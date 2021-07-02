@@ -10,33 +10,52 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-revoke-privileges/','/docs-
 
 ## 语法图
 
-**GrantStmt:**
+```ebnf+diagram
+GrantStmt ::=
+    'GRANT' PrivElemList 'ON' ObjectType PrivLevel 'TO' UserSpecList RequireClauseOpt WithGrantOptionOpt
 
-![GrantStmt](/media/sqlgram/GrantStmt.png)
+PrivElemList ::=
+    PrivElem ( ',' PrivElem )*
 
-**PrivElemList:**
+PrivElem ::=
+    PrivType ( '(' ColumnNameList ')' )?
 
-![PrivElemList](/media/sqlgram/PrivElemList.png)
+PrivType ::=
+    'ALL' 'PRIVILEGES'?
+|   'ALTER' 'ROUTINE'?
+|   'CREATE' ( 'USER' | 'TEMPORARY' 'TABLES' | 'VIEW' | 'ROLE' | 'ROUTINE' )?
+|    'TRIGGER'
+|   'DELETE'
+|    'DROP' 'ROLE'?
+|    'PROCESS'
+|    'EXECUTE'
+|   'INDEX'
+|   'INSERT'
+|   'SELECT'
+|   'SUPER'
+|    'SHOW' ( 'DATABASES' | 'VIEW' )
+|   'UPDATE'
+|   'GRANT' 'OPTION'
+|   'REFERENCES'
+|   'REPLICATION' ( 'SLAVE' | 'CLIENT' )
+|   'USAGE'
+|    'RELOAD'
+|   'FILE'
+|   'CONFIG'
+|   'LOCK' 'TABLES'
+|    'EVENT'
+|   'SHUTDOWN'
 
-**PrivElem:**
+ObjectType ::=
+    'TABLE'?
 
-![PrivElem](/media/sqlgram/PrivElem.png)
+PrivLevel ::=
+    '*' ( '.' '*' )?
+|    Identifier ( '.' ( '*' | Identifier ) )?
 
-**PrivType:**
-
-![PrivType](/media/sqlgram/PrivType.png)
-
-**ObjectType:**
-
-![ObjectType](/media/sqlgram/ObjectType.png)
-
-**PrivLevel:**
-
-![PrivLevel](/media/sqlgram/PrivLevel.png)
-
-**UserSpecList:**
-
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
+```
 
 ## 示例
 
@@ -123,7 +142,7 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## MySQL 兼容性
 
-`REVOKE <privileges>` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`REVOKE <privileges>` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

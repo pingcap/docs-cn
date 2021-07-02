@@ -10,27 +10,33 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-database/','/docs-cn/
 
 ## 语法图
 
-**AlterDatabaseStmt:**
+```ebnf+diagram
+AlterDatabaseStmt ::=
+    'ALTER' 'DATABASE' DBName? DatabaseOptionList
 
-![AlterDatabaseStmt](/media/sqlgram/AlterDatabaseStmt.png)
-
-**DatabaseOption:**
-
-![DatabaseOption](/media/sqlgram/DatabaseOption.png)
+DatabaseOption ::=
+    DefaultKwdOpt ( CharsetKw '='? CharsetName | 'COLLATE' '='? CollationName | 'ENCRYPTION' '='? EncryptionOpt )
+```
 
 ## 示例
+
+修改数据库 `test` 的字符集为 `utf8mb4`：
 
 {{< copyable "sql" >}}
 
 ```sql
-ALTER {DATABASE | SCHEMA} [db_name]
-    alter_specification ...
-alter_specification:
-    [DEFAULT] CHARACTER SET [=] charset_name
-  | [DEFAULT] COLLATE [=] collation_name
+ALTER DATABASE test DEFAULT CHARACTER SET = utf8mb4;
 ```
 
-`alter_specification` 选项用于指定数据库具体的 `CHARACTER SET` 和 `COLLATE`。目前 TiDB 只支持部分的字符集和排序规则，请参照[字符集支持](/character-set-and-collation.md)。
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+目前 TiDB 只支持部分的字符集和排序规则，详情参阅[字符集支持](/character-set-and-collation.md)。
+
+## MySQL 兼容性
+
+`ALTER DATABASE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

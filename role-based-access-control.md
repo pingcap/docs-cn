@@ -25,8 +25,7 @@ CREATE ROLE 'app_developer', 'app_read', 'app_write';
 
 角色名的格式和规范可以参考 [TiDB 用户账户管理](/user-account-management.md)。
 
-角色会被保存在 `mysql.user` 表中，如果表中有同名角色或用户，角色会创建失败并报错。
-创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
+角色会被保存在 `mysql.user` 表中，角色名称的主机名部分（如果省略）默认为 `'%'`。如果表中有同名角色或用户，角色会创建失败并报错。创建角色的用户需要拥有 `CREATE ROLE` 或 `CREATE USER` 权限。
 
 ### 授予角色权限
 
@@ -59,6 +58,7 @@ GRANT ALL ON app_db.* TO 'app_developer';
 ### 将角色授予给用户
 
 假设有一个用户拥有开发者角色，可以对 `app_db` 的所有操作权限；另外有两个用户拥有 `app_db` 的只读权限；还有一个用户拥有 `app_db` 的读写权限。
+
 首先用 `CREATE USER` 来创建用户。
 
 {{< copyable "sql" >}}
@@ -80,8 +80,7 @@ GRANT 'app_read' TO 'read_user1'@'localhost', 'read_user2'@'localhost';
 GRANT 'app_read', 'app_write' TO 'rw_user1'@'localhost';
 ```
 
-用户执行将角色授予给其他用户或者收回角色的命令，需要用户拥有 `SUPER` 权限。
-将角色授予给用户时并不会启用该角色，启用角色需要额外的操作。
+用户执行将角色授予给其他用户或者收回角色的命令，需要用户拥有 `SUPER` 权限。将角色授予给用户时并不会启用该角色，启用角色需要额外的操作。
 
 以下操作可能会形成一个“关系环”：
 
@@ -100,8 +99,7 @@ TiDB 允许这种多层授权关系存在，可以使用多层授权关系实现
 
 ### 查看角色拥有的权限
 
-可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。
-当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
+可以通过 `SHOW GRANTS` 语句查看用户被授予了哪些角色。当用户查看其他用户权限相关信息时，需要对 `mysql` 数据库拥有 `SELECT` 权限。
 
 {{< copyable "sql" >}}
 
@@ -168,8 +166,7 @@ SHOW GRANTS FOR 'read_user1'@'localhost' USING 'app_read';
 +--------------------------------------------------------+
 ```
 
-可以使用 `SHOW GRANTS` 或 `SHOW GRANTS FOR CURRENT_USER()` 查看当前用户的权限。
-这两个语句有细微的差异，`SHOW GRANTS` 会显示当前用户的启用角色的权限，而 `SHOW GRANTS FOR CURRENT_USER()` 则不会显示启用角色的权限。
+可以使用 `SHOW GRANTS` 或 `SHOW GRANTS FOR CURRENT_USER()` 查看当前用户的权限。这两个语句有细微的差异，`SHOW GRANTS` 会显示当前用户的启用角色的权限，而 `SHOW GRANTS FOR CURRENT_USER()` 则不会显示启用角色的权限。
 
 ### 设置默认启用角色
 
@@ -353,8 +350,7 @@ REVOKE INSERT, UPDATE, DELETE ON app_db.* FROM 'app_write';
 DROP ROLE 'app_read', 'app_write';
 ```
 
-这个操作会清除角色在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录，解除和其相关的授权关系。
-执行删除角色的用户需要拥有 `DROP ROLE` 或 `DROP USER` 权限。
+这个操作会清除角色在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录，解除和其相关的授权关系。执行删除角色的用户需要拥有 `DROP ROLE` 或 `DROP USER` 权限。
 
 ### 授权表
 

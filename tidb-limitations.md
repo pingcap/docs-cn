@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 |:---------|:--------------|
 | Database | 64 |
 | Table    | 64 |
-| Cloumn   | 64 |
+| Column   | 64 |
 | Index    | 64 |
 | View     | 64 |
 | Sequence | 64 |
@@ -35,19 +35,22 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 ## 单个 Table 的限制
 
-| 类型       | 最大限制   |
-|:----------|:----------|
-| Cloumns   | 512       |
-| Indexs    | 64        |
-| Rows      | unlimited |
-| Size      | unlimited |
-| Partitions| 1024      |
+| 类型       | 最大限制（默认值）              |
+|:----------|:------------------------------|
+| Columns   | 默认为 1017，最大可调至 4096     |
+| Indexs    | 默认为 64，最大可调至 512        |
+| Rows      | 无限制                         |
+| Size      | 无限制                         |
+| Partitions| 1024                          |
+
+* Columns 的最大限制可通过 [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-从-v50-版本开始引入) 修改。
+* Indexs 的最大限制可通过 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 修改。
 
 ## 单行的限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Size       | 6MB       |
+| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项调整 |
 
 ## 单列的限制
 

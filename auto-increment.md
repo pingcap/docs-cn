@@ -10,24 +10,26 @@ aliases: ['/docs-cn/dev/auto-increment/']
 
 ## 基本概念
 
-`AUTO_INCREMENT` 是用于自动填充缺省列值的列属性。当 `INSERT` 语句没有指定 `AUTO_INCREMENT` 列的具体值时，系统会自动地为该列分配一个值。该值满足唯一性，以及**特殊情况下**的递增性和连续性。使用示例如下：
+`AUTO_INCREMENT` 是用于自动填充缺省列值的列属性。当 `INSERT` 语句没有指定 `AUTO_INCREMENT` 列的具体值时，系统会自动地为该列分配一个值。
+
+出于性能原因，自增编号是系统批量分配给每台 TiDB 服务器的值（默认 3 万个值），因此自增编号能保证唯一性，但分配给 `INSERT` 语句的值仅在单台 TiDB 服务器上具有单调性。
 
 {{< copyable "sql" >}}
 
 ```sql
-create table t(id int primary key AUTO_INCREMENT, c int);
+CREATE TABLE t(id int PRIMARY KEY AUTO_INCREMENT, c int);
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
-insert into t(c) values (1);
-insert into t(c) values (2);
-insert into t(c) values (3), (4), (5);
+INSERT INTO t(c) VALUES (1);
+INSERT INTO t(c) VALUES (2);
+INSERT INTO t(c) VALUES (3), (4), (5);
 ```
 
 ```sql
-mysql> select * from t;
+SELECT * FROM t;
 +----+---+
 | id | c |
 +----+---+
@@ -45,11 +47,11 @@ mysql> select * from t;
 {{< copyable "sql" >}}
 
 ```sql
-insert into t(id, c) values (6, 6);
+INSERT INTO t(id, c) VALUES (6, 6);
 ```
 
 ```sql
-mysql> select * from t;
+SELECT * FROM t;
 +----+---+
 | id | c |
 +----+---+
@@ -70,13 +72,13 @@ mysql> select * from t;
 TiDB 实现 `AUTO_INCREMENT` 隐式分配的原理是，对于每一个自增列，都使用一个全局可见的键值对用于记录当前已分配的最大 ID。由于分布式环境下的节点通信存在一定开销，为了避免写请求放大的问题，每个 TiDB 节点在分配 ID 时，都申请一段 ID 作为缓存，用完之后再去取下一段，而不是每次分配都向存储节点申请。例如，对于以下新建的表：
 
 ```sql
-create table t(id int unique key AUTO_INCREMENT, c int);
+CREATE TABLE t(id int UNIQUE KEY AUTO_INCREMENT, c int);
 ```
 
 假设集群中有两个 TiDB 实例 A 和 B，如果向 A 和 B 分别对 `t` 执行一条插入语句：
 
 ```sql
-insert into t (c) values (1)
+INSERT INTO t (c) VALUES (1)
 ```
 
 实例 A 可能会缓存 `[1,30000]` 的自增 ID，而实例 B 则可能缓存 `[30001,60000]` 的自增 ID。各自实例缓存的 ID 将随着执行将来的插入语句被作为缺省值，顺序地填充到 `AUTO_INCREMENT` 列中。
@@ -91,69 +93,151 @@ insert into t (c) values (1)
 
 例如在上述示例中，依次执行如下操作：
 
-1. 客户端向实例 B 插入一条将 `id` 设置为 `2` 的语句 `insert into t values (2, 1)`，并执行成功。
-2. 客户端向实例 A 发送 `Insert` 语句 `insert into t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配。当前 A 缓存了 `[1, 30000]` 这段 ID，可能会分配 `2` 为自增 ID 的值，并把本地计数器加 `1`。而此时数据库中已经存在 `id` 为 `2` 的数据，最终返回 `Duplicated Error` 错误。
+1. 客户端向实例 B 插入一条将 `id` 设置为 `2` 的语句 `INSERT INTO t VALUES (2, 1)`，并执行成功。
+2. 客户端向实例 A 发送 `INSERT` 语句 `INSERT INTO t (c) (1)`，这条语句中没有指定 `id` 的值，所以会由 A 分配。当前 A 缓存了 `[1, 30000]` 这段 ID，可能会分配 `2` 为自增 ID 的值，并把本地计数器加 `1`。而此时数据库中已经存在 `id` 为 `2` 的数据，最终返回 `Duplicated Error` 错误。
 
-### 递增性保证
+### 单调性保证
 
-`AUTO_INCREMENT` 列隐式分配值的递增性只能在含有单个 TiDB 实例的集群中得到保证：即对于同一个自增列，先分配的值小于后分配的值；而在含有多个 TiDB 实例的集群中，无法保证自增列的递增性。
+TiDB 保证 `AUTO_INCREMENT` 自增值在单台服务器上单调递增。以下示例在一台服务器上生成连续的 `AUTO_INCREMENT` 自增值 `1`-`3`：
 
-例如，对于上述例子，如果先向实例 B 执行一条插入语句，再向实例 A 执行一条插入语句。根据缓存自增 ID 的性质，自增列隐式分配的值可能分别是 `30002` 和 `2`。因此从时间上看，不满足递增性。
-
-### 连续性保证
-
-在含有多个 TiDB 实例的集群中，`AUTO_INCREMENT` 分配值的连续性**只能**在 batch insert 语句中得到保证。
-
-例如，对以下表执行以下语句：
+{{< copyable "sql" >}}
 
 ```sql
-create table t (a int primary key AUTO_INCREMENT)
+CREATE TABLE t (a int PRIMARY KEY AUTO_INCREMENT, b timestamp NOT NULL DEFAULT NOW());
+INSERT INTO t (a) VALUES (NULL), (NULL), (NULL);
+SELECT * FROM t;
 ```
 
 ```sql
-insert into t values (), (), (), ()
-```
-
-即使存在正在执行并发写入的其他 TiDB 实例，或者当前实例剩余的缓存 ID 数量不够，都不会影响分配值的连续性。
-
-### `_tidb_rowid` 的关联性
-
-> **注意：**
->
-> 在没有指定整数类型主键的情况下 TiDB 会使用 `_tidb_rowid` 来标识行，该数值的分配会和自增列（如果存在的话）共用一个分配器，其中缓存的大小可能会被自增列和 `_tidb_rowid` 共同消耗。因此会有以下的示例情况：
-
-```sql
-mysql> create table t(id int unique key AUTO_INCREMENT);
-Query OK, 0 rows affected (0.05 sec)
-
-mysql> insert into t values (),(),();
-Query OK, 3 rows affected (0.00 sec)
+Query OK, 0 rows affected (0.11 sec)
+Query OK, 3 rows affected (0.02 sec)
 Records: 3  Duplicates: 0  Warnings: 0
-
-mysql> select _tidb_rowid, id from t;
-+-------------+------+
-| _tidb_rowid | id   |
-+-------------+------+
-|           4 |    1 |
-|           5 |    2 |
-|           6 |    3 |
-+-------------+------+
-3 rows in set (0.01 sec)
++---+---------------------+
+| a | b                   |
++---+---------------------+
+| 1 | 2020-09-09 20:38:22 |
+| 2 | 2020-09-09 20:38:22 |
+| 3 | 2020-09-09 20:38:22 |
++---+---------------------+
+3 rows in set (0.00 sec)
 ```
+
+如果在另一台服务器上执行插入操作，那么 `AUTO_INCREMENT` 值的顺序可能会剧烈跳跃，这是由于每台服务器都有各自缓存的 `AUTO_INCREMENT` 自增值。
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t (a) VALUES (NULL);
+SELECT * FROM t;
+```
+
+```sql
+Query OK, 1 row affected (0.03 sec)
+
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
++---------+---------------------+
+4 rows in set (0.00 sec)
+```
+
+以下示例在最先的一台服务器上执行一个插入 `INSERT` 操作，生成 `AUTO_INCREMENT` 值 `4`。因为这台服务器上仍有剩余的 `AUTO_INCREMENT` 缓存值可用于分配。在该示例中，值的顺序不具有全局单调性：
+
+```sql
+INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+SELECT * FROM t ORDER BY b;
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
+|       4 | 2020-09-09 20:44:43 |
++---------+---------------------+
+5 rows in set (0.00 sec)
+```
+
+`AUTO_INCREMENT` 缓存不会持久化，重启会导致缓存值失效。以下示例中，最先的一台服务器重启后，向该服务器执行一条插入操作：
+
+```sql
+INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+SELECT * FROM t ORDER BY b;
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
+|       4 | 2020-09-09 20:44:43 |
+| 2030001 | 2020-09-09 20:54:11 |
++---------+---------------------+
+6 rows in set (0.00 sec)
+```
+
+TiDB 服务器频繁重启可能导致 `AUTO_INCREMENT` 缓存值被快速消耗。在以上示例中，最先的一台服务器本来有可用的缓存值 `[5-3000]`。但重启后，这些值便丢失了，无法进行重新分配。
+
+用户不应指望 `AUTO_INCREMENT` 值保持连续。在以下示例中，一台 TiDB 服务器的缓存值为 `[2000001-2030000]`。当手动插入值 `2029998` 时，TiDB 取用了一个新缓存区间的值：
+
+```sql
+INSERT INTO t (a) VALUES (2029998);
+Query OK, 1 row affected (0.01 sec)
+
+INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.00 sec)
+
+INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.02 sec)
+
+INSERT INTO t (a) VALUES (NULL);
+Query OK, 1 row affected (0.01 sec)
+
+SELECT * FROM t ORDER BY b;
++---------+---------------------+
+| a       | b                   |
++---------+---------------------+
+|       1 | 2020-09-09 20:38:22 |
+|       2 | 2020-09-09 20:38:22 |
+|       3 | 2020-09-09 20:38:22 |
+| 2000001 | 2020-09-09 20:43:43 |
+|       4 | 2020-09-09 20:44:43 |
+| 2030001 | 2020-09-09 20:54:11 |
+| 2029998 | 2020-09-09 21:08:11 |
+| 2029999 | 2020-09-09 21:08:11 |
+| 2030000 | 2020-09-09 21:08:11 |
+| 2060001 | 2020-09-09 21:08:11 |
+| 2060002 | 2020-09-09 21:08:11 |
++---------+---------------------+
+11 rows in set (0.00 sec)
+```
+
+以上示例插入 `2030000` 后，下一个值为 `2060001`，即顺序出现跳跃。这是因为另一台 TiDB 服务器获取了中间缓存区间 `[2030001-2060000]`。当部署有多台 TiDB 服务器时，`AUTO_INCREMENT` 值的顺序会出现跳跃，因为对缓存值的请求是交叉出现的。
 
 ### 缓存大小控制
 
 TiDB 自增 ID 的缓存大小在早期版本中是对用户透明的。从 v3.1.2、v3.0.14 和 v4.0.rc-2 版本开始，TiDB 引入了 `AUTO_ID_CACHE` 表选项来允许用户自主设置自增 ID 分配缓存的大小。例如：
 
 ```sql
-mysql> create table t(a int auto_increment key) AUTO_ID_CACHE 100;
+CREATE TABLE t(a int AUTO_INCREMENT key) AUTO_ID_CACHE 100;
 Query OK, 0 rows affected (0.02 sec)
 
-mysql> insert into t values();
+INSERT INTO t VALUES();
 Query OK, 1 row affected (0.00 sec)
 Records: 1  Duplicates: 0  Warnings: 0
 
-mysql> select * from t;
+SELECT * FROM t;
 +---+
 | a |
 +---+
@@ -165,16 +249,16 @@ mysql> select * from t;
 此时如果将该列的自增缓存无效化，重新进行隐式分配：
 
 ```sql
-mysql> delete from t;
+DELETE FROM t;
 Query OK, 1 row affected (0.01 sec)
 
-mysql> rename table t to t1;
+RENAME TABLE t to t1;
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> insert into t1 values()
+INSERT INTO t1 VALUES()
 Query OK, 1 row affected (0.00 sec)
 
-mysql> select * from t;
+SELECT * FROM t;
 +-----+
 | a   |
 +-----+

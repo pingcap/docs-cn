@@ -1,188 +1,69 @@
 ---
-title: TiDB V4.0 Roadmap
-aliases: ['/docs-cn/dev/roadmap/','/docs-cn/ROADMAP/','/docs-cn/roadmap/']
+title: TiDB Roadmap
+aliases: ['/zh/tidb/v5.0/roadmap','/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs-cn/stable/roadmap/','/docs-cn/v4.0/roadmap/','/zh/tidb/stable/roadmap','/docs-cn/v3.1/roadmap/','/zh/tidb/v3.1/roadmap','/docs-cn/v3.0/roadmap/','/zh/tidb/v3.0/roadmap','/docs-cn/v2.1/roadmap/','/zh/tidb/v2.1/roadmap']
 ---
 
 <!-- markdownlint-disable MD001 -->
 
-# TiDB V4.0 Roadmap
+# TiDB Roadmap
 
-## TiDB
+## 提升系统的稳定性
 
-### TiDB Server
+- [x] `CREATE BINDING` 语句支持绑定 `UPDATE`/`DELETE`/`INSERT` 语句 [#15827](https://github.com/pingcap/tidb/issues/15827)
+- [x] 优化同时执行 DDL 和 DML 语句时悲观事务的模型，提升系统稳定性 [#18098](https://github.com/pingcap/tidb/issues/18098)
+- [x] 优化延时的抖动 [#18005](https://github.com/pingcap/tidb/issues/18005)
 
-#### 功能
+## 提升系统性能，降低系统延时
 
-* 支持 TiFlash 存储引擎
-* 支持 Optimizer Trace
-* 支持多列统计信息
-* 为普通 CM-Sketch 支持 TopN 统计信息
-* 完善 Plan Cache 功能
-* 支持自适应 SQL 引擎
-* 支持 SQL Tuning Advisor
-* 支持 SQL Plan Management
-* 事务
-    + 悲观锁 GA
-    + 事务内不限制语句数量
-    + 支持 10 GB 事务
+- [x] 优化批量删除的性能 [#18028](https://github.com/pingcap/tidb/issues/18028)
+- [x] 优化系统内存管理，降低系统占用内存的量 [#17479](https://github.com/pingcap/tidb/issues/17479)
+- [ ] 提升索引选择的准确性和鲁棒性 [#18065](https://github.com/pingcap/tidb/issues/18065)
+- [ ] 提升在分区表上裁剪分区和访问数据的性能 [#18016](https://github.com/pingcap/tidb/issues/18016)
+- [x] 支持异步提交数据，写完预写阶段的语句能直接返回客户端，降低系统延时 [#8316](https://github.com/tikv/tikv/issues/8316)
+- [x] 支持聚族索引 [#4841](https://github.com/pingcap/tidb/issues/4841)
+- [ ] 支持跨地区部署，分区表支持配置地理位置策略 [#18273](https://github.com/pingcap/tidb/issues/18273)
 
-#### 性能
+## 提升系统安全性
 
-* 提升 load CSV/data 性能
-* 提升 Prepare 语句性能
-* Generated Column 支持 Index
-* 优化 SQL 引擎部分算子
-    + 提升通过索引回表查询的性能
-    + Index Join 拆分为 Index Merge Join 和 Index Hash Join
-    + Radix Hash Join
-    + Index Merge
-    + Parallel Stream Aggregate
-    + Parallel Merge Sort
-    + Parallel Merge Join
-    + Full Vectorized Expression Evaluation
-* Indexes on Expressions
-* Multi-Index Scan
-* Join、Aggregate 和 Sort 算子支持外部存储
-* 优化执行引擎并发模型
-* 支持新 Cascades 优化器，支持 Cascades Planner，扩大优化器的搜索空间
+### 认证方式
 
-#### 易用性
+- [x] TiFlash 支持 TLS 功能 [#18080](https://github.com/pingcap/tidb/issues/18080)
+- [x] TiDB 集群内部通信支持 TLS 功能 [#529](https://github.com/pingcap/tiup/issues/529)
+- [x] TiUP 支持 SSH LDAP 扩展 [#528](https://github.com/pingcap/tiup/issues/528)
 
-* 完善 Optimizer Hint 功能
-* 快速修复数据库或者表元信息及数据
-* 动态修改配置项
-* 空闲连接自动断开
-* 完善支持 MySQL 5.7 DDL 语句
-* 重构日志内容
-* 支持使用 `admin checksum from … to …` 校验数据完整性
-* 支持使用标准 SQL 查询 DDL 历史记录
-* 支持使用标准 SQL 管理 Binlog
-* 支持使用标准 SQL 管理集群
-* 多个 Ctrl 工具合并一个工具
+### 透明数据加密
 
-#### 高可用
+- [ ] TiFlash 支持透明数据加密 [#18082](https://github.com/pingcap/tidb/issues/18082)
+- [ ] PD 支持透明数据加密 [#18262](https://github.com/pingcap/tidb/issues/18262)
 
-* Binlog 支持服务高可用
-* Binlog 支持数据高可靠
+### 数据脱敏
 
-### TiKV Server
+- [x] TiDB 的日志支持脱敏 [#18034](https://github.com/pingcap/tidb/issues/18034)
 
-#### 功能
+## 降低成本
 
-* 集群规模最大支持 200+ 节点
-* 全量快速备份恢复
-* 动态 Split 和 Merge 热点 Region
-* 精细的内存控制
-* Raft
-    + Joint consensus
-    + 只读副本
+- [ ] 优化在 AWS i3.xlarge/i3.2xlarge 配置上运行 TiDB 的性能和稳定性 [#18025](https://github.com/pingcap/tidb/issues/18025)
+- [ ] 优化 TiDB 存储使用云盘的性能和稳定性，例如：AWS EBS gp2 [#18024](https://github.com/pingcap/tidb/issues/18024)
 
-#### 性能
+## 新功能
 
-* 提升 Scan 性能
-* 动态扩展工作线程数量
-* 弹性扩展只读副本
-* 优化调度系统确保 QPS 不抖动
+- [ ] 恢复到任意时间点 (PITR) [#325](https://github.com/pingcap/br/issues/325)
+- [x] 支持修改列的类型 [#17526](https://github.com/pingcap/tidb/issues/17526)
+- [ ] 提升发现及诊断性能问题的效率，降低用户的使用成本 [#18867](https://github.com/pingcap/tidb/issues/18867)
+- [x] 字符集的排序规则支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
+- [ ] 数据导入
+    - [ ] TiDB Lightning 支持检测导入数据中的冲突
+    - [ ] TiDB Lightning 支持分布式并行导入
+- [ ] 数据复制：TiCDC 兼容 TiDB Binlog 相关的特性，降低 TiDB Binlog 用户使用 TiCDC 的成本 [#690](https://github.com/pingcap/ticdc/issues/690)
+    - [ ] 支持输出数据到文件系统和云端存储 (S3/GCS)
+- [ ] 数据容灾：容灾中支持快照级别的一致性数据复制 [#691](https://github.com/pingcap/ticdc/issues/691)
+    - [ ] 支持 TiDB 灾备集群在主集群遇到灾难时将备用集群复制到快照级别的一致状态
+- [ ] 支持通过 API 管理 TiCDC [#736](https://github.com/pingcap/ticdc/issues/736)
+- [x] 数据共享：TiCDC 支持 Avro 接收器，使 TiCDC 与 Kafka connect 兼容 [#660](https://github.com/pingcap/ticdc/issues/660)
+- [ ] 支持 Spark 3.0 [#1173](https://github.com/pingcap/tispark/issues/1173)
+- [x] 支持 `EXCEPT`/`INTERSECT` 操作 [#18031](https://github.com/pingcap/tidb/issues/18031)
+- [x] 支持将云上的 RDS 迁移到 TiDB，例如：云上的 MySQL 或者 Aurora [#18629](https://github.com/pingcap/tidb/issues/18629)
 
-#### 易用性
+## TiDB Operator
 
-* 重构日志内容
-
-### TiFlash
-
-#### 功能
-
-* 列式存储
-* 通过 Raft learner 从 TiKV 同步数据
-* snapshot read
-
-### TiSpark
-
-#### 功能
-
-* 支持 batch write
-* 接入 TiFlash
-
-## Data Migration
-
-### 功能
-
-* 完善前向检查
-* 可视化管理同步规则
-* 可视化管理同步任务
-* 数据同步在线校验
-
-### 易用性
-
-* 重构日志格式及内容
-
-### 高可用
-
-* 支持服务高可用
-* 支持数据高可靠
-
-## TiDB Toolkit
-
-### 功能
-
-* Loader 集成到 TiDB
-* TiDB Lightning 集成到 TiDB
-
-### 性能
-
-* TiDB Lightning 支持多 lightning + importer 实例并行导入
-
-## TiDB 未来规划
-
-### TiDB Server
-
-#### 功能
-
-* Common Table Expression
-* Invisible Index
-* 支持修改列类型
-* 分区表支持二级分区
-* 分区表与普通表相互转换
-* 视图支持写入及更新
-* Multi-Schema Change
-* 按 Table 配置副本数及分布策略
-* 精细的 QoS 控制
-* 闪回到任意时间点
-
-#### 性能
-
-* Coprocessor Cache
-* 新 Row 存储格式
-* Distributed Execution Engine
-
-#### 易用性
-
-* 全链路 Trace 工具
-* Help 信息补齐
-
-#### 安全
-
-* 列级别权限
-
-### TiKV Server
-
-#### 功能
-
-* 增量快速备份恢复
-* 闪回到任意时间点
-* 分级存储
-* 精细的 QoS 控制
-* 按 Region 配置副本数及分布策略
-* Raft
-    + 链式复制数据
-    + Witness Role
-* 存储引擎
-    + 支持 RocksDB 在 compaction 时按照 Guard 信息切分 SSTable
-    + 冷热数据分离
-
-#### 性能
-
-* 提升快速备份性能
-* 1PC
-* 支持 Storage Class Memory 硬件
-* 新 Raft 引擎
+参见 [TiDB Operator Roadmap](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/roadmap)。

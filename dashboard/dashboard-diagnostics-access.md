@@ -5,11 +5,15 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
 
 # TiDB Dashboard 集群诊断页面
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 集群诊断是在指定的时间范围内，对集群可能存在的问题进行诊断，并将诊断结果和一些集群相关的负载监控信息汇总成一个诊断报告。诊断报告是网页形式，通过浏览器保存后可离线浏览和传阅。
 
 > **注意：**
 >
-> 集群诊断功能依赖于集群中部署有 Prometheus 监控组件，参见 [TiUP](/tiup/tiup-overview.md) 或 [TiDB Ansible](/online-deployment-using-ansible.md) 部署文档了解如何部署监控组件。若集群中没有部署监控组件，生成的诊断报告中将提示生成失败。
+> 集群诊断功能依赖于集群中部署有 Prometheus 监控组件，参见 [TiUP](/tiup/tiup-overview.md) 部署文档了解如何部署监控组件。若集群中没有部署监控组件，生成的诊断报告中将提示生成失败。
 
 ## 访问
 

@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-stats/']
 
 ## 语法图
 
-**LoadStatsStmt:**
-
-![LoadStatsStmt](/media/sqlgram/LoadStatsStmt.png)
+```ebnf+diagram
+LoadStatsStmt ::=
+    'LOAD' 'STATS' stringLit
+```
 
 ## 参数说明
 
@@ -31,6 +32,10 @@ LOAD STATS '/tmp/stats.json';
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

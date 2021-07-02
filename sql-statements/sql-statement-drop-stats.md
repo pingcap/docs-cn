@@ -10,13 +10,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-stats/']
 
 ## 语法图
 
-**DropStatsStmt:**
+```ebnf+diagram
+DropStatsStmt ::=
+    'DROP' 'STATS' TableName
 
-![DropTableStmt](/media/sqlgram/DropStatsStmt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 
@@ -64,6 +64,10 @@ SHOW STATS_META WHERE db_name='test' and table_name='t';
 ```sql
 Empty set (0.00 sec)
 ```
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

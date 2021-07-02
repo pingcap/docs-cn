@@ -50,8 +50,8 @@ TiDB 分布式数据库通过 Raft 算法原生支持两地三中心架构的建
 
 - 如上图所示，北京有两个机房 IDC1 和 IDC2，机房 IDC1 中有三套机架 RAC1、RAC2、RAC3，机房 IDC2 有机架 RAC4、RAC5；西安机房 IDC3 有机架 RAC6。
 - 如上图中 RAC1 机架所示，TiDB、PD 服务部署在同一台服务器上，还有两台 TiKV 服务器；每台 TiKV 服务器部署 2 个 TiKV 实例（tikv-server），RAC2、RAC4、RAC5、RAC6 类似。
-- 机架 RAC3 上安放 TiDB Server 及中控 + 监控服务器。部署 TiDB Server，用于日常管理维护、备份使用。中控 + 监控服务器上部署 TiDB Ansible、Prometheus、Grafana 以及恢复工具；
-- 另可增加备份服务器，其上部署 Mydumper 及 Drainer，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
+- 机架 RAC3 上安放 TiDB Server 及中控 + 监控服务器。部署 TiDB Server，用于日常管理维护、备份使用。中控 + 监控服务器上部署 Prometheus、Grafana 以及恢复工具；
+- 另可增加备份服务器，其上部署 Drainer，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
 
 ## 配置
 
@@ -127,7 +127,7 @@ alertmanager_servers:
 
 在两地三中心部署方式下，对于 Labels 的设计需要充分考虑到系统的可用性和容灾能力，建议根据部署的物理结构来定义 DC、ZONE、RACK、HOST 四个等级。
 
-![label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
+![Label 逻辑定义图](/media/three-data-centers-in-two-cities-deployment-03.png)
 
 PD 设置中添加 TiKV label 的等级配置。
 

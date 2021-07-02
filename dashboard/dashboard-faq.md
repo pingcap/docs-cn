@@ -29,7 +29,7 @@ PD 中的 TiDB Dashboard 出于安全考虑仅监听部署时所指定的 IP 地
 
 QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例，没有部署的情况下就会显示为错误。向集群中新部署 Prometheus 实例即可解决该问题。
 
-若已经部署 Prometheus 监控实例但仍然显示为错误，可能的原因是您使用的部署工具（TiUP、TiDB Operator 或 TiDB Ansible）版本比较旧，没有自动汇报监控地址，导致 TiDB Dashboard 无法感知并查询监控数据。可以升级到最新的部署工具并重试。
+若已经部署 Prometheus 监控实例但仍然显示为错误，可能的原因是您使用的部署工具（TiUP 或 TiDB Operator）版本比较旧，没有自动汇报监控地址，导致 TiDB Dashboard 无法感知并查询监控数据。可以升级到最新的部署工具并重试。
 
 以下给出 TiUP 部署工具的操作方法，对于其他部署工具，请参阅工具对应文档。
 
@@ -48,8 +48,8 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
    tiup cluster start CLUSTER_NAME
    ```
 
-   即使集群已经启动，请仍然执行该命令。该命令不会影响集群上正常的业务，但会刷新并上报监控地址，从而能让监控在 TiDB Dashbaord 中正常显示。
+   即使集群已经启动，请仍然执行该命令。该命令不会影响集群上正常的业务，但会刷新并上报监控地址，从而能让监控在 TiDB Dashboard 中正常显示。
 
 ### 概况页面中 Top SQL 语句、最近慢查询显示 `invalid connection` 错误
 
-可能的原因是你开启了 TiDB 的 `prepared-plan-cache` 功能。作为实验性功能，`prepared-plan-cache` 在某些版本的 TiDB 中存在一些缺陷，开启后可能会导致 TiDB Dashboard（及其他应用）出现该问题。请依据[文档](/tidb-configuration-file.md#prepared-plan-cache)关闭 `prepared-plan-cache` 功能。
+可能的原因是你开启了 TiDB 的 `prepared-plan-cache` 功能。`prepared-plan-cache` 是实验性功能，在某些版本的 TiDB 中可能无法正常运行，开启后可能会导致 TiDB Dashboard（及其他应用）出现该问题。可以通过修改 [TiDB 配置文件](/tidb-configuration-file.md#prepared-plan-cache)来关闭 `prepared-plan-cache` 功能。

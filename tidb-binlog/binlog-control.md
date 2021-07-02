@@ -1,6 +1,6 @@
 ---
 title: binlogctl 工具
-summary: 介绍 binlogctl 的使用方法。 
+summary: 介绍 binlogctl 的使用方法。
 aliases: ['/docs-cn/dev/tidb-binlog/binlog-control/']
 ---
 
@@ -22,6 +22,10 @@ binlogctl 支持如下这些功能：
 
 ## binlogctl 下载
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 binlogctl 下载链接：
 
 {{< copyable "shell-regular" >}}
@@ -37,15 +41,6 @@ wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
 
 ```bash
 sha256sum -c tidb-{version}-linux-amd64.sha256
-```
-
-对于 v2.1.0 GA 及以上版本，binlogctl 已经包含在 TiDB 的下载包中，其他版本需要单独下载 binlogctl:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.sha256
 ```
 
 检查文件完整性，返回 ok 则正确：

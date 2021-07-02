@@ -5,7 +5,10 @@ aliases: ['/docs-cn/dev/privilege-management/','/docs-cn/dev/reference/security/
 
 # 权限管理
 
-TiDB 的权限管理系统按照 MySQL 的权限管理进行实现，TiDB 支持大部分的 MySQL 的语法和权限类型。
+TiDB 支持 MySQL 5.7 的权限管理系统，包括 MySQL 的语法和权限类型。同时 TiDB 还支持 MySQL 8.0 的以下特性：
+
+* 从 TiDB 3.0 开始，支持 SQL 角色。
+* 从 TiDB 5.1 开始，支持动态权限。
 
 本文档主要介绍 TiDB 权限相关操作、各项操作需要的权限以及权限系统的实现。
 
@@ -29,69 +32,62 @@ GRANT SELECT ON test.* TO 'xxx'@'%';
 GRANT ALL PRIVILEGES ON *.* TO 'xxx'@'%';
 ```
 
-`GRANT` 为一个不存在的用户授予权限时，默认并不会自动创建用户。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。
-如果从 SQL Mode 中去掉 `NO_AUTO_CREATE_USER`，当 `GRANT` 的目标用户不存在时，TiDB 会自动创建用户。
+默认情况下，如果指定的用户不存在，`GRANT` 语句将报错。该行为受 SQL Mode 中的 `NO_AUTO_CREATE_USER` 控制。
 
 {{< copyable "sql" >}}
 
 ```sql
-select @@sql_mode;
-```
+SET sql_mode=DEFAULT;
+Query OK, 0 rows affected (0.00 sec)
 
-```+-------------------------------------------------------------------------------------------------------------------------------------------+
+SELECT @@sql_mode;
++-------------------------------------------------------------------------------------------------------------------------------------------+
 | @@sql_mode                                                                                                                                |
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 | ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION |
 +-------------------------------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
-```
 
-{{< copyable "sql" >}}
+SELECT * FROM mysql.user WHERE user='idontexist';
+Empty set (0.00 sec)
 
-```sql
-set @@sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-```
+GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
+ERROR 1105 (HY000): You are not allowed to create a user with GRANT
 
-```
-Query OK, 0 rows affected (0.00 sec)
-```
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM mysql.user WHERE user='xxxx';
-```
-
-```
+SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
 Empty set (0.00 sec)
 ```
 
+在下面的例子中，由于没有将 SQL Mode 设置为 `NO_AUTO_CREATE_USER`，用户 `idontexist` 会被自动创建且密码为空。**不推荐**使用这种方式，因为会带来安全风险：如果用户名拼写错误，会导致新用户被创建且密码为空。
+
 {{< copyable "sql" >}}
 
 ```sql
-GRANT ALL PRIVILEGES ON test.* TO 'xxxx'@'%' IDENTIFIED BY 'yyyyy';
-```
-
-```
+SET @@sql_mode='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 Query OK, 0 rows affected (0.00 sec)
-```
 
-{{< copyable "sql" >}}
-
-```sql
-SELECT user,host FROM mysql.user WHERE user='xxxx';
-```
-
-```
-+------|------+
-| user | host |
-+------|------+
-| xxxx | %    |
-+------|------+
+SELECT @@sql_mode;
++-----------------------------------------------------------------------------------------------------------------------+
+| @@sql_mode                                                                                                            |
++-----------------------------------------------------------------------------------------------------------------------+
+| ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION |
++-----------------------------------------------------------------------------------------------------------------------+
 1 row in set (0.00 sec)
-```
 
-上述示例中，`xxxx@%` 即自动添加的用户。
+SELECT * FROM mysql.user WHERE user='idontexist';
+Empty set (0.00 sec)
+
+GRANT ALL PRIVILEGES ON test.* TO 'idontexist';
+Query OK, 1 row affected (0.05 sec)
+
+SELECT user,host,authentication_string FROM mysql.user WHERE user='idontexist';
++------------+------+-----------------------+
+| user       | host | authentication_string |
++------------+------+-----------------------+
+| idontexist | %    |                       |
++------------+------+-----------------------+
+1 row in set (0.01 sec)
+```
 
 `GRANT` 还可以模糊匹配地授予用户数据库的权限：
 
@@ -259,35 +255,63 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 +------------------------------------------------------------------+
 ```
 
+### 动态权限
+
+从 v5.1 开始，TiDB 支持 MySQL 8.0 中的动态权限特性。动态权限用于限制 `SUPER` 权限，实现对某些操作更细粒度的访问。例如，系统管理员可以使用动态权限来创建一个只能执行 `BACKUP` 和 `RESTORE` 操作的用户帐户。
+
+动态权限包括：
+
+* `BACKUP_ADMIN`
+* `RESTORE_ADMIN`
+* `ROLE_ADMIN`
+* `CONNECTION_ADMIN`
+* `SYSTEM_VARIABLES_ADMIN`
+
+若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
+
 ## TiDB 各操作需要的权限
 
-TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` 表中查找到。
+TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` 表中查找到。例如：
 
-| 权限类型       |  权限变量名    | 权限简述                 |
-| :------------ | :------------ | :---------------------- |
-| ALL            | AllPriv        | 所有权限                 |
-| Drop           | DropPriv       | 删除 schema/table        |
-| Index          | IndexPriv      | 创建/删除 index          |
-| Alter          | AlterPriv      | 执行 `ALTER` 语句          |
-| Super          | SuperPriv      | 所有权限                 |
-| Grant          | GrantPriv      | 授予其他用户权限         |
-| Create         | CreatePriv     | 创建 schema/table        |
-| Select         | SelectPriv     | 读取表内容               |
-| Insert         | InsertPriv     | 插入数据到表             |
-| Update         | UpdatePriv     | 更新表中数据             |
-| Delete         | DeletePriv     | 删除表中数据             |
-| Reload         | ReloadPriv     | 执行 `FLUSH` 语句       |
-| Config         | ConfigPriv     | 动态加载配置             |
-| Trigger        | TriggerPriv    | 尚未使用                 |
-| Process        | ProcessPriv    | 显示正在运行的任务       |
-| Execute        | ExecutePriv    | 执行 execute 语句        |
-| Drop Role      | DropRolePriv   | 执行 drop role           |
-| Show View      | ShowViewPriv   | 执行 show create view    |
-| References     | ReferencesPriv | 尚未使用                 |
-| Create View    | CreateViewPriv | 创建视图                 |
-| Create User    | CreateUserPriv | 创建用户                 |
-| Create Role    | CreateRolePriv | 执行 create role         |
-| Show Databases | ShowDBPriv     | 显示 database 内的表情况 |
+```sql
+SELECT * FROM INFORMATION_SCHEMA.USER_PRIVILEGES WHERE grantee = "'root'@'%'";
++------------+---------------+-------------------------+--------------+
+| GRANTEE    | TABLE_CATALOG | PRIVILEGE_TYPE          | IS_GRANTABLE |
++------------+---------------+-------------------------+--------------+
+| 'root'@'%' | def           | Select                  | YES          |
+| 'root'@'%' | def           | Insert                  | YES          |
+| 'root'@'%' | def           | Update                  | YES          |
+| 'root'@'%' | def           | Delete                  | YES          |
+| 'root'@'%' | def           | Create                  | YES          |
+| 'root'@'%' | def           | Drop                    | YES          |
+| 'root'@'%' | def           | Process                 | YES          |
+| 'root'@'%' | def           | References              | YES          |
+| 'root'@'%' | def           | Alter                   | YES          |
+| 'root'@'%' | def           | Show Databases          | YES          |
+| 'root'@'%' | def           | Super                   | YES          |
+| 'root'@'%' | def           | Execute                 | YES          |
+| 'root'@'%' | def           | Index                   | YES          |
+| 'root'@'%' | def           | Create User             | YES          |
+| 'root'@'%' | def           | Create Tablespace       | YES          |
+| 'root'@'%' | def           | Trigger                 | YES          |
+| 'root'@'%' | def           | Create View             | YES          |
+| 'root'@'%' | def           | Show View               | YES          |
+| 'root'@'%' | def           | Create Role             | YES          |
+| 'root'@'%' | def           | Drop Role               | YES          |
+| 'root'@'%' | def           | CREATE TEMPORARY TABLES | YES          |
+| 'root'@'%' | def           | LOCK TABLES             | YES          |
+| 'root'@'%' | def           | CREATE ROUTINE          | YES          |
+| 'root'@'%' | def           | ALTER ROUTINE           | YES          |
+| 'root'@'%' | def           | EVENT                   | YES          |
+| 'root'@'%' | def           | SHUTDOWN                | YES          |
+| 'root'@'%' | def           | RELOAD                  | YES          |
+| 'root'@'%' | def           | FILE                    | YES          |
+| 'root'@'%' | def           | CONFIG                  | YES          |
+| 'root'@'%' | def           | REPLICATION CLIENT      | YES          |
+| 'root'@'%' | def           | REPLICATION SLAVE       | YES          |
++------------+---------------+-------------------------+--------------+
+31 rows in set (0.00 sec)
+```
 
 ### ALTER
 
@@ -299,6 +323,10 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 > **注意：**
 >
 > 根据 MySQL 5.7 文档中的说明，对表进行 `ALTER` 操作需要 `INSERT` 和 `CREATE` 权限，但在 MySQL 5.7.25 版本实际情况中，该操作仅需要 `ALTER` 权限。目前，TiDB 中的 `ALTER` 权限与 MySQL 实际行为保持一致。
+
+### BACKUP
+
+需要拥有 `SUPER` 或者 `BACKUP_ADMIN` 权限。
 
 ### CREATE DATABASE
 
@@ -356,6 +384,8 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 `SHOW GRANTS` 需要拥有对 `mysql` 数据库的 `SELECT` 权限。如果是使用 `SHOW GRANTS` 查看当前用户权限，则不需要任何权限。
 
+`SHOW PROCESSLIST` 需要 `SUPER` 权限来显示属于其他用户的连接。
+
 ### CREATE ROLE/USER
 
 `CREATE ROLE` 需要 `CREATE ROLE` 权限。
@@ -378,17 +408,17 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 如果在 `GRANTS` 语句中创建用户，需要有 `CREATE USER` 权限。
 
-`GRANT ROLE` 操作需要拥有 `SUPER` 权限。
+`GRANT ROLE` 操作需要拥有 `SUPER` 或者 `ROLE_ADMIN` 权限。
 
 ### REVOKE
 
 `REVOKE` 需要 `GRANT` 权限并且拥有 `REVOKE` 所指定要撤销的权限。
 
-`REVOKE ROLE` 操作需要拥有 `SUPER` 权限。
+`REVOKE ROLE` 操作需要拥有 `SUPER` 或者 `ROLE_ADMIN` 权限。
 
 ### SET GLOBAL
 
-使用 `SET GLOBAL` 设置全局变量需要拥有 `SUPER` 权限。
+使用 `SET GLOBAL` 设置全局变量需要拥有 `SUPER` 或者 `SYSTEM_VARIABLES_ADMIN` 权限。
 
 ### ADMIN
 
@@ -400,7 +430,7 @@ TiDB 用户目前拥有的权限可以在 `INFORMATION_SCHEMA.USER_PRIVILEGES` �
 
 ### KILL
 
-使用 `KILL` 终止其他用户的会话需要拥有 `SUPER` 权限。
+使用 `KILL` 终止其他用户的会话需要拥有 `SUPER` 或者 `CONNECTION_ADMIN` 权限。
 
 ## 权限系统的实现
 
@@ -454,7 +484,7 @@ DROP USER 'test';
 
 ### 连接验证
 
-当客户端发送连接请求时，TiDB 服务器会对登录操作进行验证。验证过程先检查 `mysql.user` 表，当某条记录的 `User` 和 `Host` 和连接请求匹配上了，再去验证 Password。用户身份基于两部分信息，发起连接的客户端的 `Host`，以及用户名 `User`。如果 `User` 不为空，则用户名必须精确匹配。
+当客户端发送连接请求时，TiDB 服务器会对登录操作进行验证。验证过程先检查 `mysql.user` 表，当某条记录的 `User` 和 `Host` 和连接请求匹配上了，再去验证 `authentication_string`。用户身份基于两部分信息，发起连接的客户端的 `Host`，以及用户名 `User`。如果 `User` 不为空，则用户名必须精确匹配。
 
 User+Host 可能会匹配 `user` 表里面多行，为了处理这种情况，`user` 表的行是排序过的，客户端连接时会依次去匹配，并使用首次匹配到的那一行做权限验证。排序是按 `Host` 在前，`User` 在后。
 
@@ -483,9 +513,3 @@ TiDB 启动时，将一些权限检查的表加载到内存，之后使用缓存
 ```sql
 FLUSH PRIVILEGES;
 ```
-
-### 限制和约束
-
-一些使用频率偏低的权限当前版本的实现中还未做检查，比如 `FILE`/`USAGE`/`SHUTDOWN`/`EXECUTE`/`PROCESS`/`INDEX` 等等，未来会陆续完善。
-
-现阶段对权限的支持还没有做到 column 级别。

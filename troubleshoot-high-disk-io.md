@@ -8,13 +8,13 @@ aliases: ['/docs-cn/dev/troubleshoot-high-disk-io/']
 
 本文主要介绍如何定位和处理 TiDB 存储 I/O 过高的问题。
 
-## 确认当前 I/O 指标 
+## 确认当前 I/O 指标
 
 当出现系统响应变慢的时候，如果已经排查了 CPU 的瓶颈、数据事务冲突的瓶颈后，就需要从 I/O 来入手来辅助判断目前的系统瓶颈点。
 
 ### 从监控定位 I/O 问题
 
-最快速的定位手段是从监控来查看整体的 I/O 情况，可以从集群部署工具 (TiDB-Ansible, TiUP) 默认会部署的监控组件 Grafana 来查看对应的 I/O 监控，跟 I/O 相关的 Dashboard 有 `Overview`，`Node_exporter`，`Disk-Performance`。
+最快速的定位手段是从监控来查看整体的 I/O 情况，可以从集群部署工具 (TiUP) 默认会部署的监控组件 Grafana 来查看对应的 I/O 监控，跟 I/O 相关的 Dashboard 有 `Overview`，`Node_exporter`，`Disk-Performance`。
 
 #### 第一类面板
 
@@ -79,7 +79,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 ### 从告警发现 I/O 问题
 
-集群部署工具 (TiDB-Ansible, TiUP) 默认部署的告警组件，官方已经预置了相关的告警项目和阈值，I/O 相关项包括：
+集群部署工具 (TiUP) 默认部署的告警组件，官方已经预置了相关的告警项目和阈值，I/O 相关项包括：
 
 - TiKV_write_stall
 - TiKV_raft_log_lag

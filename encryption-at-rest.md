@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/encryption-at-rest/']
 
 # 静态加密 <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。但区别于这些加密方式，若 TiKV 在存储数据前就进行数据加密，攻击者则必须通过数据库的身份验证才能访问数据。例如，即使攻击者获得物理机的访问权限时，他也无法通过复制磁盘上的文件来访问数据。
+静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。但区别于这些加密方式，若 TiKV 在存储数据前就进行数据加密，攻击者则必须通过数据库的身份验证才能访问数据。例如，即使攻击者获得物理机的访问权限时，也无法通过复制磁盘上的文件来访问数据。
 
 TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://zh.wikipedia.org/wiki/%E5%88%86%E7%BB%84%E5%AF%86%E7%A0%81%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F) 模式下使用 [AES](https://zh.wikipedia.org/wiki/%E9%AB%98%E7%BA%A7%E5%8A%A0%E5%AF%86%E6%A0%87%E5%87%86) 对数据文件进行透明加密。要启用静态加密，用户须提供一个加密密钥，即主密钥。可以通过 AWS Key Management Service（推荐），即 KMS，提供主密钥 (master key)，也可以指定将密钥以明文形式存储在文件中。TiKV 自动轮换 (rotate) 用于加密实际数据文件的密钥，主密钥则可以由用户手动轮换。请注意，静态加密仅加密静态数据（即磁盘上的数据），而不加密网络传输中的数据。建议 TLS 与静态加密一起使用。
 
@@ -14,10 +14,10 @@ TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://zh.wikipedia.org/wi
 
 ## 注意事项及使用限制
 
-当前版本 (v4.0.0) 的 TiKV 加密功能还存在待改善之处，将在未来版本中进行改善。
+当前版本 (v4.0.0) 的 TiKV 加密功能还有待改善，需要在启用加密前注意以下事项：
 
 * TiDB 集群部署后，大部分用户数据都存储在 TiKV 节点上。这部分数据可使用加密功能进行加密。但有少量元数据存储在 PD 节点上（例如用作 TiKV Region 边界的二级索引键）。截至 v4.0.0，PD 尚未支持静态加密功能。建议使用存储级加密（例如文件系统加密）来保护存储在 PD 中的敏感数据。
-* 截至 v4.0.0，TiFlash 尚未支持静态加密功能。TiKV 与 TiFlash 一起部署时，存储在 TiFlash 中的数据不会被加密。
+* TiFlash 从 v4.0.5 开始支持静态加密功能，详情参阅 [TiFlash 静态加密](/encryption-at-rest.md#tiflash-静态加密-从-v405-版本开始引入)。TiKV 与 v4.0.5 之前版本的 TiFlash 一起部署时，存储在 TiFlash 中的数据不会被加密。
 * TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储。
 * TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`、`raftstore.raftdb-path`、`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 * TiKV 信息日志包含用于调试的用户数据。信息日志不会被加密。
@@ -35,7 +35,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR 和 AES256-CTR。
 
 数据密钥由 TiKV 生成并传递给底层存储引擎（即 RocksDB）。RocksDB 写入的所有文件，包括 SST 文件，WAL 文件和 MANIFEST 文件，均由当前数据密钥加密。TiKV 使用的其他临时文件（可能包括用户数据）也由相同的数据密钥加密。默认情况下，TiKV 每周自动轮换数据密钥，但是该时间段是可配置的。密钥轮换时，TiKV 不会重写全部现有文件来替换密钥，但如果集群的写入量恒定，则 RocksDB compaction 会将使用最新的数据密钥对数据重新加密。TiKV 跟踪密钥和加密方法，并使用密钥信息对读取的内容进行解密。
 
-无论用户配置了哪种数据加密方法，数据密钥都使用 AES256-GCM 算法进行加密，以方便对主密钥进行验证。所以当使用文件而不是 KMS 方式指定主密钥时，主密钥必须为 256位（32字节）
+无论用户配置了哪种数据加密方法，数据密钥都使用 AES256-GCM 算法进行加密，以方便对主密钥进行验证。所以当使用文件而不是 KMS 方式指定主密钥时，主密钥必须为 256位（32字节）。
 
 ## 配置加密
 
@@ -47,9 +47,9 @@ data-encryption-method = aes128-ctr
 data-key-rotation-period = 7d
 ```
 
-`data-encryption-method` 的可选值为 `aes128-ctr`、`aes192-ctr`、`aes256-ctr` 和 `plaintext`。默认值为 `plaintext`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 群集或现有 TiKV 群集开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `plaintext`，然后重启 TiKV。
+`data-encryption-method` 的可选值为 `"aes128-ctr"`、`"aes192-ctr"`、`"aes256-ctr"` 和 `"plaintext"`。默认值为 `"plaintext"`，即默认不开启加密功能。`data-key-rotation-period` 指定 TiKV 轮换密钥的频率。可以为新 TiKV 群集或现有 TiKV 群集开启加密，但只有启用后写入的数据才保证被加密。要禁用加密，请在配置文件中删除 `data-encryption-method`，或将该参数值为 `"plaintext"`，然后重启 TiKV。
 
-如果启用了加密（即 `data-encryption-method` 的值不是 `plaintext`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，请在`[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
+如果启用了加密（即 `data-encryption-method` 的值不是 `"plaintext"`），则必须指定主密钥。要使用 AWS KMS 方式指定为主密钥，请在 `[security.encryption]` 部分之后添加 `[security.encryption.master-key]` 部分：
 
 ```
 [security.encryption.master-key]
@@ -107,6 +107,19 @@ region = "us-west-2"
 
 在调试方面，可使用 `tikv-ctl` 命令查看加密元数据（例如使用的加密方法和数据密钥列表）。该操作可能会暴露密钥，因此不推荐在生产环境中使用。详情参阅 [TiKV Control](/tikv-control.md#打印加密元数据)。
 
+### TiKV 版本间兼容性
+
+为了减少 TiKV 管理加密元数据造成的 I/O 操作和互斥锁竞争引发的开销，TiKV v4.0.9 对此进行了优化。此优化可以通过 TiKV 配置文件中的 `security.encryption.enable-file-dictionary-log` 参数启用或关闭。此配置参数仅在 TiKV v4.0.9 或更高版本中生效。
+
+该配置项默认开启，此时 TiKV v4.0.8 或更早期的版本无法识别加密元数据的数据格式。例如，假设你正在使用 TiKV v4.0.9 或更高版本，开启了静态加密和默认开启了 `enable-file-dictionary-log` 配置。如果将集群降级到 TiKV v4.0.8 或更早版本，TiKV 将无法启动，并且信息日志中会有类似如下的报错：
+
+```
+[2020/12/07 07:26:31.106 +08:00] [ERROR] [mod.rs:110] ["encryption: failed to load file dictionary."]
+[2020/12/07 07:26:33.598 +08:00] [FATAL] [lib.rs:483] ["called `Result::unwrap()` on an `Err` value: Other(\"[components/encryption/src/encrypted_file/header.rs:18]: unknown version 2\")"]
+```
+
+为了避免上面所示错误，你可以首先将 `security.encryption.enable-file-dictionary-log` 设置为 `false`，然后启动 TiKV v4.0.9 或更高版本。TiKV 成功启动后，加密元数据的数据格式将降级为 TiKV 早期版本可以识别的格式。此时，你可再将 TiKV 集群降级到较早的版本。
+
 ## BR S3 服务端加密
 
 使用 BR 备份数据到 S3 时，若要启用 S3 服务端加密，需要传递 `--s3.sse` 参数并将参数值设置为 `aws:kms`。S3 将使用自己的 KMS 密钥进行加密。示例如下：
@@ -126,3 +139,9 @@ region = "us-west-2"
 ```
 ./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix> --s3.region <region>"
 ```
+
+## TiFlash 静态加密 <span class="version-mark">从 v4.0.5 版本开始引入</span>
+
+TiFlash 从 v4.0.5 起支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 `tiflash-learner.toml` 中）和监控项含义等均与 TiKV 一致。
+
+如果 TiFlash 中部署了 Grafana 组件，可以查看 **TiFlash-Proxy-Details** -> **Encryption**。

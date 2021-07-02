@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/pessimistic-transaction/','/docs-cn/dev/reference/transa
 {{< copyable "sql" >}}
 
 ```sql
-set @@global.tidb_txn_mode = 'pessimistic';
+SET GLOBAL tidb_txn_mode = 'pessimistic';
 ```
 
 除此之外，还可以执行以下 SQL 语句显式地开启悲观事务：
@@ -33,7 +33,7 @@ BEGIN PESSIMISTIC;
 {{< copyable "sql" >}}
 
 ```
-BEGIN /*!90000 PESSIMISTIC */;
+BEGIN /*T! PESSIMISTIC */;
 ```
 
 `BEGIN PESSIMISTIC;` 和 `BEGIN OPTIMISTIC;` 等语句的优先级高于 `tidb_txn_mode` 系统变量。使用这两个语句开启的事务，会忽略系统变量，从而支持悲观、乐观事务混合使用。
@@ -42,23 +42,17 @@ BEGIN /*!90000 PESSIMISTIC */;
 
 悲观事务的行为和 MySQL 基本一致（不一致之处详见[和 MySQL InnoDB 的差异](#和-mysql-innodb-的差异)）：
 
-- `SELECT FOR UPDATE` 会读取已提交的**最新**数据，并对读取到的数据加悲观锁。
+- `UPDATE`、`DELETE` 或 `INSERT` 语句都会读取已提交的**最新**数据来执行，并对所修改的行加悲观锁。
 
-- `UPDATE`、`DELETE` 和 `INSERT` 语句都会读取已提交的**最新**的数据来执行，并对修改的数据加悲观锁。
+- `SELECT FOR UPDATE` 语句会对已提交的**最新**的数据而非所修改的行加上悲观锁。
 
-- 当一行数据被加了悲观锁以后，其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。
+- 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
-- 当一行数据被加了悲观锁以后，其他尝试读取这一行的事务不会被阻塞，可以读到已提交的数据。
+- 如果多个事务尝试获取各自的锁，会出现死锁，并被检测器自动检测到。其中一个事务会被随机终止掉并返回兼容 MySQL 的错误码 `1213`。
 
-- 事务提交或回滚的时候，会释放所有的锁。
-
-- 当有多个事务同时等待同一个锁释放时，会尽可能按照事务 start ts 顺序获取锁，但不能严格保证。
-
-- 如果并发事务出现死锁，会被死锁检测器检测到，随机终止掉其中一个事务并返回兼容 MySQL 的错误码 `1213`。
+- 通过 `innodb_lock_wait_timeout` 变量，设置事务等锁的超时时间（默认值为 `50`，单位为秒）。等锁超时后返回兼容 MySQL 的错误码 `1205`。如果多个事务同时等待同一个锁释放，会大致按照事务 `start ts` 顺序获取锁。
 
 - 乐观事务和悲观事务可以共存，事务可以任意指定使用乐观模式或悲观模式来执行。
-
-- 通过设置 `innodb_lock_wait_timeout` 变量，设置等锁超时时间，等锁超时后返回兼容 MySQL 的错误码 `1205`。
 
 - 支持 `FOR UPDATE NOWAIT` 语法，遇到锁时不会阻塞等锁，而是返回兼容 MySQL 的错误码 `3572`。
 
@@ -66,9 +60,30 @@ BEGIN /*!90000 PESSIMISTIC */;
 
 ## 和 MySQL InnoDB 的差异
 
-1. TiDB 使用 range 作为 WHERE 条件，执行 DML 和 `SELECT FOR UPDATE` 语句时不会阻塞范围内并发的 `INSERT` 语句的执行。
+1. 有些 `WHERE` 子句中使用了 range，TiDB 在执行这类 DML 语句和 `SELECT FOR UPDATE` 语句时，不会阻塞 range 内并发的 DML 语句的执行。
 
-    InnoDB 通过实现 gap lock，支持阻塞 range 内并发的 `INSERT` 语句的执行，其主要目的是为了支持 statement based binlog，因此有些业务会通过将隔离级别降低至 Read Committed 来避免 gap lock 导致的并发性能问题。TiDB 不支持 gap lock，也就不需要付出相应的并发性能的代价。
+    举例：
+
+    ```sql
+    CREATE TABLE t1 (
+     id INT NOT NULL PRIMARY KEY,
+     pad1 VARCHAR(100)
+    );
+    INSERT INTO t1 (id) VALUES (1),(5),(10);
+    ```
+
+    ```sql
+    BEGIN /*T! PESSIMISTIC */;
+    SELECT * FROM t1 WHERE id BETWEEN 1 AND 10 FOR UPDATE;
+    ```
+
+    ```sql
+    BEGIN /*T! PESSIMISTIC */;
+    INSERT INTO t1 (id) VALUES (6); -- 仅 MySQL 中出现阻塞。
+    UPDATE t1 SET pad1='new value' WHERE id = 5; -- MySQL 和 TiDB 处于等待阻塞状态。
+    ```
+
+    产生这一行为是因为 TiDB 当前不支持 _gap locking_（间隙锁）。
 
 2. TiDB 不支持 `SELECT LOCK IN SHARE MODE`。
 
@@ -76,17 +91,19 @@ BEGIN /*!90000 PESSIMISTIC */;
 
 3. DDL 可能会导致悲观事务提交失败。
 
-    MySQL 在执行 DDL 时会被正在执行的事务阻塞住，而在 TiDB 中 DDL 操作会成功，造成悲观事务提交失败：`ERROR 1105 (HY000): Information schema is changed. [try again later]`。TiDB 事务执行过程中并发执行 `TRUNCATE TABLE` 语句，可能会导致事务报错 `table dosen't exist`。
+    MySQL 在执行 DDL 语句时，会被正在执行的事务阻塞住，而在 TiDB 中 DDL 操作会成功，造成悲观事务提交失败：`ERROR 1105 (HY000): Information schema is changed. [try again later]`。TiDB 事务执行过程中并发执行 `TRUNCATE TABLE` 语句，可能会导致事务报错 `table doesn't exist`。
 
 4. `START TRANSACTION WITH CONSISTENT SNAPSHOT` 之后，MySQL 仍然可以读取到之后在其他事务创建的表，而 TiDB 不能。
 
-5. autocommit 事务不支持悲观锁。
+5. autocommit 事务优先采用乐观事务提交。
+    
+    使用悲观事务模型时，autocommit 事务首先尝试使用开销更小的乐观事务模式提交。如果发生了写冲突，重试时才会使用悲观事务提交。所以 `tidb_retry_limit = 0` 时，autocommit 事务遇到写冲突仍会报 `Write Conflict` 错误。
 
-    所有自动提交的语句都不会加悲观锁，该类语句在用户侧感知不到区别，因为悲观事务的本质是把整个事务的重试变成了单个 DML 的重试，autocommit 事务即使在 TiDB 关闭重试时也会自动重试，效果和悲观事务相同。
-
-    自动提交的 select for update 语句也不会等锁。
+    自动提交的 `SELECT FOR UPDATE` 语句不会等锁。
 
 6. 对语句中 `EMBEDDED SELECT` 读到的相关数据不会加锁。
+
+7. 垃圾回收 (GC) 不会影响到正在执行的事务，但悲观事务的执行时间仍有上限，默认为 1 小时，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
 
 ## 隔离级别
 
@@ -102,27 +119,27 @@ TiDB 在悲观事务模式下支持了 2 种隔离级别：
 
 ## Pipelined 加锁流程
 
-加悲观锁需要向 TiKV 写入数据，要经过 Raft 提交并 apply 后才能返回，相比于乐观事务，不可避免的会增加部分延迟。为了降低加锁的开销，TiKV 实现了 pipelined 加锁流程：当数据满足加锁要求时，TiKV 立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率悲观锁异步写入失败，可能会导致悲观事务提交失败。
+加悲观锁需要向 TiKV 写入数据，要经过 Raft 提交并 apply 后才能返回，相比于乐观事务，不可避免的会增加部分延迟。为了降低加锁的开销，TiKV 实现了 pipelined 加锁流程：当数据满足加锁要求时，TiKV 立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但当 TiKV 出现网络隔离或者节点宕机时，悲观锁异步写入有可能失败，从而产生以下影响：
+
+* 无法阻塞修改相同数据的其他事务。如果业务逻辑依赖加锁或等锁机制，业务逻辑的正确性将受到影响。
+
+* 有较低概率导致事务提交失败，但不会影响事务正确性。
+
+如果业务逻辑依赖加锁或等锁机制，或者即使在集群异常情况下也要尽可能保证事务提交的成功率，应关闭 pipelined 加锁功能。
 
 ![Pipelined pessimistic lock](/media/pessimistic-transaction-pipelining.png)
 
-该功能默认关闭，可修改 TiKV 配置启用：
+该功能默认开启，可修改 TiKV 配置关闭：
 
 ```toml
 [pessimistic-txn]
-pipelined = true
+pipelined = false
 ```
 
-## 常见问题
+若集群是 v4.0.9 及以上版本，也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态关闭该功能：
 
-1. TiDB 日志出现 `pessimistic write conflict, retry statement`。
+{{< copyable "sql" >}}
 
-    当发生 write conflict 时，乐观事务会直接终止，而悲观事务会尝试用最新数据重试该语句直到没有 write conflict，每次重试都会打印该 log，不用特别关注。
-
-2. 执行 DML 时报错 `pessimistic lock retry limit reached`。
-
-    悲观事务每个语句有重试次数限制，当因 write conflict 重试超过该限制时会报该错误，默认为 256 次，可通过 TiDB 配置文件 `[pessimistic-txn]` 类别下的 `max-retry-limit` 修改。
-
-3. 悲观事务执行时间限制。
-
-    在 v4.0 中，GC 已不会影响到正在运行的事务，但悲观事务的执行时间仍有上限，默认为 10 分钟，可通过 TiDB 配置文件 `[performance]` 类别下的 `max-txn-ttl` 修改。
+```sql
+set config tikv pessimistic-txn.pipelined='false';
+```

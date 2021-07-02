@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/c
 
 本文重在介绍如何使用 TiUP 的 cluster 组件，如果需要线上部署的完整步骤，可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
-与 playground 组件用于部署本地集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
+与 playground 组件用于部署本地测试集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的生产集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
 
 cluster 组件的帮助文档如下：
 
@@ -16,9 +16,7 @@ tiup cluster
 ```
 
 ```
-The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.3.0/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -39,7 +37,7 @@ Available Commands:
   display     获取集群信息
   list        获取集群列表
   audit       查看集群操作日志
-  import      导入一个由 TiDB-Ansible 部署的集群
+  import      导入一个由 TiDB Ansible 部署的集群
   edit-config 编辑 TiDB 集群的配置
   reload      用于必要时重载集群配置
   patch       使用临时的组件包替换集群上已部署的组件
@@ -63,7 +61,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
 
-拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
 > **注意：**
 >
@@ -95,6 +93,22 @@ grafana_servers:
 
 monitoring_servers:
   - host: 172.16.5.134
+```
+
+TiUP 默认部署在 amd64 架构上运行的 binary，若目标机器为 arm64 架构，可以在拓扑文件中进行配置：
+
+```yaml
+global:
+  arch: "arm64"           # 让所有机器默认使用 arm64 的 binary
+
+tidb_servers:
+  - host: 172.16.5.134
+    arch: "amd64"         # 这台机器会使用 amd64 的 binary
+  - host: 172.16.5.139
+    arch: "arm64"         # 这台机器会使用 arm64 的 binary
+  - host: 172.16.5.140    # 没有配置 arch 字段的机器，会使用 global 中的默认值，这个例子中是 arm64
+
+...
 ```
 
 假如我们想要使用 TiDB 的 v3.0.12 版本，集群名字为 `prod-cluster`，则执行以下命令：
@@ -147,7 +161,7 @@ tiup cluster list
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.5/cluster list
+Starting /root/.tiup/components/cluster/v1.3.0/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
 prod-cluster  tidb  v3.0.12    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
@@ -174,7 +188,7 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.5/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.3.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
@@ -200,7 +214,7 @@ Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件�
 >
 > 本节只展示缩容命令的语法示例，线上扩缩容具体步骤可参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
 
-缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。
+缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
 由于 TiKV 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 TiDB Binlog 组件做了特殊处理：
 
@@ -239,7 +253,7 @@ tiup cluster display prod-cluster
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v0.4.5/cluster display prod-cluster
+Starting /root/.tiup/components/cluster/v1.3.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
 TiDB Version: v3.0.12
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
@@ -338,12 +352,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v4.0.0-rc 的命令为：
+例如，把集群升级到 v5.0.0 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v4.0.0-rc
+tiup cluster upgrade tidb-test v5.0.0
 ```
 
 ## 更新配置
@@ -365,6 +379,42 @@ tiup cluster reload prod-cluster
 ```
 
 该操作会将配置发送到目标机器，重启集群，使配置生效。
+
+> **注意：**
+>
+> 对于监控组件，可以通过执行 `tiup cluster edit-config` 命令在对应实例上添加自定义配置路径来进行配置自定义，例如：
+
+```yaml
+---
+
+grafana_servers:
+  - host: 172.16.5.134
+    dashboard_dir: /path/to/local/dashboards/dir
+
+monitoring_servers:
+  - host: 172.16.5.134
+    rule_dir: /path/to/local/rules/dir
+
+alertmanager_servers:
+  - host: 172.16.5.134
+    config_file: /path/to/local/alertmanager.yml
+```
+
+路径内容格式如下：
+
+- `grafana_servers` 的 `dashboard_dir` 字段指定的文件夹中应当含有完整的 `*.json` 文件。
+- `monitoring_servers` 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml` 文件。
+- `alertmanager_servers` 的 `config_file` 格式请参考 [Alertmanager 配置模板](https://github.com/pingcap/tiup/blob/master/embed/templates/config/alertmanager.yml)。
+
+在执行 `tiup reload` 时，TiUP 会将中控机上对应的配置上传到目标机器对应的配置目录中，上传之前会删除目标机器中已有的旧配置文件。如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中。例如，要修改 Grafana 的 `tidb.json` 文件，可以先将 Grafana 的 `dashboards` 目录中所有的 `*.json` 文件拷贝到本地目录中，再修改 `tidb.json` 文件。否则最终的目标机器上将缺失其他的 JSON 文件。
+
+> **注意：**
+>
+> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名后，需要完成以下操作：
+>
+> 1. 在本地的 `dashboards` 目录中，将集群名修改为新的集群名。
+> 2. 在本地的 `dashboards` 目录中，将 `datasource` 更新为新的集群名（`datasource` 是以集群名命名的）。
+> 3. 执行 `tiup cluster reload -R grafana` 命令。
 
 ## 更新组件
 
@@ -484,14 +534,14 @@ tiup cluster audit
 ```
 
 ```
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.6.0/cluster audit
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.3.0/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2020-04-29T13:25:09+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKWjF  2020-04-28T23:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKVwH  2020-04-28T23:02:08+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKKH1  2020-04-28T16:39:04+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster destroy test
-4BKKDx  2020-04-28T16:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+4BLhr0  2020-04-29T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
+4BKWjF  2020-04-28T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
+4BKVwH  2020-04-28T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
+4BKKH1  2020-04-28T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster destroy test
+4BKKDx  2020-04-28T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v5.0.0-rc /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
@@ -613,7 +663,7 @@ tiup cluster check <cluster-name> --cluster
 
 也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
 
-```sh
+```shell
 export TIUP_NATIVE_SSH=true
 # 或者
 export TIUP_NATIVE_SSh=1
@@ -632,11 +682,11 @@ export TIUP_NATIVE_SSH=enable
 TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要迁移中控机只需要拷贝 `.tiup` 目录到对应目标机器即可。
 
 1. 在原机器 home 目录下执行 `tar czvf tiup.tar.gz .tiup`。
-2. 把 `tip.tar.gz` 拷贝到目标机器 home 目录。
+2. 把 `tiup.tar.gz` 拷贝到目标机器 home 目录。
 3. 在目标机器 home 目录下执行 `tar xzvf tiup.tar.gz`。
 4. 添加 `.tiup` 目录到 `PATH` 环境变量。
 
-    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashr` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
+    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashrc` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
 
 > **注意：**
 >

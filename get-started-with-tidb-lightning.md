@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/g
 
 # TiDB Lightning 教程
 
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 Mydumper 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 Lightning：
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，目前支持 SQL 或 CSV 输出格式的数据源。你可以在以下两种场景下使用 TiDB Lightning：
 
 - **迅速**导入**大量新**数据。
 - 备份恢复所有数据。
@@ -20,21 +20,20 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 ## 准备全量备份数据
 
-我们使用 [`mydumper`](/mydumper-overview.md) 从 MySQL 导出数据，如下：
+我们使用 [`dumpling`](/dumpling-overview.md) 从 MySQL 导出数据，如下：
 
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/mydumper -h 127.0.0.1 -P 3306 -u root -t 16 -F 256 -B test -T t1,t2 --skip-tz-utc -o /data/my_database/
+./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
 
 - `-B test`：从 `test` 数据库导出。
-- `-T t1,t2`：只导出 `t1` 和 `t2` 这两个表。
+- `-f test.t[12]`：只导出 `test.t1` 和 `test.t2` 这两个表。
 - `-t 16`：使用 16 个线程导出数据。
-- `-F 256`：将每张表切分成多个文件，每个文件大小约为 256 MB。
-- `--skip-tz-utc`：添加这个参数则会忽略掉 TiDB 与导数据的机器之间时区设置不一致的情况，禁止自动转换。
+- `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
 
 这样全量备份数据就导出到了 `/data/my_database` 目录中。
 
@@ -42,13 +41,13 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群（版本要求 2.0.9 以上），本教程使用 TiDB 4.0.3 版本。部署方法可参考 [TiDB 部署方式](https://docs.pingcap.com/zh/tidb/v3.0/overview#部署方式)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.0.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB Lightning 安装包（选择与 TiDB 集群相同的版本）：
+通过以下链接获取 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）：
 
-- **v4.0.3**: [tidb-toolkit-v4.0.3-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v4.0.3-linux-amd64.tar.gz)
+- **v5.0.0**: [tidb-toolkit-v5.0.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.0.0-linux-amd64.tar.gz)
 
 ### 第 3 步：启动 `tidb-lightning`
 
@@ -68,12 +67,15 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
     # 选择使用的 local 后端
     backend = "local"
     # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
-    "sorted-kv-dir" = "/mnt/ssd/sorted-kv-dir"
+    sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_datasource/"
 
+    # 配置通配符规则，默认规则会过滤 mysql、sys、INFORMATION_SCHEMA、PERFORMANCE_SCHEMA、METRICS_SCHEMA、INSPECTION_SCHEMA 系统数据库下的所有表
+    # 若不配置该项，导入系统表时会出现“找不到 schema”的异常
+    filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
     [tidb]
     # 目标集群的信息
     host = "172.16.31.2"
@@ -99,7 +101,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志的最后一行会显示 `tidb lightning exit`。
 
-如果出错，请参见 [TiDB Lightning 错误排解](/troubleshoot-tidb-lightning.md)。
+如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
 ## 总结
 

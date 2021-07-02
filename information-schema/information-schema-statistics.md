@@ -1,6 +1,7 @@
 ---
 title: STATISTICS
 summary: 了解 information_schema 表 `STATISTICS`。
+aliases: ['/docs-cn/dev/information-schema/information-schema-statistics/']
 ---
 
 # STATISTICS

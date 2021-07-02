@@ -12,9 +12,13 @@ TiDB Binlog 支持以下功能场景：
 - **数据同步**：同步 TiDB 集群数据到其他数据库
 - **实时备份和恢复**：备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复
 
+> **注意：**
+>
+> TiDB Binlog 与 TiDB v5.0 版本开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
 ## TiDB Binlog 整体架构
 
-![TiDB Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog 架构](/media/tidb-binlog-cluster-architecture.png)
 
 TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 工具：
 
@@ -45,7 +49,20 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 ## 注意事项
 
-* 需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB Binlog。
+* TiDB Binlog 和 TiDB 在 v5.1 版本中解决了 v5.0 版本中引入的聚簇索引与 TiDB Binlog 不兼容问题。在升级 TiDB Binlog 和 TiDB Server 到 v5.1 版本后：开启 TiDB Binlog 后，TiDB 支持创建聚簇索引表；聚簇索引表的数据插入、删除和更新操作支持通过 TiDB Binlog 同步到下游。对于同步聚簇索引表时需注意：
+
+    - 如果从 v5.0 版本手动控制组件升级顺序进行升级，请确保先将 TiDB Binlog 升级至 v5.1 版本后再将 TiDB Server 升级至 v5.1 版本。
+    - 推荐将上下游的 TiDB 系统变量 [`tidb_enable_clustered_index`](/system-variables.md#tidb_enable_clustered_index-从-v50-版本开始引入) 配置为一致的值来保证上下游 TiDB 聚簇索引表结构一致。
+
+* TiDB Binlog 与 TiDB v5.0 版本开始引入的以下特性不兼容，无法一起使用：
+
+    - [TiDB 聚簇索引特性](/clustered-indexes.md#限制)：开启 TiDB Binlog 后 TiDB 不允许创建非单个整数列作为主键的聚簇索引；已创建的聚簇索引表的数据插入、删除和更新动作不会通过 TiDB Binlog 同步到下游。如需同步聚簇索引表，请升级至 v5.1 版本或使用 [TiCDC](/ticdc/ticdc-overview.md)；
+    - TiDB 系统变量 [tidb_enable_async_commit](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)：启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+    - TiDB 系统变量 [tidb_enable_1pc](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)：启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+
+* TiDB Binlog 与 TiDB v4.0.7 版本开始引入的以下特性不兼容，无法一起使用：
+
+    - TiDB 系统变量 [tidb_enable_amend_pessimistic_txn](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)：两个功能存在兼容性问题，一起使用会造成 TiDB Binlog 复制数据不一致的正确性问题。
 
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog consumer protocol 进行定制处理，参考 [Binlog Consumer Client 用户文档](/tidb-binlog/binlog-consumer-client.md)。
 

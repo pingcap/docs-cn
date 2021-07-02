@@ -16,17 +16,17 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-do/','/docs-cn/dev/referenc
 
 ## 语法图
 
-**DoStmt:**
+```ebnf+diagram
+DoStmt   ::= 'DO' ExpressionList
 
-![DoStmt](/media/sqlgram/DoStmt.png)
+ExpressionList ::=
+    Expression ( ',' Expression )*
 
-**ExpressionList:**
-
-![ExpressionList](/media/sqlgram/ExpressionList.png)
-
-**Expression:**
-
-![Expression](/media/sqlgram/Expression.png)
+Expression ::=
+    ( singleAtIdentifier assignmentEq | 'NOT' | Expression ( logOr | 'XOR' | logAnd ) ) Expression
+|   'MATCH' '(' ColumnNameList ')' 'AGAINST' '(' BitExpr FulltextSearchModifierOpt ')'
+|   PredicateExpr ( IsOrNotOp 'NULL' | CompareOp ( ( singleAtIdentifier assignmentEq )? PredicateExpr | AnyOrAll SubSelect ) )* ( IsOrNotOp ( trueKwd | falseKwd | 'UNKNOWN' ) )?
+```
 
 ## 示例
 
@@ -71,7 +71,7 @@ Query OK, 0 rows affected (2.50 sec)
 
 ## MySQL 兼容性
 
-`DO` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DO` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

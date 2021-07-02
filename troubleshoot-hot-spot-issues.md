@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/troubleshoot-hot-spot-issues/']
 
 # TiDB 热点问题处理
 
-本文适用于 TiDB 4.0 版本，介绍如何定位和解决读写热点问题。
+本文介绍如何定位和解决读写热点问题。
 
 TiDB 作为分布式数据库，内建负载均衡机制，尽可能将业务负载均匀地分布到不同计算或存储节点上，更好地利用上整体系统资源。然而，机制不是万能的，在一些场景下仍会有部分业务负载不能被很好地分散，影响性能，形成单点的过高负载，也称为热点。
 
@@ -78,8 +78,6 @@ Value: null
 
 ![Dashboard 示例4](/media/troubleshoot-hot-spot-issues-4.png)
 
-> [4.0 之前版本热点定位可以参考此文档](https://book.tidb.io/session4/chapter7/hotspot-resolved.html)
-
 ## 使用 SHARD_ROW_ID_BITS 处理热点表
 
 对于主键非整数或没有主键的表或者是联合主键，TiDB 会使用一个隐式的自增 RowID，大量 INSERT 时会把数据集中写入单个 Region，造成写入热点。
@@ -101,7 +99,7 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 `SHARD_ROW_ID_BITS` 的值可以动态修改，每次修改之后，只对新写入的数据生效。
 
-TiDB `alter-primary-key` 参数设置为 false 时，会使用表的整数型主键作为 RowID，因为 `SHARD_ROW_ID_BITS` 会改变 RowID 生成规则，所以此时无法使用 `SHARD_ROW_ID_BITS` 选项。在 `alter-primary-key` 参数设置为 true 时，TiDB 在建表时不再使用整数型主键作为 RowID，此时带有整数型主键的表也可以使用 `SHARD_ROW_ID_BITS` 特性。
+对于含有 `CLUSTERED` 主键的表，TiDB 会使用表的主键作为 RowID，因为 `SHARD_ROW_ID_BITS` 会改变 RowID 生成规则，所以此时无法使用 `SHARD_ROW_ID_BITS` 选项。而对于使用 `NONCLUSTERED` 主键的表，TiDB 会使用自动分配的 64 位整数作为 RowID，此时也可以使用 `SHARD_ROW_ID_BITS` 特性。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 以下是两张无主键情况下使用 `SHARD_ROW_ID_BITS` 打散热点后的流量图，第一张展示了打散前的情况，第二张展示了打散后的情况。
 
@@ -114,15 +112,6 @@ TiDB `alter-primary-key` 参数设置为 false 时，会使用表的整数型主
 ## 使用 AUTO_RANDOM 处理自增主键热点表
 
 使用 `AUTO_RANDOM` 处理自增主键热点表，适用于代替自增主键，解决自增主键带来的写入热点。
-
-> **注意：**
->
-> 该功能目前还是实验性功能，不推荐生产环境使用。可使用以下配置启用：
->
-> ```
-> [experimental]
-> allow-auto-random = true
-> ```
 
 使用该功能后，将由 TiDB 生成随机分布且空间耗尽前不重复的主键，达到离散写入、打散写入热点的目的。
 
@@ -172,7 +161,7 @@ SELECT LAST_INSERT_ID();
 
 ## 小表热点的优化
 
-TiDB 从 4.0 起引入了 Coprocessor Cache 功能，支持下推计算结果缓存。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，对于小表读热点能起到比较好的效果。
+TiDB 的 Coprocessor Cache 功能支持下推计算结果缓存。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，对于小表读热点能起到比较好的效果。
 
 更详细的说明参见[下推计算结果缓存](/coprocessor-cache.md#配置)文档。
 

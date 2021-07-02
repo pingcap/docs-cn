@@ -11,8 +11,7 @@ TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 
 包含整张表的 CSV 文件需命名为 `db_name.table_name.csv`，该文件会被解析为数据库 `db_name` 里名为 `table_name` 的表。
 
-如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `db_name.table_name.003.csv`。
-数字部分不需要连续但必须递增，并用零填充。
+如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `db_name.table_name.003.csv`。数字部分不需要连续但必须递增，并用零填充。
 
 文件扩展名必须为 `*.csv`，即使文件的内容并非逗号分隔。
 
@@ -25,8 +24,7 @@ CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结�
 
 ## 配置
 
-CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。
-大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
+CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。大部分设置项在 MySQL [`LOAD DATA`] 语句中都有对应的项目。
 
 ```toml
 [mydumper.csv]

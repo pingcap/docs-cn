@@ -12,13 +12,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-commit/','/docs-cn/dev/refe
 
 ## 语法图
 
-**CommitStmt:**
+```ebnf+diagram
+CommitStmt ::=
+    'COMMIT' CompletionTypeWithinTransaction?
 
-![CommitStmt](/media/sqlgram/CommitStmt.png)
-
-**CompletionTypeWithinTransaction:**
-
-![CompletionTypeWithinTransaction](/media/sqlgram/CompletionTypeWithinTransaction.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## 示例
 
@@ -64,9 +65,10 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-* 在 MySQL 中，除了有多个 primary 的群组复制以外，`COMMIT` 语句通常不会导致错误。相比之下，TiDB 使用乐观并发控制，冲突可能导致 `COMMIT` 返回错误。
-* 默认情况下，`UNIQUE` 和 `PRIMARY KEY` 约束检查将延迟直至语句提交。可通过设置 `tidb_constraint_check_in_place=TRUE` 来改变该行为。
-* TiDB 对于 `CompletionTypeWithinTransaction` 仅有语法上的支持。即不支持事务提交后，关闭连接或继续开启一个新事务的提交选项。
+* TiDB 3.0.8 及更新版本默认使用[悲观事务模型](/pessimistic-transaction.md)。在[乐观事务模型](/optimistic-transaction.md)下，需要考虑到修改的行已被另一个事务修改，导致 `COMMIT` 语句可能执行失败的情况。
+* 启用乐观事务模型后，`UNIQUE` 和 `PRIMARY KEY` 约束检查将延迟直至语句提交。当 `COMMIT` 语句失败时，这可能导致其他问题。可通过设置 `tidb_constraint_check_in_place=TRUE` 来改变该行为。
+* TiDB 解析但忽略 `ROLLBACK AND [NO] RELEASE` 语法。在 MySQL 中，使用该语法可在提交事务后立即断开客户端会话。在 TiDB 中，建议使用客户端程序的 `mysql_close()` 来实现该功能。
+* TiDB 解析但忽略 `ROLLBACK AND [NO] CHAIN` 语法。在 MySQL 中，使用该语法可在提交当前事务时立即以相同的隔离级别开启新事务。在 TiDB 中，推荐直接开启新事务。
 
 ## 另请参阅
 

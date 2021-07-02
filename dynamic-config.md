@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/dynamic-config/']
 
 # 在线修改集群配置
 
-> **注意：**
+> **警告：**
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 
@@ -29,7 +29,6 @@ show config;
 | Type | Instance        | Name                                                      | Value                                                                                                                                                                                                                                                                            |
 +------+-----------------+-----------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | tidb | 127.0.0.1:4001  | advertise-address                                         | 127.0.0.1                                                                                                                                                                                                                                                                        |
-| tidb | 127.0.0.1:4001  | alter-primary-key                                         | false                                                                                                                                                                                                                                                                            |
 | tidb | 127.0.0.1:4001  | binlog.binlog-socket                                      |                                                                                                                                                                                                                                                                                  |
 | tidb | 127.0.0.1:4001  | binlog.enable                                             | false                                                                                                                                                                                                                                                                            |
 | tidb | 127.0.0.1:4001  | binlog.ignore-error                                       | false                                                                                                                                                                                                                                                                            |
@@ -61,10 +60,14 @@ show config where type='tikv' and name='log-level'
 
 修改全部 TiKV 实例配置：
 
+> **注意：**
+>
+> 建议使用反引号包裹变量名称。
+
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv log.level="info"
+set config tikv `split.qps-threshold`=1000
 ```
 
 修改单个 TiKV 实例配置：
@@ -72,7 +75,7 @@ set config tikv log.level="info"
 {{< copyable "sql" >}}
 
 ```sql
-set config "127.0.0.1:20180" log.level="info"
+set config "127.0.0.1:20180" `split.qps-threshold`=1000
 ```
 
 设置成功会返回 `Query OK`：
@@ -88,7 +91,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set config tikv log-level='warn';
+set config `tikv log-level`='warn';
 ```
 
 ```sql
@@ -189,9 +192,10 @@ show warnings;
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
-| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果读 QPS 连续 10 秒内均超过这个值，则进行 split |
-| split.split-balance-score | load-base-split 的控制参数，确保 split 后左右访问尽量均匀 |
-| split.split-contained-score | load-base-split 的控制参数，尽量减少 split 后跨 Region 访问 |
+| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
+| split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
+| split.split-balance-score | load-base-split 的控制参数，确保 Region 切分后左右访问尽量均匀，数值越小越均匀，但也可能导致无法切分 |
+| split.split-contained-score | load-base-split 的控制参数，数值越小，Region 切分后跨 Region 的访问越少 |
 
 上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb` 或 `raftdb`。
 
@@ -207,7 +211,7 @@ PD 暂不支持单个实例拥有独立配置。所有实例共享一份配置�
 {{< copyable "sql" >}}
 
 ```sql
-set config pd log.level="info"
+set config pd `log.level`='info'
 ```
 
 设置成功会返回 `Query OK`：

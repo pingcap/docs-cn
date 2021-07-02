@@ -1,6 +1,7 @@
 ---
 title: TIKV_REGION_STATUS
 summary: 了解 information_schema 表 `TIKV_REGION_STATUS`。
+aliases: ['/docs-cn/dev/information-schema/information-schema-tikv-region-status/']
 ---
 
 # TIKV_REGION_STATUS

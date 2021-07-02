@@ -23,7 +23,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8002
 
-    带有 `SELECT FOR UPDATE` 语句的事务，在遇到写入冲突时，为保证一致性无法进行重试，事务将进行回滚并返回该错误。出现这种错误，应用程序可以安全地重新执行整个事务。 
+    带有 `SELECT FOR UPDATE` 语句的事务，在遇到写入冲突时，为保证一致性无法进行重试，事务将进行回滚并返回该错误。出现这种错误，应用程序可以安全地重新执行整个事务。
 
 * Error Number: 8003
 
@@ -31,11 +31,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8004
 
-    单个事务过大，原因及解决方法请参考[这里](/faq/migration-tidb-faq.md#transaction-too-large-是什么原因怎么解决) 
+    单个事务过大，原因及解决方法请参考[这里](/faq/migration-tidb-faq.md#transaction-too-large-是什么原因怎么解决)
 
 * Error Number: 8005
 
-    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除) 
+    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)
 
 * Error Number: 8018
 
@@ -67,7 +67,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8025
 
-    写入的单条键值对过大。TiDB 最大支持 6MB 的单个键值对，超过该限制需要将过大的单行数据进行人工处理，以满足 6MB 限制。
+    写入的单条键值对过大。TiDB 默认支持最大 6MB 的单个键值对，超过该限制可适当调整 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项以放宽限制。
 
 * Error Number: 8026
 
@@ -75,7 +75,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8027
 
-    表结构版本过期。TiDB 使用 F1 的在线 Schema 变更算法来执行 DDL。当 TiDB server 表结构版本落后于整个系统的时，执行 SQL 将遇到该错误。遇到该错误，请检查该 TiDB server 与 PD leader 之间的网络。
+    表结构版本过期。TiDB 采用在线变更表结构的方法。当 TiDB server 表结构版本落后于整个系统的时，执行 SQL 将遇到该错误。遇到该错误，请检查该 TiDB server 与 PD leader 之间的网络。
 
 * Error Number: 8028
 
@@ -119,8 +119,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8048
 
-    设置了不支持的隔离级别，如果是使用第三方工具或框架等无法修改代码进行适配的情况，可以考虑通过 `tidb_skip_isolation_level_check`
-    来绕过这一检查。
+    设置了不支持的隔离级别，如果是使用第三方工具或框架等无法修改代码进行适配的情况，可以考虑通过 [`tidb_skip_isolation_level_check`](/system-variables.md#tidb_skip_isolation_level_check) 来绕过这一检查。
 
     {{< copyable "sql" >}}
 
@@ -142,19 +141,13 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8055
 
-    当前快照过旧，数据可能已经被 GC。可以调大 `tikv_gc_life_time` 的值来避免该问题。新版本的 TiDB 会自动为长时间运行的事务保留数据，一般不会遇到该错误。
+    当前快照过旧，数据可能已经被 GC。可以调大 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值来避免该问题。从 TiDB v4.0.8 版本起，TiDB 会自动为长时间运行的事务保留数据，一般不会遇到该错误。
+
     有关 GC 的介绍和配置可以参考 [GC 机制简介](/garbage-collection-overview.md)和 [GC 配置](/garbage-collection-configuration.md)文档。
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
-    ```
 
 * Error Number: 8059
 
-    自动随机量可用次数用尽无法进行分配。当前没有恢复这类错误的方法。建议在使用 auto random 功能时使用 bigint 以获取最大的可分配次数，
-    并尽量避免手动给 auto random 列赋值。相关的介绍和使用建议可以参考 [auto random 功能文档](/auto-random.md)。
+    自动随机量可用次数用尽无法进行分配。当前没有恢复这类错误的方法。建议在使用 auto random 功能时使用 bigint 以获取最大的可分配次数，并尽量避免手动给 auto random 列赋值。相关的介绍和使用建议可以参考 [auto random 功能文档](/auto-random.md)。
 
 * Error Number: 8060
 
@@ -260,6 +253,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     带聚合函数的 SQL 中返回非聚合的列，违反了 `only_full_group_by` 模式。请修改 SQL 或者考虑关闭 `only_full_group_by` 模式。
 
+* Error Number: 8129
+
+    TiDB 尚不支持键长度 >= 65536 的 JSON 对象。
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考 [与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
@@ -334,7 +331,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9007
 
-    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)。 
+    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)。
 
 * Error Number: 9008
 
@@ -343,6 +340,14 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 9010
 
     TiKV 无法处理这条 raft log，请检查 TiKV Server 状态/监控/日志。
+
+* Error Number: 9012
+
+    请求 TiFlash 超时。请检查 TiFlash Server 状态/监控/日志以及 TiDB Server 与 TiFlash Server 之间的网络。
+
+* Error Number: 9013
+
+    TiFlash 操作繁忙。该错误一般出现在数据库负载比较高时。请检查 TiFlash Server 的状态/监控/日志。
 
 ## 故障诊断
 

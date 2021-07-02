@@ -69,6 +69,13 @@ spark.tispark.pd.addresses $your_pd_servers
 spark.sql.extensions org.apache.spark.sql.TiExtensions
 ```
 
+在 `CDH` spark 版本中添加如下配置：
+
+```
+spark.tispark.pd.addresses=$your_pd_servers
+spark.sql.extensions=org.apache.spark.sql.TiExtensions
+```
+
 `your_pd_servers` 是用逗号分隔的 PD 地址，每个地址使用 `地址:端口` 的格式。
 
 例如你有一组 PD 在`10.16.20.1`，`10.16.20.2`，`10.16.20.3`，那么 PD 配置格式是`10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
@@ -93,9 +100,7 @@ spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 
 ### 没有 Spark 集群的部署方式
 
-如果没有使用中的 Spark 集群，推荐使用 Saprk Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在我们的 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
-
-如果是使用 TiDB Ansible 部署的 TiDB 集群，也可以通过 TiDB Ansible 来部署 Spark Standalone 集群，TiSpark 也会同时部署。
+如果没有使用中的 Spark 集群，推荐使用 Spark Standalone 方式部署。这里简单介绍下 Standalone 部署方式。如果遇到问题，可以去官网寻求[帮助](https://spark.apache.org/docs/latest/spark-standalone.html)；也欢迎在 GitHub 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
 
 #### 下载安装包并安装
 
@@ -204,8 +209,7 @@ spark-sql> select count(*) from lineitem;
 Time taken: 0.673 seconds, Fetched 1 row(s)
 ```
 
-SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。
-例如，使用 beeline 连接：
+SQuirreLSQL 和 hive-beeline 可以使用 JDBC 连接 Thrift 服务器。例如，使用 beeline 连接：
 
 {{< copyable "shell-regular" >}}
 
@@ -254,8 +258,7 @@ select count(*) from account;
 
 ## 和 Hive 一起使用 TiSpark
 
-TiSpark 可以和 Hive 混合使用。
-在启动 Spark 之前，需要添加 HADOOP_CONF_DIR 环境变量指向 Hadoop 配置目录并且将 `hive-site.xml` 拷贝到 `$SPARK_HOME/conf` 目录下。
+TiSpark 可以和 Hive 混合使用。在启动 Spark 之前，需要添加 HADOOP_CONF_DIR 环境变量指向 Hadoop 配置目录并且将 `hive-site.xml` 拷贝到 `$SPARK_HOME/conf` 目录下。
 
 ```
 val tisparkDF = spark.sql("select * from tispark_table").toDF
@@ -263,9 +266,49 @@ tisparkDF.write.saveAsTable("hive_table") // save table to hive
 spark.sql("select * from hive_table a, tispark_table b where a.col1 = b.col1").show // join table across Hive and Tispark
 ```
 
+## 通过 TiSpark 将 DataFrame 批量写入 TiDB
+
+TiSpark 从 v2.3 版本开始原生支持将 DataFrame 批量写入 TiDB 集群，该写入模式通过 TiKV 的两阶段提交协议实现。
+
+TiSpark 批量写入相比 Spark + JDBC 写入，有以下特点：
+
+|  比较的方面     | TiSpark 批量写入 | Spark + JDBC 写入|
+| ------- | --------------- | --------------- |
+| 原子性   | DataFrame 的数据要么全部写入成功，要么全部写入失败 | 如果在写入过程中 spark 任务失败退出，会出现部分数据写入成功的情况 |
+| 隔离性   | 写入过程中其他事务对正在写入的数据不可见 | 写入过程中其他事务能看到部分写入成功的数据 |
+| 错误恢复 | 失败后只需要重新运行 Spark 程序 | 需要业务来实现幂等，例如失败后需要先清理部分写入成功的数据，再重新运行 Spark 程序，并且需要设置 `spark.task.maxFailures=1`，防止 task 内重试导致数据重复 |
+| 速度    | 直接写入 TiKV，速度更快 | 通过 TiDB 再写入 TiKV，对速度会有影响 |
+
+以下通过 scala API 演示如何使用 TiSpark 批量写入：
+
+```scala
+// select data to write
+val df = spark.sql("select * from tpch.ORDERS")
+
+// write data to tidb
+df.write.
+  format("tidb").
+  option("tidb.addr", "127.0.0.1").
+  option("tidb.port", "4000").
+  option("tidb.user", "root").
+  option("tidb.password", "").
+  option("database", "tpch").
+  option("table", "target_orders").
+  mode("append").
+  save()
+```
+
+如果写入的数据量比较大，且写入时间超过 10 分钟，则需要保证 GC 时间大于写入时间。
+
+```sql
+update mysql.tidb set VARIABLE_VALUE="6h" where VARIABLE_NAME="tikv_gc_life_time";
+```
+
+详细使用手册请参考[该文档](https://github.com/pingcap/tispark/blob/master/docs/datasource_api_userguide.md)。
+
 ## 通过 JDBC 将 DataFrame 写入 TiDB
 
-暂时 TiSpark 不支持直接将数据写入 TiDB 集群，但可以使用 Spark 原生的 JDBC 支持进行写入：
+除了使用 TiSpark 将 DataFrame 批量写入 TiDB 集群以外，也可以使用 Spark 原生的 JDBC 支持进行写入：
 
 ```scala
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions
@@ -306,8 +349,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
-统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。
-可以在`spark-defaults.conf`中开启或关闭统计信息读取：
+统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。可以在`spark-defaults.conf`中开启或关闭统计信息读取：
 
 | Property Name | Default | Description
 | --------   | -----:   | :----: |

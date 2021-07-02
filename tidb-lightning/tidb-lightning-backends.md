@@ -1,16 +1,22 @@
 ---
-title: TiDB Lightning 导入模式
-summary: 了解 TiDB 不同导入模式。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/']
+title: TiDB Lightning 后端
+summary: 了解使用 TiDB Lightning 导入数据时，如何选择不同的后端。
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/','/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/dev/loader-overview/']
 ---
 
-# TiDB Lightning 导入模式
+# TiDB Lightning 后端
 
-TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持 Importer-backend（默认）、Local-backend 和 TiDB-backend 三种后端，它们导入数据的区别如下：
+TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
 
-* **Local-backend**: `tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，然后批量将这些键值对写到各个 TiKV 节点，然后由 TiKV 将它们 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
++ [Importer-backend](#tidb-lightning-importer-backend)（默认）
++ [Local-backend](#tidb-lightning-local-backend)
++ [TiDB-backend](#tidb-lightning-tidb-backend)
+
+以上几种后端导入数据的区别如下：
 
 * **Importer-backend**：`tidb-lightning` 先将 SQL 或 CSV 数据编码成键值对，由 `tikv-importer` 对写入的键值对进行排序，然后把这些键值对 Ingest 到 TiKV 节点中。
+
+* **Local-backend**：`tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对以 SST 文件的形式上传到各个 TiKV 节点，然后由 TiKV 将这些 SST 文件 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
 
 * **TiDB-backend**：`tidb-lightning` 先将数据编码成 `INSERT` 语句，然后直接在 TiDB 节点上运行这些 SQL 语句进行数据导入。
 
@@ -23,6 +29,7 @@ TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导�
 | 目标表 | 必须为空 | 必须为空 | 可以不为空 |
 | 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
+| 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
 
 ## 如何选择后端模式
 
@@ -32,13 +39,17 @@ TiDB Lightning 的后端决定 `tidb-lightning` 组件将如何把将数据导�
 
 ## TiDB Lightning Local-backend
 
-Local-backend 特性在 TiDB v4.0.3 发布，v4.0.3 及以上的 TiDB Lightning 才包含此特性。另外 Local-backend 只支持 v4.0.0 以上的集群。
+自 TiDB 4.0.3 版本起，TiDB Lightning 引入了 Local-backend 特性。该特性支持导入数据到 v4.0.0 以上的 TiDB 集群。
 
 ### 部署和配置 TiDB Lightning
 
 TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与执行](/tidb-lightning/deploy-tidb-lightning.md)。
 
 ## TiDB Lightning TiDB-backend
+
+> **注意：**
+>
+> 从 TiDB v4.0 起，PingCAP 不再维护 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview) 工具。从 v5.0 起，不再提供 Loader 的文档。Loader 的功能已经完全被 TiDB Lightning 的 TiDB backend 功能取代，强烈建议切换到 TiDB Lightning。
 
 ### 部署和配置 TiDB Lightning
 
@@ -54,37 +65,6 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 * 16 逻辑核 CPU
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
 * 千兆网卡
-
-#### 使用 TiDB Ansible 部署
-
-1. `inventory.ini` 文件中，`[importer_server]` 部分可以留空。
-
-    ```ini
-    ...
-
-    [importer_server]
-    # keep empty
-
-    [lightning_server]
-    192.168.20.10
-
-    ...
-    ```
-
-2. 忽略 `group_vars/all.yml` 文件中 `tikv_importer_port` 部分的设置，`group_vars/importer_server.yml` 文件也不需要修改。但是你需要在 `conf/tidb-lightning.yml` 文件中将 `backend` 设置更改为 `tidb`。
-
-    ```yaml
-    ...
-    tikv_importer:
-        backend: "tidb"   # <-- 改成 “tidb”
-    ...
-    ```
-
-3. 启动、部署集群。
-
-4. 为 TiDB Lightning 挂载数据源。
-
-5. 启动 `tidb-lightning`。
 
 #### 手动部署
 
@@ -117,16 +97,17 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 ### 从 Loader 迁移到 TiDB Lightning TiDB-backend
 
-TiDB Lightning TiDB-backend 可以完全取代 [Loader](/loader-overview.md)。下表说明了如何将 [Loader](/loader-overview.md) 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
+当需要将数据导入到 TiDB 集群时，TiDB Lightning TiDB-backend 可以完全取代 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview)。下表说明了如何将 Loader 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
-<table align="left">
+<table>
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
 <tbody>
 <tr><td>
 
 ```toml
-# 日志
+# 日志级别
 log-level = "info"
+# 日志的输出目录
 log-file = "loader.log"
 # Prometheus
 status-addr = ":8272"
@@ -138,8 +119,9 @@ pool-size = 16
 
 ```toml
 [lightning]
-# 日志
+# 日志级别
 level = "info"
+# 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。
 file = "tidb-lightning.log"
 # Prometheus
 pprof-port = 8289
@@ -218,7 +200,8 @@ password = ""
 # TiDB 连接参数
 host = "127.0.0.1"
 port = 4000
-status-port = 10080  # <- 必须有的参数
+# 在 TiDB-backend 模式下，该参数为可选参数
+# status-port = 10080
 user = "root"
 password = ""
 #sql-mode = ""
@@ -253,9 +236,11 @@ password = ""
 
 ## TiDB Lightning Importer-backend
 
-## 部署 Importer-backend
+### 部署 Importer-backend
 
-### 硬件需求
+本节介绍 TiDB Lightning 使用 Importer 模式的部署方式：[手动部署](#手动部署-tidb-lightning)。
+
+#### 硬件需求
 
 `tidb-lightning` 和 `tikv-importer` 这两个组件皆为资源密集程序，建议各自单独部署。
 
@@ -278,91 +263,6 @@ password = ""
     - 运行过程中 CPU、I/O 和网络带宽资源都可能占满，建议单独部署。
 
 如果机器充裕的话，可以部署多套 `tidb-lightning` + `tikv-importer`，然后将源数据以表为粒度进行切分，并发导入。
-
-### 部署和配置 TiDB Lightning
-
-本节介绍 TiDB Lightning 使用 Importer 模式的两种部署方式：[使用 TiDB Ansible 部署](#使用-tidb-ansible-部署-tidb-lightning)和[手动部署](#手动部署-tidb-lightning)。
-
-#### 使用 TiDB Ansible 部署 TiDB Lightning
-
-TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deployment-using-ansible.md)。
-
-1. 编辑 `inventory.ini`，分别配置一个 IP 来部署 `tidb-lightning` 和 `tikv-importer`。
-
-    ```ini
-    ...
-
-    [importer_server]
-    192.168.20.9
-
-    [lightning_server]
-    192.168.20.10
-
-    ...
-    ```
-
-2. 修改 `group_vars/*.yml` 的变量配置这两个工具。
-
-    - `group_vars/all.yml`
-
-        ```yaml
-        ...
-        # tikv-importer 的监听端口。需对 tidb-lightning 服务器开放。
-        tikv_importer_port: 8287
-        ...
-        ```
-
-    - `group_vars/lightning_server.yml`
-
-        ```yaml
-        ---
-        dummy:
-
-        # 提供监控告警的端口。需对监控服务器 (monitoring_server) 开放。
-        tidb_lightning_pprof_port: 8289
-
-        # 获取数据源（Mydumper SQL dump 或 CSV）的路径。
-        data_source_dir: "{{ deploy_dir }}/mydumper"
-        ```
-
-    - `group_vars/importer_server.yml`
-
-        ```yaml
-        ---
-        dummy:
-
-        # 储存引擎文件的路径。需存放在空间足够大的分区。
-        import_dir: "{{ deploy_dir }}/data.import"
-        ```
-
-3. 开始部署。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    ansible-playbook bootstrap.yml &&
-    ansible-playbook deploy.yml
-    ```
-
-4. 将数据源写入 `data_source_dir` 指定的路径。
-
-5. 登录 `tikv-importer` 的服务器，并执行以下命令来启动 Importer。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    scripts/start_importer.sh
-    ```
-
-6. 登录 `tidb-lightning` 的服务器，并执行以下命令来启动 Lightning，开始导入过程。
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    scripts/start_lightning.sh
-    ```
-
-7. 完成后，在 `tikv-importer` 的服务器执行 `scripts/stop_importer.sh` 来关闭 Importer。
 
 #### 手动部署 TiDB Lightning
 
@@ -442,7 +342,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
     addr = "172.16.31.10:8287"
 
     [mydumper]
-    # Mydumper 源数据目录。
+    # 源数据目录。
     data-source-dir = "/data/my_database"
 
     [tidb]

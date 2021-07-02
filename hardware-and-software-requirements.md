@@ -11,16 +11,18 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 
 | Linux 操作系统平台       | 版本         |
 | :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
-| Oracle Enterprise Linux  | 7.3 及以上   |
-| Ubuntu LTS               | 16.04 及以上 |
+| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本   |
+| CentOS                   | 7.3 及以上的 7.x 版本   |
+| Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
+| Ubuntu LTS               | 16.04 及以上的版本      |
 
 > **注意：**
 >
-> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 Linux 操作系统来部署 TiDB。
-> - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM、XEN 主流虚拟化环境上。
+> - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
+> - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持将于 2021 年 12 月 31 日终止。
+> - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
+
+其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
 
 ## 软件配置要求
 
@@ -41,6 +43,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 | :----- | :----------: |
 | sshpass | 1.06 及以上 |
 | numa | 2.0.12 及以上 |
+| tar  | 任意      |
 
 ## 服务器建议配置
 
@@ -69,7 +72,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
 | TiDB | 16 核+ | 32 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
-| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2块最佳） | 3 |
+| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiKV | 16 核+ | 32 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
 | TiCDC | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
@@ -95,6 +98,7 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | TiDB |  4000  | 应用及 DBA 工具访问通信端口 |
 | TiDB | 10080  | TiDB 状态信息上报通信端口 |
 | TiKV |  20160 | TiKV 通信端口 |
+| TiKV |  20180 | TiKV 状态信息上报通信端口 |
 | PD | 2379 | 提供 TiDB 和 PD 通信端口 |
 | PD | 2380 | PD 集群节点间通信端口 |
 |TiFlash|9000|TiFlash TCP 服务端口|

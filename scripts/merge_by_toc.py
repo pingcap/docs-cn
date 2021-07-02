@@ -21,6 +21,8 @@ image_link_pattern = re.compile(r'!\[(.*?)\]\((.*?)\)')
 level_pattern = re.compile(r'(\s*[\-\+]+)\s')
 # match all headings
 heading_patthern = re.compile(r'(^#+|\n#+)\s')
+# match copyable snippet code
+copyable_snippet_pattern = re.compile(r'{{< copyable .* >}}')
 
 
 entry_file = "TOC.md"
@@ -138,14 +140,9 @@ def replace_heading_func(diff_level=0):
 
     return replace_heading
 
-def replace_img_link(match):
-    full = match.group(0)
-    link_name = match.group(1)
-    link = match.group(2)
-
-    if link.endswith('.png'):
-        fname = os.path.basename(link)
-        return '![%s](./media/%s)' % (link_name, fname)
+# remove copyable snippet code
+def remove_copyable(match):
+    return ''
 
 # stage 3, concat files
 for type_, level, name in followups:
@@ -158,7 +155,7 @@ for type_, level, name in followups:
             with open(name) as fp:
                 chapter = fp.read()
                 chapter = replace_link_wrap(chapter, name)
-                # chapter = image_link_pattern.sub(replace_img_link, chapter)
+                chapter = copyable_snippet_pattern.sub(remove_copyable, chapter)
 
                 # fix heading level
                 diff_level = level - heading_patthern.findall(chapter)[0].count('#')

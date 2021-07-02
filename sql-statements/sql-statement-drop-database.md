@@ -10,13 +10,12 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-database/','/docs-cn/d
 
 ## 语法图
 
-**DropDatabaseStmt:**
+```ebnf+diagram
+DropDatabaseStmt ::=
+    'DROP' 'DATABASE' IfExists DBName
 
-![DropDatabaseStmt](/media/sqlgram/DropDatabaseStmt.png)
-
-**IfExists:**
-
-![IfExists](/media/sqlgram/IfExists.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
+```
 
 ## 示例
 
@@ -67,7 +66,7 @@ SHOW DATABASES;
 
 ## MySQL 兼容性
 
-`DROP DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DROP DATABASE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

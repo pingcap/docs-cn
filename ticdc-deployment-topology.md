@@ -4,13 +4,13 @@ summary: 介绍 TiCDC 部署 TiDB 集群的拓扑结构。
 aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tools/ticdc/deploy/','/docs-cn/dev/ticdc/deploy-ticdc/']
 ---
 
-> **注意：**
->
-> TiCDC 目前为实验特性，不建议在生产环境中使用。
-
 # TiCDC 部署拓扑
 
-本文介绍 TiCDC 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。
+> **注意：**
+>
+> TiCDC 从 v4.0.6 起成为正式功能，可用于生产环境。
+
+本文介绍 [TiCDC](/ticdc/ticdc-overview.md) 部署的拓扑，以及如何在最小拓扑的基础上同时部署 TiCDC。TiCDC 是 4.0 版本开始支持的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。相比于 TiDB Binlog，TiCDC 有延迟更低、天然高可用等优点。
 
 ## 拓扑信息
 
@@ -27,6 +27,8 @@ aliases: ['/docs-cn/dev/ticdc-deployment-topology/','/docs-cn/dev/reference/tool
 [简单 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-cdc.yaml)
 
 [详细 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-cdc.yaml)
+
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#cdc_servers)。
 
 > **注意：**
 >

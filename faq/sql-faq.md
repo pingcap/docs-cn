@@ -12,6 +12,66 @@ aliases: ['/docs-cn/dev/faq/sql-faq/']
 
 详细可参考[系统变量](/system-variables.md)。
 
+## 省略 `ORDER BY` 条件时 TiDB 中返回结果的顺序与 MySQL 中的不一致
+
+这不是 bug。返回结果的顺序视不同情况而定，不保证顺序统一。
+
+MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单线程执行的。但升级到新版本后，查询计划也可能变化。无论是否期待返回结果有序，都推荐使用 `ORDER BY` 条件。
+
+[ISO/IEC 9075:1992, Database Language SQL- July 30, 1992](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt) 对此有如下表述：
+
+> If an `<order by clause>` is not specified, then the table specified by the `<cursor specification>` is T and the ordering of rows in T is implementation-dependent.（如果未指定 `<order by 条件>`，通过 `<cursor specification>` 指定的表为 T，那么 T 表中的行顺序视执行情况而定。）
+
+以下两条查询的结果都是合法的：
+
+```sql
+> select * from t;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    2 |
++------+------+
+2 rows in set (0.00 sec)
+```
+
+```sql
+> select * from t; -- 不确定返回结果的顺序
++------+------+
+| a    | b    |
++------+------+
+|    2 |    2 |
+|    1 |    1 |
++------+------+
+2 rows in set (0.00 sec)
+```
+
+如果 `ORDER BY` 中使用的列不是唯一列，该语句就不确定返回结果的顺序。以下示例中，`a` 列有重复值，因此只有 `ORDER BY a, b` 能确定返回结果的顺序。
+
+```sql
+> select * from t order by a;
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    1 |
+|    2 |    2 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+> select * from t order by a; -- 能确定 a 列的顺序，不确定 b 列的顺序
++------+------+
+| a    | b    |
++------+------+
+|    1 |    1 |
+|    2 |    2 |
+|    2 |    1 |
++------+------+
+3 rows in set (0.00 sec)
+```
+
 ## TiDB 是否支持 `SELECT FOR UPDATE`？
 
 支持。当 TiDB 使用悲观锁（自 TiDB v3.0 起默认使用）时，TiDB 中 `SELECT FOR UPDATE` 的行为与 MySQL 中的基本一致。
@@ -71,7 +131,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ## 对数据做删除操作之后，空间回收比较慢，如何处理？
 
-可以设置并行 GC，加快对空间的回收速度。默认并发为 1，最大可调整为 TiKV 实例数量的 50%。可使用 `update mysql.tidb set VARIABLE_VALUE="3" where VARIABLE_NAME="tikv_gc_concurrency";` 命令来调整。
+TiDB 采用了多版本并发控制 (MVCC)，为了使并发事务能查看到早期版本的数据，删除数据不会立即回收空间，而是推迟一段时间后再进行垃圾回收 (GC)。你可以通过修改系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)的值（默认值为 `10m0s`）配置历史数据的保留时限。
 
 ## `SHOW PROCESSLIST` 是否显示系统进程号？
 
@@ -112,8 +172,7 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 
 ## 可以使用 Hints 控制优化器行为吗？
 
-在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下 ：
-`select column_name from table_name use index（index_name）where where_condition;`
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，包括使用 [Optimizer Hints](/optimizer-hints.md) 和 [SQL 执行计划管理 (SPM)](/sql-plan-management.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：`select column_name from table_name use index（index_name）where where_condition;`
 
 ## 触发 Information schema is changed 错误的原因？
 
@@ -148,7 +207,7 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 
 ### TiDB 执行计划解读
 
-详细解读[理解 TiDB 执行计划](/query-execution-plan.md)。
+详细解读[理解 TiDB 执行计划](/explain-overview.md)。
 
 ### 统计信息收集
 
@@ -203,11 +262,11 @@ RUNNING_JOBS: ID:121, Type:add index, State:running, SchemaState:write reorganiz
 
 ### SQL 的执行计划展开成了树，ID 的序号有什么规律吗？这棵树的执行顺序会是怎么样的？
 
-ID 没什么规律，只要是唯一就行，不过生成的时候，是有一个计数器，生成一个 plan 就加一，执行的顺序和序号无关，整个执行计划是一颗树，执行时从根节点开始，不断地向上返回数据。执行计划的理解，请参考[理解 TiDB 执行计划](/query-execution-plan.md)。
+ID 没什么规律，只要是唯一就行，不过生成的时候，是有一个计数器，生成一个 plan 就加一，执行的顺序和序号无关，整个执行计划是一颗树，执行时从根节点开始，不断地向上返回数据。执行计划的理解，请参考[理解 TiDB 执行计划](/explain-overview.md)。
 
 ### TiDB 执行计划中，task cop 在一个 root 下，这个是并行的么？
 
-目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。一般来讲 root task 的输入数据是来自于 cop task 的；但是 root task 在处理数据的时候，TiKV 上的 cop task 也可以同时处理数据，等待 TiDB 的 root task 拉取，所以从这个观点上来看，他们是并行的；但是存在数据上下游关系；在执行的过程中，某些时间段其实也是并行的，第一个 cop task 在处理 [100, 200] 的数据，第二个 cop task 在处理 [1, 100] 的数据。执行计划的理解，请参考[理解 TiDB 执行计划](/query-execution-plan.md)。
+目前 TiDB 的计算任务隶属于两种不同的 task：cop task 和 root task。cop task 是指被下推到 KV 端分布式执行的计算任务，root task 是指在 TiDB 端单点执行的计算任务。一般来讲 root task 的输入数据是来自于 cop task 的；但是 root task 在处理数据的时候，TiKV 上的 cop task 也可以同时处理数据，等待 TiDB 的 root task 拉取，所以从这个观点上来看，他们是并行的；但是存在数据上下游关系；在执行的过程中，某些时间段其实也是并行的，第一个 cop task 在处理 [100, 200] 的数据，第二个 cop task 在处理 [1, 100] 的数据。执行计划的理解，请参考[理解 TiDB 执行计划](/explain-overview.md)。
 
 ## 数据库优化
 

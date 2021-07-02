@@ -1,72 +1,82 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/']
+aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/using-tiup/','/docs-cn/dev/upgrade-tidb-using-tiup-offline/', '/zh/tidb/dev/upgrade-tidb-using-tiup-offline']
 ---
 
 # 使用 TiUP 升级 TiDB
 
-本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
+本文档适用于以下升级路径：
 
-如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 5.1 及后续修订版本。
+- 使用 TiUP 从 TiDB 5.0 版本升级至 TiDB 5.1 及后续修订版本。
+
+> **注意：**
+>
+> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 5.1 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 5.1 及后续修订版本。
 
 ## 1. 升级兼容性说明
 
-- 不支持在升级后回退至 3.0 或更旧版本。
-- 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照本文档的说明，使用 TiUP 将 TiDB Ansible 配置导入，再升级到 4.0 版本。
-- TiDB Ansible 配置导入到 TiUP 中管理后，不能再通过 TiDB Ansible 对集群进行操作，否则可能因元信息不一致造成冲突。
-- 对于满足以下情况之一的 TiDB Ansible 部署的集群，暂不支持导入：
-    - 启用了 `TLS` 加密功能的集群
-    - 纯 KV 集群（没有 TiDB 实例的集群）
-    - 启用了 `Kafka` 的集群
-    - 启用了 `Spark` 的集群
-    - 启用了 `Lightning` / `Importer` 的集群
-    - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
-    - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
+- TiDB 目前暂不支持版本降级或升级后回退。
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.1 版本及后续修订版本。
+- 若要将 3.0 之前的版本升级至 5.1 版本：
+    1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
+    2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
+    3. 将集群升级至 4.0 版本。
+    4. 按本文档说明将集群升级到 5.1 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
-- 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
-- 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
-    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本
-    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本
+- 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 
 > **注意：**
 >
 > 在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
 
-## 2. 在中控机器上安装 TiUP
+## 2. 升级前准备
 
-1. 在中控机上执行如下命令安装 TiUP：
+本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
 
-    {{< copyable "shell-regular" >}}
+### 2.1 升级 TiUP 或更新 TiUP 离线镜像
 
-    ```shell
-    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-    ```
+#### 升级 TiUP 和 TiUP Cluster
 
-2. 重新声明全局环境变量：
+> **注意：**
+>
+> 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳到步骤 2.2 使用离线升级方式。
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    source .bash_profile
-    ```
-
-3. 确认 TiUP 工具是否安装：
+1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.5.0`）：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    which tiup
+    tiup update --self
+    tiup --version
     ```
 
-4. 安装 TiUP 的 cluster 工具：
+2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.5.0`）：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster
+    tiup update cluster
+    tiup cluster --version
     ```
 
-如果之前安装过 TiUP，使用如下命令更新至最新版本即可：
+#### 更新 TiUP 离线镜像
+
+> **注意：**
+>
+> 如果原集群不是通过离线部署方式部署的，可忽略此步骤。
+
+可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)的步骤下载部署新版本的 TiUP 离线镜像，上传到中控机。在执行 `local_install.sh` 后，TiUP 会完成覆盖升级。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
+sh tidb-community-server-${version}-linux-amd64/local_install.sh
+source /home/tidb/.bash_profile
+```
+
+覆盖升级完成后，执行下列命令升级 Cluster 组件：
 
 {{< copyable "shell-regular" >}}
 
@@ -74,65 +84,18 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 tiup update cluster
 ```
 
-> **注意：**
->
-> 如果 `tiup --version` 显示 `tiup` 版本低于 `v1.0.0`，请在执行 `tiup update cluster` 之前先执行 `tiup update --self` 命令更新 `tiup` 版本。
+此时离线镜像已经更新成功。如果覆盖后发现 TiUP 运行报错，可能是 manifest 未更新导致，可尝试 `rm -rf ~/.tiup/manifests/*` 后再使用。
 
-## 3. 将 TiDB Ansible 及 `inventory.ini` 配置导入到 TiUP
+### 2.2 编辑 TiUP Cluster 拓扑配置文件
 
 > **注意：**
 >
-> + 目前 TiUP 仅支持 `systemd` 的进程管理模式。如果此前使用 TiDB Ansible 部署时选择了 `supervise`，需要先按[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md#如何调整进程监管方式从-supervise-到-systemd)迁移到 `systemd`。
-> + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
-> + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
-> + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
-> + 如果在一个 TiDB Ansible 目录中管理多个不同的 `inventory.ini` 配置文件和 TiDB 集群，将其中一个集群导入到 TiUP 时，需要指定 `--no-backup` 以避免将 Ansible 目录移动到 TiUP 管理目录下面。
-
-### 3.1 将 TiDB Ansible 集群导入到 TiUP 中
-
-1. 以 `/home/tidb/tidb-ansible` 为示例路径，使用如下命令将 TiDB Ansible 集群导入到 TiUP 中：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup cluster import -d /home/tidb/tidb-ansible
-    ```
-
-2. 执行导入命令后，若集群 `Inventory` 信息解析成功，将出现如下提示：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup cluster import -d /home/tidb/tidb-ansible/
-    ```
-
-    ```
-    Found inventory file /home/tidb/tidb-ansible/inventory.ini, parsing...
-    Found cluster "ansible-cluster" (v3.0.12), deployed with user tidb.
-    Prepared to import TiDB v3.0.12 cluster ansible-cluster.
-    Do you want to continue? [y/N]:
-    ```
-
-3. 核对解析得到的集群名和版本无误后，输入`y` 确认继续执行。
-
-    + 若 `Inventory` 信息解析出错，导入过程将会终止，终止不会对原 Ansible 部署方式有任何影响，之后需根据错误提示调整并重试。
-
-    + 若 Ansible 中原集群名与 TiUP 中任一已有集群的名称重复，将会给出警示信息并提示输入一个新的集群名。因此，请注意**不要重复对同一个集群执行导入**，导致 TiUP 中同一个集群有多个名字
-
-导入完成后，可以通过 `tiup cluster display <cluster-name>` 查看当前集群状态以验证导入结果。由于 `display` 命令会查询各节点的实时状态，所以命令执行可能需要等待少许时间。
-
-### 3.2 编辑 TiUP 拓扑配置文件
-
-> **注意：**
+> 以下情况可跳过此步骤：
 >
-> 以下情况可跳过该步骤：
->
-> - 原集群没有修改过配置参数。
-> - 升级后希望使用 `4.0` 默认参数。
+> - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
+> - 升级后对未修改过的配置项希望使用 `5.1` 默认参数。
 
-1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/config`，确认配置模板中修改过的参数。
-
-2. 进入拓扑文件的 `vi` 编辑模式：
+1. 进入拓扑文件的 `vi` 编辑模式：
 
     {{< copyable "shell-regular" >}}
 
@@ -140,31 +103,41 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-3. 参考 [topology](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
+2. 参考 [topology](https://github.com/pingcap/tiup/blob/release-1.4/embed/templates/examples/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
 
-修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
+修改完成后 `:wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 
 > **注意：**
 >
-> 升级到 4.0 版本前，请确认已在 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
->
-> TiUP 版本 <= v1.0.8 可能无法正确获取 TiFlash 的数据目录，需要确认 `data_dir` 与 TiFlash 配置的 `path` 值是否一致。若不一致需要进行如下操作把 TiFlash 的 `data_dir` 改成与 `path` 一致的值：
->
->    1. 执行 `tiup cluster edit-config <cluster-name>` 命令修改配置文件。
->
->    2. 修改对应 TiFlash 的 `data_dir` 配置：
->
->        ```yaml
->          tiflash_servers:
->            - host: 10.0.1.14
->              data_dir: data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
->        ```
+> 升级到 5.1 版本前，请确认已在 4.0 修改的参数在 5.1 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 
+> 以下 TiKV 参数在 TiDB v5.1 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数:
+> 
+> - pessimistic-txn.enabled
+> - server.request-batch-enable-cross-command
+> - server.request-batch-wait-duration
 
-## 4. 滚动升级 TiDB 集群
+### 2.3 检查当前集群的健康状况
 
-本部分介绍如何滚动升级 TiDB 集群以及升级后的验证。
+为避免升级过程中出现未定义行为或其他故障，建议在升级前对集群当前的 region 健康状态进行检查，此操作可通过 `check` 子命令完成。
 
-### 4.1 将集群升级到指定版本
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster check <cluster-name> --cluster
+```
+
+执行结束后，最后会输出 region status 检查结果。如果结果为 "All regions are healthy"，则说明当前集群中所有 region 均为健康状态，可以继续执行升级；如果结果为 "Regions are not fully healthy: m miss-peer, n pending-peer" 并提示 "Please fix unhealthy regions before other operations."，则说明当前集群中有 region 处在异常状态，应先排除相应异常状态，并再次检查结果为 "All regions are healthy" 后再继续升级。
+
+## 3. 升级 TiDB 集群
+
+本部分介绍如何滚动升级 TiDB 集群以及如何进行升级后的验证。
+
+### 3.1 将集群升级到指定版本
+
+升级的方式有两种：不停机升级和停机升级。TiUP Cluster 默认的升级 TiDB 集群的方式是不停机升级，即升级过程中集群仍然可以对外提供服务。升级时会对各节点逐个迁移 leader 后再升级和重启，因此对于大规模集群需要较长时间才能完成整个升级操作。如果业务有维护窗口可供数据库停机维护，则可以使用停机升级的方式快速进行升级操作。
+
+#### 不停机升级
 
 {{< copyable "shell-regular" >}}
 
@@ -172,21 +145,47 @@ tiup update cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v4.0.0 版本为例：
+以升级到 5.1.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v4.0.0
+tiup cluster upgrade <cluster-name> v5.1.0
 ```
 
-滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
+> **注意：**
+>
+> - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
+> - 如果不希望驱逐 leader，而希望快速升级集群至新版本，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+> - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 
-如果不希望驱逐 leader，而希望立刻升级，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+#### 停机升级
 
-如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个超大值，如 `--transfer-timeout 100000000`，单位为 s。
+在停机升级前，首先需要将整个集群关停。
 
-### 4.2 升级后验证
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster stop <cluster-name>
+```
+
+之后通过 `upgrade` 命令添加 `--offline` 参数来进行停机升级。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster upgrade <cluster-name> <version> --offline
+```
+
+升级完成后集群不会自动启动，需要使用 `start` 命令来启动集群。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster start <cluster-name>
+```
+
+### 3.2 升级后验证
 
 执行 `display` 命令来查看最新的集群版本 `TiDB Version`：
 
@@ -197,53 +196,62 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /home/tidblk/.tiup/components/cluster/v1.0.0/cluster display <cluster-name>
-TiDB Cluster: <cluster-name>
-TiDB Version: v4.0.0
+Cluster type:       tidb
+Cluster name:       <cluster-name>
+Cluster version:    v5.1.0
 ```
 
 > **注意：**
 >
-> TiUP 及 TiDB（v4.0.2 起）默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+> TiUP 及 TiDB 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
 
-## 5. 升级 FAQ
+## 4. 升级 FAQ
 
 本部分介绍使用 TiUP 升级 TiDB 集群遇到的常见问题。
 
-### 5.1 升级时报错中断，处理完报错后，如何继续升级
+### 4.1 升级时报错中断，处理完报错后，如何继续升级
 
-重新执行 `tiup cluster upgrade` 命令进行升级，升级操作会重启之前已经升级完成的节点。TiDB 4.0 后续版本将支持从中断的位置继续升级。
+重新执行 `tiup cluster upgrade` 命令进行升级，升级操作会重启之前已经升级完成的节点。如果不希望重启已经升级过的节点，可以使用 `replay` 子命令来重试操作，具体方法如下：
 
-### 5.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
+1. 使用 `tiup cluster audit` 命令查看操作记录：
 
-可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群影响较大。命令如下：
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster audit
+    ```
+
+    在其中找到失败的升级操作记录，并记下该操作记录的 ID，下一步中将使用 `<audit-id>` 表示操作记录 ID 的值。
+
+2. 使用 `tiup cluster replay <audit-id>` 命令重试对应操作：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster replay <audit-id>
+    ```
+
+### 4.2 升级过程中 evict leader 等待时间过长，如何跳过该步骤快速升级
+
+可以指定 `--force`，升级时会跳过 `PD transfer leader` 和 `TiKV evict leader` 过程，直接重启并升级版本，对线上运行的集群性能影响较大。命令如下：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster upgrade <cluster-name> v4.0.0 --force
+tiup cluster upgrade <cluster-name> <version> --force
 ```
 
-### 5.3 升级完成后，如何更新 pd-ctl 等周边工具版本
+### 4.3 升级完成后，如何更新 pd-ctl 等周边工具版本
 
-目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.0`，下载地址如下：
+可通过 TiUP 安装对应版本的 `ctl` 组件来更新相关工具版本：
 
 {{< copyable "" >}}
 
 ```
-https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz
+tiup install ctl:v5.1.0
 ```
 
-### 5.4 升级过程中 TiFlash 组件升级失败
+## 5. TiDB 5.1 兼容性变化
 
-TiFlash 在 `v4.0.0-rc.2` 之前的版本可能有一些不兼容的问题。因此，如果将包含 TiFlash 组件的集群由此前版本升级至 `v4.0.0-rc.2` 之后版本的过程中遇到问题，可在 [ASK TUG](https://asktug.com/) 反馈，寻求研发人员支持。
-
-## 6. TiDB 4.0 兼容性变化
-
-- `oom-action` 参数设置为 `cancel` 时，当查询语句触发 OOM 阈值后会被 kill 掉，升级到 4.0 版本后除了 `select` 语句，还可能 kill 掉 `insert`/`update`/`delete` 等 DML 语句。
-- 4.0 版本增加了 `rename` 时对表名长度的检查，长度限制为 `64` 个字符。升级后 `rename` 后的表名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
-- 4.0 版本增加了对分区表的分区名长度的检查，长度限制为 `64` 个字符。升级后，当你创建和修改分区表时，如果分区名长度超过这个限制会报错，3.0 及之前的版本则不会报错。
-- 4.0 版本对 `explain` 执行计划的输出格式做了改进，需要注意是否有针对 `explain` 制订了自动化的分析程序。
-- 4.0 版本支持 [Read Committed 隔离级别](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。升级到 4.0 后，在悲观事务里隔离级别设置为 `READ-COMMITTED` 会生效，3.0 及之前的版本则不会生效。
-- 4.0 版本执行 `alter reorganize partition` 会报错，之前的版本则不会报错，只是语法上支持没有实际效果。
-- 4.0 版本创建 `linear hash partition` 和 `subpartition` 分区表时实际不生效，会转换为普通表，之前的版本则转换为普通分区表。
+- 兼容性变化请参考 5.1 Release Notes。
+- 请避免在对使用 TiDB-Binlog 的集群进行滚动升级过程中新创建聚簇索引表。

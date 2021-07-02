@@ -51,7 +51,7 @@ SET @c = @a + @b;
 {{< copyable "sql" >}}
 
 ```sql
-set @c = b'1000001' + b'1000001';
+SET @c = b'1000001' + b'1000001';
 ```
 
 ## 读取用户自定义变量
@@ -153,7 +153,7 @@ EXECUTE stmt USING @a, @b;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * from t;
+SELECT * FROM t;
 ```
 
 ```
@@ -178,5 +178,9 @@ SELECT @col FROM t;
 | `a`  |
 +------+
 ```
+
+## MySQL 兼容性
+
+除 `SELECT ... INTO <variable>` 外，MySQL 和 TiDB 支持的语法相同。
 
 更多细节，请参考 [MySQL 文档](https://dev.mysql.com/doc/refman/5.7/en/user-variables.html)。

@@ -7,8 +7,6 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-tpcc/','/docs-cn/dev/benc
 
 本文介绍如何对 TiDB 进行 [TPC-C](http://www.tpc.org/tpcc/) 测试。
 
-## 准备测试程序
-
 TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使用一个商品销售模型对 OLTP 系统进行测试，其中包含五类事务：
 
 * NewOrder – 新订单的生成
@@ -29,256 +27,69 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量 (MQTh, Max Qualified Throughput)，其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
-本文使用开源的 BenchmarkSQL 5.0 作为 TPC-C 测试实现并添加了对 MySQL 协议的支持，可以通过以下命令下载测试程序:
+本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 TPC-C 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-git clone -b 5.0-mysql-support-opt-2.1 https://github.com/pingcap/benchmarksql.git
+tiup install bench
 ```
 
-安装 java 和 ant，以 CentOS 为例，可以执行以下命令进行安装
-
-{{< copyable "shell-regular" >}}
-
-```shell
-sudo yum install -y java ant
-```
-
-进入 benchmarksql 目录并执行 ant 构建
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cd benchmarksql
-ant
-```
-
-## 部署 TiDB 集群
-
-对于 1000 WAREHOUSE，在 3 台服务器上部署集群。
-
-在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD 和 1 个 TiKV 实例。
-
-比如这里采用的机器硬件配置是：
-
-| 类别 | 名称 |
-| :-: | :-: |
-| OS | Linux (CentOS 7.3.1611) |
-| CPU | 40 vCPUs, Intel(R) Xeon(R) CPU E5-2630 v4 @ 2.20GHz |
-| RAM | 128GB |
-| DISK | Optane 500GB SSD |
-
-因为该型号 CPU 是 NUMA 架构，建议用 `numactl` 进行绑核。
-
-1. [安装 numactl 工具](/check-before-deployment.md#安装-numactl-工具) 。
-
-2. 用 `lscpu` 查看 NUMA node，比如：
-
-    ```text
-    NUMA node0 CPU(s):     0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38
-    NUMA node1 CPU(s):     1,3,5,7,9,11,13,15,17,19,21,23,25,27,29,31,33,35,37,39
-    ```
-
-3. 通过修改 `{tidb_deploy_path}/scripts/run_tidb.sh` 启动脚本，加入 `numactl` 来启动 TiDB：
-
-    ```text
-    #!/bin/bash
-    set -e
-
-    ulimit -n 1000000
-
-    # WARNING: This file was auto-generated. Do not edit!
-    #          All your edit might be overwritten!
-    DEPLOY_DIR=/home/damon/deploy/tidb1-1
-
-    cd "${DEPLOY_DIR}" || exit 1
-
-    export TZ=Asia/Shanghai
-
-    # 同一台机器不同的 TiDB 实例需要指定不同的 cpunodebind 以及 membind；来绑定不同的 Numa node
-    exec numactl --cpunodebind=0  --membind=0 bin/tidb-server \
-        -P 4111 \
-        --status="10191" \
-        --advertise-address="172.16.4.53" \
-        --path="172.16.4.10:2490" \
-        --config=conf/tidb.toml \
-        --log-slow-query="/home/damon/deploy/tidb1-1/log/tidb_slow_query.log" \
-        --log-file="/home/damon/deploy/tidb1-1/log/tidb.log" 2>> "/home/damon/deploy/tidb1-1/log/tidb_stderr.log"
-    ```
-
-    > **注意：**
-    >
-    > 直接修改 `run_tidb.sh` 可能会被覆盖，因此在生产环境中，如有绑核需求，建议使用 TiUP 绑核。
-
-4. 选择部署一个 HAproxy 来进行多个 TiDB node 的负载均衡，推荐配置 nbproc 为 CPU 核数。
-
-## 配置调整
-
-### TiDB 配置
-
-```toml
-[log]
-level = "error"
-
-[performance]
-# 根据 NUMA 配置，设置单个 TiDB 最大使用的 CPU 核数
-max-procs = 20
-
-[prepared_plan_cache]
-# 开启 TiDB 配置中的 prepared plan cache，以减少优化执行计划的开销
-enabled = true
-```
-
-### TiKV 配置
-
-开始可以使用基本的配置，压测运行后可以通过观察 Grafana 并参考 [TiKV 线程池调优说明](/tune-tikv-thread-performance.md)进行调整。
-
-### BenchmarkSQL 配置
-
-修改 `benchmarksql/run/props.mysql`：
-
-```text
-conn=jdbc:mysql://{HAPROXY-HOST}:{HAPROXY-PORT}/tpcc?useSSL=false&useServerPrepStmts=true&useConfigs=maxPerformance
-warehouses=1000 # 使用 1000 个 warehouse
-terminals=500   # 使用 500 个终端
-loadWorkers=32  # 导入数据的并发数
-```
+关于 TiUP Bench 组件的详细用法可参考 [TiUP Bench](/tiup/tiup-bench.md)。
 
 ## 导入数据
 
 **导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
 
-首先用 MySQL 客户端连接到 TiDB-Server 并执行：
-
-{{< copyable "sql" >}}
-
-```sql
-create database tpcc
-```
-
-之后在 shell 中运行 BenchmarkSQL 建表脚本：
+在 shell 中运行 TiUP 命令：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cd run && \
-./runSQL.sh props.mysql sql.mysql/tableCreates.sql && \
-./runSQL.sh props.mysql sql.mysql/indexCreates.sql
+tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
 ```
 
-### 直接使用 BenchmarkSQL 导入
+基于不同的机器配置，这个过程可能会持续几个小时。如果是小型集群，可以使用较小的 WAREHOUSE 值进行测试。
 
-运行导入数据脚本：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-./runLoader.sh props.mysql
-```
-
-根据机器配置这个过程可能会持续几个小时。
-
-### 通过 TiDB Lightning 导入
-
-由于导入数据量随着 warehouse 的增加而增加，当需要导入 1000 warehouse 以上数据时，可以先用 BenchmarkSQL 生成 csv 文件，再将文件通过 TiDB Lightning（以下简称 Lightning）导入的方式来快速导入。生成的 csv 文件也可以多次复用，节省每次生成所需要的时间。
-
-#### 修改 BenchmarkSQL 的配置文件
-
-1 warehouse 的 csv 文件需要 77 MB 磁盘空间，在生成之前要根据需要分配足够的磁盘空间来保存 csv 文件。可以在 `benchmarksql/run/props.mysql` 文件中增加一行：
-
-```text
-fileLocation=/home/user/csv/  # 存储 csv 文件的目录绝对路径，需保证有足够的空间
-```
-
-因为最终要使用 Lightning 导入数据，所以 csv 文件名最好符合 Lightning 要求，即 `{database}.{table}.csv` 的命名法。这里可以将以上配置改为：
-
-```text
-fileLocation=/home/user/csv/tpcc.  # 存储 csv 文件的目录绝对路径 + 文件名前缀（database）
-```
-
-这样生成的 csv 文件名将会是类似 `tpcc.bmsql_warehouse.csv` 的样式，符合 Lightning 的要求。
-
-#### 生成 csv 文件
-
-{{< copyable "shell-regular" >}}
-
-```shell
-./runLoader.sh props.mysql
-```
-
-#### 通过 Lightning 导入
-
-通过 Lightning 导入数据请参考 [Lightning 部署执行](/tidb-lightning/deploy-tidb-lightning.md)章节。这里我们介绍下通过 TiDB Ansible 部署 Lightning 导入数据的方法。
-
-##### 修改 inventory.ini
-
-这里最好手动指定清楚部署的 IP、端口、目录，避免各种冲突问题带来的异常，其中 import_dir 的磁盘空间参考 [Lightning 部署执行](/tidb-lightning/deploy-tidb-lightning.md)，data_source_dir 就是存储上一节 csv 数据的目录。
-
-```ini
-[importer_server]
-IS1 ansible_host=172.16.5.34 deploy_dir=/data2/is1 tikv_importer_port=13323 import_dir=/data2/import
-
-[lightning_server]
-LS1 ansible_host=172.16.5.34 deploy_dir=/data2/ls1 tidb_lightning_pprof_port=23323 data_source_dir=/home/user/csv
-```
-
-##### 修改 conf/tidb-lightning.yml
-
-```yaml
-mydumper:
-    no-schema: true
-    csv:
-        separator: ','
-        delimiter: ''
-        header: false
-        not-null: false
-        'null': 'NULL'
-        backslash-escape: true
-        trim-last-separator: false
-```
-
-##### 部署 Lightning 和 Importer
-
-{{< copyable "shell-regular" >}}
-
-```shell
-ansible-playbook deploy.yml --tags=lightning
-```
-
-##### 启动
-
-* 登录到部署 Lightning 和 Importer 的服务器
-* 进入部署目录
-* 在 Importer 目录下执行 `scripts/start_importer.sh`，启动 Importer
-* 在 Lightning 目录下执行 `scripts/start_lightning.sh`，开始导入数据
-
-由于是用 TiDB Ansible 进行部署的，可以在监控页面看到 Lightning 的导入进度，或者通过日志查看导入是否结束。
-
-### 导入完成后
-
-数据导入完成之后，可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句都返回结果为空，即为数据导入正确。
+数据导入完成后，可以通过命令 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 4 check` 验证数据正确性。
 
 ## 运行测试
 
-执行 BenchmarkSQL 测试脚本：
+运行测试的命令是：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-nohup ./runBenchmark.sh props.mysql &> test.log &
+tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 run
 ```
 
-运行结束后通过 `test.log` 查看结果：
+运行过程中控制台上会持续打印测试结果：
 
 ```text
-07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Measured tpmC (NewOrders) = 77373.25
-07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Measured tpmTOTAL = 171959.88
-07:09:53,455 [Thread-351] INFO   jTPCC : Term-00, Session Start     = 2019-03-21 07:07:52
-07:09:53,456 [Thread-351] INFO   jTPCC : Term-00, Session End       = 2019-03-21 07:09:53
-07:09:53,456 [Thread-351] INFO   jTPCC : Term-00, Transaction Count = 345240
+[Current] NEW_ORDER - Takes(s): 4.6, Count: 5, TPM: 65.5, Sum(ms): 4604, Avg(ms): 920, 90th(ms): 1500, 99th(ms): 1500, 99.9th(ms): 1500
+[Current] ORDER_STATUS - Takes(s): 1.4, Count: 1, TPM: 42.2, Sum(ms): 256, Avg(ms): 256, 90th(ms): 256, 99th(ms): 256, 99.9th(ms): 256
+[Current] PAYMENT - Takes(s): 6.9, Count: 5, TPM: 43.7, Sum(ms): 2208, Avg(ms): 441, 90th(ms): 512, 99th(ms): 512, 99.9th(ms): 512
+[Current] STOCK_LEVEL - Takes(s): 4.4, Count: 1, TPM: 13.8, Sum(ms): 224, Avg(ms): 224, 90th(ms): 256, 99th(ms): 256, 99.9th(ms): 256
+...
 ```
 
-tpmC 部分即为测试结果。
+运行结束后，会打印测试统计结果：
 
-测试完成之后，也可以运行 `sql.common/test.sql` 进行数据正确性验证，如果所有 SQL 语句的返回结果都为空，即为数据测试过程正确。
+```text
+[Summary] DELIVERY - Takes(s): 455.2, Count: 32, TPM: 4.2, Sum(ms): 44376, Avg(ms): 1386, 90th(ms): 2000, 99th(ms): 4000, 99.9th(ms): 4000
+[Summary] DELIVERY_ERR - Takes(s): 455.2, Count: 1, TPM: 0.1, Sum(ms): 953, Avg(ms): 953, 90th(ms): 1000, 99th(ms): 1000, 99.9th(ms): 1000
+[Summary] NEW_ORDER - Takes(s): 487.8, Count: 314, TPM: 38.6, Sum(ms): 282377, Avg(ms): 899, 90th(ms): 1500, 99th(ms): 1500, 99.9th(ms): 1500
+[Summary] ORDER_STATUS - Takes(s): 484.6, Count: 29, TPM: 3.6, Sum(ms): 8423, Avg(ms): 290, 90th(ms): 512, 99th(ms): 1500, 99.9th(ms): 1500
+[Summary] PAYMENT - Takes(s): 490.1, Count: 321, TPM: 39.3, Sum(ms): 144708, Avg(ms): 450, 90th(ms): 512, 99th(ms): 1000, 99.9th(ms): 1500
+[Summary] STOCK_LEVEL - Takes(s): 487.6, Count: 41, TPM: 5.0, Sum(ms): 9318, Avg(ms): 227, 90th(ms): 512, 99th(ms): 1000, 99.9th(ms): 1000
+```
+
+测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 4 check` 进行数据正确性验证。
+
+## 清理测试数据
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 4 cleanup
+```

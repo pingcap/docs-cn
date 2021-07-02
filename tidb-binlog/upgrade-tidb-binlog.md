@@ -7,22 +7,7 @@ aliases: ['/docs-cn/dev/tidb-binlog/upgrade-tidb-binlog/','/docs-cn/dev/referenc
 
 如未特别指明，文中出现的 TiDB Binlog 均指最新的 [Cluster](/tidb-binlog/tidb-binlog-overview.md) 版本。
 
-本文会分 TiDB Ansible 部署和手动部署两种情况介绍 TiDB Binlog 版本升级的方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
-
-## TiDB Ansible 部署
-
-本节适用于使用 [TiDB Ansible Playbook](https://github.com/pingcap/tidb-ansible) 部署的情况。
-
-### 升级 Pump
-
-1. 将新版本的二进制文件 `pump` 复制到 `{{ resources_dir }}/bin` 目录中
-2. 执行 `ansible-playbook rolling_update.yml --tags=pump` 命令来滚动升级 Pump
-
-### 升级 Drainer
-
-1. 将新版本的二进制文件 `drainer` 复制到 `{{ resources_dir }}/bin` 目录中
-2. 执行 `ansible-playbook stop_drainer.yml --tags=drainer` 命令
-3. 执行 `ansible-playbook start_drainer.yml --tags=drainer` 命令
+本文介绍通过手动部署的 TiDB Binlog 的版本升级方法，另外有一小节介绍如何从更早的不兼容版本（Kafka/Local 版本）升级到最新版本。
 
 ## 手动部署
 
@@ -79,4 +64,4 @@ TiDB Binlog 版本与 TiDB 版本的对应关系如下：
     如果返回的 `Synced` 为 true，则可以认为 Binlog 数据已经全部同步到了下游。
 
 6. 启动新版本 Drainer；
-7. 下线老版本的 Pump、Drainer 以及依赖的 Kafka 和 ZookeSeper。
+7. 下线老版本的 Pump、Drainer 以及依赖的 Kafka 和 ZooKeeper。

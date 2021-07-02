@@ -10,9 +10,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-rollback/','/docs-cn/dev/re
 
 ## 语法图
 
-**RollbackStmt:**
+```ebnf+diagram
+RollbackStmt ::=
+    'ROLLBACK' CompletionTypeWithinTransaction?
 
-![RollbackStmt](/media/sqlgram/RollbackStmt.png)
+CompletionTypeWithinTransaction ::=
+    'AND' ( 'CHAIN' ( 'NO' 'RELEASE' )? | 'NO' 'CHAIN' ( 'NO'? 'RELEASE' )? )
+|   'NO'? 'RELEASE'
+```
 
 ## 示例
 
@@ -68,7 +73,9 @@ Empty set (0.01 sec)
 
 ## MySQL 兼容性
 
-`ROLLBACK` 语句与 MySQL 不完全兼容，TiDB 对任何 `CompletionTypeWithinTransaction` 仅有语法上的支持，即不支持事务回滚后，关闭连接或继续开启一个新事务的回滚选项。如有其他兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+* TiDB 不支持 savepoint 或 `ROLLBACK TO SAVEPOINT` 语法。
+* TiDB 解析但忽略 `ROLLBACK AND [NO] RELEASE` 语法。在 MySQL 中，使用该语法可在回滚事务后立即断开客户端会话。在 TiDB 中，建议使用客户端程序的 `mysql_close()` 来实现该功能。
+* TiDB 解析但忽略 `ROLLBACK AND [NO] CHAIN` 语法。在 MySQL 中，使用该语法可在回滚当前事务时立即以相同的隔离级别开启新事务。在 TiDB 中，推荐直接开启新事务。
 
 ## 另请参阅
 

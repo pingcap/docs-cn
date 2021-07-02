@@ -25,6 +25,16 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + 默认：""
 + 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件中的配置。详细的配置项请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md)。
 
+## `--config-check`
+
+- 检查配置文件的有效性并退出
+- 默认：false
+
+## `--config-strict`
+
+- 增强配置文件的有效性
+- 默认：false
+
 ## `--cors`
 
 + 用于设置 TiDB HTTP 状态服务的 Access-Control-Allow-Origin
@@ -38,7 +48,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 ## `--enable-binlog`
 
-+ 是否产生 TiDB binlog
++ 是否产生 TiDB Binlog
 + 默认：false
 
 ## `-L`
@@ -46,6 +56,11 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 + Log 级别
 + 默认："info"
 + 可选项为：debug、info、warn、error、fatal
+
+## `--lease`
+
+- Schema lease 的持续时间。除非你知道更改该值带来的后果，否则你的更改操作是**危险的**。
+- 默认：45s
 
 ## `--log-file`
 
@@ -79,11 +94,11 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 ## `--path`
 
-+ 对于本地存储引擎 "mocktikv" 来说，path 指定的是实际的数据存放路径
-+ 当 `--store = tikv` 时，必须指定 path；当 `--store = mocktikv` 时，如果不指定 path，会使用默认值。
++ 对于本地存储引擎 "unistore" 来说，path 指定的是实际的数据存放路径
++ 当 `--store = tikv` 时，必须指定 path；当 `--store = unistore` 时，如果不指定 path，会使用默认值。
 + 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。假如在 192.168.100.113:2379、192.168.100.114:2379 和 192.168.100.115:2379 上面部署了 PD，那么 path 为 "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379"
 + 默认："/tmp/tidb"
-+ 可以通过 `tidb-server --store=mocktikv --path=""` 来启动一个纯内存引擎的 TiDB
++ 可以通过 `tidb-server --store=unistore --path=""` 来启动一个纯内存引擎的 TiDB
 
 ## `--tmp-storage-path`
 
@@ -145,8 +160,8 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 ## `--store`
 
 + 用来指定 TiDB 底层使用的存储引擎
-+ 默认："mocktikv"
-+ 可以选择 "mocktikv"（本地存储引擎）或者 "tikv"（分布式存储引擎）
++ 默认："unistore"
++ 可以选择 "unistore"（本地存储引擎）或者 "tikv"（分布式存储引擎）
 
 ## `--token-limit`
 

@@ -7,10 +7,15 @@ aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-contro
 
 TiKV Control（以下简称 tikv-ctl）是 TiKV 的命令行工具，用于管理 TiKV 集群。它的安装目录如下：
 
-* 如果是使用 TiDB Ansible 部署的集群，在 `ansible` 目录下的 `resources/bin` 子目录下。
-* 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
++ 如果是使用 TiUP 部署的集群，在 `~/.tiup/components/ctl/{VERSION}/` 目录下。
 
-[TiUP](https://github.com/pingcap/tiup) 是晚于 `tidb-ansible` 推出的部署工具，使用方式更加简化，`tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
+## 通过 TiUP 使用 TiKV Control
+
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
+`tikv-ctl` 也集成在了 `tiup` 命令中。执行以下命令，即可调用 `tikv-ctl` 工具：
 
 {{< copyable "shell-regular" >}}
 
@@ -19,16 +24,69 @@ tiup ctl tikv
 ```
 
 ```
-Starting component `ctl`: ~/.tiup/components/ctl/v4.0.0-rc.2/ctl tikv
+Starting component `ctl`: /home/tidb/.tiup/components/ctl/v4.0.8/ctl tikv
 TiKV Control (tikv-ctl)
-Release Version:   4.0.0-rc.2
+Release Version:   4.0.8
 Edition:           Community
-Git Commit Hash:   2fdb2804bf8ffaab4b18c4996970e19906296497
-Git Commit Branch: heads/refs/tags/v4.0.0-rc.2
-UTC Build Time:    2020-05-15 11:58:49
+Git Commit Hash:   83091173e960e5a0f5f417e921a0801d2f6635ae
+Git Commit Branch: heads/refs/tags/v4.0.8
+UTC Build Time:    2020-10-30 08:40:33
 Rust Version:      rustc 1.42.0-nightly (0de96d37f 2019-12-19)
-Enable Features:   jemalloc portable sse protobuf-codec
+Enable Features:   jemalloc mem-profiling portable sse protobuf-codec
 Profile:           dist_release
+
+A tool for interacting with TiKV deployments.
+
+USAGE:
+    TiKV Control (tikv-ctl) [FLAGS] [OPTIONS] [SUBCOMMAND]
+
+FLAGS:
+    -h, --help                    Prints help information
+        --skip-paranoid-checks    Skip paranoid checks when open rocksdb
+    -V, --version                 Prints version information
+
+OPTIONS:
+        --ca-path <ca_path>              Set the CA certificate path
+        --cert-path <cert_path>          Set the certificate path
+        --config <config>                Set the config for rocksdb
+        --db <db>                        Set the rocksdb path
+        --decode <decode>                Decode a key in escaped format
+        --encode <encode>                Encode a key in escaped format
+        --to-hex <escaped-to-hex>        Convert an escaped key to hex key
+        --to-escaped <hex-to-escaped>    Convert a hex key to escaped key
+        --host <host>                    Set the remote host
+        --key-path <key_path>            Set the private key path
+        --pd <pd>                        Set the address of pd
+        --raftdb <raftdb>                Set the raft rocksdb path
+
+SUBCOMMANDS:
+    bad-regions           Get all regions with corrupt raft
+    cluster               Print the cluster id
+    compact               Compact a column family in a specified range
+    compact-cluster       Compact the whole cluster in a specified range in one or more column families
+    consistency-check     Force a consistency-check for a specified region
+    decrypt-file          Decrypt an encrypted file
+    diff                  Calculate difference of region keys from different dbs
+    dump-snap-meta        Dump snapshot meta file
+    encryption-meta       Dump encryption metadata
+    fail                  Inject failures to TiKV and recovery
+    help                  Prints this message or the help of the given subcommand(s)
+    metrics               Print the metrics
+    modify-tikv-config    Modify tikv config, eg. tikv-ctl --host ip:port modify-tikv-config -n
+                          rocksdb.defaultcf.disable-auto-compactions -v true
+    mvcc                  Print the mvcc value
+    print                 Print the raw value
+    raft                  Print a raft log entry
+    raw-scan              Print all raw keys in the range
+    recover-mvcc          Recover mvcc data on one node by deleting corrupted keys
+    recreate-region       Recreate a region with given metadata, but alloc new id for it
+    region-properties     Show region properties
+    scan                  Print the range db range
+    size                  Print region size
+    split-region          Split the region
+    store                 Print the store id
+    tombstone             Set some regions on the node to tombstone by manual
+    unsafe-recover        Unsafely recover the cluster when the majority replicas are failed
 ```
 
 你可以在 `tiup ctl tikv` 后面再接上相应的参数与子命令。
@@ -204,6 +262,10 @@ middle_key_by_approximate_size:
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
+- `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
+    - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
+    - `skip` 表示 compact 不包括最下层文件。
+    - `force` 表示 compact 总是包括最下层文件。
 
 {{< copyable "shell-regular" >}}
 
@@ -277,7 +339,7 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --host 127.0.0.1:21061 consistency-check -r 2
+tikv-ctl --host 127.0.0.1:20161 consistency-check -r 2
 ```
 
 ```
@@ -378,6 +440,28 @@ tikv-ctl --host ip:port modify-tikv-config -n raftstore.sync-log -v false
 success
 ```
 
+如果 compaction 的流量控制导致待 compact 数据量 (compaction pending bytes) 堆积，可以禁用 `rate-limiter-auto-tuned` 配置项或调高 compaction 相关的流量阈值。示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-limiter-auto-tuned -v false
+```
+
+```
+success
+```
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB"
+```
+
+```
+success
+```
+
 ### 强制 Region 从多副本失败状态恢复服务
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
@@ -406,7 +490,7 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 >
 > - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 > - 一般来说，您需要为指定 Region 的 peers 所在的每个 store 运行此命令。
-> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。
+> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
 
 ### 恢复损坏的 MVCC 数据
 

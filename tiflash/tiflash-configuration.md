@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 ## PD 调度参数
 
-可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 tiup 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
+可通过 [pd-ctl](/pd-control.md) 调整参数。如果你使用 TiUP 部署，可以用 `tiup ctl pd` 代替 `pd-ctl -u <pd_ip:pd_port>` 命令。
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
@@ -25,74 +25,167 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
     - 使用 `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` 命令单独设置某个 store 的 Region 调度速度。（`store_id` 可通过 `pd-ctl -u <pd_ip:pd_port> store` 命令获得）如果没有单独设置，则继承 `store-balance-rate` 的设置。你也可以使用 `pd-ctl -u <pd_ip:pd_port> store limit` 命令查看当前设置值。
 
+- [`replication.location-labels`](/pd-configuration-file.md#location-labels)：用来表示 TiKV 实例的拓扑关系，其中 key 的顺序代表了不同标签的层次关系。在 TiFlash 开启的情况下需要使用 [`pd-ctl config placement-rules`](/pd-control.md#config-show--set-option-value--placement-rules) 来设置默认值，详细可参考 [geo-distributed-deployment-topology](/geo-distributed-deployment-topology.md)。
+
 ## TiFlash 配置参数
 
 ### 配置文件 tiflash.toml
 
-```
-tmp_path = tiflash 临时文件存放路径
-path = tiflash 数据存储路径     # 如果有多个目录，以英文逗号分隔
-path_realtime_mode = false # 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，较旧的数据存放于其他目录。
-listen_host = tiflash 服务监听 host # 一般配置成 0.0.0.0
-tcp_port = tiflash tcp 服务端口
-http_port = tiflash http 服务端口
-mark_cache_size = 5368709120 # 数据块元信息的内存 cache 大小限制，通常不需要修改
-minmax_index_cache_size = 5368709120 # 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
-```
+```toml
+## TiFlash TCP/HTTP 等辅助服务的监听 host。建议配置成 0.0.0.0，即监听本机所有 IP 地址。
+listen_host = "0.0.0.0"
+## TiFlash TCP 服务的端口
+tcp_port = 9000
+## TiFlash HTTP 服务的端口
+http_port = 8123
+## 数据块元信息的内存 cache 大小限制，通常不需要修改
+mark_cache_size = 5368709120
+## 数据块 min-max 索引的内存 cache 大小限制，通常不需要修改
+minmax_index_cache_size = 5368709120
+## DeltaIndex 内存 cache 大小限制，默认为 0，代表没有限制
+delta_index_cache_size = 0
 
-```
+## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
+## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+# path = "/tidb-data/tiflash-9000"
+## 或
+# path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
+## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，在其他目录存放较旧的数据。
+# path_realtime_mode = false
+
+## TiFlash 临时文件的存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
+# tmp_path = "/tidb-data/tiflash-9000/tmp"
+
+## 存储路径相关配置，从 v4.0.9 开始生效
+[storage]
+    ## [实验特性] 自 v5.0 引入，限制后台任务每秒写入的字节数。目前为实验特性，不推荐在生产环境中使用。
+    ## 以 byte 为单位。目前不支持如 "10GB" 的设置。
+    ## 默认为 0，代表没有限制。
+    ## 该参数主要针对 TiFlash 部署在 AWS EBS (gp2/gp3) 盘时的场景，用于控制后台任务对机器磁盘带宽的占用。
+    ## 提升 TiFlash 查询性能的稳定性。在该场景下推荐配置为磁盘带宽的 50%。
+    ## 其他场景下不建议修改该配置。
+    bg_task_io_rate_limit = 0
+
+    [storage.main]
+    ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
+    dir = [ "/tidb-data/tiflash-9000" ]
+    ## 或
+    # dir = [ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]
+
+    ## storage.main.dir 存储目录列表中每个目录的最大可用容量。
+    ## * 在未定义配置项，或者列表中全填 0 时，会使用目录所在的硬盘容量
+    ## * 以 byte 为单位。目前不支持如 "10GB" 的设置
+    ## * capacity 列表的长度应当与 dir 列表长度保持一致
+    ## 例如：
+    # capacity = [ 10737418240, 10737418240 ]
+
+    [storage.latest]
+    ## 用于存储最新的数据，大约占总数据量的 10% 以内，需要较高的 IOPS。
+    ## 默认情况该项可留空。在未配置或者为空列表的情况下，会使用 storage.main.dir 的值。
+    # dir = [ ]
+    ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
+    # capacity = [ 10737418240, 10737418240 ]
+
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
-    service_addr =  tiflash raft 服务 和 coprocessor 服务监听地址
-```
+    service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
 
-多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，需要 3 个参数控制。
-
-```
+# 多个 TiFlash 节点会选一个 master 来负责往 PD 增删 placement rule，通过 flash.flash_cluster 中的参数控制。
 [flash.flash_cluster]
     refresh_interval = master 定时刷新有效期
-    update_rule_interval = master 定时向 tidb 获取 tiflash 副本状态并与 pd 交互
+    update_rule_interval = master 定时向 tidb 获取 TiFlash 副本状态并与 pd 交互
     master_ttl = master 选出后的有效期
     cluster_manager_path = pd buddy 所在目录的绝对路径
     log = pd buddy log 路径
 
 [flash.proxy]
     addr = proxy 监听地址
-    advertise-addr = proxy 对外访问地址
+    advertise-addr = 外部访问 addr 的地址，不填则默认是 addr
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
+    log-level = proxy log 级别，默认为 "info"
+    status-addr = 拉取 proxy metrics｜status 信息的监听地址
+    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
 [logger]
     level = log 级别（支持 trace、debug、information、warning、error）
-    log = tiflash log 路径
-    errorlog = tiflash error log 路径
+    log = TiFlash log 路径
+    errorlog = TiFlash error log 路径
     size = 单个日志文件的大小
     count = 最多保留日志文件个数
+
 [raft]
-    kvstore_path = kvstore 数据存储路径 # 默认为 "{path 的第一个目录}/kvstore"
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
+
 [status]
     metrics_port = Prometheus 拉取 metrics 信息的端口
+
 [profiles]
+
 [profiles.default]
-    dt_enable_logical_split = true # 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定的空间浪费。默认为 true
-    max_memory_usage = 10000000000 # 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 10000000000。如果设置为 0 表示不限制
-    max_memory_usage_for_all_queries = 0 # 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
+    dt_enable_logical_split = true
+    ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    max_memory_usage = 0
+    ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
+    max_memory_usage_for_all_queries = 0
+    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    cop_pool_size = 0
+    ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
+    batch_cop_pool_size = 0
+
+## 安全相关配置，从 v4.0.5 开始生效
+[security]
+    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
+    # redact_info_log = false
+
+    ## 包含可信 SSL CA 列表的文件路径。如果你设置了该值，`cert_path` 和 `key_path` 中的路径也需要填写
+    # ca_path = "/path/to/ca.pem"
+    ## 包含 PEM 格式的 X509 certificate 文件路径
+    # cert_path = "/path/to/tiflash-server.pem"
+    ## 包含 PEM 格式的 X509 key 文件路径
+    # key_path = "/path/to/tiflash-server-key.pem"
 ```
 
 ### 配置文件 tiflash-learner.toml
 
-```
+```toml
 [server]
-    engine-addr = tiflash coprocessor 服务监听地址
-    status-addr = Prometheus 拉取 proxy metrics 信息的 ip + 端口
+    engine-addr = 外部访问 TiFlash coprocessor 服务的地址
+[raftstore]
+    ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
+    snap-handle-pool-size = 2
+    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
+    store-batch-retry-recv-timeout = "4ms"
 ```
+
+除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 多盘部署
 
-TiFlash 支持多盘部署，主要通过[配置文件 `tiflash.toml`](#配置文件-tiflashtoml) 中的 `path` 和 `path_realtime_mode` 这两个参数控制。
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
 
-多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/ssd_a/data/tiflash,/hdd_b/data/tiflash,/hdd_c/data/tiflash`。如果你的环境有多块磁盘，推荐一个数据存储目录对应一块磁盘，并且把性能最好的磁盘放在最前面，以发挥所有磁盘的全部性能。
+#### TiDB 集群版本低于 v4.0.9
 
-`path_realtime_mode` 参数默认值为 false，表示数据会在所有的存储目录之间进行均衡。如果设为 true，且 `path` 配置了多个目录，表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。
+TiDB v4.0.9 之前的版本中，TiFlash 只支持将存储引擎中的主要数据分布在多盘上。通过 `path`（TiUP 中为 `data_dir`）和 `path_realtime_mode` 这两个参数配置多盘部署。
+
+多个数据存储目录在 `path` 中以英文逗号分隔，比如 `/nvme_ssd_a/data/tiflash,/sata_ssd_b/data/tiflash,/sata_ssd_c/data/tiflash`。如果你的节点上有多块硬盘，推荐把性能最好的硬盘目录放在最前面，以更好地利用节点性能。
+
+如果节点上有多块相同规格的硬盘，可以把 `path_realtime_mode` 参数留空（或者把该值明确地设为 `false`）。这表示数据会在所有的存储目录之间进行均衡。但由于最新的数据仍然只会被写入到第一个目录，因此该目录所在的硬盘会较其他硬盘繁忙。
+
+如果节点上有多块规格不一致的硬盘，推荐把 `path_relatime_mode` 参数设置为 `true`，并且把性能最好的硬盘目录放在 `path` 参数内的最前面。这表示第一个目录只会存放最新数据，较旧的数据会在其他目录之间进行均衡。注意此情况下，第一个目录规划的容量大小需要占总容量的约 10%。
+
+#### TiDB 集群版本为 v4.0.9 及以上
+
+TiDB v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据和新数据都分布在多盘上。多盘部署时，推荐使用 `[storage]` 中的参数，以更好地利用节点的 I/O 性能。但 TiFlash 仍然支持 [TiDB 集群版本低于 v4.0.9](#tidb-集群版本低于-v409) 中的参数。
+
+如果节点上有多块相同规格的硬盘，推荐把硬盘目录填到 `storage.main.dir` 列表中，`storage.latest.dir` 列表留空。TiFlash 会在所有存储目录之间分摊 I/O 压力以及进行数据均衡。
+
+如果节点上有多块规格不同的硬盘，推荐把 I/O 性能较好的硬盘目录配置在 `storage.latest.dir` 中，把 I/O 性能较一般的硬盘目录配置在 `storage.main.dir` 中。例如节点上有一块 NVMe-SSD 硬盘加上两块 SATA-SSD 硬盘，你可以把 `storage.latest.dir` 设为 `["/nvme_ssd_a/data/tiflash"]` 以及把 `storage.main.dir` 设为 `["/sata_ssd_b/data/tiflash", "/sata_ssd_c/data/tiflash"]`。TiFlash 会根据两个目录列表分别进行 I/O 压力分摊及数据均衡。需要注意此情况下，`storage.latest.dir` 中规划的容量大小需要占总规划容量的约 10%。
+
+> **警告：**
+>
+> * `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。
+> * 在 TiFlash 节点改为使用 `[storage]` 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。

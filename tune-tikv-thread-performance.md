@@ -10,14 +10,14 @@ aliases: ['/docs-cn/dev/tune-tikv-thread-performance/']
 
 ## 线程池介绍
 
-在 TiKV 4.0 中，线程池主要由 gRPC、Scheduler、UnifyReadPool、Raftstore、Apply、RocksDB 以及其它一些占用 CPU 不多的定时任务与检测组件组成，这里主要介绍几个占用 CPU 比较多且会对用户读写请求的性能产生影响的线程池。
+在 TiKV 中，线程池主要由 gRPC、Scheduler、UnifyReadPool、Raftstore、Apply、RocksDB 以及其它一些占用 CPU 不多的定时任务与检测组件组成，这里主要介绍几个占用 CPU 比较多且会对用户读写请求的性能产生影响的线程池。
 
 * gRPC 线程池：负责处理所有网络请求，它会把不同任务类型的请求转发给不同的线程池。
 * Scheduler 线程池：负责检测写事务冲突，把事务的两阶段提交、悲观锁上锁、事务回滚等请求转化为 key-value 对数组，然后交给 Raftstore 线程进行 Raft 日志复制。
 * Raftstore 线程池：负责处理所有的 Raft 消息以及添加新日志的提议 (Propose)、将日志写入到磁盘，当日志在多数副本中达成一致后，它就会把该日志发送给 Apply 线程。
 * Apply 线程池：当收到从 Raftstore 线程池发来的已提交日志后，负责将其解析为 key-value 请求，然后写入 RocksDB 并且调用回调函数通知 gRPC 线程池中的写请求完成，返回结果给客户端。
 * RocksDB 线程池：RocksDB 进行 Compact 和 Flush 任务的线程池，关于 RocksDB 的架构与 Compact 操作请参考 [RocksDB: A Persistent Key-Value Store for Flash and RAM Storage](https://github.com/facebook/rocksdb)。
-* UnifyReadPool 线程池：TiKV 4.0 推出的新特性，由之前的 Coprocessor 线程池与 Storage Read Pool 合并而来，所有的读取请求包括 kv get、kv batch get、raw kv get、coprocessor 等都会在这个线程池中执行。
+* UnifyReadPool 线程池：由 Coprocessor 线程池与 Storage Read Pool 合并而来，所有的读取请求包括 kv get、kv batch get、raw kv get、coprocessor 等都会在这个线程池中执行。
 
 ## TiKV 的只读请求
 
@@ -26,7 +26,7 @@ TiKV 的读取请求分为两类：
 - 一类是指定查询某一行或者某几行的简单查询，这类查询会运行在 Storage Read Pool 中。
 - 另一类是复杂的聚合计算、范围查询，这类请求会运行在 Coprocessor Read Pool 中。
 
-从 4.0 版本开始，支持两类读取请求使用同一个线程池，以减少线程数量，降低用户使用成本，默认不开启（默认点查询和 Coprocessor 请求使用不同的线程池）。用户可以通过将 `readpool.storage.use-unified-pool` 设置为 true 来打开统一线程池。
+从 TiKV 5.0 版本起，默认所有的读取请求都通过统一的线程池进行查询。如果是从 TiKV 4.0 升级上来的 TiKV 集群且升级前未打开 `readpool.storage` 的 `use-unified-pool` 配置，则升级后所有的读取请求仍然继续使用独立的线程池进行查询，可以将 `readpool.storage.use-unified-pool` 设置为 `true` 使所有的读取请求通过统一的线程池进行查询。
 
 ## TiKV 线程池调优
 

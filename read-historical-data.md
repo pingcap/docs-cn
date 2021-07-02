@@ -1,29 +1,38 @@
 ---
-title: 读取历史数据
+title: 通过系统变量 tidb_snapshot 读取历史数据
 aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
 ---
 
-# 读取历史数据
+# 通过系统变量 tidb_snapshot 读取历史数据
 
-本文档介绍 TiDB 如何读取历史版本数据，包括具体的操作流程以及历史数据的保存策略。
+本文档介绍如何通过系统变量 `tidb_snapshot` 读取历史数据，包括具体的操作流程以及历史数据的保存策略。
+
+> **注意：**
+>
+> 你还可以使用 [Stale Read](/stale-read.md) 功能读取历史数据。更推荐使用 Stale Read 读取历史数据。
 
 ## 功能说明
 
 TiDB 实现了通过标准 SQL 接口读取历史数据功能，无需特殊的 client 或者 driver。当数据被更新、删除后，依然可以通过 SQL 接口将更新/删除前的数据读取出来。
 
-另外即使在更新数据之后，表结构发生了变化，TiDB 依旧能用旧的表结构将数据读取出来。
+> **注意：**
+>
+> 读取历史数据时，即使当前数据的表结构相较于历史数据的表结构已经发生改变，历史数据也会使用当时的表结构来返回数据。
 
 ## 操作流程
 
-为支持读取历史版本数据， 引入了一个新的 system variable: tidb_snapshot ，这个变量是 Session 范围有效，可以通过标准的 Set 语句修改其值。其值为文本，能够存储 TSO 和日期时间。TSO 即是全局授时的时间戳，是从 PD 端获取的; 日期时间的格式可以为：
-“2016-10-08 16:45:26.999”，一般来说可以只写到秒，比如”2016-10-08 16:45:26”。
-当这个变量被设置时，TiDB 会用这个时间戳建立 Snapshot（没有开销，只是创建数据结构），随后所有的 Select 操作都会在这个 Snapshot 上读取数据。
+为支持读取历史版本数据， TiDB 引入了一个新的系统变量 [`tidb_snapshot`](/system-variables.md#tidb_snapshot)：
+
+- 这个变量的作用域为 `SESSION`。
+- 你可以通过标准的 `SET` 语句修改这个变量的值。
+- 这个变量的数据类型为文本类型，能够存储 TSO 和日期时间。TSO 是从 PD 端获取的全局授时的时间戳，日期时间的格式为：“2016-10-08 16:45:26.999”，一般来说可以只写到秒，比如”2016-10-08 16:45:26”。
+- 当这个变量被设置时，TiDB 会按照设置的时间戳建立 Snapshot（没有开销，只是创建数据结构），随后所有的 `SELECT` 操作都会从这个 Snapshot 上读取数据。
 
 > **注意：**
 >
 > TiDB 的事务是通过 PD 进行全局授时，所以存储的数据版本也是以 PD 所授时间戳作为版本号。在生成 Snapshot 时，是以 tidb_snapshot 变量的值作为版本号，如果 TiDB Server 所在机器和 PD Server 所在机器的本地时间相差较大，需要以 PD 的时间为准。
 
-当读取历史版本操作结束后，可以结束当前 Session 或者是通过 Set 语句将 tidb_snapshot 变量的值设为 ""，即可读取最新版本的数据。
+当读取历史版本操作结束后，可以结束当前 Session 或者是通过 `SET` 语句将 tidb_snapshot 变量的值设为 ""，即可读取最新版本的数据。
 
 ## 历史数据保留策略
 
@@ -31,7 +40,10 @@ TiDB 使用 MVCC 管理版本，当更新/删除数据时，不会做真正的�
 
 TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行清理，关于 GC 的详细介绍参见 [TiDB 垃圾回收 (GC)](/garbage-collection-overview.md)。
 
-这里需要重点关注的是 `tikv_gc_life_time` 和 `tikv_gc_safe_point` 这条。`tikv_gc_life_time` 用于配置历史版本保留时间，可以手动修改；`tikv_gc_safe_point` 记录了当前的 safePoint，用户可以安全地使用大于 safePoint 的时间戳创建 snapshot 读取历史版本。safePoint 在每次 GC 开始运行时自动更新。
+这里需要重点关注的是：
+
+- 使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 可以配置历史版本的保留时间（默认值是 `10m0s`）。
+- 使用 SQL 语句 `SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point'` 可以查询当前的 safePoint，即当前可以读的最旧的快照。在每次 GC 开始运行时，safePoint 将自动更新。
 
 ## 示例
 
@@ -192,3 +204,21 @@ TiDB 使用周期性运行的 GC（Garbage Collection，垃圾回收）来进行
     > **注意：**
     >
     > 在 `tidb_snapshot` 前须使用 `@@` 而非 `@`，因为 `@@` 表示系统变量，`@` 表示用户变量。
+
+## 历史数据恢复策略
+
+在恢复历史版本的数据之前，需要确保在对数据进行操作时，垃圾回收机制 (GC) 不会清除历史数据。如下所示，可以通过设置 `tidb_gc_life_time` 变量来调整 GC 清理的周期。不要忘记在恢复历史数据后将该变量设置回之前的值。
+
+```sql
+SET GLOBAL tidb_gc_life_time="60m";
+```
+
+> **注意：**
+>
+> 将 GC life time 从默认的 10 分钟增加到半小时及以上，会导致同一行保留有多个版本并占用更多的磁盘空间，也可能会影响某些操作的性能，例如扫描。进行扫描操作时，TiDB 读取数据需要跳过这些有多个版本的同一行，从而影响到扫描性能。
+
+如果想要恢复历史版本的数据，可以使用以下任意一种方法进行设置：
+
+- 对于简单场景，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并使用 `LOAD DATA` 语句来导入数据。
+
+- 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时有较好的性能。

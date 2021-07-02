@@ -90,7 +90,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | **变量** | **含义** |
 | --- | --- |
 | cluster_name | 集群名称，可调整 |
-| tidb_version | TiDB 版本，TiDB Ansible 各分支默认已配置 |
+| tidb_version | TiDB 版本 |
 | deployment_method | 部署方式，默认为 binary，可选 docker |
 | process_supervision | 进程监管方式，默认为 systemd，可选 supervise |
 | timezone | 修改部署目标机器时区，默认为 Asia/Shanghai, 可调整，与set_timezone 变量结合使用 |
@@ -105,22 +105,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 | enable_slow_query_log | TiDB 慢查询日志记录到单独文件({{ deploy_dir }}/log/tidb_slow_query.log)，默认为 False，记录到 tidb 日志 |
 | deploy_without_tidb | KV 模式，不部署 TiDB 服务，仅部署 PD、TiKV 及监控服务，请将 inventory.ini 文件中 tidb_servers 主机组 IP 设置为空。 |
 
-### TiDB 离线 Ansible 部署方案（4.0 版本后不推荐使用）
-
-首先这不是我们建议的方式，如果中控机没有外网，也可以通过离线 Ansible 部署方式，详情可参考[离线 TiDB Ansible 部署方案](/offline-deployment-using-ansible.md)。
-
-### Docker Compose 快速构建集群（单机部署）
-
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](/deploy-test-cluster-using-docker-compose.md)。
-
 ### 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
-1）TiDB 中，对慢查询的定义在 tidb-ansible 的 `conf/tidb.yml` 配置文件中，`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
-
-慢查询日志默认记录到 tidb.log 中，如果希望生成单独的慢查询日志文件，修改 inventory.ini 配置文件的参数 `enable_slow_query_log` 为 True。
-
-如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log`
-文件中记录慢查询日志。
+1）TiDB 中，对慢查询的定义在 TiDB 的配置文件中。`slow-threshold: 300`，这个参数是配置慢查询记录阈值的，单位是 ms。
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
@@ -154,30 +141,9 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
 
-### 使用 TiDB Ansible 部署 TiDB 集群的时候，遇到 `UNREACHABLE! "msg": "Failed to connect to the host via ssh: "` 报错是什么原因？
-
-有两种可能性：
-
-- ssh 互信的准备工作未做好，建议严格参照我们的[官方文档步骤](/online-deployment-using-ansible.md)配置互信，并使用命令 `ansible -i inventory.ini all -m shell -a 'whoami' -b` 来验证互信配置是否成功。
-
-- 如果涉及到单服务器分配了多角色的场景，例如多组件混合部署或单台服务器部署了多个 TiKV 实例，可能是由于 ssh 复用的机制引起这个报错，可以使用 `ansible … -f 1` 的选项来规避这个报错。
-
 ## 集群管理 FAQ
 
 ### 集群日常管理
-
-#### Ansible 常见运维操作有那些？
-
-| **任务** | **Playbook** |
-| --- | --- |
-| 启动集群 | ansible-playbook start.yml |
-| 停止集群 | ansible-playbook stop.yml |
-| 销毁集群 | ansible-playbook unsafe\_cleanup.yml (若部署目录为挂载点，会报错，可忽略） |
-| 清除数据(测试用) | ansible-playbook cleanup\_data.yml |
-| 滚动升级 | ansible-playbook rolling\_update.yml |
-| 滚动升级 TiKV | ansible-playbook rolling\_update.yml --tags=tikv |
-| 滚动升级除 PD 外模块 | ansible-playbook rolling\_update.yml --skip-tags=pd |
-| 滚动升级监控组件 | ansible-playbook rolling\_update\_monitor.yml |
 
 #### TiDB 如何登录？
 
@@ -203,7 +169,7 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 #### 如何规范停止 TiDB？
 
-如果是用 TiDB Ansible 部署的，可以使用 `ansible-playbook stop.yml` 命令停止 TiDB 集群。如果不是 TiDB Ansible 部署的，可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 #### TiDB 里面可以执行 kill 命令吗？
 
@@ -224,7 +190,7 @@ TiDB 版本目前逐步标准化，每次 Release 都包含详细的 Change log�
 - `1` 表示该版本 commit 1 次
 - `ga80e796` 代表版本的 `git-hash`
 
-#### 分不清 TiDB master 版本之间的区别，经常用错 TiDB Ansible 版本?
+#### 分不清 TiDB master 版本之间的区别，应该怎么办？
 
 TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优化和修改 BUG，因此 TiDB 的版本更新周期比较快，会不定期有新版本发布，请关注我们的[新版本发布官方网站](https://pingcap.com/weekly/)。此外 TiDB 安装推荐[使用 TiUP 进行安装](/production-deployment-using-tiup.md)。此外，在 TiDB 1.0 GA 版本后，对 TiDB 的版本号进行了统一管理，TiDB 的版本可以通过以下两种方式进行查看：
 
@@ -259,6 +225,13 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 这是因为两者计算的角度不一样。`information_schema.tables.data_length` 是通过统计信息（平均每行的大小）得到的估算值。TiKV 监控面板上的 store size 是单个 TiKV 实例的数据文件（RocksDB 的 SST 文件）的大小总和。由于多版本和 TiKV 会压缩数据，所以两者显示的大小不一样。
 
+#### 为什么事务没有使用异步提交或一阶段提交？
+
+在以下情况中，即使通过系统变量开启了[异步提交](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)和[一阶段提交](/system-variables.md#tidb_enable_1pc-从-v50-版本开始引入)，TiDB 也不会使用这些特性：
+
+- 如果开启了 TiDB Binlog，受 TiDB Binlog 的实现原理限制，TiDB 不会使用异步提交或一阶段提交特性。
+- TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
+
 ### PD 管理
 
 #### 访问 PD 报错：TiKV cluster is not bootstrapped
@@ -292,11 +265,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### 集群下线节点后，怎么删除老集群节点监控信息？
 
-下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。从 Ansible inventory.ini 中删除对应节点的信息。
-
-#### 使用 PD Control 连接 PD Server 时，为什么只能通过本机 IP 连接，不能通过 127.0.0.1 连接？
-
-因为使用 TiDB Ansible 部署的集群，PD 对外服务端口不会绑定到 127.0.0.1，所以 PD Control 不会识别 127.0.0.1。
+下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。
 
 ### TiDB server 管理
 
@@ -395,7 +364,7 @@ TiKV 使用了 RocksDB 的 Column Family (CF) 特性，KV 数据最终存储在�
 
 TiDB 使用 Raft 在多个副本之间做数据同步（默认为每个 Region 3 个副本）。当一份备份出现问题时，其他的副本能保证数据的安全。根据 Raft 协议，当某个节点挂掉导致该节点里的 Leader 失效时，在最大 2 * lease time（leasetime 是 10 秒）时间后，通过 Raft 协议会很快将一个另外一个节点里的 Follower 选为新的 Region Leader 来提供服务。
 
-#### TiKV 在分别在那些场景下占用大量 IO、内存、CPU（超过参数配置的多倍）？
+#### TiKV 在分别在哪些场景下占用大量 IO、内存、CPU（超过参数配置的多倍）？
 
 在大量写入、读取的场景中会占用大量的磁盘 IO、内存、CPU。在执行很复杂的查询，比如会产生很大中间结果集的情况下，会消耗很多的内存和 CPU 资源。
 
@@ -468,7 +437,7 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 #### TiDB 集群容量 QPS 与节点数之间关系如何，和 MySQL 对比如何？
 
 - 在 10 节点内，TiDB 写入能力（Insert TPS）和节点数量基本成 40% 线性递增，MySQL 由于是单节点写入，所以不具备写入扩展能力。
-- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考[方案虽好，成本先行：数据库 Sharding+Proxy 实践解析](http://t.cn/RTD18qV)。
+- MySQL 读扩容可以通过添加从库进行扩展，但写流量无法扩展，只能通过分库分表，而分库分表有很多问题，具体参考[方案虽好，成本先行：数据库 Sharding+Proxy 实践解析](http://dbaplus.cn/news-11-1854-1.html)。
 - TiDB 不管是读流量、还是写流量都可以通过添加节点快速方便的进行扩展。
 
 #### 我们的 DBA 测试过 MySQL 性能，单台 TiDB 的性能没有 MySQL 性能那么好？
@@ -479,11 +448,9 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 #### TiDB 主要备份方式？
 
-目前，推荐的备份方式是使用 [PingCAP fork 的 Mydumper](/mydumper-overview.md)。尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份、恢复，但其性能低于 [`mydumper`](/mydumper-overview.md)/[`loader`](/loader-overview.md)，并且该工具备份、恢复大量数量时，要耗费更多时间。
+目前，数据量大时推荐使用 [BR](/br/backup-and-restore-tool.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
 
-使用 Mydumper 导出来的数据文件尽可能的小, 最好不要超过 64M, 可以设置参数 -F 64；
-
-loader 的 -t 参数可以根据 TiKV 的实例个数以及负载进行评估调整，例如 3 个 TiKV 的场景， 此值可以设为 3 * (1 ～ n)，当 TiKV 负载过高，loader 以及 TiDB 日志中出现大量 `backoffer.maxSleep 15000ms is exceeded` 可以适当调小该值，当 TiKV 负载不是太高的时候，可以适当调大该值。
+尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。
 
 ## 监控 FAQ
 

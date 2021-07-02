@@ -6,28 +6,40 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-index/','/docs-cn/dev
 
 # ALTER INDEX
 
-`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引将无法被优化器使用。
+`ALTER INDEX` 语句用于修改索引的可见性，可以将索引设置为 `Visible` 或者 `Invisible`。设置为 `Invisible` 的索引即不可见索引 (Invisible Index) 由 DML 语句维护，不会被查询优化器使用。
 
 ## 语法图
 
-**AlterTableStmt:**
+```ebnf+diagram
+AlterTableStmt ::=
+    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
 
-![AlterTableStmt](/media/sqlgram/AlterTableStmt.png)
+AlterTableSpec ::=
+    TableOptionList
+|   'SET' 'TIFLASH' 'REPLICA' LengthNum LocationLabelList
+|   'CONVERT' 'TO' CharsetKw ( CharsetName | 'DEFAULT' ) OptCollate
+|   'ADD' ( ColumnKeywordOpt IfNotExists ( ColumnDef ColumnPosition | '(' TableElementList ')' ) | Constraint | 'PARTITION' IfNotExists NoWriteToBinLogAliasOpt ( PartitionDefinitionListOpt | 'PARTITIONS' NUM ) )
+|   ( ( 'CHECK' | 'TRUNCATE' ) 'PARTITION' | ( 'OPTIMIZE' | 'REPAIR' | 'REBUILD' ) 'PARTITION' NoWriteToBinLogAliasOpt ) AllOrPartitionNameList
+|   'COALESCE' 'PARTITION' NoWriteToBinLogAliasOpt NUM
+|   'DROP' ( ColumnKeywordOpt IfExists ColumnName RestrictOrCascadeOpt | 'PRIMARY' 'KEY' |  'PARTITION' IfExists PartitionNameList | ( KeyOrIndex IfExists | 'CHECK' ) Identifier | 'FOREIGN' 'KEY' IfExists Symbol )
+|   'EXCHANGE' 'PARTITION' Identifier 'WITH' 'TABLE' TableName WithValidationOpt
+|   ( 'IMPORT' | 'DISCARD' ) ( 'PARTITION' AllOrPartitionNameList )? 'TABLESPACE'
+|   'REORGANIZE' 'PARTITION' NoWriteToBinLogAliasOpt ReorganizePartitionRuleOpt
+|   'ORDER' 'BY' AlterOrderItem ( ',' AlterOrderItem )*
+|   ( 'DISABLE' | 'ENABLE' ) 'KEYS'
+|   ( 'MODIFY' ColumnKeywordOpt IfExists | 'CHANGE' ColumnKeywordOpt IfExists ColumnName ) ColumnDef ColumnPosition
+|   'ALTER' ( ColumnKeywordOpt ColumnName ( 'SET' 'DEFAULT' ( SignedLiteral | '(' Expression ')' ) | 'DROP' 'DEFAULT' ) | 'CHECK' Identifier EnforcedOrNot | 'INDEX' Identifier IndexInvisible )
+|   'RENAME' ( ( 'COLUMN' | KeyOrIndex ) Identifier 'TO' Identifier | ( 'TO' | '='? | 'AS' ) TableName )
+|   LockClause
+|   AlgorithmClause
+|   'FORCE'
+|   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
+|   'SECONDARY_LOAD'
+|   'SECONDARY_UNLOAD'
 
-**AlterTableSpec:**
-
-![AlterTableSpec](/media/sqlgram/AlterTableSpec.png)
-
-**IndexInvisible:**
-
-![IndexInvisible](/media/sqlgram/IndexInvisible.png)
-
-## 语法
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER TABLE [table_name] ALTER INDEX [index_name] {VISIBLE | INVISIBLE}
+IndexInvisible ::=
+    'VISIBLE'
+|   'INVISIBLE'
 ```
 
 ## 示例
@@ -64,46 +76,12 @@ SHOW CREATE TABLE t1;
 1 row in set (0.00 sec)
 ```
 
-## 不可见索引
-
-不可见索引 (Invisible Indexes) 是 MySQL 8.0 引入的新功能，将一个索引设置为不可见，使优化器不会再使用这条索引。这个功能可以方便地验证使用或者不使用一条索引的查询计划，避免了 `Drop index` 或 `Add index` 这种资源消耗较多的操作。
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));
-CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
-```
-
-可以通过 `Create Table` 语句查看，不可见的索引会用 `/*!80000 INVISIBLE */` 标识出：
-
-{{< copyable "sql" >}}
-
-```sql
-SHOW CREATE TABLE t1;
-```
-
-```sql
-+-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Table | Create Table
-                                                              |
-+-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| t1    | CREATE TABLE `t1` (
-  `c1` int(11) DEFAULT NULL,
-  `c2` int(11) DEFAULT NULL,
-  UNIQUE KEY `c2` (`c2`),
-  UNIQUE KEY `c1` (`c1`) /*!80000 INVISIBLE */
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin |
-+-------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-1 row in set (0.00 sec)
-```
-
 优化器将无法使用 `c1` 这个**不可见的索引**：
 
 {{< copyable "sql" >}}
 
 ```sql
-EXPLAIN SELECT c1 FROM t1 ORDER BY c1; 
+EXPLAIN SELECT c1 FROM t1 ORDER BY c1;
 ```
 
 ```sql
@@ -122,7 +100,7 @@ EXPLAIN SELECT c1 FROM t1 ORDER BY c1;
 {{< copyable "sql" >}}
 
 ```sql
-EXPLAIN SELECT c2 FROM t1 ORDER BY c2; 
+EXPLAIN SELECT c2 FROM t1 ORDER BY c2;
 ```
 
 ```sql
@@ -161,39 +139,11 @@ ALTER TABLE t1 DROP INDEX c1;
 Query OK, 0 rows affected (0.02 sec)
 ```
 
-### 限制
+## MySQL 兼容性
 
-MySQL 对不可见索引有一条限制：不能将**主键**设置为不可见。TiDB 兼容这条限制，将主键设置为不可见后会抛出错误。
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t2(c1 INT, PRIMARY KEY(c1) INVISIBLE);
-```
-
-```sql
-ERROR 3522 (HY000): A primary key index cannot be invisible
-```
-
-这里的**主键**包括既包括显式的主键（通过 `PRIMARY KEY` 关键字指定的主键），也包括隐式的主键。
-
-当表中不存在显式的主键时，第一个 `UNIQUE` 索引（要求满足索引上的每一列都是 `NOT NULL`）会自动成为隐式的主键。
-
-即不能将隐式的主键设置为不可见的。
-
-> **注意：**
->
-> TiDB 并不会实际创建一个**隐式的主键**，这个限制仅仅在行为上兼容 MySQL。
-
-{{< copyable "sql" >}}
-
-```sql
-CREATE TABLE t2(c1 INT NOT NULL, UNIQUE(c1) INVISIBLE);
-```
-
-```                                                                                                 
-ERROR 3522 (HY000): A primary key index cannot be invisible
-```
+* TiDB 中的不可见索引是基于 MySQL 8.0 中的同等特性构建的。
+* 与 MySQL 类似，TiDB 不允许将主键索引设为不可见。
+* MySQL 中提供的优化器开关 `use_invisible_indexes=on` 可将所有的不可见索引重新设为可见。该功能在 TiDB 中不可用。
 
 ## 另请参阅
 

@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/subquery-optimization/']
 
 有时，子查询中包含了非子查询中的列，如 `select * from t where t.a in (select * from t2 where t.b=t2.b)` 中，子查询中的 `t.b` 不是子查询中的列，而是从子查询外面引入的列。这种子查询通常会被称为`关联子查询`，外部引入的列会被称为`关联列`，关联子查询相关的优化参见[关联子查询去关联](/correlated-subquery-optimization.md)。本文主要关注不涉及关联列的子查询。
 
-子查询默认会以[理解 TiDB 执行计划](/query-execution-plan.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
+子查询默认会以[理解 TiDB 执行计划](/explain-overview.md)中提到的 `semi join` 作为默认的执行方式，同时对于一些特殊的子查询，TiDB 会做一些逻辑上的替换使得查询可以获得更好的执行性能。
 
 ## `... < ALL (SELECT ... FROM ...)` 或者 `... > ANY (SELECT ... FROM ...)`
 
@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/subquery-optimization/']
 
 ## `... != ANY (SELECT ... FROM ...)`
 
-对于这种情况，当子查询中不同值的各种只有一种的话，那只要和这个值对比就即可。如果子查询中不同值的个数多于 1 个，那么必然会有不相等的情况出现。因此这样的子查询可以采取如下的改写手段：
+对于这种情况，当子查询中不同值的个数只有一种的话，那只要和这个值对比就即可。如果子查询中不同值的个数多于 1 个，那么必然会有不相等的情况出现。因此这样的子查询可以采取如下的改写手段：
 
 - `select * from t where t.id != any (select s.id from s)` 会被改写为 `select t.* from t, (select s.id, count(distinct s.id) as cnt_distinct from s) where (t.id != s.id or cnt_distinct > 1)`
 
@@ -41,8 +41,7 @@ aliases: ['/docs-cn/dev/subquery-optimization/']
 
 ## `... IN (SELECT ... FROM ...)`
 
-对于这种情况，会将其改写为 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。
-如 `select * from t1 where t1.a in (select t2.a from t2)` 会被改写为 `select t1.* from t1, (select distinct(a) a from t2) t2 where t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
+对于这种情况，会将其 `IN` 的子查询改写为 `SELECT ... FROM ... GROUP ...` 的形式，然后将 `IN` 改写为普通的 `JOIN` 的形式。如 `select * from t1 where t1.a in (select t2.a from t2)` 会被改写为 `select t1.* from t1, (select distinct(a) a from t2) t2 where t1.a = t2.a` 的形式。同时这里的 `DISTINCT` 可以在 `t2.a` 具有 `UNIQUE` 属性时被自动消去。
 
 {{< copyable "sql" >}}
 

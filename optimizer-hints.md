@@ -111,10 +111,6 @@ SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 
 `INL_HASH_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Hash Join 算法。该算法与 Index Nested Loop Join 使用条件完全一样，两者的区别是 `INL_JOIN` 会在连接的内表上建哈希表，而 `INL_HASH_JOIN` 会在连接的外表上建哈希表，后者对于内存的使用是有固定上限的，而前者使用的内存使用取决于内表匹配到的行数。
 
-### INL_MERGE_JOIN
-
-`INL_MERGE_JOIN(t1_name [, tl_name])` 提示优化器使用 Index Nested Loop Merge Join 算法。这个 Hint 的适用场景和 `INL_JOIN` 一致，相比于 `INL_JOIN` 和 `INL_HASH_JOIN` 会更节省内存，但使用条件会更苛刻：join keys 中的内表列集合是内表使用的索引的前缀，或内表使用的索引是 join keys 中的内表列集合的前缀。
-
 ### HASH_JOIN(t1_name [, tl_name ...])
 
 `HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
@@ -196,6 +192,10 @@ SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 ```sql
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
+
+> **注意：**
+>
+> 如果需要提示优化器使用的表不在同一个数据库内，需要显式指定数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
@@ -313,3 +313,23 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 ```sql
 prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 ```
+
+### NTH_PLAN(N)
+
+`NTH_PLAN(N)` 提示优化器选用在物理优化阶段搜索到的第 `N` 个物理计划。`N` 必须是正整数。
+
+如果指定的 `N` 超出了物理优化阶段的搜索范围，TiDB 会返回 warning，并根据不存在该 Hint 时一样的策略选择最优物理计划。
+
+该 Hint 在启用 cascades planner 的情况下不会生效。
+
+以下示例会强制优化器在物理阶段选择搜索到的第 3 个物理计划：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ NTH_PLAN(3) */ count(*) from t where a > 5;
+```
+
+> **注意：**
+>
+> `NTH_PLAN(N)` 主要用于测试用途，并且在未来不保证其兼容性，请谨慎使用。

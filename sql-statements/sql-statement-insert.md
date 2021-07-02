@@ -10,41 +10,37 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-insert/','/docs-cn/dev/refe
 
 ## 语法图
 
-**InsertIntoStmt:**
+```ebnf+diagram
+InsertIntoStmt ::=
+    'INSERT' TableOptimizerHints PriorityOpt IgnoreOptional IntoOpt TableName PartitionNameListOpt InsertValues OnDuplicateKeyUpdate
 
-![InsertIntoStmt](/media/sqlgram/InsertIntoStmt.png)
+TableOptimizerHints ::=
+    hintComment?
 
-**TableOptimizerHints**
+PriorityOpt ::=
+    ( 'LOW_PRIORITY' | 'HIGH_PRIORITY' | 'DELAYED' )?
 
-![TableOptimizerHints](/media/sqlgram/TableOptimizerHints.png)
+IgnoreOptional ::=
+    'IGNORE'?
 
-**PriorityOpt:**
+IntoOpt  ::= 'INTO'?
 
-![PriorityOpt](/media/sqlgram/PriorityOpt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**IgnoreOptional:**
+PartitionNameListOpt ::=
+    ( 'PARTITION' '(' Identifier ( ',' Identifier )* ')' )?
 
-![IgnoreOptional](/media/sqlgram/IgnoreOptional.png)
+InsertValues ::=
+    '(' ( ColumnNameListOpt ')' ( ValueSym ValuesList | SelectStmt | '(' SelectStmt ')' | UnionStmt ) | SelectStmt ')' )
+|   ValueSym ValuesList
+|   SelectStmt
+|   UnionStmt
+|   'SET' ColumnSetValue? ( ',' ColumnSetValue )*
 
-**IntoOpt:**
-
-![IntoOpt](/media/sqlgram/IntoOpt.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**PartitionNameListOpt:**
-
-![PartitionNameListOpt](/media/sqlgram/PartitionNameListOpt.png)
-
-**InsertValues:**
-
-![InsertValues](/media/sqlgram/InsertValues.png)
-
-**OnDuplicateKeyUpdate:**
-
-![OnDuplicateKeyUpdate](/media/sqlgram/OnDuplicateKeyUpdate.png)
+OnDuplicateKeyUpdate ::=
+    ( 'ON' 'DUPLICATE' 'KEY' 'UPDATE' AssignmentList )?
+```
 
 ## 示例
 
@@ -163,7 +159,7 @@ SELECT * FROM t2;
 
 ## MySQL 兼容性
 
-`INSERT` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`INSERT` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

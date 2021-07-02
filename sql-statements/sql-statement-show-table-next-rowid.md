@@ -64,7 +64,7 @@ show table t next_row_id;
 
 ## MySQL 兼容性
 
-`SHOW TABLE NEXT_ROW_ID` 语句是 TiDB 特有的语法。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

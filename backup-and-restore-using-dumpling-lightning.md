@@ -1,9 +1,13 @@
 ---
-title: 使用 Dumpling/TiDB Lightning 进行备份与恢复
-aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling']
+title: 使用 Dumpling/TiDB Lightning 备份与恢复
+aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/dev/export-or-backup-using-dumpling/','/zh/tidb/dev/export-or-backup-using-dumpling','/docs-cn/dev/backup-and-restore-using-mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/mydumper-lightning/','/docs-cn/dev/how-to/maintain/backup-and-restore/','/zh/tidb/dev/backup-and-restore-using-mydumper-lightning/']
 ---
 
-# 使用 Dumpling/TiDB Lightning 进行备份与恢复
+# 使用 Dumpling/TiDB Lightning 备份与恢复
+
+> **警告：**
+>
+> 本文提供的备份恢复方法已不再推荐，强烈推荐使用 [BR 工具](/br/backup-and-restore-tool.md)进行备份恢复，以获得更好的工具体验。
 
 本文档将详细介绍如何使用 Dumpling/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份和同步可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 
@@ -52,22 +56,22 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT * FROM mysql.tidb WHERE VARIABLE_NAME = 'tikv_gc_life_time';
+    SHOW GLOBAL VARIABLES LIKE 'tidb_gc_life_time';
     ```
 
     ```sql
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    | VARIABLE_NAME         | VARIABLE_VALUE                                                                                 |
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    | tikv_gc_life_time     | 10m0s                                                                                          |
-    +-----------------------+------------------------------------------------------------------------------------------------+
-    1 rows in set (0.02 sec)
+    +-------------------+-------+
+    | Variable_name     | Value |
+    +-------------------+-------+
+    | tidb_gc_life_time | 10m0s |
+    +-------------------+-------+
+    1 row in set (0.03 sec)
     ```
 
     {{< copyable "sql" >}}
 
     ```sql
-    update mysql.tidb set VARIABLE_VALUE = '720h' where VARIABLE_NAME = 'tikv_gc_life_time';
+    SET GLOBAL tidb_gc_life_time = '720h';
     ```
 
 2. 执行 `dumpling` 命令后，将 TiDB 集群的 GC 值恢复到第 1 步中的初始值：
@@ -75,7 +79,7 @@ Could not read data from testSchema.testTable: GC life time is shorter than tran
     {{< copyable "sql" >}}
 
     ```sql
-    update mysql.tidb set VARIABLE_VALUE = '10m' where VARIABLE_NAME = 'tikv_gc_life_time';
+    SET GLOBAL tidb_gc_life_time = '10m';
     ```
 
 ## 向 TiDB 恢复数据

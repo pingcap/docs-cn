@@ -6,9 +6,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-columns-from/','/docs-
 
 # SHOW [FULL] COLUMNS FROM
 
-`SHOW [FULL] COLUMNS FROM` 语句用于以表格格式描述表或视图中的列。可选关键字 `FULL` 用于显示当前用户对该列的权限，以及表定义中的 `comment`。
+`SHOW [FULL] COLUMNS FROM <table_name>` 语句用于以表格格式描述表或视图中的列。可选关键字 `FULL` 用于显示当前用户对该列的权限，以及表定义中的 `comment`。
 
-`SHOW [FULL] FIELDS FROM`，`DESC <table>`，`DESCRIBE <table>` 和 `EXPLAIN <table>` 语句都是 `SHOW [FULL] COLUMNS FROM` 的别名。
+`SHOW [FULL] FIELDS FROM <table_name>`、`DESC <table_name>`、`DESCRIBE <table_name>` 和 `EXPLAIN <table_name>` 语句都是 `SHOW [FULL] COLUMNS FROM` 的别名。
+
+> **注意：**
+>
+> `DESC TABLE <table_name>`、`DESCRIBE TABLE <table_name>` 和 `EXPLAIN TABLE <table_name>` 与上面的语句并不等价，它们是 [`DESC SELECT * FROM <table_name>`](/sql-statements/sql-statement-explain.md) 的别名。
 
 ## 语法图
 
@@ -203,7 +207,7 @@ show full columns from mysql.user;
 
 ## MySQL 兼容性
 
-`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW [FULL] COLUMNS FROM` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

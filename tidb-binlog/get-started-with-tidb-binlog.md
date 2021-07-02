@@ -30,7 +30,7 @@ TiDB Binlog 支持以下功能场景：
 
 TiDB Binlog 集群由 **Pump** 和 **Drainer** 两个组件组成。一个 Pump 集群中有若干个 Pump 节点。TiDB 实例连接到各个 Pump 节点并发送 binlog 数据到 Pump 节点。Pump 集群连接到 Drainer 节点，Drainer 将接收到的更新数据转换到某个特定下游（例如 Kafka、另一个 TiDB 集群或 MySQL 或 MariaDB Server）指定的正确格式。
 
-![TiDB Binlog architecture](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog architecture](/media/tidb-binlog-cluster-architecture.png)
 
 Pump 的集群架构能确保 TiDB 或 Pump 集群中有新的实例加入或退出时更新数据不会丢失。
 

@@ -181,8 +181,7 @@ TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考
 
 * Coprocessor request 耗时，指用于处理 COP 类型的请求，该耗时包括以下部分：
     * `tikv_cop_wait`，请求排队等待的耗时
-    * `Coprocessor handling request`
-，处理 COP 请求的耗时
+    * `Coprocessor handling request`，处理 COP 请求的耗时
 * `tikv_scheduler_command` 耗时，该耗时包含以下部分：
     * `tikv_scheduler_processing_read`，处理读请求的耗时
     * `tikv_storage_async_request` 中获取 snapshot 的耗时（snapshot 是该项监控的 label）
@@ -205,7 +204,7 @@ TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考
 >
 > 由于 Raft KV 可能会将多个请求作为一个 batch 来写入，所以 `TOTAL_TIME` 不适用于来衡量 Raft KV 的写入相关监控项的耗时，这些监控项具体是 `tikv_raft_process`、`tikv_raft_append_log`、`tikv_raft_commit_log`、`tikv_raft_apply_wait`、`tikv_raft_apply_log`。此时用 P999 和 P99 的时间来对比各个模块的耗时更加合理。
 >
-> 原因是，假如有 10 个 async write 请求，Raft KV 内部将 10 个请求打包成一个 batch 执行，执行时间为 1 秒，所以每个请求的执行时间为 1 秒，10 个请求的总时间是 10 秒。但是 Raft KV 处理的总时间是 1 秒。如果用 `TOTAL_TIME` 来衡量，用户可能不明白剩余的 9 秒耗时在哪些模块下。这里从总请求数 (`TOTAL_COUNT) 也能看出 Raft KV 的监控和其他监控的差异。
+> 原因是，假如有 10 个 async write 请求，Raft KV 内部将 10 个请求打包成一个 batch 执行，执行时间为 1 秒，所以每个请求的执行时间为 1 秒，10 个请求的总时间是 10 秒。但是 Raft KV 处理的总时间是 1 秒。如果用 `TOTAL_TIME` 来衡量，用户可能不明白剩余的 9 秒耗时在哪些模块下。这里从总请求数 (`TOTAL_COUNT`) 也能看出 Raft KV 的监控和其他监控的差异。
 
 #### Errors Occurred in Each Component
 

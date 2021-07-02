@@ -1,0 +1,31 @@
+# name: external-link-check
+
+# on: [pull_request]
+
+# jobs:
+#   base:
+#     runs-on: ubuntu-18.04
+#     steps:
+#       - name: Check out code
+#         uses: actions/checkout@v2
+
+#       # NOTE:
+#       #  - the check process can be very fast,
+#       #    but if `-c` is too large then `Too Many Requests (HTTP error 429)` may be reported from `https://github.com/*`.
+#       #  - we hardcode `--document-root` to `/github/workspace` in the container now.
+#       #  - we use `http://172.*` as sample addresses in some docs, so we need to exclude them.
+#       - name: Check external links
+#         id: lc
+#         uses: peter-evans/link-checker@v1
+#         with:
+#           args: -c 32 -d /github/workspace -r -x "http://172.*|https://github.com/.*/pull/.*|https://github.com/.*/issues/.*|https://github.com/[^.\n]*$|http://127.0.0.1.*|http://localhost.*|http://.*:.*|https://static.googleusercontent.com/media/research.google.com/.*|http://www.brendangregg.com/perf.html.*|https://blog.csdn.net.*|http://mysql-cocoa.sourceforge.net.*|https://tools.ietf.org.*|http://code.google.com.*|https://spark.apache.org.*|https://asktug.com/|https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC|http://www.alhem.net/project/mysql/|http://www.webgraphviz.com/|http://octave.sourceforge.net/database/index.html|http://gnade.sourceforge.net/|.*.md" .
+
+#       - name: Fail if there were external link errors
+#         if: ${{ steps.lc.outputs.exit_code }}
+#         run: |
+#           echo "Please check the broken links reported in the previous step \"Check external links\"."
+#           exit ${{ steps.lc.outputs.exit_code }}
+#       # Debug via SSH if previous steps failed
+#       #- name: Set up tmate session
+#       #  if: ${{ failure() }}
+#       #  uses: mxschmitt/action-tmate@v2

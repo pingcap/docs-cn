@@ -5,22 +5,26 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 # TiDB 数据库快速上手指南
 
-> **警告：**
+本指南介绍如何快速上手体验 TiDB 数据库。要上手 TiDB 数据库，你将使用到 TiUP，即 TiDB 生态系统中的一个包管理工具。通过 TiUP，你只需执行一行命令就可运行任意 TiDB 集群组件。
+
+> **注意：**
 >
-> 对于生产环境，不要使用本文介绍的方式进行部署，而应使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+> 本指南中的 TiDB 部署方式仅适用于快速上手体验，不适用于生产环境。
+>
+> - 如需在生产环境部署 TiDB，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。
+> - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
+> - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
 
-本文介绍如何快速上手体验 TiDB 分布式数据库。有以下 3 种体验方式供用户选择。
+<SimpleTab>
+<div label="Mac">
 
-- [第一种：使用 TiUP Playground 快速部署本地测试环境](#第一种使用-tiup-playground-快速部署本地测试环境)
-- [第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤](#第二种使用-tiup-cluster-在单机上模拟生产环境部署步骤)
-- [第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库](#第三种使用-tidb-wasm-一键体验-tidb-数据库)
+## 在 Mac OS 上部署本地测试环境
 
-## 第一种：使用 TiUP Playground 快速部署本地测试环境
+> **注意：**
+>
+> 由于部分 TiDB 组件尚未发布支持 Apple M1 芯片的版本，暂不支持在使用 Apple M1 芯片的本地 Mac 机器上使用 `tiup playground` 命令。
 
-- 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 集群。可以体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
-- 耗时：1 分钟
-
-作为一个分布式系统，最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例和 3 个 PD 实例来构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
+TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群，步骤如下：
 
 1. 下载并安装 TiUP。
 
@@ -34,7 +38,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
     > **注意：**
     >
-    > TiUP 安装完成会提示对应的 profile 文件的绝对路径，以下 source 操作需要根据实际位置进行操作。
+    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
 
     {{< copyable "shell-regular" >}}
 
@@ -44,7 +48,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 3. 在当前 session 执行以下命令启动集群。
 
-    - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV 和 PD 实例各 1 个：
+    - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
         {{< copyable "shell-regular" >}}
 
@@ -57,12 +61,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.0 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动一个 `v4.0.0` 版本的集群，`--monitor` 表示同时部署监控组件。
-        最新版本可以通过执行 `tiup list tidb` 来查看。
-        运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.1.0），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -72,19 +74,141 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         To view the monitor: http://127.0.0.1:9090
         ```
 
+        > **注意：**
+        >
+        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
+        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+
 4. 新开启一个 session 以访问 TiDB 数据库。
+
+    + 使用 TiUP `client` 连接 TiDB：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup client
+        ```
+
+    + 也可使用 MySQL 客户端连接 TiDB：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        mysql --host 127.0.0.1 --port 4000 -u root
+        ```
+
+5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
+
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
+
+7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+
+8. 测试完成之后，可以通过执行以下步骤来清理集群：
+
+    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
+
+    2. 执行以下命令：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup clean --all
+        ```
+
+> **注意**
+>
+> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，可使用 `--host` 参数指定监听网卡绑定外部可访问的 IP。
+
+</div>
+
+<div label="Linux">
+
+## 在 Linux OS 上部署本地测试环境
+
+TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
+
+1. 下载并安装 TiUP。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --host 127.0.0.1 --port 4000 -u root
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
+
+2. 声明全局环境变量。
+
+    > **注意：**
+    >
+    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    source .bash_profile
+    ```
+
+3. 在当前 session 执行以下命令启动集群。
+
+    - 直接运行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup playground
+        ```
+
+    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --monitor
+        ```
+
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.1.0），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+
+        ```log
+        CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
+        To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
+        To view the dashboard: http://127.0.0.1:2379/dashboard
+        To view the monitor: http://127.0.0.1:9090
+        ```
+
+        > **注意：**
+        >
+        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
+        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+
+4. 新开启一个 session 以访问 TiDB 数据库。
+
+    + 使用 TiUP `client` 连接 TiDB：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup client
+        ```
+
+    + 也可使用 MySQL 客户端连接 TiDB：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        mysql --host 127.0.0.1 --port 4000 -u root
+        ```
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
-7. 测试完成后清理集群，绿色环保。通过 `ctrl-c` 停掉进程后，执行以下命令：
+7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+
+8. 测试完成之后，可以通过执行以下步骤来清理集群：
+
+    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
+
+    2. 执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -92,7 +216,11 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
     tiup clean --all
     ```
 
-## 第二种：使用 TiUP cluster 在单机上模拟生产环境部署步骤
+> **注意：**
+>
+> TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问。若需要使服务可被外部访问，可使用 `--host` 参数指定监听网卡绑定外部可访问的 IP。
+
+## 使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
 - 适用场景：希望用单台 Linux 服务器，体验 TiDB 最小的完整拓扑的集群，并模拟生产的部署步骤。
 - 耗时：10 分钟
@@ -108,6 +236,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 最小规模的 TiDB 集群拓扑：
 
+> **注意：**
+>
+> 下表中拓扑实例的 IP 为示例 IP。在实际部署时，请替换为实际的 IP。
+
 | 实例 | 个数 | IP | 配置 |
 |:-- | :-- | :-- | :-- |
 | TiKV | 3 | 10.0.1.1 <br/> 10.0.1.1 <br/> 10.0.1.1 | 避免端口和目录冲突 |
@@ -120,7 +252,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
-- 目前 TiUP 仅支持在 x86_64 (AMD64) 架构上部署 TiDB 集群（TiUP 将在 4.0 GA 时支持在 ARM 架构上部署）
+- 目前 TiUP 支持在 x86_64 (AMD64 和 ARM) 架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 
@@ -199,6 +331,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
        readpool.coprocessor.use-unified-pool: true
      pd:
        replication.enable-placement-rules: true
+       replication.location-labels: ["host"]
      tiflash:
        logger.level: "info"
 
@@ -212,14 +345,20 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
      - host: 10.0.1.1
        port: 20160
        status_port: 20180
+       config:
+         server.labels: { host: "logic-host-1" }
 
      - host: 10.0.1.1
        port: 20161
        status_port: 20181
+       config:
+         server.labels: { host: "logic-host-2" }
 
      - host: 10.0.1.1
        port: 20162
        status_port: 20182
+       config:
+         server.labels: { host: "logic-host-3" }
 
     tiflash_servers:
      - host: 10.0.1.1
@@ -259,6 +398,14 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 8. 访问集群：
 
+    - 安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        yum -y install mysql
+        ```
+
     - 访问 TiDB 数据库，密码为空：
 
         ```shell
@@ -285,28 +432,23 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
         tiup cluster display <cluster-name>
         ```
 
-## 第三种：使用 TiDB-Wasm 一键体验 TiDB 数据库
+</div>
 
-- 适用场景：初步极速体验 TiDB 数据库的语法、兼容性等基本功能
-- 耗时：即时体验
-
-TiDB-Wasm 是运行在浏览器中的 TiDB 数据库，打开网页即可使用。TiDB-Wasm 可直接进行 SQL 执行、兼容性验证等基本操作。
-
-直接点击网址试用 TiDB-Wasm：<https://tour.pingcap.com>，之后会在内存中构建 TiDB 数据库，预计耗时 10 秒左右。
+</SimpleTab>
 
 ## 探索更多
 
 - 如果你刚刚部署好一套 TiDB 本地测试集群：
     - 学习 [TiDB SQL 操作](/basic-sql-operations.md)
     - [迁移数据到 TiDB](/migration-overview.md)
-    - 了解 [TiDB 的核心特性与核心应用场景](/overview.md)
-    - 了解 [TiDB 的整体架构](/tidb-architecture.md)
-    - 了解 [TiDB 与 MySQL 的兼容性](/mysql-compatibility.md)
 
 - 如果你准备好在生产环境部署 TiDB 了：
     - 在线部署：[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
-    - 离线部署：[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)
-    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1)
+    - [使用 TiDB Operator 在云上部署 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+
+- 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
+    - [使用 TiFlash](/tiflash/use-tiflash.md)
+    - [TiFlash 简介](/tiflash/tiflash-overview.md)
 
 > **注意：**
 >

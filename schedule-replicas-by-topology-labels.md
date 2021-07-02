@@ -38,7 +38,7 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 
 根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
 
-PD 上的配置叫做 `location-labels`，可以通过 PD 的配置文件进行配置。
+PD 上的配置叫做 `location-labels`，在集群初始化之前，可以通过 PD 的配置文件进行配置。
 
 {{< copyable "" >}}
 
@@ -47,7 +47,7 @@ PD 上的配置叫做 `location-labels`，可以通过 PD 的配置文件进行�
 location-labels = ["zone", "rack", "host"]
 ```
 
-当 PD 集群初始化完成后，需要使用 pd-ctl 工具进行在线更改：
+如果需要在 PD 集群初始化完成后进行配置，则需要使用 pd-ctl 工具进行在线更改：
 
 {{< copyable "shell-regular" >}}
 
@@ -86,29 +86,64 @@ pd-ctl config set isolation-level zone
 >
 > `isolation-level` 默认情况下为空，即不进行强制隔离级别限制，若要对其进行设置，必须先配置 PD 的 `location-labels` 参数，同时保证 `isolation-level` 的值一定为 `location-labels` 中的一个。
 
-### 使用 TiDB Ansible 进行配置
+### 使用 TiUP 进行配置（推荐）
 
-如果使用 TiDB Ansible 部署集群，可以直接在 inventory.ini 文件中统一进行 location 相关配置。tidb-ansible 会负责在 deploy 时生成对应的 TiKV 和 PD 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
 
-下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。
+下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。
 
 ```
-[tikv_servers]
+server_configs:
+  pd:
+    replication.location-labels: ["zone", "host"]
+
+tikv_servers:
 # z1
-tikv-1 labels="zone=z1,host=h1"
-tikv-2 labels="zone=z1,host=h1"
-tikv-3 labels="zone=z1,host=h2"
-tikv-4 labels="zone=z1,host=h2"
+  - host: tikv-1
+    config:
+      server.labels:
+        zone: z1
+        host: h1
+   - host: tikv-2
+    config:
+      server.labels:
+        zone: z1
+        host: h1
+  - host: tikv-3
+    config:
+      server.labels:
+        zone: z1
+        host: h2
+  - host: tikv-4
+    config:
+      server.labels:
+        zone: z1
+        host: h2
 # z2
-tikv-5 labels="zone=z2,host=h1"
-tikv-6 labels="zone=z2,host=h2"
+  - host: tikv-5
+    config:
+      server.labels:
+        zone: z2
+        host: h1
+   - host: tikv-6
+    config:
+      server.labels:
+        zone: z2
+        host: h2
 # z3
-tikv-7 labels="zone=z3,host=h1"
-tikv-8 labels="zone=z3,host=h2"
-
-[pd_servers:vars]
-location_labels = ["zone", "host"]
+  - host: tikv-7
+    config:
+      server.labels:
+        zone: z3
+        host: h1
+  - host: tikv-8
+    config:
+      server.labels:
+        zone: z3
+        host: h2
 ```
+
+详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
 
 ## 基于拓扑 label 的 PD 调度策略
 

@@ -14,7 +14,7 @@ tiup bench
 ```
 
 ```
-Starting component `bench`: /Users/joshua/.tiup/components/bench/v0.0.1/bench 
+Starting component `bench`: /home/tidb/.tiup/components/bench/v1.5.0/bench 
 Benchmark database with different workloads
 
 Usage:

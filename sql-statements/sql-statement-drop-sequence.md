@@ -10,21 +10,18 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-sequence/','/docs-cn/d
 
 ## 语法图
 
-**DropSequenceStmt:**
+```ebnf+diagram
+DropSequenceStmt ::=
+    'DROP' 'SEQUENCE' IfExists TableNameList
 
-![DropSequenceStmt](/media/sqlgram/DropSequenceStmt.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
 
-**IfExists:**
+TableNameList ::=
+    TableName ( ',' TableName )*
 
-![IfExists](/media/sqlgram/IfExists.png)
-
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 
@@ -50,7 +47,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-MySQL 暂无序列功能。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

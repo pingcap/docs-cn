@@ -25,6 +25,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ## O
 
+### Old value
+
+Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可以通过配置来指定 TiCDC 输出的增量变更日志是否包含“原始值”。
+
 ### Operator
 
 Operator 是应用于一个 Region 的，服务于某个调度目的的一系列操作的集合。例如“将 Region 2 的 Leader 迁移至 Store 5”，“将 Region 2 的副本迁移到 Store 1, 4, 5”等。

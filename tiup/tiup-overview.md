@@ -116,7 +116,6 @@ Use "tiup [command] --help" for more information about a command.
     - client：连接本机的集群
     - cluster：部署用于生产环境的集群
     - bench：对数据库进行压力测试
-    - doc：打开在线文档
 
 > **注意：**
 >

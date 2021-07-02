@@ -42,7 +42,7 @@ TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](htt
     由于分布式事务要做两阶段提交，并且底层还需要做 Raft 复制，如果一个事务非常大，会使得提交过程非常慢，并且会卡住下面的 Raft 复制流程。为了避免系统出现被卡住的情况，我们对事务的大小做了限制：
 
     - 单个事务包含的 SQL 语句不超过 5000 条（默认）
-        - 单条 KV entry 不超过 6MB
+        - 单条 KV entry 不超过 6MB（默认）
         - KV entry 的总大小不超过 10G
 
     在 Google 的 Cloud Spanner 上面，也有[类似的限制](https://cloud.google.com/spanner/docs/limits)。
@@ -134,7 +134,7 @@ TiDB 支持完整的二级索引，并且是全局索引，很多查询可以通
 
 上面提到了 TiDB 对单个事务的大小有限制，这层限制是在 KV 层面，反映在 SQL 层面的话，简单来说一行数据会映射为一个 KV entry，每多一个索引，也会增加一个 KV entry。
 
-> **注意**：
+> **注意：**：
 >
 > 对事务的大小限制，要考虑 TiDB 做编码以及事务额外 Key 的开销，在使用的时候，**建议每个事务的行数不超过 200 行，且单行数据小于 100k**，否则可能性能不佳。
 
@@ -155,8 +155,7 @@ for i from 0 to 23:
 
 ### 查询
 
-看业务的查询需求以及具体的语句，可以参考 [TiDB 专用系统变量和语法](/system-variables.md)这篇文档
-可以通过 SET 语句控制 SQL 执行的并发度，另外通过 Hint 控制 Join 物理算子选择。
+看业务的查询需求以及具体的语句，可以参考 [TiDB 专用系统变量和语法](/system-variables.md)这篇文档。可以通过 SET 语句控制 SQL 执行的并发度，另外通过 Hint 控制 Join 物理算子选择。
 
 另外 MySQL 标准的索引选择 Hint 语法，也可以用，通过 `Use Index/Ignore Index hint` 控制优化器选择索引。
 
@@ -180,14 +179,13 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 
 了解一个系统或者解决使用中的问题最好的方法是阅读文档，明白实现原理。TiDB 有大量的官方文档，希望大家在遇到问题的时候能先尝试通过文档或者搜索 Issue list 寻找解决方案。官方文档查看 [docs-cn](https://github.com/pingcap/docs-cn)。如果希望阅读英文文档，可以查看 [docs](https://github.com/pingcap/docs)。
 
-其中的 [FAQ](/faq/tidb-faq.md)
-和[故障诊断](/troubleshoot-tidb-cluster.md)章节建议大家仔细阅读。另外 TiDB 还有一些不错的工具，也有配套的文档，具体的见各项工具的 GitHub 页面。
+其中的 [FAQ](/faq/tidb-faq.md) 和[故障诊断](/troubleshoot-tidb-cluster.md)章节建议大家仔细阅读。另外 TiDB 还有一些不错的工具，也有配套的文档，具体的见各项工具的 GitHub 页面。
 
 除了文档之外，还有很多不错的文章介绍 TiDB 的各项技术细节内幕，大家可以关注下面这些文章发布渠道：
 
 + 公众号：微信搜索 PingCAP
 + 知乎专栏：[TiDB 的后花园](https://zhuanlan.zhihu.com/newsql)
-+ [官方博客](https://pingcap.github.io/blog/)
++ [官方博客](https://pingcap.com/blog-cn/)
 
 ## TiDB 的最佳适用场景
 

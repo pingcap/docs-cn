@@ -1,7 +1,7 @@
 ---
 title: mysql Schema
 summary: 了解 TiDB 系统表。
-aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/reference/system-databases/mysql/','/zh/tidb/dev/system-table-overview/']
+aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/reference/system-databases/mysql/','/zh/tidb/dev/system-table-overview/','/docs-cn/dev/mysql-schema/']
 ---
 
 # `mysql` Schema

@@ -1,0 +1,47 @@
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+server_configs:
+  tidb:
+    binlog.enable: true
+    binlog.ignore-error: true
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+tidb_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+tikv_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+
+pump_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+drainer_servers:
+  - host: 10.0.1.12
+    config:
+      # drainer meta data directory path
+      data-dir: "/path/to/save/data"
+      syncer.db-type: "file"
+      # directory to save binlog file, default same as data-dir(save checkpoint file) if this is not configured.
+      # syncer.to.dir: "/path/to/save/binlog"
+
+monitoring_servers:
+  - host: 10.0.1.10
+
+grafana_servers:
+  - host: 10.0.1.10
+
+alertmanager_servers:
+  - host: 10.0.1.10

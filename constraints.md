@@ -57,6 +57,26 @@ Query OK, 1 row affected (0.03 sec)
 
 * 第三条 `INSERT` 语句成功，因为 `last_login` 列没有被明确地指定为 `NOT NULL`。默认允许 `NULL` 值。
 
+## `CHECK` 约束
+
+TiDB 会解析并忽略 `CHECK` 约束。该行为与 MySQL 5.7 的相兼容。
+
+示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+ id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ username VARCHAR(60) NOT NULL,
+ UNIQUE KEY (username),
+ CONSTRAINT min_username_length CHECK (CHARACTER_LENGTH(username) >=4)
+);
+INSERT INTO users (username) VALUES ('a');
+SELECT * FROM users;
+```
+
 ## 唯一约束
 
 在 TiDB 的乐观事务中，默认会对唯一约束进行[惰性检查](/transaction-overview.md#惰性检查)。通过在事务提交时再进行批量检查，TiDB 能够减少网络开销、提升性能。例如：
@@ -73,23 +93,30 @@ CREATE TABLE users (
 INSERT INTO users (username) VALUES ('dave'), ('sarah'), ('bill');
 ```
 
-{{< copyable "sql" >}}
-
-```sql
-START TRANSACTION;
-```
-
-```
-Query OK, 0 rows affected (0.00 sec)
-```
+默认的悲观事务模式下：
 
 {{< copyable "sql" >}}
 
 ```sql
+BEGIN;
 INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
 ```
 
 ```
+ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
+```
+
+乐观事务模式下且 `tidb_constraint_check_in_place=0`：
+
+{{< copyable "sql" >}}
+
+```sql
+BEGIN OPTIMISTIC;
+INSERT INTO users (username) VALUES ('jane'), ('chris'), ('bill');
+```
+
+```
+Query OK, 0 rows affected (0.00 sec)
 Query OK, 3 rows affected (0.00 sec)
 Records: 3  Duplicates: 0  Warnings: 0
 ```
@@ -115,9 +142,9 @@ COMMIT;
 ERROR 1062 (23000): Duplicate entry 'bill' for key 'username'
 ```
 
-第一条 `INSERT` 语句不会导致重复键错误，这同 MySQL 的规则一致。该检查将推迟到事务提交时才会进行。
+在乐观事务的示例中，唯一约束的检查推迟到事务提交时才进行。由于 `bill` 值已经存在，这一行为导致了重复键错误。
 
-你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。如果停用此行为，则会在执行语句时就对唯一约束进行检查。例如：
+你可通过设置 `tidb_constraint_check_in_place` 为 `1` 停用此行为（该变量设置对悲观事务无效，悲观事务始终在语句执行时检查约束）。当 `tidb_constraint_check_in_place` 设置为 `1` 时，则会在执行语句时就对唯一约束进行检查。例如：
 
 ```sql
 DROP TABLE IF EXISTS users;
@@ -142,7 +169,7 @@ Query OK, 0 rows affected (0.00 sec)
 {{< copyable "sql" >}}
 
 ```sql
-START TRANSACTION;
+BEGIN OPTIMISTIC;
 ```
 
 ```
@@ -212,9 +239,31 @@ Query OK, 0 rows affected (0.10 sec)
 * 表 `t3` 创建失败，因为一张表只能有一个主键。
 * 表 `t4` 创建成功，因为虽然只能有一个主键，但 TiDB 支持定义一个多列组合作为复合主键。
 
-除上述规则外，默认情况下，TiDB 还有一个额外限制，即一旦一张表创建成功，其主键就不能再改变。如果需要添加/删除主键，需要在 TiDB 配置文件中将 `alter-primary-key` 设置为 `true`，并重启 TiDB 实例使之生效。
+除上述规则外，TiDB 目前仅支持对 `NONCLUSTERED` 的主键进行添加和删除操作。例如：
 
-当开启添加/删除主键功能以后，TiDB 允许对表添加/删除主键。但需要注意的是，对于在未开启该功能时创建的整数类型的主键的表，即使开启添加/删除主键功能，也不能删除其主键约束。
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t5 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b) CLUSTERED);
+ALTER TABLE t5 DROP PRIMARY KEY;
+```
+
+```
+ERROR 8200 (HY000): Unsupported drop primary key when the table is using clustered index
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t5 (a INT NOT NULL, b INT NOT NULL, PRIMARY KEY (a,b) NONCLUSTERED);
+ALTER TABLE t5 DROP PRIMARY KEY;
+```
+
+```
+Query OK, 0 rows affected (0.10 sec)
+```
+
+要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 
 ## 外键约束
 
@@ -273,5 +322,3 @@ ALTER TABLE orders ADD FOREIGN KEY fk_user_id (user_id) REFERENCES users(id);
     INSERT INTO orders (user_id, doc) VALUES (123, NULL);
     COMMIT;
     ```
-
-* TiDB 在执行 `SHOW CREATE TABLE` 语句的结果中不显示外键信息。

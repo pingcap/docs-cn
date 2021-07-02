@@ -43,7 +43,7 @@ server_configs:
     replication.enable-placement-rules: true
   tiflash:
     # Maximum memory usage for processing a single query. Zero means unlimited.
-    profiles.default.max_memory_usage: 10000000000
+    profiles.default.max_memory_usage: 0
     # Maximum memory usage for processing all concurrently running queries on the server. Zero means unlimited.
     profiles.default.max_memory_usage_for_all_queries: 0
 
@@ -94,8 +94,6 @@ tikv_servers:
 
 tiflash_servers:
   - host: 10.0.1.11
-    data_dir: /tidb-data/tiflash-9000
-    deploy_dir: /tidb-deploy/tiflash-9000
     # ssh_port: 22
     # tcp_port: 9000
     # http_port: 8123
@@ -104,10 +102,22 @@ tiflash_servers:
     # flash_proxy_status_port: 20292
     # metrics_port: 8234
     # deploy_dir: /tidb-deploy/tiflash-9000
+    ## The `data_dir` will be overwritten if you define `storage.main.dir` configurations in the `config` section.
+    # data_dir: /tidb-data/tiflash-9000
     # numa_node: "0,1"
     # # The following configs are used to overwrite the `server_configs.tiflash` values.
     # config:
     #   logger.level: "info"
+    #   ## Multi-disk deployment introduced in v4.0.9
+    #   ## Check https://docs.pingcap.com/tidb/stable/tiflash-configuration#multi-disk-deployment for more details.
+    #   ## Example1:
+    #   # storage.main.dir: [ "/nvme_ssd0_512/tiflash", "/nvme_ssd1_512/tiflash" ]
+    #   # storage.main.capacity = [ 536870912000, 536870912000 ]
+    #   ## Example2:
+    #   # storage.main.dir: [ "/sata_ssd0_512/tiflash", "/sata_ssd1_512/tiflash", "/sata_ssd2_512/tiflash" ]
+    #   # storage.latest.dir: [ "/nvme_ssd0_150/tiflash" ]
+    #   # storage.main.capacity = [ 536870912000, 536870912000 ]
+    #   # storage.latest.capacity = [ 161061273600 ]
     # learner_config:
     #   log-level: "info"
   # - host: 10.0.1.12

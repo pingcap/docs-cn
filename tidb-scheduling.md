@@ -1,28 +1,28 @@
 ---
-title: 调度概述
+title: TiDB 数据库的调度
 aliases: ['/docs-cn/dev/tidb-scheduling/']
 ---
 
-# 调度概述
+# TiDB 数据库的调度
 
-PD 是 TiDB 集群的管理模块，同时也负责集群数据的实时调度。本文档介绍一下 PD 的设计思想和关键概念。
+[PD](https://github.com/tikv/pd) (Placement Driver) 是 TiDB 集群的管理模块，同时也负责集群数据的实时调度。本文档介绍一下 PD 的设计思想和关键概念。
 
 ## 场景描述
 
-TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为单位进行复制和管理，每个 Region 会有多个 Replica（副本），这些 Replica 会分布在不同的 TiKV 节点上，其中 Leader 负责读/写，Follower 负责同步 Leader 发来的 Raft log。
+TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为单位进行复制和管理，每个 Region 会有多个副本 (Replica)，这些副本会分布在不同的 TiKV 节点上，其中 Leader 负责读/写，Follower 负责同步 Leader 发来的 Raft log。
 
 需要考虑以下场景：
 
-* 为了提高集群的空间利用率，需要根据 Region 的空间占用对 Replica 进行合理的分布。
-* 集群进行跨机房部署的时候，要保证一个机房掉线，不会丢失 Raft Group 的多个 Replica。
+* 为了提高集群的空间利用率，需要根据 Region 的空间占用对副本进行合理的分布。
+* 集群进行跨机房部署的时候，要保证一个机房掉线，不会丢失 Raft Group 的多个副本。
 * 添加一个节点进入 TiKV 集群之后，需要合理地将集群中其他节点上的数据搬到新增节点。
 * 当一个节点掉线时，需要考虑快速稳定地进行容灾。
     * 从节点的恢复时间来看
         * 如果节点只是短暂掉线（重启服务），是否需要进行调度。
         * 如果节点是长时间掉线（磁盘故障，数据全部丢失），如何进行调度。
-    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的 Replica 个数来看
-        * Replica 数量不够（例如节点掉线，失去副本），需要选择适当的机器的进行补充。
-        * Replica 数量过多（例如掉线的节点又恢复正常，自动加入集群），需要合理的删除多余的副本。
+    * 假设集群需要每个 Raft Group 有 N 个副本，从单个 Raft Group 的副本个数来看
+        * 副本数量不够（例如节点掉线，失去副本），需要选择适当的机器的进行补充。
+        * 副本数量过多（例如掉线的节点又恢复正常，自动加入集群），需要合理的删除多余的副本。
 * 读/写通过 Leader 进行，Leader 的分布只集中在少量几个节点会对集群造成影响。
 * 并不是所有的 Region 都被频繁的访问，可能访问热点只在少数几个 Region，需要通过调度进行负载均衡。
 * 集群在做负载均衡的时候，往往需要搬迁数据，这种数据的迁移可能会占用大量的网络带宽、磁盘 IO 以及 CPU，进而影响在线服务。
@@ -55,9 +55,9 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 调度的基本操作指的是为了满足调度的策略。上述调度需求可整理为以下三个操作：
 
-* 增加一个 Replica
-* 删除一个 Replica
-* 将 Leader 角色在一个 Raft Group 的不同 Replica 之间 transfer（迁移）。
+* 增加一个副本
+* 删除一个副本
+* 将 Leader 角色在一个 Raft Group 的不同副本之间 transfer（迁移）。
 
 刚好 Raft 协议通过 `AddReplica`、`RemoveReplica`、`TransferLeader` 这三个命令，可以支撑上述三种基本操作。
 
@@ -67,23 +67,23 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 **每个 TiKV 节点会定期向 PD 汇报节点的状态信息**
 
-TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/release-3.1/proto/pdpb.proto#L421)，主要包括：
+TiKV 节点（Store）与 PD 之间存在心跳包，一方面 PD 通过心跳包检测每个 Store 是否存活，以及是否有新加入的 Store；另一方面，心跳包中也会携带这个 [Store 的状态信息](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L473)，主要包括：
 
 * 总磁盘容量
 * 可用磁盘容量
 * 承载的 Region 数量
 * 数据写入/读取速度
-* 发送/接受的 Snapshot 数量（Replica 之间可能会通过 Snapshot 同步数据）
+* 发送/接受的 Snapshot 数量（副本之间可能会通过 Snapshot 同步数据）
 * 是否过载
 * labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
 
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
-每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个[Region 的状态](https://github.com/pingcap/kvproto/blob/release-3.1/proto/pdpb.proto#L271)，主要包括下面几点信息：
+每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个[Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：
 
 * Leader 的位置
 * Followers 的位置
-* 掉线 Replica 的个数
+* 掉线副本的个数
 * 数据写入/读取的速度
 
 PD 不断的通过这两类心跳消息收集整个集群的信息，再以这些信息作为决策的依据。
@@ -96,27 +96,27 @@ PD 不断的通过这两类心跳消息收集整个集群的信息，再以这�
 
 PD 收集了这些信息后，还需要一些策略来制定具体的调度计划。
 
-**一个 Region 的 Replica 数量正确**
+**一个 Region 的副本数量正确**
 
-当 PD 通过某个 Region Leader 的心跳包发现这个 Region 的 Replica 数量不满足要求时，需要通过 Add/Remove Replica 操作调整 Replica 数量。出现这种情况的可能原因是：
+当 PD 通过某个 Region Leader 的心跳包发现这个 Region 的副本数量不满足要求时，需要通过 Add/Remove Replica 操作调整副本数量。出现这种情况的可能原因是：
 
-* 某个节点掉线，上面的数据全部丢失，导致一些 Region 的 Replica 数量不足
-* 某个掉线节点又恢复服务，自动接入集群，这样之前已经补足了 Replica 的 Region 的 Replica 数量过多，需要删除某个 Replica
-* 管理员调整了副本策略，修改了 [max-replicas](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L95) 的配置
+* 某个节点掉线，上面的数据全部丢失，导致一些 Region 的副本数量不足
+* 某个掉线节点又恢复服务，自动接入集群，这样之前已经补足了副本的 Region 的副本数量过多，需要删除某个副本
+* 管理员调整副本策略，修改了 [max-replicas](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L95) 的配置
 
-**一个 Raft Group 中的多个 Replica 不在同一个位置**
+**一个 Raft Group 中的多个副本不在同一个位置**
 
-注意这里用的是『同一个位置』而不是『同一个节点』。在一般情况下，PD 只会保证多个 Replica 不落在一个节点上，以避免单个节点失效导致多个 Replica 丢失。在实际部署中，还可能出现下面这些需求：
+注意这里用的是『同一个位置』而不是『同一个节点』。在一般情况下，PD 只会保证多个副本不落在一个节点上，以避免单个节点失效导致多个副本丢失。在实际部署中，还可能出现下面这些需求：
 
 * 多个节点部署在同一台物理机器上
 * TiKV 节点分布在多个机架上，希望单个机架掉电时，也能保证系统可用性
 * TiKV 节点分布在多个 IDC 中，希望单个机房掉电时，也能保证系统可用性
 
-这些需求本质上都是某一个节点具备共同的位置属性，构成一个最小的『容错单元』，希望这个单元内部不会存在一个 Region 的多个 Replica。这个时候，可以给节点配置 [labels](https://github.com/tikv/tikv/blob/v4.0.0-beta/etc/config-template.toml#L140) 并且通过在 PD 上配置 [location-labels](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L100) 来指名哪些 label 是位置标识，需要在 Replica 分配的时候尽量保证一个 Region 的多个 Replica 不会分布在具有相同的位置标识的节点上。
+这些需求本质上都是某一个节点具备共同的位置属性，构成一个最小的『容错单元』，希望这个单元内部不会存在一个 Region 的多个副本。这个时候，可以给节点配置 [labels](https://github.com/tikv/tikv/blob/v4.0.0-beta/etc/config-template.toml#L140) 并且通过在 PD 上配置 [location-labels](https://github.com/pingcap/pd/blob/v4.0.0-beta/conf/config.toml#L100) 来指名哪些 label 是位置标识，需要在副本分配的时候尽量保证一个 Region 的多个副本不会分布在具有相同的位置标识的节点上。
 
 **副本在 Store 之间的分布均匀分配**
 
-由于每个 Region 副本中存储的数据容量上限是固定的，通过维持每个节点上面副本数量的均衡，使得各节点间承载的数据更均衡。
+由于每个 Region 的副本中存储的数据容量上限是固定的，通过维持每个节点上面副本数量的均衡，使得各节点间承载的数据更均衡。
 
 **Leader 数量在 Store 之间均匀分配**
 
@@ -132,7 +132,7 @@ Raft 协议要求读取和写入都通过 Leader 进行，所以计算的负载�
 
 **控制调度速度，避免影响在线服务**
 
-调度操作需要耗费 CPU、内存、磁盘 IO 以及网络带宽，需要避免对线上服务造成太大影响。PD 会对当前正在进行的操作数量进行控制，默认的速度控制是比较保守的，如果希望加快调度（比如停服务升级或者增加新节点，希望尽快调度），那么可以通过调节 PD 参数动加快调度速度。
+调度操作需要耗费 CPU、内存、磁盘 IO 以及网络带宽，需要避免对线上服务造成太大影响。PD 会对当前正在进行的操作数量进行控制，默认的速度控制是比较保守的，如果希望加快调度（比如停服务升级或者增加新节点，希望尽快调度），那么可以通过调节 PD 参数动态加快调度速度。
 
 ## 调度的实现
 

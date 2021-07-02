@@ -12,9 +12,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-begin/','/docs-cn/dev/refer
 
 ## 语法图
 
-**BeginTransactionStmt:**
-
-![BeginTransactionStmt](/media/sqlgram/BeginTransactionStmt.png)
+```ebnf+diagram
+BeginTransactionStmt ::=
+    'BEGIN' ( 'PESSIMISTIC' | 'OPTIMISTIC' )?
+|   'START' 'TRANSACTION' ( 'READ' ( 'WRITE' | 'ONLY' ( 'WITH' 'TIMESTAMP' 'BOUND' TimestampBound )? ) | 'WITH' 'CONSISTENT' 'SNAPSHOT' )?
+```
 
 ## 示例
 
@@ -60,7 +62,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL 兼容性
 
-TiDB 在执行 `BEGIN` 语句时，可以带上 `PESSIMISTIC` 或者 `OPTIMISTIC` 选项表明此语句开启事务的类型。
+TiDB 支持 `BEGIN PESSIMISTIC` 或 `BEGIN OPTIMISTIC` 的语法扩展，用户可以为某一个事务覆盖默认的事务模型。
 
 ## 另请参阅
 

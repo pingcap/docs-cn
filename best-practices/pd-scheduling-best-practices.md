@@ -42,7 +42,7 @@ aliases: ['/docs-cn/dev/best-practices/pd-scheduling-best-practices/','/docs-cn/
 
     不同的调度器从自身的逻辑和需求出发，考虑各种限制和约束后生成待执行的 Operator。这里所说的限制和约束包括但不限于：
 
-     - 不往断连中、下线中、繁忙、空间不足、在大量收发 snapshot 等各种异常状态的 Store 添加副本
+     - 不往处于异常状态中（如断连、下线、繁忙、空间不足或在大量收发 snapshot 等）的 Store 添加副本
      - Balance 时不选择状态异常的 Region
      - 不尝试把 Leader 转移给 Pending Peer
      - 不尝试直接移除 Leader
@@ -102,6 +102,11 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 ### Region merge
 
 Region merge 指的是为了避免删除数据后大量小甚至空的 Region 消耗系统资源，通过调度把相邻的小 Region 合并的过程。Region merge 由 `mergeChecker` 负责，其过程与 `replicaChecker` 类似：PD 在后台遍历，发现连续的小 Region 后发起调度。
+
+具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果出现以下任意情况，该 Region 会触发 Region merge 调度：
+
+- 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值（默认 20MiB）
+- 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值（默认 200000）
 
 ## 查询调度状态
 
@@ -166,7 +171,7 @@ pd-ctl 支持动态创建和删除 Scheduler，你可以通过这些操作来控
 
 - `scheduler show`：显示当前系统中的 Scheduler
 - `scheduler remove balance-leader-scheduler`：删除（停用）balance region 调度器
-- `scheduler add evict-leader-scheduler-1`：添加移除 Store 1 的所有 Leader 的调度器
+- `scheduler add evict-leader-scheduler 1`：添加移除 Store 1 的所有 Leader 的调度器
 
 ### 手动添加 Operator
 
@@ -259,10 +264,10 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 - 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
-    - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改。
+    - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
     - PD: 
         + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
-        + `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
+        + 或者 `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
        
         > **注意：**
         >

@@ -62,7 +62,7 @@ SHOW DRAINER STATUS;
 
 ## MySQL 兼容性
 
-MySQL 无此功能。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

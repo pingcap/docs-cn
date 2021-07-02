@@ -37,7 +37,6 @@ SHOW CONFIG;
 | Type | Instance       | Name                                            | Value                                                               |
 +------+----------------+-------------------------------------------------+---------------------------------------------------------------------+
 | tidb | 127.0.0.1:4000 | advertise-address                               | 127.0.0.1                                                           |
-| tidb | 127.0.0.1:4000 | alter-primary-key                               | false                                                               |
 | tidb | 127.0.0.1:4000 | binlog.binlog-socket                            |                                                                     |
 | tidb | 127.0.0.1:4000 | binlog.enable                                   | false                                                               |
 ...
@@ -74,7 +73,6 @@ SHOW CONFIG LIKE 'tidb';
 | Type | Instance       | Name                                            | Value                                                               |
 +------+----------------+-------------------------------------------------+---------------------------------------------------------------------+
 | tidb | 127.0.0.1:4000 | advertise-address                               | 127.0.0.1                                                           |
-| tidb | 127.0.0.1:4000 | alter-primary-key                               | false                                                               |
 | tidb | 127.0.0.1:4000 | binlog.binlog-socket                            |                                                                     |
 | tidb | 127.0.0.1:4000 | binlog.enable                                   | false                                                               |
 ...
@@ -83,7 +81,7 @@ SHOW CONFIG LIKE 'tidb';
 
 ## MySQL 兼容性
 
-`SHOW CONFIG` 是 TiDB 的扩展语法，MySQL 没有对应的语法。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

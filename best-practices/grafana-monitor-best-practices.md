@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/best-practices/grafana-monitor-best-practices/','/docs-c
 
 # 使用 Grafana 监控 TiDB 的最佳实践
 
-[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md)时，会同时部署一套 [Grafana + Prometheus 的监控平台](/tidb-monitoring-framework.md)，用于收集和展示 TiDB 集群各个组件和机器的 metric 信息。本文主要介绍使用 TiDB 监控的最佳实践，旨在帮助 TiDB 用户高效利用丰富的 metric 信息来分析 TiDB 的集群状态或进行故障诊断。
+[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)时，如果在拓扑配置中添加了 Grafana 和 Prometheus，会部署一套 [Grafana + Prometheus 的监控平台](/tidb-monitoring-framework.md)，用于收集和展示 TiDB 集群各个组件和机器的 metric 信息。本文主要介绍使用 TiDB 监控的最佳实践，旨在帮助 TiDB 用户高效利用丰富的 metric 信息来分析 TiDB 的集群状态或进行故障诊断。
 
 ## 监控架构
 
@@ -17,7 +17,7 @@ Prometheus 是一个拥有多维度数据模型和灵活查询语句的时序数
 从 TiDB 2.1.3 版本开始，监控可以支持 pull，这是一个非常好的调整，它有以下几个优点：
 
 - 如果 Prometheus 需要迁移，无需重启整个 TiDB 集群。调整前，因为组件要调整 push 的目标地址，迁移 Prometheus 需要重启整个集群。
-- 支持部署 2 套独立的 Grafana + Prometheus 的监控平台（非 HA），防止监控的单点。方法是使用 TiDB Ansible 用不同的 IP 各执行一次部署命令。
+- 支持部署 2 套独立的 Grafana + Prometheus 的监控平台（非 HA），防止监控的单点。
 - 去掉了 Pushgateway 这个单点组件。
 
 ## 监控数据的来源与展示

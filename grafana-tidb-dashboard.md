@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 # TiDB 重要监控指标详解
 
-使用 TiDB Ansible 或 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
+使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。TiDB 分为 TiDB 和 TiDB Summary 面板，两个面板的区别如下：
 
@@ -20,11 +20,12 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Duration：执行时间
         - 客户端网络请求发送到 TiDB，到 TiDB 执行结束后返回给客户端的时间。一般情况下，客户端请求都是以 SQL 语句的形式发送，但也可以包含 `COM_PING`、`COM_SLEEP`、`COM_STMT_FETCH`、`COM_SEND_LONG_DATA` 之类的命令执行时间
         - 由于 TiDB 支持 Multi-Query，因此，可以接受客户端一次性发送多条 SQL 语句，如 `select 1; select 1; select 1;`。此时，统计的执行时间是所有 SQL 语句执行完之后的总时间
-    - QPS：所有 TiDB 实例上的每秒执行的 SQL 语句数量。按照执行成功或失败（OK/Error）进行了区分
-    - Statement OPS：不同类型的 SQL 语句每秒执行的数量。按 `SELECT`、`INSERT`、`UPDATE` 等来统计
-    - QPS By Instance：每个 TiDB 实例上的 QPS。按照命令和执行结果成功或失败来统计
+    - Command Per Second：TiDB 每秒处理的命令数。按照执行结果成功或失败来统计
+    - QPS：所有 TiDB 实例上的每秒执行的 SQL 语句数量。按 `SELECT`、`INSERT`、`UPDATE` 类型进行了区分
+    - CPS By Instance：每个 TiDB 实例上的命令统计。按照命令和执行结果成功或失败来统计
     - Failed Query OPM：每个 TiDB 实例上，对每秒钟执行 SQL 语句发生的错误按照错误类型的统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码
-    - Slow query：慢查询处理时间统计（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间）
+    - Slow query：慢查询处理时间统计（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间），慢查询分为 internal 和 general SQL 语句
+    - Connection Idle Duration：空闲连接的持续时间
     - 999/99/95/80 Duration：不同类型的 SQL 语句执行耗时统计（不同百分位）
 
 - Query Detail
@@ -38,39 +39,41 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - CPU Usage：每个 TiDB 实例的 CPU 使用统计
     - Connection Count：每个 TiDB 的连接数
     - Open FD Count：每个 TiDB 实例的打开的文件描述符统计
+    - Disconnection Count：每个 TiDB 实例断开连接的数量
+    - Event OPM：每个 TiDB 实例关键事件统计，例如 start，close，graceful-shutdown，kill，hang 等
     - Goroutine Count：每个 TiDB 实例的 Goroutine 数量
-    - Go GC Duration：每个 TiDB 实例的 Golang GC 耗时
-    - Go Threads：每个 TiDB 实例的线程数量
-    - Go GC Count：每个 TiDB 实例的 Golang GC 执行次数
-    - Go GC CPU Usage：每个 TiDB 实例的 Golang GC 使用的 CPU
-    - Events OPM：每个 TiDB 实例关键事件统计，例如 start，close，graceful-shutdown，kill，hang 等
-    - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注
     - Prepare Statement Count：每个 TiDB 实例现存的 `Prepare` 语句数以及总数
+    - Keep Alive OPM：每个 TiDB 实例每分钟刷新监控的次数，通常不需要关注
+    - Panic And Critical Error：TiDB 中出现的 Panic、Critical Error 数量
     - Time Jump Back OPS：每个 TiDB 实例上每秒操作系统时间回跳的次数
-    - Write Binlog Error：每个 TiDB 每秒写入 Binlog 失败的次数
-    - Get Token Duration：每个连接获取 Token 的耗时
+    - Get Token Duration：每个连接获取 Token 的耗时  
+    - Skip Binlog Count：TiDB 写入 Binlog 失败的数量
+    - Client Data Traffic：TiDB 和客户端的数据流量统计
     - Handshake Error OPS：每个 TiDB 实例每秒握手错误的次数
 
 - Transaction
     - Transaction OPS：每秒事务的执行数量
-    - Duration：事务执行的时间
+    - Duration：事务执行耗时
     - Transaction Statement Num：事务中的 SQL 语句数量
     - Transaction Retry Num：事务重试次数
-    - Session Retry Error OPS：每秒事务重试时遇到的错误数量
+    - Session Retry Error OPS：每秒事务重试时遇到的错误数量，分为重试失败和超过最大重试次数两种类型
+    - Commit Token Wait Duration：事务提交时的流控队列等待耗时。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 值来加速提交
     - KV Transaction OPS：每个 TiDB 内部每秒执行的事务数量
         - 一个用户的事务，在 TiDB 内部可能会触发多次事务执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
         - TiDB 内部的定时任务也会通过事务来操作数据库，这部分也包含在这个面板里
     - KV Transaction Duration：每个 TiDB 内部执行事务的耗时
-    - Commit Token Wait Duration：事务提交时的流控队列等待耗时。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 来加速提交
-    - Transaction Max Write KV Num：单个事务写入的最大键值对数量
-    - Transaction Max Write Size Bytes：单个事务写入的最大键值对大小
-    - Transaction Regions Num 90：单个事务写入的 Region 数量的 90% 分位
-    - Send HeartBeat Duration：事务发送心跳的时间间隔
-    - TTL Lifetime Reach Counter：事务的 TTL 达到了上限的数量。TTL 上限默认值 10 分钟，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 10 分钟。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
+    - Transaction Regions Num：事务操作的 Region 数量  
+    - Transaction Write KV Num Rate and Sum：事务写入 KV 的速率和总计
+    - Transaction Write KV Num：事务操作的 KV 数量
     - Statement Lock Keys：单个语句的加锁个数
+    - Send HeartBeat Duration：事务发送心跳的时间间隔
+    - Transaction Write Size Bytes Rate and sum：事务写入字节数的速率和总计
+    - Transaction Write Size Bytes：事务写入的数据大小
     - Acquire Pessimistic Locks Duration：加锁所消耗的时间
+    - TTL Lifetime Reach Counter：事务的 TTL 达到了上限的数量。TTL 上限默认值 1 小时，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 1 小时。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
+    - Load Safepoint OPS：加载 Safepoint 的次数统计。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉    
     - Pessimistic Statement Retry OPS：悲观语句重试次数统计。当语句尝试加锁时，可能遇到写入冲突，此时，语句会重新获取新的 snapshot 并再次加锁
-    - Load Safepoint OPS：加载 Safepoint 的次数统计。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉
+    - Async Commit Transaction Counter：启用 Async commit 机制的事务数量，分为成功、失败两种
 
 - Executor
     - Parse Duration：SQL 语句解析耗时统计
@@ -160,6 +163,6 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 - Batch Client
     - Pending Request Count by TiKV：等待处理的 Batch 消息数量
-    - Wait Duration 95：等待处理的 Batch 消息延迟
+
     - Batch Client Unavailable Duration 95：Batch 客户端不可用的时间
     - No Available Connection Counter：Batch 客户端找不到可用链接的次数

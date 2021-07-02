@@ -119,10 +119,10 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - `> = v3.0.0` 的版本, 可以在 tidb.log 中 `grep "expensive_query"`，该 log 会记录运行超时、或使用内存超过阈值的 SQL。
     - `< v3.0.0` 的版本, 通过 `grep "memory exceeds quota"` 定位运行时内存超限的 SQL。
-  
+
     > **注意：**
     >
-    > 单条 SQL 内存阈值的默认值为 `32GB`，可通过 `tidb_mem_quota_query` 系统变量进行设置，作用域为 `SESSION`，单位为 `Byte`。也可以通过配置项热加载的方式，对配置文件中的 `mem-quota-query` 项进行修改，单位为 `Byte`。
+    > 单条 SQL 内存阈值的默认值为 `1GB`，可通过 `tidb_mem_quota_query` 系统变量进行设置，作用域为 `SESSION`，单位为 `Byte`。也可以通过配置项热加载的方式，对配置文件中的 `mem-quota-query` 项进行修改，单位为 `Byte`。
 
 - 3.2.3 缓解 OOM 问题
 
@@ -187,7 +187,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 - 4.2.1 `block-cache` 配置太大导致 OOM：
 
     - 在监控 **Grafana** -> **TiKV-details** 选中对应的 instance 后，查看 RocksDB 的 `block cache size` 监控来确认是否是该问题。
-    
+
     - 同时，请检查 `[storage.block-cache] capacity = # "1GB"` 参数是否设置合理，默认情况下 TiKV 的 `block-cache` 设置为机器总内存的 `45%`；在 container 部署时，需要显式指定该参数，因为 TiKV 获取的是物理机的内存，可能会超出 container 的内存限制。
 
 - 4.2.2 Coprocessor 收到大量大查询，返回的数据量太大，gRPC 的发送速度跟不上 Coprocessor 往外输出数据的速度，导致 OOM：
@@ -205,13 +205,13 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
     - `level0 sst` 太多导致 stall，可以添加参数 `[rocksdb] max-sub-compactions = 2`（或者 `3`），加快 level0 sst 往下 compact 的速度。该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行，见案例 [case-815](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case815.md)。
 
     - `pending compaction bytes` 太多导致 stall，磁盘 I/O 能力在业务高峰跟不上写入，可以通过调大对应 Column Family (CF) 的 `soft-pending-compaction-bytes-limit` 和 `hard-pending-compaction-bytes-limit` 参数来缓解：
-    
+
         - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会放慢写入速度。默认值 64GB，`[rocksdb.defaultcf] soft-pending-compaction-bytes-limit = "128GB"`。
-        
+
         - 如果 `pending compaction bytes` 达到该阈值，RocksDB 会 stop 写入，通常不太可能触发该情况，因为在达到 `soft-pending-compaction-bytes-limit` 的阈值之后会放慢写入速度。默认值 256GB，`hard-pending-compaction-bytes-limit = "512GB"`<!--见案例 [case-275](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case275.md) -->。
-        
+
         - 如果磁盘 IO 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
-        
+
         - 比如 default cf compaction 压力比较大，调整参数 `[rocksdb.defaultcf] compression-per-level = ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]` 改成 `compression-per-level = ["no", "no", "zstd", "zstd", "zstd", "zstd", "zstd"]`。
 
     - memtable 太多导致 stall。该问题一般发生在瞬间写入量比较大，并且 memtable flush 到磁盘的速度比较慢的情况下。如果磁盘写入速度不能改善，并且只有业务峰值会出现这种情况，可以通过调大对应 CF 的 `max-write-buffer-number` 来缓解：
@@ -252,7 +252,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 4.5.3 Append log 慢。TiKV Grafana 的 **Raft IO**/`append log duration` 比较高，通常情况下是由于写盘慢了，可以检查 RocksDB - Raft 的 `WAL Sync Duration max` 值来确认，否则可能[需要报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
-- 4.5.4 Raftstore 线程繁忙。TiKV Grafana 的 **Raft Propose**/`propose wait duration` 明显高于 `append log duration`。请查看以下情况： 
+- 4.5.4 Raftstore 线程繁忙。TiKV Grafana 的 **Raft Propose**/`propose wait duration` 明显高于 `append log duration`。请查看以下情况：
 
     - `[raftstore] store-pool-size` 配置是否过小（该值建议在 [1,5] 之间，不建议太大）。
     - 机器的 CPU 是不是不够。
@@ -371,7 +371,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
         - 时区问题，需要确保 Drainer 和上下游数据库时区一致，Drainer 通过 `/etc/localtime` 获取时区，不支持 `TZ` 环境变量，见案例 [case-826](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case826.md)。
 
-        - TiDB 中 Timestamp 的默认值为 `null`，MySQL 5.7 中 Timestamp 默认值为当前时间（MySQL 8 无此问题），因此当上游写入 `null` 的 Timestamp 且下游是 MySQL 5.7 时，Timestamp 列数据不一致。在开启 binlog 前，在上游执行 `set @@global.explicit_defaults_for_timestamp=on;` 可解决次问题。
+        - TiDB 中 Timestamp 的默认值为 `null`，MySQL 5.7 中 Timestamp 默认值为当前时间（MySQL 8 无此问题），因此当上游写入 `null` 的 Timestamp 且下游是 MySQL 5.7 时，Timestamp 列数据不一致。在开启 binlog 前，在上游执行 `set @@global.explicit_defaults_for_timestamp=on;` 可解决此问题。
 
     - 其他情况[需报 bug](https://github.com/pingcap/tidb-binlog/issues/new?labels=bug&template=bug-report.md)。
 
@@ -392,7 +392,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 - 6.1.8 Pump 启动时报错 `fail to notify all living drainer`。
 
     - Pump 启动时需要通知所有 Online 状态的 Drainer，如果通知失败则会打印该错误日志。
-    
+
     - 可以使用 binlogctl 工具查看所有 Drainer 的状态是否有异常，保证 Online 状态的 Drainer 都在正常工作。如果某个 Drainer 的状态和实际运行情况不一致，则使用 binlogctl 修改状态，然后再重启 Pump。见案例 [fail-to-notify-all-living-drainer](/tidb-binlog/handle-tidb-binlog-errors.md#pump-启动时报错-fail-to-notify-all-living-drainer)。
 
 - 6.1.9 Drainer 报错 `gen update sqls failed: table xxx: row data is corruption []`。
@@ -413,9 +413,9 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 6.2.2 执行 `query-status` 或查看日志时出现 `Access denied for user 'root'@'172.31.43.27' (using password: YES)`。
 
-    - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。
+    - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。在 v1.0.6 及以后的版本可使用明文密码。
 
-    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/precheck)。
+    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/precheck)。
 
     - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5)。
 
@@ -465,13 +465,13 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - `region-concurrency` 设定太高，线程间争用资源反而减低了效率。排查方法如下：
 
-        - 从日志的开头搜寻 `region-concurrency` 能知道 Lightning 读到的参数是多少；
-        - 如果 Lightning 与其他服务（如 Importer）共用一台服务器，必需手动将 `region-concurrency` 设为该服务器 CPU 数量的 `75%`；
+        - 从日志的开头搜寻 `region-concurrency` 能知道 TiDB Lightning 读到的参数是多少；
+        - 如果 TiDB Lightning 与其他服务（如 TiKV Importer）共用一台服务器，必需手动将 `region-concurrency` 设为该服务器 CPU 数量的 `75%`；
         - 如果 CPU 设有限额（例如从 Kubernetes 指定的上限），TiDB Lightning 可能无法自动判断出来，此时亦需要手动调整 `region-concurrency`。
 
-    - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 Mydumper 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
+    - 表结构太复杂。每条索引都会额外增加 KV 对，如果有 N 条索引，实际导入的大小就差不多是 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 文件的 N+1 倍。如果索引不太重要，可以考虑先从 schema 去掉，待导入完成后再使用 `CREATE INDEX` 加回去。
 
-    - Lightning 版本太旧。尝试使用最新的版本，可能会有改善。
+    - TiDB Lightning 版本太旧。尝试使用最新的版本，可能会有改善。
 
 - 6.3.3 `checksum failed: checksum mismatched remote vs local`
 
@@ -479,42 +479,42 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 原因 2：如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
 
-    - 原因 3：如果数据源是由机器生成而不是从 Mydumper 备份的，需确保数据符合表的限制，例如：
-    
+    - 原因 3：如果数据源是由机器生成而不是从 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 备份的，需确保数据符合表的限制，例如：
+
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
 
-    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)。
+    - 解决办法：参考[官网步骤处理](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local)。
 
 - 6.3.4 `Checkpoint for … has invalid status:(错误码)`
 
-    - 原因：断点续传已启用。Lightning 或 Importer 之前发生了异常退出。为了防止数据意外损坏，Lightning 在错误解决以前不会启动。错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
+    - 原因：断点续传已启用。TiDB Lightning 或 TiKV Importer 之前发生了异常退出。为了防止数据意外损坏，TiDB Lightning 在错误解决以前不会启动。错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
-    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
+    - 解决办法：参考[官网步骤](/tidb-lightning/tidb-lightning-faq.md#checkpoint-for--has-invalid-status错误码)处理。
 
 - 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
 
     - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
-    - 解决办法：参考[官网步骤处理](/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
+    - 解决办法：参考[官网步骤处理](/tidb-lightning/tidb-lightning-faq.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
-    - 原因：Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
+    - 原因：TiDB Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
-    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
+    - 解决办法：参考[官网步骤](/tidb-lightning/tidb-lightning-faq.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
 
 - 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
-    - 解决办法：参考[官网步骤](/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-)处理。
+    - 解决办法：参考[官网步骤](/tidb-lightning/tidb-lightning-faq.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-)处理。
 
 ## 7. 常见日志分析
 
 ### 7.1 TiDB
 
-- 7.1.1 `GC life time is shorter than transaction duration`。事务执行时间太长，超过了 GC lifetime（默认 10min），可以通过修改 `mysql.tidb` 表来调整 `life time`，通常情况下不建议修改，会导致大量老版本堆积起来（如果有大量 `update` 和 `delete` 语句）。
+- 7.1.1 `GC life time is shorter than transaction duration`。事务执行时间太长，超过了 GC lifetime（默认为 10 分钟），可以通过修改系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 来延长 life time，通常情况下不建议修改，因为延长时限可能导致大量老版本数据的堆积（如果有大量 `UPDATE` 和 `DELETE` 语句）。
 
 - 7.1.2 `txn takes too much time`。事务太长时间（超过 590s）没有提交，准备提交的时候报该错误。可以通过调大 `[tikv-client] max-txn-time-use = 590` 参数，以及调大 `GC life time` 来绕过该问题（如果确实有这个需求）。通常情况下，建议看看业务是否真的需要执行这么长时间的事务。
 
@@ -526,12 +526,10 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - `wait response is cancelled`。请求发送到 TiKV 后超时未收到 TiKV 响应。需要排查对应地址 TiKV 的响应时间和对应 Region 在当时的 PD 和 KV 日志，确定为什么 KV 未及时响应。
 
-- 7.1.5 distsql.go 报 `inconsistent index`。数据索引疑似发生不一致，首先对报错的信息中 index 所在表执行 `admin check table <TableName>` 命令，如果检查失败，则先通过命令关闭 GC，然后[报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
-   
+- 7.1.5 distsql.go 报 `inconsistent index`。数据索引疑似发生不一致，首先对报错的信息中 index 所在表执行 `admin check table <TableName>` 命令，如果检查失败，则先通过以下命令禁用 GC，然后[报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
+
     ```sql
-    begin;
-    update mysql.tidb set variable_value='72h' where variable_name='tikv_gc_life_time';
-    commit;
+    SET GLOBAL tidb_gc_enable = 0;
     ```
 
 ### 7.2 TiKV

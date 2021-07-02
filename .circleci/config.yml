@@ -17,30 +17,56 @@ jobs:
             echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
 
       - run:
+          name: "Check file encoding"
+          command: |
+            git remote add upstream https://github.com/pingcap/docs-cn.git
+            git fetch upstream
+            wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-file-encoding.py
+            python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+
+      - run:
+          name: "Check git conflicts"
+          command: |
+            wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-conflicts.py
+            python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
+
+      - run:
           name: "Install markdownlint"
           command: |
             npm install -g markdownlint-cli@0.17.0
 
       - run:
-          name: "Lint README"
-          command: markdownlint README.md
-
-      - run:
           name: "Lint edited files"
           command: |
-            git remote add upstream https://github.com/pingcap/docs-cn.git
-            git fetch upstream
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*' ':(exclude)v1.0/*' ':(exclude)v2.0/*' ':(exclude)v2.1-legacy/*')
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
-         name: "Check links"
-         command: |
-           scripts/verify-links.sh
+          name: "Check internal links"
+          command: |
+            scripts/verify-links.sh
 
       - run:
-         name: "Check link anchors"
-         command: |
-           scripts/verify-link-anchors.sh
+          name: "Check internal link anchors"
+          command: |
+            scripts/verify-link-anchors.sh
+
+      - run:
+          name: "Check control characters"
+          command: |
+            wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-control-char.py
+            python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+
+      - run:
+          name: "Check unclosed tags"
+          command: |
+            wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-tags.py
+            python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+
+      - run:
+          name: "Check manual line breaks"
+          command: |
+            wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-manual-line-breaks.py
+            python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
 
   build:
     docker:
@@ -49,6 +75,14 @@ jobs:
 
     steps:
       - checkout
+
+      - run:
+          name: install sdk and awscli
+          command: |
+            sudo pip3 install boto3
+            sudo pip3 install awscli
+            printf "%s\n" ${AWS_ACCESS_KEY} ${AWS_SECRET_KEY} ${AWS_REGION} "json" | aws configure
+
 
       - run:
           name: "Special Check for Golang User"
@@ -64,7 +98,7 @@ jobs:
 
       # echo "222.222.95.49 uc.qbox.me": adds a new host
       - deploy:
-          name: "Publish PDF"
+          name: "Publish PDF to Qiniu and S3"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "master" ]; then

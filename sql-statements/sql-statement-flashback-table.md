@@ -7,13 +7,15 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-table/','/docs-cn
 
 在 TiDB 4.0 中，引入了 `FLASHBACK TABLE` 语法，其功能是在 Garbage Collection (GC) life time 时间内，可以用 `FLASHBACK TABLE` 语句来恢复被 `DROP` 或 `TRUNCATE` 删除的表以及数据。
 
-查询集群的 `tikv_gc_safe_point` 和 `tikv_gc_life_time`。只要被 `DROP` 或 `TRUNCATE` 删除的表是在 `tikv_gc_safe_point` 时间之后，都能用 `FLASHBACK TABLE` 语法来恢复。  
+可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 `safePoint`， 即 GC 已经清理到的时间点：
 
 {{< copyable "sql" >}}
 
   ```sql
-  select * from mysql.tidb where variable_name in ('tikv_gc_safe_point','tikv_gc_life_time');
+  SELECT * FROM mysql.tidb WHERE variable_name = 'tikv_gc_safe_point';
   ```
+
+只要被 `DROP` 或 `TRUNCATE` 删除的表是在 `tikv_gc_safe_point` 时间之后，都能用 `FLASHBACK TABLE` 语法来恢复。
 
 ## 语法
 
@@ -25,17 +27,16 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 ### 语法图
 
-**FlashbackTableStmt:**
+```ebnf+diagram
+FlashbackTableStmt ::=
+    'FLASHBACK' 'TABLE' TableName FlashbackToNewName
 
-![FlashbackTableStmt](/media/sqlgram/FlashbackTableStmt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**FlashbackToNewName:**
-
-![FlashbackToNewName](/media/sqlgram/FlashbackToNewName.png)
+FlashbackToNewName ::=
+    ( 'TO' Identifier )?
+```
 
 ## 注意事项
 
@@ -95,3 +96,7 @@ TiDB 在删除表时，实际上只删除了表的元信息，并将需要删除
 > 不能用 `FLASHBACK` 多次恢复同一个被删除的表，因为 `FLASHBACK` 所恢复表的 table ID 还是被删除表的 table ID，而 TiDB 要求所有还存在的表 table ID 必须全局唯一。
 
  `FLASHBACK TABLE` 是通过快照读获取表的元信息后，再走一次类似于 `CREATE TABLE` 的建表流程，所以 `FLASHBACK TABLE` 实际上也是一种 DDL 操作。
+
+## MySQL 兼容性
+
+该语句是 TiDB 对 MySQL 语法的扩展。

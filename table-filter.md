@@ -36,7 +36,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     #          ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
-* [Lightning](/tidb-lightning/tidb-lightning-overview.md)：
+* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
     {{< copyable "shell-regular" >}}
 
@@ -49,7 +49,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
 
 在 TOML 文件中，表库过滤规则以[字符串数组](https://toml.io/cn/v1.0.0-rc.1#%E6%95%B0%E7%BB%84)的形式指定。以下为各个工具中的使用示例：
 
-* Lightning：
+* TiDB Lightning：
 
     ```toml
     [mydumper]
@@ -61,7 +61,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     ```toml
     [filter]
     rules = ['foo*.*', 'bar*.*']
-    
+
     [[sink.dispatchers]]
     matcher = ['db1.*', 'db2.*', 'db3.*']
     dispatcher = 'ts'
@@ -241,7 +241,7 @@ employees.*
 
 > **注意：**
 >
-> 在 TiDB 生态工具中，无论表库过滤如何设置，系统库总是被排除。系统库有以下六个：
+> 在 TiDB 生态工具的默认配置中，系统库总是被排除。系统库有以下六个：
 >
 > * `INFORMATION_SCHEMA`
 > * `PERFORMANCE_SCHEMA`

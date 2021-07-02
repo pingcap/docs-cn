@@ -8,17 +8,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-kill/','/docs-cn/dev/refere
 
 `KILL TIDB` 语句用于终止 TiDB 中的连接。
 
-按照设计，`KILL TIDB` 语句默认与 MySQL 不兼容。负载均衡器后面通常放有多个 TiDB 服务器，这种默认不兼容有助于防止在错误的 TiDB 服务器上终止连接。
-
 ## 语法图
 
-**KillStmt:**
+```ebnf+diagram
+KillStmt ::= KillOrKillTiDB ( 'CONNECTION' | 'QUERY' )? NUM
 
-![KillStmt](/media/sqlgram/KillStmt.png)
-
-**KillOrKillTiDB:**
-
-![KillOrKillTiDB](/media/sqlgram/KillOrKillTiDB.png)
+KillOrKillTiDB ::= 'KILL' 'TIDB'?
+```
 
 ## 示例
 
@@ -50,8 +46,10 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
+* 按照设计，`KILL TIDB` 语句默认与 MySQL 不兼容。负载均衡器后面通常放有多个 TiDB 服务器，这种默认不兼容有助于防止在错误的 TiDB 服务器上终止连接。
 * `KILL TIDB` 语句是 TiDB 的扩展语法。如果正尝试终止的会话位于同一个 TiDB 服务器上，可在配置文件里设置 [`compatible-kill-query = true`](/tidb-configuration-file.md#compatible-kill-query)。
 
 ## 另请参阅
 
 * [SHOW \[FULL\] PROCESSLIST](/sql-statements/sql-statement-show-processlist.md)
+* [CLUSTER_PROCESSLIST](/information-schema/information-schema-processlist.md#cluster_processlist)

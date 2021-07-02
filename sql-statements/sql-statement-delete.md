@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-delete/','/docs-cn/dev/refe
 
 ## 语法图
 
-**DeleteFromStmt:**
-
-![DeleteFromStmt](/media/sqlgram/DeleteFromStmt.png)
+```ebnf+diagram
+DeleteFromStmt ::=
+    'DELETE' TableOptimizerHints PriorityOpt QuickOptional IgnoreOptional ( 'FROM' ( TableName TableAsNameOpt IndexHintListOpt WhereClauseOptional OrderByOptional LimitClause | TableAliasRefList 'USING' TableRefs WhereClauseOptional ) | TableAliasRefList 'FROM' TableRefs WhereClauseOptional )
+```
 
 ## 示例
 
@@ -86,7 +87,7 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`DELETE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DELETE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

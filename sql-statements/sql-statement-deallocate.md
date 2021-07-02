@@ -10,17 +10,20 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-deallocate/','/docs-cn/dev/
 
 ## 语法图
 
-**DeallocateStmt:**
+```ebnf+diagram
+DeallocateStmt ::=
+    DeallocateSym 'PREPARE' Identifier
 
-![DeallocateStmt](/media/sqlgram/DeallocateStmt.png)
+DeallocateSym ::=
+    'DEALLOCATE'
+|   'DROP'
 
-**DeallocateSym:**
-
-![DeallocateSym](/media/sqlgram/DeallocateSym.png)
-
-**Identifier:**
-
-![Identifier](/media/sqlgram/Identifier.png)
+Identifier ::=
+    identifier
+|   UnReservedKeyword
+|   NotKeywordToken
+|   TiDBKeyword
+```
 
 ## 示例
 
@@ -71,7 +74,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`DEALLOCATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`DEALLOCATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

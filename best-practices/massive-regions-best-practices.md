@@ -96,7 +96,7 @@ TiKV 默认将 `raftstore.store-pool-size` 配置为 `2`。如果 Raftstore 出�
 
 在实际情况中，读写请求并不会均匀分布到每个 Region 上，而是集中在少数的 Region 上。那么可以尽量减少暂时空闲的 Region 的消息数量，这也就是 Hibernate Region 的功能。无必要时可不进行 `raft-base-tick`，即不驱动空闲 Region 的 Raft 状态机，那么就不会触发这些 Region 的 Raft 产生心跳信息，极大地减小了 Raftstore 的工作负担。
 
-Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分支上默认开启。可根据实际情况和需求来开启该功能。Hibernate Region 的配置说明请参考[配置 Hibernate Region](https://github.com/tikv/tikv/blob/master/docs/reference/configuration/raftstore-config.md#hibernate-region)。
+Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分支上默认开启。可根据实际情况和需求来配置此功能的开启和关闭，请参阅[配置 Hibernate Region](/tikv-configuration-file.md#hibernate-regions)。
 
 ### 方法五：开启 `Region Merge`
 
@@ -116,7 +116,7 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 >> pd-ctl config set merge-schedule-limit 8
 ```
 
-详情请参考[如何配置 Region Merge](https://github.com/tikv/tikv/blob/master/docs/how-to/configure/region-merge.md) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
+详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
 
 同时，默认配置的 `Region Merge` 的参数设置较为保守，可以根据需求参考 [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md#region-merge-速度慢) 中提供的方法加快 `Region Merge` 过程的速度。
 

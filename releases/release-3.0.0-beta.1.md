@@ -77,7 +77,7 @@ TiDB Ansible 版本：3.0.0-beta.1
 ## TiKV
 
 + 优化 Coprocessor 计算执行框架，完成 TableScan 算子，单 TableScan 即扫表操作性能提升 5% ~ 30%
-实现行 `BatchRows` 和列 `BatchColumn` 的定义 [#3660](https://github.com/tikv/tikv/pull/3660)
+    - 实现行 `BatchRows` 和列 `BatchColumn` 的定义 [#3660](https://github.com/tikv/tikv/pull/3660)
     - 实现 `VectorLike` 使得编码和解码的数据能够用统一的方式访问 [#4242](https://github.com/tikv/tikv/pull/4242)
     - 定义 `BatchExecutor` 接口，实现将请求转化为 `BatchExecutor` 的方法 [#4243](https://github.com/tikv/tikv/pull/4243)
     - 实现将表达式树转化成 RPN 格式 [#4329](https://github.com/tikv/tikv/pull/4329)

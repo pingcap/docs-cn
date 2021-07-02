@@ -18,13 +18,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-alter-instance/','/docs-cn/
 
 ## 语法图
 
-**AlterInstanceStmt:**
+```ebnf+diagram
+AlterInstanceStmt ::=
+    'ALTER' 'INSTANCE' InstanceOption
 
-![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
-
-**InstanceOption:**
-
-![InstanceOption](/media/sqlgram/InstanceOption.png)
+InstanceOption ::=
+    'RELOAD' 'TLS' ('NO' 'ROLLBACK' 'ON' 'ERROR')?
+```
 
 ## 示例
 

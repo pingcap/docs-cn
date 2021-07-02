@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 
 # 执行计划管理 (SPM)
 
-执行计划管理，又称 SPM (SQL plan management)，是通过执行计划绑定，对执行计划进行人为干预的一系列功能，包括执行计划绑定、自动捕获绑定、自动演进绑定等。
+执行计划管理，又称 SPM (SQL Plan Management)，是通过执行计划绑定，对执行计划进行人为干预的一系列功能，包括执行计划绑定、自动捕获绑定、自动演进绑定等。
 
 ## 执行计划绑定 (SQL Binding)
 
@@ -16,21 +16,89 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 {{< copyable "sql" >}}
 
 ```sql
-CREATE [GLOBAL | SESSION] BINDING FOR SelectStmt USING SelectStmt;
+CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。在不指定作用域时，隐式作用域为 SESSION。被绑定的 SQL 会被参数化后存储到系统表中。在处理 SQL 查询时，只要参数化后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前支持的可创建执行计划绑定的 SQL 类型（BindableStmt）包括：`SELECT`，`DELETE`，`UPDATE` 和带有 `SELECT` 子查询的 `INSERT` / `REPLACE`。
 
-值得注意的是当一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划时，因为优化器在遇到 SESSION 绑定时会将 GLOBAL 绑定的执行计划丢弃，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
+其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
+
+```sql
+-- 类型一：使用 `join` 关键字但不通过 `using` 关键字指定关联列的笛卡尔积
+create global binding for
+    select * from t t1 join t t2
+using
+    select * from t t1 join t t2;
+
+-- 类型二：包含了 `using` 关键字的 `delete` 语句
+create global binding for
+    delete from t1 using t1 join t2 on t1.a = t2.a
+using
+    delete from t1 using t1 join t2 on t1.a = t2.a;
+```
+
+可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
+
+```sql
+-- 类型一的第一种改写：为 `join` 关键字添加 `using` 子句
+create global binding for
+    select * from t t1 join t t2 using (a)
+using
+    select * from t t1 join t t2 using (a);
+
+-- 类型一的第二种改写：去掉 `join` 关键字
+create global binding for
+    select * from t t1, t t2
+using
+    select * from t t1, t t2;
+
+-- 类型二的改写：去掉 `delete` 语句中的 `using` 关键字
+create global binding for
+    delete t1 from t1 join t2 on t1.a = t2.a
+using
+    delete t1 from t1 join t2 on t1.a = t2.a;
+```
+
+> **注意：**
+>
+> 在对带 `SELECT` 子查询的 `INSERT` / `REPLACE` 语句创建执行计划绑定时，需要将想要绑定的优化器 Hints 指定在 `SELECT` 子查询中，而不是 `INSERT` / `REPLACE` 关键字后，不然优化器 Hints 不会生效。
 
 例如：
 
 ```sql
---  创建一个 global binding，指定其使用 sort merge join
+-- Hint 能生效的用法
+create global binding for
+    insert into t1 select * from t2 where a > 1 and b = 1
+using
+    insert into t1 select /*+ use_index(@sel_1 t2, a) */ * from t2 where a > 1 and b = 1;
+
+-- Hint 不能生效的用法
+create global binding for
+    insert into t1 select * from t2 where a > 1 and b = 1
+using
+    insert /*+ use_index(@sel_1 t2, a) */ into t1 select * from t2 where a > 1 and b = 1;
+```
+
+如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
+
+`标准化`：把 SQL 中的常量变成变量参数，对空格和换行符等做标准化处理，并对查询引用到的表显式指定数据库。例如：
+
+```sql
+select * from t where a >    1
+-- 标准化后：
+select * from test . t where a > ?
+```
+
+值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
+
+例如：
+
+```sql
+-- 创建一个 global binding，指定其使用 sort merge join
 create global binding for
     select * from t1, t2 where t1.id = t2.id
 using
-    select /*+ sm_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+    select /*+ merge_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
 explain select * from t1, t2 where t1.id = t2.id;
@@ -47,15 +115,7 @@ explain select * from t1, t2 where t1.id = t2.id;
 
 第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `sm_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `hash_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 HashJoin。
 
-`参数化`：把 SQL 中的常量变成变量参数，并对 SQL 中的空格和换行符等做标准化处理。例如：
-
-```sql
-select * from t where a >    1
--- 参数化后：
-select * from t where a > ？
-```
-
-每个标准化的 SQL 只能同时有一个通过 `CREATE BINDING` 创建的绑定。对相同的标准化 SQL 创建多个绑定时，会保留最后一个创建的绑定，之前的所有绑定（创建的和演进出来的）都会被标记为已删除。但 session 绑定和 global 绑定仍然允许共存，不受这个逻辑影响。
+每个标准化的 SQL 只能同时有一个通过 `CREATE BINDING` 创建的绑定。对相同的标准化 SQL 创建多个绑定时，会保留最后一个创建的绑定，之前的所有绑定（创建的和演进出来的）都会被删除。但 session 绑定和 global 绑定仍然允许共存，不受这个逻辑影响。
 
 另外，创建绑定时，TiDB 要求 session 处于某个数据库上下文中，也就是执行过 `use ${database}` 或者客户端连接时指定了数据库。
 
@@ -67,7 +127,7 @@ select * from t where a > ？
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE a > 2;
 ```
 
-可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `select * from t where a > ?`，而
+可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `select * from test . t where a > ?`，而
 
 {{< copyable "sql" >}}
 
@@ -75,14 +135,18 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2;
 ```
 
-则不可以创建成功，因为原始 SQL 在经过处理后是 `select * from t where a > ?`，而绑定 SQL 在经过处理后是 `select * from t where b > ?`。
+则不可以创建成功，因为原始 SQL 在经过处理后是 `select * from test . t where a > ?`，而绑定 SQL 在经过处理后是 `select * from test . t where b > ?`。
+
+> **注意：**
+>
+> 对于 `PREPARE` / `EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE` / `EXECUTE` 语句。
 
 ### 删除绑定
 
 {{< copyable "sql" >}}
 
 ```sql
-DROP [GLOBAL | SESSION] BINDING FOR SelectStmt;
+DROP [GLOBAL | SESSION] BINDING FOR BindableStmt;
 ```
 
 该语句可以在 GLOBAL 或者 SESSION 作用域内删除指定的执行计划绑定，在不指定作用域时默认作用域为 SESSION。
@@ -131,7 +195,15 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 >
 > 自动绑定功能依赖于 [Statement Summary](/statement-summary-tables.md)，因此在使用自动绑定之前需打开 Statement Summary 开关。
 
-开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）会遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动捕获绑定。
+开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）会遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动捕获绑定。绑定的执行计划为 Statement Summary 中记录执行这条语句时使用的执行计划。
+
+对于以下几种 SQL 语句，TiDB 不会自动捕获绑定：
+
+- EXPLAIN 和 EXPLAIN ANALYZE 语句；
+- TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
+- 存在手动创建的执行计划绑定的 SQL 语句；
+
+对于 `PREPARE` / `EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE` / `EXECUTE` 语句）自动捕获绑定。
 
 > **注意：**
 >
@@ -139,7 +211,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 ## 自动演进绑定 (Baseline Evolution)
 
-自动演进绑定，在 TiDB 4.0.0-rc 版本引入，是执行计划管理的重要功能之一。
+自动演进绑定，在 TiDB 4.0 版本引入，是执行计划管理的重要功能之一。
 
 由于某些数据变更后，原先绑定的执行计划可能是一个不优的计划。为了解决该问题，引入自动演进绑定功能来自动优化已经绑定的执行计划。
 
@@ -159,9 +231,9 @@ set global tidb_evolve_plan_baselines = on;
 
 > **注意：**
 >
-> 设置 global 系统变量在当前 session 并不会生效，只会在新创建的 session 生效。可以将 global 关键字替换为 session 使当前 session 开启演进功能。
+> 自动演进绑定功能目前不是 GA (Generally Available) 状态，不推荐在生产环境打开该功能。
 
-在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话，会将其标记为可使用的绑定。以下示例描述上述过程。
+在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 
 假如有表 `t` 定义如下：
 
@@ -193,7 +265,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
 绑定的演进可以解决这类问题。当优化器感知到表数据变化后，会对这条查询生成使用索引 `b` 的执行计划。但由于绑定的存在，这个执行计划不会被采纳和执行，不过它会被存在后台的演进列表里。在演进过程中，如果它被验证为执行时间明显低于使用索引 `a` 的执行时间（即当前绑定的执行计划），那么索引 `b` 会被加入到可用的绑定列表中。在此之后，当这条查询再次被执行时，优化器首先生成使用索引 `b` 的执行计划，并确认它在绑定列表中，所以会采纳它并执行，进而可以在数据变化后降低这条查询的执行时间。
 
-为了减少自动演进对集群的影响，可以通过 `tidb_evolve_plan_task_max_time` 来限制每个执行计划运行的最长时间，其默认值为 `600s`；通过 `tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time` 可以限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
+为了减少自动演进对集群的影响，可以通过设置 `tidb_evolve_plan_task_max_time` 来限制每个执行计划运行的最长时间，其默认值为 `600s`。实际在验证执行计划时，计划的最长运行时间还会被限制为不超过已验证执行计划的运行时间的两倍；通过 `tidb_evolve_plan_task_start_time` 和 `tidb_evolve_plan_task_end_time` 可以限制运行演进任务的时间窗口，默认值分别为 `00:00 +0000` 和 `23:59 +0000`。
 
 ### 注意事项
 

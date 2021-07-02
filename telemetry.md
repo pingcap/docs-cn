@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/telemetry/']
 
 # 遥测
 
-TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用情况信息，PingCAP 可以了解常见的 TiDB 集群操作，从而确定新功能优先级。
+TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品，例如，通过这些使用信息，PingCAP 可以了解常见的 TiDB 集群操作，从而确定新功能优先级。
 
 ## 哪些使用情况信息会被收集？
 
@@ -18,10 +18,12 @@ TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些�
 
 ### TiDB
 
-当 TiDB 遥测功能开启时，TiDB 集群将会以 24 小时为周期收集使用情况信息并分享给 PingCAP，包括（但不限于）：
+当 TiDB 遥测功能开启时，TiDB 集群将会以 6 小时为周期收集使用情况信息并分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
 - 集群的部署情况，包括各个组件所在的硬件信息（CPU、内存、磁盘）、组件版本号、操作系统版本号等
+- 系统的查询请求状态，例如查询请求次数、持续时长等
+- 系统组件的使用情况，例如 Async Commit 功能是否有被使用
 
 可以通过执行以下 SQL 语句查看 TiDB 收集的使用情况信息内容：
 
@@ -43,7 +45,7 @@ ADMIN SHOW TELEMETRY;
 
 ### TiUP
 
-当 TiUP 遥测功能开启时，执行 TiUP 命令时将会将使用情况信息分享给 PingCAP，包括（但不限于）：
+当 TiUP 遥测功能开启时，执行 TiUP 命令时会将使用情况信息分享给 PingCAP，包括（但不限于）：
 
 - 随机生成的遥测标示符
 - TiUP 命令的执行情况，如命令执行是否成功、命令执行耗时等
@@ -117,25 +119,6 @@ server_configs:
   tidb:
     enable-telemetry: false
 ```
-
-</details>
-
-<details>
-  <summary>通过 TiDB Ansible 部署</summary>
-
-找到部署配置文件 `tidb-ansible/conf/tidb.yml` 中以下内容：
-
-```yaml
-# enable-telemetry: true
-```
-
-将其修改为：
-
-```yaml
-enable-telemetry: false
-```
-
-详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
 
 </details>
 
@@ -224,29 +207,6 @@ server_configs:
   pd:
     dashboard.enable-telemetry: false
 ```
-
-</details>
-
-<details>
-  <summary>通过 TiDB Ansible 部署</summary>
-
-找到部署配置文件 `tidb-ansible/conf/pd.yml` 中以下内容：
-
-```yaml
-dashboard:
-  ...
-  # enable-telemetry: true
-```
-
-将其修改为：
-
-```yaml
-dashboard:
-  ...
-  enable-telemetry: false
-```
-
-详情参见[使用 TiDB Ansible 部署](/online-deployment-using-ansible.md)。
 
 </details>
 
