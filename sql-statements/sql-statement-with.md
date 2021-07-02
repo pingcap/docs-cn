@@ -36,7 +36,6 @@ CommonTableExpr ::=
 
 ```ebnf+diagram
 IdentListWithParenOpt ::=
-
 |       '(' IdentList ')'
 ```
 
