@@ -13,6 +13,7 @@ TiDB 版本：5.0.3
 + TiDB
 
     - v4.0 集群升级到 v5.0 或更高版本（dev 和 v5.1）的集群后，`tidb_multi_statement_mode` 变量的默认值由 `WARN` 变为 `OFF`
+    - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format` [#23541](https://github.com/pingcap/tidb/issues/23541)
 
 ## 功能增强
 
