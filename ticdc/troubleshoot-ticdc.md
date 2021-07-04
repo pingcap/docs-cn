@@ -316,7 +316,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
 
-## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`。
+## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`，为什么？
 
 自 v4.0.8 起，如果 changefeed 使用 canal 或者 maxwell 协议输出，TiCDC 会自动开启 Old Value 功能。但如果 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本的，changefeed 使用 canal 或 maxwell 协议的同时 Old Value 功能被禁用，此时会出现该报错。可以按照以下步骤解决该报错：
 
