@@ -354,7 +354,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 + 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)。
 + 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://asktug.com/tags/ticdc)。
 
-## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为 `REPLACE INTO`。
+## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
 
