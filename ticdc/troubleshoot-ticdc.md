@@ -420,14 +420,14 @@ mysql root@127.0.0.1:test> show create table test;
 
 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 
-- Select
-- Index
-- Insert
-- Update
-- Delete
-- Create
-- Drop
-- Alter
-- Create View
+- `Select`
+- `Index`
+- `Insert`
+- `Update`
+- `Delete`
+- `Create`
+- `Drop`
+- `Alter`
+- `Create View`
 
 如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
