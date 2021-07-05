@@ -79,7 +79,7 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 在 TiDB 的使用过程中，可以选择以下方式监控 TiDB 集群运行情况并查看性能数据。
 
 - [TiDB Dashboard](/dashboard-intro.md)：查看集群整体运行概况，分析集群读写流量分布及趋势变化，详细了解耗时较长的 SQL 语句的执行信息。
-- [监控系统 (Prometheus & Grafana)](/grafana-overview-dashboard.md)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
+- [监控系统 (Prometheus & Grafana)](/grafana-overview-dashboard.md)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
 
 如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash-alert-rules.md) 。
 
