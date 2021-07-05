@@ -644,7 +644,7 @@ Query OK, 0 rows affected (0.09 sec)
 ### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值：`OFF`（表示关闭）
+- 默认值：`OFF`（表示关闭）。如需修改此变量的默认值，请配置 [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) 参数。
 - 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
     - 0 或 OFF，代表不强制使用 MPP 模式（默认）
     - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
