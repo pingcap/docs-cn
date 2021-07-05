@@ -78,7 +78,7 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
-### datadir
+### `datadir`
 
 - 作用域：NONE
 - 默认值：/tmp/tidb
