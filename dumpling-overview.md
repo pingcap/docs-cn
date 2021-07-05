@@ -166,7 +166,7 @@ dumpling \
 
 Dumpling 在 v4.0.8 版本及更新版本中支持导出到云盘。如果需要将数据备份到 Amazon 的 S3 后端存储，那么需要在 `-o` 参数中指定 S3 的存储路径。
 
-可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 Dumpling 节点。
 
