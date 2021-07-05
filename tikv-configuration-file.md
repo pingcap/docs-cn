@@ -1274,10 +1274,7 @@ raftdb 相关配置项。
 + 默认值：1s
 
 <<<<<<< HEAD
-### `old-value-cache-size` <span class="version-mark">从 v5.0 版本开始引入</span>
-=======
-### `old-value-cache-memory-quota`
->>>>>>> ae3982f29 (tikv: update cdc config (#6418))
+### `old-value-cache-memory-quota` <span class="version-mark">从 v5.0.3 版本开始引入</span>
 
 + 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。
 + 默认值：512MB
