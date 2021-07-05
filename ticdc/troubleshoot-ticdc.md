@@ -418,7 +418,7 @@ mysql root@127.0.0.1:test> show create table test;
 
 ## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
 
-Sink 使用的数据库用户需要具有以下权限：
+Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 
 - Select
 - Index
