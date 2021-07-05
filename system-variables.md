@@ -1093,11 +1093,11 @@ explain select * from t where age=5;
 
 > **警告：**
 >
-> 目前分区表动态模式为实验特性，不建议在生产环境中使用。
+> 目前分区表动态裁剪模式为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：static
-- 这个变量用来设置是否开启分区表动态模式。关于动态模式的详细说明请参阅[分区表动态模式](/partitioned-table.md#动态模式)。
+- 这个变量用来设置是否开启分区表动态裁剪模式。关于动态裁剪模式的详细说明请参阅[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
