@@ -227,7 +227,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ## 为什么 TiCDC 到 Kafka 的同步任务延时越来越大？
 
-* 请参考 [如何查看 TiCDC 同步任务的状态？](/ticdc/troubleshoot-ticdc.md#如何查看-ticdc-同步任务的状态) 检查下同步任务的状态是否正常。
+* 请参考[如何查看 TiCDC 同步任务的状态？](/ticdc/troubleshoot-ticdc.md#如何查看-ticdc-同步任务的状态)检查下同步任务的状态是否正常。
 * 请适当调整 Kafka 的以下参数：
     * `message.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
     * `replica.fetch.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
@@ -239,7 +239,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 64MB）；通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量，目前仅对 Kafka 的 protocol 为 `default` 时有效（可选，默认值为 `4096`）;
+可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 64MB）；通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量，目前仅对 Kafka 的 protocol 为 `default` 时有效（可选，默认值为 `4096`）。
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
@@ -274,7 +274,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-的类型码)。
 
-## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`
+## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`，怎么办？
 
 自 v4.0.9 起可以尝试开启 unified sorter 特性进行同步；或者使用 BR 工具进行一次增量备份和恢复，然后从新的时间点开启 TiCDC 同步任务。TiCDC 将会在后续版本中对该问题进行优化。
 
@@ -315,7 +315,7 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
 
-## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`
+## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`，为什么？
 
 自 v4.0.8 起，如果 changefeed 使用 canal 或者 maxwell 协议输出，TiCDC 会自动开启 Old Value 功能。但如果 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本的，changefeed 使用 canal 或 maxwell 协议的同时 Old Value 功能被禁用，此时会出现该报错。可以按照以下步骤解决该报错：
 
@@ -350,11 +350,11 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 
 如果 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 的结果中没有 `gc_worker service_id`：
 
-+ 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)
-+ 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)
++ 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)。
++ 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)。
 + 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://asktug.com/tags/ticdc)。
 
-## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为 `REPLACE INTO`
+## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
 
