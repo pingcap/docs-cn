@@ -430,4 +430,4 @@ Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 - Alter
 - Create View
 
-如果要同步 `recover table` 到下游 TiDB，需要具有 `Super` 权限。
+如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
