@@ -4,7 +4,7 @@ title: HTAP 深入探索指南
 
 # HTAP 深入探索指南
 
-本指南介绍如何快速深入探索并使用 TiDB 在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能。
+本指南介绍快速深入探索并使用 TiDB 在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能。
 
 > **注意：**
 >
