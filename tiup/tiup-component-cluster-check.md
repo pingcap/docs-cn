@@ -205,7 +205,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ### -p, --password
 
-- 在连接目标机器时使用密码登陆：
+- 在连接目标机器时使用密码登录：
 
     - 对于指定了 `--cluster` 的集群，密码为部署集群时拓扑文件中指定的用户的密码
     - 对于未指定 `--cluster` 的集群，密码为 `-u/--user` 参数指定的用户的密码

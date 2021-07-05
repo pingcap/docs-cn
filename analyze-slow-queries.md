@@ -10,14 +10,14 @@ summary: 学习如何定位和分析慢查询。
 1. 从大量查询中定位出哪一类查询比较慢
 2. 分析这类慢查询的原因
 
-第一步可以通过 [慢日志](/identify-slow-queries.md)、[statement-summary](/statement-summary-tables.md) 方便地定位，推荐直接使用 [TiDB Dashboard](/dashboard/dashboard-overview.md)，它整合了这两个功能，且能方便直观地在浏览器中展示出来。本文聚焦第二步。
+第一步可以通过[慢日志](/identify-slow-queries.md)、[statement-summary](/statement-summary-tables.md) 方便地定位，推荐直接使用 [TiDB Dashboard](/dashboard/dashboard-overview.md)，它整合了这两个功能，且能方便直观地在浏览器中展示出来。本文聚焦第二步。
 
 首先将慢查询归因成两大类：
 
-- 优化器问题：如选错索引，选错 Join 类型或顺序
-- 系统性问题：将非优化器问题都归结于此类，如：某个 TiKV 实例忙导致处理请求慢，Region 信息过期导致查询变慢
+- 优化器问题：如选错索引，选错 Join 类型或顺序。
+- 系统性问题：将非优化器问题都归结于此类。如：某个 TiKV 实例忙导致处理请求慢，Region 信息过期导致查询变慢。
 
-实际中，优化器问题可能造成系统性问题，如对于某类查询，优化器应使用索引，但却使用了全表扫，这可能导致这类 SQL 消耗大量资源，造成某些 KV 实例 CPU 飚高等，表现上看就是一个系统性问题，但本质是优化器问题。
+实际中，优化器问题可能造成系统性问题。例如对于某类查询，优化器应使用索引，但却使用了全表扫。这可能导致这类 SQL 消耗大量资源，造成某些 KV 实例 CPU 飚高等问题。表现上看就是一个系统性问题，但本质是优化器问题。
 
 分析优化器问题需要有判断执行计划是否合理的能力，而系统性问题的定位相对简单，因此面对慢查询推荐的分析过程如下：
 
@@ -41,7 +41,7 @@ summary: 学习如何定位和分析慢查询。
 - 慢日志记录了 SQL 从解析到返回，几乎所有阶段的耗时，较为全面（在 TiDB Dashboard 中可以直观地查询和分析慢日志）；
 - `explain analyze` 可以拿到 SQL 实际执行中每个执行算子的耗时，对执行耗时有更细分的统计；
 
-总的来说，利用慢日志和 `explain analyze` 可以比较准确地定位查询的瓶颈点，帮助你判断这条 SQL 慢在哪个模块（TiDB/TiKV），慢在哪个阶段，下面会有一些例子。
+总的来说，利用慢日志和 `explain analyze` 可以比较准确地定位查询的瓶颈点，帮助你判断这条 SQL 慢在哪个模块 (TiDB/TiKV) ，慢在哪个阶段，下面会有一些例子。
 
 另外在 4.0.3 之后，慢日志中的 `Plan` 字段也会包含 SQL 的执行信息，也就是 `explain analyze` 的结果，这样一来 SQL 的所有耗时信息都可以在慢日志中找到。
 
@@ -57,7 +57,7 @@ summary: 学习如何定位和分析慢查询。
 
 ### TiKV 处理慢
 
-如果是 TiKV 处理慢，可以很明显的通过 `explain analyze` 中看出来，如下面这个例子，可以看到 `StreamAgg_8` 和 `TableFullScan_15` 这两个 `tikv-task` （在 `task` 列可以看出这两个任务类型是 `cop[tikv]`） 花费了 `170ms`，而 TiDB 部分的算子耗时，减去这 `170ms` 后，耗时占比非常小，说明瓶颈在 TiKV。
+如果是 TiKV 处理慢，可以很明显的通过 `explain analyze` 中看出来。例如下面这个例子，可以看到 `StreamAgg_8` 和 `TableFullScan_15` 这两个 `tikv-task` （在 `task` 列可以看出这两个任务类型是 `cop[tikv]`） 花费了 `170ms`，而 TiDB 部分的算子耗时，减去这 `170ms` 后，耗时占比非常小，说明瓶颈在 TiKV。
 
 ```sql
 +----------------------------+---------+---------+-----------+---------------+------------------------------------------------------------------------------+---------------------------------+-----------+------+
@@ -131,7 +131,7 @@ TiDB 侧 Region 信息可能过期，此时 TiKV 可能返回 `regionMiss` 的�
 
 #### 子查询被提前执行
 
-对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 where a = (select max(a) from t2)` ，`select max(a) from t2` 部分可能在优化阶段被提前执行，这种查询用 `explain analyze` 看不到对应的耗时，如下：
+对于带有非关联子查询的语句，子查询部分可能被提前执行，如：`select * from t1 where a = (select max(a) from t2)` ，`select max(a) from t2` 部分可能在优化阶段被提前执行。这种查询用 `explain analyze` 看不到对应的耗时，如下：
 
 ```sql
 mysql> explain analyze select count(*) from t where a=(select max(t1.a) from t t1, t t2 where t1.a=t2.a);
@@ -242,11 +242,11 @@ mysql> explain select * from t t1, t t2 where t1.a>t2.a;
 4. `select b from t where c=3`：多列索引没有前缀条件就用不上，所以会用 `IndexFullScan`；
 5. ...
 
-上面举例了数据读入相关的算子，在 [理解 TiDB 执行计划](/explain-overview.md) 中描述了更多算子的情况；
+上面举例了数据读入相关的算子，在[理解 TiDB 执行计划](/explain-overview.md)中描述了更多算子的情况。
 
-另外阅读 [SQL 性能调优](/sql-tuning-overview.md) 整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
+另外阅读 [SQL 性能调优](/sql-tuning-overview.md)整个小节能增加你对 TiDB 优化器的了解，帮助判断执行计划是否合理。
 
-由于大多数优化器问题在 [SQL 性能调优](/sql-tuning-overview.md) 已经有解释，这里就直接列举出来跳转过去：
+由于大多数优化器问题在 [SQL 性能调优](/sql-tuning-overview.md)已经有解释，这里就直接列举出来跳转过去：
 
 1. [索引选择错误](/wrong-index-solution.md)
 2. [Join 顺序错误](/join-reorder.md)

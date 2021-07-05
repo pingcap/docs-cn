@@ -395,6 +395,7 @@
       + [精度数学](/functions-and-operators/precision-math.md)
       + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+      + [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
     + [聚簇索引](/clustered-indexes.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
@@ -541,6 +542,7 @@
   + v5.1
     - [5.1.0](/releases/release-5.1.0.md)
   + v5.0
+    - [5.0.3](/releases/release-5.0.3.md)
     - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)

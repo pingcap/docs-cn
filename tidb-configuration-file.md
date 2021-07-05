@@ -170,6 +170,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
+#### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
+- 默认值：0
+- 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
 ## log
 
 日志相关的配置项。
@@ -448,7 +454,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询.
 + 默认值：false
-+ 该配置项是系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。
++ 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
 ## prepared-plan-cache
 
