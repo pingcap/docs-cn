@@ -1289,10 +1289,10 @@ set tidb_slow_log_threshold = 200;
 - 默认值：0
 - 这个变量表示用户会话的空闲超时，单位为秒。`0` 代表没有时间限制。
 
-### warning_count
+### `warning_count`
 
 - 作用域: SESSION
-- 默认值: `0`
+- 默认值：0
 - 这个只读变量表示之前执行语句中出现的警告数。
 
 ### `windowing_use_high_precision`
