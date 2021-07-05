@@ -136,7 +136,7 @@ mysql> SELECT * FROM t1;
 - 默认值：0
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### license
+### `license`
 
 - 作用域：NONE
 - 默认值：Apache License 2.0
