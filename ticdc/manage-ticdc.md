@@ -85,12 +85,12 @@ tiup cluster upgrade <cluster-name> v5.1.0
 
 以上状态流转图中的编号说明如下：
 
-- ① 执行 `changefeed pause` 命令  
-- ② 执行 `changefeed resume` 恢复同步任务  
-- ③ `changefeed` 运行过程中发生可恢复的错误  
-- ④ 执行 `changefeed resume` 恢复同步任务  
-- ⑤ `changefeed` 运行过程中发生不可恢复的错误  
-- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止  
+- ① 执行 `changefeed pause` 命令。 
+- ② 执行 `changefeed resume` 恢复同步任务。
+- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ④ 执行 `changefeed resume` 恢复同步任务。
+- ⑤ `changefeed` 运行过程中发生不可恢复的错误。
+- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
 
 #### 创建同步任务
 
@@ -236,7 +236,7 @@ URI 中可配置的的参数如下：
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
-更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+更多关于 Pulsar 的参数解释，参见 [“pulsar-client-go ClientOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [“pulsar-client-go ProducerOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
 
 #### 使用同步任务配置文件
 
@@ -280,7 +280,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
     - `stopped`: 停止同步（手动暂停）
     - `error`: 停止同步（出错）
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 #### 查询特定同步任务
 
