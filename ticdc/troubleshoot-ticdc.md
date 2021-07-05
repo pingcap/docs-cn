@@ -173,7 +173,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > **Note:**
 >
 > * This feature is introduced in TiCDC 4.0.2.
-> * TiCDC currently supports outputting data changes in the Canal format only to Kafka.
+> * TiCDC currently supports outputting data changes in the Canal format only to MQ sinks such as Kafka and Pulsar.
 
 For more information, refer to [Create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task).
 
