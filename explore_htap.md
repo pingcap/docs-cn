@@ -42,52 +42,61 @@ TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险�
 
 - TiFlash
 
-  - 如果已经部署 TiDB 集群但尚未部署 TiFlash 节点，请参阅扩容 TiFlash 节点中的步骤在现有 TiDB 集群中添加 TiFlash 节点。
+    - 如果已经部署 TiDB 集群但尚未部署 TiFlash 节点，请参阅[扩容 TiFlash 节点](/scale-tidb-using-tiup.md#扩容-tiflash-节点)中的步骤在现有 TiDB 集群中添加 TiFlash 节点。
+    - 如果尚未部署 TiDB 集群，请使用 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)，并在包含最小拓扑的基础上，同时[增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md)。
+    - 在决定如何选择TiFlash节点数量时，请考虑以下几种业务场景：
 
-  - 如果尚未部署 TiDB 集群，请使用 TiUP 部署 TiDB 集群，并在包含最小拓扑的基础上，同时增加 TiFlash 拓扑架构。
-  
-  - 在决定如何选择TiFlash节点数量时，请考虑以下几种业务场景：
+        - 如果业务场景以 OLTP 为主，做轻量级的 adhoc OLAP 计算，通常部署 1 个或几个 TiFlash 节点就可以感受到明显加速效果。
+        - 当 OLTP 数据吞吐量对节点 I/O 无明显压力时，每个 TiFlash 节点将会使用较多资源用于计算，这样 TiFlash 集群可实现近似线性的扩展能力。TiFlash 节点数量应根据期待的性能和响应时间调整。
+        - 当 OLTP 数据吞吐量较高时（例如写入或更新超过千万行/小时），由于网络和物理磁盘的写入能力有限，内部 TiKV 与 TiFlash 之间的 I/O 会成为主要瓶颈，也容易产生读写热点。此时TiFlash 节点数与 OLAP 计算量有较复杂非线性关系，需要根据具体系统状态调整节点数量。
 
-    - 如果业务场景以 OLTP 为主，做轻量级的 adhoc OLAP 计算，通常部署 1 个或几个 TiFlash 节点就可以感受到明显加速效果。
-    - 当 OLTP 数据吞吐量对节点 I/O 无明显压力时，每个 TiFlash 节点将会使用较多资源用于计算，这样 TiFlash 集群可实现近似线性的扩展能力。TiFlash 节点数量应根据期待的性能和响应时间调整。
-    - 当 OLTP 数据吞吐量较高时（例如写入或更新超过千万行/小时），由于网络和物理磁盘的写入能力有限，内部 TiKV 与 TiFlash 之间的 I/O 会成为主要瓶颈，也容易产生读写热点。此时TiFlash 节点数与 OLAP 计算量有较复杂非线性关系，需要根据具体系统状态调整节点数量。
 - TiSpark
-  - 如果你的业务需要基于 Spark 进行分析，请部署 TiSpark (暂不支持 Spark 3.x)。具体步骤，请参阅 TiSpark 用户指南。
-- 实时流处理
-  - 如果你想将 TiDB 与 Flink 结合构建高效易用的实时数仓，请参与 Apache Flink x TiDB Meetup 系列讲座。
+
+    - 如果你的业务需要基于 Spark 进行分析，请部署 TiSpark (暂不支持 Spark 3.x)。具体步骤，请参阅 [TiSpark 用户指南](/tispark-overview.md)。
+
+<!--    - 实时流处理
+  - 如果你想将 TiDB 与 Flink 结合构建高效易用的实时数仓，请参与 Apache Flink x TiDB Meetup 系列讲座。-->
 
 ## HTAP 数据准备
 
 TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步到 TiFlash 的数据表。指定后，TiDB 将创建对应的 TiFlash 副本。
-- 如果 TiDB 集群中还没有数据，请先迁移数据到 TiDB。详情请参阅数据迁移。
-- 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅使用 TiFlash。
+
+- 如果 TiDB 集群中还没有数据，请先迁移数据到 TiDB。详情请参阅[数据迁移](/migration-overview.md)。
+- 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅[使用 TiFlash](/use-tiflash.md)。
 
 对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。
-注意： 
-TiFlash 的 MPP 模式默认开启。当执行 SQL 语句时，TiDB 会通过优化器自动判断并选择是否以 MPP 模式执行。
-- 如需关闭 MPP 模式，请将系统变量 tidb_allow_mpp 的值设置为 OFF。
-- 如需强制使用 TiFlash 的 MPP 模式执行查询，请将系统变量 tidb_allow_mpp 和 tidb_enforce_mpp  的值设置为 ON。
-- 如需查看 TiDB 是否选择以 MPP 模式执行，你可以通过 EXPLAIN 语句查看具体的查询执行计划。如果 EXPLAIN 语句的结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
+
+> 注意： 
+> 
+> TiFlash 的 MPP 模式默认开启。当执行 SQL 语句时，TiDB 会通过优化器自动判断并选择是否以 MPP 模式执行。
+>
+> - 如需关闭 MPP 模式，请将系统变量 [tidb_allow_mpp](system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 的值设置为 OFF。
+> - 如需强制使用 TiFlash 的 MPP 模式执行查询，请将系统变量 [tidb_allow_mpp](system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [tidb_enforce_mpp](system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值设置为 ON。
+> - 如需查看 TiDB 是否选择以 MPP 模式执行，你可以[通过 EXPLAIN 语句查看具体的查询执行计划](/explain-mpp.md#用-explain-查看-mpp-模式查询的执行计划)。如果 EXPLAIN 语句的结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
 
 ## HTAP 性能监控
 
 在 TiDB 的使用过程中，可以选择以下方式监控 TiDB 集群运行情况并查看性能数据。
-- TiDB Dashboard：查看集群整体运行概况，分析集群读写流量分布及趋势变化，详细了解耗时较长的 SQL 语句的执行信息。
-- 监控系统 (Prometheus & Grafana)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
-如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 TiDB 集群报警规则 和 TiFlash 报警规则。
+
+- [TiDB Dashboard](/dashboard-intro.md)：查看集群整体运行概况，分析集群读写流量分布及趋势变化，详细了解耗时较长的 SQL 语句的执行信息。
+- [监控系统 (Prometheus & Grafana)](/grafana-overview-dashboard.md)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
+
+如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash-alert-rules.md) 。
 
 ## HTAP 故障诊断
 
 在使用 TiDB 的过程中如果遇到问题，请参阅以下文档：
-- 分析慢查询
-- 定位消耗系统资源多的查询
-- TiDB 热点问题处理
-- TiDB 集群故障诊断
-- TiFlash 常见问题
-除此之外，你可以在 Github Issues 新建一个 Issue 反馈问题，或者在 AskTUG 提交你的问题。
+
+- [分析慢查询](/analyze-slow-queries.md)
+- [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+- [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)
+- [TiDB 集群故障诊断](/troubleshoot-tidb-cluster.md)
+- [TiFlash 常见问题](/troubleshoot-tiflash.md)
+
+除此之外，你可以在 [Github Issues](https://github.com/pingcap/tiflash/issues) 新建一个 Issue 反馈问题，或者在 [AskTUG](https://asktug.com/) 提交你的问题。
 
 ## 探索更多
 
-- 如果要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 TiFlash 集群运维。
-- 如果需要移除某个 TiFlash 节点，请参阅缩容 TiFlash 节点。
-- 如果想了解 TiDB 在未来的版本中将会有哪些可用性和稳定性的提升，请参阅 TiDB Roadmap。
+- 如果要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/maintain-tiflash.md)。
+- 如果需要移除某个 TiFlash 节点，请参阅[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
+- 如果想了解 TiDB 在未来的版本中将会有哪些可用性和稳定性的提升，请参阅 [TiDB Roadmap](/roadmap.md)。
