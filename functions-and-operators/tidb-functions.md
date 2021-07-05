@@ -13,7 +13,7 @@ summary: 学习使用 TiDB 特有的函数。
 
 ## TIDB_DECODE_KEY
 
-`TIDB_DECODE_KEY` 函数可用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。
+`TIDB_DECODE_KEY` 函数用于将 TiDB 编码的键输入解码为包含 `_tidb_rowid` 和 `table_id` 的 JSON 结构。你可以在一些系统表和日志输出中找到 TiDB 的编码键。
 
 ### 语法图
 
@@ -43,7 +43,7 @@ TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 
 ## TIDB_DECODE_PLAN
 
-`TIDB_DECODE_PLAN` 函数可用于解码 TiDB 执行计划。你可以在慢查询日志中找到 TiDB 执行计划。
+`TIDB_DECODE_PLAN` 函数用于解码 TiDB 执行计划。你可以在慢查询日志中找到 TiDB 执行计划。
 
 ### 语法图
 
@@ -74,7 +74,7 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
 
 ## TIDB_IS_DDL_OWNER
 
-`TIDB_IS_DDL_OWNER` 函数可用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
+`TIDB_IS_DDL_OWNER` 函数用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
 
 ### 语法图
 
@@ -111,7 +111,7 @@ SELECT tidb_is_ddl_owner();
 
 ## TIDB_PARSE_TSO
 
-`TIDB_PARSE_TSO` 函数可用于从 TiDB TSO 时间戳中提取物理时间戳。
+`TIDB_PARSE_TSO` 函数用于从 TiDB TSO 时间戳中提取物理时间戳。
 
 TSO 指 Time Stamp Oracle，是 PD (Placement Driver) 为每个事务提供的单调递增的时间戳。
 
@@ -158,7 +158,7 @@ ROLLBACK;
 
 ## TIDB_VERSION
 
-`TIDB_VERSION` 函数可用于获取当前连接的 TiDB 服务器版本和构建详细信息。向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
+`TIDB_VERSION` 函数用于获取当前连接的 TiDB 服务器版本和构建详细信息。向 GitHub 上提交 issue 时，你可使用此函数获取相关信息。
 
 ### 语法图
 
