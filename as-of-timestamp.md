@@ -155,7 +155,7 @@ select * from t as of timestamp '2021-05-26 16:45:26';
 
 > **注意：**
 >
-> 通过 `SELECT` 语句读取多个表时要保证 TIMESTAMP EXPRESSION 是一致的。 比如： `select * from t as of timestamp NOW() - INTERVAL 2 SECOND, c as of timestamp NOW() - INTERVAL 2 SECOND;`。此外，在 `SELECT` 语句中，你必须要指定相关数据表的 as of 信息，若不指定，`SELECT` 语句会默认读最新的数据。
+> 通过 `SELECT` 语句读取多个表时要保证 TIMESTAMP EXPRESSION 是一致的。比如：`select * from t as of timestamp NOW() - INTERVAL 2 SECOND, c as of timestamp NOW() - INTERVAL 2 SECOND;`。此外，在 `SELECT` 语句中，你必须要指定相关数据表的 as of 信息，若不指定，`SELECT` 语句会默认读最新的数据。
 
 ### 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 
