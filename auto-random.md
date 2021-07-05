@@ -45,7 +45,7 @@ CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
 此时再执行形如 `INSERT INTO t(b) values...` 的 `INSERT` 语句。
 
 + 隐式分配：如果该 `INSERT` 语句没有指定整型主键列（`a` 列）的值，或者指定为 `NULL`，TiDB 会为该列自动分配值。该值不保证自增，不保证连续，只保证唯一，避免了连续的行 ID 带来的热点问题。
-+ 显式插入：如果该 `INSERT` 语句显式指定了整型主键列的值，和 `AUTO_INCREMENT` 属性类似，TiDB 会保存该值。注意，如果未在系统变量 `@@sql_mode` 中设置 `NO_AUTO_VALUE_ON_ZERO`， 即使显式指定整型主键列的值为 `0`，TiDB 也会为该列自动分配值。
++ 显式插入：如果该 `INSERT` 语句显式指定了整型主键列的值，和 `AUTO_INCREMENT` 属性类似，TiDB 会保存该值。注意，如果未在系统变量 `@@sql_mode` 中设置 `NO_AUTO_VALUE_ON_ZERO`，即使显式指定整型主键列的值为 `0`，TiDB 也会为该列自动分配值。
 
 > **注意：**
 >

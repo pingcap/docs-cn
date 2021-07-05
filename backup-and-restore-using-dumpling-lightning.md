@@ -31,7 +31,7 @@ aliases: ['/docs-cn/stable/backup-and-restore-using-dumpling-lightning/','/docs-
 
 ## 从 TiDB 备份数据
 
-使用 `dumpling` 从 TiDB 备份数据的命令如下:
+使用 `dumpling` 从 TiDB 备份数据的命令如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -39,7 +39,7 @@ aliases: ['/docs-cn/stable/backup-and-restore-using-dumpling-lightning/','/docs-
 ./bin/dumpling -h 127.0.0.1 -P 4000 -u root -t 32 -F 256m -T test.t1 -T test.t2 -o ./var/test
 ```
 
-上述命令中，用 `-T test.t1 -T test.t2` 表明只导出 `test`.`t1`，`test`.`t2` 两张表。更多导出数据筛选方式可以参考[筛选导出的数据](/dumpling-overview.md#筛选导出的数据)。
+上述命令中，用 `-T test.t1 -T test.t2` 表明只导出 `test.t1`，`test.t2` 两张表。更多导出数据筛选方式可以参考[筛选导出的数据](/dumpling-overview.md#筛选导出的数据)。
 
 `-t 32` 表明使用 32 个线程来导出数据。`-F 256m` 是将实际的表切分成一定大小的 chunk，这里的 chunk 大小为 256MB。
 

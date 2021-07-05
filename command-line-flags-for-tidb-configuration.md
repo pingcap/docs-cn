@@ -107,9 +107,9 @@ aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn
 
 ## `--proxy-protocol-networks`
 
-+ 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) 连接 TiDB 的代理服务器地址列表。
++ 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB 的代理服务器地址列表。
 + 默认：""
-+ 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) 的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
++ 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
 + 配置该参数后，TiDB 将允许配置的源 IP 地址使用 PROXY 协议连接到 TiDB，且拒绝这些源 IP 地址使用非 PROXY 协议连接。若该参数为空，则任何源 IP 地址都不能使用 PROXY 协议连接到 TiDB。地址可以使用 IP 地址格式 (192.168.1.50) 或者 CIDR 格式 (192.168.1.0/24)，并可用 `,` 分隔多个地址，或用 `*` 代表所有 IP 地址。
 
 > **警告：**
@@ -148,7 +148,7 @@ aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn
 
 + TiDB 服务状态监听端口
 + 默认："10080"
-+ 该端口用于展示 TiDB 内部数据，包括 [prometheus 统计](https://prometheus.io/) 和 [pprof](https://golang.org/pkg/net/http/pprof/)
++ 该端口用于展示 TiDB 内部数据，包括 [prometheus 统计](https://prometheus.io/)和 [pprof](https://golang.org/pkg/net/http/pprof/)
 + Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
 + pprof 数据可以通过 `http://host:status_port/debug/pprof` 访问
 
@@ -185,7 +185,7 @@ aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn
 + 默认：""
 
 ## `--affinity-cpus`
- 
+
 + 设置 TiDB server CPU 亲和性，以 "," 逗号分隔，例如 "1,2,3"
 + 默认：""
 

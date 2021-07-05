@@ -231,7 +231,7 @@ url = https://grafana.net
 
 2. 在侧边栏菜单中，依次点击 **Dashboards** > **Import** 打开 **Import Dashboard** 窗口。
 
-3. 点击 **Upload .json File** 上传对应的 JSON 文件（下载 [TiDB Grafana 配置文件](https://github.com/pingcap/tidb-ansible/tree/master/scripts))。
+3. 点击 **Upload .json File** 上传对应的 JSON 文件（下载 [TiDB Grafana 配置文件](https://github.com/pingcap/tidb-ansible/tree/master/scripts)。
 
     > **注意：**
     >
@@ -251,20 +251,20 @@ url = https://grafana.net
 
 可查看以下集群组件信息：
 
-+ **TiDB Server：**
++ **TiDB Server:**
     + query 处理时间，可以看到延迟和吞吐
     + ddl 过程监控
     + TiKV client 相关的监控
     + PD client 相关的监控
 
-+ **PD Server：**
++ **PD Server:**
     + 命令执行的总次数
     + 某个命令执行失败的总次数
     + 某个命令执行成功的耗时统计
     + 某个命令执行失败的耗时统计
     + 某个命令执行完成并返回结果的耗时统计
 
-+ **TiKV Server：**
++ **TiKV Server:**
     + GC 监控
     + 执行 KV 命令的总次数
     + Scheduler 执行命令的耗时统计

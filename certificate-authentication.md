@@ -260,7 +260,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
 
 用户证书信息可由 `require subject`、`require issuer`、`require san` 和 `require cipher` 来指定，用于检查 X.509 certificate attributes。
 
-+ `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书) 中的录入信息。
++ `require subject`：指定用户在连接时需要提供客户端证书的 `subject` 内容。指定该选项后，不需要再配置 `require ssl` 或 x509。配置内容对应[生成客户端密钥和证书](#生成客户端密钥和证书)中的录入信息。
 
     可以执行以下命令来获取该项的信息：
 
@@ -270,7 +270,7 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
     openssl x509 -noout -subject -in client-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
 
-+ `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书) 中的录入信息。
++ `require issuer`：指定签发用户证书的 CA 证书的 `subject` 内容。配置内容对应[生成 CA 密钥和证书](#生成-ca-密钥和证书)中的录入信息。
 
     可以执行以下命令来获取该项的信息：
 

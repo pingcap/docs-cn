@@ -5,7 +5,7 @@ aliases: ['/docs-cn/stable/configure-time-zone/','/docs-cn/v4.0/configure-time-z
 
 # 时区支持
 
-TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time_zone` 的默认值是 `System`，`System` 对应的实际时区在 `TiDB` 集群 bootstrap 初始化时设置。具体逻辑如下:
+TiDB 使用的时区由 `time_zone` 全局变量和 session 变量决定。`time_zone` 的默认值是 `System`，`System` 对应的实际时区在 `TiDB` 集群 bootstrap 初始化时设置。具体逻辑如下：
 
 * 优先使用 `TZ` 环境变量
 * 如果失败，则从 `/etc/localtime` 的实际软链地址提取。
@@ -39,13 +39,13 @@ SELECT @@global.time_zone, @@session.time_zone;
 
 * 'SYSTEM' 表明使用系统时间
 * 相对于 UTC 时间的偏移，比如 '+10:00' 或者 '-6:00'
-* 某个时区的名字，比如 'Europe/Helsinki'， 'US/Eastern' 或 'MET'
+* 某个时区的名字，比如 'Europe/Helsinki'，'US/Eastern' 或 'MET'
 
 `NOW()` 和 `CURTIME()` 的返回值都受到时区设置的影响。
 
 > **注意：**
 >
-> 只有 Timestamp 数据类型的值是受时区影响的。可以理解为，Timestamp 数据类型的实际表示使用的是 (字面值 + 时区信息)。其它时间和日期类型，比如 Datetime/Date/Time 是不包含时区信息的，所以也不受到时区变化的影响。
+> 只有 Timestamp 数据类型的值是受时区影响的。可以理解为，Timestamp 数据类型的实际表示使用的是（字面值 + 时区信息）。其它时间和日期类型，比如 Datetime/Date/Time 是不包含时区信息的，所以也不受到时区变化的影响。
 
 {{< copyable "sql" >}}
 
