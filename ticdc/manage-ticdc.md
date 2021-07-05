@@ -763,7 +763,7 @@ sync-ddl = true
     + 多个集群的 TiCDC 组件构成一个单向 DDL 同步链，不能成环。例如以上在 TiDB 集群 A，B 和 C 上创建环形同步任务的示例中，只有 C 集群的 TiCDC 组件关闭了 `sync-ddl`。
     + DDL 语句必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
 
-## 输出行变更的历史值<span class="version-mark">从 v4.0.5 版本开始引入</span>
+## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
 > **警告：**
 >
