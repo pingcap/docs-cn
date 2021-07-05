@@ -189,12 +189,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `hot-region-schedule-limit`
 
-+ 控制同时进行的 hot Region 任务。该参数独立于 region 调度。
++ 控制同时进行的 hot Region 任务。该配置项独立于 Region 调度。
 + 默认值：4
 
 ### `hot-region-cache-hits-threshold`
 
-+ 设置标识 hot Region 所需分钟数的阈值。只有当 Region 处于热点状态超过此分钟数时，PD才会参与热点调度。
++ 设置识别热点 Region 所需的分钟数。只有当 Region 处于热点状态持续时间超过此分钟数时，PD 才会参与热点调度。
 + 默认值：3
 
 ### `replica-schedule-limit`
