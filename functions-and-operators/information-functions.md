@@ -22,7 +22,6 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[信息函数](https://dev.mysq
 | [`SYSTEM_USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_system-user) | 与 USER() 同义                              |
 | [`USER()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_user) | 返回客户端提供的用户名和主机名                          |
 | [`VERSION()`](https://dev.mysql.com/doc/refman/5.7/en/information-functions.html#function_version) | 返回当前 MySQL 服务器的版本信息                      |
-| `TIDB_VERSION()`                           | 返回当前 TiDB 服务器的版本信息                       |
 
 ## 不支持的函数
 
