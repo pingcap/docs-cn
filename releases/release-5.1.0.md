@@ -42,7 +42,7 @@ TiDB 版本：5.1
 | TiDB 配置文件  | [`security.enable-sem`](/tidb-configuration-file.md#enable-sem)  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
 | TiDB 配置文件  | [`performance.committer-concurrency`](/tidb-configuration-file.md#committer-concurrency)  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的并发数。默认值从 `16` 修改为 `128`。|
 | TiDB 配置文件  | [`performance.tcp-no-delay`](/tidb-configuration-file.md#tcp-no-delay)  | 新增  | 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。 默认值为 `true`，代表开启。 |
-| TiDB 配置文件  | [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp)  | 新增  | 用于在实例级别控制 TiDB 是否忽略优化器代价估算，强制使用 MPP 模式，默认值为 `false`。 |
+| TiDB 配置文件  | [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp)  | 新增  | 用于在实例级别控制 TiDB 是否忽略优化器代价估算，强制使用 MPP 模式，默认值为 `false`。该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。 |
 | TiDB 配置文件  | [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity)  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
 | TiKV 配置文件  | [`abort-on-panic`](/tikv-configuration-file.md#abort-on-panic)  | 新增  | 设置 TiKV panic 时 abort 进程是否允许系统生成 core dump 文件。默认值为 false，代表不允许生成 core dump 文件。 |
 | TiKV 配置文件  | [`hibernate-regions`](/tikv-configuration-file.md#hibernate-regions)  | 修改  | 默认值从 `false` 修改为 `true`。 如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。 |
