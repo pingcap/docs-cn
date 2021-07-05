@@ -617,16 +617,6 @@ Query OK, 0 rows affected (0.09 sec)
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-> **警告：**
->
-> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
-
-- 作用域：SESSION
-- 默认值：OFF
-- 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
-
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
 > **警告：**
