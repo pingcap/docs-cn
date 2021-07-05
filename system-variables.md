@@ -89,7 +89,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：NONE
 - 默认值：/tmp/tidb
-- 这个变量表示数据存储的位置。如果数据存储在 TiKV 上，位置可以是本地路径或指向 PD 服务器的路径。
+- 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
 ### `ddl_slow_threshold`
