@@ -10,13 +10,13 @@ aliases: ['/docs-cn/stable/dynamic-config/','/docs-cn/v4.0/dynamic-config/']
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 
-在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件（TiKV、PD）的有所不同。
+在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件 (TiKV, PD) 的有所不同。
 
 ## 常用操作
 
 ### 查看实例配置
 
-可以通过 SQL语句 `show config` 来直接查看集群所有实例的配置信息，结果如下：
+可以通过 SQL 语句 `show config` 来直接查看集群所有实例的配置信息，结果如下：
 
 {{< copyable "sql" >}}
 
@@ -220,7 +220,7 @@ set config pd `log.level`='info'
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ```  包裹此类配置项，例如 ``` `schedule.leader-schedule-limit` ```。
+针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ``` 包裹此类配置项，例如 ``` `schedule.leader-schedule-limit` ```。
 
 支持配置项列表如下：
 
