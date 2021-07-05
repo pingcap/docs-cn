@@ -39,7 +39,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 > **注意：**
 >
-> - 在取值为 `gzip` 时，存在部分 TiDB Dashboard 计算无法完成的问题，调整回默认值 `none` 可正常显示。[#25419](https://github.com/pingcap/tidb/issues/25419)
+> 取值为 `gzip` 时，部分 TiDB Dashboard 可能无法完成对应的压缩运算，会显示异常。调整回默认值 `none` 后，TiDB Dashboard 可正常显示。
 
 ### `grpc-concurrency`
 
