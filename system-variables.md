@@ -78,6 +78,13 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### `datadir`
+
+- 作用域：NONE
+- 默认值：/tmp/tidb
+- 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
+- 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
+
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
@@ -119,6 +126,12 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION
 - 默认值：0
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
+
+### `license`
+
+- 作用域：NONE
+- 默认值：Apache License 2.0
+- 这个变量表示 TiDB 服务器的安装许可证。
 
 ### `max_execution_time`
 
