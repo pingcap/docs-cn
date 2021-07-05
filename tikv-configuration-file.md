@@ -1288,15 +1288,31 @@ raftdb 相关配置项。
 + 定期推进 Resolved TS 的时间间隔。
 + 默认值：1s
 
-### `old-value-cache-size` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `old-value-cache-memory-quota` <span class="version-mark">从 v5.0.3 版本开始引入</span>
 
-+ 缓存在内存中的 TiCDC Old Value 的条目个数。
-+ 默认值：1024
++ 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。
++ 默认值：512MB
+
+### `sink-memory-quota`
+
++ 缓存在内存中的 TiCDC 数据变更事件占用内存的上限。
++ 默认值：512MB
 
 ### `incremental-scan-speed-limit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 增量扫描历史数据的速度上限。
 + 默认值：128MB，即 128MB 每秒。
+
+### `incremental-scan-threads`
+
++ 增量扫描历史数据任务的线程个数。
++ 默认值：4，即 4 个线程
+
+### `incremental-scan-concurrency`
+
++ 增量扫描历史数据任务的最大并发执行个数。
++ 默认值：6，即最多并发执行 6 个任务
++ 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
 
 ## pessimistic-txn
 
