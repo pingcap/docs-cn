@@ -68,9 +68,9 @@ In v5.1, the key new features or improvements are as follows:
 
 ### SQL
 
-- Support the Common Table Expression (CTE) feature of MySQL 8.0, which empowers TiDB with the capability of querying hierarchical data recursively or non-recursively.
+- Support the Common Table Expression (CTE) feature of MySQL 8.0.
 
-    This feature meets the needs of using tree queries to implement application logics in multiple sectors such as human resources, manufacturing, financial markets, and education.
+    This feature empowers TiDB with the capability of querying hierarchical data recursively or non-recursively and meets the needs of using tree queries to implement application logics in multiple sectors such as human resources, manufacturing, financial markets, and education.
 
     In TiDB, you can apply the `WITH` statement to use Common Table Expressions. [User document](/sql-statements/sql-statement-with.md), [#17472](https://github.com/pingcap/tidb/issues/17472)
 
@@ -135,12 +135,14 @@ In v5.1, the key new features or improvements are as follows:
 + Stale read of data replicas (Experimental)
 
     Read local replicas data directly to reduce read latency and improve the query performance
+    
     [User document](/stale-read.md), [#21094](https://github.com/pingcap/tidb/issues/21094)
 
 + Enable the Hibernate Region feature by default.
 
     If a Region is in an inactive state for a long time, it is automatically set to a silent state, which reduces the system overhead of the heartbeat information between the Leader and the Follower.
-    [User document](/tikv-configuration-file.md#hibernate-regions)，[#10266](https://github.com/tikv/tikv/pull/10266)
+    
+    [User document](/tikv-configuration-file.md#hibernate-regions), [#10266](https://github.com/tikv/tikv/pull/10266)
 
 ### Stability
 
@@ -150,6 +152,7 @@ In v5.1, the key new features or improvements are as follows:
     - If large amounts of data is accumulated during the replication interruption, exceeding 1TB, the re-replication causes OOM problems.
     - Large amounts of data writes cause OOM problems in TiCDC.
     - Reduce the possibility of  TiCDC replication interruption in the following scenarios:
+        
         [project#11](https://github.com/pingcap/ticdc/projects/11)
 
         - Replication interruption when the network is unstable
@@ -162,6 +165,7 @@ In v5.1, the key new features or improvements are as follows:
 + Add a write rate limiter for TiKV background tasks (TiKV Write Rate Limiter)
 
     To ensure the duration stability of read and write requests, TiKV Write Rate Limiter smoothes the write traffic of TiKV background tasks such as GC and Compaction. The default value of TiKV background task write rate limiter is "0MB". It is recommended to set this value to the optimal I/O bandwidth of the disk, such as the maximum I/O bandwidth specified by the cloud disk manufacturer.
+    
     [User document](/tikv-configuration-file.md#storageio-rate-limit), [#9156](https://github.com/tikv/tikv/issues/9156)
 
 + Solve scheduling stability issues when multiple scaling tasks are performed at the same time
