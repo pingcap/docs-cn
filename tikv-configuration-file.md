@@ -1273,7 +1273,6 @@ raftdb 相关配置项。
 + 定期推进 Resolved TS 的时间间隔。
 + 默认值：1s
 
-<<<<<<< HEAD
 ### `old-value-cache-memory-quota` <span class="version-mark">从 v5.0.3 版本开始引入</span>
 
 + 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。
