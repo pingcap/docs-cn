@@ -11,6 +11,17 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 <!-- markdownlint-disable MD001 -->
 
+## 全局配置
+
+### abort-on-panic
+
++ 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
+
+    + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
+    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
+    
++ 默认值：false
+
 ## server
 
 服务器相关的配置项。
@@ -298,6 +309,21 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 + 默认值：系统总内存大小的 45%
 + 单位：KB|MB|GB
 
+## storage.io-rate-limit
+
+I/O rate limiter 相关的配置项。
+
+### `max-bytes-per-sec`
+
++ 限制服务器每秒从磁盘读取数据或写入数据的最大 I/O 字节数，I/O 类型由下面的 `mode` 配置项决定。达到该限制后，TiKV 倾向于放缓后台操作为前台操作节流。该配置项值应设为磁盘的最佳 I/O 带宽，例如云盘厂商指定的最大 I/O 带宽。
++ 默认值："0MB"
+
+### `mode`
+
++ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只读模式。
++ 可选值：write-only
++ 默认值：write-only
+
 ## raftstore
 
 raftstore 相关的配置项。
@@ -396,10 +422,10 @@ raftstore 相关的配置项。
 + 默认值：3s
 + 最小值：0
 
-### `hibernate-regions` (**实验特性**)
+### `hibernate-regions`
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
-+ 默认值：true
++ 默认值：v5.0.2 及以后版本默认值为 true，v5.0.2 以前的版本默认值为 false
 
 ### `raftstore.peer-stale-state-check-interval`
 
@@ -494,8 +520,8 @@ raftstore 相关的配置项。
 ### `max-peer-down-duration`
 
 + 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
-+ 默认值：5m
-+ 最小值：0
++ 默认值：10m
++ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-check-interval * 2；Hibernate Region 功能关闭时，为 0。
 
 ### `max-leader-missing-duration`
 
@@ -998,7 +1024,7 @@ bloom filter 为每个 key 预留的长度。
 ### `soft-pending-compaction-bytes-limit`
 
 + pending compaction bytes 的软限制。
-+ 默认值：64GB
++ 默认值：192GB
 + 单位：KB|MB|GB
 
 ### `hard-pending-compaction-bytes-limit`
@@ -1274,15 +1300,50 @@ raftdb 相关配置项。
 + 定期推进 Resolved TS 的时间间隔。
 + 默认值：1s
 
-### `old-value-cache-size`
+### `old-value-cache-memory-quota`
 
-+ 缓存在内存中的 TiCDC Old Value 的条目个数。
-+ 默认值：1024
++ 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限。
++ 默认值：512MB
+
+### `sink-memory-quota`
+
++ 缓存在内存中的 TiCDC 数据变更事件占用内存的上限。
++ 默认值：512MB
 
 ### `incremental-scan-speed-limit`
 
 + 增量扫描历史数据的速度上限。
 + 默认值：128MB，即 128MB 每秒。
+
+### `incremental-scan-threads`
+
++ 增量扫描历史数据任务的线程个数。
++ 默认值：4，即 4 个线程
+
+### `incremental-scan-concurrency`
+
++ 增量扫描历史数据任务的最大并发执行个数。
++ 默认值：6，即最多并发执行 6 个任务
++ 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
+
+## resolved-ts
+
+用于维护 Resolved TS 以服务 Stale Read 请求的相关配置项。
+
+### `enable`
+
++ 是否为所有 Region 维护 Resolved TS
++ 默认值：true
+
+### `advance-ts-interval`
+
++ 定期推进 Resolved TS 的时间间隔。
++ 默认值：1s
+
+### `scan-lock-pool-size`
+
++ 初始化 Resolved TS 时 TiKV 扫描 MVCC（多版本并发控制）锁数据的线程个数。
++ 默认值：2，即 2 个线程
 
 ## pessimistic-txn
 

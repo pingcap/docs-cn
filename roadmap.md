@@ -48,17 +48,18 @@ aliases: ['/zh/tidb/v5.0/roadmap','/docs-cn/ROADMAP/','/docs-cn/roadmap/','/docs
 ## 新功能
 
 - [ ] 恢复到任意时间点 (PITR) [#325](https://github.com/pingcap/br/issues/325)
-- [ ] 支持修改列的类型 [#17526](https://github.com/pingcap/tidb/issues/17526)
+- [x] 支持修改列的类型 [#17526](https://github.com/pingcap/tidb/issues/17526)
 - [ ] 提升发现及诊断性能问题的效率，降低用户的使用成本 [#18867](https://github.com/pingcap/tidb/issues/18867)
 - [x] 字符集的排序规则支持 `utf8mb4_unicode_ci` 和 `utf8_unicode_ci` [#17596](https://github.com/pingcap/tidb/issues/17596)
-- [ ] TiCDC 兼容 TiDB Binlog 相关的特性，降低用户使用 TiCDC 的成本 [#690](https://github.com/pingcap/ticdc/issues/690)
-    - [ ] 支持分类更新和插入一行数据事件
-    - [ ] 通过删除或者更新语句修改一行数据时，系统自动记录原始值
-- [ ] 容灾中支持快照级别的一致性数据复制 [#691](https://github.com/pingcap/ticdc/issues/691)
-    - [ ] 支持 MySQL 接收器在上游遇到灾难时将其复制到快照级别的一致状态
+- [ ] 数据导入
+    - [ ] TiDB Lightning 支持检测导入数据中的冲突
+    - [ ] TiDB Lightning 支持分布式并行导入
+- [ ] 数据复制：TiCDC 兼容 TiDB Binlog 相关的特性，降低 TiDB Binlog 用户使用 TiCDC 的成本 [#690](https://github.com/pingcap/ticdc/issues/690)
+    - [ ] 支持输出数据到文件系统和云端存储 (S3/GCS)
+- [ ] 数据容灾：容灾中支持快照级别的一致性数据复制 [#691](https://github.com/pingcap/ticdc/issues/691)
+    - [ ] 支持 TiDB 灾备集群在主集群遇到灾难时将备用集群复制到快照级别的一致状态
 - [ ] 支持通过 API 管理 TiCDC [#736](https://github.com/pingcap/ticdc/issues/736)
-- [ ] 支持 `import` SQL 命令 [#18089](https://github.com/pingcap/tidb/issues/18089)
-- [x] 支持 Avro 接收器，使 TiCDC 与 Kafka connect 兼容 [#660](https://github.com/pingcap/ticdc/issues/660)
+- [x] 数据共享：TiCDC 支持 Avro 接收器，使 TiCDC 与 Kafka connect 兼容 [#660](https://github.com/pingcap/ticdc/issues/660)
 - [ ] 支持 Spark 3.0 [#1173](https://github.com/pingcap/tispark/issues/1173)
 - [x] 支持 `EXCEPT`/`INTERSECT` 操作 [#18031](https://github.com/pingcap/tidb/issues/18031)
 - [x] 支持将云上的 RDS 迁移到 TiDB，例如：云上的 MySQL 或者 Aurora [#18629](https://github.com/pingcap/tidb/issues/18629)

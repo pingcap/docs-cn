@@ -170,6 +170,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
+#### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
+- 默认值：0
+- 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
 ## log
 
 日志相关的配置项。
@@ -377,6 +383,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 在 TCP 层开启 keepalive。
 + 默认值：true
 
+### `tcp-no-delay`
+
++ 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。开启后，TiDB 将禁用 TCP/IP 协议中的 Nagle 算法，允许小数据包的发送，可以降低网络延时，适用于延时敏感型且数据传输量比较小的应用。
++ 默认值：true
+
 ### `cross-join`
 
 + 默认值：true
@@ -438,6 +449,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：Byte
 + 默认值：20971520
 + 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
+
+### `enforce-mpp`
+
++ 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询.
++ 默认值：false
++ 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
 ## prepared-plan-cache
 
@@ -604,6 +621,13 @@ TiDB 服务状态相关配置。
 
 + 悲观事务中单个语句最大重试次数，重试次数超过该限制，语句执行将会报错。
 + 默认值：256
+
+### deadlock-history-capacity
+
++ 单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数。当表的容量已满时，如果再次发生死锁错误，最早的一次死锁错误的信息将从表中移除。
++ 默认值：10
++ 最小值：0
++ 最大值：10000
 
 ## experimental
 

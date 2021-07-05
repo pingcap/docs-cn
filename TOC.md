@@ -7,13 +7,13 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
+  + [TiDB 5.1 Release Notes](/releases/release-5.1.0.md)
   + [基本功能](/basic-features.md)
   + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5-vs-v4.md)
-    + [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpcc.md)
-    + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
+    + [Sysbench 性能对比 - v5.1 对比 v5.0](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
+    + [TPC-C 性能对比 - v5.1 对比 v5.0](/benchmark/v5.1-performance-benchmarking-with-tpcc.md)
+    + [TPC-H 100 性能对比 - v5.1 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.1-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
@@ -62,7 +62,6 @@
       + [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       + [外部存储](/br/backup-and-restore-storages.md)
       + [BR 常见问题](/br/backup-and-restore-faq.md)
-  + [读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -132,6 +131,11 @@
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
+  + 读取历史数据
+    + 使用 Stale Read 功能读取历史数据（推荐）
+      + [Stale Read 使用场景介绍](/stale-read.md)
+      + [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
+    + [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   + 最佳实践
     + [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
     + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
@@ -141,6 +145,7 @@
     + [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     + [海量 Region 集群调优](/best-practices/massive-regions-best-practices.md)
     + [三节点混合部署最佳实践](/best-practices/three-nodes-hybrid-deployment.md)
+    + [在三数据中心下就近读取数据](/best-practices/three-dc-local-read.md)
   + [Placement Rules 使用文档](/configure-placement-rules.md)
   + [Load Base Split 使用文档](/configure-load-base-split.md)
   + [Store Limit 使用文档](/configure-store-limit.md)
@@ -363,6 +368,7 @@
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
+      - [`WITH`](/sql-statements/sql-statement-with.md)
     + 数据类型
       + [数据类型概述](/data-type-overview.md)
       + [数据类型默认值](/data-type-default-values.md)
@@ -389,6 +395,7 @@
       + [精度数学](/functions-and-operators/precision-math.md)
       + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+      + [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
     + [聚簇索引](/clustered-indexes.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
@@ -422,7 +429,9 @@
         + [`COLLATIONS`](/information-schema/information-schema-collations.md)
         + [`COLLATION_CHARACTER_SET_APPLICABILITY`](/information-schema/information-schema-collation-character-set-applicability.md)
         + [`COLUMNS`](/information-schema/information-schema-columns.md)
+        + [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
         + [`DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)
+        + [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
         + [`ENGINES`](/information-schema/information-schema-engines.md)
         + [`INSPECTION_RESULT`](/information-schema/information-schema-inspection-result.md)
         + [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)
@@ -443,6 +452,7 @@
         + [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
         + [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
         + [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
+        + [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
         + [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)
         + [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)
         + [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)
@@ -529,7 +539,11 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
+  + v5.1
+    - [5.1.0](/releases/release-5.1.0.md)
   + v5.0
+    - [5.0.3](/releases/release-5.0.3.md)
+    - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)

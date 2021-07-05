@@ -243,11 +243,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.3.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.5.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.0.0
+TiDB Version: v5.1.0
 
 ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 
@@ -393,16 +393,6 @@ tiup cluster display <cluster-name>
         > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 IP:端口即可。
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
-
-    如果等待较长时间后，该节点仍然无法正常消失或者状态变成 Tombstone，可以考虑以下命令，把节点强制踢出集群：
-
-    **注意以下命令会直接丢弃该 TiFlash 节点上的副本，有可能导致查询失败**
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl -X POST 'http://<pd-address>/pd/api/v1/store/<store_id>/state?state=Tombstone'
-    ```
 
 4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
 

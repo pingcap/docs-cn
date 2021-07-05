@@ -89,6 +89,18 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
 
+### 系统库表的备份与恢复
+
+在 v5.1.0 之前，BR 备份时会过滤掉系统库表的数据。
+
+自 v5.1.0 起，BR 默认会**备份**全部数据，包括系统库 (`mysql.*`)，但为了兼容之前 BR 的版本，**恢复**的时候默认**不**恢复系统表，只有设置了 [`filter` 参数](/br/use-br-command-line-tool.md#使用表库过滤功能备份多张表的数据)才会把系统表恢复到临时库中，然后通过对临时库表进行重命名的方式恢复到系统库。
+
+同时，对于下列系统库表会进行特殊处理：
+
+- 统计信息相关的表：不进行恢复，因为统计信息的 table id 发生了变化。
+- mysql 库下的 `tidb` 和 `global_variables` 表：不进行恢复，因为该表不能覆盖，例如 GC safepoint 覆盖后会对集群产生影响。
+- mysql 库下的 `user` 表：恢复后需要手动执行 `FLUSH PRIVILEGE` 才能生效。
+
 ### 运行 BR 的最低机型配置要求
 
 运行 BR 的最低机型配置要求如下：
