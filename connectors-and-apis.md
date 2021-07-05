@@ -6,7 +6,7 @@ title: 连接器和 API
 
 数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用 MySQL 协议和资源的底层接口。无论是连接器还是 API，都可以用来在不同的语言和环境内连接服务器并执行 sql 语句，包括 odbc、java(jdbc)、Perl、Python、PHP、Ruby 和 C。
 
-TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
+TiDB 兼容 MySQL(5.6, 5.7) 的所有连接器和 API，包括：
 
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)
 + [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)

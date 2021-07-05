@@ -54,7 +54,7 @@ PD 可以通过命令行参数或环境变量配置。
 
 + 动态加入 PD 集群。
 + 默认：""
-+ 如果你想动态将一台 PD 加入集群，你可以使用 `--join="${advertise-client-urls}"`， `advertise-client-url` 是当前集群里面任意 PD 的 `advertise-client-url`，你也可以使用多个 PD 的，需要用逗号分隔。
++ 如果你想动态将一台 PD 加入集群，你可以使用 `--join="${advertise-client-urls}"`，`advertise-client-url` 是当前集群里面任意 PD 的 `advertise-client-url`，你也可以使用多个 PD 的，需要用逗号分隔。
 
 ## `-L`
 
@@ -72,7 +72,7 @@ PD 可以通过命令行参数或环境变量配置。
 
 + 是否开启日志切割。
 + 默认：true
-+ 当值为 true 时,按照 PD 配置文件中 `[log.file]` 信息执行。
++ 当值为 true 时，按照 PD 配置文件中 `[log.file]` 信息执行。
 
 ## `--name`
 
