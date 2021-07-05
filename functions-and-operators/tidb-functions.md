@@ -9,7 +9,7 @@ summary: 学习使用 TiDB 特有的函数。
 
 ## TIDB_BOUNDED_STALENESS
 
-`TIDB_BOUNDED_STALENESS` 是 TiDB 内部的函数。
+`TIDB_BOUNDED_STALENESS` 是 TiDB 的内部函数。
 
 ## TIDB_DECODE_KEY
 
@@ -74,7 +74,7 @@ SELECT tidb_decode_plan('8QIYMAkzMV83CQEH8E85LjA0CWRhdGE6U2VsZWN0aW9uXzYJOTYwCXR
 
 ## TIDB_IS_DDL_OWNER
 
-`TIDB_IS_DDL_OWNER` 函数可用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 是代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
+`TIDB_IS_DDL_OWNER` 函数可用于检查你连接的 TiDB 实例是否是 DDL Owner。DDL Owner 代表集群中所有其他节点执行 DDL 语句的 TiDB 实例。
 
 ### 语法图
 
