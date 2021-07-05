@@ -78,14 +78,6 @@ mysql> SELECT * FROM t1;
 - 默认值：ON
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
-<<<<<<< HEAD
-=======
-### `cte_max_recursion_depth`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：1000
-- 这个变量用于控制公共表表达式的最大递归深度。
-
 ### datadir
 
 - 作用域：NONE
@@ -93,7 +85,6 @@ mysql> SELECT * FROM t1;
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
->>>>>>> fa75bd830 (system-variables: add datadir and license (#6573))
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
