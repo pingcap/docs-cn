@@ -130,7 +130,7 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## 相关系统变量
 
-和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考[TiDB 特定系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考[TiDB 特定系统变量](/tidb-specific-system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 
