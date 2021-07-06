@@ -64,7 +64,9 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 - 如果 TiDB 集群中还没有数据，请先迁移数据到 TiDB。详情请参阅[数据迁移](/migration-overview.md)。
 - 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅[使用 TiFlash](/use-tiflash.md)。
 
-对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。
+## HTAP 数据处理
+
+使用 TiDB， 你只需写 SQL 语句进行查询或者写入需求，对于创建了 TiFlash 副本的表，TiDB 会依靠前端优化器自由选择最优的执行方式。
 
 > **注意：**
 > 
