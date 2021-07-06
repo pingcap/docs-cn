@@ -38,7 +38,7 @@ show create view v;
 
 ### 查询 `INFORMATION_SCHEMA.VIEWS` 表
 
-示例:
+示例：
 
 {{< copyable "sql" >}}
 
@@ -59,7 +59,7 @@ select * from information_schema.views;
 
 ### 查询 HTTP API
 
-示例:
+示例；
 
 {{< copyable "" >}}
 

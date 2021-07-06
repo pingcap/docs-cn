@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 ## 从 Aurora 迁移到 TiDB
 
-在云环境下，可以直接通过 Aurora Snapshot 导出的方式，将全量数据迁移至 TiDB。详细可参考 [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)。
+在云环境下，可以直接通过 Aurora Snapshot 导出的方式，将全量数据迁移至 TiDB。详细可参考[使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)。
 
 ## 从 MySQL 迁移到 TiDB
 

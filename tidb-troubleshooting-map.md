@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region 在一定时期内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
 
-- 1.1.3 TiKV 报 `TiKV server is busy` 错误，超过 `backoff` 时间，参考[4.3 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。`TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间。
+- 1.1.3 TiKV 报 `TiKV server is busy` 错误，超过 `backoff` 时间，参考 [4.3 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。`TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间。
 
 - 1.1.4 多台 TiKV 启动不了，导致 Region 没有 Leader。单台物理主机部署多个 TiKV 实例，一个物理机挂掉，由于 label 配置错误导致 Region 没有 Leader，见案例 [case-228](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case228.md)。
 
@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 ### 2.1 延迟短暂升高
 
 - 2.1.1 TiDB 执行计划不对导致延迟升高，请参考 [3.3 执行计划不对](#33-执行计划不对)。
-- 2.1.2 PD 出现选举问题或者 OOM 问题，请参考 [5.2 PD 选举问题](#52-pd-选举问题) 和 [5.3 PD OOM 问题](#53-pd-oom)。
+- 2.1.2 PD 出现选举问题或者 OOM 问题，请参考 [5.2 PD 选举问题](#52-pd-选举问题)和 [5.3 PD OOM 问题](#53-pd-oom)。
 - 2.1.3 某些 TiKV 大量掉 Leader，请参考 [4.4 某些 TiKV 大量掉 Leader](#44-某些-tikv-大量掉-leader)。
 
 ### 2.2 Latency 持续升高
@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.1.2 TiDB DDL job 卡住不动/执行很慢（通过 `admin show ddl jobs` 可以查看 DDL 进度）：
 
-    - 原因 1：与外部组件（PD/TiKV）的网络问题。
+    - 原因 1：与外部组件 (PD/TiKV) 的网络问题。
 
     - 原因 2：早期版本（v3.0.8 之前）TiDB 内部自身负载很重（高并发下可能产生了很多协程）。
 
@@ -88,7 +88,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 原因 1：执行 DML 的 TiDB 被 `graceful kill` 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交的时候会报此错。
 
-    - 原因 2：TiDB 在执行 DML 时，有一段时间连不上 PD 和 TiKV，导致以下问题：
+    - 原因 2：TiDB 在执行 DML 时，有一段时间连不上 PD 和 TiKV，导致以下问题
 
         - TiDB 在超过一个 DDL Lease（默认 `45s`）的时间内没有加载到新的 schema；或者
         - TiDB 断开与 PD 之间带 `keep alive` 设置的连接。
@@ -117,8 +117,8 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.2.2 定位造成 OOM 的 SQL（目前所有版本都无法完成精准定位，需要在发现 SQL 后再做进一步分析，确认 OOM 是否的确由该 SQL 造成）：
 
-    - `> = v3.0.0` 的版本, 可以在 tidb.log 中 `grep "expensive_query"`，该 log 会记录运行超时、或使用内存超过阈值的 SQL。
-    - `< v3.0.0` 的版本, 通过 `grep "memory exceeds quota"` 定位运行时内存超限的 SQL。
+    - `> = v3.0.0` 的版本，可以在 tidb.log 中 `grep "expensive_query"`，该 log 会记录运行超时、或使用内存超过阈值的 SQL。
+    - `< v3.0.0` 的版本，通过 `grep "memory exceeds quota"` 定位运行时内存超限的 SQL。
 
     > **注意：**
     >
@@ -148,9 +148,9 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.3.2 排查执行计划问题
 
-    - `explain analyze {SQL}`。在执行时间可以接受的情况下，对比 `explain analyze` 结果中 `count` 和 execution info 中 `rows` 的数目差距。如果在 `TableScan`/`IndexScan` 行上发现比较大的差距，很大可能是统计信息出问题；如果在其他行上发现较大差距，则也有可能是非统计信息问题。
+    - `explain analyze {SQL}` 在执行时间可以接受的情况下，对比 `explain analyze` 结果中 `count` 和 execution info 中 `rows` 的数目差距。如果在 `TableScan`/`IndexScan` 行上发现比较大的差距，很大可能是统计信息出问题；如果在其他行上发现较大差距，则也有可能是非统计信息问题。
 
-    - `select count(*)`。在执行计划中包含 `join` 等情况下，explain analyze 可能耗时过长；此时可以通过对 `TableScan`/`IndexScan` 上的条件进行 `select count(*)`，并对比 `explain` 结果中的 `row count` 信息，确定是不是统计信息的问题。
+    - `select count(*)` 在执行计划中包含 `join` 等情况下，explain analyze 可能耗时过长；此时可以通过对 `TableScan`/`IndexScan` 上的条件进行 `select count(*)`，并对比 `explain` 结果中的 `row count` 信息，确定是不是统计信息的问题。
 
 - 3.3.3 缓解问题
 
@@ -164,7 +164,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 3.4.1 客户端报 `ERROR 1265(01000) Data Truncated` 错误。原因是 TiDB 内在计算 `Decimal` 类型处理精度的时候，和 MySQL 不兼容。该错误已于 v3.0.10 中修复 ([#14438](https://github.com/pingcap/tidb/pull/14438))，具体原因如下：
 
-    在 MySQL 内，如果两个大精度 `Decimal` 做除法运算，超出最大小数精度时(`30`)，会只保留 `30` 位且不报错；TiDB 在计算结果上，也是这样实现的，但是在内部表示 `Decimal` 的结构体内，有一个表示小数精度的字段，还是保留的真实精度；
+    在 MySQL 内，如果两个大精度 `Decimal` 做除法运算，超出最大小数精度时(`30`)，会只保留 `30` 位且不报错。TiDB 在计算结果上，也是这样实现的，但是在内部表示 `Decimal` 的结构体内，有一个表示小数精度的字段，还是保留的真实精度。
 
     比如 `(0.1^30) / 10`，TiDB 和 MySQL 的结果都为 0，是正确的，因为精度最多 `30`；但是 TiDB 内表示精度的那个字段，还是 31；
 
@@ -220,13 +220,13 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 4.3.2 `scheduler too busy`
 
-    - 写入冲突严重，`latch wait duration` 比较高，查看监控： **Grafana** -> **TiKV-details** -> **scheduler prewrite** 或者 **scheduler commit** 的 `latch wait duration`。scheduler 写入任务堆积，导致超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。可通过查看 `MVCC_CONFLICT_COUNTER` 对应的 metric 来确认是否属于该情况。
+    - 写入冲突严重，`latch wait duration` 比较高，查看监控：**Grafana** -> **TiKV-details** -> **scheduler prewrite** 或者 **scheduler commit** 的 `latch wait duration`。scheduler 写入任务堆积，导致超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。可通过查看 `MVCC_CONFLICT_COUNTER` 对应的 metric 来确认是否属于该情况。
     - 写入慢导致写入堆积，该 TiKV 正在写入的数据超过了 `[storage] scheduler-pending-write-threshold = "100MB"` 设置的阈值。请参考 [4.5 TiKV 写入慢](#45-tikv-写入慢)。
 
 - 4.3.3 `raftstore is busy`，主要是消息的处理速度没有跟上接收消息的速度。短时间的 `channel full` 不会影响服务，长时间持续出现该错误可能会导致 Leader 切换走。
 
     - `append log` 遇到了 stall，参考 [4.3.1 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。
-    - `append log duration` 比较高，导致处理消息不及时，可以参考 [4.5 TiKV 写入慢](#45-tikv-写入慢) 分析为什么 `append log duration` 比较高。
+    - `append log duration` 比较高，导致处理消息不及时，可以参考 [4.5 TiKV 写入慢](#45-tikv-写入慢)分析为什么 `append log duration` 比较高。
     - 瞬间收到大量消息（查看 TiKV Raft messages 面板），Raftstore 没处理过来，通常情况下短时间的 `channel full` 不会影响服务。
 
 - 4.3.4 TiKV Coprocessor 排队，任务堆积超过了 `Coprocessor 线程数 * readpool.coprocessor.max-tasks-per-worker-[normal|low|high]`。大量大查询导致 Coprocessor 出现了堆积情况，需要确认是否由于执行计划变化而导致了大量扫表操作，请参考 [3.3 执行计划不对](#33-执行计划不对)。
@@ -246,7 +246,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 ### 4.5 TiKV 写入慢
 
-- 4.5.1 通过查看 TiKV gRPC 的 `prewrite`/`commit`/`raw-put`(仅限 raw kv 集群) duration 确认确实是 TiKV 写入慢了。通常情况下可以按照 [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 来定位到底哪个阶段慢了，下面列出几种常见的情况。
+- 4.5.1 通过查看 TiKV gRPC 的 `prewrite`/`commit`/`raw-put`（仅限 raw kv 集群）duration 确认确实是 TiKV 写入慢了。通常情况下可以按照 [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 来定位到底哪个阶段慢了，下面列出几种常见的情况。
 
 - 4.5.2 scheduler CPU 繁忙（仅限 transaction kv）。prewrite/commit 的 `scheduler command duration` 比 `scheduler latch wait duration` + `storage async write duration` 更长，并且 scheduler worker CPU 比较高，例如超过 `scheduler-worker-pool-size` * 100% 的 80%，并且或者整个机器的 CPU 资源比较紧张。如果写入量很大，确认下是否 `[storage] scheduler-worker-pool-size` 配置得太小。其他情况，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
@@ -309,7 +309,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 5.2.3 TiDB 执行 SQL 时报 PD timeout：
 
-    - PD 没 Leader 或者有切换，参考 [5.2.1 PD 选举问题](#52-pd-选举问题) 和 [5.2.2 PD 选举问题](#52-pd-选举问题)。
+    - PD 没 Leader 或者有切换，参考 [5.2.1 PD 选举问题](#52-pd-选举问题)和 [5.2.2 PD 选举问题](#52-pd-选举问题)。
 
     - 网络问题，排查网络相关情况。通过监控 **Grafana** -> **blackbox_exporter** -> **ping latency** 确定 TiDB 到 PD Leader 的网络是否正常。
 
@@ -479,7 +479,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 原因 2：如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
 
-    - 原因 3：如果数据源是由机器生成而不是从 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 备份的，需确保数据符合表的限制，例如：
+    - 原因 3：如果数据源是由机器生成而不是从 [Mydumper](https://docs.pingcap.com/zh/tidb/v4.0/mydumper-overview) 备份的，需确保数据符合表的限制。例如：
 
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
@@ -514,17 +514,17 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 ### 7.1 TiDB
 
-- 7.1.1 `GC life time is shorter than transaction duration`。事务执行时间太长，超过了 GC lifetime（默认为 10 分钟），可以通过修改系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 来延长 life time，通常情况下不建议修改，因为延长时限可能导致大量老版本数据的堆积（如果有大量 `UPDATE` 和 `DELETE` 语句）。
+- 7.1.1 `GC life time is shorter than transaction duration.`事务执行时间太长，超过了 GC lifetime（默认为 10 分钟），可以通过修改系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 来延长 life time，通常情况下不建议修改，因为延长时限可能导致大量老版本数据的堆积（如果有大量 `UPDATE` 和 `DELETE` 语句）。
 
-- 7.1.2 `txn takes too much time`。事务太长时间（超过 590s）没有提交，准备提交的时候报该错误。可以通过调大 `[tikv-client] max-txn-time-use = 590` 参数，以及调大 `GC life time` 来绕过该问题（如果确实有这个需求）。通常情况下，建议看看业务是否真的需要执行这么长时间的事务。
+- 7.1.2 `txn takes too much time.` 事务太长时间（超过 590s）没有提交，准备提交的时候报该错误。可以通过调大 `[tikv-client] max-txn-time-use = 590` 参数，以及调大 `GC life time` 来绕过该问题（如果确实有这个需求）。通常情况下，建议看看业务是否真的需要执行这么长时间的事务。
 
 - 7.1.3 coprocessor.go 报 `request outdated`。发往 TiKV 的 Coprocessor 请求在 TiKV 端排队时间超过了 60s，直接返回该错误。需要排查 TiKV Coprocessor 为什么排队这么严重。
 
 - 7.1.4 region_cache.go 大量报 `switch region peer to next due to send request fail` 且 error 信息是 `context deadline exceeded`。请求 TiKV 超时触发 region cache 切换请求到其他节点，可以对日志中的 addr 字段继续 `grep "<addr> cancelled"`，根据 grep 结果：
 
-    - `send request is cancelled`。请求发送阶段超时，可以排查监控 **Grafana** -> **TiDB** -> **Batch Client**/`Pending Request Count by TiKV` 是否大于 128，确定是否因发送远超 KV 处理能力导致发送堆积。如果 Pending Request 不多，需要排查日志确认是否因为对应 KV 有运维变更，导致短暂报出；否则非预期，[需报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
+    - `send request is cancelled.` 请求发送阶段超时，可以排查监控 **Grafana** -> **TiDB** -> **Batch Client**/`Pending Request Count by TiKV` 是否大于 128，确定是否因发送远超 KV 处理能力导致发送堆积。如果 Pending Request 不多，需要排查日志确认是否因为对应 KV 有运维变更，导致短暂报出；否则非预期，[需报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
 
-    - `wait response is cancelled`。请求发送到 TiKV 后超时未收到 TiKV 响应。需要排查对应地址 TiKV 的响应时间和对应 Region 在当时的 PD 和 KV 日志，确定为什么 KV 未及时响应。
+    - `wait response is cancelled.` 请求发送到 TiKV 后超时未收到 TiKV 响应。需要排查对应地址 TiKV 的响应时间和对应 Region 在当时的 PD 和 KV 日志，确定为什么 KV 未及时响应。
 
 - 7.1.5 distsql.go 报 `inconsistent index`。数据索引疑似发生不一致，首先对报错的信息中 index 所在表执行 `admin check table <TableName>` 命令，如果检查失败，则先通过以下命令禁用 GC，然后[报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
 
@@ -534,14 +534,14 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 ### 7.2 TiKV
 
-- 7.2.1 `key is locked`。读写冲突，读请求碰到还未提交的数据，需要等待其提交之后才能读。少量这个错误对业务无影响，大量出现这个错误说明业务读写冲突比较严重。
+- 7.2.1 `key is locked` 读写冲突，读请求碰到还未提交的数据，需要等待其提交之后才能读。少量这个错误对业务无影响，大量出现这个错误说明业务读写冲突比较严重。
 
-- 7.2.2 `write conflict`。乐观事务中的写写冲突，同时多个事务对相同的 key 进行修改，只有一个事务会成功，其他事务会自动重取 timestamp 然后进行重试，不影响业务。如果业务冲突很严重可能会导致重试多次之后事务失败，这种情况下建议使用悲观锁。
+- 7.2.2 `write conflict` 乐观事务中的写写冲突，同时多个事务对相同的 key 进行修改，只有一个事务会成功，其他事务会自动重取 timestamp 然后进行重试，不影响业务。如果业务冲突很严重可能会导致重试多次之后事务失败，这种情况下建议使用悲观锁。
 
-- 7.2.3 `TxnLockNotFound`。事务提交太慢，过了 TTL（小事务默认 3s）时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。
+- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL（小事务默认 3s）时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。
 
-- 7.2.4 `PessimisticLockNotFound`。类似 `TxnLockNotFound`，悲观事务提交太慢被其他事务回滚了。
+- 7.2.4 `PessimisticLockNotFound` 类似 `TxnLockNotFound`，悲观事务提交太慢被其他事务回滚了。
 
-- 7.2.5 `stale_epoch`。请求的 epoch 太旧了，TiDB 会更新路由之后再重新发送请求，业务无感知。epoch 在 Region 发生 split/merge 以及迁移副本的时候会变化。
+- 7.2.5 `stale_epoch` 请求的 epoch 太旧了，TiDB 会更新路由之后再重新发送请求，业务无感知。epoch 在 Region 发生 split/merge 以及迁移副本的时候会变化。
 
-- 7.2.6 `peer is not leader`。请求发到了非 Leader 的副本上，TiDB 会根据该错误更新本地路由（如果错误 response 里携带了最新 Leader 是哪个副本这一信息），并且重新发送请求到最新 Leader，一般情况下业务无感知。在 v3.0 后 TiDB 在原 Leader 请求失败时会尝试其他 peer，也会导致 TiKV 频繁出现 `not leader` 日志，可以通过查看 TiDB 对应 Region 的 `switch region peer to next due to send request fail` 日志，排查发送失败根本原因，参考 [7.1.4 TiDB](#71-tidb)。另外也可能是由于其他原因导致一些 Region 一直没有 Leader，请参考 [4.4 某些 TiKV 大量掉 Leader](#44-某些-tikv-大量掉-leader)。
+- 7.2.6 `peer is not leader` 请求发到了非 Leader 的副本上，TiDB 会根据该错误更新本地路由（如果错误 response 里携带了最新 Leader 是哪个副本这一信息），并且重新发送请求到最新 Leader，一般情况下业务无感知。在 v3.0 后 TiDB 在原 Leader 请求失败时会尝试其他 peer，也会导致 TiKV 频繁出现 `not leader` 日志，可以通过查看 TiDB 对应 Region 的 `switch region peer to next due to send request fail` 日志，排查发送失败根本原因，参考 [7.1.4 TiDB](#71-tidb)。另外也可能是由于其他原因导致一些 Region 一直没有 Leader，请参考 [4.4 某些 TiKV 大量掉 Leader](#44-某些-tikv-大量掉-leader)。

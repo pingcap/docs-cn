@@ -9,7 +9,7 @@ summary: 了解如何将 Grafana 监控数据导出为快照以及如何将快�
 
 ## 使用方法
 
-可以通过访问 <https://metricstool.pingcap.com/> 来使用 MetricsTool。它主要提供以下三种功能：
+可以通过访问 <https://metricstool.pingcap.com> 来使用 MetricsTool。它主要提供以下三种功能：
 
 * **导出快照**：提供一段在浏览器开发者工具上运行的用户脚本。你可以使用这个脚本在任意 Grafana v6.x.x 服务器上下载当前 Dashboard 中所有可见面板的快照。
 

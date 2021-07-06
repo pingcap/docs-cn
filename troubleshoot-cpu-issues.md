@@ -53,7 +53,7 @@ aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 
 * 选举不出 leader。PD 日志中有 `"lease is not expired"`，见 issues [https://github.com/etcd-io/etcd/issues/10355](https://github.com/etcd-io/etcd/issues/10355)。v3.0.x 版本和 v2.1.19 版本已解决该问题，见案例 [case-875](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case875.md)。
 
-* 选举慢。Region 加载时间长，从 PD 日志中 `grep "regions cost"`（例如日志中可能是 `load 460927 regions cost 11.77099s`）, 如果出现秒级，则说明较慢，v3.0 版本可开启 Region Storage（设置 `use-region-storage` 为 `true`），该特性能极大缩短加载 Region 的时间，见案例 [case-429](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case429.md)。
+* 选举慢。Region 加载时间长，从 PD 日志中 `grep "regions cost"`（例如日志中可能是 `load 460927 regions cost 11.77099s`），如果出现秒级，则说明较慢，v3.0 版本可开启 Region Storage（设置 `use-region-storage` 为 `true`），该特性能极大缩短加载 Region 的时间，见案例 [case-429](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case429.md)。
 
 * TiDB 与 PD 之间的网络问题，应排查网络相关情况。通过监控 Grafana -> **blackbox_exporter** -> **ping latency** 确定 TiDB 到 PD leader 的网络是否正常。
 
@@ -63,7 +63,7 @@ aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 
 * 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，已于 v3.0.6 版本修复，见 [https://github.com/pingcap/pd/pull/1952](https://github.com/pingcap/pd/pull/1952)。
 
-* PD panic。请[提交 bug](https://github.com/tikv/pd/issues/new?labels=kind/bug&template=bug-report.md)。
+* PD panic. 请[提交 bug](https://github.com/tikv/pd/issues/new?labels=kind/bug&template=bug-report.md)。
 
 * 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓取 goroutine，并[提交 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 

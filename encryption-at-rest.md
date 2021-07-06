@@ -4,7 +4,7 @@ summary: 了解如何启用静态加密功能保护敏感数据。
 aliases: ['/docs-cn/dev/encryption-at-rest/']
 ---
 
-# 静态加密 <span class="version-mark">从 v4.0.0 版本开始引入</span>
+# 静态加密<span class="version-mark">从 v4.0.0 版本开始引入</span>
 
 静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。但区别于这些加密方式，若 TiKV 在存储数据前就进行数据加密，攻击者则必须通过数据库的身份验证才能访问数据。例如，即使攻击者获得物理机的访问权限时，也无法通过复制磁盘上的文件来访问数据。
 
@@ -59,7 +59,7 @@ region = "us-west-2"
 endpoint = "https://kms.us-west-2.amazonaws.com"
 ```
 
-`key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。除非你使用非 AWS 提供的 AWS KMS 兼容服务， `endpoint` 通常无需指定。
+`key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。除非你使用非 AWS 提供的 AWS KMS 兼容服务，`endpoint` 通常无需指定。
 
 若要使用文件方式指定主密钥，主密钥配置应如下所示：
 
@@ -140,7 +140,7 @@ region = "us-west-2"
 ./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix> --s3.region <region>"
 ```
 
-## TiFlash 静态加密 <span class="version-mark">从 v4.0.5 版本开始引入</span>
+## TiFlash 静态加密<span class="version-mark">从 v4.0.5 版本开始引入</span>
 
 TiFlash 从 v4.0.5 起支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 `tiflash-learner.toml` 中）和监控项含义等均与 TiKV 一致。
 

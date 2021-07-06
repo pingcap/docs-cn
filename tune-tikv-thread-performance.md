@@ -30,9 +30,9 @@ TiKV 的读取请求分为两类：
 
 ## TiKV 线程池调优
 
-* gRPC 线程池的大小默认配置（`server.grpc-concurrency`）是 4。由于 gRPC 线程池几乎不会有多少计算开销，它主要负责网络 IO、反序列化请求，因此该配置通常不需要调整。
+* gRPC 线程池的大小默认配置 (`server.grpc-concurrency`) 是 4。由于 gRPC 线程池几乎不会有多少计算开销，它主要负责网络 IO、反序列化请求，因此该配置通常不需要调整。
 
-    - 如果部署的机器 CPU 核数特别少（小于等于 8），可以考虑将该配置（`server.grpc-concurrency`）设置为 2。
+    - 如果部署的机器 CPU 核数特别少（小于等于 8），可以考虑将该配置 (`server.grpc-concurrency`) 设置为 2。
     - 如果机器配置很高，并且 TiKV 承担了非常大量的读写请求，观察到 Grafana 上的监控 Thread CPU 的 gRPC poll CPU 的数值超过了 server.grpc-concurrency 大小的 80%，那么可以考虑适当调大 `server.grpc-concurrency` 以控制该线程池使用率在 80% 以下（即 Grafana 上的指标低于 `80% * server.grpc-concurrency` 的值）。
 
 * Scheduler 线程池的大小配置 (`storage.scheduler-worker-pool-size`) 在 TiKV 检测到机器 CPU 核数大于等于 16 时默认为 8，小于 16 时默认为 4。它主要用于将复杂的事务请求转化为简单的 key-value 读写。但是 **scheduler 线程池本身不进行任何写操作**。
@@ -42,13 +42,13 @@ TiKV 的读取请求分为两类：
     
     通常来说为了避免过多的线程切换，最好确保 scheduler 线程池的利用率保持在 50%～75% 之间。（如果线程池大小为 8 的话，那么 Grafana 上的 TiKV-Details.Thread CPU.scheduler worker CPU 应当在 400%～600% 之间较为合理）
 
-* Raftstore 线程池是 TiKV 最为复杂的一个线程池，默认大小（`raftstore.store-pool-size`）为 2，所有的写请求都会先在 Raftstore 线程 fsync 的方式写入 RocksDB（除非手动将 `raftstore.sync-log` 设置为 false；而 `raftstore.sync-log` 设置为 false，可以提升一部分写性能，但也会增加在机器故障时数据丢失的风险）。
+* Raftstore 线程池是 TiKV 最为复杂的一个线程池，默认大小 (`raftstore.store-pool-size`)为 2，所有的写请求都会先在 Raftstore 线程 fsync 的方式写入 RocksDB（除非手动将 `raftstore.sync-log` 设置为 false；而 `raftstore.sync-log` 设置为 false，可以提升一部分写性能，但也会增加在机器故障时数据丢失的风险）。
 
     由于存在 I/O，Raftstore 线程理论上不可能达到 100% 的 CPU。为了尽可能地减少写磁盘次数，将多个写请求攒在一起写入 RocksDB，最好控制其整体 CPU 使用在 60% 以下（按照线程数默认值 2，则 Grafana 监控上的 TiKV-Details.Thread CPU.Raft store CPU 上的数值控制在 120% 以内较为合理）。不要为了提升写性能盲目增大 Raftstore 线程池大小，这样可能会适得其反，增加了磁盘负担让性能变差。
 
-* UnifyReadPool 负责处理所有的读取请求。默认配置（`readpool.unified.max-thread-count`）大小为机器 CPU 数的 80% （如机器为 16 核，则默认线程池大小为 12）。
+* UnifyReadPool 负责处理所有的读取请求。默认配置 (`readpool.unified.max-thread-count`)大小为机器 CPU 数的 80% （如机器为 16 核，则默认线程池大小为 12）。
 
-    通常建议根据业务负载特性调整其 CPU 使用率在线程池大小的 60%～90% 之间 (如果用户 Grafana 上 TiKV-Details.Thread CPU.Unified read pool CPU 的峰值不超过 800%， 那么建议用户将 `readpool.unified.max-thread-count` 设置为 10，过多的线程数会造成更频繁的线程切换，并且抢占其他线程池的资源)。
+    通常建议根据业务负载特性调整其 CPU 使用率在线程池大小的 60%～90% 之间（如果用户 Grafana 上 TiKV-Details.Thread CPU.Unified read pool CPU 的峰值不超过 800%，那么建议用户将 `readpool.unified.max-thread-count` 设置为 10，过多的线程数会造成更频繁的线程切换，并且抢占其他线程池的资源）。
 
 * RocksDB 线程池是 RocksDB 进行 Compact 和 Flush 任务的线程池，通常不需要配置。
 

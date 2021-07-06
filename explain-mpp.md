@@ -7,7 +7,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 TiDB 支持使用 [MPP 模式](/tiflash/use-tiflash.md#使用-mpp-模式)来执行查询。在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
 
-本文档使用的示例数据如下:
+本文档使用的示例数据如下：
 
 {{< copyable "sql" >}}
 

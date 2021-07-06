@@ -81,17 +81,17 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 - 指定 PEM 格式的 SSL 证书的文件路径
 - 默认值：""
 
-### `--detach` / `-d`
+### `--detach`/`-d`
 
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: true
++ 使用单命令行模式（不进入 readline）
++ 默认值：true
 
-### `--help` / `-h`
+### `--help`/`-h`
 
 + 输出帮助信息
 + 默认值：false
 
-### `--interact` / `-i`
+### `--interact`/`-i`
 
 + 使用交互模式（进入 readline）
 + 默认值：false
@@ -99,18 +99,18 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ### `--key`
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
-- 默认值: ""
+- 默认值：""
 
-### `--pd` / `-u`
+### `--pd`/`-u`
 
 + 指定 PD 的地址
 + 默认地址：`http://127.0.0.1:2379`
 + 环境变量：`PD_ADDR`
 
-### `--version` / `-V`
+### `--version`/`-V`
 
 - 打印版本信息并退出
-- 默认值: false
+- 默认值：false
 
 ## 命令 (command)
 
@@ -452,7 +452,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
-    示例：将 `flow-round-by-digit` 的值设为 `4`：
+    示例：将 `flow-round-by-digit` 的值设为 `4`
 
     {{< copyable "" >}}
 
@@ -671,7 +671,7 @@ time: 43.12698ms
 
 ### `region <region_id> [--jq="<query string>"]`
 
-用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 Region 信息。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 Region 信息：
 
@@ -1055,7 +1055,7 @@ Encoding 格式示例：
 
 ### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考[jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 store 信息：
 
