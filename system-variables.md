@@ -205,11 +205,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
-- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
-    - 0 或 OFF，代表从不使用 MPP 模式
-    - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
-
-MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
+- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询。开启后 TiDB 会通过优化器自动判断是否选择 MPP 执行。MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。
 
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
