@@ -55,7 +55,8 @@ ps aux | grep tikv-server
 ```
 
 命令输出示例:
-```
+
+```shell
 tidb_ouo  9235 10.9  3.8 2019248 622776 ?      Ssl  08:28   1:12 bin/tikv-server --addr 0.0.0.0:20162 --advertise-addr 172.16.6.118:20162 --status-addr 0.0.0.0:20188 --advertise-status-addr 172.16.6.118:20188 --pd 172.16.6.118:2379 --data-dir /home/fengou1/tidb-data/tikv-20162 --config conf/tikv.toml --log-file /home/fengou1/tidb-deploy/tikv-20162/log/tikv.log
 tidb_ouo  9236  9.8  3.8 2048940 631136 ?      Ssl  08:28   1:05 bin/tikv-server --addr 0.0.0.0:20161 --advertise-addr 172.16.6.118:20161 --status-addr 0.0.0.0:20189 --advertise-status-addr 172.16.6.118:20189 --pd 172.16.6.118:2379 --data-dir /home/fengou1/tidb-data/tikv-20161 --config conf/tikv.toml --log-file /home/fengou1/tidb-deploy/tikv-20161/log/tikv.log
 ```
@@ -69,7 +70,8 @@ ps aux | grep tikv-server | awk '{print $1}'
 ```
 
 命令输出示例:
-```
+
+```shell
 tidb_ouo
 tidb_ouo
 ```
@@ -83,7 +85,8 @@ tiup cluster list
 ```
 
 命令输出示例：
-```
+
+```shell
 [root@Copy-of-VM-EE-CentOS76-v1 br]# tiup cluster list
 Starting component `cluster`: /root/.tiup/components/cluster/v1.5.2/tiup-cluster list
 Name          User      Version  Path                                               PrivateKey
@@ -100,7 +103,8 @@ ls -al backup
 ```
 
 命令输出示例：
-```
+
+```shell
 [root@Copy-of-VM-EE-CentOS76-v1 fengou1]# ls -al backup
 total 0
 drwxr-xr-x  2 root root   6 Jun 28 17:48 .
