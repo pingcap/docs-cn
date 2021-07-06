@@ -110,7 +110,7 @@ drwxr-xr-x  2 root root   6 Jun 28 17:48 .
 drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
 ```
 
-tikv-server为用户tidb_ouo启动，用户账号tidb_ouo没有权限读写backup目录， 故备份失败。
+tikv-server为用户tidb_ouo启动，用户账号tidb_ouo没有权限写backup目录， 故备份失败。
 
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
 
