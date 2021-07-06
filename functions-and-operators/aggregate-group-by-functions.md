@@ -24,10 +24,6 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 | [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_std) | 返回总体标准差 |
 | [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-samp) | 返回采样方差 |
 | [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准方差 |
-<<<<<<< HEAD
-=======
-| [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
->>>>>>> 78376826a (Batch fix broken external links (#6626))
 
 > **注意：**
 >
