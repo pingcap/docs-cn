@@ -15,7 +15,7 @@ title: HTAP 快速上手指南
 在试用前，你需要对 TiDB 面向在线事务处理的行存储引擎 [TiKV](/tikv-overview.md) 与面向实时分析场景的列存储引擎 [TiFlash](/tiflash-overview.md) 有一些基本了解：
 
 - HTAP 存储引擎：行存（Row-store）与列存（columnar-store）同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
-- HTAP 数据一致性：作为一个分布式事务型的键值数据库，TiKV 提供了满足 ACID 约束的分布式事务接口，并通过 [Raft](https://raft.github.io/raft.pdf) 协议 保证了多副本数据一致性以及高可用。TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保与 TiKV 之间的数据强一致。
+- HTAP 数据一致性：作为一个分布式事务型的键值数据库，TiKV 提供了满足 ACID 约束的分布式事务接口，并通过 [Raft](https://raft.github.io/raft.pdf) 协议保证了多副本数据一致性以及高可用。TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保与 TiKV 之间的数据强一致。
 - HTAP 数据隔离性：TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
 - MPP 计算引擎：从 v5.0 版本起，TiFlash 引入了分布式计算框架 [MPP](/use-tiflash.md#使用-mpp-模式)，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法，可以大幅度缩短分析查询的执行时间。
 
@@ -153,8 +153,8 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'test' and
 
  查询结果中：
 
-- AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态变为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
-- PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
+- `AVAILABLE` 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态变为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
+- `PROGRESS` 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
 ### 第 5 步：使用 HTAP 更快地分析数据
 
@@ -194,7 +194,7 @@ limit 10;
 
 如果结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
 
-此外，你也可以指定整个查询的各个计算部分都只使用 TiFlash 引擎，详见[使用 TiDB 读取 TiFlash](/use-tiflash.md#使用-tidb-读取-tiflash)。
+此外，你也可以指定整个查询的各个计算部分都只使用 TiFlash 引擎，详情请参阅[使用 TiDB 读取 TiFlash](/use-tiflash.md#使用-tidb-读取-tiflash)。
 
 你可以对比两次的查询结果和查询性能。
 

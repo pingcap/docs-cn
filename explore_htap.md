@@ -4,7 +4,7 @@ title: HTAP 深入探索指南
 
 # HTAP 深入探索指南
 
-本指南介绍快速深入探索并使用 TiDB 在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能。
+本指南介绍如何深入探索并使用 TiDB 在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能。
 
 > **注意：**
 >
@@ -81,7 +81,7 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 - [TiDB Dashboard](/dashboard-intro.md)：查看集群整体运行概况，分析集群读写流量分布及趋势变化，详细了解耗时较长的 SQL 语句的执行信息。
 - [监控系统 (Prometheus & Grafana)](/grafana-overview-dashboard.md)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
 
-如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash-alert-rules.md) 。
+如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash-alert-rules.md)。
 
 ## HTAP 故障诊断
 
