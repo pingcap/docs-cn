@@ -566,8 +566,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
 
-<<<<<<< HEAD
-=======
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：`INSTANCE`
@@ -575,7 +573,6 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
 
->>>>>>> 47de91471 (Change tidb_memory_usage_alarm_ratio scope to instance  (#6409))
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION
