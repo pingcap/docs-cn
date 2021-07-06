@@ -80,17 +80,7 @@ mysql> SELECT * FROM t1;
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
-<<<<<<< HEAD
 ### `datadir`
-=======
-### `cte_max_recursion_depth`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`1000`
-- 这个变量用于控制公共表表达式的最大递归深度。
-
-### datadir
->>>>>>> d2bd61322 (system-variables: update from generated source (#6571))
 
 - 作用域：NONE
 - 默认值：/tmp/tidb
@@ -214,18 +204,12 @@ mysql> SELECT * FROM t1;
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-<<<<<<< HEAD
-- 默认值：ON（表示开启）
-- 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询。开启后 TiDB 会通过优化器自动判断是否选择 MPP 执行。MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。
-=======
 - 默认值：`ON`
-- 可选值：`OFF`，`ON`，`ENFORCE`
 - 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
     - 0 或 OFF，代表从不使用 MPP 模式
     - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
 
 MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
->>>>>>> d2bd61322 (system-variables: update from generated source (#6571))
 
 ### `tidb_allow_remove_auto_inc` <span class="version-mark">从 v2.1.18 和 v3.0.4 版本开始引入</span>
 
@@ -233,17 +217,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
-<<<<<<< HEAD
-=======
-### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 可选值：`1` 和 `2`
-- 默认值：`2`
-- 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1.0 中，该变量的默认值为 `2`，作为实验特性使用，具体可参照[统计信息简介](/statistics.md)文档。
-
->>>>>>> d2bd61322 (system-variables: update from generated source (#6571))
 ### `tidb_auto_analyze_end_time`
 
 - 作用域：GLOBAL
@@ -455,12 +428,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`ON`
+- 默认值：对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 OFF。
 - 指定是否在只涉及一个 Region 的事务上启用一阶段提交特性。比起传统两阶段提交，一阶段提交能大幅降低事务提交延迟并提升吞吐。
 
 > **注意：**
 >
-> - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
+> - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0.0 以下版本，升级后默认值为 `OFF`。
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
@@ -481,16 +454,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_async_commit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-<<<<<<< HEAD
 - 默认值：对于新创建的集群，v5.0 RC 版本的默认值为 OFF，自 v5.0 GA 版本起默认值为 ON。对于升级到 v5.0 GA 版本的集群，如果升级前是 v5.0 RC 版本，升级不改变该变量的值；如果升级前是 v4.0 及之前版本，升级后默认值为 OFF。
-=======
-- 默认值：`ON`
->>>>>>> d2bd61322 (system-variables: update from generated source (#6571))
 - 该变量控制是否启用 Async Commit 特性，使事务两阶段提交的第二阶段于后台异步进行。开启本特性能降低事务提交的延迟。
 
 > **注意：**
 >
-> - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
+> - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0.0 以下版本，升级后默认值为 `OFF`。
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
@@ -522,20 +491,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
-<<<<<<< HEAD
-=======
-### `tidb_enable_enhanced_security`
-
-- 作用域：NONE
-- 默认值：`OFF`
-- 这个变量表示所连接的 TiDB 服务器是否启用了安全增强模式 (SEM)。若要改变该变量值，你需要在 TiDB 服务器的配置文件中修改 `enable-sem` 项的值，并重启 TiDB 服务器。
-- 安全增强模式受[安全增强式 Linux](https://zh.wikipedia.org/wiki/安全增强式Linux) 等系统设计的启发，削减拥有 MySQL `SUPER` 权限的用户能力，转而使用细粒度的 `RESTRICTED` 权限作为替代。这些细粒度的 `RESTRICTED` 权限如下：
-    - `RESTRICTED_TABLES_ADMIN`：能够写入 `mysql` 库中的系统表，能查看 `information_schema` 表上的敏感列。
-    - `RESTRICTED_STATUS_ADMIN`：能够在 `SHOW STATUS` 命令中查看敏感内容。
-    - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
-    - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
-
->>>>>>> d2bd61322 (system-variables: update from generated source (#6571))
 ### `tidb_enable_fast_analyze`
 
 - 作用域：SESSION | GLOBAL
@@ -649,19 +604,6 @@ Query OK, 0 rows affected (0.09 sec)
 - 这个变量用来控制是否开启窗口函数的支持。默认值 1 代表开启窗口函数的功能。
 - 由于窗口函数会使用一些保留关键字，可能导致原先可以正常执行的 SQL 语句在升级 TiDB 后无法被解析语法，此时可以将 `tidb_enable_window_function` 设置为 `OFF`。
 
-<<<<<<< HEAD
-=======
-### `tidb_enforce_mpp` <span class="version-mark">从 v5.1 版本开始引入</span>
-
-- 作用域：SESSION
-- 默认值：`OFF`（表示关闭）
-- 这个变量用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
-    - 0 或 OFF，代表不强制使用 MPP 模式（默认）
-    - 1 或 ON，代表将忽略代价估算，强制使用 MPP 模式。注意：只有当 `tidb_allow_mpp=true` 时该设置才生效。
-
-MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法。MPP 模式选择的详细说明参见[控制是否选择 MPP 模式](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)。
-
->>>>>>> d2bd61322 (system-variables: update from generated source (#6571))
 ### `tidb_evolve_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
