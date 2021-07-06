@@ -345,9 +345,11 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
     cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-## 从 CDC 中删除了一个 checkpoint 滞后的 changefeed 后，TiKV 的 `gc-safepoint` 出现大幅推进，导致 TiKV 性能下降，如何解决？
+## 从 TiCDC 中删除了一个 checkpoint 滞后的 changefeed 后，TiKV 的 `gc-safepoint` 出现大幅推进，导致 TiKV 性能下降，如何解决？
 
-CDC 会在 PD 中设置 `gc-safepoint` 保证可能将被同步的数据不被 TiKV 垃圾回收机制清除，该 `gc-safepoint` 以进度最落后的 changefeed 为准。如果一个 changefeed 落后了若干天，之后用户将该 changefeed 删除，`gc-safepoint` 会突然前进若干天，导致 TiKV 在短时间内 GC 大量数据，影响正常业务。这种情况下可以通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响。可以通过 tikv-ctl 动态修改
+TiCDC 会在 PD 中设置 `gc-safepoint` 保证可能将被同步的数据不被 TiKV 垃圾回收机制清除，该 `gc-safepoint` 以进度最落后的 changefeed 为准。如果一个 changefeed 落后了若干天，之后用户将该 changefeed 删除，`gc-safepoint` 会突然前进若干天，导致 TiKV 在短时间内 GC 大量数据，影响正常业务。这种情况下可以通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响。可以通过 tikv-ctl 动态修改。
+
+{{< copyable "shell-regular" >}}
 
 ```
 tikv-ctl --host=ip:port modify-tikv-config -n gc.max_write_bytes_per_sec -v 10MB
@@ -359,6 +361,8 @@ tikv-ctl --host=ip:port modify-tikv-config -n gc.max_write_bytes_per_sec -v 10MB
 
 出于稳定性考虑，TiCDC 新建的 changefeed 中默认不开启定期自动再平衡。再平衡只在新节点加入时触发。此外 TiCDC 在调度表时会尽量保证轻负载节点优先。如果偶然出现了不平衡现象，可以尝试通过触发 
 
+{{< copyable "shell-regular" >}}
+
 ```
 curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/rebalance_trigger
 ```
@@ -366,6 +370,8 @@ curl -X POST -d 'cf-id=[your-changefeed-id]' http://owner:port/capture/owner/reb
 来解决。
 
 此外，还可以通过手工调度的方式来进行平衡
+
+{{< copyable "shell-regular" >}}
 
 ```
 curl -X POST -d 'cf-id=[your-changefeed-id]&target-cp-id=[target-capture-id]&table-id=[table-id]' http://owner:port/capture/owner/move_table
@@ -391,6 +397,8 @@ TiCDC 使用 Etcd 管理同步的进度，包括所有数据表的信息。如�
 ## 使用 TiCDC 创建 changefeed 时，`enable-old-value` 设置为 true 后 cdc 执行到下游的语句仍然为 `REPLACE INTO` 而非 `UPDATE`, 这是预期的吗？
 
 创建 changefeed 时需要显式指定 `safe-mode` 为 `false` 才会让 MySQL sink 使用 `update`, 执行步骤为:
+
+{{< copyable "shell-regular" >}}
 
 ```
 cdc cli changefeed pause -c simple-replication-task --pd=http://10.0.10.25:2379
@@ -456,4 +464,3 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 >
 > 以上步骤仅适用于 TiCDC v4.0.11 及以上版本（不包括 v5.0.0-rc）。
 > 在其它版本中（v4.0.11 以下和 v5.0.0-rc），DDL 执行失败后 changefeed 的 checkpoint-ts 为该 DDL 语句的 finish-ts。使用 `cdc cli changefeed resume` 恢复同步任务后不会重试该 DDL 语句，而是直接跳过执行该 DDL 语句。
-
