@@ -101,7 +101,7 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_quote]: https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-quote
 [json_contains]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains
 [json_contains_path]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path
-[json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_json-arrayagg
+[json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-arrayagg
 [json_depth]: https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth
 [json_search]: https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search
 [json_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append
