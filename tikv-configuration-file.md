@@ -37,6 +37,10 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + gRPC 消息的压缩算法，取值：none， deflate， gzip。
 + 默认值：none
 
+> **注意：**
+>
+> 取值为 `gzip` 时，部分 TiDB Dashboard 可能无法完成对应的压缩运算，会显示异常。调整回默认值 `none` 后，TiDB Dashboard 可正常显示。
+
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。
