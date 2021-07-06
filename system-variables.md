@@ -870,7 +870,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_memory_usage_alarm_ratio`
 
-- 作用域：SESSION
+- 作用域：`INSTANCE`
 - 默认值：`0.8`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
@@ -1304,6 +1304,12 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 31536000]`
 - 单位：秒
 - 这个变量表示用户会话的空闲超时。`0` 代表没有时间限制。
+
+### `warning_count`
+
+- 作用域: SESSION
+- 默认值：0
+- 这个只读变量表示之前执行语句中出现的警告数。
 
 ### `windowing_use_high_precision`
 

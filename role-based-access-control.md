@@ -171,7 +171,7 @@ SHOW GRANTS FOR 'read_user1'@'localhost' USING 'app_read';
 
 角色在授予给用户之后，并不会生效；只有在用户启用了某些角色之后，才可以使用角色拥有的权限。
 
-可以对用户设置默认启用的角色；用户在登陆时，默认启用的角色会被自动启用。
+可以对用户设置默认启用的角色；用户在登录时，默认启用的角色会被自动启用。
 
 {{< copyable "sql" >}}
 
@@ -221,7 +221,7 @@ SET ROLE {
 }
 ```
 
-例如，登陆 `rw_user1` 后，为当前用户启用角色 `app_read` 和 `app_write` ，仅在当前 session 有效：
+例如，登录 `rw_user1` 后，为当前用户启用角色 `app_read` 和 `app_write` ，仅在当前 session 有效：
 
 {{< copyable "sql" >}}
 
@@ -277,7 +277,7 @@ SET ROLE ALL EXCEPT 'app_read'
 SET DEFAULT ROLE ALL TO 'rw_user1'@'localhost';
 ```
 
-用 `rw_user1@localhost` 登陆后：
+用 `rw_user1@localhost` 登录后：
 
 {{< copyable "sql" >}}
 
