@@ -9,10 +9,11 @@ aliases: ['/docs-cn/v3.1/functions-and-operators/aggregate-group-by-functions/',
 
 ## TiDB 支持的聚合函数
 
-TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
+TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 | 函数名    | 功能描述              |
 |:---------|:--------------------|
+<<<<<<< HEAD
 | [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count)                   | 返回检索到的行的数目|
 | [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count-distinct)  | 返回不同值的数目 |
 | [`SUM()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_sum)                       | 返回和         |
@@ -20,6 +21,20 @@ TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
 | [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_max)                       | 返回最大值     |
 | [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | 返回最小值     |
 | [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | 返回连接的字符串  |
+=======
+| [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_count)                   | 返回检索到的行的数目|
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_count-distinct)  | 返回不同值的数目 |
+| [`SUM()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_sum)                       | 返回和         |
+| [`AVG()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_avg)                       | 返回平均值     |
+| [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_max)                       | 返回最大值     |
+| [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_min)                       | 返回最小值     |
+| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_group-concat)     | 返回连接的字符串  |
+| [`VARIANCE()`，`VAR_POP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-pop) | 返回总体标准方差 |
+| [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_std) | 返回总体标准差 |
+| [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-samp) | 返回采样方差 |
+| [`STDDEV_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_stddev-samp) | 返回采样标准方差 |
+| [`JSON_OBJECTAGG(key, value)`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg) | 将结果集返回为单个含 (key, value) 键值对的 JSON object |
+>>>>>>> 78376826a (Batch fix broken external links (#6626))
 
 > **注意：**
 >
