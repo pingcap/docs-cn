@@ -9,17 +9,17 @@ aliases: ['/docs-cn/v2.1/functions-and-operators/aggregate-group-by-functions/',
 
 ## TiDB 支持的聚合函数
 
-TiDB 支持的 MySQL GROUP BY 聚合函数如下所示：
+TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
 | 函数名    | 功能描述              |
 |:---------|:--------------------|
-| [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count)                   | 返回检索到的行的数目|
-| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count-distinct)  | 返回不同值的数目 |
-| [`SUM()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_sum)                       | 返回和         |
-| [`AVG()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_avg)                       | 返回平均值     |
-| [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_max)                       | 返回最大值     |
-| [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | 返回最小值     |
-| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | 返回连接的字符串  |
+| [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_count)                   | 返回检索到的行的数目|
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_count-distinct)  | 返回不同值的数目 |
+| [`SUM()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_sum)                       | 返回和         |
+| [`AVG()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_avg)                       | 返回平均值     |
+| [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_max)                       | 返回最大值     |
+| [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_min)                       | 返回最小值     |
+| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_group-concat)     | 返回连接的字符串  |
 
 > **注意：**
 >
