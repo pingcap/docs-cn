@@ -358,16 +358,16 @@ header = false
 
 ## 如何获取 TiDB Lightning 运行时的 goroutine 信息
 
-1. 如果配置文件中已经指定了 [status-port](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)，可以跳过此步骤。否则，需要向 TiDB Lightning 发送 USR1 信号开启 status-port。
+1. 如果 TiDB Lightning 的配置文件中已经指定了 [`status-port`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)，可以跳过此步骤。否则，需要向 TiDB Lightning 发送 USR1 信号以开启 `status-port`。
 
    首先通过 `ps` 等命令获取 TiDB Lightning 的进程 ID（PID），然后运行如下命令
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```sh
-   kill -USR1 <lightning-pid>
-   ```
+    ```sh
+    kill -USR1 <lightning-pid>
+    ```
    
-   查看 TiDB Lightning 的日志，其中有“starting HTTP server / start HTTP server / started HTTP server”的日志显示了新开启的 status-port。
+    查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
 
-2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 返回 goroutine 信息。
+2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。
