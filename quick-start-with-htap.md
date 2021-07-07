@@ -25,9 +25,9 @@ title: HTAP 快速上手指南
 
 ### 第 1 步：部署试用环境
 
-在试用 TiDB HTAP 功能前，请按照 [TiDB 数据库快速上手指南](quick-start-with-tidb.md)中的步骤部署 TiDB 试用环境。
+在试用 TiDB HTAP 功能前，请按照 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)中的步骤部署 TiDB 试用环境。
 
-在 [TiDB 数据库快速上手指南](quick-start-with-tidb.md)中，推荐直接执行 `tiup playground` 命令启动最新版本的 TiDB 集群，包括 TiDB、TiKV、PD 和 TiFlash 实例各 1 个；如果你想要指定 TiDB 版本以及各组件实例个数，请同时指定 TiFlash 实例的个数，示例如下：
+在 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)中，推荐直接执行 `tiup playground` 命令启动最新版本的 TiDB 集群，包括 TiDB、TiKV、PD 和 TiFlash 实例各 1 个；如果你想要指定 TiDB 版本以及各组件实例个数，请同时指定 TiFlash 实例的个数，示例如下：
 
 {{< copyable "shell-regular" >}}
 

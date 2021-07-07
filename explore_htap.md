@@ -72,8 +72,8 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 > 
 > TiFlash 的 MPP 模式默认开启。当执行 SQL 语句时，TiDB 会通过优化器自动判断并选择是否以 MPP 模式执行。
 >
-> - 如需关闭 MPP 模式，请将系统变量 [tidb_allow_mpp](system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 的值设置为 OFF。
-> - 如需强制使用 TiFlash 的 MPP 模式执行查询，请将系统变量 [tidb_allow_mpp](system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [tidb_enforce_mpp](system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值设置为 ON。
+> - 如需关闭 MPP 模式，请将系统变量 [tidb_allow_mpp](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 的值设置为 OFF。
+> - 如需强制使用 TiFlash 的 MPP 模式执行查询，请将系统变量 [tidb_allow_mpp](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [tidb_enforce_mpp](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值设置为 ON。
 > - 如需查看 TiDB 是否选择以 MPP 模式执行，你可以[通过 EXPLAIN 语句查看具体的查询执行计划](/explain-mpp.md#用-explain-查看-mpp-模式查询的执行计划)。如果 EXPLAIN 语句的结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
 
 ## HTAP 性能监控
