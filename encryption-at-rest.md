@@ -140,7 +140,7 @@ region = "us-west-2"
 ./br restore full --pd <pd-address> --storage "s3://<bucket>/<prefix> --s3.region <region>"
 ```
 
-## TiFlash 静态加密<span class="version-mark">从 v4.0.5 版本开始引入</span>
+## TiFlash 静态加密 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
 TiFlash 从 v4.0.5 起支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 `tiflash-learner.toml` 中）和监控项含义等均与 TiKV 一致。
 
