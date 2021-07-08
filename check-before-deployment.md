@@ -176,7 +176,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
-   - 若返回报错信息 `Unit ntpd.service could not be found.`，请尝试运行以下命令，查看你是否使用 `chronyd` 而不是 `ntpd` 的系统配置来与 NTP 的时钟同步：
+    - 若返回报错信息 `Unit ntpd.service could not be found.`，请尝试执行以下命令，以查看与 NTP 进行时钟同步所使用的系统配置是 `chronyd` 还是 `ntpd`：
 
         {{< copyable "shell-regular" >}}
 
@@ -190,7 +190,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
         ```
 
-        如果你使用的系统配置是 `chronyd`，请继续执行步骤 3。
+        如果你使用的系统配置是 `chronyd`，请直接执行以下的步骤 3。
 
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
@@ -224,11 +224,11 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         Unable to talk to NTP daemon. Is it running?
         ```
 
-3. 运行 `chronyc tracking` 命令查看 Chrony 服务是否与 NTP 服务器同步。
+3. 执行 `chronyc tracking` 命令查看 Chrony 服务是否与 NTP 服务器同步。
 
     > **注意：**
     >
-    > 该操作仅适用于使用 Chrony 而不是 ntpd 的系统。
+    > 该操作仅适用于使用 Chrony 的系统，不适用于使用 NTPd 的系统。
 
     {{< copyable "shell-regular" >}}
 
@@ -260,7 +260,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         Leap status    : Not synchronised
         ```
 
-    - 如果该命令返回结果如下，则表示 `chronyd` 服务未正常运行：
+    - 如果该命令返回结果如下，则表示 Chrony 服务未正常运行：
 
         ```
         506 Cannot talk to daemon
