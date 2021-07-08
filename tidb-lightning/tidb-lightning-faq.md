@@ -360,7 +360,7 @@ header = false
 
 1. 如果 TiDB Lightning 的配置文件中已经指定了 [`status-port`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)，可以跳过此步骤。否则，需要向 TiDB Lightning 发送 USR1 信号以开启 `status-port`。
 
-   首先通过 `ps` 等命令获取 TiDB Lightning 的进程 ID（PID），然后运行如下命令
+    首先通过 `ps` 等命令获取 TiDB Lightning 的进程 PID，然后运行如下命令：
 
     {{< copyable "shell-regular" >}}
 
