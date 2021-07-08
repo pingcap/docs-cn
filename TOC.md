@@ -7,13 +7,13 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [What's New in TiDB 5.0](/releases/release-5.0.0.md)
+  + [TiDB 5.1 Release Notes](/releases/release-5.1.0.md)
   + [基本功能](/basic-features.md)
   + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5-vs-v4.md)
-    + [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpcc.md)
-    + [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
+    + [Sysbench 性能对比 - v5.1 对比 v5.0](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
+    + [TPC-C 性能对比 - v5.1 对比 v5.0](/benchmark/v5.1-performance-benchmarking-with-tpcc.md)
+    + [TPC-H 100 性能对比 - v5.1 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.1-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
@@ -62,11 +62,6 @@
       + [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       + [外部存储](/br/backup-and-restore-storages.md)
       + [BR 常见问题](/br/backup-and-restore-faq.md)
-  + 读取历史数据
-    + 使用 Stale Read 功能读取历史数据（推荐）
-      + [Stale Read 使用场景介绍](/stale-read.md)
-      + [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
-    + [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   + [修改时区](/configure-time-zone.md)
   + [日常巡检](/daily-check.md)
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -136,6 +131,11 @@
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
+  + 读取历史数据
+    + 使用 Stale Read 功能读取历史数据（推荐）
+      + [Stale Read 使用场景介绍](/stale-read.md)
+      + [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
+    + [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   + 最佳实践
     + [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
     + [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
@@ -395,6 +395,7 @@
       + [精度数学](/functions-and-operators/precision-math.md)
       + [集合运算](/functions-and-operators/set-operators.md)
       + [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+      + [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
     + [聚簇索引](/clustered-indexes.md)
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
@@ -538,7 +539,10 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + [产品路线图](/roadmap.md)
+  + v5.1
+    - [5.1.0](/releases/release-5.1.0.md)
   + v5.0
+    - [5.0.3](/releases/release-5.0.3.md)
     - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)

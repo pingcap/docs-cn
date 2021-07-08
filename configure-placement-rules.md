@@ -18,7 +18,7 @@ Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本�
 
 多条规则的 key range 可以有重叠部分的，即一个 Region 能匹配到多条规则。这种情况下 PD 根据 Rule 的属性来决定规则是相互覆盖还是同时生效。如果有多条规则同时生效，PD 会按照规则的堆叠次序依次去生成调度进行规则匹配。
 
-此外，为了满足不同来源的规则相互隔离的需求，支持更灵活的方式来组织规则，还引入了分组（Group）的概念。通常情况下，用户可根据规则的不同来源把规则放置在不同的 Group。
+此外，为了满足不同来源的规则相互隔离的需求，支持更灵活的方式来组织规则，还引入了分组 (Group) 的概念。通常情况下，用户可根据规则的不同来源把规则放置在不同的 Group。
 
 Placement Rules 示意图如下所示：
 
@@ -315,7 +315,7 @@ pd-ctl config placement-rules rule-bundle save -in="rules.json"
 
 ### 使用 tidb-ctl 查询表相关的 key range
 
-若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md) 来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
+若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md)来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
 
 {{< copyable "shell-regular" >}}
 

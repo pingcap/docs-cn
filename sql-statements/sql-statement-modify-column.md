@@ -10,9 +10,9 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-modify-column/','/docs-cn/d
 
 从 v5.1.0 版本起，TiDB 开始支持 Reorg 类型变更，包括但不限于：
 
-- 从 varchar 转换为 bigint 
-- decimal 精度修改
-- 从 varchar(10) 到 varchar(5) 的长度压缩
+- 从 `VARCHAR` 转换为 `BIGINT`
+- `DECIMAL` 精度修改
+- 从 `VARCHAR(10)` 到 `VARCHAR(5)` 的长度压缩
 
 ## 语法图
 
@@ -178,7 +178,7 @@ CREATE TABLE `t1` (
     ERROR 1105 (HY000): Unsupported multi schema change
     ```
   
-* 不支持修改主键列上的类型。例如：
+* 不支持修改主键列上需要 Reorg-Data 的类型，但是支持修改 Meta-Only 的类型。例如：
   
     ```sql
     CREATE TABLE t (a int primary key);
@@ -186,7 +186,13 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
     ```
 
-* 不支持修改 generated column 的类型。例如：
+    ```sql
+    CREATE TABLE t (a int primary key);
+    ALTER TABLE t MODIFY COLUMN a bigint;
+    Query OK, 0 rows affected (0.01 sec)
+    ```
+
+* 不支持修改生成列的类型。例如：
 
     ```sql
     CREATE TABLE t (a INT, b INT as (a+1));

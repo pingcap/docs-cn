@@ -9,14 +9,14 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.6。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.1.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v4.0.6
+tiup cluster upgrade <cluster-name> v5.1.0
 ```
 
 ### 升级的注意事项
@@ -79,18 +79,18 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 - Normal：同步任务正常进行，checkpoint-ts 正常推进。
 - Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
-- Error：同步任务报错，由于某些可恢复的内部错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Error：同步任务报错，由于某些可恢复的错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
 - Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
 - Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。处于这个状态的 changefeed 不会阻挡 GC 推进。
 
 以上状态流转图中的编号说明如下：
 
-- ① 执行 `changefeed pause` 命令  
-- ② 执行 `changefeed resume` 恢复同步任务  
-- ③ `changefeed` 运行过程中发生可恢复的错误  
-- ④ 执行 `changefeed resume` 恢复同步任务  
-- ⑤ `changefeed` 运行过程中发生不可恢复的错误  
-- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止  
+- ① 执行 `changefeed pause` 命令。 
+- ② 执行 `changefeed resume` 恢复同步任务。
+- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ④ 执行 `changefeed resume` 恢复同步任务。
+- ⑤ `changefeed` 运行过程中发生不可恢复的错误。
+- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
 
 #### 创建同步任务
 
@@ -236,7 +236,7 @@ URI 中可配置的的参数如下：
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
-更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+更多关于 Pulsar 的参数解释，参见 [“pulsar-client-go ClientOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [“pulsar-client-go ProducerOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
 
 #### 使用同步任务配置文件
 
@@ -280,7 +280,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
     - `stopped`: 停止同步（手动暂停）
     - `error`: 停止同步（出错）
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 #### 查询特定同步任务
 

@@ -13,7 +13,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 ```
 
 - `<cluster-name>` 表示新集群的名字，不能和现有集群同名
-- `<version>` 为要部署的 TiDB 集群版本号，如 `v4.0.9`
+- `<version>` 为要部署的 TiDB 集群版本号，如 `v5.1.0`
 - `<topology.yaml>` 为事先编写好的[拓扑文件](/tiup/tiup-cluster-topology-reference.md)
 
 ## 选项
@@ -28,7 +28,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 ### -p, --password
 
-- 在连接目标机器时使用密码登陆，不可和 `-i/--identity_file` 同时使用。
+- 在连接目标机器时使用密码登录，不可和 `-i/--identity_file` 同时使用。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 

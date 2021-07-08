@@ -37,6 +37,10 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + gRPC 消息的压缩算法，取值：none， deflate， gzip。
 + 默认值：none
 
+> **注意：**
+>
+> 取值为 `gzip` 时，部分 TiDB Dashboard 可能无法完成对应的压缩运算，会显示异常。调整回默认值 `none` 后，TiDB Dashboard 可正常显示。
+
 ### `grpc-concurrency`
 
 + gRPC 工作线程的数量。
@@ -520,8 +524,8 @@ raftstore 相关的配置项。
 ### `max-peer-down-duration`
 
 + 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
-+ 默认值：5m
-+ 最小值：0
++ 默认值：10m
++ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-check-interval * 2；Hibernate Region 功能关闭时，为 0。
 
 ### `max-leader-missing-duration`
 
