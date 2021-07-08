@@ -181,7 +181,7 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 Dumpling also supports reading credential files from `~/.aws/credentials`. For more Dumpling configuration, see the configuration of [External storages](/br/backup-and-restore-storages.md).
 
-When you back up data using Dumpling, explicitly specify the `--s3.region` parameter, which means the region of the S3 storage:
+When you back up data using Dumpling, explicitly specify the `--s3.region` parameter, which means the region of the S3 storage (for example, `ap-northeast-1`):
 
 {{< copyable "shell-regular" >}}
 
