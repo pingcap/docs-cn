@@ -28,7 +28,7 @@ In addition, you can control the memory quota of a query using the following ses
 
 | Variable Name                    | Description                                       | Unit | Default Value |
 | -------------------------------- | ------------------------------------------------- | ---- | ------------- |
-| tidb_mem_quota_query             | Control the memory quota of a query               | Byte | 32 << 30      |
+| tidb_mem_quota_query             | Control the memory quota of a query               | Byte | 1 << 30 (1 GB)  |
 | tidb_mem_quota_hashjoin          | Control the memory quota of "HashJoinExec"        | Byte | 32 << 30      |
 | tidb_mem_quota_mergejoin         | Control the memory quota of "MergeJoinExec"       | Byte | 32 << 30      |
 | tidb_mem_quota_sort              | Control the memory quota of "SortExec"            | Byte | 32 << 30      |
