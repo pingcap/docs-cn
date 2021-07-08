@@ -50,3 +50,5 @@ tiup dm import [flags]
 ## 输出
 
 导入过程的日志信息。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

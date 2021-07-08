@@ -135,7 +135,7 @@ EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 
 以上执行计划中，
 
-* `[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并广播给大表（表 a）数据所在的各个节点。
+* `[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表（表 a）读数据并广播给大表（表 b）数据所在的各个节点。
 * `[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
 
 ## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`

@@ -27,7 +27,7 @@ tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 
 ### -p, --password
 
-- 在连接目标机器时使用密码登陆，不可和 `-i/--identity_file` 同时使用。
+- 在连接目标机器时使用密码登录，不可和 `-i/--identity_file` 同时使用。
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
@@ -52,3 +52,5 @@ tiup cluster scale-out <cluster-name> <topology.yaml> [flags]
 ## 输出
 
 扩容日志
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

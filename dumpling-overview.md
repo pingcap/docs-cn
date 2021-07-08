@@ -35,7 +35,9 @@ Dumpling 的更多具体用法可以使用 --help 选项查看，或者查看 [D
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
-Dumpling 包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md#dumpling)。
+要获取 Dumpling，你可以使用 TiUP 执行 `tiup install dumpling` 命令。获取后，使用 `tiup dumpling ...` 命令运行 Dumpling。
+
+Dumpling 也包含在 tidb-toolkit 安装包中，可[在此下载](/download-ecosystem-tools.md#dumpling)。
 
 ## 从 TiDB/MySQL 导出数据
 
@@ -58,7 +60,7 @@ dumpling \
   -P 4000 \
   -h 127.0.0.1 \
   --filetype sql \
-  --threads 32 \
+  -t 8 \
   -o /tmp/test \
   -r 200000 \
   -F 256MiB
@@ -68,6 +70,7 @@ dumpling \
 
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
 - `-o` 用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URL](/br/backup-and-restore-storages.md) 格式。
+- `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
 - `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。
 - `-F` 选项用于指定单个文件的最大大小（单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入）。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
@@ -164,7 +167,7 @@ dumpling \
 
 Dumpling 在 v4.0.8 版本及更新版本中支持导出到云盘。如果需要将数据备份到 Amazon 的 S3 后端存储，那么需要在 `-o` 参数中指定 S3 的存储路径。
 
-可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 Dumpling 节点。
 
@@ -177,7 +180,7 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[外部存储](/br/backup-and-restore-storages.md)。
 
-在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域。
+在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域，例如 `ap-northeast-1`。
 
 {{< copyable "shell-regular" >}}
 
@@ -248,7 +251,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
-- `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度，但也会加大数据库内存消耗，因此不宜设置过大。
+- `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
 - `-r` 选项用于指定单个文件的最大记录数（或者说，数据库中的行数），开启后 Dumpling 会开启表内并发，提高导出大表的速度。
 
 利用以上选项可以提高 Dumpling 的导出速度。
@@ -286,7 +289,7 @@ $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-historical-data.md#操作流程) 时的数据。
 
-`--snapshot` 选项可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）或有效的 `datetime` 时间，例如：
+`--snapshot` 选项可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）或有效的 `datetime` 时间（`YYYY-MM-DD hh:mm:ss` 形式），例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -307,7 +310,7 @@ Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 T
 
 ### 导出大规模数据时的 TiDB GC 设置
 
-如果导出的 TiDB 版本大于 v4.0.0，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。v4.0.0 之前的版本依然需要手动修改 GC。
+如果导出的 TiDB 版本大于等于 v4.0.0，并且 Dumpling 可以访问 TiDB 集群的 PD 地址，Dumpling 会自动配置延长 GC 时间且不会对原集群造成影响。
 
 其他情况下，假如导出的数据量非常大，可以提前调长 GC 时间，以避免因为导出过程中发生 GC 导致导出失败：
 

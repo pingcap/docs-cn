@@ -12,6 +12,55 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 
+### 导入导出速度慢，各组件日志中出现大量重试、EOF 错误并且没有其他错误
+
+在没有其他逻辑出错的情况下，重试、EOF 可能是由网络问题引起的，建议首先使用相关工具排查网络连通状况。以下示例使用 [iperf](https://iperf.fr/) 进行排查：
+
++ 在出现重试、EOF 错误的服务器端节点执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    iperf3 -s
+    ```
+
++ 在出现重试、EOF 错误的客户端节点执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    iperf3 -c <server-IP>
+    ```
+
+下面是一个网络连接良好的客户端节点的输出：
+
+```shell
+$ iperf3 -c 192.168.196.58
+Connecting to host 192.168.196.58, port 5201
+[  5] local 192.168.196.150 port 55397 connected to 192.168.196.58 port 5201
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-1.00   sec  18.0 MBytes   150 Mbits/sec
+[  5]   1.00-2.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   2.00-3.00   sec  18.2 MBytes   153 Mbits/sec
+[  5]   3.00-4.00   sec  22.5 MBytes   188 Mbits/sec
+[  5]   4.00-5.00   sec  22.4 MBytes   188 Mbits/sec
+[  5]   5.00-6.00   sec  22.8 MBytes   191 Mbits/sec
+[  5]   6.00-7.00   sec  20.8 MBytes   174 Mbits/sec
+[  5]   7.00-8.00   sec  20.1 MBytes   168 Mbits/sec
+[  5]   8.00-9.00   sec  20.8 MBytes   175 Mbits/sec
+[  5]   9.00-10.00  sec  21.8 MBytes   183 Mbits/sec
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bitrate
+[  5]   0.00-10.00  sec   208 MBytes   175 Mbits/sec                  sender
+[  5]   0.00-10.00  sec   208 MBytes   174 Mbits/sec                  receiver
+
+iperf Done.
+```
+
+如果输出显示网络带宽较低、带宽波动大，各组件日志中就可能出现大量重试、EOF 错误。此时你需要咨询网络服务供应商以提升网络质量。
+
+如果输出的各指标良好，请尝试更新各组件版本。如果更新后仍无法解决问题，请移步 [AskTUG 论坛](https://asktug.com/)寻求帮助。
+
 ### 不小心把 MySQL 的 user 表导入到 TiDB 了，或者忘记密码，无法登录，如何处理？
 
 重启 TiDB 服务，配置文件中增加 `-skip-grant-table=true` 参数，无密码登录集群后，可以根据情况重建用户，或者重建 mysql.user 表，具体表结构搜索官网。
@@ -84,7 +133,7 @@ TiDB 读流量可以通过增加 TiDB server 进行扩展，总读容量无限�
 
 ### Transaction too large 是什么原因，怎么解决？
 
-TiDB 限制了单条 KV entry 不超过 6MB。
+TiDB 限制了单条 KV entry 不超过 6MB，可以修改配置文件中的 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项进行调整，最大可以修改到 120MB。
 
 分布式事务要做两阶段提交，而且底层还需要做 Raft 复制。如果一个事务非常大，提交过程会非常慢，事务写冲突概率会增加，而且事务失败后回滚会导致不必要的性能开销。所以我们设置了 key-value entry 的总大小默认不超过 100MB。如果业务需要使用大事务，可以修改配置文件中的 `txn-total-size-limit` 配置项进行调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
 

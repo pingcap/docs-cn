@@ -32,7 +32,13 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 
 **TableRefsClause:**
 
-![TableRefsClause](/media/sqlgram/TableRefsClause.png)
+```ebnf+diagram
+TableRefsClause ::= 
+    TableRef AsOfClause? ( ',' TableRef AsOfClause? )*
+
+AsOfClause ::=
+    'AS' 'OF' 'TIMESTAMP' Expression
+```
 
 **WhereClauseOptional:**
 

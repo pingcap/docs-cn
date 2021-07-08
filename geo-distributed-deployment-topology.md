@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 
 # 跨数据中心部署拓扑
 
-本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。
+本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。本文示例所涉及的城市是上海（即 `sha`）和北京（即 `bja` 和 `bjb`）。
 
 ## 拓扑信息
 
@@ -86,3 +86,5 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 >
 > - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在目标主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
 > - 如果部署目录配置为相对路径，会部署在用户家目录下。
+
+有关 Label 的使用和 Raft Group 副本数量，详见[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。

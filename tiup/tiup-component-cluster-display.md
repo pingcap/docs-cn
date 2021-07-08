@@ -24,7 +24,7 @@ tiup cluster display <cluster-name> [flags]
 
 ### -N, --node（strings，默认为 []，表示所有节点）
 
-指定要查询的节点，不指定则表示所有节点。该选项的值为以逗号分割的节点 ID 列表，节点 ID 为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第一列。
+指定要查询的节点，不指定则表示所有节点。该选项的值为以逗号分割的节点 ID 列表，如果不确定要查询节点的 ID，不指定此选项，输出会显示所有节点的 ID 和状态信息。
 
 > **注意：**
 >
@@ -32,7 +32,7 @@ tiup cluster display <cluster-name> [flags]
 
 ### -R, --role（strings，默认为 []，表示所有角色）
 
-指定要查询的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，角色为[集群状态](/tiup/tiup-component-cluster-display.md)表格的第二列。
+指定要查询的角色，不指定则表示所有角色。该选项的值为以逗号分割的节点角色列表，如果不确定要查询节点的角色，不指定此选项，输出会显示所有节点的角色和状态信息。
 
 > **注意：**
 >
@@ -59,3 +59,5 @@ tiup cluster display <cluster-name> [flags]
     - Status：该节点服务当前的状态
     - Data Dir：服务的数据目录，`-` 表示没有数据目录
     - Deploy Dir：服务的部署目录
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

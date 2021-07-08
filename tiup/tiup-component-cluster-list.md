@@ -4,7 +4,7 @@ title: tiup cluster list
 
 # tiup cluster list
 
-tiup-cluster 支持使用同一个中控机部署多套集群，而命令 `tiup cluster list` 可以查看当前登陆的用户使用该中控机部署了哪些集群。
+tiup-cluster 支持使用同一个中控机部署多套集群，而命令 `tiup cluster list` 可以查看当前登录的用户使用该中控机部署了哪些集群。
 
 > **注意：**
 > 
@@ -33,3 +33,5 @@ tiup cluster list [flags]
 - Version：集群版本
 - Path：集群部署数据在中控机上的路径
 - PrivateKey：连接集群的私钥所在路径
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

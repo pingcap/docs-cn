@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/character-set-and-collation/','/docs-cn/dev/reference/sq
 
 字符集 (character set) 是符号与编码的集合。TiDB 中的默认字符集是 utf8mb4，与 MySQL 8.0 及更高版本中的默认字符集匹配。
 
-排序规则 (collation) 是在字符集中比较字符以及字符排序顺序的规则。例如，在二进制排序规则中，比较“A”和“a”的结果是不一样的：
+排序规则 (collation) 是在字符集中比较字符以及字符排序顺序的规则。例如，在二进制排序规则中，比较 `A` 和 `a` 的结果是不一样的：
 
 {{< copyable "sql" >}}
 
@@ -314,7 +314,7 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 规则如下：
 
-* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name`  字符集和 `collation_name` 排序规则。
+* 规则 1：如果指定了 `CHARACTER SET charset_name` 和 `COLLATE collation_name`，则直接使用 `charset_name` 字符集和 `collation_name` 排序规则。
 * 规则 2：如果指定了 `CHARACTER SET charset_name` 且未指定 `COLLATE collation_name`，则使用 `charset_name` 字符集和 `charset_name` 对应的默认排序规则。
 * 规则 3：如果 `CHARACTER SET charset_name` 和 `COLLATE collation_name` 都未指定，则使用 `character_set_connection` 和 `collation_connection` 系统变量给出的字符集和排序规则。
 
