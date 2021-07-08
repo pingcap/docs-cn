@@ -178,7 +178,7 @@ CREATE TABLE `t1` (
     ERROR 1105 (HY000): Unsupported multi schema change
     ```
 
-* Does not support modifying the data types on the primary key columns. For example:
+* Does not support modifying the Reorg-Data types on the primary key columns but supports modifying the Meta-Only types. For example:
 
     ```sql
     CREATE TABLE t (a int primary key);
@@ -186,7 +186,13 @@ CREATE TABLE `t1` (
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
     ```
 
-* Does not support modifying the types of generate columns. For example:
+    ```sql
+    CREATE TABLE t (a int primary key);
+    ALTER TABLE t MODIFY COLUMN a bigint;
+    Query OK, 0 rows affected (0.01 sec)
+    ```
+
+* Does not support modifying the column types on generated columns. For example:
 
     ```sql
     CREATE TABLE t (a INT, b INT as (a+1));
