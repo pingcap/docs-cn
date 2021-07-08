@@ -73,7 +73,7 @@ tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --tiflash 1 --monitor
     SELECT CONCAT(table_schema,'.',table_name) AS 'Table Name', table_rows AS 'Number of Rows', CONCAT(ROUND(data_length/(1024*1024*1024),4),'G') AS 'Data Size', CONCAT(ROUND(index_length/(1024*1024*1024),4),'G') AS 'Index Size', CONCAT(ROUND((data_length+index_length)/(1024*1024*1024),4),'G') AS'Total'FROM information_schema.TABLES WHERE table_schema LIKE 'test';
     ```
 
-    从输出中可以看到，一共生成了八张表，最大的一张表数据量有 600万行（由于数据是工具随机生成，所以实际的数据生成量以 SQL 实际查询到的值为准）。
+    从输出中可以看到，一共生成了八张表，最大的一张表数据量有 600 万行（由于数据是工具随机生成，所以实际的数据生成量以 SQL 实际查询到的值为准）。
 
     ```sql
     +---------------+----------------+-----------+------------+---------+
