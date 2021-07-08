@@ -36,8 +36,6 @@ tiup cluster edit-config <cluster-name>
 
 执行以上命令之后，进入到 vi 编辑器页面之后，修改 [server-configs](/tiup/tiup-cluster-topology-reference.md#server_configs) 中 cdc 的配置，如下所示：
 
-{{< copyable "shell-regular" >}}
-
 ```shell
  server_configs:
   tidb: {}
