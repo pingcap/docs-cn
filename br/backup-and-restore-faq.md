@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 >
 > 因此，最好在恢复前提前检查权限。
 
-如何检查权限:
+你可以按照如下步骤进行权限检查：
 
 ### 1. 执行 Linux 原生的进程查询命令
 
