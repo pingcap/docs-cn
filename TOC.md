@@ -523,7 +523,7 @@
     + [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
     + [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
     + TiUP 支持场景
-      + [使用 tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      + [使用 tiup playground 运行本地测试集群](/tiup/tiup-playground.md)
       + [使用 tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       + [使用 tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       + [使用 tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
