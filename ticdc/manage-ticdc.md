@@ -26,7 +26,7 @@ tiup cluster upgrade <cluster-name> v5.1.0
 
 ## 使用 TiUP 修改 TiCDC 配置
 
-本部分介绍如何使用 TiUP 的 [tiup cluster edit-config](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为1小时。
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
 
 首先执行以下命令。将 `<cluster-name>` 替换成实际的集群名。
 
