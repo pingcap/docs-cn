@@ -393,7 +393,7 @@ BR 可以并且会默认备份 `mysql` 数据库下的表。
 br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
 ```
 
-在如上的命令中，使用 `-f '*.*'` 来覆盖掉默认的规则，然后通过 `-f '!mysql.*'` 来命令 BR 不要恢复 `mysql` 中的表，除非另有指定。最后的 `-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
+在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
 
 如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
 
