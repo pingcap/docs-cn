@@ -394,6 +394,39 @@ br restore full \
 
 增量恢复的方法和使用 BR 进行全量恢复的方法并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
 
+### 恢复创建在 `mysql` 数据库下的表（实验性功能）
+
+BR 可以并且会默认备份 `mysql` 数据库下的表。
+
+在执行恢复时，`mysql` 下的表默认不会被恢复。如果需要恢复 `mysql` 下的用户创建的表，可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中要恢复目标用户表为 `mysql.usertable`；该命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
+```
+
+在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
+
+如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full -f 'mysql.usertable' -s $external_storage_url
+```
+
+> **警告：**
+>
+> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现非预期的状况，已知的异常如下：
+>
+> - 统计信息表（`mysql.stat_*`）无法被恢复。
+> - 系统变量表（`mysql.tidb`，`mysql.global_variables`）无法被恢复。
+> - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）无法被恢复。
+> - GC 数据无法被恢复。
+> 
+> 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
+
 ### Raw KV 恢复（实验性功能）
 
 > **警告：**
