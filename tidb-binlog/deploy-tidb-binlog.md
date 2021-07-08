@@ -325,7 +325,7 @@ Drainer="192.168.0.13"
         host = "192.168.0.13"
         user = "root"
         # 如果你不想在配置文件中写明文密码，则可以使用 `./binlogctl -cmd encrypt -text string` 生成加密的密码
-        # encrypted_password 非空时 password 会被忽略, encrypted_password 和 password 二选一即可。
+        # 如果配置了 encrypted_password 且非空，那么配置的 password 不生效。encrypted_password 和 password 无法同时生效。
         password = ""
         encrypted_password = ""
         port = 3306
