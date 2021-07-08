@@ -32,9 +32,9 @@ TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险�
 
 ## HTAP 架构
 
-在 TiDB 中，面向在线事务处理的行存储引擎 [TiKV](/tikv-overview.md) 与面向实时分析场景的列存储引擎 [TiFlash](/tiflash-overview.md) 同时存在，自动同步，保持强一致性。
+在 TiDB 中，面向在线事务处理的行存储引擎 [TiKV](/tikv-overview.md) 与面向实时分析场景的列存储引擎 [TiFlash](/tiflash/tiflash-overview.md) 同时存在，自动同步，保持强一致性。
 
-更多架构信息，请参考 [TiDB HTAP 形态架构](/tiflash-overview.md#整体架构)。
+更多架构信息，请参考 [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)。
 
 ## HTAP 环境准备
 
@@ -62,7 +62,7 @@ TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险�
 TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步到 TiFlash 的数据表。指定后，TiDB 将创建对应的 TiFlash 副本。
 
 - 如果 TiDB 集群中还没有数据，请先迁移数据到 TiDB。详情请参阅[数据迁移](/migration-overview.md)。
-- 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅[使用 TiFlash](/use-tiflash.md)。
+- 如果 TiDB 集群中已经有从上游同步过来的数据，TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，详情请参阅[使用 TiFlash](/tiflash/use-tiflash.md)。
 
 ## HTAP 数据处理
 
@@ -83,7 +83,7 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 - [TiDB Dashboard](/dashboard-intro.md)：查看集群整体运行概况，分析集群读写流量分布及趋势变化，详细了解耗时较长的 SQL 语句的执行信息。
 - [监控系统 (Prometheus & Grafana)](/grafana-overview-dashboard.md)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
 
-如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash-alert-rules.md)。
+如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
 
 ## HTAP 故障诊断
 
@@ -93,12 +93,11 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 - [定位消耗系统资源多的查询](/identify-expensive-queries.md)
 - [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)
 - [TiDB 集群故障诊断](/troubleshoot-tidb-cluster.md)
-- [TiFlash 常见问题](/troubleshoot-tiflash.md)
+- [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 
 除此之外，你可以在 [Github Issues](https://github.com/pingcap/tiflash/issues) 新建一个 Issue 反馈问题，或者在 [AskTUG](https://asktug.com/) 提交你的问题。
 
 ## 探索更多
 
-- 如果要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/maintain-tiflash.md)。
+- 如果要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
 - 如果需要移除某个 TiFlash 节点，请参阅[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
-- 如果想了解 TiDB 在未来的版本中将会有哪些可用性和稳定性的提升，请参阅 [TiDB Roadmap](/roadmap.md)。

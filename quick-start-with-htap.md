@@ -12,12 +12,12 @@ title: HTAP 快速上手指南
 
 ## 基础概念
 
-在试用前，你需要对 TiDB 面向在线事务处理的行存储引擎 [TiKV](/tikv-overview.md) 与面向实时分析场景的列存储引擎 [TiFlash](/tiflash-overview.md) 有一些基本了解：
+在试用前，你需要对 TiDB 面向在线事务处理的行存储引擎 [TiKV](/tikv-overview.md) 与面向实时分析场景的列存储引擎 [TiFlash](/tiflash/tiflash-overview.md) 有一些基本了解：
 
 - HTAP 存储引擎：行存（Row-store）与列存（columnar-store）同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
 - HTAP 数据一致性：作为一个分布式事务型的键值数据库，TiKV 提供了满足 ACID 约束的分布式事务接口，并通过 [Raft](https://raft.github.io/raft.pdf) 协议保证了多副本数据一致性以及高可用。TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保与 TiKV 之间的数据强一致。
 - HTAP 数据隔离性：TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
-- MPP 计算引擎：从 v5.0 版本起，TiFlash 引入了分布式计算框架 [MPP](/use-tiflash.md#使用-mpp-模式)，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法，可以大幅度缩短分析查询的执行时间。
+- MPP 计算引擎：从 v5.0 版本起，TiFlash 引入了分布式计算框架 [MPP](/tiflash/use-tiflash.md#使用-mpp-模式)，允许节点之间的数据交换并提供高性能、高吞吐的 SQL 算法，可以大幅度缩短分析查询的执行时间。
 
 ## 体验步骤
 
@@ -194,12 +194,12 @@ limit 10;
 
 如果结果中出现 ExchangeSender 和 ExchangeReceiver 算子，表明 MPP 已生效。
 
-此外，你也可以指定整个查询的各个计算部分都只使用 TiFlash 引擎，详情请参阅[使用 TiDB 读取 TiFlash](/use-tiflash.md#使用-tidb-读取-tiflash)。
+此外，你也可以指定整个查询的各个计算部分都只使用 TiFlash 引擎，详情请参阅[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash)。
 
 你可以对比两次的查询结果和查询性能。
 
 ## 探索更多
 
-- [TiDB HTAP 形态架构](/tiflash-overview.md#整体架构)
+- [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore_htap.md)
-- [使用 TiFlash](/use-tiflash.md)  
+- [使用 TiFlash](/tiflash/use-tiflash.md)  
