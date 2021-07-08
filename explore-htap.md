@@ -8,7 +8,7 @@ title: HTAP 深入探索指南
 
 > **注意：**
 >
-> 如果对 TiDB HTAP 功能还不太了解并希望快速试用，请参阅[快速上手 HTAP](/quick_start_with_htap.md)。
+> 如果对 TiDB HTAP 功能还不太了解并希望快速试用，请参阅[快速上手 HTAP](/quick-start-with-htap.md)。
 
 ## HTAP 适用场景
 
