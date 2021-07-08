@@ -26,7 +26,7 @@ TableStmt ::=
 
 ### 示例
 
-如下示例中，表 `t1` 有一个隐藏的 `rowid`，是由 TiDB 生成的。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是非聚簇主键的典型结果。
+如下示例中，表 `t1` 有一个隐藏的由 TiDB 生成的 `rowid`，并且语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是非聚簇主键的典型结果。
 
 {{< copyable "sql" >}}
 
@@ -41,7 +41,7 @@ TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 1 row in set (0.00 sec)
 ```
 
-如下示例中，表 `t2` 有一个复合聚簇主键。由 JSON 输出可知，可以看到 `handle` 一项中包含了主键一部分的两个列的名称和对应值。
+如下示例中，表 `t2` 有一个复合聚簇主键。由 JSON 输出可知，可以看到 `handle` 项中包含了主键部分的信息：两个列的名称和对应值。
 
 {{< copyable "sql" >}}
 
