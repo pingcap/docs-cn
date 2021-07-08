@@ -33,7 +33,7 @@ tiup cluster upgrade <cluster-name> v5.1.0
 tiup cluster edit-config <cluster-name> 
 ```
 
-执行以上命令之后，进入到 vi 编辑器页面之后，修改 [server-configs](/tiup/tiup-cluster-topology-reference.md#server_configs) 中 cdc 的配置，如下所示：
+执行以上命令之后，进入到 vi 编辑器页面，修改 [`server-configs`](/tiup/tiup-cluster-topology-reference.md#server_configs) 下的 `cdc` 配置，如下所示：
 
 ```shell
  server_configs:
