@@ -1064,9 +1064,9 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 + Default value: `"128MB"`
 + Unit: KB|MB|GB
 
-## rocksdb.defaultcf.titan | rocksdb.writecf.titan | rocksdb.lockcf.titan
+## rocksdb.defaultcf.titan
 
-Configuration items related to `rocksdb.defaultcf.titan`, `rocksdb.writecf.titan`, and `rocksdb.lockcf.titan`.
+Configuration items related to `rocksdb.defaultcf.titan`.
 
 ### `min-blob-size`
 
@@ -1142,7 +1142,7 @@ Configuration items related to `rocksdb.defaultcf.titan`, `rocksdb.writecf.titan
 + Determines whether to use the merge operator to write back blob indexes for Titan GC. When `gc-merge-rewrite` is enabled, it reduces the effect of Titan GC on the writes in the foreground.
 + Default value: `false`
 
-## `raftdb`
+## raftdb
 
 Configuration items related to `raftdb`
 
