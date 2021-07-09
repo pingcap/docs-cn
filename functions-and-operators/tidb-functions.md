@@ -41,7 +41,7 @@ TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 1 row in set (0.00 sec)
 ```
 
-如下示例中，表 `t2` 有一个复合聚簇主键。由 JSON 输出可知，可以看到 `handle` 项中包含了主键部分的信息：两个列的名称和对应值。
+以下示例中，表 `t2` 有一个复合聚簇主键。由 JSON 输出可知，输出结果的 `handle` 项中包含了主键部分两列的信息，即两列的名称和对应的值。
 
 {{< copyable "sql" >}}
 
