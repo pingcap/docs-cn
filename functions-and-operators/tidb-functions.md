@@ -26,7 +26,7 @@ TableStmt ::=
 
 ### 示例
 
-如下示例中，表 `t1` 有一个隐藏的由 TiDB 生成的 `rowid`，并且语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是非聚簇主键的典型结果。
+以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
 
 {{< copyable "sql" >}}
 
