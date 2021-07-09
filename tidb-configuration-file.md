@@ -454,7 +454,7 @@ Configuration items related to performance.
 
 + Determines whether to ignore the optimizer's cost estimation and to forcibly use TiFlash's MPP mode for query execution.
 + Default value: `false`
-+ This configuration item is the initial value of [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51).
++ This configuration item controls the initial value of [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51). For example, when this configuration item is set to `true`, the default value of `tidb_enforce_mpp` is `ON`.
 
 ## prepared-plan-cache
 

@@ -663,7 +663,7 @@ Query OK, 0 rows affected (0.09 sec)
 ### `tidb_enforce_mpp` <span class="version-mark">New in v5.1</span>
 
 - Scope: SESSION
-- Default value: `OFF`
+- Default value: `OFF`. To change this default value, modify the [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) configuration value.
 - Controls whether to ignore the optimizer's cost estimation and to forcibly use TiFlash's MPP mode for query execution. The value options are as follows:
     - `0` or `OFF`, which means that the MPP mode is not forcibly used (by default).
     - `1` or `ON`, which means that the cost estimation is ignored and the MPP mode is forcibly used. Note that this setting only takes effect when `tidb_allow_mpp=true`.
