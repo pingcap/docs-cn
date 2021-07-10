@@ -16,7 +16,7 @@ summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 > 要解决该问题，你需要为使用 Stale Read 特性的查询禁用 TiFlash 副本。要禁用 TiFlash 副本，你可以使用以下任一方法：
 >
 > + 通过设置变量来禁用 TiFlash 副本 `set session tidb_isolation_read_engines='tidb,tikv'`。
-> + 使用 [hint](https://docs.pingcap.com/zh/tidb/dev/optimizer-hints#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-) 强制 TiDB 从 TiKV 读取数据。
+> + 使用 [hint](/optimizer-hints.md#read_from_storagetiflasht1_name--tl_name--tikvt2_name--tl_name-) 强制 TiDB 从 TiKV 读取数据。
 
 TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的形式读取历史数据，无需特殊的服务器或者驱动器。当数据被更新或删除后，你可以通过 SQL 接口将更新或删除前的数据读取出来。
 
@@ -155,7 +155,7 @@ select * from t as of timestamp '2021-05-26 16:45:26';
 
 > **注意：**
 >
-> 通过 `SELECT` 语句读取多个表时要保证 TIMESTAMP EXPRESSION 是一致的。 比如： `select * from t as of timestamp NOW() - INTERVAL 2 SECOND, c as of timestamp NOW() - INTERVAL 2 SECOND;`。此外，在 `SELECT` 语句中，你必须要指定相关数据表的 as of 信息，若不指定，`SELECT` 语句会默认读最新的数据。
+> 通过 `SELECT` 语句读取多个表时要保证 TIMESTAMP EXPRESSION 是一致的。比如：`select * from t as of timestamp NOW() - INTERVAL 2 SECOND, c as of timestamp NOW() - INTERVAL 2 SECOND;`。此外，在 `SELECT` 语句中，你必须要指定相关数据表的 as of 信息，若不指定，`SELECT` 语句会默认读最新的数据。
 
 ### 通过 `START TRANSACTION READ ONLY AS OF TIMESTAMP` 读取历史数据
 

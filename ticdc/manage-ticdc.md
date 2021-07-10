@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。
 
 ## 使用 TiUP 升级 TiCDC
 
@@ -23,6 +23,35 @@ tiup cluster upgrade <cluster-name> v5.1.0
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
 * 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
+
+## 使用 TiUP 修改 TiCDC 配置
+
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+
+首先执行以下命令。将 `<cluster-name>` 替换成实际的集群名。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster edit-config <cluster-name> 
+```
+
+执行以上命令之后，进入到 vi 编辑器页面，修改 [`server-configs`](/tiup/tiup-cluster-topology-reference.md#server_configs) 下的 `cdc` 配置，如下所示：
+
+```shell
+ server_configs:
+  tidb: {}
+  tikv: {}
+  pd: {}
+  tiflash: {}
+  tiflash-learner: {}
+  pump: {}
+  drainer: {}
+  cdc:
+    gc-ttl: 3600
+```
+
+修改完毕后执行 `tiup cluster relaod -R cdc` 命令重新加载配置。
 
 ## 使用加密传输 (TLS) 功能
 
@@ -85,12 +114,12 @@ tiup cluster upgrade <cluster-name> v5.1.0
 
 以上状态流转图中的编号说明如下：
 
-- ① 执行 `changefeed pause` 命令  
-- ② 执行 `changefeed resume` 恢复同步任务  
-- ③ `changefeed` 运行过程中发生可恢复的错误  
-- ④ 执行 `changefeed resume` 恢复同步任务  
-- ⑤ `changefeed` 运行过程中发生不可恢复的错误  
-- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止  
+- ① 执行 `changefeed pause` 命令。 
+- ② 执行 `changefeed resume` 恢复同步任务。
+- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ④ 执行 `changefeed resume` 恢复同步任务。
+- ⑤ `changefeed` 运行过程中发生不可恢复的错误。
+- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
 
 #### 创建同步任务
 
@@ -236,7 +265,7 @@ URI 中可配置的的参数如下：
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
-更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+更多关于 Pulsar 的参数解释，参见 [“pulsar-client-go ClientOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [“pulsar-client-go ProducerOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
 
 #### 使用同步任务配置文件
 
@@ -280,7 +309,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
     - `stopped`: 停止同步（手动暂停）
     - `error`: 停止同步（出错）
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 #### 查询特定同步任务
 
