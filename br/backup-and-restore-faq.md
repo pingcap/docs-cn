@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 ## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
-在恢复的时候，每个节点都必须能够访问到**所有**的备份文件（SST files），默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
+在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)，默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
 
 建议在备份的时候挂载一块 NFS 网盘作为备份盘，详见[将单表数据备份到网络盘](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐生产环境使用)。
 
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
 
-全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
+全量备份的时候会过滤掉系统库 (`information_schema`, `performance_schema`, `mysql`)。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
 
@@ -90,7 +90,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 可以使用 kubectl 执行 `kubectl -n ${namespace} get bk ${name}` 以获得上次 BR 备份 `commitTs` 字段，该字段的内容可作为 `--lastbackupts` 使用。
 
-## BR backupTS 如何转化成 Unix 时间?
+## BR backupTS 如何转化成 Unix 时间？
 
 BR `backupTS` 默认是在备份开始前，从 PD 获取到的最新时间戳。可以使用 `pd-ctl tso timestamp` 来解析该时间戳，以获得精确值，也可以通过 `backupTS >> 18` 来快速获取估计值。
 

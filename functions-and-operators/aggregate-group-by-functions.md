@@ -141,7 +141,7 @@ select distinct a, b from t order by c;
 
 但是在 TiDB 中，上述查询是合规的，详情参阅 [#4254](https://github.com/pingcap/tidb/issues/4254)。
 
-TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值：
+TiDB 中另一个标准 SQL 的扩展允许 `HAVING` 子句中的引用使用 `SELECT` 列表中的别名表达式。例如：以下查询返回在 `orders` 中只出现一次的 `name` 值
 
 {{< copyable "sql" >}}
 

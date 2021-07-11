@@ -12,9 +12,9 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 本小节列出了 TiDB 升级相关的常见问题与解决办法。
 
-### 滚动升级有那些影响?
+### 滚动升级有那些影响？
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑（TiDB \* 2、PD \* 3、TiKV \* 3），如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑 (TiDB \* 2, PD \* 3, TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
 
 ### Binary 如何升级？
 
@@ -96,7 +96,7 @@ alter table t change column a a varchar(22) character set utf8;
     curl "http://$IP:10080/schema/test/t" | python -m json.tool
     ```
 
-    这里用了 python 的格式化 json的工具，也可以不加，此处只是为了方便注释。
+    这里用了 python 的格式化 json 的工具，也可以不加，此处只是为了方便注释。
 
     ```json
     {
@@ -213,7 +213,7 @@ alter table t change column a a varchar(22) character set utf8;
 
 #### `ERROR 1366 (HY000): incorrect utf8 value f09f8c80(🌀) for column a`
 
-TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 的插入数据进行 UTF8 Unicode encoding 检查。在v2.1.2 及之后版本中，添加了该检查。
+TiDB 在 v2.1.1 及之前版本中，如果 charset 是 UTF8，没有对 4-byte 的插入数据进行 UTF8 Unicode encoding 检查。在 `v2.1.2` 及之后版本中，添加了该检查。
 
 - 升级前：v2.1.1 及之前版本
 
