@@ -152,7 +152,7 @@ SELECT TRUE, true, tRuE, FALSE, FaLsE, false;
 
 十六进制字面值是有 `X` 和 `0x` 前缀的字符串，后接表示十六进制的数字。注意 `0x` 是大小写敏感的，不能表示为 `0X`。
 
-例：
+例如：
 
 ```
 X'ac12'
