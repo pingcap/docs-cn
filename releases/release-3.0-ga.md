@@ -25,7 +25,7 @@ TiDB Ansible 版本：3.0.0
 + 新功能
     - 新增 Window Function，支持所有 MySQL 8.0 中的窗口函数，包括 `NTILE`，`LEAD`，`LAG`、`PERCENT_RANK`、`NTH_VALUE`、`CUME_DIST`、`FIRST_VALUE`、`LAST_VALUE`、`RANK`、`DENSE_RANK`、`ROW_NUMBER` 函数
     - 新增 View 功能（**实验特性**）
-    - 完善  Table Partition 功能：
+    - 完善 Table Partition 功能：
         - Range Partition
         - Hash Partition
     - 新增插件系统，官方提供 IP 白名单（**企业版特性**），审计日志（**企业版特性**）等插件
@@ -52,7 +52,7 @@ TiDB Ansible 版本：3.0.0
     - 新增导入导出列的关联性信息功能
 + SQL 执行引擎
     - 优化日志输出，`EXECUTE` 语句输出用户变量，`COMMIT` 语句输出慢查询日志，方便排查问题
-    - 新增 `EXPLAIN ANALYZE` 功能，提升SQL 调优易用性
+    - 新增 `EXPLAIN ANALYZE` 功能，提升 SQL 调优易用性
     - 新增 `admin show next_row_id` 功能，方便获取下一行 ID
     - 新增 `JSON_QUOTE`、`JSON_ARRAY_APPEND`、`JSON_MERGE_PRESERVE`、`BENCHMARK`、`COALESCE`、`NAME_CONST` 6 个内建函数
     - 优化 Chunk 大小控制逻辑，根据查询上下文件动态调整，降低 SQL 执行时间和资源消耗，提升性能
@@ -210,7 +210,7 @@ TiDB Ansible 版本：3.0.0
     - Grafana 从 4.6.3 升级到 6.1.6 版本
     - Ansible 从 2.5.14 升级到 2.7.11 版本
 - 新增 TiKV summary 监控面板，方便查看集群状态
-- 新增 TiKV trouble_shooting  监控面板，删除重复项，方便排查问题
+- 新增 TiKV trouble_shooting 监控面板，删除重复项，方便排查问题
 - 新增 TiKV details 监控面板，方便调试排查问题
 - 新增滚动升级并发检测版本是否一致功能，提升滚动升级性能
 - 新增 lightning 部署运维功能

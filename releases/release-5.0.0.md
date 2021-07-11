@@ -14,7 +14,7 @@ TiDB 版本：5.0.0
 
 + TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点共同分担完成。当 MPP 模式开启后，TiDB 将会根据代价决定是否应该交由 MPP 框架进行计算。MPP 模式下，表连接将通过对 JOIN Key 进行数据计算时重分布（Exchange 操作）的方式把计算压力分摊到各个 TiFlash 执行节点，从而达到加速计算的目的。经测试，TiDB 5.0 在同等资源下，MPP 引擎的总体性能是 Greenplum 6.15.0 与 Apache Spark 3.1.1 两到三倍之间，部分查询可达 8 倍性能差异。
 + 引入聚簇索引功能，提升数据库的性能。例如，TPC-C tpmC 的性能提升了 39%。
-+ 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench 设置 64 线程测试 Update index 时, 平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
++ 开启异步提交事务功能，降低写入数据的延迟。例如：Sysbench 设置 64 线程测试 Update index 时，平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
 + 通过提升优化器的稳定性及限制系统任务对 I/O、网络、CPU、内存等资源的占用，降低系统的抖动。例如：测试 8 小时，TPC-C 测试中 tpmC 抖动标准差的值小于等于 2%。
 + 通过完善调度功能及保证执行计划在最大程度上保持不变，提升系统的稳定性。
 + 引入 Raft Joint Consensus 算法，确保 Region 成员变更时系统的可用性。
@@ -29,7 +29,7 @@ TiDB 版本：5.0.0
 + 新增系统变量 [`tidb_executor_concurrency`](/system-variables.md#tidb_executor_concurrency-从-v50-版本开始引入)，用于统一控制算子并发度。原有的 tidb_*_concurrency（例如 `tidb_projection_concurrency`）设置仍然生效，使用过程中会提示已废弃警告。
 + 新增系统变量 [`tidb_skip_ascii_check`](/system-variables.md#tidb_skip_ascii_check-从-v50-版本开始引入)，用于决定在写入 ASCII 字符集的列时，是否对字符的合法性进行检查，默认为 OFF。
 + 新增系统变量 [`tidb_enable_strict_double_type_check`](/system-variables.md#tidb_enable_strict_double_type_check-从-v50-版本开始引入)，用于决定类似“double(N)”语法是否允许被定义在表结构中，默认为 OFF。
-+ 系统变量 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的默认值由 20000 修改为 0，即在 LOAD/INSERT INTO SELECT ... 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。
++ 系统变量 [`tidb_dml_batch_size`](/system-variables.md#tidb_dml_batch_size) 的默认值由 20000 修改为 0，即在 "LOAD/INSERT INTO SELECT ..." 等语法中，不再默认使用 Batch DML，而是通过大事务以满足严格的 ACID 语义。
 
     > **注意：**
     >
@@ -87,7 +87,7 @@ List COLUMNS 分区表是 List 分区表的变体，主要的区别是分区键�
 
 你可以设置 session 变量 [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) 的值为 `ON`，开启 List COLUMNS 分区表功能。
 
-#### 不可见索引（Invisible Indexes）
+#### 不可见索引 (Invisible Indexes)
 
 [用户文档](/sql-statements/sql-statement-alter-index.md)，[#9246](https://github.com/pingcap/tidb/issues/9246)
 
@@ -130,7 +130,7 @@ DBA 通过 `ALTER INDEX` 语句可以修改某个索引的可见性。修改后�
 
 [用户文档](/log-redaction.md)，[#18566](https://github.com/pingcap/tidb/issues/18566)
 
-为满足各种安全合规（如《通用数据保护条例》(GDPR)）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。
+为满足各种安全合规（如《通用数据保护条例(GDPR)》）的要求，系统在输出错误信息和日志信息时，支持对敏感信息（例如，身份证信息、信用卡号）进行脱敏处理，避免敏感信息泄露。
 
 TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开关开启此功能：
 
@@ -226,15 +226,15 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 + 不支持与 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 属性一起使用。
 + 集群升级回滚时，存量的表不受影响，新增表可以通过导入、导出数据的方式降级。
 
-### 异步提交事务（Async Commit)
+### 异步提交事务 (Async Commit)
 
 [用户文档](/system-variables.md#tidb_enable_async_commit-从-v50-版本开始引入)，[#8316](https://github.com/tikv/tikv/issues/8316)
 
 数据库的客户端会同步等待数据库系统通过两阶段 (2PC) 完成事务的提交，事务在第一阶段提交成功后就会返回结果给客户端，系统会在后台异步执行第二阶段提交操作，降低事务提交的延迟。如果事务的写入只涉及一个 Region，则第二阶段可以直接被省略，变成一阶段提交。
 
-开启异步提交事务特性后，在硬件、配置完全相同的情况下，Sysbench 设置 64 线程测试 Update index 时, 平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
+开启异步提交事务特性后，在硬件、配置完全相同的情况下，Sysbench 设置 64 线程测试 Update index 时，平均延迟由 12.04 ms 降低到 7.01ms ，降低了 41.7%。
 
-开启异步提交事务特性时，数据库应用开发人员可以考虑将事务的一致性从线性一致性降低到 [因果一致性](/transaction-overview.md#因果一致性事务)，减少 1 次网络交互降低延迟，提升数据写入的性能。开启因果一致性的 SQL 语句为 `START TRANSACTION WITH CAUSAL CONSISTENCY`。
+开启异步提交事务特性时，数据库应用开发人员可以考虑将事务的一致性从线性一致性降低到[因果一致性](/transaction-overview.md#因果一致性事务)，减少 1 次网络交互降低延迟，提升数据写入的性能。开启因果一致性的 SQL 语句为 `START TRANSACTION WITH CAUSAL CONSISTENCY`。
 
 开启因果一致性后，在硬件和配置完全相同的情况下，Sysbench 设置 64 线程测试 oltp_write_only 时，平均延迟由 11.86ms 降低到 11.19ms，降低了 5.6%。
 
@@ -326,7 +326,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 在升级 TiDB 时，为避免性能抖动问题，你可以开启自动捕获并绑定执行计划的功能，由系统自动捕获并绑定最近一次执行计划然后存储在系统表中。升级完成后，你可以通过 `SHOW GLOBAL BINDINGS` 导出绑定的执行计划，自行分析并决策是否要删除绑定的执行计划。
 
-系统默认关闭自动捕获并绑定执行计划的功能，你可以通过修改 Server 或者设置全局系统变量 `tidb_capture_plan_baselines = ON` 开启此功能。开启此功能后，系统每隔 `bind-info-lease` (默认 3 秒）从 Statement Summary 抓取出现过至少 2 次的 SQL 语句并自动捕获、绑定。
+系统默认关闭自动捕获并绑定执行计划的功能，你可以通过修改 Server 或者设置全局系统变量 `tidb_capture_plan_baselines = ON` 开启此功能。开启此功能后，系统每隔 `bind-info-lease`（默认 3 秒）从 Statement Summary 抓取出现过至少 2 次的 SQL 语句并自动捕获、绑定。
 
 ### TiFlash 查询稳定性提升
 
@@ -386,7 +386,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 [用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/ticdc/issues/660)
 
-为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、 Oracle 等系统。
+为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、Oracle 等系统。
 
 Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect，扩展了 TiDB 数据流转到其他异构数据库或者系统的能力。
 

@@ -23,7 +23,7 @@ TiDB Ansible 版本：2.1.18
     - 修复当查询条件中包含 cast 函数时 outer join 被错误转化为 inner join 的问题 [#12791](https://github.com/pingcap/tidb/pull/12791)
     - 修复 AntiSemiJoin 的 join 条件中错误的表达式传递 [#12800](https://github.com/pingcap/tidb/pull/12800)
 + SQL 执行引擎
-    - 修复时间取整不正确的问题 (如 2019-09-11 11:17:47.999999666 应该被取整到 2019-09-11 11:17:48) [#12259](https://github.com/pingcap/tidb/pull/12259)
+    - 修复时间取整不正确的问题，（如 2019-09-11 11:17:47.999999666 应该被取整到 2019-09-11 11:17:48）[#12259](https://github.com/pingcap/tidb/pull/12259)
     - 修复 `PREPARE` 语句类型没有记录在监控中的问题 [#12329](https://github.com/pingcap/tidb/pull/12329)
     - 修复 `FROM_UNIXTIME` 在检查 NULL 值时 panic 的错误 [#12572](https://github.com/pingcap/tidb/pull/12572)
     - 修复 `YEAR` 类型数据插入非法年份时，结果为 `NULL` 而不是 `0000` 的兼容性问题 [#12744](https://github.com/pingcap/tidb/pull/12744)
