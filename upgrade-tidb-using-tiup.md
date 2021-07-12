@@ -22,6 +22,7 @@ aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup/','/docs-cn/v4.0/upgrade-tidb
     - 启用了 `Lightning` / `Importer` 的集群
     - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
     - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）或者单独为某一台机器的 node_exporter / blackbox_exporter 设置了和其他机器的 node_exporter / blackbox_exporter 不同的 `deploy_dir`
+- 如果使用 TiDB Ansible 部署的集群中有部分节点未部署监控，应当先使用 TiDB Ansible 在 inventory 的 `monitored_servers` 分组中补充对应节点，并通过 `deploy.yaml` playbook 将监控组件补充部署完整，否则在导入后进行其他运维操作时可能会因找不到监控组件而出错。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
 - 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
