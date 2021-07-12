@@ -20,9 +20,7 @@ MySQL 中，返回结果的顺序可能较为固定，因为查询是通过单�
 
 [ISO/IEC 9075:1992, Database Language SQL- July 30, 1992](http://www.contrib.andrew.cmu.edu/~shadow/sql/sql1992.txt) 对此有如下表述：
 
-> If an `<order by clause>` is not specified, then the table specified by the `<cursor specification>` is T and the ordering of rows in T is implementation-dependent.
-> 
-> 如果未指定 `<order by 条件>`，通过 `<cursor specification>` 指定的表为 T，那么 T 表中的行顺序视执行情况而定。
+> If an `<order by clause>` is not specified, then the table specified by the `<cursor specification>` is T and the ordering of rows in T is implementation-dependent.（如果未指定 `<order by 条件>`，通过 `<cursor specification>` 指定的表为 T，那么 T 表中的行顺序视执行情况而定。）
 
 以下两条查询的结果都是合法的：
 
