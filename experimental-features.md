@@ -41,7 +41,6 @@ This document introduces the experimental features of TiDB in different versions
 
 + [Integrate TiCDC with Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md) (Introduced in v5.0)
 + [The cyclic replication feature of TiCDC](/ticdc/manage-ticdc.md#cyclic-replication) (Introduced in v5.0)
-+ [Bit flags of columns](/ticdc/ticdc-open-protocol.md#bit-flags-of-columns) in [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event).
 
 ## Storage
 

@@ -148,7 +148,7 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
     | Column Name    | String |  The column name.  |
     | Column Type    | Number |  The column type. For details, see [Column Type Code](#column-type-code).  |
     | Where Handle  | Boolean   |  Determines whether this column can be the filter condition of the `Where` clause. When this column is unique on the table, `Where Handle` is `true`. |
-    | Flag (**experimental**)       | Number   |  The bit flags of columns. For details, see [Bit flags of columns](#bit-flags-of-columns). |
+    | Flag       | Number   |  The bit flags of columns. For details, see [Bit flags of columns](#bit-flags-of-columns). |
     | Column Value   | Any    | The Column value.   |
 
 ### DDL Event
@@ -385,6 +385,5 @@ If the value of a column is `46`, the column is a composite index column, a prim
 
 > **Note:**
 >
-> + This feature is still experimental. Do **NOT** use it in the production environment.
 > + `BinaryFlag` is meaningful only when the column type is BLOB/TEXT (including TINYBLOB/TINYTEXT and BINARY/CHAR). When the upstream column is the BLOB type, the `BinaryFlag` value is set to `1`. When the upstream column is the TEXT type, the `BinaryFlag` value is set to `0`.
 > + To replicate a table from the upstream, TiCDC selects a [valid index](/ticdc/ticdc-overview.md#restrictions) as the Handle index. The `HandleKeyFlag` value of the Handle index column is set to `1`.
