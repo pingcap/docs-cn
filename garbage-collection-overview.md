@@ -13,9 +13,9 @@ TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新�
 
 GC 会被定期触发。每次 GC 时，首先，TiDB 会计算一个称为 safe point 的时间戳，接下来 TiDB 会在保证 safe point 之后的快照全部拥有正确数据的前提下，删除更早的过期数据。每一轮 GC 分为以下三个步骤：
 
-1. Resolve Locks. 该阶段会对所有 Region 扫描 safe point 之前的锁，并清理这些锁。
-2. Delete Ranges. 该阶段快速地删除由于 `DROP TABLE`/`DROP INDEX` 等操作产生的整区间的废弃数据。
-3. Do GC. 该阶段每个 TiKV 节点将会各自扫描该节点上的数据，并对每一个 key 删除其不再需要的旧版本。
+1. "Resolve Locks" 阶段会对所有 Region 扫描 safe point 之前的锁，并清理这些锁。
+2. "Delete Ranges" 阶段快速地删除由于 `DROP TABLE`/`DROP INDEX` 等操作产生的整区间的废弃数据。
+3. "Do GC" 阶段每个 TiKV 节点将会各自扫描该节点上的数据，并对每一个 key 删除其不再需要的旧版本。
 
 默认配置下，GC 每 10 分钟触发一次，每次 GC 会保留最近 10 分钟内的数据（即默认 GC life time 为 10 分钟，safe point 的计算方式为当前时间减去 GC life time）。如果一轮 GC 运行时间太久，那么在一轮 GC 完成之前，即使到了下一次触发 GC 的时间也不会开始下一轮 GC。另外，为了使持续时间较长的事务能在超过 GC life time 之后仍然可以正常运行，safe point 不会超过正在执行中的事务的开始时间 (start_ts)。
 
