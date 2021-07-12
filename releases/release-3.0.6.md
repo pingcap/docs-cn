@@ -29,7 +29,7 @@ TiDB Ansible 版本：3.0.6
     - 支持在分区表上执行 `ADMIN CHECK TABLE` [#13140](https://github.com/pingcap/tidb/pull/13140)
     - 修复对空表进行 `FAST ANALYZE` 时 panic 的问题 [#13343](https://github.com/pingcap/tidb/pull/13343)
     - 修复在包含多列索引的空表上执行 Fast Analyze 时 panic 的问题 [#13394](https://github.com/pingcap/tidb/pull/13394)
-    - 修复当 `WHERE` 子句上有  UNIQUE KEY 的等值条件时，估算行数大于 1 的问题 [#13382](https://github.com/pingcap/tidb/pull/13382)
+    - 修复当 `WHERE` 子句上有 UNIQUE KEY 的等值条件时，估算行数大于 1 的问题 [#13382](https://github.com/pingcap/tidb/pull/13382)
     - 修复当 TiDB 开启 `Streaming` 后返回数据有可能重复的问题 [#13254](https://github.com/pingcap/tidb/pull/13254)
     - 将 `CMSketch` 中出现次数最多的 N 个值抽取出来，提高估算准确度 [#13429](https://github.com/pingcap/tidb/pull/13429)
 + Server

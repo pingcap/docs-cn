@@ -100,7 +100,7 @@ TiDB Ansible 版本：3.0.0-rc.1
     - 新增 batch 聚合框架 [#4533](https://github.com/tikv/tikv/pull/4533)
     - 新增 `BatchSelectionExecutor` [#4562](https://github.com/tikv/tikv/pull/4562)
     - 实现 batch aggression function `AVG` [#4570](https://github.com/tikv/tikv/pull/4570)
-    - 实现  RPN function `LogicalAnd` [#4575](https://github.com/tikv/tikv/pull/4575)
+    - 实现 RPN function `LogicalAnd` [#4575](https://github.com/tikv/tikv/pull/4575)
 + Misc
     - 支持选用 tcmalloc 为内存分配器 [#4370](https://github.com/tikv/tikv/pull/4370)
 

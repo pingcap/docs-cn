@@ -86,7 +86,7 @@ TiDB 版本：4.0.7
     - 修复当 `balance-region` 开启时，如果存在 Region 没有 Leader，可能会导致 PD panic 的问题 [#2994](https://github.com/pingcap/pd/pull/2994)
     - 修复 Region 合并后 Region 大小和 Region key 数量的统计偏差 [#2985](https://github.com/pingcap/pd/pull/2985)
     - 修复热点统计不正确的问题 [#2991](https://github.com/pingcap/pd/pull/2991)
-    - 修复 `redirectSchedulerDelete` 中未进行 `nil` 判断的问题  [#2974](https://github.com/pingcap/pd/pull/2974)
+    - 修复 `redirectSchedulerDelete` 中未进行 `nil` 判断的问题 [#2974](https://github.com/pingcap/pd/pull/2974)
 
 + TiFlash
 

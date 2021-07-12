@@ -154,7 +154,7 @@ CREATE TABLE `t1` (
 1 row in set (0.00 sec)
 ```
 
-**注意:**
+**注意：**
 
 > - 当所变更的类型与已经存在的数据行产生冲突时，TiDB 会进行报错处理。在上述例子中，TiDB 将进行如下报错：
 >
@@ -163,7 +163,7 @@ CREATE TABLE `t1` (
 >   ERROR 1406 (22001): Data Too Long, field len 4, data len 5
 >   ```
 >
-> - 由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间 (约 2.5s) 的等待处理：
+> - 由于和 Async Commit 功能兼容，DDL 在开始进入到 Reorg Data 前会有一定时间（约 2.5s）的等待处理：
 >
 >   ```
 >   Query OK, 0 rows affected (2.52 sec)
