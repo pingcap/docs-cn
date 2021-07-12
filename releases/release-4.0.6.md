@@ -65,7 +65,7 @@ TiDB 版本：4.0.6
 
 + TiFlash
 
-    - 在 Grafana 中添加关于数据同步 (`apply Region snapshots`, `ingest SST files`) 的监控面板
+    - 在 Grafana 中添加关于数据同步（`apply Region snapshots` 和 `ingest SST files`）的监控面板
     - 在 Grafana 中添加关于 `write stall` 的监控面板
     - 添加 `dt_segment_force_merge_delta_rows` 及 `dt_segment_force_merge_delta_deletes` 用于调整阈值以避免 `write stall` 发生
     - 支持在 TiFlash-Proxy 中把 `raftstore.snap-handle-pool-size` 设为 `0` 以禁用多线程同步 Region snapshot，可降低同步数据时内存消耗

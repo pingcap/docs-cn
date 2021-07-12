@@ -3,7 +3,7 @@ title: Split Region 使用文档
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-split-region/','/docs-cn/dev/reference/sql/statements/split-region/']
 ---
 
-# Split Region   使用文档
+# Split Region 使用文档
 
 在 TiDB 中新建一个表后，默认会单独切分出 1 个 [Region](/tidb-storage.md#region) 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 Region 中的数据超过默认 Region 大小限制后，这个 Region 会开始分裂成 2 个 Region。
 
