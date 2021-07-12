@@ -76,9 +76,9 @@ iperf Done.
 
 DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
-- 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC（Change Data Capture）。
+- 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC (Change Data Capture)。
 - 自研数据导出导入程序实现。
-- 导出（Spool）成文本文件，然后通过 Load infile 进行导入。
+- 导出 (Spool) 成文本文件，然后通过 Load infile 进行导入。
 - 使用第三方数据迁移工具。
 
 目前看来 OGG 最为合适。

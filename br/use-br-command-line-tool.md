@@ -38,7 +38,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 
 ### 命令和子命令
 
-BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个子命令:
+BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个子命令：
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
@@ -53,7 +53,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
-* `-V` (或 `--version`)：检查 BR 版本。
+* `-V`（或 `--version`）：检查 BR 版本。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -162,7 +162,7 @@ br backup full \
 
 如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
 
-这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
 > **注意：**
 >
