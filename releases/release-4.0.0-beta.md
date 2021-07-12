@@ -15,7 +15,7 @@ TiDB Ansible 版本：4.0.0-beta
 
 + 当 `Insert`/`Replace`/`Delete`/`Update` 在执行过程中所使用的内存空间超过启动配置项 `MemQuotaQuery` 的限制时，输出日志或取消本次执行过程，具体行为取决于启动配置项 `OOMAction` [#14179](https://github.com/pingcap/tidb/pull/14179) [#14289](https://github.com/pingcap/tidb/pull/14289) [#14299](https://github.com/pingcap/tidb/pull/14299)
 + 估算 `Index Join` 的代价时由仅考虑驱动表的行数调整为考虑驱动表和被驱动表的行数，提升估算的准确性 [#12085](https://github.com/pingcap/tidb/pull/12085)
-+ 新增  15 个 SQL hint，用于控制优化器行为，提升优化器稳定性
++ 新增 15 个 SQL hint，用于控制优化器行为，提升优化器稳定性
     - [#11253](https://github.com/pingcap/tidb/pull/11253) [#11364](https://github.com/pingcap/tidb/pull/11364) [#11673](https://github.com/pingcap/tidb/pull/11673) [#11740](https://github.com/pingcap/tidb/pull/11740) [#11746](https://github.com/pingcap/tidb/pull/11746)
     - [#11809](https://github.com/pingcap/tidb/pull/11809) [#11996](https://github.com/pingcap/tidb/pull/11996) [#12043](https://github.com/pingcap/tidb/pull/12043) [#12059](https://github.com/pingcap/tidb/pull/12059) [#12246](https://github.com/pingcap/tidb/pull/12246)
     - [#12382](https://github.com/pingcap/tidb/pull/12382)

@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/releases/release-2.0.7/','/docs-cn/dev/releases/207/']
     - 加速 `ADD UNIQUE INDEX` [#7562](https://github.com/pingcap/tidb/pull/7562)
     - 增加控制 DDL 并发度的选项 [#7563](https://github.com/pingcap/tidb/pull/7563)
 - Bug Fixes
-    - 修复 `PRIMARY KEY` 为整数的表，无法使用 `USE INDEX(PRIMARY)` 的问题  [#7298](https://github.com/pingcap/tidb/pull/7298)
+    - 修复 `PRIMARY KEY` 为整数的表，无法使用 `USE INDEX(PRIMARY)` 的问题 [#7298](https://github.com/pingcap/tidb/pull/7298)
     - 修复 `Merge Join` 和 `Index Join` 在 inner row 为 `NULL` 时输出多余结果的问题 [#7301](https://github.com/pingcap/tidb/pull/7301)
     - 修复 chunk size 设置过小时，`Join` 输出多余结果的问题 [#7315](https://github.com/pingcap/tidb/pull/7315)
     - 修复建表语句中包含 `range column` 语法导致 panic 的问题 [#7379](https://github.com/pingcap/tidb/pull/7379)

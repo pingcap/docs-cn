@@ -28,7 +28,7 @@ aliases: ['/docs-cn/dev/releases/release-2.1-beta/','/docs-cn/dev/releases/21bet
     - 添加 `auto_analyze_ratio` 系统变量控制自动 analyze 的阈值
     - 添加 HTTP API 控制是否打开 `general log`
     - 添加 HTTP API 在线修改日志级别
-    - 在 `general log` 和 `slow query log`  中添加 user 信息
+    - 在 `general log` 和 `slow query log` 中添加 user 信息
     - 支持 Server side cursor
 - 兼容性
     - 支持更多 MySQL 语法

@@ -25,7 +25,7 @@ TiDB Ansible 版本：2.1.8
 - `STR_TO_DATE` 函数支持格式 `%H`，提升兼容性 [#9964](https://github.com/pingcap/tidb/pull/9964)
 - 修复 `GROUP_CONCAT` 函数在 group by 唯一索引的情况下结果错误的问题 [#9969](https://github.com/pingcap/tidb/pull/9969)
 - 当 Optimizer Hints 存在不匹配的表名的时候返回 warning [#9970](https://github.com/pingcap/tidb/pull/9970)
-- 统一日志格式规范，利于工具收集分析 [日志规范](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)
+- 统一日志格式规范，利于工具收集分析[日志规范](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)
 - 修复大量 NULL 值导致统计信息估算不准确的问题 [#9979](https://github.com/pingcap/tidb/pull/9979)
 - 修复 TIMESTAMP 类型默认值为边界值的时候报错的问题 [#9987](https://github.com/pingcap/tidb/pull/9987)
 - 检查设置 `time_zone` 值的合法性 [#10000](https://github.com/pingcap/tidb/pull/10000)

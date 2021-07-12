@@ -123,7 +123,7 @@ ERROR 1141 (42000): There is no such grant defined for user 'newuser' on host '%
 
 ## MySQL 兼容性
 
-* 在 TiDB 中删除不存在的用户时，使用 `IF EXISTS` 可避免出现警告。[Issue #10196](https://github.com/pingcap/tidb/issues/10196)。
+* 在 TiDB 中删除不存在的用户时，使用 `IF EXISTS` 可避免出现警告。[Issue #10196](https://github.com/pingcap/tidb/issues/10196)
 
 ## 另请参阅
 
