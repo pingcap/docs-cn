@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 ### 滚动升级有那些影响？
 
-滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑 (TiDB \* 2, PD \* 3, TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
+滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
 
 ### Binary 如何升级？
 
