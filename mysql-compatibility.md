@@ -155,7 +155,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
     + MySQL 5.7 默认与 TiDB 相同。
     + MySQL 8.0 默认 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`。
 
-- `lower_case_table_names`:
+- `lower_case_table_names`：
     + TiDB 默认：`2`，且仅支持设置该值为 `2`。
     + MySQL 默认如下：
         - Linux 系统中该值为 `0`
