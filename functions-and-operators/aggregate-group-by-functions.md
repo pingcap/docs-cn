@@ -10,17 +10,17 @@ This document describes details about the supported aggregate functions in TiDB.
 
 ## Supported aggregate functions
 
-This section describes the supported MySQL group (aggregate) functions in TiDB.
+This section describes the supported MySQL `GROUP BY` aggregate functions in TiDB.
 
 | Name                                                                                                        | Description                                       |
 |:--------------------------------------------------------------------------------------------------------------|:--------------------------------------------------|
-| [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count)                   | Return a count of the number of rows returned     |
-| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_count-distinct)  | Return the count of a number of different values  |
-| [`SUM()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_sum)                       | Return the sum                                    |
-| [`AVG()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_avg)                       | Return the average value of the argument          |
-| [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_max)                       | Return the maximum value                          |
-| [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_min)                       | Return the minimum value                          |
-| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/group-by-functions.html#function_group-concat)     | Return a concatenated string                     |
+| [`COUNT()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_count)                   | Return a count of the number of rows returned     |
+| [`COUNT(DISTINCT)`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_count-distinct)  | Return the count of a number of different values  |
+| [`SUM()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_sum)                       | Return the sum                                    |
+| [`AVG()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_avg)                       | Return the average value of the argument          |
+| [`MAX()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_max)                       | Return the maximum value                          |
+| [`MIN()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_min)                       | Return the minimum value                          |
+| [`GROUP_CONCAT()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_group-concat)     | Return a concatenated string                     |
 | [`VARIANCE()`, `VAR_POP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-pop) | Return the population standard variance|
 | [`STD()`，`STDDEV()`，`STDDEV_POP`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_std) | Return the population standard deviation |
 | [`VAR_SAMP()`](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_var-samp) | Return the sample variance |
