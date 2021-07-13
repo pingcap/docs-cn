@@ -6,6 +6,15 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 # 迁移常见问题
 
+本文介绍 TiDB 数据迁移中的常见问题。
+
+如果要查看迁移相关工具的常见问题，请参考以下链接：
+
+- [Backup & Restore 常见问题](br/backup-and-restore-faq.md)
+- [TiDB Binlog 常见问题](tidb-binlog/tidb-binlog-faq.md)
+- [TiDB Lightning 常见问题](tidb-lightning/tidb-lightning-faq.md)
+- [TiCDC 常见问题和故障处理](ticdc/troubleshoot-ticdc.md)
+
 ## 全量数据导出导入
 
 ### 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
