@@ -171,7 +171,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > **注意：**
 >
 > * 该功能在 TiCDC 4.0.2 版本引入。
-> * 目前 TiCDC 支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
+> * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
 
 更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
 
