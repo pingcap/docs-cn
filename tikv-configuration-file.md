@@ -906,8 +906,8 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 ### `whole-key-filtering`
 
 + Determines whether to put the entire key to bloom filter
-+ Default value for `defaultcf`: `true`
-+ Default value for `writecf` and `lockcf`: `false`
++ Default value for `defaultcf` and `lockcf`: `true`
++ Default value for `writecf`: `false`
 
 ### `bloom-filter-bits-per-key`
 
@@ -931,7 +931,8 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 
 + The default compression algorithm for each level
 + Optional values: ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
-+ Default value: `No` for the first two levels, and `lz4` for the next five levels
++ Default value for `defaultcf` and `writecf`: ["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ Default value for `lockcf`: ["no", "no", "no", "no", "no", "no", "no"]
 
 ### `bottommost-level-compression`
 
@@ -1006,7 +1007,7 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 + The priority type of compaction
 + Optional values: `0` (`ByCompensatedSize`), `1` (`OldestLargestSeqFirst`), `2` (`OldestSmallestSeqFirst`), `3` (`MinOverlappingRatio`)
 + Default value for `defaultcf` and `writecf`: `3`
-+ Default value for `lockcf`: `1`
++ Default value for `lockcf`: `0`
 
 ### `dynamic-level-bytes`
 
