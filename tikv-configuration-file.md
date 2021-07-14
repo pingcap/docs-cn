@@ -888,7 +888,7 @@ rocksdb defaultcf 相关的配置项。
 
 ### `pin-l0-filter-and-index-blocks`
 
-+ 是否 pin 住 L0 的 index 和 filter。
++ 开启 index block 和 filter block 常驻在内存中的开关。
 + 默认值：true
 
 ### `use-bloom-filter`
