@@ -35,7 +35,7 @@ Other Linux OS versions such as Debian Linux and Fedora Linux might work but are
 | Software | Version |
 | :--- | :--- |
 | sshpass | 1.06 or later |
-| TiUP | 0.6.2 or later |
+| TiUP | 1.5.0 or later |
 
 > **Note:**
 >
