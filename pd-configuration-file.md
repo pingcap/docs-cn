@@ -332,7 +332,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `max-replicas`
 
-+ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。当此配置被在线修改后，PD 会在后台通过调度使得 region 的副本数量符合配置。
 + 默认值：3
 
 ### `location-labels`
