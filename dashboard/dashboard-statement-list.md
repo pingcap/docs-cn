@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-list/']
 
 可以通过以下两种方法访问 SQL 语句分析页面：
 
-- 登录后，左侧导航条点击**SQL 语句分析**（SQL Statements）：
+- 登录后，左侧导航条点击 "**SQL 语句分析**" (SQL Statements)。
 
   ![访问](/media/dashboard/dashboard-statement-access.png)
 
@@ -30,19 +30,19 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 ### 显示其他字段
 
-页面顶部**选择列**（Columns）选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
+页面顶部**选择列** (Columns) 选项中可选择显示更多列，可将鼠标移动到列名右侧的 (i) 图标处查看列的说明：
 
 ![选择列](/media/dashboard/dashboard-statement-columns-selector.png)
 
 ### 修改列表排序依据
 
-列表默认以**累计耗时**（Total Latency）从高到低进行排序，点击不同的列标题可以修改排序依据或切换排序顺序：
+列表默认以**累计耗时** (Total Latency) 从高到低进行排序，点击不同的列标题可以修改排序依据或切换排序顺序：
 
 ![修改列排序](/media/dashboard/dashboard-statement-change-order.png)
 
 ### 修改数据收集设置
 
-在列表页面，点击顶部右侧的**设置**（Settings）按钮，即可对 SQL 语句分析功能进行设置：
+在列表页面，点击顶部右侧的**设置** (Settings) 按钮，即可对 SQL 语句分析功能进行设置：
 
 ![设置入口](/media/dashboard/dashboard-statement-setting-entry.png)
 
@@ -52,10 +52,13 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
 
 在设置中可以选择关闭或开启 SQL 语句分析功能。在开启 SQL 语句分析功能时可以修改以下选项：
 
-- 数据收集周期：默认 30 分钟，每次进行 SQL 语句分析的时间长度。SQL 语句分析功能每次对一段时间范围内的所有 SQL 语句进行汇总统计，如果这个时间范围过长，则统计的粒度粗，不利用定位问题；如果太短，则统计的粒度细，方便定位问题，但会导致在相同的数据保留时间内产生更多的记录，产生更多的内存占用。因此需要根据实际情况调整，在需要定位问题时适当地将值调低。
+- 数据收集周期：默认 30 分钟，每次进行 SQL 语句分析的时间长度。SQL 语句分析功能每次对一段时间范围内的所有 SQL 语句进行汇总统计。
+
+    如果这个时间范围过长，则统计的粒度粗，不利用定位问题；如果太短，则统计的粒度细，方便定位问题，但会导致在相同的数据保留时间内产生更多的记录，产生更多的内存占用。因此需要根据实际情况调整，在需要定位问题时适当地将值调低。
+
 - 数据保留时间：默认 1 天，统计信息保留的时间，超过这个时间的数据会被从系统表中删除。
 
-参见 [Statement Summary Tables 参数设置](/statement-summary-tables.md#参数配置) 文档了解详细情况。
+参见 [Statement Summary Tables 参数设置](/statement-summary-tables.md#参数配置)文档了解详细情况。
 
 > **注意：**
 >

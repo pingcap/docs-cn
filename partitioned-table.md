@@ -1284,7 +1284,7 @@ select * from t;
 
 该变量仅作用于建表，已经建表之后再修改该变量无效。详见[系统变量和语法](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入)。
 
-### 动态模式
+### 动态裁剪模式
 
 > **警告：**
 >

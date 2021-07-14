@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/hybrid-deployment-topology/']
 | 实例 | 个数 | 物理机配置 | IP | 配置 |
 | :-- | :-- | :-- | :-- | :-- |
 | TiDB | 6 | 32 VCore 64GB | 10.0.1.1<br/> 10.0.1.2<br/> 10.0.1.3 | 配置 numa 绑核操作 |
-| PD | 3 | 16 VCore 32 GB | 10.0.1.4<br/> 10.0.1.5<br/> 10.0.1.6 | 配置 location_lables 参数 |
+| PD | 3 | 16 VCore 32 GB | 10.0.1.4<br/> 10.0.1.5<br/> 10.0.1.6 | 配置 location_labels 参数 |
 | TiKV | 6 | 32 VCore 64GB | 10.0.1.7<br/> 10.0.1.8<br/> 10.0.1.9 | 1. 区分实例级别的 port、status_port；<br/> 2. 配置全局参数 readpool、storage 以及 raftstore；<br/> 3. 配置实例级别 host 维度的 labels；<br/> 4. 配置 numa 绑核操作|
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd)  | 10.0.1.10 | 默认配置 |
 

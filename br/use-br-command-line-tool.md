@@ -38,7 +38,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 
 ### 命令和子命令
 
-BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个子命令:
+BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个子命令：
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群
@@ -53,7 +53,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 
 * `--pd`：用于连接的选项，表示 PD 服务地址，例如 `"${PDIP}:2379"`。
 * `-h`/`--help`：获取所有命令和子命令的使用帮助。例如 `br backup --help`。
-* `-V` (或 `--version`)：检查 BR 版本。
+* `-V`（或 `--version`）：检查 BR 版本。
 * `--ca`：指定 PEM 格式的受信任 CA 的证书文件路径。
 * `--cert`：指定 PEM 格式的 SSL 证书文件路径。
 * `--key`：指定 PEM 格式的 SSL 证书密钥文件路径。
@@ -162,7 +162,7 @@ br backup full \
 
 如果备份的存储并不是在本地，而是在 Amazon 的 S3 后端存储，那么需要在 `storage` 子命令中指定 S3 的存储路径，并且赋予 BR 节点和 TiKV 节点访问 Amazon S3 的权限。
 
-这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+这里可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`，如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
 > **注意：**
 >
@@ -308,6 +308,10 @@ br restore db \
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名字。其余选项的含义与[恢复全部备份数据](#恢复全部备份数据)相同。
 
+> **注意**：
+>
+> 恢复备份数据的时候，`--db` 选项指定的数据库名必须与执行备份时候 `--db`选项指定的数据库名相同，否则无法恢复成功。由于备份数据的元文件`backupmeta` 记录了该数据库名，因此只能将数据恢复到同名的数据库。推荐做法是把备份文件恢复到另一个集群的同名数据库中。
+
 ### 恢复单张表的数据
 
 要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。该命令的使用帮助可通过 `br restore table -h` 或 `br restore table --help` 来获取。
@@ -376,6 +380,39 @@ br restore full \
 ### 增量恢复
 
 增量恢复的方法和使用 BR 进行全量恢复的方法并无差别。需要注意，恢复增量数据的时候，需要保证备份时指定的 `last backup ts` 之前备份的数据已经全部恢复到目标集群。
+
+### 恢复创建在 `mysql` 数据库下的表（实验性功能）
+
+BR 可以并且会默认备份 `mysql` 数据库下的表。
+
+在执行恢复时，`mysql` 下的表默认不会被恢复。如果需要恢复 `mysql` 下的用户创建的表，可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中要恢复目标用户表为 `mysql.usertable`；该命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
+```
+
+在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
+
+如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full -f 'mysql.usertable' -s $external_storage_url
+```
+
+> **警告：**
+>
+> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现非预期的状况，已知的异常如下：
+>
+> - 统计信息表（`mysql.stat_*`）无法被恢复。
+> - 系统变量表（`mysql.tidb`，`mysql.global_variables`）无法被恢复。
+> - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）无法被恢复。
+> - GC 数据无法被恢复。
+> 
+> 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
 ### Raw KV 恢复（实验性功能）
 

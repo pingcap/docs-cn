@@ -237,6 +237,16 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 同时进行 Region 调度的任务个数
 + 默认值：2048
 
+### `hot-region-schedule-limit`
+
++ 控制同时进行的 hot Region 任务。该配置项独立于 Region 调度。
++ 默认值：4
+
+### `hot-region-cache-hits-threshold`
+
++ 设置识别热点 Region 所需的分钟数。只有当 Region 处于热点状态持续时间超过此分钟数时，PD 才会参与热点调度。
++ 默认值：3
+
 ### `replica-schedule-limit`
 
 + 同时进行 replica 调度的任务个数。
@@ -351,9 +361,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
 
-+ 打开 `flow-round-by-digit`
 + 默认值：3
-+ PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `100500`。默认值为 `3`。该配置替换了 `trace-region-flow`。
++ PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
 ## label-property
 
