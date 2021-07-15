@@ -1,5 +1,6 @@
 ---
 title: HTAP 快速上手指南
+summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。 
 ---
 
 # HTAP 快速上手指南

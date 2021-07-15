@@ -1,5 +1,6 @@
 ---
 title: HTAP 深入探索指南
+summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。 
 ---
 
 # HTAP 深入探索指南
