@@ -234,6 +234,14 @@ tiup cluster display <cluster-name>
 >
 > 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
 
+> **注意：**
+>
+> TiKV 中的 PD Client 会缓存 PD 节点的列表。
+>
+> + 在 v4.0.3 版本之前，TiKV 不会定期自动更新该 PD 节点列表的缓存，只有在 PD leader 发生切换或 TiKV 重启加载最新配置后才会更新。为避免 TiKV 缓存的 PD 节点列表过旧的风险，在扩缩容 PD 完成后，PD 集群中应至少包含一个扩缩容操作前就已经存在的 PD 节点成员。如果不满足该条件，你需要手动执行 PD transfer leader 操作以更新 TiKV 中的 PD 缓存列表。
+>
+> + 在 v4.0.3 及以后的版本中，增加了定期自动更新 PD 节点的机制，可以降低 TiKV 缓存的 PD 节点列表过旧这一问题出现的概率。但仍应尽量避免在扩容新 PD 后直接一次性缩容所有扩容前就已经存在的 PD 节点。如果需要，请确保在下线所有之前存在的 PD 节点前将 PD 的 leader 切换至新扩容的 PD 节点。
+
 ### 1. 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
