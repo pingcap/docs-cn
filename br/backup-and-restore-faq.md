@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 ## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
-在恢复的时候，每个节点都必须能够访问到**所有**的备份文件（SST files），默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
+在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)，默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
 
 建议在备份的时候挂载一块 NFS 网盘作为备份盘，详见[将单表数据备份到网络盘](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐生产环境使用)。
 
@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
 
-全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
+全量备份的时候会过滤掉系统库 (`information_schema`、`performance_schema`、`mysql`)。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
 
@@ -43,6 +43,75 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 > 使用 BR 进行数据的恢复时，检验读权限的时机是在第一次读取 SST 文件时，考虑到执行 DDL 的耗时，这个时刻可能会离开始运行 BR 的时间很远。这样可能会出现等了很长时间之后遇到 Permission denied 错误失败的情况。
 >
 > 因此，最好在恢复前提前检查权限。
+
+你可以按照如下步骤进行权限检查：
+
+1. 执行 Linux 原生的进程查询命令
+
+    {{< copyable "shell-regular" >}}
+    
+    ```bash
+    ps aux | grep tikv-server
+    ```
+    
+    命令输出示例如下:
+    
+    ```shell
+    tidb_ouo  9235 10.9  3.8 2019248 622776 ?      Ssl  08:28   1:12 bin/tikv-server --addr 0.0.0.0:20162 --advertise-addr 172.16.6.118:20162 --status-addr 0.0.0.0:20188 --advertise-status-addr 172.16.6.118:20188 --pd 172.16.6.118:2379 --data-dir /home/user1/tidb-data/tikv-20162 --config conf/tikv.toml --log-file /home/user1/tidb-deploy/tikv-20162/log/tikv.log
+    tidb_ouo  9236  9.8  3.8 2048940 631136 ?      Ssl  08:28   1:05 bin/tikv-server --addr 0.0.0.0:20161 --advertise-addr 172.16.6.118:20161 --status-addr 0.0.0.0:20189 --advertise-status-addr 172.16.6.118:20189 --pd 172.16.6.118:2379 --data-dir /home/user1/tidb-data/tikv-20161 --config conf/tikv.toml --log-file /home/user1/tidb-deploy/tikv-20161/log/tikv.log
+    ```
+    
+    或者执行以下命令：
+    
+    {{< copyable "shell-regular" >}}
+    
+    ```bash
+    ps aux | grep tikv-server | awk '{print $1}'
+    ```
+    
+    命令输出示例如下:
+    
+    ```shell
+    tidb_ouo
+    tidb_ouo
+    ```
+
+2. 使用 TiUP 命令查询集群的启动信息
+
+    {{< copyable "shell-regular" >}}
+    
+    ```bash
+    tiup cluster list
+    ```
+    
+    命令输出示例如下：
+    
+    ```shell
+    [root@Copy-of-VM-EE-CentOS76-v1 br]# tiup cluster list
+    Starting component `cluster`: /root/.tiup/components/cluster/v1.5.2/tiup-cluster list
+    Name          User      Version  Path                                               PrivateKey
+    ----          ----      -------  ----                                               ----------
+    tidb_cluster  tidb_ouo  v5.0.2   /root/.tiup/storage/cluster/clusters/tidb_cluster  /root/.tiup/storage/cluster/clusters/tidb_cluster/ssh/id_rsa
+    ```
+
+3. 检查备份目录的权限，例如 `backup` 目录是备份数据存储目录。命令示例如下：
+
+    {{< copyable "shell-regular" >}}
+    
+    ```bash
+    ls -al backup
+    ```
+    
+    命令输出示例如下：
+    
+    ```shell
+    [root@Copy-of-VM-EE-CentOS76-v1 user1]# ls -al backup
+    total 0
+    drwxr-xr-x  2 root root   6 Jun 28 17:48 .
+    drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
+    ```
+    
+    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但用户账号 `tidb_ouo` 没有 `backup` 目录的写入权限， 所以备份失败。
 
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
 
@@ -90,7 +159,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 可以使用 kubectl 执行 `kubectl -n ${namespace} get bk ${name}` 以获得上次 BR 备份 `commitTs` 字段，该字段的内容可作为 `--lastbackupts` 使用。
 
-## BR backupTS 如何转化成 Unix 时间?
+## BR backupTS 如何转化成 Unix 时间？
 
 BR `backupTS` 默认是在备份开始前，从 PD 获取到的最新时间戳。可以使用 `pd-ctl tso timestamp` 来解析该时间戳，以获得精确值，也可以通过 `backupTS >> 18` 来快速获取估计值。
 

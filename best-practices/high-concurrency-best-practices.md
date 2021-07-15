@@ -194,7 +194,7 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 create table t (a int, b int) SHARD_ROW_ID_BITS = 4 PRE_SPLIT_REGIONS=3;
 ```
 
-- `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 （16=2^4） 个范围区间。
+- `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 (16=2^4) 个范围区间。
 - `PRE_SPLIT_REGIONS=3` 表示建完表后提前切分出 8 (2^3) 个 Region。
 
 开始写数据进表 t 后，数据会被写入提前切分好的 8 个 Region 中，这样也避免了刚开始建表完后因为只有一个 Region 而存在的写热点问题。
