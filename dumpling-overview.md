@@ -260,7 +260,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 > **注意：**
 >
-> 在大多数场景下，用户不需要调整 Dumpling 的默认数据一致性选项(默认值 `auto`)。
+> 在大多数场景下，用户不需要调整 Dumpling 的默认数据一致性选项（默认值为 `auto`）。
 
 Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
