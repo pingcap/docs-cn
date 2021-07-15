@@ -122,3 +122,11 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 ## TiCDC 开放数据协议
 
 TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ (Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。详细信息参考 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)。
+
+## `sort-dir` 及 `data-dir` 配置项的兼容性说明
+
+`sort-dir` 配置项用于给 TiCDC 内部的排序器指定临时文件目录，其作用在各版本有过如下兼容性更改：
+
+|  版本  |  `sort-engine` 的使用  |  说明   |  使用建议  |
+|  :---  |    :---               |  :--    | :-- |
+|  v5.1 版本及其他更新的 TiDB 版本  | `sort-dir` 被弃用，建议配置 `data-dir` |  `data-dir` 可以通过最新版本的 TiUP 进行配置。这些版本中 unified sorter 是默认开启的，升级时请确保 `data-dir` 已经被正确配置，否则将默认使用 `/tmp/cdc_data`。<br /><br />如果该目录所在设备空间不足，有可能出现硬盘空间不足的问题。之前配置的 changefeed 的 `sort-dir` 配置将会失效。| 需要通过 `cdc server` 命令行参数（或 TiUP）配置 `data-dir` |
