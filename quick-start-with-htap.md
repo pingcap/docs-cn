@@ -52,7 +52,7 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
 
 ### 第 2 步：准备试用数据
 
-通过此步骤，你可以生成一个 [TPC-H](http://www.tpc.org/tpch/) 数据集用于体验 TiDB HTAP 功能。如果你对 TPC-H 感兴趣，可查看其[规格说明](http://tpc.org/tpc_documents_current_versions/pdf/tpc-h_v3.0.0.pdf)。
+通过以下步骤，将生成一个 [TPC-H](http://www.tpc.org/tpch/) 数据集用于体验 TiDB HTAP 功能。如果你对 TPC-H 感兴趣，可查看其[规格说明](http://tpc.org/tpc_documents_current_versions/pdf/tpc-h_v3.0.0.pdf)。
 
 > **注意：**
 >
