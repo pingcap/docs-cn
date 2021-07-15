@@ -34,7 +34,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-compression-type`
 
-+ gRPC 消息的压缩算法，取值：none， deflate， gzip。
++ gRPC 消息的压缩算法，取值：none，deflate，gzip。
 + 默认值：none
 
 > **注意：**
@@ -56,7 +56,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `grpc-memory-pool-quota`
 
 + gRPC 可使用的内存大小限制。
-+ 默认值: 无限制
++ 默认值：无限制
 + 建议仅在出现内存不足 (OOM) 的情况下限制内存使用。需要注意，限制内存使用可能会导致卡顿。
 
 ### `grpc-raft-conn-num`
@@ -251,8 +251,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `stack-size`
 
-+ Coprocessor 线程池中线程的栈大小，默认值：10，单位：KiB|MiB|GiB。
-+ 类型：整数 + 单位
++ Coprocessor 线程池中线程的栈大小。
 + 默认值：10MB
 + 单位：KB|MB|GB
 + 最小值：2MB
@@ -278,13 +277,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 写入数据队列的最大值，超过该值之后对于新的写入 TiKV 会返回 Server Is Busy 错误。
 + 默认值：100MB
-+ 单位: MB|GB
++ 单位：MB|GB
 
 ### `reserve-space`
 
 + TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
 + 默认值：5GB
-+ 单位: MB|GB
++ 单位：MB|GB
 
 ### `enable-ttl`
 
@@ -560,7 +559,7 @@ raftstore 相关的配置项。
 
 ### `consistency-check-interval`
 
-+ 触发一致性检查的时间间隔, 0 表示不启用。
++ 触发一致性检查的时间间隔，0 表示不启用。
 + 默认值：0s
 + 最小值：0
 
@@ -645,7 +644,7 @@ coprocessor 相关的配置项。
 
 ### `split-region-on-table`
 
-+ 开启按 table 分裂 Region的开关，建议仅在 TiDB 模式下使用。
++ 开启按 table 分裂 Region 的开关，建议仅在 TiDB 模式下使用。
 + 默认值：false
 
 ### `batch-split-limit`
@@ -718,7 +717,7 @@ rocksdb 相关的配置项。
 
 ### `wal-recovery-mode`
 
-+ WAL 恢复模式，取值：0（TolerateCorruptedTailRecords），1（AbsoluteConsistency），2（PointInTimeRecovery），3（SkipAnyCorruptedRecords）。
++ WAL 恢复模式，取值：0 (TolerateCorruptedTailRecords)，1 (AbsoluteConsistency)，2 (PointInTimeRecovery)，3 (SkipAnyCorruptedRecords)。
 + 默认值：2
 + 最小值：0
 + 最大值：3
@@ -864,14 +863,14 @@ rocksdb defaultcf 相关的配置项。
 
 ### `block-size`
 
-+ rocksdb block size。
++ rocksdb block size.
 + 默认值：64KB
 + 最小值：1KB
 + 单位：KB|MB|GB
 
 ### `block-cache-size`
 
-+ rocksdb block cache size。
++ rocksdb block cache size.
 + 默认值：机器总内存 * 25%
 + 最小值：0
 + 单位：KB|MB|GB
@@ -997,7 +996,7 @@ bloom filter 为每个 key 预留的长度。
 ### `compaction-pri`
 
 + Compaction 优先类型
-+ 可选择值：3（MinOverlappingRatio），0（ByCompensatedSize），1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
++ 可选择值：3 (MinOverlappingRatio)，0 (ByCompensatedSize)，1 (OldestLargestSeqFirst)，2 (OldestSmallestSeqFirst)。
 + 默认值：3
 
 ### `dynamic-level-bytes`
@@ -1136,7 +1135,7 @@ rocksdb writecf 相关的配置项。
 
 ### `block-cache-size`
 
-+ block cache size。
++ block cache size.
 + 默认值：机器总内存 * 15%
 + 单位：MB|GB
 
@@ -1173,7 +1172,7 @@ rocksdb lockcf 相关配置项。
 
 ### `block-cache-size`
 
-+ block cache size。
++ block cache size.
 + 默认值：机器总内存 * 2%
 + 单位：MB|GB
 

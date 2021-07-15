@@ -76,11 +76,11 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Async Commit Transaction Counter：启用 Async commit 机制的事务数量，分为成功、失败两种
 
 - Executor
-    - Parse Duration：SQL 语句解析耗时统计
-    - Compile Duration：将解析后的 SQL AST 编译成执行计划耗时统计
-    - Execution Duration：执行 SQL 语句执行计划耗时统计
-    - Expensive Executor OPS：每秒消耗系统资源比较多的算子统计，包括 Merge Join，Hash Join，Index Look Up Join，Hash Agg，Stream Agg，Sort，TopN 等
-    - Queries Using Plan Cache OPS：每秒使用 Plan Cache 的查询数量统计
+    - Parse Duration：SQL 语句解析耗时统计。
+    - Compile Duration：将解析后的 SQL AST 编译成执行计划耗时统计。
+    - Execution Duration：执行 SQL 语句执行计划耗时统计。
+    - Expensive Executor OPS：每秒消耗系统资源比较多的算子统计。包括 Merge Join、Hash Join、Index Look Up Join、Hash Agg、Stream Agg、Sort、TopN 等。
+    - Queries Using Plan Cache OPS：每秒使用 Plan Cache 的查询数量统计。
 
 - Distsql
     - Distsql Duration：Distsql 处理的时长
@@ -153,7 +153,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - GC
     - Worker Action OPM：GC 相关操作的数量，包括 run\_job，resolve\_lock，delete\_range 等操作
     - Duration 99：GC 相关操作的耗时统计
-    - Config：GC 的数据保存时长（life time）和 GC 运行间隔（run interval）配置
+    - Config：GC 的数据保存时长 (life time) 和 GC 运行间隔 (run interval) 配置
     - GC Failure OPM：GC 相关操作失败数量统计
     - Delete Range Failure OPM：Delete range 失败的次数
     - Too Many Locks Error OPM：GC 清锁过多错误的数量
