@@ -72,7 +72,7 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 - Store Write rate bytes：每个 TiKV 实例总的写入的流量
 - Store Write rate keys：每个 TiKV 实例总的写入 keys
 - Hot cache write entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
-- Selector events： 热点调度中选择器的事件发生次数
+- Selector events：热点调度中选择器的事件发生次数
 - Direction of hotspot move leader：热点调度中 leader 的调度方向，正数代表调入，负数代表调出
 - Direction of hotspot move peer：热点调度中 peer 的调度方向，正数代表调入，负数代表调出
 
@@ -137,7 +137,7 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 
 ## Heartbeat
 
-- Heartbeat region event QPS：心跳处理 region 的 QPS， 包括更新缓存和持久化
+- Heartbeat region event QPS：心跳处理 region 的 QPS，包括更新缓存和持久化
 - Region heartbeat report：TiKV 向 PD 发送的心跳个数
 - Region heartbeat report error：TiKV 向 PD 发送的异常的心跳个数
 - Region heartbeat report active：TiKV 向 PD 发送的正常的心跳个数

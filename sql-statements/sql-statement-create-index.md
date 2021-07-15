@@ -187,7 +187,7 @@ CREATE INDEX idx ON t ((lower(name)));
 
 ## 不可见索引
 
-不可见索引（Invisible Indexes）不会被查询优化器使用：
+不可见索引 (Invisible Indexes) 不会被查询优化器使用：
 
 ```sql
 CREATE TABLE t1 (c1 INT, c2 INT, UNIQUE(c2));

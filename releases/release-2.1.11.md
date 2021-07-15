@@ -16,7 +16,7 @@ TiDB Ansible 版本：2.1.11
 - 修复 delete 多表 join 的结果时使用错误 schema 的问题 [#10595](https://github.com/pingcap/tidb/pull/10595)
 - 修复 `CONVERT()` 函数返回错误的字段类型的问题 [#10263](https://github.com/pingcap/tidb/pull/10263)
 - 更新统计信息时合并不重叠的反馈信息 [#10569](https://github.com/pingcap/tidb/pull/10569)
-- 修复  `unix_timestamp()-unix_timestamp(now())` 计算错误的问题 [#10491](https://github.com/pingcap/tidb/pull/10491)
+- 修复 `unix_timestamp()-unix_timestamp(now())` 计算错误的问题 [#10491](https://github.com/pingcap/tidb/pull/10491)
 - 修复 `period_diff` 与 MySQL 8.0 不兼容的问题 [#10501](https://github.com/pingcap/tidb/pull/10501)
 - 收集统计信息的时候，忽略 `Virtual Column`，避免异常报错 [#10628](https://github.com/pingcap/tidb/pull/10628)
 - 支持 `SHOW OPEN TABLES` 语句 [#10374](https://github.com/pingcap/tidb/pull/10374)

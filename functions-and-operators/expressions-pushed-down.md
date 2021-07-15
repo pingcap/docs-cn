@@ -46,7 +46,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
     - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
 + `reason`：用于记录该函数被加入黑名单的原因。
 
-> **注意：**：
+> **注意：**
 >
 > `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
 
