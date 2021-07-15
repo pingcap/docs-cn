@@ -85,7 +85,7 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包。步骤如下：
 
-1. 在线环境中安装 TiUP 包管理器工具
+1. 在在线环境中安装 TiUP 包管理器工具
 
     1. 执行如下命令安装 TiUP 工具：
 
@@ -132,6 +132,52 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         ```
 
         此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
+
+3. 自定义制作的离线镜像，或调整已有离线镜像中的内容
+
+    如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
+
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.5.2 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror clone tiup-custom-mirror-v1.5.2 --tiup v1.5.2 --cluster v1.5.2
+        ```
+
+        如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
+
+    2. 参考上文“使用 TiUP 制作离线镜像”第 2 步的方式，将此不完整的离线镜像传输到隔离环境的中控机。
+
+    3. 在隔离环境的中控机上，查看当前使用的离线镜像路径。较新版本的 TiUP 可以直接通过命令获取当前的镜像地址：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror show
+        ```
+
+        以上命令如果提示 `show` 命令不存在，可能当前使用的是较老版本的 TiUP。此时可以通过查看 `$HOME/.tiup/tiup.toml` 获得正在使用的镜像地址。将此镜像地址记录下来，后续步骤中将以变量 `${base_mirror}` 指代此镜像地址。
+
+    4. 将不完整的离线镜像合并到已有的离线镜像中：
+
+        首先将当前离线镜像中的 `keys` 目录复制到 `$HOME/.tiup` 目录中：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cp -r ${base_mirror}/keys $HOME/.tiup/
+        ```
+
+        然后使用 TiUP 命令将不完整的离线镜像合并到当前使用的镜像中：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror merge tiup-custom-mirror-v1.5.2
+        ```
+    
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
