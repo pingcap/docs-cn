@@ -200,6 +200,7 @@ br backup full \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
     --send-credentials-to-tikv=true \
+    --ratelimit 120 \
     --log-file backuptable.log
 ```
 
@@ -217,6 +218,7 @@ br backup full \
 ```shell
 br backup full\
     --pd ${PDIP}:2379 \
+    --ratelimit 120 \
     -s local:///home/tidb/backupdata/incr \
     --lastbackupts ${LAST_BACKUP_TS}
 ```
@@ -247,6 +249,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 br backup raw --pd $PD_ADDR \
     -s "local://$BACKUP_DIR" \
     --start 31 \
+    --ratelimit 120 \
     --end 3130303030303030 \
     --format hex \
     --cf default
@@ -299,6 +302,7 @@ br restore full \
 br restore full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
+    --ratelimit 128 \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
 ```
@@ -315,6 +319,7 @@ Full Restore <---------/...............................................> 17.12%.
 br restore db \
     --pd "${PDIP}:2379" \
     --db "test" \
+    --ratelimit 128 \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
 ```
@@ -338,6 +343,7 @@ br restore table \
     --pd "${PDIP}:2379" \
     --db "test" \
     --table "usertable" \
+    --ratelimit 128 \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
 ```
@@ -384,6 +390,7 @@ br restore full \
     --pd "${PDIP}:2379" \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
+    --ratelimit 128 \
     --send-credentials-to-tikv=true \
     --log-file restorefull.log
 ```
@@ -403,7 +410,7 @@ BR 可以并且会默认备份 `mysql` 数据库下的表。
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --ratelimit 128 
 ```
 
 在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
@@ -413,7 +420,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f 'mysql.usertable' -s $external_storage_url
+br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128 
 ```
 
 > **警告：**
@@ -442,6 +449,7 @@ br restore raw --pd $PD_ADDR \
     -s "local://$BACKUP_DIR" \
     --start 31 \
     --end 3130303030303030 \
+    --ratelimit 128 \
     --format hex \
     --cf default
 ```
@@ -480,6 +488,7 @@ br restore raw --pd $PD_ADDR \
     ```shell
     br restore full \
         -s "local://$BACKUP_DIR" \
+        --ratelimit 128 \
         --pd $PD_ADDR \
         --online
     ```
