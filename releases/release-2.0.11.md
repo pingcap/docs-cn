@@ -17,5 +17,4 @@ aliases: ['/docs-cn/dev/releases/release-2.0.11/','/docs-cn/dev/releases/2.0.11/
 
 ## TiKV
 
-- 修复了两个 Region merge 相关的问题
-[#4003](https://github.com/tikv/tikv/pull/4003)，[#4004](https://github.com/tikv/tikv/pull/4004)
+- 修复了两个 Region merge 相关的问题 [#4003](https://github.com/tikv/tikv/pull/4003)，[#4004](https://github.com/tikv/tikv/pull/4004)
