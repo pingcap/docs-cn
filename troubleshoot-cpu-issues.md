@@ -63,7 +63,7 @@ aliases: ['/docs-cn/dev/troubleshoot-cpu-issues/']
 
 * 滚动升级的时候 PD OOM，gRPC 消息大小没限制，监控可看到 TCP InSegs 较大，已于 v3.0.6 版本修复，见 [https://github.com/pingcap/pd/pull/1952](https://github.com/pingcap/pd/pull/1952)。
 
-* PD panic. 请[提交 bug](https://github.com/tikv/pd/issues/new?labels=kind/bug&template=bug-report.md)。
+* PD panic。请[提交 bug](https://github.com/tikv/pd/issues/new?labels=kind/bug&template=bug-report.md)。
 
 * 其他原因，通过 `curl http://127.0.0.1:2379/debug/pprof/goroutine?debug=2` 抓取 goroutine，并[提交 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 

@@ -374,7 +374,7 @@ tiup cluster display <cluster-name>
 
         > **注意：**
         >
-        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的IP:端口即可。
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 `IP:端口`即可。
 
 2. 在 pd-ctl 中下线该 TiFlash 节点。
 
@@ -390,7 +390,7 @@ tiup cluster display <cluster-name>
 
         > **注意：**
         >
-        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的IP:端口即可。
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 `IP:端口`即可。
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 

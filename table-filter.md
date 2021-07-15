@@ -16,7 +16,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
 
 在命令行中使用多个 `-f` 或 `--filter` 参数，即可在 TiDB 生态工具中应用表库过滤规则。每个过滤规则均采用 `db.table` 形式，支持通配符（详情见[下一节](#使用通配符)）。以下为各个工具中的使用示例：
 
-* [BR](/br/backup-and-restore-tool.md):
+* [BR](/br/backup-and-restore-tool.md)：
 
     {{< copyable "shell-regular" >}}
 
@@ -27,7 +27,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
-* [Dumpling](/backup-and-restore-using-dumpling-lightning.md):
+* [Dumpling](/backup-and-restore-using-dumpling-lightning.md)：
 
     {{< copyable "shell-regular" >}}
 
@@ -36,7 +36,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     #          ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
-* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md):
+* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
     {{< copyable "shell-regular" >}}
 
@@ -49,14 +49,14 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
 
 在 TOML 文件中，表库过滤规则以[字符串数组](https://toml.io/cn/v1.0.0-rc.1#%E6%95%B0%E7%BB%84)的形式指定。以下为各个工具中的使用示例：
 
-* TiDB Lightning:
+* TiDB Lightning：
 
     ```toml
     [mydumper]
     filter = ['foo*.*', 'bar*.*']
     ```
 
-* [TiCDC](/ticdc/ticdc-overview.md):
+* [TiCDC](/ticdc/ticdc-overview.md)：
 
     ```toml
     [filter]

@@ -162,7 +162,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
         - Windows 系统中该值为 `1`
         - macOS 系统中该值为 `2`
 
-- `explicit_defaults_for_timestamp`:
+- `explicit_defaults_for_timestamp`：
     + TiDB 默认：`ON`，且仅支持设置该值为 `ON`。
     + MySQL 5.7 默认：`OFF`。
     + MySQL 8.0 默认：`ON`。

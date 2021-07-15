@@ -59,7 +59,7 @@ select * from information_schema.views;
 
 ### 查询 HTTP API
 
-示例；
+示例：
 
 {{< copyable "" >}}
 

@@ -34,7 +34,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-compression-type`
 
-+ gRPC 消息的压缩算法，取值：none, deflate, gzip。
++ gRPC 消息的压缩算法，取值：none，deflate，gzip。
 + 默认值：none
 
 > **注意：**
