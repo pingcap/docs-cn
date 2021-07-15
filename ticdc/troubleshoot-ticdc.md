@@ -415,3 +415,19 @@ mysql root@127.0.0.1:test> show create table test;
 ```
 
 产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1/v4.0.13 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1/v4.0.13 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
+
+## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
+
+Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
+
+- `Select`
+- `Index`
+- `Insert`
+- `Update`
+- `Delete`
+- `Create`
+- `Drop`
+- `Alter`
+- `Create View`
+
+如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
