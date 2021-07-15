@@ -71,16 +71,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认值：3
 + 单位：秒
 
-### `tso-save-interval`
-
-+ TSO 分配的时间窗口,实时持久存储。
-+ 默认值：3s
-
-### `enable-prevote`
-
-+ 开启 raft prevote 的开关。
-+ 默认值：true
-
 ### `quota-backend-bytes`
 
 + 元信息数据库存储空间的大小，默认 8GiB。
@@ -99,21 +89,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `force-new-cluster`
 
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
-+ 默认值：false
-
-### `tick-interval`
-
-+ etcd raft 的 tick 周期。
-+ 默认值：100ms
-
-### `election-interval`
-
-+ etcd leader 选举的超时时间。
-+ 默认值：3s
-
-### `use-region-storage`
-
-+ 开启独立的 region 存储。
 + 默认值：false
 
 ## security
@@ -286,39 +261,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置 Region 算分公式版本。
 + 默认值：v2
 + 可选值：v1，v2
-
-### `disable-remove-down-replica`
-
-+ 关闭自动删除 DownReplica 的特性的开关，当设置为 true 时，PD 不会自动清理宕机状态的副本。
-+ 默认值：false
-
-### `disable-replace-offline-replica`
-
-+ 关闭迁移 OfflineReplica 的特性的开关，当设置为 true 时，PD 不会迁移下线状态的副本。
-+ 默认值：false
-
-### `disable-make-up-replica`
-
-+ 关闭补充副本的特性的开关，当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
-+ 默认值：false
-
-### `disable-remove-extra-replica`
-
-+ 关闭删除多余副本的特性开关，当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
-+ 默认值：false
-
-### `disable-location-replacement`
-
-+ 关闭隔离级别检查的开关，当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
-+ 默认值：false
-
-### `store-balance-rate`
-
-+ 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
-+ 类型：Integer
-+ 默认值：15
-+ 最小值：0
-+ 最大值：200
 
 ### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
