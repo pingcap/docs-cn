@@ -113,9 +113,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 > **注意：**
 >
-> 当一种 SQL 因为达到 `tidb_stmt_summary_max_stmt_count` 限制要被移除时，TiDB 会移除该 SQL 语句种类在所有时间段的数据。因此，即使一个时间段内的 SQL 种类数量没有达到上限，显示的 SQL 语句数量也会比实际的少。如遇到该情况，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
-> 
-> 同时，向 statements summary 中频繁插入表中不存在的 SQL 会带来较大性能开销，建议尽可能调整 `tidb_stmt_summary_max_stmt_count` 得大些。
+> 当一种 SQL 因为达到 `tidb_stmt_summary_max_stmt_count` 限制要被移除时，TiDB 会移除该 SQL 语句种类在所有时间段的数据。因此，即使一个时间段内的 SQL 种类数量没有达到上限，显示的 SQL 语句数量也会比实际的少。如遇到该情况，对性能也有一些影响，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
 
 statement summary 配置示例如下：
 
