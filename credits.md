@@ -31,7 +31,7 @@ TiDB 开发者为 TiDB 的新功能开发、性能优化、稳定性保障做出
 - [tidb-incubator/TiBigData](https://github.com/tidb-incubator/TiBigData/graphs/contributors)
 - [ti-community-infra](https://github.com/orgs/ti-community-infra/people)
 
-完整的贡献者名单，请查阅 [SIG | TiDB DevGroup](https://contributor.tidb.io/SIG)
+完整的贡献者名单，请查阅 [SIG | TiDB DevGroup](https://contributor.tidb.io/sig)
 
 ## TiDB 文档写作者和译员
 
