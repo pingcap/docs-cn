@@ -598,7 +598,6 @@ Take the following steps to check the current operating system configuration and
     echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
     echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
     echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
-    echo "vm.swappiness = 0">> /etc/sysctl.conf
     sysctl -p
     ```
 
