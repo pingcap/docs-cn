@@ -5,11 +5,11 @@ summary: 了解如何将 TiDB 集群的增量数据实时同步到另一集群�
 
 # 将 TiDB 集群的增量数据实时同步到另一集群
 
-本文档介绍如何为一个 TiDB 集群开启一个 TiDB 或 MySQL 从集群，并将增量数据实时同步到从集群。
+本文档介绍如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL 从集群，并将增量数据实时从主集群同步到从集群。
 
 ## 使用场景
 
-如果你需要为一个运行中的 TiDB 集群设置从集群，并行进行实时增量数据同步，可使用 [Backup & Restore (BR)](/backup-and-restore-tool.md)、[Dumpling](/dumpling-overview.md) 或 [TiDB Binlog](/tidb-binlog-overview.md) 进行操作。
+如果你需要配置一个运行中的 TiDB 集群和其从集群，以进行实时增量数据同步，可使用 [Backup & Restore (BR)](/backup-and-restore-tool.md)、[Dumpling](/dumpling-overview.md) 或 [TiDB Binlog](/tidb-binlog-overview.md)。
 
 ## 实现原理
 
@@ -26,7 +26,7 @@ summary: 了解如何将 TiDB 集群的增量数据实时同步到另一集群�
 
 ## 同步操作步骤
 
-假设现有 A 集群正常运行，要新建一个 B 集群，并将 A 集群的数据实时增量进行同步到 B 集群，可以通过以下步骤来实现。
+假设现有 A 集群正常运行，你需要先新建一个 B 集群作为 A 集群的从集群，并将 A 集群的数据实时增量进行同步到 B 集群，可以通过以下步骤来实现。
 
 ### 步骤一：开启 TiDB Binlog
 
