@@ -78,6 +78,6 @@ summary: 了解如何将 TiDB 集群的增量数据实时同步到另一集群�
 ```toml
 initial-commit-ts = COMMIT_TS
 [syncer.to]
-host = {B 集群}
+host = {B 集群的 IP 地址}
 port = 3306
 ```
