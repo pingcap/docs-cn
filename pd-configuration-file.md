@@ -280,7 +280,7 @@ Configuration items related to replicas
 
 ### `max-replicas`
 
-+ The number of replicas
++ The number of replicas, that is, the sum of the number of leaders and followers. The default value `3` means 1 leader and 2 followers. When this configuration is modified online, PD will schedule Regions in the background so that the number of replicas matches this configuration.
 + Default value: `3`
 
 ### `location-labels`
