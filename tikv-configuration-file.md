@@ -1053,7 +1053,7 @@ bloom filter 为每个 key 预留的长度。
 + 默认值：128MB
 + 单位：KB|MB|GB
 
-## rocksdb.defaultcf.titan
+## `rocksdb.defaultcf.titan`
 
 rocksdb defaultcf titan 相关的配置项。
 
@@ -1186,7 +1186,7 @@ rocksdb lockcf 相关配置项。
 + 触发 compaction 的 L0 文件个数。
 + 默认值：1
 
-## raftdb
+## `raftdb`
 
 raftdb 相关配置项。
 
