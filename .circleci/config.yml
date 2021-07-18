@@ -118,9 +118,12 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Install markdownlint"
+          name: "Install Zhmd"
           command: |
-            npm install -g preset-lint-zh
+            zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
+      - run:
+          name: "zhmd lint"
+          command: |
             zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
 
 
