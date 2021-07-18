@@ -126,7 +126,7 @@ jobs:
       - run:
           name: "Install Zhmd"
           command: |
-            zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
+            npm install -g preset-lint-zh
       - run:
           name: "zhmd lint"
           command: |
