@@ -66,7 +66,7 @@ TitanTableBuilder 是实现分离 key-value 的关键，它通过判断 value si
 Garbage Collection (GC) 的目的是回收空间。由于在 LSM-tree compaction 进行回收 key 时，储存在 blob 文件中的 value 并不会一同被删除，因此需要 GC 定期来将已经作废的 value 删除掉。在 Titan 中有两种 GC 方式可供选择：
 
 - 定期整合重写 Blob 文件将作废的 value 剔除（传统 GC）
-- 在 LSM-tree compaction 的时候同时进行 blob 文件的重写（Level-Merge）
+- 在 LSM-tree compaction 的时候同时进行 blob 文件的重写 (Level-Merge)
 
 ### 传统 GC
 
@@ -74,7 +74,7 @@ Titan 使用 RocksDB 的 TablePropertiesCollector 和 EventListener 来收集 GC
 
 #### TablePropertiesCollector
 
-RocksDB 允许使用自定义的 TablePropertiesCollector 来搜集 SST 上的 properties 并写入到对应文件中去。Titan 通过一个自定义的 TablePropertiesCollector —— BlobFileSizeCollector 来搜集每个 SST 中有多少数据是存放在哪些 BlobFile 上的，将它收集到的 properties 命名为 BlobFileSizeProperties，它的工作流程和数据格式如下图所示：
+RocksDB 允许使用自定义的 TablePropertiesCollector 来搜集 SST 上的 properties 并写入到对应文件中去。Titan 通过一个自定义的 TablePropertiesCollector -- BlobFileSizeCollector 来搜集每个 SST 中有多少数据是存放在哪些 BlobFile 上的，将它收集到的 properties 命名为 BlobFileSizeProperties，它的工作流程和数据格式如下图所示：
 
 ![BlobFileSizeProperties](/media/titan/titan-4.png)
 

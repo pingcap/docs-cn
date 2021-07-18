@@ -111,12 +111,25 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+  zhmd:
+    docker:
+      - image: circleci/node:lts
+    working_directory: ~/pingcap/docs-cn
+    steps:
+      - checkout
+      - run:
+          name: "Install markdownlint"
+          command: |
+            npm install -g preset-lint-zh
+            zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
+
 
 workflows:
   version: 2
   lint:
     jobs:
       - lint
+      - zhmd
   build:
     jobs:
       - build:

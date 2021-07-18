@@ -1,0 +1,45 @@
+includes:
+  - "/*.md"
+  - "s*/*.md"
+ignore:
+  - path: encryption-at-rest.md
+    scope: all
+    ruleId: ZH426
+  # 括号作为开闭区间标记，忽略左右括号匹配  
+  - path: sql-statements/sql-statement-split-region.md
+    scope: all
+    ruleId: ZH423
+  - path: experimental-features.md
+    scope: all
+    ruleId: ZH417
+  # 忽略顿号带来的中英文符号检测   
+  - path: mysql-compatibility.md
+    scope: all
+    ruleId: ZH417
+  - path: tidb-storage.md
+    scope: line
+    ruleId: ZH423
+    line: 51
+  - path: statistics.md
+    scope: line
+    ruleId: ZH400
+    line: 32
+  - path: tidb-troubleshooting-map.md
+    scope: all
+    ruleId: ZH417
+  - path: sql-statements/sql-statement-show-table-regions.md
+    scope: line
+    line: 165
+    ruleId: ZH423
+  - path: sql-statements/sql-statement-explain-analyze.md
+    scope: all
+    ruleId: ZH403
+  - path: sql-statements/sql-statement-explain-analyze.md
+    scope: all
+    ruleId: ZH428
+
+
+
+
+
+
