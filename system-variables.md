@@ -588,7 +588,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：WARN
+- 默认值：从 v4.0.14 起，默认值为 OFF。对于 v4.0.14 前的 v4.0 版本，默认值为 WARN。
 - 可选值：OFF，ON 和 WARN
 - 该变量用于控制是否在同一个 `COM_QUERY` 调用中执行多个查询。
 - 为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。该变量可用作早期 TiDB 版本的升级路径选项。该变量值与是否允许多语句行为的对照表如下：
