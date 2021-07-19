@@ -154,7 +154,7 @@ select count(*) from information_schema.statements_summary;
 +----------+
 | count(*) |
 +----------+
-|     3000 |
+|     3001 |
 +----------+
 1 row in set (0.001 sec)
 ```
