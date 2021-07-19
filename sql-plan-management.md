@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前支持的可创建执行计划绑定的 SQL 类型（BindableStmt）包括：`SELECT`，`DELETE`，`UPDATE` 和带有 `SELECT` 子查询的 `INSERT` / `REPLACE`。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前支持的可创建执行计划绑定的 SQL 类型 (BindableStmt) 包括：`SELECT`，`DELETE`，`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
 
 其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
 
@@ -61,7 +61,7 @@ using
 
 > **注意：**
 >
-> 在对带 `SELECT` 子查询的 `INSERT` / `REPLACE` 语句创建执行计划绑定时，需要将想要绑定的优化器 Hints 指定在 `SELECT` 子查询中，而不是 `INSERT` / `REPLACE` 关键字后，不然优化器 Hints 不会生效。
+> 在对带 `SELECT` 子查询的 `INSERT`/`REPLACE` 语句创建执行计划绑定时，需要将想要绑定的优化器 Hints 指定在 `SELECT` 子查询中，而不是 `INSERT`/`REPLACE` 关键字后，不然优化器 Hints 不会生效。
 
 例如：
 
@@ -139,7 +139,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 
 > **注意：**
 >
-> 对于 `PREPARE` / `EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE` / `EXECUTE` 语句。
+> 对于 `PREPARE`/`EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE`/`EXECUTE` 语句。
 
 ### 删除绑定
 
@@ -203,7 +203,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
 - 存在手动创建的执行计划绑定的 SQL 语句；
 
-对于 `PREPARE` / `EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE` / `EXECUTE` 语句）自动捕获绑定。
+对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
 > **注意：**
 >

@@ -16,7 +16,7 @@ TiDB 版本：5.1
 - 支持 MySQL 8 中的动态权限 (Dynamic Privileges) 配置，实现对某些操作更细粒度的控制。
 - 支持通过 Stale Read 功能直接读取本地副本数据，降低读取延迟，提升查询性能（实验特性）。
 - 新增锁视图 (Lock View) 功能方便 DBA 观察事务加锁情况以及排查死锁问题（实验特性）。
-- 新增 TiKV 后台任务写入限制（TiKV Write Rate Limiter)，保证读写请求的延迟稳定性。
+- 新增 TiKV 后台任务写入限制 (TiKV Write Rate Limiter)，保证读写请求的延迟稳定性。
 
 ## 兼容性更改
 
@@ -68,7 +68,7 @@ TiDB 版本：5.1
 
 ### SQL
 
-- 新增 MySQL 8 中的公共表表达式 (Common Table Expression，简称 CTE)。
+- 新增 MySQL 8 中的公共表表达式（Common Table Expression，简称 CTE）。
 
     CTE 为 TiDB 带来递归或非递归查询层次结构数据的能力，满足了人力资源、制造业、金融市场和教育在内的多种应用领域需要使用树形查询实现业务逻辑的需求。
 
@@ -112,7 +112,7 @@ TiDB 版本：5.1
     SET TRANSACTION READ ONLY as of timestamp '2020-09-06 00:00:00';
     ```
 
-- 引入一种新的统计信息类型 `tidb_analyze_version = 2` (实验特性)。
+- 引入一种新的统计信息类型 `tidb_analyze_version = 2`（实验特性）。
 
     `tidb_analyze_version = 2` 默认启用，避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
@@ -182,8 +182,8 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
 
     - 支持 `VITESS_HASH()` 函数 [#23915](https://github.com/pingcap/tidb/pull/23915)
     - 支持枚举类型下推到 TiKV ，提升 WHERE 子句中使用枚举类型时的性能 [#23619](https://github.com/pingcap/tidb/issues/23619)
-    - 优化 Window Function 计算过程，解决了使用 ROW_NUMBER() 对数据分页时 TiDB OOM 的问题  [#23807](https://github.com/pingcap/tidb/issues/23807)
-    - 优化 UNION ALL 的计算过程，解决了使用 UNION ALL 连接大量 SELECT 语句时 TiDB OOM 的问题  [#21441](https://github.com/pingcap/tidb/issues/21441)
+    - 优化 Window Function 计算过程，解决了使用 ROW_NUMBER() 对数据分页时 TiDB OOM 的问题 [#23807](https://github.com/pingcap/tidb/issues/23807)
+    - 优化 UNION ALL 的计算过程，解决了使用 UNION ALL 连接大量 SELECT 语句时 TiDB OOM 的问题 [#21441](https://github.com/pingcap/tidb/issues/21441)
     - 优化分区表动态裁剪模式，提升其性能和稳定性 [#24150](https://github.com/pingcap/tidb/issues/24150)
     - 解决多种情况下出现的 `Region is Unavailable` 问题 [project#62](https://github.com/pingcap/tidb/projects/62)
 
@@ -269,7 +269,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 修复了在某些情况下，使用前缀索引和 Index Join 导致的 panic 的问题 [#24547](https://github.com/pingcap/tidb/issues/24547) [#24716](https://github.com/pingcap/tidb/issues/24716) [#24717](https://github.com/pingcap/tidb/issues/24717)
     - 修复了 `point get` 的 prepare plan cache 被事务中的 `point get` 语句不正确使用的问题 [#24741](https://github.com/pingcap/tidb/issues/24741)
     - 修复了当排序规则为 `ascii_bin` 或 `latin1_bin` 时，写入错误的前缀索引值的问题 [#24569](https://github.com/pingcap/tidb/issues/24569)
-    - 修复了正在执行的事务被 GC worker 中断的问题 [#24591](https://github.com/pingcap/tidb/issues/24591))
+    - 修复了正在执行的事务被 GC worker 中断的问题 [#24591](https://github.com/pingcap/tidb/issues/24591)
     - 修复了当 `new-collation` 开启且 `new-row-format` 关闭的情况下，点查在聚簇索引下可能出错的问题 [#24541](https://github.com/pingcap/tidb/issues/24541)
     - 为 Shuffle Hash Join 重构分区键的转换功能 [#24490](https://github.com/pingcap/tidb/pull/24490)
     - 修复了当查询包含 `HAVING` 子句时，在构建计划的过程中 panic 的问题 [#24045](https://github.com/pingcap/tidb/issues/24045)

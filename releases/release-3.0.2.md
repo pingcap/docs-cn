@@ -51,7 +51,7 @@ TiDB Ansible 版本：3.0.2
     - 修复 `DATE_ADD` 函数中，没有正确处理 INTERVAL 小数部分的符号而导致结果不正确的问题 [#11615](https://github.com/pingcap/tidb/pull/11615)
     - 修复 `Ranger` 没有正确处理前缀索引，导致 Index Lookup Join 中包含前缀索引时，查询结果不正确的问题 [#11565](https://github.com/pingcap/tidb/pull/11565)
     - 修复 `NAME_CONST` 函数第二个参数为负数时执行会报 `Incorrect arguments to NAME_CONST` 的问题 [#11268](https://github.com/pingcap/tidb/pull/11268)
-    - 修复一条 SQL 语句在涉及当前时间计算时（例如 `CURRENT_TIMSTAMP` 或者 `NOW`），多次取当前时间值，结果与 MySQL不兼容的问题：现在同一条SQL语句中取当前时间时，均使用相同值 [#11394](https://github.com/pingcap/tidb/pull/11394)
+    - 修复一条 SQL 语句在涉及当前时间计算时（例如 `CURRENT_TIMSTAMP` 或者 `NOW`），多次取当前时间值，结果与 MySQL 不兼容的问题：现在同一条SQL语句中取当前时间时，均使用相同值 [#11394](https://github.com/pingcap/tidb/pull/11394)
     - 修复了父 Executor `Close` 出现错误时，没有对 `ChildExecutor` 调用 `Close` 的问题，该问题可能导致 `KILL` 语句失效时，子 `ChildExecutor` 没有关闭而导致 Goroutine 泄露 [#11576](https://github.com/pingcap/tidb/pull/11576)
 + Server
     - 修复 `LOAD DATA` 处理 CSV 文件中缺失的 `TIMESTAMP` 字段时，自动补充的值是 0 不是当前时间戳的问题 [#11250](https://github.com/pingcap/tidb/pull/11250)

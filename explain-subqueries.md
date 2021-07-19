@@ -7,7 +7,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 TiDB 会执行多种[子查询相关的优化](/subquery-optimization.md)，以提升子查询的执行性能。本文档介绍一些常见子查询的优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
 
-本文档所使用的示例表数据如下:
+本文档所使用的示例表数据如下：
 
 ```sql
 CREATE TABLE t1 (id BIGINT NOT NULL PRIMARY KEY auto_increment, pad1 BLOB, pad2 BLOB, pad3 BLOB, int_col INT NOT NULL DEFAULT 0);

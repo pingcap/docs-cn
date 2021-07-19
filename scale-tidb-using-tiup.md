@@ -234,6 +234,10 @@ tiup cluster display <cluster-name>
 >
 > 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
 
+> **注意：**
+>
+> TiKV 中的 PD Client 会缓存 PD 节点的列表。当前版本的 TiKV 有定期自动更新 PD 节点的机制，可以降低 TiKV 缓存的 PD 节点列表过旧这一问题出现的概率。但你应尽量避免在扩容新 PD 后直接一次性缩容所有扩容前就已经存在的 PD 节点。如果需要，请确保在下线所有之前存在的 PD 节点前将 PD 的 leader 切换至新扩容的 PD 节点。
+
 ### 1. 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
@@ -362,7 +366,7 @@ tiup cluster display <cluster-name>
 
 1. 使用 pd-ctl 的 store 命令在 PD 中查看该 TiFlash 节点对应的 store id。
 
-    * 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令。
+    * 在 [pd-ctl](/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）中输入 store 命令。
 
     * 若使用 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
@@ -374,7 +378,7 @@ tiup cluster display <cluster-name>
 
         > **注意：**
         >
-        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 IP:端口即可。
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 `IP:端口`即可。
 
 2. 在 pd-ctl 中下线该 TiFlash 节点。
 
@@ -390,7 +394,7 @@ tiup cluster display <cluster-name>
 
         > **注意：**
         >
-        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 IP:端口即可。
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 `IP:端口`即可。
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 

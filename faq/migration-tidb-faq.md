@@ -6,6 +6,16 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 
 # 迁移常见问题
 
+本文介绍 TiDB 数据迁移中的常见问题。
+
+如果要查看迁移相关工具的常见问题，请参考以下链接：
+
+- [Backup & Restore 常见问题](/br/backup-and-restore-faq.md)
+- [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
+- [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
+- [Data Migration 常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+- [TiCDC 常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
+
 ## 全量数据导出导入
 
 ### 如何将一个运行在 MySQL 上的应用迁移到 TiDB 上？
@@ -76,9 +86,9 @@ iperf Done.
 
 DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
-- 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC（Change Data Capture）。
+- 使用 Oracle 官方迁移工具，如 OGG、Gateway（透明网关）、CDC (Change Data Capture)。
 - 自研数据导出导入程序实现。
-- 导出（Spool）成文本文件，然后通过 Load infile 进行导入。
+- 导出 (Spool) 成文本文件，然后通过 Load infile 进行导入。
 - 使用第三方数据迁移工具。
 
 目前看来 OGG 最为合适。

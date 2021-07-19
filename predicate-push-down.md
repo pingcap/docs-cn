@@ -86,7 +86,7 @@ desc select * from t where substring('123', a, 1) = '1';
 
 在该查询中，存在谓词 `substring('123', a, 1) = '1'`。
 
-从 explain 结果中可以看到，该谓词没有被下推到 TiKV 上进行计算，这是因为 TiKV coprocessor 中没有对 `substring` 内置函数进行支持, 因此无法将其下推到 TiKV 上。
+从 explain 结果中可以看到，该谓词没有被下推到 TiKV 上进行计算，这是因为 TiKV coprocessor 中没有对 `substring` 内置函数进行支持，因此无法将其下推到 TiKV 上。
 
 ### 示例 5: 外连接中内表上的谓词不能下推
 
@@ -109,7 +109,7 @@ explain select * from t left join s on t.a = s.a where s.a is null;
 
 在该查询中，内表 s 上存在谓词 `s.a is null`。
 
-从 explain 中可以看到，该谓词没有被下推到 join 前进行计算，这是因为外连接在不满足 on 条件时会对内表填充 NULL，而在该查询中 `s.a is null` 用来对 join 后的结果进行过滤，如果将其下推到 join 前在内表上进行过滤，则下推前后不等价, 因此不可进行下推。
+从 explain 中可以看到，该谓词没有被下推到 join 前进行计算，这是因为外连接在不满足 on 条件时会对内表填充 NULL，而在该查询中 `s.a is null` 用来对 join 后的结果进行过滤，如果将其下推到 join 前在内表上进行过滤，则下推前后不等价，因此不可进行下推。
 
 ### 示例 6: 谓词中包含用户变量时不能下推
 

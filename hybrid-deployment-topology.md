@@ -100,6 +100,6 @@ aliases: ['/docs-cn/dev/hybrid-deployment-topology/']
 > **注意：**
 >
 > - 编辑配置文件模版时，注意修改必要参数、IP、端口及目录。
-> - 各个组件的 deploy_dir，默认会使用 global 中的 `<deploy_dir>/<components_name>-<port>`。例如 tidb 端口指定 4001，则 deploy_dir 默认为 /tidb-deploy/tidb-4001。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
+> - 各个组件的 deploy_dir，默认会使用 global 中的 `<deploy_dir>/<components_name>-<port>`。例如 tidb 端口指定 4001，则 deploy_dir 默认为 '/tidb-deploy/tidb-4001'。因此，在多实例场景下指定非默认端口时，无需再次指定目录。
 > - 无需手动创建配置文件中的 `tidb` 用户，TiUP cluster 组件会在部署主机上自动创建该用户。可以自定义用户，也可以和中控机的用户保持一致。
 > - 如果部署目录配置为相对路径，会部署在用户家目录下。

@@ -11,7 +11,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 可以通过以下两种方法访问实例性能分析页面：
 
-- 登录后，左侧导航条点击 **高级调试** → **实例性能分析**：
+- 登录后，左侧导航条点击 "**高级调试**" → "**实例性能分析**"：
 
   ![访问](/media/dashboard/dashboard-profiling-access.png)
 
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ## 开始性能分析
 
-在实例性能分析页面，选择至少一个想要分析的目标实例，点击**开始分析**（Start Profiling）按钮即可开始性能分析：
+在实例性能分析页面，选择至少一个想要分析的目标实例，点击**开始分析** (Start Profiling) 按钮即可开始性能分析：
 
 ![界面](/media/dashboard/dashboard-profiling-start.png)
 
@@ -35,7 +35,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ## 下载性能分析结果
 
-所有实例的性能分析都完成后，可点击右上角下载按钮（Download Profiling Result）打包下载所有性能分析结果：
+所有实例的性能分析都完成后，可点击右上角下载按钮 (Download Profiling Result) 打包下载所有性能分析结果：
 
 ![界面](/media/dashboard/dashboard-profiling-download.png)
 
