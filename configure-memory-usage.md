@@ -106,7 +106,7 @@ server-memory-quota = 34359738368
 
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 1000 行数据。
 
-3. 执行 `select * from t t1 join t t1 join t t3 order by t1.a`。该 SQL 语句会输出 1000000000 条记录，占用巨大的内存，进而触发报警。
+3. 执行 `select * from t t1 join t t2 join t t3 order by t1.a`。该 SQL 语句会输出 1000000000 条记录，占用巨大的内存，进而触发报警。
 
 4. 检查 `tidb.log` 文件，其中会记录系统总内存、系统当前内存使用量、tidb-server 实例的内存使用量以及状态文件所在目录。
 

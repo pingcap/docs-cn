@@ -38,7 +38,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `peer-urls`
 
 + PD 节点监听其他 PD 节点的 URL 列表。
-+ 默认: `"http://127.0.0.1:2380"`
++ 默认：`"http://127.0.0.1:2380"`
 + 如果部署一个集群，peer URLs 必须指定当前主机的 IP 地址，例如 `"http://192.168.100.113:2380"`，如果是运行在 Docker 则需要指定为 `"http://0.0.0.0:2380"`。
 
 ### `advertise-peer-urls`
@@ -72,16 +72,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认值：3
 + 单位：秒
 
-### `tso-save-interval`
-
-+ TSO 分配的时间窗口,实时持久存储。
-+ 默认值：3s
-
-### `enable-prevote`
-
-+ 开启 raft prevote 的开关。
-+ 默认值：true
-
 ### `quota-backend-bytes`
 
 + 元信息数据库存储空间的大小，默认 8GiB。
@@ -100,21 +90,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `force-new-cluster`
 
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
-+ 默认值：false
-
-### `tick-interval`
-
-+ etcd raft 的 tick 周期。
-+ 默认值：100ms
-
-### `election-interval`
-
-+ etcd leader 选举的超时时间。
-+ 默认值：3s
-
-### `use-region-storage`
-
-+ 开启独立的 region 存储。
 + 默认值：false
 
 ## security
@@ -148,7 +123,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `format`
 
-+ 日志格式，可指定为"text"，"json"， "console"。
++ 日志格式，可指定为"text"，"json"，"console"。
 + 默认值：text
 
 ### `disable-timestamp`
@@ -170,13 +145,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
-+ 默认: 28
++ 默认：28
 + 最小值为 1
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
-+ 默认: 7
++ 默认：7
 + 最小值为 1
 
 ## metric
@@ -186,7 +161,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `interval`
 
 + 向 Prometheus 推送监控指标数据的间隔时间。
-+ 默认: 15s
++ 默认：15s
 
 ## schedule
 
@@ -195,27 +170,27 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认: 20
++ 默认：20
 
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认: 200000
++ 默认：200000
 
 ### `patrol-region-interval`
 
 + 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
-+ 默认: 100ms
++ 默认：100ms
 
 ### `split-merge-interval`
 
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
-+ 默认: 1h
++ 默认：1h
 
 ### `max-snapshot-count`
 
 + 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-+ 默认: 3
++ 默认：3
 
 ### `max-pending-peer-count`
 
@@ -274,7 +249,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `tolerant-size-ratio`
 
 + 控制 balance 缓冲区大小。
-+ 默认值：0 (为 0 为自动调整缓冲区大小)
++ 默认值：0（为 0 为自动调整缓冲区大小）
 + 最小值：0
 
 ### `enable-cross-table-merge`
@@ -288,39 +263,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认值：v2
 + 可选值：v1，v2
 
-### `disable-remove-down-replica`
-
-+ 关闭自动删除 DownReplica 的特性的开关，当设置为 true 时，PD 不会自动清理宕机状态的副本。
-+ 默认值：false
-
-### `disable-replace-offline-replica`
-
-+ 关闭迁移 OfflineReplica 的特性的开关，当设置为 true 时，PD 不会迁移下线状态的副本。
-+ 默认值：false
-
-### `disable-make-up-replica`
-
-+ 关闭补充副本的特性的开关，当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
-+ 默认值：false
-
-### `disable-remove-extra-replica`
-
-+ 关闭删除多余副本的特性开关，当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
-+ 默认值：false
-
-### `disable-location-replacement`
-
-+ 关闭隔离级别检查的开关，当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
-+ 默认值：false
-
-### `store-balance-rate`
-
-+ 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
-+ 类型：Integer
-+ 默认值：15
-+ 最小值：0
-+ 最大值：200
-
 ### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
@@ -332,7 +274,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `max-replicas`
 
-+ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。当此配置被在线修改后，PD 会在后台通过调度使得 Region 的副本数量符合配置。
 + 默认值：3
 
 ### `location-labels`

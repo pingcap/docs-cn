@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-- TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具（PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader）、客户端等均适用于 TiDB。
+- TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、 mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
 
 - 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
     - 有更好的解决方案，例如 JSON 取代 XML 函数。
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模型](/pessimistic-transaction.md#和-mysql-innodb-的差异) 相关的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模型](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息请查看各自具体页面。
 
 ## 不支持的功能特性
 
@@ -108,7 +108,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 
 ### `ANALYZE TABLE`
 
-TiDB 中的[信息统计](/statistics.md#手动收集) 与 MySQL 中的有所不同：TiDB 中的信息统计会完全重构表的统计数据，语句执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
+TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不同：TiDB 中的信息统计会完全重构表的统计数据，语句执行过程较长，但在 MySQL/InnoDB 中，它是一个轻量级语句，执行过程较短。
 
 更多信息统计的差异请参阅 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)。
 
@@ -152,7 +152,7 @@ TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下�
 
 - SQL mode：
     + TiDB 默认：`ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION`。
-    + MySQL 5.7 默认 与 TiDB 相同。
+    + MySQL 5.7 默认与 TiDB 相同。
     + MySQL 8.0 默认 `ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION`。
 
 - `lower_case_table_names`：

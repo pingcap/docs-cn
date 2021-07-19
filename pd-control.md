@@ -83,15 +83,15 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ### `--detach` / `-d`
 
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: true
++ 使用单命令行模式（不进入 readline）
++ 默认值：true
 
 ### `--help` / `-h`
 
 + 输出帮助信息
 + 默认值：false
 
-### `--interact` / `-i`
+### `--interact`/`-i`
 
 + 使用交互模式（进入 readline）
 + 默认值：false
@@ -99,18 +99,18 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ### `--key`
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
-- 默认值: ""
+- 默认值：""
 
-### `--pd` / `-u`
+### `--pd`/`-u`
 
 + 指定 PD 的地址
 + 默认地址：`http://127.0.0.1:2379`
 + 环境变量：`PD_ADDR`
 
-### `--version` / `-V`
+### `--version`/`-V`
 
 - 打印版本信息并退出
-- 默认值: false
+- 默认值：false
 
 ## 命令 (command)
 

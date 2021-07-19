@@ -67,7 +67,7 @@ aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key
 - scheduler pending commands：每个 TiKV 实例上 pending 命令的个数
 - coprocessor executor count：TiKV 每秒收到的 coprocessor 操作数量，按照 coprocessor 类型统计
 - coprocessor request duration：处理 coprocessor 读请求所花费的时间
-- raft store CPU：raftstore 线程的 CPU 使用率，线程数量默认为 2 (通过 `raftstore.store-pool-size` 配置)。如果单个线程使用率超过 80%，说明使用率很高
+- raft store CPU：raftstore 线程的 CPU 使用率，线程数量默认为 2（通过 `raftstore.store-pool-size` 配置）。如果单个线程使用率超过 80%，说明使用率很高
 - Coprocessor CPU：coprocessor 线程的 CPU 使用率
 
 ## System Info

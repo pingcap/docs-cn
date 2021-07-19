@@ -37,7 +37,7 @@ select max(a) from (select a from t where a is not null order by a desc limit 1)
 
 这个新的 SQL 语句在 `a` 列存在索引（或 `a` 列是某个联合索引的前缀）时，能够利用索引只扫描一行数据来得到最大或者最小值，从而避免对整个表的扫描。
 
-上述例子最终得到的执行计划如下:
+上述例子最终得到的执行计划如下：
 
 ```
 mysql> explain select max(a) from t;

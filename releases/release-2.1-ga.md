@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/releases/release-2.1-ga/','/docs-cn/dev/releases/2.1ga/'
     - 支持在 `UPDATE` 和 `DELETE` 语句中使用 Index Hint 和 Join Hint
     - 支持更多函数下推：`ABS`/`CEIL`/`FLOOR`/`IS TRUE`/`IS FALSE`
     - 优化内建函数 `IF` 和 `IFNULL` 的常量折叠算法
-    - 优化 `EXPLAIN` 语句输出格式, 使用层级结构表示算子之间的上下游关系
+    - 优化 `EXPLAIN` 语句输出格式，使用层级结构表示算子之间的上下游关系
 
 + SQL 执行引擎
 
