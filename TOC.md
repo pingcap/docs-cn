@@ -18,8 +18,10 @@
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
-  + [快速上手指南](/quick-start-with-tidb.md)
+  + [快速上手 TiDB](/quick-start-with-tidb.md)
+  + [快速上手 HTAP](/quick-start-with-htap.md)
   + [SQL 基本操作](/basic-sql-operations.md)
+  + [深入探索 HTAP](/explore-htap.md)
 + 部署标准集群
   + [软硬件环境需求](/hardware-and-software-requirements.md)
   + [环境与系统配置检查](/check-before-deployment.md)
