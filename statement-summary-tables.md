@@ -88,7 +88,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 ## `statements_summary_evicted`
 
-`statements_summary` 表的容量受 `tidb_stmt_summary_max_stmt_count` 配置控制，内部则都使用 LRU 算法，一旦接收到的 SQL 种类超过了 `tidb_stmt_summary_max_stmt_count`，表中最久未被命中的记录就会被驱逐出表。statement summary 引入了 `statements_summary_evicted` 表，该表记录了各个时段被驱逐的 `SQL` 的具体种数。
+`statements_summary` 表的容量受 `tidb_stmt_summary_max_stmt_count` 配置控制，内部使用 LRU 算法，一旦接收到的 SQL 种类超过了 `tidb_stmt_summary_max_stmt_count`，表中最久未被命中的记录就会被驱逐出表。statement summary 引入了 `statements_summary_evicted` 表，该表记录了各个时段被驱逐的 `SQL` 的具体种数。
 
 `statements_summary_evicted` 表只有当发生了 `SQL` 被 `statement summary` 驱逐的时候表内容才会被更新。表中仅有发生了驱逐的时间段才会有记录。
 
