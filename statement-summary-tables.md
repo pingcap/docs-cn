@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/perfo
 - `statements_summary_history`
 - `cluster_statements_summary`
 - `cluster_statements_summary_history`
-  
+
 本文将详细介绍这些表，以及如何利用它们来排查 SQL 性能问题。
 
 ## `statements_summary`
