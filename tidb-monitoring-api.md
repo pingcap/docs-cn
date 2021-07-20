@@ -110,14 +110,14 @@ curl http://127.0.0.1:10080/schema_storage/mysql/stats_histograms
 
 ```
 {
-	"table_schema": "mysql",
-	"table_name": "stats_histograms",
-	"table_rows": 0,
-	"avg_row_length": 0,
-	"data_length": 0,
-	"max_data_length": 0,
-	"index_length": 0,
-	"data_free": 0
+    "table_schema": "mysql", 
+    "table_name": "stats_histograms", 
+    "table_rows": 0, 
+    "avg_row_length": 0, 
+    "data_length": 0, 
+    "max_data_length": 0, 
+    "index_length": 0, 
+    "data_free": 0
 }
 ```
 
@@ -126,14 +126,16 @@ curl http://127.0.0.1:10080/schema_storage/test
 ```
 
 ```
-[{
-	"table_schema": "test",
-	"table_name": "test",
-	"table_rows": 0,
-	"avg_row_length": 0,
-	"data_length": 0,
-	"max_data_length": 0,
-	"index_length": 0,
-	"data_free": 0
-}]
+[
+    {
+        "table_schema": "test", 
+        "table_name": "test", 
+        "table_rows": 0, 
+        "avg_row_length": 0, 
+        "data_length": 0, 
+        "max_data_length": 0, 
+        "index_length": 0, 
+        "data_free": 0
+    }
+]
 ```
