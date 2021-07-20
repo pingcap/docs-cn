@@ -108,7 +108,7 @@ explain select * from t left join s on t.a = s.a where s.a is null;
 6 rows in set (0.00 sec)
 ```
 
-In this query，there is a predicate `s.a is null` on the inner table `s`。
+In this query，there is a predicate `s.a is null` on the inner table `s`.
 
 From the `explain` results，we can see that the predicate is not pushed below join operator. This is because the outer join fills the inner table with `NULL` values when the `on` condition isn't satisfied, and the predicate `s.a is null` is used to filter the results after the join. If it is pushed down to the inner table below join, the execution plan is not equivalent to the original one.
 

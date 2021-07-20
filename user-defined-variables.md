@@ -86,7 +86,7 @@ SELECT @a1, @a2, @a3, @a4 := @a1+@a2+@a3;
 +------+------+------+--------------------+
 ```
 
-Before the variable `@a4` is modified or the connection is closed, its value is always `7`。
+Before the variable `@a4` is modified or the connection is closed, its value is always `7`.
 
 If a hexadecimal literal or binary literal is used when setting the user-defined variable, TiDB will treat it as a binary string. If you want to set it to a number, you can manually add the `CAST` conversion, or use the numeric operator in the expression:
 

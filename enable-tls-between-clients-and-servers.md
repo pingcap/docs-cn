@@ -183,4 +183,4 @@ The newly loaded certificate, key, and CA take effect on the connection that is 
 
 ### See also
 
-- [Enable TLS Between TiDB Components](/enable-tls-between-components.md)。
+- [Enable TLS Between TiDB Components](/enable-tls-between-components.md).
