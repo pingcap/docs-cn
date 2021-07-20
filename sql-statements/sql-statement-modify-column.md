@@ -215,7 +215,6 @@ CREATE TABLE `t1` (
     ALTER TABLE t MODIFY COLUMN a DATETIME;
     ERROR 8200 (HY000): Unsupported modify column: change from original type decimal(13,7) to datetime is currently unsupported yet
     ```
-* 不支持在使用悲观事务时，将 [`tidb_enable_amend_pessimistic_txn`](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入) 设置成 `ON` 的场景。
 
 ## 另请参阅
 
