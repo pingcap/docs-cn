@@ -14,16 +14,10 @@
 
 **Tips for choosing the affected version(s):**
 
-- If your change fits one of the following situations, **CHOOSE MASTER ONLY**:
+- If your change supplement missing or incomplete content, or fixes inaccurate or wrong contents, **CHOOSE MASTER ONLY**.
+- If your change involves a version-specific feature behavior change or a compatibility change, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**.
 
-    - Relates to a documentation enhancement, such as supplementing missing or incomplete document contents.
-    - Fixes inaccurate or incorrect document contents, including values, descriptions, examples, or typos.
-    - Involves a documentation refactor in a specific topic module.
-
-- If your change fits one of the following situations, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**:
-
-    - Involves a feature behavior change that relates to a specific version.
-    - Involves a compatibility change, including changing the default value of a configuration item or a system variable.
+For details, see [tips for choosing the affected versions (in Chinese)](/CONTRIBUTING.md#版本选择指南).
 
 - [ ] master (the latest development version)
 - [ ] v5.1 (TiDB 5.1 versions)
