@@ -148,3 +148,5 @@ SSO 可以随时禁用。禁用后，之前已录入并存储在本地的替代�
 3. 打开 TiDB Dashboard 配置界面，将上一步获取到的 **Issuer** 填入 **OIDC Client ID**、将 **Audience** 填入 **OIDC Discovery URL** 后，完成授权并保存配置，如下所示。
 
    ![操作示例 3](/media/dashboard/dashboard-session-sso-okta-info-3.png)
+
+4. 至此，TiDB Dashboard 已被配置为使用 Okta 进行 SSO 登录。
