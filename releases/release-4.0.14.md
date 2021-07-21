@@ -12,9 +12,9 @@ TiDB 版本：4.0.14
 
 + TiDB
 
-    - 在 v4.0 中将 `tidb_multi_statement_mode` 的默认值从 `WARN` 更改为 `OFF`，建议使用客户端库的多语句功能。参考[`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-new-in-v4011) [#25749](https://github.com/pingcap/tidb/pull/25749)
-    - 将 Grafana 从 v6.1.16 升级到 v7.5.7 以解决两个安全漏洞. 参考 [Grafana post](https://grafana.com/blog/2020/06/03/grafana-6.7.4-and-7.0.2-released-with-important-security-fix/)
-    - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值 200 修改为 3000 [#25872](https://github.com/pingcap/tidb/pull/25872)
+    - 在 v4.0 中将 `tidb_multi_statement_mode` 的默认值从 `WARN` 更改为 `OFF`。建议使用客户端库的多语句功能，参考[`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-从-v4011-引入)。[#25749](https://github.com/pingcap/tidb/pull/25749)
+    - 将 Grafana 从 v6.1.16 升级到 v7.5.7 以解决两个安全漏洞，参考 [Grafana 博文](https://grafana.com/blog/2020/06/03/grafana-6.7.4-and-7.0.2-released-with-important-security-fix/)。
+    - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值从 `200` 修改为 `3000` [#25872](https://github.com/pingcap/tidb/pull/25872)
 
 + TiKV
 
@@ -29,18 +29,18 @@ TiDB 版本：4.0.14
 
 + TiDB Dashboard
 
-    - 新增 OIDC SSO 支持，通过设置兼容 OIDC 标准的 SSO 服务（例如 Okta、Auth0 等），用户可以在不输入 SQL 密码的情况下登录 TiDB Dashboard [#960](https://github.com/pingcap/tidb-dashboard/pull/960)
-    - 新增 Debug API 界面用于高级调试，通过界面可以替代目前的命令行方式来调用 TiDB 和 PD 的内部调试性 API [#927](https://github.com/pingcap/tidb-dashboard/pull/927)
+    - 新增 OIDC SSO 支持。通过设置兼容 OIDC 标准的 SSO 服务（例如 Okta、Auth0 等），用户可以在不输入 SQL 密码的情况下登录 TiDB Dashboard [#960](https://github.com/pingcap/tidb-dashboard/pull/960)
+    - 新增 **Debug API** 界面用于高级调试，通过该界面可以替代命令行方式来调用 TiDB 和 PD 的内部调试性 API [#927](https://github.com/pingcap/tidb-dashboard/pull/927)
 
 ## 改进提升
 
 + TiDB
 
-    - 在 update 语句中的读过程，使用 point/batch point get 写入 index 的 key 来替代给 row 数据上锁  [#26223](https://github.com/pingcap/tidb/pull/26223)
+    ?- 在 `UPDATE` 语句的读过程中，使用 `point get` 或 `batch point get` 写入索引的键来替代给 row 数据上锁 [#26223](https://github.com/pingcap/tidb/pull/26223)
     - 支持 MySQL 的系统变量 `init_connect` 及其相关功能 [#26031](https://github.com/pingcap/tidb/pull/26031)
-    - 支持稳定结果模式 [#26003](https://github.com/pingcap/tidb/pull/26003)
-    - 支持函数 `json_unquote()` 下推到 TiKV [#25721](https://github.com/pingcap/tidb/pull/25721)
-    - 使 SPM 不受字符集的影响 [#23295](https://github.com/pingcap/tidb/pull/23295)
+    - 支持稳定结果模式，使查询结果更稳定 [#26003](https://github.com/pingcap/tidb/pull/26003)
+    - 支持将函数 `json_unquote()` 下推到 TiKV [#25721](https://github.com/pingcap/tidb/pull/25721)
+    - 使 SQL 计划管理 (SPM) 不受字符集的影响 [#23295](https://github.com/pingcap/tidb/pull/23295)
 
 + TiKV
 
@@ -51,69 +51,115 @@ TiDB 版本：4.0.14
 
 + PD
 
-    - 更新 TiDB Dashboard 版本至 v2021.07.17.1 [#3882](https://github.com/pingcap/pd/pull/3882)
-    - 减少各调度器在同时工作时的冲突 [#3854](https://github.com/tikv/pd/pull/3854)
-    - 修复了当集群内 Store 非常多时，PD 切换 Leader 慢的问题 [#3718](https://github.com/pingcap/pd/pull/3718)
+    - 减少各调度器在同时工作时产生的冲突 [#3854](https://github.com/tikv/pd/pull/3854)
 
 + TiDB Dashboard
 
-    - 支持将当前会话分享为只读的会话，禁止分享出来的会话进行修改操作 [#960](https://github.com/pingcap/tidb-dashboard/pull/960)
+    - 更新 TiDB Dashboard 版本至 v2021.07.17.1 [#3882](https://github.com/pingcap/pd/pull/3882)
+    - 支持将当前会话分享为只读的会话，禁止对分享的会话进行修改操作 [#960](https://github.com/pingcap/tidb-dashboard/pull/960)
+
++ Tools
+
+    + Backup & Restore (BR)
+
+        - 恢复时合并小文件以提升速度 [#655](https://github.com/pingcap/br/pull/655)
+
+    + Dumpling
+
+        - 上游是 TiDB v3.x 时，使用 `_tidb_rowid` 来切分表以减低 TiDB 的内存使用 [#306](https://github.com/pingcap/dumpling/pull/306)
+
+    + TiCDC
+
+        - 改善 PD 节点缺失证书时的错误信息 [#2184](https://github.com/pingcap/ticdc/pull/2184)
+        - Sorter 发生 IO 错误时提供更友善的信息 [#1976](https://github.com/pingcap/ticdc/pull/1976)
+        - 新增 KV client 的 Region 增量扫描的并发度上限，减低 TiKV 的压力 [#1926](https://github.com/pingcap/ticdc/pull/1926)
+        - 新增表内存使用量的监控 [#1884](https://github.com/pingcap/ticdc/pull/1884)
 
 ## Bug 修复
 
 + TiDB
 
-    - 当所有的聚合函数被消除时生成正确的行数量 [#26039](https://github.com/pingcap/tidb/pull/26039)
-    - 修复当参数是 enum/set 类型时，ifnull 函数的计算错误 [#26035](https://github.com/pingcap/tidb/pull/26035)
+    - 修复当连接一个带 `WHERE` 条件的子查询（值为 `false` ）时 `SELECT` 的结果与 MySQL 不兼容的问题 [#24865](https://github.com/pingcap/tidb/issues/24865)
+    - 修复当参数是 `ENUM` 或 `SET` 类型时 `ifnull` 函数计算错误的问题 [#24944](https://github.com/pingcap/tidb/issues/24944)
     - 修复某些情况下错误的聚合函数消除 [#26033](https://github.com/pingcap/tidb/pull/26033)
-    - 修复 merge join 中当列为 set 类型时可能产生的错误结果 [#26032](https://github.com/pingcap/tidb/pull/26032)
-    - 修复 IN 语句的某些执行错误 [#25665](https://github.com/pingcap/tidb/pull/25665)
-    - 修复 `select ... for update` 语句在 join on 分区表时，可能产生异常退出的情况 [#25501](https://github.com/pingcap/tidb/pull/25501)
-    - 修复 plan cache 中，在事务过程中 point get plan 不正确的问题 [#24764](https://github.com/pingcap/tidb/pull/24764)
-    - 修复 `load data` 语句可以不正常导入非 utf8 数据的问题 [#26142](https://github.com/pingcap/tidb/pull/26142)
-    - 修复通过 http API 访问统计信息时，可能导致内存泄露的问题 [#24650](https://github.com/pingcap/tidb/pull/24650)
-    - 修复执行 `ALTER USER` 语句的安全性问题 [#25347](https://github.com/pingcap/tidb/pull/25347)
-    - 修复系统表 `TIKV_REGION_PEERS` 不能正确处理 `DOWN` 状态. [#24918](https://github.com/pingcap/tidb/pull/24918)
-    - 修复解析 DateTime 不截断非法字符串 [#22260](https://github.com/pingcap/tidb/pull/22260)
-    - 修复 `select into outfile` 语句在列类型是 year 时，可能无法产生结果的问题 [#22185](https://github.com/pingcap/tidb/pull/22185)
+    - 修复 Merge Join 运算中当列为 `SET` 类型时可能产生错误结果的问题 [#26032](https://github.com/pingcap/tidb/pull/26032)
+    - 修复 Cartesian Join 运算返回错误结果的问题 [#25665](https://github.com/pingcap/tidb/pull/25665)
+    - 修复 `SELECT ... FOR UPDATE` 语句进行连接运算且连接使用分区表时，可能产生异常退出情况的问题 [#25501](https://github.com/pingcap/tidb/pull/25501)
+    - 修复缓存的 `prepared` 计划被错误用于 `point get` 的问题 [#24764](https://github.com/pingcap/tidb/pull/24764)
+    - 修复 `LOAD DATA` 语句可以不正常导入非 utf8 数据的问题 [#26142](https://github.com/pingcap/tidb/pull/26142)
+    - 修复通过 HTTP API 访问统计信息时，可能导致内存泄露的问题 [#24650](https://github.com/pingcap/tidb/pull/24650)
+    - 修复执行 `ALTER USER` 语句时出现的安全性问题 [#25347](https://github.com/pingcap/tidb/pull/25347)
+    - 修复系统表 `TIKV_REGION_PEERS` 不能正确处理 `DOWN` 状态的问题 [#24918](https://github.com/pingcap/tidb/pull/24918)
+    - 修复解析 `DateTime` 不截断非法字符串的问题 [#22260](https://github.com/pingcap/tidb/pull/22260)
+    - 修复 `select into outfile` 语句在列类型是 `YEAR` 时，可能无法产生结果的问题 [#22185](https://github.com/pingcap/tidb/pull/22185)
 
 + TiKV
 
-    - 性能统计时容忍时间倒退避免 panic [#10572](https://github.com/tikv/tikv/pull/10572)
-    - 修复 double 转 double 时对符号的错误处理 [#10532](https://github.com/tikv/tikv/pull/10532)
-    - 修复 panic 退出有时报错信息会丢失的问题 [#10488](https://github.com/tikv/tikv/pull/10488)
-    - 修复开启加密情况下重新生成同样 snapshot 会 panic 的问题 [#10462](https://github.com/tikv/tikv/pull/10462)
-    - 修复 json_unquote 中错误的参数类型 [#10425](https://github.com/tikv/tikv/pull/10425)
-    - 滚动重启时跳过清除回调以避免在高冲突下破坏事务一致 [#10395](https://github.com/tikv/tikv/pull/10395)
-    - 修复 backup 线程泄漏 [#10360](https://github.com/tikv/tikv/pull/10360)
-    - 修复 split 和创建新 region 冲突时可能会损坏 metadata 的问题 [#9584](https://github.com/tikv/tikv/pull/9584)
-    - 修复特定情况下 region 心跳会导致 TiKV 不进行 split 的问题 [#10274](https://github.com/tikv/tikv/pull/10274)
-    - 修复 CM Sketch 格式不一致导致的统计信息错误问题 [#10433](https://github.com/tikv/tikv/pull/10433)
-    - 修复 apply wait duration 的错误统计 [#9966](https://github.com/tikv/tikv/pull/9966)
-    - 修复使用 titan 时 delete_files_in_range 以后可能会产生 "Missing Blob" 报错的问题 [#10232](https://github.com/tikv/tikv/pull/10232)
+    - 修复特定平台上的 duration 计算可能崩溃的问题 [#10572](https://github.com/tikv/tikv/pull/10572)
+    - 修复将 `DOUBLE` 类型转换为 `DOUBLE` 的错误函数 [#25200](https://github.com/pingcap/tidb/issues/25200)
+    - 修复使用 async logger 时 panic 日志可能会丢失的问题 [#10488](https://github.com/tikv/tikv/pull/10488)
+    - 修复开启加密后再次生成同样的 snapshot 会出现 panic 的问题 [#10462](https://github.com/tikv/tikv/pull/10462)
+    - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
+    - 修复关机期间出现的可疑警告和来自 Raftstore 的非确定性响应 [#10395](https://github.com/tikv/tikv/pull/10395)
+    - 修复备份线程泄漏的问题 [#10360](https://github.com/tikv/tikv/pull/10360)
+    - 修复 Region split 过慢以及进行 Region merge 时，Region split 可能会损坏 metadata 的问题 [#9584](https://github.com/tikv/tikv/pull/9584)
+    - 修复特定情况下 Region 心跳会导致 TiKV 不进行 split 的问题 [#10274](https://github.com/tikv/tikv/pull/10274)
+    - 修复 TiKV 和 TiDB 间 CM Sketch 格式不一致导致统计信息错误问题 [#10433](https://github.com/tikv/tikv/pull/10433)
+    - 修复 `apply wait duration` 指标的错误统计 [#9966](https://github.com/tikv/tikv/pull/9966)
+    - 修复使用 Titan 时 `delete_files_in_range` 以后可能会产生 "Missing Blob" 报错的问题 [#10232](https://github.com/tikv/tikv/pull/10232)
 
 + PD
 
     - 修复调度器在执行删除操作后可能再次出现的问题 [#3825](https://github.com/pingcap/pd/pull/3825)
     - 修复调度器在临时配置加载完毕前启动可能导致数据争用的问题 [#3773](https://github.com/pingcap/pd/pull/3773)
-    - 修复打散 Region 操作可能导致 PD Panic 的问题 [#3761](https://github.com/pingcap/pd/pull/3761)
-    - 修复部分 Operator 未被设置正确的优先级的问题 [#3703](https://github.com/pingcap/pd/pull/3703)
-    - 修复删除不存在的 Store 的  evict-leader 调度器时可能导致 PD Panic 的问题 [#3680](https://github.com/pingcap/pd/pull/3680)
+    - 修复打散 Region 操作可能导致 PD panic 的问题 [#3761](https://github.com/pingcap/pd/pull/3761)
+    - 修复部分 Operator 未被正确设置优先级的问题 [#3703](https://github.com/pingcap/pd/pull/3703)
+    - 修复从不存在的 Store 上删除 `evict-leader` 调度器时可能导致 PD panic 的问题 [#3680](https://github.com/pingcap/pd/pull/3680)
+    - 修复了当集群内 Store 非常多时，PD 切换 Leader 慢的问题 [#3697](https://github.com/tikv/pd/issues/3697)
 
 + TiDB Dashboard
 
-    - 修复实例性能分析界面中部分 TiDB 可能抓取性能数据失败的问题 [#944](https://github.com/pingcap/tidb-dashboard/pull/944)
-    - 修复 SQL 语句分析界面不显示 "执行计划数" 的问题 [#939](https://github.com/pingcap/tidb-dashboard/pull/939)
+    - 修复实例性能分析界面无法获取全部 TiDB 实例信息的问题 [#944](https://github.com/pingcap/tidb-dashboard/pull/944)
+    - 修复 SQL 语句分析界面不显示执行“计划数”的问题 [#939](https://github.com/pingcap/tidb-dashboard/pull/939)
     - 修复在升级集群后慢查询界面可能显示 "unknown field" 错误的问题 [#930](https://github.com/pingcap/tidb-dashboard/pull/930)
 
 + TiFlash
 
     - 修复编译 DAG 请求时出现进程崩溃的潜在问题
     - 修复读负载高的情况下进程崩溃的问题
-    - 修复因 split 失败而不断重启的问题
+    - 修复因列存中 split 失败导致 TiFlash 不断重启的问题
     - 修复无法删除 Delta 历史数据的潜在问题
     - 修复并发复制共享 Delta 索引导致结果错误的问题
-    - 修复当存在数据缺失的情况下 TiFlash 无法启动的问题
+    - 修复当数据缺失时 TiFlash 无法重启的问题
     - 修复旧的 dm 文件无法被自动清理的问题
-    - 修复 SUBSTRING 函数包含特殊参数时引起进程崩溃的潜在问题
-    - 修复 INT 类型转换为 TIME 类型时产生错误结果的问题
+    - 修复 `SUBSTRING` 函数包含特殊参数时引起进程崩溃的潜在问题
+    - 修复将 `INT` 类型转换为 `TIME` 类型时产生错误结果的问题
+
++ Tools
+
+    + Backup & Restore (BR)
+
+        - 修正不能恢复 `mysql` 库内的用户表的问题 [#1142](https://github.com/pingcap/br/pull/1142)
+
+    + TiDB Lightning
+
+        - 修正对 Parquet 格式 Decimal 类型的解析 [#1276](https://github.com/pingcap/br/pull/1276)
+        - 修正当启用 `strict-format = true`、且 CSV 文件不是以 `\r\n` 为结尾时出现 EOF 错误的问题 [#1188](https://github.com/pingcap/br/pull/1188)
+        - 修正当自增列类型是 FLOAT 或 DOUBLE 时，自增值会错乱的问题 [#1185](https://github.com/pingcap/br/pull/1185)
+        - 防止批量处理超过 4 GB 的 KV 数据，避免 Lightning 崩溃 [#1128](https://github.com/pingcap/br/pull/1128)
+
+    + Dumpling
+
+        - 使用 Dumpling 导出至 S3 需要 `s3:ListBucket` 权限，现在不再要求覆盖整个 Bucket，只需要覆盖导出的前缀即可 [#287](https://github.com/pingcap/dumpling/pull/287)
+
+    + TiCDC
+
+        - 修正分区表新增分区后的处理 [#2205](https://github.com/pingcap/ticdc/pull/2205)
+        - 新增 CDC 服务端配置项 `capture-session-ttl` [#2169](https://github.com/pingcap/ticdc/pull/2169)
+        - 修正 TiCDC 无法读取 `/proc/meminfo` 导致的崩溃 [#2023](https://github.com/pingcap/ticdc/pull/2023)
+        - 降低内存使用量 [#2011](https://github.com/pingcap/ticdc/pull/2011)
+        - 降低在表数量很多时 Unified Sorter 的内存使用量 [#1957](https://github.com/pingcap/ticdc/pull/1957)
+        - 修正 MySQL sink 遇到错误或暂停时，MySQL 连接会泄漏的问题 [#1945](https://github.com/pingcap/ticdc/pull/1945)
+        - 修正当 Start TS 小于 Current TS − GC TTL 时无法创建 TiCDC changefeed 的问题 [#1871](https://github.com/pingcap/ticdc/pull/1871)
+        - 减少 Sort heap 的大小，以降低 CPU 开销 [#1862](https://github.com/pingcap/ticdc/pull/1862)
+        - 修正在移动表后 Resolved TS 停止更新的问题 [#1827](https://github.com/pingcap/ticdc/pull/1827)
