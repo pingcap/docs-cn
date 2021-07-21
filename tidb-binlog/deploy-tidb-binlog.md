@@ -15,7 +15,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ## 使用 TiUP 部署 TiDB Binlog
 
-推荐使用 TiUP 部署 TiDB Binlog，详细部署方式参考 [TiUP 部署 TiDB Binlog](/production-deployment-using-tiup.md)。
+推荐使用 TiUP 部署 TiDB Binlog。即在使用 TiUP 部署 TiDB 时，在[拓扑文件](/tidb-binlog-deployment-topology.md)中添加 TiDB Binlog 的 `drainer` 和 `pump` 节点信息后，再随 TiDB 一起部署。详细部署方式参考 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ## 使用 Binary 部署 TiDB Binlog
 
