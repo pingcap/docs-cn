@@ -82,6 +82,37 @@ mysql> SELECT * FROM t1;
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### character_set_client
+
+- 作用域: SESSION | GLOBAL
+- 默认值: `utf8mb4`
+- 这个变量表示客户端的字符集。如果要查看更多 TiDB 中支持的字符集和排序规则，请参见[字符集和排序规则](/character-set-and-collation.md)。 如果需要更改字符集，建议使用[`SET NAMES`](/sql-statements/sql-statement-set-names.md).
+
+### character_set_connection
+
+- 作用域: SESSION | GLOBAL
+- 默认值: `utf8mb4`
+- 这个变量表示没有特定字符集的字符串常量。
+
+### character_set_database
+
+- 作用域: SESSION | GLOBAL
+- 默认值: `utf8mb4`
+- 这个变量表示当前使用中的默认数据库的字符集，**不建议设置这个变量**。当选择一个新的默认数据库时，服务器会更改该变量的值。
+
+### character_set_results
+
+- 作用域: SESSION | GLOBAL
+- 默认值: `utf8mb4`
+- The character set that is used when data is sent to the client.
+- 当数据发送至客户端后，该变量则会被使用。
+
+### character_set_server
+
+- 作用域: SESSION | GLOBAL
+- 默认值: `utf8mb4`
+- 当`CREATE SCHEMA`中没有设置特定的字符集时，该变量用于创建新的`SCHEMA` 。
+
 ### `cte_max_recursion_depth`
 
 - 作用域：SESSION | GLOBAL
