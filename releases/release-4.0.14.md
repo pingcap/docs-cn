@@ -103,7 +103,7 @@ TiDB 版本：4.0.14
     - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
     - 修复关机期间出现的可疑警告和来自 Raftstore 的非确定性响应 [#10353](https://github.com/tikv/tikv/issues/10353) [#10307](https://github.com/tikv/tikv/issues/10307)
     - 修复备份线程泄漏的问题 [#10287](https://github.com/tikv/tikv/issues/10287)
-    - 修复 Region split 过慢以及进行 Region merge 时，Region split 可能会损坏 metadata 的问题 [#7503](https://github.com/tikv/tikv/pull/7503) [#8456](https://github.com/tikv/tikv/issues/8456) [#8783](https://github.com/tikv/tikv/issues/8783)
+    - 修复 Region split 过慢以及进行 Region merge 时，Region split 可能会损坏 metadata 的问题 [#8456](https://github.com/tikv/tikv/issues/8456) [#8783](https://github.com/tikv/tikv/issues/8783)
     - 修复特定情况下 Region 心跳会导致 TiKV 不进行 split 的问题 [#10111](https://github.com/tikv/tikv/issues/10111)
     - 修复 TiKV 和 TiDB 间 CM Sketch 格式不一致导致统计信息错误问题 [#25638](https://github.com/pingcap/tidb/issues/25638)
     - 修复 `apply wait duration` 指标的错误统计 [#9893](https://github.com/tikv/tikv/issues/9893)
