@@ -62,18 +62,19 @@ TiDB 版本：4.0.14
 
     + Backup & Restore (BR)
 
-        - 恢复时合并小文件以提升速度 [#655](https://github.com/pingcap/br/pull/655)
+        - 恢复数据时合并小文件以提升恢复速度 [#655](https://github.com/pingcap/br/pull/655)
 
     + Dumpling
 
-        - 上游是 TiDB v3.x 时，使用 `_tidb_rowid` 来切分表以减低 TiDB 的内存使用 [#306](https://github.com/pingcap/dumpling/pull/306)
+        - 上游是 TiDB v3.x 集群时，使用 `_tidb_rowid` 来切分表以减少 TiDB 的内存使用 [#306](https://github.com/pingcap/dumpling/pull/306)
 
     + TiCDC
 
-        - 改善 PD 节点缺失证书时的错误信息 [#2184](https://github.com/pingcap/ticdc/pull/2184)
-        - Sorter 发生 IO 错误时提供更友善的信息 [#1976](https://github.com/pingcap/ticdc/pull/1976)
-        - 新增 KV client 的 Region 增量扫描的并发度上限，减低 TiKV 的压力 [#1926](https://github.com/pingcap/ticdc/pull/1926)
-        - 新增表内存使用量的监控 [#1884](https://github.com/pingcap/ticdc/pull/1884)
+        - 优化 PD 节点缺失证书时的报错信息 [#2184](https://github.com/pingcap/ticdc/pull/2184)
+        - 优化 sorter I/O 报错信息 [#1976](https://github.com/pingcap/ticdc/pull/1976)
+        - 在 KV client 中新增 Region 增量扫描的并发度上限，减小 TiKV 的压力 [#1926](https://github.com/pingcap/ticdc/pull/1926)
+        - 新增表内存使用量的监控项 [#1884](https://github.com/pingcap/ticdc/pull/1884)
+        - 新增 TiCDC 服务端配置项 `capture-session-ttl` [#2169](https://github.com/pingcap/ticdc/pull/2169)
 
 ## Bug 修复
 
@@ -139,27 +140,25 @@ TiDB 版本：4.0.14
 
     + Backup & Restore (BR)
 
-        - 修正不能恢复 `mysql` 库内的用户表的问题 [#1142](https://github.com/pingcap/br/pull/1142)
+        - 修复不能恢复 `mysql` 库内的用户表的问题 [#1142](https://github.com/pingcap/br/pull/1142)
 
     + TiDB Lightning
 
-        - 修正对 Parquet 格式 Decimal 类型的解析 [#1276](https://github.com/pingcap/br/pull/1276)
-        - 修正当启用 `strict-format = true`、且 CSV 文件不是以 `\r\n` 为结尾时出现 EOF 错误的问题 [#1188](https://github.com/pingcap/br/pull/1188)
-        - 修正当自增列类型是 FLOAT 或 DOUBLE 时，自增值会错乱的问题 [#1185](https://github.com/pingcap/br/pull/1185)
-        - 防止批量处理超过 4 GB 的 KV 数据，避免 Lightning 崩溃 [#1128](https://github.com/pingcap/br/pull/1128)
+        - 修复 TiDB Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1276](https://github.com/pingcap/br/pull/1276)
+        - 修复 TiDB Lightning 导入大文件拆分时遇到的 EOF 报错问题 [#1133](https://github.com/pingcap/br/issues/1133)
+        - 修复 TiDB Lightning 导入含 `auto_increment` 的 `DOUBLE` 或 `FLOAT` 类型列的表时生成极大 base 值的问题 [#1185](https://github.com/pingcap/br/pull/1185)
+        - 修复在生成超过 4 GB 的 KV 数据时可能发生的 panic 问题 [#1128](https://github.com/pingcap/br/pull/1128)
 
     + Dumpling
 
-        - 使用 Dumpling 导出至 S3 需要 `s3:ListBucket` 权限，现在不再要求覆盖整个 Bucket，只需要覆盖导出的前缀即可 [#287](https://github.com/pingcap/dumpling/pull/287)
+        - 使用 Dumpling 导出至 S3 存储时，不再要求 `s3:ListBucket` 权限覆盖整个 Bucket，只需要覆盖导出的前缀即可 [#287](https://github.com/pingcap/dumpling/pull/287)
 
     + TiCDC
 
-        - 修正分区表新增分区后的处理 [#2205](https://github.com/pingcap/ticdc/pull/2205)
-        - 新增 CDC 服务端配置项 `capture-session-ttl` [#2169](https://github.com/pingcap/ticdc/pull/2169)
-        - 修正 TiCDC 无法读取 `/proc/meminfo` 导致的崩溃 [#2023](https://github.com/pingcap/ticdc/pull/2023)
-        - 降低内存使用量 [#2011](https://github.com/pingcap/ticdc/pull/2011)
-        - 降低在表数量很多时 Unified Sorter 的内存使用量 [#1957](https://github.com/pingcap/ticdc/pull/1957)
-        - 修正 MySQL sink 遇到错误或暂停时，MySQL 连接会泄漏的问题 [#1945](https://github.com/pingcap/ticdc/pull/1945)
-        - 修正当 Start TS 小于 Current TS − GC TTL 时无法创建 TiCDC changefeed 的问题 [#1871](https://github.com/pingcap/ticdc/pull/1871)
-        - 减少 Sort heap 的大小，以降低 CPU 开销 [#1862](https://github.com/pingcap/ticdc/pull/1862)
-        - 修正在移动表后 Resolved TS 停止更新的问题 [#1827](https://github.com/pingcap/ticdc/pull/1827)
+        - 修复分区表新增分区后的处理 [#2205](https://github.com/pingcap/ticdc/pull/2205)
+        - 修复 TiCDC 无法读取 `/proc/meminfo` 导致崩溃的问题 [#2023](https://github.com/pingcap/ticdc/pull/2023)
+        - 减少 TiCDC 运行时的内存使用 [#2011](https://github.com/pingcap/ticdc/pull/2011) [#1957](https://github.com/pingcap/ticdc/pull/1957)
+        - 修复 MySQL sink 遇到错误或暂停时，MySQL 连接会泄漏的问题 [#1945](https://github.com/pingcap/ticdc/pull/1945)
+        - 修复当 start TS 小于 current TS 减去 GC TTL 时无法创建 TiCDC changefeed 的问题 [#1871](https://github.com/pingcap/ticdc/pull/1871)
+        - 减少 sort heap 的内存 `malloc`，以降低 CPU 开销 [#1862](https://github.com/pingcap/ticdc/pull/1862)
+        - 修复调度数据表时可能发生的同步终止问题 [#1827](https://github.com/pingcap/ticdc/pull/1827)
