@@ -10,6 +10,12 @@ TiDB 版本：4.0.14
 
 ## 兼容性更改
 
++ TiDB
+
+    - 在 v4.0 中将 `tidb_multi_statement_mode` 的默认值从 `WARN` 更改为 `OFF`，建议使用客户端库的多语句功能。参考[`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-new-in-v4011) [#25749](https://github.com/pingcap/tidb/pull/25749)
+    - 将 Grafana 从 v6.1.16 升级到 v7.5.7 以解决两个安全漏洞. 参考 [Grafana post](https://grafana.com/blog/2020/06/03/grafana-6.7.4-and-7.0.2-released-with-important-security-fix/)
+    - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值 200 修改为 3000 [#25872](https://github.com/pingcap/tidb/pull/25872)
+
 + TiKV
 
     - 将 `merge-check-tick-interval` 配置项的默认值从 `10` 修改为 `2` 以加快 Region 合并的速度 [#9676](https://github.com/tikv/tikv/pull/9676)
@@ -27,6 +33,14 @@ TiDB 版本：4.0.14
     - 新增 Debug API 界面用于高级调试，通过界面可以替代目前的命令行方式来调用 TiDB 和 PD 的内部调试性 API [#927](https://github.com/pingcap/tidb-dashboard/pull/927)
 
 ## 改进提升
+
++ TiDB
+
+    - 在 update 语句中的读过程，使用 point/batch point get 写入 index 的 key 来替代给 row 数据上锁  [#26223](https://github.com/pingcap/tidb/pull/26223)
+    - 支持 MySQL 的系统变量 `init_connect` 及其相关功能 [#26031](https://github.com/pingcap/tidb/pull/26031)
+    - 支持稳定结果模式 [#26003](https://github.com/pingcap/tidb/pull/26003)
+    - 支持函数 `json_unquote()` 下推到 TiKV [#25721](https://github.com/pingcap/tidb/pull/25721)
+    - 使 SPM 不受字符集的影响 [#23295](https://github.com/pingcap/tidb/pull/23295)
 
 + TiKV
 
@@ -46,6 +60,22 @@ TiDB 版本：4.0.14
     - 支持将当前会话分享为只读的会话，禁止分享出来的会话进行修改操作 [#960](https://github.com/pingcap/tidb-dashboard/pull/960)
 
 ## Bug 修复
+
++ TiDB
+
+    - 当所有的聚合函数被消除时生成正确的行数量 [#26039](https://github.com/pingcap/tidb/pull/26039)
+    - 修复当参数是 enum/set 类型时，ifnull 函数的计算错误 [#26035](https://github.com/pingcap/tidb/pull/26035)
+    - 修复某些情况下错误的聚合函数消除 [#26033](https://github.com/pingcap/tidb/pull/26033)
+    - 修复 merge join 中当列为 set 类型时可能产生的错误结果 [#26032](https://github.com/pingcap/tidb/pull/26032)
+    - 修复 IN 语句的某些执行错误 [#25665](https://github.com/pingcap/tidb/pull/25665)
+    - 修复 `select ... for update` 语句在 join on 分区表时，可能产生异常退出的情况 [#25501](https://github.com/pingcap/tidb/pull/25501)
+    - 修复 plan cache 中，在事务过程中 point get plan 不正确的问题 [#24764](https://github.com/pingcap/tidb/pull/24764)
+    - 修复 `load data` 语句可以不正常导入非 utf8 数据的问题 [#26142](https://github.com/pingcap/tidb/pull/26142)
+    - 修复通过 http API 访问统计信息时，可能导致内存泄露的问题 [#24650](https://github.com/pingcap/tidb/pull/24650)
+    - 修复执行 `ALTER USER` 语句的安全性问题 [#25347](https://github.com/pingcap/tidb/pull/25347)
+    - 修复系统表 `TIKV_REGION_PEERS` 不能正确处理 `DOWN` 状态. [#24918](https://github.com/pingcap/tidb/pull/24918)
+    - 修复解析 DateTime 不截断非法字符串 [#22260](https://github.com/pingcap/tidb/pull/22260)
+    - 修复 `select into outfile` 语句在列类型是 year 时，可能无法产生结果的问题 [#22185](https://github.com/pingcap/tidb/pull/22185)
 
 + TiKV
 
