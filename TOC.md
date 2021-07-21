@@ -473,6 +473,9 @@
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + 会话管理与配置
+        + [分享会话](/dashboard/dashboard-session-share.md)
+        + [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       + [常见问题](/dashboard/dashboard-faq.md)
   + CLI
     + [tikv-ctl](/tikv-control.md)

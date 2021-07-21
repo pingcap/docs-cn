@@ -1,0 +1,150 @@
+---
+title: 配置 TiDB Dashboard 使用 SSO 登录
+summary: 了解如何配置 TiDB Dashboard 启用 SSO 登录。
+aliases: ['/docs-cn/dev/dashboard/dashboard-session-sso/']
+---
+
+# 配置 TiDB Dashboard 使用 SSO 登录
+
+TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点登录（Single Sign-On）。配置 TiDB Dashboard 启用 SSO 登录后，用户可以通过配置的 SSO 服务进行登录鉴权、无需输入 SQL 用户名和密码即可登录到 TiDB Dashboard。
+
+备注：该功能仅在 v4.0.14 或更高版本集群中可用。
+
+## 配置 OIDC SSO
+
+### 启用 SSO
+
+1. 登录 TiDB Dashboard；
+
+2. 点击边栏左下角用户名访问配置界面；
+
+3. 在 **单点登录** (Single Sign-On) 区域下，开启 **允许使用 SSO 登录到 TiDB Dashboard** (Enable to use SSO when sign into TiDB Dashboard)；
+
+4. 在表单中填写 **OIDC Client ID** 和 **OIDC Discovery URL** 字段；
+
+   您一般可以从 SSO 服务的提供商处获取到这两个字段信息：
+
+   - OIDC Client ID 有时也被称为 OIDC Token Issuer；
+   - OIDC Discovery URL 有时也被称为 OIDC Token Audience。
+
+5. TiDB Dashboard SSO 的原理是在 SSO 成功鉴权后，采用 TiDB Dashboard 内加密存储的 SQL 登录密码进行替代登录，因此您还需要将 SQL 登录密码录入到 TiDB Dashboard 中，以便在 SSO 鉴权通过后完成登录。点击 **授权登录为该用户** (Authorize Impersonation) 按钮录入密码。
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-enable-1.png)
+
+   > **注意：**
+   >
+   > 您录入的密码将被加密存储。若 SQL 用户的密码后续发生了变更，将导致 SSO 登录失败。这时可以重新录入密码使它恢复正常。
+
+6. 在对话框中填写完毕密码后，点击 **授权并保存** (Authorize and Save)；
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-enable-2.png)
+
+7. 点击 **更新** (Update) 保存配置。
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-enable-3.png)
+
+8. 至此 TiDB Dashboard 中已经成功开启了 SSO 登录。
+
+   > **注意：**
+   >
+   > 部分 SSO 服务出于安全原因还需要您进一步在 SSO 服务中配置受信任的登录和登出跳转地址，请参见 SSO 服务的具体帮助完成配置。
+
+### 禁用 SSO
+
+SSO 可以随时禁用。禁用后，之前已录入并存储在本地的替代登录 SQL 密码将被彻底清除。禁用步骤如下：
+
+1. 登录 TiDB Dashboard；
+
+2. 点击边栏左下角用户名访问配置界面；
+
+3. 在 **单点登录** (Single Sign-On) 区域下，关闭 **允许使用 SSO 登录到 TiDB Dashboard** (Enable to use SSO when sign into TiDB Dashboard)；
+
+4. 点击 **更新** (Update) 保存配置。
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-disable.png)
+
+### 在密码发生变更后重新录入密码
+
+若替代登录的 SQL 用户密码发生了变更，则 SSO 登录将会失败。此时，您可以将新的登录密码录入到 TiDB Dashboard 中以便恢复正常 SSO 登录功能，步骤如下：
+
+1. 登录 TiDB Dashboard；
+
+2. 点击边栏左下角用户名访问配置界面；
+
+3. 在 **单点登录** (Single Sign-On) 区域下，点击 **授权登录为该用户** (Authorize Impersonation) 按钮来录入新的密码。
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-reauthorize.png)
+
+4. 在对话框中填写完毕密码后，点击 **授权并保存** (Authorize and Save)。
+
+## 使用 SSO 登录
+
+若 TiDB Dashboard 已经完成了 SSO 的配置，用户可使用以下步骤完成登录：
+
+1. 在 TiDB Dashboard 登录界面上，点击 **使用公司账号 SSO 登录** (Sign in via Company Account)；
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-signin.png)
+
+2. 在配置的 SSO 系统中进行登录；
+
+3. 用户将被重定向回 TiDB Dashboard 完成登录。
+
+## 示例：使用 Okta 进行 TiDB Dashboard SSO 登录认证
+
+[Okta](https://www.okta.com/) 是一个提供 OIDC SSO 的身份认证服务。以下步骤展示了如何配置 Okta 及 TiDB Dashboard 使得 TiDB Dashboard 可以通过 Okta 进行 SSO 登录。
+
+### 步骤一：配置 Okta
+
+首先需要在 Okta 中创建一个用于集成 SSO 的 Application Integration。
+
+1. 访问 Okta 管理后台；
+
+2. 左侧边栏点击 **Applications** > **Applications**；
+
+3. 点击 **Create App Integration** 按钮；
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-okta-1.png)
+
+4. 在弹出的对话框中，**Sign-in method** 字段选择 **OIDC - OpenID Connect**；
+
+5. **Application Type** 字段选择 **Single-Page Application**；
+
+6. 对话框中点击 **Next** 按钮；
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-okta-2.png)
+
+7. **Sign-in redirect URIs** 字段填写：
+
+   ```
+   http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
+   ```
+
+   其中，`DASHBOARD_IP:PORT` 请替换为您在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。
+
+8. **Sign-out redirect URIs** 字段填写：
+
+   ```
+   http://DASHBOARD_IP:PORT/dashboard/
+   ```
+
+   其中，`DASHBOARD_IP:PORT` 与上一步一样，请替换为实际域名（或 IP）及端口。
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-okta-3.png)
+
+9. 在 **Assignments** 中按您实际需求配置组织中哪些用户可以通过这个 SSO 登录 TiDB Dashboard，然后点击 **Save** 按钮保存配置。
+
+   ![操作示例](/media/dashboard/dashboard-session-sso-okta-4.png)
+
+### 步骤二：获取 TiDB Dashboard 所需配置参数并填入 TiDB Dashboard
+
+1. 在 Okta 创建的 App Integration 中，点击 **Sign On**
+
+   ![操作示例 1](/media/dashboard/dashboard-session-sso-okta-info-1.png)
+
+2. 在 **OpenID Connect ID Token** 区域中有 **Issuer** 和 **Audience** 字段，复制这两个值。
+
+   ![操作示例 2](/media/dashboard/dashboard-session-sso-okta-info-2.png)
+
+3. 打开 TiDB Dashboard 配置界面，将上一步获取到的 **Issuer** 填入 **OIDC Client ID**、将 **Audience** 填入 **OIDC Discovery URL** 后，完成授权并保存配置，如下所示。
+
+   ![操作示例 3](/media/dashboard/dashboard-session-sso-okta-info-3.png)
