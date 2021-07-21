@@ -80,7 +80,7 @@ TiDB 版本：4.0.14
 
 + TiDB
 
-    - 修复当连接一个带 `WHERE` 条件的子查询（值为 `false` ）时 `SELECT` 的结果与 MySQL 不兼容的问题 [#24865](https://github.com/pingcap/tidb/issues/24865)
+    - 修复当连接一个带 `WHERE` 条件的子查询（值为 `false`）时 `SELECT` 的结果与 MySQL 不兼容的问题 [#24865](https://github.com/pingcap/tidb/issues/24865)
     - 修复当参数是 `ENUM` 或 `SET` 类型时 `ifnull` 函数计算错误的问题 [#24944](https://github.com/pingcap/tidb/issues/24944)
     - 修复某些情况下错误的聚合函数消除 [#25202](https://github.com/pingcap/tidb/issues/25202)
     - 修复 Merge Join 运算中当列为 `SET` 类型时可能产生错误结果的问题 [#25669](https://github.com/pingcap/tidb/issues/25669)
@@ -96,14 +96,14 @@ TiDB 版本：4.0.14
 
 + TiKV
 
-    - 修复特定平台上的 duration 计算可能崩溃的问题 [#10572](https://github.com/tikv/tikv/pull/10572)
+    - 修复特定平台上的 duration 计算可能崩溃的问题 [#related-issue](https://github.com/rust-lang/rust/issues/86470#issuecomment-877557654)
     - 修复将 `DOUBLE` 类型转换为 `DOUBLE` 的错误函数 [#25200](https://github.com/pingcap/tidb/issues/25200)
-    - 修复使用 async logger 时 panic 日志可能会丢失的问题 [#9955](https://github.com/tikv/tikv/pull/9955)
+    - 修复使用 async logger 时 panic 日志可能会丢失的问题 [#8998](https://github.com/tikv/tikv/issues/8998)
     - 修复开启加密后再次生成同样的 snapshot 会出现 panic 的问题 [#10462](https://github.com/tikv/tikv/pull/10462)
     - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
-    - 修复关机期间出现的可疑警告和来自 Raftstore 的非确定性响应 [#10353](https://github.com/tikv/tikv/issues/10353)
+    - 修复关机期间出现的可疑警告和来自 Raftstore 的非确定性响应 [#10353](https://github.com/tikv/tikv/issues/10353) [#10307](https://github.com/tikv/tikv/issues/10307)
     - 修复备份线程泄漏的问题 [#10287](https://github.com/tikv/tikv/issues/10287)
-    - 修复 Region split 过慢以及进行 Region merge 时，Region split 可能会损坏 metadata 的问题 [#9584](https://github.com/tikv/tikv/pull/9584)
+    - 修复 Region split 过慢以及进行 Region merge 时，Region split 可能会损坏 metadata 的问题 [#7503](https://github.com/tikv/tikv/pull/7503) [#8456](https://github.com/tikv/tikv/issues/8456) [#8783](https://github.com/tikv/tikv/issues/8783)
     - 修复特定情况下 Region 心跳会导致 TiKV 不进行 split 的问题 [#10111](https://github.com/tikv/tikv/issues/10111)
     - 修复 TiKV 和 TiDB 间 CM Sketch 格式不一致导致统计信息错误问题 [#25638](https://github.com/pingcap/tidb/issues/25638)
     - 修复 `apply wait duration` 指标的错误统计 [#9893](https://github.com/tikv/tikv/issues/9893)
@@ -112,17 +112,17 @@ TiDB 版本：4.0.14
 + PD
 
     - 修复调度器在执行删除操作后可能再次出现的问题 [#2572](https://github.com/tikv/pd/issues/2572)
-    - 修复调度器在临时配置加载完毕前启动可能导致数据争用的问题 [#3773](https://github.com/pingcap/pd/pull/3773)
+    - 修复调度器在临时配置加载完毕前启动可能导致数据争用的问题 [#3771](https://github.com/tikv/pd/issues/3771)
     - 修复打散 Region 操作可能导致 PD panic 的问题 [#3761](https://github.com/pingcap/pd/pull/3761)
     - 修复部分 Operator 未被正确设置优先级的问题 [#3703](https://github.com/pingcap/pd/pull/3703)
-    - 修复从不存在的 Store 上删除 `evict-leader` 调度器时可能导致 PD panic 的问题 [#3680](https://github.com/pingcap/pd/pull/3680)
+    - 修复从不存在的 Store 上删除 `evict-leader` 调度器时可能导致 PD panic 的问题 [#3660](https://github.com/tikv/pd/issues/3660)
     - 修复了当集群内 Store 非常多时，PD 切换 Leader 慢的问题 [#3697](https://github.com/tikv/pd/issues/3697)
 
 + TiDB Dashboard
 
     - 修复实例性能分析界面无法获取全部 TiDB 实例信息的问题 [#944](https://github.com/pingcap/tidb-dashboard/pull/944)
     - 修复 SQL 语句分析界面不显示执行“计划数”的问题 [#939](https://github.com/pingcap/tidb-dashboard/pull/939)
-    - 修复在升级集群后慢查询界面可能显示 "unknown field" 错误的问题 [#930](https://github.com/pingcap/tidb-dashboard/pull/930)
+    - 修复在升级集群后慢查询界面可能显示 "unknown field" 错误的问题 [#902](https://github.com/pingcap/tidb-dashboard/issues/902)
 
 + TiFlash
 
@@ -151,7 +151,7 @@ TiDB 版本：4.0.14
 
     + Dumpling
 
-        - 使用 Dumpling 导出至 S3 存储时，不再要求 `s3:ListBucket` 权限覆盖整个 Bucket，只需要覆盖导出的前缀即可 [#287](https://github.com/pingcap/dumpling/pull/287)
+        - 使用 Dumpling 导出至 S3 存储时，不再要求 `s3:ListBucket` 权限覆盖整个 Bucket，只需要覆盖导出的前缀即可 [#898](https://github.com/pingcap/br/issues/898)
 
     + TiCDC
 
@@ -159,6 +159,6 @@ TiDB 版本：4.0.14
         - 修复 TiCDC 无法读取 `/proc/meminfo` 导致崩溃的问题 [#2023](https://github.com/pingcap/ticdc/pull/2023)
         - 减少 TiCDC 运行时的内存使用 [#2011](https://github.com/pingcap/ticdc/pull/2011) [#1957](https://github.com/pingcap/ticdc/pull/1957)
         - 修复 MySQL sink 遇到错误或暂停时，MySQL 连接会泄漏的问题 [#1945](https://github.com/pingcap/ticdc/pull/1945)
-        - 修复当 start TS 小于 current TS 减去 GC TTL 时无法创建 TiCDC changefeed 的问题 [#1871](https://github.com/pingcap/ticdc/pull/1871)
-        - 减少 sort heap 的内存 `malloc`，以降低 CPU 开销 [#1862](https://github.com/pingcap/ticdc/pull/1862)
+        - 修复当 start TS 小于 current TS 减去 GC TTL 时无法创建 TiCDC changefeed 的问题 [#1839](https://github.com/pingcap/ticdc/issues/1839)
+        - 减少 sort heap 的内存 `malloc`，以降低 CPU 开销 [#1853](https://github.com/pingcap/ticdc/issues/1853)
         - 修复调度数据表时可能发生的同步终止问题 [#1827](https://github.com/pingcap/ticdc/pull/1827)
