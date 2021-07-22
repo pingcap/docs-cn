@@ -671,7 +671,7 @@ time: 43.12698ms
 
 ### `region <region_id> [--jq="<query string>"]`
 
-用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 Region 信息。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 Region 信息：
 
@@ -1055,7 +1055,7 @@ Encoding 格式示例：
 
 ### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 store 信息：
 
