@@ -186,7 +186,7 @@ enableQueryTimeouts = false
 
 TiDB 提供两个与 MySQL 兼容的超时控制参数，`wait_timeout` 和 `max_execution_time`。这两个参数分别控制与 Java 应用连接的空闲超时时间和连接中 SQL 执行的超时时间，即控制 TiDB 与 Java 应用的连接最长闲多久和最长忙多久。这两个参数的默认值都是 `0`，即默认允许连接无限闲置以及无限忙碌（一个 SQL 语句执行无限的长的时间）。
 
-但是，实际生产中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响，可以通过在应用连接字符串中配置它们来避免空闲连接和执行时间过长的 SQL。比如，设置 `sessionVariables=wait_timeout=3600`（1 小时）和 `sessionVariables=max_execution_time=300000`（5 分钟）。
+但在实际生产环境中，空闲连接和一直无限执行的 SQL 对数据库和应用都有不好的影响。你可以通过在应用的连接字符串中配置这两个参数来避免空闲连接和执行时间过长的 SQL 语句。例如，设置 `sessionVariables=wait_timeout=3600`（1 小时）和 `sessionVariables=max_execution_time=300000`（5 分钟）。
 
 ## 连接池
 
