@@ -30,7 +30,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
 + [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
 + [View](/information-schema/information-schema-views.md)。
-+ [Stale Read](/stale-read.md)。
 
 ## 配置管理
 
