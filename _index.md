@@ -25,8 +25,10 @@ aliases: ['/docs-cn/dev/']
 <NavColumn>
 <ColumnTitle>快速上手</ColumnTitle>
 
-- [快速上手指南](/quick-start-with-tidb.md)
+- [快速上手 TiDB](/quick-start-with-tidb.md)
+- [快速上手 HTAP](/quick-start-with-htap.md)
 - [SQL 基本操作](/basic-sql-operations.md)
+- [深入探索 HTAP](/explore-htap.md)
 
 </NavColumn>
 
