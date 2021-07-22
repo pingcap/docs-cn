@@ -89,7 +89,7 @@ mysql> SELECT * FROM t1;
 - 范围：`[0, 4294967295]`
 - 这个变量用于控制公共表表达式的最大递归深度。
 
-### datadir
+### `datadir`
 
 - 作用域：NONE
 - 默认值：/tmp/tidb
@@ -149,7 +149,7 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### license
+### `license`
 
 - 作用域：NONE
 - 默认值：Apache License 2.0
@@ -586,7 +586,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
-### tidb_enable_strict_double_type_check <span class="version-mark">从 v5.0 版本开始引入</span>
+### `tidb_enable_strict_double_type_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
