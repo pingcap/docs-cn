@@ -1372,7 +1372,7 @@ set tidb_slow_log_threshold = 200;
 
 ### `warning_count`
 
-- 作用域: SESSION
+- 作用域：SESSION
 - 默认值：`0`
 - 这个只读变量表示之前执行语句中出现的警告数。
 

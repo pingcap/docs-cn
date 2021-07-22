@@ -29,7 +29,7 @@ TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险�
 
     当将 TiDB 应用于数据中枢场景时，TiDB 作为数据中枢可以无缝连接数据业务层和数据仓库层，满足不同业务的需求。
 
-如果想了解更多关于 TiDB HTAP  场景信息，请参阅 [PingCAP 官网中关于 HTAP 的博客](https://pingcap.com/blog-cn/#HTAP)。
+如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [PingCAP 官网中关于 HTAP 的博客](https://pingcap.com/blog-cn/#HTAP)。
 
 ## HTAP 架构
 
@@ -49,7 +49,7 @@ TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险�
 
         - 如果业务场景以 OLTP 为主，做轻量级的 Ad hoc OLAP 计算，通常部署 1 个或几个 TiFlash 节点就会产生明显的加速效果。
         - 当 OLTP 数据吞吐量对节点 I/O 无明显压力时，每个 TiFlash 节点将会使用较多资源用于计算，这样 TiFlash 集群可实现近似线性的扩展能力。TiFlash 节点数量应根据期待的性能和响应时间调整。
-        - 当 OLTP 数据吞吐量较高时（例如写入或更新超过千万行/小时），由于网络和物理磁盘的写入能力有限，内部 TiKV 与 TiFlash 之间的 I/O 会成为主要瓶颈，也容易产生读写热点。此时TiFlash 节点数与 OLAP 计算量有较复杂非线性关系，需要根据具体系统状态调整节点数量。
+        - 当 OLTP 数据吞吐量较高时（例如写入或更新超过千万行/小时），由于网络和物理磁盘的写入能力有限，内部 TiKV 与 TiFlash 之间的 I/O 会成为主要瓶颈，也容易产生读写热点。此时 TiFlash 节点数与 OLAP 计算量有较复杂非线性关系，需要根据具体系统状态调整节点数量。
 
 - TiSpark
 
@@ -84,7 +84,7 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 - [TiDB Dashboard](/dashboard/dashboard-intro.md)：查看集群整体运行概况，分析集群读写流量分布及趋势变化，详细了解耗时较长的 SQL 语句的执行信息。
 - [监控系统 (Prometheus & Grafana)](/grafana-overview-dashboard.md)：查看 TiDB 集群各组件（包括 PD、TiDB、TiKV、TiFlash、TiCDC、Node_exporter）的相关监控参数。
 
-如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md) 和 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
+如需查看 TiDB 和 TiFlash 集群报警规则和处理方法，请查阅 [TiDB 集群报警规则](/alert-rules.md)和 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
 
 ## HTAP 故障诊断
 
