@@ -37,9 +37,3 @@ ignore:
   - path: sql-statements/sql-statement-explain-analyze.md
     scope: all
     ruleId: ZH428
-
-
-
-
-
-
