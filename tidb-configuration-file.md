@@ -117,7 +117,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `repair-table-list`
 
-+ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 "db.table1"，"db.table2" ……
++ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 ["db.table1","db.table2", ……]。
 + 默认值：[]
 + 默认情况下，该 list 名单为空，表示没有所需修复的坏表信息。
 

@@ -452,7 +452,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
 
-    示例：将 `flow-round-by-digit` 的值设为 `4`。
+    示例：将 `flow-round-by-digit` 的值设为 `4`：
 
     {{< copyable "" >}}
 
