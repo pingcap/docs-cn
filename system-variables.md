@@ -85,9 +85,10 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`1000`
+- 范围：`[0, 4294967295]`
 - 这个变量用于控制公共表表达式的最大递归深度。
 
-### datadir
+### `datadir`
 
 - 作用域：NONE
 - 默认值：/tmp/tidb
@@ -147,7 +148,7 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### license
+### `license`
 
 - 作用域：NONE
 - 默认值：Apache License 2.0
@@ -584,7 +585,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
-### tidb_enable_strict_double_type_check <span class="version-mark">从 v5.0 版本开始引入</span>
+### `tidb_enable_strict_double_type_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
@@ -742,6 +743,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 默认值：`10m0s`
+- 范围：`[10m0s, 8760h0m0s]`
 - 这个变量用于指定每次进行垃圾回收 (GC) 时保留数据的时限。变量值为 Go 的 Duration 字符串格式。每次进行 GC 时，将以当前时间减去该变量的值作为 safe point。
 
 > **Note:**
@@ -755,6 +757,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 默认值：`10m0s`
+- 范围：`[10m0s, 8760h0m0s]`
 - 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`、`"15m"`等。
 
 ### `tidb_gc_scan_lock_mode` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1369,7 +1372,7 @@ set tidb_slow_log_threshold = 200;
 ### `warning_count`
 
 - 作用域: SESSION
-- 默认值：0
+- 默认值：`0`
 - 这个只读变量表示之前执行语句中出现的警告数。
 
 ### `windowing_use_high_precision`
