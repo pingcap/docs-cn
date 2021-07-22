@@ -52,5 +52,4 @@ ignore:
     scope: all
     ruleId: ZH403
 
-failed_msg: "报错结果仅供参考，请 PR 作者二次确认错误信息。"
-
+failed_msg: "以上报错结果仅供参考，请 PR 作者二次确认错误信息后再修改文档。"
