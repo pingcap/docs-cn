@@ -37,6 +37,20 @@ ignore:
   - path: sql-statements/sql-statement-explain-analyze.md
     scope: all
     ruleId: ZH428
+  - path: tidb-configuration-file.md
+    scope: line
+    line: 120
+    ruleId: ZH417
+  - path: storage-engine/titan-overview.md
+    line: 77
+    scope: line
+    ruleId: ZH427
+  - path: storage-engine/rocksdb-overview.md 
+    scope: all
+    ruleId: ZH403
+  - path: pd-control.md
+    scope: all
+    ruleId: ZH403
 
 failed_msg: "报错结果仅供参考，请 PR 作者二次确认错误信息。"
 
