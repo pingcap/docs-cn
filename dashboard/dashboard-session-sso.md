@@ -1,7 +1,6 @@
 ---
 title: 配置 TiDB Dashboard 使用 SSO 登录
 summary: 了解如何配置 TiDB Dashboard 启用 SSO 登录。
-aliases: ['/docs-cn/dev/dashboard/dashboard-session-sso/']
 ---
 
 # 配置 TiDB Dashboard 使用 SSO 登录
