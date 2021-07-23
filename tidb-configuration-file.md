@@ -270,7 +270,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `require-secure-transport`
 
-- 是否要求客户端使用安全传输模式。
+- 配置是否要求客户端使用安全传输模式。
 - 默认值：`false`
 
 ### `enable-sem`
