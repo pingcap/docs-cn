@@ -7,10 +7,6 @@ summary: 了解如何将当前的 TiDB Dashboard 会话分享给其他用户访�
 
 你可以将当前的 TiDB Dashboard 会话安全地分享给其他用户访问，这样其他用户无需要知道登录账号密码即可访问 TiDB Dashboard 并进行操作。
 
-> 注意：
->
-> 该功能仅在 v4.0.6 或更高版本的集群中可用。
-
 ## 分享者操作步骤
 
 1. 登录 TiDB Dashboard。
