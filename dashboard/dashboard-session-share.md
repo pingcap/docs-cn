@@ -27,7 +27,6 @@ summary: 了解如何将当前的 TiDB Dashboard 会话分享给其他用户访�
 
    - 以只读权限分享：分享的会话为只读，例如不允许进行配置修改等操作。
 
-
 5. 点击**生成授权码** (Generate Authorization Code)。
 
    ![操作示例](/media/dashboard/dashboard-session-share-settings-2.png)
