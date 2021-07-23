@@ -14,8 +14,7 @@
 
 **Tips for choosing the affected version(s):**
 
-- If your change supplement missing or incomplete content, or fixes inaccurate or wrong contents, **CHOOSE MASTER ONLY**.
-- If your change involves a version-specific feature behavior change or a compatibility change, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**.
+By default, **CHOOSE MASTER ONLY** so your changes will be applied to the next TiDB major or minor releases. If your PR involves a product feature behavior change or a compatibility change, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**.  
 
 For details, see [tips for choosing the affected versions (in Chinese)](/CONTRIBUTING.md#版本选择指南).
 
