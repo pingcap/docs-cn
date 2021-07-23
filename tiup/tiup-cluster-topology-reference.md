@@ -493,6 +493,8 @@ drainer_servers:
 
 - `deploy_dir`: Specifies the deployment directory. If it is not specified or specified as a relative directory, the directory is generated according to the `deploy_dir` directory configured in `global`.
 
+- `data_dir`：Specifies the data directory. If it is not specified or specified as a relative directory, the directory is generated according to the `data_dir` directory configured in `global`.
+
 - `log_dir`: Specifies the log directory. If it is not specified or specified as a relative directory, the log is generated according to the `log_dir` directory configured in `global`.
 
 - `gc-ttl`: The Time To Live (TTL) duration of the service level GC safepoint set by TiCDC in PD, in seconds. The default value is `86400`, which is 24 hours.
@@ -514,6 +516,7 @@ For the above fields, you cannot modify these configured fields after the deploy
 - `host`
 - `port`
 - `deploy_dir`
+- `data_dir`
 - `log_dir`
 - `gc-ttl`
 - `tz`
