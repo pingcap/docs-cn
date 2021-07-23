@@ -890,7 +890,7 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 
 ### `pin-l0-filter-and-index-blocks`
 
-+ Determines whether to pin the index and filter at L0
++ Determines whether to pin the index and filter blocks of the level 0 SST files in memory.
 + Default value: `true`
 
 ### `use-bloom-filter`
