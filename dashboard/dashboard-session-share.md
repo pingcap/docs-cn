@@ -5,7 +5,7 @@ summary: 了解如何将当前的 TiDB Dashboard 会话分享给其他用户访�
 
 # 分享 TiDB Dashboard 会话
 
-> 注意：
+> **注意**：
 >
 > 该功能仅在 v4.0.6 或更高版本的集群中可用。
 
