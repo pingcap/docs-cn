@@ -1280,7 +1280,7 @@ The `tidb_enable_list_partition` environment variable controls whether to enable
 
 This variable is only used in table creation. After the table is created, modify this variable value takes no effect. For details, see [system variables](/system-variables.md#tidb_enable_list_partition-new-in-v50).
 
-### Dynamic mode
+### Dynamic pruning mode
 
 > **Warning:**
 >

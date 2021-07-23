@@ -33,7 +33,7 @@ In v5.1, the key new features or improvements are as follows:
 | [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-new-in-v510)  | Newly added | Controls how TiDB collects statistics. The default value of this variable is `2`. This is an experimental feature. |
 | [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) | Newly added | Indicates whether the TiDB server you are connected to has the Security Enhanced Mode (SEM) enabled. This variable setting cannot be changed without restarting the TiDB server. |
 | [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51) | Newly added | Controls whether to ignore the optimizer's cost estimation and to forcibly use the MPP mode for query execution. The data type of this variable is `BOOL` and the default value is `false`. |
-| [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-new-in-v51) | Newly added | Specifies whether to enable dynamic prune mode for partitioned tables. This feature is experimental. The default value of this variable is `static`, which means the dynamic mode for partitioned tables is disabled by default.  |
+| [`tidb_partition_prune_mode`](/system-variables.md#tidb_partition_prune_mode-new-in-v51) | Newly added | Specifies whether to enable dynamic pruning mode for partitioned tables. This feature is experimental. The default value of this variable is `static`, which means the dynamic pruning mode for partitioned tables is disabled by default.  |
 
 ### Configuration file parameters
 
@@ -184,7 +184,7 @@ To learn more about the information and how to disable this behavior, refer to [
     - Support pushing down data of the enumerated type to TiKV to improve performance when using enumerated types in `WHERE` clauses [#23619](https://github.com/pingcap/tidb/issues/23619)
     - Optimize the calculation of Window Function to solve TiDB OOM problems when paging data with ROW_NUMBER() [#23807](https://github.com/pingcap/tidb/issues/23807)
     - Optimize the calculation of `UNION ALL` to solve the TiDB OOM problems when using `UNION ALL` to join a large number of `SELECT` statements [#21441](https://github.com/pingcap/tidb/issues/21441)
-    - Optimize the dynamic mode of partitioned tables to improve performance and stability [#24150](https://github.com/pingcap/tidb/issues/24150)
+    - Optimize the dynamic pruning mode of partitioned tables to improve performance and stability [#24150](https://github.com/pingcap/tidb/issues/24150)
     - Fix the `Region is Unavailable` issue that occurs in multiple scenarios [project#62](https://github.com/pingcap/tidb/projects/62)
     - Fix multiple `Region is Unavailable` issues that might occur in frequent scheduling situations
     - Fix `Region is Unavailable` issue that might occur in some high stress write situations

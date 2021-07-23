@@ -1109,7 +1109,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Default value: `static`
-- Specifies whether to enable `dynamic` mode for partitioned tables. For details about the dynamic pruning mode, see [Dynamic Pruning Mode for Partitioned Tables](/partitioned-table.md#dynamic-mode).
+- Specifies whether to enable `dynamic` mode for partitioned tables. For details about the dynamic pruning mode, see [Dynamic Pruning Mode for Partitioned Tables](/partitioned-table.md#dynamic-pruning-mode).
 
 ### tidb_pprof_sql_cpu <span class="version-mark">New in v4.0</span>
 
