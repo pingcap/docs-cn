@@ -12,7 +12,7 @@ TiDB 版本：4.0.14
 
 + TiDB
 
-    - 在 v4.0 中将 `tidb_multi_statement_mode` 的默认值从 `WARN` 更改为 `OFF`。建议使用客户端库的多语句功能，参考[`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-从-v4011-引入)。[#25749](https://github.com/pingcap/tidb/pull/25749)
+    - 在 v4.0 中将 `tidb_multi_statement_mode` 的默认值从 `WARN` 更改为 `OFF`。建议使用客户端库的多语句功能，参考[`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入)。[#25749](https://github.com/pingcap/tidb/pull/25749)
     - 将 Grafana 从 v6.1.16 升级到 v7.5.7 以解决两个安全漏洞，参考 [Grafana 博文](https://grafana.com/blog/2020/06/03/grafana-6.7.4-and-7.0.2-released-with-important-security-fix/)。
     - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值从 `200` 修改为 `3000` [#25872](https://github.com/pingcap/tidb/pull/25872)
 
@@ -36,7 +36,7 @@ TiDB 版本：4.0.14
 
 + TiDB
 
-    ?- 在 `UPDATE` 语句的读过程中，使用 `point get` 或 `batch point get` 写入索引的键来替代给 row 数据上锁 [#26223](https://github.com/pingcap/tidb/pull/26223)
+    - 对于 point/batch point get 算子，在唯一索引写入过程中，将悲观锁 LOCK 记录转化为 PUT 记录 [#26223](https://github.com/pingcap/tidb/pull/26223)
     - 支持 MySQL 的系统变量 `init_connect` 及其相关功能 [#26031](https://github.com/pingcap/tidb/pull/26031)
     - 支持稳定结果模式，使查询结果更稳定 [#26003](https://github.com/pingcap/tidb/pull/26003)
     - 支持将函数 `json_unquote()` 下推到 TiKV [#25721](https://github.com/pingcap/tidb/pull/25721)
