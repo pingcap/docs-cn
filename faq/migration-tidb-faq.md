@@ -5,7 +5,15 @@ summary: Learn about the FAQs related to data migration.
 
 # Migration FAQs
 
-This document summarizes the FAQs related to TiDB data migration.
+This document summarizes the frequently asked questions (FAQs) related to TiDB data migration. 
+
+For the frequently asked questions about migration-related tools, click the corresponding links in the list below:
+
+- [Backup & Restore FAQ](/br/backup-and-restore-faq.md)
+- [TiDB Binlog FAQ](/tidb-binlog/tidb-binlog-faq.md)
+- [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)
+- [TiDB Data Migration (DM) FAQs](https://docs.pingcap.com/tidb-data-migration/stable/faq)
+- [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
 
 ## Full data export and import
 
