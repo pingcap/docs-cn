@@ -99,7 +99,7 @@ TiDB 版本：4.0.14
     - 修复特定平台上的 duration 计算可能崩溃的问题 [#related-issue](https://github.com/rust-lang/rust/issues/86470#issuecomment-877557654)
     - 修复将 `DOUBLE` 类型转换为 `DOUBLE` 的错误函数 [#25200](https://github.com/pingcap/tidb/issues/25200)
     - 修复使用 async logger 时 panic 日志可能会丢失的问题 [#8998](https://github.com/tikv/tikv/issues/8998)
-    - 修复开启加密后再次生成同样的 snapshot 会出现 panic 的问题 [#10462](https://github.com/tikv/tikv/pull/10462)
+    - 修复开启加密后再次生成同样的 snapshot 会出现 panic 的问题 [#9786](https://github.com/tikv/tikv/issues/9786) [#10407](https://github.com/tikv/tikv/issues/10407)
     - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
     - 修复关机期间出现的可疑警告和来自 Raftstore 的非确定性响应 [#10353](https://github.com/tikv/tikv/issues/10353) [#10307](https://github.com/tikv/tikv/issues/10307)
     - 修复备份线程泄漏的问题 [#10287](https://github.com/tikv/tikv/issues/10287)
