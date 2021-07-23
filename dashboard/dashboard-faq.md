@@ -64,7 +64,6 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
   - Firefox：菜单 ➤ Web 开发者 ➤ 切换工具箱（译者注：此处修改为最新的 Firefox Quantum），或者工具栏 ➤ 切换工具箱。 
   - Chrome：菜单 ➤ 更多工具 ➤ 开发者工具。
   - Safari：Develop ➤ Show Web Inspector。如果你看不到 Develop 菜单，点开 Preferences ➤ Advanced，然后点击 Show Develop menu in menu bar 复选框。
-  - Opera： Developer ➤ Web Inspector
 
    以 Chrome 为例：
 
