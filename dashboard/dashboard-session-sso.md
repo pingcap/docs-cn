@@ -7,10 +7,6 @@ summary: 了解如何配置 TiDB Dashboard 启用 SSO 登录。
 
 TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点登录 (Single Sign-On)。配置 TiDB Dashboard 启用 SSO 登录后，你可以通过配置的 SSO 服务进行登录鉴权，无需输入 SQL 用户名和密码即可登录到 TiDB Dashboard。
 
-> **注意：**
->
-> 该功能仅在 v4.0.14 或更高版本的集群中可用。
-
 ## 配置 OIDC SSO
 
 ### 启用 SSO
