@@ -94,7 +94,7 @@ select * from employee where id in (...) and salary between ? and ?;
 
 ## statement summary 的 cluster 表
 
-`statements_summary`、 `statements_summary_history` 和 `statements_summary_evicted` 仅显示单台 TiDB server 的 statement summary 数据。若要查询整个集群的数据，需要查询 `cluster_statements_summary`、`cluster_statements_summary_history` 或 `cluster_statements_summary_evicted` 表。
+`statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 仅显示单台 TiDB server 的 statement summary 数据。若要查询整个集群的数据，需要查询 `cluster_statements_summary`、`cluster_statements_summary_history` 或 `cluster_statements_summary_evicted` 表。
 
 `cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary` 相同。
 
@@ -121,7 +121,7 @@ set global tidb_stmt_summary_refresh_interval = 1800;
 set global tidb_stmt_summary_history_size = 24;
 ```
 
-以上配置生效后，`statements_summary` 每 30 分钟清空一次。因为 24 * 30 分钟 = 12 小，，所以 `statements_summary_history` 保存最近 12 小时的历史数。.`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段的记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个 时间段。
+以上配置生效后，`statements_summary` 每 30 分钟清空一次。因为 24 * 30 分钟 = 12 小，，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
 
 以上几个系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
 
