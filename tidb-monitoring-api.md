@@ -140,4 +140,3 @@ Metrics 接口用于监控整个集群的状态和性能。
 - 如果使用其他方式部署 TiDB 集群，在使用 metrics 接口前，需先[部署 Prometheus 和 Grafana](/deploy-monitoring-services.md)。
 
 成功部署 Prometheus 和 Grafana 之后，[配置 Grafana](/deploy-monitoring-services.md)。
-
