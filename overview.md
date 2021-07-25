@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 
 ## 另请参阅
 
-- [TiDB 整体架构](/tidb-architecture.md)
-- [TiDB 数据库的存储](/tidb-storage.md)
-- [TiDB 数据库的计算](/tidb-computing.md)
-- [TiDB 数据库的调度](/tidb-scheduling.md)
+- [ TiDB 整体架构    ](/tidb-architecture.md)
+- [ TiDB 数据库的存储 ](/tidb-storage.md)
+- [ TiDB 数据库的计算 ](/tidb-computing.md)
+- [ TiDB 数据库的调度 ](/tidb-scheduling.md)
