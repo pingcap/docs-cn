@@ -7,9 +7,9 @@ aliases: ['/docs-cn/dev/tidb-monitoring-api/']
 
 TiDB 提供了以下两种接口来监控集群状态：
 
-- [状态接口](#使用状态接口)：通过 HTTP 接口对外汇报组件的信息。
+- [状态接口](#运行状态)：通过 HTTP 接口对外汇报组件的信息。
+- [存储信息](#存储信息)：通过 HTTP 接口对外汇报表的存储信息。
 - [Metrics 接口](#使用-metrics-接口)：使用 Prometheus 记录组件中各种操作的详细信息，使用 Grafana 进行可视化展示。
-- [存储信息](#存储信息接口)：通过 HTTP 接口对外汇报表的存储信息。
 
 ## 使用状态接口
 
@@ -140,3 +140,4 @@ Metrics 接口用于监控整个集群的状态和性能。
 - 如果使用其他方式部署 TiDB 集群，在使用 metrics 接口前，需先[部署 Prometheus 和 Grafana](/deploy-monitoring-services.md)。
 
 成功部署 Prometheus 和 Grafana 之后，[配置 Grafana](/deploy-monitoring-services.md)。
+
