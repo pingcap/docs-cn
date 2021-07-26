@@ -93,7 +93,7 @@ TiDB 版本：4.0.14
     - 修复系统表 `TIKV_REGION_PEERS` 不能正确处理 `DOWN` 状态的问题 [#24879](https://github.com/pingcap/tidb/issues/24879)
     - 修复解析 `DateTime` 时不截断非法字符串的问题 [#22231](https://github.com/pingcap/tidb/issues/22231)
     - 修复 `select into outfile` 语句在列类型是 `YEAR` 时，可能无法产生结果的问题 [#22159](https://github.com/pingcap/tidb/issues/22159)
-    - 修复 `UNION` 子查询中出现 `NULL` 时可能导致查询结果出错的问题 [#26553](https://github.com/pingcap/tidb/pull/26553)
+    - 修复 `UNION` 子查询中出现 `NULL` 时可能导致查询结果出错的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
     - 修复某些情况下投影算子在执行时可能造成 panic 的问题 [#26534](https://github.com/pingcap/tidb/pull/26534)
 
 + TiKV
