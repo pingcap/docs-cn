@@ -9,6 +9,10 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 ## 配置 OIDC SSO
 
+> **注意：**
+>
+> 该功能仅在 v5.0.4 或更高版本的集群中可用。
+
 ### 启用 SSO
 
 1. 登录 TiDB Dashboard。
