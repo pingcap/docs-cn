@@ -4,7 +4,7 @@ title: TiDB 4.0.14 Release Notes
 
 # TiDB 4.0.14 Release Notes
 
-发版日期：2021 年 7 月 22 日
+发版日期：2021 年 7 月 29 日
 
 TiDB 版本：4.0.14
 
@@ -36,7 +36,7 @@ TiDB 版本：4.0.14
 
 + TiDB
 
-    - 对于 point/batch point get 算子，在唯一索引写入过程中，将悲观锁 LOCK 记录转化为 PUT 记录 [#26223](https://github.com/pingcap/tidb/pull/26223)
+    - 对于 `point get` 或 `batch point get` 算子，在唯一索引写入过程中，将悲观锁 `LOCK` 记录转化为 `PUT` 记录 [#26223](https://github.com/pingcap/tidb/pull/26223)
     - 支持 MySQL 的系统变量 `init_connect` 及其相关功能 [#26031](https://github.com/pingcap/tidb/pull/26031)
     - 支持稳定结果模式，使查询结果更稳定 [#26003](https://github.com/pingcap/tidb/pull/26003)
     - 支持将函数 `json_unquote()` 下推到 TiKV [#25721](https://github.com/pingcap/tidb/pull/25721)
@@ -91,7 +91,7 @@ TiDB 版本：4.0.14
     - 修复通过 HTTP API 访问统计信息时，可能导致内存泄露的问题 [#24650](https://github.com/pingcap/tidb/pull/24650)
     - 修复执行 `ALTER USER` 语句时出现的安全性问题 [#25225](https://github.com/pingcap/tidb/issues/25225)
     - 修复系统表 `TIKV_REGION_PEERS` 不能正确处理 `DOWN` 状态的问题 [#24879](https://github.com/pingcap/tidb/issues/24879)
-    - 修复解析 `DateTime` 不截断非法字符串的问题 [#22231](https://github.com/pingcap/tidb/issues/22231)
+    - 修复解析 `DateTime` 时不截断非法字符串的问题 [#22231](https://github.com/pingcap/tidb/issues/22231)
     - 修复 `select into outfile` 语句在列类型是 `YEAR` 时，可能无法产生结果的问题 [#22159](https://github.com/pingcap/tidb/issues/22159)
 
 + TiKV
