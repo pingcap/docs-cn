@@ -30,7 +30,7 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
 
 在 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)中：
 
-- 推荐直接执行 `tiup playground` 命令启动最新版本的 TiDB 集群，此命令将自动部署 TiDB、TiKV、PD 和 TiFlash 实例各 1 个:
+- 推荐直接执行 `tiup playground` 命令启动最新版本的 TiDB 集群，此命令将自动部署 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
     {{< copyable "shell-regular" >}}
 
@@ -102,7 +102,7 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
     8 rows in set (0.06 sec)
      ```
 
-    这是一个商业订购系统的数据库。其中，`test.nation` 表是国家信息、`test.region` 表是地区信息，`test.part` 表是零件信息，`test.supplier` 表是供货商信息，`test.partsupp` 表是供货商的零件信息，`test.customer` 表是消费者信息，`test.orders` 表是订单信息，`test.lineitem` 表是在线商品的信息。
+    这是一个商业订购系统的数据库。其中，`test.nation` 表是国家信息、`test.region` 表是地区信息、`test.part` 表是零件信息、`test.supplier` 表是供货商信息、`test.partsupp` 表是供货商的零件信息、`test.customer` 表是消费者信息、`test.orders` 表是订单信息、`test.lineitem` 表是在线商品的信息。
 
 ### 第 3 步：使用行存查询数据
 
