@@ -104,7 +104,6 @@ mysql> SELECT * FROM t1;
 
 - 作用域: SESSION | GLOBAL
 - 默认值: `utf8mb4`
-- The character set that is used when data is sent to the client.
 - 该变量表示数据发送至客户端时所使用的字符集。
 
 ### character_set_server
