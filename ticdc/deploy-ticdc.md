@@ -62,4 +62,4 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `key`：TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 - `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
 - `sort-dir`：指定排序引擎使用的临时文件目录。该配置项的默认值为 `/tmp/sorter`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。需确保 TiCDC 在该 `sort-dir` 路径下可读写数据。从 v4.0.14 和 v5.0.3 开始，该参数将不起作用，推荐使用 `data-dir` 参数启动 TiCDC。
-- `data-dir`：指定 TiCDC 运行过程中使用的临时文件目录，从 v4.0.14 和 v5.0.3 开始支持。推荐在启动 TiCDC 时指定该参数，建议其所在磁盘至少有 500GB 的可用空间。如果启动时未指定该参数，将会参考已有 changefeed 的 `sort-dir` 设置情况初始化该参数，默认值为 `/tmp/cdc_data`。在运行过程中，如果 `data-dir` 所在磁盘可用磁盘空间不足 10%, 运行在该 TiCDC server 上的 changefeed 将会报错并停止运行，用户需要在重新设置好 `data-dir` 所在磁盘情况之后手动重启相关 changefeed。排序引擎使用的临时文件目录，即 `sort-dir`，会被设置为 `{data-dir}/tmp/sorter`。
+- `data-dir`：指定 TiCDC 运行过程中使用的临时文件目录，从 v4.0.14 和 v5.0.3 开始支持。推荐在启动 TiCDC 时指定该参数，建议其所在磁盘至少有 500GB 的可用空间。如果启动时未指定该参数，将会参考已有 changefeed 的 `sort-dir` 设置情况初始化该参数，默认值为 `/tmp/cdc_data`。在运行过程中，如果 `data-dir` 所在磁盘可用磁盘空间不足 10%, 运行在该 TiCDC server 上的 changefeed 将会报错并停止运行，用户需要重新设置 `data-dir` 所在磁盘, 在至少保证有 10% 可用空间之后，手动重启相关 changefeed。排序引擎使用的临时文件目录，即 `sort-dir`，会被设置为 `{data-dir}/tmp/sorter`。
