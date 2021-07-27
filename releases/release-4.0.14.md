@@ -4,7 +4,7 @@ title: TiDB 4.0.14 Release Notes
 
 # TiDB 4.0.14 Release Notes
 
-发版日期：2021 年 7 月 29 日
+发版日期：2021 年 7 月 27 日
 
 TiDB 版本：4.0.14
 
