@@ -61,10 +61,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.13 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v4.0.14 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v4.0.13），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v4.0.14），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -162,10 +162,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v4.0.13 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v4.0.14 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v4.0.13），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v4.0.14），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^

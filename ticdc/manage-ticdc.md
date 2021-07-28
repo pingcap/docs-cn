@@ -9,14 +9,14 @@ aliases: ['/docs-cn/stable/ticdc/manage-ticdc/','/docs-cn/v4.0/ticdc/manage-ticd
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.13。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.14。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v4.0.13
+tiup cluster upgrade <cluster-name> v4.0.14
 ```
 
 ### 升级的注意事项
