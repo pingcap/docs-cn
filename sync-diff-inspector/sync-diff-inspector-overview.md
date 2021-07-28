@@ -142,7 +142,7 @@ fix-sql-file = "fix.sql"
 
     # Specifies the column used to divide data into chunks. If you do not configure it,
     # sync-diff-inspector chooses an appropriate column (primary key, unique key, or a field with index).
-    index-field = "id"
+    index-fields = "id"
 
     # Specifies the range of the data to be checked
     # It needs to comply with the syntax of the WHERE clause in SQL.
