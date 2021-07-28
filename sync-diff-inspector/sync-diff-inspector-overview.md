@@ -139,7 +139,7 @@ fix-sql-file = "fix.sql"
     table = "test3"
 
     # 指定用于划分 chunk 的列，如果不配置该项，sync-diff-inspector 会选取一个合适的列（主键／唯一键／索引）
-    index-field = "id"
+    index-fields = "id"
 
     # 指定检查的数据的范围，需要符合 sql 中 where 条件的语法
     range = "age > 10 AND age < 20"
