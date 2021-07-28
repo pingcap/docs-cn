@@ -46,6 +46,8 @@ TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的�
 > 除了指定时间戳，`AS OF TIMESTAMP` 语法最常用使用的方式是读几秒前的数据。如果采用这种方式，推荐读 5 秒以上的历史数据。
 >
 > 使用 Stale Read 时需要为 TiDB 和 PD 节点部署 NTP 服务，防止 TiDB 指定的时间戳超过当前最新的 TSO 分配进度（如几秒后的时间戳），或者落后于 GC safe point 的时间戳。当指定的时间戳超过服务范围，TiDB 会返回错误。
+>
+> v5.1.1 之前的版本，`Prepare` 语句与 `AS OF TIMESTAMP` 语法的兼容支持尚不完善，不推荐同时使用。自 v5.1.1 起，`Prepare` 语句已兼容 `AS OF TIMESTAMP` 语法，两者可以同时使用。
 
 ## 示例
 
