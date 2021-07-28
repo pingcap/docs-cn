@@ -40,9 +40,7 @@ curl http://127.0.0.1:10080/status
 
 #### 存储信息
 
-以下示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，并判断该 TiDB Server 是否存活。结果以 JSON 格式返回：
-
-以下示例中，通过访问 `http://${host}:${port}/schema_storage/${db}/${table}` 获取指定数据表的存储信息。结果以 JSON 格式返回：
+以下示例中，通过访问 `http://${host}:${port}/schema_storage/${db}/${table}` 获取指定数据表的存储信息。结果以 **JSON** 格式返回：
 
 {{< copyable "shell-regular" >}}
 
