@@ -91,12 +91,12 @@ db3.tbl3
 
 ### 使用通配符
 
-表名的两个部分均支持使用通配符（详情见 [fnmatch(3)](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_13)）。
+表名的两个部分均支持使用通配符（详情见 [fnmatch(3)](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_13) ）。
 
 * `*`：匹配零个或多个字符。
 * `?`：匹配一个字符。
-* `[a-z]`：匹配 “a” 和 “z” 之间的一个字符。
-* `[!a-z]`：匹配不在 “a” 和 “z” 之间的一个字符。
+* `[a-z]`：匹配 "a" 和 "z" 之间的一个字符。
+* `[!a-z]`：匹配不在 "a" 和 "z" 之间的一个字符。
 
 ```
 db[0-9].tbl[0-9a-f][0-9a-f]
