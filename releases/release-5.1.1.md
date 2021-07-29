@@ -16,9 +16,9 @@ title: TiDB 5.1.1 Release Notes
 
 + TiKV
 
-    - 提高 prewrite 请求的幂等性以减少不确定性错误的概率 [#10586](https://github.com/tikv/tikv/pull/10586)
-    - 预防处理过期请求时的栈溢出风险 [#10502](https://github.com/tikv/tikv/pull/10502)
-    - 不使用 stale read 请求的 `start_ts` 更新 `max_ts` 以避免不必要的 commit 请求重试 [#10451](https://github.com/tikv/tikv/pull/10451)
+    - 提升 prewrite 请求的幂等性以减少不确定性错误的概率 [#10586](https://github.com/tikv/tikv/pull/10586)
+    - 预防处理多个过期命令时出现栈溢出的风险 [#10502](https://github.com/tikv/tikv/pull/10502)
+    - 不使用 Stale Read 请求的 `start_ts` 更新 `max_ts` 以避免过多不必要的 commit 请求重试 [#10451](https://github.com/tikv/tikv/pull/10451)
     - 分离处理读写的 ready 状态以减少读延迟 [#10592](https://github.com/tikv/tikv/pull/10592)
     - 降低 I/O 限流器开启后对数据导入速度的影响 [#10390](https://github.com/tikv/tikv/pull/10390)
     - 提升 Raft gRPC 连接的负载均衡 [#10495](https://github.com/tikv/tikv/pull/10495)
@@ -28,7 +28,7 @@ title: TiDB 5.1.1 Release Notes
     + TiCDC
 
         - 移除 `file sorter` 文件排序器 [#2327](https://github.com/pingcap/ticdc/pull/2327)
-        - 改进连接 PD 是缺少证书情况下的报错提示 [#2186](https://github.com/pingcap/ticdc/pull/2186)
+        - 优化连接 PD 时缺少证书情况下的报错提示 [#2186](https://github.com/pingcap/ticdc/pull/2186)
 
     + TiDB Lightning
 
