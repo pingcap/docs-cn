@@ -22,7 +22,40 @@ tiup cluster upgrade <cluster-name> v4.0.14
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+<<<<<<< HEAD
 * 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
+=======
+* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
+
+## 使用 TiUP 修改 TiCDC 配置
+
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+
+首先执行以下命令。将 `<cluster-name>` 替换成实际的集群名。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster edit-config <cluster-name>
+```
+
+执行以上命令之后，进入到 vi 编辑器页面，修改 [`server-configs`](/tiup/tiup-cluster-topology-reference.md#server_configs) 下的 `cdc` 配置，如下所示：
+
+```shell
+ server_configs:
+  tidb: {}
+  tikv: {}
+  pd: {}
+  tiflash: {}
+  tiflash-learner: {}
+  pump: {}
+  drainer: {}
+  cdc:
+    gc-ttl: 3600
+```
+
+修改完毕后执行 `tiup cluster relaod -R cdc` 命令重新加载配置。
+>>>>>>> ed620fa60 (ticdc: Fix cdc doc outdate link and info (#6734))
 
 ## 使用加密传输 (TLS) 功能
 
@@ -69,6 +102,32 @@ tiup cluster upgrade <cluster-name> v4.0.14
 
 ### 管理同步任务 (`changefeed`)
 
+<<<<<<< HEAD
+=======
+#### 同步任务状态流转
+
+同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
+
+![TiCDC state transfer](/media/ticdc-state-transfer.png)
+
+以上状态流转图中的状态说明如下：
+
+- Normal：同步任务正常进行，checkpoint-ts 正常推进。
+- Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Error：同步任务报错，由于某些可恢复的错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
+- Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。处于这个状态的 changefeed 不会阻挡 GC 推进。
+
+以上状态流转图中的编号说明如下：
+
+- ① 执行 `changefeed pause` 命令。
+- ② 执行 `changefeed resume` 恢复同步任务。
+- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ④ 执行 `changefeed resume` 恢复同步任务。
+- ⑤ `changefeed` 运行过程中发生不可恢复的错误。
+- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
+
+>>>>>>> ed620fa60 (ticdc: Fix cdc doc outdate link and info (#6734))
 #### 创建同步任务
 
 使用以下命令来创建同步任务：
@@ -803,6 +862,11 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > **注意：**
 >
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
+<<<<<<< HEAD
 > + 请保证硬盘的空闲容量大于等于 128G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + v4.0.13 版本之后，Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
+=======
+> + 请保证硬盘的空闲容量大于等于 500G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
+> + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
+>>>>>>> ed620fa60 (ticdc: Fix cdc doc outdate link and info (#6734))
 > + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom如何处理)回答中提供的方法。
