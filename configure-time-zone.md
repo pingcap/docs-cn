@@ -28,12 +28,12 @@ Each client has its own time zone setting, given by the session `time_zone` vari
 SET time_zone = timezone;
 ```
 
-You can use the following statement to view the current values of the global and client-specific time zones:
+You can use the following statement to view the current values of the global, client-specific and system time zones:
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @@global.time_zone, @@session.time_zone;
+SELECT @@global.time_zone, @@session.time_zone, @@global.system_time_zone;
 ```
 
 To set the format of the value of the `time_zone`:
