@@ -58,3 +58,25 @@ If your deployment tool is TiUP, take the following steps to solve this problem.
 ### An `invalid connection` error is shown in **Top SQL Statements** and **Recent Slow Queries** on the Overview page
 
 The possible reason is that you have enabled the `prepared-plan-cache` feature of TiDB. As an experimental feature, when enabled, `prepared-plan-cache` might not function properly in specific TiDB versions, which could cause this problem in TiDB Dashboard (and other applications). You can disable `prepared-plan-cache` by updating [TiDB Configuration file](/tidb-configuration-file.md#prepared-plan-cache) to solve this problem.
+
+### An `unknown field` error is shown in **Slow Queries** page
+
+If the `unknown field` error appears on the **Slow Queries** page after the cluster upgrade, the error is related to a compatibility issue caused by the difference between TiDB Dashboard server fields (which might be updated) and user preferences fields (which are in the browser cache). This issue has been fixed. If your cluster is earlier than v5.0.3 or v4.0.14, perform the following steps to resolve the issue:
+
+To clear your browser cache, take the following steps:
+
+1. Open TiDB Dashboard page.
+
+2. Open Developer Tools. Different browsers have different ways of opening Developer Tools. After clicking the **Menu Bar**:
+
+    - Firefox: Menu ➤ Web Developer ➤ Toggle Tools, or Tools ➤ Web Developer ➤ Toggle Tools.
+    - Chrome: More tools ➤ Developer tools.
+    - Safari: Develop ➤ Show Web Inspector. If you can't see the Develop menu, go to Safari ➤ Preferences ➤ Advanced, and check the Show Develop menu in menu bar checkbox. 
+
+    In the following example, Chrome is used.
+
+    ![Opening DevTools from Chrome's main menu](/media/dashboard/dashboard-faq-devtools.png)
+
+3. Select the **Application** panel, expand the **Local Storage** menu and select the **TiDB Dashboard page domain**. Click the **Clear All** button.
+
+    ![Clear the Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
