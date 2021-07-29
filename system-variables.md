@@ -128,6 +128,13 @@ mysql> SELECT * FROM t1;
 - This variable indicates the location where data is stored. This location can be a local path or point to a PD server if the data is stored on TiKV.
 - A value in the format of `ip_address:port` indicates the PD server that TiDB connects to on startup.
 
+### default_authentication_plugin
+
+- Scope: GLOBAL
+- Default value: `mysql_native_password`
+- This variable sets the authentication method that the server advertises when the server-client connection is being established. Possible values for this variable are documented in [Authentication plugin status](/security-compatibility-with-mysql.md#authentication-plugin-status).
+- Value options: `mysql_native_password` and `caching_sha2_password`. For more details, see [Authentication plugin status](/security-compatibility-with-mysql.md#authentication-plugin-status).
+
 ### ddl_slow_threshold
 
 - Scope: INSTANCE
