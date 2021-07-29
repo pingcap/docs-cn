@@ -6,6 +6,19 @@ title: TiDB 5.1.1 Release Notes
 
 ## 兼容性更改
 
++ TiDB
+
+    - 对于从 4.0 上升上来的集群来说，该 tidb_multi_statement_mode 的当前值是 OFF。推荐您替代使用客户端上的 multi-statement 的功能，可以参考文档的更多细节。[#25751](https://github.com/pingcap/tidb/pull/25751)
+    - 访问表 table_storage_stats 现在需要 SUPER 权限。[#26352](https://github.com/pingcap/tidb/pull/26352)
+    - 访问表 information_schema.user_privileges 现在需要 mysql.user 上的 SELECT 权限来显示其他人的权限。[#26311](https://github.com/pingcap/tidb/pull/26311)
+    - 访问表 information_schema.cluster_hardware 现在需要 CONFIG 权限。
+    - 访问表 information_schema.cluster_info 现在需要 PROCESS 权限。
+    - 访问表 information_schema.cluster_load 现在需要 PROCESS 权限。
+    - 访问表 information_schema.cluster_systeminfo 现在需要 PROCESS 权限。
+    - 访问表 information_schema.cluster_log 现在需要 PROCESS 权限。[#26297](https://github.com/pingcap/tidb/pull/26297)
+    - 访问表 information_schema.cluster_config 现在需要 CONFIG 权限。[#26150](https://github.com/pingcap/tidb/pull/26150)
+    - 提升了 str_to_date 对 MySQL 的兼容性。[#25768](https://github.com/pingcap/tidb/pull/25768)
+
 ## 功能增强
 
 + TiDB Dashboard
@@ -17,6 +30,22 @@ title: TiDB 5.1.1 Release Notes
     - 支持 DAG 请求中的 `HAVING()` 函数
 
 ## 改进提升
+
++ TiDB
+
+    - Stale Read 功能的 GA
+    - 在插入数据时候，避免了对 paramMarker 的分配。[#26076](https://github.com/pingcap/tidb/pull/26076)
+    - 优化器：支持了稳定结果顺序模式。[#25995](https://github.com/pingcap/tidb/pull/25995)
+    - 开启了内置函数 json_unquote 下推到 TiKV。[#26265](https://github.com/pingcap/tidb/pull/26265)
+    - 支持了 mpp 查询的重试。[#26480](https://github.com/pingcap/tidb/pull/26480)
+    - 使用 point/batch point get 将索引键的 lock 记录更改为 put 记录来读取更新。[#26225](https://github.com/pingcap/tidb/pull/26225)
+    - 禁止使用 stale 查询来进行创建视图。[#26225](https://github.com/pingcap/tidb/pull/26225)
+    - 在 MPP 模式下彻底下推 count-distinct agg。[#26194](https://github.com/pingcap/tidb/pull/26194)
+    - MPP：在发起 mpp 查询之前检查 tiflash 的可用性。[#26192](https://github.com/pingcap/tidb/pull/26192)
+    - 扩大 tidb_stmt_summary_max_stmt_count 的值从 200 到 30000。[#25874](https://github.com/pingcap/tidb/pull/25874)
+    - 不支持设置读时间戳为将来的时间。[#25763](https://github.com/pingcap/tidb/pull/25763)
+    - 当 agg 函数在 explain 语句中不能下推时打印警告日志。[#25737](https://github.com/pingcap/tidb/pull/25737)
+    - 增加 evicted count 的集群信息。[#25587](https://github.com/pingcap/tidb/pull/25587)
 
 + TiKV
 
@@ -44,6 +73,31 @@ title: TiDB 5.1.1 Release Notes
         - 减少访问数据库元信息的频率以提升性能和稳定性 [#315](https://github.com/pingcap/dumpling/pull/315)
 
 ## Bug 修复
+
++ TiDB
+
+    - 修复了 amend 事务在 modify column（需要 reorg）下且开关 tidb_enable_amend_pessimistic_txn=on 下的正确性。[#26273](https://github.com/pingcap/tidb/pull/26273)
+    - 修复了 last_day 函数行为在 SQLmode 行为下的不兼容问题。[#26001](https://github.com/pingcap/tidb/pull/26001)
+    - 确保 limit 输出不会多于他孩子节点的列数。[#25980](https://github.com/pingcap/tidb/pull/25980)
+    - 修复了提交悲观事务可能会导致写冲突的问题。[#25973](https://github.com/pingcap/tidb/pull/25973)
+    - 修复了优化器当构建 IndexJoin 时可以正确处理自查询中的其他条件。[#25819](https://github.com/pingcap/tidb/pull/25819)
+    - 修复了成功提交的悲观事务可能会报提交失败的问题。[#25803](https://github.com/pingcap/tidb/pull/25803)
+    - 修复了 merge join 中 set 类型的不正确结果。[#25695](https://github.com/pingcap/tidb/pull/25695)
+    - 修复了在悲观事务中索引键值可能会被重复提交的问题。[#26482](https://github.com/pingcap/tidb/pull/26482)
+    - 修复了优化器在定位分区时可能会有整数溢出的风险。[#26471](https://github.com/pingcap/tidb/pull/26471)
+    - 修复了将 date 类型 cast 成 timestamp 时可能会写入无效值的问题。[#26395](https://github.com/pingcap/tidb/pull/26395)
+    - 修复了 copt-cache metrics 会在 grafana 显示 hits/miss/evict 数量的问题。[#26344](https://github.com/pingcap/tidb/pull/26344)
+    - 修复了 telemetry 引起的吵杂日志。[#26284](https://github.com/pingcap/tidb/pull/26284)
+    - 修复了索引前缀的查询范围问题。[#26262](https://github.com/pingcap/tidb/pull/26262)
+    - 修复了并发 truncate 共一个 partition 会导致 DDL 卡住的问题。[#26239](https://github.com/pingcap/tidb/pull/26239)
+    - 修复了重复 enum 元素的问题。[#26202](https://github.com/pingcap/tidb/pull/26202)
+    - 修复了 CTE 迭代器没有正确关闭的问题。[#26148](https://github.com/pingcap/tidb/pull/26148)
+    - 修复了 load data 可能成功导入非 utf8 字符的数据。[#26144](https://github.com/pingcap/tidb/pull/26144)
+    - 修复了窗口函数中 unsigned int 的错误。[#26027](https://github.com/pingcap/tidb/pull/26027)
+    - 修复了 async-commit 清锁时可能会导致 TiDB panic 的问题。[#25862](https://github.com/pingcap/tidb/pull/25862)
+    - 使 Stale Read 完全支持 prepare 语句。[#25800](https://github.com/pingcap/tidb/pull/25800)
+    - 修复了 ODCB 风格的文本 (如 {d '2020-01-01'}...) 不能被作为表达式的问题。[#25578](https://github.com/pingcap/tidb/pull/25578)
+    - 修复了单独运行 tidb 时候一些不必要的错误。[#25555](https://github.com/pingcap/tidb/pull/25555)
 
 + TiKV
 
