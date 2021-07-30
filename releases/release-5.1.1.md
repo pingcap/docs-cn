@@ -78,7 +78,7 @@ title: TiDB 5.1.1 Release Notes
 
     - 修复了 `tidb_enable_amend_pessimistic_txn=on` 下更改列类型可能出现数据丢失的问题 [#26203](https://github.com/pingcap/tidb/issues/26203)
     - 修复了 `last_day` 函数的行为在 SQL 模式下不兼容的问题 [#26001](https://github.com/pingcap/tidb/pull/26001)
-    ?- 修复 `LIMIT` 位于窗口函数之上时可能出现的 panic 问题 [#25980](https://github.com/pingcap/tidb/pull/25980)
+    - 修复 `LIMIT` 位于窗口函数之上时可能出现的 panic 问题 [#25980](https://github.com/pingcap/tidb/pull/25980)
     - 修复了提交悲观事务可能会导致写冲突的问题。[#25973](https://github.com/pingcap/tidb/pull/25973)
     - 修复关联子查询中 Index Join 的结果不正确问题 [#25819](https://github.com/pingcap/tidb/pull/25819)
     - 修复了成功提交的悲观事务可能会报提交失败的问题 [#25803](https://github.com/pingcap/tidb/pull/25803)
