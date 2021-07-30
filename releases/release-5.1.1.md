@@ -79,15 +79,15 @@ title: TiDB 5.1.1 Release Notes
     - 修复了 `tidb_enable_amend_pessimistic_txn=on` 下更改列类型可能出现数据丢失的问题 [#26203](https://github.com/pingcap/tidb/issues/26203)
     - 修复了 `last_day` 函数的行为在 SQL 模式下不兼容的问题 [#26001](https://github.com/pingcap/tidb/pull/26001)
     - 修复 `LIMIT` 位于窗口函数之上时可能出现的 panic 问题 [#25344](https://github.com/pingcap/tidb/issues/25344)
-    - 修复了提交悲观事务可能会导致写冲突的问题。[#25964](https://github.com/pingcap/tidb/issues/25964)
+    - 修复了提交悲观事务可能会导致写冲突的问题 [#25964](https://github.com/pingcap/tidb/issues/25964)
     - 修复关联子查询中 Index Join 的结果不正确问题 [#25799](https://github.com/pingcap/tidb/issues/25799)
     - 修复了成功提交的悲观事务可能会报提交失败的问题 [#10468](https://github.com/tikv/tikv/issues/10468)
     - 修复在 `SET` 类型列上 Merge Join 结果不正确的问题 [#25669](https://github.com/pingcap/tidb/issues/25669)
-    - 修复了在悲观事务中索引键值可能会被重复提交的问题。[#26482](https://github.com/pingcap/tidb/pull/26482)
+    - 修复了在悲观事务中索引键值可能会被重复提交的问题 [#26359](https://github.com/pingcap/tidb/issues/26359)
     - 修复了优化器在定位分区时存在整数溢出的风险 [#26227](https://github.com/pingcap/tidb/issues/26227)
     - 修复了将 `DATE` 类型转换成时间戳时可能会写入无效值的问题 [#26292](https://github.com/pingcap/tidb/issues/26292)
     - 修复了 Coprocessor Cache 监控项未在 Grafana 中显示的问题 [#26338](https://github.com/pingcap/tidb/issues/26338)
-    - 修复了 telemetry 引起的干扰日志 [#25760](https://github.com/pingcap/tidb/issues/25760)
+    - 修复了 telemetry 引起的干扰日志 [#25760](https://github.com/pingcap/tidb/issues/25760) [#25785](https://github.com/pingcap/tidb/issues/25785)
     - 修复了索引前缀的查询范围问题 [#26029](https://github.com/pingcap/tidb/issues/26029)
     - 修复了并发 truncate 同一个 partition 会导致 DDL 执行卡住的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
     - 修复了 `EMUN` 元素重复的问题 [#25955](https://github.com/pingcap/tidb/issues/25955)
@@ -108,12 +108,12 @@ title: TiDB 5.1.1 Release Notes
     - 修复开启加密后再次生成同样的 snapshot 会出现 panic 的问题 [#9786](https://github.com/tikv/tikv/issues/9786) [#10407](https://github.com/tikv/tikv/issues/10407)
     - 修正 `tikv_raftstore_hibernated_peer_state` 监控指标项 [#10330](https://github.com/tikv/tikv/issues/10330)
     - 修复 coprocessor 中 `json_unquote()` 函数错误的参数类型 [#10176](https://github.com/tikv/tikv/issues/10176)
-    - 修复悲观事务中索引键被重复 commit 的问题 [#10586](https://github.com/tikv/tikv/pull/10586)
-    - 修复 `ReadIndex` 请求在 leader 迁移后返回过期数据的问题 [#10474](https://github.com/tikv/tikv/pull/10474)
+    - 修复悲观事务中索引键被重复 commit 的问题 [#10468](https://github.com/tikv/tikv/issues/10468#issuecomment-869491061)
+    - 修复 `ReadIndex` 请求在 leader 迁移后返回过期数据的问题 [#9351](https://github.com/tikv/tikv/issues/9351)
 
 + PD
 
-    - 修复多个调度器产生调度冲突时无法生产预期调度的问题 [#3807](https://github.com/tikv/pd/issues/3807)
+    - 修复多个调度器产生调度冲突时无法生产预期调度的问题 [#3807](https://github.com/tikv/pd/issues/3807) [#3778](https://github.com/tikv/pd/issues/3778)
     - 修复当调度器被删除后，可能会再度运行的问题 [#2572](https://github.com/tikv/pd/issues/2572)
 
 + TiFlash
