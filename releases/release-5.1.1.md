@@ -4,6 +4,10 @@ title: TiDB 5.1.1 Release Notes
 
 # TiDB 5.1.1 Release Notes
 
+发版日期：2021 年 7 月 30 日
+
+TiDB 版本：5.1.1
+
 ## 兼容性更改
 
 + TiDB
@@ -87,7 +91,7 @@ title: TiDB 5.1.1 Release Notes
     - 修复了优化器在定位分区时存在整数溢出的风险 [#26227](https://github.com/pingcap/tidb/issues/26227)
     - 修复了将 `DATE` 类型转换成时间戳时可能会写入无效值的问题 [#26292](https://github.com/pingcap/tidb/issues/26292)
     - 修复了 Coprocessor Cache 监控项未在 Grafana 中显示的问题 [#26338](https://github.com/pingcap/tidb/issues/26338)
-    - 修复了 telemetry 引起的干扰日志 [#25760](https://github.com/pingcap/tidb/issues/25760) [#25785](https://github.com/pingcap/tidb/issues/25785)
+    - 修复了遥测引起的干扰日志 [#25760](https://github.com/pingcap/tidb/issues/25760) [#25785](https://github.com/pingcap/tidb/issues/25785)
     - 修复了索引前缀的查询范围问题 [#26029](https://github.com/pingcap/tidb/issues/26029)
     - 修复了并发 truncate 同一个 partition 会导致 DDL 执行卡住的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
     - 修复了 `EMUN` 元素重复的问题 [#25955](https://github.com/pingcap/tidb/issues/25955)
@@ -143,8 +147,8 @@ title: TiDB 5.1.1 Release Notes
 
     + Backup & Restore (BR)
 
-        - 修复了错误计算待恢复数据的大小的问题 [#1285](https://github.com/pingcap/br/pull/1285)
-        - 修复了从 cdclog 恢复数据时会遗漏 DDL event 的问题 [#1094](https://github.com/pingcap/br/pull/1094)
+        - 修复了错误计算待恢复数据的大小的问题 [#1270](https://github.com/pingcap/br/issues/1270)
+        - 修复了从 cdclog 恢复数据时会遗漏 DDL event 的问题 [#870](https://github.com/pingcap/br/issues/870)
 
     + TiDB Lightning
 
