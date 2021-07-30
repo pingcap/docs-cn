@@ -491,6 +491,9 @@
         + [Use Diagnostics](/dashboard/dashboard-diagnostics-usage.md)
       + [Search Logs Page](/dashboard/dashboard-log-search.md)
       + [Profile Instances Page](/dashboard/dashboard-profiling.md)
+      + Session Management and Configuration
+        + [Share Session](/dashboard/dashboard-session-share.md)
+        + [Configure SSO](/dashboard/dashboard-session-sso.md)
       + [FAQ](/dashboard/dashboard-faq.md)
   + CLI
     + [tikv-ctl](/tikv-control.md)
