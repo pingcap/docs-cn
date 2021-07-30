@@ -98,7 +98,7 @@ select * from employee where id in (...) and salary between ? and ?;
 - `tidb_enable_stmt_summary`：是否打开 statement summary 功能。1 代表打开，0 代表关闭，默认打开。statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 - `tidb_stmt_summary_refresh_interval`：`statements_summary` 的清空周期，单位是秒 (s)，默认值是 `1800`。
 - `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，默认值是 `24`。
-- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量。v4.0.14 前，默认 200 条。自 v4.0.14，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。
+- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量。v5.1.1 前，默认 200 条。自 v5.1.1 起，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
 
