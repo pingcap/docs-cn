@@ -1298,7 +1298,7 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`200`
+- 默认值：v5.1.1 前为 `200`。自 v5.1.1 起为 `3000`
 - 范围：`[1, 32767]`
 - 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
 
