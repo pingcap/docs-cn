@@ -9,8 +9,6 @@ summary: 了解如何使用 AS OF TIMESTAMP 语法读取历史数据。
 
 > **警告：**
 >
-> Stale Read 目前为实验特性。不推荐在生产环境下使用该特性。
->
 > 目前 Stale Read 特性无法和 TiFlash 一起使用。如果你的查询中带有 `AS OF TIMESTAMP` 并且 TiDB 可能从 TiFlash 副本读取数据，你可能会遇到 `ERROR 1105 (HY000): stale requests require tikv backend` 报错信息。
 >
 > 要解决该问题，你需要为使用 Stale Read 特性的查询禁用 TiFlash 副本。要禁用 TiFlash 副本，你可以使用以下任一方法：
@@ -47,9 +45,9 @@ TiDB 支持通过标准 SQL 接口，即通过 `AS OF TIMESTAMP` SQL 语法的�
 > 
 > 除了指定时间戳，`AS OF TIMESTAMP` 语法最常用使用的方式是读几秒前的数据。如果采用这种方式，推荐读 5 秒以上的历史数据。
 >
-> 使用 Stale Read 时需要为 TiDB 和 PD 节点部署 NTP 服务，防止 TiDB 指定的时间戳超过当前最新的 TSO 分配进度（如几秒后的时间戳），或者落后于 GC safe point 的时间戳。当指定的时间戳超过服务范围，TiDB 会产生报错或者等待事务提交等行为。
+> 使用 Stale Read 时需要为 TiDB 和 PD 节点部署 NTP 服务，防止 TiDB 指定的时间戳超过当前最新的 TSO 分配进度（如几秒后的时间戳），或者落后于 GC safe point 的时间戳。当指定的时间戳超过服务范围，TiDB 会返回错误。
 >
-> `Prepare` 语句与 `AS OF TIMESTAMP` 语法的兼容支持尚不完善，不推荐同时使用。
+> v5.1.1 之前的版本，`Prepare` 语句与 `AS OF TIMESTAMP` 语法的兼容支持尚不完善，不推荐同时使用。自 v5.1.1 起，`Prepare` 语句已兼容 `AS OF TIMESTAMP` 语法，两者可以同时使用。
 
 ## 示例
 
