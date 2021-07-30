@@ -70,7 +70,7 @@ TiDB version: 4.0.14
 
     + TiCDC
 
-        - Improve the error message returned when a PD endpoint misses the certificate [#2184](https://github.com/pingcap/ticdc/pull/2184)
+        - Improve the error message returned when a PD endpoint misses the certificate [#1973](https://github.com/pingcap/ticdc/issues/1973)
         - Make the sorter I/O errors more user-friendly [#1976](https://github.com/pingcap/ticdc/pull/1976)
         - Add a concurrency limit on the Region incremental scan in the KV client to reduce the pressure of TiKV [#1926](https://github.com/pingcap/ticdc/pull/1926)
         - Add metrics for the table memory consumption [#1884](https://github.com/pingcap/ticdc/pull/1884)
