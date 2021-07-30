@@ -23,7 +23,7 @@ summary: BR 相关的常见问题以及解决方法。
 
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
 
-全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
+在 v5.1.0 之前，BR 备份时会过滤掉系统库 `mysql.*` 的表数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 `mysql.*` 中的数据。但由于恢复 `mysql.*` 中系统表数据的技术实现尚不完善，因此 BR 默认**不恢复**系统库 `mysql` 中的表数据。详情参阅[备份和恢复 `mysql` 系统库下的表数据（实验特性）](/br/backup-and-restore-tool.md#备份和恢复-mysql-系统库下的表数据实验特性)。
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
 
