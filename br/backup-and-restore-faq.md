@@ -23,7 +23,11 @@ summary: BR 相关的常见问题以及解决方法。
 
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
 
+<<<<<<< HEAD
 全量备份的时候会过滤掉系统库（`information_schema`，`performance_schema`，`mysql`）。参考[备份原理](/br/backup-and-restore-tool.md#工作原理)。
+=======
+在 v5.1.0 之前，BR 备份时会过滤掉系统库 `mysql.*` 的表数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 `mysql.*` 中的数据。但由于恢复 `mysql.*` 中系统表数据的技术实现尚不完善，因此 BR 默认**不恢复**系统库 `mysql` 中的表数据。详情参阅[备份和恢复 `mysql` 系统库下的表数据（实验特性）](/br/backup-and-restore-tool.md#备份和恢复-mysql-系统库下的表数据实验特性)。
+>>>>>>> af5f1068b (update br faq (#6776))
 
 因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
 
@@ -43,6 +47,78 @@ summary: BR 相关的常见问题以及解决方法。
 >
 > 因此，最好在恢复前提前检查权限。
 
+<<<<<<< HEAD
+=======
+你可以按照如下步骤进行权限检查：
+
+1. 执行 Linux 原生的进程查询命令
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ps aux | grep tikv-server
+    ```
+
+    命令输出示例如下:
+
+    ```shell
+    tidb_ouo  9235 10.9  3.8 2019248 622776 ?      Ssl  08:28   1:12 bin/tikv-server --addr 0.0.0.0:20162 --advertise-addr 172.16.6.118:20162 --status-addr 0.0.0.0:20188 --advertise-status-addr 172.16.6.118:20188 --pd 172.16.6.118:2379 --data-dir /home/user1/tidb-data/tikv-20162 --config conf/tikv.toml --log-file /home/user1/tidb-deploy/tikv-20162/log/tikv.log
+    tidb_ouo  9236  9.8  3.8 2048940 631136 ?      Ssl  08:28   1:05 bin/tikv-server --addr 0.0.0.0:20161 --advertise-addr 172.16.6.118:20161 --status-addr 0.0.0.0:20189 --advertise-status-addr 172.16.6.118:20189 --pd 172.16.6.118:2379 --data-dir /home/user1/tidb-data/tikv-20161 --config conf/tikv.toml --log-file /home/user1/tidb-deploy/tikv-20161/log/tikv.log
+    ```
+
+    或者执行以下命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ps aux | grep tikv-server | awk '{print $1}'
+    ```
+
+    命令输出示例如下:
+
+    ```shell
+    tidb_ouo
+    tidb_ouo
+    ```
+
+2. 使用 TiUP 命令查询集群的启动信息
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster list
+    ```
+
+    命令输出示例如下：
+
+    ```shell
+    [root@Copy-of-VM-EE-CentOS76-v1 br]# tiup cluster list
+    Starting component `cluster`: /root/.tiup/components/cluster/v1.5.2/tiup-cluster list
+    Name          User      Version  Path                                               PrivateKey
+    ----          ----      -------  ----                                               ----------
+    tidb_cluster  tidb_ouo  v5.0.2   /root/.tiup/storage/cluster/clusters/tidb_cluster  /root/.tiup/storage/cluster/clusters/tidb_cluster/ssh/id_rsa
+    ```
+
+3. 检查备份目录的权限，例如 `backup` 目录是备份数据存储目录。命令示例如下：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ls -al backup
+    ```
+
+    命令输出示例如下：
+
+    ```shell
+    [root@Copy-of-VM-EE-CentOS76-v1 user1]# ls -al backup
+    total 0
+    drwxr-xr-x  2 root root   6 Jun 28 17:48 .
+    drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
+    ```
+
+    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但用户账号 `tidb_ouo` 没有 `backup` 目录的写入权限， 所以备份失败。
+
+>>>>>>> af5f1068b (update br faq (#6776))
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
 
 这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})` 这类错误信息，首先检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
