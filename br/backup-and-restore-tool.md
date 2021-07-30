@@ -88,15 +88,17 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
 
-### 系统库下表的备份与恢复
+### ###在 `mysql` 系统表中备份和恢复表数据（实验特性）
 
-在 v5.1.0 之前，BR 备份时会过滤掉系统库 (`mysql.*`) 的数据。
+>**警告：**
+>
+> 该功能目前为实验性功能，未经彻底测试。**不建议**在生产环境中使用该功能。
 
-自 v5.1.0 起，BR 默认备份集群内的全部数据，包括系统库 (`mysql.*`)，但为了兼容 v5.1.0 之前的 BR 版本，恢复数据的时候默认**不恢复**系统库下的数据。只有设置了 [`filter` 参数](/br/use-br-command-line-tool.md#使用表库过滤功能备份多张表的数据)才会把系统库下的数据恢复到临时库中，然后通过对临时库表进行重命名的方式恢复到系统库。
+在 v5.1.0 之前，BR 备份时会过滤掉系统库 (`mysql.*`) 的数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 (`mysql.*`)。但是由于在 `mysql.*` 中恢复系统表的技术实现尚未完成，因此系统库 `mysql` 中的表默认**未恢复**。
 
-BR 之所以对系统表进行如上处理，是因为用户可以在系统库中创建非系统表，并且有需求对这些非系统表进行备份恢复。同时，BR 对系统表的恢复功能尚不完善，所以你在实际操作中，**不建议**恢复集群本身存在的系统表。
+如果希望将系统表（如 `mysql.usertable1`）的数据还原到系统库 `mysql`，可以设置 [`filter` 参数](/br/use-br-command-line-tool.md#使用表库过滤功能备份多张表的数据) 来过滤表名（`-f“mysql.usertable1`）。设置后，系统库下的数据会恢复到临时库中，然后通过对临时库表进行重命名的方式恢复到系统库。
 
-因此，在恢复数据涉及到系统库的时候，你需要通过**表名过滤** (`-f "mysql.usertable1"`) 的方式过滤具体的表，以此来进行数据恢复。同时 BR 默认提供一个黑名单，用来阻止恢复以下系统表。即使你指定了 `-f "mysql.*"`，以下表也不会被恢复：
+由于技术原因，无法正确恢复以下系统表。即使你指定了 `-f "mysql.*"`，以下表也不会被恢复：
 
 - 统计信息相关的表："stats_buckets"，"stats_extended"，"stats_feedback"，"stats_fm_sketch"，"stats_histograms"，"stats_meta"，"stats_top_n"
 - 权限或系统相关的表："tidb"，"global_variables"，"columns_priv"，"db"，"default_roles"，"global_grants"，"global_priv"，"role_edges"，"tables_priv"，"user"，"gc_delete_range"，"gc_delete_range_done"，"schema_index_usage"
