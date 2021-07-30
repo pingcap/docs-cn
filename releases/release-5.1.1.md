@@ -12,7 +12,7 @@ TiDB 版本：5.1.1
 
 + TiDB
 
-    - 对于从 v4.0 升级至 v5.1 的集群，`tidb_multi_statement_mode` 的默认值从为 `OFF`。建议使用客户端库的多语句功能，参考 [`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) [#25751](https://github.com/pingcap/tidb/pull/25751)
+    - 对于从 v4.0 升级至 v5.1 的集群，`tidb_multi_statement_mode` 的默认值为 `OFF`。建议使用客户端库的多语句功能，参考 [`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) [#25751](https://github.com/pingcap/tidb/pull/25751)
     - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值从 `200` 修改为 `3000` [#25874](https://github.com/pingcap/tidb/pull/25874)
     - 访问 `table_storage_stats` 表需要 `SUPER` 权限 [#26352](https://github.com/pingcap/tidb/pull/26352)
     - 访问 `information_schema.user_privileges` 表需要 `mysql.user` 上的 `SELECT` 权限来显示其他人的权限 [#26311](https://github.com/pingcap/tidb/pull/26311)
