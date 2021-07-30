@@ -14,14 +14,14 @@ TiDB 版本：5.1.1
 
     - 对于从 v4.0 升级至 v5.1 的集群，`tidb_multi_statement_mode` 的默认值从为 `OFF`。建议使用客户端库的多语句功能，参考 [`tidb_multi_statement_mode` 文档](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) [#25751](https://github.com/pingcap/tidb/pull/25751)
     - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值从 `200` 修改为 `3000` [#25874](https://github.com/pingcap/tidb/pull/25874)
-    - 访问 `table_storage_stats` 表现在需要 `SUPER` 权限 [#26352](https://github.com/pingcap/tidb/pull/26352)
-    - 访问 `information_schema.user_privileges` 表现在需要 `mysql.user` 上的 `SELECT` 权限来显示其他人的权限 [#26311](https://github.com/pingcap/tidb/pull/26311)
-    - 访问 `information_schema.cluster_hardware` 现在需要 `CONFIG` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
-    - 访问 `information_schema.cluster_info` 表现在需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
-    - 访问 `information_schema.cluster_load` 表现在需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
-    - 访问 `information_schema.cluster_systeminfo` 表现在需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
-    - 访问 `information_schema.cluster_log` 表现在需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
-    - 访问 `information_schema.cluster_config` 表现在需要 `CONFIG` 权限 [#26150](https://github.com/pingcap/tidb/pull/26150)
+    - 访问 `table_storage_stats` 表需要 `SUPER` 权限 [#26352](https://github.com/pingcap/tidb/pull/26352)
+    - 访问 `information_schema.user_privileges` 表需要 `mysql.user` 上的 `SELECT` 权限来显示其他人的权限 [#26311](https://github.com/pingcap/tidb/pull/26311)
+    - 访问 `information_schema.cluster_hardware` 需要 `CONFIG` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
+    - 访问 `information_schema.cluster_info` 表需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
+    - 访问 `information_schema.cluster_load` 表需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
+    - 访问 `information_schema.cluster_systeminfo` 表需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
+    - 访问 `information_schema.cluster_log` 表需要 `PROCESS` 权限 [#26297](https://github.com/pingcap/tidb/pull/26297)
+    - 访问 `information_schema.cluster_config` 表需要 `CONFIG` 权限 [#26150](https://github.com/pingcap/tidb/pull/26150)
 
 ## 功能增强
 
