@@ -103,7 +103,9 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
 
-如果同步任务长时间中断，累积未消费的数据比较多，再次启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+升级 TiDB 集群和 TiCDC 集群到最新版本。OOM 问题在 v4.0.14 上已得到缓解。
+
+如无法升级，则需要开启 Unified Sorter 排序功能，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -115,6 +117,7 @@ cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir=
 >
 > + TiCDC 从 4.0.9 版本起支持 Unified Sorter 排序引擎。
 > + TiCDC（4.0 发布版本）还不支持动态修改排序引擎。在修改排序引擎设置前，请务必确保 changefeed 已经停止 (stopped)。
+> + `sort-dir` 在不同版本之间有不同的行为，请参考 [`sort-dir` 及 `data-dir` 配置项的兼容性说明](/ticdc/ticdc-overview.md#sort-dir-及-data-dir-配置项的兼容性说明)，谨慎配置。
 > + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。如果积攒的数据总量有可能超过 1 TB，则不建议使用 TiCDC 进行同步。
 
 ## TiCDC 的 `gc-ttl` 是什么？
