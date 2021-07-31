@@ -23,9 +23,69 @@ title: TiCDC 常见问题和故障处理
 
 在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步限制](/ticdc/ticdc-overview.md#同步限制)。如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表。用户选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。用户选择其他输入，则不会创建同步任务。
 
-## 如何处理 TiCDC 同步任务的中断？
+## 如何查看 TiCDC 同步任务的状态？
 
-目前已知可能发生的同步中断包括以下两类场景：
+可以使用 `cdc cli` 查询同步任务的状态。例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed list --pd=http://10.0.10.25:2379
+```
+
+上述命令输出如下：
+
+```json
+[{
+    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
+```
+
+* `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
+* `state` 为该同步任务的状态：
+    * `normal`：正常同步。
+    * `stopped`：停止同步（手动暂停或出错）。
+    * `removed`：已删除任务。
+
+> **注意：**
+>
+> 该功能在 TiCDC 4.0.3 版本引入。
+
+## TiCDC 同步任务出现中断
+
+### 如何判断 TiCDC 同步任务出现中断？
+
+- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 `changefeed id`）监控项。如果该值不发生变化（也可以查看 `checkpoint lag` 是否不断增大），可能同步任务出现中断。
+- 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
+- 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
+- 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
+
+### 如何查看 TiCDC 同步任务是否被人为终止？
+
+可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
+
+* `0`: 任务进行中，没有被人为停止。
+* `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+* `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+* `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+
+### 如何处理 TiCDC 同步任务的中断？
+
+目前已知可能发生的同步中断包括以下场景：
 
 - 下游持续异常，TiCDC 多次重试后仍然失败。
 
@@ -41,20 +101,7 @@ title: TiCDC 常见问题和故障处理
         2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
         3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` ，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
 
-## 如何判断 TiCDC 同步任务出现中断？
-
-- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 `changefeed id`）监控项。如果该值不发生变化（也可以查看 `checkpoint lag` 是否不断增大），可能同步任务出现中断。
-- 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
-- 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
-- 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
-
-## TiCDC 的 `gc-ttl` 是什么？
-
-从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何晚于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
-
-启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
-
-## 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
+### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
 
 如果同步任务长时间中断，累积未消费的数据比较多，再次启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
@@ -69,6 +116,12 @@ cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir=
 > + TiCDC 从 4.0.9 版本起支持 Unified Sorter 排序引擎。
 > + TiCDC（4.0 发布版本）还不支持动态修改排序引擎。在修改排序引擎设置前，请务必确保 changefeed 已经停止 (stopped)。
 > + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。如果积攒的数据总量有可能超过 1 TB，则不建议使用 TiCDC 进行同步。
+
+## TiCDC 的 `gc-ttl` 是什么？
+
+从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何晚于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
+
+启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
 
 ## TiCDC GC safepoint 的完整行为是什么
 
@@ -173,57 +226,6 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
 
 更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
-
-## 如何查看 TiCDC 同步任务的状态？
-
-可以使用 `cdc cli` 查询同步任务的状态。例如：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
-```
-
-上述命令输出如下：
-
-```json
-[{
-    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
-    "summary": {
-      "state": "normal",
-      "tso": 417886179132964865,
-      "checkpoint": "2020-07-07 16:07:44.881",
-      "error": null
-    }
-}]
-```
-
-* `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态：
-    * `normal`：正常同步。
-    * `stopped`：停止同步（手动暂停或出错）。
-    * `removed`：已删除任务。
-
-> **注意：**
->
-> 该功能在 TiCDC 4.0.3 版本引入。
-
-## 如何查看 TiCDC 同步任务是否被人为终止？
-
-可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
-```
-
-上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
-
-* `0`: 任务进行中，没有被人为停止。
-* `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-* `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-* `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
 
 ## 为什么 TiCDC 到 Kafka 的同步任务延时越来越大？
 
