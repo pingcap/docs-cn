@@ -91,7 +91,6 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 - 下游持续异常，TiCDC 多次重试后仍然失败。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-
     - 处理方法：用户可以在下游恢复正常后，通过 HTTP 接口恢复同步任务。
 
 - 因下游存在不兼容的 SQL 语句，导致同步不能继续。
@@ -102,6 +101,13 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
         2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
         3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` ，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
 
+- 在 v4.0.13 及以下版本中 TiCDC 同步分区表存在问题，导致同步停止。
+
+    - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
+    - 处理方法：
+        1. 通过 `cdc cli changefeed pause -c <changefeed-id>` 暂停同步。
+        2. 等待约一分钟后，通过 `cdc cli changefeed resume -c <changefeed-id>` 恢复同步。
+
 ### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
 
 升级 TiDB 集群和 TiCDC 集群到最新版本。OOM 问题在 v4.0.14 上已得到缓解。
@@ -111,7 +117,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
+cdc cli changefeed update -c <changefeed-id> --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
 ```
 
 > **注意：**
