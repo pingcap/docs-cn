@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
         - 客户端网络请求发送到 TiDB，到 TiDB 执行结束后返回给客户端的时间。一般情况下，客户端请求都是以 SQL 语句的形式发送，但也可以包含 `COM_PING`、`COM_SLEEP`、`COM_STMT_FETCH`、`COM_SEND_LONG_DATA` 之类的命令执行时间。
         - 由于 TiDB 支持 Multi-Query，因此，客户端可以一次性发送多条 SQL 语句，如 `select 1; select 1; select 1;`。此时的执行时间是所有 SQL 语句执行完之后的总时间。
     - Command Per Second：TiDB 按照执行结果成功或失败来统计每秒处理的命令数。
-    - QPS：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上的每秒执行的 SQL 语句数量。
+    - QPS：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上每秒执行的 SQL 语句数量。
     - CPS By Instance：按照命令和执行结果成功或失败来统计每个 TiDB 实例上的命令。
     - Failed Query OPM：每个 TiDB 实例上，对每秒钟执行 SQL 语句发生的错误按照错误类型（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码。
     - Slow query：慢查询处理时间（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间），慢查询分为 internal 和 general SQL 语句。
