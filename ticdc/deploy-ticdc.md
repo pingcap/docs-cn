@@ -61,4 +61,5 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`：TiCDC 使用的证书文件路径，PEM 格式，可选。
 - `key`：TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
 - `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
-- `sort-dir`：指定排序引擎使用的临时文件目录。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。需确保 TiCDC 在该 `sort-dir` 路径下可读写数据。
+- `data-dir`：指定 TiCDC 需要使用磁盘储存文件时使用的目录。目前 Unified Sorter 会使用该目录储存临时文件，请确保该目录所在设备可用空间充足。对于使用 TiUP 的用户，本选项可以通过配置 `cdc_servers` 小节中的 `data_dir` 来指定或默认使用 `global` 中 `data_dir` 路径。
+- `sort-dir`：指定排序引擎使用的临时文件目录。**自 v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**
