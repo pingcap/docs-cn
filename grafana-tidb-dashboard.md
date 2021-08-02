@@ -162,7 +162,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Push Task Duration 95：将 GC 子任务推送给 GC worker 的耗时
 
 - Batch Client
-    - Pending Request Count by TiKV： TiKV 批量消息处理等待数量
+    - Pending Request Count by TiKV：TiKV 批量消息处理的等待数量
     - Wait Duration 95: 批量消息处理等待时间。
     - Batch Client Unavailable Duration 95： 批处理客户端不可用时长。
     - No Available Connection Counter：批处理客户端不可用连接数。
