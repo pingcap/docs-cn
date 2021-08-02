@@ -154,7 +154,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Worker Action OPM：GC 相关操作的数量，包括 run\_job，resolve\_lock，delete\_range 等操作
     - Duration 99：GC 相关操作的耗时
     - Config：GC 的数据保存时长 (life time) 和 GC 运行间隔 (run interval) 配置
-    - GC Failure OPM：GC 相关操作失败数量
+    - GC Failure OPM：GC 相关操作失败的数量
     - Delete Range Failure OPM：Delete range 失败的次数
     - Too Many Locks Error OPM：GC 清锁过多错误的数量
     - Action Result OPM：GC 相关操作结果数量
