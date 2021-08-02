@@ -85,11 +85,17 @@ select * from employee where id in (...) and salary between ? and ?;
 
 字段 `SUMMARY_BEGIN_TIME` 和 `SUMMARY_END_TIME` 代表历史时间段的开始时间和结束时间。
 
-## `cluster_statements_summary` 和 `cluster_statements_summary_history`
+## `statements_summary_evicted`
 
-`statements_summary` 和 `statements_summary_history` 仅显示单台 TiDB server 的 statement summary 数据。要查询整个集群的数据，需要查询 `cluster_statements_summary` 和 `cluster_statements_summary_history`。
+`statements_summary` 表的容量受 `tidb_stmt_summary_max_stmt_count` 配置控制，内部使用 LRU 算法，一旦接收到的 SQL 种类超过了 `tidb_stmt_summary_max_stmt_count`，表中最久未被命中的记录就会被驱逐出表。TiDB 引入了 `statements_summary_evicted` 表，该表记录了各个时段被驱逐的 `SQL` 的具体种数。
 
-`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据。这两张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary` 相同。
+只有当 `SQL` 被 `statement summary` 表驱逐的时候，`statements_summary_evicted` 表的内容才会更新。`statements_summary_evicted` 表仅记录发生驱逐的时间段。
+
+## statement summary 的 cluster 表
+
+`statements_summary`、`statements_summary_history` 和 `statements_summary_evicted` 仅显示单台 TiDB server 的 statement summary 数据。若要查询整个集群的数据，需要查询 `cluster_statements_summary`、`cluster_statements_summary_history` 或 `cluster_statements_summary_evicted` 表。
+
+`cluster_statements_summary` 显示各台 TiDB server 的 `statements_summary` 数据，`cluster_statements_summary_history` 显示各台 TiDB server 的 `statements_summary_history` 数据，而 `cluster_statements_summary_evicted` 则显示各台 TiDB server 的 `statements_summary_evicted` 数据。这三张表用字段 `INSTANCE` 表示 TiDB server 的地址，其他字段与 `statements_summary` 相同。
 
 ## 参数配置
 
@@ -97,14 +103,14 @@ select * from employee where id in (...) and salary between ? and ?;
 
 - `tidb_enable_stmt_summary`：是否打开 statement summary 功能。1 代表打开，0 代表关闭，默认打开。statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 - `tidb_stmt_summary_refresh_interval`：`statements_summary` 的清空周期，单位是秒 (s)，默认值是 `1800`。
-- `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，默认值是 `24`。
+- `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，也是 `statements_summary_evicted` 的表容量，默认值是 `24`。
 - `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量。v5.1.1 前，默认 200 条。自 v5.1.1 起，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
 
 > **注意：**
 >
-> 当一种 SQL 因为达到 `tidb_stmt_summary_max_stmt_count` 限制要被移除时，TiDB 会移除该 SQL 语句种类在所有时间段的数据。因此，即使一个时间段内的 SQL 种类数量没有达到上限，显示的 SQL 语句数量也会比实际的少。如遇到该情况，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
+> 当一种 SQL 因为达到 `tidb_stmt_summary_max_stmt_count` 限制要被移除时，TiDB 会移除该 SQL 语句种类在所有时间段的数据。因此，即使一个时间段内的 SQL 种类数量没有达到上限，显示的 SQL 语句数量也会比实际的少。如遇到该情况，对性能也有一些影响，建议调大 `tidb_stmt_summary_max_stmt_count` 的值。
 
 statement summary 配置示例如下：
 
@@ -114,7 +120,7 @@ set global tidb_stmt_summary_refresh_interval = 1800;
 set global tidb_stmt_summary_history_size = 24;
 ```
 
-以上配置生效后，`statements_summary` 每 30 分钟清空一次。因为 24 * 30 分钟 = 12 小时，所以 `statements_summary_history` 保存最近 12 小时的历史数据。
+以上配置生效后，`statements_summary` 每 30 分钟清空一次。因为 24 * 30 分钟 = 12 小时，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
 
 以上几个系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
 
@@ -126,6 +132,50 @@ set global tidb_stmt_summary_history_size = 24;
 > **注意：**
 >
 > `tidb_stmt_summary_history_size`、`tidb_stmt_summary_max_stmt_count`、`tidb_stmt_summary_max_sql_length` 这些配置都影响内存占用，建议根据实际情况调整，不宜设置得过大。
+
+### 为 statement summary 设定合适的大小
+
+在系统运行一段时间后，可以查看 `statements_summary` 表检查是否发生了 evict，例如：
+
+```sql
+select @@global.tidb_stmt_summary_max_stmt_count;
+select count(*) from information_schema.statements_summary;
+```
+
+```
++-------------------------------------------+
+| @@global.tidb_stmt_summary_max_stmt_count |
++-------------------------------------------+
+| 3000                                      |
++-------------------------------------------+
+1 row in set (0.001 sec)
+
++----------+
+| count(*) |
++----------+
+|     3001 |
++----------+
+1 row in set (0.001 sec)
+```
+
+可以发现 `statements_summary` 表已经满了。再查看 `statements_summary_evicted` 表检查 evict 的数据。
+
+```sql
+select * from information_schema.statements_summary_evicted;
+```
+
+```
++---------------------+---------------------+---------------+
+| BEGIN_TIME          | END_TIME            | EVICTED_COUNT |
++---------------------+---------------------+---------------+
+| 2020-01-02 16:30:00 | 2020-01-02 17:00:00 |            59 |
++---------------------+---------------------+---------------+
+| 2020-01-02 16:00:00 | 2020-01-02 16:30:00 |            45 |
++---------------------+---------------------+---------------+
+2 row in set (0.001 sec)
+```
+
+由上可知，对最多 59 种 SQL 发生了 evict，也就是说最好将 statement summary 的容量增大至少 59 条记录。
 
 ## 目前的限制
 
@@ -184,6 +234,8 @@ SELECT sum_latency, avg_latency, exec_count, query_sample_text
 ```
 
 ## 表的字段介绍
+
+### `statements_summary` 字段介绍
 
 下面介绍 `statements_summary` 表中各个字段的含义。
 
@@ -271,3 +323,9 @@ SQL 的基础信息：
 - `BACKOFF_TYPES`：遇到需要重试的错误时的所有错误类型及每种类型重试的次数，格式为 `类型:次数`。如有多种错误则用 `,` 分隔，例如 `txnLock:2,pdRPC:1`
 - `AVG_AFFECTED_ROWS`：平均影响行数
 - `PREV_SAMPLE_TEXT`：当 SQL 是 `COMMIT` 时，该字段为 `COMMIT` 的前一条语句；否则该字段为空字符串。当 SQL 是 `COMMIT` 时，按 digest 和 `prev_sample_text` 一起分组，即不同 `prev_sample_text` 的 `COMMIT` 也会分到不同的行
+
+### `statements_summary_evicted` 字段介绍
+
+- `BEGIN_TIME`: 记录的开始时间；
+- `END_TIME`: 记录的结束时间；
+- `EVICTED_COUNT`：在记录的时间段内 evict 了多少种 SQL。
