@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 - Query Detail
     - Duration 80/95/99/999 By Instance：每个 TiDB 实例执行 SQL 语句的耗时（不同百分位）。
-    - Failed Query OPM Detail：每个 TiDB 实例执行 SQL 语句发生的错误按照错误类型（例如语法错误、主键冲突等）。
+    - Failed Query OPM Detail：每个 TiDB 实例执行 SQL 语句发生的错误按照错误类型统计（例如语法错误、主键冲突等）。
     - Internal SQL OPS：整个 TiDB 集群内部 SQL 语句执行的 QPS。内部 SQL 语句是指 TiDB 内部自动执行的 SQL 语句，一般由用户 SQL 语句来触发或者内部定时任务触发。
 
 - Server
