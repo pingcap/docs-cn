@@ -20,7 +20,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
     + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
     
-+ 默认值：`false`
++ 默认值：false
 
 ## server
 
@@ -289,7 +289,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
 + 注意：TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式的不同，用户只能在新建集群时设置好该功能，在已有集群上修改该项配置会使得启动报错。
-+ 默认值：`false`
++ 默认值：false
 
 ### `ttl-check-poll-interval`
 
@@ -304,7 +304,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 ### `shared`
 
 + 是否开启共享 block cache。
-+ 默认值：`true`
++ 默认值：true
 
 ### `capacity`
 
@@ -334,7 +334,7 @@ raftstore 相关的配置项。
 ### `prevote`
 
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
-+ 默认值：`true`
++ 默认值：true
 
 ### `raftdb-path`
 
@@ -572,12 +572,12 @@ raftstore 相关的配置项。
 ### `right-derive-when-split`
 
 + 为 true 时，以最大分裂 key 为起点的 region 复用原 region 的 key；否则以原 region 起点 key 作为起点的 region 复用原 region 的 key。
-+ 默认值：`true`
++ 默认值：true
 
 ### `allow-remove-leader`
 
 + 允许删除主开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `merge-max-log-gap`
 
@@ -594,7 +594,7 @@ raftstore 相关的配置项。
 ### `use-delete-range`
 
 + 开启 rocksdb delete_range 接口删除数据的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `cleanup-import-sst-interval`
 
@@ -645,7 +645,7 @@ coprocessor 相关的配置项。
 ### `split-region-on-table`
 
 + 开启按 table 分裂 Region 的开关，建议仅在 TiDB 模式下使用。
-+ 默认值：`false`
++ 默认值：false
 
 ### `batch-split-limit`
 
@@ -713,7 +713,7 @@ rocksdb 相关的配置项。
 ### `create-if-missing`
 
 + 自动创建 DB 开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `wal-recovery-mode`
 
@@ -744,7 +744,7 @@ rocksdb 相关的配置项。
 ### `enable-statistics`
 
 + 开启 RocksDB 的统计信息。
-+ 默认值：`true`
++ 默认值：true
 
 ### `stats-dump-period`
 
@@ -768,7 +768,7 @@ rocksdb 相关的配置项。
 ### `use-direct-io-for-flush-and-compaction`
 
 + flush 或者 compaction 开启 DirectIO 的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `rate-bytes-per-sec`
 
@@ -788,12 +788,12 @@ rocksdb 相关的配置项。
 ### `rate-limiter-auto-tuned` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 控制是否依据最近的负载量自动优化 RocksDB 的 compaction rate limiter 配置。此配置项开启后，compaction pending bytes 监控指标值会比一般情况下稍微高些。
-+ 默认值：`true`
++ 默认值：true
 
 ### `enable-pipelined-write`
 
 + 开启 Pipelined Write 的开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `bytes-per-sync`
 
@@ -839,7 +839,7 @@ Titan 相关的配置项。
 ### `enabled`
 
 + 开启 Titan 开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `dirname`
 
@@ -849,7 +849,7 @@ Titan 相关的配置项。
 ### `disable-gc`
 
 + 关闭 Titan 对 Blob 文件的 GC 的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `max-background-gc`
 
@@ -878,27 +878,27 @@ rocksdb defaultcf 相关的配置项。
 ### `disable-block-cache`
 
 + 开启 block cache 开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `cache-index-and-filter-blocks`
 
 + 开启缓存 index 和 filter 的开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `pin-l0-filter-and-index-blocks`
 
 + 控制第 0 层 SST 文件的 index block 和 filter block 是否常驻在内存中的开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `use-bloom-filter`
 
 + 开启 bloom filter 的开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `optimize-filters-for-hits`
 
 + 开启优化 filter 的命中率的开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `whole-key-filtering`
 
@@ -915,7 +915,7 @@ bloom filter 为每个 key 预留的长度。
 ### `block-based-bloom-filter`
 
 + 开启每个 block 建立 bloom filter 的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `read-amp-bytes-per-bit`
 
@@ -1002,7 +1002,7 @@ bloom filter 为每个 key 预留的长度。
 ### `dynamic-level-bytes`
 
 + 开启 dynamic level bytes 优化的开关。
-+ 默认值：`true`
++ 默认值：true
 
 ### `num-levels`
 
@@ -1022,7 +1022,7 @@ bloom filter 为每个 key 预留的长度。
 ### `disable-auto-compactions`
 
 + 开启自动 compaction 的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `soft-pending-compaction-bytes-limit`
 
@@ -1039,7 +1039,7 @@ bloom filter 为每个 key 预留的长度。
 ### `enable-compaction-guard`
 
 + 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
-+ 默认值：`true`
++ 默认值：true
 
 ### `compaction-guard-min-output-file-size`
 
@@ -1122,12 +1122,12 @@ rocksdb defaultcf titan 相关的配置项。
 ### `level-merge`
 
 + 是否通过开启 level-merge 来提升读性能，副作用是写放大会比不开启更大。
-+ 默认值：`false`
++ 默认值：false
 
 ### `gc-merge-rewrite`
 
 + 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
-+ 默认值：`false`
++ 默认值：false
 
 ## rocksdb.writecf
 
@@ -1142,17 +1142,17 @@ rocksdb writecf 相关的配置项。
 ### `optimize-filters-for-hits`
 
 + 开启优化 filter 的命中率的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `whole-key-filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `enable-compaction-guard`
 
 + 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
-+ 默认值：`true`
++ 默认值：true
 
 ### `compression-per-level`
 
@@ -1184,7 +1184,7 @@ rocksdb lockcf 相关配置项。
 ### `optimize-filters-for-hits`
 
 + 开启优化 filter 的命中率的开关。
-+ 默认值：`false`
++ 默认值：false
 
 ### `whole-key-filtering`
 
@@ -1303,7 +1303,7 @@ raftdb 相关配置项。
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否开启 GC in Compaction Filter 特性
-+ 默认值：`false`
++ 默认值：false
 
 ## backup
 
@@ -1357,7 +1357,7 @@ raftdb 相关配置项。
 ### `enable`
 
 + 是否为所有 Region 维护 Resolved TS
-+ 默认值：`true`
++ 默认值：true
 
 ### `advance-ts-interval`
 
@@ -1387,4 +1387,4 @@ raftdb 相关配置项。
 ### `pipelined`
 
 + 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
-+ 默认值：`true`
++ 默认值：true
