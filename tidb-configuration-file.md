@@ -274,6 +274,11 @@ Configuration items related to log files.
 
 Configuration items related to security.
 
+### `require-secure-transport`
+
+- Determines whether to require the client to use the secure mode for data transport.
+- Default value: `false`
+
 ### `enable-sem`
 
 - Enables the Security Enhanced Mode (SEM).
