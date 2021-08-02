@@ -165,6 +165,5 @@ To understand the key metrics displayed on the TiDB dashboard, check the followi
 
 - Batch Client
     - Pending Request Count by TiKV: the number of Batch messages that are pending processing
-    - Wait Duration 95: the waiting time of Batch messages that are pending processing
     - Batch Client Unavailable Duration 95: the unavailable time of the Batch client
     - No Available Connection Counter: the number of times the Batch client cannot find an available link
