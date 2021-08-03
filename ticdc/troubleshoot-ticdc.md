@@ -109,9 +109,17 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，应该如何处理？
 
-升级 TiDB 集群和 TiCDC 集群到最新版本。该 OOM 问题在 v4.0.14 上已得到缓解。
+升级 TiDB 集群和 TiCDC 集群到最新版本。该 OOM 问题在 **v4.0.14 及之后的 v4.0 版本，v5.0.2 及之后的 v5.0 版本，更新的版本**上已得到缓解。
 
-如无法升级，则需要开启 Unified Sorter 排序功能，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+在这些版本上，可以开启 Unified Sorter 排序功能，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified`，使用示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed update -c <changefeed-id> --sort-engine="unified" --pd=http://10.0.10.25:2379
+```
+
+如无法升级，对于**之前的版本**，启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
 
 {{< copyable "shell-regular" >}}
 
