@@ -1193,7 +1193,7 @@ rocksdb lockcf 相关配置项。
 
 ### `compression-per-level`
 
-+ 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
++ 每一层默认压缩算法。
 + 默认值：["no", "no", "no", "no", "no", "no", "no"]
 
 ### `compaction-pri`
