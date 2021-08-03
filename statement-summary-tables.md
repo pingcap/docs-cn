@@ -120,11 +120,7 @@ set global tidb_stmt_summary_refresh_interval = 1800;
 set global tidb_stmt_summary_history_size = 24;
 ```
 
-<<<<<<< HEAD
-以上配置生效后，`statements_summary` 每 30 分钟清空一次。因为 24 * 30 分钟 = 12 小时，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
-=======
 以上配置生效后，`statements_summary` 每 30 分钟清空一次，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
->>>>>>> c7a87663c (statement summary: fix typo in statement-summary (#6794))
 
 以上几个系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
 
