@@ -7,7 +7,8 @@ aliases: ['/docs-cn/dev/tidb-monitoring-api/']
 
 TiDB 提供了以下两种接口来监控集群状态：
 
-- [状态接口](#使用状态接口)：通过 HTTP 接口对外汇报组件的信息。
+- [状态接口](#运行状态)：通过 HTTP 接口对外汇报组件的信息。
+- [存储信息](#存储信息)：通过 HTTP 接口对外汇报表的存储信息。
 - [Metrics 接口](#使用-metrics-接口)：使用 Prometheus 记录组件中各种操作的详细信息，使用 Grafana 进行可视化展示。
 
 ## 使用状态接口
@@ -18,6 +19,8 @@ TiDB 提供了以下两种接口来监控集群状态：
 
 - TiDB API 地址：`http://${host}:${port}`
 - 默认端口：10080
+
+#### 运行状态
 
 以下示例中，通过访问 `http://${host}:${port}/status` 获取当前 TiDB Server 的状态，并判断该 TiDB Server 是否存活。结果以 **JSON** 格式返回：
 
@@ -33,6 +36,48 @@ curl http://127.0.0.1:10080/status
     version: "5.7.25-TiDB-v4.0.0-rc-141-g7267747ae",  # TiDB 版本号
     git_hash: "7267747ae0ec624dffc3fdedb00f1ed36e10284b"  # TiDB 当前代码的 Git Hash
 }
+```
+
+#### 存储信息
+
+以下示例中，通过访问 `http://${host}:${port}/schema_storage/${db}/${table}` 获取指定数据表的存储信息。结果以 **JSON** 格式返回：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+curl http://127.0.0.1:10080/schema_storage/mysql/stats_histograms
+```
+
+```
+{
+    "table_schema": "mysql", 
+    "table_name": "stats_histograms", 
+    "table_rows": 0, 
+    "avg_row_length": 0, 
+    "data_length": 0, 
+    "max_data_length": 0, 
+    "index_length": 0, 
+    "data_free": 0
+}
+```
+
+```bash
+curl http://127.0.0.1:10080/schema_storage/test
+```
+
+```
+[
+    {
+        "table_schema": "test", 
+        "table_name": "test", 
+        "table_rows": 0, 
+        "avg_row_length": 0, 
+        "data_length": 0, 
+        "max_data_length": 0, 
+        "index_length": 0, 
+        "data_free": 0
+    }
+]
 ```
 
 ### PD Server
