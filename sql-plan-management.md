@@ -197,14 +197,6 @@ SELECT [SESSION] @@last_plan_from_binding;
 
 该语句使用系统变量 [last_plan_from_binding](https://docs.pingcap.com/zh/tidb/stable/system-variables#last_plan_from_binding-%E4%BB%8E-v40-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
 
-{{< copyable "sql" >}}
-
-```sql
-SHOW [SESSION] STATUS LIKE 'last_plan_binding_update_time';
-```
-
-该语句使用状态变量 last_plan_binding_update_time 显示当前机器中 Binding 上一次的更新时间。其中 last_plan_binding_update_time 的默认值是 '0000-00-00 00:00:00'。
-
 另外，当我们使用 explain 语句查看 SQL 的查询计划时，如果该 SQL 使用了 Binding，explain 语句会产生 warning，我们可以通过查看 warning 了解 SQL 使用了哪一条 Binding。
 
 ```
@@ -219,12 +211,6 @@ show global bindings;
 
 -- 查看上一次 Binding 更新的时间，对比上一条语句的查询结果可以发现其展示的值是 Binding 最新更新的时间
 show status like 'last_plan_binding_update_time';
-
--- 执行被绑定的查询
-select * from t;
-
--- 通过查看系统变量 last_plan_from_binding 展示上一条查询是否使用了 Binding
-select @@last_plan_from_binding;
 
 -- 使用 explain 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 Binding
 explain select * from t;
@@ -275,7 +261,7 @@ set global tidb_evolve_plan_baselines = on;
 
 > **注意：**
 >
-> 自动演进功能目前为实验特性，存在未知风险并需要继续优化，不建议在生产环境中使用。此开关将被禁用直到该功能到达 GA (Generally Available) 状态，如果尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请与 PingCAP 的技术支持联系获取相关支持。
+> 自动演进功能目前为实验特性，存在未知风险并需要继续优化，不建议在生产环境中使用。此开关将被禁用直到该功能到达 GA (Generally Available) 状态，如果尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它关闭，如发现 Binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
 
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 
