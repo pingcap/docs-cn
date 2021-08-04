@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 本文列出了在使用 Backup & Restore (BR) 时，可能会遇到的问题及相应的解决方法。   
 
-如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
+如   果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
 ## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
