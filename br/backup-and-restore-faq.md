@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
-## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
+## 恢复   的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
 在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)，默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
 
