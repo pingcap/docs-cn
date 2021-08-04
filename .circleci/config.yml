@@ -15,6 +15,12 @@ jobs:
             echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
             echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
 
+      - install
+      - run:
+          name: Install
+          command: |
+            npm install lint
+
       - run:
           name: "Check file encoding"
           command: |
