@@ -173,7 +173,7 @@ explain select * from t1,t2 where t1.id = t2.id;
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 ```
 
-该语句会输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
+该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
 
 | 列名 | 说明            |
 | -------- | ------------- |
@@ -186,6 +186,50 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | charset | 字符集 |
 | collation | 排序规则 |
 | source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
+
+### 绑定的排查
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT [SESSION] @@last_plan_from_binding;
+```
+
+该语句使用系统变量 [last_plan_from_binding](https://docs.pingcap.com/zh/tidb/stable/system-variables#last_plan_from_binding-%E4%BB%8E-v40-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW [SESSION] STATUS LIKE 'last_plan_binding_update_time';
+```
+
+该语句使用状态变量 last_plan_binding_update_time 显示当前机器中 Binding 上一次的更新时间。其中 last_plan_binding_update_time 的默认值是 '0000-00-00 00:00:00'。
+
+另外，当我们使用 explain 语句查看 SQL 的查询计划时，如果该 SQL 使用了 Binding，explain 语句会产生 warning，我们可以通过查看 warning 了解 SQL 使用了哪一条 Binding。
+
+```
+-- 创建一个 global binding
+create global binding for
+    select * from t
+using
+    select * from t;
+
+-- 查看所有的 Binding
+show global bindings;
+
+-- 查看上一次 Binding 更新的时间，对比上一条语句的查询结果可以发现其展示的值是 Binding 最新更新的时间
+show status like 'last_plan_binding_update_time';
+
+-- 执行被绑定的查询
+select * from t;
+
+-- 通过查看系统变量 last_plan_from_binding 展示上一条查询是否使用了 Binding
+select @@last_plan_from_binding;
+
+-- 使用 explain 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 Binding
+explain select * from t;
+show warnings;
+```
 
 ## 自动捕获绑定 (Baseline Capturing)
 
