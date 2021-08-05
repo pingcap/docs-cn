@@ -174,7 +174,7 @@ In v5.1, the key new features or improvements are as follows:
 
 TiDB adds the running status of TiDB cluster requests in telemetry, including execution status, failure status, etc.
 
-To learn more about the information and how to disable this behavior, refer to [Telemetry](https://docs.pingcap.com/zh/tidb/stable/telemetry).
+To learn more about the information and how to disable this behavior, refer to [Telemetry](/telemetry.md).
 
 ## Improvements
 
