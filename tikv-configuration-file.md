@@ -859,7 +859,7 @@ Titan 相关的配置项。
 
 ## rocksdb.defaultcf | rocksdb.writecf | rocksdb.lockcf
 
-`rocksdb.defaultcf`，`rocksdb.writecf`和 `rocksdb.lockcf` 相关的配置项。
+rocksdb defaultcf，rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `block-size`
 
@@ -1073,7 +1073,7 @@ bloom filter 为每个 key 预留的长度。
 
 ## rocksdb.defaultcf.titan| rocksdb.writecf.titan | rocksdb.lockcf.titan
 
-`rocksdb defaultcf titan`，`rocksdb.writecf.titan`和`rocksdb.lockcf.titan` 相关的配置项。
+rocksdb defaultcf titan，rocksdb writecf titan 和 rocksdb lockcf titan 相关的配置项。
 
 ### `min-blob-size`
 
