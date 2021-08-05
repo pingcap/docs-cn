@@ -885,10 +885,10 @@ rocksdb defaultcf 相关的配置项。
 + 开启优化 filter 的命中率的开关。
 + 默认值：true
 
-### `whole_key_filtering`
+### `whole-key-filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：true
++ 默认值：`true`
 
 ### `bloom-filter-bits-per-key`
 
@@ -1139,6 +1139,11 @@ rocksdb writecf 相关的配置项。
 + 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
 + 默认值：true
 
+### `compression-per-level`
+
++ 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
++ 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
+
 ### `compaction-guard-min-output-file-size`
 
 + 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
@@ -1165,6 +1170,22 @@ rocksdb lockcf 相关配置项。
 
 + 开启优化 filter 的命中率的开关。
 + 默认值：false
+
+### `whole-key-filtering`
+
++ 开启将整个 key 放到 bloom filter 中的开关。
++ 默认值：`true`
+
+### `compression-per-level`
+
++ 每一层默认压缩算法。
++ 默认值：["no", "no", "no", "no", "no", "no", "no"]
+
+### `compaction-pri`
+
++ Compaction 优先类型
++ 可选择值：3 (MinOverlappingRatio)，0 (ByCompensatedSize)，1 (OldestLargestSeqFirst)，2 (OldestSmallestSeqFirst)。
++ 默认值：0
 
 ### `level0-file-num-compaction-trigger`
 
