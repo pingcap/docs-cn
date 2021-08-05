@@ -27,7 +27,7 @@ TiDB 还可以通过设置 session 变量 `time_zone` 为每个连接维护各�
 SET time_zone = timezone;
 ```
 
-查看当前系统使用的时区的值：
+使用以下 SQL 语句查看当前全局时区、客户端时区和系统时区的值：
 
 {{< copyable "sql" >}}
 
