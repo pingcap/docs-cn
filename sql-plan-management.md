@@ -165,6 +165,10 @@ explain select * from t1,t2 where t1.id = t2.id;
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
+> **注意：**
+>
+> 每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）后台的线程会触发一次对 update_time 在 10 个 `bind-info-lease` 以前的状态为 `deleted` 的 binding 的回收清除操作。
+
 ### 查看绑定
 
 {{< copyable "sql" >}}
@@ -205,12 +209,6 @@ create global binding for
     select * from t
 using
     select * from t;
-
--- 查看所有的 Binding
-show global bindings;
-
--- 查看上一次 Binding 更新的时间，对比上一条语句的查询结果可以发现其展示的值是 Binding 最新更新的时间
-show status like 'last_plan_binding_update_time';
 
 -- 使用 explain 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 Binding
 explain select * from t;
