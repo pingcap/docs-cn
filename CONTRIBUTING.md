@@ -29,12 +29,12 @@ Before you contribute, please take a quick look at some general information abou
 
 ### Learn about docs versions
 
-Currently, we maintain six versions of TiDB documentation, each with a separate branch:
+Currently, we maintain seven versions of TiDB documentation, each with a separate branch:
 
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
-| `release-5.1` branch | the 5.1 version |
+| `release-5.1` branch | the 5.1 stable version |
 | `release-5.0` branch | the 5.0 stable version |
 | `release-4.0` branch | the 4.0 stable version |
 | `release-3.1` branch | the 3.1 stable version |
@@ -45,22 +45,24 @@ Currently, we maintain six versions of TiDB documentation, each with a separate 
 >
 > Previously, we maintain all versions in the `master` branch, with directories like `dev` (the latest development version), `v3.0` and so on. Each docs version is updated very frequently and changes to one version often apply to another version or other versions as well.
 >
-> Since February 21, 2020, to reduce manual editing and updating work among versions, we have started to maintain each version in a separate branch and introduce sre-bot to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.
+> Since February 21, 2020, to reduce manual editing and updating work among versions, we have started to maintain each version in a separate branch and introduced sre-bot (now ti-chi-bot) to automatically file PRs to other versions as long as you add corresponding cherry-pick labels to your PR.
 
 ### Use cherry-pick labels
 
 - If your changes apply to only one docs version, just submit a PR to the corresponding version branch.
 
-- If your changes apply to multiple docs versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the sre-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, sre-bot will start to work.
-    - `needs-cherry-pick-5.1` label: sre-bot will submit a PR to the `release-5.1` branch.
-    - `needs-cherry-pick-5.0` label: sre-bot will submit a PR to the `release-5.0` branch.
-    - `needs-cherry-pick-4.0` label: sre-bot will submit a PR to the `release-4.0` branch.
-    - `needs-cherry-pick-3.1` label: sre-bot will submit a PR to the `release-3.1` branch.
-    - `needs-cherry-pick-3.0` label: sre-bot will submit a PR to the `release-3.0` branch.
-    - `needs-cherry-pick-2.1` label: sre-bot will submit a PR to the `release-2.1` branch.
-    - `needs-cherry-pick-master` label: sre-bot will submit a PR to the `master` branch.
+- If your changes apply to multiple docs versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.
+    - `needs-cherry-pick-5.1` label: ti-chi-bot will submit a PR to the `release-5.1` branch.
+    - `needs-cherry-pick-5.0` label: ti-chi-bot will submit a PR to the `release-5.0` branch.
+    - `needs-cherry-pick-4.0` label: ti-chi-bot will submit a PR to the `release-4.0` branch.
+    - `needs-cherry-pick-3.1` label: ti-chi-bot will submit a PR to the `release-3.1` branch.
+    - `needs-cherry-pick-3.0` label: ti-chi-bot will submit a PR to the `release-3.0` branch.
+    - `needs-cherry-pick-2.1` label: ti-chi-bot will submit a PR to the `release-2.1` branch.
+    - `needs-cherry-pick-master` label: ti-chi-bot will submit a PR to the `master` branch.
 
-- If most of your changes apply to multiple docs versions but some differences exist among versions, you still can use cherry-pick labels to let sre-bot create PRs to other versions. After the PR to another version is successfully submitted by sre-bot, you can make changes to that PR.
+    For how to choose the docs versions, refer to [Guideline for choosing the affected version(s)](#guideline-for-choosing-the-affected-versions).
+
+- If most of your changes apply to multiple docs versions but some differences exist among versions, you still can use cherry-pick labels to let ti-chi-bot create PRs to other versions. After the PR to another version is successfully submitted by ti-chi-bot, you can make changes to that PR.
 
 ## How to contribute
 
@@ -141,6 +143,23 @@ git push -u origin new-branch-name # "-u" is used to track the remote branch fro
 2. Click the `Compare & pull request` button next to your `new-branch-name` branch to create your PR. See [Pull Request Title Style](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#pull-request-title-style).
 
 Now, your PR is successfully submitted! After this PR is merged, you will automatically become a contributor to TiDB documentation.
+
+## Guideline for choosing the affected version(s)
+
+When you create a Pull Request, you need to choose the release version to which your document change applies in the description template on your Pull Request page.
+
+If your change fits one of the following situations, it is recommended to **CHOOSE THE MASTER BRANCH ONLY**. After the PR is merged, the change will be soon displayed on the [Dev page of the PingCAP documentation website](https://docs.pingcap.com/tidb/dev/). After the next major or minor version of TiDB is released, the change will also be displayed on the website page for the new version.
+
+- Relates to a documentation enhancement, such as supplementing missing or incomplete document contents.
+- Fixes inaccurate or incorrect document contents, including values, descriptions, examples, or typos.
+- Involves a documentation refactor in a specific topic module.
+
+If your change fits one of the following situations, **CHOOSE THE AFFECTED RELEASE BRANCH(ES) AND MASTER**:
+
+- Involves a feature behavior change that relates to a specific version.
+- Involves a compatibility change, including changing the default value of a configuration item or a system variable.
+- Fixes format to resolve a display error
+- Fixes broken links
 
 ## Contact
 
