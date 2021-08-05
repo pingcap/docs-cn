@@ -18,7 +18,7 @@ TiDB 支持多种身份验证方式。通过使用 [`CREATE USER`](/sql-statemen
 
 TiDB 目前支持的身份验证方式可在以下的表格中查找到。当把身份验证方式设定为默认方法时，服务端会显示当前服务端与客户端之间的连接状态。如需进行其操作，请设置 [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) 参数。
 
-针对 TLS 身份验证，TiDB 目前采用不同的配置方案。具体情况请参见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md).
+针对 TLS 身份验证，TiDB 目前采用不同的配置方案。具体情况请参见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
 
 | 身份验证方式    | 支持        |
 | :------------------------| :--------------- |
