@@ -274,7 +274,7 @@ COMMIT;
 
 Currently, TiCDC does not provide the standard parsing library for TiCDC Open Protocol, but the Golang version and Java version of parsing demonstrations are provided. You can refer to the data format provided in this document and the following demonstrations to implement the protocol parsing for consumers.
 
-- [Golang demo](https://github.com/pingcap/ticdc/tree/master/kafka_consumer)
+- [Golang demo](https://github.com/pingcap/ticdc/tree/master/cmd/kafka-consumer)
 - [Java demo](https://github.com/pingcap/ticdc/tree/master/demo/java)
 
 ## Column type code
