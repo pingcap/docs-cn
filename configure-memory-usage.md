@@ -124,3 +124,33 @@ server-memory-quota = 34359738368
     * `record path`：表示状态文件存放的目录
 
 5. 通过访问状态文件所在目录（该示例中的目录为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内的日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md)。
+
+## 使用串行的 HashAgg 实现来缓解内存使用
+
+默认配置下，tidb-server 会使用并行的 HashAgg 实现来进行聚合函数的计算。
+但是并行的 HashAgg 实现有如下缺点：
+
+1. 相较于串行的 HashAgg 来说，内存占用更大。
+2. 无法进行落盘操作。当 SQL 的内存使用超过 Memory Quota，tidb-server 会 cancel 掉这条 SQL。
+
+在对 SQL 执行时间要求不严格的情况下，我们可以通过使用串行的 HashAgg 实现，借助落盘来缓解内存压力。
+
+下例通过构造一个占用大量内存的 SQL 语句，对该功能进行演示：
+
+1. 配置 SQL 的 Memory Quota 为 1GB（默认 1GB）。 `set tidb_mem_quota_query = 1 << 30`
+2. 创建单表 `CREATE TABLE t(a int);` 并插入 200 行不同的数据。
+3. 执行 `select count(*) from (select count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a) t2;`。该 SQL 会占用巨大的内存，并且被 tidb-server kill 掉。
+
+    ```
+    [tidb]> select count(*) from (select count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a) t2;
+    ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
+    ```
+
+4. 配置 HashAgg 为串行实现。 `set tidb_executor_concurrency = 1;`
+5. 执行相同的 SQL，SQL 可以执行
+
+
+> **警告：**
+>
+> + HashAgg 落盘功能在 Memory Quota 较小时，可能会对需要处理的数据进行重复落盘。并且在落盘次数超过一定限制时，依旧会 cancel 掉这条 SQL。因此，请配置合适的 Memory Quota。
+> + HashAgg 落盘功能目前不支持 distinct 聚合函数。使用 distinct 函数依旧会导致内存占用过大且无法落盘，让 SQL 被 cancel 掉。
