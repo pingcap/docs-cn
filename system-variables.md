@@ -84,32 +84,32 @@ mysql> SELECT * FROM t1;
 
 ### character_set_client
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 这个变量表示从客户端发出的数据所用的字符集。有关更多 TiDB 支持的字符集和排序规则，参阅[字符集和排序规则](/character-set-and-collation.md)文档。如果需要更改字符集，建议使用 [`SET NAMES`](/sql-statements/sql-statement-set-names.md) 语句。
 
 ### character_set_connection
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 若没有为字符串常量指定字符集，该变量表示这些字符串常量所使用的字符集。
 
 ### character_set_database
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 该变量表示当前默认在用数据库的字符集，**不建议设置该变量**。选择新的默认数据库后，服务器会更改该变量的值。
 
 ### character_set_results
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 该变量表示数据发送至客户端时所使用的字符集。
 
 ### character_set_server
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
 
 ### `cte_max_recursion_depth`
