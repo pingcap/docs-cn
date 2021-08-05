@@ -1071,9 +1071,9 @@ bloom filter 为每个 key 预留的长度。
 + 默认值：128MB
 + 单位：KB|MB|GB
 
-## rocksdb.defaultcf.titan| rocksdb.writecf.titan | rocksdb.lockcf.titan
+## rocksdb.defaultcf.titan
 
-rocksdb defaultcf titan，rocksdb writecf titan 和 rocksdb lockcf titan 相关的配置项。
+rocksdb defaultcf titan 相关的配置项。
 
 ### `min-blob-size`
 
