@@ -98,7 +98,7 @@ AsOfClause ::=
 |`ORDER BY` | OrderBy 子句用于指定结果排序顺序，可以按照列、表达式或者是 `select_expr` 列表中某个位置的字段进行排序。|
 |`LIMIT` | Limit 子句用于限制结果条数。Limit 接受一个或两个数字参数，如果只有一个参数，那么表示返回数据的最大行数；如果是两个参数，那么第一个参数表示返回数据的第一行的偏移量（第一行数据的偏移量是 0），第二个参数指定返回数据的最大条目数。另支持 `FETCH FIRST/NEXT n ROW/ROWS ONLY` 语法，与 `LIMIT n` 效果相同，其中 `n` 可省略，省略时与 `LIMIT 1` 效果相同。|
 |`Window window_definition`| 窗口函数的相关语法，用来进行一些分析型计算的操作，详情可见 [窗口函数](/functions-and-operators/window-functions.md)|
-|`FOR UPDATE` | 对查询结果集所有行上锁（对于在查询条件内，但是不在结果集的行，将不会加锁，如事务启动后由其他事务写入的行），以监测其他事务对这些的并发修改。使用[乐观事务模型](/optimistic-transaction.md)时，语句执行期间不会检测锁，因此，不会像 PostgreSQL 之类的数据库一样，在当前事务结束前阻止其他事务执行 `UPDATE`、`DELETE` 和 `SELECT FOR UPDATE`。在事务的提交阶段 `SELECT FOR UPDATE` 读到的行，也会进行两阶段提交，因此，它们也可以参与事务冲突检测。如发生写入冲突，那么包含 `SELECT FOR UPDATE` 语句的事务会提交失败。如果没有冲突，事务将成功提交，当提交结束时，这些被加锁的行，会产生一个新版本，可以让其他尚未提交的事务，在将来提交时发现写入冲突。若使用悲观事务，则行为与其他数据库基本相同，不一致之处参考[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。 |
+|`FOR UPDATE` | 对查询结果集所有行上锁（对于在查询条件内，但是不在结果集的行，将不会加锁，如事务启动后由其他事务写入的行），以监测其他事务对这些的并发修改。使用[乐观事务模型](/optimistic-transaction.md)时，语句执行期间不会检测锁，因此，不会像 PostgreSQL 之类的数据库一样，在当前事务结束前阻止其他事务执行 `UPDATE`、`DELETE` 和 `SELECT FOR UPDATE`。在事务的提交阶段 `SELECT FOR UPDATE` 读到的行，也会进行两阶段提交，因此，它们也可以参与事务冲突检测。如发生写入冲突，那么包含 `SELECT FOR UPDATE` 语句的事务会提交失败。如果没有冲突，事务将成功提交，当提交结束时，这些被加锁的行，会产生一个新版本，可以让其他尚未提交的事务，在将来提交时发现写入冲突。若使用悲观事务，则行为与其他数据库基本相同，不一致之处参考[和 MySQL InnoDB 的差异](/pessimistic-transaction.md#和-mysql-innodb-的差异)。TiDB 支持 `FOR UPDATE NOWAIT` 语法，详情可见 [TiDB Pessimistic Transaction Model](/pessimistic-transaction.md)。|
 |`LOCK IN SHARE MODE` | TiDB 出于兼容性解析这个语法，但是不做任何处理|
 
 ## 示例
