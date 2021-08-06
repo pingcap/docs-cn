@@ -131,26 +131,43 @@ server-memory-quota = 34359738368
 但是并行的 HashAgg 实现有如下缺点：
 
 1. 相较于串行的 HashAgg 来说，内存占用更大。
-2. 无法进行落盘操作。当 SQL 的内存使用超过 Memory Quota，tidb-server 会 cancel 掉这条 SQL。
+2. 无法进行落盘操作。当 SQL 的内存使用超过 Memory Quota 时，tidb-server 会 cancel 掉这条 SQL。
 
 在对 SQL 执行时间要求不严格的情况下，我们可以通过使用串行的 HashAgg 实现，借助落盘来缓解内存压力。
 
 下例通过构造一个占用大量内存的 SQL 语句，对该功能进行演示：
 
 1. 配置 SQL 的 Memory Quota 为 1GB（默认 1GB）。 `set tidb_mem_quota_query = 1 << 30`
-2. 创建单表 `CREATE TABLE t(a int);` 并插入 200 行不同的数据。
-3. 执行 `select count(*) from (select count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a) t2;`。该 SQL 会占用巨大的内存，并且被 tidb-server kill 掉。
+2. 创建单表 `CREATE TABLE t(a int);` 并插入 256 行不同的数据。
+3. 尝试执行 SQL `explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;`。该 SQL 占用巨大的内存，会被 tidb-server cancel 掉。
 
-    ```
-    [tidb]> select count(*) from (select count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a) t2;
+    ```sql
+    [tidb]> explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;
     ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
     ```
 
-4. 配置 HashAgg 为串行实现。 `set tidb_executor_concurrency = 1;`
-5. 执行相同的 SQL，SQL 可以执行
+4. 通过用户变量 `set tidb_executor_concurrency = 1;`，将执行器的并发度调整为 1。此时，HashAgg 会使用串行的执行逻辑。
+5. 执行相同的 SQL，SQL 可以执行成功。可以从详细的执行计划看出，HashAgg 使用了 600MB 的硬盘空间。
 
+    ```sql
+    [tidb]> explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;
+    +---------------------------------+-------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------+----------+
+    | id                              | estRows     | actRows  | task      | access object | execution info                                                                                                                                                      | operator info                                                   | memory    | disk     |
+    +---------------------------------+-------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------+----------+
+    | HashAgg_11                      | 204.80      | 16777216 | root      |               | time:1m37.4s, loops:16385                                                                                                                                           | group by:test.t.a, test.t.a, test.t.a, funcs:count(1)->Column#7 | 1.13 GB   | 600.0 MB |
+    | └─HashJoin_12                   | 16777216.00 | 16777216 | root      |               | time:21.5s, loops:16385, build_hash_table:{total:267.2µs, fetch:228.9µs, build:38.2µs}, probe:{concurrency:1, total:35s, max:35s, probe:35s, fetch:962.2µs}         | CARTESIAN inner join                                            | 8.23 KB   | 4 KB     |
+    |   ├─TableReader_21(Build)       | 256.00      | 256      | root      |               | time:87.2µs, loops:2, cop_task: {num: 1, max: 150µs, proc_keys: 0, rpc_num: 1, rpc_time: 145.1µs, copr_cache_hit_ratio: 0.00}                                       | data:TableFullScan_20                                           | 885 Bytes | N/A      |
+    |   │ └─TableFullScan_20          | 256.00      | 256      | cop[tikv] | table:t3      | tikv_task:{time:23.2µs, loops:256}                                                                                                                                  | keep order:false, stats:pseudo                                  | N/A       | N/A      |
+    |   └─HashJoin_14(Probe)          | 65536.00    | 65536    | root      |               | time:728.1µs, loops:65, build_hash_table:{total:307.5µs, fetch:277.6µs, build:29.9µs}, probe:{concurrency:1, total:34.3s, max:34.3s, probe:34.3s, fetch:278µs}      | CARTESIAN inner join                                            | 8.23 KB   | 4 KB     |
+    |     ├─TableReader_19(Build)     | 256.00      | 256      | root      |               | time:126.2µs, loops:2, cop_task: {num: 1, max: 308.4µs, proc_keys: 0, rpc_num: 1, rpc_time: 295.3µs, copr_cache_hit_ratio: 0.00}                                    | data:TableFullScan_18                                           | 885 Bytes | N/A      |
+    |     │ └─TableFullScan_18        | 256.00      | 256      | cop[tikv] | table:t2      | tikv_task:{time:79.2µs, loops:256}                                                                                                                                  | keep order:false, stats:pseudo                                  | N/A       | N/A      |
+    |     └─TableReader_17(Probe)     | 256.00      | 256      | root      |               | time:211.1µs, loops:2, cop_task: {num: 1, max: 295.5µs, proc_keys: 0, rpc_num: 1, rpc_time: 279.7µs, copr_cache_hit_ratio: 0.00}                                    | data:TableFullScan_16                                           | 885 Bytes | N/A      |
+    |       └─TableFullScan_16        | 256.00      | 256      | cop[tikv] | table:t1      | tikv_task:{time:71.4µs, loops:256}                                                                                                                                  | keep order:false, stats:pseudo                                  | N/A       | N/A      |
+    +---------------------------------+-------------+----------+-----------+---------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------+-----------+----------+
+    9 rows in set (1 min 37.428 sec)
+    ```
 
-> **警告：**
+> **注意：**
 >
-> + HashAgg 落盘功能在 Memory Quota 较小时，可能会对需要处理的数据进行重复落盘。并且在落盘次数超过一定限制时，依旧会 cancel 掉这条 SQL。因此，请配置合适的 Memory Quota。
-> + HashAgg 落盘功能目前不支持 distinct 聚合函数。使用 distinct 函数依旧会导致内存占用过大且无法落盘，让 SQL 被 cancel 掉。
+> + HashAgg 目前仅串行的实现支持落盘功能。使用并行的 HashAgg 且内存占用过大时，无法进行落盘。
+> + HashAgg 落盘功能目前不支持 distinct 聚合函数。使用 distinct 函数且内存占用过大时，无法进行落盘。
