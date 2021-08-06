@@ -399,6 +399,30 @@ cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --start-ts 4152
 cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 ```
 
+## The default value of the time type field is inconsistent when replicating a DDL statement to the downstream MySQL 5.7. What can I do?
+
+Suppose that the `create table test (id int primary key, ts timestamp)` statement is executed in the upstream TiDB. When TiCDC replicates this statement to the downstream MySQL 5.7, MySQL uses the default configuration. The table schema after the replication is as follows. The default value of the `timestamp` field becomes `CURRENT_TIMESTAMP`:
+
+{{< copyable "sql" >}}
+
+```sql
+mysql root@127.0.0.1:test> show create table test;
++-------+----------------------------------------------------------------------------------+
+| Table | Create Table                                                                     |
++-------+----------------------------------------------------------------------------------+
+| test  | CREATE TABLE `test` (                                                            |
+|       |   `id` int(11) NOT NULL,                                                         |
+|       |   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, |
+|       |   PRIMARY KEY (`id`)                                                             |
+|       | ) ENGINE=InnoDB DEFAULT CHARSET=latin1                                           |
++-------+----------------------------------------------------------------------------------+
+1 row in set
+```
+
+From the result, you can see that the table schema before and after the replication is inconsistent. This is because the default value of `explicit_defaults_for_timestamp` in TiDB is different from that in MySQL. See [MySQL Compatibility](/mysql-compatibility.md#default-differences) for details.
+
+Since v5.0.1 or v4.0.13, for each replication to MySQL, TiCDC automatically sets `explicit_defaults_for_timestamp = ON` to ensure that the time type is consistent between the upstream and downstream. For versions earlier than v5.0.1 or v4.0.13, pay attention to the compatibility issue caused by the inconsistent `explicit_defaults_for_timestamp` value when using TiCDC to replicate the time type data.
+
 ## When the sink of the replication downstream is TiDB or MySQL, what permissions do users of the downstream database need?
 
 When the sink is TiDB or MySQL, the users of the downstream database need the following permissions:
