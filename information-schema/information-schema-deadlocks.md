@@ -49,6 +49,7 @@ DESC deadlocks;
 
 > **注意：**
 >
+> * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
 > * `CURRENT_SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的 hash。`CURRENT_SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
 
 ## `KEY_INFO`

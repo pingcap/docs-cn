@@ -249,6 +249,10 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 * [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁信息，包括阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句的 Digest 和发生等待的 key。
 * [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上或整个集群上最近发生过的若干次死锁的相关信息，包括死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
 
+> **注意：**
+>
+> Lock View 相关的表中展示的 SQL 语句均为归一化的 SQL 语句（即去除了格式和参数的形式），由 SQL Digest 内部查询获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍详见 [Statement Summary Tables](/statement-summary-tables.md)
+
 以下为排查部分问题的示例。
 
 #### 死锁错误
@@ -363,6 +367,6 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
 1 row in set (0.01 sec)
 ```
 
-上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 `TIDB_DECODE_SQL_DIGESTS` 函数，以尝试将该列（内容为 SQL Digest 的数组）转换为归一化的 SQL 文本的数组。
+上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，以尝试将该列（内容为一组 SQL Digest）转换为其对应的 SQL 语句，以便于阅读。
 
 如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。

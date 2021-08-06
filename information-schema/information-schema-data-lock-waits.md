@@ -38,6 +38,7 @@ DESC data_lock_waits;
 
 > **警告：**
 >
+> * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
 > * `DATA_LOCK_WAITS` 表中的信息是在查询时，从所有 TiKV 节点实时获取的。目前，即使加上了 `WHERE` 查询条件，也无法避免对所有 TiKV 节点都进行信息收集。如果集群规模很大、负载很高，查询该表有造成性能抖动的潜在风险，因此请根据实际情况使用。
 > * 来自不同 TiKV 节点的信息不能保证是同一时间点的快照。
 > * `SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的 hash。`SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
