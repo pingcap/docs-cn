@@ -1011,28 +1011,6 @@ bloom filter 为每个 key 预留的长度。
 + 默认值：256GB
 + 单位：KB|MB|GB
 
-<<<<<<< HEAD
-=======
-### `enable-compaction-guard`
-
-+ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
-+ `defaultcf` 默认值：`true`
-+ `writecf` 默认值：`true`
-+ `lockcf` 默认值：`false`
-
-### `compaction-guard-min-output-file-size`
-
-+ 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：8MB
-+ 单位：KB|MB|GB
-
-### `compaction-guard-max-output-file-size`
-
-+ 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
-+ 默认值：128MB
-+ 单位：KB|MB|GB
-
->>>>>>> 4f93467c2 (TiKV configuration: integrate writecf and lockcf to one part with defaultcf (#6816))
 ## rocksdb.defaultcf.titan
 
 rocksdb defaultcf titan 相关的配置项。
