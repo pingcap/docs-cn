@@ -126,6 +126,13 @@ mysql> SELECT * FROM t1;
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
+### default_authentication_plugin
+
+- 作用域：GLOBAL
+- 默认值：`mysql_native_password`
+- 这个变量用于设置身份验证方式。当把身份验证方式设定为默认方法时，服务端会显示当前服务端与客户端之间的连接状态。如需查询该变量的其他可选值，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)。
+- 可选值：`mysql_native_password` and `caching_sha2_password`。更多信息，请参见 [可用的身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)。
+
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
