@@ -634,6 +634,11 @@ TiDB 服务状态相关配置。
 + 最小值：0
 + 最大值：10000
 
+### deadlock-history-collect-retryable
+
++ 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
++ 默认值：false
+
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
