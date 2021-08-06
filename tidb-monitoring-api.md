@@ -8,7 +8,8 @@ aliases: ['/docs/dev/tidb-monitoring-api/']
 
 You can use the following two types of interfaces to monitor the TiDB cluster state:
 
-- [The state interface](#use-the-state-interface): this interface uses the HTTP interface to get the component information.
+- [The state interface](#running-status): this interface uses the HTTP interface to get the component information.
+- [Storage information](#storage-information): this interface uses the HTTP interface to get the storage information of data tables.
 - [The metrics interface](#use-the-metrics-interface): this interface uses Prometheus to record the detailed information of the various operations in components and views these metrics using Grafana.
 
 ## Use the state interface
@@ -20,7 +21,9 @@ The state interface monitors the basic information of a specific component in th
 - TiDB API address: `http://${host}:${port}`
 - Default port: `10080`
 
-The following example uses `http://${host}:${port}/status` to get the current state of the TiDB server and to determine whether the server is alive. The result is returned in JSON format.
+### Running status
+
+The following example uses `http://${host}:${port}/status` to get the current state of the TiDB server and to determine whether the server is alive. The result is returned in **JSON** format.
 
 ```bash
 curl http://127.0.0.1:10080/status
@@ -29,6 +32,48 @@ curl http://127.0.0.1:10080/status
     version: "5.7.25-TiDB-v3.0.0-beta-250-g778c3f4a5",  # The TiDB version number.
     git_hash: "778c3f4a5a716880bcd1d71b257c8165685f0d70"  # The Git Hash of the current TiDB code.
 }
+```
+
+#### Storage information
+
+The following example uses `http://${host}:${port}/schema_storage/${db}/${table}` to get the storage information of the specific data table. The result is returned in **JSON** format.
+
+{{< copyable "shell-regular" >}}
+
+```bash
+curl http://127.0.0.1:10080/schema_storage/mysql/stats_histograms
+```
+
+```
+{
+    "table_schema": "mysql", 
+    "table_name": "stats_histograms", 
+    "table_rows": 0, 
+    "avg_row_length": 0, 
+    "data_length": 0, 
+    "max_data_length": 0, 
+    "index_length": 0, 
+    "data_free": 0
+}
+```
+
+```bash
+curl http://127.0.0.1:10080/schema_storage/test
+```
+
+```
+[
+    {
+        "table_schema": "test", 
+        "table_name": "test", 
+        "table_rows": 0, 
+        "avg_row_length": 0, 
+        "data_length": 0, 
+        "max_data_length": 0, 
+        "index_length": 0, 
+        "data_free": 0
+    }
+]
 ```
 
 ### PD server
