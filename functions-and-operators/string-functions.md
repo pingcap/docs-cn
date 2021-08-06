@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev
 
 # 字符串函数
 
-TiDB 支持使用 MySQL 5.7 中提供的大部分[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)和 Oracle 21 中提供的一些[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
+TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
 ## 支持的函数
 
