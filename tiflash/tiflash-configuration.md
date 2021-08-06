@@ -86,6 +86,32 @@ delta_index_cache_size = 0
     ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
     # capacity = [ 10737418240, 10737418240 ]
 
+    [storage.io_rate_limit]
+    ## IO 限流的读写总带宽，单位：Byte。默认值 0，关闭 IO 限流功能。
+    # max_bytes_per_sec = 0
+    ## max_read_bytes_per_sec 和 max_write_bytes_per_sec 的含义和 max_bytes_per_sec 类似。
+    ## 只是这里的读写带宽限制是分开的，适用于一些读写带宽限制是分开计算的云盘，比如 GCP 上的 persistent disk。
+    # max_read_bytes_per_sec = 0
+    # max_write_bytes_per_sec = 0
+
+    ## 下面的参数，一般不需要调整
+    ## TiFlash 内部将 IO 请求分成 4 种类型：前台写、后台写、前台读、后台读。IO 限流初始化时，会根据下面的权重（weight）
+    ## 比例分配带宽。如果 weight 配置为 0，则对应的 IO 操作不会被 IO 限流。
+    # foreground_write_weight = 25
+    # background_write_weight = 25
+    # foreground_read_weight = 25
+    # background_read_weight = 25
+    ## TiFlash 支持自动根据当前的 IO 负载情况自动调整各种 IO 类型的限流带宽。
+    ## auto_tune_sec 表示自动调整逻辑的执行间隔，单位：second。0 表示关闭自动调整。
+    # auto_tune_sec = 5
+    ## IO 带宽占用的百分比的水位线，用于自动调整逻辑，一般不需要调整。
+    # emergency_pct = 96
+    # high_pct = 85
+    # medium_pct = 60
+    ## IO 带宽调整的限制参数，一般不需要调整
+    # tune_base = 2
+    # min_bytes_per_sec = 2097152
+
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割
     service_addr =  TiFlash raft 服务 和 coprocessor 服务监听地址
