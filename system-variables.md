@@ -130,8 +130,8 @@ mysql> SELECT * FROM t1;
 
 - 作用域：GLOBAL
 - 默认值：`mysql_native_password`
-- 这个变量用于设置身份验证方式。当把身份验证方式设定为默认方法时，服务端会显示当前服务端与客户端之间的连接状态。如需查询该变量的其他可选值，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)。
-- 可选值：`mysql_native_password` and `caching_sha2_password`。更多信息，请参见 [可用的身份验证插件](/security-compatibility-with-mysql.md#authentication-plugin-status)。
+- 这个变量用于设置身份验证方式。当把身份验证方式设定为默认方法时，服务端会显示当前服务端与客户端之间的连接状态。如需查询该变量的其他可选值，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
+- 可选值：`mysql_native_password`，`caching_sha2_password`。更多信息，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `ddl_slow_threshold`
 
