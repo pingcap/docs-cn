@@ -52,9 +52,9 @@ DESC data_lock_waits;
 * `"table_id"`：该 key 所属的表的 ID。
 * `"table_name"`：该 key 所属的表的名称。
 * `"handle_type"`：该 row key 的 handle 类型，其可能的值有：
-  * `"int"`：handle 为 int 类型，即 handle 为 row id；
-  * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型；
-  * `"unknown"`：当前暂不支持的 handle 类型。
+    * `"int"`：handle 为 int 类型，即 handle 为 row id；
+    * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型；
+    * `"unknown"`：当前暂不支持的 handle 类型。
 * `"partition_handle"`：是否为 partition handle。
 * `"handle_value"`：handle 的值。
 * `"index_id"`：该 index key 所属的 index id。

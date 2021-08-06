@@ -53,7 +53,6 @@ DESC tidb_trx;
 * `DB`：执行该事务的 session 当前的默认数据库名。
 * `ALL_SQL_DIGESTS`：该事务已经执行过的语句的 Digest 的列表，表示为一个 JSON 格式的字符串数组。每个事务最多记录前 50 条语句。通过 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数可以将该列的信息变换为对应的归一化 SQL 语句的列表。
 
-
 > **注意：**
 >
 > * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以获取该表中的完整信息。没有 PROCESS 权限的用户则只能查询到当前用户所执行的事务的信息。

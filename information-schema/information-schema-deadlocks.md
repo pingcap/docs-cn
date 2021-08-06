@@ -46,7 +46,6 @@ DESC deadlocks;
 
 要调整 `DEADLOCKS` 表中可以容纳的死锁事件数量，可通过 TiDB 配置文件中的 [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) 配置项进行调整，默认容纳最近 10 次死锁错误的信息。
 
-
 > **注意：**
 >
 > * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
@@ -61,9 +60,9 @@ DESC deadlocks;
 * `"table_id"`：该 key 所属的表的 ID。
 * `"table_name"`：该 key 所属的表的名称。
 * `"handle_type"`：该 row key 的 handle 类型，其可能的值有：
-  * `"int"`：handle 为 int 类型，即 handle 为 row id；
-  * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型；
-  * `"unknown"`：当前暂不支持的 handle 类型。
+    * `"int"`：handle 为 int 类型，即 handle 为 row id；
+    * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型；
+    * `"unknown"`：当前暂不支持的 handle 类型。
 * `"partition_handle"`：是否为 partition handle。
 * `"handle_value"`：handle 的值。
 * `"index_id"`：该 index key 所属的 index id。
@@ -197,4 +196,3 @@ DESC cluster_deadlocks;
 | TRX_HOLDING_LOCK        | bigint(21) unsigned | NO   |      | NULL    |       |
 +-------------------------+---------------------+------+------+---------+-------+
 ```
-
