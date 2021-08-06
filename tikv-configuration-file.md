@@ -1087,49 +1087,6 @@ rocksdb defaultcf titan 相关的配置项。
 + 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
 + 默认值：false
 
-<<<<<<< HEAD
-## rocksdb.writecf
-
-rocksdb writecf 相关的配置项。
-
-### `block-cache-size`
-
-+ block cache size。
-+ 默认值：机器总内存 * 15%
-+ 单位：MB|GB
-
-### `optimize-filters-for-hits`
-
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：false
-
-### `whole-key-filtering`
-
-+ 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：false
-
-## rocksdb.lockcf
-
-rocksdb lockcf 相关配置项。
-
-### `block-cache-size`
-
-+ block cache size。
-+ 默认值：机器总内存 * 2%
-+ 单位：MB|GB
-
-### `optimize-filters-for-hits`
-
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：false
-
-### `level0-file-num-compaction-trigger`
-
-+ 触发 compaction 的 L0 文件个数。
-+ 默认值：1
-
-=======
->>>>>>> 4f93467c2 (TiKV configuration: integrate writecf and lockcf to one part with defaultcf (#6816))
 ## raftdb
 
 raftdb 相关配置项。
