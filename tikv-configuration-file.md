@@ -848,29 +848,19 @@ rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `block-size`
 
-<<<<<<< HEAD
-+ rocksdb block size。
-+ 默认值：64KB
-=======
 + 一个 RocksDB block 的默认大小。
 + `defaultcf` 默认值：64KB
 + `writecf` 默认值：64KB
 + `lockcf` 默认值：16KB
->>>>>>> 4f93467c2 (TiKV configuration: integrate writecf and lockcf to one part with defaultcf (#6816))
 + 最小值：1KB
 + 单位：KB|MB|GB
 
 ### `block-cache-size`
 
-<<<<<<< HEAD
-+ rocksdb block cache size。
-+ 默认值：机器总内存 * 25%
-=======
 + 一个 RocksDB block 的默认缓存大小。
 + `defaultcf` 默认值：机器总内存 * 25%
 + `writecf` 默认值：机器总内存 * 15%
 + `lockcf` 默认值：机器总内存 * 2%
->>>>>>> 4f93467c2 (TiKV configuration: integrate writecf and lockcf to one part with defaultcf (#6816))
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -1005,15 +995,10 @@ bloom filter 为每个 key 预留的长度。
 ### `compaction-pri`
 
 + Compaction 优先类型
-<<<<<<< HEAD
-+ 可选择值：3（MinOverlappingRatio），0（ByCompensatedSize），1（OldestLargestSeqFirst），2（OldestSmallestSeqFirst）。
-+ 默认值：3
-=======
 + 可选择值：`0` (`ByCompensatedSize`)，`1` (`OldestLargestSeqFirst`)，`2` (`OldestSmallestSeqFirst`)，`3` (`MinOverlappingRatio`)。
 + `defaultcf` 默认值：`3`
 + `writecf` 默认值：`3`
 + `lockcf` 默认值：`1`
->>>>>>> 4f93467c2 (TiKV configuration: integrate writecf and lockcf to one part with defaultcf (#6816))
 
 ### `dynamic-level-bytes`
 
