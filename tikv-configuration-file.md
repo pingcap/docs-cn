@@ -312,6 +312,35 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 + 默认值：系统总内存大小的 45%
 + 单位：KB|MB|GB
 
+## storage.flow-control
+
+在 storage scheduler 层进行流控代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在大写入下卡住 raftstore/apply worker 导致 QPS drop 的问题。
+
+### `enable`
+
++ 是否开启 flow control 流控机制。当开启时，会自动关闭 KvDB 的 write stall 和 RaftDB 的 write stall（除了 memtable）
++ 默认值：true
+
+### `memtables-threshold`
+
++ 当 KvDB 的 memtable 达到该阈值时，流控机制开始工作。
++ 默认值：5
+
+### `l0-files-threshold`
+
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
++ 默认值：9
+
+### `soft-pending-compaction-bytes-limit`
+
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
++ 默认值："192GB"
+
+### `hard-pending-compaction-bytes-limit`
+
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。
++ 默认值："1024GB"
+
 ## storage.io-rate-limit
 
 I/O rate limiter 相关的配置项。
