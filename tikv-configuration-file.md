@@ -638,6 +638,13 @@ raftstore 相关的配置项。
 + 默认值：1
 + 最小值：大于 0
 
+### `inspect-interval`
+
++ 定期检测 Raftstore 的延迟情况，并且当检测延迟超过该时间时会被记为超时。
++ 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
++ 默认值: 500ms
++ 最小值：1ms
+
 ## coprocessor
 
 coprocessor 相关的配置项。
