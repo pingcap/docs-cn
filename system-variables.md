@@ -1414,6 +1414,7 @@ set tidb_slow_log_threshold = 200;
 
 
 ### `tidb_enable_auto_increment_in_generated`
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
