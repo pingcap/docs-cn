@@ -600,7 +600,11 @@ Type "I consent" to continue, anything else to exit: I consent
 
 ### 打印损坏的 SST 文件信息
 
-SST 文件的损坏会导致 TiKV 进程 panic，为了清理掉这些文件，你可以使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。请保证执行此命令前关闭当前 TiKV 实例。
+TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。为了清理掉这些文件，你可以使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
+
+> **注意：**
+>
+> 执行此命令前，请保证关闭当前运行的 TiKV 实例。
 
 ```bash
 $ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
@@ -624,6 +628,6 @@ corruption analysis has completed
 
 通过上面的输出，你可以看到损坏的 SST 文件和损坏原因等信息先被打印出，然后是相关的元信息。
 
-+ 在 `sst meta` 的输出里，14 表示 sst number，552997 表示 file size，紧随其后的是最小和最大的 seqno 等其它元信息。
-+ `overlap region` 部分会输出损坏 SST 文件所涉及的 region。这个信息是从 PD 组件获取的。
-+ `suggested operations` 部分会为你清理损坏的 SST 文件提供建议操作。你可以参考这些建议的命令清理文件并重新启动该 TiKV 实例。
++ 在 `sst meta` 输出部分，`14` 表示 SST 文件号，`552997` 表示文件大小，紧随其后的是最小和最大的序列号 (seq) 等其它元信息。
++ `overlap region` 部分为损坏 SST 文件所在 Region 的信息。该信息是从 PD 组件获取的。
++ `suggested operations` 部分为你清理损坏的 SST 文件提供建议操作。你可以参考这些建议的命令，清理文件，并重新启动该 TiKV 实例。
