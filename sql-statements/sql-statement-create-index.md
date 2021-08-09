@@ -202,7 +202,6 @@ DROP INDEX idx1 ON t1;
 
 假设已有建立在 lower(col1) 上的表达式索引 idx，那么：
 当读取的结果为相同的表达式时，可以使用表达式索引。例如：
-
 {{< copyable "sql" >}}
 
 ```sql
