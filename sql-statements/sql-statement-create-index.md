@@ -189,7 +189,7 @@ DROP INDEX idx1 ON t1;
 >
 > 表达式索引不能为主键。
 > 表达式索引中的表达式不能包含易变函数，例如 rand(), now() 等。
-> 表达式索引将隐式占用名字,  `_V$_{index_name}_{index_offset}`，如果已有相同名字的列存在，创建表达式索引将报错。如果后面新增相同名字的列，也会报错。
+> 表达式索引将隐式占用名字， `_V$_{index_name}_{index_offset}`，如果已有相同名字的列存在，创建表达式索引将报错。如果后面新增相同名字的列，也会报错。
 > 表达式索引中的表达式不能包含系统变量以及用户变量。
 > 表达式索引中的表达式不能包含子查询。
 > 表达式索引中的表达式不能包含 AUTO_INCREMENT 属性的列。一个例外是设置系统变量 tidb_enable_auto_increment_in_generated 为 true 后，可以去掉该限制。
@@ -258,7 +258,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 ## 相关系统变量
 
-和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 、 `tidb_ddl_reorg_priority` 和 `tidb_enable_auto_increment_in_generated`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 、 `tidb_ddl_reorg_priority` 和 `tidb_enable_auto_increment_in_generated`， 具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 
