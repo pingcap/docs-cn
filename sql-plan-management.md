@@ -167,7 +167,7 @@ explain select * from t1,t2 where t1.id = t2.id;
 
 > **注意：**
 >
-> 执行 DROP GLOBAL BINDING 会将当前 tidb-server 缓存中的绑定删除，并将系统表中对应行的状态修改为 'deleted'。该命令不会直接将系统表记录删除的原因是，其他 tidb-server 需要读取这个 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 update_time 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 已经读去过这个 'deleted' 状态并更新完缓存）的回收清除操作。
+> 执行 DROP GLOBAL BINDING 会将当前 tidb-server 缓存中的绑定删除，并将系统表中对应行的状态修改为 'deleted'。该命令不会直接将系统表记录删除的原因是，其他 tidb-server 需要读取这个 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 update_time 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 已经读取过这个 'deleted' 状态并更新完缓存）的回收清除操作。
 
 ### 查看绑定
 
