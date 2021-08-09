@@ -518,3 +518,36 @@ Type "I consent" to continue, anything else to exit: I consent
 > **Note**
 >
 > The command will expose data encryption keys as plaintext. In production, DO NOT redirect the output to a file. Even deleting the output file afterward may not cleanly wipe out the content from disk.
+
+### Print information related to damaged SST files
+
+Damaged SST files in TiKV might cause the TiKV process to panic. To clean up the damaged SST files, you will need the information of these files. To get the information, you can execute the `bad-ssts` command in TiKV Control. The needed information is shown in the output. The following is an example command and output.
+
+```bash
+$ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
+```
+
+```bash
+--------------------------------------------------------
+corruption info:
+data/tikv-21107/db/000014.sst: Corruption: Bad table magic number: expected 9863518390377041911, found 759105309091689679 in data/tikv-21107/db/000014.sst
+
+sst meta:
+14:552997[1 .. 5520]['0101' seq:1, type:1 .. '7A7480000000000000FF0F5F728000000000FF0002160000000000FAFA13AB33020BFFFA' seq:2032, type:1] at level 0 for Column family "default"  (ID 0)
+it isn't easy to handle local data, start key:0101
+
+overlap region:
+RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
+
+suggested operations:
+tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
+tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+--------------------------------------------------------
+corruption analysis has completed
+```
+
+From the output above, you can see that the information of the damaged SST file is printed first and then the meta-information is printed.
+
++ In the `sst meta` part, `14` means the SST file number; `552997` means the file size, followed by the smallest and largest sequence numbers and other meta-information.
++ The `overlap region` part shows the information of the Region involved. This information is obtained through the PD server.
++ The `suggested operations` part provides you suggestion to clean up the damaged SST file. You can take the suggestion to clean up files and restart the TiKV instance.
