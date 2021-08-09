@@ -1412,7 +1412,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-
 ### `tidb_enable_auto_increment_in_generated`
 
 - 作用域：SESSION | GLOBAL
