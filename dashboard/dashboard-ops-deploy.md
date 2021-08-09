@@ -125,4 +125,4 @@ tiup cluster display CLUSTER_NAME --dashboard
 ## 下一步
 
 - 参阅[访问 TiDB Dashboard](/dashboard/dashboard-access.md) 章节了解如何访问及登录集群上的 TiDB Dashboard 界面。
-- 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md) 章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。
+- 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。

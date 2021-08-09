@@ -18,8 +18,10 @@
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
 + 快速上手
-  + [快速上手指南](/quick-start-with-tidb.md)
+  + [快速上手 TiDB](/quick-start-with-tidb.md)
+  + [快速上手 HTAP](/quick-start-with-htap.md)
   + [SQL 基本操作](/basic-sql-operations.md)
+  + [深入探索 HTAP](/explore-htap.md)
 + 部署标准集群
   + [软硬件环境需求](/hardware-and-software-requirements.md)
   + [环境与系统配置检查](/check-before-deployment.md)
@@ -48,6 +50,7 @@
     + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
   + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-dumpling-files.md)
+  + [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
@@ -482,6 +485,9 @@
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + 会话管理与配置
+        + [分享会话](/dashboard/dashboard-session-share.md)
+        + [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       + [常见问题](/dashboard/dashboard-faq.md)
   + CLI
     + [tikv-ctl](/tikv-control.md)
@@ -538,8 +544,8 @@
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
-  + [产品路线图](/roadmap.md)
   + v5.1
+    - [5.1.1](/releases/release-5.1.1.md)
     - [5.1.0](/releases/release-5.1.0.md)
   + v5.0
     - [5.0.3](/releases/release-5.0.3.md)
@@ -548,6 +554,7 @@
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.14](/releases/release-4.0.14.md)
     - [4.0.13](/releases/release-4.0.13.md)
     - [4.0.12](/releases/release-4.0.12.md)
     - [4.0.11](/releases/release-4.0.11.md)

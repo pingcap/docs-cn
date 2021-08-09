@@ -49,7 +49,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：Byte
 + 当单条 SQL 语句使用临时磁盘，导致 TiDB server 的总体临时磁盘总量超过 `tmp-storage-quota` 时，当前 SQL 操作会被取消，并返回 `Out Of Global Storage Quota!` 错误。
 + 当 `tmp-storage-quota` 小于 0 时则没有上述检查与限制。
-+ 默认值: -1
++ 默认值：-1
 + 当 `tmp-storage-path` 的剩余可用容量低于 `tmp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
 
 ### `oom-action`
@@ -103,7 +103,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `server-version`
 
-+ 用来修改 TiDB 在以下情况下返回的版本号:
++ 用来修改 TiDB 在以下情况下返回的版本号：
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
 + 默认值：""
@@ -117,7 +117,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `repair-table-list`
 
-+ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 ["db.table1","db.table2"...]。
++ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 ["db.table1","db.table2", ……]。
 + 默认值：[]
 + 默认情况下，该 list 名单为空，表示没有所需修复的坏表信息。
 
@@ -182,7 +182,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `level`
 
-+ 指定日志的输出级别, 可选项为 [debug, info, warn, error, fatal]
++ 指定日志的输出级别，可选项为 [debug, info, warn, error, fatal]
 + 默认值："info"
 
 ### `format`
@@ -209,7 +209,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `slow-query-file`
 
 + 慢查询日志的文件名。
-+ 默认值："tidb-slow.log"，注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值是 ""。
++ 默认值："tidb-slow.log"。注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值是 ""。
 + 设置后，慢查询日志会单独输出到该文件。
 
 ### `slow-threshold`
@@ -268,6 +268,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 安全相关配置。
 
+### `require-secure-transport`
+
+- 配置是否要求客户端使用安全传输模式。
+- 默认值：`false`
+
 ### `enable-sem`
 
 - 启用安全增强模式 (SEM)。
@@ -312,8 +317,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `spilled-file-encryption-method`
 
 + 内存落盘文件的加密方式。
-+ 默认值: `"plaintext"`，表示不进行加密
-+ 可选值：`"plaintext"`、`"aes128-ctr"`
++ 默认值：`"plaintext"`，表示不进行加密。
++ 可选值：`"plaintext"`、`"aes128-ctr"`。
 
 ## performance
 
@@ -452,7 +457,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `enforce-mpp`
 
-+ 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询.
++ 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 

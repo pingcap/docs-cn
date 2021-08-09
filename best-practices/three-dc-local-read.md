@@ -11,7 +11,7 @@ summary: 了解通过 Stale Read 功能在三数据中心下就近读取数据�
 
 部署三数据中心的方法，参考[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md)。
 
-请注意，如果 TiKV 和 TiDB 都有 `labels` 配置项，在给 TiKV 和 TiDB 配置标签时，同一个数据中心下的 TiKV 和 TiDB 应该配置相同的 `zone` 标签。假设 TiKV 和 TiDB 都在 `dc-1` 数据中心下，那么两者都需要配置如下标签:
+请注意，如果 TiKV 和 TiDB 都有 `labels` 配置项，在给 TiKV 和 TiDB 配置标签时，同一个数据中心下的 TiKV 和 TiDB 应该配置相同的 `zone` 标签。假设 TiKV 和 TiDB 都在 `dc-1` 数据中心下，那么两者都需要配置如下标签：
 
 ```
 [labels]

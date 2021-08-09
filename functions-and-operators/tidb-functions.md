@@ -26,6 +26,8 @@ TableStmt ::=
 
 ### 示例
 
+以下示例中，表 `t1` 有一个隐藏的 `rowid`，该 `rowid` 由 TiDB 生成。语句中使用了 `TIDB_DECODE_KEY` 函数。结果显示，隐藏的 `rowid` 被解码后并输出，这是典型的非聚簇主键结果。
+
 {{< copyable "sql" >}}
 
 ```sql
@@ -37,6 +39,69 @@ SELECT START_KEY, TIDB_DECODE_KEY(START_KEY) FROM information_schema.tikv_region
                  START_KEY: 7480000000000000FF3B5F728000000000FF1DE3F10000000000FA
 TIDB_DECODE_KEY(START_KEY): {"_tidb_rowid":1958897,"table_id":"59"}
 1 row in set (0.00 sec)
+```
+
+以下示例中，表 `t2` 有一个复合聚簇主键。由 JSON 输出可知，输出结果的 `handle` 项中包含了主键部分两列的信息，即两列的名称和对应的值。
+
+{{< copyable "sql" >}}
+
+```sql
+show create table t2\G
+```
+
+```sql
+*************************** 1. row ***************************
+       Table: t2
+Create Table: CREATE TABLE `t2` (
+  `id` binary(36) NOT NULL,
+  `a` tinyint(3) unsigned NOT NULL,
+  `v` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`a`,`id`) /*T![clustered_index] CLUSTERED */
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+1 row in set (0.001 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select * from information_schema.tikv_region_status where table_name='t2' limit 1\G
+```
+
+```sql
+*************************** 1. row ***************************
+                REGION_ID: 48
+                START_KEY: 7480000000000000FF3E5F720400000000FF0000000601633430FF3338646232FF2D64FF3531632D3131FF65FF622D386337352DFFFF3830653635303138FFFF61396265000000FF00FB000000000000F9
+                  END_KEY:
+                 TABLE_ID: 62
+                  DB_NAME: test
+               TABLE_NAME: t2
+                 IS_INDEX: 0
+                 INDEX_ID: NULL
+               INDEX_NAME: NULL
+           EPOCH_CONF_VER: 1
+            EPOCH_VERSION: 38
+            WRITTEN_BYTES: 0
+               READ_BYTES: 0
+         APPROXIMATE_SIZE: 136
+         APPROXIMATE_KEYS: 479905
+  REPLICATIONSTATUS_STATE: NULL
+REPLICATIONSTATUS_STATEID: NULL
+1 row in set (0.005 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF3338646232FF2D64FF3531632D3131FF65FF622D386337352DFFFF3830653635303138FFFF61396265000000FF00FB000000000000F9');
+```
+
+```sql
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| tidb_decode_key('7480000000000000FF3E5F720400000000FF0000000601633430FF3338646232FF2D64FF3531632D3131FF65FF622D386337352DFFFF3830653635303138FFFF61396265000000FF00FB000000000000F9') |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| {"handle":{"a":"6","id":"c4038db2-d51c-11eb-8c75-80e65018a9be"},"table_id":62}                                                                                                        |
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
 ```
 
 ### MySQL 兼容性

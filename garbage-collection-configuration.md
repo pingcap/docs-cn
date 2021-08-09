@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/garbage-collection-configuration/','/docs-cn/dev/referen
 
 # GC 配置
 
-你可以通过以下系统变量进行 GC 配置:
+你可以通过以下系统变量进行 GC 配置：
 
 * [`tidb_gc_enable`](/system-variables.md#tidb_gc_enable-从-v50-版本开始引入)
 * [`tidb_gc_run_interval`](/system-variables.md#tidb_gc_run_interval-从-v50-版本开始引入)
@@ -29,7 +29,7 @@ tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_s
 
 TiDB 5.0 及之后的版本不再需要向各个 TiKV Region 都发送触发 GC 的请求，因此不再提供 `CENTRAL` GC 模式的支持，取而代之的是效率更高的 `DISTRIBUTED` GC 模式 （自 TiDB 3.0 起的默认 GC 模式）。
 
-如果要了解 TiDB 历史版本中 GC 配置的变化信息，请使用左侧导航栏中的 _TIDB 版本选择器_ 切换到本文档的历史版本。
+如果要了解 TiDB 历史版本中 GC 配置的变化信息，请使用左侧导航栏中的 _"TIDB 版本选择器"_ 切换到本文档的历史版本。
 
 ## GC in Compaction Filter 机制
 

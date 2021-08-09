@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/partitioned-table/','/docs-cn/dev/reference/sql/partitio
 
 ## 分区类型
 
-本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区) 和 [Hash 分区](#hash-分区)。Range 分区，List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
+本节介绍 TiDB 中的分区类型。当前支持的类型包括 [Range 分区](#range-分区)、[List 分区](#list-分区)、[List COLUMNS 分区](#list-columns-分区)和 [Hash 分区](#hash-分区)。Range 分区，List 分区和 List COLUMNS 分区可以用于解决业务中大量删除带来的性能问题，支持快速删除分区。Hash 分区则可以用于大量写入场景下的数据打散。
 
 ### Range 分区
 
@@ -241,7 +241,7 @@ test> INSERT INTO t VALUES (7, 7);
 ERROR 1525 (HY000): Table has no partition for value 7
 ```
 
-要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用该关键字后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错:
+要忽略以上类型的错误，可以通过使用 `IGNORE` 关键字。使用该关键字后，就不会插入包含不匹配分区列值的行，但是会插入任何具有匹配值的行，并且不会报错：
 
 ```sql
 test> TRUNCATE t;
@@ -1018,7 +1018,7 @@ PARTITION BY HASH(col1 + col3)
 ERROR 1491 (HY000): A PRIMARY KEY must include all columns in the table's partitioning function
 ```
 
-原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们，做如下修改后语句即为合法:
+原因是 `col1` 和 `col3` 出现在分区键中，但是几个唯一键定义并没有完全包含它们，做如下修改后语句即为合法：
 
 {{< copyable "sql" >}}
 
@@ -1080,7 +1080,7 @@ PARTITION BY HASH( YEAR(col2) )
 PARTITIONS 4;
 ```
 
-以上两个例子中，主键都没有包含分区表达式中的全部的列，在主键中补充缺失列后语句即为合法:
+以上两个例子中，主键都没有包含分区表达式中的全部的列，在主键中补充缺失列后语句即为合法：
 
 {{< copyable "sql" >}}
 
@@ -1351,7 +1351,7 @@ mysql> explain select * from t1 where id < 150;
 + 不能使用 Plan Cache（见以下示例一和示例二）
 + 不能使用 IndexJoin 的执行方式（见以下示例三和示例四）
 
-**示例一**：以下示例在配置文件中开启 Plan Cache 功能，并在 `static` 模式下执行同一个查询两次：
+**示例一**：以下示例在配置文件中开启 Plan Cache 功能，并在 `static` 模式下执行同一个查询两次。
 
 {{< copyable "sql" >}}
 
@@ -1383,7 +1383,7 @@ mysql> select @@last_plan_from_cache;
 
 `last_plan_from_cache` 变量可以显示上一次查询是否命中 Plan Cache。从以上示例一可知，在 `static` 模式下，即使在分区表上执行同一个查询多次，也不会命中 Plan Cache。
 
-**示例二**：以下示例在 `dynamic` 模式下执行与示例一相同的操作：
+**示例二**：以下示例在 `dynamic` 模式下执行与示例一相同的操作。
 
 {{< copyable "sql" >}}
 
@@ -1412,7 +1412,7 @@ mysql> select @@last_plan_from_cache;
 
 由示例二结果可知，开启 `dynamic` 模式后，分区表查询能命中 Plan Cache 。
 
-**示例三**：以下示例在 `static` 模式下尝试执行计划带 IndexJoin 的查询：
+**示例三**：以下示例在 `static` 模式下尝试执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
@@ -1450,7 +1450,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 从以上示例三结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
 
-**示例四**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询：
+**示例四**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 

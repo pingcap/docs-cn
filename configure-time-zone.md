@@ -27,12 +27,12 @@ TiDB 还可以通过设置 session 变量 `time_zone` 为每个连接维护各�
 SET time_zone = timezone;
 ```
 
-查看当前使用的时区的值：
+使用以下 SQL 语句查看当前全局时区、客户端时区和系统时区的值：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @@global.time_zone, @@session.time_zone;
+SELECT @@global.time_zone, @@session.time_zone, @@global.system_time_zone;
 ```
 
 设置 `time_zone` 的值的格式：
