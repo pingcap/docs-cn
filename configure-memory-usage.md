@@ -127,8 +127,7 @@ server-memory-quota = 34359738368
 
 ## 使用串行的 HashAgg 实现来缓解内存使用
 
-默认配置下，tidb-server 会使用并行的 HashAgg 实现来进行聚合函数的计算。
-但是并行的 HashAgg 实现有如下缺点：
+默认配置下，tidb-server 会使用并行的 HashAgg 实现来进行聚合函数的计算。但是并行的 HashAgg 实现有如下缺点：
 
 1. 相较于串行的 HashAgg 来说，内存占用更大。
 2. 无法进行落盘操作。当 SQL 的内存使用超过 Memory Quota 时，tidb-server 会 cancel 掉这条 SQL。
