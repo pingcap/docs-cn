@@ -604,6 +604,9 @@ SST 文件的损坏会导致 TiKV 进程 panic，为了清理掉这些文件，�
 
 ```bash
 $ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
+```
+
+```bash
 --------------------------------------------------------
 corruption info:
 data/tikv-21107/db/000014.sst: Corruption: Bad table magic number: expected 9863518390377041911, found 759105309091689679 in data/tikv-21107/db/000014.sst
