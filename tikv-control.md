@@ -621,6 +621,6 @@ corruption analysis has completed
 
 通过上面的输出，你可以看到损坏的 SST 文件和损坏原因等信息先被打印出，然后是相关的元信息。
 
-+ 在 `sst meta` 的输出里, 14 表示 sst number，552997 表示 file size，紧随其后的是最小和最大的 seqno 等其它元信息。
++ 在 `sst meta` 的输出里，14 表示 sst number，552997 表示 file size，紧随其后的是最小和最大的 seqno 等其它元信息。
 + `overlap region` 部分会输出损坏 SST 文件所涉及的 region。这个信息是从 PD 组件获取的。
 + `suggested operations` 部分会为你清理损坏的 SST 文件提供建议操作。你可以参考这些建议的命令清理文件并重新启动该 TiKV 实例。
