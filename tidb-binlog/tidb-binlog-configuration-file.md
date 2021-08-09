@@ -333,22 +333,19 @@ tbl-name = "~^a.*"
 
 ### syncer.to.checkpoint
 
-以下是 `syncer.to.checkpoint` 相关的配置项。
+* `type`：指定用哪种方式保存同步进度，目前支持的选项：`mysql` 和 `tidb`。
 
-### type
+> **注意：**
+> 当 file 类型的下游 checkpoint 保存在本地文件系统
+> 当 `mysql` 或 `tidb` 类型保存同步进度时，需要指定以下配置项：
 
-* 指定用哪种方式保存同步进度。
-* 目前支持的选项：`mysql` 和 `tidb`
+* `schema`：默认为 `"tidb_binlog"`。
 
-* 默认：与下游类型相同。例如 `file` 类型的下游进度保存在本地文件系统，`mysql` 类型的下游进度保存在下游数据库。当明确指定要使用 `mysql` 或 `tidb` 保存同步进度时，需要指定以下配置项：
+  > **注意：**
+  >
+  > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
 
-    * `schema`：默认为 `"tidb_binlog"`。
-
-        > **注意：**
-        >
-        > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
-
-    * `host`
-    * `user`
-    * `password`
-    * `port`
+* `host`
+* `user`
+* `password`
+* `port`
