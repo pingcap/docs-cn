@@ -523,6 +523,10 @@ Type "I consent" to continue, anything else to exit: I consent
 
 Damaged SST files in TiKV might cause the TiKV process to panic. To clean up the damaged SST files, you will need the information of these files. To get the information, you can execute the `bad-ssts` command in TiKV Control. The needed information is shown in the output. The following is an example command and output.
 
+> **Note:**
+>
+> Before running this command, stop the running TiKV instance.
+
 ```bash
 $ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
 ```
