@@ -197,7 +197,7 @@ DROP INDEX idx1 ON t1;
 >
 > 表达式索引中的表达式不能包含子查询。
 >
-> 表达式索引中的表达式不能包含 AUTO_INCREMENT 属性的列。一个例外是设置系统变量 tidb_enable_auto_increment_in_generated 为 true 后，可以去掉该限制。
+> 表达式索引中的表达式不能包含 AUTO_INCREMENT 属性的列。一个例外是设置系统变量 `tidb_enable_auto_increment_in_generated` 为 `true` 后，可以去掉该限制。
 >
 > 表达式索引中的表达式不能包含窗口函数。
 >
