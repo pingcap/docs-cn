@@ -318,7 +318,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ### `enable`
 
-+ 是否开启 flow control 流控机制。当开启时，会自动关闭 KvDB 的 write stall 和 RaftDB 的 write stall（除了 memtable）
++ 是否开启 flow control 流控机制。当开启时，会自动关闭 KvDB 的 write stall 和 RaftDB 的除了 memtable 以外的 write stall
 + 默认值：true
 
 ### `memtables-threshold`
