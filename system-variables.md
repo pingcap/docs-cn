@@ -517,6 +517,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
+### `tidb_enable_auto_increment_in_generated`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
+
 ### `tidb_enable_cascades_planner`
 
 - 作用域：SESSION | GLOBAL
@@ -1411,9 +1417,3 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_enable_auto_increment_in_generated`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`OFF`
-- 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
