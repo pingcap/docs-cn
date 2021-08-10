@@ -1014,7 +1014,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`100`
 - 范围：`[0, 2147483647]`
 - 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
-- 如果 Limit 或者 TopN 的取值个数小于等于这个阈值，则 Limit 和 Sort 算子会被强制下推到 TiKV，该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
+- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
 
 ### `tidb_opt_enable_correlation_adjustment`
 
