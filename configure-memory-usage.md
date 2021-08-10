@@ -125,28 +125,53 @@ server-memory-quota = 34359738368
 
 5. 通过访问状态文件所在目录（该示例中的目录为 `/tmp/1000_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage/record`），可以得到一组文件，其中包括 `goroutinue`、`heap`、`running_sql` 3 个文件，文件以记录状态文件的时间为后缀。这 3 个文件分别用来记录报警时的 goroutine 栈信息，堆内存使用状态，及正在运行的 SQL 信息。其中 `running_sql` 文件内的日志格式请参考 [`expensive-queries`](/identify-expensive-queries.md)。
 
-## 使用串行的 HashAgg 实现来缓解内存使用
+## tidb-server 其它内存控制策略
 
-默认配置下，tidb-server 会使用并行的 HashAgg 实现来进行聚合函数的计算。但是并行的 HashAgg 实现有如下缺点：
+### 流控
 
-1. 相较于串行的 HashAgg 来说，内存占用更大。
-2. 无法进行落盘操作。当 SQL 的内存使用超过 Memory Quota 时，tidb-server 会 cancel 掉这条 SQL。
+- TiDB 目前支持对读数据算子的动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
+- 流控行为会由参数 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 控制。
+- 当流控被触发时，会在日志中打印一条包含关键字 `memory exceeds quota, destroy one token now` 的日志。
 
-在对 SQL 执行时间要求不严格的情况下，我们可以通过使用串行的 HashAgg 实现，借助落盘来缓解内存压力。
+### 落盘
 
-下例通过构造一个占用大量内存的 SQL 语句，对该功能进行演示：
+- TiDB 目前支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 Memory Quota 时，tidb-server 可以通过落盘执行算子的中间数据，缓解内存压力。目前支持落盘的算子有：Sort，MergeJoin，HashJoin，HashAgg。
+- 落盘行为会由参数 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)，[`oom-use-tmp-storage`](/tidb-configuration-file.md#oom-use-tmp-storage)，[`oom-use-tmp-storage`](/tidb-configuration-file.md#oom-use-tmp-storage), [`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path),[`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) 共同控制。
+- Sort，MergeJoin，HashJoin 落盘是从 v4.0.0 版本开始引入的，HashAgg 落盘是从 v5.2.0 版本开始引入的。
+- 含 HashAgg 的 SQL 引起 OOM 时，可以尝试设置 concurrency = 1 来触发落盘。
 
-1. 配置 SQL 的 Memory Quota 为 1GB（默认 1GB）。 `set tidb_mem_quota_query = 1 << 30`
+下例通过构造一个占用大量内存的 SQL 语句，对 HashAgg 落盘功能进行演示：
+
+1. 将 SQL 语句的 Memory Quota 配置为 1GB（默认 1GB）：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set tidb_mem_quota_query = 1 << 30;
+    ```
+
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 256 行不同的数据。
-3. 尝试执行 SQL `explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;`。该 SQL 占用巨大的内存，会被 tidb-server cancel 掉。
+
+3. 尝试执行下列 SQL 语句。该 SQL 语句占用大量内存，会返回 Out of Memory Quota 错误，被 tidb-server cancel 掉。
+
+    {{< copyable "sql" >}}
 
     ```sql
     [tidb]> explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;
     ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
     ```
 
-4. 通过用户变量 `set tidb_executor_concurrency = 1;`，将执行器的并发度调整为 1。此时，HashAgg 会使用串行的执行逻辑。
-5. 执行相同的 SQL，SQL 可以执行成功。可以从详细的执行计划看出，HashAgg 使用了 600MB 的硬盘空间。
+4. 通过用户变量 `tidb_executor_concurrency`，将执行器的并发度调整为 1。在此配置下，内存不足时 HashAgg 会使用尝试触发落盘。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    set tidb_executor_concurrency = 1;
+    ```
+
+5. 执行相同的 SQL 语句，不再返回错误，可以执行成功。从详细的执行计划可以看出，HashAgg 使用了 600MB 的硬盘空间。
+
+    {{< copyable "sql" >}}
 
     ```sql
     [tidb]> explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;
@@ -166,7 +191,7 @@ server-memory-quota = 34359738368
     9 rows in set (1 min 37.428 sec)
     ```
 
-> **注意：**
+> **注意： HashAgg 落盘功能的限制**
 >
-> + HashAgg 目前仅串行的实现支持落盘功能。使用并行的 HashAgg 且内存占用过大时，无法进行落盘。
+> + 默认配置下，HashAgg 无法落盘。如果需要使用 HashAgg 落盘功能，需要将执行器并发度调整为 1。
 > + HashAgg 落盘功能目前不支持 distinct 聚合函数。使用 distinct 函数且内存占用过大时，无法进行落盘。
