@@ -166,10 +166,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
-        To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
+        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root -p (no password) --comments
         To view the dashboard: http://127.0.0.1:2379/dashboard
-        To view the monitor: http://127.0.0.1:9090
+        PD client endpoints: [127.0.0.1:2379]
+        To view the Prometheus: http://127.0.0.1:9090
+        To view the Grafana: http://127.0.0.1:3000
         ```
 
         > **注意：**
@@ -198,6 +199,8 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
+
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
 
 7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
