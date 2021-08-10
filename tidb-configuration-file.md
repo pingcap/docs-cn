@@ -325,7 +325,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 启动时自动生成 TLS 身份验证。
 + 默认值：`true`
 
-
 ## performance
 
 性能相关配置。
