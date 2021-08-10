@@ -631,15 +631,19 @@ POST /api/v1/changefeeds
     {"matcher":["test1.*", "test2.*"], "dispatcher":"ts"},
     {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"},
   ],
-	"protocal":"default", 
+  "protocal":"default", 
 }
 
 ```
 `dispatchers`: 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器,支持 default、ts、rowid、table 四种分发器，分发规则如下：
+
  - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
  - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
  - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
  - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
+
+
+```
 
 `matcher` 的匹配语法和过滤器规则语法相同。
 
@@ -653,10 +657,7 @@ POST /api/v1/changefeeds
 
 ```shell
 curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blcakhole://"}'
-
 ```
-
-
 
 ### 删除同步任务
 
@@ -683,8 +684,6 @@ DELETE /api/v1/changefeeds/{changefeed_id}
 ```shell
 curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 ```
-
-
 
 ### 更新同步任务配置
 
@@ -728,10 +727,6 @@ PUT /api/v1/changefeeds/{changefeed_id}
 ```shell
  curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/test1 -d '{"mounter_worker_num":32}'
 ```
-
-
-
-
 
 ### 查询同步任务列表
 
@@ -781,8 +776,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
     }
 ]
 ```
-
-
 
 ### 查询特定同步任务
 
@@ -837,11 +830,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
 }
 ```
 
-
-
 ### 暂停同步任务
-
-#### 请求URI
 
 该接口是一个异步接口，请求成功会返回 `202 Accepted` ，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
 
@@ -866,8 +855,6 @@ POST /api/v1/changefeeds/{changefeed_id}/pasue
 ```shell
 curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/pause
 ```
-
-
 
 ### 恢复同步任务
 
@@ -895,10 +882,6 @@ POST /api/v1/changefeeds/{changefeed_id}/resume
 curl -X POST http://127.0.0.1:8300/api/v1/changefeeds/test1/resume
 ```
 
-
-
-
-
 ### 查询同步子任务(`processor`)列表
 
 该接口是一个同步接口，请求成功会返回当前 TiCDC 集群中的所有 processor 的基本信息。
@@ -923,8 +906,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors
     }
 ]
 ```
-
-
 
 ### 查询特定同步子任务(`processor`)
 
@@ -964,8 +945,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors/test1/561c3784-77f0-4863-ad5
 }        
 ```
 
-
-
 ### 查询 TiCDC 服务进程 (`capture`) 列表
 
 该接口是一个同步接口，请求成功会返回当前 TiCDC 集群中的所有 capture 的基本信息。
@@ -992,9 +971,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/captures
 ]
 ```
 
-
-
-
 ### 驱逐 owner 节点
 
 该接口是一个异步的请求，请求成功会返回 `202 Accepted` ，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
@@ -1010,7 +986,6 @@ POST /api/v1/owner/resign
 ```shell
 curl -X POST http://127.0.0.1:8300/api/v1/owner/resign
 ```
-
 
 ### 手动触发表的负载均衡
 
@@ -1103,8 +1078,6 @@ curl -X POST -d 'log_level=debug' http://127.0.0.1:8300/api/v1/log
 ```
 
 如上所示，`error_msg` 描述了错误信息， `error_code` 则是相应的错误代码。
-
-## 
 
 ## 同步任务配置文件描述
 
