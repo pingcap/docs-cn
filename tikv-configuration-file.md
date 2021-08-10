@@ -314,7 +314,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ## storage.flow-control
 
-在 storage scheduler 层进行流控代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在大写入下卡住 raftstore/apply worker 导致 QPS drop 的问题。
+在 scheduler 层进行流控代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在大写入下卡住 raftstore/apply 线程导致 QPS drop 的问题。
 
 ### `enable`
 
@@ -323,7 +323,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ### `memtables-threshold`
 
-+ 当 KvDB 的 memtable 达到该阈值时，流控机制开始工作。
++ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。
 + 默认值：5
 
 ### `l0-files-threshold`
