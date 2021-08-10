@@ -1075,7 +1075,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 热点，可选的维度有 `byte` 和 `key`。需要注意的是，若集群未全部升级到 v5.2 及以上版本时，它们不会生效。通常用户不需要修改这些配置项。
+- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同类型的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 类型的热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 类型的热点，可选的维度有 `byte` 和 `key`。若集群未全部升级到 v5.2 及以上版本时，它们不会生效。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
