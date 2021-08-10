@@ -320,6 +320,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：`"plaintext"`，表示不进行加密。
 + 可选值：`"plaintext"`、`"aes128-ctr"`。
 
+### `auto-tls`
+
++ TiDB 启动时自动生成 TLS 身份验证。
++ 默认值：`true`
+
+
 ## performance
 
 性能相关配置。
