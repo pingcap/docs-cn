@@ -202,9 +202,9 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
 
-7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
-8. 测试完成之后，可以通过执行以下步骤来清理集群：
+9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
     1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
 
