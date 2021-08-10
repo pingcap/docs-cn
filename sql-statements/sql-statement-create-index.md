@@ -224,10 +224,10 @@ SELECT lower(col1) FROM t;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM t WHERE lower(col1) = “a”;
-SELECT * FROM t WHERE lower(col1) > “a”;
-SELECT * FROM t WHERE lower(col1) BETWEEN “a” AND “b”;
-SELECT * FROM t WHERE lower(col1) in (“a”, “b”);
+SELECT * FROM t WHERE lower(col1) = "a";
+SELECT * FROM t WHERE lower(col1) > "a";
+SELECT * FROM t WHERE lower(col1) BETWEEN "a" AND "b";
+SELECT * FROM t WHERE lower(col1) in ("a", "b");
 SELECT * FROM t WHERE lower(col1) > "a" AND lower(col1) < "b";
 SELECT * FROM t WHERE lower(col1) > "b" OR lower(col1) < "a";
 ```
