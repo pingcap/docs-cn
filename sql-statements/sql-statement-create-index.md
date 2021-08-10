@@ -249,7 +249,7 @@ SELECT max(lower(col1)) FROM t；
 SELECT min(col1) FROM t GROUP BY lower(col1);
 ```
 
-`show index`, `information_schema.tidb_indexes` 以及 `information_schema.STATISTICS` 中的 `Expression` 这一列将显示表达式索引对应的表达式。对于非表达式索引，其值为 `NULL`。
+要查看表达式索引对应的表达式，可执行 `show index` 或查看系统表 `information_schema.tidb_indexes` 以及 `information_schema.STATISTICS` 表，输出中 `Expression` 这一列显示对应的表达式。对于非表达式索引，该列的值为 `NULL`。
 
 维护表达式索引的代价比一般的索引更高，因为在插入或者更新每一行时都需要计算出表达式的值。因为表达式的值已经存储在索引中，所以当优化器选择表达式索引时，表达式的值就不需要再计算。因此，当查询速度比插入速度和更新速度更重要时，可以考虑建立表达式索引。
 
