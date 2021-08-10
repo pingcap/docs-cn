@@ -177,7 +177,7 @@ ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
 CREATE TABLE t1(col1 char(10), col2 char(10), key index((col1 + col2)));
 ```
 
-删除表达式索引与删除普通索引一致：
+删除表达式索引与删除普通索引的方法一致：
 
 {{< copyable "sql" >}}
 
