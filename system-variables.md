@@ -1015,6 +1015,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
+### `tidb_opt_limit_push_down_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`100`
+- 范围：`[0, 2147483647]`
+- 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
+- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
+
+### `tidb_opt_enable_correlation_adjustment`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器是否开启交叉估算。
+
 ### `tidb_opt_correlation_exp_factor`
 
 - 作用域：SESSION | GLOBAL
