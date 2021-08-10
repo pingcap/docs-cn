@@ -633,8 +633,8 @@ POST /api/v1/changefeeds
   ],
   "protocal":"default", 
 }
-
 ```
+
 `dispatchers`: 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器,支持 default、ts、rowid、table 四种分发器，分发规则如下：
 
  - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
@@ -642,10 +642,7 @@ POST /api/v1/changefeeds
  - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
  - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 
-
-```
-
-`matcher` 的匹配语法和过滤器规则语法相同。
+`matcher`: 匹配语法和过滤器规则语法相同。
 
 `protocal`: 对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 default、canal、avro 和 maxwell 四种协议，默认为 TiCDC Open Protocol。
 
