@@ -58,7 +58,8 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## 废弃实验参数：bg_task_io_rate_limit
+    ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
+    # bg_task_io_rate_limit = 0
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
