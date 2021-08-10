@@ -336,7 +336,7 @@ tbl-name = "~^a.*"
 * `type`：指定用哪种方式保存同步进度，目前支持的选项：`mysql`, `tidb` 和 `file`。
 
 > **注意：**
-> 当 file 类型的下游 checkpoint 保存在本地文件系统
+> file 类型的下游 checkpoint 保存在 `<data-dir>/savepoint` 文件中
 > 当 `mysql` 或 `tidb` 类型保存同步进度时，需要指定以下配置项：
 
 * `schema`：默认为 `"tidb_binlog"`。
