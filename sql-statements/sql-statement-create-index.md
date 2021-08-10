@@ -240,7 +240,7 @@ SELECT * FROM t WHERE lower(col1) > "b" OR lower(col1) < "a";
 SELECT * FROM t ORDER BY lower(col1);
 ```
 
-当聚合函数或者 GROUP BY 中包含相同的表达式时，可以使用表达式索引。例如：
+当聚合函数或者 `GROUP BY` 中包含相同的表达式时，可以使用表达式索引。例如：
 
 {{< copyable "sql" >}}
 
