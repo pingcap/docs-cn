@@ -98,8 +98,8 @@ driver = "file"
 #keep-after-success = false
 
 [tikv-importer]
-# Delivery backend, can be "importer", "local", or "tidb".
-# backend = "importer"
+# Delivery backend, can be "local", "importer" or "tidb".
+# backend = "local"
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
 # Action to do when trying to insert a duplicated entry in the "tidb" backend.
@@ -362,7 +362,7 @@ min-available-ratio = 0.05
 | -d *directory* | Directory or [external storage URL](/br/backup-and-restore-storages.md) of the data dump to read from | `mydumper.data-source-dir` |
 | -L *level* | Log level: debug, info, warn, error, fatal (default = info) | `lightning.log-level` |
 | -f *rule* | [Table filter rules](/table-filter.md) (can be specified multiple times) | `mydumper.filter` |
-| --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-backends.md) (`importer`, `local`, or `tidb`) | `tikv-importer.backend` |
+| --backend *backend* | [Delivery backend](/tidb-lightning/tidb-lightning-backends.md) (`local`, `importer`, or `tidb`) | `tikv-importer.backend` |
 | --log-file *file* | Log file path (default = a temporary file in `/tmp`) | `lightning.log-file` |
 | --status-addr *ip:port* | Listening address of the TiDB Lightning server | `lightning.status-port` |
 | --importer *host:port* | Address of TiKV Importer | `tikv-importer.addr` |

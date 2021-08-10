@@ -10,13 +10,13 @@ The backend determines how TiDB Lightning imports data into the target cluster.
 
 TiDB Lightning supports the following [backends](/tidb-lightning/tidb-lightning-glossary.md#back-end):
 
-+ [Importer-backend](#tidb-lightning-importer-backend) (default)
 + [Local-backend](#tidb-lightning-local-backend)
++ [Importer-backend](#tidb-lightning-importer-backend)
 + [TiDB-backend](#tidb-lightning-tidb-backend)
 
-The **Importer-backend** (default): `tidb-lightning` first encodes the SQL or CSV data into KV pairs, and relies on the external `tikv-importer` program to sort these KV pairs and ingest directly into the TiKV nodes.
-
 The **Local-backend**: `tidb-lightning` first encodes data into key-value pairs, sorts and stores them in a local temporary directory, and *upload* these key-value pairs to each TiKV node *as SST files*. Then, TiKV ingests these *SST files* into the cluster. The implementation of Local-backend is the same with that of Importer-backend but does not rely on the external `tikv-importer` component.
+
+The **Importer-backend**: `tidb-lightning` first encodes the SQL or CSV data into KV pairs, and relies on the external `tikv-importer` program to sort these KV pairs and ingest directly into the TiKV nodes.
 
 The **TiDB-backend**: `tidb-lightning` first encodes these data into SQL `INSERT` statements, and has these statements executed directly on the TiDB node.
 
