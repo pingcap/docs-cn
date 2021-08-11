@@ -59,17 +59,22 @@ DESC deadlocks;
 * `"db_name"`：该 key 所属的数据库（schema）的名称。
 * `"table_id"`：该 key 所属的表的 ID。
 * `"table_name"`：该 key 所属的表的名称。
+* `"partition_id"`：该 key 所在的 partition 的 ID。
+* `"partition_name"`：该 key 所在的 partition 的名称。
 * `"handle_type"`：该 row key 的 handle 类型，其可能的值有：
     * `"int"`：handle 为 int 类型，即 handle 为 row id；
     * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型；
     * `"unknown"`：当前暂不支持的 handle 类型。
-* `"partition_handle"`：是否为 partition handle。
 * `"handle_value"`：handle 的值。
 * `"index_id"`：该 index key 所属的 index id。
 * `"index_name"`：该 index key 所属的 index 名称。
 * `"index_values"`：该 index key 中的 index value。
 
-其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`，index key 不会包含 `handle_type` 和 `partition_handle`，已经被 drop 掉的表中的 key 的信息可能只有 `table_id` 等几个 ID。
+其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`，index key 不会包含 `handle_type` 和 `handle_value`，已经被 drop 掉的表中的 key 的信息可能只有 `table_id` 等几个 ID。
+
+> **注意：**
+>
+> 如果一个 key 来自一张启用了 partition 的表，而在查询时，由于某些原因（例如，其所属的表已经被删除）导致无法查询其所属的 schema 信息，则其所属的 partition ID 可能会出现在 `table_id` 字段中。这是因为，TiDB 对不同 partition 的 key 的编码方式与对几张独立的表的 key 的编码方式一致，因而在缺失 schema 信息时无法确认该 key 属于一个普通的表还是一个 partition。
 
 ## 可重试的死锁错误
 
