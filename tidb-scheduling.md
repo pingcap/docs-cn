@@ -45,7 +45,7 @@ The above situations can be classified into two types:
     * Storage capacity of all TiKV peers are balanced;
     * Hot spots are balanced;
     * Speed of load balancing for the Regions needs to be limited to ensure that online services are stable;
-    * Maintainers are able to to take peers online/offline manually.
+    * Maintainers are able to take peers online/offline manually.
 
 After the first type of requirements is satisfied, the system will be failure tolerable. After the second type of requirements is satisfied, resources will be utilized more efficiently and the system will have better scalability.
 
