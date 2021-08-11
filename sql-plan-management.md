@@ -203,7 +203,7 @@ SELECT [SESSION] @@last_plan_from_binding;
 
 另外，当使用 `explain format = 'verbose'`  语句查看一条 SQL 语句的查询计划时，如果该 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
 
-```
+```sql
 -- 创建一个 global binding
 
 create global binding for
