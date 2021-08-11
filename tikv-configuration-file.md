@@ -314,11 +314,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ## storage.flow-control
 
-在 scheduler 层进行流控代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在大写入下卡住 raftstore/apply 线程导致 QPS drop 的问题。
+在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在写入量较大时卡住 Raftstore 或 Apply 线程导致 QPS 下降的问题。本节介绍 TiKV 流量控制机制相关的配置项。
 
 ### `enable`
 
-+ 是否开启 flow control 流控机制。当开启时，会自动关闭 KvDB 的 write stall 和 RaftDB 的除了 memtable 以外的 write stall
++ 是否开启流量控制机制。开启后，TiKV 会自动关闭 KvDB 的 write stall 机制，还会关闭 RaftDB 中除 memtable 以外的 write stall 机制。
 + 默认值：true
 
 ### `memtables-threshold`
