@@ -573,7 +573,21 @@ Empty set (0.00 sec)
 
 ## 分区管理
 
-通过 `ALTER TABLE` 语句可以执行一些添加、删除、合并、切分、重定义分区的操作。
+对于 `LIST` 和 `RANGE` 分区表，通过 `ALTER TABLE <表名> ADD PARTITION (<分区说明>)` 或 `ALTER TABLE <表名> DROP PARTITION <分区列>` 语句，可以执行添加和删除分区的操作。
+
+对于 `LIST` 和 `RANGE` 分区表，暂不支持 `REORGANIZE PARTITION` 语句。
+
+对于 `HASH` 分区表，暂不支持 `COALESCE PARTITION` 和 `ADD PARTITION` 语句。
+
+`EXCHANGE PARTITION` 语句用来交换分区和非分区表，类似于重命名表如 `RENAME TABLE t1 TO t1_tmp, t2 TO t1, t1_tmp TO t2` 的操作。
+
+例如，`ALTER TABLE partitioned_table EXCHANGE PARTITION p1 WITH TABLE non_partitioned_table` 交换的是 `p1` 分区的 `non_partitioned_table` 表和 `partitioned_table` 表。
+
+确保要交换分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
+
+> **警告：**
+>
+> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用  `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
 
 ### Range 分区管理
 
