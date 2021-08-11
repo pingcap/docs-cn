@@ -201,7 +201,7 @@ SELECT [SESSION] @@last_plan_from_binding;
 
 该语句使用系统变量 [last_plan_from_binding](https://docs.pingcap.com/zh/tidb/stable/system-variables#last_plan_from_binding-%E4%BB%8E-v40-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
 
-另外，当我们使用 explain format = 'verbose'  语句查看 SQL 的查询计划时，如果该 SQL 使用了 binding，explain 语句会产生 warning，我们可以通过查看 warning 了解 SQL 使用了哪一条 binding。
+另外，当使用 `explain format = 'verbose'`  语句查看一条 SQL 语句的查询计划时，如果该 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
 
 ```
 -- 创建一个 global binding
