@@ -79,8 +79,8 @@ title: PD 重要监控指标详解
 
 ## Statistics - hot read
 
-- Hot Region's leader distribution：每个 TiKV 实例上成为读取热点的 leader 的数量
-- Total read bytes on hot leader Regions：每个 TiKV 实例上所有成为读取热点的 leader 的总的读取流量大小
+- Hot Region's peer distribution：每个 TiKV 实例上成为读取热点的 peer 的数量
+- Total read bytes on hot peer Regions：每个 TiKV 实例上所有成为读取热点的 peer 的总的读取流量大小
 - Store read rate bytes：每个 TiKV 实例总的读取的流量
 - Store read rate keys：每个 TiKV 实例总的读取 keys
 - Hot cache read entry number：每个 TiKV 实例进入热点统计模块的 peer 的数量
