@@ -191,7 +191,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | collation | 排序规则 |
 | source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
 
-### 绑定的排查
+### 排查绑定
 
 {{< copyable "sql" >}}
 
