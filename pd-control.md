@@ -1081,7 +1081,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
     ```
 
-- `strict-picking-store` 是控制热点调度搜索空间的开关，打开时会在保证稳定性的前提下进行热点调度。通常为打开，关闭后只保证第一优先级维度的均衡性，可能会导致其他维度的均衡度降低。通常用户不需要修改这个配置项。
+- `strict-picking-store` 是控制热点调度搜索空间的开关，打开时会在保证稳定性的前提下进行热点调度。通常为打开，关闭后只保证第一优先级维度的均衡度，可能会导致其他维度的均衡度降低。通常用户不需要修改这个配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set strict-picking-store true
