@@ -205,13 +205,14 @@ SELECT [SESSION] @@last_plan_from_binding;
 
 ```
 -- 创建一个 global binding
+
 create global binding for
     select * from t
 using
     select * from t;
 
--- 使用 explain format = 'verbose' 
-语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
+-- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
+
 explain format = 'verbose' select * from t;
 show warnings;
 ```
