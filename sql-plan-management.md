@@ -259,7 +259,7 @@ set global tidb_evolve_plan_baselines = on;
 
 `tidb_evolve_plan_baselines` 的默认值为 `off`。
 
-> **注意：**
+> **警告：**
 >
 > 自动演进功能目前为实验特性，存在未知风险并需要继续优化，不建议在生产环境中使用。此开关将被禁用直到该功能到达 GA (Generally Available) 状态，如果尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它关闭，如发现 Binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
 
