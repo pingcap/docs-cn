@@ -19,7 +19,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
     + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
     + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
-    
+
 + 默认值：false
 
 ## server
@@ -281,7 +281,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `reserve-space`
 
-+ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
++ TiKV 启动时会预留一块磁盘空间用作存储防护，预留空间大小为部署 TiKV 的存储的容量的百分之五与本配置参数之间的最大值。该预留空间用于防护磁盘被业务流量直接打爆。当磁盘可用空间不足预留空间时，业务正常写操作失败会返回 Disk_Full 错误码，此时需要运维干预进行扩容，亦或者执行 Drop Table 释放空间。该预留空间中80%空间用作软防御，20%会用作磁盘占位符。占位符名称为 `space_placeholder_file`，位于 `storage.data-dir` 目录下，用于防止极端场景下打穿软防御空间而导致 Crash 的情况。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。待 TiKV 实例的存储空间余额充沛后建议将该参数重新设置，以启用磁盘防护功能。用户配置本参数为 `0MB` 时，防护功能不起作用。
 + 默认值：5GB
 + 单位：MB|GB
 
