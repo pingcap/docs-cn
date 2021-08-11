@@ -54,15 +54,15 @@ DESC data_lock_waits;
 * `"partition_id"`：该 key 所在的 partition 的 ID。
 * `"partition_name"`：该 key 所在的 partition 的名称。
 * `"handle_type"`：该 row key 的 handle 类型，其可能的值有：
-    * `"int"`：handle 为 int 类型，即 handle 为 row id；
-    * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型；
-    * `"unknown"`：当前暂不支持的 handle 类型。
+    * `"int"`：handle 为 int 类型，即 handle 为 row id
+    * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型
+    * `"unknown"`：当前暂不支持的 handle 类型
 * `"handle_value"`：handle 的值。
 * `"index_id"`：该 index key 所属的 index id。
 * `"index_name"`：该 index key 所属的 index 名称。
 * `"index_values"`：该 index key 中的 index value。
 
-其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`，index key 不会包含 `handle_type` 和 `handle_value`，已经被 drop 掉的表中的 key 的信息可能只有 `table_id` 等几个 ID。
+其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`；index key 不会包含 `handle_type` 和 `handle_value`；已经被 drop 掉的表中的 key 的信息无法获取 `table_name`、`db_id`、`db_name`、`index_name` 等 schema 信息，且无法区分是否为分区表等。
 
 > **注意：**
 >
@@ -87,4 +87,4 @@ CURRENT_HOLDING_TRX_ID: 426790590082449409
 1 row in set (0.01 sec)
 ```
 
-以上查询结果显示，ID 为 `425405024158875649` 的事务在执行 Digest 为 `"f7530877a35ae65300c42250abd8bc731bbaf0a7cabc05dab843565230611bb22"` 的语句的过程中，试图在 `"7480000000000000355f728000000000000002"` 这个 key 上获取悲观锁，但是该 key 上的锁目前被 ID 为 `425405016242126849` 的事务持有。
+以上查询结果显示，ID 为 `425405024158875649` 的事务在执行 Digest 为 `"f7530877a35ae65300c42250abd8bc731bbaf0a7cabc05dab843565230611bb22"`、形如 ``update `t` set `v` = `v` + ? where `id` = ?`` 的语句的过程中，试图在 `"7480000000000000355f728000000000000002"` 这个 key 上获取悲观锁，但是该 key 上的锁目前被 ID 为 `425405016242126849` 的事务持有。

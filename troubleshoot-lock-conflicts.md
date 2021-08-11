@@ -251,7 +251,7 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 
 > **注意：**
 >
-> Lock View 相关的表中展示的 SQL 语句均为归一化的 SQL 语句（即去除了格式和参数的形式），由 SQL Digest 内部查询获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍详见 [Statement Summary Tables](/statement-summary-tables.md)
+> Lock View 所属的系统表中展示的 SQL 语句为归一化的 SQL 语句（即去除了格式和参数的形式的 SQL 语句），由 SQL Digest 内部查询获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
 
 以下为排查部分问题的示例。
 
@@ -275,6 +275,8 @@ select * from information_schema.deadlocks;
 ```
 
 查询结果会显示死锁错误中多个事务之间的等待关系和各个事务当前正在执行的 SQL 语句的归一化形式（即去掉参数和格式的形式），以及发生冲突的 key 及其从 key 中解读出的一些信息。
+
+例如在上述例子中，第一行意味着 ID 为 `426812829645406216` 的事务当前正在执行形如 ``update `t` set `v` = ? where `id` = ? ;`` 的语句，被另一个 ID 为 `426812829645406217` 的事务阻塞；而 `426812829645406217` 同样也在执行一条形如 ``update `t` set `v` = ? where `id` = ? ;`` 的语句，并被 ID 为 `426812829645406216` 的事务阻塞，两个事务因而构成死锁。
 
 #### 少数热点 key 造成锁排队
 
@@ -367,6 +369,6 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
 1 row in set (0.01 sec)
 ```
 
-上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，以尝试将该列（内容为一组 SQL Digest）转换为其对应的 SQL 语句，以便于阅读。
+上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，以尝试将该列（内容为一组 SQL Digest）转换为其对应的归一化 SQL 语句，以便于阅读。
 
 如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。
