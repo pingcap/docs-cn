@@ -71,7 +71,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
         > **注意：**
         >
-        > + 只有 v5.1.1 及以上版本的 TiDB，才可以在 Apple M1 Silicon 的机器上运行 `tiup playground`。
+        > + 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 Silicon 的机器上运行 `tiup playground`。
         > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
         > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
 
