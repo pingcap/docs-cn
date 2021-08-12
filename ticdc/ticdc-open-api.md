@@ -1,3 +1,8 @@
+---
+title: TiCDC Open API
+summary: 详细介绍了 TiCDC 的所有 Open API 接口的使用方式。
+---
+
 # TiCDC Open API
 
 ## 概述
