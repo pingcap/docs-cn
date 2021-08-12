@@ -4,7 +4,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
 # 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
-通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)）来描述集群拓扑。
+通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)）来描述集群拓扑。
 
 同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。本文档介绍拓扑文件的各个区块以各区块中的各字段。
 
