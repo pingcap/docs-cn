@@ -20,7 +20,7 @@ The current version of TiKV encryption has the following drawbacks. Be aware of 
 * TiFlash supports encryption at rest since v4.0.5. For details, refer to [Encryption at Rest for TiFlash](#encryption-at-rest-for-tiflash-new-in-v405). When deploying TiKV with TiFlash earlier than v4.0.5, data stored in TiFlash is not encrypted.
 * TiKV currently does not exclude encryption keys and user data from core dumps. It is advised to disable core dumps for the TiKV process when using encryption at rest. This is not currently handled by TiKV itself.
 * TiKV tracks encrypted data files using the absolute path of the files. As a result, once encryption is turned on for a TiKV node, the user should not change data file paths configuration such as `storage.data-dir`, `raftstore.raftdb-path`, `rocksdb.wal-dir` and `raftdb.wal-dir`.
-* TiKV info log contains user data for debugging purposes. The info log and this data in it are not encrypted.
+* TiKV, TiDB, and PD  info logs might contain user data for debugging purposes. The info log and this data in it are not encrypted. It is recommended to enable [log redaction](/log-redaction.md).
 
 ## TiKV encryption at rest
 
