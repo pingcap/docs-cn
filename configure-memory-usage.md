@@ -192,7 +192,7 @@ server-memory-quota = 34359738368
     9 rows in set (1 min 37.428 sec)
     ```
 
-> **注意： HashAgg 落盘功能的限制**
+> **注意：**
 >
 > + 默认配置下，HashAgg 无法落盘。如果需要使用 HashAgg 落盘功能，需要将执行器并发度调整为 1。
 > + HashAgg 落盘功能目前不支持 distinct 聚合函数。使用 distinct 函数且内存占用过大时，无法进行落盘。
