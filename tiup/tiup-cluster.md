@@ -60,7 +60,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
 
-拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
 > **注意：**
 >
