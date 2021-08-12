@@ -99,11 +99,7 @@ tiup update cluster
     tiup cluster import -d /home/tidb/tidb-ansible
     ```
 
-<<<<<<< HEAD
 2. 执行导入命令后，若集群 `Inventory` 信息解析成功，将出现如下提示：
-=======
-2. 参考 [topology](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
->>>>>>> 43e24c3d4 (tiup: fix dead links (#6852))
 
     {{< copyable "shell-regular" >}}
 
