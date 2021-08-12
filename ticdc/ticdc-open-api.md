@@ -7,7 +7,7 @@ summary: 详细介绍了 TiCDC 的所有 Open API 接口的使用方式。
 
 ## 概述
 
-目前 TiCDC Open API 提供了一些对 TiCDC 集群进行查询和运维功能，其总体功能和 [cdc cli 工具](/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
+目前 TiCDC Open API 提供了一些对 TiCDC 集群进行查询和运维功能，其总体功能和 [cdc cli 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
 
 ## 详细描述
 
@@ -105,7 +105,7 @@ POST /api/v1/changefeeds
 | `mounter_worker_num`      | int 类型，mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/manage-ticdc.md#创建同步任务)时所作的解释相同，此处不再赘述，下面会对一些需要补充说明的参数进行进一步阐述。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)时所作的解释相同，此处不再赘述，下面会对一些需要补充说明的参数进行进一步阐述。
 
 `force_replicate`：该值默认为 false ，当指定为 true 时，同步任务会尝试强制同步没有唯一索引的表。
 
@@ -271,7 +271,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 此处对以上返回的信息做进一步阐述：
 
 - id：同步任务的 ID
-- state：同步任务当前所处的[状态](/manage-ticdc.md#同步任务状态流转)。
+- state：同步任务当前所处的[状态](/ticdc/manage-ticdc.md#同步任务状态流转)。
 - checkpoint_tso：同步任务当前 checkpoint 的 tso 表示。
 - checkpoint_tso：同步任务当前checkpoint 的格式化时间表示。
 - error：同步任务的错误信息。
