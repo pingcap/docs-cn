@@ -45,7 +45,9 @@ TiDB 采用如下的启发式前置规则来选择索引：
 
 + 规则 4：如果规则 2 和 3 之中仅选出一条候选索引，则选择该候选索引。如果规则 2 和 3 均选出候选索引，则选择读取行数（读索引行数 + 回表行数）较小的索引。
 
-上述规则中的“索引全匹配”指每个索引列上均存在等值条件。在执行 `EXPLAIN FORMAT = 'verbose' ...` 语句时，如果前置规则匹配了某一索引， TiDB 会输出一条 NOTE 级别的 warning 提示该索引匹配了前置规则。在以下示例中，因为索引 `idx_b` 满足规则 2 中“唯一性索引 + 需要回表”的条件，TiDB 选择索引 `idx_b` 作为访问路径，`SHOW WARNING` 给出了索引 `idx_b` 命中前置规则的提示。
+上述规则中的“索引全匹配”指每个索引列上均存在等值条件。在执行 `EXPLAIN FORMAT = 'verbose' ...` 语句时，如果前置规则匹配了某一索引，TiDB 会输出一条 NOTE 级别的 warning 提示该索引匹配了前置规则。
+
+在以下示例中，因为索引 `idx_b` 满足规则 2 中“唯一性索引 + 需要回表”的条件，TiDB 选择索引 `idx_b` 作为访问路径，`SHOW WARNING` 返回了索引 `idx_b` 命中前置规则的提示。
 
 ```sql
 mysql> CREATE TABLE t(a INT PRIMARY KEY, b INT, c INT, UNIQUE INDEX idx_b(b));
