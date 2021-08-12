@@ -72,7 +72,7 @@ mysql> SHOW WARNINGS;
 
 #### Skyline-Pruning
 
-Skyline-Pruning 是一个针对索引的启发式过滤规则，能降低错误估算导致选错索引的概率。 Skyline-Pruning 会从以下三个维度衡量一个索引的好坏：
+Skyline-Pruning 是一个针对索引的启发式过滤规则，能降低错误估算导致选错索引的概率。Skyline-Pruning 从以下三个维度衡量一个索引的优劣：
 
 - 索引的列涵盖了多少访问条件。“访问条件”指的是可以转化为某列范围的 `where` 条件，如果某个索引的列集合涵盖的访问条件越多，那么它在这个维度上更优。
 
