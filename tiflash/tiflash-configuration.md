@@ -107,7 +107,7 @@ delta_index_cache_size = 0
     # emergency_pct = 96
     # high_pct = 85
     # medium_pct = 60
-    ## IO 带宽调整的限制参数，一般不需要调整
+    ## I/O 带宽调整的限制参数，一般不需要调整
     # tune_base = 2
     # min_bytes_per_sec = 2097152
 
