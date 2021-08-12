@@ -87,7 +87,7 @@ delta_index_cache_size = 0
     ## I/O 限流功能限制下的读写流量总带宽，单位为 Byte，默认值为 0，即默认关闭 I/O 限流功能。
     # max_bytes_per_sec = 0
     ## max_read_bytes_per_sec 和 max_write_bytes_per_sec 的含义和 max_bytes_per_sec 类似，分别指 I/O 限流功能限制下的读流量总带宽和写流量总带宽 。
-    ## 只是这里的读写带宽限制是分开的，适用于一些读写带宽限制是分开计算的云盘，比如 GCP 上的 persistent disk。
+    ## 分别用两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 GCP 上的 persistent disk。
     # max_read_bytes_per_sec = 0
     # max_write_bytes_per_sec = 0
 
