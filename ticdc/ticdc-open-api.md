@@ -48,6 +48,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/status
     "is_owner": true
 }
 ```
+
 此处对以上返回的信息做进一步阐述：
 
 - version: 当前 TiCDC 版本号。
@@ -55,7 +56,6 @@ curl -X GET http://127.0.0.1:8300/api/v1/status
 - id: 当前服务器 (capture) 的 ID。
 - pid: 当前服务器 (capture) 进程的 PID。
 - is_owner: 表示当前服务器是否是 owner。
-
 
 ### 检查 TiCDC 集群的健康状态 
 
@@ -262,6 +262,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
     }
 ]
 ```
+
 此处对以上返回的信息做进一步阐述：
 
 - id：同步任务的 ID
@@ -560,4 +561,3 @@ POST /api/v1/log
 ```shell
 curl -X POST -d 'log_level=debug' http://127.0.0.1:8300/api/v1/log 
 ```
-
