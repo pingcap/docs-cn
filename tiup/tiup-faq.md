@@ -23,7 +23,7 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 
 ## 怎么样编写 tiup-cluster 组件的拓扑文件？
 
-可以参考拓扑文件的[样例](https://github.com/pingcap/tiup/tree/master/embed/templates/examples)，样例中包含了：
+可以参考拓扑文件的[样例](https://github.com/pingcap/tiup/tree/master/embed/examples/cluster)，样例中包含了：
 
 1. 两地三中心
 2. 最小部署拓扑
