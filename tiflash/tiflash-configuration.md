@@ -101,7 +101,7 @@ delta_index_cache_size = 0
     # foreground_read_weight = 25
     # background_read_weight = 25
     ## TiFlash 支持自动根据当前的 IO 负载情况自动调整各种 IO 类型的限流带宽，有可能会超过设置的权重。
-    ## auto_tune_sec 表示自动调整逻辑的执行间隔，单位：second。0 表示关闭自动调整。
+    ## auto_tune_sec 表示自动调整的执行间隔，单位为秒。设为 0 表示关闭自动调整。
     # auto_tune_sec = 5
     ## IO 带宽占用的百分比的水位线，用于自动调整逻辑，一般不需要调整。
     # emergency_pct = 96
