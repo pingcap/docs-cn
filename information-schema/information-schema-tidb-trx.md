@@ -56,7 +56,7 @@ DESC tidb_trx;
 > **注意：**
 >
 > * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以获取该表中的完整信息。没有 PROCESS 权限的用户则只能查询到当前用户所执行的事务的信息。
-> * `CURRENT_SQL_DIGEST` 和 `ALL_SQL_DIGESTS` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的 hash。`CURRENT_SQL_DIGEST_TEXT` 列中的信息和函数 `TIDB_DECODE_SQL_DIGESTS` 所得到的结果均为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
+> * `CURRENT_SQL_DIGEST` 和 `ALL_SQL_DIGESTS` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的哈希值。`CURRENT_SQL_DIGEST_TEXT` 列中的信息和函数 `TIDB_DECODE_SQL_DIGESTS` 所得到的结果均为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
 > * [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数调用开销较大，如果对大量事务的信息调用该函数查询历史 SQL，可能查询耗时较长。如果集群规模较大、同一时刻并发运行的事务较多，请避免直接在查询 `TIDB_TRX` 全表的同时直接将该函数用于 `ALL_SQL_DIGEST` 列（即尽量避免 ``select *, tidb_decode_sql_digests(all_sql_digests) from tidb_trx`` 这样的用法）。
 > * 目前 `TIDB_TRX` 表暂不支持显示 TiDB 内部事务相关的信息。
 

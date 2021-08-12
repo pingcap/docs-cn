@@ -49,7 +49,7 @@ DESC deadlocks;
 > **注意：**
 >
 > * 仅拥有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以查询该表。
-> * `CURRENT_SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的 hash。`CURRENT_SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
+> * `CURRENT_SQL_DIGEST` 列中的信息（SQL Digest）为 SQL 语句进行归一化后计算得到的哈希值。`CURRENT_SQL_DIGEST_TEXT` 列中的信息为内部从 Statements Summary 系列表中查询得到，因而存在内部查询不到对应语句的可能性。关于 SQL Digest 和 Statements Summary 相关表的详细说明，请参阅[Statement Summary Tables](/statement-summary-tables.md)。
 
 ## `KEY_INFO`
 
@@ -59,22 +59,22 @@ DESC deadlocks;
 * `"db_name"`：该 key 所属的数据库（schema）的名称。
 * `"table_id"`：该 key 所属的表的 ID。
 * `"table_name"`：该 key 所属的表的名称。
-* `"partition_id"`：该 key 所在的 partition 的 ID。
-* `"partition_name"`：该 key 所在的 partition 的名称。
-* `"handle_type"`：该 row key 的 handle 类型，其可能的值有：
-    * `"int"`：handle 为 int 类型，即 handle 为 row id
+* `"partition_id"`：该 key 所在的分区（partition）的 ID。
+* `"partition_name"`：该 key 所在的分区（partition）的名称。
+* `"handle_type"`：该 row key （即储存一行数据的 key）的 handle 类型，其可能的值有：
+    * `"int"`：handle 为 int 类型，即 handle 为 row ID
     * `"common"`：非 int64 类型的 handle，在启用 clustered index 时非 int 类型的主键会显示为此类型
     * `"unknown"`：当前暂不支持的 handle 类型
 * `"handle_value"`：handle 的值。
-* `"index_id"`：该 index key 所属的 index id。
+* `"index_id"`：该 index key （即储存索引的 key）所属的 index ID。
 * `"index_name"`：该 index key 所属的 index 名称。
 * `"index_values"`：该 index key 中的 index value。
 
-其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`；index key 不会包含 `handle_type` 和 `handle_value`；非分区表不会显示 `partition_id` 和 `partition_name`；已经被 drop 掉的表中的 key 的信息无法获取 `table_name`、`db_id`、`db_name`、`index_name` 等 schema 信息，且无法区分是否为分区表。
+其中，不适用或当前无法查询到的信息会被省略。比如，row key 的信息中不会包含 `index_id`、`index_name` 和 `index_values`；index key 不会包含 `handle_type` 和 `handle_value`；非分区表不会显示 `partition_id` 和 `partition_name`；已经被删除掉的表中的 key 的信息无法获取 `table_name`、`db_id`、`db_name`、`index_name` 等 schema 信息，且无法区分是否为分区表。
 
 > **注意：**
 >
-> 如果一个 key 来自一张启用了 partition 的表，而在查询时，由于某些原因（例如，其所属的表已经被删除）导致无法查询其所属的 schema 信息，则其所属的 partition ID 可能会出现在 `table_id` 字段中。这是因为，TiDB 对不同 partition 的 key 的编码方式与对几张独立的表的 key 的编码方式一致，因而在缺失 schema 信息时无法确认该 key 属于一个普通的表还是一个 partition。
+> 如果一个 key 来自一张启用了分区的表，而在查询时，由于某些原因（例如，其所属的表已经被删除）导致无法查询其所属的 schema 信息，则其所属的分区的 ID 可能会出现在 `table_id` 字段中。这是因为，TiDB 对不同分区的 key 的编码方式与对几张独立的表的 key 的编码方式一致，因而在缺失 schema 信息时无法确认该 key 属于一张未分区的表还是某张表的一个分区。
 
 ## 可重试的死锁错误
 
@@ -111,7 +111,7 @@ update t set v = 2 where id = 1;
 3. 事务 B 执行第二条语句试图对 `id = 1` 的行上锁，被事务 A 阻塞
 4. 事务 A 试图对 `id = 2` 的行上锁，被 B 阻塞，形成死锁
 
-对于情况二，由于事务 A 阻塞其它事务的语句也是当前正在执行的语句，因而可以解除当前语句所上的悲观锁（使得事务 B 可以继续运行），并重试当前语句。TiDB 内部使用 key 的 hash 来判断是否属于这种情况。
+对于情况二，由于事务 A 阻塞其它事务的语句也是当前正在执行的语句，因而可以解除当前语句所上的悲观锁（使得事务 B 可以继续运行），并重试当前语句。TiDB 内部使用 key 的哈希值来判断是否属于这种情况。
 
 当可重试的死锁发生时，内部自动重试并不会引起事务报错，因而对客户端透明，但是这种情况的频繁发生可能影响性能。当这种情况发生时，在 TiDB 的日志中可以观察到 `single statement deadlock, retry statement` 字样的日志。
 
