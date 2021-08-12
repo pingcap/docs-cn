@@ -102,7 +102,7 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-2. 参考 [topology](https://github.com/pingcap/tiup/blob/release-1.4/embed/templates/examples/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
+2. 参考 [topology](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
 
 修改完成后 `:wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 

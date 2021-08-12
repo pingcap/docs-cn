@@ -96,7 +96,7 @@ tiup cluster display ${cluster-name}
                 log.slow-threshold: 300
         ```
 
-    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
+    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
 
     **配置项层次结构使用 `.` 表示**。
 
