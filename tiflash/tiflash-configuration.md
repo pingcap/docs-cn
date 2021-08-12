@@ -84,7 +84,7 @@ delta_index_cache_size = 0
     ## `[storage.io_rate_limit]` 相关配置从 v5.2.0 开始引入 。
     [storage.io_rate_limit]
     ## 该配置项是 I/O 限流功能的开关，默认关闭。TiFlash 的 I/O 限流功能适用于磁盘带宽较小且磁盘带宽大小明确的云盘场景。
-    ## IO 限流的读写总带宽，单位：Byte。默认值 0，关闭 IO 限流功能。
+    ## I/O 限流功能限制下的读写流量总带宽，单位为 Byte，默认值为 0，即默认关闭 I/O 限流功能。
     # max_bytes_per_sec = 0
     ## max_read_bytes_per_sec 和 max_write_bytes_per_sec 的含义和 max_bytes_per_sec 类似。
     ## 只是这里的读写带宽限制是分开的，适用于一些读写带宽限制是分开计算的云盘，比如 GCP 上的 persistent disk。
