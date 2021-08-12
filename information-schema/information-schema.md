@@ -32,7 +32,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | `PLUGINS`                                                                               | Not implemented by TiDB. Returns zero rows. |
 | [`PROCESSLIST`](/information-schema/information-schema-processlist.md)                  | Provides similar information to the command `SHOW PROCESSLIST`. |
 | `PROFILING`                                                                             | Not implemented by TiDB. Returns zero rows. |
-| `REFERENTIAL_CONSTRAINTS`                                                               | Not implemented by TiDB. Returns zero rows. |
+| `REFERENTIAL_CONSTRAINTS`                                                               | Provides information on `FOREIGN KEY` constraints. |
 | `ROUTINES`                                                                              | Not implemented by TiDB. Returns zero rows. |
 | [`SCHEMATA`](/information-schema/information-schema-schemata.md)                        | Provides similar information to `SHOW DATABASES`. |
 | `SCHEMA_PRIVILEGES`                                                                     | Not implemented by TiDB. Returns zero rows. |

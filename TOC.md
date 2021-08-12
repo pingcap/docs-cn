@@ -450,6 +450,7 @@
         + [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)
         + [`PARTITIONS`](/information-schema/information-schema-partitions.md)
         + [`PROCESSLIST`](/information-schema/information-schema-processlist.md)
+        + [`REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
         + [`SCHEMATA`](/information-schema/information-schema-schemata.md)
         + [`SEQUENCES`](/information-schema/information-schema-sequences.md)
         + [`SESSION_VARIABLES`](/information-schema/information-schema-session-variables.md)
