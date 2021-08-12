@@ -109,7 +109,7 @@ When the cluster is in operation, if you need to modify the parameters of a comp
                 log.slow-threshold: 300
         ```
 
-    For the parameter format, see the [TiUP parameter template](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml).
+    For the parameter format, see the [TiUP parameter template](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml).
 
     **Use `.` to represent the hierarchy of the configuration items**.
 

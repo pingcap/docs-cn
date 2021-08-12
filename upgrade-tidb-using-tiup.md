@@ -106,7 +106,7 @@ Now, the offline mirror has been upgraded successfully. If an error occurs durin
     tiup cluster edit-config <cluster-name>
     ```
 
-2. Refer to the format of [topology](https://github.com/pingcap/tiup/blob/release-1.4/embed/templates/examples/topology.example.yaml) configuration template and fill the parameters you want to modify in the `server_configs` section of the topology file.
+2. Refer to the format of [topology](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml) configuration template and fill the parameters you want to modify in the `server_configs` section of the topology file.
 
 3. After the modification, enter <kbd>:</kbd> + <kbd>w</kbd> + <kbd>q</kbd> to save the change and exit the editing mode. Enter <kbd>Y</kbd> to confirm the change.
 
