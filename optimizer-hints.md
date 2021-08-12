@@ -23,7 +23,7 @@ Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `
 SELECT /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 ```
 
-可以通过 [`Explain`](/sql-statements/sql-statement-explain.md) / [`Explain Analyze`](/sql-statements/sql-statement-explain-analyze.md) 语句的输出，来查看 Optimizer Hints 对查询执行计划的影响。
+可以通过 [`Explain`](/sql-statements/sql-statement-explain.md)/[`Explain Analyze`](/sql-statements/sql-statement-explain-analyze.md) 语句的输出，来查看 Optimizer Hints 对查询执行计划的影响。
 
 如果 Optimizer Hints 包含语法错误或不完整，查询语句不会报错，而是按照没有 Optimizer Hints 的情况执行。如果 Hint 不适用于当前语句，TiDB 会返回 Warning，用户可以在查询结束后通过 `Show Warnings` 命令查看具体信息。
 

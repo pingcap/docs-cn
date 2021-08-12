@@ -13,7 +13,7 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下�
 
 建议的措施：
 
-- 为 TiDB `root` 用户设置一个强密码。请参见 [TiDB 用户账户管理](/user-account-management.md) 了解详情。
+- 为 TiDB `root` 用户设置一个强密码。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
 
 ## 使用防火墙阻止不可信访问
 
@@ -35,7 +35,7 @@ TiDB Dashboard 通过 PD Client 端口提供服务，默认为 <http://IP:2379/d
 
 在测试环境中，您可能需要配置防火墙开放 TiDB Dashboard 端口供外部访问。
 
-当部署了多个 PD 实例时，其中仅有一个 PD 实例会真正运行 TiDB Dashboard，访问其他 PD 实例时会发生浏览器重定向，因此需要确保防火墙配置了正确的 IP 地址。关于该机制的详情，可参阅 [TiDB Dashboard 多 PD 实例部署](/dashboard/dashboard-ops-deploy.md#多-pd-实例部署) 章节。
+当部署了多个 PD 实例时，其中仅有一个 PD 实例会真正运行 TiDB Dashboard，访问其他 PD 实例时会发生浏览器重定向，因此需要确保防火墙配置了正确的 IP 地址。关于该机制的详情，可参阅 [TiDB Dashboard 多 PD 实例部署](/dashboard/dashboard-ops-deploy.md#多-pd-实例部署)章节。
 
 使用 TiUP 部署工具时，可使用以下命令查看实际运行 TiDB Dashboard 的 PD 实例地址（将 `CLUSTER_NAME` 替换为集群名称）：
 
@@ -73,7 +73,7 @@ http://192.168.0.123:2379/dashboard/
 
 建议的措施：
 
-- 参见 [通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md) 了解安全且推荐的反向代理配置。
+- 参见[通过反向代理使用 TiDB Dashboard](/dashboard/dashboard-ops-reverse-proxy.md) 了解安全且推荐的反向代理配置。
 
 ## 为反向代理开启 TLS
 

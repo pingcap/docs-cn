@@ -276,7 +276,9 @@ select * from information_schema.deadlocks;
 
 查询结果会显示死锁错误中多个事务之间的等待关系和各个事务当前正在执行的 SQL 语句的 Digest，以及发生冲突的 key。
 
-你可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 表中获取最近一段时间内，执行过的 SQL 语句的 Digest 所对应的归一化的 SQL 语句的文本（详见 [`STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 表](/statement-summary-tables.md)）。你也可将获取到的结果直接与 `DEADLOCKS` 表进行 join 操作。注意：`STATEMENTS_SUMMARY` 中可能不包含所有 SQL 语句的信息，所以以下例子中使用了 left join：
+你可以从 `STATEMENTS_SUMMARY` 或 `STATEMENTS_SUMMARY_HISTORY` 表中获取最近一段时间内，执行过的 SQL 语句的 Digest 所对应的归一化的 SQL 语句的文本（详见 [`STATEMENTS_SUMMARY` 和 `STATEMENTS_SUMMARY_HISTORY` 表](/statement-summary-tables.md)）。你也可将获取到的结果直接与 `DEADLOCKS` 表进行 join 操作。
+
+注意：`STATEMENTS_SUMMARY` 中可能不包含所有 SQL 语句的信息，所以以下例子中使用了 left join。
 
 {{< copyable "sql" >}}
 

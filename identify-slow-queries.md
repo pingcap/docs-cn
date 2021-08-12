@@ -60,7 +60,7 @@ Slow Query 基础信息：
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
 * `Index_ids`：表示语句涉及到的索引的 ID。
 * `Succ`：表示语句是否执行成功。
-* `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间，常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
+* `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
@@ -150,7 +150,7 @@ set @@tidb_enable_collect_execution_info=0;
 
 ## 慢日志内存映射表
 
-用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md) 中的介绍。
+用户可通过查询 `INFORMATION_SCHEMA.SLOW_QUERY` 表来查询慢查询日志中的内容，表中列名和慢日志中字段名一一对应，表结构可查看 [`SLOW_QUERY` 表](/information-schema/information-schema-slow-query.md)中的介绍。
 
 > **注意：**
 >
@@ -206,7 +206,7 @@ TiDB 4.0 中新增了 [`CLUSTER_SLOW_QUERY`](/information-schema/information-sch
 
 关于查询 `CLUSTER_SLOW_QUERY` 表，TiDB 会把相关的计算和判断下推到其他节点执行，而不是把其他节点的慢查询数据都取回来在一台 TiDB 上执行。
 
-## 查询 `SLOW_QUERY` / `CLUSTER_SLOW_QUERY` 示例
+## 查询 `SLOW_QUERY`/`CLUSTER_SLOW_QUERY` 示例
 
 ### 搜索 Top N 的慢查询
 

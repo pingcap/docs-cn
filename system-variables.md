@@ -82,18 +82,56 @@ mysql> SELECT * FROM t1;
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### character_set_client
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 这个变量表示从客户端发出的数据所用的字符集。有关更多 TiDB 支持的字符集和排序规则，参阅[字符集和排序规则](/character-set-and-collation.md)文档。如果需要更改字符集，建议使用 [`SET NAMES`](/sql-statements/sql-statement-set-names.md) 语句。
+
+### character_set_connection
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 若没有为字符串常量指定字符集，该变量表示这些字符串常量所使用的字符集。
+
+### character_set_database
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 该变量表示当前默认在用数据库的字符集，**不建议设置该变量**。选择新的默认数据库后，服务器会更改该变量的值。
+
+### character_set_results
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 该变量表示数据发送至客户端时所使用的字符集。
+
+### character_set_server
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
+
 ### `cte_max_recursion_depth`
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`1000`
+- 范围：`[0, 4294967295]`
 - 这个变量用于控制公共表表达式的最大递归深度。
 
-### datadir
+### `datadir`
 
 - 作用域：NONE
 - 默认值：/tmp/tidb
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
+
+### `default_authentication_plugin`
+
+- 作用域：GLOBAL
+- 默认值：`mysql_native_password`
+- 服务器和客户端建立连接时。这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
+- 可选值：`mysql_native_password`，`caching_sha2_password`。更多信息，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `ddl_slow_threshold`
 
@@ -148,7 +186,7 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 这个变量用来显示上一个 `execute` 语句所使用的执行计划是不是直接从 plan cache 中取出来的。
 
-### license
+### `license`
 
 - 作用域：NONE
 - 默认值：Apache License 2.0
@@ -280,7 +318,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 默认值：`2`
 - 范围：`[1, 2147483647]`
-- 这个变量用来给 TiDB 的 `backoff` 最大时间增加权重，即内部遇到网络或其他组件（TiKV、PD）故障时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
+- 这个变量用来给 TiDB 的 `backoff` 最大时间增加权重，即内部遇到网络或其他组件 (TiKV, PD) 故障时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
 
     例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
 
@@ -502,7 +540,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`INT_ONLY`
-- 可选值： `OFF`，`ON`，`INT_ONLY`
+- 可选值：`OFF`，`ON`，`INT_ONLY`
 - 这个变量用于控制默认情况下表的主键是否使用[聚簇索引](/clustered-indexes.md)。“默认情况”即不显式指定 `CLUSTERED`/`NONCLUSTERED` 关键字的情况。可设置为 `OFF`/`ON`/`INT_ONLY`。
     - `OFF` 表示所有主键默认使用非聚簇索引。
     - `ON` 表示所有主键默认使用聚簇索引。
@@ -585,7 +623,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
-### tidb_enable_strict_double_type_check <span class="version-mark">从 v5.0 版本开始引入</span>
+### `tidb_enable_strict_double_type_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
@@ -611,7 +649,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
-- 可选值： `OFF`，`ON`，`AUTO`
+- 可选值：`OFF`，`ON`，`AUTO`
 - 这个变量用来设置是否开启 `TABLE PARTITION` 特性。目前变量支持以下三种值：
     - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
     - `AUTO` 目前作用和 `ON` 一样。
@@ -693,7 +731,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - `index lookup`
 - `index lookup join`
 - `hash join`
-- `hash aggregation` (partial 和 final 阶段)
+- `hash aggregation`（partial 和 final 阶段）
 - `window`
 - `projection`
 
@@ -743,6 +781,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 默认值：`10m0s`
+- 范围：`[10m0s, 8760h0m0s]`
 - 这个变量用于指定每次进行垃圾回收 (GC) 时保留数据的时限。变量值为 Go 的 Duration 字符串格式。每次进行 GC 时，将以当前时间减去该变量的值作为 safe point。
 
 > **Note:**
@@ -756,6 +795,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 默认值：`10m0s`
+- 范围：`[10m0s, 8760h0m0s]`
 - 这个变量用于指定垃圾回收 (GC) 运行的时间间隔。变量值为 Go 的 Duration 字符串格式，如`"1h30m"`、`"15m"`等。
 
 ### `tidb_gc_scan_lock_mode` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -766,7 +806,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：GLOBAL
 - 默认值：`LEGACY`
-- 可设置为： `PHYSICAL`，`LEGACY`
+- 可设置为：`PHYSICAL`，`LEGACY`
     - `LEGACY`：使用旧的扫描方式，即禁用 Green GC。
     - `PHYSICAL`：使用物理扫描方式，即启用 Green GC。
 - 这个变量用于指定垃圾回收 (GC) 的 Resolve Locks（清理锁）步骤中扫描锁的方式。当变量值设置为 `LEGACY` 时，TiDB 以 Region 为单位进行扫描。当变量值设置为 `PHYSICAL` 时，每个 TiKV 节点分别绕过 Raft 层直接扫描数据，可以有效地缓解在启用 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions) 功能时，GC 唤醒全部 Region 的影响，从而提升 Resolve Locks（清理锁）这个步骤的执行速度。
@@ -975,6 +1015,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
+### `tidb_opt_limit_push_down_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`100`
+- 范围：`[0, 2147483647]`
+- 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
+- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
+
+### `tidb_opt_enable_correlation_adjustment`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器是否开启交叉估算。
+
 ### `tidb_opt_correlation_exp_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -995,7 +1049,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行带有 `Distinct` 的聚合函数（比如 `select count(distinct a) from t`）下推到 Coprocessor 的优化操作。当查询中带有 `Distinct` 的聚合操作执行很慢时，可以尝试设置该变量为 `1`。
 
-在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后， `distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
+在以下示例中，`tidb_opt_distinct_agg_push_down` 开启前，TiDB 需要从 TiKV 读取所有数据，并在 TiDB 侧执行 `distinct`。`tidb_opt_distinct_agg_push_down` 开启后，`distinct a` 被下推到了 Coprocessor，在 `HashAgg_5` 里新增里一个 `group by` 列 `test.t.a`。
 
 ```sql
 mysql> desc select count(distinct a) from test.t;
@@ -1266,7 +1320,7 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`200`
+- 默认值：`3000`
 - 范围：`[1, 32767]`
 - 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
 
@@ -1289,7 +1343,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`pessimistic`
-- 可选值： `pessimistic`，`optimistic`
+- 可选值：`pessimistic`，`optimistic`
 - 这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/pessimistic-transaction.md)。
 - 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 - 将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
@@ -1369,8 +1423,8 @@ set tidb_slow_log_threshold = 200;
 
 ### `warning_count`
 
-- 作用域: SESSION
-- 默认值：0
+- 作用域：SESSION
+- 默认值：`0`
 - 这个只读变量表示之前执行语句中出现的警告数。
 
 ### `windowing_use_high_precision`

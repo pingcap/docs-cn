@@ -83,15 +83,15 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ### `--detach` / `-d`
 
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: true
++ 使用单命令行模式（不进入 readline）
++ 默认值：true
 
 ### `--help` / `-h`
 
 + 输出帮助信息
 + 默认值：false
 
-### `--interact` / `-i`
+### `--interact`/`-i`
 
 + 使用交互模式（进入 readline）
 + 默认值：false
@@ -99,18 +99,18 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ### `--key`
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
-- 默认值: ""
+- 默认值：""
 
-### `--pd` / `-u`
+### `--pd`/`-u`
 
 + 指定 PD 的地址
 + 默认地址：`http://127.0.0.1:2379`
 + 环境变量：`PD_ADDR`
 
-### `--version` / `-V`
+### `--version`/`-V`
 
 - 打印版本信息并退出
-- 默认值: false
+- 默认值：false
 
 ## 命令 (command)
 
@@ -671,7 +671,7 @@ time: 43.12698ms
 
 ### `region <region_id> [--jq="<query string>"]`
 
-用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 Region 信息。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 Region 信息：
 
@@ -1005,28 +1005,50 @@ Encoding 格式示例：
 {
   "min-hot-byte-rate": 100,
   "min-hot-key-rate": 10,
+  "min-hot-query-rate": 10,
   "max-zombie-rounds": 3,
   "max-peer-number": 1000,
   "byte-rate-rank-step-ratio": 0.05,
   "key-rate-rank-step-ratio": 0.05,
+  "query-rate-rank-step-ratio": 0.05,
   "count-rank-step-ratio": 0.01,
   "great-dec-ratio": 0.95,
   "minor-dec-ratio": 0.99,
-  "src-tolerance-ratio": 1.02,
-  "dst-tolerance-ratio": 1.02
+  "src-tolerance-ratio": 1.05,
+  "dst-tolerance-ratio": 1.05,
+  "read-priorities": [
+    "query",
+    "byte"
+  ],
+  "write-leader-priorities": [
+    "key",
+    "byte"
+  ],
+  "write-peer-priorities": [
+    "byte",
+    "key"
+  ],
+  "strict-picking-store": "true",
+  "enable-for-tiflash": "true"
 }
 ```
 
-- `min-hot-byte-rate` 指计数的最小字节，通常为 100。
+- `min-hot-byte-rate` 指计数的最小字节数，通常为 100。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set min-hot-byte-rate 100
     ```
 
-- `min-hot-key-rate` 指计数的最小 key，通常为 10。
+- `min-hot-key-rate` 指计数的最小 key 数，通常为 10。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
+    ```
+
+- `min-hot-query-rate` 指计数的最小 query 数，通常为 10。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set min-hot-query-rate 10
     ```
 
 - `max-zombie-rounds` 指一个 operator 可被纳入 pending influence 所允许的最大心跳次数。如果将它设置为更大的值，更多的 operator 可能会被纳入 pending influence。通常用户不需要修改这个值。pending influence 指的是在调度中产生的、但仍生效的影响。
@@ -1041,7 +1063,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set max-peer-number 1000
     ```
 
-- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、count 的 step ranks。rank step ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
+- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio`、`query-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、query 和 count 的 step ranks。rank-step-ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
@@ -1050,12 +1072,30 @@ Encoding 格式示例：
 - `src-tolerance-ratio` 和 `dst-tolerance-ratio` 是期望调度器的配置项。`tolerance-ratio` 的值越小，调度就越容易。当出现冗余调度时，你可以适当调大这个值。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.05
+    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
+    ```
+
+- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同类型的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 类型的热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 类型的热点，可选的维度有 `byte` 和 `key`。若集群组件未全部升级到 v5.2 及以上版本，这些配置不会生效，固定使用兼容配置。通常用户不需要修改这些配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
+    ```
+
+- `strict-picking-store` 是控制热点调度搜索空间的开关，打开时会在保证稳定性的前提下进行热点调度。通常为打开，关闭后只保证第一优先级维度的均衡度，可能会导致其他维度的均衡度降低。通常用户不需要修改这个配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set strict-picking-store true
+    ```
+
+- `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
 ### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 store 信息：
 

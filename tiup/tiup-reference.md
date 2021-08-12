@@ -25,7 +25,7 @@ tiup [flags] <component> [args...]      # 运行组件
 打印指定组件的二进制文件路径：
 
 - 执行 `tiup -B/--binary <component>` 将打印已安装的 `<component>` 组件的最新稳定版路径，若 `<component>` 组件未安装，则报错
-- 执行 `tiup -B/--binary <component>:<version>` 将答应已经安装的 `<component>` 组件的 `<version>` 版本所在的路径，若该版本未安装，则报错
+- 执行 `tiup -B/--binary <component>:<version>` 将打印已经安装的 `<component>` 组件的 `<version>` 版本所在的路径，若该版本未安装，则报错
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 

@@ -129,7 +129,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8050
 
-    设置了不支持的权限类型，遇到该错误请参考[TiDB 权限说明](/privilege-management.md#tidb-各操作需要的权限)进行调整。
+    设置了不支持的权限类型，遇到该错误请参考 [TiDB 权限说明](/privilege-management.md#tidb-各操作需要的权限)进行调整。
 
 * Error Number: 8051
 
@@ -259,7 +259,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8200
 
-    尚不支持的 DDL 语法。请参考 [与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
+    尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
 
 * Error Number: 8214
 

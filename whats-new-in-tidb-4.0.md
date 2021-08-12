@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/whats-new-in-tidb-4.0/']
 ## TiDB Dashboard
 
 + DBA 通过 [TiDB Dashboard](/dashboard/dashboard-intro.md) UI 可以快速了解集群的集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息、SQL 访问信息、诊断报告信息等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，具体信息如下：
-    - Cluster Info，提供集群中所有组件，包括： TiDB、TiKV、PD、TiFlash 运行状态及其所在主机的运行状态。
+    - Cluster Info，提供集群中所有组件，包括：TiDB、TiKV、PD、TiFlash 运行状态及其所在主机的运行状态。
     - Key Visualizer，系统可视化输出 TiDB 集群一段时间内的流量情况，用于 DBA 分析 TiDB 集群的使用模式和排查流量热点。
     - SQL Statements，记录当系统执行的所有 SQL 以及 SQL 相关的统计信息，包括：执行次数、执行时间汇总等，帮助用户快速分析系统的 SQL 执行状况，判断系统中有哪些热点 SQL 语句等。
     - Slow Queries，汇总集群中所有的慢查询语句，帮助用户快速定位慢查询语句。
@@ -29,10 +29,10 @@ aliases: ['/docs-cn/dev/whats-new-in-tidb-4.0/']
 
 ## 部署运维工具
 
-TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiDB 生态内的所有的包，提供组件管理、Playground、Cluster、TUF、离线部署等功能，将安装、部署、运维 TiDB 工具化，提升 DBA 部署、运维 TiDB 的效率。详情参阅：[TiUP](/tiup/tiup-overview.md)，具体的功能如下：
+TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiDB 生态内的所有的包，提供组件管理、Playground、Cluster、TUF、离线部署等功能，将安装、部署、运维 TiDB 工具化，提升 DBA 部署、运维 TiDB 的效率。详情参阅：[TiUP](/tiup/tiup-overview.md)。具体的功能如下：
 
 - 组件管理功能，提供一键式组件信息查询、安装、升级、卸载等功能，方便 DBA 管理 TiDB 的所有组件。
-- 集群管理功能 (Cluster)：提供一键式 TiDB 集群的部署、运维 TiDB 功能，包括：安装、部署、扩容、缩容、升级、配置变更、启动、停止、重启，查询集群状信息等，支持管理多个 TiDB 集群。
+- 集群管理功能 (Cluster)：提供一键式 TiDB 集群的部署、运维 TiDB 功能。包括：安装、部署、扩容、缩容、升级、配置变更、启动、停止、重启，查询集群状信息等，支持管理多个 TiDB 集群。
 - 本地部署功能 (Playground): 提供快速在本地部署一个 TiDB 集群，快速体验、了解 TiDB 的基本功能，注意：此功能仅用于快速了解 TiDB，不适合上生产。
 - 私有镜像管理 (Mirror): 当无法通过公网访问 TiUP 官方镜像时，TiUP 提供构建私有镜像的方案，帮助用户构建私有镜像及提供离线部署部署的功能。
 - 性能测试功能 (Benchmark): 提供一键部署性能测试工具的功能，主要提供 TPC-C、TPC-H 两种性能测试的 workload 。
@@ -53,7 +53,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 - 优化 `EXPLAIN` 和 `EXPLAIN ANALYZE` 的输出结果，显示更多的信息，提升排查问题的效率。详情参阅：[Explain Analyze](/sql-statements/sql-statement-explain-analyze.md)，[Explain](/sql-statements/sql-statement-explain.md)。
 - 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当查询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/explain-overview.md#indexmerge-示例)。
 - 支持 AutoRandom Key 作为 TiDB 在列属性上的扩展语法，AutoRandom 被设计用于解决自增主键列的写热点问题，为使用自增主键列的用户提供最低成本的 MySQL 迁移方案。详情参阅：[AutoRandom Key](/auto-random.md)。
-- 新增集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息等系统表等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[information_schema](/information-schema/information-schema.md)，具体信息如下：
+- 新增集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息等系统表等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[information_schema](/information-schema/information-schema.md)。具体信息如下：
 
     - 新增集群拓扑、配置、日志、硬件、操作系统等信息表，帮助 DBA 快速了集群配置、状态信息：
 
@@ -71,7 +71,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 
 ## 字符集及排序规则
 
-在 TiDB 4.0 的新集群中，支持大小写和口音不敏感的排序规则 `utf8mb4_general_ci` 及 `utf8_general_ci`，详情参阅: [字符集及排序规则](/character-set-and-collation.md)。
+在 TiDB 4.0 的新集群中，支持大小写和口音不敏感的排序规则 `utf8mb4_general_ci` 及 `utf8_general_ci`，详情参阅：[字符集及排序规则](/character-set-and-collation.md)。
 
 ## 安全
 
@@ -90,4 +90,4 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 
 ## TiCDC
 
-TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB)，Kafka 及 Pulsar 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)。
+TiCDC 支持通过拉取 TiKV 变更日志实现 TiDB 集群之间数据同步，支持数据的高可靠、服务的高可用能力，确保数据不会丢失。用户可以通过订阅的方式订阅数据的变更信息，系统会自动将数据推送到下游系统，当前仅支持 MySQL 协议的数据库（例如：MySQL、TiDB），Kafka 及 Pulsar 作为 TiCDC 的下游，同时用户也可以通过 TiCDC 提供的[开放数据协议](/ticdc/ticdc-open-protocol.md)自行扩展支持的下游系统。详情参阅：[TiCDC](/ticdc//ticdc-overview.md)。
