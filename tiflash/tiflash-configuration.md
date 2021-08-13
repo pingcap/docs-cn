@@ -95,7 +95,7 @@ delta_index_cache_size = 0
     ## 下面的参数用于控制不同 I/O 流量类型分配到的带宽权重，一般不需要调整。
     ## TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。
     ## I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
-    ## 以下默认配置表示每一种流量将获得 1/4 的权重。
+    ## 以下默认配置表示每一种流量将获得 25% 的权重。
     ## 如果将 weight 配置为 0，则对应的 I/O 操作不会被限流。
     # foreground_write_weight = 25
     # background_write_weight = 25
