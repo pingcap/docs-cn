@@ -166,7 +166,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     [tidb]> explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;
     ```
 
-该 SQL 语句占用大量内存，返回 Out of Memory Quota 错误。
+    该 SQL 语句占用大量内存，返回 Out of Memory Quota 错误。
 
     ```sql
     ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
