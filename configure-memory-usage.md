@@ -127,13 +127,13 @@ server-memory-quota = 34359738368
 
 ## tidb-server 其它内存控制策略
 
-### 流控
+### 流量控制
 
 - TiDB 支持对读数据算子的动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子就会停止一个线程。
 - 流控行为由参数 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 控制。
 - 当流控被触发时，会在日志中打印一条包含关键字 `memory exceeds quota, destroy one token now` 的日志。
 
-### 落盘
+### 数据落盘
 
 TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 Memory Quota 时，tidb-server 可以通过落盘执行算子的中间数据，缓解内存压力。支持落盘的算子有：Sort、MergeJoin、HashJoin、HashAgg。
 
@@ -164,10 +164,13 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 
     ```sql
     [tidb]> explain analyze select /*+ HASH_AGG() */ count(*) from t t1 join t t2 join t t3 group by t1.a, t2.a, t3.a;
+    ```
+
+    ```sql
     ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
     ```
 
-4. 设置系统变量 `tidb_executor_concurrency`将执行器的并发度调整为 1。在此配置下，内存不足时 HashAgg 会自动尝试触发落盘。
+4. 设置系统变量 `tidb_executor_concurrency` 将执行器的并发度调整为 1。在此配置下，内存不足时 HashAgg 会自动尝试触发落盘。
 
     {{< copyable "sql" >}}
 
