@@ -389,6 +389,3 @@ Currently, TiFlash does not support some features. These features might be incom
         ```
 
         In the example above, `a/b`'s inferred type from the compiling is `Decimal(7,4)` both in TiDB and in TiFlash. Constrained by `Decimal(7,4)`, `a/b`'s returned type should be `0.0000`. In TiDB, `a/b`'s runtime precision is higher than `Decimal(7,4)`, so the original table data is not filtered by the `where a/b` condition. However, in TiFlash, the calculation of `a/b` uses `Decimal(7,4)` as the result type, so the original table data is filtered by the `where a/b` condition.
-
-* The MPP mode in TiFlash does not support the following features:
-    * If the [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) configuration item's value is `true`, the MPP mode does not support the string-type join key or the string column type in the `group by` aggregation. For these two query types, the MPP mode is not selected by default.
