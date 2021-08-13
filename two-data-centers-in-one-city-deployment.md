@@ -43,9 +43,11 @@ global:
   ssh_port: 22
   deploy_dir: "/data/tidb_cluster/tidb-deploy"
   data_dir: "/data/tidb_cluster/tidb-data"
+
 server_configs:
   pd:
     replication.location-labels:  ["zone","rack","host"]
+
 pd_servers:
   - host: 10.63.10.10
     name: "pd-10"
@@ -53,10 +55,14 @@ pd_servers:
     name: "pd-11"
   - host: 10.63.10.12
     name: "pd-12"
+
+
 tidb_servers:
   - host: 10.63.10.10
   - host: 10.63.10.11
   - host: 10.63.10.12
+
+
 tikv_servers:
   - host: 10.63.10.30
     config:
@@ -70,10 +76,14 @@ tikv_servers:
   - host: 10.63.10.33
     config:
       server.labels: { zone: "west", rack: "west-2", host: "33" }
+
+
 monitoring_servers:
   - host: 10.63.10.60
+
 grafana_servers:
   - host: 10.63.10.60
+
 alertmanager_servers:
   - host: 10.63.10.60
 ```
