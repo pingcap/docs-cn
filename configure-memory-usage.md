@@ -167,7 +167,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     ERROR 1105 (HY000): Out Of Memory Quota![conn_id=3]
     ```
 
-4. 通过用户变量 `tidb_executor_concurrency`，将执行器的并发度调整为 1。在此配置下，内存不足时 HashAgg 会使用尝试触发落盘。
+4. 设置系统变量 `tidb_executor_concurrency`将执行器的并发度调整为 1。在此配置下，内存不足时 HashAgg 会自动尝试触发落盘。
 
     {{< copyable "sql" >}}
 
