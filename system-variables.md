@@ -84,32 +84,32 @@ mysql> SELECT * FROM t1;
 
 ### character_set_client
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 这个变量表示从客户端发出的数据所用的字符集。有关更多 TiDB 支持的字符集和排序规则，参阅[字符集和排序规则](/character-set-and-collation.md)文档。如果需要更改字符集，建议使用 [`SET NAMES`](/sql-statements/sql-statement-set-names.md) 语句。
 
 ### character_set_connection
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 若没有为字符串常量指定字符集，该变量表示这些字符串常量所使用的字符集。
 
 ### character_set_database
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 该变量表示当前默认在用数据库的字符集，**不建议设置该变量**。选择新的默认数据库后，服务器会更改该变量的值。
 
 ### character_set_results
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 该变量表示数据发送至客户端时所使用的字符集。
 
 ### character_set_server
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
 
 ### `cte_max_recursion_depth`
@@ -125,6 +125,13 @@ mysql> SELECT * FROM t1;
 - 默认值：/tmp/tidb
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
+
+### `default_authentication_plugin`
+
+- 作用域：GLOBAL
+- 默认值：`mysql_native_password`
+- 服务器和客户端建立连接时。这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
+- 可选值：`mysql_native_password`，`caching_sha2_password`。更多信息，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `ddl_slow_threshold`
 
@@ -1007,6 +1014,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
+
+### `tidb_opt_limit_push_down_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`100`
+- 范围：`[0, 2147483647]`
+- 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
+- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
+
+### `tidb_opt_enable_correlation_adjustment`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器是否开启交叉估算。
 
 ### `tidb_opt_correlation_exp_factor`
 

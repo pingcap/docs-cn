@@ -259,3 +259,73 @@ Check Table Before Drop: false
 ### MySQL 兼容性
 
 `TIDB_VERSION` 是 TiDB 特有的函数，和 MySQL 不兼容。如果要求兼容 MySQL，可以使用 `VERSION` 获取版本信息，但结果不包含详细的构建信息。
+
+## TIDB_DECODE_SQL_DIGESTS
+
+`TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式）。函数接受 1 个或 2 个参数：
+
+* `digests`：字符串类型，该参数应符合 JSON 字符串数组的格式，数组中的每个字符串应为一个 SQL Digest。
+* `stmtTruncateLength`：可选参数，整数类型，用来限制返回结果中每条 SQL 语句的长度，超过指定的长度会被截断。0 表示不限制长度。
+
+返回一个字符串，符合 JSON 字符串数组的格式，数组中的第 *i* 项为参数 `digests` 中的第 *i* 个元素所对应的语句。如果参数 `digests` 中的某一项不是一个有效的 SQL Digest 或系统无法查询到其对应的 SQL 语句，则返回结果中对应项为 `null`。如果指定了截断长度（`stmtTruncateLength > 0`），则返回结果中每条超过该长度的语句，保留前 `stmtTruncateLength` 个字符，并在尾部增加 `"..."` 后缀表示发生了截断。如果参数 `digests` 为 `NULL`，则函数的返回值为 `NULL`。
+
+> **注意：**
+>
+> * 仅持有 [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) 权限的用户可以使用该函数。
+> * `TIDB_DECODE_SQL_DIGESTS` 执行时，TiDB 内部从 Statement Summary 一系列表中查询每个 SQL Digest 所对应的语句，因而并不能保证对任意 SQL Digest 都总是能查询到对应的语句，只有在集群中执行过的语句才有可能被查询到，且是否能查询到受 Statement Summary 表相关配置的影响。有关 Statement Summary 表的详细说明，参见 [Statement Summary Tables](/statement-summary-tables.md)。
+> * 该函数开销较大，在行数很多的查询中（比如在规模较大、比较繁忙的集群上查询 `information_schema.cluster_tidb_trx` 全表时）直接使用该函数可能导致查询运行时间较长。请谨慎使用。
+>     * 该函数开销大的原因是，其每次被调用时，都会在内部发起对 `STATEMENTS_SUMMARY`、`STATEMENTS_SUMMARY_HISTORY`、`CLUSTER_STATEMENTS_SUMMARY` 和 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 这几张表的查询，且其中涉及 `UNION` 操作。且该函数目前不支持向量化，即对于多行数据调用该函数时，对每行都会独立进行一次上述的查询。
+
+### 语法图
+
+```ebnf+diagram
+DecodeSQLDigestsExpr ::=
+    "TIDB_DECODE_SQL_DIGESTS" "(" digests ( "," stmtTruncateLength )? ")"
+```
+
+### 示例
+
+{{< copyable "sql" >}}
+
+```sql
+set @digests = '["e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02ad5","38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821","e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7"]';
+
+select tidb_decode_sql_digests(@digests);
+```
+
+```sql
++------------------------------------+
+| tidb_decode_sql_digests(@digests)  |
++------------------------------------+
+| ["begin",null,"select * from `t`"] |
++------------------------------------+
+1 row in set (0.00 sec)
+```
+
+上面的例子中，参数是一个包含 3 个 SQL Digest 的 JSON 数组，其对应的 SQL 语句分别为查询结果中给出的三项。但是其中第二条 SQL Digest 所对应的 SQL 语句未能从集群中找到，因而结果中的第二项为 `null`。
+
+{{< copyable "sql" >}}
+
+```sql
+select tidb_decode_sql_digests(@digests, 10);
+```
+
+```sql
++---------------------------------------+
+| tidb_decode_sql_digests(@digests, 10) |
++---------------------------------------+
+| ["begin",null,"select * f..."]        |
++---------------------------------------+
+1 row in set (0.01 sec)
+```
+
+上述调用指定了第二个参数（即截断长度）为 10，而查询结果中的第三条语句的长度大于 10，因而仅保留了前 10 个字符，并在尾部添加了 `"..."` 表示发生了截断。
+
+### MySQL 兼容性
+
+`TIDB_DECODE_SQL_DIGESTS` 是 TiDB 特有的函数，和 MySQL 不兼容。
+
+### 另请参阅
+
+- [`Statement Summary Tables`](/statement-summary-tables.md)
+- [`INFORMATION_SCHEMA.TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)

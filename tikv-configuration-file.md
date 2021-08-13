@@ -312,6 +312,35 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 + 默认值：系统总内存大小的 45%
 + 单位：KB|MB|GB
 
+## storage.flow-control
+
+在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在写入量较大时卡住 Raftstore 或 Apply 线程导致 QPS 下降的问题。本节介绍 TiKV 流量控制机制相关的配置项。
+
+### `enable`
+
++ 是否开启流量控制机制。开启后，TiKV 会自动关闭 KvDB 的 write stall 机制，还会关闭 RaftDB 中除 memtable 以外的 write stall 机制。
++ 默认值：true
+
+### `memtables-threshold`
+
++ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。
++ 默认值：5
+
+### `l0-files-threshold`
+
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
++ 默认值：9
+
+### `soft-pending-compaction-bytes-limit`
+
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
++ 默认值："192GB"
+
+### `hard-pending-compaction-bytes-limit`
+
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。
++ 默认值："1024GB"
+
 ## storage.io-rate-limit
 
 I/O rate limiter 相关的配置项。
@@ -638,6 +667,13 @@ raftstore 相关的配置项。
 + 默认值：1
 + 最小值：大于 0
 
+### `inspect-interval`
+
++ TiKV 每隔一段时间会检测 Raftstore 线程的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，Raftstore 线程会被记为超时。
++ 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
++ 默认值：500ms
++ 最小值：1ms
+
 ## coprocessor
 
 coprocessor 相关的配置项。
@@ -857,21 +893,25 @@ Titan 相关的配置项。
 + 默认值：4
 + 最小值：1
 
-## rocksdb.defaultcf
+## rocksdb.defaultcf | rocksdb.writecf | rocksdb.lockcf
 
-rocksdb defaultcf 相关的配置项。
+rocksdb defaultcf、rocksdb writecf 和 rocksdb lockcf 相关的配置项。
 
 ### `block-size`
 
-+ rocksdb block size.
-+ 默认值：64KB
++ 一个 RocksDB block 的默认大小。
++ `defaultcf` 默认值：64KB
++ `writecf` 默认值：64KB
++ `lockcf` 默认值：16KB
 + 最小值：1KB
 + 单位：KB|MB|GB
 
 ### `block-cache-size`
 
-+ rocksdb block cache size.
-+ 默认值：机器总内存 * 25%
++ 一个 RocksDB block 的默认缓存大小。
++ `defaultcf` 默认值：机器总内存 * 25%
++ `writecf` 默认值：机器总内存 * 15%
++ `lockcf` 默认值：机器总内存 * 2%
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -898,12 +938,16 @@ rocksdb defaultcf 相关的配置项。
 ### `optimize-filters-for-hits`
 
 + 开启优化 filter 的命中率的开关。
-+ 默认值：true
++ `defaultcf` 默认值：`true`
++ `writecf` 默认值：`false`
++ `lockcf` 默认值：`false`
 
-### `whole_key_filtering`
+### `whole-key-filtering`
 
 + 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：true
++ `defaultcf` 默认值：`true`
++ `writecf` 默认值：`false`
++ `lockcf` 默认值：`false`
 
 ### `bloom-filter-bits-per-key`
 
@@ -938,7 +982,9 @@ bloom filter 为每个 key 预留的长度。
 ### `write-buffer-size`
 
 + memtable 大小。
-+ 默认值：128MB
++ `defaultcf` 默认值：`"128MB"`
++ `writecf` 默认值：`"128MB"`
++ `lockcf` 默认值：`"32MB"`
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -957,7 +1003,9 @@ bloom filter 为每个 key 预留的长度。
 ### `max-bytes-for-level-base`
 
 + base level (L1) 最大字节数，一般设置为 memtable 大小 4 倍。
-+ 默认值：512MB
++ `defaultcf` 默认值：`"512MB"`
++ `writecf` 默认值：`"512MB"`
++ `lockcf` 默认值：`"128MB"`
 + 最小值：0
 + 单位：KB|MB|GB
 
@@ -971,7 +1019,9 @@ bloom filter 为每个 key 预留的长度。
 ### `level0-file-num-compaction-trigger`
 
 + 触发 compaction 的 L0 文件最大个数。
-+ 默认值：4
++ `defaultcf` 默认值：`4`
++ `writecf` 默认值：`4`
++ `lockcf` 默认值：`1`
 + 最小值：0
 
 ### `level0-slowdown-writes-trigger`
@@ -996,8 +1046,10 @@ bloom filter 为每个 key 预留的长度。
 ### `compaction-pri`
 
 + Compaction 优先类型
-+ 可选择值：3 (MinOverlappingRatio)，0 (ByCompensatedSize)，1 (OldestLargestSeqFirst)，2 (OldestSmallestSeqFirst)。
-+ 默认值：3
++ 可选择值：`0` (`ByCompensatedSize`)，`1` (`OldestLargestSeqFirst`)，`2` (`OldestSmallestSeqFirst`)，`3` (`MinOverlappingRatio`)。
++ `defaultcf` 默认值：`3`
++ `writecf` 默认值：`3`
++ `lockcf` 默认值：`1`
 
 ### `dynamic-level-bytes`
 
@@ -1014,7 +1066,7 @@ bloom filter 为每个 key 预留的长度。
 + 每一层的默认放大倍数。
 + 默认值：10
 
-### `rocksdb.defaultcf.compaction-style`
+### `compaction-style`
 
 + Compaction 方法，可选值为 level，universal。
 + 默认值：level
@@ -1039,7 +1091,9 @@ bloom filter 为每个 key 预留的长度。
 ### `enable-compaction-guard`
 
 + 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
-+ 默认值：true
++ `defaultcf` 默认值：`true`
++ `writecf` 默认值：`true`
++ `lockcf` 默认值：`false`
 
 ### `compaction-guard-min-output-file-size`
 
@@ -1128,63 +1182,6 @@ rocksdb defaultcf titan 相关的配置项。
 
 + 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
 + 默认值：false
-
-## rocksdb.writecf
-
-rocksdb writecf 相关的配置项。
-
-### `block-cache-size`
-
-+ block cache size.
-+ 默认值：机器总内存 * 15%
-+ 单位：MB|GB
-
-### `optimize-filters-for-hits`
-
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：false
-
-### `whole-key-filtering`
-
-+ 开启将整个 key 放到 bloom filter 中的开关。
-+ 默认值：false
-
-### `enable-compaction-guard`
-
-+ 设置 compaction guard 的启用状态。compaction guard 优化通过使用 TiKV Region 边界分割 SST 文件，帮助降低 compaction I/O，让 TiKV 能够输出较大的 SST 文件，并且在迁移 Region 时及时清理过期数据。
-+ 默认值：true
-
-### `compaction-guard-min-output-file-size`
-
-+ 设置 compaction guard 启用时 SST 文件大小的最小值，防止 SST 文件过小。
-+ 默认值：8MB
-+ 单位：KB|MB|GB
-
-### `compaction-guard-max-output-file-size`
-
-+ 设置 compaction guard 启用时 SST 文件大小的最大值，防止 SST 文件过大。对于同一列族，此配置项的值会覆盖 `target-file-size-base`。
-+ 默认值：128MB
-+ 单位：KB|MB|GB
-
-## rocksdb.lockcf
-
-rocksdb lockcf 相关配置项。
-
-### `block-cache-size`
-
-+ block cache size.
-+ 默认值：机器总内存 * 2%
-+ 单位：MB|GB
-
-### `optimize-filters-for-hits`
-
-+ 开启优化 filter 的命中率的开关。
-+ 默认值：false
-
-### `level0-file-num-compaction-trigger`
-
-+ 触发 compaction 的 L0 文件个数。
-+ 默认值：1
 
 ## raftdb
 
