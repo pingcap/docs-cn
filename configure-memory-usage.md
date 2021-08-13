@@ -129,7 +129,7 @@ server-memory-quota = 34359738368
 
 ### 流控
 
-- TiDB 目前支持对读数据算子的动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
+- TiDB 支持对读数据算子的动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子就会停止一个线程。
 - 流控行为由参数 [`tidb_enable_rate_limit_action`](/system-variables.md#tidb_enable_rate_limit_action) 控制。
 - 当流控被触发时，会在日志中打印一条包含关键字 `memory exceeds quota, destroy one token now` 的日志。
 
