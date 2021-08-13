@@ -158,7 +158,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 256 行不同的数据。
 
-3. 尝试执行下列 SQL 语句。该 SQL 语句占用大量内存，会返回 Out of Memory Quota 错误，被 tidb-server cancel 掉。
+3. 尝试执行以下 SQL 语句：
 
     {{< copyable "sql" >}}
 
