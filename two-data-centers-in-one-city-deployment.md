@@ -1,6 +1,6 @@
 ---
 title: 同城两中心自适应同步模式部署
-summary: 介绍同城使用两中心自适应同步模式部署方式
+summary: 介绍同城使用两中心自适应同步模式部署方式。
 aliases: ['/docs-cn/dev/two-data-centers-in-one-city-deployment/']
 ---
 
