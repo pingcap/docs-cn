@@ -81,7 +81,7 @@ delta_index_cache_size = 0
     ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
     # capacity = [ 10737418240, 10737418240 ]
 
-    ## `[storage.io_rate_limit]` 相关配置从 v5.2.0 开始引入。
+    ## [storage.io_rate_limit] 相关配置从 v5.2.0 开始引入。
     [storage.io_rate_limit]
     ## 该配置项是 I/O 限流功能的开关，默认关闭。TiFlash 的 I/O 限流功能适用于磁盘带宽较小且磁盘带宽大小明确的云盘场景。
     ## I/O 限流功能限制下的读写流量总带宽，单位为 Byte，默认值为 0，即默认关闭 I/O 限流功能。
