@@ -320,6 +320,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：`"plaintext"`，表示不进行加密。
 + 可选值：`"plaintext"`、`"aes128-ctr"`。
 
+### `auto-tls`
+
++ 控制 TiDB 启动时是否自动生成 TLS 证书。
++ 默认值：`true`
+
 ## performance
 
 性能相关配置。
@@ -633,3 +638,8 @@ TiDB 服务状态相关配置。
 + 默认值：10
 + 最小值：0
 + 最大值：10000
+
+### deadlock-history-collect-retryable
+
++ 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
++ 默认值：false
