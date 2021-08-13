@@ -142,7 +142,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 - Sort，MergeJoin，HashJoin 落盘是从 v4.0.0 版本开始引入的，HashAgg 落盘是从 v5.2.0 版本开始引入的。
 - 当包含 Sort、MergeJoin、或HashJoin 的 SQL 语句引起内存 OOM 时，TiDB 默认会触发落盘。当包含 HashAgg 算子的 SQL 语句引起内存 OOM 时，TiDB 默认不触发落盘，请按照以下示例步骤将设置 `tidb_executor_concurrency = 1` 来触发落盘。
 
-下例通过构造一个占用大量内存的 SQL 语句，对 HashAgg 落盘功能进行演示：
+本示例通过构造一个占用大量内存的 SQL 语句，对 HashAgg 落盘功能进行演示：
 
 1. 将 SQL 语句的 Memory Quota 配置为 1GB（默认 1GB）：
 
