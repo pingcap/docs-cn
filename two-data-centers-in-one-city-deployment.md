@@ -223,7 +223,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 1. **初始化**：集群在初次启动时处于 sync（同步复制）模式，PD 会下发信息给 TiKV，所有 TiKV 节点会严格按照 sync 模式的要求进行工作。
 
-2. **同步切异步**：PD 通过定时检查 TiKV 的心跳信息来判断 TiKV 是否宕机或断连。如果宕机数超过 PRIMARY/DR 各自副本的数量 `primary-replicas` 和 `dr-replicas`，意味着无法完成同步复制，需要切换状态。当宕机时间超过了 `wait-store-timeout` 设定的时间，PD 将集群状态切换成 async（异步复制）模式。然后 PD 再将 async 状态下发到所有 TiKV 节点，TiKV 的复制模式由双中心同步方式转为原生的 Raft 大多数落实方式（majority）。
+2. **同步切异步**：PD 通过定时检查 TiKV 的心跳信息来判断 TiKV 是否宕机或断连。如果宕机数超过 PRIMARY/DR 各自副本的数量 `primary-replicas` 和 `dr-replicas`，意味着无法完成同步复制，需要切换状态。当宕机时间超过了 `wait-store-timeout` 设定的时间，PD 将集群状态切换成 async（异步复制）模式。然后 PD 再将 async 状态下发到所有 TiKV 节点，TiKV 的复制模式由双中心同步方式转为原生的 Raft 大多数落实方式 (majority)。
 
 3. **异步切同步**：PD 通过定时检查 TiKV 的心跳信息来判断 TiKV 是否恢复连接，如果宕机数小于 PRIMARY/DR 各自副本的数量，意味着可以切回同步了。PD 会将集群复制状态先切换至 sync-recover 并将该状态下发给所有 TiKV 节点。TiKV 的所有 Region 逐步切换成双机房同步复制模式，切换成功后通过心跳将状态同步信息给 PD。PD 记录 TiKV 上 Region 的状态并统计恢复进度。当 TiKV 的所有 Region 都完成了同步复制模式的切换，PD 将集群复制状态切换为 sync。
 
