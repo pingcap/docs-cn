@@ -358,4 +358,3 @@ create global binding for select * from t where a < 100 and b < 100 using select
     -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
     -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
     ```
-
