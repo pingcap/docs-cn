@@ -324,7 +324,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
 执行计划管理功能（SPM）在版本升级过程中可能会出现一些兼容性问题导致升级失败，你需要在版本升级前做一些检查，确保版本顺利升级。
 
-* 当你尝试从 v5.2 以前的版本升级到此版本，需要注意在升级前检查自动演进的开关 `tidb_evolve_plan_baselines` 是否已经关闭，如果尚未关闭，则需要将其关闭后再进行升级。具体操作如下所示：
+* 当你尝试从 v5.2 以前的版本（含 v4.0/ v5.0/ v5.1）升级到此版本，需要注意在升级前检查自动演进的开关 `tidb_evolve_plan_baselines` 是否已经关闭。如果尚未关闭，则需要将其关闭后再进行升级。具体操作如下所示：
 
   {{< copyable "sql" >}}
 
