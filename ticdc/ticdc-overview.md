@@ -114,7 +114,7 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 目前支持使用 `cdc cli` 工具或 HTTP 接口来管理 TiCDC 集群状态和数据同步任务。详细操作见：
 
 - [使用 `cdc cli` 工具来管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)
-- [使用 HTTP 接口管理集群状态和数据同步](/ticdc/manage-ticdc.md#使用-http-接口管理集群状态和数据同步)
+- [使用 Open API 接口管理集群状态和数据同步](/ticdc/ticdc-open-api.md)
 
 ## TiCDC 常见问题
 
