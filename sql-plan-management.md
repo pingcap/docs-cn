@@ -342,7 +342,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
   具体操作如下所示：
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
     ```sql
     -- 在待升级的版本上检查现有可用绑定对应的查询语句。
