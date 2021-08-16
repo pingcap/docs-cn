@@ -344,18 +344,18 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
   {{< copyable "sql" >}}
 
-  ```sql
-  -- 在待升级的版本上检查现有可用绑定对应的查询语句。
+    ```sql
+    -- 在待升级的版本上检查现有可用绑定对应的查询语句。
   
-  select bind_sql from mysql.bind_info where source != 'builtin' and status = 'using';
+    select bind_sql from mysql.bind_info where source != 'builtin' and status = 'using';
   
-  -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
+    -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
   
-  bind_sql_0;
-  bind_sql_1;
-  ...
+    bind_sql_0;
+    bind_sql_1;
+    ...
   
-  -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
-  -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
-  ```
+    -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
+    -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
+    ```
 
