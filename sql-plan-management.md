@@ -265,10 +265,6 @@ set global tidb_evolve_plan_baselines = on;
 >
 > 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
 
-> **注意：**
->
-> 当你尝试从 v5.2 以前的版本升级到此版本，需要注意在升级前检查此开关是否已经关闭，如果未关闭，则需要将其关闭后再进行升级，否则会造成升级失败。
-
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 
 假如有表 `t` 定义如下：
@@ -323,3 +319,43 @@ create global binding for select * from t where a < 100 and b < 100 using select
     | max_execution_time | 查询过程最多消耗多少时间 |
 
 + `read_from_storage` 是一个非常特别的 hint，因为它指定了读表时选择从 TiKV 读还是从 TiFlash 读。由于 TiDB 提供隔离读的功能，当隔离条件变化时，这个 hint 对演进出来的执行计划影响很大，所以当最初创建的绑定中存在这个 hint，TiDB 会无视其所有演进的绑定。
+
+## 升级检查 (Upgrade Checklist)
+
+执行计划管理功能（SPM）在版本升级过程中可能会出现一些兼容性问题导致升级失败，你需要在版本升级前做一些检查，确保版本顺利升级。
+
+* 当你尝试从 v5.2 以前的版本升级到此版本，需要注意在升级前检查自动演进的开关 `tidb_evolve_plan_baselines` 是否已经关闭，如果尚未关闭，则需要将其关闭后再进行升级。具体操作如下所示：
+
+  {{< copyable "sql" >}}
+
+  ```sql
+  -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
+  
+  select @@global.tidb_evolve_plan_baselines;
+  
+  -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
+  
+  set global tidb_evolve_plan_baselines = off;
+  ```
+
+* 当你尝试从 v4 版本升级到此版本，需要注意在升级前检查所有可用绑定对应的查询语句在新版本中是否存在语法错误。如果存在语法错误，则需要将对应的绑定进行删除。
+
+  具体操作如下所示：
+
+  {{< copyable "sql" >}}
+
+  ```sql
+  -- 在待升级的版本上检查现有可用绑定对应的查询语句。
+  
+  select bind_sql from mysql.bind_info where source != 'builtin' and status = 'using';
+  
+  -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
+  
+  bind_sql_0;
+  bind_sql_1;
+  ...
+  
+  -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
+  -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
+  ```
+
