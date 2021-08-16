@@ -32,11 +32,11 @@ TiCDC 提供 Open API 功能，用户可通过 Open API 对 TiCDC 集群进行�
 
 所有 API 的请求体与返回值统一使用 JSON 格式数据。本文档以下部分描述当前提供的 API 的具体使用方法。
 
-在下文的描述中，假定 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
+在下文的示例描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
 
 ## API 统一错误格式
 
-对 API 发起的请求，在发生错误的时候会返回统一格式的错误信息。
+对 API 发起的请求后，如发生错误，返回错误信息的格式如下所示：
 
 ```json
 {
@@ -45,7 +45,7 @@ TiCDC 提供 Open API 功能，用户可通过 Open API 对 TiCDC 集群进行�
 }
 ```
 
-如上所示，`error_msg` 描述了错误信息， `error_code` 则是相应的错误代码。
+如上所示，`error_msg` 描述错误信息，`error_code` 则是对应的错误码。
 
 ## 获取 TiCDC 节点状态信息
 
@@ -79,7 +79,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/status
 
 - version: 当前 TiCDC 版本号。
 - git_hash: git 哈希值。
-- id: 该节点的 capture  ID。
+- id: 该节点的 capture ID。
 - pid: 该节点 capture 进程的 PID。
 - is_owner: 表示该节点是否是 owner。
 
@@ -101,7 +101,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 ## 创建同步任务
 
-该接口是一个异步接口，请求成功会返回 `202 Accepted` ，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
+该接口是一个异步接口，请求成功会返回 `202 Accepted`。该返回结果只代表服务器答应执行该命令，不保证命令会被成功的执行。
 
 ### 请求URI
 
@@ -118,7 +118,7 @@ POST /api/v1/changefeeds
 | `changefeed_id`           | string 类型，同步任务的 ID。 （非必选）                |
 | `start_ts`                | uint64 类型，指定 changefeed 的开始 TSO。（非必选）    |
 | `target_ts`               | uint64 类型，指定 changefeed 的目标 TSO。（非必选）    |
-| **`sink_uri`**            | string 类型，同步任务下游的地址。**（必选）**          |
+| **`sink_uri`**            | string 类型，同步任务下游的地址。（**必选**）          |
 | `force_replicate`         | bool 类型，是否强制同步没有唯一索引的表。（非必选）    |
 | `ignore_ineligible_table` | bool 类型，是否忽略无法进行同步的表。（非必选）        |
 | `filter_rules`            | string 类型数组，表库过滤的规则。（非必选）            |
@@ -126,7 +126,7 @@ POST /api/v1/changefeeds
 | `mounter_worker_num`      | int 类型，mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)时所作的解释相同，此处不再赘述，下面会对一些需要补充说明的参数进行进一步阐述。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)时所作的解释相同，具体解释请参见该文档。下面会对一些需要补充说明的参数进行进一步阐述。
 
 `force_replicate`：该值默认为 false ，当指定为 true 时，同步任务会尝试强制同步没有唯一索引的表。
 
