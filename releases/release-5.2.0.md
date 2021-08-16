@@ -229,6 +229,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 热点调度支持对 TiFlash 的写热点进行调度 [#3900](https://github.com/tikv/pd/pull/3900)
 
 + TiFlash
+
     - 新增若干 运算符 支持：`MOD / %, `LIKE`
     - 新增若干 字符串函数 支持：`ASCII()`, `COALESCE()`,  `LENGTH()`, `POSITION()`, `TRIM()`
     - 新增若干 数学函数 支持：`CONV()`, `CRC32()`, `DEGREES()`, `EXP()`, `LN()`, `LOG()`, `LOG10()`, `LOG2()`, `POW()`, `RADIANS()`, `ROUND(decimal)`, `SIN()`, `MOD()`
@@ -329,4 +330,4 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + Dumpling
 
         - 修复 Dumpling GC safepoint 设置过晚问题 [#290](https://github.com/pingcap/dumpling/pull/290)
-        - 修复 Dumpling 在特定 MySQL 版本下卡住的问题 (#325)[https://github.com/pingcap/dumpling/pull/325]
+        - 修复 Dumpling 在特定 MySQL 版本下卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
