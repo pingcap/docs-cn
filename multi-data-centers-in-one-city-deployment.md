@@ -61,7 +61,7 @@ Raft 是一种分布式一致性算法，在 TiDB 集群的多种组件中，PD 
 集群 TSO 获取能力以及读取性能有所提升。具体调度策略设置模板参照如下：
 
 ```shell
--- 其他机房统一驱逐 leader 到业务流量机房
+-- 其他机房统一驱逐 leader 到业务流量机房 (5.2 以上版本删除，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能)
 config set label-property reject-leader LabelName labelValue
 
 -- 迁移 PD leader 并设置优先级
@@ -70,6 +70,9 @@ member leader_priority pdName1 5
 member leader_priority pdName2 4
 member leader_priority pdName3 3
 ```
+
+> **注意**
+> 5.2 以上版本已不支持，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
 
 **缺点：**
 

@@ -192,6 +192,9 @@ tikv_servers:
     ```
     config set label-property reject-leader dc 3
     ```
+  
+    > **注意**
+    > 5.2 以上版本已不支持，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
 
 - 设置 PD 的优先级，为了避免出现异地数据中心的 PD 成为 Leader，可以将本地数据中心的 PD 优先级调高（数字越大，优先级越高），将异地的 PD 优先级调低。
 
