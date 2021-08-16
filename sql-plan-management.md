@@ -326,7 +326,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
 * 当你尝试从 v5.2 以前的版本（即 v4.0、v5.0、v5.1）升级到此版本，需要注意在升级前检查自动演进的开关 `tidb_evolve_plan_baselines` 是否已经关闭。如果尚未关闭，则需要将其关闭后再进行升级。具体操作如下所示：
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
     ```sql
     -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
