@@ -29,22 +29,22 @@ TiDB 版本：5.2
 
 | 变量名   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|
-|default_authentication_plugin|新增|设置服务器对外通告的默认身份验证方式，默认值为`mysql\_native\_password`。|
-|tidb_enable_auto_increment_in_generated|新增|控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。|
-|tidb_opt_enable_correlation_adjustment|新增|控制优化器是否开启交叉估算，默认值为`ON`。|
-|tidb_opt_limit_push_down_threshold|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
-|tidb_restricted_read_only|新增|控制整个集群的只读状态，默认值为`OFF`。|
-|tidb_stmt_summary_max_stmt_count|修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
-|tidb_enable_streaming|废弃|废弃 TiDB 配置文件中`enable-streaming`配置项||
+|[`default_authentication_plugin`](/system-variables.md#default_authentication_plugin)|新增|设置服务器对外通告的默认身份验证方式，默认值为`mysql\_native\_password`。|
+|[`tidb_enable_auto_increment_in_generated](/system-variables.md#tidb_enable_auto_increment_in_generated)|新增|控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。|
+|[`tidb_opt_enable_correlation_adjustment](/system-variables.md#tidb_opt_enable_correlation_adjustment)||新增|控制优化器是否开启交叉估算，默认值为`ON`。|
+|[`tidb_opt_limit_push_down_threshold](/system-variables.md#tidb_opt_limit_push_down_threshold)||新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
+|[`tidb_restricted_read_only]()||新增|控制整个集群的只读状态，默认值为`OFF`。|
+|[`tidb_stmt_summary_max_stmt_count](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)||修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
+|`tidb_enable_streaming`|废弃|废弃 TiDB 配置文件中`enable-streaming`配置项||
 
 ### 配置文件参数
 
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
-|TiDB 配置文件|pessimistic-txn.deadlock-history-collect-retryable|新增|控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。|
-|TiDB 配置文件|security.auto-tls|新增|控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `true`。|
-|TiDB 配置文件|stmt-summary.max-stmt-count|修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
-|TiDB 配置文件|experimental.allow-expression-index|废弃|废弃 TiDB 配置文件中`allow-expression-index` 配置项|
+|TiDB 配置文件|[`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable)|新增|控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。|
+|TiDB 配置文件|[`security.auto-tls`](/tidb-configuration-file.md#auto-tls)|新增|控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `true`。|
+|TiDB 配置文件|[`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count)|修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
+|TiDB 配置文件|`experimental.allow-expression-index`|废弃|废弃 TiDB 配置文件中`allow-expression-index` 配置项|
 
 ### 其他
 
