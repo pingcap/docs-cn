@@ -17,7 +17,7 @@ TiDB 版本：5.2
 - 优化 TiKV 预留空间管理，提升存储稳定性。
 - 为 TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制，提升 TiKV 流控稳定性。
 - 简化 Data Migration (DM) 工具运维，降低运维管理的成本。
-- TiCDC 支持 HTTP 协议 OpenAPI  对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
+- TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
 
 ## 兼容性更改
 
@@ -247,7 +247,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiCDC
         - 为 kv client 增量扫添加并发限制 [#1899](https://github.com/pingcap/ticdc/pull/1899)
         - 始终在 TiCDC 内部拉取 old value [#2271](https://github.com/pingcap/ticdc/pull/2271)
-        - 对于不可恢复的 DML 错误快速失败退出  [#1928](https://github.com/pingcap/ticdc/pull/1928)
+        - 对于不可恢复的 DML 错误快速失败退出 [#1928](https://github.com/pingcap/ticdc/pull/1928)
         - 在 region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/ticdc/pull/2235)
 
     + Dumpling
@@ -306,7 +306,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiCDC
 
         - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题  [#1985](https://github.com/pingcap/ticdc/pull/1985)
-        - 修复 changefeed 创建成功后立即失败的问题  [#2115](https://github.com/pingcap/ticdc/pull/2115)
+        - 修复 changefeed 创建成功后立即失败的问题 [#2115](https://github.com/pingcap/ticdc/pull/2115)
         - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#2117](https://github.com/pingcap/ticdc/pull/2117)
         - 修复 owner 被 kill 后 DDL 丢失的问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
         - 修复 cli 在默认 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
@@ -322,7 +322,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiDB Lightning
 
         - 修复 Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1272)
-        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 问题  [#1290](https://github.com/pingcap/br/issues/1290)
+        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 问题 [#1290](https://github.com/pingcap/br/issues/1290)
         - 修复 Lightning 因 int handle 溢出导致导入数据失败问题 [#1291](https://github.com/pingcap/br/issues/1291)
         - 修复 Lightning 在 local backend 模式下可能因数据丢失遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
         - 修复 Lightning 恢复 table schema 时与 clustered index 不兼容的问题 [#1364](https://github.com/pingcap/br/pull/1364)
