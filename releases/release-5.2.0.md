@@ -31,11 +31,11 @@ TiDB 版本：5.2
 |:----------|:-----------|:-----------|
 |[`default_authentication_plugin`](/system-variables.md#default_authentication_plugin)|新增|设置服务器对外通告的默认身份验证方式，默认值为`mysql\_native\_password`。|
 |[`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated)|新增|控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。|
-|[`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment)||新增|控制优化器是否开启交叉估算，默认值为`ON`。|
-|[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)||新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
-|[`tidb_restricted_read_only`]()||新增|控制整个集群的只读状态，默认值为`OFF`。|
-|[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)||修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
-|`tidb_enable_streaming`|废弃|废弃 TiDB 配置文件中`enable-streaming`配置项||
+|[`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment)|新增|控制优化器是否开启交叉估算，默认值为`ON`。|
+|[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
+|[`tidb_restricted_read_only`]()|新增|控制整个集群的只读状态，默认值为`OFF`。|
+|[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)|修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
+|`tidb_enable_streaming`|废弃|废弃 TiDB 配置文件中`enable-streaming`配置项|
 
 ### 配置文件参数
 
