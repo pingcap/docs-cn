@@ -986,6 +986,7 @@ Encoding 格式示例：
 >> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 调度出去
 >> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
