@@ -58,7 +58,7 @@ The `global` section corresponds to the cluster's global configuration and has t
 
     - If `data_dir` is a relative path, the component data is placed in `<deploy_dir>/<data_dir>`. For the calculation rules of `<deploy_dir>`, see the application rules of the `deploy_dir` field.
 
-- `log_dir`: The data directory. Default value: `"log"`. Its application rules are as follows:
+- `log_dir`: The log directory. Default value: `"log"`. Its application rules are as follows:
 
     - If the absolute path `log_dir` is configured at the instance level, the actual log directory is the `log_dir` configured for the instance.
 
