@@ -29,7 +29,7 @@ TiDB 版本：5.2
 
 | 变量名   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|
-|[`default_authentication_plugin`](/system-variables.md#default_authentication_plugin)|新增|设置服务器对外通告的默认身份验证方式，默认值为`mysql\_native\_password`。|
+|[`default_authentication_plugin`](/system-variables.md#default_authentication_plugin)|新增|设置服务器对外通告的默认身份验证方式，默认值为 `mysql_native_password`。|
 |[`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated)|新增|控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。|
 |[`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment)|新增|控制优化器是否开启交叉估算，默认值为`ON`。|
 |[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
@@ -69,7 +69,7 @@ TiDB 版本：5.2
 
     表达式索引是一种特殊的索引，能将索引建立于表达式上。创建了表达式索引后，TiDB 支持基于表达式的查询，极大提升查询的性能。
 
-    [用户文档](sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/)
+    [用户文档](/sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/)
 
 - **支持 Oracle 中的 `translate`函数**
 
@@ -190,12 +190,12 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
         - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
  
-    + Lightning
+    + TiDB Lightning
 
         - 支持 CSV 文件中除 \r/\n 之外的自定义行尾 [#1297](https://github.com/pingcap/br/pull/1297)
         - 支持表达式索引和依赖于虚拟生成列的索引 [#1407](https://github.com/pingcap/br/pull/1407)
 
-     +Dumpling
+    + Dumpling
         - 支持备份不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的兼容 MySQL 的数据库 [#311](https://github.com/pingcap/dumpling/pull/311)
 
 ## 提升改进
@@ -249,6 +249,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 始终在 TiCDC 内部拉取 old value [#2271](https://github.com/pingcap/ticdc/pull/2271)
         - 对于不可恢复的 DML 错误快速失败退出 [#1928](https://github.com/pingcap/ticdc/pull/1928)
         - 在 region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/ticdc/pull/2235)
+        - 优化 workerpool 以降低在高并发情况下 goroutine 的数量 [#2201](https://github.com/pingcap/ticdc/pull/2201)
 
     + Dumpling
         - 通过 tidb_rowid 来对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
@@ -313,6 +314,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 修复 TiCDC 可能遇到 `ErrSchemaStorageTableMiss` 导致 changefeed 被意外地重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
         - 修复 TiCDC 遇到 ErrGCTTLExceeded 错误时 changefeed 不能被 remove 的问题 [#2429](https://github.com/pingcap/ticdc/pull/2429)
         - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#2431](https://github.com/pingcap/ticdc/pull/2431)
+        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
 
     + Backup & Restore (BR)s
 
