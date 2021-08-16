@@ -328,15 +328,15 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
   {{< copyable "sql" >}}
 
-  ```sql
-  -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
+    ```sql
+    -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
   
-  select @@global.tidb_evolve_plan_baselines;
+    select @@global.tidb_evolve_plan_baselines;
   
-  -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
+    -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
   
-  set global tidb_evolve_plan_baselines = off;
-  ```
+    set global tidb_evolve_plan_baselines = off;
+    ```
 
 * 当你尝试从 v4.0 版本升级到此版本，需要注意在升级前检查所有可用绑定对应的查询语句在新版本中是否存在语法错误。如果存在语法错误，则需要删除对应的绑定。
 
