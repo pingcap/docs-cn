@@ -1,20 +1,20 @@
 ---
 title: TiCDC Open API
-summary: 了解 TiCDC 的所有 Open API 接口的使用方式。
+summary: 了解如何使用 Open API 接口来管理集群状态和数据同步。
 ---
 
 # TiCDC Open API
 
-**警告**
-
-TiCDC Open API 目前为实验功能，不建议在生产环境中使用该功能。
+> **警告**
+>
+> TiCDC Open API 目前为实验功能，不建议在生产环境中使用该功能。
 
 TiCDC 提供 Open API 功能，用户可通过 Open API 对 TiCDC 集群进行查询和运维操作。Open API 的总体功能和 [cdc cli 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
 
-当前支持的所有 API 如下：
+你可以通过 Open API 完成 TiCDC 集群的如下运维操作：
 
-- [获取 TiCDC server 状态信息](#获取 TiCDC server 状态信息)
-- [检查 TiCDC 集群的健康状态](#检查 TiCDC 集群的健康状态) 
+- [获取 TiCDC server 状态信息](#获取-ticdc-server-状态信息)
+- [检查 TiCDC 集群的健康状态](#检查-ticdc-集群的健康状态) 
 - [创建同步任务](#创建同步任务)
 - [删除同步任务](#删除同步任务)
 - [更新同步任务配置](#更新同步任务配置)
@@ -24,13 +24,13 @@ TiCDC 提供 Open API 功能，用户可通过 Open API 对 TiCDC 集群进行�
 - [恢复同步任务](#恢复同步任务)
 - [查询同步子任务列表](#查询同步子任务列表)
 - [查询特定同步子任务](#查询特定同步子任务)
-- [查询 TiCDC 服务进程列表](#查询 TiCDC 服务进程列表)
-- [驱逐 owner 节点](#驱逐 owner 节点)
+- [查询 TiCDC 服务进程列表](#查询-ticdc-服务进程列表)
+- [驱逐 owner 节点](#驱逐-owner-节点)
 - [手动触发表的负载均衡](#手动触发表的负载均衡)
 - [手动调度表到其他节点](#手动调度表到其他节点)
-- [动态调整 TiCDC Server 日志级别](#动态调整 TiCDC Server 日志级别)
+- [动态调整 TiCDC Server 日志级别](#动态调整-ticdc-server-日志级别)
 
-所有 API 的请求体与返回值数据格式统一为 JSON 格式数据。下面将会详细描述当前提供的 API 的具体使用方法。
+所有 API 的请求体与返回值统一使用 JSON 格式数据。本文档以下部分描述当前提供的 API 的具体使用方法。
 
 在下文的描述中，假定 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
 
@@ -163,7 +163,7 @@ POST /api/v1/changefeeds
 
 ### 使用样例
 
-以下请求会创建一个 ID 为 `test5` ，sink_uri 为 `blackhome://` 的同步任务。
+以下请求会创建一个 ID 为 `test5`，sink_uri 为 `blackhome://` 的同步任务。
 
 {{< copyable "shell-regular" >}}
 
@@ -175,7 +175,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1
 
 ## 删除同步任务
 
-该接口是一个异步接口，请求成功会返回 `202 Accepted` ，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
+该接口是一个异步接口，请求成功会返回 `202 Accepted`，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
 
 ### 请求URI
 
@@ -205,7 +205,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 该接口是一个异步接口，请求成功会返回 `202 Accepted` ，它只代表服务器答应执行该命令，不保证命令会被成功的执行。
 
-修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
+修改 changefeed 配置需要按照`暂停任务 -> 修改配置 -> 恢复任务`的流程。
 
 ### 请求URI
 
@@ -232,7 +232,7 @@ PUT /api/v1/changefeeds/{changefeed_id}
 | `mounter_worker_num`  | int 类型，mounter 线程数。（非必选）                   |
 | `sink_config`         | sink 的配置参数。（非必选）                            |
 
-以上参数含义与创建同步任务中的参数相同，此处不再赘述。
+以上参数含义与[创建同步任务](#创建同步任务)中的参数相同，此处不再赘述。
 
 ### 使用样例
 
@@ -299,7 +299,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds?state=normal
 
 - id：同步任务的 ID
 - state：同步任务当前所处的[状态](/ticdc/manage-ticdc.md#同步任务状态流转)。
-- checkpoint_tso：同步任务当前 checkpoint 的 tso 表示。
+- checkpoint_tso：同步任务当前 checkpoint 的 TSO 表示。
 - checkpoint_tso：同步任务当前checkpoint 的格式化时间表示。
 - error：同步任务的错误信息。
 
