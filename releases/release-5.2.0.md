@@ -157,7 +157,7 @@ TiDB 版本：5.2
 
     - DM v2.1.0 支持 HTTP 协议 OpenAPI，方便用户基于 OpenAPI 实现自动化运维，降低运维管理的成本
     - DM v2.1.0 根据用户的不同角色提供了不同的 Grafana 面板用于监控数据迁移的状态，同时增加了同步延迟时间监控，使任务状态展示更加直观
-    - DM v2.1.0  支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
+    - DM v2.1.0 支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
 
 - DM 支持对行变更事件进行条件过滤
 
@@ -231,7 +231,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 + TiFlash
 
     - 新增若干运算符的支持：`MOD / %`, `LIKE`
-    - 新增若干字符串函数的支持：`ASCII()`, `COALESCE()`,  `LENGTH()`, `POSITION()`, `TRIM()`
+    - 新增若干字符串函数的支持：`ASCII()`, `COALESCE()`, `LENGTH()`, `POSITION()`, `TRIM()`
     - 新增若干数学函数的支持：`CONV()`, `CRC32()`, `DEGREES()`, `EXP()`, `LN()`, `LOG()`, `LOG10()`, `LOG2()`, `POW()`, `RADIANS()`, `ROUND(decimal)`, `SIN()`, `MOD()`
     - 新增若干日期函数的支持： `ADDDATE(string, real)`, `DATE_ADD(string, real)`, `DATE()`
     - 更多函数支持：`INET_NTOA()`, `INET_ATON()`, `INET6_ATON`, `INET6_NTOA()`
@@ -305,7 +305,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题  [#1985](https://github.com/pingcap/ticdc/pull/1985)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1985](https://github.com/pingcap/ticdc/pull/1985)
         - 修复 changefeed 创建成功后立即失败的问题 [#2115](https://github.com/pingcap/ticdc/pull/2115)
         - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#2117](https://github.com/pingcap/ticdc/pull/2117)
         - 修复 owner 被 kill 后 DDL 丢失的问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
