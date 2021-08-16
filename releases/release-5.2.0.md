@@ -317,7 +317,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + Backup & Restore (BR)s
 
         - 修复 BR 恢复中忽略了所有系统表的问题 [#1197](https://github.com/pingcap/br/issues/1197) [#1201](https://github.com/pingcap/br/issues/1201)
-        - 修复  BR 恢复 cdclog 时漏掉 DDL 操作的问题 [#870](https://github.com/pingcap/br/issues/870)
+        - 修复 BR 恢复 cdclog 时漏掉 DDL 操作的问题 [#870](https://github.com/pingcap/br/issues/870)
 
     + TiDB Lightning
 
