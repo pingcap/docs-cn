@@ -165,7 +165,7 @@ TiDB 版本：5.2
 
 ### TiDB 数据共享订阅
 
-TiCDC 支持 HTTP 协议 OpenAPI  对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
+TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
 
 [#2411](https://github.com/pingcap/ticdc/issues/2411)
 
