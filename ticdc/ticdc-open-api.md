@@ -9,7 +9,7 @@ summary: 了解 TiCDC 的所有 Open API 接口的使用方式。
 
 TiCDC Open API 目前为实验功能，不建议在生产环境中使用该功能。
 
-目前 TiCDC Open API 提供了一些对 TiCDC 集群进行查询和运维功能，其总体功能和 [cdc cli 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
+TiCDC 提供 Open API 功能，用户可通过 API（即 HTTP 接口）对 TiCDC 集群进行查询和运维操作。Open API 的总体功能和 [cdc cli 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
 
 当前支持的所有 API 如下：
 
