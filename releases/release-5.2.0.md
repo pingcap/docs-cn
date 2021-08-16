@@ -17,7 +17,7 @@ TiDB 版本：5.2
 - 优化 TiKV 预留空间管理，提升存储稳定性。
 - 为 TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制，提升 TiKV 流控稳定性。
 - 简化 Data Migration (DM) 工具运维，降低运维管理的成本。
-- TiCDC 支持 HTTP 协议 OpenAPI  对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
+- TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
 
 ## 兼容性更改
 
@@ -29,7 +29,7 @@ TiDB 版本：5.2
 
 | 变量名   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|
-|[`default_authentication_plugin`](/system-variables.md#default_authentication_plugin)|新增|设置服务器对外通告的默认身份验证方式，默认值为`mysql\_native\_password`。|
+|[`default_authentication_plugin`](/system-variables.md#default_authentication_plugin)|新增|设置服务器对外通告的默认身份验证方式，默认值为 `mysql_native_password`。|
 |[`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated)|新增|控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。|
 |[`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment)|新增|控制优化器是否开启交叉估算，默认值为`ON`。|
 |[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
@@ -69,7 +69,7 @@ TiDB 版本：5.2
 
     表达式索引是一种特殊的索引，能将索引建立于表达式上。创建了表达式索引后，TiDB 支持基于表达式的查询，极大提升查询的性能。
 
-    [用户文档](sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/)
+    [用户文档](/sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/)
 
 - **支持 Oracle 中的 `translate`函数**
 
@@ -157,7 +157,7 @@ TiDB 版本：5.2
 
     - DM v2.1.0 支持 HTTP 协议 OpenAPI，方便用户基于 OpenAPI 实现自动化运维，降低运维管理的成本
     - DM v2.1.0 根据用户的不同角色提供了不同的 Grafana 面板用于监控数据迁移的状态，同时增加了同步延迟时间监控，使任务状态展示更加直观
-    - DM v2.1.0  支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
+    - DM v2.1.0 支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
 
 - DM 支持对行变更事件进行条件过滤
 
@@ -165,7 +165,7 @@ TiDB 版本：5.2
 
 ### TiDB 数据共享订阅
 
-TiCDC 支持 HTTP 协议 OpenAPI  对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
+TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
 
 [#2411](https://github.com/pingcap/ticdc/issues/2411)
 
@@ -190,12 +190,12 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
         - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
  
-    + Lightning
+    + TiDB Lightning
 
         - 支持 CSV 文件中除 \r/\n 之外的自定义行尾 [#1297](https://github.com/pingcap/br/pull/1297)
         - 支持表达式索引和依赖于虚拟生成列的索引 [#1407](https://github.com/pingcap/br/pull/1407)
 
-     +Dumpling
+    + Dumpling
         - 支持备份不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的兼容 MySQL 的数据库 [#311](https://github.com/pingcap/dumpling/pull/311)
 
 ## 提升改进
@@ -231,7 +231,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 + TiFlash
 
     - 新增若干运算符的支持：`MOD / %`, `LIKE`
-    - 新增若干字符串函数的支持：`ASCII()`, `COALESCE()`,  `LENGTH()`, `POSITION()`, `TRIM()`
+    - 新增若干字符串函数的支持：`ASCII()`, `COALESCE()`, `LENGTH()`, `POSITION()`, `TRIM()`
     - 新增若干数学函数的支持：`CONV()`, `CRC32()`, `DEGREES()`, `EXP()`, `LN()`, `LOG()`, `LOG10()`, `LOG2()`, `POW()`, `RADIANS()`, `ROUND(decimal)`, `SIN()`, `MOD()`
     - 新增若干日期函数的支持： `ADDDATE(string, real)`, `DATE_ADD(string, real)`, `DATE()`
     - 更多函数支持：`INET_NTOA()`, `INET_ATON()`, `INET6_ATON`, `INET6_NTOA()`
@@ -247,8 +247,9 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiCDC
         - 为 kv client 增量扫添加并发限制 [#1899](https://github.com/pingcap/ticdc/pull/1899)
         - 始终在 TiCDC 内部拉取 old value [#2271](https://github.com/pingcap/ticdc/pull/2271)
-        - 对于不可恢复的 DML 错误快速失败退出  [#1928](https://github.com/pingcap/ticdc/pull/1928)
+        - 对于不可恢复的 DML 错误快速失败退出 [#1928](https://github.com/pingcap/ticdc/pull/1928)
         - 在 region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/ticdc/pull/2235)
+        - 优化 workerpool 以降低在高并发情况下 goroutine 的数量 [#2201](https://github.com/pingcap/ticdc/pull/2201)
 
     + Dumpling
         - 通过 tidb_rowid 来对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
@@ -305,24 +306,25 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题  [#1985](https://github.com/pingcap/ticdc/pull/1985)
-        - 修复 changefeed 创建成功后立即失败的问题  [#2115](https://github.com/pingcap/ticdc/pull/2115)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1985](https://github.com/pingcap/ticdc/pull/1985)
+        - 修复 changefeed 创建成功后立即失败的问题 [#2115](https://github.com/pingcap/ticdc/pull/2115)
         - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#2117](https://github.com/pingcap/ticdc/pull/2117)
         - 修复 owner 被 kill 后 DDL 丢失的问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
         - 修复 cli 在默认 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
         - 修复 TiCDC 可能遇到 `ErrSchemaStorageTableMiss` 导致 changefeed 被意外地重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
         - 修复 TiCDC 遇到 ErrGCTTLExceeded 错误时 changefeed 不能被 remove 的问题 [#2429](https://github.com/pingcap/ticdc/pull/2429)
         - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#2431](https://github.com/pingcap/ticdc/pull/2431)
+        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
 
     + Backup & Restore (BR)s
 
         - 修复 BR 恢复中忽略了所有系统表的问题 [#1197](https://github.com/pingcap/br/issues/1197) [#1201](https://github.com/pingcap/br/issues/1201)
-        - 修复  BR 恢复 cdclog 时漏掉 DDL 操作的问题 [#870](https://github.com/pingcap/br/issues/870)
+        - 修复 BR 恢复 cdclog 时漏掉 DDL 操作的问题 [#870](https://github.com/pingcap/br/issues/870)
 
     + TiDB Lightning
 
         - 修复 Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1272)
-        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 问题  [#1290](https://github.com/pingcap/br/issues/1290)
+        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 问题 [#1290](https://github.com/pingcap/br/issues/1290)
         - 修复 Lightning 因 int handle 溢出导致导入数据失败问题 [#1291](https://github.com/pingcap/br/issues/1291)
         - 修复 Lightning 在 local backend 模式下可能因数据丢失遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
         - 修复 Lightning 恢复 table schema 时与 clustered index 不兼容的问题 [#1364](https://github.com/pingcap/br/pull/1364)
