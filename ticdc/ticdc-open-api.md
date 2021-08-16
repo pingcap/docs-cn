@@ -9,7 +9,7 @@ summary: 了解 TiCDC 的所有 Open API 接口的使用方式。
 
 TiCDC Open API 目前为实验功能，不建议在生产环境中使用该功能。
 
-TiCDC 提供 Open API 功能，用户可通过 API（即 HTTP 接口）对 TiCDC 集群进行查询和运维操作。Open API 的总体功能和 [cdc cli 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
+TiCDC 提供 Open API 功能，用户可通过 Open API 对 TiCDC 集群进行查询和运维操作。Open API 的总体功能和 [cdc cli 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
 
 当前支持的所有 API 如下：
 
@@ -30,9 +30,9 @@ TiCDC 提供 Open API 功能，用户可通过 API（即 HTTP 接口）对 TiCDC
 - [手动调度表到其他节点](#手动调度表到其他节点)
 - [动态调整 TiCDC Server 日志级别](#动态调整 TiCDC Server 日志级别)
 
-HTTP 接口的请求体与返回值数据格式统一为 JSON 格式数据。下面将会详细描述当前提供的 API 接口的具体使用方法。
+所有 API 的请求体与返回值数据格式统一为 JSON 格式数据。下面将会详细描述当前提供的 API 的具体使用方法。
 
-在以下接口描述中，假定 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
+在下文的描述中，假定 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时可以通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
 
 ## API 统一错误格式
 
@@ -47,15 +47,17 @@ HTTP 接口的请求体与返回值数据格式统一为 JSON 格式数据。下
 
 如上所示，`error_msg` 描述了错误信息， `error_code` 则是相应的错误代码。
 
-## 获取 TiCDC server 状态信息
+## 获取 TiCDC 节点状态信息
 
-该接口是一个同步接口，请求成功会返回对应服务器的状态信息。
+该接口是一个同步接口，请求成功会返回对应节点的状态信息。
 
 ### 请求 URI
 
 GET /api/v1/status
 
 ### 使用样例
+
+以下请求会获取 IP 地址为 `127.0.0.1` ，端口号为 `8300` 的 TiCDC 节点的状态信息。
 
 {{< copyable "shell-regular" >}}
 
@@ -77,9 +79,9 @@ curl -X GET http://127.0.0.1:8300/api/v1/status
 
 - version: 当前 TiCDC 版本号。
 - git_hash: git 哈希值。
-- id: 当前服务器 (capture) 的 ID。
-- pid: 当前服务器 (capture) 进程的 PID。
-- is_owner: 表示当前服务器是否是 owner。
+- id: 该节点的 capture  ID。
+- pid: 该节点 capture 进程的 PID。
+- is_owner: 表示该节点是否是 owner。
 
 ## 检查 TiCDC 集群的健康状态 
 
@@ -107,7 +109,7 @@ POST /api/v1/changefeeds
 
 ### 参数说明
 
-使用 HTTP 接口创建同步任务可选的参数不如使用 cli 命令创建同步任务的参数完备，以下是 HTTP 接口支持的参数。
+使用 API 创建同步任务可选的参数不如使用 cli 命令创建同步任务的参数完备，以下是该 API 支持的参数。
 
 #### 请求体参数
 
@@ -219,7 +221,7 @@ PUT /api/v1/changefeeds/{changefeed_id}
 
 #### 请求体参数
 
-目前仅支持通过 HTTP 接口修改同步任务的如下配置。
+目前仅支持通过 API 修改同步任务的如下配置。
 
 | 参数名                | 说明                                                   |
 | :-------------------- | :----------------------------------------------------- |

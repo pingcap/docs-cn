@@ -676,7 +676,6 @@ sync-ddl = true
         --cyclic-replica-id 1 \
         --cyclic-filter-replica-ids 2 \
         --cyclic-sync-ddl true
-    
     # 在 TiDB 集群 B 上创建环形同步任务。
     cdc cli changefeed create \
         --sink-uri="mysql://root@${TiDB_C_HOST}/" \
@@ -684,7 +683,6 @@ sync-ddl = true
         --cyclic-replica-id 2 \
         --cyclic-filter-replica-ids 3 \
         --cyclic-sync-ddl true
-    
     # 在 TiDB 集群 C 上创建环形同步任务。
     cdc cli changefeed create \
         --sink-uri="mysql://root@${TiDB_A_HOST}/" \
