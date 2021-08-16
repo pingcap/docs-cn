@@ -611,16 +611,16 @@ TiDB 服务状态相关配置。
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-系统表 `events_statement_summary_by_digest` 的相关配置。
+系统表 `statements_summary` 的相关配置。
 
 ### max-stmt-count
 
-+ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
-+ 默认值：100
++ `statements_summary` 表中保存的 SQL 种类的最大数量。
++ 默认值：3000
 
 ### max-sql-length
 
-+ `events_statement_summary_by_digest` 表中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ `statements_summary` 表中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn
