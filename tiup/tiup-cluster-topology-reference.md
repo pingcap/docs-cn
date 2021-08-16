@@ -45,7 +45,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
     - 如果在实例级别配置了绝对路径的 `data_dir`，那么实际数据目录为该实例设定的 `data_dir`
     - 对于每个实例，如果用户未配置 `data_dir`，其默认值为 `<global.data_dir>`
     - 如果 `data_dir` 为相对路径，那么组件数据将放到 `<deploy_dir>/<data_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
-- `log_dir`：数据目录，默认值："log"。其应用规则如下：
+- `log_dir`：日志目录，默认值："log"。其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `log_dir`，那么实际日志目录为该实例设定的 `log_dir`
     - 对于每个实例，如果用户未配置 `log_dir`，其默认值为 `<global.log_dir>`
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
