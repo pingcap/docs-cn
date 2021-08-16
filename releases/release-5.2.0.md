@@ -230,10 +230,10 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
 + TiFlash
 
-    - 新增若干 运算符 支持：`MOD / %, `LIKE`
-    - 新增若干 字符串函数 支持：`ASCII()`, `COALESCE()`,  `LENGTH()`, `POSITION()`, `TRIM()`
-    - 新增若干 数学函数 支持：`CONV()`, `CRC32()`, `DEGREES()`, `EXP()`, `LN()`, `LOG()`, `LOG10()`, `LOG2()`, `POW()`, `RADIANS()`, `ROUND(decimal)`, `SIN()`, `MOD()`
-    - 新增若干 日期函数 支持： `ADDDATE(string, real)`, `DATE_ADD(string, real)`, `DATE()`
+    - 新增若干运算符的支持：`MOD / %`, `LIKE`
+    - 新增若干字符串函数的支持：`ASCII()`, `COALESCE()`,  `LENGTH()`, `POSITION()`, `TRIM()`
+    - 新增若干数学函数的支持：`CONV()`, `CRC32()`, `DEGREES()`, `EXP()`, `LN()`, `LOG()`, `LOG10()`, `LOG2()`, `POW()`, `RADIANS()`, `ROUND(decimal)`, `SIN()`, `MOD()`
+    - 新增若干日期函数的支持： `ADDDATE(string, real)`, `DATE_ADD(string, real)`, `DATE()`
     - 更多函数支持：`INET_NTOA()`, `INET_ATON()`, `INET6_ATON`, `INET6_NTOA()`
     - 支持当 new collation 打开时 MPP 模式下的 Shuffled Hash Join 和 Shuffled Hash Aggregation 运算
     - 优化基础代码提升 MPP 性能
