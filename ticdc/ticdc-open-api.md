@@ -5,7 +5,7 @@ summary: 了解如何使用 Open API 接口来管理集群状态和数据同步�
 
 # TiCDC Open API
 
-> **警告**
+> **警告：**
 >
 > TiCDC Open API 目前为实验功能，不建议在生产环境中使用该功能。
 
