@@ -261,11 +261,15 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置是否开启跨表 merge。
 + 默认值：true
 
-### `region-score-formula-version`
+### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span> 
 
 + 设置 Region 算分公式版本。
 + 默认值：v2
 + 可选值：v1，v2
+
+> **注意：**
+>
+> 4.x 升级上来默认不会自动开启新策略以保证升级后行为一致，若想切换使许则手动通过 `pd-ctl` 设置切换。
 
 ### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -309,6 +313,10 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 默认值：3
 + PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
+> **注意：**
+>
+> 4.x 升级上来的保持和 `trace-region-flow` 设置一致，如果 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127。 否则为 3。
 
 ## label-property
 
