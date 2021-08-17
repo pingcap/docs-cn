@@ -96,6 +96,12 @@ TiDB 版本：5.2
     - 引入变量 `tidb_opt_limit_push_down_threshold` 控制优化器对 Limit/TopN 的下推行为，可以解决部分情况下因为估算误差导致 Limit/TopN 不能下推的问题。
 
     [用户文档](/system-variables.md/#tidb_opt_limit_push_down_threshold)，[#26085](https://github.com/pingcap/tidb/issues/26085)
+    
+- **提升优化器的索引过滤规则 (Index Selection)**
+
+	新增加了一些索引选择的裁剪规则，在通过统计信息进行对比之前，通过规则进一步对可能的选择的索引范围进行缩小。从而减小各种情况下选到不优索引的概率。
+
+	[用户文档](/choose-index.md)
  
 ### 事务
 
@@ -318,7 +324,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#2431](https://github.com/pingcap/ticdc/pull/2431)
         - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
 
-    + Backup & Restore (BR)s
+    + Backup & Restore (BR)
 
         - 修复 BR 恢复中忽略了所有系统表的问题 [#1197](https://github.com/pingcap/br/issues/1197) [#1201](https://github.com/pingcap/br/issues/1201)
         - 修复 BR 恢复 cdclog 时漏掉 DDL 操作的问题 [#870](https://github.com/pingcap/br/issues/870)
