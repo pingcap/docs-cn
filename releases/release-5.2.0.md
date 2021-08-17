@@ -161,9 +161,7 @@ TiDB 版本：5.2
 
 - **简化 Data Migration (DM) 工具运维**
 
-    - DM v2.1.0 支持 HTTP 协议 OpenAPI，方便用户基于 OpenAPI 实现自动化运维，降低运维管理的成本
-    - DM v2.1.0 根据用户的不同角色提供了不同的 Grafana 面板用于监控数据迁移的状态，同时增加了同步延迟时间监控，使任务状态展示更加直观
-    - DM v2.1.0 支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
+    DM v2.0.6 支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
 
 - Lightning 支持自定义 CSV 数据的终止符，兼容 MySQL LOAD DATA CSV 数据格式 。使得 Lightning 可以直接使用在用户数据流转架构体系中。[#1297](https://github.com/pingcap/br/pull/1297)
 
