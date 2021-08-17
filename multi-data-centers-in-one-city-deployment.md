@@ -71,8 +71,9 @@ member leader_priority pdName2 4
 member leader_priority pdName3 3
 ```
 
-> **注意**
-> TiDB 5.2 及以上版本默认已不开启 `label-property` 支持。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
+> **注意：**
+>
+> TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
 
 **缺点：**
 
