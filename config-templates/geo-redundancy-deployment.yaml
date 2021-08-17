@@ -29,7 +29,7 @@ server_configs:
   pd:
     replication.location-labels: ["zone","dc","rack","host"]
     replication.max-replicas: 5
-    label-property: # TiDB 5.2 及以上版本默认已不开启 `label-property` 支持。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
+    label-property:  # TiDB 5.2 及以上版本默认不支持 label-property 配置。若要设置副本策略，请使用 Placement Rules。
       reject-leader:
         - key: "dc"
           value: "sha"
