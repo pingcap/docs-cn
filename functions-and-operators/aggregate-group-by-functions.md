@@ -39,6 +39,8 @@ TiDB 支持的 MySQL `GROUP BY` 聚合函数如下所示：
 
     该函数中，表达式的返回结果必须为[数值类型](/data-type-numeric.md)或[日期与时间类型](/data-type-date-and-time.md)。函数不支持计算其他类型的返回结果，并直接返回 `NULL`。
 
+    该函数在 v4.0.8 版本开始支持使用。
+
     以下是一个计算第 50 百分位数的例子：
 
     {{< copyable "sql" >}}
