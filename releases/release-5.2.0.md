@@ -11,7 +11,7 @@ TiDB 版本：5.2
 在 5.2 版本中，你可以获得以下关键特性：
 
 - 新增表达式索引 (Expression index)，极大提升查询的性能。
-- 提升优化器的估算准确度 (Cardinality Estimation)，降低查询响应时间。
+- 提升优化器的估算准确度 (Cardinality Estimation)，有助于选中最优的执行计划。
 - 锁视图 (Lock View) 成为 GA 特性，提供更直观方便的方式观察事务加锁情况以及排查死锁问题。
 - 新增 TiFlash IO 限流功能，提升 TiFlash 读写稳定性。
 - 优化 TiKV 预留空间管理，提升存储稳定性。
@@ -75,11 +75,11 @@ TiDB 版本：5.2
 
     表达式索引是一种特殊的索引，能将索引建立于表达式上。创建了表达式索引后，TiDB 支持基于表达式的查询，极大提升查询的性能。
 
-    [用户文档](/sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/)
+    [用户文档](/sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/25150)
 
 - **支持 Oracle 中的 `translate`函数**
 
-    `translate` 函数可以将字符串中出现的所有指定字符替换为其它字符，不会像 Oracle 一样将空字符串视为`NULL`。
+    `translate` 函数可以将字符串中出现的所有指定字符替换为其它字符， TiDB 中的 `translate` 函数不会像 Oracle 一样将空字符串视为`NULL`。
 
     [用户文档](functions-and-operators/string-functions.md)
 
@@ -117,7 +117,7 @@ TiDB 版本：5.2
     - 查看 TiDB 节点上最近发生的若干次死锁错误：[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
     - 查看 TiDB 节点上正在执行的事务的信息：[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
 
-- 对带有 `AUTO_RANDOM` 或者 `SHARD_ROW_ID_BITS` 属性的表，优化其添加索引的操作。
+- 对带有 `AUTO_RANDOM` 或者 `SHARD_ROW_ID_BITS` 属性的表，优化其大部分添加索引操作的场景。
 
 ### 稳定性
 
