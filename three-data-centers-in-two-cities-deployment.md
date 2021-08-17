@@ -194,7 +194,7 @@ tikv_servers:
     ```
   
     > **注意**
-    > 5.2 以上版本已不支持，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
+    > TiDB 5.2 及以上版本默认已不开启 `label-property` 支持。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
 
 - 设置 PD 的优先级，为了避免出现异地数据中心的 PD 成为 Leader，可以将本地数据中心的 PD 优先级调高（数字越大，优先级越高），将异地的 PD 优先级调低。
 

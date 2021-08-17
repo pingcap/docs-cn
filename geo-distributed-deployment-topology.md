@@ -83,7 +83,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
     ```
 
     > **注意**
-    > 5.2 以上版本已不支持，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
+    > TiDB 5.2 及以上版本默认已不开启 `label-property` 支持。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md) 替代该功能。
 
 有关 Label 的使用和 Raft Group 副本数量，详见[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
