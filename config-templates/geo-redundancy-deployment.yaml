@@ -30,7 +30,7 @@ server_configs:
     replication.location-labels: ["zone","dc","rack","host"]
     replication.max-replicas: 5
     label-property:
-      reject-leader: # v5.2 以上版本请使用 Placement Rules 代替
+      reject-leader: # v5.2 及以上版本请使用 Placement Rules 代替
         - key: "dc"
           value: "sha"
 pd_servers:
