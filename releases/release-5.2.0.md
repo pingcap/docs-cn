@@ -138,18 +138,6 @@ TiDB 版本：5.2
 
     [用户文档](tiflash/tiflash-configuration.md)
 
-- **优化 TiKV 预留空间管理，提升存储稳定性**
-
-    在 v5.2 之前的版本中，当 TiDB 集群中的某一个 TiKV 遇到磁盘写满错误时，会挂掉并重启。从 v5.2 起，TiKV 引入两级阈值存储防护功能，在剩余可用磁盘空间触发 storage.reserve-space 阈值之后，拦截写相关操作，避免磁盘使用率继续增长从而导致挂机。同时，支持采用该预留空间进行空间回收。
-
-    对于任何一个 Region，如果不过半副本所在的实例磁盘占用触发阈值，Region Leader 会避免继续给它们发 Append 消息，Region 此时仍然可读、可写。
-
-    如果 Region Leader 所在实例的磁盘占用触发阈值，后续的写入请求会被返回错误；客户端收到错误之后应当回退并重试；PD 和 TiKV 应当保证在 commit-timeout 内该 Region 的 Leader 迁移到合适的地方。
-
-    如果 Region 的过半副本所在实例的磁盘占用触发阈值，则该 Region 上后续的 prewrite 请求会被返回错误，以避免磁盘占用无限增长；commit、rollback、resolve-lock 等操作仍然会允许，以保证继续可读并可以通过 Drop/Truncate 表的方式回收空间；MVCC-DELETE 操作仍然被允许，以保证用户可以通过 delete 语句回收空间
-
-    [用户文档](/tikv-configuration-file.md#reserve-space)，[#10537](https://github.com/tikv/tikv/issues/10537)
-
 - **提升 TiKV 流控稳定性**
 
     TiKV 引入了新的流控机制代替之前的 RocksDB write stall 流控机制。相比于 write stall 机制，新的流控机制通过以下改进减少了流控对前台写入稳定性的影响：
