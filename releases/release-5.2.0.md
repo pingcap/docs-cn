@@ -34,7 +34,7 @@ TiDB 版本：5.2
 |[`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment)|新增|控制优化器是否开启交叉估算，默认值为`ON`。|
 |[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
 |[`tidb_restricted_read_only`](/system-variables.md#tidb_restricted_read_only)|新增|控制整个集群的只读状态，默认值为`OFF`。|
-|[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)|修改|表示 statement summary tables 保存的 SQL 种类数量，默认值从 200 修改为 3000。|
+|[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)|修改|表示 statement summary 在内存中保存的语句的最大数量。默认值从 200 修改为 3000。|
 |`tidb_enable_streaming`|废弃|废弃 TiDB 配置文件中`enable-streaming`配置项|
 
 ### 配置文件参数
@@ -57,11 +57,12 @@ TiDB 版本：5.2
 
 ### 其他
 
-- 升级前，请检查系统变量 `tidb_evolve_plan_baselines` 是否是 ON。如果是 ON，需要
-要改成 `OFF`，否则会导致升级失败。
-- v4.0 集群升级到 v5.0 或更高版本（dev 和 v5.1）的集群后，`tidb_multi_statement_mode` 变量的默认值由 `WARN` 变为 `OFF`。
+- 升级前，请检查系统变量 [`tidb_evolve_plan_baselines`](/system-variables.md#tidb_evolve_plan_baselines-从-v40-版本开始引入) 的值是否为 `ON`。如果为 `ON`，需要
+要将其改成 `OFF`，否则会导致升级失败。
+- v4.0 集群升级到 v5.0 或更高版本（dev 和 v5.1）的集群后，[`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 变量的默认值由 `WARN` 变为 `OFF`。
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
-- 升级至 5.2 版本时，TiKV 会通过`block-cache.capacity`计算`memory-usage-limit`，此时 `memory-usage-limit` 的计算结果默认为 “`block-cache.capacity` / 0.45 * 0.75”的值。
+- 升级至 5.2 版本时，TiKV 会通过 `block-cache.capacity` 计算 `memory-usage-limit`，此时 `memory-usage-limit` 的计算结果默认为 “`block-cache.capacity` / 0.45 * 0.75”的值。
 
     例如，当[storage.block-cache] capacity = “24GB”时，`memory-usage-limit`为 40GB (24GB/0.45*0.75 = 40GB)。
 
