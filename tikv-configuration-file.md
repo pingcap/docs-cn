@@ -312,6 +312,35 @@ Configuration items related to the sharing of block cache among multiple RocksDB
 + Default value: 45% of the size of total system memory
 + Unit: KB|MB|GB
 
+## storage.flow-control
+
+Configuration items related to the flow control mechanism in TiKV. This mechanism supersedes the write stall mechanism in RocksDB and controls flow at the scheduler layer, which avoids the issue of QPS drop caused by the stuck Raftstore or Apply threads when the write traffic is high.
+
+### `enable`
+
++ Determines whether to enable the flow control mechanism. After it is enabled, TiKV automatically disables the write stall mechanism of KvDB and the write stall mechanism of RaftDB (excluding memtable).
++ Default value: `true`
+
+### `memtables-threshold`
+
++ When the number of kvDB memtables reaches this threshold, the flow control mechanism starts to work.
++ Default value: `5`
+
+### `l0-files-threshold`
+
++ When the number of kvDB L0 files reaches this threshold, the flow control mechanism starts to work.
++ Default value: `9`
+
+### `soft-pending-compaction-bytes-limit`
+
++ When the pending compaction bytes in KvDB reach this threshold, the flow control mechanism starts to reject some write requests and reports the `ServerIsBusy` error.
++ Default value: `"192GB"`
+
+### `hard-pending-compaction-bytes-limit`
+
++ When the pending compaction bytes in KvDB reach this threshold, the flow control mechanism rejects all write requests and reports the `ServerIsBusy` error.
++ Default value: `"1024GB"`
+
 ## storage.io-rate-limit
 
 Configuration items related to the I/O rate limiter.
