@@ -179,7 +179,7 @@ curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1
 
 ### 请求 URI
 
-DELETE /api/v1/changefeeds/{changefeed_id}
+`DELETE /api/v1/changefeeds/{changefeed_id}`
 
 ### 参数说明
 
@@ -209,7 +209,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 ### 请求 URI
 
-PUT /api/v1/changefeeds/{changefeed_id}
+`PUT /api/v1/changefeeds/{changefeed_id}`
 
 ### 参数说明
 
