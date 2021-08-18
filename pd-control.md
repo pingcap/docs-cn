@@ -1076,13 +1076,13 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同类型的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 类型的热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 类型的热点，可选的维度有 `byte` 和 `key`。若集群组件未全部升级到 v5.2 及以上版本，这些配置不会生效，固定使用兼容配置。通常用户不需要修改这些配置项。
+- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同类型的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 类型的热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 类型的热点，可选的维度有 `byte` 和 `key`。对于从低于 v5.2 版本升级上来的集群，读热点进行调度时将使用兼容配置，也即按照 `byte,key` 进行调度，如果想使用 `query` 的维度需要手动开启，对于 v5.2 的新建集群，将使用 `query,byte` 进行调度。如果集群中存在低于 v5.2 版本的节点，也将固定使用兼容配置。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
     ```
 
-- `strict-picking-store` 是控制热点调度搜索空间的开关，打开时会在保证稳定性的前提下进行热点调度。通常为打开，关闭后只保证第一优先级维度的均衡度，可能会导致其他维度的均衡度降低。通常用户不需要修改这个配置项。
+- `strict-picking-store` 是控制热点调度搜索空间的开关，打开时会尽可能严格匹配所配置的维度优先级来进行热点调度。通常为打开，关闭后只保证第一优先级维度的均衡度，可能会导致其他维度的均衡度降低。通常用户不需要修改这个配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set strict-picking-store true
