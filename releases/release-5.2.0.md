@@ -63,12 +63,7 @@ TiDB 版本：5.2
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
 - 升级至 5.2 版本时，TiKV 会通过 `block-cache.capacity` 计算 `memory-usage-limit`，此时 `memory-usage-limit` 的计算结果默认为 “`block-cache.capacity` / 0.45 * 0.75”的值。
 
-    例如，当[storage.block-cache] capacity = “24GB”时，`memory-usage-limit`为 40GB (24GB/0.45*0.75 = 40GB)。
-
-- 表达式索引兼容性说明
-    - 升级过程中不允许执行表达式索引的 DDL 操作
-    - 通过视图进行查询时，无法使用表达式索引。
-    - 表达式索引与 Binding 存在兼容性问题。当表达式索引中的表达式存在常量时，对应的查询所建的 binding 会扩大范围。假设表达式索引的表达式为 `a+1`，对应的查询为 `a+1 > 2`。则建立的 binding 为 `a+? > ?`，这会导致像 `a+2 > 2` 这样的查询也会强制走表达式索引，得到一个较差的执行计划。这同样影响 SPM 中的捕获和演进功能。
+    例如，当[storage.block-cache] capacity = “24GB” 时，`memory-usage-limit`为 40GB (24GB/0.45*0.75 = 40GB)。
 
 ## 新功能
 
