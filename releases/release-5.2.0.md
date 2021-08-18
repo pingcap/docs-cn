@@ -4,7 +4,7 @@ title: TiDB 5.2 Release Notes
 
 # TiDB 5.2 Release Notes
 
-发版日期：2021 年 8 月 20 日
+发版日期：2021 年 8 月 27 日
 
 TiDB 版本：5.2
 
