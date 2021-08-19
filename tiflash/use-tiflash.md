@@ -217,9 +217,53 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 ## TiFlash 支持的计算下推
 
+<<<<<<< HEAD
 > **注意：**
 >
 > TiDB 4.0.2 版本之前，TiFlash 不支持 TiDB 新排序规则框架，所以在 TiDB 开启[新框架下的排序规则支持](/character-set-and-collation.md#新框架下的排序规则支持)后不支持任何表达式的下推，TiDB 4.0.2 以及后续的版本取消了这个限制。
+=======
+TiFlash 支持部分算子的下推，支持的算子如下：
+
+* TableScan：该算子从表中读取数据
+* Selection：该算子对数据进行过滤
+* HashAgg：该算子基于 [Hash Aggregation](/explain-aggregation.md#hash-aggregation) 算法对数据进行聚合运算
+* StreamAgg：该算子基于 [Stream Aggregation](/explain-aggregation.md#stream-aggregation) 算法对数据进行聚合运算。StreamAgg 仅支持不带 `GROUP BY` 条件的列。
+* TopN：该算子对数据求 TopN 运算
+* Limit：该算子对数据进行 limit 运算
+* Project：该算子对数据进行投影运算
+* HashJoin（带等值 Join 条件）：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
+    * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
+    * 不支持下推 `Full Outer Join`
+* HashJoin（不带等值 Join 条件，即 Cartesian Join）：该算子实现了 Cartesian Join，但有以下使用条件：
+    * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
+    * 只有在 Broadcast Join 中才支持 Cartesian Join
+
+在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
+
+* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round(int), round(double), round(decimal), abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
+* 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
+* 位运算：`bitand, bitor, bigneg, bitxor`
+* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
+* JSON 函数：`json_length`
+* 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
+* 聚合函数：`min, max, sum, count, avg, approx_count_distinct`
+* 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
+
+另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
+
+如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
+
+## 使用 MPP 模式
+
+TiFlash 支持 MPP 模式的查询执行，即在计算中引入跨节点的数据交换（data shuffle 过程）。TiDB 默认由优化器自动选择是否使用 MPP 模式，你可以通过修改变量 [`tidb_allow_mpp`](/system-variables.md#tidb_allow_mpp-从-v50-版本开始引入) 和 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的值来更改选择策略。
+
+### 控制是否选择 MPP 模式
+
+变量 `tidb_allow_mpp` 控制 TiDB 能否选择 MPP 模式执行查询。变量 `tidb_enforce_mpp` 控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
+
+这两个变量所有取值对应的结果如下：
+>>>>>>> 7cb130e8e (tiflash: Remove the description about expr_blacklist in use_tiflash.md (#6891))
 
 TiFlash 支持谓词、聚合下推计算以及表连接，下推的计算可以帮助 TiDB 进行分布式加速。暂不支持的计算类型是 `Full Outer Join` 和 `DISTINCT COUNT`，会在后续版本逐步优化。
 
