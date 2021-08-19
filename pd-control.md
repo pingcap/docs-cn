@@ -1076,7 +1076,14 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同类型的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 类型的热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 类型的热点，可选的维度有 `byte` 和 `key`。若集群组件未全部升级到 v5.2 及以上版本，这些配置不会生效，固定使用兼容配置，升级完成后会继续保持兼容配置。兼容配置与新集群的默认配置的区别是不含有 `query` 维度。通常用户不需要修改这些配置项。
+- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡。
+	
+	    - `read-priorities`、`write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，支持配置两个维度。可选的维度有 `query`、`byte` 和 `key`。
+	    - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置两个维度，支持配置 `byte` 和 `key` 维度。
+	    
+	    > ** 注意：**
+	    >
+	    > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，升级完成后会继续保持兼容配置。兼容配置与新集群的默认配置的区别是不含有 `query` 维度。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
