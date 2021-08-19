@@ -1076,7 +1076,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡。
+- `read-priorities`、`write-leader-priorities` 和 `write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡。
 	
 	    - `read-priorities`、`write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，支持配置两个维度。可选的维度有 `query`、`byte` 和 `key`。
 	    - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置两个维度，支持配置 `byte` 和 `key` 维度。
