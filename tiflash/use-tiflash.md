@@ -235,14 +235,22 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * 数学函数：`+, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)`
 * 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in`
 * 位运算：`bitand, bitor, bigneg, bitxor`
+<<<<<<< HEAD
 * 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right`
 * 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), date_add(string, int), date_add(datetime, int), date_sub(datetime, int), date_sub(string, int), datediff, year, month, day, extract(datetime)`
+=======
+* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
+>>>>>>> 7cb130e8e (tiflash: Remove the description about expr_blacklist in use_tiflash.md (#6891))
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct`
 
+<<<<<<< HEAD
 其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)。
 
+=======
+>>>>>>> 7cb130e8e (tiflash: Remove the description about expr_blacklist in use_tiflash.md (#6891))
 另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续提供支持，也可以联系官方沟通。
