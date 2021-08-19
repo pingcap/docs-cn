@@ -250,6 +250,10 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 该接口是一个同步接口，请求成功会返回 TiCDC 集群中所有同步任务 (changefeed) 的基本信息。
 
+### 请求 URI
+
+`GET /api/v1/changefeeds`
+
 ### 参数说明
 
 #### 查询参数
@@ -261,10 +265,6 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 `state` 可选值为 all、normal、stopped、error、failed、finished。
 
 若不指定该参数，则默认返回处于 normal、stopped、failed 状态的同步任务基本信息。
-
-### 请求 URI
-
-`GET /api/v1/changefeeds`
 
 ### 使用样例
 
@@ -455,6 +455,8 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors
 | `capture_id`    | 需要查询的子任务的 Capture ID    |
 
 ### 使用样例
+
+以下请求查询 `changefeed_id` 为 `test`、`capture_id` 为 `561c3784-77f0-4863-ad52-65a3436db6af` 的同步子任务。一个同步子任务通过 `changefeed_id` 和 `capture_id` 来标识。
 
 {{< copyable "shell-regular" >}}
 
