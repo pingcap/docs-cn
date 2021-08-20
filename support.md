@@ -8,7 +8,7 @@ aliases: ['/docs/dev/support/','/docs/dev/support-resources/']
 
 You can reach out to the community members via any one of the following ways:
 
-+ Slack Channel: [https://pingcap.com/tidbslack](https://pingcap.com/tidbslack)
++ Slack Channel: [https://slack.tidb.io/](https://slack.tidb.io/invite?team=tidb-community&channel=everyone&ref=pingcap)
 + Google Groups: [https://groups.google.com/forum/#!forum/tidb-user](https://groups.google.com/forum/#!forum/tidb-user)
 + Stack Overflow: [https://stackoverflow.com/questions/tagged/tidb](https://stackoverflow.com/questions/tagged/tidb)
 + Twitter: [https://twitter.com/PingCAP](https://twitter.com/PingCAP)

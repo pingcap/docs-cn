@@ -10,7 +10,7 @@ This document describes the problems encountered during the use of TiDB and prov
 
 ## Error codes
 
-TiDB is compatible with the error codes in MySQL, and in most cases returns the same error code as MySQL. For a list of error codes for MySQL, see [Server Error Message Reference](https://dev.mysql.com/doc/refman/5.7/en/server-error-reference.html). In addition, TiDB has the following unique error codes:
+TiDB is compatible with the error codes in MySQL, and in most cases returns the same error code as MySQL. For a list of error codes for MySQL, see [MySQL 5.7 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/5.7/en/). In addition, TiDB has the following unique error codes:
 
 > **Note:**
 >
