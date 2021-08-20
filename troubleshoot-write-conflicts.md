@@ -46,7 +46,7 @@ In the TiDB Grafana panel, check the following monitoring metrics under **KV Err
 
      ![kv-retry-duration](/media/troubleshooting-write-conflict-kv-retry-duration.png)
 
-You can also use `[kv:9007]Write conflict` as the key word to search in the TiDB log. The key word also indicates the write conflict exists in the cluster.
+You can also use `[kv:9007]Write conflict` as the keywords to search in the TiDB log. The keywords also indicate the write conflict exists in the cluster.
 
 ## Resolve write conflicts
 
