@@ -359,4 +359,4 @@ Configuration items related to the [TiDB Dashboard](/dashboard/dashboard-intro.m
 
 ## `replication-mode`
 
-Configuration items related to the replication mode of all Regions. See [Enable synchronous replication in PD configuration file](/synchronous-replication.md#enable-synchronous-replication-in-the-pd-configuration-file) for details.
+Configuration items related to the replication mode of all Regions. See [Enable the DR Auto-Sync mode](/two-data-centers-in-one-city-deployment.md#enable-the-dr-auto-sync-mode) for details.

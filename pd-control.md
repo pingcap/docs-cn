@@ -308,7 +308,7 @@ Usage:
     config set cluster-version 1.0.8              // Set the version of the cluster to 1.0.8
     ```
 
-- `replication-mode` controls the replication mode of Regions in the dual data center scenario. See [Change replication mode manually](/synchronous-replication.md#change-the-replication-mode-manually) for details.
+- `replication-mode` controls the replication mode of Regions in the dual data center scenario. See [Enable the DR Auto-Sync mode](/two-data-centers-in-one-city-deployment.md#enable-the-dr-auto-sync-mode) for details.
 
 - `leader-schedule-policy` is used to select the scheduling strategy for the leader. You can schedule the leader according to `size` or `count`.
 
