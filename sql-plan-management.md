@@ -162,6 +162,10 @@ explain select * from t1,t2 where t1.id = t2.id;
 
 In the example above, the dropped binding in the SESSION scope shields the corresponding binding in the GLOBAL scope. The optimizer does not add the `sm_join(t1, t2)` hint to the statement. The top node of the execution plan in the `explain` result is not fixed to MergeJoin by this hint. Instead, the top node is independently selected by the optimizer according to the cost estimation.
 
+> **Note:**
+>
+> Executing `DROP GLOBAL BINDING` drops the binding in the current tidb-server instance cache and changes the status of the corresponding row in the system table to 'deleted'. This statement does not directly delete the records in the system table, because other tidb-server instances need to read the 'deleted' status to drop the corresponding binding in their cache. For the records in these system tables with the status of 'deleted', at every 100 `bind-info-lease` (the default value is `3s`, and `300s` in total) interval, the background thread triggers an operation of reclaiming and clearing on the bindings of `update_time` before 10 `bind-info-lease` (to ensure that all tidb-server instances have read the 'deleted' status and updated the cache).
+
 ### View binding
 
 {{< copyable "sql" >}}
@@ -170,7 +174,7 @@ In the example above, the dropped binding in the SESSION scope shields the corre
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere]
 ```
 
-This statement outputs the execution plan bindings at the GLOBAL or SESSION level. The default scope is SESSION. Currently `SHOW BINDINGS` outputs eight columns, as shown below:
+This statement outputs the execution plan bindings at the GLOBAL or SESSION level according to the order of binding update time from the latest to earliest. The default scope is SESSION. Currently `SHOW BINDINGS` outputs eight columns, as shown below:
 
 | Column Name | Note |
 | :-------- | :------------- |
@@ -183,6 +187,32 @@ This statement outputs the execution plan bindings at the GLOBAL or SESSION leve
 | charset | Character set |
 | collation | Ordering rule |
 | source | The way in which a binding is created, including `manual` (created by the `create [global] binding` SQL statement), `capture` (captured automatically by TiDB), and `evolve` (evolved automatically by TiDB) |
+
+### Troubleshoot binding
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT [SESSION] @@last_plan_from_binding;
+```
+
+This statement uses the system variable [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-new-in-v40) to show whether the execution plan used by the last executed statement is from the binding.
+
+In addition, when you use the `explain format = 'verbose'` statement to view the query plan of a SQL statement, if the SQL statement uses binding, the `explain` statement will return a warning. In this situation, you can check the warning message to learn which binding is used in the SQL statement.
+
+```sql
+-- Create a global binding.
+
+create global binding for
+    select * from t
+using
+    select * from t;
+
+-- Use the `explain format = 'verbose'` statement to check the SQL execution plan. Check the warning message to view the binding used in the query.
+
+explain format = 'verbose' select * from t;
+show warnings;
+```
 
 ## Baseline capturing
 
@@ -226,9 +256,10 @@ set global tidb_evolve_plan_baselines = on;
 
 The default value of `tidb_evolve_plan_baselines` is `off`.
 
-> **Note:**
+> **Warning:**
 >
-> The feature baseline evolution is not generally available for now. It is **NOT RECOMMENDED** to use it in the production environment.
+> + Baseline evolution is an experimental feature. Unknown risks might exist. It is **NOT** recommended that you use it in the production environment.
+> + This variable is forcibly set to `off` until the baseline evolution feature becomes generally available (GA). If you try to enable this feature, an error is returned. If you have already used this feature in a production environment, disable it as soon as possible. If you find that the binding status is not as expected, contact PingCAP's technical support for help.
 
 After the automatic binding evolution feature is enabled, if the optimal execution plan selected by the optimizer is not among the binding execution plans, the optimizer marks the plan as an execution plan that waits for verification. At every `bind-info-lease` (the default value is `3s`) interval, an execution plan to be verified is selected and compared with the binding execution plan that has the least cost in terms of the actual execution time. If the plan to be verified has shorter execution time (the current criterion for the comparison is that the execution time of the plan to be verified is no longer than 2/3 that of the binding execution plan), this plan is marked as a usable binding. The following example describes the process above.
 
