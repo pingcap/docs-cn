@@ -29,7 +29,7 @@ server_configs:
   pd:
     replication.location-labels: ["zone","dc","rack","host"]
     replication.max-replicas: 5
-    label-property:
+    label-property:  # Since TiDB 5.2, the `label-property` configuration is not supported by default. To set the replica policy, use the placement rules.
       reject-leader:
         - key: "dc"
           value: "sha"

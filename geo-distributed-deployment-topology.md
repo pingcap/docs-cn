@@ -84,9 +84,13 @@ This section describes the key parameter configuration of the TiDB geo-distribut
               value: "sha"
     ```
 
+   > **Note:**
+   >
+   > Since TiDB 5.2, the `label-property` configuration is not supported by default. To set the replica policy, use the [placement rules](/configure-placement-rules.md).
+   
+For the further information about labels and the number of Raft Group replicas, see [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md).
+
 > **Note:**
 >
 > - You do not need to manually create the `tidb` user in the configuration file. The TiUP cluster component automatically creates the `tidb` user on the target machines. You can customize the user, or keep the user consistent with the control machine.
 > - If you configure the deployment directory as a relative path, the cluster will be deployed in the home directory of the user.
-
-[Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md) further explains the use of labels and the number of Raft Group replicas.
