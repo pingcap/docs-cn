@@ -318,3 +318,40 @@ Because the baseline evolution automatically creates a new binding, when the que
     | `max_execution_time` | The longest duration for a query. |
 
 + `read_from_storage` is a special hint in that it specifies whether to read data from TiKV or from TiFlash when reading tables. Because TiDB provides isolation reads, when the isolation condition changes, this hint has a great influence on the evolved execution plan. Therefore, when this hint exists in the initially created binding, TiDB ignores all its evolved bindings.
+
+## Upgrade checklist
+
+During cluster upgrade, SQL Plan Management (SPM) might cause compatibility issues and make the upgrade fail. To ensure a successful upgrade, you need to include the following list for upgrade precheck:
+
+* When you upgrade from a version earlier than v5.2.0 (that is, v4.0, v5.0, and v5.1) to the current version, make sure that `tidb_evolve_plan_baselines` is disabled before the upgrade. To disable this variable, perform the following steps. 
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    -- Check whether `tidb_evolve_plan_baselines` is disabled in the earlier version. 
+  
+    select @@global.tidb_evolve_plan_baselines;
+  
+    -- If `tidb_evolve_plan_baselines` is still enabled, disable it. 
+  
+    set global tidb_evolve_plan_baselines = off;
+    ```
+
+* Before you upgrade from v4.0 to the current version, you need to check whether the syntax of all queries corresponding to the available SQL bindings is correct in the new version. If any syntax errors exist, delete the corresponding SQL binding. To do that, perform the following steps.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    -- Check the query corresponding to the available SQL binding in the version to be upgraded.
+  
+    select bind_sql from mysql.bind_info where status = 'using';
+  
+    -- Verify the result from the above SQL query in the test environment of the new version. 
+  
+    bind_sql_0;
+    bind_sql_1;
+    ...
+  
+    -- In the case of a syntax error (ERROR 1064 (42000): You have an error in your SQL syntax), delete the corresponding binding. 
+    -- For any other errors (for example, tables are not found), it means that the syntax is compatible. No other operation is needed. 
+    ```
