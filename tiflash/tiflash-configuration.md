@@ -51,29 +51,25 @@ minmax_index_cache_size = 5368709120
 delta_index_cache_size = 0
 
 ## The storage path of TiFlash data. If there are multiple directories, separate each directory with a comma.
-## `path` and `path_realtime_mode` are deprecated since v4.0.9. Use the configurations
-## in the `[storage]` section to get better performance in the multi-disk deployment scenarios
+## path and path_realtime_mode are deprecated since v4.0.9. Use the configurations
+## in the [storage] section to get better performance in the multi-disk deployment scenarios
 # path = "/tidb-data/tiflash-9000"
 ## or
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
-## The default value is `false`. If you set it to `true` and multiple directories
+## The default value is false. If you set it to true and multiple directories
 ## are set in the path, the latest data is stored in the first directory and older
 ## data is stored in the rest directories.
 # path_realtime_mode = false
 
-## The path in which the TiFlash temporary files are stored. By default it is the first directory in `path`
-## or in `storage.latest.dir` appended with "/tmp".
+## The path in which the TiFlash temporary files are stored. By default it is the first directory in path
+## or in storage.latest.dir appended with "/tmp".
 # tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## Storage paths settings take effect starting from v4.0.9
 [storage]
-    ## [Experimental] New in v5.0. This item limits the total write rate of background tasks in bytes per second. It is not recommended to use this experimental feature in a production environment.
-    ## The unit is bytes. Currently, the setting such as "10GB" is not supported.
-    ## The default value is 0, which means no limit.
-    ## This parameter is used to control the usage of machine disk bandwidth by background tasks mainly for the scenario where TiFlash is deployed on the AWS EBS (gp2/gp3) disk.
-    ## This parameter can be used to improve the stability of the TiFlash query performance. The recommended configuration in this scenario is 50% of the disk bandwidth.
-    ## It is not recommended to modify this configuration in other scenarios.
-    bg_task_io_rate_limit = 0
+    ## This configuration item is deprecated since v5.2.0. You can use the [storage.io_rate_limit] settings below instead.
+
+    # bg_task_io_rate_limit = 0
 
     [storage.main]
     ## The list of directories to store the main data. More than 90% of the total data is stored in
@@ -82,30 +78,54 @@ delta_index_cache_size = 0
     ## or
     # dir = [ "/ssd0/tidb-data/tiflash", "/ssd1/tidb-data/tiflash" ]
 
-    ## The maximum storage capacity of each directory in `storage.main.dir`.
+    ## The maximum storage capacity of each directory in storage.main.dir.
     ## If it is not set, or is set to multiple 0, the actual disk (the disk where the directory is located) capacity is used.
     ## Note that human-readable numbers such as "10GB" are not supported yet.
     ## Numbers are specified in bytes.
-    ## The size of the `capacity` list should be the same with the `dir` size.
+    ## The size of the capacity list should be the same with the dir size.
     ## For example:
     # capacity = [ 10737418240, 10737418240 ]
 
     [storage.latest]
     ## The list of directories to store the latest data. About 10% of the total data is stored in
     ## the directory list. The directories (or directory) listed here require higher IOPS
-    ## metrics than those in `storage.main.dir`.
-    ## If it is not set (by default), the values of `storage.main.dir` are used.
+    ## metrics than those in storage.main.dir.
+    ## If it is not set (by default), the values of storage.main.dir are used.
     # dir = [ ]
-    ## The maximum storage capacity of each directory in `storage.latest.dir`.
+    ## The maximum storage capacity of each directory in storage.latest.dir.
     ## If it is not set, or is set to multiple 0, the actual disk (the disk where the directory is located) capacity is used.
     # capacity = [ 10737418240, 10737418240 ]
+
+    ## [storage.io_rate_limit] settings are new in v5.2.0.
+    [storage.io_rate_limit]
+    ## This configuration item determines whether to limit the I/O traffic, which is disabled by default. This traffic limit in TiFlash is suitable for cloud storage that has the disk bandwidth of a small and specific size.
+    ## The total I/O bandwidth for disk reads and writes. The unit is bytes and the default value is 0, which means the I/O traffic is not limited by default.
+    # max_bytes_per_sec = 0
+    ## max_read_bytes_per_sec and max_write_bytes_per_sec have similar meanings to max_bytes_per_sec. max_read_bytes_per_sec means the total I/O bandwidth for disk reads, and max_write_bytes_per_sec means the total I/O bandwidth for disk writes.
+    ## These configuration items limit I/O bandwidth for disk reads and writes separately. You can use them for cloud storage that calculates the limit of I/O bandwidth for disk reads and writes separately, such as the Persistent Disk provided by Google Cloud Platform.
+    ## When the value of max_bytes_per_sec is not 0, max_bytes_per_sec is prioritized.
+    # max_read_bytes_per_sec = 0
+    # max_write_bytes_per_sec = 0
+
+    ## The following parameters control the bandwidth weights assigned to different I/O traffic types. Generally, you do not need to adjust these parameters.
+    ## TiFlash internally divides I/O requests into four types: foreground writes, background writes, foreground reads, background reads.
+    ## When the I/O traffic limit is initialized, TiFlash assigns the bandwidth according to the following weight ratio.
+    ## The following  default configurations indicate that each type of traffic gets a weight of 25% (25 / (25 + 25 + 25 + 25) = 25%).
+    ## If the weight is configured to 0, the corresponding I/O traffic is not limited.
+    # foreground_write_weight = 25
+    # background_write_weight = 25
+    # foreground_read_weight = 25
+    # background_read_weight = 25
+    ## TiFlash supports automatically tuning the traffic limit for different I/O types according to the current I/O load. Sometimes, the tuned bandwidth might exceed the weight ratio set above.
+    ## auto_tune_sec indicates the interval of automatic tuning. The unit is seconds. If the value of auto_tune_sec is 0, the automatic tuning is disabled.
+    # auto_tune_sec = 5
 
 [flash]
     tidb_status_addr = TiDB status port and address. # Multiple addresses are separated with commas.
     service_addr = The listening address of TiFlash Raft services and coprocessor services.
 
 ## Multiple TiFlash nodes elect a master to add or delete placement rules to PD,
-## and the configurations in `flash.flash_cluster` control this process.
+## and the configurations in flash.flash_cluster control this process.
 [flash.flash_cluster]
     refresh_interval = Master regularly refreshes the valid period.
     update_rule_interval = Master regularly gets the status of TiFlash replicas and interacts with PD.
@@ -140,7 +160,7 @@ delta_index_cache_size = 0
 [profiles]
 
 [profiles.default]
-    ## The default value is `true`. This parameter determines whether the segment
+    ## The default value is true. This parameter determines whether the segment
     ## of DeltaTree Storage Engine uses logical split.
     ## Using the logical split can reduce the write amplification, and improve the write speed.
     ## However, these are at the cost of disk space waste.
@@ -162,12 +182,12 @@ delta_index_cache_size = 0
 ## Security settings take effect starting from v4.0.5.
 [security]
     ## New in v5.0. This configuration item enables or disables log redaction. If the configuration value
-    ## is set to `true`, all user data in the log will be replaced by `?`.
-    ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging in tiflash-learner.toml.
+    ## is set to true, all user data in the log will be replaced by ?.
+    ## Note that you also need to set security.redact-info-log for tiflash-learner's logging in tiflash-learner.toml.
     # redact_info_log = false
 
     ## Path of the file that contains a list of trusted SSL CAs. If set, the following settings
-    ## `cert_path` and `key_path` are also needed.
+    ## cert_path and key_path are also needed.
     # ca_path = "/path/to/ca.pem"
     ## Path of the file that contains X509 certificate in PEM format.
     # cert_path = "/path/to/tiflash-server.pem"
@@ -175,8 +195,8 @@ delta_index_cache_size = 0
     # key_path = "/path/to/tiflash-server-key.pem"
 
     ## New in v5.0. This configuration item enables or disables log redaction. If the configuration value
-    ## is set to `true`, all user data in the log will be replaced by `?`.
-    ## Note that you also need to set `security.redact-info-log` for tiflash-learner's logging in tiflash-learner.toml.
+    ## is set to true, all user data in the log will be replaced by ?.
+    ## Note that you also need to set security.redact-info-log for tiflash-learner's logging in tiflash-learner.toml.
     # redact_info_log = false
 ```
 
