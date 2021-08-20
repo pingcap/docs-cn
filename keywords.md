@@ -447,6 +447,7 @@ Query OK, 0 rows affected (0.08 sec)
 - PER_DB
 - PER_TABLE
 - PESSIMISTIC (R)
+- PLACEMENT (R)
 - PLUGINS
 - PRECEDING
 - PRECISION (R)
