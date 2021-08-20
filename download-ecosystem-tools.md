@@ -52,7 +52,7 @@ title: TiDB 工具下载
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v2.0.4` 版本的下载链接为 `https://download.pingcap.org/dm-v2.0.4-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v2.0.6` 版本的下载链接为 `https://download.pingcap.org/dm-v2.0.6-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/dm/releases) 查看当前已发布版本。
 
 ## Dumpling
 
