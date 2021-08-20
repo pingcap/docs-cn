@@ -347,7 +347,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
     ```sql
     -- 在待升级的版本上检查现有可用绑定对应的查询语句。
   
-    select bind_sql from mysql.bind_info where source != 'builtin' and status = 'using';
+    select bind_sql from mysql.bind_info where status = 'using';
   
     -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
   
