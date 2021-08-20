@@ -104,43 +104,109 @@ Query OK, 0 rows affected (0.31 sec)
 
 ## Expression index
 
+In some scenarios, the filtering condition of a query is based on a certain expression. In these scenarios, the query performance is relatively poor because ordinary indexes cannot take effect, the query can only be executed by scanning the entire table. The expression index is a type of special index that can be created on an expression. Once an expression index is created, TiDB can use the index for the expression-based query, which significantly improves the query performance.
+
+For example, if you want to create an index based on `col1+cols2`, execute the following SQL statement:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE INDEX idx1 ON t1 ((col1 + col2));
+```
+
+Or you can execute the following equivalent statement:
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
+```
+
+You can also specify the expression index when you create the table:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1(col1 char(10), col2 char(10), key index((col1 + col2)));
+```
+
+You can drop an expression index in the same way as dropping an ordinary index:
+
+{{< copyable "sql" >}}
+
+```sql
+DROP INDEX idx1 ON t1;
+```
+
 > **Note:**
 >
-> Expression index is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+> An expression index cannot be created on a primary key.
+>
+> The expression in an expression index cannot contain the following content:
+>
+> - Volatile functions, such as `rand()` and `now()`.
+> - System variables and user variables.
+> - Subqueries.
+> - `AUTO_INCREMENT` column. You can remove this restriction by setting the value of `tidb_enable_auto_increment_in_generated` (system variable) to `true`.
+> - Window functions.
+> - ROW functions, such as `create table t (j json, key k (((j,j))));`.
+> - Aggregate functions.
+> 
+> An expression index implicitly takes up a name (for example, `_V$_{index_name}_{index_offset}`). If you try to create a new expression index with the name that a column has already had, an error occurs. In addition, if you add a new column with the same name, an error also occurs.
+>
+> Make sure that the number of function parameters in the expression of an expression index is correct.
+>
+> When the expression of an index contains a string-related function, affected by the returned type and the length, creating the expression index might fail. In this situation, you can use the `cast()` function to explicitly specify the returned type and the length. 
 
-To use this feature, make the following setting in [TiDB Configuration File](/tidb-configuration-file.md#allow-expression-index-new-in-v400):
+When the expression in a query statement matches the expression in an expression index, the optimizer can choose the expression index for the query. In some cases, the optimizer might not choose an expression index depending on statistics. In this situation, you can force the optimizer to select an expression index by using optimizer hints.
+
+In the following examples, suppose that you create the expression index `idx` on the expression `lower(col1)`:
+
+If the results of the query statement are the same expressions, the expression index applies. Take the following statement as an example:
 
 {{< copyable "sql" >}}
 
 ```sql
-allow-expression-index = true
+SELECT lower(col1) FROM t;
 ```
 
-TiDB can build indexes not only on one or more columns in a table, but also on an expression. When queries involve expressions, expression indexes can speed up those queries.
-
-Take the following query as an example:
+If the same expression is included in the filtering conditions, the expression index applies. Take the following statements as an example:
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM t WHERE lower(name) = "pingcap";
+SELECT * FROM t WHERE lower(col1) = "a";
+SELECT * FROM t WHERE lower(col1) > "a";
+SELECT * FROM t WHERE lower(col1) BETWEEN "a" AND "b";
+SELECT * FROM t WHERE lower(col1) in ("a", "b");
+SELECT * FROM t WHERE lower(col1) > "a" AND lower(col1) < "b";
+SELECT * FROM t WHERE lower(col1) > "b" OR lower(col1) < "a";
 ```
 
-If the following expression index is built, you can use the index to speed up the above query:
+When the queries are sorted by the same expression, the expression index applies. Take the following statement as an example:
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX idx ON t ((lower(name)));
+SELECT * FROM t ORDER BY lower(col1);
 ```
+
+If the same expression is included in the aggregate (`GROUP BY`) functions, the expression index applies. Take the following statements as an example:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT max(lower(col1)) FROM t；
+SELECT min(col1) FROM t GROUP BY lower(col1);
+```
+
+To see the expression corresponding to the expression index, execute `show index`, or check the system tables `information_schema.tidb_indexes` and the table `information_schema.STATISTICS`. The `Expression` column in the output indicates the corresponded expression. For the non-expression indexes, the column shows `NULL`.
 
 The cost of maintaining an expression index is higher than that of maintaining other indexes, because the value of the expression needs to be calculated whenever a row is inserted or updated. The value of the expression is already stored in the index, so this value does not require recalculation when the optimizer selects the expression index.
 
 Therefore, when the query performance outweighs the insert and update performance, you can consider indexing the expressions.
 
-Expression indexes have the same syntax and limitations as in MySQL. They are implemented by building indexes on generated virtual columns that are invisible, so the supported expressions inherit all [limitations of virtual generated columns](/generated-columns.md#limitations).
-
-Currently, the optimizer can use the indexed expressions when the expressions are only in the `FIELD` clause, `WHERE` clause, and `ORDER BY` clause. The `GROUP BY` clause will be supported in future updates.
+Expression indexes have the same syntax and limitations as in MySQL. They are implemented by creating indexes on generated virtual columns that are invisible, so the supported expressions inherit all [limitations of virtual generated columns](/generated-columns.md#limitations).
 
 ## Invisible index
 
@@ -155,13 +221,15 @@ For details, see [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md).
 
 ## Associated session variables
 
-The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size` and `tidb_ddl_reorg_priority`. Refer to [system variables](/system-variables.md#tidb_ddl_reorg_worker_cnt) for details.
+The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size`, `tidb_ddl_reorg_priority`, and `tidb_enable_auto_increment_in_generated`. Refer to [system variables](/system-variables.md#tidb_ddl_reorg_worker_cnt) for details.
 
 ## MySQL compatibility
 
 * `FULLTEXT`, `HASH` and `SPATIAL` indexes are not supported.
 * Descending indexes are not supported (similar to MySQL 5.7).
 * Adding the primary key of the `CLUSTERED` type to a table is not supported. For more details about the primary key of the `CLUSTERED` type, refer to [clustered index](/clustered-indexes.md).
+* Expression indexes are incompatible with views. When a query is executed using a view, the expression index cannot be used at the same time.
+* Expression indexes have compatibility issues with bindings. When the expression of an expression index has a constant, the binding created for the corresponding query expands its scope. For example, suppose that the expression in the expression index is  `a+1`, and the corresponding query condition is  `a+1 > 2`. In this case, the created binding is `a+? > ?`, which means that the query with the condition such as `a+2 > 2` is also forced to use the expression index and results in a poor execution plan. In addition, this also affects the baseline capturing and baseline evolution in SQL Plan Management (SPM).
 
 ## See also
 

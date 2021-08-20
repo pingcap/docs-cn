@@ -637,12 +637,3 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 + Default value: `10`
 + Minimum value: `0`
 + Maximum value: `10000`
-
-## experimental
-
-The `experimental` section, introduced in v3.1.0, describes configurations related to the experimental features of TiDB.
-
-### `allow-expression-index` <span class="version-mark">New in v4.0.0</span>
-
-- Determines whether to create the expression index.
-- Default value: `false`
