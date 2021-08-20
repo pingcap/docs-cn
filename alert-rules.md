@@ -702,7 +702,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason=!"meet_lock"}[10m]) > 10000`
+    `increase(tikv_coprocessor_request_error{reason!="meet_lock"}[10m]) > 10000`
 
 * 规则描述：
 
