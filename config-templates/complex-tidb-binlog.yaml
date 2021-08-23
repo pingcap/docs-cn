@@ -128,8 +128,6 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
-<<<<<<< HEAD
-=======
       syncer.to.checkpoint:
         schema: "tidb-binlog"
         type: "tidb"
@@ -137,23 +135,6 @@ drainer_servers:
         user: "root"
         password: "123"
         port: 4000
-  - host: 10.0.1.13
-    port: 8249
-    deploy_dir: "/tidb-deploy/drainer-8249"
-    data_dir: "/tidb-data/drainer-8249"
-    # If Drainer does not have a checkpoint, use the initial commitTS as the initial checkpoint.
-    # If commit_ts is set to -1 (the default value), you will get a latest timestamp from PD.
-    commit_ts: -1
-    # The following configurations are used to overwrite the `server_configs.drainer` values.
-    config:
-      syncer.db-type: "kafka"
-      syncer.replicate-do-db:
-      - db1
-      - db2
-      syncer.to.kafka-addrs: "10.0.1.20:9092,10.0.1.21:9092,10.0.1.22:9092"
-      syncer.to.kafka-version: "0.10.0.0"
-      syncer.to.topic-name: "asyouwish"
->>>>>>> 56f38c771 (add checkpoint info (#6829))
 
 monitoring_servers:
   - host: 10.0.1.10
