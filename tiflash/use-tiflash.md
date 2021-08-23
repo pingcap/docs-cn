@@ -233,7 +233,7 @@ set @@session.tidb_opt_broadcast_join=1
 
 ```
 +, -, /, *, >=, <=, =, !=, <, >, ifnull, isnull, bitor, in, bitand, or, and, like, not, case when, month, substr, timestampdiff, date_format, from_unixtime, json_length, if, bitneg, bitxor, 
-round without fraction, cast(int as decimal), date_add(datetime, int), min, max, sum, count, avg, approx_count_distinct
+round without fraction, cast(int as decimal), min, max, sum, count, avg, approx_count_distinct
 ```
 
 目前 TiFlash 不支持下推的情况包括：
