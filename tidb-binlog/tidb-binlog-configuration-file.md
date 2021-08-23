@@ -334,7 +334,7 @@ tbl-name = "~^a.*"
 
 ### syncer.to.checkpoint
 
-* `type`：指定用哪种方式保存同步进度，目前支持的选项：`mysql`, `tidb` 和 `file`。
+* `type`：指定用哪种方式保存同步进度，目前支持的选项为 `mysql`、`tidb` 和 `file`。
 
 > **注意：**
 > file 类型的下游 checkpoint 保存在 `<data-dir>/savepoint` 文件中
