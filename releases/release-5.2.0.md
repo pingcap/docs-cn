@@ -140,7 +140,7 @@ TiDB 版本：5.2
     在 leader 处理写入请求的入口处就进行流控，不会再卡住 raftstore/apply worker 引起次生问题
     改善的流控算法，有效避免在大写入压力下导致 QPS drop 的问题
 
-    [用户文档](/tikv-configuration-file.md/#storage.flow-control)
+    [用户文档](/tikv-configuration-file.md#storageflow-control)
   ， [#10137](https://github.com/tikv/tikv/issues/10137)
 
 - **自动检测并恢复集群中单个 TiKV 变慢带来的影响**
