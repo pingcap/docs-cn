@@ -239,13 +239,8 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * 数学函数：`+, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)`
 * 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in`
 * 位运算：`bitand, bitor, bigneg, bitxor`
-<<<<<<< HEAD
 * 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), date_add(string, int), date_add(datetime, int), date_sub(datetime, int), date_sub(string, int), datediff, year, month, day, extract(datetime)`
-=======
-* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
->>>>>>> 7cb130e8e (tiflash: Remove the description about expr_blacklist in use_tiflash.md (#6891))
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime)`
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct`
