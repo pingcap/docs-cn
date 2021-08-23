@@ -676,6 +676,13 @@ Configuration items related to Raftstore
 + Controls whether to enable batch processing of the requests. When it is enabled, the write performance is significantly improved. 
 + Default value: `true`
 
+### `inspect-interval`
+
++ At a certain interval, TiKV inspects the latency of the Raftstore component. This parameter specifies the interval of the inspection. If the latency exceeds this value, this inspection is marked as timeout. 
++ Judges whether the TiKV node is slow based on the ratio of timeout inspection. 
++ Default value: `"500ms"`
++ Minimum value: `"1ms"`
+
 ## Coprocessor
 
 Configuration items related to Coprocessor
