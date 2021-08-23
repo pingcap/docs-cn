@@ -711,7 +711,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason!="lock"}[10m]) > 100`
+    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 100`
 
 * 规则描述：
 
@@ -725,7 +725,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason="lock"}[10m]) > 10000`
+    `increase(tikv_coprocessor_request_error{reason!="meet_lock"}[10m]) > 10000`
 
 * 规则描述：
 
