@@ -210,7 +210,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 支持标记为删除状态的 binding 进行自动垃圾回收 [#26206](https://github.com/pingcap/tidb/pull/26206)
     - 在 EXPLAIN VERBOSE 的结果中显示查询优化是否使用了某个 binding [#26930](https://github.com/pingcap/tidb/pull/26930)
     - 增加新的状态变量 `last_plan_binding_update_time` 用于查看当前 TiDB 实例中 binding cache 对应的时间戳 [#26340](https://github.com/pingcap/tidb/pull/26340)
-    - 在打开 binding 演进或者执行 `admin evolve bindings` 时报错 [#26333](https://github.com/pingcap/tidb/pull/26333)
+    - 在打开 binding 演进或者执行 `admin evolve bindings` 时提供报错，避免自动演进绑定（目前为试验特性，已在当前 TiDB 版本关闭）影响到其他功能 [#26333](https://github.com/pingcap/tidb/pull/26333)
 
 + TiKV
 
