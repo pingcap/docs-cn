@@ -687,7 +687,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason!="lock"}[10m]) > 100`
+    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 100`
 
 * 规则描述：
 
@@ -701,7 +701,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason="lock"}[10m]) > 10000`
+    `increase(tikv_coprocessor_request_error{reason!="meet_lock"}[10m]) > 10000`
 
 * 规则描述：
 
