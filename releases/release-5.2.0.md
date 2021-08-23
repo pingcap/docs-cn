@@ -179,7 +179,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
     + TiCDC
 
-        - 增加 HTTP API 支持对 TiCDC 集群进行查询和修改 [#2416](https://github.com/pingcap/ticdc/pull/2416)
+        - 新增 HTTP API，支持对 TiCDC 集群进行查询和修改 [#2416](https://github.com/pingcap/ticdc/pull/2416)
         - 新增专为 TiDB 设计的二进制 MQ 格式，比基于 JSON 的开放协议更紧凑 [#1621](https://github.com/pingcap/ticdc/pull/1621)
         - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
         - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
@@ -190,7 +190,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 支持表达式索引和依赖于虚拟生成列的索引 [#1407](https://github.com/pingcap/br/pull/1407)
 
     + Dumpling
-        - 支持备份不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的兼容 MySQL 的数据库 [#311](https://github.com/pingcap/dumpling/pull/311)
+        - 支持备份兼容 MySQL 但不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的数据库 [#311](https://github.com/pingcap/dumpling/pull/311)
 
 ## 提升改进
 
@@ -207,8 +207,8 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 修复升级可能会导致的 binding 无法被加载到缓存的问题 [#23295](https://github.com/pingcap/tidb/pull/23295)
     - 对 SHOW BINDINGS 结果按照 (original_sql, update_time) 有序输出 [#26139](https://github.com/pingcap/tidb/pull/26139)
     - 改进使用 binding 优化查询的逻辑，减少对查询的优化次数 [#26141](https://github.com/pingcap/tidb/pull/26141)
-    - 支持标记为删除状态的 binding 的自动垃圾回收 [#26206](https://github.com/pingcap/tidb/pull/26206)
-    - 在 EXPLAIN VERBOSE 结果中显示查询优化是否使用了某个 binding [#26930](https://github.com/pingcap/tidb/pull/26930)
+    - 支持标记为删除状态的 binding 进行自动垃圾回收 [#26206](https://github.com/pingcap/tidb/pull/26206)
+    - 在 EXPLAIN VERBOSE 的结果中显示查询优化是否使用了某个 binding [#26930](https://github.com/pingcap/tidb/pull/26930)
     - 增加新的状态变量 `last_plan_binding_update_time` 用于查看当前 TiDB 实例中 binding cache 对应的时间戳 [#26340](https://github.com/pingcap/tidb/pull/26340)
     - 在打开 binding 演进或者执行 `admin evolve bindings` 时报错 [#26333](https://github.com/pingcap/tidb/pull/26333)
 
@@ -219,7 +219,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
 + PD
 
-    - 热点调度增加对 QPS 维度的支持，同时可以调整优先级[#3869](https://github.com/tikv/pd/issues/3869)
+    - 热点调度增加对 QPS 维度的支持，同时支持调整维度的优先级顺序[#3869](https://github.com/tikv/pd/issues/3869)
     - 热点调度支持对 TiFlash 的写热点进行调度 [#3900](https://github.com/tikv/pd/pull/3900)
 
 + TiFlash
@@ -228,8 +228,8 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 新增若干字符串函数的支持：`ASCII()`, `COALESCE()`, `LENGTH()`, `POSITION()`, `TRIM()`
     - 新增若干数学函数的支持：`CONV()`, `CRC32()`, `DEGREES()`, `EXP()`, `LN()`, `LOG()`, `LOG10()`, `LOG2()`, `POW()`, `RADIANS()`, `ROUND(decimal)`, `SIN()`, `MOD()`
     - 新增若干日期函数的支持： `ADDDATE(string, real)`, `DATE_ADD(string, real)`, `DATE()`
-    - 更多函数支持：`INET_NTOA()`, `INET_ATON()`, `INET6_ATON`, `INET6_NTOA()`
-    - 支持当 new collation 打开时 MPP 模式下的 Shuffled Hash Join 和 Shuffled Hash Aggregation 运算
+    - 新增更多的函数支持：`INET_NTOA()`, `INET_ATON()`, `INET6_ATON`, `INET6_NTOA()`
+    - 当 new collation 打开时，支持 MPP 模式下的 Shuffled Hash Join 和 Shuffled Hash Aggregation 运算
     - 优化基础代码提升 MPP 性能
     - 为 tidb_broadcast_join_threshold_count 和 tidb_broadcast_join_threshold_size 新增 `-1` 为正无穷值
     - 支持将 `STRING` 类型转换为 `DOUBLE` 类型
@@ -241,12 +241,12 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiCDC
         - 为 kv client 增量扫添加并发限制 [#1899](https://github.com/pingcap/ticdc/pull/1899)
         - 始终在 TiCDC 内部拉取 old value [#2271](https://github.com/pingcap/ticdc/pull/2271)
-        - 对于不可恢复的 DML 错误快速失败退出 [#1928](https://github.com/pingcap/ticdc/pull/1928)
-        - 在 region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/ticdc/pull/2235)
+        - 当遇到不可恢复的 DML 错误，TiCDC 快速失败并退出 [#1928](https://github.com/pingcap/ticdc/pull/1928)
+        - 在 Region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/ticdc/pull/2235)
         - 优化 workerpool 以降低在高并发情况下 goroutine 的数量 [#2201](https://github.com/pingcap/ticdc/pull/2201)
 
     + Dumpling
-        - 通过 tidb_rowid 来对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
+        - 通过 tidb_rowid 对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
         - 减少 Dumpling 对 information_schema 库的访问以提高稳定性 [#305](https://github.com/pingcap/dumpling/pull/305)
 
 ## Bug 修复
@@ -305,7 +305,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#2117](https://github.com/pingcap/ticdc/pull/2117)
         - 修复 owner 被 kill 后 DDL 丢失的问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
         - 修复 cli 在默认 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
-        - 修复 TiCDC 可能遇到 `ErrSchemaStorageTableMiss` 导致 changefeed 被意外地重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
+        - 修复 TiCDC 可能遇到 `ErrSchemaStorageTableMiss` 导致 changefeed 被意外重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
         - 修复 TiCDC 遇到 ErrGCTTLExceeded 错误时 changefeed 不能被 remove 的问题 [#2429](https://github.com/pingcap/ticdc/pull/2429)
         - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#2431](https://github.com/pingcap/ticdc/pull/2431)
         - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
@@ -318,12 +318,12 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiDB Lightning
 
         - 修复 Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1272)
-        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 问题 [#1290](https://github.com/pingcap/br/issues/1290)
-        - 修复 Lightning 因 int handle 溢出导致导入数据失败问题 [#1291](https://github.com/pingcap/br/issues/1291)
+        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 的问题 [#1290](https://github.com/pingcap/br/issues/1290)
+        - 修复 Lightning 因 int handle 溢出导致导入数据失败的问题 [#1291](https://github.com/pingcap/br/issues/1291)
         - 修复 Lightning 在 local backend 模式下可能因数据丢失遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
         - 修复 Lightning 恢复 table schema 时与 clustered index 不兼容的问题 [#1364](https://github.com/pingcap/br/pull/1364)
 
     + Dumpling
 
-        - 修复 Dumpling GC safepoint 设置过晚问题 [#290](https://github.com/pingcap/dumpling/pull/290)
+        - 修复 Dumpling GC safepoint 设置过晚的问题 [#290](https://github.com/pingcap/dumpling/pull/290)
         - 修复 Dumpling 在特定 MySQL 版本下卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
