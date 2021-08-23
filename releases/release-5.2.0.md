@@ -35,7 +35,7 @@ TiDB 版本：5.2
 |[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
 |[`tidb_restricted_read_only`](/system-variables.md#tidb_restricted_read_only)|新增|控制整个集群的只读状态，默认值为`OFF`。|
 |[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)|修改|表示 statement summary 在内存中保存的语句的最大数量。默认值从 200 修改为 3000。|
-|`tidb_enable_streaming`|废弃|废弃 TiDB 配置文件中`enable-streaming`配置项|
+|`tidb_enable_streaming`|废弃|系统变量 `enable-streaming`已废弃，不建议再使用。|
 
 ### 配置文件参数
 
