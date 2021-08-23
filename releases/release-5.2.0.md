@@ -79,7 +79,7 @@ TiDB 版本：5.2
 
     `translate` 函数可以将字符串中出现的所有指定字符替换为其它字符， TiDB 中的 `translate` 函数不会像 Oracle 一样将空字符串视为`NULL`。
 
-    [用户文档](functions-and-operators/string-functions.md)
+    [用户文档](/functions-and-operators/string-functions.md)
 
 - **支持 Spilling HashAgg**
 
@@ -93,7 +93,7 @@ TiDB 版本：5.2
     - 提升对越界估算的准确度。例如，在当天统计信息尚未更新的情况下，对于包含 `where date=Now()` 的查询，TiDB 也能准确地选中对应索引。
     - 引入变量 `tidb_opt_limit_push_down_threshold` 控制优化器对 Limit/TopN 的下推行为，可以解决部分情况下因为估算误差导致 Limit/TopN 不能下推的问题。
 
-    [用户文档](/system-variables.md/#tidb_opt_limit_push_down_threshold)，[#26085](https://github.com/pingcap/tidb/issues/26085)
+    [用户文档](/system-variables.md#tidb_opt_limit_push_down_threshold)，[#26085](https://github.com/pingcap/tidb/issues/26085)
     
 - **提升优化器的索引过滤规则 (Index Selection)**
 
@@ -131,7 +131,7 @@ TiDB 版本：5.2
 
     TiFlash IO Rate Limiter 提供了一个新的防止“读/写”任务之间过度竞争系统 IO 资源的机制，可以平衡系统对“读”和“写”任务的响应，并且可以根据读/写负载的情况自动限速。
 
-    [用户文档](tiflash/tiflash-configuration.md)
+    [用户文档](/tiflash/tiflash-configuration.md)
 
 - **提升 TiKV 流控稳定性**
 
@@ -140,14 +140,14 @@ TiDB 版本：5.2
     在 leader 处理写入请求的入口处就进行流控，不会再卡住 raftstore/apply worker 引起次生问题
     改善的流控算法，有效避免在大写入压力下导致 QPS drop 的问题
 
-    [用户文档](tikv-configuration-file.md/##storage.flow-control)
+    [用户文档](/tikv-configuration-file.md/#storage.flow-control)
   ， [#10137](https://github.com/tikv/tikv/issues/10137)
 
 - **自动检测并恢复集群中单个 TiKV 变慢带来的影响**
 
     在 TiKV 中引入了慢节点检测机制，通过检测 TiKV Raftstore 的快慢来计算出一个分数，并通过 Store Heartbeat 上报给 PD。并且在 PD 上增加了 `evict-slow-store-scheduler` 调度器，能够自动驱逐单个变慢的 TiKV 节点上的 Leader，以降低其对整个集群性能的影响。同时，还增加了慢节点相关的报警项，帮助用户快速发现并处理问题。
 
-    [用户文档](tikv-configuration-file.md#inspect-interval)，[#10539](https://github.com/tikv/tikv/issues/10539)
+    [用户文档](/tikv-configuration-file.md#inspect-interval)，[#10539](https://github.com/tikv/tikv/issues/10539)
 
 ### 数据迁移
 
