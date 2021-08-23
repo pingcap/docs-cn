@@ -231,7 +231,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 规则描述：
 
-    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本，下线 TiKV 节点也会导致少量 Region 缺副本（对于有 pending peer 的 Region 会走先减后加的流程）。
+    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本。
 
 * 处理方法：
 
