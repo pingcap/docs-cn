@@ -85,7 +85,7 @@ TiDB 版本：5.2
 
     支持 HashAgg 的落盘。当包含 HashAgg 算子的 SQL 语句引起 OOM 时，可以尝试设置算子的并发度为 1 来触发落盘，缓解 TiDB 内存压力。
 
-    [用户文档](/configure-memory-usage.md##tidb-server-其它内存控制策略)，[#25882](https://github.com/pingcap/tidb/issues/25882)
+    [用户文档](/configure-memory-usage.md#tidb-server-其它内存控制策略)，[#25882](https://github.com/pingcap/tidb/issues/25882)
 
 - **提升优化器的估算准确度 (Cardinality Estimation)**
 
