@@ -22,6 +22,10 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-list/']
 
 SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统表，参见 [Statement Summary Tables](/statement-summary-tables.md) 文档了解该系统表的详细情况。
 
+> **注意：**
+>
+> 在 SQL 语句分析页面的 **Mean Latency** 列中，蓝色条表示平均耗时。如果某条 SQL 语句的蓝色条上有黄色的线，黄色线的左右两侧分别代表最近一个收集周期内该 SQL 语句耗时的最小值和最大值。
+
 ### 修改列表过滤条件
 
 页面顶部可修改显示的时间范围、按执行 SQL 所在数据库进行过滤，或按 SQL 类型进行过滤，如下所示。默认显示最近一个收集周期（默认最近 30 分钟）内的所有 SQL 语句执行情况。

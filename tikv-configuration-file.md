@@ -121,6 +121,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1s
 + 最小值：0
 
+### `raft-client-queue-size`
+
++ 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
++ 默认值：8192
+
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
@@ -281,11 +286,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `reserve-space`
 
-+ TiKV 启动时会预留一块磁盘空间用于防护磁盘被写满。预留空间大小为 TiKV 存储容量的百分之五与本配置参数之间的最大值。预留空间中 80% 的空间用作软防御，20% 的空间用作磁盘占位符。占位符名称为 `space_placeholder_file`，位于 `storage.data-dir` 目录下，用于防止极端场景下软防御空间也被写满而导致 TiKV Crash。
-
-    - 当磁盘可用空间不足预留空间时，业务正常写操作失败会返回 Disk_Full 错误码。此时需要运维干预进行扩容，或者执行 Drop Table 释放空间。
-    - 当 TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除 `space_placeholder_file` 文件，并且将 `reserve-space` 设置为 `0MB`（代表关闭磁盘防护功能）。待 TiKV 实例的存储空间充足后，建议重新设置该参数，以启用磁盘防护功能。
-    
++ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
 + 默认值：5GB
 + 单位：MB|GB
 
@@ -460,13 +461,8 @@ raftstore 相关的配置项。
 
 ### `hibernate-regions`
 
-+ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
++ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
 + 默认值：v5.0.2 及以后版本默认值为 true，v5.0.2 以前的版本默认值为 false
-
-### `raftstore.peer-stale-state-check-interval`
-
-+ 修改对 Region 的状态检查间隔时间。
-+ 默认值：5 min
 
 ### `split-region-check-tick-interval`
 
@@ -670,6 +666,11 @@ raftstore 相关的配置项。
 + 驱动 future 的线程池线程数。
 + 默认值：1
 + 最小值：大于 0
+
+### `cmd-batch`
+
++ 对请求进行攒批的控制开关，开启后可显著提升写入性能。
++ 默认值：true
 
 ### `inspect-interval`
 
