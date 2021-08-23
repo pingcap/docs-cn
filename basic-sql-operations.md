@@ -236,11 +236,15 @@ To query a specific column, add the column name after the `SELECT` keyword:
 
 ```sql
 SELECT name FROM person;
+```
+
+```sql
 +------+
 | name |
 +------+
 | tom  |
 +------+
+1 rows in set (0.00 sec)
 ```
 
 Use the `WHERE` clause to filter all records that match the conditions and then return the result:
