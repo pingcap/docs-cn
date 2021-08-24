@@ -51,7 +51,7 @@ tiup cluster edit-config <cluster-name>
     gc-ttl: 3600
 ```
 
-修改完毕后执行 `tiup cluster relaod -R cdc` 命令重新加载配置。
+修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
 ## 使用加密传输 (TLS) 功能
 
