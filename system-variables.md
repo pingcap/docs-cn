@@ -1308,7 +1308,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`24`
 - 范围：`[0, 255]`
-- 这个变量设置了 statement summary tables 的历史记录容量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
