@@ -1,17 +1,17 @@
 ---
-title: TiCDC Open API
-summary: 了解如何使用 Open API 接口来管理集群状态和数据同步。
+title: TiCDC OpenAPI
+summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
 ---
 
-# TiCDC Open API
+# TiCDC OpenAPI
 
 > **警告：**
 >
-> TiCDC Open API 目前为实验功能，不建议在生产环境中使用该功能。
+> TiCDC OpenAPI 目前为实验功能，不建议在生产环境中使用该功能。
 
-TiCDC 提供 Open API 功能，用户可通过 Open API 对 TiCDC 集群进行查询和运维操作。Open API 的总体功能和 [`cdc cli` 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
+TiCDC 提供 OpenAPI 功能，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
 
-你可以通过 Open API 完成 TiCDC 集群的如下运维操作：
+你可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
 
 - [获取 TiCDC 节点状态信息](#获取-ticdc-节点状态信息)
 - [检查 TiCDC 集群的健康状态](#检查-ticdc-集群的健康状态)

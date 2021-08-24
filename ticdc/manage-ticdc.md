@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC Open API 来管理 TiCDC 集群和同步任务，详见 [TiCDC Open API](/ticdc/ticdc-open-api.md)。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
 ## 使用 TiUP 升级 TiCDC
 
