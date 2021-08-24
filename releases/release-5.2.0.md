@@ -34,7 +34,7 @@ TiDB 版本：5.2
 |[`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment)|新增|控制优化器是否开启交叉估算，默认值为`ON`。|
 |[`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold)|新增|设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。|
 |[`tidb_restricted_read_only`](/system-variables.md#tidb_restricted_read_only)|新增|控制整个集群的只读状态，默认值为`OFF`。|
-|[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)|修改|表示 statement summary 在内存中保存的语句的最大数量。默认值从 200 修改为 3000。|
+|[`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入)|修改|表示 statement summary 在内存中保存的语句的最大数量。默认值从 `200` 修改为 `3000`。|
 |`tidb_enable_streaming`|废弃|系统变量 `enable-streaming`已废弃，不建议再使用。|
 
 ### 配置文件参数
@@ -47,9 +47,9 @@ TiDB 版本：5.2
 |TiDB 配置文件|`experimental.allow-expression-index` |废弃|废弃 TiDB 配置文件中`allow-expression-index` 配置项|
 |TiKV 配置文件|[`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch) |新增|对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。|
 |TiKV 配置文件|[`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) |新增|TiKV 每隔一段时间会检测 Raftstore 线程的延迟情况，该配置项设置检测的时间间隔。默认值为 `500ms`。|
-|TiKV 配置文件|[`raftstore.max-peer-down-duration`](/tikv-configuration-file.md#max-peer-down-duration) |修改|表示副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。默认值从 `5m` 修改为 `10m`。|
+|TiKV 配置文件|[`raftstore.max-peer-down-duration`](/tikv-configuration-file.md#max-peer-down-duration) |修改|表示副本允许的最长未响应时间，超过将被标记为 `down`，后续 PD 会尝试将其删掉。默认值从 `5m` 修改为 `10m`。|
 |TiKV 配置文件|[`server.raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size) |新增|指定 TiKV 中发送 Raft 消息的缓冲区大小。默认值为 8192。|
-|TiKV 配置文件|[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) |新增|表示是否开启 TiKV 流量控制机制。默认值为 `true`，代表开启。|
+|TiKV 配置文件|[`storage.flow-control.enable`](/tikv-configuration-file.md#enable) |新增|表示是否开启 TiKV 流量控制机制。默认值为 `true`。|
 |TiKV 配置文件|[`storage.flow-control.memtables-threshold`](/tikv-configuration-file.md#memtables-threshold) |新增|当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。默认值为 5。|
 |TiKV 配置文件|[`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold) |新增|当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。默认值为 9。|
 |TiKV 配置文件|[`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit) |新增|当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求并报错。默认值为 "192GB"。|
@@ -61,9 +61,9 @@ TiDB 版本：5.2
 - v4.0 集群升级到 v5.0 或更高版本（dev 和 v5.1）的集群后，[`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 变量的默认值由 `WARN` 变为 `OFF`。
 - 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
-- 升级至 5.2 版本时，TiKV 会通过 `block-cache.capacity` 计算 `memory-usage-limit`，此时 `memory-usage-limit` 的计算结果默认为 “`block-cache.capacity` / 0.45 * 0.75”的值。
+- 升级至 5.2 版本时，TiKV 会通过 `block-cache.capacity` 计算 `memory-usage-limit`，此时 `memory-usage-limit` 的计算结果默认为 "`block-cache.capacity` / 0.45 * 0.75" 的值。
 
-    例如，当[storage.block-cache] capacity = “24GB” 时，`memory-usage-limit`为 40GB (24GB/0.45*0.75 = 40GB)。
+    例如，当[storage.block-cache] capacity = "24GB" 时，`memory-usage-limit`为 40GB (24GB/0.45*0.75 = 40GB)。
 
 ## 新功能
 
