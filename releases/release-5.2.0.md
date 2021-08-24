@@ -282,7 +282,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
 + PD
 
-    - 修复多个调度器产生调度冲突时无法生产预期调度的问题 [#3807](https://github.com/tikv/pd/issues/3807) [#3778](https://github.com/tikv/pd/issues/3778)
+    - 修复多个调度器之间存在调度冲突时无法产生预期调度的问题 [#3807](https://github.com/tikv/pd/issues/3807) [#3778](https://github.com/tikv/pd/issues/3778)
 
 + TiFlash
 
@@ -303,9 +303,9 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1985](https://github.com/pingcap/ticdc/pull/1985)
         - 修复 changefeed 创建成功后立即失败的问题 [#2115](https://github.com/pingcap/ticdc/pull/2115)
         - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#2117](https://github.com/pingcap/ticdc/pull/2117)
-        - 修复 owner 被 kill 后 DDL 丢失的问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
-        - 修复 cli 在默认 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
-        - 修复 TiCDC 可能遇到 `ErrSchemaStorageTableMiss` 导致 changefeed 被意外重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
+        - 修复 TiCDC Owner 崩溃时潜在的 DDL 丢失问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
+        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
+        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
         - 修复 TiCDC 遇到 ErrGCTTLExceeded 错误时 changefeed 不能被 remove 的问题 [#2429](https://github.com/pingcap/ticdc/pull/2429)
         - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#2431](https://github.com/pingcap/ticdc/pull/2431)
         - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
@@ -320,10 +320,10 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 修复 Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1272)
         - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 的问题 [#1290](https://github.com/pingcap/br/issues/1290)
         - 修复 Lightning 因 int handle 溢出导致导入数据失败的问题 [#1291](https://github.com/pingcap/br/issues/1291)
-        - 修复 Lightning 在 local backend 模式下可能因数据丢失遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
+        - 修复 Lightning 在 local backend 模式下因数据丢失可能遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
         - 修复 Lightning 恢复 table schema 时与 clustered index 不兼容的问题 [#1364](https://github.com/pingcap/br/pull/1364)
 
     + Dumpling
 
-        - 修复 Dumpling GC safepoint 设置过晚的问题 [#290](https://github.com/pingcap/dumpling/pull/290)
-        - 修复 Dumpling 在特定 MySQL 版本下获取上游表结构卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
+        - 修复 Dumpling GC safepoint 设置过晚导致数据导出失败的问题 [#290](https://github.com/pingcap/dumpling/pull/290)
+        - 修复 Dumpling 在特定 MySQL 版本下获取上游表名时卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
