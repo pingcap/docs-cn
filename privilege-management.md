@@ -266,7 +266,7 @@ SHOW GRANTS FOR `rw_user`@`192.168.%`;
 * `ROLE_ADMIN`
 * `CONNECTION_ADMIN`
 * `SYSTEM_VARIABLES_ADMIN`
-* `RESTRICTED_REPLICA_WRITER_ADMIN`
+* `RESTRICTED_REPLICA_WRITER_ADMIN` 允许权限拥有者在 TiDB 集群开启了只读模式的情况下不受影响地执行写入或更新操作，详见 [tidb_restricted_read_only 配置项](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_restricted_read_only)。
 
 若要查看全部的动态权限，请执行 `SHOW PRIVILEGES` 语句。由于用户可使用插件来添加新的权限，因此可分配的权限列表可能因用户的 TiDB 安装情况而异。
 
