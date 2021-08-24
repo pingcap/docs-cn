@@ -120,7 +120,7 @@ You can either deploy TiCDC along with a new TiDB cluster or add the TiCDC compo
 Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see:
 
 - [Use `cdc cli` to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task)
-- [Use Open API to manage cluster status and data replication task](/ticdc/ticdc-open-api.md)
+- [Use OpenAPI to manage cluster status and data replication task](/ticdc/ticdc-open-api.md)
 
 ## Troubleshoot TiCDC
 

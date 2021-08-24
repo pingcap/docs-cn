@@ -1,19 +1,19 @@
 ---
-title: TiCDC Open API
-summary: Learn how to use the Open API interface to manage the cluster status and data replication.
+title: TiCDC OpenAPI
+summary: Learn how to use the OpenAPI interface to manage the cluster status and data replication.
 ---
 
-# TiCDC Open API
+# TiCDC OpenAPI
 
 <!-- markdownlint-disable MD024 -->
 
 > **Warning:**
 >
-> TiCDC Open API is still an experimental feature. It is not recommended to use it in a production environment.
+> TiCDC OpenAPI is still an experimental feature. It is not recommended to use it in a production environment.
 
-TiCDC provides the Open API feature for querying and operating the TiCDC cluster, which is similar to the feature of [`cdc cli` tool] (/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task).
+TiCDC provides the OpenAPI feature for querying and operating the TiCDC cluster, which is similar to the feature of [`cdc cli` tool](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task).
 
-You can use the Open APIs to perform the following maintenance operations on the TiCDC cluster:
+You can use the APIs to perform the following maintenance operations on the TiCDC cluster:
 
 - [Get the status information of a TiCDC node](#get-the-status-information-of-a-ticdc-node)
 - [Check the health status of a TiCDC cluster](#check-the-health-status-of-a-ticdc-cluster)

@@ -8,7 +8,7 @@ aliases: ['/docs/dev/ticdc/manage-ticdc/','/docs/dev/reference/tools/ticdc/manag
 
 This document describes how to upgrade TiCDC cluster and modify the configuration of TiCDC cluster using TiUP, and how to manage the TiCDC cluster and replication tasks using the command-line tool `cdc cli`.
 
-You can also use the HTTP interface (the TiCDC Open API feature) to manage the TiCDC cluster and replication tasks. For details, see [TiCDC Open API](/ticdc/ticdc-open-api.md).
+You can also use the HTTP interface (the TiCDC OpenAPI feature) to manage the TiCDC cluster and replication tasks. For details, see [TiCDC OpenAPI](/ticdc/ticdc-open-api.md).
 
 ## Upgrade TiCDC using TiUP
 
