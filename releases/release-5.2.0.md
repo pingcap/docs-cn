@@ -265,7 +265,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 修复了操作符 `<=>` 不能正确生效的问题 [#24477](https://github.com/pingcap/tidb/issues/24477)
     - 修复并行 `Apply` 算子的数据竞争问题 [#23280](https://github.com/pingcap/tidb/issues/23280)
     - 修复对 PartitionUnion 算子的 IndexMerge 结果排序时出现 `index out of range` 错误 [#23919](https://github.com/pingcap/tidb/issues/23919)
-    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [25680]( https://github.com/pingcap/tidb/issues/25680)
+    - 修复 `tidb_snapshot` 被允许设置为非预期的过大值，而可能造成事务隔离性被破坏的问题 [#25680]( https://github.com/pingcap/tidb/issues/25680)
     - 修复 ODBC 类常数（例如 `{d '2020-01-01'}`）不能被用作表达式的问题 [#25531](https://github.com/pingcap/tidb/issues/25531)
     - 修复 `SELECT DISTINCT` 被转化为 Batch Get 而导致结果不正确的问题 [#25320](https://github.com/pingcap/tidb/issues/25320)
     - 修复无法触发将查询从 TiFlash 回退到 TiKV 的问题 [#23665](https://github.com/pingcap/tidb/issues/23665) [#24421](https://github.com/pingcap/tidb/issues/24421)
