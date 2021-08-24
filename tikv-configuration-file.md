@@ -319,7 +319,7 @@ Configuration items related to the sharing of block cache among multiple RocksDB
 
 ## storage.flow-control
 
-Configuration items related to the flow control mechanism in TiKV. This mechanism supersedes the write stall mechanism in RocksDB and controls flow at the scheduler layer, which avoids the issue of QPS drop caused by the stuck Raftstore or Apply threads when the write traffic is high.
+Configuration items related to the flow control mechanism in TiKV. This mechanism replaces the write stall mechanism in RocksDB and controls flow at the scheduler layer, which avoids the issue of QPS drop caused by the stuck Raftstore or Apply threads when the write traffic is high.
 
 ### `enable`
 
