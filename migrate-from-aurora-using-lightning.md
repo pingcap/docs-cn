@@ -84,7 +84,7 @@ summary: 了解如何使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量�
 
     > **注意：**
     > 
-    > - 请根据实际情况设置数据源地址的相关参数和输出文件的路径。例如 `database-1.cedtft9htlae.us-west-2.rds.amazonaws.com` 是 Aurora MySQL 的地址
+    > - 请根据实际情况设置数据源地址的相关参数和输出文件的路径。例如 `database-1.cedtft9htlae.us-west-2.rds.amazonaws.com` 是 Aurora MySQL 的地址。
     > - 如果需要导出所有库表，则不需要设置 `--filter` 相关参数。如果只需要导出部分库表，可参考 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md) 进行设置。
 
 2. 使用 TiDB Lightning 创建表结构
