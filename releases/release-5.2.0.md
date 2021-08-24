@@ -43,7 +43,7 @@ TiDB 版本：5.2
 |:----------|:-----------|:-----------|:-----------|
 |TiDB 配置文件|[`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable)|新增|控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。|
 |TiDB 配置文件|[`security.auto-tls`](/tidb-configuration-file.md#auto-tls)|新增|控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `true`。|
-|TiDB 配置文件|[`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count)|修改|表示系统表 `statements_summary` 保存的 SQL 种类的最大数量。默认值从 200 修改为 3000。|
+|TiDB 配置文件|[`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count)|修改|表示 statement summary tables  中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。|
 |TiDB 配置文件|`experimental.allow-expression-index` |废弃|废弃 TiDB 配置文件中`allow-expression-index` 配置项|
 |TiKV 配置文件|[`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch) |新增|对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。|
 |TiKV 配置文件|[`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval) |新增|TiKV 每隔一段时间会检测 Raftstore 线程的延迟情况，该配置项设置检测的时间间隔。默认值为 `500ms`。|
@@ -137,8 +137,8 @@ TiDB 版本：5.2
 
     TiKV 引入了新的流控机制代替之前的 RocksDB write stall 流控机制。相比于 write stall 机制，新的流控机制通过以下改进减少了流控对前台写入稳定性的影响：
 
-    在 leader 处理写入请求的入口处就进行流控，不会再卡住 raftstore/apply worker 引起次生问题
-    改善的流控算法，有效避免在大写入压力下导致 QPS drop 的问题
+    当 RocksDB compaction 压力堆积时，通过在 TiKV scheduler 层进行流控而不是在 RocksDB 层进行流控，避免 RocksDB write stall 造成的 raftstore 卡顿并造成 Raft 选举超时导致发生节点 leader 迁移的问题。
+    改善的流控算法，有效降低大写入压力下导致 QPS 下降的问题
 
     [用户文档](/tikv-configuration-file.md#storageflow-control)
   ， [#10137](https://github.com/tikv/tikv/issues/10137)
@@ -155,7 +155,7 @@ TiDB 版本：5.2
 
     DM v2.0.6 支持自动识别使用 VIP 的数据源实例切换事件（failover/计划切换），自动连接上新的数据源实例，减少数据复制的延迟和减少运维操作步骤
 
-- Lightning 支持自定义 CSV 数据的终止符，兼容 MySQL LOAD DATA CSV 数据格式 。使得 Lightning 可以直接使用在用户数据流转架构体系中。[#1297](https://github.com/pingcap/br/pull/1297)
+- TiDB Lightning 支持自定义 CSV 数据的终止符，兼容 MySQL LOAD DATA CSV 数据格式 。使得 TiDB Lightning 可以直接使用在用户数据流转架构体系中。[#1297](https://github.com/pingcap/br/pull/1297)
 
 ### TiDB 数据共享订阅
 
@@ -186,7 +186,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
  
     + TiDB Lightning
 
-        - 支持 CSV 文件中除 \r/\n 之外的自定义行尾 [#1297](https://github.com/pingcap/br/pull/1297)
+        - 支持 CSV 文件中除 `\r` 和 `\n` 之外的自定义行尾 [#1297](https://github.com/pingcap/br/pull/1297)
         - 支持表达式索引和依赖于虚拟生成列的索引 [#1407](https://github.com/pingcap/br/pull/1407)
 
     + Dumpling
@@ -326,4 +326,4 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + Dumpling
 
         - 修复 Dumpling GC safepoint 设置过晚的问题 [#290](https://github.com/pingcap/dumpling/pull/290)
-        - 修复 Dumpling 在特定 MySQL 版本下卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
+        - 修复 Dumpling 在特定 MySQL 版本下获取上游表结构卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
