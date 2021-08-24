@@ -156,7 +156,7 @@ DROP INDEX idx1 ON t1;
 >
 > Make sure that the number of function parameters in the expression of an expression index is correct.
 >
-> When the expression of an index contains a string-related function, affected by the returned type and the length, creating the expression index might fail. In this situation, you can use the `cast()` function to explicitly specify the returned type and the length. 
+> When the expression of an index contains a string-related function, affected by the returned type and the length, creating the expression index might fail. In this situation, you can use the `cast()` function to explicitly specify the returned type and the length. For example, to create an expression index based on the `repeat(a, 3)` expression, you need to modify this expression to `cast(repeat(a, 3) as char(20))`.
 
 When the expression in a query statement matches the expression in an expression index, the optimizer can choose the expression index for the query. In some cases, the optimizer might not choose an expression index depending on statistics. In this situation, you can force the optimizer to select an expression index by using optimizer hints.
 
