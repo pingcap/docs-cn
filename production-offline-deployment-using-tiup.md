@@ -11,7 +11,7 @@ aliases: ['/docs-cn/stable/production-offline-deployment-using-tiup/','/docs-cn/
 
 ### 方式一：下载官方 TiUP 离线组件包
 
-在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
+在 [官方下载页面](https://pingcap.com/zh/product#SelectProduct) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
 ### 方式二：使用 `tiup mirror clone` 命令手动打包离线组件包
 
