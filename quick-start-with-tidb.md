@@ -21,10 +21,6 @@ This guide walks you through the quickest way to get started with TiDB. You will
 
 ## Deploy a local test environment on Mac OS
 
-> **Note:**
->
-> Currently, some TiDB components do not have a released version that supports the Apple M1 chip. Therefore, the `tiup playground` command currently cannot be executed on the local Mac machine that uses the Apple M1 chip.
-
 As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the test cluster by taking the following steps:
 
 1. Download and install TiUP:
@@ -62,10 +58,10 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v5.2.0 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        The command downloads a version cluster to the local machine and starts it, such as v5.1.0. `--monitor` means that the monitoring component is also deployed.
+        The command downloads a version cluster to the local machine and starts it, such as v5.2.0. `--monitor` means that the monitoring component is also deployed.
 
         To view the latest version, run `tiup list tidb`.
 
@@ -81,8 +77,9 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
         > **Note:**
         >
-        > For the playground operated in this way, after the test deployment is finished, TiUP will clean up the original cluster data. You will get a new cluster after re-running the command.
-        > If you want the data to be persisted on storage，run `tiup --tag <your-tag> playground ...`. For details, refer to [TiUP Reference Guide](/tiup/tiup-reference.md#-t---tag).
+        > + Since v5.2.0, TiDB supports running `tiup playground` on the machine that uses the Apple M1 chip.
+        > + For the playground operated in this way, after the test deployment is finished, TiUP will clean up the original cluster data. You will get a new cluster after re-running the command.
+        > + If you want the data to be persisted on storage，run `tiup --tag <your-tag> playground ...`. For details, refer to [TiUP Reference Guide](/tiup/tiup-reference.md#-t---tag).
 
 4. Start a new session to access TiDB:
 
@@ -167,10 +164,10 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v5.2.0 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        The command downloads a version cluster to the local machine and starts it, such as v5.1.0. `--monitor` means that the monitoring component is also deployed.
+        The command downloads a version cluster to the local machine and starts it, such as v5.2.0. `--monitor` means that the monitoring component is also deployed.
 
         To view the latest version, run `tiup list tidb`.
 
@@ -178,10 +175,11 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
-        To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
+        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root -p (no password) --comments
         To view the dashboard: http://127.0.0.1:2379/dashboard
-        To view the monitor: http://127.0.0.1:9090
+        PD client endpoints: [127.0.0.1:2379]
+        To view the Prometheus: http://127.0.0.1:9090
+        To view the Grafana: http://127.0.0.1:3000
         ```
 
         > **Note:**
@@ -211,9 +209,11 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
 
-7. (Optional) [Load data to TiFlash](/tiflash/use-tiflash.md) for analysis.
+7. Access the Grafana dashboard of TiDB through <http://127.0.0.1:3000>. Both the default username and password are `admin`.
 
-8. Clean up the cluster after the test deployment:
+8. (Optional) [Load data to TiFlash](/tiflash/use-tiflash.md) for analysis.
+
+9. Clean up the cluster after the test deployment:
 
     1. Stop the process by pressing `ctrl-c`.
 
