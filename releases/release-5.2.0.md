@@ -43,7 +43,7 @@ TiDB 版本：5.2
 | :---------- | :----------- | :----------- | :----------- | 
 | TiDB 配置文件 | [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) | 新增 | 控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。 | 
 | TiDB 配置文件 | [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) | 新增 | 控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `true`。 | 
-| TiDB 配置文件 | [`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count) | 修改 | 表示 statement summary tables  中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 | 
+| TiDB 配置文件 | [`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count) | 修改 | 表示 statement summary tables 中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 | 
 | TiDB 配置文件 | `experimental.allow-expression-index`  | 废弃 | 废弃 TiDB 配置文件中`allow-expression-index` 配置项 | 
 | TiKV 配置文件 | [`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch)  | 新增 | 对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。 | 
 | TiKV 配置文件 | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval)  | 新增 | TiKV 每隔一段时间会检测 Raftstore 线程的延迟情况，该配置项设置检测的时间间隔。默认值为 `500ms`。 | 
