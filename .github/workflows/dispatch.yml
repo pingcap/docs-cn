@@ -1,9 +1,9 @@
-name: Repsitory dispatch workflow from docs-cn-release-master
+name: Repsitory dispatch workflow from docs-cn-release-release-5.2
 
 on:
   push:
     branches:
-      - master
+      - release-5.2
 
 jobs:
   build:
