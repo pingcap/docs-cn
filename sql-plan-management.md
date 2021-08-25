@@ -195,7 +195,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 {{< copyable "sql" >}}
 
 ```sql
-SELECT [SESSION] @@last_plan_from_binding;
+SELECT @@[SESSION.]last_plan_from_binding;
 ```
 
 该语句使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
