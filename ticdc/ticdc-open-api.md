@@ -126,7 +126,9 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 | `mounter_worker_num`      | `INT` 类型，mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)时所作的解释相同，具体解释请参见该文档。下面会对一些需要补充说明的参数进行进一步阐述。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
+
+下面会对一些需要补充说明的参数进行进一步阐述。
 
 `force_replicate`：该值默认为 false，当指定为 true 时，同步任务会尝试强制同步没有唯一索引的表。
 
@@ -168,7 +170,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blcakhole://"}'
+curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'
 ```
 
 若是请求成功，则返回 `202 Accepted`，若请求失败，则返回错误信息和错误码。
@@ -217,7 +219,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 | 参数名          | 说明                                 |
 | :-------------- | :----------------------------------- |
-| `changefeed_id` | 需要查询的同步任务 (changefeed) 的 ID |
+| `changefeed_id` | 需要更新的同步任务 (changefeed) 的 ID |
 
 #### 请求体参数
 
@@ -241,7 +243,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 {{< copyable "shell-regular" >}}
 
 ```shell
- curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/test1 -d '{"mounter_worker_num":32}'
+ curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/test1 -d '{"mounter_worker_num":32}'
 ```
 
 若是请求成功，则返回 `202 Accepted`，若请求失败，则返回错误信息和错误码。
