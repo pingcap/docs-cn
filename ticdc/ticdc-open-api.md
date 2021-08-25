@@ -126,7 +126,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 | `mounter_worker_num`      | `INT` 类型，mounter 线程数。（非必选）                   |
 | `sink_config`             | sink 的配置参数。（非必选）                            |
 
-`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与[使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)时所作的解释相同，具体解释请参见该文档。需要注意的一点是，当在 `sink_uri` 中指定证书的路径时，对应证书必须已经上传到对应的 TiCDC server 上。
+`changefeed_id`、`start_ts`、`target_ts`、`sink_uri` 的含义和格式与 [使用 cli 创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)中所作的解释相同，具体解释请参见该文档。需要注意，当在 `sink_uri` 中指定证书的路径时，须确保已将对应证书上传到对应的 TiCDC server 上。
 
 下面会对一些需要补充说明的参数进行进一步阐述。
 
