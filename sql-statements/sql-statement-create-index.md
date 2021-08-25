@@ -153,12 +153,12 @@ Query OK, 0 rows affected (0.31 sec)
 
 在一些场景中，查询的条件往往是基于某个表达式进行过滤。在这些场景中，一般的索引不能生效，执行查询只能遍历整个表，导致查询性能较差。表达式索引是一种特殊的索引，能将索引建立于表达式上。在创建了表达式索引后，基于表达式的查询便可以使用上索引，极大提升查询的性能。
 
-假设要基于 `col1+cols2` 这个表达式建立索引，示例的 SQL 语句如下：
+假设要基于 `lower(col1)` 这个表达式建立索引，示例的 SQL 语句如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX idx1 ON t1 ((col1 + col2));
+CREATE INDEX idx1 ON t1 (lower(col1));
 ```
 
 或者等价的语句：
@@ -166,7 +166,7 @@ CREATE INDEX idx1 ON t1 ((col1 + col2));
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
+ALTER TABLE t1 ADD INDEX idx1(lower(col1));
 ```
 
 还可以在建表的同时指定表达式索引：
@@ -174,7 +174,7 @@ ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index((col1 + col2)));
+CREATE TABLE t1(col1 char(10), col2 char(10), key index(lower(col1)));
 ```
 
 删除表达式索引与删除普通索引的方法一致：
@@ -186,6 +186,14 @@ DROP INDEX idx1 ON t1;
 ```
 
 > **注意：**
+> 
+> 表达式索引涉及众多表达式，为了确保正确性，只有经过充分测试的函数才允许直接创建，这些函数可以查询变量 `tidb_allow_function_for_expression_index` 了解。对于未经过充分测试的函数，其存在正确性风险, 我们将其视为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+> 
+> {{< copyable "sql" >}}
+> 
+> ```sql
+> allow-expression-index = true
+> ```
 >
 > 表达式索引不能为主键。
 >

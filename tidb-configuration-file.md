@@ -643,3 +643,12 @@ TiDB 服务状态相关配置。
 
 + 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
 + 默认值：false
+
+## experimental
+
+experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
+
+### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
+
++ 用于控制是否能创建表达式索引。在 5.2.0 版本之后，认为是安全的函数可以直接创建表达式索引而不需要打开该配置项。如果要创建基于其他函数的表达式，可以打开该配置项，但可能存在正确性问题。
++ 默认值：false
