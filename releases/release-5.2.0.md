@@ -317,7 +317,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
     + TiDB Lightning
 
-        - 修复 Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1277](https://github.com/pingcap/br/pull/1272)
+        - 修复 TiDB Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1272](https://github.com/pingcap/br/pull/1272)
         - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 的问题 [#1290](https://github.com/pingcap/br/issues/1290)
         - 修复 Lightning 因 int handle 溢出导致导入数据失败的问题 [#1291](https://github.com/pingcap/br/issues/1291)
         - 修复 Lightning 在 local backend 模式下因数据丢失可能遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
