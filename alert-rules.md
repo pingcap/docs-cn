@@ -690,7 +690,7 @@ This section gives the alert rules for the TiKV component.
 
 * Alert rule:
 
-    `increase(tikv_coprocessor_request_error{reason!="lock"}[10m]) > 100`
+    `increase(tikv_coprocessor_request_error{reason=!"meet_lock"}[10m]) > 100`
 
 * Description:
 
@@ -704,7 +704,7 @@ This section gives the alert rules for the TiKV component.
 
 * Alert rule:
 
-    `increase(tikv_coprocessor_request_error{reason="lock"}[10m]) > 10000`
+    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 10000`
 
 * Description:
 
