@@ -219,7 +219,7 @@ curl -X DELETE http://127.0.0.1:8300/api/v1/changefeeds/test1
 
 | 参数名          | 说明                                 |
 | :-------------- | :----------------------------------- |
-| `changefeed_id` | 需要暂停的同步任务 (changefeed) 的 ID |
+| `changefeed_id` | 需要更新的同步任务 (changefeed) 的 ID |
 
 #### 请求体参数
 
