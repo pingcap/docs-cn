@@ -252,6 +252,11 @@ mysql> SELECT * FROM t1;
 - 默认值：""
 - 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
 
+### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2 版本开始引入</span>
+
+- 作用域：NONE
+- 这个变量用于显示创建表达式索引所允许使用的函数。
+
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
