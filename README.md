@@ -13,6 +13,7 @@
 | 文档仓库 branch | 对应 TiDB 文档版本 |
 |:---------|:----------|
 | [`master`](https://github.com/pingcap/docs-cn/tree/master) | dev 最新开发版 |
+| [`release-5.2`](https://github.com/pingcap/docs-cn/tree/release-5.2) | 5.2 稳定版 |
 | [`release-5.1`](https://github.com/pingcap/docs-cn/tree/release-5.1) | 5.1 稳定版 |
 | [`release-5.0`](https://github.com/pingcap/docs-cn/tree/release-5.0) | 5.0 稳定版 |
 | [`release-4.0`](https://github.com/pingcap/docs-cn/tree/release-4.0) | 4.0 稳定版 |
