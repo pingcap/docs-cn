@@ -239,6 +239,12 @@ show warnings;
 >
 > 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动捕获绑定时会默认屏蔽内嵌 SQL。
 
+为了方便控制想要捕获的 SQL 语句的范围，TiDB 提供了捕获过滤器的功能，通过该功能，用户可以指定 TiDB 在捕获时忽略涉及到某张表的查询，或者涉及某个数据库下任何表的查询，以及执行次数少于给定阈值的查询。具体来说，TiDB 提供了一张系统表 `mysql.capture_plan_baselines_blacklist`，该表定义有三个列，分别是整数类型的 `id`, 以及字符串类型的 `filter_type` 和 `filter_value`，表中每一行数据代表一个捕获过滤器，其中 `id` 列是自增字段，用于方便用户删除和改动某一行过滤器。`filter_type` 列目前只能有三种取值，"table"，"db" 以及 "frequency"，插入其他类型的 `filter_type` 不会生效，只会在捕获时在日志中打印一条警告。`filter_value` 如何填写取决于 `filter_type` 的值，如果是 "table"，则在 `filter_value` 列填写某个想要加入捕获黑名单的表名，比如 "test.t1"，注意需要显示指定数据库名并按照格式填写，否则无法生效。如果 `filter_type` 的值是 "db"，则在 `filter_value` 列填写想要加入捕获黑名单的数据库名。如果 `filter_type` 的值是 "frequency"，则该过滤器是用于控制捕获的查询需要执行的最小次数，需要在 `filter_value` 列填写一个大于 1 的整数字符串，比如 "3"，表示执行次数小于等于 3 的查询在捕获时都会被忽略。
+
+如果 `mysql.capture_plan_baselines_blacklist` 中存在多条相同类型的过滤器，捕获的行为视过滤器类型而定。如果类型是 "table" 和 "db"，多条过滤器同时生效，如果类型是 "frequency"，频次最高的那个过滤器生效，因为多个 "frequency" 类型过滤器之间是包含的关系。注意，"frequency" 类型的值最小为 "1"，否则过滤器在捕获时不会生效。另外，`filter_type` 和 `filter_value` 列中的值是大小写不敏感的，比如 `('db', 'db1')` 和 `('DB', 'Db1')` 在过滤器层面是等价的。
+
+DBA 可以通过 `INSERT` / `UPDATE` / `DELETE` 操作 `mysql.capture_plan_baselines_blacklist` 中的过滤器，这些修改会在下一次自动绑定捕获时生效。
+
 ## 自动演进绑定 (Baseline Evolution)
 
 自动演进绑定，在 TiDB 4.0 版本引入，是执行计划管理的重要功能之一。
