@@ -611,7 +611,7 @@ TiDB 服务状态相关配置。
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-系统表 [Statement summary tables](/statement-summary-tables.md) 的相关配置。
+系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
 
 ### max-stmt-count
 
