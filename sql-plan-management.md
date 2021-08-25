@@ -193,7 +193,7 @@ This statement outputs the execution plan bindings at the GLOBAL or SESSION leve
 {{< copyable "sql" >}}
 
 ```sql
-SELECT [SESSION] @@last_plan_from_binding;
+SELECT @@[SESSION.]last_plan_from_binding;
 ```
 
 This statement uses the system variable [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-new-in-v40) to show whether the execution plan used by the last executed statement is from the binding.
