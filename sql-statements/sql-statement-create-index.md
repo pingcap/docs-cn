@@ -186,7 +186,7 @@ DROP INDEX idx1 ON t1;
 
 > **注意：**
 > 
-> 表达式索引涉及众多表达式，为了确保正确性，只有经过充分测试的函数才允许直接创建，这些函数可以查询变量 `tidb_allow_function_for_expression_index` 了解。对于未经过充分测试的函数，其存在正确性风险, 我们将其视为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+> 表达式索引涉及众多表达式，为了确保正确性，只有经过充分测试的函数才允许直接创建，这些函数可以查询变量 `tidb_allow_function_for_expression_index` 了解。目前只支持 `lower`，`md5`，`reverse`，`upper` 和 `vitess_hash` 这几个函数，后续会持续添加新的函数进来。对于未经过充分测试的函数，其存在正确性风险，我们将其视为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
 > 
 > {{< copyable "sql" >}}
 > 
