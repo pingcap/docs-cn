@@ -1,7 +1,6 @@
 ---
 title: TiDB 数据库的存储
 summary: 了解 TiDB 数据库的存储层。
-aliases: ['/docs-cn/dev/tidb-storage/']
 ---
 
 # TiDB 数据库的存储
