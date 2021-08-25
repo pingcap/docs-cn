@@ -9,7 +9,7 @@ If you need to modify the cluster service configuration after the cluster is dep
 > **Note:**
 >
 > + When you modify the configuration, you cannot add or delete machines. For how to add machines, see [Scale out a cluster](/tiup/tiup-component-dm-scale-out.md). For how to delete machines, see [Scale in a cluster](/tiup/tiup-component-dm-scale-in.md).
-> + After you execute the `tiup dm edit-config` command, the configuration is modified only on the control machine. Then you need to execute the `tiup dm relaod` command to reload the configuration.
+> + After you execute the `tiup dm edit-config` command, the configuration is modified only on the control machine. Then you need to execute the `tiup dm reload` command to reload the configuration.
 
 ## Syntax
 

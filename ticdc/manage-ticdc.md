@@ -54,7 +54,7 @@ Then, enter the vi editor page and modify the `cdc` configuraion under [`server-
     gc-ttl: 3600
 ```
 
-After the modification, execute the `tiup cluster relaod -R cdc` command to reload the configuration.
+After the modification, execute the `tiup cluster reload -R cdc` command to reload the configuration.
 
 ## Use TLS
 
