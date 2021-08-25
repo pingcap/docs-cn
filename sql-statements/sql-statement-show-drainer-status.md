@@ -1,7 +1,6 @@
 ---
 title: SHOW DRAINER STATUS
 summary: TiDB 数据库中 SHOW DRAINER STATUS 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-drainer-status/']
 ---
 
 # SHOW DRAINER STATUS
