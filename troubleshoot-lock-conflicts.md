@@ -241,9 +241,9 @@ Since v5.1, TiDB supports the Lock View feature. This feature has several system
 * [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md): Provides the pessimistic lock-waiting information in TiKV, including the `start_ts` of the blocking and blocked transaction, the digest of the blocked SQL statement, and the key on which the waiting occurs.
 * [`DEADLOCKS` and `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md): Provides the information of several deadlock events that have recently occurred on the current TiDB node or in the entire cluster, including the waiting relationship among transactions in the deadlock loops, the digest of the statement currently being executed in the transaction, and the key on which the waiting occurs.
 
-> **Warning:**
+> **Note:**
 >
-> Currently, this is an experimental feature. The definition and behavior of the table structure might have major changes in future releases.
+> The SQL statements shown in the Lock View-related system tables are normalized SQL statements (that is, SQL statements without formats and arguments), which are obtained by internal queries according to SQL digests, so the tables cannot obtain the complete statements that include the format and arguments. For the detailed description of SQL digests and normalized SQL statement, see [Statement Summary Tables](/statement-summary-tables.md).
 
 The following sections show the examples of troubleshooting some issues using these tables.
 
@@ -258,32 +258,17 @@ select * from information_schema.deadlocks;
 ```
 
 ```sql
-+-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
-| DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | KEY                                    | TRX_HOLDING_LOCK   |
-+-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
-|           1 | 2021-06-04 08:22:38.765699 |         0 | 425405959304904707 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | 7480000000000000385F728000000000000002 | 425405959304904708 |
-|           1 | 2021-06-04 08:22:38.765699 |         0 | 425405959304904708 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | 7480000000000000385F728000000000000001 | 425405959304904707 |
-+-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+----------------------------------------+--------------------+
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
+| DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | CURRENT_SQL_DIGEST_TEXT                 | KEY                                    | KEY_INFO                                                                                           | TRX_HOLDING_LOCK   |
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
+|           1 | 2021-08-05 11:09:03.230341 |         0 | 426812829645406216 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | update `t` set `v` = ? where `id` = ? ; | 7480000000000000355F728000000000000002 | {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"2"} | 426812829645406217 |
+|           1 | 2021-08-05 11:09:03.230341 |         0 | 426812829645406217 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | update `t` set `v` = ? where `id` = ? ; | 7480000000000000355F728000000000000001 | {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"1"} | 426812829645406216 |
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
 ```
 
-The query result above shows the waiting relationship among multiple transactions in the deadlock error, the digest of the SQL statement currently being executed in each transaction, and the key on which the conflict occurs.
+The query result above shows the waiting relationship among multiple transactions in the deadlock error, the normalized form of the SQL statements currently being executed in each transaction (statements without formats and arguments), the key on which the conflict occurs, and the information of the key.
 
-You can get the text of the normalized SQL statement corresponding to the digest of the SQL statements executed recently from the `STATEMENTS_SUMMARY` or `STATEMENTS_SUMMARY_HISTORY` table. For details, see [`STATEMENTS_SUMMARY` and `STATEMENTS_SUMMARY_HISTORY` tables](/statement-summary-tables.md). You can also join the obtained results directly with the `DEADLOCKS` table. Note that the `STATEMENTS_SUMMARY` table might not contain the information of all SQL statements, so left join is used in the following example:
-
-{{< copyable "sql" >}}
-
-```sql
-select l.deadlock_id, l.occur_time, l.try_lock_trx_id, l.trx_holding_lock, s.digest_text from information_schema.deadlocks as l left join information_schema.statements_summary as s on l.current_sql_digest = s.digest;
-```
-
-```sql
-+-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
-| deadlock_id | occur_time                 | try_lock_trx_id    | trx_holding_lock   | digest_text                             |
-+-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
-|           1 | 2021-06-04 08:22:38.765699 | 425405959304904707 | 425405959304904708 | update `t` set `v` = ? where `id` = ? ; |
-|           1 | 2021-06-04 08:22:38.765699 | 425405959304904708 | 425405959304904707 | update `t` set `v` = ? where `id` = ? ; |
-+-------------+----------------------------+--------------------+--------------------+-----------------------------------------+
-```
+For example, in the above example, the first row means that the transaction with the ID of `426812829645406216` is executing a statement like ``update `t` set `v` =? Where `id` =? ;`` but is blocked by another transaction with the ID of `426812829645406217`. The transaction with the ID of `426812829645406217` is also executing a statement that is in the form of ``update `t` set `v` =? Where `id` =? ;`` but is blocked by the transaction with the ID of `426812829645406216`. The two transactions thus form a deadlock.
 
 #### A few hot keys cause queueing locks
 
@@ -299,8 +284,8 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 +----------------------------------------+-------+
 | key                                    | count |
 +----------------------------------------+-------+
-| 7480000000000000415f728000000000000001 |     2 |
-| 7480000000000000415f728000000000000002 |     1 |
+| 7480000000000000415F728000000000000001 |     2 |
+| 7480000000000000415F728000000000000002 |     1 |
 +----------------------------------------+-------+
 ```
 
@@ -313,36 +298,36 @@ Note that the information displayed in the `TIDB_TRX` and `CLUSTER_TIDB_TRX` tab
 {{< copyable "sql" >}}
 
 ```sql
-select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415f728000000000000001"\G
+select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
 ```
 
 ```sql
 *************************** 1. row ***************************
-                ID: 425496938634543111
-        START_TIME: 2021-06-08 08:46:48.341000
-CURRENT_SQL_DIGEST: a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9
-             STATE: LockWaiting
-WAITING_START_TIME: 2021-06-08 08:46:48.388024
-   MEM_BUFFER_KEYS: 1
-  MEM_BUFFER_BYTES: 19
-        SESSION_ID: 87
-              USER: root
-                DB: test
-   ALL_SQL_DIGESTS: [0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3, a4e28cc182bdd18288e2a34180499b9404cd0
-ba07e3cc34b6b3be7b7c2de7fe9, a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9]
+                     ID: 426831815660273668
+             START_TIME: 2021-08-06 07:16:00.081000
+     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
+CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
+                  STATE: LockWaiting
+     WAITING_START_TIME: 2021-08-06 07:16:00.087720
+        MEM_BUFFER_KEYS: 0
+       MEM_BUFFER_BYTES: 0
+             SESSION_ID: 77
+                   USER: root
+                     DB: test
+        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
 *************************** 2. row ***************************
-                ID: 425496940994101249
-        START_TIME: 2021-06-08 08:46:57.342000
-CURRENT_SQL_DIGEST: a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9
-             STATE: LockWaiting
-WAITING_START_TIME: 2021-06-08 08:46:57.590060
-   MEM_BUFFER_KEYS: 0
-  MEM_BUFFER_BYTES: 0
-        SESSION_ID: 85
-              USER: root
-                DB: test
-   ALL_SQL_DIGESTS: [0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3, a4e28cc182bdd18288e2a34180499b9404cd0
-ba07e3cc34b6b3be7b7c2de7fe9]
+                     ID: 426831818019569665
+             START_TIME: 2021-08-06 07:16:09.081000
+     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
+CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
+                  STATE: LockWaiting
+     WAITING_START_TIME: 2021-08-06 07:16:09.290271
+        MEM_BUFFER_KEYS: 0
+       MEM_BUFFER_BYTES: 0
+             SESSION_ID: 75
+                   USER: root
+                     DB: test
+        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
 2 rows in set (0.00 sec)
 ```
 
@@ -353,25 +338,29 @@ If a transaction is known to be blocked by another transaction (or multiple tran
 {{< copyable "sql" >}}
 
 ```sql
-select l.key, trx.* from information_schema.data_lock_waits as l join information_schema.tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 425497223886536705\G
+select l.key, trx.*, tidb_decode_sql_digests(trx.all_sql_digests) as sqls from information_schema.data_lock_waits as l join information_schema.cluster_tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 426831965449355272\G
 ```
 
 ```sql
 *************************** 1. row ***************************
-               key: 7480000000000000475f728000000000000002
-                ID: 425497219115778059
-        START_TIME: 2021-06-08 09:04:38.292000
-CURRENT_SQL_DIGEST: a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9
-             STATE: LockWaiting
-WAITING_START_TIME: 2021-06-08 09:04:38.336264
-   MEM_BUFFER_KEYS: 1
-  MEM_BUFFER_BYTES: 19
-        SESSION_ID: 97
-              USER: root
-                DB: test
-   ALL_SQL_DIGESTS: [0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3, a4e28cc182bdd18288e2a34180499b9404cd0
-ba07e3cc34b6b3be7b7c2de7fe9, a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9]
+                    key: 74800000000000004D5F728000000000000001
+               INSTANCE: 127.0.0.1:10080
+                     ID: 426832040186609668
+             START_TIME: 2021-08-06 07:30:16.581000
+     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
+CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
+                  STATE: LockWaiting
+     WAITING_START_TIME: 2021-08-06 07:30:16.592763
+        MEM_BUFFER_KEYS: 1
+       MEM_BUFFER_BYTES: 19
+             SESSION_ID: 113
+                   USER: root
+                     DB: test
+        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
+                   sqls: ["begin ;","select * from `t` where `id` = ? for update ;","update `t` set `v` = `v` + ? where `id` = ? ;"]
 1 row in set (0.01 sec)
 ```
+
+In the above query, the [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) function is used on the `ALL_SQL_DIGESTS` column of the `CLUSTER_TIDB_TRX` table. This function tries to convert this column (the value is a set of SQL digests) to the normalized SQL statements, which improves readability.
 
 If the `start_ts` of the current transaction is unknown, you can try to find it out from the information in the `TIDB_TRX` / `CLUSTER_TIDB_TRX` table or in the [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) table.

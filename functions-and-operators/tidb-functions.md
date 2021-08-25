@@ -257,3 +257,73 @@ Check Table Before Drop: false
 ### MySQL compatibility
 
 The `TIDB_VERSION` function is TiDB-specific and not compatible with MySQL. If MySQL compatibility is required, you can also use `VERSION` to get version information, but the result does not contain build details.
+
+## TIDB_DECODE_SQL_DIGESTS
+
+The `TIDB_DECODE_SQL_DIGESTS` function is used to query the normalized SQL statements (a form without formats and arguments) corresponding to the set of SQL digests in the cluster. This function accepts 1 or 2 arguments:
+
+* `digests`: A string. This parameter is in the format of a JSON string array, and each string in the array is a SQL digest.
+* `stmtTruncateLength`: An integer (optional). It is used to limit the length of each SQL statement in the returned result. If a SQL statement exceeds the specified length, the statement is truncated. `0` means that the length is unlimited.
+
+This function returns a string, which is in the format of a JSON string array. The *i*-th item in the array is the normalized SQL statement corresponding to the *i*-th element in the `digests` parameter. If an element in the `digests` parameter is not a valid SQL digest or the system cannot find the corresponding SQL statement, the corresponding item in the returned result is `null`. If the truncation length is specified (`stmtTruncateLength > 0`), for each statement in the returned result that exceeds this length, the first `stmtTruncateLength` characters are retained and the suffix `"..."` is added at the end to indicate the truncation. If the `digests` parameter is `NULL`, the returned value of the function is `NULL`.
+
+> **Note:**
+>
+> * Only users with the [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) privilege can use this function.
+> * When `TIDB_DECODE_SQL_DIGESTS` is executed, TiDB queries the statement corresponding to each SQL digest from the statement summary tables, so there is no guarantee that the corresponding statement can always be found for any SQL digest. Only the statements that have been executed in the cluster can be found, and whether these SQL statements can be queried or not is also affected by the related configuration of the statement summary tables. For the detailed description of the statement summary table, see [Statement Summary Tables](/statement-summary-tables.md).
+> * This function has a high overhead. In queries with a large number of rows (for example, querying the full table of `information_schema.cluster_tidb_trx` on a large and busy cluster), using this function might cause the queries to run for too long. Use it with caution.
+>     * This function has a high overhead because every time it is called, it internally queries the `STATEMENTS_SUMMARY`, `STATEMENTS_SUMMARY_HISTORY`, `CLUSTER_STATEMENTS_SUMMARY`, and `CLUSTER_STATEMENTS_SUMMARY_HISTORY` tables, and the query involves the `UNION` operation. This function currently does not support vectorization, that is, when calling this function for multiple rows of data, the above query is performed separately for each row.
+
+### Synopsis
+
+```ebnf+diagram
+DecodeSQLDigestsExpr ::=
+    "TIDB_DECODE_SQL_DIGESTS" "(" digests ( "," stmtTruncateLength )? ")"
+```
+
+### Example
+
+{{< copyable "sql" >}}
+
+```sql
+set @digests = '["e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02ad5","38b03afa5debbdf0326a014dbe5012a62c51957f1982b3093e748460f8b00821","e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7"]';
+
+select tidb_decode_sql_digests(@digests);
+```
+
+```sql
++------------------------------------+
+| tidb_decode_sql_digests(@digests)  |
++------------------------------------+
+| ["begin",null,"select * from `t`"] |
++------------------------------------+
+1 row in set (0.00 sec)
+```
+
+In the above example, the parameter is a JSON array containing 3 SQL digests, and the corresponding SQL statements are the three items in the query results. But the SQL statement corresponding to the second SQL digest cannot be found from the cluster, so the second item in the result is `null`.
+
+{{< copyable "sql" >}}
+
+```sql
+select tidb_decode_sql_digests(@digests, 10);
+```
+
+```sql
++---------------------------------------+
+| tidb_decode_sql_digests(@digests, 10) |
++---------------------------------------+
+| ["begin",null,"select * f..."]        |
++---------------------------------------+
+1 row in set (0.01 sec)
+```
+
+The above call specifies the second parameter (that is, the truncation length) as 10, and the length of the third statement in the query result is greater than 10. Therefore, only the first 10 characters are retained, and `"..."` is added at the end, which indicates the truncation.
+
+### MySQL compatibility
+
+`TIDB_DECODE_SQL_DIGESTS` is a TiDB-specific function and not compatible with MySQL.
+
+### See also
+
+- [`Statement Summary Tables`](/statement-summary-tables.md)
+- [`INFORMATION_SCHEMA.TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
