@@ -128,7 +128,9 @@ Compared to the optional parameters for creating a replication task using the `c
 | `mounter_worker_num` | `INT` type. The mounter thread number. (Optional) |
 | `sink_config` | The configuration parameters of sink. (Optional) |
 
-The meaning and format of `changefeed_id`, `start_ts`, `target_ts`, and `sink_uri` are the same as those described in the [Use `cdc cli` to create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task) document. For the detailed description of these parameters, see this document. Some other parameters in the above table are described further as follows.
+The meaning and format of `changefeed_id`, `start_ts`, `target_ts`, and `sink_uri` are the same as those described in the [Use `cdc cli` to create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task) document. For the detailed description of these parameters, see this document. Note that when you specify the certificate path in `sink_uri`, make sure you have uploaded the corresponding certificate to the corresponding TiCDC server.
+
+Some other parameters in the above table are described further as follows.
 
 `force_replicate`: This parameter defaults to `false`. When it is specified as `true`, TiCDC tries to forcibly replicate tables that do not have a unique index.
 
@@ -170,7 +172,7 @@ The following request creates a replication task with an ID of `test5` and a `si
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blcakhole://"}'
+curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds -d '{"changefeed_id":"test5","sink_uri":"blackhole://"}'
 ```
 
 If the request is successful, `202 Accepted` is returned. If the request fails, an error message and error code are returned.
@@ -243,7 +245,7 @@ The following request updates the `mounter_worker_num` of the replication task w
 {{< copyable "shell-regular" >}}
 
 ```shell
- curl -X POST -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/test1 -d '{"mounter_worker_num":32}'
+ curl -X PUT -H "'Content-type':'application/json'" http://127.0.0.1:8300/api/v1/changefeeds/test1 -d '{"mounter_worker_num":32}'
 ```
 
 If the request is successful, `202 Accepted` is returned. If the request fails, an error message and error code are returned.
