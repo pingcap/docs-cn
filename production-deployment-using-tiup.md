@@ -71,7 +71,131 @@ aliases: ['/docs-cn/stable/production-deployment-using-tiup/','/docs-cn/v4.0/pro
     tiup --binary cluster
     ```
 
+<<<<<<< HEAD
 ## 第 3 步：编辑初始化配置文件
+=======
+### 方式二：离线部署 TiUP 组件
+
+离线部署 TiUP 组件的操作步骤如下。
+
+#### 准备 TiUP 离线组件包
+
+方式一：在[官方下载页面](https://pingcap.com/zh/product#SelectProduct)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
+
+方式二：使用 `tiup mirror clone` 命令手动打包离线组件包。步骤如下：
+
+1. 在在线环境中安装 TiUP 包管理器工具
+
+    1. 执行如下命令安装 TiUP 工具：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+        ```
+
+    2. 重新声明全局环境变量：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        source .bash_profile
+        ```
+
+    3. 确认 TiUP 工具是否安装：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        which tiup
+        ```
+
+2. 使用 TiUP 制作离线镜像
+
+    1. 在一台和外网相通的机器上拉取需要的组件：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror clone tidb-community-server-${version}-linux-amd64 ${version} --os=linux --arch=amd64
+        ```
+
+        该命令会在当前目录下创建一个名叫 `tidb-community-server-${version}-linux-amd64` 的目录，里面包含 TiUP 管理的组件包。
+
+    2. 通过 tar 命令将该组件包打包然后发送到隔离环境的中控机：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tar czvf tidb-community-server-${version}-linux-amd64.tar.gz tidb-community-server-${version}-linux-amd64
+        ```
+
+        此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
+
+3. 自定义制作的离线镜像，或调整已有离线镜像中的内容
+
+    如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
+
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.5.2 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror clone tiup-custom-mirror-v1.5.2 --tiup v1.5.2 --cluster v1.5.2
+        ```
+
+        如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
+
+    2. 参考上文“使用 TiUP 制作离线镜像”第 2 步的方式，将此不完整的离线镜像传输到隔离环境的中控机。
+
+    3. 在隔离环境的中控机上，查看当前使用的离线镜像路径。较新版本的 TiUP 可以直接通过命令获取当前的镜像地址：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror show
+        ```
+
+        以上命令如果提示 `show` 命令不存在，可能当前使用的是较老版本的 TiUP。此时可以通过查看 `$HOME/.tiup/tiup.toml` 获得正在使用的镜像地址。将此镜像地址记录下来，后续步骤中将以变量 `${base_mirror}` 指代此镜像地址。
+
+    4. 将不完整的离线镜像合并到已有的离线镜像中：
+
+        首先将当前离线镜像中的 `keys` 目录复制到 `$HOME/.tiup` 目录中：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cp -r ${base_mirror}/keys $HOME/.tiup/
+        ```
+
+        然后使用 TiUP 命令将不完整的离线镜像合并到当前使用的镜像中：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror merge tiup-custom-mirror-v1.5.2
+        ```
+    
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
+
+#### 部署离线环境 TiUP 组件
+
+将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz && \
+sh tidb-community-server-${version}-linux-amd64/local_install.sh && \
+source /home/tidb/.bash_profile
+```
+
+`local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
+
+若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
+
+## 第 3 步：初始化集群拓扑文件
+>>>>>>> 3f5076c00 (Update production-deployment-using-tiup.md (#6952))
 
 请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。
 
