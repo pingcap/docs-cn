@@ -23,37 +23,37 @@ TiDB 版本：5.2
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.2 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。 
+> 当从一个早期的 TiDB 版本升级到 TiDB 5.2 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。
 
 ### 系统变量
 
-|  变量名    |  修改类型    |  描述    | 
-| :---------- | :----------- | :----------- | 
-| [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 新增 | 设置服务器对外通告的默认身份验证方式，默认值为 `mysql_native_password`。 | 
-| [`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated) | 新增 | 控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。 | 
-| [`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment) | 新增 | 控制优化器是否开启交叉估算，默认值为`ON`。 | 
-| [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 新增 | 设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。 | 
-| [`tidb_restricted_read_only`](/system-variables.md#tidb_restricted_read_only) | 新增 | 控制整个集群的只读状态，默认值为`OFF`。 | 
-| [`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) | 修改 | 表示 statement summary 在内存中保存的语句的最大数量。默认值从 `200` 修改为 `3000`。 | 
-| `tidb_enable_streaming` | 废弃 | 系统变量 `enable-streaming`已废弃，不建议再使用。 | 
+|  变量名    |  修改类型    |  描述    |
+| :---------- | :----------- | :----------- |
+| [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) | 新增 | 设置服务器对外通告的默认身份验证方式，默认值为 `mysql_native_password`。 |
+| [`tidb_enable_auto_increment_in_generated`](/system-variables.md#tidb_enable_auto_increment_in_generated) | 新增 | 控制是否允许在创建生成列或者表达式索引时引用自增列，默认值为`OFF`。 |
+| [`tidb_opt_enable_correlation_adjustment`](/system-variables.md#tidb_opt_enable_correlation_adjustment) | 新增 | 控制优化器是否开启交叉估算，默认值为`ON`。 |
+| [`tidb_opt_limit_push_down_threshold`](/system-variables.md#tidb_opt_limit_push_down_threshold) | 新增 | 设置将 Limit 和 TopN 算子下推到 TiKV 的阈值，默认值为`100`。 |
+| [`tidb_restricted_read_only`](/system-variables.md#tidb_restricted_read_only) | 新增 | 控制整个集群的只读状态，默认值为`OFF`。 |
+| [`tidb_stmt_summary_max_stmt_count`](/system-variables.md#tidb_stmt_summary_max_stmt_count-从-v40-版本开始引入) | 修改 | 表示 statement summary 在内存中保存的语句的最大数量。默认值从 `200` 修改为 `3000`。 |
+| `tidb_enable_streaming` | 废弃 | 系统变量 `enable-streaming`已废弃，不建议再使用。 |
 
 ### 配置文件参数
 
-|  配置文件    |  配置项    |  修改类型    |  描述    | 
-| :---------- | :----------- | :----------- | :----------- | 
-| TiDB 配置文件 | [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) | 新增 | 控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。 | 
-| TiDB 配置文件 | [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) | 新增 | 控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `true`。 | 
-| TiDB 配置文件 | [`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count) | 修改 | 表示 statement summary tables 中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 | 
-| TiDB 配置文件 | `experimental.allow-expression-index`  | 废弃 | 废弃 TiDB 配置文件中`allow-expression-index` 配置项 | 
-| TiKV 配置文件 | [`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch)  | 新增 | 对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。 | 
-| TiKV 配置文件 | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval)  | 新增 | TiKV 每隔一段时间会检测 Raftstore 线程的延迟情况，该配置项设置检测的时间间隔。默认值为 `500ms`。 | 
-| TiKV 配置文件 | [`raftstore.max-peer-down-duration`](/tikv-configuration-file.md#max-peer-down-duration)  | 修改 | 表示副本允许的最长未响应时间，超过将被标记为 `down`，后续 PD 会尝试将其删掉。默认值从 `5m` 修改为 `10m`。 | 
-| TiKV 配置文件 | [`server.raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size)  | 新增 | 指定 TiKV 中发送 Raft 消息的缓冲区大小。默认值为 8192。 | 
-| TiKV 配置文件 | [`storage.flow-control.enable`](/tikv-configuration-file.md#enable)  | 新增 | 表示是否开启 TiKV 流量控制机制。默认值为 `true`。 | 
-| TiKV 配置文件 | [`storage.flow-control.memtables-threshold`](/tikv-configuration-file.md#memtables-threshold)  | 新增 | 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。默认值为 5。 | 
+|  配置文件    |  配置项    |  修改类型    |  描述    |
+| :---------- | :----------- | :----------- | :----------- |
+| TiDB 配置文件 | [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) | 新增 | 控制 [`INFORMATION\_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。 |
+| TiDB 配置文件 | [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) | 新增 | 控制 TiDB 启动时是否自动生成 TLS 证书，默认值为 `true`。 |
+| TiDB 配置文件 | [`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count) | 修改 | 表示 statement summary tables 中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 |
+| TiDB 配置文件 | `experimental.allow-expression-index`  | 废弃 | 废弃 TiDB 配置文件中`allow-expression-index` 配置项 |
+| TiKV 配置文件 | [`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch)  | 新增 | 对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。 |
+| TiKV 配置文件 | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval)  | 新增 | TiKV 每隔一段时间会检测 Raftstore 线程的延迟情况，该配置项设置检测的时间间隔。默认值为 `500ms`。 |
+| TiKV 配置文件 | [`raftstore.max-peer-down-duration`](/tikv-configuration-file.md#max-peer-down-duration)  | 修改 | 表示副本允许的最长未响应时间，超过将被标记为 `down`，后续 PD 会尝试将其删掉。默认值从 `5m` 修改为 `10m`。 |
+| TiKV 配置文件 | [`server.raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size)  | 新增 | 指定 TiKV 中发送 Raft 消息的缓冲区大小。默认值为 8192。 |
+| TiKV 配置文件 | [`storage.flow-control.enable`](/tikv-configuration-file.md#enable)  | 新增 | 表示是否开启 TiKV 流量控制机制。默认值为 `true`。 |
+| TiKV 配置文件 | [`storage.flow-control.memtables-threshold`](/tikv-configuration-file.md#memtables-threshold)  | 新增 | 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。默认值为 5。 |
 | TiKV 配置文件 | [`storage.flow-control.l0-files-threshold`](/tikv-configuration-file.md#l0-files-threshold)  | 新增 | 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。默认值为 9。 | 
-| TiKV 配置文件 | [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit)  | 新增 | 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求并报错。默认值为 "192GB"。 | 
-| TiKV 配置文件 | [`storage.flow-control.hard-pending-compaction-bytes-limit`](/tikv-configuration-file.md#hard-pending-compaction-bytes-limit)  | 新增 | 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝所有写入请求并报错。默认值为 "1024GB"。 | 
+| TiKV 配置文件 | [`storage.flow-control.soft-pending-compaction-bytes-limit`](/tikv-configuration-file.md#soft-pending-compaction-bytes-limit)  | 新增 | 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求并报错。默认值为 "192GB"。 |
+| TiKV 配置文件 | [`storage.flow-control.hard-pending-compaction-bytes-limit`](/tikv-configuration-file.md#hard-pending-compaction-bytes-limit)  | 新增 | 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝所有写入请求并报错。默认值为 "1024GB"。 |
 
 ### 其他
 
@@ -94,13 +94,13 @@ TiDB 版本：5.2
     - 引入变量 `tidb_opt_limit_push_down_threshold` 控制优化器对 Limit/TopN 的下推行为，可以解决部分情况下因为估算误差导致 Limit/TopN 不能下推的问题。
 
     [用户文档](/system-variables.md#tidb_opt_limit_push_down_threshold)，[#26085](https://github.com/pingcap/tidb/issues/26085)
-    
+
 - **提升优化器的索引过滤规则 (Index Selection)**
 
     新增加了一些索引选择的裁剪规则，在通过统计信息进行对比之前，通过规则进一步对可能的选择的索引范围进行缩小。从而减小各种情况下选到不优索引的概率。
-    
+
     [用户文档](/choose-index.md)
- 
+
 ### 事务
 
 - **锁视图 (Lock View) 成为 GA 特性**
@@ -109,11 +109,11 @@ TiDB 版本：5.2
 
     在 5.2 中，Lock View 新增以下特性：
 
-    - 对于 Lock View 所属的各张表中的 SQL Digest 列， v5.1 额外增加了一列显示对应的归一化的 SQL 语句文本，无需手动查询 SQL Digest 对应的语句。  
+    - 对于 Lock View 所属的各张表中的 SQL Digest 列， v5.1 额外增加了一列显示对应的归一化的 SQL 语句文本，无需手动查询 SQL Digest 对应的语句。
     - 增加了 `TIDB_DECODE_SQL_DIGESTS` 函数用于在集群中查询一组 SQL Digest 所对应的 SQL 语句的归一化形式（即去除格式和参数后的形式），简化了查询某一事务历史执行过的语句的操作
-    - 在 `DATA_LOCK_WAITS` 和 `DEADLOCKS` 系统表中，增加一列显示 key 中解出的表名、row id、索引值等信息，简化了定位 key 所属的表、解读 key 的内容等信息的操作。 
+    - 在 `DATA_LOCK_WAITS` 和 `DEADLOCKS` 系统表中，增加一列显示 key 中解出的表名、row id、索引值等信息，简化了定位 key 所属的表、解读 key 的内容等信息的操作。
     - 支持在 `DEADLOCKS` 表中收集可重试的死锁错误的信息，以便于排查因可重试的死锁引发的问题。默认不收集，可通过配置选项 `pessimistic-txn.deadlock-history-collect-retryable` 启用 。
-    - `TIDB_TRX` 系统表支持区分正在执行查询的事务和闲置中的事务，即将原来的 `Normal` 状态拆分成 `Running` 和 `Idle` 状态。 
+    - `TIDB_TRX` 系统表支持区分正在执行查询的事务和闲置中的事务，即将原来的 `Normal` 状态拆分成 `Running` 和 `Idle` 状态。
 
     用户文档：
 
@@ -183,7 +183,7 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 新增专为 TiDB 设计的二进制 MQ 格式，比基于 JSON 的开放协议更紧凑 [#1621](https://github.com/pingcap/ticdc/pull/1621)
         - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
         - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
- 
+
     + TiDB Lightning
 
         - 支持 CSV 文件中除 `\r` 和 `\n` 之外的自定义行尾 [#1297](https://github.com/pingcap/br/pull/1297)
@@ -205,10 +205,10 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 提升内置函数 `str_to_date` 在格式指定器中 `%b/%M/%r/%T` 的 MySQL 兼容性 [#25767](https://github.com/pingcap/tidb/pull/25767)
     - 修复因对同一条查询重复创建不同 binding 可能导致的多个 TiDB 上 binding cache 不一致的问题 [#26015](https://github.com/pingcap/tidb/pull/26015)
     - 修复升级可能会导致的 binding 无法被加载到缓存的问题 [#23295](https://github.com/pingcap/tidb/pull/23295)
-    - 对 SHOW BINDINGS 结果按照 (original_sql, update_time) 有序输出 [#26139](https://github.com/pingcap/tidb/pull/26139)
+    - 对 `SHOW BINDINGS` 结果按照 (original_sql, update_time) 有序输出 [#26139](https://github.com/pingcap/tidb/pull/26139)
     - 改进使用 binding 优化查询的逻辑，减少对查询的优化次数 [#26141](https://github.com/pingcap/tidb/pull/26141)
     - 支持标记为删除状态的 binding 进行自动垃圾回收 [#26206](https://github.com/pingcap/tidb/pull/26206)
-    - 在 EXPLAIN VERBOSE 的结果中显示查询优化是否使用了某个 binding [#26930](https://github.com/pingcap/tidb/pull/26930)
+    - 在 `EXPLAIN VERBOSE` 的结果中显示查询优化是否使用了某个 binding [#26930](https://github.com/pingcap/tidb/pull/26930)
     - 增加新的状态变量 `last_plan_binding_update_time` 用于查看当前 TiDB 实例中 binding cache 对应的时间戳 [#26340](https://github.com/pingcap/tidb/pull/26340)
     - 在打开 binding 演进或者执行 `admin evolve bindings` 时提供报错，避免自动演进绑定（目前为试验特性，已在当前 TiDB 版本关闭）影响到其他功能 [#26333](https://github.com/pingcap/tidb/pull/26333)
 
@@ -231,7 +231,6 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 新增更多的函数支持：`INET_NTOA()`, `INET_ATON()`, `INET6_ATON`, `INET6_NTOA()`
     - 当 new collation 打开时，支持 MPP 模式下的 Shuffled Hash Join 和 Shuffled Hash Aggregation 运算
     - 优化基础代码提升 MPP 性能
-    - 为 tidb_broadcast_join_threshold_count 和 tidb_broadcast_join_threshold_size 新增 `-1` 为正无穷值
     - 支持将 `STRING` 类型转换为 `DOUBLE` 类型
     - 通过多线程优化右外连接中的非连接数据
     - 支持在 MPP 查询中自动清理过期的 Region 信息
@@ -246,8 +245,8 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
         - 优化 workerpool 以降低在高并发情况下 goroutine 的数量 [#2201](https://github.com/pingcap/ticdc/pull/2201)
 
     + Dumpling
-        - 通过 tidb_rowid 对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
-        - 减少 Dumpling 对 information_schema 库的访问以提高稳定性 [#305](https://github.com/pingcap/dumpling/pull/305)
+        - 通过 `tidb_rowid` 对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
+        - 减少 Dumpling 对 `information_schema` 库的访问以提高稳定性 [#305](https://github.com/pingcap/dumpling/pull/305)
 
 ## Bug 修复
 
@@ -300,15 +299,15 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1985](https://github.com/pingcap/ticdc/pull/1985)
-        - 修复 changefeed 创建成功后立即失败的问题 [#2115](https://github.com/pingcap/ticdc/pull/2115)
-        - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#2117](https://github.com/pingcap/ticdc/pull/2117)
-        - 修复 TiCDC Owner 崩溃时潜在的 DDL 丢失问题 [#2252](https://github.com/pingcap/ticdc/pull/2252)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/ticdc/issues/1902)
+        - 修复 changefeed 创建成功后立即失败的问题 [#2113](https://github.com/pingcap/ticdc/issues/2113)
+        - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#1625](https://github.com/pingcap/ticdc/issues/1625)
+        - 修复 TiCDC Owner 崩溃时潜在的 DDL 丢失问题 [#1260](https://github.com/pingcap/ticdc/issues/1260)
         - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
-        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2423](https://github.com/pingcap/ticdc/pull/2423)
-        - 修复 TiCDC 遇到 ErrGCTTLExceeded 错误时 changefeed 不能被 remove 的问题 [#2429](https://github.com/pingcap/ticdc/pull/2429)
-        - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#2431](https://github.com/pingcap/ticdc/pull/2431)
-        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
+        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2422](https://github.com/pingcap/ticdc/issues/2422)
+        - 修复 TiCDC 遇到 `ErrGCTTLExceeded` 错误时 changefeed 不能被 remove 的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
+        - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259) [#2424](https://github.com/pingcap/ticdc/issues/2424)
+        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
 
     + Backup & Restore (BR)
 
@@ -318,12 +317,12 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     + TiDB Lightning
 
         - 修复 TiDB Lightning 解析 Parquet 文件中 `DECIMAL` 类型数据失败的问题 [#1272](https://github.com/pingcap/br/pull/1272)
-        - 修复 Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 的问题 [#1290](https://github.com/pingcap/br/issues/1290)
-        - 修复 Lightning 因 int handle 溢出导致导入数据失败的问题 [#1291](https://github.com/pingcap/br/issues/1291)
-        - 修复 Lightning 在 local backend 模式下因数据丢失可能遇到 checksum 不匹配的问题 [#1413](https://github.com/pingcap/br/pull/1413)
-        - 修复 Lightning 恢复 table schema 时与 clustered index 不兼容的问题 [#1364](https://github.com/pingcap/br/pull/1364)
+        - 修复 TiDB Lightning 恢复 table schema 时报错 "Error 9007: Write conflict" 的问题 [#1290](https://github.com/pingcap/br/issues/1290)
+        - 修复 TiDB Lightning 因 int handle 溢出导致导入数据失败的问题 [#1291](https://github.com/pingcap/br/issues/1291)
+        - 修复 TiDB Lightning 在 local backend 模式下因数据丢失可能遇到 checksum 不匹配的问题 [#1403](https://github.com/pingcap/br/issues/1403)
+        - 修复 TiDB Lightning 恢复 table schema 时与 clustered index 不兼容的问题 [#1362](https://github.com/pingcap/br/issues/1362)
 
     + Dumpling
 
         - 修复 Dumpling GC safepoint 设置过晚导致数据导出失败的问题 [#290](https://github.com/pingcap/dumpling/pull/290)
-        - 修复 Dumpling 在特定 MySQL 版本下获取上游表名时卡住的问题 [#325](https://github.com/pingcap/dumpling/pull/325)
+        - 修复 Dumpling 在特定 MySQL 版本下获取上游表名时卡住的问题 [#322](https://github.com/pingcap/dumpling/issues/322)
