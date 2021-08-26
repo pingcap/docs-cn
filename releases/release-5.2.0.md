@@ -176,7 +176,6 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
 
     + TiCDC
 
-        - 新增 HTTP API，支持对 TiCDC 集群进行查询和修改 [#2416](https://github.com/pingcap/ticdc/pull/2416)
         - 新增专为 TiDB 设计的二进制 MQ 格式，比基于 JSON 的开放协议更紧凑 [#1621](https://github.com/pingcap/ticdc/pull/1621)
         - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
         - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
@@ -209,10 +208,6 @@ TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的
     - 增加新的状态变量 `last_plan_binding_update_time` 用于查看当前 TiDB 实例中 binding cache 对应的时间戳 [#26340](https://github.com/pingcap/tidb/pull/26340)
     - 在打开 binding 演进或者执行 `admin evolve bindings` 时提供报错，避免自动演进绑定（目前为试验特性，已在当前 TiDB 版本关闭）影响到其他功能 [#26333](https://github.com/pingcap/tidb/pull/26333)
 
-+ TiKV
-
-    - 限制 TiCDC sink 的内存消耗 [#10305](https://github.com/tikv/tikv/pull/10305)
-    - 为 TiCDC old value 缓存增加基于内存使用量的上限 [#10313](https://github.com/tikv/tikv/pull/10313)
 
 + PD
 
