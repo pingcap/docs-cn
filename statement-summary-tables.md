@@ -12,8 +12,9 @@ Therefore, starting from v4.0.0-rc.1, TiDB provides system tables in `informatio
 
 - [`statements_summary`](#statements_summary)
 - [`statements_summary_history`](#statements_summary_history)
-- [`cluster_statements_summary`](#cluster_statements_summary-and-cluster_statements_summary_history)
-- [`cluster_statements_summary_history`](#cluster_statements_summary-and-cluster_statements_summary_history)
+- [`cluster_statements_summary`](#statements_summary_evicted)
+- [`cluster_statements_summary_history`](#statements_summary_evicted)
+- [`statements_summary_evicted`](#statements_summary_evicted)
 
 This document details these tables and introduces how to use them to troubleshoot SQL performance issues.
 
@@ -89,11 +90,17 @@ The table schema of `statements_summary_history` is identical to that of `statem
 
 The fields `SUMMARY_BEGIN_TIME` and `SUMMARY_END_TIME` represent the start time and the end time of the historical time range.
 
-## `cluster_statements_summary` and `cluster_statements_summary_history`
+## `statements_summary_evicted`
 
-`statements_summary` and `statements_summary_history` display the statement summary data of only a single TiDB server. To query the data of the entire cluster, you need to query `cluster_statements_summary` and `cluster_statements_summary_history`.
+The `tidb_stmt_summary_max_stmt_count` variable controls the maximum number of statements that the `statement_summary` table stores in memory. The `statement_summary` table uses the LRU algorithm. Once the number of SQL statements exceeds the `tidb_stmt_summary_max_stmt_count` value, the longest unused record is evicted from the table. The number of evicted SQL statements during each period is recorded in the `statements_summary_evicted` table.
 
-`cluster_statements_summary` displays the `statements_summary` data of each TiDB server, and `cluster_statements_summary_history` displays the `statements_summary_history` data of each TiDB server. These two tables use the `INSTANCE` field to represent the address of the TiDB server. The other fields are the same as those in `statements_summary`.
+The `statements_summary_evicted` table is updated only when a SQL record is evicted from the `statement_summary` table. The `statements_summary_evicted` only records the period during which the eviction occurs and the number of evicted SQL statements.
+
+## The `cluster` tables for statement summary
+
+The `statements_summary`, `statements_summary_history`, and `statements_summary_evicted` tables only show the statement summary of a single TiDB server. To query the data of the entire cluster, you need to query the `cluster_statements_summary`, `cluster_statements_summary_history`, or `cluster_statements_summary_evicted` tables.
+
+`cluster_statements_summary` displays the `statements_summary` data of each TiDB server. `cluster_statements_summary_history` displays the `statements_summary_history` data of each TiDB server. `cluster_statements_summary_evicted` displays the `statements_summary_evicted` data of each TiDB server. These tables use the `INSTANCE` field to represent the address of the TiDB server. The other fields are the same as those in `statements_summary`.
 
 ## Parameter configuration
 
@@ -101,14 +108,14 @@ The following system variables are used to control the statement summary:
 
 - `tidb_enable_stmt_summary`: Determines whether to enable the statement summary feature. `1` represents `enable`, and `0` means `disable`. The feature is enabled by default. The statistics in the system table are cleared if this feature is disabled. The statistics are re-calculated next time this feature is enabled. Tests have shown that enabling this feature has little impact on performance.
 - `tidb_stmt_summary_refresh_interval`: The interval at which the `statements_summary` table is refreshed. The time unit is second (s). The default value is `1800`.
-- `tidb_stmt_summary_history_size`: The size of each SQL statement category stored in the `statements_summary_history` table. The default value is `24`.
-- `tidb_stmt_summary_max_stmt_count`: Limits the number of SQL statements that can be stored in statement summary tables. The default value is `3000`. If the limit is exceeded, those SQL statements that recently remain unused are cleared.
+- `tidb_stmt_summary_history_size`: The size of each SQL statement category stored in the `statements_summary_history` table, which is also the maximum number of records in the `statement_summary_evicted` table. The default value is `24`.
+- `tidb_stmt_summary_max_stmt_count`: Limits the number of SQL statements that can be stored in statement summary tables. The default value is `3000`. If the limit is exceeded, those SQL statements that recently remain unused are cleared. These cleared SQL statements are recorded in the `statement_summary_evicted` table.
 - `tidb_stmt_summary_max_sql_length`: Specifies the longest display length of `DIGEST_TEXT` and `QUERY_SAMPLE_TEXT`. The default value is `4096`.
 - `tidb_stmt_summary_internal_query`: Determines whether to count the TiDB SQL statements. `1` means to count, and `0` means not to count. The default value is `0`.
 
 > **Note:**
 >
-> When a category of SQL statement needs to be removed because the `tidb_stmt_summary_max_stmt_count` limit is exceeded, TiDB removes the data of that SQL statement category of all time ranges from the `statement summary history` table. Therefore, even if the number of SQL statement categories in a certain time range does not reach the limit, the number of SQL statements stored in the `statement summary history` table is less than the actual number of SQL statements. If this situation occurs, you are recommended to increase the value of `tidb_stmt_summary_max_stmt_count`.
+> When a category of SQL statement needs to be removed because the `tidb_stmt_summary_max_stmt_count` limit is exceeded, TiDB removes the data of that SQL statement category of all time ranges from the `statement_summary_history` table. Therefore, even if the number of SQL statement categories in a certain time range does not reach the limit, the number of SQL statements stored in the `statement_summary_history` table is less than the actual number of SQL statements. If this situation occurs and affects performance, you are recommended to increase the value of `tidb_stmt_summary_max_stmt_count`.
 
 An example of the statement summary configuration is shown as follows:
 
@@ -122,6 +129,8 @@ set global tidb_stmt_summary_history_size = 24;
 
 After the configuration above takes effect, every 30 minutes the `statements_summary` table is cleared. The `statements_summary_history` table stores data generated over the recent 12 hours.
 
+The `statements_summary_evicted` table records the recent 24 periods during which SQL statements are evicted from the statement summary. The `statements_summary_evicted` table is updated every 30 minutes.
+
 The system variables above have two scopes: global and session. These scopes work differently from other system variables:
 
 - After setting the global variable, your setting applies to the whole cluster immediately.
@@ -132,6 +141,50 @@ The system variables above have two scopes: global and session. These scopes wor
 > **Note:**
 >
 > The `tidb_stmt_summary_history_size`, `tidb_stmt_summary_max_stmt_count`, and `tidb_stmt_summary_max_sql_length` configuration items affect memory usage. It is recommended that you adjust these configurations based on your needs. It is not recommended to set them too large values.
+
+### Set a proper size for statement summary
+
+After the system has run for a period of time, you can check the `statement_summary` table to see whether SQL eviction has occurred. For example:
+
+```sql
+select @@global.tidb_stmt_summary_max_stmt_count;
+select count(*) from information_schema.statements_summary;
+```
+
+```sql
++-------------------------------------------+
+| @@global.tidb_stmt_summary_max_stmt_count |
++-------------------------------------------+
+| 3000                                      |
++-------------------------------------------+
+1 row in set (0.001 sec)
+
++----------+
+| count(*) |
++----------+
+|     3001 |
++----------+
+1 row in set (0.001 sec)
+```
+
+You can see that the `statements_summary` table is full of records. Then check the evicted data from the `statements_summary_evicted` table:
+
+```sql
+select * from information_schema.statements_summary_evicted;
+```
+
+```sql
++---------------------+---------------------+---------------+
+| BEGIN_TIME          | END_TIME            | EVICTED_COUNT |
++---------------------+---------------------+---------------+
+| 2020-01-02 16:30:00 | 2020-01-02 17:00:00 |            59 |
++---------------------+---------------------+---------------+
+| 2020-01-02 16:00:00 | 2020-01-02 16:30:00 |            45 |
++---------------------+---------------------+---------------+
+2 row in set (0.001 sec)
+```
+
+From the result above, you can see that a maximum of 59 SQL categories are evicted, which indicates that the proper size of the statement summary is 59 records.
 
 ## Limitation
 
@@ -197,7 +250,9 @@ The result shows that the following three categories of SQL statements consume t
 3 rows in set (0.00 sec)
 ```
 
-### Fields description
+## Fields description
+
+### `statements_summary` fields description
 
 The following are descriptions of fields in the `statements_summary` table.
 
@@ -285,3 +340,9 @@ Transaction-related fields:
 - `BACKOFF_TYPES`: All types of errors that require retries and the number of retries for each type. The format of the field is `type:number`. If there is more than one error type, each is separated by a comma, like `txnLock:2,pdRPC:1`.
 - `AVG_AFFECTED_ROWS`: The average number of rows affected.
 - `PREV_SAMPLE_TEXT`:  When the current SQL statement is `COMMIT`, `PREV_SAMPLE_TEXT` is the previous statement to `COMMIT`. In this case, SQL statements are grouped by the digest and `prev_sample_text`. This means that `COMMIT` statements with different `prev_sample_text` are grouped to different rows. When the current SQL statement is not `COMMIT`, the `PREV_SAMPLE_TEXT` field is an empty string.
+
+### `statements_summary_evicted` fields description
+
+- `BEGIN_TIME`: Records the starting time.
+- `END_TIME`: Records the ending time.
+- `EVICTED_COUNT`: The number of SQL categories that are evicted during the record period.
