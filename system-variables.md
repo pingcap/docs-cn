@@ -845,42 +845,72 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+<<<<<<< HEAD
 
 - 默认值：24（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量设置了 statement summary 的历史记录容量。
+=======
+- 默认值：`24`
+- 范围：`[0, 255]`
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
+>>>>>>> 551b5c991 (change expressions related to `statement summary tables` to ensure co… (#6928))
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+<<<<<<< HEAD
 
 - 默认值：0（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
+=======
+- 默认值：`OFF`
+- 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
+>>>>>>> 551b5c991 (change expressions related to `statement summary tables` to ensure co… (#6928))
 
 ### `tidb_stmt_summary_max_sql_length` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+<<<<<<< HEAD
 
 - 默认值：4096（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量控制 statement summary 显示的 SQL 字符串长度。
+=======
+- 默认值：`4096`
+- 范围：`[0, 2147483647]`
+- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
+>>>>>>> 551b5c991 (change expressions related to `statement summary tables` to ensure co… (#6928))
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+<<<<<<< HEAD
 
 - 默认值：v4.0.14 前为 200。自 v4.0.14 起为 3000（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
+=======
+- 默认值：`3000`
+- 范围：`[1, 32767]`
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
+>>>>>>> 551b5c991 (change expressions related to `statement summary tables` to ensure co… (#6928))
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
+<<<<<<< HEAD
 
 - 默认值：1800（受配置文件影响，这里给出的是默认配置文件取值）
 
 - 这个变量设置了 statement summary 的刷新时间，单位为秒。
+=======
+- 默认值：`1800`
+- 范围：`[1, 2147483647]`
+- 单位：秒
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
+>>>>>>> 551b5c991 (change expressions related to `statement summary tables` to ensure co… (#6928))
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
