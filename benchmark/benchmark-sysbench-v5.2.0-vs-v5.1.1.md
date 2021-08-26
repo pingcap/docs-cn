@@ -154,7 +154,7 @@ v5.2.0 对比 v5.1.1，Point Select 性能提升了 10.99%。
 
 v5.2.0 对比 v5.1.1，Update Non-index 性能下降了 1.59%。
 
-![Update Non-index](/media/sysbench_v520vsv511_update_non_index.png)
+![Update Non-index](/media/sysbench_v511vsv520_update_non_index.png)
 
 ### Update Index 性能
 
@@ -169,7 +169,7 @@ v5.2.0 对比 v5.1.1，Update Non-index 性能下降了 1.59%。
 
 v5.2.0 对比 v5.1.1，Update Index 性能下降了 3.93%。
 
-![Update Index](/media/sysbench_v520vsv511_update_index.png)
+![Update Index](/media/sysbench_v511vsv520_update_index.png)
 
 ### Read Write 性能
 
@@ -184,4 +184,4 @@ v5.2.0 对比 v5.1.1，Update Index 性能下降了 3.93%。
 
 v5.2.0 对比 v5.1.1，Read Write 性能下降了 1.35%。
 
-![Read Write](/media/sysbench_v520vsv511_read_write.png)
+![Read Write](/media/sysbench_v511vsv520_read_write.png)
