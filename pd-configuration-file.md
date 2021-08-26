@@ -122,7 +122,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `level`
 
-+ 日志等级，可指定为"DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
++ 日志等级，可指定为 "DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
 + 默认值："INFO"
 
 ### `format`
