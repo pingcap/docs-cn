@@ -13,7 +13,7 @@ TiDB 版本：5.2
 - 新增表达式索引 (Expression index)，极大提升查询的性能。
 - 提升优化器的估算准确度 (Cardinality Estimation)，有助于选中最优的执行计划。
 - 锁视图 (Lock View) 成为 GA 特性，提供更直观方便的方式观察事务加锁情况以及排查死锁问题。
-- 新增 TiFlash IO 限流功能，提升 TiFlash 读写稳定性。
+- 新增 TiFlash I/O 限流功能，提升 TiFlash 读写稳定性。
 - 优化 TiKV 预留空间管理，提升存储稳定性。
 - 为 TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制，提升 TiKV 流控稳定性。
 - 简化 Data Migration (DM) 工具运维，降低运维管理的成本。
