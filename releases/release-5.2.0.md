@@ -61,9 +61,6 @@ TiDB 版本：5.2
 - v4.0 集群升级到 v5.2 集群后，[`tidb_multi_statement_mode`](/system-variables.md#tidb_multi_statement_mode-从-v4011-版本开始引入) 变量的默认值由 `WARN` 变为 `OFF`。
 - 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
-- 升级至 5.2 版本时，TiKV 会通过 `block-cache.capacity` 计算 `memory-usage-limit`，此时 `memory-usage-limit` 的计算结果默认为 "`block-cache.capacity` / 0.45 * 0.75" 的值。
-
-    例如，当[storage.block-cache] capacity = "24GB" 时，`memory-usage-limit`为 40GB (24GB/0.45*0.75 = 40GB)。
 
 ## 新功能
 
