@@ -134,7 +134,6 @@
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
-  + [同城两中心部署](/two-data-centers-in-one-city-deployment.md)
   + 读取历史数据
     + 使用 Stale Read 功能读取历史数据（推荐）
       + [Stale Read 使用场景介绍](/stale-read.md)
