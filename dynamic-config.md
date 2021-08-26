@@ -123,7 +123,6 @@ show warnings;
 
 | 配置项 | 简介 |
 | --- | --- |
-| raftstore.sync-log | 数据、log 落盘是否同步 |
 | raftstore.raft-entry-max-size | 单个日志最大大小 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
