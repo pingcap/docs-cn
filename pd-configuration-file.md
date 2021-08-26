@@ -120,10 +120,20 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 日志相关的配置项。
 
+### `level`
+
++ 日志等级，可指定为 "DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
++ 默认值："INFO"
+
 ### `format`
 
+<<<<<<< HEAD
 + 日志格式，可指定为"text"，"json"， "console"。
 + 默认值：text
+=======
++ 日志格式，可指定为"text"，"json"，"console"。
++ 默认值："text"
+>>>>>>> c4fd91396 (Added log.level description (#6963))
 
 ### `disable-timestamp`
 
