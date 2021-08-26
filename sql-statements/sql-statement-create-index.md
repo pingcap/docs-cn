@@ -201,7 +201,7 @@ DROP INDEX idx1 ON t1;
 > 1 row in set (0.00 sec)
 > ```
 > 
-> 对于以上变量返回结果之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符，`cast`，`case when` 也同样作为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+> 对于以上变量返回结果之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`cast` 和 `case when` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
 > 
 > {{< copyable "sql" >}}
 > 
