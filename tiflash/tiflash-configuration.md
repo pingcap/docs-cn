@@ -46,6 +46,8 @@ delta_index_cache_size = 0
 
 ## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+## 从 v5.2.0 版本开始，如果要使用配置项 storage.io_rate_limit，需要同时将 TiFlash 的数据存储路径设置为 storage.main.dir。
+## 当 [storage] 配置项存在的情况下，path 和 path_realtime_mode 两个配置会被忽略。
 # path = "/tidb-data/tiflash-9000"
 ## 或
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
