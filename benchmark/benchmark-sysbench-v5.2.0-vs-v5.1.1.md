@@ -139,7 +139,7 @@ sysbench $testname \
 
 v5.2.0 对比 v5.1.1，Point Select 性能提升了 10.99%。
 
-![Point Select](/media/sysbench_v520vsv511_point_select.png)
+![Point Select](/media/sysbench_v511vsv520_point_select.png)
 
 ### Update Non-index 性能
 
