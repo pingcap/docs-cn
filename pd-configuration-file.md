@@ -356,7 +356,3 @@ Configuration items related to the [TiDB Dashboard](/dashboard/dashboard-intro.m
 + Determines whether to enable the telemetry collection feature in TiDB Dashboard.
 + Default value: `true`
 + See [Telemetry](/telemetry.md) for details.
-
-## `replication-mode`
-
-Configuration items related to the replication mode of all Regions. See [Enable the DR Auto-Sync mode](/two-data-centers-in-one-city-deployment.md#enable-the-dr-auto-sync-mode) for details.

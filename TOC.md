@@ -140,7 +140,6 @@
 + Tutorials
   + [Multiple Data Centers in One City Deployment](/multi-data-centers-in-one-city-deployment.md)
   + [Three Data Centers in Two Cities Deployment](/three-data-centers-in-two-cities-deployment.md)
-  + [Two Data Centers in One City Deployment](/two-data-centers-in-one-city-deployment.md)
   + Read Historical Data
     + Use Stale Read (Recommended)
       + [Usage Scenarios of Stale Read](/stale-read.md)
