@@ -164,12 +164,6 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
 
 支持在使用 Apple M1 芯片的本地 Mac 机器上使用 `tiup playground` 命令。
 
-### 遥测
-
-TiDB 在遥测中新增收集特定功能的使用情况，比如内建函数的使用情况。
-
-若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](https://docs.pingcap.com/zh/tidb/stable/telemetry)文档。
-
 ## 功能增强
 
 + Tools
