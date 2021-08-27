@@ -13,7 +13,7 @@
   + 性能测试报告
     + [Sysbench 性能对比 - v5.1 对比 v5.0](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
     + [TPC-C 性能对比 - v5.1 对比 v5.0](/benchmark/v5.1-performance-benchmarking-with-tpcc.md)
-    + [TPC-H 100 性能对比 - v5.1 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.1-performance-benchmarking-with-tpch.md)
+    + [TPC-H 100 性能对比 - v5.2 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.2-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
