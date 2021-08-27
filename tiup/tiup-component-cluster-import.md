@@ -17,7 +17,7 @@ title: tiup cluster import
 >     + 启用了 TiDB Lightning/ Importer 的集群
 >     + 仍使用老版本 `push` 的方式收集监控指标（从 v3.0 起默认为 `pull` 模式，如果没有特意调整过则可以支持）
 >     + 在 `inventory.ini` 配置文件中单独为机器的 `node_exporter` / `blackbox_exporter` 通过 `node_exporter_port`/`blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
-> + 如果使用 TiDB Ansible 部署的集群中有部分节点未部署监控，应当先使用 TiDB Ansible 在 `inventory.ini` 文件的 `monitored_servers` 分组中补充对应节点的信息，并通过 `deploy.yaml` playbook 将补充的监控组件部署完整。否则在数据导入 TiUP 后进行其他运维操作时，可能会因监控组件缺失而出错。
+> + 如果使用 TiDB Ansible 部署的集群中有部分节点未部署监控，应当先使用 TiDB Ansible 在 `inventory.ini` 文件的 `monitored_servers` 分组中补充对应节点的信息，并通过 `deploy.yaml` playbook 将补充的监控组件部署完整。否则在集群导入 TiUP 后进行其他运维操作时，可能会因监控组件缺失而出错。
 
 ## 语法
 
