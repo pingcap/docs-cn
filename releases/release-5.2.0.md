@@ -135,8 +135,8 @@ TiDB 版本：5.2
 
     TiKV 引入了新的流控机制代替之前的 RocksDB write stall 流控机制。相比于 write stall 机制，新的流控机制通过以下改进减少了流控对前台写入稳定性的影响：
 
-        - 当 RocksDB compaction 压力堆积时，通过在 TiKV scheduler 层进行流控而不是在 RocksDB 层进行流控，避免 RocksDB write stall 造成的 raftstore 卡顿并造成 Raft 选举超时导致发生节点 leader 迁移的问题。
-        - 改善流控算法，有效降低大写入压力下导致 QPS 下降的问题
+    - 当 RocksDB compaction 压力堆积时，通过在 TiKV scheduler 层进行流控而不是在 RocksDB 层进行流控，避免 RocksDB write stall 造成的 raftstore 卡顿并造成 Raft 选举超时导致发生节点 leader 迁移的问题。
+    - 改善流控算法，有效降低大写入压力下导致 QPS 下降的问题
 
     [用户文档](/tikv-configuration-file.md#storageflow-control)， [#10137](https://github.com/tikv/tikv/issues/10137)
 
