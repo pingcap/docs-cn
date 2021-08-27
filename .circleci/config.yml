@@ -102,7 +102,7 @@ jobs:
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
             if [ "${CIRCLE_BRANCH}" == "release-5.1" ]; then
-              python3 scripts/upload.py output.pdf tidb-stable-zh-manual.pdf;
+              python3 scripts/upload.py output.pdf tidb-v5.1-zh-manual.pdf;
             fi
 
       - run:
