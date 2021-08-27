@@ -5,6 +5,10 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 # TiDB Release Notes
 
+## 5.2
+
+- [5.2.0](/releases/release-5.2.0.md)
+
 ## 5.1
 
 - [5.1.1](/releases/release-5.1.1.md)
