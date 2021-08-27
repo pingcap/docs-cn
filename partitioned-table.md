@@ -587,7 +587,7 @@ Empty set (0.00 sec)
 
 > **警告：**
 >
-> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用  `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
+> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用 `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
 
 ### Range 分区管理
 
