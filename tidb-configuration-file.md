@@ -323,7 +323,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `auto-tls`
 
 + 控制 TiDB 启动时是否自动生成 TLS 证书。
-+ 默认值：`true`
++ 默认值：`false`
 
 ## performance
 
