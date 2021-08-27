@@ -593,7 +593,6 @@ TiDB 服务状态相关配置。
 ### max-sql-length
 
 + 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
->>>>>>> 551b5c991 (change expressions related to `statement summary tables` to ensure co… (#6928))
 + 默认值：4096
 
 ## pessimistic-txn
