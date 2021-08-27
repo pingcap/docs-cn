@@ -514,9 +514,13 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_cascades_planner
 
+> **Warning:**
+>
+> Currently, cascades planner is an experimental feature. It is not recommended that you use it in the production environment.
+
 - Scope: SESSION | GLOBAL
 - Default value: `OFF`
-- This variable is used to control whether to enable the cascades planner, which is currently considered experimental.
+- This variable is used to control whether to enable the cascades planner.
 
 ### tidb_enable_chunk_rpc <span class="version-mark">New in v4.0</span>
 
@@ -552,6 +556,10 @@ Constraint checking is always performed in place for pessimistic transactions (d
     - `RESTRICTED_USER_ADMIN`: The ability to prevent other users from making changes or dropping a user account.
 
 ### tidb_enable_fast_analyze
+
+> **Warning:**
+>
+> Currently, `Fast Analyze` is an experimental feature. It is not recommended that you use it in the production environment.
 
 - Scope: SESSION | GLOBAL
 - Default value: `OFF`
