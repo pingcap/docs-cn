@@ -26,8 +26,10 @@ Designed for the cloud, TiDB provides flexible scalability, reliability and secu
 <NavColumn>
 <ColumnTitle>Quick Start</ColumnTitle>
 
-- [Quick Start Guide](/quick-start-with-tidb.md)
+- [Quick Start with TiDB](/quick-start-with-tidb.md)
+- [Quick Start with HTAP](/quick-start-with-htap.md)
 - [Explore SQL with TiDB](/basic-sql-operations.md)
+- [Explore HTAP](/explore-htap.md)
 
 </NavColumn>
 
