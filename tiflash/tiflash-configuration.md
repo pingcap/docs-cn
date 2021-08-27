@@ -53,6 +53,8 @@ delta_index_cache_size = 0
 ## The storage path of TiFlash data. If there are multiple directories, separate each directory with a comma.
 ## path and path_realtime_mode are deprecated since v4.0.9. Use the configurations
 ## in the [storage] section to get better performance in the multi-disk deployment scenarios
+## Since TiDB v5.2.0, if you need to use the storage.io_rate_limit configuration, you need to set the storage path of TiFlash data to storage.main.dir at the same time.
+## When the [storage] configurations exist, both path and path_realtime_mode configurations are ignored.
 # path = "/tidb-data/tiflash-9000"
 ## or
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
