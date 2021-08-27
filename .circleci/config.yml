@@ -21,13 +21,13 @@ jobs:
             git remote add upstream https://github.com/pingcap/docs-cn.git
             git fetch upstream
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-file-encoding.py
-            python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-file-encoding.py $(git diff-tree --name-only --no-commit-id -r upstream/release-5.2..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check git conflicts"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-conflicts.py
-            python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' '*.yml' '*.yaml')
+            python3 check-conflicts.py $(git diff-tree --name-only --no-commit-id -r upstream/release-5.2..HEAD -- '*.md' '*.yml' '*.yaml')
 
       - run:
           name: "Install markdownlint"
@@ -37,7 +37,7 @@ jobs:
       - run:
           name: "Lint edited files"
           command: |
-            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            markdownlint $(git diff-tree --name-only --no-commit-id -r upstream/release-5.2..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check internal links"
@@ -53,19 +53,19 @@ jobs:
           name: "Check control characters"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-control-char.py
-            python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-control-char.py $(git diff-tree --name-only --no-commit-id -r upstream/release-5.2..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check unclosed tags"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-tags.py
-            python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-tags.py $(git diff-tree --name-only --no-commit-id -r upstream/release-5.2..HEAD -- '*.md' ':(exclude).github/*')
 
       - run:
           name: "Check manual line breaks"
           command: |
             wget https://raw.githubusercontent.com/CharLotteiu/pingcap-docs-checks/main/check-manual-line-breaks.py
-            python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/master..HEAD -- '*.md' ':(exclude).github/*')
+            python3 check-manual-line-breaks.py $(git diff-tree --name-only --no-commit-id -r upstream/release-5.2..HEAD -- '*.md' ':(exclude).github/*')
 
   build:
     docker:
@@ -100,8 +100,8 @@ jobs:
           name: "Publish PDF to Qiniu and S3"
           command: |
             sudo bash -c 'echo "222.222.95.49 uc.qbox.me" >> /etc/hosts';
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              python3 scripts/upload.py output.pdf tidb-dev-zh-manual.pdf;
+            if [ "${CIRCLE_BRANCH}" == "release-5.2" ]; then
+              python3 scripts/upload.py output.pdf tidb-stable-zh-manual.pdf;
             fi
 
       - run:
@@ -145,4 +145,4 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - release-5.2
