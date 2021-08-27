@@ -169,7 +169,7 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
 
     + TiCDC
 
-        - 新增专为 TiDB 设计的二进制 MQ 格式，比基于 JSON 的开放协议更紧凑 [#1621](https://github.com/pingcap/ticdc/pull/1621)
+        - 新增专为 TiDB 设计的比基于 JSON 的开放协议更紧凑的二进制 MQ 格式 [#1621](https://github.com/pingcap/ticdc/pull/1621)
         - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
         - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
 
@@ -200,8 +200,6 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
     - 在 `EXPLAIN VERBOSE` 的结果中显示查询优化是否使用了某个 binding [#26930](https://github.com/pingcap/tidb/pull/26930)
     - 增加新的状态变量 `last_plan_binding_update_time` 用于查看当前 TiDB 实例中 binding cache 对应的时间戳 [#26340](https://github.com/pingcap/tidb/pull/26340)
     - 在打开 binding 演进或者执行 `admin evolve bindings` 时提供报错，避免自动演进绑定（目前为试验特性，已在当前 TiDB 版本关闭）影响到其他功能 [#26333](https://github.com/pingcap/tidb/pull/26333)
-
-
 + PD
 
     - 热点调度增加对 QPS 维度的支持，同时支持调整维度的优先级顺序[#3869](https://github.com/tikv/pd/issues/3869)
