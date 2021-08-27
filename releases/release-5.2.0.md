@@ -61,6 +61,8 @@ TiDB 版本：5.2
 - 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 兼容 MySQL 5.7 的 noop 变量 `innodb_default_row_format`，配置此变量无实际效果 [#23541](https://github.com/pingcap/tidb/issues/23541)。
 
+- 从 TiDB 5.2 起，为了提高系统安全性，TiDB 建议（但不要求）对客户端的连接进行加密。如需加密，请在 TiDB 升级前或升级后将 `security.auto-tls` 设置为 `true`。当客户端开启连接加密时（大部分客户端会默认开启），MySQL 的 `have_openssl` 和 `have_ssl` 变量值从 `DISABLED` 更改为 `YES`，TiDB 将对连接数据进行加密。
+
 ## 新功能
 
 ### SQL
