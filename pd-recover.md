@@ -29,7 +29,7 @@ PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取
 
 > **注意：**
 >
-> `{version}` 是 TiDB 的版本号。例如，`v5.1.0` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.1.0-linux-amd64.tar.gz`。
+> `{version}` 是 TiDB 的版本号。例如，`v5.2.0` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.2.0-linux-amd64.tar.gz`。
 
 ## 快速开始
 
