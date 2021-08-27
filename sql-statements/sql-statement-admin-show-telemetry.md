@@ -428,4 +428,4 @@ DATA_PREVIEW: {
 ## 另请参阅
 
 * [遥测](/telemetry.md)
-* [系统变量 `tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-new-in-v402)
+* [系统变量 `tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入)
