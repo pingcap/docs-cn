@@ -267,6 +267,7 @@
       + [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       + [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
       + [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
+      + [`ADMIN SHOW TELEMETRY]`](/sql-statements/sql-statement-admin-show-telemetry.md)
       + [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       + [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       + [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
