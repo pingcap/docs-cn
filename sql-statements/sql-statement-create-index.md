@@ -153,12 +153,12 @@ Query OK, 0 rows affected (0.31 sec)
 
 在一些场景中，查询的条件往往是基于某个表达式进行过滤。在这些场景中，一般的索引不能生效，执行查询只能遍历整个表，导致查询性能较差。表达式索引是一种特殊的索引，能将索引建立于表达式上。在创建了表达式索引后，基于表达式的查询便可以使用上索引，极大提升查询的性能。
 
-假设要基于 `col1+cols2` 这个表达式建立索引，示例的 SQL 语句如下：
+假设要基于 `lower(col1)` 这个表达式建立索引，示例的 SQL 语句如下：
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX idx1 ON t1 ((col1 + col2));
+CREATE INDEX idx1 ON t1 (lower(col1));
 ```
 
 或者等价的语句：
@@ -166,7 +166,7 @@ CREATE INDEX idx1 ON t1 ((col1 + col2));
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
+ALTER TABLE t1 ADD INDEX idx1(lower(col1));
 ```
 
 还可以在建表的同时指定表达式索引：
@@ -174,7 +174,7 @@ ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index((col1 + col2)));
+CREATE TABLE t1(col1 char(10), col2 char(10), key index(lower(col1)));
 ```
 
 删除表达式索引与删除普通索引的方法一致：
@@ -186,6 +186,28 @@ DROP INDEX idx1 ON t1;
 ```
 
 > **注意：**
+> 
+> 表达式索引涉及众多表达式。为了确保正确性，当前仅允许经充分测试的一部分函数用于创建表达式索引，即生产环境中仅允许表达式中包含这些函数。这些函数可以通过查询变量 `tidb_allow_function_for_expression_index` 得到。在后续版本中，这些函数会持续增加。
+> 
+> {{< copyable "sql" >}}
+>
+> ```sql
+> mysql> select @@tidb_allow_function_for_expression_index;
+> +--------------------------------------------+
+> | @@tidb_allow_function_for_expression_index |
+> +--------------------------------------------+
+> | lower, md5, reverse, upper, vitess_hash    |
+> +--------------------------------------------+
+> 1 row in set (0.00 sec)
+> ```
+> 
+> 对于以上变量返回结果之外的函数，由于未完成充分测试，当前仍为实验特性，不建议在生产环境中使用。其他的表达式例如运算符、`cast` 和 `case when` 也同样为实验特性，不建议在生产环境中使用。如果仍然希望使用，可以在 [TiDB 配置文件](/tidb-configuration-file.md#allow-expression-index-从-v400-版本开始引入)中进行以下设置：
+> 
+> {{< copyable "sql" >}}
+> 
+> ```sql
+> allow-expression-index = true
+> ```
 >
 > 表达式索引不能为主键。
 >
@@ -201,7 +223,9 @@ DROP INDEX idx1 ON t1;
 > 
 > 表达式索引将隐式占用名字，`_V$_{index_name}_{index_offset}`，如果已有相同名字的列存在，创建表达式索引将报错。如果后续新增相同名字的列，也会报错。
 >
-> 表达式中的表达式中出现函数参数的个数必须正确。
+> 在表达式索引中，表达式的函数参数个数必须正确。
+> 
+> 当索引的表达式使用了字符串相关的函数时，受返回类型以及其长度的影响，创建表达式索引可能会失败。这时可以使用 `cast()` 函数显式指定返回的类型以及长度。例如表达式 `repeat(a, 3)`，为了能根据该表达式建立表达式索引，需要将表达式改写为 `cast(repeat(a, 3) as char(20))` 这样的形式。
 
 当查询语句中的表达式与表达式索引中的表达式一致时，优化器可以为该查询选择使用表达式索引。依赖于统计信息，某些情况下优化器不一定选择表达式索引。这时可以通过 hint 指定强制使用表达式索引。
 

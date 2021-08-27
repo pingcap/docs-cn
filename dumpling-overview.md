@@ -47,6 +47,7 @@ Dumpling 也包含在 tidb-toolkit 安装包中，可[在此下载](/download-ec
 - RELOAD
 - LOCK TABLES
 - REPLICATION CLIENT
+- PROCESS
 
 ### 导出到 sql 文件
 

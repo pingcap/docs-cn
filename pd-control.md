@@ -986,6 +986,7 @@ Encoding 格式示例：
 >> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
 >> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
@@ -1075,13 +1076,20 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-- `read-priorities`、`write-leader-priorities`、`write-peer-priorities` 用于控制处理不同类型的热点时，优先均衡的第一维度和第二维度。对于 `read` 和 `write-leader` 类型的热点，可选的维度有 `query`、`byte` 和 `key`。对于 `write-peer` 类型的热点，可选的维度有 `byte` 和 `key`。若集群组件未全部升级到 v5.2 及以上版本，这些配置不会生效，固定使用兼容配置。通常用户不需要修改这些配置项。
+- `read-priorities`、`write-leader-priorities` 和 `write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡，支持配置两个维度。
+
+    - `read-priorities` 和 `write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，可选的维度有 `query`、`byte` 和 `key`。
+    - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置 `byte` 和 `key` 维度。
+    
+    > **注意：**
+    >
+    > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
     ```
 
-- `strict-picking-store` 是控制热点调度搜索空间的开关，打开时会在保证稳定性的前提下进行热点调度。通常为打开，关闭后只保证第一优先级维度的均衡度，可能会导致其他维度的均衡度降低。通常用户不需要修改这个配置项。
+- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set strict-picking-store true

@@ -117,7 +117,7 @@ all_sql_digests: ["e6f07d43b5c21db0fbb9a31feac2dc599787763393dd5acbfad80e247eb02
        all_sqls: ["begin","update `t` set `v` = `v` + ? where `id` = ?"]
 ```
 
-此查询
+此查询对 `TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列调用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，将 SQL Digest 的数组通过系统内部的查询转换成归一化 SQL 语句的数组，以便于直观地获取事务历史执行过的语句的信息。但是需要注意上述查询扫描了 `TIDB_TRX` 全表，并对每一行都调用了 `TIDB_DECODE_SQL_DIGESTS` 函数；而 `TIDB_DECODE_SQL_DIGESTS` 函数调用的开销很大，所以如果集群中并发事务数量较多，请尽量避免这种查询。
 
 ## CLUSTER_TIDB_TRX
 
