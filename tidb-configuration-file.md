@@ -642,3 +642,12 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 
 + Controls whether the [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) table collects the information of retryable deadlock errors. For the description of retryable deadlock errors, see [Retryable deadlock errors](/information-schema/information-schema-deadlocks.md#retryable-deadlock-errors).
 + Default value: `false`
+
+## experimental
+
+The `experimental` section, introduced in v3.1.0, describes the configurations related to the experimental features of TiDB.
+
+### `allow-expression-index` <span class="version-mark">New in v4.0.0</span>
+
++ Controls whether an expression index can be created. Since TiDB v5.2.0, if the function in an expression is safe, you can create an expression index directly based on this function without enabling this configuration. If you want to create an expression index based on other functions, you can enable this configuration, but correctness issues might exist. By querying the `tidb_allow_function_for_expression_index` variable, you can get the functions that are safe to be directly used for creating an expression.
++ Default value: `false`

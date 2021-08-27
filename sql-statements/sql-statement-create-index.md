@@ -106,12 +106,12 @@ Query OK, 0 rows affected (0.31 sec)
 
 In some scenarios, the filtering condition of a query is based on a certain expression. In these scenarios, the query performance is relatively poor because ordinary indexes cannot take effect, the query can only be executed by scanning the entire table. The expression index is a type of special index that can be created on an expression. Once an expression index is created, TiDB can use the index for the expression-based query, which significantly improves the query performance.
 
-For example, if you want to create an index based on `col1+cols2`, execute the following SQL statement:
+For example, if you want to create an index based on `lower(col1)`, execute the following SQL statement:
 
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX idx1 ON t1 ((col1 + col2));
+CREATE INDEX idx1 ON t1 (lower(col1));
 ```
 
 Or you can execute the following equivalent statement:
@@ -119,7 +119,7 @@ Or you can execute the following equivalent statement:
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t1 ADD INDEX idx1((col1 + col2));
+ALTER TABLE t1 ADD INDEX idx1(lower(col1));
 ```
 
 You can also specify the expression index when you create the table:
@@ -127,7 +127,7 @@ You can also specify the expression index when you create the table:
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index((col1 + col2)));
+CREATE TABLE t1(col1 char(10), col2 char(10), key index(lower(col1)));
 ```
 
 You can drop an expression index in the same way as dropping an ordinary index:
@@ -139,6 +139,28 @@ DROP INDEX idx1 ON t1;
 ```
 
 > **Note:**
+> 
+> Expression index involves various kinds of expressions. To ensure correctness, only some fully tested functions are allowed for creating an expression index. This means that only these functions are allowed in expressions in a production environment. You can get these functions by querying `tidb_allow_function_for_expression_index` variable. In future versions, more functions might be added to the list.
+> 
+> {{< copyable "sql" >}}
+>
+> ```sql
+> mysql> select @@tidb_allow_function_for_expression_index;
+> +--------------------------------------------+
+> | @@tidb_allow_function_for_expression_index |
+> +--------------------------------------------+
+> | lower, md5, reverse, upper, vitess_hash    |
+> +--------------------------------------------+
+> 1 row in set (0.00 sec)
+> ```
+> 
+> For the functions that are not included in the returned result above, those functions are not fully tested and not recommended for a production environment, which can be seen as experimental. Other expressions such as operators, `cast`, and `case when` are also seen as experimental and not recommended for production. However, if you still want to use those expressions, you can make the following configuration in the [TiDB configuration file](/tidb-configuration-file.md#allow-expression-index-new-in-v400):
+> 
+> {{< copyable "sql" >}}
+> 
+> ```sql
+> allow-expression-index = true
+> ```
 >
 > An expression index cannot be created on a primary key.
 >
