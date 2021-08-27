@@ -10,13 +10,14 @@ Before TiDB v4.0, TiDB clusters were mainly deployed using TiDB Ansible. For TiD
 >
 > + After importing the TiDB Ansible configuration to TiUP for management, **DO NOT** use TiDB Ansible for cluster operations anymore. Otherwise, conflicts might be caused due to inconsistent meta information.
 > + If the clusters deployed using TiDB Ansible are in any of the following situations, do not use the `import` command.
-> + Clusters with TLS encryption enabled
-> + Pure KV clusters (clusters without TiDB instances)
-> + Clusters with Kafka enabled
-> + Clusters with Spark enabled
-> + Clusters with TiDB Lightning/TiKV Importer enabled
-> + Clusters still using the old `push` mode to collect monitoring metrics (if you keep the default mode `pull` unchanged, using the `import` command is supported)
-> + Clusters in which the non-default ports (the ports configured in the `group_vars` directory are compatible) are separately configured in the `inventory.ini` configuration file using `node_exporter_port` / `blackbox_exporter_port`
+>     + Clusters with TLS encryption enabled
+>     + Pure KV clusters (clusters without TiDB instances)
+>     + Clusters with Kafka enabled
+>     + Clusters with Spark enabled
+>     + Clusters with TiDB Lightning/TiKV Importer enabled
+>     + Clusters still using the old `push` mode to collect monitoring metrics (if you keep the default mode `pull` unchanged, using the `import` command is supported)
+>     + Clusters in which the non-default ports (the ports configured in the `group_vars` directory are compatible) are separately configured in the `inventory.ini` configuration file using `node_exporter_port` / `blackbox_exporter_port`
+> + If some nodes in the cluster deployed using TiDB Ansible are deployed without monitoring components, you should first use TiDB Ansible to add the corresponding node information in the `monitored_servers` section of the `inventory.ini` file, and then use the `deploy.yaml` playbook to fully deploy monitoring components. Otherwise, when you perform maintenance operations after the cluster is imported into TiUP, errors might occur due to the lack of monitoring components.
 
 ## Syntax
 
