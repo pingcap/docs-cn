@@ -135,11 +135,10 @@ TiDB 版本：5.2
 
     TiKV 引入了新的流控机制代替之前的 RocksDB write stall 流控机制。相比于 write stall 机制，新的流控机制通过以下改进减少了流控对前台写入稳定性的影响：
 
-    当 RocksDB compaction 压力堆积时，通过在 TiKV scheduler 层进行流控而不是在 RocksDB 层进行流控，避免 RocksDB write stall 造成的 raftstore 卡顿并造成 Raft 选举超时导致发生节点 leader 迁移的问题。
-    改善的流控算法，有效降低大写入压力下导致 QPS 下降的问题
+        - 当 RocksDB compaction 压力堆积时，通过在 TiKV scheduler 层进行流控而不是在 RocksDB 层进行流控，避免 RocksDB write stall 造成的 raftstore 卡顿并造成 Raft 选举超时导致发生节点 leader 迁移的问题。
+        - 改善流控算法，有效降低大写入压力下导致 QPS 下降的问题
 
-    [用户文档](/tikv-configuration-file.md#storageflow-control)
-  ， [#10137](https://github.com/tikv/tikv/issues/10137)
+    [用户文档](/tikv-configuration-file.md#storageflow-control)， [#10137](https://github.com/tikv/tikv/issues/10137)
 
 - **自动检测并恢复集群中单个 TiKV 变慢带来的影响**
 
@@ -288,7 +287,7 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
         - 修复 changefeed 创建成功后立即失败的问题 [#2113](https://github.com/pingcap/ticdc/issues/2113)
         - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#1625](https://github.com/pingcap/ticdc/issues/1625)
         - 修复 TiCDC Owner 崩溃时潜在的 DDL 丢失问题 [#1260](https://github.com/pingcap/ticdc/issues/1260)
-        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2385](https://github.com/pingcap/ticdc/pull/2385)
+        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/ticdc/issues/2373)
         - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2422](https://github.com/pingcap/ticdc/issues/2422)
         - 修复 TiCDC 遇到 `ErrGCTTLExceeded` 错误时 changefeed 不能被 remove 的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
         - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259) [#2424](https://github.com/pingcap/ticdc/issues/2424)
