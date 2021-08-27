@@ -253,6 +253,11 @@ mysql> SELECT * FROM t1;
 - 默认值：""
 - 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
 
+### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
+
+- 作用域：NONE
+- 这个变量用于显示创建表达式索引所允许使用的函数。
+
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -328,16 +333,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`10240`
-- 范围：`[-1, 9223372036854775807]`
-- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。当设置为 -1 时，该阈值无穷大。
+- 范围：`[0, 9223372036854775807]`
+- 单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_broadcast_join_threshold_size` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`104857600` (100 MiB)
-- 范围：`[-1, 9223372036854775807]`
+- 范围：`[0, 9223372036854775807]`
 - 单位：字节
-- 如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。当设置为 -1 时，该阈值无穷大。
+- 如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
 ### `tidb_build_stats_concurrency`
 
@@ -1308,27 +1313,27 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`24`
 - 范围：`[0, 255]`
-- 这个变量设置了 statement summary 的历史记录容量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
+- 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
 
 ### `tidb_stmt_summary_max_sql_length` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量控制 statement summary 显示的 SQL 字符串长度。
+- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`3000`
 - 范围：`[1, 32767]`
-- 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1336,7 +1341,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`1800`
 - 范围：`[1, 2147483647]`
 - 单位：秒
-- 这个变量设置了 statement summary 的刷新时间。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 

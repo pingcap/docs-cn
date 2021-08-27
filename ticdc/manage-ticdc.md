@@ -5,18 +5,18 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC Open API 来管理 TiCDC 集群和同步任务，详见 [TiCDC Open API](/ticdc/ticdc-open-api.md)。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.1.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.2.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v5.1.0
+tiup cluster upgrade <cluster-name> v5.2.0
 ```
 
 ### 升级的注意事项
@@ -51,7 +51,7 @@ tiup cluster edit-config <cluster-name>
     gc-ttl: 3600
 ```
 
-修改完毕后执行 `tiup cluster relaod -R cdc` 命令重新加载配置。
+修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
 ## 使用加密传输 (TLS) 功能
 

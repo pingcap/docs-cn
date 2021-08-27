@@ -11,9 +11,9 @@
   + [基本功能](/basic-features.md)
   + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v5.1 对比 v5.0](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
-    + [TPC-C 性能对比 - v5.1 对比 v5.0](/benchmark/v5.1-performance-benchmarking-with-tpcc.md)
-    + [TPC-H 100 性能对比 - v5.1 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.1-performance-benchmarking-with-tpch.md)
+    + [Sysbench 性能对比 - v5.2 对比 v5.1](/benchmark/benchmark-sysbench-v5.2.0-vs-v5.1.1.md)
+    + [TPC-C 性能对比 - v5.2 对比 v5.1](/benchmark/v5.2-performance-benchmarking-with-tpcc.md)
+    + [TPC-H 100 性能对比 - v5.2 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.2-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
@@ -134,7 +134,6 @@
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
-  + [同城两中心部署](/two-data-centers-in-one-city-deployment.md)
   + 读取历史数据
     + 使用 Stale Read 功能读取历史数据（推荐）
       + [Stale Read 使用场景介绍](/stale-read.md)

@@ -43,7 +43,7 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --tiflash 1 --monitor
+    tiup playground v5.2.0 --db 2 --pd 3 --kv 3 --tiflash 1 --monitor
     ```
 
 > **注意：**
