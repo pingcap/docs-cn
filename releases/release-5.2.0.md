@@ -2,7 +2,7 @@
 title: TiDB 5.2 Release Notes
 ---
 
-# Release date: August 27, 2021
+# TiDB 5.2 Release Notes
 
 Release date: August 27, 2021
 
