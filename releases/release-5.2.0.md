@@ -10,7 +10,7 @@ TiDB 版本：5.2.0
 
 在 5.2 版本中，你可以获得以下关键特性：
 
-- 支持基于部分函数创建表达式索引 (Expression index) ，极大提升查询的性能。
+- 支持基于部分函数创建表达式索引 (Expression index)，极大提升查询的性能。
 - 提升优化器的估算准确度 (Cardinality Estimation)，有助于选中最优的执行计划。
 - 锁视图 (Lock View) 成为 GA 特性，提供更直观方便的方式观察事务加锁情况以及排查死锁问题。
 - 新增 TiFlash I/O 限流功能，提升 TiFlash 读写稳定性。
