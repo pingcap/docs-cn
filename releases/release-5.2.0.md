@@ -66,9 +66,9 @@ TiDB 版本：5.2.0
 
 ### SQL
 
-- **新增表达式索引 (Expression index)**
+- **支持基于部分函数创建表达式索引 (Expression index)**
 
-    表达式索引是一种特殊的索引，能将索引建立于表达式上。创建了表达式索引后，TiDB 支持部分函数基于表达式的查询，极大提升查询的性能。
+    表达式索引是一种特殊的索引，能将索引建立于表达式上。创建了表达式索引后，TiDB 支持基于表达式的查询，极大提升查询的性能。
 
     [用户文档](/sql-statements/sql-statement-create-index.md)，[#25150](https://github.com/pingcap/tidb/issues/25150)
 
