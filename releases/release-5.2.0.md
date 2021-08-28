@@ -10,11 +10,10 @@ TiDB version: 5.2.0
 
 In v5.2, the key new features and improvements are as follows:
 
-- Support expression index to greatly improve query performance
+- Support using several functions in expression indexes to greatly improve query performance
 - Improve the accuracy of optimizer cardinality estimation to help to select optimal execution plans
 - Announce the general availability (GA) for the Lock View feature to observe transaction locking events and troubleshoot deadlock problems
 - Add the TiFlash I/O traffic limit feature to improve the stability of read and write for TiFlash
-- Optimize TiKV reserving space management to improve the stability of storage
 - TiKV introduces a new flow control mechanism to replace the previous RocksDB write stall mechanism to improve the stability of TiKV flow control
 - Simplify the operation and maintenance of Data Migration (DM) to reduce the management cost.
 - TiCDC supports HTTP protocol OpenAPI to manage TiCDC tasks. It provides a more user-friendly operation method for both Kubernetes and on-premises environments. (Experimental feature)
@@ -66,7 +65,7 @@ In v5.2, the key new features and improvements are as follows:
 
 ### SQL
 
-- **Support expression index**
+- **Support using several functions in expression indexes**
 
     The expression index is a type of special index that can be created on an expression. After an expression index is created, TiDB supports expression-based queries, which greatly improves query performance.
 
@@ -147,7 +146,7 @@ In v5.2, the key new features and improvements are as follows:
 
     TiKV introduces the slow node detection mechanism. This mechanism calculates a score by inspecting the rate of TiKV Raftstore, and then reports the score to PD through store heartbeats. Meanwhile, it adds the `evict-slow-store-scheduler` scheduler on PD to automatically evict the leader on a single slow TiKV node. In this way, the impact on the whole cluster is mitigated. At the same time, more alert items about slow nodes are introduced to help you quickly pinpoint and solve problems.
 
-[User document]( /tikv-configuration-file.md#inspect-interval), [#10539](https://github.com/tikv/tikv/issues/10539)
+    [User document]( /tikv-configuration-file.md#inspect-interval), [#10539](https://github.com/tikv/tikv/issues/10539)
 
 ### Data Migration
 
