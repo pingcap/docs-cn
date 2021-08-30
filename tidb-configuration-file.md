@@ -323,7 +323,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `auto-tls`
 
 + 控制 TiDB 启动时是否自动生成 TLS 证书。
-+ 默认值：`true`
++ 默认值：`false`
 
 ## performance
 
@@ -611,16 +611,16 @@ TiDB 服务状态相关配置。
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-系统表 `events_statement_summary_by_digest` 的相关配置。
+系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
 
 ### max-stmt-count
 
-+ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
-+ 默认值：100
++ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
++ 默认值：3000
 
 ### max-sql-length
 
-+ `events_statement_summary_by_digest` 表中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn
@@ -639,11 +639,16 @@ TiDB 服务状态相关配置。
 + 最小值：0
 + 最大值：10000
 
+### deadlock-history-collect-retryable
+
++ 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
++ 默认值：false
+
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
 
 ### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-+ 用于控制是否能创建表达式索引。
++ 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false

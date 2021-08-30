@@ -19,7 +19,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
     + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
     + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
-    
+
 + 默认值：false
 
 ## server
@@ -120,6 +120,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + endpoint 下推查询请求输出慢日志的阈值，处理时间超过阈值后会输出慢日志。
 + 默认值：1s
 + 最小值：0
+
+### `raft-client-queue-size`
+
++ 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
++ 默认值：8192
 
 ## readpool.unified
 
@@ -456,13 +461,8 @@ raftstore 相关的配置项。
 
 ### `hibernate-regions`
 
-+ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `raftstore.peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
++ 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
 + 默认值：v5.0.2 及以后版本默认值为 true，v5.0.2 以前的版本默认值为 false
-
-### `raftstore.peer-stale-state-check-interval`
-
-+ 修改对 Region 的状态检查间隔时间。
-+ 默认值：5 min
 
 ### `split-region-check-tick-interval`
 
@@ -666,6 +666,18 @@ raftstore 相关的配置项。
 + 驱动 future 的线程池线程数。
 + 默认值：1
 + 最小值：大于 0
+
+### `cmd-batch`
+
++ 对请求进行攒批的控制开关，开启后可显著提升写入性能。
++ 默认值：true
+
+### `inspect-interval`
+
++ TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。
++ 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
++ 默认值：500ms
++ 最小值：1ms
 
 ## coprocessor
 
