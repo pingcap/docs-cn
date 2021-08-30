@@ -759,10 +759,10 @@ rocksdb 相关的配置项。
 
 + WAL 恢复模式，取值：0, 1, 2, 3。
 
-+ 0 (TolerateCorruptedTailRecords): 容忍所有日志的尾部数据记录不完整。
-+ 1 (AbsoluteConsistency): WAL 中不应含有任何损坏的数据。
-+ 2 (PointInTimeRecovery): 时间点恢复。
-+ 3 (SkipAnyCorruptedRecords): 灾难后恢复，跳过 WAL 中损坏的数据。
++ 0 (TolerateCorruptedTailRecords): 容忍并丢弃日志尾部不完整的记录。
++ 1 (AbsoluteConsistency): 当日志中存在任何损坏记录时，放弃恢复。
++ 2 (PointInTimeRecovery): 顺序恢复日志，直到碰到第一个损坏的记录。
++ 3 (SkipAnyCorruptedRecords): 灾难后恢复。跳过日志中损坏的记录，尽可能多的恢复数据。
 
 + 默认值：2
 + 最小值：0
