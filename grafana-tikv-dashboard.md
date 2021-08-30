@@ -99,13 +99,13 @@ title: TiKV 监控指标详解
 ## Raft process
 
 - Ready handled：Raft 中不同 ready 类型的 ops
-  - count: 批量处理 ready 的 ops
-  - has_ready_region: 获得 ready 的 Region 的 ops
-  - pending_region: 被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
-  - message: ready 内待发送 message 的 ops
-  - append: ready 内 Raft log entry 的 ops
-  - commit: ready 内 committed Raft log entry 的 ops
-  - snapshot: 携带 snapshot 的 ready 的 ops
+    - count: 批量处理 ready 的 ops
+    - has_ready_region: 获得 ready 的 Region 的 ops
+    - pending_region: 被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
+    - message: ready 内待发送 message 的 ops
+    - append: ready 内 Raft log entry 的 ops
+    - commit: ready 内 committed Raft log entry 的 ops
+    - snapshot: 携带 snapshot 的 ready 的 ops
 - 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
 - Process ready duration：处理 ready 所花费的时间
 - Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
