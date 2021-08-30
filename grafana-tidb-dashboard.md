@@ -1,6 +1,6 @@
 ---
 title: TiDB 监控指标
-summary: 了解一些Grafana TiDB Dashboard展示的关键指标
+summary: 了解 Grafana Dashboard 中展示的关键指标。
 aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/tidb-dashboard/']
 ---
 
