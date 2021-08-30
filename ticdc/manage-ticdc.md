@@ -22,40 +22,6 @@ tiup cluster upgrade <cluster-name> v4.0.14
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
-<<<<<<< HEAD
-* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
-=======
-* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
-
-## 使用 TiUP 修改 TiCDC 配置
-
-本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
-
-首先执行以下命令。将 `<cluster-name>` 替换成实际的集群名。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster edit-config <cluster-name>
-```
-
-执行以上命令之后，进入到 vi 编辑器页面，修改 [`server-configs`](/tiup/tiup-cluster-topology-reference.md#server_configs) 下的 `cdc` 配置，如下所示：
-
-```shell
- server_configs:
-  tidb: {}
-  tikv: {}
-  pd: {}
-  tiflash: {}
-  tiflash-learner: {}
-  pump: {}
-  drainer: {}
-  cdc:
-    gc-ttl: 3600
-```
-
-修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
->>>>>>> daf833f97 (fix typo: relaod -> reload (#6931))
 
 ## 使用加密传输 (TLS) 功能
 
