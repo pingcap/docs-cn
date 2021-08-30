@@ -340,9 +340,9 @@ tbl-name = "~^a.*"
 
 * `schema`：默认为 `"tidb_binlog"`。
 
-      > **注意：**
-      >
-      > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
+    > **注意：**
+    >
+    > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
 
 * `host`
 * `user`
