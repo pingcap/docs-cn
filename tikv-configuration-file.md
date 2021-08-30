@@ -758,7 +758,13 @@ rocksdb 相关的配置项。
 
 ### `wal-recovery-mode`
 
-+ WAL 恢复模式，取值：0 (TolerateCorruptedTailRecords)，1 (AbsoluteConsistency)，2 (PointInTimeRecovery)，3 (SkipAnyCorruptedRecords)。
++ WAL 恢复模式，取值：0，1，2，3。
+
++ 0 (TolerateCorruptedTailRecords)：容忍并丢弃日志尾部不完整的记录。
++ 1 (AbsoluteConsistency)：当日志中存在任何损坏记录时，放弃恢复。
++ 2 (PointInTimeRecovery)：按顺序恢复日志，直到碰到第一个损坏的记录。
++ 3 (SkipAnyCorruptedRecords)：灾难后恢复。跳过日志中损坏的记录，尽可能多的恢复数据。
+
 + 默认值：2
 + 最小值：0
 + 最大值：3
@@ -808,7 +814,7 @@ rocksdb 相关的配置项。
 
 ### `use-direct-io-for-flush-and-compaction`
 
-+ flush 或者 compaction 开启 DirectIO 的开关。
++ 决定后台 flush 或者 compaction 的读写是否设置 O_DIRECT 的标志。该选项对性能的影响：开启 O_DIRECT 可以绕过并防止污染操作系统 buffer cache，但后续文件读取需要把内容重新读到 buffer cache。
 + 默认值：false
 
 ### `rate-bytes-per-sec`
