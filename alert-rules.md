@@ -773,11 +773,19 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
     查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
 
-#### `TiKV_low_space_and_add_region`
+#### `TiKV_low_space`
 
 * 报警规则：
 
-    `count((sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2) and (sum(tikv_raftstore_snapshot_traffic_total{type="applying"}) by (instance) > 0)) > 0`
+    `sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2`
+
+* 规则描述：
+
+    TiKV 数据量超过节点配置容量或物理磁盘容量的 80%。
+
+* 处理方法：
+
+    确认节点空间均衡情况，做好扩容计划。
 
 #### `TiKV_approximate_region_size`
 
