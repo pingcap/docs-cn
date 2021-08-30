@@ -102,7 +102,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Ready handled：Raft 中不同 ready 类型的 ops
   - count: 批量处理 ready 的 ops
   - has_ready_region: 获得 ready 的 Region 的 ops
-  - pending_region: 被检查是否获得 ready 的 region 的 ops，v3.0.0 后废弃
+  - pending_region: 被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
   - message: ready 内待发送 message 的 ops
   - append: ready 内 Raft log entry 的 ops
   - commit: ready 内 committed Raft log entry 的 ops
