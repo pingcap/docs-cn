@@ -84,7 +84,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 - Distsql
     - Distsql Duration：Distsql 处理的时长
-    - Distsql QPS：每秒Distsql 的数量
+    - Distsql QPS：每秒 Distsql 的数量
     - Distsql Partial QPS：每秒 Partial Results 的数量
     - Scan Keys Num：每个 Query 扫描的 Key 的数量
     - Scan Keys Partial Num：每一个 Partial Result 扫描的 Key 的数量
@@ -100,12 +100,12 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 - KV Request
     - KV Request OPS：KV Request 根据 TiKV 显示执行次数
     - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
-    - KV Request Duration 99 by type：根据类型显示KV Request 执行时间
+    - KV Request Duration 99 by type：根据类型显示 KV Request 的执行时间
 
 - PD Client
-    - PD Client CMD OPS：PD Client 每秒执行命令数量
+    - PD Client CMD OPS：PD Client 每秒执行命令的数量
     - PD Client CMD Duration：PD Client 执行命令耗时
-    - PD Client CMD Fail OPS：PD Client 每秒执行命令失败数量
+    - PD Client CMD Fail OPS：PD Client 每秒执行命令失败的数量
     - PD TSO OPS：TiDB 每秒从 PD 获取 TSO 的数量
     - PD TSO Wait Duration：TiDB 等待从 PD 返回 TSO 的时间
     - PD TSO RPC Duration：TiDB 从向 PD 发送获取 TSO 的请求到接收到 TSO 的耗时
