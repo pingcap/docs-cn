@@ -99,7 +99,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 - KV Request
     - KV Request OPS：KV Request 根据 TiKV 显示执行次数
-    - KV Request Duration 99 by store：根据 TiKV 显示KV Request 执行时间
+    - KV Request Duration 99 by store：根据 TiKV 显示 KV Request 执行时间
     - KV Request Duration 99 by type：根据类型显示KV Request 执行时间
 
 - PD Client
