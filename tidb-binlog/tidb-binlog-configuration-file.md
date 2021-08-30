@@ -336,15 +336,13 @@ tbl-name = "~^a.*"
 
 * `type`：指定用哪种方式保存同步进度，目前支持的选项为 `mysql`、`tidb` 和 `file`。
 
-> **注意：**
-> file 类型的下游 checkpoint 保存在 `<data-dir>/savepoint` 文件中
-> 当 `mysql` 或 `tidb` 类型保存同步进度时，需要指定以下配置项：
+    该配置选项默认与下游类型相同。例如 `file` 类型的下游 checkpoint 进度保存在本地文件 `<data-dir>/savepoint` 中，`mysql` 类型的下游进度保存在下游数据库。当明确指定要使用 `mysql` 或 `tidb` 保存同步进度时，需要指定以下配置项：
 
 * `schema`：默认为 `"tidb_binlog"`。
 
-  > **注意：**
-  >
-  > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
+      > **注意：**
+      >
+      > 在同个 TiDB 集群中部署多个 Drainer 时，需要为每个 Drainer 节点指定不同的 checkpoint schema，否则两个实例的同步进度会互相覆盖。
 
 * `host`
 * `user`
