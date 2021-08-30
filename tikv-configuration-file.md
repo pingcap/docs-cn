@@ -757,7 +757,7 @@ rocksdb 相关的配置项。
 
 ### `wal-recovery-mode`
 
-+ WAL 恢复模式，取值：0, 1, 2, 3。
++ WAL 恢复模式，取值：0，1，2，3。
 
 + 0 (TolerateCorruptedTailRecords): 容忍并丢弃日志尾部不完整的记录。
 + 1 (AbsoluteConsistency): 当日志中存在任何损坏记录时，放弃恢复。
