@@ -22,6 +22,7 @@ tiup cluster upgrade <cluster-name> v4.0.14
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
+* 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#5-升级-faq)。
 
 ## 使用加密传输 (TLS) 功能
 
