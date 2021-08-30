@@ -147,7 +147,7 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
 
 * 不支持在单个 `ALTER TABLE` 语句中进行多个更改。
-* 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#Reorg-Data Change) 类型的变更。
+* 不支持主键列上 [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) 类型的变更。
 * 不支持分区表上的列类型变更。
 * 不支持生成列上的列类型变更。
 * 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB 中的 `CAST` 函数与 MySQL 的行为存在兼容性问题。
