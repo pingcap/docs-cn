@@ -70,7 +70,7 @@ TiDB 版本：4.0.14
 
     + TiCDC
 
-        - 优化 PD 节点缺失证书时的报错信息 [#2184](https://github.com/pingcap/ticdc/pull/2184)
+        - 优化连接 PD 时缺少证书情况下的报错提示 [#1973](https://github.com/pingcap/ticdc/issues/1973)
         - 优化 sorter I/O 报错信息 [#1976](https://github.com/pingcap/ticdc/pull/1976)
         - 在 KV client 中新增 Region 增量扫描的并发度上限，减小 TiKV 的压力 [#1926](https://github.com/pingcap/ticdc/pull/1926)
         - 新增表内存使用量的监控项 [#1884](https://github.com/pingcap/ticdc/pull/1884)

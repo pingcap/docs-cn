@@ -84,32 +84,32 @@ mysql> SELECT * FROM t1;
 
 ### character_set_client
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 这个变量表示从客户端发出的数据所用的字符集。有关更多 TiDB 支持的字符集和排序规则，参阅[字符集和排序规则](/character-set-and-collation.md)文档。如果需要更改字符集，建议使用 [`SET NAMES`](/sql-statements/sql-statement-set-names.md) 语句。
 
 ### character_set_connection
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 若没有为字符串常量指定字符集，该变量表示这些字符串常量所使用的字符集。
 
 ### character_set_database
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 该变量表示当前默认在用数据库的字符集，**不建议设置该变量**。选择新的默认数据库后，服务器会更改该变量的值。
 
 ### character_set_results
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 该变量表示数据发送至客户端时所使用的字符集。
 
 ### character_set_server
 
-- 作用域: SESSION | GLOBAL
-- 默认值: `utf8mb4`
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
 - 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
 
 ### `cte_max_recursion_depth`
@@ -125,6 +125,13 @@ mysql> SELECT * FROM t1;
 - 默认值：/tmp/tidb
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
+
+### `default_authentication_plugin`
+
+- 作用域：GLOBAL
+- 默认值：`mysql_native_password`
+- 服务器和客户端建立连接时。这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
+- 可选值：`mysql_native_password`，`caching_sha2_password`。更多信息，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `ddl_slow_threshold`
 
@@ -245,6 +252,11 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 默认值：""
 - 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
+
+### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
+
+- 作用域：NONE
+- 这个变量用于显示创建表达式索引所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -516,6 +528,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
+
+### `tidb_enable_auto_increment_in_generated`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
 
 ### `tidb_enable_cascades_planner`
 
@@ -1008,6 +1026,20 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
+### `tidb_opt_limit_push_down_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`100`
+- 范围：`[0, 2147483647]`
+- 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
+- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
+
+### `tidb_opt_enable_correlation_adjustment`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器是否开启交叉估算。
+
 ### `tidb_opt_correlation_exp_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -1281,27 +1313,27 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`24`
 - 范围：`[0, 255]`
-- 这个变量设置了 statement summary 的历史记录容量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
+- 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
 
 ### `tidb_stmt_summary_max_sql_length` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量控制 statement summary 显示的 SQL 字符串长度。
+- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`3000`
 - 范围：`[1, 32767]`
-- 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1309,7 +1341,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`1800`
 - 范围：`[1, 2147483647]`
 - 单位：秒
-- 这个变量设置了 statement summary 的刷新时间。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 

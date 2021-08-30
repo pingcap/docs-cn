@@ -128,6 +128,13 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
+      syncer.to.checkpoint:
+        schema: "tidb-binlog"
+        type: "tidb"
+        host: "10.0.1.14"
+        user: "root"
+        password: "123"
+        port: 4000
   - host: 10.0.1.13
     port: 8249
     deploy_dir: "/tidb-deploy/drainer-8249"

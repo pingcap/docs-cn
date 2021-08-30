@@ -72,7 +72,7 @@ server_configs:
   tikv:
     server.grpc-compression-type: gzip
   pd:
-    replication.location-labels:  ["dc","rack","zone","host"]
+    replication.location-labels:  ["dc","zone","rack","host"]
     schedule.tolerant-size-ratio: 20.0
 
 pd_servers:
@@ -192,6 +192,10 @@ tikv_servers:
     ```
     config set label-property reject-leader dc 3
     ```
+  
+    > **注意：**
+    >
+    > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
 
 - 设置 PD 的优先级，为了避免出现异地数据中心的 PD 成为 Leader，可以将本地数据中心的 PD 优先级调高（数字越大，优先级越高），将异地的 PD 优先级调低。
 

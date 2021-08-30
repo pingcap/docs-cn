@@ -6,7 +6,7 @@ title: 通过 TiUP 部署 DM 集群的拓扑文件配置
 
 在部署或扩容 TiDB Data Migration (DM) 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
 
-拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/dm/topology.example.yaml)。
+拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
 
 ## 文件结构
 

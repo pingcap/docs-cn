@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/error-codes/','/docs-cn/dev/reference/error-codes/']
 
 ## 错误码
 
-TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [Server Error Message Reference](https://dev.mysql.com/doc/refman/5.7/en/server-error-reference.html)。另外还有一些 TiDB 特有的错误码：
+TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [[MySQL 5.7 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/5.7/en/)。另外还有一些 TiDB 特有的错误码：
 
 > **注意：**
 >
