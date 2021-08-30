@@ -813,7 +813,7 @@ rocksdb 相关的配置项。
 
 ### `use-direct-io-for-flush-and-compaction`
 
-+ 决定后台 flush 或者 compaction 的读写是否设置 O_DIRECT 的开关。开启 O_DIRECT 可以绕过操作系统的 cache，通常会降低性能。
++ 决定后台 flush 或者 compaction 的读写是否设置 O_DIRECT 的标志。该选项对性能的影响：开启 O_DIRECT 可以绕过并防止污染操作系统 buffer cache，但后续文件读取需要把内容重新读到 buffer cache。
 + 默认值：false
 
 ### `rate-bytes-per-sec`
