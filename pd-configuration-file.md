@@ -269,7 +269,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 > **注意：**
 >
-> 4.x 升级上来默认不会自动开启新策略以保证升级后行为一致，若想切换使用需要手动通过 `pd-ctl` 设置切换。
+> 如果是从 v4.0 升级至当前版本，默认不自动开启该算分公式新版本，以保证升级前后 PD 行为一致。若想切换算分公式的版本，使用需要手动通过 `pd-ctl` 设置切换，详见 [PD Control](/pd-control.md#config-show--set-option-value--placement-rules) 文档。
 
 ### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
