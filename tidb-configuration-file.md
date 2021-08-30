@@ -588,7 +588,7 @@ TiDB 服务状态相关配置。
 ### max-stmt-count
 
 + 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
-+ 默认值：3000
++ 默认值：200
 
 ### max-sql-length
 
