@@ -94,7 +94,11 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
     tidb_cluster  tidb_ouo  v5.0.2   /root/.tiup/storage/cluster/clusters/tidb_cluster  /root/.tiup/storage/cluster/clusters/tidb_cluster/ssh/id_rsa
     ```
 
+<<<<<<< HEAD
 3. 检查备份目录的权限，例如 `backup` 目录是备份数据存储目录。命令示例如下：
+=======
+3. 检查备份目录的权限，例如 `backup` 目录是备份数据存储目录。命令示例如下
+>>>>>>> 3eb2f51eb (Update Aurora MySQL dumpling command (#6847) (#7014))
 
     {{< copyable "shell-regular" >}}
 
