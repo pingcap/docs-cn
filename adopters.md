@@ -34,7 +34,7 @@ This is a list of TiDB adopters in various industries.
 |[Mobike](https://en.wikipedia.org/wiki/Mobike)|Ridesharing|[English](https://pingcap.com/case-studies/tidb-in-mobike)|
 |[Autohome](https://www.crunchbase.com/organization/autohome)|Automobile|[English](https://pingcap.com/case-studies/reduce-real-time-query-latency-from-0.5s-to-0.01s-with-scale-out-htap-database); [Chinese](https://pingcap.com/cases-cn/user-case-qichezhijia/)|
 |[Chehaoduo](https://www.crunchbase.com/organization/guazi-com)|Automobile|[English](https://pingcap.com/case-studies/top-car-trading-platform-chooses-scale-out-database-as-mysql-alternative)|
-|[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|[English](https://pingcap.com/case-studies/tidb-in-xiaomi)|
+|[Xiaomi](https://en.wikipedia.org/wiki/Xiaomi)|Consumer Electronics|English [#1](https://pingcap.com/case-studies/tidb-in-xiaomi), [#2](https://pingcap.com/case-studies/a-mysql-alternative-scale-out-database-helps-xiaomi-hyper-growth)|
 |[LY.com](https://www.crunchbase.com/organization/ly-com)|Travel||
 |[Qunar.com](https://www.crunchbase.com/organization/qunar-com)|Travel||
 |[Hulu](https://www.hulu.com)|Entertainment||
