@@ -79,12 +79,12 @@ Because the snapshot data exported from Aurora to S3 does not contain the SQL st
 1. Use Dumpling to export table schema files:
 
     ```
-    ./dumpling --host 127.0.0.1 --port 4000 --user root --password password --no-data --output ./schema --filter "mydb.*"
+    ./dumpling --host database-1.cedtft9htlae.us-west-2.rds.amazonaws.com --port 3306 --user root --password password --consistency none --no-data --output ./schema --filter "mydb.*"
     ```
 
     > **Note:**
     >
-    > - Set the parameters of the data source address and the path of output files according to your actual situation.
+    > - Set the parameters of the data source address and the path of output files according to your actual situation. For example, `database-1.cedtft9htlae.us-west-2.rds.amazonaws.com` is the address of Aurora MySQL.
     > - If you need to export all database tables, you do not need to set the `--filter` parameter. If you only need to export some of the database tables, configure `--filter` according to [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md).
 
 2. Use TiDB Lightning to create table schemas:
