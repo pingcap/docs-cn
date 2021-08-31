@@ -30,7 +30,7 @@ summary: 了解如何将 TiDB 集群的增量数据实时同步到另一集群�
 
 ### 步骤一：开启 TiDB Binlog
 
-确保 A 集群已经部署并且开启了 TiDB Binlog(/tidb-binlog/deploy-tidb-binlog.md)。
+确保 A 集群已经部署并且开启了 TiDB Binlog。
 
 ### 步骤二：全量导出集群数据
 
