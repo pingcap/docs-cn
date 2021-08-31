@@ -126,7 +126,6 @@ The following TiKV configuration items can be modified online:
 
 | Configuration item | Description |
 | :--- | :--- |
-| `raftstore.sync-log` | Determines whether to sync data and logs for persistent storage |
 | `raftstore.raft-entry-max-size` | The maximum size of a single log |
 | `raftstore.raft-log-gc-tick-interval` | The time interval at which the polling task of deleting Raft logs is scheduled |
 | `raftstore.raft-log-gc-threshold` | The soft limit on the maximum allowable number of residual Raft logs |
