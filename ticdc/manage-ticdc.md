@@ -116,10 +116,12 @@ tiup cluster edit-config <cluster-name>
 
 - ① 执行 `changefeed pause` 命令。
 - ② 执行 `changefeed resume` 恢复同步任务。
-- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ③ `changefeed` 运行过程中发生可恢复的错误，自动进行恢复。
 - ④ 执行 `changefeed resume` 恢复同步任务。
 - ⑤ `changefeed` 运行过程中发生不可恢复的错误。
-- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
+- ⑥ `changefeed` 已经进行到预设的 TargetTs，同步自动停止。
+- ⑦ `changefeed` 停滞时间超过 `gc-ttl` 所指定的时长，不可被恢复。
+- ⑧ `changefeed` 尝试自动恢复过程中发生不可恢复的错误。
 
 #### 创建同步任务
 
