@@ -99,10 +99,6 @@ address = ""
 job = "tikv"
 
 [raftstore]
-# The default value is true, which means writing the data on the disk compulsorily. If it is not in a business scenario
-# of the financial security level, it is recommended to set the value to false to achieve better performance.
-sync-log = true
-
 # Raft RocksDB directory. The default value is Raft subdirectory of [storage.data-dir].
 # If there are multiple disks on the machine, store the data of Raft RocksDB on different disks to improve TiKV performance.
 # raftdb-path = "/tmp/tikv/store/raft"
