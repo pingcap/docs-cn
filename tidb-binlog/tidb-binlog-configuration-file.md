@@ -335,22 +335,17 @@ When the downstream is Kafka, the valid configuration items are as follows:
 
 ### syncer.to.checkpoint
 
-This section introduces a configuration item related to `syncer.to.checkpoint`.
+* `type`: Specifies in what way the replication progress is saved. Currently, the available options are `mysql`, `tidb`, and `file`.
 
-### type
+    This configuration item is the same as the downstream type by default. For example, when the downstream is `file`, the checkpoint progress is saved in the local file `<data-dir>/savepoint`; when the downstream is `mysql`, the progress is saved in the downstream database. If you need to explicitly specify using `mysql` or `tidb` to store the progress, make the following configuration:
 
-* Specifies in what way the replication progress is saved.
-* Available options: `mysql` and `tidb`.
+* `schema`: `"tidb_binlog"` by default.
 
-* Default value: The same as the downstream type. For example, when the downstream is `file`, the progress is saved in the local file system; when the downstream is `mysql`, the progress is saved in the downstream database. If you explicitly specify using `mysql` or `tidb` to store the progress, make the following configuration:
+    > **Note:**
+    >
+    > When deploying multiple Drainer nodes in the same TiDB cluster, you need to specify a different checkpoint schema for each node. Otherwise, the replication progress of two instances will overwrite each other.
 
-    * `schema`: `tidb_binlog` by default.
-
-        > **Note:**
-        >
-        > When deploying multiple Drainer nodes in the same TiDB cluster, you need to specify a different checkpoint schema for each node. Otherwise, the replication progress of two instances will overwrite each other.
-
-    * `host`
-    * `user`
-    * `password`
-    * `port`
+* `host`
+* `user`
+* `password`
+* `port`
