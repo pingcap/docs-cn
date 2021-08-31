@@ -50,7 +50,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 对于 `cdc server` 命令中可用选项解释如下：
 
-- `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time Toive) 时长，和 TiCDC 同步任务所能够停滞的时长。单位为秒，默认值为 `86400`，即 24 小时。（注意，TiCDC 同步任务的停滞会引起 TiCDC  GC safepoint 的推进，即会影响上游 TiDB GC 的推进，详情可以参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md) 
+- `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，和 TiCDC 同步任务所能够停滞的时长。单位为秒，默认值为 `86400`，即 24 小时。（注意，TiCDC 同步任务的停滞会引起 TiCDC  GC safepoint 的推进，即会影响上游 TiDB GC 的推进，详情可以参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md) 
 - `pd`：PD client 的 URL。
 - `addr`：TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
 - `advertise-addr`：TiCDC 对外访问地址。
