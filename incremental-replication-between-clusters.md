@@ -71,7 +71,7 @@ summary: 了解如何将 TiDB 集群的增量数据实时同步到另一集群�
 
 ### 步骤三：同步增量数据
 
-1. 修改 TiDB Binlog 的 `drainer.toml` 配置文件，增加如下配置，从指定的位置 `COMMIT_TS` 开始将数据同步至 B 集群。
+修改 TiDB Binlog 的 `drainer.toml` 配置文件，增加如下配置，从指定的位置 `COMMIT_TS` 开始将数据同步至 B 集群。
 
 {{< copyable "" >}}
 
