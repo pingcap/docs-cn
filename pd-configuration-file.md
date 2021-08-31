@@ -127,10 +127,15 @@ Configuration items related to security
 
 Configuration items related to log
 
+### `level`
+
++ The log level, which can be specified as "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL".
++ Default value: "INFO"
+
 ### `format`
 
 + The log format, which can be specified as "text", "json", or "console"
-+ Default value: `text`
++ Default value: "text"
 
 ### `disable-timestamp`
 
