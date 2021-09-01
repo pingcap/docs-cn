@@ -11,13 +11,65 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 <!-- markdownlint-disable MD001 -->
 
+<<<<<<< HEAD
+=======
+## 全局配置
+
+### abort-on-panic
+
++ 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
+
+    + 如果此配置项值为 false ，当 TiKV panic 时，TiKV 调用 `exit()` 退出进程。
+    + 如果此配置项值为 true ，当 TiKV panic 时，TiKV 调用 `abort()` 退出进程。此时 TiKV 允许系统在退出时生成 core dump 文件。要生成 core dump 文件，你还需要进行 core dump 相关的系统配置（比如打开 `ulimit -c` 和配置 core dump 路径，不同操作系统配置方式不同）。建议将 core dump 生成路径设置在 TiKV 数据的不同磁盘分区，避免 core dump 文件占用磁盘空间过大，造成 TiKV 磁盘空间不足。
+
++ 默认值：false
+
+### `log-level`
+
++ 日志等级。
++ 可选值："trace"，"debug"，"info"，"warning"，"error"，"critical"
++ 默认值："info"
+
+### `log-file`
+
++ 日志文件。如果未设置该项，日志会默认输出到 "stderr"。
++ 默认值：""
+
+### `log-format`
+
++ 日志的格式。
++ 可选值："json"，"text"
++ 默认值："text"
+
+### `log-rotation-timespan`
+
++ 轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。
++ 默认值："24h"
+
+### `log-rotation-size`
+
++ 触发日志轮换的文件大小。一旦日志文件大小超过指定的阈值，日志文件将被轮换，将旧文件被置于新文件中，新文件名即旧文件名加上时间戳后缀。
++ 默认值："300MB"
+
+### `slow-log-file`
+
++ 存储慢日志的文件。
++ 如果未设置本项但设置了 `log-file`，慢日志将输出至 `log-file` 指定的日志文件中。如果本项和 `log-file` 均未设置，所有日志默认输出到 "stderr"。
++ 默认值：""
+
+### `slow-log-threshold`
+
++ 输出慢日志的阈值。处理时间超过该阈值后会输出慢日志。
++ 默认值："1s"
+
+>>>>>>> e8debeb6a (tikv configs: add 7 log-related configs (#6996))
 ## server
 
 服务器相关的配置项。
 
 ### `status-thread-pool-size`
 
-+ Http API 服务的工作线程数量。
++ HTTP API 服务的工作线程数量。
 + 默认值：1
 + 最小值：1
 
