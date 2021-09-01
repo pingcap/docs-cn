@@ -146,7 +146,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
         ...
     ```
     
-关于使用 label 进行副本调度划分可用区的更多内容，可以参考：[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment) 与 [两地三中心部署](/three-data-centers-in-two-cities-deployment)。
+关于使用 label 进行副本调度划分可用区的更多内容，可以参考：[通过拓扑 label 进行副本调度](schedule-replicas-by-topology-labels)，[同城多数据中心部署 TiDB](multi-data-centers-in-one-city-deployment) 与 [两地三中心部署](three-data-centers-in-two-cities-deployment)。
 
 ## 使用 TiDB 读取 TiFlash
 
