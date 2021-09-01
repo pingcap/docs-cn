@@ -536,6 +536,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_cascades_planner`
 
+> **警告：**
+>
+> 目前 cascades planner 为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 cascades planner。
@@ -574,6 +578,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
 ### `tidb_enable_fast_analyze`
+
+> **警告：**
+>
+> 目前快速分析功能为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
