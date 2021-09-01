@@ -83,69 +83,69 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 1. 在集群配置文件中为 TiFlash 节点指定 label. 
 
-```
-tiflash_servers:
-  - host: 172.16.5.81
-    config:
-      flash.proxy.labels: zone=z1
-  - host: 172.16.5.82
-    config:
-      flash.proxy.labels: zone=z1
-  - host: 172.16.5.85
-    config:
-      flash.proxy.labels: zone=z2
-```
+    ```
+    tiflash_servers:
+      - host: 172.16.5.81
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.82
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.85
+        config:
+          flash.proxy.labels: zone=z2
+    ```
 
 2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
-```
+    ```sql
+    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+    ```
 
-例如：
+    例如：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
-```
+    ```sql
+    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+    ```
 
 3. 此时 pd 就会根据设置的 label 进行调度，将表 t 的两个副本分别调度到两个可用区中。我们可以通过监控或 pd-ctl 来验证这一点：
 
-```sh
-> tiup ctl:<version> pd -u<pd-host>:<pd-port> store
+    ```sh
+    > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
 
-    ...
-    
-    "address": "172.16.5.82:23913",
-    "labels": [
-      { "key": "engine", "value": "tiflash"},
-      { "key": "zone", "value": "z1" }
-    ],
-    "region_count": 4,
-    
-    ...
-    
-    "address": "172.16.5.81:23913",
-    "labels": [
-      { "key": "engine", "value": "tiflash"},
-      { "key": "zone", "value": "z1" }
-    ],
-    "region_count": 5,
-    
-    ...
-    
-    "address": "172.16.5.85:23913",
-    "labels": [
-      { "key": "engine", "value": "tiflash"},
-      { "key": "zone", "value": "z2" }
-    ],
-    "region_count": 9,
-    
-    ...
-```
+        ...
+
+        "address": "172.16.5.82:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 4,
+
+        ...
+
+        "address": "172.16.5.81:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 5,
+
+        ...
+
+        "address": "172.16.5.85:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z2" }
+        ],
+        "region_count": 9,
+
+        ...
+    ```
 
 ## 使用 TiDB 读取 TiFlash
 
