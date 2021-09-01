@@ -203,6 +203,18 @@ TiDB 在执行 SQL 语句时，会使用当时的 `schema` 来处理该 SQL 语�
 
 并发执行 DDL 时，建议将 DDL 数量保持在 20 以下，否则你需要在应用端重试失败的 DDL 语句。
 
+## SQL 语句和 TiKV RPC 接口的对应关系是什么？
+
+TiKV RPC 和 SQL 语句并没有很强的相关性，在一些情况下，没有 SQL 执行的时候，TiDB 也会调用 RPC 接口去 TiKV 获取信息，如 TiDB 启动的时候，会启动一个 DDL work，work 就会定时调用 Get 接口去 TiKV 获取信息，但此时并没有执行任何sql语句。
+
+TiKV 对外提供了两套 RPC 接口，一套是 Txn API，另一套是 Raw API。Raw API 有更低的延迟，更好的性能，但不支持事务的属性，Txn API 提供了对于事务的支持，在 TiDB 中和 TiKV 的交互都使用了 Txn API。
+
+在 TiDB 当中，查询相关的 SQL 语句一般都是通过 Coprocessor RPC 把相关的逻辑下发到 TiKV 当中，具体的 RPC 请求可以通过 `EXPLAIN ANALYZE` 进行查看。
+
+为了支持分布式事务，TiDB 使用的是[两阶段提交协议](/optimistic-transaction.md)。如果使用的是乐观事务，在 execute SQL 阶段所有的数据都是写在 TiDB 的 cache 当中，不会有 RPC 的调用，只有当执行 commit 提交事务时，才会调用 PreWrite 和 Commit 这两个 RPC 请求向 TiKV 去提交修改，在悲观事务下，在 execute SQL 阶段会增加调用 PessimisticLock RPC 方法去获取悲观锁。
+
+以上只是简单的介绍了 SQL 语句和部分 TiKV RPC 接口的对应关系。在一些其他场景下，TiDB 还会调用其他的 RPC 接口，如在悲观事务下，执行 rollback 时会调用 PessimisticRollback 去释放悲观锁等。
+
 ## SQL 优化
 
 ### TiDB 执行计划解读
