@@ -61,7 +61,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
-## 查看表同步进度
+### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
@@ -75,6 +75,76 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
+
+### 可用区设置
+
+如果在配置副本时为了考虑容灾，需要将 TiFlash 的不同数据副本分布在多个数据中心，则可以按如下步骤进行配置：
+
+1. 在集群配置文件中为 TiFlash 节点指定 label. 
+
+```
+tiflash_servers:
+  - host: 172.16.5.81
+    config:
+      flash.proxy.labels: zone=z1
+  - host: 172.16.5.82
+    config:
+      flash.proxy.labels: zone=z1
+  - host: 172.16.5.85
+    config:
+      flash.proxy.labels: zone=z2
+```
+
+2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+```
+
+例如：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+```
+
+3. 此时 pd 就会根据设置的 label 进行调度，将表 t 的两个副本分别调度到两个可用区中。我们可以通过监控或 pd-ctl 来验证这一点：
+
+```sh
+> tiup ctl:<version> pd -u<pd-host>:<pd-port> store
+
+    ...
+    
+    "address": "172.16.5.82:23913",
+    "labels": [
+      { "key": "engine", "value": "tiflash"},
+      { "key": "zone", "value": "z1" }
+    ],
+    "region_count": 4,
+    
+    ...
+    
+    "address": "172.16.5.81:23913",
+    "labels": [
+      { "key": "engine", "value": "tiflash"},
+      { "key": "zone", "value": "z1" }
+    ],
+    "region_count": 5,
+    
+    ...
+    
+    "address": "172.16.5.85:23913",
+    "labels": [
+      { "key": "engine", "value": "tiflash"},
+      { "key": "zone", "value": "z2" }
+    ],
+    "region_count": 9,
+    
+    ...
+```
 
 ## 使用 TiDB 读取 TiFlash
 
