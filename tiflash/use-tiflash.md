@@ -149,7 +149,6 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
     
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考：[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment) 与 [两地三中心部署](/three-data-centers-in-two-cities-deployment)。
 
-
 ## 使用 TiDB 读取 TiFlash
 
 TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本，而没有做任何 engine 的配置，则默认使用 CBO 方式。
