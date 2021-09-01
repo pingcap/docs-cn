@@ -800,7 +800,7 @@ rocksdb 相关的配置项。
 
 ### `compaction-readahead-size`
 
-+ 异步 Sync 限速速率。
++ 开启 RocksDB compaction 过程中的预读功能，该项指定预读数据的大小。如果使用的是机械磁盘，建议该值至少为 2MB。
 + 默认值：0
 + 最小值：0
 + 单位：B|KB|MB|GB
