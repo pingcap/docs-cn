@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `REFERENTIAL_CONSTRAINTS`。
 
 # REFERENTIAL_CONSTRAINTS
 
-`REFERENTIAL_CONSTRAINTS`表提供了有关表之间`FOREIGN KEY`关系的信息。请注意，目前 TiDB 不对`FOREIGN KEY`进行约束，也不执行`ON DELETE CASCADE`等操作。
+`REFERENTIAL_CONSTRAINTS` 表提供 TiDB 表之间 `FOREIGN KEY` 关系的信息。请注意，目前 TiDB 不强制进行 `FOREIGN KEY` 约束，也不执行 `ON DELETE CASCADE` 等操作。
 
 {{< copyable "sql" >}}
 
