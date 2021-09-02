@@ -79,7 +79,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 ### 可用区设置
 
-如果在配置副本时为了考虑容灾，需要将 TiFlash 的不同数据副本分布在多个数据中心，则可以按如下步骤进行配置：
+在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
 
 1. 在集群配置文件中为 TiFlash 节点指定 label. 
 
