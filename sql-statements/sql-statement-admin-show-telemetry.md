@@ -5,7 +5,7 @@ summary：TiDB 数据库中 ADMIN SHOW TELEMETRY 的使用概况。
 
 # ADMIN SHOW TELEMETRY
 
-`ADMIN SHOW TELEMETRY`语句用于查看 TiDB 通过[遥测](/telemetry.md)功能收集到的信息内容。
+`ADMIN SHOW TELEMETRY` 语句用于查看通过[遥测](/telemetry.md)功能收集到并分享给 PingCAP 的使用信息。
 
 ## 语法图
 
