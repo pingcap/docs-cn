@@ -112,7 +112,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
     ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
     ```
 
-3. 此时 pd 就会根据设置的 label 进行调度，将表 t 的两个副本分别调度到两个可用区中。我们可以通过监控或 pd-ctl 来验证这一点：
+3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
