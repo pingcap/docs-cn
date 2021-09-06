@@ -10,11 +10,10 @@ TiDB 版本：5.2.0
 
 在 5.2 版本中，你可以获得以下关键特性：
 
-- 新增表达式索引 (Expression index)，极大提升查询的性能。
+- 支持基于部分函数创建表达式索引 (Expression index)，极大提升查询的性能。
 - 提升优化器的估算准确度 (Cardinality Estimation)，有助于选中最优的执行计划。
 - 锁视图 (Lock View) 成为 GA 特性，提供更直观方便的方式观察事务加锁情况以及排查死锁问题。
 - 新增 TiFlash I/O 限流功能，提升 TiFlash 读写稳定性。
-- 优化 TiKV 预留空间管理，提升存储稳定性。
 - 为 TiKV 引入新的流控机制代替之前的 RocksDB write stall 流控机制，提升 TiKV 流控稳定性。
 - 简化 Data Migration (DM) 工具运维，降低运维管理的成本。
 - TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性)
@@ -67,7 +66,7 @@ TiDB 版本：5.2.0
 
 ### SQL
 
-- **新增表达式索引 (Expression index)**
+- **支持基于部分函数创建表达式索引 (Expression index)**
 
     表达式索引是一种特殊的索引，能将索引建立于表达式上。创建了表达式索引后，TiDB 支持基于表达式的查询，极大提升查询的性能。
 

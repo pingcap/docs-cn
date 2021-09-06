@@ -537,6 +537,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_cascades_planner`
 
+> **警告：**
+>
+> 目前 cascades planner 为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 cascades planner。
@@ -575,6 +579,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
 ### `tidb_enable_fast_analyze`
+
+> **警告：**
+>
+> 目前快速分析功能为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
@@ -1120,10 +1128,10 @@ mysql> desc select count(distinct a) from test.t;
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 将该变量值设为 `1` 后，优化器总是偏好索引扫描而不是全表扫描。
-- 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引扫描。
+- 将该变量值设为 `1` 后，优化器总是偏好区间扫描而不是全表扫描。
+- 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引区间扫描。
 
 ```sql
 explain select * from t where age=5;
