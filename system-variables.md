@@ -1130,7 +1130,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 将该变量值设为 `1` 后，优化器总是偏好区间扫描而不是全表扫描。
+- 将该变量值设为 `ON` 后，优化器总是偏好区间扫描而不是全表扫描。
 - 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引区间扫描。
 
 ```sql
