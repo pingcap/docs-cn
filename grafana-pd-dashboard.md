@@ -84,8 +84,8 @@ The following is the description of PD Dashboard metrics items:
 
 ## Statistics - hot read
 
-- Hot Region's leader distribution: The total number of leader Regions that have become read hotspots on each TiKV instance
-- Total read bytes on hot leader Regions: The total read bytes of leaders that have become read hotspots on each TiKV instance
+- Hot Region's peer distribution: The total number of peer Regions that have become read hotspots on each TiKV instance
+- Total read bytes on hot peer Regions: The total read bytes of peers that have become read hotspots on each TiKV instance
 - Store read rate bytes: The total read bytes of each TiKV instance
 - Store read rate keys: The total read keys of each TiKV instance
 - Hot cache read entry number: The number of peers that are in the read hotspot statistics module on each TiKV instance
