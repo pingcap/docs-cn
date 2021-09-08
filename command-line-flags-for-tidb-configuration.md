@@ -14,12 +14,6 @@ When you start the TiDB cluster, you can use command-line options or environment
 - Default: ""
 - This address must be accessible by the rest of the TiDB cluster and the user.
 
-## `--binlog-socket`
-
-- The TiDB services use the unix socket file for internal connections, such as the Pump service
-- Default: ""
-- You can use "/tmp/pump.sock" to accept the communication of Pump unix socket file.
-
 ## `--config`
 
 - The configuration file
@@ -102,11 +96,6 @@ When you start the TiDB cluster, you can use command-line options or environment
 - For the distributed storage engine like TiKV, `--path` specifies the actual PD address. Assuming that you deploy the PD server on 192.168.100.113:2379, 192.168.100.114:2379 and 192.168.100.115:2379, the value of `--path` is "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379".
 - Default: "/tmp/tidb"
 - You can use `tidb-server --store=unistore --path=""` to enable a pure in-memory TiDB.
-
-## `--tmp-storage-path`
-
-+ TiDB's temporary storage path
-+ Default: `<TMPDIR>/tidb/tmp-storage`
 
 ## `--proxy-protocol-networks`
 
