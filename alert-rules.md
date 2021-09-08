@@ -752,11 +752,20 @@ This section gives the alert rules for the TiKV component.
 
     Check which kind of tasks has a higher value. You can normally find a solution to the Coprocessor and apply worker tasks from other metrics.
 
-#### `TiKV_low_space_and_add_region`
+#### `TiKV_low_space`
 
 * Alert rule:
 
-    `count((sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2) and (sum(tikv_raftstore_snapshot_traffic_total{type="applying"}) by (instance) > 0)) > 0`
+    `sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2`
+
+* Description:
+
+    The data volume of TiKV exceeds 80% of the configured node capacity or the disk capacity of the machine.
+
+* Solution:
+
+    * Check the balance condition of node space.
+    * Make a plan to increase the disk capacity or delete some data or increase cluster node depending on different situations.
 
 #### `TiKV_approximate_region_size`
 
