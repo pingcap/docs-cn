@@ -100,7 +100,14 @@ This document provides a detailed description of these key metrics on the **TiKV
 
 ## Raft process
 
-- Ready handled: The count of handled ready operations per second
+- Ready handled: The number of handled ready operations per type per second
+    - count: The number of handled ready operations per second
+    - has_ready_region: The number of Regions that have ready per second
+    - pending_region: The operations per second of the Regions being checked for whether it has ready. This metric is deprecated since v3.0.0
+    - message: The number of messages that the ready operations per second contain
+    - append: The number of Raft log entries that the ready operations per second contain
+    - commit: The number of committed Raft log entries that the ready operations per second contain
+    - snapshot: The number of snapshots that the ready operations per second contains
 - 0.99 Duration of Raft store events: The time consumed by Raftstore events (P99)
 - Process ready duration: The time consumed for processes to be ready in Raft
 - Process ready duration per server: The time consumed for peer processes to be ready in Raft per TiKV instance. It should be less than 2 seconds (P99.99).
