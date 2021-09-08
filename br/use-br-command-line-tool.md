@@ -420,7 +420,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128 
+br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 ```
 
 > **警告：**
