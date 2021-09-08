@@ -162,3 +162,11 @@ BR does not back up statistics (except in v4.0.9). Therefore, after restoring th
 In v4.0.9, BR backs up statistics by default, which consumes too much memory. To ensure that the backup process goes well, the backup for statistics is disabled by default starting from v4.0.10.
 
 If you do not execute `ANALYZE` on the table, TiDB will fail to select the optimized execution plan due to inaccurate statistics. If query performance is not a key concern, you can ignore `ANALYZE`.
+
+## Can I use multiple BR processes at the same time to restore the data of a single cluster?
+
+**It is strongly not recommended** to use multiple BR processes at the same time to restore the data of a single cluster for the following reasons:
+
++ When BR restores data, it modifies some global configurations of PD. Therefore, if you use multiple BR processes for data restore at the same time, these configurations might be mistakenly overwritten and cause abnormal cluster status.
++ BR consumes a lot of cluster resources to restore data, so in fact, running BR processes in parallel improves the restore speed only to a limited extent.
++ There has been no test for running multiple BR processes in parallel for data restore, so it is not guaranteed to succeed.
