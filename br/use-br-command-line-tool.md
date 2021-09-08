@@ -81,7 +81,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backupfull.log
 ```
 
@@ -93,7 +93,7 @@ br backup full \
 br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backupfull.log
 Full Backup <---------/................................................> 17.12%.
 ```
@@ -111,7 +111,7 @@ br backup db \
     --pd "${PDIP}:2379" \
     --db test \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -133,7 +133,7 @@ br backup table \
     --db test \
     --table usertable \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -154,7 +154,7 @@ br backup full \
     --pd "${PDIP}:2379" \
     --filter 'db*.tbl*' \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backupfull.log
 ```
 
@@ -187,7 +187,7 @@ br backup full \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
     --send-credentials-to-tikv=true \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -205,7 +205,7 @@ br backup full \
 ```shell
 br backup full\
     --pd ${PDIP}:2379 \
-    --ratelimit 120 \
+    --ratelimit 128 \
     -s local:///home/tidb/backupdata/incr \
     --lastbackupts ${LAST_BACKUP_TS}
 ```
@@ -236,7 +236,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 br backup raw --pd $PD_ADDR \
     -s "local://$BACKUP_DIR" \
     --start 31 \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --end 3130303030303030 \
     --format hex \
     --cf default
