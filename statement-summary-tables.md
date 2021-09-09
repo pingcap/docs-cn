@@ -8,7 +8,7 @@ aliases: ['/docs/dev/statement-summary-tables/','/docs/dev/reference/performance
 
 To better handle SQL performance issues, MySQL has provided [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html) in `performance_schema` to monitor SQL with statistics. Among these tables, `events_statements_summary_by_digest` is very useful in locating SQL problems with its abundant fields such as latency, execution times, rows scanned, and full table scans.
 
-Therefore, starting from v4.0.0-rc.1, TiDB provides system tables in `information_schema`. These system tables are similar to `events_statements_summary_by_digest` in terms of features.
+Therefore, starting from v4.0.0-rc.1, TiDB provides system tables in `information_schema` (_not_ `performance_schema`) that are similar to `events_statements_summary_by_digest` in terms of features.
 
 - [`statements_summary`](#statements_summary)
 - [`statements_summary_history`](#statements_summary_history)
@@ -20,7 +20,7 @@ This document details these tables and introduces how to use them to troubleshoo
 
 ## `statements_summary`
 
-`statements_summary` is a system table in `performance_schema`. `statements_summary` groups the SQL statements by the SQL digest and the plan digest, and provides statistics for each SQL category.
+`statements_summary` is a system table in `information_schema`. `statements_summary` groups the SQL statements by the SQL digest and the plan digest, and provides statistics for each SQL category.
 
 The "SQL digest" here means the same as used in slow logs, which is a unique identifier calculated through normalized SQL statements. The normalization process ignores constant, blank characters, and is case insensitive. Therefore, statements with consistent syntaxes have the same digest. For example:
 
