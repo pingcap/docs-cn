@@ -53,8 +53,10 @@ Log in to the database by running the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -u root -h 10.0.1.4 -P 4000
+mysql -u root -h ${tidb_server_host_IP_address} -P 4000
 ```
+
+`${tidb_server_host_IP_address}` is one of the IP addresses set for `tidb_servers` when you [initialize the cluster topology file](/production-deployment-using-tiup.md#step-3-initialize-cluster-topology-file), such as `10.0.1.7`.
 
 The following information indicates successful login:
 
