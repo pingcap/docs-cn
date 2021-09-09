@@ -9,9 +9,13 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ## 安装方式
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ### 使用 TiUP
 
-可直接通过 `tiup ctl pd:<pd_version> -u http://<pd_ip>:<pd_port> [-i]` 使用。
+可直接通过 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> [-i]` 使用。
 
 ### 下载安装包
 
@@ -23,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v4.0.0-rc.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz`。也可以使用 `latest` 替代 `{version}` 来下载最新的未发布版本。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.2.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.2.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -79,15 +83,15 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ### `--detach` / `-d`
 
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: true
++ 使用单命令行模式（不进入 readline）
++ 默认值：true
 
 ### `--help` / `-h`
 
 + 输出帮助信息
 + 默认值：false
 
-### `--interact` / `-i`
+### `--interact`/`-i`
 
 + 使用交互模式（进入 readline）
 + 默认值：false
@@ -95,18 +99,18 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ### `--key`
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
-- 默认值: ""
+- 默认值：""
 
-### `--pd` / `-u`
+### `--pd`/`-u`
 
 + 指定 PD 的地址
 + 默认地址：`http://127.0.0.1:2379`
 + 环境变量：`PD_ADDR`
 
-### `--version` / `-V`
+### `--version`/`-V`
 
 - 打印版本信息并退出
-- 默认值: false
+- 默认值：false
 
 ## 命令 (command)
 
@@ -218,7 +222,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 
 ```
-"4.0.0"
+"5.2.0"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
@@ -384,7 +388,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set hot-region-schedule-limit 4
     ```
 
-- `hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有命中 cache 的次数超过这个阈值才会被当作热点。
+- `hot-region-cache-hits-threshold` 用于设置识别热点 Region 所需的分钟数，只有 Region 处于热点状态持续时间超过该分钟数后，才能参与热点调度。
 
 - `tolerant-size-ratio` 控制 balance 缓冲区大小。当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
@@ -442,9 +446,19 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `enable-debug-metrics` 用于开启 debug 的 metrics。当设置为 true 时，PD 会开启一些 metrics，比如 `balance-tolerant-size` 等。
 
-- `enable-placement-rules` 用于开启 placement rules。
+- `enable-placement-rules` 用于开启 placement rules，在 v5.0 及以上的版本默认开启。
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
+
+- PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
+    示例：将 `flow-round-by-digit` 的值设为 `4`：
+
+    {{< copyable "" >}}
+
+    ```bash
+    config set flow-round-by-digit 4
+    ```
 
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
@@ -657,7 +671,7 @@ time: 43.12698ms
 
 ### `region <region_id> [--jq="<query string>"]`
 
-用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 Region 信息。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 Region 信息：
 
@@ -972,11 +986,12 @@ Encoding 格式示例：
 >> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
 >> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器 
->> scheduler resume all                           // 继续运行所有的调度器 
+>> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
+>> scheduler resume all                           // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
 ```
 
@@ -991,28 +1006,50 @@ Encoding 格式示例：
 {
   "min-hot-byte-rate": 100,
   "min-hot-key-rate": 10,
+  "min-hot-query-rate": 10,
   "max-zombie-rounds": 3,
   "max-peer-number": 1000,
   "byte-rate-rank-step-ratio": 0.05,
   "key-rate-rank-step-ratio": 0.05,
+  "query-rate-rank-step-ratio": 0.05,
   "count-rank-step-ratio": 0.01,
   "great-dec-ratio": 0.95,
   "minor-dec-ratio": 0.99,
-  "src-tolerance-ratio": 1.02,
-  "dst-tolerance-ratio": 1.02
+  "src-tolerance-ratio": 1.05,
+  "dst-tolerance-ratio": 1.05,
+  "read-priorities": [
+    "query",
+    "byte"
+  ],
+  "write-leader-priorities": [
+    "key",
+    "byte"
+  ],
+  "write-peer-priorities": [
+    "byte",
+    "key"
+  ],
+  "strict-picking-store": "true",
+  "enable-for-tiflash": "true"
 }
 ```
 
-- `min-hot-byte-rate` 指计数的最小字节，通常为 100。
+- `min-hot-byte-rate` 指计数的最小字节数，通常为 100。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set min-hot-byte-rate 100
     ```
 
-- `min-hot-key-rate` 指计数的最小 key，通常为 10。
+- `min-hot-key-rate` 指计数的最小 key 数，通常为 10。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
+    ```
+
+- `min-hot-query-rate` 指计数的最小 query 数，通常为 10。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set min-hot-query-rate 10
     ```
 
 - `max-zombie-rounds` 指一个 operator 可被纳入 pending influence 所允许的最大心跳次数。如果将它设置为更大的值，更多的 operator 可能会被纳入 pending influence。通常用户不需要修改这个值。pending influence 指的是在调度中产生的、但仍生效的影响。
@@ -1027,7 +1064,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set max-peer-number 1000
     ```
 
-- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、count 的 step ranks。rank step ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
+- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio`、`query-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、query 和 count 的 step ranks。rank-step-ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
@@ -1036,12 +1073,37 @@ Encoding 格式示例：
 - `src-tolerance-ratio` 和 `dst-tolerance-ratio` 是期望调度器的配置项。`tolerance-ratio` 的值越小，调度就越容易。当出现冗余调度时，你可以适当调大这个值。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.05
+    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
+    ```
+
+- `read-priorities`、`write-leader-priorities` 和 `write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡，支持配置两个维度。
+
+    - `read-priorities` 和 `write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，可选的维度有 `query`、`byte` 和 `key`。
+    - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置 `byte` 和 `key` 维度。
+    
+    > **注意：**
+    >
+    > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
+    ```
+
+- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set strict-picking-store true
+    ```
+
+- `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
 ### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 store 信息：
 

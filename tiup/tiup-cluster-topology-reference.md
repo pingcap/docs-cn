@@ -4,7 +4,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
 # 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 
-通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)）来描述集群拓扑。
+通过 TiUP 部署或扩容 TiDB 集群时，需要提供一份拓扑文件（[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)）来描述集群拓扑。
 
 同样，修改集群配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。本文档介绍拓扑文件的各个区块以各区块中的各字段。
 
@@ -45,7 +45,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
     - 如果在实例级别配置了绝对路径的 `data_dir`，那么实际数据目录为该实例设定的 `data_dir`
     - 对于每个实例，如果用户未配置 `data_dir`，其默认值为 `<global.data_dir>`
     - 如果 `data_dir` 为相对路径，那么组件数据将放到 `<deploy_dir>/<data_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
-- `log_dir`：数据目录，默认值："log"。其应用规则如下：
+- `log_dir`：日志目录，默认值："log"。其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `log_dir`，那么实际日志目录为该实例设定的 `log_dir`
     - 对于每个实例，如果用户未配置 `log_dir`，其默认值为 `<global.log_dir>`
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
@@ -380,6 +380,7 @@ drainer_servers:
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 `global` 区块中的 `ssh_port`
 - `port`：TiCDC 服务的监听端口，默认 8300
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
+- `data_dir`：指定数据目录。若不指定该字段或指定为相对目录，数据目录则按照 `global` 中配置的 `data_dir` 生成。
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
 - `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，单位为秒，默认值为 86400，即 24 小时
 - `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。
@@ -394,6 +395,7 @@ drainer_servers:
 - `host`
 - `port`
 - `deploy_dir`
+- `data_dir`
 - `log_dir`
 - `gc-ttl`
 - `tz`
@@ -501,6 +503,10 @@ tispark_workers:
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "15d"
 - `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
+- `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
+    - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
+    - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
+- `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
@@ -521,6 +527,21 @@ tispark_workers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    remote_config:
+      remote_write:
+      - queue_config:
+          batch_send_deadline: 5m
+          capacity: 100000
+          max_samples_per_send: 10000
+          max_shards: 300
+        url: http://127.0.0.1:8003/write
+      remote_read:
+      - url: http://127.0.0.1:8003/read
+    external_alertmanagers:
+    - host: 10.1.1.1
+      web_port: 9093
+    - host: 10.1.1.2
+      web_port: 9094
 ```
 
 ### `grafana_servers`
@@ -533,7 +554,7 @@ monitoring_servers:
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `username`：Grafana 登陆界面的用户名
+- `username`：Grafana 登录界面的用户名
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`

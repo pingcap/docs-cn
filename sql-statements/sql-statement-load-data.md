@@ -10,9 +10,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/r
 
 ## 语法图
 
-**LoadDataStmt:**
-
-![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
+```ebnf+diagram
+LoadDataStmt ::=
+    'LOAD' 'DATA' LocalOpt 'INFILE' stringLit DuplicateOpt 'INTO' 'TABLE' TableName CharsetOpt Fields Lines IgnoreLines ColumnNameOrUserVarListOptWithBrackets LoadDataSetSpecOpt
+```
 
 ## 参数说明
 
@@ -96,7 +97,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 ## MySQL 兼容性
 
-`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+除 `LOAD DATA...REPLACE INTO` 语法 [#24515](https://github.com/pingcap/tidb/issues/24515) 之外，`LOAD DATA` 语句应该完全兼容 MySQL。若发现任何兼容性差异，请在 GitHub 上提 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 > **注意：**
 >

@@ -5,24 +5,53 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v4.0.6。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.2.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v4.0.6
+tiup cluster upgrade <cluster-name> v5.2.0
 ```
 
 ### 升级的注意事项
 
 * TiCDC v4.0.2 对 `changefeed` 的配置做了调整，请参阅[配置文件兼容注意事项](/ticdc/manage-ticdc.md#配置文件兼容性的注意事项)。
 * 升级期间遇到的问题及其解决办法，请参阅[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md#4-升级-faq)。
+
+## 使用 TiUP 修改 TiCDC 配置
+
+本节介绍如何使用 TiUP 的 [`tiup cluster edit-config`](/tiup/tiup-component-cluster-edit-config.md) 命令来修改 TiCDC 的配置。在以下例子中，假设需要把 TiCDC 的 `gc-ttl` 从默认值 `86400` 修改为 `3600`，即 1 小时。
+
+首先执行以下命令。将 `<cluster-name>` 替换成实际的集群名。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster edit-config <cluster-name>
+```
+
+执行以上命令之后，进入到 vi 编辑器页面，修改 [`server-configs`](/tiup/tiup-cluster-topology-reference.md#server_configs) 下的 `cdc` 配置，如下所示：
+
+```shell
+ server_configs:
+  tidb: {}
+  tikv: {}
+  pd: {}
+  tiflash: {}
+  tiflash-learner: {}
+  pump: {}
+  drainer: {}
+  cdc:
+    gc-ttl: 3600
+```
+
+修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
 ## 使用加密传输 (TLS) 功能
 
@@ -69,6 +98,29 @@ tiup cluster upgrade <cluster-name> v4.0.6
 
 ### 管理同步任务 (`changefeed`)
 
+#### 同步任务状态流转
+
+同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
+
+![TiCDC state transfer](/media/ticdc-state-transfer.png)
+
+以上状态流转图中的状态说明如下：
+
+- Normal：同步任务正常进行，checkpoint-ts 正常推进。
+- Stopped：同步任务停止，由于用户手动暂停 (pause) changefeed。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Error：同步任务报错，由于某些可恢复的错误导致同步无法继续进行，处于这个状态的 changefeed 会不断尝试继续推进，直到状态转为 Normal。处于这个状态的 changefeed 会阻挡 GC 推进。
+- Finished：同步任务完成，同步任务进度已经达到预设的 TargetTs。处于这个状态的 changefeed 不会阻挡 GC 推进。
+- Failed：同步任务失败。由于发生了某些不可恢复的错误，导致同步无法继续进行，并且无法恢复。处于这个状态的 changefeed 不会阻挡 GC 推进。
+
+以上状态流转图中的编号说明如下：
+
+- ① 执行 `changefeed pause` 命令。
+- ② 执行 `changefeed resume` 恢复同步任务。
+- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ④ 执行 `changefeed resume` 恢复同步任务。
+- ⑤ `changefeed` 运行过程中发生不可恢复的错误。
+- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
+
 #### 创建同步任务
 
 使用以下命令来创建同步任务：
@@ -76,13 +128,13 @@ tiup cluster upgrade <cluster-name> v4.0.6
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task"
+cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:123456@127.0.0.1:3306/" --changefeed-id="simple-replication-task" --sort-engine="unified"
 ```
 
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"memory","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -98,13 +150,13 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。
-- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `memory`/`unified`/`file`：
+- `--sort-engine`：指定 changefeed 使用的排序引擎。因 TiDB 和 TiKV 使用分布式架构，TiCDC 需要对数据变更记录进行排序后才能输出。该项支持 `unified`（默认）/`memory`/`file`：
 
-    - `memory`：在内存中进行排序。
     - `unified`：优先使用内存排序，内存不足时则自动使用硬盘暂存数据。该选项默认开启。
+    - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
-- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 `cdc server` 命令中使用该选项来设置临时文件目录。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
+- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
 - `--config`：指定 changefeed 配置文件。
 
 #### Sink URI 配置 `mysql`/`tidb`
@@ -203,8 +255,8 @@ URI 中可配置的的参数如下：
 | `tlsAllowInsecureConnection` | 在开启 TLS 之后是否允许非加密连接（可选） |
 | `tlsValidateHostname` | 是否校验下游 Pulsar 证书中的 host name（可选） |
 | `maxConnectionsPerBroker` | 下游单个 Pulsar broker 最多允许的连接数（可选，默认值为 1） |
-| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `"{"tlsCertFile":"/path/to/cert", "tlsKeyFile":"/path/to/key"}"`）|
-| `auth.token` | 使用 token 模式认证下游（可选，示例 `"{"token":"secret-token"}"` 或者 `"{"file":"path/to/secret-token-file"}"`）|
+| `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`）|
+| `auth.token` | 使用 token 模式认证下游（可选，示例 `auth=token&auth.token=secret-token` 或者 `auth=token&auth.file=path/to/secret-token-file`）|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
@@ -213,7 +265,7 @@ URI 中可配置的的参数如下：
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
-更多关于 Pulsar 的参数解释，参见 [pulsar-client-go ClientOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [pulsar-client-go ProducerOptions 文档](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions)
+更多关于 Pulsar 的参数解释，参见 [“pulsar-client-go ClientOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) 和 [“pulsar-client-go ProducerOptions 文档”](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions) 。
 
 #### 使用同步任务配置文件
 
@@ -254,9 +306,10 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 - `checkpoint` 即为 TiCDC 已经将该时间点前的数据同步到了下游。
 - `state` 为该同步任务的状态：
     - `normal`: 正常同步
-    - `stopped`: 停止同步（手动暂停或出错）
+    - `stopped`: 停止同步（手动暂停）
+    - `error`: 停止同步（出错）
     - `removed`: 已删除任务（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
-    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）
+    - `finished`: 任务已经同步到指定 `target-ts`，处于已完成状态（只在指定 `--all` 选项时才会显示该状态的任务。未指定时，可通过 `query` 查询该状态的任务）。
 
 #### 查询特定同步任务
 
@@ -299,7 +352,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
     "start-ts": 419036036249681921,
     "target-ts": 0,
     "admin-job-type": 0,
-    "sort-engine": "memory",
+    "sort-engine": "unified",
     "sort-dir": ".",
     "config": {
       "case-sensitive": true,
@@ -411,14 +464,6 @@ cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 
 - `--changefeed-id=uuid` 为需要操作的 `changefeed` ID。
 
-删除任务后会保留任务的同步状态信息 24 小时（主要用于记录同步的 checkpoint），24 小时内不能创建同名的任务。如果希望彻底删除任务信息，可以指定 `--force` 或 `-f` 参数删除，删除后 changefeed 的所有信息都会被清理，可以立即创建同名的 changefeed。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed remove --pd=http://10.0.10.25:2379 --changefeed-id simple-replication-task --force
-```
-
 ### 更新同步任务配置
 
 TiCDC 从 4.0.4 开始支持非动态修改同步任务配置，修改 changefeed 配置需要按照 `暂停任务 -> 修改配置 -> 恢复任务` 的流程。
@@ -492,93 +537,6 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 - `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id。
 - `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
-
-## 使用 HTTP 接口管理集群状态和数据同步
-
-目前 HTTP 接口提供一些基础的查询和运维功能。在以下接口描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
-
-### 获取 TiCDC server 状态信息的接口
-
-使用以下命令获取 CDC server 状态信息的接口：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl http://127.0.0.1:8300/status
-```
-
-```
-{
- "version": "0.0.1",
- "git_hash": "863f8ea889b144244ff53593a45c47ad22d37396",
- "id": "6d92386a-73fc-43f3-89de-4e337a42b766", # capture id
- "pid": 12102    # cdc server pid
-}
-```
-
-### 驱逐 owner 节点
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST http://127.0.0.1:8300/capture/owner/resign
-```
-
-以上命令仅对 owner 节点请求有效。
-
-```
-{
- "status": true,
- "message": ""
-}
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST http://127.0.0.1:8301/capture/owner/resign
-```
-
-以上命令对非 owner 节点请求返回错误。
-
-```
-election: not leader
-```
-
-### 手动调度表到其他节点
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
-```
-
-参数说明
-
-| 参数名        | 说明 |
-| :----------- | :--- |
-| `cf-id`        | 进行调度的 Changefeed ID |
-| `target-cp-id` | 目标 Capture ID |
-| `table-id`     | 需要调度的 Table ID |
-
-以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
-
-```
-{
- "status": true,
- "message": ""
-}
-```
-
-### 动态调整 TiCDC server 日志级别
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST -d '"debug"' http://127.0.0.1:8301/admin/log
-```
-
-`POST` 参数表示新的日志级别，支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。该接口参数为 JSON 编码，需要注意引号的使用：`'"debug"'`。
 
 ## 同步任务配置文件描述
 
@@ -718,7 +676,6 @@ sync-ddl = true
         --cyclic-replica-id 1 \
         --cyclic-filter-replica-ids 2 \
         --cyclic-sync-ddl true
-
     # 在 TiDB 集群 B 上创建环形同步任务。
     cdc cli changefeed create \
         --sink-uri="mysql://root@${TiDB_C_HOST}/" \
@@ -726,7 +683,6 @@ sync-ddl = true
         --cyclic-replica-id 2 \
         --cyclic-filter-replica-ids 3 \
         --cyclic-sync-ddl true
-
     # 在 TiDB 集群 C 上创建环形同步任务。
     cdc cli changefeed create \
         --sink-uri="mysql://root@${TiDB_A_HOST}/" \
@@ -742,9 +698,11 @@ sync-ddl = true
 2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
 3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
 4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
-5. 如果想在线 DDL，需要确保以下两点：
-    1. 多个集群的 TiCDC 构成一个单向 DDL 同步链，不能成环，例如示例中只有 C 集群的 TiCDC 关闭了 `sync-ddl`。
-    2. DDL 必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
+5. 在多集群同时写入时，为了避免业务出错，请避免执行 DDL 语句，比如 `ADD COLUMN`/`DROP COLUMN` 等。
+6. 如果想在线执行 DDL 语句，需要确保满足以下条件：
+    + 业务兼容 DDL 语句执行前后的表结构。
+    + 多个集群的 TiCDC 组件构成一个单向 DDL 同步链，不能成环。例如以上在 TiDB 集群 A，B 和 C 上创建环形同步任务的示例中，只有 C 集群的 TiCDC 组件关闭了 `sync-ddl`。
+    + DDL 语句必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
@@ -781,13 +739,26 @@ force-replicate = true
 
 ## Unified Sorter 功能
 
-Unified Sorter 是 TiCDC 中的排序引擎功能，目前默认开启，用于缓解以下场景造成的内存溢出问题：
+Unified Sorter 是 TiCDC 中的排序引擎功能，用于缓解以下场景造成的内存溢出问题：
 
 + 如果 TiCDC 数据订阅任务的暂停中断时间长，其间积累了大量的增量更新数据需要同步。
 + 从较早的时间点启动数据订阅任务，业务写入量大，积累了大量的更新数据需要同步。
 
+对 v4.0.13 版本之后的 `cdc cli` 创建的 changefeed，默认开启 Unified Sorter。对 v4.0.13 版本前已经存在的 changefeed，则使用之前的配置。
+
+要确定一个 changefeed 上是否开启了 Unified Sorter 功能，可执行以下示例命令查看（假设 PD 实例的 IP 地址为 `http://10.0.10.25:2379`）：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-replication-task | grep 'sort-engine'
+```
+
+以上命令的返回结果中，如果 `sort-engine` 的值为 "unified"，则说明 Unified Sorter 已在该 changefeed 上开启。
+
 > **注意：**
 >
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
-> + 请保证硬盘的空闲容量大于等于 128G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
+> + 请保证硬盘的空闲容量大于等于 500G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
+> + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。

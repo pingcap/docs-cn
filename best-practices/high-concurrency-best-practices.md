@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/best-practices/high-concurrency-best-practices/','/docs-
 
 如果要解决以上挑战，需要从 TiDB 数据切分以及调度的原理开始讲起。这里只作简单说明，详情可参阅[谈调度](https://pingcap.com/blog-cn/tidb-internal-3/)。
 
-TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 即将支持 [Follower-Read](https://zhuanlan.zhihu.com/p/78164196)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
+TiDB 以 Region 为单位对数据进行切分，每个 Region 有大小限制（默认 96M）。Region 的切分方式是范围切分。每个 Region 会有多副本，每一组副本，称为一个 Raft Group。每个 Raft Group 中由 Leader 负责执行这块数据的读 & 写（TiDB 支持 [Follower-Read](/follower-read.md)）。Leader 会自动地被 PD 组件均匀调度在不同的物理节点上，用以均分读写压力。
 
 ![TiDB 数据概览](/media/best-practices/tidb-data-overview.png)
 
@@ -194,7 +194,7 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 create table t (a int, b int) SHARD_ROW_ID_BITS = 4 PRE_SPLIT_REGIONS=3;
 ```
 
-- `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 （16=2^4） 个范围区间。
+- `SHARD_ROW_ID_BITS = 4` 表示 tidb_rowid 的值会随机分布成 16 (16=2^4) 个范围区间。
 - `PRE_SPLIT_REGIONS=3` 表示建完表后提前切分出 8 (2^3) 个 Region。
 
 开始写数据进表 t 后，数据会被写入提前切分好的 8 个 Region 中，这样也避免了刚开始建表完后因为只有一个 Region 而存在的写热点问题。

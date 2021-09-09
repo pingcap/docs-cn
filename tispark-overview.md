@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 
 TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要你搭建一个 Spark 集群。
 
-本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html) 了解 Spark 的相关信息。
+本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html)了解 Spark 的相关信息。
 
 ## 概述
 
@@ -15,7 +15,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ![TiSpark Architecture](/media/tispark-architecture.png)
 
-+ TiSpark 深度整合了 Spark Catalyst 引擎, 可以对计算提供精确的控制，使 Spark 能够高效的读取 TiKV 中的数据，提供索引支持以实现高速的点查。
++ TiSpark 深度整合了 Spark Catalyst 引擎，可以对计算提供精确的控制，使 Spark 能够高效的读取 TiKV 中的数据，提供索引支持以实现高速的点查。
 + 通过多种计算下推减少 Spark SQL 需要处理的数据大小，以加速查询；利用 TiDB 的内建的统计信息选择更优的查询计划。
 + 从数据集群的角度看，TiSpark + TiDB 可以让用户无需进行脆弱和难以维护的 ETL，直接在同一个平台进行事务和分析两种工作，简化了系统架构和运维。
 + 用户借助 TiSpark 项目可以在 TiDB 上使用 Spark 生态圈提供的多种工具进行数据处理。例如，使用 TiSpark 进行数据分析和 ETL；使用 TiKV 作为机器学习的数据源；借助调度系统产生定时报表等等。
@@ -31,7 +31,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 ## 推荐配置
 
-本部分描述了 TiKV 与 TiSpark 集群分开部署、Spark 与 TiSpark 集群独立部署，以及TiSpark 与 TiKV 集群混合部署的建议配置。
+本部分描述了 TiKV 与 TiSpark 集群分开部署、Spark 与 TiSpark 集群独立部署，以及 TiSpark 与 TiKV 集群混合部署的建议配置。
 
 ### TiKV 与 TiSpark 集群分开部署的配置
 
@@ -289,7 +289,7 @@ val df = spark.sql("select * from tpch.ORDERS")
 df.write.
   format("tidb").
   option("tidb.addr", "127.0.0.1").
-  option("tidb.port", "4000")
+  option("tidb.port", "4000").
   option("tidb.user", "root").
   option("tidb.password", "").
   option("database", "tpch").
@@ -367,7 +367,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 - Q. Spark 执行中报 warning：WARN ObjectStore:568 - Failed to get database
 
-    A. Warning 忽略即可，原因是 Spark 找不到对应的 hive 库，因为这个库是在 TIKV 中，而不是在 hive 中。可以考虑调整 [log4j 日志](https://github.com/pingcap/tidb-docker-compose/blob/master/tispark/conf/log4j.properties#L43)，将该参数添加到 spark 下 conf 里 log4j 文件(如果后缀是 template 那先 mv 成后缀 properties)。
+    A. Warning 忽略即可，原因是 Spark 找不到对应的 hive 库，因为这个库是在 TIKV 中，而不是在 hive 中。可以考虑调整 [log4j 日志](https://github.com/pingcap/tidb-docker-compose/blob/master/tispark/conf/log4j.properties#L43)，将该参数添加到 spark 下 conf 里 log4j 文件（如果后缀是 template 那先 mv 成后缀 properties）。
 
 - Q. Spark 执行中报 java.sql.BatchUpdateException: Data Truncated
 
@@ -377,6 +377,6 @@ TiSpark 可以使用 TiDB 的统计信息：
 
     A. TiSpark 通过读取 hive-site 里的 meta 来搜寻 hive 的库。如果搜寻不到，就通过读取 tidb meta 搜寻 tidb 库。如果不需要该行为，可不在 hive site 中配置 hive 的 meta。
 
-- Q. TiSpark 执行 Spark 任务时报：Error：java.io.InvalidClassException: com.pingcap.tikv.region.TiRegion; local class incompatible: stream classdesc serialVersionUID ...
+- Q. TiSpark 执行 Spark 任务时报："Error：java.io.InvalidClassException: com.pingcap.tikv.region.TiRegion; local class incompatible: stream classdesc serialVersionUID ..."
 
     A. 该报错日志中显示 serialVersionUID 冲突，说明存在不同版本的 class 和 TiRegion。因为 TiRegion 是 TiSpark 独有的，所以可能存在多个版本的 TiSpark 包。要解决该报错，请确保集群中各节点的 TiSpark 依赖包版本一致。

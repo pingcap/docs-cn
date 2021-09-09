@@ -177,6 +177,22 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
     Active: active (running) since 一 2017-12-18 13:13:19 CST; 3s ago
     ```
 
+    - 若返回报错信息 `Unit ntpd.service could not be found.`，请尝试执行以下命令，以查看与 NTP 进行时钟同步所使用的系统配置是 `chronyd` 还是 `ntpd`：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        sudo systemctl status cronyd.service
+        ```
+
+        ```
+        chronyd.service - NTP client/server
+        Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
+        Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
+        ```
+
+        如果你使用的系统配置是 `chronyd`，请直接执行以下的步骤 3。
+
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
     > **注意：**
@@ -207,6 +223,48 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
         ```
         Unable to talk to NTP daemon. Is it running?
+        ```
+
+3. 执行 `chronyc tracking` 命令查看 Chrony 服务是否与 NTP 服务器同步。
+
+    > **注意：**
+    >
+    > 该操作仅适用于使用 Chrony 的系统，不适用于使用 NTPd 的系统。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    chronyc tracking
+    ```
+
+    - 如果该命令返回结果为 `Leap status : Normal`，则代表同步过程正常。
+
+        ```
+        Reference ID    : 5EC69F0A (ntp1.time.nl)
+        Stratum         : 2
+        Ref time (UTC)  : Thu May 20 15:19:08 2021
+        System time     : 0.000022151 seconds slow of NTP time
+        Last offset     : -0.000041040 seconds
+        RMS offset      : 0.000053422 seconds
+        Frequency       : 2.286 ppm slow
+        Residual freq   : -0.000 ppm
+        Skew            : 0.012 ppm
+        Root delay      : 0.012706812 seconds
+        Root dispersion : 0.000430042 seconds
+        Update interval : 1029.8 seconds
+        Leap status     : Normal
+        ```
+
+    - 如果该命令返回结果如下，则表示同步过程出错：
+
+        ```
+        Leap status    : Not synchronised
+        ```
+
+    - 如果该命令返回结果如下，则表示 Chrony 服务未正常运行：
+
+        ```
+        506 Cannot talk to daemon
         ```
 
 如果要使 NTP 服务尽快开始同步，执行以下命令。可以将 `pool.ntp.org` 替换为你的 NTP 服务器：
@@ -528,7 +586,6 @@ sudo systemctl enable ntpd.service
     echo "net.ipv4.tcp_tw_recycle = 0">> /etc/sysctl.conf
     echo "net.ipv4.tcp_syncookies = 0">> /etc/sysctl.conf
     echo "vm.overcommit_memory = 1">> /etc/sysctl.conf
-    echo "vm.swappiness = 0">> /etc/sysctl.conf
     sysctl -p
     ```
 
@@ -547,7 +604,7 @@ sudo systemctl enable ntpd.service
 
 ## 手动配置 SSH 互信及 sudo 免密码
 
-对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登陆，可忽略本段内容。
+对于有需求，通过手动配置中控机至目标节点互信的场景，可参考本段。通常推荐使用 TiUP 部署工具会自动配置 SSH 互信及免密登录，可忽略本段内容。
 
 1. 以 `root` 用户依次登录到部署目标机器创建 `tidb` 用户并设置登录密码。
 

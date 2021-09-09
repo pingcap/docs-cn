@@ -25,7 +25,7 @@
 
 ### 翻译中文文档
 
-TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/) 也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs 仓库](https://github.com/pingcap/docs) 中。**具体的认领方式**如下。
+TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](https://docs.pingcap.com/tidb/dev/)也需要频繁更新。这一过程会涉及很多的**中译英**，即将 pingcap/docs-cn 仓库里已 merge 但尚未进行翻译处理的 Pull Request 翻译为英文，并提交 Pull Request 至 [pingcap/docs 仓库](https://github.com/pingcap/docs)中。**具体的认领方式**如下。
 
 > **注意：**
 >
@@ -39,7 +39,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 你可以通过以下简单几步来认领并提交一个 PR 翻译任务：
 
-> 注意：
+> **注意**：
 >
 > 关于下面步骤中所提到的 comment 式命令，详细说明请参考[常用 bot 命令](#常用-bot-命令)。
 
@@ -49,11 +49,11 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 2. 认领 PR
 
-    打开你想认领的 PR，拉到底部留下这条 comment：`/assign @Your-GitHub-ID`（将 Your-GitHub-ID 替换为你的 GitHub ID），即可将此 PR 的翻译任务分配给自己。
+    打开你想认领的 PR，拉到底部留下这条 comment：`/assign`，即可将此 PR 的翻译任务分配给自己。
 
 3. 修改 PR 标签
 
-    PR 认领成功后，继续在底部 comment 区域依次发送：`/unlabel translation/welcome` 及 `/label translation/doing`，即可将右侧 label 栏中的 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
+    PR 认领成功后，继续在底部 comment 区域依次发送：`/remove-translation welcome` 及 `/translation doing`，即可将右侧 label 栏中的 `translation/welcome` 改为 `translation/doing`，之后你便可以开始翻译了。
 
 4. 翻译 PR 并提交
 
@@ -61,11 +61,11 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
 
 5. 填写 PR 描述并修改标签
 
-    新建 PR 成功后，先按照模板说明完整填写 PR 描述，接着在底部发送：`/label translation/from-docs-cn`，为 PR 添加 `translation/from-docs-cn` 标签，表明此 PR 是从中文翻译过来的。然后回到源 PR 依次发送：`/unlabel translation/doing` 及 `/label translation/done`，将源 PR 标签修改为 `translation/done`，表明翻译已完成。
+    新建 PR 成功后，先按照模板说明完整填写 PR 描述，接着在底部发送：`/translation from-docs-cn`，为 PR 添加 `translation/from-docs-cn` 标签，表明此 PR 是从中文翻译过来的。然后回到源 PR 依次发送：`/remove-translation doing` 及 `/translation done`，将源 PR 标签修改为 `translation/done`，表明翻译已完成。
 
 6. 分配 Reviewer（推荐，非必需）
 
-    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。具体操作为：在新建的 PR 下发送 `/cc @TomShawn, @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
+    每个 PR 都需要经过 Review 后才能合并，分配 Reviewer 一般由文档仓库管理员负责，但我们也十分欢迎你来主动承担这个任务。具体操作为：在新建的 PR 下发送 `/cc @TomShawn @technical-reviewer`（将 technical-reviewer 替换为源 PR 作者的 GitHub ID），即可将 Review 任务分配给 docs 仓库管理员 @TomShawn 及源 PR 的作者。
 
 ## 快速上手资源
 
@@ -91,7 +91,7 @@ TiDB 文档的修改需要遵循一定的流程，具体如下。考虑到有些
 
 > **注意：**
 >
-> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版）、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。
+> 目前 TiDB 主要维护以下几个版本的文档：dev（最新开发版，对应文档仓库的 master 分支）、v5.2、v5.1、v5.0、v4.0、v3.1、v3.0 以及 v2.1。提 Pull Request 前请务必考虑修改会影响的文档版本，并据此修改所有相应的版本。选择版本时，请参考[版本选择指南](#版本选择指南)。
 
 ### 第 0 步：签署 Contributor License Agreement
 
@@ -165,7 +165,7 @@ git push -u origin new-branch-name
 
 > **注意：**
 >
-> - 如果你的修改影响多个文档版本 (dev, v4.0, v3.1, v3.0, v2.1)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
+> - 如果你的修改影响多个文档版本 (dev, v5.0, v4.0, v3.1, v3.0, v2.1)，务必**在 PR 描述框中勾选相应的版本**，后续仓库管理员会为你的 PR 打上相应的 cherry-pick 标签。
 
 ## 必须遵循的 Markdown 规范
 
@@ -187,12 +187,29 @@ TiDB 中文文档使用 Markdown 语言进行编写，为了保证文档质量�
 
 | 命令 | 含义 | 示例 |
 | ------ | ------ | ------ |
-| `/label` | 给 PR 添加 label，多个 label 间需要用逗号分隔。 | `/label translation/doing` |
-| `/unlabel` | 删除 PR label。 | `/unlabel translation/welcome` |
-| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/assign @CharLotteiu` |
+| `/label` | 给 PR 添加 label，多个 label 间需要用逗号分隔。如果 label 中有斜线 `/`，则命令为 `/[label 的第一个单词] [label 其他部分]` | `/label contribution`，`/translation from-docs` |
+| `/remove-label` | 删除 PR label。如果 label 中有斜线 `/`，则命令为 `/remove-[label 的第一个单词] [label 其他部分]` | `/remove-label contribution`，`/remove-translation welcome` |
+| `/assign` | 将 PR 分配给指定的人，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。如果想要将 PR 分配给自己，`/assign`后可不跟 GitHub ID。 | `/assign @CharLotteiu` |
 | `/unassign` | 移除 PR 之前指定的 assignee。 | `/unassign @CharLotteiu` |
 | `/cc` | 将 PR 分配给指定的 reviewer，需 @指定用户的 GitHub ID，多个 GitHub ID 间用逗号分隔。 | `/cc @TomShawn, @yikeke` |
 | `/uncc` | 移除 PR 之前指定的 reviewer。  | `/uncc @TomShawn`|
+
+## 版本选择指南
+
+创建 Pull Request 时，你需要在 Pull Request 的描述模版中选择文档改动适用的版本分支。
+
+如果你的 PR 改动符合以下任一情况，推荐**只选择 master 分支**。此 PR 的改动在合并后将显示到[官网文档 Dev 页面](https://docs.pingcap.com/zh/tidb/dev/)，在下一次 TiDB 发新版本时将显示到对应版本的文档页面。
+
+- 完善和优化文档内容，例如补充缺失或不完整的信息。
+- 修正不准确或错误的文档内容，例如默认值错误、描述不准确、示例错误、拼写错误等。
+- 重新组织现有文档的某个局部，例如“部署标准集群”、“数据迁移”、“TiDB 生态工具”等。
+
+如果你的 PR 改动符合以下任一情况，请**选择 master 分支以及受影响的 release 分支**：
+
+- 涉及与版本相关的功能行为变化。
+- 涉及与版本相关的兼容性变化，例如更改某个配置项或变量的默认值。
+- 修复文档页面的渲染或显示错误。
+- 修复文档内的死链。
 
 ## 联系我们
 

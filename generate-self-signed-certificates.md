@@ -36,7 +36,7 @@ apt install openssl
 yum install openssl
 ```
 
-也可以参考 OpenSSL 官方的[下载文档](https://www.openssl.org/source/) 进行安装。
+也可以参考 OpenSSL 官方的[下载文档](https://www.openssl.org/source/)进行安装。
 
 ## 生成 CA 证书
 

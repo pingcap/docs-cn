@@ -81,10 +81,12 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
     如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，例如：
 
-    - 只想克隆 TiDB 的 v5.0.0 版本，则执行 `tiup mirror clone <target-dir> --tidb v5.0.0`
-    - 只想克隆 TiDB 的 v5.0.0 版本，以及 TiKV 的所有版本，则执行 `tiup mirror clone <target-dir> --tidb v5.0.0 --tikv all`
-    - 克隆一个集群的所有组件的 v5.0.0 版本，则执行 `tiup mirror clone <target-dir> v5.0.0`
+    - 只想克隆 TiDB 的 v5.2.0 版本，则执行 `tiup mirror clone <target-dir> --tidb v5.2.0`
+    - 只想克隆 TiDB 的 v5.2.0 版本，以及 TiKV 的所有版本，则执行 `tiup mirror clone <target-dir> --tidb v5.2.0 --tikv all`
+    - 克隆一个集群的所有组件的 v5.2.0 版本，则执行 `tiup mirror clone <target-dir> v5.2.0`
 
 ## 使用示例
+
+使用 `tiup mirror clone` 命令克隆的仓库可以在主机之间共享。可以通过 SCP、NFS 共享文件，也可以通过 HTTP 或 HTTPS 协议使用仓库。用 `tiup mirror set <location>` 命令来指定仓库的位置。
 
 参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md#方式二离线部署-tiup-组件)安装 TiUP 离线镜像，部署并启动 TiDB 集群。

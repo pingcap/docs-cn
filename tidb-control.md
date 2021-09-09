@@ -11,9 +11,13 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 
 本节提供了两种方式获取 TiDB Control 工具。
 
+> **注意：**
+>
+> 建议使用的 Control 工具版本与集群版本保持一致。
+
 ### 通过 TiUP 安装
 
-在安装 TiUP 之后， 可以使用 `tiup ctl tidb` 命令来获取 TiDB Control 的二进制程序以及运行 TiDB Control。
+在安装 TiUP 之后，可以使用 `tiup ctl tidb` 命令来获取 TiDB Control 的二进制程序以及运行 TiDB Control。
 
 ### 从源代码编译安装
 
@@ -66,7 +70,7 @@ TiDB Control 是 TiDB 的命令行工具，用于获取 TiDB 状态信息，多�
 - `--ssl-key` 连接使用的 TLS 密钥文件路径
 - `--ssl-cert` 连接使用的 TLS 证书文件路径
 
-其中 `--pdhost` 和 `--pdport` 主要是用于 `etcd` 子命令，例如：`tidb-ctl etcd ddlinfo`。如不添加地址和端口将使用默认值，TiDB/PD 服务默认的地址是 127.0.0.1 (服务地址只能使用 IP 地址)，TiDB 服务端口默认的端口是 10080，PD 服务端口默认的端口是 2379 **连接选项是全局选项，适用于以下所有命令。**
+其中 `--pdhost` 和 `--pdport` 主要是用于 `etcd` 子命令，例如：`tidb-ctl etcd ddlinfo`。如不添加地址和端口将使用默认值，TiDB/PD 服务默认的地址是 127.0.0.1（服务地址只能使用 IP 地址），TiDB 服务端口默认的端口是 10080，PD 服务端口默认的端口是 2379 **连接选项是全局选项，适用于以下所有命令。**
 
 ### schema 命令
 
@@ -76,7 +80,7 @@ in 子命令用来通过数据库名获取数据库中所有表的表结构。
 
 `tidb-ctl schema in {数据库名}`
 
-如：`tidb-ctl schema in mysql` 将得到以下结果：
+如：`tidb-ctl schema in mysql` 将得到以下结果
 
 ```json
 [
@@ -98,7 +102,7 @@ in 子命令用来通过数据库名获取数据库中所有表的表结构。
 
 如希望指定表名，可以使用 `tidb-ctl schema in {数据库名} -n {表名}` 进行过滤。
 
-如：`tidb-ctl schema in mysql -n db` 将得到 mysql 库中 db 表的表结构，结果如下：
+如：`tidb-ctl schema in mysql -n db` 将得到 mysql 库中 db 表的表结构。结果如下：
 
 ```json
 {
@@ -135,7 +139,7 @@ tid 子命令用来通过表的 id 获取数据库中表的表结构。
  "collate": "utf8mb4_bin",
   ...
 }
-``` 
+```
 
 同 in 子命令一样，如果使用的 TiDB 地址不是默认的地址和端口，需要通过 `--host` 和 `--port` 参数指定 TiDB 的地址和 status 端口。
 
@@ -282,7 +286,7 @@ tidb-ctl base64decode [table_id] [base64_data]
 ### etcd 命令
 
 * `tidb-ctl etcd ddlinfo` 获取 DDL 信息。
-* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd (所有的 KEY 会添加到 `/tidb/ddl/all_schema_versions/` 之下)。
+* `tidb-ctl etcd putkey KEY VALUE` 添加 KEY VALUE 到 etcd（所有的 KEY 会添加到 `/tidb/ddl/all_schema_versions/` 之下）。
 
     {{< copyable "shell-regular" >}}
 

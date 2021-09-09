@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-flashback-table/','/docs-cn
 
 在 TiDB 4.0 中，引入了 `FLASHBACK TABLE` 语法，其功能是在 Garbage Collection (GC) life time 时间内，可以用 `FLASHBACK TABLE` 语句来恢复被 `DROP` 或 `TRUNCATE` 删除的表以及数据。
 
-可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 `safePoint`， 即 GC 已经清理到的时间点：
+可以使用系统变量 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 配置数据的历史版本的保留时间（默认值是 `10m0s`）。可以使用以下 SQL 语句查询当前的 `safePoint`，即 GC 已经清理到的时间点：
 
 {{< copyable "sql" >}}
 
@@ -27,17 +27,16 @@ FLASHBACK TABLE table_name [TO other_table_name]
 
 ### 语法图
 
-**FlashbackTableStmt:**
+```ebnf+diagram
+FlashbackTableStmt ::=
+    'FLASHBACK' 'TABLE' TableName FlashbackToNewName
 
-![FlashbackTableStmt](/media/sqlgram/FlashbackTableStmt.png)
+TableName ::=
+    Identifier ( '.' Identifier )?
 
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
-
-**FlashbackToNewName:**
-
-![FlashbackToNewName](/media/sqlgram/FlashbackToNewName.png)
+FlashbackToNewName ::=
+    ( 'TO' Identifier )?
+```
 
 ## 注意事项
 

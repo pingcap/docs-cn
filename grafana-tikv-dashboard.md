@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
 
-对于日常运维，我们通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据 [性能地图](https://asktug.com/_/tidb-performance-map/#/) 可以检查集群的状态是否符合预期。
+对于日常运维，我们通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据[性能地图](https://asktug.com/_/tidb-performance-map/#/)可以检查集群的状态是否符合预期。
 
 以下为 **TiKV-Details** 默认的监控信息：
 
@@ -100,6 +100,13 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 ## Raft process
 
 - Ready handled：Raft 中不同 ready 类型的 ops
+    - count: 批量处理 ready 的 ops
+    - has_ready_region: 获得 ready 的 Region 的 ops
+    - pending_region: 被检查是否获得 ready 的 Region 的 ops，v3.0.0 后废弃
+    - message: ready 内待发送 message 的 ops
+    - append: ready 内 Raft log entry 的 ops
+    - commit: ready 内 committed Raft log entry 的 ops
+    - snapshot: 携带 snapshot 的 ready 的 ops
 - 0.99 Duration of Raft store events：99% 的 raftstore 事件所花费的时间
 - Process ready duration：处理 ready 所花费的时间
 - Process ready duration per server：每个 TiKV 实例处理 ready 所花费的时间，99.99% 的情况下，应该小于 2s
@@ -222,20 +229,18 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 
 ## GC
 
-- MVCC versions：每个 key 的版本个数
-- MVCC delete versions：GC 删除掉的每个 key 的版本个数
 - GC tasks：由 gc_worker 处理的 GC 任务的个数
 - GC tasks Duration：执行 GC 任务时所花费的时间
-- GC keys (write CF)：在 GC 过程中，write CF 中 受影响的 key 的个数
-- TiDB GC worker actions：TiDB GC worker 的不同 action 的个数
 - TiDB GC seconds：TiDB 执行 GC 花费的时间
-- GC speed：GC 每秒删除的 key 的数量
+- TiDB GC worker actions：TiDB GC worker 的不同 action 的个数
 - TiKV AutoGC Working：Auto GC 管理器的工作状态
-- ResolveLocks Progress：GC 第一阶段（ResolveLocks）的进度
+- ResolveLocks Progress：GC 第一阶段 (ResolveLocks) 的进度
 - TiKV Auto GC Progress：GC 第二阶段的进度
+- GC speed：GC 每秒删除的 key 的数量
 - TiKV Auto GC SafePoint：TiKV GC 的 safe point 的数值，safe point 为当前 GC 的时间戳
 - GC lifetime：TiDB 设置的 GC lifetime
 - GC interval：TiDB 设置的 GC 间隔
+- GC in Compaction Filter：write CF 的 Compaction Filter 中已过滤版本的数量
 
 ## Snapshot
 
@@ -307,9 +312,9 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Keys flow：不同操作造成的 key 的流量
 - Total keys：每个 CF 中 key 的个数
 - Read flow：不同读操作的流量
-- Bytes / Read：每次读的大小
+- Bytes/Read：每次读的大小
 - Write flow：不同写操作的流量
-- Bytes / Write：每次写的大小
+- Bytes/Write：每次写的大小
 - Compaction flow：compaction 相关的流量
 - Compaction pending bytes：等待 compaction 的大小
 - Read amplification：每个 TiKV 实例的读放大

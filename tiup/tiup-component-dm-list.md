@@ -4,7 +4,7 @@ title: tiup dm list
 
 # tiup dm list
 
-tiup-dm 支持使用同一个中控机部署多套集群，而命令 `tiup dm list` 可以查看当前登陆的用户使用该中控机部署了哪些集群。
+tiup-dm 支持使用同一个中控机部署多套集群，而命令 `tiup dm list` 可以查看当前登录的用户使用该中控机部署了哪些集群。
 
 > **注意：**
 > 
@@ -12,15 +12,17 @@ tiup-dm 支持使用同一个中控机部署多套集群，而命令 `tiup dm li
 
 ## 语法
 
-```sh
+```shell
 tiup dm list [flags]
 ```
 
 ## 选项
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
@@ -31,3 +33,5 @@ tiup dm list [flags]
 - Version：集群版本
 - Path：集群部署数据在中控机上的路径
 - PrivateKey：连接集群的私钥所在路径
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

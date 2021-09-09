@@ -24,14 +24,73 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
 
 在使用 `cdc cli changefeed create` 创建同步任务时会检查上游表是否符合[同步限制](/ticdc/ticdc-overview.md#同步限制)。如果存在表不满足同步限制，会提示 `some tables are not eligible to replicate` 并列出这些不满足的表。用户选择 `Y` 或 `y` 则会继续创建同步任务，并且同步过程中自动忽略这些表的所有更新。用户选择其他输入，则不会创建同步任务。
 
-## 如何处理 TiCDC 同步任务的中断？
+## 如何查看 TiCDC 同步任务的状态？
 
-目前已知可能发生的同步中断包括以下两类场景：
+可以使用 `cdc cli` 查询同步任务的状态。例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed list --pd=http://10.0.10.25:2379
+```
+
+上述命令输出如下：
+
+```json
+[{
+    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
+```
+
+* `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
+* `state` 为该同步任务的状态：
+    * `normal`：正常同步。
+    * `stopped`：停止同步（手动暂停或出错）。
+    * `removed`：已删除任务。
+
+> **注意：**
+>
+> 该功能在 TiCDC 4.0.3 版本引入。
+
+## TiCDC 同步任务出现中断
+
+### 如何判断 TiCDC 同步任务出现中断？
+
+- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 `changefeed id`）监控项。如果该值不发生变化（也可以查看 `checkpoint lag` 是否不断增大），可能同步任务出现中断。
+- 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
+- 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
+- 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
+
+### 如何查看 TiCDC 同步任务是否被人为终止？
+
+可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
+
+* `0`: 任务进行中，没有被人为停止。
+* `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
+* `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
+* `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
+
+### 如何处理 TiCDC 同步任务的中断？
+
+目前已知可能发生的同步中断包括以下场景：
 
 - 下游持续异常，TiCDC 多次重试后仍然失败。
 
     - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
-
     - 处理方法：用户可以在下游恢复正常后，通过 HTTP 接口恢复同步任务。
 
 - 因下游存在不兼容的 SQL 语句，导致同步不能继续。
@@ -42,34 +101,45 @@ aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools
         2. 使用新的任务配置文件，增加`ignore-txn-start-ts` 参数跳过指定 `start-ts` 对应的事务。
         3. 通过 HTTP API 停止旧的同步任务，使用 `cdc cli changefeed create` ，指定新的任务配置文件，指定 `start-ts` 为刚才记录的 `checkpoint-ts`，启动新的同步任务恢复同步。
 
-## 如何判断 TiCDC 同步任务出现中断？
+- 在 v4.0.13 及之前的版本中 TiCDC 同步分区表存在问题，导致同步停止。
 
-- 通过 Grafana 检查同步任务的 `changefeed checkpoint`（注意选择正确的 `changefeed id`）监控项。如果该值不发生变化（也可以查看 `checkpoint lag` 是否不断增大），可能同步任务出现中断。
-- 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
-- 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
-- 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
+    - 该场景下 TiCDC 会保存任务信息，由于 TiCDC 已经在 PD 中设置的 service GC safepoint，在 `gc-ttl` 的有效期内，同步任务 checkpoint 之后的数据不会被 TiKV GC 清理掉。
+    - 处理方法：
+        1. 通过 `cdc cli changefeed pause -c <changefeed-id>` 暂停同步。
+        2. 等待约一分钟后，通过 `cdc cli changefeed resume -c <changefeed-id>` 恢复同步。
 
-## TiCDC 的 `gc-ttl` 是什么？
+### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，应该如何处理？
 
-从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何晚于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
+升级 TiDB 集群和 TiCDC 集群到最新版本。该 OOM 问题在 **v4.0.14 及之后的 v4.0 版本，v5.0.2 及之后的 v5.0 版本，更新的版本**上已得到缓解。
 
-启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
-
-## 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理？
-
-如果同步任务长时间中断，累积未消费的数据比较多，再次启动 TiCDC 可能会发生 OOM。这种情况下可以启用 TiCDC 提供的实验特性 Unified Sorter 排序引擎，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+在这些版本上，可以开启 Unified Sorter 排序功能，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified`，使用示例如下：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
+cdc cli changefeed update -c <changefeed-id> --sort-engine="unified" --pd=http://10.0.10.25:2379
+```
+
+如果无法升级到上述版本，需要在**之前的版本**上开启 Unified Sorter，可以在创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified` 和 `--sort-dir=/path/to/sort_dir`，使用示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed update -c <changefeed-id> --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
 ```
 
 > **注意：**
 >
 > + TiCDC 从 4.0.9 版本起支持 Unified Sorter 排序引擎。
 > + TiCDC（4.0 发布版本）还不支持动态修改排序引擎。在修改排序引擎设置前，请务必确保 changefeed 已经停止 (stopped)。
+> + `sort-dir` 在不同版本之间有不同的行为，请参考 [`sort-dir` 及 `data-dir` 配置项的兼容性说明](/ticdc/ticdc-overview.md#sort-dir-及-data-dir-配置项的兼容性说明)，谨慎配置。
 > + 目前 Unified Sorter 排序引擎为实验特性，在数据表较多 (>= 100) 时可能出现性能问题，影响同步速度，故不建议在生产环境中使用。开启 Unified Sorter 前请保证各 TiCDC 节点机器上有足够硬盘空间。如果积攒的数据总量有可能超过 1 TB，则不建议使用 TiCDC 进行同步。
+
+## TiCDC 的 `gc-ttl` 是什么？
+
+从 TiDB v4.0.0-rc.1 版本起，PD 支持外部服务设置服务级别 GC safepoint。任何一个服务可以注册更新自己服务的 GC safepoint。PD 会保证任何晚于该 GC safepoint 的 KV 数据不会在 TiKV 中被 GC 清理掉。在 TiCDC 中启用了这一功能，用来保证 TiCDC 在不可用、或同步任务中断情况下，可以在 TiKV 内保留 TiCDC 需要消费的数据不被 GC 清理掉。
+
+启动 TiCDC server 时可以通过 `gc-ttl` 指定 GC safepoint 的 TTL，这个值的含义是当 TiCDC 服务全部挂掉后，由 TiCDC 在 PD 所设置的 GC safepoint 保存的最长时间，该值默认为 86400 秒。
 
 ## TiCDC GC safepoint 的完整行为是什么
 
@@ -171,64 +241,13 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > **注意：**
 >
 > * 该功能在 TiCDC 4.0.2 版本引入。
-> * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 Kafka。
+> * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
 
 更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
 
-## 如何查看 TiCDC 同步任务的状态？
-
-可以使用 `cdc cli` 查询同步任务的状态。例如：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
-```
-
-上述命令输出如下：
-
-```json
-[{
-    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
-    "summary": {
-      "state": "normal",
-      "tso": 417886179132964865,
-      "checkpoint": "2020-07-07 16:07:44.881",
-      "error": null
-    }
-}]
-```
-
-* `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态：
-    * `normal`：正常同步。
-    * `stopped`：停止同步（手动暂停或出错）。
-    * `removed`：已删除任务。
-
-> **注意：**
->
-> 该功能在 TiCDC 4.0.3 版本引入。
-
-## 如何查看 TiCDC 同步任务是否被人为终止？
-
-可以使用 `cdc cli` 查询同步任务是否被人为终止。例如：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
-```
-
-上述命令的输出中 `admin-job-type` 标志这个同步的任务的状态：
-
-* `0`: 任务进行中，没有被人为停止。
-* `1`: 任务暂停，停止任务后所有同步 `processor` 会结束退出，同步任务的配置和同步状态都会保留，可以从 `checkpoint-ts` 恢复任务。
-* `2`: 任务恢复，同步任务从 `checkpoint-ts` 继续同步。
-* `3`: 任务已删除，接口请求后会结束所有同步 `processor`，并清理同步任务配置信息。同步状态保留，只提供查询，没有其他实际功能。
-
 ## 为什么 TiCDC 到 Kafka 的同步任务延时越来越大？
 
-* 请参考 [如何查看 TiCDC 同步任务的状态？](/ticdc/troubleshoot-ticdc.md#如何查看-ticdc-同步任务的状态) 检查下同步任务的状态是否正常。
+* 请参考[如何查看 TiCDC 同步任务的状态？](/ticdc/troubleshoot-ticdc.md#如何查看-ticdc-同步任务的状态)检查下同步任务的状态是否正常。
 * 请适当调整 Kafka 的以下参数：
     * `message.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
     * `replica.fetch.max.bytes`，将 Kafka 的 `server.properties` 中该参数调大到 `1073741824` (1 GB)。
@@ -240,7 +259,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
 
-不能，目前 TiCDC 控制了向 Kafka 发送的消息批量的大小最大为 512 MB，其中单个消息的大小最大为 4 MB。
+可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 64MB）；通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量，目前仅对 Kafka 的 protocol 为 `default` 时有效（可选，默认值为 `4096`）。
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
@@ -275,7 +294,7 @@ Open protocol 的输出中 type = 6 即为 null，比如：
 
 更多信息请参考 [Open protocol Event 格式定义](/ticdc/ticdc-open-protocol.md#column-的类型码)。
 
-## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`
+## TiCDC 启动任务的 start-ts 时间戳与当前时间差距较大，任务执行过程中同步中断，出现错误 `[CDC:ErrBufferReachLimit]`，怎么办？
 
 自 v4.0.9 起可以尝试开启 unified sorter 特性进行同步；或者使用 BR 工具进行一次增量备份和恢复，然后从新的时间点开启 TiCDC 同步任务。TiCDC 将会在后续版本中对该问题进行优化。
 
@@ -311,12 +330,12 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 ## 当 changefeed 的下游为类 MySQL 数据库时，TiCDC 执行了一个耗时较长的 DDL 语句，阻塞了所有其他 changefeed，应该怎样处理？
 
 1. 首先暂停执行耗时较长的 DDL 的 changefeed。此时可以观察到，这个 changefeed 暂停后，其他的 changefeed 不再阻塞了。
-2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `StartTs`。
+2. 在 TiCDC log 中搜寻 `apply job` 字段，确认耗时较长的 DDL 的 `start-ts`。
 3. 手动在下游执行该 DDL 语句，执行完毕后进行下面的操作。
-4. 修改 changefeed 配置，将上述 `StartTs` 添加到 `ignore-txn-start-ts` 配置项中。
+4. 修改 changefeed 配置，将上述 `start-ts` 添加到 `ignore-txn-start-ts` 配置项中。
 5. 恢复被暂停的 changefeed。
 
-## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`
+## TiCDC 集群升级到 v4.0.8 之后，changefeed 报错 `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled`，为什么？
 
 自 v4.0.8 起，如果 changefeed 使用 canal 或者 maxwell 协议输出，TiCDC 会自动开启 Old Value 功能。但如果 TiCDC 是从较旧版本升级到 v4.0.8 或以上版本的，changefeed 使用 canal 或 maxwell 协议的同时 Old Value 功能被禁用，此时会出现该报错。可以按照以下步骤解决该报错：
 
@@ -417,11 +436,11 @@ cdc cli changefeed resume -c simple-replication-task --pd=http://10.0.10.25:2379
 
 如果 `pd-ctl service-gc-safepoint --pd <pd-addrs>` 的结果中没有 `gc_worker service_id`：
 
-+ 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)
-+ 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)
++ 如果 PD 的版本 <= v4.0.8，详见 [PD issue #3128](https://github.com/tikv/pd/issues/3128)。
++ 如果 PD 是由 v4.0.8 或更低版本滚动升级到新版，详见 [PD issue #3366](https://github.com/tikv/pd/issues/3366)。
 + 对于其他情况，请将上述命令执行结果反馈到 [AskTUG 论坛](https://asktug.com/tags/ticdc)。
 
-## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为 `REPLACE INTO`
+## 使用 TiCDC 创建同步任务时将 `enable-old-value` 设置为 `true` 后，为什么上游的 `INSERT`/`UPDATE` 语句经 TiCDC 同步到下游后变为了 `REPLACE INTO`？
 
 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
 
@@ -464,3 +483,41 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 >
 > 以上步骤仅适用于 TiCDC v4.0.11 及以上版本（不包括 v5.0.0-rc）。
 > 在其它版本中（v4.0.11 以下和 v5.0.0-rc），DDL 执行失败后 changefeed 的 checkpoint-ts 为该 DDL 语句的 finish-ts。使用 `cdc cli changefeed resume` 恢复同步任务后不会重试该 DDL 语句，而是直接跳过执行该 DDL 语句。
+
+## 同步 DDL 到下游 MySQL 5.7 时间类型字段默认值不一致
+
+比如上游 TiDB 的建表语句为 `create table test (id int primary key, ts timestamp)`，TiCDC 同步该语句到下游 MySQL 5.7，MySQL 使用默认配置，同步得到的表结构如下所示，timestamp 字段默认值会变成 `CURRENT_TIMESTAMP`：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql root@127.0.0.1:test> show create table test;
++-------+----------------------------------------------------------------------------------+
+| Table | Create Table                                                                     |
++-------+----------------------------------------------------------------------------------+
+| test  | CREATE TABLE `test` (                                                            |
+|       |   `id` int(11) NOT NULL,                                                         |
+|       |   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, |
+|       |   PRIMARY KEY (`id`)                                                             |
+|       | ) ENGINE=InnoDB DEFAULT CHARSET=latin1                                           |
++-------+----------------------------------------------------------------------------------+
+1 row in set
+```
+
+产生表结构不一致的原因是 `explicit_defaults_for_timestamp` 的[默认值在 TiDB 和 MySQL 5.7 不同](/mysql-compatibility.md#默认设置)。从 TiCDC v5.0.1/v4.0.13 版本开始，同步到 MySQL 会自动设置 session 变量 `explicit_defaults_for_timestamp = ON`，保证同步时间类型时上下游行为一致。对于 v5.0.1/v4.0.13 以前的版本，同步时间类型时需要注意 `explicit_defaults_for_timestamp` 默认值不同带来的兼容性问题。
+
+## 数据同步下游的 Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要哪些权限？
+
+Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
+
+- `Select`
+- `Index`
+- `Insert`
+- `Update`
+- `Delete`
+- `Create`
+- `Drop`
+- `Alter`
+- `Create View`
+
+如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。

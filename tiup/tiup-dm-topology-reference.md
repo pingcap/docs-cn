@@ -6,7 +6,7 @@ title: 通过 TiUP 部署 DM 集群的拓扑文件配置
 
 在部署或扩容 TiDB Data Migration (DM) 集群时，需要提供一份拓扑文件来描述集群拓扑，同样，修改配置也是通过编辑拓扑文件来实现的，区别在于修改配置时仅允许修改部分字段。
 
-拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/dm/topology.example.yaml)。
+拓扑文件[示例参考](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
 
 ## 文件结构
 
@@ -194,6 +194,10 @@ worker_servers:
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点 ID，比如 "0,1"
 - `storage_retention`：Prometheus 监控数据保留时间，默认 "15d"
 - `rule_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `*.rules.yml` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Prometheus 的规则
+- `remote_config`：用于支持将 Prometheus 数据写到远端，或从远端读取数据，该字段下有两个配置：
+    - `remote_write`：参考 Prometheus [`<remote_write>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_write) 文档
+    - `remote_read`：参考 Prometheus [`<remote_read>`](https://prometheus.io/docs/prometheus/latest/configuration/configuration/#remote_read) 文档
+- `external_alertmanagers`：若配置了 `external_alertmanagers`，Prometheus 会将配置行为报警通知到集群外的 Alertmanager。该字段为一个数组，数组的元素为每个外部的 Alertmanager，由 `host` 和 `web_port` 字段构成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global` 中的 `resource_control`
@@ -214,6 +218,21 @@ worker_servers:
 monitoring_servers:
   - host: 10.0.1.11
     rule_dir: /local/rule/dir
+    remote_config:
+      remote_write:
+      - queue_config:
+          batch_send_deadline: 5m
+          capacity: 100000
+          max_samples_per_send: 10000
+          max_shards: 300
+        url: http://127.0.0.1:8003/write
+      remote_read:
+      - url: http://127.0.0.1:8003/read
+    external_alertmanagers:
+    - host: 10.1.1.1
+      web_port: 9093
+    - host: 10.1.1.2
+      web_port: 9094
 ```
 
 ### `grafana_servers`
@@ -226,7 +245,7 @@ monitoring_servers:
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
 - `arch`：`host` 字段所指定的机器的架构，若不指定该字段，则默认为 `global` 中的 `arch`
-- `username`：Grafana 登陆界面的用户名
+- `username`：Grafana 登录界面的用户名
 - `password`：Grafana 对应的密码
 - `dashboard_dir`：该字段指定一个本地目录，该目录中应当含有完整的 `dashboard(*.json)` 文件，这些文件会在集群配置初始化阶段被传输到目标机器上，作为 Grafana 的 dashboards
 - `resource_control`：针对该服务的资源控制，如果配置了该字段，会将该字段和 `global` 中的 `resource_control` 内容合并（若字段重叠，以本字段内容为准），然后生成 systemd 配置文件并下发到 `host` 指定机器。`resource_control` 的配置规则同 `global`中的 `resource_control`

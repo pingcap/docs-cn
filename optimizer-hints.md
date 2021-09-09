@@ -23,7 +23,7 @@ Optimizer Hints 不区分大小写，通过 `/*+ ... */` 注释的形式跟在 `
 SELECT /*+ USE_INDEX(t1, idx1), HASH_AGG(), HASH_JOIN(t1) */ count(*) FROM t t1, t t2 WHERE t1.a = t2.b;
 ```
 
-可以通过 [`Explain`](/sql-statements/sql-statement-explain.md) / [`Explain Analyze`](/sql-statements/sql-statement-explain-analyze.md) 语句的输出，来查看 Optimizer Hints 对查询执行计划的影响。
+可以通过 [`Explain`](/sql-statements/sql-statement-explain.md)/[`Explain Analyze`](/sql-statements/sql-statement-explain-analyze.md) 语句的输出，来查看 Optimizer Hints 对查询执行计划的影响。
 
 如果 Optimizer Hints 包含语法错误或不完整，查询语句不会报错，而是按照没有 Optimizer Hints 的情况执行。如果 Hint 不适用于当前语句，TiDB 会返回 Warning，用户可以在查询结束后通过 `Show Warnings` 命令查看具体信息。
 
@@ -185,7 +185,7 @@ SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 
 ### READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])
 
-`READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])` 提示优化器从指定的存储引擎来读取指定的表，目前支持的存储引擎参数有 `TIKV` 和 `TIFLASH`。例如：
+`READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])` 提示优化器从指定的存储引擎来读取指定的表，目前支持的存储引擎参数有 `TIKV` 和 `TIFLASH`。如果为表指定了别名，就只能使用表的别名作为 `READ_FROM_STORAGE()` 的参数；如果没有指定别名，则用表的本名作为其参数。例如：
 
 {{< copyable "sql" >}}
 

@@ -34,12 +34,12 @@ TiUP 使用命令 `tiup mirror rotate` 来自动化以上流程。
 
 > **注意：**
 >
-> + 经测试，小于 TiUP v1.3.0 的版本无法正确获得新的 root.json [#983](https://github.com/pingcap/tiup/issues/983)。
-> + 使用此功能前请确保所有的 TiUP 客户端升级到了 v1.3.0 或以上版本。
+> + 经测试，小于 TiUP v1.5.0 的版本无法正确获得新的 root.json [#983](https://github.com/pingcap/tiup/issues/983)。
+> + 使用此功能前请确保所有的 TiUP 客户端升级到了 v1.5.0 或以上版本。
 
 ## 语法
 
-```sh
+```shell
 tiup mirror rotate [flags]
 ```
 
@@ -56,3 +56,5 @@ tiup mirror rotate [flags]
 ## 输出
 
 - 各个镜像管理员当前的签名状态
+
+[<< 返回上一页 - TiUP Mirror 命令清单](/tiup/tiup-command-mirror.md#命令清单)

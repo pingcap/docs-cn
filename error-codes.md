@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/error-codes/','/docs-cn/dev/reference/error-codes/']
 
 ## 错误码
 
-TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [Server Error Message Reference](https://dev.mysql.com/doc/refman/5.7/en/server-error-reference.html)。另外还有一些 TiDB 特有的错误码：
+TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样的错误码。关于 MySQL 的错误码列表，详见 [[MySQL 5.7 Error Message Reference](https://dev.mysql.com/doc/mysql-errors/5.7/en/)。另外还有一些 TiDB 特有的错误码：
 
 > **注意：**
 >
@@ -67,7 +67,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8025
 
-    写入的单条键值对过大。TiDB 最大支持 6MB 的单个键值对，超过该限制需要将过大的单行数据进行人工处理，以满足 6MB 限制。
+    写入的单条键值对过大。TiDB 默认支持最大 6MB 的单个键值对，超过该限制可适当调整 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 配置项以放宽限制。
 
 * Error Number: 8026
 
@@ -75,7 +75,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8027
 
-    表结构版本过期。TiDB 使用 F1 的在线 Schema 变更算法来执行 DDL。当 TiDB server 表结构版本落后于整个系统的时，执行 SQL 将遇到该错误。遇到该错误，请检查该 TiDB server 与 PD leader 之间的网络。
+    表结构版本过期。TiDB 采用在线变更表结构的方法。当 TiDB server 表结构版本落后于整个系统的时，执行 SQL 将遇到该错误。遇到该错误，请检查该 TiDB server 与 PD leader 之间的网络。
 
 * Error Number: 8028
 
@@ -129,7 +129,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8050
 
-    设置了不支持的权限类型，遇到该错误请参考[TiDB 权限说明](/privilege-management.md#tidb-各操作需要的权限)进行调整。
+    设置了不支持的权限类型，遇到该错误请参考 [TiDB 权限说明](/privilege-management.md#tidb-各操作需要的权限)进行调整。
 
 * Error Number: 8051
 
@@ -259,7 +259,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8200
 
-    尚不支持的 DDL 语法。请参考 [与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
+    尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
 
 * Error Number: 8214
 

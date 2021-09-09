@@ -21,7 +21,7 @@ title: tiup cluster scale-in
 
 ## 语法
 
-```sh
+```shell
 tiup cluster scale-in <cluster-name> [flags]
 ```
 
@@ -33,9 +33,11 @@ tiup cluster scale-in <cluster-name> [flags]
 
 选择要缩容的节点，若缩容多个节点，以逗号分割。
 
-### --force（boolean，默认 false）
+### --force
 
-在某些情况下，有可能被缩容的节点宿主机已经宕机，导致无法通过 SSH 连接到节点进行操作，这个时候可以通过 `--force` 选项强制将其从集群中移除。
+- 在某些情况下，有可能被缩容的节点宿主机已经宕机，导致无法通过 SSH 连接到节点进行操作，这个时候可以通过 `--force` 选项强制将其从集群中移除。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 > **注意：**
 >
@@ -49,10 +51,14 @@ tiup cluster scale-in <cluster-name> [flags]
 >
 > 若出现跳过等待直接缩容的情况，服务性能可能会出现抖动。
 
-### -h, --help（boolean，默认 false）
+### -h, --help
 
-输出帮助信息。
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 缩容日志
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

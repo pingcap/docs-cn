@@ -9,7 +9,7 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
-- [快速试用 TiDB 集群](/quick-start-with-tidb.md#第一种使用-tiup-playground-快速部署本地测试环境)
+- [快速试用 TiDB 集群](/quick-start-with-tidb.md)
 - [生产环境部署](/production-deployment-using-tiup.md)
 - [Kubernetes 环境部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/access-dashboard/)
 
@@ -125,4 +125,4 @@ tiup cluster display CLUSTER_NAME --dashboard
 ## 下一步
 
 - 参阅[访问 TiDB Dashboard](/dashboard/dashboard-access.md) 章节了解如何访问及登录集群上的 TiDB Dashboard 界面。
-- 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md) 章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。
+- 参阅[提高 TiDB Dashboard 安全性](/dashboard/dashboard-ops-security.md)章节了解如何增强 TiDB Dashboard 的安全性，如配置防火墙等。

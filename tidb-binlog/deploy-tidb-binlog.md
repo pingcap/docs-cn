@@ -16,7 +16,7 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ## 使用 TiUP 部署 TiDB Binlog
 
-推荐使用 TiUP 部署 TiDB Binlog，详细部署方式参考 [TiUP 部署 TiDB Binlog](/production-deployment-using-tiup.md)。
+推荐使用 TiUP 部署 TiDB Binlog。即在使用 TiUP 部署 TiDB 时，在[拓扑文件](/tidb-binlog-deployment-topology.md)中添加 TiDB Binlog 的 `drainer` 和 `pump` 节点信息后，再随 TiDB 一起部署。详细部署方式参考 [TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ## 使用 Binary 部署 TiDB Binlog
 
@@ -325,9 +325,9 @@ Drainer="192.168.0.13"
         [syncer.to]
         host = "192.168.0.13"
         user = "root"
+        # 如果你不想在配置文件中写明文密码，则可以使用 `./binlogctl -cmd encrypt -text string` 生成加密的密码
+        # 如果配置了 encrypted_password 且非空，那么配置的 password 不生效。encrypted_password 和 password 无法同时生效。
         password = ""
-        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
-        # encrypted_password 非空时 password 会被忽略
         encrypted_password = ""
         port = 3306
 

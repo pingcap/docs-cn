@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
-aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/']
+aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/deploy-test-cluster-using-docker-compose','/zh/tidb/dev/test-deployment-using-docker']
 ---
 
 # 使用 TiUP 部署 TiDB 集群
@@ -81,11 +81,11 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 #### 准备 TiUP 离线组件包
 
-方式一：在 [官方下载页面](https://pingcap.com/download-cn/) 选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
+方式一：在[官方下载页面](https://pingcap.com/zh/product#SelectProduct)选择对应版本的 TiDB server 离线镜像包（包含 TiUP 离线组件包）。
 
-方式二：使用 `tiup mirror clone` 命令手动打包离线组件包，步骤如下：
+方式二：使用 `tiup mirror clone` 命令手动打包离线组件包。步骤如下：
 
-1. 在线环境中安装 TiUP 包管理器工具
+1. 在在线环境中安装 TiUP 包管理器工具
 
     1. 执行如下命令安装 TiUP 工具：
 
@@ -132,6 +132,52 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         ```
 
         此时，`tidb-community-server-${version}-linux-amd64.tar.gz` 就是一个独立的离线环境包。
+
+3. 自定义制作的离线镜像，或调整已有离线镜像中的内容
+
+    如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
+
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.5.2 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror clone tiup-custom-mirror-v1.5.2 --tiup v1.5.2 --cluster v1.5.2
+        ```
+
+        如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
+
+    2. 参考上文“使用 TiUP 制作离线镜像”第 2 步的方式，将此不完整的离线镜像传输到隔离环境的中控机。
+
+    3. 在隔离环境的中控机上，查看当前使用的离线镜像路径。较新版本的 TiUP 可以直接通过命令获取当前的镜像地址：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror show
+        ```
+
+        以上命令如果提示 `show` 命令不存在，可能当前使用的是较老版本的 TiUP。此时可以通过查看 `$HOME/.tiup/tiup.toml` 获得正在使用的镜像地址。将此镜像地址记录下来，后续步骤中将以变量 `${base_mirror}` 指代此镜像地址。
+
+    4. 将不完整的离线镜像合并到已有的离线镜像中：
+
+        首先将当前离线镜像中的 `keys` 目录复制到 `$HOME/.tiup` 目录中：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        cp -r ${base_mirror}/keys $HOME/.tiup/
+        ```
+
+        然后使用 TiUP 命令将不完整的离线镜像合并到当前使用的镜像中：
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup mirror merge tiup-custom-mirror-v1.5.2
+        ```
+    
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
@@ -230,9 +276,9 @@ alertmanager_servers:
 >
 > - 对于需要某个节点生效的参数，请在具体节点的 `config` 中配置。
 >
-> - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
+> - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
 >
-> - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) 、 [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
+> - 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)、[PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
 
 ## 第 4 步：执行部署命令
 
@@ -242,7 +288,7 @@ alertmanager_servers:
 >
 > - 如果是密钥方式，可以通过 `-i` 或者 `--identity_file` 来指定密钥的路径；
 > - 如果是密码方式，可以通过 `-p` 进入密码交互窗口；
-> - 如果已经配置免密登陆目标机，则不需填写认证。
+> - 如果已经配置免密登录目标机，则不需填写认证。
 >
 > 一般情况下 TiUP 会在目标机器上创建 `topology.yaml` 中约定的用户和组，以下情况例外：
 >
@@ -263,17 +309,17 @@ tiup cluster check ./topology.yaml --apply --user root [-p] [-i /home/root/.ssh/
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy tidb-test v5.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+tiup cluster deploy tidb-test v5.2.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
 以上部署命令中：
 
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
-- 可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本，后续内容以版本 `v5.0.0` 为例
+- 可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本，后续内容以版本 `v5.2.0` 为例
 - 初始化配置文件为 `topology.yaml`
 - --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
-- [-i] 及 [-p]：非必选项，如果已经配置免密登陆目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
-- 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml#L7)。
+- [-i] 及 [-p]：非必选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
+- 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
 
 预期日志结尾输出会有 ```Deployed cluster `tidb-test` successfully``` 关键词，表示部署成功。
 
@@ -288,10 +334,10 @@ tiup cluster list
 TiUP 支持管理多个 TiDB 集群，该命令会输出当前通过 TiUP cluster 管理的所有集群信息，包括集群名称、部署用户、版本、密钥信息等：
 
 ```log
-Starting /home/tidb/.tiup/components/cluster/v1.3.0/cluster list
+Starting /home/tidb/.tiup/components/cluster/v1.5.0/cluster list
 Name              User  Version        Path                                                        PrivateKey
 ----              ----  -------        ----                                                        ----------
-tidb-test         tidb  v5.0.0      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
+tidb-test         tidb  v5.2.0      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
 ## 第 6 步：检查部署的 TiDB 集群情况

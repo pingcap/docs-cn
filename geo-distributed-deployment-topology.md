@@ -6,15 +6,15 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 
 # 跨数据中心部署拓扑
 
-本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。
+本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。本文示例所涉及的城市是上海（即 `sha`）和北京（即 `bja` 和 `bjb`）。
 
 ## 拓扑信息
 
 |实例 | 个数 | 物理机配置 | BJ IP | SH IP |配置 |
 | :-- | :-- | :-- | :-- | :-- | :-- |
-| TiDB |3 | 16 VCore 32GB * 1 | 10.0.1.1 <br/> 10.0.1.2 <br/> 10.0.1.3 <br/> 10.0.1.4 | 10.0.1.5 | 默认端口 <br/>  全局目录配置 |
-| PD | 3 | 4 VCore 8GB * 1 |10.0.1.6 <br/> 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
-| TiKV | 3 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.11 <br/> 10.0.1.12 <br/> 10.0.1.13 <br/> 10.0.1.14 | 10.0.1.15 | 默认端口 <br/> 全局目录配置 |
+| TiDB |5 | 16 VCore 32GB * 1 | 10.0.1.1 <br/> 10.0.1.2 <br/> 10.0.1.3 <br/> 10.0.1.4 | 10.0.1.5 | 默认端口 <br/>  全局目录配置 |
+| PD | 5 | 4 VCore 8GB * 1 |10.0.1.6 <br/> 10.0.1.7 <br/> 10.0.1.8 <br/> 10.0.1.9 | 10.0.1.10 | 默认端口 <br/> 全局目录配置 |
+| TiKV | 5 | 16 VCore 32GB 2TB (nvme ssd) * 1 | 10.0.1.11 <br/> 10.0.1.12 <br/> 10.0.1.13 <br/> 10.0.1.14 | 10.0.1.15 | 默认端口 <br/> 全局目录配置 |
 | Monitoring & Grafana | 1 | 4 VCore 8GB * 1 500GB (ssd) | 10.0.1.16 || 默认端口 <br/> 全局目录配置 |
 
 ### 拓扑模版
@@ -81,6 +81,12 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
             - key: "dc"
               value: "sha"
     ```
+
+    > **注意：**
+    >
+    > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
+
+有关 Label 的使用和 Raft Group 副本数量，详见[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
 > **注意：**
 >

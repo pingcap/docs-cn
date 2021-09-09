@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` （默认）以及 `tidb_analyze_version = 2`。两种版本中，TiDB 维护的统计信息如下：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1.0 中，该变量的默认值为 `2`，作为实验特性启用。两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
@@ -21,7 +21,7 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 | 列的平均长度 | √ | √ |
 | 索引的平均长度 | √ | √ |
 
-Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，提高了大多数场景中的估算精度。
+Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
 
@@ -54,8 +54,6 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 
 可以通过执行 `ANALYZE` 语句来收集统计信息。
 
-#### 全量收集
-
 > **注意：**
 >
 > 在 TiDB 中执行 `ANALYZE TABLE` 语句比在 MySQL 或 InnoDB 中耗时更长。InnoDB 采样的只是少量页面，但 TiDB 会完全重构一系列统计信息。适用于 MySQL 的脚本会误以为执行 `ANALYZE TABLE` 耗时较短。
@@ -63,6 +61,10 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 > 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
 >
 > 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+>
+> `tidb_enable_fast_analyze` 为实验性功能，目前与 `tidb_analyze_version=2` 的统计信息**不完全匹配**。因此开启 `tidb_enable_fast_analyze` 时需要将 `tidb_analyze_version` 的值设置为 `1`。
+
+#### 全量收集
 
 可以通过以下几种语法进行全量收集。
 
@@ -106,6 +108,10 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKE
 ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
 ```
 
+> **注意：**
+>
+> 为了保证前后统计信息的一致性，在设置 `tidb_analyze_version=2` 时，`ANALYZE TABLE TableName INDEX` 也会收集整个表而不是所给索引的统计信息。
+
 #### 增量收集
 
 对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来单独分析新增的部分，以提高分析的速度。
@@ -147,11 +153,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在查询语句执行时，TiDB 会以 `feedback-probability` 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。可通过配置文件修改 `feedback-probability`，其默认值是 `0.05`。设置成 `0.0` 可以关闭这个功能。
-
-> **注意：**
->
-> 在配置文件中如果将 `feedback-probability` 设置为 `0` 会导致设置失败并报错。需要设置成 `0.0` 才可以关闭 `feedback-probability`。
+在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
 
 ### 控制 ANALYZE 并发度
 
@@ -273,10 +275,10 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 | column_name | 根据 is_index 来变化：is_index 为 0 时是列名，为 1 时是索引名 |
 | is_index | 是否是索引列 |
 | update_time | 更新时间 |
-| version | 版本，对应 analyze 时，tidb_analyze_version 的值 |
 | distinct_count | 不同值数量 |
 | null_count | NULL 的数量 |
 | avg_col_size | 列平均长度 |
+| correlation | 该列与整型主键的皮尔逊系数，表示两列之间的关联程度 |
 
 ### 直方图桶的信息
 

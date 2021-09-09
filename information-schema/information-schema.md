@@ -31,7 +31,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `PLUGINS`                                                                                                                  | TiDB 未实现，返回零行。                                                           |
 | [`PROCESSLIST`](/information-schema/information-schema-processlist.md)                                                     | 提供与 `SHOW PROCESSLIST` 命令类似的信息。                                        |
 | `PROFILING`                                                                                                                | TiDB 未实现，返回零行。                                                           |
-| `REFERENTIAL_CONSTRAINTS`                                                                                                  | TiDB 未实现，返回零行。                                                           |
+| `REFERENTIAL_CONSTRAINTS`                                                                                                  | 提供有关 `FOREIGN KEY` 约束的信息。                                                          |
 | `ROUTINES`                                                                                                                 | TiDB 未实现，返回零行。                                                           |
 | [`SCHEMATA`](/information-schema/information-schema-schemata.md)                                                           | 提供与 `SHOW DATABASES` 命令类似的信息。                                          |
 | `SCHEMA_PRIVILEGES`                                                                                                        | TiDB 未实现，返回零行。                                                           |
@@ -55,6 +55,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md) | 汇总由客户端产生的错误和警告。                                 |
 | [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)   | 汇总由客户端产生的错误和警告。                                 |
 | [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)            | 提供有关整个 TiDB 集群的配置设置的详细信息。                   |
+| `CLUSTER_DEADLOCKS`                                                                     | 提供 `DEADLOCKS` 表的集群级别的视图。                          |
 | [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-info.md)            | 提供在每个 TiDB 组件上发现的底层物理硬件的详细信息。           |
 | [`CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md)                | 提供当前集群拓扑的详细信息。                                   |
 | [`CLUSTER_LOAD`](/information-schema/information-schema-cluster-load.md)                | 提供集群中 TiDB 服务器的当前负载信息。                         |
@@ -62,9 +63,12 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `CLUSTER_PROCESSLIST`                                                                   | 提供 `PROCESSLIST` 表的集群级别的视图。                        |
 | `CLUSTER_SLOW_QUERY`                                                                    | 提供 `SLOW_QUERY` 表的集群级别的视图。                         |
 | `CLUSTER_STATEMENTS_SUMMARY`                                                            | 提供 `STATEMENTS_SUMMARY` 表的集群级别的视图。                 |
-| `CLUSTER_STATEMENTS_SUMMARY_HISTORY`                                                    | 提供 `CLUSTER_STATEMENTS_SUMMARY_HISTORY` 表的集群级别的视图。 |
+| `CLUSTER_STATEMENTS_SUMMARY_HISTORY`                                                    | 提供 `STATEMENTS_SUMMARY_HISTORY` 表的集群级别的视图。         |
+| `CLUSTER_TIDB_TRX`                                                                      | 提供 `TIDB_TRX` 表的集群级别的视图。                           |
 | [`CLUSTER_SYSTEMINFO`](/information-schema/information-schema-cluster-systeminfo.md)    | 提供集群中服务器的内核参数配置的详细信息。                     |
+| [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)          | 提供 TiKV 服务器上的等锁信息。                                 |
 | [`DDL_JOBS`](/information-schema/information-schema-ddl-jobs.md)                        | 提供与 `ADMIN SHOW DDL JOBS` 类似的输出。                      |
+| [`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)                      | 提供 TiDB 节点上最近发生的数次死锁错误的信息。                 |
 | [`INSPECTION_RESULT`](/information-schema/information-schema-inspection-result.md)      | 触发内部诊断检查。                                             |
 | [`INSPECTION_RULES`](/information-schema/information-schema-inspection-rules.md)        | 进行的内部诊断检查的列表。                                     |
 | [`INSPECTION_SUMMARY`](/information-schema/information-schema-inspection-summary.md)    | 重要监视指标的摘要报告。                                       |
@@ -79,6 +83,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)        | 提供有关哪些 Region 访问次数最多的统计信息。                   |
 | [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)                | 提供有关 TiDB 表的索引信息。                                   |
 | [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | 提供 TiDB 服务器的列表                                         |
+| [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)                        | 提供 TiDB 节点上正在执行的事务的信息。                         |
 | [`TIFLASH_REPLICA`](/information-schema/information-schema-tiflash-replica.md)          | 提供有关 TiFlash 副本的详细信息。                              |
 | [`TIKV_REGION_PEERS`](/information-schema/information-schema-tikv-region-peers.md)      | 提供 Region 存储位置的详细信息。                               |
 | [`TIKV_REGION_STATUS`](/information-schema/information-schema-tikv-region-status.md)    | 提供 Region 的统计信息。                                       |

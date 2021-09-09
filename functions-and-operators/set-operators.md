@@ -74,7 +74,7 @@ select * from t1 except select * from t2;
 
 差集 (EXCEPT) 暂时不支持 `EXCEPT ALL`。
 
-## 交集（INTERSECT）
+## 交集 (INTERSECT)
 
 数学上，两个集合 A 和 B 的交集是含有所有既属于 A 又属于 B 的元素，而且没有其他元素的集合。
 

@@ -119,7 +119,7 @@ tiup cluster display <cluster-name>
 | 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD   | 
+| 10.0.1.4   | TiDB + PD   |
 | 10.0.1.5   | **TiDB** + TiKV + Monitor   |
 | 10.0.1.1   | TiKV    |
 | 10.0.1.2   | TiKV    |
@@ -133,7 +133,7 @@ tiup cluster display <cluster-name>
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
 > 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 v5.0 以上版本。
-> 2. 执行 `tiup ctl pd -u <pd-host>:<pd-port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
+> 2. 执行 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
 
 ### 1. 添加节点信息到 scale-out.yaml 文件
 
@@ -170,13 +170,13 @@ tiup cluster display <cluster-name>
 
 扩容后，集群拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash   |
-| 10.0.1.4   | TiDB + PD + **TiFlash**    | 
-| 10.0.1.5   | TiDB+ TiKV + Monitor   | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + **TiFlash**    |
+| 10.0.1.5   | TiDB+ TiKV + Monitor   |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 扩容 TiCDC 节点
 
@@ -218,13 +218,13 @@ tiup cluster display <cluster-name>
 
 扩容后，集群拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + **TiCDC**  |
-| 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  | 
-| 10.0.1.5   | TiDB+ TiKV + Monitor   | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  |
+| 10.0.1.5   | TiDB+ TiKV + Monitor   |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiDB/PD/TiKV 节点
 
@@ -233,6 +233,10 @@ tiup cluster display <cluster-name>
 > **注意：**
 >
 > 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+
+> **注意：**
+>
+> TiKV 中的 PD Client 会缓存 PD 节点的列表。当前版本的 TiKV 有定期自动更新 PD 节点的机制，可以降低 TiKV 缓存的 PD 节点列表过旧这一问题出现的概率。但你应尽量避免在扩容新 PD 后直接一次性缩容所有扩容前就已经存在的 PD 节点。如果需要，请确保在下线所有之前存在的 PD 节点前将 PD 的 leader 切换至新扩容的 PD 节点。
 
 ### 1. 查看节点 ID 信息
 
@@ -243,11 +247,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.3.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.5.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v4.0.0-rc
+TiDB Version: v5.2.0
 
 ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 
@@ -308,13 +312,13 @@ tiup cluster display <cluster-name>
 
 调整后，拓扑结构如下：
 
-| Host IP   | Service   | 
+| Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC | 
-| 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
+| 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiFlash 节点
 
@@ -362,15 +366,19 @@ tiup cluster display <cluster-name>
 
 1. 使用 pd-ctl 的 store 命令在 PD 中查看该 TiFlash 节点对应的 store id。
 
-    * 在 [pd-ctl](/pd-control.md) (tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件) 中输入 store 命令。
+    * 在 [pd-ctl](/pd-control.md)（tidb-ansible 目录下的 `resources/bin` 包含对应的二进制文件）中输入 store 命令。
 
     * 若使用 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl pd -u <pd-address> store
+        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store
         ```
+
+        > **注意：**
+        >
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 `IP:端口`即可。
 
 2. 在 pd-ctl 中下线该 TiFlash 节点。
 
@@ -381,20 +389,14 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl pd -u <pd-address> store delete <store_id>
+        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
 
+        > **注意：**
+        >
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 `IP:端口`即可。
+
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
-
-    如果等待较长时间后，该节点仍然无法正常消失或者状态变成 Tombstone，可以考虑以下命令，把节点强制踢出集群：
-
-    **注意以下命令会直接丢弃该 TiFlash 节点上的副本，有可能导致查询失败**
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    curl -X POST 'http://<pd-address>/pd/api/v1/store/<store_id>/state?state=Tombstone'
-    ```
 
 4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
 
@@ -463,13 +465,13 @@ tiup cluster display <cluster-name>
 
 调整后，拓扑结构如下：
 
-| Host IP   | Service   | 
+| Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  | 
-| 10.0.1.5   | TiDB + Monitor  | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  |
+| 10.0.1.5   | TiDB + Monitor  |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiCDC 节点
 
@@ -495,10 +497,10 @@ tiup cluster display <cluster-name>
 
 调整后，拓扑结构如下：
 
-| Host IP   | Service   | 
+| Host IP   | Service   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  | 
-| 10.0.1.5   | TiDB + Monitor  | 
-| 10.0.1.1   | TiKV    | 
-| 10.0.1.2   | TiKV    | 
+| 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  |
+| 10.0.1.5   | TiDB + Monitor  |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |

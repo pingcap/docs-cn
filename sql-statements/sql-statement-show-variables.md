@@ -135,7 +135,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_stmt_summary_history_size      | 24                  |
 | tidb_stmt_summary_internal_query    | 0                   |
 | tidb_stmt_summary_max_sql_length    | 4096                |
-| tidb_stmt_summary_max_stmt_count    | 200                 |
+| tidb_stmt_summary_max_stmt_count    | 3000                |
 | tidb_stmt_summary_refresh_interval  | 1800                |
 | tidb_store_limit                    | 0                   |
 | tidb_txn_mode                       |                     |

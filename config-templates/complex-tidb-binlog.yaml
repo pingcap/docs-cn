@@ -92,35 +92,35 @@ pump_servers:
   - host: 10.0.1.1
     ssh_port: 22
     port: 8250
-    deploy_dir: "/tidb-deploy/pump-8249"
-    data_dir: "/tidb-data/pump-8249"
-    # The following configs are used to overwrite the `server_configs.drainer` values.
+    deploy_dir: "/tidb-deploy/pump-8250"
+    data_dir: "/tidb-data/pump-8250"
+    # The following configs are used to overwrite the `server_configs.pump` values.
     config:
       gc: 7
   - host: 10.0.1.2
     ssh_port: 22
     port: 8250
-    deploy_dir: "/tidb-deploy/pump-8249"
-    data_dir: "/tidb-data/pump-8249"
-    # The following configs are used to overwrite the `server_configs.drainer` values.
+    deploy_dir: "/tidb-deploy/pump-8250"
+    data_dir: "/tidb-data/pump-8250"
+    # The following configs are used to overwrite the `server_configs.pump` values.
     config:
       gc: 7
   - host: 10.0.1.3
     ssh_port: 22
     port: 8250
-    deploy_dir: "/tidb-deploy/pump-8249"
-    data_dir: "/tidb-data/pump-8249"
-    # The following configs are used to overwrite the `server_configs.drainer` values.
+    deploy_dir: "/tidb-deploy/pump-8250"
+    data_dir: "/tidb-data/pump-8250"
+    # The following configs are used to overwrite the `server_configs.pump` values.
     config:
       gc: 7
 drainer_servers:
   - host: 10.0.1.12
     port: 8249
+    deploy_dir: "/tidb-deploy/drainer-8249"
     data_dir: "/tidb-data/drainer-8249"
     # If drainer doesn't have a checkpoint, use initial commitTS as the initial checkpoint.
     # Will get a latest timestamp from pd if commit_ts is set to -1 (the default value).
     commit_ts: -1
-    deploy_dir: "/tidb-deploy/drainer-8249"
     # The following configs are used to overwrite the `server_configs.drainer` values.
     config:
       syncer.db-type: "tidb"
@@ -128,6 +128,29 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
+      syncer.to.checkpoint:
+        schema: "tidb-binlog"
+        type: "tidb"
+        host: "10.0.1.14"
+        user: "root"
+        password: "123"
+        port: 4000
+  - host: 10.0.1.13
+    port: 8249
+    deploy_dir: "/tidb-deploy/drainer-8249"
+    data_dir: "/tidb-data/drainer-8249"
+    # If Drainer does not have a checkpoint, use the initial commitTS as the initial checkpoint.
+    # If commit_ts is set to -1 (the default value), you will get a latest timestamp from PD.
+    commit_ts: -1
+    # The following configurations are used to overwrite the `server_configs.drainer` values.
+    config:
+      syncer.db-type: "kafka"
+      syncer.replicate-do-db:
+      - db1
+      - db2
+      syncer.to.kafka-addrs: "10.0.1.20:9092,10.0.1.21:9092,10.0.1.22:9092"
+      syncer.to.kafka-version: "0.10.0.0"
+      syncer.to.topic-name: "asyouwish"
 
 monitoring_servers:
   - host: 10.0.1.10

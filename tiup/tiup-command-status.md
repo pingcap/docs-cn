@@ -15,7 +15,7 @@ title: tiup status
 
 ## 语法
 
-```sh
+```shell
 tiup status [flags]
 ```
 
@@ -35,3 +35,5 @@ tiup status [flags]
 - Directory: 数据目录
 - Binary: 二进制文件路径
 - Args: 启动参数
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

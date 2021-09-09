@@ -8,7 +8,7 @@ title: tiup dm upgrade
 
 ## 语法
 
-```sh
+```shell
 tiup dm upgrade <cluster-name> <version> [flags]
 ```
 
@@ -17,10 +17,18 @@ tiup dm upgrade <cluster-name> <version> [flags]
 
 ## 选项
 
-### -h, --help（boolean，默认 false）
+### --offline
 
-输出帮助信息。
+声明当前集群处于离线状态。指定该选项时，TiUP DM 仅原地替换集群组件的二进制文件，不重启服务。
+
+### -h, --help
+
+- 输出帮助信息。
+- 数据类型：`BOOLEAN`
+- 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
 ## 输出
 
 升级服务的日志。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

@@ -8,7 +8,7 @@ title: tiup install
 
 ## 语法
 
-```sh
+```shell
 tiup install <component1>[:version] [component2...N] [flags]
 ```
 
@@ -23,3 +23,5 @@ tiup install <component1>[:version] [component2...N] [flags]
 - 正常情况下输出组件的下载信息
 - 若组件不存在则报错 `The component "%s" not found`
 - 若版本不存在则报错 `version %s not supported by component %s`
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)
