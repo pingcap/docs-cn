@@ -35,7 +35,7 @@ def check_BOM(filename):
     BUFSIZE = 4096
     BOMLEN = len(codecs.BOM_UTF8)
 
-    with open(filename, "r+b") as fp:
+    with open(filename, "r+b", encoding='utf-8') as fp:
         chunk = fp.read(BUFSIZE)
         if chunk.startswith(codecs.BOM_UTF8):
             i = 0

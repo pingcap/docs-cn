@@ -107,7 +107,7 @@ def filter_frontmatter(content):
         if len(collect) >= 2:
             filter_point = collect[1]
             content = content[filter_point:]
-            
+
     return content
 
 def filter_backticks(content, filename):
@@ -140,7 +140,7 @@ status_code = 0
 for filename in sys.argv[1:]:
     # print("Checking " + filename + "......\n")
     if os.path.isfile(filename):
-        file = open(filename, "r" )
+        file = open(filename, "r", encoding='utf-8')
         content = file.read()
         file.close()
 

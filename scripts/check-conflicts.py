@@ -42,7 +42,7 @@ for filename in sys.argv[1:]:
     single = []
     lineNum = 0
     if os.path.isfile(filename):
-        with open(filename,'r') as file:
+        with open(filename,'r', encoding='utf-8') as file:
             for line in file:
                 lineNum += 1
                 if re.match(r'<{7}.*\n', line):
@@ -57,7 +57,7 @@ for filename in sys.argv[1:]:
                     flag = 0
                 else:
                     continue
-            
+
 
     if len(pos):
         mark = 1
@@ -65,7 +65,7 @@ for filename in sys.argv[1:]:
         for conflict in pos:
             if len(conflict) == 2:
                 print("CONFLICTS: line " + str(conflict[0]) + " to line " + str(conflict[1]) + "\n")
-    
+
     pos = []
 
 if mark:

@@ -40,7 +40,7 @@ def check_manual_break(filename):
     lineNum = 0
     mark = 0
 
-    with open(filename,'r') as file:
+    with open(filename,'r', encoding='utf-8') as file:
         for line in file:
 
             lineNum += 1
