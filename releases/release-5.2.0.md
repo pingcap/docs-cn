@@ -8,6 +8,10 @@ Release date: August 27, 2021
 
 TiDB version: 5.2.0
 
+> **Warning:**
+>
+> Some known issues are found in this version, and these issues are fixed in new versions. It is recommended that you use the latest 5.2.x version.
+
 In v5.2, the key new features and improvements are as follows:
 
 - Support using several functions in expression indexes to greatly improve query performance
