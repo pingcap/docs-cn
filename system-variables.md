@@ -596,9 +596,9 @@ Constraint checking is always performed in place for pessimistic transactions (d
     * `START TRANSACTION READ ONLY` and `SET TRANSACTION READ ONLY` syntax
     * The `tx_read_only`, `transaction_read_only`, `offline_mode`, `super_read_only` and `read_only` system variables
 
-> **Note:**
+> **Warning:**
 >
-> Only the default value of `OFF` can be considered safe. Setting `tidb_enable_noop_functions=1` might lead to unexpected behaviors in your application, because it permits TiDB to ignore certain syntax without providing an error.
+> Only the default value of `OFF` can be considered safe. Setting `tidb_enable_noop_functions=1` might lead to unexpected behaviors in your application, because it permits TiDB to ignore certain syntax without providing an error. For example, the syntax `START TRANSACTION READ ONLY` is permitted, but the transaction remains in read-write mode.
 
 ### tidb_enable_parallel_apply <span class="version-mark">New in v5.0</span>
 
