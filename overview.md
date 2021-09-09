@@ -20,7 +20,7 @@ aliases: ['/docs/dev/key-features/','/tidb/dev/key-features','/docs/dev/overview
 
 - **Real-time HTAP**
 
-    TiDB provides two storage engines: [TiKV](https://tikv.org/), a row-based storage engine, and [TiFlash](/tiflash/tiflash-overview.md), a columnar storage engine. TiFlash uses the Multi-Raft Learner protocol to replicate data from TiKV in real time, ensuring that the data between the TiKV row-based storage engine and the TiFlash columnar storage engine are consistent. TiKV and TiFlash can be deployed on different machines as needed to solve the problem of HTAP resource isolation.
+    TiDB provides two storage engines: [TiKV](/tikv-overview.md), a row-based storage engine, and [TiFlash](/tiflash/tiflash-overview.md), a columnar storage engine. TiFlash uses the Multi-Raft Learner protocol to replicate data from TiKV in real time, ensuring that the data between the TiKV row-based storage engine and the TiFlash columnar storage engine are consistent. TiKV and TiFlash can be deployed on different machines as needed to solve the problem of HTAP resource isolation.
 
 - **Cloud-native distributed database**
 
@@ -28,7 +28,7 @@ aliases: ['/docs/dev/key-features/','/tidb/dev/key-features','/docs/dev/overview
 
 - **Compatible with the MySQL 5.7 protocol and MySQL ecosystem**
 
-    TiDB is compatible with the MySQL 5.7 protocol, common features of MySQL, and the MySQL ecosystem. To migrate your applications to TiDB, you do not need to change a single line of code in many cases or only need to modify a small amount of code. In addition, TiDB provides a series of [data migration tools](/migration-overview.md) to help migrate application data easily into TiDB.
+    TiDB is compatible with the MySQL 5.7 protocol, common features of MySQL, and the MySQL ecosystem. To migrate your applications to TiDB, you do not need to change a single line of code in many cases or only need to modify a small amount of code. In addition, TiDB provides a series of [data migration tools](/ecosystem-tool-user-guide.md) to help easily migrate application data into TiDB.
 
 ## Use cases
 
