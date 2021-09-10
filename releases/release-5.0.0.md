@@ -68,6 +68,7 @@ In v5.0, the key new features or improvements are as follows:
 
 ### Others
 
++ Before the upgrade, check the value of the TiDB configuration [`feedback-probability`](/tidb-configuration-file.md#feedback-probability). If the value is not 0, the "panic in the recoverable goroutine" error will occur after the upgrade, but this error does not affect the upgrade.
 + Forbid conversion between `VARCHAR` type and `CHAR` type during the column type change to avoid data correctness issues.
 
 ## New features

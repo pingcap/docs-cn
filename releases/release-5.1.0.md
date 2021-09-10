@@ -58,6 +58,7 @@ In v5.1, the key new features or improvements are as follows:
 
 ### Others
 
+- Before the upgrade, check the value of the TiDB configuration [`feedback-probability`](/tidb-configuration-file.md#feedback-probability). If the value is not 0, the "panic in the recoverable goroutine" error will occur after the upgrade, but this error does not affect the upgrade.
 - Upgrade the Go compiler version of TiDB from go1.13.7 to go1.16.4, which improves the TiDB performance. If you are a TiDB developer, upgrade your Go compiler version to ensure a smooth compilation. 
 - Avoid creating tables with clustered indexes in the cluster that uses TiDB Binlog during the TiDB rolling upgrade.
 - Avoid executing statements like `alter table ... modify column` or `alter table ... change column` during the TiDB rolling upgrade.
