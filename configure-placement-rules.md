@@ -211,7 +211,37 @@ pd-ctl config placement-rules load
 pd-ctl config placement-rules load --group=pd --out=rule.txt
 ```
 
+<<<<<<< HEAD
 以上命令将 PD Group 的规则转存至 rule.txt 文件。
+=======
+修改完成后，使用 `rule-bundle set` 子命令将文件中的配置保存至 PD 服务器。与前面介绍的 `save` 不同，此命令会替换服务器端该分组内的所有规则。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle set pd -in="group.json"
+```
+
+### 使用 pd-ctl 查看和修改所有配置
+
+用户还可以使用 pd-ctl 查看和修改所有配置，即把全部配置保存至文件，修改后再覆盖保存。该操作同样使用 `rule-bundle` 子命令。
+
+下面的命令将所有配置保存至 `rules.json` 文件：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle load --out="rules.json"
+```
+
+编辑完文件后，使用下面的命令将配置保存至 PD 服务器：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle save --in="rules.json"
+```
+>>>>>>> 8bacedf6e (tidb: fix placement doc (#7073))
 
 ### 使用 tidb-ctl 查询表相关的 key range
 
