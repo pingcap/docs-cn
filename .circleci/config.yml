@@ -111,12 +111,41 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
+<<<<<<< HEAD
+=======
+#   zhmd:
+#     docker:
+#       - image: circleci/node:lts
+#     working_directory: ~/pingcap/docs-cn
+#     steps:
+#       - checkout
+#       - run:
+#           name: Setup
+#           command: |
+#             mkdir ~/.npm-global
+#             npm config set prefix '~/.npm-global'
+#             echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+#             echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
+#       - run:
+#           name: "Install Zhmd"
+#           command: |
+#             npm install -g preset-lint-zh
+#       - run:
+#           name: "zhmd lint"
+#           command: |
+#             zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
+
+>>>>>>> 3a30845d8 (Temporarilty disable zh.md to avoid jenkins error-reporting (#7104))
 
 workflows:
   version: 2
   lint:
     jobs:
       - lint
+<<<<<<< HEAD
+=======
+#     - zhmd
+>>>>>>> 3a30845d8 (Temporarilty disable zh.md to avoid jenkins error-reporting (#7104))
   build:
     jobs:
       - build:
