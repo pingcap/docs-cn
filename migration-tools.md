@@ -1,5 +1,5 @@
 ---
-title: 迁移工具
+title: 数据迁移工具概览
 summary: 介绍 TiDB 的数据迁移工具。
 ---
 
