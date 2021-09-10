@@ -41,7 +41,8 @@
       + [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
       + [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
-  + [概述](/migration-overview.md)
+  + [数据迁移场景](/migration-overview.md)
+  + [迁移工具](/migration-tools.md)
   + 从 MySQL 迁移至 TiDB
     + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
