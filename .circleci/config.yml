@@ -110,27 +110,27 @@ jobs:
 
       - store_artifacts:
           path: /tmp/artifacts
-  zhmd:
-    docker:
-      - image: circleci/node:lts
-    working_directory: ~/pingcap/docs-cn
-    steps:
-      - checkout
-      - run:
-          name: Setup
-          command: |
-            mkdir ~/.npm-global
-            npm config set prefix '~/.npm-global'
-            echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
-            echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
-      - run:
-          name: "Install Zhmd"
-          command: |
-            npm install -g preset-lint-zh
-      - run:
-          name: "zhmd lint"
-          command: |
-            zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
+#   zhmd:
+#     docker:
+#       - image: circleci/node:lts
+#     working_directory: ~/pingcap/docs-cn
+#     steps:
+#       - checkout
+#       - run:
+#           name: Setup
+#           command: |
+#             mkdir ~/.npm-global
+#             npm config set prefix '~/.npm-global'
+#             echo 'export PATH=~/.npm-global/bin:$PATH' >> $BASH_ENV
+#             echo 'export NODE_PATH=~/.npm-global/lib/node_modules:$NODE_PATH' >> $BASH_ENV
+#       - run:
+#           name: "Install Zhmd"
+#           command: |
+#             npm install -g preset-lint-zh
+#       - run:
+#           name: "zhmd lint"
+#           command: |
+#             zhmd -c ~/pingcap/docs-cn/.zhlint.yaml
 
 
 workflows:
@@ -138,7 +138,7 @@ workflows:
   lint:
     jobs:
       - lint
-      - zhmd
+#     - zhmd
   build:
     jobs:
       - build:
