@@ -176,15 +176,13 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
     以上内容中，将 `DASHBOARD_IP:PORT` 替换为你在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。
 
-    此字段可以填入多个值，用逗号分隔，用于不同的环境，比如用于开发环境则可以加上 `http://localhost:3001/dashboard/?sso_callback=1`。
-
 6. **Allowed Logout URLs** 字段填写如下内容：
 
     ```
     http://DASHBOARD_IP:PORT/dashboard/
     ```
 
-    类似地，将 `DASHBOARD_IP:PORT` 替换为实际的域名（或 IP）及端口。以及支持填入多个值，用于开发环境则可以加上 `http://localhost:3001/dashboard/` (此时，开发环境下访问 TiDB Dashboard 前端首页要使用 `http://localhost:3001/dashboard/`，而不是 `http://localhost:3001/`)。
+    类似地，将 `DASHBOARD_IP:PORT` 替换为实际的域名（或 IP）及端口。
 
     ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-2.png)
 
@@ -192,7 +190,7 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 ### 步骤二：获取 TiDB Dashboard 所需的配置参数并填入 TiDB Dashboard
 
-1. 将 Auth0 **Settings** 栏 **Basic Information** 项的 **Client ID** 字段的值填入 TiDB Dashboard 的 **OIDC Client ID**，将 **Domain** 字段的值，加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中。完成授权并保存配置即可。
+1. 将 Auth0 **Settings** 栏 **Basic Information** 项的 **Client ID** 字段的值填入 TiDB Dashboard 的 **OIDC Client ID**，将 **Domain** 字段的值，加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中，比如 `https://example.us.auth0.com/`。完成授权并保存配置即可。
 
     ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-3.png)
 
