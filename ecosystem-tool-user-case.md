@@ -11,7 +11,6 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 | 使用场景 |迁移源|迁移目的地| 工具 | 描述 | 
 |:---|:---|:---|:---|:---|
 |CSV 数据导入  |CSV|TiDB| [TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) |当需要将其他工具导出的格式兼容的 CSV 文件导入到 TiDB 时，可使用 [TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)。 |  
-`格式兼容`是指 CSV 文件与 TiDB 格式兼容对吗？
 
 | 全量数据迁移  | MySQL/Aurora |TiDB|  [Dumpling](/dumpling-overview.md) ，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) | 当需要从 MySQL/Aurora 导入全量数据时，可先使用 [Dumpling](/dumpling-overview.md) 将数据导出为 SQL dump 文件，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB 集群。 | 
 
