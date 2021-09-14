@@ -14,7 +14,6 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 | 全量数据迁移  | MySQL/Aurora |TiDB|  [Dumpling](/dumpling-overview.md)，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) | 当需要从 MySQL/Aurora 导入全量数据时，可先使用 [Dumpling](/dumpling-overview.md) 将数据导出为 SQL dump 文件，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB 集群。 | 
 
-
 | 全量 + 增量数据迁移 | MySQL/Aurora |TiDB|[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview)  | 当你既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 完成[全量数据和增量数据的迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。 如果全量数据量较大（TB 级别），则可先使用 [Dumpling](/dumpling-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。| 
 
 | TiDB 集群备份与恢复 |TiDB |TiDB|[BR](/br/backup-and-restore-tool.md)  | 当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-tool.md)。另外，BR 也可以对 TiDB 的数据进行[增量备份](/br/use-br-command-line-tool.md#增量备份)和[增量恢复](/br/use-br-command-line-tool.md#增量恢复)。 | 
