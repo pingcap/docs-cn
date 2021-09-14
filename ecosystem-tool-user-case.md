@@ -11,7 +11,6 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 | 使用场景 |迁移源|迁移目的地| 工具 | 描述 | 
 |:---|:---|:---|:---|:---|
 |CSV 数据导入  |CSV|TiDB| [TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) |当需要将其他工具导出的格式兼容的 CSV 文件导入到 TiDB 时，可使用 [TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)。 |  
-
 | 全量数据迁移  | MySQL/Aurora |TiDB|  [Dumpling](/dumpling-overview.md)，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) | 当需要从 MySQL/Aurora 导入全量数据时，可先使用 [Dumpling](/dumpling-overview.md) 将数据导出为 SQL dump 文件，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB 集群。 | 
 
 | 全量 + 增量数据迁移 | MySQL/Aurora |TiDB|[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview)  | 当你既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 完成[全量数据和增量数据的迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。 如果全量数据量较大（TB 级别），则可先使用 [Dumpling](/dumpling-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。| 
