@@ -1274,7 +1274,7 @@ raftdb 相关配置项。
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否开启 GC in Compaction Filter 特性
-+ 默认值：false
++ 默认值：true
 
 ## backup
 
