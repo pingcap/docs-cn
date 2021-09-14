@@ -5,41 +5,41 @@ aliases: ['/docs/dev/ticdc/ticdc-craft/','/docs/dev/reference/tools/ticdc/craft/
 
 # TiCDC Craft
 
-TiCDC Craft is a row-level data change notification protocol that provides data sources for monitoring, caching, full-text indexing, analysis engines, and primary-secondary replication between different databases. TiCDC complies with TiCDC Craft and replicates data changes of TiDB to third-party data medium such as MQ (Message Queue). Compared to JSON based Open Protocol, craft is a binary protocol therefore is more compact and use less resources to encode and decode. For large TiDB clusters which have high write throughput, performance is more important than human readability to support such high change events traffic.
+TiCDC Craft 是一个行级的数据变更通知协议，为数据源提供了监控、缓存、全文索引、分析引擎和不同数据库之间的主次复制的能力。TiCDC 使用 TiCDC Craft，将 TiDB 的数据变化复制到第三方数据媒介，如MQ（消息队列）。与基于 JSON 的开放协议相比，craft 是一个二进制协议，因此更加紧凑，编码和解码时使用的资源更少。具有高写入量的大型 TiDB 集群事件变更日志也是海量的，此时协议的高性能远比可读性重要。
 
-TiCDC Craft uses Event as the basic unit to replicate data change events to the downstream. The Event is divided into three categories:
+TiCDC Craft使用Event作为基本单元，将数据变更事件复制到下游。事件被分为以下三类：
 
-* [Row Changed Event](#row-changed-event): Represents the data change in a row. When a row is changed, this Event is sent and contains information about the changed row.
-* [DDL Event](#ddl-event): Represents the DDL change. This Event is sent after a DDL statement is successfully executed in the upstream. The DDL Event is broadcasted to every MQ Partition.
-* [Resolved Event](#resolved-event): Represents a special time point before which the Event received is complete.
+* [Row Changed Event](#row-changed-event): 代表行数据变更。当某一行被改变时，包含行变更信息的事件将会被发送出去.
+* [DDL Event](#ddl-event): 代表DDL变更。在上游成功执行 DDL 语句后此事件会被发送。DDL 事件会被广播到消息队列的每个分区。
+* [Resolved Event](#resolved-event): 代表一个特殊的时间点，标志在这个时间点之前收到的事件都已被完成。
 
 ## Restrictions
 
-* In most cases, the Row Changed Event of a version is sent only once, but in special situations such as node failure and network partition, the Row Changed Event of the same version might be sent multiple times.
-* On the same table, the Row Changed Events of each version which is first sent are incremented in the order of timestamps (TS) in the Event stream.
-* Resolved Events are periodically broadcasted to each MQ Partition. The Resolved Event means that any Event with a TS earlier than Resolved Event TS has been sent to the downstream.
-* DDL Events are broadcasted to each MQ Partition.
-* Multiple Row Changed Events of a row are sent to the same MQ Partition.
+* 在大多数情况下，同一版本的 Row Changed Event 只会发送一次，但在特殊情况下，如节点故障和网络分区，某一版本的 Row Chanhed Even 可能被多次发送。
+* 在同一个表中，Row Changed Event 在事件流中的版本将在第一次发送后按时间戳（TS）依次递增。
+* Resolved Events 会被定期广播的消息队列的每个分区中.  Resolved Event 表示任何 TS 早于 Resolved Event 的事件已被发送到下游。
+* DDL 事件会被广播到消息队列的每个分区。
+* 同一行的多个 Row Changed Events 会被发送到消息队列的同一个分区。
 
 ## Benchmark
 
-* Binary protocol encodes the same events with far less amount of bytes.
-* Protobuf is a popular binary format that can be used instead of craft format. Since craft format can apply sophisticated optimizations, it can be more compact and faster than protobuf.
+* 对同一事件，二进制协议编码所占用的字节数更少。
+* Protobuf 作为一种被广泛使用的二进制格式，可以用来代替 craft. 因为craft格式可以应用复杂的优化，所以它可以比 protobuf 更紧凑、更快。
 
-Serialized size:
+压缩率对比:
 
 | case | craft size | json size | protobuf 1 size | protobuf 2 size | craft compressed | json compressed | protobuf 1 compressed | protobuf 2 compressed |
 | :---- | :--------- | :-------- | :-------------- | :-------------- | :--------------- | :-------------- | :-------------------- | :-------------------- |
 | case 0 | 300 | 708 (136%)+ | 382 (27%)+ | 375 (25%)+ | 168 | 223 (32%)+ | 198 (17%)+ | 181 (7%)+ |
 | case 1 | 993 | 2816 (183%)+ | 1528 (53%)+ | 1482 (49%)+ | 209 | 286 (36%)+ | 235 (12%)+ | 221 (5%)+ |
 
-Encoding speed:
+编码速度对比:
 
 | craft | json | protobuf 1 | protobuf 2 |
 | :---- | :--- | :--------- | :--------- |
 | 4809 ns/op | 28388 ns/op (490%)+ | 3921 ns/op (19%)- | 3645 ns/op (25%)- |
 
-Decoding speed:
+解码速度对比:
 
 | craft | json | protobuf 1 | protobuf 2 |
 | :---- | :--- | :--------- | :--------- |
@@ -47,12 +47,12 @@ Decoding speed:
 
 ## Message format
 
-A Message contains one or more Events, arranged in the following format:
+一条 message 包含一个或多个 event，按以下格式排列：
 
 Message:
 
 | uvarint | header | body | term dictionary | size tables |
-| :------ | :------ | :------ | :------ |
+| :------ | :------ | :------ | :------ | ------- |
 | version | events header | events body | term dictionary | size tables |
 
 Header:
@@ -112,30 +112,30 @@ Primitive types:
 
 | type | encoding |
 | :--- | :------- |
-| uvarint | Each byte in a uvarint, except the last byte, has the most significant bit (msb) set – this indicates that there are further bytes to come. The lower 7 bits of each byte are used to store the two's complement representation of the number in groups of 7 bits, least significant group first |
-| little endian uvarint | Each byte in a uvarint, except the last byte, has the most significant bit (msb) set – this indicates that there are further bytes to come. The lower 7 bits of each byte are used to store the two's complement representation of the number in groups of 7 bits, most significant group first |
-| varint | Use ZigZag encoding to map signed integers to unsigned integers so that the numbers with a small absolute encoded value too. |
-| float64 | Fixed 64 bits lump of data stored in little-endian byte order |
-| string/bytes | Uvarint encoded length followed by a specific number of bytes of data |
-| nullable string/bytes | Varint encoded length followed by a specific number of bytes of data. Length of -1 is used to indicate null string/bytes |
+| uvarint | uvarint 中除了最后一个字节外，每个字节都设置了最高有效位（msb）— 表示是否还有更多的字节。每个字节的低 7 位用于存储以 7 位为一组数字的二进制补码表示，最低有效组优先。 |
+| little endian uvarint | uvarint 中除了最后一个字节外，每个字节都设置了最高有效位（msb）— 表示是否还有更多的字节。每个字节的低 7 位用于存储以 7 位为一组数字的二进制补码表示，最高有效组优先。 |
+| varint | 使用ZigZag编码将有符号整数映射到无符号整数，这样数字的绝对编码值也会变小。 |
+| float64 | 固定64位的数据块以小端字节序存储。 |
+| string/bytes | uvarint 编码的长度，后面是特定字节数的数据。 |
+| nullable string/bytes | varint 编码的长度，后面是具体的数据字节数。长度为-1时，表示空字符串或字节数组。 |
 
 Chunk of primitive types:
 
 | chunk type | encoding |
 | :--------- | :------- |
-| uvarint chunk | Consecutive elements encoded in uvarint format |
-| varint chunk | Consecutive elements encoded in varint format |
-| delta uvarint chunk | Base number encoded in uvarint format followed by delta of each element to last element encoded in uvarint format |
-| delta varint chunk | Base number encoded in varint format followed by delta of each element to last element encoded in varint format |
-| float64 chunk | Consecutive elements encoded in float64 format |
-| string/bytes chunk | Consecutive length of all string/bytes encoded in uvarint format followed by bytes of each elements |
-| nullable string/bytes chunk | Consecutive length of all string/bytes encoded in uvarint format followed by bytes of each elements. Length of -1 is used to indicate null string/bytes |
+| uvarint chunk | 以 uvarint 格式编码的连续元素。 |
+| varint chunk | 以 varint 格式编码的连续元素。 |
+| delta uvarint chunk | 以 uvarint 格式编码的基数，后面是以 uvarint 格式编码的每个元素与最后一个元素的差值。 |
+| delta varint chunk | 以 varint 格式编码的基数，后面是以 uvarint 格式编码的每个元素与最后一个元素的差值。 |
+| float64 chunk | 以 float64 格式编码的连续元素。 |
+| string/bytes chunk | 以 uvarint 格式编码的所有字符串/字节的连续长度，后面是每个元素的字节数。 |
+| nullable string/bytes chunk | 以 uvarint 格式编码的所有字符串/字节的连续长度，后面是每个元素的字节。长度为 -1 时表示空字符串或字节数组。 |
 
-* The version of the current protocol is `1`.
+* 当前协议的版本号为  `1`.
 
 ## Event format
 
-This section introduces the formats of Row Changed Event, DDL Event, and Resolved Event.
+本节介绍 Row Changed Event, DDL Event 和 Resolved Event 这三种事件的格式。
 
 ### Row Changed Event
 
@@ -143,40 +143,41 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     | Data | Type | Description |
     | :-------- | :--- | :---------- |
-    | Commit TS | uint64 | The timestamp of transaction that causes the row change.  |
-    | Type | uint64 | Type of the event. 0x1: Row Changed, 0x2: DDL, 0x3: Resolved |
-    | Partition ID | uint64 | Partition ID (It is -1 when the physical table is not part of partitioned table)|
-    | Schema | string |  The name of the schema where the row is in. |
-    | Table | String |  The name of the table where the row is in. |
+    | Commit TS | uint64 | 导致行变化的事务的时间戳。 |
+    | Type | uint64 | 事件类型. 0x1: Row Changed, 0x2: DDL, 0x3: Resolved. |
+    | Partition ID | uint64 | 分区 ID（当物理表不是分区表的一部分时，ID 为 -1）。 |
+    | Schema | string | 该行所在的库名。 |
+    | Table | String | 该行所在的表名。 |
 
 + **Event:**
 
-    `Insert` event. The newly added row data is output.
+    `Insert` event. 新添加的数据将会被输出。
 
     | Column group(s) |
     | :-------------- |
     | New values |
 
-    `Update` event. The newly added row data and the row data before the update are output. Old values are only available when the old value feature is enabled.
+    `Update` event. 新添加的行和更新前的行会被输出。旧值只有在启用旧值功能时才可用。
 
     | Column group(s) |
     | :-------------- |
     | New values |
     | Old values |
 
-    `Delete` event. The deleted row data is output. When the old value feature is enabled, the `Delete` event includes all the columns of the deleted row data; when this feature is disabled, the `Delete` event only includes the [HandleKey](#bit-flags-of-columns) column.
+    `Delete` event. 被删除的行会被输出. 当旧值功能被启用时,  `Delete` event 包含被删除的所有列; 当旧值功能被禁用时, `Delete` event 仅仅包含 [HandleKey](#bit-flags-of-columns) .
+    
     | Column group(s) |
     | :-------------- |
     | Deleted values |
-
+    
     Column :
-
+    
     | Data | Type | Description |
     | :--- | :--- | :---------- |
-    | Name | string | The column name. |
-    | Type | uint64 | The column type. For details, see [Column Type Code](#column-type-code). |
-    | Flag (**experimental**) | numeric | The bit flags of columns. For details, see [Bit flags of columns](#bit-flags-of-columns). |
-    | Value | any | The Column value. For details, see [Binary encoding for different column types](#column-type-code). |
+    | Name | string | 列名。 |
+    | Type | uint64 | 列类型，详见 [Column Type Code](#column-type-code). |
+    | Flag (**experimental**) | numeric | 列标签，详见 [Bit flags of columns](#bit-flags-of-columns). |
+    | Value | any | 列值，详见 [Binary encoding for different column types](#column-type-code). |
 
 ### DDL Event
 
@@ -184,15 +185,15 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     | Data | Type   | Description                         |
     | :--- | :----- | :---------------------------------- |
-    | Commit TS | uint64 | The timestamp of the transaction that performs the DDL change. |
-    | Schema | string | The schema name of the DDL change, which might be an empty string. |
-    | Table | string | The table name of the DDL change, which might be am empty string. |
+    | Commit TS | uint64 | 执行DDL变更的事务的时间戳。 |
+    | Schema | string | DDL 变更影响的库名，可能为空字符串。 |
+    | Table | string | DDL 变更影响的表名，可能为空字符串。 |
 
 + **Event:**
 
     | Data | Type   | Description   |
     | :--- | :----- | :------------ |
-    | Type | uint64 | The DDL type. For details, see [DDL Type Code](#ddl-type-code).    |
+    | Type | uint64 | DDL 类型，详见 [DDL Type Code](#ddl-type-code). |
     | Query | string | DDL Query SQL |
 
 ### Resolved Event
@@ -201,15 +202,15 @@ This section introduces the formats of Row Changed Event, DDL Event, and Resolve
 
     | Data | Type | Description |
     | :--- | :--- | :---------- |
-    | TS | uint64 | The Resolved timestamp. Any TS earlier than this Event has been sent. |
+    | TS | uint64 | Resolved Event 的时间戳。任何 TS 比此 TS 早的事件都已发送。 |
 
 + **Event:** None
 
 ## Examples of the Event stream output
 
-This section shows and displays the output logs of the Event stream. Since craft protocol is binary hence not human readable, we are going to use Open Protocol to demonstrate what will happen and the corresponding craft event stream is equivalent to the human readable json counterpart.
+本节展示事件流的输出日志。由于 craft 协议是二进制的，因此不具备可读性，我们将使用开放协议来演示发生的事情，相应的 craft 事件流被转化为具备可读性的 json.
 
-Suppose that you execute the following SQL statement in the upstream and the MQ Partition number is 2:
+假设你在上游执行以下 SQL 语句，消息队列分区编号为2.
 
 {{< copyable "sql" >}}
 
@@ -217,7 +218,7 @@ Suppose that you execute the following SQL statement in the upstream and the MQ 
 CREATE TABLE test.t1(id int primary key, val varchar(16));
 ```
 
-From the following Log 1 and Log 3, you can see that the DDL Event is broadcasted to all MQ Partitions, and that the Resolved Event is periodically broadcasted to each MQ Partition.
+从下面的日志 1 和日志 3 可以看出，DDL Event 被广播到所有的 MQ 分区，而 Resolved Event 被定期广播到每个 MQ 分区。
 
 ```
 1. [partition=0] [key="{\"ts\":415508856908021766,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":2}"] [value="{\"q\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"t\":3}"]
@@ -226,7 +227,7 @@ From the following Log 1 and Log 3, you can see that the DDL Event is broadcaste
 4. [partition=1] [key="{\"ts\":415508856908021766,\"t\":3}"] [value=]
 ```
 
-Execute the following SQL statements in the upstream:
+在上游执行以下SQL语句：
 
 {{< copyable "sql" >}}
 
@@ -239,9 +240,9 @@ INSERT INTO test.t1(id, val) VALUES (3, 'cc');
 COMMIT;
 ```
 
-+ From the following Log 5 and Log 6, you can see that Row Changed Events on the same table might be sent to different partitions based on the primary key, but changes to the same row are sent to the same partition so that the downstream can easily process the Event concurrently.
-+ From Log 6, multiple changes to the same row in a transaction are only sent in one Row Changed Event.
-+ Log 8 is a repeated event of Log 7. Row Changed Event might be repeated, but the first Event of each version is sent orderly.
++ 从下面的日志 5 和日志 6 中，你可以看到，同一表中的多个 Row Changed Event 可能会根据主键被发送到不同的分区，但同一行的改变会被发送到同一分区，这样下游就可以很容易地并发处理该事件。
++ 从日志 6 开始，在一个事务中对同一行的多个更改只在一个 Row Changed Event 中发送。
++ 日志 8 是日志 7 的一个重复事件。行改变的事件可能会被重复，但每个版本的第一个事件是有序发送的。
 
 ```
 5. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":1},\"val\":{\"t\":15,\"v\":\"YWE=\"}}}"]
@@ -250,7 +251,7 @@ COMMIT;
 8. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
 ```
 
-Execute the following SQL statements in the upstream:
+在上游执行以下SQL语句：
 
 {{< copyable "sql" >}}
 
@@ -262,8 +263,8 @@ UPDATE test.t1 SET id = 4, val = 'ee' WHERE id = 2;
 COMMIT;
 ```
 
-+ Log 9 is the Row Changed Event of the `Delete` type. This type of Event only contains primary key columns or unique index columns.
-+ Log 13 and Log 14 are Resolved Events. The Resolved Event means that in this Partition, any events smaller than the Resolved TS (including Row Changed Event and DDL Event) have been sent.
++ 日志 9 是 `Delete`类型的  Row Changed Event, 这种类型的事件只包含主键列或唯一索引列。
++ 日志 13 和日志 14 是 Resolved Event. Resolved Event 表示在这个分区中，任何小于 Resolved Event 的 TS 的事件（包括 Row Changed Event 和DDL Event）都已经被发送。
 
 ```
 9. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"d\":{\"id\":{\"t\":3,\"h\":true,\"v\":1}}}"]
@@ -276,14 +277,14 @@ COMMIT;
 
 ## Protocol parsing for consumers
 
-Currently, TiCDC does not provide the standard parsing library for TiCDC Craft, but the Golang version and Java version of parsers are provided. You can refer to the data format provided in this document and the following decoders to implement the protocol parsers for other languages.
+目前，TiCDC 没有提供 TiCDC Craft 的标准解析库，但提供了 Golang 版本和 Java 版本的解析器。你可以参考本文件提供的数据格式和以下解码器来实现其他语言的协议解析器。
 
 - [Golang demo](https://github.com/pingcap/ticdc/tree/master/kafka_consumer)
 - [Java demo](https://github.com/pingcap/ticdc/tree/master/demo/java)
 
 ## Column type code
 
-`Column Type Code` represents the column data type of the Row Changed Event.
+`Column Type Code` 表示 Row Changed Event 中列的数据类型。
 
 | Type                  | Code  | Encoding Format | Note |
 | :-------------------- | :---- | :-------------- | :--- |
@@ -315,7 +316,7 @@ Currently, TiCDC does not provide the standard parsing library for TiCDC Craft, 
 
 ## DDL Type Code
 
-`DDL Type Code` represents the DDL statement type of the DDL Event.
+`DDL Type Code` 表示 DDL Event 中 DDL 的类型。
 
 | Type                              | Code |
 | :-------------------------------- | :- |
@@ -358,7 +359,7 @@ Currently, TiCDC does not provide the standard parsing library for TiCDC Craft, 
 
 ## Bit flags of columns
 
-The bit flags represent specific attributes of columns.
+The bit flags 表示列的特殊属性。
 
 | Bit | Value | Name | Description |
 | :-- | :---- | :--- | :---------- |
@@ -371,7 +372,7 @@ The bit flags represent specific attributes of columns.
 | 7   | 0x40 | NullableFlag        | Whether the column is a nullable column. |
 | 8   | 0x80 | UnsignedFlag        | Whether the column is an unsigned column. |
 
-Example:
+例:
 
 If the value of a column flag is `85`, the column is a nullable column, a unique index column, a generated column, and a binary-encoded column.
 
@@ -389,7 +390,7 @@ If the value of a column is `46`, the column is a composite index column, a prim
 
 > **Note:**
 >
-> + This feature is still experimental. Do **NOT** use it in the production environment.
-> + `BinaryFlag` is meaningful only when the column type is BLOB/TEXT (including TINYBLOB/TINYTEXT and BINARY/CHAR). When the upstream column is the BLOB type, the `BinaryFlag` value is set to `1`. When the upstream column is the TEXT type, the `BinaryFlag` value is set to `0`.
-> + To replicate a table from the upstream, TiCDC selects a [valid index](/ticdc/ticdc-overview.md#restrictions) as the Handle index. The `HandleKeyFlag` value of the Handle index column is set to `1`.
+> + 这一特性仍处于试验阶段。请**不要**在生产环境中使用它。
+> + `BinaryFlag` 只有在列类型为 BLOB/TEXT (包括 TINYBLOB/TINYTEXT 和 BINARY/CHAR) 才有意义。 当上游列是 BLOB 类型时，`BinaryFlag`值被设置为`1`。当上游列是 TEXT 类型时，`BinaryFlag` 值被设置为 `0`.
+> + 从上游复制一个表时，TiCDC选择一个[有效索引](/ticdc/ticdc-overview.md#restrictions)作为 Handle 索引。Handle 索引列的 `HandleKeyFlag` 值被设置为`1`。
 > + [Protobuf definition for benchmark](https://github.com/sunxiaoguang/ticdc/blob/craft/proto/CraftBenchmark.proto)
