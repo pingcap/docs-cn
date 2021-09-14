@@ -241,9 +241,9 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 
 For details, see [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md).
 
-## Associated session variables
+## Associated system variables
 
-The global variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size`, `tidb_ddl_reorg_priority`, and `tidb_enable_auto_increment_in_generated`. Refer to [system variables](/system-variables.md#tidb_ddl_reorg_worker_cnt) for details.
+The system variables associated with the `CREATE INDEX` statement are `tidb_ddl_reorg_worker_cnt`, `tidb_ddl_reorg_batch_size`, `tidb_enable_auto_increment_in_generated`, and `tidb_ddl_reorg_priority`. Refer to [system variables](/system-variables.md#tidb_ddl_reorg_worker_cnt) for details.
 
 ## MySQL compatibility
 
