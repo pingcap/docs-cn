@@ -157,7 +157,7 @@ Query OK, 0 rows affected (0.31 sec)
 {{< copyable "sql" >}}
 
 ```sql
-CREATE INDEX idx1 ON t1 (lower(col1));
+CREATE INDEX idx1 ON t1 ((lower(col1)));
 ```
 
 或者等价的语句：
@@ -165,7 +165,7 @@ CREATE INDEX idx1 ON t1 (lower(col1));
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t1 ADD INDEX idx1(lower(col1));
+ALTER TABLE t1 ADD INDEX idx1((lower(col1)));
 ```
 
 还可以在建表的同时指定表达式索引：
@@ -173,8 +173,11 @@ ALTER TABLE t1 ADD INDEX idx1(lower(col1));
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index(lower(col1)));
+CREATE TABLE t1(col1 char(10), col2 char(10), key index((lower(col1))));
 ```
+
+> **注意：**
+> 表达式索引中的表达式需要用 `(` 和 `)` 包围起来，否则会报语法错误。
 
 删除表达式索引与删除普通索引的方法一致：
 
