@@ -298,7 +298,7 @@ For example, to save all configuration to the `rules.json` file, execute the fol
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle load -out="rules.json"
+pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ```
 
 After editing the file, execute the following command to save the configuration to the PD server:
@@ -306,7 +306,7 @@ After editing the file, execute the following command to save the configuration 
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle save -in="rules.json"
+pd-ctl config placement-rules rule-bundle save --in="rules.json"
 ```
 
 ### Use tidb-ctl to query the table-related key range
