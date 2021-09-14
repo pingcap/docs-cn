@@ -27,22 +27,7 @@ The following table provides an overview of the feature development history of T
 | [Window functions](/functions-and-operators/window-functions.md)                                         | Y            | Y            | Y            | Y            |
 | [Miscellaneous functions](/functions-and-operators/miscellaneous-functions.md)                           | Y            | Y            | Y            | Y            |
 | [Operators](/functions-and-operators/operators.md)                                                       | Y            | Y            | Y            | Y            |
-| [**Character sets**](/character-set-and-collation.md)                                                    | **5.2**      | **5.1**      | **5.0**      | **4.0**      |
-| `utf8`                                                                                                   | Y            | Y            | Y            | Y            |
-| `utf8mb4`                                                                                                | Y            | Y            | Y            | Y            |
-| `ascii` [^1]                                                                                             | Y            | Y            | Y            | Y            |
-| `latin1`                                                                                                 | Y            | Y            | Y            | Y            |
-| `binary`                                                                                                 | Y            | Y            | Y            | Y            |
-| [**Collations**](/character-set-and-collation.md)                                                        | **5.2**      | **5.1**      | **5.0**      | **4.0**      |
-| `utf8_bin`                                                                                               | Y            | Y            | Y            | Y            |
-| `utf8_general_ci`                                                                                        | Y            | Y            | Y            | Y            |
-| `utf8_unicode_ci`                                                                                        | Y            | Y            | Y            | Y            |
-| `utf8mb4_bin`                                                                                            | Y            | Y            | Y            | Y            |
-| `utf8mb4_general_ci`                                                                                     | Y            | Y            | Y            | Y            |
-| `utf8mb4_unicode_ci`                                                                                     | Y            | Y            | Y            | Y            |
-| `ascii_bin`                                                                                              | Y            | Y            | Y            | Y            |
-| `latin1_bin`                                                                                             | Y            | Y            | Y            | Y            |
-| `binary`                                                                                                 | Y            | Y            | Y            | Y            |
+| [Character sets and collations](/character-set-and-collation.md) [^1]                                    | Y            | Y            | Y            | Y            |
 | **Indexing and constraints**                                                                             | **5.2**      | **5.1**      | **5.0**      | **4.0**      |
 | [Expression indexes](/sql-statements/sql-statement-create-index.md#expression-index)                     | Experimental | Experimental | Experimental | Experimental |
 | [Columnar storage (TiFlash)](/tiflash/tiflash-overview.md)                                               | Y            | Y            | Y            | Y            |
