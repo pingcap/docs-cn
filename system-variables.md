@@ -1201,7 +1201,7 @@ SET tidb_query_log_max_len = 20
 
 ### tidb_replica_read <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION
+- Scope: SESSION | GLOBAL
 - Default value: `leader`
 - Possible values: `leader`, `follower`, `leader-and-follower`
 - This variable is used to control where TiDB reads data. Here are three options:
@@ -1320,7 +1320,8 @@ SET tidb_slow_log_threshold = 200;
 - Scope: SESSION | GLOBAL
 - Default value: `1800`
 - Range: `[1, 2147483647]`
-- This variable is used to set the refresh time of [statement summary tables](/statement-summary-tables.md). The unit is second.
+- Unit: Seconds
+- This variable is used to set the refresh time of [statement summary tables](/statement-summary-tables.md).
 
 ### tidb_store_limit <span class="version-mark">New in v3.0.4 and v4.0</span>
 
@@ -1358,7 +1359,8 @@ SET tidb_slow_log_threshold = 200;
 - Scope: SESSION
 - Default value: `300`
 - Range: `[1, 2147483647]`
-- This variable is used to set the timeout for executing the `SPLIT REGION` statement. The unit is second. If a statement is not executed completely within the specified time value, a timeout error is returned.
+- Unit: Seconds
+- This variable is used to set the timeout for executing the `SPLIT REGION` statement. If a statement is not executed completely within the specified time value, a timeout error is returned.
 
 ### tidb_window_concurrency <span class="version-mark">New in v4.0</span>
 
