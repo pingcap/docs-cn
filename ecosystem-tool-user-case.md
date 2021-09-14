@@ -19,6 +19,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 
 | TiDB 集群备份与恢复 |TiDB |TiDB|[BR](/br/backup-and-restore-tool.md)  | 当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-tool.md)。另外，BR 也可以对 TiDB 的数据进行[增量备份](/br/use-br-command-line-tool.md#增量备份)和[增量恢复](/br/use-br-command-line-tool.md#增量恢复)。 | 
-| TiDB 之间全量 + 增量 数据迁移|TiDB |TiDB| [Dumpling](/dumpling-overview.md) ，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) | 当需要将 TiDB 集群的数据迁移到其他 TiDB 集群时，可使用 [Dumpling](/dumpling-overview.md) 从 TiDB 将全量数据导出为 SQL dump 文件，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB。如果还需要执行增量数据的迁移，可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。 | 
+| TiDB 之间全量 + 增量 数据迁移|TiDB |TiDB| [Dumpling](/dumpling-overview.md)，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) | 当需要将 TiDB 集群的数据迁移到其他 TiDB 集群时，可使用 [Dumpling](/dumpling-overview.md) 从 TiDB 将全量数据导出为 SQL dump 文件，然后再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入到 TiDB。如果还需要执行增量数据的迁移，可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。 | 
+
 
 |TiDB 增量数据订阅  | TiDB |TiDB|[TiDB Binlog](/tidb-binlog/binlog-consumer-client.md) | 当需要订阅 TiDB 增量数据的变更时，可使用 [TiDB Binlog](/tidb-binlog/binlog-consumer-client.md)。 | 
