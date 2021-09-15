@@ -20,7 +20,7 @@ TiKV 从 v4.0.0 起支持静态加密，即在 [CTR](https://zh.wikipedia.org/wi
 * TiFlash 从 v4.0.5 开始支持静态加密功能，详情参阅 [TiFlash 静态加密](/encryption-at-rest.md#tiflash-静态加密-从-v405-版本开始引入)。TiKV 与 v4.0.5 之前版本的 TiFlash 一起部署时，存储在 TiFlash 中的数据不会被加密。
 * TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储。
 * TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`、`raftstore.raftdb-path`、`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
-* TiKV 信息日志包含用于调试的用户数据。信息日志不会被加密。
+* TiKV，TiDB 和 PD 信息日志可能包含用于调试的用户数据。信息日志不会被加密。建议启用[日志脱敏](/log-redaction.md)。
 
 ## 功能概述
 
