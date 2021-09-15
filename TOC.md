@@ -261,6 +261,7 @@
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
       - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
+      - [`ADMIN SHOW TELEMETRY]`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
@@ -547,6 +548,7 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v5.2
+    - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   + v5.1
     - [5.1.1](/releases/release-5.1.1.md)

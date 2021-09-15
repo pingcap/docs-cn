@@ -5,7 +5,7 @@ summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。
 
 # HTAP 深入探索指南
 
-本指南介绍如何深入探索并使用 TiDB 在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能。
+本指南介绍如何进一步探索并使用 TiDB 在线事务与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 功能。
 
 > **注意：**
 >
@@ -29,7 +29,7 @@ TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险�
 
     当将 TiDB 应用于数据中枢场景时，TiDB 作为数据中枢可以无缝连接数据业务层和数据仓库层，满足不同业务的需求。
 
-如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [PingCAP 官网中关于 HTAP 的博客](https://pingcap.com/blog-cn/#HTAP)。
+如果想了解更多关于 TiDB HTAP 场景信息，请参阅 [PingCAP 官网中关于 HTAP 的博客](https://pingcap.com/zh/blog/?tag=HTAP)。
 
 ## HTAP 架构
 
