@@ -156,11 +156,11 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 ### 步骤一：配置 Auth0
 
-1. 访问 Auth0 管理后台。
+1. 访问 Auth0 的管理后台。
 
 2. 点击左侧边栏的 **Applications** > **Applications**。
 
-3. 点击 **Create Application**，在弹出窗口中输入 Name，比如 "TiDB Dashboard"，application type 选择 "Single Page Web Application"。
+3. 点击 **Create Application**，在弹出窗口中输入 Name，例如 "TiDB Dashboard"。在 **Choose an application type** 下选择 "Single Page Web Application"。
 
     ![Create Application](/media/dashboard/dashboard-session-sso-auth0-create-app.png)
 
@@ -168,15 +168,15 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
     ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-1.png)
 
-5. **Allowed Callback URLs** 字段填写如下内容：
+5. 在 **Allowed Callback URLs** 字段中填写如下内容：
 
     ```
     http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
     ```
 
-    以上内容中，将 `DASHBOARD_IP:PORT` 替换为你在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。
+    在以上内容中，将 `DASHBOARD_IP:PORT` 替换为你在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。
 
-6. **Allowed Logout URLs** 字段填写如下内容：
+6. 在 **Allowed Logout URLs** 字段中填写如下内容：
 
     ```
     http://DASHBOARD_IP:PORT/dashboard/
@@ -190,7 +190,7 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 ### 步骤二：获取 TiDB Dashboard 所需的配置参数并填入 TiDB Dashboard
 
-1. 将 Auth0 **Settings** 栏 **Basic Information** 项的 **Client ID** 字段的值填入 TiDB Dashboard 的 **OIDC Client ID**，将 **Domain** 字段的值，加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中，比如 `https://example.us.auth0.com/`。完成授权并保存配置即可。
+1. 将 Auth0 **Settings** 栏 **Basic Information** 项的 **Client ID** 字段的值填入 TiDB Dashboard 的 **OIDC Client ID**，将 **Domain** 字段的值，加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中，例如 `https://example.us.auth0.com/`。完成授权并保存配置即可。
 
     ![Settings](/media/dashboard/dashboard-session-sso-auth0-settings-3.png)
 
