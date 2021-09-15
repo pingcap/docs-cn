@@ -64,6 +64,7 @@ In v5.2, the key new features and improvements are as follows:
 - Before the upgrade, check the value of the TiDB configuration [`feedback-probability`](/tidb-configuration-file.md#feedback-probability). If the value is not `0`, the "panic in the recoverable goroutine" error will occur after the upgrade, but this error does not affect the upgrade.
 - TiDB is now compatible with MySQL 5.7's noop variable `innodb_default_row_format`. Setting this variable has no effect. [#23541](https://github.com/pingcap/tidb/issues/23541)
 - Starting from TiDB 5.2, to improve system security, it is recommended (but not mandatory) to encrypt the transport layer for connections from clients. TiDB provides the Auto TLS feature to automatically configure and enable encryption in TiDB. To use the Auto TLS feature, before the TiDB upgrade, set [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) in the TiDB configuration file to `true`.
+- Support the `caching_sha2_password` authentication method to make migration from MySQL 8.0 easier and to improve security.
 
 ## New features
 
