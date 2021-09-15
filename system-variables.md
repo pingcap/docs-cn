@@ -126,19 +126,19 @@ mysql> SELECT * FROM t1;
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
-### `default_authentication_plugin`
-
-- 作用域：GLOBAL
-- 默认值：`mysql_native_password`
-- 服务器和客户端建立连接时。这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
-- 可选值：`mysql_native_password`，`caching_sha2_password`。更多信息，请参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
-
 ### `ddl_slow_threshold`
 
 - 作用域：INSTANCE
 - 默认值：`300`
 - 单位：毫秒
 - 耗时超过该阈值的 DDL 操作会被输出到日志。
+
+### `default_authentication_plugin`
+
+- 作用域：GLOBAL
+- 默认值：`mysql_native_password`
+- 可选值：`mysql_native_password`，`caching_sha2_password`
+- 服务器和客户端建立连接时，这个变量用于设置服务器对外通告的默认身份验证方式。如要了解该变量的其他可选值，参见[可用的身份验证插件](/security-compatibility-with-mysql.md#可用的身份验证插件)。
 
 ### `foreign_key_checks`
 
@@ -189,7 +189,7 @@ mysql> SELECT * FROM t1;
 ### `license`
 
 - 作用域：NONE
-- 默认值：Apache License 2.0
+- 默认值：'Apache License 2.0'
 - 这个变量表示 TiDB 服务器的安装许可证。
 
 ### `max_execution_time`
@@ -278,8 +278,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 可选值：`1` 和 `2`
 - 默认值：`2`
+- 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
 - 在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1.0 中，该变量的默认值为 `2`，作为实验特性使用，具体可参照[统计信息简介](/statistics.md)文档。
 
@@ -601,7 +601,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
@@ -1034,20 +1034,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
-### `tidb_opt_limit_push_down_threshold`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`100`
-- 范围：`[0, 2147483647]`
-- 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
-- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
-
-### `tidb_opt_enable_correlation_adjustment`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`ON`
-- 这个变量用来控制优化器是否开启交叉估算。
-
 ### `tidb_opt_correlation_exp_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -1096,6 +1082,12 @@ mysql> desc select count(distinct a) from test.t;
 4 rows in set (0.00 sec)
 ```
 
+### tidb_opt_enable_correlation_adjustment
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器是否开启交叉估算。
+
 ### `tidb_opt_insubq_to_join_and_agg`
 
 - 作用域：SESSION | GLOBAL
@@ -1125,6 +1117,14 @@ mysql> desc select count(distinct a) from test.t;
     ```sql
     select * from t, t1 where t.a=t1.a;
     ```
+
+### `tidb_opt_limit_push_down_threshold`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`100`
+- 范围：`[0, 2147483647]`
+- 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
+- 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
