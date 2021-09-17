@@ -8,6 +8,12 @@ title: TiDB 5.0.1 Release Notes
 
 TiDB 版本：5.0.1
 
+## 兼容性更改
+
++ TiDB 配置文件
+
+    - [`committer-concurrency`](/tidb-configuration-file.md#committer-concurrency) 配置项的默认值由 16 改成 128。
+
 ## 改进提升
 
 + TiDB
