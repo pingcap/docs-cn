@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 # 使用 Dumpling 导出数据
 
-使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于完成逻辑上的全量备份或者导出。也支持导出到 Amazon S3 中。下图展示了使用 Dumpling 导出数据的场景。
+使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于逻辑全量备份或者导出。也支持导出到 Amazon S3 中。下图展示了使用 Dumpling 导出数据的场景。
 
 ![Dumpling 导出数据](/media/dumpling.png)
 
@@ -23,7 +23,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用。
 
 - 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-tool.md)。
 - 如果需要实时的增量备份，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
-- 所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导入回 TiDB。
+- 所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导回到 TiDB。
 
 > **注意：**
 >
@@ -36,7 +36,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用。
 - 支持导出到 Amazon S3 云盘。
 - 针对 TiDB 进行了更多优化：
     - 支持配置 TiDB 单条 SQL 内存限制。
-    - 针对 TiDB v4.0.0 以上版本支持自动调整 TiDB GC 时间。
+    - 针对 TiDB v4.0.0 及更新版本支持自动调整 TiDB GC 时间。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
     - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
@@ -78,7 +78,7 @@ dumpling \
 
 > **注意：**
 >
-> 如果导出的单表大小超过 10 GB，**强烈建议**使用`-r` 和 `-F` 参数。
+> 如果导出的单表大小超过 10 GB，**强烈建议**使用 `-r` 和 `-F` 参数。
 
 ### 导出到 CSV 文件
 
@@ -165,9 +165,9 @@ dumpling \
 
 ### 导出到 Amazon S3 云盘
 
-Dumpling 在 v4.0.8 版本及更新版本中支持导出到 Amazon S3 云盘。如果需要将数据备份到 Amazon S3 后端存储，那么需要在 `-o` 参数中指定 Amazon S3 的存储路径。
+Dumpling 在 v4.0.8 及更新版本支持导出到 Amazon S3 云盘。如果需要将数据备份到 Amazon S3 后端存储，那么需要在 `-o` 参数中指定 Amazon S3 的存储路径。
 
-可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
+可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
 将有权限访问该 Amazon S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 Dumpling 节点。
 
@@ -180,7 +180,7 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[外部存储](/br/backup-and-restore-storages.md)。
 
-在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域，例如 `ap-northeast-1`。
+在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 Amazon S3 存储所在的区域，例如 `ap-northeast-1`。
 
 {{< copyable "shell-regular" >}}
 
