@@ -302,7 +302,7 @@ pd-ctl config placement-rules rule-bundle set pd -in="group.json"
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle load -out="rules.json"
+pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ```
 
 编辑完文件后，使用下面的命令将配置保存至 PD 服务器：
@@ -310,7 +310,7 @@ pd-ctl config placement-rules rule-bundle load -out="rules.json"
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle save -in="rules.json"
+pd-ctl config placement-rules rule-bundle save --in="rules.json"
 ```
 
 ### 使用 tidb-ctl 查询表相关的 key range

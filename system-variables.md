@@ -619,9 +619,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     * `START TRANSACTION READ ONLY` 和 `SET TRANSACTION READ ONLY` 语法
     * `tx_read_only`、`transaction_read_only`、`offline_mode`、`super_read_only` 以及 `read_only` 系统变量
 
-> **注意：**
+> **警告：**
 >
-> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
+> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
 ### `tidb_enable_rate_limit_action`
 
@@ -1130,7 +1130,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 将该变量值设为 `1` 后，优化器总是偏好区间扫描而不是全表扫描。
+- 将该变量值设为 `ON` 后，优化器总是偏好区间扫描而不是全表扫描。
 - 在以下示例中，`tidb_opt_prefer_range_scan` 开启前，TiDB 优化器需要执行全表扫描。`tidb_opt_prefer_range_scan` 开启后，优化器选择了索引区间扫描。
 
 ```sql

@@ -146,12 +146,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 5.2.0 版本为例：
+以升级到 5.2.1 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v5.2.0
+tiup cluster upgrade <cluster-name> v5.2.1
 ```
 
 > **注意：**
@@ -199,7 +199,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v5.2.0
+Cluster version:    v5.2.1
 ```
 
 > **注意：**
@@ -249,7 +249,7 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v5.2.0
+tiup install ctl:v5.2.1
 ```
 
 ## 5. TiDB 5.2 兼容性变化

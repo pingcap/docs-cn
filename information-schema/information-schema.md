@@ -31,7 +31,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | `PLUGINS`                                                                                                                  | TiDB 未实现，返回零行。                                                           |
 | [`PROCESSLIST`](/information-schema/information-schema-processlist.md)                                                     | 提供与 `SHOW PROCESSLIST` 命令类似的信息。                                        |
 | `PROFILING`                                                                                                                | TiDB 未实现，返回零行。                                                           |
-| `REFERENTIAL_CONSTRAINTS`                                                                                                  | TiDB 未实现，返回零行。                                                           |
+| `REFERENTIAL_CONSTRAINTS`                                                                                                  | 提供有关 `FOREIGN KEY` 约束的信息。                                                          |
 | `ROUTINES`                                                                                                                 | TiDB 未实现，返回零行。                                                           |
 | [`SCHEMATA`](/information-schema/information-schema-schemata.md)                                                           | 提供与 `SHOW DATABASES` 命令类似的信息。                                          |
 | `SCHEMA_PRIVILEGES`                                                                                                        | TiDB 未实现，返回零行。                                                           |
