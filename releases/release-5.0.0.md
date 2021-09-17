@@ -60,7 +60,6 @@ TiDB 版本：5.0.0
 + `gc.enable-compaction-filter` 配置项的默认值由 `false` 改成 `true`。
 + `enable-cross-table-merge` 配置项的默认值由 `false` 改成 `true`。
 + [`rate-limiter-auto-tuned`](/tikv-configuration-file.md#rate-limiter-auto-tuned-从-v50-版本开始引入) 配置项的默认值由 `false` 改成 `true`。
-+ [`committer-concurrency`](/tidb-configuration-file.md#committer-concurrency) 配置项的默认值由 16 改成 128。
 
 ### 其他
 
