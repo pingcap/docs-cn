@@ -7,7 +7,7 @@ aliases: ['/docs-cn/stable/statement-summary-tables/','/docs-cn/v4.0/statement-s
 
 针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
-为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema` 中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
+为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema` (_not_ `performance_schema`) 中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
 
 - `statements_summary`
 - `statements_summary_history`
@@ -29,7 +29,7 @@ SELECT * FROM employee WHERE id IN (1, 2, 3) AND salary BETWEEN 1000 AND 2000;
 select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 ```
 
-规一化后都是：
+归一化后都是：
 
 ```sql
 select * from employee where id in (...) and salary between ? and ?;
