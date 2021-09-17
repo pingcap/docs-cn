@@ -10,11 +10,43 @@ TiDB 版本：5.0.4
 
 ## 兼容性更改
 
++ TiDB
+
+    - 回退 #19341 以避免 #24326 [#26258](https://github.com/pingcap/tidb/pull/26258)
+    - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值从 `200` 修改为 `3000` [#25873](https://github.com/pingcap/tidb/pull/25873)
+    - 以下 Bug 修复涉及执行结果变化，可能引起兼容性变化，对业务造成影响：
+        - 修复了当 UNION 的子计划包含 NULL 值时 TiDB 会返回错误结果的问题 [#26571](https://github.com/pingcap/tidb/pull/26571)
+        - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26565](https://github.com/pingcap/tidb/pull/26565)
+        - 修复了 `last_day` 函数的行为在 SQL 模式下不兼容的问题 [#26000](https://github.com/pingcap/tidb/pull/26000)
+        - 修复了 `having` 可能执行错误的问题 [#27742](https://github.com/pingcap/tidb/pull/27742)
+        - 修复了当 `between` 表达式两边的 collation 不一样会导致查询结果错误的问题 [#27548](https://github.com/pingcap/tidb/pull/27548)
+        - 修复了当 `group_concat` 列指定了非 bin 的 collation 时查询结果错误的问题 [#27528](https://github.com/pingcap/tidb/pull/27528)
+        - 修复了当打开 new collation 时，在多列上执行 `count(distinct)` 表达式结果错误的问题 [#27507](https://github.com/pingcap/tidb/pull/27507)
+        - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27368](https://github.com/pingcap/tidb/pull/27368)
+        - 修复了当 `SQL_MODE` 为 'STRICT_TRANS_TABLES' 时，插入非法时间不报错的问题 [#27110](https://github.com/pingcap/tidb/pull/27110)
+        - 修复了当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26903](https://github.com/pingcap/tidb/pull/26903)
+        - 修复了索引前缀的查询范围问题 [#26261](https://github.com/pingcap/tidb/pull/26261)
+        - 修复 `LOAD DATA` 语句可以不正常导入非 utf8 数据的问题 [#26143](https://github.com/pingcap/tidb/pull/26143)
+        - 修复了当二级索引包含主键中的列时，`insert ignore on duplicate update` 可能插入错误数据的问题 [#25905](https://github.com/pingcap/tidb/pull/25905)
+        - 修复了当分区表有聚簇索引时，`insert ignore duplicate update` 可能插入错误数据的问题 [#25859](https://github.com/pingcap/tidb/pull/25859)
+        - 修复了当 point get 或 batch point get 的查找键是 `enum` 类型时，查询结果可能错误的问题 [#24772](https://github.com/pingcap/tidb/pull/24772)
+        - 修复了 `bit` 类型做除法时查询结果不正确的问题 [#24267](https://github.com/pingcap/tidb/pull/24267)
+        - 修复了 prepared 语句和直接查询的结果可能不一致的问题 [#23373](https://github.com/pingcap/tidb/pull/23373)
+        - 修复了当 `year` 类型与字符串或整数类型比较时，结果可能错误的问题 [#23336](https://github.com/pingcap/tidb/pull/23336)
+
 ## 功能增强
+
++ TiDB
+
+    - 支持系统变量 `tidb_enforce_mpp`，设为 1 时忽略优化器代价估算，强制使用 MPP 模式。
 
 + TiKV
 
     - 支持动态修改 CDC 配置 [#10685](https://github.com/tikv/tikv/pull/10685)
+
++ PD
+
+    - TiDB Dashboard: 增加了基于 OIDC 的 SSO 支持 [#3884](https://github.com/tikv/pd/pull/3884)
 
 + TiFlash
 
@@ -23,6 +55,21 @@ TiDB 版本：5.0.4
     - 为 Grafana 面板增加每个实例的写入吞吐
 
 ## 提升改进
+
++ TiDB
+
+    - 基于直方图的 row count 来触发 auto-analyze [#26707](https://github.com/pingcap/tidb/pull/26707)
+    - 当一台 TiFlash 实例之前重启过，TiDB 一段时间内不给该实例发送请求 [#26757](https://github.com/pingcap/tidb/pull/26757)
+    - 增加 split region 的速度限制，使 `split table` 和 `presplit` 更稳定 [#26657](https://github.com/pingcap/tidb/pull/26657)
+    - 支持 MPP 查询的重试 [#26483](https://github.com/pingcap/tidb/pull/26483)
+    - 在发起 MPP 查询之前检查 TiFlash 的可用性 [#26356](https://github.com/pingcap/tidb/pull/26356)
+    - 支持稳定结果模式，使查询结果更稳定 [#26084](https://github.com/pingcap/tidb/pull/26084)
+    - 支持 MySQL 系统变量 `init_connect` 及相关功能. [#26072](https://github.com/pingcap/tidb/pull/26072)
+    - 在 MPP 模式下彻底下推 COUNT(DISTINCT) 聚合函数 [#25861](https://github.com/pingcap/tidb/pull/25861)
+    - 当聚合函数在 EXPLAIN 语句中不能被下推时打印警告日志 [#25736](https://github.com/pingcap/tidb/pull/25736)
+    - 在 Grafana 监控中给 `TiFlashQueryTotalCounter` 加上执行错误的数量 [#25327](https://github.com/pingcap/tidb/pull/25327)
+    - 支持通过二级索引在 HTTP API 查询聚簇索引表的 MVCC 数据 [#24470](https://github.com/pingcap/tidb/pull/24470)
+    - 优化 prepared 语句在解析器的内存分配 [#24371](https://github.com/pingcap/tidb/pull/24371)
 
 + TiKV
 
@@ -37,13 +84,32 @@ TiDB 版本：5.0.4
 
 + PD
 
-    - 在 placement rule 开启时并且 Region 拥有 down/pending 副本时，PD 会保证留下健康副本[#4073](https://github.com/tikv/pd/pull/4073)
-    - PD 会动态调整调度计算重试次数，避免消耗过量 CPU 资源[#4047](https://github.com/tikv/pd/pull/4047)
     - 提升了 PD 之间 region 同步的性能 [#3993](https://github.com/tikv/pd/pull/3993)
-    - 出于安全考虑，PD persist-api 只会接收 json 文件 [#3969](https://github.com/tikv/pd/pull/3969)
-    - 提升了热点调度计算时的性能 [#3910](https://github.com/tikv/pd/pull/3910)
 
 ## Bug 修复
+
++ TiDB
+
+    - 修复了当查询分区表且分区键带有 `IS NULL` 条件时，TiDB 可能 panic 的问题 [#26963](https://github.com/pingcap/tidb/pull/26963)
+    - 修复了 `float64` 类型的溢出检查与 MySQL 不一致的问题 [#26724](https://github.com/pingcap/tidb/pull/26724)
+    - 修复了 `case when` 表达式的 charset 和 collation 错误的问题 [#26672](https://github.com/pingcap/tidb/pull/26672)
+    - 修复了提交悲观事务可能会导致写冲突的问题 [#25974](https://github.com/pingcap/tidb/pull/25974)
+    - 修复了在悲观事务中索引键值可能会被重复提交的问题 [#26495](https://github.com/pingcap/tidb/pull/26495)
+    - 修复了清除 Async Commit 锁时可能会导致 TiDB panic 的问题 [#25863](https://github.com/pingcap/tidb/pull/25863)
+    - 修复了使用 INDEX MERGE 可能找不到列的问题 [#25806](https://github.com/pingcap/tidb/pull/25806)
+    - 修复了使用 `ALTER USER REQUIRE SSL` 清空用户的 `authentication_string` 的问题 [#25348](https://github.com/pingcap/tidb/pull/25348)
+    - 修复了新集群上系统变量 `tidb_gc_scan_lock_mode` 的值显示为 "PHYSICAL" 而实际是 "LEGACY" 的问题 [#25118](https://github.com/pingcap/tidb/pull/25118)
+    - 修复了系统表 `TIKV_REGION_PEERS` 没有显示 `DOWN` 状态的问题 [#24919](https://github.com/pingcap/tidb/pull/24919)
+    - 修复了使用 HTTP API 时导致内存泄漏的问题 [#24649](https://github.com/pingcap/tidb/pull/24649)
+    - 修复了视图不支持 `DEFINER` 的问题 [#24532](https://github.com/pingcap/tidb/pull/24532)
+    - 修复了 `tidb-server --help` 退出状态是 2 的问题 [#24074](https://github.com/pingcap/tidb/pull/24074)
+    - 修复了设置全局系统变量 `dml_batch_size` 后无效的问题 [#24731](https://github.com/pingcap/tidb/pull/24731)
+    - 修复了同时使用 `read_from_storage` 和分区表会报错的问题 [#24374](https://github.com/pingcap/tidb/pull/24374)
+    - 修复了使用聚合函数可能 panic 的问题 [#24354](https://github.com/pingcap/tidb/pull/24354)
+    - 修复了统计信息可能导致查询 panic 的问题 [#24061](https://github.com/pingcap/tidb/pull/24061)
+    - 修复了在 `bit` 类型的列上使用 `approx_percentile` 函数可能 panic 的问题 [#23703](https://github.com/pingcap/tidb/pull/23703)
+    - 修复了 Grafana 上 `Coprocessor Cache` 数据显示不正确的问题 [#26343](https://github.com/pingcap/tidb/pull/26343)
+    - 修复了并发 truncate 同一个 partition 会导致 DDL 执行卡住的问题 [#26238](https://github.com/pingcap/tidb/pull/26238)
 
 + TiKV
 
@@ -57,12 +123,11 @@ TiDB 版本：5.0.4
 
 + PD
 
-    - 修复了 PD 无法及时修复 down peer 副本的问题 [#4082](https://github.com/tikv/pd/pull/4082)
-    - 修复了 PD 在热点调度时没有考虑驱逐 leader 的 Store 的情况 [#3975](https://github.com/tikv/pd/pull/3975)
-    - 修复了 PD 在热点调度中的错误统计 [#3964](https://github.com/tikv/pd/pull/3964)
-    - 修复了 PD placement rule 在相关配置更改后没有及时更新的问题 [#3914](https://github.com/tikv/pd/pull/3914)
-    - 修复了 PD 在产生调度时计算出错误的 store limit 使用情况从而无法调度 [#3856](https://github.com/tikv/pd/pull/3856)
-    - 修复了 PD 调度器在修改失败时没有及时报错的问题 [#3823](https://github.com/tikv/pd/pull/3823)
+    - 修复 PD 未能及时修复 down peer 副本的问题 [#4082](https://github.com/tikv/pd/pull/4082)
+    - 修复 placement rule 未能及时更新的问题 [#3914](https://github.com/tikv/pd/pull/3914)
+    - 修复 PD 在扩容 TiKV 时可能会 panic 的问题. [#3910](https://github.com/tikv/pd/pull/3910)
+    - 修复多个调度器运行时会造成调度冲突的问题[#3856](https://github.com/tikv/pd/pull/3856)
+    - 修复删除调度器失败后未能提示的问题 [#3823](https://github.com/tikv/pd/pull/3823)
 
 + TiFlash
 
@@ -81,3 +146,41 @@ TiDB 版本：5.0.4
     - 修复 TiFlash 长时间运行后无法回收 delta 数据的潜在问题
     - 修复 metrics 显示错误数值的潜在问题
     - 修复多盘部署时数据不一致的潜在问题
+
++ Tools
+
+    + Dumpling
+
+        - 修复对 mysql-8.0.3 或更高版本执行 `show table status` 卡住的问题。
+        - 支持 MemSQL/SingleStore 的 `WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE DATABASE` 语法。
+
+    + TiCDC
+
+        - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 json 时进程崩溃的 Bug。 [#2782](https://github.com/pingcap/ticdc/pull/2782)
+        - 修复表重新调度时多个流写同一张表引发的数据不一致 Bug。 [#2728](https://github.com/pingcap/ticdc/pull/2728)
+        - 降低 gRPC 窗口大小来避免 Region 数量过多时触发 OOM。  [#2724](https://github.com/pingcap/ticdc/pull/2724)
+        - 修复内存压力大时 gRPC 连接频繁断开的错误。 [#2719](https://github.com/pingcap/ticdc/pull/2719)
+        - 优化内存排序后端的内存回收效率。 [#2711](https://github.com/pingcap/ticdc/pull/2711)
+        - 修复无符号整数的类型转换错误。 [#2655](https://github.com/pingcap/ticdc/pull/2655)
+        - 修复 open protocol 在上游事务插入并删除同一行数据情况下输出空值的问题. [#2620](https://github.com/pingcap/ticdc/pull/2620)
+        - 修复表结构变更时创建的流处理 DDL 失败的问题。 [#2610](https://github.com/pingcap/ticdc/pull/2610)
+        - 优化 DDL 执行逻辑，使用异步方式执行 DDL，保证 DDL 阻塞不影响 owner 工作逻辑。[#2605](https://github.com/pingcap/ticdc/pull/2605)
+        - 禁止使用不同的版本启动 TiCDC 节点。 [#2598](https://github.com/pingcap/ticdc/pull/2598)
+        - 修复元信息管理问题。 [#2558](https://github.com/pingcap/ticdc/pull/2558)
+        - 为所有 KV 客户端创建全局共享的 gRPC 连接池。 [#2533](https://github.com/pingcap/ticdc/pull/2533)
+        - 修复 sink Close 不正确导致多个节点写同一张表的 Bug。 [#2492](https://github.com/pingcap/ticdc/pull/2492)
+        - 降低了 workerpool 中创建 goroutine 的数量. [#2487](https://github.com/pingcap/ticdc/pull/2487)
+        - 修复 capture list 命令中出现已经关闭的 capture 的 Bug。 [#2466](https://github.com/pingcap/ticdc/pull/2466)
+        - 修复集成测试中遇到的由于 DDL Job 重复导致的 ErrSchemaStorageTableMiss 错误. [#2458](https://github.com/pingcap/ticdc/pull/2458)
+        - 修复遇到 ErrGCTTLExceeded 错误时 changefeed 无法删除的 Bug。 [#2456](https://github.com/pingcap/ticdc/pull/2456)
+        - 修复同步大数据量表到 cdclog 失败的 Bug。 [#2445](https://github.com/pingcap/ticdc/pull/2445)
+        - 修复客户端向后兼容。 [#2413](https://github.com/pingcap/ticdc/pull/2413)
+        - 修复 Region 从某个 TiKV 节点全部迁移走时，回收其对应的 CDC worker 的 goroutine 资源 [#2377](https://github.com/pingcap/ticdc/pull/2377)
+        - 删除已经不再维护的 FileSorter 代码。 [#2326](https://github.com/pingcap/ticdc/pull/2326)
+        - 默认从 TiKV 获取行变更的历史值（old-value），输出会根据 enable-old-value 配置进行调整。 [#2305](https://github.com/pingcap/ticdc/pull/2305)
+        - 修复 SinkManager 中对 map 的不安全并发访问。 [#2299](https://github.com/pingcap/ticdc/pull/2299)
+        - 修复 owner 在执行 DDL 时崩溃可能导致的潜在的 DDL 任务丢失的 Bug。[#2292](https://github.com/pingcap/ticdc/pull/2292)
+        - 修复在 region 刚初始化时立刻执行 resolve lock 的问题。 [#2265](https://github.com/pingcap/ticdc/pull/2265)
+        - 修复创建新的分区表时部分分区被重复分发。 [#2263](https://github.com/pingcap/ticdc/pull/2263)
+        - 优化 PD 缺失证书时的报错信息。 [#2185](https://github.com/pingcap/ticdc/pull/2185)
+        - 当任务结束时清除 changefeed 和 processor 的监控指标。 [#2177](https://github.com/pingcap/ticdc/pull/2177)
