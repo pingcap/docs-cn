@@ -127,20 +127,19 @@ TiDB 版本：5.0.4
     - 修复了在 `BIT` 类型的列上使用 `approx_percentile` 函数可能 Panic 的问题 [#23703](https://github.com/pingcap/tidb/pull/23703)
     - 修复了 Grafana 上 `Coprocessor Cache` 面板的数据显示不正确的问题 [#26343](https://github.com/pingcap/tidb/pull/26343)
     - 修复了并发 truncate 同一个分区会导致 DDL 语句执行卡住的问题 [#26238](https://github.com/pingcap/tidb/pull/26238)
-    - [planner, expression: avoid exprs with side effects in column pruning and agg pushdown (#27370) by ti-srebot · Pull Request #27637 · pingcap/tidb](https://github.com/pingcap/tidb/pull/27637)
-    - [executor: fix hash join between datetime and timestamp (#25915) by ti-srebot · Pull Request #25990 · pingcap/tidb](https://github.com/pingcap/tidb/pull/25990)
-    - [expression: do not derive filters containing null sensitive functions from outer join (#27067) by ti-srebot · Pull Request #27194 · pingcap/tidb](https://github.com/pingcap/tidb/pull/27194)
-    - [planner: add missing column for Apply convert to Join (#27246) by ti-srebot · Pull Request #27283 · pingcap/tidb](https://github.com/pingcap/tidb/pull/27283)
+    - 修复当会话变量用作 `GROUP BY` 项时查询结果出错的问题 [#27637](https://github.com/pingcap/tidb/pull/27637)
+    - 修复连接表时 `VARCHAR` 类型与时间戳之间错误的隐式转换 [#25990](https://github.com/pingcap/tidb/pull/25990)
+    - 修复相关子查询语句中的错误结果 [#27283](https://github.com/pingcap/tidb/pull/27283)
 
 + TiKV
 
-    - 修复快照 GC 过程中可能遗留快照文件的问题。 [#10872](https://github.com/tikv/tikv/pull/10872)
-    - 修复 TiKV 在启用 Titan 并从 pre-5.0 版本升级时出现的 Panic 问题 [#10843](https://github.com/tikv/tikv/pull/10843)
-    - 修复高版本 TiKV 无法回滚到 5.0.x 的问题。 [#10843](https://github.com/tikv/tikv/pull/10843)
-    - 修复了启用 Titan 并从 < 5.0 版本升级到 >= 5.0 版本时 TiKV 崩溃的问题（如果集群从 TiKV 3.x 升级并在升级之前启用了 Titan，则该集群可能会遇到问题）。 [#10778](https://github.com/tikv/tikv/pull/10778)
-    - 修复遗留的悲观锁导致的解析失败问题。 [#10654](https://github.com/tikv/tikv/pull/10654)
-    - 修复某些平台上时间间隔计算 Panic 问题。 [#10571](https://github.com/tikv/tikv/pull/10571)
-    - 修复 load-base-split 中`batch_get_command` 的键值未编码问题。 [#10564](https://github.com/tikv/tikv/pull/10564)
+    ?- 修复当有快照文件未被 GC 回收时，快照在 GC 的过程中可能遗留 GC 快照文件的问题 [#10872](https://github.com/tikv/tikv/pull/10872)
+    - 修复了 TiKV 在启用 Titan 并从 5.0 以前的版本升级时出现 Panic 的问题 [#10843](https://github.com/tikv/tikv/pull/10843)
+    - 修复了高版本的 TiKV 无法回滚到 v5.0.x 的问题 [#10843](https://github.com/tikv/tikv/pull/10843)
+    - 修复了启用 Titan 并从 v5.0 以前的版本升级到 v5.0 及以后的版本时 TiKV 崩溃的问题（例如，如果集群从 TiKV v3.x 升级并在升级之前启用了 Titan，则该集群可能会遇到该问题）[#10778](https://github.com/tikv/tikv/pull/10778)
+    - 修复了遗留的悲观锁导致的解析失败的问题 [#10654](https://github.com/tikv/tikv/pull/10654)
+    - 修复在某些平台上计算时间间隔出现 Panic 的问题 [#10571](https://github.com/tikv/tikv/pull/10571)
+    - 修复 Load Base Split 中 `batch_get_command` 的键值未编码问题 [#10564](https://github.com/tikv/tikv/pull/10564)
 
 + PD
 
