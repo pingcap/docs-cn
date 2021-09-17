@@ -52,7 +52,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用。
 
 ### 导出到 SQL 文件
 
-Dumpling 默认导出数据格式为 sql 文件。也可以通过设置 `--filetype sql` 导出数据到 sql 文件：
+Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 `--filetype sql` 导出数据到 SQL 文件：
 
 {{< copyable "shell-regular" >}}
 
