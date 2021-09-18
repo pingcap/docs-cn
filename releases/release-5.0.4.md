@@ -143,11 +143,11 @@ TiDB 版本：5.0.4
 
 + PD
 
-    - 修复 PD 未能及时修复 down peer 副本的问题 [#4082](https://github.com/tikv/pd/pull/4082)
-    - 修复 placement rule 未能及时更新的问题 [#3914](https://github.com/tikv/pd/pull/3914)
-    - 修复 PD 在扩容 TiKV 时可能会 panic 的问题. [#3910](https://github.com/tikv/pd/pull/3910)
-    - 修复多个调度器运行时会造成调度冲突的问题[#3856](https://github.com/tikv/pd/pull/3856)
-    - 修复删除调度器失败后未能提示的问题 [#3823](https://github.com/tikv/pd/pull/3823)
+    - 修复 PD 未能及时修复 Down Peer 副本的问题 [#4082](https://github.com/tikv/pd/pull/4082)
+    - 修复了 `replication.max-replicas` 更新后默认的 Placement Rules 副本数量不变的问题 [#3914](https://github.com/tikv/pd/pull/3914)
+    - 修复了 PD 在扩容 TiKV 时可能会 Panic 的问题 [#3910](https://github.com/tikv/pd/pull/3910)
+    - 修复多个调度器运行时会造成调度冲突的问题 [#3856](https://github.com/tikv/pd/pull/3856)
+    - 修复了删除调度器后调度器可能再次出现的问题 [#3823](https://github.com/tikv/pd/pull/3823)
 
 + TiFlash
 
