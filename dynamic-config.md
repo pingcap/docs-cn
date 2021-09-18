@@ -196,6 +196,10 @@ show warnings;
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果读 QPS 连续 10 秒内均超过这个值，则进行 split |
 | split.split-balance-score | load-base-split 的控制参数，确保 split 后左右访问尽量均匀 |
 | split.split-contained-score | load-base-split 的控制参数，尽量减少 split 后跨 Region 访问 |
+| cdc.incremental-scan-concurrency | 增量扫描历史数据任务的最大并发执行个数 |
+| cdc.incremental-scan-speed-limit| 增量扫描历史数据的速度上限 |
+| cdc.min-ts-interval | 定期推进 Resolved TS 的时间间隔 |
+| cdc.sink-memory-quota| 缓存在内存中的 TiCDC 数据变更事件占用内存的上限 |
 
 上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb` 或 `raftdb`。
 
