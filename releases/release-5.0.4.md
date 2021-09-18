@@ -152,18 +152,18 @@ TiDB 版本：5.0.4
 + TiFlash
 
     - 修复执行扫表任务时潜在的进程崩溃问题
-    - 修复执行 `MPP` 任务时潜在的内存泄漏问题
+    - 修复执行 MPP 任务时潜在的内存泄漏问题
     - 修复处理 DAG 请求时出现 `duplicated region` 报错的问题
     - 修复执行 `COUNT` 或 `COUNT DISTINCT` 函数时出现非预期结果的问题
-    - 修复执行 `MPP` 任务时潜在的进程崩溃问题
+    - 修复执行 MPP 任务时潜在的进程崩溃问题
     - 修复 TiFlash 多盘部署时无法恢复数据的潜在问题
     - 修复析构 `SharedQueryBlockInputStream` 时出现进程崩溃的潜在问题
     - 修复析构 `MPPTask` 时出现进程崩溃的潜在问题
     - 修复 TiFlash 无法建立 MPP 连接时出现非预期结果的问题
-    - 修复解决锁时潜在的进程崩溃问题
-    - 修复写压力重时 metrics 中 store size 不准确的问题
+    - 修复解锁时潜在的进程崩溃问题
+    - 修复写入压力大时 metrics 中 store size 不准确的问题
     - 修复当查询过滤条件包含诸如 `CONSTANT` `<` | `<=` | `>` | `>=` `COLUMN` 时出现错误结果的问题
-    - 修复 TiFlash 长时间运行后无法回收 delta 数据的潜在问题
+    - 修复 TiFlash 长时间运行后无法回收 Delta 数据的潜在问题
     - 修复 metrics 显示错误数值的潜在问题
     - 修复多盘部署时数据不一致的潜在问题
 
@@ -171,27 +171,27 @@ TiDB 版本：5.0.4
 
     + Dumpling
 
-        - 修复对 mysql-8.0.3 或更高版本执行 `show table status` 卡住的问题。
+        - 修复在 MySQL 8.0.3 或更高版本执行 `show table status` 语句卡住的问题 [#342](https://github.com/pingcap/dumpling/pull/342)
 
     + TiCDC
 
-        - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 json 时进程崩溃的 Bug。 [#2782](https://github.com/pingcap/ticdc/pull/2782)
-        - 修复表重新调度时多个流写同一张表引发的数据不一致 Bug。 [#2728](https://github.com/pingcap/ticdc/pull/2728)
-        - 降低 gRPC 窗口大小来避免 Region 数量过多时触发 OOM。  [#2724](https://github.com/pingcap/ticdc/pull/2724)
-        - 修复内存压力大时 gRPC 连接频繁断开的错误。 [#2719](https://github.com/pingcap/ticdc/pull/2719)
-        - 修复无符号整数的类型转换错误。 [#2655](https://github.com/pingcap/ticdc/pull/2655)
-        - 修复 open protocol 在上游事务插入并删除同一行数据情况下输出空值的问题. [#2620](https://github.com/pingcap/ticdc/pull/2620)
-        - 修复表结构变更时创建的流处理 DDL 失败的问题。 [#2610](https://github.com/pingcap/ticdc/pull/2610)
-        - 优化 DDL 执行逻辑，使用异步方式执行 DDL，保证 DDL 阻塞不影响 owner 工作逻辑。[#2605](https://github.com/pingcap/ticdc/pull/2605)
-        - 修复元信息管理问题。 [#2558](https://github.com/pingcap/ticdc/pull/2558)
-        - 修复 sink Close 不正确导致多个节点写同一张表的 Bug。 [#2492](https://github.com/pingcap/ticdc/pull/2492)
-        - 修复 capture list 命令中出现已经关闭的 capture 的 Bug。 [#2466](https://github.com/pingcap/ticdc/pull/2466)
-        - 修复集成测试中遇到的由于 DDL Job 重复导致的 ErrSchemaStorageTableMiss 错误. [#2458](https://github.com/pingcap/ticdc/pull/2458)
-        - 修复遇到 ErrGCTTLExceeded 错误时 changefeed 无法删除的 Bug。 [#2456](https://github.com/pingcap/ticdc/pull/2456)
-        - 修复同步大数据量表到 cdclog 失败的 Bug。 [#2445](https://github.com/pingcap/ticdc/pull/2445)
-        - 修复客户端向后兼容。[#2413](https://github.com/pingcap/ticdc/pull/2413)
-        - 修复 SinkManager 中对 map 的不安全并发访问。 [#2299](https://github.com/pingcap/ticdc/pull/2299)
-        - 修复 owner 在执行 DDL 时崩溃可能导致的潜在的 DDL 任务丢失的 Bug。[#2292](https://github.com/pingcap/ticdc/pull/2292)
-        - 修复在 region 刚初始化时立刻执行 resolve lock 的问题。 [#2265](https://github.com/pingcap/ticdc/pull/2265)
-        - 修复创建新的分区表时部分分区被重复分发。 [#2263](https://github.com/pingcap/ticdc/pull/2263)
-        - 当任务结束时清除 changefeed 和 processor 的监控指标。 [#2177](https://github.com/pingcap/ticdc/pull/2177)
+        - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2782](https://github.com/pingcap/ticdc/pull/2782)
+        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2728](https://github.com/pingcap/ticdc/pull/2728)
+        - 降低 gRPC 窗口大小来避免 Region 数量过多时触发内存溢出 [#2724](https://github.com/pingcap/ticdc/pull/2724)
+        - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2719](https://github.com/pingcap/ticdc/pull/2719)
+        - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2655](https://github.com/pingcap/ticdc/pull/2655)
+        - 修复 TiCDC Open Protocol 在上游插入事务并删除同一行数据的情况下输出空值的问题 [#2620](https://github.com/pingcap/ticdc/pull/2620)
+        - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2610](https://github.com/pingcap/ticdc/pull/2610)
+        - 修复无响应的下游中断 old owner 中的同步任务直到该任务超时的问题 [#2605](https://github.com/pingcap/ticdc/pull/2605)
+        - 修复元信息管理问题 [#2558](https://github.com/pingcap/ticdc/pull/2558)
+        - 修复 sink Close 不正确导致多个节点写同一张表的问题 [#2492](https://github.com/pingcap/ticdc/pull/2492)
+        - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2466](https://github.com/pingcap/ticdc/pull/2466)
+        - 修复集成测试中遇到的由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2458](https://github.com/pingcap/ticdc/pull/2458)
+        - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2456](https://github.com/pingcap/ticdc/pull/2456)
+        - 修复同步数据量大的表到 cdclog 失败的问题 [#2445](https://github.com/pingcap/ticdc/pull/2445)
+        - 修复客户端向后兼容性问题 [#2413](https://github.com/pingcap/ticdc/pull/2413)
+        - 修复 `SinkManager` 中对 map 的不安全并发访问 [#2299](https://github.com/pingcap/ticdc/pull/2299)
+        - 修复 owner 在执行 DDL 语句时崩溃可能导致 DDL 任务丢失的问题 [#2292](https://github.com/pingcap/ticdc/pull/2292)
+        - 修复在 Region 初始化时立刻执行清锁的问题 [#2265](https://github.com/pingcap/ticdc/pull/2265)
+        - 修复创建新的分区表时部分分区被重复分发的问题 [#2263](https://github.com/pingcap/ticdc/pull/2263)
+        - 修复同步任务已删除但 TiCDC 持续报警的问题 [#2177](https://github.com/pingcap/ticdc/pull/2177)
