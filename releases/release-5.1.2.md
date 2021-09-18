@@ -8,20 +8,10 @@ title: TiDB 5.1.2 Release Notes
 
 TiDB 版本：5.1.2
 
+## 兼容性更改
+
+## 功能增强
+
 ## 改进提升
 
-+ TiDB
-
-+ TiFlash
-
 ## Bug 修复
-
-+ TiDB
-
-+ TiFlash
-
-+ PD
-
-+ Tools
-
-    + Backup & Restore (BR)
