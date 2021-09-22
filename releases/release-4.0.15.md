@@ -42,35 +42,35 @@ TiDB 版本：4.0.15
     + Backup & Restore (BR)
 
         - 并发执行分裂和打散 Region 的操作，提升恢复速度 [#1429](https://github.com/pingcap/br/pull/1429)
-        - 遇到 PD 请求错误或 TiKV IO 超时错误时进行重试 [#1433](https://github.com/pingcap/br/pull/1433)
-        - 进行大量小表时减少空 region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374) [#1432](https://github.com/pingcap/br/pull/1432)
-        - 创建表的时候自动执行 `Rebase auto id` 操作，，省去了单独执行 `Rebase auto id` DDL，加快恢复速度 [#1424](https://github.com/pingcap/br/pull/1424)
+        - 遇到 PD 请求错误或 TiKV I/O 超时错误时进行重试 BR 任务 [#1433](https://github.com/pingcap/br/pull/1433)
+        - 恢复大量小表时减少空 Region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374) [#1432](https://github.com/pingcap/br/pull/1432)
+        - 创建表的时候自动执行 `rebase auto id` 操作，省去了单独的 `rebase auto id` DDL 操作，加快恢复速度 [#1424](https://github.com/pingcap/br/pull/1424)
 
     + Dumpling
 
-        - 获取要导出的表之前过滤掉不需要导出的 database，提升过滤效率 [#337](https://github.com/pingcap/dumpling/pull/337)
-        - 因为 "show table status" 在某些 mysql 版本中运行存在问题，使用 "show full tables " 来获取需要导出的 tables [#332](https://github.com/pingcap/dumpling/pull/332)
-        - 支持从不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 或 `SHOW CREATE TABLE` 的 MySQL 协议数据库据库导出数据 [#329](https://github.com/pingcap/dumpling/pull/329)
-        - 完善 Dumpling 的警告日志，避免误解出现导出失败 [#340](https://github.com/pingcap/dumpling/pull/340)
+        - 获取表信息前过滤掉不需要导出的数据库，提升 `SHOW TABLE STATUS` 的过滤效率 [#337](https://github.com/pingcap/dumpling/pull/337)
+        - 使用 `SHOW FULL TABLES` 来获取需要导出的表，因为 `SHOW TABLE STATUS` 在某些 MySQL 版本上运行存在问题 [#332](https://github.com/pingcap/dumpling/pull/332)
+        - 支持对 MySQL 兼容的特定数据库进行备份，这些数据库不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语法 [#309](https://github.com/pingcap/dumpling/issues/309)
+        - 完善 Dumpling 的警告日志，避免让用户误以为导出失败 [#340](https://github.com/pingcap/dumpling/pull/340)
 
     + TiDB Lightning
 
-        - 支持导入数据到带有表达式索引或基于 `virtual generated column` 的索引的表中 [#1418](https://github.com/pingcap/br/pull/1418)
+        - 支持导入数据到带有表达式索引或带有基于虚拟生成列的索引的表中 [#1418](https://github.com/pingcap/br/pull/1418)
 
     + TiCDC
 
-        - 解决了 `new collation` 和 TiCDC 的兼容性问题 [#2304](https://github.com/pingcap/ticdc/pull/2304)
-        - 减少 region 在 TiKV 节点上发生转移情况的 goroutines 数量 [#2376](https://github.com/pingcap/ticdc/pull/2376)
-        - 优化高并发情况的 workerpool 机制 [#2486](https://github.com/pingcap/ticdc/pull/2486)
-        - DDL 执行异步化，不阻塞其他 changefeed 的运行 [#2471](https://github.com/pingcap/ticdc/pull/2471)
-        - 添加一个全局 gRPC 连接池，让 `kv client` 能够共享 gRPC 连接 [#2531](https://github.com/pingcap/ticdc/pull/2531)
+        - TiCDC 总是 TiKV 内部拉取 old value [#2304](https://github.com/pingcap/ticdc/pull/2304)
+        - 当某张表的 Region 从某个 TiKV 节点全部迁移走时，减少 goroutine 资源的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
+        - 在高并发下减少 workerpool 中创建的 goroutine 数量 [#2211](https://github.com/pingcap/ticdc/issues/2211)
+        - 异步执行 DDL 语句，不阻塞其他 changefeed [#2471](https://github.com/pingcap/ticdc/pull/2471)
+        - 为所有 KV 客户端创建全局共享的 gRPC 连接池 [#2531](https://github.com/pingcap/ticdc/pull/2531)
         - 遇到无法恢复的 DML 错误立即退出，不进行重试 [2315](https://github.com/pingcap/ticdc/pull/2315)
-        - 优化 unified sorter 对内存的使用 [#2710](https://github.com/pingcap/ticdc/pull/2710)
-        - 增加 DDL 执行的 Prometheus 监控指标 [#2681](https://github.com/pingcap/ticdc/pull/2681)
-        - 禁止使用不同 `Major` 或 `Minor` 版本 `cdccli` 操作 `TiCDC` [#2601](https://github.com/pingcap/ticdc/pull/2601)
-        - 删除被 `unify sort` 取代的 `file sorter`[#2325](https://github.com/pingcap/ticdc/pull/2325)
-        - 清理被删的 changefeed 和退出的处理节点的监控数据 [#2313](https://github.com/pingcap/ticdc/pull/2313)
-        - 优化 region 初始化时的 `resolve lock` 算法 [#2264](https://github.com/pingcap/ticdc/pull/2264)
+        - 优化 Unified Sorter 使用内存排序时的内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
+        - 为 DDL 语句的执行新增 Prometheus 监控指标 [#2681](https://github.com/pingcap/ticdc/pull/2681)
+        - 禁止使用不同的 major 和 minor 版本启动 TiCDC 节点 [#2601](https://github.com/pingcap/ticdc/pull/2601)
+        - 移除 `file sorter` 文件排序器 [#2325](https://github.com/pingcap/ticdc/pull/2325)
+        - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2313](https://github.com/pingcap/ticdc/pull/2313)
+        - 优化 Region 初始化后的清锁算法 [#2264](https://github.com/pingcap/ticdc/pull/2264)
 
 ## Bug 修复
 
