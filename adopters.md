@@ -14,7 +14,6 @@ This is a list of TiDB adopters in various industries.
 |[VNG](https://en.wikipedia.org/wiki/VNG_Corporation)|Mobile Payment|English [#1](https://pingcap.com/case-studies/tidb-at-zalopay-infrastructure-lesson-learned/), [#2](https://pingcap.com/case-studies/zalopay-using-a-scale-out-mysql-alternative-to-serve-millions-of-users)|
 |[Ping++](https://www.crunchbase.com/organization/ping-5)|Mobile Payment||
 |[LianLian Tech](https://www.crunchbase.com/organization/lianlian-pay)|Mobile Payment||
-|[Pinterest](https://en.wikipedia.org/wiki/Pinterest)|Media and Entertainment|[English](https://pingcap.com/case-studies/how-pinterest-reduced-costs-and-improved-data-consistency-with-newsql-database)|
 |[U-Next](https://www.crunchbase.com/organization/u-next)|Media and Entertainment|[English](https://pingcap.com/case-studies/running-a-scale-out-database-on-arm-as-mysql-alternative/)|
 |[Dailymotion](https://en.wikipedia.org/wiki/Dailymotion)|Media and Entertainment||
 |[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-iqiyi/)|
