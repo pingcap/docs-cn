@@ -94,7 +94,7 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 ### 使用多个 TiDB Lightning 并行导入单表的数据
 
-如果源数据存放于 Amazon S3 等分布式存储中(见 [TiDB Lightning 支持的远端存储](/br/backup-and-restore-storages.md)) ，也可以使用多个 TiDB Lighting 导入不同的文件以加速整体的导入。
+如果源数据存放于 Amazon S3 等分布式存储中（见 [TiDB Lightning 支持的远端存储](/br/backup-and-restore-storages.md)），也可以使用多个 TiDB Lighting 导入不同的文件以加速整体导入。
 
 假设通过 Dumpling 导出的源文件存放在 Amazon S3 云存储中，数据文件为 `my_db.my_table.00001.sql` ~ `my_db.my_table.10000.sql` 共计 10000 个 SQL 文件。如果希望使用两个 TiDB Lightning 实例加速导入，则可以在配置文件中增加如下设置：
 
