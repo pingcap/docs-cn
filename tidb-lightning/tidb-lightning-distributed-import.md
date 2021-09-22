@@ -59,7 +59,7 @@ status-addr = ":8289"
 data-source-dir = "/path/to/source-dir"
 
 [tikv-importer]
-# 使用 local 后端
+# 使用 Local 后端
 backend = "local"
 
 # 设置本地排序数据的路径
