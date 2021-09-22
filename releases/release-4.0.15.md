@@ -12,31 +12,36 @@ TiDB 版本：4.0.15
 
 + TiDB
 
-    - 回滚 [#21045](https://github.com/pingcap/tidb/pull/21045) 以避免第一次跑 show variables 很慢的问题。[#24326](https://github.com/pingcap/tidb/issues/24326).[26240]
+    - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#21045](https://github.com/pingcap/tidb/pull/21045) 中的部分更改，可能会引起兼容性问题。[#24326](https://github.com/pingcap/tidb/issues/24326)
+
+## 功能增强
+
++ TiKV
+
+    - 支持动态修改 TiCDC 配置 [#10645](https://github.com/tikv/tikv/issues/10645)
 
 ## 提升改进
 
 + TiDB
 
-    - Trigger auto-analyze based on histogram row count [#26706](https://github.com/pingcap/tidb/pull/26706)
+    - 基于直方图的 row count 来触发 auto-analyze [#26706](https://github.com/pingcap/tidb/pull/26706)
 
 + TiKV
 
-    - 读写分离减少读取延迟 [#10619](https://github.com/tikv/tikv/pull/10619)
-    - TiKV 协处理器慢日志只会考虑处理请求所花费的时间 [#10863](https://github.com/tikv/tikv/pull/10863)
-    - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程。 [#10863](https://github.com/tikv/tikv/pull/10863)
-    - 支持动态更改 CDC 配置。 [#10684](https://github.com/tikv/tikv/pull/10684)
-    - 减少已解析的 ts 消息大小以节省网络带宽。[#10677](https://github.com/tikv/tikv/pull/10677)
+    - 分离处理读写的 ready 状态以减少读延迟 [#10475](https://github.com/tikv/tikv/issues/10475)
+    - TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
+    - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
+    - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
 
 + PD
 
-    - 提升 PD 之间同步 Region 信息的性能 [#3932](https://github.com/tikv/pd/pull/3932)
+    - 提升了 PD 之间同步 Region 信息的性能 [#3932](https://github.com/tikv/pd/pull/3932)
 
 + Tools
 
     + Backup & Restore (BR)
 
-        - 并发执行 split 和 scatter regions 操作，在我们的性能测试中恢复速度从2小时提高到30分钟 [#1429](https://github.com/pingcap/br/pull/1429)
+        - 并发执行分裂和打散 Region 的操作，提升恢复速度 [#1429](https://github.com/pingcap/br/pull/1429)
         - 遇到 PD 请求错误或 TiKV IO 超时错误时进行重试 [#1433](https://github.com/pingcap/br/pull/1433)
         - 进行大量小表时减少空 region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374) [#1432](https://github.com/pingcap/br/pull/1432)
         - 创建表的时候自动执行 `Rebase auto id` 操作，，省去了单独执行 `Rebase auto id` DDL，加快恢复速度 [#1424](https://github.com/pingcap/br/pull/1424)
