@@ -4,48 +4,55 @@ title: TiDB 4.0.15 Release Notes
 
 # TiDB 4.0.15 Release Notes
 
+发版日期：2021 年 9 月 27 日
+
+TiDB 版本：4.0.15
+
 ## 兼容性更改
 
-## 功能增强
++ TiDB
+
+    - 回滚 [#21045](https://github.com/pingcap/tidb/pull/21045) 以避免第一次跑 show variables 很慢的问题。[#24326](https://github.com/pingcap/tidb/issues/24326).[26240]
 
 ## 提升改进
 
-## Bug 修复
++ TiDB
 
-+工具
+    - Trigger auto-analyze based on histogram row count [#26706](https://github.com/pingcap/tidb/pull/26706)
 
-    #备份和恢复(BR)
++ TiKV
 
-    ## 功能改进
+    - 读写分离减少读取延迟 [#10619](https://github.com/tikv/tikv/pull/10619)
+    - TiKV 协处理器慢日志只会考虑处理请求所花费的时间 [#10863](https://github.com/tikv/tikv/pull/10863)
+    - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程。 [#10863](https://github.com/tikv/tikv/pull/10863)
+    - 支持动态更改 CDC 配置。 [#10684](https://github.com/tikv/tikv/pull/10684)
+    - 减少已解析的 ts 消息大小以节省网络带宽。[#10677](https://github.com/tikv/tikv/pull/10677)
+
++ PD
+
+    - 提升 PD 之间同步 Region 信息的性能 [#3932](https://github.com/tikv/pd/pull/3932)
+
++ Tools
+
+    + Backup & Restore (BR)
 
         - 并发执行 split 和 scatter regions 操作，在我们的性能测试中恢复速度从2小时提高到30分钟 [#1429](https://github.com/pingcap/br/pull/1429)
         - 遇到 PD 请求错误或 TiKV IO 超时错误时进行重试 [#1433](https://github.com/pingcap/br/pull/1433)
         - 进行大量小表时减少空 region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374) [#1432](https://github.com/pingcap/br/pull/1432)
         - 创建表的时候自动执行 `Rebase auto id` 操作，，省去了单独执行 `Rebase auto id` DDL，加快恢复速度 [#1424](https://github.com/pingcap/br/pull/1424)
 
-    ## Bugs 修复
-        - 修复了备份和恢复中平均速度计算不准确的问题 [#1410](https://github.com/pingcap/br/pull/1410)
-    
-    # 数据迁移
-
-    ## 数据导出工具(Dumpling) 
-
-    ### 功能改进
+    + Dumpling
 
         - 获取要导出的表之前过滤掉不需要导出的 database，提升过滤效率 [#337](https://github.com/pingcap/dumpling/pull/337)
         - 因为 "show table status" 在某些 mysql 版本中运行存在问题，使用 "show full tables " 来获取需要导出的 tables [#332](https://github.com/pingcap/dumpling/pull/332)
         - 支持从不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 或 `SHOW CREATE TABLE` 的 MySQL 协议数据库据库导出数据 [#329](https://github.com/pingcap/dumpling/pull/329)
         - 完善 Dumpling 的警告日志，避免误解出现导出失败 [#340](https://github.com/pingcap/dumpling/pull/340)
 
-    ## 数据导入工具(TiDB Lightning) 
-
-    ### 功能改进
+    + TiDB Lightning
 
         - 支持导入数据到带有表达式索引或基于 `virtual generated column` 的索引的表中 [#1418](https://github.com/pingcap/br/pull/1418)
 
-    # TiCDC
-
-    ## 功能改进
+    + TiCDC
 
         - 解决了 `new collation` 和 TiCDC 的兼容性问题 [#2304](https://github.com/pingcap/ticdc/pull/2304)
         - 减少 region 在 TiKV 节点上发生转移情况的 goroutines 数量 [#2376](https://github.com/pingcap/ticdc/pull/2376)
@@ -60,7 +67,51 @@ title: TiDB 4.0.15 Release Notes
         - 清理被删的 changefeed 和退出的处理节点的监控数据 [#2313](https://github.com/pingcap/ticdc/pull/2313)
         - 优化 region 初始化时的 `resolve lock` 算法 [#2264](https://github.com/pingcap/ticdc/pull/2264)
 
-    ## Bugs 修复
+## Bug 修复
+
++ TiDB
+
+    - 修复 binary literal 构造 range 时的 bug 。[26455](https://github.com/pingcap/tidb/pull/26455)
+    - 修复当查询包含 group by 和 union 时报错 "index out of range" 的问题。[26553](https://github.com/pingcap/tidb/pull/26553)
+    - 修复有 tombstone 存储时请求发送失败的问题.[25849](https://github.com/pingcap/tidb/pull/25849)
+    - 修复 case when 表达式字符集相关问题。[26671](https://github.com/pingcap/tidb/pull/26671)
+    - 修复将非法字符串转为 date 类型时的非预期行为。[27935](https://github.com/pingcap/tidb/pull/27935)
+    - 修复将 Apply 算子转为 Join 时漏掉 column 信息的问题。[27282](https://github.com/pingcap/tidb/pull/27282)
+    - 修复 new collation 打开时 count distinct 结果错误问题。[27830](https://github.com/pingcap/tidb/pull/27830)
+    - 修复 extract 表达式参数为负的 Duration 时结果错误问题。[27369](https://github.com/pingcap/tidb/pull/27369)
+    - group_concat 聚合函数增加对 collation 信息的处理。[27835](https://github.com/pingcap/tidb/pull/27835)
+    - 修复 between 表达式类型推导时 collation 错误问题。[27851](https://github.com/pingcap/tidb/pull/27851)
+    - 修复 greatest(datetime) 表达式 union null 结果错误问题。[26564](https://github.com/pingcap/tidb/pull/26564)
+    - 修复聚合函数 having 条件被错误地下推的问题。[27741](https://github.com/pingcap/tidb/pull/27741)
+
++ TiKV
+
+    - 修复恢复时启用TDE时br报告文件已存在错误的问题。 [#10917](https://github.com/tikv/tikv/pull/10917)
+    - RaftStore Snapshot GC 修复：修复 1 个快照文件 GC 失败时，快照 GC 漏掉 GC 快照文件的问题。[#10871](https://github.com/tikv/tikv/pull/10871)
+    - 修复删除陈旧区域过于频繁的问题。[#10781](https://github.com/tikv/tikv/pull/10781)
+    - 修复频繁重新连接 pd 客户端。 [#9818](https://github.com/tikv/tikv/pull/9818)
+    - 从加密文件字典中检查陈旧的文件信息。  [#10598](https://github.com/tikv/tikv/pull/10598)
+
++ PD
+
+    - 修复 PD 不能及时修复 down-peer 的问题 [#4081](https://github.com/tikv/pd/pull/4081)
+    - 修复扩容 TiKV 时 PD 可能会 panic 的问题 [#3909](https://github.com/tikv/pd/pull/3909)
+
++ TiFlash
+
+    - 修复多盘部署时数据不一致的潜在问题
+    - 修复当查询过滤条件包含诸如 `CONSTANT` `<` | `<=` | `>` | `>=` `COLUMN` 时出现错误结果的问题
+    - 修复写压力重时 metrics 中 store size 不准确的问题
+    - 修复 TiFlash 多盘部署时无法恢复数据的潜在问题
+    - 修复 TiFlash 长时间运行后无法回收 delta 历史数据的潜在问题
+
++ Tools
+
+    + Backup & Restore (BR)
+
+        - 修复了备份和恢复中平均速度计算不准确的问题 [#1410](https://github.com/pingcap/br/pull/1410)
+
+    + TiCDC
 
         - 修正 owner 可能会遇到 `ErrSchemaStorageTableMiss` ，并意外地重置了 changefeed 的问题 [#2457](https://github.com/pingcap/ticdc/pull/2457)
         - 修正如果遇到 GcTTL 执行超市后无法删除 changefeed 的问题 [#2455](https://github.com/pingcap/ticdc/pull/2455)
