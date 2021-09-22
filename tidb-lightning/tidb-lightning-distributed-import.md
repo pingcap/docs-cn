@@ -36,7 +36,7 @@ region-split-size = '480MiB'
 
 假设上游为包含 10 个分表的 MySQL 集群，总共大小为 10 TB。使用 5 个 TiDB Lightning 实例并行导入，每个实例导入 2 TB 数据，预计可以将总导入时间（不包含 Dumpling 导出的耗时)）由约 40 小时降至约 10 小时。
 
-假设上游的库名为 `my_db`，每个分表的名字为 `my_table_01` ~ `my_table_10`，需要合并导入至下游的 `my_db.my_table` 表中。 具体的操作步骤如下：
+假设上游的库名为 `my_db`，每个分表的名字为 `my_table_01` ~ `my_table_10`，需要合并导入至下游的 `my_db.my_table` 表中。 下文介绍具体的操作步骤。
 
 #### 第 1 步：使用 Dumpling 导出数据
 
