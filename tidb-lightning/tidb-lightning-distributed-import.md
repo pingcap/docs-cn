@@ -22,7 +22,7 @@ TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表�
 
 TiDB Lightning 分布式并行的水平扩展性能受每个实例的导入速度和目标集群规模的限制。在通常情况下，建议至少确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)，以达到最佳的导入性能。
 
-TiDB Lightning 在默认配置下会按照 `96MiB` 的大小划分 Region 的大小，但是在并行导入的时候，由于不同的 TiDB Lightning 实例划分的 Region 范围不同，会导致产生大量不足 `96MiB` 的 Region，大幅影响导入的性能。为了缓解此问题，建议在并行导入的时候，将此参数调大至 `n * 96Mib`（n 为最大并行导入单表的 lightning 实例数量）。
+TiDB Lightning 在默认配置下会按照 96 MiB 的大小划分 Region 的大小，但是在并行导入的时候，由于不同的 TiDB Lightning 实例划分的 Region 范围不同，会导致产生大量不足 96 MiB 的 Region，大幅影响导入的性能。为了缓解此问题，建议在并行导入的时候，将此参数调大至 `n * 96 MiB`（n 为最大并行导入单表的 lightning 实例数量）。
 
 ```
 [tikv-importer]
