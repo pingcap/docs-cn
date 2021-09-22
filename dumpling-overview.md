@@ -6,16 +6,16 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 # 使用 Dumpling 导出数据
 
-使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或者 CSV 格式，可以用于逻辑全量备份或者导出。也支持导出到 Amazon S3 中。下图展示了使用 Dumpling 导出数据的场景。
+使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，可以用于逻辑全量备份。也支持导出到 Amazon S3 中。下图展示了使用 Dumpling 导出数据的场景。
 
 ![Dumpling 导出数据](/media/dumpling.png)
 
-你可以通过下列途径获取 Dumpling：
+你可以通过下列任意方式获取 Dumpling：
 
 - TiUP 执行 `tiup install dumpling` 命令。获取后，使用 `tiup dumpling ...` 命令运行 Dumpling。
 - 下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools.md#dumpling)。
 
-更多具体用法，可以使用 --help 选项查看，或参考 [Dumpling 主要选项表](#dumpling-主要选项表)。
+更多详情，可以使用 --help 选项查看，或参考 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
@@ -198,7 +198,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 
 #### 使用 `--where` 选项筛选数据
 
-默认情况下，Dumpling 会导出排除系统数据库（包括 `mysql` 、`sys` 、`INFORMATION_SCHEMA` 、`PERFORMANCE_SCHEMA`、`METRICS_SCHEMA` 和 `INSPECTION_SCHEMA`）外所有其他数据库。你可以使用 `--where <SQL where expression>` 来选定要导出的记录。
+默认情况下，Dumpling 会导出排除系统数据库（包括 `mysql` 、`sys` 、`INFORMATION_SCHEMA` 、`PERFORMANCE_SCHEMA`、`METRICS_SCHEMA` 和 `INSPECTION_SCHEMA`）外所有其他数据库。你可以使用 `--where <SQL where expression>` 来指定要导出的记录。
 
 {{< copyable "shell-regular" >}}
 
