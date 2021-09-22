@@ -229,11 +229,15 @@ SELECT * FROM person;
 
 ```sql
 SELECT name FROM person;
+```
+
+```sql
 +------+
 | name |
 +------+
 | tom  |
 +------+
+1 rows in set (0.00 sec)
 ```
 
 使用 WHERE 子句，对所有记录进行是否符合条件的筛选后再返回。例如：

@@ -7,22 +7,23 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 5.1 及后续修订版本。
-- 使用 TiUP 从 TiDB 5.0 版本升级至 TiDB 5.1 及后续修订版本。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 5.2 及后续修订版本。
+- 使用 TiUP 从 TiDB 5.0 版本升级至 TiDB 5.2 及后续修订版本。
+- 使用 TiUP 从 TiDB 5.1 版本升级至 TiDB 5.2 及后续修订版本。
 
 > **注意：**
 >
-> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 5.1 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 5.1 及后续修订版本。
+> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 5.2 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 5.2 及后续修订版本。
 
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.1 版本及后续修订版本。
-- 若要将 3.0 之前的版本升级至 5.1 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.2 版本及后续修订版本。
+- 若要将 3.0 之前的版本升级至 5.2 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
-    4. 按本文档说明将集群升级到 5.1 版本。
+    4. 按本文档说明将集群升级到 5.2 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 
@@ -93,7 +94,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `5.1` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `5.2` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -103,16 +104,16 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-2. 参考 [topology](https://github.com/pingcap/tiup/blob/release-1.4/embed/templates/examples/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
+2. 参考 [topology](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml) 配置模板的格式，将希望修改的参数填到拓扑文件的 `server_configs` 下面。
 
 修改完成后 `:wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 
 > **注意：**
 >
-> 升级到 5.1 版本前，请确认已在 4.0 修改的参数在 5.1 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
-> 
-> 以下 TiKV 参数在 TiDB v5.1 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
-> 
+> 升级到 5.2 版本前，请确认已在 4.0 修改的参数在 5.2 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+>
+> 以下 TiKV 参数在 TiDB v5.2 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
+>
 > - pessimistic-txn.enabled
 > - server.request-batch-enable-cross-command
 > - server.request-batch-wait-duration
@@ -145,12 +146,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 5.1.0 版本为例：
+以升级到 5.2.1 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v5.1.0
+tiup cluster upgrade <cluster-name> v5.2.1
 ```
 
 > **注意：**
@@ -198,7 +199,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v5.1.0
+Cluster version:    v5.2.1
 ```
 
 > **注意：**
@@ -248,10 +249,10 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v5.1.0
+tiup install ctl:v5.2.1
 ```
 
-## 5. TiDB 5.1 兼容性变化
+## 5. TiDB 5.2 兼容性变化
 
-- 兼容性变化请参考 5.1 Release Notes。
-- 请避免在对使用 TiDB-Binlog 的集群进行滚动升级过程中新创建聚簇索引表。
+- 兼容性变化请参考 5.2 Release Notes。
+- 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。

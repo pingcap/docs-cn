@@ -71,6 +71,10 @@ member leader_priority pdName2 4
 member leader_priority pdName3 3
 ```
 
+> **注意：**
+>
+> TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
+
 **缺点：**
 
 - 写入场景仍受数据中心网络延迟影响，这是因为遵循 Raft 多数派协议，所有写入的数据需要同步复制到至少 2 个数据中心

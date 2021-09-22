@@ -7,13 +7,13 @@
 
 + 关于 TiDB
   + [TiDB 简介](/overview.md)
-  + [TiDB 5.1 Release Notes](/releases/release-5.1.0.md)
+  + [TiDB 5.2 Release Notes](/releases/release-5.2.0.md)
   + [基本功能](/basic-features.md)
   + [实验特性](/experimental-features.md)
   + 性能测试报告
-    + [Sysbench 性能对比 - v5.1 对比 v5.0](/benchmark/benchmark-sysbench-v5.1.0-vs-v5.0.2.md)
-    + [TPC-C 性能对比 - v5.1 对比 v5.0](/benchmark/v5.1-performance-benchmarking-with-tpcc.md)
-    + [TPC-H 100 性能对比 - v5.1 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.1-performance-benchmarking-with-tpch.md)
+    + [Sysbench 性能对比 - v5.2 对比 v5.1](/benchmark/benchmark-sysbench-v5.2.0-vs-v5.1.1.md)
+    + [TPC-C 性能对比 - v5.2 对比 v5.1](/benchmark/v5.2-performance-benchmarking-with-tpcc.md)
+    + [TPC-H 100 性能对比 - v5.2 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.2-performance-benchmarking-with-tpch.md)
   + [与 MySQL 的兼容性](/mysql-compatibility.md)
   + [使用限制](/tidb-limitations.md)
   + [荣誉列表](/credits.md)
@@ -202,6 +202,7 @@
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
     + [监控指标](/ticdc/monitor-ticdc.md)
+    + [TiCDC Open API](/ticdc/ticdc-open-api.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     + [术语表](/ticdc/ticdc-glossary.md)
@@ -260,6 +261,7 @@
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
       - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
+      - [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
@@ -444,6 +446,7 @@
         + [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)
         + [`PARTITIONS`](/information-schema/information-schema-partitions.md)
         + [`PROCESSLIST`](/information-schema/information-schema-processlist.md)
+        + [`REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
         + [`SCHEMATA`](/information-schema/information-schema-schemata.md)
         + [`SEQUENCES`](/information-schema/information-schema-sequences.md)
         + [`SESSION_VARIABLES`](/information-schema/information-schema-session-variables.md)
@@ -544,6 +547,9 @@
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
+  + v5.2
+    - [5.2.1](/releases/release-5.2.1.md)
+    - [5.2.0](/releases/release-5.2.0.md)
   + v5.1
     - [5.1.1](/releases/release-5.1.1.md)
     - [5.1.0](/releases/release-5.1.0.md)

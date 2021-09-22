@@ -5,18 +5,18 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 # TiCDC 运维操作及任务管理
 
-本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 和 HTTP 接口两种方式来管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。
+本文档介绍如何通过 TiCDC 提供的命令行工具 `cdc cli` 管理 TiCDC 集群和同步任务，并介绍了如何使用 TiUP 来升级和修改 TiCDC 集群的配置。你也可以通过 HTTP 接口，即 TiCDC OpenAPI 来管理 TiCDC 集群和同步任务，详见 [TiCDC OpenAPI](/ticdc/ticdc-open-api.md)。
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.1.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.2.1。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v5.1.0
+tiup cluster upgrade <cluster-name> v5.2.1
 ```
 
 ### 升级的注意事项
@@ -51,7 +51,7 @@ tiup cluster edit-config <cluster-name>
     gc-ttl: 3600
 ```
 
-修改完毕后执行 `tiup cluster relaod -R cdc` 命令重新加载配置。
+修改完毕后执行 `tiup cluster reload -R cdc` 命令重新加载配置。
 
 ## 使用加密传输 (TLS) 功能
 
@@ -538,93 +538,6 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 - `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
 
-## 使用 HTTP 接口管理集群状态和数据同步
-
-目前 HTTP 接口提供一些基础的查询和运维功能。在以下接口描述中，假设 TiCDC server 的监听 IP 地址为 `127.0.0.1`，端口为 `8300`（在启动 TiCDC server 时通过 `--addr=ip:port` 指定绑定的 IP 和端口）。
-
-### 获取 TiCDC server 状态信息的接口
-
-使用以下命令获取 CDC server 状态信息的接口：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl http://127.0.0.1:8300/status
-```
-
-```
-{
- "version": "0.0.1",
- "git_hash": "863f8ea889b144244ff53593a45c47ad22d37396",
- "id": "6d92386a-73fc-43f3-89de-4e337a42b766", # capture id
- "pid": 12102    # cdc server pid
-}
-```
-
-### 驱逐 owner 节点
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST http://127.0.0.1:8300/capture/owner/resign
-```
-
-以上命令仅对 owner 节点请求有效。
-
-```
-{
- "status": true,
- "message": ""
-}
-```
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST http://127.0.0.1:8301/capture/owner/resign
-```
-
-以上命令对非 owner 节点请求返回错误。
-
-```
-election: not leader
-```
-
-### 手动调度表到其他节点
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST http://127.0.0.1:8300/capture/owner/move_table -d 'cf-id=cf060953-036c-4f31-899f-5afa0ad0c2f9&target-cp-id=6f19a6d9-0f8c-4dc9-b299-3ba7c0f216f5&table-id=49'
-```
-
-参数说明
-
-| 参数名        | 说明 |
-| :----------- | :--- |
-| `cf-id`        | 进行调度的 Changefeed ID |
-| `target-cp-id` | 目标 Capture ID |
-| `table-id`     | 需要调度的 Table ID |
-
-以上命令仅对 owner 节点请求有效。对非 owner 节点将会返回错误。
-
-```
-{
- "status": true,
- "message": ""
-}
-```
-
-### 动态调整 TiCDC server 日志级别
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X POST -d '"debug"' http://127.0.0.1:8301/admin/log
-```
-
-`POST` 参数表示新的日志级别，支持 [zap 提供的日志级别](https://godoc.org/go.uber.org/zap#UnmarshalText)："debug"、"info"、"warn"、"error"、"dpanic"、"panic"、"fatal"。该接口参数为 JSON 编码，需要注意引号的使用：`'"debug"'`。
-
 ## 同步任务配置文件描述
 
 本部分详细介绍了同步任务的配置。
@@ -763,7 +676,6 @@ sync-ddl = true
         --cyclic-replica-id 1 \
         --cyclic-filter-replica-ids 2 \
         --cyclic-sync-ddl true
-
     # 在 TiDB 集群 B 上创建环形同步任务。
     cdc cli changefeed create \
         --sink-uri="mysql://root@${TiDB_C_HOST}/" \
@@ -771,7 +683,6 @@ sync-ddl = true
         --cyclic-replica-id 2 \
         --cyclic-filter-replica-ids 3 \
         --cyclic-sync-ddl true
-
     # 在 TiDB 集群 C 上创建环形同步任务。
     cdc cli changefeed create \
         --sink-uri="mysql://root@${TiDB_A_HOST}/" \

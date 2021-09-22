@@ -58,11 +58,13 @@ TiDB 版本：5.1
 
 ### 其他
 
+- 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 - 为了提升 TiDB 性能，TiDB 的 Go 编译器版本从 go1.13.7 升级到了 go1.16.4。如果你是 TiDB 的开发者，为了能保证顺利编译，请对应升级你的 Go 编译器版本。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级的过程中新创建聚簇索引表。
 - 请避免在 TiDB 滚动升级时执行 `alter table ... modify column` 或 `alter table ... change column`。
 - 当按表构建 TiFlash 副本时，v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则会导致升级失败。
 - 在 TiCDC 的 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir`。[#1795](https://github.com/pingcap/ticdc/pull/1795)
+- 升级到 TiDB 5.1 之后，如果遇到 "function READ ONLY has only noop implementation" 错误，可以将系统变量 [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) 的值设置为 `ON` 以忽略此报错。因为 MySQL 的 'read_only' 变量在 TiDB 中尚不生效（属于 'noop' 行为），即使在 TiDB 中设置了此变量，集群仍然是可写的。
 
 ## 新功能
 

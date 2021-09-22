@@ -165,6 +165,10 @@ explain select * from t1,t2 where t1.id = t2.id;
 
 在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
+> **注意：**
+>
+> 执行 `DROP GLOBAL BINDING` 会删除当前 tidb-server 实例缓存中的绑定，并将系统表中对应行的状态修改为 'deleted'。该语句不会直接删除系统表中的记录，因为其他 tidb-server 实例需要读取系统表中的 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 `update_time` 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 实例已经读取过这个 'deleted' 状态并更新完缓存）的回收清除操作。
+
 ### 查看绑定
 
 {{< copyable "sql" >}}
@@ -173,7 +177,7 @@ explain select * from t1,t2 where t1.id = t2.id;
 SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 ```
 
-该语句会输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
+该语句会按照绑定更新时间由新到旧的顺序输出 GLOBAL 或者 SESSION 作用域内的执行计划绑定，在不指定作用域时默认作用域为 SESSION。目前 `SHOW BINDINGS` 会输出 8 列，具体如下：
 
 | 列名 | 说明            |
 | -------- | ------------- |
@@ -186,6 +190,32 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | charset | 字符集 |
 | collation | 排序规则 |
 | source | 创建方式，包括 manual （由 `create [global] binding` 生成）、capture（由 tidb 自动创建生成）和 evolve （由 tidb 自动演进生成） |
+
+### 排查绑定
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT @@[SESSION.]last_plan_from_binding;
+```
+
+该语句使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
+
+另外，当使用 `explain format = 'verbose'` 语句查看一条 SQL 语句的查询计划时，如果该 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
+
+```sql
+-- 创建一个 global binding
+
+create global binding for
+    select * from t
+using
+    select * from t;
+
+-- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
+
+explain format = 'verbose' select * from t;
+show warnings;
+```
 
 ## 自动捕获绑定 (Baseline Capturing)
 
@@ -229,9 +259,11 @@ set global tidb_evolve_plan_baselines = on;
 
 `tidb_evolve_plan_baselines` 的默认值为 `off`。
 
-> **注意：**
+> **警告：**
 >
-> 自动演进绑定功能目前不是 GA (Generally Available) 状态，不推荐在生产环境打开该功能。
+> 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
+>
+> 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
 
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 
@@ -287,3 +319,42 @@ create global binding for select * from t where a < 100 and b < 100 using select
     | max_execution_time | 查询过程最多消耗多少时间 |
 
 + `read_from_storage` 是一个非常特别的 hint，因为它指定了读表时选择从 TiKV 读还是从 TiFlash 读。由于 TiDB 提供隔离读的功能，当隔离条件变化时，这个 hint 对演进出来的执行计划影响很大，所以当最初创建的绑定中存在这个 hint，TiDB 会无视其所有演进的绑定。
+
+## 升级检查 (Upgrade Checklist)
+
+执行计划管理功能 (SPM) 在版本升级过程中可能会出现一些兼容性问题导致升级失败，你需要在版本升级前做一些检查，确保版本顺利升级。
+
+* 当你尝试从 v5.2 以前的版本（即 v4.0、v5.0、v5.1）升级到当前版本，需要注意在升级前检查自动演进的开关 `tidb_evolve_plan_baselines` 是否已经关闭。如果尚未关闭，则需要将其关闭后再进行升级。具体操作如下所示：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
+  
+    select @@global.tidb_evolve_plan_baselines;
+  
+    -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
+  
+    set global tidb_evolve_plan_baselines = off;
+    ```
+
+* 当你尝试从 v4.0 版本升级到当前版本，需要注意在升级前检查所有可用绑定对应的查询语句在新版本中是否存在语法错误。如果存在语法错误，则需要删除对应的绑定。
+
+    具体操作如下所示：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    -- 在待升级的版本上检查现有可用绑定对应的查询语句。
+  
+    select bind_sql from mysql.bind_info where status = 'using';
+  
+    -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
+  
+    bind_sql_0;
+    bind_sql_1;
+    ...
+  
+    -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
+    -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
+    ```

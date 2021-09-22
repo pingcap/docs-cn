@@ -62,7 +62,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
-## 查看表同步进度
+### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
@@ -76,6 +76,78 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
+
+### 可用区设置
+
+在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
+
+1. 在集群配置文件中为 TiFlash 节点指定 label. 
+
+    ```
+    tiflash_servers:
+      - host: 172.16.5.81
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.82
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.85
+        config:
+          flash.proxy.labels: zone=z2
+    ```
+
+2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+    ```
+
+    例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+    ```
+
+3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
+
+    ```shell
+    > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
+
+        ...
+
+        "address": "172.16.5.82:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 4,
+
+        ...
+
+        "address": "172.16.5.81:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 5,
+
+        ...
+
+        "address": "172.16.5.85:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z2" }
+        ],
+        "region_count": 9,
+
+        ...
+    ```
+    
+关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
 
@@ -237,16 +309,15 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
-* 数学函数：`+, -, /, *, >=, <=, =, !=, <, >, round(int), round(double), abs, floor(int), ceil(int), ceiling(int)`
-* 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in`
+* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round(int), round(double), round(decimal), abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
+* 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
 * 位运算：`bitand, bitor, bigneg, bitxor`
-* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), date_add(string, int), date_add(datetime, int), date_sub(datetime, int), date_sub(string, int), datediff, year, month, day, extract(datetime)`
+* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct`
-
-其中，`cast` 和 `date_add` 的下推默认不开启，若需要手动开启，请参考[优化规则及表达式下推的黑名单](/blocklist-control-plan.md)
+* 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
 
 另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
 
@@ -389,6 +460,3 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         ```
 
         以上示例中，在 TiDB 和 TiFlash 中，`a/b` 在编译期推导出来的类型都为 `Decimal(7,4)`，而在 `Decimal(7,4)` 的约束下，`a/b` 返回的结果应该为 `0.0000`。但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)` 高，所以原表中的数据没有被 `where a/b` 过滤掉。而在 TiFlash 中 `a/b` 在运行期也是采用 `Decimal(7,4)` 作为结果类型，所以原表中的数据被 `where a/b` 过滤掉了。
-
-* TiFlash MPP 模式不支持如下功能：
-    * 在配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的值为 `true` 时，MPP 不支持 join 的连接键类型为字符串或 `group by` 聚合运算时列类型为字符串的情况。在处理这两类查询时，默认不选择 MPP 模式。
