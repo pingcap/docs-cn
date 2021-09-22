@@ -463,3 +463,9 @@ Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 - `Create View`
 
 如果要同步 `recover table` 到下游 TiDB，需要有 `Super` 权限。
+
+## 为什么在启用 TiDB [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，并且当 TiCDC 设置 enable-old-value=false 时 update 语句在下游产生新旧 2 条记录？
+
+在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据或 MySQL sink 的同步数据只包含变更后的值，不包含变更前行的值，所以无法正确的对数据进行更新和输出变更。
+
+所以当启用 TiDB 的新的 Collation 框架后，需要在 changefeed 的配置文件的根级别指定 `enable-old-value=true` 才能正确进行同步和输出变更。
