@@ -5,7 +5,11 @@ aliases: ['/docs-cn/v2.1/mysql-compatibility/','/docs-cn/v2.1/reference/mysql-co
 
 # 与 MySQL 兼容性对比
 
+<<<<<<< HEAD
 TiDB 支持 MySQL 传输协议及其绝大多数的语法。这意味着您现有的 MySQL 连接器和客户端都可以继续使用。大多数情况下您现有的应用都可以迁移至 TiDB，无需任何代码修改。
+=======
+- TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
+>>>>>>> 761e20003 (reword some descriptions in MySQL Compatibility (#7153))
 
 当前 TiDB 服务器官方支持的版本为 MySQL 5.7。大部分 MySQL 运维工具（如 PHPMyAdmin, Navicat, MySQL Workbench 等），以及备份恢复工具（如 mysqldump，Mydumper/myloader）等都可以直接使用。
 
