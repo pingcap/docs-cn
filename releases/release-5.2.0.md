@@ -66,6 +66,8 @@ TiDB 版本：5.2.0
 
 - 从 TiDB 5.2 起，为了提高系统安全性，建议（但不要求）对来自客户端的连接进行传输层加密，TiDB 提供 Auto TLS 功能在 TiDB 服务器端自动配置并开启加密。要使用 Auto TLS 功能，请在 TiDB 升级前将 TiDB 配置文件中的 [`security.auto-tls`](/tidb-configuration-file.md#auto-tls) 设置为 `true`。
 
+- 支持 `caching_sha2_password` 身份验证方式，简化了从 MySQL 8.0 的迁移操作，并提高了安全性。
+
 ## 新功能
 
 ### SQL
