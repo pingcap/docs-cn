@@ -76,39 +76,40 @@ TiDB 版本：4.0.15
 
 + TiDB
 
-    - 修复 binary literal 构造 range 时的 bug 。[26455](https://github.com/pingcap/tidb/pull/26455)
-    - 修复当查询包含 group by 和 union 时报错 "index out of range" 的问题。[26553](https://github.com/pingcap/tidb/pull/26553)
-    - 修复有 tombstone 存储时请求发送失败的问题.[25849](https://github.com/pingcap/tidb/pull/25849)
-    - 修复 case when 表达式字符集相关问题。[26671](https://github.com/pingcap/tidb/pull/26671)
-    - 修复将非法字符串转为 date 类型时的非预期行为。[27935](https://github.com/pingcap/tidb/pull/27935)
-    - 修复将 Apply 算子转为 Join 时漏掉 column 信息的问题。[27282](https://github.com/pingcap/tidb/pull/27282)
-    - 修复 new collation 打开时 count distinct 结果错误问题。[27830](https://github.com/pingcap/tidb/pull/27830)
-    - 修复 extract 表达式参数为负的 Duration 时结果错误问题。[27369](https://github.com/pingcap/tidb/pull/27369)
-    - group_concat 聚合函数增加对 collation 信息的处理。[27835](https://github.com/pingcap/tidb/pull/27835)
-    - 修复 between 表达式类型推导时 collation 错误问题。[27851](https://github.com/pingcap/tidb/pull/27851)
-    - 修复 greatest(datetime) 表达式 union null 结果错误问题。[26564](https://github.com/pingcap/tidb/pull/26564)
-    - 修复聚合函数 having 条件被错误地下推的问题。[27741](https://github.com/pingcap/tidb/pull/27741)
+    - 修复构建 range 时未正确给二进制字面值设置排序规则的问题 [#26455](https://github.com/pingcap/tidb/pull/26455)
+    - 修复 `case when` 表达式的字符集不正确的问题 [#26671](https://github.com/pingcap/tidb/pull/26671)
+    - 修复当查询包含 `GROUP BY` 和 `UNION` 时报错 "index out of range" 的问题 [#26553](https://github.com/pingcap/tidb/pull/26553)
+    - 修复当 TiKV 有 tombstone store 时 TiDB 发送请求失败的问题 [#25849](https://github.com/pingcap/tidb/pull/25849)
+    - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#27935](https://github.com/pingcap/tidb/pull/27935)
+    - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27282](https://github.com/pingcap/tidb/pull/27282)
+    - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27830](https://github.com/pingcap/tidb/pull/27830)
+    - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
+    - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
+    - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
+    - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
+    - 修复了 `having` 可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
+    - 移除文档中未记录的 `/debug/sub-optimal-plan` HTTP API [#27264](https://github.com/pingcap/tidb/pull/27264)
 
 + TiKV
 
-    - 修复恢复时启用TDE时br报告文件已存在错误的问题。 [#10917](https://github.com/tikv/tikv/pull/10917)
-    - RaftStore Snapshot GC 修复：修复 1 个快照文件 GC 失败时，快照 GC 漏掉 GC 快照文件的问题。[#10871](https://github.com/tikv/tikv/pull/10871)
-    - 修复删除陈旧区域过于频繁的问题。[#10781](https://github.com/tikv/tikv/pull/10781)
-    - 修复频繁重新连接 pd 客户端。 [#9818](https://github.com/tikv/tikv/pull/9818)
-    - 从加密文件字典中检查陈旧的文件信息。  [#10598](https://github.com/tikv/tikv/pull/10598)
+    - 修复数据恢复期间启用 TDE 时 BR 报告文件已存在错误的问题 [#10917](https://github.com/tikv/tikv/pull/10917)
+    ?- 修复当有快照文件未被 GC 回收时，快照在 GC 的过程中可能遗留 GC 快照文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
+    - 修复 TiKV 过于频繁删除陈旧 Region 的问题 [#10781](https://github.com/tikv/tikv/pull/10781)
+    - 修复 TiKV 频繁重新连接 PD 客户端的问题 [#9818](https://github.com/tikv/tikv/pull/9818)
+    - 从加密文件字典中检查陈旧的文件信息 [#10598](https://github.com/tikv/tikv/pull/10598)
 
 + PD
 
-    - 修复 PD 不能及时修复 down-peer 的问题 [#4081](https://github.com/tikv/pd/pull/4081)
-    - 修复扩容 TiKV 时 PD 可能会 panic 的问题 [#3909](https://github.com/tikv/pd/pull/3909)
+    - 修复 PD 未能及时修复 Down Peer 副本的问题 [#4077](https://github.com/tikv/pd/issues/4077)
+    - 修复了 PD 在扩容 TiKV 时可能会 Panic 的问题 [#3868](https://github.com/tikv/pd/issues/3868)
 
 + TiFlash
 
     - 修复多盘部署时数据不一致的潜在问题
     - 修复当查询过滤条件包含诸如 `CONSTANT` `<` | `<=` | `>` | `>=` `COLUMN` 时出现错误结果的问题
-    - 修复写压力重时 metrics 中 store size 不准确的问题
+    - 修复写入压力大时 metrics 中 store size 不准确的问题
     - 修复 TiFlash 多盘部署时无法恢复数据的潜在问题
-    - 修复 TiFlash 长时间运行后无法回收 delta 历史数据的潜在问题
+    - 修复 TiFlash 长时间运行后无法回收 Delta 历史数据的潜在问题
 
 + Tools
 
@@ -118,19 +119,19 @@ TiDB 版本：4.0.15
 
     + TiCDC
 
-        - 修正 owner 可能会遇到 `ErrSchemaStorageTableMiss` ，并意外地重置了 changefeed 的问题 [#2457](https://github.com/pingcap/ticdc/pull/2457)
-        - 修正如果遇到 GcTTL 执行超市后无法删除 changefeed 的问题 [#2455](https://github.com/pingcap/ticdc/pull/2455)
-        - 修正下线 TiCDC 节点出现在节点列表查询中的问题 [#2447](https://github.com/pingcap/ticdc/pull/2447)
-        - 修复 cdc runtime 死锁问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
-        - 修复表调度导致的出现并发复制的问题，该情况下数据会出现不一致[#2495](https://github.com/pingcap/ticdc/pull/2495)[#2727](https://github.com/pingcap/ticdc/pull/2727)
-        - 修复元数据管理出现 EtcdWorker 快照隔离的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
-        - 修复因为 ddl sink 导致 changefeed 不能被停止的问题 [#2556](https://github.com/pingcap/ticdc/pull/2556)
-        - 修复 open protocol 问题 —— 当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2619](https://github.com/pingcap/ticdc/pull/2619)
-        - 修复处理无符号 tinyint 的 panic 问题[#2654](https://github.com/pingcap/ticdc/pull/2654)
-        - 修复内存压力大时 gRPC keepalive 错误 [#2718](https://github.com/pingcap/ticdc/pull/2718)
-        - 修复 TiCDC 坚挺太多 regions 出现的 OOM 问题 [#2723](https://github.com/pingcap/ticdc/pull/2723)
-        - 修复处理 json编码 panic 的问题 [#2781](https://github.com/pingcap/ticdc/pull/2781)
-        - 修复了在创建新的 changefeed 时可能发生的内存泄漏 [#2623](https://github.com/pingcap/ticdc/pull/2623)
-        - 修复 owner 重新启动时，DDL 处理的 bug [#2609](https://github.com/pingcap/ticdc/pull/2609)
-        - 修复在 owner 挂掉的情况下， TiCDC 复制可能丢失 DDL 问题 [#2291](https://github.com/pingcap/ticdc/pull/2291)
-        - 修复 runtime panic 问题 [#2298](https://github.com/pingcap/ticdc/pull/2298)
+        - 修复集成测试中遇到的由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2422](https://github.com/pingcap/ticdc/issues/2422)
+        - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
+        - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/ticdc/issues/2388)
+        - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
+        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2495](https://github.com/pingcap/ticdc/pull/2495) [#2727](https://github.com/pingcap/ticdc/pull/2727)
+        - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
+        - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2556](https://github.com/pingcap/ticdc/pull/2556)
+        - 修复 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2619](https://github.com/pingcap/ticdc/pull/2619)
+        - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
+        - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2723](https://github.com/pingcap/ticdc/pull/2723)
+        - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
+        - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2623](https://github.com/pingcap/ticdc/pull/2623)
+        - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
+        - 修复 owner 在执行 DDL 语句时崩溃可能导致 DDL 任务丢失的问题 [#1260](https://github.com/pingcap/ticdc/issues/1260)
+        - 修复 `SinkManager` 中对 map 的不安全并发访问 [#2298](https://github.com/pingcap/ticdc/pull/2298)
