@@ -70,6 +70,13 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 >
 > 目前这部分监控指标仅包含了 TiFlash 存储层的统计指标，未包括 TiFlash-Proxy 内的信息。
 
+## Storage Write Stall
+
+- Write & Delta Management Throughput: 所有实例的写入及数据整理的吞吐量。`throughput_write` 意味着通过 Raft 进行数据同步的吞吐量。`throughput_delta-management` 是指数据整理的吞吐量。`total_write` 是指自上次启动以来的总写入字节数。`total_delta-management` 是指自上次启动以来数据整理的总字节数。
+- Write Stall Duration: 每个实例写入和移除 Region 数据发生 stall 的时长。
+- Write Throughput By Instance: 每个实例写入数据的吞吐量。它包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
+- Write Command OPS By Instance: 每个实例收到的各种命令的总计数。`write block` 代表着通过 Raft 同步数据日志。`delete_range` 表示一些 Region 从该实例中删除或移动到该实例中。`ingest` 表示着一些 Region 的快照被 apply 到这个实例中gco -b add_tiflash_metrics_write_stall。
+
 ## Raft
 
 - Read Index OPS：每个 TiFlash 实例每秒触发 read_index 请求的次数，等于请求触发的 Region 总数。
