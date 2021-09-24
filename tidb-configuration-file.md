@@ -368,7 +368,7 @@ Configuration items related to performance.
 ### `committer-concurrency`
 
 + The number of goroutines for requests related to executing commit in the commit phase of the single transaction.
-+ Default value: `16`
++ Default value: `128`
 + If the transaction to commit is too large, the waiting time for the flow control queue when the transaction is committed might be too long. In this situation, you can increase the configuration value to speed up the commit.
 
 ### `stmt-count-limit`
