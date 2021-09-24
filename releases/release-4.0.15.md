@@ -123,7 +123,7 @@ TiDB 版本：4.0.15
         - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
         - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/ticdc/issues/2388)
         - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
-        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230) [#2230](https://github.com/pingcap/ticdc/issues/2230)
+        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
         - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
         - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2552](https://github.com/pingcap/ticdc/issues/2552)
         - 修复 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
