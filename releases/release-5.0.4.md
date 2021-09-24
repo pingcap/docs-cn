@@ -76,7 +76,7 @@ TiDB 版本：5.0.4
     - 分离处理读写的 ready 状态以减少读延迟 [#10475](https://github.com/tikv/tikv/issues/10475)
     - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
     - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
-    - TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#1084](https://github.com/tikv/tikv/issues/10841)
+    - TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 使预写尽可能具有幂等性，以减少出现未确定错误的可能 [#10587](https://github.com/tikv/tikv/pull/10587)
     - 避免在低写入流量下误报 "GC can not work" [#10662](https://github.com/tikv/tikv/pull/10662)
     - 数据库在备份时总是与原始集群大小相匹配 [#10643](https://github.com/tikv/tikv/pull/10643)
@@ -90,7 +90,7 @@ TiDB 版本：5.0.4
 
     + Dumpling
 
-        - 支持对 MySQL 兼容的特定数据库进行备份，这些数据库不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE DATABASE` 语法 [#309](https://github.com/pingcap/dumpling/issues/309)
+        - 支持对 MySQL 兼容的特定数据库进行备份，这些数据库不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语法 [#309](https://github.com/pingcap/dumpling/issues/309)
 
     + TiCDC
 
