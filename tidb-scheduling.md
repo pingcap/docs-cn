@@ -77,6 +77,16 @@ TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包�
 * 是否过载
 * labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
 
+通过使用 `pd-ctl` 可以查看到 Store 的状态信息。 TiKV Store 的状态具体分为 Up，Disconnect，Offline，Down，Tombstone，其具体关系如下：
+
+*  **Up** ：表示当前的 Store 处于提供服务的状态。
+*  **Disconnect**：当 PD 和 TiKV 的心跳信息丢失超过 20s 后，该 TiKV 的状态会变为 Disconnect 状态，当时间超过 `max-store-down-time` 定义的时间后，该 TiKV 会变为 Down。
+*  **Down**：表示该 TiKV 与集群失去链接的时间已经超过了 `max-store-down-time` 定义的时间，默认 30 分钟，超过该时间后，相应的 TiKV 会变为 Down，并且开始在存活的 TiKV 上补足各个 Region 的副本。
+*  **Offline**：当对某个 TiKV 缩容后，该 TiKV 会变为 Offline 状态，该状态只是 TiKV 下线的中间状态，处于该状态的 TiKV 会进行 leader 的 transfter 和 region balance ，当 `leader_count/region_count` (pd-ctl 获取) 均显示 transfter 或 balance 完毕后，该 TiKV 会由 Offline —> Tombstone。在 Offline 状态时，禁止关闭该 TiKV 服务以及其所在的物理服务器。
+*  **Tombstone**：表示该 TiKV 已处于完全下线状态，可以使用 remove-tombstone 接口安全的清理该状态的 TiKV。
+
+![TiKV store status relationship](/media/tikv-store-status-relationship.png)
+
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
 每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个 [Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：

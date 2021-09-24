@@ -1185,7 +1185,9 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * 使用 `pd-ctl` 可以查看到 TiKV Store 的状态信息，即 Up, Disconnect，Offline, Down, Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md##信息收集)。
+
 
 ### `log [fatal | error | warn | info | debug]`
 
