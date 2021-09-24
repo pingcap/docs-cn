@@ -119,7 +119,8 @@ TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables
 
 ## TiDB 中删除数据后会立即释放空间吗？
 
-DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作 TiDB 的 GC 机制会删除数据，但不会释放空间，而是当后续进行 compaction 时释放空间。
+DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作 TiDB 的 GC 机制会删除数据，但不会立即释放空间，而是当后续进行 compaction 时释放空间。
+
 
 ## TiDB 是否支持 `REPLACE INTO` 语法？
 
