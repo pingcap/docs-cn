@@ -12,7 +12,7 @@ TiDB 版本：4.0.15
 
 + TiDB
 
-    - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#18517](https://github.com/pingcap/tidb/issues/18517) 中的部分更改，可能会引起兼容性问题。[#18517](https://github.com/pingcap/tidb/issues/18517)
+    - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#21045](https://github.com/pingcap/tidb/pull/21045) 中的部分更改，可能会引起兼容性问题。[#24326](https://github.com/pingcap/tidb/issues/24326)
 
 ## 功能增强
 
@@ -41,15 +41,15 @@ TiDB 版本：4.0.15
 
     + Backup & Restore (BR)
 
-        - 并发执行分裂和打散 Region 的操作，提升恢复速度 [#1429](https://github.com/pingcap/br/pull/1429)
-        - 遇到 PD 请求错误或 TiKV I/O 超时错误时进行重试 BR 任务 [#1433](https://github.com/pingcap/br/pull/1433)
-        - 恢复大量小表时减少空 Region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374) [#1432](https://github.com/pingcap/br/pull/1432)
+        - 并发执行分裂和打散 Region 的操作，提升恢复速度 [#1363](https://github.com/pingcap/br/pull/1363)
+        - 遇到 PD 请求错误或 TiKV I/O 超时错误时进行重试 BR 任务 [#27787](https://github.com/pingcap/tidb/issues/27787)
+        - 恢复大量小表时减少空 Region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374)
         - 创建表的时候自动执行 `rebase auto id` 操作，省去了单独的 `rebase auto id` DDL 操作，加快恢复速度 [#1424](https://github.com/pingcap/br/pull/1424)
 
     + Dumpling
 
         - 获取表信息前过滤掉不需要导出的数据库，提升 `SHOW TABLE STATUS` 的过滤效率 [#337](https://github.com/pingcap/dumpling/pull/337)
-        - 使用 `SHOW FULL TABLES` 来获取需要导出的表，因为 `SHOW TABLE STATUS` 在某些 MySQL 版本上运行存在问题 [#332](https://github.com/pingcap/dumpling/pull/332)
+        - 使用 `SHOW FULL TABLES` 来获取需要导出的表，因为 `SHOW TABLE STATUS` 在某些 MySQL 版本上运行存在问题 [#322](https://github.com/pingcap/dumpling/issues/322)
         - 支持对 MySQL 兼容的特定数据库进行备份，这些数据库不支持 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语法 [#309](https://github.com/pingcap/dumpling/issues/309)
         - 完善 Dumpling 的警告日志，避免让用户误以为导出失败 [#340](https://github.com/pingcap/dumpling/pull/340)
 
@@ -59,14 +59,14 @@ TiDB 版本：4.0.15
 
     + TiCDC
 
-        - TiCDC 总是 TiKV 内部拉取 old value [#2304](https://github.com/pingcap/ticdc/pull/2304)
+        - TiCDC 总是 TiKV 内部拉取 old value [#2397](https://github.com/pingcap/ticdc/pull/2397)
         - 当某张表的 Region 从某个 TiKV 节点全部迁移走时，减少 goroutine 资源的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
         - 在高并发下减少 workerpool 中创建的 goroutine 数量 [#2211](https://github.com/pingcap/ticdc/issues/2211)
-        - 异步执行 DDL 语句，不阻塞其他 changefeed [#2471](https://github.com/pingcap/ticdc/pull/2471)
+        - 异步执行 DDL 语句，不阻塞其他 changefeed [#2295](https://github.com/pingcap/ticdc/issues/2295)
         - 为所有 KV 客户端创建全局共享的 gRPC 连接池 [#2531](https://github.com/pingcap/ticdc/pull/2531)
-        - 遇到无法恢复的 DML 错误立即退出，不进行重试 [2315](https://github.com/pingcap/ticdc/pull/2315)
+        - 遇到无法恢复的 DML 错误立即退出，不进行重试 [#1724](https://github.com/pingcap/ticdc/issues/1724)
         - 优化 Unified Sorter 使用内存排序时的内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
-        - 为 DDL 语句的执行新增 Prometheus 监控指标 [#2681](https://github.com/pingcap/ticdc/pull/2681)
+        - 为 DDL 语句的执行新增 Prometheus 监控指标 [#2595](https://github.com/pingcap/ticdc/issues/2595) [#2669](https://github.com/pingcap/ticdc/issues/2669)
         - 禁止使用不同的 major 和 minor 版本启动 TiCDC 节点 [#2601](https://github.com/pingcap/ticdc/pull/2601)
         - 移除 `file sorter` 文件排序器 [#2325](https://github.com/pingcap/ticdc/pull/2325)
         - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2156](https://github.com/pingcap/ticdc/issues/2156)
@@ -79,7 +79,7 @@ TiDB 版本：4.0.15
     - 修复构建 range 时未正确给二进制字面值设置排序规则的问题 [#23672](https://github.com/pingcap/tidb/issues/23672)
     - 修复 `case when` 表达式的字符集不正确的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
     - 修复当查询包含 `GROUP BY` 和 `UNION` 时报错 "index out of range" 的问题 [#26553](https://github.com/pingcap/tidb/pull/26553)
-    - 修复当 TiKV 有 tombstone store 时 TiDB 发送请求失败的问题 [#25849](https://github.com/pingcap/tidb/pull/25849)
+    - 修复当 TiKV 有 tombstone store 时 TiDB 发送请求失败的问题 [#23676](https://github.com/pingcap/tidb/issues/23676) [#24648](https://github.com/pingcap/tidb/issues/24648)
     - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#26762](https://github.com/pingcap/tidb/issues/26762)
     - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27233](https://github.com/pingcap/tidb/issues/27233)
     - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
@@ -125,11 +125,11 @@ TiDB 版本：4.0.15
         - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
         - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230) [#2230](https://github.com/pingcap/ticdc/issues/2230)
         - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
-        - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2556](https://github.com/pingcap/ticdc/pull/2556)
+        - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2552](https://github.com/pingcap/ticdc/issues/2552)
         - 修复 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
         - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
-        - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2723](https://github.com/pingcap/ticdc/pull/2723)
+        - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2673](https://github.com/pingcap/ticdc/issues/2673)
         - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
         - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
         - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
