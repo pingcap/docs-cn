@@ -72,10 +72,17 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 
 ## Storage Write Stall
 
-- Write & Delta Management Throughput：所有实例的写入及数据整理的吞吐量。`throughput_write` 意味着通过 Raft 进行数据同步的吞吐量。`throughput_delta-management` 是指数据整理的吞吐量。`total_write` 是指自上次启动以来的总写入字节数。`total_delta-management` 是指自上次启动以来数据整理的总字节数。
+- Write & Delta Management Throughput：所有实例写入及数据整理的吞吐量。
+    - `throughput_write` 表示通过 Raft 进行数据同步的吞吐量。
+    - `throughput_delta-management` 表示数据整理的吞吐量。
+    - `total_write` 表示自上次启动以来的总写入字节数。
+    - `total_delta-management` 表示自上次启动以来数据整理的总字节数。
 - Write Stall Duration：每个实例写入和移除 Region 数据发生 stall 的时长。
-- Write Throughput By Instance：每个实例写入数据的吞吐量。它包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
-- Write Command OPS By Instance：每个实例收到的各种命令的总计数。`write block` 代表着通过 Raft 同步数据日志。`delete_range` 表示一些 Region 从该实例中删除或移动到该实例中。`ingest` 表示着一些 Region 的快照被 apply 到这个实例中。
+- Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
+- Write Command OPS By Instance：每个实例收到各种命令的总计数。
+    - `write block` 表示通过 Raft 同步数据日志。
+    - `delete_range` 表示从该实例中删除一些 Region 或移动一些 Region 到该实例中。
+    - `ingest` 表示这些 Region 的快照被 apply 到这个实例中。
 
 ## Raft
 
