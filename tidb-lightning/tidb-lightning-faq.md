@@ -85,10 +85,10 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-TiDB Lightning 只支持两种格式的数据源：
+目前，TiDB Lightning 支持：
 
-1. [Dumpling](/dumpling-overview.md) 生成的 SQL dump
-2. 储存在本地文件系统的 [CSV](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) 文件
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
+- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
