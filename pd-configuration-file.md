@@ -277,6 +277,20 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
 + 默认值：true
 
+### `hot-regions-write-interval`
+
+* 设置 pd 存储 Hot Region 信息时间间隔。
+* 默认值：10m
+
+> 注意：
+>
+> hot region的信息一般三分钟更新一次，如果设置时间间隔小于三分钟，中间部分更新可能没有意义。
+
+### `hot-regions-reserved-days`
+
+* 设置 pd 保留多久之前的 Hot Region 信息
+* 默认值: 7天
+
 ## replication
 
 副本相关的配置项。

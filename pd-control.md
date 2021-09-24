@@ -21,9 +21,9 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
 
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
+| :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
+| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
@@ -491,7 +491,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ]
 ```
 
-### `hot [read | write | store]`
+### `hot [read | write | store| history]`
 
 用于显示集群热点信息。示例如下。
 
@@ -517,6 +517,50 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ```bash
 >> hot store
+```
+
+显示历史读写热点信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history startTime endTime [ <name> <value> ]
+```
+
+例如查询时间`1634478065`到`1734478065`之间的历史hot_region信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1634478065 1734478065
+```
+
+```
+[
+  {
+    UpdateTime    ...
+    RegionID      ...
+    PeerID        ... 
+    StoreID       ... 
+    IsLeader      ... 
+    IsLearner     ... 
+    HotRegionType ... 
+    HotDegree     ... 
+    FlowBytes     ... 
+    KeyRate       ... 
+    QueryRate     ... 
+    StartKey      ... 
+    EndKey        ... 
+    EncryptionMeta ...
+  }
+  ......
+]
+```
+
+对于参数的值为数组的请用[x,y,...]形式进行参数值的设置，如下所示:
+
+```
+>hot history 1634478065 1634650865 hot_region_type write region_id [1,2,3] store_id [1,2,3] peer_id [1,2,3] is_leader false is_learner false
 ```
 
 ### `label [store <name> <value>]`
