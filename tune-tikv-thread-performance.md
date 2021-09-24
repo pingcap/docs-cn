@@ -29,7 +29,11 @@ TiKV 的读取请求分为两类：
 
 ## TiKV 线程池调优
 
+<<<<<<< HEAD
 * gRPC 线程池的大小默认配置（`server.grpc-concurrency`）是 4。由于 gRPC 线程池几乎不会有多少计算开销，它主要负责网络 IO、反序列化请求，因此该配置通常不需要调整。
+=======
+* gRPC 线程池的大小默认配置 (`server.grpc-concurrency`) 是 5。由于 gRPC 线程池几乎不会有多少计算开销，它主要负责网络 IO、反序列化请求，因此该配置通常不需要调整。
+>>>>>>> 056610784 (Tune TiKV: change the default value of `grpc-concurrency` (#7139))
 
     - 如果部署的机器 CPU 核数特别少（小于等于 8），可以考虑将该配置（`server.grpc-concurrency`）设置为 2。
     - 如果机器配置很高，并且 TiKV 承担了非常大量的读写请求，观察到 Grafana 上的监控 Thread CPU 的 gRPC poll CPU 的数值超过了 server.grpc-concurrency 大小的 80%，那么可以考虑适当调大 `server.grpc-concurrency` 以控制该线程池使用率在 80% 以下（即 Grafana 上的指标低于 `80% * server.grpc-concurrency` 的值）。
