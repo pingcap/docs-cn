@@ -12,7 +12,7 @@ TiDB 版本：4.0.15
 
 + TiDB
 
-    - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#21045](https://github.com/pingcap/tidb/pull/21045) 中的部分更改，可能会引起兼容性问题。[#24326](https://github.com/pingcap/tidb/issues/24326)
+    - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#18517](https://github.com/pingcap/tidb/issues/18517) 中的部分更改，可能会引起兼容性问题。[#18517](https://github.com/pingcap/tidb/issues/18517)
 
 ## 功能增强
 
@@ -24,7 +24,7 @@ TiDB 版本：4.0.15
 
 + TiDB
 
-    - 基于直方图的 row count 来触发 auto-analyze [#26706](https://github.com/pingcap/tidb/pull/26706)
+    - 基于直方图的 row count 来触发 auto-analyze [#24237](https://github.com/pingcap/tidb/issues/24237)
 
 + TiKV
 
@@ -55,7 +55,7 @@ TiDB 版本：4.0.15
 
     + TiDB Lightning
 
-        - 支持导入数据到带有表达式索引或带有基于虚拟生成列的索引的表中 [#1418](https://github.com/pingcap/br/pull/1418)
+        - 支持导入数据到带有表达式索引或带有基于虚拟生成列的索引的表中 [#1404](https://github.com/pingcap/br/issues/1404)
 
     + TiCDC
 
@@ -69,20 +69,20 @@ TiDB 版本：4.0.15
         - 为 DDL 语句的执行新增 Prometheus 监控指标 [#2681](https://github.com/pingcap/ticdc/pull/2681)
         - 禁止使用不同的 major 和 minor 版本启动 TiCDC 节点 [#2601](https://github.com/pingcap/ticdc/pull/2601)
         - 移除 `file sorter` 文件排序器 [#2325](https://github.com/pingcap/ticdc/pull/2325)
-        - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2313](https://github.com/pingcap/ticdc/pull/2313)
-        - 优化 Region 初始化后的清锁算法 [#2264](https://github.com/pingcap/ticdc/pull/2264)
+        - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2156](https://github.com/pingcap/ticdc/issues/2156)
+        - 优化 Region 初始化后的清锁算法 [#2188](https://github.com/pingcap/ticdc/issues/2188)
 
 ## Bug 修复
 
 + TiDB
 
-    - 修复构建 range 时未正确给二进制字面值设置排序规则的问题 [#26455](https://github.com/pingcap/tidb/pull/26455)
-    - 修复 `case when` 表达式的字符集不正确的问题 [#26671](https://github.com/pingcap/tidb/pull/26671)
+    - 修复构建 range 时未正确给二进制字面值设置排序规则的问题 [#23672](https://github.com/pingcap/tidb/issues/23672)
+    - 修复 `case when` 表达式的字符集不正确的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
     - 修复当查询包含 `GROUP BY` 和 `UNION` 时报错 "index out of range" 的问题 [#26553](https://github.com/pingcap/tidb/pull/26553)
     - 修复当 TiKV 有 tombstone store 时 TiDB 发送请求失败的问题 [#25849](https://github.com/pingcap/tidb/pull/25849)
-    - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#27935](https://github.com/pingcap/tidb/pull/27935)
-    - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27282](https://github.com/pingcap/tidb/pull/27282)
-    - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27830](https://github.com/pingcap/tidb/pull/27830)
+    - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#26762](https://github.com/pingcap/tidb/issues/26762)
+    - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27233](https://github.com/pingcap/tidb/issues/27233)
+    - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
     - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
     - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
     - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
@@ -92,11 +92,11 @@ TiDB 版本：4.0.15
 
 + TiKV
 
-    - 修复数据恢复期间启用 TDE 时 BR 报告文件已存在错误的问题 [#10917](https://github.com/tikv/tikv/pull/10917)
+    - 修复数据恢复期间启用 TDE 时 BR 报告文件已存在错误的问题 [#1179](https://github.com/pingcap/br/issues/1179)
     ?- 修复当有快照文件未被 GC 回收时，快照在 GC 的过程中可能遗留 GC 快照文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
-    - 修复 TiKV 过于频繁删除陈旧 Region 的问题 [#10781](https://github.com/tikv/tikv/pull/10781)
-    - 修复 TiKV 频繁重新连接 PD 客户端的问题 [#9818](https://github.com/tikv/tikv/pull/9818)
-    - 从加密文件字典中检查陈旧的文件信息 [#10598](https://github.com/tikv/tikv/pull/10598)
+    - 修复 TiKV 过于频繁删除陈旧 Region 的问题 [#10680](https://github.com/tikv/tikv/issues/10680)
+    - 修复 TiKV 频繁重新连接 PD 客户端的问题 [#9690](https://github.com/tikv/tikv/issues/9690)
+    - 从加密文件字典中检查陈旧的文件信息 [#9115](https://github.com/tikv/tikv/issues/9115)
 
 + PD
 
@@ -115,7 +115,7 @@ TiDB 版本：4.0.15
 
     + Backup & Restore (BR)
 
-        - 修复了备份和恢复中平均速度计算不准确的问题 [#1410](https://github.com/pingcap/br/pull/1410)
+        - 修复了备份和恢复中平均速度计算不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
 
     + TiCDC
 
@@ -123,15 +123,15 @@ TiDB 版本：4.0.15
         - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
         - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/ticdc/issues/2388)
         - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
-        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2495](https://github.com/pingcap/ticdc/pull/2495) [#2727](https://github.com/pingcap/ticdc/pull/2727)
+        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230) [#2230](https://github.com/pingcap/ticdc/issues/2230)
         - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
         - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2556](https://github.com/pingcap/ticdc/pull/2556)
-        - 修复 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2619](https://github.com/pingcap/ticdc/pull/2619)
+        - 修复 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
         - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2723](https://github.com/pingcap/ticdc/pull/2723)
         - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2623](https://github.com/pingcap/ticdc/pull/2623)
+        - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
         - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
         - 修复 owner 在执行 DDL 语句时崩溃可能导致 DDL 任务丢失的问题 [#1260](https://github.com/pingcap/ticdc/issues/1260)
         - 修复 `SinkManager` 中对 map 的不安全并发访问 [#2298](https://github.com/pingcap/ticdc/pull/2298)
