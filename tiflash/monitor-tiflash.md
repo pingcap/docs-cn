@@ -82,7 +82,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Write Command OPS By Instance：每个实例收到各种命令的总计数。
     - `write block` 表示通过 Raft 同步数据日志。
     - `delete_range` 表示从该实例中删除一些 Region 或移动一些 Region 到该实例中。
-    - `ingest` 表示这些 Region 的快照被 apply 到这个实例中。
+    - `ingest` 表示这些 Region 的快照被应用到这个实例中。
 
 ## Raft
 
