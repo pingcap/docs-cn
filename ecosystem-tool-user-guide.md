@@ -100,7 +100,7 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 
 ## 数据校验 - sync-diff-inspector
 
-[sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具还提供了修复数据的功能，可用于修复少量不一致的数据。
+[sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 是一个用于校验 MySQL / TiDB 中两份数据是否一致的工具。该工具还提供了修复数据的功能，可用于修复少量不一致的数据。
 
 基本信息：
 
