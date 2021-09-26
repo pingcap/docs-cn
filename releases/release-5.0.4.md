@@ -133,7 +133,7 @@ TiDB 版本：5.0.4
 
 + TiKV
 
-    ?- 修复当有快照文件未被 GC 回收时，快照在 GC 的过程中可能遗留 GC 快照文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
+    - 修复损坏的快照文件可能会造成磁盘空间无法回收的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
     - 修复了 TiKV 在启用 Titan 并从 5.0 以前的版本升级时出现 Panic 的问题 [#10843](https://github.com/tikv/tikv/pull/10843)
     - 修复了高版本的 TiKV 无法回滚到 v5.0.x 的问题 [#10843](https://github.com/tikv/tikv/pull/10843)
     - 修复了启用 Titan 并从 v5.0 以前的版本升级到 v5.0 及以后的版本时 TiKV 崩溃的问题（例如，如果集群从 TiKV v3.x 升级并在升级之前启用了 Titan，则该集群可能会遇到该问题）[#10774](https://github.com/tikv/tikv/issues/10774)
