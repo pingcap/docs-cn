@@ -118,5 +118,3 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Alertmanager | 9094 | 告警通信端口 |
 
 ## 客户端 Web 浏览器要求
-
-TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
