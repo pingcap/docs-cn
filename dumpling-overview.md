@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 更多详情，可以使用 --help 选项查看，或参考 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
-使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
+使用 Dumpling 时，需要在已经启动的集群上执行导出命令。
 
 TiDB 还提供了其他工具，你可以根据需要选择使用：
 
@@ -51,6 +51,8 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 - PROCESS
 
 ### 导出到 SQL 文件
+
+本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
 Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 `--filetype sql` 导出数据到 SQL 文件：
 
