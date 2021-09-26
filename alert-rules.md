@@ -956,17 +956,17 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-  `probe_success{group="tiflash"} == 0`
+    `probe_success{group="tiflash"} == 0`
 
 * 规则描述：
 
-  TiFlash 服务端口探测失败。
+    TiFlash 服务端口探测失败。
 
 * 处理方法：
 
-  * 检查 TiFlash 服务所在机器是否宕机。
-  * 检查 TiFlash 进程是否存在。
-  * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
+    * 检查 TiFlash 服务所在机器是否宕机。
+    * 检查 TiFlash 进程是否存在。
+    * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
 
 #### `Pump_server_is_down`
 
