@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tool
 
 # TiDB 生态工具功能概览
 
-TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验，例如：数据迁入、全量导出、全量导入、备份回复、校验等等。请根据需要选择适用的工具。
+TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验，例如：数据迁入、全量导出、全量导入、备份恢复、校验等等。请根据需要选择适用的工具。
 
 ## 数据迁入 - TiDB Data Migration (DM)
 
