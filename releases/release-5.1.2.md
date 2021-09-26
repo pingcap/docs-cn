@@ -139,14 +139,14 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
-        - 修复未充分考虑字符串类型的值可能是`string`或`[]byte`时，转换为`json` 格式可能导致 TiCDC 进程崩溃的问题 [#2783](https://github.com/pingcap/ticdc/pull/2783)
-        - 降低`gRPC`的`window size`以避免出现`OOM`的情况 [#2725](https://github.com/pingcap/ticdc/pull/2725)
-        - 修复内存压力较高时`gRPC`的`keepalive`错误 [#2720](https://github.com/pingcap/ticdc/pull/2720)
-        - 修复`unsigned tinyint`导致 TiCDC 崩溃的问题 [#2656](https://github.com/pingcap/ticdc/pull/2656)
+        - 修复未充分考虑字符串类型的值可能是 `string` 或 `[]byte` 时，转换为 `json` 格式可能导致 TiCDC 进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
+        - 降低 gRPC 的 window size 以避免出现 OOM 的情况 [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - 修复内存压力较高时 gRPC 的 `keepalive` 错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - 修复 `unsigned tinyint` 导致 TiCDC 崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复开放协议下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值  [#2612](https://github.com/pingcap/ticdc/issues/2612)
-        - 修复手动重启 TiCDC 时`DDL`处理上的一个问题 [#2607](https://github.com/pingcap/ticdc/pull/2607)
+        - 修复手动重启 TiCDC 时 `DDL` 处理上的一个问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
         - 修复操作元数据时，快照隔离可能被破坏的问题 [#2559](https://github.com/pingcap/ticdc/pull/2559)
         - 修复表被重新调度时，可能被多个进程同时写入的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
         - 修复日志中出现的 `ErrSchemaStorageTableMiss` 错误且 `changefeed` 被意外重置的问题 [#2422](https://github.com/pingcap/ticdc/issues/2422)
         - 修复遇到 `GcTTL Exceeded` 错误时 `changefeed` 无法被移除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
-        - 修复同步大表到 `cdclog` 失败的问题 [#2446](https://github.com/pingcap/ticdc/pull/2446)
+        - 修复同步大表到 `cdclog` 失败的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259)[#2424](https://github.com/pingcap/ticdc/issues/2424)
