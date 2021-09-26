@@ -24,7 +24,7 @@ TiDB 版本：5.1.2
 
     + Dumpling
 
-        - 支持备份一些无法执行 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#328](https://github.com/pingcap/dumpling/pull/328)
+        - 支持备份一些无法执行 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#309](https://github.com/pingcap/dumpling/issues/309)
         - 添加一个全局 `gRPC` 连接池并在 `kv` 客户端之间共享 `gRPC` 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
 
 ## 改进提升
