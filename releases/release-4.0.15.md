@@ -13,6 +13,16 @@ TiDB 版本：4.0.15
 + TiDB
 
     - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#21045](https://github.com/pingcap/tidb/pull/21045) 中的部分更改，可能会引起兼容性问题。[#24326](https://github.com/pingcap/tidb/issues/24326)
+    + 以下 Bug 修复涉及执行结果变化，可能引起兼容性变化：
+        - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
+        - 修复了 `having` 可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
+        - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
+        - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
+        - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
+        - 修复 `case when` 表达式的字符集不正确的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
+        - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27233](https://github.com/pingcap/tidb/issues/27233)
+        - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#26762](https://github.com/pingcap/tidb/issues/26762)
+        - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
 
 ## 功能增强
 
@@ -77,23 +87,14 @@ TiDB 版本：4.0.15
 + TiDB
 
     - 修复构建 range 时未正确给二进制字面值设置排序规则的问题 [#23672](https://github.com/pingcap/tidb/issues/23672)
-    - 修复 `case when` 表达式的字符集不正确的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
     - 修复当查询包含 `GROUP BY` 和 `UNION` 时报错 "index out of range" 的问题 [#26553](https://github.com/pingcap/tidb/pull/26553)
     - 修复当 TiKV 有 tombstone store 时 TiDB 发送请求失败的问题 [#23676](https://github.com/pingcap/tidb/issues/23676) [#24648](https://github.com/pingcap/tidb/issues/24648)
-    - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#26762](https://github.com/pingcap/tidb/issues/26762)
-    - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27233](https://github.com/pingcap/tidb/issues/27233)
-    - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
-    - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
-    - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
-    - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
-    - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
-    - 修复了 `having` 可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
     - 移除文档中未记录的 `/debug/sub-optimal-plan` HTTP API [#27264](https://github.com/pingcap/tidb/pull/27264)
 
 + TiKV
 
     - 修复数据恢复期间启用 TDE 时 BR 报告文件已存在错误的问题 [#1179](https://github.com/pingcap/br/issues/1179)
-    ?- 修复当有快照文件未被 GC 回收时，快照在 GC 的过程中可能遗留 GC 快照文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
+    - 修复损坏的快照文件可能会造成磁盘空间无法回收的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
     - 修复 TiKV 过于频繁删除陈旧 Region 的问题 [#10680](https://github.com/tikv/tikv/issues/10680)
     - 修复 TiKV 频繁重新连接 PD 客户端的问题 [#9690](https://github.com/tikv/tikv/issues/9690)
     - 从加密文件字典中检查陈旧的文件信息 [#9115](https://github.com/tikv/tikv/issues/9115)
