@@ -13,22 +13,22 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 
 基本信息：
 
-- DM 的输入：MySQL/MariaDB
-- DM 的输出：TiDB 集群
+- TiDB DM 的输入：MySQL/MariaDB
+- TiDB DM 的输出：TiDB 集群
 - 适用 TiDB 版本：所有版本
-- Kubernetes 支持：开发中
+- Kubernetes 支持：使用 [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm) 在 Kubernetes 上部署 TiDB DM。
 
-如果数据量在 TB 级别以下，推荐直接使用 DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的复制）。
+如果数据量在 TB 级别以下，推荐直接使用 TiDB DM 迁移 MySQL/MariaDB 数据到 TiDB（迁移的过程包括全量数据的导出导入和增量数据的复制）。
 
 如果数据量在 TB 级别，推荐的迁移步骤如下：
 
 1. 使用 [Dumpling](/dumpling-overview.md) 导出 MySQL/MariaDB 全量数据。
 2. 使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将全量导出数据导入 TiDB 集群。
-3. 使用 DM 复制 MySQL/MariaDB 增量数据到 TiDB。
+3. 使用 TiDB DM 复制 MySQL/MariaDB 增量数据到 TiDB。
 
 > **注意：**
 >
-> - 原 Syncer 工具已停止维护，不再推荐使用，相关场景请使用 DM 的增量复制模式进行替代。
+> - 原 Syncer 工具已停止维护，不再推荐使用，相关场景请使用 TiDB DM 的增量复制模式进行替代。
 
 ## 全量导出 - Dumpling
 
@@ -77,6 +77,16 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 - 适用 TiDB 版本：v4.0 及以上
 - Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)，[使用 BR 工具恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
 
+## TiDB 增量数据同步 - TiCDC
+
+[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供开放数据协议 (TiCDC Open Protocol)，支持其他系统订阅数据变更。
+
+基本信息：
+
+- TiCDC 的输入：TiDB 集群
+- TiCDC 的输出：TiDB 集群、MySQL、Kafka、Apache Pulsar、Confluent
+- 适用 TiDB 版本：v4.0.6 及以上
+
 ## TiDB 增量日志同步 - TiDB Binlog
 
 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是收集 TiDB 的增量 binlog 数据，并提供准实时同步和备份的工具。该工具可用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。
@@ -88,24 +98,14 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 - 适用 TiDB 版本：v2.1 及以上
 - Kubernetes 支持：[TiDB Binlog 运维文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-binlog)，[Kubernetes 上的 TiDB Binlog Drainer 配置](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/configure-tidb-binlog-drainer)
 
-## TiDB 增量数据同步 - TiCDC
-
-[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供开放数据协议 (TiCDC Open Protocol)，支持其他系统订阅数据变更。
-
-基本信息：
-
-- TiCDC 的输入：TiDB 集群
-- TiCDC 的输出：TiDB 集群、MySQL、Kafka、Apache Pulsar、Confluent
-- 适用 TiDB 版本：v4.0.6 及以上
-
 ## 数据校验 - sync-diff-inspector
 
 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 是一个用于校验 MySQL／TiDB 中两份数据是否一致的工具。该工具还提供了修复数据的功能，可用于修复少量不一致的数据。
 
 基本信息：
 
-- TiCDC 的输入：TiDB、MySQL
-- TiCDC 的输出：TiDB、MySQL
+- sync-diff-inspector 的输入：TiDB、MySQL
+- sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
 
 ## TiSpark
