@@ -16,7 +16,7 @@ TiDB 版本：5.1.2
 
         - 将兼容版本从`5.1.0-alpha`改为`5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
         - 禁止跨主要和次要版本操作TiCDC集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
-        - 修复 `CLI` 的向后兼容性 [#2414](https://github.com/pingcap/ticdc/pull/2414)
+        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2414](https://github.com/pingcap/ticdc/pull/2414)
 
 ## 功能增强
 
@@ -24,8 +24,8 @@ TiDB 版本：5.1.2
 
     + Dumpling
 
-        - 支持备份一些无法执行`START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#328](https://github.com/pingcap/dumpling/pull/328)
-        - 添加一个全局`gRPC`连接池并在`kv`客户端之间共享`gRPC`连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
+        - 支持备份一些无法执行 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#328](https://github.com/pingcap/dumpling/pull/328)
+        - 添加一个全局 `gRPC` 连接池并在 `kv` 客户端之间共享 `gRPC` 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
 
 ## 改进提升
 
@@ -36,15 +36,15 @@ TiDB 版本：5.1.2
 
 + TiKV
 
-    - 支持动态更改CDC 配置. [#10686](https://github.com/tikv/tikv/pull/10686)
-    - 减少resolved ts消息大小以节省网络带宽. [#10679](https://github.com/tikv/tikv/pull/10679)
-    - 支持限制Store心跳所包含的peer stats数量. [#10621](https://github.com/tikv/tikv/pull/10621)
+    - 支持动态更改 CDC (Change Data Capture) 配置项 [#10686] (https://github.com/tikv/tikv/pull/10686)
+    - 减少 Resolved TS 的消息大小，以节省网络带宽 [#10679](https://github.com/tikv/tikv/pull/10679)
+    - 支持限制每个 Store 发送的心跳包信息中 peer 状态（PeerStat）信息的数量 [#10621](https://github.com/tikv/tikv/pull/10621)
 
 + PD
 
-    - 允许empty region 被调度在scatter 调度器 [#4117](https://github.com/tikv/pd/pull/4117)
-    - 提升region 信息同步性能. [#3933](https://github.com/tikv/pd/pull/3933)
-    - 根据operator 生成情况动态调整Store重试次数 [#4048](https://github.com/tikv/pd/pull/4048)
+    - 允许空 Region 被调度在 scatter range 调度器，并可以在该调度器中使用单独的 tolerance 配置项 [#4117](https://github.com/tikv/pd/pull/4117)
+    - 提升 PD 之间同步 Region 信息的性能 [#3933](https://github.com/tikv/pd/pull/3933) 
+    - 支持根据 Operator 的生成情况动态调整 Store 的重试次数 [#4048](https://github.com/tikv/pd/pull/4048)
 
 + TiFlash
 
@@ -65,11 +65,11 @@ TiDB 版本：5.1.2
 
 + TiDB
 
-    - 修复 hash 列为 enum 类型时 index hash join 可能出错的问题 [#28081](https://github.com/pingcap/tidb/pull/28081)
-    - 修复 batch client 链接复用可能阻塞请求的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
-    - 修复 overflow 检查的兼容性问题 [#26725](https://github.com/pingcap/tidb/pull/26725)
-    - 修复 TiDB 把 `pd is timeout` 返回成 `unkonwn` 的问题 [#26682](https://github.com/pingcap/tidb/pull/26682)
-    - 修复错误的 charset 和 collation 导致 case-when 函数出错的问题 [#26673](https://github.com/pingcap/tidb/pull/26673)
+    - 修复 hash 列为 ENUM 类型时 index hash join 的结果可能出错的问题 [#28081](https://github.com/pingcap/tidb/pull/28081)
+    - 修复极少数情况下 batch client 复用空闲连接可能阻塞请求发送的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
+    - 通过使用与 MySQL 相同的 logic 以修复 overflow 检查的兼容性问题 [#26725](https://github.com/pingcap/tidb/pull/26725)
+    - 修复 TiDB 把 `pd is timeout` 错误返回成 `unkonwn` 的问题 [#26682](https://github.com/pingcap/tidb/pull/26682)
+    - 修复错误的 charset 和 collation 导致 case when 函数出错的问题 [#26673](https://github.com/pingcap/tidb/pull/26673)
     - 修复 `greatest(datetime) union null` 返回空结果的问题 [#26566](https://github.com/pingcap/tidb/pull/26566)
     - 修复 MPP 查询可能返回 `can not found column in Schema column` 错误的问题 [#28148](https://github.com/pingcap/tidb/pull/28148)
     - 修复 TiFlash 宕机可能导致 TiDB panic 的问题 [#28139](https://github.com/pingcap/tidb/pull/28139)
@@ -131,7 +131,7 @@ TiDB 版本：5.1.2
 
     + Backup & Restore (BR)
 
-        - 恢复时显示的`平均速度`的数值不正确 [#1412](https://github.com/pingcap/br/pull/1412)
+        - 修复了备份数据和恢复数据时显示的`平均速度`的数值不正确的问题[#1412](https://github.com/pingcap/br/pull/1412)
 
     + Dumpling
 
@@ -139,12 +139,12 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
-        - 字符串类型的值可能是`string`或`[]byte`，修复了未充分考虑两种可能性时转换为`json` 格式可能导致 TiCDC 进程崩溃的问题 [#2783](https://github.com/pingcap/ticdc/pull/2783)
-        - 降低`gRPC`的`window size`以避免`OOM`的情况 [#2725](https://github.com/pingcap/ticdc/pull/2725)
+        - 修复未充分考虑字符串类型的值可能是`string`或`[]byte`时，转换为`json` 格式可能导致 TiCDC 进程崩溃的问题 [#2783](https://github.com/pingcap/ticdc/pull/2783)
+        - 降低`gRPC`的`window size`以避免出现`OOM`的情况 [#2725](https://github.com/pingcap/ticdc/pull/2725)
         - 修复内存压力较高时`gRPC`的`keepalive`错误 [#2720](https://github.com/pingcap/ticdc/pull/2720)
-        - 修复了`unsigned tinyint`导致 TiCDC 崩溃的问题 [#2656](https://github.com/pingcap/ticdc/pull/2656)
-        - 开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值  [#2621](https://github.com/pingcap/ticdc/pull/2621)
-        - 修复手工重启 TiCDC 时`DDL`处理上的一个问题 [#2607](https://github.com/pingcap/ticdc/pull/2607)
+        - 修复`unsigned tinyint`导致 TiCDC 崩溃的问题 [#2656](https://github.com/pingcap/ticdc/pull/2656)
+        - 修复开放协议下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值  [#2621](https://github.com/pingcap/ticdc/pull/2621)
+        - 修复手动重启 TiCDC 时`DDL`处理上的一个问题 [#2607](https://github.com/pingcap/ticdc/pull/2607)
         - 修复一个元数据管理上的问题 [#2559](https://github.com/pingcap/ticdc/pull/2559)
         - 修复当表正在被重新调度时可能被多个进程同时写入的问题 [#2493](https://github.com/pingcap/ticdc/pull/2493)
         - 修复日志中出现的`ErrSchemaStorageTableMiss`错误且`changefeed`被意外重置的问题 [#2459](https://github.com/pingcap/ticdc/pull/2459)
