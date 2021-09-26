@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -778,6 +778,10 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     Region 分裂的速度不及写入的速度。为缓解这种情况，建议更新到支持 batch-split 的版本 (>= 2.1.0-rc1)。如暂时无法更新，可以使用 `pd-ctl operator add split-region <region_id> --policy=approximate` 手动分裂 Region。
 
+## TiFlash 报警规则
+
+关于 TiFlash 报警规则的详细描述，参见 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
+
 ## TiDB Binlog 报警规则
 
 关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
@@ -947,6 +951,22 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiDB 服务所在机器是否宕机。
     * 检查 TiDB 进程是否存在。
     * 检查监控机与 TiDB 服务所在机器之间网络是否正常。
+
+#### `TiFlash_server_is_down`
+
+* 报警规则：
+
+  `probe_success{group="tiflash"} == 0`
+
+* 规则描述：
+
+  TiFlash 服务端口探测失败。
+
+* 处理方法：
+
+  * 检查 TiFlash 服务所在机器是否宕机。
+  * 检查 TiFlash 进程是否存在。
+  * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
 
 #### `Pump_server_is_down`
 
