@@ -128,7 +128,7 @@ TiDB 版本：4.0.15
         - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2552](https://github.com/pingcap/ticdc/issues/2552)
         - 修复一个 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
         - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
-        - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - 减小 gRPC 窗口来避免 Region 数量过多时触发内存溢出 [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2673](https://github.com/pingcap/ticdc/issues/2673)
         - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
         - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
