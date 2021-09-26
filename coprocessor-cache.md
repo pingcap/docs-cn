@@ -3,7 +3,7 @@ title: 下推计算结果缓存
 aliases: ['/docs-cn/dev/coprocessor-cache/']
 ---
 
-# 下推计算结果缓存
+# 下推计算结果缓     存
 
 TiDB 从 4.0 起支持下推计算结果缓存（即 Coprocessor Cache 功能）。开启该功能后，将在 TiDB 实例侧缓存下推给 TiKV 计算的结果，在部分场景下起到加速效果。
 
