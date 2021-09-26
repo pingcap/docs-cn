@@ -14,8 +14,8 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
-        - 将兼容版本从`5.1.0-alpha`改为`5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
-        - 禁止跨主要和次要版本操作TiCDC集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
+        - 将兼容版本从 `5.1.0-alpha` 改为 `5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
+        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
         - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2414](https://github.com/pingcap/ticdc/pull/2414)
 
 ## 功能增强
@@ -31,8 +31,8 @@ TiDB 版本：5.1.2
 
 + TiDB
 
-    - 根据直方图行数来触 auto-analyze [#26708](https://github.com/pingcap/tidb/pull/26708)
-    - 下推 mod() 到 TiFlash [#27865](https://github.com/pingcap/tidb/pull/27865)
+    - 根据直方图行数来触 auto-analyze, 提升 auto-analyze 触发的准确度 [#26708](https://github.com/pingcap/tidb/pull/26708)
+    - 下推 mod() 到 TiFlash，提升查询性能 [#27865](https://github.com/pingcap/tidb/pull/27865)
 
 + TiKV
 
@@ -131,7 +131,7 @@ TiDB 版本：5.1.2
 
     + Backup & Restore (BR)
 
-        - 修复了备份数据和恢复数据时显示的`平均速度`的数值不正确的问题[#1412](https://github.com/pingcap/br/pull/1412)
+        - 修复了备份数据和恢复数据时显示的“平均速度”的数值不正确的问题 [#1412](https://github.com/pingcap/br/pull/1412)
 
     + Dumpling
 
@@ -145,8 +145,8 @@ TiDB 版本：5.1.2
         - 修复`unsigned tinyint`导致 TiCDC 崩溃的问题 [#2656](https://github.com/pingcap/ticdc/pull/2656)
         - 修复开放协议下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值  [#2621](https://github.com/pingcap/ticdc/pull/2621)
         - 修复手动重启 TiCDC 时`DDL`处理上的一个问题 [#2607](https://github.com/pingcap/ticdc/pull/2607)
-        - 修复一个元数据管理上的问题 [#2559](https://github.com/pingcap/ticdc/pull/2559)
-        - 修复当表正在被重新调度时可能被多个进程同时写入的问题 [#2493](https://github.com/pingcap/ticdc/pull/2493)
-        - 修复日志中出现的`ErrSchemaStorageTableMiss`错误且`changefeed`被意外重置的问题 [#2459](https://github.com/pingcap/ticdc/pull/2459)
-        - 修复遇到`GcTTL Exceeded`错误时`changefeed`无法被移除的问题 [#2454](https://github.com/pingcap/ticdc/pull/2454)
-        - 修复一个同步大表到`cdclog`失败的问题 [#2446](https://github.com/pingcap/ticdc/pull/2446)
+        - 修复操作元数据时，快照隔离可能被破坏的问题 [#2559](https://github.com/pingcap/ticdc/pull/2559)
+        - 修复表被重新调度时，可能被多个进程同时写入的问题 [#2493](https://github.com/pingcap/ticdc/pull/2493)
+        - 修复日志中出现的 `ErrSchemaStorageTableMiss` 错误且 `changefeed` 被意外重置的问题 [#2459](https://github.com/pingcap/ticdc/pull/2459)
+        - 修复遇到 `GcTTL Exceeded` 错误时 `changefeed` 无法被移除的问题 [#2454](https://github.com/pingcap/ticdc/pull/2454)
+        - 修复同步大表到 `cdclog` 失败的问题 [#2446](https://github.com/pingcap/ticdc/pull/2446)
