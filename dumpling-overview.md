@@ -99,7 +99,7 @@ dumpling \
 > **注意：**
 >
 > - `--sql` 选项仅仅可用于导出 CSV 的场景。
-> - 这里需要在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+> - 该命令将在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
 > - Dumpling 导出不区分`字符串`与`关键字`。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
 
 ### 输出文件格式
