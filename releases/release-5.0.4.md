@@ -14,11 +14,11 @@ TiDB 版本：5.0.4
 
     - 修复在新会话中执行 `SHOW VARIABLES` 速度较慢的问题。该修复回退了 [#19341](https://github.com/pingcap/tidb/pull/19341) 中的部分更改，可能会引起兼容性问题。[#24326](https://github.com/pingcap/tidb/issues/24326)
     - 将系统变量 `tidb_stmt_summary_max_stmt_count` 的默认值从 `200` 修改为 `3000` [#25873](https://github.com/pingcap/tidb/pull/25873)
-    + 以下 Bug 修复涉及执行结果变化，可能引起兼容性变化，对业务造成影响：
+    + 以下 Bug 修复涉及执行结果变化，可能引起兼容性变化：
         - 修复了当 `UNION` 的子计划包含 `NULL` 值时 TiDB 返回错误结果的问题 [#26559](https://github.com/pingcap/tidb/issues/26559)
         - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
         - 修复了 `last_day` 函数的行为在 SQL 模式下不兼容的问题 [#26000](https://github.com/pingcap/tidb/pull/26000)
-        - 修复了 `having` 可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
+        - 修复了 `having` 子句可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
         - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
         - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
         - 修复了当开启 New Collation 时，在多列上执行 `count(distinct)` 表达式结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
@@ -30,7 +30,7 @@ TiDB 版本：5.0.4
         - 修复了当二级索引包含主键中的列时，`insert ignore on duplicate update` 可能插入错误数据的问题 [#25809](https://github.com/pingcap/tidb/issues/25809)
         - 修复了当分区表有聚簇索引时，`insert ignore duplicate update` 可能插入错误数据的问题 [#25846](https://github.com/pingcap/tidb/issues/25846)
         - 修复了当 point get 或 batch point get 的查找键是 `ENUM` 类型时，查询结果可能错误的问题 [#24562](https://github.com/pingcap/tidb/issues/24562)
-        - 修复了 `BIT` 类型做除法时查询结果不正确的问题 [#23479](https://github.com/pingcap/tidb/issues/23479)
+        - 修复了 `BIT` 类型值做除法时查询结果不正确的问题 [#23479](https://github.com/pingcap/tidb/issues/23479)
         - 修复了 `prepared` 语句和直接查询的结果可能不一致的问题 [#22949](https://github.com/pingcap/tidb/issues/22949)
         - 修复了当 `YEAR` 类型与字符串或整数类型比较时，结果可能错误的问题 [#23262](https://github.com/pingcap/tidb/issues/23262)
 
@@ -50,7 +50,7 @@ TiDB 版本：5.0.4
 
 + TiFlash
 
-    - 支持 `HAVING()` 函数
+    - 支持在 DAG 请求中使用 `HAVING()` 函数
     - 支持 `DATE()` 函数
     - 为 Grafana 面板增加每个实例的写入吞吐
 
@@ -60,14 +60,14 @@ TiDB 版本：5.0.4
 
     - 基于直方图的 row count 来触发 auto-analyze [#24237](https://github.com/pingcap/tidb/issues/24237)
     - 当一个 TiFlash 节点此前因宕机重启过，TiDB 一段时间内不给该节点发送请求 [#26757](https://github.com/pingcap/tidb/pull/26757)
-    - 增加 `split region` 的速度限制，使 `split table` 和 `presplit` 更稳定 [#22969](https://github.com/pingcap/tidb/issues/22969)
+    - 增大 `split region` 的速度上限，使 `split table` 和 `presplit` 更稳定 [#22969](https://github.com/pingcap/tidb/issues/22969)
     - 支持 MPP 查询的重试 [#26483](https://github.com/pingcap/tidb/pull/26483)
     - 在发起 MPP 查询之前检查 TiFlash 的可用性 [#1807](https://github.com/pingcap/tics/issues/1807)
     - 支持稳定结果模式，使查询结果更稳定 [#26084](https://github.com/pingcap/tidb/pull/26084)
     - 支持 MySQL 系统变量 `init_connect` 及相关功能 [#18894](https://github.com/pingcap/tidb/issues/18894)
-    - 在 MPP 模式下彻底下推 `COUNT(DISTINCT)` 聚合函数 [#25861](https://github.com/pingcap/tidb/pull/25861)
+    - 在 MPP 模式中彻底下推 `COUNT(DISTINCT)` 聚合函数 [#25861](https://github.com/pingcap/tidb/pull/25861)
     - 当聚合函数在 `EXPLAIN` 语句中不能被下推时打印警告日志 [#25736](https://github.com/pingcap/tidb/pull/25736)
-    - 在 Grafana 监控中给 `TiFlashQueryTotalCounter` 加上错误标签 [#25327](https://github.com/pingcap/tidb/pull/25327)
+    - 在 Grafana 监控中为 `TiFlashQueryTotalCounter` 加上错误标签 [#25327](https://github.com/pingcap/tidb/pull/25327)
     - 支持在 HTTP API 中通过二级索引查询聚簇索引表的 MVCC 数据 [#24209](https://github.com/pingcap/tidb/issues/24209)
     - 优化 `prepared` 语句在解析器的内存分配 [#24371](https://github.com/pingcap/tidb/pull/24371)
 
@@ -76,10 +76,10 @@ TiDB 版本：5.0.4
     - 分离处理读写的 ready 状态以减少读延迟 [#10475](https://github.com/tikv/tikv/issues/10475)
     - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
     - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
-    - TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
+    - 使 TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 使预写尽可能具有幂等性，以减少出现未确定错误的可能 [#10587](https://github.com/tikv/tikv/pull/10587)
-    - 避免在低写入流量下误报 "GC can not work" [#10662](https://github.com/tikv/tikv/pull/10662)
-    - 数据库在备份时总是与原始集群大小相匹配 [#10643](https://github.com/tikv/tikv/pull/10643)
+    - 避免在低写入流量下误报 "GC can not work" 错误 [#10662](https://github.com/tikv/tikv/pull/10662)
+    - 使数据库在备份时总是与原始集群大小相匹配 [#10643](https://github.com/tikv/tikv/pull/10643)
     - 确保 Panic 信息刷新到日志 [#9955](https://github.com/tikv/tikv/pull/9955)
 
 + PD
@@ -125,7 +125,7 @@ TiDB 版本：5.0.4
     - 修复了 TiDB 在执行投影算子时会 Panic 的问题 [#24264](https://github.com/pingcap/tidb/issues/24264)
     - 修复了统计信息可能导致查询 Panic 的问题 [#24061](https://github.com/pingcap/tidb/pull/24061)
     - 修复了在 `BIT` 类型的列上使用 `approx_percentile` 函数可能 Panic 的问题 [#23662](https://github.com/pingcap/tidb/issues/23662)
-    - 修复了 Grafana 上 `Coprocessor Cache` 面板的数据显示不正确的问题 [#26338](https://github.com/pingcap/tidb/issues/26338)
+    - 修复了 Grafana 上 **Coprocessor Cache** 面板的数据显示不正确的问题 [#26338](https://github.com/pingcap/tidb/issues/26338)
     - 修复了并发 truncate 同一个分区会导致 DDL 语句执行卡住的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
     - 修复当会话变量用作 `GROUP BY` 项时查询结果出错的问题 [#27106](https://github.com/pingcap/tidb/issues/27106)
     - 修复连接表时 `VARCHAR` 类型与时间戳之间错误的隐式转换 [#25902](https://github.com/pingcap/tidb/issues/25902)
@@ -162,7 +162,7 @@ TiDB 版本：5.0.4
     - 修复 TiFlash 无法建立 MPP 连接时出现非预期结果的问题
     - 修复解锁时潜在的进程崩溃问题
     - 修复写入压力大时 metrics 中 store size 不准确的问题
-    - 修复当查询过滤条件包含诸如 `CONSTANT` `<` | `<=` | `>` | `>=` `COLUMN` 时出现错误结果的问题
+    - 修复当查询过滤条件包含诸如 `CONSTANT`、`<`、`<=`、`>`、`>=` 或 `COLUMN` 时出现错误结果的问题
     - 修复 TiFlash 长时间运行后无法回收 Delta 数据的潜在问题
     - 修复 metrics 显示错误数值的潜在问题
     - 修复多盘部署时数据不一致的潜在问题
@@ -177,14 +177,14 @@ TiDB 版本：5.0.4
 
         - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
         - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2417](https://github.com/pingcap/ticdc/pull/2417)
-        - 降低 gRPC 窗口大小来避免 Region 数量过多时触发内存溢出 [#2724](https://github.com/pingcap/ticdc/pull/2724)
+        - 减小 gRPC 窗口来避免 Region 数量过多时触发内存溢出 [#2724](https://github.com/pingcap/ticdc/pull/2724)
         - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复 TiCDC Open Protocol 在上游插入事务并删除同一行数据的情况下输出空值的问题 [#2612](https://github.com/pingcap/ticdc/issues/2612)
         - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
         - 修复无响应的下游中断 old owner 中的同步任务直到该任务超时的问题 [#2295](https://github.com/pingcap/ticdc/issues/2295)
         - 修复元信息管理问题 [#2558](https://github.com/pingcap/ticdc/pull/2558)
-        - 修复 sink Close 不正确导致多个节点写同一张表的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
+        - 修复 TiCDC 切换 owner 后出现数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
         - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/ticdc/issues/2388)
         - 修复集成测试中遇到的由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2422](https://github.com/pingcap/ticdc/issues/2422)
         - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
