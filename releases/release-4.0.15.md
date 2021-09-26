@@ -42,7 +42,7 @@ TiDB 版本：4.0.15
     + Backup & Restore (BR)
 
         - 并发执行分裂和打散 Region 的操作，提升恢复速度 [#1363](https://github.com/pingcap/br/pull/1363)
-        - 遇到 PD 请求错误或 TiKV I/O 超时错误时进行重试 BR 任务 [#27787](https://github.com/pingcap/tidb/issues/27787)
+        - 遇到 PD 请求错误或 TiKV I/O 超时错误时重试 BR 任务 [#27787](https://github.com/pingcap/tidb/issues/27787)
         - 恢复大量小表时减少空 Region 的产生，避免影响恢复后的集群运行 [#1374](https://github.com/pingcap/br/issues/1374)
         - 创建表的时候自动执行 `rebase auto id` 操作，省去了单独的 `rebase auto id` DDL 操作，加快恢复速度 [#1424](https://github.com/pingcap/br/pull/1424)
 
@@ -59,14 +59,14 @@ TiDB 版本：4.0.15
 
     + TiCDC
 
-        - TiCDC 总是 TiKV 内部拉取 old value [#2397](https://github.com/pingcap/ticdc/pull/2397)
+        - TiCDC 总是内部从 TiKV 拉取 old value，提升 TiCDC 易用性 [#2397](https://github.com/pingcap/ticdc/pull/2397)
         - 当某张表的 Region 从某个 TiKV 节点全部迁移走时，减少 goroutine 资源的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
         - 在高并发下减少 workerpool 中创建的 goroutine 数量 [#2211](https://github.com/pingcap/ticdc/issues/2211)
         - 异步执行 DDL 语句，不阻塞其他 changefeed [#2295](https://github.com/pingcap/ticdc/issues/2295)
         - 为所有 KV 客户端创建全局共享的 gRPC 连接池 [#2531](https://github.com/pingcap/ticdc/pull/2531)
         - 遇到无法恢复的 DML 错误立即退出，不进行重试 [#1724](https://github.com/pingcap/ticdc/issues/1724)
         - 优化 Unified Sorter 使用内存排序时的内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
-        - 为 DDL 语句的执行新增 Prometheus 监控指标 [#2595](https://github.com/pingcap/ticdc/issues/2595) [#2669](https://github.com/pingcap/ticdc/issues/2669)
+        - 为执行 DDL 语句新增 Prometheus 监控指标 [#2595](https://github.com/pingcap/ticdc/issues/2595) [#2669](https://github.com/pingcap/ticdc/issues/2669)
         - 禁止使用不同的 major 和 minor 版本启动 TiCDC 节点 [#2601](https://github.com/pingcap/ticdc/pull/2601)
         - 移除 `file sorter` 文件排序器 [#2325](https://github.com/pingcap/ticdc/pull/2325)
         - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2156](https://github.com/pingcap/ticdc/issues/2156)
@@ -106,7 +106,7 @@ TiDB 版本：4.0.15
 + TiFlash
 
     - 修复多盘部署时数据不一致的潜在问题
-    - 修复当查询过滤条件包含诸如 `CONSTANT` `<` | `<=` | `>` | `>=` `COLUMN` 时出现错误结果的问题
+    - 修复当查询过滤条件包含诸如 `CONSTANT`、`<`、`<=`、`>`、`>=` 或 `COLUMN` 时出现错误结果的问题
     - 修复写入压力大时 metrics 中 store size 不准确的问题
     - 修复 TiFlash 多盘部署时无法恢复数据的潜在问题
     - 修复 TiFlash 长时间运行后无法回收 Delta 历史数据的潜在问题
@@ -119,14 +119,14 @@ TiDB 版本：4.0.15
 
     + TiCDC
 
-        - 修复集成测试中遇到的由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2422](https://github.com/pingcap/ticdc/issues/2422)
+        - 修复集成测试中遇到由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2422](https://github.com/pingcap/ticdc/issues/2422)
         - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
         - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/ticdc/issues/2388)
         - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
         - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
         - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
         - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2552](https://github.com/pingcap/ticdc/issues/2552)
-        - 修复 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
+        - 修复一个 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
         - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复内存压力大时 gRPC 连接频繁断开的错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2673](https://github.com/pingcap/ticdc/issues/2673)
