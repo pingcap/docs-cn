@@ -16,7 +16,7 @@ TiDB 版本：5.1.2
 
         - 将兼容版本从 `5.1.0-alpha` 改为 `5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
         - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
-        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2343](https://github.com/pingcap/ticdc/issues/2373)
+        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/ticdc/issues/2373)
 
 ## 功能增强
 
