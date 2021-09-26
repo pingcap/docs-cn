@@ -182,7 +182,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         {{< copyable "shell-regular" >}}
 
         ```bash
-        sudo systemctl status cronyd.service
+        sudo systemctl status chronyd.service
         ```
 
         ```
@@ -191,7 +191,9 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
         ```
 
-        如果你使用的系统配置是 `chronyd`，请直接执行以下的步骤 3。
+      若发现系统既没有配置 `chronyd` 也没有配置 `ntpd` ，则表示系统尚未安装任一服务。此时，应先安装其中一个服务，并保证它可以自动启动，默认使用 `ntpd`。
+
+        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。
 
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
