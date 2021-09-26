@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 使用 Dumpling 时，需要在已经启动的集群上执行导出命令。本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
-TiDB 还提供了其他工具，你可以根据需要选择使用。
+TiDB 还提供了其他工具，你可以根据需要选择使用：
 
 - 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-tool.md)。
 - 如果需要实时的增量备份，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
