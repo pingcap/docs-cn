@@ -77,7 +77,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
     - `throughput_delta-management` 表示数据整理的吞吐量。
     - `total_write` 表示自上次启动以来的总写入字节数。
     - `total_delta-management` 表示自上次启动以来数据整理的总字节数。
-- Write Stall Duration：每个实例写入和移除 Region 数据发生 stall 的时长。
+- Write Stall Duration：每个实例写入和移除 Region 数据产生的卡顿时长。
 - Write Throughput By Instance：每个实例写入数据的吞吐量，包括 apply Raft 数据日志以及 Raft 快照的写入吞吐量。
 - Write Command OPS By Instance：每个实例收到各种命令的总计数。
     - `write block` 表示通过 Raft 同步数据日志。
