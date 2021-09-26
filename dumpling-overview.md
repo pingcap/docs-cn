@@ -6,9 +6,15 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 # 使用 Dumpling 导出数据
 
-使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。下图展示了使用 Dumpling 导出数据的场景。
+使用数据导出工具 [Dumpling](https://github.com/pingcap/dumpling)，你可以把存储在 TiDB 或 MySQL 中的数据导出为 SQL 或 CSV 格式，用于逻辑全量备份。Dumpling 也支持将数据导出到 Amazon S3 中。
+
+下图展示了使用 Dumpling 导出数据的场景。
 
 ![Dumpling 导出数据](/media/dumpling.png)
+
+建议先观看下面的培训视频（时长 28 分钟），快速了解 Dumpling 的基本功能。
+
+<video style="width: 100%;" src="https://tidb-docs.s3.us-east-2.amazonaws.com/Lesson+18+%E8%AF%BE%E7%A8%8B.mp4"></video> 
 
 你可以通过下列任意方式获取 Dumpling：
 
