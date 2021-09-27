@@ -13,9 +13,7 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 
 建议先观看下面的培训视频（时长 28 分钟），快速了解 Dumpling 的基本功能。
 
-<video id="video" controls="" preload="none" poster="">
-      <source id="mp4" src="https://tidb-docs.s3.us-east-2.amazonaws.com/Lesson+18+%E8%AF%BE%E7%A8%8B.mp4" type="video/mp4">
-      </video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/Lesson+18+%E8%AF%BE%E7%A8%8B.mp4" width="800px" height="600px" controls="controls"></video>
 
 你可以通过下列任意方式获取 Dumpling：
 
