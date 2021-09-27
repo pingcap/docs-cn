@@ -152,7 +152,7 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
     ![操作示例 3](/media/dashboard/dashboard-session-sso-okta-info-3.png)
 
-至此，TiDB Dashboard 已被配置为使用 Okta 进行 SSO 登录。
+    至此，TiDB Dashboard 已被配置为使用 Okta 进行 SSO 登录。
 
 ## 示例二：使用 Auth0 进行 TiDB Dashboard SSO 登录认证
 
