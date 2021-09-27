@@ -41,7 +41,7 @@ TiDB 版本：5.1.2
 
 + PD
 
-    - 允许空 Region 被调度在 scatter range 调度器，并可以在该调度器中使用单独的 `tolerance` 配置项 [#4117](https://github.com/tikv/pd/pull/4117)
+    - 存在 scatter range 调度器情况下，允许空 Region 被调度，并可以在该调度器中使用单独的 `tolerance` 配置项 [#4117](https://github.com/tikv/pd/pull/4117)
     - 提升 PD 之间同步 Region 信息的性能 [#3933](https://github.com/tikv/pd/pull/3933)
     - 支持根据 Operator 的生成情况动态调整 Store 的重试次数 [#3744](https://github.com/tikv/pd/issues/3744)
 
