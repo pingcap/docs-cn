@@ -80,6 +80,36 @@ mysql> SELECT * FROM t1;
 - 默认值：`ON`
 - 用于设置在非显式事务时是否自动提交事务。更多信息，请参见[事务概述](/transaction-overview.md#自动提交)。
 
+### character_set_client
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 这个变量表示从客户端发出的数据所用的字符集。有关更多 TiDB 支持的字符集和排序规则，参阅[字符集和排序规则](/character-set-and-collation.md)文档。如果需要更改字符集，建议使用 [`SET NAMES`](/sql-statements/sql-statement-set-names.md) 语句。
+
+### character_set_connection
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 若没有为字符串常量指定字符集，该变量表示这些字符串常量所使用的字符集。
+
+### character_set_database
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 该变量表示当前默认在用数据库的字符集，**不建议设置该变量**。选择新的默认数据库后，服务器会更改该变量的值。
+
+### character_set_results
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 该变量表示数据发送至客户端时所使用的字符集。
+
+### character_set_server
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`utf8mb4`
+- 当 `CREATE SCHEMA` 中没有指定字符集时，该变量表示这些新建的表结构所使用的字符集。
+
 ### `datadir`
 
 - 作用域：NONE
@@ -461,6 +491,10 @@ mysql> SELECT * FROM t1;
 
 ### `tidb_enable_cascades_planner`
 
+> **警告：**
+>
+> 目前 cascades planner 为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 cascades planner。
@@ -488,6 +522,10 @@ mysql> SELECT * FROM t1;
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
 ### `tidb_enable_fast_analyze`
+
+> **警告：**
+>
+> 目前快速分析功能为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
@@ -520,9 +558,9 @@ mysql> SELECT * FROM t1;
     * `LOCK IN SHARE MODE` 语法
     * `SQL_CALC_FOUND_ROWS` 语法
 
-> **注意：**
+> **警告：**
 >
-> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
+> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
 ### `tidb_enable_rate_limit_action`
 
@@ -1186,27 +1224,27 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`24`
 - 范围：`[0, 255]`
-- 这个变量设置了 statement summary 的历史记录容量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 这个变量用来控制是否在 statement summary 中包含 TiDB 内部 SQL 的信息。
+- 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
 
 ### `tidb_stmt_summary_max_sql_length` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量控制 statement summary 显示的 SQL 字符串长度。
+- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：v5.0.4 前为 200。自 v5.0.4 起为 3000
 - 范围：`[1, 32767]`
-- 这个变量设置了 statement summary 在内存中保存的语句的最大数量。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1214,7 +1252,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`1800`
 - 范围：`[1, 2147483647]`
 - 单位：秒
-- 这个变量设置了 statement summary 的刷新时间。
+- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 

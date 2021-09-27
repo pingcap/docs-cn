@@ -96,10 +96,6 @@ address = ""
 job = "tikv"
 
 [raftstore]
-# 默认为 true，表示强制将数据刷到磁盘上。如果是非金融安全级别的业务场景，建议设置成 false，
-# 以便获得更高的性能。
-sync-log = true
-
 # Raft RocksDB 目录。默认值是 [storage.data-dir] 的 raft 子目录。
 # 如果机器上有多块磁盘，可以将 Raft RocksDB 的数据放在不同的盘上，提高 TiKV 的性能。
 # raftdb-path = "/tmp/tikv/store/raft"
