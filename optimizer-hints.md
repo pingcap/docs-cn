@@ -182,6 +182,17 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 ```
 
+### LIMIT_TO_COP()
+
+`LIMIT_TO_COP()` 提示优化器将制定查询快中的 Limit 和 TopN 算子下推到 coprocessor。如果优化器没有下推 Limit 或者 TopN 算子，建议尝试。例如：
+
+
+{{< copyable "sql" >}}
+
+```sql
+select /*+ LIMIT_TO_COP() */ * from t where a = 1 and b > 10 and b < 20 and c > 50 order by d limit 1
+```
+
 ### READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])
 
 `READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])` 提示优化器从指定的存储引擎来读取指定的表，目前支持的存储引擎参数有 `TIKV` 和 `TIFLASH`。如果为表指定了别名，就只能使用表的别名作为 `READ_FROM_STORAGE()` 的参数；如果没有指定别名，则用表的本名作为其参数。例如：
