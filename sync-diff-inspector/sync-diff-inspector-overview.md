@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 
 * 不支持 JSON、BIT、BINARY、BLOB 等类型的数据，在校验时需要设置 `ignore-columns` 忽略检查这些类型的数据。
 
-* FLOAT、DOUBLE 等浮点数类型在 TiDB 和 MySQL 中的实现方式不同，在计算 checksum 时会分别取6位和15位有效数字。如果不使用该特性，需要设置 `ignore-columns` 忽略这些列的检查。
+* FLOAT、DOUBLE 等浮点数类型在 TiDB 和 MySQL 中的实现方式不同，在计算 checksum 时会分别取 6 位和 15 位有效数字。如果不使用该特性，需要设置 `ignore-columns` 忽略这些列的检查。
 
 * 支持对不包含主键或者唯一索引的表进行校验，但是如果数据不一致，生成的用于修复的 SQL 可能无法正确修复数据。
 
@@ -97,7 +97,7 @@ ignore-struct-check = false
 
 ######################### Databases config #########################
 [data-sources]
-[data-sources.mysql1] # mysql1 是该数据库实例唯一标识的id，用于下面task.source-instances/task.target-instance中
+[data-sources.mysql1] # mysql1 是该数据库实例唯一标识的 id，用于下面 task.source-instances/task.target-instance 中
     host = "127.0.0.1"
     port = 3306
     user = "root"
@@ -115,7 +115,7 @@ ignore-struct-check = false
 
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
 [table-configs]
-[table-configs.config1] # config1 是该配置的唯一标识id，用于下面task.target-configs中
+[table-configs.config1] # config1 是该配置的唯一标识 id，用于下面 task.target-configs 中
 # 目标数据库名称
 schema = "schama1"
 # 目标表名称
@@ -149,19 +149,19 @@ target-table = "t2" # 目标表名
 # 配置需要对比的*目标数据库*中的表
 [task]
     # output-dir 会保存如下信息
-    # 1 检查出错误后生成的修复SQL，按chunk划分文件
+    # 1 检查出错误后生成的修复 SQL，按 chunk 划分文件
     # 2 log: sync-diff.log 保存日志信息
     # 3 summary: summary.txt 保存总结
     # 4 checkpoint: a dir 保存断点续传信息
     output-dir = "./output"
 
-    # 上游数据库，内容是data-sources声明的唯一标识id，下同
+    # 上游数据库，内容是 data-sources 声明的唯一标识 id，下同
     source-instances = ["mysql1"]
 
     # 下游数据库
     target-instance = ["tidb"]
 
-    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由`.`隔开
+    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 
     # 对部分表的额外配置
@@ -180,32 +180,65 @@ target-table = "t2" # 目标表名
 
 该命令最终会在`config.toml`中的`output-dir`输出目录输出本次比对的检查报告`summary.txt`和日志`sync_diff.log`。在输出目录下还会生成由`config.toml`文件内容哈希值命名的文件夹，该文件夹下包括断点续传checkpoint结点信息以及数据存在不一致时生成的SQL修复数据。
 
+#### 进度条
+
+sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进度信息包括表的结构比较结果、表的数据比较结果以及进度条。(注意：为了达成显示效果，请保持显示窗口宽度在80字符以上)
+
+```progress
+A total of 2 tables need to be compared
+
+Comparing the table structure of ``sbtest`.`sbtest96`` ... equivalent
+Comparing the table structure of ``sbtest`.`sbtest99`` ... equivalent
+Comparing the table data of ``sbtest`.`sbtest96`` ... failure
+Comparing the table data of ``sbtest`.`sbtest99`` ...
+_____________________________________________________________________________
+Progress [==========================================================>--] 98% 193/200
+```
+
+```progress
+A total of 2 tables need to be compared
+
+Comparing the table structure of ``sbtest`.`sbtest96`` ... equivalent
+Comparing the table structure of ``sbtest`.`sbtest99`` ... equivalent
+Comparing the table data of ``sbtest`.`sbtest96`` ... failure
+Comparing the table data of ``sbtest`.`sbtest99`` ... failure
+_____________________________________________________________________________
+Progress [============================================================>] 100% 0/0
+The data of `sbtest`.`sbtest99` is not equal
+The data of `sbtest`.`sbtest96` is not equal
+
+The rest of tables are all equal.
+The patch file has been generated in 
+        'output/917510ea1671909f6a7bd34f7f967427/fix-on-tidb2/'
+You can view the comparision details through 'output/sync_diff.log'
+```
+
 #### 日志
 
-sync-diff-inspector 的日志存放在`${output}/sync_diff.log`中，其中`${output}`是`config.toml`文件中`output-dir`的值。
+sync-diff-inspector 的日志存放在 `${output}/sync_diff.log` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 #### 校验进度
 
-sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于`${output}/${config_hash}/checkpoint/sync_diff_checkpoints.pb`中，其中`${output}`是`config.toml`文件中`output-dir`的值，`${config_hash}`是`config.toml`文件内容的哈希值。)，格式如下：
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于 `${output}/${config_hash}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值，`${config_hash}` 是 `config.toml` 文件内容的哈希值)，格式如下：
 
 ```checkpoint
 {
     "chunk-info":{
-        "state":"success",
+        "state":"failed",
         "chunk-range":{
             "index":{
                 "table-index":0,
                 "bucket-index-left":0,
-                "bucket-index-right":1,
-                "chunk-index":2,
+                "bucket-index-right":0,
+                "chunk-index":1,
                 "chunk-count":200,
             },
             "type":2,
             "bounds":[
                 {
                     "column":"id",
-                    "lower":"87486",
-                    "upper":"93285",
+                    "lower":"174985",
+                    "upper":"212143",
                     "has-lower":true,
                     "has-upper":true,
                 },
@@ -213,7 +246,7 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
             "is-first":false,
             "is-last":false,
             "where":"((((`id` \u003e ?)) AND ((`id` \u003c= ?))) AND TRUE)",
-            "args":["87486","93285"],
+            "args":["174985","212143"],
         },
         "index-id":0,
     },
@@ -227,30 +260,22 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
                     "schma":"sbtest",
                     "table":"sbtest99",
                     "struct-equal":true,
-                    "data-equal":true,
-                    "meet-error":null,
+                    "data-equal":false,
                     "chunk-result":{
                         "0:0-0:0:200":{
-                            "rows-add":0,
-                            "rows-delete":0,
-                            "rows-count":42317,
+                            "rows-add":1,
+                            "rows-delete":1,
                         },
                         "0:0-0:1:200":{
-                            "rows-add":0,
-                            "rows-delete":0,
-                            "rows-count":45169,
-                        },
-                        "0:0-0:2:200":{
-                            "rows-add":0,
-                            "rows-delete":0,
-                            "rows-count":5799,
+                            "rows-add":1,
+                            "rows-delete":1,
                         },
                     },
                 },
             },
         },
         "start-time":"0001-01-01T00:00:00Z",
-        "time-duration":10030869563,
+        "time-duration":60160836703,
         "TotalSize":0,
         "SourceConfig":null,
         "TargetConfig":null,
@@ -260,37 +285,37 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
 
 checkpoint主要分为两块内容：
 
-- chunk-info: 保存chunk的所有信息，chunk按照一定顺序被排列，checkpoint保证文件中的chunk及其之前的所有chunk都已经被比对过。
+- chunk-info: 保存 chunk 的所有信息，chunk 按照一定顺序被排列，checkpoint 保证文件中的 chunk 及其之前的所有 chunk 都已经被比对过。
     
-    - state: 保存该chunk比对是否出现error
+    - state: 保存该 chunk 比对是否出现 error
 
-    - chunk-range: 保存该chunk在表中的范围
+    - chunk-range: 保存该 chunk 在表中的范围
 
-        - index: 作为chunk的唯一标识和排序依据。例子表示该chunk位于第一个表`(table-index=0)`，包括了bucketID=0`(bucket-index-left=0)`到bukcetID=1`(bucket-index-right=1)`的范围，这段范围被划分为5个chunks`(chunk-count=2)`，该chunk位于第一个`(chunk-index=200)`。
+        - index: 作为 chunk 的唯一标识和排序依据。例子表示该 chunk 位于第一个表 `(table-index=0)`，包括了 bucketID=0 `(bucket-index-left=0)` 到 bukcetID=1 `(bucket-index-right=0)` 的范围，这段范围被划分为200个 chunks `(chunk-count=200)`，该chunk位于第 2 个 `(chunk-index=1)`。
 
-        - type: 表示该chunk是由哪种方式划分的。type=0表示通过了TiDB的buckets信息来划分。
+        - type: 表示该 chunk 是由哪种方式划分的。type=1 表示通过了 TiDB 的 buckets 信息来划分。type=2 表示随机划分。
 
-        - bounds: 表示该chunk的范围，注意bounds是有顺序的，不同bounds的顺序表示不同的范围。
+        - bounds: 表示该 chunk 的范围，注意 bounds 是有顺序的，不同 bounds 的顺序表示不同的范围。
 
-        - where: 由bounds转化的SQL语句的where。
+        - where: 由 bounds 转化的 SQL 语句的 where。
 
-        - args: 按顺序填充where中的`?`。
+        - args: 按顺序填充 where 中的 `?`。
 
-    - index-id: 如果使用了索引，则该值标志该chunk使用哪一个index
+    - index-id: 如果使用了索引来划分 chunk，则该值标志该 chunk 使用哪一个 index。
 
-- report-info: 保存chunk的比对的统计结果
+- report-info: 保存 chunk 的比对的统计结果
 
     - Result: 比对的结果
 
-    - PassNum:
+    - PassNum: 目前比对一致的表的数量
 
-    - FailNum:
+    - FailNum: 目前比对不一致的表的数量
 
-    - table-results: 存放各个表的比对统计结果，例子表示表`hb_test.t_order_shard`表结果比较和数据比较都不对，在chunk`0:0-0:0:5`(由chunk.index唯一标识)共比对了4431行，0行缺失和0行多余。
+    - table-results: 存放各个表的比对统计结果，例子表示表 `sbtest.sbtest99` 的表结构一致但表数据不一致，对 chunk `0:0-0:0:200` (由 `chunk.index` 唯一标识)的修复需要添加一行和删除一行。
 
 #### 校验结果
 
-当校验结束时，sync-diff-inspector 会输出一份校验报告，位于`${output}/summary.txt`中，其中`${output}`是`config.toml`文件中`output-dir`的值。
+当校验结束时，sync-diff-inspector 会输出一份校验报告，位于 `${output}/summary.txt` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 ```summary
 +---------------------+--------------------+----------------+
@@ -307,11 +332,11 @@ Average Speed: 113.277149MB/s
 
 - STRUCTURE EQUALITY: 表结构是否相同
 
-- DATA DIFF ROWS: 即rowAdd/rowDelete，表示该表修复需要增加/删除的行数
+- DATA DIFF ROWS: 即 `rowAdd` / `rowDelete` ，表示该表修复需要增加/删除的行数
 
 #### SQL修复
 
-校验过程中遇到不同的行，会生成修复数据的SQL语句。一个chunk如果出现数据不一致，就会生成一个以`chunk.Index`命名的sql文件。文件位于`${output}/${config_hash}/fix-on-${instance}`文件夹下。其中`${instance}`为`config.toml`中`task.target-instance`的值。
+校验过程中遇到不同的行，会生成修复数据的SQL语句。一个chunk如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的sql文件。文件位于 `${output}/${config_hash}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
 
 一个sql文件会包含该chunk的所属表以及表示的范围信息。对每个修复SQL语句，有三种情况：
 
