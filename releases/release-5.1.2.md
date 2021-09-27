@@ -21,6 +21,7 @@ TiDB 版本：5.1.2
         - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
         - 修复了当 `SQL_MODE` 为 'STRICT_TRANS_TABLES' 时，插入非法时间不报错的问题 [#26762](https://github.com/pingcap/tidb/issues/26762)
         - 修复了当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
+
 + Tools
 
     + TiCDC
@@ -80,24 +81,16 @@ TiDB 版本：5.1.2
     - 通过使用与 MySQL 相同的 logic 以修复 overflow 检查的兼容性问题 [#23897](https://github.com/pingcap/tidb/issues/23897)
     - 修复 TiDB 把 `pd is timeout` 错误返回成 `unkonwn` 的问题 [#26147](https://github.com/pingcap/tidb/issues/26147)
     - 修复错误的字符集和排序规则导致 `case when` 函数出错的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
-    - 修复 `greatest(datetime) union null` 返回空结果的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
     - 修复 MPP 查询可能返回 `can not found column in Schema column` 错误的问题 [#28148](https://github.com/pingcap/tidb/pull/28148)
     - 修复 TiFlash 宕机可能导致 TiDB Panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
     - 修复使用谓词 `enum like 'x%'` 可能导致错误结果的问题 [#27130](https://github.com/pingcap/tidb/issues/27130)
-    - 修复 `between` 表达式推导 collation 错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
     - 修复当使用 IndexLookupJoin 时公共表达式 (CTE) 死锁的问题 [#27410](https://github.com/pingcap/tidb/issues/27410)
     - 修复死锁重试被错误记录到 `INFORMATION_SCHEMA.DEADLOCKS` 表的问题 [#27400](https://github.com/pingcap/tidb/issues/27400)
-    - 修复 `GROUP_CONCAT` 函数未考虑 collation 的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
-    - 修复当开启 New Collation 时 `COUNT(DISTINCT)` 多列返回错误结果的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
     - 修复分区表上的 `TABLESAMPLE` 查询结果排序不生效的问题 [#27349](https://github.com/pingcap/tidb/issues/27349)
-    - 修复 `EXTRACT` 函数在参数为负数时返回错误结果的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
     - 移除未使用的 `/debug/sub-optimal-plan` HTTP 接口相关逻辑 [#27265](https://github.com/pingcap/tidb/pull/27265)
-    - 修复当聚合函数包含 `HAVING` 条件时导致的错误 Selection 下推 [#26496](https://github.com/pingcap/tidb/issues/26496)
     - 修复 hash 分区表处理无符号数据时查询返回错误结果的问题 [#26569](https://github.com/pingcap/tidb/issues/26569)
-    - 修复转换非法字符串为 `DATE` 类型时出现的非预期行为 [#26762](https://github.com/pingcap/tidb/issues/26762)
     - 修复当 `NO_UNSIGNED_SUBTRACTION` 被设置时创建分区出错的问题 [#26765](https://github.com/pingcap/tidb/issues/26765)
     - 修复 `Apply` 转换为 Join 时缺失 `distinct` 的问题 [#26958](https://github.com/pingcap/tidb/issues/26958)
-    - 修复 `NO_ZERO_IN_DATE` 对默认值不生效的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
     - 为处于恢复状态的 TiFlash 节点设置一段屏蔽时间，避免在此时间内阻塞查询 [#26897](https://github.com/pingcap/tidb/pull/26897)
     - 修复 CTE 被引用多次时可能出现的 bug 的问题 [#26212](https://github.com/pingcap/tidb/issues/26212)
     - 修复使用 MergeJoin 时可能造成 CTE 出现 bug 的问题 [#25474](https://github.com/pingcap/tidb/issues/25474)
