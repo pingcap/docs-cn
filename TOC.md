@@ -557,7 +557,7 @@
   + [All Releases](/releases/release-notes.md)
   + v5.2
     + [5.2.1](/releases/release-5.2.1.md)
-    + [5.2.0](/releases/release-5.2.0.md)  
+    + [5.2.0](/releases/release-5.2.0.md)
   + v5.1
     + [5.1.1](/releases/release-5.1.1.md)
     + [5.1.0](/releases/release-5.1.0.md)
@@ -568,6 +568,7 @@
     + [5.0 GA](/releases/release-5.0.0.md)
     + [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    + [4.0.15](/releases/release-4.0.15.md)
     + [4.0.14](/releases/release-4.0.14.md)
     + [4.0.13](/releases/release-4.0.13.md)
     + [4.0.12](/releases/release-4.0.12.md)
