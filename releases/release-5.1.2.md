@@ -57,7 +57,7 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
-        - 当统一分类器使用内存进行分类时，优化内存管理 [#2712](https://github.com/pingcap/ticdc/pull/2712)
+        - 当统一分类器使用内存进行分类时，优化内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
         - 当并发性高时，优化 workerpool 以减少 goroutines 的数量 [#2488](https://github.com/pingcap/ticdc/pull/2488)
         - 当一个表的区域从一个 TiKV 节点转移出去时，减少 goroutine 的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
 
