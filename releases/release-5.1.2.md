@@ -97,20 +97,22 @@ TiDB 版本：5.1.2
 
 + TiKV
 
-    - 修复当TiKV从3.x,4.x升级至5.x时，在导入快照文件时可能出现的文件泄露问题. [#10902](https://github.com/tikv/tikv/issues/10902)
-    - 修复在快照文件垃圾回收过程中，单个文件回收失败（比如损坏文件）会阻塞所有文件回收的问题. [#10813](https://github.com/tikv/tikv/issues/10813)
-    - 在判断日志记录是否过慢时，仅考量请求的处理时间。当日志线程过载，队列塞满时丢弃日志而不是阻塞线程。 [#10865](https://github.com/tikv/tikv/pull/10865)
-    - 修复处理coprocessor请求时超时造成的panic错误 [#10852](https://github.com/tikv/tikv/issues/10852)
-    - 修复TiKV在启用Titan，并升级（从5.0之前）时出现的panic错误。修复无法回退至5.0.x的错误。 [#10842](https://github.com/tikv/tikv/pull/10842)
-    - 修复TiKV可能会在RocksDB读取文件之前，将文件删除的错误。 [#10438](https://github.com/tikv/tikv/issues/10438)
-    - 修复在resolve lock时因“遗留”悲观锁所造成的错误。 [#26404](https://github.com/pingcap/tidb/issues/26404)
+    - 修复当 TiKV 从 3.x 升级至 4.x 或 5.x 时，在导入快照文件时出现文件导入不完整的问题 [#10902](https://github.com/tikv/tikv/issues/10902)
+    - 修复在快照文件垃圾回收过程中，单个文件回收失败（比如损坏文件）会阻塞所有文件回收的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
+    - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
+    - 使 TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
+    - 修复当处理 Coprocessor 请求时因超时而导致 Panic 的问题 [#10852](https://github.com/tikv/tikv/issues/10852)
+    - 修复 TiKV 在启用 Titan 并从 5.0 以前的版本升级时出现 Panic 的问题 [#10842](https://github.com/tikv/tikv/pull/10842)
+    - 修复高版本的 TiKV 无法回滚到 v5.0.x 的问题 [#10842](https://github.com/tikv/tikv/pull/10842)
+    - 修复 TiKV 可能会在 RocksDB 读取文件之前删除文件的错误 [#10438](https://github.com/tikv/tikv/issues/10438)
+    - 修复遗留的悲观锁导致的解析失败的问题 [#26404](https://github.com/pingcap/tidb/issues/26404)
 
 + PD
 
-    - 修复down-peer region无法及时被修复 [#4077](https://github.com/tikv/pd/issues/4077)
-    - 修复max-replica 不一致问题 [#3886](https://github.com/tikv/pd/issues/3886)
-    - 修复PD出现Panic在扩容场景下[#3911](https://github.com/tikv/pd/pull/3911)
-    - 修复集群存在evict leader 调度器时，PD 热点调度无法工作[#3697](https://github.com/tikv/pd/pull/3697)
+    - 修复 PD 未能及时修复 Down Peer 副本的问题 [#4077](https://github.com/tikv/pd/issues/4077)
+    - 修复 `replication.max-replicas` 更新后默认的 Placement Rules 副本数量不变的问题 [#3886](https://github.com/tikv/pd/issues/3886)
+    - 修复 PD 在扩容 TiKV 时可能会 Panic 的问题 [#3868](https://github.com/tikv/pd/issues/3868)
+    - 修复当集群中存在 evict leader 调度器时，PD 热点调度无法工作的问题 [#3697](https://github.com/tikv/pd/issues/3697)
 
 + TiFlash
 
