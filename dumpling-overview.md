@@ -58,7 +58,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 - REPLICATION CLIENT
 - PROCESS
 
-### 导出到 SQL 文件
+### 导出为 SQL 文件
 
 本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
