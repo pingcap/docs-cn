@@ -78,9 +78,9 @@ TiDB 版本：5.1.2
 
     - 修复 hash 列为 `ENUM` 类型时 index hash join 的结果可能出错的问题 [#27893](https://github.com/pingcap/tidb/issues/27893)
     - 修复极少数情况下 batch client 复用空闲连接可能阻塞请求发送的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
-    - 通过使用与 MySQL 相同的 logic 以修复 overflow 检查的兼容性问题 [#23897](https://github.com/pingcap/tidb/issues/23897)
+    - 修复了 `FLOAT64` 类型的溢出检查与 MySQL 不一致的问题 [#23897](https://github.com/pingcap/tidb/issues/23897)
     - 修复 TiDB 把 `pd is timeout` 错误返回成 `unkonwn` 的问题 [#26147](https://github.com/pingcap/tidb/issues/26147)
-    - 修复错误的字符集和排序规则导致 `case when` 函数出错的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
+    - 修复了 `case when` 表达式的字符集和排序规则错误的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
     - 修复 MPP 查询可能返回 `can not found column in Schema column` 错误的问题 [#28148](https://github.com/pingcap/tidb/pull/28148)
     - 修复 TiFlash 宕机可能导致 TiDB Panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
     - 修复使用谓词 `enum like 'x%'` 可能导致错误结果的问题 [#27130](https://github.com/pingcap/tidb/issues/27130)
