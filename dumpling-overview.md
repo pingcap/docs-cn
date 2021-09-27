@@ -56,7 +56,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 - REPLICATION CLIENT
 - PROCESS
 
-### 导出到 SQL 文件
+### 导出为 SQL 文件
 
 本文假设在 `127.0.0.1:4000` 有一个 TiDB 实例，并且这个 TiDB 实例中有无密码的 root 用户。
 
@@ -88,7 +88,7 @@ dumpling \
 >
 > 如果导出的单表大小超过 10 GB，**强烈建议**使用 `-r` 和 `-F` 参数。
 
-### 导出到 CSV 文件
+### 导出为 CSV 文件
 
 假如导出数据的格式是 CSV（使用 `--filetype csv` 即可导出 CSV 文件），还可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录，例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
 
