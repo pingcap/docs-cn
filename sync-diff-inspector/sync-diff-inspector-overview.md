@@ -60,11 +60,13 @@ sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据
 
 ### 配置文件说明
 
-sync-diff-inspector 的配置总共分为三个部分：
+sync-diff-inspector 的配置总共分为五个部分：
 
 - Global config: 通用配置，包括日志级别、划分 chunk 的大小、校验的线程数量等。
-- Tables config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
 - Databases config: 配置上下游数据库实例。
+- table-configs: 对具体表的特殊配置。
+- routes: 用于上游多表对下游表的映射
+- Task config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
 
 下面是一个完整配置文件的说明：
 
@@ -113,6 +115,7 @@ ignore-struct-check = false
     # remove comment if use tidb's snapshot data
     # snapshot = "2016-10-08 16:45:26"
 
+######################### table-configs #########################
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
 [table-configs]
 [table-configs.config1] # config1 是该配置的唯一标识 id，用于下面 task.target-configs 中
@@ -132,6 +135,7 @@ chunk-size = 0
 # 指定该表的 collation
 collation = ""
 
+########################### routes ###########################
 # 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
 # 可以只配置 schema 或者 table 的映射关系，也可以都配置
 [routes]
@@ -151,7 +155,7 @@ target-table = "t2" # 目标表名
 # 配置需要对比的*目标数据库*中的表
 [task]
     # output-dir 会保存如下信息
-    # 1 检查出错误后生成的修复 SQL，按 chunk 划分文件
+    # 1 sql: 检查出错误后生成的修复 SQL 文件，并且一个 chunk 对应一个文件
     # 2 log: sync-diff.log 保存日志信息
     # 3 summary: summary.txt 保存总结
     # 4 checkpoint: a dir 保存断点续传信息
@@ -180,7 +184,7 @@ target-table = "t2" # 目标表名
 ./bin/sync_diff_inspector --config=./config.toml
 ```
 
-该命令最终会在`config.toml`中的`output-dir`输出目录输出本次比对的检查报告`summary.txt`和日志`sync_diff.log`。在输出目录下还会生成由`config.toml`文件内容哈希值命名的文件夹，该文件夹下包括断点续传checkpoint结点信息以及数据存在不一致时生成的SQL修复数据。
+该命令最终会在 `config.toml` 中的 `output-dir` 输出目录输出本次比对的检查报告 `summary.txt` 和日志 `sync_diff.log`。在输出目录下还会生成由 `config.toml` 文件内容哈希值命名的文件夹，该文件夹下包括断点续传 checkpoint 结点信息以及数据存在不一致时生成的 SQL 修复数据。
 
 #### 进度条
 
@@ -336,15 +340,15 @@ Average Speed: 113.277149MB/s
 
 - DATA DIFF ROWS: 即 `rowAdd` / `rowDelete` ，表示该表修复需要增加/删除的行数
 
-#### SQL修复
+#### SQL 修复
 
-校验过程中遇到不同的行，会生成修复数据的SQL语句。一个chunk如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的sql文件。文件位于 `${output}/${config_hash}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
+校验过程中遇到不同的行，会生成修复数据的 SQL 语句。一个chunk如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的 SQL 文件。文件位于 `${output}/${config_hash}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
 
-一个sql文件会包含该chunk的所属表以及表示的范围信息。对每个修复SQL语句，有三种情况：
+一个 SQL 文件会包含该 chunk 的所属表以及表示的范围信息。对每个修复 SQL 语句，有三种情况：
 
-- 下游数据库缺失行，则是REPLACE语句
-- 下游数据库冗余行，则是DELETE语句
-- 下游数据库行部分数据不一致，则是REPLACE语句，但会在sql文件中通过注释的方法标明不同的列
+- 下游数据库缺失行，则是 REPLACE 语句
+- 下游数据库冗余行，则是 DELETE 语句
+- 下游数据库行部分数据不一致，则是 REPLACE 语句，但会在 SQL 文件中通过注释的方法标明不同的列
 
 ```SQL
 -- table: sbtest.sbtest99
@@ -366,4 +370,4 @@ REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'he
 * TiDB 使用的 collation 为 `utf8_bin`。如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。
 * sync-diff-inspector 会优先使用 TiDB 的统计信息来划分 chunk，需要尽量保证统计信息精确，可以在**业务空闲期**手动执行 `analyze table {table_name}`。
 * table-rule 的规则需要特殊注意，例如设置了 `schema-pattern="test1"`，`target-schema="test2"`，会对比 source 中的 `test1` 库和 target 中的 `test2` 库；如果 source 中有 `test2` 库，该库也会和 target 中的 `test2` 库进行对比。
-* 生成的 `fix.sql` 仅作为修复数据的参考，需要确认后再执行这些 SQL 修复数据。
+* 生成的 SQL 文件仅作为修复数据的参考，需要确认后再执行这些 SQL 修复数据。
