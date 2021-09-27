@@ -132,7 +132,7 @@ TiDB 版本：5.1.2
 
     + Backup & Restore (BR)
 
-        - 修复了备份数据和恢复数据时显示的平均速度数值不正确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
+        - 修复了备份数据和恢复数据时显示的平均速度数值不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
 
     + Dumpling
 
