@@ -10,6 +10,17 @@ TiDB 版本：5.1.2
 
 ## 兼容性更改
 
++ TiDB
+
+    + 以下 Bug 修复涉及执行结果变化，可能引起兼容性变化：
+        - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
+       - 修复了 `having` 子句可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
+        - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
+        - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
+        - 修复了当开启 New Collation 时，在多列上执行 `count(distinct)` 表达式结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
+        - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
+        - 修复了当 `SQL_MODE` 为 'STRICT_TRANS_TABLES' 时，插入非法时间不报错的问题 [#26762](https://github.com/pingcap/tidb/issues/26762)
+        - 修复了当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
 + Tools
 
     + TiCDC
