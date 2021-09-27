@@ -127,8 +127,10 @@ index-fields = ""
 # 忽略某些列的检查，例如 sync-diff-inspector 目前还不支持的一些类型（json，bit，blob 等），
 # 或者是浮点类型数据在 TiDB 和 MySQL 中的表现可能存在差异，可以使用 ignore-columns 忽略检查这些列
 ignore-columns = ["",""]
-# 指定划分该表的chunk的大小
+# 指定划分该表的 chunk 的大小
 chunk-size = 0
+# 指定该表的 collation
+collation = ""
 
 # 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
 # 可以只配置 schema 或者 table 的映射关系，也可以都配置
