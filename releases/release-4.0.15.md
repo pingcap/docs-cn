@@ -19,7 +19,6 @@ TiDB 版本：4.0.15
         - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
         - 修复了 `extract` 函数的参数是负数时查询结果错误的问题 [#27236](https://github.com/pingcap/tidb/issues/27236)
         - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
-        - 修复 `case when` 表达式的字符集不正确的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
         - 修复将 `Apply` 算子转为 `Join` 时漏掉列信息的问题 [#27233](https://github.com/pingcap/tidb/issues/27233)
         - 修复将非法字符串转为 `DATE` 类型时的非预期行为 [#26762](https://github.com/pingcap/tidb/issues/26762)
         - 修复开启 New Collation 时多列的 `count distinct` 返回结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
@@ -90,6 +89,7 @@ TiDB 版本：4.0.15
     - 修复当查询包含 `GROUP BY` 和 `UNION` 时报错 "index out of range" 的问题 [#26553](https://github.com/pingcap/tidb/pull/26553)
     - 修复当 TiKV 有 tombstone store 时 TiDB 发送请求失败的问题 [#23676](https://github.com/pingcap/tidb/issues/23676) [#24648](https://github.com/pingcap/tidb/issues/24648)
     - 移除文档中未记录的 `/debug/sub-optimal-plan` HTTP API [#27264](https://github.com/pingcap/tidb/pull/27264)
+    - 修复 `case when` 表达式的字符集不正确的问题 [#26662](https://github.com/pingcap/tidb/issues/26662)
 
 + TiKV
 
