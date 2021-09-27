@@ -80,9 +80,9 @@ tiup mirror clone <target-dir> [global-version] [flags]
 
     如果只想克隆某个组件的某一个版本而不是所有版本，则使用 `--<component>=<version>` 来限定，例如：
 
-    - 只想克隆 TiDB 的 v5.1.0 版本，则执行 `tiup mirror clone <target-dir> --tidb v5.1.0`
-    - 只想克隆 TiDB 的 v5.1.0 版本，以及 TiKV 的所有版本，则执行 `tiup mirror clone <target-dir> --tidb v5.1.0 --tikv all`
-    - 克隆一个集群的所有组件的 v5.1.0 版本，则执行 `tiup mirror clone <target-dir> v5.1.0`
+    - 只想克隆 TiDB 的 v5.1.2 版本，则执行 `tiup mirror clone <target-dir> --tidb v5.1.2`
+    - 只想克隆 TiDB 的 v5.1.2 版本，以及 TiKV 的所有版本，则执行 `tiup mirror clone <target-dir> --tidb v5.1.2 --tikv all`
+    - 克隆一个集群的所有组件的 v5.1.2 版本，则执行 `tiup mirror clone <target-dir> v5.1.2`
 
 ## 使用示例
 
