@@ -185,7 +185,7 @@ SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 
 ### LIMIT_TO_COP()
 
-`LIMIT_TO_COP()` 提示优化器将制定查询块中的 Limit 和 TopN 算子下推到 coprocessor。优化器没有下推 Limit 或者 TopN 算子时建议尝试使用该提示。例如：
+`LIMIT_TO_COP()` 提示优化器将指定查询块中的 `Limit` 和 `TopN` 算子下推到 coprocessor。优化器没有下推 Limit 或者 TopN 算子时建议尝试使用该提示。例如：
 
 
 {{< copyable "sql" >}}
