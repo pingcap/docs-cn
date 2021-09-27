@@ -142,7 +142,7 @@ TiDB 版本：5.1.2
 
         - 修复未充分考虑字符串类型的值可能是 `string` 或 `[]byte` 时，转换为 JSON 格式可能导致 TiCDC 进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
         - 降低 gRPC 的 window size 以避免出现 OOM 的情况 [#2202](https://github.com/pingcap/ticdc/issues/2202)
-        - 修复内存压力较高时 gRPC 的 keepalive 错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - 修复内存压力较高时 gRPC 的 `keepalive` 错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - 修复 `unsigned tinyint` 导致 TiCDC 崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复 TiCDC Open Protocol 下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值 [#2612](https://github.com/pingcap/ticdc/issues/2612)
         - 修复手动重启 TiCDC 时 DDL 处理存在的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
