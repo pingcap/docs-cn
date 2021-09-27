@@ -36,15 +36,15 @@ TiDB 版本：5.1.2
 
 + TiKV
 
-    - 支持动态更改 CDC (Change Data Capture) 配置项 [#10686] (https://github.com/tikv/tikv/pull/10686)
-    - 减少 Resolved TS 的消息大小，以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
-    - 支持限制每个 Store 发送的心跳包信息中 peer 状态（PeerStat）信息的数量 [#10621](https://github.com/tikv/tikv/pull/10621)
+    - 支持动态更改 TiCDC 配置项 [#10645] (https://github.com/tikv/tikv/issues/10645)
+    - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
+    - 支持限制每个 Store 发送的心跳包信息中 peer stats 的数量 [#10621](https://github.com/tikv/tikv/pull/10621)
 
 + PD
 
     - 允许空 Region 被调度在 scatter range 调度器，并可以在该调度器中使用单独的 tolerance 配置项 [#4117](https://github.com/tikv/pd/pull/4117)
     - 提升 PD 之间同步 Region 信息的性能 [#3933](https://github.com/tikv/pd/pull/3933) 
-    - 支持根据 Operator 的生成情况动态调整 Store 的重试次数 [#4048](https://github.com/tikv/pd/pull/4048)
+    - 支持根据 Operator 的生成情况动态调整 Store 的重试次数 [#3744](https://github.com/tikv/pd/issues/3744)
 
 + TiFlash
 
