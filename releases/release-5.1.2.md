@@ -32,7 +32,6 @@ TiDB 版本：5.1.2
 + TiDB
 
     - 根据直方图行数来触 auto-analyze，提升 auto-analyze 触发的准确度 [#24237](https://github.com/pingcap/tidb/issues/24237)
-    - 下推 `mod()` 到 TiFlash，提升查询性能 [#2318](https://github.com/pingcap/tics/issues/2318)
 
 + TiKV
 
