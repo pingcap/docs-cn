@@ -100,7 +100,7 @@ TiDB 版本：5.1.2
 
 + TiKV
 
-    - 修复当 TiKV 从 v3.x 升级至较高版本时，在导入快照文件时出现文件导入不完整的问题 [#10902](https://github.com/tikv/tikv/issues/10902)
+    - 修复当 TiKV 从 v3.x 升级至较高版本后出现 Panic 的问题 [#10902](https://github.com/tikv/tikv/issues/10902)
     - 修复损坏的快照文件可能会造成磁盘空间无法回收的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
     - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 使 TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
