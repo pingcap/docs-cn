@@ -190,7 +190,7 @@ SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ LIMIT_TO_COP() */ * from t where a = 1 and b > 10 and b < 20 and c > 50 order by d limit 1
+SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
 ```
 
 ### READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])
