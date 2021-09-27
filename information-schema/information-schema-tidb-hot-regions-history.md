@@ -63,10 +63,26 @@ DESC tidb_hot_regions_history;
 >
 > + TIDB_HOT_REGIONS_HISTORY表的UPDATE_TIME, REGION_ID, STORE_ID, PEER_ID, IS_LEARNER, IS_LEADER, TYPE字段会下推到PD服务器过滤，所以为了降低使用该表的开销，必须指定搜索关键字以及时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
 
-例如，使用以下 SQL 语句，你可以查询某张表指定时间内的热点Regions：
+下面是一些常见的应用场景：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM INFORMATION_SCHEMA.tidb_hot_regions_history WHERE update_time >'2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and TABLE_NAME = 'table_name';
+# 查询一段时间内的所有热点regions，替换update_time即可
+SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00';
+
+# 查询某张表指定时间内的热点regions，替换update_time, table_name 即可
+SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and TABLE_NAME = 'table_name';
+
+# 查询某张表指定时间内热点regions 的分布，替换update_time, table_name 即可
+SELECT count(region_id) cnt, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00'  and table_name = 'table_name' GROUP BY STORE_ID ORDER BY cnt DESC;
+
+# 查询某张表指定时间内热点leader regions的分布，替换update_time, table_name 即可
+SELECT count(region_id) cnt, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00'  and table_name = 'table_name' and is_leader=1 GROUP BY STORE_ID ORDER BY cnt DESC;
+
+# 查询某张表指定时间内热点index regions的分布，替换update_time, table_name 即可
+SELECT count(region_id) cnt, index_name, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' group by index_name, store_id order by index_name,cnt desc;
+
+# 查询某张表指定时间内热点index leader regions的分布，替换update_time, table_name 即可
+SELECT count(region_id) cnt, index_name, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2022-09-19 00:00:00' and table_name = 'table_name' and is_leader=1 group by index_name, store_id order by index_name,cnt desc;
 ```
