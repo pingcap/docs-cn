@@ -36,7 +36,7 @@ TiDB 版本：5.1.2
 
 + TiKV
 
-    - 支持动态更改 TiCDC 配置项 [#10645] (https://github.com/tikv/tikv/issues/10645)
+    - 支持动态更改 TiCDC 配置项 [#10645](https://github.com/tikv/tikv/issues/10645)
     - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
     - 支持限制每个 Store 发送的心跳包信息中 peer stats 的数量 [#10621](https://github.com/tikv/tikv/pull/10621)
 
