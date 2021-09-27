@@ -173,12 +173,12 @@ tiup update cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v4.0.14 版本为例：
+以升级到 v4.0.15 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v4.0.14
+tiup cluster upgrade <cluster-name> v4.0.15
 ```
 
 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
@@ -200,7 +200,7 @@ tiup cluster display <cluster-name>
 ```
 Starting /home/tidblk/.tiup/components/cluster/v1.0.0/cluster display <cluster-name>
 TiDB Cluster: <cluster-name>
-TiDB Version: v4.0.14
+TiDB Version: v4.0.15
 ```
 
 > **注意：**
@@ -222,12 +222,12 @@ TiDB Version: v4.0.14
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster upgrade <cluster-name> v4.0.14 --force
+tiup cluster upgrade <cluster-name> v4.0.15 --force
 ```
 
 ### 5.3 升级完成后，如何更新 pd-ctl 等周边工具版本
 
-目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.14`，下载地址如下：
+目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.15`，下载地址如下：
 
 {{< copyable "" >}}
 

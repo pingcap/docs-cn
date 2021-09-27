@@ -17,7 +17,7 @@ aliases: ['/docs-cn/stable/download-ecosystem-tools/','/docs-cn/v4.0/download-ec
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v4.0.14` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.14-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v4.0.15` 版本的下载链接为 `https://download.pingcap.org/tidb-v4.0.15-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
@@ -29,7 +29,7 @@ aliases: ['/docs-cn/stable/download-ecosystem-tools/','/docs-cn/v4.0/download-ec
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v4.0.14` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.14-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v4.0.15` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.15-linux-amd64.tar.gz`。
 
 ## 备份和恢复 (BR) 工具
 
@@ -41,7 +41,7 @@ aliases: ['/docs-cn/stable/download-ecosystem-tools/','/docs-cn/v4.0/download-ec
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v4.0.14` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.14-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v4.0.15` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.15-linux-amd64.tar.gz`。
 
 ## TiDB DM (Data Migration)
 
@@ -65,7 +65,7 @@ aliases: ['/docs-cn/stable/download-ecosystem-tools/','/docs-cn/v4.0/download-ec
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.14` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.14-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v4.0.15` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v4.0.15-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
 > Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
 ## Syncer，Loader 和 Mydumper
