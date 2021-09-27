@@ -14,7 +14,7 @@ TiDB 版本：5.1.2
 
     + 以下 Bug 修复涉及执行结果变化，可能引起兼容性变化：
         - 修复了 `greatest(datetime) union null` 返回空字符串的问题 [#26532](https://github.com/pingcap/tidb/issues/26532)
-       - 修复了 `having` 子句可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
+        - 修复了 `having` 子句可能执行错误的问题 [#26496](https://github.com/pingcap/tidb/issues/26496)
         - 修复了当 `between` 表达式两边的 collation 不一致会导致查询结果错误的问题 [#27146](https://github.com/pingcap/tidb/issues/27146)
         - 修复了当 `group_concat` 函数包含非 `bin` 的 collation 时查询结果错误的问题 [#27429](https://github.com/pingcap/tidb/issues/27429)
         - 修复了当开启 New Collation 时，在多列上执行 `count(distinct)` 表达式结果错误的问题 [#27091](https://github.com/pingcap/tidb/issues/27091)
@@ -27,17 +27,6 @@ TiDB 版本：5.1.2
     + TiCDC
 
         - 将兼容版本从 `5.1.0-alpha` 改为 `5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
-        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
-        - 修复 CLI 在默认 `sort-engine` 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/ticdc/issues/2373)
-
-## 功能增强
-
-+ Tools
-
-    + Dumpling
-
-        - 支持备份一些无法执行 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#309](https://github.com/pingcap/dumpling/issues/309)
-        - 添加一个全局 gRPC 连接池并在 KV 客户端之间共享 gRPC 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
 
 ## 改进提升
 
@@ -71,6 +60,12 @@ TiDB 版本：5.1.2
         - 当统一分类器使用内存进行分类时，优化内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
         - 当并发性高时，优化 workerpool 以减少 goroutines 的数量 [#2488](https://github.com/pingcap/ticdc/pull/2488)
         - 当一个表的区域从一个 TiKV 节点转移出去时，减少 goroutine 的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
+
+    + Dumpling
+
+        - 支持备份一些无法执行 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#309](https://github.com/pingcap/dumpling/issues/309)
+        - 添加一个全局 gRPC 连接池并在 KV 客户端之间共享 gRPC 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
+        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
 
 ## Bug 修复
 
@@ -141,6 +136,7 @@ TiDB 版本：5.1.2
     + Dumpling
 
         - 修复特定 MySQL 版本（8.0.3，8.0.23）下，`show table status` 返回结果不正确导致 dump 阶段卡死的问题 [#333](https://github.com/pingcap/dumpling/pull/333)
+        - 修复 CLI 在默认 `sort-engine` 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/ticdc/issues/2373)
 
     + TiCDC
 
