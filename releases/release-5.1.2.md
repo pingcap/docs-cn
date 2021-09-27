@@ -48,9 +48,9 @@ TiDB 版本：5.1.2
 + TiFlash
 
     - 支持 `DATE()` 函数
-    - 在 Grafana 面板增加每个实例的写入吞吐量
+    - 为 Grafana 面板增加每个实例的写入吞吐
     - 优化 `leader-read` 流程的性能
-    - 加速 `MPP` 任务取消的流程
+    - 加速 MPP 任务取消的流程
 
 + Tools
 
