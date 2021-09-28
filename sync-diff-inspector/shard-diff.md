@@ -104,7 +104,7 @@ target-table = "table-0" # 目标表名
 
 sync-diff-inspector 完整的示例配置如下：
 
-```
+``` 
 # Diff Configuration.
 
 ######################### Global config #########################
