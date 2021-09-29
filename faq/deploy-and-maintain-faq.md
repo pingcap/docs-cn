@@ -252,7 +252,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 #### TiKV 节点（Store）的各状态 Up, Disconnect，Offline, Down, Tombstone 之间的关系是什么？
 
-使用 `pd-ctl` 可以查看 TiKV Store 的状态信息。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md##信息收集)。
+使用 `pd-ctl` 可以查看 TiKV Store 的状态信息。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 #### PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？
 
