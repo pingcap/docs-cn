@@ -73,6 +73,20 @@ The following sections introduce the default monitoring information of **TiFlash
 >
 > These metrics only cover the monitoring information of the TiFlash storage layer and do not cover that in TiFlash-Proxy.
 
+## Storage Write Stall
+
+- Write & Delta Management Throughput: The throughput of write and data compaction for all instances.
+    - `throughput_write` means the throughput of data synchronization through Raft.
+    - `throughput_delta-management` means the throughput of data compaction.
+    - `total_write` means the total bytes written since the last start.
+    - `total_delta-management` means the total bytes of data compacted since the last start.
+- Write Stall Duration: The stall duration of write and removing Region data (deleting ranges) by instance.
+- Write Throughput By Instance: The throughput of write by instance. It includes the throughput by applying the Raft write commands and Raft snapshots.
+- Write Command OPS By Instance: The total count of different kinds of commands received by instance.
+    - `write block` means the data logs synchronized through Raft.
+    - `delete_range` means that some Regions are removed from or moved to this instance.
+    - `ingest` means some Region snapshots are applied to this instance.
+
 ## Raft
 
 - Read Index OPS: The number of times that each TiFlash instance triggers the `read_index` request per second, which equals to the number of Regions triggered.
