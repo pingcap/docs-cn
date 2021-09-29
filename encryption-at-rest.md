@@ -25,7 +25,7 @@ TiKV 支持静态加密，即在 [CTR](https://en.wikipedia.org/wiki/Block_ciphe
 
 TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储，该功能目前无法由 TiKV 独立处理。
 
-TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`, `raftstore.raftdb-path`, `rocksdb.wal-dir` 和 `raftdb.wal-dir`。
+TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`，`raftstore.raftdb-path`，`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 
 ### TiFlash
 
@@ -39,21 +39,13 @@ PD 的静态加密为实验特性，其配置方式与 TiKV 相同。
 
 ### BR 备份
 
-BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-server-side-encryption)。
+BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
 
 ### 日志
 
-<<<<<<< Updated upstream
-* TiDB 集群部署后，大部分用户数据都存储在 TiKV 节点上。这部分数据可使用加密功能进行加密。但有少量元数据存储在 PD 节点上（例如用作 TiKV Region 边界的二级索引键）。截至 v4.0.0，PD 尚未支持静态加密功能。建议使用存储级加密（例如文件系统加密）来保护存储在 PD 中的敏感数据。
-* TiFlash 从 v4.0.5 开始支持静态加密功能，详情参阅 [TiFlash 静态加密](/encryption-at-rest.md#tiflash-静态加密-从-v405-版本开始引入)。TiKV 与 v4.0.5 之前版本的 TiFlash 一起部署时，存储在 TiFlash 中的数据不会被加密。
-* TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储。
-* TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`、`raftstore.raftdb-path`、`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
-* TiKV 信息日志包含用于调试的用户数据。信息日志不会被加密。
-=======
 TiKV， TiDB 和 PD 信息日志中可能会包含用于调试的用户数据。信息日志不会被加密，建议开启[日志脱敏](/log-redaction.md)功能。
->>>>>>> Stashed changes
 
-## 功能概述
+## TiKV 静态加密
 
 TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR 和 AES256-CTR。TiKV 使用信封加密 (envelop encryption)，所以启用加密后，TiKV 使用以下两种类型的密钥：
 
@@ -77,7 +69,7 @@ TiKV 当前支持的加密算法包括 AES128-CTR、AES192-CTR 和 AES256-CTR。
 3. 点击**创建密钥**，选择**对称** (Symmetric) 作为密钥类型。
 4. 为钥匙设置一个别名。
 
-你也可以使用 AWS CLI 执行该操作。
+你也可以使用 AWS CLI 执行该操作：
 
 ```shell
 aws --region us-west-2 kms create-key
@@ -86,7 +78,7 @@ aws --region us-west-2 kms create-alias --alias-name "alias/tidb-tde" --target-k
 
 需要在第二条命令中输入的 `--target-key-id` 是第一条命令的结果。
 
-## 配置加密
+### 配置加密
 
 要启用加密，你可以在 TiKV 和 PD 的配置文件中添加加密部分：
 
@@ -126,7 +118,7 @@ path = "/path/to/key/file"
 3b5896b5be691006e0f71c3040a29495ddcad20b14aff61806940ebd780d3c62
 ```
 
-## 轮换主密钥
+### 轮换主密钥
 
 要轮换主密钥，你必须在配置中同时指定新的主密钥和旧的主密钥，然后重启 TiKV。用 `security.encryption.master-key` 指定新的主密钥，用 `security.encryption.previous-master-key` 指定旧的主密钥。`security.encryption.previous-master-key` 配置的格式与 `encryption.master-key` 相同。重启时，TiKV 必须能同时访问旧主密钥和新主密钥，但一旦 TiKV 启动并运行，就只需访问新密钥。此后，可以将 `encryption.previous-master-key` 项保留在配置文件中。即使重启时，TiKV 也只会在无法使用新的主密钥解密现有数据时尝试使用旧密钥。
 
@@ -146,7 +138,7 @@ key-id = "0987dcba-09fe-87dc-65ba-ab0987654321"
 region = "us-west-2"
 ```
 
-## 监控和调试
+### 监控和调试
 
 要监控静态加密（如果 TiKV 中部署了 Grafana 组件），可以查看 **TiKV-Details** -> **Encryption** 面板中的监控项：
 
