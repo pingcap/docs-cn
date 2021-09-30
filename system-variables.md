@@ -84,6 +84,12 @@ mysql> SELECT * FROM t1;
 - Default value: `ON`
 - Controls whether statements should automatically commit when not in an explicit transaction. See [Transaction Overview](/transaction-overview.md#autocommit) for more information.
 
+### block_encryption_mode
+
+- Scope: SESSION | GLOBAL
+- Default value: `aes-128-ecb`
+- Defines the encryption mode for the `AES_ENCRYPT()` and `AES_DECRYPT()` functions.
+
 ### character_set_client
 
 - Scope: SESSION | GLOBAL
@@ -112,7 +118,25 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Default value: `utf8mb4`
-- The character set used for new schemas when no character set is specified in the `CREATE SCHEMA` statement.
+- The default character set for the server.
+
+### collation_connection
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4_bin`
+- This variable indicates the collation for string literals that do not have a specified collation.
+
+### collation_database
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4_bin`
+- This variable indicates the collation of the default database in use. **It is NOT recommended to set this variable**. When a new default database is selected, the server changes the variable value.
+
+### collation_server
+
+- Scope: SESSION | GLOBAL
+- Default value: `utf8mb4_bin`
+- The default collation for the server.
 
 ### cte_max_recursion_depth
 
@@ -142,11 +166,37 @@ mysql> SELECT * FROM t1;
 - This variable sets the authentication method that the server advertises when the server-client connection is being established. Possible values for this variable are documented in [Authentication plugin status](/security-compatibility-with-mysql.md#authentication-plugin-status).
 - Value options: `mysql_native_password` and `caching_sha2_password`. For more details, see [Authentication plugin status](/security-compatibility-with-mysql.md#authentication-plugin-status).
 
+### default_week_format
+
+- Scope: SESSION | GLOBAL
+- Default value: `0`
+- Range: `[0, 7]`
+- Sets the week format used by the `WEEK()` function.
+
 ### foreign_key_checks
 
 - Scope: SESSION | GLOBAL
 - Default value: `OFF`
 - For compatibility, TiDB returns foreign key checks as `OFF`.
+
+### group_concat_max_len
+
+- Scope: SESSION | GLOBAL
+- Default value: `1024`
+- Range: `[4, 18446744073709551615]`
+- The maximum buffer size for items in the `GROUP_CONCAT()` function.
+
+### have_openssl
+
+- Scope: NONE
+- Default value: `DISABLED`
+- A read-only variable for MySQL compatibility. Set to `YES` by the server when the server has TLS enabled.
+
+### have_ssl
+
+- Scope: NONE
+- Default value: `DISABLED`
+- A read-only variable for MySQL compatibility. Set to `YES` by the server when the server has TLS enabled.
 
 ### hostname
 
@@ -200,6 +250,13 @@ mysql> SELECT * FROM t1;
 - Default value: `Apache License 2.0`
 - This variable indicates the license of your TiDB server installation.
 
+### max_allowed_packet
+
+- Scope: GLOBAL | SESSION
+- Default value: `67108864`
+- Range: `[1024, 1073741824]`
+- The maximum size of a packet for the MySQL protocol.
+
 ### max_execution_time
 
 - Scope: SESSION | GLOBAL
@@ -237,6 +294,24 @@ mysql> SELECT * FROM t1;
 - Default value: `18446744073709551615`
 - Range: `[0, 18446744073709551615]`
 - The maximum number of rows returned by the `SELECT` statements.
+
+### ssl_ca
+
+- Scope: NONE
+- Default value: ""
+- The location of the certificate authority file (if there is one).
+
+### ssl_cert
+
+- Scope: NONE
+- Default value: ""
+- The location of the certificate file (if there is a file) that is used for SSL/TLS connections.
+
+### ssl_key
+
+- Scope: NONE
+- Default value: ""
+- The location of the private key file (if there is one) that is used for SSL/TLS connections.
 
 ### system_time_zone
 

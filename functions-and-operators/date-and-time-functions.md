@@ -74,3 +74,7 @@ TiDB supports all of the [date and time functions](https://dev.mysql.com/doc/ref
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | Return the year and week                 |
 
 For details, see [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
+
+## Related system variables
+
+The `default_week_format` variable affects the `WEEK()` function.

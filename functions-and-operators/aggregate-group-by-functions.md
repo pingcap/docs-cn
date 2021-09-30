@@ -154,3 +154,7 @@ group by id, val;
 The following aggregate functions are currently unsupported in TiDB. You can track our progress in [TiDB #7623](https://github.com/pingcap/tidb/issues/7623):
 
 - `JSON_ARRAYAGG`
+
+## Related system variables
+
+The `group_concat_max_len` variable sets the maximum number of items for the `GROUP_CONCAT()` function.
