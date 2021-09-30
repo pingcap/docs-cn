@@ -188,7 +188,7 @@ mysql> SELECT * FROM t1;
 ### `license`
 
 - 作用域：NONE
-- 默认值：'Apache License 2.0'
+- 默认值：`Apache License 2.0`
 - 这个变量表示 TiDB 服务器的安装许可证。
 
 ### `max_execution_time`
