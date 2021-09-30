@@ -1237,11 +1237,6 @@ raftdb 相关配置项。
 + 缓存在内存中的 TiCDC 数据变更事件占用内存的上限。
 + 默认值：512MB
 
-### `incremental-scan-speed-limit`
-
-+ 增量扫描历史数据的速度上限。
-+ 默认值：128MB，即 128MB 每秒。
-
 ### `incremental-scan-threads`
 
 + 增量扫描历史数据任务的线程个数。
