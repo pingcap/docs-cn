@@ -44,8 +44,8 @@ explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 >
 > SQL Hint 的优先级高于系统变量。
 >
-> 此外，有两个限制会导致 `IndexMerge` 无法使用：
+> 此外，有以下两个限制会导致 `IndexMerge` 无法被使用：
 > 
-> - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
+> - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 `IndexMerge` 。
 > 
-> - 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
+> - 如果查询在显式事务里，且该条查询之前的语句已经涉及写入操作，优化器不会选择 `IndexMerge`。
