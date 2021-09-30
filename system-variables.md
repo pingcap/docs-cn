@@ -276,6 +276,23 @@ mysql> SELECT * FROM t1;
 - Range: `[0, 65535]`
 - The port that the `tidb-server` is listening on when speaking the MySQL protocol.
 
+### skip_name_resolve <span class="version-mark">New in v5.2.0</span>
+
+- Scope: GLOBAL
+- Default value: `OFF`
+- This variable controls whether the `tidb-server` instance resolves hostnames as a part of the connection handshake.
+- When the DNS is unreliable, you can enable this option to improve network performance.
+
+> **Note:**
+>
+> When `skip_name_resolve=ON`, users with a hostname in their identity will no longer be able to log into the server. For example:
+>
+> ```sql
+> CREATE USER 'appuser'@'apphost' IDENTIFIED BY 'app-password';
+> ```
+>
+> In this example, it is recommended to replace `apphost` with an IP address or the wildcard (`%`).
+
 ### socket
 
 - Scope: NONE
