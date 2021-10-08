@@ -608,6 +608,8 @@ enable-old-value = true
 
 开启该特性后，TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时也会自动支持的 TiDB 4.0 新 Collation 特性。
 
+从 v4.0.15 开始 TiCDC 内部默认拉取 Old Value 来支持新的 Collation 框架，但是 TiCDC Open Protocol 是否输出 Old Value 还是由 `enable-old-value` 参数控制。
+
 ## 同步没有有效索引的表
 
 从 v4.0.8 开始，TiCDC 支持通过修改任务配置来同步没有有效索引的表。若要开启该特性，需要在 `changefeed` 配置文件的根级别进行如下指定：
