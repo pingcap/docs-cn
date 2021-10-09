@@ -8,7 +8,7 @@ aliases: ['/docs/dev/alert-rules/','/docs/dev/reference/alert-rules/']
 
 # TiDB Cluster Alert Rules
 
-This document describes the alert rules for different components in a TiDB cluster, including the rule descriptions and solutions of the alert items in TiDB, TiKV, PD, TiDB Binlog, Node_exporter and Blackbox_exporter.
+This document describes the alert rules for different components in a TiDB cluster, including the rule descriptions and solutions of the alert items in TiDB, TiKV, PD, TiFlash, TiDB Binlog, Node_exporter and Blackbox_exporter.
 
 According to the severity level, alert rules are divided into three categories (from high to low): emergency-level, critical-level, and warning-level. This division of severity levels applies to all alert items of each component below.
 
@@ -781,6 +781,10 @@ This section gives the alert rules for the TiKV component.
 
     The speed of splitting Regions is slower than the write speed. To alleviate this issue, you’d better update TiDB to a version that supports batch-split (>= 2.1.0-rc1). If it is not possible to update temporarily, you can use `pd-ctl operator add split-region <region_id> --policy=approximate` to manually split Regions.
 
+## TiFlash alert rules
+
+For the detailed descriptions of TiFlash alert rules, see [TiFlash Alert Rules](/tiflash/tiflash-alert-rules.md).
+
 ## TiDB Binlog alert rules
 
 For the detailed descriptions of TiDB Binlog alert rules, see [TiDB Binlog monitoring document](/tidb-binlog/monitor-tidb-binlog-cluster.md#alert-rules).
@@ -953,6 +957,22 @@ This section gives the alert rules for the Blackbox_exporter TCP, ICMP, and HTTP
     * Check whether the machine that provides the TiDB service is down.
     * Check whether the TiDB process exists.
     * Check whether the network between the monitoring machine and the TiDB machine is normal.
+
+#### `TiFlash_server_is_down`
+
+* Alert rule:
+
+    `probe_success{group="tiflash"} == 0`
+
+* Description:
+
+    Failure to probe the TiFlash service port.
+
+* Solution:
+
+    * Check whether the machine that provides the TiFlash service is down.
+    * Check whether the TiFlash process exists.
+    * Check whether the network between the monitoring machine and the TiFlash machine is normal.
 
 #### `Pump_server_is_down`
 

@@ -34,7 +34,7 @@ This document introduces the alert rules of the TiFlash cluster.
 
 - Solution:
 
-    It might be caused by the internal problems of the TiFlash TMT engine. Contact [TiFlash R&D](mailto:support@pingcap.com) for support.
+    It might be caused by the internal problems of the TiFlash storage engine. Contact [TiFlash R&D](mailto:support@pingcap.com) for support.
 
 ## `TiFlash_raft_read_index_duration`
 
