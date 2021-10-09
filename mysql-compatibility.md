@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模型](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息请查看各自具体页面。
 
 ## 不支持的功能特性
 
