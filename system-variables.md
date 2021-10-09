@@ -204,6 +204,10 @@ mysql> SELECT * FROM t1;
 - Default value: (system hostname)
 - The hostname of the TiDB server as a read-only variable.
 
+### identity
+
+This variable is an alias for `last_insert_id`.
+
 ### init_connect
 
 - Scope: GLOBAL
@@ -258,7 +262,7 @@ mysql> SELECT * FROM t1;
 
 ### max_allowed_packet
 
-- Scope: GLOBAL | SESSION
+- Scope: SESSION | GLOBAL
 - Default value: `67108864`
 - Range: `[1024, 1073741824]`
 - The maximum size of a packet for the MySQL protocol.
@@ -714,6 +718,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Default value: `OFF`
+- Possible values: `OFF`, `ON`, `WARN`
 - By default, TiDB returns an error when you attempt to use the syntax for functionality that is not yet implemented. When the variable value is set to `ON`, TiDB silently ignores such cases of unavailable functionality, which is helpful if you cannot make changes to the SQL code.
 - Enabling `noop` functions controls the following behaviors:
     * `get_lock` and `release_lock` functions
@@ -1330,7 +1335,7 @@ SET tidb_query_log_max_len = 20
 
 - Scope: SESSION | GLOBAL
 - Default value: `leader`
-- Possible values: `leader`, `follower`, `leader-and-follower`
+- Possible values: `leader`, `follower`, `leader-and-follower`, `closest-replicas`
 - This variable is used to control where TiDB reads data. Here are three options:
     - leader: Read only from leader node
     - follower: Read only from follower node
@@ -1518,6 +1523,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Default value: `16777216`
+- Range: `[1024, 9223372036854775807]`
 - Unit: Bytes
 - Indicates the maximum size of a temporary table.
 
