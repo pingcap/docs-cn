@@ -39,7 +39,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 
 ## 事务
 
-+ 悲观事务正式 GA 并作为默认事务模式提供，支持 Read Committed 隔离级别以及 `SELECT FOR UPDATE NOWAIT` 语法。详情参阅：[悲观事务模型](/pessimistic-transaction.md)。
++ 悲观事务正式 GA 并作为默认事务模式提供，支持 Read Committed 隔离级别以及 `SELECT FOR UPDATE NOWAIT` 语法。详情参阅：[悲观事务模式](/pessimistic-transaction.md)。
 + 支持大事务，最大事务限制由 100 MB 提升到了 10 GB，同时支持乐观事务和悲观事务。详情参阅：[事务限制](/transaction-overview.md#事务限制)。
 
 ## SQL 功能
