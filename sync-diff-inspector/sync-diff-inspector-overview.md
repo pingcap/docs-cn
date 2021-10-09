@@ -84,8 +84,8 @@ check-thread-count = 4
 # 抽样检查的比例，如果设置为 100 则检查全部数据
 sample-percent = 100
 
-# 通过计算 chunk 的 checksum 来对比数据，如果不开启则逐行对比数据
-use-checksum = true
+# 只通过计算 chunk 的 checksum 来对比数据，如果开启，当上下游chunk的checksum不同时，则跳过逐行比对
+compare-checksum-only = false
 
 # 是否使用上次校验的 checkpoint，如果开启，则只校验上次未校验以及校验失败的 chunk
 use-checkpoint = true
