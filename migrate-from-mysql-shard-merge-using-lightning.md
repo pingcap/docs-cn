@@ -148,7 +148,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 ### 第 2 步：处理主键或唯一索引冲突
 
-来自多张分表的数据可能会引发主键或者唯一索引的数据冲突，因此在导入数据之前，需要结合分表逻辑对每个主键或唯一索引进行检查，还可能需要预先在下游创建表结构。更多详情，请参考[ 跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#%E8%B7%A8%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E5%9C%A8%E4%B8%BB%E9%94%AE%E6%88%96%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%86%B2%E7%AA%81%E5%A4%84%E7%90%86)。
+来自多张分表的数据可能会引发主键或者唯一索引的数据冲突，因此在导入数据之前，需要结合分表逻辑对每个主键或唯一索引进行检查，还可能需要预先在下游创建表结构。更多详情，请参考[ 跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#跨分表数据在主键或唯一索引冲突处理)。
 
 ### 第 3 步：启动 TiDB Lightning 进行导入
 
