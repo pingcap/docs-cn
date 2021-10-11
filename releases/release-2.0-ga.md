@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/releases/release-2.0-ga/','/docs-cn/dev/releases/2.0ga/'
     - 提升点查性能
 - Server
     - 支持 Proxy Protocol
-    - 添加大量监控项, 优化日志
+    - 添加大量监控项，优化日志
     - 支持配置文件的合法性检测
     - 支持 HTTP API 获取 TiDB 参数信息
     - 使用 Batch 方式 Resolve Lock，提升垃圾回收速度

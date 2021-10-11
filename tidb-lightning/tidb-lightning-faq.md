@@ -85,10 +85,10 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-TiDB Lightning 只支持两种格式的数据源：
+目前，TiDB Lightning 支持：
 
-1. [Dumpling](/dumpling-overview.md) 生成的 SQL dump
-2. 储存在本地文件系统的 [CSV](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) 文件
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
+- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
@@ -355,3 +355,19 @@ TiDB Lightning Local-backend 只支持导入到 v4.0.0 及以上版本的 TiDB �
 [mydumper.csv]
 header = false
 ```
+
+## 如何获取 TiDB Lightning 运行时的 goroutine 信息
+
+1. 如果 TiDB Lightning 的配置文件中已经指定了 [`status-port`](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)，可以跳过此步骤。否则，需要向 TiDB Lightning 发送 USR1 信号以开启 `status-port`。
+
+    首先通过 `ps` 等命令获取 TiDB Lightning 的进程 PID，然后运行如下命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```sh
+    kill -USR1 <lightning-pid>
+    ```
+   
+    查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
+
+2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。

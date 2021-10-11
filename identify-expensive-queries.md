@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/identify-expensive-queries/','/docs-cn/dev/how-to/mainta
 
 # 定位消耗系统资源多的查询
 
-TiDB 会将执行时间超过 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 限制（默认值为 60s），或使用内存超过 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 限制（默认值为 1 GB）的语句输出到 [tidb-server 日志文件](/tidb-configuration-file.md#logfile)（默认文件为 “tidb.log”）中，用于在语句执行结束前定位消耗系统资源多的查询语句（以下简称为 expensive query），帮助用户分析和解决语句执行的性能问题。
+TiDB 会将执行时间超过 [`tidb_expensive_query_time_threshold`](/system-variables.md#tidb_expensive_query_time_threshold) 限制（默认值为 60s），或使用内存超过 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 限制（默认值为 1 GB）的语句输出到 [tidb-server 日志文件](/tidb-configuration-file.md#logfile)（默认文件为 "tidb.log"）中，用于在语句执行结束前定位消耗系统资源多的查询语句（以下简称为 expensive query），帮助用户分析和解决语句执行的性能问题。
 
 注意，expensive query 日志和[慢查询日志](/identify-slow-queries.md)的区别是，慢查询日志是在语句执行完后才打印，expensive query 日志可以将正在执行的语句的相关信息打印出来。当一条语句在执行过程中达到资源使用阈值时（执行时间/使用内存量），TiDB 会即时将这条语句的相关信息写入日志。
 

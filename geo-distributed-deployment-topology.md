@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
 
 # 跨数据中心部署拓扑
 
-本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。
+本文以典型的两地三中心为例，介绍跨数据中心部署的拓扑以及关键参数。本文示例所涉及的城市是上海（即 `sha`）和北京（即 `bja` 和 `bjb`）。
 
 ## 拓扑信息
 
@@ -81,6 +81,12 @@ aliases: ['/docs-cn/dev/geo-distributed-deployment-topology/']
             - key: "dc"
               value: "sha"
     ```
+
+    > **注意：**
+    >
+    > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。
+
+有关 Label 的使用和 Raft Group 副本数量，详见[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)。
 
 > **注意：**
 >

@@ -40,7 +40,7 @@ TiDB Ansible 版本：2.1.17
     - 修复 `unaryMinus` 函数，当 Int 结果溢出时，返回结果类型没有为 Decimal 导致与 MySQL 不兼容的问题 [#11990](https://github.com/pingcap/tidb/pull/11990)
     - 修复 `LOAD DATA` 语句执行时，计数顺序导致的 `last_insert_id()` 可能不正确的问题 [#11994](https://github.com/pingcap/tidb/pull/11994)
     - 修复用户显式、隐式混合写入自增列数据时，`last_insert_id()` 可能不正确的问题 [#12001](https://github.com/pingcap/tidb/pull/12001)
-    - 修复一个 `JSON_UNQUOTE` 函数兼容性问题：只有在双引号（`"`）内的值需要 Unquote，例如 `SELECT JSON_UNQUOTE("\\\\")` 应当为 "`\\`"（不进行 Unquote）[#12096](https://github.com/pingcap/tidb/pull/12096)
+    - 修复一个 `JSON_UNQUOTE` 函数兼容性问题：只有在双引号 `"` 内的值需要 Unquote，例如 `SELECT JSON_UNQUOTE("\\\\")` 应当为 "`\\`"（不进行 Unquote）[#12096](https://github.com/pingcap/tidb/pull/12096)
 + Server
     - TiDB 事务重试时，记录在慢日志中的 `start ts` 由最后一次重试的时间改为第一次执行的时间 [#11878](https://github.com/pingcap/tidb/pull/11878)
     - 在 `LockResolver` 中添加事务的 Key 数量：当 Key 数量较少时，可以避免对整个 Region 的 Scan 操作，减小清锁的代价 [#11889](https://github.com/pingcap/tidb/pull/11889)

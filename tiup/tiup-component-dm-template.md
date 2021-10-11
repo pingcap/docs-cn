@@ -34,3 +34,5 @@ tiup dm template [flags]
 ## 输出
 
 根据指定选项输出拓扑模版到标准输出，可重定向到拓扑文件中用于部署。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

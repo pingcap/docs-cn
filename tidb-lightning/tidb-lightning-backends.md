@@ -8,15 +8,15 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/r
 
 TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)决定 `tidb-lightning` 组件将如何把将数据导入到目标集群中。目前，TiDB Lightning 支持以下后端：
 
-+ [Importer-backend](#tidb-lightning-importer-backend)（默认）
 + [Local-backend](#tidb-lightning-local-backend)
++ [Importer-backend](#tidb-lightning-importer-backend)
 + [TiDB-backend](#tidb-lightning-tidb-backend)
 
 以上几种后端导入数据的区别如下：
 
-* **Importer-backend**：`tidb-lightning` 先将 SQL 或 CSV 数据编码成键值对，由 `tikv-importer` 对写入的键值对进行排序，然后把这些键值对 Ingest 到 TiKV 节点中。
-
 * **Local-backend**：`tidb-lightning` 先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对以 SST 文件的形式上传到各个 TiKV 节点，然后由 TiKV 将这些 SST 文件 Ingest 到集群中。和 `Importer-backend` 原理相同，不过不依赖额外的 `tikv-importer` 组件。
+
+* **Importer-backend**：`tidb-lightning` 先将 SQL 或 CSV 数据编码成键值对，由 `tikv-importer` 对写入的键值对进行排序，然后把这些键值对 Ingest 到 TiKV 节点中。
 
 * **TiDB-backend**：`tidb-lightning` 先将数据编码成 `INSERT` 语句，然后直接在 TiDB 节点上运行这些 SQL 语句进行数据导入。
 
@@ -29,6 +29,7 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 | 目标表 | 必须为空 | 必须为空 | 可以不为空 |
 | 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
+| 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
 
 ## 如何选择后端模式
 
@@ -98,14 +99,15 @@ on-duplicate = "replace" # 或者 “error”、“ignore”
 
 当需要将数据导入到 TiDB 集群时，TiDB Lightning TiDB-backend 可以完全取代 [Loader](https://docs.pingcap.com/zh/tidb/v4.0/loader-overview)。下表说明了如何将 Loader 的配置迁移到 [TiDB Lightning 配置](/tidb-lightning/tidb-lightning-configuration.md)中：
 
-<table align="left">
+<table>
 <thead><tr><th>Loader</th><th>TiDB Lightning</th></tr></thead>
 <tbody>
 <tr><td>
 
 ```toml
-# 日志
+# 日志级别
 log-level = "info"
+# 日志的输出目录
 log-file = "loader.log"
 # Prometheus
 status-addr = ":8272"
@@ -117,8 +119,9 @@ pool-size = 16
 
 ```toml
 [lightning]
-# 日志
+# 日志级别
 level = "info"
+# 日志的输出目录。如果未指定该位置目录，默认为执行命令的所在目录。
 file = "tidb-lightning.log"
 # Prometheus
 pprof-port = 8289
@@ -197,7 +200,8 @@ password = ""
 # TiDB 连接参数
 host = "127.0.0.1"
 port = 4000
-status-port = 10080  # <- 必须有的参数
+# 在 TiDB-backend 模式下，该参数为可选参数
+# status-port = 10080
 user = "root"
 password = ""
 #sql-mode = ""

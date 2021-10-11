@@ -45,3 +45,5 @@ tiup dm restart <cluster-name> [flags]
 ## 输出
 
 重启服务的日志。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

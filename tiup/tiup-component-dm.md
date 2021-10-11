@@ -73,3 +73,5 @@ tiup dm [command] [flags]
 - [enable](/tiup/tiup-component-dm-enable.md)：开启指定集群或服务开机自启动
 - [disable](/tiup/tiup-component-dm-disable.md)：关闭指定集群或服务开机自启动
 - [help](/tiup/tiup-component-dm-help.md)：输出帮助信息
+
+[<< 返回上一页 - TiUP 组件清单](/tiup/tiup-reference.md#组件清单)

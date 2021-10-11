@@ -48,3 +48,5 @@ tiup update [component1][:version] [component2..N] [flags]
 
 - 升级成功：`Updated successfully!`
 - 目标版本不存在：`Error: version %s not supported by component %s`
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

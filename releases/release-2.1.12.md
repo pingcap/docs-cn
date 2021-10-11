@@ -16,7 +16,7 @@ TiDB Ansible 版本：2.1.12
 - 修复在使用 feedback 时由于类型不匹配导致进程 panic 的问题 [#10755](https://github.com/pingcap/tidb/pull/10755)
 - 修复某些情况下改变字符集导致 BLOB 类型变成 TEXT 类型的问题 [#10745](https://github.com/pingcap/tidb/pull/10745)
 - 修复某些情况下在事务中的 `GRANT` 操作误报 "Duplicate Entry" 错误的问题 [#10739](https://github.com/pingcap/tidb/pull/10739)
-- 提升以下功能跟 MySQL  的兼容性
+- 提升以下功能跟 MySQL 的兼容性：
     - `DAYNAME` 函数 [#10732](https://github.com/pingcap/tidb/pull/10732)
     - `MONTHNAME` 函数 [#10733](https://github.com/pingcap/tidb/pull/10733)
     - `EXTRACT` 函数在处理 `MONTH` 的时候支持零值 [#10702](https://github.com/pingcap/tidb/pull/10702)

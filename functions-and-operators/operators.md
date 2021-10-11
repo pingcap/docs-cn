@@ -71,7 +71,7 @@ OR, ||
 = (assignment), :=
 ```
 
-详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html).
+详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/operator-precedence.html)。
 
 ## 比较方法和操作符
 
@@ -101,7 +101,7 @@ OR, ||
 | [`NOT LIKE`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#operator_not-like) | 不满足简单模式匹配 |
 | [`STRCMP()`](https://dev.mysql.com/doc/refman/5.7/en/string-comparison-functions.html#function_strcmp) | 比较两个字符串 |
 
-详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html).
+详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html)。
 
 ## 逻辑操作符
 
@@ -112,7 +112,7 @@ OR, ||
 | [`\|\|`, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
 | [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑异或 |
 
-详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
+详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html)。
 
 ## 赋值操作符
 
@@ -121,4 +121,4 @@ OR, ||
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-equal) | 赋值 (可用于 [`SET`](https://dev.mysql.com/doc/refman/5.7/en/set-variable.html) 语句中, 或用于 [`UPDATE`](https://dev.mysql.com/doc/refman/5.7/en/update.html) 语句的 `SET` 中 ) |
 | [`:=`](https://dev.mysql.com/doc/refman/5.7/en/assignment-operators.html#operator_assign-value) | 赋值 |
 
-详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html).
+详情参见[这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-functional-dependence.html)。

@@ -149,6 +149,8 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 若选择的格式为 `tiup cluster check <cluster-name>` 则必须加上该选项：`tiup cluster check <cluster-name> --cluster`。
 
+该选项的数据类型为 `BOOLEAN`。该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
+
 ### -N, --node
 
 - 指定要检查的节点。该选项的值为以逗号分割的节点 ID 列表，节点 ID 为 [`tiup-component-cluster-display`](/tiup/tiup-component-cluster-display.md) 命令返回的集群状态表格的第一列。
@@ -203,7 +205,7 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 
 ### -p, --password
 
-- 在连接目标机器时使用密码登陆：
+- 在连接目标机器时使用密码登录：
 
     - 对于指定了 `--cluster` 的集群，密码为部署集群时拓扑文件中指定的用户的密码
     - 对于未指定 `--cluster` 的集群，密码为 `-u/--user` 参数指定的用户的密码
@@ -225,3 +227,5 @@ tiup cluster check <topology.yml | cluster-name> [flags]
 - Check：检查项
 - Result：检查结果（Pass/Warn/Fail）
 - Message：结果描述
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

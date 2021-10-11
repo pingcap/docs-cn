@@ -7,13 +7,12 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 本文主要介绍 TiDB Lightning 使用 Local-backend 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。
 
-如果你不希望影响 TiDB 集群的对外服务，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 中的硬件需求与部署方式进行数据导入。
+如果使用 Local-backend 进行数据导入，TiDB Lightning 运行后，**TiDB 集群将无法正常对外提供服务**。如果你不希望 TiDB 集群的对外服务受到影响，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 中的硬件需求与部署方式进行数据导入。
 
 ## 注意事项
 
 在使用 TiDB Lightning 前，需注意以下事项：
 
-- TiDB Lightning 运行后，TiDB 集群将无法正常对外提供服务。
 - 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致延迟。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
 
     {{< copyable "shell-regular" >}}

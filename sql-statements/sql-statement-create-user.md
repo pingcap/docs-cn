@@ -45,7 +45,7 @@ CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.04 sec)
 ```
 
-创建一个只能在 `192.168.1.1` 登陆的用户，密码为 `newuserpassword`。
+创建一个只能在 `192.168.1.1` 登录的用户，密码为 `newuserpassword`。
 
 {{< copyable "sql" >}}
 

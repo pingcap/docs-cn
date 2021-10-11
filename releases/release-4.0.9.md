@@ -42,7 +42,7 @@ TiDB 版本：4.0.9
     - 区分用户变量的类型 [#21107](https://github.com/pingcap/tidb/pull/21107)
     - 在配置文件中添加了 `performance.gogc` 配置项，用于设置 `GOGC` [#20922](https://github.com/pingcap/tidb/pull/20922)
     - 提升 `Timestamp` 和 `Datetime` 类型的二进制输出结果与 MySQL 的兼容性 [#21135](https://github.com/pingcap/tidb/pull/21135)
-    - 优化用户使用 `LOCK IN SHARE MODE`  SQL 语句时输出的报错信息 [#21005](https://github.com/pingcap/tidb/pull/21005)
+    - 优化用户使用 `LOCK IN SHARE MODE` SQL 语句时输出的报错信息 [#21005](https://github.com/pingcap/tidb/pull/21005)
     - 优化在可剪切的表达式进行常量折叠时输出的错误信息，避免输出不必要的警告或错误信息 [#21040](https://github.com/pingcap/tidb/pull/21040)
     - 优化 `LOAD DATA` 语句执行 `PREPARE` 时的报错信息 [#21199](https://github.com/pingcap/tidb/pull/21199)
     - 修改整型列的类型时，忽略掉整型字段的零值填充的属性 [#20986](https://github.com/pingcap/tidb/pull/20986)

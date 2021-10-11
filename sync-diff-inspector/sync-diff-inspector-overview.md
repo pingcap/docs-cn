@@ -46,25 +46,25 @@ sync-diff-inspector 需要获取表结构信息、查询数据、建 checkpoint 
 
     - SELECT（查数据进行对比）
 
-    - SHOW_DATABASES (查看库名)
+    - SHOW_DATABASES（查看库名）
 
-    - RELOAD (查看表结构)
+    - RELOAD（查看表结构）
 
 - 下游数据库
 
-    - SELECT （查数据进行对比）
+    - SELECT（查数据进行对比）
 
-    - CREATE （创建 checkpoint 库和表）
+    - CREATE（创建 checkpoint 库和表）
 
-    - DELETE （删除 checkpoint 表中的信息）
+    - DELETE（删除 checkpoint 表中的信息）
 
-    - INSERT  （写入 checkpoint 表）
+    - INSERT（写入 checkpoint 表）
 
     - UPDATE（修改 checkpoint 表）
 
-    - SHOW_DATABASES (查看库名)
+    - SHOW_DATABASES（查看库名）
 
-    - RELOAD (查看表结构)
+    - RELOAD（查看表结构）
 
 ### 配置文件说明
 
@@ -146,7 +146,7 @@ fix-sql-file = "fix.sql"
     table = "test3"
 
     # 指定用于划分 chunk 的列，如果不配置该项，sync-diff-inspector 会选取一个合适的列（主键／唯一键／索引）
-    index-field = "id"
+    index-fields = "id"
 
     # 指定检查的数据的范围，需要符合 sql 中 where 条件的语法
     range = "age > 10 AND age < 20"

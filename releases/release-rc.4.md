@@ -44,4 +44,4 @@ aliases: ['/docs-cn/dev/releases/release-rc.4/','/docs-cn/dev/releases/rc4/']
 + 支持谓词下推
 + 支持聚合下推
 + 支持范围裁剪
-+ 通过 TPC-H 测试 (除去一个需要 View 的 Query)
++ 通过 TPC-H 测试（除去一个需要 View 的 Query）

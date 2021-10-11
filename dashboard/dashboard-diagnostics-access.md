@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
 
 可以通过以下两种方法访问集群诊断页面：
 
-* 登录后，左侧导航条点击**集群诊断**（Cluster Diagnose）：
+* 登录后，左侧导航条点击**集群诊断** (Cluster Diagnose)：
 
     ![访问](/media/dashboard/dashboard-diagnostics-access.png)
 

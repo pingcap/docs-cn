@@ -20,5 +20,5 @@ aliases: ['/docs-cn/dev/shard-row-id-bits/']
 
 ## 语句示例
 
-- `CREATE TABLE`：`CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
-- `ALTER TABLE`：`ALTER TABLE t SHARD_ROW_ID_BITS = 4;`
+- `CREATE TABLE`: `CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;`
+- `ALTER TABLE`: `ALTER TABLE t SHARD_ROW_ID_BITS = 4;`

@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/string-functions/','/docs-cn/dev
 
 # 字符串函数
 
-TiDB 支持使用 MySQL 5.7 中提供的大部分[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)。
+TiDB 支持使用大部分 MySQL 5.7 中提供的[字符串函数](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html)和一部分 Oracle 21 所提供的[函数](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlqr/SQL-Functions.html#GUID-93EC62F8-415D-4A7E-B050-5D5B2C127009)。
 
 ## 支持的函数
 
@@ -59,6 +59,7 @@ TiDB 支持使用 MySQL 5.7 中提供的大部分[字符串函数](https://dev.m
 | [`SUBSTRING()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_substring)  | 返回指定的子字符串   |
 | [`SUBSTRING_INDEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_substring-index)  | 从一个字符串中返回指定出现次数的定界符之前的子字符串  |
 | [`TO_BASE64()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_to-base64)  | 返回转化为 base-64 表示的字符串参数   |
+| [`TRANSLATE()`](https://docs.oracle.com/en/database/oracle/oracle-database/21/sqlrf/TRANSLATE.html#GUID-80F85ACB-092C-4CC7-91F6-B3A585E3A690) | 将字符串中出现的所有指定字符替换为其它字符。这个函数不会像 Oracle 一样将空字符串视为`NULL` |
 | [`TRIM()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_trim)   | 去掉前缀和后缀空格 |
 | [`UCASE()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_ucase)       | 与 `UPPER()` 功能相同   |
 | [`UNHEX()`](https://dev.mysql.com/doc/refman/5.7/en/string-functions.html#function_unhex)  | 返回一个数的十六进制表示，形式为字符串 |

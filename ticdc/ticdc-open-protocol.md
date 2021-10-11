@@ -150,7 +150,7 @@ Value:
 | Column Name    | String | 列名   |
 | Column Type    | Number | 列类型，详见：[Column 的类型码](#column-的类型码) |
 | Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。 |
-| Flag（**实验性**）          | Number | 列标志位，详见：[列标志位](#列标志位) |
+| Flag           | Number | 列标志位，详见：[列标志位](#列标志位) |
 | Column Value   | Any    | 列值   |
 
 ### DDL Event
@@ -276,7 +276,7 @@ COMMIT;
 
 目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析 demo。用户可以参考本文档提供的数据格式和以下 demo 实现消费端协议解析。
 
-- [Golang demo](https://github.com/pingcap/ticdc/tree/master/kafka_consumer)
+- [Golang demo](https://github.com/pingcap/ticdc/tree/master/cmd/kafka-consumer)
 - [Java demo](https://github.com/pingcap/ticdc/tree/master/demo/java)
 
 ## Column 的类型码
@@ -387,6 +387,5 @@ DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
 
 > **注意：**
 >
-> + 该功能为实验性功能，请勿在生产环境使用。
 > + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
 > + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。

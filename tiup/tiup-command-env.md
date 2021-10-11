@@ -24,3 +24,5 @@ tiup env [name1...N]
 - 若指定了 `[name1...N]`，则按顺序输出 "{value}" 列表
 
 以上输出中若 `value` 为空则代表未设置环境变量的值，此时 TiUP 会使用默认值。
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

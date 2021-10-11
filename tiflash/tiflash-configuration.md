@@ -17,7 +17,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
     >
     > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
-- [`store-balance-rate`](/pd-configuration-file.md#store-balance-rate)：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
+- `store-balance-rate`：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
 
     > **注意：**
     >
@@ -47,6 +47,8 @@ delta_index_cache_size = 0
 
 ## TiFlash 数据的存储路径。如果有多个目录，以英文逗号分隔。
 ## 从 v4.0.9 版本开始，不推荐使用 path 及 path_realtime_mode 参数。推荐使用 [storage] 下的配置项代替，这样在多盘部署的场景下能更好地利用节点性能。
+## 从 v5.2.0 版本开始，如果要使用配置项 storage.io_rate_limit，需要同时将 TiFlash 的数据存储路径设置为 storage.main.dir。
+## 当 [storage] 配置项存在的情况下，path 和 path_realtime_mode 两个配置会被忽略。
 # path = "/tidb-data/tiflash-9000"
 ## 或
 # path = "/ssd0/tidb-data/tiflash,/ssd1/tidb-data/tiflash,/ssd2/tidb-data/tiflash"
@@ -58,13 +60,8 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-    ## [实验特性] 自 v5.0 引入，限制后台任务每秒写入的字节数。目前为实验特性，不推荐在生产环境中使用。
-    ## 以 byte 为单位。目前不支持如 "10GB" 的设置。
-    ## 默认为 0，代表没有限制。
-    ## 该参数主要针对 TiFlash 部署在 AWS EBS (gp2/gp3) 盘时的场景，用于控制后台任务对机器磁盘带宽的占用。
-    ## 提升 TiFlash 查询性能的稳定性。在该场景下推荐配置为磁盘带宽的 50%。
-    ## 其他场景下不建议修改该配置。
-    bg_task_io_rate_limit = 0
+    ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
+    # bg_task_io_rate_limit = 0
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -85,6 +82,30 @@ delta_index_cache_size = 0
     # dir = [ ]
     ## storage.latest.dir 存储目录列表中，每个目录的最大可用容量。
     # capacity = [ 10737418240, 10737418240 ]
+
+    ## [storage.io_rate_limit] 相关配置从 v5.2.0 开始引入。
+    [storage.io_rate_limit]
+    ## 该配置项是 I/O 限流功能的开关，默认关闭。TiFlash 的 I/O 限流功能适用于磁盘带宽较小且磁盘带宽大小明确的云盘场景。
+    ## I/O 限流功能限制下的读写流量总带宽，单位为 Byte，默认值为 0，即默认关闭 I/O 限流功能。
+    # max_bytes_per_sec = 0
+    ## max_read_bytes_per_sec 和 max_write_bytes_per_sec 的含义和 max_bytes_per_sec 类似，分别指 I/O 限流功能限制下的读流量总带宽和写流量总带宽。
+    ## 分别用两个配置项控制读写带宽限制，适用于一些读写带宽限制分开计算的云盘，例如 GCP 上的 persistent disk。
+    ## 当 max_bytes_per_sec 配置不为 0 时，优先使用 max_bytes_per_sec。
+    # max_read_bytes_per_sec = 0
+    # max_write_bytes_per_sec = 0
+
+    ## 下面的参数用于控制不同 I/O 流量类型分配到的带宽权重，一般不需要调整。
+    ## TiFlash 内部将 I/O 请求分成 4 种类型：前台写、后台写、前台读、后台读。
+    ## I/O 限流初始化时，TiFlash 会根据下面的权重 (weight) 比例分配带宽。
+    ## 以下默认配置表示每一种流量将获得 25 / (25 + 25 + 25 + 25) = 25% 的权重。
+    ## 如果将 weight 配置为 0，则对应的 I/O 操作不会被限流。
+    # foreground_write_weight = 25
+    # background_write_weight = 25
+    # foreground_read_weight = 25
+    # background_read_weight = 25
+    ## TiFlash 支持根据当前的 I/O 负载情况自动调整各种 I/O 类型的限流带宽，有可能会超过设置的权重。
+    ## auto_tune_sec 表示自动调整的执行间隔，单位为秒。设为 0 表示关闭自动调整。
+    # auto_tune_sec = 5
 
 [flash]
     tidb_status_addr = tidb status 端口地址 # 多个地址以逗号分割

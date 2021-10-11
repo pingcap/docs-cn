@@ -7,7 +7,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 TiDB 支持使用 [MPP 模式](/tiflash/use-tiflash.md#使用-mpp-模式)来执行查询。在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
 
-本文档使用的示例数据如下:
+本文档使用的示例数据如下：
 
 {{< copyable "sql" >}}
 
@@ -135,7 +135,7 @@ EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 
 以上执行计划中，
 
-* `[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表读数据并广播给大表（表 a）数据所在的各个节点。
+* `[TableFullScan_17, Selection_18, ExchangeSender_19]` 从小表（表 a）读数据并广播给大表（表 b）数据所在的各个节点。
 * `[TableFullScan_21, Selection_22, ExchangeReceiver_20, HashJoin_43, ExchangeSender_46]` 完成 join 并将数据返回给 TiDB。
 
 ## 对 MPP 模式的查询使用 `EXPLAIN ANALYZE`
