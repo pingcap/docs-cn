@@ -1,0 +1,481 @@
+---
+title: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据
+summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据。
+---
+
+# 使用 Dumpling 和 TiDB Lightning 合并导入分表数据
+
+如果分表数据总规模特别大（例如大于 1 TB），并且允许 TiDB 集群在迁移期间无其他业务写入，那么你可以使用 TiDB Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 TiDB DM 进行增量数据的分表同步。本文档举例介绍了导入数据的操作步骤。
+
+如果分库分表合并迁移在 1 TB 以内，请参考[使用 DM 进行分表合并迁移](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-shard-merge)，支持全量和增量更为简单。
+
+使用 TiDB Lightning 快速合并导入的原理如下图所示。
+
+![使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/media/shard-merge-using-lightning.png)
+
+在这个示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lighting 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。虽然 Dumpling 可以导出 MySQL 实例中的所有数据库，本文仅导出部分数据作为示例。
+
+关于 Dumpling 和 TiDB Lightning 的更多介绍，请参考：
+
+* [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)
+* [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)
+
+**说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
+
+```
+select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 \as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables;
+```
+
+## 前提条件
+
+### TiDB Lightning 的资源要求
+
+**操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，你可以在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。运行过程默认会占满 CPU，建议单独部署。如果条件不允许，可以和其他组件（比如 `tikv-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
+
+**内存和 CPU**：因为 TiDB Lightning 对计算机资源消耗较高，是资源密集型工具，建议分配 64 GB 以上的内存以及 32 核以上的 CPU，而且确保 CPU 核数和内存（GB）比为 1:2 以上，以获取最佳性能。
+
+**磁盘空间**：足够储存整个数据源的 SSD 硬盘，读取速度越快越好。
+
+### 目标 TiKV 集群的磁盘空间要求
+
+**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[ 副本数量](https://docs.pingcap.com/zh/tidb/stable/deploy-and-maintain-faq#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。多出来的 2 倍是算上下列没储存在数据源的因素的保守估计：
+
+* 索引会占据额外的空间
+* RocksDB 的空间放大效应
+
+### 上游 MySQL 权限
+
+使用 Dumpling 从 MySQL 导出数据，需要下列权限：
+
+* SELECT
+* RELOAD
+* LOCK TABLES
+* REPLICATION CLIENT
+* PROCESS
+
+### 下游 TiDB 权限
+
+本文档示例中使用的后端模式为 Local-backend，所以 TiDB Lightning 需要下游 TiDB 下列权限：
+
+* SELECT
+* UPDATE
+* ALTER
+* CREATE
+* DROP
+
+一般情况下，推荐使用配置项 `checksum = true`，所以 TiDB Lightning 还需要有下游 TiDB admin 用户权限。
+
+更多相关权限的说明，请参考[TiDB Lightning 对下游数据库的账号权限要求是怎样的？](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq#tidb-lightning-%E5%AF%B9%E4%B8%8B%E6%B8%B8%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%B4%A6%E5%8F%B7%E6%9D%83%E9%99%90%E8%A6%81%E6%B1%82%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84)
+
+### 部署 Dumpling 和 TiDB Lightning
+
+* [使用 TiUP 部署 TiDB Lighting](/quick_install_tools.md)
+* [使用 TiUP 部署 Dumping](/quick_install_tools.md)
+
+## 数据导入流程
+
+导入流程如下图所示：
+
+![合并导入分表数据流程](/media/shard-merge-using-lightning-procedure.png)
+
+1. 用 Dumpling 导出全量数据备份。在本文档示例中，分别从 2 个源数据库中各导出 2 个表：
+    - 从 my_db1 导出 table1、table2
+    - 从 my_db2 导出 table3、table4
+2. 处理主键或唯一索引冲突
+3. 启动 TiDB Lightning 执行导入操作
+4. 导入成功
+5. （可选）使用 TiDB DM 进行增量数据迁移
+
+下面详细介绍每一步的操作流程。
+
+### 第 1 步：用 Dumpling 导出全量数据备份
+
+如果需要导出的多个分表属于同一个上游 MySQL 实例，可以直接使用 Dumpling 的 `-f` 参数一次导出多个分表的结果。如果多个分表分布在不同的 MySQL 实例，可以使用 Dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。下面的例子中同时用到了上述两种方式，然后将导出的数据存放在同一父目录下。
+
+1. 使用 Dumpling 从 my_db1 中导出表 table1 和 table2，如下：
+
+    ```
+    tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
+    ```
+
+    各参数的解释和使用说明见下表。
+
+<table>
+  <tr>
+   <td><strong>参数</strong>
+   </td>
+   <td><strong>解释</strong>
+   </td>
+  </tr>
+  <tr>
+   <td><code>-B my_db1</code>
+   </td>
+   <td>从 <code>my_db1</code> 数据库导出。
+   </td>
+  </tr>
+  <tr>
+   <td><code>-f my_db1.table[12]</code>
+   </td>
+   <td>只导出 <code>my_db1.table1</code> 和 <code>my_db1.table2</code> 这两个表。
+   </td>
+  </tr>
+  <tr>
+   <td><code>-t 16</code>
+   </td>
+   <td>使用 16 个线程导出数据。
+   </td>
+  </tr>
+  <tr>
+   <td><code>-r 200000</code>
+   </td>
+   <td>指定单个文件的最大行数为 200000，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用<strong>。如果导出的单表超过 10 GB，强烈建议使用该参数。</strong>
+   </td>
+  </tr>
+  <tr>
+   <td><code>-F 256MB</code>
+   </td>
+   <td>将每张表切分成多个文件，每个文件约为 256 MB。<strong>强烈建议使用该参数，避免单表过大时由于单个文件过大导致导出失败</strong>。
+   </td>
+  </tr>
+</table>
+
+2. 然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
+
+    ```
+     tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
+   ```
+
+这样所需的全量备份数据就全部导出到了 `/data/my_database` 目录中。将所有源数据表格存储在一个目录中，是为了后续方便用 TiDB Lightning 导入。
+
+### 第 2 步：处理主键或唯一索引冲突
+
+来自多张分表的数据可能会引发主键或者唯一索引的数据冲突，因此在导入数据之前，需要结合分表逻辑对每个主键或唯一索引进行检查，还可能需要预先在下游创建表结构。更多详情，请参考[ 跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#%E8%B7%A8%E5%88%86%E8%A1%A8%E6%95%B0%E6%8D%AE%E5%9C%A8%E4%B8%BB%E9%94%AE%E6%88%96%E5%94%AF%E4%B8%80%E7%B4%A2%E5%BC%95%E5%86%B2%E7%AA%81%E5%A4%84%E7%90%86)。
+
+### 第 3 步：启动 TiDB Lightning 进行导入
+
+在启动 TiDB Lightning 进行导入之前，建议先了解如何选择后端模式、选择断点续传的处理方式，然后根据你的实际情况选择合适的方式进行。
+
+#### 后端模式
+
+在启动 TiDB Lightning 的时候请选择合适的后端模式。
+
+* 如果导入的目标集群为 v4.0 或更新版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能高于其他模式。
+* 如果目标集群为 v3.x 或更旧版本，则建议使用 Importer-backend 模式。
+* 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则可以使用 TiDB-backend 模式。但由于该模式导入速度较慢，不适合本文介绍的大量数据迁移场景。
+
+默认使用 Local-backend 模式。本文档的示例中采用了 Local-backend 模式。更多信息请参考[ TiDB Lightning 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
+
+下表展示了各后端模式的特点。
+
+<table>
+  <tr>
+   <td>后端
+   </td>
+   <td>Local-backend
+   </td>
+   <td>Importer-backend
+   </td>
+   <td>TiDB-backend
+   </td>
+  </tr>
+  <tr>
+   <td>速度
+   </td>
+   <td>快 (~500 GB/小时)
+   </td>
+   <td>快 (~400 GB/小时)
+   </td>
+   <td>慢 (~50 GB/小时)
+   </td>
+  </tr>
+  <tr>
+   <td>资源使用率
+   </td>
+   <td>高
+   </td>
+   <td>高
+   </td>
+   <td>低
+   </td>
+  </tr>
+  <tr>
+   <td>占用网络带宽
+   </td>
+   <td>高
+   </td>
+   <td>中
+   </td>
+   <td>低
+   </td>
+  </tr>
+  <tr>
+   <td>导入时是否满足 ACID
+   </td>
+   <td>否
+   </td>
+   <td>否
+   </td>
+   <td>是
+   </td>
+  </tr>
+  <tr>
+   <td>目标表
+   </td>
+   <td>必须为空
+   </td>
+   <td>必须为空
+   </td>
+   <td>可以不为空
+   </td>
+  </tr>
+  <tr>
+   <td>额外组件
+   </td>
+   <td>无
+   </td>
+   <td>tikv-importer
+   </td>
+   <td>无
+   </td>
+  </tr>
+  <tr>
+   <td>支持 TiDB 集群版本
+   </td>
+   <td>>= v4.0.0
+   </td>
+   <td>全部
+   </td>
+   <td>全部
+   </td>
+  </tr>
+  <tr>
+   <td>是否影响 TiDB 对外提供服务
+   </td>
+   <td>是
+   </td>
+   <td>是
+   </td>
+   <td>否
+   </td>
+  </tr>
+</table>
+
+#### 断点续传
+
+大量数据导入一般耗时数小时甚至数天，长时间运行的进程会有一定机率发生非正常中断。如果每次重启都从头开始，之前已成功导入的数据就会前功尽弃。为此，TiDB Lightning 提供了断点续传的功能，即使 TiDB Lightning 崩溃，在重启时仍然从断点开始继续工作。
+
+若 TiDB Lightning 因不可恢复的错误而退出，例如数据出错，在重启时不会使用断点，而是直接报错离开。为保证已导入的数据安全，必须先解决掉这些错误才能继续。你可以使用`tidb-lightning-ctl` 命令控制导入出错后的行为。该命令的选项有：
+
+* --checkpoint-error-destroy：出现错误后，让失败的表从头开始整个导入过程。
+* --checkpoint-error-ignore：如果导入表曾经出错，该命令会清除出错状态，如同错误没有发生过一样。
+* --checkpoint-remove：无论是否有出错，把表的断点清除。
+
+关于断点续传的更多信息，请参考[ TiDB Lightning 断点续传](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)。
+
+#### 执行导入操作
+
+启动 tidb-lightning 的步骤如下：
+
+1. 将数据源上传到部署了 TiDB Lightning 的服务器。
+2. 参考下面例子配置 `tidb-lightning.toml`。
+
+    ```
+    [lightning]
+    # 日志
+    level = "info"
+    file = "tidb-lightning.log"
+
+    [tikv-importer]
+    # 选择使用 local 后端
+    backend = "local"
+    # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
+    sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
+    # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
+
+    [[routes]]
+    schema-pattern = "my_db1"
+    table-pattern = "table[1-2]"
+    target-schema = "my_db"
+    target-table = "table5"
+
+    [[routes]]
+    schema-pattern = "my_db2"
+    table-pattern = "table[3-4]"
+    target-schema = "my_db"
+    target-table = "table5"
+
+    [mydumper]
+    # 源数据目录。设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
+    data-source-dir = "/data/my_database/"
+    # 配置通配符规则，默认规则会过滤 mysql、sys、INFORMATION_SCHEMA、PERFORMANCE_SCHEMA、METRICS_SCHEMA、INSPECTION_SCHEMA 系统数据库下的所有表
+    # 若不配置该项，导入系统表时会出现“找不到 schema”的异常
+    filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+
+    [tidb]
+    # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
+    host = "172.16.31.2"
+    port = 4000
+    user = "root"
+    password = "rootroot"
+    # 表架构信息在从 TiDB 的“状态端口”获取。
+    status-port = 10080
+    # 集群 pd 的地址。示例仅供参考。请把 IP 地址等信息替换成真实的信息。
+    pd-addr = "172.16.31.3:2379"
+    ```
+
+3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+
+   ```
+   tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
+   ```
+4. 导入开始后，可以采用以下任意方式查看进度：
+    - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+    - 通过监控面板查看进度，请参见[ TiDB Lightning 监控](https://pingcap.feishu.cn/tidb-lightning/monitor-tidb-lightning.md)。
+
+等待 TiDB Lightning 运行结束，则整个导入完成。
+
+### 第 4 步：导入成功
+
+导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+
+> **注意：**
+>
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+
+如果导入过程中遇到问题，请参见[ TiDB Lightning 常见问题](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)。
+
+### 第 5 步 （可选）：增量数据的迁移
+
+<!--
+增量数据的迁移有两种方式，使用 TiDB DM 或使用 TiDB Lightning。
+
+### 使用 TiDB DM 进行增量数据迁移
+-->
+
+如果要将源数据库从指定位置开始的 Binlog 迁移到 TiDB，可以使用 TiDB DM 进行增量数据迁移。请参考[Data Migration 增量数据迁移场景](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-incremental-migration)。
+
+<!--
+### 使用 TiDB Lightning 进行增量数据迁移
+
+TiDB Lightning 总是会检测目标表中是否包含数据，如果包含，则会自动切换至增量导入模式，因此无需执行任何额外操作即可使用此功能。
+
+如果要向已经有数据的表中导入数据，TiDB Lightning 的各个后端对增量导入特性的支持如下表所示。请根据你当前使用的产品版本判断是否可以使用 TiDB Lightning 进行增量数据迁移。
+
+<table>
+  <tr>
+   <td><strong>后端</strong>
+   </td>
+   <td><strong>Local-backend</strong>
+   </td>
+   <td><strong>Importer-backend</strong>
+   </td>
+   <td><strong>TiDB-backend</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>支持的 TiDB Lightning 集群版本
+   </td>
+   <td>>= v5.1.0
+   </td>
+   <td>>= v5.1.0
+   </td>
+   <td>全部
+   </td>
+  </tr>
+  <tr>
+   <td>支持 TiDB 集群版本
+   </td>
+   <td>>= v4.0.0
+   </td>
+   <td>全部
+   </td>
+   <td>全部
+   </td>
+  </tr>
+  <tr>
+   <td>导入时是否满足 ACID
+   </td>
+   <td>否
+   </td>
+   <td>否
+   </td>
+   <td>是
+   </td>
+  </tr>
+  <tr>
+   <td>是否支持数据校验
+   </td>
+   <td>是
+   </td>
+   <td>是
+   </td>
+   <td>否
+   </td>
+  </tr>
+  <tr>
+   <td>额外组件
+   </td>
+   <td>无
+   </td>
+   <td><code>tikv-importer</code>
+   </td>
+   <td>无
+   </td>
+  </tr>
+  <tr>
+   <td>是否支持导入重复数据
+   </td>
+   <td>否
+   </td>
+   <td>否
+   </td>
+   <td>是
+   </td>
+  </tr>
+</table>
+
+TiDB Lightning 会自动调整 ID 分配器的基准值以确保为 AUTO_INCREMENT 类型的字段或分配的值不会重复。同时，在开始导入之前，如果 TiDB Lightning 发现目标表中包含数据，则会首先执行一次 Checksum，确保最终 Checksum 结果的正确性。
+
+**重复数据处理**
+
+功能尚未上线。等上线后再补充到文档中。
+
+重复数据是指导入数据的不同行的主键或唯一键的值相同。Local 和 Importer 后端目前不支持对包含重复数据（包含导入的数据文件之间以及导入数据和表内以后数据之间的冲突），TiDB 后端支持导入包含冲突的数据。
+
+在使用 TiDB Lightning 的 TiDB 后端时，可以通过设置 `tikv-importer.on-duplicate` 配置项指定冲突数据的处理方式。
+
+`tikv-importer.on-duplicate` 各个取值的含义说明：
+
+<table>
+  <tr>
+   <td><strong>on-duplicate</strong>
+   </td>
+   <td><strong>含义</strong>
+   </td>
+  </tr>
+  <tr>
+   <td>replace (默认值)
+   </td>
+   <td>使用新插入的数据替换已存在的数据
+   </td>
+  </tr>
+  <tr>
+   <td>ignore
+   </td>
+   <td>忽略新插入的数据，保留已存在的数据
+   </td>
+  </tr>
+  <tr>
+   <td>error
+   </td>
+   <td>返回错误并终止导入
+   </td>
+  </tr>
+</table>
+
+## 解决冲突
+
+参考文档 https://docs.google.com/document/d/196Lo21L3Pw2C0FOHgO2Z9vRn4Xwt7405WpR0_SZnBiY/edit?n=TiDB_Lightning_Local_Backend_Duplicate_Detection#heading=h.2b0fpsdj4w5j
+
+功能尚未上线。等上线后再补充到文档中。
+-->
