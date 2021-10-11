@@ -102,8 +102,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 <table>
   <tr>
-   <td><strong>参数</strong>
-   </td>
+   <th>参数</th>
    <td><strong>解释</strong>
    </td>
   </tr>
