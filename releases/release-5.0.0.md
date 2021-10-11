@@ -257,11 +257,11 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 要关闭 Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
-### 提升 `delete * from table where id < ? limit ?` 语句执行的性能
+### 提升 `delete from table where id < ? limit ?` 语句执行的性能
 
 [#18028](https://github.com/pingcap/tidb/issues/18028)
 
-`delete * from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
+`delete from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
 
 ### 优化 load base 切分策略，解决部分小表热点读场景数据无法切分的性能问题
 

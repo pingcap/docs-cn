@@ -136,7 +136,7 @@ TiDB 调度过程中会占用 I/O、Network、CPU、Memory 等资源，若不对
 
 ### 其他性能优化
 
-+ 提升 `delete * from table where id < ?` 语句执行的性能，p99 性能提升了 4 倍 [#18028](https://github.com/pingcap/tidb/issues/18028)
++ 提升 `delete from table where id < ?` 语句执行的性能，p99 性能提升了 4 倍 [#18028](https://github.com/pingcap/tidb/issues/18028)
 + TiFlash 支持同时向本地多块磁盘并发读、写数据，充分利用本地多块磁盘并发的读、写数据的能力，提升性能
 
 ## 高可用和容灾
