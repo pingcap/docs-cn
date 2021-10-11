@@ -52,6 +52,7 @@
     + [Use TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [Use `LOAD DATA` Statement](/sql-statements/sql-statement-load-data.md)
   + [Migrate from SQL Files](/migrate-from-mysql-dumpling-files.md)
+  + [Replicate Incremental Data between TiDB Clusters in Real Time](/incremental-replication-between-clusters.md)
 + Maintain
   + Upgrade
     + [Use TiUP (Recommended)](/upgrade-tidb-using-tiup.md)
