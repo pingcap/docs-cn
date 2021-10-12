@@ -336,6 +336,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
    tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
    ```
 4. 导入开始后，可以采用以下任意方式查看进度：
+
     - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
     - 通过监控面板查看进度，请参见[ TiDB Lightning 监控](https://pingcap.feishu.cn/tidb-lightning/monitor-tidb-lightning.md)。
 
