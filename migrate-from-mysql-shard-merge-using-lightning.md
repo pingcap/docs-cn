@@ -100,11 +100,11 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 首先使用 Dumpling 从 my_db1 中导出表 table1 和 table2，如下：
 
-    ```
-    tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
-    ```
+```
+tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
+```
 
-    各参数的解释和使用说明见下表。
+各参数的解释和使用说明见下表。
 
 <table>
   <tr>
@@ -146,11 +146,11 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
 
-    {{< copyable "sql" >}}
+{{< copyable "sql" >}}
 
-    ```shell
-     tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
-   ```
+```shell
+tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
+```
 
 这样所需的全量备份数据就全部导出到了 `/data/my_database` 目录中。将所有源数据表格存储在一个目录中，是为了后续方便用 TiDB Lightning 导入。
 
@@ -332,9 +332,9 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
-   ```shell
-   tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
-   ```
+    ```shell
+    tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
+    ```
    
 4. 导入开始后，可以采用以下任意方式查看进度：
 
