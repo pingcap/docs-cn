@@ -71,10 +71,12 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 更多相关权限的说明，请参考[TiDB Lightning 对下游数据库的账号权限要求是怎样的？](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 
+<!--
 ### 部署 Dumpling 和 TiDB Lightning
 
-* [使用 TiUP 部署 TiDB Lighting](/quick_install_tools.md)
-* [使用 TiUP 部署 Dumping](/quick_install_tools.md)
+* [使用 TiUP 部署 TiDB Lighting](https://github.com/pingcap/docs/pull/6144/files#diff-53a937b1281c0fcb1ca972172e4c1b31a97af54bc5414e3186a648ea9eef6e23)
+* [使用 TiUP 部署 Dumping](https://github.com/pingcap/docs/pull/6144/files#diff-53a937b1281c0fcb1ca972172e4c1b31a97af54bc5414e3186a648ea9eef6e23)
+-->
 
 ## 数据导入流程
 
