@@ -9,13 +9,7 @@ summary: 使用 Dumpling 从 TiDB 导出数据。
 
 下图展示了使用 Dumpling 导出数据的场景。
 
-<<<<<<< HEAD
-> **注意：**
->
-> PingCAP 之前维护的 Mydumper 工具 fork 自 [mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 目前已经不再开发新功能，其绝大部分功能已经被 [Dumpling](/dumpling-overview.md) 取代。Dumpling 工具使用 Go 语言编写，支持更多针对 TiDB 特性的优化。请切换到 Dumpling。
-=======
 ![Dumpling 导出数据](/media/dumpling.png)
->>>>>>> 3bbc55710 (Refined Dumpling doc (#7143))
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
@@ -271,11 +265,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 > **注意：**
 >
-<<<<<<< HEAD
-> 在大多数场景下，用户不需要调整 Dumpling 的默认数据一致性选项。
-=======
 > 数据一致性选项的默认值为 `auto`。在大多数场景下，你不需要调整该选项。
->>>>>>> 3bbc55710 (Refined Dumpling doc (#7143))
 
 Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。对于 TiDB 来说，默认情况下，会通过获取某个时间戳的快照来保证一致性（即 `--consistency snapshot`）。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
