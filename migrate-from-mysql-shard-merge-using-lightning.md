@@ -22,9 +22,13 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
 
-```
+{{< copyable "sql" >}}
+
+```sql
 select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 \as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables;
 ```
+
+{{< copyable "sql" >}}
 
 ## 前提条件
 
@@ -65,7 +69,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 一般情况下，推荐使用配置项 `checksum = true`，所以 TiDB Lightning 还需要有下游 TiDB admin 用户权限。
 
-更多相关权限的说明，请参考[TiDB Lightning 对下游数据库的账号权限要求是怎样的？](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq#tidb-lightning-%E5%AF%B9%E4%B8%8B%E6%B8%B8%E6%95%B0%E6%8D%AE%E5%BA%93%E7%9A%84%E8%B4%A6%E5%8F%B7%E6%9D%83%E9%99%90%E8%A6%81%E6%B1%82%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84)
+更多相关权限的说明，请参考[TiDB Lightning 对下游数据库的账号权限要求是怎样的？](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 
 ### 部署 Dumpling 和 TiDB Lightning
 
@@ -140,7 +144,9 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 2. 然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
 
-    ```
+    {{< copyable "sql" >}}
+
+    ```shell
      tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
    ```
 
@@ -278,7 +284,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 1. 将数据源上传到部署了 TiDB Lightning 的服务器。
 2. 参考下面例子配置 `tidb-lightning.toml`。
 
-    ```
+    ```toml
     [lightning]
     # 日志
     level = "info"
@@ -324,7 +330,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
-   ```
+   ```shell
    tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
    ```
 4. 导入开始后，可以采用以下任意方式查看进度：
