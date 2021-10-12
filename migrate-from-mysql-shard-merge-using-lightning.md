@@ -42,7 +42,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 ### 目标 TiKV 集群的磁盘空间要求
 
-**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[ 副本数量](https://docs.pingcap.com/zh/tidb/stable/deploy-and-maintain-faq#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。多出来的 2 倍是算上下列没储存在数据源的因素的保守估计：
+**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[副本数量](https://docs.pingcap.com/zh/tidb/stable/deploy-and-maintain-faq#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。多出来的 2 倍是算上下列没储存在数据源的因素的保守估计：
 
 * 索引会占据额外的空间
 * RocksDB 的空间放大效应
@@ -98,7 +98,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 如果需要导出的多个分表属于同一个上游 MySQL 实例，可以直接使用 Dumpling 的 `-f` 参数一次导出多个分表的结果。如果多个分表分布在不同的 MySQL 实例，可以使用 Dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。下面的例子中同时用到了上述两种方式，然后将导出的数据存放在同一父目录下。
 
-1. 使用 Dumpling 从 my_db1 中导出表 table1 和 table2，如下：
+首先使用 Dumpling 从 my_db1 中导出表 table1 和 table2，如下：
 
     ```
     tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
@@ -144,7 +144,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
   </tr>
 </table>
 
-2. 然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
+然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
 
     {{< copyable "sql" >}}
 
@@ -156,7 +156,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 ### 第 2 步：处理主键或唯一索引冲突
 
-来自多张分表的数据可能会引发主键或者唯一索引的数据冲突，因此在导入数据之前，需要结合分表逻辑对每个主键或唯一索引进行检查，还可能需要预先在下游创建表结构。更多详情，请参考[ 跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#跨分表数据在主键或唯一索引冲突处理)。
+来自多张分表的数据可能会引发主键或者唯一索引的数据冲突，因此在导入数据之前，需要结合分表逻辑对每个主键或唯一索引进行检查，还可能需要预先在下游创建表结构。更多详情，请参考 [跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#跨分表数据在主键或唯一索引冲突处理)。
 
 ### 第 3 步：启动 TiDB Lightning 进行导入
 
@@ -170,7 +170,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 * 如果目标集群为 v3.x 或更旧版本，则建议使用 Importer-backend 模式。
 * 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则可以使用 TiDB-backend 模式。但由于该模式导入速度较慢，不适合本文介绍的大量数据迁移场景。
 
-默认使用 Local-backend 模式。本文档的示例中采用了 Local-backend 模式。更多信息请参考[ TiDB Lightning 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
+默认使用 Local-backend 模式。本文档的示例中采用了 Local-backend 模式。更多信息请参考 [TiDB Lightning 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
 
 下表展示了各后端模式的特点。
 
@@ -277,7 +277,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 * --checkpoint-error-ignore：如果导入表曾经出错，该命令会清除出错状态，如同错误没有发生过一样。
 * --checkpoint-remove：无论是否有出错，把表的断点清除。
 
-关于断点续传的更多信息，请参考[ TiDB Lightning 断点续传](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)。
+关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)。
 
 #### 执行导入操作
 
@@ -339,7 +339,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 4. 导入开始后，可以采用以下任意方式查看进度：
 
     - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-    - 通过监控面板查看进度，请参见[ TiDB Lightning 监控](https://pingcap.feishu.cn/tidb-lightning/monitor-tidb-lightning.md)。
+    - 通过监控面板查看进度，请参见 [TiDB Lightning 监控](https://pingcap.feishu.cn/tidb-lightning/monitor-tidb-lightning.md)。
 
 等待 TiDB Lightning 运行结束，则整个导入完成。
 
@@ -351,7 +351,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 >
 > 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
 
-如果导入过程中遇到问题，请参见[ TiDB Lightning 常见问题](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)。
+如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)。
 
 ### 第 5 步 （可选）：增量数据的迁移
 
@@ -361,7 +361,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 ### 使用 TiDB DM 进行增量数据迁移
 -->
 
-如果要将源数据库从指定位置开始的 Binlog 迁移到 TiDB，可以使用 TiDB DM 进行增量数据迁移。请参考[Data Migration 增量数据迁移场景](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-incremental-migration)。
+如果要将源数据库从指定位置开始的 Binlog 迁移到 TiDB，可以使用 TiDB DM 进行增量数据迁移。请参考 [Data Migration 增量数据迁移场景](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-incremental-migration)。
 
 <!--
 ### 使用 TiDB Lightning 进行增量数据迁移
