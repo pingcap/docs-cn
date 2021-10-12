@@ -10,13 +10,9 @@ aliases: ['/docs-cn/stable/dumpling-overview/','/docs-cn/v4.0/dumpling-overview/
 
 下图展示了使用 Dumpling 导出数据的场景。
 
-<<<<<<< HEAD
-## 相比于 Mydumper，Dumpling 有哪些改进之处？
-=======
 ![Dumpling 导出数据](/media/dumpling.png)
 
 要快速了解 Dumpling 的基本功能，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只作为功能介绍、学习参考，具体操作步骤和最新功能，请以文档内容为准。
->>>>>>> 3bbc55710 (Refined Dumpling doc (#7143))
 
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/Lesson+18+%E8%AF%BE%E7%A8%8B.mp4" width="600px" height="450px" controls="controls"></video>
 
