@@ -72,15 +72,9 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 
 基本信息：
 
-<<<<<<< HEAD
 - [备份输出和恢复输入的文件类型](/br/backup-and-restore-tool.md#备份文件类型)：SST + `backupmeta` 文件
 - 适用 TiDB 版本：v3.1 及 v4.0
 - Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/backup-to-aws-s3-using-br), [使用 BR 工具恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/restore-from-aws-s3-using-br)
-=======
-- [备份输出和恢复输入的文件类型](/br/backup-and-restore-tool.md)：SST + `backupmeta` 文件
-- 适用 TiDB 版本：v4.0 及以上
-- Kubernetes 支持：[使用 BR 工具备份 TiDB 集群数据到兼容 S3 的存储](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br)，[使用 BR 工具恢复 S3 兼容存储上的备份数据](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br)
->>>>>>> 1698e7b69 (Refine ecosystem-tool-user-guide.md (#7117))
 
 ## TiDB 增量数据同步 - TiCDC
 
@@ -105,11 +99,7 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 
 ## 数据校验 - sync-diff-inspector
 
-<<<<<<< HEAD
-[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据的迁移和增量数据的复制。
-=======
 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 是一个用于校验 MySQL/TiDB 中两份数据是否一致的工具。该工具还提供了修复数据的功能，可用于修复少量不一致的数据。
->>>>>>> 1698e7b69 (Refine ecosystem-tool-user-guide.md (#7117))
 
 基本信息：
 
