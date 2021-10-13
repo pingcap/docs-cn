@@ -469,4 +469,4 @@ Sink 为 TiDB 或 MySQL 时，下游数据库的用户需要以下权限：
 
 在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据或 MySQL sink 的同步数据只包含变更后的值，不包含变更前行的值，所以在新的 Collation 框架下无法正确的对数据进行更新和输出变更。
 
-从 v4.0.15、v5.0.4、v5.1.1、v5.2.0 之后开始 TiCDC 内部默认拉取 Old Value 来支持新的 Collation 框架，但是 TiCDC Open Protocol 是否输出 Old Value 还是由 `enable-old-value` 参数控制。
+从 v4.0.15、v5.0.4、v5.1.1 和 v5.2.0 之后开始 TiCDC 内部默认拉取 Old Value 来支持新的 Collation 框架，但是 TiCDC Open Protocol 是否输出 Old Value 还是由 `enable-old-value` 参数控制。
