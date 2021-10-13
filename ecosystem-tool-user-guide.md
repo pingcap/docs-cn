@@ -69,7 +69,7 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 
 ## 备份和恢复 - Backup & Restore
 
-[BR](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
+[Backup & Restore (BR)](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
 
 基本信息：
 
