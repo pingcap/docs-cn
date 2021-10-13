@@ -37,6 +37,8 @@ def check_manual_break(filename):
     metadata = 0
     toggle = 0
     ctoggle = 0
+    stoggle = 0
+    mathtoggle = 0
     lineNum = 0
     mark = 0
 
@@ -64,15 +66,28 @@ def check_manual_break(filename):
                     else:
                         continue
 
+                # Skip multi-line '<script' tags.
+                if re.match (r'\s*<\/*script',line):
+                    if re.match(r'\s*<script',line):
+                        stoggle = 1
+                    elif re.match(r'\s*</script>',line):
+                        stoggle = 0
+                    else:
+                        continue
+
                 # Skip image links.
                 if re.match(r'(\s|\t)*!\[.+\](\(.+\)|: [a-zA-z]+://[^\s]*)',line):
                     continue
+
+                # Skip MathJax notations.
+                if re.match(r'\s*\$\$\s*$', line):
+                    mathtoggle = abs(1-mathtoggle)
 
                 # Set a toggle to skip code blocks.
                 if re.match(r'(\s|\t)*`{3}', line):
                     toggle = abs(1-toggle)
 
-                if toggle == 1 or ctoggle == 1:
+                if toggle or ctoggle or stoggle or mathtoggle:
                     continue
                 else:
                     # Keep a record of the current line and the former line.
