@@ -408,7 +408,10 @@ drainer_servers:
 cdc_servers:
   - host: 10.0.1.20
     gc-ttl: 86400
+    data_dir: "/cdc-data"
   - host: 10.0.1.21
+    gc-ttl: 86400
+    data_dir: "/cdc-data"
 ```
 
 ### `tispark_masters`
