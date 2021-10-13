@@ -66,7 +66,7 @@ TiDB 提供了丰富的生态工具，可以帮助你进行数据迁移和校验
 >
 > 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-backends.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
 
-## 备份和恢复 - BR
+## 备份和恢复 - Backup & Restore
 
 [BR](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
 
