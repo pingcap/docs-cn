@@ -191,7 +191,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 ### 紧急级别报警项
 
-#### `PD_cluster_offline_tikv_nums`
+#### `PD_cluster_down_tikv_nums`
 
 * 报警规则：
 
