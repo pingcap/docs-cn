@@ -101,7 +101,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 ## TiFlash 分析慢
 
-检查 SQL 中是否含有 TiFlash 不支持的函数或算子，如果您的版本是 5.0 以下，可以参照[TiFlash支持的计算下推](/use-tiflash#tiflash-支持的计算下推)；如果您的版本是 5.0 及以上，可以[使用 Explain 语句查询执行计划的 warnings](/use-tiflash#控制是否选择-mpp-模式) 来查看。
+检查 SQL 中是否含有 TiFlash 不支持的函数或算子，如果您的版本是 5.0 以下，可以参照[TiFlash支持的计算下推](/tiflash/use-tiflash#TiFlash-支持的计算下推.md)；如果您的版本是 5.0 及以上，可以[使用 Explain 语句查询执行计划的 warnings](/tiflash/use-tiflash#控制是否选择-mpp-模式) 来查看。
 
 ## TiFlash 数据不同步
 
