@@ -128,7 +128,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config show replication' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
+    echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
     - 返回 `true`，进入下一步；
@@ -137,7 +137,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 4. 检查集群副本数 `max-replicas` 配置是否合理。
 
     - 若 `max-replicas` 取值未超过 TiKV 节点数，无需操作，进入下一步；
-    - 若 `max-replicas` 超过 TiKV 节点数，PD 不会向 TiFlash 同步数据。此时， 应将 `max-replicas` 修改为小于等于 TiKV 节点数。
+    - 若 `max-replicas` 超过 TiKV 节点数，PD 不会向 TiFlash 同步数据。此时，应将 `max-replicas` 修改为小于等于 TiKV 节点数。
 
     > **注意：**
     >
@@ -155,6 +155,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     "count": 3,
     "location_labels": [
       "host"
+
     ]
   }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
