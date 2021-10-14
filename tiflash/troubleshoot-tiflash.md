@@ -43,7 +43,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    echo 'config show replication' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
     ```
 
     - 返回 `true`，进入下一步；
@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo "store" | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    echo "store" | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
     ```
 
     store.labels 中含有 `{"key": "engine", "value": "tiflash"}` 信息的为 TiFlash proxy。
@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config placement-rules show' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    echo 'config placement-rules show' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
     ```
 
     再确认 "default: count" 参数值。
@@ -114,7 +114,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     - 有正常返回，进入下一步;
     - 无正常返回：
 
-      执行 `select * from information_schema.tiflash_replica` 检查是否已经建了 TiFlash replica，没有的话，重新执行 `alter table <tbl_name> set tiflash replica <num>` 或者查看是否有其他执行语句（如 `add index` ）或 DDL 操作是否异常。
+      执行 `select * from information_schema.tiflash_replica` 检查是否已经建了 TiFlash replica，没有的话，重新执行 `alter table ${tbl_name} set tiflash replica ${num}` 或者查看是否有其他执行语句（如 `add index` ）或 DDL 操作是否异常。
 
 2. 检查 TiFlash 进程是否正常。
 
@@ -128,7 +128,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    echo 'config show replication' | /path/to/pd-ctl -u http://${pd-ip}:${pd-port}
     ```
 
     - 返回 `true`，进入下一步；
@@ -156,7 +156,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     "location_labels": [
       "host"
     ]
-  }' http://172.16.x.xxx:2379/pd/api/v1/config/rule
+  }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
 
 5. 检查 TiFlash 与 TiDB 或 PD 连接是否正常。
