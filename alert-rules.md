@@ -195,7 +195,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_down_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_down_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -212,7 +212,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance,job,le)) > 1`
+    `histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance, job, le)) > 1`
 
 * 规则描述：
 
@@ -228,7 +228,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="miss_peer_region_count"}) > 100`
+    `(sum(pd_regions_status{type="miss_peer_region_count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -245,7 +245,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_disconnected_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_disconnected_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -262,7 +262,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_low_space_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_low_space_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -280,7 +280,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To,instance,job,le)) > 1`
+    `histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To, instance, job, le)) > 1`
 
 * 规则描述：
 
@@ -295,7 +295,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket{type="tso"}[1m])) by (instance,job,le)) > 0.1`
+    `histogram_quantile(0.99, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket{type="tso"}[1m])) by (instance, job, le)) > 0.1`
 
 * 规则描述：
 
@@ -312,7 +312,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="down_peer_region_count"}) > 0`
+    `(sum(pd_regions_status{type="down-peer-region-count"}) by (instance)  > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -328,7 +328,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="pending_peer_region_count"}) > 100`
+    `(sum(pd_regions_status{type="pending-peer-region-count"}) by (instance) > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
