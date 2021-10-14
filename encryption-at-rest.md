@@ -7,15 +7,15 @@ summary: 了解如何启用静态加密功能保护敏感数据。
 
 > **注意：**
 >
-> 如果集群部署在 AWS 上并在使用 EBS (Elastic Block Store) 存储，建议使用 EBS 加密，详细信息请参考 [AWS 文档 - EBS 加密](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html)。如果集群部署在 AWS 上，但在使用 EBS 存储以外的存储方式（例如本地 NVMe 存储），则建议使用本文中介绍的静态加密。
+> 如果集群部署在 AWS 上并在使用 EBS (Elastic Block Store) 存储数据，建议使用 EBS 加密，详细信息请参考 [AWS 文档 - EBS 加密](https://docs.aws.amazon.com/zh_cn/AWSEC2/latest/UserGuide/EBSEncryption.html)。如果集群部署在 AWS 上，但未使用 EBS 存储（例如使用本地 NVMe 存储），则建议使用本文中介绍的静态加密方式。
 
 静态加密 (encryption at rest) 即在存储数据时进行数据加密。对于数据库，静态加密功能也叫透明数据加密 (TDE)，区别于传输数据加密 (TLS) 或使用数据加密（很少使用）。SSD 驱动器、文件系统、云供应商等都可进行静态加密。但区别于这些加密方式，若 TiKV 在存储数据前就进行数据加密，攻击者则必须通过数据库的身份验证才能访问数据。例如，即使攻击者获得物理机的访问权限时，也无法通过复制磁盘上的文件来访问数据。
 
-## 不同的 TiDB 组件支持的加密方式
+## 各 TiDB 组件支持的加密方式
 
-在一个 TiDB 集群中，不同的组件使用不同的加密方法。本节介绍了 TiKV、 TiFlash、 PD 和 Backup & Restore (BR) 等不同的 TiDB 组件支持的加密方式。
+在一个 TiDB 集群中，不同的组件使用不同的加密方式。本节介绍 TiKV、 TiFlash、PD 和 Backup & Restore (BR) 等不同 TiDB 组件支持的加密方式。
 
-当部署一个 TiDB 集群时，大部分的用户数据会存储在 TiKV 和 TiFlash 节点上。此外，一些元数据会存储在 PD 节点上，比如用作为 TiKV Region 边界的二级索引密钥。为了能够充分发挥静态加密的性能，所有组件都需要启用加密功能。此外，进行加密时，也需要对备份、日志文件和通过网络传输的数据进行加密。
+部署好一个 TiDB 集群后，大部分用户数据会存储在 TiKV 和 TiFlash 节点上。此外，一些元数据会存储在 PD 节点上，例如用作为 TiKV Region 边界的二级索引密钥。为了能够充分发挥静态加密的优势，所有组件都需要启用加密功能。此外，进行加密时，也需要对备份、日志文件和通过网络传输的数据进行加密。
 
 ### TiKV
 
@@ -25,11 +25,11 @@ TiKV 支持静态加密，即在 [CTR](https://en.wikipedia.org/wiki/Block_ciphe
 
 TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据。建议在使用静态加密时禁用 TiKV 进程的核心转储，该功能目前无法由 TiKV 独立处理。
 
-TiKV 使用文件的绝对路径跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`，`raftstore.raftdb-path`，`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
+TiKV 使用文件的绝对路径来跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`，`raftstore.raftdb-path`，`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 
 ### TiFlash
 
-TiFlash 支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 tiflash-learner.toml 中）和监控项含义等均与 TiKV 一致。
+TiFlash 支持静态加密。数据密钥由 TiFlash 生成。TiFlash（包括 TiFlash Proxy）写入的所有文件，包括数据文件、Schema 文件、临时文件等，均由当前数据密钥加密。TiFlash 支持的加密算法、加密配置方法（配置项在 `tiflash-learner.toml` 中）和监控项含义等均与 TiKV 一致。
 
 如果 TiFlash 中部署了 Grafana 组件，可以查看 **TiFlash-Proxy-Details** -> **Encryption**。
 
@@ -43,7 +43,7 @@ BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务
 
 ### 日志
 
-TiKV， TiDB 和 PD 信息日志中可能会包含用于调试的用户数据。信息日志不会被加密，建议开启[日志脱敏](/log-redaction.md)功能。
+TiKV， TiDB 和 PD 信息日志中可能包含用于调试的用户数据。信息日志不会被加密，建议开启[日志脱敏](/log-redaction.md)功能。
 
 ## TiKV 静态加密
 
@@ -102,7 +102,7 @@ endpoint = "https://kms.us-west-2.amazonaws.com"
 
 `key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。`endpoint` 通常无需指定，除非你在使用非 AWS 提供的 AWS KMS 兼容服务或需要使用 [KMS VPC endpoint](https://docs.aws.amazon.com/kms/latest/developerguide/kms-vpc-endpoint.html)。
 
-你也可以使用 AWS [多区域密钥](https://docs.aws.amazon.com/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
+你也可以使用 AWS [多区域键](https://docs.aws.amazon.com/zh_cn/kms/latest/developerguide/multi-region-keys-overview.html)。为此，你需要在一个特定的区域设置一个主键，并在需要的区域中添加副本密钥。
 
 若要使用文件方式指定主密钥，主密钥配置应如下所示：
 
