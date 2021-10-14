@@ -64,8 +64,8 @@ sync-diff-inspector 的配置总共分为五个部分：
 
 - Global config: 通用配置，包括日志级别、划分 chunk 的大小、校验的线程数量等。
 - Databases config: 配置上下游数据库实例。
-- table-configs: 对具体表的特殊配置。
-- routes: 用于上游多表对下游表的映射
+- Table configs: 对具体表的特殊配置。（可选）
+- Routes: 用于上游多表对下游表的映射。（可选）
 - Task config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
 
 下面是一个完整配置文件的说明：
@@ -115,7 +115,7 @@ ignore-struct-check = false
     # remove comment if use tidb's snapshot data
     # snapshot = "2016-10-08 16:45:26"
 
-######################### table-configs #########################
+######################### Table configs #########################
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
 [table-configs]
 [table-configs.config1] # config1 是该配置的唯一标识 id，用于下面 task.target-configs 中
@@ -135,7 +135,7 @@ chunk-size = 0
 # 指定该表的 collation
 collation = ""
 
-########################### routes ###########################
+########################### Routes ###########################
 # 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
 # 可以只配置 schema 或者 table 的映射关系，也可以都配置
 [routes]
