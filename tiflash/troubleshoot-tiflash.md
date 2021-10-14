@@ -195,7 +195,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     - 是，PD 调度正常;
     - 否，PD 调度异常，联系 PD 的值班人员协助排查。
 
-    > ** 注意：**
+    > **注意：**
     >
     > 当需要同步的表有很多小 region 且 region merge 参数已开启或取值较大时，可能会出现 progress 一段时间不变化或者变小的现象。
 
