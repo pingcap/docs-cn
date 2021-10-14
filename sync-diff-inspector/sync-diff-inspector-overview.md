@@ -188,7 +188,8 @@ target-table = "t2" # 目标表名
 
 #### 进度条
 
-sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进度信息包括表的结构比较结果、表的数据比较结果以及进度条。(注意：为了达成显示效果，请保持显示窗口宽度在80字符以上)
+sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进度信息包括表的结构比较结果、表的数据比较结果以及进度条。
+> **建议：** 为了达成显示效果，请保持显示窗口宽度在80字符以上
 
 ```progress
 A total of 2 tables need to be compared
@@ -291,33 +292,33 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
 
 checkpoint主要分为两块内容：
 
-- chunk-info: 保存 chunk 的所有信息，chunk 按照一定顺序被排列，checkpoint 保证文件中的 chunk 及其之前的所有 chunk 都已经被比对过。
+- chunk-info: 保存选中 chunk 的所有信息。chunk 的有序性由其 `index` 字段保证，checkpoint 保证该 chunk 及该 chunk 之前的所有 chunk 都已经被比对过。
     
-    - state: 保存该 chunk 比对是否出现 error
+    - state: 保存该 chunk 比对是否出现 error。
 
-    - chunk-range: 保存该 chunk 在表中的范围
+    - chunk-range: 保存该 chunk 在表中的范围。
 
-        - index: 作为 chunk 的唯一标识和排序依据。例子表示该 chunk 位于第一个表 `(table-index=0)`，包括了 bucketID=0 `(bucket-index-left=0)` 到 bukcetID=1 `(bucket-index-right=0)` 的范围，这段范围被划分为200个 chunks `(chunk-count=200)`，该chunk位于第 2 个 `(chunk-index=1)`。
+        - index: 保存 chunk 的唯一标识和排序依据。例子表示该 chunk 位于第一个表 `(table-index=0)`，包括了 bucketID=0 `(bucket-index-left=0)` 到 bukcetID=1 `(bucket-index-right=0)` 的范围，这段范围被划分为200个 chunks `(chunk-count=200)`，该chunk位于第 2 个 `(chunk-index=1)`。
 
         - type: 表示该 chunk 是由哪种方式划分的。type=1 表示通过了 TiDB 的 buckets 信息来划分。type=2 表示随机划分。
 
         - bounds: 表示该 chunk 的范围，注意 bounds 是有顺序的，不同 bounds 的顺序表示不同的范围。
 
-        - where: 由 bounds 转化的 SQL 语句的 where。
+        - where: 表示由 bounds 转化的 SQL 语句的 where。
 
-        - args: 按顺序填充 where 中的 `?`。
+        - args: 表示用于按顺序填充 where 中的 `?` 的值。
 
     - index-id: 如果使用了索引来划分 chunk，则该值标志该 chunk 使用哪一个 index。
 
-- report-info: 保存 chunk 的比对的统计结果
+- report-info: 保存 chunk 的比对的统计结果。
 
-    - Result: 比对的结果
+    - Result: 保存比对的结果。
 
-    - PassNum: 目前比对一致的表的数量
+    - PassNum: 保存目前比对一致的表的数量。
 
-    - FailNum: 目前比对不一致的表的数量
+    - FailNum: 保存目前比对不一致的表的数量。
 
-    - table-results: 存放各个表的比对统计结果，例子表示表 `sbtest.sbtest99` 的表结构一致但表数据不一致，对 chunk `0:0-0:0:200` (由 `chunk.index` 唯一标识)的修复需要添加一行和删除一行。
+    - table-results: 保存各个表的比对统计结果，例子表示表 `sbtest.sbtest99` 的表结构一致但表数据不一致，对 chunk `0:0-0:0:200` (由 `chunk.index` 唯一标识)的修复需要添加一行和删除一行。
 
 #### 校验结果
 
