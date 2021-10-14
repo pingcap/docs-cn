@@ -190,7 +190,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 ### 紧急级别报警项
 
-#### `PD_cluster_offline_tikv_nums`
+#### `PD_cluster_down_tikv_nums`
 
 * 报警规则：
 
