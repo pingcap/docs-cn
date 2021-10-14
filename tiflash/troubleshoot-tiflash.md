@@ -143,7 +143,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     >
     > 测试环境可能会取 `max-replicas` 默认值 3，在生产环境中，TiKV 节点数一般大于该值。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
     ```shell
     curl -X POST -d '{
@@ -206,8 +206,8 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
     检查磁盘使用空间比例是否高于 `low-space-ratio` 的值（默认值 0.8，即当节点的空间占用比例 超过 80% 时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据）。
 
-    - 磁盘使用率 ≥ `low-space-ratio` 时，空间不足。删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）；
-    - 磁盘使用率 < `low-space-ratio` 时，空间正常，进入下一步。
+    - 磁盘使用率大于等于 `low-space-ratio` 时，空间不足。删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）；
+    - 磁盘使用率小于 `low-space-ratio` 时，空间正常，进入下一步。
 
 2. 检查 TiKV、PD、TiFlash 之间的网络情况。
 
@@ -216,7 +216,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     - 没有更新，检查下一步；
     - 有更新，检查是否有 `down peer` （`down peer` 可能会没有清理干净而导致同步卡住）
       - `pd-ctl region check-down-peer`
-      - `pd-ctl operator add remove-peer \<region-id> \<tiflash-store-id>`
+      - `pd-ctl operator add remove-peer\<region-id> \<tiflash-store-id>`
 
 3. 查看 CPU 使用率。
 
