@@ -397,8 +397,6 @@ drainer_servers:
 - `deploy_dir`
 - `data_dir`
 - `log_dir`
-- `gc-ttl`
-- `tz`
 - `arch`
 - `os`
 
