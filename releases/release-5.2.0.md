@@ -48,7 +48,7 @@ TiDB 版本：5.2.0
 | TiDB 配置文件 | [`stmt-summary.max-stmt-count`](/tidb-configuration-file.md#max-stmt-count) | 修改 | 表示 statement summary tables 中保存的 SQL 种类的最大数量。默认值从 `200` 修改为 `3000`。 |
 | TiDB 配置文件 | `experimental.allow-expression-index`  | 废弃 | 废弃 TiDB 配置文件中`allow-expression-index` 配置项 |
 | TiKV 配置文件 | [`raftstore.cmd-batch`](/tikv-configuration-file.md#cmd-batch)  | 新增 | 对请求进行攒批的控制开关，开启后可显著提升写入性能。默认值为 `true`。 |
-| TiKV 配置文件 | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval)  | 新增 | TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。默认值为 `500ms` |
+| TiKV 配置文件 | [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval)  | 新增 | TiKV 每隔一段时间会检测 Raftstore 组件的延迟情况，该配置项设置检测的时间间隔。当检测的延迟超过该时间，该检测会被记为超时。默认值为 `500ms`。|
 | TiKV 配置文件 | [`raftstore.max-peer-down-duration`](/tikv-configuration-file.md#max-peer-down-duration)  | 修改 | 表示副本允许的最长未响应时间，超过将被标记为 `down`，后续 PD 会尝试将其删掉。默认值从 `5m` 修改为 `10m`。 |
 | TiKV 配置文件 | [`server.raft-client-queue-size`](/tikv-configuration-file.md#raft-client-queue-size)  | 新增 | 指定 TiKV 中发送 Raft 消息的缓冲区大小。默认值为 8192。 |
 | TiKV 配置文件 | [`storage.flow-control.enable`](/tikv-configuration-file.md#enable)  | 新增 | 表示是否开启 TiKV 流量控制机制。默认值为 `true`。 |
