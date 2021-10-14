@@ -46,7 +46,8 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
     ```
 
-    预期结果为 `"enable-placement-rules": "true"`（已开启）。如未开启，具体开启方法参考[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)。
+    - 返回 `true`，进入下一步；
+    - 返回 `false`，参照[开启 Placement Rules 特性](/configure-placement-rules#开启-placement-rules-特性)开启`Placement Rules`。
 
 2. 通过 TiFlash-Summary 监控面板下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
 
@@ -97,3 +98,150 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 1. 参照[下线 TiFlash 节点](/scale-tidb-using-tiup.md#方案二手动缩容-tiflash-节点)一节下线对应的 TiFlash 节点。
 2. 清除该 TiFlash 节点的相关数据。
 3. 重新在集群中部署 TiFlash 节点。
+
+## TiFlash 分析慢
+
+检查 SQL 中是否含有 TiFlash 不支持的函数或算子，如果您的版本是 5.0 以下，可以参照[TiFlash支持的计算下推](/use-tiflash#tiflash-支持的计算下推)；如果您的版本是 5.0 及以上，可以[使用 Explain 语句查询执行计划的 warnings](/use-tiflash#控制是否选择-mpp-模式) 来查看。
+
+## TiFlash 数据不同步
+
+数据完全不同步是指在部署完 TiFlash 节点且进行了数据的同步操作（alter 操作）之后，没有数据同步到 TiFlash 节点，您可以通过以下步骤确认或解决问题：
+
+1. 检查同步操作是否执行。
+
+    执行 `alter table <tbl_name> set tiflash replica <num>` 操作，查看是否有正常返回:
+
+    - 有正常返回，进入下一步;
+    - 无正常返回：
+
+      执行 `select * from information_schema.tiflash_replica` 检查是否已经建了 TiFlash replica，没有的话，重新执行 `alter table <tbl_name> set tiflash replica <num>` 或者查看是否有其他执行语句（如 `add index` ）或 DDL 操作是否异常。
+
+2. 检查 TiFlash 进程是否正常。
+
+    查看 `progress` 、`tiflash_cluster_manager.log` 日志中的 `flash_region_count` 参数以及 TiFlash Uptime 是否有变化:
+
+    - 有变化，TiFlash 进程正常，进入下一步；
+    - 没有变化，TiFlash 进程异常，通过 `tiflash` 日志进一步排查
+
+3. 使用 pd-ctl 检查 PD 的 [Placement Rules](/configure-placement-rules.md) 功能是否开启：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    echo 'config show replication' | /path/to/pd-ctl -u http://<pd-ip>:<pd-port>
+    ```
+
+    - 返回 `true`，进入下一步；
+    - 返回 `false`，参照[开启 Placement Rules 特性](/configure-placement-rules#开启-placement-rules-特性)开启`Placement Rules`。
+
+4. 检查集群副本数 `max-replicas` 配置是否合理。
+
+    - 若 `max-replicas` 取值未超过 TiKV 节点数，无需操作，进入下一步；
+    - 若 `max-replicas` 超过 TiKV 节点数，PD 不会向 TiFlash 同步数据。此时， 应将 `max-replicas` 修改为小于等于 TiKV 节点数。
+
+    > **注意：**
+    >
+    > 测试环境可能会取 `max-replicas` 默认值 3，在生产环境中，TiKV 节点数一般大于该值。
+
+   {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl -X POST -d '{
+    "group_id": "pd",
+    "id": "default",
+    "start_key": "",
+    "end_key": "",
+    "role": "voter",
+    "count": 3,
+    "location_labels": [
+      "host"
+    ]
+  }' http://172.16.x.xxx:2379/pd/api/v1/config/rule
+    ```
+
+5. 检查 TiFlash 与 TiDB 或 PD 连接是否正常。
+
+    检查 `flash_cluster_manager.log` 日志，查找关键字 `ERROR`。
+
+    - 没有关键字 `ERROR`，连接正常，进入下一步；
+    - 有关键字 `ERROR`， 连接异常：
+
+      - 出现 PD 相关关键字：
+
+        检查 TiFlash 配置文件中`raft.pd_addr` 对应 pd 地址是否有效，执行 `curl '{pd-addr}/pd/api/v1/config/rules'` 检查是否能在 5s 内正常返回无报错。
+
+      - 出现 TiDB 相关关键字：
+
+        检查 TiFlash 配置文件中 `flash.tidb_status_addr` 对应 tidb 的 status 服务地址是否有效，执行 `curl '{tidb-status-addr}/tiflash/replica'` 检查是否能在 5s 内正常返回无报错。
+
+      - 检查节点间能否相互连通。
+
+    > **注意：**
+    >
+    > 如问题依然无法解决，收集相关组件的日志进行排查。
+
+6. 检查表是否创建 `placement-rule`。
+
+    检查 `flash_cluster_manager.log` 日志，查找是否存在关键字 `Set placement rule … table-<table_id>-r`。
+
+    - 有关键字，进入下一步；
+    - 没有关键字，收集相关组件的日志进行排查。
+
+7. 检查 PD 是否正常发起调度。
+
+    查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字，且之后是否出现 `add operator` 之类的调度行为。
+
+    - 是，PD 调度正常;
+    - 否，PD 调度异常，联系 PD 的值班人员协助排查。
+
+    > ** 注意：**
+    >
+    > 当需要同步的表有很多小 region 且 region merge 参数已开启或取值较大时，可能会出现 progress 一段时间不变化或者变小的现象。
+
+## TiFlash 数据同步卡住
+
+同步卡住是指在数据同步过程中，数据一开始可以正常同步，经过一段时间，全部或者部分数据无法同步。
+
+1. 检查磁盘空间。
+
+    检查磁盘使用空间比例是否高于 `low-space-ratio` 的值（默认值 0.8，即当节点的空间占用比例 超过 80% 时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据）。
+
+    - 磁盘使用率 ≥ `low-space-ratio` 时，空间不足。删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）；
+    - 磁盘使用率 < `low-space-ratio` 时，空间正常，进入下一步。 
+
+2. 检查 TiKV、PD、TiFlash 之间的网络情况。
+
+    在 `flash_cluster_manager.log` 中检查同步卡住的 table 对应的 `flash_region_count` 是否有更新。
+
+    - 没有更新，检查下一步；
+    - 有更新，检查是否有 `down peer` （`down peer` 可能会没有清理干净而导致同步卡住）
+      - `pd-ctl region check-down-peer`
+      - `pd-ctl operator add remove-peer \<region-id> \<tiflash-store-id>`
+
+3. 查看 CPU 使用率。
+
+    选择 `TiFlash-Proxy-Details` > `Thread CPU` > `Region task worker pre-handle/generate snapshot CPU`，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
+
+    若曲线为一条直线，表示 TiFlash 发生卡死，可强制杀进程重启或联系值班人员。
+
+## 数据同步慢
+
+同步慢可能由多种原因引起，按以下步骤进行排查。
+
+1. 调整调度参数取值。
+
+    - 调大 `store limit` 增加同步速度;
+    - 调小 `config set patrol-region-interval 10ms`， 加快 TiKV 侧 checker 扫描 region 的频率;
+    - 调大 `region merge` 参数，减少 region 数量，从而减少扫描数量，提高检查频次。
+
+2. 调整 TiFlash 侧负载。
+
+    TiFlash 负载过大会引起同步慢，可通过 Grafana 中的 TiFlash-Summary 看板查看各个负载的情况：
+
+    - `Applying snapshots Count`: `TiFlash-summary` > `raft` > `Applying snapshots Count`
+    - `Snapshot Predecode Duration`: `TiFlash-summary` > `raft` > `Snapshot Predecode Duration`
+    - `Snapshot Flush Duration`: `TiFlash-summary` > `raft` > `Snapshot Flush Duration`
+    - `Write Stall Duration`: `TiFlash-summary` > `Storage Write Stall` > `Write Stall Duration`
+    - `generate snapshot CPU`: `TiFlash-Proxy-Details` > `Thread CPU` > `Region task worker pre-handle/generate snapshot CPU`
+
+您可根据业务业务优先级，调整负载情况。
