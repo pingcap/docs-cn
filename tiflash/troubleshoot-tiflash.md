@@ -47,7 +47,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     ```
 
     - 返回 `true`，进入下一步；
-    - 返回 `false`，参照[开启 Placement Rules 特性](/configure-placement-rules#开启-placement-rules-特性)开启`Placement Rules`。
+    - 返回 `false`，参照[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)开启`Placement Rules`。
 
 2. 通过 TiFlash-Summary 监控面板下的 UpTime 检查操作系统中 TiFlash 进程是否正常。
 
@@ -72,7 +72,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     ```
 
     再确认 "default: count" 参数值。
-    
+
     > **注意：**
     >
     > 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
@@ -101,7 +101,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 ## TiFlash 分析慢
 
-检查 SQL 中是否含有 TiFlash 不支持的函数或算子，如果您的版本是 5.0 以下，可以参照[TiFlash支持的计算下推](/tiflash/use-tiflash#TiFlash-支持的计算下推.md)；如果您的版本是 5.0 及以上，可以[使用 Explain 语句查询执行计划的 warnings](/tiflash/use-tiflash#控制是否选择-mpp-模式) 来查看。
+检查 SQL 中是否含有 TiFlash 不支持的函数或算子，如果您的版本是 5.0 以下，可以参照[TiFlash支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)；如果您的版本是 5.0 及以上，可以[使用 Explain 语句查询执行计划的 warnings](/tiflash/use-tiflash.md#控制是否选择-mpp-模式) 来查看。
 
 ## TiFlash 数据不同步
 
@@ -132,7 +132,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     ```
 
     - 返回 `true`，进入下一步；
-    - 返回 `false`，参照[开启 Placement Rules 特性](/configure-placement-rules#开启-placement-rules-特性)开启`Placement Rules`。
+    - 返回 `false`，参照[开启 Placement Rules 特性](/configure-placement-rules.md#开启-placement-rules-特性)开启`Placement Rules`。
 
 4. 检查集群副本数 `max-replicas` 配置是否合理。
 
@@ -207,7 +207,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
     检查磁盘使用空间比例是否高于 `low-space-ratio` 的值（默认值 0.8，即当节点的空间占用比例 超过 80% 时，为避免磁盘空间被耗尽，PD 会尽可能避免往该节点迁移数据）。
 
     - 磁盘使用率 ≥ `low-space-ratio` 时，空间不足。删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）；
-    - 磁盘使用率 < `low-space-ratio` 时，空间正常，进入下一步。 
+    - 磁盘使用率 < `low-space-ratio` 时，空间正常，进入下一步。
 
 2. 检查 TiKV、PD、TiFlash 之间的网络情况。
 
