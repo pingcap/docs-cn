@@ -147,17 +147,17 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
     ```shell
     curl -X POST -d '{
-    "group_id": "pd",
-    "id": "default",
-    "start_key": "",
-    "end_key": "",
-    "role": "voter",
-    "count": 3,
-    "location_labels": [
-      "host"
+        "group_id": "pd",
+        "id": "default",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 3,
+        "location_labels": [
+        "host"
 
-    ]
-  }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
+        ]
+    }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
 
 5. 检查 TiFlash 与 TiDB 或 PD 连接是否正常。
