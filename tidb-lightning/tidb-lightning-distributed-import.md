@@ -4,7 +4,10 @@ title: TiDB Lightning 分布式并行导入
 
 # TiDB Lightning 分布式并行导入
 
-TiDB Lightning 的 Local 后端模式从 v5.1.0 版本开始支持单表或多表数据的并行导入。
+TiDB Lightning 的 Local 后端模式从 v5.1.0 版本开始支持单表或多表数据的并行导入。支持从以下数据源并行导入：
+
+- Dumpling 导出的数据形式，包括 SQL/CSV
+- 存储在 Amazon S3  云盘的数据
 
 TiDB Lightning 并行导入功能通过支持同步启动多个实例并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
