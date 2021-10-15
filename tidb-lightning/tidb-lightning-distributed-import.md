@@ -4,7 +4,7 @@ title: TiDB Lightning 分布式并行导入
 
 # TiDB Lightning 分布式并行导入
 
-TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-Local-backend)从 v5.1.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
+TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)从 v5.1.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
@@ -24,9 +24,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ### 解决主键或者唯一索引的冲突
 
-在使用 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-Local-backend)模式并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
-
-要解决主键或唯一索引冲突处理，请参考[跨分表数据在主键或唯一索引冲突处理](shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)。
+在使用 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)模式并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
 ### 优化配置项`tikv-import.region-split-size`
 
@@ -143,7 +141,6 @@ pattern = '(?i)^(?:[^/]*/)my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
 schema = "my_db"
 table = "my_table"
 type = "sql"
-
 ```
 
 另外一个实例的配置修改为只导入 `05001 ~ 10000` 这些数据文件即可。
