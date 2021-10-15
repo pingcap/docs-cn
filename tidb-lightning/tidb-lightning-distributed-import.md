@@ -8,10 +8,10 @@ TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
-TiDB Lightning 支持从以下数据源并行导入：
+TiDB Lightning 并行导入可以用于以下场景：
 
-- Dumpling 导出的数据形式，包括 SQL/CSV
-- 存储在 Amazon S3 云盘上的数据
+- 使用 Dumpling + Lightning 并行导入分库分表数据至 TiDB
+- 从 Amazon S3 等分布式存储中并行导入单表数据
 
 ## 使用说明
 
