@@ -87,7 +87,7 @@ target-table = "my_table"
 
 #### 第 3 步：开启 TiDB Lightning 进行数据导入
 
-在使用 TiDB Lightning 并行导入时，对每个 TiDB Lightning 节点机器配置的需求与非并行导入模式相同，每个 TiDB Lightning 节点需要消耗相同的资源，建议部署在不同的机器上面，具体见 [](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-Local-backend)
+在使用 TiDB Lightning 并行导入时，对每个 TiDB Lightning 节点机器配置的需求与非并行导入模式相同，每个 TiDB Lightning 节点需要消耗相同的资源，建议部署在不同的机器上面，具体见 [TiDB Lightning Local-backend](/tidb-lightning/tidb-lightning-backends.md#TiDB-Lightning-Local-backend)
 
 依次在每台机器上面运行 TiDB Lightning。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
