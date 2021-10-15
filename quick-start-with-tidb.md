@@ -7,16 +7,18 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 本指南介绍如何快速上手体验 TiDB 数据库。要上手 TiDB 数据库，你将使用到 TiUP，即 TiDB 生态系统中的一个包管理工具。通过 TiUP，你只需执行一行命令就可运行任意 TiDB 集群组件。
 
-如需部署本地生产集群，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
+> **注意：**
+>
+> 本指南中的 TiDB 部署方式仅适用于快速上手体验，不适用于生产环境。
+>
+> - 如需在生产环境部署 TiDB，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。
+> - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
+> - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
 
 <SimpleTab>
 <div label="Mac">
 
 ## 在 Mac OS 上部署本地测试环境
-
-> **注意：**
->
-> 由于部分 TiDB 组件尚未发布支持 Apple M1 芯片的版本，暂不支持在使用 Apple M1 芯片的本地 Mac 机器上使用 `tiup playground` 命令。
 
 TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群，步骤如下：
 
@@ -55,10 +57,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.0.1 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v5.2.1 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v5.0.1），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.2.1），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -70,6 +72,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
         > **注意：**
         >
+        > + 支持 v5.2.1 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
         > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
         > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
 
@@ -156,17 +159,18 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.0.1 --db 2 --pd 3 --kv 3 --monitor
+        tiup playground v5.2.1 --db 2 --pd 3 --kv 3 --monitor
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v5.0.1），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.2.1），`--monitor` 表示同时部署监控组件。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
-        To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
+        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root -p (no password) --comments
         To view the dashboard: http://127.0.0.1:2379/dashboard
-        To view the monitor: http://127.0.0.1:9090
+        PD client endpoints: [127.0.0.1:2379]
+        To view the Prometheus: http://127.0.0.1:9090
+        To view the Grafana: http://127.0.0.1:3000
         ```
 
         > **注意：**
@@ -196,9 +200,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
-7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
 
-8. 测试完成之后，可以通过执行以下步骤来清理集群：
+8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+
+9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
     1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
 
@@ -246,7 +252,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 - 部署需要使用部署主机的 root 用户及密码
 - 部署主机[关闭防火墙](/check-before-deployment.md#检测及关闭目标部署机器的防火墙)或者开放 TiDB 集群的节点间所需端口
-- 目前 TiUP 支持在 x86_64 (AMD64 和 ARM) 架构上部署 TiDB 集群
+- 目前 TiUP 支持在 x86_64（AMD64 和 ARM）架构上部署 TiDB 集群
     - 在 AMD64 架构下，建议使用 CentOS 7.3 及以上版本 Linux 操作系统
     - 在 ARM 架构下，建议使用 CentOS 7.6 1810 版本 Linux 操作系统
 

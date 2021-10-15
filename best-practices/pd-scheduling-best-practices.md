@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/best-practices/pd-scheduling-best-practices/','/docs-cn/
 
 > **注意：**
 >
-> 本文内容基于 TiDB 3.0 版本，更早的版本（2.x）缺少部分功能的支持，但是基本原理类似，也可以以本文作为参考。
+> 本文内容基于 TiDB 3.0 版本，更早的版本 (2.x) 缺少部分功能的支持，但是基本原理类似，也可以以本文作为参考。
 
 ## PD 调度原理
 
@@ -57,7 +57,7 @@ aliases: ['/docs-cn/dev/best-practices/pd-scheduling-best-practices/','/docs-cn/
 
     b. `OperatorController` 会根据配置以一定的并发量从等待队列中取出 Operator 并执行。执行的过程就是依次把每个 Operator Step 下发给对应 Region 的 Leader。
 
-    c. 标记 Operator 为 “finish” 或 “timeout” 状态，然后从执行列表中移除。
+    c. 标记 Operator 为 "finish" 或 "timeout" 状态，然后从执行列表中移除。
 
 ### 负载均衡
 
@@ -93,11 +93,11 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 
 ### 缩容及故障恢复
 
-缩容是指预备将某个 Store 下线，通过命令将该 Store 标记为 “Offline“ 状态，此时 PD 通过调度将待下线节点上的 Region 迁移至其他节点。
+缩容是指预备将某个 Store 下线，通过命令将该 Store 标记为 "Offline" 状态，此时 PD 通过调度将待下线节点上的 Region 迁移至其他节点。
 
 故障恢复是指当有 Store 发生故障且无法恢复时，有 Peer 分布在对应 Store 上的 Region 会产生缺少副本的状况，此时 PD 需要在其他节点上为这些 Region 补副本。
 
-这两种情况的处理过程基本上是一样的。`replicaChecker` 检查到 Region 存在异常状态的 Peer后，生成调度在健康的 Store 上创建新副本替换异常的副本。
+这两种情况的处理过程基本上是一样的。`replicaChecker` 检查到 Region 存在异常状态的 Peer 后，生成调度在健康的 Store 上创建新副本替换异常的副本。
 
 ### Region merge
 
@@ -213,7 +213,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 - 生成的调度是正常的，但是调度的速度很慢。可能的原因有：
 
-    - 调度速度受限于 limit 配置。PD 默认配置的 limit 比较保守，在不对正常业务造成显著影响的前提下，可以酌情将 `leader-schedule-limit` 或 `region-schedule-limit` 调大一些。此外， `max-pending-peer-count` 以及 `max-snapshot-count` 限制也可以放宽。
+    - 调度速度受限于 limit 配置。PD 默认配置的 limit 比较保守，在不对正常业务造成显著影响的前提下，可以酌情将 `leader-schedule-limit` 或 `region-schedule-limit` 调大一些。此外，`max-pending-peer-count` 以及 `max-snapshot-count` 限制也可以放宽。
     - 系统中同时运行有其他的调度任务产生竞争，导致 balance 速度上不去。这种情况下如果 balance 调度的优先级更高，可以先停掉其他的调度或者限制其他调度的速度。例如 Region 没均衡的情况下做下线节点操作，下线的调度与 Region Balance 会抢占 `region-schedule-limit` 配额，此时你可以调小 `replica-schedule-limit` 以限制下线调度的速度，或者设置 `disable-replace-offline-replica = true` 来暂时关闭下线流程。
     - 调度执行得太慢。可以通过 **Operator step duration** 进行判断。通常不涉及到收发 Snapshot 的 Step（比如 `TransferLeader`，`RemovePeer`，`PromoteLearner` 等）的完成时间应该在毫秒级，涉及到 Snapshot 的 Step（如 `AddLearner`，`AddPeer` 等）的完成时间为数十秒。如果耗时明显过高，可能是 TiKV 压力过大或者网络等方面的瓶颈导致的，需要具体情况具体分析。
 
@@ -240,7 +240,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 ### 节点上线速度慢
 
-目前 PD 没有对节点上线特殊处理。节点上线实际上是依靠 balance region 机制来调度的，所以参考[Leader/Region 分布不均衡](#leaderregion-分布不均衡) 中的排查步骤即可。
+目前 PD 没有对节点上线特殊处理。节点上线实际上是依靠 balance region 机制来调度的，所以参考[Leader/Region 分布不均衡](#leaderregion-分布不均衡)中的排查步骤即可。
 
 ### 热点分布不均匀
 
@@ -273,10 +273,12 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
         >
         > 在开启 `placement-rules`后，请合理切换 `txn`和 `raw`，避免无法正常解码 key。
 
-- 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数（`approximate_keys`）在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
+- 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数 (`approximate_keys`) 在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 
 ### TiKV 节点故障处理策略
 
 没有人工介入时，PD 处理 TiKV 节点故障的默认行为是，等待半小时之后（可通过 `max-store-down-time` 配置调整），将此节点设置为 Down 状态，并开始为涉及到的 Region 补充副本。
 
 实践中，如果能确定这个节点的故障是不可恢复的，可以立即做下线处理，这样 PD 能尽快补齐副本，降低数据丢失的风险。与之相对，如果确定这个节点是能恢复的，但可能半小时之内来不及，则可以把 `max-store-down-time` 临时调整为比较大的值，这样能避免超时之后产生不必要的副本补充，造成资源浪费。
+
+自 v5.2.0 起，TiKV 引入了慢节点检测机制。通过对 TiKV 中的请求进行采样，计算出一个范围在 1~100 的分数。当分数大于等于 80 时，该 TiKV 节点会被设置为 slow 状态。可以通过添加 [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config) 来针对慢节点进行对应的检测和调度。当检测到有且只有一个 TiKV 节点为慢节点，并且该 TiKV 的 slow score 到达上限（默认 100）时，将节点上的 leader 驱逐（其作用类似于 `evict-leader-scheduler`）。

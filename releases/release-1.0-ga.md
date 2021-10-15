@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/releases/release-1.0-ga/','/docs-cn/dev/releases/ga/']
 
 # TiDB 1.0 Release Notes
 
-2017 年 10 月 16 日，TiDB 发布 GA 版（TiDB 1.0）。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
+2017 年 10 月 16 日，TiDB 发布 GA 版 (TiDB 1.0)。该版本对 MySQL 兼容性、SQL 优化器、系统稳定性、性能做了大量的工作。
 
 ## TiDB
 

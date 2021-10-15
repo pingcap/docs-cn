@@ -14,7 +14,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
     + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。
-+ [hibernate-regions](/tikv-configuration-file.md#hibernate-regions-实验特性)，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。
 
 ## 调度功能
 
@@ -23,12 +22,13 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## SQL 功能
 
-+ List 分区表 （List Partition）。（v5.0 实验特性）
-+ List Column 分区表 （List Column Partition)。（v5.0 实验特性）
++ List 分区表 (List Partition)。（v5.0 实验特性）
++ List Column 分区表 (List Column Partition)。（v5.0 实验特性）
++ [分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。（v5.1 实验特性）
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
-+ [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
++ [JSON 数据类型](/data-type-json.md)及 [JSON 函数](/functions-and-operators/json-functions.md)。
 + [View](/information-schema/information-schema-views.md)。
 
 ## 配置管理
@@ -40,7 +40,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
 + TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)。（v5.0 实验特性）
-+ [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md#row-changed-event) 的 [列标志位](/ticdc/ticdc-open-protocol.md#列标志位) 功能。
 
 ## 存储
 

@@ -38,7 +38,7 @@ ExplainableStmt ::=
 >
 > 使用 MySQL 客户端连接到 TiDB 时，为避免输出结果在终端中换行，可先执行 `pager less -S` 命令。执行命令后，新的 `EXPLAIN` 的输出结果不再换行，可按右箭头 <kbd>→</kbd> 键水平滚动阅读输出结果。
 
-目前 TiDB 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`， `operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
+目前 TiDB 的 `EXPLAIN` 会输出 5 列，分别是：`id`，`estRows`，`task`，`access object`，`operator info`。执行计划中每个算子都由这 5 列属性来描述，`EXPLAIN` 结果中每一行描述一个算子。每个属性的具体含义如下：
 
 | 属性名          | 含义 |
 |:----------------|:----------------------------------------------------------------------------------------------------------|
@@ -239,7 +239,7 @@ dot xx.dot -T png -O
 
 The `xx.dot` is the result returned by the above statement.
 
-如果你的计算机上未安装 `dot` 程序，可将结果复制到 [本网站](http://www.webgraphviz.com/) 以获取树形图：
+如果你的计算机上未安装 `dot` 程序，可将结果复制到[本网站](http://www.webgraphviz.com/)以获取树形图：
 
 ![Explain Dot](/media/explain_dot.png)
 

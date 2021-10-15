@@ -69,7 +69,7 @@ TiDB 版本：3.0.14
 
     - 修复 `WEEKEND` 函数在 SQL mode 为 `ALLOW_INVALID_DATES` 时结果与 MySQL 不兼容的问题 [#16170](https://github.com/pingcap/tidb/pull/16170)
     - 修复当索引列上包含自增主键时，`DROP INDEX` 执行失败的问题 [#16008](https://github.com/pingcap/tidb/pull/16008)
-    - 修复 Statement Summary 中，`TABLE_NAMES`  列值有时会不正确的问题 [#15231](https://github.com/pingcap/tidb/pull/15231)
+    - 修复 Statement Summary 中，`TABLE_NAMES` 列值有时会不正确的问题 [#15231](https://github.com/pingcap/tidb/pull/15231)
     - 修复因 Plan Cache 启动后部分表达式计算结果错误的问题 [#16184](https://github.com/pingcap/tidb/pull/16184)
     - 修复函数 `not`/`istrue` /`isfalse` 计算结果错误的问题 [#15916](https://github.com/pingcap/tidb/pull/15916)
     - 修复带有冗余索引的表 MergeJoin 时 Panic 的问题 [#15919](https://github.com/pingcap/tidb/pull/15919)

@@ -55,7 +55,7 @@ tiup cluster start ${cluster-name} -N 1.2.3.4:2379,1.2.3.5:2379
 
 ## 查看集群状态
 
-集群启动之后需要检查每个组件的运行状态，以确保每个组件工作正常。TiUP 提供了 display 命令，节省了登陆到每台机器上去查看进程的时间。
+集群启动之后需要检查每个组件的运行状态，以确保每个组件工作正常。TiUP 提供了 display 命令，节省了登录到每台机器上去查看进程的时间。
 
 {{< copyable "shell-regular" >}}
 
@@ -97,7 +97,7 @@ tiup cluster display ${cluster-name}
                 log.slow-threshold: 300
         ```
 
-    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/templates/examples/topology.example.yaml)。
+    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
 
     **配置项层次结构使用 `.` 表示**。
 

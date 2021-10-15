@@ -25,9 +25,9 @@ TPC-C 是一个对 OLTP（联机交易处理）系统进行测试的规范，使
 
 我们将以 1000 WAREHOUSE 为例进行测试。
 
-TPC-C 使用 tpmC 值（Transactions per Minute）来衡量系统最大有效吞吐量 (MQTh, Max Qualified Throughput)，其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
+TPC-C 使用 tpmC 值 (Transactions per Minute) 来衡量系统最大有效吞吐量 (MQTh, Max Qualified Throughput)，其中 Transactions 以 NewOrder Transaction 为准，即最终衡量单位为每分钟处理的新订单数。
 
-本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 TPC-C 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序:
+本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 TPC-C 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序：
 
 {{< copyable "shell-regular" >}}
 

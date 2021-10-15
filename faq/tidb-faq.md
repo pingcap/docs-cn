@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 
 # FAQ
 
-## 一、 TiDB 介绍、架构、原理
+## 一、TiDB 介绍、架构、原理
 
 ### 1.1 TiDB 介绍及整体架构
 
@@ -21,7 +21,7 @@ TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID �
 
 不是，虽然 TiDB 支持 MySQL 语法和协议，但是 TiDB 是由 PingCAP 团队完全自主开发的产品。
 
-#### 1.1.4 TiDB、TiKV、Placement Driver (PD)  主要作用？
+#### 1.1.4 TiDB、TiKV、Placement Driver (PD) 主要作用？
 
 - TiDB 是 Server 计算层，主要负责 SQL 的解析、制定查询计划、生成执行器。
 - TiKV 是分布式 Key-Value 存储引擎，用来存储真正的数据，简而言之，TiKV 是 TiDB 的存储引擎。
@@ -53,7 +53,7 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 
-目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取，以及 [AskTUG 网站](https://asktug.com) 与技术专家互动交流。
+目前[官方文档](/overview.md#tidb-简介)是获取 TiDB 相关知识最主要、最及时的发布途径。除此之外，我们也有一些技术沟通群，如有需求可发邮件至 [info@pingcap.com](mailto:info@pingcap.com) 获取，以及 [AskTUG 网站](https://asktug.com)与技术专家互动交流。
 
 #### 1.1.11 TiDB 用户名长度限制？
 
@@ -61,9 +61,9 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.12 TiDB 是否支持 XA？
 
-虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC（Connector / J），但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
+虽然 TiDB 的 JDBC 驱动用的就是 MySQL JDBC (Connector / J)，但是当使用 Atomikos 的时候，数据源要配置成类似这样的配置：`type="com.mysql.jdbc.jdbc2.optional.MysqlXADataSource"`。MySQL JDBC XADataSource 连接 TiDB 的模式目前是不支持的。MySQL JDBC 中配置好的 XADataSource 模式，只对 MySQL 数据库起作用（DML 去修改 redo 等）。
 
-Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然后 Atomikos 在操作 TM 和 RM（DB）的时候，会通过数据源的配置，发起带有 XA 指令到 JDBC 层，JDBC 层 XA 模式启用的情况下，会对 InnoDB（如果是 MySQL 的话）下发操作一连串 XA 逻辑的动作，包括 DML 去变更 redo log 等，就是两阶段递交的那些操作。TiDB 目前的引擎版本中，没有对上层应用层 JTA / XA 的支持，不解析这些 Atomikos 发过来的 XA 类型的操作。
+Atomikos 配好两个数据源后，JDBC 驱动都要设置成 XA 模式，然后 Atomikos 在操作 TM 和 RM (DB) 的时候，会通过数据源的配置，发起带有 XA 指令到 JDBC 层。JDBC 层 XA 模式启用的情况下，会对 InnoDB（如果是 MySQL 的话）下发操作一连串 XA 逻辑的动作，包括 DML 去变更 redo log 等，就是两阶段递交的那些操作。TiDB 目前的引擎版本中，没有对上层应用层 JTA / XA 的支持，不解析这些 Atomikos 发过来的 XA 类型的操作。
 
 MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiDB 本身就通过 Google 的 Percolator 事务模型支持分布式事务，性能稳定性比 XA 要高出很多，所以不会也不需要支持 XA。
 
@@ -93,7 +93,7 @@ MySQL 是单机数据库，只能通过 XA 来满足跨数据库事务，而 TiD
 
 #### 2.1.1 目前 TiDB 云上部署都支持哪些云厂商？
 
-关于云上部署，TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和 [阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+关于云上部署，TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
 
 此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口，欢迎大家使用。
 
@@ -153,7 +153,7 @@ SET GLOBAL tidb_gc_life_time = '30m';
 
 - log 中是否有 panic
 - dmesg 中是否有 oom，命令：`dmesg -T | grep -i oom`
-- 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用, 会被操作系统 kill。
+- 长时间没有访问，也会收到这个报错，一般是 tcp 超时导致的，tcp 长时间不用，会被操作系统 kill。
 
 #### 3.2.2 ERROR 1105 (HY000): other error: unknown error Wire Error(InvalidEnumValue(4004)) 是什么意思？
 

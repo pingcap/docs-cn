@@ -99,7 +99,7 @@ t22_r11
 
 #### 均匀切分
 
-由于 `row_id` 是整数，所以根据指定的 `lower_value`、`upper_value` 以及 `region_num`，可以推算出需要切分的 key。TiDB 先计算 step（`step = (upper_value - lower_value)/region_num`），然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `region_num` 个 Region。
+由于 `row_id` 是整数，所以根据指定的 `lower_value`、`upper_value` 以及 `region_num`，可以推算出需要切分的 key。TiDB 先计算 step (`step = (upper_value - lower_value)/region_num`)，然后在 `lower_value` 和 `upper_value` 之间每隔 step 区间切一次，最终切出 `region_num` 个 Region。
 
 例如，对于表 t，如果想要从 `minInt64`~`maxInt64` 之间均匀切割出 16 个 Region，可以用以下语句：
 
@@ -187,7 +187,7 @@ SPLIT TABLE t INDEX idx1 BETWEEN ("a") AND ("{") REGIONS 26;
 SPLIT TABLE t INDEX idx2 BETWEEN ("2010-01-01 00:00:00") AND ("2020-01-01 00:00:00") REGIONS 10;
 ```
 
-该语句会把表 t 中 idx2 的索引数据 Region 从 `2010-01-01 00:00:00` 到  `2020-01-01 00:00:00` 切成 10 个 Region。region1 的范围是从 `[minIndexValue,  2011-01-01 00:00:00)`，region2 的范围是 `[2011-01-01 00:00:00, 2012-01-01 00:00:00)`……
+该语句会把表 t 中 idx2 的索引数据 Region 从 `2010-01-01 00:00:00` 到 `2020-01-01 00:00:00` 切成 10 个 Region。region1 的范围是从 `[minIndexValue,  2011-01-01 00:00:00)`，region2 的范围是 `[2011-01-01 00:00:00, 2012-01-01 00:00:00)`……
 
 如果希望按照天为间隔切分索引，示例如下：
 
@@ -225,7 +225,7 @@ SPLIT TABLE t INDEX idx3 BETWEEN ("2010-01-01 00:00:00", "a") AND ("2010-01-01 0
 
 索引数据也可以根据用户指定的索引值来做切分。
 
-假如有 idx4 (a,b)，其中 a 列是 varchar 类型， b 列是 timestamp 类型。
+假如有 idx4 (a,b)，其中 a 列是 varchar 类型，b 列是 timestamp 类型。
 
 {{< copyable "sql" >}}
 

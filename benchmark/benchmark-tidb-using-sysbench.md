@@ -28,7 +28,7 @@ TiKV 集群存在多个 Column Family，包括 Default CF、Write CF 和 LockCF�
 
 Default CF : Write CF = 4 : 1
 
-在 TiKV 中需要根据机器内存大小配置 RocksDB 的 block cache，以充分利用内存。以 40 GB 内存的虚拟机部署一个 TiKV 为例，其 block cache 建议配置如下:
+在 TiKV 中需要根据机器内存大小配置 RocksDB 的 block cache，以充分利用内存。以 40 GB 内存的虚拟机部署一个 TiKV 为例，其 block cache 建议配置如下：
 
 ```yaml
 server_configs:
@@ -135,7 +135,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 Sysbench 1.0.14 没有提供数据预热的功能，因此需要手动进行数据预热。如果使用更新的 Sysbench 版本，可以使用自带的预热功能。
 
-以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句 进行数据预热：
+以 Sysbench 中某张表 sbtest7 为例，执行如下 SQL 语句进行数据预热：
 
 {{< copyable "sql" >}}
 

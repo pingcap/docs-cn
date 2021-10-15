@@ -216,7 +216,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    etcd 写盘慢，这很容易引起 PD leader 超时或者 TSO 无法及时存盘等问题，从而导致整个集群停止服务。
+    fsync 操作延迟大于 1s，代表 etcd 写盘慢，这很容易引起 PD leader 超时或者 TSO 无法及时存盘等问题，从而导致整个集群停止服务。
 
 * 处理方法：
 
@@ -232,7 +232,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本，下线 TiKV 节点也会导致少量 Region 缺副本（对于有 pending peer 的 Region 会走先减后加的流程）。
+    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本。
 
 * 处理方法：
 
@@ -688,7 +688,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason!="lock"}[10m]) > 100`
+    `increase(tikv_coprocessor_request_error{reason=!"meet_lock"}[10m]) > 100`
 
 * 规则描述：
 
@@ -696,13 +696,13 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    Coprocessor 错误的主要原因分为“lock”、“outdated”和“full”等。“outdated”表示请求超时，很可能是由于排队时间过久，或者单个请求的耗时比较长。“full”表示 Coprocessor 的请求队列已经满了，可能是正在执行的请求比较耗时，导致新来的请求都在排队。耗时比较长的查询需要查看下对应的执行计划是否正确。
+    Coprocessor 错误的主要原因分为 "lock"、"outdated" 和 "full" 等。"outdated" 表示请求超时，很可能是由于排队时间过久，或者单个请求的耗时比较长。"full" 表示 Coprocessor 的请求队列已经满了，可能是正在执行的请求比较耗时，导致新来的请求都在排队。耗时比较长的查询需要查看下对应的执行计划是否正确。
 
 #### `TiKV_coprocessor_request_lock_error`
 
 * 报警规则：
 
-    `increase(tikv_coprocessor_request_error{reason="lock"}[10m]) > 10000`
+    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 10000`
 
 * 规则描述：
 
@@ -710,7 +710,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    Coprocessor 错误的主要原因分为“lock”、“outdated”、“full”等。“lock”表示读到的数据正在写入，需要等待一会再读（TiDB 内部会自动重试）。少量这种错误不用关注，如果有大量这种错误，需要查看写入和查询是否有冲突。
+    Coprocessor 错误的主要原因分为 "lock"、"outdated"、"full" 等。"lock" 表示读到的数据正在写入，需要等待一会再读（TiDB 内部会自动重试）。少量这种错误不用关注，如果有大量这种错误，需要查看写入和查询是否有冲突。
 
 #### `TiKV_coprocessor_pending_request`
 
@@ -750,11 +750,19 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
 
-#### `TiKV_low_space_and_add_region`
+#### `TiKV_low_space`
 
 * 报警规则：
 
-    `count((sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2) and (sum(tikv_raftstore_snapshot_traffic_total{type="applying"}) by (instance) > 0)) > 0`
+    `sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2`
+
+* 规则描述：
+
+    TiKV 数据量超过节点配置容量或物理磁盘容量的 80%。
+
+* 处理方法：
+
+    确认节点空间均衡情况，做好扩容计划。
 
 #### `TiKV_approximate_region_size`
 

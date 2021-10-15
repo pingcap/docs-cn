@@ -13,7 +13,7 @@ TiDB 版本：4.0.0-rc.2
 
 + TiDB
 
-    - 去掉了特别为开启 Binlog 时定义的事务容量上限（100 MB），现在事务的容量上限统一为 10 GB，但若开启 Binlog 且下游是 Kafka，由于 Kafka 消息大小的限制是 1 GB，请根据情况调整 `txn-total-size-limit` 配置参数 [#16941](https://github.com/pingcap/tidb/pull/16941)
+    - 去掉了特别为开启 Binlog 时定义的事务容量上限 (100 MB)，现在事务的容量上限统一为 10 GB，但若开启 Binlog 且下游是 Kafka，由于 Kafka 消息大小的限制是 1 GB，请根据情况调整 `txn-total-size-limit` 配置参数 [#16941](https://github.com/pingcap/tidb/pull/16941)
     - 查询 `CLUSTER_LOG` 表时，如果未指定时间范围，由默认时间范围变更为返回错误且用户必须指定时间范围 [#17003](https://github.com/pingcap/tidb/pull/17003)
     - `CREATE TABLE` 创建分区表时指定未支持的 sub-partition 或 linear hash 选项，将会创建非分区普通表，而不是选项未生效的分区表 [#17197](https://github.com/pingcap/tidb/pull/17197)
 
@@ -153,7 +153,7 @@ TiDB 版本：4.0.0-rc.2
     - 修复 restore 后生成大量空 Region 的问题 [#7632](https://github.com/tikv/tikv/pull/7632)
     - 修复 Raftstore 收到乱序 read index 响应时会引发 panic 的问题 [#7370](https://github.com/tikv/tikv/pull/7370)
     - 修复启用统一线程池时，不会验证 storage 或 `coprocessor read pool` 配置是否无效的问题 [#7513](https://github.com/tikv/tikv/pull/7513)
-    - 修复 TiKV server 关闭时，join 可能 panic 的 问题 [#7713](https://github.com/tikv/tikv/pull/7713)
+    - 修复 TiKV server 关闭时，join 可能 panic 的问题 [#7713](https://github.com/tikv/tikv/pull/7713)
     - 修复通过诊断 API 搜索慢日志无返回结果的问题 [#7776](https://github.com/tikv/tikv/pull/7776)
     - 修复节点长时间运行时，系统会产生较多内存碎片的问题 [#7556](https://github.com/tikv/tikv/pull/7556)
     - 修复部分情况下因存储无效日期导致 SQL 执行失败的问题 [#7268](https://github.com/tikv/tikv/pull/7268)
@@ -182,7 +182,7 @@ TiDB 版本：4.0.0-rc.2
     - TiDB Binlog
 
         - 修复当下游为 Kafka 时对 `mediumint` 类型数据未处理的问题 [#962](https://github.com/pingcap/tidb-binlog/pull/962)
-        - 修复当 DDL 中库名为关键字时 reparo 解析失败的问题  [#961](https://github.com/pingcap/tidb-binlog/pull/961)
+        - 修复当 DDL 中库名为关键字时 reparo 解析失败的问题 [#961](https://github.com/pingcap/tidb-binlog/pull/961)
 
     - TiCDC
 

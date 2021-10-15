@@ -47,6 +47,7 @@ Dumpling 也包含在 tidb-toolkit 安装包中，可[在此下载](/download-ec
 - RELOAD
 - LOCK TABLES
 - REPLICATION CLIENT
+- PROCESS
 
 ### 导出到 sql 文件
 
@@ -167,7 +168,7 @@ dumpling \
 
 Dumpling 在 v4.0.8 版本及更新版本中支持导出到云盘。如果需要将数据备份到 Amazon 的 S3 后端存储，那么需要在 `-o` 参数中指定 S3 的存储路径。
 
-可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html) 在 Bucket 中创建一个文件夹 `Folder`。
+可以参照 [AWS 官方文档 - 如何创建 S3 存储桶](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`。如果有需要，还可以参照 [AWS 官方文档 - 创建文件夹](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
 将有权限访问该 S3 后端存储的账号的 `SecretKey` 和 `AccessKey` 作为环境变量传入 Dumpling 节点。
 
@@ -180,7 +181,7 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[外部存储](/br/backup-and-restore-storages.md)。
 
-在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域。
+在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 S3 存储所在的区域，例如 `ap-northeast-1`。
 
 {{< copyable "shell-regular" >}}
 
@@ -260,9 +261,9 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 > **注意：**
 >
-> 在大多数场景下，用户不需要调整 Dumpling 的默认数据一致性选项。
+> 在大多数场景下，用户不需要调整 Dumpling 的默认数据一致性选项（默认值为 `auto`）。
 
-Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。对于 TiDB 来说，默认情况下，会通过获取某个时间戳的快照来保证一致性（即 `--consistency snapshot`）。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
+Dumpling 通过 `--consistency <consistency level>` 标志控制导出数据“一致性保证”的方式。在使用 snapshot 来保证一致性的时候，可以使用 `--snapshot` 选项指定要备份的时间戳。还可以使用以下的一致性级别：
 
 - `flush`：使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作、保证备份连接的全局一致性和记录 POS 信息。所有的备份连接启动事务后释放该锁。推荐在业务低峰或者 MySQL 备份库上进行全量备份。
 - `snapshot`：获取指定时间戳的一致性快照并导出。

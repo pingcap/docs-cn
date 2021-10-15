@@ -59,7 +59,7 @@ region = "us-west-2"
 endpoint = "https://kms.us-west-2.amazonaws.com"
 ```
 
-`key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。除非你使用非 AWS 提供的 AWS KMS 兼容服务， `endpoint` 通常无需指定。
+`key-id` 指定 KMS CMK 的密钥 ID。`region` 为 KMS CMK 的 AWS 区域名。除非你使用非 AWS 提供的 AWS KMS 兼容服务，`endpoint` 通常无需指定。
 
 若要使用文件方式指定主密钥，主密钥配置应如下所示：
 

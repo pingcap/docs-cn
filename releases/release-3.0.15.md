@@ -14,7 +14,7 @@ TiDB 版本：3.0.15
 + TiDB
 
     - 禁止分区表上的查询使用 plan cache 功能 [#16759](https://github.com/pingcap/tidb/pull/16759)
-    - 分区表支持 `admin recover index`、 `admin check index` 语句 [#17315](https://github.com/pingcap/tidb/pull/17315) [#17390](https://github.com/pingcap/tidb/pull/17390)
+    - 分区表支持 `admin recover index`、`admin check index` 语句 [#17315](https://github.com/pingcap/tidb/pull/17315) [#17390](https://github.com/pingcap/tidb/pull/17390)
     - Range 类型分区表支持按 `in` 查询条件进行分区裁剪 [#17318](https://github.com/pingcap/tidb/pull/17318)
     - 优化 `SHOW CREATE TABLE` 的输出结果，在分区名称上添加了引号 [#16315](https://github.com/pingcap/tidb/pull/16315)
     - `GROUP_CONCAT` 支持 `ORDER BY` 子句 [#16988](https://github.com/pingcap/tidb/pull/16988)

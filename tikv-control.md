@@ -597,3 +597,37 @@ Type "I consent" to continue, anything else to exit: I consent
 > **注意：**
 >
 > 本命令会以明文方式打印数据加密密钥。在生产环境中，请勿将本命令的输出重定向到磁盘文件中。即使使用以后删除该文件也不能保证文件内容从磁盘中干净清除。
+
+### 打印损坏的 SST 文件信息
+
+TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。为了清理掉这些文件，你可以使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
+
+> **注意：**
+>
+> 执行此命令前，请保证关闭当前运行的 TiKV 实例。
+
+```bash
+$ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
+```
+
+```bash
+--------------------------------------------------------
+corruption info:
+data/tikv-21107/db/000014.sst: Corruption: Bad table magic number: expected 9863518390377041911, found 759105309091689679 in data/tikv-21107/db/000014.sst
+sst meta:
+14:552997[1 .. 5520]['0101' seq:1, type:1 .. '7A7480000000000000FF0F5F728000000000FF0002160000000000FAFA13AB33020BFFFA' seq:2032, type:1] at level 0 for Column family "default"  (ID 0)
+it isn't easy to handle local data, start key:0101
+overlap region:
+RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
+suggested operations:
+tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
+tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+--------------------------------------------------------
+corruption analysis has completed
+```
+
+通过上面的输出，你可以看到损坏的 SST 文件和损坏原因等信息先被打印出，然后是相关的元信息。
+
++ 在 `sst meta` 输出部分，`14` 表示 SST 文件号，`552997` 表示文件大小，紧随其后的是最小和最大的序列号 (seq) 等其它元信息。
++ `overlap region` 部分为损坏 SST 文件所在 Region 的信息。该信息是从 PD 组件获取的。
++ `suggested operations` 部分为你清理损坏的 SST 文件提供建议操作。你可以参考这些建议的命令，清理文件，并重新启动该 TiKV 实例。

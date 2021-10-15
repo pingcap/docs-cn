@@ -188,7 +188,7 @@ TIMESTAMP[(fsp)]
 YEAR[(4)]
 ```
 
-`YEAR` 类型遵循以下格式规则:
+`YEAR` 类型遵循以下格式规则：
 
 + 如果是四位数的数值，支持的范围是 `1901` 至 `2155`。
 + 如果是四位数的字符串，支持的范围是 `'1901'` 到 `'2155'`。
@@ -289,7 +289,7 @@ CREATE TABLE t1 (
 + 当 `DATE` 转换为 `DATETIME` 或 `TIMESTAMP` 时，会添加时间部分 `00:00:00`，因为 `DATE` 不包含任何时间信息。
 + 当 `DATE` 转换为 `TIME` 时，结果是 `00:00:00`。
 
-`DATETIME` 或 `TIMESTAMP` 的转换:
+`DATETIME` 或 `TIMESTAMP` 的转换：
 
 + 当 `DATETIME` 或 `TIMESTAMP` 转换为 `DATE` 时，时间和小数部分将被舍弃。例如，`1999-12-31 23:59:59.499` 被转换为 `1999-12-31`。
 + 当 `DATETIME` 或 `TIMESTAMP` 转换为 `TIME` 时，时间部分被舍弃，因为 `TIME` 不包含任何时间信息。

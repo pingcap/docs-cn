@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/troubleshoot-high-disk-io/']
 
 #### 第一类面板
 
-在 `Overview` > `System Info` > `IO Util`  中，可以看到集群中每个机器的 I/O 情况，该指标和 Linux iostat 监控中的 util 类似，百分比越高代表磁盘 I/O 占用越高：
+在 `Overview` > `System Info` > `IO Util` 中，可以看到集群中每个机器的 I/O 情况，该指标和 Linux iostat 监控中的 util 类似，百分比越高代表磁盘 I/O 占用越高：
 
 - 如果监控中只有一台机器的 I/O 高，那么可以辅助判断当前有读写热点。
 - 如果监控中大部分机器的 I/O 都高，那么集群现在有高 I/O 负载存在。
@@ -71,7 +71,7 @@ TiDB 集群主要的持久化组件是 TiKV 集群，一个 TiKV 包含两个 Ro
 
 - TiKV RocksDB 日志出现 `write stall`。
 
-    可能是 `level0 sst` 太多导致 stall。可以添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将 从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
+    可能是 `level0 sst` 太多导致 stall。可以添加参数 `[rocksdb] max-sub-compactI/Ons = 2（或者 3）` 加快 level0 sst 往下 compact 的速度，该参数的意思是将从 level0 到 level1 的 compaction 任务最多切成 `max-sub-compactions` 个子任务交给多线程并发执行。
 
     如果磁盘 I/O 能力持续跟不上写入，建议扩容。如果磁盘的吞吐达到了上限（例如 SATA SSD 的吞吐相对 NVME SSD 会低很多）导致 write stall，但是 CPU 资源又比较充足，可以尝试采用压缩率更高的压缩算法来缓解磁盘的压力，用 CPU 资源换磁盘资源。
     

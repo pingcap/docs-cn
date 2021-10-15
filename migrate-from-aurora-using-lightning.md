@@ -19,7 +19,7 @@ summary: 了解如何使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量�
 
 根据部署方式不同，按如下步骤编辑配置文件 `tidb-lighting.toml`。
 
-1. 将 配置文件中 `[mydumper]` 部分的 `data-source-dir` 设置为[第一步](#第一步从-aurora-导出全量数据至-amazon-s3)导出的 S3 Bucket 路径。
+1. 将配置文件中 `[mydumper]` 部分的 `data-source-dir` 设置为[第一步](#第一步从-aurora-导出全量数据至-amazon-s3)导出的 S3 Bucket 路径。
 
     ```
     [mydumper]
@@ -56,7 +56,7 @@ summary: 了解如何使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量�
     [mydumper]
     no-schema = true
 
-    [mydumper.files]
+    [[mydumper.files]]
     # 使用单引号字符串避免转义
     pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
     schema = '$1'
@@ -79,12 +79,12 @@ summary: 了解如何使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量�
 1. 使用 Dumpling 导出表结构文件：
 
     ```
-    ./dumpling --host 127.0.0.1 --port 4000 --user root --password password --no-data --output ./schema --filter "mydb.*"
+    ./dumpling --host database-1.cedtft9htlae.us-west-2.rds.amazonaws.com --port 3306 --user root --password password --consistency none --no-data --output ./schema --filter "mydb.*"
     ```
 
     > **注意：**
     > 
-    > - 请根据实际情况设置数据源地址的相关参数和输出文件的路径。
+    > - 请根据实际情况设置数据源地址的相关参数和输出文件的路径。例如 `database-1.cedtft9htlae.us-west-2.rds.amazonaws.com` 是 Aurora MySQL 的地址。
     > - 如果需要导出所有库表，则不需要设置 `--filter` 相关参数。如果只需要导出部分库表，可参考 [table-filter](https://github.com/pingcap/tidb-tools/blob/master/pkg/table-filter/README.md) 进行设置。
 
 2. 使用 TiDB Lightning 创建表结构

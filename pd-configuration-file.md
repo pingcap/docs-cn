@@ -38,7 +38,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `peer-urls`
 
 + PD 节点监听其他 PD 节点的 URL 列表。
-+ 默认: `"http://127.0.0.1:2380"`
++ 默认：`"http://127.0.0.1:2380"`
 + 如果部署一个集群，peer URLs 必须指定当前主机的 IP 地址，例如 `"http://192.168.100.113:2380"`，如果是运行在 Docker 则需要指定为 `"http://0.0.0.0:2380"`。
 
 ### `advertise-peer-urls`
@@ -72,16 +72,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认值：3
 + 单位：秒
 
-### `tso-save-interval`
-
-+ TSO 分配的时间窗口,实时持久存储。
-+ 默认值：3s
-
-### `enable-prevote`
-
-+ 开启 raft prevote 的开关。
-+ 默认值：true
-
 ### `quota-backend-bytes`
 
 + 元信息数据库存储空间的大小，默认 8GiB。
@@ -100,21 +90,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `force-new-cluster`
 
 + 强制让该 PD 以一个新集群启动，且修改 raft 成员数为 1。
-+ 默认值：false
-
-### `tick-interval`
-
-+ etcd raft 的 tick 周期。
-+ 默认值：100ms
-
-### `election-interval`
-
-+ etcd leader 选举的超时时间。
-+ 默认值：3s
-
-### `use-region-storage`
-
-+ 开启独立的 region 存储。
 + 默认值：false
 
 ## security
@@ -146,10 +121,15 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 日志相关的配置项。
 
+### `level`
+
++ 日志等级，可指定为 "DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
++ 默认值："INFO"
+
 ### `format`
 
-+ 日志格式，可指定为"text"，"json"， "console"。
-+ 默认值：text
++ 日志格式，可指定为"text"，"json"，"console"。
++ 默认值："text"
 
 ### `disable-timestamp`
 
@@ -170,13 +150,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
-+ 默认: 28
++ 默认：28
 + 最小值为 1
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
-+ 默认: 7
++ 默认：7
 + 最小值为 1
 
 ## metric
@@ -186,7 +166,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `interval`
 
 + 向 Prometheus 推送监控指标数据的间隔时间。
-+ 默认: 15s
++ 默认：15s
 
 ## schedule
 
@@ -195,27 +175,27 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-merge-region-size`
 
 + 控制 Region Merge 的 size 上限，当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认: 20
++ 默认：20
 
 ### `max-merge-region-keys`
 
 + 控制 Region Merge 的 key 上限，当 Region key 大于指定值时 PD 不会将其与相邻的 Region 合并。
-+ 默认: 200000
++ 默认：200000
 
 ### `patrol-region-interval`
 
 + 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
-+ 默认: 100ms
++ 默认：100ms
 
 ### `split-merge-interval`
 
 + 控制对同一个 Region 做 split 和 merge 操作的间隔，即对于新 split 的 Region 一段时间内不会被 merge。
-+ 默认: 1h
++ 默认：1h
 
 ### `max-snapshot-count`
 
 + 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-+ 默认: 3
++ 默认：3
 
 ### `max-pending-peer-count`
 
@@ -236,6 +216,16 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 同时进行 Region 调度的任务个数
 + 默认值：2048
+
+### `hot-region-schedule-limit`
+
++ 控制同时进行的 hot Region 任务。该配置项独立于 Region 调度。
++ 默认值：4
+
+### `hot-region-cache-hits-threshold`
+
++ 设置识别热点 Region 所需的分钟数。只有当 Region 处于热点状态持续时间超过此分钟数时，PD 才会参与热点调度。
++ 默认值：3
 
 ### `replica-schedule-limit`
 
@@ -264,7 +254,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `tolerant-size-ratio`
 
 + 控制 balance 缓冲区大小。
-+ 默认值：0 (为 0 为自动调整缓冲区大小)
++ 默认值：0（为 0 为自动调整缓冲区大小）
 + 最小值：0
 
 ### `enable-cross-table-merge`
@@ -272,44 +262,15 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置是否开启跨表 merge。
 + 默认值：true
 
-### `region-score-formula-version`
+### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span> 
 
 + 设置 Region 算分公式版本。
 + 默认值：v2
-+ 可选值：v1，v2
++ 可选值：v1，v2。v2 相比于 v1，变化会更平滑，空间回收引起的调度抖动情况会得到改善。
 
-### `disable-remove-down-replica`
-
-+ 关闭自动删除 DownReplica 的特性的开关，当设置为 true 时，PD 不会自动清理宕机状态的副本。
-+ 默认值：false
-
-### `disable-replace-offline-replica`
-
-+ 关闭迁移 OfflineReplica 的特性的开关，当设置为 true 时，PD 不会迁移下线状态的副本。
-+ 默认值：false
-
-### `disable-make-up-replica`
-
-+ 关闭补充副本的特性的开关，当设置为 true 时，PD 不会为副本数不足的 Region 补充副本。
-+ 默认值：false
-
-### `disable-remove-extra-replica`
-
-+ 关闭删除多余副本的特性开关，当设置为 true 时，PD 不会为副本数过多的 Region 删除多余副本。
-+ 默认值：false
-
-### `disable-location-replacement`
-
-+ 关闭隔离级别检查的开关，当设置为 true 时，PD 不会通过调度来提升 Region 副本的隔离级别。
-+ 默认值：false
-
-### `store-balance-rate`
-
-+ 控制 TiKV 每分钟最多允许做 add peer 相关操作的次数。
-+ 类型：Integer
-+ 默认值：15
-+ 最小值：0
-+ 最大值：200
+> **注意：**
+>
+> 如果是从 v4.0 升级至当前版本，默认不自动开启该算分公式新版本，以保证升级前后 PD 行为一致。若想切换算分公式的版本，使用需要手动通过 `pd-ctl` 设置切换，详见 [PD Control](/pd-control.md#config-show--set-option-value--placement-rules) 文档。
 
 ### `enable-joint-consensus` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -322,7 +283,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `max-replicas`
 
-+ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。当此配置被在线修改后，PD 会在后台通过调度使得 Region 的副本数量符合配置。
 + 默认值：3
 
 ### `location-labels`
@@ -348,6 +309,15 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 默认值：false
 + 参考[Placement Rules 使用文档](/configure-placement-rules.md)
 + 4.0 实验性特性
+
+### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
+
++ 默认值：3
++ PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
+> **注意：**
+>
+> 如果是从 v4.0 升级至当前版本，升级后的 `flow-round-by-digit` 行为和升级前的 `trace-region-flow` 行为默认保持一致：如果升级前 `trace-region-flow` 为 false，则升级后 `flow-round-by-digit` 为 127；如果升级前 `trace-region-flow` 为 true，则升级后 `flow-round-by-digit` 为 3。
 
 ## label-property
 

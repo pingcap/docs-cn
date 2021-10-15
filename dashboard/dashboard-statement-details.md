@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-details/','/docs-cn/dev/da
 
 ### 基本信息
 
-包含关于表名、索引名、执行次数、累计耗时等信息。**描述**（Description）列对各个字段进行了具体描述。
+包含关于表名、索引名、执行次数、累计耗时等信息。**描述** (Description) 列对各个字段进行了具体描述。
 
 ![基本信息](/media/dashboard/dashboard-statement-plans-basic.png)
 

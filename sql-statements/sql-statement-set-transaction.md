@@ -10,17 +10,23 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-set-transaction/','/docs-cn
 
 ## 语法图
 
-**SetStmt:**
+```ebnf+diagram
 
-![SetStmt](/media/sqlgram/SetStmt.png)
+SetStmt ::=
+    'SET' ( VariableAssignmentList | 
+    'PASSWORD' ('FOR' Username)? '=' PasswordOpt | 
+    ( 'GLOBAL'| 'SESSION' )? 'TRANSACTION' TransactionChars | 
+    'CONFIG' ( Identifier | stringLit) ConfigItemName EqOrAssignmentEq SetExpr )
 
-**TransactionChar:**
+TransactionChars ::=
+    ( 'ISOLATION' 'LEVEL' IsolationLevel | 'READ' 'WRITE' | 'READ' 'ONLY' AsOfClause? )
 
-![TransactionChar](/media/sqlgram/TransactionChar.png)
+IsolationLevel ::=
+    ( 'REPEATABLE' 'READ' | 'READ' ( 'COMMITTED' | 'UNCOMMITTED' ) | 'SERIALIZABLE' )
 
-**IsolationLevel:**
-
-![IsolationLevel](/media/sqlgram/IsolationLevel.png)
+AsOfClause ::=
+    ( 'AS' 'OF' 'TIMESTAMP' Expression)
+```
 
 ## 示例
 

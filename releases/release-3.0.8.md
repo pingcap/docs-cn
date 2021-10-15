@@ -15,7 +15,7 @@ TiDB Ansible 版本：3.0.8
 
 + SQL 优化器
     - 修复 SQL Binding 因为 cache 更新不及时，导致绑定计划错误的问题 [#13891](https://github.com/pingcap/tidb/pull/13891)
-    - 修复当 SQL 包含符号列表（类似于 "?, ?, ?" 这样的占位符）时，SQL Binding 可能失效的问题 [#14004](https://github.com/pingcap/tidb/pull/14004)
+    - 修复当 SQL 包含符号列表（类似于 `?, ?, ?` 这样的占位符）时，SQL Binding 可能失效的问题 [#14004](https://github.com/pingcap/tidb/pull/14004)
     - 修复 SQL Binding 由于原 SQL 以 `;` 结尾而不能创建/删除的问题 [#14113](https://github.com/pingcap/tidb/pull/14113)
     - 修复 `PhysicalUnionScan` 算子没有正确设置统计信息，导致查询计划可能选错的问题 [#14133](https://github.com/pingcap/tidb/pull/14133)
     - 移除 `minAutoAnalyzeRatio` 约束使自动 analyze 更及时 [#14015](https://github.com/pingcap/tidb/pull/14015)
@@ -37,7 +37,7 @@ TiDB Ansible 版本：3.0.8
 + Server
     - Statement Summary 功能改进：
         - 新增大量的 SQL 指标字段，便于对 SQL 进行更详细的统计分析 [#14151](https://github.com/pingcap/tidb/pull/14151)，[#14168](https://github.com/pingcap/tidb/pull/14168)
-        - 新增 `stmt-summary.refresh-interval` 参数用于控制定期将 `events_statements_summary_by_digest` 表中过期的数据移到  `events_statements_summary_by_digest_history` 表，默认间隔时间：30min [#14161](https://github.com/pingcap/tidb/pull/14161)
+        - 新增 `stmt-summary.refresh-interval` 参数用于控制定期将 `events_statements_summary_by_digest` 表中过期的数据移到 `events_statements_summary_by_digest_history` 表，默认间隔时间：30min [#14161](https://github.com/pingcap/tidb/pull/14161)
         - 新增 `events_statements_summary_by_digest_history` 表，保存从 `events_statements_summary_by_digest` 中过期的数据 [#14166](https://github.com/pingcap/tidb/pull/14166)
     - 修复执行 RBAC 相关的内部 SQL 时，错误输出 binlog 的问题 [#13890](https://github.com/pingcap/tidb/pull/13890)
     - 新增 `server-version` 配置项来控制修改 TiDB server 版本的功能 [#13906](https://github.com/pingcap/tidb/pull/13906)
