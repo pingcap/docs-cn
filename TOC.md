@@ -166,6 +166,7 @@
       + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
+      + [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
@@ -199,25 +200,6 @@
       + [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       + [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     + [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-<<<<<<< HEAD
-  + TiDB Lightning
-    + [概述](/tidb-lightning/tidb-lightning-overview.md)
-    + [快速上手教程](/get-started-with-tidb-lightning.md)
-    + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
-    + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
-    + 主要功能
-      + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      + [表库过滤](/table-filter.md)
-      + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [后端](/tidb-lightning/tidb-lightning-backends.md)
-      + [增量导入](/tidb-lightning/tidb-lightning-increment-import.md)
-      + [分布式并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-      + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-    + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-=======
->>>>>>> 3341acee649c894138806d06691b11cefe82267a
   + TiCDC
     + [概述](/ticdc/ticdc-overview.md)
     + [安装部署](/ticdc/deploy-ticdc.md)
