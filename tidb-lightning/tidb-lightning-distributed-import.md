@@ -5,7 +5,6 @@ title: TiDB Lightning 分布式并行导入
 # TiDB Lightning 分布式并行导入
 
 TiDB Lightning 的 Local 后端模式从 v5.1.0 版本开始支持单表的并行导入模式，即同时启动多个 TiDB Lightning 导入数据至单个表中。
-
 TiDB Lightning 并行导入功能通过支持同步启动多个实例并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表的元信息，以协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
