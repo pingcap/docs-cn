@@ -724,8 +724,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
     * `get_lock` and `release_lock` functions
     * `LOCK IN SHARE MODE` syntax
     * `SQL_CALC_FOUND_ROWS` syntax
-    * `CREATE TEMPORARY TABLE` syntax
-    * `DROP TEMPORARY TABLE` syntax
     * `START TRANSACTION READ ONLY` and `SET TRANSACTION READ ONLY` syntax
     * The `tx_read_only`, `transaction_read_only`, `offline_mode`, `super_read_only`, `read_only` and `sql_auto_is_null` system variables
 
