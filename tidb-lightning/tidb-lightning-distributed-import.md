@@ -50,7 +50,7 @@ region-split-size = '480MiB'
 
 ## 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 
-在使用 TiDB Lightning 并行导入分库分表数据的时候，请根据数据量大小选择使用的
+在使用 TiDB Lightning 并行导入分库分表数据的时候，请根据数据量大小选择使用的 TiDB Lightning 实例数量。
 
 - 如果 MySQL 数据量小于 1 TiB，可以使用一个 TiDB Lightning 实例进行并行导入。
 - 如果 MySQL 数据量超过 1 TiB，建议每个 MySQL 实例对应一个 TiDB Lightning 实例，而且并行 TiDB Lightning 实例数量不要超过 10 个。
