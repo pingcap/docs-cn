@@ -46,7 +46,7 @@ region-split-size = '480MiB'
 接下来，本文档将以两个并行导入的示例，详细介绍了不同场景下并行导入的操作步骤：
 
 - 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
-- 示例 2：从 Amazon S3 中并行导入单表数据
+- 示例 2：使用 TiDB Lightning 并行导入单表数据
 
 ## 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 
