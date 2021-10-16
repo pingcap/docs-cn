@@ -34,7 +34,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)，以达到最佳的导入性能。
 
-TiDB Lightning 会按照配置项 `tikv-import.region-split-size`（默认为 96MiB）划分 Region 的大小，但是在并行导入的时候，由于不同的 TiDB Lightning 实例划分的 Region 范围不同，会导致产生大量小于 96 MiB 的 Region，严重影响导入的性能。
+TiDB Lightning 会按照配置项 `tikv-import.region-split-size`（默认为 96 MiB）划分 Region 的大小，但是在并行导入的时候，由于不同的 TiDB Lightning 实例划分的 Region 范围不同，会导致产生大量小于 96 MiB 的 Region，严重影响导入的性能。
 
 为了缓解此问题，建议在并行导入的时候，将每一个 TiDB Lightning 实例的此配置项调整为 `n * 96 MiB`（n 为最大并行导入单表的 TiDB Lightning 实例数量）。下面是一个配置示例：
 
