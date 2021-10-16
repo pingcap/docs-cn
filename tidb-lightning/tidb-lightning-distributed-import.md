@@ -11,7 +11,7 @@ TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.
 TiDB Lightning 并行导入可以用于以下场景：
 
 - 并行导入分库分表的数据。在该场景中，来自上游多个数据库实例中的多个表，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。
-- 并行导入单表的数据。在该场景中，存放在某个目录中或云存储（如 Amazon S3）中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该功能为此版本引入的新功能。
+- 并行导入单表的数据。在该场景中，存放在某个目录中或云存储（如 Amazon S3）中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该功能为 v5.3.0 此版本引入的新功能。
 
 >**注意：**
 >
