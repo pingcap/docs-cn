@@ -26,7 +26,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 在使用 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)模式并行导入时，需要确保多个 TiDB Lightning 的数据源之间，以及它们和 TiDB 的目标表中的数据没有主键或者唯一索引的冲突，并且导入的目标表不能有其他应用进行数据写入。否则，TiDB Lightning 将无法保证导入结果的正确性，并且导入完成后相关的数据表将处于数据索引不一致的状态。
 
-### 优化配置项`tikv-import.region-split-size`
+### 导入性能优化
 
 由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)，以达到最佳的导入性能。
 
