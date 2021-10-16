@@ -98,7 +98,7 @@ target-schema = "my_db"
 target-table = "my_table"
 ``` 
 
-如果数据源存放在 Amazon S3 或 GCS 等分布式存储缓存，请参考 [外部存储 URL](/br/backup-and-restore-storages.md)。
+如果数据源存放在 Amazon S3 或 GCS 等分布式存储缓存，请参考[外部存储](/br/backup-and-restore-storages.md)。
 
 ### 第 3 步：开启 TiDB Lightning 进行数据导入
 
