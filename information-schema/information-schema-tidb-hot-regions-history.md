@@ -59,7 +59,7 @@ DESC tidb_hot_regions_history;
 
 > **注意：**
 >
-> + TIDB_HOT_REGIONS_HISTORY表的UPDATE_TIME, REGION_ID, STORE_ID, PEER_ID, IS_LEARNER, IS_LEADER, TYPE字段会下推到PD服务器过滤，所以为了降低使用该表的开销，必须指定搜索关键字以及时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
+> + `TIDB_HOT_REGIONS_HISTORY` 表的 `UPDATE_TIME`, `REGION_ID`, `STORE_ID`, `PEER_ID`, `IS_LEARNER`, `IS_LEADER`, `TYPE` 字段会下推到PD服务器执行，所以为了降低使用该表的开销，必须指定搜索时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
 
 下面是一些常见的应用场景：
 
@@ -70,6 +70,10 @@ DESC tidb_hot_regions_history;
   ```sql
   SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00';
   ```
+
+  > **Note:**
+  >
+  > `UPDATE_TIME` 同样支持unix时间戳。例如: `update_time >TIMESTAMP('2012-08-18 21:40:00')` 或 `update_time > FROM_UNIXTIME(1629294000.000) `。
 
 * 查询某张表指定时间内的热点regions，替换update_time, table_name 即可。
 
