@@ -5,7 +5,9 @@ summary: 了解 information_schema 表 `TIDB_HOT_REGIONS_HISTORY`。
 
 # TIDB_HOT_REGIONS_HISTORY
 
-`TIDB_HOT_REGIONS_HISTORY` 表提供了关于历史热点 Region 的相关信息, 这些信息由PD定期存储在本地，存储间隔为 [`hot-regions-write-interval`](/pd-configuration-file.md#hot-regions-write-interval)的值（默认值为10m)，历史热点信息保持的期限为[`hot-regions-reserved-days`](/pd-configuration-file.md#hot-regions-write-interval)的值（默认值为7days），详情参见[PD 配置文件描述](/pd-configuration-file.md#hot-regions-write-interval)。
+`TIDB_HOT_REGIONS_HISTORY` 表提供了关于历史热点 Region 的相关信息，这些信息由PD定期存储在本地，存储间隔为 [`hot-regions-write-interval`](/pd-configuration-file.md#hot-regions-write-interval)的值（默认值为10m)，历史热点信息保持的期限为[`hot-regions-reserved-days`](/pd-configuration-file.md#hot-regions-write-interval)的值（默认值为7days），详情参见[PD 配置文件描述](/pd-configuration-file.md#hot-regions-write-interval)。
+
+{{< copyable "sql" >}}
 
 ```sql
 USE information_schema;
@@ -38,23 +40,19 @@ DESC tidb_hot_regions_history;
 
 `TIDB_HOT_REGIONS_HISTORY` 表各列字段含义如下：
 
-* UPDATE_TIME：热点Region更新时间。
+* UPDATE_TIME：热点 Region 更新时间。
 * DB_NAME：热点 Region 所在数据库对象的数据库名。
 * TABLE_ID：热点 Region 所在表的 ID。
 * TABLE_NAME：热点 Region 所在表的名称。
 * INDEX_NAME：热点 Region 所在索引的名称。
-
 * INDEX_ID：热点 Region 所在索引的 ID。
-
 * REGION_ID：热点 Region 的 ID。
 * STORE_ID：热点Region所在TiKV Store的ID。
 * PEER_ID：热点Region对应的副本 Peer 的 ID。
 * IS_LEARNER：PEER 是否是 LEARNER。
 * IS_LEADER：PEER 是否是 LEADER。
-
 * TYPE：热点 Region 的类型。
 * HOT_DEGREE：该 热点Region 的热度。
-
 * FLOW_BYTES：该 Region 内读写的字节数量。
 * KEY_RATE：该 Region内读写的key数量。
 * QUERY_RATE：该 Region内读写的query数量。
