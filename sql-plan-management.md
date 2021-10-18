@@ -85,7 +85,7 @@ using
 
 ```sql
 select * from t where a >    1
--- 标准化后：
+-- 以上语句标准化后如下：
 select * from test . t where a > ?
 ```
 
@@ -100,7 +100,7 @@ select * from test . t where a > ?
 > select * from t limit 10, 20
 > select * from t where a in (1)
 > select * from t where a in (1,2,3)
-> -- 标准化后：
+> -- 以上语句标准化后如下：
 > select * from test . t limit ? 
 > select * from test . t limit ...
 > select * from test . t where a in ( ? ) 
