@@ -104,15 +104,13 @@ ignore-struct-check = false
     port = 3306
     user = "root"
     password = ""
-    # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
-    # snapshot = "2016-10-08 16:45:26"
 
 [data-sources.tidb]
     host = "127.0.0.1"
     port = 4000
     user = "root"
     password = ""
-    # remove comment if use tidb's snapshot data
+    # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "2016-10-08 16:45:26"
 
 ######################### Table configs #########################
@@ -165,7 +163,7 @@ target-table = "t2" # 目标表名
     source-instances = ["mysql1"]
 
     # 下游数据库
-    target-instance = ["tidb"]
+    target-instance = "tidb"
 
     # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
