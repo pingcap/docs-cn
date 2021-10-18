@@ -77,6 +77,159 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 backend = "tidb"
 ```
 
+#### 配置说明
+
+```toml
+### tidb-lightning 任务配置
+
+[lightning]
+# 启动之前检查集群是否满足最低需求。
+# check-requirements = true
+
+# 引擎文件的最大并行数。
+# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
+# 这两项设置控制两种引擎文件的最大并发数。
+# 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数。
+# index-concurrency = 0
+# 控制同时允许导入的最大“数据引擎”数量，默认值为 CPU 数，本配置不应小于 index-concurrency。
+# table-concurrency = 0
+
+# 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同。TiDB-backend 的瓶颈不在 CPU, 可以根据下游集群的
+# 实际负载调大此配置以优化写入速度，同时在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
+# region-concurrency =
+
+[checkpoint]
+# 是否启用断点续传。
+# 导入数据时，TiDB Lightning 会记录当前表导入的进度。
+# 所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
+enable = true
+# 存储断点的数据库名称。
+schema = "tidb_lightning_checkpoint"
+# 存储断点的方式。
+#  - file：存放在本地文件系统。
+#  - mysql：存放在兼容 MySQL 的数据库服务器。
+driver = "file"
+
+# dsn 是数据源名称 (data source name)，表示断点的存放位置。
+# 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
+#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+# 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
+# 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
+# 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
+# dsn = "/tmp/tidb_lightning_checkpoint.pb"
+
+# 所有数据导入成功后是否保留断点。设置为 false 时为删除断点。
+# 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
+# keep-after-success = false
+
+[tikv-importer]
+# 后端模式，对于 TiDB-backend 请设置为 “tidb”
+# backend = "local"
+
+# 对于插入重复数据时执行的操作：
+# - replace：新数据替代已有数据
+# - ignore：保留已有数据，忽略新数据
+# - error：中止导入并报错
+# on-duplicate = "replace"
+
+[mydumper]
+# 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
+read-block-size = 65536 # Byte (默认为 64 KB)
+
+# （源数据文件）单个导入区块大小的最小值。
+# TiDB Lightning 根据该值将一张大表分割为多个数据引擎文件。
+# batch-size = 107_374_182_400 # Byte (默认为 100 GB)
+
+# 本地源数据目录或外部存储 URL
+data-source-dir = "/data/my_database"
+
+# 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
+#  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
+#  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
+#  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
+#  - binary：不尝试转换编码。
+# 注意：**数据** 文件始终解析为 binary 文件。
+character-set = "auto"
+
+# “严格”格式的导入数据可加快处理速度。
+# strict-format = true 要求：
+# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
+# 甚至被引号包裹的字符换行符都不可包含，即换行符只可用来分隔行。
+# 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
+# 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
+# 为保证数据安全而非追求处理速度，默认值为 false。
+strict-format = false
+
+# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
+# max-region-size = 268_435_456 # Byte（默认是 256 MB）
+
+# 只导入与该通配符规则相匹配的表。详情见相应章节。
+filter = ['*.*']
+
+# 配置 CSV 文件的解析方式。
+[mydumper.csv]
+# 字段分隔符，应为单个 ASCII 字符。
+separator = ','
+# 引用定界符，可为单个 ASCII 字符或空字符串。
+delimiter = '"'
+# CSV 文件是否包含表头。
+# 如果 header = true，将跳过首行。
+header = true
+# CSV 文件是否包含 NULL。
+# 如果 not-null = true，CSV 所有列都不能解析为 NULL。
+not-null = false
+# 如果 not-null = false（即 CSV 可以包含 NULL），
+# 为以下值的字段将会被解析为 NULL。
+null = '\N'
+# 是否对字段内“\“进行转义
+backslash-escape = true
+# 如果有行以分隔符结尾，删除尾部分隔符。
+trim-last-separator = false
+
+[tidb]
+# 目标集群的信息。tidb-server 的地址，填一个即可。
+host = "172.16.31.1"
+port = 4000
+user = "root"
+password = ""
+# 表结构信息从 TiDB 的“status-port”获取。
+status-port = 10080
+# pd-server 的地址，填一个即可。
+pd-addr = "172.16.31.4:2379"
+# tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
+# 设置 TiDB 库的日志等级。
+log-level = "error"
+
+# 解析和执行 SQL 语句的默认 SQL 模式。
+sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
+# `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
+# 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
+# 会使用下游数据库 global 级别的 `max_allowed_packet`。
+max-allowed-packet = 67_108_864
+
+# SQL 连接是否使用 TLS。可选值为：
+#  * ""            - 如果填充了 [tidb.security] 部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
+#  * "false"       - 禁用 TLS
+#  * "cluster"     - 强制使用 TLS 并使用 [tidb.security] 部分中指定的 CA 验证服务器的证书
+#  * "skip-verify" - 强制使用 TLS，但不验证服务器的证书（不安全！）
+#  * "preferred"   - 与 "skip-verify" 相同，但是如果服务器不支持 TLS，则会退回到未加密的连接
+# tls = ""
+# 指定证书和密钥用于 TLS 连接 MySQL。
+# [tidb.security]
+# CA 的公钥证书。设置为空字符串可禁用 SQL 的 TLS。
+# ca-path = "/path/to/ca.pem"
+# 该服务的公钥证书。默认为 `security.cert-path` 的副本
+# cert-path = "/path/to/lightning.pem"
+# 此服务的私钥。默认为 `security.key-path` 的副本
+# key-path = "/path/to/lightning.key"
+
+# 设置周期性后台操作。
+# 支持的单位：h（时）、m（分）、s（秒）。
+[cron]
+# 在日志中打印导入进度的持续时间。
+log-progress = "5m"
+```
+
 或者在用命令行启动 `tidb-lightning` 时，传入参数 `--backend tidb`。
 
 ### 冲突解决
