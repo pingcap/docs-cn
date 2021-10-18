@@ -90,13 +90,19 @@ backend = "tidb"
 # 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
 # 这两项设置控制两种引擎文件的最大并发数。
 # 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数。
-# index-concurrency = 0
+# index-concurrency = 40
 # 控制同时允许导入的最大“数据引擎”数量，默认值为 CPU 数，本配置不应小于 index-concurrency。
-# table-concurrency = 0
+# table-concurrency = 40
 
 # 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同。TiDB-backend 的瓶颈不在 CPU, 可以根据下游集群的
 # 实际负载调大此配置以优化写入速度，同时在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
-# region-concurrency =
+# region-concurrency = 40
+
+# 日志相关的配置
+# 输出日志级别
+level = "info"
+# 日志输出的文件。如果为空，则会输出至 /tmp/lightning.log.{timestamp}； 如果希望输出至系统标准输出，请设置为 "-"。
+# file = "tidb-lightning.log"
 
 [checkpoint]
 # 是否启用断点续传。
@@ -118,13 +124,9 @@ driver = "file"
 # 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
 # dsn = "/tmp/tidb_lightning_checkpoint.pb"
 
-# 所有数据导入成功后是否保留断点。设置为 false 时为删除断点。
-# 保留断点有利于进行调试，但会泄漏关于数据源的元数据。
-# keep-after-success = false
-
 [tikv-importer]
 # 后端模式，对于 TiDB-backend 请设置为 “tidb”
-# backend = "local"
+# backend = "tidb"
 
 # 对于插入重复数据时执行的操作：
 # - replace：新数据替代已有数据
