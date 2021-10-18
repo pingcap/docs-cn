@@ -33,7 +33,7 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 
 > **注意：**
 >
-> TiDB Lightning Local-backend 从 v5.3.0 版本才开始支持导入数据至非空的目标表，并且在使用时要求新导入数据和表内已有数据无冲突；TiDB-backend 无此要求。
+> 自 TiDB 5.3.0 版本起，TiDB Lightning Local-backend 开始支持导入数据至非空的目标表，并且在使用时要求新导入数据和表内已有数据无冲突；TiDB-backend 无此要求。
 
 ## 如何选择后端模式
 
