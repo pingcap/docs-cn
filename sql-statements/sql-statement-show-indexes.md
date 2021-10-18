@@ -97,7 +97,7 @@ SHOW KEYS FROM t1;
 
 ## MySQL 兼容性
 
-MySQL 中的 Cardinality 列返回该索引上的不同的值的个数，而 TiDB 中的 Cardinality 列始终返回 0。
+MySQL 中的 `Cardinality` 列返回该索引上不同值的个数，而 TiDB 中的 `Cardinality` 列始终返回 `0`。
 
 ## 另请参阅
 
