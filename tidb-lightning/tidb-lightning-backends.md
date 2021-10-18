@@ -145,14 +145,6 @@ read-block-size = 65536 # Byte (默认为 64 KB)
 # 本地源数据目录或外部存储 URL
 data-source-dir = "/data/my_database"
 
-# 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
-#  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
-#  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
-#  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
-#  - binary：不尝试转换编码。
-# 注意：**数据** 文件始终解析为 binary 文件。
-character-set = "auto"
-
 # “严格”格式的导入数据可加快处理速度。
 # strict-format = true 要求：
 # 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
@@ -165,7 +157,7 @@ strict-format = false
 # 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
 # max-region-size = 268_435_456 # Byte（默认是 256 MB）
 
-# 只导入与该通配符规则相匹配的表。详情见相应章节。
+# 只导入与该通配符规则相匹配的表。详情见表库过滤章节。
 filter = ['*.*']
 
 # 配置 CSV 文件的解析方式。
@@ -194,20 +186,9 @@ host = "172.16.31.1"
 port = 4000
 user = "root"
 password = ""
-# 表结构信息从 TiDB 的“status-port”获取。
-status-port = 10080
-# pd-server 的地址，填一个即可。
-pd-addr = "172.16.31.4:2379"
-# tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
-# 设置 TiDB 库的日志等级。
-log-level = "error"
 
 # 解析和执行 SQL 语句的默认 SQL 模式。
-sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
-# `max-allowed-packet` 设置数据库连接允许的最大数据包大小，
-# 对应于系统参数中的 `max_allowed_packet`。 如果设置为 0，
-# 会使用下游数据库 global 级别的 `max_allowed_packet`。
-max-allowed-packet = 67_108_864
+# sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
 
 # SQL 连接是否使用 TLS。可选值为：
 #  * ""            - 如果填充了 [tidb.security] 部分，则强制使用 TLS（与 "cluster" 情况相同），否则与 "false" 情况相同
