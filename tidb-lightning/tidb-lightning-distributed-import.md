@@ -17,6 +17,14 @@ TiDB Lightning 并行导入可以用于以下场景：
 >
 >并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 
+下图展示了并行导入分库分表的工作流程。
+
+![并行导入分库分表](/media/parallel-import-shard-tables.png)
+
+下图展示了并行导入单表的工作流程。
+
+![并行导入单表](/media/parallel-import-single-tables.png)
+
 ## 使用说明
 
 使用 TiDB Lightning 并行导入无须额外配置。TiDB Lightning 在启动时，会在下游 TiDB 中注册元信息，并自动检测是否有其他实例向目标集群导入数据。如果有，则自动进入并行导入模式。
@@ -122,7 +130,7 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 ## 示例 2：使用 TiDB Lightning 并行导入单表数据
 
-TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于更多远端存储信息，请参考 [TiDB Lightning 支持的远端存储](/br/backup-and-restore-storages.md)）。
+TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于更多远端存储信息，请参考 [TiDB Lightning 支持的远端存储](/br/backup-and-restore-storages.md)。
 
 > **说明**
 >
