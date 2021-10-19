@@ -84,9 +84,29 @@ using
 
 ```sql
 select * from t where a >    1
--- 标准化后：
+-- 以上语句标准化后如下：
 select * from test . t where a > ?
 ```
+
+> **注意：**
+>
+> 在进行标准化的时候，被逗号 `,` 连接起来的多个常量会被标准化为 `...` 而不是 `?`。
+>
+> 例如：
+> 
+> ```sql
+> select * from t limit 10
+> select * from t limit 10, 20
+> select * from t where a in (1)
+> select * from t where a in (1,2,3)
+> -- 以上语句标准化后如下：
+> select * from test . t limit ? 
+> select * from test . t limit ...
+> select * from test . t where a in ( ? ) 
+> select * from test . t where a in ( ... )
+> ```
+> 
+> 因此包含单个常量的 SQL 语句和包含被逗号连接起来多个常量的 SQL 语句，在被绑定时会被 TiDB 视作不同的 SQL 语句，需要分别创建绑定。
 
 值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
 
