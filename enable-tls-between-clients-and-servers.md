@@ -6,77 +6,51 @@ aliases: ['/docs/dev/enable-tls-between-clients-and-servers/','/docs/dev/how-to/
 
 # Enable TLS between TiDB Clients and Servers
 
-Non-encrypted connection between TiDB's server and client is used by default, which enables third parties that monitor channel traffic to know the data sent and received between the server and the client, including but not limited to query content, query results, and so on. If a channel is untrustworthy (such as if the client is connected to the TiDB server via a public network), then a non-encrypted connection is prone to information leakage. In this case, for security reasons, it is recommended to use an encrypted connection.
+Non-encrypted connection between TiDB's server and clients is allowed by default, which enables third parties that monitor channel traffic to know the data sent and received between the server and the client, including but not limited to query content, query results, and so on. If a channel is untrustworthy (such as if the client is connected to the TiDB server via a public network), then a non-encrypted connection is prone to information leakage. In this case, for security reasons, it is recommended to require an encrypted connection.
 
-The TiDB server supports the encrypted connection based on the TLS (Transport Layer Security). The protocol is consistent with MySQL encrypted connections and is directly supported by existing MySQL clients such as MySQL operation tools and MySQL drivers. TLS is sometimes referred to as SSL (Secure Sockets Layer). Because the SSL protocol has [known security vulnerabilities](https://en.wikipedia.org/wiki/Transport_Layer_Security), TiDB does not support it. TiDB supports the following versions: TLS 1.0, TLS 1.1, and TLS 1.2, TLS 1.3.
+The TiDB server supports the encrypted connection based on the TLS (Transport Layer Security). The protocol is consistent with MySQL encrypted connections and is directly supported by existing MySQL clients such as MySQL Client, MySQL Shell and MySQL drivers. TLS is sometimes referred to as SSL (Secure Sockets Layer). Because the SSL protocol has [known security vulnerabilities](https://en.wikipedia.org/wiki/Transport_Layer_Security), TiDB does not support SSL. TiDB supports the following protocols: TLS 1.0, TLS 1.1, TLS 1.2 and TLS 1.3.
 
-After using an encrypted connection, the connection has the following security properties:
+When an encrypted connection is used, the connection has the following security properties:
 
-- Confidentiality: the traffic plaintext cannot be eavesdropped
+- Confidentiality: the traffic plaintext is encrypted to avoid eavesdropping
 - Integrity: the traffic plaintext cannot be tampered
-- Authentication: (optional) the client and the server can verify the identity of both parties to avoid man-in-the-middle attacks
+- Authentication: (optional) the client can verify the identity of the server and the server can verify the identity of the client to avoid man-in-the-middle attacks
 
-The encrypted connections in TiDB are disabled by default. To use encrypted connections in the client, you must first configure the TiDB server and enable encrypted connections. In short, to use encrypted connections, both of the following conditions must be met:
+To use connections secured with TLS, you first need to configure the TiDB server to enable TLS. Then you need to configure the client application to use TLS. Most client libraries enable TLS automatically when the server has TLS support configured correctly.
 
-+ Enable encrypted connections in the TiDB server.
-+ The client specifies to use an encrypted connection.
+Similar to MySQL, TiDB allows TLS and non-TLS connections on the same TCP port. For a TiDB server with TLS enabled, you can choose to securely connect to the TiDB server through an encrypted connection, or to use an unencrypted connection. You can use the following ways to require the use of secure connections:
 
-Similar to MySQL, the encrypted connections in TiDB consist of single connections. The encrypted connection is optional by default. For a TiDB server with encrypted connections enabled, you can choose to securely connect to the TiDB server through an encrypted connection, or to use a generally unencrypted connection. If the encrypted connections are enforced as required, both of the following two ways are available:
-
-+ Configure the launch parameter `--require-secure-transport` to enable encrypted connections to the TiDB server for all users.
-+ Specify `require ssl` when you create a user (`create user`), grant permissions (`grant`) or modify an existing user (`alter user`), which is to specify that specified users must use the encrypted connection to access TiDB. The following is an example of creating a user:
++ Configure the launch parameter `--require-secure-transport` to require secure connections to the TiDB server for all users.
++ Specify `REQUIRE SSL` when you create a user (`create user`), or modify an existing user (`alter user`), which is to specify that specified users must use the encrypted connection to access TiDB. The following is an example of creating a user:
 
     {{< copyable "sql" >}}
 
     ```sql
-    create user 'u1'@'%'  require ssl;
+    CREATE USER 'u1'@'%' IDENTIFIED BY 'my_random_password' REQUIRE SSL;
     ```
 
 > **Note:**
 >
 > If the login user has configured using the [TiDB Certificate-Based Authentication for Login](/certificate-authentication.md#configure-the-user-certificate-information-for-login-verification), the user is implicitly required to enable the encrypted connection to TiDB.
 
-## Configure TiDB to use encrypted connections
+## Configure TiDB server to use secure connections
 
-See the following descriptions about the related parameters to enable encrypted connections:
+See the following desrciptions about the related parameters to enable secure connections:
 
+- [`auto-tls`](/tidb-configuration-file.md#auto-tls): enables automatic certificate generation (since v5.2.0)
 - [`ssl-cert`](/tidb-configuration-file.md#ssl-cert): specifies the file path of the SSL certificate
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key): specifies the private key that matches the certificate
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
 
-To enable encrypted connections in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable authentication](#enable-authentication)).
+`auto-tls` allows secure connections but does not provide client certificate validation. For certificate validation, and to control how certificates are generated, see the advice on configuring the `ssl-cert`, `ssl-key` and `ssl-ca` variables  below.
+
+To enable secure connections with your own certificates in the TiDB server, you must specify both of the `ssl-cert` and `ssl-key` parameters in the configuration file when you start the TiDB server. You can also specify the `ssl-ca` parameter for client authentication (see [Enable authentication](#enable-authentication)).
 
 All the files specified by the parameters are in PEM (Privacy Enhanced Mail) format. Currently, TiDB does not support the import of a password-protected private key, so it is required to provide a private key file without a password. If the certificate or private key is invalid, the TiDB server starts as usual, but the client cannot connect to the TiDB server through an encrypted connection.
 
-The certificate or key is signed and generated using OpenSSL, or quickly generated using the `mysql_ssl_rsa_setup` tool in MySQL:
-
-```bash
-mysql_ssl_rsa_setup --datadir=./certs
-```
-
-This command generates the following files in the `certs` directory:
-
-```
-certs
-├── ca-key.pem
-├── ca.pem
-├── client-cert.pem
-├── client-key.pem
-├── private_key.pem
-├── public_key.pem
-├── server-cert.pem
-└── server-key.pem
-```
-
-The corresponding TiDB configuration file parameters are:
-
-```toml
-[security]
-ssl-cert = "certs/server-cert.pem"
-ssl-key = "certs/server-key.pem"
-```
-
 If the certificate parameters are correct, TiDB outputs `secure connection is enabled` when started; otherwise, it outputs `secure connection is NOT ENABLED`.
+
+For TiDB versions earlier than v5.2.0, you can use `mysql_ssl_rsa_setup --datadir=./certs` to generate certficates. The `mysql_ssal_rsa_setup` tool is a part of MySQL Server.
 
 ## Configure the MySQL client to use encrypted connections
 
@@ -87,6 +61,11 @@ You can change the connection behavior of the client using the following `--ssl-
 - `--ssl-mode=REQUIRED`: The client requires an encrypted connection. The connection cannot be established if the server side does not support encrypted connections.
 - In the absence of the `--ssl-mode` parameter: The client attempts to use an encrypted connection, but the encrypted connection cannot be established if the server side does not support encrypted connections. Then the client uses an unencrypted connection.
 - `--ssl-mode=DISABLED`: The client uses an unencrypted connection.
+
+MySQL 8.0 clients have two SSL modes in addition to this parameter:
+
+- `--ssl-mode=VERIFY_CA`: Validates the certificate from the server against the CA that requires `--ssl-ca`.
+- `--ssl-mode=VERIFY_IDENTITY`: The same as `VERIFY_CA`, but also validating whether the hostname you are connecting to matches the certificate.
 
 For more information, see [Client-Side Configuration for Encrypted Connections](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration) in MySQL.
 
@@ -147,6 +126,8 @@ SSL: Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
 
 The TLS versions, key exchange protocols and encryption algorithms supported by TiDB are determined by the official Golang libraries.
 
+The crypto policy for your operating system and the client library you are using might also impact the list of supported protocols and cipher suites.
+
 ### Supported TLS versions
 
 - TLS 1.0
@@ -171,6 +152,8 @@ The TLS versions, key exchange protocols and encryption algorithms supported by 
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_128\_GCM\_SHA256
 - TLS\_ECDHE\_RSA\_WITH\_AES\_256\_GCM\_SHA384
 - TLS\_ECDHE\_ECDSA\_WITH\_AES\_256\_GCM\_SHA384
+- TLS\_ECDHE\_RSA\_WITH\_CHACHA20\_POLY1305\_SHA256
+- TLS\_ECDHE\_ECDSA\_WITH\_CHACHA20\_POLY1305\_SHA256
 - TLS\_AES\_128\_GCM\_SHA256
 - TLS\_AES\_256\_GCM\_SHA384
 - TLS\_CHACHA20\_POLY1305\_SHA256
@@ -181,6 +164,24 @@ To replace the certificate, the key or CA, first replace the corresponding files
 
 The newly loaded certificate, key, and CA take effect on the connection that is established after the statement is successfully executed. The connection established before the statement execution is not affected.
 
-### See also
+## Montoring
+
+Since TiDB v5.2.0, you can use the `Ssl_server_not_after` and `Ssl_server_not_before` status variables to monitor the start and end dates of the validity of the certificate.
+
+```sql
+SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
+```
+
+```
++-----------------------+--------------------------+
+| Variable_name         | Value                    |
++-----------------------+--------------------------+
+| Ssl_server_not_after  | Nov 28 06:42:32 2021 UTC |
+| Ssl_server_not_before | Aug 30 06:42:32 2021 UTC |
++-----------------------+--------------------------+
+2 rows in set (0.0076 sec)
+```
+
+## See also
 
 - [Enable TLS Between TiDB Components](/enable-tls-between-components.md).

@@ -6,6 +6,10 @@ aliases: ['/docs/dev/generate-self-signed-certificates/','/docs/dev/how-to/secur
 
 # Generate Self-Signed Certificates
 
+> **Note:**
+>
+> To enable TLS between clients and servers, you only need to set `auto-tls`.
+
 This document provides an example of using `openssl` to generate a self-signed certificate. You can also generate certificates and keys that meet requirements according to your demands.
 
 Assume that the topology of the instance cluster is as follows:
