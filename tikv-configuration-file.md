@@ -378,7 +378,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 ### `l0-files-threshold`
 
 + 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
-+ 默认值：20
++ v5.2.2 前，默认值为 9。自 v5.2.2 起，默认值为 20。
 
 ### `soft-pending-compaction-bytes-limit`
 
