@@ -24,7 +24,7 @@ This document describes the operators precedence, comparison functions and opera
 | [~](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-invert) | Bitwise inversion |
 | [\|](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-or) | Bitwise OR |
 | [^](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-xor) | Bitwise XOR |
-| [CASE](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case) | Case operator |
+| [CASE](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#operator_case) | Case operator |
 | [DIV](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_div) | Integer division |
 | [/](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_divide) | Division operator |
 | [=](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal) | Equal operator |
