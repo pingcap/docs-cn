@@ -50,7 +50,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 - 如果 MySQL 数据量小于 2 TiB，可以使用一个 TiDB Lightning 实例进行并行导入
 - 如果 MySQL 数据量超过 2 TiB，并且 MySQL 实例总数没有超过 10 个，建议每个 MySQL 实例对应一个 TiDB Lightning 实例，而且并行 TiDB Lightning 实例数量不要超过 10 个
-- 如果MySQL 数据量超过 2 TiB，并且 MySQL 实例总数超过 10 个，建议这些 MySQL 实例导出的数据平均分配至 5~10 个 TiDB Lightning 实例进行导入
+- 如果 MySQL 数据量超过 2 TiB，并且 MySQL 实例总数超过 10 个，建议这些 MySQL 实例导出的数据平均分配 5 到 10 个 TiDB Lightning 实例进行导入
 
 接下来，本文档将以两个并行导入的示例，详细介绍了不同场景下并行导入的操作步骤：
 
