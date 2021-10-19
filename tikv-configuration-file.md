@@ -103,6 +103,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1
 + 最小值：1
 
+### `max-grpc-send-msg-len`
+
++ 设置 gRPC 可以发送的最大消息长度（以字节为单位）。 `-1` 表示无限制。
++ 默认值：10485760
++ 单位：bytes
++ 最大值：-1
+
 ### `grpc-stream-initial-window-size`
 
 + gRPC stream 的 window 大小。
