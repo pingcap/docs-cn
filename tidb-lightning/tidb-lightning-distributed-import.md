@@ -124,7 +124,7 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amazon S3 中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该方法可以加快整体导入速度。关于更多远端存储信息，请参考 [TiDB Lightning 支持的远端存储](/br/backup-and-restore-storages.md)。
 
-> **注意**
+> **注意：**
 >
 > 在本地环境下，可以使用 Dumpling 的 --where 参数，预先将单表的数据划分成不同的部分导出至多台机器的本地磁盘，此时依然可以使用并行导入功能，其配置与示例 1 相同。
 
