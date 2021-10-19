@@ -58,7 +58,7 @@ To integrate TiDB with Confluent Platform, you can use the TiCDC component with 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    curl -X POST -H "Content-Type: application/json" -d jdbc-sink-connector.json http://127.0.0.1:8083/connectors
+    curl -X POST -H "Content-Type: application/json" -d @jdbc-sink-connector.json http://127.0.0.1:8083/connectors
     ```
 
 3. Deploy TiCDC in one of the following ways. If TiCDC is already deployed, you can skip this step.
