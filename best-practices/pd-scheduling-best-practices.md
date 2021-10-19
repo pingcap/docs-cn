@@ -78,7 +78,7 @@ Because different nodes might differ in performance, you can also set the weight
 
 ### Hot regions scheduling
 
-For hot regions scheduling, use `hot-region-scheduler`. Currently in TiDB 3.0, the process is performed as follows:
+For hot regions scheduling, use `hot-region-scheduler`. Since TiDB v3.0, the process is performed as follows:
 
 1. Count hot regions by determining read/write traffic that exceeds a certain threshold for a certain period based on the information reported by stores.
 
