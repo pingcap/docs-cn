@@ -91,7 +91,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 ## 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md#sql_mode)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
+TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.md#sql_mode) 系统变量。对全局作用域变量的更改将作用于集群中的其它服务器，并且重启后更改依然有效。因此，你无需在每台 TiDB 服务器上都更改 `sql_mode` 的值。
 
 ## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
