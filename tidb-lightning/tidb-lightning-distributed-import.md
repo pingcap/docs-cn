@@ -1,5 +1,6 @@
 ---
 title: TiDB Lightning 分布式并行导入
+summary: 本文档介绍了 TiDB Lightning 分布式并行导入的概念、使用场景、使用说明和使用方法。
 ---
 
 # TiDB Lightning 分布式并行导入
@@ -11,11 +12,11 @@ TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.
 TiDB Lightning 并行导入可以用于以下场景：
 
 - 并行导入分库分表的数据。在该场景中，来自上游多个数据库实例中的多个表，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。
-- 并行导入单表的数据。在该场景中，存放在某个目录中或云存储（如 Amazon S3）中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该功能为 v5.3.0 此版本引入的新功能。
+- 并行导入单表的数据。在该场景中，存放在某个目录中或云存储（如 Amazon S3）中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。
 
 >**注意：**
 >
->并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
+> 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 
 下图展示了并行导入分库分表的工作流程。
 
@@ -40,15 +41,15 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 ### 导入性能优化
 
-由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)。同时，在使用 TiDB Lightning 并行导入模式时，需要如下限制以达到最优性能：
+由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)。同时，在使用 TiDB Lightning 并行导入模式时，需要实现如下限制以达到最优性能：
 
-- 每个 TiDB Lightning 实例导入的源文件总大小不超过 5TB
-- TiDB Lihgning 实例的总数量不超过 10 个
-- 并行导入单表的 TiDB Lightning 实例不超过 5 个
+- 每个 TiDB Lightning 实例导入的源文件总大小不超过 5 TB；
+- TiDB Lihgning 实例的总数量不超过 10 个；
+- 并行导入单表的 TiDB Lightning 实例不超过 5 个。
 
 在使用 TiDB Lightning 并行导入分库分表数据的时候，请根据数据量大小选择使用的 TiDB Lightning 实例数量。
 
-- 如果 MySQL 数据量小于 1 TiB，可以使用一个 TiDB Lightning 实例进行并行导入。
+- 如果 MySQL 数据量小于 1 TiB，可以使用一个 TiDB Lightning 实例进行并行导入；
 - 如果 MySQL 数据量超过 1 TiB，建议每个 MySQL 实例对应一个 TiDB Lightning 实例，而且并行 TiDB Lightning 实例数量不要超过 10 个。
 
 接下来，本文档将以两个并行导入的示例，详细介绍了不同场景下并行导入的操作步骤：
