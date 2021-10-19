@@ -90,9 +90,6 @@ backend = "local"
 # 设置本地排序数据的路径
 sorted-kv-dir = "/path/to/sorted-dir"
 
-# 调整 Region 的大小
-region-split-size = '480MiB'
-
 # 设置分库分表合并规则
 [[routes]]
 schema-pattern = "my_db"
