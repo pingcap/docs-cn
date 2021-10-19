@@ -77,7 +77,7 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 
 ### 热点调度
 
-热点调度对应的调度器是 `hot-region-scheduler`。在 3.0 版本中，统计热点 Region 的方式为：
+热点调度对应的调度器是 `hot-region-scheduler`。从 TiDB v3.0 版本开始，统计热点 Region 的方式为：
 
 1. 根据 Store 上报的信息，统计出持续一段时间读或写流量超过一定阈值的 Region。
 2. 用与负载均衡类似的方式把这些 Region 分散开来。
