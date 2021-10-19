@@ -26,14 +26,10 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 | 资源使用率 | 高 | 高 | 低 |
 | 占用网络带宽 | 高 | 中  | 低 |
 | 导入时是否满足 ACID | 否 | 否 | 是 |
-| 目标表 | 可以不为空 | 必须为空 | 可以不为空 |
+| 目标表 | 必须为空 | 必须为空 | 可以不为空 |
 | 额外组件 | 无 | `tikv-importer` | 无 |
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 | 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
-
-> **注意：**
->
-> 自 TiDB 5.3.0 版本起，TiDB Lightning Local-backend 开始支持导入数据至非空的目标表，并且在使用时要求新导入数据和表内已有数据无冲突；TiDB-backend 无此要求。
 
 ## 如何选择后端模式
 
