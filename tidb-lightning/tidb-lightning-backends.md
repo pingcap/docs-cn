@@ -83,6 +83,7 @@ backend = "tidb"
 # tidb-lightning 任务配置
 
 [lightning]
+
 # 启动之前检查集群是否满足最低需求。
 check-requirements = true
 
@@ -104,6 +105,7 @@ level = "info"
 # file = "tidb-lightning.log"
 
 [checkpoint]
+
 # 是否启用断点续传。
 # 导入数据时，TiDB Lightning 会记录当前表导入的进度。
 # 所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
@@ -126,6 +128,7 @@ driver = "file"
 # dsn = "/tmp/tidb_lightning_checkpoint.pb"
 
 [tikv-importer]
+
 # 后端模式，对于 TiDB-backend 请设置为 “tidb”
 backend = "tidb"
 
@@ -136,6 +139,7 @@ backend = "tidb"
 # on-duplicate = "replace"
 
 [mydumper]
+
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = 65536 # Byte (默认为 64 KB)
 
@@ -189,6 +193,7 @@ backslash-escape = true
 trim-last-separator = false
 
 [tidb]
+
 # 目标集群的信息。tidb-server 的地址，填一个即可。
 host = "172.16.31.1"
 port = 4000
