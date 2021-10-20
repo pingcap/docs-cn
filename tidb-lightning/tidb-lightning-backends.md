@@ -92,16 +92,16 @@ backend = "tidb"
 # 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数。
 # index-concurrency = 40
 # 控制同时允许导入的最大“数据引擎”数量，默认值为 CPU 数，本配置不应小于 index-concurrency。
-# table-concurrency = 40
+table-concurrency = 40
 
 # 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同。TiDB-backend 的瓶颈不在 CPU, 可以根据下游集群的
 # 实际负载调大此配置以优化写入速度，同时在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
-# region-concurrency = 40
+region-concurrency = 40
 
 # 日志相关的配置
 # 输出日志级别
 level = "info"
-# 日志输出的文件。如果为空，则会输出至 /tmp/lightning.log.{timestamp}； 如果希望输出至系统标准输出，请设置为 "-"。
+# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}； 如果希望输出至系统标准输出，请设置为 "-"。
 # file = "tidb-lightning.log"
 
 [checkpoint]
@@ -112,13 +112,13 @@ enable = true
 # 存储断点的数据库名称。
 schema = "tidb_lightning_checkpoint"
 # 存储断点的方式。
-#  - file：存放在本地文件系统。
+#  - file（默认）：存放在本地文件系统。
 #  - mysql：存放在兼容 MySQL 的数据库服务器。
 driver = "file"
 
 # dsn 是数据源名称 (data source name)，表示断点的存放位置。
 # 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-#若不设置该路径，则默认存储路径为“/tmp/CHECKPOINT_SCHEMA.pb”。
+#若不设置该路径，则默认存储路径为“/tmp/{schema}.pb”。
 # 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
 # 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
 # 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
@@ -135,12 +135,12 @@ driver = "file"
 # on-duplicate = "replace"
 
 [mydumper]
-# 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
-read-block-size = 65536 # Byte (默认为 64 KB)
+# 设置文件读取的区块大小(默认为 64 KiB)，确保该值比数据源的最长字符串长。
+# read-block-size = "64KiB" 
 
-# （源数据文件）单个导入区块大小的最小值。
+# （源数据文件）单个导入区块大小的最小值（默认为 100 GiB）。
 # TiDB Lightning 根据该值将一张大表分割为多个数据引擎文件。
-# batch-size = 107_374_182_400 # Byte (默认为 100 GB)
+# batch-size = "100GiB"
 
 # 本地源数据目录或外部存储 URL
 data-source-dir = "/data/my_database"
@@ -152,15 +152,15 @@ data-source-dir = "/data/my_database"
 # 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
 # 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
 # 为保证数据安全而非追求处理速度，默认值为 false。
-strict-format = false
+# strict-format = false
 
 # 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
-# max-region-size = 268_435_456 # Byte（默认是 256 MB）
+# max-region-size = "256MiB" # Byte（默认是 256 MiB）
 
-# 只导入与该通配符规则相匹配的表。详情见表库过滤章节。
-filter = ['*.*']
+# 只导入与该通配符规则相匹配的表，默认会过滤掉系统表。详情见表库过滤章节。
+# filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
 
-# 配置 CSV 文件的解析方式。
+# 配置 CSV 文件的解析方式（如果源文件中不包含 CSV 文件可不设置此项）。
 [mydumper.csv]
 # 字段分隔符，应为单个 ASCII 字符。
 separator = ','
