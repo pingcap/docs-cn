@@ -372,7 +372,7 @@ Configuration items related to the flow control mechanism in TiKV. This mechanis
 ### `l0-files-threshold`
 
 + When the number of kvDB L0 files reaches this threshold, the flow control mechanism starts to work.
-+ Default value: `9`
++ Default value: `20`
 
 ### `soft-pending-compaction-bytes-limit`
 
