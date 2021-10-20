@@ -44,7 +44,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)。同时，在使用 TiDB Lightning 并行导入模式时，为达到最优性能，建议进行如下限制：
 
 - 每个 TiDB Lightning 实例导入的源文件总大小不超过 5 TiB
-- TiDB Lihgning 实例的总数量不超过 10 个
+- TiDB Lightning 实例的总数量不超过 10 个
 
 在使用 TiDB Lightning 并行导入分库分表数据的时候，请根据数据量大小选择使用的 TiDB Lightning 实例数量。
 
