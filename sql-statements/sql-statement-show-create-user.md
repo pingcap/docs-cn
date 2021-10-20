@@ -26,7 +26,8 @@ aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-create-user/','/doc
 SHOW CREATE USER 'root';
 ```
 
-```+--------------------------------------------------------------------------------------------------------------------------+
+```
++--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for root@%                                                                                                   |
 +--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'root'@'%' IDENTIFIED WITH 'mysql_native_password' AS '' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
