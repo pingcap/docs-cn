@@ -52,7 +52,7 @@ DESC statistics;
 * `SEQ_IN_INDEX`：索引中的列序号，从 `1` 开始。
 * `COLUMN_NAME`：列名。请参见表达式列的说明。
 * `COLLATION`：列在索引中的排序方式。取值可以是 `A`（升序）、`D`（降序）或 `NULL`（未排序）。
-* `CARDINALITY`：索引中唯一值的数量的估计。要更新这个数字，执行 `ANALYZE TABLE`。
+* `CARDINALITY`：TiDB 未使用该字段。该字段的值总是 `0`。
 * `SUB_PART`：索引的前缀。如果只对列的部分前缀进行索引，则为索引字符的数量；如果对整个列进行索引，则为 `NULL`。
 * `PACKED`：TiDB 未使用该字段。这个值总是 `NULL`。
 * `NULLABLE`：如果列可能包含 `NULL` 值，则值为 `YES`；如果不包含，则值为 `''`。

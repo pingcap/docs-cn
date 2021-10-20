@@ -103,6 +103,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1
 + 最小值：1
 
+### `max-grpc-send-msg-len`
+
++ 设置可发送的最大 gRPC 消息长度。
++ 默认值：10485760
++ 单位：Bytes
++ 最大值：2147483647
+
 ### `grpc-stream-initial-window-size`
 
 + gRPC stream 的 window 大小。
@@ -372,7 +379,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 ### `l0-files-threshold`
 
 + 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
-+ 默认值：9
++ 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 

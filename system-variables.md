@@ -617,7 +617,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     * `CREATE TEMPORARY TABLE` 语法
     * `DROP TEMPORARY TABLE` 语法
     * `START TRANSACTION READ ONLY` 和 `SET TRANSACTION READ ONLY` 语法
-    * `tx_read_only`、`transaction_read_only`、`offline_mode`、`super_read_only` 以及 `read_only` 系统变量
+    * `tx_read_only`、`transaction_read_only`、`offline_mode`、`super_read_only`、`read_only` 以及 `sql_auto_is_null` 系统变量
 
 > **警告：**
 >
