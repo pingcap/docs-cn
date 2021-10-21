@@ -34,7 +34,7 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 ## 如何选择后端模式
 
 - 如果导入的目标集群为 v4.0 或以上版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能也较其他两个模式更高
-- 如果目标集群为 v3.x 或以下，则建议使用 Importer-backend 模式
+- 如果目标集群为 v3.x 或以下，建议使用 Importer-backend 模式
 - 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则最好使用 TiDB-backend 模式
 
 ## TiDB Lightning Local-backend
