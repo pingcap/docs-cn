@@ -61,12 +61,12 @@ TiDB version: 5.1.2
         - Optimize memory management when the Unified Sorter is using memory to sort data [#2553](https://github.com/pingcap/ticdc/issues/2553)
         - Optimize workerpool for fewer goroutines when concurrency is high  [#2211](https://github.com/pingcap/ticdc/issues/2211)
         - Reduce goroutine usage when a table's Region transfer away from a TiKV node [#2284](https://github.com/pingcap/ticdc/issues/2284)
+        - Add a global gRPC connection pool and share gRPC connections among KV clients [#2534](https://github.com/pingcap/ticdc/pull/2534)
+        - Prohibit operating TiCDC clusters across major and minor versions [#2599](https://github.com/pingcap/ticdc/pull/2599)
 
     + Dumpling
 
         - Support backing up MySQL-compatible databases that do not support `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` and `SHOW CREATE TABLE` [#309](https://github.com/pingcap/dumpling/issues/309)
-        - Add a global gRPC connection pool and share gRPC connections among KV clients [#2534](https://github.com/pingcap/ticdc/pull/2534)
-        - Prohibit operating TiCDC clusters across major and minor versions [#2599](https://github.com/pingcap/ticdc/pull/2599)
 
 ## Bug fixes
 
@@ -142,7 +142,7 @@ TiDB version: 5.1.2
     + TiCDC
 
         - Fix a bug that the JSON encoding might cause panic when processing a string type value that is `string` or `[]byte` [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - Reduce gRPC window size to avoid OOM [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - Reduce gRPC window size to avoid OOM [#2673](https://github.com/pingcap/ticdc/issues/2673)
         - Fix a gRPC `keepalive` error under high memory pressure [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - Fix a bug that an unsigned `tinyint` causes TiCDC to panic [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - Fix an empty value issue in TiCDC Open Protocol. An empty value is no longer output when there is no change in one transaction. [#2612](https://github.com/pingcap/ticdc/issues/2612)
