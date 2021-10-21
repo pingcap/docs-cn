@@ -14,12 +14,12 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - 完整性：流量明文无法被篡改；
 - 身份验证（可选）：客户端和服务端能验证双方身份，避免中间人攻击。
 
-要在 TiDB 客户端与服务端间通信开启加密传输，首先你需要在 TiDB 服务端通过配置开启加密连接的支持，然后通过配置客户端应用程序使用加密连接。一般情况下，如果服务端正确配置了加密连接支持，客户端库都会自动启用加密传输。
+要为 TiDB 客户端与服务端间的通信开启 TLS 加密传输，首先需要在 TiDB 服务端通过配置开启 TLS 加密连接的支持，然后通过配置客户端应用程序使用 TLS 加密连接。一般情况下，如果服务端正确配置了 TLS加密连接支持，客户端库都会自动启用 TLS 加密传输。
 
-另外，与 MySQL 一致，TiDB 支持在同一 TCP 端口的加密连接和非加密连接。对于开启了加密连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需客户端使用加密连接，你可以通过以下方式进行配置：
+另外，与 MySQL 相同，TiDB 也支持在同一 TCP 端口上开启 TLS 连接或非 TLS 连接。对于开启了 TLS 连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需使用加密连接，你可以通过以下方式进行配置：
 
 + 通过在启动参数中配置 `--require-secure-transport` 要求所有用户必须使用加密连接来连接到 TiDB。
-+ 通过在创建用户 (`create user`)，或修改已有用户 (`alter user`) 时指定 `require ssl` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
++ 通过在创建用户 (`create user`)，或修改已有用户 (`alter user`) 时指定 `REQUIRE SSL` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
 
     ```sql
     CREATE USER 'u1'@'%' IDENTIFIED BY 'my_random_password' REQUIRE SSL;
@@ -38,14 +38,15 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key)：指定证书文件对应的私钥
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
 
-`auto tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的信息，请参考下面配置 `ssl-cert`, `ssl-key` 和 `ssl-ca` 变量的建议：
+`auto tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
 
-- 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能使 TiDB 服务端接受安全连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
+- 在启动 TiDB 时，至少需要在配置文件中同时指定 `ssl-cert` 和 `ssl-key` 参数，才能在 TiDB 服务端开启安全连接。还可以指定 `ssl-ca` 参数进行客户端身份验证（请参见[配置启用身份验证](#配置启用身份验证)章节）。
 - 参数指定的文件都为 PEM 格式。另外目前 TiDB 尚不支持加载有密码保护的私钥，因此必须提供一个没有密码的私钥文件。若提供的证书或私钥无效，则 TiDB 服务端将照常启动，但并不支持客户端加密连接到 TiDB 服务端。
 - 若证书参数无误，则 TiDB 在启动时将会输出 `secure connection is enabled`，否则 TiDB 会输出 `secure connection is NOT ENABLED`。
 
 > **注意：**
-> 在 v5.2.0 版本之前，你可以使用 `mysql_ssl_rsa_setup --datadir=./certs` 生成证书。`mysql_ssal_rsa_setup` 工具是 MySQL 服务器的一部分。
+>
+>  v5.2.0 版本之前，你可以使用 `mysql_ssl_rsa_setup --datadir=./certs` 生成证书。`mysql_ssl_rsa_setup` 工具是 MySQL Server 的一部分。
 
 ## 配置 MySQL 客户端使用安全连接
 
@@ -60,7 +61,7 @@ MySQL 5.7 及以上版本自带的客户端默认尝试使用安全连接，若�
 除此参数外，MySQL 8.0 客户端有两种 SSL 模式：
 
 - `--ssl-mode=VERIFY_CA`: 根据 `--ssl-ca` 签发的 CA 验证来自服务器的证书。
-- `--ssl-mode=VERIFY_IDENTITY`: 与 `VERIFY_CA` 相同，但也验证你连接的主机名是否与证书匹配。
+- `--ssl-mode=VERIFY_IDENTITY`: 与 `VERIFY_CA` 相同，但也验证所连接的主机名是否与证书匹配。
 
 详细信息请参阅 MySQL 文档中关于[客户端配置安全连接](https://dev.mysql.com/doc/refman/5.7/en/using-encrypted-connections.html#using-encrypted-connections-client-side-configuration)的部分。
 
@@ -160,7 +161,7 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 
 ## 监控
 
-自 TiDB v5.2.0 版本起, 你可以使用 `Ssl_server_not_after` 和 `Ssl_server_not_before` 状态变量监控证书有效期的起止时间。
+自 TiDB v5.2.0 版本起，你可以使用 `Ssl_server_not_after` 和 `Ssl_server_not_before` 状态变量监控证书有效期的起止时间。
 
 ```sql
 SHOW GLOBAL STATUS LIKE 'Ssl\_server\_not\_%';
