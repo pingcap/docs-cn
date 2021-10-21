@@ -60,12 +60,12 @@ TiDB 版本：5.1.2
         - 当统一分类器使用内存进行分类时，优化内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
         - 当并发性高时，优化 workerpool 以减少 goroutines 的数量 [#2488](https://github.com/pingcap/ticdc/pull/2488)
         - 当一个表的区域从一个 TiKV 节点转移出去时，减少 goroutine 的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
+        - 添加一个全局 gRPC 连接池并在 KV 客户端之间共享 gRPC 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
+        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
 
     + Dumpling
 
         - 支持备份一些无法执行 `START TRANSACTION ... WITH CONSISTENT SNAPSHOT` 和 `SHOW CREATE TABLE` 语句的 MySQL 兼容数据库 [#309](https://github.com/pingcap/dumpling/issues/309)
-        - 添加一个全局 gRPC 连接池并在 KV 客户端之间共享 gRPC 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
-        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
 
 ## Bug 修复
 
@@ -141,7 +141,7 @@ TiDB 版本：5.1.2
     + TiCDC
 
         - 修复未充分考虑字符串类型的值可能是 `string` 或 `[]byte` 时，转换为 JSON 格式可能导致 TiCDC 进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - 降低 gRPC 的 window size 以避免出现 OOM 的情况 [#2202](https://github.com/pingcap/ticdc/issues/2202)
+        - 降低 gRPC 的 window size 以避免出现 OOM 的情况 [#2673](https://github.com/pingcap/ticdc/issues/2673)
         - 修复内存压力较高时 gRPC 的 `keepalive` 错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
         - 修复 `unsigned tinyint` 导致 TiCDC 崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
         - 修复 TiCDC Open Protocol 下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值 [#2612](https://github.com/pingcap/ticdc/issues/2612)
