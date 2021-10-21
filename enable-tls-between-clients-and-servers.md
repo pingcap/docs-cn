@@ -47,7 +47,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 
 > **注意：**
 >
->  v5.2.0 版本之前，你可以使用 `mysql_ssl_rsa_setup --datadir=./certs` 生成证书。`mysql_ssl_rsa_setup` 工具是 MySQL Server 的一部分。
+> v5.2.0 版本之前，你可以使用 `mysql_ssl_rsa_setup --datadir=./certs` 生成证书。`mysql_ssl_rsa_setup` 工具是 MySQL Server 的一部分。
 
 ## 配置 MySQL 客户端使用安全连接
 
@@ -122,7 +122,7 @@ SSL: Cipher in use is ECDHE-RSA-AES128-GCM-SHA256
 
 TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方库决定。
 
-你使用的操作系统和客户端库的加密政策也可能会影响到支持的协议版本和密码套件。
+你使用的客户端库和操作系统加密策略也可能会影响到支持的协议版本和密码套件。
 
 ### 支持的 TLS 版本
 
