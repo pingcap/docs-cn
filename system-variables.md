@@ -605,6 +605,19 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
+### `tidb_enable_mpp_balance_with_continuous_region` 从 v5.3 版本开始引入
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用于控制 MPP 查询的负载均衡逻辑是否考虑 region 在 TiFlash 节点上的连续性。
+
+### `tidb_enable_mpp_balance_with_continuous_region_count` 从 v5.3 版本开始引入
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`20`
+- 范围：`[1, 10000]`
+- 这个变量用于控制每次选取连续 region 的数量。当 `tidb_enable_mpp_balance_with_continuous_region` 为 `ON` 时，这个变量才有效。
+
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
