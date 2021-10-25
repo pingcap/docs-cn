@@ -71,7 +71,7 @@ Placement Rules 示意图如下所示：
 
 ### 开启 Placement Rules 特性
 
-Placement rules 特性在 TiDB v5.0 及以上的版本中是默认开启的。如需手动开启这个特性，可以[集群初始化以前设置 PD 配置文件](/###关闭-placement-rules-特性)：
+Placement Rules 特性在 TiDB v5.0 及以上的版本中是默认开启的。如需手动开启这个特性，可以[集群初始化以前设置 PD 配置文件](/###关闭-placement-rules-特性)：
 
 {{< copyable "" >}}
 
