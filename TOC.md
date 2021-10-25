@@ -45,8 +45,7 @@
   + 从 MySQL 迁移至 TiDB
     + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
-    + [使用 DM 工具从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
-    + [使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/migrate-from-mysql-shard-merge-using-lightning.md)
+    + [使用 DM 工具从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)  
   + 从 CSV 文件迁移至 TiDB
     + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
