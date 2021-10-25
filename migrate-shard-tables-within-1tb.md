@@ -126,8 +126,7 @@ routes:
 
 #### Binlog event filter
 
-Binlog event filter 是比迁移表黑白名单更加细粒度的过滤规则，可以指定只迁移或者过滤掉某些 
-schema / table 的指定类型 binlog，比如 INSERT、TRUNCATE TABLE。更多详情，请参考 [Binlog event filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#binlog-event-filter)。
+Binlog event filter 是比迁移表黑白名单更加细粒度的过滤规则，可以指定只迁移或者过滤掉某些 schema / table 的指定类型 binlog，比如 INSERT、TRUNCATE TABLE。更多详情，请参考 [Binlog event filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#binlog-event-filter)。
 
 ## 迁移方案
 
@@ -389,7 +388,7 @@ tiup dmctl --master-addr 127.0.0.1:8261 query-status
 
 ## 第 5 步：监控任务和检查日志
 
-如果使用 TiUP 部署 DM 集群时正确部署了 Prometheus 与 Grafana，如 Grafana 的地址为 172.16.10.71，可在浏览器中打开 http://172.16.10.71:3000 进入 Grafana，选择 DM 的 Dashboard 即可查看 DM 相关监控项。具体监控指标请参考[监控与告警设置](https://docs.pingcap.com/zh/tidb-data-migration/stable/monitor-a-dm-cluster)。
+如果使用 TiUP 部署 DM 集群时正确部署了 Prometheus 与 Grafana，如 Grafana 的地址为 172.16.10.71，可在浏览器中[打开页面进入 Grafana](http://172.16.10.71:3000)，选择 DM 的 Dashboard 即可查看 DM 相关监控项。具体监控指标请参考[监控与告警设置](https://docs.pingcap.com/zh/tidb-data-migration/stable/monitor-a-dm-cluster)。
 
 你也可以通过日志文件查看 DM 运行状态和相关错误。
 
