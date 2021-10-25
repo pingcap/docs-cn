@@ -12,7 +12,7 @@ summary: 介绍 使用 DM 进行分库分表合并迁移（ 1 TB以内）的操�
 - TB 级以内的分库分表数据合并迁移
 - 基于 MySQL binlog 的增量、持续分库分表合并迁移
 
-若要迁移分表总和 1 TB 以上的数据，则 DM 工具耗时较长，可参考 [使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/sync-diff-inspector/sync-diff-inspector-overview.md)。
+若要迁移分表总和 1 TB 以上的数据，则 DM 工具耗时较长，可参考 [使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/migrate-from-mysql-shard-merge-using-lightning.md)。
 
 ## 迁移场景介绍
 
