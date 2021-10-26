@@ -84,29 +84,30 @@ backend = "tidb"
 # tidb-lightning 任务配置
 
 [lightning]
-
-# 启动之前检查集群是否满足最低需求。
+# 启动之前检查集群是否满足最低需求
 check-requirements = true
 
-# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”，这两项设置控制两种引擎文件的最大并发数。
-# 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数。
+# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”
+# 这两项设置控制两种引擎文件的最大并发数
+# 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数
 index-concurrency = 40
 
-# 控制同时允许导入的最大“数据引擎”数量，默认值为 CPU 数，本配置不应小于 index-concurrency。
+# 控制同时允许导入的最大“数据引擎”数，默认值为 CPU 数，本配置不应小于 index-concurrency
 table-concurrency = 40
 
-# 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同。TiDB-backend 的瓶颈通常不在 CPU, 可以根据下游集群的实际负载调大此配置以优化写入速度，同时在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
+# 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同
+# TiDB-backend 的瓶颈通常不在 CPU, 可以根据下游集群的实际负载调大此配置以优化写入速度
+# 在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
 region-concurrency = 40
 
 # 日志相关的配置
 # 输出日志级别
 level = "info"
 
-# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}；如果希望输出至系统标准输出，请设置为 "-"。
+# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}；如果希望输出至系统标准输出，请设置为 "-"
 # file = "tidb-lightning.log"
 
 [checkpoint]
-
 # 启用断点续传
 # 导入数据时，TiDB Lightning 会记录当前表导入的进度
 # 若 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据
@@ -136,7 +137,6 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-
 # 后端模式，对于 TiDB-backend 请设置为 “tidb”
 backend = "tidb"
 
@@ -147,7 +147,6 @@ backend = "tidb"
 # on-duplicate = "replace"
 
 [mydumper]
-
 # 设置文件读取的区块大小(默认为 64 KiB)，确保该值比数据源的最长字符串长。
 # read-block-size = "64KiB" 
 
@@ -175,7 +174,6 @@ data-source-dir = "/data/my_database"
 
 # 配置 CSV 文件的解析方式（如果源文件中不包含 CSV 文件可不设置此项）。
 [mydumper.csv]
-
 # 字段分隔符，应为单个 ASCII 字符。
 separator = ','
 
@@ -201,7 +199,6 @@ backslash-escape = true
 trim-last-separator = false
 
 [tidb]
-
 # 目标集群的信息。tidb-server 的地址，填一个即可。
 host = "172.16.31.1"
 port = 4000
