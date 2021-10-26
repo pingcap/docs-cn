@@ -103,7 +103,7 @@ region-concurrency = 40
 # 输出日志级别
 level = "info"
 
-# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}； 如果希望输出至系统标准输出，请设置为 "-"。
+# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}；如果希望输出至系统标准输出，请设置为 "-"。
 # file = "tidb-lightning.log"
 
 [checkpoint]
