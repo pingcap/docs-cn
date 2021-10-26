@@ -42,7 +42,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 ### 目标 TiKV 集群的磁盘空间要求
 
-**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[副本数量](https://docs.pingcap.com/zh/tidb/stable/deploy-and-maintain-faq#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。多出来的 2 倍是算上下列没储存在数据源的因素的保守估计：
+**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[副本数量](https://docs.pingcap.com/zh/tidb/stable/deploy-and-maintain-faq#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。 公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
 
 * 索引会占据额外的空间
 * RocksDB 的空间放大效应
@@ -100,6 +100,8 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 首先使用 Dumpling 从 my_db1 中导出表 table1 和 table2，如下：
 
+{{< copyable "shell-regular" >}}
+
 ```
 tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
 ```
@@ -146,7 +148,7 @@ tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db1
 
 然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
 
-{{< copyable "sql" >}}
+{{< copyable "shell-regular" >}}
 
 ```shell
 tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
@@ -331,6 +333,8 @@ tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2
     ```
 
 3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
+
+{{< copyable "shell-regular" >}}
 
     ```shell
     tiup tidb-lightning -config tidb-lightning.toml > nohup.out &

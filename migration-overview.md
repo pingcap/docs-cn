@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 #### 迁移方法
 
-使用 Dumpling 从多个 MySQL 数据库中导出数据，再使用 TiDB Lightning 将各分库分表数据合并导入到 TiDB，详细信息可参考[使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/migrate-from-mysql-shard-merge-using-lightning.md)
+使用 Dumpling 从多个 MySQL 数据库中导出数据，再使用 TiDB Lightning 将各分库分表数据合并导入到 TiDB，详细信息可参考[使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/migrate-from-mysql-shard-merge-using-lightning.md)。
 
 ### 使用 DM 迁移数据
 
