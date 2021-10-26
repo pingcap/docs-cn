@@ -374,7 +374,7 @@ tiup dmctl --master-addr 127.0.0.1:8261 start-task task.yaml
 }
 ```
 
-如果迁移任务启动失败，请根据提升修改配置信息，然后再次执行 `start-task task.yaml` 启动迁移任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling)，以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
+如果迁移任务启动失败，请根据提示修改配置信息，然后再次执行 `start-task task.yaml` 启动迁移任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling)，以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
 
 ## 第 4 步：查看任务
 
