@@ -107,26 +107,33 @@ level = "info"
 
 [checkpoint]
 
-# 是否启用断点续传。
-# 导入数据时，TiDB Lightning 会记录当前表导入的进度。
-# 所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
+# 启用断点续传
+# 导入数据时，TiDB Lightning 会记录当前表导入的进度
+# 若 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据
 enable = true
 
-# 存储断点的数据库名称。
-schema = "tidb_lightning_checkpoint"
-
-# 存储断点的方式。
-#  - file（默认）：存放在本地文件系统。
-#  - mysql：存放在兼容 MySQL 的数据库服务器。
+# 存储断点的方式
+#  - file（默认）：存放在本地文件系统（要求 v2.1.1 或以上）
+#  - mysql：存放在兼容 MySQL 的数据库服务器
 driver = "file"
 
-# dsn 是数据源名称 (data source name)，表示断点的存放位置。
-# 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-# 若不设置该路径，则默认存储路径为“/tmp/{schema}.pb”。
-# 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
-# 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
-# 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
+# 存储断点的数据库名称
+# 仅在 driver = "mysql" 时生效
+# schema = "tidb_lightning_checkpoint"
+
+# 断点的存放位置
+#
+# 若 driver = "file"，此参数为断点信息存放的文件路径
+# 如果不设置该参数则默认为 `/tmp/CHECKPOINT_SCHEMA.pb`
+#
+# 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)/”
+# 默认会重用 [tidb] 设置目标数据库来存储断点
+# 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 的数据库服务器
 # dsn = "/tmp/tidb_lightning_checkpoint.pb"
+
+# 导入成功后是否保留断点。默认为删除
+# 保留断点可用于调试，但有可能泄漏数据源的元数据
+# keep-after-success = false
 
 [tikv-importer]
 
