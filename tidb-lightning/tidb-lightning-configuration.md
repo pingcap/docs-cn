@@ -147,12 +147,12 @@ character-set = "auto"
 #  - GBK：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）。
 #  - binary：不尝试转换编码（默认）。
 # 留空此配置将默认使用 "binary"，即不尝试转换编码。
-# 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入，
-# 如果字符集设置与源数据文件的实际编码不符，可能会导致导入失败，导入缺失或导入数据乱码。
+# 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
+# 如果字符集设置与源数据文件的实际编码不符，可能会导致导入失败、导入缺失或导入数据乱码。
 data-character-set = "binary"
 # 指定在源数据文件的字符集转换过程中，出现不兼容字符时的替换字符。
-# 此项不可与字段分隔符，引用界定符和换行符号重复。
-# 默认值为 "\uFFFD" 即 UTF-8 编码中的 "error" Rune 或 Unicode replacement character。
+# 此项不可与字段分隔符、引用界定符和换行符号重复。
+# 默认值为 "\uFFFD"，即 UTF-8 编码中的 "error" Rune 或 Unicode replacement character。
 # 改变默认值可能会导致潜在的源数据文件解析性能下降。
 data-invalid-char-replace = "\uFFFD"
 
