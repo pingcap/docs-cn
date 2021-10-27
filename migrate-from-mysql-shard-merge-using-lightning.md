@@ -25,7 +25,7 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据。
 {{< copyable "sql" >}}
 
 ```sql
-select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 \as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables;
+select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables group by table_schema;
 ```
 
 ## 前提条件
