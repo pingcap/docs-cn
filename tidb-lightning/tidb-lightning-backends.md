@@ -92,7 +92,7 @@ check-requirements = true
 # 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数
 index-concurrency = 40
 
-# 控制同时允许导入的最大“数据引擎”数，默认值为 CPU 数，本配置不应小于 index-concurrency
+# 控制同时允许导入的最大“数据引擎”数，默认值为 CPU 数，本配置应大于或等于 index-concurrency
 table-concurrency = 40
 
 # 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同
