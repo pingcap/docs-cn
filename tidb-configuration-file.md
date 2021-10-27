@@ -504,10 +504,10 @@ prepare 语句的 plan cache 设置。
 ### `param`
 
 + 采样器参数。
-  - 对于 const 类型，可选值为 0 或 1，表示是否开启。
-  - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
-  - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
-  - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
+    - 对于 const 类型，可选值为 0 或 1，表示是否开启。
+    - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
+    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
 + 默认值：1.0
 
 ### `sampling-server-url`
