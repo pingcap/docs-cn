@@ -75,26 +75,15 @@ sync-diff-inspector 的配置总共分为五个部分：
 
 ######################### Global config #########################
 
-# 日志级别，可以设置为 info、debug
-log-level = "info"
-
 # 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# 抽样检查的比例，如果设置为 100 则检查全部数据
-sample-percent = 100
-
-# 只通过计算 chunk 的 checksum 来对比数据，如果开启，当上下游chunk的checksum不同时，则跳过逐行比对
-compare-checksum-only = false
-
-# 是否使用上次校验的 checkpoint，如果开启，则只校验上次未校验以及校验失败的 chunk
-use-checkpoint = true
+# 如果关闭，只通过计算 chunk 的 checksum 来对比数据
+# 如果开启，当上下游 chunk 的 checksum 不同时，则跳过逐行比对
+export-fix-sql = true
 
 # 不对比数据
-ignore-data-check = false
-
-# 不对比表结构
-ignore-struct-check = false
+check-struct-only = false
 
 
 ######################### Databases config #########################
@@ -111,7 +100,7 @@ ignore-struct-check = false
     user = "root"
     password = ""
     # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
-    # snapshot = "2016-10-08 16:45:26"
+    # snapshot = "386902609362944000"
 
 ######################### Table configs #########################
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
@@ -214,8 +203,27 @@ The data of `sbtest`.`sbtest96` is not equal
 
 The rest of tables are all equal.
 The patch file has been generated in 
-        'output/917510ea1671909f6a7bd34f7f967427/fix-on-tidb2/'
+        'output/fix-on-tidb2/'
 You can view the comparision details through 'output/sync_diff.log'
+```
+
+### 输出文件
+
+输出文件目录结构如下：
+```
+output/
+|-- checkpoint
+| |-- bbfec8cc8d1f58a5800e63aa73e5 //config hash
+│ |-- DO_NOT_EDIT_THIS_DIR
+│ └-- sync_diff_checkpoints.pb
+|
+|-- fix-on-target
+| |-- xxx.sql
+| |-- xxx.sql
+| └-- xxx.sql
+|
+|-- summary.txt
+└-- sync_diff.log
 ```
 
 #### 日志
@@ -224,7 +232,7 @@ sync-diff-inspector 的日志存放在 `${output}/sync_diff.log` 中，其中 `$
 
 #### 校验进度
 
-sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于 `${output}/${config_hash}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值，`${config_hash}` 是 `config.toml` 文件内容的哈希值)，格式如下：
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。文件内容格式如下：
 
 ```checkpoint
 {
@@ -256,13 +264,10 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
         "index-id":0,
     },
     "report-info":{
-        "Result":"fail",
-        "PassNum":0,
-        "FailedNum":0,
         "table-results":{
             "sbtest":{
                 "sbtest99":{
-                    "schma":"sbtest",
+                    "schema":"sbtest",
                     "table":"sbtest99",
                     "struct-equal":true,
                     "data-equal":false,
@@ -281,9 +286,6 @@ sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到ch
         },
         "start-time":"0001-01-01T00:00:00Z",
         "time-duration":60160836703,
-        "TotalSize":0,
-        "SourceConfig":null,
-        "TargetConfig":null,
     },
 }
 ```
@@ -310,12 +312,6 @@ checkpoint主要分为两块内容：
 
 - report-info: 保存 chunk 的比对的统计结果。
 
-    - Result: 保存比对的结果。
-
-    - PassNum: 保存目前比对一致的表的数量。
-
-    - FailNum: 保存目前比对不一致的表的数量。
-
     - table-results: 保存各个表的比对统计结果，例子表示表 `sbtest.sbtest99` 的表结构一致但表数据不一致，对 chunk `0:0-0:0:200` (由 `chunk.index` 唯一标识)的修复需要添加一行和删除一行。
 
 #### 校验结果
@@ -341,7 +337,7 @@ Average Speed: 113.277149MB/s
 
 #### SQL 修复
 
-校验过程中遇到不同的行，会生成修复数据的 SQL 语句。一个chunk如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的 SQL 文件。文件位于 `${output}/${config_hash}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
+校验过程中遇到不同的行，会生成修复数据的 SQL 语句。一个chunk如果出现数据不一致，就会生成一个以 `chunk.Index` 命名的 SQL 文件。文件位于 `${output}/fix-on-${instance}` 文件夹下。其中 `${instance}` 为 `config.toml` 中 `task.target-instance` 的值。
 
 一个 SQL 文件会包含该 chunk 的所属表以及表示的范围信息。对每个修复 SQL 语句，有三种情况：
 
