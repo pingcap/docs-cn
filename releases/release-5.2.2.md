@@ -19,6 +19,14 @@ TiDB 版本：5.2.2
     - 在调试日志中显示关于 coprocessor 遇到锁的 SQL 语句信息。[#27718](https://github.com/pingcap/tidb/issues/27718)
     - SQL 逻辑层数据备份和恢复时，支持显示备份和恢复数据大小的功能。[#27247](https://github.com/pingcap/tidb/issues/27247)
 
++ TiKV
+
+    - 简化 L0 层流控算法 [#10879](https://github.com/tikv/tikv/issues/10879)
+    - 优化 raft client 错误日志的收集 [#10983](https://github.com/tikv/tikv/pull/10983)
+    - TiKV coprocessor 慢日志仅统计处理请求所消耗的时间 [#10866](https://github.com/tikv/tikv/pull/10866)
+    - 当 slogger 线程过载和队列打满的情况下，丢弃日志而非阻塞线程 [#10866](https://github.com/tikv/tikv/pull/10866)
+    - 加入更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
+
 + PD
 
     - 热点调度器 `QPS` 统计维度支持更多写请求类型 [#4028](https://github.com/tikv/pd/pull/4028)
@@ -73,6 +81,16 @@ TiDB 版本：5.2.2
     - 修复了 `plus` 表达式中检查溢出方法出错的问题。[27419](https://github.com/pingcap/tidb/pull/27419)
     - 修复了当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题。[27302](https://github.com/pingcap/tidb/pull/27302)
     - 修复 `TIDB_TRX` 中不包含重试事务的问题。[28670](https://github.com/pingcap/tidb/pull/28670)
+
++ TiKV
+
+    - 修复由于 `Congest` 错误导致的 CDC 频繁增加的 scan 重试 [#11082](https://github.com/tikv/tikv/issues/11082)
+    - 修复因 channel 打满导致的 raft 断连情况 [#11047](https://github.com/tikv/tikv/issues/11047)
+    - 修复了 raft client 中 batch 消息过大的问题 [#9714](https://github.com/tikv/tikv/issues/9714)
+    - 修复了 `resolved_ts` 中协程泄漏的问题 [#10965](https://github.com/tikv/tikv/issues/10965)
+    - 修复了当 response 大小超过 4GiB 时 coprocessor panic 的问题 [#9012](https://github.com/tikv/tikv/issues/9012)
+    - 修复了 snapshot GC 缺失 GC snapshot 文件的问题，该问题发生在当一个 snapshot 文件无法被 GC 的时候 [#10813](https://github.com/tikv/tikv/issues/10813)
+    - 修复了当处理 copr 请求的时间超出期限后的意外 panic 行为 [#10852](https://github.com/tikv/tikv/issues/10852)
         
 + PD
 
