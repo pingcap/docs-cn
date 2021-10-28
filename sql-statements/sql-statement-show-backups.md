@@ -6,9 +6,13 @@ aliases: ['/docs/dev/sql-statements/sql-statement-show-backups/']
 
 # SHOW [BACKUPS|RESTORES]
 
-This statement shows a list of all queued and running [`BACKUP`](/sql-statements/sql-statement-backup.md) and [`RESTORE`](/sql-statements/sql-statement-restore.md) tasks.
+These statements show a list of all queued, running and recently finished [`BACKUP`](/sql-statements/sql-statement-backup.md) and [`RESTORE`](/sql-statements/sql-statement-restore.md) tasks that were executed on a TiDB instance.
 
-Use `SHOW BACKUPS` to query `BACKUP` tasks and use `SHOW RESTORES` to query `RESTORE` tasks. Both statements require `SUPER` privilege to run.
+Both statements require `SUPER` privilege to run.
+
+Use `SHOW BACKUPS` to query `BACKUP` tasks and use `SHOW RESTORES` to query `RESTORE` tasks.
+
+Backups and restores that were started with the `br` commandline tool are not shown.
 
 ## Synopsis
 
@@ -40,11 +44,11 @@ SHOW BACKUPS;
 ```
 
 ```sql
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
-| Destination                    | State   | Progress | Queue_Time          | Execution_Time      | Finish_Time | Connection |
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
-| s3://example-bucket/backup-01/ | Backup  | 98.38    | 2020-04-12 23:09:03 | 2020-04-12 23:09:25 |        NULL |          4 |
-+--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
+| Destination                    | State   | Progress | Queue_time          | Execution_time      | Finish_time | Connection | Message |
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
+| s3://example-bucket/backup-01/ | Backup  | 98.38    | 2020-04-12 23:09:03 | 2020-04-12 23:09:25 |        NULL |          4 | NULL    |
++--------------------------------+---------+----------+---------------------+---------------------+-------------+------------+---------+
 1 row in set (0.00 sec)
 ```
 
@@ -55,10 +59,19 @@ The first row of the result above is described as follows:
 | `Destination` | The destination URL (with all parameters stripped to avoid leaking secret keys) |
 | `State` | State of the task |
 | `Progress` | Estimated progress in the current state as a percentage |
-| `Queue_Time` | When the task was queued |
-| `Execution_Time` | When the task was started; the value is `0000-00-00 00:00:00` for queueing tasks |
-| `Finish_Time` | (not used for now) |
+| `Queue_time` | When the task was queued |
+| `Execution_time` | When the task was started; the value is `0000-00-00 00:00:00` for queueing tasks |
+| `Finish_time` | The timestamp when the task finished; the value is `0000-00-00 00:00:00` for queueing and running tasks |
 | `Connection` | Connection ID running this task |
+| `Message` | Message with details |
+
+The possible states are:
+
+| State | Description |
+| :-----|:------------|
+| Backup | Making a backup |
+| Wait | Waiting for execution |
+| Checksum | Running a checksum operation |
 
 The connection ID can be used to cancel a backup/restore task via the [`KILL TIDB QUERY`](/sql-statements/sql-statement-kill.md) statement.
 
