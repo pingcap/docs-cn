@@ -23,6 +23,7 @@ TiDB 版本：5.2.2
 
     - 热点调度器 `QPS` 统计维度支持更多写请求类型 [#4028](https://github.com/tikv/pd/pull/4028)
     - 通过动态调整重试上限，优化 `balance region` 调度器的性能 [#4046](https://github.com/tikv/pd/pull/4046)
+    - 将 TiDB Dashboard 升级至 v2021.10.08.1 [#4070](https://github.com/tikv/pd/pull/4070)
     - 允许` evict leader` 调度器调度拥有不健康副本的 `region` [#4132](https://github.com/tikv/pd/pull/4132)
     - 优化收到进程结束信号后调度器的退出速度 [#4199](https://github.com/tikv/pd/pull/4199)
 
