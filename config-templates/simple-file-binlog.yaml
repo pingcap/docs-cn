@@ -30,9 +30,9 @@ pump_servers:
   - host: 10.0.1.3
 drainer_servers:
   - host: 10.0.1.12
+    # drainer meta data directory path
+    data_dir: "/path/to/save/data"
     config:
-      # drainer meta data directory path
-      data-dir: "/path/to/save/data"
       syncer.db-type: "file"
       # directory to save binlog file, default same as data-dir(save checkpoint file) if this is not configured.
       # syncer.to.dir: "/path/to/save/binlog"
