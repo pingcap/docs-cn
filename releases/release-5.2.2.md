@@ -84,7 +84,7 @@ TiDB 版本：5.2.2
 
 + TiFlash
 
-    - 修复 TiFlash 在部分平台上由于缺失 `nsl` 库而无法启动的问题 [#3207](https://github.com/pingcap/tics/pull/3207)
+    - 修复 TiFlash 在部分平台上由于缺失 `nsl` 库而无法启动的问题
 
 + Tools
 
