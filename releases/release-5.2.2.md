@@ -25,15 +25,15 @@ TiDB 版本：5.2.2
     - 优化 raft client 错误日志的收集 [#10983](https://github.com/tikv/tikv/pull/10983)
     - 使 TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
-    - 加入更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
+    - 添加更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
 
 + PD
 
-    - 热点调度器的 QPS 维度支持更多写请求类型 [#3869](https://github.com/tikv/pd/issues/3869)
+    - 热点调度器的 QPS 维度支持更多的写请求类型 [#3869](https://github.com/tikv/pd/issues/3869)
     - 通过动态调整 Balance Region 调度器的重试上限，优化该调度器的性能 [#3744](https://github.com/tikv/pd/issues/3744)
     - 将 TiDB Dashboard 升级至 v2021.10.08.1 [#4070](https://github.com/tikv/pd/pull/4070)
-    - 允许 evict leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
-    - 优化收到进程结束信号后调度器的退出速度 [#4146](https://github.com/tikv/pd/issues/4146)
+    - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
+    - 优化收到进程结束信号后调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
 
 + Tools
 
@@ -84,12 +84,12 @@ TiDB 版本：5.2.2
 
 + TiKV
 
-    - 修复 Congest 错误导致 CDC 频繁增加 scan 重试的问题 [#11082](https://github.com/tikv/tikv/issues/11082)
+    - 修复因 Congest 错误而导致的 CDC 频繁增加 scan 重试的问题 [#11082](https://github.com/tikv/tikv/issues/11082)
     - 修复因 channel 打满而导致的 Raft 断连情况 [#11047](https://github.com/tikv/tikv/issues/11047)
     - 修复 Raft client 中 batch 消息过大的问题 [#9714](https://github.com/tikv/tikv/issues/9714)
     - 修复 `resolved_ts` 中协程泄漏的问题 [#10965](https://github.com/tikv/tikv/issues/10965)
     - 修复当 response 大小超过 4 GiB 时 Coprocessor panic 的问题 [#9012](https://github.com/tikv/tikv/issues/9012)
-    - 修复当一个 snapshot 文件无法被 GC 的时 snapshot GC 会缺失 GC snapshot 文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
+    - 修复当一个 snapshot 文件无法被垃圾清理 (GC) 时 snapshot GC 会缺失 GC snapshot 文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
     - 修复当处理 Coprocessor 请求时因超时而导致 Panic 的问题 [#10852](https://github.com/tikv/tikv/issues/10852)
 
 + PD
@@ -98,8 +98,8 @@ TiDB 版本：5.2.2
     - 修复 PD 未能及时修复 Down Peer 副本的问题 [#4077](https://github.com/tikv/pd/issues/4077)
     - 修复 Scatter Range 调度器无法对空 Region 进行调度的问题 [#4118](https://github.com/tikv/pd/pull/4118)
     - 修复 key manager 占用过多 CPU 的问题 [#4071](https://github.com/tikv/pd/issues/4071)
-    - 修复热点调度器变更配置过程中可能存在的数据竞争问题 [#4159](https://github.com/tikv/pd/issues/4159)
-    - 修复因  Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936) 
+    - 修复热点调度器变更配置的过程中可能会存在的数据竞争问题 [#4159](https://github.com/tikv/pd/issues/4159)
+    - 修复因 Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936)
 
 + TiFlash
 
