@@ -623,6 +623,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器在一张表上的统计信息过期时的行为。
+- 统计信息过期的判断标准是：上次 ANALYZE 这张表后，该表数据修改行数大于该表总行数的 80%（可通过 [`pseudo-estimate-ratio`](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file#pseudo-estimate-ratio) 配置文件参数调整）。
+- 默认情况下（该变量设为 `ON` 时），一张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。该变量设为 `OFF` 时，即使统计信息过期，优化器也会照常使用该表上的统计信息。
+- 在数据修改较频繁，没有及时执行 ANALYZE，但又希望执行计划保持稳定时，可以将该变量设为 `OFF`。
+
 ### `tidb_enable_rate_limit_action`
 
 - 作用域：SESSION | GLOBAL
