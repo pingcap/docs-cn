@@ -98,53 +98,24 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 ```
 tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
 ```
+以上命令中，各参数解释如下：
 
-各参数的解释和使用说明见下表。
+- `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
+- `-o` 用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URL](/br/backup-and-restore-storages.md) 格式。
+- `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
+- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。
+- `-F` 选项用于指定单个文件的最大大小（单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入）。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
-<table>
-  <tr>
-   <th>参数</th>
-   <td><strong>解释</strong>
-   </td>
-  </tr>
-  <tr>
-   <td><code>-B my_db1</code>
-   </td>
-   <td>从 <code>my_db1</code> 数据库导出。
-   </td>
-  </tr>
-  <tr>
-   <td><code>-f my_db1.table[12]</code>
-   </td>
-   <td>只导出 <code>my_db1.table1</code> 和 <code>my_db1.table2</code> 这两个表。
-   </td>
-  </tr>
-  <tr>
-   <td><code>-t 16</code>
-   </td>
-   <td>使用 16 个线程导出数据。
-   </td>
-  </tr>
-  <tr>
-   <td><code>-r 200000</code>
-   </td>
-   <td>指定单个文件的最大行数为 200000，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用<strong>。如果导出的单表超过 10 GB，强烈建议使用该参数。</strong>
-   </td>
-  </tr>
-  <tr>
-   <td><code>-F 256MB</code>
-   </td>
-   <td>将每张表切分成多个文件，每个文件约为 256 MB。<strong>强烈建议使用该参数，避免单表过大时由于单个文件过大导致导出失败</strong>。
-   </td>
-  </tr>
-</table>
+> **注意：**
+>
+> 如果导出的单表大小超过 10 GiB，**强烈建议**使用`-r` 和 `-F` 参数。
 
 然后使用 Dumpling 从 my_db2 中导出表 table3 和 table4，如下：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
+tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o /data/my_database/
 ```
 
 这样所需的全量备份数据就全部导出到了 `/data/my_database` 目录中。将所有源数据表格存储在一个目录中，是为了后续方便用 TiDB Lightning 导入。
@@ -165,98 +136,16 @@ tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2
 
 下表展示了各后端模式的特点。
 
-<table>
-  <tr>
-   <td>后端
-   </td>
-   <td>Local-backend
-   </td>
-   <td>Importer-backend
-   </td>
-   <td>TiDB-backend
-   </td>
-  </tr>
-  <tr>
-   <td>速度
-   </td>
-   <td>快 (~500 GB/小时)
-   </td>
-   <td>快 (~400 GB/小时)
-   </td>
-   <td>慢 (~50 GB/小时)
-   </td>
-  </tr>
-  <tr>
-   <td>资源使用率
-   </td>
-   <td>高
-   </td>
-   <td>高
-   </td>
-   <td>低
-   </td>
-  </tr>
-  <tr>
-   <td>占用网络带宽
-   </td>
-   <td>高
-   </td>
-   <td>中
-   </td>
-   <td>低
-   </td>
-  </tr>
-  <tr>
-   <td>导入时是否满足 ACID
-   </td>
-   <td>否
-   </td>
-   <td>否
-   </td>
-   <td>是
-   </td>
-  </tr>
-  <tr>
-   <td>目标表
-   </td>
-   <td>必须为空
-   </td>
-   <td>必须为空
-   </td>
-   <td>可以不为空
-   </td>
-  </tr>
-  <tr>
-   <td>额外组件
-   </td>
-   <td>无
-   </td>
-   <td>tikv-importer
-   </td>
-   <td>无
-   </td>
-  </tr>
-  <tr>
-   <td>支持 TiDB 集群版本
-   </td>
-   <td>>= v4.0.0
-   </td>
-   <td>全部
-   </td>
-   <td>全部
-   </td>
-  </tr>
-  <tr>
-   <td>是否影响 TiDB 对外提供服务
-   </td>
-   <td>是
-   </td>
-   <td>是
-   </td>
-   <td>否
-   </td>
-  </tr>
-</table>
+| 后端 | Local-backend | Importer-backend | TiDB-backend |
+|:---|:---|:---|:---|
+| 速度 | 快 (~500 GB/小时) | 快 (~400 GB/小时) | 慢 (~50 GB/小时) |
+| 资源使用率 | 高 | 高 | 低 |
+| 占用网络带宽 | 高 | 中  | 低 |
+| 导入时是否满足 ACID | 否 | 否 | 是 |
+| 目标表 | 必须为空 | 必须为空 | 可以不为空 |
+| 额外组件 | 无 | `tikv-importer` | 无 |
+| 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
+| 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
 
 #### 断点续传
 
