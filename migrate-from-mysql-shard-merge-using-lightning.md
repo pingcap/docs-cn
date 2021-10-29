@@ -1,9 +1,9 @@
 ---
-title: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据
-summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据。
+title: 分库分表合并导入到 TiDB
+summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。本文介绍的方法适用于导入数据总量大于 1 TB 的场景。
 ---
 
-# 使用 Dumpling 和 TiDB Lightning 合并导入分表数据
+# 分库分表合并导入到 TiDB （大于 1 TB）
 
 如果分表数据总规模特别大（例如大于 1 TB），并且允许 TiDB 集群在迁移期间无其他业务写入，那么你可以使用 TiDB Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 TiDB DM 进行增量数据的分表同步。本文档举例介绍了导入数据的操作步骤。
 
@@ -78,17 +78,14 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 ## 数据导入流程
 
-导入流程如下图所示：
-
-![合并导入分表数据流程](/media/shard-merge-using-lightning-procedure.png)
+导入流程如下：
 
 1. 用 Dumpling 导出全量数据备份。在本文档示例中，分别从 2 个源数据库中各导出 2 个表：
     - 从 my_db1 导出 table1、table2
     - 从 my_db2 导出 table3、table4
-2. 处理主键或唯一索引冲突
-3. 启动 TiDB Lightning 执行导入操作
-4. 导入成功
-5. （可选）使用 TiDB DM 进行增量数据迁移
+2. 启动 TiDB Lightning 执行导入操作
+3. 导入成功
+4. （可选）使用 TiDB DM 进行增量数据迁移
 
 下面详细介绍每一步的操作流程。
 
@@ -152,11 +149,7 @@ tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2
 
 这样所需的全量备份数据就全部导出到了 `/data/my_database` 目录中。将所有源数据表格存储在一个目录中，是为了后续方便用 TiDB Lightning 导入。
 
-### 第 2 步：处理主键或唯一索引冲突
-
-来自多张分表的数据可能会引发主键或者唯一索引的数据冲突，因此在导入数据之前，需要结合分表逻辑对每个主键或唯一索引进行检查，还可能需要预先在下游创建表结构。更多详情，请参考 [跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#跨分表数据在主键或唯一索引冲突处理)。
-
-### 第 3 步：启动 TiDB Lightning 进行导入
+### 第 2 步：启动 TiDB Lightning 进行导入
 
 在启动 TiDB Lightning 进行导入之前，建议先了解如何选择后端模式、选择断点续传的处理方式，然后根据你的实际情况选择合适的方式进行。
 
@@ -343,7 +336,7 @@ tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2
 
 等待 TiDB Lightning 运行结束，则整个导入完成。
 
-### 第 4 步：导入成功
+### 第 3 步：导入成功
 
 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
 
@@ -353,7 +346,7 @@ tiup dumpling -h &lt;ip> -P &lt;port> -u root -t 16 -r 200000 -F 256MB -B my_db2
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)。
 
-### 第 5 步 （可选）：增量数据的迁移
+### 第 4 步 （可选）：增量数据的迁移
 
 <!--
 增量数据的迁移有两种方式，使用 TiDB DM 或使用 TiDB Lightning。
