@@ -16,8 +16,8 @@ TiDB 版本：5.2.2
 
 + TiDB
 
-    - 在调试日志中显示关于 coprocessor 遇到锁的 SQL 语句信息。[#27718](https://github.com/pingcap/tidb/issues/27718)
-    - SQL 逻辑层数据备份和恢复时，支持显示备份和恢复数据大小的功能。[#27247](https://github.com/pingcap/tidb/issues/27247)
+    - 当 coprocessor 遇到锁时，在调试日志中显示受影响的 SQL 语句帮助诊断问题 [#27718](https://github.com/pingcap/tidb/issues/27718)
+    - 在 SQL 逻辑层备份和恢复数据时，支持显示备份和恢复数据的大小 [#27247](https://github.com/pingcap/tidb/issues/27247)
 
 + TiKV
 
@@ -48,23 +48,23 @@ TiDB 版本：5.2.2
 
 + TiDB
 
-    - 修复了 `plan cache` 无法感知 `unsigned` 标志的问题 [#28254](https://github.com/pingcap/tidb/issues/28254)
-    - 修复了出现 `out of range` 时 `partition pruning` 出错的问题 [#28233](https://github.com/pingcap/tidb/issues/28233)
-    - 修复了在某些情况下可能缓存无效 `join` 计划的问题 [#28087](https://github.com/pingcap/tidb/issues/28087)
-    - 修复了 hash 列为 `enum` 时构建错误 `IndexLookUpJoin` 的问题。 [#27893](https://github.com/pingcap/tidb/issues/27893)
-    - 修复了批处理客户端在某些罕见情况下回收空闲连接可能会阻塞发送请求的问题。[#28345](https://github.com/pingcap/tidb/pull/28345)
-    - 修复了当 Lightning 在目标集群上执行校验失败时的恐慌问题。[#27686](https://github.com/pingcap/tidb/pull/27686)
-    - 修复了某些情况下 `date_add` 和 `date_sub` 执行结果错误的问题。[#27232](https://github.com/pingcap/tidb/issues/27232)
-    - 修复了 `hour` 函数在向量化表达式中执行结果错误的问题 [#28643](https://github.com/pingcap/tidb/issues/28643)
-    - 修复了 MySQL 5.1 和更旧的客户端存在的认证问题 [#27855](https://github.com/pingcap/tidb/issues/27855)
-    - 修复了自动分析可能会触发超出指定时间的问题。[#28698](https://github.com/pingcap/tidb/issues/28698)
-    - 修复了设置任何会话变量都会使 `tidb_snapshot` 失效的问题。[#28683](https://github.com/pingcap/tidb/pull/28683)
-    - 修复了在有大量 `miss-peer region` 的集群中 BR 不可用的问题。” [#27534](https://github.com/pingcap/tidb/issues/27534)
-    - 修复了当不支持的 `cast` 被下推到 TiFlash 时出现的错误，如 `tidb_cast to Int32 is not supported`。[#23907](https://github.com/pingcap/tidb/issues/23907)
-    - 修复了 `%s value is out of range in '%s'` 错误没有填充 `DECIMAL overflow` 信息的问题。 [#27964](https://github.com/pingcap/tidb/issues/27964)
-    - 修复了 MPP 节点的可用性检测在某些边界场景中无法工作的问题。 [#3118](https://github.com/pingcap/tics/issues/3118)
-    - 修复了分配 `MPP task ID` 时的 `DATA RACE` 问题。[#27952](https://github.com/pingcap/tidb/issues/27952)
-    - 修复了 MPP 查询时删除空的 `dual table` 时出现 `index out of range` 错误的问题。[#28250](https://github.com/pingcap/tidb/issues/28250)
+    - 修复 `plan cache` 无法感知 `unsigned` 标志变化的问题 [#28254](https://github.com/pingcap/tidb/issues/28254)
+    - 修复当分区功能出现 `out of range` 时 `partition pruning` 出错的问题 [#28233](https://github.com/pingcap/tidb/issues/28233)
+    - 修复在某些情况下 Planner 可能缓存无效 `join` 计划的问题 [#28087](https://github.com/pingcap/tidb/issues/28087)
+    - 修复 hash 列为 `enum` 时构建错误 `IndexLookUpJoin` 的问题。 [#27893](https://github.com/pingcap/tidb/issues/27893)
+    - 修复批处理客户端在某些罕见情况下回收空闲连接可能会阻塞发送请求的问题 [#27688](https://github.com/pingcap/tidb/pull/27688)
+    - 修复当 TiDB Lightning 在目标集群上执行校验失败时 panic 的问题 [#27686](https://github.com/pingcap/tidb/pull/27686)
+    - 修复某些情况下 `date_add` 和 `date_sub` 函数执行结果错误的问题 [#27232](https://github.com/pingcap/tidb/issues/27232)
+    - 修复 `hour` 函数在向量化表达式中执行结果错误的问题 [#28643](https://github.com/pingcap/tidb/issues/28643)
+    - 修复连接到 MySQL 5.1 或更早的客户端时存在的认证问题 [#27855](https://github.com/pingcap/tidb/issues/27855)
+    - 修复当新增索引时自动分析可能会在指定时间之外触发的问题 [#28698](https://github.com/pingcap/tidb/issues/28698)
+    - 修复设置任何会话变量都会使 `tidb_snapshot` 失效的问题 [#28683](https://github.com/pingcap/tidb/pull/28683)
+    - 修复在有大量 `miss-peer region` 的集群中 BR 不可用的问题 [#27534](https://github.com/pingcap/tidb/issues/27534)
+    - 修复当不支持的 `cast` 被下推到 TiFlash 时出现的非预期错误，例如 `tidb_cast to Int32 is not supported` [#23907](https://github.com/pingcap/tidb/issues/23907)
+    - 修复 `%s value is out of range in '%s'` 报错中缺失 `DECIMAL overflow` 信息的问题 [#27964](https://github.com/pingcap/tidb/issues/27964)
+    - 修复 MPP 节点的可用性检测在某些边界场景中无法工作的问题 [#3118](https://github.com/pingcap/tics/issues/3118)
+    - 修复分配 `MPP task ID` 时出现 `DATA RACE` 的问题 [#27952](https://github.com/pingcap/tidb/issues/27952)
+    - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
     - 修复运行 MPP 查询时出现 `invalid cop task execution summaries length` 相关日志的问题 [#1791](https://github.com/pingcap/tics/issues/1791)
     - 修复运行 MPP 查询时出现 `can not found column in Schema column` 报错的问题 [#28149](https://github.com/pingcap/tidb/pull/28149)
     - 修复 TiDB 在 TiFlash 关闭时可能出现 `panic` 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
