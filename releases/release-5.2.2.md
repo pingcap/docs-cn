@@ -8,10 +8,6 @@ title: TiDB 5.2.2 Release Notes
 
 TiDB 版本：5.2.2
 
-## 兼容性更改
-
-## 功能增强
-
 ## 提升改进
 
 + TiDB
