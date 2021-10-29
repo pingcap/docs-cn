@@ -23,8 +23,7 @@ TiDB 版本：5.2.2
 
     - 简化 L0 层流控算法 [#10879](https://github.com/tikv/tikv/issues/10879)
     - 优化 raft client 错误日志的收集 [#10983](https://github.com/tikv/tikv/pull/10983)
-    - 使 TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
-    - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
+    - 优化日志线程以避免其成为性能瓶颈 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 添加更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
 
 + PD
@@ -33,7 +32,7 @@ TiDB 版本：5.2.2
     - 通过动态调整 Balance Region 调度器的重试上限，优化该调度器的性能 [#3744](https://github.com/tikv/pd/issues/3744)
     - 将 TiDB Dashboard 升级至 v2021.10.08.1 [#4070](https://github.com/tikv/pd/pull/4070)
     - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
-    - 优化收到进程结束信号后调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
+    - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
 
 + Tools
 
