@@ -558,6 +558,7 @@
 + Release Notes
   + [All Releases](/releases/release-notes.md)
   + v5.2
+    + [5.2.2](/releases/release-5.2.2.md)  
     + [5.2.1](/releases/release-5.2.1.md)
     + [5.2.0](/releases/release-5.2.0.md)
   + v5.1
