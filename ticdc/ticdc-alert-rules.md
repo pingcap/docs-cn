@@ -4,7 +4,7 @@ title: TiCDC 集群监控报警
 
 # TiCDC 集群监控报警
 
-本文介绍了 TiCDC 组件的报警项及相应的报警规则。根据严重级别，报警项可分为三类，按照严重程度由高到低依次为：重要级别 (Critical)、警告级别 (Warning)。
+本文介绍了 TiCDC 组件的报警项及相应的报警规则。根据严重级别，报警项按照严重程度由高到低依次为：重要级别 (Critical)、警告级别 (Warning)。
 
 ## 监控报警规则
 
@@ -20,7 +20,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor checkpoint延迟超过10分钟
+    cdc processor checkpoint延迟超过10分钟。
 
 * 处理方法：
 
@@ -33,7 +33,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor resolved ts延迟超过5分钟
+    cdc processor resolved ts延迟超过5分钟。
 
 * 处理方法：
 
@@ -45,7 +45,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor异常退出
+    cdc processor异常退出。
 
 * 处理方法：
 
@@ -62,7 +62,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    TiCDC集群有多个owner
+    TiCDC集群有多个owner。
 
 * 处理方法：
 
@@ -75,7 +75,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc_mounter unmarshall跟mount的时间超过1秒
+    cdc_mounter unmarshall跟mount的时间超过1秒。
 
 * 处理方法：
 
@@ -88,7 +88,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc sink操作执行时间超过10s
+    cdc sink操作执行时间超过10s。
 
 * 处理方法：
 
@@ -101,7 +101,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor checkpoint时间戳1分钟没有推进
+    cdc processor checkpoint时间戳1分钟没有推进。
 
 * 处理方法：
 
@@ -114,7 +114,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    ticdc puller entry sorter排序延迟太高
+    ticdc puller entry sorter排序延迟太高。
 
 * 处理方法：
 
@@ -127,7 +127,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    ticdc puller entry sorter merge延迟太高
+    ticdc puller entry sorter merge延迟太高。
 
 * 处理方法：
 
@@ -140,7 +140,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    tikv cdc最小的resolved ts 1分钟没推进
+    tikv cdc最小的resolved ts 1分钟没推进。
 
 * 处理方法：
 
@@ -153,7 +153,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    tikv cdc扫描耗时超过10分钟
+    tikv cdc扫描耗时超过10分钟。
 
 * 处理方法：
 
@@ -166,7 +166,7 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc sink到下游mysql时遇到错误
+    cdc sink到下游mysql时遇到错误。
 
 * 处理方法：
 
@@ -179,6 +179,6 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    TiCDC 堆内存使用量超过10GB
+    TiCDC 堆内存使用量超过10GB。
     
 * 处理方法：
