@@ -109,15 +109,15 @@ TiDB 版本：5.2.2
 
     + TiCDC
 
-        - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题。[#3061](https://github.com/pingcap/ticdc/issues/3061)
-        - 修复 TiCDC 进程 PANIC `tikv reported duplicated request to the same region, which is not expected`。[#3093](https://github.com/pingcap/ticdc/pull/3093)
-        - 修复在验证下游 TiDB/MySQL 可用性时导致的无意义的 CPU 消耗。[#3077](https://github.com/pingcap/ticdc/pull/3077)
-        - 修复 TiCDC 产生的 Kafka 消息体积不受 `max-message-size` 约束的问题。[#3049](https://github.com/pingcap/ticdc/pull/3049)
-        - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题。[#3018](https://github.com/pingcap/ticdc/pull/3018)
-        - 修复当开启 `force-replicate` 时，可能有些没有有效索引的分区表被非预期的忽略的问题。[#2866](https://github.com/pingcap/ticdc/pull/2866)
-        - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题。[#2854](https://github.com/pingcap/ticdc/pull/2854)
-        - 修复在将某些类型的列编码为 Open Protocol 格式时，TiCDC 进程可能 PANIC `interface conversion: interface {} is string, not []uint8`。[#2784](https://github.com/pingcap/ticdc/pull/2784)
-        - 修复在将某些类型的列编码为 Avro 格式时，TiCDC 进程可能 PANIC `interface conversion: interface {} is uint64, not int64`。[#2657](https://github.com/pingcap/ticdc/pull/2657)
+        - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/ticdc/issues/3061)
+        - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 PANIC `tikv reported duplicated request to the same region, which is not expected` [#2386](https://github.com/pingcap/ticdc/issues/2386)
+        - 修复在验证下游 TiDB/MySQL 可用性时产生的无意义的 CPU 消耗 [#3073](https://github.com/pingcap/ticdc/issues/3073)
+        - 修复 TiCDC 产生的 Kafka 消息体积不受 `max-message-size` 约束的问题 [#2962](https://github.com/pingcap/ticdc/issues/2962)
+        - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/ticdc/issues/2978)
+        - 修复当开启 `force-replicate` 时，可能某些没有有效索引的分区表被忽略的问题 [#2834](https://github.com/pingcap/ticdc/issues/2834)
+        - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/ticdc/issues/2470)
+        - 修复在将某些类型的列编码为 Open Protocol 格式时，TiCDC 进程可能 PANIC `interface conversion: interface {} is string, not []uint8` [#2758](https://github.com/pingcap/ticdc/issues/2758)
+        - 修复在将某些类型的列编码为 Avro 格式时，TiCDC 进程可能 PANIC `interface conversion: interface {} is uint64, not int64` [#2648](https://github.com/pingcap/ticdc/issues/2648)
     
     + TiDB Binlog
 
