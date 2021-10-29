@@ -53,6 +53,7 @@ This is a list of TiDB adopters in various industries.
 |[Mobikok](https://www.linkedin.com/company/shenzhen-keke-network-technology-co.-ltd./)|AdTech||
 |[Ninja Van](https://www.crunchbase.com/organization/ninja-van-2)| Logistics|[English](https://pingcap.com/case-studies/choose-a-mysql-alternative-over-vitess-and-crdb-to-scale-out-our-databases-on-k8s)|
 |[ZTO Express](https://www.crunchbase.com/organization/zto-express)| Logistics|[English](https://pingcap.com/case-studies/why-we-migrated-from-exadata-to-a-scale-out-htap-database-for-near-real-time-analytics); [Chinese](https://pingcap.com/cases-cn/user-case-zto-express/)|
+|[JD.com](https://en.wikipedia.org/wiki/JD.com)|Logistics|[English](https://pingcap.com/case-studies/8x-system-performance-boost-why-we-migrated-from-mysql-to-newsql-database); [Chinese](https://pingcap.com/zh/case/user-case-jdl)|
 |[G7 Networks](https://www.crunchbase.com/organization/g7)| Logistics||
 |[Hive-Box](http://www.fcbox.com/en/pc/index.html#/)|Logistics||
 |[NetEase Games](https://www.linkedin.com/company/netease-games)|Gaming|[English](https://pingcap.com/case-studies/why-we-chose-tidb-over-other-mysql-based-and-newsql-storage-solutions); [Chinese](https://pingcap.com/cases-cn/user-case-wangyihuyu/)|
