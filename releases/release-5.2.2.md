@@ -39,10 +39,10 @@ TiDB 版本：5.2.2
 
     + TiCDC
 
-        - 将 Kafka sink 配置项默认值由 `MaxMessageBytes` 64MB 改为 1MB，消息因体积过大而被 Kafka Broker 拒收。[#3104](https://github.com/pingcap/ticdc/pull/3104)
-        - 降低同步链路中的内存占用 [#3037](https://github.com/pingcap/ticdc/pull/3037) [#2726](https://github.com/pingcap/ticdc/pull/2726) [#2642](https://github.com/pingcap/ticdc/pull/2642)
-        - 优化监控项和告警规则，提升了同步链路、内存 GC、存量数据扫描过程的可观测性。[#2735](https://github.com/pingcap/ticdc/pull/2735) [#2828](https://github.com/pingcap/ticdc/pull/2828) [#3000](https://github.com/pingcap/ticdc/pull/3000 [#3035](https://github.com/pingcap/ticdc/pull/3035) [#3026](https://github.com/pingcap/ticdc/pull/3026)
-        - 当同步任务状态正常时，不再显示历史上的错误信息，避免误导用户。[#2979](https://github.com/pingcap/ticdc/pull/2979)
+        -  修改 Kafka sink 配置项 `MaxMessageBytes` 的默认值，由 64 MB 减小为 1 MB。消息过大会被 Kafka Broker 拒收 [#3104](https://github.com/pingcap/ticdc/pull/3104)
+        - 减少同步链路中的内存占用 [#2553](https://github.com/pingcap/ticdc/issues/2553)[#3037](https://github.com/pingcap/ticdc/pull/3037) [#2726](https://github.com/pingcap/ticdc/pull/2726) 
+        - 优化监控项和告警规则，提升了同步链路、内存 GC、存量数据扫描过程的可观测性 [#2735](https://github.com/pingcap/ticdc/pull/2735) [#1606](https://github.com/pingcap/ticdc/issues/1606) [#3000](https://github.com/pingcap/ticdc/pull/3000 [#2985](https://github.com/pingcap/ticdc/issues/2985) [#2156](https://github.com/pingcap/ticdc/issues/2156)
+        - 当同步任务状态正常时，不再显示历史错误信息，避免误导用户 [#2242](https://github.com/pingcap/ticdc/issues/2242)
 
 ## Bug 修复
 
