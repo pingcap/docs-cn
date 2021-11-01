@@ -59,9 +59,3 @@ GRANT RESTRICTED_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
 
 -- To also allow modifying TiDB Dashboard configurations:
 GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
-
-如果该用户还需要写的权限，比如需要能够修改 TiDB Dashboard 的配置，则还需要授予额外的权限，比如 `SYSTEM_VARIABLES_ADMIN`。
-
-```sql
-GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
-```
