@@ -623,6 +623,19 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用于开启 TSO Follower Proxy 特性。值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 上，通过 PD follower 转发 TSO 请求，以降低 PD leader 的 CPU 压力。
+- 适合开启 TSO Follower Proxy 的场景：
+    * PD leader 因为高压力的 TSO 请求达到 CPU 瓶颈，TSO RPC 时延较高。
+    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time) 并不能缓解上述问题。
+
+> **注意：**
+>
+> 在 PD leader 未因 CPU 限制达到瓶颈并导致 TSO RPC 时延升高前打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行时延上升，影响集群 QPS 表现。
+
 ### `tidb_enable_rate_limit_action`
 
 - 作用域：SESSION | GLOBAL
@@ -944,8 +957,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION
 - 默认值：`OFF`
-- 这个变量用来设置是否启用低精度 tso 特性，开启该功能之后新事务会使用一个每 2s 更新的 ts 来读取数据。
-- 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 tso 的开销。
+- 这个变量用来设置是否启用低精度 TSO 特性，开启该功能之后新事务会使用一个每 2s 更新的 TS 来读取数据。
+- 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 TSO 的开销。
 
 ### `tidb_max_chunk_size`
 
@@ -1357,6 +1370,23 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
+
+### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`0`
+- 范围：`[0, 10]`
+- 这个变量用于设置 TiDB 向 PD 请求 TSO 时进行一次 Batch 操作的最大等待时长，单位是毫秒。默认值为 0，即不进行额外的等待。
+- 在向 PD 获取 TSO 请求时，TiDB 使用的 PD Client 会一次尽可能多地收集同一时刻的 TSO 请求，将其 Batch 合并成一个 RPC 请求再发送给 PD，期以减轻 PD 的压力。
+- 这个变量被设为非 0 值时，会在每一次 Batch 操作结束前进行一个最大时长为其值的等待，目的是为了收集到更多的 TSO 请求，提高 Batch 效果。
+- 适合调高这个变量值的场景：
+    * PD leader 因为高压力的 TSO 请求达到 CPU 瓶颈，TSO RPC 时延较高。
+    * 集群中 TiDB 实例数量不多，但每一台 TiDB 上的并发量较高。
+- 实际使用中推荐尽可能将该变量设置在一个较小的值。
+
+> **注意：**
+>
+> 在 PD leader 未因 CPU 限制达到瓶颈并导致 TSO RPC 时延升高前调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行时延上升，影响集群 QPS 表现。
 
 ### `tidb_txn_mode`
 
