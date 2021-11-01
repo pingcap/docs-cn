@@ -627,14 +627,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
-- 这个变量用于开启 TSO Follower Proxy 特性。值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 上，通过 PD follower 转发 TSO 请求，以降低 PD leader 的 CPU 压力。
+- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
 - 适合开启 TSO Follower Proxy 的场景：
-    * PD leader 因为高压力的 TSO 请求达到 CPU 瓶颈，TSO RPC 时延较高。
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 的延迟较高。
     * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 并不能缓解上述问题。
 
 > **注意：**
 >
-> 在 PD leader 未因 CPU 限制达到瓶颈并导致 TSO RPC 时延升高前打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行时延上升，影响集群 QPS 表现。
+> 如果在 PD leader 未因 CPU 限制达到瓶颈而导致 TSO RPC 延迟升高前打开 TSO Follower Proxy，可能会导致 TiDB 的语句执行延迟上升，影响集群 QPS 表现。
 
 ### `tidb_enable_rate_limit_action`
 
@@ -957,7 +957,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 - 作用域：SESSION
 - 默认值：`OFF`
-- 这个变量用来设置是否启用低精度 TSO 特性，开启该功能之后新事务会使用一个每 2s 更新的 TS 来读取数据。
+- 这个变量用来设置是否启用低精度 TSO 特性。开启该功能之后，新事务会使用一个每 2s 更新一次的 TS 来读取数据。
 - 主要场景是在可以容忍读到旧数据的情况下，降低小的只读事务获取 TSO 的开销。
 
 ### `tidb_max_chunk_size`
@@ -1376,17 +1376,18 @@ set tidb_slow_log_threshold = 200;
 - 作用域：GLOBAL
 - 默认值：`0`
 - 范围：`[0, 10]`
-- 这个变量用于设置 TiDB 向 PD 请求 TSO 时进行一次 Batch 操作的最大等待时长，单位是毫秒。默认值为 0，即不进行额外的等待。
-- 在向 PD 获取 TSO 请求时，TiDB 使用的 PD Client 会一次尽可能多地收集同一时刻的 TSO 请求，将其 batch 合并成一个 RPC 请求再发送给 PD，期以减轻 PD 的压力。
-- 这个变量被设为非 0 值时，会在每一次 batch 操作结束前进行一个最大时长为其值的等待，目的是为了收集到更多的 TSO 请求，提高 batch 效果。
+- 单位：毫秒
+- 这个变量用来设置 TiDB 向 PD 请求 TSO 时进行一次 batch 操作的最大等待时长。默认值为 `0`，即不进行额外的等待。
+- 在向 PD 获取 TSO 请求时，TiDB 使用的 PD Client 会一次尽可能多地收集同一时刻的 TSO 请求，将其 batch 合并成一个 RPC 请求后再发送给 PD，从而减轻 PD 的压力。
+- 当这个变量设置为非 0 值时，TiDB 会在每一次 batch 操作结束前进行一个最大时长为其值的等待，目的是为了收集到更多的 TSO 请求，从而提高 batch 效果。
 - 适合调高这个变量值的场景：
-    * PD leader 因为高压力的 TSO 请求达到 CPU 瓶颈，TSO RPC 时延较高。
-    * 集群中 TiDB 实例数量不多，但每一台 TiDB 上的并发量较高。
-- 实际使用中推荐尽可能将该变量设置在一个较小的值。
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 的延迟较高。
+    * 集群中 TiDB 实例的数量不多，但每一台 TiDB 上的并发量较高。
+- 在实际使用中，推荐将该变量尽可能设置为一个较小的值。
 
 > **注意：**
 >
-> 在 PD leader 未因 CPU 限制达到瓶颈并导致 TSO RPC 时延升高前调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行时延上升，影响集群 QPS 表现。
+> 如果在 PD leader 未因 CPU 限制达到瓶颈而导致 TSO RPC 延迟升高前调高 `tidb_tso_client_batch_max_wait_time`，可能会导致 TiDB 的语句执行延迟上升，影响集群 QPS 表现。
 
 ### `tidb_txn_mode`
 
