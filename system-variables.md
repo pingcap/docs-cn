@@ -573,7 +573,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Default value: `4`
-- Range: `[1, 128]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the DDL operation in the `re-organize` phase.
 
@@ -595,7 +595,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Default value: `15`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the `scan` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
@@ -863,7 +863,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Default value: `5`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 
 This variable is used to set the concurrency of the following SQL operators (to one value):
@@ -910,7 +910,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Default value: `-1`
-- Range: `[1, 128]`
+- Range: `[1, 256]`
 - Unit: Threads
 - Specifies the number of threads in the [Resolve Locks](/garbage-collection-overview.md#resolve-locks) step of GC. A value of `-1` means that TiDB will automatically decide the number of garbage collection threads to use.
 
@@ -978,7 +978,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the `hash join` algorithm.
 - A value of `-1` means that the value of `tidb_executor_concurrency` will be used instead.
@@ -991,7 +991,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of executing the concurrent `hash aggregation` algorithm in the `final` phase.
 - When the parameter of the aggregate function is not distinct, `HashAgg` is run concurrently and respectively in two phases - the `partial` phase and the `final` phase.
@@ -1005,7 +1005,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of executing the concurrent `hash aggregation` algorithm in the `partial` phase.
 - When the parameter of the aggregate function is not distinct, `HashAgg` is run concurrently and respectively in two phases - the `partial` phase and the `final` phase.
@@ -1028,7 +1028,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the `index lookup` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
@@ -1042,7 +1042,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the `index lookup join` algorithm.
 - A value of `-1` means that the value of `tidb_executor_concurrency` will be used instead.
@@ -1060,7 +1060,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Default value: `1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the `serial scan` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
@@ -1325,7 +1325,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[-1, 2147483647]`
+- Range: `[-1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency of the `Projection` operator.
 - A value of `-1` means that the value of `tidb_executor_concurrency` will be used instead.
@@ -1528,7 +1528,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Default value: `-1`
-- Range: `[1, 2147483647]`
+- Range: `[1, 256]`
 - Unit: Threads
 - This variable is used to set the concurrency degree of the window operator.
 - A value of `-1` means that the value of `tidb_executor_concurrency` will be used instead.
