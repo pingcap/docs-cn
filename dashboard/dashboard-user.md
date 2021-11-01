@@ -37,7 +37,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 通过执行以下示例 SQL 语句可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
 ```sql
-CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '$YOUR_PASSWORD';
+CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
 GRANT PROCESS, CONFIG ON *.* TO 'dashboardAdmin'@'%';
 GRANT SHOW DATABASES ON *.* TO 'dashboardAdmin'@'%';
 GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
