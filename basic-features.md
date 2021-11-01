@@ -87,7 +87,7 @@ TiDB 的功能发展历史如下表所示。请注意，正在开发中的功能
 | [List 分区](/partitioned-table.md)                                                               | 实验功能 | 实验功能 | 实验功能 | N            |
 | [List COLUMNS 分区](/partitioned-table.md)                                                       | 实验功能 | 实验功能 | 实验功能 | N            |
 | [`EXCHANGE PARTITION`](/partitioned-table.md)                                                            | 实验功能 | 实验功能 | 实验功能 | N            |
-| [动态分区裁剪](/partitioned-table.md#dynamic-pruning-mode)                                            | Experimental | Experimental | N            | N            |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式)                                            | 实验功能 | 实验功能 | N            | N            |
 | **统计信息**                                                                                           | **5.2**      | **5.1**      | **5.0**      | **4.0**      |
 | [CM-Sketch](/statistics.md)                                                                               | 已废弃   | 已废弃   | 已废弃   | Y            |
 | [直方图](/statistics.md)                                                                             | Y            | Y            | Y            | Y            |
