@@ -41,7 +41,9 @@ CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
 GRANT PROCESS, CONFIG ON *.* TO 'dashboardAdmin'@'%';
 GRANT SHOW DATABASES ON *.* TO 'dashboardAdmin'@'%';
 GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
-```
+
+-- To also allow modifying TiDB Dashboard configurations:
+GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
 
 
 注意：当 TiDB 的[安全增强模式 (SEM) 功能](/system-variables.md#tidb_enable_enhanced_security)打开时，需要执行的 SQL 语句示例如下：
