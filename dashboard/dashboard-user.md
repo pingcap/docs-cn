@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 
 # TiDB Dashboard 用户
 
-从 TiDB 5.3 开始，TiDB Dashboard 支持使用任意 SQL 用户登录，该 SQL 用户必须拥有以下权限：
+从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义的 SQL 用户登录访问。该 SQL 用户必须拥有以下权限：
 
 - ALL PRIVILEGES
 
