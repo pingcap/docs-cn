@@ -211,6 +211,7 @@ You can view the comparision details through 'output/sync_diff.log'
 ### 输出文件
 
 输出文件目录结构如下：
+
 ```
 output/
 |-- checkpoint
