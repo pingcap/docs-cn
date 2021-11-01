@@ -40,7 +40,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 ### 目标 TiKV 集群的磁盘空间要求
 
-**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[副本数量](https://docs.pingcap.com/zh/tidb/stable/deploy-and-maintain-faq#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
+**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 ×[副本数量](/deploy-and-maintain-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
 
 * 索引会占据额外的空间
 * RocksDB 的空间放大效应
