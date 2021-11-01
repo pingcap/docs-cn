@@ -77,58 +77,67 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 backend = "tidb"
 ```
 
+或者在用命令行启动 `tidb-lightning` 时，传入参数 `--backend tidb`。
+
 #### 配置说明与示例
 
 ```toml
 # tidb-lightning 任务配置
 
 [lightning]
-
-# 启动之前检查集群是否满足最低需求。
+# 启动之前检查集群是否满足最低需求
 check-requirements = true
 
-# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”，这两项设置控制两种引擎文件的最大并发数。
-# 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数。
+# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”
+# 这两项设置控制两种引擎文件的最大并发数
+# 控制同时允许导入的最大表数量，对于 TiDB-backend，默认值为 CPU 数
 index-concurrency = 40
 
-# 控制同时允许导入的最大“数据引擎”数量，默认值为 CPU 数，本配置不应小于 index-concurrency。
+# 控制同时允许导入的最大“数据引擎”数，默认值为 CPU 数，本配置应大于或等于 index-concurrency
 table-concurrency = 40
 
-# 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同。TiDB-backend 的瓶颈通常不在 CPU, 可以根据下游集群的实际负载调大此配置以优化写入速度，同时在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
+# 执行 SQL 语句的并发数。默认与逻辑 CPU 的数量相同
+# TiDB-backend 的瓶颈通常不在 CPU, 可以根据下游集群的实际负载调大此配置以优化写入速度
+# 在调整此配置时，建议将 index-concurrency 和 table-concurrency 也调整成相同的值
 region-concurrency = 40
 
 # 日志相关的配置
 # 输出日志级别
 level = "info"
 
-# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}； 如果希望输出至系统标准输出，请设置为 "-"。
+# 日志输出的文件。如果为空（默认），则会输出至 /tmp/lightning.log.{timestamp}；如果希望输出至系统标准输出，请设置为 "-"
 # file = "tidb-lightning.log"
 
 [checkpoint]
-
-# 是否启用断点续传。
-# 导入数据时，TiDB Lightning 会记录当前表导入的进度。
-# 所以即使 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据。
+# 启用断点续传
+# 导入数据时，TiDB Lightning 会记录当前表导入的进度
+# 若 TiDB Lightning 或其他组件异常退出，在重启时也可以避免重复再导入已完成的数据
 enable = true
 
-# 存储断点的数据库名称。
-schema = "tidb_lightning_checkpoint"
-
-# 存储断点的方式。
-#  - file（默认）：存放在本地文件系统。
-#  - mysql：存放在兼容 MySQL 的数据库服务器。
+# 存储断点的方式
+#  - file（默认）：存放在本地文件系统（要求 v2.1.1 或以上）
+#  - mysql：存放在兼容 MySQL 的数据库服务器
 driver = "file"
 
-# dsn 是数据源名称 (data source name)，表示断点的存放位置。
-# 若 driver = "file"，则 dsn 为断点信息存放的文件路径。
-# 若不设置该路径，则默认存储路径为“/tmp/{schema}.pb”。
-# 若 driver = "mysql"，则 dsn 为“用户:密码@tcp(地址:端口)/”格式的 URL。
-# 若不设置该 URL，则默认会使用 [tidb] 部分指定的 TiDB 服务器来存储断点。
-# 为减少目标 TiDB 集群的压力，建议指定另一台兼容 MySQL 的数据库服务器来存储断点。
+# 存储断点的数据库名称
+# 仅在 driver = "mysql" 时生效
+# schema = "tidb_lightning_checkpoint"
+
+# 断点的存放位置
+#
+# 若 driver = "file"，此参数为断点信息存放的文件路径
+# 如果不设置该参数则默认为 `/tmp/CHECKPOINT_SCHEMA.pb`
+#
+# 若 driver = "mysql"，此参数为数据库连接参数 (DSN)，格式为“用户:密码@tcp(地址:端口)/”
+# 默认会重用 [tidb] 设置目标数据库来存储断点
+# 为避免加重目标集群的压力，建议另外使用一个兼容 MySQL 的数据库服务器
 # dsn = "/tmp/tidb_lightning_checkpoint.pb"
 
-[tikv-importer]
+# 导入成功后是否保留断点。默认为删除
+# 保留断点可用于调试，但有可能泄漏数据源的元数据
+# keep-after-success = false
 
+[tikv-importer]
 # 后端模式，对于 TiDB-backend 请设置为 “tidb”
 backend = "tidb"
 
@@ -139,7 +148,6 @@ backend = "tidb"
 # on-duplicate = "replace"
 
 [mydumper]
-
 # 设置文件读取的区块大小(默认为 64 KiB)，确保该值比数据源的最长字符串长。
 # read-block-size = "64KiB" 
 
@@ -167,7 +175,6 @@ data-source-dir = "/data/my_database"
 
 # 配置 CSV 文件的解析方式（如果源文件中不包含 CSV 文件可不设置此项）。
 [mydumper.csv]
-
 # 字段分隔符，应为单个 ASCII 字符。
 separator = ','
 
@@ -193,7 +200,6 @@ backslash-escape = true
 trim-last-separator = false
 
 [tidb]
-
 # 目标集群的信息。tidb-server 的地址，填一个即可。
 host = "172.16.31.1"
 port = 4000
@@ -231,9 +237,7 @@ tls = ""
 log-progress = "5m"
 ```
 
-或者在用命令行启动 `tidb-lightning` 时，传入参数 `--backend tidb`。
-
-### 冲突解决
+### 解决冲突
 
 TiDB-backend 支持导入到已填充的表（非空表）。但是，新数据可能会与旧数据的唯一键冲突。你可以通过使用如下任务配置来控制遇到冲突时的默认行为：
 
