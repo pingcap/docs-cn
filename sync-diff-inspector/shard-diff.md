@@ -20,25 +20,15 @@ sync-diff-inspector 完整的示例配置如下：
 
 ######################### Global config #########################
 
-log-level = "info"
-
-# how many goroutines are created to check data
+# 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# sampling check percent, for example 10 means only check 10% data
-sample-percent = 100
+# 如果关闭，只通过计算 chunk 的 checksum 来对比数据
+# 如果开启，当上下游 chunk 的 checksum 不同时，则跳过逐行比对
+export-fix-sql = true
 
-# set true if just want compare data by checksum, will skip select data when checksum is not equal.
-use-checksum = false
-
-# set true will continue check from the latest checkpoint
-use-checkpoint = true
-
-# ignore check table's data
-ignore-data-check = false
-
-# ignore check table's struct
-ignore-struct-check = false
+# 不对比数据
+check-struct-only = false
 
 
 ######################### Databases config #########################
@@ -49,8 +39,6 @@ ignore-struct-check = false
     password = ""
 
     route-rules = ["rule1"]
-    # remove comment if use tidb's snapshot data
-    # snapshot = "2016-10-08 16:45:26"
 
 [data-sources.mysql2]
     host = "127.0.0.1"
@@ -59,17 +47,14 @@ ignore-struct-check = false
     password = ""
 
     route-rules = ["rule2"]
-    # remove comment if use tidb's snapshot data
-    # snapshot = "2016-10-08 16:45:26"
 
 [data-sources.tidb]
     host = "127.0.0.1"
     port = 4000
     user = "root"
     password = ""
-    # remove comment if use tidb's snapshot data
-    # snapshot = "2016-10-08 16:45:26"
 
+########################### Routes ###########################
 [routes.rule1]
 schema-pattern = "test"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
 table-pattern = "table-[1-2]"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
@@ -95,7 +80,7 @@ target-table = "table-0" # 目标表名
     target-instance = ["tidb"]
 
     # tables need to check. *Include `schema` and `table`. Use `.` to split*
-    target-check-tables = ["test.tabale-0"]
+    target-check-tables = ["test.table-0"]
 ```
 
 当上游分表较多，且所有分表的命名都符合一定的规则时，则可以使用 `table-rules` 进行配置。场景如图所示：
@@ -104,30 +89,20 @@ target-table = "table-0" # 目标表名
 
 sync-diff-inspector 完整的示例配置如下：
 
-``` 
+```toml
 # Diff Configuration.
 
 ######################### Global config #########################
 
-log-level = "info"
-
-# how many goroutines are created to check data
+# 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# sampling check percent, for example 10 means only check 10% data
-sample-percent = 100
+# 如果关闭，只通过计算 chunk 的 checksum 来对比数据
+# 如果开启，当上下游 chunk 的 checksum 不同时，则跳过逐行比对
+export-fix-sql = true
 
-# set true if just want compare data by checksum, will skip select data when checksum is not equal.
-use-checksum = false
-
-# set true will continue check from the latest checkpoint
-use-checkpoint = true
-
-# ignore check table's data
-ignore-data-check = false
-
-# ignore check table's struct
-ignore-struct-check = false
+# 不对比数据
+check-struct-only = false
 
 
 ######################### Databases config #########################
@@ -138,8 +113,6 @@ ignore-struct-check = false
     password = ""
 
     route-rules = ["rule1"]
-    # remove comment if use tidb's snapshot data
-    # snapshot = "2016-10-08 16:45:26"
 
 [data-sources.mysql2]
     host = "127.0.0.1"
@@ -148,17 +121,14 @@ ignore-struct-check = false
     password = ""
 
     route-rules = ["rule1"]
-    # remove comment if use tidb's snapshot data
-    # snapshot = "2016-10-08 16:45:26"
 
 [data-sources.tidb]
     host = "127.0.0.1"
     port = 4000
     user = "root"
     password = ""
-    # remove comment if use tidb's snapshot data
-    # snapshot = "2016-10-08 16:45:26"
 
+########################### Routes ###########################
 [routes.rule1]
 schema-pattern = "test"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
 table-pattern = "table-*"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
@@ -181,3 +151,7 @@ target-table = "table-0" # 目标表名
     target-check-tables = ["test.table-0"]
 
 ```
+
+## 注意事项
+
+1. 如果上游数据库有 `table_0` 也会被下游数据库匹配到。

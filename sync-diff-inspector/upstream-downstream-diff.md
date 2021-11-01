@@ -38,15 +38,13 @@ select * from tidb_binlog.checkpoint;
     port = 3306
     user = "root"
     password = ""
-    # remove comment if use tidb's snapshot data
-    snapshot = "2016-10-08 16:45:26"
+    snapshot = "409621863377928345"
 
 [data-sources.tidb]
     host = "127.0.0.1"
     port = 4000
     user = "root"
     password = ""
-    # remove comment if use tidb's snapshot data
     snapshot = "409621863377928345"
 ```
 
@@ -54,3 +52,4 @@ select * from tidb_binlog.checkpoint;
 
 - Drainer 的 `db-type` 需要设置为 `tidb`，这样才会在 checkpoint 中保存 `ts-map`。
 - 需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
+- 以上配置只展示 `Databases config` 部分，并不完全。完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
