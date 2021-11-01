@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 - RESTRICTED_STATUS_ADMIN
 - RESTRICTED_VARIABLES_ADMIN
 
-当权限未满足要求时，登录会提示该用户没有足够权限的错误。如下图所示：
+当用户的权限未满足要求时，将无法使用该用户登录 TiDB Dashboard，如下图所示：
 
 ![](/media/dashboard/dashboard-user-insufficient-privileges.png)
 
