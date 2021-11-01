@@ -1,5 +1,5 @@
 ---
-title: 分库分表合并导入到 TiDB
+title: 分库分表合并导入到 TiDB（大于 1 TB）
 summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。本文介绍的方法适用于导入数据总量大于 1 TB 的场景。
 ---
 
