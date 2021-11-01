@@ -98,6 +98,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 ```
 tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o /data/my_database/
 ```
+
 以上命令中，各参数解释如下：
 
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
@@ -212,7 +213,7 @@ tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'm
 
 3. 配置合适的参数运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
 
-{{< copyable "shell-regular" >}}
+  {{<copyable "shell-regular">}}
 
     ```shell
     tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
