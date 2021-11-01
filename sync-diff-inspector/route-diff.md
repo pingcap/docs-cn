@@ -65,5 +65,3 @@ target-table = "t_2" # 目标表名
 
 1. 如果上游数据库有 `t_2` 也会被下游数据库匹配到。
 2. 以上配置只展示 route-rules 部分，并不完全。完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
-
-
