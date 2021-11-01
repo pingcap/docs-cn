@@ -1,6 +1,5 @@
 ---
 title: 从 DM 拉取配置 
-aliases: ['/docs-cn/dev/sync-diff-inspector/dm-diff/','/docs-cn/dev/reference/tools/sync-diff-inspector/dm-diff/']
 ---
 
 # 从 DM 拉取配置
