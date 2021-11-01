@@ -236,7 +236,7 @@ tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'm
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)。
 
-### 第 4 步 （可选）：增量数据的迁移
+### 第 4 步（可选）：增量数据的迁移
 
 <!--
 增量数据的迁移有两种方式，使用 TiDB DM 或使用 TiDB Lightning。
