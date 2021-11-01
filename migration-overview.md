@@ -27,6 +27,7 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 可以使用 Dumpling 和 TiDB Lightning 迁移大于 1 TiB 的 MySQL 全量数据。详细信息请参考[使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)。
 
+<!-- 
 ## MySQL 分库分表合并迁移到 TiDB
 
 目前可以使用以下两种方式将 MySQL 数据全量迁移到 TiDB。
@@ -41,6 +42,7 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 ### 大于 1 TiB 的分库分表合并迁移 
 
 对于 MySQL 全量数据大于 1 TiB、分表合并迁移的场景，可以先用 Dumpling 从多个 MySQL 数据库中导出数据，再使用 TiDB Lightning 将各分库分表数据合并导入到 TiDB。详细信息请参考[分库分表合并导入到 TiDB （大于 1 TiB）](/migrate-from-mysql-shard-merge-using-lightning.md)。
+-->
 
 ## 从文件迁移到 TiDB
 
