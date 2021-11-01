@@ -71,7 +71,7 @@ The following table provides an overview of the feature development history of T
 | [Auto increment](/auto-increment.md)                                                                     | Y            | Y            | Y            | Y            |
 | [Auto random](/auto-random.md)                                                                           | Y            | Y            | Y            | Y            |
 | [DDL algorithm assertions](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            |
-| Multi schema change: add column(s)                                                                       | Y            | Y            | Y            | N            |
+| Multi schema change: add column(s)                                                                       | Experimental | Experimental | Experimental | Experimental |
 | [Change column type](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | N            | N            |
 | **Transactions**                                                                                         | **5.2**      | **5.1**      | **5.0**      | **4.0**      |
 | [Async commit](/system-variables.md#tidb_enable_async_commit-new-in-v50)                                 | Y            | Y            | Y            | N            |
