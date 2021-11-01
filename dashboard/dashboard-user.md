@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 
 ![](/media/dashboard/dashboard-user-insufficient-privileges.png)
 
-此外，当该 SQL 用户拥有以下三种权限之一时，具有写权限，登录 TiDB Dashboard 后可以进行修改配置的操作，否则只有读权限。
+此外，当该 SQL 用户拥有以下**任意**权限时，登录 TiDB Dashboard 后可在界面上对各项配置进行修改，否则只有读权限，无法修改配置：
 
 - ALL PRIVILEGES
 - SUPER
