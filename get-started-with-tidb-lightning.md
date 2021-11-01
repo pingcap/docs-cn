@@ -64,7 +64,7 @@ Download the TiDB Lightning installation package from the following link:
 
     ```toml
     [lightning]
-    # logging
+    # Logging
     level = "info"
     file = "tidb-lightning.log"
 

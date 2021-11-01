@@ -17,7 +17,7 @@ This document describes how to enable, configure, store, and control *checkpoint
 # Whether to enable checkpoints.
 # While importing data, TiDB Lightning records which tables have been imported, so
 # even if TiDB Lightning or some other component crashes, you can start from a known
-# good state instead of redoing everything.
+# good state instead of restarting from scratch.
 enable = true
 
 # Where to store the checkpoints.

@@ -79,6 +79,165 @@ backend = "tidb"
 
 or supplying the `--backend tidb` arguments when executing `tidb-lightning`.
 
+#### Configuration description and samples
+
+This section provides the samples for task configuration in TiDB Lightning.
+
+```toml
+# tidb-lightning task configuration
+
+[lightning]
+# Checks whether the cluster satisfies the minimum requirement before starting.
+check-requirements = true
+
+# Each table is split into one "index engine" to store indices, and multiple
+# "data engines" to store row data. These settings control the maximum
+# concurrent number for each type of engines.
+# Controls the maximum number of tables that can be imported in parallel. For TiDB-backend, the default value is the number of CPU cores.
+index-concurrency = 40
+
+# Controls the maximum number of "data engines" allowed to be imported in parallel. The default value is the number of CPU cores. The value should be no less than the value of index-concurrency.
+table-concurrency = 40
+
+# The number of concurrent SQL statements executed. It is set to the number of logical CPU cores by default. The bottleneck of TiDB-backend is usually not the CPU. You can increase this value based on the actual load of the downstream cluster to optimize the write speed. At the same time, when adjusting this configuration, it is recommended to adjust the index-concurrency and table-concurrency to the same value.
+region-concurrency = 40
+
+# Logging
+level = "info"
+# The directory to which the log is output. If it is empty (default), the file is saved to /tmp/lightning.log.{timestamp}. If you want the logs to be written to the system standard output, set it to "-".
+file = "tidb-lightning.log"
+
+[checkpoint]
+# Whether to enable checkpoints.
+# While importing data, TiDB Lightning records which tables have been imported, so
+# even if TiDB Lightning or some other component crashes, you can start from a known
+# good state instead of restarting from scratch.
+enable = true
+
+# Where to store the checkpoints.
+#  - file (default): store as a local file (requires v2.1.1 or later)
+#  - mysql: store into a remote MySQL-compatible database
+driver = "file"
+
+# The schema name (database name) to store the checkpoints
+# Enabled only when `driver = "mysql"`.
+# schema = "tidb_lightning_checkpoint"
+
+# The data source name (DSN) indicating the location of the checkpoint storage.
+#
+# For the "file" driver, the DSN is a path. If the path is not specified, Lightning would
+# default to "/tmp/CHECKPOINT_SCHEMA.pb".
+#
+# For the "mysql" driver, the DSN is a URL in the form of "USER:PASS@tcp(HOST:PORT)/".
+# If the URL is not specified, the TiDB server from the [tidb] section is used to
+# store the checkpoints. You should specify a different MySQL-compatible
+# database server to reduce the load of the target TiDB cluster.
+#dsn = "/tmp/tidb_lightning_checkpoint.pb"
+
+# Whether to keep the checkpoints after all data are imported. If false, the
+# checkpoints are deleted. Keeping the checkpoints can aid debugging but
+# might leak metadata about the data source.
+# keep-after-success = false
+
+[tikv-importer]
+# use the TiDB-backend.
+backend = "tidb"
+
+# Action to do when trying to insert a duplicated entry in the "tidb" backend.
+#  - replace: use new entry to replace the existing entry
+#  - ignore: keep the existing entry, and ignore the new entry
+#  - error: report error and quit the program
+# on-duplicate = "replace"
+
+[mydumper]
+# Block size for file reading. Keep it longer than the longest string of
+# the data source.
+# read-block-size = "64KiB" 
+
+# Minimum size (in terms of source data file) of each batch of import.
+# TiDB Lightning splits a large table into multiple data engine files according to this size.
+# batch-size = 107_374_182_400 # Byte (default = 100 GB)
+
+# Local source data directory or the URL of the external storage.
+data-source-dir = "/data/my_database"
+
+# the input data in a "strict" format speeds up processing.
+# "strict-format = true" requires that:
+# in CSV, every value cannot contain literal new lines (U+000A and U+000D, or \r and \n) even
+# when quoted, which means new lines are strictly used to separate rows.
+# "Strict" format allows TiDB Lightning to quickly locate split positions of a large file for parallel processing.
+# However, if the input data is not "strict", it may split a valid data in half and
+# corrupt the result.
+# The default value is false for safety instead of speed.
+strict-format = false
+
+# If strict-format is true, TiDB Lightning splits large CSV files into multiple chunks to process in
+# parallel. max-region-size is the maximum size of each chunk after splitting.
+# max-region-size = 268_435_456 # Byte (default = 256 MB)
+
+# Only import tables if these wildcard rules are matched. See the corresponding section for details.
+filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+
+# Configures how CSV files are parsed.
+[mydumper.csv]
+# Separator between fields, should be an ASCII character.
+separator = ','
+# Quoting delimiter, can either be an ASCII character or empty string.
+delimiter = '"'
+# Whether the CSV files contain a header.
+# If `header` is true, the first line will be skipped.
+header = true
+# Whether the CSV contains any NULL value.
+# If `not-null` is true, all columns from CSV cannot be NULL.
+not-null = false
+# When `not-null` is false (that is, CSV can contain NULL),
+# fields equal to this value will be treated as NULL.
+null = '\N'
+# Whether to interpret backslash escapes inside fields.
+backslash-escape = true
+# If a line ends with a separator, remove it.
+trim-last-separator = false
+
+[tidb]
+# Configuration of any TiDB server from the cluster.
+host = "172.16.31.1"
+port = 4000
+user = "root"
+password = ""
+
+# The default SQL mode used to parse and execute the SQL statements.
+sql-mode = "ONLY_FULL_GROUP_BY,NO_ENGINE_SUBSTITUTION"
+
+# Whether to use TLS for SQL connections. Valid values are:
+#  * ""            - force TLS (same as "cluster") if [tidb.security] section is populated, otherwise same as "false"
+#  * "false"       - disable TLS
+#  * "cluster"     - force TLS and verify the server's certificate with the CA specified in the [tidb.security] section
+#  * "skip-verify" - force TLS but do not verify the server's certificate (insecure!)
+#  * "preferred"   - same as "skip-verify", but if the server does not support TLS, fallback to unencrypted connection
+# tls = ""
+
+# Specifies certificates and keys for TLS-enabled MySQL connections.
+# [tidb.security]
+
+# Public certificate of the CA. Set to empty string to disable TLS for SQL.
+# ca-path = "/path/to/ca.pem"
+
+# Public certificate of this service. Default to copy of `security.cert-path`
+# cert-path = "/path/to/lightning.pem"
+
+# Private key of this service. Default to copy of `security.key-path`
+# key-path = "/path/to/lightning.key"
+
+# Configures the background periodic actions.
+# Supported units: h (hour), m (minute), s (second).
+[cron]
+
+# Duration between which an import progress is printed to the log.
+log-progress = "5m"
+```
+
+For detailed descriptions of the configuration items, see [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
+
 ### Conflict resolution
 
 The TiDB-backend supports importing to an already-populated table. However, the new data might cause a unique key conflict with the old data. You can control how to resolve the conflict by using this task configuration.

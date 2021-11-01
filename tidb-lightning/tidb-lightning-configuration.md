@@ -76,7 +76,7 @@ io-concurrency = 5
 # Whether to enable checkpoints.
 # While importing data, TiDB Lightning records which tables have been imported, so
 # even if TiDB Lightning or another component crashes, you can start from a known
-# good state instead of redoing everything.
+# good state instead of restarting from scratch.
 enable = true
 # The schema name (database name) to store the checkpoints.
 schema = "tidb_lightning_checkpoint"
@@ -103,9 +103,9 @@ driver = "file"
 # The listening address of tikv-importer when backend is "importer". Change it to the actual address.
 addr = "172.16.31.10:8287"
 # Action to do when trying to insert a duplicated entry in the "tidb" backend.
-#  - replace: new entry replaces existing entry
-#  - ignore:  keep existing entry, ignore new entry
-#  - error:   report error and quit the program
+#  - replace: use new entry to replace the existing entry
+#  - ignore: keep the existing entry, and ignore the new entry
+#  - error: report error and quit the program
 # on-duplicate = "replace"
 # The size limit of generated SST files in the "local" backend. It is better
 # to be the same as the Region size of TiKV (96 MB by default).
