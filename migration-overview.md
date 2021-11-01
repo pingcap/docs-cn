@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/migration-overview/','/docs-cn/dev/data-migration-route'
 
 ### 1 TiB 以内的全量数据迁移
 
-可以使用 DM 将 1 TiB 以内的 MySQL 全量数据迁移到 TiDB。也支持同步 MySQL 的增量数据到 TiDB。详细信息请参考[使用 DM 工具从 Amazon Aurora MySQL 迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)
+可以使用 DM 将 1 TiB 以内的 MySQL 全量数据迁移到 TiDB。也支持同步 MySQL 的增量数据到 TiDB。详细信息请参考[使用 DM 工具从 Amazon Aurora MySQL 迁移](https://docs.pingcap.com/zh/tidb-data-migration/stable/migrate-from-mysql-aurora)
 
 ### 大于 1 TiB 的全量数据迁移
 

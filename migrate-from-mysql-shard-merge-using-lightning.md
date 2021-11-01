@@ -17,8 +17,8 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。�
 
 关于 Dumpling 和 TiDB Lightning 的更多介绍，请参考：
 
-* [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)
-* [TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)
+* [Dumpling](/dumpling-overview.md)
+* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
 
@@ -67,7 +67,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 
 一般情况下，推荐使用配置项 `checksum = true`，所以 TiDB Lightning 还需要有下游 TiDB admin 用户权限。
 
-更多相关权限的说明，请参考[TiDB Lightning 对下游数据库的账号权限要求是怎样的？](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq#tidb-lightning-对下游数据库的账号权限要求是怎样的)
+更多相关权限的说明，请参考[TiDB Lightning 对下游数据库的账号权限要求是怎样的？](/tidb-lightning/tidb-lightning-faq.md#TiDB Lightning 对下游数据库的账号权限要求是怎样的？)
 
 <!--
 ### 部署 Dumpling 和 TiDB Lightning
@@ -133,7 +133,7 @@ tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'm
 * 如果目标集群为 v3.x 或更旧版本，则建议使用 Importer-backend 模式。
 * 如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则可以使用 TiDB-backend 模式。但由于该模式导入速度较慢，不适合本文介绍的大量数据迁移场景。
 
-默认使用 Local-backend 模式。本文档的示例中采用了 Local-backend 模式。更多信息请参考 [TiDB Lightning 后端](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends)。
+默认使用 Local-backend 模式。本文档的示例中采用了 Local-backend 模式。更多信息请参考 [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)。
 
 下表展示了各后端模式的特点。
 
@@ -158,7 +158,7 @@ tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'm
 * --checkpoint-error-ignore：如果导入表曾经出错，该命令会清除出错状态，如同错误没有发生过一样。
 * --checkpoint-remove：无论是否有出错，把表的断点清除。
 
-关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-checkpoints)。
+关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
 #### 执行导入操作
 
