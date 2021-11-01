@@ -48,8 +48,8 @@
     + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
     + [使用 DM 工具从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
   + 分库分表迁移至 TiDB
-    + [使用 DM 进行分库分表合并迁移（ 1 TB以内）](/migrate-shard-tables-within-1tb.md)  
-    + [使用 Dumpling 和 TiDB Lightning 合并导入分表数据（ 1 TB以上）](/migrate-from-mysql-shard-merge-using-lightning.md)    
+    + [将 MySQL 分库分表(1 TiB以内)合并迁移到 TiDB](/migrate-shard-tables-within-1tb.md)  
+    + [将 MySQL 分库分表(大于 1 TiB)合并迁移到 TiDB](/migrate-from-mysql-shard-merge-using-lightning.md)    
   + 从 CSV 文件迁移至 TiDB
     + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
