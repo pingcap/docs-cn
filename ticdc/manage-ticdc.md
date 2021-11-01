@@ -762,3 +762,46 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > + 请保证硬盘的空闲容量大于等于 500G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
 > + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
+
+## 灾难场景的最终一致性复制
+
+从 v5.3.0 版本开始，TiCDC 开始提供灾难场景下的最终一致性复制能力。具体解决的场景是当生产集群（TiCDC 同步的上游集群）发生灾难且短时间内无法恢复对外提供服务，TiCDC 需要具备保证从集群数据一致性的能力，并允许业务快速的将流量切换至从集群，避免数据库长时间不可用而对业务造成影响。该功能支持 TiCDC 复制 TiDB 集群增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后可以在 30 分钟内恢复下游集群到上游的某个 snapshot 状态，并且允许丢失的数据小于 5 分钟。即 RTO <= 5min, RPO <= 30min。
+
+### 使用前提
+
+- 提供具有高可用的 S3 存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
+- TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，新增配置在 changefeed 的配置文件中
+
+```toml
+[consistent]
+# 一致性级别，none 为默认，非灾难场景，提供 finished-ts 情况下的最终一致性；eventual 使用 redo log，提供上游灾难情况下的最终一致性
+level = "eventual"
+
+# 单个 redo log 文件大小，单位 MB
+max-log-size = 64
+
+# 刷新或上传 redo log 至 S3 的间隔，单位毫秒
+flush-interval = 1000
+
+# 存储 redo log 的形式，包括 nfs（NFS 目录），S3（上传至S3）
+storage = "s3://logbucket/test-changefeed?endpoint=http://$S3_ENDPOINT/"
+```
+
+### 灾难恢复
+
+当上游发生灾难后，需要通过 `cdc redo` 命令在下游手动恢复，恢复流程如下
+
+- 确保 TiCDC 进程已经退出，防止在数据恢复过程中上游恢复服务，TiCDC 重新开始同步数据。
+- 使用 cdc binary 进行数据恢复，具体命令如下
+
+```shell
+cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
+    --storage="s3://logbucket/test-changefeed?endpoint=http://10.0.10.25:24927/" \
+    --sink-uri="mysql://normal:123456@10.0.10.55:3306/"
+```
+
+以上命令中：
+
+- `tmp-dir` 用于下载 TiCDC 增量数据备份文件的临时目录。
+- `storage` 存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
+- `sink-uri` 恢复数据到的下游地址，scheme 仅支持 `mysql`
