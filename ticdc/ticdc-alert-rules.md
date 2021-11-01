@@ -20,10 +20,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor checkpoint延迟超过10分钟。
+    TiCDC 某个同步任务延迟超过 10 分钟。
 
 * 处理方法：
 
+    参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
 #### `cdc_resolvedts_high_delay`
 
@@ -33,9 +34,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor resolved ts延迟超过5分钟。
+    TiCDC 某个同步任务的 resolved ts 延迟超过 10 分钟。
 
 * 处理方法：
+
+    该告警与同步任务中断类似，可参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
 #### `ticdc_processor_exit_with_error_count`
 
@@ -45,10 +48,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor异常退出。
+    TiCDC 某个同步任务报错退出。
 
 * 处理方法：
 
+    参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
 ### 警告级别报警项
 
@@ -62,10 +66,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    TiCDC集群有多个owner。
+    TiCDC 集群有多个 owner。
 
 * 处理方法：
 
+    收集 TiCDC 日志，定位原因。
 
 #### `ticdc_mounter_unmarshal_and_mount_time_more_than_1s`
 
@@ -75,10 +80,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc_mounter unmarshall跟mount的时间超过1秒。
+    TiCDC 某一同步任务解码变更数据的耗时超过 1 秒。
 
 * 处理方法：
 
+    收集 TiCDC 日志，定位原因。
 
 #### `cdc_sink_execute_duration_time_more_than_10s`
 
@@ -88,10 +94,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc sink操作执行时间超过10s。
+    TiCDC 某一同步任务写下游执行时间超过 10 秒。
 
 * 处理方法：
 
+    检查下游是否出现问题。
 
 #### `cdc_processor_checkpoint_tso_no_change_for_1m`
 
@@ -101,10 +108,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc processor checkpoint时间戳1分钟没有推进。
+    TiCDC 某一个同步任务进度超过 1 分钟没有推进。
 
 * 处理方法：
 
+    参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
 #### `ticdc_puller_entry_sorter_sort_bucket`
 
@@ -114,10 +122,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    ticdc puller entry sorter排序延迟太高。
+    TiCDC puller entry sorter 排序延迟太高。
 
 * 处理方法：
 
+    收集 TiCDC 日志，定位原因。
 
 #### `ticdc_puller_entry_sorter_merge_bucket`
 
@@ -127,10 +136,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    ticdc puller entry sorter merge延迟太高。
+    TiCDC puller entry sorter merge 延迟太高。
 
 * 处理方法：
 
+    收集 TiCDC 日志，定位原因。
 
 #### `tikv_cdc_min_resolved_ts_no_change_for_1m`
 
@@ -140,10 +150,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    tikv cdc最小的resolved ts 1分钟没推进。
+    TiKV CDC 模块最小的 resolved ts 1 分钟没推进。
 
 * 处理方法：
 
+    收集 TiKV 日志，定位原因。
 
 #### `tikv_cdc_scan_duration_seconds_more_than_10min`
 
@@ -153,10 +164,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    tikv cdc扫描耗时超过10分钟。
+    TiKV CDC 模块的增量扫描耗时超过 10 分钟。
 
 * 处理方法：
 
+    收集 TiCDC 监控和 TiKV 日志，定位原因。
 
 #### `ticdc_sink_mysql_execution_error`
 
@@ -166,10 +178,11 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    cdc sink到下游mysql时遇到错误。
+    TiCDC 某一同步任务写下游 MySQL 时遇到错误。
 
 * 处理方法：
 
+    MySQL 报错的情况较多，参考[`TiCDC 常见问题和故障处理`](/ticdc/troubleshoot-ticdc.md)
 
 #### `ticdc_memory_abnormal`
 
@@ -179,6 +192,8 @@ title: TiCDC 集群监控报警
 
 * 规则描述：
 
-    TiCDC 堆内存使用量超过10GB。
+    TiCDC 堆内存使用量超过 10 GiB。
     
 * 处理方法：
+
+    收集 TiCDC 监控和 TiCDC 日志，定位原因。
