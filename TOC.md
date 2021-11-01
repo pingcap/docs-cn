@@ -473,7 +473,9 @@
         + [部署](/dashboard/dashboard-ops-deploy.md)
         + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
         + [安全](/dashboard/dashboard-ops-security.md)
-      + [访问](/dashboard/dashboard-access.md)
+      + 访问
+        + [访问](/dashboard/dashboard-access.md)
+        + [多用户](/dashboard/dashboard-user.md)
       + [概况页面](/dashboard/dashboard-overview.md)
       + [集群信息页面](/dashboard/dashboard-cluster-info.md)
       + [流量可视化页面](/dashboard/dashboard-key-visualizer.md)

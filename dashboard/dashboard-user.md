@@ -1,9 +1,9 @@
 ---
-title: TiDB Dashboard 用户
+title: TiDB Dashboard 多用户
 aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 ---
 
-# TiDB Dashboard 用户
+# TiDB Dashboard 多用户
 
 从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义的 SQL 用户登录访问。该 SQL 用户必须拥有以下权限：
 
@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 - CONFIG
 - DASHBOARD_CLIENT 或者 SUPER
 
-当 TiDB [安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 功能打开时，该 SQL 用户还需要拥用以下额外的所有权限：
+当 TiDB 的[安全增强模式 (SEM) 功能](/system-variables.md#tidb_enable_enhanced_security)打开时，该 SQL 用户还需要拥用以下额外的所有权限：
 
 - RESTRICTED_TABLES_ADMIN
 - RESTRICTED_STATUS_ADMIN
@@ -44,7 +44,7 @@ GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
 
 -- To also allow modifying TiDB Dashboard configurations:
 GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
-
+```
 
 注意：当 TiDB 的[安全增强模式 (SEM) 功能](/system-variables.md#tidb_enable_enhanced_security)打开时，需要执行的 SQL 语句示例如下：
 
@@ -59,3 +59,4 @@ GRANT RESTRICTED_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
 
 -- To also allow modifying TiDB Dashboard configurations:
 GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
+```
