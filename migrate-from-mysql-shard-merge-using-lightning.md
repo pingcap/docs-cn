@@ -234,7 +234,7 @@ tiup dumpling -h <ip> -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'm
 >
 > 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
 
-如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-faq)。
+如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
 ### 第 4 步（可选）：增量数据的迁移
 
