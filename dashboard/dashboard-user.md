@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 
 ## 示例
 
-当 TiDB 安全增强模式 (SEM) 功能未打开时，通过以下示例代码可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`。
+通过执行以下示例 SQL 语句可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
 ```sql
 CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '$YOUR_PASSWORD';
