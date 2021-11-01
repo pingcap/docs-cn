@@ -32,26 +32,21 @@ select * from tidb_binlog.checkpoint;
 使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Databases config` 部分示例配置如下：
 
 ```toml
-######################### Databases config #########################
+######################### Databases config ########################
+[data-sources.mysql1]
+    host = "127.0.0.1"
+    port = 3306
+    user = "root"
+    password = ""
+    # remove comment if use tidb's snapshot data
+    snapshot = "2016-10-08 16:45:26"
 
-# 源数据库实例的配置
-[[source-db]]
+[data-sources.tidb]
     host = "127.0.0.1"
     port = 4000
     user = "root"
-    password = "123456"
-    # 源数据库实例的 id，唯一标识一个数据库实例
-    instance-id = "source-1"
-    # 使用 TiDB 的 snapshot 功能，对应 ts-map 中的 master-ts
-    snapshot = "409621863377928194"
-
-# 目标数据库实例的配置
-[target-db]
-    host = "127.0.0.1"
-    port = 4001
-    user = "root"
-    password = "123456"
-    # 使用 TiDB 的 snapshot 功能，对应 ts-map 中的 slave-ts
+    password = ""
+    # remove comment if use tidb's snapshot data
     snapshot = "409621863377928345"
 ```
 
