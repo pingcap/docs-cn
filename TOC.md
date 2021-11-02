@@ -472,7 +472,7 @@
       + 运维
         + [部署](/dashboard/dashboard-ops-deploy.md)
         + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
-        + [多用户](/dashboard/dashboard-user.md)
+        + [用户管理](/dashboard/dashboard-user.md)
         + [安全](/dashboard/dashboard-ops-security.md)
       + [访问](/dashboard/dashboard-access.md)
       + [概况页面](/dashboard/dashboard-overview.md)
