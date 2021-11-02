@@ -1,13 +1,13 @@
 ---
-title: 分库分表合并导入到 TiDB（大于 1 TB）
-summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。本文介绍的方法适用于导入数据总量大于 1 TB 的场景。
+title: 分库分表合并导入到 TiDB（大于 1 TiB）
+summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。本文介绍的方法适用于导入数据总量大于 1 TiB 的场景。
 ---
 
-# 分库分表合并导入到 TiDB（大于 1 TB）
+# 分库分表合并导入到 TiDB（大于 1 TiB）
 
-如果分表数据总规模特别大（例如大于 1 TB），并且允许 TiDB 集群在迁移期间无其他业务写入，那么你可以使用 TiDB Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 TiDB DM 进行增量数据的分表同步。本文档举例介绍了导入数据的操作步骤。
+如果分表数据总规模特别大（例如大于 1 TiB），并且允许 TiDB 集群在迁移期间无其他业务写入，那么你可以使用 TiDB Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 TiDB DM 进行增量数据的分表同步。本文档举例介绍了导入数据的操作步骤。
 
-如果分库分表合并迁移在 1 TB 以内，请参考[使用 DM 进行分表合并迁移](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-shard-merge)，支持全量和增量更为简单。
+如果分库分表合并迁移在 1 TiB 以内，请参考[使用 DM 进行分表合并迁移](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-shard-merge)，支持全量和增量更为简单。
 
 使用 TiDB Lightning 快速合并导入的原理如下图所示。
 
