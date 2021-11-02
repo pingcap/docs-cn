@@ -1,0 +1,90 @@
+---
+title: PLAN REPLAYER
+---
+# `PLAN REPLAYER` 概览
+
+在定位排查 TiDB 用户问题时，经常需要用户提供系统中和查询计划相关的信息。为了提升相关信息获取的易用性和问题排查效率，TiDB  提供 `PLAN REPLAYER` 命令来“一键” 保存和恢复现场问题的相关信息，提升查询计划问题诊断的效率，同时方便将问题归档管理。
+
+## `PLAN REPLAYER` 导出
+
+`PLAN REPLAYER` 可以用来保存单个 SQL 的现场。导出接口如下：
+
+{{< copyable "sql" >}}
+```
+PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement
+```
+
+TiDB 会根据 `sql-statement` 整理出相关现场，包括：
+- TiDB 版本信息
+- TiDB 配置信息
+- TiDB 系统变量
+- TiDB 执行计划绑定信息（SQL Binding）
+- `sql-statement` 中所包含的表结构
+- `sql-statement` 中所包含的表的统计信息
+- `EXPLAIN [ANALYZE] sql-statement` 的结果
+
+> **注意：**
+>
+> `PLAN REPLAYER` **不会**导出表中数据
+
+一个例子：
+
+{{< copyable "sql" >}}
+```
+use test;
+create table t(a int, b int);
+insert into t valuse(1,1), (2, 2), (3, 3);
+analyze table t;
+
+plan replayer dump explain select * from t;
+```
+
+`PLAN REPLAYER DUMP` 会将以上信息打包整理成 `ZIP` 文件，并返回文件标识作为执行结果。
+
+```
+MySQL [test]> plan replayer dump explain select * from t;
++------------------------------------------------------------------+
+| Dump_link                                                        |
++------------------------------------------------------------------+
+| replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip |
++------------------------------------------------------------------+
+1 row in set (0.015 sec)
+
+```
+
+因为 MySQL Client 无法下载文件，所以需要通过 TiDB HTTP 接口和文件标识下载文件：
+
+{{< copyable "bash" >}}
+```
+http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_token}?forward=true
+```
+
+其中，${tidb-server-ip}:${tidb-server-status-port} 是集群中任意 TiDB server 的地址
+一个例子：
+
+{{< copyable "bash" >}}
+```
+curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip?forward=true > plan_replayer.zip
+```
+
+## `PLAN REPLAYER` 导入
+
+有 `PLAN REPLAYER` 导出的 `ZIP` 文件后，便可以通过 `PLAN REPLAYER` 导入接口在任意 TiDB 上恢复现场。语法如下：
+
+{{< copyable "sql" >}}
+```
+PLAN REPLAYER LOAD ‘file_name’;
+```
+
+`file_name` 为要导入的 `ZIP` 文件名。
+一个例子：
+
+{{< copyable "sql" >}}
+```
+PLAN REPLAYER LOAD ‘plan_replayer.zip’
+```
+
+> **注意：**
+>
+> PLAN REPLAYER 导入会修改 TiDB 系统变量、执行计划绑定信息、表结构和统计信息。
+
