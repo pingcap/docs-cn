@@ -240,13 +240,12 @@ max-allowed-packet = 67_108_864
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Compact -> Analyze。
 [post-restore]
-# 如果设置为 required，会对所有表逐个执行 `ADMIN CHECKSUM TABLE <table>` 操作
-# 来验证数据的完整性。说明：从 v4.0.8 开始，checksum 的默认值由此前的 true 改为 required。
+# 设置对所有表逐个执行 `ADMIN CHECKSUM TABLE <table>` 操作的行为，用于验证数据的完整性。
 # 有以下选项:
 # - "off"：不执行 checksum。
 # - "optional"：执行 admin checksum，但如果 checksum 失败，则忽略出现的错误。
 # - "required"：执行 admin checksum，如果 checksum 失败，TiDB Lightning 退出。
-# 默认为 required。
+# 默认为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
 # 说明：为了保持兼容性，bool 值`true` 和 `false` 仍然支持。 其中 `true` 等同于 "required"，`false` 等于 "off"。
 checksum = required
 
@@ -258,9 +257,13 @@ level-1-compact = false
 # 默认值为 false。
 compact = false
 
-# 如果设置为 true，会对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
-# 如果设置为 optional，会对所有表逐个执行 `ANALYZE TABLE <table>` 操作，但忽略执行结果的中的错误。
-# 默认值为 optional。
+# 设置对所有表逐个执行 `ANALYZE TABLE <table>` 操作的情况。
+# 有以下选项:
+# - "off"：不执行 analyze。
+# - "optional"：执行 analyze，但如果 analyze 失败，则忽略出现的错误。
+# - "required"：执行 analyze，如果 analyze 失败，TiDB Lightning 退出。
+# 默认值为 optional。从 v4.0.8 开始，analyze 的默认值由此前的 true 改为 optional。
+# 说明：为了保持兼容性，bool 值`true` 和 `false` 仍然支持。 其中 `true` 等同于 "required"，`false` 等于 "off"。
 analyze = optional
 
 # 设置周期性后台操作。
