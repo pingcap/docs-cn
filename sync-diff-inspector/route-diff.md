@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference
 下面是一个简单的例子：
 
 ```toml
-######################### Databases config #########################
+######################### Datasource config #########################
 [data-sources.mysql1]
     host = "127.0.0.1"
     port = 3306
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference
 
     route-rules = ["rule1"]
     
-[data-sources.tidb]
+[data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
     user = "root"
@@ -38,7 +38,7 @@ target-table = "t_2" # 目标表名
 如果需要校验大量的不同库名或者表名的表，也可以通过 `rules` 设置映射关系来简化配置。可以只配置 schema 或者 table 的映射关系，也可以都配置。例如上游库 `test_1` 中的所有表都同步到了下游的 `test_2` 库中，可以使用如下配置进行校验：
 
 ```toml
-######################### Databases config #########################
+######################### Datasource config #########################
 [data-sources.mysql1]
     host = "127.0.0.1"
     port = 3306
@@ -47,7 +47,7 @@ target-table = "t_2" # 目标表名
 
     route-rules = ["rule1"]
     
-[data-sources.tidb]
+[data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
     user = "root"

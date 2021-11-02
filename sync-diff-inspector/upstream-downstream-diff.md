@@ -29,10 +29,10 @@ select * from tidb_binlog.checkpoint;
 
 ## 配置 snapshot
 
-使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Databases config` 部分示例配置如下：
+使用上一步骤获取的 ts-map 信息来配置上下游数据库的 snapshot 信息。其中的 `Datasource config` 部分示例配置如下：
 
 ```toml
-######################### Databases config ########################
+######################### Datasource config ########################
 [data-sources.mysql1]
     host = "127.0.0.1"
     port = 3306
@@ -40,7 +40,7 @@ select * from tidb_binlog.checkpoint;
     password = ""
     snapshot = "409621863377928345"
 
-[data-sources.tidb]
+[data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
     user = "root"
@@ -52,4 +52,4 @@ select * from tidb_binlog.checkpoint;
 
 - Drainer 的 `db-type` 需要设置为 `tidb`，这样才会在 checkpoint 中保存 `ts-map`。
 - 需要调整 TiKV 的 GC 时间，保证在校验时 snapshot 对应的历史数据不会被执行 GC。建议调整为 1 个小时，在校验后再还原 GC 设置。
-- 以上配置只展示 `Databases config` 部分，并不完全。完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
+- 以上配置只展示 `Datasource config` 部分，并不完全。完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。

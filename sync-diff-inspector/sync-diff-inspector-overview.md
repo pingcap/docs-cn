@@ -63,10 +63,10 @@ sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据
 
 sync-diff-inspector 的配置总共分为五个部分：
 
-- Global config: 通用配置，包括日志级别、划分 chunk 的大小、校验的线程数量等。
-- Databases config: 配置上下游数据库实例。
-- Table configs: 对具体表的特殊配置。（可选）
-- Routes: 用于上游多表对下游表的映射。（可选）
+- Global config: 通用配置，包括校验的线程数量、是否输出修复 SQL 、是否比对数据等。
+- Datasource config: 配置上下游数据库实例。
+- Table config: 对具体表的特殊配置，例如指定范围、忽略的列等等。（可选）
+- Routes: 上游多表名通过正则匹配下游单表名的规则。（可选）
 - Task config: 配置校验哪些表，如果有的表在上下游有一定的映射关系或者有一些特殊要求，则需要对指定的表进行配置。
 
 下面是一个完整配置文件的说明：
@@ -79,15 +79,14 @@ sync-diff-inspector 的配置总共分为五个部分：
 # 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# 如果关闭，只通过计算 chunk 的 checksum 来对比数据
-# 如果开启，当上下游 chunk 的 checksum 不同时，则跳过逐行比对
+# 如果开启，若表存在不一致，则输出用于修复的 SQL 语句。
 export-fix-sql = true
 
 # 不对比数据
 check-struct-only = false
 
 
-######################### Databases config #########################
+######################### Datasource config #########################
 [data-sources]
 [data-sources.mysql1] # mysql1 是该数据库实例唯一标识的 id，用于下面 task.source-instances/task.target-instance 中
     host = "127.0.0.1"
@@ -95,7 +94,7 @@ check-struct-only = false
     user = "root"
     password = ""
 
-[data-sources.tidb]
+[data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
     user = "root"
@@ -103,7 +102,7 @@ check-struct-only = false
     # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "386902609362944000"
 
-######################### Table configs #########################
+######################### Table config #########################
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
 [table-configs]
 [table-configs.config1] # config1 是该配置的唯一标识 id，用于下面 task.target-configs 中
@@ -113,14 +112,14 @@ schema = "schama1"
 table = "table"
 # 指定检查的数据的范围，需要符合 sql 中 where 条件的语法
 range = "age > 10 AND age < 20"
-# 指定用于划分 chunk 的列，如果不配置该项，sync-diff-inspector 会选取一个合适的列（主键／唯一键／索引）
-index-fields = ""
+# 指定用于划分 chunk 的列，使用逗号分割，如果不配置该项，sync-diff-inspector 会选取一些合适的列（主键／唯一键／索引）
+index-fields = "col1,col2"
 # 忽略某些列的检查，例如 sync-diff-inspector 目前还不支持的一些类型（json，bit，blob 等），
 # 或者是浮点类型数据在 TiDB 和 MySQL 中的表现可能存在差异，可以使用 ignore-columns 忽略检查这些列
 ignore-columns = ["",""]
-# 指定划分该表的 chunk 的大小
+# 指定划分该表的 chunk 的大小，若不指定可以删去或者将其配置为 0。
 chunk-size = 0
-# 指定该表的 collation
+# 指定该表的 collation，若不指定可以删去或者将其配置为空字符串。
 collation = ""
 
 ########################### Routes ###########################
@@ -153,9 +152,10 @@ target-table = "t2" # 目标表名
     source-instances = ["mysql1"]
 
     # 下游数据库
-    target-instance = "tidb"
+    target-instance = "tidb0"
 
-    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
+    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开。
+    # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg: https://github.com/google/re2/wiki/Syntax
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 
     # 对部分表的额外配置
@@ -174,7 +174,7 @@ target-table = "t2" # 目标表名
 
 该命令最终会在 `config.toml` 中的 `output-dir` 输出目录输出本次比对的检查报告 `summary.txt` 和日志 `sync_diff.log`。在输出目录下还会生成由 `config.toml` 文件内容哈希值命名的文件夹，该文件夹下包括断点续传 checkpoint 结点信息以及数据存在不一致时生成的 SQL 修复数据。
 
-#### 进度条
+#### 前台输出
 
 sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进度信息包括表的结构比较结果、表的数据比较结果以及进度条。
 > **建议：** 为了达成显示效果，请保持显示窗口宽度在80字符以上
@@ -234,87 +234,7 @@ sync-diff-inspector 的日志存放在 `${output}/sync_diff.log` 中，其中 `$
 
 #### 校验进度
 
-sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。文件内容格式如下：
-
-```checkpoint
-{
-    "chunk-info":{
-        "state":"failed",
-        "chunk-range":{
-            "index":{
-                "table-index":0,
-                "bucket-index-left":0,
-                "bucket-index-right":0,
-                "chunk-index":1,
-                "chunk-count":200,
-            },
-            "type":2,
-            "bounds":[
-                {
-                    "column":"id",
-                    "lower":"174985",
-                    "upper":"212143",
-                    "has-lower":true,
-                    "has-upper":true,
-                },
-            ],
-            "is-first":false,
-            "is-last":false,
-            "where":"((((`id` \u003e ?)) AND ((`id` \u003c= ?))) AND TRUE)",
-            "args":["174985","212143"],
-        },
-        "index-id":0,
-    },
-    "report-info":{
-        "table-results":{
-            "sbtest":{
-                "sbtest99":{
-                    "schema":"sbtest",
-                    "table":"sbtest99",
-                    "struct-equal":true,
-                    "data-equal":false,
-                    "chunk-result":{
-                        "0:0-0:0:200":{
-                            "rows-add":1,
-                            "rows-delete":1,
-                        },
-                        "0:0-0:1:200":{
-                            "rows-add":1,
-                            "rows-delete":1,
-                        },
-                    },
-                },
-            },
-        },
-        "start-time":"0001-01-01T00:00:00Z",
-        "time-duration":60160836703,
-    },
-}
-```
-
-checkpoint主要分为两块内容：
-
-- chunk-info: 保存选中 chunk 的所有信息。chunk 的有序性由其 `index` 字段保证，checkpoint 保证该 chunk 及该 chunk 之前的所有 chunk 都已经被比对过。
-    
-    - state: 保存该 chunk 比对是否出现 error。
-
-    - chunk-range: 保存该 chunk 在表中的范围。
-
-        - index: 保存 chunk 的唯一标识和排序依据。例子表示该 chunk 位于第一个表 `(table-index=0)`，包括了 bucketID=0 `(bucket-index-left=0)` 到 bukcetID=1 `(bucket-index-right=0)` 的范围，这段范围被划分为200个 chunks `(chunk-count=200)`，该chunk位于第 2 个 `(chunk-index=1)`。
-
-        - type: 表示该 chunk 是由哪种方式划分的。type=1 表示通过了 TiDB 的 buckets 信息来划分。type=2 表示随机划分。
-
-        - bounds: 表示该 chunk 的范围，注意 bounds 是有顺序的，不同 bounds 的顺序表示不同的范围。
-
-        - where: 表示由 bounds 转化的 SQL 语句的 where。
-
-        - args: 表示用于按顺序填充 where 中的 `?` 的值。
-
-    - index-id: 如果使用了索引来划分 chunk，则该值标志该 chunk 使用哪一个 index。
-
-- report-info: 保存 chunk 的比对的统计结果。
-
-    - table-results: 保存各个表的比对统计结果，例子表示表 `sbtest.sbtest99` 的表结构一致但表数据不一致，对 chunk `0:0-0:0:200` (由 `chunk.index` 唯一标识)的修复需要添加一行和删除一行。
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到checkpoint中(位于 `${output}/checkpoint/sync_diff_checkpoints.pb` 中，其中 `${output}` 是 `config.toml` 文件中 `output-dir` 的值。
 
 #### 校验结果
 

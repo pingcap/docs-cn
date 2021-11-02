@@ -16,11 +16,10 @@ title: 从 DM 拉取配置
 # 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# 如果关闭，只通过计算 chunk 的 checksum 来对比数据
-# 如果开启，当上下游 chunk 的 checksum 不同时，则跳过逐行比对
+# 如果开启，若表存在不一致，则输出用于修复的 SQL 语句。
 export-fix-sql = true
 
-# 不对比数据
+# 只对比表结构而不对比数据
 check-struct-only = false
 
 # dm-master 的地址, 格式为 "http://127.0.0.1:8261"
