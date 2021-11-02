@@ -234,7 +234,7 @@ strict-format = true
 
 - `x` 大，即导入集群键值对更多：
     - 可能这张表在导入前已有数据，因此影响了数据校验。这也包括 TiDB Lightning 之前失败停机过，但没有正确重启。
-- `y` 大，即本地数据源键值对更多
+- `y` 大，即本地数据源键值对更多：
     - 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
     - 可能导出数据中包含重复数据，例如唯一键和主键 (UNIQUE and PRIMARY KEYs) 有重复的值、下游表结构为大小写不敏感而数据为大小写敏感。
 - 其他情况
@@ -242,7 +242,7 @@ strict-format = true
 
 **解决办法**：
 
-1. 使用 `tidb-lightning-ctl` 把出错的表删除，检查表结构与数据，重启 TiDB Lightning 重新导入那些表。
+1. 使用 `tidb-lightning-ctl` 把出错的表删除，检查表结构与数据，重启 TiDB Lightning 重新导入此前出错的表。
 
     {{< copyable "shell-regular" >}}
 
