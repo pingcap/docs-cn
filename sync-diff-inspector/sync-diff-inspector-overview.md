@@ -82,7 +82,7 @@ check-thread-count = 4
 # 如果开启，若表存在不一致，则输出用于修复的 SQL 语句。
 export-fix-sql = true
 
-# 不对比数据
+# 只对比表结构而不对比数据
 check-struct-only = false
 
 
