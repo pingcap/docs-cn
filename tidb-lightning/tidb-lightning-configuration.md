@@ -230,7 +230,7 @@ max-allowed-packet = 67_108_864
 # - "optional"：执行 admin checksum，如果 checksum 失败，则忽略出现的错误。
 # - "required"：执行 admin checksum，如果 checksum 失败，TiDB Lightning 退出。
 # 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
-# 说明：为了保持兼容性，bool 值`true` 和 `false` 仍然支持。 其中 `true` 等同于 "required"，`false` 等于 "off"。
+# 说明：为了保持兼容性，布尔值 `true` 和 `false` 仍然支持。其中 `true` 等同于 "required"，`false` 等于 "off"。
 checksum = required
 
 # 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
