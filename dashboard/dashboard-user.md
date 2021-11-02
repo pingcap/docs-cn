@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 多用户
-aliases: ['/docs-cn/dev/dashboard/dashboard-user/']
 ---
 
 # TiDB Dashboard 多用户
