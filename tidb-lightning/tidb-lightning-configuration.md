@@ -161,17 +161,17 @@ no-schema = false
 # schema encoding.
 character-set = "auto"
 
-# Assumes the input data are "strict" to speed up processing.
-# Implications of strict-format = true are:
-#  * in CSV, every value cannot contain literal new lines (U+000A and U+000D, or \r and \n) even
-#    when quoted, which means new lines are strictly used to separate rows.
-# Strict format allows TiDB Lightning to quickly locate split positions of a large file for parallel
-# processing. However, if the input data is not strict, it may split a valid data in half and
+# the input data in a "strict" format speeds up processing.
+# "strict-format = true" requires that:
+# in CSV, every value cannot contain literal new lines (U+000A and U+000D, or \r and \n) even
+# when quoted, which means new lines are strictly used to separate rows.
+# "Strict" format allows TiDB Lightning to quickly locate split positions of a large file for parallel processing.
+# However, if the input data is not "strict", it may split a valid data in half and
 # corrupt the result.
-# The default value is false for safety over speed.
+# The default value is false for safety instead of speed.
 strict-format = false
 
-# If strict-format is true, TiDB Lightning will split large CSV files into multiple chunks to process in
+# If strict-format is true, TiDB Lightning splits large CSV files into multiple chunks to process in
 # parallel. max-region-size is the maximum size of each chunk after splitting.
 # max-region-size = 268_435_456 # Byte (default = 256 MB)
 
