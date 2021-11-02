@@ -73,7 +73,7 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
 ```
 
 - `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
@@ -81,13 +81,39 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 - `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
 - `WITH NUM CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
 - `WITH NUM SAMPLES` 用于指定采样的数目。
+- `WITH FLOAT_NUM SAMPLERATE` 用于指定采样率。
+
+##### `WITH NUM SAMPLES` 与 `WITH FLOAT_NUM SAMPLERATE`
+
+这两种设置对应了两种不同的收集采样的算法。`WITH NUM SAMPLES` 指定了采样集的大小，在 TiDB 中是以蓄水池采样的方式实现。`WITH FLOAT_NUM SAMPLERATE` 是在 v5.3.0 中新加入的采样方式，指定的是采样率的大小，是个取值范围 (0, 1] 的参数，在 TiDB 中是以伯努利采样的方式实现。伯努利采样的方式对比较大的表比较友好，在收集效率和资源使用上有很大提升。蓄水池采样由于中间结果集会产生一定的冗余结果因此会对内存等资源造成额外的压力，当表比较大的时候不推荐使用 `WITH NUM SAMPLES` 指定采样集的方式收集统计信息。
+
+在 v5.3.0 之前 TiDB 总是采用蓄水池采样的方式收集统计信息。在 v5.3.0 开始的版本中，TiDB Version 2 的统计信息默认会选取伯努利采样的方式收集统计信息。可以通过 `WITH NUM SAMPLES` 语句来重新使用蓄水池采样的方式采样。
+
+> *注意：*
+>
+> 目前采样率是基于一个自适应的算法进行计算。当通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，我们会通过这个行数去计算采集 10 万行所对应的采样率。如果我们观察不到这个值，会通过表 [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) 的列 `TABLE_KEYS` 去作为另一个参考来计算采样率。
+> 通常情况下 `STATS_META` 相对 `TABLE_KEYS` 更可信，但是由于通过 [`TiDB Lightning`](/tidb-lightning/tidb-lightning-overview.md) 等方式导入时，`STATS_META` 在导入结束后的结果是 0。为了处理这个情况，我们在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，也会去使用 `TABLE_KEYS` 去计算采样率。
+
+收集 TableName 中部分列的统计信息：
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName Columns [ColumnNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
+```
+
+这个语法会收集所指定的列以及索引和扩展统计信息所涉及的列的统计信息。对于列数很多的表来说，需要统计信息的列可能只是一个很小的子集，通过这个语法我们可以极大的减轻收集统计信息的负担。
+
+> **注意：**
+>
+> ColumnNameList 不可为空。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
 ```
 
 IndexNameList 为空时会收集所有索引列的统计信息。
