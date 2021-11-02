@@ -47,6 +47,38 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 
 Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
+> *注意：*
+>
+> 在 v5.3.0 之前，Version 2 在优化了读取存储的同时，在没有改变采样算法的情况下扩大了最终的采样集的大小。因此提升 TiDB 的资源开销。
+> 如果使用过程中发生了内存 OOM，可以通过如下的方式回退为 Version 1 的统计信息：
+>
+> 如果 ANALYZE 语句是手动执行的，请手动 ANALYZE 每张需要的表。可以通过如下的 SQL 获得对应的 ANALYZE 语句。
+
+{{< copyable "sql" >}}
+
+``` sql
+select 
+	distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) 
+from 
+	information_schema.tables, mysql.stats_histograms
+where 
+	stats_ver = 2 and table_id = tidb_table_id; 
+```
+
+> 如果 ANALYZE 是开启了自动 ANALYZE 之后由 TIDB 自动执行的。可以通过如下的 SQL 生成对应的 DROP STATS 语句并执行，等待自动ANALYZE 自动收集。
+
+{{ copyable "sql" }}
+
+```sql
+select 
+	distinct(concat('DROP STATS ',table_schema, '.', table_name,';'))
+from
+	information_schema.tables, mysql.stats_histograms 
+where 
+	stats_ver = 2 and table_id = tidb_table_id;
+```
+
+
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
 
 ## 直方图简介
