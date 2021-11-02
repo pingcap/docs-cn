@@ -1107,7 +1107,7 @@ mysql> desc select count(distinct a) from test.t;
     {{< copyable "sql" >}}
 
     ```sql
-    select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
+    select t.* from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
     ```
 
     如果 t1 在列 `aa` 上有 unique 且 not null 的限制，可以直接改写为如下，不需要添加 aggregation。
@@ -1115,7 +1115,7 @@ mysql> desc select count(distinct a) from test.t;
     {{< copyable "sql" >}}
 
     ```sql
-    select * from t, t1 where t.a=t1.a;
+    select t.* from t, t1 where t.a=t1.aa;
     ```
 
 ### `tidb_opt_limit_push_down_threshold`
