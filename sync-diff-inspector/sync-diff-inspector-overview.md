@@ -83,7 +83,7 @@ check-thread-count = 4
 # 如果开启，当上下游 chunk 的 checksum 不同时，则跳过逐行比对
 export-fix-sql = true
 
-# 不对比数据
+# 只对比表结构而不对比数据
 check-struct-only = false
 
 
