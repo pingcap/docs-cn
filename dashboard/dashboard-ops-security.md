@@ -15,6 +15,8 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下�
 
 - 为 TiDB `root` 用户设置一个强密码。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
 
+从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义 SQL 用户登录，建议创建一个非 root 用户用于登录访问 TiDB Dashboard。参见 [TiDB Dashboard 多用户](/dashboard/dashboard-user.md)了解详情。
+
 ## 使用防火墙阻止不可信访问
 
 TiDB Dashboard 通过 PD Client 端口提供服务，默认为 <http://IP:2379/dashboard/>。尽管 TiDB Dashboard 需要验证身份，但 PD Client 端口上承载的其他 PD 内部特权接口不需要验证身份，且能进行特权操作，例如 <http://IP:2379/pd/api/v1/members>。因此，将 PD Client 端口直接暴露给外部网络具有极大的风险。
