@@ -262,7 +262,7 @@ compact = false
 # - "off"：不执行 analyze。
 # - "optional"：执行 analyze，如果 analyze 失败，则忽略出现的错误。
 # - "required"：执行 analyze，如果 analyze 失败，TiDB Lightning 退出。
-# 默认值为 optional。从 v4.0.8 开始，analyze 的默认值由此前的 true 改为 optional。
+# 默认值为 "optional"。从 v4.0.8 开始，analyze 的默认值由此前的 "true" 改为 "optional"。
 # 说明：为了保持兼容性，bool 值`true` 和 `false` 仍然支持。 其中 `true` 等同于 "required"，`false` 等于 "off"。
 analyze = optional
 
