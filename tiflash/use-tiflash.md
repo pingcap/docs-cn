@@ -116,37 +116,38 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-
+    
         ...
-
+    
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-
+    
         ...
-
+    
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-
+    
         ...
-
+    
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-
+    
         ...
     ```
     
+
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
@@ -309,17 +310,17 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
-* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round(int), round(double), round(decimal), abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
+* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
 * 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
 * 位运算：`bitand, bitor, bigneg, bitxor`
-* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
+* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate`
 * JSON 函数：`json_length`
-* 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
-* 聚合函数：`min, max, sum, count, avg, approx_count_distinct`
+* 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
+* 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
 * 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
 
-另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
+另外，所有包含 Bit/Set/Geometry 类型的表达式均不能下推到 TiFlash。
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
 
@@ -434,16 +435,16 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-
+        
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -451,10 +452,10 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```
