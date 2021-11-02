@@ -627,6 +627,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+<<<<<<< HEAD
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -641,6 +642,20 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 统计信息过期的判断标准：最近一次对某张表执行 `ANALYZE` 获得统计信息后，该表数据被修改的行数大于该表总行数的 80%，便可判定该表的统计信息已过期。该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置参数调整。
 - 默认情况下（即该变量值为 `ON` 时），某张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。
 - 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，可以将该变量值设为 `OFF`。
+=======
+### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
+- 适合开启 TSO Follower Proxy 的场景：
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
+    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
+
+> **注意：**
+>
+> 如果 PD leader 未因 CPU 限制达到瓶颈而导致 TSO RPC 延迟升高，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+>>>>>>> 99878c8c0 (Add two session variables' descriptions related to TSO Scalability feature (#7364))
 
 ### `tidb_enable_rate_limit_action`
 
@@ -1390,6 +1405,7 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
+<<<<<<< HEAD
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1398,6 +1414,8 @@ set tidb_slow_log_threshold = 200;
 - 单位：字节
 - 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
 
+=======
+>>>>>>> 99878c8c0 (Add two session variables' descriptions related to TSO Scalability feature (#7364))
 ### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1414,7 +1432,11 @@ set tidb_slow_log_threshold = 200;
 
 > **注意：**
 >
+<<<<<<< HEAD
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+=======
+> 如果 PD leader 未因 CPU 限制达到瓶颈而导致 TSO RPC 延迟升高，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+>>>>>>> 99878c8c0 (Add two session variables' descriptions related to TSO Scalability feature (#7364))
 
 ### `tidb_txn_mode`
 
