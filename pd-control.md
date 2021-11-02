@@ -1215,6 +1215,23 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+### `unsafe remove-failed-stores <store_id>[, <store_id>, ...]`
+
+用于执行Online Unasfe Recover，在多数副本永久损坏造成数据不可用时进行有损恢复。
+
+```bash
+>> unsafe remove-failed-stores <store_id>[,<store_id>, ...]
+```
+
+### `unsafe remove-failed-stores [show | history]`
+
+在Online Unsafe Recover触发后，显示此任务的当前状态或已经历的所有状态。
+
+```bash
+>>> unsafe remove-failed-stores show
+>>> unsafe remove-failed-stores history
+```
+
 ## jq 格式化 json 输出示例
 
 ### 简化 `store` 的输出
