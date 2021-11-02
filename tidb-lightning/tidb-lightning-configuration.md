@@ -241,7 +241,7 @@ level-1-compact = false
 # 默认值为 false。
 compact = false
 
-# 设置对所有表逐个执行 `ANALYZE TABLE <table>` 操作的情况。
+# 设置对所有表逐个执行 `ANALYZE TABLE <table>` 操作的行为。
 # 有以下选项:
 # - "off"：不执行 analyze。
 # - "optional"：执行 analyze，如果 analyze 失败，则忽略出现的错误。
