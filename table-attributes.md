@@ -15,38 +15,38 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 表属性为 `key=value` 的形式，多个属性需要用逗号分隔。具体示例如下，其中 `t` 为所要修改的表名，`p` 为所要修改的分区名，`[]`内部为可选项。
 
-### 设置表或分区属性
++ 设置表或分区属性
 
-```sql
-alter table t [partition p ]attributes[=]'key=value[, key1=value1...]';
-```
+    ```sql
+    alter table t [partition p ]attributes[=]'key=value[, key1=value1...]';
+    ```
 
-### 重置表或分区属性
++ 重置表或分区属性
 
-```sql
-alter table t [partition p ]attributes[=]default;
-```
+    ```sql
+    alter table t [partition p ]attributes[=]default;
+    ```
 
-### 查看当前全部表及分区属性
++ 查看当前全部表及分区属性
 
-```sql
-select * from information_schema.attributes;
-```
+    ```sql
+    select * from information_schema.attributes;
+    ```
 
-### 查看某一张表或分区配置的属性
++ 查看某一张表或分区配置的属性
 
-```sql
-select * from information_schema.attributes where id='schema/t[/p]';
-```
+    ```sql
+    select * from information_schema.attributes where id='schema/t[/p]';
+    ```
 
-### 查看拥有某属性的所有表及分区
++ 查看拥有某属性的所有表及分区
 
-```sql
-select * from information_schema.attributes where attributes like '%key%';
-```
+    ```sql
+    select * from information_schema.attributes where attributes like '%key%';
+    ```
 
-### 覆盖关系
-当表和分区同时存在相同属性的情况下，分区会将表的属性覆盖，如对于分区表 `t` 中分区 `p` 配置下述两个属性后：
+## 覆盖关系
+如果表和分区同时存在相同属性，分区会将表的属性覆盖。例如，为分区表 `t` 中分区 `p` 同时配置 `key=value` 和 `key=value1` 两个属性：
 
 ```sql
 alter table t attributes[=]'key=value';
