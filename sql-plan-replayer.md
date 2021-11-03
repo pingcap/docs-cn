@@ -91,5 +91,5 @@ PLAN REPLAYER LOAD ‘plan_replayer.zip’
 
 > **注意：**
 >
-> PLAN REPLAYER 导入会修改 TiDB 系统变量、执行计划绑定信息、表结构和统计信息。
+> `PLAN REPLAYER` 在一个 TiDB 集群上导入另一集群的现场信息，会修改导入集群的 TiDB 系统变量、执行计划绑定信息、表结构和统计信息。
 
