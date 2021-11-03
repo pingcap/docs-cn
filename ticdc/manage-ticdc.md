@@ -781,10 +781,10 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 # - eventual： 使用 redo log，提供上游灾难情况下的最终一致性。
 level = "eventual"
 
-# 单个 redo log 文件大小，单位 MB
+# 单个 redo log 文件大小，单位 MiB，默认值 64，建议该值不超过 128。
 max-log-size = 64
 
-# 刷新或上传 redo log 至 S3 的间隔，单位毫秒
+# 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
 flush-interval = 1000
 
 # 存储 redo log 的形式，包括 nfs（NFS 目录），S3（上传至S3）
