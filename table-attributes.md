@@ -46,7 +46,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
     ```
 
 ## 覆盖关系
-如果表和分区同时存在相同属性，分区会将表的属性覆盖。例如，为分区表 `t` 中的分区 `p` 同时配置 `key=value` 和 `key=value1` 两个属性时：
+如果为分区表配置属性，该属性则会对表的所有分区生效，如额外为分区配置属性且属性与表的属性相同时，分区会将表的属性覆盖。例如，当分区表 `t` 配置属性 `key=value`，同时分区 `p` 配置属性 `key=value1` 时：
 
 ```sql
 alter table t attributes[=]'key=value';
@@ -107,7 +107,7 @@ alter table t attributes[=]'merge_option=deny';
 alter table t partition p attributes[=]'merge_option=allow';
 ```
 
-当对分区表 `t` 中的分区 `p` 同时配置上述两个属性时，实际分区 `p` 的 Region 可以被合并。当分区的属性被重置时，分区 `p` 则会继承表 `t` 的属性，Region 无法被合并。
+同时配置上述两个属性时，实际分区 `p` 的 Region 可以被合并。当分区的属性被重置时，分区 `p` 则会继承表 `t` 的属性，Region 无法被合并。
 
 > **注意：** 
 > 
