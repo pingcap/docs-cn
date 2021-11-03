@@ -1225,7 +1225,7 @@ logic:  120102
 
 ### `unsafe remove-failed-stores [show | history]`
 
-在Online Unsafe Recover触发后，显示此任务的当前状态或已经历的所有状态。
+在 Online Unsafe Recover 触发后，显示此任务的当前状态或已经历的所有状态。
 
 ```bash
 >>> unsafe remove-failed-stores show
