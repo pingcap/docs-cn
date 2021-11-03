@@ -20,10 +20,10 @@ jobs:
         echo "::set-output name=repo::$(cut -d'/' -f2 <<< ${{ github.repository }})"
         echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
 
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v1.1.1
-      with:
-          token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
-          repository: pingcap/website-docs/
-          event-type: ${{ steps.extract_info.outputs.repo }}/${{ steps.extract_info.outputs.branch }}-${{ steps.extract_info.outputs.sha }}
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
+    # - name: Repository Dispatch
+    #   uses: peter-evans/repository-dispatch@v1.1.1
+    #   with:
+    #       token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
+    #       repository: pingcap/website-docs/
+    #       event-type: ${{ steps.extract_info.outputs.repo }}/${{ steps.extract_info.outputs.branch }}-${{ steps.extract_info.outputs.sha }}
+    #       client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
