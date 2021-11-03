@@ -776,7 +776,9 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 ```toml
 [consistent]
-# 一致性级别，none 为默认，非灾难场景，提供 finished-ts 情况下的最终一致性；eventual 使用 redo log，提供上游灾难情况下的最终一致性
+# 一致性级别，选项有：
+# - none： 默认值，非灾难场景，提供 finished-ts 情况下的最终一致性。
+# - eventual： 使用 redo log，提供上游灾难情况下的最终一致性。
 level = "eventual"
 
 # 单个 redo log 文件大小，单位 MB
