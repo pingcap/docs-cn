@@ -28,7 +28,6 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
@@ -121,6 +120,10 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 ### 视图
 
 TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
+
+### 临时表
+
+详见[与 MySQL 临时表的兼容性](/temporary-table.md#与 MySQL 临时表的兼容性)
 
 ### 存储引擎
 
