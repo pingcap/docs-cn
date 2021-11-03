@@ -19,7 +19,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - 不属于 `Select`、`Update`、`Insert`、`Delete` 和集合操作 `Union`、`Intersect`、`Except` 的查询；
 - 访问分区表、临时表或访问表中包含生成列的查询；
 - 包含子查询的查询，如 `select * from t where a > (select ...)`；
-- 包含 `ignore_plan_cache` `hint` 的查询，如 `select /*+ ignore_plan_cache() */ * from t`；
+- 包含 `ignore_plan_cache` 这一 Hint 的查询，例如 `select /*+ ignore_plan_cache() */ * from t`；
 - 包含除 `?` 外其他变量（系统变量或用户自定义变量）的查询，如 `select * from t where a>? and b>@x`；
 - 包含无法被缓存函数的查询，目前不能被缓存的函数有：`database()`、`current_user`、`current_role`、`user`、`connection_id`、`last_insert_id`、`row_count`、`version`、`like`；
 - `?` 在 `Limit` 后的查询，如 `Limit ?` 或者 `Limit 10, ?`，此时 `?` 的具体值对查询影响较大，故不缓存；
