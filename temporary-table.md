@@ -135,6 +135,7 @@ TiDB 本地临时表的以下特性与限制与 MySQL 一致：
 - 创建本地临时表需要 `CREATE TEMPORARY TABLES` 权限，随后对该表的所有操作不需要权限
 - 本地临时表不支持 foreign key 和 partition table
 - 不支持基于本地临时表创建视图
+- `SHOW [FULL] TABLES` 不显示本地临时表
 
 TiDB 本地临时表与 MySQL 临时表有以下方面不兼容：
 
