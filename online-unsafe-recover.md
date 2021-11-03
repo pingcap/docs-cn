@@ -63,7 +63,9 @@ Online Unsafe Recover 功能适用于以下场景：
 
 进度命令提示任务已完成后，可以尝试运行一些简单 SQL 查询或写入操作确保数据可以读写。示例如下：
 
-XXX
+```SQL
+select count(*) from table_that_suffered_from_group_majority_failure;
+```
 
 > **注意：**
 >
