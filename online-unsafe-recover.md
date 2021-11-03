@@ -38,12 +38,12 @@ Online Unsafe Recover 的一般使用场景为:
     * 部分数据确实不可用。
     * 离线结点确实无法自动恢复（重启）。
 2. 暂时关闭load balancing等内部调度（建议在关闭后等待几个小时，使已经触发的调度有充分时间完成）。
-    1. 在pdctl中使用[`config show`](./pd-control#config-show--set-option-value--placement-rules)获取当前配置信息
+    1. 在pdctl中使用[`config show`](/pd-control#config-show--set-option-value--placement-rules)获取当前配置信息
     2. 在pdctl中关闭各类调度
-        * [`config set region-schedule-limit 0`](./pd-control#config-show--set-option-value--placement-rules)
-        * [`config set replica-schedule-limit 0`](./pd-control#config-show--set-option-value--placement-rules)
-        * [`config set merge-schedule-limit 0`](./pd-control#config-show--set-option-value--placement-rules)
-3. 使用pdctl中[`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](./pd-control#unsafe-remove-failed-stores-store-ids--show--history)命令移除无法自动恢复的结点，注意，此命令返回的成功仅代表请求被接受，实际恢复过程会在后台进行。
-4. 在上述命令运行成功之后，通过[`unsafe remove-failed-stores show (or history)`](./pd-control#config-show--set-option-value--placement-rules)来查看进度。
+        * [`config set region-schedule-limit 0`](/pd-control#config-show--set-option-value--placement-rules)
+        * [`config set replica-schedule-limit 0`](/pd-control#config-show--set-option-value--placement-rules)
+        * [`config set merge-schedule-limit 0`](/pd-control#config-show--set-option-value--placement-rules)
+3. 使用pdctl中[`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control#unsafe-remove-failed-stores-store-ids--show--history)命令移除无法自动恢复的结点，注意，此命令返回的成功仅代表请求被接受，实际恢复过程会在后台进行。
+4. 在上述命令运行成功之后，通过[`unsafe remove-failed-stores show (or history)`](/pd-control#config-show--set-option-value--placement-rules)来查看进度。
 5. 当进度命令提示完成之后，可以尝试运行一些简单 SQL 查询或写入操作确保数据可以读写。注意，数据可以读写并不代表没有数据丢失。
 6. 重新开启调度,将在第2步时修改的配置调整回初始值。
