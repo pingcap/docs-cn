@@ -1,6 +1,6 @@
 ---
 title: 表属性及分区属性使用文档
-summary: 介绍 TiDB 的 `ATTRIBTUES` 使用方法。
+summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 ---
 
 表属性及分区属性是从 v5.3.0 引入的新特性，主要用于为表或分区添加特定的属性以执行相应的属性对应的行为。
