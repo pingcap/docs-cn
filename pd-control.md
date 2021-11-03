@@ -1215,7 +1215,7 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
-### `unsafe remove-failed-stores [store_ids, show, history]`
+### `unsafe remove-failed-stores [store-ids | show | history]`
 
 用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
 
@@ -1223,6 +1223,9 @@ logic:  120102
 
 ```bash
 >> unsafe remove-failed-stores 101,102,103
+```
+
+```bash
 Success!
 ```
 
@@ -1230,6 +1233,9 @@ Success!
 
 ```bash
 >> unsafe remove-failed-stores show
+```
+
+```bash
 [
   "Collecting cluster info from all alive stores, 10/12.",
   "Stores that have reports to PD: 1, 2, 3, ...",
@@ -1237,8 +1243,11 @@ Success!
 ]
 ```
 
-```
+```bash
 >> unsafe remove-failed-stores history
+```
+
+```bash
 [
   "Store reports collection:",
   "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",

@@ -64,7 +64,6 @@ aliases: ['/docs-cn/dev/']
 - [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
 - [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
 - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
-- [多结点永久损坏后的在线有损恢复](/online-unsafe-recover.md)
 
 </NavColumn>
 
