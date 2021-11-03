@@ -1215,21 +1215,44 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
-### `unsafe remove-failed-stores <store_id>[, <store_id>, ...]`
+### `unsafe remove-failed-stores [store_ids, show, history]`
 
-用于执行Online Unasfe Recover，在多数副本永久损坏造成数据不可用时进行有损恢复。
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
+
+执行 Online Unasfe Recover，移除永久损坏的结点（store）:
 
 ```bash
->> unsafe remove-failed-stores <store_id>[,<store_id>, ...]
+>> unsafe remove-failed-stores 101,102,103
+Success!
 ```
 
-### `unsafe remove-failed-stores [show | history]`
-
-在 Online Unsafe Recover 触发后，显示此任务的当前状态或已经历的所有状态。
+显示当前正在运行的 Online Unsafe Recover 的当前或历史状态。
 
 ```bash
->>> unsafe remove-failed-stores show
->>> unsafe remove-failed-stores history
+>> unsafe remove-failed-stores show
+[
+  "Collecting cluster info from all alive stores, 10/12.",
+  "Stores that have reports to PD: 1, 2, 3, ...",
+  "Stores that have not reported to PD: 11, 12",
+]
+```
+
+```
+>> unsafe remove-failed-stores history
+[
+  "Store reports collection:",
+  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
+  "Store 8: region ...",
+  "...",
+  "Recovery Plan:",
+  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
+  "Store 8, ..."
+  "...",
+  "Execution Progress:",
+  "Store 10 finished,",
+  "Store 7 not yet finished",
+  "...",
+]
 ```
 
 ## jq 格式化 json 输出示例
