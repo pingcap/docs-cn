@@ -623,6 +623,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 默认情况下，修改过的行数/表的总行数的比值，超过`performance.pseudo-estimate-ratio`时系统会认为统计信息已经过期，会采用 pseudo 统计信息，这种行为和之前版本兼容。若将该变量值设为 `OFF`，TiDB 会继续使用已经过期的统计信息, 不会采用 pseudo 统计信息，可以避免因为使用 pseudo 统计信息，而导致执行计划变化的情况。
+
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：GLOBAL
