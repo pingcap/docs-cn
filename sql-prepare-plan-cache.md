@@ -25,7 +25,7 @@ TiDB 优化器对这两类查询的处理是一样的：`Prepare` 时将参数�
 - `?` 在 `Limit` 后的查询，如 `Limit ?` 或者 `Limit 10, ?`，此时 `?` 的具体值对查询影响较大，故不缓存；
 - `?` 直接在 `Order By` 后的查询，如 `Order By ?`，此时 `?` 表示根据 `Order By` 后第几列排序，对查询影响较大，故不缓存；如果是普通表达式，如 `Order By a+?` 则会缓存；
 - `?` 紧跟在 `Group by` 后的查询，如 `Group By ?`，此时 `?` 表示根据 `Group By` 后第几列聚合，对查询影响较大，故不缓存；如果是普通表达式，如 `Group By a+?` 则会缓存；
-- `?` 出现在窗口函数 `Window Frame` 定义中的查询，如 `(partition by year order by sale rows ? preceding)`；如果 `?` 出现在窗口函数的其他位置，可以使用缓存；
+- `?` 出现在窗口函数 `Window Frame` 定义中的查询，如 `(partition by year order by sale rows ? preceding)`；如果 `?` 出现在窗口函数的其他位置，可以会缓存；
 - 用参数进行 `int` 和 `string` 比较的查询，如 `c_int >= ?` 或者 `c_int in (?, ?)`等，其中 `?` 为字符串类型，如 `set @x='123'`；此时为了保证结果和 MySQL 兼容性，需要每次对参数进行调整，故不会缓存；
 - 会访问 `TiFlash` 的计划不会被缓存；
 
