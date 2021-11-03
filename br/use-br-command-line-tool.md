@@ -496,7 +496,7 @@ br restore raw --pd $PD_ADDR \
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo "config set enable-placement-rules true" | pd-ctr
+    echo "config set enable-placement-rules true" | pd-ctl
     ```
 
 2. 编辑恢复节点 TiKV 的配置文件，在 `server` 一项中指定：
