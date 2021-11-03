@@ -793,10 +793,10 @@ storage = "s3://logbucket/test-changefeed?endpoint=http://$S3_ENDPOINT/"
 
 ### 灾难恢复
 
-当上游发生灾难后，需要通过 `cdc redo` 命令在下游手动恢复，恢复流程如下
+当上游发生灾难后，需要通过 `cdc redo` 命令在下游手动恢复。恢复流程如下：
 
-- 确保 TiCDC 进程已经退出，防止在数据恢复过程中上游恢复服务，TiCDC 重新开始同步数据。
-- 使用 cdc binary 进行数据恢复，具体命令如下
+1. 确保 TiCDC 进程已经退出，防止在数据恢复过程中上游恢复服务，TiCDC 重新开始同步数据。
+2. 使用 cdc binary 进行数据恢复，具体命令如下：
 
 ```shell
 cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
