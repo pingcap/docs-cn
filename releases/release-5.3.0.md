@@ -105,12 +105,11 @@ TiDB 版本：5.3.0
 
 ## 性能优化
 
-- **TiFlash**
+- **提升 TiFlash 实时分析能力**
 
     - 降低远端数据读取的开销，减少网络传输量
     - 大幅优化 TiFlash TableScan 算子的执行效率
-    - 新增以下函数支持：
-
+    - 新增更多的函数支持，提升
         - 新增运算符支持：LIKE expression
         - 新增若干字符串函数支持：FORMAT(), LOWER(), LTRIM(), RTRIM(), SUBSTRING_INDEX(), TRIM(), UCASE(), UPPER()
         - 新增数学函数支持：ROUND(decimal, int)
@@ -124,7 +123,7 @@ TiDB 版本：5.3.0
 
 ## 稳定性提升
 
-- **TiFlash**
+- **提升 TiFlash 稳定性**
 
     - 优化在高负载下查询容易超时的问题
     - 优化 TiFlash 日志搜索性能，避免搜索大体量日志（大于 10GB）时出现的卡顿或失败现象
@@ -155,15 +154,15 @@ TiDB 版本：5.3.0
 
 ## 数据迁移
 
-- **支持部署多个 Lightning**
+- **支持部署多个 TiDB Lightning**
 
-    新版本 TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。 该功能无须特别的配置，在不改变用户使用习惯的同时，极大的提高用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
+    新版本 TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。 该功能无需特别的配置，在不改变用户使用习惯的同时，极大提高了用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
 
-    在我们性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）
+    在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）
 
     [用户文档](/)  
 
-- **提高 DM 复制性能（Replication performance improvement）**
+- **提高 DM 复制性能**
 
     以更低的延迟将数据从 MySQL 同步到 TiDB，包含三项子内容
 
@@ -173,11 +172,21 @@ TiDB 版本：5.3.0
 
 - **增加 DM 的 OpenAPI 以更方便地管理集群**
 
+    <功能描述 （DM 的 OpenAPI 是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
+
+    <功能支持情况，TiDB 默认开启还是关闭此功能，如果默认关闭，如何开启>
+
+    <如果功能限制或此功能特定的兼容性问题，需要提及>
+
+    [用户文档](/)  
+
 - **Lightning 支持导入 GBK 编码文件** 
 
     [用户文档](/tidb-lightning-configuration.md)
 
 - **Lightning 支持忽略部分错误行**
+
+    <能给用户带来什么好处>
 
 ## TiDB 数据共享订阅
 
