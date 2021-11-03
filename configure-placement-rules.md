@@ -70,7 +70,7 @@ Placement Rules 示意图如下所示：
 
 本节的操作步骤以使用 [pd-ctl](/pd-control.md) 工具为例，涉及到的命令也支持通过 HTTP API 进行调用。
 
-### 开启 Placement Rules 功能
+### 开启 Placement Rules 特性
 
 Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](/###关闭-placement-rules-特性)。如需在关闭后重新开启该特性，可以集群初始化以前设置 PD 配置文件：
 
