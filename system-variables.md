@@ -628,9 +628,9 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用来控制优化器在一张表上的统计信息过期时的行为。
-- 统计信息过期的判断标准是：上次 ANALYZE 这张表后，该表数据修改行数大于该表总行数的 80%（可通过 [`pseudo-estimate-ratio`](https://docs.pingcap.com/zh/tidb/dev/tidb-configuration-file#pseudo-estimate-ratio) 配置文件参数调整）。
-- 默认情况下（该变量设为 `ON` 时），一张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。该变量设为 `OFF` 时，即使统计信息过期，优化器也会照常使用该表上的统计信息。
-- 在数据修改较频繁，没有及时执行 ANALYZE，但又希望执行计划保持稳定时，可以将该变量设为 `OFF`。
+- 统计信息过期的判断标准：最近一次对某张表执行 `ANALYZE` 获得统计信息后，该表数据被修改的行数大于该表总行数的 80%，便可判定该表的统计信息已过期。该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置参数调整。
+- 默认情况下（即该变量值为 `ON` 时），某张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。
+- 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，可以将该变量值设为 `OFF`。
 
 ### `tidb_enable_rate_limit_action`
 
