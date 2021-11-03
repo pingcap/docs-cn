@@ -111,5 +111,5 @@ alter table t partition p attributes[=]'merge_option=allow';
 
 > **注意：** 
 > 
-> 1. 如果目前只存在分区表的属性，即使配置 `merge_option=allow`，分区也会默认按照实际分区数量切分成多个 Region。如需合并所有 Region，则需要[重置该分区表](#使用方法)的属性。
+> 1. 如果目前只存在分区表的属性，即使配置 `merge_option=allow`，分区也会默认按照实际分区数量切分成多个 Region。如需合并所有 Region，则需要[重置该分区表的属性](#使用方法)。
 > 2. 使用该属性需要注意 PD 的参数 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的配置。如果没有配置 `merge_option`，Region 在超过 `split-merge-interval` 指定的时间后满足条件即可合并。如果配置了 `merge_option`，则超过指定时间后会根据 `merge_option` 的配置情况再决定是否可以合并。
