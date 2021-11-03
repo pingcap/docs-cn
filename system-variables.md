@@ -1378,7 +1378,7 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
-### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`67108864`

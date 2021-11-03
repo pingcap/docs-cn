@@ -252,7 +252,7 @@ Empty set (0.00 sec)
 
 无论定义表时声明的 `EGNINE` 是哪种存储引擎，本地临时表和全局临时表的数据都只暂存在 TiDB 实例的内存中，不持久化。
 
-为了避免 OOM，用户可通过系统变量 [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size) 限制每张临时表的大小，当临时表大小超过限制后报错。`tidb_tmp_table_max_size` 的默认值是 `64MB`。
+为了避免 OOM，用户可通过系统变量 [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) 限制每张临时表的大小，当临时表大小超过限制后报错。`tidb_tmp_table_max_size` 的默认值是 `64MB`。
 
 例如调整 `tidb_tmp_table_max_size` 为 `256MB`：
 
