@@ -22,22 +22,23 @@ TiDB 是一个具备高可用性的数据库，根据用户定义的副本规则
 
 ## 使用场景
 
-Online Unsafe Recover 的一般使用场景为：
+Online Unsafe Recover 的一般使用场景为:
+
 * 有部分结点永久损坏，无法重启，并造成了业务端部分数据不可读，不可写。
 * 数据丢失可以容忍，而希望受影响的数据行可以恢复读写。
 * 希望可以在线，一站恢复。
 
 ## 使用方法
 
-0. Pre-check
+1. Pre-check
     * 部分数据确实不可用。
     * 离线结点确实无法自动恢复（重启）。
-1. 暂时关闭load balancing等内部调度（建议在关闭后等待几个小时，使已经触发的调度有充分时间完成）。
+2. 暂时关闭load balancing等内部调度（建议在关闭后等待几个小时，使已经触发的调度有充分时间完成）。
     * 在pdctl中使用`config show`获取当前配置信息
     * 在pdctl中使用`config set region-schedule-limit 0`
     * 在pdctl中使用`config set replica-schedule-limit 0`
     * 在pdctl中使用`config set merge-schedule-limit 0`
-2. 使用pdctl中`unsafe remove-failed-stores <store_id>[,<store_id>,...]`命令移除无法自动恢复的结点，注意，此命令返回的成功仅代表请求被接受，实际恢复过程会在后台进行。
-3. 在上述命令运行成功之后，通过`unsafe remove-failed-stores show (or history)`来查看进度。
-4. 当进度命令提示完成之后，可以使用常规数据访问方式确保数据可以读写。注意，数据可以读写并不代表没有数据丢失。
-5. 重新开启调度,将之前修改过配置调整回初始设置。
+3. 使用pdctl中`unsafe remove-failed-stores <store_id>[,<store_id>,...]`命令移除无法自动恢复的结点，注意，此命令返回的成功仅代表请求被接受，实际恢复过程会在后台进行。
+4. 在上述命令运行成功之后，通过`unsafe remove-failed-stores show (or history)`来查看进度。
+5. 当进度命令提示完成之后，可以使用常规数据访问方式确保数据可以读写。注意，数据可以读写并不代表没有数据丢失。
+6. 重新开启调度,将之前修改过配置调整回初始设置。
