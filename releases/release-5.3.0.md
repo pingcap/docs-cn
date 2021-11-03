@@ -164,7 +164,7 @@ TiDB 版本：5.3.0
 
 - **提高 DM 复制性能**
 
-    以更低的延迟将数据从 MySQL 同步到 TiDB，包含三项子内容
+    支持以下功能，实现以更低的延迟将数据从 MySQL 同步数据到 TiDB。
 
     - 合并单行数据的多次变更（Compact multiple updates on a single row into one statement）
     - 点查更新合并为批量操作（Merge batch updates of multiple rows into one statement）
