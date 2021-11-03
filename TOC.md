@@ -71,7 +71,7 @@
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   + [在线修改集群配置](/dynamic-config.md)
-  + [多结点永久损坏后的在线有损恢复](/online-unsafe-recover.md)
+  + [多节点永久损坏后的在线有损恢复](/online-unsafe-recover.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
