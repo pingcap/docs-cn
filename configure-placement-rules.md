@@ -11,7 +11,7 @@ summary: 如何配置 Placement Rules
 
 Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
 
-Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules] (/###关闭-placement-rules-特性)。
+Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](/###关闭-placement-rules-特性)。
 
 ## 规则系统介绍
 
@@ -72,7 +72,7 @@ Placement Rules 示意图如下所示：
 
 ### 开启 Placement Rules 功能
 
-Placement Rules 特性在 TiDB v5.0 及以上的版本中是默认开启的。如需手动开启这个特性，可以[集群初始化以前设置 PD 配置文件](/###关闭-placement-rules-特性)：
+Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](/###关闭-placement-rules-特性)。如需在关闭后重新开启该特性，可以集群初始化以前设置 PD 配置文件：
 
 {{< copyable "" >}}
 
@@ -81,7 +81,7 @@ Placement Rules 特性在 TiDB v5.0 及以上的版本中是默认开启的。�
 enable-placement-rules = true
 ```
 
-这样，PD 在初始化成功后会开启这个功能，并根据 `max-replicas` 及 `location-labels` 配置生成对应的规则：
+这样，PD 在初始化成功后会开启这个特性，并根据 `max-replicas` 及 `location-labels` 配置生成对应的规则：
 
 {{< copyable "" >}}
 
@@ -112,9 +112,9 @@ PD 同样将根据系统的 `max-replicas` 及 `location-labels` 生成默认的
 >
 > 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
 
-### 关闭 Placement Rules 功能
+### 关闭 Placement Rules 特性
 
-使用 pd-ctl 可以关闭 Placement Rules 功能，切换为之前的调度策略。
+使用 pd-ctl 可以关闭 Placement Rules 特性，切换为之前的调度策略。
 
 {{< copyable "shell-regular" >}}
 
