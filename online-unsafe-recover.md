@@ -29,18 +29,46 @@ Online Unsafe Recover 的一般使用场景为:
 * 数据丢失可以容忍，而希望受影响的数据行可以恢复读写。
 * 希望在线一站式恢复数据。
 
-## 使用方法
+## 前提条件
 
-1. Pre-check
-    * 部分数据确实不可用。
-    * 离线结点确实无法自动恢复（重启）。
-2. 暂时关闭load balancing等内部调度（建议在关闭后等待几个小时，使已经触发的调度有充分时间完成）。
-    1. 在pdctl中使用[`config show`](/pd-control.md#config-show--set-option-value--placement-rules)获取当前配置信息
-    2. 在pdctl中关闭各类调度
-        * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-        * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-        * [`config set merge-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-3. 使用pdctl中[`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history)命令移除无法自动恢复的结点，注意，此命令返回的成功仅代表请求被接受，实际恢复过程会在后台进行。
-4. 在上述命令运行成功之后，通过[`unsafe remove-failed-stores show (or history)`](/pd-control.md#config-show--set-option-value--placement-rules)来查看进度。
-5. 当进度命令提示完成之后，可以尝试运行一些简单 SQL 查询或写入操作确保数据可以读写。注意，数据可以读写并不代表没有数据丢失。
-6. 重新开启调度,将在第2步时修改的配置调整回初始值。
+在使用 Online Unsafe Recover 功能前，请确认以下事项：
+
+* 确认部分数据确实不可用。
+* 确认离线节点确实无法自动恢复或重启。
+
+## 第 1 步：关闭各类调度
+
+暂时关闭负载均衡等各类内部调度。关闭后，建议等待约 XX 小时，使已经触发的调度能有充分的时间完成调度任务。
+
+1. 使用 pd-ctl 执行 [`config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
+2. 使用 pd-ctl 关闭各类调度：
+  * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+  * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+  * [`config set merge-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+
+## 第 2 步：移除无法自动恢复的节点
+
+使用 pd-ctl 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history)命令，移除无法自动恢复的节点。
+
+
+> **注意：**
+>
+> 此命令成功返回代表请求已被接受，节点实际会在后台进行恢复。
+
+## 第 3 步：查看进度
+
+节点移除命令运行成功后，使用 pd-ctl 执行 [`unsafe remove-failed-stores show (or history)`](/pd-control.md#config-show--set-option-value--placement-rules)命令，查看移除进度。
+
+## 第 4 步：测试读写任务
+
+进度命令提示任务已完成后，可以尝试运行一些简单 SQL 查询或写入操作确保数据可以读写。示例如下：
+
+XXX
+
+> **注意：**
+>
+> 数据可以读写并不代表没有数据丢失。
+
+## 第 5 步：重新开启调度
+
+把在第 1 步中修改的配置 `config set region-schedule-limit 0`，`config set replica-schedule-limit 0`，`config set merge-schedule-limit 0` 调整回初始值，重新开启调度功能。
