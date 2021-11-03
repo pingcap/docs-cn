@@ -71,7 +71,7 @@ Placement Rules 示意图如下所示：
 
 本节的操作步骤以使用 [pd-ctl](/pd-control.md) 工具为例，涉及到的命令也支持通过 HTTP API 进行调用。
 
-### 开启 Placement Rules 特性
+### 开启 Placement Rules 功能
 
 Placement Rules 特性在 TiDB v5.0 及以上的版本中是默认开启的。如需手动开启这个特性，可以[集群初始化以前设置 PD 配置文件](/###关闭-placement-rules-特性)：
 
@@ -82,7 +82,7 @@ Placement Rules 特性在 TiDB v5.0 及以上的版本中是默认开启的。�
 enable-placement-rules = true
 ```
 
-这样，PD 在初始化成功后会开启这个特性，并根据 `max-replicas` 及 `location-labels` 配置生成对应的规则：
+这样，PD 在初始化成功后会开启这个功能，并根据 `max-replicas` 及 `location-labels` 配置生成对应的规则：
 
 {{< copyable "" >}}
 
@@ -113,9 +113,9 @@ PD 同样将根据系统的 `max-replicas` 及 `location-labels` 生成默认的
 >
 > 开启 Placement Rules 后，原先的 `max-replicas` 及 `location-labels` 配置项将不再生效。如果需要调整副本策略，应当使用 Placement Rules 相关接口。
 
-### 关闭 Placement Rules 特性
+### 关闭 Placement Rules 功能
 
-使用 pd-ctl 可以关闭 Placement Rules 特性，切换为之前的调度策略。
+使用 pd-ctl 可以关闭 Placement Rules 功能，切换为之前的调度策略。
 
 {{< copyable "shell-regular" >}}
 
