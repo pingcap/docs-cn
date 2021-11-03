@@ -771,8 +771,8 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 ### 使用前提
 
-- 提供具有高可用的 S3 存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
-- TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，新增配置在 changefeed 的配置文件中
+- 准备好具有高可用的 S3 存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
+- TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，新增配置在 changefeed 的配置文件中。
 
 ```toml
 [consistent]
