@@ -64,7 +64,8 @@ MySQL [test]> plan replayer dump explain select * from t;
 
 因为 MySQL Client 无法下载文件，所以需要通过 TiDB HTTP 接口和文件标识下载文件：
 
-{{< copyable "bash" >}}
+{{< copyable "shell-regular" >}}
+
 ```
 http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_token}?forward=true
 ```
