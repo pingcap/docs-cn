@@ -41,6 +41,10 @@ TiDB 的临时表分为本地临时表和全局临时表：
 
 ### 本地临时表使用示例
 
+> **注意：**
+>
+> 使用 TiDB 中的临时表前，注意临时表[与其他 TiDB 功能的兼容性限制](#与其他-tidb-功能的兼容性限制)以及[与 MySQL 临时表的兼容性](#与-mysql-临时表的兼容性)。
+
 假设已存在普通表 `users`:
 
 {{< copyable "sql" >}}
@@ -173,6 +177,10 @@ TiDB 本地临时表与 MySQL 临时表有以下方面不兼容：
 用户可通过 `CREATE GLOBAL TEMPORARY TABLE` 语句创建全局临时表，语句末尾要加上 `ON COMMIT DELETE ROWS`。可通过 `DROP TABLE` 或 `DROP GLOBAL TEMPORARY TABLE` 语句删除全局临时表。
 
 ### 全局临时表使用示例
+
+> **注意：**
+>
+> 使用 TiDB 中的临时表前，注意临时表[与其他 TiDB 功能的兼容性限制](#与其他-tidb-功能的兼容性限制)。
 
 在会话 A 中创建全局临时表 `users`：
 
