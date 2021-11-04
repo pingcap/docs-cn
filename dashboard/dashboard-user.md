@@ -67,4 +67,4 @@ summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
 
 ## 登录 Dashboard
 
-创建 TiDB Dashboard 自定义 SQL 用户后，你可以使用该账号密码[登录](/dashboard-access.md#登录) TiDB Dashboard。
+创建 TiDB Dashboard 自定义 SQL 用户后，你可以使用该账号密码[登录](/dashboard/dashboard-access.md#登录) TiDB Dashboard。
