@@ -1,5 +1,6 @@
 ---
 title: PLAN REPLAYER
+summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 ---
 # `PLAN REPLAYER` 概览
 
