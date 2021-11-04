@@ -24,7 +24,7 @@ TiDB 版本：5.3.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-|tidb_enable_noop_functions  | 修改 | 此变量不在控制 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+|tidb_enable_noop_functions  | 修改 | 此变量不再控制 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
 | tidb_tmp_table_max_size | 新增  | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
 |  |  |  |
 
