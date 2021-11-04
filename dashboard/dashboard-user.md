@@ -28,7 +28,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     - RESTRICTED_STATUS_ADMIN
     - RESTRICTED_VARIABLES_ADMIN
 
-- 当需要自定义的 SQL 用户在登录 TiDB Dashboard 后能修改界面上的各项配置时，请为自定义的 SQL 用户赋予以下**任意**权限时。否则 SQL 用户只有读权限，无法修改配置。
+- 若希望 SQL 用户在登录 TiDB Dashboard 后允许修改界面上的各项配置，SQL 用户还应当拥有以下权限：
 
     - SYSTEM_VARIABLES_ADMIN
 
