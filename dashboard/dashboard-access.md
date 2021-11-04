@@ -33,14 +33,39 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 
 ![登录界面](/media/dashboard/dashboard-access-login.png)
 
-如果存在以下情况，则可能会登录失败：
+在 v5.3.0 之前，仅支持使用 root 用户登录，如果存在以下情况，则可能会登录失败：
 
 - TiDB root 用户不存在
 - PD 未启动或无法访问
 - TiDB 未启动或无法访问
 - root 密码错误
 
+从 v5.3.0 起，只要任意用户拥有以下权限，就可以登录：
+
+- PROCESS
+- SHOW DATABASES
+- CONFIG
+- DASHBOARD_CLIENT 或 SUPER
+
+如果 TiDB 有开启 [安全增强模式（SEM）](/tidb-configuration-file.md#enable-sem)，则还需要拥有以下权限：
+
+- RESTRICTED_TABLES_ADMIN
+- RESTRICTED_STATUS_ADMIN
+- RESTRICTED_USER_ADMIN
+
 登录后，24 小时内将保持自动登录状态。参见[登出](#登出)章节了解如何登出用户。
+
+下面示例是创建最小权限的用户来访问 TiDB Dashboard:
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '1234567';
+GRANT PROCESS, CONFIG, DASHBOARD_CLIENT, SHOW DATABASES, SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
+GRANT RESTRICTED_STATUS_ADMIN ON *.* TO 'dashboardAdmin'@'%';
+GRANT RESTRICTED_TABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
+GRANT RESTRICTED_USER_ADMIN ON *.* TO 'dashboardAdmin'@'%';
+```
 
 ## 切换语言
 
