@@ -14,7 +14,7 @@ summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 
 ## 使用 `PLAN REPLAYER` 导出集群信息
 
-`PLAN REPLAYER` 可以用来保存单个 SQL 的现场。导出接口如下：
+你可以使用 `PLAN REPLAYER` 来保存 TiDB 集群的现场信息。导出接口如下：
 
 {{< copyable "sql" >}}
 ```
