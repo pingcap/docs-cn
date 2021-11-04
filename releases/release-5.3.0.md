@@ -326,6 +326,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     - 修复 `plus` 表达式中检查溢出方法出错的问题 [26977](https://github.com/pingcap/tidb/issues/26977)
     - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [27024](https://github.com/pingcap/tidb/issues/27024)
     - 修复 `TIDB_TRX` 中不包含重试事务的问题 [28670](https://github.com/pingcap/tidb/pull/28670)
+    - 修复配置项 `plugin_dir` 的默认值错误问题 [28084](https://github.com/pingcap/tidb/issues/28084)  
 
 + TiKV
 
