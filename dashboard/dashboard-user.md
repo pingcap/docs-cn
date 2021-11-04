@@ -24,7 +24,7 @@ summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
     - RESTRICTED_STATUS_ADMIN
     - RESTRICTED_VARIABLES_ADMIN
 
-- 当需要自定义的 SQL 用户在登录 TiDB Dashboard 后能修改界面上的各项配置时，请为自定义的 SQL 用户赋予以下**任意**权限时。否则 SQL 用户只有读权限，无法修改配置：
+- 当需要自定义的 SQL 用户在登录 TiDB Dashboard 后能修改界面上的各项配置时，请为自定义的 SQL 用户赋予以下**任意**权限时。否则 SQL 用户只有读权限，无法修改配置。
 
     - ALL PRIVILEGES
     - SUPER
