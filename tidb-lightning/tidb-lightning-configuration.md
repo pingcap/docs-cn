@@ -365,7 +365,7 @@ min-available-ratio = 0.05
 | --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional、off (默认为 required) | `post-restore.analyze` |
-| --checksum *bool* | 导入后比较校验和，可选值为 required、optional、off (默认为 optional) | `post-restore.checksum` |
+| --checksum *level* | 导入后比较校验和，可选值为 required、optional、off (默认为 optional) | `post-restore.checksum` |
 | --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
