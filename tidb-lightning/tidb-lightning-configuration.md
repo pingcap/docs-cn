@@ -111,7 +111,7 @@ addr = "172.16.31.10:8287"
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
-read-block-size = "64KiB" (默认为 64 KiB)
+read-block-size = "64KiB" # 默认值
 
 # 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
 # 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning
@@ -160,7 +160,7 @@ data-invalid-char-replace = "\uFFFD"
 strict-format = false
 
 # 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
-# max-region-size = "256MiB" （默认是 256 MiB）
+# max-region-size = "256MiB" # 默认值
 
 # 只导入与该通配符规则相匹配的表。详情见相应章节。
 filter = ['*.*']
