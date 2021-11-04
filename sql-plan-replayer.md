@@ -94,6 +94,7 @@ PLAN REPLAYER LOAD 'file_name';
 一个例子：
 
 {{< copyable "sql" >}}
+
 ```
 PLAN REPLAYER LOAD ‘plan_replayer.zip’
 ```
