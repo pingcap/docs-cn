@@ -19,7 +19,7 @@ summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 {{< copyable "sql" >}}
 
 ```
-PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement
+PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement;
 ```
 
 TiDB 会根据 `sql-statement` 整理出相关现场，包括：
