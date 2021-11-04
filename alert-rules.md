@@ -342,7 +342,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `count(changes(pd_server_tso{type="save"}[10m]) > 0) >= 2`
+    `count(changes(pd_tso_events{type="save"}[10m]) > 0) >= 2`
 
 * 规则描述：
 
@@ -373,7 +373,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `changes(pd_server_tso{type="system_time_slow"}[10m]) >= 1`
+    `changes(pd_tso_events{type="system_time_slow"}[10m]) >= 1`
 
 * 规则描述：
 
