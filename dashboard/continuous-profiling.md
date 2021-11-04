@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 实例性能持续分析页面
+summary: TiDB Dashboard 持续性能分析功能
 aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 ---
 
@@ -9,11 +10,81 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 >
 > 该功能目前为实验特性，不建议在生产环境中使用。
 
-持续性能分析功能允许用户对各个 TiDB、TiKV、PD、TiFlash 实例在不重启的情况下，持续进行内部性能数据收集，并且持久化在监控节点。收集到的性能数据可显示为有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，快速了解该实例 CPU 资源消耗的主要内容。
+持续性能分析是一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 提供了数据库源码水平的性能洞察，通过火焰图的形式帮助研发、运维人员定位性能问题的根因，无论过去现在皆可回溯。
+该功能以低于 0.5% 的性能损耗，对数据库内部运行状态持续打快照（类似 CT 扫描），让原本“黑盒”的数据库变成“白盒”，具备更高的可观测性。该功能一键开启后自动运行，存储结果提供了保留时长的设定，过期的结果将会被回收，确保存储空间的有效利用。
 
 ## 分析内容
+
+持续性能分析功能允许用户对各个 TiDB、TiKV、PD、TiFlash 实例在不重启的情况下，持续进行内部性能数据收集，并且持久化在 [monitoring_servers](https://docs.pingcap.com/zh/tidb/stable/tiup-cluster-topology-reference#monitoring_servers) 监控节点。收集到的性能数据可显示为有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，快速了解该实例 CPU 资源消耗的主要内容。目前支持的性能信息内容：
 TiDB/PD: CPU profile、Heap、Mutex、Goroutine（debug=2）
 TiKV/TiFlash: CPU Profile
+
+> **注意：**
+>
+> 持续性能分析功能可在 x86 架构下完整使用，但 TiKV 和 TiFlash 的支持还不完整。
+
+## 启用持续性能分析
+
+持续性能分析功能在 TiDB v5.3.0 引入，在实验特性阶段，需要经由 2 阶段操作启用该功能。
+
+### 由 TiUP 部署/升级的集群
+
+1. 启动前检查
+
+在启动前，需要先检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
+
+    - 检查 TiUP 版本：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup --version
+        ```
+
+        上述命令。运行结果将显示集群的访问方式：
+
+        ```log
+        CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
+        To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
+        To view the dashboard: http://127.0.0.1:2379/dashboard
+        To view the monitor: http://127.0.0.1:9090
+        ```
+
+        > **注意：**
+        >
+        > + 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
+        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
+        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+
+    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+
+
+
+  - 检查 TiUP Cluster 版本
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup --version
+    ```
+  若提示
+    ```
+    
+- 升级 TiUP Cluster 版本至最新
+
+
+- 重启 Prometheus 节点
+
+
+
+### 由 TiDB Operator 或二进制部署/升级的集群
+暂时还不支持 TiDB Operator 或二进制部署/升级的集群。
+
+> **注意：**
+>
+> 持续性能分析功能依赖 ng_port 配置。若集群中没有部署 ngm 组件，将无法使用持续性能分析功能。
+
 
 ## 访问
 
