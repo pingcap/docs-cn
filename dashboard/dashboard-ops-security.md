@@ -17,11 +17,13 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下�
 
 - 为 TiDB 的 `root` 用户设置一个强密码，或禁用 `root` 账户。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
 
-### 创建只拥有指定权限的非 root 用户
+### 为 TiDB Dashboard 创建最小权限用户
 
-从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义 SQL 用户登录，你可以为自定义 SQL 用户指定所需要的权限。
+TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。可以基于最小权限原则配置合适的用户访问 TiDB Dashboard，减少高权限用户的使用场景。
 
-建议创建一个非 root 用户用于登录访问 TiDB Dashboard。请参见 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)了解详情。
+建议的措施：
+
+- 为访问 TiDB Dashboard 创建一个最小权限的 SQL 用户，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。请参见 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)了解详情。
 
 ## 使用防火墙阻止不可信访问
 
