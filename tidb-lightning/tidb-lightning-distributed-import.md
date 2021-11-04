@@ -20,11 +20,9 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
 
-
 ![并行导入分库分表](/media/parallel-import-shard-tables.png)
 
 下图展示了并行导入单表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例，将单个表中的数据拆分后，并行导入到下游的 TiDB 集群。
-
 
 ![并行导入单表](/media/parallel-import-single-tables.png)
 
