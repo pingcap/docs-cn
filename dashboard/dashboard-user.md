@@ -30,8 +30,6 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
 - 当需要自定义的 SQL 用户在登录 TiDB Dashboard 后能修改界面上的各项配置时，请为自定义的 SQL 用户赋予以下**任意**权限时。否则 SQL 用户只有读权限，无法修改配置。
 
-    - ALL PRIVILEGES
-    - SUPER
     - SYSTEM_VARIABLES_ADMIN
 
 如果自定义的 SQL 用户的权限未满足要求时，该用户将无法登录 TiDB Dashboard。如下图所示：
