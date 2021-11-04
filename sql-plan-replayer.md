@@ -81,7 +81,7 @@ curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJf
 
 ## 使用 `PLAN REPLAYER` 导入集群信息
 
-有 `PLAN REPLAYER` 导出的 `ZIP` 文件后，便可以通过 `PLAN REPLAYER` 导入接口在任意 TiDB 上恢复现场。语法如下：
+有 `PLAN REPLAYER` 导出的 `ZIP` 文件后，便可以通过 `PLAN REPLAYER` 导入接口在任意 TiDB 集群上恢复另一集群地现场信息。语法如下：
 
 {{< copyable "sql" >}}
 ```
