@@ -44,7 +44,7 @@ GRANT PROCESS, CONFIG ON *.* TO 'dashboardAdmin'@'%';
 GRANT SHOW DATABASES ON *.* TO 'dashboardAdmin'@'%';
 GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
 
--- To also allow modifying TiDB Dashboard configurations:
+-- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
 GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
 ```
 
