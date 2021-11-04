@@ -86,7 +86,7 @@ curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJf
 {{< copyable "sql" >}}
 
 ```
-PLAN REPLAYER LOAD ‘file_name’;
+PLAN REPLAYER LOAD 'file_name';
 ```
 
 `file_name` 为要导入的 `ZIP` 文件名。
