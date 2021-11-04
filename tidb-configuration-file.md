@@ -483,7 +483,7 @@ prepare 语句的 plan cache 设置。
 ### `capacity`
 
 + 缓存语句的数量。
-+ 默认值：100
++ 默认值：1000
 + 类型为 uint，小于 0 的值会被转化为大整数。
 
 ### `memory-guard-ratio`
