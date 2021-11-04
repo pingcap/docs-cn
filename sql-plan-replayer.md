@@ -69,8 +69,7 @@ MySQL [test]> plan replayer dump explain select * from t;
 http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_token}
 ```
 
-其中，`${tidb-server-ip}:${tidb-server-status-port}` 是集群中任意 TiDB server 的地址。
-一个例子：
+其中，`${tidb-server-ip}:${tidb-server-status-port}` 是集群中任意 TiDB server 的地址。示例如下：
 
 {{< copyable "shell-regular" >}}
 
