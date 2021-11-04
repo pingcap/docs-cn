@@ -76,11 +76,11 @@ AsOfClause ::=
 
 ```ebnf+diagram
 SelectLockOpt ::= 
-    (('FOR' 'UPDATE' ('OF' TableList)? 'NOWAIT'?)|
-|   ('LOCK' 'IN' 'SHARE' 'MODE'))?
+    ( ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'? )
+|   ( 'LOCK' 'IN' 'SHARE' 'MODE' ) )?
 
 TableList ::=
-    TableName (',' TableName)*
+    TableName ( ',' TableName )*
 ```
 
 **WindowClauseOptional**
