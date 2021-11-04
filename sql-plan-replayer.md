@@ -96,7 +96,7 @@ PLAN REPLAYER LOAD 'file_name';
 {{< copyable "sql" >}}
 
 ```
-PLAN REPLAYER LOAD ‘plan_replayer.zip’
+PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
 
 > **注意：**
