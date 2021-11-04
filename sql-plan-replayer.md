@@ -26,7 +26,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 
 - TiDB 版本信息
 - TiDB 配置信息
-- TiDB 系统变量
+- TiDB Session 系统变量
 - TiDB 执行计划绑定信息（SQL Binding）
 - `sql-statement` 中所包含的表结构
 - `sql-statement` 中所包含表的统计信息
@@ -83,7 +83,7 @@ curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJf
 
 > **警告：**
 >
-> `PLAN REPLAYER` 在一个 TiDB 集群上导入另一集群的现场信息，会修改导入集群的 TiDB 系统变量、执行计划绑定信息、表结构和统计信息。
+> `PLAN REPLAYER` 在一个 TiDB 集群上导入另一集群的现场信息，会修改导入集群的 TiDB Session 系统变量、执行计划绑定信息、表结构和统计信息。
 
 有 `PLAN REPLAYER` 导出的 `ZIP` 文件后，便可以通过 `PLAN REPLAYER` 导入接口在任意 TiDB 集群上恢复另一集群地现场信息。语法如下：
 
