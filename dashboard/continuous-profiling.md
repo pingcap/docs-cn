@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ## 分析内容
 
-持续性能分析功能允许用户对各个 TiDB、TiKV、PD、TiFlash 实例在不重启的情况下，持续进行内部性能数据收集，并且持久化在 [monitoring_servers](https://docs.pingcap.com/zh/tidb/stable/tiup-cluster-topology-reference#monitoring_servers) 监控节点。收集到的性能数据可显示为有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，快速了解该实例 CPU 资源消耗的主要内容。目前支持的性能信息内容：
+持续性能分析功能允许用户对各个 TiDB、TiKV、PD、TiFlash 实例在不重启的情况下，持续进行内部性能数据收集，并且持久化在监控节点。收集到的性能数据可显示为有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，快速了解该实例 CPU 资源消耗的主要内容。目前支持的性能信息内容：
 TiDB/PD: CPU profile、Heap、Mutex、Goroutine（debug=2）
 TiKV/TiFlash: CPU Profile
 
@@ -33,7 +33,7 @@ TiKV/TiFlash: CPU Profile
 
 > **注意：**
 >
-> - 使用持续性能分析功能需 TiDB v5.3.0 及以上版本的集群，可前往 TiDB Dashboard [集群信息页面](https://docs.pingcap.com/zh/tidb/stable/daily-check#%E5%AE%9E%E4%BE%8B%E9%9D%A2%E6%9D%BF)，查看当前版本信息。
+> - 使用持续性能分析功能需 TiDB v5.3.0 及以上版本的集群，可前往 TiDB Dashboard [集群信息页面](/daily-check#实时面板)，查看当前版本信息。
 > - 若不是 TiDB v5.3.0 及以上版本集群，请先升级 TiDB 版本到 v5.3.0 及以上。
 
 在启动前，需要先检查 TiUP Cluster 版本，若版本低于 v1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
@@ -86,7 +86,7 @@ TiKV/TiFlash: CPU Profile
         tiup cluster edit-config ${cluster-name}
         ```
         
-    - 设置参数，在 [monitoring_servers](https://docs.pingcap.com/zh/tidb/stable/tiup-cluster-topology-reference#monitoring_servers) 下面增加 “ng_port:${port}”：
+    - 设置参数，在 [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers) 下面增加 “ng_port:${port}”：
 
         ```log
         monitoring_servers:
