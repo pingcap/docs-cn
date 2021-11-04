@@ -29,54 +29,84 @@ TiKV/TiFlash: CPU Profile
 
 ### 由 TiUP 部署/升级的集群
 
-1. 启动前检查
+#### 启动前检查
 
-在启动前，需要先检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
+> **注意：**
+>
+> - 使用持续性能分析功能需 TiDB v5.3.0 及以上版本的集群，可前往 TiDB Dashboard [集群信息页面](https://docs.pingcap.com/zh/tidb/stable/daily-check#%E5%AE%9E%E4%BE%8B%E9%9D%A2%E6%9D%BF)，查看当前版本信息。
+> - 若不是 TiDB v5.3.0 及以上版本集群，请先升级 TiDB 版本到 v5.3.0 及以上。
 
-    - 检查 TiUP 版本：
+在启动前，需要先检查 TiUP Cluster 版本，若版本低于 v1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
 
-        {{< copyable "shell-regular" >}}
+1. 检查 TiUP 版本：
 
         ```shell
-        tiup --version
+        tiup cluster --version
         ```
 
-        上述命令。运行结果将显示集群的访问方式：
+    上述命令可查看 TiUP 的具体版本。显示为：
 
         ```log
-        CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-        To connect TiDB: mysql --host 127.0.0.1 --port 4000 -u root
-        To connect TiDB: mysql --host 127.0.0.1 --port 4001 -u root
-        To view the dashboard: http://127.0.0.1:2379/dashboard
-        To view the monitor: http://127.0.0.1:9090
+        tiup version 1.7.0 tiup
+        Go Version: go1.17.2
+        Git Ref: v1.7.0
+        ```
+        
+    若低于 v1.7.0，需要先升级 TiUP Cluster。若已经是 v1.7.0 及以上版本，可直接重启 Prometheus 节点。
+
+2. 升级 TiUP 和 TiUP Cluster 版本至最新。
+    
+    - 升级 TiUP：
+
+        ```shell
+        tiup update --self
+        ```
+        
+    - 升级 TiUP Cluster：
+
+        ```shell
+        tiup update cluster
         ```
 
-        > **注意：**
-        >
-        > + 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
-        > + 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-        > + 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+3. 重启 Prometheus 节点：
 
-    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+        ```shell
+        tiup cluster reload ${cluster-name} --role prometheus
+        ```
 
+重启后，完成启动前检查。
 
+#### 启动功能流程
 
-  - 检查 TiUP Cluster 版本
+1. 在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
 
-    {{< copyable "shell-regular" >}}
+    - 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
 
-    ```shell
-    tiup --version
-    ```
-  若提示
-    ```
-    
-- 升级 TiUP Cluster 版本至最新
+        ```shell
+        tiup cluster edit-config ${cluster-name}
+        ```
+        
+    - 设置参数，在 [monitoring_servers](https://docs.pingcap.com/zh/tidb/stable/tiup-cluster-topology-reference#monitoring_servers) 下面增加 “ng_port:${port}”：
 
+        ```log
+        monitoring_servers:
+        - host: 172.16.6.6
+          ng_port: ${port}
+        ```
 
-- 重启 Prometheus 节点
+    - 重启 Prometheus 节点：
 
+        ```shell
+        tiup cluster reload ${cluster-name} --role prometheus
+        ```
 
+    重启后，完成中控机所需的操作。
+
+2. 在 TiDB Dashboard 的"**高级调试**" → "**实例性能分析**" → "**持续分析**"页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮，即可开启功能：
+
+![界面]()
+
+可以修改保留时间。分析结果会持久化到磁盘中，超过保留时间会被回收。该配置对所有结果生效，包括历史结果。
 
 ### 由 TiDB Operator 或二进制部署/升级的集群
 暂时还不支持 TiDB Operator 或二进制部署/升级的集群。
@@ -85,8 +115,7 @@ TiKV/TiFlash: CPU Profile
 >
 > 持续性能分析功能依赖 ng_port 配置。若集群中没有部署 ngm 组件，将无法使用持续性能分析功能。
 
-
-## 访问
+## 访问页面
 
 该功能默认关闭，需要手动打开启用。
 
@@ -98,23 +127,6 @@ TiKV/TiFlash: CPU Profile
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/continuous_profiling>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
-## 启用持续性能分析
-
-### 启用存储节点
-
-
-
-> **注意：**
->
-> 持续性能分析功能依赖于集群中部署有 ngm 组件。若集群中没有部署 ngm 组件，将无法使用持续性能分析功能。
-
-### 界面启用功能
-
-在持续分析页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮即开启功能：
-
-![界面]()
-
-可以修改保留时间。分析结果会持久化到磁盘中，超过保留时间会被回收。该配置对所有结果生效，包括历史结果。
 
 ## 查看性能分析历史结果
 
@@ -135,3 +147,6 @@ TiKV/TiFlash: CPU Profile
 ![界面]()
 
 
+## 停用持续性能分析
+
+在 TiDB Dashboard 的"**高级调试**" → "**实例性能分析**" → "**持续分析**"页面，点击**设置**，进入设置弹窗，关闭**启用功能**开关，点击**保存** (Save) 按钮，即可停用该功能。
