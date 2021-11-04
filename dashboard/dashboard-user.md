@@ -64,3 +64,6 @@ GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     ```
+
+## 登陆 Dashboard
+创建 TiDB Dashboard 自定义 SQL 用户后，你可以使用该账号密码[登录](https://docs.pingcap.com/zh/tidb/dev/dashboard-access#%E7%99%BB%E5%BD%95) TiDB Dashboard。�
