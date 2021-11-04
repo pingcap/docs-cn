@@ -40,9 +40,10 @@ TiDB 版本：5.3.0
 
 - 临时表：
 
-    - 如果在 v5.3.0 升级前创建了 session 临时表，这些临时表在升级后会被 TiDB 当成普通表处理，导致应用报错。在 v5.3.0 上创建的 global 临时表在降级后会被当作普通表处理，导致应用报错。
-    - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表]((/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。 如果 TiCDC 和 BR 的上游集群包含全局临时表，下游集群必须是 TiDB 5.3.0 及以上版本，否则同步报错。
-    - 更多关于临时表兼容性信息，请参考 [临时表与其他功能的兼容性](/temporary-table.md#与其他功能的兼容性)
+    - 如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级后也会被 TiDB 当成普通表处理。在 v5.3.0 上创建的全局临时表在降级后会被当作普通表处理，导致数据错误。
+    - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。 
+    - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则报错。
+    - 更多关于临时表兼容性信息，请参考 [临时表与其他功能的兼容性](/temporary-table.md#与其他-tidb-功能的兼容性限制)
     
 - 
 - 
@@ -219,7 +220,7 @@ TiDB 版本：5.3.0
 
 ## 部署及运维
 
-- **持续性能分析**
+- **持续性能分析（实验特性）**
 
     TiDB Dashboard 引入持续性能分析功能，提供在集群运行状态时自动保存实例性能分析结果的能力，通过火焰图的形式提高了 TiDB 集群性能的可观测性，有助于缩短故障诊断时间。
 
@@ -241,11 +242,13 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 
     - 当 coprocessor 遇到锁时，在调试日志中显示受影响的 SQL 语句帮助诊断问题 [#27718](https://github.com/pingcap/tidb/issues/27718)
     - 在 SQL 逻辑层备份和恢复数据时，支持显示备份和恢复数据的大小 [#27247](https://github.com/pingcap/tidb/issues/27247)
+    - 改进 `tidb_analyze_version=2` 时 ANALYZE 默认的收集逻辑，提高收集速度并且降低资源开销
+    - 引入语法 `ANALYZE TABLE table_name COLUMNS col_1, col_2, ..., col_n`，为宽表提供只收集一部分列统计信息的方案。提高宽表收集统计信息的速度。
 
 + TiKV
 
     - 简化 L0 层流控算法 [#10879](https://github.com/tikv/tikv/issues/10879)
-    - 优化 raft client 错误日志的收集 [#10983](https://github.com/tikv/tikv/pull/10983)
+    - 优化 raft client 错误日志的收集 [#10944](https://github.com/tikv/tikv/pull/10944)
     - 优化日志线程以避免其成为性能瓶颈 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 添加更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
 
