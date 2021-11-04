@@ -38,7 +38,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
 ![insufficient-privileges](/media/dashboard/dashboard-user-insufficient-privileges.png)
 
-## 创建自定义用户示例
+## 示例：创建一个最小权限 SQL 用户用于登录 TiDB Dashboard
 
 - 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，你可以通过执行以下示例 SQL 语句创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
