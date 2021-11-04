@@ -2,7 +2,8 @@
 title: PLAN REPLAYER
 summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 ---
-# `PLAN REPLAYER` 概览
+
+# PLAN REPLAYER
 
 用户在定位排查 TiDB 集群问题时，经常需要提供系统和查询计划相关的信息。为了帮助用户更方便地获取相关信息，更高效地排查集群问题，TiDB 在 v5.3.0 中引入了 `PLAN REPLAYER` 命令，用于“一键”保存和恢复现场问题的相关信息，提升查询计划问题诊断的效率，同时方便将问题归档管理。
 
