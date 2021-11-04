@@ -69,4 +69,4 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
 ## 登录 TiDB Dashboard
 
-创建 TiDB Dashboard 自定义 SQL 用户后，你可以使用该账号密码[登录](/dashboard/dashboard-access.md#登录) TiDB Dashboard。
+创建满足 TiDB Dashboard 权限要求的 SQL 用户后，你可以使用该用户[登录](/dashboard/dashboard-access.md#登录) TiDB Dashboard。
