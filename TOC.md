@@ -211,6 +211,7 @@
     + [术语表](/ticdc/ticdc-glossary.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
+    + [从 TiDB DM 拉取配置的数据校验](/sync-diff-inspector/dm-diff.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)

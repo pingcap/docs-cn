@@ -11,12 +11,12 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 
 * 对比表结构和数据
 * 如果数据不一致，则生成用于修复数据的 SQL 语句
-* 支持 [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
-* 支持 [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
+* 支持[不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
+* 支持[分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
 * 支持 [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-* 支持 [从 DM 拉取配置](/sync-diff-inspector/dm-diff.md)
+* 支持[从 TiDB DM 拉取配置的数据校验](/sync-diff-inspector/dm-diff.md)
 
-可通过以下方式下载 sync-diff-inspector：
+你可通过以下方式下载 sync-diff-inspector：
 
 + Binary 包。点击 [tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) 进行下载。
 + Docker 镜像。执行以下命令进行下载：
@@ -27,9 +27,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
     docker pull pingcap/tidb-enterprise-tools
     ```
 
-## sync-diff-inspector 的使用
-
-### 使用限制
+## sync-diff-inspector 的使用限制
 
 * 对于 MySQL 和 TiDB 之间的数据同步不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
 
@@ -39,7 +37,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 
 * 支持对不包含主键或者唯一索引的表进行校验，但是如果数据不一致，生成的用于修复的 SQL 可能无法正确修复数据。
 
-### 数据库权限
+## sync-diff-inspector 所需的数据库权限
 
 sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据库权限如下：
 
@@ -59,7 +57,7 @@ sync-diff-inspector 需要获取表结构信息、查询数据，需要的数据
 
     - RELOAD（查看表结构）
 
-### 配置文件说明
+## 配置文件说明
 
 sync-diff-inspector 的配置总共分为五个部分：
 
@@ -162,7 +160,7 @@ target-table = "t2" # 目标表名
     target-configs= ["config1"]
 ```
 
-### 运行 sync-diff-inspector
+## 运行 sync-diff-inspector
 
 执行如下命令：
 
@@ -174,10 +172,13 @@ target-table = "t2" # 目标表名
 
 该命令最终会在 `config.toml` 中的 `output-dir` 输出目录输出本次比对的检查报告 `summary.txt` 和日志 `sync_diff.log`。在输出目录下还会生成由 `config.toml` 文件内容哈希值命名的文件夹，该文件夹下包括断点续传 checkpoint 结点信息以及数据存在不一致时生成的 SQL 修复数据。
 
-#### 前台输出
+### 前台输出
 
 sync-diff-inspector 在执行过程中会往 `stdout` 发送进度信息。进度信息包括表的结构比较结果、表的数据比较结果以及进度条。
-> **建议：** 为了达成显示效果，请保持显示窗口宽度在80字符以上
+
+> **注意：**
+>
+> 为了达成显示效果，请保持显示窗口宽度在80字符以上。
 
 ```progress
 A total of 2 tables need to be compared
@@ -281,7 +282,7 @@ Average Speed: 113.277149MB/s
 REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'hello','world');
 ```
 
-### 注意事项
+## 注意事项
 
 * sync-diff-inspector 在校验数据时会消耗一定的服务器资源，需要避免在业务高峰期间校验。
 * TiDB 使用的 collation 为 `utf8_bin`。如果对 MySQL 和 TiDB 的数据进行对比，需要注意 MySQL 中表的 collation 设置。如果表的主键／唯一键为 varchar 类型，且 MySQL 中 collation 设置与 TiDB 不同，可能会因为排序问题导致最终校验结果不正确，需要在 sync-diff-inspector 的配置文件中增加 collation 设置。

@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/shard-diff/','/docs-cn/dev/reference
 
 # 分库分表场景下的数据校验
 
-sync-diff-inspector 支持对分库分表场景进行数据校验。例如有多个 MySQL 实例，使用同步工具 DM 同步到一个 TiDB 中，用户可以使用 sync-diff-inspector 对上下游数据进行校验。
+sync-diff-inspector 支持对分库分表场景进行数据校验。例如有多个 MySQL 实例，当你使用同步工具 [TiDB DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 同步到一个 TiDB 时，可以使用 sync-diff-inspector 对上下游数据进行校验。
 
 ## 使用 datasource config 进行配置
 
@@ -23,7 +23,7 @@ sync-diff-inspector 完整的示例配置如下：
 # 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# 如果开启，若表存在不一致，则输出用于修复的 SQL 语句。
+# 如果开启，若表存在不一致，则输出用于修复的 SQL 语句
 export-fix-sql = true
 
 # 只对比表结构而不对比数据
@@ -55,16 +55,16 @@ check-struct-only = false
 
 ########################### Routes ###########################
 [routes.rule1]
-schema-pattern = "test"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
-table-pattern = "table-[1-2]"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
+schema-pattern = "test"        # 匹配数据源的库名，支持通配符 "*" 和 "?"
+table-pattern = "table-[1-2]"  # 匹配数据源的表名，支持通配符 "*" 和 "?"
 target-schema = "test"         # 目标库名
-target-table = "table-0" # 目标表名
+target-table = "table-0"       # 目标表名
 
 [routes.rule2]
 schema-pattern = "test"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
-table-pattern = "table-3"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
-target-schema = "test"         # 目标库名
-target-table = "table-0" # 目标表名
+table-pattern = "table-3"    # 匹配数据源的表名，支持通配符 "*" 和 "?"
+target-schema = "test"       # 目标库名
+target-table = "table-0"     # 目标表名
 
 ######################### Task config #########################
 [task]
@@ -129,9 +129,9 @@ check-struct-only = false
 ########################### Routes ###########################
 [routes.rule1]
 schema-pattern = "test"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
-table-pattern = "table-*"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
-target-schema = "test"         # 目标库名
-target-table = "table-0" # 目标表名
+table-pattern = "table-*"    # 匹配数据源的表名，支持通配符 "*" 和 "?"
+target-schema = "test"       # 目标库名
+target-table = "table-0"     # 目标表名
 
 ######################### Task config #########################
 [task]
@@ -147,9 +147,8 @@ target-table = "table-0" # 目标表名
 
     # tables need to check. *Include `schema` and `table`. Use `.` to split*
     target-check-tables = ["test.table-0"]
-
 ```
 
 ## 注意事项
 
-1. 如果上游数据库有 `table_0` 也会被下游数据库匹配到。
+如果上游数据库有 `table_0` 也会被下游数据库匹配到。

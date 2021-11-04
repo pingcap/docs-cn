@@ -5,9 +5,9 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference
 
 # 不同库名或表名的数据校验
 
-用户在使用 DM 等同步工具时，可以设置 `route-rules` 将数据同步到下游指定表中。sync-diff-inspector 通过设置`rules`提供了校验不同库名、表名的表的功能。
+当你在使用 [TiDB DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 等同步工具时，可以设置 `route-rules` 将数据同步到下游指定表中。sync-diff-inspector 通过设置 `rules` 提供了校验不同库名、表名的表的功能。
 
-下面是一个简单的例子：
+下面是一个简单的配置文件说明，要了解完整配置，请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 
 ```toml
 ######################### Datasource config #########################
@@ -56,12 +56,11 @@ target-table = "t_2" # 目标表名
 ########################### Routes ###########################
 [routes.rule1]
 schema-pattern = "test_1"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
-table-pattern = "*"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
-target-schema = "test_2"         # 目标库名
-target-table = "t_2" # 目标表名
+table-pattern = "*"            # 匹配数据源的表名，支持通配符 "*" 和 "?"
+target-schema = "test_2"       # 目标库名
+target-table = "t_2"           # 目标表名
 ```
 
 ## 注意事项
 
-1. 如果上游数据库有 `t_2` 也会被下游数据库匹配到。
-2. 以上配置只展示 route-rules 部分，并不完全。完整配置请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
+如果上游数据库有 `t_2` 也会被下游数据库匹配到。
