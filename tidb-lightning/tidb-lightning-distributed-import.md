@@ -122,7 +122,6 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 你也可以通过 `lightning.check-requirements` 配置来关闭检查，执行强制导入。更多详细检查内容，可以查看[Lightning 执行前检查项](/tidb-lightning/tidb-lightning-prechecks.md)
 
-
 ### 第 4 步：查看进度
 
 开始导入后，可以通过以下任意方式查看进度：
