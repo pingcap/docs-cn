@@ -7,14 +7,14 @@ summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
 
 从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义的 SQL 用户登录访问，你可以为自定义 SQL 用户指定所需要的权限。
 
-- 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security)时，要访问 TiDB Dashboard，需要为自定义的 SQL 用户赋予 `ALL PRIVILEGES` 权限或者以下**所有**权限：
+- 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，要访问 TiDB Dashboard，需要为自定义的 SQL 用户赋予 `ALL PRIVILEGES` 权限或者以下**所有**权限：
 
     - PROCESS
     - SHOW DATABASES
     - CONFIG
     - DASHBOARD_CLIENT 或者 SUPER
 
-- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security)时，要访问 TiDB Dashboard，需要为自定义的 SQL 用户赋予 `ALL PRIVILEGES` 权限或者以下**所有**权限：
+- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，要访问 TiDB Dashboard，需要为自定义的 SQL 用户赋予 `ALL PRIVILEGES` 权限或者以下**所有**权限：
 
     - PROCESS
     - SHOW DATABASES
@@ -36,7 +36,7 @@ summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
 
 ## 创建自定义用户示例
 
-- 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security)时，你可以通过执行以下示例 SQL 语句可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
+- 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，你可以通过执行以下示例 SQL 语句可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
 ```sql
 CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
@@ -48,7 +48,7 @@ GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
 GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
 ```
 
-- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security)时，你可以通过执行以下示例 SQL 语句可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
+- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，你可以通过执行以下示例 SQL 语句可以创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
     ```sql
     CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
