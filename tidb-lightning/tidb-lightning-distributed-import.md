@@ -18,11 +18,13 @@ TiDB Lightning 并行导入可以用于以下场景：
 >
 > 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 
-下图展示了并行导入分库分表的工作流程。
+下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB集群。
+
 
 ![并行导入分库分表](/media/parallel-import-shard-tables.png)
 
-下图展示了并行导入单表的工作流程。
+下图展示了并行导入单表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例，将单个表中的数据拆分后，并行导入到下游的 TiDB集群。
+
 
 ![并行导入单表](/media/parallel-import-single-tables.png)
 
@@ -111,6 +113,14 @@ target-table = "my_table"
 # !/bin/bash
 nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
+
+在并行导入的场景下，iDB Lightning 在启动任务之后，会自动进行下列检查：
+
+- 检查本地盘空间以及 TiKV 集群是否有足够空间导入数据。检查时会对数据源进行采样，通过采样结果预估索引大小占比。由于估算中考虑了索引，因此可能会出现尽管数据源大小低于本地盘可用空间，但依然无法通过检测的情况。
+- 检查 TiKV 集群的 region 分布是否均匀，以及是否存在大量空 region，如果存在大量空 region，则无法执行导入。
+- 检查数据源导入数据是否有序，并且根据检查结果自动调整 `mydumper.batch-size` 的大小。因此 `mydumper.batch-size` 配置不再对用户开放。
+
+你也可以通过 `lightning.check-requirements` 配置来关闭检查，执行强制导入。
 
 ### 第 4 步：查看进度
 
