@@ -1229,7 +1229,7 @@ logic:  120102
 Success!
 ```
 
-显示当前正在运行的 Online Unsafe Recover 的当前或历史状态。
+显示正在运行的 Online Unsafe Recover 的当前状态或历史状态。
 
 ```bash
 >> unsafe remove-failed-stores show
