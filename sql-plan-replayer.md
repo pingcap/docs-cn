@@ -22,7 +22,8 @@ summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement;
 ```
 
-TiDB 会根据 `sql-statement` 整理出相关现场，包括：
+TiDB 根据 `sql-statement` 整理出以下集群现场信息：
+
 - TiDB 版本信息
 - TiDB 配置信息
 - TiDB 系统变量
