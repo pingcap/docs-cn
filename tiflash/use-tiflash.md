@@ -242,17 +242,17 @@ In TiDB, operators are organized in a tree structure. For an operator to be push
 
 Currently, TiFlash supports the following push-down expressions:
 
-* Mathematical functions: `+, -, /, *, %, >=, <=, =, !=, <, >, round(int), round(double), round(decimal), abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
+* Mathematical functions: `+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
 * Logical functions: `and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
 * Bitwise operations: `bitand, bitor, bigneg, bitxor`
-* String functions: `substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
-* Date functions: `date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
+* String functions: `substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index`
+* Date functions: `date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate`
 * JSON function: `json_length`
-* Conversion functions: `cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
-* Aggregate functions: `min, max, sum, count, avg, approx_count_distinct`
+* Conversion functions: `cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
+* Aggregate functions: `min, max, sum, count, avg, approx_count_distinct, group_concat`
 * Miscellaneous functions: `inetntoa, inetaton, inet6ntoa, inet6aton`
 
-In addition, expressions that contain the Time/Bit/Set/Enum/Geometry type cannot be pushed down to TiFlash.
+In addition, expressions that contain the Bit/Set/Geometry type cannot be pushed down to TiFlash.
 
 If a query encounters unsupported push-down calculations, TiDB needs to complete the remaining calculations, which might greatly affect the TiFlash acceleration effect. The currently unsupported operators and expressions might be supported in future versions.
 
