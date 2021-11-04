@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard 用户管理
-summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
+summary: 了解如何创建 SQL 用户用于访问 TiDB Dashboard
 ---
 
 # TiDB Dashboard 用户管理
