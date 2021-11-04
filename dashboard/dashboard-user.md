@@ -32,7 +32,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
     - SYSTEM_VARIABLES_ADMIN
 
-如果自定义的 SQL 用户的权限未满足要求时，该用户将无法登录 TiDB Dashboard。如下图所示：
+如果登录 TiDB Dashboard 时指定的 SQL 用户未满足上述权限需求，则登录将失败，如下图所示：
 
 ![insufficient-privileges](/media/dashboard/dashboard-user-insufficient-privileges.png)
 
