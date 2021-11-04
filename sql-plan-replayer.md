@@ -73,7 +73,8 @@ http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_to
 其中，`${tidb-server-ip}:${tidb-server-status-port}` 是集群中任意 TiDB server 的地址。
 一个例子：
 
-{{< copyable "bash" >}}
+{{< copyable "shell-regular" >}}
+
 ```
 curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip?forward=true > plan_replayer.zip
 ```
