@@ -67,7 +67,7 @@ MySQL [test]> plan replayer dump explain select * from t;
 {{< copyable "shell-regular" >}}
 
 ```
-http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_token}?forward=true
+http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_token}
 ```
 
 其中，`${tidb-server-ip}:${tidb-server-status-port}` 是集群中任意 TiDB server 的地址。
@@ -80,6 +80,10 @@ curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJf
 ```
 
 ## 使用 `PLAN REPLAYER` 导入集群信息
+
+> **警告：**
+>
+> `PLAN REPLAYER` 在一个 TiDB 集群上导入另一集群的现场信息，会修改导入集群的 TiDB 系统变量、执行计划绑定信息、表结构和统计信息。
 
 有 `PLAN REPLAYER` 导出的 `ZIP` 文件后，便可以通过 `PLAN REPLAYER` 导入接口在任意 TiDB 集群上恢复另一集群地现场信息。语法如下：
 
@@ -98,8 +102,3 @@ PLAN REPLAYER LOAD 'file_name';
 ```
 PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
-
-> **注意：**
->
-> `PLAN REPLAYER` 在一个 TiDB 集群上导入另一集群的现场信息，会修改导入集群的 TiDB 系统变量、执行计划绑定信息、表结构和统计信息。
-
