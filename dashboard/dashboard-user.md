@@ -18,7 +18,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     - CONFIG
     - DASHBOARD_CLIENT
 
-- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，要访问 TiDB Dashboard，需要为自定义的 SQL 用户赋予 `ALL PRIVILEGES` 权限或者以下**所有**权限：
+- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，要访问 TiDB Dashboard，SQL 用户应当拥有以下**所有**权限：
 
     - PROCESS
     - SHOW DATABASES
