@@ -84,6 +84,7 @@
   + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
+  + [保存和恢复集群现场信息](/sql-plan-replayer.md)
   + [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
   + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
@@ -417,6 +418,7 @@
       + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md)
     + [分区表](/partitioned-table.md)
+    + [临时表](/temporary-table.md)
     + [字符集和排序规则](/character-set-and-collation.md)
     + 系统表
       + [`mysql`](/mysql-schema.md)
@@ -474,6 +476,7 @@
       + 运维
         + [部署](/dashboard/dashboard-ops-deploy.md)
         + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
+        + [用户管理](/dashboard/dashboard-user.md)
         + [安全](/dashboard/dashboard-ops-security.md)
       + [访问](/dashboard/dashboard-access.md)
       + [概况页面](/dashboard/dashboard-overview.md)
