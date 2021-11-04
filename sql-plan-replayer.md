@@ -39,6 +39,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 ### `PLAN REPLAYER` 导出示例
 
 {{< copyable "sql" >}}
+
 ```
 use test;
 create table t(a int, b int);
