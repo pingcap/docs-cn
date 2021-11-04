@@ -186,7 +186,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 > 目前自动更新无法记录手动 ANALYZE 时输入的配置项。因此当通过 `WITH` 语句控制 ANALYZE 的收集行为时，目前需要手动设置定时任务收集统计信息。
 >
 > {{< copyable "sql" >}}
-
+>
 > ```sql
 > [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 > ```
