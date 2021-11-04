@@ -418,6 +418,7 @@
       + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md)
     + [分区表](/partitioned-table.md)
+    + [临时表](/temporary-table.md)
     + [字符集和排序规则](/character-set-and-collation.md)
     + 系统表
       + [`mysql`](/mysql-schema.md)
