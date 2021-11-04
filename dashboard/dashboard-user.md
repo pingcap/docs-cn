@@ -65,5 +65,6 @@ GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     ```
 
-## 登陆 Dashboard
-创建 TiDB Dashboard 自定义 SQL 用户后，你可以使用该账号密码[登录](https://docs.pingcap.com/zh/tidb/dev/dashboard-access#%E7%99%BB%E5%BD%95) TiDB Dashboard。�
+## 登录 Dashboard
+
+创建 TiDB Dashboard 自定义 SQL 用户后，你可以使用该账号密码[登录](/dashboard-access.md#登录) TiDB Dashboard。
