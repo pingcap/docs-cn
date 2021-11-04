@@ -26,6 +26,8 @@ TiDB 的临时表分为本地临时表和全局临时表：
 - 在会话结束后，该会话创建的本地临时表会自动删除
 - 本地临时表可以与普通表同名，此时在 DDL 和 DML 语句中，普通表被隐藏，直到本地临时表被删除
 
+用户可通过 `CREATE TEMPORARY TABLE` 语句创建本地临时表，通过 `DROP TABLE` 或 `DROP TEMPORARY TABLE` 语句删除本地临时表。
+
 不同于 MySQL，TiDB 本地临时表都是外部表，SQL 语句不会创建内部临时表。
 
 ### 示例
@@ -154,6 +156,8 @@ TiDB 本地临时表与 MySQL 临时表有以下方面不兼容：
 - 全局临时表的表定义会持久化，对所有会话可见
 - 全局临时表的数据只对当前的事务内可见，事务结束后数据自动清空
 - 全局临时表不能与普通表同名
+
+用户可通过 `CREATE GLOBAL TEMPORARY TABLE` 语句创建全局临时表，语句末尾要加上 `ON COMMIT DELETE ROWS`。可通过 `DROP TABLE` 或 `DROP GLOBAL TEMPORARY TABLE` 语句删除全局临时表。
 
 ### 示例
 
