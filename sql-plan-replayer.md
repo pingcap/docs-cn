@@ -12,7 +12,7 @@ summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 - 导出排查现场 TiDB 集群的相关信息，导出为 ZIP 格式的文件用于保存。
 - 在任意 TiDB 集群上导入另一 TiDB 集群现场信息的 ZIP 文件。 
 
-## `PLAN REPLAYER` 导出
+## 使用 `PLAN REPLAYER` 导出集群信息
 
 `PLAN REPLAYER` 可以用来保存单个 SQL 的现场。导出接口如下：
 
