@@ -13,7 +13,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
 
 TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下，TiDB 的 `root` 用户没有密码，因而访问 TiDB Dashboard 也不需要密码验证。这将会给恶意访问者极大的集群权限，包括执行特权 SQL 等。
 
-建议为 TiDB `root` 用户设置一个强密码。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
+建议的措施：
+
+- 为 TiDB 的 `root` 用户设置一个强密码，或禁用 `root` 账户。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
 
 ### 创建只拥有指定权限的非 root 用户
 
