@@ -872,7 +872,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `avg(irate(node_cpu{mode="idle"}[5m])) by(instance) * 100 <= 20`
+    `avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by(instance) * 100 <= 20`
 
 * 规则描述：
 
@@ -901,7 +901,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `((rate(node_disk_read_time_ms{device=~".+"}[5m]) / rate(node_disk_reads_completed{device=~".+"}[5m])) or (irate(node_disk_read_time_ms{device=~".+"}[5m]) / irate(node_disk_reads_completed{device=~".+"}[5m]))) > 32`
+    `((rate(node_disk_read_time_seconds_total{device=~".+"}[5m]) / rate(node_disk_reads_completed_total{device=~".+"}[5m])) or (irate(node_disk_read_time_seconds_total{device=~".+"}[5m]) / irate(node_disk_reads_completed_total{device=~".+"}[5m])) ) * 1000 > 32`
 
 * 规则描述：
 
@@ -917,7 +917,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `((rate(node_disk_write_time_ms{device=~".+"}[5m]) / rate(node_disk_writes_completed{device=~".+"}[5m])) or (irate(node_disk_write_time_ms{device=~".+"}[5m]) / irate(node_disk_writes_completed{device=~".+"}[5m])))> 16`
+    `((rate(node_disk_write_time_seconds_total{device=~".+"}[5m]) / rate(node_disk_writes_completed_total{device=~".+"}[5m])) or (irate(node_disk_write_time_seconds_total{device=~".+"}[5m]) / irate(node_disk_writes_completed_total{device=~".+"}[5m])))> 16`
 
 * 规则描述：
 
