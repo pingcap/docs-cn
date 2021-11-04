@@ -38,9 +38,9 @@ Online Unsafe Recover 功能适用于以下场景：
 
 ## 第 1 步：关闭各类调度
 
-暂时关闭负载均衡等各类内部调度。关闭后，建议等待约 XX 小时，使已经触发的调度能有充分的时间完成调度任务。
+暂时关闭负载均衡等各类内部调度。关闭后，建议等待约 1 小时，使已经触发的调度能有充分的时间完成调度任务。
 
-1. 使用 pd-ctl 执行 [`config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
+1. 使用 pd-ctl 执行 [{{< copyable "shell-regular" >}} `config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
 2. 使用 pd-ctl 关闭各类调度：
   * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
   * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
