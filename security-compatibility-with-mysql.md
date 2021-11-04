@@ -26,11 +26,12 @@ The support for TLS authentication is configured differently. For detailed infor
 | `mysql_native_password`  | Yes              |
 | `sha256_password`        | No               |
 | `caching_sha2_password`  | Yes, since 5.2.0 |
-| `auth_socket`            | No               |
+| `auth_socket`            | Yes, since 5.3.0 |
 | [TLS Certificates]       | Yes              |
 | LDAP                     | No               |
 | PAM                      | No               |
 | ed25519 (MariaDB)        | No               |
 | GSSAPI (MariaDB)         | No               |
+| FIDO                     | No               |
 
 [TLS Certificates]: /enable-tls-between-clients-and-servers.md
