@@ -123,7 +123,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 ### 临时表
 
-详见 [TiDB 本地临时表与 MySQL 临时表的兼容性](/temporary-table.md#与-MySQL-临时表的兼容性)。
+详见 [TiDB 本地临时表与 MySQL 临时表的兼容性](/temporary-table.md#与-mysql-临时表的兼容性)。
 
 ### 存储引擎
 
