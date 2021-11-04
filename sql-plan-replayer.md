@@ -79,7 +79,7 @@ http://${tidb-server-ip}:${tidb-server-status-port}/plan_replayer/dump/${file_to
 curl http://127.0.0.1:10080/plan_replayer/dump/replayer_single_JOGvpu4t7dssySqJfTtS4A==_1635750890568691080.zip?forward=true > plan_replayer.zip
 ```
 
-## `PLAN REPLAYER` 导入
+## 使用 `PLAN REPLAYER` 导入集群信息
 
 有 `PLAN REPLAYER` 导出的 `ZIP` 文件后，便可以通过 `PLAN REPLAYER` 导入接口在任意 TiDB 上恢复现场。语法如下：
 
