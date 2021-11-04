@@ -17,6 +17,7 @@ summary: TiDB 数据库中 PLAN REPLAYER 的使用概况。
 你可以使用 `PLAN REPLAYER` 来保存 TiDB 集群的现场信息。导出接口如下：
 
 {{< copyable "sql" >}}
+
 ```
 PLAN REPLAYER DUMP EXPLAIN [ANALYZE] sql-statement
 ```
