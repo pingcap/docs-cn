@@ -7,6 +7,8 @@ summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
 
 从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义的 SQL 用户登录访问，你可以为自定义 SQL 用户指定所需要的权限。
 
+## 所需权限说明
+
 - 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，要访问 TiDB Dashboard，需要为自定义的 SQL 用户赋予 `ALL PRIVILEGES` 权限或者以下**所有**权限：
 
     - PROCESS
