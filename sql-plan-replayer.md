@@ -29,7 +29,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 - TiDB 系统变量
 - TiDB 执行计划绑定信息（SQL Binding）
 - `sql-statement` 中所包含的表结构
-- `sql-statement` 中所包含的表的统计信息
+- `sql-statement` 中所包含表的统计信息
 - `EXPLAIN [ANALYZE] sql-statement` 的结果
 
 > **注意：**
