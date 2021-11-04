@@ -120,7 +120,8 @@ nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 - 检查 TiKV 集群的 region 分布是否均匀，以及是否存在大量空 region，如果存在大量空 region，则无法执行导入。
 - 检查数据源导入数据是否有序，并且根据检查结果自动调整 `mydumper.batch-size` 的大小。因此 `mydumper.batch-size` 配置不再对用户开放。
 
-你也可以通过 `lightning.check-requirements` 配置来关闭检查，执行强制导入。
+你也可以通过 `lightning.check-requirements` 配置来关闭检查，执行强制导入。更多详细检查内容，可以查看[Lightning 执行前检查项](/tidb-lightning/tidb-lightning-prechecks.md)
+
 
 ### 第 4 步：查看进度
 
