@@ -84,7 +84,7 @@
   + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
-  + [保存和恢复集群现场信息](/sql-plan-player.md)
+  + [保存和恢复集群现场信息](/sql-plan-replayer.md)
   + [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
   + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
