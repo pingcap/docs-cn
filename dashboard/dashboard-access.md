@@ -45,8 +45,6 @@ TiDB Dashboard 可在常见的、更新及时的桌面浏览器中使用，具�
 
 登录后，24 小时内将保持自动登录状态。参见[登出](#登出)章节了解如何登出用户。
 
-从 TiDB 5.3 开始，TiDB Dashboard 支持使用自定义 SQL 用户登录，参见 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)了解详情。
-
 ## 切换语言
 
 TiDB Dashboard 目前支持以下语言：
