@@ -40,15 +40,15 @@ summary: 了解如何创建 TiDB Dashboard 自定义 SQL 用户
 
 - 当所连接的 TiDB 服务器未启用[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，你可以通过执行以下示例 SQL 语句创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
-```sql
-CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
-GRANT PROCESS, CONFIG ON *.* TO 'dashboardAdmin'@'%';
-GRANT SHOW DATABASES ON *.* TO 'dashboardAdmin'@'%';
-GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
+    ```sql
+    CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
+    GRANT PROCESS, CONFIG ON *.* TO 'dashboardAdmin'@'%';
+    GRANT SHOW DATABASES ON *.* TO 'dashboardAdmin'@'%';
+    GRANT DASHBOARD_CLIENT ON *.* TO 'dashboardAdmin'@'%';
 
--- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
-GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
-```
+    -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
+    GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
+    ```
 
 - 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，你可以通过执行以下示例 SQL 语句创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
 
