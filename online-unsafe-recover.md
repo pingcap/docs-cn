@@ -49,6 +49,7 @@ Online Unsafe Recover 功能适用于以下场景：
 ## 第 2 步：移除无法自动恢复的节点
 
 使用 pd-ctl 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history)命令，移除无法自动恢复的节点。
+
 > **注意：**
 >
 > 此命令成功返回代表请求已被接受，节点实际会在后台进行恢复。
