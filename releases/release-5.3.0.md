@@ -114,15 +114,6 @@ TiDB 版本：5.3.0
 - **提升 TiFlash 实时分析能力**
 
     - 降低远端数据读取的开销，减少网络传输量
-    - 大幅优化 TiFlash TableScan 算子的执行效率
-    - 新增更多的函数支持，提升
-        - 新增运算符支持：LIKE expression
-        - 新增若干字符串函数支持：FORMAT(), LOWER(), LTRIM(), RTRIM(), SUBSTRING_INDEX(), TRIM(), UCASE(), UPPER()
-        - 新增数学函数支持：ROUND(decimal, int)
-        - 新增若干日期时间函数支持：HOUR(), MICROSECOND(), MINUTE(), SECOND(), SYSDATE()
-        - 新增 CAST 函数支持：CAST(time, real)
-        - 新增若干聚合函数支持：GROUP_CONCAT(), SUM(enum)
-
     - 支持在非 Linux 平台上，使用 Dashboard 查看硬件信息
 
     [用户文档](/)  
