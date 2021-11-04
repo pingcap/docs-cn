@@ -1219,7 +1219,7 @@ logic:  120102
 
 用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
 
-执行 Online Unsafe Recover，移除永久损坏的节点 (Store):
+执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
 
 ```bash
 >> unsafe remove-failed-stores 101,102,103
@@ -1229,7 +1229,7 @@ logic:  120102
 Success!
 ```
 
-显示正在运行的 Online Unsafe Recover 的当前状态或历史状态。
+显示正在运行的 Online Unsafe Recovery 的当前状态或历史状态。
 
 ```bash
 >> unsafe remove-failed-stores show
