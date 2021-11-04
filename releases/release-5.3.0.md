@@ -260,6 +260,25 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
     - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
 
++ TiFlash
+
+    - 显著优化了 TableScan 算子的执行效率
+    - 减少了存储引擎的 GC 过程中的写放大和内存使用
+    - 改进了 TiFlash 重启时的稳定性和可用性，减少了重启结束后短时间内查询可能失败的情况
+    - 增加支持下推多个新的字符串，时间等函数到 MPP 引擎
+
+        - 字符串函数：LIKE pattern，FORMAT(), LOWER(), LTRIM(), RTRIM(), SUBSTRING_INDEX(), TRIM(), UCASE(), UPPER()
+        - 数学函数：ROUND(decimal, int)
+        - 日期时间函数：HOUR(), MICROSECOND(), MINUTE(), SECOND(), SYSDATE()
+        - 类型转换函数：CAST(time, real)
+        - 聚合函数：GROUP_CONCAT(), SUM(enum)
+
+    - 提供了 512 位 SIMD 支持
+    - 增强了对过期的数据版本的清理算法，减少磁盘使用量及提高读文件性能
+    - 解决了用户在某些非Linux平台系统上查看 dashboard 时，无法获取内存或CPU等相关信息
+    - 统一 TiFlash 日志文件的命名风格（与 TiKV 保持一致），并支持动态修改 logger.count、logger.size
+    - 完善了列存文件的数据校验能力（checksums，实验功能）
+
 + Tools
 
     + TiCDC
@@ -332,6 +351,14 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 + TiFlash
 
     - 修复 TiFlash 在部分平台上由于缺失 `nsl` 库而无法启动的问题
+    - 阻止 wait index 无限等待，防止写入压力较重时 TiFlash 长时间等待数据同步而无法提供服务的问题（新增默认超时为5分钟）
+    - 解决了当日志体量很大时，用户搜索日志很慢或搜索不出的问题
+    - 解决了搜索比较久远的历史日志时，只能搜索出最近的一部分日志的问题
+    - 修复在打开 new collation 的情况下可能出现的结果错误
+    - 修复 SQL 语句中含有极长嵌套表达式时可能出现的解析错误
+    - 修复 Exchange 算子中可能出现的 `Block schema mismatch` 错误
+    - 修复 Decimal 类型比较时可能出现的 `Can't compare` 错误
+    - 修复 `left/substring` 函数中的 `3rd arguments of function substringUTF8 must be constants` 错误 
 
 + Tools
 
