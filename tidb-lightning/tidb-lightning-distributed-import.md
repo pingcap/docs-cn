@@ -114,7 +114,7 @@ target-table = "my_table"
 nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
-在并行导入的场景下，iDB Lightning 在启动任务之后，会自动进行下列检查：
+在并行导入的场景下，TiDB Lightning 在启动任务之后，会自动进行下列检查：
 
 - 检查本地盘空间以及 TiKV 集群是否有足够空间导入数据。检查时会对数据源进行采样，通过采样结果预估索引大小占比。由于估算中考虑了索引，因此可能会出现尽管数据源大小低于本地盘可用空间，但依然无法通过检测的情况。
 - 检查 TiKV 集群的 region 分布是否均匀，以及是否存在大量空 region，如果存在大量空 region，则无法执行导入。
