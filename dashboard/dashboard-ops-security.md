@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
 
 尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供可信的用户实体访问。当你希望将 TiDB Dashboard 提供给外部网络用户或不可信用户访问时，需要注意采取以下措施以避免安全漏洞。
 
-## 为 TiDB 用户安全性
+## 提高 TiDB 用户安全性
 
 ### 为 `root` 用户设置强密码
 
