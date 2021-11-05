@@ -68,13 +68,7 @@ TiKV/TiFlash: CPU Profile
         tiup update cluster
         ```
 
-3. 重启 Prometheus 节点：
-
-        ```shell
-        tiup cluster reload ${cluster-name} --role prometheus
-        ```
-
-重启后，完成启动前检查。
+升级后，完成启动前检查。
 
 #### 启动功能流程
 
