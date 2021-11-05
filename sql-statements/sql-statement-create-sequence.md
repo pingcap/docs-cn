@@ -47,7 +47,6 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     [ START [ WITH | = ] start ]
     [ CACHE [=] cache | NOCACHE | NO CACHE]
     [ CYCLE | NOCYCLE | NO CYCLE]
-    [ ORDER | NOORDER | NO ORDER]
     [table_options]
 ```
 
@@ -62,7 +61,6 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 | `START` | `MINVALUE` 或 `MAXVALUE` | 指定序列的初始值。当 `INCREMENT` > `0` 时，默认值为 `MINVALUE`; 当 `INCREMENT` < `0` 时，默认值为 `MAXVALUE`。|
 | `CACHE` | `1000` | 指定每个 TiDB 本地缓存序列的大小。|
 | `CYCLE` | `NO CYCLE` | 指定序列用完之后是否要循环使用。在 `CYCLE` 的情况下，当 `INCREMENT` > `0` 时，序列用完后的后续起始值为 `MINVALUE`；当 `INCREMENT` < `0` 时，序列用完后的后续起始值为 `MAXVALUE`。|
-| `ORDER` | `NO ORDER` | TiDB 暂时不支持 `ORDER` 选项，仅在语法上做兼容。|
 
 ## `SEQUENCE` 函数
 
