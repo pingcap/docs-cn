@@ -9,8 +9,8 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 > **注意：** 
 > 
-> - 目前仅支持添加 `merge_option` 属性。
-> - 在使用 TiDB Binlog 或 TiCDC 进行同步以及使用 BR 进行增量备份的时候会跳过该 DDL，如需使用，需要手动在下游或者备份集群执行。
+> - 目前 TiDB 仅支持为表或分区添加 `merge_option` 属性，用于控制 Region 合并。
+> - 当使用 TiDB Binlog 或 TiCDC 进行同步或者使用 BR 进行增量备份时，同步和备份会跳过表属性设置的 DDL。如需在下游或者备份集群使用表属性，需要在下游或者备份集群手动执行表属性设置的 DDL。
 
 ## 使用方法
 
