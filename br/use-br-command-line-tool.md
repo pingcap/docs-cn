@@ -226,7 +226,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 自 TiDB v5.3.0 起， TiDB 开始支持备份加密功能，你可配置下列参数在备份过程中到达加密数据的效果：
 
-* `--crypter.method`：加密算法，支持 `aes128-ctr/aes192-ctr/aes256-ctl` 三种算法，缺省值为 `plaintext`，表示不加密
+* `--crypter.method`：加密算法，支持 `aes128-ctr/aes192-ctr/aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
 * `--crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节
 * `--crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 crypter.key 不需要传入
 
