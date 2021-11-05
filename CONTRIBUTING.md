@@ -34,6 +34,7 @@ Currently, we maintain the following versions of TiDB documentation, each with a
 | Docs branch name | Version description |
 | :--- | :--- |
 | `master` branch | the latest development version |
+| `release-5.3` branch | the 5.3 stable version |
 | `release-5.2` branch | the 5.2 stable version |
 | `release-5.1` branch | the 5.1 stable version |
 | `release-5.0` branch | the 5.0 stable version |
@@ -53,6 +54,7 @@ Currently, we maintain the following versions of TiDB documentation, each with a
 - If your changes apply to only one docs version, just submit a PR to the corresponding version branch.
 
 - If your changes apply to multiple docs versions, you don't have to submit a PR to each branch. Instead, after you submit your PR, trigger the ti-chi-bot to submit a PR to other version branches by adding one or several of the following labels as needed. Once the current PR is merged, ti-chi-bot will start to work.
+    - `needs-cherry-pick-5.3` label: ti-chi-bot will submit a PR to the `release-5.3` branch.
     - `needs-cherry-pick-5.2` label: ti-chi-bot will submit a PR to the `release-5.2` branch.
     - `needs-cherry-pick-5.1` label: ti-chi-bot will submit a PR to the `release-5.1` branch.
     - `needs-cherry-pick-5.0` label: ti-chi-bot will submit a PR to the `release-5.0` branch.
