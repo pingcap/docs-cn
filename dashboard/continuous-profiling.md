@@ -21,7 +21,7 @@ TiKV/TiFlash: CPU Profile
 
 > **注意：**
 >
-> 持续性能分析功能可在 x86 架构下完整使用，但 TiKV 和 TiFlash 的支持还不完整。
+> 在 TiDB v5.3 版本，持续性能分析功能可在 x86 架构下完整使用，但 TiKV 和 TiFlash 的支持还不完整。
 
 ## 启用持续性能分析
 
@@ -40,7 +40,9 @@ TiKV/TiFlash: CPU Profile
 
 1. 检查 TiUP 版本：
 
-        ```
+        {{< copyable "shell-regular" >}}
+        
+        ```shell-regular
         tiup cluster --version
         ```
 
@@ -58,13 +60,17 @@ TiKV/TiFlash: CPU Profile
     
     - 升级 TiUP：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell-regular
         tiup update --self
         ```
         
     - 升级 TiUP Cluster：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell-regular
         tiup update cluster
         ```
 
@@ -76,7 +82,9 @@ TiKV/TiFlash: CPU Profile
 
     - 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell-regular
         tiup cluster edit-config ${cluster-name}
         ```
         
@@ -90,7 +98,9 @@ TiKV/TiFlash: CPU Profile
 
     - 重启 Prometheus 节点：
 
-        ```
+        {{< copyable "shell-regular" >}}
+
+        ```shell-regular
         tiup cluster reload ${cluster-name} --role prometheus
         ```
 
