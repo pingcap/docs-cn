@@ -244,6 +244,10 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 
 + TiKV
 
+    - 增强磁盘空间防护能力，提升存储稳定性。
+
+        针对 TiKV 遇到磁盘写满错误时可能 Panic 的问题，为磁盘剩余空间引入两级阈值防御机制，避免超额流量耗尽磁盘空间。同时，提供阈值触发时的空间回收能力。当剩余空间触发阈值时，部分写操作会失败，并返回 disk full 错误和盘满节点列表。此时，可以通过 `Drop/Truncate Table` 或者扩容等方式来回收空间，恢复服务。
+
     - 简化 L0 层流控算法 [#10879](https://github.com/tikv/tikv/issues/10879)
     - 优化 raft client 错误日志的收集 [#10944](https://github.com/tikv/tikv/pull/10944)
     - 优化日志线程以避免其成为性能瓶颈 [#10841](https://github.com/tikv/tikv/issues/10841)
