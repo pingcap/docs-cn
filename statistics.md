@@ -109,6 +109,7 @@ ANALYZE TABLE TableName Columns [ColumnNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH
 > **注意：**
 >
 > ColumnNameList 不可为空。
+> 该语法是全量收集的语法，如果遇到第一次收集了列 a 和 列 b 的统计信息之后想要增加列 c 的统计信息，需要同时指定三列 `ANALYZE table t columns a, b, c`，而不是 `ANALYZE TABLE t COLUMNS c`。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
