@@ -24,7 +24,8 @@ TiDB 版本：5.3.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-|tidb_enable_noop_functions  | 修改 | 此变量不再控制 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+|tidb_enable_noop_functions  | 修改 | 此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+| `tmp_table_size` | 修改 | 更名为 `tidb_tmp_table_size`，不再保留 `tmp_table_size`。升级前global 级别tmp_table_size 有值，升级后需要手动转换为tidb_tmp_table_size。 |
 | tidb_tmp_table_max_size | 新增  | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
 |  |  |  |
 
@@ -32,8 +33,13 @@ TiDB 版本：5.3.0
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-|  |  |  |
-|  |  |  |
+| TiDB |  |  |
+| TiKV | storage.reserve-space  | 原磁盘占位符 `storage.reserve-space` 会按功能进行拆分，其中的 20% 为磁盘文件用作硬防御，80% 用作软防御，空间回收。 |
+|  | memory-usage-limit  | 以前的版本没有 memory-usage-limit 参数， 升级后改参数值根据 storage.block-cache.capacity来计算 |
+| PD | max-snapshot-count |  |
+| PD | max-pending-peer-count |  |
+| PD | patrol-region-interval |  |
+| TiDB | prepared-plan-cache.capacity  | Increase default value for prepared-plan-cache.capacity from 100 to 1000 |
 |  |  |  |
 
 ### 其他
@@ -43,11 +49,13 @@ TiDB 版本：5.3.0
     - 如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级后也会被 TiDB 当成普通表处理。在 v5.3.0 上创建的全局临时表在降级后会被当作普通表处理，导致数据错误。
     - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。 
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则报错。
-    - 更多关于临时表兼容性信息，请参考 [临时表与其他功能的兼容性](/temporary-table.md#与其他-tidb-功能的兼容性限制)
-    
-- 
-- 
-- 
+    - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-table.md#与-mysql-临时表的兼容性) 和 [与其他 TiDB 功能的兼容性限制](/temporary-table.md#与其他-tidb-功能的兼容性限制)。
+
+- 修正 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具备 `SHOW VIEW` 才允许执行 `SHOW CREATE VIEW` 语句。
+- 系统变量 `sql_auto_is_null` 被加入 Noop Funciton 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改改变量会报错。
+- 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，现在 TiDB 执行该语句会报错。
+- v5.3.0之前，对于新增索引，analyze 时间不受设定时间的限制，tidb_auto_analyze_start_time 和 tidb_auto_analyze_end_time 时间段内将不会出发 auto analyze
+- plugin 的默认路径从 "" 改为 /data/deploy/plugin
 
 ## 新功能
 
@@ -178,6 +186,7 @@ TiDB 版本：5.3.0
 - **Lightning 支持忽略部分错误行**
 
     <能给用户带来什么好处>
+
 - **Sync-diff-inspector 优化**
 
     - 大幅提升了对比速度，由原来的 375 MB/s 提升至 700 MB/s
@@ -185,6 +194,7 @@ TiDB 版本：5.3.0
     - 优化了用户交互界面，在对比过程中可以显示进度
    
      [用户文档](/)
+
 ### TiDB 数据共享订阅
 
 - **TiCDC 支持灾备场景下的最终一致性复制**
