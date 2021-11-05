@@ -40,13 +40,13 @@ TiKV/TiFlash: CPU Profile
 
 1. 检查 TiUP 版本：
 
-        ```shell
+        ```
         tiup cluster --version
         ```
 
     上述命令可查看 TiUP 的具体版本。显示为：
 
-        ```log
+        ```
         tiup version 1.7.0 tiup
         Go Version: go1.17.2
         Git Ref: v1.7.0
@@ -58,13 +58,13 @@ TiKV/TiFlash: CPU Profile
     
     - 升级 TiUP：
 
-        ```shell
+        ```
         tiup update --self
         ```
         
     - 升级 TiUP Cluster：
 
-        ```shell
+        ```
         tiup update cluster
         ```
 
@@ -76,13 +76,13 @@ TiKV/TiFlash: CPU Profile
 
     - 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
 
-        ```shell
+        ```
         tiup cluster edit-config ${cluster-name}
         ```
         
     - 设置参数，在 [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers) 下面增加 “ng_port:${port}”：
 
-        ```log
+        ```
         monitoring_servers:
         - host: 172.16.6.6
           ng_port: ${port}
@@ -90,7 +90,7 @@ TiKV/TiFlash: CPU Profile
 
     - 重启 Prometheus 节点：
 
-        ```shell
+        ```
         tiup cluster reload ${cluster-name} --role prometheus
         ```
 
