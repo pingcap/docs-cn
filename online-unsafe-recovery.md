@@ -43,12 +43,12 @@ Online Unsafe Recovery 功能适用于以下场景：
 >
 > 关闭调度时，系统将无法处理系统数据热点问题，请在恢复后尽快重新开启调度。
 
-1. 使用 pd-ctl 执行 [{{< copyable "shell-regular" >}} `config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
+1. 使用 pd-ctl 执行 `config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
 2. 使用 pd-ctl 关闭各类调度：
 
-  * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-  * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-  * [`config set merge-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+    * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+    * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+    * [`config set merge-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
 
 ## 第 2 步：移除无法自动恢复的节点
 
