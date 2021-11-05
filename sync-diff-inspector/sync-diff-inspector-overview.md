@@ -102,7 +102,6 @@ check-struct-only = false
 
 ######################### Table config #########################
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
-[table-configs]
 [table-configs.config1] # config1 是该配置的唯一标识 id，用于下面 task.target-configs 中
 # 目标数据库名称
 schema = "schama1"
@@ -146,13 +145,13 @@ target-table = "t2" # 目标表名
     # 4 checkpoint: a dir 保存断点续传信息
     output-dir = "./output"
 
-    # 上游数据库，内容是 data-sources 声明的唯一标识 id，下同
+    # 上游数据库，内容是 data-sources 声明的唯一标识 id
     source-instances = ["mysql1"]
 
-    # 下游数据库
+    # 下游数据库，内容是 data-sources 声明的唯一标识 id
     target-instance = "tidb0"
 
-    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开。
+    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg: https://github.com/google/re2/wiki/Syntax
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 

@@ -1,11 +1,11 @@
 ---
-title: 从 TiDB DM 拉取配置的数据校验
+title: 基于 DM 同步场景下的数据校验
 summary: 了解如何使用 TiDB DM 拉取指定配置进行数据校验。
 ---
 
-# 从 TiDB DM 拉取配置的数据校验
+# 基于 DM 同步场景下的数据校验
 
-当你在使用 [TiDB DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 等同步工具时，可以从 `DM-master` 拉取指定 `task-name` 的配置，进行数据校验。
+当你在使用 [TiDB DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 等同步工具时，需要校验 DM 同步后数据的一致性。你可以从 `DM-master` 拉取指定 `task-name` 的配置，进行数据校验。
 
 下面是一个简单的配置文件说明，要了解完整配置，请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 
@@ -41,4 +41,4 @@ dm-task = "test"
     target-check-tables = ["hb_test.*"]
 ```
 
-使用该配置，会对（）进行校验。/ 你可以在（什么场景下）进行校验。
+该配置在 dm-task = "test" 中，会对该任务下 hb_test 库的所有表进行检验，自动从 DM 配置中获取上游对下游库名的正则匹配，以校验 DM 同步后数据的一致性。
