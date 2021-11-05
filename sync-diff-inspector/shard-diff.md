@@ -74,7 +74,7 @@ target-table = "table-0"     # 目标表名
 
     target-instance = ["tidb0"]
 
-    # tables need to check. *Include `schema` and `table`. Use `.` to split*
+    # 需要检查的表，包括库名和表名。使用`.`隔开
     target-check-tables = ["test.table-0"]
 ```
 
@@ -137,7 +137,7 @@ target-table = "table-0"     # 目标表名
 
     target-instance = ["tidb0"]
 
-    # tables need to check. *Include `schema` and `table`. Use `.` to split*
+    # 需要检查的表，包括库名和表名。使用`.`隔开
     target-check-tables = ["test.table-0"]
 ```
 
