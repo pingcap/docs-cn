@@ -1,15 +1,16 @@
 ---
-title: 表属性使用文档
+title: 表属性
 summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 ---
 
-# 表属性使用文档
+# 表属性
 
 表属性是 TiDB 从 5.3.0 版本开始引入的新特性，用于为表或分区添加特定的属性，以对表或分区执行相应属性对应的操作，例如可以利用表属性控制 Region 的合并。
 
 > **注意：** 
 > 
-> 目前仅支持添加 `merge_option` 属性。
+> - 目前仅支持添加 `merge_option` 属性。
+> - 在使用 TiDB Binlog 或 TiCDC 进行同步以及使用 BR 进行增量备份的时候会跳过该 DDL，如需使用，需要手动在下游或者备份集群执行。
 
 ## 使用方法
 
@@ -27,7 +28,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
     alter table t [partition p ]attributes[=]default;
     ```
 
-+ 查看当前全部表及分区属性
++ 查看全部表及分区属性
 
     ```sql
     select * from information_schema.attributes;
@@ -47,7 +48,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 ## 覆盖关系
 
-如果为分区表配置属性，该属性则会对表的所有分区生效，如额外为分区配置属性且属性与表的属性相同时，分区会将表的属性覆盖。例如，当分区表 `t` 配置属性 `key=value`，同时分区 `p` 配置属性 `key=value1` 时：
+为分区表配置的属性会对表的所有分区生效。一种例外情况是，如果分区表和分区都配置了相同属性但属性值不同，分区属性将覆盖分区表属性。例如，当分区表 `t` 配置属性 `key=value`，同时分区 `p` 配置属性 `key=value1` 时：
 
 ```sql
 alter table t attributes[=]'key=value';
@@ -60,8 +61,15 @@ alter table t partition p attributes[=]'key=value1';
 
 ### 使用场景
 
-+ 场景一：在对某张新建表或某个新建分区写入数据存在热点问题时，通常需要用户使用分裂打散 Region 的操作避免写入热点，但由于新建表或分区的分裂操作实际产生的是空 Region，如果分裂打散操作距离写入存在一定时间间隔，则 Region 会被合并，从而导致无法真正规避写入热点问题。该场景下，可通过为表或分区添加 `merge_option` 属性，设置值为 `deny`，有效解决写入热点问题。
-+ 场景二：在只读场景下，如果是通过手动分裂 Region 缓解某张表或分区的周期性读热点问题，且不希望热点消失后手动分裂的 Region 被合并，可以通过为表或分区添加 `merge_option` 属性，设置值为 `deny` 解决这一问题。
+当写入或读取数据存在热点时，可以使用表属性控制 Region 合并，通过为表或分区添加 `merge_option` 属性，将其设置为 `deny` 来解决。以下介绍了两种使用场景。
+
+#### 新建表或分区的写入热点问题
+
+在对某张新建表或某个新建分区写入数据存在热点问题时，通常需要使用分裂打散 Region 的操作避免写入热点，但由于新建表或分区的分裂操作实际产生的是空 Region，如果分裂打散操作距离写入存在一定时间间隔，则 Region 可能会被合并，从而导致无法真正规避写入热点问题。此时可以为表或分区添加 `merge_option` 属性，设置为 `deny` 来解决问题。
+
+#### 只读场景下周期性读热点问题
+
+在只读场景下，如果是通过手动分裂 Region 缓解某张表或分区的周期性读热点问题，且不希望热点消失后手动分裂的 Region 被合并。此时可以为表或分区添加 `merge_option` 属性，设置为 `deny` 来解决问题。
 
 ### 使用方法
 
@@ -95,7 +103,7 @@ alter table t partition p attributes[=]'key=value1';
     alter table t partition p attributes[=]'merge_option=allow';
     ```
 
-+ 查看当前所有配置了 `merge_option` 属性的表或分区
++ 查看所有配置了 `merge_option` 属性的表或分区
 
     ```sql
     select * from information_schema.attributes where attributes like '%merge_option%';
@@ -112,5 +120,5 @@ alter table t partition p attributes[=]'merge_option=allow';
 
 > **注意：** 
 > 
-> 1. 如果目前只存在分区表的属性，即使配置 `merge_option=allow`，分区也会默认按照实际分区数量切分成多个 Region。如需合并所有 Region，则需要[重置该分区表的属性](#使用方法)。
-> 2. 使用该属性需要注意 PD 的参数 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的配置。如果没有配置 `merge_option`，Region 在超过 `split-merge-interval` 指定的时间后满足条件即可合并。如果配置了 `merge_option`，则超过指定时间后会根据 `merge_option` 的配置情况再决定是否可以合并。
+> - 如果目前只存在分区表的属性，即使配置 `merge_option=allow`，分区也会默认按照实际分区数量切分成多个 Region。如需合并所有 Region，则需要[重置该分区表的属性](#使用方法)。
+> - 使用该属性需要注意 PD 的参数 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的配置。如果没有配置 `merge_option`，Region 在超过 `split-merge-interval` 指定的时间后满足条件即可合并。如果配置了 `merge_option`，则超过指定时间后会根据 `merge_option` 的配置情况再决定是否可以合并。

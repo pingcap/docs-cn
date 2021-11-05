@@ -407,6 +407,7 @@
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
     + [SQL 模式](/sql-mode.md)
+    + [表属性](/table-attributes.md)
     + 事务
       + [事务概览](/transaction-overview.md)
       + [隔离级别](/transaction-isolation-levels.md)
