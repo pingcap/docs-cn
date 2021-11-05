@@ -171,11 +171,11 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "low-space-ratio": 0.8,
     "max-merge-region-keys": 200000,
     "max-merge-region-size": 20,
-    "max-pending-peer-count": 16,
-    "max-snapshot-count": 3,
+    "max-pending-peer-count": 64,
+    "max-snapshot-count": 64,
     "max-store-down-time": "30m0s",
     "merge-schedule-limit": 8,
-    "patrol-region-interval": "100ms",
+    "patrol-region-interval": "10ms",
     "region-schedule-limit": 2048,
     "region-score-formula-version": "v2",
     "replica-schedule-limit": 64,
@@ -227,12 +227,12 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
-    设置最大 snapshot 为 16：
+    设置最大 snapshot 为 64：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-snapshot-count 16
+    >> config set max-snapshot-count 64
     ```
 
 - `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
@@ -320,12 +320,12 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
-    设置 replicaChecker 的运行频率为 50 毫秒：
+    设置 replicaChecker 的运行频率为 10 毫秒：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set patrol-region-interval 50ms
+    >> config set patrol-region-interval 10ms
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
