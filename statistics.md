@@ -108,9 +108,9 @@ ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH D
 
 > **注意：**
 >
-> 该语法只支持 `tidb_analyze_version = 2` 的情况。
-> ColumnNameList 不可为空。
-> 该语法是全量收集的语法，如果遇到第一次收集了列 a 和 列 b 的统计信息之后想要增加列 c 的统计信息，需要同时指定三列 `ANALYZE table t columns a, b, c`，而不是 `ANALYZE TABLE t COLUMNS c`。
+> + 以上语法只支持 `tidb_analyze_version = 2` 的情况。
+> + 在以上语法中，`ColumnNameList` 不可为空。
+> + 以上语法是全量收集的语法。第一次收集了列 a 和 列 b 的统计信息之后，如果还想要增加列 c 的统计信息，需要在语法中同时指定三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
