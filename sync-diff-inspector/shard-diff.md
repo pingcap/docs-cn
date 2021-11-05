@@ -68,10 +68,6 @@ target-table = "table-0"     # 目标表名
 
 ######################### Task config #########################
 [task]
-    # 1 fix sql: fix-target-TIDB1.sql
-    # 2 log: sync-diff.log
-    # 3 summary: summary.txt
-    # 4 checkpoint: a dir
     output-dir = "./output"
 
     source-instances = ["mysql1", "mysql2"]
@@ -96,7 +92,7 @@ sync-diff-inspector 完整的示例配置如下：
 # 检查数据的线程数量，上下游数据库的连接数会略大于该值
 check-thread-count = 4
 
-# 如果开启，若表存在不一致，则输出用于修复的 SQL 语句。
+# 如果开启，若表存在不一致，则输出用于修复的 SQL 语句
 export-fix-sql = true
 
 # 只对比表结构而不对比数据
@@ -135,10 +131,6 @@ target-table = "table-0"     # 目标表名
 
 ######################### Task config #########################
 [task]
-    # 1 fix sql: fix-target-TIDB1.sql
-    # 2 log: sync-diff.log
-    # 3 summary: summary.txt
-    # 4 checkpoint: a dir
     output-dir = "./output"
 
     source-instances = ["mysql1", "mysql2"]
