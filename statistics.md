@@ -101,13 +101,14 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName Columns [ColumnNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 这个语法会收集指定列以及索引的统计信息，以及扩展统计信息所涉及列的统计信息。如果表的列数较多，需要统计信息的列可能只是表很小的一个子集，通过这个语法可以极大地减轻收集统计信息的负担。
 
 > **注意：**
 >
+> 该语法只支持 `tidb_analyze_version = 2` 的情况。
 > ColumnNameList 不可为空。
 > 该语法是全量收集的语法，如果遇到第一次收集了列 a 和 列 b 的统计信息之后想要增加列 c 的统计信息，需要同时指定三列 `ANALYZE table t columns a, b, c`，而不是 `ANALYZE TABLE t COLUMNS c`。
 
@@ -127,6 +128,15 @@ IndexNameList 为空时会收集所有索引列的统计信息。
 
 ```sql
 ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+收集 TableName 中所有的 PartitionNameList 中分区的部分列统计信息：
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName PARTITION PartitionNameList COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+
 ```
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
