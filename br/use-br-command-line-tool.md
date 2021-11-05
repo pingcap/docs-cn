@@ -224,17 +224,17 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 ### 加密备份数据
 
-TiDB v5.3.0 以后的版本开始支持备份加密功能，用户可配置下列参数达到在备份过程中加密数据的效果。
+自 TiDB v5.3.0 起， TiDB 开始支持备份加密功能，你可配置下列参数在备份过程中到达加密数据的效果：
 
 * `--crypter.method`：加密算法，支持 `aes128-ctr/aes192-ctr/aes256-ctl` 三种算法，缺省值为 `plaintext`，表示不加密
-* `--crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节)密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为32 字节
+* `--crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为32 字节
 * `--crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 crypter.key 不需要传入
 
 > **警告：**
 >
-> 密钥丢失，备份的数据将无法恢复到集群中。
+> 如密钥丢失，备份的数据将无法恢复到集群中。
 
-备份加密的示例如下
+备份加密的示例如下：
 
 {{< copyable "shell-regular" >}}
 
@@ -449,7 +449,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 
 ### 解密恢复数据
 
-在对数据做加密备份后，恢复操作是需要传入相应的解密参数的，解密算法或密钥不正确则无法恢复，解密参数和加密参数一致即可，解密恢复的示例如下：
+在对数据做加密备份后，恢复操作需传入相应的解密参数，解密算法或密钥不正确则无法恢复，解密参数和加密参数一致即可。解密恢复的示例如下：
 
 {{< copyable "shell-regular" >}}
 
