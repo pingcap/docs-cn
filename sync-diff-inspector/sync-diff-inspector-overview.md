@@ -214,18 +214,18 @@ You can view the comparision details through 'output/sync_diff.log'
 
 ```
 output/
-|-- checkpoint
-| |-- bbfec8cc8d1f58a5800e63aa73e5 //config hash
+|-- checkpoint // 保存断点续传信息
+| |-- bbfec8cc8d1f58a5800e63aa73e5 //config hash 占位文件，标识该输出目录（output/）对应的配置文件
 │ |-- DO_NOT_EDIT_THIS_DIR
-│ └-- sync_diff_checkpoints.pb
+│ └-- sync_diff_checkpoints.pb // 断点续传信息
 |
-|-- fix-on-target
+|-- fix-on-target // 保存用于修复不一致的 SQL 文件
 | |-- xxx.sql
 | |-- xxx.sql
 | └-- xxx.sql
 |
-|-- summary.txt
-└-- sync_diff.log
+|-- summary.txt // 保存校验结果的总结
+└-- sync_diff.log // 保存 sync-diff-inspector 执行过程中输出的日志信息
 ```
 
 #### 日志
