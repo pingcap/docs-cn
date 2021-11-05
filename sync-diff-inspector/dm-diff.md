@@ -31,10 +31,6 @@ dm-task = "test"
 
 ######################### Task config #########################
 [task]
-    # 1 fix sql: fix-target-TIDB1.sql
-    # 2 log: sync-diff.log
-    # 3 summary: summary.txt
-    # 4 checkpoint: a dir
     output-dir = "./output"
 
     # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开

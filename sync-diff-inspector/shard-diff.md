@@ -74,7 +74,7 @@ target-table = "table-0"     # 目标表名
 
     target-instance = ["tidb0"]
 
-    # 需要检查的表，包括库名和表名。使用`.`隔开
+    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     target-check-tables = ["test.table-0"]
 ```
 
@@ -137,7 +137,7 @@ target-table = "table-0"     # 目标表名
 
     target-instance = ["tidb0"]
 
-    # 需要检查的表，包括库名和表名。使用`.`隔开
+    # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     target-check-tables = ["test.table-0"]
 ```
 
