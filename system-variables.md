@@ -614,8 +614,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     * `get_lock` 和 `release_lock` 函数
     * `LOCK IN SHARE MODE` 语法
     * `SQL_CALC_FOUND_ROWS` 语法
-    * `CREATE TEMPORARY TABLE` 语法
-    * `DROP TEMPORARY TABLE` 语法
     * `START TRANSACTION READ ONLY` 和 `SET TRANSACTION READ ONLY` 语法
     * `tx_read_only`、`transaction_read_only`、`offline_mode`、`super_read_only`、`read_only` 以及 `sql_auto_is_null` 系统变量
 
@@ -1379,6 +1377,14 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
+
+### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`67108864`
+- 范围：`[1048576, 137438953472]`
+- 单位：字节
+- 这个变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。
 
 ### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
 
