@@ -61,7 +61,7 @@ io-concurrency = 5
 
 # TiDB Lightning 能够承受的最大非致命（non-fatal）错误数。超过此数，TiDB Lightning 会停止任务。
 # 非致命（non-fatal）错误指的是只出现在某些行中的错误。忽略这些错误可以让导入进程继续下去。
-# 如果将该值设置为 N，那么 TiDB Lightning 会在遇到第 N+1 个非致命错误时即可停止。
+# 如果将该值设置为 N，那么 TiDB Lightning 会在遇到第 N+1 个非致命错误时停止。
 # 跳过的行会被插入到目标 TiDB 中的 "task info" schema 中。
 max-error = 0
 # task-info-schema-name 是用于存储 TiDB Lightning 执行结果的 schema/database 的名称。
