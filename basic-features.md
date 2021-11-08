@@ -148,7 +148,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Dumpling 逻辑导入](/dumpling-overview.md)                                                         | Y            | Y            | Y            | Y            |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)                                  | Y            | Y            | Y            | N            |
 | [数据迁移工具](/migration-overview.md)                                                | Y            | Y            | Y            | Y            |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                                                      | 已废弃   | 已废弃   | 已废弃   | 已废弃   |
+| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                                                      | Y   | Y   | Y   | Y   |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                                                    | Y            | Y            | Y            | Y            |
 
 ## 管理，可视化和工具
