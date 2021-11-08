@@ -25,13 +25,74 @@ If you do not specify `start-ts`, or specify `start-ts` as `0`, when a replicati
 
 When you execute `cdc cli changefeed create` to create a replication task, TiCDC checks whether the upstream tables meet the [replication restrictions](/ticdc/ticdc-overview.md#restrictions). If some tables do not meet the restrictions, `some tables are not eligible to replicate` is returned with a list of ineligible tables. You can choose `Y` or `y` to continue creating the task, and all updates on these tables are automatically ignored during the replication. If you choose an input other than `Y` or `y`, the replication task is not created.
 
-## How do I handle replication interruption?
+## How do I view the state of TiCDC replication tasks?
+
+To view the status of TiCDC replication tasks, use `cdc cli`. For example:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed list --pd=http://10.0.10.25:2379
+```
+
+The expected output is as follows:
+
+```json
+[{
+    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
+    "summary": {
+      "state": "normal",
+      "tso": 417886179132964865,
+      "checkpoint": "2020-07-07 16:07:44.881",
+      "error": null
+    }
+}]
+```
+
+* `checkpoint`: TiCDC has replicated all data before this timestamp to downstream.
+* `state`: The state of this replication task:
+    * `normal`: The task runs normally.
+    * `stopped`: The task is stopped manually or encounters an error. 
+    * `removed`: The task is removed. 
+
+> **Note:**
+>
+> This feature is introduced in TiCDC 4.0.3.
+
+## TiCDC replication interruptions
+
+### How do I know whether a TiCDC replication task is interrupted?
+
+- Check the `changefeed checkpoint` monitoring metric of the replication task (choose the right `changefeed id`) in the Grafana dashboard. If the metric value stays unchanged, or the `checkpoint lag` metric keeps increasing, the replication task might be interrupted.
+- Check the `exit error count` monitoring metric. If the metric value is greater than `0`, an error has occurred in the replication task.
+- Execute `cdc cli changefeed list` and `cdc cli changefeed query` to check the status of the replication task. `stopped` means the task has stopped, and the `error` item provides the detailed error message. After the error occurs, you can search `error on running processor` in the TiCDC server log to see the error stack for troubleshooting.
+- In some extreme cases, the TiCDC service is restarted. You can search the `FATAL` level log in the TiCDC server log for troubleshooting.
+
+### How do I know whether the replication task is stopped manually?
+
+You can know whether the replication task is stopped manually by executing `cdc cli`. For example: 
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
+```
+
+In the output of the above command, `admin-job-type` shows the state of this replication task:
+
+* `0`: In progress, which means that the task is not stopped manually.
+* `1`: Paused. When the task is paused, all replicated `processor`s exit. The configuration and the replication status of the task are retained, so you can resume the task from `checkpiont-ts`.
+* `2`: Resumed. The replication task resumes from `checkpoint-ts`.
+* `3`: Removed. When the task is removed, all replicated `processor`s are ended, and the configuration information of the replication task is cleared up. The replication status is retained only for later queries.
+
+### How do I handle replication interruptions?
 
 A replication task might be interrupted in the following known scenarios:
 
 - The downstream continues to be abnormal, and TiCDC still fails after many retries.
 
     - In this scenario, TiCDC saves the task information. Because TiCDC has set the service GC safepoint in PD, the data after the task checkpoint is not cleaned by TiKV GC within the valid period of `gc-ttl`.
+
     - Handling method: You can resume the replication task via the HTTP interface after the downstream is back to normal.
 
 - Replication cannot continue because of incompatible SQL statement(s) in the downstream.
@@ -42,34 +103,45 @@ A replication task might be interrupted in the following known scenarios:
         2. Use the new task configuration file and add the `ignore-txn-start-ts` parameter to skip the transaction corresponding to the specified `start-ts`.
         3. Stop the old replication task via HTTP API. Execute `cdc cli changefeed create` to create a new task and specify the new task configuration file. Specify `checkpoint-ts` recorded in step 1 as the `start-ts` and start a new task to resume the replication.
 
-## How do I know whether a TiCDC replication task is interrupted?
+- In TiCDC v4.0.13 and earlier versions, when TiCDC replicates the partitioned table, it might encounter an error that leads to replication interruption. 
 
-- Check the `changefeed checkpoint` monitoring metric of the replication task (choose the right `changefeed id`) in the Grafana dashboard. If the metric value stays unchanged, or the `checkpoint lag` metric keeps increasing, the replication task might be interrupted.
-- Check the `exit error count` monitoring metric. If the metric value is greater than `0`, an error has occurred in the replication task.
-- Execute `cdc cli changefeed list` and `cdc cli changefeed query` to check the status of the replication task. `stopped` means the task has stopped and the `error` item provides the detailed error information. After the error occurs, you can search `error on running processor` in the TiCDC server log to see the error stack for troubleshooting.
-- In some extreme cases, the TiCDC service is restarted. You can search the `FATAL` level log in the TiCDC server log for troubleshooting.
+    - In this scenario, TiCDC saves the task information. Because TiCDC has set the service GC safepoint in PD, the data after the task checkpoint is not cleaned by TiKV GC within the valid period of `gc-ttl`.
+    - Handling procedures:
+        1. Pause the replication task by executing `cdc cli changefeed pause -c <changefeed-id>`. 
+        2. Wait for about one munite, and then resume the replication task by executing `cdc cli changefeed resume -c <changefeed-id>`.
 
-## What is `gc-ttl` in TiCDC?
+### What should I do to handle the OOM that occurs after TiCDC is restarted after a task interruption?
 
-Since v4.0.0-rc.1, PD supports external services in setting the service-level GC safepoint. Any service can register and update its GC safepoint. PD ensures that the key-value data smaller than this GC safepoint is not cleaned by GC. Enabling this feature in TiCDC ensures that the data to be consumed by TiCDC is retained in TiKV without being cleaned by GC when the replication task is unavailable or interrupted.
+- Update your TiDB cluster and TiCDC cluster to the latest versions. The OOM problem has already been resolved in **v4.0.14 and later v4.0 versions, v5.0.2 and later v5.0 versions, and the latest versions**. 
 
-When starting the TiCDC server, you can specify the Time To Live (TTL) duration of GC safepoint through `gc-ttl`, which means the longest time that data is retained within the GC safepoint. This value is set by TiCDC in PD, which is 86,400 seconds by default.
-
-## How do I handle the OOM that occurs after TiCDC is restarted after a task interruption?
-
-If the replication task is interrupted for a long time and a large volume of new data has been written to TiDB, Out of Memory (OOM) might occur when TiCDC is restarted. In this situation, you can enable unified sorter, TiCDC's experimental sorting engine. This engine sorts data in the disk when the memory is insufficient. To enable this feature, pass `--sort-engine=unified` and `--sort-dir=/path/to/sort_dir` to the `cdc cli` command when creating a replication task. For example:
+- In the above updated versions, you can enable the Unified Sorter to help you sort data in the disk when the system memory is insufficient. To enable this function, you can pass `--sort-engine=unified` to the `cdc cli` command when creating a replication task. For example:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed update -c [changefeed-id] --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
+cdc cli changefeed update -c <changefeed-id> --sort-engine="unified" --pd=http://10.0.10.25:2379
+```
+
+If you fail to update your cluster to the above new versions, you can still enable Unified Sorter in **previous versions**. You can pass `--sort-engine=unified` and `--sort-dir=/path/to/sort_dir` to the `cdc cli` command when creating a replication task. For example:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cdc cli changefeed update -c <changefeed-id> --sort-engine="unified" --sort-dir="/data/cdc/sort" --pd=http://10.0.10.25:2379
 ```
 
 > **Note:**
 >
 > + Since v4.0.9, TiCDC supports the unified sorter engine.
 > + TiCDC (the 4.0 version) does not support dynamically modifying the sorting engine yet. Make sure that the changefeed has stopped before modifying the sorter settings.
+> + `sort-dir` has different behaviors in different versions. Refer to [compatibility notes for`sort-dir` and `data-dir`](/ticdc/ticdc-overview.md#compatibility-notes-for-sort-dir-and-data-dir), and configure it with caution. 
 > + Currently, the unified sorter is an experimental feature. When the number of tables is too large (>=100), the unified sorter might cause performance issues and affect replication throughput. Therefore, it is not recommended to use it in a production environment. Before you enable the unified sorter, make sure that the machine of each TiCDC node has enough disk capacity. If the total size of unprocessed data changes might exceed 1 TB, it is not recommend to use TiCDC for replication.
+
+## What is `gc-ttl` in TiCDC?
+
+Since v4.0.0-rc.1, PD supports external services in setting the service-level GC safepoint. Any service can register and update its GC safepoint. PD ensures that the key-value data later than this GC safepoint is not cleaned by GC. When the replication task is unavailable or interrupted, this feature ensures that the data to be consumed by TiCDC is retained in TiKV without being cleaned by GC.
+
+When starting the TiCDC server, you can specify the Time To Live (TTL) duration of GC safepoint by configuring `gc-ttl`, which means the longest time that data is retained within the GC safepoint. This value is set by TiCDC in PD, which is 86,400 seconds by default.
 
 ## What is the complete behavior of TiCDC garbage collection (GC) safepoint?
 
@@ -177,61 +249,9 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 
 For more information, refer to [Create a replication task](/ticdc/manage-ticdc.md#create-a-replication-task).
 
-## How do I view the status of TiCDC replication tasks?
-
-To view the status of TiCDC replication tasks, use `cdc cli`. For example:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed list --pd=http://10.0.10.25:2379
-```
-
-The expected output is as follows:
-
-```json
-[{
-    "id": "4e24dde6-53c1-40b6-badf-63620e4940dc",
-    "summary": {
-      "state": "normal",
-      "tso": 417886179132964865,
-      "checkpoint": "2020-07-07 16:07:44.881",
-      "error": null
-    }
-}]
-```
-
-* `checkpoint`: TiCDC has replicated all data before this timestamp to downstream.
-* `state`: The state of the replication task:
-
-    * `normal`: The task runs normally.
-    * `stopped`: The task is stopped manually or encounters an error.
-    * `removed`: The task is removed.
-
-> **Note:**
->
-> This feature is introduced in TiCDC 4.0.3.
-
-## How do I know whether the replication task is stopped manually?
-
-You can know whether the replication task is stopped manually by using `cdc cli`. For example:
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-2316-4f4f-a70b-d1a7c59ba79f
-```
-
-In the output of this command, `admin-job-type` shows the state of the replication task:
-
-* `0`: In progress, which means that the task is not stopped manually.
-* `1`: Paused. When the task is paused, all replicated `processor`s exit. The configuration and the replication status of the task are retained, so you can resume the task from `checkpiont-ts`.
-* `2`: Resumed. The replication task resumes from `checkpoint-ts`.
-* `3`: Removed. When the task is removed, all replicated `processor`s are ended, and the configuration information of the replication task is cleared up. Only the replication status is retained for later queries.
-
 ## Why does the latency from TiCDC to Kafka become higher and higher?
 
-* Check [how do I view the status of TiCDC replication tasks](#how-do-i-view-the-status-of-ticdc-replication-tasks).
+* Check [how do I view the state of TiCDC replication tasks](#how-do-i-view-the-state-of-ticdc-replication-tasks).
 * Adjust the following parameters of Kafka:
 
     * Increase the `message.max.bytes` value in `server.properties` to `1073741824` (1 GB).
