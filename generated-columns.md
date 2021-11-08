@@ -142,7 +142,7 @@ desc select a+1 from t where a+1=3;
 >
 > In the above example, the column type of `a` is int and the column type of `a+1` is bigint. If the type of the generated column is set to int, the replacement will not occur.
 >
-> For type conversion rules, see [Type Conversion of Expression Evaluation] (/functions-and-operators/type-conversion-in-expression-evaluation.md).
+> For type conversion rules, see [Type Conversion of Expression Evaluation](/functions-and-operators/type-conversion-in-expression-evaluation.md).
 
 ## Limitations
 
