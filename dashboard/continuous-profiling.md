@@ -29,11 +29,15 @@ TiKV/TiFlash: CPU Profile
 
 ### 由 TiUP 部署/升级的集群
 
+> **注意：**
+>
+> 持续性能分析功能暂时还不支持 TiDB Operator 或二进制部署/升级的集群。
+
 #### 启动前检查
 
 > **注意：**
 >
-> - 持续性能分析功能用于 TiDB 5.3.0 及以上版本集群，若低于该版本，请先升级。可前往 TiDB Dashboard [集群信息页面](/daily-check#实时面板)，查看当前版本信息。
+> - 持续性能分析功能用于 TiDB 5.3.0 及以上版本集群，若低于该版本，请先[升级](/upgrade-tidb-using-tiup)。可前往 TiDB Dashboard [集群信息页面](/daily-check#实时面板)，查看当前版本信息。
 
 在启动前，需要检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
 
@@ -110,9 +114,6 @@ TiKV/TiFlash: CPU Profile
 ![界面]()
 
 可以修改保留时间。分析结果会持久化到磁盘中，超过保留时间会被回收。该配置对所有结果生效，包括历史结果。
-
-### 由 TiDB Operator 或二进制部署/升级的集群
-暂时还不支持 TiDB Operator 或二进制部署/升级的集群。
 
 ## 访问页面
 
