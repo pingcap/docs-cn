@@ -101,7 +101,7 @@ SELECT * FROM users;
 1 row in set (0.00 sec)
 ```
 
-在会话 B 中创建本地临时表 `users`，也不会有名字冲突。会话 B 内访问 `users` 时，访问的是会话 B 内创建的 `users` 的数据。
+在会话 B 中创建本地临时表 `users`，也不会有名字冲突。会话 B 内访问 `users` 时，访问的是会话 B 内创建的本地临时表 `users` 数据。
 
 {{< copyable "sql" >}}
 
@@ -180,7 +180,7 @@ TiDB 本地临时表与 MySQL 临时表有以下方面不兼容：
 
 > **注意：**
 >
-> 使用 TiDB 中的临时表前，注意临时表[与其他 TiDB 功能的兼容性限制](#与其他-tidb-功能的兼容性限制)。
+> 使用 TiDB 中的临时表前，注意临时表[与其他 TiDB 功能的兼容性限制](#与其他-tidb-功能的兼容性限制)以及[与 MySQL 临时表的兼容性](#与-mysql-临时表的兼容性)。
 
 在会话 A 中创建全局临时表 `users`：
 
@@ -276,7 +276,7 @@ Empty set (0.00 sec)
 
 ## 限制临时表的内存占用
 
-无论定义表时声明的 `EGNINE` 是哪种存储引擎，本地临时表和全局临时表的数据都只暂存在 TiDB 实例的内存中，不持久化。
+无论定义表时声明的 `ENGINE` 是哪种存储引擎，本地临时表和全局临时表的数据都只暂存在 TiDB 实例的内存中，不持久化。
 
 为了避免内存溢出，用户可通过系统变量 [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) 限制每张临时表的大小。当临时表大小超过限制后 TiDB 会报错。`tidb_tmp_table_max_size` 的默认值是 `64MB`。
 
