@@ -33,10 +33,9 @@ TiKV/TiFlash: CPU Profile
 
 > **注意：**
 >
-> - 使用持续性能分析功能需 TiDB v5.3.0 及以上版本的集群，可前往 TiDB Dashboard [集群信息页面](/daily-check#实时面板)，查看当前版本信息。
-> - 若不是 TiDB v5.3.0 及以上版本集群，请先升级 TiDB 版本到 v5.3.0 及以上。
+> - 持续性能分析功能用于 TiDB 5.3.0 及以上版本集群，若低于该版本，请先升级。可前往 TiDB Dashboard [集群信息页面](/daily-check#实时面板)，查看当前版本信息。
 
-在启动前，需要先检查 TiUP Cluster 版本，若版本低于 v1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
+在启动前，需要检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
 
 1. 检查 TiUP 版本：
 
