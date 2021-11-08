@@ -84,7 +84,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|
 | `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`                                                    | Y            | Y            | Y            | Y            |
 | [生成列](/generated-columns.md)                                                               | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [试图](/views.md)                                                                                       | Y            | Y            | Y            | Y            |
+| [视图](/views.md)                                                                                       | Y            | Y            | Y            | Y            |
 | [序列](/sql-statements/sql-statement-create-sequence.md)                                            | Y            | Y            | Y            | Y            |
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                                                                     | Y            | Y            | Y            | Y            |
 | [`AUTO_RANDOM` 列](/auto-random.md)                                                                           | Y            | Y            | Y            | Y            |
