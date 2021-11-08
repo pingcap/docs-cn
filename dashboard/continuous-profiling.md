@@ -37,7 +37,7 @@ TiKV/TiFlash: CPU Profile
 
 > **注意：**
 >
-> - 持续性能分析功能用于 TiDB 5.3.0 及以上版本集群，若低于该版本，请先[升级](/upgrade-tidb-using-tiup)。可前往 TiDB Dashboard [集群信息页面](/daily-check#实时面板)，查看当前版本信息。
+> - 持续性能分析功能用于 TiDB 5.3.0 及以上版本集群，若低于该版本，请先[升级](/upgrade-tidb-using-tiup.md)。可前往 TiDB Dashboard [集群信息页面](/daily-check.md#实时面板)，查看当前版本信息。
 
 在启动前，需要检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
 
@@ -111,7 +111,7 @@ TiKV/TiFlash: CPU Profile
 
 2. 在 TiDB Dashboard 的"**高级调试**" → "**实例性能分析**" → "**持续分析**"页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮，即可开启功能：
 
-![界面]()
+![界面](/media/dashboard/dashboard-conprof-start.png)
 
 可以修改保留时间。分析结果会持久化到磁盘中，超过保留时间会被回收。该配置对所有结果生效，包括历史结果。
 
@@ -123,7 +123,7 @@ TiKV/TiFlash: CPU Profile
 
 - 登录后，左侧导航条点击 "**高级调试**" → "**实例性能分析**" → "**持续分析**"：
 
-  ![访问]()
+  ![访问](/media/dashboard/dashboard-conprof-access.png)
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/continuous_profiling>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
@@ -132,7 +132,7 @@ TiKV/TiFlash: CPU Profile
 
 开始持续性能分析后，可以在列表中看到已经完成的性能分析结果：
 
-![界面]()
+![界面](/media/dashboard/dashboard-conprof-history.png)
 
 性能分析会在后台运行，刷新或退出当前页面不会终止已经运行的性能分析任务。
 
@@ -140,11 +140,11 @@ TiKV/TiFlash: CPU Profile
 
 进入某次分析结果后，可点击右上角下载按钮 (Download Profiling Result) 打包下载所有性能分析结果：
 
-![界面]()
+![界面](/media/dashboard/dashboard-conprof-download.png)
 
 也可以点击列表中的单个实例，直接查看其性能分析结果：
 
-![界面]()
+![界面](/media/dashboard/dashboard-conprof-single.png)
 
 
 ## 停用持续性能分析
@@ -152,3 +152,5 @@ TiKV/TiFlash: CPU Profile
 1. 在 TiDB Dashboard 的"**高级调试**" → "**实例性能分析**" → "**持续分析**"页面，点击**设置**，进入设置弹窗。
 2. 关闭**启用功能**开关。
 3. 点击**保存** (Save) 按钮。
+
+![界面](/media/dashboard/dashboard-conprof-stop.png)
