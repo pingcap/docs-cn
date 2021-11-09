@@ -109,7 +109,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
     重启后，完成中控机所需的操作。
 
-2. 在 TiDB Dashboard 的"**高级调试**" → "**实例性能分析**" → "**持续分析**"页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮，即可开启功能：
+2. 在 TiDB Dashboard 的**高级调试** > **实例性能分析** > **持续分析**页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮，即可开启功能：
 
 ![界面](/media/dashboard/dashboard-conprof-start.png)
 
