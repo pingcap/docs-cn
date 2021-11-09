@@ -32,7 +32,7 @@ TiKV/TiFlash: CPU Profile
 >
 > 持续性能分析功能暂时还不支持 TiDB Operator 或二进制部署/升级的集群。
 
-#### 启动前检查
+### 启动前检查
 
 > **注意：**
 >
