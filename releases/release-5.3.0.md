@@ -34,13 +34,14 @@ TiDB 版本：5.3.0
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB |  |  |
+| TiDB | prepared-plan-cache.capacity  | Increase default value for prepared-plan-cache.capacity from 100 to 1000 |
 | TiKV | storage.reserve-space  | 原磁盘占位符 `storage.reserve-space` 会按功能进行拆分，其中的 20% 为磁盘文件用作硬防御，80% 用作软防御，空间回收。 |
 |  | memory-usage-limit  | 以前的版本没有 memory-usage-limit 参数， 升级后改参数值根据 storage.block-cache.capacity来计算 |
-| PD | max-snapshot-count |  |
-| PD | max-pending-peer-count |  |
-| PD | patrol-region-interval |  |
-| TiDB | prepared-plan-cache.capacity  | Increase default value for prepared-plan-cache.capacity from 100 to 1000 |
-|  |  |  |
+| PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数，默认值从 `1` 修改为 `0`。 ｜
+| PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数，默认值从 `7` 修改为 `0`。 ｜
+| PD | [`patrol-region-interval`](/pd-configuration-file.md#patrol-region-interval) | 修改 |此配置项用于控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。默认值从 `100ms` 修改为 `10ms`。 ｜
+| PD | [`max-snapshot-count`](/pd-configuration-file.md#max-snapshot-count) | 修改 |此配置项用于控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。默认值从 `3` 修改为 `64`。 ｜
+| PD | [`max-pending-peer-count`](/pd-configuration-file.md#max-pending-peer-count) | 修改 |此配置项用于控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。默认值从 `16` 修改为 `64`。 ｜
 
 ### 其他
 
@@ -88,6 +89,12 @@ TiDB 版本：5.3.0
 
     [用户文档](/)    
 
+- **支持 `FOR UPDATE OF TABLES` 语法**
+
+    对于存在多表 join 的语句，支持只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。 
+
+    [用户文档](/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689) 
+
 - **表/分区表属性设置**
 
     增加 ALTER TABLE [PARTITION] ATTRIBUTES 语句支持，允许用户设置表，分区表属性，目前支持 merge_option 属性。通过 merge_option 用户可以显式控制 region 是否合并。
@@ -128,28 +135,16 @@ TiDB 版本：5.3.0
 
 ### 稳定性
 
-- **支持 Raft 多数副本丢失下的在线恢复能力**
+- **支持 Raft 多数副本丢失时数据的在线恢复能力（实验特性）**
 
-    增加 PD-CTL RECOVER-STORE-FAILURE 语句支持，提供在线恢复 TiKV 实例能力。通过该功能，用户可以实现：
+    增加 PD-CTL RECOVER-STORE-FAILURE 语句支持，提供在线恢复 TiKV 实例能力。通过该功能，可以实现：
 
     - 在线恢复所有 Raft 多数副本丢失的 Region 可读写。
     - 保证恢复所有 Region 后没有数据空洞。
 
-    需要注意的是，Raft 多数失败的情况下无法避免已提交数据的丢失。
+    需要注意的是，Raft 多数副本失败的情况下无法避免已提交数据的丢失。
 
-    [用户文档](/)  
-
-### 高可用和容灾
-
-- **功能 9**
-
-    <功能描述 （功能是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
-
-    <功能支持情况，TiDB 默认开启还是关闭此功能，如果默认关闭，如何开启>
-
-    <如果功能限制或此功能特定的兼容性问题，需要提及>
-
-    [用户文档](/)  
+    [用户文档](/online-unsafe-recovery.md), [#10483](https://github.com/tikv/tikv/issues/10483)  
 
 ### 数据迁移
 
@@ -169,7 +164,7 @@ TiDB 版本：5.3.0
     - 点查更新合并为批量操作（Merge batch updates of multiple rows into one statement）
     - 异步保存检查点（Async Checkpoint）
 
-- **增加 DM 的 OpenAPI 以更方便地管理集群**
+- **增加 DM 的 OpenAPI 以更方便地管理集群（实验特性）**
 
     <功能描述 （DM 的 OpenAPI 是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
 
@@ -183,7 +178,7 @@ TiDB 版本：5.3.0
 
     [用户文档](/tidb-lightning-configuration.md)
 
-- **Lightning 支持忽略部分错误行**
+- **Lightning 支持忽略部分错误行（实验特性）**
 
     <能给用户带来什么好处>
 
@@ -203,18 +198,6 @@ TiDB 版本：5.3.0
 
     [用户文档](/)  
 
-### 问题诊断效率
-
-- **功能 10**
-
-    <功能描述 （功能是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
-
-    <功能支持情况，TiDB 默认开启还是关闭此功能，如果默认关闭，如何开启>
-
-    <如果功能限制或此功能特定的兼容性问题，需要提及>
-
-    [用户文档](/)  
-
 ### 部署及运维
 
 - **持续性能分析（实验特性）**
@@ -225,13 +208,17 @@ TiDB 版本：5.3.0
 
     持续性能分析功能必须使用 TiUP 1.7.0 及以上版本升级或安装的集群才可使用。
 
-    [用户文档](/)  
+    [用户文档](/dashboard/continuous-profiling.md)  
 
 ### 遥测
 
 TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 
 若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+
+## 移除功能
+
+从 TiCDC v5.3.0 版本开始, TiDB 集群之间的环形同步功能（v5.0 实验特性）被移除。
 
 ## 提升改进
 
