@@ -25,6 +25,9 @@ TiDB 版本：5.3.0
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
 |tidb_enable_noop_functions  | 修改 | 此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+| [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
+|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
+|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
 | `tmp_table_size` | 修改 | 更名为 `tidb_tmp_table_size`，不再保留 `tmp_table_size`。升级前global 级别tmp_table_size 有值，升级后需要手动转换为tidb_tmp_table_size。 |
 | tidb_tmp_table_max_size | 新增  | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
 |  |  |  |
@@ -33,12 +36,12 @@ TiDB 版本：5.3.0
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB |  |  |
-| TiDB | prepared-plan-cache.capacity  | Increase default value for prepared-plan-cache.capacity from 100 to 1000 |
-| TiKV | storage.reserve-space  | 原磁盘占位符 `storage.reserve-space` 会按功能进行拆分，其中的 20% 为磁盘文件用作硬防御，80% 用作软防御，空间回收。 |
+| TiDB | [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增 | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。｜
+| TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
+| TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space）| 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
 |  | memory-usage-limit  | 以前的版本没有 memory-usage-limit 参数， 升级后改参数值根据 storage.block-cache.capacity来计算 |
-| PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数，默认值从 `1` 修改为 `0`。 ｜
-| PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数，默认值从 `7` 修改为 `0`。 ｜
+| PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 ｜
+| PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。｜
 | PD | [`patrol-region-interval`](/pd-configuration-file.md#patrol-region-interval) | 修改 |此配置项用于控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。默认值从 `100ms` 修改为 `10ms`。 ｜
 | PD | [`max-snapshot-count`](/pd-configuration-file.md#max-snapshot-count) | 修改 |此配置项用于控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。默认值从 `3` 修改为 `64`。 ｜
 | PD | [`max-pending-peer-count`](/pd-configuration-file.md#max-pending-peer-count) | 修改 |此配置项用于控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。默认值从 `16` 修改为 `64`。 ｜
@@ -97,23 +100,21 @@ TiDB 版本：5.3.0
 
 - **表/分区表属性设置**
 
-    增加 ALTER TABLE [PARTITION] ATTRIBUTES 语句支持，允许用户设置表，分区表属性，目前支持 merge_option 属性。通过 merge_option 用户可以显式控制 region 是否合并。
+    增加 `ALTER TABLE [PARTITION] ATTRIBUTES` 语句支持，允许用户设置表和分区的表属性。目前支持设置 `merge_option` 属性。通过设置 `merge_option` 属性，用户可以显式控制 Region 是否合并。
 
-    应用场景：用户 SPLIT TABLE 之后不会马上插入数据的情况下，超过一定时间后，空 region 默认会被自动合并。用户可以通过该功能设置表属性为 merge_option=deny，避免 region 的自动合并。
+    应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
 
-    [用户文档](/)    
+    [用户文档](/table-attributes.md), [#3839](https://github.com/tikv/pd/issues/3839)
 
 ### 安全
 
-- **功能 5**
+- **支持为 TiDB Dashboard 创建最小权限用户**
 
-    <功能描述 （功能是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
+    TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。可以基于最小权限原则配置合适的用户访问 TiDB Dashboard，减少高权限用户的使用场景。
 
-    <功能支持情况，TiDB 默认开启还是关闭此功能，如果默认关闭，如何开启>
+    建议为访问 TiDB Dashboard 创建一个最小权限的 SQL 用户，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。
 
-    <如果功能限制或此功能特定的兼容性问题，需要提及>
-
-    [用户文档](/)   
+    [用户文档](/dashboard/dashboard-user.md)   
 
 ### 性能
 
@@ -121,17 +122,19 @@ TiDB 版本：5.3.0
 
     优化 TiDB 时间戳处理流程，支持通过开启 PD follower proxy 和调整 PD client 批量请求 TSO 的最大等待时长，降低 PD leader 时间戳处理负载，提升系统整体可扩展性。
 
-    - 支持通过 tidb_enable_tso_follower_proxy 参数设置 PD follower proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD follower proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
+    - 支持通过 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) 系统变量设置 PD follower proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD follower proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
 
     > **注意：**
     >
     > 在 client 数较少的情况下，PD leader 负载不高的情况下，不建议开启 PD follower proxy 功能。
 
-    - 支持通过 tidb_tso_client_batch_max_wait_time 参数设置 PD client 批量请求 TSO 的最大等待时间，单位毫秒。在 PD TSO 请求负载过高的情况下，通过调大该参数，可以提升一次请求 TSO 的数量，降低 PD 负载，提升吞吐。
+    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 系统变量设置 PD client 批量请求 TSO 的最大等待时间，单位毫秒。在 PD TSO 请求负载过高的情况下，通过调大该参数，可以提升一次请求 TSO 的数量，降低 PD 负载，提升吞吐。
 
     > **注意：**
     >
     > 在 TSO 请求负载不高的情况下，不建议调整该参数。 
+
+    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入), [#3149](https://github.com/tikv/pd/issues/3149)  
 
 ### 稳定性
 
@@ -148,14 +151,6 @@ TiDB 版本：5.3.0
 
 ### 数据迁移
 
-- **支持部署多个 TiDB Lightning**
-
-    新版本 TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。 该功能无需特别的配置，在不改变用户使用习惯的同时，极大提高了用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
-
-    在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）。此外在 MySQL 分表数据聚合迁移到 TiDB 的场景中，MySQL 分表之间可能有冲突数据（主键/唯一键索引相同的数据），Lightning 也支持了数据导入过程中检查冲突数据的功能，用户可以使用该功能发现冲突数据，然后按照业务规则进行处理，冲突检测使用文档（待更新）。
-
-    [用户文档](/)  
-
 - **提高 DM 复制性能**
 
     支持以下功能，实现以更低的延迟将数据从 MySQL 同步数据到 TiDB。
@@ -166,21 +161,41 @@ TiDB 版本：5.3.0
 
 - **增加 DM 的 OpenAPI 以更方便地管理集群（实验特性）**
 
-    <功能描述 （DM 的 OpenAPI 是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
+    DM 提供 OpenAPI 功能，用户可通过 OpenAPI 对 DM 集群进行查询和运维操作。OpenAPI 的总体功能和 [dmctl 工具](https://docs.pingcap.com/zh/tidb-data-migration/stable/dmctl-introduction)类似。
 
-    <功能支持情况，TiDB 默认开启还是关闭此功能，如果默认关闭，如何开启>
+    当前 OpenAPI 功能为实验特性，默认关闭，不建议在生产环境中使用。
+   
+    [用户文档](https://docs.pingcap.com/zh/tidb-data-migration/stable/open-api)  
 
-    <如果功能限制或此功能特定的兼容性问题，需要提及>
+- **TiDB Lightning 分布式并行导入**
 
-    [用户文档](/)  
+    TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。 该功能无需特别的配置，在不改变用户使用习惯的同时，极大提高了用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
+
+    在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）。此外在 MySQL 分表数据聚合迁移到 TiDB 的场景中，MySQL 分表之间可能有冲突数据（主键/唯一键索引相同的数据），Lightning 也支持了数据导入过程中检查冲突数据的功能，用户可以使用该功能发现冲突数据，然后按照业务规则进行处理，冲突检测使用文档（待更新）。
+
+    [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)  
+
+- **TiDB Lightning 执行任务前的检查项**
+
+    TiDB Lightning 增加了执行前检查配置的功能。默认开启。该功能会自动进行一些磁盘空间和执行配置的常规检查，主要目的是确保后续的整个导入过程顺利。
+
+    [用户文档](tidb-lightning/tidb-lightning-prechecks.md) 
 
 - **Lightning 支持导入 GBK 编码文件** 
 
-    [用户文档](/tidb-lightning-configuration.md)
+    [用户文档](/tidb-lightning/tidb-lightning-configuration.md)
 
 - **Lightning 支持忽略部分错误行（实验特性）**
 
-    <能给用户带来什么好处>
+    从 TiDB 5.3.0 开始，你可以配置 TiDB Lightning 以跳过诸如无效类型转换、唯一键冲突等错误，让导入任务持续进行，就如同出现错误的行数据不存在一样。你可以依据生成的报告，手动修复这些错误。该功能适用于以下场景：
+
+    - 要导入的数据有少许错误
+    - 手动定位错误比较困难
+    - 如果遇到错误就重启 TiDB Lightning，代价太大
+
+    TiDB Lightning 错误处理功能是实验特性。**不建议**在生产环境中仅依赖该功能处理相关错误。
+
+    [用户文档](/tidb-lightning/tidb-lightning-error-resolution.md)
 
 - **Sync-diff-inspector 优化**
 
@@ -188,15 +203,30 @@ TiDB 版本：5.3.0
     - 对比过程中对 TiDB 节点的内存消耗降低近一半
     - 优化了用户交互界面，在对比过程中可以显示进度
    
-     [用户文档](/)
+     [用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)
+
+### 问题诊断效率
+
+- **保存和恢复集群现场信息**
+
+    在定位排查 TiDB 集群问题时，用户经常需要提供系统和查询计划相关的信息。为了帮助用户更方便地获取相关信息，更高效地排查集群问题，TiDB 在 v5.3.0 中引入了 `PLAN REPLAYER` 命令，用于“一键”保存和恢复现场问题的相关信息，提升查询计划问题诊断的效率，同时方便将问题归档管理。
+
+    `PLAN REPLAYER` 主要功能如下：
+
+    - 导出排查现场 TiDB 集群的相关信息，导出为 ZIP 格式的文件用于保存。
+    - 在任意 TiDB 集群上导入另一 TiDB 集群现场信息的 ZIP 文件。
+
+    [用户文档](/sql-plan-replayer.md), [#26325](https://github.com/pingcap/tidb/issues/26325)
 
 ### TiDB 数据共享订阅
 
 - **TiCDC 支持灾备场景下的最终一致性复制**
 
-    - 在主从灾备架构下，若上游集群遭遇不可恢复的灾难，TiCDC 具备保证下游最终一致性的能力。
+    在主从灾备架构下，当生产集群（即 TiCDC 同步的上游集群）发生灾难、且短时间内无法恢复对外提供服务时，TiCDC 具备保证从集群数据一致性的能力，并允许业务快速的将流量切换至从集群，避免数据库长时间不可用而对业务造成影响。
 
-    [用户文档](/)  
+    该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 30 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 5 分钟。即 RPO <= 30min，RTO <= 5min。
+
+    [用户文档](/ticdc/manage-ticdc.md)  
 
 ### 部署及运维
 
@@ -251,6 +281,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 + TiFlash
 
     - 显著优化了 TableScan 算子的执行效率
+    - 优化了 Exchange 算子的执行效率
     - 减少了存储引擎的 GC 过程中的写放大和内存使用
     - 改进了 TiFlash 重启时的稳定性和可用性，减少了重启结束后短时间内查询可能失败的情况
     - 增加支持下推多个新的字符串，时间等函数到 MPP 引擎
