@@ -76,6 +76,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)          | A summary of metrics extracted from Prometheus. |
 | `METRICS_SUMMARY_BY_LABEL`                                                              | See `METRICS_SUMMARY` table. |
 | [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)            | Provides the PromQL definitions for tables in `METRICS_SCHEMA`. |
+| [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md)          | Provides information on all objects that have explicit placement rules assigned. |
 | [`SEQUENCES`](/information-schema/information-schema-sequences.md)                      | The TiDB implementation of sequences is based on MariaDB. |
 | [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md)                    | Provides information on slow queries on the current TiDB server. |
 | [`STATEMENTS_SUMMARY`](/statement-summary-tables.md)                                    | Similar to performance_schema statement summary in MySQL. |

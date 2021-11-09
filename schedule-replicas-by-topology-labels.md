@@ -6,6 +6,10 @@ aliases: ['/docs/dev/location-awareness/','/docs/dev/how-to/deploy/geographic-re
 
 # Schedule Replicas by Topology Labels
 
+> **Note:**
+>
+> TiDB v5.3.0 introduces an experimental support for [Placement Rules in SQL](/placement-rules-in-sql.md). This offers a more convenient way to configure the placement of tables and partitions. Placement Rules in SQL might replace placement configuration with PD in future releases.
+
 To improve the high availability and disaster recovery capability of TiDB clusters, it is recommended that TiKV nodes are physically scattered as much as possible. For example, TiKV nodes can be distributed on different racks or even in different data centers. According to the topology information of TiKV, the PD scheduler automatically performs scheduling at the background to isolate each replica of a Region as much as possible, which maximizes the capability of disaster recovery.
 
 To make this mechanism effective, you need to properly configure TiKV and PD so that the topology information of the cluster, especially the TiKV location information, is reported to PD during deployment. Before you begin, see [Deploy TiDB Using TiUP](/production-deployment-using-tiup.md) first.

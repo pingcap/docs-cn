@@ -294,6 +294,13 @@ This variable is an alias for `last_insert_id`.
 >
 > Unlike in MySQL, the `max_execution_time` system variable currently works on all kinds of statements in TiDB, not only restricted to the `SELECT` statement. The precision of the timeout value is roughly 100ms. This means the statement might not be terminated in accurate milliseconds as you specify.
 
+### placement_checks
+
+- Scope: SESSION | GLOBAL
+- Default value: ON
+- This variable controls whether DDL statements validate [Placement Rules in SQL](/placement-rules-in-sql.md).
+- It is intended to be used by logical dump/restore tools to ensure that tables can always be created even if placement rules are violated. This is similar to how mysqldump writes `SET FOREIGN_KEY_CHECKS=0;` to the start of every dump file.
+
 ### plugin_dir
 
 - Scope: INSTANCE
