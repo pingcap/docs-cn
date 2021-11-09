@@ -360,7 +360,7 @@
       - [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md)
       - [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md)
       - [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md)
-      - [`SHOW PLACEMENT LABELS`](sql-statements/sql-statement-show-placement-labels.md)
+      - [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md)
       - [`SHOW PLUGINS`](/sql-statements/sql-statement-show-plugins.md)
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
       - [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
