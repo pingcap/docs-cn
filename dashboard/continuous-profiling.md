@@ -74,7 +74,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
         {{< copyable "shell-regular" >}}
 
-        ```shell-regular
+        ```shell
         tiup update cluster
         ```
 
