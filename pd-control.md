@@ -1215,6 +1215,55 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+### `unsafe remove-failed-stores [store-ids | show | history]`
+
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
+
+执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
+
+```bash
+>> unsafe remove-failed-stores 101,102,103
+```
+
+```bash
+Success!
+```
+
+显示正在运行的 Online Unsafe Recovery 的当前状态或历史状态。
+
+```bash
+>> unsafe remove-failed-stores show
+```
+
+```bash
+[
+  "Collecting cluster info from all alive stores, 10/12.",
+  "Stores that have reports to PD: 1, 2, 3, ...",
+  "Stores that have not reported to PD: 11, 12",
+]
+```
+
+```bash
+>> unsafe remove-failed-stores history
+```
+
+```bash
+[
+  "Store reports collection:",
+  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
+  "Store 8: region ...",
+  "...",
+  "Recovery Plan:",
+  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
+  "Store 8, ..."
+  "...",
+  "Execution Progress:",
+  "Store 10 finished,",
+  "Store 7 not yet finished",
+  "...",
+]
+```
+
 ## jq 格式化 json 输出示例
 
 ### 简化 `store` 的输出
