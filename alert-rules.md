@@ -783,7 +783,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 ## TiCDC 报警规则
 
-关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
+关于 TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
 
 ## Node_exporter 主机报警规则
 
