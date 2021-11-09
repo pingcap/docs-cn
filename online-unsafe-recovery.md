@@ -29,14 +29,16 @@ Online Unsafe Recovery 功能适用于以下场景：
 * 可以容忍数据丢失，希望受影响的数据恢复读写。
 * 希望在线一站式恢复数据。
 
-## 前提条件
+## 使用步骤
+
+### 前提条件
 
 在使用 Online Unsafe Recovery 功能进行数据有损恢复前，请确认以下事项：
 
 * 部分数据确实不可用。
 * 离线节点确实无法自动恢复或重启。
 
-## 第 1 步：关闭各类调度
+### 第 1 步：关闭各类调度
 
 暂时关闭负载均衡等各类内部调度。关闭后，建议等待约 10 分钟，使已经触发的调度能有充分的时间完成调度任务。
 
@@ -51,7 +53,7 @@ Online Unsafe Recovery 功能适用于以下场景：
     * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
     * [`config set merge-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
 
-## 第 2 步：移除无法自动恢复的节点
+### 第 2 步：移除无法自动恢复的节点
 
 使用 pd-ctl 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history)命令，移除无法自动恢复的节点。
 
@@ -59,11 +61,11 @@ Online Unsafe Recovery 功能适用于以下场景：
 >
 > 此命令成功返回，仅表示请求已被接受，而不代表恢复成功。节点实际会在后台进行恢复。
 
-## 第 3 步：查看进度
+### 第 3 步：查看进度
 
 节点移除命令运行成功后，使用 pd-ctl 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules)命令，查看移除进度。当命令执行结果显示 "Last recovery has finished" 时，系统恢复完成。
 
-## 第 4 步：测试读写任务
+### 第 4 步：测试读写任务
 
 进度命令提示任务已完成后，可以尝试运行一些简单 SQL 查询或写入操作确保数据可以读写。示例如下：
 
@@ -75,6 +77,6 @@ select count(*) from table_that_suffered_from_group_majority_failure;
 >
 > 数据可以读写并不代表没有数据丢失。
 
-## 第 5 步：重新开启调度
+### 第 5 步：重新开启调度
 
 把在第 1 步中修改的配置 `config set region-schedule-limit 0`，`config set replica-schedule-limit 0`，`config set merge-schedule-limit 0` 调整回初始值，重新开启调度功能。至此，整个流程结束。
