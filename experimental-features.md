@@ -57,5 +57,9 @@ summary: 了解 TiDB 各版本的实验特性。
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。
+<<<<<<< HEAD
 + [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
+=======
++ [多节点永久损坏后的在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
+>>>>>>> 9b0d4ab87 (Add documents for online unsafe recover (#7381))
 + [持续性能分析](/dashboard/continuous-profiling.md)。
