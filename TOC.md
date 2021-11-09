@@ -84,6 +84,7 @@
   + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
+  + [保存和恢复集群现场信息](/sql-plan-replayer.md)
   + [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
   + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
@@ -168,6 +169,7 @@
       + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
+    + [执行任务前的检查项](/tidb-lightning/tidb-lightning-prechecks.md)    
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
@@ -214,6 +216,7 @@
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+    + [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   + TiSpark
     + [TiSpark 快速上手](/get-started-with-tispark.md)
     + [TiSpark 用户指南](/tispark-overview.md)
@@ -407,6 +410,7 @@
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
     + [SQL 模式](/sql-mode.md)
+    + [表属性](/table-attributes.md)
     + 事务
       + [事务概览](/transaction-overview.md)
       + [隔离级别](/transaction-isolation-levels.md)
@@ -417,6 +421,7 @@
       + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md)
     + [分区表](/partitioned-table.md)
+    + [临时表](/temporary-table.md)
     + [字符集和排序规则](/character-set-and-collation.md)
     + 系统表
       + [`mysql`](/mysql-schema.md)
@@ -474,6 +479,7 @@
       + 运维
         + [部署](/dashboard/dashboard-ops-deploy.md)
         + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
+        + [用户管理](/dashboard/dashboard-user.md)
         + [安全](/dashboard/dashboard-ops-security.md)
       + [访问](/dashboard/dashboard-access.md)
       + [概况页面](/dashboard/dashboard-overview.md)
@@ -489,7 +495,9 @@
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
-      + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + 实例性能分析
+        + [手动分析页面](/dashboard/dashboard-profiling.md)
+        + [持续分析页面](/dashboard/continuous-profiling.md)
       + 会话管理与配置
         + [分享会话](/dashboard/dashboard-session-share.md)
         + [配置 SSO 登录](/dashboard/dashboard-session-sso.md)

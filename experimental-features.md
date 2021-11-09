@@ -59,3 +59,4 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。
++ [持续性能分析](/dashboard/continuous-profiling.md)。
