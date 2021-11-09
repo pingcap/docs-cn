@@ -81,7 +81,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
         tiup cluster edit-config ${cluster-name}
         ```
         
-    2. 设置参数，在 [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers) 下面增加 “ng_port:${port}”：
+    2. 设置参数，在 [monitoring_servers](/tiup/tiup-cluster-topology-reference.md) 下面增加 “ng_port:${port}”：
 
         ```
         monitoring_servers:
