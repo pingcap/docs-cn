@@ -196,6 +196,7 @@
     + [Overview](/tidb-lightning/tidb-lightning-overview.md)
     + [Tutorial](/get-started-with-tidb-lightning.md)
     + [Deploy](/tidb-lightning/deploy-tidb-lightning.md)
+    + [Precheck](/tidb-lightning/tidb-lightning-prechecks.md)   
     + [Configure](/tidb-lightning/tidb-lightning-configuration.md)
     + Key Features
       + [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
