@@ -5,11 +5,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 # TiDB 集群报警规则
 
-<<<<<<< HEAD
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
-=======
 本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
->>>>>>> 40d1931c1 (Add description of TiCDC alert rules (#7354))
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
