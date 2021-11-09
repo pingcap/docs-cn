@@ -33,19 +33,19 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 1. 检查 TiUP 版本：
 
-        {{< copyable "shell-regular" >}}
-        
-        ```shell
-        tiup cluster --version
-        ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster --version
+    ```
 
     上述命令可查看 TiUP 的具体版本。显示为：
 
-        ```
-        tiup version 1.7.0 tiup
-        Go Version: go1.17.2
-        Git Ref: v1.7.0
-        ```
+    ```
+    tiup version 1.7.0 tiup
+    Go Version: go1.17.2
+    Git Ref: v1.7.0
+    ```
         
     若低于 v1.7.0，需要先升级 TiUP Cluster。若已经是 v1.7.0 及以上版本，可直接重启 Prometheus 节点。
 
