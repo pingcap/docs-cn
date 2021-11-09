@@ -167,7 +167,7 @@
       + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
-      + [故障处理](/tidb-lightning/tidb-lightning-error-resolution.md)
+      + [错误处理](/tidb-lightning/tidb-lightning-error-resolution.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
