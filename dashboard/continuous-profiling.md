@@ -100,7 +100,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
           ng_port: ${port}
         ```
 
-    - 重启 Prometheus 节点：
+    3. 重启 Prometheus 节点：
 
         {{< copyable "shell-regular" >}}
 
