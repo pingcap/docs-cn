@@ -7,7 +7,8 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 > **警告：**
 >
-> 持续性能分析功能在 TiDB 5.3.0 作为实验特性引入，不建议在生产环境中使用。
+> 持续性能分析功能作为实验特性，不建议在生产环境中使用。
+> 该功能在 TiDB 5.3.0 引入，需要升级到 5.3.0 及以上版本体验。
 > 该功能可在 x86 架构下支持 TiDB、TiKV、PD ，暂不支持 TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
 > 该功能暂时只用于使用 TiUP 部署和升级的集群，不支持 TiDB Operator 或二进包制部署和升级的集群。
 
@@ -22,23 +23,11 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 - TiDB/PD: CPU profile、Heap、Mutex、Goroutine（debug=2）
 - TiKV: CPU Profile
 
-> **注意：**
->
-> 在 TiDB v5.3 版本，持续性能分析功能可在 x86 架构下支持 TiDB、TiKV、PD ，可作为实验特性开启，暂不支持 TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
-
 ## 启用持续性能分析
 
-持续性能分析在 TiDB 5.3.0 作为实验特性引入，需由两阶段操作启用。
-
-> **注意：**
->
-> 持续性能分析功能暂时只用于使用 TiUP 部署和升级的集群，不支持 TiDB Operator 或二进制部署和升级的集群。
+持续性能分析功能需由两阶段操作启用。
 
 ### 启动前检查
-
-> **注意：**
->
-> 持续性能分析功能用于 TiDB 5.3.0 及以上版本集群，若低于该版本，请先[升级](/upgrade-tidb-using-tiup.md)。可前往 TiDB Dashboard [集群信息页面](/daily-check.md#实时面板)，查看当前版本信息。
 
 在启动前，需要检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
 
@@ -112,7 +101,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 2. 在 TiDB Dashboard 的**高级调试** > **实例性能分析** > **持续分析**页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮，即可开启功能：
 
-![界面](/media/dashboard/dashboard-conprof-start.png)
+![启用功能](/media/dashboard/dashboard-conprof-start.png)
 
 可以修改保留时间。分析结果会持久化到磁盘中，超过保留时间会被回收。该配置对所有结果生效，包括历史结果。
 
@@ -122,7 +111,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 - 登录后，左侧导航条点击 **高级调试** > **实例性能分析** > **持续分析**：
 
-  ![访问](/media/dashboard/dashboard-conprof-access.png)
+  ![访问页面](/media/dashboard/dashboard-conprof-access.png)
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/continuous_profiling>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
@@ -131,7 +120,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 开始持续性能分析后，可以在列表中看到已经完成的性能分析结果：
 
-![界面](/media/dashboard/dashboard-conprof-history.png)
+![历史结果](/media/dashboard/dashboard-conprof-history.png)
 
 性能分析会在后台运行，刷新或退出当前页面不会终止已经运行的性能分析任务。
 
@@ -139,11 +128,11 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 进入某次分析结果后，可点击右上角下载按钮 (Download Profiling Result) 打包下载所有性能分析结果：
 
-![界面](/media/dashboard/dashboard-conprof-download.png)
+![下载某次分析结果](/media/dashboard/dashboard-conprof-download.png)
 
 也可以点击列表中的单个实例，直接查看其性能分析结果：
 
-![界面](/media/dashboard/dashboard-conprof-single.png)
+![查看单个实例分析结果](/media/dashboard/dashboard-conprof-single.png)
 
 
 ## 停用持续性能分析
@@ -152,4 +141,4 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 2. 关闭**启用功能**开关。
 3. 点击**保存** (Save) 按钮。
 
-![界面](/media/dashboard/dashboard-conprof-stop.png)
+![停用功能](/media/dashboard/dashboard-conprof-stop.png)
