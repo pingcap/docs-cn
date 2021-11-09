@@ -25,7 +25,7 @@ summary: 了解 TiDB 的基本功能。
 | [信息函数](/functions-and-operators/information-functions.md)                               | Y            | Y            | Y            | Y            |
 | [JSON 函数](/functions-and-operators/json-functions.md)                                             | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [聚合函数](/functions-and-operators/aggregate-group-by-functions.md)                        | Y            | Y            | Y            | Y            |
-| [窗口函数](/functions-and-operators/window-functions.md)                                         | Experimental            | Experimental            | Experimental            | Experimental            |
+| [窗口函数](/functions-and-operators/window-functions.md)                                         | Y            | Y            | Y            | Y            |
 | [其他函数](/functions-and-operators/miscellaneous-functions.md)                           | Y            | Y            | Y            | Y            |
 | [操作符](/functions-and-operators/operators.md)                                                       | Y            | Y            | Y            | Y            |
 | [字符集和排序规则](/character-set-and-collation.md) [^1]                                    | Y            | Y            | Y            | Y            |
