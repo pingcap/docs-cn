@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard 实例性能持续分析页面
-summary: TiDB Dashboard 持续性能分析功能，continuous profiling
+summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 ---
 
