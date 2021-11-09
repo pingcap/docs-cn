@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [窗口函数](/functions-and-operators/window-functions.md)                                         | Y            | Y            | Y            | Y            | Y            |
 | [其他函数](/functions-and-operators/miscellaneous-functions.md)                           | Y            | Y            | Y            | Y            | Y            |
 | [操作符](/functions-and-operators/operators.md)                                                       | Y            | Y            | Y            | Y            | Y            |
-| [字符集和排序规则](/character-set-and-collation.md) [^1]                                    | Y            | Y            | Y            | Y            |
+| [字符集和排序规则](/character-set-and-collation.md) [^1]                                    | Y            | Y            | Y            | Y            | Y            |
 
 ## 索引和约束
 
@@ -49,17 +49,17 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | SQL 语句 [^2]                                                                                  | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
-| `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`REPLACE`                                                  | Y            | Y            | Y            | Y            |
-| `INSERT ON DUPLICATE KEY UPDATE`                                                                         | Y            | Y            | Y            | Y            |
-| `LOAD DATA INFILE`                                                                                       | Y            | Y            | Y            | Y            |
-| `SELECT INTO OUTFILE`                                                                                    | Y            | Y            | Y            | Y            |
-| `INNER JOIN`, `LEFT\|RIGHT [OUTER] JOIN`                                                                 | Y            | Y            | Y            | Y            |
-| `UNION`，`UNION ALL`                                                                                     | Y            | Y            | Y            | Y            |
+| `SELECT`，`INSERT`，`UPDATE`，`DELETE`，`REPLACE`                                                  | Y            | Y            | Y            | Y            | Y            |
+| `INSERT ON DUPLICATE KEY UPDATE`                                                                         | Y            | Y            | Y            | Y            | Y            |
+| `LOAD DATA INFILE`                                                                                       | Y            | Y            | Y            | Y            | Y            |
+| `SELECT INTO OUTFILE`                                                                                    | Y            | Y            | Y            | Y            | Y            |
+| `INNER JOIN`, `LEFT\|RIGHT [OUTER] JOIN`                                                                 | Y            | Y            | Y            | Y            | Y            |
+| `UNION`，`UNION ALL`                                                                                     | Y            | Y            | Y            | Y            | Y            |
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md)                          | Y            | Y            | Y            | Y            | N            |
-| `GROUP BY`，`ORDER BY`                                                                                   | Y            | Y            | Y            | Y            |
+| `GROUP BY`，`ORDER BY`                                                                                   | Y            | Y            | Y            | Y            | Y            |
 | [窗口函数](/functions-and-operators/window-functions.md)                                         | Y            | Y            | Y            | Y            | Y            |
 | [公共表表达式 (CTE)](/sql-statements/sql-statement-with.md)                                  | Y            | Y            | Y            | N            | N            |
-| `START TRANSACTION`，`COMMIT`，`ROLLBACK`                                                                | Y            | Y            | Y            | Y            |
+| `START TRANSACTION`，`COMMIT`，`ROLLBACK`                                                                | Y            | Y            | Y            | Y            | Y            |
 | [`EXPLAIN`](/sql-statements/sql-statement-explain.md)                                                    | Y            | Y            | Y            | Y            | Y            |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)                                    | Y            | Y            | Y            | Y            | Y            |
 | [用户自定义变量](/user-defined-variables.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
@@ -82,14 +82,14 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 数据定义语言 (DDL)                                                                       | 5.3      | 5.2      | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
-| `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`                                                    | Y            | Y            | Y            | Y            |
+| `CREATE`，`DROP`，`ALTER`，`RENAME`，`TRUNCATE`                                                    | Y            | Y            | Y            | Y            | Y            |
 | [生成列](/generated-columns.md)                                                               | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [视图](/views.md)                                                                                       | Y            | Y            | Y            | Y            | Y            |
 | [序列](/sql-statements/sql-statement-create-sequence.md)                                            | Y            | Y            | Y            | Y            | Y            |
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                                                                     | Y            | Y            | Y            | Y            | Y            |
 | [`AUTO_RANDOM` 列](/auto-random.md)                                                                           | Y            | Y            | Y            | Y            | Y            |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            | Y            |
-| 在单条语句中添加多列                                                                       | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
+| 在单条语句中添加多列                                                                       | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | Y            | N            | N            |
 
 ## 事务
@@ -133,7 +133,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [静态加密 (TDE)](/encryption-at-rest.md)                                                       | Y            | Y            | Y            | Y            | Y            |
 | [基于角色的访问控制 (RBAC)](/role-based-access-control.md)                                        | Y            | Y            | Y            | Y            | Y            |
 | [证书鉴权](/certificate-authentication.md)                                       | Y            | Y            | Y            | Y            | Y            |
-| `caching_sha2_password` 认证                                                                   | Y            | N            | N            | N            |
+| `caching_sha2_password` 认证                                                                   | Y            | Y            | N            | N            | N            |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md)                                              | Y            | Y            | Y            | Y            | Y            |
 | [动态权限](/privilege-management.md#动态权限)                                        | Y            | Y            | Y            | N            | N            |
 | [安全增强模式](/system-variables.md#tidb_enable_enhanced_security)                             | Y            | Y            | Y            | N            | N            |
@@ -144,7 +144,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | 数据导入和导出                                                                               | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md)                             | Y            | Y            | Y            | Y            | Y            |
-| mydumper 逻辑导入                                                                                  | 已废弃   | 已废弃   | 已废弃   | 已废弃   |
+| mydumper 逻辑导入                                                                                  | 已废弃   | 已废弃   | 已废弃   | 已废弃   | 已废弃   |
 | [Dumpling 逻辑导入](/dumpling-overview.md)                                                         | Y            | Y            | Y            | Y            | Y            |
 | [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)                                  | Y            | Y            | Y            | Y            | N            |
 | [数据迁移工具](/migration-overview.md)                                                | Y            | Y            | Y            | Y            | Y            |
@@ -162,10 +162,10 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Statements summary tables](/statement-summary-tables.md)                                                | Y            | Y            | Y            | Y            | Y            |
 | [慢查询日志](/identify-slow-queries.md)                                                              | Y            | Y            | Y            | Y            | Y            |
 | [TiUP 部署](/tiup/tiup-overview.md)                                                                | Y            | Y            | Y            | Y            | Y            |
-| Ansible 部署                                                                                       | N            | N            | N            | 已废弃   |
+| Ansible 部署                                                                                       | N            | N            | N            | N            | 已废弃   |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable)                                      | Y            | Y            | Y            | Y            | Y            |
 | [内置物理备份](/br/backup-and-restore-use-cases.md)                                          | Y            | Y            | Y            | Y            | Y            |
-| Top SQL                                                                                                  | Y            | N            | N            | N            |
+| Top SQL                                                                                                  | Y            | Y            | N            | N            | N            |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y            | Y            | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
