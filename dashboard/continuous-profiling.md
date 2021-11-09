@@ -121,7 +121,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 可以通过以下两种方法访问实例性能分析页面：
 
-- 登录后，左侧导航条点击 "**高级调试**" → "**实例性能分析**" → "**持续分析**"：
+- 登录后，左侧导航条点击 **高级调试** > **实例性能分析** > **持续分析**：
 
   ![访问](/media/dashboard/dashboard-conprof-access.png)
 
