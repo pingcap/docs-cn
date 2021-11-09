@@ -14,6 +14,9 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-table/','/docs-cn/dev/
 DropTableStmt ::=
     'DROP' OptTemporary TableOrTables IfExists TableNameList RestrictOrCascadeOpt
 
+OptTemporary ::=
+    ( 'TEMPORARY' | ('GLOBAL' 'TEMPORARY') )?
+
 TableOrTables ::=
     'TABLE'
 |   'TABLES'
@@ -21,6 +24,14 @@ TableOrTables ::=
 TableNameList ::=
     TableName ( ',' TableName )*
 ```
+
+## 删除临时表
+
+删除普通表和临时表的用法如下：
+
+- `DROP TEMPORARY TABLE` 只能删除本地临时表
+- `DROP GLOBAL TEMPORARY TABLE` 只能删除全局临时表
+- `DROP TABLE` 可以删除普通表或临时表
 
 ## 示例
 
