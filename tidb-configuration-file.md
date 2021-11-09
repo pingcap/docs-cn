@@ -607,7 +607,7 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
++ 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
