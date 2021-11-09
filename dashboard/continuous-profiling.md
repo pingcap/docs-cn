@@ -78,7 +78,7 @@ TiKV/TiFlash: CPU Profile
 
 升级后，完成启动前检查。
 
-#### 启动功能流程
+### 启动功能流程
 
 1. 在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
 
