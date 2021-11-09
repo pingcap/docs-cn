@@ -133,7 +133,6 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ![查看单个实例分析结果](/media/dashboard/dashboard-conprof-single.png)
 
-
 ## 停用持续性能分析
 
 1. 在 TiDB Dashboard 的**高级调试** > **实例性能分析** > **持续分析**页面，点击**设置**，进入设置弹窗。
