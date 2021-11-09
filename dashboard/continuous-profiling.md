@@ -114,6 +114,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
   ![访问页面](/media/dashboard/dashboard-conprof-access.png)
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/continuous_profiling>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
+
 ## 查看性能分析历史结果
 
 开始持续性能分析后，可以在列表中看到已经完成的性能分析结果：
