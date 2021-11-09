@@ -112,7 +112,7 @@ summary: 了解 TiDB 的基本功能。
 | [List 分区](/partitioned-table.md)                                                               | 实验特性 | 实验特性 | 实验特性 | N            |
 | [List COLUMNS 分区](/partitioned-table.md)                                                       | 实验特性 | 实验特性 | 实验特性 | N            |
 | [`EXCHANGE PARTITION`](/partitioned-table.md)                                                            | 实验特性 | 实验特性 | 实验特性 | N            |
-| [动态裁剪](/partitioned-table.md#动态裁剪模式)                                            | 实验特性 | 实验特性 | N            | N            |
+| [动态裁剪](https://docs.pingcap.com/zh/tidb/v5.1/partitioned-table#动态裁剪模式)                                            | 实验特性 | 实验特性 | N            | N            |
 
 ## 统计信息
 
