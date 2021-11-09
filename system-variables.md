@@ -204,6 +204,13 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+### `placement_checks`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。
+- 该变量可由逻辑转储或恢复工具使用，确保即使违反放置规则也始终可以创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件开头的方式。
+
 ### `port`
 
 - 作用域：NONE
