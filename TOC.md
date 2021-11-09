@@ -196,11 +196,7 @@
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
     + [监控指标](/ticdc/monitor-ticdc.md)
-<<<<<<< HEAD
-=======
     + [报警规则](/ticdc/ticdc-alert-rules.md)
-    + [TiCDC Open API](/ticdc/ticdc-open-api.md)
->>>>>>> 40d1931c1 (Add description of TiCDC alert rules (#7354))
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     + [术语表](/ticdc/ticdc-glossary.md)
