@@ -24,13 +24,12 @@ TiDB 版本：5.3.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-|tidb_enable_noop_functions  | 修改 | 此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+| [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
 |[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
 |[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
-| `tmp_table_size` | 修改 | 更名为 `tidb_tmp_table_size`，不再保留 `tmp_table_size`。升级前global 级别tmp_table_size 有值，升级后需要手动转换为tidb_tmp_table_size。 |
-| tidb_tmp_table_max_size | 新增  | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
-|  |  |  |
+| [tidb_tmp_table_max_size](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增  | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
+| `tmp_table_size` | 修改 | 更名为 `tidb_tmp_table_size`，不再保留 `tmp_table_size`。升级前 global 级别tmp_table_size 有值，升级后需要手动转换为 tidb_tmp_table_size。 |
 
 ### 配置文件参数
 
@@ -51,7 +50,7 @@ TiDB 版本：5.3.0
 - 临时表：
 
     - 如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级后也会被 TiDB 当成普通表处理。在 v5.3.0 上创建的全局临时表在降级后会被当作普通表处理，导致数据错误。
-    - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。 
+    - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则报错。
     - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-table.md#与-mysql-临时表的兼容性) 和 [与其他 TiDB 功能的兼容性限制](/temporary-table.md#与其他-tidb-功能的兼容性限制)。
 
@@ -90,13 +89,13 @@ TiDB 版本：5.3.0
         - 支持重名，用户无需为业务设计复杂的表命名规则。
         - 提供会话级别的数据隔离，降低业务设计复杂度，会话结束后删除临时表。
 
-    [用户文档](/)    
+    [用户文档](/)
 
 - **支持 `FOR UPDATE OF TABLES` 语法**
 
-    对于存在多表 join 的语句，支持只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。 
+    对于存在多表 join 的语句，支持只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。
 
-    [用户文档](/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689) 
+    [用户文档](/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689)
 
 - **表/分区表属性设置**
 
@@ -114,7 +113,7 @@ TiDB 版本：5.3.0
 
     建议为访问 TiDB Dashboard 创建一个最小权限的 SQL 用户，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。
 
-    [用户文档](/dashboard/dashboard-user.md)   
+    [用户文档](/dashboard/dashboard-user.md)
 
 ### 性能
 
@@ -132,9 +131,9 @@ TiDB 版本：5.3.0
 
     > **注意：**
     >
-    > 在 TSO 请求负载不高的情况下，不建议调整该参数。 
+    > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
-    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入), [#3149](https://github.com/tikv/pd/issues/3149)  
+    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入), [#3149](https://github.com/tikv/pd/issues/3149)
 
 ### 稳定性
 
@@ -164,8 +163,8 @@ TiDB 版本：5.3.0
     DM 提供 OpenAPI 功能，用户可通过 OpenAPI 对 DM 集群进行查询和运维操作。OpenAPI 的总体功能和 [dmctl 工具](https://docs.pingcap.com/zh/tidb-data-migration/stable/dmctl-introduction)类似。
 
     当前 OpenAPI 功能为实验特性，默认关闭，不建议在生产环境中使用。
-   
-    [用户文档](https://docs.pingcap.com/zh/tidb-data-migration/stable/open-api)  
+
+    [用户文档](https://docs.pingcap.com/zh/tidb-data-migration/stable/open-api)
 
 - **TiDB Lightning 分布式并行导入**
 
@@ -173,15 +172,15 @@ TiDB 版本：5.3.0
 
     在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）。此外在 MySQL 分表数据聚合迁移到 TiDB 的场景中，MySQL 分表之间可能有冲突数据（主键/唯一键索引相同的数据），Lightning 也支持了数据导入过程中检查冲突数据的功能，用户可以使用该功能发现冲突数据，然后按照业务规则进行处理，冲突检测使用文档（待更新）。
 
-    [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)  
+    [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)
 
 - **TiDB Lightning 执行任务前的检查项**
 
     TiDB Lightning 增加了执行前检查配置的功能。默认开启。该功能会自动进行一些磁盘空间和执行配置的常规检查，主要目的是确保后续的整个导入过程顺利。
 
-    [用户文档](tidb-lightning/tidb-lightning-prechecks.md) 
+    [用户文档](tidb-lightning/tidb-lightning-prechecks.md)
 
-- **Lightning 支持导入 GBK 编码文件** 
+- **Lightning 支持导入 GBK 编码文件**
 
     [用户文档](/tidb-lightning/tidb-lightning-configuration.md)
 
@@ -202,7 +201,7 @@ TiDB 版本：5.3.0
     - 大幅提升了对比速度，由原来的 375 MB/s 提升至 700 MB/s
     - 对比过程中对 TiDB 节点的内存消耗降低近一半
     - 优化了用户交互界面，在对比过程中可以显示进度
-   
+
      [用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)
 
 ### 问题诊断效率
@@ -226,7 +225,7 @@ TiDB 版本：5.3.0
 
     该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 30 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 5 分钟。即 RPO <= 30min，RTO <= 5min。
 
-    [用户文档](/ticdc/manage-ticdc.md)  
+    [用户文档](/ticdc/manage-ticdc.md)
 
 ### 部署及运维
 
@@ -238,7 +237,7 @@ TiDB 版本：5.3.0
 
     持续性能分析功能必须使用 TiUP 1.7.0 及以上版本升级或安装的集群才可使用。
 
-    [用户文档](/dashboard/continuous-profiling.md)  
+    [用户文档](/dashboard/continuous-profiling.md)
 
 ### 遥测
 
@@ -303,7 +302,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     + TiCDC
 
         - 通过修改 Kafka sink 配置项 `MaxMessageBytes` 的默认值，由 64 MB 减小为 1 MB，以修复消息过大会被 Kafka Broker 拒收的问题 [#3104](https://github.com/pingcap/ticdc/pull/3104)
-        - 减少同步链路中的内存占用 [#2553](https://github.com/pingcap/ticdc/issues/2553)[#3037](https://github.com/pingcap/ticdc/pull/3037) [#2726](https://github.com/pingcap/ticdc/pull/2726) 
+        - 减少同步链路中的内存占用 [#2553](https://github.com/pingcap/ticdc/issues/2553)[#3037](https://github.com/pingcap/ticdc/pull/3037) [#2726](https://github.com/pingcap/ticdc/pull/2726)
         - 优化监控项和告警规则，提升了同步链路、内存 GC、存量数据扫描过程的可观测性 [#2735](https://github.com/pingcap/ticdc/pull/2735) [#1606](https://github.com/pingcap/ticdc/issues/1606) [#3000](https://github.com/pingcap/ticdc/pull/3000) [#2985](https://github.com/pingcap/ticdc/issues/2985) [#2156](https://github.com/pingcap/ticdc/issues/2156)
         - 当同步任务状态正常时，不再显示历史错误信息，避免误导用户 [#2242](https://github.com/pingcap/ticdc/issues/2242)
 
@@ -358,7 +357,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     - 修复当一个 snapshot 文件无法被垃圾清理 (GC) 时 snapshot GC 会缺失 GC snapshot 文件的问题 [#10813](https://github.com/tikv/tikv/issues/10813)
     - 修复当处理 Coprocessor 请求时因超时而导致 panic 的问题 [#10852](https://github.com/tikv/tikv/issues/10852)
     - 修复因统计线程监控数据导致的内存泄漏 [#11195](https://github.com/tikv/tikv/issues/11195)
-    - 修复在某些平台获取 cgroup 信息导致 panic 的问题 [#10980](https://github.com/tikv/tikv/pull/10980) 
+    - 修复在某些平台获取 cgroup 信息导致 panic 的问题 [#10980](https://github.com/tikv/tikv/pull/10980)
 + PD
 
     - 修复因超过副本配置数量而导致错误删除带有数据且处于 pending 状态的副本的问题 [#4045](https://github.com/tikv/pd/issues/4045)
@@ -378,7 +377,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     - 修复 SQL 语句中含有极长嵌套表达式时可能出现的解析错误
     - 修复 Exchange 算子中可能出现的 `Block schema mismatch` 错误
     - 修复 Decimal 类型比较时可能出现的 `Can't compare` 错误
-    - 修复 `left/substring` 函数中的 `3rd arguments of function substringUTF8 must be constants` 错误 
+    - 修复 `left/substring` 函数中的 `3rd arguments of function substringUTF8 must be constants` 错误
 
 + Tools
 
@@ -393,7 +392,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
         - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/ticdc/issues/2470)
         - 修复在将某些类型的列编码为 Open Protocol 格式时，TiCDC 进程可能 panic 的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
         - 修复在将某些类型的列编码为 Avro 格式时，TiCDC 进程可能 panic 的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
-    
+
     + TiDB Binlog
 
         - 修复当大部分表被过滤掉时，在某些特殊的负载下，checkpoint 不更新的问题 [#1075](https://github.com/pingcap/tidb-binlog/pull/1075)
