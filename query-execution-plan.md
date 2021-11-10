@@ -7,6 +7,10 @@ aliases: ['/docs-cn/v3.0/query-execution-plan/','/docs-cn/v3.0/reference/perform
 
 TiDB 优化器会根据当前数据表的实际情况来选择最优的执行计划，执行计划由一系列的算子构成。本文将详细解释 TiDB 中 `EXPLAIN` 语句返回的执行计划信息。
 
+> **注意：**
+>
+> 你正在查看理解 TiDB 执行计划较旧版本 (TiDB v3.0) 的文档。[TiDB 执行计划概览](https://docs.pingcap.com/zh/tidb/stable/explain-overview)是本文档较新的版本。如无特殊需求，建议查看较新版本的文档。
+
 ## 使用 `EXPLAIN` 来优化 SQL 语句
 
 `EXPLAIN` 语句的返回结果提供了 TiDB 执行 SQL 查询的详细信息：
