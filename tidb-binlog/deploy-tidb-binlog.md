@@ -357,7 +357,7 @@ Drainer="192.168.0.13"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
         # kafka-max-messages = 1024
-        # 配置单条 kafka 消息的最大 size（单位为 Byte），默认为 1G，最大配置 2G
+        # 配置单条 Kafka 消息的最大 size（单位为 Byte），默认为 1 GB，最大可配置为 2 GB
         # kafka-max-message-size = 1073741824
 
         # 保存 binlog 数据的 Kafka 集群的 topic 名称，默认值为 <cluster-id>_obinlog
