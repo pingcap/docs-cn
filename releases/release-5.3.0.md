@@ -101,7 +101,7 @@ TiDB 版本：5.3.0
 
     对于存在多表 join 的语句，支持只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。
 
-    [用户文档](/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689)
+    [用户文档](/sql-statements/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689)
 
 - **表属性设置**
 
