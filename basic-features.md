@@ -57,7 +57,7 @@ summary: 了解 TiDB 的基本功能。
 | [`EXCEPT` 和 `INTERSECT` 运算符](/functions-and-operators/set-operators.md)                          | Y            | Y            | Y            | N            |
 | `GROUP BY`，`ORDER BY`                                                                                   | Y            | Y            | Y            | Y            |
 | [窗口函数](/functions-and-operators/window-functions.md)                                         | Y            | Y            | Y            | Y            |
-| [公共表表达式 (CTE)](/sql-statements/sql-statement-with.md)                                  | Y            | Y            | N            | N            |
+| [公共表表达式 (CTE)](https://docs.pingcap.com/zh/tidb/v5.1/sql-statement-with)                                  | Y            | Y            | N            | N            |
 | `START TRANSACTION`，`COMMIT`，`ROLLBACK`                                                                | Y            | Y            | Y            | Y            |
 | [`EXPLAIN`](/sql-statements/sql-statement-explain.md)                                                    | Y            | Y            | Y            | Y            |
 | [`EXPLAIN ANALYZE`](/sql-statements/sql-statement-explain-analyze.md)                                    | Y            | Y            | Y            | Y            |
@@ -70,7 +70,7 @@ summary: 了解 TiDB 的基本功能。
 | [执行计划缓存](/sql-prepare-plan-cache.md)                                                   | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                                                     | Y            | Y            | Y            | Y            |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)                                                               | Y            | Y            | Y            | 实验特性 |
-| [Stale Read](/stale-read.md)                                                                             | Y            | Y            | N            | N            |
+| [Stale Read](https://docs.pingcap.com/zh/tidb/v5.1/stale-read)                                                                             | Y            | Y            | N            | N            |
 | [Follower Read](/follower-read.md)                                                                      | Y            | Y            | Y            | Y            |
 | [通过系统变量 tidb_snapshot 读取历史数据](/read-historical-data.md)                                         | Y            | Y            | Y            | Y            |
 | [Optimizer hints](/optimizer-hints.md)                                                                   | Y            | Y            | Y            | Y            |
@@ -166,7 +166,7 @@ summary: 了解 TiDB 的基本功能。
 | [内置物理备份](/br/backup-and-restore-use-cases.md)                                          | Y            | Y            | Y            | Y            |
 | Top SQL                                                                                                  | Y            | N            | N            | N            |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y            | 实验特性 | 实验特性 | 实验特性 |
+| [Lock View](https://docs.pingcap.com/zh/tidb/v5.1/information-schema-data-lock-waits)                                   | Y            | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [`SET CONFIG`](/dynamic-config.md)                                                                       | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 
