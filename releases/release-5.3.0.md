@@ -97,7 +97,7 @@ TiDB 版本：5.3.0
 
     [用户文档](/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689)
 
-- **表/分区表属性设置**
+- **表属性设置**
 
     增加 `ALTER TABLE [PARTITION] ATTRIBUTES` 语句支持，允许用户设置表和分区的表属性。目前支持设置 `merge_option` 属性。通过设置 `merge_option` 属性，用户可以显式控制 Region 是否合并。
 
