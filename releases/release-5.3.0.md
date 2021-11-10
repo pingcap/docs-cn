@@ -35,15 +35,15 @@ TiDB 版本：5.3.0
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB | [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增 | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。｜
+| TiDB | [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增 | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
 | TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
-| TiKV | memory-usage-limit | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后改参数值根据 storage.block-cache.capacity来计算 |
-| PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 ｜
-| PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。｜
-| PD | [`patrol-region-interval`](/pd-configuration-file.md#patrol-region-interval) | 修改 |此配置项用于控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。默认值从 `100ms` 修改为 `10ms`。 ｜
-| PD | [`max-snapshot-count`](/pd-configuration-file.md#max-snapshot-count) | 修改 |此配置项用于控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。默认值从 `3` 修改为 `64`。 ｜
-| PD | [`max-pending-peer-count`](/pd-configuration-file.md#max-pending-peer-count) | 修改 |此配置项用于控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。默认值从 `16` 修改为 `64`。 ｜
+| TiKV | memory-usage-limit | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后改参数值根据 storage.block-cache.capacity来计算。 |
+| PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 |
+| PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。 |
+| PD | [`patrol-region-interval`](/pd-configuration-file.md#patrol-region-interval) | 修改 |此配置项用于控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。默认值从 `100ms` 修改为 `10ms`。 |
+| PD | [`max-snapshot-count`](/pd-configuration-file.md#max-snapshot-count) | 修改 |此配置项用于控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。默认值从 `3` 修改为 `64`。 |
+| PD | [`max-pending-peer-count`](/pd-configuration-file.md#max-pending-peer-count) | 修改 |此配置项用于控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。默认值从 `16` 修改为 `64`。 |
 
 ### 其他
 
@@ -146,7 +146,7 @@ TiDB 版本：5.3.0
 
     需要注意的是，Raft 多数副本失败的情况下无法避免已提交数据的丢失。
 
-    [用户文档](/online-unsafe-recovery.md), [#10483](https://github.com/tikv/tikv/issues/10483)  
+    [用户文档](/online-unsafe-recovery.md), [#10483](https://github.com/tikv/tikv/issues/10483)
 
 ### 数据迁移
 
