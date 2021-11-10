@@ -1,9 +1,9 @@
 ---
-title: 用 EXPLAIN 查看 SQL 语句需要访问的分区
+title: 用 EXPLAIN 查看分区查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看 SQL 语句需要访问的分区
+# 用 EXPLAIN 查看分区查询的执行计划
 
 使用 `EXPLAIN` 语句可以查看 TiDB 在执行查询时需要访问的分区。由于存在[分区裁剪](/partition-pruning.md)，所显示的分区通常只是所有分区的一个子集。本文档介绍了常见分区表的一些优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
 
@@ -130,3 +130,13 @@ EXPLAIN SELECT COUNT(*) FROM t1 WHERE YEAR(d) = 2017;
 * 在扫描每个分区时，`Selection` 算子将筛选出年份不为 2017 的行。
 * 在每个分区上会执行流式聚合，以计算匹配的行数。
 * `└─PartitionUnion_21` 算子会合并访问每个分区后的结果。
+
+## 其他类型查询的执行计划
+
++ [MPP 模式查询的执行计划](/explain-mpp.md)
++ [索引查询的执行计划](/explain-indexes.md)
++ [Join 查询的执行计划](/explain-joins.md)
++ [子查询的执行计划](/explain-subqueries.md)
++ [聚合查询的执行计划](/explain-aggregation.md)
++ [视图查询的执行计划](/explain-views.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)

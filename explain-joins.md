@@ -1,9 +1,11 @@
 ---
-title: 用 EXPLAIN 查看使用 JOIN 的 SQL 执行计划
+title: 用 EXPLAIN 查看 JOIN 查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看使用 JOIN 的 SQL 执行计划
+# 用 EXPLAIN 查看 JOIN 查询的执行计划
+
+SQL 查询中可能会使用 JOIN 进行表连接，可以通过 `EXPLAIN` 语句来查看 JOIN 查询的执行计划。本文提供多个示例，以帮助用户理解表连接查询是如何执行的。
 
 在 TiDB 中，SQL 优化器需要确定数据表的连接顺序，且要判断对于某条特定的 SQL 语句，哪一种 Join 算法最为高效。
 
@@ -299,3 +301,13 @@ TiDB 会按照以下顺序执行 Merge Join 算子：
 1. 从 Build 端把一个 Join Group 的数据全部读取到内存中。
 2. 读取 Probe 端的数据。
 3. 将 Probe 端的每行数据与 Build 端的一个完整 Join Group 比较，依次查看是否匹配（除了满足等值条件以外，还有其他非等值条件，这里的“匹配”主要是指查看是否满足非等值条件）。Join Group 指的是所有 Join Key 上值相同的数据。
+
+## 其他类型查询的执行计划
+
++ [MPP 模式查询的执行计划](/explain-mpp.md)
++ [索引查询的执行计划](/explain-indexes.md)
++ [子查询的执行计划](/explain-subqueries.md)
++ [聚合查询的执行计划](/explain-aggregation.md)
++ [视图查询的执行计划](/explain-views.md)
++ [分区查询的执行计划](/explain-partitions.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
