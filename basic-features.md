@@ -135,7 +135,7 @@ summary: 了解 TiDB 的基本功能。
 | `caching_sha2_password` 认证                                                                   | Y            | N            | N            | N            |
 | [与 MySQL 兼容的 `GRANT` 权限管理](/privilege-management.md)                                              | Y            | Y            | Y            | Y            |
 | [动态权限](https://docs.pingcap.com/zh/tidb/v5.1/privilege-management#动态权限)                                        | Y            | Y            | N            | N            |
-| [安全增强模式](/system-variables.md#tidb_enable_enhanced_security)                             | Y            | Y            | N            | N            |
+| [安全增强模式](https://docs.pingcap.com/zh/tidb/v5.1/system-variables#tidb_enable_enhanced_security)                             | Y            | Y            | N            | N            |
 | [日志脱敏](/log-redaction.md)                                                                  | Y            | Y            | Y            | N            |
 
 ## 数据导入和导出
