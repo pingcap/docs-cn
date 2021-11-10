@@ -8,12 +8,12 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 
 > **注意：**
 >
-> 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生内存 OOM，请设置全局变量 `tidb_analyze_version = 1`，然后进行以下操作之一：
-> 
+> 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，请设置全局变量 `tidb_analyze_version = 1`，然后进行以下操作之一：
+>
 > - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
 >
 >   {{< copyable "sql" >}}
-> 
+>
 >   ```sql
 >   select distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
 >    ```
@@ -21,7 +21,7 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 > - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
 >
 >   {{< copyable "sql" >}}
-> 
+>
 >   ```sql
 >   select distinct(concat('DROP STATS ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
 >   ```
