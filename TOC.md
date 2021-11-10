@@ -107,7 +107,15 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
       + [MPP 模式查询的执行计划](/explain-mpp.md)
+      + [索引查询的执行计划](/explain-indexes.md)
+      + [Join 查询的执行计划](/explain-joins.md)
+      + [子查询的执行计划](/explain-subqueries.md)
+      + [聚合查询的执行计划](/explain-aggregation.md)
+      + [视图查询的执行计划](/explain-views.md)
+      + [分区查询的执行计划](/explain-partitions.md)
+      + [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
