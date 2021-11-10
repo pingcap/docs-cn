@@ -156,14 +156,12 @@ Configuration items related to the log file
 ### `max-days`
 
 + The maximum number of days in which a log is kept
-+ Default value: `28`
-+ Minimum value: `1`
++ Default value: `0`
 
 ### `max-backups`
 
 + The maximum number of log files to keep
-+ Default value: `7`
-+ Minimum value: `1`
++ Default value: `0`
 
 ## `metric`
 
@@ -191,7 +189,7 @@ Configuration items related to scheduling
 ### `patrol-region-interval`
 
 + Controls the running frequency at which `replicaChecker` checks the health state of a Region. The smaller this value is, the faster `replicaChecker` runs. Normally, you do not need to adjust this parameter.
-+ Default value: `100ms`
++ Default value: `10ms`
 
 ### `split-merge-interval`
 
@@ -201,12 +199,12 @@ Configuration items related to scheduling
 ### `max-snapshot-count`
 
 + Controls the maximum number of snapshots that a single store receives or sends at the same time. PD schedulers depend on this configuration to prevent the resources used for normal traffic from being preempted.
-+ Default value value: `3`
++ Default value value: `64`
 
 ### `max-pending-peer-count`
 
 + Controls the maximum number of pending peers in a single store. PD schedulers depend on this configuration to prevent too many Regions with outdated logs from being generated on some nodes.
-+ Default value: `16`
++ Default value: `64`
 
 ### `max-store-down-time`
 

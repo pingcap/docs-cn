@@ -154,11 +154,11 @@ Usage:
     "low-space-ratio": 0.8,
     "max-merge-region-keys": 200000,
     "max-merge-region-size": 20,
-    "max-pending-peer-count": 16,
-    "max-snapshot-count": 3,
+    "max-pending-peer-count": 64,
+    "max-snapshot-count": 64,
     "max-store-down-time": "30m0s",
     "merge-schedule-limit": 8,
-    "patrol-region-interval": "100ms",
+    "patrol-region-interval": "10ms",
     "region-schedule-limit": 2048,
     "region-score-formula-version": "v2",
     "replica-schedule-limit": 64,
@@ -185,7 +185,7 @@ Usage:
 - `max-snapshot-count` controls the maximum number of snapshots that a single store receives or sends out at the same time. The scheduler is restricted by this configuration to avoid taking up normal application resources. When you need to improve the speed of adding replicas or balancing, increase this value.
 
     ```bash
-    >> config set max-snapshot-count 16  // Set the maximum number of snapshots to 16
+    >> config set max-snapshot-count 64  // Set the maximum number of snapshots to 64
     ```
 
 - `max-pending-peer-count` controls the maximum number of pending peers in a single store. The scheduler is restricted by this configuration to avoid producing a large number of Regions without the latest log in some nodes. When you need to improve the speed of adding replicas or balancing, increase this value. Setting it to 0 indicates no limit.
@@ -243,7 +243,7 @@ Usage:
 - `patrol-region-interval` controls the execution frequency that `replicaChecker` checks the health status of Regions. A shorter interval indicates a higher execution frequency. Generally, you do not need to adjust it.
 
     ```bash
-    >> config set patrol-region-interval 50ms // Set the execution frequency of replicaChecker to 50ms
+    >> config set patrol-region-interval 10ms // Set the execution frequency of replicaChecker to 10ms
     ```
 
 - `max-store-down-time` controls the time that PD decides the disconnected store cannot be restored if exceeded. If PD does not receive heartbeats from a store within the specified period of time, PD adds replicas in other nodes.
