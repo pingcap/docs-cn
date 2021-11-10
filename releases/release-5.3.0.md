@@ -75,7 +75,7 @@ TiDB 版本：5.3.0
     - 把热点数据的 leader 放到高性能的 TiKV 实例上
     - 将不相关的数据分离到不同的存储中以提高可用性
 
-    [用户文档](/)
+    [用户文档](/information-schema/information-schema-placement-rules.md), [#18030](https://github.com/pingcap/tidb/issues/18030)
 
 - **临时表**
 
@@ -89,7 +89,7 @@ TiDB 版本：5.3.0
         - 支持重名，用户无需为业务设计复杂的表命名规则。
         - 提供会话级别的数据隔离，降低业务设计复杂度，会话结束后删除临时表。
 
-    [用户文档](/)
+    [用户文档](/temporary-table.md), [#24169](https://github.com/pingcap/tidb/issues/24169)
 
 - **支持 `FOR UPDATE OF TABLES` 语法**
 
