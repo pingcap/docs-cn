@@ -1,9 +1,11 @@
 ---
-title: 用 EXPLAIN 查看带聚合计算的 SQL 执行计划
+title: 用 EXPLAIN 查看聚合查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看带聚合计算的 SQL 执行计划
+# 用 EXPLAIN 查看聚合查询执行计划
+
+SQL 查询中可能会使用聚合计算，可以通过 `EXPLAIN` 语句来查看聚合查询的执行计划。本文提供多个示例，以帮助用户理解聚合查询是如何执行的。
 
 SQL 优化器会选择以下任一算子实现数据聚合：
 
@@ -175,3 +177,13 @@ Query OK, 0 rows affected (0.28 sec)
 +------------------------------+---------+-----------+----------------------------+----------------------------------------------------------------------------------------------------+
 5 rows in set (0.00 sec)
 ```
+
+## 其他类型查询的执行计划
+
++ [MPP 模式查询的执行计划](/explain-mpp.md)
++ [索引查询的执行计划](/explain-indexes.md)
++ [Join 查询的执行计划](/explain-joins.md)
++ [子查询的执行计划](/explain-subqueries.md)
++ [视图查询的执行计划](/explain-views.md)
++ [分区查询的执行计划](/explain-partitions.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
