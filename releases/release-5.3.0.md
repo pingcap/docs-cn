@@ -63,7 +63,7 @@ TiDB 版本：5.3.0
 - 修正 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具备 `SHOW VIEW` 才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Funciton 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改改变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，现在 TiDB 执行该语句会报错。
-- v5.3.0之前，对于新增索引，analyze 时间不受设定时间的限制，tidb_auto_analyze_start_time 和 tidb_auto_analyze_end_time 时间段内将不会出发 auto analyze
+- v5.3.0 之前，对于新增索引，analyze 时间不受设定时间的限制，`tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 时间段内将不会触发 auto analyze
 - plugin 的默认路径从 "" 改为 /data/deploy/plugin
 
 ## 新功能
