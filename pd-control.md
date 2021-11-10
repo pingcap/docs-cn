@@ -1031,39 +1031,10 @@ Encoding 格式示例：
 - `src-tolerance-ratio` 和 `dst-tolerance-ratio` 是期望调度器的配置项。`tolerance-ratio` 的值越小，调度就越容易。当出现冗余调度时，你可以适当调大这个值。
 
     ```bash
-<<<<<<< HEAD
     >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.05
-=======
-    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-- `read-priorities`、`write-leader-priorities` 和 `write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡，支持配置两个维度。
-
-    - `read-priorities` 和 `write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，可选的维度有 `query`、`byte` 和 `key`。
-    - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置 `byte` 和 `key` 维度。
-
-    > **注意：**
-    >
-    > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
-
-    ```bash
-    >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
-    ```
-
-- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
-
-    ```bash
-    >> scheduler config balance-hot-region-scheduler set strict-picking-store true
-    ```
-
-- `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
-
-    ```bash
-    >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
->>>>>>> 7556fc610 (Remove store limit scene (#7429))
-    ```
-
-### ```store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]```
+### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
 
