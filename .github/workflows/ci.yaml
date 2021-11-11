@@ -1,0 +1,18 @@
+name: ci
+
+on: [pull_request]
+
+jobs:
+
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out
+      uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12'
+    - name: Verify internal links
+      run: ./scripts/verify-links.sh
+    - name: Verify internal link anchors
+      run: ./scripts/verify-link-anchors.sh
