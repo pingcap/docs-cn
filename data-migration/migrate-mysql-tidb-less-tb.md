@@ -1,9 +1,9 @@
 ---
-title: 从 TB 级以下 MySQL 迁移数据到 TiDB
+title: 从 TiB 级以下 MySQL 迁移数据到 TiDB
 summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TB 级以下 MySQL 迁移数据到 TiDB
+# 从 TiB 级以下 MySQL 迁移数据到 TiDB
 
 本文档介绍如何使用 TiDB DM （以下简称 DM）以全量+增量的模式迁移 TB 以内数据到 TiDB。一般而言，受到表结构索引数目等信息、硬件以及网络环境影响，迁移速率在 30～50GB/h 不等。使用 TiDB DM 迁移的流程如下图所示。
 
@@ -22,13 +22,13 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 
 ```yaml
 # Configuration.
-source-id: "mysql-01" # 唯一命令，不可重复
+source-id: "mysql-01"     # 唯一命名，不可重复
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
 enable-gtid: false
 
 from:
-  host: "${host}" # 例如：172.16.10.81
+  host: "${host}"         # 例如：172.16.10.81
   user: "root"
   password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
   port: 3306
@@ -64,10 +64,10 @@ name: "test"
 task-mode: "all"
 # 下游 TiDB 配置信息。
 target-database:
-  host: "${host}" # 例如：172.16.10.83
+  host: "${host}"                   # 例如：172.16.10.83
   port: 4000
   user: "root"
-  password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
+  password: "${password}"           # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
 
 # 当前数据迁移任务需要的全部上游 MySQL 实例配置。
 mysql-instances:
@@ -96,7 +96,7 @@ block-allow-list:                     # 如果 DM 版本早于 v2.0.0-beta.2 则
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 check-task task.yaml
+tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
 ```
 
 使用 tiup dmctl 执行以下命令启动数据迁移任务。
@@ -104,14 +104,14 @@ tiup dmctl --master-addr 172.16.10.71:8261 check-task task.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 start-task task.yaml
+tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 ```
 
 该命令中的参数描述如下：
 
 |参数|描述|
 |-|-|
-|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}|
+|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
 |start-task|命令用于创建数据迁移任务|
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
@@ -123,7 +123,7 @@ tiup dmctl --master-addr 172.16.10.71:8261 start-task task.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 query-status ${task-name}
+tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
 关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)

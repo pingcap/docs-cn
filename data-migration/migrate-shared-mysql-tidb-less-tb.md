@@ -174,7 +174,7 @@ block-allow-list:
 - [Table routing](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#table-routing)
 - [Block & Allow Table Lists](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#block--allow-table-lists)
 - [Binlog event filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#binlog-event-filter)
-- [Binlog value filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-expression-filter)
+- [Binlog expression filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-expression-filter)
 
 ## 第 3 步. 启动任务
 
@@ -210,7 +210,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 query-status ${task-name}
+tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
 关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)

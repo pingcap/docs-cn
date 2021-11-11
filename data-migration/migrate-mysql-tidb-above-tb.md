@@ -1,9 +1,9 @@
 ---
-title: 从 TB 级以上 MySQL 迁移数据到 TiDB
+title: 从 TiB 级以上 MySQL 迁移数据到 TiDB
 summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TB 级以上 MySQL 迁移数据到 TiDB
+# 从 TiB 级以上 MySQL 迁移数据到 TiDB
 
 通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度(30~50 GiB/h)可能令整个迁移周期过长。
 
@@ -17,14 +17,44 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 - [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
 
+## 资源要求
+
+**操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，您可以在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程默认会占满 CPU，建议单独部署。如果条件不允许，可以和其他组件（比如 `tikv-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 TiDB Lightning 使用 CPU 资源。混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
+
+**内存和 CPU**：因为 TiDB Lightning 对计算机资源消耗较高，建议分配 64 GB 以上的内存以及 32 核以上的 CPU，而且确保 CPU 核数和内存（GB）比为 1:2 以上，以获取最佳性能。
+
+**磁盘空间**：
+
+- Dumpling 需要足够储存整个数据源的存储空间，推荐使用 SSD 介质。
+- Lightning 导入期间需要排序键值对的临时存放空间，至少需要数据源最大单表的空间。
+
+**说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
+
+{{< copyable "sql" >}}
+
+```sql
+# 统计所有 schema 大小，单位 MiB，注意修改 ${schema_name}
+select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
+
+# 统计最大单表，单位 MiB，注意修改 ${schema_name}
+select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
+```
+
+### 目标 TiKV 集群的磁盘空间要求
+
+**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/deploy-and-maintain-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
+
+* 索引会占据额外的空间
+* RocksDB 的空间放大效应
+
 ## 第 1 步. 使用 Dumpling 从 MySQL 导出全量数据
 
-Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 --filetype sql 导出数据到 SQL 文件：
+Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 --filetype sql 指定导出文件类型：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling -h ${ip} -P <port> -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
+tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
 
 ```
 
@@ -148,27 +178,27 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 {{< copyable "shell-regular" >}}
 
 ```yaml
-   name: task-test                  # 任务名称，需要全局唯一。
-   task-mode: incremental           # 任务模式，设为 "incremental" 即只进行增量数据迁移。
+   name: task-test                      # 任务名称，需要全局唯一。
+   task-mode: incremental               # 任务模式，设为 "incremental" 即只进行增量数据迁移。
 
    ## 配置下游 TiDB 数据库实例访问信息
-   target-database:                 # 下游数据库实例配置。
-     host: "${host}"                # 例如：127.0.0.1
+   target-database:                     # 下游数据库实例配置。
+     host: "${host}"                    # 例如：127.0.0.1
      port: 4000
      user: "root"
-     password: "${password}"        # 推荐使用经过 dmctl 加密的密文。
+     password: "${password}"            # 推荐使用经过 dmctl 加密的密文。
 
    ##  使用黑白名单配置需要同步的表
-   block-allow-list:                # 数据源数据库实例匹配的表的 block-allow-list 过滤规则集，如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
-     bw-rule-1:                     # 黑白名单配置项 ID。
-       do-dbs: ["${db-name}"]       # 迁移哪些库。
+   block-allow-list:                    # 数据源数据库实例匹配的表的 block-allow-list 过滤规则集，如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
+     bw-rule-1:                         # 黑白名单配置项 ID。
+       do-dbs: ["${db-name}"]           # 迁移哪些库。
 
    ## 配置数据源
    mysql-instances:
-     - source-id: "mysql-01"         # 数据源 ID，即 source1.yaml 中的 source-id
-       block-allow-list: "bw-rule-1" # 引入上面黑白名单配置。
-#       syncer-config-name: "global" # 引用上面的 syncers 增量数据配置。
-       meta:                         # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
+     - source-id: "mysql-01"            # 数据源 ID，即 source1.yaml 中的 source-id
+       block-allow-list: "bw-rule-1"    # 引入上面黑白名单配置。
+#       syncer-config-name: "global"    # 引用上面的 syncers 增量数据配置。
+       meta:                            # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
          binlog-name: "mysql-bin.000004"  # 第 1 步中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
          binlog-pos: 109227
          # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"

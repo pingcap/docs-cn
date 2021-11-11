@@ -7,7 +7,10 @@ summary: 介绍下游存在更多列的迁移场景。
 
 本文档介绍数据同步时，下游存在更多列的迁移场景需要的注意事项。具体迁移操作可参考已有数据迁移场景：
 
-# TODO
+- [从 TiB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
+- [从 TiB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
+- [TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
+- [TiB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
 
 ## 使用 DM 迁移至更多列的下游
 

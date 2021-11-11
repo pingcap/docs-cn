@@ -41,17 +41,22 @@
       + [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
       + [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
-  + [数据迁移场景](/migration-overview.md)
+  + [数据迁移综述](/data-migration/migration-overview-1.md)
   + [迁移工具](/migration-tools.md)
-  + 从 MySQL 迁移至 TiDB
-    + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
-    + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
-    + [使用 DM 工具从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
-  + 从 CSV 文件迁移至 TiDB
-    + [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-    + [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
-  + [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-dumpling-files.md)
-  + [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
+  + 数据迁移场景
+    + [从 Aurora 迁移数据到 TiDB](/data-migration/migrate-aurora-tidb-from-snapshot.md)
+    + [从 TiB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
+    + [从 TiB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
+    + [TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
+    + [TiB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
+    + [从平面文件迁移数据到 TiDB](/data-migration/migrate-flat-file-tidb.md)
+    + [从 SQL 文件迁移数据到 TiDB](//data-migration/migrate-sql-file-tidb.md)
+    + [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
+  + 复杂迁移操作
+    + [上游使用 pt/gh-ost 工具的持续同步场景](/data-migration/migrate-with-pt-ghost.md)
+    + [如何过滤 binlog 事件](/data-migration/migrate-with-binlog-event-filter.md)
+    + [如何通过 SQL 表达式过滤 binlog](/data-migration/migrate-with-binlog-sql-expression-filter.md)
+    + [下游存在更多列的迁移场景](//data-migration/migrate-with-more-columns-downstream.md)
 + 运维操作
   + 升级 TiDB 版本
     + [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)

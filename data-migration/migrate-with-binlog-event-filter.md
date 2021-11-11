@@ -3,9 +3,14 @@ title: 如何过滤 binlog 事件
 summary: 介绍如何过滤 binlog 事件。
 ---
 
-# 如何通过过滤 binlog 事件
+# 如何过滤 binlog 事件
 
 本文档介绍使用 DM 持续增量数据同步时，如何过滤 binlog 事件。具体迁移操作可参考已有数据迁移场景：
+
+- [从 TiB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
+- [从 TiB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
+- [TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
+- [TiB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
 
 ## 配置方式
 

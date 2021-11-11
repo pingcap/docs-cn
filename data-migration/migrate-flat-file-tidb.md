@@ -59,7 +59,7 @@ file = "tidb-lightning.log"
 # 默认使用 local 后端模式以获取最好的性能，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
-# 设置排序的键值对的临时存放地址，目标路径需要是一个空目录
+# 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间
 sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
 [mydumper]
@@ -139,6 +139,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 以上以 CSV 文件举例完整的平面文件导入过程，若数据源为其他格式的平面文件，除文件名仍必须以`.csv`结尾外，配置文件`tidb-lightning.toml`的`[mydumper.csv]`格式定义同样需要做相应修改。常见的格式举例：
 
 **TSV**
+
 ```
 # 格式示例
 # ID    Region    Count
