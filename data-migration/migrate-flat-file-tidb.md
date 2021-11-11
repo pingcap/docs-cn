@@ -11,6 +11,7 @@ TiDB Lightning 支持读取 CSV 格式的平面文件，以及其他定界符格
 ## 前提条件
 
 - [使用 TiUP 安装 TiDB Lightning](/migration-tools.md)
+- [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 
 ## 第 1 步. 准备 CSV 文件
 
@@ -19,7 +20,7 @@ TiDB Lightning 支持读取 CSV 格式的平面文件，以及其他定界符格
 - 包含整张表数据的 CSV 文件需命名为`${db_name}.${table_name}.csv`
 - 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续但必须递增，并用零填充。
 
-## 第 2 步. 定义目标表结构
+## 第 2 步. 创建目标表结构
 
 平面文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 

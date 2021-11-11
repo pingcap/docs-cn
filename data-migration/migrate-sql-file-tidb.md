@@ -43,6 +43,8 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
 
 新建文件 `tidb-lightning.toml`，包含以下内容：
 
+{{< copyable "" >}}
+
 ```toml
 [lightning]
 # 日志
@@ -69,9 +71,9 @@ port = 4000
 user = "root"
 password = "${password}"
 # 表结构信息在从 TiDB 的“状态端口”获取。
-status-port = ${port} # 例如：10080
+status-port = ${port}       # 例如：10080
 # 集群 pd 的地址
-pd-addr = "${ip}:${port}" # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
 关于配置文件更多信息，可参阅：[TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).

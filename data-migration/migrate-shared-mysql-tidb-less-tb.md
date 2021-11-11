@@ -1,16 +1,16 @@
 ---
-title: 从 TB 级以下分库分表 MySQL 迁移数据到 TiDB
-summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
+title: TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB
+summary: 介绍如何从 TiB 级以下分库分表 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TB 级以下分库分表 MySQL 迁移数据到 TiDB
+# TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB
 
 如果你想把上游多个 MySQL 数据库实例合并迁移到下游的同一个 TiDB 数据库中，且数据量不太大（比如所有分表的总和小于 1 TB），你可以使用 DM 工具进行分库分表的合并迁移。本文举例介绍了合并迁移的操作步骤、注意事项、故障排查等。本文档适用于:
 
-- TB 级以内的分库分表数据合并迁移
+- TiB 级以内的分库分表数据合并迁移
 - 基于 MySQL binlog 的增量、持续分库分表合并迁移
 
-若要迁移分表总和 1 TB 以上的数据，则 DM 工具耗时较长，可参考[从 TB 级以上分库分表 MySQL 迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)。
+若要迁移分表总和 1 TB 以上的数据，则 DM 工具耗时较长，可参考[从 TiB 级以上分库分表 MySQL 迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)。
 
 本文以一个简单的场景为例，示例中的两个数据源 MySQL 实例的分库和分表数据迁移至下游 TiDB 集群。示意图如下。
 
@@ -92,13 +92,13 @@ from:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 operate-source create source1.yaml
+tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
 |参数           |描述|
 |-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}|
+|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
 |operate-source create|向 DM 集群加载、列出、移除数据源|
 
 重复以上操作直至所有数据源均添加完成。
@@ -107,7 +107,9 @@ tiup dmctl --master-addr 172.16.10.71:8261 operate-source create source1.yaml
 
 新建`task1.yaml`文件, 写入以下内容：
 
-```
+{{< copyable "" >}}
+
+```yaml
 name: "shard_merge"
 # 任务模式，可设为 
 # full：只进行全量数据迁移
@@ -181,7 +183,7 @@ block-allow-list:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 check-task task.yaml
+tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
 ```
 
 使用 tiup dmctl 执行以下命令启动数据迁移任务。
@@ -189,14 +191,14 @@ tiup dmctl --master-addr 172.16.10.71:8261 check-task task.yaml
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 start-task task.yaml
+tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 ```
 
 该命令中的参数描述如下：
 
 |参数|描述|
 |-|-|
-|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}|
+|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
 |start-task|命令用于创建数据迁移任务|
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)

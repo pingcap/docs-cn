@@ -18,7 +18,7 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 
 新建`source1.yaml`文件, 写入以下内容：
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 # Configuration.
@@ -39,20 +39,20 @@ from:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 operate-source create source1.yaml
+tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
 |参数           |描述|
 |-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}|
+|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
 |operate-source create|向 DM 集群加载、列出、移除数据源|
 
 ## 第 2 步. 创建迁移任务
 
 新建`task1.yaml`文件, 写入以下内容：
 
-{{< copyable "shell-regular" >}}
+{{< copyable "" >}}
 
 ```yaml
 # 任务名，多个同时运行的任务不能重名。
