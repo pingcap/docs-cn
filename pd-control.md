@@ -131,7 +131,7 @@ Usage:
 >> config show                                // Display the config information of the scheduling
 {
   "replication": {
-    "enable-placement-rules": "false",
+    "enable-placement-rules": "true",
     "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
@@ -139,13 +139,6 @@ Usage:
   },
   "schedule": {
     "enable-cross-table-merge": "true",
-    "enable-debug-metrics": "false",
-    "enable-location-replacement": "true",
-    "enable-make-up-replica": "true",
-    "enable-one-way-merge": "false",
-    "enable-remove-down-replica": "true",
-    "enable-remove-extra-replica": "true",
-    "enable-replace-offline-replica": "true",
     "high-space-ratio": 0.7,
     "hot-region-cache-hits-threshold": 3,
     "hot-region-schedule-limit": 4,
@@ -164,7 +157,6 @@ Usage:
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
-    "store-limit-mode": "manual",
     "tolerant-size-ratio": 0
   }
 }
@@ -175,7 +167,7 @@ Usage:
   "location-labels": "",
   "isolation-level": "",
   "strictly-match-label": "false",
-  "enable-placement-rules": "false"
+  "enable-placement-rules": "true"
 }
 
 >> config show cluster-version                // Display the current version of the cluster, which is the current minimum version of TiKV nodes in the cluster and does not correspond to the binary version.
@@ -795,7 +787,7 @@ Usage:
 
     - `read-priorities` and `write-leader-priorities` control which dimensions the scheduler prioritizes for scheduling hot Regions of the read and write-leader types. The dimension options are `query`, `byte`, and `key`.
     - `write-peer-priorities` controls which dimensions the scheduler prioritizes for scheduling hot Regions of the write-peer type. The dimension options are `byte` and `key`.
-    
+
     > **Note:**
     >
     > If a cluster component is earlier than v5.2, the configuration of `query` dimension does not take effect. If some components are upgraded to v5.2 or later, the `byte` and `key` dimensions still by default have the priority for hot Region scheduling. After all components of the cluster are upgraded to v5.2 or later, such a configuration still takes effect for compatibility. You can view the real-time configuration using the `pd-ctl` command. Usually, you do not need to modify these configurations.
@@ -816,7 +808,7 @@ Usage:
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id>  [--jq="<query string>"]`
+### `store [delete | label | weight | remove-tombstone | limit ] <store_id>  [--jq="<query string>"]`
 
 Use this command to view the store information or remove a specified store. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
@@ -829,9 +821,9 @@ Usage:
   "stores": [...]
 }
 >> store 1                             // Get the store with the store id of 1
-  ......
+......
 >> store delete 1                      // Delete the store with the store id of 1
-  ......
+......
 >> store label 1 zone cn               // Set the value of the label with the "zone" key to "cn" for the store with the store id of 1
 >> store weight 1 5 10                 // Set the leader weight to 5 and Region weight to 10 for the store with the store id of 1
 >> store remove-tombstone              // Remove stores that are in tombstone state
@@ -844,14 +836,6 @@ Usage:
 >> store limit 1 5 add-peer            // Set the limit of adding-peer operations to 5 per minute for store 1
 >> store limit 1 5 remove-peer         // Set the limit of removing-peer operations to 5 per minute for store 1
 >> store limit all 5 remove-peer       // Set the limit of removing-peer operations to 5 per minute for all stores
->> store limit-scene                   // Show all limit scenarios (experimental)
-{
-  "Idle": 100,
-  "Low": 50,
-  "Normal": 32,
-  "High": 12
-}
->> store limit-scene idle 100 // set rate to 100 in the idle scene (experimental)
 ```
 
 > **Note:**
@@ -885,7 +869,7 @@ logic:  120102
 ### Simplify the output of `store`
 
 ```bash
-» store --jq=".stores[].store | { id, address, state_name}"
+>> store --jq=".stores[].store | { id, address, state_name}"
 {"id":1,"address":"127.0.0.1:20161","state_name":"Up"}
 {"id":30,"address":"127.0.0.1:20162","state_name":"Up"}
 ...
@@ -894,7 +878,7 @@ logic:  120102
 ### Query the remaining space of the node
 
 ```bash
-» store --jq=".stores[] | {id: .store.id, available: .status.available}"
+>> store --jq=".stores[] | {id: .store.id, available: .status.available}"
 {"id":1,"available":"10 GiB"}
 {"id":30,"available":"10 GiB"}
 ...
@@ -905,7 +889,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
 ```
 
 ```
@@ -919,7 +903,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
 ```
 
 ```
@@ -931,7 +915,7 @@ logic:  120102
 ### Query the distribution status of the Region replicas
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
 {"id":2,"peer_stores":[1,30,31]}
 {"id":4,"peer_stores":[1,31,34]}
 ...
@@ -942,7 +926,7 @@ logic:  120102
 For example, to filter out all Regions whose number of replicas is not 3:
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
 {"id":12,"peer_stores":[30,32]}
 {"id":2,"peer_stores":[1,30,31,32]}
 ```
@@ -952,7 +936,7 @@ For example, to filter out all Regions whose number of replicas is not 3:
 For example, to filter out all Regions that have a replica on store30:
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
 {"id":6,"peer_stores":[1,30,31]}
 {"id":22,"peer_stores":[1,30,32]}
 ...
@@ -961,7 +945,7 @@ For example, to filter out all Regions that have a replica on store30:
 You can also find out all Regions that have a replica on store30 or store31 in the same way:
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
 {"id":16,"peer_stores":[1,30,34]}
 {"id":28,"peer_stores":[1,30,32]}
 {"id":12,"peer_stores":[30,32]}
@@ -973,7 +957,7 @@ You can also find out all Regions that have a replica on store30 or store31 in t
 For example, when [store1, store30, store31] is unavailable at its downtime, you can find all Regions whose Down replicas are more than normal replicas:
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
 {"id":2,"peer_stores":[1,30,31,32]}
 {"id":12,"peer_stores":[30,32]}
 {"id":14,"peer_stores":[1,30,32]}
@@ -983,14 +967,14 @@ For example, when [store1, store30, store31] is unavailable at its downtime, you
 Or when [store1, store30, store31] fails to start, you can find Regions where the data can be manually removed safely on store1. In this way, you can filter out all Regions that have a replica on store1 but don't have other DownPeers:
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
 {"id":24,"peer_stores":[1,32,33]}
 ```
 
 When [store30, store31] is down, find out all Regions that can be safely processed by creating the `remove-peer` Operator, that is, Regions with one and only DownPeer:
 
 ```bash
-» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+>> region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
 {"id":12,"remove_peer":[30]}
 {"id":4,"remove_peer":[31]}
 {"id":22,"remove_peer":[30]}
