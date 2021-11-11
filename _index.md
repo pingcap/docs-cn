@@ -101,6 +101,7 @@ aliases: ['/docs-cn/dev/']
 - [权限管理](/privilege-management.md)
 - [基于角色的访问控制](/role-based-access-control.md)
 - [证书鉴权](/certificate-authentication.md)
+- [版本发布时间线](/releases/release-timeline.md)
 
 </NavColumn>
 
