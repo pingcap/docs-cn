@@ -826,6 +826,19 @@ Query OK, 0 rows affected (0.09 sec)
 - Default value: `ON`
 - This variable is used to dynamically control whether the telemetry collection in TiDB is enabled. By setting the value to `OFF`, the telemetry collection is disabled. If the [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) TiDB configuration item is set to `false` on all TiDB instances, the telemetry collection is always disabled and this system variable will not take effect. See [Telemetry](/telemetry.md) for details.
 
+### tidb_enable_tso_follower_proxy <span class="version-mark">New in v5.3</span>
+
+- Scope: GLOBAL
+- Default value: `OFF`
+- This variable is used to enable the TSO Follower Proxy feature. When the value is `OFF`, TiDB only gets TSO from the PD leader. After this feature is enabled, TiDB gets TSO by evenly sending requests to all PD nodes and forwarding TSO requests through PD followers. This helps reduce the CPU pressure of PD leader.
+- Scenarios for enabling TSO Follower Proxy:
+    * Due to the high pressure of TSO requests, the CPU of the PD leader reaches a bottleneck, which causes high latency of TSO RPC requests.
+    * The TiDB cluster has many TiDB instances, and increasing the value of [`tidb_tso_client_batch_max_wait_time`](#tidb_tso_client_batch_max_wait_time-new-in-v53) cannot alleviate the high latency issue of TSO RPC requests.
+
+> **Note:**
+>
+> Suppose that the TSO RPC latency increases for reasons other than a CPU usage bottleneck of the PD leader (such as network issues). In this case, enabling the TSO Follower Proxy might increase the execution latency in TiDB and affect the QPS performance of the cluster.
+
 ### tidb_enable_vectorized_expression <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -1506,6 +1519,24 @@ SET tidb_slow_log_threshold = 200;
 - Default value: `0`
 - Range: `[0, 9223372036854775807]`
 - This variable is used to limit the maximum number of requests TiDB can send to TiKV at the same time. 0 means no limit.
+
+### tidb_tso_client_batch_max_wait_time <span class="version-mark">New in v5.3</span>
+
+- Scope: GLOBAL
+- Default value: `0`
+- Range: `[0, 10]`
+- Unit: Milliseconds
+- This variable is used to set the maximum waiting time for a batch operation when TiDB requests TSO from PD. The default value is `0`, which means no extra waiting time.
+- When obtaining TSO requests from PD each time, PD Client, used by TiDB, collects as many TSO requests received at the same time as possible. Then, PD Client merges the collected requests in batch into one RPC request and sends the request to PD. This helps reduce the pressure on PD.
+- After setting this variable to a value greater than `0`, TiDB waits for the maximum duration of this value before the end of each batch merge. This is to collect more TSO requests and improve the effect of batch operations.
+- Scenarios for increasing the value of this variable:
+    * Due to the high pressure of TSO requests, the CPU of the PD leader reaches a bottleneck, which causes high latency of TSO RPC requests.
+    * There are not many TiDB instances in the cluster, but every TiDB instance is in high concurrency.
+- It is recommended to set this variable to a value as small as possible.
+
+> **Notes:**
+>
+> Suppose that the TSO RPC latency increases for reasons other than a CPU usage bottleneck of the PD leader (such as network issues). In this case, increasing the value of `tidb_tso_client_batch_max_wait_time` might increase the execution latency in TiDB and affect the QPS performance of the cluster.
 
 ### tidb_txn_mode
 
