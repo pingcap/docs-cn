@@ -172,6 +172,10 @@
       + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
+<<<<<<< HEAD
+=======
+    + [执行任务前的检查项](/tidb-lightning/tidb-lightning-prechecks.md)
+>>>>>>> 8927590b8 (*: add TiDB release timeline (#7479))
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
@@ -551,6 +555,14 @@
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
+<<<<<<< HEAD
+=======
+  + [版本发布时间线](/releases/release-timeline.md)
+  + v5.2
+    - [5.2.2](/releases/release-5.2.2.md)
+    - [5.2.1](/releases/release-5.2.1.md)
+    - [5.2.0](/releases/release-5.2.0.md)
+>>>>>>> 8927590b8 (*: add TiDB release timeline (#7479))
   + v5.1
     - [5.1.2](/releases/release-5.1.2.md)
     - [5.1.1](/releases/release-5.1.1.md)
