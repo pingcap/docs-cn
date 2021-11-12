@@ -16,6 +16,7 @@ summary: 了解 TiDB 数据库。
 - [TiDB 简介](/overview.md)
 - [基本功能](/basic-features.md)
 - [TiDB 5.2 Release Notes](/releases/release-5.2.0.md)
+- [TiDB 版本发布时间线](/releases/release-timeline.md)
 - [与 MySQL 的兼容性](/mysql-compatibility.md)
 - [使用限制](/tidb-limitations.md)
 
