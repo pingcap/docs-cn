@@ -526,7 +526,7 @@ prepare 语句的 plan cache 设置。
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 
-### `enable`
+### `enabled`
 
 + 开启或关闭事务内存锁
 + 默认值：false
