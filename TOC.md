@@ -176,10 +176,6 @@
       + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
-<<<<<<< HEAD
-=======
-    + [执行任务前的检查项](/tidb-lightning/tidb-lightning-prechecks.md)
->>>>>>> 8927590b8 (*: add TiDB release timeline (#7479))
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
