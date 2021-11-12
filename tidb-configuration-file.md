@@ -483,7 +483,7 @@ prepare 语句的 plan cache 设置。
 ### `capacity`
 
 + 缓存语句的数量。
-+ 默认值：100
++ 默认值：1000
 + 类型为 uint，小于 0 的值会被转化为大整数。
 
 ### `memory-guard-ratio`
@@ -607,7 +607,7 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
++ 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
