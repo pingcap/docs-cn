@@ -34,16 +34,16 @@ max-error = 0
 * 零日期时间，如 `'0000-00-00'` 和 `'2021-12-00'`
 * 在 NOT NULL 列中设置了 NULL
 * 生成的列表达式求值失败
-* 列计数不匹配。行中数值的数量和列的数量不一致。
+* 列计数不匹配。行中数值的数量和列的数量不一致
 * `on-duplicate = "error"` 时，TiDB 后端的唯一键/主键冲突
 * 其他 SQL 错误
 
 下列错误是致命错误，不能通过配置 `max-error` 跳过：
 
-* 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号。
-* I/O、网络、或系统权限错误。
+* 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号
+* I/O、网络、或系统权限错误
 
-在 Local 后端模式下，唯一键/主键冲突的冲突是单独处理的。将在接下来的章节进行介绍。
+在 Local 后端模式下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
 
 ## 解决重复问题
 
@@ -138,13 +138,13 @@ CREATE TABLE conflict_error_v1 (
 >
 > 错误报告记录的是文件偏移量，不是行号或列号，因为行号或列号的获取效率很低。你可以使用下列命令在字节位实现快速跳转（以 183 为例）：
 >
-> * shell, printing several lines before —
+> * shell, 输出一些前置的数据行——
 >
 >     ```sh
 >     head -c 183 file.csv | tail
 >     ```
 >
-> * shell, printing several lines after —
+> * shell, 输出一些后置的数据行——
 >
 >     ```sh
 >     tail -c +183 file.csv | head
@@ -185,7 +185,7 @@ CREATE TABLE conflict_error_v1 (
     EOF
     ```
 
-3. 配置 TiDB Lightning，启用严格 SQL 模式，使用本地后端进行导入，通过删除解决重复项，并最多跳过 10 个错误：
+3. 配置 TiDB Lightning，启用严格 SQL 模式，使用 Local 后端模式进行导入，通过删除解决重复项，并最多跳过 10 个错误：
 
     {{< copyable "shell-regular" >}}
 
