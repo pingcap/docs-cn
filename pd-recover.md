@@ -97,7 +97,7 @@ To get the allocated ID from the PD log, you need to make sure that the log you 
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r | head -n 1
+cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
 ```
 
 ```bash
