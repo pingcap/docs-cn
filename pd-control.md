@@ -148,7 +148,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 {
   "replication": {
-    "enable-placement-rules": "false",
+    "enable-placement-rules": "true",
     "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
@@ -156,13 +156,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   },
   "schedule": {
     "enable-cross-table-merge": "true",
-    "enable-debug-metrics": "false",
-    "enable-location-replacement": "true",
-    "enable-make-up-replica": "true",
-    "enable-one-way-merge": "false",
-    "enable-remove-down-replica": "true",
-    "enable-remove-extra-replica": "true",
-    "enable-replace-offline-replica": "true",
     "high-space-ratio": 0.7,
     "hot-region-cache-hits-threshold": 3,
     "hot-region-schedule-limit": 4,
@@ -181,7 +174,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
-    "store-limit-mode": "manual",
     "tolerant-size-ratio": 0
   }
 }
@@ -209,7 +201,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   "isolation-level": "",
   "location-labels": "",
   "strictly-match-label": "false",
-  "enable-placement-rules": "false"
+  "enable-placement-rules": "true"
 }
 ```
 
@@ -1080,7 +1072,7 @@ Encoding 格式示例：
 
     - `read-priorities` 和 `write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，可选的维度有 `query`、`byte` 和 `key`。
     - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置 `byte` 和 `key` 维度。
-    
+
     > **注意：**
     >
     > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
@@ -1101,7 +1093,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
+### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -1129,7 +1121,7 @@ Encoding 格式示例：
 ```
 
 ```
-  ......
+......
 ```
 
 下线 store id 为 1 的 store：
@@ -1141,7 +1133,7 @@ Encoding 格式示例：
 ```
 
 ```
-  ......
+......
 ```
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
@@ -1173,14 +1165,6 @@ Encoding 格式示例：
 >> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
 >> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
 >> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
->> store limit-scene                   // 显示所有的限速场景（实验性功能）
-{
-  "Idle": 100,
-  "Low": 50,
-  "Normal": 32,
-  "High": 12
-}
->> store limit-scene idle 100          // 设置 load 为 idle 场景下，添加/删除 peer 的速度上限为每分钟 100 个
 ```
 
 > **注意：**
@@ -1271,7 +1255,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» store --jq=".stores[].store | { id, address, state_name}"
+>> store --jq=".stores[].store | { id, address, state_name}"
 ```
 
 ```
@@ -1285,7 +1269,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» store --jq=".stores[] | {id: .store.id, available: .status.available}"
+>> store --jq=".stores[] | {id: .store.id, available: .status.available}"
 ```
 
 ```
@@ -1299,7 +1283,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
 ```
 
 ```
@@ -1313,7 +1297,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
 ```
 
 ```
@@ -1327,7 +1311,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
 ```
 
 ```
@@ -1343,7 +1327,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
 ```
 
 ```
@@ -1358,7 +1342,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
 ```
 
 ```
@@ -1372,7 +1356,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
 ```
 
 ```
@@ -1389,7 +1373,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
 ```
 
 ```
@@ -1404,7 +1388,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
 ```
 
 ```
@@ -1416,7 +1400,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+>> region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
 ```
 
 ```

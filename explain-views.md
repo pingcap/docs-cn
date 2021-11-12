@@ -107,3 +107,13 @@ Query OK, 0 rows affected (2 min 31.20 sec)
 ```
 
 在第一条语句中，TiDB 能够使用组合索引的两个部分 `(bike_number, duration)`。在第二条语句，TiDB 仅使用了索引 `(bike_number, duration)` 的第一部分 `bike_number`。
+
+## 其他类型查询的执行计划
+
++ [MPP 模式查询的执行计划](/explain-mpp.md)
++ [索引查询的执行计划](/explain-indexes.md)
++ [Join 查询的执行计划](/explain-joins.md)
++ [子查询的执行计划](/explain-subqueries.md)
++ [聚合查询的执行计划](/explain-aggregation.md)
++ [分区查询的执行计划](/explain-partitions.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
