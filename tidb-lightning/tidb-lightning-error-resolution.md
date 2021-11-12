@@ -186,6 +186,7 @@ CREATE TABLE conflict_error_v1 (
     ```
 
 3. 配置 TiDB Lightning，启用严格 SQL 模式，使用本地后端进行导入，通过删除解决重复项，并最多跳过 10 个错误：
+
     {{< copyable "shell-regular" >}}
 
     ```sh
@@ -208,6 +209,7 @@ CREATE TABLE conflict_error_v1 (
     ```
 
 4. 运行 TiDB Lightning。因为已跳过所有错误，该命令执行完会成功退出：
+
     {{< copyable "shell-regular" >}}
 
     ```sh
