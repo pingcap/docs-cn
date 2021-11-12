@@ -113,7 +113,7 @@ CREATE TABLE conflict_error_v1 (
 
 **syntax_error_v1** 记录文件中的语法错误。目前尚未生效。
 
-**type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-Type-error)。每个错误一行。
+**type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
 **conflict_error_v1** 记录所有[后端中的唯一键/主键冲突](#解决重复问题)。每对冲突有 2 行。
 
