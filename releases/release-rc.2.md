@@ -5,7 +5,7 @@ aliases: ['/docs/dev/releases/release-rc.2/','/docs/dev/releases/rc2/']
 
 # TiDB RC2 Release Notes
 
-On August 4, 2017, TiDB RC4 is released! This release is focused on the compatibility with MySQL, SQL query optimizer, system stability and performance in this version. What’s more, a new permission management mechanism is added and users can control data access in the same way as the MySQL privilege management system.
+On March 1, 2017, TiDB RC2 is released! This release is focused on the compatibility with MySQL, SQL query optimizer, system stability and performance in this version. What’s more, a new permission management mechanism is added and users can control data access in the same way as the MySQL privilege management system.
 
 ## TiDB
 

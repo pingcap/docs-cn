@@ -196,7 +196,7 @@
     + [Overview](/tidb-lightning/tidb-lightning-overview.md)
     + [Tutorial](/get-started-with-tidb-lightning.md)
     + [Deploy](/tidb-lightning/deploy-tidb-lightning.md)
-    + [Precheck](/tidb-lightning/tidb-lightning-prechecks.md)   
+    + [Precheck](/tidb-lightning/tidb-lightning-prechecks.md)
     + [Configure](/tidb-lightning/tidb-lightning-configuration.md)
     + Key Features
       + [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
@@ -564,8 +564,9 @@
 + [Glossary](/glossary.md)
 + Release Notes
   + [All Releases](/releases/release-notes.md)
+  + [Release Timeline](/releases/release-timeline.md)
   + v5.2
-    + [5.2.2](/releases/release-5.2.2.md)  
+    + [5.2.2](/releases/release-5.2.2.md)
     + [5.2.1](/releases/release-5.2.1.md)
     + [5.2.0](/releases/release-5.2.0.md)
   + v5.1
