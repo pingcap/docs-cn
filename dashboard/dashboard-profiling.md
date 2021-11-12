@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 在实例性能分析页面，选择至少一个想要分析的目标实例，点击**开始分析** (Start Profiling) 按钮即可开始性能分析：
 
-![开始分析](/media/dashboard/dashboard-profiling-start.png)
+![开始分析](/media/dashboard/dashboard-profiling-start.png) 
 
 在开始性能分析前可以修改性能分析时长。性能分析所需时间取决于分析时长，默认为 30 秒。30 秒的性能分析大约需要 30 秒完成。
 
