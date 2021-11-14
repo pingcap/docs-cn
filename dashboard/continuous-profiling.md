@@ -7,14 +7,22 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 > **警告：**
 >
-> 持续性能分析功能作为实验特性，不建议在生产环境中使用。
-> 该功能在 TiDB 5.3.0 引入，需要升级到 5.3.0 及以上版本体验。
-> 该功能可在 x86 架构下支持 TiDB、TiKV、PD ，暂不支持 TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
-> 该功能暂时只用于使用 TiUP 部署和升级的集群，不支持 TiDB Operator 或二进制包部署和升级的集群。
+> 持续性能分析目前为实验特性，不建议在生产环境中使用。
+>
 
 持续性能分析是一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。
 
 该功能以低于 0.5% 的性能损耗，对数据库内部运行状态持续打快照（类似 CT 扫描），让原本“黑盒”的数据库变成“白盒”，具备更高的可观测性。该功能一键开启后自动运行，存储结果提供了保留时长的设定，过期的结果将会被回收，确保存储空间的有效利用。
+
+## 使用限制
+
+使用持续性能分析时，应留意如下使用限制：
+
+- 该功能在 TiDB 5.3.0 引入，需要升级到 5.3.0 及以上版本使用。
+
+- 该功能可在 x86 架构下支持 TiDB、TiKV、PD ，暂不支持 TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
+
+- 该功能暂时只用于使用 TiUP 部署和升级的集群，不支持 TiDB Operator 或二进制包部署和升级的集群。
 
 ## 分析内容
 
@@ -25,11 +33,11 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ## 启用持续性能分析
 
-持续性能分析功能需由两阶段操作启用。
+启用持续性能分析，需要首先检查 TiUP 版本信息，然后配置中控机和 TiDB Dashboard 相关参数。
 
-### 启动前检查
+### 检查版本
 
-在启动前，需要检查 TiUP Cluster 版本，若版本低于 1.7.0 则需要先升级 TiUP Cluster，再对 Prometheus 节点进行 reload 操作。
+检查 TiUP Cluster 版本，若版本低于 1.7.0，则需要先升级 TiUP Cluster。
 
 1. 检查 TiUP 版本：
 
@@ -46,11 +54,11 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
     Go Version: go1.17.2
     Git Ref: v1.7.0
     ```
-        
-    若低于 v1.7.0，需要先升级 TiUP Cluster。若已经是 v1.7.0 及以上版本，可直接重启 Prometheus 节点。
+
+    若低于 v1.7.0，需要先升级 TiUP Cluster。
 
 2. 升级 TiUP 和 TiUP Cluster 版本至最新。
-    
+
     - 升级 TiUP：
 
         {{< copyable "shell-regular" >}}
@@ -58,7 +66,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
         ```shell
         tiup update --self
         ```
-        
+
     - 升级 TiUP Cluster：
 
         {{< copyable "shell-regular" >}}
@@ -69,7 +77,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 升级后，完成启动前检查。
 
-### 启动功能流程
+### 配置中控机和 TiDB Dashboard
 
 1. 在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
 
@@ -80,7 +88,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
         ```shell
         tiup cluster edit-config ${cluster-name}
         ```
-        
+
     2. 设置参数，在 [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers) 下面增加 “ng_port:${port}”：
 
         ```
@@ -99,11 +107,13 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
     重启后，完成中控机所需的操作。
 
-2. 在 TiDB Dashboard 的**高级调试** > **实例性能分析** > **持续分析**页面，点击**设置**，进入设置弹窗，打开**启用功能**开关，点击**保存** (Save) 按钮，即可开启功能：
+2. 启用持续性能分析。
 
-![启用功能](/media/dashboard/dashboard-conprof-start.png)
+    1. 进入 TiDB Dashboard，选择**高级调试** > **实例性能分析** > **持续分析**。
+    2. 点击**打开设置**。在右侧**设置**页面，将**启用特性**下方的开关打开。设置**保留时间**或保留默认值。
+    3. 点击**保存**。
 
-可以修改保留时间。分析结果会持久化到磁盘中，超过保留时间会被回收。该配置对所有结果生效，包括历史结果。
+    ![启用功能](/media/dashboard/dashboard-conprof-start.png)
 
 ## 访问页面
 
@@ -135,8 +145,8 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ## 停用持续性能分析
 
-1. 在 TiDB Dashboard 的**高级调试** > **实例性能分析** > **持续分析**页面，点击**设置**，进入设置弹窗。
-2. 关闭**启用功能**开关。
-3. 点击**保存** (Save) 按钮。
+1. 进入 TiDB Dashboard，选择**高级调试** > **实例性能分析** > **持续分析**。
+2. 点击**设置**，将**启用特性**下方的开关关闭。
+3. 点击**保存**。
 
 ![停用功能](/media/dashboard/dashboard-conprof-stop.png)
