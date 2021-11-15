@@ -29,10 +29,12 @@ The CSV format can be configured in `tidb-lightning.toml` under the `[mydumper.c
 
 ```toml
 [mydumper.csv]
-# Separator between fields, should be an ASCII character.
+# Separator between fields. Must not be empty.
 separator = ','
-# Quoting delimiter, can either be an ASCII character or empty string.
+# Quoting delimiter. Empty value means no quoting.
 delimiter = '"'
+# Line terminator. Empty value means both "\n" (LF) and "\r\n" (CRLF) are line terminators.
+terminator = ''
 # Whether the CSV files contain a header.
 # If `header` is true, the first line will be skipped.
 header = true
@@ -48,16 +50,25 @@ backslash-escape = true
 trim-last-separator = false
 ```
 
+In all string fields such as `separator`, `delimiter` and `terminator`, if the input involves special characters, you can use backslash escape sequence to represent them in a *double-quoted* string (`"…"`). For example, `separator = "\u001f"` means using the ASCII character 0x1F as separator.
+
+Additionally, you can use *single-quoted* strings (`'…'`) to suppress backslash escaping. For example, `terminator = '\n'` means using the two-character string: a backslash followed by the letter "n", as the terminator.
+
+See the [TOML v1.0.0 specification] for details.
+
 [`LOAD DATA`]: https://dev.mysql.com/doc/refman/8.0/en/load-data.html
+
+[TOML v1.0.0 specification]: https://toml.io/en/v1.0.0#string
 
 ### `separator`
 
 - Defines the field separator.
-- Must be a single ASCII character.
+- Can be multiple characters, but must not be empty.
 - Common values:
 
-    * `','` for CSV
-    * `"\t"` for TSV
+    * `','` for CSV (comma-separated values)
+    * `"\t"` for TSV (tab-separated values)
+    * `"\u0001"` to use the ASCII character 0x01 as separator
 
 - Corresponds to the `FIELDS TERMINATED BY` option in the LOAD DATA statement.
 
@@ -73,6 +84,12 @@ trim-last-separator = false
 - Corresponds to the `FIELDS ENCLOSED BY` option in the `LOAD DATA` statement.
 
 [RFC 4180]: https://tools.ietf.org/html/rfc4180
+
+### `terminator`
+
+- Defines the line terminator.
+- If `terminator` is empty, both `"\r"` (U+000D Carriage Return) and `"\n"` (U+000A Line Feed) are used as terminator.
+- Corresponds to the `LINES TERMINATED BY` option in the `LOAD DATA` statement.
 
 ### `header`
 
@@ -127,14 +144,26 @@ trim-last-separator = false
 - When `trim-last-separator = false`, this is interpreted as a row of 5 fields `('A', '', 'B', '', '')`.
 - When `trim-last-separator = true`, this is interpreted as a row of 3 fields `('A', '', 'B')`.
 
+- This option is deprecated, because the behavior with multiple trailing separators is not intuitive. Use the `terminator` option instead. If your old configuration was
+
+    ```toml
+    separator = ','
+    trim-last-separator = true
+    ```
+
+    we recommend changing this to
+
+    ```toml
+    separator = ','
+    terminator = ",\n"
+    ```
+
 ### Non-configurable options
 
 TiDB Lightning does not support every option supported by the `LOAD DATA` statement. Some examples:
 
-* The line terminator must only be CR (`\r`), LF (`\n`) or CRLF (`\r\n`), which means `LINES TERMINATED BY` is not customizable.
 * There cannot be line prefixes (`LINES STARTING BY`).
-* The header cannot be simply skipped (`IGNORE n LINES`), it must be valid column names if present.
-* Delimiters and separators can only be a single ASCII character.
+* The header cannot be simply skipped (`IGNORE n LINES`). It must be valid column names if present.
 
 ## Strict format
 
@@ -147,10 +176,10 @@ This can be fixed by splitting the CSV into multiple files first. For the generi
 strict-format = true
 ```
 
-Currently, a strict CSV file means every field occupies only a single line. In the other words, one of the following must be true:
+Currently, a strict CSV file means every field occupies only a single line. In other words, one of the following must be true:
 
 * Delimiter is empty, or
-* Every field does not contain CR (`\r`) or LF (`\n`).
+* Every field does not contain the terminator itself. In the default configuration, this means every field does not contain CR (`\r`) or LF (`\n`).
 
 If a CSV file is not strict, but `strict-format` was wrongly set to `true`, a field spanning multiple lines may be cut in half into two chunks, causing parse failure, or even worse, quietly importing corrupted data.
 
@@ -168,7 +197,6 @@ header = true
 not-null = false
 null = '\N'
 backslash-escape = true
-trim-last-separator = false
 ```
 
 Example content:
@@ -191,7 +219,6 @@ header = true
 not-null = false
 null = 'NULL'
 backslash-escape = false
-trim-last-separator = false
 ```
 
 Example content:
@@ -210,10 +237,10 @@ ID    Region    Count
 [mydumper.csv]
 separator = '|'
 delimiter = ''
+terminator = "|\n"
 header = false
 not-null = true
 backslash-escape = false
-trim-last-separator = true
 ```
 
 Example content:
