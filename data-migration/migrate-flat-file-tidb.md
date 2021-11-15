@@ -71,7 +71,7 @@ no-schema = true
 
 # 定义平面文件格式
 [mydumper.csv]
-# 字段分隔符，必须为 ASCII 字符。
+# 字段分隔符，必须为 ASCII 字符。不建议源文件使用默认的“,”简单分隔符，推荐“|+|”等非常见字符组合
 separator = ','
 # 引用定界符，可以为 ASCII 字符或空字符。
 delimiter = '"'
