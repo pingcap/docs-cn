@@ -18,7 +18,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 使用持续性能分析时，应留意如下使用限制：
 
-- 该功能在 TiDB 5.3.0 引入，需要升级到 5.3.0 及以上版本使用。
+- 该功能在 TiDB v5.3.0 引入，需要升级到 5.3.0 及以上版本使用。
 
 - 该功能可在 x86 架构下支持 TiDB、TiKV、PD ，暂不支持 TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
 
