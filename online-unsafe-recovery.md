@@ -8,7 +8,7 @@ summary: 如何使用 Online Unsafe Recovery。
 > **警告：**
 >
 > - 此功能为有损恢复，无法保证数据和数据索引完整性。
-> - 此功能为实验特性，其接口、策略和内部实现在最终发布时可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
+> - 此功能为实验特性，其接口、策略和内部实现在 GA 前可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
 > - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
 
 当多数副本的永久性损坏造成部分数据不可读写时，可以使用 Online Unsafe Recovery 功能进行数据有损恢复。
@@ -44,9 +44,9 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 > **注意：**
 >
-> 关闭调度时，系统将无法处理系统数据热点问题，请在恢复后尽快重新开启调度。
+> 关闭调度后，系统将无法处理系统数据热点问题，请在恢复后尽快重新开启调度。
 
-1. 使用 pd-ctl 执行 `config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
+1. 使用 pd-ctl 执行 [`config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
 2. 使用 pd-ctl 关闭各类调度：
 
     * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
