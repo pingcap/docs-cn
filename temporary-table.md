@@ -102,7 +102,7 @@ SELECT * FROM users;
 1 row in set (0.00 sec)
 ```
 
-在会话 B 中创建本地临时表 `users`，也不会有名字冲突。会话 B 内访问 `users` 时，访问的是会话 B 内创建的本地临时表 `users` 数据。
+在会话 B 中创建本地临时表 `users`，不会与普通表 `users` 冲突，也不会与会话 A 中的本地临时表 `users` 冲突。会话 B 内访问 `users` 时，访问的是会话 B 内创建的本地临时表 `users` 数据。
 
 {{< copyable "sql" >}}
 
