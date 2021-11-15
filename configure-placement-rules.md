@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/configure-placement-rules/','/docs-cn/dev/how-to/configu
 
 > **警告：**
 >
-> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。除配合使用 TiFlash 的场景外，单独开启 Placement Rules 没有经过大量测试，因此，不建议在生产环境单独开启该功能。
+> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。但是，单独开启 Placement Rules 则尚未经过大量测试，因此，不建议在生产环境中单独开启该功能。
 
 > **注意：**
 >
