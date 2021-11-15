@@ -124,7 +124,7 @@ addr = "172.16.31.10:8287"
 #    inconsistent data in the target TiDB.
 #  - remove: records all duplicate records like the 'record' algorithm and remove all duplicate records to ensure a consistent
 #    state in the target TiDB.
-# duplicate-resolution = 'record'
+# duplicate-resolution = 'none'
 # The number of KV pairs sent in one request in the "local" backend.
 # send-kv-pairs = 32768
 # The directory of local KV sorting in the "local" backend. If the disk

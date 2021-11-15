@@ -47,7 +47,7 @@ Unique/Primary key conflict in Local backend is handled separately, explained in
 
 ```toml
 [tikv-importer]
-duplicate-resolution = 'record'
+duplicate-resolution = 'none'
 ```
 
 Local backend imports data by first converting them to KV pairs, and ingest them into TiKV in batches. Unlike the TiDB backend, duplicate rows are not detected until the end of task. Therefore, duplicate errors in local backend is not controlled by `max-error`, but rather a separate configuration `duplicate-resolution`.
