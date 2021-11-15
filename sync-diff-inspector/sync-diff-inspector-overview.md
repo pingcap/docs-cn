@@ -69,6 +69,7 @@ sync-diff-inspector 的配置总共分为五个部分：
 
 下面是一个完整配置文件的说明：
 
+- 提示：配置名后带 `s` 的配置项允许拥有多个配置值，因此需要使用方括号`[]` 来包含配置值。
 ```toml
 # Diff Configuration.
 
@@ -99,25 +100,6 @@ check-struct-only = false
     password = ""
     # 使用 TiDB 的 snapshot 功能，如果开启的话会使用历史数据进行对比
     # snapshot = "386902609362944000"
-
-######################### Table config #########################
-# 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
-[table-configs.config1] # config1 是该配置的唯一标识 id，用于下面 task.target-configs 中
-# 目标数据库名称
-schema = "schama1"
-# 目标表名称
-table = "table"
-# 指定检查的数据的范围，需要符合 sql 中 where 条件的语法
-range = "age > 10 AND age < 20"
-# 指定用于划分 chunk 的列，使用逗号分割，如果不配置该项，sync-diff-inspector 会选取一些合适的列（主键／唯一键／索引）
-index-fields = "col1,col2"
-# 忽略某些列的检查，例如 sync-diff-inspector 目前还不支持的一些类型（json，bit，blob 等），
-# 或者是浮点类型数据在 TiDB 和 MySQL 中的表现可能存在差异，可以使用 ignore-columns 忽略检查这些列
-ignore-columns = ["",""]
-# 指定划分该表的 chunk 的大小，若不指定可以删去或者将其配置为 0。
-chunk-size = 0
-# 指定该表的 collation，若不指定可以删去或者将其配置为空字符串。
-collation = ""
 
 ########################### Routes ###########################
 # 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
@@ -155,8 +137,25 @@ target-table = "t2" # 目标表名
     # 使用 ? 来匹配任意一个字符；使用 * 来匹配任意；详细匹配规则参考 golang regexp pkg: https://github.com/google/re2/wiki/Syntax
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 
-    # 对部分表的额外配置
+    # 对部分表的额外配置，其中 config1 在下面 Table config 配置栏中定义
     target-configs= ["config1"]
+
+######################### Table config #########################
+# 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
+[table-configs.config1] # config1 是该配置的唯一标识 id，用于上面 task.target-configs 中
+# 目标表名称，可以使用正则来匹配多个表，但不允许存在一个表同时被多个特殊配置匹配。
+target-tables = ["schema*.test*", "test2.t2"]
+# 指定检查的数据的范围，需要符合 sql 中 where 条件的语法
+range = "age > 10 AND age < 20"
+# 指定用于划分 chunk 的列，如果不配置该项，sync-diff-inspector 会选取一些合适的列（主键／唯一键／索引）
+index-fields = ["col1","col2"]
+# 忽略某些列的检查，例如 sync-diff-inspector 目前还不支持的一些类型（json，bit，blob 等），
+# 或者是浮点类型数据在 TiDB 和 MySQL 中的表现可能存在差异，可以使用 ignore-columns 忽略检查这些列
+ignore-columns = ["",""]
+# 指定划分该表的 chunk 的大小，若不指定可以删去或者将其配置为 0。
+chunk-size = 0
+# 指定该表的 collation，若不指定可以删去或者将其配置为空字符串。
+collation = ""
 ```
 
 ## 运行 sync-diff-inspector
