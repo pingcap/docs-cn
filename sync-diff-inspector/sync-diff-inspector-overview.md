@@ -70,6 +70,7 @@ sync-diff-inspector 的配置总共分为五个部分：
 下面是一个完整配置文件的说明：
 
 - 提示：配置名后带 `s` 的配置项允许拥有多个配置值，因此需要使用方括号 `[]` 来包含配置值。
+
 ```toml
 # Diff Configuration.
 
@@ -156,6 +157,7 @@ ignore-columns = ["",""]
 chunk-size = 0
 # 指定该表的 collation，若不指定可以删去或者将其配置为空字符串。
 collation = ""
+
 ```
 
 ## 运行 sync-diff-inspector
