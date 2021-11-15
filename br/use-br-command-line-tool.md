@@ -246,6 +246,31 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 In the above example, for the incremental backup data, BR records the data changes and the DDL operations during `(LAST_BACKUP_TS, current PD timestamp]`. When restoring data, BR first restores DDL operations and then the data.
 
+### Encrypt data during backup
+
+Since TiDB v5.3.0, TiDB supports backup encryption. You can configure the following parameters to encrypt data during backup:
+
+* `--crypter.method`: Encryption algorithm. Supports three algorithms `aes128-ctr/aes192-ctr/aes256-ctr`. The default value is `plaintext` and indicates no encryption.
+* `--crypter.key`: Encryption key in hexadecimal string format. `aes128-ctr` means 128 bit (16 bytes) key length, `aes192-ctr` means 24 bytes and `aes256-ctr` means 32 bytes.
+* `--crypter.key-file`: The key file. You can directly pass in the file path where the key is stored as a parameter without passing in "crypter.key"
+
+> **Warning:**
+>
+> - If the key is lost, the backup data cannot be restored to the cluster.
+> - The encryption feature needs to be used on BR tools and TiDB clusters v5.3.0 or later versions, and the encrypted backup data cannot be restored on clusters ealier than v5.3.0.
+
+The configuration example for backup encryption is as follows:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --crypter.method aes128-ctr \
+    --crypter.key 0123456789abcdef0123456789abcdef
+```
+
 ### Point-in-time recovery (experimental feature)
 
 Point-in-time recovery (PITR) allows you to restore data to a point in time of your choice.
@@ -310,7 +335,7 @@ To restore the cluster data, use the `br restore` command. You can add the `full
 > - Where each peer is scattered to during restore is random. We don't know in advance which node will read which file.
 >
 > These can be avoided using shared storage, for example mounting an NFS on the local path, or using S3. With network storage, every node can automatically read every SST file, so these caveats no longer apply.
-> 
+>
 > Also, note that you can only run one restore operation for a single cluster at the same time. Otherwise, unexpected behaviors might occur. For details, see [FAQ](/br/backup-and-restore-faq.md#can-i-use-multiple-br-processes-at-the-same-time-to-restore-the-data-of-a-single-cluster).
 
 ### Restore all the backup data
@@ -481,8 +506,24 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - the system variable tables (`mysql.tidb`，`mysql.global_variables`) cannot be restored.
 > - the user information tables (such as `mysql.user` and `mysql.columns_priv`) cannot be restored.
 > - GC data cannot be restored.
-> 
+>
 > Restoring system tables might cause more compatibility issues. To avoid unexpected issues, **DO NOT** restore system tables in the production environment.
+
+### Decrypt data during restore
+
+After encrypting the backup data, you need to pass in the corresponding decryption parameters to restore the data. You need to ensure that the decryption parameters and encryption parameters are consistent. If the decryption algorithm or key is incorrect, the data cannot be restored. 
+
+The following is an example of decrypting the backup data:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --crypter.method aes128-ctr \
+    --crypter.key 0123456789abcdef0123456789abcdef
+```
 
 ### Restore Raw KV (experimental feature)
 
