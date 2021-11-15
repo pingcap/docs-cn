@@ -115,7 +115,7 @@ CREATE TABLE t1 (
 );
 ```
 
-### 为 schema 配置默认的放置规则
+### 为数据库配置默认的放置规则
 
 你可以为某个数据库指定默认的放置选项，类似于为数据库设置默认字符集或排序规则。如果没有指定其他选项，就会使用数据库上指定的配置。示例如下：
 
@@ -133,7 +133,7 @@ ALTER DATABASE test FOLLOWERS=2;  -- 再次更改默认的放置选项，此更�
 CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置规则 FOLLOWERS=2 生效。
 ```
 
-只有创建表时会从数据库继承默认的放置选项，因此推荐使用 `PLACEMENT POLICY` 放置策略来设置默认的放置选项。可以通过改动放置策略，改变继承自数据库的放置选项。
+由于只有在创建表时才会从数据库继承放置选项，因此推荐使用 `PLACEMENT POLICY` 放置策略来设置默认的放置选项。使用后，用户可以通过改动放置策略，改变继承自数据库的放置选项。
 
 ### 高级放置
 
@@ -167,7 +167,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 目前已知 Placement Rules in SQL 实验特性存在以下限制：
 
-* Dumpling 不支持导出放置策略。见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
+* Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
 * 临时表不支持放置选项，直接放置和放置策略均不支持。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
