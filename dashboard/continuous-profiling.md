@@ -147,7 +147,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)。
 2. 点击**设置** (Settings)，将**启用特性** (Enable Feature) 下方的开关关闭。
-3. 在弹出的**停用持续性能分析** (Disable Continuous Profiling Feature) 对话框中，选择**停用** (Disable)。
+3. 在弹出的**停用持续分析** (Disable Continuous Profiling Feature) 对话框中，选择**停用** (Disable)。
 4. 点击**保存** (Save)。
 
 ![停用功能](/media/dashboard/dashboard-conprof-stop.png)
