@@ -422,7 +422,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-悲观事务模型中，始终默认执行约束检查。
+悲观事务模式中，始终默认执行约束检查。
 
 ### `tidb_current_ts`
 
@@ -860,10 +860,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `user`：当前会话用户
     - `schemaVersion`：当前 schema 版本
     - `txnStartTS`：当前事务的开始时间戳
-    - `forUpdateTS`：事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模型为乐观事务时，该条目与 `txnStartTS` 等价。
+    - `forUpdateTS`：事务模式为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模式为乐观事务时，该条目与 `txnStartTS` 等价。
     - `isReadConsistency`：当前事务隔离级别是否是读已提交 (RC)
     - `current_db`：当前数据库名
-    - `txn_mode`：事务模型。可选值：`OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
+    - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式） 
     - `sql`：当前查询对应的 SQL 语句
 
 ### `tidb_hash_join_concurrency`
@@ -1410,7 +1410,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`pessimistic`
 - 可选值：`pessimistic`，`optimistic`
 - 这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/pessimistic-transaction.md)。
-- 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+- 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 - 将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
 
 ### `tidb_use_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>

@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/optimistic-transaction/','/docs-cn/dev/reference/transac
 
 > **注意：**
 >
-> 自 v3.0.8 开始，TiDB 集群默认使用[悲观事务模型](/pessimistic-transaction.md)。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+> 自 v3.0.8 开始，TiDB 集群默认使用[悲观事务模式](/pessimistic-transaction.md)。但如果从 3.0.7 及之前版本创建的集群升级到 3.0.8 及之后的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 
 ## 乐观事务原理
 
