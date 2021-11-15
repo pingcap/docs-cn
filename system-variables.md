@@ -843,7 +843,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `forUpdateTS`：事务模式为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模式为乐观事务时，该条目与 `txnStartTS` 等价。
     - `isReadConsistency`：当前事务隔离级别是否是读已提交 (RC)
     - `current_db`：当前数据库名
-    - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式）
+    - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式） 
     - `sql`：当前查询对应的 SQL 语句
 
 ### `tidb_hash_join_concurrency`
