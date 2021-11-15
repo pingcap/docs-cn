@@ -77,6 +77,9 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Optimizer hints](/optimizer-hints.md)                                                                   | Y            | Y            | Y            | Y            | Y            |
 | [MPP 执行引擎](/explain-mpp.md)                                                                   | Y            | Y            | Y            | Y            | N            |
 | [Index Merge Join](/explain-index-merge.md)                                                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [执行计划缓存](/sql-prepare-plan-cache.md)                                                        | Y |   |   |   |   |
+[Placement Rules in SQL](/placement-rules-in-sql.md)                                             | 实验特性 |       
+|          |         |                   |
 
 ## 数据定义语言 (DDL)
 
@@ -91,6 +94,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            | Y            |
 | 在单条语句中添加多列                                                                       | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | Y            | N            | N            |
+| [临时表](/temporary-table.md)                                                                    | Y           |
 
 ## 事务
 
@@ -165,11 +169,11 @@ aliases: ['/docs-cn/dev/basic-features/']
 | Ansible 部署                                                                                       | N            | N            | N            | N            | 已废弃   |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable)                                      | Y            | Y            | Y            | Y            | Y            |
 | [内置物理备份](/br/backup-and-restore-use-cases.md)                                          | Y            | Y            | Y            | Y            | Y            |
-| Top SQL                                                                                                  | Y            | Y            | N            | N            | N            |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y            | Y            | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [`SET CONFIG`](/dynamic-config.md)                                                                       | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [持续性能分析](/continuous-profiling.md) | 实验特性 | N | N | N | N |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
