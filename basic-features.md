@@ -77,8 +77,8 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Optimizer hints](/optimizer-hints.md)                                                                   | Y            | Y            | Y            | Y            | Y            |
 | [MPP 执行引擎](/explain-mpp.md)                                                                   | Y            | Y            | Y            | Y            | N            |
 | [Index Merge Join](/explain-index-merge.md)                                                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [执行计划缓存](/sql-prepare-plan-cache.md)                                                        | Y |   |   |   |   |
-[Placement Rules in SQL](/placement-rules-in-sql.md)                                             | 实验特性 |   |   |   |   |
+| [执行计划缓存](/sql-prepare-plan-cache.md)                                                        | Y |  实验特性 |  实验特性 |  实验特性 | 实验特性  |
+[Placement Rules in SQL](/placement-rules-in-sql.md)                                             | 实验特性 |   N  |   N   |  N  |   N  |
 
 ## 数据定义语言 (DDL)
 
@@ -93,7 +93,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            | Y            |
 | 在单条语句中添加多列                                                                       | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | Y            | N            | N            |
-| [临时表](/temporary-table.md)                                                                    | Y           |
+| [临时表](/temporary-table.md)                                                                    | Y           |  N  |   N  |  N  |  N  |
 
 ## 事务
 
