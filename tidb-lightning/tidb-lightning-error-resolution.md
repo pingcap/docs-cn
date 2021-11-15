@@ -1,9 +1,9 @@
 ---
-title: TiDB Lightning 错误处理
+title: TiDB Lightning 错误处理配置
 summary: 介绍了如何解决导入数据过程中的类型转换和冲突错误。
 ---
 
-# 错误处理
+# 错误处理配置
 
 > **警告:**
 >
