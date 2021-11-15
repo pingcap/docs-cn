@@ -173,15 +173,15 @@ CREATE TABLE conflict_error_v1 (
     ```sh
     cat <<EOF > example.t.1.sql
         INSERT INTO t (a, b) VALUES
-        (0, NULL),              -- column is NOT NULL
+        (0, NULL),              -- 列不为空
         (1, 'one'),
         (2, 'two'),
-        (40, 'forty'),          -- conflicts with the other 40 below
-        (54, 'fifty-four'),     -- conflicts with the other 'fifty-four' below
-        (77, 'seventy-seven'),  -- the string is longer than 12 characters
-        (600, 'six hundred'),   -- the number overflows TINYINT
-        (40, 'fourty'),         -- conflicts with the other 40 above
-        (42, 'fifty-four');     -- conflicts with the other 'fifty-four' above
+        (40, 'forty'),          -- 与下面的 `40` 冲突
+        (54, 'fifty-four'),     -- 与下面的 `54` 冲突
+        (77, 'seventy-seven'),  -- 字符串长度超过 12 个字符
+        (600, 'six hundred'),   -- 数字超出了 TINYINT 数据类型支持的范围
+        (40, 'fourty'),         -- 与上面的 `40` 冲突
+        (42, 'fifty-four');     -- 与上面的 `54` 冲突
     EOF
     ```
 
