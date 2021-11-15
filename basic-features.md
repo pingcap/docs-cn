@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 高级 SQL 功能                                                                                | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
-| [执行计划缓存](/sql-prepare-plan-cache.md)                                                   | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [执行计划缓存](/sql-prepare-plan-cache.md)                                                   | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                                                     | Y            | Y            | Y            | Y            | Y            |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)                                                               | Y            | Y            | Y            | Y            | 实验特性 |
 | [Stale Read](/stale-read.md)                                                                             | Y            | Y            | Y            | N            | N            |
