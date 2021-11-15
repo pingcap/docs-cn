@@ -1,17 +1,24 @@
 ---
 title: Placement Rules in SQL
-summary: Learn how to schedule placement of tables and partitions.
+summary: Learn how to schedule placement of tables and partitions using SQL statements.
 ---
 
 # Placement Rules in SQL
 
 > **Warning:**
 >
-> Placement Rules in SQL is an experimental feature. The syntax might change before its GA, and there might also be bugs.
->
-> If you understand the risks, you can enable this experiment feature by executing `SET GLOBAL tidb_enable_alter_placement = 1;`.
+> Placement Rules in SQL is an experimental feature introduced in v5.3.0. The syntax might change before its GA, and there might also be bugs. If you understand the risks, you can enable this experiment feature by executing `SET GLOBAL tidb_enable_alter_placement = 1;`.
 
-Placement Rules allow you to configure where data will be stored in a TiKV cluster. This is useful for scenarios including optimizing a high availability strategy, ensuring that local copies of data will be available for local stale reads, and adhering to compliance requirements.
+Placement Rules in SQL is a feature that enables you to specify where data is stored in a TiKV cluster using SQL interfaces. Using this feature, tables and partitions are scheduled to specific regions, data centers, racks, or hosts. This is useful for scenarios including optimizing a high availability strategy with lower cost, ensuring that local replicas of data are available for local stale reads, and adhering to data locality requirements.
+
+The detailed user scenarios are as follows:
+
+- Place data across regions to improve the access performance in a specific region
+- Merge multiple databases of different applications to reduce the cost on database maintenance
+- Increase replica count for important data to improve the application availability and data reliability
+- Store new data into SSDs and store old data into HHDs to lower the cost on data archiving and storage
+- Schedule the leaders of hotspot data to high-performance TiKV instances
+- Separate cold data to lower-cost storage mediums to improve cost efficiency
 
 ## Specify placement options
 
@@ -59,7 +66,7 @@ If you use direct placement options, you have to alter rules for each object (fo
 In addition to the placement options above, you can also use the advance configurations. For details, see [Advance placement](#advanced-placement).
 
 | Option Name                | Description                                                                                    |
-|----------------------------|------------------------------------------------------------------------------------------------|                                                                                       
+| --------------| ------------ |
 | `CONSTRAINTS`              | A list of constraints that apply to all roles. For example, `CONSTRAINTS="[+disk=ssd]`.        |
 | `FOLLOWER_CONSTRAINTS`     | A list of constraints that only apply to followers.                                            |
 
@@ -83,9 +90,9 @@ CREATE PLACEMENT POLICY eastandwest PRIMARY_REGION="us-east-1" REGIONS="us-east-
 CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 ```
 
-The `SCHEDULE` option instructs TiDB on how to balance the followers.
+The `SCHEDULE` option instructs TiDB on how to balance the followers. The default schedule of `EVEN` ensures a balance of followers in all regions.
 
-The default schedule of `EVEN` ensures a balance of followers in all regions. You can use the `MAJORITY_IN_PRIMARY` schedule to ensure that enough followers are placed in the primary region (`us-east-1`) so that quorum can be achieved. If the primary region completely fails, you can the `MAJORITY_IN_PRIMARY` schedule for lower latency transactions at the expense of availability.
+To ensure that enough followers are placed in the primary region (`us-east-1`) so that quorum can be achieved, you can use the `MAJORITY_IN_PRIMARY` schedule.  If the primary region completely fails, you can the `MAJORITY_IN_PRIMARY` schedule for lower latency transactions at the expense of availability.
 
 ### Assign placement to a partitioned table
 
@@ -131,7 +138,7 @@ Because placement options are only inherited from the database schema when a tab
 
 ### Advanced placement
 
-The placement options `PRIMARY_REGION`, `REGIONS`, and `SCHEDULE` meet the basic needs of data placement at the loss of some flexibility. For more complex scenarios with the need for higher flexibility, you can also use the advanced placement options of `CONSTRAINTS` and `FOLLOWER_CONSTRAINTS`. These two options are mutually exclusive. If you specify both at the same time, an error will be returned.
+The placement options `PRIMARY_REGION`, `REGIONS`, and `SCHEDULE` meet the basic needs of data placement at the loss of some flexibility. For more complex scenarios with the need for higher flexibility, you can also use the advanced placement options of `CONSTRAINTS` and `FOLLOWER_CONSTRAINTS`. You cannot specify the `PRIMARY_REGION`, `REGIONS`, or `SCHEDULE` option with the `CONSTRAINTS` option at the same time. If you specify both at the same time, an error will be returned.
 
 For example, to set constraints that data must reside on a TiKV store where the label `disk` must match a value:
 
@@ -153,7 +160,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 You can either specify constraints in list format (`[+disk=ssd]`) or in dictionary format (`{+disk=ssd:1,+disk=hdd:2}`).
 
-In list format, constraints are specified as a list of key-value pairs. The key starts with either a `+` or a `-` with `+disk=ssd` indicating that the label `disk` must be set to `ssd`, and `-disk=hdd`, indicating that the label `disk` must not be `hdd`.
+In list format, constraints are specified as a list of key-value pairs. The key starts with either a `+` or a `-`. `+disk=ssd` indicates that the label `disk` must be set to `ssd`, and `-disk=hdd` indicates that the label `disk` must not be `hdd`.
 
 In dictionary format, constraints also indicate a number of instances that apply to that rule. For example `FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` indicates that 1 follower is in us-east-1, 1 follower is in us-east-2, 1 follower is in us-west-1, and 1 follower can be in any region.
 
@@ -164,6 +171,6 @@ The following known limitations exist in the experimental release of Placement R
 * Dumpling does not support dumping placement policies. See [issue #29371](https://github.com/pingcap/tidb/issues/29371).
 * TiDB tools, including Backup & Restore (BR), TiCDC, TiDB Lightning, and TiDB Data Migration (DM), do not yet support placement rules.
 * Temporary tables do not support placement options (either via direct placement or placement policies).
-* Syntactic sugar rules exist for setting `PRIMARY_REGION` and `REGIONS`, but in future we plan to add varieties for `PRIMARY_RACK`, `PRIMARY_ZONE` and `PRIMARY_HOST`. See [issue #18030](https://github.com/pingcap/tidb/issues/18030)
+* Syntactic sugar rules are permitted for setting `PRIMARY_REGION` and `REGIONS`. In the future, we plan to add varieties for `PRIMARY_RACK`, `PRIMARY_ZONE`, and `PRIMARY_HOST`. See [issue #18030](https://github.com/pingcap/tidb/issues/18030).
 * TiFlash learners are not configurable through Placement Rules syntax.
-* Placement rules only ensure that data at rest resides on the correct TiKV store. The rules do not guarantee that data in transit (via either user-queries or internal operations) only occurs in a specific region.
+* Placement rules only ensure that data at rest resides on the correct TiKV store. The rules do not guarantee that data in transit (via either user queries or internal operations) only occurs in a specific region.
