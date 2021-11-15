@@ -79,7 +79,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ### 配置中控机和 TiDB Dashboard
 
-1. 在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
+1. 在中控机上，通过 TiUP 添加 ng_port 配置项。
 
     1. 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
 
