@@ -56,7 +56,7 @@ Local 后端模式下，TiDB Lightning 导入数据时先将数据转换成 KV �
 duplicate-resolution = 'none'
 ```
 
-`duplicate-resolution`有以下三个选项：
+`duplicate-resolution` 有以下三个选项：
 
 * **'none'**：不对重复数据进行检测。如果唯一键/主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
 * **'record'**：检测重复数据，但不会对重复数据进行修复。如果唯一键/主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
