@@ -99,7 +99,7 @@ TiDB 版本：5.3.0
 
     对于存在多表 join 的语句，支持只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。
 
-    [用户文档](/sql-statements/sql-statement-select.md), [#28689](https://github.com/pingcap/tidb/issues/28689)
+    [用户文档](/sql-statements/sql-statement-select.md)，[#28689](https://github.com/pingcap/tidb/issues/28689)
 
 - **表属性设置**
 
@@ -107,7 +107,7 @@ TiDB 版本：5.3.0
 
     应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
 
-    [用户文档](/table-attributes.md), [#3839](https://github.com/tikv/pd/issues/3839)
+    [用户文档](/table-attributes.md)，[#3839](https://github.com/tikv/pd/issues/3839)
 
 ### 安全
 
@@ -137,7 +137,7 @@ TiDB 版本：5.3.0
     >
     > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
-    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入), [#3149](https://github.com/tikv/pd/issues/3149)
+    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
 
 ### 稳定性
 
@@ -150,7 +150,7 @@ TiDB 版本：5.3.0
 
     需要注意的是，Raft 多数副本失败的情况下无法避免已提交数据的丢失。
 
-    [用户文档](/online-unsafe-recovery.md), [#10483](https://github.com/tikv/tikv/issues/10483)
+    [用户文档](/online-unsafe-recovery.md)，[#10483](https://github.com/tikv/tikv/issues/10483)
 
 ### 数据迁移
 
@@ -251,7 +251,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 
 ## 移除功能
 
-从 TiCDC v5.3.0 版本开始, TiDB 集群之间的环形同步功能（v5.0 实验特性）被移除。
+从 TiCDC v5.3.0 版本开始，TiDB 集群之间的环形同步功能（v5.0 实验特性）被移除。
 
 ## 提升改进
 
@@ -289,11 +289,11 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     - 改进了 TiFlash 重启时的稳定性和可用性，减少了重启结束后短时间内查询可能失败的情况
     - 增加支持下推多个新的字符串，时间等函数到 MPP 引擎
 
-        - 字符串函数：LIKE pattern，FORMAT(), LOWER(), LTRIM(), RTRIM(), SUBSTRING_INDEX(), TRIM(), UCASE(), UPPER()
+        - 字符串函数：LIKE pattern，FORMAT()，LOWER()，LTRIM()，RTRIM()，SUBSTRING_INDEX()，TRIM()，UCASE()，UPPER()
         - 数学函数：ROUND(decimal, int)
-        - 日期时间函数：HOUR(), MICROSECOND(), MINUTE(), SECOND(), SYSDATE()
+        - 日期时间函数：HOUR()，MICROSECOND()，MINUTE()，SECOND()，SYSDATE()
         - 类型转换函数：CAST(time, real)
-        - 聚合函数：GROUP_CONCAT(), SUM(enum)
+        - 聚合函数：GROUP_CONCAT()，SUM(enum)
 
     - 提供了 512 位 SIMD 支持
     - 增强了对过期的数据版本的清理算法，减少磁盘使用量及提高读文件性能
@@ -348,7 +348,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
     - 修复 `plus` 表达式中检查溢出方法出错的问题 [26977](https://github.com/pingcap/tidb/issues/26977)
     - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [27024](https://github.com/pingcap/tidb/issues/27024)
     - 修复 `TIDB_TRX` 中不包含重试事务的问题 [28670](https://github.com/pingcap/tidb/pull/28670)
-    - 修复配置项 `plugin_dir` 的默认值错误问题 [28084](https://github.com/pingcap/tidb/issues/28084)  
+    - 修复配置项 `plugin_dir` 的默认值错误问题 [28084](https://github.com/pingcap/tidb/issues/28084)
 
 + TiKV
 
