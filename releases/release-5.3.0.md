@@ -160,7 +160,6 @@ TiDB 版本：5.3.0
 
     - 合并单行数据的多次变更（Compact multiple updates on a single row into one statement）
     - 点查更新合并为批量操作（Merge batch updates of multiple rows into one statement）
-    - 异步保存检查点（Async Checkpoint）
 
 - **增加 DM 的 OpenAPI 以更方便地管理集群（实验特性）**
 
