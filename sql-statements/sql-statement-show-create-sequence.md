@@ -1,7 +1,7 @@
 ---
 title: SHOW CREATE SEQUENCE
 summary: TiDB 数据库中 SHOW CREATE SEQUENCE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-create-sequence/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-create-sequence/','/docs-cn/v4.0/sql-statements/sql-statement-show-create-sequence/','/docs-cn/stable/reference/sql/statements/show-create-sequence/','/docs-cn/v4.0/reference/sql/statements/show-create-sequence/']
 ---
 
 # SHOW CREATE SEQUENCE
@@ -23,7 +23,7 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-create-sequence/']
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE seq;
+CREATE SEQUENCE seq;
 ```
 
 ```
@@ -47,7 +47,7 @@ SHOW CREATE SEQUENCE seq;
 
 ## MySQL 兼容性
 
-MySQL 暂无序列选项。TiDB 序列部分借鉴自 MariaDB。`SETVAL` 函数的步调是 TiDB 特有的，其他函数的步调与 MariaDB 保持一致。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

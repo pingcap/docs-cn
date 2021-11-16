@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 集群部署
-aliases: ['/docs-cn/stable/reference/tidb-binlog/deploy/']
+aliases: ['/docs-cn/stable/tidb-binlog/deploy-tidb-binlog/','/docs-cn/v4.0/tidb-binlog/deploy-tidb-binlog/','/docs-cn/stable/reference/tidb-binlog/deploy/','/docs-cn/stable/reference/tools/tidb-binlog/deploy/','/docs-cn/stable/how-to/deploy/tidb-binlog/']
 ---
 
 # TiDB Binlog 集群部署
@@ -566,9 +566,9 @@ Drainer="192.168.0.13"
         [syncer.to]
         host = "192.168.0.13"
         user = "root"
+        # 如果你不想在配置文件中写明文密码，则可以使用 `./binlogctl -cmd encrypt -text string` 生成加密的密码
+        # 如果配置了 encrypted_password 且非空，那么配置的 password 不生效。encrypted_password 和 password 无法同时生效。
         password = ""
-        # 使用 `./binlogctl -cmd encrypt -text string` 加密的密码
-        # encrypted_password 非空时 password 会被忽略
         encrypted_password = ""
         port = 3306
 
@@ -587,7 +587,6 @@ Drainer="192.168.0.13"
         # encrypted_password 非空时 password 会被忽略
         # encrypted_password = ""
         # port = 3306
-
 
         # db-type 设置为 file 时，存放 binlog 文件的目录
         # [syncer.to]

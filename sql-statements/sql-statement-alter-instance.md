@@ -1,7 +1,7 @@
 ---
 title: ALTER INSTANCE
 summary: TiDB 数据库中 ALTER INSTANCE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/alter-instance/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-alter-instance/','/docs-cn/v4.0/sql-statements/sql-statement-alter-instance/','/docs-cn/stable/reference/sql/statements/alter-instance/']
 ---
 
 # ALTER INSTANCE
@@ -18,13 +18,13 @@ aliases: ['/docs-cn/stable/reference/sql/statements/alter-instance/']
 
 ## 语法图
 
-**AlterInstanceStmt:**
+```ebnf+diagram
+AlterInstanceStmt ::=
+    'ALTER' 'INSTANCE' InstanceOption
 
-![AlterInstanceStmt](/media/sqlgram/AlterInstanceStmt.png)
-
-**InstanceOption:**
-
-![InstanceOption](/media/sqlgram/InstanceOption.png)
+InstanceOption ::=
+    'RELOAD' 'TLS' ('NO' 'ROLLBACK' 'ON' 'ERROR')?
+```
 
 ## 示例
 

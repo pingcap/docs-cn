@@ -1,7 +1,7 @@
 ---
 title: PD 调度策略最佳实践
 summary: 了解 PD 调度策略的最佳实践和调优方式
-aliases: ['/docs-cn/stable/reference/best-practices/pd-scheduling/']
+aliases: ['/docs-cn/stable/best-practices/pd-scheduling-best-practices/','/docs-cn/v4.0/best-practices/pd-scheduling-best-practices/','/docs-cn/stable/reference/best-practices/pd-scheduling/']
 ---
 
 # PD 调度策略最佳实践
@@ -42,7 +42,7 @@ aliases: ['/docs-cn/stable/reference/best-practices/pd-scheduling/']
 
     不同的调度器从自身的逻辑和需求出发，考虑各种限制和约束后生成待执行的 Operator。这里所说的限制和约束包括但不限于：
 
-     - 不往断连中、下线中、繁忙、空间不足、在大量收发 snapshot 等各种异常状态的 Store 添加副本
+     - 不往处于异常状态中（如断连、下线、繁忙、空间不足或在大量收发 snapshot 等）的 Store 添加副本
      - Balance 时不选择状态异常的 Region
      - 不尝试把 Leader 转移给 Pending Peer
      - 不尝试直接移除 Leader
@@ -102,6 +102,11 @@ Region 负载均衡调度主要依赖 `balance-leader` 和 `balance-region` 两�
 ### Region merge
 
 Region merge 指的是为了避免删除数据后大量小甚至空的 Region 消耗系统资源，通过调度把相邻的小 Region 合并的过程。Region merge 由 `mergeChecker` 负责，其过程与 `replicaChecker` 类似：PD 在后台遍历，发现连续的小 Region 后发起调度。
+
+具体来说，当某个新分裂出来的 Region 存在的时间超过配置项 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的值（默认 1h）后，如果出现以下任意情况，该 Region 会触发 Region merge 调度：
+
+- 该 Region 大小小于配置项 [`max-merge-region-size`](/pd-configuration-file.md#max-merge-region-size) 的值（默认 20MiB）
+- 该 Region 中 key 的数量小于配置项 [`max-merge-region-keys`](/pd-configuration-file.md#max-merge-region-keys) 的值（默认 200000）
 
 ## 查询调度状态
 
@@ -166,7 +171,7 @@ pd-ctl 支持动态创建和删除 Scheduler，你可以通过这些操作来控
 
 - `scheduler show`：显示当前系统中的 Scheduler
 - `scheduler remove balance-leader-scheduler`：删除（停用）balance region 调度器
-- `scheduler add evict-leader-scheduler-1`：添加移除 Store 1 的所有 Leader 的调度器
+- `scheduler add evict-leader-scheduler 1`：添加移除 Store 1 的所有 Leader 的调度器
 
 ### 手动添加 Operator
 
@@ -249,7 +254,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 - 从 PD 的统计来看没有热点，但是从 TiKV 的相关 Metrics 可以看出部分节点负载明显高于其他节点，成为整个系统的瓶颈。这是因为目前 PD 统计热点 Region 的维度比较单一，仅针对流量进行分析，在某些场景下无法准确定位热点。例如部分 Region 有大量的点查请求，从流量上来看并不显著，但是过高的 QPS 导致关键模块达到瓶颈。
 
-    **解决方法**：首先从业务层面确定形成热点的 table，然后添加 `scatter-range-scheduler` 调度器使这个 table 的所有 Region 均匀分布。TiDB 也在其 HTTP API 中提供了相关接口来简化这个操作，具体可以参考 [TiDB HTTP API](https://github.com/pingcap/tidb/blob/master/docs/tidb_http_api.md) 文档。
+    **解决方法**：首先从业务层面确定形成热点的 table，然后添加 `scatter-range-scheduler` 调度器使这个 table 的所有 Region 均匀分布。TiDB 也在其 HTTP API 中提供了相关接口来简化这个操作，具体可以参考 [TiDB HTTP API](https://github.com/pingcap/tidb/blob/release-4.0/docs/tidb_http_api.md) 文档。
 
 ### Region Merge 速度慢
 
@@ -259,10 +264,10 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 - 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
-    - TiKV: `split-region-on-table` 设为 `false`，该参数不支持动态修改。
+    - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
     - PD: 
         + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
-        + `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
+        + 或者 `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
        
         > **注意：**
         >

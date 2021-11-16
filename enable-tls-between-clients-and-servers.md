@@ -1,6 +1,6 @@
 ---
 title: 为 TiDB 客户端服务端间通信开启加密传输
-aliases: ['/docs-cn/stable/how-to/secure/enable-tls-clients/','/docs-cn/stable/encrypted-connections-with-tls-protocols/','/docs-cn/stable/enable-tls-between-clients/']
+aliases: ['/docs-cn/stable/enable-tls-between-clients-and-servers/','/docs-cn/v4.0/enable-tls-between-clients-and-servers/','/docs-cn/stable/how-to/secure/enable-tls-clients/','/docs-cn/stable/encrypted-connections-with-tls-protocols/','/docs-cn/stable/enable-tls-between-clients/']
 ---
 
 # 为 TiDB 客户端服务端间通信开启加密传输
@@ -31,7 +31,7 @@ TiDB 的加密连接支持默认是关闭的，必须在 TiDB 服务端通过配
 
 > **注意：**
 >
-> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/certificate-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户必须使用加密连接连接 TiDB。
+> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/certificate-authentication.md#配置登录时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户必须使用加密连接连接 TiDB。
 
 ## 配置 TiDB 启用加密连接支持
 
@@ -103,7 +103,7 @@ create user 'u1'@'%'  require x509;
 
 > **注意：**
 >
-> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/certificate-authentication.md#配置登陆时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户需进行身份验证。
+> 如果登录用户已配置使用 [TiDB 证书鉴权功能](/certificate-authentication.md#配置登录时需要校验的用户证书信息)校验用户证书，也会隐式要求对应用户需进行身份验证。
 
 ## 检查当前连接是否是加密连接
 

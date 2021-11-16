@@ -1,6 +1,7 @@
 ---
 title: SHOW PROFILES
 summary: TiDB 数据库中 SHOW PROFILES 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-profiles/','/docs-cn/v4.0/sql-statements/sql-statement-show-profiles/']
 ---
 
 # SHOW PROFILES
@@ -24,3 +25,7 @@ SHOW PROFILES
 ```
 Empty set (0.00 sec)
 ```
+
+## MySQL 兼容性
+
+该语句仅与 MySQL 兼容，无其他作用。执行 `SHOW PROFILES` 始终返回空结果。

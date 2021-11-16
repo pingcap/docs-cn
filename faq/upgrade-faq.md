@@ -1,7 +1,7 @@
 ---
 title: 升级与升级后常见问题
 summary: TiDB 升级与升级后的常见问题与解决办法。
-aliases: ['/docs-cn/stable/faq/upgrade/']
+aliases: ['/docs-cn/stable/faq/upgrade-faq/','/docs-cn/v4.0/faq/upgrade-faq/','/docs-cn/stable/faq/upgrade/']
 ---
 
 # 升级与升级后常见问题

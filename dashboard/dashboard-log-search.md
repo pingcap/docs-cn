@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 日志搜索页面
 summary: 在集群中搜索所有节点上的日志
+aliases: ['/docs-cn/stable/dashboard/dashboard-log-search/','/docs-cn/v4.0/dashboard/dashboard-log-search/']
 ---
 
 # TiDB Dashboard 日志搜索页面

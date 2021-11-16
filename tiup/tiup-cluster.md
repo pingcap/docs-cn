@@ -1,13 +1,13 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
-aliases: ['/docs-cn/stable/reference/tools/tiup/cluster/']
+aliases: ['/docs-cn/stable/tiup/tiup-cluster/','/docs-cn/v4.0/tiup/tiup-cluster/','/docs-cn/stable/reference/tools/tiup/cluster/']
 ---
 
 # 使用 TiUP 部署运维 TiDB 线上集群
 
 本文重在介绍如何使用 TiUP 的 cluster 组件，如果需要线上部署的完整步骤，可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
-与 playground 组件用于部署本地集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
+与 playground 组件用于部署本地测试集群类似，cluster 组件用于快速部署生产集群。对比 playground，cluster 组件提供了更强大的生产集群管理功能，包括对集群的升级、缩容、扩容甚至操作、审计等。
 
 cluster 组件的帮助文档如下：
 
@@ -16,9 +16,7 @@ tiup cluster
 ```
 
 ```
-The component `cluster` is not installed; downloading from repository.
-download https://tiup-mirrors.pingcap.com/cluster-v0.4.9-darwin-amd64.tar.gz 15.32 MiB / 15.34 MiB 99.90% 10.04 MiB p/s
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.4.9/cluster
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.3.0/cluster
 Deploy a TiDB cluster for production
 
 Usage:
@@ -32,6 +30,7 @@ Available Commands:
   restart     重启集群
   scale-in    集群缩容
   scale-out   集群扩容
+  clean       清理数据
   destroy     销毁集群
   upgrade     升级集群
   exec        在集群的一个或多个机器上执行命令
@@ -46,6 +45,8 @@ Available Commands:
 
 Flags:
   -h, --help              帮助信息
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -60,7 +61,7 @@ tiup cluster deploy <cluster-name> <version> <topology.yaml> [flags]
 
 该命令需要提供集群的名字、集群使用的 TiDB 版本，以及一个集群的拓扑文件。
 
-拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
+拓扑文件的编写可参考[示例](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。以一个最简单的拓扑为例，将下列文件保存为 `/tmp/topology.yaml`：
 
 > **注意：**
 >
@@ -92,6 +93,22 @@ grafana_servers:
 
 monitoring_servers:
   - host: 172.16.5.134
+```
+
+TiUP 默认部署在 amd64 架构上运行的 binary，若目标机器为 arm64 架构，可以在拓扑文件中进行配置：
+
+```yaml
+global:
+  arch: "arm64"           # 让所有机器默认使用 arm64 的 binary
+ 
+tidb_servers:
+  - host: 172.16.5.134
+    arch: "amd64"         # 这台机器会使用 amd64 的 binary
+  - host: 172.16.5.139
+    arch: "arm64"         # 这台机器会使用 arm64 的 binary
+  - host: 172.16.5.140    # 没有配置 arch 字段的机器，会使用 global 中的默认值，这个例子中是 arm64
+  
+...
 ```
 
 假如我们想要使用 TiDB 的 v3.0.12 版本，集群名字为 `prod-cluster`，则执行以下命令：
@@ -197,7 +214,7 @@ Status 列用 `Up` 或者 `Down` 表示该服务是否正常。对于 PD 组件�
 >
 > 本节只展示缩容命令的语法示例，线上扩缩容具体步骤可参考[使用 TiUP 扩容缩容 TiDB 集群](/scale-tidb-using-tiup.md)。
 
-缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关数据文件。
+缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
 由于 TiKV 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV 和 TiDB Binlog 组件做了特殊处理：
 
@@ -329,6 +346,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -361,6 +380,42 @@ tiup cluster reload prod-cluster
 
 该操作会将配置发送到目标机器，重启集群，使配置生效。
 
+> **注意：**
+>
+> 对于监控组件，可以通过执行 `tiup cluster edit-config` 命令在对应实例上添加自定义配置路径来进行配置自定义，例如：
+
+```yaml
+---
+
+grafana_servers:
+  - host: 172.16.5.134
+    dashboard_dir: /path/to/local/dashboards/dir
+
+monitoring_servers:
+  - host: 172.16.5.134
+    rule_dir: /path/to/local/rules/dir
+
+alertmanager_servers:
+  - host: 172.16.5.134
+    config_file: /path/to/local/alertmanager.yml
+```
+
+路径内容格式如下：
+
+- `grafana_servers` 的 `dashboard_dir` 字段指定的文件夹中应当含有完整的 `*.json` 文件。
+- `monitoring_servers` 的 `rule_dir` 字段定义的文件夹中应当含有完整的 `*.rules.yml` 文件。
+- `alertmanager_servers` 的 `config_file` 格式请参考 [Alertmanager 配置模板](https://github.com/pingcap/tiup/blob/master/embed/templates/config/alertmanager.yml)。
+
+在执行 `tiup reload` 时，TiUP 会将中控机上对应的配置上传到目标机器对应的配置目录中，上传之前会删除目标机器中已有的旧配置文件。如果想要修改某一个配置文件，请确保将所有的（包含未修改的）配置文件都放在同一个目录中。例如，要修改 Grafana 的 `tidb.json` 文件，可以先将 Grafana 的 `dashboards` 目录中所有的 `*.json` 文件拷贝到本地目录中，再修改 `tidb.json` 文件。否则最终的目标机器上将缺失其他的 JSON 文件。
+
+> **注意：**
+>
+> 如果配置了 `grafana_servers` 的 `dashboard_dir` 字段，在执行 `tiup cluster rename` 命令进行集群重命名后，需要完成以下操作：
+>
+> 1. 在本地的 `dashboards` 目录中，将集群名修改为新的集群名。
+> 2. 在本地的 `dashboards` 目录中，将 `datasource` 更新为新的集群名（`datasource` 是以集群名命名的）。
+> 3. 执行 `tiup cluster reload -R grafana` 命令。
+
 ## 更新组件
 
 常规的升级集群可以使用 upgrade 命令，但是在某些场景下（例如 Debug)，可能需要用一个临时的包替换正在运行的组件，此时可以用 patch 命令：
@@ -385,6 +440,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -406,6 +463,10 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
 
 ## 导入 TiDB Ansible 集群
+
+> **注意：**
+>
+> TiUP cluster 组件对 TiSpark 的支持目前为实验性特性，暂不支持导入启用了 TiSpark 组件的集群。
 
 在 TiUP 之前，一般使用 TiDB Ansible 部署 TiDB 集群，import 命令用于将这部分集群过渡给 TiUP 接管。import 命令用法如下：
 
@@ -429,6 +490,8 @@ Flags:
   -r, --rename NAME        重命名被导入的集群
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -471,14 +534,14 @@ tiup cluster audit
 ```
 
 ```
-Starting component `cluster`: /Users/joshua/.tiup/components/cluster/v0.6.0/cluster audit
+Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.3.0/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2020-04-29T13:25:09+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKWjF  2020-04-28T23:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKVwH  2020-04-28T23:02:08+08:00  /Users/joshua/.tiup/components/cluster/v0.6.0/cluster deploy test v4.0.0-rc /tmp/topology.yaml
-4BKKH1  2020-04-28T16:39:04+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster destroy test
-4BKKDx  2020-04-28T16:36:57+08:00  /Users/joshua/.tiup/components/cluster/v0.4.9/cluster deploy test v4.0.0-rc /tmp/topology.yaml
+4BLhr0  2020-04-29T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v4.0.0 /tmp/topology.yaml
+4BKWjF  2020-04-28T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v4.0.0 /tmp/topology.yaml
+4BKVwH  2020-04-28T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v4.0.0 /tmp/topology.yaml
+4BKKH1  2020-04-28T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster destroy test
+4BKKDx  2020-04-28T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.3.0/cluster deploy test v4.0.0 /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
@@ -582,3 +645,49 @@ tiup cluster check <cluster-name> --cluster
 在运行检测时，若指定了 `--apply` 参数，程序将尝试对其中未通过的项目自动修复。自动修复仅限于部分可通过修改配置或系统参数调整的项目，其它未修复的项目需要根据实际情况手工处理。
 
 环境检查不是部署集群的必需流程。对于生产环境建议在部署前执行环境检查并通过所有检测项。如果未通过全部检查项，也可能正常部署和运行集群，但可能无法获得最佳性能表现。
+
+## 使用中控机系统自带的 SSH 客户端连接集群
+
+在以上所有操作中，涉及到对集群机器的操作都是通过 TiUP 内置的 SSH 客户端连接集群执行命令，但是在某些场景下，需要使用系统自带的 SSH 客户端来对集群执行操作，比如：
+
+- 使用 SSH 插件来做认证
+- 使用定制的 SSH 客户端
+
+此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
+
+- 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --native-ssh`
+- 启动集群: `tiup cluster start <cluster-name> --native-ssh`
+- 升级集群: `tiup cluster upgrade ... --native-ssh`
+
+所有涉及集群操作的步骤都可以加上 `--native-ssh` 来使用系统自带的客户端。
+
+也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
+
+```shell
+export TIUP_NATIVE_SSH=true
+# 或者
+export TIUP_NATIVE_SSh=1
+# 或者
+export TIUP_NATIVE_SSH=enable
+```
+
+若环境变量和 `--native-ssh` 同时指定，则以 `--native-ssh` 为准。
+
+> **注意：**
+>
+> 在部署集群的步骤中，若需要使用密码的方式连接 (-p)，或者密钥文件设置了 passphrase，则需要保证中控机上安装了 sshpass，否则连接时会报错。
+
+## 迁移中控机与备份
+
+TiUP 相关的数据都存储在用户 home 目录的 `.tiup` 目录下，若要迁移中控机只需要拷贝 `.tiup` 目录到对应目标机器即可。
+
+1. 在原机器 home 目录下执行 `tar czvf tiup.tar.gz .tiup`。
+2. 把 `tiup.tar.gz` 拷贝到目标机器 home 目录。
+3. 在目标机器 home 目录下执行 `tar xzvf tiup.tar.gz`。
+4. 添加 `.tiup` 目录到 `PATH` 环境变量。
+
+    如使用 `bash` 并且是 `tidb` 用户，在 `~/.bashrc` 中添加 `export PATH=/home/tidb/.tiup/bin:$PATH` 后执行 `source ~/.bashrc`，根据使用的 shell 与用户做相应调整。
+
+> **注意：**
+>
+> 为了避免中控机磁盘损坏等异常情况导致 TiUP 数据丢失，建议定时备份 `.tiup` 目录。

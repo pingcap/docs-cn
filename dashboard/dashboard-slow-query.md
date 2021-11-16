@@ -1,6 +1,7 @@
 ---
 title: TiDB Dashboard 慢查询页面
 summary: 了解如何在 TiDB Dashboard 中查看慢查询。
+aliases: ['/docs-cn/stable/dashboard/dashboard-slow-query/','/docs-cn/v4.0/dashboard/dashboard-slow-query/']
 ---
 
 # TiDB Dashboard 慢查询页面
@@ -48,7 +49,7 @@ summary: 了解如何在 TiDB Dashboard 中查看慢查询。
 在列表中点击任意一行可以显示该慢查询的详细执行信息，包含：
 
 - SQL：慢查询 SQL 文本（下图中区域 1）
-- 执行计划：慢查询的执行计划，参阅[理解 TiDB 执行计划](/query-execution-plan.md)文档了解如何解读执行计划（下图中区域 2）
+- 执行计划：慢查询的执行计划，参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划（下图中区域 2）
 - 其他分类好的 SQL 执行信息（下图中区域 3）
 
 ![查看执行详情](/media/dashboard/dashboard-slow-queries-detail1.png)

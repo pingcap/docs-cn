@@ -1,6 +1,6 @@
 ---
 title: 使用 TiUP 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/stable/how-to/scale/with-tiup/']
+aliases: ['/docs-cn/stable/scale-tidb-using-tiup/','/docs-cn/v4.0/scale-tidb-using-tiup/','/docs-cn/stable/how-to/scale/with-tiup/','/docs-cn/stable/reference/tiflash/scale/','/docs-cn/v4.0/reference/tiflash/scale/']
 ---
 
 # 使用 TiUP 扩容缩容 TiDB 集群
@@ -13,7 +13,7 @@ TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
 例如，集群原拓扑结构如下所示：
 
-| 主机 IP   | 服务   | 
+| 主机 IP   | 服务   |
 |:----|:----|
 | 10.0.1.3   | TiDB + TiFlash   |
 | 10.0.1.4   | TiDB + PD   | 
@@ -98,6 +98,10 @@ pd_servers:
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
 
+> **注意：**
+>
+> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
+
 预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
 
 ### 3. 检查集群状态
@@ -122,14 +126,14 @@ tiup cluster display <cluster-name>
 
 ## 扩容 TiFlash 节点
 
+如果要添加一个 TiFlash 节点，其 IP 地址为 `10.0.1.4`，可以按照如下步骤进行操作。
+
 > **注意：**
 >
 > 在原有 TiDB 集群上新增 TiFlash 组件需要注意：
 >
-> 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 rc 以上版本。
-> 2. 下载 [pd-ctl](https://download.pingcap.org/tidb-v4.0.0-rc.2-linux-amd64.tar.gz)，执行 `config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。
-
-如果要添加一个 TiFlash 节点，IP 地址为 10.0.1.4，可以按照如下步骤进行操作。
+> 1. 首先确认当前 TiDB 的版本支持 TiFlash，否则需要先升级 TiDB 集群至 4.0 RC 以上版本。
+> 2. 执行 `tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> config set enable-placement-rules true` 命令，以开启 PD 的 Placement Rules 功能。或通过 [pd-ctl](/pd-control.md) 执行对应的命令。
 
 ### 1. 添加节点信息到 scale-out.yaml 文件
 
@@ -149,6 +153,10 @@ tiflash_servers:
 ```shell
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
+
+> **注意：**
+>
+> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
 
 ### 3. 查看集群状态
 
@@ -183,7 +191,11 @@ tiup cluster display <cluster-name>
 ```ini
 cdc_servers:
   - host: 10.0.1.3
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
   - host: 10.0.1.4
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
 ```
 
 ### 2. 运行扩容命令
@@ -193,6 +205,10 @@ cdc_servers:
 ```shell
 tiup cluster scale-out <cluster-name> scale-out.yaml
 ```
+
+> **注意：**
+>
+> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
 
 ### 3. 查看集群状态
 
@@ -222,6 +238,14 @@ tiup cluster display <cluster-name>
 >
 > 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
 
+> **注意：**
+>
+> TiKV 中的 PD Client 会缓存 PD 节点的列表。
+>
+> + 在 v4.0.3 版本之前，TiKV 不会定期自动更新该 PD 节点列表的缓存，只有在 PD leader 发生切换或 TiKV 重启加载最新配置后才会更新。为避免 TiKV 缓存的 PD 节点列表过旧的风险，在扩缩容 PD 完成后，PD 集群中应至少包含一个扩缩容操作前就已经存在的 PD 节点成员。如果不满足该条件，你需要手动执行 PD transfer leader 操作以更新 TiKV 中的 PD 缓存列表。
+>
+> + 在 v4.0.3 及以后的版本中，增加了定期自动更新 PD 节点的机制，可以降低 TiKV 缓存的 PD 节点列表过旧这一问题出现的概率。但仍应尽量避免在扩容新 PD 后直接一次性缩容所有扩容前就已经存在的 PD 节点。如果需要，请确保在下线所有之前存在的 PD 节点前将 PD 的 leader 切换至新扩容的 PD 节点。
+
 ### 1. 查看节点 ID 信息
 
 {{< copyable "shell-regular" >}}
@@ -235,14 +259,16 @@ Starting /root/.tiup/components/cluster/v0.4.6/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v4.0.0-rc
+TiDB Version: v4.0.15
 
 ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 
 --              ----         ----        -----                            ------  --------                ----------
 
-10.0.1.3:8300   cdc         10.0.1.3     8300                                Up      -                       deploy/cdc-8300
-10.0.1.4:8300   cdc         10.0.1.4     8300                                Up      -                       deploy/cdc-8300
+10.0.1.3:8300   cdc          10.0.1.3    8300                             Up      data/cdc-8300           deploy/cdc-8300
+
+10.0.1.4:8300   cdc          10.0.1.4    8300                             Up      data/cdc-8300           deploy/cdc-8300
+
 10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
 
 10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
@@ -357,20 +383,28 @@ tiup cluster display <cluster-name>
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl pd -u <pd-address> store
+        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store
         ```
+
+        > **注意：**
+        >
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 IP:端口即可。
 
 2. 在 pd-ctl 中下线该 TiFlash 节点。
 
-    * 在 pd-ctl 中输入 `store delete <store_id>`，其中 <store_id> 为上一步查到的该 TiFlash 节点对应的 store id。
+    * 在 pd-ctl 中输入 `store delete <store_id>`，其中 `<store_id>` 为上一步查到的该 TiFlash 节点对应的 store id。
 
     * 若通过 TiUP 部署，可以调用以下命令代替 `pd-ctl`：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup ctl pd -u <pd-address> store delete <store_id>
+        tiup ctl:<cluster-version> pd -u http://<pd_ip>:<pd_port> store delete <store_id>
         ```
+
+        > **注意：**
+        >
+        > 如果集群中有多个 PD 实例，只需在以上命令中指定一个活跃 PD 实例的 IP:端口即可。
 
 3. 等待该 TiFlash 节点对应的 store 消失或者 state_name 变成 Tombstone 再关闭 TiFlash 进程。
 

@@ -1,6 +1,6 @@
 ---
 title: TiUP 常见运维操作
-aliases: ['/docs-cn/stable/how-to/maintain/tiup-operations/']
+aliases: ['/docs-cn/stable/maintain-tidb-using-tiup/','/docs-cn/v4.0/maintain-tidb-using-tiup/','/docs-cn/stable/how-to/maintain/tiup-operations/']
 ---
 
 # TiUP 常见运维操作
@@ -55,7 +55,7 @@ tiup cluster start ${cluster-name} -N 1.2.3.4:2379,1.2.3.5:2379
 
 ## 查看集群状态
 
-集群启动之后需要检查每个组件的运行状态，以确保每个组件工作正常。TiUP 提供了 display 命令，节省了登陆到每台机器上去查看进程的时间。
+集群启动之后需要检查每个组件的运行状态，以确保每个组件工作正常。TiUP 提供了 display 命令，节省了登录到每台机器上去查看进程的时间。
 
 {{< copyable "shell-regular" >}}
 
@@ -97,11 +97,11 @@ tiup cluster display ${cluster-name}
                 log.slow-threshold: 300
         ```
 
-    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml)。
+    参数的格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
 
     **配置项层次结构使用 `.` 表示**。
 
-    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/v4.0.0-rc/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/v4.0.0-rc/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/pingcap/pd/blob/v4.0.0-rc/conf/config.toml)。
+    关于组件的更多配置参数说明，可参考 [tidb `config.toml.example`](https://github.com/pingcap/tidb/blob/release-4.0/config/config.toml.example)、[tikv `config.toml.example`](https://github.com/tikv/tikv/blob/release-4.0/etc/config-template.toml) 和 [pd `config.toml.example`](https://github.com/tikv/pd/blob/release-4.0/conf/config.toml)。
 
 3. 执行 `reload` 命令滚动分发配置、重启相应组件：
 
@@ -113,7 +113,7 @@ tiup cluster display ${cluster-name}
 
 ### 示例
 
-如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/v4.0.0-rc/config/config.toml.example) 模块下，调整后的配置如下：
+如果要调整 tidb-server 中事务大小限制参数 `txn-total-size-limit` 为 `1G`，该参数位于 [performance](https://github.com/pingcap/tidb/blob/release-4.0/config/config.toml.example) 模块下，调整后的配置如下：
 
 ```
 server_configs:
@@ -147,6 +147,8 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
+      --native-ssh        使用系统默认的 SSH 客户端
+      --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
 ```
@@ -166,6 +168,21 @@ tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -R tidb
 ```bash
 tiup cluster patch test-cluster /tmp/tidb-hotfix.tar.gz -N 172.16.4.5:4000
 ```
+
+## 重命名集群
+
+部署并启动集群后，可以通过 `tiup cluster rename` 命令来对集群重命名：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster rename ${cluster-name} ${new-name}
+```
+
+> **注意：**
+> 
+> + 重命名集群会重启监控（Prometheus 和 Grafana）。
+> + 重命名集群之后 Grafana 可能会残留一些旧集群名的面板，需要手动删除这些面板。
 
 ## 关闭集群
 
@@ -193,6 +210,56 @@ tiup cluster stop ${cluster-name} -R tidb
 
 ```bash
 tiup cluster stop ${cluster-name} -N 1.2.3.4:4000,1.2.3.5:4000
+```
+
+## 清除集群数据
+
+此操作会关闭所有服务，并清空其数据目录或/和日志目录，并且无法恢复，需要**谨慎操作**。
+
+清空集群所有服务的数据，但保留日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --data
+```
+
+清空集群所有服务的日志，但保留数据：
+
+```bash
+tiup cluster clean ${cluster-name} --log
+```
+
+清空集群所有服务的数据和日志：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all
+```
+
+清空 Prometheus 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-role prometheus
+```
+
+清空节点 `172.16.13.11:9000` 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.11:9000
+```
+
+清空部署在 `172.16.13.12` 以外的所有服务的日志和数据：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster clean ${cluster-name} --all --ignore-node 172.16.13.12
 ```
 
 ## 销毁集群

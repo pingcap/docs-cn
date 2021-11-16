@@ -1,5 +1,6 @@
 ---
 title: TiDB Dashboard 实例性能分析页面
+aliases: ['/docs-cn/stable/dashboard/dashboard-profiling/','/docs-cn/v4.0/dashboard/dashboard-profiling/']
 ---
 
 # TiDB Dashboard 实例性能分析页面

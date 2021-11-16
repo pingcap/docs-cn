@@ -1,20 +1,20 @@
 ---
 title: 连接器和 API
-aliases: ['/docs-cn/stable/reference/supported-clients/']
+aliases: ['/docs-cn/stable/connectors-and-apis/','/docs-cn/v4.0/connectors-and-apis/','/docs-cn/stable/reference/supported-clients/','/docs-cn/v4.0/reference/supported-clients/']
 ---
 
 # 连接器和 API
 
 数据库连接器为客户端提供了连接数据库服务端的方式，APIs 提供了使用 MySQL 协议和资源的底层接口。无论是连接器还是 API，都可以用来在不同的语言和环境内连接服务器并执行 sql 语句，包括 odbc、java(jdbc)、Perl、Python、PHP、Ruby 和 C。
 
-TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
+TiDB 兼容 MySQL(5.6, 5.7) 的所有连接器和 API，包括：
 
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)
 + [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)
 + [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)
 + [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)
 + [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)
-+ [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)
++ [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html)
 + [MySQL PHP API](https://dev.mysql.com/doc/refman/5.7/en/apis-php-info.html)
 + [MySQL Perl API](https://dev.mysql.com/doc/refman/5.7/en/apis-perl.html)
 + [MySQL Python API](https://dev.mysql.com/doc/refman/5.7/en/apis-python.html)
@@ -22,10 +22,6 @@ TiDB 兼容 MySQL(5.6、5.7) 的所有连接器和 API，包括：
 + [MySQL Tcl API](https://dev.mysql.com/doc/refman/5.7/en/apis-tcl.html)
 + [MySQL Eiffel Wrapper](https://dev.mysql.com/doc/refman/5.7/en/apis-eiffel.html)
 + [Mysql Go API](https://github.com/go-sql-driver/mysql)
-
-> **注意：**
->
-> 若要使用 MySQL 8.0 的连接器连接到 TiDB，你必须显式地指定 `default-auth=mysql_native_password`，因为 `mysql_native_password` 不再是[默认的插件](https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password)。
 
 ## 使用 MySQL 连接器连接 TiDB
 
@@ -39,7 +35,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 
 ## 使用 MySQL C API 连接 TiDB
 
-如果使用 C 语言程序直接连接 TiDB，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
+如果使用 C 语言程序直接连接 TiDB，可以直接链接 libmysqlclient 库，使用 MySQL 的 [C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html)，这是最主要的一种 C 语言连接方式，被各种客户端和 API 广泛使用，包括 Connector/C。
 
 ## 使用 MySQL 第三方 API 连接 TiDB
 
@@ -48,12 +44,12 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | Environment    | API                                      | Type                             | Notes                                    |
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
 | Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See [MySQL Bindings for GNU Ada](http://gnade.sourceforge.net/) |
-| C              | C API                                    | `libmysqlclient`                 | See [Section 27.8, “MySQL C API”](https://dev.mysql.com/doc/refman/5.7/en/c-api.html). |
+| C              | C API                                    | `libmysqlclient`                 | See [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html). |
 | C++            | Connector/C++                            | `libmysqlclient`                 | See [MySQL Connector/C++ Developer Guide](https://dev.mysql.com/doc/connector-cpp/en/). |
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/). |
 |                | MySQL wrapped                            | `libmysqlclient`                 | See [MySQL wrapped](http://www.alhem.net/project/mysql/). |
 | Go             | go-sql-driver                            | Native Driver                    | See [Mysql Go API](https://github.com/go-sql-driver/mysql) |
-| Cocoa          | MySQL-Cocoa                              | `libmysqlclient`                 | Compatible with the Objective-C Cocoa environment. See<http://mysql-cocoa.sourceforge.net/> |
+| Cocoa          | MySQL-Cocoa                              | `libmysqlclient`                 | Compatible with the Objective-C Cocoa environment. See <http://mysql-cocoa.sourceforge.net/> |
 | D              | MySQL for D                              | `libmysqlclient`                 | See [MySQL for D](https://github.com/mysql-d/mysql-native). |
 | Eiffel         | Eiffel MySQL                             | `libmysqlclient`                 | See [Section 27.14, “MySQL Eiffel Wrapper”](https://dev.mysql.com/doc/refman/5.7/en/apis-eiffel.html). |
 | Erlang         | `erlang-mysql-driver`                    | `libmysqlclient`                 | See [`erlang-mysql-driver`.](http://code.google.com/p/erlang-mysql-driver/) |

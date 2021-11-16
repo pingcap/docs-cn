@@ -1,6 +1,6 @@
 ---
 title: 本地快速部署 TiDB 集群
-aliases: ['/docs-cn/stable/reference/tools/tiup/playground/']
+aliases: ['/docs-cn/stable/tiup/tiup-playground/','/docs-cn/v4.0/tiup/tiup-playground/','/docs-cn/stable/reference/tools/tiup/playground/']
 ---
 
 # 本地快速部署 TiDB 集群
@@ -75,7 +75,7 @@ tiup playground nightly --monitor
 
 ### 覆盖 PD 的默认配置
 
-首先，你需要复制 PD 的[配置模版](https://github.com/pingcap/pd/blob/master/conf/config.toml)。假设你将复制的配置文件放置在 `~/config/pd.toml`，按需修改一些内容后，执行以下命令可以覆盖 PD 的默认配置：
+首先，你需要复制 PD 的[配置模版](https://github.com/pingcap/pd/blob/release-4.0/conf/config.toml)。假设你将复制的配置文件放置在 `~/config/pd.toml`，按需修改一些内容后，执行以下命令可以覆盖 PD 的默认配置：
 
 {{< copyable "shell-regular" >}}
 

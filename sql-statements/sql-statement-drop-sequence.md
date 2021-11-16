@@ -1,7 +1,7 @@
 ---
 title: DROP SEQUENCE
 summary: TiDB 数据库中 DROP SEQUENCE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/drop-sequence/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-drop-sequence/','/docs-cn/v4.0/sql-statements/sql-statement-drop-sequence/','/docs-cn/stable/reference/sql/statements/drop-sequence/','/docs-cn/v4.0/reference/sql/statements/drop-sequence/']
 ---
 
 # DROP SEQUENCE
@@ -10,21 +10,18 @@ aliases: ['/docs-cn/stable/reference/sql/statements/drop-sequence/']
 
 ## 语法图
 
-**DropSequenceStmt:**
+```ebnf+diagram
+DropSequenceStmt ::=
+    'DROP' 'SEQUENCE' IfExists TableNameList
 
-![DropSequenceStmt](/media/sqlgram/DropSequenceStmt.png)
+IfExists ::= ( 'IF' 'EXISTS' )?
 
-**IfExists:**
+TableNameList ::=
+    TableName ( ',' TableName )*
 
-![IfExists](/media/sqlgram/IfExists.png)
-
-**TableNameList:**
-
-![TableNameList](/media/sqlgram/TableNameList.png)
-
-**TableName:**
-
-![TableName](/media/sqlgram/TableName.png)
+TableName ::=
+    Identifier ('.' Identifier)?
+```
 
 ## 示例
 
@@ -50,7 +47,7 @@ Query OK, 0 rows affected (0.03 sec)
 
 ## MySQL 兼容性
 
-MySQL 暂无序列功能。
+该语句是 TiDB 的扩展，序列的实现借鉴自 MariaDB。
 
 ## 另请参阅
 

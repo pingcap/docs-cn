@@ -1,7 +1,7 @@
 ---
 title: TRACE
 summary: TiDB 数据库中 TRACE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/trace/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-trace/','/docs-cn/v4.0/sql-statements/sql-statement-trace/','/docs-cn/stable/reference/sql/statements/trace/']
 ---
 
 # TRACE

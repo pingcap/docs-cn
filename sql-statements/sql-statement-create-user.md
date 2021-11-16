@@ -1,7 +1,7 @@
 ---
 title: CREATE USER
 summary: TiDB 数据库中 CREATE USER 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/create-user/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-user/','/docs-cn/v4.0/sql-statements/sql-statement-create-user/','/docs-cn/stable/reference/sql/statements/create-user/','/docs-cn/v4.0/reference/sql/statements/create-user/']
 ---
 
 # CREATE USER
@@ -10,29 +10,26 @@ aliases: ['/docs-cn/stable/reference/sql/statements/create-user/']
 
 ## 语法图
 
-**CreateUserStmt:**
+```ebnf+diagram
+CreateUserStmt ::=
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
 
-![CreateUserStmt](/media/sqlgram/CreateUserStmt.png)
+IfNotExists ::=
+    ('IF' 'NOT' 'EXISTS')?
 
-**IfNotExists:**
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+UserSpec ::=
+    Username AuthOption
 
-**UserSpecList:**
+AuthOption ::=
+    ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
-
-**UserSpec:**
-
-![UserSpec](/media/sqlgram/UserSpec.png)
-
-**AuthOption:**
-
-![AuthOption](/media/sqlgram/AuthOption.png)
-
-**StringName:**
-
-![StringName](/media/sqlgram/StringName.png)
+StringName ::=
+    stringLit
+|   Identifier
+```
 
 ## 示例
 
@@ -48,7 +45,7 @@ CREATE USER 'newuser' IDENTIFIED BY 'newuserpassword';
 Query OK, 1 row affected (0.04 sec)
 ```
 
-创建一个只能在 `192.168.1.1` 登陆的用户，密码为 `newuserpassword`。
+创建一个只能在 `192.168.1.1` 登录的用户，密码为 `newuserpassword`。
 
 {{< copyable "sql" >}}
 

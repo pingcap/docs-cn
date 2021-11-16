@@ -1,6 +1,7 @@
 ---
 title: SHOW [BACKUPS|RESTORES]
 summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-backups/','/docs-cn/v4.0/sql-statements/sql-statement-show-backups/']
 ---
 
 # SHOW [BACKUPS|RESTORES]
@@ -11,13 +12,14 @@ summary: TiDB 数据库中 SHOW [BACKUPS|RESTORES] 的使用概况。
 
 ## 语法图
 
-**ShowBRIEStmt:**
+```ebnf+diagram
+ShowBRIEStmt ::=
+    "SHOW" ("BACKUPS" | "RESTORES") ShowLikeOrWhere?
 
-![ShowBRIEStmt](/media/sqlgram/ShowBRIEStmt.png)
-
-**ShowLikeOrWhereOpt:**
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
+ShowLikeOrWhere ::=
+    "LIKE" SimpleExpr
+|   "WHERE" Expression
+```
 
 ## 示例
 

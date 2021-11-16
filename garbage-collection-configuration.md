@@ -1,6 +1,6 @@
 ---
 title: GC 配置
-aliases: ['/docs-cn/stable/reference/garbage-collection/configuration/']
+aliases: ['/docs-cn/stable/garbage-collection-configuration/','/docs-cn/v4.0/garbage-collection-configuration/','/docs-cn/stable/reference/garbage-collection/configuration/']
 ---
 
 # GC 配置
@@ -97,7 +97,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 >
 > Green GC 目前为实验特性，不建议在生产环境中使用。
 
-设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#raftstorehibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
+设定 GC 的 Resolve Locks 阶段中，扫描锁的方式，即是否开启 Green GC（实验性特性）。Resolve Locks 阶段需要扫描整个集群的锁。在不开启 Green GC 的情况下，TiDB 会以 Region 为单位进行扫描。Green GC 提供了“物理扫描”的功能，即每台 TiKV 节点分别绕过 Raft 层直接扫描数据。该功能可以有效缓解 [Hibernate Region](/tikv-configuration-file.md#hibernate-regions-实验特性) 功能开启时，GC 唤醒全部 Region 的现象，并一定程度上提升 Resolve Locks 阶段的执行速度。
 
 - `"legacy"`（默认）：使用旧的扫描方式，即关闭 Green GC。
 - `"physical"`：使用物理扫描的方式，即开启 Green GC。
@@ -135,7 +135,7 @@ update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_tim
 
 ## 流控
 
-TiKV 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响，`0` 为关闭该功能。该配置可通过 tikv-ctl 动态修改：
+TiDB 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-bytes-per-sec` 限制 GC worker 每秒数据写入量，降低对正常请求的影响，`0` 为关闭该功能。该配置可通过 tikv-ctl 动态修改：
 
 {{< copyable "shell-regular" >}}
 

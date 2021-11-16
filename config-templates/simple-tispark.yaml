@@ -1,0 +1,45 @@
+# # Global variables are applied to all deployments and used as the default value of
+# # the deployments if a specific deployment value is missing.
+global:
+  user: "tidb"
+  ssh_port: 22
+  deploy_dir: "/tidb-deploy"
+  data_dir: "/tidb-data"
+
+pd_servers:
+  - host: 10.0.1.4
+  - host: 10.0.1.5
+  - host: 10.0.1.6
+
+tidb_servers:
+  - host: 10.0.1.1
+  - host: 10.0.1.2
+  - host: 10.0.1.3
+
+tikv_servers:
+  - host: 10.0.1.7
+  - host: 10.0.1.8
+  - host: 10.0.1.9
+
+
+# NOTE: TiSpark support is an experimental feature, it's not recommend to be used in
+# production at present.
+# To use TiSpark, you need to manually install Java Runtime Environment (JRE) 8 on the
+# host, see the OpenJDK doc for a reference: https://openjdk.java.net/install/
+# NOTE: Only 1 master node is supported for now
+tispark_masters:
+  - host: 10.0.1.21
+
+# NOTE: multiple worker nodes on the same host is not supported by Spark
+tispark_workers:
+  - host: 10.0.1.22
+  - host: 10.0.1.23
+
+monitoring_servers:
+  - host: 10.0.1.10
+
+grafana_servers:
+  - host: 10.0.1.10
+
+alertmanager_servers:
+  - host: 10.0.1.10

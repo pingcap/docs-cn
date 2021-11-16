@@ -1,6 +1,6 @@
 ---
 title: TiFlash 性能调优
-aliases: ['/docs-cn/stable/reference/tiflash/tune-performance/']
+aliases: ['/docs-cn/stable/tiflash/tune-tiflash-performance/','/docs-cn/v4.0/tiflash/tune-tiflash-performance/','/docs-cn/stable/reference/tiflash/tune-performance/']
 ---
 
 # TiFlash 性能调优

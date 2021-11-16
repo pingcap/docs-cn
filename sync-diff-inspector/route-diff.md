@@ -1,6 +1,6 @@
 ---
 title: 不同库名或表名的数据校验
-aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/route-diff/']
+aliases: ['/docs-cn/stable/sync-diff-inspector/route-diff/','/docs-cn/v4.0/sync-diff-inspector/route-diff/','/docs-cn/stable/reference/tools/sync-diff-inspector/route-diff/']
 ---
 
 # 不同库名或表名的数据校验

@@ -1,9 +1,15 @@
 ---
 title: 离线 TiDB Ansible 部署方案
-aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/offline-ansible/']
+aliases: ['/docs-cn/stable/offline-deployment-using-ansible/','/docs-cn/v4.0/offline-deployment-using-ansible/','/docs-cn/stable/how-to/deploy/orchestrated/offline-ansible','/zh/tidb/dev/offline-deployment-using-ansible/','/docs-cn/dev/offline-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/offline-ansible/','/zh/tidb/stable/offline-deployment-using-ansible/']
 ---
 
 # 离线 TiDB Ansible 部署方案
+
+> **警告：**
+>
+> 对于生产环境，推荐[使用 TiUP 离线部署 TiDB 集群](/production-offline-deployment-using-tiup.md)。从 TiDB 4.0 版本开始，PingCAP 不再维护 TiDB Ansible 的部署方式。继续使用 TiDB Ansible 部署 TiDB 集群可能存在风险，因此不推荐该部署方式。TiUP 可直接支持之前使用 TiDB Ansible 方式部署的集群。
+>
+> 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考 [TiDB 快速上手指南](/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/deploy-test-cluster-using-docker-compose.md)。
 
 ## 准备机器
 

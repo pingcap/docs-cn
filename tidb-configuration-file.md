@@ -1,13 +1,13 @@
 ---
 title: TiDB 配置文件描述
-aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration-file/']
+aliases: ['/docs-cn/stable/tidb-configuration-file/','/docs-cn/v4.0/tidb-configuration-file/','/docs-cn/stable/reference/configuration/tidb-server/configuration-file/','/docs-cn/v4.0/reference/configuration/tidb-server/configuration']
 ---
 
 <!-- markdownlint-disable MD001 -->
 
 # TiDB 配置文件描述
 
-TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
+TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/config.toml.example](https://github.com/pingcap/tidb/blob/release-4.0/config/config.toml.example) 找到默认值的配置文件，重命名为 `config.toml` 即可。本文档只介绍未包含在[命令行参数](/command-line-flags-for-tidb-configuration.md)中的参数。
 
 ### `split-table`
 
@@ -24,6 +24,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
 + 默认值：1073741824
++ 注意：当集群从 v2.0.x 或 v3.0.x 版本直接升级至 v4.0.9 及以上版本时，该配置默认值为 34359738368。
 + 超过该值的请求会被 `oom-action` 定义的行为所处理。
 + 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
 
@@ -48,18 +49,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `oom-action`
 
-> **注意：**
+> **警告：**
 >
 > 目前 `oom-action` 为实验功能，会对写入过程中的内存进行统计。如果用户希望根据该特性取消写入操作，不建议在生产环境中将参数值配置为 `cancel`。
 
 + 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
 + 默认值："log"
 + 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
-
-### `enable-streaming`
-
-+ 开启 coprocessor 的 streaming 获取数据模式。
-+ 默认值：false
 
 ### `lower-case-table-names`
 
@@ -148,6 +144,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ## log
 
 日志相关的配置项。
+
+### `level`
+
++ 指定日志的输出级别, 可选项为 [debug, info, warn, error, fatal]
++ 默认值："info"
 
 ### `format`
 
@@ -283,11 +284,49 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 这个配置只有在 `prepared-plan-cache.enabled` 为 `true` 的情况才会生效。当 LRU 的 size 大于 `prepared-plan-cache.capacity` 时，也会剔除 LRU 中的元素。
 
+### `server-memory-quota` <span class="version-mark">从 v4.0.9 版本开始引入</span>
+
+> **警告：**
+>
+> `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
+
++ tidb-server 实例内存的使用限制，单位为字节。
++ 默认值：0
++ 默认值为 0 表示无内存限制。
+
+### `memory-usage-alarm-ratio` <span class="version-mark">从 v4.0.9 版本开始引入</span>
+
++ tidb-server 实例内存使用占总内存的比例超过一定阈值时会报警。该配置项的有效范围为 `0` 到 `1`。如果配置该选项为 `0` 或 `1`，则表示关闭内存阈值报警功能。
++ 默认值：0.8
++ 当内存阈值报警功能开启时，如果配置项 [`server-memory-quota`](/tidb-configuration-file.md#server-memory-quota-从-v409-版本开始引入) 未设置，则内存报警阈值为 `memory-usage-alarm-ratio * 系统内存大小`；如果 `server-memory-quota` 被设置且大于 0，则内存报警阈值为 `memory-usage-alarm-ratio * server-memory-quota`。
++ 当 TiDB 检测到 tidb-server 的内存使用超过了阈值，则会认为存在内存溢出的风险，会将当前正在执行的所有 SQL 语句中内存使用最高的 10 条语句和运行时间最长的 10 条语句以及 heap profile 记录到目录 [`tmp-storage-path/record`](/tidb-configuration-file.md#tmp-storage-path) 中，并输出一条包含关键字 `tidb-server has the risk of OOM` 的日志。
++ 该值作为系统变量 [`tidb_memory_usage_alarm_ratio`](/system-variables.md#tidb_memory_usage_alarm_ratio) 的初始值。
+
+### `txn-entry-size-limit` <span class="version-mark">从 v4.0.10 版本开始引入</span>
+
++ TiDB 单行数据的大小限制
++ 默认值：6291456 (Byte)
++ 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
++ 注意，TiKV 有类似的限制。若单个写入请求的数据量大小超出 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)，默认为 8MB，TiKV 会拒绝处理该请求。当表的一行记录较大时，需要同时修改这两个配置。
+
 ### `txn-total-size-limit`
 
 + TiDB 单个事务大小限制
 + 默认值：104857600 (Byte)
 + 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
+
+### `max-txn-ttl`
+
++ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
++ 默认值：600000
++ 单位：毫秒
++ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
+
+### `committer-concurrency`
+
++ 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量
++ 默认值：16
++ 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过调大该配置项来加速提交。
 
 ### `stmt-count-limit`
 
@@ -298,7 +337,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tcp-keep-alive`
 
 + TiDB 在 TCP 层开启 keepalive。
-+ 默认值：false
++ 默认值：true
 
 ### `cross-join`
 
@@ -315,7 +354,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - 每隔 `stats-lease` 时间，TiDB 会检查是否有列的统计信息需要被加载到内存中
     - 每隔 `200 * stats-lease` 时间，TiDB 会将内存中缓存的 feedback 写入系统表中
     - 每隔 `5 * stats-lease` 时间，TiDB 会读取系统表中的 feedback，更新内存中缓存的统计信息
-+ 当 `stats-lease` 为 0 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
++ 当 `stats-lease` 为 0s 时，TiDB 会以 3s 的时间间隔周期性的读取系统表中的统计信息并更新内存中缓存的统计信息。但不会自动修改统计信息相关系统表，具体来说，TiDB 不再自动修改这些表：
     - `mysql.stats_meta`：TiDB 不再自动记录事务中对某张表的修改行数，也不会更新到这个系统表中
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
@@ -328,8 +367,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0.05
-+ 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
++ 默认值：0
++ 此功能默认关闭，暂不建议开启。如果开启此功能，对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ### `query-feedback-limit`
 
@@ -384,7 +423,7 @@ prepare 语句的 Plan cache 设置。
 ### `grpc-connection-count`
 
 + 跟每个 TiKV 之间建立的最大连接数。
-+ 默认值：16
++ 默认值：4
 
 ### `grpc-keepalive-time`
 
@@ -403,13 +442,6 @@ prepare 语句的 Plan cache 设置。
 + 执行事务提交时，最大的超时时间。
 + 默认值：41s
 + 这个值必须是大于两倍 Raft 选举的超时时间。
-
-### `max-txn-ttl`
-
-+ 单个事务持锁的最长时间，超过该时间，该事务的锁可能会被其他事务清除，导致该事务无法成功提交。
-+ 默认值：600000
-+ 单位：毫秒
-+ 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
 ### `max-batch-size`
 
@@ -445,20 +477,28 @@ prepare 语句的 Plan cache 设置。
 ### `capacity-mb`
 
 + 缓存的总数据量大小。当缓存空间满时，旧缓存条目将被逐出。
-+ 默认值：1000
++ 默认值：1000.0
 + 单位：MB
++ 类型：Float
 
 ### `admission-max-result-mb`
 
-+ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集大于该参数指定的大小，则结果集不会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
-+ 默认值：10
++ 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集小于该参数指定的大小，则结果集会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
++ 默认值：10.0
 + 单位：MB
++ 类型：Float
 
 ### `admission-min-process-ms`
 
 + 指定能被缓存的单个下推计算结果集的最短计算时间。若单个下推计算在 Coprocessor 上的计算时间小于该参数指定的时间，则结果集不会被缓存。处理得很快的请求没有必要进行缓存，仅对处理时间很长的请求进行缓存，减少缓存被逐出的概率，这是本配置参数的意义。
 + 默认值：5
 + 单位：ms
+
+### `admission-max-ranges` <span class="version-mark">从 v4.0.8 版本开始引入</span>
+
++ 指定能被缓存的单个下推计算结果集的最大范围数量。如果下推计算存在的范围数量超过该配置项指定的数量，则结果集不会被缓存。一般认为当范围数量过多时，解析范围是计算的主要开销，这样 Coprocessor Cache 带来的额外计算开销会较大。
++ 默认值：500
++ 类型：uint
 
 ## txn-local-latches
 
@@ -516,21 +556,21 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
++ 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-系统表 `events_statement_summary_by_digest` 的相关配置。
+系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
 
 ### max-stmt-count
 
-+ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
-+ 默认值：100
++ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
++ 默认值：v4.0.14 前为 200，自 v4.0.14 起为 3000
 
 ### max-sql-length
 
-+ `events_statement_summary_by_digest` 表中`DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn
@@ -548,12 +588,6 @@ TiDB 服务状态相关配置。
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
-
-### `allow-auto-random` <span class="version-mark">从 v3.1.0 版本开始引入</span>
-
-+ 用于控制是否允许使用 `AUTO_RANDOM`。
-+ 默认值：false
-+ 默认情况下，不支持使用 `AUTO_RANDOM`。当该值为 true 时，不允许同时设置 alter-primary-key 为 true。
 
 ### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 

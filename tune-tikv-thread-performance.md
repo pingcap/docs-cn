@@ -1,6 +1,7 @@
 ---
 title: TiKV 线程池性能调优
 summary: 了解 TiKV 线程池性能调优。
+aliases: ['/docs-cn/stable/tune-tikv-thread-performance/','/docs-cn/v4.0/tune-tikv-thread-performance/']
 ---
 
 # TiKV 线程池性能调优

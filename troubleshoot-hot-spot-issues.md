@@ -1,5 +1,6 @@
 ---
 title: TiDB 热点问题处理
+aliases: ['/docs-cn/stable/troubleshoot-hot-spot-issues/','/docs-cn/v4.0/troubleshoot-hot-spot-issues/']
 ---
 
 # TiDB 热点问题处理
@@ -113,15 +114,6 @@ TiDB `alter-primary-key` 参数设置为 false 时，会使用表的整数型主
 ## 使用 AUTO_RANDOM 处理自增主键热点表
 
 使用 `AUTO_RANDOM` 处理自增主键热点表，适用于代替自增主键，解决自增主键带来的写入热点。
-
-> **注意：**
->
-> 该功能目前还是实验性功能，不推荐生产环境使用。可使用以下配置启用：
->
-> ```
-> [experimental]\
-> allow-auto-random = true
-> ```
 
 使用该功能后，将由 TiDB 生成随机分布且空间耗尽前不重复的主键，达到离散写入、打散写入热点的目的。
 

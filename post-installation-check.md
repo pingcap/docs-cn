@@ -1,6 +1,7 @@
 ---
 title: 验证集群运行状态
 summary: 介绍如何验证集群运行状态。
+aliases: ['/docs-cn/stable/post-installation-check/','/docs-cn/v4.0/post-installation-check/']
 ---
 
 # 验证集群运行状态
@@ -24,8 +25,6 @@ summary: 介绍如何验证集群运行状态。
 ### 查看 Grafana 监控 Overview 页面检查 TiDB 集群状态
 
 - 通过 `{Grafana-ip}:3000` 登录 Grafana 监控，默认用户名及密码为 `admin`/`admin`。
-
-    ![Grafana-login](/media/tiup/grafana-login.png)
 
 - 点击 **Overview** 监控页面检查 TiDB 端口和负载监控信息。
 

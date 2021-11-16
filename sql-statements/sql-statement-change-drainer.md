@@ -1,6 +1,7 @@
 ---
 title: CHANGE DRAINER
 summary: TiDB 数据库中 CHANGE DRAINER 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-change-drainer/','/docs-cn/v4.0/sql-statements/sql-statement-change-drainer/']
 ---
 
 # CHANGE DRAINER
@@ -61,7 +62,7 @@ SHOW DRAINER STATUS;
 
 ## MySQL 兼容性
 
-MySQL 无此功能。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

@@ -1,5 +1,6 @@
 ---
 title: TiDB 使用限制
+aliases: ['/docs-cn/stable/tidb-limitations/','/docs-cn/v4.0/tidb-limitations/']
 ---
 
 # 使用限制
@@ -12,7 +13,7 @@ title: TiDB 使用限制
 |:---------|:--------------|
 | Database | 64 |
 | Table    | 64 |
-| Cloumn   | 64 |
+| Column   | 64 |
 | Index    | 64 |
 | View     | 64 |
 | Sequence | 64 |
@@ -36,7 +37,7 @@ title: TiDB 使用限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Cloumns   | 512       |
+| Columns   | 512       |
 | Indexs    | 64        |
 | Rows      | unlimited |
 | Size      | unlimited |
@@ -46,7 +47,7 @@ title: TiDB 使用限制
 
 | 类型       | 最大限制   |
 |:----------|:----------|
-| Size       | 6MB       |
+| Size       | 默认为 6MB，可通过 [`txn-entry-size-limit`](/tidb-configuration-file.md#txn-entry-size-limit-从-v4010-版本开始引入) 配置项调整 |
 
 ## 单列的限制
 

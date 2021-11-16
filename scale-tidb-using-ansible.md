@@ -1,15 +1,17 @@
 ---
 title: 使用 TiDB Ansible 扩容缩容 TiDB 集群
-aliases: ['/docs-cn/stable/how-to/scale/with-ansible/']
+aliases: ['/docs-cn/stable/scale-tidb-using-ansible/','/docs-cn/v4.0/scale-tidb-using-ansible/','/docs-cn/stable/how-to/scale/with-ansible/','/zh/tidb/dev/scale-tidb-using-ansible/','/docs-cn/dev/scale-tidb-using-ansible/','/docs-cn/dev/how-to/scale/with-ansible/','/zh/tidb/stable/scale-tidb-using-ansible/']
 ---
 
 # 使用 TiDB Ansible 扩容缩容 TiDB 集群
 
 TiDB 集群可以在不影响线上服务的情况下进行扩容和缩容。
 
-> **注意：**
+> **警告：**
 >
-> 以下缩容示例中，被移除的节点没有混合部署其他服务；如果混合部署了其他服务，不能按如下操作。
+> + 对于生产环境，推荐[使用 TiUP 进行集群扩缩容操作](/scale-tidb-using-tiup.md)。自 v4.0 版本起，PingCAP 不再提供 TiDB Ansible 的扩缩容支持（废弃）。继续使用 TiDB Ansible 对 TiDB 集群进行扩缩容操作可能存在风险，因此不推荐该方式。
+>
+> + 以下缩容示例中，被移除的节点没有混合部署其他服务；如果混合部署了其他服务，不能按如下操作。
 
 假设拓扑结构如下所示：
 

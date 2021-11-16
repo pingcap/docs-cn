@@ -1,6 +1,6 @@
 ---
 title: TiDB 版本发布历史
-aliases: ['/docs-cn/stable/releases/rn/']
+aliases: ['/docs-cn/stable/releases/release-notes/','/docs-cn/v4.0/releases/release-notes/','/docs-cn/stable/releases/rn/']
 ---
 
 # TiDB 版本发布历史
@@ -9,6 +9,18 @@ TiDB 历史版本发布声明如下：
 
 ## 4.0
 
+- [4.0.15](/releases/release-4.0.15.md)
+- [4.0.14](/releases/release-4.0.14.md)
+- [4.0.13](/releases/release-4.0.13.md)
+- [4.0.12](/releases/release-4.0.12.md)
+- [4.0.11](/releases/release-4.0.11.md)
+- [4.0.10](/releases/release-4.0.10.md)
+- [4.0.9](/releases/release-4.0.9.md)
+- [4.0.8](/releases/release-4.0.8.md)
+- [4.0.7](/releases/release-4.0.7.md)
+- [4.0.6](/releases/release-4.0.6.md)
+- [4.0.5](/releases/release-4.0.5.md)
+- [4.0.4](/releases/release-4.0.4.md)
 - [4.0.3](/releases/release-4.0.3.md)
 - [4.0.2](/releases/release-4.0.2.md)
 - [4.0.1](/releases/release-4.0.1.md)
@@ -32,6 +44,10 @@ TiDB 历史版本发布声明如下：
 
 ## 3.0
 
+- [3.0.20](/releases/release-3.0.20.md)
+- [3.0.19](/releases/release-3.0.19.md)
+- [3.0.18](/releases/release-3.0.18.md)
+- [3.0.17](/releases/release-3.0.17.md)
 - [3.0.16](/releases/release-3.0.16.md)
 - [3.0.15](/releases/release-3.0.15.md)
 - [3.0.14](/releases/release-3.0.14.md)

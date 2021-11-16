@@ -1,11 +1,12 @@
 ---
 title: TiFlash 部署拓扑
 summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓扑结构。
+aliases: ['/docs-cn/stable/tiflash-deployment-topology/','/docs-cn/v4.0/tiflash-deployment-topology/']
 ---
 
 # TiFlash 部署拓扑
 
-本文介绍在部署最小拓扑集群的基础上，部署 TiFlash 的拓扑结构。TiFlash 是列式的存储引擎，已经成为集群拓扑的标配。适合 Real-Time HTAP 业务。
+本文介绍在部署最小拓扑集群的基础上，部署 [TiFlash](/tiflash/tiflash-overview.md) 的拓扑结构。TiFlash 是列式的存储引擎，已经成为集群拓扑的标配，适合 Real-Time HTAP 业务。
 
 ## 拓扑信息
 
@@ -22,6 +23,8 @@ summary: 了解在部署最小拓扑集群的基础上，部署 TiFlash 的拓�
 - [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/simple-tiflash.yaml)
 
 - [详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/release-4.0/config-templates/complex-tiflash.yaml)
+
+以上 TiDB 集群拓扑文件中，详细的配置项说明见[通过 TiUP 部署 TiDB 集群的拓扑文件配置](/tiup/tiup-cluster-topology-reference.md#tiflash_servers)。
 
 ### 关键参数介绍
 

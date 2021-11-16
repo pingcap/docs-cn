@@ -1,6 +1,6 @@
 ---
 title: sync-diff-inspector 用户文档
-aliases: ['/docs-cn/stable/reference/tools/sync-diff-inspector/overview/']
+aliases: ['/docs-cn/stable/sync-diff-inspector/sync-diff-inspector-overview/','/docs-cn/v4.0/sync-diff-inspector/sync-diff-inspector-overview/','/docs-cn/stable/reference/tools/sync-diff-inspector/overview/']
 ---
 
 # sync-diff-inspector 用户文档
@@ -15,9 +15,9 @@ sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一�
 * 支持[分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
 * 支持 [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
 
-GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
+GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/release-4.0/sync_diff_inspector)
 
-下载地址：[tidb-enterprise-tools-latest-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-latest-linux-amd64.tar.gz)
+下载地址：[tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
 
@@ -44,7 +44,7 @@ sync-diff-inspector 需要获取表结构信息、查询数据、建 checkpoint 
     - RELOAD (查看表结构)
 
 - 下游数据库
-  
+
     - SELECT （查数据进行对比）
 
     - CREATE （创建 checkpoint 库和表）
@@ -139,7 +139,7 @@ fix-sql-file = "fix.sql"
     table = "test3"
 
     # 指定用于划分 chunk 的列，如果不配置该项，sync-diff-inspector 会选取一个合适的列（主键／唯一键／索引）
-    index-field = "id"
+    index-fields = "id"
 
     # 指定检查的数据的范围，需要符合 sql 中 where 条件的语法
     range = "age > 10 AND age < 20"
@@ -213,6 +213,44 @@ fix-sql-file = "fix.sql"
 ```
 
 该命令最终会在日志中输出一个检查报告，说明每个表的检查情况。如果数据存在不一致的情况，sync-diff-inspector 会生成 SQL 修复不一致的数据，并将这些 SQL 语句保存到 `fix.sql` 文件中。
+
+#### 日志
+
+sync-diff-inspector 会在运行时定期（间隔 10s）输出校验进度到日志中，格式如下：
+
+```log
+[2020/11/12 17:47:00.170 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test_table] ["chunk num"=1000] ["success num"=80] ["failed num"=1] ["ignore num"=0]
+```
+
+- chunk num：总共需要校验的 chunk 数量。
+- success num：已经校验数据一致的 chunk 数量。
+- failed num：校验失败的 chunk 数量。校验时遇到错误和数据不一致两种情况都属于校验失败。
+- ignore num：被忽略校验的 chunk 数量。当配置项 `sample-percent` 的值小于 `100` 时，sync-diff-inspector 会采用抽样的方式校验数据，这样就会有部分 chunk 被忽略校验。
+
+#### 校验结果
+
+当校验结束时，sync-diff-inspector 会输出一份校验报告。
+
++ 数据校验一致的日志示例如下：
+
+    ```log
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=1] ["check failed num"=0]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=true]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=353.462744ms]
+    [2020/11/12 17:47:00.174 +08:00] [INFO] [main.go:69] ["check pass!!!"]
+    ```
+
++ 数据校验不一致或者遇到错误时的日志示例如下：
+
+    ```log
+    [2020/11/12 18:16:17.068 +08:00] [INFO] [checkpoint.go:276] ["summary info"] [instance_id=target] [schema=test] [table=test1] ["chunk num"=1] ["success num"=0] ["failed num"=1] ["ignore num"=0]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:80] ["check result summary"] ["check passed num"=0] ["check failed num"=1]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [report.go:87] ["table check result"] [schema=test] [table=test_table] ["struct equal"=true] ["data equal"=false]
+    [2020/11/12 18:16:17.071 +08:00] [INFO] [main.go:75] ["check data finished"] [cost=319.849706ms]
+    [2020/11/12 18:16:17.071 +08:00] [WARN] [main.go:66] ["check failed!!!"]
+    ```
+
+校验通过和未通过的表的个数打印在 `check result summary` 中。所有表的校验结果的打印在 `table check result` 中。
 
 ### 注意事项
 

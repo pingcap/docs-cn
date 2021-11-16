@@ -1,6 +1,6 @@
 ---
 title: TiKV 配置参数
-aliases: ['/docs-cn/stable/reference/configuration/tikv-server/configuration/']
+aliases: ['/docs-cn/stable/command-line-flags-for-tikv-configuration/','/docs-cn/v4.0/command-line-flags-for-tikv-configuration/','/docs-cn/stable/reference/configuration/tikv-server/configuration/']
 ---
 
 # TiKV 配置参数
@@ -35,7 +35,7 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 + TiKV 对外访问服务状态地址
 + 默认：使用 `--status-addr`
 + 在某些情况下，例如 docker 或者 NAT 网络环境，客户端并不能通过 `--status-addr` 的地址来访问到 TiKV。此时，你可以设置 `--advertise-status-addr` 来让客户端访问 TiKV。
-+ 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 20180:20180`，那么可以设置 `\-\-advertise-status-addr="192.168.100.113:20180"`，客户端可以通过 `192.168.100.113:20180` 来找到这个服务。
++ 例如，Docker 内部 IP 地址为 `172.17.0.1`，而宿主机的 IP 地址为 `192.168.100.113` 并且设置了端口映射 `-p 20180:20180`，那么可以设置 `--advertise-status-addr="192.168.100.113:20180"`，客户端可以通过 `192.168.100.113:20180` 来找到这个服务。
 
 ## `-C, --config`
 
@@ -46,7 +46,7 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 ## `--capacity`
 
 + TiKV 存储数据的容量
-+ 默认：0 (无限)
++ 默认：0（无限）
 + PD 需要使用这个值来对整个集群做 balance 操作。（提示：你可以使用 10GB 来替代 10737418240，从而简化参数的传递）
 
 ## `--data-dir`
@@ -54,7 +54,7 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 + TiKV 数据存储路径
 + 默认："/tmp/tikv/store"
 
-## `-L, --log`
+## `-L`
 
 + Log 级别
 + 默认："info"
@@ -70,5 +70,4 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 
 + PD 地址列表。
 + 默认：""
-+ TiKV 必须使用这个值连接 PD，才能正常工作。使用逗号来分隔多个 PD 地址，例如：
-  192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379
++ TiKV 必须使用这个值连接 PD，才能正常工作。使用逗号来分隔多个 PD 地址，例如：192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379

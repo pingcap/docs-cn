@@ -1,13 +1,13 @@
 ---
 title: PD 配置文件描述
-aliases: ['/docs-cn/stable/reference/configuration/pd-server/configuration-file/']
+aliases: ['/docs-cn/stable/pd-configuration-file/','/docs-cn/v4.0/pd-configuration-file/','/docs-cn/stable/reference/configuration/pd-server/configuration-file/','/docs-cn/v4.0/reference/configuration/pd-server/configuration-file/']
 ---
 
 # PD 配置文件描述
 
 <!-- markdownlint-disable MD001 -->
 
-PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/pingcap/pd/blob/master/conf/config.toml) 找到默认的配置文件。
+PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/config.toml](https://github.com/tikv/pd/blob/release-4.0/conf/config.toml) 找到默认的配置文件。
 
 本文档只阐述未包含在命令行参数中的参数，命令行参数参见 [PD 配置参数](/command-line-flags-for-pd-configuration.md)。
 
@@ -34,8 +34,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `quota-backend-bytes`
 
-+ 元信息数据库存储空间的大小，默认 2GB。
-+ 默认：2147483648
++ 元信息数据库存储空间的大小，默认 8GiB。
++ 默认：8589934592
 
 ### `auto-compaction-mod`
 
@@ -86,14 +86,25 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 包含 X509 key 的 PEM 文件路径
 + 默认：""
 
+### `redact-info-log` <span class="version-mark">从 v4.0.10 版本开始引入</span>
+
++ 控制 PD 日志脱敏的开关
++ 该配置项值设为 true 时将对 PD 日志脱敏，遮蔽日志中的用户信息。
++ 默认值：false
+
 ## log
 
 日志相关的配置项。
 
+### `level`
+
++ 日志等级，可指定为 "DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
++ 默认值："INFO"
+
 ### `format`
 
-+ 日志格式，可指定为"text"，"json"， "console"。
-+ 默认：text
++ 日志格式，可指定为"text"，"json"，"console"。
++ 默认值："text"
 
 ### `disable-timestamp`
 
@@ -129,7 +140,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `interval`
 
-+ 向 promethus 推送监控指标数据的间隔时间。
++ 向 Prometheus 推送监控指标数据的间隔时间。
 + 默认: 15s
 
 ## schedule
@@ -181,6 +192,16 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 同时进行 Region 调度的任务个数
 + 默认：2048
 
+### `hot-region-schedule-limit`
+
++ 控制同时进行的 hot Region 任务。该配置项独立于 Region 调度。
++ 默认值：4
+
+### `hot-region-cache-hits-threshold`
+
++ 设置识别热点 Region 所需的分钟数。只有当 Region 处于热点状态持续时间超过此分钟数时，PD 才会参与热点调度。
++ 默认值：3
+
 ### `replica-schedule-limit`
 
 + 同时进行 replica 调度的任务个数。
@@ -193,14 +214,14 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `high-space-ratio`
 
-+ 设置 store 空间充裕的阈值。
++ 设置 store 空间充裕的阈值。当节点的空间占用比例小于该阈值时，PD 调度时会忽略节点的剩余空间，主要根据实际数据量进行均衡。此配置仅在 `region-score-formula-version = v1` 时生效。
 + 默认：0.7
 + 最小值：大于 0
 + 最大值：小于 1
 
 ### `low-space-ratio`
 
-+ 设置 store 空间不足的阈值。
++ 设置 store 空间不足的阈值。当某个节点的空间占用比例超过该阈值时，PD 会尽可能避免往该节点迁移数据，同时主要根据节点剩余空间大小进行调度，避免对应节点的磁盘空间被耗尽。
 + 默认：0.8
 + 最小值：大于 0
 + 最大值：小于 1
@@ -247,7 +268,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `max-replicas`
 
-+ 副本数量。
++ 所有副本数量，即 leader 与 follower 数量之和。默认为 `3`，即 1 个 leader 和 2 个 follower。
 + 默认：3
 
 ### `location-labels`
@@ -258,7 +279,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `strictly-match-label`
 
-+ 打开强制 TiKV Label 和 PD 的 localtion-labels 是否匹配的检查
++ 打开强制 TiKV Label 和 PD 的 location-labels 是否匹配的检查
 + 默认：false
 
 ### `enable-placement-rules`

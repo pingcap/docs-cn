@@ -1,7 +1,7 @@
 ---
 title: FLUSH STATUS
 summary: TiDB 数据库中 FLUSH STATUS 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/flush-status/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-flush-status/','/docs-cn/v4.0/sql-statements/sql-statement-flush-status/','/docs-cn/stable/reference/sql/statements/flush-status/']
 ---
 
 # FLUSH STATUS
@@ -10,17 +10,21 @@ aliases: ['/docs-cn/stable/reference/sql/statements/flush-status/']
 
 ## 语法图
 
-**FlushStmt:**
+```ebnf+diagram
+FlushStmt ::=
+    'FLUSH' NoWriteToBinLogAliasOpt FlushOption
 
-![FlushStmt](/media/sqlgram/FlushStmt.png)
+NoWriteToBinLogAliasOpt ::=
+    ( 'NO_WRITE_TO_BINLOG' | 'LOCAL' )?
 
-**NoWriteToBinLogAliasOpt:**
-
-![NoWriteToBinLogAliasOpt](/media/sqlgram/NoWriteToBinLogAliasOpt.png)
-
-**FlushOption:**
-
-![FlushOption](/media/sqlgram/FlushOption.png)
+FlushOption ::=
+    'PRIVILEGES'
+|   'STATUS'
+|    'TIDB' 'PLUGINS' PluginNameList
+|    'HOSTS'
+|   LogTypeOpt 'LOGS'
+|   TableOrTables TableNameListOpt WithReadLockOpt
+```
 
 ## 示例
 

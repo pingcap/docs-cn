@@ -1,9 +1,13 @@
 ---
 title: TiDB Ansible 常见运维操作
-aliases: ['/docs-cn/stable/how-to/maintain/ansible-operations/']
+aliases: ['/docs-cn/stable/maintain-tidb-using-ansible/','/docs-cn/v4.0/maintain-tidb-using-ansible/','/docs-cn/stable/how-to/maintain/ansible-operations/','/zh/tidb/dev/maintain-tidb-using-ansible/','/docs-cn/dev/maintain-tidb-using-ansible/','/docs-cn/dev/how-to/maintain/ansible-operations/','/zh/tidb/stable/maintain-tidb-using-ansible/']
 ---
 
 # TiDB Ansible 常见运维操作
+
+> **警告：**
+>
+> 对于生产环境，推荐[使用 TiUP 进行集群运维操作](/maintain-tidb-using-tiup.md)。自 v4.0 版本起，PingCAP 不再提供 TiDB Ansible 的运维支持（废弃）。继续使用 TiDB Ansible 运维 TiDB 集群可能存在风险，因此不推荐该运维方式。
 
 ## 启动集群
 

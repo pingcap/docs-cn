@@ -1,6 +1,7 @@
 ---
 title: SHOW CONFIG
 summary: TiDB 数据库中 SHOW CONFIG 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-config/','/docs-cn/v4.0/sql-statements/sql-statement-show-config/']
 ---
 
 # SHOW CONFIG
@@ -82,7 +83,7 @@ SHOW CONFIG LIKE 'tidb';
 
 ## MySQL 兼容性
 
-`SHOW CONFIG` 是 TiDB 的扩展语法，MySQL 没有对应的语法。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

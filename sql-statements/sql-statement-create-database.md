@@ -1,7 +1,7 @@
 ---
 title: CREATE DATABASE
 summary: TiDB 数据库中 CREATE DATABASE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/create-database/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-database/','/docs-cn/v4.0/sql-statements/sql-statement-create-database/','/docs-cn/stable/reference/sql/statements/create-database/']
 ---
 
 # CREATE DATABASE
@@ -10,21 +10,19 @@ aliases: ['/docs-cn/stable/reference/sql/statements/create-database/']
 
 ## 语法图
 
-**CreateDatabaseStmt:**
+```ebnf+diagram
+CreateDatabaseStmt ::=
+    'CREATE' 'DATABASE' IfNotExists DBName DatabaseOptionListOpt
 
-![CreateDaatabaseStmt](/media/sqlgram/CreateDatabaseStmt.png)
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-**IfNotExists:**
+DBName ::=
+    Identifier
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
-
-**DBName:**
-
-![DBName](/media/sqlgram/DBName.png)
-
-**DatabaseOptionListOpt:**
-
-![DatabaseOptionListOpt](/media/sqlgram/DatabaseOptionListOpt.png)
+DatabaseOptionListOpt ::=
+    DatabaseOptionList?
+```
 
 ## 语法说明
 
@@ -94,7 +92,7 @@ SHOW TABLES;
 
 ## MySQL 兼容性
 
-`CREATE DATABASE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`CREATE DATABASE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

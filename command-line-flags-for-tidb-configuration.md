@@ -1,6 +1,6 @@
 ---
 title: TiDB 配置参数
-aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
+aliases: ['/docs-cn/stable/command-line-flags-for-tidb-configuration/','/docs-cn/v4.0/command-line-flags-for-tidb-configuration/','/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 ---
 
 # TiDB 配置参数
@@ -13,17 +13,21 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 + 默认：""
 + 必须确保用户和集群中的其他机器都能够访问到该 IP 地址
 
-## `--binlog-socket`
-
-+ TiDB 服务使用 unix socket file 方式接受内部连接，如 Pump 服务
-+ 默认：""
-+ 例如，可以使用 "/tmp/pump.sock" 来接受 Pump unix socket file 通信
-
 ## `--config`
 
 + 配置文件
 + 默认：""
 + 如果你指定了配置文件，TiDB 会首先读取配置文件的配置。如果对应的配置在命令行参数里面也存在，TiDB 就会使用命令行参数的配置来覆盖配置文件中的配置。详细的配置项请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md)。
+
+## `--config-check`
+
+- 检查配置文件的有效性并退出
+- 默认：false
+
+## `--config-strict`
+
+- 增强配置文件的有效性
+- 默认：false
 
 ## `--cors`
 
@@ -38,7 +42,7 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 
 ## `--enable-binlog`
 
-+ 是否产生 TiDB binlog
++ 是否产生 TiDB Binlog
 + 默认：false
 
 ## `-L`
@@ -46,6 +50,11 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 + Log 级别
 + 默认："info"
 + 可选项为：debug、info、warn、error、fatal
+
+## `--lease`
+
+- Schema lease 的持续时间。除非你知道更改该值带来的后果，否则你的更改操作是**危险的**。
+- 默认：45s
 
 ## `--log-file`
 
@@ -85,16 +94,11 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 + 默认："/tmp/tidb"
 + 可以通过 `tidb-server --store=mocktikv --path=""` 来启动一个纯内存引擎的 TiDB
 
-## `--tmp-storage-path`
-
-+ TiDB 临时磁盘存储位置。
-+ 默认：`<操作系统临时文件夹>/tidb/tmp-storage`
-
 ## `--proxy-protocol-networks`
 
-+ 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) 连接 TiDB 的代理服务器地址列表。
++ 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB 的代理服务器地址列表。
 + 默认：""
-+ 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt) 的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
++ 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
 + 配置该参数后，TiDB 将允许配置的源 IP 地址使用 PROXY 协议连接到 TiDB，且拒绝这些源 IP 地址使用非 PROXY 协议连接。若该参数为空，则任何源 IP 地址都不能使用 PROXY 协议连接到 TiDB。地址可以使用 IP 地址格式 (192.168.1.50) 或者 CIDR 格式 (192.168.1.0/24)，并可用 `,` 分隔多个地址，或用 `*` 代表所有 IP 地址。
 
 > **警告：**
@@ -133,7 +137,7 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 
 + TiDB 服务状态监听端口
 + 默认："10080"
-+ 该端口用于展示 TiDB 内部数据，包括 [prometheus 统计](https://prometheus.io/) 和 [pprof](https://golang.org/pkg/net/http/pprof/)
++ 该端口用于展示 TiDB 内部数据，包括 [prometheus 统计](https://prometheus.io/)和 [pprof](https://golang.org/pkg/net/http/pprof/)
 + Prometheus 统计可以通过 `http://host:status_port/metrics` 访问
 + pprof 数据可以通过 `http://host:status_port/debug/pprof` 访问
 
@@ -170,7 +174,7 @@ aliases: ['/docs-cn/stable/reference/configuration/tidb-server/configuration/']
 + 默认：""
 
 ## `--affinity-cpus`
- 
+
 + 设置 TiDB server CPU 亲和性，以 "," 逗号分隔，例如 "1,2,3"
 + 默认：""
 

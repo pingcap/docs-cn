@@ -1,7 +1,7 @@
 ---
 title: SET PASSWORD
 summary: TiDB 数据库中 SET PASSWORD 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/set-password/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-set-password/','/docs-cn/v4.0/sql-statements/sql-statement-set-password/','/docs-cn/stable/reference/sql/statements/set-password/']
 ---
 
 # SET PASSWORD
@@ -42,7 +42,8 @@ Query OK, 1 row affected (0.00 sec)
 SHOW CREATE USER 'newuser';
 ```
 
-```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
@@ -66,7 +67,8 @@ Query OK, 0 rows affected (0.01 sec)
 SHOW CREATE USER 'newuser';
 ```
 
-```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
@@ -92,7 +94,8 @@ Query OK, 0 rows affected (0.00 sec)
 SHOW CREATE USER 'newuser';
 ```
 
-```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*94BDCEBE19083CE2A1F959FD02F964C7AF4CFC29' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
@@ -102,7 +105,7 @@ SHOW CREATE USER 'newuser';
 
 ## MySQL 兼容性
 
-`SET PASSWORD` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SET PASSWORD` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

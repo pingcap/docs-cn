@@ -1,6 +1,6 @@
 ---
 title: 如何用 Sysbench 测试 TiDB
-aliases: ['/docs-cn/stable/benchmark/how-to-run-sysbench/']
+aliases: ['/docs-cn/stable/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/v4.0/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/stable/benchmark/how-to-run-sysbench/']
 ---
 
 # 如何用 Sysbench 测试 TiDB
@@ -11,8 +11,7 @@ aliases: ['/docs-cn/stable/benchmark/how-to-run-sysbench/']
 
 - [硬件要求](/hardware-and-software-requirements.md)
 
-- 参考 [TiDB 部署文档](https://pingcap.com/docs-cn/v3.0/how-to/deploy/orchestrated/ansible/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。
-    对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
+- 参考 [TiDB 部署文档](https://pingcap.com/docs-cn/v3.0/how-to/deploy/orchestrated/ansible/)部署 TiDB 集群。在 3 台服务器的条件下，建议每台机器部署 1 个 TiDB，1 个 PD，和 1 个 TiKV 实例。关于磁盘，以 32 张表、每张表 10M 行数据为例，建议 TiKV 的数据目录所在的磁盘空间大于 512 GB。对于单个 TiDB 的并发连接数，建议控制在 500 以内，如需增加整个系统的并发压力，可以增加 TiDB 实例，具体增加的 TiDB 个数视测试压力而定。
 
 IDC 机器：
 
@@ -58,7 +57,7 @@ enabled = true
 
 升高 TiKV 的日志级别同样有利于提高性能表现。
 
-TiKV 集群存在两个 Column Family（Default CF 和 Write CF），主要用于存储不同类型的数据。对于 Sysbench 测试，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
+TiKV 集群存在多个 Column Family，包括 Default CF、Write CF 和 LockCF，主要用于存储不同类型的数据。对于 Sysbench 测试，需要关注 Default CF 和 Write CF，导入数据的 Column Family 在 TiDB 集群中的比例是固定的。这个比例是：
 
 Default CF : Write CF = 4 : 1
 
@@ -122,6 +121,10 @@ db-driver=mysql
 
 ### 数据导入
 
+> **注意：**
+>
+> 如果 TiDB 启用了乐观事务模型（默认为悲观锁模式），当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
+
 在数据导入前，需要对 TiDB 进行简单设置。在 MySQL 客户端中执行如下命令：
 
 {{< copyable "sql" >}}
@@ -130,7 +133,7 @@ db-driver=mysql
 set global tidb_disable_txn_auto_retry = off;
 ```
 
-然后退出客户端。TiDB 使用乐观事务模型，当发现并发冲突时，会回滚事务。将 `tidb_disable_txn_auto_retry` 设置为 `off` 会开启事务冲突后的自动重试机制，可以尽可能避免事务冲突报错导致 Sysbench 程序退出的问题。
+然后退出客户端。
 
 重新启动 MySQL 客户端执行以下 SQL 语句，创建数据库 `sbtest`：
 
@@ -140,9 +143,9 @@ set global tidb_disable_txn_auto_retry = off;
 create database sbtest;
 ```
 
-调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。该方式对于 TiDB 需要花费更多的导入时间。用户可以通过调整顺序来加速数据的导入。
+调整 Sysbench 脚本创建索引的顺序。Sysbench 按照“建表->插入数据->创建索引”的顺序导入数据。对于 TiDB 而言，该方式会花费更多的导入时间。你可以通过调整顺序来加速数据的导入。
 
-假设用户使用的 [Sysbench](https://github.com/akopytov/sysbench/tree/1.0.14) 版本。我们可以通过以下两种方式来修改。
+假设使用的 Sysbench 版本为 [1.0.14](https://github.com/akopytov/sysbench/tree/1.0.14)，可以通过以下两种方式来修改：
 
 1. 直接下载为 TiDB 修改好的 [oltp_common.lua](https://raw.githubusercontent.com/pingcap/tidb-bench/master/sysbench/sysbench-patch/oltp_common.lua) 文件，覆盖 `/usr/share/sysbench/oltp_common.lua` 文件。
 2. 将 `/usr/share/sysbench/oltp_common.lua` 的第 [235](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L235) 行到第 [240](https://github.com/akopytov/sysbench/blob/1.0.14/src/lua/oltp_common.lua#L240) 行移动到第 198 行以后。

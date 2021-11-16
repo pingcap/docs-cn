@@ -1,6 +1,6 @@
 ---
 title: HAProxy 在 TiDB 中的最佳实践
-aliases: ['/docs-cn/stable/reference/best-practices/haproxy/']
+aliases: ['/docs-cn/stable/best-practices/haproxy-best-practices/','/docs-cn/v4.0/best-practices/haproxy-best-practices/','/docs-cn/stable/reference/best-practices/haproxy/']
 ---
 
 # HAProxy 在 TiDB 中的最佳实践

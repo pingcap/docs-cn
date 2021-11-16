@@ -1,6 +1,7 @@
 ---
 title: SHOW BUILTINS
 summary: TiDB 数据库中 SHOW BUILTINS 的使用概况。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-builtins/','/docs-cn/v4.0/sql-statements/sql-statement-show-builtins/']
 ---
 
 # SHOW BUILTINS
@@ -299,4 +300,4 @@ SHOW BUILTINS;
 
 ## MySQL 兼容性
 
-`SHOW BUILTINS` 是 TiDB 新增语法，MySQL 中无此语法。
+该语句是 TiDB 对 MySQL 语法的扩展。

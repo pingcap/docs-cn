@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.1.1 Release Notes
-aliases: ['/docs-cn/stable/releases/3.1.1/']
+aliases: ['/docs-cn/stable/releases/release-3.1.1/','/docs-cn/v4.0/releases/release-3.1.1/','/docs-cn/stable/releases/3.1.1/']
 ---
 
 # TiDB 3.1.1 Release Notes

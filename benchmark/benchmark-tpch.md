@@ -1,6 +1,6 @@
 ---
 title: TiDB TPC-H 50G 性能测试报告
-aliases: ['/docs-cn/stable/benchmark/tpch/']
+aliases: ['/docs-cn/stable/benchmark/benchmark-tpch/','/docs-cn/v4.0/benchmark/benchmark-tpch/','/docs-cn/stable/benchmark/tpch/']
 ---
 
 # TiDB TPC-H 50G 性能测试报告

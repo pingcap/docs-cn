@@ -1,7 +1,7 @@
 ---
 title: Placement Rules 使用文档
 summary: 如何配置 Placement Rules
-aliases: ['/docs-cn/stable/how-to/configure/placement-rules/']
+aliases: ['/docs-cn/stable/configure-placement-rules/','/docs-cn/v4.0/configure-placement-rules/','/docs-cn/stable/how-to/configure/placement-rules/']
 ---
 
 # Placement Rules 使用文档
@@ -215,7 +215,7 @@ pd-ctl config placement-rules load --group=pd --out=rule.txt
 
 ### 使用 tidb-ctl 查询表相关的 key range
 
-若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md) 来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
+若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md)来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
 
 {{< copyable "shell-regular" >}}
 

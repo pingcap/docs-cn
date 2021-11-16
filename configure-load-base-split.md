@@ -1,6 +1,7 @@
 ---
 title: Load Base Split
 summary: 介绍 Load Base Split 功能。
+aliases: ['/docs-cn/stable/configure-load-base-split/','/docs-cn/v4.0/configure-load-base-split/']
 ---
 
 # Load Base Split 
@@ -68,6 +69,6 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
     curl "http://ip:status_port/config"
     ```
 
-> **注意**
+> **注意：**
 >
 > 从 v4.0.0-rc.2 起可以使用 SQL 语句来修改和查看配置。

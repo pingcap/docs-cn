@@ -1,7 +1,7 @@
 ---
 title: PREPARE
 summary: TiDB 数据库中 PREPARE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/prepare/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-prepare/','/docs-cn/v4.0/sql-statements/sql-statement-prepare/','/docs-cn/stable/reference/sql/statements/prepare/','/zh/stable/reference/sql/statements/prepare/']
 ---
 
 # PREPARE
@@ -10,13 +10,14 @@ aliases: ['/docs-cn/stable/reference/sql/statements/prepare/']
 
 ## 语法图
 
-**PreparedStmt:**
+```ebnf+diagram
+PreparedStmt ::=
+    'PREPARE' Identifier 'FROM' PrepareSQL
 
-![PreparedStmt](/media/sqlgram/PreparedStmt.png)
-
-**PrepareSQL:**
-
-![PrepareSQL](/media/sqlgram/PrepareSQL.png)
+PrepareSQL ::=
+    stringLit
+|   UserVariable
+```
 
 ## 示例
 
@@ -67,7 +68,7 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## MySQL 兼容性
 
-`PREPARE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`PREPARE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

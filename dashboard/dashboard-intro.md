@@ -1,12 +1,9 @@
 ---
 title: TiDB Dashboard 介绍
+aliases: ['/docs-cn/stable/dashboard/dashboard-intro/','/docs-cn/v4.0/dashboard/dashboard-intro/']
 ---
 
 # TiDB Dashboard 介绍
-
-> **注意：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
 
 TiDB Dashboard 是 TiDB 自 4.0 版本起提供的图形化界面，可用于监控及诊断 TiDB 集群。TiDB Dashboard 内置于 TiDB 的 PD 组件中，无需独立部署。
 

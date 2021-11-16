@@ -1,6 +1,6 @@
 ---
 title: TiDB 3.0.4 Release Notes
-aliases: ['/docs-cn/stable/releases/3.0.4/']
+aliases: ['/docs-cn/stable/releases/release-3.0.4/','/docs-cn/v4.0/releases/release-3.0.4/','/docs-cn/stable/releases/3.0.4/','/docs-cn/v4.0/releases/3.0.4/']
 ---
 
 # TiDB 3.0.4 Release Notes
@@ -35,6 +35,7 @@ TiDB Ansible 版本：3.0.4
 - 社区贡献者
 
     感谢以下社区贡献者参与本次发版：
+
     - [sduzh](https://github.com/sduzh)
     - [lizhenda](https://github.com/lizhenda)
 

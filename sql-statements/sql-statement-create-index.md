@@ -1,7 +1,7 @@
 ---
 title: CREATE INDEX
 summary: CREATE INDEX 在 TiDB 中的使用概况
-aliases: ['/docs-cn/stable/reference/sql/statements/create-index/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-create-index/','/docs-cn/v4.0/sql-statements/sql-statement-create-index/','/docs-cn/stable/reference/sql/statements/create-index/']
 ---
 
 # CREATE INDEX
@@ -10,65 +10,58 @@ aliases: ['/docs-cn/stable/reference/sql/statements/create-index/']
 
 ## 语法图
 
-**CreateIndexStmt:**
+```ebnf+diagram
+CreateIndexStmt ::=
+    'CREATE' IndexKeyTypeOpt 'INDEX' IfNotExists Identifier IndexTypeOpt 'ON' TableName '(' IndexPartSpecificationList ')' IndexOptionList IndexLockAndAlgorithmOpt
 
-![CreateIndexStmt](/media/sqlgram/CreateIndexStmt.png)
+IndexKeyTypeOpt ::=
+    ( 'UNIQUE' | 'SPATIAL' | 'FULLTEXT' )?
 
-**IndexKeyTypeOpt:**
+IfNotExists ::=
+    ( 'IF' 'NOT' 'EXISTS' )?
 
-![IndexKeyTypeOpt](/media/sqlgram/IndexKeyTypeOpt.png)
+IndexTypeOpt ::=
+    IndexType?
 
-**IfNotExists:**
+IndexPartSpecificationList ::=
+    IndexPartSpecification ( ',' IndexPartSpecification )*
 
-![IfNotExists](/media/sqlgram/IfNotExists.png)
+IndexOptionList ::=
+    IndexOption*
 
-**IndexTypeOpt:**
+IndexLockAndAlgorithmOpt ::=
+    ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
 
-![IndexTypeOpt](/media/sqlgram/IndexTypeOpt.png)
+IndexType ::=
+    ( 'USING' | 'TYPE' ) IndexTypeName
 
-**IndexPartSpecificationList:**
+IndexPartSpecification ::=
+    ( ColumnName OptFieldLen | '(' Expression ')' ) Order
 
-![IndexPartSpecificationList](/media/sqlgram/IndexPartSpecificationList.png)
+IndexOption ::=
+    'KEY_BLOCK_SIZE' '='? LengthNum
+|   IndexType
+|   'WITH' 'PARSER' Identifier
+|   'COMMENT' stringLit
+|   IndexInvisible
 
-**IndexOptionList:**
+IndexTypeName ::=
+    'BTREE'
+|   'HASH'
+|   'RTREE'
 
-![IndexOptionList](/media/sqlgram/IndexOptionList.png)
+ColumnName ::=
+    Identifier ( '.' Identifier ( '.' Identifier )? )?
 
-**IndexLockAndAlgorithmOpt:**
+OptFieldLen ::=
+    FieldLen?
 
-![IndexLockAndAlgorithmOpt](/media/sqlgram/IndexLockAndAlgorithmOpt.png)
+IndexNameList ::=
+    ( Identifier | 'PRIMARY' )? ( ',' ( Identifier | 'PRIMARY' ) )*
 
-**IndexType:**
-
-![IndexType](/media/sqlgram/IndexType.png)
-
-**IndexPartSpecification:**
-
-![IndexPartSpecification](/media/sqlgram/IndexPartSpecification.png)
-
-**IndexOption:**
-
-![IndexOption](/media/sqlgram/IndexOption.png)
-
-**IndexTypeName:**
-
-![IndexTypeName](/media/sqlgram/IndexTypeName.png)
-
-**ColumnName:**
-
-![ColumnName](/media/sqlgram/ColumnName.png)
-
-**OptFieldLen:**
-
-![OptFieldLen](/media/sqlgram/OptFieldLen.png)
-
-**IndexNameList:**
-
-![IndexNameList](/media/sqlgram/IndexNameList.png)
-
-**KeyOrIndex:**
-
-![KeyOrIndex](/media/sqlgram/KeyOrIndex.png)
+KeyOrIndex ::=
+    'Key' | 'Index'
+```
 
 ## 示例
 
@@ -192,9 +185,9 @@ CREATE INDEX idx ON t ((lower(name)));
 
 表达式索引的语法和限制与 MySQL 相同，是通过将索引建立在隐藏的虚拟生成列 (generated virtual column) 上来实现的。因此所支持的表达式继承了虚拟生成列的所有[限制](/generated-columns.md#生成列的局限性)。目前，建立了索引的表达式只有在 `FIELD` 子句、`WHERE` 子句和 `ORDER BY` 子句中时，优化器才能使用表达式索引。后续将支持 `GROUP BY` 子句。
 
-## 相关 session 变量
+## 相关系统变量
 
-和 `CREATE INDEX` 语句相关的全局变量有 `tidb_ddl_reorg_worker_cnt`，`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
+和 `CREATE INDEX` 语句相关的系统变量有 `tidb_ddl_reorg_worker_cnt` 、`tidb_ddl_reorg_batch_size` 和 `tidb_ddl_reorg_priority`，具体可以参考[系统变量](/system-variables.md#tidb_ddl_reorg_worker_cnt)。
 
 ## MySQL 兼容性
 

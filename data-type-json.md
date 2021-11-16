@@ -1,6 +1,6 @@
 ---
 title: JSON 类型
-aliases: ['/docs-cn/stable/reference/sql/data-types/json/']
+aliases: ['/docs-cn/stable/data-type-json/','/docs-cn/v4.0/data-type-json/','/docs-cn/stable/reference/sql/data-types/json/']
 ---
 
 # JSON 类型
@@ -29,4 +29,4 @@ INSERT INTO city (id,detail) VALUES (1, '{"name": "Beijing", "population": 100}'
 SELECT id FROM city WHERE population >= 100;
 ```
 
-有关 JSON 的更多信息，可以参考[JSON 函数](/functions-and-operators/json-functions.md)和[生成列](/generated-columns.md)。
+有关 JSON 的更多信息，可以参考 [JSON 函数](/functions-and-operators/json-functions.md)和[生成列](/generated-columns.md)。

@@ -1,7 +1,7 @@
 ---
 title: LOAD DATA
 summary: TiDB 数据库中 LOAD DATA 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/load-data/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-load-data/','/docs-cn/v4.0/sql-statements/sql-statement-load-data/','/docs-cn/stable/reference/sql/statements/load-data/']
 ---
 
 # LOAD DATA
@@ -10,9 +10,10 @@ aliases: ['/docs-cn/stable/reference/sql/statements/load-data/']
 
 ## 语法图
 
-**LoadDataStmt:**
-
-![LoadDataStmt](/media/sqlgram/LoadDataStmt.png)
+```ebnf+diagram
+LoadDataStmt ::=
+    'LOAD' 'DATA' LocalOpt 'INFILE' stringLit DuplicateOpt 'INTO' 'TABLE' TableName CharsetOpt Fields Lines IgnoreLines ColumnNameOrUserVarListOptWithBrackets LoadDataSetSpecOpt
+```
 
 ## 参数说明
 
@@ -27,8 +28,7 @@ aliases: ['/docs-cn/stable/reference/sql/statements/load-data/']
 "alice","33","street 1"\r\n
 ```
 
-如果想分别提取 `bob`、`20`、`street 1`，可以指定数据的分隔符号为 `','`，数据的包围符号为 `'\"'`。
-可以写成：
+如果想分别提取 `bob`、`20`、`street 1`，可以指定数据的分隔符号为 `','`，数据的包围符号为 `'\"'`。可以写成：
 
 ```sql
 FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\r\n'
@@ -101,7 +101,7 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 > **注意：**
 >
-> 这种拆分事务提交的方式是以打破事务的原子性和隔离性为代价的，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议在生产环境中使用。
+> 这种拆分事务提交的方式是以打破事务的原子性和隔离性为代价的，使用该特性时，使用者需要保证没有其他对正在处理的表的**任何**操作，并且在出现报错时，需要及时**人工介入，检查数据的一致性和完整性**。因此，不建议对读写频繁的表使用 `LOAD DATA` 语句。
 
 ## 另请参阅
 

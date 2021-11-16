@@ -1,6 +1,7 @@
 ---
 title: 术语表
 summary: 了解 TiDB 相关术语。
+aliases: ['/docs-cn/stable/glossary/','/docs-cn/v4.0/glossary/']
 ---
 
 # 术语表
@@ -23,6 +24,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 它们分别对应 [Peer](#regionpeerraft-group) 的三种角色。其中 Leader 负责响应客户端的读写请求；Follower 被动地从 Leader 同步数据，当 Leader 失效时会进行选举产生新的 Leader；Learner 是一种特殊的角色，它只参与同步 raft log 而不参与投票，在目前的实现中只短暂存在于添加副本的中间步骤。
 
 ## O
+
+### Old value
+
+Old value 特指在 TiCDC 输出的增量变更日志中的“原始值”。可以通过配置来指定 TiCDC 输出的增量变更日志是否包含“原始值”。
 
 ### Operator
 

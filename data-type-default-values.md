@@ -1,6 +1,6 @@
 ---
 title: 数据类型的默认值
-aliases: ['/docs-cn/stable/reference/sql/data-types/default-values/']
+aliases: ['/docs-cn/stable/data-type-default-values/','/docs-cn/v4.0/data-type-default-values/','/docs-cn/stable/reference/sql/data-types/default-values/','/docs-cn/v4.0/reference/sql/data-types/default-values/']
 ---
 
 # 数据类型的默认值
@@ -9,7 +9,7 @@ aliases: ['/docs-cn/stable/reference/sql/data-types/default-values/']
 
 `BLOB`、`TEXT` 以及 `JSON` 不可以设置默认值。
 
-如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定:
+如果一个列的定义中没有 `DEFAULT` 的设置。TiDB 按照如下的规则决定：
 
 * 如果该类型可以使用 `NULL` 作为值，那么这个列会在定义时添加隐式的默认值设置 `DEFAULT NULL`。
 * 如果该类型无法使用 `NULL` 作为值，那么这个列在定义时不会添加隐式的默认值设置。

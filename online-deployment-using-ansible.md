@@ -1,9 +1,15 @@
 ---
 title: 使用 TiDB Ansible 部署 TiDB 集群
-aliases: ['/docs-cn/stable/how-to/deploy/orchestrated/ansible/']
+aliases: ['/docs-cn/stable/online-deployment-using-ansible/','/docs-cn/v4.0/online-deployment-using-ansible/','/docs-cn/stable/how-to/deploy/orchestrated/ansible/','/zh/tidb/dev/online-deployment-using-ansible/','/docs-cn/dev/online-deployment-using-ansible/','/docs-cn/dev/how-to/deploy/orchestrated/ansible/','/zh/tidb/stable/online-deployment-using-ansible/']
 ---
 
 # 使用 TiDB Ansible 部署 TiDB 集群
+
+> **警告：**
+>
+> 对于生产环境，推荐[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。从 TiDB 4.0 版本开始，PingCAP 不再维护 TiDB Ansible 的部署方式。继续使用 TiDB Ansible 部署 TiDB 集群可能存在风险，因此不推荐该部署方式。TiUP 可直接支持之前使用 TiDB Ansible 方式部署的集群。
+>
+> 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考 [TiDB 快速上手指南](/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/deploy-test-cluster-using-docker-compose.md)。
 
 Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingcap/tidb-ansible) 是 PingCAP 基于 Ansible playbook 功能编写的集群部署工具。本文档介绍如何使用 TiDB Ansible 部署一个完整的 TiDB 集群。
 
@@ -19,12 +25,6 @@ Ansible 是一款自动化运维工具，[TiDB Ansible](https://github.com/pingc
 - [集群开启 binlog](/tidb-binlog/tidb-binlog-overview.md)
 - [清除集群数据](/maintain-tidb-using-ansible.md#清除集群数据)
 - [销毁集群](/maintain-tidb-using-ansible.md#销毁集群)
-
-> **警告：**
->
-> 对于生产环境，推荐[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。从 TiDB 4.0 版本开始，不再推荐使用 TiDB Ansible 部署 TiDB 集群，但可以使用 TiUP 直接支持之前的 Ansible 集群。
->
-> 如果只是希望测试 TiDB 或体验 TiDB 特性，可参考 [TiDB 快速上手指南](/quick-start-with-tidb.md)或者[使用 Docker Compose 在单机上快速部署 TiDB 集群](/deploy-test-cluster-using-docker-compose.md)。
 
 ## 准备机器
 

@@ -1,6 +1,6 @@
 ---
 title: 数据类型概述
-aliases: ['/docs-cn/stable/reference/sql/data-types/overview/']
+aliases: ['/docs-cn/stable/data-type-overview/','/docs-cn/v4.0/data-type-overview/','/docs-cn/stable/reference/sql/data-types/overview/']
 ---
 
 # 数据类型概述

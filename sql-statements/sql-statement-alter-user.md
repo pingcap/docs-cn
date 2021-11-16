@@ -1,7 +1,7 @@
 ---
 title: ALTER USER
 summary: TiDB 数据库中 ALTER USER 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/alter-user/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-alter-user/','/docs-cn/v4.0/sql-statements/sql-statement-alter-user/','/docs-cn/stable/reference/sql/statements/alter-user/']
 ---
 
 # ALTER USER
@@ -10,25 +10,22 @@ aliases: ['/docs-cn/stable/reference/sql/statements/alter-user/']
 
 ## 语法图
 
-**AlterUserStmt:**
+```ebnf+diagram
+AlterUserStmt ::=
+    'ALTER' 'USER' IfExists (UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions | 'USER' '(' ')' 'IDENTIFIED' 'BY' AuthString)
 
-![AlterUserStmt](/media/sqlgram/AlterUserStmt.png)
+UserSpecList ::=
+    UserSpec ( ',' UserSpec )*
 
-**UserSpecList:**
+UserSpec ::=
+    Username AuthOption
 
-![UserSpecList](/media/sqlgram/UserSpecList.png)
+Username ::=
+    StringName ('@' StringName | singleAtIdentifier)? | 'CURRENT_USER' OptionalBraces
 
-**UserSpec:**
-
-![UserSpec](/media/sqlgram/UserSpec.png)
-
-**Username:**
-
-![Username](/media/sqlgram/Username.png)
-
-**AuthOption:**
-
-![AuthOption](/media/sqlgram/AuthOption.png)
+AuthOption ::=
+    ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
+```
 
 ## 示例
 
@@ -48,7 +45,8 @@ Query OK, 1 row affected (0.01 sec)
 SHOW CREATE USER 'newuser';
 ```
 
-```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*5806E04BBEE79E1899964C6A04D68BCA69B1A879' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |
@@ -72,7 +70,8 @@ Query OK, 0 rows affected (0.02 sec)
 SHOW CREATE USER 'newuser';
 ```
 
-```+----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for newuser@%                                                                                                                                            |
 +----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'newuser'@'%' IDENTIFIED WITH 'mysql_native_password' AS '*FB8A1EA1353E8775CA836233E367FBDFCB37BE73' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |

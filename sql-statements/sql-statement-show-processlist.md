@@ -1,7 +1,7 @@
 ---
 title: SHOW [FULL] PROCESSLIST
 summary: TiDB 数据库中 SHOW [FULL] PROCESSLIST 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-processlist/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-processlist/','/docs-cn/v4.0/sql-statements/sql-statement-show-processlist/','/docs-cn/stable/reference/sql/statements/show-processlist/']
 ---
 
 # SHOW [FULL] PROCESSLIST

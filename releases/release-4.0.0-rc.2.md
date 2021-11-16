@@ -1,5 +1,6 @@
 ---
 title: TiDB 4.0 RC.2 Release Notes
+aliases: ['/docs-cn/stable/releases/release-4.0.0-rc.2/','/docs-cn/v4.0/releases/release-4.0.0-rc.2/']
 ---
 
 # TiDB 4.0 RC.2 Release Notes

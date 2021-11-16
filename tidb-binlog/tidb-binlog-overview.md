@@ -1,6 +1,6 @@
 ---
 title: TiDB Binlog 简介
-aliases: ['/docs-cn/stable/reference/tidb-binlog/overview/']
+aliases: ['/docs-cn/stable/tidb-binlog/tidb-binlog-overview/','/docs-cn/v4.0/tidb-binlog/tidb-binlog-overview/','/docs-cn/stable/reference/tidb-binlog/overview/','/docs-cn/stable/reference/tools/tidb-binlog/overview/']
 ---
 
 # TiDB Binlog 简介
@@ -14,21 +14,21 @@ TiDB Binlog 支持以下功能场景：
 
 ## TiDB Binlog 整体架构
 
-![TiDB Binlog 架构](/media/tidb_binlog_cluster_architecture.png)
+![TiDB Binlog 架构](/media/tidb-binlog-cluster-architecture.png)
 
 TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 工具：
 
 ### Pump
 
-[Pump](https://github.com/pingcap/tidb-binlog/blob/master/pump) 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
+[Pump](https://github.com/pingcap/tidb-binlog/blob/release-4.0/pump) 用于实时记录 TiDB 产生的 Binlog，并将 Binlog 按照事务的提交时间进行排序，再提供给 Drainer 进行消费。
 
 ### Drainer
 
-[Drainer](https://github.com/pingcap/tidb-binlog/tree/master/drainer) 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
+[Drainer](https://github.com/pingcap/tidb-binlog/tree/release-4.0/drainer) 从各个 Pump 中收集 Binlog 进行归并，再将 Binlog 转化成 SQL 或者指定格式的数据，最终同步到下游。
 
 ### binlogctl 工具
 
-[`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/master/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
+[`binlogctl`](https://github.com/pingcap/tidb-binlog/tree/release-4.0/binlogctl) 是一个 TiDB Binlog 配套的运维工具，具有如下功能：
 
 * 获取 TiDB 集群当前的 TSO
 * 查看 Pump/Drainer 状态
@@ -45,11 +45,13 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 ## 注意事项
 
-* 需要使用 TiDB v2.0.8-binlog、v2.1.0-rc.5 及以上版本，否则不兼容该版本的 TiDB Binlog。
+* TiDB Binlog 与 TiDB v4.0.7 版本开始引入的以下特性不兼容，无法一起使用：
 
-* Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog slave protocol 进行定制处理，参考 [binlog slave client 用户文档](/tidb-binlog/binlog-slave-client.md)。
+    - TiDB 系统变量 [tidb_enable_amend_pessimistic_txn](/system-variables.md#tidb_enable_amend_pessimistic_txn-从-v407-版本开始引入)：两个功能存在兼容性问题，一起使用会造成 TiDB Binlog 复制数据不一致的正确性问题。
 
-* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
+* Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog consumer protocol 进行定制处理，参考 [Binlog Consumer Client 用户文档](/tidb-binlog/binlog-consumer-client.md)。
+
+* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/release-4.0/proto/binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
 
     关于 `db-type` 的取值，应注意：
 

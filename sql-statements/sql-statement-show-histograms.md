@@ -1,6 +1,7 @@
 ---
 title: SHOW STATS_HISTOGRAMS
 summary: TiDB 数据库中 SHOW HISTOGRAMS 语句的简单说明。
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-histograms/','/docs-cn/v4.0/sql-statements/sql-statement-show-histograms/']
 ---
 
 # SHOW STATS_HISTOGRAMS
@@ -58,7 +59,7 @@ show stats_histograms where table_name = 't2';
 
 ## MySQL 兼容性
 
-`SHOW STATS_HISTOGRAMS` 是 TiDB 专有语法，因此不兼容 MySQL。
+该语句是 TiDB 对 MySQL 语法的扩展。
 
 ## 另请参阅
 

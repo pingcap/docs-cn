@@ -1,9 +1,13 @@
 ---
 title: 使用 TiDB Ansible 升级 TiDB
-aliases: ['/docs-cn/stable/how-to/upgrade/from-previous-version/']
+aliases: ['/docs-cn/stable/upgrade-tidb-using-ansible/','/docs-cn/v4.0/upgrade-tidb-using-ansible/','/docs-cn/stable/how-to/upgrade/from-previous-version/','/docs-cn/v4.0/how-to/upgrade/from-previous-version/','/docs-cn/stable/how-to/upgrade/rolling-updates-with-ansible/','/docs-cn/op-guide/ansible-deployment-rolling-update/','/zh/tidb/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/upgrade-tidb-using-ansible/','/docs-cn/dev/how-to/upgrade/from-previous-version/','/docs-cn/dev/how-to/upgrade/to-tidb-3.0/','/docs-cn/dev/how-to/upgrade/rolling-updates-with-ansible/','/zh/tidb/stable/upgrade-tidb-using-ansible/']
 ---
 
 # 使用 TiDB Ansible 升级 TiDB
+
+> **警告：**
+>
+> 对于生产环境，推荐[使用 TiUP 升级 TiDB 集群](/upgrade-tidb-using-tiup.md)。自 v4.0 版本起，PingCAP 不再提供 TiDB Ansible 的升级支持（废弃）。继续使用 TiDB Ansible 升级 TiDB 集群可能存在风险，因此不推荐该升级方式。
 
 本文档适用于从 TiDB 2.0、2.1、3.0、3.1 版本升级至 TiDB 4.0 版本以及 TiDB 4.0 的低版本升级至 TiDB 4.0 高版本。目前，TiDB 4.0 版本兼容 [TiDB Binlog Cluster 版本](/tidb-binlog/tidb-binlog-overview.md)。
 

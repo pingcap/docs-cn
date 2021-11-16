@@ -1,7 +1,7 @@
 ---
 title: SHOW CREATE USER
 summary: TiDB 数据库中 SHOW CREATE USER 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-create-user/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-create-user/','/docs-cn/v4.0/sql-statements/sql-statement-show-create-user/','/docs-cn/stable/reference/sql/statements/show-create-user/']
 ---
 
 # SHOW CREATE USER
@@ -26,7 +26,8 @@ aliases: ['/docs-cn/stable/reference/sql/statements/show-create-user/']
 SHOW CREATE USER 'root';
 ```
 
-```+--------------------------------------------------------------------------------------------------------------------------+
+```
++--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER for root@%                                                                                                   |
 +--------------------------------------------------------------------------------------------------------------------------+
 | CREATE USER 'root'@'%' IDENTIFIED WITH 'mysql_native_password' AS '' REQUIRE NONE PASSWORD EXPIRE DEFAULT ACCOUNT UNLOCK |

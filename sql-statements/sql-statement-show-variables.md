@@ -1,7 +1,7 @@
 ---
 title: SHOW [GLOBAL|SESSION] VARIABLES
 summary: TiDB 数据库中 SHOW [GLOBAL|SESSION] VARIABLES 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/show-variables/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-show-variables/','/docs-cn/v4.0/sql-statements/sql-statement-show-variables/','/docs-cn/stable/reference/sql/statements/show-variables/']
 ---
 
 # SHOW [GLOBAL|SESSION] VARIABLES
@@ -69,8 +69,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_enable_radix_join              | 0                   |
 | tidb_enable_slow_log                | 1                   |
 | tidb_enable_stmt_summary            | 1                   |
-| tidb_enable_streaming               | 0                   |
-| tidb_enable_table_partition         | on                  |
+| tidb_enable_table_partition          | on                  |
 | tidb_enable_vectorized_expression   | 1                   |
 | tidb_enable_window_function         | 1                   |
 | tidb_evolve_plan_baselines          | off                 |
@@ -136,7 +135,7 @@ SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_stmt_summary_history_size      | 24                  |
 | tidb_stmt_summary_internal_query    | 0                   |
 | tidb_stmt_summary_max_sql_length    | 4096                |
-| tidb_stmt_summary_max_stmt_count    | 200                 |
+| tidb_stmt_summary_max_stmt_count    | 3000                |
 | tidb_stmt_summary_refresh_interval  | 1800                |
 | tidb_store_limit                    | 0                   |
 | tidb_txn_mode                       |                     |
@@ -165,7 +164,7 @@ SHOW GLOBAL VARIABLES LIKE 'time_zone%';
 
 ## MySQL 兼容性
 
-`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`SHOW [GLOBAL|SESSION] VARIABLES` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

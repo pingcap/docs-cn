@@ -1,10 +1,43 @@
 ---
 title: 分区裁剪
+summary: 了解 TiDB 分区裁剪的使用场景。
+aliases: ['/docs-cn/stable/partition-pruning/','/docs-cn/v4.0/partition-pruning/']
 ---
 
 # 分区裁剪
 
 分区裁剪是只有当目标表为分区表时，才可以进行的一种优化方式。分区裁剪通过分析查询语句中的过滤条件，只选择可能满足条件的分区，不扫描匹配不上的分区，进而显著地减少计算的数据量。
+
+例如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t1 (
+ id INT NOT NULL PRIMARY KEY,
+ pad VARCHAR(100)
+)
+PARTITION BY RANGE COLUMNS(id) (
+ PARTITION p0 VALUES LESS THAN (100),
+ PARTITION p1 VALUES LESS THAN (200),
+ PARTITION p2 VALUES LESS THAN (MAXVALUE)
+);
+INSERT INTO t1 VALUES (1, 'test1'),(101, 'test2'), (201, 'test3');
+EXPLAIN SELECT * FROM t1 WHERE id BETWEEN 80 AND 120;
+```
+
+```sql
++----------------------------+---------+-----------+------------------------+------------------------------------------------+
+| id                         | estRows | task      | access object          | operator info                                  |
++----------------------------+---------+-----------+------------------------+------------------------------------------------+
+| PartitionUnion_8           | 80.00   | root      |                        |                                                |
+| ├─TableReader_10           | 40.00   | root      |                        | data:TableRangeScan_9                          |
+| │ └─TableRangeScan_9       | 40.00   | cop[tikv] | table:t1, partition:p0 | range:[80,120], keep order:false, stats:pseudo |
+| └─TableReader_12           | 40.00   | root      |                        | data:TableRangeScan_11                         |
+|   └─TableRangeScan_11      | 40.00   | cop[tikv] | table:t1, partition:p1 | range:[80,120], keep order:false, stats:pseudo |
++----------------------------+---------+-----------+------------------------+------------------------------------------------+
+5 rows in set (0.00 sec)
+```
 
 ## 分区裁剪的使用场景
 
@@ -193,9 +226,9 @@ explain select * from t where x between 7 and 14;
 
 ##### 场景三
 
-分区表达式为 `fn(col)` 的简单形式，查询条件是 `> < = >= <=` ，且 `fn` 是单调函数，可以使用分区裁剪。
+分区表达式为 `fn(col)` 的简单形式，查询条件是 `>` `<` `=` `>=` `<=` 之一，且 `fn` 是单调函数，可以使用分区裁剪。
 
-理论上所有满足单调条件（严格或者非严格）的函数都是可以支持分区裁剪。实际上，目前 TiDB 已经支持的单调函数只有：
+关于 `fn` 函数，对于任意 `x` `y`，如果 `x > y`，则 `fn(x) > fn(y)`，那么这种是严格递增的单调函数。非严格递增的单调函数也可以符合分区裁剪要求，只要函数 `fn` 满足：对于任意 `x` `y`，如果 `x > y`，则 `fn(x) >= fn(y)`。理论上，所有满足单调条件（严格或者非严格）的函数都支持分区裁剪。目前，TiDB 支持的单调函数如下：
 
 ```sql
 unix_timestamp

@@ -1,6 +1,6 @@
 ---
 title: TiUP 简介
-aliases: ['/docs-cn/stable/reference/tools/tiup/overview/']
+aliases: ['/docs-cn/stable/tiup/tiup-overview/','/docs-cn/v4.0/tiup/tiup-overview/','/docs-cn/stable/reference/tools/tiup/overview/']
 ---
 
 # TiUP 简介
@@ -116,7 +116,6 @@ Use "tiup [command] --help" for more information about a command.
     - client：连接本机的集群
     - cluster：部署用于生产环境的集群
     - bench：对数据库进行压力测试
-    - doc：打开在线文档
 
 > **注意：**
 >

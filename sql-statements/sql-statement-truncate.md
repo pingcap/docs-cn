@@ -1,7 +1,7 @@
 ---
 title: TRUNCATE
 summary: TiDB 数据库中 TRUNCATE 的使用概况。
-aliases: ['/docs-cn/stable/reference/sql/statements/truncate/']
+aliases: ['/docs-cn/stable/sql-statements/sql-statement-truncate/','/docs-cn/v4.0/sql-statements/sql-statement-truncate/','/docs-cn/stable/reference/sql/statements/truncate/']
 ---
 
 # TRUNCATE
@@ -88,7 +88,7 @@ Empty set (0.00 sec)
 
 {{< copyable "sql" >}}
 
-```sqlS
+```sql
 INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
 ```
 
@@ -109,7 +109,7 @@ Query OK, 0 rows affected (0.11 sec)
 
 ## MySQL 兼容性
 
-`TRUNCATE` 语句与 MySQL 完全兼容。如有任何兼容性差异，请在 GitHub 上提交 [issue](/report-issue.md)。
+`TRUNCATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
 
 ## 另请参阅
 

@@ -1,6 +1,6 @@
 ---
 title: 操作符
-aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/operators/']
+aliases: ['/docs-cn/stable/functions-and-operators/operators/','/docs-cn/v4.0/functions-and-operators/operators/','/docs-cn/stable/reference/sql/functions-and-operators/operators/']
 ---
 
 # 操作符
@@ -16,7 +16,7 @@ aliases: ['/docs-cn/stable/reference/sql/functions-and-operators/operators/']
 | [~](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-invert) | 位非 |
 | [`\|`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-or) | 位或 |
 | [`^`](https://dev.mysql.com/doc/refman/5.7/en/bit-functions.html#operator_bitwise-xor) | 按位异或 |
-| [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/control-flow-functions.html#operator_case) | case 操作符 |
+| [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#operator_case) | case 操作符 |
 | [`DIV`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_div) | 整数除 |
 | [`/`](https://dev.mysql.com/doc/refman/5.7/en/arithmetic-functions.html#operator_divide) | 除法 |
 | [`=`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal) | 相等比较 |
@@ -110,7 +110,7 @@ OR, ||
 | [`AND`, &&](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_and) | 逻辑与 |
 | [`NOT`, `!`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_not) | 逻辑非 |
 | [`\|\|`, `OR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_or) | 逻辑或 |
-| [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑亦或 |
+| [`XOR`](https://dev.mysql.com/doc/refman/5.7/en/logical-operators.html#operator_xor) | 逻辑异或 |
 
 详情参见 [这里](https://dev.mysql.com/doc/refman/5.7/en/group-by-handling.html).
 

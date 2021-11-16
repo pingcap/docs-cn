@@ -1,6 +1,6 @@
 ---
 title: TiDB 生态工具功能概览
-aliases: ['/docs-cn/stable/reference/tools/user-guide/']
+aliases: ['/docs-cn/stable/ecosystem-tool-user-guide/','/docs-cn/v4.0/ecosystem-tool-user-guide/','/docs-cn/stable/reference/tools/user-guide/','/docs-cn/stable/how-to/migrate/incrementally-from-mysql/']
 ---
 
 # TiDB 生态工具功能概览
@@ -18,18 +18,23 @@ aliases: ['/docs-cn/stable/reference/tools/user-guide/']
 - 适用 TiDB 版本：所有版本
 - Kubernetes 支持：尚未支持
 
+> **注意：**
+>
+> PingCAP 之前维护的 Mydumper 工具 fork 自 [Mydumper project](https://github.com/maxbube/mydumper)，针对 TiDB 的特性进行了优化。Mydumper 已经被 [Dumpling](/dumpling-overview.md) 工具取代，并使用 Go 语言编写，支持更多针对 TiDB 特性的优化。建议切换到 Dumpling。
+
 ## 全量导入
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 是一个用于将全量数据导入到 TiDB 集群的工具。
 
-使用 TiDB Lightning 导入数据到 TiDB 时，有两种模式：
+使用 TiDB Lightning 导入数据到 TiDB 时，有三种模式：
 
-- `importer` 模式：以 TiKV-importer 作为后端，这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
-- `tidb` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `importer` 模式的导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
+- `local` 模式：TiDB Lightning 将数据解析为有序的键值对，并直接将其导入 TiKV。这种模式一般用于导入大量的数据（TB 级别）到新集群，但在数据导入过程中集群无法提供正常的服务。
+- `importer` 模式：和 `local` 模式类似，但是需要部署额外的组件 `tikv-importer` 协助完成键值对的导入。对于 4.0 以上的目标集群，请优先使用 `local` 模式进行导入。
+- `tidb` 模式：以 TiDB/MySQL 作为后端，这种模式相比 `local` 和 `importer` 模式的导入速度较慢，但是可以在线导入，同时也支持将数据导入到 MySQL。
 
 基本信息：
 
-- Lightning 的输入：
+- TiDB Lightning 的输入：
     - Dumpling 输出文件
     - 其他格式兼容的 CSV 文件
 - 适用 TiDB 版本：v2.1 及以上
@@ -37,7 +42,7 @@ aliases: ['/docs-cn/stable/reference/tools/user-guide/']
 
 > **注意：**
 >
-> 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-tidb-backend.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
+> 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-backends.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
 
 ## 备份和恢复
 
@@ -62,7 +67,7 @@ aliases: ['/docs-cn/stable/reference/tools/user-guide/']
 
 ## 数据迁入
 
-[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
+[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据和增量数据的迁移。
 
 基本信息：
 

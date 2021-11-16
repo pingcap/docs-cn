@@ -1,13 +1,13 @@
 ---
 title: 使用 TiUP 升级 TiDB
-aliases: ['/docs-cn/stable/how-to/upgrade/using-tiup/']
+aliases: ['/docs-cn/stable/upgrade-tidb-using-tiup/','/docs-cn/v4.0/upgrade-tidb-using-tiup/','/docs-cn/stable/how-to/upgrade/using-tiup/','/docs-cn/v4.0/how-to/upgrade/using-tiup/']
 ---
 
 # 使用 TiUP 升级 TiDB
 
 本文档适用于使用 TiUP 从 TiDB 3.0 或 3.1 版本升级至 TiDB 4.0 版本，以及从 4.0 版本升级至后续版本。
 
-如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，并完成升级。
+如果原集群使用 TiDB Ansible 部署，TiUP 也支持将 TiDB Ansible 配置导入，参考 [`tiup cluster import`](/tiup/tiup-component-cluster-import.md)，并完成升级。
 
 ## 1. 升级兼容性说明
 
@@ -15,18 +15,19 @@ aliases: ['/docs-cn/stable/how-to/upgrade/using-tiup/']
 - 3.0 之前的版本，需要先通过 TiDB Ansible 升级到 3.0 版本，然后按照本文档的说明，使用 TiUP 将 TiDB Ansible 配置导入，再升级到 4.0 版本。
 - TiDB Ansible 配置导入到 TiUP 中管理后，不能再通过 TiDB Ansible 对集群进行操作，否则可能因元信息不一致造成冲突。
 - 对于满足以下情况之一的 TiDB Ansible 部署的集群，暂不支持导入：
-    - 启用了 `TLS` 加密功能的集群
+    - 启用了 TLS 加密功能的集群
     - 纯 KV 集群（没有 TiDB 实例的集群）
-    - 启用了 `Kafka` 的集群
-    - 启用了 `Spark` 的集群
-    - 启用了 `Lightning` / `Importer` 的集群
+    - 启用了 Kafka 的集群
+    - 启用了 Spark 的集群
+    - 启用了 TiDB Lightning / TiKV Importer 的集群
     - 仍使用老版本 `'push'` 的方式收集监控指标（从 3.0 默认为 `'pull'` 模式，如果没有特意调整过则可以支持）
-    - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）
+    - 在 `inventory.ini` 配置文件中单独为机器的 node_exporter / blackbox_exporter 通过 `node_exporter_port` / `blackbox_exporter_port` 设置了非默认端口（在 `group_vars` 目录中统一配置的可以兼容）或者单独为某一台机器的 node_exporter / blackbox_exporter 设置了和其他机器的 node_exporter / blackbox_exporter 不同的 `deploy_dir`
+- 如果使用 TiDB Ansible 部署的集群中有部分节点未部署监控，应当先使用 TiDB Ansible 在 `inventory.ini` 文件的 `monitored_servers` 分组中补充对应节点的信息，并通过 `deploy.yaml` playbook 将补充的监控组件部署完整。否则在数据导入 TiUP 后进行其他运维操作时，可能会因监控组件缺失而出错。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 从 2.0.6 之前的版本升级到 4.0 版本之前，需要确认集群中是否存在正在运行中的 DDL 操作，特别是耗时的 `Add Index` 操作，等 DDL 操作完成后再执行升级操作
 - 2.1 及之后版本启用了并行 DDL，早于 2.0.1 版本的集群，无法滚动升级到 4.0 版本，可以选择下面两种方案：
-    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本
-    - 先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本
+    - 停机升级，直接从早于 2.0.1 的 TiDB 版本升级到 4.0 版本，然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
+    - 滚动升级，先滚动升级到 2.0.1 或者之后的 2.0.x 版本，再滚动升级到 4.0 版本。然后使用 TiUP Cluster 提供的 `tiup cluster import` 命令导入配置并使用 TiUP 作为管理工具。
 
 > **注意：**
 >
@@ -82,6 +83,7 @@ tiup update cluster
 
 > **注意：**
 >
+> + 目前 TiUP 仅支持 `systemd` 的进程管理模式。如果此前使用 TiDB Ansible 部署时选择了 `supervise`，需要先按[使用 TiDB Ansible 部署 TiDB 集群](/online-deployment-using-ansible.md#如何调整进程监管方式从-supervise-到-systemd)迁移到 `systemd`。
 > + 如果原集群已经是 TiUP 部署，可以跳过此步骤。
 > + 目前默认识别 `inventory.ini` 配置文件，如果你的配置为其他名称，请指定。
 > + 你需要确保当前集群的状态与 `inventory.ini` 中的拓扑一致，并确保集群的组件运行正常，否则导入后会导致集群元信息异常。
@@ -129,7 +131,7 @@ tiup update cluster
 > - 原集群没有修改过配置参数。
 > - 升级后希望使用 `4.0` 默认参数。
 
-1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/config`，确认配置模板中修改过的参数。
+1. 进入 TiDB Ansible 的备份目录 `~/.tiup/storage/cluster/clusters/{cluster_name}/ansible-imported-configs`，确认配置模板中修改过的参数。
 
 2. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -139,13 +141,25 @@ tiup update cluster
     tiup cluster edit-config <cluster-name>
     ```
 
-3. 参考 [topology](https://github.com/pingcap/tiup/blob/master/examples/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
+3. 参考 [topology](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml) 配置模板的格式，将原集群修改过的参数填到拓扑文件的 `server_configs` 下面。
 
 修改完成后 `wq` 保存并退出编辑模式，输入 `Y` 确认变更。
 
 > **注意：**
 >
-> 升级到 4.0 版本前，请确认 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
+> 升级到 4.0 版本前，请确认已在 3.0 修改的参数在 4.0 版本中是兼容的，可参考[配置模板](/tikv-configuration-file.md)。
+>
+> TiUP 版本 <= v1.0.8 可能无法正确获取 TiFlash 的数据目录，需要确认 `data_dir` 与 TiFlash 配置的 `path` 值是否一致。若不一致需要进行如下操作把 TiFlash 的 `data_dir` 改成与 `path` 一致的值：
+>
+>    1. 执行 `tiup cluster edit-config <cluster-name>` 命令修改配置文件。
+>
+>    2. 修改对应 TiFlash 的 `data_dir` 配置：
+>
+>        ```yaml
+>          tiflash_servers:
+>            - host: 10.0.1.14
+>              data_dir: /data/tiflash-11315 # 修改为 TiFlash 配置文件的 `path` 值
+>        ```
 
 ## 4. 滚动升级 TiDB 集群
 
@@ -159,12 +173,12 @@ tiup update cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 v4.0.0 版本为例：
+以升级到 v4.0.15 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v4.0.0
+tiup cluster upgrade <cluster-name> v4.0.15
 ```
 
 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟，超过后会直接停止实例。
@@ -186,7 +200,7 @@ tiup cluster display <cluster-name>
 ```
 Starting /home/tidblk/.tiup/components/cluster/v1.0.0/cluster display <cluster-name>
 TiDB Cluster: <cluster-name>
-TiDB Version: v4.0.0
+TiDB Version: v4.0.15
 ```
 
 > **注意：**
@@ -208,12 +222,12 @@ TiDB Version: v4.0.0
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster upgrade <cluster-name> v4.0.0 --force
+tiup cluster upgrade <cluster-name> v4.0.15 --force
 ```
 
 ### 5.3 升级完成后，如何更新 pd-ctl 等周边工具版本
 
-目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.0`，下载地址如下：
+目前 TiUP 没有对周边工具的版本进行管理更新，如需下载最新版本的工具包，直接下载 TiDB 安装包即可，将 `{version}` 替换为对应的版本如 `v4.0.15`，下载地址如下：
 
 {{< copyable "" >}}
 
