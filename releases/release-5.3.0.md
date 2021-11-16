@@ -173,7 +173,7 @@ TiDB 版本：5.3.0
 
     TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。该功能无需特别的配置，在不改变用户使用习惯的同时，极大提高了用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
 
-    在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）。此外在 MySQL 分表数据聚合迁移到 TiDB 的场景中，MySQL 分表之间可能有冲突数据（主键/唯一键索引相同的数据），Lightning 也支持了数据导入过程中检查冲突数据的功能，用户可以使用该功能发现冲突数据，然后按照业务规则进行处理，冲突检测使用文档（待更新）。
+    在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）。
 
     [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)
 
@@ -186,18 +186,6 @@ TiDB 版本：5.3.0
 - **TiDB Lightning 支持导入 GBK 编码的文件**
 
     [用户文档](/tidb-lightning/tidb-lightning-configuration.md)
-
-- **TiDB Lightning 支持忽略部分错误行（实验特性）**
-
-    从 TiDB 5.3.0 开始，你可以配置 TiDB Lightning 以跳过诸如无效类型转换、唯一键冲突等错误，让导入任务持续进行，就如同出现错误的行数据不存在一样。你可以依据生成的报告，手动修复这些错误。该功能适用于以下场景：
-
-    - 要导入的数据有少许错误
-    - 手动定位错误比较困难
-    - 如果遇到错误就重启 TiDB Lightning，代价太大
-
-    TiDB Lightning 错误处理功能是实验特性。**不建议**在生产环境中仅依赖该功能处理相关错误。
-
-    [用户文档](/tidb-lightning/tidb-lightning-error-resolution.md)
 
 - **Sync-diff-inspector 优化**
 
