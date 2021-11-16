@@ -17,9 +17,9 @@ summary: 如何使用 Online Unsafe Recovery。
 
 在 TiDB 中，根据用户定义的多种副本规则，一份数据可能会同时存储在多个节点中，从而保证在单个或少数节点暂时离线或损坏时，读写数据不受任何影响。但是，当一个 Region 的多数或全部副本在短时间内全部下线时，为了保证数据的完整性，该 Region 会处于暂不可用的状态。
 
-如果一段数据的多数副本发生了永久性损坏（如磁盘损坏）等问题，从而导致节点无法上线时，此段数据会一直保持暂不可用的状态。这时，如果用户希望集群恢复正常使用，在用户能够容忍数据回退或数据丢失的前提下，TiDB 理论上可以通过手动覆写数据分片元信息的方式，使其重新形成多数派，进而让上层业务可以写入和读取（可能是 stale 的，或者为空）这一段数据分片。
+如果一段数据的多数副本发生了永久性损坏（如磁盘损坏）等问题，从而导致节点无法上线时，此段数据会一直保持暂不可用的状态。这时，如果用户希望集群恢复正常使用，在用户能够容忍数据回退或数据丢失的前提下，用户理论上可以通过手动移除不可用副本的方式，使 TiDB 重新形成多数派，进而让上层业务可以写入和读取（可能是 stale 的，或者为空）这一段数据分片。
 
-在这个情况下，当存有可容忍丢失的数据的部分节点受到永久性损坏时，用户可以通过使用 Online Unsafe Recovery，快速简单地进行有损恢复。使用 Online Unsafe Recovery 时，PD 会收集全部节点内的数据分片元信息，用 PD 的全局视角生成一份更实时、更完整的恢复计划后，将其计划下发给各个存活的节点，使各节点执行数据恢复任务。另外，下发恢复计划后，PD 还会定期查看恢复进度，确保集群的当前状态与其所期待的状态相互匹配。
+在这个情况下，当存有可容忍丢失的数据的部分节点受到永久性损坏时，用户可以通过使用 Online Unsafe Recovery，快速简单地进行有损恢复。使用 Online Unsafe Recovery 时，PD 会收集全部节点内的数据分片元信息，用 PD 的全局视角生成一份更实时、更完整的恢复计划后，将其计划下发给各个存活的节点，使各节点执行数据恢复任务。另外，下发恢复计划后，PD 还会定期查看恢复进度，并在需要时，重新向各节点分发恢复计划。
 
 ## 适用场景
 
@@ -35,7 +35,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 在使用 Online Unsafe Recovery 功能进行数据有损恢复前，请确认以下事项：
 
-* 部分数据确实不可用。
+* 离线节点导致部分数据确实不可用。
 * 离线节点确实无法自动恢复或重启。
 
 ### 第 1 步：关闭各类调度
@@ -46,8 +46,8 @@ Online Unsafe Recovery 功能适用于以下场景：
 >
 > 关闭调度后，系统将无法处理系统数据热点问题，请在恢复后尽快重新开启调度。
 
-1. 使用 pd-ctl 执行 [`config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
-2. 使用 pd-ctl 关闭各类调度：
+1. 使用 PD Control 执行 [`config show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，获取当前的配置信息。
+2. 使用 PD Control 关闭各类调度：
 
     * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
     * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
@@ -55,7 +55,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 2 步：移除无法自动恢复的节点
 
-使用 pd-ctl 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history)命令，移除无法自动恢复的节点。
+使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history)命令，移除无法自动恢复的节点。
 
 > **注意：**
 >
@@ -63,7 +63,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 3 步：查看进度
 
-节点移除命令运行成功后，使用 pd-ctl 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules)命令，查看移除进度。当命令执行结果显示 "Last recovery has finished" 时，系统恢复完成。
+节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules)命令，查看移除进度。当命令执行结果显示 "Last recovery has finished" 时，系统恢复完成。
 
 ### 第 4 步：测试读写任务
 
