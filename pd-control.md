@@ -864,6 +864,61 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+### `unsafe remove-failed-stores [store-ids | show | history]`
+
+> **Warning:**
+>
+> - This feature is a lossy recovery, so TiKV cannot guarantee data integrity and data indexes integrity after using the feature.
+> - Online Unsafe Recovery is an experimental feature, and it is **NOT** recommended to use it in the production environment. The interface, strategy, and internal implementation of this feature might change when it becomes generally available (GA). Although this feature has been tested in some scenarios, it is not thoroughly validated and might cause system unavailability.
+> - It is recommended to perform the feature-related operations with the support from the TiDB team. If any misoperation is performed, it might be hard to recover the cluster.
+
+Use this command to perform lossy recovery operations when permanently damaged replicas cause data to be unavailable. For example:
+
+Execute Online Unsafe Recovery to remove permanently damaged stores:
+
+```bash
+>> unsafe remove-failed-stores 101,102,103
+```
+
+```bash
+Success!
+```
+
+Show the current or historical state of Online Unsafe Recovery:
+
+```bash
+>> unsafe remove-failed-stores show
+```
+
+```bash
+[
+  "Collecting cluster info from all alive stores, 10/12.",
+  "Stores that have reports to PD: 1, 2, 3, ...",
+  "Stores that have not reported to PD: 11, 12",
+]
+```
+
+```bash
+>> unsafe remove-failed-stores history
+```
+
+```bash
+[
+  "Store reports collection:",
+  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
+  "Store 8: region ...",
+  "...",
+  "Recovery Plan:",
+  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
+  "Store 8, ..."
+  "...",
+  "Execution Progress:",
+  "Store 10 finished,",
+  "Store 7 not yet finished",
+  "...",
+]
+```
+
 ## Jq formatted JSON output usage
 
 ### Simplify the output of `store`
