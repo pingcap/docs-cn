@@ -277,26 +277,6 @@ The following are descriptions of parameters that can be configured for the sink
 
 For more parameters of Pulsar, see [pulsar-client-go ClientOptions](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ClientOptions) and [pulsar-client-go ProducerOptions](https://godoc.org/github.com/apache/pulsar-client-go/pulsar#ProducerOptions).
 
-#### Configure sink URI with cdclog
-
-The `cdclog` files (files written by TiCDC on the local filesystem or on the Amazon S3-compatible storage) can be used together with Backup & Restore (BR) to provide point-in-time (PITR) recovery. See [Point in Time recovery (experimental feature)](/br/use-br-command-line-tool.md#point-in-time-recovery-experimental-feature) for details.
-
-The following command creates a changefeed that will write cdclog files locally to the `/data/cdc/log` directory.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="local:///data/cdclog" --config changefeed.toml
-```
-
-The following command creates a changefeed that will write cdclog files to an external S3 storage in the `logbucket` bucket with a subdirectory of `test`. The endpoint is set in the URI, which is needed if you are using an S3-compatible storage other than Amazon S3.
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="s3://logbucket/test?endpoint=http://$S3_ENDPOINT/" --config changefeed.toml
-```
-
 #### Use the task configuration file
 
 For more replication configuration (for example, specify replicating a single table), see [Task configuration file](#task-configuration-file).
