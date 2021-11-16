@@ -6,6 +6,7 @@ summary: 介绍如何从 CSV 等平面文件迁移数据到 TiDB。
 # 从平面文件迁移数据到 TiDB
 
 平面文件(flat file)也被称为文本数据库，是一种以纯文本格式存储数据的数据库类型。 平面文件通常是去除所有文字处理和结构标记的文本文件。平面文件的特点是每行有一条记录的表格。记录中的不同列使用制表符或逗号来划分字段。例如，逗号分隔值（Comma-Separated Values，CSV）工作表每个字段之间用逗号隔开。 
+
 TiDB Lightning 支持读取 CSV 格式的平面文件，以及其他定界符格式如 TSV（制表符分隔值）。以下将以 CSV 文件为例展示如何导入。
 
 ## 前提条件
@@ -105,6 +106,7 @@ pd-addr = "${ip}:${port}" # 例如 172.16.31.3:2379。当 backend = "local" 时 
 ## 第 4 步. 以更快的速度导入（可选）
 
 导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
+
 要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用`strict-format`模式。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MB 的多个文件块进行并行处理。
 
 注意：如果 CSV 文件不是严格格式但`strict-format`被误设为`true`，跨多行的单个完整字段会被分割成两部分，导致解析失败，甚至不报错地导入已损坏的数据。
@@ -132,6 +134,7 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 tidb-lightning.log 的最后一行会显示 `tidb lightning exit`。
+
 如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
 ## 其他格式的平面文件

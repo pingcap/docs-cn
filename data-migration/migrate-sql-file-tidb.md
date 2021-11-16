@@ -89,4 +89,5 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 tidb-lightning.log 的最后一行会显示 `tidb lightning exit`。
+
 如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。

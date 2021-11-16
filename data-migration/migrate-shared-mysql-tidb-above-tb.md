@@ -368,7 +368,9 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ### 监控任务与查看日志
 
 要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
+
 如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+
 DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
 - DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
