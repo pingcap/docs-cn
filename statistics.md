@@ -74,7 +74,7 @@ You can perform full collection using the following syntax.
     {{< copyable "sql" >}}
 
     ```sql
-    ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+    ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
 + `WITH NUM BUCKETS` specifies the maximum number of buckets in the generated histogram.
@@ -82,23 +82,61 @@ You can perform full collection using the following syntax.
 + `WITH NUM CMSKETCH DEPTH` specifies the depth of the CM Sketch.
 + `WITH NUM CMSKETCH WIDTH` specifies the width of the CM Sketch.
 + `WITH NUM SAMPLES` specifies the number of samples.
++ `WITH FLOAT_NUM SAMPLERATE` specifies the sampling rate.
+
+`WITH NUM SAMPLES` and `WITH FLOAT_NUM SAMPLERATE` correspond to two different algorithms of collecting samples.
+
+- `WITH NUM SAMPLES` specifies the size of the sampling set, which is implemented in the reservoir sampling method in TiDB. When a table is large, it is not recommended to use this method to collect statistics. Because the intermediate result set of the reservoir sampling contains redundant results, it causes additional pressure on resources such as memory.
+- `WITH FLOAT_NUM SAMPLERATE` is a sampling method introduced in v5.3.0. With the value range `(0, 1]`, this parameter specifies the sampling rate. It is implemented in the way of Bernoulli sampling in TiDB, which is more suitable for sampling larger tables and performs better in collection efficiency and resource usage.
+
+Before v5.3.0, TiDB uses the reservoir sampling method to collect statistics. Since v5.3.0, the TiDB Version 2 statistics uses the Bernoulli sampling method to collect statistics by default. To re-use the reservoir sampling method, you can use the `WITH NUM SAMPLES` statement.
+
+> **Note:**
+>
+> The current sampling rate is calculated based on an adaptive algorithm. When you can observe the number of rows in a table using [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md), you can use this number of rows to calculate the sampling rate corresponding to 100,000 rows. If you cannot observe this number, you can use the `TABLE_KEYS` column in the [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) table as another reference to calculate the sampling rate.
+>
+> Normally, `STATS_META` is more credible than `TABLE_KEYS`. However, after importing data through the methods like [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md), the result of `STATS_META` is `0`. To handle this situation, you can use `TABLE_KEYS` to calculate the sampling rate when the result of `STATS_META` is much smaller than the result of `TABLE_KEYS`.
+
+The following syntax collects statistics for some columns in the `TableName` table:
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+This syntax collects statistics on the specified columns and indexes, as well as the statistics on the columns involved in the extended statistics. If the number of columns in the table is large, the columns that require statistics might only be a small subset of the table. In this situation, this syntax can greatly reduce the stress of collecting statistics.
+
+> **Note:**
+>
+> + The syntax above takes effect only when `tidb_analyze_version = 2`.
+> + In the syntax above, `ColumnNameList` cannot be empty.
+> + The syntax above collects the full statistics of a table. For example, after collecting the statistics of column a and column b, to further collect the statistics of column c, you need to specify all three columns in the statement `ANALYZE table t columns a, b, c` rather than specifying only the additional column c like `ANALYZE TABLE t COLUMNS c`.
 
 + To collect statistics of the index columns on all `IndexNameList`s in `TableName`:
 
     {{< copyable "sql" >}}
 
     ```sql
-    ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+    ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
     ```
 
-  The statement collects statistics of all index columns when `IndexNameList` is empty.
+    The statement collects statistics of all index columns when `IndexNameList` is empty.
 
 + To collect statistics of partition in all `PartitionNameList`s in `TableName`:
 
     {{< copyable "sql" >}}
 
     ```sql
-    ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+    ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
+
++ To collect statistics of some columns for the partitions in all `PartitionNameList`s in `TableName`:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
 + To collect statistics of index columns for the partitions in all `PartitionNameList`s in `TableName`:
@@ -106,7 +144,7 @@ You can perform full collection using the following syntax.
     {{< copyable "sql" >}}
 
     ```sql
-    ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+    ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
 > **Note:**
@@ -129,7 +167,7 @@ You can perform incremental collection using the following syntax.
     {{< copyable "sql" >}}
 
     ```sql
-    ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+    ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
 + To incrementally collect statistics of index columns for partitions in all `PartitionNameLists` in `TableName`:
@@ -137,7 +175,7 @@ You can perform incremental collection using the following syntax.
     {{< copyable "sql" >}}
 
     ```sql
-    ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+    ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
 ### Automatic update
@@ -153,6 +191,10 @@ Three system variables related to automatic update of statistics are as follows:
 | `tidb_auto_analyze_end_time`   | `23:59 +0000` | The end time in a day when TiDB can perform automatic update |
 
 When the ratio of the number of modified rows to the total number of rows of `tbl` in a table is greater than `tidb_auto_analyze_ratio`, and the current time is between `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`, TiDB executes the `ANALYZE TABLE tbl` statement in the background to automatically update the statistics of this table.
+
+> **Note:**
+>
+> Currently, the automatic update does not record the configuration items input at manual `ANALYZE`. Therefore, when you use the `WITH` syntax to control the collecting behavior of `ANALYZE`, you need to manually set scheduled tasks to collect statistics.
 
 Before v5.0, when the query is executed, TiDB collects feedback with the probability of `feedback-probability` and uses it to update the histogram and Count-Min Sketch. **In v5.0, this feature is disabled by default, and it is not recommended to enable this feature.**
 
