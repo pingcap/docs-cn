@@ -63,6 +63,7 @@ TiDB 版本：5.3.0
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
 - v5.3.0 之前，对于新增索引，analyze 时间不受设定时间的限制，`tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 时间段内将不会触发 auto analyze
 - plugin 的默认路径从 "" 改为 /data/deploy/plugin
+- DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/ticdc/tree/master/dm)。DM 版本号从 v2.0.x 修改为 v5.3.0，用户可以无风险从 v2.0.x 升级至 v5.3。
 
 ## 新功能
 
