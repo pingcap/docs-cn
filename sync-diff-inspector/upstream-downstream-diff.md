@@ -25,29 +25,20 @@ mysql> select * from tidb_binlog.checkpoint;
 
 Then configure the snapshot information of the upstream and downstream databases by using the `ts-map` information obtained in [Step 1](#step-1-obtain-ts-map).
 
-Here is a configuration example of the `Databases config` section:
+Here is a configuration example of the `Datasource config` section:
 
 ```toml
-######################### Databases config #########################
-
-# Configuration of the source database instance
-[[source-db]]
+######################### Datasource config ########################
+[data-sources.mysql1]
+    host = "127.0.0.1"
+    port = 3306
+    user = "root"
+    password = ""
+    snapshot = "409621863377928345"
+[data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
     user = "root"
-    password = "123456"
-    # The instance ID of the source database, the unique identifier of a database instance
-    instance-id = "source-1"
-    # Uses the snapshot function of TiDB, corresponding to the primary-ts in ts-map
-    snapshot = "409621863377928194"
-
-# Configuration of the target database instance
-[target-db]
-    host = "127.0.0.1"
-    port = 4001
-    user = "root"
-    password = "123456"
-    # Uses the snapshot function of TiDB, corresponding to the secondary-ts in ts-map
     snapshot = "409621863377928345"
 ```
 
@@ -56,3 +47,4 @@ Here is a configuration example of the `Databases config` section:
 > - Set `db-type` of Drainer to `tidb` to ensure that `ts-map` is saved in the checkpoint.
 > - Modify the Garbage Collection (GC) time of TiKV to ensure that the historical data corresponding to snapshot is not collected by GC during the data check. It is recommended that you modify the GC time to 1 hour and recover the setting after the check.
 > - In some versions of TiDB Binlog, `master-ts` and `slave-ts` are stored in `ts-map`. `master-ts` is equivalent to `primary-ts` and `slave-ts` is equivalent to `secondary-ts`.
+> - The above example only shows the section of `Datasource config`. For complete configuration, refer to [sync-diff-inspector User Guide](/sync-diff-inspector/sync-diff-inspector-overview.md).
