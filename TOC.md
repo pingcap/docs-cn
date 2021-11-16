@@ -71,6 +71,7 @@
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   + [在线修改集群配置](/dynamic-config.md)
+  + [多节点永久损坏后的在线有损恢复](/online-unsafe-recovery.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -108,7 +109,15 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
       + [MPP 模式查询的执行计划](/explain-mpp.md)
+      + [索引查询的执行计划](/explain-indexes.md)
+      + [Join 查询的执行计划](/explain-joins.md)
+      + [子查询的执行计划](/explain-subqueries.md)
+      + [聚合查询的执行计划](/explain-aggregation.md)
+      + [视图查询的执行计划](/explain-views.md)
+      + [分区查询的执行计划](/explain-partitions.md)
+      + [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
@@ -166,9 +175,11 @@
       + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
+      + [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
+      + [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
+    + [执行任务前的检查项](/tidb-lightning/tidb-lightning-prechecks.md)
     + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
@@ -206,6 +217,7 @@
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
     + [监控指标](/ticdc/monitor-ticdc.md)
+    + [报警规则](/ticdc/ticdc-alert-rules.md)
     + [TiCDC Open API](/ticdc/ticdc-open-api.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
@@ -494,7 +506,9 @@
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
-      + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + 实例性能分析
+        + [手动分析页面](/dashboard/dashboard-profiling.md)
+        + [持续分析页面](/dashboard/continuous-profiling.md)
       + 会话管理与配置
         + [分享会话](/dashboard/dashboard-session-share.md)
         + [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
@@ -554,10 +568,11 @@
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
+  + [版本发布时间线](/releases/release-timeline.md)
   + v5.3
-    - [5.3.0](/releases/release-5.3.0.md)  
+    - [5.3.0](/releases/release-5.3.0.md)
   + v5.2
-    - [5.2.2](/releases/release-5.2.2.md)  
+    - [5.2.2](/releases/release-5.2.2.md)
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   + v5.1

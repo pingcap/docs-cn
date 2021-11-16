@@ -55,11 +55,11 @@ TiDB 版本：5.3.0
 
     - 如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级后也会被 TiDB 当成普通表处理。在 v5.3.0 上创建的全局临时表在降级后会被当作普通表处理，导致数据错误。
     - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
-    - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则报错。
+    - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
     - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-table.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-table.md#与其他-tidb-功能的兼容性限制)。
 
 - 修正 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
-- 系统变量 `sql_auto_is_null` 被加入 Noop Funciton 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改改变量会报错。
+- 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
 - v5.3.0 之前，对于新增索引，analyze 时间不受设定时间的限制，`tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 时间段内将不会触发 auto analyze
 - plugin 的默认路径从 "" 改为 /data/deploy/plugin
@@ -154,13 +154,12 @@ TiDB 版本：5.3.0
 
 ### 数据迁移
 
-- **提高 DM 复制性能**
+- **提高 DM 同步性能**
 
     支持以下功能，实现以更低的延迟将数据从 MySQL 同步数据到 TiDB。
 
     - 合并单行数据的多次变更（Compact multiple updates on a single row into one statement）
     - 点查更新合并为批量操作（Merge batch updates of multiple rows into one statement）
-    - 异步保存检查点（Async Checkpoint）
 
 - **增加 DM 的 OpenAPI 以更方便地管理集群（实验特性）**
 
@@ -285,7 +284,7 @@ TiDB 在遥测中新增收集 <列出本次新增遥测内容>。
 
     - 显著优化了 TableScan 算子的执行效率
     - 优化了 Exchange 算子的执行效率
-    - 减少了存储引擎的 GC 过程中的写放大和内存使用
+    - 减少了存储引擎的 GC 过程中的写放大和内存使用（实验功能）
     - 改进了 TiFlash 重启时的稳定性和可用性，减少了重启结束后短时间内查询可能失败的情况
     - 增加支持下推多个新的字符串，时间等函数到 MPP 引擎
 
