@@ -13,7 +13,6 @@ Placement Rules in SQL is a feature that enables you to specify where data is st
 
 The detailed user scenarios are as follows:
 
-- Place data across regions to improve the access performance in a specific region
 - Merge multiple databases of different applications to reduce the cost on database maintenance
 - Increase replica count for important data to improve the application availability and data reliability
 - Store new data into SSDs and store old data into HHDs to lower the cost on data archiving and storage
@@ -92,7 +91,7 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 
 The `SCHEDULE` option instructs TiDB on how to balance the followers. The default schedule of `EVEN` ensures a balance of followers in all regions.
 
-To ensure that enough followers are placed in the primary region (`us-east-1`) so that quorum can be achieved, you can use the `MAJORITY_IN_PRIMARY` schedule.  If the primary region completely fails, you can the `MAJORITY_IN_PRIMARY` schedule for lower latency transactions at the expense of availability.
+To ensure that enough followers are placed in the primary region (`us-east-1`) so that quorum can be achieved, you can use the `MAJORITY_IN_PRIMARY` schedule. This schedule helps provide lower latency transactions at the expense of some availability. If the primary region fails, `MAJORITY_IN_PRIMARY` cannot provide automatic failover.
 
 ### Assign placement to a partitioned table
 
