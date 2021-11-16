@@ -204,6 +204,13 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+### `placement_checks`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。
+- 该变量可由逻辑转储或逻辑恢复工具使用，确保即使违反放置规则也始终可以创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件的开头部分。
+
 ### `port`
 
 - 作用域：NONE
@@ -959,6 +966,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
+
+### `tidb_log_file_max_days` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`0`
+- 这个变量可以调整当前 TiDB 实例上日志的最大保留天数。默认值是实例配置文件中指定的值，见配置项 [`max-days`](/tidb-configuration-file.md#max-days)。此变量只影响当前 TiDB 实例上的配置，重启后丢失，且配置文件不受影响。
 
 ### `tidb_low_resolution_tso`
 
