@@ -34,8 +34,6 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 相比之下，读 workload 受到的影响更小：甚至 QPS 略有上升。
 总体的 P99 延迟只上升了 50% 左右，QPS 约下降了 4%。
 
-内部另一个较早的测试用例：使用 `sysbench` 的 `oltp_read_only` 场景**全速**备份到非服务盘，依照表结构的不同，结果显示对集群 QPS 的影响在 15%~25% 之间。
-
 如果需要控制备份带来的影响，可以：
 
 1. 使用 `--ratelimit` 参数限速。注意这个参数限制的是*存储备份文件到外部存储*的速度，计算总大小的时候请以备份日志中 `backup data size(after compressed)` 为基准。
