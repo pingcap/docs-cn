@@ -59,15 +59,6 @@ table-concurrency = 6
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
 
-# TiDB Lightning 能够承受的最大非致命（non-fatal）错误数。超过此数，TiDB Lightning 会停止任务。
-# 非致命（non-fatal）错误指的是只出现在某些行中的错误。忽略这些错误可以让导入进程继续下去。
-# 如果将该值设置为 N，那么 TiDB Lightning 会在遇到第 N+1 个非致命错误时停止。
-# 跳过的行会被插入到目标 TiDB 中的 "task info" schema 中。
-max-error = 0
-# task-info-schema-name 是用于存储 TiDB Lightning 执行结果的 schema/database 的名称。
-# 如果为空，则关闭错误记录功能。
-# task-info-schema-name = 'lightning_task_info'
-
 [security]
 # 指定集群中用于 TLS 连接的证书和密钥。
 # CA 的公钥证书。如果留空，则禁用 TLS。
@@ -111,12 +102,6 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
-# 当后端模式为 'local' 时，设置是否检测和解决重复的记录（唯一键冲突）。
-# 目前支持三种解决方法：
-#  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
-#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
-#  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
-# duplicate-resolution = 'none'
 # 当后端是 “local” 时，一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
 # 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
