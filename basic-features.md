@@ -77,7 +77,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Optimizer hints](/optimizer-hints.md)                                                                   | Y            | Y            | Y            | Y            | Y            |
 | [MPP 执行引擎](/explain-mpp.md)                                                                   | Y            | Y            | Y            | Y            | N            |
 | [Index Merge Join](/explain-index-merge.md)                                                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [执行计划缓存](/sql-prepare-plan-cache.md)                                                        | Y |  实验特性 |  实验特性 |  实验特性 | 实验特性  |
 [Placement Rules in SQL](/placement-rules-in-sql.md)                                             | 实验特性 |   N  |   N   |  N  |   N  |
 
 ## 数据定义语言 (DDL)
