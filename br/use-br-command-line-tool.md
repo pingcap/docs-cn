@@ -246,7 +246,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 In the above example, for the incremental backup data, BR records the data changes and the DDL operations during `(LAST_BACKUP_TS, current PD timestamp]`. When restoring data, BR first restores DDL operations and then the data.
 
-### Encrypt data during backup
+### Encrypt data during backup (experimental feature)
 
 Since TiDB v5.3.0, TiDB supports backup encryption. You can configure the following parameters to encrypt data during backup:
 
@@ -256,6 +256,7 @@ Since TiDB v5.3.0, TiDB supports backup encryption. You can configure the follow
 
 > **Warning:**
 >
+> - This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
 > - If the key is lost, the backup data cannot be restored to the cluster.
 > - The encryption feature needs to be used on BR tools and TiDB clusters v5.3.0 or later versions, and the encrypted backup data cannot be restored on clusters ealier than v5.3.0.
 
@@ -509,9 +510,13 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 >
 > Restoring system tables might cause more compatibility issues. To avoid unexpected issues, **DO NOT** restore system tables in the production environment.
 
-### Decrypt data during restore
+### Decrypt data during restore (experimental feature)
 
-After encrypting the backup data, you need to pass in the corresponding decryption parameters to restore the data. You need to ensure that the decryption parameters and encryption parameters are consistent. If the decryption algorithm or key is incorrect, the data cannot be restored. 
+> **Warning:**
+>
+> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
+After encrypting the backup data, you need to pass in the corresponding decryption parameters to restore the data. You need to ensure that the decryption parameters and encryption parameters are consistent. If the decryption algorithm or key is incorrect, the data cannot be restored.
 
 The following is an example of decrypting the backup data:
 
