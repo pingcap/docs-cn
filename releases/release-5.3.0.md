@@ -34,7 +34,7 @@ TiDB 版本：5.3.0
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
 |[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
 |[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
-| [tidb_tmp_table_max_size](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增  | 此变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。 |
+| [tidb_tmp_table_max_size](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增  | 此变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。 |
 
 ### 配置文件参数
 
@@ -54,16 +54,16 @@ TiDB 版本：5.3.0
 - 临时表：
 
     - 如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级后也会被 TiDB 当成普通表处理。在 v5.3.0 上创建的全局临时表在降级后会被当作普通表处理，导致数据错误。
-    - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
+    - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
-    - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-table.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-table.md#与其他-tidb-功能的兼容性限制)。
+    - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-table.md#与其他-tidb-功能的兼容性限制)。
 
 - 修正 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
-- v5.3.0 之前，对于新增索引，analyze 时间不受设定时间的限制，`tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 时间段内将不会触发 auto analyze
-- plugin 的默认路径从 "" 改为 /data/deploy/plugin
-- DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/ticdc/tree/master/dm)。DM 版本号从 v2.0.x 修改为 v5.3.0，用户可以无风险从 v2.0.x 升级至 v5.3。
+- 修复了 v5.3.0 之前的版本中新增索引会导致在规定时间外触发 auto-analyze 的问题。在 v5.3.0 中，用户通过 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 设定时间段后，只会在该时间段内触发 auto-analyze。
+- plugin 默认存放目录从 "" 改为 /data/deploy/plugin。
+- DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/ticdc/tree/master/dm)。DM 版本号从 v2.0.x 修改为 v5.3.0，用户可以无风险从 v2.0.x 升级至 v5.3.0。
 
 ## 新功能
 
@@ -102,9 +102,9 @@ TiDB 版本：5.3.0
 
     [用户文档](/sql-statements/sql-statement-select.md)，[#28689](https://github.com/pingcap/tidb/issues/28689)
 
-- **表属性设置**
+- **设置表属性**
 
-    增加 `ALTER TABLE [PARTITION] ATTRIBUTES` 语句支持，允许用户设置表和分区的表属性。目前支持设置 `merge_option` 属性。通过设置 `merge_option` 属性，用户可以显式控制 Region 是否合并。
+    增加 `ALTER TABLE [PARTITION] ATTRIBUTES` 语句支持，允许用户为表和分区设置属性。目前 TiDB 仅支持设置 `merge_option` 属性。通过为表或分区添加 `merge_option` 属性，用户可以显式控制 Region 是否合并。
 
     应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
 
@@ -124,15 +124,15 @@ TiDB 版本：5.3.0
 
 - **优化 PD 时间戳处理流程**
 
-    优化 TiDB 时间戳处理流程，支持通过开启 PD follower proxy 和调整 PD client 批量请求 TSO 的最大等待时长，降低 PD leader 时间戳处理负载，提升系统整体可扩展性。
+    优化 TiDB 时间戳处理流程，支持通过开启 PD Follower Proxy 和调整 PD client 批量请求 TSO 时所需的 batch 等待时间的方式来降低 PD leader 时间戳处理负载，提升系统整体可扩展性。
 
-    - 支持通过 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) 系统变量设置 PD follower proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD follower proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
+    - 支持通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) 设置 PD Follower Proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD Follower Proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，从而有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
 
     > **注意：**
     >
-    > 在 client 数较少的情况下，PD leader 负载不高的情况下，不建议开启 PD follower proxy 功能。
+    > 在 client 数较少、PD leader 负载不高的情况下，不建议开启 PD Follower Proxy 功能。
 
-    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 系统变量设置 PD client 批量请求 TSO 的最大等待时间，单位毫秒。在 PD TSO 请求负载过高的情况下，通过调大该参数，可以提升一次请求 TSO 的数量，降低 PD 负载，提升吞吐。
+    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 系统变量设置 PD client 批量请求 TSO 时所需的最大 batch 等待时间，单位为毫秒。在 PD TSO 请求负载过高的情况下，可以通过调大等待时间获得更大的 batch size，从而降低 PD 负载，提升吞吐。
 
     > **注意：**
     >
@@ -142,14 +142,15 @@ TiDB 版本：5.3.0
 
 ### 稳定性
 
-- **支持 Raft 多数副本丢失时数据的在线恢复能力（实验特性）**
+- **支持多节点永久损坏后的在线有损恢复（实验特性）**
 
-    增加 PD-CTL RECOVER-STORE-FAILURE 语句支持，提供在线恢复 TiKV 实例能力。通过该功能，可以实现：
+    新增对 `unsafe remove-failed-stores` 命令的支持，实现数据有损恢复。当多数副本发生了永久性损坏（如磁盘损坏）等问题，导致无法在业务层读写一段数据时，PD 可以执行在线数据恢复，使该数据恢复至可读写状态。
 
-    - 在线恢复所有 Raft 多数副本丢失的 Region 可读写。
-    - 保证恢复所有 Region 后没有数据空洞。
-
-    需要注意的是，Raft 多数副本失败的情况下无法避免已提交数据的丢失。
+> **警告：**
+>
+> - 此功能为有损恢复，无法保证数据和数据索引完整性。
+> - 此功能为实验特性，其接口、策略和内部实现在 GA 前可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
+> - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
 
     [用户文档](/online-unsafe-recovery.md)，[#10483](https://github.com/tikv/tikv/issues/10483)
 
