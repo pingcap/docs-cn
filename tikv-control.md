@@ -462,11 +462,17 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB
 success
 ```
 
-### 强制 Region 从多副本失败状态恢复服务
+### 强制 Region 从多副本失败状态恢复服务（慎用）
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
 
 `-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。如果要对某一个 store 上的全部 Region 都执行这个操作，可简单指定 `--all-regions`。
+
+> **警告：**
+>
+> - 此功能使用不当可能导致集群难以恢复，存在风险。请悉知潜在的风险，尽量避免在生产环境中使用。
+> - 如果使用 `--all-regions`，必须在剩余所有连入集群的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
+> - 一旦执行了 `remove-fail-stores`，不可再重新启动被移除的节点并将其加入集群，否则会导致元数据的不一致，最终引发 Region 不可用。
 
 {{< copyable "shell-regular" >}}
 
@@ -488,9 +494,8 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 
 > **注意：**
 >
-> - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 > - 一般来说，您需要为指定 Region 的 peers 所在的每个 store 运行此命令。
-> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
+> - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 
 ### 恢复损坏的 MVCC 数据
 
