@@ -6,10 +6,6 @@ aliases: ['/docs/dev/ticdc/ticdc-overview/','/docs/dev/reference/tools/ticdc/ove
 
 # TiCDC Overview
 
-> **Note:**
->
-> TiCDC is a feature for general availability (GA) since v4.0.6. You can use it in the production environment.
-
 [TiCDC](https://github.com/pingcap/ticdc) is a tool for replicating the incremental data of TiDB. This tool is implemented by pulling TiKV change logs. It can restore data to a consistent state with any upstream TSO, and provides [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md) to support other systems to subscribe to data changes.
 
 ## TiCDC Architecture
@@ -27,7 +23,7 @@ The architecture of TiCDC is shown in the following figure:
     - Assembles KV change logs in the internal logic.
     - Provides the interface to output KV change logs. The data sent includes real-time change logs and incremental scan change logs.
 
-- `capture`: The operating process of TiCDC. Multiple `capture`s form a TiCDC cluster that replicates KV change logs.
+- `capture`: The operating process of TiCDC. Multiple `captures` form a TiCDC cluster that replicates KV change logs.
 
     - Each `capture` pulls a part of KV change logs.
     - Sorts the pulled KV change log(s).
@@ -73,6 +69,10 @@ Currently, the TiCDC sink component supports replicating data to the following d
 
 ## Restrictions
 
+There are some restrictions when using TiCDC.
+
+### Requirements for valid index
+
 TiCDC only replicates the table that has at least one **valid index**. A **valid index** is defined as follows:
 
 - The primary key (`PRIMARY KEY`) is a valid index.
@@ -84,14 +84,33 @@ Since v4.0.8, TiCDC supports replicating tables **without a valid index** by mod
 
 ### Unsupported scenarios
 
-Currently, The following scenarios are not supported:
+Currently, the following scenarios are not supported:
 
 - The TiKV cluster that uses RawKV alone.
 - The [DDL operation `CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md) and the [SEQUENCE function](/sql-statements/sql-statement-create-sequence.md#sequence-function) in TiDB. When the upstream TiDB uses `SEQUENCE`, TiCDC ignores `SEQUENCE` DDL operations/functions performed upstream. However, DML operations using `SEQUENCE` functions can be correctly replicated.
 
 TiCDC only provides partial support for scenarios of large transactions in the upstream. For details, refer to [FAQ: Does TiCDC support replicating large transactions? Is there any risk?](/ticdc/troubleshoot-ticdc.md#does-ticdc-support-replicating-large-transactions-is-there-any-risk).
 
-## Notice for compatibility issues
+> **Note:**
+>
+> Since v5.3.0, TiCDC no longer supports the cyclic replication feature.
+
+## Install and deploy TiCDC
+
+You can either deploy TiCDC along with a new TiDB cluster or add the TiCDC component to an existing TiDB cluster. For details, see [Deploy TiCDC](/ticdc/deploy-ticdc.md).
+
+## Manage TiCDC Cluster and Replication Tasks
+
+Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see:
+
+- [Use `cdc cli` to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task)
+- [Use OpenAPI to manage cluster status and data replication task](/ticdc/ticdc-open-api.md)
+
+## TiCDC Open Protocol
+
+TiCDC Open Protocol is a row-level data change notification protocol that provides data sources for monitoring, caching, full-text indexing, analysis engines, and primary-secondary replication between different databases. TiCDC complies with TiCDC Open Protocol and replicates data changes of TiDB to third-party data medium such as MQ (Message Queue). For more information, see [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md).
+
+## Compatibility notes
 
 ### Incompatibility issue caused by using the TiCDC v5.0.0-rc `cdc cli` tool to operate a v4.0.x cluster
 
@@ -111,32 +130,7 @@ Solutions: Use the `cdc` executable file corresponding to the TiCDC cluster vers
 >
 > The above issue exists only when `cdc cli` is v5.0.0-rc. Other v5.0.x `cdc cli` tool can be compatible with v4.0.x clusters.
 
-### Compatibility with temporary tables
-
-Since v5.3.0, TiCDC supports [global temporary tables](/temporary-table.md#global-temporary-tables). Replicating global temporary tables to the downstream using TiCDC of a version earlier than v5.3.0 causes table definition error.
-
-If the upstream cluster contains a global temporary table, the downstream TiDB cluster is expected to be v5.3.0 or a later version. Otherwise, an error occurs during the replication process.
-
-## Install and deploy TiCDC
-
-You can either deploy TiCDC along with a new TiDB cluster or add the TiCDC component to an existing TiDB cluster. For details, see [Deploy TiCDC](/ticdc/deploy-ticdc.md).
-
-## Manage TiCDC Cluster and Replication Tasks
-
-Currently, you can use the `cdc cli` tool to manage the status of a TiCDC cluster and data replication tasks. For details, see:
-
-- [Use `cdc cli` to manage cluster status and data replication task](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task)
-- [Use OpenAPI to manage cluster status and data replication task](/ticdc/ticdc-open-api.md)
-
-## Troubleshoot TiCDC
-
-For details, refer to [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md).
-
-## TiCDC Open Protocol
-
-TiCDC Open Protocol is a row-level data change notification protocol that provides data sources for monitoring, caching, full-text indexing, analysis engines, and primary-secondary replication between different databases. TiCDC complies with TiCDC Open Protocol and replicates data changes of TiDB to third-party data medium such as MQ (Message Queue). For more information, see [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md).
-
-## Compatibility notes for `sort-dir` and `data-dir`
+### Compatibility notes for `sort-dir` and `data-dir`
 
 The `sort-dir` configuration is used to specify the temporary file directory for the TiCDC sorter. Its functionalities might vary in different versions. The following table lists `sort-dir`'s compatibility changes across versions.
 
@@ -145,3 +139,13 @@ The `sort-dir` configuration is used to specify the temporary file directory for
 | v4.0.11 or an earlier v4.0 version, v5.0.0-rc | It is a changefeed configuration item and specifies temporary file directory for the `file` sorter and `unified` sorter. | In these versions, `file` sorter and `unified` sorter are **experimental features** and **NOT** recommended for the production environment. <br/><br/> If multiple changefeeds use the `unified` sorter as its `sort-engine`, the actual temporary file directory might be the `sort-dir` configuration of any changefeed, and the directory used for each TiCDC node might be different. | It is not recommended to use `unified` sorter in the production environment. |
 | v4.0.12, v4.0.13, v5.0.0, and v5.0.1 |  It is a configuration item of changefeed or of `cdc server`. | By default, the `sort-dir` configuration of a changefeed does not take effect, and the `sort-dir` configuration of `cdc server` defaults to `/tmp/cdc_sort`. It is recommended to only configure `cdc server` in the production environment.<br /><br /> If you use TiUP to deploy TiCDC, it is recommended to use the latest TiUP version and set `sorter.sort-dir` in the TiCDC server configuration.<br /><br /> The `unified` sorter is enabled by default in v4.0.13, v5.0.0, and v5.0.1. If you want to upgrade your cluster to these versions, make sure that you have correctly configured `sorter.sort-dir` in the TiCDC server configuration. | You need to configure `sort-dir` using the `cdc server` command-line parameter (or TiUP). |
 |  v4.0.14 and later v4.0 versions, v5.0.2 and later v5.0 versions, later TiDB versions | `sort-dir` is deprecated. It is recommended to configure `data-dir`.  |  You can configure `data-dir` using the latest version of TiUP. In these TiDB versions, `unified` sorter is enabled by default. Make sure that `data-dir` has been configured correctly when you upgrade your cluster. Otherwise, `/tmp/cdc_data` will be used by default as the temporary file directory. <br /><br /> If the storage capacity of the device where the directory is located is insufficient, the problem of insufficient hard disk space might occur. In this situation, the previous `sort-dir` configuration of changefeed will become invalid.| You need to configure `data-dir` using the `cdc server` command-line parameter (or TiUP).  |
+
+### Compatibility with temporary tables
+
+Since v5.3.0, TiCDC supports [global temporary tables](/temporary-table.md#global-temporary-tables). Replicating global temporary tables to the downstream using TiCDC of a version earlier than v5.3.0 causes table definition error.
+
+If the upstream cluster contains a global temporary table, the downstream TiDB cluster is expected to be v5.3.0 or a later version. Otherwise, an error occurs during the replication process.
+
+## Troubleshoot TiCDC
+
+For details, refer to [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md).

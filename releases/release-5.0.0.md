@@ -397,24 +397,6 @@ To support the business requirements of streaming TiDB data to other systems, th
 
 The Kafka connectors protocol provided by the Confluent platform is widely used in the community, and it supports transferring data to either relational or non-relational databases in different protocols. By integrating TiCDC to Kafka Connect of the Confluent platform, TiDB extends the ability to stream TiDB data to other heterogeneous databases or systems.
 
-### Support cyclic replication between TiDB clusters using TiCDC (**experimental feature**)
-
-[User document](/ticdc/manage-ticdc.md#cyclic-replication), [#471](https://github.com/pingcap/ticdc/issues/471)
-
-Because of the communication latency and other issues caused by geographical differences, this scenario exists: to support the local business, users deploy multiple TiDB clusters in different geographical areas, and then to accomplish tasks such as analytics and settlements, users replicate data across multiple TiDB clusters or aggregate the replicated data to a central TiDB hub.
-
-TiCDC supports replicating data across multiple independent TiDB clusters. For example, TiDB cluster A, cluster B, and cluster C all have a table named `test.user_data` and write data into this table respectively. With the cyclic replication feature, the data written into `test.user_data` in one cluster can be replicated to the other two clusters, so that the `test.user_data` table in the three clusters is consistent with each other.
-
-This feature can be used in the following scenarios:
-
-+ Multiple TiDB clusters back up data for each other, so the application can switch to a normal TiDB cluster in the event of a disaster.
-+ Multiple geo-distributed TiDB clusters are deployed to support the local business, and the data in the same tables needs to be replicated between TiDB clusters.
-
-This feature has the following limitations and constraints：
-
-+ Writing data to tables with auto-increment IDs in different clusters is not supported, because the data replication causes data to overwrite each other and then results in data loss.
-+ Writing the same data to the same table in different clusters is not supported, because the data replication causes data to overwrite each other and then results in data loss.
-
 ## Diagnostics
 
 [User document](/sql-statements/sql-statement-explain.md#explain)
