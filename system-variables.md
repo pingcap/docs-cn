@@ -1397,7 +1397,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`67108864`
 - 范围：`[1048576, 137438953472]`
 - 单位：字节
-- 这个变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。
+- 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
 
 ### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
 

@@ -438,7 +438,7 @@
       + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md)
     + [分区表](/partitioned-table.md)
-    + [临时表](/temporary-table.md)
+    + [临时表](/temporary-tables.md)
     + [字符集和排序规则](/character-set-and-collation.md)
     + [Placement Rules in SQL](/placement-rules-in-sql.md)
     + 系统表
