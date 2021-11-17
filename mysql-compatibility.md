@@ -122,7 +122,7 @@ Views in TiDB are not updatable. They do not support write operations such as `U
 
 ### Temporary tables
 
-For details, see [Compatibility between TiDB local temporary tables and MySQL temporary tables](/temporary-table.md#compatibility-with-mysql-temporary-tables).
+For details, see [Compatibility between TiDB local temporary tables and MySQL temporary tables](/temporary-tables.md#compatibility-with-mysql-temporary-tables).
 
 ### Storage engines
 

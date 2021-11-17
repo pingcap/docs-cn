@@ -1541,7 +1541,7 @@ SET tidb_slow_log_threshold = 200;
 - Default value: `67108864`
 - Range: `[1048576, 137438953472]`
 - Unit: Bytes
-- This variable is used to set the maximum size of a single temporary table. Any temporary table with a size larger than this variable value causes error.
+- This variable is used to set the maximum size of a single [temporary table](/temporary-tables.md). Any temporary table with a size larger than this variable value causes error.
 
 ### tidb_tso_client_batch_max_wait_time <span class="version-mark">New in v5.3</span>
 

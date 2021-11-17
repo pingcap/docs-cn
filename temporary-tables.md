@@ -160,7 +160,7 @@ The following features and limitations of TiDB local temporary tables are the sa
 Local temporary tables in TiDB are incompatible with MySQL temporary tables in the following aspects:
 
 - TiDB local temporary tables do not support `ALTER TABLE`.
-- TiDB local temporary tables ignore the `ENGINE` table option, and always store temporary table data in TiDB memory with a [memory limit](/temporary-table.md#limit-the-memory-usage-of-temporary-tables).
+- TiDB local temporary tables ignore the `ENGINE` table option, and always store temporary table data in TiDB memory with a [memory limit](#limit-the-memory-usage-of-temporary-tables).
 - When `MEMORY` is declared as the storage engine, TiDB local temporary tables are not restricted by the `MEMORY` storage engine.
 - When `INNODB` or `MYISAM` is declared as the storage engine, TiDB local temporary tables ignore the system variables specific to the InnoDB temporary tables.
 - MySQL does not permit referencing to the same temporary table multiple times in the same SQL statement. TiDB local temporary tables do not have this restriction.

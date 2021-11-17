@@ -142,7 +142,7 @@ The `sort-dir` configuration is used to specify the temporary file directory for
 
 ### Compatibility with temporary tables
 
-Since v5.3.0, TiCDC supports [global temporary tables](/temporary-table.md#global-temporary-tables). Replicating global temporary tables to the downstream using TiCDC of a version earlier than v5.3.0 causes table definition error.
+Since v5.3.0, TiCDC supports [global temporary tables](/temporary-tables.md#global-temporary-tables). Replicating global temporary tables to the downstream using TiCDC of a version earlier than v5.3.0 causes table definition error.
 
 If the upstream cluster contains a global temporary table, the downstream TiDB cluster is expected to be v5.3.0 or a later version. Otherwise, an error occurs during the replication process.
 

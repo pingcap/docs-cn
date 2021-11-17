@@ -437,7 +437,7 @@
       + [Configuration](/garbage-collection-configuration.md)
     + [Views](/views.md)
     + [Partitioning](/partitioned-table.md)
-    + [Temporary Tables](/temporary-table.md)
+    + [Temporary Tables](/temporary-tables.md)
     + [Character Set and Collation](/character-set-and-collation.md)
     + [Placement Rules in SQL](/placement-rules-in-sql.md)
     + System Tables
