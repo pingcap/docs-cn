@@ -14,6 +14,9 @@ This statement drops a table from the currently selected database. An error is r
 DropTableStmt ::=
     'DROP' OptTemporary TableOrTables IfExists TableNameList RestrictOrCascadeOpt
 
+OptTemporary ::=
+    ( 'TEMPORARY' | ('GLOBAL' 'TEMPORARY') )?
+
 TableOrTables ::=
     'TABLE'
 |   'TABLES'
@@ -21,6 +24,14 @@ TableOrTables ::=
 TableNameList ::=
     TableName ( ',' TableName )*
 ```
+
+## Drop temporary tables
+
+You can use the following syntax to drop ordinary tables and temporary tables:
+
+- Use `DROP TEMPORARY TABLE` to drop local temporary tables.
+- Use `DROP GLOBAL TEMPORARY TABLE` to drop global temporary tables.
+- Use `DROP TABLE` to drop ordinary tables or temporary tables.
 
 ## Examples
 

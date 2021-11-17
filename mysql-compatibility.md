@@ -25,7 +25,6 @@ However, some features of MySQL are not supported. This could be because there i
 + Events
 + User-defined functions
 + `FOREIGN KEY` constraints [#18209](https://github.com/pingcap/tidb/issues/18209)
-+ Temporary tables [#1248](https://github.com/pingcap/tidb/issues/1248)
 + `FULLTEXT`/`SPATIAL` functions and indexes [#1793](https://github.com/pingcap/tidb/issues/1793)
 + Character sets other than `utf8`, `utf8mb4`, `ascii`, `latin1` and `binary`
 + SYS schema
@@ -120,6 +119,10 @@ These differences are documented further in [`ANALYZE TABLE`](/sql-statements/sq
 ### Views
 
 Views in TiDB are not updatable. They do not support write operations such as `UPDATE`, `INSERT`, and `DELETE`.
+
+### Temporary tables
+
+For details, see [Compatibility between TiDB local temporary tables and MySQL temporary tables](/temporary-table.md#compatibility-with-mysql-temporary-tables).
 
 ### Storage engines
 

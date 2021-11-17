@@ -12,11 +12,17 @@ This statement copies the definition of an existing table, without copying any d
 
 ```ebnf+diagram
 CreateTableLikeStmt ::=
-    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen OnCommitOpt
+
+OptTemporary ::=
+    ( 'TEMPORARY' | ('GLOBAL' 'TEMPORARY') )?
 
 LikeTableWithOrWithoutParen ::=
     'LIKE' TableName
 |   '(' 'LIKE' TableName ')'
+
+OnCommitOpt ::=
+    ('ON' 'COMMIT' 'DELETE' 'ROWS')?
 ```
 
 ## Examples
