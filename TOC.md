@@ -496,6 +496,7 @@
       + Maintain
         + [Deploy](/dashboard/dashboard-ops-deploy.md)
         + [Reverse Proxy](/dashboard/dashboard-ops-reverse-proxy.md)
+        + [User Management](/dashboard/dashboard-user.md)
         + [Secure](/dashboard/dashboard-ops-security.md)
       + [Access](/dashboard/dashboard-access.md)
       + [Overview Page](/dashboard/dashboard-overview.md)
