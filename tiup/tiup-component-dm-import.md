@@ -12,7 +12,7 @@ title: tiup dm import
 > - 导入前请先停止原集群
 > - 对于需要升级到 v2.0 的数据迁移任务，请不要执行 `stop-task`
 > - 仅支持导入到 v2.0.0-rc.2 或更高版本
-> - `import` 命令用于将 DM v1.0 集群导入到全新的 v2.0 集群。如果需要将数据迁移任务导入到已有的 v2.0 集群，请参考 [TiDB Data Migration 1.0.x 到 2.0.x 手动升级](https://docs.pingcap.com/zh/tidb-data-migration/stable/manually-upgrade-dm-1.0-to-2.0)
+> - `import` 命令用于将 DM v1.0 集群导入到全新的 v2.0 集群。如果需要将数据迁移任务导入到已有的 v2.0 集群，请参考 [TiDB Data Migration 1.0.x 到 2.0.x+ 手动升级](https://docs.pingcap.com/zh/tidb-data-migration/stable/manually-upgrade-dm-1.0-to-2.0)
 > - 部分组件生成的部署目录会跟原集群不一样，具体可以使用 `display` 命令查看
 > - 导入前运行 `tiup update --self && tiup update dm` 确认升级 TiUP DM 组件到最新版本
 > - 导入后集群中仅会有一个 DM-master 节点，可参考[扩容节点](/tiup/tiup-component-dm-scale-out.md)对 DM-master 进行扩容
