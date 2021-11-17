@@ -160,7 +160,7 @@ TiDB 本地临时表的以下特性与限制与 MySQL 一致：
 TiDB 本地临时表与 MySQL 临时表有以下方面不兼容：
 
 - TiDB 本地临时表不支持 `ALTER TABLE`
-- TiDB 本地临时表忽略 `ENGINE` 表选项，始终在 TiDB 内存中暂存临时表数据，并且有[内存限制](/temporary-table.md#限制临时表的内存占用)
+- TiDB 本地临时表忽略 `ENGINE` 表选项，始终在 TiDB 内存中暂存临时表数据，并且有[内存限制](/temporary-tables.md#限制临时表的内存占用)
 - 当声明存储引擎为 `MEMORY` 时，TiDB 本地临时表没有 `MEMORY` 存储引擎的限制
 - 当声明存储引擎为 `INNODB` 或 `MYISAM` 时，TiDB 本地临时表忽略 InnoDB 临时表特有的系统变量
 - MySQL 不允许在同一条 SQL 中多次引用同一张临时表，而 TiDB 本地临时表没有该限制
