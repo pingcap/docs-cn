@@ -101,7 +101,7 @@ type = '$3'
 
 如果需要在 TiDB 开启 TLS ，请参考： [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)
 
-### Step 4. 在下游 TiDB 创建表库
+### Step 4. 导入全量数据到 TiDB
 
 使用 Lightning 在下游 TiDB 建表:
 
@@ -110,8 +110,6 @@ type = '$3'
 ```shell
 tiup tidb-lightning -config tidb-lightning.toml -d ./schema -no-schema=false
 ```
-
-### Step 5. 导入全量数据到 TiDB
 
 将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Dumpling 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 

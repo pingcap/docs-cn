@@ -54,8 +54,8 @@
     + [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
   + 复杂迁移操作
     + [上游使用 pt/gh-ost 工具的持续同步场景](/data-migration/migrate-with-pt-ghost.md)
-    + [如何过滤 binlog 事件](/data-migration/migrate-with-binlog-event-filter.md)
-    + [如何通过 SQL 表达式过滤 binlog](/data-migration/migrate-with-binlog-sql-expression-filter.md)
+    + [如何根据类型或 DDL 内容过滤 binlog 事件](/data-migration/migrate-with-binlog-event-filter.md)
+    + [如何通过 SQL 表达式过滤 DML binlog 事件](/data-migration/migrate-with-binlog-sql-expression-filter.md)
     + [下游存在更多列的迁移场景](//data-migration/migrate-with-more-columns-downstream.md)
 + 运维操作
   + 升级 TiDB 版本
