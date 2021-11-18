@@ -189,7 +189,7 @@ name: "test"
 # full：只进行全量数据迁移
 # incremental： binlog 实时同步
 # all： 全量 + binlog 迁移
-task-mode: "all"
+task-mode: "incremental"
 # 下游 TiDB 配置信息。
 target-database:
   host: "${host}"                   # 例如：172.16.10.83
