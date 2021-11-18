@@ -27,7 +27,7 @@ CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。�
 
 ```toml
 [mydumper.csv]
-# 字段分隔符，必须为 ASCII 字符。不建议源文件使用默认的','简单分隔符，推荐'|+|'等非常见字符组合
+# 字段分隔符，必须为 ASCII 字符。如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符例如'|+|'。
 separator = ','
 # 引用定界符，可以为 ASCII 字符或空字符。
 delimiter = '"'
@@ -160,7 +160,7 @@ strict-format = true
 
 ```toml
 [mydumper.csv]
-separator = ',' # 不建议源文件使用默认的','简单分隔符，推荐'|+|'等非常见字符组合
+separator = ',' # 如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符例如'|+|'
 delimiter = '"'
 header = true
 not-null = false
