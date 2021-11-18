@@ -1,9 +1,9 @@
 ---
-title: TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB
-summary: 介绍如何从 TiB 级以下分库分表 MySQL 迁移数据到 TiDB。
+title: TB 级以下分库分表 MySQL 合并迁移数据到 TiDB
+summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
 ---
 
-# TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB
+# TB 级以下分库分表 MySQL 合并迁移数据到 TiDB
 
 如果你想把上游多个 MySQL 数据库实例合并迁移到下游的同一个 TiDB 数据库中，且数据量不太大（比如所有分表的总和小于 1 TB），你可以使用 DM 工具进行分库分表的合并迁移。本文举例介绍了合并迁移的操作步骤、注意事项、故障排查等。本文档适用于:
 

@@ -1,9 +1,9 @@
 ---
-title: TiB 级以上分库分表 MySQL 合并迁移数据到 TiDB
+title: TB 级以上分库分表 MySQL 合并迁移数据到 TiDB
 summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。本文介绍的方法适用于导入数据总量大于 1 TiB 的场景。
 ---
 
-# TiB 级以上分库分表 MySQL 合并迁移数据到 TiDB
+# TB 级以上分库分表 MySQL 合并迁移数据到 TiDB
 
 如果分表数据总规模特别大（例如大于 1 TiB），并且允许 TiDB 集群在迁移期间无其他业务写入，那么你可以使用 TiDB Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 TiDB DM 进行增量数据的分表同步。本文档举例介绍了导入数据的操作步骤。
 

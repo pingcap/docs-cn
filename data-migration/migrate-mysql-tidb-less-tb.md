@@ -1,9 +1,9 @@
 ---
-title: 从 TiB 级以下 MySQL 迁移数据到 TiDB
+title: 从 TB 级以下 MySQL 迁移数据到 TiDB
 summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TiB 级以下 MySQL 迁移数据到 TiDB
+# 从 TB 级以下 MySQL 迁移数据到 TiDB
 
 本文档介绍如何使用 TiDB DM （以下简称 DM）以全量+增量的模式迁移 TB 以内数据到 TiDB。一般而言，受到表结构索引数目等信息、硬件以及网络环境影响，迁移速率在 30～50GB/h 不等。使用 TiDB DM 迁移的流程如下图所示。
 

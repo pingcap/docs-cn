@@ -1,9 +1,9 @@
 ---
-title: 从 TiB 级以上 MySQL 迁移数据到 TiDB
+title: 从 TB 级以上 MySQL 迁移数据到 TiDB
 summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TiB 级以上 MySQL 迁移数据到 TiDB
+# 从 TB 级以上 MySQL 迁移数据到 TiDB
 
 通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度(30~50 GiB/h)可能令整个迁移周期过长。
 
