@@ -222,6 +222,10 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
 
+>
+> 以下功能是实验特性，如果在使用过程中遇到问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
+>
+
 ### 加密备份数据（实验性功能）
 
 自 TiDB v5.3.0 起， TiDB 开始支持备份加密功能，你可配置下列参数在备份过程中到达加密数据的效果：
@@ -247,9 +251,6 @@ br backup full\
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
-
-> 以下功能是实验特性，如果在使用过程中遇到问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
->
 
 ### Raw KV 备份（实验性功能）
 
