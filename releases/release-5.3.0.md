@@ -145,7 +145,7 @@ TiDB 版本：5.3.0
 
     新增对 `unsafe remove-failed-stores` 命令的支持，实现数据有损恢复。当多数副本发生了永久性损坏（如磁盘损坏）等问题，导致无法在业务层读写一段数据时，PD 可以执行在线数据恢复，使该数据恢复至可读写状态。
 
-进行该功能相关操作时，建议在 TiDB 团队支持下完成。
+    进行该功能相关操作时，建议在 TiDB 团队支持下完成。
 
     [用户文档](/online-unsafe-recovery.md)，[#10483](https://github.com/tikv/tikv/issues/10483)
 
