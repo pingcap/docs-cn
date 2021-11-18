@@ -74,7 +74,7 @@ The third-party APIs are not developed by Oracle. The following table lists the 
 | Ruby           | MySQL/Ruby                               | `libmysqlclient`                 | Uses `libmysqlclient`. See [Section 27.12.1, “The MySQL/Ruby API”](https://dev.mysql.com/doc/refman/5.7/en/apis-ruby-mysqlruby.html) |
 |                | Ruby/MySQL                               | Native Driver                    | See [Section 27.12.2, “The Ruby/MySQL API”](https://dev.mysql.com/doc/refman/5.7/en/apis-ruby-rubymysql.html) |
 | Scheme         | `Myscsh`                                 | `libmysqlclient`                 | See [`Myscsh`](https://github.com/aehrisch/myscsh) |
-| SPL            | `sql_mysql`                              | `libmysqlclient`                 | See [`sql_mysql` for SPL](http://www.clifford.at/spl/spldoc/sql_mysql.html) |
+| SPL            | `sql_mysql`                              | `libmysqlclient`                 | See `sql_mysql` for SPL |
 | Tcl            | MySQLtcl                                 | `libmysqlclient`                 | See [Section 27.13, “MySQL Tcl API”](https://dev.mysql.com/doc/refman/5.7/en/apis-tcl.html) |
 
 ## Connector versions supported by TiDB

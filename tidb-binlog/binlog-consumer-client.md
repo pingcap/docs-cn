@@ -118,7 +118,7 @@ message Binlog {
 }
 ```
 
-For the definition of the data format, see [`binlog.proto`](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/binlog.proto).
+For the definition of the data format, see [`secondary_binlog.proto`](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/secondary_binlog.proto)
 
 ### Driver
 
