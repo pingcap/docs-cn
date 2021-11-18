@@ -8,7 +8,7 @@ aliases: ['/docs/dev/migration-overview/']
 
 这篇文章描述如何迁移数据到 TiDB。TiDB 提供了下面几种数据迁移功能
 
-- 全量数据迁移：使用 TiDB Lightning 将 CSV/Aurora Snapshot/mydumper sql file 数据导入到 TiDB 集群；为了更好的配合从 MySQL/MariaDB 数据库进行全量迁移，TiDB 也提供了数据导出工具 Dumpling，支持将全量数据导出成 CSV/mydumper sql 文件。
+- 全量数据迁移：使用 TiDB Lightning 将 平面文件/Aurora Snapshot/mydumper sql file 数据导入到 TiDB 集群；为了更好的配合从 MySQL/MariaDB 数据库进行全量迁移，TiDB 也提供了数据导出工具 Dumpling，支持将全量数据导出成 平面文件/mydumper sql 文件。
 
 - 快速初始化 TiDB 集群：TiDB Lightning 还提供的快速导入功能，可以实现快速初始化 TiDB 集群的指定表的效果，使用该功能前需要了解，快速导入期间对 TiDB 集群影响极大， 集群不适合对外提供访问；
 
@@ -20,7 +20,7 @@ aliases: ['/docs/dev/migration-overview/']
 
 ## 迁移 Aurora MySQL 到 TiDB
 
-从 Aurora 迁移数据到部署在 AWS 的 TiDB 集群， 数据迁移可以氛围全量迁移和增量迁移两个步骤进行，根据你的业务需求选择相应的步骤。考虑到 Aurora 和 TiDB 部署在不同 region 的情况，方案也包含介绍从不同 region 之前进行数据迁移的最佳实践。
+从 Aurora 迁移数据到部署在 AWS 的 TiDB 集群， 数据迁移可以分为全量迁移和增量迁移两个步骤进行，请根据您的业务需求选择相应的步骤。
 
 - [从 Aurora 迁移数据到 TiDB](/data-migration/migrate-aurora-tidb-from-snapshot.md)
 
