@@ -248,7 +248,7 @@ br backup full\
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
 
-> 以下功能是实验特性，如果在使用过程中遇到问题，欢迎到 (AskTug)[https://asktug.com/] 论坛提问。
+> 以下功能是实验特性，如果在使用过程中遇到问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 >
 
 ### Raw KV 备份（实验性功能）
