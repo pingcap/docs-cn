@@ -1,13 +1,11 @@
 ---
-title: 从平面文件迁移数据到 TiDB
-summary: 介绍如何从 CSV 等平面文件迁移数据到 TiDB。
+title: 从 CSV 文件迁移数据到 TiDB
+summary: 介绍如何从 CSV 等文件迁移数据到 TiDB。
 ---
 
-# 从平面文件迁移数据到 TiDB
+# 从 CSV 文件迁移数据到 TiDB
 
-平面文件(flat file)也被称为文本数据库，是一种以纯文本格式存储数据的数据库类型。 平面文件通常是去除所有文字处理和结构标记的文本文件。平面文件的特点是每行有一条记录的表格。记录中的不同列使用制表符或逗号来划分字段。例如，逗号分隔值（Comma-Separated Values，CSV）工作表每个字段之间用逗号隔开。 
-
-TiDB Lightning 支持读取 CSV 格式的平面文件，以及其他定界符格式如 TSV（制表符分隔值）。以下将以 CSV 文件为例展示如何导入。
+TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式如 TSV（制表符分隔值）。日常我们称之为“平面文件”类型的数据导入，也可以参考本文档进行。以下将以 CSV 文件为例展示如何导入。
 
 ## 前提条件
 
@@ -23,7 +21,7 @@ TiDB Lightning 支持读取 CSV 格式的平面文件，以及其他定界符格
 
 ## 第 2 步. 创建目标表结构
 
-平面文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
+CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
 1. 编写包含 DDL 语句的 SQL 文件。
 
@@ -70,7 +68,7 @@ data-source-dir = "/data/my_datasource/"
 # 不创建表库，当在第 2 步手动完成下游表结构创建时此项设为 true，否则为 false
 no-schema = true
 
-# 定义平面文件格式
+# 定义 CSV 格式
 [mydumper.csv]
 # 字段分隔符，必须为 ASCII 字符。不建议源文件使用默认的“,”简单分隔符，推荐“|+|”等非常见字符组合
 separator = ','
@@ -137,9 +135,9 @@ nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
-## 其他格式的平面文件
+## 其他格式的文件
 
-以上以 CSV 文件举例完整的平面文件导入过程，若数据源为其他格式的平面文件，除文件名仍必须以`.csv`结尾外，配置文件`tidb-lightning.toml`的`[mydumper.csv]`格式定义同样需要做相应修改。常见的格式举例：
+以上以 CSV 文件举例完整导入过程，若数据源为其他格式，除文件名仍必须以`.csv`结尾外，配置文件`tidb-lightning.toml`的`[mydumper.csv]`格式定义同样需要做相应修改。常见的格式举例：
 
 **TSV**
 
