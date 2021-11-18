@@ -227,7 +227,7 @@ strict-format = true
 
 ## `checksum failed: checksum mismatched remote vs local`
 
-**原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因，可以通过检查日志中包含 `checksum mismatched` 的行进一步定位：
+**原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因，可以通过检查日志中包含 `checksum mismatched` 的行进一步定位。
 
 包含 `checksum mismatched` 的行中有 `total_kvs: x vs y` 的信息，`x` 表示导入集群在完成导入后计算出的键值对（KV pairs）数目，`y` 表示本地数据源产生的键值对数目。
 
