@@ -73,12 +73,11 @@ TiDB 版本：5.3.0
 
     新增对 `[CREATE | ALTER] PLACEMENT POLICY` 语句的支持，提供 SQL 接口设置数据放置规则。通过该功能，用户可以指定任意连续数据按照不同地域、机房、机柜、主机、硬件、副本数规则进行部署，满足低成本、高可用、灵活多变的业务诉求。该功能可以实现以下业务场景：
 
-    - 跨区域放置数据以改善局部访问性能
     - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本，并通过规则配置实现业务资源隔离
     - 增加重要数据的副本数，提高业务可用性和数据可靠性
     - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
     - 把热点数据的 leader 放到高性能的 TiKV 实例上
-    - 将不相关的数据分离到不同的存储中以提高可用性
+    - 将冷数据分离到不同的存储中以提高可用性
 
     [用户文档](/information-schema/information-schema-placement-rules.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
 
@@ -175,7 +174,8 @@ TiDB 版本：5.3.0
 
     TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。该功能无需特别的配置，在不改变用户使用习惯的同时，极大提高了用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
 
-    在产品性能测试中，使用 x 个 Lightning 导入整体大小 x TB MySQL 分表数据到 TiDB 单表，总耗时 x h，平均单台 Lightning 速度达到 x GB/h。（数据待更新）。
+经测试，使用 10 台 TiDB Lightning，20 TB 规模的 MySQL 数据可以在 8 小时内导入到 TiDB，单台 TiDB Lightning 可以支持 250 GB/s 的导入速度，整体效率提升了 8 倍。
+
 
     [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)
 
@@ -186,6 +186,8 @@ TiDB 版本：5.3.0
     [用户文档](tidb-lightning/tidb-lightning-prechecks.md)
 
 - **TiDB Lightning 支持导入 GBK 编码的文件**
+
+通过指定源数据文件的字符集，TiDB Lightning 会在导入过程中将源文件从指定的字符集转换为 UTF-8 编码。
 
     [用户文档](/tidb-lightning/tidb-lightning-configuration.md)
 
