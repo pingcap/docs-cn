@@ -10,11 +10,11 @@ aliases: ['/docs/dev/migration-overview/']
 
 - 全量数据迁移：使用 TiDB Lightning 将 平面文件/Aurora Snapshot/mydumper sql file 数据导入到 TiDB 集群；为了更好的配合从 MySQL/MariaDB 数据库进行全量迁移，TiDB 也提供了数据导出工具 Dumpling，支持将全量数据导出成 平面文件/mydumper sql 文件。
 
-- 快速初始化 TiDB 集群：TiDB Lightning 还提供的快速导入功能，可以实现快速初始化 TiDB 集群的指定表的效果，使用该功能前需要了解，快速导入期间对 TiDB 集群影响极大， 集群不适合对外提供访问；
+- 快速初始化 TiDB 集群：TiDB Lightning 还提供的快速导入功能，可以实现快速初始化 TiDB 集群的指定表的效果，使用该功能前需要了解，快速导入期间对 TiDB 集群影响极大，集群不适合对外提供访问；
 
 - 增量数据迁移：使用 TiDB DM 从 MySQL/MariaDB/Aurora 同步 Binlog 到 TiDB，该功能可以极大降低业务迁移过程中停机窗口时间；此外 DM 提供了适合小规模数据量数据库（< 1T）的全量数据迁移功能；
 
-- TiDB 集群复制： TiDB 支持备份恢复功能，该功能可以实现将 TiDB 的某个快照初始化到另一个全新的 TiDB 集群。
+- TiDB 集群复制：TiDB 支持备份恢复功能，该功能可以实现将 TiDB 的某个快照初始化到另一个全新的 TiDB 集群。
 
 根据迁移数据所在数据库类型、部署位置、业务数据规模大小、业务需求等因素，会有不同数据迁移选择。下面展示一些常用的数据迁移场景，方便用户依据这些线索选择到最适合自己的数据迁移方案。
 

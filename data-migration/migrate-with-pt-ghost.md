@@ -29,7 +29,6 @@ task-mode: all                  # 任务模式，可设为 "full"、"incremental
 shard-mode: "pessimistic"       # 如果为分库分表合并任务则需要配置该项。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
 online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容上游使用 gh-ost 、pt 两种工具的自动处理
-online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 在未来将被弃用，建议使用 `online-ddl`
 ```
 
 ## 开启 online-ddl 的影响
