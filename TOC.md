@@ -41,7 +41,8 @@
       + [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
       + [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
-  + [概述](/migration-overview.md)
+  + [数据迁移场景](/migration-overview.md)
+  + [迁移工具](/migration-tools.md)
   + 从 MySQL 迁移至 TiDB
     + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
@@ -70,6 +71,7 @@
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   + [在线修改集群配置](/dynamic-config.md)
+  + [在线有损恢复](/online-unsafe-recovery.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -83,6 +85,7 @@
   + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
   + [定位消耗系统资源多的查询](/identify-expensive-queries.md)
   + [SQL 语句统计](/statement-summary-tables.md)
+  + [保存和恢复集群现场信息](/sql-plan-replayer.md)
   + [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
   + [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
   + [热点问题处理](/troubleshoot-hot-spot-issues.md)
@@ -106,7 +109,15 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
       + [MPP 模式查询的执行计划](/explain-mpp.md)
+      + [索引查询的执行计划](/explain-indexes.md)
+      + [Join 查询的执行计划](/explain-joins.md)
+      + [子查询的执行计划](/explain-subqueries.md)
+      + [聚合查询的执行计划](/explain-aggregation.md)
+      + [视图查询的执行计划](/explain-views.md)
+      + [分区查询的执行计划](/explain-partitions.md)
+      + [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
@@ -134,6 +145,7 @@
 + 教程
   + [同城多中心部署](/multi-data-centers-in-one-city-deployment.md)
   + [两地三中心部署](/three-data-centers-in-two-cities-deployment.md)
+  + [同城两中心部署](/two-data-centers-in-one-city-deployment.md)
   + 读取历史数据
     + 使用 Stale Read 功能读取历史数据（推荐）
       + [Stale Read 使用场景介绍](/stale-read.md)
@@ -156,6 +168,22 @@
   + [功能概览](/ecosystem-tool-user-guide.md)
   + [适用场景](/ecosystem-tool-user-case.md)
   + [工具下载](/download-ecosystem-tools.md)
+  + [Dumpling](/dumpling-overview.md)
+  + TiDB Lightning
+    + [概述](/tidb-lightning/tidb-lightning-overview.md)
+    + 主要功能
+      + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+      + [表库过滤](/table-filter.md)
+      + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+      + [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
+      + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+    + [快速上手教程](/get-started-with-tidb-lightning.md)
+    + [执行任务前的检查项](/tidb-lightning/tidb-lightning-prechecks.md)
+    + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
+    + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
+    + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+    + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+    + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + Backup & Restore (BR)
     + [BR 工具简介](/br/backup-and-restore-tool.md)
     + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
@@ -182,36 +210,23 @@
       + [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       + [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     + [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  + TiDB Lightning
-    + [概述](/tidb-lightning/tidb-lightning-overview.md)
-    + [快速上手教程](/get-started-with-tidb-lightning.md)
-    + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
-    + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
-    + 主要功能
-      + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      + [表库过滤](/table-filter.md)
-      + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [后端](/tidb-lightning/tidb-lightning-backends.md)
-      + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-    + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + TiCDC
     + [概述](/ticdc/ticdc-overview.md)
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
     + [监控指标](/ticdc/monitor-ticdc.md)
+    + [报警规则](/ticdc/ticdc-alert-rules.md)
     + [TiCDC Open API](/ticdc/ticdc-open-api.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     + [术语表](/ticdc/ticdc-glossary.md)
-  + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     + [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     + [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
+    + [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   + TiSpark
     + [TiSpark 快速上手](/get-started-with-tispark.md)
     + [TiSpark 用户指南](/tispark-overview.md)
@@ -261,10 +276,11 @@
       - [`ADMIN CHECKSUM TABLE`](/sql-statements/sql-statement-admin-checksum-table.md)
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
       - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
-      - [`ADMIN SHOW TELEMETRY]`](/sql-statements/sql-statement-admin-show-telemetry.md)
+      - [`ADMIN SHOW TELEMETRY`](/sql-statements/sql-statement-admin-show-telemetry.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
       - [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
+      - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
@@ -277,6 +293,7 @@
       - [`CREATE [GLOBAL|SESSION] BINDING`](/sql-statements/sql-statement-create-binding.md)
       - [`CREATE DATABASE`](/sql-statements/sql-statement-create-database.md)
       - [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md)
+      - [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md)
       - [`CREATE ROLE`](/sql-statements/sql-statement-create-role.md)
       - [`CREATE SEQUENCE`](/sql-statements/sql-statement-create-sequence.md)
       - [`CREATE TABLE LIKE`](/sql-statements/sql-statement-create-table-like.md)
@@ -292,6 +309,7 @@
       - [`DROP COLUMN`](/sql-statements/sql-statement-drop-column.md)
       - [`DROP DATABASE`](/sql-statements/sql-statement-drop-database.md)
       - [`DROP INDEX`](/sql-statements/sql-statement-drop-index.md)
+      - [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md)
       - [`DROP ROLE`](/sql-statements/sql-statement-drop-role.md)
       - [`DROP SEQUENCE`](/sql-statements/sql-statement-drop-sequence.md)
       - [`DROP STATS`](/sql-statements/sql-statement-drop-stats.md)
@@ -336,6 +354,7 @@
       - [`SHOW COLLATION`](/sql-statements/sql-statement-show-collation.md)
       - [`SHOW [FULL] COLUMNS FROM`](/sql-statements/sql-statement-show-columns-from.md)
       - [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)
+      - [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md)
       - [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md)
       - [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md)
       - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
@@ -349,6 +368,9 @@
       - [`SHOW INDEXES [FROM|IN]`](/sql-statements/sql-statement-show-indexes.md)
       - [`SHOW KEYS [FROM|IN]`](/sql-statements/sql-statement-show-keys.md)
       - [`SHOW MASTER STATUS`](/sql-statements/sql-statement-show-master-status.md)
+      - [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md)
+      - [`SHOW PLACEMENT FOR`](/sql-statements/sql-statement-show-placement-for.md)
+      - [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md)
       - [`SHOW PLUGINS`](/sql-statements/sql-statement-show-plugins.md)
       - [`SHOW PRIVILEGES`](/sql-statements/sql-statement-show-privileges.md)
       - [`SHOW [FULL] PROCESSSLIST`](/sql-statements/sql-statement-show-processlist.md)
@@ -405,6 +427,7 @@
     + [约束](/constraints.md)
     + [生成列](/generated-columns.md)
     + [SQL 模式](/sql-mode.md)
+    + [表属性](/table-attributes.md)
     + 事务
       + [事务概览](/transaction-overview.md)
       + [隔离级别](/transaction-isolation-levels.md)
@@ -415,7 +438,9 @@
       + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md)
     + [分区表](/partitioned-table.md)
+    + [临时表](/temporary-tables.md)
     + [字符集和排序规则](/character-set-and-collation.md)
+    + [Placement Rules in SQL](/placement-rules-in-sql.md)
     + 系统表
       + [`mysql`](/mysql-schema.md)
       + INFORMATION_SCHEMA
@@ -445,6 +470,7 @@
         + [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)
         + [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)
         + [`PARTITIONS`](/information-schema/information-schema-partitions.md)
+        + [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md)
         + [`PROCESSLIST`](/information-schema/information-schema-processlist.md)
         + [`REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
         + [`SCHEMATA`](/information-schema/information-schema-schemata.md)
@@ -472,6 +498,7 @@
       + 运维
         + [部署](/dashboard/dashboard-ops-deploy.md)
         + [反向代理](/dashboard/dashboard-ops-reverse-proxy.md)
+        + [用户管理](/dashboard/dashboard-user.md)
         + [安全](/dashboard/dashboard-ops-security.md)
       + [访问](/dashboard/dashboard-access.md)
       + [概况页面](/dashboard/dashboard-overview.md)
@@ -487,7 +514,9 @@
         + [查看报告](/dashboard/dashboard-diagnostics-report.md)
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
-      + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + 实例性能分析
+        + [手动分析页面](/dashboard/dashboard-profiling.md)
+        + [持续分析页面](/dashboard/continuous-profiling.md)
       + 会话管理与配置
         + [分享会话](/dashboard/dashboard-session-share.md)
         + [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
@@ -547,19 +576,24 @@
 + [术语表](/glossary.md)
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
+  + [版本发布时间线](/releases/release-timeline.md)
   + v5.2
+    - [5.2.2](/releases/release-5.2.2.md)
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   + v5.1
+    - [5.1.2](/releases/release-5.1.2.md)
     - [5.1.1](/releases/release-5.1.1.md)
     - [5.1.0](/releases/release-5.1.0.md)
   + v5.0
+    - [5.0.4](/releases/release-5.0.4.md)
     - [5.0.3](/releases/release-5.0.3.md)
     - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.15](/releases/release-4.0.15.md)
     - [4.0.14](/releases/release-4.0.14.md)
     - [4.0.13](/releases/release-4.0.13.md)
     - [4.0.12](/releases/release-4.0.12.md)
