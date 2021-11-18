@@ -1,9 +1,9 @@
 ---
-title: 用 EXPLAIN 查看使用子查询的执行计划
+title: 用 EXPLAIN 查看子查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看使用子查询的执行计划
+# 用 EXPLAIN 查看子查询的执行计划
 
 TiDB 会执行多种[子查询相关的优化](/subquery-optimization.md)，以提升子查询的执行性能。本文档介绍一些常见子查询的优化方式，以及如何解读 `EXPLAIN` 语句返回的执行计划信息。
 
@@ -147,3 +147,13 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 ```
 
 上述查询首先读取了表 `t3`，然后根据主键开始探测 (probe) 表 `t1`。连接类型是 _anti semi join_，即反半连接：之所以使用 _anti_，是因为上述示例有不存在匹配值（即 `NOT IN`）的情况；使用 `Semi Join` 则是因为仅需要匹配第一行后就可以停止查询。
+
+## 其他类型查询的执行计划
+
++ [MPP 模式查询的执行计划](/explain-mpp.md)
++ [索引查询的执行计划](/explain-indexes.md)
++ [Join 查询的执行计划](/explain-joins.md)
++ [聚合查询的执行计划](/explain-aggregation.md)
++ [视图查询的执行计划](/explain-views.md)
++ [分区查询的执行计划](/explain-partitions.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)

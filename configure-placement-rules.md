@@ -6,11 +6,17 @@ aliases: ['/docs-cn/dev/configure-placement-rules/','/docs-cn/dev/how-to/configu
 
 # Placement Rules 使用文档
 
+> **警告：**
+>
+> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。但是，单独开启 Placement Rules 则尚未经过大量测试，因此，不建议在生产环境中单独开启该功能。
+
 > **注意：**
 >
-> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。除配合使用 TiFlash 的场景外，单独开启 Placement Rules 没有经过大量测试，因此，不建议在生产环境单独开启该功能。
+> TiDB 在 v5.3.0 中引入了实验特性 [Placement Rules in SQL](/placement-rules-in-sql.md)。使用该功能，你可以更方便地配置表和分区的位置。在未来版本中，Placement Rules in SQL 可能取代本文档介绍的 Placement Rules 功能。
 
 Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
+
+Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](#关闭-placement-rules-特性)。
 
 ## 规则系统介绍
 
@@ -71,7 +77,7 @@ Placement Rules 示意图如下所示：
 
 ### 开启 Placement Rules 特性
 
-默认情况下，Placement Rules 特性是关闭的。要开启这个特性，可以集群初始化以前设置 PD 配置文件：
+Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](#关闭-placement-rules-特性)。如需在关闭后重新开启该特性，可以集群初始化以前设置 PD 配置文件：
 
 {{< copyable "" >}}
 

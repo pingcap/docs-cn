@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/deploy-monitoring-services/','/docs-cn/dev/monitor-a-tid
 {{< copyable "shell-regular" >}}
 
 ```bash
-wget https://download.pingcap.org/prometheus-2.8.1.linux-amd64.tar.gz
+wget https://download.pingcap.org/prometheus-2.27.1.linux-amd64.tar.gz
 wget https://download.pingcap.org/node_exporter-0.17.0.linux-amd64.tar.gz
 wget https://download.pingcap.org/grafana-6.1.6.linux-amd64.tar.gz
 ```
@@ -37,7 +37,7 @@ wget https://download.pingcap.org/grafana-6.1.6.linux-amd64.tar.gz
 {{< copyable "shell-regular" >}}
 
 ```bash
-tar -xzf prometheus-2.8.1.linux-amd64.tar.gz
+tar -xzf prometheus-2.27.1.linux-amd64.tar.gz
 tar -xzf node_exporter-0.17.0.linux-amd64.tar.gz
 tar -xzf grafana-6.1.6.linux-amd64.tar.gz
 ```
@@ -66,7 +66,7 @@ cd node_exporter-0.17.0.linux-amd64
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd prometheus-2.8.1.linux-amd64 &&
+cd prometheus-2.27.1.linux-amd64 &&
 vi prometheus.yml
 ```
 
