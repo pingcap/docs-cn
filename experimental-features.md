@@ -39,7 +39,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## TiDB 数据共享订阅
 
 + TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
-+ TiCDC [支持 TiDB 集群之间环形同步](/ticdc/manage-ticdc.md#环形同步)。（v5.0 实验特性）
 
 ## 存储
 
@@ -59,4 +58,5 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。
++ [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
 + [持续性能分析](/dashboard/continuous-profiling.md)。
