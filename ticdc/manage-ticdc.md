@@ -156,7 +156,6 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
 - `--config`：指定 changefeed 配置文件。
-- `--data-dir`：指定 TiCDC 需要使用磁盘储存文件时使用的目录。目前 Unified Sorter 会使用该目录储存临时文件，请确保该目录所在设备可用空间充足。对于使用 TiUP 的用户，本选项可以通过配置 `cdc_servers` 小节中的 `data_dir` 来指定或默认使用 `global` 中 `data_dir` 路径。
 
 #### Sink URI 配置 `mysql`/`tidb`
 
