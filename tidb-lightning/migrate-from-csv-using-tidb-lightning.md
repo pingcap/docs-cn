@@ -4,7 +4,7 @@ title: CSV 支持
 
 # CSV 支持与限制
 
-本文介绍如何使用 TiDB Lightning 从 CSV 文件迁移数据到 TiDB。关于如何从 MySQL 生成 CSV 文件，可以参考[使用 Dumpling 导出到 CSV 文件](/dumpling-overview.md#导出到-csv-文件)。
+本文介绍如何使用 TiDB Lightning 从 CSV 文件迁移数据到 TiDB。关于如何从 MySQL 生成 CSV 文件，可以参考[使用 Dumpling 导出到 CSV 文件](/dumpling-overview.md#导出为-csv-文件)。
 
 TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他定界符格式如 TSV（制表符分隔值）。
 
