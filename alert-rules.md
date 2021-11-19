@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -750,11 +750,19 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
 
-#### `TiKV_low_space_and_add_region`
+#### `TiKV_low_space`
 
 * 报警规则：
 
-    `count((sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2) and (sum(tikv_raftstore_snapshot_traffic_total{type="applying"}) by (instance) > 0)) > 0`
+    `sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2`
+
+* 规则描述：
+
+    TiKV 数据量超过节点配置容量或物理磁盘容量的 80%。
+
+* 处理方法：
+
+    确认节点空间均衡情况，做好扩容计划。
 
 #### `TiKV_approximate_region_size`
 
@@ -770,9 +778,17 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
     Region 分裂的速度不及写入的速度。为缓解这种情况，建议更新到支持 batch-split 的版本 (>= 2.1.0-rc1)。如暂时无法更新，可以使用 `pd-ctl operator add split-region <region_id> --policy=approximate` 手动分裂 Region。
 
+## TiFlash 报警规则
+
+关于 TiFlash 报警规则的详细描述，参见 [TiFlash 报警规则](/tiflash/tiflash-alert-rules.md)。
+
 ## TiDB Binlog 报警规则
 
 关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
+
+## TiCDC 报警规则
+
+关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
 
 ## Node_exporter 主机报警规则
 
@@ -939,6 +955,22 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
     * 检查 TiDB 服务所在机器是否宕机。
     * 检查 TiDB 进程是否存在。
     * 检查监控机与 TiDB 服务所在机器之间网络是否正常。
+
+#### `TiFlash_server_is_down`
+
+* 报警规则：
+
+    `probe_success{group="tiflash"} == 0`
+
+* 规则描述：
+
+    TiFlash 服务端口探测失败。
+
+* 处理方法：
+
+    * 检查 TiFlash 服务所在机器是否宕机。
+    * 检查 TiFlash 进程是否存在。
+    * 检查监控机与 TiFlash 服务所在机器之间网络是否正常。
 
 #### `Pump_server_is_down`
 

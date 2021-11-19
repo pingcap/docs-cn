@@ -81,7 +81,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backupfull.log
 ```
 
@@ -93,7 +93,7 @@ br backup full \
 br backup full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backupfull.log
 Full Backup <---------/................................................> 17.12%.
 ```
@@ -111,7 +111,7 @@ br backup db \
     --pd "${PDIP}:2379" \
     --db test \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -133,7 +133,7 @@ br backup table \
     --db test \
     --table usertable \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -154,7 +154,7 @@ br backup full \
     --pd "${PDIP}:2379" \
     --filter 'db*.tbl*' \
     --storage "local:///tmp/backup" \
-    --ratelimit 120 \
+    --ratelimit 128 \
     --log-file backupfull.log
 ```
 
@@ -187,6 +187,7 @@ br backup full \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
     --send-credentials-to-tikv=true \
+    --ratelimit 128 \
     --log-file backuptable.log
 ```
 
@@ -204,6 +205,7 @@ br backup full \
 ```shell
 br backup full\
     --pd ${PDIP}:2379 \
+    --ratelimit 128 \
     -s local:///home/tidb/backupdata/incr \
     --lastbackupts ${LAST_BACKUP_TS}
 ```
@@ -220,6 +222,32 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
 
+### 加密备份数据（实验性功能）
+
+自 TiDB v5.3.0 起， TiDB 开始支持备份加密功能，你可配置下列参数在备份过程中到达加密数据的效果：
+
+* `--crypter.method`：加密算法，支持 `aes128-ctr/aes192-ctr/aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+* `--crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节
+* `--crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 crypter.key 不需要传入
+
+> **警告：**
+>
+> - 当前该功能为实验特性，不建议在生产环境中使用。
+> - 密钥丢失，备份的数据将无法恢复到集群中。
+> - 加密功能需在 br 工具和 TiDB 集群都不低于 v5.3.0 的版本上使用，且加密备份得到的数据无法在低于 v5.3.0 版本的集群上恢复。
+
+备份加密的示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --crypter.method aes128-ctr \
+    --crypter.key 0123456789abcdef0123456789abcdef
+```
+
 ### Raw KV 备份（实验性功能）
 
 > **警告：**
@@ -234,6 +262,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 br backup raw --pd $PD_ADDR \
     -s "local://$BACKUP_DIR" \
     --start 31 \
+    --ratelimit 128 \
     --end 3130303030303030 \
     --format hex \
     --cf default
@@ -262,7 +291,7 @@ br backup raw --pd $PD_ADDR \
 >
 > 使用共享存储可以避免这些情况。例如，在本地路径上安装 NFS，或使用 S3。利用这些网络存储，各个节点都可以自动读取每个 SST 文件，此时上述注意事项不再适用。
 > 
-> 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见 [FAQ](/br/backup-and-restore-faq.md#是否可以同时使用多个-br-命令对单个集群进行恢复)。
+> 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见 [FAQ](/br/backup-and-restore-faq.md#是否可以同时使用多个-br-进程对单个集群进行恢复)。
 
 ### 恢复全部备份数据
 
@@ -288,6 +317,7 @@ br restore full \
 br restore full \
     --pd "${PDIP}:2379" \
     --storage "local:///tmp/backup" \
+    --ratelimit 128 \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
 ```
@@ -304,6 +334,7 @@ Full Restore <---------/...............................................> 17.12%.
 br restore db \
     --pd "${PDIP}:2379" \
     --db "test" \
+    --ratelimit 128 \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
 ```
@@ -327,6 +358,7 @@ br restore table \
     --pd "${PDIP}:2379" \
     --db "test" \
     --table "usertable" \
+    --ratelimit 128 \
     --storage "local:///tmp/backup" \
     --log-file restorefull.log
 ```
@@ -373,6 +405,7 @@ br restore full \
     --pd "${PDIP}:2379" \
     --storage "s3://${Bucket}/${Folder}" \
     --s3.region "${region}" \
+    --ratelimit 128 \
     --send-credentials-to-tikv=true \
     --log-file restorefull.log
 ```
@@ -392,7 +425,7 @@ BR 可以并且会默认备份 `mysql` 数据库下的表。
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 ```
 
 在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
@@ -402,7 +435,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f 'mysql.usertable' -s $external_storage_url
+br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 ```
 
 > **警告：**
@@ -415,6 +448,24 @@ br restore full -f 'mysql.usertable' -s $external_storage_url
 > - GC 数据无法被恢复。
 > 
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
+
+### 解密恢复数据（实验性功能）
+
+> **警告：**
+>
+> - 当前该功能为实验特性，不建议在生产环境中使用。
+
+在对数据做加密备份后，恢复操作需传入相应的解密参数，解密算法或密钥不正确则无法恢复，解密参数和加密参数一致即可。解密恢复的示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --crypter.method aes128-ctr \
+    --crypter.key 0123456789abcdef0123456789abcdef
+```
 
 ### Raw KV 恢复（实验性功能）
 
@@ -431,6 +482,7 @@ br restore raw --pd $PD_ADDR \
     -s "local://$BACKUP_DIR" \
     --start 31 \
     --end 3130303030303030 \
+    --ratelimit 128 \
     --format hex \
     --cf default
 ```
@@ -469,6 +521,7 @@ br restore raw --pd $PD_ADDR \
     ```shell
     br restore full \
         -s "local://$BACKUP_DIR" \
+        --ratelimit 128 \
         --pd $PD_ADDR \
         --online
     ```

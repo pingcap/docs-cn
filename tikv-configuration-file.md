@@ -22,13 +22,51 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 默认值：false
 
+### `log-level`
+
++ 日志等级。
++ 可选值："trace"，"debug"，"info"，"warning"，"error"，"critical"
++ 默认值："info"
+
+### `log-file`
+
++ 日志文件。如果未设置该项，日志会默认输出到 "stderr"。
++ 默认值：""
+
+### `log-format`
+
++ 日志的格式。
++ 可选值："json"，"text"
++ 默认值："text"
+
+### `log-rotation-timespan`
+
++ 轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。
++ 默认值："24h"
+
+### `log-rotation-size`
+
++ 触发日志轮换的文件大小。一旦日志文件大小超过指定的阈值，日志文件将被轮换，将旧文件被置于新文件中，新文件名即旧文件名加上时间戳后缀。
++ 默认值："300MB"
+
+### `slow-log-file`
+
++ 存储慢日志的文件。
++ 如果未设置本项但设置了 `log-file`，慢日志将输出至 `log-file` 指定的日志文件中。如果本项和 `log-file` 均未设置，所有日志默认输出到 "stderr"。
++ 默认值：""
+
+### `slow-log-threshold`
+
++ 输出慢日志的阈值。处理时间超过该阈值后会输出慢日志。
++ 默认值："1s"
+
 ## server
 
 服务器相关的配置项。
 
 ### `status-thread-pool-size`
 
-+ Http API 服务的工作线程数量。
++ HTTP API 服务的工作线程数量。
 + 默认值：1
 + 最小值：1
 
@@ -64,6 +102,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + tikv 节点之间用于 raft 通讯的链接最大数量。
 + 默认值：1
 + 最小值：1
+
+### `max-grpc-send-msg-len`
+
++ 设置可发送的最大 gRPC 消息长度。
++ 默认值：10485760
++ 单位：Bytes
++ 最大值：2147483647
 
 ### `grpc-stream-initial-window-size`
 
@@ -286,7 +331,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `reserve-space`
 
-+ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
++ TiKV 启动时会预留一块空间用于保护磁盘空间。当磁盘剩余空间小于该预留空间时，TiKV 会限制部分写操作。预留空间形式上分为两个部分：预留空间的 80% 用作磁盘空间不足时的运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。在回收空间的过程中，如果额外使用的磁盘空间过多，导致存储耗尽时，该临时文件会成为恢复服务的最后一道防御。
++ 临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。当 TiKV 因磁盘空间耗尽而下线时，重启 TiKV 会自动删除该临时文件，并自动尝试回收空间。
++ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。当该配置项的值为 `0MB` 时，TiKV 会关闭磁盘防护功能。
 + 默认值：5GB
 + 单位：MB|GB
 
@@ -334,7 +381,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 ### `l0-files-threshold`
 
 + 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
-+ 默认值：9
++ 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 
@@ -758,7 +805,13 @@ rocksdb 相关的配置项。
 
 ### `wal-recovery-mode`
 
-+ WAL 恢复模式，取值：0 (TolerateCorruptedTailRecords)，1 (AbsoluteConsistency)，2 (PointInTimeRecovery)，3 (SkipAnyCorruptedRecords)。
++ WAL 恢复模式，取值：0，1，2，3。
+
++ 0 (TolerateCorruptedTailRecords)：容忍并丢弃日志尾部不完整的记录。
++ 1 (AbsoluteConsistency)：当日志中存在任何损坏记录时，放弃恢复。
++ 2 (PointInTimeRecovery)：按顺序恢复日志，直到碰到第一个损坏的记录。
++ 3 (SkipAnyCorruptedRecords)：灾难后恢复。跳过日志中损坏的记录，尽可能多的恢复数据。
+
 + 默认值：2
 + 最小值：0
 + 最大值：3
@@ -794,7 +847,7 @@ rocksdb 相关的配置项。
 
 ### `compaction-readahead-size`
 
-+ 异步 Sync 限速速率。
++ 开启 RocksDB compaction 过程中的预读功能，该项指定预读数据的大小。如果使用的是机械磁盘，建议该值至少为 2MB。
 + 默认值：0
 + 最小值：0
 + 单位：B|KB|MB|GB
@@ -808,7 +861,7 @@ rocksdb 相关的配置项。
 
 ### `use-direct-io-for-flush-and-compaction`
 
-+ flush 或者 compaction 开启 DirectIO 的开关。
++ 决定后台 flush 或者 compaction 的读写是否设置 O_DIRECT 的标志。该选项对性能的影响：开启 O_DIRECT 可以绕过并防止污染操作系统 buffer cache，但后续文件读取需要把内容重新读到 buffer cache。
 + 默认值：false
 
 ### `rate-bytes-per-sec`
@@ -1284,7 +1337,7 @@ raftdb 相关配置项。
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 是否开启 GC in Compaction Filter 特性
-+ 默认值：false
++ 默认值：true
 
 ## backup
 

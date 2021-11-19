@@ -24,7 +24,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
 - [cdc_servers](/tiup/tiup-cluster-topology-reference.md#cdc_servers)：CDC 实例的配置，用来指定 CDC 组件部署到哪些机器上
 - [tispark_masters](/tiup/tiup-cluster-topology-reference.md#tispark_masters)：TiSpark Master 实例的配置，用来指定 TiSpark Master 组件部署到哪台机器上，仅允许部署一个 TiSpark Master 节点
 - [tispark_workers](/tiup/tiup-cluster-topology-reference.md#tispark_workers)：TiSpark Worker 实例的配置，用来指定 TiSpark Worker 组件部署到哪些机器上
-- [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：用来指定 Prometheus 部署在哪机器上，TiUP 支持部署多台 Prometheus 实例，但真实投入使用的只有第一个
+- [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers)：用来指定 Prometheus 和 NGMonitoring 部署在哪些机器上，TiUP 支持部署多台 Prometheus 实例，但真实投入使用的只有第一个
 - [grafana_servers](/tiup/tiup-cluster-topology-reference.md#grafana_servers)：Grafana 实例的配置，用来指定 Grafana 部署在哪台机器上
 - [alertmanager_servers](/tiup/tiup-cluster-topology-reference.md#alertmanager_servers)：Alertemanager 实例的配置，用来指定 Alertmanager 部署在哪些机器上
 
@@ -45,7 +45,7 @@ title: 通过 TiUP 部署 TiDB 集群的拓扑文件配置
     - 如果在实例级别配置了绝对路径的 `data_dir`，那么实际数据目录为该实例设定的 `data_dir`
     - 对于每个实例，如果用户未配置 `data_dir`，其默认值为 `<global.data_dir>`
     - 如果 `data_dir` 为相对路径，那么组件数据将放到 `<deploy_dir>/<data_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
-- `log_dir`：数据目录，默认值："log"。其应用规则如下：
+- `log_dir`：日志目录，默认值："log"。其应用规则如下：
     - 如果在实例级别配置了绝对路径的 `log_dir`，那么实际日志目录为该实例设定的 `log_dir`
     - 对于每个实例，如果用户未配置 `log_dir`，其默认值为 `<global.log_dir>`
     - 如果 `log_dir` 为相对路径，那么组件日志将放到 `<deploy_dir>/<log_dir>` 中，其中 `<deploy_dir>` 的计算规则请参考 `deploy_dir` 字段的应用规则
@@ -397,8 +397,6 @@ drainer_servers:
 - `deploy_dir`
 - `data_dir`
 - `log_dir`
-- `gc-ttl`
-- `tz`
 - `arch`
 - `os`
 
@@ -408,7 +406,10 @@ drainer_servers:
 cdc_servers:
   - host: 10.0.1.20
     gc-ttl: 86400
+    data_dir: "/cdc-data"
   - host: 10.0.1.21
+    gc-ttl: 86400
+    data_dir: "/cdc-data"
 ```
 
 ### `tispark_masters`
@@ -494,7 +495,8 @@ tispark_workers:
 
 `monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`monitoring_servers` 是一个数组，每个数组元素包含以下字段：
 
-- `host`：指定部署到哪台机器，字段值填 IP 地址，不可省略
+- `host`：指定部署到哪台机器，字段值填 IP 地址，必填项
+- `ng_port`：指定连接 NGMonitoring 的 SSH 端口，在 TiUP v1.7.0 引入，支持 TiDB v5.3.0 及以上版本的[持续性能分析](/dashboard/dashboard-profiling.md)和 Top SQL 功能。
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
 - `port`：指定 Prometheus 提供服务的端口，默认值：9090
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
