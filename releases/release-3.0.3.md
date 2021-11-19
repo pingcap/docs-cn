@@ -14,8 +14,7 @@ TiDB Ansible 版本：3.0.3
 
 + SQL 优化器
     - 添加 `opt_rule_blacklist` 表，用于禁用一些逻辑优化规则，比如 `aggregation_eliminate`，`column_prune` 等 [#11658](https://github.com/pingcap/tidb/pull/11658)
-    - 修复 Index join 的 join key 中使用前缀索引或者使用 unsigned 的索引列等于负数时结果不正确的问题
-[#11759](https://github.com/pingcap/tidb/pull/11759)
+    - 修复 Index join 的 join key 中使用前缀索引或者使用 unsigned 的索引列等于负数时结果不正确的问题 [#11759](https://github.com/pingcap/tidb/pull/11759)
     - 修复 `create … binding ...` 的 Select 语句中带有 `”` 或者 `\` 时解析报错的问题 [#11726](https://github.com/pingcap/tidb/pull/11726)
 + SQL 执行引擎
     - 修复 `Quote` 函数处理 null 值的返回值类型出错的问题 [#11619](https://github.com/pingcap/tidb/pull/11619)
