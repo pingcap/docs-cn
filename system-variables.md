@@ -258,7 +258,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：""
-- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
+- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 返回超时错误（对应的错误码为 ErrTiFlashServerTimeout）时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。 
 
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -1397,7 +1397,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`67108864`
 - 范围：`[1048576, 137438953472]`
 - 单位：字节
-- 这个变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。
+- 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
 
 ### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
 

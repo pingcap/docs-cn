@@ -71,7 +71,7 @@
   + [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   + [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   + [在线修改集群配置](/dynamic-config.md)
-  + [多节点永久损坏后的在线有损恢复](/online-unsafe-recovery.md)
+  + [在线有损恢复](/online-unsafe-recovery.md)
 + 监控与告警
   + [监控框架概述](/tidb-monitoring-framework.md)
   + [监控 API](/tidb-monitoring-api.md)
@@ -176,7 +176,6 @@
       + [表库过滤](/table-filter.md)
       + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       + [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
-      + [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
       + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     + [快速上手教程](/get-started-with-tidb-lightning.md)
     + [执行任务前的检查项](/tidb-lightning/tidb-lightning-prechecks.md)
@@ -439,7 +438,7 @@
       + [GC 配置](/garbage-collection-configuration.md)
     + [视图](/views.md)
     + [分区表](/partitioned-table.md)
-    + [临时表](/temporary-table.md)
+    + [临时表](/temporary-tables.md)
     + [字符集和排序规则](/character-set-and-collation.md)
     + [Placement Rules in SQL](/placement-rules-in-sql.md)
     + 系统表
