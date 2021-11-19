@@ -1,7 +1,6 @@
 ---
 title: Follower Read
 summary: 了解 Follower Read 的使用与实现。
-aliases: ['/docs-cn/dev/follower-read/','/docs-cn/dev/reference/performance/follower-read/']
 ---
 
 # Follower Read

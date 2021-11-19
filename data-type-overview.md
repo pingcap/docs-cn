@@ -1,6 +1,5 @@
 ---
 title: 数据类型概述
-aliases: ['/docs-cn/dev/data-type-overview/','/docs-cn/dev/reference/sql/data-types/overview/']
 ---
 
 # 数据类型概述

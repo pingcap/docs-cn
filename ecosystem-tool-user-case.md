@@ -1,7 +1,6 @@
 ---
 title: TiDB 生态工具适用场景
 summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
-aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 ---
 
 # TiDB 生态工具适用场景

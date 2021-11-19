@@ -1,7 +1,6 @@
 ---
 title: 同城多数据中心部署 TiDB
 summary: 本文档介绍同城多数据中心部署 TiDB 方案。
-aliases: ['/docs-cn/dev/multi-data-centers-in-one-city-deployment/','/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn/dev/geo-redundancy-deployment/']
 ---
 
 # 同城多数据中心部署 TiDB

@@ -1,7 +1,6 @@
 ---
 title: START TRANSACTION
 summary: TiDB 数据库中 START TRANSACTION 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-start-transaction/','/docs-cn/dev/reference/sql/statements/start-transaction/']
 ---
 
 # START TRANSACTION

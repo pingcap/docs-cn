@@ -1,6 +1,5 @@
 ---
 title: TiDB Lightning 教程
-aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
 ---
 
 # TiDB Lightning 教程
