@@ -218,6 +218,12 @@ TiDB 版本：5.3.0
 
     [用户文档](/ticdc/manage-ticdc.md)
 
+    **TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理**
+
+    从 TiDB v5.2.0 起，TiCDC 提供的 OpenAPI 功能成为正式特性，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。
+
+    [用户文档](/ticdc/ticdc-open-api.md)
+
 ### 部署及运维
 
 - **持续性能分析（实验特性）**
