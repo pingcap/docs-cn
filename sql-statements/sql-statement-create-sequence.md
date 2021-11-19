@@ -1,7 +1,6 @@
 ---
 title: CREATE SEQUENCE
 summary: CREATE SEQUENCE 在 TiDB 中的使用概况
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-sequence/','/docs-cn/dev/reference/sql/statements/create-sequence/']
 ---
 
 # CREATE SEQUENCE

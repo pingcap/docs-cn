@@ -1,7 +1,6 @@
 ---
 title: EXPLAIN 概览
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划。
-aliases: ['/docs-cn/dev/query-execution-plan/','/docs-cn/dev/reference/performance/understanding-the-query-execution-plan/','/docs-cn/dev/index-merge/','/docs-cn/dev/reference/performance/index-merge/','/zh/tidb/dev/query-execution-plan/']
 ---
 
 # `EXPLAIN` 概览

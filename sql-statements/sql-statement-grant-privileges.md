@@ -1,7 +1,6 @@
 ---
 title: GRANT <privileges>
 summary: TiDB 数据库中 GRANT <privileges> 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-grant-privileges/','/docs-cn/dev/reference/sql/statements/grant-privileges/']
 ---
 
 # `GRANT <privileges>`
