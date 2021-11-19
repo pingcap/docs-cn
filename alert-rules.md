@@ -5,7 +5,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -749,11 +749,19 @@ summary: TiDB 集群中各组件的报警规则详解。
 
     查看是哪一类任务的值偏高，通常 Coprocessor、apply worker 这类任务都可以在其他指标里找到解决办法。
 
-#### `TiKV_low_space_and_add_region`
+#### `TiKV_low_space`
 
 * 报警规则：
 
-    `count((sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2) and (sum(tikv_raftstore_snapshot_traffic_total{type="applying"}) by (instance) > 0)) > 0`
+    `sum(tikv_store_size_bytes{type="available"}) by (instance) / sum(tikv_store_size_bytes{type="capacity"}) by (instance) < 0.2`
+
+* 规则描述：
+
+    TiKV 数据量超过节点配置容量或物理磁盘容量的 80%。
+
+* 处理方法：
+
+    确认节点空间均衡情况，做好扩容计划。
 
 #### `TiKV_approximate_region_size`
 
@@ -772,6 +780,10 @@ summary: TiDB 集群中各组件的报警规则详解。
 ## TiDB Binlog 报警规则
 
 关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
+
+## TiCDC 报警规则
+
+关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
 
 ## Node_exporter 主机报警规则
 

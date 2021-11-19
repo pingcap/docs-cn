@@ -9,7 +9,7 @@ title: tiup cluster edit-config
 > **注意：**
 > 
 > + 修改配置时不能增删机器，增删机器属于[集群扩容](/tiup/tiup-component-cluster-scale-out.md)和[集群缩容](/tiup/tiup-component-cluster-scale-in.md)的功能。
-> + 执行完该命令后配置只是在中控机上修改了，要应用配置需要执行 `tiup cluster relaod` 命令来重新加载。
+> + 执行完该命令后配置只是在中控机上修改了，要应用配置需要执行 `tiup cluster reload` 命令来重新加载。
 
 ## 语法
 

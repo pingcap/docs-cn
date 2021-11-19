@@ -39,7 +39,8 @@
       + [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
       + [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 + 数据迁移
-  + [概述](/migration-overview.md)
+  + [数据迁移场景](/migration-overview.md)
+  + [迁移工具](/migration-tools.md)
   + 从 MySQL 迁移至 TiDB
     + [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     + [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
@@ -104,7 +105,15 @@
     + [SQL 性能调优概览](/sql-tuning-overview.md)
     + 理解 TiDB 执行计划
       + [TiDB 执行计划概览](/explain-overview.md)
+      + [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
       + [MPP 模式查询的执行计划](/explain-mpp.md)
+      + [索引查询的执行计划](/explain-indexes.md)
+      + [Join 查询的执行计划](/explain-joins.md)
+      + [子查询的执行计划](/explain-subqueries.md)
+      + [聚合查询的执行计划](/explain-aggregation.md)
+      + [视图查询的执行计划](/explain-views.md)
+      + [分区查询的执行计划](/explain-partitions.md)
+      + [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
     + SQL 优化流程
       + [SQL 优化流程概览](/sql-optimization-concepts.md)
       + 逻辑优化
@@ -148,6 +157,21 @@
   + [功能概览](/ecosystem-tool-user-guide.md)
   + [适用场景](/ecosystem-tool-user-case.md)
   + [工具下载](/download-ecosystem-tools.md)
+  + [Dumpling](/dumpling-overview.md)
+  + TiDB Lightning
+    + [概述](/tidb-lightning/tidb-lightning-overview.md)
+    + 主要功能
+      + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+      + [表库过滤](/table-filter.md)
+      + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+      + [TiDB Lightning后端](/tidb-lightning/tidb-lightning-backends.md)
+      + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+    + [快速上手教程](/get-started-with-tidb-lightning.md)
+    + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
+    + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
+    + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+    + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+    + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + Backup & Restore (BR)
     + [BR 工具简介](/br/backup-and-restore-tool.md)
     + [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
@@ -174,30 +198,16 @@
       + [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       + [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     + [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  + TiDB Lightning
-    + [概述](/tidb-lightning/tidb-lightning-overview.md)
-    + [快速上手教程](/get-started-with-tidb-lightning.md)
-    + [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
-    + [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
-    + 主要功能
-      + [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      + [表库过滤](/table-filter.md)
-      + [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      + [后端](/tidb-lightning/tidb-lightning-backends.md)
-      + [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    + [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    + [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-    + [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   + TiCDC
     + [概述](/ticdc/ticdc-overview.md)
     + [安装部署](/ticdc/deploy-ticdc.md)
     + [运维管理](/ticdc/manage-ticdc.md)
     + [故障诊断](/ticdc/troubleshoot-ticdc.md)
     + [监控指标](/ticdc/monitor-ticdc.md)
+    + [报警规则](/ticdc/ticdc-alert-rules.md)
     + [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     + [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     + [术语表](/ticdc/ticdc-glossary.md)
-  + [Dumpling](/dumpling-overview.md)
   + sync-diff-inspector
     + [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     + [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -473,6 +483,9 @@
         + [使用示例](/dashboard/dashboard-diagnostics-usage.md)
       + [日志搜索页面](/dashboard/dashboard-log-search.md)
       + [实例性能分析页面](/dashboard/dashboard-profiling.md)
+      + 会话管理与配置
+        + [分享会话](/dashboard/dashboard-session-share.md)
+        + [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       + [常见问题](/dashboard/dashboard-faq.md)
   + CLI
     + [tikv-ctl](/tikv-control.md)
@@ -530,12 +543,14 @@
 + 版本发布历史
   + [发布版本汇总](/releases/release-notes.md)
   + v5.0
+    - [5.0.4](/releases/release-5.0.4.md)
     - [5.0.3](/releases/release-5.0.3.md)
     - [5.0.2](/releases/release-5.0.2.md)
     - [5.0.1](/releases/release-5.0.1.md)
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   + v4.0
+    - [4.0.15](/releases/release-4.0.15.md)
     - [4.0.14](/releases/release-4.0.14.md)
     - [4.0.13](/releases/release-4.0.13.md)
     - [4.0.12](/releases/release-4.0.12.md)

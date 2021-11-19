@@ -12,12 +12,6 @@ title: TiDB 配置参数
 + 默认：""
 + 必须确保用户和集群中的其他机器都能够访问到该 IP 地址
 
-## `--binlog-socket`
-
-+ TiDB 服务使用 unix socket file 方式接受内部连接，如 Pump 服务
-+ 默认：""
-+ 例如，可以使用 "/tmp/pump.sock" 来接受 Pump unix socket file 通信
-
 ## `--config`
 
 + 配置文件
@@ -98,11 +92,6 @@ title: TiDB 配置参数
 + 对于 "TiKV" 存储引擎来说，path 指定的是实际的 PD 地址。假如在 192.168.100.113:2379、192.168.100.114:2379 和 192.168.100.115:2379 上面部署了 PD，那么 path 为 "192.168.100.113:2379, 192.168.100.114:2379, 192.168.100.115:2379"
 + 默认："/tmp/tidb"
 + 可以通过 `tidb-server --store=unistore --path=""` 来启动一个纯内存引擎的 TiDB
-
-## `--tmp-storage-path`
-
-+ TiDB 临时磁盘存储位置。
-+ 默认：`<操作系统临时文件夹>/tidb/tmp-storage`
 
 ## `--proxy-protocol-networks`
 

@@ -63,6 +63,7 @@ TiDB 版本：5.0.0
 
 ### 其他
 
++ 升级前，请检查 TiDB 配置项 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的值。如果不为 0，升级后会触发 "panic in the recoverable goroutine" 报错，但不影响升级。
 + 为了避免造成数据正确性问题，列类型变更不再允许 `VARCHAR` 类型和 `CHAR` 类型的互相转换。
 
 ## 新功能
@@ -256,11 +257,11 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 要关闭 Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
-### 提升 `delete * from table where id < ? limit ?` 语句执行的性能
+### 提升 `delete from table where id < ? limit ?` 语句执行的性能
 
 [#18028](https://github.com/pingcap/tidb/issues/18028)
 
-`delete * from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
+`delete from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
 
 ### 优化 load base 切分策略，解决部分小表热点读场景数据无法切分的性能问题
 

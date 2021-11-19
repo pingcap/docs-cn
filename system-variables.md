@@ -229,7 +229,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：""
-- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
+- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 返回超时错误（对应的错误码为 ErrTiFlashServerTimeout）时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。 
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -491,6 +491,10 @@ mysql> SELECT * FROM t1;
 
 ### `tidb_enable_cascades_planner`
 
+> **警告：**
+>
+> 目前 cascades planner 为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否开启 cascades planner。
@@ -518,6 +522,10 @@ mysql> SELECT * FROM t1;
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
 ### `tidb_enable_fast_analyze`
+
+> **警告：**
+>
+> 目前快速分析功能为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
@@ -550,16 +558,22 @@ mysql> SELECT * FROM t1;
     * `LOCK IN SHARE MODE` 语法
     * `SQL_CALC_FOUND_ROWS` 语法
 
-> **注意：**
+> **警告：**
 >
-> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。
+> 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
+
+### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
 ### `tidb_enable_rate_limit_action`
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
-- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#spilled-file-encryption-method)。
+- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#oom-use-tmp-storage)。
 
 ### `tidb_enable_slow_log`
 
@@ -604,12 +618,6 @@ Query OK, 0 rows affected (0.09 sec)
     - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
-
-### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：0
-- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -1020,7 +1028,7 @@ mysql> desc select count(distinct a) from test.t;
     {{< copyable "sql" >}}
 
     ```sql
-    select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
+    select t.* from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
     ```
 
     如果 t1 在列 `aa` 上有 unique 且 not null 的限制，可以直接改写为如下，不需要添加 aggregation。
@@ -1028,7 +1036,7 @@ mysql> desc select count(distinct a) from test.t;
     {{< copyable "sql" >}}
 
     ```sql
-    select * from t, t1 where t.a=t1.a;
+    select t.* from t, t1 where t.a=t1.aa;
     ```
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1234,7 +1242,7 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`200`
+- 默认值：v5.0.4 前为 200。自 v5.0.4 起为 3000
 - 范围：`[1, 32767]`
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
 

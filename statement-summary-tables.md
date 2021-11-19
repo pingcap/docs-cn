@@ -6,7 +6,7 @@ title: Statement Summary Tables
 
 针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
-为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema` 中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
+为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema`（_而不是_ `performance_schema`）中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
 
 - `statements_summary`
 - `statements_summary_history`
@@ -28,7 +28,7 @@ SELECT * FROM employee WHERE id IN (1, 2, 3) AND salary BETWEEN 1000 AND 2000;
 select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 ```
 
-规一化后都是：
+归一化后都是：
 
 ```sql
 select * from employee where id in (...) and salary between ? and ?;
@@ -98,7 +98,7 @@ select * from employee where id in (...) and salary between ? and ?;
 - `tidb_enable_stmt_summary`：是否打开 statement summary 功能。1 代表打开，0 代表关闭，默认打开。statement summary 关闭后，系统表里的数据会被清空，下次打开后重新统计。经测试，打开后对性能几乎没有影响。
 - `tidb_stmt_summary_refresh_interval`：`statements_summary` 的清空周期，单位是秒 (s)，默认值是 `1800`。
 - `tidb_stmt_summary_history_size`：`statements_summary_history` 保存每种 SQL 的历史的数量，默认值是 `24`。
-- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量，默认 200 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。
+- `tidb_stmt_summary_max_stmt_count`：statement summary tables 保存的 SQL 种类数量。v5.0.4 前，默认 200 条。自 v5.0.4 起，默认 3000 条。当 SQL 种类超过该值时，会移除最近没有使用的 SQL。
 - `tidb_stmt_summary_max_sql_length`：字段 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 的最大显示长度，默认值是 4096。
 - `tidb_stmt_summary_internal_query`：是否统计 TiDB 的内部 SQL。1 代表统计，0 代表不统计，默认不统计。
 
