@@ -132,13 +132,9 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `memory`：在内存中进行排序。**不建议使用，同步大量数据时易引发 OOM。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
-<<<<<<< HEAD
-- `--sort-dir`: 指定排序引擎使用的临时文件目录。对于 v5.0.x 版本，**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
-
-=======
->>>>>>> f7a6843ae (cdc: modify descriptions related to Unified Sorter and data_dir (#6789))
 - `--config`：指定 changefeed 配置文件。
 - `--sort-dir`: 用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
+- `--data-dir`：指定 TiCDC 需要使用磁盘储存文件时使用的目录。目前 Unified Sorter 会使用该目录储存临时文件，请确保该目录所在设备可用空间充足。对于使用 TiUP 的用户，本选项可以通过配置 `cdc_servers` 小节中的 `data_dir` 来指定或默认使用 `global` 中 `data_dir` 路径。
 
 #### Sink URI 配置 `mysql`/`tidb`
 
@@ -841,9 +837,6 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
 > + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
-<<<<<<< HEAD
-> + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
-=======
 > + 如需在已使用 `memory` 排序的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
 
 ## 灾难场景的最终一致性复制
@@ -892,4 +885,3 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 - `tmp-dir` ：指定用于下载 TiCDC 增量数据备份文件的临时目录。
 - `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
 - `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
->>>>>>> f7a6843ae (cdc: modify descriptions related to Unified Sorter and data_dir (#6789))
