@@ -1,9 +1,9 @@
 ---
-title: 本地快速部署 TiDB 集群
+title: 使用 tiup-playground 运行本地测试集群
 aliases: ['/docs-cn/dev/tiup/tiup-playground/','/docs-cn/dev/reference/tools/tiup/playground/']
 ---
 
-# 本地快速部署 TiDB 集群
+# 使用 tiup-playground 运行本地测试集群
 
 TiDB 集群是由多个组件构成的分布式系统，一个典型的 TiDB 集群至少由 3 个 PD 节点、3 个 TiKV 节点和 2 个 TiDB 节点构成。对于想要快速体验 TiDB 的用户来说，手工部署这么多组件是非常耗时且麻烦的事情。本文介绍 TiUP 中的 playground 组件，以及如何通过 playground 组件快速搭建一套本地的 TiDB 测试环境。
 

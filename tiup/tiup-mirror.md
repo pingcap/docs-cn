@@ -1,9 +1,9 @@
 ---
-title: 搭建私有镜像
+title: 使用 tiup-mirror 定制离线镜像
 aliases: ['/docs-cn/dev/tiup/tiup-mirror/','/docs-cn/dev/tiup/tiup-mirrors/','/docs-cn/dev/reference/tools/tiup/mirror/','/docs-cn/dev/reference/tools/tiup/mirrors/']
 ---
 
-# 搭建私有镜像
+# 使用 tiup-mirror 定制离线镜像
 
 在构建私有云时，通常会使用隔离的网络环境，此时无法访问 TiUP 的官方镜像。因此，TiUP 提供了构建私有镜像的方案，它主要由 mirror 指令来实现，该方案也可用于离线部署。
 
