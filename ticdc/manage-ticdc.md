@@ -224,7 +224,7 @@ URI 中可配置的的参数如下：
 
 参数详细说明:
 
-* 在 v4.0.16 版本后，`max-message-bytes` 默认值从 512MB，调整为 1MB，从而防止发送过大的数据。
+* v4.0.16, `max-message-bytes` 默认值从 512MB 调整为 1MB, `partition-num` 默认值从 4 调整为 3。
 
 > **注意：**
 >
