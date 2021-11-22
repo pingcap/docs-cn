@@ -393,14 +393,14 @@
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
       - [`USE`](/sql-statements/sql-statement-use.md)
       - [`WITH`](/sql-statements/sql-statement-with.md)
-    * 数据类型
+    - 数据类型
       - [数据类型概述](/data-type-overview.md)
       - [数据类型默认值](/data-type-default-values.md)
       - [数值类型](/data-type-numeric.md)
       - [日期和时间类型](/data-type-date-and-time.md)
       - [字符串类型](/data-type-string.md)
       - [JSON 类型](/data-type-json.md)
-    * 函数与操作符
+    - 函数与操作符
       - [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
       - [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
       - [操作符](/functions-and-operators/operators.md)
@@ -420,25 +420,25 @@
       - [集合运算](/functions-and-operators/set-operators.md)
       - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
       - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
-    * [聚簇索引](/clustered-indexes.md)
-    * [约束](/constraints.md)
-    * [生成列](/generated-columns.md)
-    * [SQL 模式](/sql-mode.md)
-    * [表属性](/table-attributes.md)
-    * 事务
+    - [聚簇索引](/clustered-indexes.md)
+    - [约束](/constraints.md)
+    - [生成列](/generated-columns.md)
+    - [SQL 模式](/sql-mode.md)
+    - [表属性](/table-attributes.md)
+    - 事务
       - [事务概览](/transaction-overview.md)
       - [隔离级别](/transaction-isolation-levels.md)
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
-    * 垃圾回收 (GC)
+    - 垃圾回收 (GC)
       - [GC 机制简介](/garbage-collection-overview.md)
       - [GC 配置](/garbage-collection-configuration.md)
-    * [视图](/views.md)
-    * [分区表](/partitioned-table.md)
-    * [临时表](/temporary-tables.md)
-    * [字符集和排序规则](/character-set-and-collation.md)
-    * [Placement Rules in SQL](/placement-rules-in-sql.md)
-    * 系统表
+    - [视图](/views.md)
+    - [分区表](/partitioned-table.md)
+    - [临时表](/temporary-tables.md)
+    - [字符集和排序规则](/character-set-and-collation.md)
+    - [Placement Rules in SQL](/placement-rules-in-sql.md)
+    - 系统表
       - [`mysql`](/mysql-schema.md)
       - INFORMATION_SCHEMA
         - [Overview](/information-schema/information-schema.md)
@@ -489,7 +489,7 @@
         - [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)
         - [`VIEWS`](/information-schema/information-schema-views.md)
       - [`METRICS_SCHEMA`](/metrics-schema.md)
-  * UI
+  - UI
     - TiDB Dashboard
       - [简介](/dashboard/dashboard-intro.md)
       - 运维
@@ -518,24 +518,24 @@
         - [分享会话](/dashboard/dashboard-session-share.md)
         - [配置 SSO 登录](/dashboard/dashboard-session-sso.md)
       - [常见问题](/dashboard/dashboard-faq.md)
-  * CLI
+  - CLI
     - [tikv-ctl](/tikv-control.md)
     - [pd-ctl](/pd-control.md)
     - [tidb-ctl](/tidb-control.md)
     - [pd-recover](/pd-recover.md)
     - [binlog-ctl](/tidb-binlog/binlog-control.md)
-  * 命令行参数
+  - 命令行参数
     - [tidb-server](/command-line-flags-for-tidb-configuration.md)
     - [tikv-server](/command-line-flags-for-tikv-configuration.md)
     - [tiflash-server](/tiflash/tiflash-command-line-flags.md)
     - [pd-server](/command-line-flags-for-pd-configuration.md)
-  * 配置文件参数
+  - 配置文件参数
     - [tidb-server](/tidb-configuration-file.md)
     - [tikv-server](/tikv-configuration-file.md)
     - [tiflash-server](/tiflash/tiflash-configuration.md)
     - [pd-server](/pd-configuration-file.md)
-  * [系统变量](/system-variables.md)
-  * 存储引擎
+  - [系统变量](/system-variables.md)
+  - 存储引擎
     - TiKV
       - [TiKV 简介](/tikv-overview.md)
       - [RocksDB 简介](/storage-engine/rocksdb-overview.md)
@@ -544,7 +544,7 @@
     - TiFlash
       - [TiFlash 简介](/tiflash/tiflash-overview.md)
       - [使用 TiFlash](/tiflash/use-tiflash.md)
-  * TiUP
+  - TiUP
     - [文档地图](/tiup/tiup-documentation-guide.md)
     - [概览](/tiup/tiup-overview.md)
     - [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
@@ -559,11 +559,10 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  * [遥测](/telemetry.md)
-  * [错误码](/error-codes.md)
-  * [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
-
-* 常见问题解答 (FAQ)
+  - [遥测](/telemetry.md)
+  - [错误码](/error-codes.md)
+  - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
+- 常见问题解答 (FAQ)
   - [产品 FAQ](/faq/tidb-faq.md)
   - [SQL FAQ](/faq/sql-faq.md)
   - [部署运维 FAQ](/faq/deploy-and-maintain-faq.md)
@@ -571,8 +570,8 @@
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
   - [迁移 FAQ](/faq/migration-tidb-faq.md)
-* [术语表](/glossary.md)
-* 版本发布历史
+- [术语表](/glossary.md)
+- 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - v5.2
