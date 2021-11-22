@@ -110,9 +110,9 @@ aliases: ['/docs-cn/stable/check-before-deployment/','/docs-cn/v4.0/check-before
 
 不建议将 swap 用作内存，因为这会降低性能，建议永久关闭系统 swap。
 
-关闭 swap:
+要关闭 swap，可执行以下步骤:
 
-1. 设置内核参数 `swappiness` 为 `0`, 即不使用 swap；
+1. 设置内核参数 `swappiness` 为 `0`，即不使用 swap。
 2. 应用新的内核参数；
 3. 执行 `swapoff -a`，使已使用的 swap 清空；
 4. 执行 `swapon -a`，此时，由于 `swappiness` 为 `0`，实际不会使用 swap。
