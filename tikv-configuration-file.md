@@ -103,6 +103,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：1
 + 最小值：1
 
+### `max-grpc-send-msg-len`
+
++ 设置可发送的最大 gRPC 消息长度。
++ 默认值：10485760
++ 单位：Bytes
++ 最大值：2147483647
+
 ### `grpc-stream-initial-window-size`
 
 + gRPC stream 的 window 大小。
@@ -324,7 +331,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `reserve-space`
 
-+ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
++ TiKV 启动时会预留一块空间用于保护磁盘空间。当磁盘剩余空间小于该预留空间时，TiKV 会限制部分写操作。预留空间形式上分为两个部分：预留空间的 80% 用作磁盘空间不足时的运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。在回收空间的过程中，如果额外使用的磁盘空间过多，导致存储耗尽时，该临时文件会成为恢复服务的最后一道防御。
++ 临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。当 TiKV 因磁盘空间耗尽而下线时，重启 TiKV 会自动删除该临时文件，并自动尝试回收空间。
++ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。当该配置项的值为 `0MB` 时，TiKV 会关闭磁盘防护功能。
 + 默认值：5GB
 + 单位：MB|GB
 
@@ -372,7 +381,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 ### `l0-files-threshold`
 
 + 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
-+ 默认值：9
++ 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 
@@ -489,12 +498,6 @@ raftstore 相关的配置项。
 
 + 内存中日志 cache 允许的最长残留时间。
 + 默认值：30s
-+ 最小值：0
-
-### `raft-reject-transfer-leader-duration`
-
-+ 新节点保护时间，控制迁移 leader 到新加节点的最小时间，设置过小容易导致迁移 leader 失败。
-+ 默认值：3s
 + 最小值：0
 
 ### `hibernate-regions`
