@@ -499,12 +499,6 @@ raftstore 相关的配置项。
 + 默认值：30s
 + 最小值：0
 
-### `raft-reject-transfer-leader-duration`
-
-+ 新节点保护时间，控制迁移 leader 到新加节点的最小时间，设置过小容易导致迁移 leader 失败。
-+ 默认值：3s
-+ 最小值：0
-
 ### `hibernate-regions`
 
 + 打开或关闭静默 Region。打开后，如果 Region 长时间处于非活跃状态，即被自动设置为静默状态。静默状态的 Region 可以降低 Leader 和 Follower 之间心跳信息的系统开销。可以通过 `peer-stale-state-check-interval` 调整 Leader 和 Follower 之间的心跳间隔。
