@@ -7,10 +7,6 @@ summary: Learn how to use the OpenAPI interface to manage the cluster status and
 
 <!-- markdownlint-disable MD024 -->
 
-> **Warning:**
->
-> TiCDC OpenAPI is still an experimental feature. It is not recommended to use it in a production environment.
-
 TiCDC provides the OpenAPI feature for querying and operating the TiCDC cluster, which is similar to the feature of [`cdc cli` tool](/ticdc/manage-ticdc.md#use-cdc-cli-to-manage-cluster-status-and-data-replication-task).
 
 You can use the APIs to perform the following maintenance operations on the TiCDC cluster:
@@ -148,9 +144,9 @@ The configuration parameters of sink are as follows:
 {
   "dispatchers":[
     {"matcher":["test1.*", "test2.*"], "dispatcher":"ts"},
-    {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"},
+    {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"}
   ],
-  "protocal":"default",
+  "protocal":"default"
 }
 ```
 
@@ -352,7 +348,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
             "capture_id": "d8924259-f52f-4dfb-97a9-c48d26395945",
             "table_ids": [
                 63,
-                65,
+                65
             ],
             "table_operations": {}
         }
@@ -474,7 +470,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors/test1/561c3784-77f0-4863-ad5
     "resolved_ts": 426919123369066496,
     "table_ids": [
         63,
-        65,
+        65
     ],
     "error": null
 }
