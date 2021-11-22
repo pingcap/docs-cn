@@ -22,7 +22,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 - 算术运算符、位运算符、比较运算符、逻辑运算符、日期和时间运算符等。
 
-## 字符集及排序规则 
+## 字符集及排序规则
 
 - 字符集：UTF8、UTF8MB4、BINARY、ASCII、LATIN1。
 
