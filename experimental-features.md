@@ -61,6 +61,6 @@ summary: 了解 TiDB 各版本的实验特性。
 ## 问题诊断
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。（v4.0 实验特性）
-+ [集群诊断](/dashboard/dashboard-diagnostics-access.md)。
++ [集群诊断](/dashboard/dashboard-diagnostics-access.md)。（v4.0 实验特性）
 + [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
 + [持续性能分析](/dashboard/continuous-profiling.md)。（v5.3 实验特性）
