@@ -180,7 +180,7 @@ TiDB 版本：5.3.0
 
     TiDB Lightning 增加了执行前检查配置的功能。默认开启。该功能会自动进行一些磁盘空间和执行配置的常规检查，主要目的是确保后续的整个导入过程顺利。
 
-    [用户文档](tidb-lightning/tidb-lightning-prechecks.md)
+    [用户文档](/tidb-lightning/tidb-lightning-prechecks.md)
 
 - **TiDB Lightning 支持导入 GBK 编码的文件**
 
