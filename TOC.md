@@ -112,7 +112,7 @@
       - [子查询的执行计划](/explain-subqueries.md)
       - [聚合查询的执行计划](/explain-aggregation.md)
       - [视图查询的执行计划](/explain-views.md)
-      - [分区查询的执行计划](/explain-partitions.md)
+      - [分区查询的执行计划](/explain-partitions.md) 
       - [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
     - SQL 优化流程
       - [SQL 优化流程概览](/sql-optimization-concepts.md)
