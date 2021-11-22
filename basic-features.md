@@ -148,7 +148,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [快速导入 (TiDB Lightning)](/tidb-lightning/tidb-lightning-overview.md)                             | Y            | Y            | Y            | Y            | Y            |
 | mydumper 逻辑导入                                                                                  | 已废弃   | 已废弃   | 已废弃   | 已废弃   | 已废弃   |
 | [Dumpling 逻辑导入](/dumpling-overview.md)                                                         | Y            | Y            | Y            | Y            | Y            |
-| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)                                  | Y            | Y            | Y            | Y            | N            |
+| [事务 `LOAD DATA`](/sql-statements/sql-statement-load-data.md)                                  | Y            | Y            | Y            | Y            | N [^3]            |
 | [数据迁移工具](/migration-overview.md)                                                | Y            | Y            | Y            | Y            | Y            |
 | [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)                                                      | Y   | Y   | Y   | Y   | Y   |
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                                                    | Y            | Y            | Y            | Y            | Y            |
@@ -176,3 +176,5 @@ aliases: ['/docs-cn/dev/basic-features/']
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
 [^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
+
+[^3]: 对于 TiDB v4.0，事务 `LOAD DATA` 不保证原子性。
