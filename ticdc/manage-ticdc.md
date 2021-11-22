@@ -192,7 +192,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
 URI 中可配置的的参数如下：
@@ -201,10 +201,10 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
-| `cdc-test`           | 使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
-| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+| `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
+| `kafka-version`      | 下游 Kafka 版本号。可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致。 |
+| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID。可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`。 |
+| `partition-num`     | 下游 Kafka partition 数量。可选，不能大于实际 partition 数量。如果不填，会自动获取 partition 数量。 |
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
@@ -231,7 +231,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -246,7 +246,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+--sink-uri="pulsar://127.0.0.1:6650/topic-name?connectionTimeout=2s"
 ```
 
 URI 中可配置的的参数如下：
