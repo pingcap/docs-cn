@@ -166,7 +166,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
 URI 中可配置的的参数如下：
@@ -175,10 +175,10 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
-| `cdc-test`           | 使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
-| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+| `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
+| `kafka-version`      | 下游 Kafka 版本号。可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致。 |
+| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID。可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`。 |
+| `partition-num`     | 下游 Kafka partition 数量。可选，不能大于实际 partition 数量。如果不填，会自动获取 partition 数量。 |
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
@@ -202,7 +202,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -217,7 +217,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+--sink-uri="pulsar://127.0.0.1:6650/topic-name?connectionTimeout=2s"
 ```
 
 URI 中可配置的的参数如下：
@@ -830,6 +830,59 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > **注意：**
 >
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
+<<<<<<< HEAD
 > + 请保证硬盘的空闲容量大于等于 500G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + v4.0.13 版本之后，Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
 > + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
+=======
+> + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
+> + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
+> + 如需在已使用 `memory` 排序的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
+
+## 灾难场景的最终一致性复制
+
+从 v5.3.0 版本开始，TiCDC 开始提供灾难场景下的最终一致性复制能力。具体解决的场景是，当生产集群（即 TiCDC 同步的上游集群）发生灾难、且短时间内无法恢复对外提供服务，TiCDC 需要具备保证从集群数据一致性的能力，并允许业务快速的将流量切换至从集群，避免数据库长时间不可用而对业务造成影响。
+
+该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 30 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 5 分钟。即 RPO <= 30min，RTO <= 5min。
+
+### 使用前提
+
+- 准备好具有高可用的 S3 存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
+- TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，开启方式是在 changefeed 配置文件中增加以下配置：
+
+```toml
+[consistent]
+# 一致性级别，选项有：
+# - none： 默认值，非灾难场景，只有在任务指定 finished-ts 情况下保证最终一致性。
+# - eventual： 使用 redo log，提供上游灾难情况下的最终一致性。
+level = "eventual"
+
+# 单个 redo log 文件大小，单位 MiB，默认值 64，建议该值不超过 128。
+max-log-size = 64
+
+# 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
+flush-interval = 1000
+
+# 存储 redo log 的形式，包括 nfs（NFS 目录），S3（上传至S3）
+storage = "s3://logbucket/test-changefeed?endpoint=http://$S3_ENDPOINT/"
+```
+
+### 灾难恢复
+
+当上游发生灾难后，需要通过 `cdc redo` 命令在下游手动恢复。恢复流程如下：
+
+1. 确保 TiCDC 进程已经退出，防止在数据恢复过程中上游恢复服务，TiCDC 重新开始同步数据。
+2. 使用 cdc binary 进行数据恢复，具体命令如下：
+
+```shell
+cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
+    --storage="s3://logbucket/test-changefeed?endpoint=http://10.0.10.25:24927/" \
+    --sink-uri="mysql://normal:123456@10.0.10.55:3306/"
+```
+
+以上命令中：
+
+- `tmp-dir` ：指定用于下载 TiCDC 增量数据备份文件的临时目录。
+- `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
+- `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
+>>>>>>> 1935538a4 (optimization config desc (#7204))
