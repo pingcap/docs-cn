@@ -107,7 +107,6 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 - `--config`：指定 changefeed 配置文件。
 - `--sort-dir`: 用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13 起已经无效，请不要使用**。
 
-
 #### Sink URI 配置 `mysql`/`tidb`
 
 配置样例如下所示：
