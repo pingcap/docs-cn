@@ -5,20 +5,20 @@ summary: Learn the concept, user scenarios, usages, and limitations of importing
 
 # Use TiDB Lightning to Import Data in Parallel
 
-The [Local-backend mode](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend) of TiDB Lightning supports the parallel import of a single table or multiple tables. By simultaneously running multiple TiDB Lightning instances, you can import data in parallel from different single tables or multiple tables. In this way, TiDB Lightning provides the ability to scale horizontally, which can greatly reduce the time required to import large amounts of data.
+Since v5.3.0, the [Local-backend mode](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend) of TiDB Lightning supports the parallel import of a single table or multiple tables. By simultaneously running multiple TiDB Lightning instances, you can import data in parallel from different single tables or multiple tables. In this way, TiDB Lightning provides the ability to scale horizontally, which can greatly reduce the time required to import large amounts of data.
 
 In technical implementation, TiDB Lightning records the meta data of each instance and the data of each imported table in the target TiDB, and coordinates the Row ID allocation range of different instances, the record of global Checksum, and the configuration changes and recovery of TiKV and PD.
 
 You can use TiDB Lightning to import data in parallel in the following scenarios:
 
 - Import sharded schemas and sharded tables. In this scenario, multiple tables from multiple upstream database instances are imported into the downstream TiDB database by different TiDB Lightning instances in parallel.
-- Import single tables in parallel. In this scenario, single tables stored in a certain directory or cloud storage (such as Amazon S3) are imported into the downstream TiDB cluster by different TiDB Lightning instances in parallel.
+- Import single tables in parallel. In this scenario, single tables stored in a certain directory or cloud storage (such as Amazon S3) are imported into the downstream TiDB cluster by different TiDB Lightning instances in parallel. This is a new feature introduced in TiDB 5.3.0.
 
 > **Note:**
 >
 > Parallel import only supports the initialized empty tables in TiDB. It does not support migrating data to tables with data written by existing services. Otherwise, data inconsistencies may occur.
 
-The following diagram shows how importing sharded schemas and sharded tables works. In this scenario, you can use multiple TiDB Lightning instances to import MySQL sharded tables to a downstream TiDB cluster. 
+The following diagram shows how importing sharded schemas and sharded tables works. In this scenario, you can use multiple TiDB Lightning instances to import MySQL sharded tables to a downstream TiDB cluster.
 
 ![Import sharded schemas and sharded tables](/media/parallel-import-shard-tables-en.png)
 
@@ -26,7 +26,7 @@ The following diagram shows how importing single tables works. In this scenario,
 
 ![Import single tables](/media/parallel-import-single-tables-en.png)
 
-## Considerations 
+## Considerations
 
 No additional configuration is required for parallel import using TiDB Lightning. When TiDB Lightning is started, it registers meta data in the downstream TiDB cluster and automatically detects whether there are other instances migrating data to the target cluster at the same time. If there is, it automatically enters the parallel import mode.
 
@@ -97,7 +97,7 @@ schema-pattern = "my_db"
 table-pattern = "my_table_*"
 target-schema = "my_db"
 target-table = "my_table"
-``` 
+```
 
 If the data source is stored in a distributed storage cache such as Amazon S3 or GCS, see [External Storages](/br/backup-and-restore-storages.md).
 
