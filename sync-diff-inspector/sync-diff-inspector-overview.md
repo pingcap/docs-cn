@@ -109,7 +109,7 @@ check-struct-only = false
 # 如果需要对比大量的不同库名或者表名的表的数据，或者用于校验上游多个分表与下游总表的数据，可以通过 table-rule 来设置映射关系
 # 可以只配置 schema 或者 table 的映射关系，也可以都配置
 [routes]
-[routes.rule1] # rule1 是该配置的唯一标识自定义 id，用于上面 data-sources.route-rules 中
+[routes.rule1] # rule1 是该配置的唯一标识的自定义 id，用于上面 data-sources.route-rules 中
 schema-pattern = "test_*"      # 匹配数据源的库名，支持通配符 "*" 和 "?"
 table-pattern = "t_*"          # 匹配数据源的表名，支持通配符 "*" 和 "?"
 target-schema = "test"         # 目标库名
