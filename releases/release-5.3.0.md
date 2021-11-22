@@ -42,7 +42,8 @@ TiDB 版本：5.3.0
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
-| TiKV | memory-usage-limit | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
+| TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
+|  TiKV | `raftstore.raft-reject-transfer-leader-duration` | 删除 | 控制迁移 leader 到新加节点的最小时间。|
 | PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 |
 | PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。 |
 | PD | [`patrol-region-interval`](/pd-configuration-file.md#patrol-region-interval) | 修改 | 此配置项用于控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。默认值从 `100ms` 修改为 `10ms`。 |
