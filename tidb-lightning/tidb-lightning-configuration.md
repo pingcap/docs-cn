@@ -361,7 +361,7 @@ min-available-ratio = 0.05
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
 | --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`local`、`importer` 或 `tidb` | `tikv-importer.backend` |
-| --log-file *file* | 日志文件路径（默认是 `/tmp` 中的临时文件） | `lightning.log-file` |
+| --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`, 设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
