@@ -97,8 +97,6 @@ tiup cluster edit-config <cluster-name>
 
 ### 管理同步任务 (`changefeed`)
 
-<<<<<<< HEAD
-=======
 #### 同步任务状态流转
 
 同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
@@ -124,7 +122,6 @@ tiup cluster edit-config <cluster-name>
 - ⑦ `changefeed` 停滞时间超过 `gc-ttl` 所指定的时长，不可被恢复。
 - ⑧ `changefeed` 尝试自动恢复过程中发生不可恢复的错误。
 
->>>>>>> f2210099f (ticdc: add description about gc-ttl (#7041))
 #### 创建同步任务
 
 使用以下命令来创建同步任务：
