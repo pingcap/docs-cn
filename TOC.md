@@ -1,24 +1,20 @@
-# TiDB 中文用户文档
-
 <!-- markdownlint-disable MD007 -->
-<!-- markdownlint-disable MD032 -->
+<!-- markdownlint-disable MD041 -->
 
-## 目录
-
-+ 关于 TiDB
+- 关于 TiDB
   - [TiDB 简介](/overview.md)
-  + Benchmark 测试
+  - Benchmark 测试
     - [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     - [Sysbench 性能对比 - v2.1 对比 v2.0](/benchmark/v2.1-performance-benchmarking-with-sysbench.md)
     - [TPC-H 50G 性能对比 - v2.1 对比 v2.0](/benchmark/v2.1-performance-benchmarking-with-tpch.md)
-+ 主要概念
+- 主要概念
   - [整体架构](/architecture.md)
-  + 核心特性
+  - 核心特性
     - [水平扩展](/key-features.md#水平扩展)
     - [高可用](/key-features.md#高可用)
-+ 操作指南
-  + 快速上手
-    + 创建集群
+- 操作指南
+  - 快速上手
+    - 创建集群
       - [使用 Docker Compose](https://pingcap.com/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/)
     - [SQL 基本操作](/basic-sql-operations.md)
     - [读取历史数据](/read-historical-data.md)
@@ -26,63 +22,63 @@
     - [TiDB Data Migration 教程](https://pingcap.com/docs-cn/tidb-data-migration/stable/get-started/)
     - [TiDB Lightning 教程](/get-started-with-tidb-lightning.md)
     - [TiSpark 教程](/get-started-with-tispark.md)
-  + 部署
+  - 部署
     - [软硬件环境需求](/hardware-and-software-requirements.md)
-    + 集群部署方式
+    - 集群部署方式
       - [使用 Ansible 部署（推荐）](/online-deployment-using-ansible.md)
       - [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
-    + 跨地域冗余
+    - 跨地域冗余
       - [跨数据中心部署方案](/geo-redundancy-deployment.md)
       - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
     - [使用 Ansible 部署 DM 集群](https://pingcap.com/docs-cn/tidb-data-migration/stable/deploy-a-dm-cluster-using-ansible/)
-  + 配置
+  - 配置
     - [时区](/configure-time-zone.md)
     - [内存控制](/configure-memory-usage.md)
-  + 安全
-    + 安全传输层协议 (TLS)
+  - 安全
+    - 安全传输层协议 (TLS)
       - [为 MySQL 客户端开启 TLS](/encrypted-connections-with-tls-protocols.md)
       - [为 TiDB 组件间开启 TLS](/enable-tls-between-components.md)
     - [生成自签名证书](/generate-self-signed-certificates.md)
-  + 监控
+  - 监控
     - [概述](/tidb-monitoring-framework.md)
     - [监控 TiDB 集群](/monitor-a-tidb-cluster.md)
     - [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
-  + 迁移
+  - 迁移
     - [概述](/migration-overview.md)
-    + 从 MySQL 迁移
+    - 从 MySQL 迁移
       - [全量迁移](/migrate-full-data-from-mysql.md)
       - [增量复制](/migrate-incremental-data-from-mysql.md)
     - [使用 DM 从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
     - [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
     - [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
-  + 运维
+  - 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
-    + 备份与恢复
+    - 备份与恢复
       - [使用 Mydumper 和 Loader 进行备份与恢复](/backup-and-restore.md)
       - [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     - [定位慢查询](/identify-slow-queries.md)
-  + 扩容缩容
+  - 扩容缩容
     - [使用 Ansible 扩容缩容](/scale-tidb-using-ansible.md)
-  + 升级
+  - 升级
     - [升级至 TiDB 2.1](/upgrade-tidb-using-ansible.md)
-  + 故障诊断
+  - 故障诊断
     - [TiDB 集群问题导图](/tidb-troubleshooting-map.md)
     - [集群配置诊断](/troubleshoot-tidb-cluster.md)
     - [TiDB Lightning 故障诊断](/troubleshoot-tidb-lightning.md)
-+ 参考手册
-  + SQL
+- 参考手册
+  - SQL
     - [与 MySQL 兼容性对比](/mysql-compatibility.md)
-    + SQL 语言结构
+    - SQL 语言结构
       - [字面值](/literal-values.md)
       - [Schema 对象名](/schema-object-names.md)
       - [关键字和保留字](/keywords-and-reserved-words.md)
       - [用户自定义变量](/user-defined-variables.md)
       - [表达式语法](/expression-syntax.md)
       - [注释语法](/comment-syntax.md)
-    + 数据类型
+    - 数据类型
       - [概述](/data-type-overview.md)
       - [默认值](/data-type-default-values.md)
-      + 数值类型
+      - 数值类型
         - [`BIT`](/data-type-numeric.md#bit-类型)
         - [`BOOL|BOOLEAN`](/data-type-numeric.md#boolean-类型)
         - [`TINYINT`](/data-type-numeric.md#tinyint-类型)
@@ -93,13 +89,13 @@
         - [`FLOAT`](/data-type-numeric.md#float-类型)
         - [`DOUBLE`](/data-type-numeric.md#double-类型)
         - [`DECIMAL`](/data-type-numeric.md#decimal-类型)
-      + 日期和时间类型
+      - 日期和时间类型
         - [`DATE`](/data-type-date-and-time.md#date-类型)
         - [`TIME`](/data-type-date-and-time.md#time-类型)
         - [`DATETIME`](/data-type-date-and-time.md#datetime-类型)
         - [`TIMESTAMP`](/data-type-date-and-time.md#timestamp-类型)
         - [`YEAR`](/data-type-date-and-time.md#year-类型)
-      + 字符串类型
+      - 字符串类型
         - [`CHAR`](/data-type-string.md#char-类型)
         - [`VARCHAR`](/data-type-string.md#varchar-类型)
         - [`TEXT`](/data-type-string.md#text-类型)
@@ -115,7 +111,7 @@
         - [`ENUM`](/data-type-string.md#enum-类型)
         - [`SET`](/data-type-string.md#set-类型)
       - [JSON 类型](/data-type-json.md)
-    + 函数与操作符
+    - 函数与操作符
       - [函数与操作符概述](/functions-and-operators/functions-and-operators-overview.md)
       - [表达式求值的类型转换](/functions-and-operators/type-conversion-in-expression-evaluation.md)
       - [操作符](/functions-and-operators/operators.md)
@@ -131,7 +127,7 @@
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
       - [其它函数](/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](/functions-and-operators/precision-math.md)
-    + SQL 语句
+    - SQL 语句
       - [`ADD COLUMN`](/sql-statements/sql-statement-add-column.md)
       - [`ADD INDEX`](/sql-statements/sql-statement-add-index.md)
       - [`ADMIN`](/sql-statements/sql-statement-admin.md)
@@ -212,31 +208,31 @@
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
     - [字符集](/character-set-and-collation.md)
-  + 配置
-    + tidb-server
+  - 配置
+    - tidb-server
       - [MySQL 系统变量](/system-variables.md)
       - [TiDB 特定系统变量](/tidb-specific-system-variables.md)
       - [配置参数](/command-line-flags-for-tidb-configuration.md)
       - [配置文件描述](/tidb-configuration-file.md)
-    + pd-server
+    - pd-server
       - [配置参数](/pd-configuration-file.md)
-    + tikv-server
+    - tikv-server
       - [配置参数](/tikv-configuration-file.md)
-  + 安全
+  - 安全
     - [与 MySQL 的安全特性差异](/security-compatibility-with-mysql.md)
     - [TiDB 数据库权限管理](/privilege-management.md)
     - [TiDB 用户账户管理](/user-account-management.md)
-  + 事务
+  - 事务
     - [事务概览](/transaction-overview.md)
     - [隔离级别](/transaction-isolation-levels.md)
     - [乐观事务](/optimistic-transaction.md)
-  + 系统数据库
+  - 系统数据库
     - [`mysql`](/system-tables/system-table-overview.md)
     - [`information_schema`](/system-tables/system-table-information-schema.md)
   - [错误码](/error-codes.md)
   - [支持的连接器和 API](/connectors-and-apis.md)
   - [垃圾回收 (GC)](/garbage-collection.md)
-  + 性能调优
+  - 性能调优
     - [操作系统性能参数调优](/tune-operating-system.md)
     - [SQL 优化流程](/sql-optimization-concepts.md)
     - [理解 TiDB 执行计划](/query-execution-plan.md)
@@ -246,20 +242,20 @@
     - [TiKV 调优](/tune-tikv-performance.md)
     - [TiDB 最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)
     - [列裁剪](/column-pruning.md)
-  + 监控指标
+  - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
     - [PD 面板](/grafana-pd-dashboard.md)
     - [TiKV 面板](/grafana-tikv-dashboard.md)
   - [报警规则](/alert-rules.md)
-  + 最佳实践
+  - 最佳实践
     - [HAProxy 最佳实践](/best-practices/haproxy-best-practices.md)
     - [Java 应用开发最佳实践](/best-practices/java-app-best-practices.md)
     - [Grafana 监控最佳实践](/best-practices/grafana-monitor-best-practices.md)
     - [PD 调度策略最佳实践](/best-practices/pd-scheduling-best-practices.md)
     - [海量 Region 集群调优最佳实践](/best-practices/massive-regions-best-practices.md)
-  + [TiSpark 使用指南](/tispark-overview.md)
-  + TiDB Binlog
+  - [TiSpark 使用指南](/tispark-overview.md)
+  - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [部署使用](/tidb-binlog/deploy-tidb-binlog.md)
     - [运维管理](/tidb-binlog/maintain-tidb-binlog-cluster.md)
@@ -271,18 +267,18 @@
     - [增量恢复](/tidb-binlog/tidb-binlog-reparo.md)
     - [Kafka 自定义开发](/tidb-binlog/binlog-consumer-client.md)
     - [术语表](/tidb-binlog/tidb-binlog-glossary.md)
-    + 故障诊断
+    - 故障诊断
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  + 周边工具
+  - 周边工具
     - [功能概览](/ecosystem-tool-user-guide.md)
     - [适用场景](/ecosystem-tool-user-case.md)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
     - [Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/)
-    + TiDB Lightning
+    - TiDB Lightning
       - [概述](/tidb-lightning/tidb-lightning-overview.md)
       - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
       - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
@@ -294,7 +290,7 @@
       - [故障诊断](/troubleshoot-tidb-lightning.md)
       - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-    + sync-diff-inspector
+    - sync-diff-inspector
       - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
       - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
       - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
@@ -304,19 +300,19 @@
     - [TiKV Control](/tikv-control.md)
     - [TiDB Control](/tidb-control.md)
     - [工具下载](/download-ecosystem-tools.md)
-+ 常见问题 (FAQ)
+- 常见问题 (FAQ)
   - [TiDB FAQ](/faq/tidb-faq.md)
   - [TiDB Lightning FAQ](/tidb-lightning/tidb-lightning-faq.md)
   - [升级 FAQ](/faq/upgrade-faq.md)
-+ 技术支持
+- 技术支持
   - [支持渠道](/support.md)
   - [反馈问题](/report-issue.md)
-+ 贡献
+- 贡献
   - [贡献代码](/contribute.md#成为-tidb-的贡献者)
   - [改进文档](/contribute.md#改进文档)
-+ 版本发布历史
+- 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
-  + v2.1
+  - v2.1
     - [2.1.19](/releases/release-2.1.19.md)
     - [2.1.18](/releases/release-2.1.18.md)
     - [2.1.17](/releases/release-2.1.17.md)
@@ -343,7 +339,7 @@
     - [2.1 RC2](/releases/release-2.1-rc.2.md)
     - [2.1 RC1](/releases/release-2.1-rc.1.md)
     - [2.1 Beta](/releases/release-2.1-beta.md)
-  + v2.0
+  - v2.0
     - [2.0.11](/releases/release-2.0.11.md)
     - [2.0.10](/releases/release-2.0.10.md)
     - [2.0.9](/releases/release-2.0.9.md)
@@ -362,11 +358,11 @@
     - [2.0 RC1](/releases/release-2.0-rc.1.md)
     - [1.1 Beta](/releases/release-1.1-beta.md)
     - [1.1 Alpha](/releases/release-1.1-alpha.md)
-  + v1.0
+  - v1.0
     - [1.0](/releases/release-1.0-ga.md)
     - [Pre-GA](/releases/release-pre-ga.md)
     - [RC4](/releases/release-rc.4.md)
     - [RC3](/releases/release-rc.3.md)
     - [RC2](/releases/release-rc.2.md)
     - [RC1](/releases/release-rc.1.md)
-+ [术语表](/glossary.md)
+- [术语表](/glossary.md)
