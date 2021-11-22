@@ -99,6 +99,8 @@ tiup cluster edit-config <cluster-name>
 
 #### 同步任务状态流转
 
+本功能适用于 v5.1.2 及更新版本。
+
 同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
 
 ![TiCDC state transfer](/media/ticdc-state-transfer.png)
