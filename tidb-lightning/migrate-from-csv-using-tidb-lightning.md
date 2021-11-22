@@ -1,10 +1,12 @@
 ---
-title: TiDB Lightning CSV Support
+title: TiDB Lightning CSV Support and Restrictions
 summary: Learn how to import CSV files via TiDB Lightning.
 aliases: ['/docs/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs/dev/reference/tools/tidb-lightning/csv/']
 ---
 
-# TiDB Lightning CSV Support
+# TiDB Lightning CSV Support and Restrictions
+
+This document describes how to migrate data from CSV files to TiDB using TiDB Lightning. For information about how to generate CSV files from MySQL, see [Export to CSV files using Dumpling](/dumpling-overview.md#export-to-csv-files).
 
 TiDB Lightning supports reading CSV (comma-separated values) data source, as well as other delimited format such as TSV (tab-separated values).
 
