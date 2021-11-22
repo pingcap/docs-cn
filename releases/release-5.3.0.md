@@ -57,7 +57,7 @@ TiDB 版本：5.3.0
     - 对于本地临时表，如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级至 v5.3.0 或更高版本后，也会被 TiDB 当成普通表处理。对于全局临时表，如果在 v5.3.0 上创建了全局临时表，当 TiDB 降级至 v5.3.0 以前版本后，这些临时表会被当作普通表处理，导致数据错误。
     - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
-    - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-table.md#与其他-tidb-功能的兼容性限制)。
+    - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
 
 - 修复 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
@@ -94,7 +94,7 @@ TiDB 版本：5.3.0
         - 支持重名，用户无需为业务设计复杂的表命名规则。
         - 提供会话级别的数据隔离，降低业务设计复杂度，会话结束后删除临时表。
 
-    [用户文档](/temporary-table.md)，[#24169](https://github.com/pingcap/tidb/issues/24169)
+    [用户文档](/temporary-tables.md)，[#24169](https://github.com/pingcap/tidb/issues/24169)
 
 - **支持 `FOR UPDATE OF TABLES` 语法**
 
