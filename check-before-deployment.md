@@ -112,8 +112,8 @@ summary: 了解部署 TiDB 前的环境检查操作。
 要关闭 swap，可执行以下步骤:
 
 1. 设置内核参数 `swappiness` 为 `0`，即不使用 swap。
-2. 应用新的内核参数；
-3. 执行 `swapoff -a`，使已使用的 swap 清空；
+2. 应用新的内核参数。
+3. 执行 `swapoff -a`，使已使用的 swap 清空。
 4. 执行 `swapon -a`，此时，由于 `swappiness` 为 `0`，实际不会使用 swap。
 
 {{< copyable "shell-regular" >}}
