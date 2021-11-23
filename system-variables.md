@@ -1297,19 +1297,19 @@ mysql> desc select count(distinct a) from test.t;
 - For example, after you enable this optimization rule, the subquery is converted as follows:
 
     ```sql
-    select * from t where t.a in (select aa from t1)
+    select * from t where t.a in (select aa from t1);
     ```
 
     The subquery is converted to join as follows:
 
     ```sql
-    select * from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa
+    select t.* from t, (select aa from t1 group by aa) tmp_t where t.a = tmp_t.aa;
     ```
 
     If `t1` is limited to be `unique` and `not null` in the `aa` column. You can use the following statement, without aggregation.
 
     ```sql
-    select * from t, t1 where t.a=t1.a
+    select t.* from t, t1 where t.a=t1.aa;
     ```
 
 ### tidb_opt_limit_push_down_threshold
