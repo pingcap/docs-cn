@@ -9,11 +9,12 @@ summary: 了解 TiKV 线程池性能调优。
 
 ## 线程池介绍
 
-在 TiKV 中，线程池主要由 gRPC、Scheduler、UnifyReadPool、Raftstore、Apply、RocksDB 以及其它一些占用 CPU 不多的定时任务与检测组件组成，这里主要介绍几个占用 CPU 比较多且会对用户读写请求的性能产生影响的线程池。
+在 TiKV 中，线程池主要由 gRPC、Scheduler、UnifyReadPool、Raftstore、StoreWriter, Apply、RocksDB 以及其它一些占用 CPU 不多的定时任务与检测组件组成，这里主要介绍几个占用 CPU 比较多且会对用户读写请求的性能产生影响的线程池。
 
 * gRPC 线程池：负责处理所有网络请求，它会把不同任务类型的请求转发给不同的线程池。
 * Scheduler 线程池：负责检测写事务冲突，把事务的两阶段提交、悲观锁上锁、事务回滚等请求转化为 key-value 对数组，然后交给 Raftstore 线程进行 Raft 日志复制。
-* Raftstore 线程池：负责处理所有的 Raft 消息以及添加新日志的提议 (Propose)、将日志写入到磁盘，当日志在多数副本中达成一致后，它就会把该日志发送给 Apply 线程。
+* Raftstore 线程池：负责处理所有的 Raft 消息以及添加新日志的提议 (Propose)、如果 `store-io-pool-size` 为 0，将日志写入到磁盘，如果不为 0，将日志发给 StoreWriter 线程、当日志在多数副本中达成一致后，它就会把该日志发送给 Apply 线程。
+* StoreWriter 线程池：该线程池负责将所有 Raft 日志写入到磁盘，再将结果发回 Raftstore 线程。
 * Apply 线程池：当收到从 Raftstore 线程池发来的已提交日志后，负责将其解析为 key-value 请求，然后写入 RocksDB 并且调用回调函数通知 gRPC 线程池中的写请求完成，返回结果给客户端。
 * RocksDB 线程池：RocksDB 进行 Compact 和 Flush 任务的线程池，关于 RocksDB 的架构与 Compact 操作请参考 [RocksDB: A Persistent Key-Value Store for Flash and RAM Storage](https://github.com/facebook/rocksdb)。
 * UnifyReadPool 线程池：由 Coprocessor 线程池与 Storage Read Pool 合并而来，所有的读取请求包括 kv get、kv batch get、raw kv get、coprocessor 等都会在这个线程池中执行。
@@ -41,9 +42,11 @@ TiKV 的读取请求分为两类：
     
     通常来说为了避免过多的线程切换，最好确保 scheduler 线程池的利用率保持在 50%～75% 之间。（如果线程池大小为 8 的话，那么 Grafana 上的 TiKV-Details.Thread CPU.scheduler worker CPU 应当在 400%～600% 之间较为合理）
 
-* Raftstore 线程池是 TiKV 最为复杂的一个线程池，默认大小 (`raftstore.store-pool-size`) 为 2，所有的写请求都会先在 Raftstore 线程 fsync 的方式写入 RocksDB。
+* Raftstore 线程池是 TiKV 最为复杂的一个线程池，默认大小 (`raftstore.store-pool-size`) 为 2。StoreWriter 线程池默认大小(`raftstore.store-io-pool-size`) 为 0。
 
-    由于存在 I/O，Raftstore 线程理论上不可能达到 100% 的 CPU。为了尽可能地减少写磁盘次数，将多个写请求攒在一起写入 RocksDB，最好控制其整体 CPU 使用在 60% 以下（按照线程数默认值 2，则 Grafana 监控上的 TiKV-Details.Thread CPU.Raft store CPU 上的数值控制在 120% 以内较为合理）。不要为了提升写性能盲目增大 Raftstore 线程池大小，这样可能会适得其反，增加了磁盘负担让性能变差。
+    如果 StoreWriter 线程池大小为 0, 所有的写请求都会在 Raftstore 线程以 fsync 的方式写入 RocksDB。由于存在 I/O，Raftstore 线程理论上不可能达到 100% 的 CPU。为了尽可能地减少写磁盘次数，将多个写请求攒在一起写入 RocksDB，最好控制其整体 CPU 使用在 60% 以下（按照线程数默认值 2，则 Grafana 监控上的 TiKV-Details.Thread CPU.Raft store CPU 上的数值控制在 120% 以内较为合理）。不要为了提升写性能盲目增大 Raftstore 线程池大小，这样可能会适得其反，增加了磁盘负担让性能变差。
+
+    如果 StoreWriter 线程池大小不为 0，所有写请求都会在 StoreWriter 线程以 fsync 的方式写入 RocksDB。相比于写请求在 Raftstore 线程完成，理论上这样能显著降低写延迟和读的尾延迟，但是写的更快意味着 raft 日志会变的更多，从而使得 Raftstore，Apply 和 gRPC 线程的 CPU 开销增多，反而可能因为 CPU 资源不足抵消了优化效果，甚至还可能比原来更慢。所以建议只在整体 CPU 资源比较充裕的情况下开启此功能。由于 Raftstore 线程把绝大部分的 I/O 请求交给了 StoreWriter，它的 CPU 使用率控制在 80% 以下即可。StoreWriter 线程池大小会影响 raft 日志数量，所以不宜过大，一般来说 1 到 2 个即可。如果 CPU 使用率高于 80%，可以考虑再增加。另外要注意对其他线程池 CPU 开销的影响，必要的时候需要相应增加 Raftstore，Apply，gRPC 线程的大小。
 
 * UnifyReadPool 负责处理所有的读取请求。默认配置 (`readpool.unified.max-thread-count`) 大小为机器 CPU 数的 80% （如机器为 16 核，则默认线程池大小为 12）。
 

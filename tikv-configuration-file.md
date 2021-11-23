@@ -701,6 +701,12 @@ raftstore 相关的配置项。
 + 默认值：2
 + 最小值：大于 0
 
+### `store-io-pool-size`
+
++ 处理 raft io 任务的线程池线程数，0 表示 io 任务在 store 线程处理。
++ 默认值：0
++ 最小值：0
+
 ### `future-poll-size`
 
 + 驱动 future 的线程池线程数。
@@ -718,6 +724,18 @@ raftstore 相关的配置项。
 + 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
 + 默认值：500ms
 + 最小值：1ms
+
+### `raft-write-size-limit`
+
++ 触发 raft 数据写入的阈值。`store-io-pool-size` 为 0 时不生效。
++ 默认值: 1MB
++ 最小值：0
+
+### `raft-msg-flush-interval`
+
++ raft 消息攒批发出的间隔时间。`store-io-pool-size` 为 0 时不生效。
++ 默认值：250us
++ 最小值：0
 
 ## coprocessor
 
