@@ -86,9 +86,29 @@ If you do not specify the scope when creating an execution plan binding, the def
 
 ```sql
 select * from t where a >    1
--- Normalized:
+-- After normalization, the above statement is as follows:
 select * from test . t where a > ?
 ```
+
+> **Note:**
+>
+> Multiple constants joined by commas `,` are normalized as `...` instead of `?`.
+>
+> For example:
+>
+> ```sql
+> select * from t limit 10
+> select * from t limit 10, 20
+> select * from t where a in (1)
+> select * from t where a in (1,2,3)
+> -- After normalization, the above statements are as follows:
+> select * from test . t limit ?
+> select * from test . t limit ...
+> select * from test . t where a in ( ? )
+> select * from test . t where a in ( ... )
+> ```
+>
+> When bindings are created, TiDB treats SQL statements that contain a single constant and SQL statements that contain multiple constants joined by commas differently. Therefore, you need to create bindings for the two SQL types separately.
 
 When a SQL statement has bound execution plans in both GLOBAL and SESSION scopes, because the optimizer ignores the bound execution plan in the GLOBAL scope when it encounters the SESSION binding, the bound execution plan of this statement in the SESSION scope shields the execution plan in the GLOBAL scope.
 

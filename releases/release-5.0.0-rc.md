@@ -138,7 +138,7 @@ Related issue: [#18005](https://github.com/pingcap/tidb/issues/18005)
 
 ### Other performance optimizations
 
-+ Improve the execution performance of `delete * from table where id <?` statement. Its P99 performance improves by four times. [#18028](https://github.com/pingcap/tidb/issues/18028)
++ Improve the execution performance of `delete from table where id <?` statement. Its P99 performance improves by four times. [#18028](https://github.com/pingcap/tidb/issues/18028)
 + TiFlash supports concurrently reading and writing data in multiple local disks to improve performance.
 
 ## High availability and disaster recovery

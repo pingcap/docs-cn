@@ -261,11 +261,11 @@ In 5.0 GA, the Coprocessor cache feature is enabled by default. After this featu
 
 To disable the Coprocessor cache feature, you can modify the `capacity-mb` configuration item of `tikv-client.copr-cache` to `0.0`.
 
-### Improve the execution performance of `delete * from table where id <? Limit ?` statement
+### Improve the execution performance of `delete from table where id <? Limit ?` statement
 
 [#18028](https://github.com/pingcap/tidb/issues/18028)
 
-The p99 performance of the `delete * from table where id <? limit ?` statement is improved by 4 times.
+The p99 performance of the `delete from table where id <? limit ?` statement is improved by 4 times.
 
 ### Optimize load base split strategy to solve the performance problem that data cannot be split in some small table hotspot read scenarios
 

@@ -160,14 +160,14 @@ As mentioned before, TiDB limits the size of a single transaction in the Key-Val
 
 It is recommended to split statements into batches or add a limit to the statements, whether they are `INSERT`, `UPDATE` or `DELETE` statements.
 
-When deleting a large amount of data, it is recommended to use `Delete * from t where xx limit 5000;`. It deletes through the loop and use `Affected Rows == 0` as a condition to end the loop.
+When deleting a large amount of data, it is recommended to use `Delete from t where xx limit 5000;`. It deletes through the loop and use `Affected Rows == 0` as a condition to end the loop.
 
 If the amount of data that needs to be deleted at a time is large, this loop method gets slower and slower because each deletion traverses backward. After deleting the previous data, lots of deleted flags remain for a short period (then all is cleared by Garbage Collection) and affect the following `DELETE` statement. If possible, it is recommended to refine the `WHERE` condition. Assume that you need to delete all data on `2017-05-26`, you can use the following statements:
 
 ```sql
 for i from 0 to 23:
     while affected_rows > 0:
-        delete * from t where insert_time >= i:00:00 and insert_time < (i+1):00:00 limit 5000;
+        delete from t where insert_time >= i:00:00 and insert_time < (i+1):00:00 limit 5000;
         affected_rows = select affected_rows()
 ```
 

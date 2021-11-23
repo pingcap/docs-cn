@@ -51,7 +51,7 @@ Fields in the `STATISTICS` table are described as follows:
 * `SEQ_IN_INDEX`: The column number in the index, starting from `1`.
 * `COLUMN_NAME`: The column name. See the description of the `Expression` column.
 * `COLLATION`: The sorting method of the columns in the index. The value can be `A` (ascending order), `D` (descending order) or `NULL` (unsorted).
-* `CARDINALITY`: The estimated number of unique values ​​in the index. To update this value, execute `ANALYZE TABLE`.
+* `CARDINALITY`: TiDB does not use this field. The field value is always `0`.
 * `SUB_PART`: The prefix of the index. If only part of the prefix of the column is indexed, the value is the number of indexed characters; if the entire column is indexed, the value is `NULL`.
 * `PACKED`: TiDB does not use this field. This value is always `NULL`.
 * `NULLABLE`: If the column might contain a `NULL` value, the value is `YES`; if not, the value is `''`.
