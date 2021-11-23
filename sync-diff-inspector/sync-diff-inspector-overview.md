@@ -141,7 +141,7 @@ target-table = "t2" # 目标表名
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
 
     #（可选）对部分表的额外配置，其中 config1 在下面 Table config 配置栏中定义
-    target-configs= ["config1"]
+    target-configs = ["config1"]
 
 ######################### Table config #########################
 # 对部分表进行特殊的配置，配置的表必须包含在 task.target-check-tables 中
