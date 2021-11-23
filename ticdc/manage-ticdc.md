@@ -197,7 +197,7 @@ Sample configuration:
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
 The following are descriptions of parameters and parameter values that can be configured for the sink URI with `kafka`:
@@ -206,10 +206,10 @@ The following are descriptions of parameters and parameter values that can be co
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | The IP address of the downstream Kafka services                                 |
 | `9092`               | The port for the downstream Kafka                                          |
-| `cdc-test`           | The name of the Kafka topic                                      |
-| `kafka-version`      | The version of the downstream Kafka (optional, `2.4.0` by default. Currently, the earliest supported Kafka version is `0.11.0.2` and the latest one is `2.7.0`. This value needs to be consistent with the actual version of the downstream Kafka.)                      |
-| `kafka-client-id`    | Specifies the Kafka client ID of the replication task (optional, `TiCDC_sarama_producer_replication ID` by default) |
-| `partition-num`      | The number of the downstream Kafka partitions (Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically.) |
+| `topic-name`         | Variable. The name of the Kafka topic                                      |
+| `kafka-version`      | The version of the downstream Kafka. Optional, `2.4.0` by default. Currently, the earliest supported Kafka version is `0.11.0.2` and the latest one is `2.7.0`. This value needs to be consistent with the actual version of the downstream Kafka.                      |
+| `kafka-client-id`    | Specifies the Kafka client ID of the replication task. Optional. `TiCDC_sarama_producer_replication ID` by default. |
+| `partition-num`      | The number of the downstream Kafka partitions. Optional. The value must be **no greater than** the actual number of partitions. If you do not configure this parameter, the partition number is obtained automatically. |
 | `max-message-bytes`  | The maximum size of data that is sent to Kafka broker each time (optional, `64MB` by default) |
 | `replication-factor` | The number of Kafka message replicas that can be saved (optional, `1` by default)                       |
 | `protocol` | The protocol with which messages are output to Kafka. The value options are `default`, `canal`, `avro`, and `maxwell` (`default` by default)    |
@@ -236,7 +236,7 @@ Sample configuration:
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -251,7 +251,7 @@ Sample configuration:
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+--sink-uri="pulsar://127.0.0.1:6650/topic-name?connectionTimeout=2s"
 ```
 
 The following are descriptions of parameters that can be configured for the sink URI with `pulsar`:
