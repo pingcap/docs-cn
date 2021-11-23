@@ -5,10 +5,6 @@ summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步�
 
 # TiCDC OpenAPI
 
-> **警告：**
->
-> TiCDC OpenAPI 目前为实验功能，不建议在生产环境中使用该功能。
-
 TiCDC 提供 OpenAPI 功能，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。OpenAPI 的总体功能和 [`cdc cli` 工具](/ticdc/manage-ticdc.md#使用-cdc-cli-工具来管理集群状态和数据同步)类似。
 
 你可以通过 OpenAPI 完成 TiCDC 集群的如下运维操作：
@@ -146,9 +142,9 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 {
   "dispatchers":[
     {"matcher":["test1.*", "test2.*"], "dispatcher":"ts"},
-    {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"},
+    {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"}
   ],
-  "protocal":"default",
+  "protocal":"default"
 }
 ```
 
@@ -350,7 +346,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/changefeeds/test1
             "capture_id": "d8924259-f52f-4dfb-97a9-c48d26395945",
             "table_ids": [
                 63,
-                65,
+                65
             ],
             "table_operations": {}
         }
@@ -473,7 +469,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/processors/test1/561c3784-77f0-4863-ad5
     "resolved_ts": 426919123369066496,
     "table_ids": [
         63,
-        65,
+        65
     ],
     "error": null
 }
