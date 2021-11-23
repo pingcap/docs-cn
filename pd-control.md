@@ -808,14 +808,14 @@ Encoding 格式示例：
 
 ### `region startkey [--format=raw|encode|hex] <key> <limit>`
 
-用于查询从某个 key 开始的所有 Region。
+用于查询从某个 key 范围内的所有 Region。
 
 示例：
 
 {{< copyable "" >}}
 
 ```bash
->> region startkey --format=raw abc
+>> region startkey --format=raw a z
 ```
 
 ```
