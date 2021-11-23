@@ -166,7 +166,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
 URI 中可配置的的参数如下：
@@ -175,10 +175,10 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
-| `cdc-test`           | 使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
-| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
+| `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
+| `kafka-version`      | 下游 Kafka 版本号。可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致。 |
+| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID。可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`。 |
+| `partition-num`     | 下游 Kafka partition 数量。可选，不能大于实际 partition 数量。如果不填，会自动获取 partition 数量。 |
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
@@ -202,7 +202,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -217,7 +217,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+--sink-uri="pulsar://127.0.0.1:6650/topic-name?connectionTimeout=2s"
 ```
 
 URI 中可配置的的参数如下：
@@ -830,9 +830,6 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > **注意：**
 >
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
-> + 请保证硬盘的空闲容量大于等于 500G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
-> + v4.0.13 版本之后，Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
-> + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
 > + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
 > + 如需在已使用 `memory` 排序的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
