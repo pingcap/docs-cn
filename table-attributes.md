@@ -19,13 +19,13 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 + 设置表或分区属性
 
     ```sql
-    alter table t [partition p ]attributes[=]'key=value[, key1=value1...]';
+    alter table t [partition p] attributes [=] 'key=value[, key1=value1...]';
     ```
 
 + 重置表或分区属性
 
     ```sql
-    alter table t [partition p ]attributes[=]default;
+    alter table t [partition p] attributes [=] default;
     ```
 
 + 查看全部表及分区属性
@@ -73,34 +73,36 @@ alter table t partition p attributes[=]'key=value1';
 
 ### 使用方法
 
+使用方法如下，其中 `t` 为所要修改的表名，`p` 为所要修改的分区名。
+
 + 禁止属于某个表的 Region 被合并
 
     ```sql
-    alter table t attributes[=]'merge_option=deny';
+    alter table t attributes 'merge_option=deny';
     ```
 
 + 允许属于某个表的 Region 被合并
 
     ```sql
-    alter table t attributes[=]'merge_option=allow';
+    alter table t attributes 'merge_option=allow';
     ```
 
 + 重置某个表的属性
 
     ```sql
-    alter table t attributes[=]default；
+    alter table t attributes default;
     ```
 
 + 禁止属于某个分区的 Region 被合并
 
     ```sql
-    alter table t partition p attributes[=]'merge_option=deny';
+    alter table t partition p attributes 'merge_option=deny';
     ```
 
 + 允许属于某个分区的 Region 被合并
 
     ```sql
-    alter table t partition p attributes[=]'merge_option=allow';
+    alter table t partition p attributes 'merge_option=allow';
     ```
 
 + 查看所有配置了 `merge_option` 属性的表或分区
@@ -112,8 +114,8 @@ alter table t partition p attributes[=]'key=value1';
 ### 覆盖关系
 
 ```sql
-alter table t attributes[=]'merge_option=deny';
-alter table t partition p attributes[=]'merge_option=allow';
+alter table t attributes 'merge_option=deny';
+alter table t partition p attributes 'merge_option=allow';
 ```
 
 同时配置上述两个属性时，实际分区 `p` 的 Region 可以被合并。当分区的属性被重置时，分区 `p` 则会继承表 `t` 的属性，Region 无法被合并。
