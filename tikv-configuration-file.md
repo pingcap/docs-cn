@@ -102,6 +102,13 @@ This document only describes the parameters that are not included in command-lin
 + Default: `1`
 + Minimum value: `1`
 
+### `max-grpc-send-msg-len`
+
++ Sets the maximum length of a gRPC message that can be sent 
++ Default: `10485760`
++ Unit: Bytes
++ Maximum value: `2147483647`
+
 ### `grpc-stream-initial-window-size`
 
 + The window size of the gRPC stream
