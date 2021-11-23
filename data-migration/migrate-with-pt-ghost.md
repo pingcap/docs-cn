@@ -1,7 +1,6 @@
 ---
 title: 上游使用 pt/gh-ost 工具的持续同步场景
 summary: 介绍在使用 DM 持续增量数据同步，上游使用 pt/gh-ost 工具进行在线 DDL 变更时 DM 的处理方式和注意事项。
-
 ---
 
 # 上游使用 pt/gh-ost 工具的持续同步场景

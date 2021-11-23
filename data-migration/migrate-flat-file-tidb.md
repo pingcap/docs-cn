@@ -23,7 +23,7 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式如
 
 CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
-1. 编写包含 DDL 语句的 SQL 文件。
+首先编写包含 DDL 语句的 SQL 文件。
 
 - 文件名格式为`${db_name}-schema-create.sql`,其内容需包含 CREATE DATABASE 语句；
 - 文件名格式为`${db_name}.${table_name}-schema.sql`,其内容需包含 CREATE TABLE 语句。
@@ -35,7 +35,7 @@ CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提�
 no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
 ```
 
-1. 手动在下游 TiDB 建库和表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
+然后手动在下游 TiDB 建库和表。之后需要在导入过程中在`tidb-lightning.toml`中进行设置。
 
 ```toml
 [mydumper] 
@@ -103,11 +103,13 @@ pd-addr = "${ip}:${port}" # 例如 172.16.31.3:2379。当 backend = "local" 时 
 
 ## 第 4 步. 以更快的速度导入（可选）
 
-导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
+导入文件的大小统一约为 256 MiB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
 
-要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用`strict-format`模式。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MB 的多个文件块进行并行处理。
+要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用`strict-format`模式。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MiB 的多个文件块进行并行处理。
 
-注意：如果 CSV 文件不是严格格式但`strict-format`被误设为`true`，跨多行的单个完整字段会被分割成两部分，导致解析失败，甚至不报错地导入已损坏的数据。
+> **注意：**
+>
+> 如果 CSV 文件不是严格格式但 `strict-format` 被误设为 `true`，跨多行的单个完整字段会被分割成两部分，导致解析失败，甚至不报错地导入已损坏的数据。
 
 严格格式的 CSV 文件中，每个字段仅占一行，即必须满足以下条件之一：
 

@@ -5,7 +5,7 @@ summary: 介绍如何使用快照从 Aurora 迁移数据到 TiDB。
 
 # 从 Aurora 迁移数据到 TiDB
 
-本文档介绍通过 Aurora 迁移数据到 TiDB，采用[DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html) 导入可以节约大量的空间和时间成本。迁移过程包含两个过程：
+本文档介绍通过 Aurora 迁移数据到 TiDB，采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html) 导入可以节约大量的空间和时间成本。迁移过程包含两个过程：
 
 - 使用 Lightning 导入全量数据到 TiDB
 - 使用 DM 持续增量数据到 TiDB（可选）
@@ -232,7 +232,7 @@ mysql-instances:
 tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
 ```
 
-使用 tiup dmctl 执行以下命令启动数据迁移任务。
+使用 `tiup dmctl` 执行以下命令启动数据迁移任务。
 
 {{< copyable "shell-regular" >}}
 
