@@ -1,20 +1,18 @@
 ---
-title: Instance Profiling Page
-summary: Learn the instance profiling page of TiDB Dashboard.
+title: Manual Profiling
+summary: Learn the manual instance profiling of TiDB Dashboard.
 aliases: ['/docs/dev/dashboard/dashboard-profiling/']
 ---
 
-# Instance Profiling Page
+# Manual Instance Profiling Page
 
-The instance profiling page summarizes the internal performance data of each TiDB instance, TiKV instance, and PD instance. With this page, you can view the instance profiling without restarting these instances.
-
-The summarized performance data can be displayed as a flame graph or a directed acyclic graph, which visually shows the internal operations and proportions performed on the instances during the performance summary period. With this graph, you can quickly learn the main CPU resource consumption of these instances.
+On the manual instance profiling page, you can collect continuous performance data of TiDB, TiKV, PD, and TiFlash instances without restarting any of them. The data collected can be displayed on a flame graph or a directed acyclic graph. The graph visually shows what internal operations are performed on the instances during the performance summary period and the corresponding proportions. With this graph, you can quickly learn the CPU resource consumption of these instances.
 
 ## Access the page
 
-You can access the instance profiling page using one of the following methods:
+You can access the instance profiling page using either of the following methods:
 
-- After logging into TiDB Dashboard, click **Advanced Debugging** → **Profile Instances** on the left navigation bar.
+- After logging into TiDB Dashboard, click **Advanced Debugging** > **Profile Instances** > **Manually Profile** on the left navigation bar.
 
   ![Access instance profiling page](/media/dashboard/dashboard-profiling-access.png)
 

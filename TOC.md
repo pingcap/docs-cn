@@ -511,7 +511,9 @@
         - [View Diagnostics Report](/dashboard/dashboard-diagnostics-report.md)
         - [Use Diagnostics](/dashboard/dashboard-diagnostics-usage.md)
       - [Search Logs Page](/dashboard/dashboard-log-search.md)
-      - [Profile Instances Page](/dashboard/dashboard-profiling.md)
+      - [Instance Profiling]
+        - [Manual Profiling](/dashboard/dashboard-profiling.md)
+        - [Continuous Profiling](/dashboard/continuous-profiling.md)
       - Session Management and Configuration
         - [Share Session](/dashboard/dashboard-session-share.md)
         - [Configure SSO](/dashboard/dashboard-session-sso.md)
