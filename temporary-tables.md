@@ -164,7 +164,7 @@ Local temporary tables in TiDB are incompatible with MySQL temporary tables in t
 - When `MEMORY` is declared as the storage engine, TiDB local temporary tables are not restricted by the `MEMORY` storage engine.
 - When `INNODB` or `MYISAM` is declared as the storage engine, TiDB local temporary tables ignore the system variables specific to the InnoDB temporary tables.
 - MySQL does not permit referencing to the same temporary table multiple times in the same SQL statement. TiDB local temporary tables do not have this restriction.
-- The system table `information_schema.INNODB_TEMP_TABLE_INFO` in TiDB does not show local temporary tables.
+- The system table `information_schema.INNODB_TEMP_TABLE_INFO` that shows temporary tables in MySQL does not exist in TiDB. Currently, TiDB does not have a system table that shows local temporary tables.
 - TiDB does not have internal temporary tables. The MySQL system variables for internal temporary tables do not take effect for TiDB.
 
 ## Global temporary tables
