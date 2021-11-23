@@ -1,16 +1,16 @@
 ---
-title: TiDB 悲观事务模型
-summary: 了解 TiDB 的悲观事务模型。
+title: TiDB 悲观事务模式
+summary: 了解 TiDB 的悲观事务模式。
 aliases: ['/docs-cn/dev/pessimistic-transaction/','/docs-cn/dev/reference/transactions/transaction-pessimistic/']
 ---
 
-# TiDB 悲观事务模型
+# TiDB 悲观事务模式
 
-为了使 TiDB 的使用方式更加贴近传统数据库，降低用户迁移的成本，TiDB 自 v3.0 版本开始在乐观事务模型的基础上支持了悲观事务模型。本文将介绍 TiDB 悲观事务的相关特性。
+为了使 TiDB 的使用方式更加贴近传统数据库，降低用户迁移的成本，TiDB 自 v3.0 版本开始在乐观事务模型的基础上支持了悲观事务模式。本文将介绍 TiDB 悲观事务的相关特性。
 
 > **注意：**
 >
-> 自 v3.0.8 开始，新创建的 TiDB 集群默认使用悲观事务模型。但如果从 v3.0.7 版本及之前创建的集群升级到 >= v3.0.8 的版本，则不会改变默认的事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+> 自 v3.0.8 开始，新创建的 TiDB 集群默认使用悲观事务模式。但如果从 v3.0.7 版本及之前创建的集群升级到 >= v3.0.8 的版本，则不会改变默认的事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 
 ## 事务模式的修改方法
 
@@ -58,6 +58,8 @@ BEGIN /*T! PESSIMISTIC */;
 
 - 如果 `Point Get` 和 `Batch Point Get` 算子没有读到数据，依然会对给定的主键或者唯一键加锁，阻塞其他事务对相同主键唯一键加锁或者进行写入操作。
 
+- 支持 `FOR UPDATE OF TABLES` 语法，对于存在多表 join 的语句，只对 `OF TABLES` 中包含的表关联的行进行悲观锁加锁操作。 
+
 ## 和 MySQL InnoDB 的差异
 
 1. 有些 `WHERE` 子句中使用了 range，TiDB 在执行这类 DML 语句和 `SELECT FOR UPDATE` 语句时，不会阻塞 range 内并发的 DML 语句的执行。
@@ -97,7 +99,7 @@ BEGIN /*T! PESSIMISTIC */;
 
 5. autocommit 事务优先采用乐观事务提交。
     
-    使用悲观事务模型时，autocommit 事务首先尝试使用开销更小的乐观事务模式提交。如果发生了写冲突，重试时才会使用悲观事务提交。所以 `tidb_retry_limit = 0` 时，autocommit 事务遇到写冲突仍会报 `Write Conflict` 错误。
+    使用悲观事务模式时，autocommit 事务首先尝试使用开销更小的乐观事务模式提交。如果发生了写冲突，重试时才会使用悲观事务提交。所以 `tidb_retry_limit = 0` 时，autocommit 事务遇到写冲突仍会报 `Write Conflict` 错误。
 
     自动提交的 `SELECT FOR UPDATE` 语句不会等锁。
 

@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/transaction-overview/','/docs-cn/dev/reference/transacti
 
 # TiDB 事务概览
 
-TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模型。TiDB 3.0.8 及以后版本，TiDB 默认采用悲观事务模型。
+TiDB 支持分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模式。TiDB 3.0.8 及以后版本，TiDB 默认采用悲观事务模式。
 
 本文主要介绍涉及事务的常用语句、显式/隐式事务、事务的隔离级别和惰性检查，以及事务大小的限制。
 
