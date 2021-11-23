@@ -553,7 +553,7 @@ This section introduces configuration items related to the Coprocessor Cache fea
 
 Configuration related to the transaction latch. It is recommended to enable it when many local transaction conflicts occur.
 
-### `enable`
+### `enabled`
 
 - Determines whether to enable the memory lock of transactions.
 - Default value: `false`
