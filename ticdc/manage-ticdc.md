@@ -162,9 +162,8 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `memory`: Sorts data changes in memory. It is **NOT recommended** to use this sorting engine, because OOM is easily triggered when you replicate a large amount of data.
     - `file`: Entirely uses the disk to store the temporary data. This feature is **deprecated**. It is **NOT recommended** to use it in **any** situation.
 
-- `--sort-dir`: Specifies the temporary file directory of the sorting engine. It is **NOT recommended** to use this option in the command `cdc cli changefeed create`. You are recommended to use this option [in the command `cdc server` to set the temporary file directory](/ticdc/deploy-ticdc.md#description-of-ticdc-cdc-server-command-line-parameters). The default value of this option is `/tmp/cdc_sort`. When the unified sorter is enabled, if the default directory `/tmp/cdc_sort` on the sever is not writable or there is not enough space, you need to manually specify a directory in `sort-dir`. If the directory specified in `sort-dir` is not writable, `changefeed` stops automatically.
-
 - `--config`: Specifies the configuration file of the `changefeed`.
+- `sort-dir`: Specifies the temporary file directory used by the sorting engine. **Note that this option is not supported since TiDB v4.0.13, v5.0.3 and v5.1.0. Do not use it any more**.
 
 #### Configure sink URI with `mysql`/`tidb`
 
@@ -644,9 +643,9 @@ In the output of the above command, if the value of `sort-engine` is "unified", 
 > **Note:**
 >
 > + If your servers use mechanical hard drives or other storage devices that have high latency or limited bandwidth, use the unified sorter with caution.
-> + The total free capacity of hard drives must be greater than or equal to 500G. If you need to replicate a large amount of historical data, make sure that the free capacity on each node is greater than or equal to the size of the incremental data that needs to be replicated.
+> + By default, Unified Sorter uses `data_dir` to store temporary files. It is recommended to ensure that the free disk space is greater than or equal to 500 GiB. For production environments, it is recommended to ensure that the free disk space on each node is greater than (the maximum `checkpoint-ts` delay allowed by the business) * (upstream write traffic at business peak hours). In addition, if you plan to replicate a large amount of historical data after `changefeed` is created, make sure that the free space on each node is greater than the amount of replicated data.
 > + Unified sorter is enabled by default. If your servers do not match the above requirements and you want to disable the unified sorter, you need to manually set `sort-engine` to `memory` for the changefeed.
-> + To enable Unified Sorter on an existing changefeed, see the methods provided in [How do I handle the OOM that occurs after TiCDC is restarted after a task interruption?](/ticdc/troubleshoot-ticdc.md#what-should-i-do-to-handle-the-oom-that-occurs-after-ticdc-is-restarted-after-a-task-interruption). 
+> + To enable Unified Sorter on an existing changefeed that uses `memory` to sort, see the methods provided in [How do I handle the OOM that occurs after TiCDC is restarted after a task interruption?](/ticdc/troubleshoot-ticdc.md#what-should-i-do-to-handle-the-oom-that-occurs-after-ticdc-is-restarted-after-a-task-interruption). 
 
 ## Eventually consistent replication in disaster scenarios
 
