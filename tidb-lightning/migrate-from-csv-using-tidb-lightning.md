@@ -89,7 +89,7 @@ trim-last-separator = false
 
 - 指定行尾定界符。
 - 如果 `terminator` 为空，表示 "\n"（换行）和 "\r\n" （回车+换行）均表示行尾。
-- 对应  LOAD DATA 语句中的 `LINES TERMINATED BY` 项。
+- 对应 LOAD DATA 语句中的 `LINES TERMINATED BY` 项。
 
 ### `header`
 
@@ -163,7 +163,6 @@ trim-last-separator = false
 
 TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
-* 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF（`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 
