@@ -162,6 +162,10 @@ DOUBLE PRECISION [(M,D)] [UNSIGNED] [ZEROFILL], REAL[(M,D)] [UNSIGNED] [ZEROFILL
 >
 > 与在 MySQL 中一样，`DOUBLE` 数据类型存储近似值。对于货币之类的精确值，建议使用 `DECIMAL` 类型。
 
+> **注意：**
+>
+> TiDB 和 MySQL 在 `SELECT CAST(MeN AS CHAR)` （或者等价的 `SELECT CONVERT(MeM, CHAR)` ）的结果显示上存在不一致，其中 `MeN` 是用科学计数法表示的双精度浮点数。MySQL 在 `N` 属于 `[-15, 14]` 范围时显示完整数值，在该范围外显示科学计数法。而 TiDB 始终显示完整数值。例如，MySQL 对于 `SELECT CAST(3.1415e15 AS CHAR)` 显示结果为 `3.1415e15` ，而 TiDB 的显示结果为 `3141500000000000`。
+
 ### 存储空间
 
 每种类型对存储空间的需求如下表所示：
