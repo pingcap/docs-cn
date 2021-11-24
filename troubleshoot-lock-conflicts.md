@@ -133,8 +133,8 @@ Solutions:
     Checking the time interval using the PD control tool:
 
     ```shell
-    ./pd-ctl tso [start_ts]
-    ./pd-ctl tso [commit_ts]
+    tiup ctl pd tso [start_ts]
+    tiup ctl pd tso [commit_ts]
     ```
 
 * It is recommended to check whether the write performance is slow, which might cause that the efficiency of transaction commit is poor, and thus the lock is cleared.

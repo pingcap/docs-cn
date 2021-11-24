@@ -125,7 +125,7 @@ Currently, it is not supported to only enable encrypted transmission of some spe
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./pd-ctl -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
+    tiup ctl pd -u https://127.0.0.1:2379 --cacert /path/to/ca.pem --cert /path/to/client.pem --key /path/to/client-key.pem
     ```
 
     {{< copyable "shell-regular" >}}
