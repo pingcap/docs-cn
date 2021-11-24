@@ -53,7 +53,7 @@ plan replayer dump explain select * from t;
 
 > **注意：**
 > 
-> `ZIP` 文件最多会在 TiDB 集群中保存一个小时，超时后会将其删除。
+> `ZIP` 文件最多会在 TiDB 集群中保存一个小时，超时后 TiDB 会将其删除。
 
 ```sql
 MySQL [test]> plan replayer dump explain select * from t;
