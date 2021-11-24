@@ -21,7 +21,7 @@ summary: 了解 TiDB 各版本的实验特性。
 
 ## SQL 功能
 
-+ [使用 SQL 接口设置数据放置规则](/information-schema/information-schema-placement-rules.md)。(v5.3 实验特性)
++ [使用 SQL 接口设置数据放置规则](/placement-rules-in-sql.md)。(v5.3 实验特性)
 + List 分区表 (List Partition)。（v5.0 实验特性）
 + List Column 分区表 (List Column Partition)。（v5.0 实验特性）
 + [分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。（v5.1 实验特性）
