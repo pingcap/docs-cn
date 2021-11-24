@@ -49,7 +49,7 @@ TiKV 的读取请求分为两类：
 * Raftstore 线程池是 TiKV 最为复杂的一个线程池，默认大小 (`raftstore.store-pool-size`) 为 2。StoreWriter 线程池 (`raftstore.store-io-pool-size`) 的默认大小为 0。
 
     * 如果 StoreWriter 线程池大小为 0，所有的写请求都会在 Raftstore 线程以 fsync 的方式写入 RocksDB。由于存在 I/O，Raftstore 线程理论上不可能达到 100% 的 CPU。为了尽可能地减少写磁盘次数，你可以使 Raftstore 线程积攒多个写请求后，再将其请求写入 RocksDB。另外，对于 Raftstore 线程的 CPU 使用率，建议最好将其整体 CPU 使用控制在 60% 以下（当把 Raftstore 线程数设置为默认值 2 时，Grafana 监控上的 TiKV-Details.Thread CPU.Raft store CPU 上的数值则适合控制在 120% 以内）。不要为了提升写性能盲目增大 Raftstore 线程池大小，这样可能会适得其反，反而增加磁盘负担，导致性能变差。
-    * 如果 StoreWriter 线程池大小不为 0，所有写请求都会在 StoreWriter 线程以 fsync 的方式写入 RocksDB。与写请求在 Raftstore 线程完成的情况相比，这样理论上能够显著地降低写延迟和读的尾延迟。然而，写入速度变得更快意味着 Raft 日志也变得更多，从而导致 Raftstore、Apply 和 gRPC 线程的 CPU 开销增多。在这种情况下，CPU 资源不足可能会抵消优化效果，反而还可能比原来的写速度更慢。因此，建议仅在整体 CPU 资源比较充裕的情况下开启此功能。由于 Raftstore 线程把绝大部分的 I/O 请求交给 StoreWriter，StoreWriter 线程的 CPU 使用率控制在 80% 以下即可。另外，由于 StoreWriter 线程池的大小会影响 Raft 日志数量，所以该值不宜过大，一般来说设为 1 或 2 即可。如果 CPU 使用率高于 80%，可以考虑再增加。此外，需要注意 Raft 日志增多对其他线程池 CPU 开销的影响，必要的时候需要相应地增加 Raftstore，Apply，gRPC 线程的大小。
+    * 如果 StoreWriter 线程池大小不为 0，所有写请求都会在 StoreWriter 线程以 fsync 的方式写入 RocksDB。与写请求在 Raftstore 线程完成的情况相比，这样理论上能够显著地降低写延迟和读的尾延迟。然而，写入速度变得更快意味着 Raft 日志也变得更多，从而导致 Raftstore 线程、Apply 线程和 gRPC 线程的 CPU 开销增多。在这种情况下，CPU 资源不足可能会抵消优化效果，反而还可能比原来的写速度更慢。因此，建议仅在整体 CPU 资源比较充裕的情况下开启此功能。由于 Raftstore 线程把绝大部分的 I/O 请求交给 StoreWriter，StoreWriter 线程的 CPU 使用率控制在 80% 以下即可。另外，由于 StoreWriter 线程池的大小会影响 Raft 日志数量，所以该值不宜过大，一般来说设为 1 或 2 即可。如果 CPU 使用率高于 80%，可以考虑再增加。此外，需要注意 Raft 日志增多对其他线程池 CPU 开销的影响，必要的时候需要相应地增加 Raftstore 线程，Apply 线程和 gRPC 线程的大小。
 
 * UnifyReadPool 负责处理所有的读取请求。默认配置 (`readpool.unified.max-thread-count`) 大小为机器 CPU 数的 80% （如机器为 16 核，则默认线程池大小为 12）。
 
