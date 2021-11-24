@@ -145,12 +145,14 @@ trim-last-separator = false
 - 此配置项已被弃用，建议使用兼容性更好的 `terminator`。
 
     如果有如下旧的配置：
+
     ```toml
     separator = ','
     trim-last-separator = true
     ```
 
     建议修改为：
+
     ```toml
     separator = ','
     terminator = ",\n" # 请根据文件实际使用的换行符指定为 ",\n" 或 ",\r\n"
