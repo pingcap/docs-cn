@@ -92,7 +92,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            | Y            |
 | 在单条语句中添加多列                                                                       | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | Y            | N            | N            |
-| [临时表](/temporary-table.md)                                                                    | Y           |  N  |   N  |  N  |  N  |
+| [临时表](/temporary-tables.md)                                                                    | Y           |  N  |   N  |  N  |  N  |
 
 ## 事务
 
