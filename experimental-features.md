@@ -58,5 +58,5 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。
-+ [多节点永久损坏后的在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
++ [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
 + [持续性能分析](/dashboard/continuous-profiling.md)。

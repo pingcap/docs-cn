@@ -3,7 +3,9 @@ title: CSV 支持
 aliases: ['/docs-cn/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/csv/']
 ---
 
-# CSV 支持
+# CSV 支持与限制
+
+本文介绍如何使用 TiDB Lightning 从 CSV 文件迁移数据到 TiDB。关于如何从 MySQL 生成 CSV 文件，可以参考[使用 Dumpling 导出到 CSV 文件](/dumpling-overview.md#导出为-csv-文件)。
 
 TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他定界符格式如 TSV（制表符分隔值）。
 
@@ -28,7 +30,7 @@ CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。�
 
 ```toml
 [mydumper.csv]
-# 字段分隔符，必须为 ASCII 字符。
+# 字段分隔符，必须为 ASCII 字符。如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符例如'|+|'。
 separator = ','
 # 引用定界符，可以为 ASCII 字符或空字符。
 delimiter = '"'
@@ -161,7 +163,7 @@ strict-format = true
 
 ```toml
 [mydumper.csv]
-separator = ','
+separator = ',' # 如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符例如'|+|'
 delimiter = '"'
 header = true
 not-null = false
