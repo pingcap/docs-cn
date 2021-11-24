@@ -107,9 +107,9 @@ summary: 了解部署 TiDB 前的环境检查操作。
 
 ## 检测及关闭系统 swap
 
-本段介绍 swap 关闭方法。TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+TiDB 运行需要有足够的内存。如果内存不足，不建议使用 swap 作为内存不足的缓冲，因为这会降低性能。建议永久关闭系统 swap。
 
-建议执行以下命令关闭系统 swap：
+要永久关闭 swap，可执行以如下命令:
 
 {{< copyable "shell-regular" >}}
 
@@ -118,6 +118,11 @@ echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
+
+> **注意：**
+>
+> - 一起执行 `swapoff -a` 和 `swapon -a` 命令是为了刷新 swap，将 swap 里的数据转储回内存，并清空 swap 里的数据。不可省略 `swapon -a` 只执行 `swapoff -a`，否则重启后 swap 会再次自动打开，使得操作失效。
+> - 执行 `sysctl -p` 命令是为了在不重启的情况下使配置生效。
 
 ## 检测及关闭目标部署机器的防火墙
 
