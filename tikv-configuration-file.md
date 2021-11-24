@@ -99,7 +99,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-raft-conn-num`
 
-+ tikv 节点之间用于 raft 通讯的链接最大数量。
++ tikv 节点之间用于 Raft 通讯的链接最大数量。
 + 默认值：1
 + 最小值：1
 
@@ -474,24 +474,24 @@ raftstore 相关的配置项。
 
 ### `raft-log-gc-tick-interval`
 
-+ 删除 raft 日志的轮询任务调度间隔时间，0 表示不启用。
++ 删除 Raft 日志的轮询任务调度间隔时间，0 表示不启用。
 + 默认值：10s
 + 最小值：0
 
 ### `raft-log-gc-threshold`
 
-+ 允许残余的 raft 日志个数，这是一个软限制。
++ 允许残余的 Raft 日志个数，这是一个软限制。
 + 默认值：50
 + 最小值：1
 
 ### `raft-log-gc-count-limit`
 
-+ 允许残余的 raft 日志个数，这是一个硬限制。默认值为按照每个日志 1MB 而计算出来的 3/4 region 大小所能容纳的日志个数。
++ 允许残余的 Raft 日志个数，这是一个硬限制。默认值为按照每个日志 1MB 而计算出来的 3/4 region 大小所能容纳的日志个数。
 + 最小值：0
 
 ### `raft-log-gc-size-limit`
 
-+ 允许残余的 raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
++ 允许残余的 Raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
 + 最小值：大于 0
 
 ### `raft-entry-cache-life-time`
@@ -686,7 +686,7 @@ raftstore 相关的配置项。
 
 ### `apply-pool-size`
 
-+ 处理数据落盘的线程池线程数。
++ 处理数据落盘的线程池线程数量。
 + 默认值：2
 + 最小值：大于 0
 
@@ -698,19 +698,19 @@ raftstore 相关的配置项。
 
 ### `store-pool-size`
 
-+ 处理 raft 的线程池线程数。
++ 处理 Raft 的线程池线程数量。
 + 默认值：2
 + 最小值：大于 0
 
 ### `store-io-pool-size`
 
-+ 处理 raft io 任务的线程池线程数，0 表示 io 任务在 store 线程处理。
++ 处理 Raft I/O 任务的线程池线程数量，`0` 表示 I/O 任务在 Raftstore 线程处理。
 + 默认值：0
 + 最小值：0
 
 ### `future-poll-size`
 
-+ 驱动 future 的线程池线程数。
++ 驱动 future 的线程池线程数量。
 + 默认值：1
 + 最小值：大于 0
 
@@ -728,13 +728,13 @@ raftstore 相关的配置项。
 
 ### `raft-write-size-limit`
 
-+ 触发 raft 数据写入的阈值。`store-io-pool-size` 为 0 时不生效。
-+ 默认值: 1MB
++ 触发 Raft 数据写入的阈值。当 `store-io-pool-size` 的值为 0 时，该配置项不会生效。
++ 默认值：1MB
 + 最小值：0
 
 ### `raft-msg-flush-interval`
 
-+ raft 消息攒批发出的间隔时间。`store-io-pool-size` 为 0 时不生效。
++ Raft 消息攒批发出的间隔时间。当 `store-io-pool-size` 的值为 0 时，该配置项不会生效。
 + 默认值：250us
 + 最小值：0
 
@@ -787,7 +787,7 @@ rocksdb 相关的配置项。
 
 ### `max-background-flushes`
 
-+ RocksDB 用于刷写 memtable 的最大后台线程数。
++ RocksDB 用于刷写 memtable 的最大后台线程数量。
 + 默认值：2
 + 最小值：1
 
@@ -1334,7 +1334,7 @@ raftdb 相关配置项。
 
 ### `num-threads`
 
-+ 处理 RPC 请求线程数。
++ 处理 RPC 请求线程数量。
 + 默认值：8
 + 最小值：1
 
@@ -1357,7 +1357,7 @@ raftdb 相关配置项。
 
 ### `num-threads`
 
-+ 处理备份的工作线程数。
++ 处理备份的工作线程数量。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
