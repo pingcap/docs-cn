@@ -55,11 +55,11 @@ sync-diff-inspector needs to obtain the information of table schema and to query
 
 The configuration of sync-diff-inspector consists of the following parts:
 
-- `Global config`: General configurations, including number of threads to check, whether to export SQL statement to fix inconsistent tables, whether to campare the data and so on.
+- `Global config`: General configurations, such as number of threads to check, whether to export SQL statement to fix inconsistent tables, and whether to campare the data.
 - `Databases config`: Configures the instances of the upstream and downstream databases.
-- `Tables config`: Special configurations for specific tables, including specified ranges, columns to be ignored and so on (optional).
-- `Routes`: Rules for upstream multiple schema names to match downstream single schema names (optional).
+- `Routes`: Rules for upstream multiple schema names to match downstream single schema names **(optional)**.
 - `Task config`: Configures the tables for checking. If some tables have a certain mapping relationship between the upstream and downstream databases or have some special requirements, you must configure these tables.
+- `Table config`: Special configurations for specific tables, such as specified ranges and columns to be ignored **(optional)**.
 
 Below is the description of a complete configuration file:
 
@@ -80,24 +80,27 @@ check-struct-only = false
 
 ######################### Datasource config #########################
 [data-sources]
-[data-sources.mysql1] # mysql1 is the only ID for the database instance. It is used for following `task.source-instances/task.target-instance` configuration.
+[data-sources.mysql1] # mysql1 is the only custom ID for the database instance. It is used for the following `task.source-instances/task.target-instance` configuration.
     host = "127.0.0.1"
     port = 3306
     user = "root"
     password = ""
+
+    # (optional) Use mapping rules to match multiple upstream sharded tables. Rule1 and rule2 are configured in the following Routes section.
+    route-rules = ["rule1", "rule2"]
 
 [data-sources.tidb0]
     host = "127.0.0.1"
     port = 4000
     user = "root"
     password = ""
-    # Uses the snapshot feature. If enabled, historical data is used for comparison
+    # (optional) Uses the snapshot feature. If enabled, historical data is used for comparison
     # snapshot = "386902609362944000"
 
 ########################### Routes ##############################
 # To compare the data of a large number of tables with different schema names or table names, or check the data of multiple upstream sharded tables and downstream table family, use the table-rule to configure the mapping relationship. You can configure the mapping rule only for the schema or table. Also, you can configure the mapping rules for both the schema and the table.
 [routes]
-[routes.rule1]
+[routes.rule1] # rule1 is the only custom ID for the configuration. It is used for the above `data-sources.route-rules` configuration.
 schema-pattern = "test_*"      # Matches the schema name of the data source. Supports the wildcards "*" and "?"
 table-pattern = "t_*"          # Matches the table name of the data source. Supports the wildcards "*" and "?"
 target-schema = "test"         # The name of the schema in the target database
@@ -125,28 +128,28 @@ target-table = "t2"             # The name of the target table
     # Use "?" to match any character and “*” to match characters of any length.
     # For detailed match rules, refer to golang regexp pkg: https://github.com/google/re2/wiki/Syntax.
     target-check-tables = ["schema*.table*", "!c.*", "test2.t2"]
-    # Extra configurations for some tables, Config1 is defined in the following table config example.
-    target-configs= ["config1"]
+    # (optional) Extra configurations for some tables, Config1 is defined in the following table config example.
+    target-configs = ["config1"]
 
 ######################### Table config #########################
 # Special configurations for specific tables. The tables to be configured must be in `task.target-check-tables`.
-[table-configs.config1] # config1  is the only ID for this configuration. It is used for the above `task.target-configs` configuration.
+[table-configs.config1] # config1  is the only custom ID for this configuration. It is used for the above `task.target-configs` configuration.
 # The name of the target table, you can use regular expressions to match multiple tables, but one table is not allowed to be matched by multiple special configurations at the same time.
 target-tables = ["schema*.test*", "test2.t2"]
-# Specifies the range of the data to be checked
+# (optional) Specifies the range of the data to be checked
 # It needs to comply with the syntax of the WHERE clause in SQL.
 range = "age > 10 AND age < 20"
-# Specifies the column used to divide data into chunks. If you do not configure it,
+# (optional) Specifies the column used to divide data into chunks. If you do not configure it,
 # sync-diff-inspector chooses an appropriate column (primary key, unique key, or a field with index).
 index-fields = ["col1","col2"]
-# Ignores checking some columns such as some types (json, bit, blob, etc.)
+# (optional) Ignores checking some columns such as some types (json, bit, blob, etc.)
 # that sync-diff-inspector does not currently support.
 # The floating-point data type behaves differently in TiDB and MySQL. You can use
 # `ignore-columns` to skip checking these columns.
 ignore-columns = ["",""]
-# Specifies the size of the chunk for dividing the table. If not specified, this configuration can be deleted or be set as 0.
+# (optional) Specifies the size of the chunk for dividing the table. If not specified, this configuration can be deleted or be set as 0.
 chunk-size = 0
-# Specifies the "collation" for the table. If not specified, this configuration can be deleted or be set as an empty string.
+# (optional) Specifies the "collation" for the table. If not specified, this configuration can be deleted or be set as an empty string.
 collation = ""
 ```
 
