@@ -12,7 +12,7 @@ In DM v1.0, the cluster is basically deployed using TiDB Ansible. TiUP DM provid
 > - Before importing the cluster, stop running the original cluster first.
 > - For data migration tasks that need to be upgraded to v2.0, do not execute `stop-task` on these tasks.
 > - The command only supports importing to DM v2.0.0-rc.2 and later versions.
-> - The `import` command is used to import a DM v1.0 cluster to a new DM v2.0 cluster. If you need to import data migration tasks to an existing v2.0 cluster, refer to [Manually Upgrade TiDB Data Migration from v1.0.x to v2.0.x](https://docs.pingcap.com/tidb-data-migration/stable/manually-upgrade-dm-1.0-to-2.0)
+> - The `import` command is used to import a DM v1.0 cluster to a new DM v2.0 cluster. If you need to import data migration tasks to an existing v2.0 cluster, refer to [Manually Upgrade TiDB Data Migration from v1.0.x to v2.0+](https://docs.pingcap.com/tidb-data-migration/stable/manually-upgrade-dm-1.0-to-2.0)
 > - The deployment directories of some components might be different from those in the original cluster. You can check it with the `display` command.
 > - Before importing the cluster, run `tiup update --self && tiup update dm` to upgrade TiUP DM components to the latest version.
 > - After the cluster is imported, there is only one DM-master node in the cluster. You can refer to [the `scale out` command](/tiup/tiup-component-dm-scale-out.md) to scale out the DM-master node.
