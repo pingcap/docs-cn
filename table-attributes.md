@@ -16,7 +16,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 表属性为 `key=value` 的形式，多个属性需要用逗号分隔。具体示例如下，其中 `t` 为所要修改的表名，`p` 为所要修改的分区名，`[]`内部为可选项。
 
-+ 设置表或分区属性
++ 设置表或分区属性 
 
     ```sql
     alter table t [partition p] attributes [=] 'key=value[, key1=value1...]';
