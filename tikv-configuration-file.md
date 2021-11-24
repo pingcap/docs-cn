@@ -728,13 +728,13 @@ raftstore 相关的配置项。
 
 ### `raft-write-size-limit`
 
-+ 触发 Raft 数据写入的阈值。当 `store-io-pool-size` 的值为 0 时，该配置项不会生效。
++ 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
 + 默认值：1MB
 + 最小值：0
 
 ### `raft-msg-flush-interval`
 
-+ Raft 消息攒批发出的间隔时间。当 `store-io-pool-size` 的值为 0 时，该配置项不会生效。
++ Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `store-io-pool-size` 的值为 `0` 时，该配置项不会生效。
 + 默认值：250us
 + 最小值：0
 
