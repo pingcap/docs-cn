@@ -862,7 +862,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(node_load5 / count without (cpu, mode) (node_cpu{mode="system"})) > 1`
+    `(node_load5 / count without (cpu, mode) (node_cpu_seconds_total{mode="system"})) > 1`
 
 * 规则描述：
 
@@ -877,7 +877,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `avg(irate(node_cpu{mode="idle"}[5m])) by(instance) * 100 <= 20`
+    `avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by(instance) * 100 <= 20`
 
 * 规则描述：
 
