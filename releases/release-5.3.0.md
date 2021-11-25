@@ -173,7 +173,6 @@ TiDB 版本：5.3.0
 
 经测试，使用 10 台 TiDB Lightning，20 TB 规模的 MySQL 数据可以在 8 小时内导入到 TiDB，单台 TiDB Lightning 可以支持 250 GB/s 的导入速度，整体效率提升了 8 倍。
 
-
     [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)
 
 - **TiDB Lightning 执行任务前的检查项**
