@@ -14,7 +14,7 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式如
 
 ## 第 1 步. 准备 CSV 文件
 
-将所有要导入的 CSV 文件放在同一目录下，若要 Lighting 识别所有 CSV 文件，文件名必须满足一定格式。
+将所有要导入的 CSV 文件放在同一目录下，若要 Lighting 识别所有 CSV 文件，文件名必须满足以下格式：
 
 - 包含整张表数据的 CSV 文件需命名为`${db_name}.${table_name}.csv`
 - 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续但必须递增，并用零填充为同样长度。
@@ -55,8 +55,9 @@ level = "info"
 file = "tidb-lightning.log"
 
 [tikv-importer]
-# 默认使用 local 后端模式以获取最好的性能，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+# 更多配置
 backend = "local"
 # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间
 sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
@@ -65,7 +66,9 @@ sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 # 源数据目录。
 data-source-dir = "/data/my_datasource/"
 
-# 不创建表库，当在第 2 步手动完成下游表结构创建时此项设为 true，否则为 false
+# 设置是否需要创建表库
+# 若需要 Lightning 创建库表，则设为 false
+# 若已手动完成下游表结构创建，则设为 true
 no-schema = true
 
 # 定义 CSV 格式

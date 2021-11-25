@@ -13,7 +13,7 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 
 - [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
-- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
+- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro#dm-worker-%E6%89%80%E9%9C%80%E6%9D%83%E9%99%90)
 - [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
 
@@ -26,7 +26,7 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 **磁盘空间**：
 
 - Dumpling 需要足够储存整个数据源的存储空间，推荐使用 SSD 介质。
-- Lightning 导入期间需要排序键值对的临时存放空间，至少需要数据源最大单表的空间。
+- Lightning 导入期间需要排序键值对的临时存放空间，磁盘空间至少可以存储数据源的最大单表。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
 
@@ -55,7 +55,6 @@ Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 --filety
 
 ```shell
 tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
-
 ```
 
 以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)
@@ -197,7 +196,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
    mysql-instances:
      - source-id: "mysql-01"            # 数据源 ID，即 source1.yaml 中的 source-id
        block-allow-list: "bw-rule-1"    # 引入上面黑白名单配置。
-#       syncer-config-name: "global"    # 引用上面的 syncers 增量数据配置。
+#       syncer-config-name: "global"    # 引用下面的 syncers 增量数据配置。
        meta:                            # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
          binlog-name: "mysql-bin.000004"  # 第 1 步中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
          binlog-pos: 109227
@@ -257,8 +256,8 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
-- DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
-- DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
+- DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
+- DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多
 

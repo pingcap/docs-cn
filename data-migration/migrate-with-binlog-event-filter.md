@@ -32,7 +32,7 @@ filters:
 | Event           | 分类 | 说明                       |
 | --------------- | ---- | --------------------------|
 | all             |      | 过滤所有 events            |
-| all dml         |      | 过滤所有 DML events        |
+| all dml         |      | 匹配所有 DML events        |
 | all ddl         |      | 过滤所有 DDL events        |
 | none            |      | 不过滤任何 events          |
 | none ddl        |      | 不包含任何 DDL events      |
