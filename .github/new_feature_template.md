@@ -1,6 +1,6 @@
 ---
 title: 特性名称（与文档一级标题保持一致）
-summary: xxx（一句话介绍该文档的主要内容）
+summary: xxx（一句话介绍该文档的主要内容，请尽可能多地包含本文的关键词，这有利于搜索引擎优化）
 ---
 
 <!--本文档为新增功能类模板，你可直接复制使用，用时请将多余的说明删除。该类文档示例：[聚簇索引](/clustered-indexes.md)-->
@@ -9,7 +9,7 @@ summary: xxx（一句话介绍该文档的主要内容）
 
 - 功能一定要有对应的功能介绍文档。
 - 如果新增功能与其他厂商相同或相似，切忌完全抄袭其他厂商文档中的示例。
-- 记得在 TOC.md 中合适的位置加目录（思考用户最有可能在哪里找文档）。
+- 请在 TOC.md 中合适的位置加目录（思考用户最有可能在哪里找文档）。
 
 # 特性名称（与文首 metadata 中的 title 名称保持一致）
 
@@ -58,7 +58,7 @@ TiDB 提供 x 种 xxx 使用方法，分别是 xxx，xxx，和 xxx。
 
 本小节给出更多用户可能想看到的相关文档，如：
 
-- 如果需要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
+- 如果需要查看 TiFlash 版本、TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
 - 如果需要移除某个 TiFlash 节点，请参阅[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
 
 或直接给出用户接下来可能感兴趣的文档，如：
