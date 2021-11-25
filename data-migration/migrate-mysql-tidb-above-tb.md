@@ -60,13 +60,13 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)
 |参数               |说明|
 |-                  |-|
-|-u or --user       |MySQL 数据库的用户|
-|-p or --password   |MySQL 数据库的用户密码|
-|-P or --port       |MySQL 数据库的端口|
-|-h or --host       |MySQL 数据库的 IP 地址|
-|-t or --thread     |导出的线程数|
-|-o or --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
-|-r or --row        |单个文件的最大行数|
+|-u 或 --user       |MySQL 数据库的用户|
+|-p 或 --password   |MySQL 数据库的用户密码|
+|-P 或 --port       |MySQL 数据库的端口|
+|-h 或 --host       |MySQL 数据库的 IP 地址|
+|-t 或 --thread     |导出的线程数|
+|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
+|-r 或 --row        |单个文件的最大行数|
 |-F                 |指定单个文件的最大大小，单位为 MiB|
 |-B 或 --database  | 导出指定数据库 |
 |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。 `[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]`（导出除系统库外的所有库表） |

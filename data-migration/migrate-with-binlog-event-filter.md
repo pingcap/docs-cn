@@ -102,19 +102,7 @@ filters:
   filter-procedure-rule:
     schema-pattern: "test_*"
     table-pattern: "t_*"
-    sql-pattern: ["^DROP\\s+PROCEDURE", "^CREATE\\s+PROCEDURE"]
-    action: Ignore
-```
-
-### 过滤 TiDB parser 不支持的 SQL 语句
-
-使用全局过滤规则 `schema-pattern: "*"`来过滤 TiDB parser 不支持的 SQL 语句：
-
-```
-filters:
-  filter-partition-rule:
-    schema-pattern: "*"
-    sql-pattern: ["ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
+    sql-pattern: [".*\\s+DROP\\s+PROCEDURE", ".*\\s+CREATE\\s+PROCEDURE", "ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
     action: Ignore
 ```
 
