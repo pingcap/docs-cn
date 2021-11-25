@@ -18,7 +18,7 @@ summary: 介绍如何从 SQL 文件迁移数据到 TiDB。
 
 ## 第 2 步. 定义目标表结构
 
-平面文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
+CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
 1. 编写包含 DDL 语句的 SQL 文件。
 
@@ -32,7 +32,7 @@ summary: 介绍如何从 SQL 文件迁移数据到 TiDB。
 no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
 ```
 
-1. 手动在下游 TiDB 建库和表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
+2. 手动在下游 TiDB 建库和表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
 
 ```toml
 [mydumper] 

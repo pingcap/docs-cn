@@ -13,8 +13,6 @@ summary: 介绍如何使用快照从 Aurora 迁移数据到 TiDB。
 ## 前提条件
 
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
-- [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
-- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
 - [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 
 ## 使用 Lightning 导入全量数据到 TiDB
@@ -45,7 +43,7 @@ mysql> SHOW MASTER STATUS;
 - 创建快照点时，Aurora binlog 名称及位置
 - 快照文件的 S3 路径，及具有访问权限的 SecretKey 和 AccessKey
 
-### Step 2. 使用 Dumpling 导出 schema
+### 第 2 步. 使用 Dumpling 导出 schema
 
 因为 Aurora 生成的快照文件并不包含建表语句文件，所以您需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建。或者跳过此步骤以手动方式在下游自行创建。
 
@@ -59,18 +57,18 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no
 
 |参数               |说明|
 |-                  |-|
-|-u or --user       |MySQL 数据库的用户|
-|-p or --password   |MySQL 数据库的用户密码|
-|-P or --port       |MySQL 数据库的端口|
-|-h or --host       |MySQL 数据库的 IP 地址|
-|-t or --thread     |导出的线程数|
-|-o or --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
-|-r or --row        |单个文件的最大行数|
+|-u 或 --user       |MySQL 数据库的用户|
+|-p 或 --password   |MySQL 数据库的用户密码|
+|-P 或 --port       |MySQL 数据库的端口|
+|-h 或 --host       |MySQL 数据库的 IP 地址|
+|-t 或 --thread     |导出的线程数|
+|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
+|-r 或 --row        |单个文件的最大行数|
 |-F                 |指定单个文件的最大大小，单位为 MiB|
 |-B 或 --database   |导出指定数据库|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
 
-### Step 3. 编写 Lightning 配置文件 
+### 第 3 步. 编写 Lightning 配置文件 
 
 根据一下内容创建`tidb-lighting.toml` 配置文件:
 
@@ -116,7 +114,7 @@ type = '$3'
 
 如果需要在 TiDB 开启 TLS ，请参考： [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)
 
-### Step 4. 导入全量数据到 TiDB
+### 第 4 步. 导入全量数据到 TiDB
 
 使用 Lightning 在下游 TiDB 建表:
 
@@ -153,7 +151,13 @@ nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.ou
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
+
 ## 使用 DM 持续增量同步数据到 TiDB（可选）
+
+### 前提条件
+
+- [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
+- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
 
 ### 第 1 步. 创建数据源
 

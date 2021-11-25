@@ -17,13 +17,13 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式如
 将所有要导入的 CSV 文件放在同一目录下，若要 Lighting 识别所有 CSV 文件，文件名必须满足一定格式。
 
 - 包含整张表数据的 CSV 文件需命名为`${db_name}.${table_name}.csv`
-- 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续但必须递增，并用零填充。
+- 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续但必须递增，并用零填充为同样长度。
 
 ## 第 2 步. 创建目标表结构
 
 CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
-首先编写包含 DDL 语句的 SQL 文件。
+1. 首先编写包含 DDL 语句的 SQL 文件。
 
 - 文件名格式为`${db_name}-schema-create.sql`,其内容需包含 CREATE DATABASE 语句；
 - 文件名格式为`${db_name}.${table_name}-schema.sql`,其内容需包含 CREATE TABLE 语句。
@@ -35,7 +35,7 @@ CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提�
 no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
 ```
 
-然后手动在下游 TiDB 建库和表。之后需要在导入过程中在`tidb-lightning.toml`中进行设置。
+2. 手动在下游 TiDB 建库和表。之后需要在导入过程中在`tidb-lightning.toml`中进行设置。
 
 ```toml
 [mydumper] 
