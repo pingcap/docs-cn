@@ -25,7 +25,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 + 重置表或分区属性
 
     ```sql
-    ALTER TABLE t [PARTITION p] ATTRIBUTES [=] default;
+    ALTER TABLE t [PARTITION p] ATTRIBUTES [=] DEFAULT;
     ```
 
 + 查看全部表及分区属性
@@ -96,7 +96,7 @@ ALTER TABLE t PARTITION p ATTRIBUTES[=]'key=value1';
 + 禁止属于某个分区的 Region 被合并
 
     ```sql
-    ALTER TABLE t PARTITION p attributes 'merge_option=deny';
+    ALTER TABLE t PARTITION p ATTRIBUTES 'merge_option=deny';
     ```
 
 + 允许属于某个分区的 Region 被合并
