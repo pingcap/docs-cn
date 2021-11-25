@@ -66,6 +66,7 @@ MySQL [test]> select * from tbl;
 - `delete-value-expr`：配置一个表达式，对 DELETE 类型的 binlog event (DELETE_ROWS_EVENT) 带有的值生效。不能与 `insert-value-expr`、`update-old-value-expr`、`update-new-value-expr` 出现在一个配置项中。
 
 > **注意：**
+>
 > `update-old-value-expr` 可以与 `update-new-value-expr` 同时配置。
 > 当二者同时配置时，会将“更新+旧值“满足`update-old-value-expr` **且**”更新+新值“满足 `update-new-value-expr` 的行过滤掉。
 > 当只配置一者时，配置的这条表达式会决定是否过滤**整个行变更**，即旧值的删除和新值的插入会作为一个整体被过滤掉。
@@ -77,4 +78,5 @@ TIMESTAMP 类型的默认时区是 UTC。可以使用 `c_timestamp = '2021-01-01
 配置项 `expression-filter` 下可以定义多条过滤规则，上游数据源在其 `expression-filters` 配置项中引用需要的规则使其生效。当有多条规则生效时，匹配到**任意一条**规则即会导致某个行变更被过滤。
 
 > **注意：**
+>
 > 为某张表设置过多的表达式过滤会增加 DM 的计算开销，可能导致数据迁移速度变慢。

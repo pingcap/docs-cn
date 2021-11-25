@@ -186,7 +186,7 @@ block-allow-list:
 tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
 ```
 
-使用 tiup dmctl 执行以下命令启动数据迁移任务。
+使用 `tiup dmctl` 执行以下命令启动数据迁移任务。
 
 {{< copyable "shell-regular" >}}
 

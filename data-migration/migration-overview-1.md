@@ -20,13 +20,13 @@ aliases: ['/docs/dev/migration-overview/']
 
 ## 迁移 Aurora MySQL 到 TiDB
 
-从 Aurora 迁移数据到部署在 AWS 的 TiDB 集群， 数据迁移可以分为全量迁移和增量迁移两个步骤进行，请根据您的业务需求选择相应的步骤。
+从 Aurora 迁移数据到部署在 AWS 的 TiDB 集群，数据迁移可以分为全量迁移和增量迁移两个步骤进行。请根据你的业务需求选择相应的步骤。
 
 - [从 Aurora 迁移数据到 TiDB](/data-migration/migrate-aurora-tidb-from-snapshot.md)
 
 ## 迁移 MySQL 到 TiDB
 
-没有 Cloud storage（S3）服务，网络联通和延迟情况良好， 从 MySQL 迁移数据到 TiDB 可以考虑参照下面的便捷方案
+没有 Cloud storage（S3）服务，网络联通和延迟情况良好，从 MySQL 迁移数据到 TiDB 可以考虑参照下面的便捷方案。
 
 - [从 TiB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
 
