@@ -4,7 +4,6 @@
 # Generate all-in-one Markdown file for ``doc-cn``
 # Tip: 不支持中文文件名
 # readme.md 中的目录引用的md多次（或者md的sub heading)，以第一次出现为主
-# 每个版本都会生成一个自己的 PDF
 
 from __future__ import print_function, unicode_literals
 
@@ -32,17 +31,10 @@ with open(entry_file) as fp:
     level = 0
     current_level = ""
     for line in fp:
-        if not in_toc and line.startswith("## "):
+        if not in_toc and not line.startswith("<!-- "):
             in_toc = True
-            print("in toc")
-        elif in_toc and line.startswith('## '):
-            in_toc = False
-            # yes, toc processing done
-            # contents.append(line[1:]) # skip 1 level TOC
-            break
         elif in_toc and not line.startswith('#') and line.strip():
             ## get level from space length
-            print(line)
             level_space_str = level_pattern.findall(line)[0][:-1]
             level = len(level_space_str) // 2 + 1 ## python divide get integer
 
@@ -50,32 +42,23 @@ with open(entry_file) as fp:
             if matches:
                 for match in matches:
                     fpath = match[2]
-                    if fpath.startswith('http'):
-                        ## remove list format character `- `, `+ `
-                        followups.append(('TOC', level, line.strip()[2:]))
-                    elif fpath.endswith('.md'):
-                        # remove first slash from the fpath
+                    if fpath.endswith('.md'):
+                        # remove the first slash in the relative path
                         fpath = fpath[1:]
-                        print('fpath, ',fpath)
                         key = ('FILE', level, fpath)
                         if key not in followups:
-                            print(key)
                             followups.append(key)
+                    elif fpath.startswith('http'):
+                        ## remove list format character `- `, `+ `
+                        followups.append(('TOC', level, line.strip()[2:]))
             else:
                 name = line.strip().split(None, 1)[-1]
                 key = ('TOC', level, name)
                 if key not in followups:
-                    print(key)
                     followups.append(key)
 
         else:
             pass
-
-    # overview part in README.md
-    followups.insert(1, ("RAW", 0, fp.read()))
-
-for k in followups:
-    print(k)
 
 # stage 2, get file heading
 file_link_name = {}
@@ -97,8 +80,6 @@ for tp, lv, f in followups:
         tag = tag[3:]
     file_link_name[f] = tag.lower().replace(' ', '-')
 
-print(file_link_name)
-
 def replace_link_wrap(chapter, name):
 
     # Note: 仅仅支持 hash 匹配，如果在多个文档中有同名 heading 会碰撞
@@ -108,22 +89,18 @@ def replace_link_wrap(chapter, name):
         link_name = match.group(1)
         link = match.group(2)
         frag = match.group(3)
-        if link.endswith('.md') or '.md#' in link:
+        if link.startswith('http'):
+            return full
+        elif link.endswith('.md') or '.md#' in link:
             if not frag:
-                relative_path = ''
-                if not link.startswith('.'):
-                    relative_path = '../'
-                _rel_path = os.path.normpath(os.path.join(name, relative_path, link))
+                link = link[1:]
                 for fpath in file_link_name:
-                    if _rel_path == fpath:
+                    if link == fpath:
                         frag = '#' + file_link_name[fpath]
             return '[%s](%s)' % (link_name, frag)
         elif link.endswith('.png') or link.endswith('.jpeg') or link.endswith('.svg') or link.endswith('.gif') or link.endswith('.jpg'):
             # special handing for pic
             img_link = re.sub(r'[\.\/]*media\/', './media/', link, count=0, flags=0)
-            # print('****************', img_link)
-            # print('================', '[%s](%s)' % (link_name, img_link))
-            # return '[%s](%s/%s)' % (link_name, dirname, fname)
             return '[%s](%s)' % (link_name, img_link)
         else:
             return full
@@ -161,7 +138,6 @@ for type_, level, name in followups:
                 # fix heading level
                 diff_level = level - heading_patthern.findall(chapter)[0].count('#')
 
-                print(name, type_, level, diff_level)
                 chapter = heading_patthern.sub(replace_heading_func(diff_level), chapter)
                 contents.append(chapter)
                 contents.append('') # add an empty line
@@ -173,4 +149,3 @@ for type_, level, name in followups:
 target_doc_file = 'doc.md'
 with open(target_doc_file, 'w') as fp:
     fp.write('\n'.join(contents))
-    contents = []
