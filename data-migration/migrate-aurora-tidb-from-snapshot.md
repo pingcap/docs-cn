@@ -19,13 +19,28 @@ summary: 介绍如何使用快照从 Aurora 迁移数据到 TiDB。
 
 ## 使用 Lightning 导入全量数据到 TiDB
 
-### Step 1. 导出 Aurora 快照文件到 Amazon S3
+### 第 1 步. 导出 Aurora 快照文件到 Amazon S3
 
-为 Aurora 创建快照，如果需要在后续进行持续增量数据同步，请在创建快照后记录 binlog 位置信息，作为增量复制的起始点。关于如何查找 binlog 位置信息，请参考 [Create a snapshot of your replication source](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Replication.MySQL.html#AuroraMySQL.Replication.MySQL.CreateSnapshot)
+1. 执行以下命令，查询当前 binlog 位置
 
-导出 Aurora 快照文件的具体方式，请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+```shell
+mysql> SHOW MASTER STATUS;
+```
 
-最终您需要准备好以下信息：
+您将得到类似以下的输出，请记录 binlog 名称和位置
+
+```
++------------------+----------+--------------+------------------+-------------------+
+| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
++------------------+----------+--------------+------------------+-------------------+
+| mysql-bin.000002 |    52806 |              |                  |                   |
++------------------+----------+--------------+------------------+-------------------+
+1 row in set (0.012 sec)
+```
+
+2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+
+请注意，上述两项操作的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致同步时产生数据冲突。最终您需要准备好以下信息：
 
 - 创建快照点时，Aurora binlog 名称及位置
 - 快照文件的 S3 路径，及具有访问权限的 SecretKey 和 AccessKey
