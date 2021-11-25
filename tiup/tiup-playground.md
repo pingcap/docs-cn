@@ -27,9 +27,11 @@ playground 的命令行参数说明：
 ```bash
 Flags:
       --db int                   设置集群中的 TiDB 数量（默认为1）
+      --db.host host             指定 TiDB 的监听地址
+      --db.port int              指定 TiDB 的端口号
       --db.binpath string        指定 TiDB 二进制文件的位置（开发调试用，可忽略）
       --db.config string         指定 TiDB 的配置文件（开发调试用，可忽略）
-      --db.host host             指定 TiDB 的监听地址
+      --db.timeout int           指定 TiDB 最大等待超时时间，单位为秒，若配置为0，则为用不超时。
       --drainer int              设置集群中 Drainer 数据
       --drainer.binpath string   指定 Drainer 二进制文件的位置（开发调试用，可忽略）
       --drainer.config string    指定 Drainer 的配置文件
@@ -38,16 +40,25 @@ Flags:
       --kv int                   设置集群中的 TiKV 数量（默认为1）
       --kv.binpath string        指定 TiKV 二进制文件的位置（开发调试用，可忽略）
       --kv.config string         指定 TiKV 的配置文件（开发调试用，可忽略）
-      --monitor                  是否启动监控
+      --mode string              指定 TiUP playground 运行模式，支持'tidb', 'tikv-slim' (默认为 "tidb")
       --pd int                   设置集群中的 PD 数量（默认为1）
+      --pd.host host             指定 PD 的监听地址
       --pd.binpath string        指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string         指定 PD 的配置文件（开发调试用，可忽略）
       --pump int                 指定集群中 Pump 的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
       --pump.binpath string      指定 Pump 二进制文件的位置（开发调试用，可忽略）
       --pump.config string       指定 Pump 的配置文件（开发调试用，可忽略）
+  -T, --tag string               设置 playground 的 tag 信息
+      --ticdc int                设置集群中的 TiCDC 的数量（默认为0）
+      --ticdc.binpath string     指定 TiCDC 二进制文件的位置（开发调试用，可忽略）
+      --ticdc.config string      指定 TiCDC 的配置文件（开发调试用，可忽略）
       --tiflash int              设置集群中 TiFlash 数量（默认为0）
       --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
+      --tiflash.timeout int      指定 TiFlash 最大等待超时时间，单位为秒，若配置为0，则为用不超时。
+  -v, --version                  显示 TiUP playground 的版本号
+      --without-monitor          设置不使用 prometheus 和 grafana 的监控功能 ,若无此参数则默认开启监控功能。
+
 ```
 
 ## 使用示例
@@ -67,7 +78,7 @@ nightly 就是这个集群的版本号，类似的可以 `tiup playground v5.3.0
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground nightly --monitor
+tiup playground nightly 
 ```
 
 该命令会在 9090 端口启动 prometheus 用于展示集群内部的时序数据。
