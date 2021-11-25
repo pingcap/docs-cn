@@ -34,8 +34,8 @@
     - [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
-      - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
-      - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
+    - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
+    - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 - 数据迁移
   - [数据迁移场景](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
