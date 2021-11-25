@@ -16,7 +16,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 表属性为 `key=value` 的形式，多个属性需要用逗号分隔。具体示例如下，其中 `t` 为所要修改的表名，`p` 为所要修改的分区名，`[]`内部为可选项。
 
-+ 设置表或分区属性 
++ 设置表或分区属性
 
     ```sql
     ALTER TABLE t [PARTITION p] ATTRIBUTES [=] 'key=value[, key1=value1...]';
@@ -63,8 +63,6 @@ ALTER TABLE t PARTITION p ATTRIBUTES[=]'key=value1';
 
 当写入或读取数据存在热点时，可以使用表属性控制 Region 合并，通过为表或分区添加 `merge_option` 属性，将其设置为 `deny` 来解决。以下介绍了两种使用场景。
 
-通过以上设置仅能处理部分热点问题。如需了解更多的热点问题处理相关内容，请参阅 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
-
 #### 新建表或分区的写入热点问题
 
 在对某张新建表或某个新建分区写入数据存在热点问题时，通常需要使用分裂打散 Region 的操作避免写入热点，但由于新建表或分区的分裂操作实际产生的是空 Region，如果分裂打散操作距离写入存在一定时间间隔，则 Region 可能会被合并，从而导致无法真正规避写入热点问题。此时可以为表或分区添加 `merge_option` 属性，设置为 `deny` 来解决问题。
@@ -92,7 +90,7 @@ ALTER TABLE t PARTITION p ATTRIBUTES[=]'key=value1';
 + 重置某个表的属性
 
     ```sql
-    ALTER TABLE t ATTRIBUTES default;
+    ALTER TABLE t ATTRIBUTES DEFAULT;
     ```
 
 + 禁止属于某个分区的 Region 被合并
@@ -104,7 +102,7 @@ ALTER TABLE t PARTITION p ATTRIBUTES[=]'key=value1';
 + 允许属于某个分区的 Region 被合并
 
     ```sql
-    ALTER TABLE t PARTITION p ATTRIBUTES 'merge_option=allow';
+    ALTER TABLE t PARTITION p attributes 'merge_option=allow';
     ```
 
 + 查看所有配置了 `merge_option` 属性的表或分区
