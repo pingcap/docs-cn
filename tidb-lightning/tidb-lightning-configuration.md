@@ -172,7 +172,6 @@ separator = ','
 # 引用定界符，设置为空表示字符串未加引号。
 delimiter = '"'
 # 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行）均表示行尾。
-# 注意：如果同时设置非空的 terminator 并且 trim-last-separator 为 true，则 trim-last-separator 将被忽略。
 terminator = ""
 # CSV 文件是否包含表头。
 # 如果 header = true，将跳过首行。
