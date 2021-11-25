@@ -292,7 +292,7 @@ CREATE TABLE t1 (
 `DATETIME` 或 `TIMESTAMP` 的转换：
 
 + 当 `DATETIME` 或 `TIMESTAMP` 转换为 `DATE` 时，时间和小数部分将被舍弃。例如，`1999-12-31 23:59:59.499` 被转换为 `1999-12-31`。
-+ 当 `DATETIME` 或 `TIMESTAMP` 转换为 `TIME` 时，时间部分被舍弃，因为 `TIME` 不包含任何时间信息。
++ 当 `DATETIME` 或 `TIMESTAMP` 转换为 `TIME` 时，日期部分被舍弃，因为 `TIME` 不包含任何日期信息。
 
 如果要将 `TIME` 转换为其他时间和日期格式，日期部分会自动指定为 `CURRENT_DATE()`。最终的转换结果是由 `TIME` 和 `CURRENT_DATE()` 组成的日期。也就是说，如果 `TIME` 的值超出了 `00:00:00` 到 `23:59:59` 的范围，那么转换后的日期部分并不表示当前的日期。
 
