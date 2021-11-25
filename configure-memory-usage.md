@@ -100,7 +100,7 @@ The following example constructs a memory-intensive SQL statement that triggers 
 
 2. Execute `CREATE TABLE t(a int);` and insert 1000 rows of data.
 
-3. Execute `select * from t t1 join t t1 join t t3 order by t1.a`. This SQL statement outputs one billion records, which consumes a large amount of memory and therefore triggers the alarm.
+3. Execute `select * from t t1 join t t2 join t t3 order by t1.a`. This SQL statement outputs one billion records, which consumes a large amount of memory and therefore triggers the alarm.
 
 4. Check the `tidb.log` file which records the total system memory, current system memory usage, memory usage of the tidb-server instance, and the directory of status files.
 
