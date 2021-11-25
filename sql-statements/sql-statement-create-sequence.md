@@ -48,7 +48,6 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
     [ START [ WITH | = ] start ]
     [ CACHE [=] cache | NOCACHE | NO CACHE]
     [ CYCLE | NOCYCLE | NO CYCLE]
-    [ ORDER | NOORDER | NO ORDER]
     [table_options]
 ```
 
@@ -63,7 +62,6 @@ CREATE [TEMPORARY] SEQUENCE [IF NOT EXISTS] sequence_name
 | `START` | `MINVALUE` or `MAXVALUE`| Specifies the initial value of a sequence. When `INCREMENT` > `0`, the default value is `MINVALUE`. When `INCREMENT` < `0`, the default value is `MAXVALUE`. |
 | `CACHE` | `1000` | Specifies the local cache size of a sequence in TiDB. |
 | `CYCLE` | `NO CYCLE` | Specifies whether a sequence restarts from the minimum value (or maximum for the descending sequence). When `INCREMENT` > `0`, the default value is `MINVALUE`. When `INCREMENT` < `0`, the default value is `MAXVALUE`. |
-| `ORDER` | `NO ORDER` | TiDB currently does not support the `ORDER` option and provides only syntax compatibility for it. |
 
 ## `SEQUENCE` function
 
