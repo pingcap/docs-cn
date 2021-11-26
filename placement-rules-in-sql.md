@@ -165,7 +165,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 > **注意：**
 >
-> 字典和列表格式都基于YAML解析，但YAML语法有些时候不能正常解析。比如YAML会把 "{+disk=ssd:1,+disk=hdd:2}" 解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
+> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=hdd:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
 
 ## 使用限制
 
