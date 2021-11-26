@@ -38,7 +38,7 @@ Flags:
       --drainer.config string    指定 Drainer 的配置文件
   -h, --help                     打印帮助信息
       --host string              设置每个组件的监听地址（默认为 127.0.0.1），如果要提供给别的电脑访问，可设置为 0.0.0.0
-      --kv int                   设置集群中的 TiKV 数量（默认为1）
+      --kv int                   设置集群中 TiKV 节点的数量（默认为1）
       --kv.binpath string        指定 TiKV 二进制文件的位置（开发调试用，可忽略）
       --kv.config string         指定 TiKV 的配置文件（开发调试用，可忽略）
       --mode string              指定 TiUP playground 的运行模式，取值选项为 'tidb'（默认）和 'tikv-slim'
