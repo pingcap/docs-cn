@@ -53,7 +53,7 @@ Flags:
       --ticdc int                设置集群中的 TiCDC 节点的数量（默认为 0）
       --ticdc.binpath string     指定 TiCDC 二进制文件的位置（开发调试用，可忽略）
       --ticdc.config string      指定 TiCDC 的配置文件（开发调试用，可忽略）
-      --tiflash int              设置集群中 TiFlash 数量（默认为0）
+      --tiflash int              设置集群中 TiFlash 节点的数量（默认为 1）
       --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
       --tiflash.timeout int      指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则为用不超时。
