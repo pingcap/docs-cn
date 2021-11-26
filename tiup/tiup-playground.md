@@ -49,7 +49,7 @@ Flags:
       --pump int                 指定集群中 Pump 的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
       --pump.binpath string      指定 Pump 二进制文件的位置（开发调试用，可忽略）
       --pump.config string       指定 Pump 的配置文件（开发调试用，可忽略）
-  -T, --tag string               设置 playground 的 tag 信息
+  -T, --tag string               设置 TiUP playground 的 tag 信息
       --ticdc int                设置集群中的 TiCDC 的数量（默认为0）
       --ticdc.binpath string     指定 TiCDC 二进制文件的位置（开发调试用，可忽略）
       --ticdc.config string      指定 TiCDC 的配置文件（开发调试用，可忽略）
