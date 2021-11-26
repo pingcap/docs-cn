@@ -26,7 +26,7 @@ playground 的命令行参数说明：
 
 ```bash
 Flags:
-      --db int                   设置集群中的 TiDB 数量（默认为1）
+      --db int                   设置集群中 TiDB 节点的数量（默认为1）
       --db.host host             指定 TiDB 的监听地址
       --db.port int              指定 TiDB 的端口号
       --db.binpath string        指定 TiDB 二进制文件的位置（开发调试用，可忽略）
