@@ -32,7 +32,7 @@ Flags:
       --db.port int              指定 TiDB 的端口号
       --db.binpath string        指定 TiDB 二进制文件的位置（开发调试用，可忽略）
       --db.config string         指定 TiDB 的配置文件（开发调试用，可忽略）
-      --db.timeout int           指定 TiDB 最大等待超时时间，单位为秒，若配置为0，则为用不超时。
+      --db.timeout int           指定 TiDB 最长等待超时时间，单位为秒。若配置为 0，则永不超时。
       --drainer int              设置集群中 Drainer 数据
       --drainer.binpath string   指定 Drainer 二进制文件的位置（开发调试用，可忽略）
       --drainer.config string    指定 Drainer 的配置文件
