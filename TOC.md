@@ -62,6 +62,7 @@
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       - [外部存储](/br/backup-and-restore-storages.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+      - [RawKV 备份恢复](/br/rawkv-backup-and-restore.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
