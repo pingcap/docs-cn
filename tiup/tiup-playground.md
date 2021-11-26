@@ -56,7 +56,7 @@ Flags:
       --tiflash int              设置集群中 TiFlash 节点的数量（默认为 1）
       --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
-      --tiflash.timeout int      指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则为用不超时。
+      --tiflash.timeout int      指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则为永不超时。
   -v, --version                  显示 TiUP playground 的版本号
       --without-monitor          设置不使用 Prometheus 和 Grafana 的监控功能。若不添加此参数则默认开启监控功能。
 
