@@ -42,7 +42,7 @@ Flags:
       --kv.binpath string        指定 TiKV 二进制文件的位置（开发调试用，可忽略）
       --kv.config string         指定 TiKV 的配置文件（开发调试用，可忽略）
       --mode string              指定 TiUP playground 的运行模式，取值选项为 'tidb'（默认）和 'tikv-slim'
-      --pd int                   设置集群中的 PD 数量（默认为1）
+      --pd int                   设置集群中 PD 节点的数量（默认为1）
       --pd.host host             指定 PD 的监听地址
       --pd.binpath string        指定 PD 二进制文件的位置（开发调试用，可忽略）
       --pd.config string         指定 PD 的配置文件（开发调试用，可忽略）
