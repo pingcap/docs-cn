@@ -40,7 +40,7 @@ Flags:
       --kv int                   设置集群中 TiKV 节点的数量（默认为1）
       --kv.binpath string        指定 TiKV 二进制文件的位置（开发调试用，可忽略）
       --kv.config string         指定 TiKV 的配置文件（开发调试用，可忽略）
-      --mode string              指定 TiUP playground 的运行模式，取值选项为 'tidb'（默认）和 'tikv-slim'
+      --mode string              指定 playground 的运行模式，取值选项为 'tidb'（默认）和 'tikv-slim'
       --pd int                   设置集群中 PD 节点的数量（默认为1）
       --pd.host host             指定 PD 的监听地址
       --pd.binpath string        指定 PD 二进制文件的位置（开发调试用，可忽略）
@@ -48,7 +48,7 @@ Flags:
       --pump int                 设置集群中 Pump 节点的数量（非 0 的时候 TiDB 会开启 TiDB Binlog）
       --pump.binpath string      指定 Pump 二进制文件的位置（开发调试用，可忽略）
       --pump.config string       指定 Pump 的配置文件（开发调试用，可忽略）
-  -T, --tag string               设置 TiUP playground 的 tag 信息
+  -T, --tag string               设置 playground 的 tag 信息
       --ticdc int                设置集群中 TiCDC 节点的数量（默认为 0）
       --ticdc.binpath string     指定 TiCDC 二进制文件的位置（开发调试用，可忽略）
       --ticdc.config string      指定 TiCDC 的配置文件（开发调试用，可忽略）
@@ -56,7 +56,7 @@ Flags:
       --tiflash.binpath string   指定 TiFlash 的二进制文件位置（开发调试用，可忽略）
       --tiflash.config string    指定 TiFlash 的配置文件（开发调试用，可忽略）
       --tiflash.timeout int      指定 TiFlash 最长等待超时时间，单位为秒，若配置为 0，则永不超时。
-  -v, --version                  显示 TiUP playground 的版本号
+  -v, --version                  显示 playground 的版本号
       --without-monitor          设置不使用 Prometheus 和 Grafana 的监控功能。若不添加此参数，则默认开启监控功能。
 
 ```
