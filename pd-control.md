@@ -870,7 +870,6 @@ Encoding 格式示例：
 }
 ```
 
-
 ### `region store <store_id>`
 
 用于查询某个 store 上面所有的 Region。
