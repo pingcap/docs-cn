@@ -80,7 +80,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-concurrency`
 
-+ gRPC 工作线程的数量。
++ gRPC 工作线程的数量。调整 gRPC 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：5
 + 最小值：1
 
@@ -181,7 +181,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `max-thread-count`
 
-+ 统一处理读请求的线程池最多的线程数量。
++ 统一处理读请求的线程池最多的线程数量。调整 UnifyReadPool 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：CPU * 0.8，但最少为 4
 
 ### `stack-size`
@@ -318,7 +318,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `scheduler-worker-pool-size`
 
-+ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。
++ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
 + 最小值：1
 
@@ -685,7 +685,7 @@ raftstore 相关的配置项。
 
 ### `apply-pool-size`
 
-+ 处理数据落盘的线程池中线程的数量。
++ 处理数据落盘的线程池中线程的数量。调整 Apply 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
 + 最小值：大于 0
 
@@ -780,7 +780,7 @@ rocksdb 相关的配置项。
 
 ### `max-background-jobs`
 
-+ RocksDB 后台线程个数。
++ RocksDB 后台线程个数。调整 RocksDB 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：8
 + 最小值：2
 
@@ -1258,7 +1258,7 @@ raftdb 相关配置项。
 
 ### `max-background-jobs`
 
-+ RocksDB 后台线程个数。
++ RocksDB 后台线程个数。调整 RocksDB 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
 + 最小值：2
 
