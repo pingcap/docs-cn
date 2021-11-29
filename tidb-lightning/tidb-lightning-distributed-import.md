@@ -142,20 +142,20 @@ Assuming that the source files are stored in Amazon S3, the table files are `my_
 ```
 [[mydumper.files]]
 # the db schema file
-pattern = '(?i)^(?:[^/]*/)my_db-schema-create\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db-schema-create\.sql'
 schema = "my_db"
 type = "schema-schema"
 
 [[mydumper.files]]
 # the table schema file
-pattern = '(?i)^(?:[^/]*/)my_db\.my_table-schema\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db\.my_table-schema\.sql'
 schema = "my_db"
 table = "my_table"
 type = "table-schema"
 
 [[mydumper.files]]
 # Only import 00001~05000 and ignore other files
-pattern = '(?i)^(?:[^/]*/)my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
 schema = "my_db"
 table = "my_table"
 type = "sql"
