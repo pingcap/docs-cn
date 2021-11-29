@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/tune-tikv-thread-performance/']
 * Scheduler 线程池：负责检测写事务冲突，把事务的两阶段提交、悲观锁上锁、事务回滚等请求转化为 key-value 对数组，然后交给 Raftstore 线程进行 Raft 日志复制。
 * Raftstore 线程池：
     * 处理所有的 Raft 消息以及添加新日志的提议 (Propose)。
-    * 处理 Raft 日志。如果 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size) 配置项的值为 `0`，Raftstore 线程将日志写入到磁盘；如果该值不为 `0`，Raftstore 线程将日志发送给 StoreWriter 线程处理。
+    * 处理 Raft 日志。如果 [`store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) 配置项的值为 `0`，Raftstore 线程将日志写入到磁盘；如果该值不为 `0`，Raftstore 线程将日志发送给 StoreWriter 线程处理。
     * 当日志在多数副本中达成一致后，Raftstore 线程把该日志发送给 Apply 线程处理。
 * StoreWriter 线程池：负责将所有 Raft 日志写入到磁盘，再把结果返回到 Raftstore 线程。
 * Apply 线程池：当收到从 Raftstore 线程池发来的已提交日志后，负责将其解析为 key-value 请求，然后写入 RocksDB 并且调用回调函数通知 gRPC 线程池中的写请求完成，返回结果给客户端。
