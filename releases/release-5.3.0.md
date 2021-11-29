@@ -43,6 +43,10 @@ TiDB 版本：5.3.0
 | TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
+|  TiKV | `raftstore.store-pool-size` | 含义更改 | v5.3 以前，为 Raft 的线程池中处理消息的线程数量。自 v5.3 起，表示 Raftstore 线程池中执行 CPU 任务的线程数量。|
+| TiKV | `raftstore.store-io-pool-size` | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。| 
+|  TiKV | `raftstore.raft-write-size-limit` | 新增 | 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
+|  TiKV | `raftstore.raft-msg-flush-interval` | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | `raftstore.raft-reject-transfer-leader-duration` | 删除 | 控制迁移 leader 到新加节点的最小时间。|
 | PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 |
 | PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。 |
@@ -59,6 +63,7 @@ TiDB 版本：5.3.0
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
     - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
 
+- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 “|Warning | 1292 | Truncated incorrect xxx: 'xx'” 的警告。
 - 修复 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
@@ -218,9 +223,9 @@ TiDB 版本：5.3.0
 
     [用户文档](/ticdc/manage-ticdc.md)
 
-    **TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理**
+- **TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理**
 
-    从 TiDB v5.2.0 起，TiCDC 提供的 OpenAPI 功能成为正式特性，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。
+    从 TiDB v5.3.0 起，TiCDC 提供的 OpenAPI 功能成为正式特性，用户可通过 OpenAPI 对 TiCDC 集群进行查询和运维操作。
 
     [用户文档](/ticdc/ticdc-open-api.md)
 
@@ -238,7 +243,7 @@ TiDB 版本：5.3.0
 
 ## 遥测
 
-TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。
+TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的数据中不包含任何实际业务的表名或表数据。
 
 若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
 
@@ -355,6 +360,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。
     - 修复当处理 Coprocessor 请求时因超时而导致 panic 的问题 [#10852](https://github.com/tikv/tikv/issues/10852)
     - 修复因统计线程监控数据导致的内存泄漏 [#11195](https://github.com/tikv/tikv/issues/11195)
     - 修复在某些平台获取 cgroup 信息导致 panic 的问题 [#10980](https://github.com/tikv/tikv/pull/10980)
+    - 修复 Compaction Filter GC 无法清除 MVCC Deletion 版本导致 scan 性能下降的问题 [#11248](https://github.com/tikv/tikv/pull/11248)
 + PD
 
     - 修复因超过副本配置数量而导致错误删除带有数据且处于 pending 状态的副本的问题 [#4045](https://github.com/tikv/pd/issues/4045)
