@@ -701,7 +701,7 @@ raftstore 相关的配置项。
 + 默认值：2
 + 最小值：大于 0
 
-### `store-io-pool-size`
+### `store-io-pool-size`<span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 处理 Raft I/O 任务的线程池中线程的数量，`0` 表示 I/O 任务由 Raftstore 线程处理。
 + 默认值：0
@@ -725,13 +725,13 @@ raftstore 相关的配置项。
 + 默认值：500ms
 + 最小值：1ms
 
-### `raft-write-size-limit`
+### `raft-write-size-limit`<span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
 + 默认值：1MB
 + 最小值：0
 
-### `raft-msg-flush-interval`
+### `raft-msg-flush-interval`<span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 + Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `store-io-pool-size` 的值为 `0` 时，该配置项不会生效。
 + 默认值：250us
