@@ -155,6 +155,7 @@ TiDB 版本：4.0.9
     - 修复了快照读能够命中 lock cache，返回错误结果的问题 [#21539](https://github.com/pingcap/tidb/pull/21539)
     - 修复了在同一个事务中读取大量数据时可能发生的内存泄漏问题 [#21129](https://github.com/pingcap/tidb/pull/21129)
     - 修复了在子查询中省略表别名时的语法解析错误问题 [#20367](https://github.com/pingcap/tidb/pull/20367)
+    - 修复了查询中 `IN` 函数的参数为 time 类型时可能返回错误结果的问题 [#21290](https://github.com/pingcap/tidb/issues/21290)
 
 + TiKV
 
