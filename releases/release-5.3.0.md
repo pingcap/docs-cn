@@ -176,7 +176,7 @@ TiDB 版本：5.3.0
 
     TiDB Lightning 支持用户同时部署多个 Lightning，并行地将单表或者多表数据迁移 TiDB。该功能无需特别的配置，在不改变用户使用习惯的同时，极大提高了用户的数据迁移能力，助力大数据量业务架构升级，在生产环境使用 TiDB。
 
-经测试，使用 10 台 TiDB Lightning，20 TB 规模的 MySQL 数据可以在 8 小时内导入到 TiDB，单台 TiDB Lightning 可以支持 250 GB/s 的导入速度，整体效率提升了 8 倍。
+    经测试，使用 10 台 TiDB Lightning，20 TB 规模的 MySQL 数据可以在 8 小时内导入到 TiDB，单台 TiDB Lightning 可以支持 250 GB/s 的导入速度，整体效率提升了 8 倍。
 
     [用户文档](/tidb-lightning/tidb-lightning-distributed-import.md)
 
@@ -188,7 +188,7 @@ TiDB 版本：5.3.0
 
 - **TiDB Lightning 支持导入 GBK 编码的文件**
 
-通过指定源数据文件的字符集，TiDB Lightning 会在导入过程中将源文件从指定的字符集转换为 UTF-8 编码。
+    通过指定源数据文件的字符集，TiDB Lightning 会在导入过程中将源文件从指定的字符集转换为 UTF-8 编码。
 
     [用户文档](/tidb-lightning/tidb-lightning-configuration.md)
 
