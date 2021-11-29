@@ -43,7 +43,6 @@ TiDB 版本：5.3.0
 | TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
-|  TiKV | `raftstore.store-pool-size` | 含义更改 | v5.3 以前，为 Raft 的线程池中处理消息的线程数量。自 v5.3 起，表示 Raftstore 线程池中执行 CPU 任务的线程数量。|
 | TiKV | `raftstore.store-io-pool-size` | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。| 
 |  TiKV | `raftstore.raft-write-size-limit` | 新增 | 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | `raftstore.raft-msg-flush-interval` | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
