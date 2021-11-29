@@ -142,20 +142,20 @@ TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amaz
 ```
 [[mydumper.files]]
 # db schema 文件
-pattern = '(?i)^(?:[^/]*/)my_db-schema-create\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db-schema-create\.sql'
 schema = "my_db"
 type = "schema-schema"
 
 [[mydumper.files]]
 # table schema 文件
-pattern = '(?i)^(?:[^/]*/)my_db\.my_table-schema\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db\.my_table-schema\.sql'
 schema = "my_db"
 table = "my_table"
 type = "table-schema"
 
 [[mydumper.files]]
 # 只导入 00001~05000 这些数据文件并忽略其他文件
-pattern = '(?i)^(?:[^/]*/)my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
 schema = "my_db"
 table = "my_table"
 type = "sql"
