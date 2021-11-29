@@ -156,6 +156,7 @@ TiDB version: 4.0.9
     - Fix a bug that snapshot reads hits the lock cache [#21539](https://github.com/pingcap/tidb/pull/21539)
     - Fix an issue of potential memory leak after reading a lot of data in a long-lived transaction [#21129](https://github.com/pingcap/tidb/pull/21129)
     - Fix the issue that omitting the table alias in a subquery will have a syntax error returned [#20367](https://github.com/pingcap/tidb/pull/20367)
+    - Fix the issue that when the argument of the `IN` function in a query is the time type, the query might return an incorrect result [#21290](https://github.com/pingcap/tidb/issues/21290)
 
 + TiKV
 
