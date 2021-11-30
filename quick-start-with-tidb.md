@@ -57,7 +57,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.3.0 --db 2 --pd 3 --kv 3 
+        tiup playground v5.3.0 --db 2 --pd 3 --kv 3
         ```
 
         上述命令会在本地下载并启动某个版本的集群（例如 v5.3.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
@@ -114,7 +114,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         tiup clean --all
         ```
 
-> **注意**
+> **注意：**
 >
 > TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问；若需要使服务可被外部访问，可使用 `--host` 参数指定监听网卡绑定外部可访问的 IP。
 
@@ -161,7 +161,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.3.0 --db 2 --pd 3 --kv 3 
+        tiup playground v5.3.0 --db 2 --pd 3 --kv 3
         ```
 
         上述命令会在本地下载并启动某个版本的集群（例如 v5.3.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
