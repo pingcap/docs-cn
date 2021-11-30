@@ -265,9 +265,9 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 - 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
   - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
-  - PD: 使用 PD Control，选择性地设置以下参数。
+  - PD: 使用 PD Control，根据集群情况选择性地设置以下参数。
 
-    * 如果集群中不存在 TiDB 实例，[`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) 的值应该被设置为 `raw` 或 `txn`。此时，无论 enable-cross-table-merge 设置为何，PD 均可以跨表合并 Region。 该参数支持动态修改。
+    * 如果集群中不存在 TiDB 实例，应该将 [`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) 的值设置为 `raw` 或 `txn`。此时，无论 `enable-cross-table-merge` 设置如何，PD 均可以跨表合并 Region。 该参数支持动态修改。
 
      {{< copyable "shell-regular" >}}
 
@@ -275,7 +275,7 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
          config set key-type txn
         ```
 
-    * 如果集群中存在 TiDB 实例，`key-type` 应该为 `table`。此时设置 `enable-cross-table-merge` 为 `true`，可以让 PD 能跨表合并 Region。该参数支持动态修改。
+    * 如果集群中存在 TiDB 实例，`key-type` 的值应该设置为 `table`。此时设置 `enable-cross-table-merge` 为 `true`，可以让 PD 跨表合并 Region。该参数支持动态修改。
 
          {{< copyable "shell-regular" >}}
 
