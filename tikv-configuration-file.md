@@ -76,11 +76,11 @@ This document only describes the parameters that are not included in command-lin
 + The compression algorithm for gRPC messages
 + Optional values: `"none"`, `"deflate"`, `"gzip"`
 + Default value: `"none"`
-+ Note: When the value is `gzip`, TiDB Dashboard will have a display error because it might not complete the corresponding compression algorithm in some cases. If you adjust the value back to the default `none`, TiDB Dashboard will display normally. 
++ Note: When the value is `gzip`, TiDB Dashboard will have a display error because it might not complete the corresponding compression algorithm in some cases. If you adjust the value back to the default `none`, TiDB Dashboard will display normally.
 
 ### `grpc-concurrency`
 
-+ The number of gRPC worker threads
++ The number of gRPC worker threads. When you modify the size of the gRPC thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `5`
 + Minimum value: `1`
 
@@ -167,7 +167,7 @@ This document only describes the parameters that are not included in command-lin
 
 ### `raft-client-queue-size`
 
-+ Specifies the queue size of the Raft messages in TiKV. If too many messages not sent in time result in a full buffer, or messages discarded, you can specify a greater value to improve system stability. 
++ Specifies the queue size of the Raft messages in TiKV. If too many messages not sent in time result in a full buffer, or messages discarded, you can specify a greater value to improve system stability.
 + Default value: `8192`
 
 ## readpool.unified
@@ -181,7 +181,7 @@ Configuration items related to the single thread pool serving read requests. Thi
 
 ### `max-thread-count`
 
-+ The maximum working thread count of the unified read pool
++ The maximum working thread count of the unified read pool or the UnifyReadPool thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `MAX(4, CPU * 0.8)`
 
 ### `stack-size`
@@ -319,7 +319,7 @@ Configuration items related to storage
 
 ### `scheduler-worker-pool-size`
 
-+ The number of `scheduler` threads, mainly used for checking transaction consistency before data writing. If the number of CPU cores is greater than or equal to `16`, the default value is `8`; otherwise, the default value is `4`.
++ The number of `scheduler` threads, mainly used for checking transaction consistency before data writing. If the number of CPU cores is greater than or equal to `16`, the default value is `8`; otherwise, the default value is `4`. When you modify the size of the Scheduler thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `4`
 + Minimum value: `1`
 
@@ -685,7 +685,7 @@ Configuration items related to Raftstore
 
 ### `apply-pool-size`
 
-+ The allowable number of threads in the pool that flushes data to storage
++ The allowable number of threads in the pool that flushes data to storage. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `2`
 + Minimum value: greater than `0`
 
@@ -697,9 +697,15 @@ Configuration items related to Raftstore
 
 ### `store-pool-size`
 
-+ The allowable number of threads that process Raft
++ The allowable number of threads that process Raft, which is the size of the Raftstore thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `2`
 + Minimum value: greater than `0`
+
+### `store-io-pool-size` <span class="version-mark">New in v5.3.0</span>
+
++ The allowable number of threads that process Raft I/O tasks, which is the size of the StoreWriter thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
++ Default value: `0`
++ Minimum value: `0`
 
 ### `future-poll-size`
 
@@ -709,15 +715,27 @@ Configuration items related to Raftstore
 
 ### `cmd-batch`
 
-+ Controls whether to enable batch processing of the requests. When it is enabled, the write performance is significantly improved. 
++ Controls whether to enable batch processing of the requests. When it is enabled, the write performance is significantly improved.
 + Default value: `true`
 
 ### `inspect-interval`
 
-+ At a certain interval, TiKV inspects the latency of the Raftstore component. This parameter specifies the interval of the inspection. If the latency exceeds this value, this inspection is marked as timeout. 
-+ Judges whether the TiKV node is slow based on the ratio of timeout inspection. 
++ At a certain interval, TiKV inspects the latency of the Raftstore component. This parameter specifies the interval of the inspection. If the latency exceeds this value, this inspection is marked as timeout.
++ Judges whether the TiKV node is slow based on the ratio of timeout inspection.
 + Default value: `"500ms"`
 + Minimum value: `"1ms"`
+
+### `raft-write-size-limit` <span class="version-mark">New in v5.3.0</span>
+
++ Determines the threshold at which Raft data is written into the disk. If the data size is larger than the value of this configuration item, the data is written to the disk. When the value of `store-io-pool-size` is `0`, this configuration item does not take effect.
++ Default value: `1MB`
++ Minimum value: `0`
+
+### `raft-msg-flush-interval` <span class="version-mark">New in v5.3.0</span>
+
++ Determines the interval at which Raft messages are sent in batches. The Raft messages in batches are sent at every interval specified by this configuration item. When the value of `store-io-pool-size` is `0`, this configuration item does not take effect.
++ Default value: `250us`
++ Minimum value: `0`
 
 ## Coprocessor
 
@@ -762,7 +780,7 @@ Configuration items related to RocksDB
 
 ### `max-background-jobs`
 
-+ The number of background threads in RocksDB
++ The number of background threads in RocksDB. When you modify the size of the RocksDB thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `8`
 + Minimum value: `2`
 
@@ -1236,7 +1254,7 @@ Configuration items related to `raftdb`
 
 ### `max-background-jobs`
 
-+ The number of background threads in RocksDB
++ The number of background threads in RocksDB. When you modify the size of the RocksDB thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `4`
 + Minimum value: `2`
 
