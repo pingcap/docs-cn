@@ -8,7 +8,7 @@ title: TiDB 5.3 Release Notes
 
 TiDB 版本：5.3.0
 
-在 5.3.0 版本中，你可以获得以下关键特性：
+在 v5.3.0 版本中，你可以获得以下关键特性：
 
 + 引入临时表，简化业务逻辑并提升性能
 + 支持设置表和分区的表属性
@@ -24,7 +24,7 @@ TiDB 版本：5.3.0
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.3.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Notes](/releases/release-notes.md)。
+> 当从一个早期的 TiDB 版本升级到 TiDB v5.3.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Notes](/releases/release-notes.md)。
 
 ### 系统变量
 
