@@ -78,11 +78,11 @@ TiDB 版本：5.3.0
 
     新增对 `[CREATE | ALTER] PLACEMENT POLICY` 语句的支持，提供 SQL 接口设置数据放置规则。通过该功能，用户可以指定任意连续数据按照不同地域、机房、机柜、主机、硬件、副本数规则进行部署，满足低成本、高可用、灵活多变的业务诉求。该功能可以实现以下业务场景：
 
-    - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本，并通过规则配置实现业务资源隔离
-    - 增加重要数据的副本数，提高业务可用性和数据可靠性
-    - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
-    - 把热点数据的 leader 放到高性能的 TiKV 实例上
-    - 将冷数据分离到不同的存储中以提高可用性
+    - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本，并通过规则配置实现业务资源隔离。
+    - 增加重要数据的副本数，提高业务可用性和数据可靠性。
+    - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本。
+    - 把热点数据的 leader 放到高性能的 TiKV 实例上。
+    - 将冷数据分离到不同的存储中以提高可用性。
 
     [用户文档](/information-schema/information-schema-placement-rules.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
 
@@ -193,9 +193,9 @@ TiDB 版本：5.3.0
 
 - **Sync-diff-inspector 优化**
 
-    - 大幅提升了对比速度，由原来的 375 MB/s 提升至 700 MB/s
-    - 对比过程中对 TiDB 节点的内存消耗降低近一半
-    - 优化了用户交互界面，在对比过程中可以显示进度
+    - 大幅提升了对比速度，由原来的 375 MB/s 提升至 700 MB/s。
+    - 对比过程中对 TiDB 节点的内存消耗降低近一半。
+    - 优化了用户交互界面，在对比过程中可以显示进度。
 
      [用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)
 
@@ -244,7 +244,7 @@ TiDB 版本：5.3.0
 
 TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的数据中不包含任何实际业务的表名或表数据。
 
-若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+关于所收集的信息详情及如何禁用该行为，参见[遥测](/telemetry.md)文档。
 
 ## 移除功能
 
@@ -257,7 +257,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 当 coprocessor 遇到锁时，在调试日志中显示受影响的 SQL 语句帮助诊断问题 [#27718](https://github.com/pingcap/tidb/issues/27718)
     - 在 SQL 逻辑层备份和恢复数据时，支持显示备份和恢复数据的大小 [#27247](https://github.com/pingcap/tidb/issues/27247)
     - 改进 `tidb_analyze_version=2` 时 ANALYZE 默认的收集逻辑，提高收集速度并且降低资源开销
-    - 引入语法 `ANALYZE TABLE table_name COLUMNS col_1, col_2, ..., col_n`，为宽表提供只收集一部分列统计信息的方案。提高宽表收集统计信息的速度。
+    - 引入语法 `ANALYZE TABLE table_name COLUMNS col_1, col_2, ..., col_n`，为宽表提供只收集一部分列统计信息的方案，提高宽表收集统计信息的速度
 
 + TiKV
 
