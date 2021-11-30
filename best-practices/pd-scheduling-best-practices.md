@@ -267,7 +267,7 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
   - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
   - PD: 使用 PD Control，选择性地设置以下参数。
 
-    * [`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) 设为 `txn` 或者 `raw`，该参数支持动态修改。
+    * 如果集群中不存在 TiDB 实例，[`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) 的值应该被设置为 "raw" 或 "txn"。此时，无论 enable-cross-table-merge 设置为何，PD 均可以跨表合并 Region。 该参数支持动态修改。
 
      {{< copyable "shell-regular" >}}
 
@@ -275,7 +275,7 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
          config set key-type txn
         ```
 
-    * 或者，`key-type` 保持 `table`，同时设置 `enable-cross-table-merge` 为 `true`，该参数支持动态修改。
+    * 如果集群中存在 TiDB 实例，`key-type` 应该为 `table`。此时设置 `enable-cross-table-merge` 为 `true`，可以让 PD 能跨表合并 Region。该参数支持动态修改。
 
          {{< copyable "shell-regular" >}}
 
