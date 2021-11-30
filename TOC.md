@@ -3,7 +3,7 @@
 
 - About TiDB
   - [TiDB Introduction](/overview.md)
-  - [TiDB 5.2 Release Notes](/releases/release-5.2.0.md)
+  - [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
   - [Basic Features](/basic-features.md)
   - [Experimental Features](/experimental-features.md)
   - Benchmarks
