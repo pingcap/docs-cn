@@ -263,14 +263,30 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
 
 - 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
-    - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
-    - PD: 
-        + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
-        + 或者 `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
-       
-        > **注意：**
-        >
-        > 在开启 `placement-rules`后，请合理切换 `txn`和 `raw`，避免无法正常解码 key。
+  - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
+  - PD: 使用 PD Control，选择性地设置以下参数。
+
+    * [`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) 设为 `txn` 或者 `raw`，该参数支持动态修改。
+
+     {{< copyable "shell-regular" >}}
+
+        ```bash
+         config set key-type txn
+        ```
+
+    * 或者，`key-type` 保持 `table`，同时设置 `enable-cross-table-merge` 为 `true`，该参数支持动态修改。
+
+         {{< copyable "shell-regular" >}}
+
+            ```bash
+             config set enable-cross-table-merge true
+            ```
+
+    如果遇到修改未生效的问题，请参阅[修改 TiKV/PD 的 toml 配置文件后没有生效](/deploy-and-maintain-faq.md#为什么修改了-tikvpd-的-toml-配置文件却没有生效)。
+
+    > **注意：**
+    >
+    > 在开启 `placement-rules`后，请合理切换 `key-type`，避免无法正常解码 key。
 
 - 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数 (`approximate_keys`) 在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 
