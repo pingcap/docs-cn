@@ -98,7 +98,7 @@ TiDB 版本：5.3.0
         - 支持重名，用户无需为业务设计复杂的表命名规则。
         - 提供会话级别的数据隔离，降低业务设计复杂度，会话结束后删除临时表。
 
-    [用户文档](/temporary-tables.md)，[#24169](https://github.com/pingcap/tidb/issues/24169)
+        [用户文档](/temporary-tables.md)，[#24169](https://github.com/pingcap/tidb/issues/24169)
 
 - **支持 `FOR UPDATE OF TABLES` 语法**
 
@@ -142,7 +142,7 @@ TiDB 版本：5.3.0
         >
         > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
-    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
+        [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
 
 ### 稳定性
 
