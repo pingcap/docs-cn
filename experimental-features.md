@@ -22,14 +22,15 @@ This document introduces the experimental features of TiDB in different versions
 
 ## SQL
 
++ [Use SQL interface to set placement rules for data] (/placement-rules-in-sql.md) (Introduced in v5.3)
 + List Partition (Introduced in v5.0)
 + List COLUMNS Partition (Introduced in v5.0)
 + [Dynamic Pruning Mode for Partitioned Tables](/partitioned-table.md#dynamic-pruning-mode). (Introduced in v5.1)
 + The expression index feature. The expression index is also called the function-based index. When you create an index, the index fields do not have to be a specific column but can be an expression calculated from one or more columns. This feature is useful for quickly accessing the calculation-based tables. See [Expression index](/sql-statements/sql-statement-create-index.md) for details. (Introduced in v4.0)
-+ [Generated Columns](/generated-columns.md).
-+ [User-Defined Variables](/user-defined-variables.md).
-+ [JSON data type](/data-type-json.md) and [JSON functions](/functions-and-operators/json-functions.md).
-+ [View](/information-schema/information-schema-views.md).
++ [Generated Columns](/generated-columns.md) (Introduced in v2.1)
++ [User-Defined Variables](/user-defined-variables.md) (Introduced in v2.1)
++ [JSON data type](/data-type-json.md) and [JSON functions](/functions-and-operators/json-functions.md) (Introduced in v2.1)
++ [View](/information-schema/information-schema-views.md) (Introduced in v2.1)
 
 ## Configuration management
 
@@ -42,21 +43,25 @@ This document introduces the experimental features of TiDB in different versions
 
 ## Storage
 
-+ [Disable Titan](/storage-engine/titan-configuration.md#disable-titan-experimental).
-+ [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental).
++ [Disable Titan](/storage-engine/titan-configuration.md#disable-titan-experimental) (Introduced in v4.0)
++ [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental) (Introduced in v4.0)
 + TiFlash supports distributing the new data of the storage engine on multiple hard drives to share the I/O pressure. (Introduced in v4.0)
+
+<!--## Data migration 
+
++ [DM OpenAPI](https://docs.pingcap.com/tidb-data-migration/stable/open-api) (Introduced in v5.3) -->
 
 ## Backup and restoration
 
-+ [Back up Raw KV](/br/use-br-command-line-tool.md#back-up-raw-kv-experimental-feature).
++ [Back up Raw KV](/br/use-br-command-line-tool.md#back-up-raw-kv-experimental-feature) (Introduced in v3.1)
 
 ## Garbage collection
 
-+ [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50).
++ [Green GC](/system-variables.md#tidb_gc_scan_lock_mode-new-in-v50) (Introduced in v5.0)
 
 ## Diagnostics
 
-+ [SQL diagnostics](/information-schema/information-schema-sql-diagnostics.md).
-+ [Cluster diagnostics](/dashboard/dashboard-diagnostics-access.md).
-+ [Continuous profiling](/dashboard/continuous-profiling.md)
++ [SQL diagnostics](/information-schema/information-schema-sql-diagnostics.md) (Introduced in v4.0)
++ [Cluster diagnostics](/dashboard/dashboard-diagnostics-access.md) (Introduced in v4.0)
++ [Continuous profiling](/dashboard/continuous-profiling.md) (Introduced in v5.3)
 + [Online Unsafe Recovery](/online-unsafe-recovery.md) (Introduced in v5.3)
