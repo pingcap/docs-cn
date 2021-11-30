@@ -30,7 +30,7 @@ TiDB 版本：5.3.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-| [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 由于 TiDB 5.3.0 支持临时表，此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+| [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 由于 TiDB v5.3.0 支持临时表，此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
 |[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭 TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
 |[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
