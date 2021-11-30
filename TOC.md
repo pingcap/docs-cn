@@ -7,8 +7,8 @@
   - [Basic Features](/basic-features.md)
   - [Experimental Features](/experimental-features.md)
   - Benchmarks
-    - [v5.2 Sysbench Performance Test Report](/benchmark/benchmark-sysbench-v5.2.0-vs-v5.1.1.md)
-    - [v5.2 TPC-C Performance Test Report](/benchmark/v5.2-performance-benchmarking-with-tpcc.md)
+    - [v5.3 Sysbench Performance Test Report](/benchmark/benchmark-sysbench-v5.3.0-vs-v5.2.2.md)
+    - [v5.3 TPC-C Performance Test Report](/benchmark/v5.3-performance-benchmarking-with-tpcc.md)
     - [v5.3 MPP mode TPC-H 100GB Performance Test](/benchmark/v5.3-performance-benchmarking-with-tpch.md)
   - [MySQL Compatibility](/mysql-compatibility.md)
   - [TiDB Limitations](/tidb-limitations.md)
