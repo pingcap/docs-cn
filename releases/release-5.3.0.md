@@ -102,7 +102,7 @@ In v5.3, the key new features or improvements are as follows:
         - Supports duplicated table names. You do not need to design complicated naming rules for your application.
         - Provides session-level data isolation, which enables you to design a simpler application logic. After the transaction finishes, the temporary tables are dropped.
 
-    [User document](/temporary-tables.md), [#24169](https://github.com/pingcap/tidb/issues/24169)
+        [User document](/temporary-tables.md), [#24169](https://github.com/pingcap/tidb/issues/24169)
 
 - **Support the `FOR UPDATE OF TABLES` syntax**
 
