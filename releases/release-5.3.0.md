@@ -62,12 +62,12 @@ TiDB 版本：5.3.0
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
     - 关于临时表的更多兼容性信息，请参考[与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
 
-- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 “|Warning | 1292 | Truncated incorrect xxx: 'xx'” 的警告。
+- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 `|Warning | 1292 | Truncated incorrect xxx: 'xx'` 的警告。
 - 修复 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
 - 修复 v5.3.0 之前的版本中新增索引会导致在规定时间外触发 auto-analyze 的问题。在 v5.3.0 中，用户通过 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 设定时间段后，只会在该时间段内触发 auto-analyze。
-- plugin 默认存放目录从 "" 改为 /data/deploy/plugin。
+- plugin 默认存放目录从 `""` 改为 `/data/deploy/plugin`。
 - DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/ticdc/tree/master/dm)。DM 版本号从 v2.0.x 修改为 v5.3.0，用户可以无风险从 v2.0.x 升级至 v5.3.0。
 
 ## 新功能
@@ -373,7 +373,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
 
     - 修复 TiFlash Store Size 统计结果不准确的问题
     - 修复 TiFlash 在部分平台上由于缺失 `nsl` 库而无法启动的问题
-    - 阻止 wait index 无限等待，防止写入压力较重时 TiFlash 长时间等待数据同步而无法提供服务的问题（新增默认超时为5分钟）
+    - 阻止 wait index 无限等待，防止写入压力较重时 TiFlash 长时间等待数据同步而无法提供服务的问题（新增默认超时为 5 分钟）
     - 解决了当日志体量很大时，用户搜索日志很慢或搜索不出的问题
     - 解决了搜索比较久远的历史日志时，只能搜索出最近的一部分日志的问题
     - 修复在打开 new collation 的情况下可能出现的结果错误
