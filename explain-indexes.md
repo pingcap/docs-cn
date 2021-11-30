@@ -40,7 +40,6 @@ TiDB uses the `IndexLookup` operator when retrieving data from a secondary index
 EXPLAIN SELECT * FROM t1 WHERE intkey = 123;
 EXPLAIN SELECT * FROM t1 WHERE intkey < 10;
 EXPLAIN SELECT * FROM t1 WHERE intkey BETWEEN 300 AND 310;
-EXPLAIN SELECT * FROM t1 WHERE intkey BETWEEN 300 AND 310;
 EXPLAIN SELECT * FROM t1 WHERE intkey IN (123,29,98);
 EXPLAIN SELECT * FROM t1 WHERE intkey >= 99 AND intkey <= 103;
 ```
