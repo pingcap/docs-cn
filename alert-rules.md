@@ -598,7 +598,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    Apply Raft log 线程压力太大，通常是因为写入太猛了。
+    Apply Raft log 线程压力太大，通常是因为短期内写入的数据量太多，已经接近或超过 apply 线程的处理上限。
 
 ### 警告级别报警项
 
