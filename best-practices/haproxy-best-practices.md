@@ -14,7 +14,7 @@ This document describes best practices for configuration and usage of [HAProxy](
 
 HAProxy is free, open-source software written in C language that provides a high availability load balancer and proxy server for TCP and HTTP-based applications. Because of its fast and efficient use of CPU and memory, HAProxy is now widely used by many well-known websites such as GitHub, Bitbucket, Stack Overflow, Reddit, Tumblr, Twitter, Tuenti, and AWS (Amazon Web Services).
 
-HAProxy is written in the year 2000 by Willy Tarreau, the core contributor to the Linux kernel, who is still responsible for the maintenance of the project and provides free software updates in the open-source community. The latest stable version 2.0.0 was released on August 16, 2019, bringing more [excellent features](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/).
+HAProxy is written in the year 2000 by Willy Tarreau, the core contributor to the Linux kernel, who is still responsible for the maintenance of the project and provides free software updates in the open-source community. In this guide, HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/) is used. It is recommended to use the latest stable version. See [the released version of HAProxy](http://www.haproxy.org/) for details.
 
 ## Basic features
 
@@ -72,28 +72,51 @@ yum -y install epel-release gcc systemd-devel
 
 ## Deploy HAProxy
 
-You can easily use HAProxy to configure and set up a load-balanced database environment. This section shows general deployment operations. You can customize the [configuration file](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html) based on your actual scenario.
+You can easily use HAProxy to configure and set up a load-balanced database environment. This section shows general deployment operations. You can customize the [configuration file](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html) based on your actual scenario.
 
 ### Install HAProxy
 
-1. Use yum to install HAProxy：
+1. Download the package of the HAProxy 2.5.0 source code:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    yum -y install haproxy
+    wget https://github.com/haproxy/haproxy/archive/refs/tags/v2.5.0.zip
     ```
 
-2. Check whether the installation is successful：
+2. Unzip the package:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    unzip v2.5.0.zip
+    ```
+
+3. Compile the application from the source code:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd haproxy-2.5.0
+    make clean
+    make -j 8 TARGET=linux-glibc  USE_THREAD=1
+    make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # Replace `${/app/haproxy}` and `${/app/haproxy/bin}` with your custom directories.
+    ```
+
+4. Reconfigure the profile:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
+    ```
+
+5. Check whether the installation is successful:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     which haproxy
-    ```
-
-    ```
-    /usr/sbin/haproxy
     ```
 
 #### HAProxy commands
@@ -146,10 +169,10 @@ global                                     # Global configuration.
    log         127.0.0.1 local2            # Global syslog servers (up to two).
    chroot      /var/lib/haproxy            # Changes the current directory and sets superuser privileges for the startup process to improve security.
    pidfile     /var/run/haproxy.pid        # Writes the PIDs of HAProxy processes into this file.
-   maxconn     4000                        # The maximum number of concurrent connections for a single HAProxy process.
+   maxconn     256                         # The maximum number of concurrent connections per HAProxy thread.
+   nbthread    48                          # The maximum number of threads. (The upper limit is equal to the number of CPUs)
    user        haproxy                     # Same with the UID parameter.
    group       haproxy                     # Same with the GID parameter. A dedicated user group is recommended.
-   nbproc      40                          # The number of processes created when going daemon. When starting multiple processes to forward requests, make sure the value is large enough so that HAProxy does not block processes.
    daemon                                  # Makes the process fork into background. It is equivalent to the command line "-D" argument. It can be disabled by the command line "-db" argument.
    stats socket /var/lib/haproxy/stats     # The directory where statistics output is saved.
 
@@ -183,9 +206,7 @@ listen tidb-cluster                        # Database load balancing.
 
 ### Start HAProxy
 
-There are two methods to start HAProxy.
-
-Method 1: Execute `haproxy`. `/etc/haproxy/haproxy.cfg` is read by default (recommended).
+To start HAProxy, run `haproxy`. `/etc/haproxy/haproxy.cfg` is read by default (recommended).
 
 {{< copyable "shell-regular" >}}
 
@@ -193,19 +214,9 @@ Method 1: Execute `haproxy`. `/etc/haproxy/haproxy.cfg` is read by default (reco
 haproxy -f /etc/haproxy/haproxy.cfg
 ```
 
-Method 2: Use `systemd` to start HAProxy.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-systemctl start haproxy.service
-```
-
 ### Stop HAProxy
 
-There are two methods to stop HAProxy.
-
-Method 1: Use `kill -9`.
+To stop HAProxy, use the `kill -9` command.
 
 1. Run the following command:
 
@@ -222,11 +233,3 @@ Method 1: Use `kill -9`.
     ```bash
     kill -9 ${haproxy.pid}
     ```
-
-Method 2: Use `systemd`.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-systemctl stop haproxy.service
-```
