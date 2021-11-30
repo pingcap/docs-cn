@@ -14,10 +14,10 @@ title: TiDB 数据库快速上手指南
 > - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
 > - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
 
+## 部署本地测试环境
+
 <SimpleTab>
 <div label="Mac">
-
-## 在 Mac OS 上部署本地测试环境
 
 TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群，步骤如下：
 
@@ -119,8 +119,6 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 <div label="Linux">
 
-## 在 Linux OS 上部署本地测试环境
-
 TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
 
 1. 下载并安装 TiUP。
@@ -218,6 +216,9 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 > **注意：**
 >
 > TiUP Playground 默认监听 `127.0.0.1`，服务仅本地可访问。若需要使服务可被外部访问，可使用 `--host` 参数指定监听网卡绑定外部可访问的 IP。
+
+</div>
+</SimpleTab>
 
 ## 使用 TiUP cluster 在单机上模拟生产环境部署步骤
 
@@ -430,10 +431,6 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         ```shell
         tiup cluster display <cluster-name>
         ```
-
-</div>
-
-</SimpleTab>
 
 ## 探索更多
 
