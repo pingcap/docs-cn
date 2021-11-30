@@ -20,9 +20,9 @@ If you directly execute the `tiup playground` command, TiUP uses the locally ins
 
 This command actually performs the following operations:
 
-- Because this command does not specify the version of the playground component, TiUP first checks the latest version of the installed playground component. Assume that the latest version is v1.5.0, then this command works the same as `tiup playground:v1.5.0`.
+- Because this command does not specify the version of the playground component, TiUP first checks the latest version of the installed playground component. Assume that the latest version is v1.7.0, then this command works the same as `tiup playground:v1.7.0`.
 - If you have not used TiUP playground to install the TiDB, TiKV, and PD components, the playground component installs the latest stable version of these components, and then start these instances.
-- Because this command does not specify the version of the TiDB, PD, and TiKV component, TiUP playground uses the latest version of each component by default. Assume that the latest version is v5.2.2, then this command works the same as `tiup playground:v1.5.0 v5.2.2`.
+- Because this command does not specify the version of the TiDB, PD, and TiKV component, TiUP playground uses the latest version of each component by default. Assume that the latest version is v5.3.0, then this command works the same as `tiup playground:v1.7.0 v5.3.0`.
 - Because this command does not specify the number of each component, TiUP playground, by default, starts a smallest cluster that consists of one TiDB instance, one TiKV instance, and one PD instance.
 - After starting each TiDB component, TiUP playground reminds you that the cluster is successfully started and provides you some useful information, such as how to connect to the TiDB cluster through the MySQL client and how to access the [TiDB Dashboard](/dashboard/dashboard-intro.md).
 
@@ -64,7 +64,7 @@ Flags:
 tiup playground nightly
 ```
 
-In the command above, `nightly` is the version number of the cluster. Similarly, you can replace `nightly` with `v5.2.2`, and the command is `tiup playground v5.2.2`.
+In the command above, `nightly` is the version number of the cluster. Similarly, you can replace `nightly` with `v5.3.0`, and the command is `tiup playground v5.3.0`.
 
 ### Start a cluster with monitor
 
@@ -103,7 +103,7 @@ By default, only one instance is started for each TiDB, TiKV, and PD component. 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground v3.0.10 --db 3 --pd 3 --kv 3
+tiup playground v5.3.0 --db 3 --pd 3 --kv 3
 ```
 
 ## Quickly connect to the TiDB cluster started by playground

@@ -137,12 +137,12 @@ To prepare the TiUP offline component package, manually pack an offline componen
 
     If you want to adjust an existing offline mirror (such as adding a new version of a component), take the following steps:
 
-    1. When pulling an offline mirror, you can get an incomplete offline mirror by specifying specific information via parameters, such as the component and version information. For example, you can pull an offline mirror that includes only the offline mirror of TiUP v1.5.2 and TiUP Cluster v1.5.2 by running the following command:
+    1. When pulling an offline mirror, you can get an incomplete offline mirror by specifying specific information via parameters, such as the component and version information. For example, you can pull an offline mirror that includes only the offline mirror of TiUP v1.7.0 and TiUP Cluster v1.7.0 by running the following command:
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.5.2 --tiup v1.5.2 --cluster v1.5.2
+        tiup mirror clone tiup-custom-mirror-v1.7.0 --tiup v1.7.0 --cluster v1.7.0
         ```
 
         If you only need the components for a particular platform, you can specify them using the `--os`  or `--arch` parameters.
@@ -174,10 +174,10 @@ To prepare the TiUP offline component package, manually pack an offline componen
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.5.2
+        tiup mirror merge tiup-custom-mirror-v1.7.0
         ```
-    
-    5. When the above steps are completed, check the result by running the `tiup list` command. In this document's example, the outputs of both `tiup list tiup` and `tiup list cluster` show that the corresponding components of `v1.5.2` are available.
+
+    5. When the above steps are completed, check the result by running the `tiup list` command. In this document's example, the outputs of both `tiup list tiup` and `tiup list cluster` show that the corresponding components of `v1.7.0` are available.
 
 #### Step 2: Deploy the offline TiUP component
 
@@ -306,13 +306,13 @@ Then execute the `deploy` command to deploy the TiDB cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy tidb-test v5.2.2 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+tiup cluster deploy tidb-test v5.3.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
 In the above command:
 
 - The name of the deployed TiDB cluster is `tidb-test`.
-- You can see the latest supported versions by running `tiup list tidb`. This document takes `v5.2.2` as an example.
+- You can see the latest supported versions by running `tiup list tidb`. This document takes `v5.3.0` as an example.
 - The initialization configuration file is `topology.yaml`.
 - `--user root`: Log in to the target machine through the `root` key to complete the cluster deployment, or you can use other users with `ssh` and `sudo` privileges to complete the deployment.
 - `[-i]` and `[-p]`: optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the `root` user (or other users specified by `--user`) that has access to the target machine. `[-p]` is used to input the user password interactively.
@@ -334,7 +334,7 @@ TiUP supports managing multiple TiDB clusters. The command above outputs informa
 Starting /home/tidb/.tiup/components/cluster/v1.5.0/cluster list
 Name              User  Version        Path                                                        PrivateKey
 ----              ----  -------        ----                                                        ----------
-tidb-test         tidb  v5.2.2      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
+tidb-test         tidb  v5.3.0      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
 ## Step 6: Check the status of the deployed TiDB cluster
