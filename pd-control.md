@@ -28,7 +28,7 @@ If you want to download the latest version of `pd-ctl`, directly download the Ti
 
 > **Note:**
 >
-> `{version}` indicates the version number of TiDB. For example, if `{version}` is `v5.2.2`, the package download link is `https://download.pingcap.org/tidb-v5.2.2-linux-amd64.tar.gz`.
+> `{version}` indicates the version number of TiDB. For example, if `{version}` is `v5.3.0`, the package download link is `https://download.pingcap.org/tidb-v5.3.0-linux-amd64.tar.gz`.
 
 ### Compile from source code
 
