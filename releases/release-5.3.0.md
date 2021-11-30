@@ -8,7 +8,7 @@ title: TiDB 5.3 Release Notes
 
 TiDB 版本：5.3.0
 
-在 5.3 版本中，你可以获得以下关键特性：
+在 v5.3.0 版本中，你可以获得以下关键特性：
 
 + 引入临时表，简化业务逻辑并提升性能
 + 支持设置表和分区的表属性
@@ -24,13 +24,13 @@ TiDB 版本：5.3.0
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.3.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。
+> 当从一个早期的 TiDB 版本升级到 TiDB v5.3.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Notes](/releases/release-notes.md)。
 
 ### 系统变量
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-| [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 由于 TiDB 5.3 支持临时表，此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
+| [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 由于 TiDB v5.3.0 支持临时表，此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
 |[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭 TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
 |[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
@@ -43,7 +43,7 @@ TiDB 版本：5.3.0
 | TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
-| TiKV | `raftstore.store-io-pool-size` | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。| 
+| TiKV | `raftstore.store-io-pool-size` | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。|
 |  TiKV | `raftstore.raft-write-size-limit` | 新增 | 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | `raftstore.raft-msg-flush-interval` | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | `raftstore.raft-reject-transfer-leader-duration` | 删除 | 控制迁移 leader 到新加节点的最小时间。|
@@ -60,14 +60,14 @@ TiDB 版本：5.3.0
     - 对于本地临时表，如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级至 v5.3.0 或更高版本后，也会被 TiDB 当成普通表处理。对于全局临时表，如果在 v5.3.0 上创建了全局临时表，当 TiDB 降级至 v5.3.0 以前版本后，这些临时表会被当作普通表处理，导致数据错误。
     - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
-    - 关于临时表的更多兼容性信息，请参考 [与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
+    - 关于临时表的更多兼容性信息，请参考[与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
 
-- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 “|Warning | 1292 | Truncated incorrect xxx: 'xx'” 的警告。
+- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 `|Warning | 1292 | Truncated incorrect xxx: 'xx'` 的警告。
 - 修复 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
 - 修复 v5.3.0 之前的版本中新增索引会导致在规定时间外触发 auto-analyze 的问题。在 v5.3.0 中，用户通过 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 设定时间段后，只会在该时间段内触发 auto-analyze。
-- plugin 默认存放目录从 "" 改为 /data/deploy/plugin。
+- plugin 默认存放目录从 `""` 改为 `/data/deploy/plugin`。
 - DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/ticdc/tree/master/dm)。DM 版本号从 v2.0.x 修改为 v5.3.0，用户可以无风险从 v2.0.x 升级至 v5.3.0。
 
 ## 新功能
@@ -78,11 +78,11 @@ TiDB 版本：5.3.0
 
     新增对 `[CREATE | ALTER] PLACEMENT POLICY` 语句的支持，提供 SQL 接口设置数据放置规则。通过该功能，用户可以指定任意连续数据按照不同地域、机房、机柜、主机、硬件、副本数规则进行部署，满足低成本、高可用、灵活多变的业务诉求。该功能可以实现以下业务场景：
 
-    - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本，并通过规则配置实现业务资源隔离
-    - 增加重要数据的副本数，提高业务可用性和数据可靠性
-    - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
-    - 把热点数据的 leader 放到高性能的 TiKV 实例上
-    - 将冷数据分离到不同的存储中以提高可用性
+    - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本，并通过规则配置实现业务资源隔离。
+    - 增加重要数据的副本数，提高业务可用性和数据可靠性。
+    - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本。
+    - 把热点数据的 leader 放到高性能的 TiKV 实例上。
+    - 将冷数据分离到不同的存储中以提高可用性。
 
     [用户文档](/information-schema/information-schema-placement-rules.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
 
@@ -132,15 +132,15 @@ TiDB 版本：5.3.0
 
     - 支持通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) 设置 PD Follower Proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD Follower Proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，从而有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
 
-    > **注意：**
-    >
-    > 在 client 数较少、PD leader 负载不高的情况下，不建议开启 PD Follower Proxy 功能。
+        > **注意：**
+        >
+        > 在 client 数较少、PD leader 负载不高的情况下，不建议开启 PD Follower Proxy 功能。
 
     - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 系统变量设置 PD client 批量请求 TSO 时所需的最大 batch 等待时间，单位为毫秒。在 PD TSO 请求负载过高的情况下，可以通过调大等待时间获得更大的 batch size，从而降低 PD 负载，提升吞吐。
 
-    > **注意：**
-    >
-    > 在 TSO 请求负载不高的情况下，不建议调整该参数。
+        > **注意：**
+        >
+        > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
     [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
 
@@ -160,8 +160,8 @@ TiDB 版本：5.3.0
 
     支持以下功能，实现以更低的延迟将数据从 MySQL 同步数据到 TiDB。
 
-    - 合并单行数据的多次变更（Compact multiple updates on a single row into one statement）
-    - 点查更新合并为批量操作（Merge batch updates of multiple rows into one statement）
+    - 合并单行数据的多次变更 (Compact multiple updates on a single row into one statement)
+    - 点查更新合并为批量操作 (Merge batch updates of multiple rows into one statement)
 
 - **增加 DM 的 OpenAPI 以更方便地管理集群（实验特性）**
 
@@ -193,9 +193,9 @@ TiDB 版本：5.3.0
 
 - **Sync-diff-inspector 优化**
 
-    - 大幅提升了对比速度，由原来的 375 MB/s 提升至 700 MB/s
-    - 对比过程中对 TiDB 节点的内存消耗降低近一半
-    - 优化了用户交互界面，在对比过程中可以显示进度
+    - 大幅提升了对比速度，由原来的 375 MB/s 提升至 700 MB/s。
+    - 对比过程中对 TiDB 节点的内存消耗降低近一半。
+    - 优化了用户交互界面，在对比过程中可以显示进度。
 
      [用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)
 
@@ -244,7 +244,7 @@ TiDB 版本：5.3.0
 
 TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的数据中不包含任何实际业务的表名或表数据。
 
-若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)文档。
+关于所收集的信息详情及如何禁用该行为，参见[遥测](/telemetry.md)文档。
 
 ## 移除功能
 
@@ -257,7 +257,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 当 coprocessor 遇到锁时，在调试日志中显示受影响的 SQL 语句帮助诊断问题 [#27718](https://github.com/pingcap/tidb/issues/27718)
     - 在 SQL 逻辑层备份和恢复数据时，支持显示备份和恢复数据的大小 [#27247](https://github.com/pingcap/tidb/issues/27247)
     - 改进 `tidb_analyze_version=2` 时 ANALYZE 默认的收集逻辑，提高收集速度并且降低资源开销
-    - 引入语法 `ANALYZE TABLE table_name COLUMNS col_1, col_2, ..., col_n`，为宽表提供只收集一部分列统计信息的方案。提高宽表收集统计信息的速度。
+    - 引入语法 `ANALYZE TABLE table_name COLUMNS col_1, col_2, ..., col_n`，为宽表提供只收集一部分列统计信息的方案，提高宽表收集统计信息的速度
 
 + TiKV
 
@@ -341,11 +341,11 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 修复当设置 `NO_UNSIGNED_SUBTRACTION` 时创建分区失败的问题 [#26765](https://github.com/pingcap/tidb/issues/26765)
     - 避免在列修剪和聚合下推中使用有副作用的表达式 [#27106](https://github.com/pingcap/tidb/issues/27106)
     - 删除无用的 gRPC 日志 [#24190](https://github.com/pingcap/tidb/issues/24190)
-    - 限制有效的小数点长度以修复精度相关的问题 [3091](https://github.com/pingcap/tics/issues/3091)
-    - 修复 `plus` 表达式中检查溢出方法出错的问题 [26977](https://github.com/pingcap/tidb/issues/26977)
-    - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [27024](https://github.com/pingcap/tidb/issues/27024)
-    - 修复 `TIDB_TRX` 中不包含重试事务的问题 [28670](https://github.com/pingcap/tidb/pull/28670)
-    - 修复配置项 `plugin_dir` 的默认值错误问题 [28084](https://github.com/pingcap/tidb/issues/28084)
+    - 限制有效的小数点长度以修复精度相关的问题 [#3091](https://github.com/pingcap/tics/issues/3091)
+    - 修复 `plus` 表达式中检查溢出方法出错的问题 [#26977](https://github.com/pingcap/tidb/issues/26977)
+    - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [#27024](https://github.com/pingcap/tidb/issues/27024)
+    - 修复 `TIDB_TRX` 中不包含重试事务的问题 [#28670](https://github.com/pingcap/tidb/pull/28670)
+    - 修复配置项 `plugin_dir` 的默认值错误问题 [#28084](https://github.com/pingcap/tidb/issues/28084)
 
 + TiKV
 
@@ -373,7 +373,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
 
     - 修复 TiFlash Store Size 统计结果不准确的问题
     - 修复 TiFlash 在部分平台上由于缺失 `nsl` 库而无法启动的问题
-    - 阻止 wait index 无限等待，防止写入压力较重时 TiFlash 长时间等待数据同步而无法提供服务的问题（新增默认超时为5分钟）
+    - 阻止 wait index 无限等待，防止写入压力较重时 TiFlash 长时间等待数据同步而无法提供服务的问题（新增默认超时为 5 分钟）
     - 解决了当日志体量很大时，用户搜索日志很慢或搜索不出的问题
     - 解决了搜索比较久远的历史日志时，只能搜索出最近的一部分日志的问题
     - 修复在打开 new collation 的情况下可能出现的结果错误
