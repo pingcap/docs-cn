@@ -1280,13 +1280,18 @@ Configuration items related to security
 
 ### `cert-path`
 
-+ The path of the Privacy Enhanced Mail (PEM) file that contains the X509 certificate
++ The path of the Privacy Enhanced Mail (PEM) file that contains the X.509 certificate
 + Default value: ""
 
 ### `key-path`
 
-+ The path of the PEM file that contains the X509 key
++ The path of the PEM file that contains the X.509 key
 + Default value: ""
+
+### `cert-allowed-cn`
+
++ A list of acceptable X.509 Common Names in certificates presented by clients. Requests are permitted only when the presented Common Name is an exact match with one of the entries in the list.
++ Default value: `[]`. This means that the client certificate CN check is disabled by default.
 
 ### `redact-info-log` <span class="version-mark">New in v4.0.8</span>
 
