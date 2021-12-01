@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
     {{< copyable "shell-regular" >}}
 
     ```shell
-    docker pull pingcap/tidb-enterprise-tools
+    docker pull pingcap/tidb-enterprise-tools:nightly
     ```
 
 ## sync-diff-inspector 的使用限制
