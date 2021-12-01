@@ -3,12 +3,12 @@
 
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 5.2 Release Notes](/releases/release-5.2.0.md)
+  - [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v5.2 对比 v5.1](/benchmark/benchmark-sysbench-v5.2.0-vs-v5.1.1.md)
-    - [TPC-C 性能对比 - v5.2 对比 v5.1](/benchmark/v5.2-performance-benchmarking-with-tpcc.md)
+    - [Sysbench 性能对比 - v5.3 对比 v5.2](/benchmark/benchmark-sysbench-v5.3.0-vs-v5.2.2.md)
+    - [TPC-C 性能对比 - v5.3 对比 v5.2](/benchmark/v5.3-performance-benchmarking-with-tpcc.md)
     - [TPC-H 100 性能对比 - v5.3 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.3-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -574,6 +574,8 @@
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
+  - v5.3
+    - [5.3.0](/releases/release-5.3.0.md)
   - v5.2
     - [5.2.3](/releases/release-5.2.3.md)
     - [5.2.2](/releases/release-5.2.2.md)

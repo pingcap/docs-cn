@@ -862,7 +862,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(node_load5 / count without (cpu, mode) (node_cpu{mode="system"})) > 1`
+    `(node_load5 / count without (cpu, mode) (node_cpu_seconds_total{mode="system"})) > 1`
 
 * 规则描述：
 
