@@ -99,7 +99,7 @@ You can easily use HAProxy to configure and set up a load-balanced database envi
     ```bash
     cd haproxy-2.5.0
     make clean
-    make -j 8 TARGET=linux-glibc  USE_THREAD=1
+    make -j 8 TARGET=linux-glibc USE_THREAD=1
     make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # Replace `${/app/haproxy}` and `${/app/haproxy/bin}` with your custom directories.
     ```
 
