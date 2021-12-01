@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/re
 
 HAProxy 是由 C 语言编写的自由开放源码的软件，为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。因为 HAProxy 能够快速、高效使用 CPU 和内存，所以目前使用非常广泛，许多知名网站诸如 GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 以及亚马逊网络服务系统都在使用 HAProxy。
 
-HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/)。推荐使用最新稳定版的，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
+HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/)。推荐使用最新稳定版的 HAProxy，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
 
 ## HAProxy 部分核心功能介绍
 
