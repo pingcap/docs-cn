@@ -246,7 +246,7 @@ It is recommended that you create a least-privileged SQL user to access and sign
 
 Starting from TiCDC v5.3.0, the cyclic replication feature between TiDB clusters (an experimental feature in v5.0.0) has been removed. If you have already used this feature to replicate data before upgrading TiCDC, the related data is not affected after the upgrade.
 
-### Telemetry
+## Telemetry
 
 TiDB adds the information to the telemetry report about whether or not the TEMPORARY TABLE feature is used. This does not include table names or table data.
 
