@@ -99,7 +99,7 @@ HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具�
     cd haproxy-2.5.0
     make clean
     make -j 8 TARGET=linux-glibc USE_THREAD=1
-    make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为实际的路径。
+    make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为自定义的实际路径。
     ```
 
 4. 重新配置 `profile` 文件：
@@ -168,7 +168,7 @@ global                                     # 全局配置。
    log         127.0.0.1 local2            # 定义全局的 syslog 服务器，最多可以定义两个。
    chroot      /var/lib/haproxy            # 更改当前目录并为启动进程设置超级用户权限，从而提高安全性。
    pidfile     /var/run/haproxy.pid        # 将 HAProxy 进程的 PID 写入 pidfile。
-   maxconn     256                         # 每个 HAProxy 线程所接受的最大并发连接数。
+   maxconn     256                         # 每个 HAProxy 线程可接受的最大并发连接数。
    nbthread    48                          # 最大线程数。线程数的上限与 CPU 数量相同。
    user        haproxy                     # 同 UID 参数。
    group       haproxy                     # 同 GID 参数，建议使用专用用户组。
