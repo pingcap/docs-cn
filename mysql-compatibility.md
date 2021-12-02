@@ -117,6 +117,41 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
 - TiDB 中的 `SELECT .. GROUP BY expr` 的返回结果与 MySQL 5.7 并不一致。MySQL 5.7 的结果等价于 `GROUP BY expr ORDER BY expr`。而 TiDB 中该语法所返回的结果并不承诺任何顺序，与 MySQL 8.0 的行为一致。
 
+### `UPDATE` 语句
+
+```sql
+CREATE TABLE companies (id bigint primary key, ida bigint);
+INSERT INTO companies VALUES (14, 14);
+UPDATE companies SET id = id + 1, ida = id * 2;
+```
+
+在 MySQL 中得到的结果是
+
+```sql
+mysql> select * from companies;
++----+------+
+| id | ida  |
++----+------+
+| 15 |   30 |
++----+------+
+1 row in set (0.00 sec)
+```
+
+在 TiDB 中得到的结果是
+
+
+```sql
+mysql> select * from companies;
++----+------+
+| id | ida  |
++----+------+
+| 15 |   28 |
++----+------+
+1 row in set (0.00 sec)
+```
+
+TiDB 中 `id` 的值始终是原始的表中的 `id` 列的值，而 MySQL 中，后面一个表达式中 `id` 的值是前一个表达式对 `id` 计算之后的结果。
+
 ### 视图
 
 TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
