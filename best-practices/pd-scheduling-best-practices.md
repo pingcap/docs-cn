@@ -274,7 +274,7 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
         config set key-type txn
         ```
 
-        * 如果集群中存在 TiDB 实例，`key-type` 的值应该设置为 `table`。此时设置 `enable-cross-table-merge` 为 `true`，可以让 PD 跨表合并 Region。该参数支持动态修改。
+        * 如果集群中存在 TiDB 实例，应该将 `key-type` 的值设置为 `table`。此时将 `enable-cross-table-merge` 设置为 `true`，可以使 PD 跨表合并 Region。该参数支持动态修改。
 
         {{< copyable "shell-regular" >}}
 
@@ -282,11 +282,11 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
         config set enable-cross-table-merge true
         ```
 
-        如果遇到修改未生效的问题，请参阅[修改 TiKV/PD 的 toml 配置文件后没有生效](/faq/deploy-and-maintain-faq.md#为什么修改了-tikvpd-的-toml-配置文件却没有生效)。
+        如果修改未生效，请参阅[ FAQ - 修改 TiKV/PD 的 toml 配置文件后没有生效](/faq/deploy-and-maintain-faq.md#为什么修改了-tikvpd-的-toml-配置文件却没有生效)。
 
         > **注意：**
         >
-        > 在开启 `placement-rules`后，请合理切换 `key-type`，避免无法正常解码 key。
+        > 在开启 `placement-rules` 后，请合理切换 `key-type`，避免无法正常解码 key。
 
 - 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数 (`approximate_keys`) 在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 
