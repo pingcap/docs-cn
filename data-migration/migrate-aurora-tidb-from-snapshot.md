@@ -19,7 +19,7 @@ summary: 介绍如何使用快照从 Aurora 迁移数据到 TiDB。
 
 ### 第 1 步. 导出 Aurora 快照文件到 Amazon S3
 
-1. 执行以下命令，查询当前 binlog 位置
+第 1 步：执行以下命令，查询当前 binlog 位置
 
 ```shell
 mysql> SHOW MASTER STATUS;
@@ -36,7 +36,7 @@ mysql> SHOW MASTER STATUS;
 1 row in set (0.012 sec)
 ```
 
-2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+第 2 步：导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
 
 请注意，上述两项操作的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。最终您需要准备好以下信息：
 
@@ -149,7 +149,6 @@ nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.ou
 > 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
-
 
 ## 使用 DM 持续增量同步数据到 TiDB（可选）
 

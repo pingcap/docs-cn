@@ -51,7 +51,7 @@ DM 尝试使用下游表结构解析上游产生的 binlog event 时，会报出
 
 此时，我们可以使用`operate-schema`命令来为该表指定与 binlog event 匹配的表结构。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
 
-1. 为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。将对应的 CREATE TABLE 表结构语句并保存到文件，例如将以下表结构保存到`log.messages.sql` 中。
+第 1 步：为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。将对应的 CREATE TABLE 表结构语句并保存到文件，例如将以下表结构保存到`log.messages.sql` 中。
 
 ```sql
 # 上游表结构
@@ -61,7 +61,7 @@ CREATE TABLE `messages` (
 )
 ```
 
-2. 使用`operate-schema`命令设置表结构（此时 task 应该由于上述错误而处于 Paused 状态）。
+第 2 步：使用`operate-schema`命令设置表结构（此时 task 应该由于上述错误而处于 Paused 状态）。
 
 {{< copyable "shell-regular" >}}
 
@@ -78,7 +78,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-schema set -s mysql-01 task-t
 |-d             |指定 database|
 |-t             |指定 table|
 
-3. 使用`resume-task`命令恢复处于 Paused 状态的任务。
+第 3 步：使用`resume-task`命令恢复处于 Paused 状态的任务。
 
 {{< copyable "shell-regular" >}}
 
@@ -86,7 +86,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-schema set -s mysql-01 task-t
 tiup dmctl --master-addr ${advertise-addr} resume-task ${task-name}
 ```
 
-4. 使用`query-status`命令确认数据迁移任务是否运行正常。
+第 4 步：使用`query-status`命令确认数据迁移任务是否运行正常。
 
 {{< copyable "shell-regular" >}}
 
