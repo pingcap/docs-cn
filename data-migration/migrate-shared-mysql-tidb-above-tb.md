@@ -13,7 +13,7 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。�
 
 ![使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/media/lightning/shard-merge-using-lightning.png)
 
-在这个示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lighting 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。虽然 Dumpling 可以导出 MySQL 实例中的所有数据库，本文仅导出部分数据作为示例。
+在这个示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lighting 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
 
 本文将以三个步骤演示导入流程：
 
@@ -217,7 +217,7 @@ tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
