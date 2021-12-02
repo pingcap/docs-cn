@@ -27,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.0.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.3.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -83,15 +83,15 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ### `--detach` / `-d`
 
-+ 使用单命令行模式(不进入 readline)
-+ 默认值: true
++ 使用单命令行模式（不进入 readline）
++ 默认值：true
 
 ### `--help` / `-h`
 
 + 输出帮助信息
 + 默认值：false
 
-### `--interact` / `-i`
+### `--interact`/`-i`
 
 + 使用交互模式（进入 readline）
 + 默认值：false
@@ -99,18 +99,18 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ### `--key`
 
 - 指定 PEM 格式的 SSL 证书密钥文件路径，即 `--cert` 所指定的证书的私钥
-- 默认值: ""
+- 默认值：""
 
-### `--pd` / `-u`
+### `--pd`/`-u`
 
 + 指定 PD 的地址
 + 默认地址：`http://127.0.0.1:2379`
 + 环境变量：`PD_ADDR`
 
-### `--version` / `-V`
+### `--version`/`-V`
 
 - 打印版本信息并退出
-- 默认值: false
+- 默认值：false
 
 ## 命令 (command)
 
@@ -148,7 +148,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 {
   "replication": {
-    "enable-placement-rules": "false",
+    "enable-placement-rules": "true",
     "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
@@ -156,13 +156,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   },
   "schedule": {
     "enable-cross-table-merge": "true",
-    "enable-debug-metrics": "false",
-    "enable-location-replacement": "true",
-    "enable-make-up-replica": "true",
-    "enable-one-way-merge": "false",
-    "enable-remove-down-replica": "true",
-    "enable-remove-extra-replica": "true",
-    "enable-replace-offline-replica": "true",
     "high-space-ratio": 0.7,
     "hot-region-cache-hits-threshold": 3,
     "hot-region-schedule-limit": 4,
@@ -171,17 +164,16 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "low-space-ratio": 0.8,
     "max-merge-region-keys": 200000,
     "max-merge-region-size": 20,
-    "max-pending-peer-count": 16,
-    "max-snapshot-count": 3,
+    "max-pending-peer-count": 64,
+    "max-snapshot-count": 64,
     "max-store-down-time": "30m0s",
     "merge-schedule-limit": 8,
-    "patrol-region-interval": "100ms",
+    "patrol-region-interval": "10ms",
     "region-schedule-limit": 2048,
     "region-score-formula-version": "v2",
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
-    "store-limit-mode": "manual",
     "tolerant-size-ratio": 0
   }
 }
@@ -209,7 +201,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   "isolation-level": "",
   "location-labels": "",
   "strictly-match-label": "false",
-  "enable-placement-rules": "false"
+  "enable-placement-rules": "true"
 }
 ```
 
@@ -222,17 +214,17 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 
 ```
-"5.0.0"
+"5.2.2"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
-    设置最大 snapshot 为 16：
+    设置最大 snapshot 为 64：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-snapshot-count 16
+    >> config set max-snapshot-count 64
     ```
 
 - `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
@@ -320,12 +312,12 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
-    设置 replicaChecker 的运行频率为 50 毫秒：
+    设置 replicaChecker 的运行频率为 10 毫秒：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set patrol-region-interval 50ms
+    >> config set patrol-region-interval 10ms
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
@@ -388,7 +380,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set hot-region-schedule-limit 4
     ```
 
-- `hot-region-cache-hits-threshold` 用于设置热点 Region 的阈值，只有命中 cache 的次数超过这个阈值才会被当作热点。
+- `hot-region-cache-hits-threshold` 用于设置识别热点 Region 所需的分钟数，只有 Region 处于热点状态持续时间超过该分钟数后，才能参与热点调度。
 
 - `tolerant-size-ratio` 控制 balance 缓冲区大小。当两个 store 的 leader 或 Region 的得分差距小于指定倍数的 Region size 时，PD 会认为此时 balance 达到均衡状态。
 
@@ -446,9 +438,19 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `enable-debug-metrics` 用于开启 debug 的 metrics。当设置为 true 时，PD 会开启一些 metrics，比如 `balance-tolerant-size` 等。
 
-- `enable-placement-rules` 用于开启 placement rules。
+- `enable-placement-rules` 用于开启 placement rules，在 v5.0 及以上的版本默认开启。
 
 - `store-limit-mode` 用于控制 store 限速机制的模式。主要有两种模式：`auto` 和 `manual`。`auto` 模式下会根据 load 自动进行平衡调整（实验性功能）。
+
+- PD 会对流量信息的末尾数字进行四舍五入处理，减少 Region 流量信息变化引起的统计信息更新。该配置项用于指定对 Region 流量信息的末尾进行四舍五入的位数。例如流量 `100512` 会归约到 `101000`。默认值为 `3`。该配置替换了 `trace-region-flow`。
+
+    示例：将 `flow-round-by-digit` 的值设为 `4`：
+
+    {{< copyable "" >}}
+
+    ```bash
+    config set flow-round-by-digit 4
+    ```
 
 ### `config placement-rules [disable | enable | load | save | show | rule-group]`
 
@@ -661,7 +663,7 @@ time: 43.12698ms
 
 ### `region <region_id> [--jq="<query string>"]`
 
-用于显示 Region 信息。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+用于显示 Region 信息。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 Region 信息：
 
@@ -976,6 +978,7 @@ Encoding 格式示例：
 >> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
 >> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
 >> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
 >> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
 >> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
 >> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
@@ -995,28 +998,50 @@ Encoding 格式示例：
 {
   "min-hot-byte-rate": 100,
   "min-hot-key-rate": 10,
+  "min-hot-query-rate": 10,
   "max-zombie-rounds": 3,
   "max-peer-number": 1000,
   "byte-rate-rank-step-ratio": 0.05,
   "key-rate-rank-step-ratio": 0.05,
+  "query-rate-rank-step-ratio": 0.05,
   "count-rank-step-ratio": 0.01,
   "great-dec-ratio": 0.95,
   "minor-dec-ratio": 0.99,
-  "src-tolerance-ratio": 1.02,
-  "dst-tolerance-ratio": 1.02
+  "src-tolerance-ratio": 1.05,
+  "dst-tolerance-ratio": 1.05,
+  "read-priorities": [
+    "query",
+    "byte"
+  ],
+  "write-leader-priorities": [
+    "key",
+    "byte"
+  ],
+  "write-peer-priorities": [
+    "byte",
+    "key"
+  ],
+  "strict-picking-store": "true",
+  "enable-for-tiflash": "true"
 }
 ```
 
-- `min-hot-byte-rate` 指计数的最小字节，通常为 100。
+- `min-hot-byte-rate` 指计数的最小字节数，通常为 100。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set min-hot-byte-rate 100
     ```
 
-- `min-hot-key-rate` 指计数的最小 key，通常为 10。
+- `min-hot-key-rate` 指计数的最小 key 数，通常为 10。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
+    ```
+
+- `min-hot-query-rate` 指计数的最小 query 数，通常为 10。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set min-hot-query-rate 10
     ```
 
 - `max-zombie-rounds` 指一个 operator 可被纳入 pending influence 所允许的最大心跳次数。如果将它设置为更大的值，更多的 operator 可能会被纳入 pending influence。通常用户不需要修改这个值。pending influence 指的是在调度中产生的、但仍生效的影响。
@@ -1031,7 +1056,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set max-peer-number 1000
     ```
 
-- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、count 的 step ranks。rank step ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
+- `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio`、`query-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、query 和 count 的 step ranks。rank-step-ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
 
     ```bash
     >> scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
@@ -1040,12 +1065,37 @@ Encoding 格式示例：
 - `src-tolerance-ratio` 和 `dst-tolerance-ratio` 是期望调度器的配置项。`tolerance-ratio` 的值越小，调度就越容易。当出现冗余调度时，你可以适当调大这个值。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.05
+    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
+- `read-priorities`、`write-leader-priorities` 和 `write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡，支持配置两个维度。
 
-用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq-格式化-json-输出示例](#jq-格式化-json-输出示例)。示例如下。
+    - `read-priorities` 和 `write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，可选的维度有 `query`、`byte` 和 `key`。
+    - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置 `byte` 和 `key` 维度。
+
+    > **注意：**
+    >
+    > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
+    ```
+
+- `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set strict-picking-store true
+    ```
+
+- `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
+
+    ```bash
+    >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
+    ```
+
+### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
+
+用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
 显示所有 store 信息：
 
@@ -1071,7 +1121,7 @@ Encoding 格式示例：
 ```
 
 ```
-  ......
+......
 ```
 
 下线 store id 为 1 的 store：
@@ -1083,7 +1133,7 @@ Encoding 格式示例：
 ```
 
 ```
-  ......
+......
 ```
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
@@ -1115,19 +1165,12 @@ Encoding 格式示例：
 >> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
 >> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
 >> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
->> store limit-scene                   // 显示所有的限速场景（实验性功能）
-{
-  "Idle": 100,
-  "Low": 50,
-  "Normal": 32,
-  "High": 12
-}
->> store limit-scene idle 100          // 设置 load 为 idle 场景下，添加/删除 peer 的速度上限为每分钟 100 个
 ```
 
 > **注意：**
 >
-> 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 
@@ -1156,6 +1199,61 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+### `unsafe remove-failed-stores [store-ids | show | history]`
+
+> **警告：**
+>
+> - 此功能为有损恢复，无法保证数据和数据索引完整性。
+> - 此功能为实验特性，其接口、策略和内部实现在最终发布时可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
+> - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
+
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
+
+执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
+
+```bash
+>> unsafe remove-failed-stores 101,102,103
+```
+
+```bash
+Success!
+```
+
+显示正在运行的 Online Unsafe Recovery 的当前状态或历史状态。
+
+```bash
+>> unsafe remove-failed-stores show
+```
+
+```bash
+[
+  "Collecting cluster info from all alive stores, 10/12.",
+  "Stores that have reports to PD: 1, 2, 3, ...",
+  "Stores that have not reported to PD: 11, 12",
+]
+```
+
+```bash
+>> unsafe remove-failed-stores history
+```
+
+```bash
+[
+  "Store reports collection:",
+  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
+  "Store 8: region ...",
+  "...",
+  "Recovery Plan:",
+  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
+  "Store 8, ..."
+  "...",
+  "Execution Progress:",
+  "Store 10 finished,",
+  "Store 7 not yet finished",
+  "...",
+]
+```
+
 ## jq 格式化 json 输出示例
 
 ### 简化 `store` 的输出
@@ -1163,7 +1261,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq=".stores[].store | { id, address, state_name}"
+>> store --jq=".stores[].store | { id, address, state_name}"
 ```
 
 ```
@@ -1177,7 +1275,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq=".stores[] | {id: .store.id, available: .status.available}"
+>> store --jq=".stores[] | {id: .store.id, available: .status.available}"
 ```
 
 ```
@@ -1191,7 +1289,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
 ```
 
 ```
@@ -1205,7 +1303,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
 ```
 
 ```
@@ -1219,7 +1317,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
 ```
 
 ```
@@ -1235,7 +1333,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
 ```
 
 ```
@@ -1250,7 +1348,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
 ```
 
 ```
@@ -1264,7 +1362,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
 ```
 
 ```
@@ -1281,7 +1379,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
 ```
 
 ```
@@ -1296,7 +1394,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
 ```
 
 ```
@@ -1308,7 +1406,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+>> region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
 ```
 
 ```

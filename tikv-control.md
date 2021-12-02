@@ -462,11 +462,17 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB
 success
 ```
 
-### 强制 Region 从多副本失败状态恢复服务
+### 强制 Region 从多副本失败状态恢复服务（慎用）
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
 
 `-s` 选项接受多个以逗号分隔的 `store_id`，并使用 `-r` 参数来指定包含的 Region。如果要对某一个 store 上的全部 Region 都执行这个操作，可简单指定 `--all-regions`。
+
+> **警告：**
+>
+> - 此功能使用不当可能导致集群难以恢复，存在风险。请悉知潜在的风险，尽量避免在生产环境中使用。
+> - 如果使用 `--all-regions`，必须在剩余所有连入集群的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
+> - 一旦执行了 `remove-fail-stores`，不可再重新启动被移除的节点并将其加入集群，否则会导致元数据的不一致，最终引发 Region 不可用。
 
 {{< copyable "shell-regular" >}}
 
@@ -488,9 +494,8 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 
 > **注意：**
 >
-> - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 > - 一般来说，您需要为指定 Region 的 peers 所在的每个 store 运行此命令。
-> - 如果使用 `--all-regions`，通常需要在集群剩余所有健康的 store 上执行此命令。需要保证这些健康的 store 都停掉服务后再进行恢复，否则期间 Region 副本之间的 peer 列表不一致会导致执行 `split-region` 或者 `remove-peer` 时报错进而引起其他元数据的不一致，最终引发 Region 不可用。
+> - 该命令只支持本地模式。在运行成功后，会打印 `success!`。
 
 ### 恢复损坏的 MVCC 数据
 
@@ -597,3 +602,37 @@ Type "I consent" to continue, anything else to exit: I consent
 > **注意：**
 >
 > 本命令会以明文方式打印数据加密密钥。在生产环境中，请勿将本命令的输出重定向到磁盘文件中。即使使用以后删除该文件也不能保证文件内容从磁盘中干净清除。
+
+### 打印损坏的 SST 文件信息
+
+TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。为了清理掉这些文件，你可以使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
+
+> **注意：**
+>
+> 执行此命令前，请保证关闭当前运行的 TiKV 实例。
+
+```bash
+$ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
+```
+
+```bash
+--------------------------------------------------------
+corruption info:
+data/tikv-21107/db/000014.sst: Corruption: Bad table magic number: expected 9863518390377041911, found 759105309091689679 in data/tikv-21107/db/000014.sst
+sst meta:
+14:552997[1 .. 5520]['0101' seq:1, type:1 .. '7A7480000000000000FF0F5F728000000000FF0002160000000000FAFA13AB33020BFFFA' seq:2032, type:1] at level 0 for Column family "default"  (ID 0)
+it isn't easy to handle local data, start key:0101
+overlap region:
+RegionInfo { region: id: 4 end_key: 7480000000000000FF0500000000000000F8 region_epoch { conf_ver: 1 version: 2 } peers { id: 5 store_id: 1 }, leader: Some(id: 5 store_id: 1) }
+suggested operations:
+tikv-ctl ldb --db=data/tikv-21107/db unsafe_remove_sst_file "data/tikv-21107/db/000014.sst"
+tikv-ctl --db=data/tikv-21107/db tombstone -r 4 --pd <endpoint>
+--------------------------------------------------------
+corruption analysis has completed
+```
+
+通过上面的输出，你可以看到损坏的 SST 文件和损坏原因等信息先被打印出，然后是相关的元信息。
+
++ 在 `sst meta` 输出部分，`14` 表示 SST 文件号，`552997` 表示文件大小，紧随其后的是最小和最大的序列号 (seq) 等其它元信息。
++ `overlap region` 部分为损坏 SST 文件所在 Region 的信息。该信息是从 PD 组件获取的。
++ `suggested operations` 部分为你清理损坏的 SST 文件提供建议操作。你可以参考这些建议的命令，清理文件，并重新启动该 TiKV 实例。

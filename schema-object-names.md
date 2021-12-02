@@ -62,7 +62,7 @@ SELECT 1 AS `identifier`, 2 AS 'string';
 
 ## Identifier Qualifiers
 
-Object Names (对象名字) 有时可以被限定或者省略。例如在创建表的时候可以省略数据库限定名：
+Object Names（对象名字）有时可以被限定或者省略。例如在创建表的时候可以省略数据库限定名：
 
 {{< copyable "sql" >}}
 

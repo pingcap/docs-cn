@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 > **注意：**
 >
 > - 如果选用 Local-backend 来导入数据，导入期间集群无法提供正常的服务，速度更快，适用于导入大量的数据（TB 以上级别）。
-> - 如果选用 TiDB-backend 来导入数据，导入期间集群可以正常提供服务, 但相对导入速度较慢。
+> - 如果选用 TiDB-backend 来导入数据，导入期间集群可以正常提供服务，但相对导入速度较慢。
 > - 二者的具体差别参见 [TiDB Lightning Backend](/tidb-lightning/tidb-lightning-backends.md)。
 
 ## 第 2 步：配置 TiDB Lightning 的数据源

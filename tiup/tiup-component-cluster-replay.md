@@ -23,3 +23,5 @@ tiup cluster replay <audit-id> [flags]
 ## 输出
 
 `<audit-id>` 对应的命令的输出。
+
+[<< 返回上一页 - TiUP Cluster 命令清单](/tiup/tiup-component-cluster.md#命令清单)

@@ -30,3 +30,5 @@ tiup dm audit [audit-id] [flags]
     - ID：该条记录对应的 audit-id
     - Time：该条记录对应的命令执行时间
     - Command：该条记录对应的命令
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

@@ -6,11 +6,17 @@ aliases: ['/docs-cn/dev/configure-placement-rules/','/docs-cn/dev/how-to/configu
 
 # Placement Rules 使用文档
 
+> **警告：**
+>
+> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。但是，单独开启 Placement Rules 则尚未经过大量测试，因此，不建议在生产环境中单独开启该功能。
+
 > **注意：**
 >
-> 在配合使用 TiFlash 场景下，Placement Rules 功能进行过大量测试，可以在生产环境中使用。除配合使用 TiFlash 的场景外，单独开启 Placement Rules 没有经过大量测试，因此，不建议在生产环境单独开启该功能。
+> TiDB 在 v5.3.0 中引入了实验特性 [Placement Rules in SQL](/placement-rules-in-sql.md)。使用该功能，你可以更方便地配置表和分区的位置。在未来版本中，Placement Rules in SQL 可能取代本文档介绍的 Placement Rules 功能。
 
 Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本规则系统，用于指导 PD 针对不同类型的数据生成对应的调度。通过组合不同的调度规则，用户可以精细地控制任何一段连续数据的副本数量、存放位置、主机类型、是否参与 Raft 投票、是否可以担任 Raft leader 等属性。
+
+Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](#关闭-placement-rules-特性)。
 
 ## 规则系统介绍
 
@@ -18,7 +24,7 @@ Placement Rules 是 PD 在 4.0 版本引入的试验特性，它是一套副本�
 
 多条规则的 key range 可以有重叠部分的，即一个 Region 能匹配到多条规则。这种情况下 PD 根据 Rule 的属性来决定规则是相互覆盖还是同时生效。如果有多条规则同时生效，PD 会按照规则的堆叠次序依次去生成调度进行规则匹配。
 
-此外，为了满足不同来源的规则相互隔离的需求，支持更灵活的方式来组织规则，还引入了分组（Group）的概念。通常情况下，用户可根据规则的不同来源把规则放置在不同的 Group。
+此外，为了满足不同来源的规则相互隔离的需求，支持更灵活的方式来组织规则，还引入了分组 (Group) 的概念。通常情况下，用户可根据规则的不同来源把规则放置在不同的 Group。
 
 Placement Rules 示意图如下所示：
 
@@ -71,7 +77,7 @@ Placement Rules 示意图如下所示：
 
 ### 开启 Placement Rules 特性
 
-默认情况下，Placement Rules 特性是关闭的。要开启这个特性，可以集群初始化以前设置 PD 配置文件：
+Placement Rules 特性在 TiDB v5.0 及以上的版本中默认开启。如需关闭 Placement Rules 特性，请参考[关闭 Placement Rules](#关闭-placement-rules-特性)。如需在关闭后重新开启该特性，可以集群初始化以前设置 PD 配置文件：
 
 {{< copyable "" >}}
 
@@ -302,7 +308,7 @@ pd-ctl config placement-rules rule-bundle set pd -in="group.json"
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle load -out="rules.json"
+pd-ctl config placement-rules rule-bundle load --out="rules.json"
 ```
 
 编辑完文件后，使用下面的命令将配置保存至 PD 服务器：
@@ -310,12 +316,12 @@ pd-ctl config placement-rules rule-bundle load -out="rules.json"
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle save -in="rules.json"
+pd-ctl config placement-rules rule-bundle save --in="rules.json"
 ```
 
 ### 使用 tidb-ctl 查询表相关的 key range
 
-若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md) 来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
+若需要针对元数据或某个特定的表进行特殊配置，可以通过 [tidb-ctl](https://github.com/pingcap/tidb-ctl) 的 [`keyrange` 命令](https://github.com/pingcap/tidb-ctl/blob/master/doc/tidb-ctl_keyrange.md)来查询相关的 key。注意要添加 `--encode` 返回 PD 中的表示形式。
 
 {{< copyable "shell-regular" >}}
 

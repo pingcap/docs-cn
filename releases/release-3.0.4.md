@@ -46,7 +46,7 @@ TiDB Ansible 版本：3.0.4
     - 修改当 `SHOW STATS_BUCKETS` 结果中包含无效 Key 时的行为，将返回错误修改为使用 16 进制显示 [#12094](https://github.com/pingcap/tidb/pull/12094)
     - 修复查询中包含 `SLEEP` 函数时（例如 `select 1 from (select sleep(1)) t;)`），由于列裁剪导致查询中的 `sleep(1)` 失效的问题 [#11953](https://github.com/pingcap/tidb/pull/11953)
     - 当查询只关心表的行数而不关心表数据时，使用索引扫描降低 IO [#12112](https://github.com/pingcap/tidb/pull/12112)
-    - 当 `use index()` 中没有指定索引时不去使用任何索引，和 MySQL 兼容 (如 `explain select a from t use index();`) [#12100](https://github.com/pingcap/tidb/pull/12100)
+    - 当 `use index()` 中没有指定索引时不去使用任何索引，和 MySQL 兼容（如 `explain select a from t use index();`）[#12100](https://github.com/pingcap/tidb/pull/12100)
     - 严格限制统计信息 `CMSketch` 中 `TopN` 记录的数量，修复快速 `analyze` 因为超过事务大小限制而失败的问题 [#11914](https://github.com/pingcap/tidb/pull/11914)
     - 修复 `Update` 语句包含子查询时，转换子查询出现的错误 [#12483](https://github.com/pingcap/tidb/pull/12483)
     - 将 Limit 算子下推到 `IndexLookUpReader` 执行逻辑中优化 `select ... limit ... offset ...` 的执行性能 [#12378](https://github.com/pingcap/tidb/pull/12378)
@@ -79,7 +79,7 @@ TiDB Ansible 版本：3.0.4
 - DDL
     - 新增变量 `tidb_allow_remove_auto_inc`，默认禁止删除列 `AUTO INCREMENT` 属性 [#12145](https://github.com/pingcap/tidb/pull/12145)
     - 修复 TiDB 特殊语法 `PRE_SPLIT_REGIONS` 没有使用注释的方式向下游同步，导致下游数据库报错的问题 [#12120](https://github.com/pingcap/tidb/pull/12120)
-    - 在配置文件中添加 `split-region-max-num` 参数，使得 `SPLIT TABLE` 语法允许的最大 Region 数量可调整，该参数默认值 `10000`  [#12097](https://github.com/pingcap/tidb/pull/12079)
+    - 在配置文件中添加 `split-region-max-num` 参数，使得 `SPLIT TABLE` 语法允许的最大 Region 数量可调整，该参数默认值 `10000` [#12097](https://github.com/pingcap/tidb/pull/12079)
     - 支持将一个 Region 切分成多个 Region，并修复打散 Region 超时的问题 [#12343](https://github.com/pingcap/tidb/pull/12343)
     - 修复当索引包含自增列，并且该自增列被两个索引引用时删除失败的问题 [#12344](https://github.com/pingcap/tidb/pull/12344)
 - Monitor
@@ -90,7 +90,7 @@ TiDB Ansible 版本：3.0.4
 - Raftstore
     - 修复 Raftstore 统计空 Region 中 key 个数不准确问题 [#5414](https://github.com/tikv/tikv/pull/5414)
     - 添加 RocksDB 双向链表支持，提升逆序扫性能 [#5368](https://github.com/tikv/tikv/pull/5368)
-    - 支持 PD 批量 `Split` 和空的 `Split` 命令, 使得 Split 可以批量进行，提高 Split 效率 [#5470](https://github.com/tikv/tikv/pull/5470)
+    - 支持 PD 批量 `Split` 和空的 `Split` 命令，使得 Split 可以批量进行，提高 Split 效率 [#5470](https://github.com/tikv/tikv/pull/5470)
 - Server
     - 修复查看版本命令的输出格式与 2.X 格式不一致的问题 [#5501](https://github.com/tikv/tikv/pull/5501)
     - 更新 Titan 至 3.0 分支最新版本 [#5517](https://github.com/tikv/tikv/pull/5517)

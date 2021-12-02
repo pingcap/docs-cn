@@ -7,7 +7,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 TiDB 支持使用 [MPP 模式](/tiflash/use-tiflash.md#使用-mpp-模式)来执行查询。在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
 
-本文档使用的示例数据如下:
+本文档使用的示例数据如下：
 
 {{< copyable "sql" >}}
 
@@ -164,3 +164,13 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1 GROUP BY id;
 ```
 
 与 `EXPLAIN` 相比，ExchangeSender 的 `operator info` 中多了 `task id` 的输出，其记录了该查询片段实例化成的 MPP 任务的任务 ID。此外 MPP 算子中都会有 `threads` 这一列，这列记录了 MPP 在执行该算子时使用的并发数（如果集群由多个节点组成，该并发数是所有节点并发数相加的结果）。
+
+## 其他类型查询的执行计划
+
++ [索引查询的执行计划](/explain-indexes.md)
++ [Join 查询的执行计划](/explain-joins.md)
++ [子查询的执行计划](/explain-subqueries.md)
++ [聚合查询的执行计划](/explain-aggregation.md)
++ [视图查询的执行计划](/explain-views.md)
++ [分区查询的执行计划](/explain-partitions.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)

@@ -34,3 +34,5 @@ tiup uninstall <component1>:<version> [component2...N] [flags]
 
 - 正常退出：`Uninstalled component "%s" successfully!`
 - 若未指定 `<version>` 也未指定 `--all`：报错 `Use "tiup uninstall tidbx --all" if you want to remove all versions.`
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

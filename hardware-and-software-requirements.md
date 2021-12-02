@@ -11,16 +11,18 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 
 | Linux 操作系统平台       | 版本         |
 | :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上   |
-| CentOS                   | 7.3 及以上   |
-| Oracle Enterprise Linux  | 7.3 及以上   |
-| Ubuntu LTS               | 16.04 及以上 |
+| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本   |
+| CentOS                   | 7.3 及以上的 7.x 版本   |
+| Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
+| Ubuntu LTS               | 16.04 及以上的版本      |
 
 > **注意：**
 >
-> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
-> - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 Linux 操作系统来部署 TiDB。
-> - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM、XEN 主流虚拟化环境上。
+> - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
+> - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持将于 2021 年 12 月 31 日终止。
+> - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
+
+其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
 
 ## 软件配置要求
 
@@ -29,7 +31,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 | 软件 | 版本 |
 | :----------------------- | :----------: |
 | sshpass | 1.06 及以上 |
-| TiUP | 0.6.2 及以上 |
+| TiUP | 1.5.0 及以上 |
 
 > **注意：**
 >
@@ -85,7 +87,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - TiFlash 数据目录的第一块磁盘推荐用高性能 SSD 来缓冲 TiKV 同步数据的实时写入，该盘性能应不低于 TiKV 所使用的磁盘，比如 PCI-E SSD。并且该磁盘容量建议不小于总容量的 10%，否则它可能成为这个节点的能承载的数据量的瓶颈。而其他磁盘可以根据需求部署多块普通 SSD，当然更好的 PCI-E SSD 硬盘会带来更好的性能。
 > - TiFlash 推荐与 TiKV 部署在不同节点，如果条件所限必须将 TiFlash 与 TiKV 部署在相同节点，则需要适当增加 CPU 核数和内存，且尽量将 TiFlash 与 TiKV 部署在不同的磁盘，以免互相干扰。
 > - TiFlash 硬盘总容量大致为：`整个 TiKV 集群的需同步数据容量 / TiKV 副本数 * TiFlash 副本数`。例如整体 TiKV 的规划容量为 1 TB、TiKV 副本数为 3、TiFlash 副本数为 2，则 TiFlash 的推荐总容量为 `1024 GB / 3 * 2`。用户可以选择同步部分表数据而非全部，具体容量可以根据需要同步的表的数据量具体分析。
-> - TiCDC 硬盘配置建议 200 GB+ PCIE-SSD。
+> - TiCDC 硬盘配置建议 1 TB+ PCIE-SSD。
 
 ## 网络要求
 

@@ -232,7 +232,7 @@ TiDB 内置自动诊断的结果，具体各字段含义以及介绍可以参考
 
 ![Transaction 报表](/media/dashboard/dashboard-diagnostics-tidb-txn.png)
 
-* `TOTAL_VALUE`：该项监控在报告时间段内所有值的和（SUM）。
+* `TOTAL_VALUE`：该项监控在报告时间段内所有值的和 (SUM)。
 * `TOTAL_COUNT`：该项监控出现的总次数。
 * P999: 该项监控的 P999 最大值。
 * P99: 该项监控的 P99 最大值。
@@ -292,8 +292,8 @@ TIKV 模块的相关监控报表如下：
 
 * **Scheduler Initial Config**：PD 调度相关配置在报告开始时间的初始值。
 * **TiDB GC Initial Config**：TiDB GC 相关配置在报告开始时间的初始值。
-* **TiKV RocksDB Initial Config**：TiKV RocksDB  相关配置在报告开始时间的初始值。
-* **TiKV RaftStore Initial Config**：TiKV RaftStore  相关配置在报告开始时间的初始值。
+* **TiKV RocksDB Initial Config**：TiKV RocksDB 相关配置在报告开始时间的初始值。
+* **TiKV RaftStore Initial Config**：TiKV RaftStore 相关配置在报告开始时间的初始值。
 
 在报表时间范围内，如若有些配置被修改过，以下表包括部分配置被修改的记录：
 
@@ -345,7 +345,7 @@ TIKV 模块的相关监控报表如下：
 * `MAX_DIFF_RATIO` 表示 `t1` 和 `t2` 时间段最大值的 `DIFF_RATIO`。
 * `MIN_DIFF_RATIO` 表示 `t1` 和 `t2` 时间段最小值的 `DIFF_RATIO`。
 
-`DIFF_RATIO`：表示两个时间段的差异大小，有以下几个取值方式：
+`DIFF_RATIO` 表示两个时间段的差异大小，有以下几个取值方式：
 
 * 如果该监控仅在 `t2` 时间内才有值，`t1` 时间段没有，则 `DIFF_RATIO` 取值为 `1`。
 * 如果监控项仅在 `t1` 时间内才有值，`t1` 时间段没有，则 `DIFF_RATIO` 取值为 `-1`。

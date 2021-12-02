@@ -93,8 +93,8 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# 选择后端：“importer” 或 “local” 或 “tidb”
-# backend = "importer"
+# 选择后端：“local” 或 “importer” 或 “tidb”
+# backend = "local"
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 当后端是 “tidb” 时，插入重复数据时执行的操作。
@@ -102,8 +102,6 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
-# 当后端是 “local” 时，控制生成 SST 文件的大小，最好跟 TiKV 里面的 Region 大小保持一致，默认是 96 MB。
-# region-split-size = 100_663_296
 # 当后端是 “local” 时，一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
 # 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
@@ -114,10 +112,6 @@ addr = "172.16.31.10:8287"
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
 read-block-size = 65536 # Byte (默认为 64 KB)
-
-# （源数据文件）单个导入区块大小的最小值。
-# TiDB Lightning 根据该值将一张大表分割为多个数据引擎文件。
-# batch-size = 107_374_182_400 # Byte (默认为 100 GB)
 
 # 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
 # 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning
@@ -138,8 +132,23 @@ no-schema = false
 #  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
 #  - auto：自动判断文件编码是 UTF-8 还是 GB-18030，两者皆非则会报错（默认）。
 #  - binary：不尝试转换编码。
-# 注意：**数据** 文件始终解析为 binary 文件。
 character-set = "auto"
+
+# 指定源数据文件的字符集，Lightning 会在导入过程中将源文件从指定的字符集转换为 UTF-8 编码。
+# 该配置项目前仅用于指定 CSV 文件的字符集。只支持下列选项：
+#  - utf8mb4：源数据文件使用 UTF-8 编码。
+#  - GB18030：源数据文件使用 GB-18030 编码。
+#  - GBK：源数据文件使用 GBK 编码（GBK 编码是对 GB-2312 字符集的拓展，也被称为 Code Page 936）。
+#  - binary：不尝试转换编码（默认）。
+# 留空此配置将默认使用 "binary"，即不尝试转换编码。
+# 需要注意的是，Lightning 不会对源数据文件的字符集做假定，仅会根据此配置对数据进行转码并导入。
+# 如果字符集设置与源数据文件的实际编码不符，可能会导致导入失败、导入缺失或导入数据乱码。
+data-character-set = "binary"
+# 指定在源数据文件的字符集转换过程中，出现不兼容字符时的替换字符。
+# 此项不可与字段分隔符、引用界定符和换行符号重复。
+# 默认值为 "\uFFFD"，即 UTF-8 编码中的 "error" Rune 或 Unicode replacement character。
+# 改变默认值可能会导致潜在的源数据文件解析性能下降。
+data-invalid-char-replace = "\uFFFD"
 
 # “严格”格式的导入数据可加快处理速度。
 # strict-format = true 要求：
@@ -225,17 +234,31 @@ max-allowed-packet = 67_108_864
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Compact -> Analyze。
 [post-restore]
-# 如果设置为 true，会对所有表逐个执行 `ADMIN CHECKSUM TABLE <table>` 操作
-# 来验证数据的完整性。
-checksum = true
+# 设置对所有表逐个执行 `ADMIN CHECKSUM TABLE <table>` 操作的行为，用于验证数据的完整性。
+# 有以下选项:
+# - "off"：不执行 checksum。
+# - "optional"：执行 admin checksum，如果 checksum 失败，则忽略出现的错误。
+# - "required"：执行 admin checksum，如果 checksum 失败，TiDB Lightning 退出。
+# 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
+# 说明：为了保持兼容性，布尔值 "true" 和 "false" 仍然支持。其中 "true" 等同于 "required"，"false" 等于 "off"。
+checksum = required
+
 # 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
 # 默认值为 false。
 level-1-compact = false
+
 # 如果设置为 true，会在导入过程结束时对整个 TiKV 集群执行一次 full Compact。
 # 默认值为 false。
 compact = false
-# 如果设置为 true，会对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
-analyze = true
+
+# 设置对所有表逐个执行 `ANALYZE TABLE <table>` 操作的行为。
+# 有以下选项:
+# - "off"：不执行 analyze。
+# - "optional"：执行 analyze，如果 analyze 失败，则忽略出现的错误。
+# - "required"：执行 analyze，如果 analyze 失败，TiDB Lightning 退出。
+# 默认值为 "optional"。从 v4.0.8 开始，analyze 的默认值由此前的 "true" 改为 "optional"。
+# 说明：为了保持兼容性，布尔值"true" 和 "false" 仍然支持。 其中"true" 等同于 "required"，"false" 等于 "off"。
+analyze = optional
 
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
@@ -338,8 +361,8 @@ min-available-ratio = 0.05
 | -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/backup-and-restore-storages.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`importer`、`local` 或 `tidb` | `tikv-importer.backend` |
-| --log-file *file* | 日志文件路径（默认是 `/tmp` 中的临时文件） | `lightning.log-file` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`local`、`importer` 或 `tidb` | `tikv-importer.backend` |
+| --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`, 设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
 | --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
@@ -350,8 +373,8 @@ min-available-ratio = 0.05
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
 | --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-| --analyze *bool* | 导入后分析表信息 (默认值为 true) | `post-restore.analyze` |
-| --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
+| --analyze *bool* | 导入后分析表信息 (默认值为 optional) | `post-restore.analyze` |
+| --checksum *bool* | 导入后比较校验和 (默认值为 required) | `post-restore.checksum` |
 | --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |

@@ -5,7 +5,29 @@ aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statist
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` （默认）以及 `tidb_analyze_version = 2`。两种版本中，TiDB 维护的统计信息如下：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1 和 v5.2 中，该变量的默认值为 `2`，作为实验特性启用。
+
+> **注意：**
+>
+> 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，请设置全局变量 `tidb_analyze_version = 1`，然后进行以下操作之一：
+>
+> - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
+>
+>   {{< copyable "sql" >}}
+>
+>   ```sql
+>   select distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
+>    ```
+>
+> - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
+>
+>   {{< copyable "sql" >}}
+>
+>   ```sql
+>   select distinct(concat('DROP STATS ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
+>   ```
+
+两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
@@ -21,7 +43,7 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 | 列的平均长度 | √ | √ |
 | 索引的平均长度 | √ | √ |
 
-Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，提高了大多数场景中的估算精度。
+Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
 本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
 
@@ -61,6 +83,8 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 > 如需更快的分析速度，可将 `tidb_enable_fast_analyze` 设置为 `1` 来打开快速分析功能。该参数的默认值为 `0`。
 >
 > 快速分析功能开启后，TiDB 会随机采样约 10000 行的数据来构建统计信息。因此在数据分布不均匀或者数据量比较少的情况下，统计信息的准确度会比较差。可能导致执行计划不优，比如选错索引。如果可以接受普通 `ANALYZE` 语句的执行时间，则推荐关闭快速分析功能。
+>
+> `tidb_enable_fast_analyze` 为实验性功能，目前与 `tidb_analyze_version=2` 的统计信息**不完全匹配**。因此开启 `tidb_enable_fast_analyze` 时需要将 `tidb_analyze_version` 的值设置为 `1`。
 
 #### 全量收集
 
@@ -71,7 +95,7 @@ Top-N 即是这个列或者这个索引中，出现次数前 n 的值。TiDB 会
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 - `WITH NUM BUCKETS` 用于指定生成直方图的桶数量上限。
@@ -79,13 +103,43 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 - `WITH NUM CMSKETCH DEPTH` 用于指定 CM Sketch 的长。
 - `WITH NUM CMSKETCH WIDTH` 用于指定 CM Sketch 的宽。
 - `WITH NUM SAMPLES` 用于指定采样的数目。
+- `WITH FLOAT_NUM SAMPLERATE` 用于指定采样率。
+
+`WITH NUM SAMPLES` 与 `WITH FLOAT_NUM SAMPLERATE` 这两种设置对应了两种不同的收集采样的算法。
+
+- `WITH NUM SAMPLES` 指定了采样集的大小，在 TiDB 中是以蓄水池采样的方式实现。当表较大时，不推荐使用这种方式收集统计信息。因为蓄水池采样中间结果集会产生一定的冗余结果，会对内存等资源造成额外的压力。
+- `WITH FLOAT_NUM SAMPLERATE` 是在 v5.3.0 中引入的采样方式，指定的采样率的大小，是取值范围 `(0, 1]` 的参数。在 TiDB 中是以伯努利采样的方式实现，更适合对较大的表进行采样，在收集效率和资源使用上更有优势。
+
+在 v5.3.0 之前 TiDB 采用蓄水池采样的方式收集统计信息。自 v5.3.0 版本起，TiDB Version 2 的统计信息默认会选取伯努利采样的方式收集统计信息。若要重新使用蓄水池采样的方式采样，可以使用 `WITH NUM SAMPLES` 语句。
+
+> **注意：**
+>
+> 目前采样率基于自适应算法进行计算。当你通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，可通过这个行数去计算采集 10 万行所对应的采样率。如果你观察不到这个值，可通过 [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) 表的 `TABLE_KEYS` 列作为另一个参考来计算采样率。
+>
+> 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
+
+以下语法收集 TableName 表中部分列的统计信息：
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+这个语法会收集指定列以及索引的统计信息，以及扩展统计信息所涉及列的统计信息。如果表的列数较多，需要统计信息的列可能只是表很小的一个子集，通过这个语法可以极大地减轻收集统计信息的负担。
+
+> **注意：**
+>
+> + 以上语法只支持 `tidb_analyze_version = 2` 的情况。
+> + 在以上语法中，`ColumnNameList` 不可为空。
+> + 以上语法是全量收集的语法。第一次收集了列 a 和 列 b 的统计信息之后，如果还想要增加列 c 的统计信息，需要在语法中同时指定三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
 ```
 
 IndexNameList 为空时会收集所有索引列的统计信息。
@@ -95,7 +149,15 @@ IndexNameList 为空时会收集所有索引列的统计信息。
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+收集 TableName 中所有的 PartitionNameList 中分区的部分列统计信息：
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName PARTITION PartitionNameList COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -103,8 +165,12 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKE
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
+
+> **注意：**
+>
+> 为了保证前后统计信息的一致性，在设置 `tidb_analyze_version=2` 时，`ANALYZE TABLE TableName INDEX` 也会收集整个表而不是所给索引的统计信息。
 
 #### 增量收集
 
@@ -122,7 +188,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH 
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 增量收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -130,7 +196,7 @@ ANALYZE INCREMENTAL TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES];
+ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 ### 自动更新
@@ -147,11 +213,17 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在查询语句执行时，TiDB 会以 `feedback-probability` 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。可通过配置文件修改 `feedback-probability`，其默认值是 `0.05`。设置成 `0.0` 可以关闭这个功能。
-
 > **注意：**
 >
-> 在配置文件中如果将 `feedback-probability` 设置为 `0` 会导致设置失败并报错。需要设置成 `0.0` 才可以关闭 `feedback-probability`。
+> 目前自动更新无法记录手动 ANALYZE 时输入的配置项。因此当通过 `WITH` 语句控制 ANALYZE 的收集行为时，目前需要手动设置定时任务收集统计信息。
+>
+> {{< copyable "sql" >}}
+>
+> ```sql
+> [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+> ```
+
+在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
 
 ### 控制 ANALYZE 并发度
 
@@ -273,10 +345,10 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 | column_name | 根据 is_index 来变化：is_index 为 0 时是列名，为 1 时是索引名 |
 | is_index | 是否是索引列 |
 | update_time | 更新时间 |
-| version | 版本，对应 analyze 时，tidb_analyze_version 的值 |
 | distinct_count | 不同值数量 |
 | null_count | NULL 的数量 |
 | avg_col_size | 列平均长度 |
+| correlation | 该列与整型主键的皮尔逊系数，表示两列之间的关联程度 |
 
 ### 直方图桶的信息
 

@@ -19,7 +19,7 @@ TiDB Ansible 版本：2.1.14
 - 支持根据负载情况自动调整 Auto ID 分配的步长 [#10997](https://github.com/pingcap/tidb/pull/10997)
 - 修复 SQL 查询结束时 `MemTracker` 统计的 DistSQL 内存信息未正确清理的问题 [#10971](https://github.com/pingcap/tidb/pull/10971)
 - `information_schema.processlist` 表中新增 `MEM` 列用于描述 Query 的内存使用情况 [#10896](https://github.com/pingcap/tidb/pull/10896)
-- 新增全局系统变量  `max_execution_time`，用于控制查询的最大执行时间 [10940](https://github.com/pingcap/tidb/pull/10940)
+- 新增全局系统变量 `max_execution_time`，用于控制查询的最大执行时间 [10940](https://github.com/pingcap/tidb/pull/10940)
 - 修复使用未支持的聚合函数导致 TiDB panic 的问题 [#10911](https://github.com/pingcap/tidb/pull/10911)
 - 新增 `load data` 语句失败后自动回滚最后一个事务功能 [#10862](https://github.com/pingcap/tidb/pull/10862)
 - 修复 TiDB 超过内存配额的行为配置为 CANCEL 时，某些情况下 TiDB 返回结果不正确的问题 [#11016](https://github.com/pingcap/tidb/pull/11016)

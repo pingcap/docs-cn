@@ -10,6 +10,8 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合**大数据量**的场景。
 
+BR 除了可以用来进行常规备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
+
 本文介绍了 BR 的工作原理、推荐部署配置、使用限制以及几种使用方式。
 
 ## 工作原理
@@ -73,6 +75,7 @@ BR 和 TiDB 集群的兼容性问题分为以下两方面：
 | 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 `tidb_enable_clustered_index` 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
 | 恢复集群开启 TiCDC 同步 | [#364](https://github.com/pingcap/br/issues/364#issuecomment-646813965) |  TiKV 暂不能将 BR ingest 的 SST 文件下推到 TiCDC，因此使用 BR 恢复时候需要关闭 TiCDC。 |
+| 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 
 在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
 
@@ -88,6 +91,21 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | 用 BR v5.0 备份 TiDB v5.0 | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误）
 | 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+
+### 备份和恢复 `mysql` 系统库下的表数据（实验特性）
+
+> **警告：**
+>
+> 该功能目前为实验性功能，尚未经过充分测试。**不建议**在生产环境中使用该功能。
+
+在 v5.1.0 之前，BR 备份时会过滤掉系统库 `mysql.*` 的表数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 `mysql.*` 中的数据。但由于恢复 `mysql.*` 中系统表数据的技术实现尚不完善，因此 BR 默认**不恢复**系统库 `mysql` 中的表数据。
+
+如果你希望将系统表（如 `mysql.usertable1`）的数据恢复到系统库 `mysql` 中，可以设置 [`filter` 参数](/br/use-br-command-line-tool.md#使用表库过滤功能备份多张表的数据) 来过滤表名 (`-f "mysql.usertable1"`)。完成设置后，系统库下的表数据会恢复到临时库中，然后通过对临时库表进行重命名的方式恢复到系统库。
+
+由于技术原因，以下系统表不能被正确恢复。即使你指定了 `-f "mysql.*"`，以下表也不会被恢复：
+
+- 统计信息相关的表："stats_buckets"，"stats_extended"，"stats_feedback"，"stats_fm_sketch"，"stats_histograms"，"stats_meta"，"stats_top_n"
+- 权限或系统相关的表："tidb"，"global_variables"，"columns_priv"，"db"，"default_roles"，"global_grants"，"global_priv"，"role_edges"，"tables_priv"，"user"，"gc_delete_range"，"gc_delete_range_done"，"schema_index_usage"
 
 ### 运行 BR 的最低机型配置要求
 
@@ -109,6 +127,7 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 - BR 恢复最好串行执行。不同恢复任务并行会导致 Region 冲突增多，恢复的性能降低。
 - 推荐在 `-s` 指定的备份路径上挂载一个共享存储，例如 NFS。这样能方便收集和管理备份文件。
 - 在使用共享存储时，推荐使用高吞吐的存储硬件，因为存储的吞吐会限制备份或恢复的速度。
+- BR 默认会分别在备份、恢复完成后，进行一轮数据校验，将文本数据同集群数据比较，来保证正确性。在迁移场景下，为了减少迁移耗时，推荐备份时关闭校验(`--checksum=false`)，只在恢复时开启校验。
 
 ### 使用方式
 

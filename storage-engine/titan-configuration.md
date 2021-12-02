@@ -30,7 +30,7 @@ Titan 对 RocksDB 兼容，也就是说，使用 RocksDB 存储引擎的现有 T
 
     具体命令，可参考[通过 TiUP 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
-+ 方法二：直接编辑 TiKV 配置文件开启 Titan（生产环境不推荐)。
++ 方法二：直接编辑 TiKV 配置文件开启 Titan（生产环境不推荐）。
 
     {{< copyable "" >}}
 

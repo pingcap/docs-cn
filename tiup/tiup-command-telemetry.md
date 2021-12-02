@@ -52,3 +52,5 @@ tiup telemetry <command>
 ### disable
 
 命令 `tiup telemetry disable` 停用遥测。
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

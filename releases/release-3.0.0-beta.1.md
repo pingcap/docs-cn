@@ -67,7 +67,7 @@ TiDB Ansible 版本：3.0.0-beta.1
 
 + 统一[日志格式规范](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)，利于工具收集分析
 + 模拟器
-    - 支持不同  store 可采用不同的心跳间隔时间 [#1418](https://github.com/pingcap/pd/pull/1418)
+    - 支持不同 store 可采用不同的心跳间隔时间 [#1418](https://github.com/pingcap/pd/pull/1418)
     - 添加导入数据的场景 [#1263](https://github.com/pingcap/pd/pull/1263)
 + 热点调度可配置化 [#1412](https://github.com/pingcap/pd/pull/1412)
 + 增加 store 地址为维度的监控项，代替原有的 Store ID [#1429](https://github.com/pingcap/pd/pull/1429)

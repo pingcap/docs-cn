@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-sysbench-v4-vs-v3/']
 
 测试对比 TiDB v4.0 和 v3.0 在 OLTP 场景下的性能。
 
-## 测试环境 (AWS EC2）
+## 测试环境 (AWS EC2)
 
 ### 硬件配置
 

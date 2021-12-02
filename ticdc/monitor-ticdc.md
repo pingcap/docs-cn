@@ -51,21 +51,21 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 
 **Changefeed** 面板的各指标说明如下：
 
-- Changefeed table count：一个同步任务中分配到各个 TiCDC 节点同步的数据表个数
-- Processor resolved ts：TiCDC 节点内部状态中已同步的时间点
-- Table resolved ts：同步任务中各数据表的同步进度
-- Changefeed checkpoint：同步任务同步到下游的进度，正常情况下绿柱应和黄线相接
-- PD etcd requests/s：TiCDC 节点每秒向 PD 读写数据的次数
-- Exit error count：每分钟内导致同步中断的错误发生次数
-- Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）
-- Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）
-- Flush sink duration：TiCDC 异步刷写数据入下游的耗时直方图
-- Flush sink duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间
-- Sink write duration：TiCDC 将一个事务的更改写到下游的耗时直方图
-- Sink write duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 将一个事务的更改写到下游所花费的时间
-- MySQL sink conflict detect duration：MySQL 写入冲突检测耗时直方图
-- MySQL sink conflict detect duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，MySQL 写入冲突检测耗时
-- MySQL sink worker load：TiCDC 节点中写 MySQL 线程的负载情况
+- Changefeed table count：一个同步任务中分配到各个 TiCDC 节点同步的数据表个数。
+- Processor resolved ts：TiCDC 节点内部状态中已同步的时间点。
+- Table resolved ts：同步任务中各数据表的同步进度。
+- Changefeed checkpoint：同步任务同步到下游的进度，正常情况下绿柱应和黄线相接。
+- PD etcd requests/s：TiCDC 节点每秒向 PD 读写数据的次数。
+- Exit error count：每分钟内导致同步中断的错误发生次数。
+- Changefeed checkpoint lag：同步任务上下游数据的进度差（以时间计算）。
+- Changefeed resolved ts lag：TiCDC 节点内部同步状态与上游的进度差（以时间计算）。
+- Flush sink duration：TiCDC 异步刷写数据入下游的耗时直方图。
+- Flush sink duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 异步刷写数据入下游所花费的时间。
+- Sink write duration：TiCDC 将一个事务的更改写到下游的耗时直方图。
+- Sink write duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，TiCDC 将一个事务的更改写到下游所花费的时间。
+- MySQL sink conflict detect duration：MySQL 写入冲突检测耗时直方图。
+- MySQL sink conflict detect duration percentile：每秒钟中 95%、99% 和 99.9% 的情况下，MySQL 写入冲突检测耗时。
+- MySQL sink worker load：TiCDC 节点中写 MySQL 线程的负载情况。
 
 ## Events 面板
 
@@ -77,25 +77,25 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 
 **Events** 面板的各指标说明如下：
 
-- Eventfeed count：TiCDC 节点中 Eventfeed RPC 的个数
-- Event size percentile：每秒钟中 95% 和 99.9% 的情况下，TiCDC 收到的来自 TiKV 的数据变更消息大小
-- Eventfeed error/m：TiCDC 节点中每分钟 Eventfeed RPC 遇到的错误个数
-- KV client receive events/s：TiCDC 节点中 KV client 模块每秒收到来自 TiKV 的数据变更个数
-- Puller receive events/s：TiCDC 节点中 Puller 模块每秒收到来自 KV client 模块的数据变更个数
-- Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更个数
-- Sink flush rows/s：TiCDC 节点每秒写到下游的数据变更的个数
-- Puller buffer size：TiCDC 节点中缓存在 Puller 模块中的数据变更个数
-- Entry sorter buffer size：TiCDC 节点中缓存在 Sorter 模块中的数据变更个数
-- Processor/Mounter buffer size：TiCDC 节点中缓存在 Processor 模块和 Mounter 模块中的数据变更个数
-- Sink row buffer size：TiCDC 节点中缓存在 Sink 模块中的数据变更个数
-- Entry sorter sort duration：TiCDC 节点对数据变更进行排序的耗时直方图
-- Entry sorter sort duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 排序数据变更所花费的时间
-- Entry sorter merge duration：TiCDC 节点合并排序后的数据变更的耗时直方图
-- Entry sorter merge duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 合并排序后的数据变更所花费的时间
-- Mounter unmarshal duration：TiCDC 节点解码数据变更的耗时直方图
-- Mounter unmarshal duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 解码数据变更所花费的时间
-- KV client dispatch events/s：TiCDC 节点内部 KV client 模块每秒分发数据变更的个数
-- KV client batch resolved size：TiKV 批量发给 TiCDC 的 resolved ts 消息的大小
+- Eventfeed count：TiCDC 节点中 Eventfeed RPC 的个数。
+- Event size percentile：每秒钟中 95% 和 99.9% 的情况下，TiCDC 收到的来自 TiKV 的数据变更消息大小。
+- Eventfeed error/m：TiCDC 节点中每分钟 Eventfeed RPC 遇到的错误个数。
+- KV client receive events/s：TiCDC 节点中 KV client 模块每秒收到来自 TiKV 的数据变更个数。
+- Puller receive events/s：TiCDC 节点中 Puller 模块每秒收到来自 KV client 模块的数据变更个数。
+- Puller output events/s：TiCDC 节点中 Puller 模块每秒输出到 Sorter 模块的数据变更个数。
+- Sink flush rows/s：TiCDC 节点每秒写到下游的数据变更的个数。
+- Puller buffer size：TiCDC 节点中缓存在 Puller 模块中的数据变更个数。
+- Entry sorter buffer size：TiCDC 节点中缓存在 Sorter 模块中的数据变更个数。
+- Processor/Mounter buffer size：TiCDC 节点中缓存在 Processor 模块和 Mounter 模块中的数据变更个数。
+- Sink row buffer size：TiCDC 节点中缓存在 Sink 模块中的数据变更个数。
+- Entry sorter sort duration：TiCDC 节点对数据变更进行排序的耗时直方图。
+- Entry sorter sort duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 排序数据变更所花费的时间。
+- Entry sorter merge duration：TiCDC 节点合并排序后的数据变更的耗时直方图。
+- Entry sorter merge duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 合并排序后的数据变更所花费的时间。
+- Mounter unmarshal duration：TiCDC 节点解码数据变更的耗时直方图。
+- Mounter unmarshal duration percentile：每秒钟中 95%，99% 和 99.9% 的情况下，TiCDC 解码数据变更所花费的时间。
+- KV client dispatch events/s：TiCDC 节点内部 KV client 模块每秒分发数据变更的个数。
+- KV client batch resolved size：TiKV 批量发给 TiCDC 的 resolved ts 消息的大小。
 
 ## TiKV 面板
 

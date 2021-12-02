@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-tpch/','/docs-cn/dev/benchmark/tpch/
 
 ### TiDB 版本信息
 
-TiDB 1.0：
+TiDB 1.0:
 
 | 组件名 | 版本号      | commit hash                                |
 |--------|-------------|--------------------------------------------|
@@ -63,7 +63,7 @@ TiDB 1.0：
 | TiKV   | v1.0.8      | 2bb923a4cd23dbf68f0d16169fd526dc5c1a9f4a   |
 | PD     | v1.0.8      | 137fa734472a76c509fbfd9cb9bc6d0dc804a3b7   |
 
-TiDB 2.0：
+TiDB 2.0:
 
 | 组件名 | 版本号      | commit hash                                |
 |--------|-------------|--------------------------------------------|

@@ -27,3 +27,5 @@ tiup clean [name] [flags]
 ```
 Clean instance of `%s`, directory: %s
 ```
+
+[<< 返回上一页 - TiUP 命令清单](/tiup/tiup-reference.md#命令清单)

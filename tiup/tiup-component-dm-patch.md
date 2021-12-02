@@ -59,7 +59,7 @@ tiup dm patch <cluster-name> <package-path> [flags]
 >
 > 若同时指定了 `-N, --node`，那么将替换它们的交集中的服务。
 
-## --offline
+### --offline
 
 声明当前集群处于离线状态。指定该选项时，TiUP DM 仅原地替换集群组件的二进制文件，不重启服务。
 
@@ -72,3 +72,5 @@ tiup dm patch <cluster-name> <package-path> [flags]
 ## 输出
 
 tiup-dm 的执行日志。
+
+[<< 返回上一页 - TiUP DM 命令清单](/tiup/tiup-component-dm.md#命令清单)

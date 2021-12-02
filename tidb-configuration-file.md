@@ -49,7 +49,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：Byte
 + 当单条 SQL 语句使用临时磁盘，导致 TiDB server 的总体临时磁盘总量超过 `tmp-storage-quota` 时，当前 SQL 操作会被取消，并返回 `Out Of Global Storage Quota!` 错误。
 + 当 `tmp-storage-quota` 小于 0 时则没有上述检查与限制。
-+ 默认值: -1
++ 默认值：-1
 + 当 `tmp-storage-path` 的剩余可用容量低于 `tmp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
 
 ### `oom-action`
@@ -103,7 +103,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `server-version`
 
-+ 用来修改 TiDB 在以下情况下返回的版本号:
++ 用来修改 TiDB 在以下情况下返回的版本号：
     - 当使用内置函数 `VERSION()` 时。
     - 当与客户端初始连接，TiDB 返回带有服务端版本号的初始握手包时。具体可以查看 MySQL 初始握手包的[描述](https://dev.mysql.com/doc/internals/en/connection-phase-packets.html#packet-Protocol::Handshake)。
 + 默认值：""
@@ -117,7 +117,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `repair-table-list`
 
-+ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 ["db.table1","db.table2"...]。
++ 配合 `repair-mode` 为 true 时使用，用于列出实例中需要修复的坏表的名单，该名单的写法为 ["db.table1","db.table2", ……]。
 + 默认值：[]
 + 默认情况下，该 list 名单为空，表示没有所需修复的坏表信息。
 
@@ -170,13 +170,19 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
+#### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
+- 默认值：0
+- 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
 ## log
 
 日志相关的配置项。
 
 ### `level`
 
-+ 指定日志的输出级别, 可选项为 [debug, info, warn, error, fatal]
++ 指定日志的输出级别，可选项为 [debug, info, warn, error, fatal]
 + 默认值："info"
 
 ### `format`
@@ -203,7 +209,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `slow-query-file`
 
 + 慢查询日志的文件名。
-+ 默认值："tidb-slow.log"，注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值是 ""。
++ 默认值："tidb-slow.log"。注：由于 TiDB V2.1.8 更新了慢日志格式，所以将慢日志单独输出到了慢日志文件。V2.1.8 之前的版本，该变量的默认值是 ""。
 + 设置后，慢查询日志会单独输出到该文件。
 
 ### `slow-threshold`
@@ -243,8 +249,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 #### `max-size`
 
 + 日志文件的大小限制。
-+ 默认值：300MB
-+ 最大设置上限为 4GB。
++ 默认值：300
++ 单位：MB
++ 最大设置上限为 4096。
 
 #### `max-days`
 
@@ -261,6 +268,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ## security
 
 安全相关配置。
+
+### `require-secure-transport`
+
+- 配置是否要求客户端使用安全传输模式。
+- 默认值：`false`
+
+### `enable-sem`
+
+- 启用安全增强模式 (SEM)。
+- 默认值：`false`
+- 可以通过系统变量 [`tidb_enable_enhanced_security`](/system-variables.md#tidb_enable_enhanced_security) 获取安全增强模式的状态。
 
 ### `ssl-ca`
 
@@ -300,8 +318,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `spilled-file-encryption-method`
 
 + 内存落盘文件的加密方式。
-+ 默认值: `"plaintext"`，表示不进行加密
-+ 可选值：`"plaintext"`、`"aes128-ctr"`
++ 默认值：`"plaintext"`，表示不进行加密。
++ 可选值：`"plaintext"`、`"aes128-ctr"`。
+
+### `auto-tls`
+
++ 控制 TiDB 启动时是否自动生成 TLS 证书。
++ 默认值：`false`
 
 ## performance
 
@@ -357,7 +380,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `committer-concurrency`
 
 + 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量
-+ 默认值：16
++ 默认值：128
 + 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过调大该配置项来加速提交。
 
 ### `stmt-count-limit`
@@ -369,6 +392,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `tcp-keep-alive`
 
 + TiDB 在 TCP 层开启 keepalive。
++ 默认值：true
+
+### `tcp-no-delay`
+
++ 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。开启后，TiDB 将禁用 TCP/IP 协议中的 Nagle 算法，允许小数据包的发送，可以降低网络延时，适用于延时敏感型且数据传输量比较小的应用。
 + 默认值：true
 
 ### `cross-join`
@@ -399,8 +427,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0.05
-+ 对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
++ 默认值：0
++ 此功能默认关闭，暂不建议开启。如果开启此功能，对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
 
 ### `query-feedback-limit`
 
@@ -433,6 +461,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：20971520
 + 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
 
+### `enforce-mpp`
+
++ 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
++ 默认值：false
++ 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
+
 ## prepared-plan-cache
 
 prepare 语句的 plan cache 设置。
@@ -449,7 +483,7 @@ prepare 语句的 plan cache 设置。
 ### `capacity`
 
 + 缓存语句的数量。
-+ 默认值：100
++ 默认值：1000
 + 类型为 uint，小于 0 的值会被转化为大整数。
 
 ### `memory-guard-ratio`
@@ -521,7 +555,7 @@ prepare 语句的 plan cache 设置。
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 
-### `enable`
+### `enabled`
 
 + 开启或关闭事务内存锁
 + 默认值：false
@@ -573,21 +607,21 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
++ 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-系统表 `events_statement_summary_by_digest` 的相关配置。
+系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
 
 ### max-stmt-count
 
-+ `events_statement_summary_by_digest` 表中保存的 SQL 种类的最大数量。
-+ 默认值：100
++ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
++ 默认值：3000
 
 ### max-sql-length
 
-+ `events_statement_summary_by_digest` 表中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn
@@ -599,11 +633,23 @@ TiDB 服务状态相关配置。
 + 悲观事务中单个语句最大重试次数，重试次数超过该限制，语句执行将会报错。
 + 默认值：256
 
+### deadlock-history-capacity
+
++ 单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数。当表的容量已满时，如果再次发生死锁错误，最早的一次死锁错误的信息将从表中移除。
++ 默认值：10
++ 最小值：0
++ 最大值：10000
+
+### deadlock-history-collect-retryable
+
++ 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
++ 默认值：false
+
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
 
 ### `allow-expression-index` <span class="version-mark">从 v4.0.0 版本开始引入</span>
 
-+ 用于控制是否能创建表达式索引。
++ 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false

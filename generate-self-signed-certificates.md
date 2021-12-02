@@ -5,6 +5,10 @@ aliases: ['/docs-cn/dev/generate-self-signed-certificates/','/docs-cn/dev/how-to
 
 # 生成自签名证书
 
+> **注意：**
+>
+> 要在 TiDB 客户端与服务端间通信开启加密传输，你只需配置 `auto-tls` 参数。
+
 本文档提供使用 `openssl` 生成自签名证书的一个示例，用户也可以根据自己的需求生成符合要求的证书和密钥。
 
 假设实例集群拓扑如下：
@@ -36,7 +40,7 @@ apt install openssl
 yum install openssl
 ```
 
-也可以参考 OpenSSL 官方的[下载文档](https://www.openssl.org/source/) 进行安装。
+也可以参考 OpenSSL 官方的[下载文档](https://www.openssl.org/source/)进行安装。
 
 ## 生成 CA 证书
 

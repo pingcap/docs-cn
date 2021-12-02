@@ -10,13 +10,13 @@ aliases: ['/docs-cn/dev/dynamic-config/']
 >
 > 该功能目前是实验性阶段，不建议在生产环境中使用。
 
-在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件（TiKV、PD）的有所不同。
+在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件 (TiKV, PD) 的有所不同。
 
 ## 常用操作
 
 ### 查看实例配置
 
-可以通过 SQL语句 `show config` 来直接查看集群所有实例的配置信息，结果如下：
+可以通过 SQL 语句 `show config` 来直接查看集群所有实例的配置信息，结果如下：
 
 {{< copyable "sql" >}}
 
@@ -123,14 +123,12 @@ show warnings;
 
 | 配置项 | 简介 |
 | --- | --- |
-| raftstore.sync-log | 数据、log 落盘是否同步 |
 | raftstore.raft-entry-max-size | 单个日志最大大小 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
-| raftstore.raft-reject-transfer-leader-duration | 控制迁移 leader 到新加节点的最小时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
 | raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
@@ -196,7 +194,11 @@ show warnings;
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
 | split.split-balance-score | load-base-split 的控制参数，确保 Region 切分后左右访问尽量均匀，数值越小越均匀，但也可能导致无法切分 |
 | split.split-contained-score | load-base-split 的控制参数，数值越小，Region 切分后跨 Region 的访问越少 |
-
+| cdc.min-ts-interval | 定期推进 Resolved TS 的时间间隔 |
+| cdc.old-value-cache-memory-quota | 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限 |
+| cdc.sink-memory-quota| 缓存在内存中的 TiCDC 数据变更事件占用内存的上限 |
+| cdc.incremental-scan-speed-limit| 增量扫描历史数据的速度上限 |
+| cdc.incremental-scan-concurrency | 增量扫描历史数据任务的最大并发执行个数 |
 上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb` 或 `raftdb`。
 
 - 当 `db-name` 为 `rocksdb` 时，`cf-name` 的可取值有：`defaultcf`、`writecf`、`lockcf`、`raftcf`；
@@ -220,7 +222,7 @@ set config pd `log.level`='info'
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ```  包裹此类配置项，例如 ``` `schedule.leader-schedule-limit` ```。
+针对 PD 可在线修改的配置项，成功修改后则会持久化到 etcd 中，不会对配置文件进行持久化，后续以 etcd 中的配置为准。同上，若和 TiDB 预留关键字冲突，需要用反引号 ``` ` ``` 包裹此类配置项，例如 ``` `schedule.leader-schedule-limit` ```。
 
 支持配置项列表如下：
 
@@ -267,9 +269,11 @@ Query OK, 0 rows affected (0.01 sec)
 
 ### 在线修改 TiDB 配置
 
-在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过 [SQL 变量](/system-variables.md)来完成修改。
+在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过[系统变量](/system-variables.md)来完成修改。
 
-下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。`slow-threshold` 默认值是 200 毫秒，可以通过设置 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
+下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。
+
+`slow-threshold` 默认值是 300 毫秒，可以通过设置系统变量 `tidb_slow_log_threshold` 将其修改为 200 毫秒：
 
 {{< copyable "sql" >}}
 
