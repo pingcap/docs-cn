@@ -20,7 +20,7 @@ summary: 介绍如何从 SQL 文件迁移数据到 TiDB。
 
 CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
-1. 编写包含 DDL 语句的 SQL 文件。
+方法一：编写包含 DDL 语句的 SQL 文件。
 
 - 文件名格式为`${db_name}-schema-create.sql`,其内容需包含 CREATE DATABASE 语句；
 - 文件名格式为`${db_name}.${table_name}-schema.sql`,其内容需包含 CREATE TABLE 语句。
@@ -32,7 +32,7 @@ CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提�
 no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
 ```
 
-2. 手动在下游 TiDB 建库和表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
+方法二：手动在下游 TiDB 建库和表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
 
 ```toml
 [mydumper] 
@@ -68,7 +68,7 @@ no-schema = true
 # 目标集群的信息
 host = "${ip}"
 port = 4000
-user = "root"
+user = "${user_name}"
 password = "${password}"
 # 表结构信息在从 TiDB 的“状态端口”获取。
 status-port = ${port}       # 例如：10080

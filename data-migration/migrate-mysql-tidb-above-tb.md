@@ -119,7 +119,7 @@ status-port = ${status-port}  # 表架构信息在从 TiDB 的“状态端口”
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lighting 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
-关于更多 Lightning 的配置，请参考[TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)
+关于更多 Lightning 的配置，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
 
@@ -167,7 +167,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 |参数           |描述|
 |-              |-|
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-source create|向 DM 集群加载、列出、移除数据源|
+|operate-source create|向 DM 集群加载数据源|
 
 ### 添加同步任务
 

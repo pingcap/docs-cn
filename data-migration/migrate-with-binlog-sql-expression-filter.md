@@ -3,7 +3,7 @@ title: 如何通过 SQL 表达式过滤 binlog
 summary: 介绍如何通过 SQL 表达式过滤 binlog。
 ---
 
-# 如何通过 SQL 表达式过滤 binlog
+# 如何通过 SQL 表达式过滤掉特定 DML
 
 本文档介绍使用 DM 持续增量数据同步时，如何更加精细的过滤 binlog 事件。具体迁移操作可参考已有数据迁移场景：
 

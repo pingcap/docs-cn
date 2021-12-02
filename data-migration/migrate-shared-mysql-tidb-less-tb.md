@@ -99,7 +99,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 |参数           |描述|
 |-              |-|
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-source create|向 DM 集群加载、列出、移除数据源|
+|operate-source create|向 DM 集群加载数据源|
 
 重复以上操作直至所有数据源均添加完成。
 
