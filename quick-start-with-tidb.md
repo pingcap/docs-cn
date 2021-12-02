@@ -20,7 +20,6 @@ title: TiDB 数据库快速上手指南
 ## 部署本地测试集群
 
 - 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
-- 耗时：1 分钟。
 
 <SimpleTab>
 <div label="Mac">
