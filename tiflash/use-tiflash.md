@@ -3,6 +3,8 @@ title: 使用 TiFlash
 aliases: ['/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/']
 ---
 
+如果需要快速体验以 TPC-H 为例子，从导入到查询的完整流程，可以参考 [HTAP 快速上手指南](/quick-start-with-htap.md)
+
 # 使用 TiFlash
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表。
