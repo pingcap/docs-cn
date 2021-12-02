@@ -17,7 +17,7 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式如
 将所有要导入的 CSV 文件放在同一目录下，若要 Lighting 识别所有 CSV 文件，文件名必须满足以下格式：
 
 - 包含整张表数据的 CSV 文件需命名为`${db_name}.${table_name}.csv`
-- 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续但必须递增，并用零填充为同样长度。
+- 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续但必须递增，并用零填充前缀为同样长度。
 
 ## 第 2 步. 创建目标表结构
 
@@ -92,8 +92,8 @@ trim-last-separator = false
 
 # 目标集群的信息
 host = "${ip}"
-port = 4000
-user = "root"
+port = ${port}
+user = "${user_name}" 
 password = "${password}"
 # 表结构信息在从 TiDB 的“状态端口”获取。
 status-port = ${port} # 例如：10080
@@ -105,7 +105,7 @@ pd-addr = "${ip}:${port}" # 例如 172.16.31.3:2379。当 backend = "local" 时 
 
 ## 第 4 步. 以更快的速度导入（可选）
 
-导入文件的大小统一约为 256 MiB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
+导入文件的大小统一约为 256 MiB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 在默认配置下只能使用一个线程来处理，这会降低导入速度。
 
 要解决此问题，可先将 CSV 文件分割为多个文件。对于通用格式的 CSV 文件，在没有读取整个文件的情况下无法快速确定行的开始和结束位置。因此，默认情况下 TiDB Lightning 不会自动分割 CSV 文件。但如果你确定待导入的 CSV 文件符合特定的限制要求，则可以启用`strict-format`模式。启用后，TiDB Lightning 会将单个 CSV 大文件分割为单个大小为 256 MiB 的多个文件块进行并行处理。
 

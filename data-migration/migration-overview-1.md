@@ -28,25 +28,25 @@ aliases: ['/docs/dev/migration-overview/']
 
 没有 Cloud storage（S3）服务，网络联通和延迟情况良好，从 MySQL 迁移数据到 TiDB 可以考虑参照下面的便捷方案。
 
-- [从 TiB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
+- [从 TB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
 
 如果你对数据迁移速度有要求，或者数据规模特别大（例如 TiB 级以上），并且允许 TiDB 集群在迁移期间禁止其他业务写入，那么你可以先使用 Lightning 进行快速导入，然后根据业务需要选择是否使用 DM 进行增量数据（Binlog）同步
 
-- [从 TiB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
+- [从 TB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
 
 ## 分库分表 MySQL 合并迁移到 TiDB
 
 如果你的业务使用了基于 MySQL 分库的方案来存储数据，业务数据从 MySQL 迁移到 TiDB 后合并这些分表数据到一张合并，你可以使用 DM 进行分表合并迁移
 
-- [TiB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
+- [TB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
 
 如果分表数据总规模特别大（例如 TiB 级以上），并且允许 TiDB 集群在迁移期间禁止其他业务写入，那么你可以使用 Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 DM 进行增量数据（Binlog）的分表同步
 
-- [TiB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
+- [TB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
 
 ## 从文件迁移数据到 TiDB
 
-- [从平面文件迁移数据到 TiDB](/data-migration/migrate-flat-file-tidb.md)
+- [从 CSV 文件迁移数据到 TiDB](/data-migration/migrate-flat-file-tidb.md)
 - [从 SQL 文件迁移数据到 TiDB](//data-migration/migrate-sql-file-tidb.md)
 
 ## 更加复杂的迁移方式

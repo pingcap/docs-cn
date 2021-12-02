@@ -8,7 +8,7 @@ summary: 介绍如何使用快照从 Aurora 迁移数据到 TiDB。
 本文档介绍通过 Aurora 迁移数据到 TiDB，采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html) 导入可以节约大量的空间和时间成本。迁移过程包含两个过程：
 
 - 使用 Lightning 导入全量数据到 TiDB
-- 使用 DM 持续增量数据到 TiDB（可选）
+- 使用 DM 持续增量同步到 TiDB（可选）
 
 ## 前提条件
 
@@ -38,7 +38,7 @@ mysql> SHOW MASTER STATUS;
 
 2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
 
-请注意，上述两项操作的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致同步时产生数据冲突。最终您需要准备好以下信息：
+请注意，上述两项操作的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。最终您需要准备好以下信息：
 
 - 创建快照点时，Aurora binlog 名称及位置
 - 快照文件的 S3 路径，及具有访问权限的 SecretKey 和 AccessKey
@@ -190,7 +190,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 |参数           |描述|
 |-              |-|
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-source create|向 DM 集群加载、列出、移除数据源|
+|operate-source create|向 DM 集群加载数据源|
 
 ### 第 2 步. 创建迁移任务
 

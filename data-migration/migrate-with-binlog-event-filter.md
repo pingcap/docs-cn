@@ -100,8 +100,7 @@ filters:
 ```
 filters:
   filter-procedure-rule:
-    schema-pattern: "test_*"
-    table-pattern: "t_*"
+    schema-pattern: "*"
     sql-pattern: [".*\\s+DROP\\s+PROCEDURE", ".*\\s+CREATE\\s+PROCEDURE", "ALTER\\s+TABLE[\\s\\S]*ADD\\s+PARTITION", "ALTER\\s+TABLE[\\s\\S]*DROP\\s+PARTITION"]
     action: Ignore
 ```
