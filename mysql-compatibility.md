@@ -125,6 +125,41 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 详情参见 [`SELECT`](/sql-statements/sql-statement-select.md)。
 
+### `UPDATE` 语句
+
+```sql
+CREATE TABLE companies (id bigint primary key, ida bigint);
+INSERT INTO companies VALUES (14, 14);
+UPDATE companies SET id = id + 1, ida = id * 2;
+```
+
+在 MySQL 中得到的结果是
+
+```sql
+mysql> select * from companies;
++----+------+
+| id | ida  |
++----+------+
+| 15 |   30 |
++----+------+
+1 row in set (0.00 sec)
+```
+
+在 TiDB 中得到的结果是
+
+
+```sql
+mysql> select * from companies;
++----+------+
+| id | ida  |
++----+------+
+| 15 |   28 |
++----+------+
+1 row in set (0.00 sec)
+```
+
+TiDB 中 `id` 的值始终是原始的表中的 `id` 列的值，而 MySQL 中，后面一个表达式中 `id` 的值是前一个表达式对 `id` 计算之后的结果。
+
 ### 视图
 
 TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
