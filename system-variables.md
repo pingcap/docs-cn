@@ -204,6 +204,13 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+### `placement_checks`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。
+- 该变量可由逻辑转储或逻辑恢复工具使用，确保即使违反放置规则也始终可以创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件的开头部分。
+
 ### `port`
 
 - 作用域：NONE
@@ -251,7 +258,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：""
-- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
+- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 返回超时错误（对应的错误码为 ErrTiFlashServerTimeout）时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。 
 
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -422,7 +429,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
         ERROR 1062 : Duplicate entry '1' for key 'PRIMARY'
         ```
 
-悲观事务模型中，始终默认执行约束检查。
+悲观事务模式中，始终默认执行约束检查。
 
 ### `tidb_current_ts`
 
@@ -621,6 +628,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：0
+- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
+
 ### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -629,19 +642,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 统计信息过期的判断标准：最近一次对某张表执行 `ANALYZE` 获得统计信息后，该表数据被修改的行数大于该表总行数的 80%，便可判定该表的统计信息已过期。该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置参数调整。
 - 默认情况下（即该变量值为 `ON` 时），某张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。
 - 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，可以将该变量值设为 `OFF`。
-
-### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 默认值：`OFF`
-- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
-- 适合开启 TSO Follower Proxy 的场景：
-    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
-    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
-
-> **注意：**
->
-> 如果 PD leader 未因 CPU 限制达到瓶颈而导致 TSO RPC 延迟升高，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
 
 ### `tidb_enable_rate_limit_action`
 
@@ -694,17 +694,24 @@ Query OK, 0 rows affected (0.09 sec)
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
 
-### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：0
-- 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
-
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`ON`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
+- 适合开启 TSO Follower Proxy 的场景：
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
+    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
+
+> **注意：**
+>
+> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
 
 ### `tidb_enable_vectorized_expression` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -860,10 +867,10 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `user`：当前会话用户
     - `schemaVersion`：当前 schema 版本
     - `txnStartTS`：当前事务的开始时间戳
-    - `forUpdateTS`：事务模型为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模型为乐观事务时，该条目与 `txnStartTS` 等价。
+    - `forUpdateTS`：事务模式为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模式为乐观事务时，该条目与 `txnStartTS` 等价。
     - `isReadConsistency`：当前事务隔离级别是否是读已提交 (RC)
     - `current_db`：当前数据库名
-    - `txn_mode`：事务模型。可选值：`OPTIMISTIC`（乐观事务模型），或 `PESSIMISTIC`（悲观事务模型）
+    - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式） 
     - `sql`：当前查询对应的 SQL 语句
 
 ### `tidb_hash_join_concurrency`
@@ -959,6 +966,12 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：SESSION
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
+
+### `tidb_log_file_max_days` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`0`
+- 这个变量可以调整当前 TiDB 实例上日志的最大保留天数。默认值是实例配置文件中指定的值，见配置项 [`max-days`](/tidb-configuration-file.md#max-days)。此变量只影响当前 TiDB 实例上的配置，重启后丢失，且配置文件不受影响。
 
 ### `tidb_low_resolution_tso`
 
@@ -1276,7 +1289,7 @@ SET tidb_query_log_max_len = 20;
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
-- TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
+- 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是关闭该变量的数倍。
 
 ### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1384,7 +1397,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`67108864`
 - 范围：`[1048576, 137438953472]`
 - 单位：字节
-- 这个变量用于限制单个[临时表](/temporary-table.md)的最大大小，临时表超出该大小后报错。
+- 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
 
 ### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
 
@@ -1402,7 +1415,7 @@ set tidb_slow_log_threshold = 200;
 
 > **注意：**
 >
-> 如果 PD leader 未因 CPU 限制达到瓶颈而导致 TSO RPC 延迟升高，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
 
 ### `tidb_txn_mode`
 
@@ -1410,7 +1423,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`pessimistic`
 - 可选值：`pessimistic`，`optimistic`
 - 这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/pessimistic-transaction.md)。
-- 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
+- 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 - 将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
 
 ### `tidb_use_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>

@@ -236,7 +236,8 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+> - 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+> - 由于 TiKV、TiFlash 和 TiDB Binlog 组件是异步下线的，且下线过程耗时较长，所以 TiUP 对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理，详情参考[下线特殊处理](/tiup/tiup-component-cluster-scale-in.md#下线特殊处理)。
 
 > **注意：**
 >
@@ -251,11 +252,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.5.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.7.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.2.2
+TiDB Version: v5.3.0
 
 ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 

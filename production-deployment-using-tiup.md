@@ -137,12 +137,12 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
     如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
 
-    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.5.2 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.7.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.5.2 --tiup v1.5.2 --cluster v1.5.2
+        tiup mirror clone tiup-custom-mirror-v1.7.0 --tiup v1.7.0 --cluster v1.7.0
         ```
 
         如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
@@ -174,10 +174,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.5.2
+        tiup mirror merge tiup-custom-mirror-v1.7.0
         ```
     
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.7.0` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
@@ -309,13 +309,13 @@ tiup cluster check ./topology.yaml --apply --user root [-p] [-i /home/root/.ssh/
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy tidb-test v5.2.2 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+tiup cluster deploy tidb-test v5.3.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
 以上部署命令中：
 
 - 通过 TiUP cluster 部署的集群名称为 `tidb-test`
-- 可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本，后续内容以版本 `v5.2.2` 为例
+- 可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本，后续内容以版本 `v5.3.0` 为例
 - 初始化配置文件为 `topology.yaml`
 - --user root：通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p]：非必选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码
@@ -334,10 +334,10 @@ tiup cluster list
 TiUP 支持管理多个 TiDB 集群，该命令会输出当前通过 TiUP cluster 管理的所有集群信息，包括集群名称、部署用户、版本、密钥信息等：
 
 ```log
-Starting /home/tidb/.tiup/components/cluster/v1.5.0/cluster list
+Starting /home/tidb/.tiup/components/cluster/v1.7.0/cluster list
 Name              User  Version        Path                                                        PrivateKey
 ----              ----  -------        ----                                                        ----------
-tidb-test         tidb  v5.2.2      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
+tidb-test         tidb  v5.3.0      /home/tidb/.tiup/storage/cluster/clusters/tidb-test         /home/tidb/.tiup/storage/cluster/clusters/tidb-test/ssh/id_rsa
 ```
 
 ## 第 6 步：检查部署的 TiDB 集群情况

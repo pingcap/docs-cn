@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 # TiDB 集群报警规则
 
-本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
+本文介绍了 TiDB 集群中各组件的报警规则，包括 TiDB、TiKV、PD、TiFlash、TiDB Binlog、TiCDC、Node_exporter 和 Blackbox_exporter 的各报警项的规则描述及处理方法。
 
 按照严重程度由高到低，报警项可分为紧急级别 \> 严重级别 \> 警告级别三类。该分级适用于以下各组件的报警项。
 
@@ -343,7 +343,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `count(changes(pd_server_tso{type="save"}[10m]) > 0) >= 2`
+    `count(changes(pd_tso_events{type="save"}[10m]) > 0) >= 2`
 
 * 规则描述：
 
@@ -374,7 +374,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `changes(pd_server_tso{type="system_time_slow"}[10m]) >= 1`
+    `changes(pd_tso_events{type="system_time_slow"}[10m]) >= 1`
 
 * 规则描述：
 
@@ -786,6 +786,10 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
 
+## TiCDC 报警规则
+
+关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
+
 ## Node_exporter 主机报警规则
 
 本节介绍了 Node_exporter 主机的报警项。
@@ -858,7 +862,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `(node_load5 / count without (cpu, mode) (node_cpu{mode="system"})) > 1`
+    `(node_load5 / count without (cpu, mode) (node_cpu_seconds_total{mode="system"})) > 1`
 
 * 规则描述：
 
@@ -873,7 +877,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `avg(irate(node_cpu{mode="idle"}[5m])) by(instance) * 100 <= 20`
+    `avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by(instance) * 100 <= 20`
 
 * 规则描述：
 
@@ -902,7 +906,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `((rate(node_disk_read_time_ms{device=~".+"}[5m]) / rate(node_disk_reads_completed{device=~".+"}[5m])) or (irate(node_disk_read_time_ms{device=~".+"}[5m]) / irate(node_disk_reads_completed{device=~".+"}[5m]))) > 32`
+    `((rate(node_disk_read_time_seconds_total{device=~".+"}[5m]) / rate(node_disk_reads_completed_total{device=~".+"}[5m])) or (irate(node_disk_read_time_seconds_total{device=~".+"}[5m]) / irate(node_disk_reads_completed_total{device=~".+"}[5m])) ) * 1000 > 32`
 
 * 规则描述：
 
@@ -918,7 +922,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 报警规则：
 
-    `((rate(node_disk_write_time_ms{device=~".+"}[5m]) / rate(node_disk_writes_completed{device=~".+"}[5m])) or (irate(node_disk_write_time_ms{device=~".+"}[5m]) / irate(node_disk_writes_completed{device=~".+"}[5m])))> 16`
+    `((rate(node_disk_write_time_seconds_total{device=~".+"}[5m]) / rate(node_disk_writes_completed_total{device=~".+"}[5m])) or (irate(node_disk_write_time_seconds_total{device=~".+"}[5m]) / irate(node_disk_writes_completed_total{device=~".+"}[5m])))> 16`
 
 * 规则描述：
 

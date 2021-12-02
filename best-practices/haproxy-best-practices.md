@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/best-practices/haproxy-best-practices/','/docs-cn/dev/re
 
 HAProxy 是由 C 语言编写的自由开放源码的软件，为基于 TCP 和 HTTP 协议的应用程序提供高可用性、负载均衡和代理服务。因为 HAProxy 能够快速、高效使用 CPU 和内存，所以目前使用非常广泛，许多知名网站诸如 GitHub、Bitbucket、Stack Overflow、Reddit、Tumblr、Twitter 和 Tuenti 以及亚马逊网络服务系统都在使用 HAProxy。
 
-HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。最新的稳定版本 2.0.0 于 2019 年 8 月 16 日发布，带来更多[优秀的特性](https://www.haproxy.com/blog/haproxy-2-0-and-beyond/)。
+HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，他现在仍然负责该项目的维护，并在开源社区免费提供版本迭代。本文示例使用 HAProxy [2.5.0](https://www.haproxy.com/blog/announcing-haproxy-2-5/)。推荐使用最新稳定版的 HAProxy，详情见[已发布的 HAProxy 版本](http://www.haproxy.org/)。
 
 ## HAProxy 部分核心功能介绍
 
@@ -71,28 +71,51 @@ yum -y install epel-release gcc systemd-devel
 
 ## 部署 HAProxy
 
-HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html)。
+HAProxy 配置 Database 负载均衡场景操作简单，以下部署操作具有普遍性，不具有特殊性，建议根据实际场景，个性化配置相关的[配置文件](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html)。
 
 ### 安装 HAProxy
 
-1. 使用 yum 安装 HAProxy：
+1. 下载 HAProxy 2.5.0 的源码包：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    yum -y install haproxy
+    wget https://github.com/haproxy/haproxy/archive/refs/tags/v2.5.0.zip
     ```
 
-2. 验证 HAProxy 安装是否成功：
+2. 解压源码包：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    unzip v2.5.0.zip
+    ```
+
+3. 从源码编译 HAProxy 应用：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    cd haproxy-2.5.0
+    make clean
+    make -j 8 TARGET=linux-glibc USE_THREAD=1
+    make PREFIX=${/app/haproxy} SBINDIR=${/app/haproxy/bin} install  # 将 `${/app/haproxy}` 和 `${/app/haproxy/bin}` 替换为自定义的实际路径。
+    ```
+
+4. 重新配置 `profile` 文件：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    echo 'export PATH=/app/haproxy/bin:$PATH' >> /etc/profile
+    ```
+
+5. 检查 HAProxy 是否安装成功：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
     which haproxy
-    ```
-
-    ```
-    /usr/sbin/haproxy
     ```
 
 #### HAProxy 命令介绍
@@ -145,10 +168,10 @@ global                                     # 全局配置。
    log         127.0.0.1 local2            # 定义全局的 syslog 服务器，最多可以定义两个。
    chroot      /var/lib/haproxy            # 更改当前目录并为启动进程设置超级用户权限，从而提高安全性。
    pidfile     /var/run/haproxy.pid        # 将 HAProxy 进程的 PID 写入 pidfile。
-   maxconn     4000                        # 每个 HAProxy 进程所接受的最大并发连接数。
+   maxconn     256                         # 每个 HAProxy 线程可接受的最大并发连接数。
+   nbthread    48                          # 最大线程数。线程数的上限与 CPU 数量相同。
    user        haproxy                     # 同 UID 参数。
    group       haproxy                     # 同 GID 参数，建议使用专用用户组。
-   nbproc      40                          # 在后台运行时创建的进程数。在启动多个进程转发请求时，确保该值足够大，保证 HAProxy 不会成为瓶颈。
    daemon                                  # 让 HAProxy 以守护进程的方式工作于后台，等同于命令行参数“-D”的功能。当然，也可以在命令行中用“-db”参数将其禁用。
    stats socket /var/lib/haproxy/stats     # 统计信息保存位置。
 
@@ -182,46 +205,30 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 
 ### 启动 HAProxy
 
-- 方法一：执行 `haproxy`，默认读取 `/etc/haproxy/haproxy.cfg`（推荐）。
+要启动 HAProxy，执行 `haproxy` 命令。默认读取 `/etc/haproxy/haproxy.cfg`（推荐）。
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    haproxy -f /etc/haproxy/haproxy.cfg
-    ```
-
-- 方法二：使用 `systemd` 启动 HAProxy。
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    systemctl start haproxy.service
-    ```
+```bash
+haproxy -f /etc/haproxy/haproxy.cfg
+```
 
 ### 停止 HAProxy
 
-- 方法一：使用 `kill -9`。
+要停止 HAProxy，使用 `kill -9` 命令。
 
-    1. 执行如下命令：
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        ps -ef | grep haproxy
-        ```
-
-    2. 终止 HAProxy 相关的 PID 进程：
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        kill -9 ${haproxy.pid}
-        ```
-
-- 方法二：使用 `systemd`。
+1. 执行如下命令：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    systemctl stop haproxy.service
+    ps -ef | grep haproxy
+    ```
+
+2. 终止 HAProxy 相关的 PID 进程：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kill -9 ${haproxy.pid}
     ```
