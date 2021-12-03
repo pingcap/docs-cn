@@ -282,7 +282,7 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
         config set enable-cross-table-merge true
         ```
 
-        如果修改未生效，请参阅[ FAQ - 修改 TiKV/PD 的 toml 配置文件后没有生效](/faq/deploy-and-maintain-faq.md#为什么修改了-tikvpd-的-toml-配置文件却没有生效)。
+        如果修改未生效，请参阅 [FAQ - 修改 TiKV/PD 的 toml 配置文件后没有生效](/faq/deploy-and-maintain-faq.md#为什么修改了-tikvpd-的-toml-配置文件却没有生效)。
 
         > **注意：**
         >
