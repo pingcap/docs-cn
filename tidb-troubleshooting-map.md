@@ -321,7 +321,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 5.2.4 其他问题
 
-    - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，v3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情请参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
+    - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，v3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
 
     - 其他原因，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
