@@ -275,7 +275,7 @@ Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-sc
         config set key-type txn
         ```
 
-        * 如果集群中存在 TiDB 实例，应该将 `key-type` 的值设置为 `table`。此时将 `enable-cross-table-merge` 设置为 `true`，可以使 PD 跨表合并 Region。该参数支持动态修改。
+        * 如果集群中存在 TiDB 实例，将 `key-type` 的值设置为 `table`。此时将 `enable-cross-table-merge` 设置为 `true`，可以使 PD 跨表合并 Region。该参数支持动态修改。
 
         {{< copyable "shell-regular" >}}
 
