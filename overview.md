@@ -50,7 +50,7 @@ title: TiDB 简介
 
     当前绝大部分企业的业务数据都分散在不同的系统中，没有一个统一的汇总，随着业务的发展，企业的决策层需要了解整个公司的业务状况以便及时做出决策，故需要将分散在各个系统的数据汇聚在同一个系统并进行二次加工处理生成 T+0 或 T+1 的报表。传统常见的解决方案是采用 ETL + Hadoop 来完成，但 Hadoop 体系太复杂，运维、存储成本太高无法满足用户的需求。与 Hadoop 相比，TiDB 就简单得多，业务通过 ETL 工具或者 TiDB 的同步工具将数据同步到 TiDB，在 TiDB 中可通过 SQL 直接生成报表。
 
-关于 TiDB 典型应用场景和典型案例的介绍，请观看以下视频。
+关于 TiDB 典型应用场景和用户案例的介绍，请观看以下视频。
 
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/301_Lesson_06.mp4" width="600px" height="450px" controls="controls"></video>
 
