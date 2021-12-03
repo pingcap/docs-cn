@@ -98,7 +98,7 @@ TiDB 版本：5.3.0
         - 支持重名，用户无需为业务设计复杂的表命名规则。
         - 提供会话级别的数据隔离，降低业务设计复杂度，会话结束后删除临时表。
 
-    [用户文档](/temporary-tables.md)，[#24169](https://github.com/pingcap/tidb/issues/24169)
+        [用户文档](/temporary-tables.md)，[#24169](https://github.com/pingcap/tidb/issues/24169)
 
 - **支持 `FOR UPDATE OF TABLES` 语法**
 
@@ -142,7 +142,7 @@ TiDB 版本：5.3.0
         >
         > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
-    [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
+        [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
 
 ### 稳定性
 
@@ -218,7 +218,7 @@ TiDB 版本：5.3.0
 
     在主从灾备架构下，当生产集群（即 TiCDC 同步的上游集群）发生灾难、且短时间内无法恢复对外提供服务时，TiCDC 具备保证从集群数据一致性的能力，并允许业务快速的将流量切换至从集群，避免数据库长时间不可用而对业务造成影响。
 
-    该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 30 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 5 分钟。即 RPO <= 30min，RTO <= 5min。
+    该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 5 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 30 分钟。即 RTO <= 5min，RPO <= 30min。
 
     [用户文档](/ticdc/manage-ticdc.md)
 
