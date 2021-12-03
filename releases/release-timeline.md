@@ -9,6 +9,7 @@ summary: 了解 TiDB 的版本发布时间线。
 
 | 版本 | 发布日期 |
 | :--- | :--- |
+| [5.0.5](/releases/release-5.0.5.md) | 2021-12-03 |
 | [5.2.3](/releases/release-5.2.3.md) | 2021-12-03 |
 | [5.3.0](https://docs.pingcap.com/zh/tidb/v5.3/release-5.3.0) | 2021-11-30 |
 | [5.2.2](/releases/release-5.2.2.md) | 2021-10-29 |
