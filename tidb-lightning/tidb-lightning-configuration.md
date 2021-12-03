@@ -368,13 +368,8 @@ min-available-ratio = 0.05
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
 | --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-<<<<<<< HEAD
-| --analyze *level* | 导入后分析表信息，可选值为 required、optional、off (默认为 required) | `post-restore.analyze` |
-| --checksum *level* | 导入后比较校验和，可选值为 required、optional、off (默认为 optional) | `post-restore.checksum` |
-=======
-| --analyze *bool* | 导入后分析表信息 (默认值为 optional) | `post-restore.analyze` |
-| --checksum *bool* | 导入后比较校验和 (默认值为 required) | `post-restore.checksum` |
->>>>>>> 2f0c7e7e36bce3d8d19bce7da4a980e50b78683f
+| --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
+| --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
 | --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
