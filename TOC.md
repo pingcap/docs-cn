@@ -577,14 +577,17 @@
   - v5.3
     - [5.3.0](/releases/release-5.3.0.md)
   - v5.2
+    - [5.2.3](/releases/release-5.2.3.md)
     - [5.2.2](/releases/release-5.2.2.md)
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)
     - [5.1.1](/releases/release-5.1.1.md)
     - [5.1.0](/releases/release-5.1.0.md)
   - v5.0
+    - [5.0.5](/releases/release-5.0.5.md)
     - [5.0.4](/releases/release-5.0.4.md)
     - [5.0.3](/releases/release-5.0.3.md)
     - [5.0.2](/releases/release-5.0.2.md)
