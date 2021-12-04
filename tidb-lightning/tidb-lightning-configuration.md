@@ -225,11 +225,6 @@ max-allowed-packet = 67_108_864
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Compact -> Analyze。
 [post-restore]
-<<<<<<< HEAD
-# 如果设置为 true，会对所有表逐个执行 `ADMIN CHECKSUM TABLE <table>` 操作
-# 来验证数据的完整性。
-checksum = true
-=======
 # 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 # 可选的配置项：
 # - "required"（默认）。在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。
@@ -241,20 +236,12 @@ checksum = "required"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 # 此配置的可选配置项与 `post-restore` 相同，但默认值为 "optional"。
 analyze = "optional"
-
->>>>>>> 29ff63bf5 (lightning: update config description of checksum and analyze (#7408))
 # 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
 # 默认值为 false。
 level-1-compact = false
 # 如果设置为 true，会在导入过程结束时对整个 TiKV 集群执行一次 full Compact。
 # 默认值为 false。
 compact = false
-<<<<<<< HEAD
-# 如果设置为 true，会对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
-analyze = true
-=======
-
->>>>>>> 29ff63bf5 (lightning: update config description of checksum and analyze (#7408))
 
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
@@ -369,13 +356,8 @@ min-available-ratio = 0.05
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
 | --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-<<<<<<< HEAD
-| --analyze *bool* | 导入后分析表信息 (默认值为 true) | `post-restore.analyze` |
-| --checksum *bool* | 导入后比较校验和 (默认值为 true) | `post-restore.checksum` |
-=======
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
->>>>>>> 29ff63bf5 (lightning: update config description of checksum and analyze (#7408))
 | --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
