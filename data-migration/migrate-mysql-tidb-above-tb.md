@@ -57,7 +57,8 @@ Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 --filety
 tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
 ```
 
-以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)
+以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)。
+
 |参数               |说明|
 |-                  |-|
 |-u 或 --user       |MySQL 数据库的用户|
@@ -73,7 +74,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 
 请确保`${data-path}`拥有足够的空间。强烈建议使用`-F`参数以避免单表过大导致备份过程中断。
 
-查看在`${data-path}`目录下的`metadata`文件，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息，这将在第 3 步增量同步的时候使用
+查看在`${data-path}`目录下的`metadata`文件，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息，这将在第 3 步增量同步的时候使用。
 
 ```
 SHOW MASTER STATUS:
@@ -164,6 +165,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
+
 |参数           |描述|
 |-              |-|
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
