@@ -5,7 +5,15 @@ aliases: ['/docs-cn/stable/sql-prepare-plan-cache/','/docs-cn/v4.0/sql-prepare-p
 
 # 执行计划缓存
 
+<<<<<<< HEAD
 TiDB 支持对 `Prepare` / `Execute` 请求的执行计划缓存。
+=======
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
+TiDB 支持对 `Prepare` / `Execute` 请求的执行计划缓存。其中包括以下两种形式的预处理语句：
+>>>>>>> bf43eed3c (SQL prepare execution plan cache: add the experimental feature warning (#7804))
 
 `Prepare` / `Execute` 请求有两种形式：
 
