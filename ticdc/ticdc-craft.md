@@ -54,7 +54,7 @@ TiCDC Craft 以 Event 为基本单位向下游复制数据变更事件，Event �
 
 ## Message 格式定义
 
-Primitive types:
+基本类型：
 
 | type | encoding |
 | :--- | :------- |
@@ -65,7 +65,7 @@ Primitive types:
 | string/bytes | uvarint 编码的长度，后面是特定字节数的数据。 |
 | nullable string/bytes | varint 编码的长度，后面是具体的数据字节数。长度为-1时，表示空字符串或字节数组。 |
 
-Chunk of primitive types:
+基本类型的 chunk:
 
 | chunk type | encoding |
 | :--------- | :------- |
@@ -340,25 +340,25 @@ COMMIT;
 | FLOAT                 | 4     | float64 | |
 | DOUBLE                | 5     | float64 | |
 | NULL                  | 6     | null bytes | |
-| TIMESTAMP             | 7     | string | Example: 1973-12-30 15:30:00 |
+| TIMESTAMP             | 7     | string | 例： 1973-12-30 15:30:00 |
 | BIGINT                | 8     | uvarint for unsigned / varint for signed | |
 | MEDIUMINT             | 9     | uvarint for unsigned / varint for signed | |
-| DATE                  | 10/14 | string | Example: 2000-01-01 |
-| TIME                  | 11    | string | Example: 23:59:59 |
-| DATETIME              | 12    | string | 2015-12-20 23:58:58 |
+| DATE                  | 10/14 | string | 例：2000-01-01 |
+| TIME                  | 11    | string | 例：23:59:59 |
+| DATETIME              | 12    | string | 例：2015-12-20 23:58:58 |
 | YEAR                  | 13    | uvarint for unsigned / varint for signed | |
-| VARCHAR/VARBINARY     | 15/253| string | The value is encoded in UTF-8. |
+| VARCHAR/VARBINARY     | 15/253| string | 值为 UTF-8 编码格式 |
 | BIT                   | 16    | uvarint | |
-| JSON                  | 245   | string | Example: {"key1": "value1"} |
-| DECIMAL               | 246   | string | Example: 129012.1230000 |
+| JSON                  | 245   | string | 例：{"key1": "value1"} |
+| DECIMAL               | 246   | string | 例：129012.1230000 |
 | ENUM                  | 247   | uvarint | |
 | SET                   | 248   | uvarint | |
 | TINYTEXT/TINYBLOB     | 249   | bytes | |
 | MEDIUMTEXT/MEDIUMBLOB | 250   | bytes | |
 | LONGTEXT/LONGBLOB     | 251   | bytes | |
 | TEXT/BLOB             | 252   | bytes | |
-| CHAR/BINARY           | 254   | string | The value is encoded in UTF-8. |
-| GEOMETRY              | 255   | null bytes | Unsupported |
+| CHAR/BINARY           | 254   | string | 值为 UTF-8 编码格式 |
+| GEOMETRY              | 255   | null bytes | 不支持 |
 
 ## DDL Type Code
 
@@ -409,26 +409,24 @@ The bit flags 表示列的特殊属性。
 
 | Bit | Value | Name | Description |
 | :-- | :---- | :--- | :---------- |
-| 1   | 0x01 | BinaryFlag          | Whether the column is a binary-encoded column. |
-| 2   | 0x02 | HandleKeyFlag       | Whether the column is a Handle index column. |
-| 3   | 0x04 | GeneratedColumnFlag | Whether the column is a generated column. |
-| 4   | 0x08 | PrimaryKeyFlag      | Whether the column is a primary key column. |
-| 5   | 0x10 | UniqueKeyFlag       | Whether the column is a unique index column. |
-| 6   | 0x20 | MultipleKeyFlag     | Whether the column is a composite index column. |
-| 7   | 0x40 | NullableFlag        | Whether the column is a nullable column. |
-| 8   | 0x80 | UnsignedFlag        | Whether the column is an unsigned column. |
+| 1   | 0x01 | BinaryFlag          | 代表列是否为 binary-encoded column. |
+| 2   | 0x02 | HandleKeyFlag       | 代表列是否为 Handle index column. |
+| 3   | 0x04 | GeneratedColumnFlag | 代表列是否为 generated column. |
+| 4   | 0x08 | PrimaryKeyFlag      | 代表列是否为 primary key column. |
+| 5   | 0x10 | UniqueKeyFlag       | 代表列是否为 unique index column. |
+| 6   | 0x20 | MultipleKeyFlag     | 代表列是否为 composite index column. |
+| 7   | 0x40 | NullableFlag        | 代表列是否为 nullable column. |
+| 8   | 0x80 | UnsignedFlag        | 代表列是否为 unsigned column. |
 
 例:
 
-If the value of a column flag is `85`, the column is a nullable column, a unique index column, a generated column, and a binary-encoded column.
-
+如果列的 flag 为 `85`, 则该列为 nullable column, unique index column, generated column, 以及 binary-encoded column.
 ```
 85 == 0b_101_0101
    == NullableFlag | UniqueKeyFlag | GeneratedColumnFlag | BinaryFlag
 ```
 
-If the value of a column is `46`, the column is a composite index column, a primary key column, a generated column, and a Handle key column.
-
+如果列的 flag 为 `46`,  则该列为 composite index column,  primary key column,  generated column, 以及 Handle key column.
 ```
 46 == 0b_010_1110
    == MultipleKeyFlag | PrimaryKeyFlag | GeneratedColumnFlag | HandleKeyFlag
