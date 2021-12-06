@@ -138,7 +138,7 @@ TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、
 
 ### 全局临时表兼容性说明
 
-TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-table.md#全局临时表)。
+TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。
 
 你需要使用 TiCDC v5.3.0 及以上版本同步全局临时表到下游。低于该版本，会导致表定义错误。
 
