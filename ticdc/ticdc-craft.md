@@ -16,9 +16,9 @@ TiCDC Craft 以 Event 为基本单位向下游复制数据变更事件，Event �
 * [DDL Event](#ddl-event): 代表代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中。
 * [Resolved Event](#resolved-event): 代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。
 
-> **Note:**
+> **警告：**
 >
-> + 这一特性仍处于试验阶段。请**不要**在生产环境中使用它。
+> + 当前该功能为实验特性，请勿在生产环境中使用。
 
 ## 协议约束
 
