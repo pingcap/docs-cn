@@ -171,7 +171,7 @@ Meta data size table:
     | New values |
     | Old values |
 
-    `Delete` event. 被删除的行会被输出. 当旧值功能被启用时,  `Delete` event 包含被删除的所有列; 当旧值功能被禁用时, `Delete` event 仅仅包含 [HandleKey](#bit-flags-of-columns) .
+    `Delete` event. 被删除的行会被输出。当旧值功能被启用时,  `Delete` event 包含被删除的所有列; 当旧值功能被禁用时, `Delete` event 仅仅包含 [HandleKey](#bit-flags-of-columns)。
     
     | Column group(s) |
     | :-------------- |
