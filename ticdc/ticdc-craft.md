@@ -434,6 +434,6 @@ The bit flags 表示列的特殊属性。
 
 > **说明：**
 >
-> + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
-> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
+> + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 设置为 `1`；当上游列为 TEXT 类型时，BinaryFlag 设置为 `0`。
+> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index. Handle Index 包含的列的 HandleKeyFlag 设置为 `1`。
 > + [Protobuf definition for benchmark](https://github.com/pingcap/ticdc/blob/master/proto/CraftBenchmark.proto)
