@@ -190,20 +190,20 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 ### 紧急级别报警项
 
-#### `PD_cluster_offline_tikv_nums`
+#### `PD_cluster_down_store_nums`
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_down_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_down_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    PD 长时间（默认配置是 30 分钟）没有收到 TiKV 心跳。
+    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。 
 
 * 处理方法：
 
-    * 检查 TiKV 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
-    * 如果确定 TiKV 无法恢复，可做下线处理。
+    * 检查 TiKV/TiFlash 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
+    * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
 
 ### 严重级别报警项
 
@@ -211,7 +211,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance,job,le)) > 1`
+    `histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[1m])) by (instance, job, le)) > 1`
 
 * 规则描述：
 
@@ -227,7 +227,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="miss_peer_region_count"}) > 100`
+    `(sum(pd_regions_status{type="miss_peer_region_count"}) by (instance)  > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -240,32 +240,32 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 ### 警告级别报警项
 
-#### `PD_cluster_lost_connect_tikv_nums`
+#### `PD_cluster_lost_connect_store_nums`
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_disconnected_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_disconnected_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    PD 在 20 秒之内未收到 TiKV 上报心跳。正常情况下是每 10 秒收到 1 次心跳。
+    PD 在 20 秒之内未收到 TiKV/TiFlash 上报心跳。正常情况下是每 10 秒收到 1 次心跳。
 
 * 处理方法：
 
-    * 排查是否在重启 TiKV。
-    * 检查 TiKV 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
-    * 如果确定 TiKV 无法恢复，可做下线处理。
-    * 如果确定 TiKV 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV 被判定为无法恢复并开始搬移数据。
+    * 排查是否在重启 TiKV/TiFlash。
+    * 检查 TiKV/TiFlash 进程是否正常、网络是否隔离以及负载是否过高，并尽可能地恢复服务。
+    * 如果确定 TiKV/TiFlash 无法恢复，可做下线处理。
+    * 如果确定 TiKV/TiFlash 可以恢复，但在短时间内还无法恢复，可以考虑延长 `max-down-time` 配置，防止超时后 TiKV/TiFlash 被判定为无法恢复并开始搬移数据。
 
 #### `PD_cluster_low_space`
 
 * 报警规则：
 
-    `sum(pd_cluster_status{type="store_low_space_count"}) > 0`
+    `(sum(pd_cluster_status{type="store_low_space_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
-    表示 TiKV 节点空间不足。
+    表示 TiKV/TiFlash 节点空间不足。
 
 * 处理方法：
 
@@ -279,7 +279,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To,instance,job,le)) > 1`
+    `histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[1m])) by (To, instance, job, le)) > 1`
 
 * 规则描述：
 
@@ -294,7 +294,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `histogram_quantile(0.99, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket{type="tso"}[1m])) by (instance,job,le)) > 0.1`
+    `histogram_quantile(0.99, sum(rate(pd_client_request_handle_requests_duration_seconds_bucket{type="tso"}[1m])) by (instance, job, le)) > 0.1`
 
 * 规则描述：
 
@@ -311,7 +311,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="down_peer_region_count"}) > 0`
+    `(sum(pd_regions_status{type="down-peer-region-count"}) by (instance)  > 0) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
@@ -327,7 +327,7 @@ summary: TiDB 集群中各组件的报警规则详解。
 
 * 报警规则：
 
-    `sum(pd_regions_status{type="pending_peer_region_count"}) > 100`
+    `(sum(pd_regions_status{type="pending-peer-region-count"}) by (instance) > 100) and (sum(etcd_server_is_leader) by (instance) > 0)`
 
 * 规则描述：
 
