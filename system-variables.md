@@ -26,6 +26,18 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 > - 在 TiDB 中，`GLOBAL` 变量的设置即使重启后也仍然有效。每隔 2 秒，其他 TiDB server 会获取到对变量设置的更改。详情见 [TiDB #14531](https://github.com/pingcap/tidb/issues/14531)。
 > - 此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 5.7 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
 
+> **注意：**
+>
+> 变量取较大值并不总会带来更好的性能。由于大部分变量对单个连接生效，设置变量时，还应考虑正在执行语句的并发连接数量。
+>
+> 确定安全值时，应考虑变量的单位：
+>
+> * 如果单位为线程，安全值通常取决于 CPU 核的数量。
+> * 如果单位为字节，安全值通常小于系统内存的总量。
+> * 如果单位为时间，单位可能为秒或毫秒。
+>
+> 单位相同的多个变量可能会争夺同一组资源。
+
 ## 变量参考
 
 ### `allow_auto_random_explicit_insert` <span class="version-mark">从 v4.0.3 版本开始引入</span>
