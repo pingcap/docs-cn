@@ -12,154 +12,154 @@ TiDB version: 4.0.16
 
 + TiDB
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiKV
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 ## Feature enhancement(s)
 
 + TiKV
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + PD
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 ## Improvements
 
 + TiDB
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiKV
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + PD
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiDB Dashboard
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiFlash
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + Tools
 
-  + Backup & Restore (BR)
+    + Backup & Restore (BR)
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
-  + TiCDC
+    + TiCDC
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
-  + Dumpling
+    + Dumpling
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
-  + TiDB Lightning
+    + TiDB Lightning
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
-  + TiDB Binlog
+    + TiDB Binlog
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
 ## Bug Fixes
 
 + TiDB
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiKV
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + PD
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiDB Dashboard
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + TiFlash
 
-  + note 1
+    + note 1
 
-  + note 2
+    + note 2
 
 + Tools
 
-  + Backup & Restore (BR)
+    + Backup & Restore (BR)
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
-  + TiCDC
+    + TiCDC
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
 
-  + Dumpling
+    + Dumpling
 
-    + note 1
-
-    + note 2
-
-  + TiDB Lightning
-
-    + note 1
+        + note 1
 
     + note 2
 
-  + TiDB Binlog
+    + TiDB Lightning
 
-    + note 1
+        + note 1
 
-    + note 2
+        + note 2
+
+    + TiDB Binlog
+
+        + note 1
+
+        + note 2
