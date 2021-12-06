@@ -252,7 +252,7 @@ Meta data size table:
     19 01 00 05                                       |....|
 ```
 
-## Examples of the Event stream output
+## 事件流输出日志示例
 
 本节展示事件流的输出日志。由于 craft 协议是二进制的，因此不具备可读性，我们将使用开放协议来演示发生的事情，相应的 craft 事件流被转化为具备可读性的 json.
 
