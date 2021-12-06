@@ -1025,7 +1025,9 @@ bloom filter 为每个 key 预留的长度。
 ### `compression-per-level`
 
 + 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
-+ 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `defaultcf` 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `writecf` 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `lockcf` 默认值：["no", "no", "no", "no", "no", "no", "no"]
 
 ### `bottommost-level-compression`
 
