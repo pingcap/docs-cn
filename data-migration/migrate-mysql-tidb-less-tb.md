@@ -128,7 +128,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)
 
-## 第 5 步. 监控任务与查看日志(可选)
+## 第 5 步. 监控任务与查看日志（可选）
 
 要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
 

@@ -7,7 +7,7 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 
 通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度(30~50 GiB/h)可能令整个迁移周期过长。
 
-因此，本文档介绍使用 Dumpling 和 Lightning 进行全量数据迁移，其 local backend 模式导入速度可达 500 GiB/h。再使用 DM 完成增量数据迁移。
+因此，本文档介绍使用 Dumpling 和 Lightning 进行全量数据迁移，其后端 (local backend) 模式导入速度可达每小时 500 GiB。再使用 DM 完成增量数据迁移。
 
 ## 前提条件
 
