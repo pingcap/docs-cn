@@ -88,7 +88,7 @@ Message:
 Header:
 
 | delta uvarint chunk | uvarint chunk | delta varint chunk | delta varint chunk | delta varint chunk |
-| :------ | :------ | :------ | :------ | :------ | :------ |
+| :------ | :------ | :------ | :------ | :------ |
 | commit ts | event type | partition id (-1 for no partition) | schema | table |
 
 Body for [Row Changed Event](#row-changed-event):
