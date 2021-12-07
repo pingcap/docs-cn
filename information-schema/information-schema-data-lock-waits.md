@@ -39,6 +39,7 @@ The meaning of each column field in the `DATA_LOCK_WAITS` table is as follows:
 > **Warning:**
 >
 > * Only the users with the [PROCESS](https://dev.mysql.com/doc/refman/8.0/en/privileges-provided.html#priv_process) privilege can query this table.
+> * Currently, the table can only record the **pessimistic lock waiting** information. If an optimistic transaction (such as an autocommit transaction) is blocked by a pessimistic lock, this table will not display the corresponding lock waiting information.
 > * The information in the `DATA_LOCK_WAITS` table is obtained in real time from all TiKV nodes during the query. Currently, even if a query has the `WHERE` condition, the information collection is still performed on all TiKV nodes. If your cluster is large and the load is high, querying this table might cause potential risk of performance jitter. Therefore, use it according to your actual situation.
 > * Information from different TiKV nodes is NOT guaranteed to be snapshots of the same time.
 > * The information (SQL digest) in the `SQL_DIGEST` column is the hash value calculated from the normalized SQL statement. The information in the `SQL_DIGEST_TEXT` column is internally queried from statements summary tables, so it is possible that the corresponding statement cannot be found internally. For the detailed description of SQL digests and the statements summary tables, see [Statement Summary Tables](/statement-summary-tables.md).
