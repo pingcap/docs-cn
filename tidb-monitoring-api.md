@@ -4,10 +4,9 @@ title: TiDB 集群监控 API
 
 # TiDB 集群监控 API
 
-TiDB 提供了以下两种接口来监控集群状态：
+TiDB 提供了以下几种接口来监控集群状态：
 
-- [状态接口](#运行状态)：通过 HTTP 接口对外汇报组件的信息。
-- [存储信息](#存储信息)：通过 HTTP 接口对外汇报表的存储信息。
+- [状态接口](#使用状态接口)：通过 HTTP 接口对外汇报组件的信息。通过状态接口，你可获取当前 TiDB Server 的[运行状态](#运行状态)以及表的[存储信息](#存储信息)。
 - [Metrics 接口](#使用-metrics-接口)：使用 Prometheus 记录组件中各种操作的详细信息，使用 Grafana 进行可视化展示。
 
 ## 使用状态接口
@@ -49,13 +48,13 @@ curl http://127.0.0.1:10080/schema_storage/mysql/stats_histograms
 
 ```
 {
-    "table_schema": "mysql", 
-    "table_name": "stats_histograms", 
-    "table_rows": 0, 
-    "avg_row_length": 0, 
-    "data_length": 0, 
-    "max_data_length": 0, 
-    "index_length": 0, 
+    "table_schema": "mysql",
+    "table_name": "stats_histograms",
+    "table_rows": 0,
+    "avg_row_length": 0,
+    "data_length": 0,
+    "max_data_length": 0,
+    "index_length": 0,
     "data_free": 0
 }
 ```
@@ -67,13 +66,13 @@ curl http://127.0.0.1:10080/schema_storage/test
 ```
 [
     {
-        "table_schema": "test", 
-        "table_name": "test", 
-        "table_rows": 0, 
-        "avg_row_length": 0, 
-        "data_length": 0, 
-        "max_data_length": 0, 
-        "index_length": 0, 
+        "table_schema": "test",
+        "table_name": "test",
+        "table_rows": 0,
+        "avg_row_length": 0,
+        "data_length": 0,
+        "max_data_length": 0,
+        "index_length": 0,
         "data_free": 0
     }
 ]
