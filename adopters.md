@@ -17,7 +17,7 @@ This is a list of TiDB adopters in various industries.
 |[LianLian Tech](https://www.crunchbase.com/organization/lianlian-pay)|Mobile Payment||
 |[U-Next](https://www.crunchbase.com/organization/u-next)|Media and Entertainment|[English](https://pingcap.com/case-studies/running-a-scale-out-database-on-arm-as-mysql-alternative/)|
 |[Dailymotion](https://en.wikipedia.org/wiki/Dailymotion)|Media and Entertainment||
-|[iQiyi](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-iqiyi/)|
+|[iQIYI](https://en.wikipedia.org/wiki/IQiyi)|Media and Entertainment|English [#1](https://pingcap.com/case-studies/tidb-in-iqiyi/), [#2](https://pingcap.com/case-studies/how-tidb-powers-real-time-analytics-for-a-streaming-media-giant); [Chinese](https://pingcap.com/zh/case/user-case-iq)|
 |[BookMyShow](https://www.crunchbase.com/organization/bookmyshow)|Media and Entertainment|[English](https://pingcap.com/case-studies/tidb-in-bookmyshow/)|
 |[Yiguo.com](https://www.crunchbase.com/organization/shanghai-yiguo-electron-business)|E-commerce|[English](https://www.datanami.com/2018/02/22/hybrid-database-capturing-perishable-insights-yiguo/)|
 |[Shopee](https://en.wikipedia.org/wiki/Shopee)|E-commerce|English [#1](https://pingcap.com/case-studies/tidb-in-shopee/), [#2](https://pingcap.com/case-studies/choosing-right-database-for-your-applications)|
@@ -61,7 +61,7 @@ This is a list of TiDB adopters in various industries.
 |[Kunlun](https://www.crunchbase.com/organization/kunlun)|Gaming|[English](https://pingcap.com/case-studies/empowering-your-gaming-application-with-a-scale-out-newsql-database)|
 |[YOOZOO Games](https://www.crunchbase.com/organization/yoozoo-games)|Gaming||
 |[Seasun Games](https://www.crunchbase.com/organization/seasun)|Gaming||
-|[FUNYOURS JAPAN](http://company.funyours.co.jp/)|Gaming||
+|[FUNYOURS JAPAN](https://www.funyours.co.jp/#/company)|Gaming||
 |[Hoodinn](https://www.crunchbase.com/organization/hoodinn)|Gaming||
 |[SEA group](https://sea-group.org/?lang=en)|Gaming||
 |[Zhaopin.com](https://www.crunchbase.com/organization/zhaopin)|Recruiting||
