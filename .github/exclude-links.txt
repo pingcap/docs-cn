@@ -17,4 +17,4 @@ http://9.9.9.9:2379/
 http:/DASHBOARD_IP:PORT/dashboard
 http:/$%7Btidb-server-ip%7D:$%7Btidb-server-status-port%7D/
 https://kms.us-west-2.amazonaws.com
-http://$ip:10080/schema/test/t
+http://\$ip:10080/schema/test/t
