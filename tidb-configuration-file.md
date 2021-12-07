@@ -257,7 +257,7 @@ Configuration items related to log files.
 - The size limit of the log file.
 - Default value: 300
 - Unit: MB
-- The maximum size is 4GB.
+- The maximum value is 4096.
 
 #### `max-days`
 
