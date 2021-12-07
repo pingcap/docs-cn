@@ -4,7 +4,7 @@ on:
   repository_dispatch:
   workflow_dispatch:
   schedule:
-    - cron: "0 13 * * 2"
+    - cron: "0 0 * * 1"
 
 jobs:
   linkChecker:
@@ -25,7 +25,7 @@ jobs:
         with:
           title: Broken Link Detected
           content-filepath: ./lychee/out.md
-          assignees: ran-huang
+          assignees: TomShawn
 
 #      - name: Fail if there were link errors
 #        run: exit ${{ steps.lychee.outputs.exit_code }}
