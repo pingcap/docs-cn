@@ -1,0 +1,31 @@
+name: Links
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1"
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.1.1
+        with:
+          # For parameter description, see https://github.com/lycheeverse/lychee#commandline-parameters
+          args: -E --exclude-mail -v -i -n -a 429 -t 45 --exclude-file ./.github/exclude-links.txt -- **/*.md
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Create Issue From File
+        uses: peter-evans/create-issue-from-file@v3
+        with:
+          title: Broken Link Detected
+          content-filepath: ./lychee/out.md
+          assignees: TomShawn
+
+#      - name: Fail if there were link errors
+#        run: exit ${{ steps.lychee.outputs.exit_code }}

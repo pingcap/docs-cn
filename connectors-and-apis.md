@@ -44,7 +44,7 @@ The third-party APIs are not developed by Oracle. The following table lists the 
 
 | Environment    | API                                      | Type                             | Notes                                    |
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
-| Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See [MySQL Bindings for GNU Ada](http://gnade.sourceforge.net/) |
+| Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See MySQL Bindings for GNU Ada. |
 | C              | C API                                    | `libmysqlclient`                 | See [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html) |
 | C++            | Connector/C++                            | `libmysqlclient`                 | See [MySQL Connector/C++ Developer Guide](https://dev.mysql.com/doc/connector-cpp/en/) |
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/) |
