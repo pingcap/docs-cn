@@ -40,7 +40,7 @@ TiUP is a new package manager tool introduced in v4.0 that is used to manage all
 
 ## Transaction
 
-- The pessimistic transaction is now provided for general availability as the default transaction mode. Support the Read Committed isolation level and the `SELECT FOR UPDATE NOWAIT` syntax. See [Pessimistic Transaction Model](/pessimistic-transaction.md) for details.
+- The pessimistic transaction is now provided for general availability as the default transaction mode. Support the Read Committed isolation level and the `SELECT FOR UPDATE NOWAIT` syntax. See [Pessimistic Transaction Mode](/pessimistic-transaction.md) for details.
 - Support large transactions. Increase the upper limit on transaction size from 10 MB to 10 GB. Support both the pessimistic transaction and optimistic transaction. See [Transaction size limit](/transaction-overview.md#transaction-size-limit) for details.
 
 ## SQL features

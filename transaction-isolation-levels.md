@@ -23,7 +23,7 @@ TiDB implements Snapshot Isolation (SI) consistency, which it advertises as `REP
 >
 > In TiDB v3.0, the automatic retry of transactions is disabled by default. It is not recommended to enable the automatic retry because it might **break the transaction isolation level**. Refer to [Transaction Retry](/optimistic-transaction.md#automatic-retry) for details.
 >
-> Starting from TiDB [v3.0.8](/releases/release-3.0.8.md#tidb), newly created TiDB clusters use the [pessimistic transaction model](/pessimistic-transaction.md) by default. The current read (`for update` read) is **non-repeatable read**. Refer to [pessimistic transaction mode](/pessimistic-transaction.md) for details.
+> Starting from TiDB [v3.0.8](/releases/release-3.0.8.md#tidb), newly created TiDB clusters use the [pessimistic transaction mode](/pessimistic-transaction.md) by default. The current read (`for update` read) is **non-repeatable read**. Refer to [pessimistic transaction mode](/pessimistic-transaction.md) for details.
 
 ## Repeatable Read isolation level
 

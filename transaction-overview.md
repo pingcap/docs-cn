@@ -6,7 +6,7 @@ aliases: ['/docs/dev/transaction-overview/','/docs/dev/reference/transactions/ov
 
 # Transactions
 
-TiDB supports distributed transactions using either [pessimistic](/pessimistic-transaction.md) or [optimistic](/optimistic-transaction.md) transaction models. Starting from TiDB 3.0.8, TiDB uses the pessimistic transaction model by default.
+TiDB supports distributed transactions using either [pessimistic](/pessimistic-transaction.md) or [optimistic](/optimistic-transaction.md) transaction mode. Starting from TiDB 3.0.8, TiDB uses the pessimistic transaction mode by default.
 
 This document introduces commonly used transaction-related statements, explicit and implicit transactions, isolation levels, lazy check for constraints, and transaction sizes.
 

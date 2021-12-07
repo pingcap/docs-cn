@@ -79,7 +79,7 @@ On June 28, 2019, TiDB 3.0 GA is released. The corresponding TiDB Ansible versio
     - Add a feature to use `SHARD_ROW_ID_BITS` to scatter row IDs when the column contains an AUTO_INCREMENT attribute to relieve hotspot issues
     - Optimize the lifetime of invalid DDL metadata to speed up recovering the normal execution of DDL operations after upgrading the TiDB cluster
 + Transactions
-    - Support the pessimistic transaction model (**Experimental**)
+    - Support the pessimistic transaction mode (**Experimental**)
     - Optimize transaction processing logics to adapt to more scenarios:
         - Change the default value `tidb_disable_txn_auto_retry` to `on`, which means non-auto committed transactions will not be retried
         - Add the `tidb_batch_commit` system variable to split a transaction into multiple ones to be executed concurrently
@@ -153,7 +153,7 @@ On June 28, 2019, TiDB 3.0 GA is released. The corresponding TiDB Ansible versio
 + Support batch receiving and sending Raft messages, improving TPS by 7% for write intensive scenarios
 + Support checking RocksDB Level 0 files before applying snapshots to avoid write stall
 + Introduce Titan, a key-value plugin that improves write performance for scenarios with value sizes greater than 1KiB, and relieves write amplification in certain degrees
-+ Support the pessimistic transaction model (**Experimental**)
++ Support the pessimistic transaction mode (**Experimental**)
 + Support getting monitoring information via HTTP
 + Modify the semantics of `Insert` to allow Prewrite to succeed only when there is no Key
 + Develop a unified log format specification with restructured log system to facilitate collection and analysis by tools

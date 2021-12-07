@@ -12,7 +12,7 @@ Before enabling optimistic transactions, make sure that your application correct
 
 > **Note:**
 >
-> Starting from v3.0.8, TiDB uses the [pessimistic transaction model](/pessimistic-transaction.md) by default. However, this does not affect your existing cluster if you upgrade it from v3.0.7 or earlier to v3.0.8 or later. In other words, **only newly created clusters default to using the pessimistic transaction model**.
+> Starting from v3.0.8, TiDB uses the [pessimistic transaction mode](/pessimistic-transaction.md) by default. However, this does not affect your existing cluster if you upgrade it from v3.0.7 or earlier to v3.0.8 or later. In other words, **only newly created clusters default to using the pessimistic transaction mode**.
 
 ## Principles of optimistic transactions
 

@@ -44,4 +44,4 @@ TiDB supports the syntax extension of `BEGIN PESSIMISTIC` or `BEGIN OPTIMISTIC`.
 * [ROLLBACK](/sql-statements/sql-statement-rollback.md)
 * [START TRANSACTION](/sql-statements/sql-statement-start-transaction.md)
 * [TiDB optimistic transaction model](/optimistic-transaction.md)
-* [TiDB pessimistic transaction model](/pessimistic-transaction.md)
+* [TiDB pessimistic transaction mode](/pessimistic-transaction.md)

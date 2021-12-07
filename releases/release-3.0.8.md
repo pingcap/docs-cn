@@ -65,7 +65,7 @@ TiDB Ansible version: 3.0.8
 + Transaction
     - Update the default value of the `tidb_txn_mode` variable from `""` to `"pessimistic"` when a new cluster is created [#14171](https://github.com/pingcap/tidb/pull/14171)
     - Fix the issue that the lock waiting time is too long for a pessimistic transaction because the lock waiting time for a single statement is not reset when a transaction is retried [#13990](https://github.com/pingcap/tidb/pull/13990)
-    - Fix the issue that wrong data might be read because unmodified data is unlocked for the pessimistic transaction model [#14050](https://github.com/pingcap/tidb/pull/14050)
+    - Fix the issue that wrong data might be read because unmodified data is unlocked for the pessimistic transaction mode [#14050](https://github.com/pingcap/tidb/pull/14050)
     - Fix repeated insert value restriction checks because transaction types are not distinguished when prewrite is performed in mocktikv [#14175](https://github.com/pingcap/tidb/pull/14175)
     - Fix the panic because transactions are not correctly handled when `session.TxnState` is `Invalid` [#13988](https://github.com/pingcap/tidb/pull/13988)
     - Fix the issue that the `ErrConfclit` structure in mocktikv does not contain `ConflictCommitTS` [#14080](https://github.com/pingcap/tidb/pull/14080)

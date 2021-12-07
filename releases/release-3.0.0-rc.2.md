@@ -40,7 +40,7 @@ On May 28, 2019, TiDB 3.0.0-rc.2 is released. The corresponding TiDB Ansible ver
     - Add the `tidb_back_off_weight` variable to control the backoff time [#10266](https://github.com/pingcap/tidb/pull/10266)
     - Prohibit TiDB retrying non-automatically committed transactions in default conditions by setting the default value of `tidb_disable_txn_auto_retry` to `on` [#10266](https://github.com/pingcap/tidb/pull/10266)
     - Fix the database privilege judgment of `role` in `RBAC` [#10261](https://github.com/pingcap/tidb/pull/10261)
-    - Support the pessimistic transaction model (experimental) [#10297](https://github.com/pingcap/tidb/pull/10297)
+    - Support the pessimistic transaction mode (experimental) [#10297](https://github.com/pingcap/tidb/pull/10297)
     - Reduce the wait time for handling lock conflicts in some cases [#10006](https://github.com/pingcap/tidb/pull/10006)
     - Make the Region cache able to visit follower nodes when a fault occurs in the leader node [#10256](https://github.com/pingcap/tidb/pull/10256)
     - Add the `tidb_low_resolution_tso` variable to control the number of TSOs obtained in batches and reduce the times of transactions obtaining TSO to adapt for scenarios where data consistency is not so strictly required [#10428](https://github.com/pingcap/tidb/pull/10428)
