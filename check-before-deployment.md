@@ -108,9 +108,9 @@ aliases: ['/docs-cn/dev/check-before-deployment/']
 
 ## 检测及关闭系统 swap
 
-本段介绍 swap 关闭方法。TiDB 运行需要有足够的内存，并且不建议使用 swap 作为内存不足的缓冲，这会降低性能。因此建议永久关闭系统 swap，并且不要使用 `swapoff -a` 方式关闭，否则重启机器后该操作会失效。
+TiDB 运行需要有足够的内存。如果内存不足，不建议使用 swap 作为内存不足的缓冲，因为这会降低性能。建议永久关闭系统 swap。
 
-建议执行以下命令关闭系统 swap：
+要永久关闭 swap，可执行以如下命令:
 
 {{< copyable "shell-regular" >}}
 
@@ -119,6 +119,11 @@ echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
+
+> **注意：**
+>
+> - 一起执行 `swapoff -a` 和 `swapon -a` 命令是为了刷新 swap，将 swap 里的数据转储回内存，并清空 swap 里的数据。不可省略 `swapon -a` 只执行 `swapoff -a`，否则重启后 swap 会再次自动打开，使得操作失效。
+> - 执行 `sysctl -p` 命令是为了在不重启的情况下使配置生效。
 
 ## 检测及关闭目标部署机器的防火墙
 
@@ -182,7 +187,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         {{< copyable "shell-regular" >}}
 
         ```bash
-        sudo systemctl status cronyd.service
+        sudo systemctl status chronyd.service
         ```
 
         ```
@@ -191,7 +196,9 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
         Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
         ```
 
-        如果你使用的系统配置是 `chronyd`，请直接执行以下的步骤 3。
+      若发现系统既没有配置 `chronyd` 也没有配置 `ntpd` ，则表示系统尚未安装任一服务。此时，应先安装其中一个服务，并保证它可以自动启动，默认使用 `ntpd`。
+
+        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。 
 
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
