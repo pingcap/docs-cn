@@ -133,7 +133,9 @@ mysql> SELECT * FROM t1;
 
 ## MySQL compatibility
 
-This statement is understood to be fully compatible with MySQL. Any compatibility differences should be [reported via an issue](https://github.com/pingcap/tidb/issues/new/choose) on GitHub.
+- The syntax `SELECT ... INTO @variable` is not supported.
+- The syntax `SELECT ... GROUP BY ... WITH ROLLUP` is not supported.
+- The syntax `SELECT .. GROUP BY expr` does not imply `GROUP BY expr ORDER BY expr` as it does in MySQL 5.7. TiDB instead matches the behavior of MySQL 8.0 and does not imply a default order.
 
 ## See also
 
