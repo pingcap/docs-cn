@@ -154,6 +154,6 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
    + [索引查询的执行计划](/explain-indexes.md)
 + [Join 查询的执行计划](/explain-joins.md)
 + [聚合查询的执行计划](/explain-aggregation.md)
- + [视图查询的执行计划](/explain-views.md)
++ [视图查询的执行计划](/explain-views.md)
 + [分区查询的执行计划](/explain-partitions.md)
 + [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
