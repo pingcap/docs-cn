@@ -10,6 +10,10 @@ This guide walks you through the quickest way to get started with TiDB. You will
 
 > **Note:**
 >
+> TiDB, TiUP and TiDB Dashboard share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
+
+> **Note:**
+>
 > The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production.
 >
 > - To deploy an on-premises production cluster, see [production installation guide](/production-deployment-using-tiup.md).
@@ -460,7 +464,3 @@ Other requirements for the target machine:
 
     - [Use TiFlash](/tiflash/use-tiflash.md)
     - [TiFlash Overview](/tiflash/tiflash-overview.md)
-
-> **Note:**
->
-> By default, TiDB, TiUP and TiDB Dashboard share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
