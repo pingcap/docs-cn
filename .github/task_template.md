@@ -100,6 +100,15 @@ category: xxx（如 how-to）
 
 ## 第 2 步：xxx
 
+1. xxx
+
+    1. xxx
+    2. xxx
+
+2. xxx
+
+3. xxx
+
 ## 第 3 步：xxx
 
 ## 探索更多
