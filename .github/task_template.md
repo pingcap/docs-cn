@@ -73,7 +73,28 @@ category: xxx（如 how-to）
     + 并列项描述
     + 并列项描述
 
-4. xxx
+4. xxx 如果此步骤涉及到某配置文件的更新，请给出此配置文件的详细位置，比如是在哪个节点的哪个位置，配置文档的名称是什么，并在配置文件中关键字段进行解释，方便用户理解。
+
+    ```toml
+    ### tidb-lightning 全局配置
+
+    [lightning]
+    # 用于拉取 web 界面和 Prometheus 监控项的 HTTP 端口。设置为 0 时为禁用状态。
+    status-addr = ':8289'
+
+    # 切换为服务器模式并使用 web 界面
+    # 详情参见“TiDB Lightning web 界面”文档
+    server-mode = false
+
+    # 日志
+    level = "info"
+    file = "tidb-lightning.log"
+    max-size = 128 # MB
+    max-days = 28
+    max-backups = 14
+    ```
+
+5. xxx
 
     每一步骤后，最好提供查看/验证操作是否成功的方法，以便用户参考。
 
