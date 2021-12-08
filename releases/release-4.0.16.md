@@ -20,13 +20,13 @@ TiDB 版本：4.0.16
     - drainer: fix kafka message limit problem [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
 + Tools
        + TiCDC
-              - 将 Kafka Sink `max-message-bytes` 的默认值改为 1MB。[#3002](https://github.com/pingcap/ticdc/pull/3002)
-              - 将 Kafka Sink `partition-num` 的默认值改为 3。[#3565](https://github.com/pingcap/ticdc/pull/3565)
+              - 将 Kafka Sink `max-message-bytes` 的默认值改为 1MB。[#2962](https://github.com/pingcap/ticdc/issues/2962)
+              - 将 Kafka Sink `partition-num` 的默认值改为 3。[#3337](https://github.com/pingcap/ticdc/issues/3337)
 ## 提升改进
 
 + TiKV
 
-    - sst_importer: 当使用BR-Restore或者Lighting-Local-backend时，采用 zstd 算法压缩SST以减小使用空间 [#10642](https://github.com/tikv/tikv/pull/10642)
+    - sst_importer: 当使用BR-Restore或者Lighting-Local-backend时，采用 zstd 算法压缩SST以减小使用空间 [#11469](https://github.com/tikv/tikv/issues/11469)
 
 
 + Tools
@@ -39,8 +39,8 @@ TiDB 版本：4.0.16
 
         - 为 EtcdWorker 添加 Tick 频率限制。[#3267](https://github.com/pingcap/ticdc/pull/3267)
         - 优化 TiKV 重新加载时的速率限制控制，并解决 gPRC 的拥堵问题，这可能导致初始化阶段的缓慢。[#3110](https://github.com/pingcap/ticdc/issues/3110)
-        - 忽略 changefeed 更新命令的全局标志 [#2875](https://github.com/pingcap/ticdc/pull/2875)
-        - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2851](https://github.com/pingcap/ticdc/pull/2851)
+        - 忽略 changefeed 更新命令的全局标志 [#2803](https://github.com/pingcap/ticdc/issues/2803)
+        - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2470](https://github.com/pingcap/ticdc/issues/2470)
         - 禁止跨主要和次要版本操作 TiCDC 集群。[#2601](https://github.com/pingcap/ticdc/pull/2601)
 
 ## Bug fixes
@@ -70,7 +70,7 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - 修复在极端情况下merge, conf change和snapshot同时发生时出现panic的问题 [#11509](https://github.com/tikv/tikv/pull/11509)
+    - 修复在极端情况下merge, conf change和snapshot同时发生时出现panic的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
     - 修复decimal除法结果为0时 符号为负的问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
     - 修复不正确的by-instance gGrpc 平均时间 [#11299](https://github.com/tikv/tikv/issues/11299)
     - 修复在缺失downstream时CDC panic的问题[#11123](https://github.com/tikv/tikv/issues/11123)
@@ -80,9 +80,9 @@ TiDB 版本：4.0.16
 
 + PD
 
-    - 修复 TiKV 节点缩容后可能导致 Panic 的问题 [#4378](https://github.com/tikv/pd/pull/4378)
+    - 修复 TiKV 节点缩容后可能导致 Panic 的问题 [#4344](https://github.com/tikv/pd/issues/4344)
     - 修复 PD 在旧 leader 下台后无法尽快选举出新 leader 的问题 [#3936](https://github.com/tikv/pd/issues/3936)
-    - `evict-leader-scheduler` 支持调度有不健康 Peer 的 Region [#4133](https://github.com/tikv/pd/pull/4133)
+    - `evict-leader-scheduler` 支持调度有不健康 Peer 的 Region [#4093](https://github.com/tikv/pd/issues/4093)
 
 + TiFlash
 
@@ -90,17 +90,17 @@ TiDB 版本：4.0.16
 
     + TiCDC
 
-        - 修复监控 checkpoint lag 出现负值的问题 [#3532](https://github.com/pingcap/ticdc/pull/3532)
+        - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/ticdc/issues/3010)
         - 修复在容器环境中 OOM 的问题 [#3440](https://github.com/pingcap/ticdc/pull/3440)
-        - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3290](https://github.com/pingcap/ticdc/pull/3290)
+        - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3288](https://github.com/pingcap/ticdc/issues/3288)
         - 修复处理 DDL 后的内存泄漏 [#3274](https://github.com/pingcap/ticdc/pull/3274)
-        - 当发生 ErrGCTTLExceeded 错误时，修复 changefeed 不快速失败的问题 [#3134](https://github.com/pingcap/ticdc/pull/3134)
+        - 当发生 ErrGCTTLExceeded 错误时，修复 changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/ticdc/issues/3111)
         - 修复了当发生 region 合并时，回退的 resolvedTs 事件会阻止 resolve lock [#3061](https://github.com/pingcap/ticdc/issues/3061)
-        - 当遇到 ErrPrewriteNotMatch 时，关闭 gPRC 流并重新创建它，以避免重复请求错误 [#3094](https://github.com/pingcap/ticdc/pull/3094)
-        - 修复 Kafka Sink 由于 `max-message-size` 选项的限制而无法发送消息的问题 [#3046](https://github.com/pingcap/ticdc/pull/3046)
-        - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续启动 [#3023](https://github.com/pingcap/ticdc/pull/3023)
+        - 当遇到 ErrPrewriteNotMatch 时，关闭 gPRC 流并重新创建它，以避免重复请求错误 [#2386](https://github.com/pingcap/ticdc/issues/2386)
+        - 修复 Kafka Sink 由于 `max-message-size` 选项的限制而无法发送消息的问题 [#2962](https://github.com/pingcap/ticdc/issues/2962)
+        - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续启动 [#11017](https://github.com/tikv/tikv/issues/11017)
         - 修复 Kafka 生产者报告错误时可能出现的死锁 [#3015](https://github.com/pingcap/ticdc/pull/3015)
         - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题 [#2863](https://github.com/pingcap/ticdc/pull/2863)
         - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
-        - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3669](https://github.com/pingcap/ticdc/pull/3669)
+        - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3539](https://github.com/pingcap/ticdc/pull/3539)
         - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3561](https://github.com/pingcap/ticdc/pull/3561)
