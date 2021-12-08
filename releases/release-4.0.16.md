@@ -21,8 +21,6 @@ TiDB 版本：4.0.16
 
 ## 提升改进
 
-+ TiDB
-
 + TiKV
 
     - sst_importer: 当使用BR-Restore或者Lighting-Local-backend时，采用 zstd 算法压缩SST以减小使用空间 [#10642](https://github.com/tikv/tikv/pull/10642)
@@ -36,12 +34,12 @@ TiDB 版本：4.0.16
 
     + TiCDC
 
-        - 为 EtcdWorker 添加 Tick 频率限制。 [#3267](https://github.com/pingcap/ticdc/pull/3267)
+        - 为 EtcdWorker 添加 Tick 频率限制。[#3267](https://github.com/pingcap/ticdc/pull/3267)
         - 优化 TiKV 重新加载时的速率限制控制，并解决 gPRC 的拥堵问题，这可能导致初始化阶段的缓慢。[#3131](https://github.com/pingcap/ticdc/pull/3131)
-        - 将 Kafka Sink `MaxMessageBytes` 的默认值改为 1MB。 [#3106](https://github.com/pingcap/ticdc/pull/3106)
-        - 忽略 changefeed 更新命令的全局标志。 [#2875](https://github.com/pingcap/ticdc/pull/2875)
-        - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds。 [#2851](https://github.com/pingcap/ticdc/pull/2851)
-        - 禁止跨主要和次要版本操作 TiCDC 集群。 [#2601](https://github.com/pingcap/ticdc/pull/2601)
+        - 将 Kafka Sink `MaxMessageBytes` 的默认值改为 1MB [#3106](https://github.com/pingcap/ticdc/pull/3106)
+        - 忽略 changefeed 更新命令的全局标志 [#2875](https://github.com/pingcap/ticdc/pull/2875)
+        - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2851](https://github.com/pingcap/ticdc/pull/2851)
+        - 禁止跨主要和次要版本操作 TiCDC 集群。[#2601](https://github.com/pingcap/ticdc/pull/2601)
 
 ## Bug fixes
 
@@ -66,7 +64,7 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - 修复在极端情况下merge, conf change和snapshot同时发生时出现panic的问题[#11509](https://github.com/tikv/tikv/pull/11509)
+    - 修复在极端情况下merge, conf change和snapshot同时发生时出现panic的问题 [#11509](https://github.com/tikv/tikv/pull/11509)
     - 修复decimal除法结果为0时 符号为负的问题 [#11332](https://github.com/tikv/tikv/pull/11332)
     - 修复不正确的by-instance gGrpc 平均时间 [#11326](https://github.com/tikv/tikv/pull/11326)
     - 修复在缺失downstream时CDC panic的问题[#11135](https://github.com/tikv/tikv/pull/11135)
@@ -86,19 +84,19 @@ TiDB 版本：4.0.16
 
     + TiCDC
 
-        - 修复监控 checkpoint lag 出现负值的问题。 [#3532](https://github.com/pingcap/ticdc/pull/3532)
-        - 修复在容器环境中 OOM 的问题。 [#3440](https://github.com/pingcap/ticdc/pull/3440)
-        - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题。 [#3290](https://github.com/pingcap/ticdc/pull/3290)
-        - 修复处理 DDL 后的内存泄漏。 [#3274](https://github.com/pingcap/ticdc/pull/3274)
-        - 当发生 ErrGCTTLExceeded 错误时，修复 changefeed 不快速失败的问题。 [#3134](https://github.com/pingcap/ticdc/pull/3134)
-        - 修复了当发生 region 合并时，回退的 resolvedTs 事件会阻止 resolve lock。 [#3099](https://github.com/pingcap/ticdc/pull/3099)
-        - 当遇到 ErrPrewriteNotMatch 时，关闭 gPRC 流并重新创建它，以避免重复请求错误。 [#3094](https://github.com/pingcap/ticdc/pull/3094)
-        - 修复 Kafka Sink 由于 `max-message-size` 选项的限制而无法发送消息的问题。 [#3046](https://github.com/pingcap/ticdc/pull/3046)
-        - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续启动。 [#3023](https://github.com/pingcap/ticdc/pull/3023)
-        - 修复 Kafka 生产者报告错误时可能出现的死锁。[#3015](https://github.com/pingcap/ticdc/pull/3015)
-        - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题。 [#2863](https://github.com/pingcap/ticdc/pull/2863)
-        - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题。 [#2623](https://github.com/pingcap/ticdc/pull/2623)
-        - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住。 [#3669](https://github.com/pingcap/ticdc/pull/3669)
+        - 修复监控 checkpoint lag 出现负值的问题 [#3532](https://github.com/pingcap/ticdc/pull/3532)
+        - 修复在容器环境中 OOM 的问题 [#3440](https://github.com/pingcap/ticdc/pull/3440)
+        - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3290](https://github.com/pingcap/ticdc/pull/3290)
+        - 修复处理 DDL 后的内存泄漏 [#3274](https://github.com/pingcap/ticdc/pull/3274)
+        - 当发生 ErrGCTTLExceeded 错误时，修复 changefeed 不快速失败的问题 [#3134](https://github.com/pingcap/ticdc/pull/3134)
+        - 修复了当发生 region 合并时，回退的 resolvedTs 事件会阻止 resolve lock [#3099](https://github.com/pingcap/ticdc/pull/3099)
+        - 当遇到 ErrPrewriteNotMatch 时，关闭 gPRC 流并重新创建它，以避免重复请求错误 [#3094](https://github.com/pingcap/ticdc/pull/3094)
+        - 修复 Kafka Sink 由于 `max-message-size` 选项的限制而无法发送消息的问题 [#3046](https://github.com/pingcap/ticdc/pull/3046)
+        - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续启动 [#3023](https://github.com/pingcap/ticdc/pull/3023)
+        - 修复 Kafka 生产者报告错误时可能出现的死锁 [#3015](https://github.com/pingcap/ticdc/pull/3015)
+        - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题 [#2863](https://github.com/pingcap/ticdc/pull/2863)
+        - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2623](https://github.com/pingcap/ticdc/pull/2623)
+        - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3669](https://github.com/pingcap/ticdc/pull/3669)
 
 ## 未抓取到的 critical bug
 
