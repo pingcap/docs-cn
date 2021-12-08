@@ -12,12 +12,12 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - 当将一个非法的utf8 字符串转为Real类型时，把该字符串中合法的Utf8前缀转成Real类型，而不是直接报错. [#9870](https://github.com/tikv/tikv/pull/9870)
-    - [cdc: reduce events batch to solve congest error (#11086) by ti-srebot · Pull Request #11089 · tikv/tikv](https://github.com/tikv/tikv/pull/11089)
+    - 当将一个非法的utf8 字符串转为Real类型时，把该字符串中合法的Utf8前缀转成Real类型，而不是直接报错 [#9870](https://github.com/tikv/tikv/pull/9870)
+    - cdc: reduce events batch to solve congest error [#11089](https://github.com/tikv/tikv/pull/11089)
 
 + TiDB Binlog
 
-    - [drainer: fix kafka message limit problem (#1039) by ti-chi-bot · Pull Request #1078 · pingcap/tidb-binlog](https://github.com/pingcap/tidb-binlog/pull/1078)
+    - drainer: fix kafka message limit problem [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
 
 ## 提升改进
 
