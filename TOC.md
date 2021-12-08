@@ -16,8 +16,7 @@
     - [高可用](/key-features.md#高可用)
 - 操作指南
   - 快速上手
-    - 创建集群
-      - [使用 Docker Compose 部署 TiDB 集群](https://pingcap.com/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/)
+    - [创建集群](/quick-start-with-tidb.md)
     - [SQL 基本操作](/basic-sql-operations.md)
     - [读取历史数据](/read-historical-data.md)
     - [TiDB Binlog 教程](/get-started-with-tidb-binlog.md)
