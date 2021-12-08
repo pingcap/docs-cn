@@ -330,6 +330,7 @@ tbl-name = "~^a.*"
 * `kafka-addrs`
 * `kafka-version`
 * `kafka-max-messages`
+* `kafka-max-message-size`
 * `topic-name`
 
 ### syncer.to.checkpoint
