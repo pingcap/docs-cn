@@ -3,7 +3,7 @@ title: xxx（与文档一级标题保持一致）
 summary: xxx（一句话介绍该文档的主要内容，请尽可能多地包含本文的关键词，这有利于搜索引擎优化）
 ---
 
-<!--本文档为概念简介类模板，你可直接复制使用，用时请将多余的说明删除。该类文档示例：[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)-->
+<!--本文档为概念简介类模板，你可直接复制使用，用时请将多余的说明删除。该类文档示例：[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。-->
 
 特别说明：请在 TOC.md 中合适的位置加目录（思考用户最有可能在哪里找文档）。
 
