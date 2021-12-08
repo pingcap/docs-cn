@@ -61,6 +61,10 @@ TiDB 版本：4.0.16
     - 修复了 `NO_ZERO_IN_DATE` 对默认值未生效的问题 [#26902](https://github.com/pingcap/tidb/pull/26902)
     - 修复了 copt-cache 的监控信息，现在在 Grafana 中会显示 hits/miss/evict 的数据 [#26342](https://github.com/pingcap/tidb/pull/26342)
     - 修复并发 truncate 相同的分区导致 DDL 卡死的问题 [#26237](https://github.com/pingcap/tidb/pull/26237)
+    - expression: fix wrong flen when cast decimal to string. [#30012](https://github.com/pingcap/tidb/pull/30012)
+    - planner: change redundantSchema to fullSchema to correctly handle natural and "using" joins. [#30037](https://github.com/pingcap/tidb/pull/30037)
+    - planner: fix topn wrongly pushed to index scan side when it's a prefix index [#29796](https://github.com/pingcap/tidb/pull/29796)
+    - insert: fix the auto id retry won't cast the datum to origin type. [#30019](https://github.com/pingcap/tidb/pull/30019)
 
 + TiKV
 
@@ -97,15 +101,4 @@ TiDB 版本：4.0.16
         - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题 [#2863](https://github.com/pingcap/ticdc/pull/2863)
         - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2623](https://github.com/pingcap/ticdc/pull/2623)
         - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3669](https://github.com/pingcap/ticdc/pull/3669)
-
-## 未抓取到的 critical bug
-
-+ TiDB
-
-+ TiKV
-
-+ TiFlash
-
-+ Tools
-
-+ PD
+        - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3561](https://github.com/pingcap/ticdc/pull/3561)
