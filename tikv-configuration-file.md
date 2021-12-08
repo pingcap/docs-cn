@@ -644,11 +644,6 @@ raftstore 相关的配置项。
 + 为 true 时，以最大分裂 key 为起点的 region 复用原 region 的 key；否则以原 region 起点 key 作为起点的 region 复用原 region 的 key。
 + 默认值：true
 
-### `allow-remove-leader`
-
-+ 允许删除主开关。
-+ 默认值：false
-
 ### `merge-max-log-gap`
 
 + 进行 merge 时，允许的最大日志缺失个数。

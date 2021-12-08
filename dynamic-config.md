@@ -148,7 +148,6 @@ show warnings;
 | raftstore.peer-stale-state-check-interval | 触发检验副本是否处于无主状态的时间间隔 |
 | raftstore.consistency-check-interval | 触发一致性检查的时间间隔 |
 | raftstore.raft-store-max-leader-lease | Region 主可信任期的最长时间 |
-| raftstore.allow-remove-leader | 允许删除主开关 |
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
