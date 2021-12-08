@@ -121,9 +121,8 @@ addr = "172.16.31.10:8287"
 # range-concurrency = 16
 
 [mydumper]
-# Block size for file reading. Keep it longer than the longest string of
-# the data source.
-read-block-size = 65536 # Byte (default = 64 KB)
+# Block size for file reading. Keep it longer than the longest string of the data source.
+read-block-size = "64KiB" # default value
 
 # The engine file needs to be imported sequentially. Due to parallel processing,
 # multiple data engines will be imported at nearly the same time, and this
@@ -132,7 +131,7 @@ read-block-size = 65536 # Byte (default = 64 KB)
 # resources. The scale up factor is controlled by this parameter, which
 # expresses the ratio of duration between the "import" and "write" steps
 # with full concurrency. This can be calculated by using the ratio
-# (import duration/write duration) of a single table of size around 1 GB.
+# (import duration/write duration) of a single table of size around 1 GiB.
 # The exact timing can be found in the log. If "import" is faster, the batch
 # size variance is smaller, and a ratio of zero means a uniform batch size.
 # This value should be in the range (0 <= batch-import-ratio < 1).
@@ -182,7 +181,7 @@ strict-format = false
 
 # If strict-format is true, TiDB Lightning splits large CSV files into multiple chunks to process in
 # parallel. max-region-size is the maximum size of each chunk after splitting.
-# max-region-size = 268_435_456 # Byte (default = 256 MB)
+# max-region-size = "256MiB" # default value
 
 # Only import tables if these wildcard rules are matched. See the corresponding section for details.
 filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
@@ -260,15 +259,18 @@ max-allowed-packet = 67_108_864
 # these as true in the production environment.
 # The execution order: Checksum -> Analyze
 [post-restore]
-# Specifies the behavior of `ADMIN CHECKSUM TABLE <table>` for each table to verify data integrity. 
+# Specifies whether to perform `ADMIN CHECKSUM TABLE <table>` for each table to verify data integrity after importing.
 # The following options are available:
+# - "required" (default value): Perform admin checksum. If checksum fails, TiDB Lightning will exit with failure.
+# - "optional": Perform admin checksum. If checksum fails, TiDB Lightning will report a WARN log but ignore any error.
 # - "off": Do not perform checksum.
-# - "optional": Perform admin checksum, but will ignore any error if checksum fails.
-# - "required": Perform admin checksum. If checksum fails, TiDB Lightning will exit with failure.
-# The default value is "required". Note that since v4.0.8, the default value has changed from "true" to "required". 
-# For backward compatibility, bool values "true" and "false" are also allowed for this field. 
+# Note that since v4.0.8, the default value has changed from "true" to "required".
+# For backward compatibility, bool values "true" and "false" are also allowed for this field.
 # "true" is equivalent to "required" and "false" is equivalent to "off".
-checksum = required
+checksum = "required"
+# Specifies whether to perform `ANALYZE TABLE <table>` for each table after checksum is done.
+# Options available for this field are the same as `post-restore`. However, the default value for this field is "optional".
+analyze = "optional"
 
 # If the value is set to `true`, a level-1 compaction is performed
 # every time a table is imported.
@@ -279,16 +281,6 @@ level-1-compact = false
 # TiKV cluster is performed at the end of the import.
 # The default value is `false`.
 compact = false
-
-# Specifies the behavior of `ANALYZE TABLE <table>` for each table.
-# The following options are available:
-# - "off": Do not perform `ANALYZE TABLE <table>`.
-# - "optional": Perform `ANALYZE TABLE <table>`, but will ignore any error if checksum fails.
-# - "required": Perform `ANALYZE TABLE <table>`. If it fails, TiDB Lightning will exit with failure.
-# The default value is "optional". Note that since v4.0.8, the default value has changed from "true" to "optional". 
-# For backward compatibility, bool values "true" and "false" are also allowed for this field. 
-# "true" is equivalent to "required" and "false" is equivalent to "off".
-analyze = optional
 
 # Configures the background periodic actions.
 # Supported units: h (hour), m (minute), s (second).
@@ -402,8 +394,8 @@ min-available-ratio = 0.05
 | --tidb-password *password* | Password to connect to TiDB | `tidb.password` |
 | --no-schema | Ignore schema files, get schema directly from TiDB | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | Whether to enable checkpoints (default = true) | `checkpoint.enable` |
-| --analyze *bool* | Analyze tables after importing (default = optional) | `post-restore.analyze` |
-| --checksum *bool* | Compare checksum after importing (default = required) | `post-restore.checksum` |
+| --analyze *level* | Analyze tables after importing. Available values are "required", "optional" (default value), and "off" | `post-restore.analyze` |
+| --checksum *level* | Compare checksum after importing. Available values are "required" (default value), "optional", and "off" | `post-restore.checksum` |
 | --check-requirements *bool* | Check cluster version compatibility before starting (default = true) | `lightning.check-requirements` |
 | --ca *file* | CA certificate path for TLS connection | `security.ca-path` |
 | --cert *file* | Certificate path for TLS connection | `security.cert-path` |
