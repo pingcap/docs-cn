@@ -18,8 +18,8 @@ TiDB 版本：4.0.16
 
         + TiCDC
 
-        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB，防止发送过大消息到 Kafka 集群 [#2962](https://github.com/pingcap/ticdc/issues/2962)
-        - 将 Kafka Sink `partition-num` 的默认值改为 3，更加平均的分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/ticdc/issues/3337)
+              - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB，防止发送过大消息到 Kafka 集群 [#2962](https://github.com/pingcap/ticdc/issues/2962)
+              - 将 Kafka Sink `partition-num` 的默认值改为 3，更加平均的分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/ticdc/issues/3337)
 
 ## 提升改进
 
@@ -105,6 +105,6 @@ TiDB 版本：4.0.16
         - (dup) 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/ticdc/issues/2978)
         - (dup) 修复当开启 `force-replicate` 时，可能某些没有有效索引的分区表被忽略的问题 [#2834](https://github.com/pingcap/ticdc/issues/2834)
         - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
-        - 修复可能因为 Sink 组件提前推进 resolved ts 导致数据不一致的问题。 [#3503](https://github.com/pingcap/ticdc/issues/3503)
+        - 修复可能因为 Sink 组件提前推进 resolved ts 导致数据不一致的问题 [#3503](https://github.com/pingcap/ticdc/issues/3503)
         - (dup) 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/ticdc/issues/2470)
         - 修复 changefeed 更新命令无法识别全局命令行参数的问题 [#2803](https://github.com/pingcap/ticdc/issues/2803)
