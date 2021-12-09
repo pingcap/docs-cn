@@ -26,7 +26,7 @@ DM 的用户文档目前独立于 TiDB 文档。要访问 DM 的用户文档，�
 
 本节介绍 DM 工具的核心功能模块。
 
-![DM Core Features](/media/dm-core-features.png)
+![DM Core Features](/media/dm/dm-core-features.png)
 
 ### Block & allow lists
 
