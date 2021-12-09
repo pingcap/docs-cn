@@ -78,7 +78,7 @@ TiDB 版本：4.0.16
     - 修复在缺失downstream时CDC panic的问题[#11123](https://github.com/tikv/tikv/issues/11123)
     - 修复在channel 满时会断开raft client 的grpc连接的问题 [#11047](https://github.com/tikv/tikv/issues/11047)
     - 修复在Max/Min 中无法正确识别int64是否为有符号整数从而导致Max/Min结果不正确的问题。[#10158](https://github.com/tikv/tikv/issues/10158)
-    -  修复CDC频繁incremental扫描重试导致的Congest错误. [#11082](https://github.com/tikv/tikv/issues/11082)
+    - 修复CDC频繁incremental扫描重试导致的Congest错误. [#11082](https://github.com/tikv/tikv/issues/11082)
 
 + PD
 
