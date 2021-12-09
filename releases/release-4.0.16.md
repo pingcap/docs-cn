@@ -81,8 +81,6 @@ TiDB 版本：4.0.16
 
 + TiFlash
 
-+ TiFlash
-
     - 修复 TiFlash 在部分平台上由于缺失 nsl 库而无法启动的问题
 
 + Tools
