@@ -266,7 +266,7 @@ TiDB 在遥测中新增收集集群请求的运行状态，包括执行情况、
     - 修复某些情况下 `IN` 语句的执行结果可能错误的问题 [#23889](https://github.com/pingcap/tidb/issues/23889)
     - 修复某些字符串函数的返回结果错误的问题 [#23759](https://github.com/pingcap/tidb/issues/23759)
     - 执行 `REPLACE` 语句需要用户同时拥有 `INSERT` 和 `DELETE` 权限 [#23909](https://github.com/pingcap/tidb/issues/23909)
-    - 修复点查时出现的的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
+    - 修复点查时出现的性能回退 [#24070](https://github.com/pingcap/tidb/pull/24070)
     - 修复因错误比较二进制与字节而导致的 `TableDual` 计划错误的问题 [#23846](https://github.com/pingcap/tidb/issues/23846)
     - 修复了在某些情况下，使用前缀索引和 Index Join 导致的 panic 的问题 [#24547](https://github.com/pingcap/tidb/issues/24547) [#24716](https://github.com/pingcap/tidb/issues/24716) [#24717](https://github.com/pingcap/tidb/issues/24717)
     - 修复了 `point get` 的 prepare plan cache 被事务中的 `point get` 语句不正确使用的问题 [#24741](https://github.com/pingcap/tidb/issues/24741)
