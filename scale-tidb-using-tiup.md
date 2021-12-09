@@ -420,7 +420,7 @@ tiup cluster display <cluster-name>
 
 手动在 PD 中清除同步规则的步骤如下：
 
-1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
     {{< copyable "shell-regular" >}}
 
