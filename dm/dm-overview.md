@@ -15,7 +15,7 @@ DM 工具的文档目前独立于 TiDB 文档。要访问 DM 工具的文档，�
 
 - [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
 - [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
-- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/stable)
+- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/v5.3)
 
 > **注意：**
 >
