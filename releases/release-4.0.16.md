@@ -31,7 +31,6 @@ TiDB 版本：4.0.16
 
     - sst_importer: 当使用BR-Restore或者Lighting-Local-backend时，采用 zstd 算法压缩SST以减小使用空间 [#11469](https://github.com/tikv/tikv/issues/11469)
 
-
 + Tools
 
     + Backup & Restore (BR)
