@@ -43,7 +43,7 @@ TiDB 版本：4.0.16
         - 为 EtcdWorker 添加 Tick 频率限制。[#3112](https://github.com/pingcap/ticdc/issues/3112)
         - 优化 TiKV 重新加载时的速率限制控制，并解决 gPRC 的拥堵问题，这可能导致初始化阶段的缓慢。[#3110](https://github.com/pingcap/ticdc/issues/3110)
         - 忽略 changefeed 更新命令的全局标志 [#2803](https://github.com/pingcap/ticdc/issues/2803)
-        - 禁止跨主要和次要版本操作 TiCDC 集群。[#2601](https://github.com/pingcap/ticdc/pull/2601)
+        - 禁止跨主要和次要版本操作 TiCDC 集群。[#3352](https://github.com/pingcap/ticdc/issues/3352)
 
 ## Bug fixes
 
@@ -104,6 +104,5 @@ TiDB 版本：4.0.16
         - 修复 Kafka 生产者报告错误时可能出现的死锁 [#2978](https://github.com/pingcap/ticdc/issues/2978)
         - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题 [#2834](https://github.com/pingcap/ticdc/issues/2834)
         - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
-        - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3539](https://github.com/pingcap/ticdc/pull/3539)
         - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3503](https://github.com/pingcap/ticdc/issues/3503)
         - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2470](https://github.com/pingcap/ticdc/issues/2470)
