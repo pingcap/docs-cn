@@ -16,14 +16,10 @@ TiDB 版本：4.0.16
 
 + Tools
 
-    + TiDB Binlog
+        + TiCDC
 
-        - Drainer: 修复了 Kafka message 大于 1GB 时无法发送到下游的问题。[#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
-
-    + TiCDC
-
-        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1MB。[#2962](https://github.com/pingcap/ticdc/issues/2962)
-        - 将 Kafka Sink `partition-num` 的默认值改为 3。[#3337](https://github.com/pingcap/ticdc/issues/3337)
+        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB [#2962](https://github.com/pingcap/ticdc/issues/2962)
+        - 将 Kafka Sink `partition-num` 的默认值改为 3 [#3337](https://github.com/pingcap/ticdc/issues/3337)
 
 ## 提升改进
 
@@ -39,10 +35,10 @@ TiDB 版本：4.0.16
 
     + TiCDC
 
-        - 为 EtcdWorker 添加 Tick 频率限制。[#3112](https://github.com/pingcap/ticdc/issues/3112)
-        - 优化 TiKV 重新加载时的速率限制控制，并解决 gPRC 的拥堵问题，这可能导致初始化阶段的缓慢。[#3110](https://github.com/pingcap/ticdc/issues/3110)
+        - 为 EtcdWorker 添加 Tick 频率限制 [#3112](https://github.com/pingcap/ticdc/issues/3112)
+        - 优化 TiKV 重新加载时的速率限制控制，解决延缓初始化的 gPRC 拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
         - 忽略 changefeed 更新命令的全局标志 [#2803](https://github.com/pingcap/ticdc/issues/2803)
-        - 禁止跨主要和次要版本操作 TiCDC 集群。[#3352](https://github.com/pingcap/ticdc/issues/3352)
+        - 禁止跨主要和次要版本操作 TiCDC 集群 [#3352](https://github.com/pingcap/ticdc/issues/3352)
 
 ## Bug fixes
 
