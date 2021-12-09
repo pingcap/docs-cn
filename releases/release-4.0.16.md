@@ -15,13 +15,17 @@ TiDB 版本：4.0.16
     - 当将一个非法的utf8 字符串转为Real类型时，把该字符串中合法的Utf8前缀转成Real类型，而不是直接报错 [#11466](https://github.com/tikv/tikv/issues/11466)
     - cdc: reduce events batch to solve congest error [#11082](https://github.com/tikv/tikv/issues/11082)
 
-+ TiDB Binlog
-
-    - drainer: fix kafka message limit problem [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
 + Tools
-       + TiCDC
-              - 将 Kafka Sink `max-message-bytes` 的默认值改为 1MB。[#2962](https://github.com/pingcap/ticdc/issues/2962)
-              - 将 Kafka Sink `partition-num` 的默认值改为 3。[#3337](https://github.com/pingcap/ticdc/issues/3337)
+
+    + TiDB Binlog
+
+        - drainer: fix kafka message limit problem [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
+
+    + TiCDC
+
+        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1MB。[#2962](https://github.com/pingcap/ticdc/issues/2962)
+        - 将 Kafka Sink `partition-num` 的默认值改为 3。[#3337](https://github.com/pingcap/ticdc/issues/3337)
+
 ## 提升改进
 
 + TiKV
@@ -33,11 +37,11 @@ TiDB 版本：4.0.16
 
     + Backup & Restore (BR)
 
-        - 增强恢复的鲁棒性 [#1445](https://github.com/pingcap/br/pull/1445)
+        - 增强恢复的鲁棒性 [#27421](https://github.com/pingcap/tidb/issues/27421)
 
     + TiCDC
 
-        - 为 EtcdWorker 添加 Tick 频率限制。[#3267](https://github.com/pingcap/ticdc/pull/3267)
+        - 为 EtcdWorker 添加 Tick 频率限制。[#3112](https://github.com/pingcap/ticdc/issues/3112)
         - 优化 TiKV 重新加载时的速率限制控制，并解决 gPRC 的拥堵问题，这可能导致初始化阶段的缓慢。[#3110](https://github.com/pingcap/ticdc/issues/3110)
         - 忽略 changefeed 更新命令的全局标志 [#2803](https://github.com/pingcap/ticdc/issues/2803)
         - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2470](https://github.com/pingcap/ticdc/issues/2470)
@@ -91,16 +95,16 @@ TiDB 版本：4.0.16
     + TiCDC
 
         - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/ticdc/issues/3010)
-        - 修复在容器环境中 OOM 的问题 [#3440](https://github.com/pingcap/ticdc/pull/3440)
+        - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/ticdc/issues/1798)
         - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3288](https://github.com/pingcap/ticdc/issues/3288)
-        - 修复处理 DDL 后的内存泄漏 [#3274](https://github.com/pingcap/ticdc/pull/3274)
+        - 修复处理 DDL 后的内存泄漏 [#3174](https://github.com/pingcap/ticdc/issues/3174)
         - 当发生 ErrGCTTLExceeded 错误时，修复 changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/ticdc/issues/3111)
         - 修复了当发生 region 合并时，回退的 resolvedTs 事件会阻止 resolve lock [#3061](https://github.com/pingcap/ticdc/issues/3061)
         - 当遇到 ErrPrewriteNotMatch 时，关闭 gPRC 流并重新创建它，以避免重复请求错误 [#2386](https://github.com/pingcap/ticdc/issues/2386)
         - 修复 Kafka Sink 由于 `max-message-size` 选项的限制而无法发送消息的问题 [#2962](https://github.com/pingcap/ticdc/issues/2962)
         - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续启动 [#11017](https://github.com/tikv/tikv/issues/11017)
-        - 修复 Kafka 生产者报告错误时可能出现的死锁 [#3015](https://github.com/pingcap/ticdc/pull/3015)
-        - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题 [#2863](https://github.com/pingcap/ticdc/pull/2863)
+        - 修复 Kafka 生产者报告错误时可能出现的死锁 [#2978](https://github.com/pingcap/ticdc/issues/2978)
+        - 在没有有效索引的分区表中添加分区后，修复 DML 不被同步的问题 [#2834](https://github.com/pingcap/ticdc/issues/2834)
         - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
         - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3539](https://github.com/pingcap/ticdc/pull/3539)
-        - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3561](https://github.com/pingcap/ticdc/pull/3561)
+        - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3503](https://github.com/pingcap/ticdc/issues/3503)
