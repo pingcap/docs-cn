@@ -115,34 +115,34 @@ type = '$3'
 
 ### 第 4 步. 导入全量数据到 TiDB
 
-使用 Lightning 在下游 TiDB 建表:
+1. 使用 Lightning 在下游 TiDB 建表:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup tidb-lightning -config tidb-lightning.toml -d ./schema -no-schema=false
-```
+    ```shell
+    tiup tidb-lightning -config tidb-lightning.toml -d ./schema -no-schema=false
+    ```
 
-将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Dumpling 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
+2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
 
-可以指定参数`--s3.region`，即表示 Amazon S3 存储所在的区域，例如`ap-northeast-1`。更多存储配置可以参考[外部存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages)。
+    将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Dumpling 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
-运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+    可以指定参数`--s3.region`，即表示 Amazon S3 存储所在的区域，例如`ap-northeast-1`。更多存储配置可以参考[外部存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages)。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-export AWS_ACCESS_KEY_ID=${access_key}
-export AWS_SECRET_ACCESS_KEY=${secret_key}
-nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out &
-```
+    ```shell
+    export AWS_ACCESS_KEY_ID=${access_key}
+    export AWS_SECRET_ACCESS_KEY=${secret_key}
+    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out &
+    ```
 
-导入开始后，可以采用以下任意方式查看进度：
+3. 导入开始后，可以采用以下任意方式查看进度：
 
-- 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-- 通过监控面板查看进度，请参见 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+   - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+   - 通过监控面板查看进度，请参见 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
 
-导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
 
 > **注意：**
 >
