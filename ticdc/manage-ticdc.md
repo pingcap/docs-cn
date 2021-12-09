@@ -220,7 +220,7 @@ URI 中可配置的的参数如下：
 最佳实践：
 
 * TiCDC 推荐用户自行创建 Kafka Topic，至少需要知道 Topic 的 `max.message.bytes` 参数和 partition 的数量。在创建 changefeed 的时候，分别对应设置 `max-message-bytes` 和 `partition-num` 参数。
-* 如果用户在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议用户明确指定这两个参数。
+* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
 
 参数详细说明:
 
