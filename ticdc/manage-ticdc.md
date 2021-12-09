@@ -202,7 +202,6 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
-| `cdc-test`           | 使用的 Kafka topic 名字                                      |
 | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
@@ -219,8 +218,8 @@ URI 中可配置的的参数如下：
 
 最佳实践：
 
-* TiCDC 推荐用户自行创建 Kafka Topic，至少需要知道 Topic 的 `max.message.bytes` 参数和 partition 的数量。在创建 changefeed 的时候，分别对应设置 `max-message-bytes` 和 `partition-num` 参数。
-* 如果用户在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议用户明确指定这两个参数。
+* TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
+* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
 
 参数详细说明:
 
