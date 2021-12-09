@@ -100,5 +100,5 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 
 ## 探索更多
 
-- 如果要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
+- 如果要查看 TiFlash 版本、TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
 - 如果需要移除某个 TiFlash 节点，请参阅[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
