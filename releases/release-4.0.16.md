@@ -18,7 +18,7 @@ TiDB 版本：4.0.16
 
     + TiDB Binlog
 
-        - drainer: fix kafka message limit problem [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
+        - Drainer: 修复了 Kafka message 大于 1GB 时无法发送到下游的问题。[#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
 
     + TiCDC
 
@@ -95,13 +95,13 @@ TiDB 版本：4.0.16
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/ticdc/issues/1798)
         - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3288](https://github.com/pingcap/ticdc/issues/3288)
         - 修复处理 DDL 后的内存泄漏 [#3174](https://github.com/pingcap/ticdc/issues/3174)
-        - 当发生 ErrGCTTLExceeded 错误时，修复 changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/ticdc/issues/3111)
+        - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/ticdc/issues/3111)
         - (dup) 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/ticdc/issues/3061)
         - (dup) 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 panic 的问题 [#2386](https://github.com/pingcap/ticdc/issues/2386)
         - (dup) 修复 TiCDC 产生的 Kafka 消息体积不受 `max-message-size` 约束的问题 [#2962](https://github.com/pingcap/ticdc/issues/2962)
         - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续启动 [#11017](https://github.com/tikv/tikv/issues/11017)
         - (dup) 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/ticdc/issues/2978)
         - (dup) 修复当开启 `force-replicate` 时，可能某些没有有效索引的分区表被忽略的问题 [#2834](https://github.com/pingcap/ticdc/issues/2834)
-        - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
+        - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
         - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3503](https://github.com/pingcap/ticdc/issues/3503)
         - (dup) 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/ticdc/issues/2470)
