@@ -12,7 +12,7 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - 当将一个非法的utf8 字符串转为Real类型时，把该字符串中合法的Utf8前缀转成Real类型，而不是直接报错 [#11466](https://github.com/tikv/tikv/issues/11466)
+    - 当把一个非法的 UTF-8 字符串转换为 Real 类型时，会依照该字符串中的合法 UTF-8 前缀进行转换，而不是直接报错 [#11466](https://github.com/tikv/tikv/issues/11466)
 
 + Tools
 
@@ -29,7 +29,7 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - sst_importer: 当使用BR-Restore或者Lighting-Local-backend时，采用 zstd 算法压缩SST以减小使用空间 [#11469](https://github.com/tikv/tikv/issues/11469)
+    - sst_importer: 当使用 BR 恢复或 Lightning 的 Local-backend 导入数据时，会采用 Zstd 算法压缩 SST 文件，从而减小磁盘使用空间 [#11469](https://github.com/tikv/tikv/issues/11469)
 
 + Tools
 
@@ -71,12 +71,12 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - 修复在极端情况下merge, conf change和snapshot同时发生时出现panic的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
-    - 修复decimal除法结果为0时 符号为负的问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
-    - 修复不正确的by-instance gGrpc 平均时间 [#11299](https://github.com/tikv/tikv/issues/11299)
-    - 修复在缺失downstream时CDC panic的问题[#11123](https://github.com/tikv/tikv/issues/11123)
+    - 修复在极端情况下同时进行 Region Merge、ConfChange 和 Snapshot 时，TiKV 会出现 Panic 的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
+    - 修复 Decimal 除法计算的结果为 0 时符号为负的问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
+    - 修复 TiKV 监控项中实例级别 gRPC 的平均延迟时间不准确的问题 [#11299](https://github.com/tikv/tikv/issues/11299)
+    - 修复在缺失下游数据库时出现 CDC Panic 的问题 [#11123](https://github.com/tikv/tikv/issues/11123)
     - (dup) 修复因 channel 打满而导致的 Raft 断连情况 [#11047](https://github.com/tikv/tikv/issues/11047)
-    - 修复在Max/Min 中无法正确识别int64是否为有符号整数从而导致Max/Min结果不正确的问题。[#10158](https://github.com/tikv/tikv/issues/10158)
+    - 修复由于无法在 `Max/Min` 函数中正确识别 Int64 是否为有符号整数，从而导致  `Max/Min` 函数的计算结果不正确的问题 [#10158](https://github.com/tikv/tikv/issues/10158)
     - (dup) 修复因 Congest 错误而导致的 CDC 频繁增加 scan 重试的问题 [#11082](https://github.com/tikv/tikv/issues/11082)
 
 + PD
