@@ -59,15 +59,15 @@ TiDB 版本：4.0.16
     - 修复 `case when` 函数和 enum 类型一起使用时的一处崩溃 [#29357](https://github.com/pingcap/tidb/issues/29357)
     - 修复 `microsecond` 函数的向量化表达式版本结果不正确的问题 [#29244](https://github.com/pingcap/tidb/issues/29244)
     - (dup) 修复 `hour` 函数在向量化表达式中执行结果错误的问题 [#28643](https://github.com/pingcap/tidb/issues/28643)
-    - 修复了乐观事务冲突导致可能相互阻塞的问题 [#11148](https://github.com/tikv/tikv/issues/11148)
-    - 修复 auto analyze 一处日志信息不全 [#29188](https://github.com/pingcap/tidb/issues/29188)
-    - 修复了 `NO_ZERO_IN_DATE` 对默认值未生效的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
-    - 修复了 copt-cache 的监控信息，现在在 Grafana 中会显示 hits/miss/evict 的数据 [#26338](https://github.com/pingcap/tidb/issues/26338)
+    - 修复了乐观事务冲突导致可能事务相互阻塞的问题 [#11148](https://github.com/tikv/tikv/issues/11148)
+    - 修复 `auto analyze` 输出日志信息不完整的问题 [#29188](https://github.com/pingcap/tidb/issues/29188)
+    - 修复了 `NO_ZERO_IN_DATE` 对默认值不生效的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
+    - 修复了 Grafana 的 Coprocessor Cache 监控面板不显示数据的问题。现在 Grafana 会显示 `hits`/`miss`/`evict` 的数据 [#26338](https://github.com/pingcap/tidb/issues/26338)
     - 修复并发 truncate 相同的分区导致 DDL 卡死的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
-    - expression: fix wrong flen when cast decimal to string. [#29417](https://github.com/pingcap/tidb/issues/29417)
-    - planner: change redundantSchema to fullSchema to correctly handle natural and "using" joins. [#29481](https://github.com/pingcap/tidb/issues/29481)
-    - planner: fix topn wrongly pushed to index scan side when it's a prefix index [#29711](https://github.com/pingcap/tidb/issues/29711)
-    - insert: fix the auto id retry won't cast the datum to origin type. [#29892](https://github.com/pingcap/tidb/issues/29892)
+    - 修复 `CONCAT` 函数的参数为负浮点数时，该参数在返回结果中被截断末位数的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
+    - 修复使用 `NATUAL JOIN` 连接多张表时，查询结果中多出一列的问题 [#29481](https://github.com/pingcap/tidb/issues/29481)
+    - 修复 `IndexScan` 使用前缀索引时，`TopN` 被错误下推至 `indexPlan` 的问题  [#29711](https://github.com/pingcap/tidb/issues/29711)
+    - 修复在 `DOUBLE` 类型的自增列上重试事务会导致数据错误的问题 [#29892](https://github.com/pingcap/tidb/issues/29892)
 
 + TiKV
 
