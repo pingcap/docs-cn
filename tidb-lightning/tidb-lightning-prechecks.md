@@ -1,11 +1,11 @@
 ---
-title: TiDB Lightning 执行任务前的检查项
-summary: 本文档介绍了 TiDB Lightning 在执行数据迁移任务前的检查项，确保 TiDB Lightning 能够顺利执行任务。
+title: 前置检查
+summary: 本文档介绍了 TiDB Lightning 前置检查功能，确保 TiDB Lightning 能够顺利执行任务。
 ---
 
-# TiDB Lightning 执行任务前的检查项
+# 前置检查
 
-从 TiDB 5.3.0 开始，TiDB Lightning 增加了执行前检查配置的功能。默认开启。该功能会自动进行一些磁盘空间和执行配置的常规检查，主要目的是确保后续的整个导入过程顺利。
+从 TiDB 5.3.0 开始，TiDB Lightning 增加了前置检查功能，可以在执行迁移前检查配置。默认开启。该功能会自动进行一些磁盘空间和执行配置的常规检查，主要目的是确保后续的整个导入过程顺利。
 
 下表介绍了各检查项和详细解释。
 
