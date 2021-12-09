@@ -34,7 +34,7 @@ title: TiDB 集群故障诊断
 
 + pd-server、tikv-server 数据都已清空
 
-    tikv-server 存储具体的数据，pd-server 存储 tikv-server 中数据的的元信息。如果只清空 pd-server 或只清空 tikv-server 的数据，会导致两边数据不匹配。
+    tikv-server 存储具体的数据，pd-server 存储 tikv-server 中数据的元信息。如果只清空 pd-server 或只清空 tikv-server 的数据，会导致两边数据不匹配。
 
 + 清空 pd-server 和 tikv-server 的数据并重启后，也需要重启 tidb-server
 

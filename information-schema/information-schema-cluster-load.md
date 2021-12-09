@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `CLUSTER_LOAD`。
 
 # CLUSTER_LOAD
 
-集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的的当前负载信息。
+集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的当前负载信息。
 
 {{< copyable "sql" >}}
 
