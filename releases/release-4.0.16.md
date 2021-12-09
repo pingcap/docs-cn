@@ -106,3 +106,4 @@ TiDB 版本：4.0.16
         - 修复了在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
         - 正确设置 Kafka 生产者请求元数据的超时时间，防止数据同步卡住 [#3539](https://github.com/pingcap/ticdc/pull/3539)
         - 让 Sink 组件在汇报 resoved ts 时不要跳过 flush 操作 [#3503](https://github.com/pingcap/ticdc/issues/3503)
+        - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2470](https://github.com/pingcap/ticdc/issues/2470)
