@@ -43,7 +43,6 @@ TiDB 版本：4.0.16
         - 为 EtcdWorker 添加 Tick 频率限制。[#3112](https://github.com/pingcap/ticdc/issues/3112)
         - 优化 TiKV 重新加载时的速率限制控制，并解决 gPRC 的拥堵问题，这可能导致初始化阶段的缓慢。[#3110](https://github.com/pingcap/ticdc/issues/3110)
         - 忽略 changefeed 更新命令的全局标志 [#2803](https://github.com/pingcap/ticdc/issues/2803)
-        - 将创建服务 gc safepoint ttl 扩展到 1 小时，以支持创建需要长时间初始化的 changefeeds [#2470](https://github.com/pingcap/ticdc/issues/2470)
         - 禁止跨主要和次要版本操作 TiCDC 集群。[#2601](https://github.com/pingcap/ticdc/pull/2601)
 
 ## Bug fixes
