@@ -12,7 +12,7 @@ TiDB 版本：4.0.16
 
 + TiKV
 
-    - 当把一个非法的 UTF-8 字符串转换为 Real 类型时，会依照该字符串中的合法 UTF-8 前缀进行转换，而不是直接报错 [#11466](https://github.com/tikv/tikv/issues/11466)
+    - 在 v4.0.16 以前，当把一个非法的 UTF-8 字符串转换为 Real 类型时会直接报错。自 v4.0.16 起，TiDB 会依照该字符串中的合法 UTF-8 前缀进行转换 [#11466](https://github.com/tikv/tikv/issues/11466)
 
 + Tools
 
