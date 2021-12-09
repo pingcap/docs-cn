@@ -36,7 +36,7 @@ TiDB 版本：4.0.16
     + TiCDC
 
         - 为 EtcdWorker 添加 Tick 频率限制，防止 pd 的 Etcd 写入次数过多影响 pd 服务 [#3112](https://github.com/pingcap/ticdc/issues/3112)
-        - 优化 TiKV 重新加载时的速率限制控制，解决延缓初始化的 gPRC 拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
+        - 优化 TiKV 重新加载时的速率限制控制，解决 changefeed 初始化的 gPRC 拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
 
 ## Bug 修复
 
@@ -83,7 +83,6 @@ TiDB 版本：4.0.16
 
 + TiFlash
 
-    - 修复 Decimal 类型比较时可能出现的溢出和 Can't compare 错误
     - 修复 TiFlash 在部分平台上由于缺失 nsl 库而无法启动的问题
 
 + Tools
@@ -97,7 +96,7 @@ TiDB 版本：4.0.16
         - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/ticdc/issues/3010)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/ticdc/issues/1798)
         - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3288](https://github.com/pingcap/ticdc/issues/3288)
-        - 修复处理 DDL 后的内存泄漏 [#3174](https://github.com/pingcap/ticdc/issues/3174)
+        - 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/ticdc/issues/3174)
         - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/ticdc/issues/3111)
         - (dup) 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/ticdc/issues/3061)
         - (dup) 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 panic 的问题 [#2386](https://github.com/pingcap/ticdc/issues/2386)
