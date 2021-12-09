@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-cluster-load/','/docs-cn/dev/
 
 # CLUSTER_LOAD
 
-集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的的当前负载信息。
+集群负载表 `CLUSTER_LOAD` 提供集群各个实例所在服务器的当前负载信息。
 
 {{< copyable "sql" >}}
 
