@@ -13,7 +13,6 @@ TiDB 版本：4.0.16
 + TiKV
 
     - 当将一个非法的utf8 字符串转为Real类型时，把该字符串中合法的Utf8前缀转成Real类型，而不是直接报错 [#11466](https://github.com/tikv/tikv/issues/11466)
-    - cdc: reduce events batch to solve congest error [#11082](https://github.com/tikv/tikv/issues/11082)
 
 + Tools
 
