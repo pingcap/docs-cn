@@ -88,6 +88,9 @@ TiDB 版本：4.0.16
 + TiFlash
 
 + Tools
+    + TiDB Binlog
+        
+        - 修复传输事务超过 1 GB 时 Drainer 会退出的问题 [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
 
     + TiCDC
 
