@@ -16,10 +16,10 @@ TiDB 版本：4.0.16
 
 + Tools
 
-        + TiCDC
+    + TiCDC
 
-              - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB，防止发送过大消息到 Kafka 集群 [#2962](https://github.com/pingcap/ticdc/issues/2962)
-              - 将 Kafka Sink `partition-num` 的默认值改为 3，更加平均的分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/ticdc/issues/3337)
+        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB，防止发送过大消息到 Kafka 集群 [#2962](https://github.com/pingcap/ticdc/issues/2962)
+        - 将 Kafka Sink `partition-num` 的默认值改为 3，更加平均的分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/ticdc/issues/3337)
 
 ## 提升改进
 
@@ -86,7 +86,7 @@ TiDB 版本：4.0.16
 + Tools
 
     + TiDB Binlog
-        
+
         - 修复传输事务超过 1 GB 时 Drainer 会退出的问题 [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
 
     + TiCDC
