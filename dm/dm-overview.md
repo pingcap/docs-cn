@@ -11,11 +11,11 @@ summary: 了解 TiDB Data Migration
 
 DM 工具的可用版本包括 v1.0、v2.0、v5.3。如无特殊需求，建议使用 DM 的最新稳定版本 v5.3。
 
-DM 的用户文档目前独立于 TiDB 文档。要访问 DM 的用户文档，请点击以下链接：
+DM 工具的文档目前独立于 TiDB 文档。要访问 DM 工具的文档，请点击以下链接：
 
-- [DM v1.0 用户文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
-- [DM v2.0 用户文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
-- [DM v5.3 用户文档](https://docs.pingcap.com/zh/tidb-data-migration/stable)
+- [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
+- [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
+- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/stable)
 
 > **注意：**
 >
