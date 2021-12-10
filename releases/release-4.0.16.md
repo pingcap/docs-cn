@@ -55,7 +55,7 @@ TiDB 版本：4.0.16
     - (dup) 修复 `hour` 函数在向量化表达式中执行结果错误的问题 [#28643](https://github.com/pingcap/tidb/issues/28643)
     - 修复乐观事务冲突可能导致事务相互阻塞的问题 [#11148](https://github.com/tikv/tikv/issues/11148)
     - 修复 `auto analyze` 输出的日志信息不完整的问题 [#29188](https://github.com/pingcap/tidb/issues/29188)
-    - 修复了当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
+    - 修复当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
     - 修复 Grafana 上 **Coprocessor Cache** 监控面板的数据显示不正确的问题。现在 Grafana 会显示 `hits`/`miss`/`evict` 的数据 [#26338](https://github.com/pingcap/tidb/issues/26338)
     - 修复并发 truncate 同一个分区会导致 DDL 语句执行卡住的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
     - 修复 `CONCAT` 函数的参数为负浮点数时，该参数在返回结果中被截断末位数的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
