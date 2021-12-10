@@ -35,7 +35,7 @@ TiDB 版本：4.0.16
 
     + TiCDC
 
-        - 为 EtcdWorker 添加 Tick 频率限制，防止 pd 的 Etcd 写入次数过多影响 pd 服务 [#3112](https://github.com/pingcap/ticdc/issues/3112)
+        - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过多影响 PD 服务 [#3112](https://github.com/pingcap/ticdc/issues/3112)
         - 优化 TiKV 重新加载时的速率限制控制，解决 changefeed 初始化的 gPRC 拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
 
 ## Bug 修复
@@ -87,7 +87,7 @@ TiDB 版本：4.0.16
 
     + TiDB Binlog
 
-        - 修复传输事务超过 1 GB 时 Drainer 会退出的问题 [#1078](https://github.com/pingcap/tidb-binlog/pull/1078)
+        - 修复传输事务超过 1 GB 时 Drainer 会退出的问题 [#28659](https://github.com/pingcap/tidb/issues/28659)
 
     + TiCDC
 
