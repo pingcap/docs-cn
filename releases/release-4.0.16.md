@@ -35,8 +35,8 @@ TiDB 版本：4.0.16
 
     + TiCDC
 
-        - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过多影响 PD 服务 [#3112](https://github.com/pingcap/ticdc/issues/3112)
-        - 优化 TiKV 重新加载时的速率限制控制，解决 changefeed 初始化的 gPRC 拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
+        - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过于频繁影响 PD 服务 [#3112](https://github.com/pingcap/ticdc/issues/3112)
+        - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
 + Grafana
 
     - 升级到 v7.5.11，规避老版本的安全漏洞
