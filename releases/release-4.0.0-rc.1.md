@@ -43,11 +43,11 @@ TiDB 版本：4.0.0-rc.1
 
 + TiCDC
 
-    - 修复 TiCDC 内部维护的 schema 信息对于读写操作时序问题没有正确处理导致同步失败问题 [#438](https://github.com/pingcap/ticdc/pull/438) [#450](https://github.com/pingcap/ticdc/pull/450) [#478](https://github.com/pingcap/ticdc/pull/478) [#496](https://github.com/pingcap/ticdc/pull/496)
-    - 修复 TiKV client 遇到部分 TiKV 异常没有正确维护内部资源的 bug [#499](https://github.com/pingcap/ticdc/pull/499) [#492](https://github.com/pingcap/ticdc/pull/492)
-    - 修复节点异常残留元数据信息没有正确清理的 bug [#488](https://github.com/pingcap/ticdc/pull/488) [#504](https://github.com/pingcap/ticdc/pull/504)
-    - 修复 TiKV client 没有正确处理 prewrite 重复发送的问题 [#446](https://github.com/pingcap/ticdc/pull/446)
-    - 修复 TiKV client 没有正确处理在初始化前接收到冗余 prewrite 的问题 [#448](https://github.com/pingcap/ticdc/pull/448)
+    - 修复 TiCDC 内部维护的 schema 信息对于读写操作时序问题没有正确处理导致同步失败问题 [#438](https://github.com/pingcap/tiflow/pull/438) [#450](https://github.com/pingcap/tiflow/pull/450) [#478](https://github.com/pingcap/tiflow/pull/478) [#496](https://github.com/pingcap/tiflow/pull/496)
+    - 修复 TiKV client 遇到部分 TiKV 异常没有正确维护内部资源的 bug [#499](https://github.com/pingcap/tiflow/pull/499) [#492](https://github.com/pingcap/tiflow/pull/492)
+    - 修复节点异常残留元数据信息没有正确清理的 bug [#488](https://github.com/pingcap/tiflow/pull/488) [#504](https://github.com/pingcap/tiflow/pull/504)
+    - 修复 TiKV client 没有正确处理 prewrite 重复发送的问题 [#446](https://github.com/pingcap/tiflow/pull/446)
+    - 修复 TiKV client 没有正确处理在初始化前接收到冗余 prewrite 的问题 [#448](https://github.com/pingcap/tiflow/pull/448)
 
 + Backup & Restore (BR)
 
@@ -87,11 +87,11 @@ TiDB 版本：4.0.0-rc.1
 
 + TiCDC
 
-    - 在 Kafka sink 模块提供发送批量消息支持 [#426](https://github.com/pingcap/ticdc/pull/426)
-    - 支持在 processor 内使用文件排序 [#477](https://github.com/pingcap/ticdc/pull/477)
-    - 增加自动 resolve lock 的支持 [#459](https://github.com/pingcap/ticdc/pull/459)
-    - 增加自动向 PD 设置 TiCDC 服务级别 safepoint 的功能 [#487](https://github.com/pingcap/ticdc/pull/487)
-    - 增加数据同步时的时区配置 [#498](https://github.com/pingcap/ticdc/pull/498)
+    - 在 Kafka sink 模块提供发送批量消息支持 [#426](https://github.com/pingcap/tiflow/pull/426)
+    - 支持在 processor 内使用文件排序 [#477](https://github.com/pingcap/tiflow/pull/477)
+    - 增加自动 resolve lock 的支持 [#459](https://github.com/pingcap/tiflow/pull/459)
+    - 增加自动向 PD 设置 TiCDC 服务级别 safepoint 的功能 [#487](https://github.com/pingcap/tiflow/pull/487)
+    - 增加数据同步时的时区配置 [#498](https://github.com/pingcap/tiflow/pull/498)
 
 + Backup & Restore (BR)
 
