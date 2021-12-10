@@ -9,4 +9,4 @@ summary: 了解如何在 Kubernetes 上部署 TiDB
 
 对于当前 TiDB 版本，TiDB Operator 的适用版本为 v1.2。
 
-TiDB Operator 的文档目前独立于 TiDB 文档。要查看如何使用 TiDB Operator 在 Kubernetes 上部署 TiDB 的详细步骤，请参阅 [TiDB Operator 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2)。
+TiDB Operator 的文档目前独立于 TiDB 文档。要查看如何使用 TiDB Operator 在 Kubernetes 上部署 TiDB 的详细步骤，请参阅 [TiDB in Kubernetes 用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2)。
