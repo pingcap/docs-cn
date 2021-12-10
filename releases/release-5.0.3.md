@@ -21,9 +21,9 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 增加 HTTP API 获取 TiCDC changefeed 信息和节点健康信息 [#1955](https://github.com/pingcap/ticdc/pull/1955)
-        - 为 kafka 下游增加 SASL/SCRAM 支持 [#1942](https://github.com/pingcap/ticdc/pull/1942)
-        - 使 TiCDC 在 server 级别支持 `--data-dir` 配置 [#2070](https://github.com/pingcap/ticdc/pull/2070)
+        - 增加 HTTP API 获取 TiCDC changefeed 信息和节点健康信息 [#1955](https://github.com/pingcap/tiflow/pull/1955)
+        - 为 kafka 下游增加 SASL/SCRAM 支持 [#1942](https://github.com/pingcap/tiflow/pull/1942)
+        - 使 TiCDC 在 server 级别支持 `--data-dir` 配置 [#2070](https://github.com/pingcap/tiflow/pull/2070)
 
 ## 提升改进
 
@@ -68,7 +68,7 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1586](https://github.com/pingcap/ticdc/issues/1586) [#1501](https://github.com/pingcap/ticdc/issues/1501#issuecomment-820027078) [#1682](https://github.com/pingcap/ticdc/pull/1682) [#1393](https://github.com/pingcap/ticdc/issues/1393) [#1847](https://github.com/pingcap/ticdc/pull/1847) [#1905](https://github.com/pingcap/ticdc/issues/1905) [#1904](https://github.com/pingcap/ticdc/issues/1904)
+        - 优化 gRPC 的重连逻辑，提升 KV client 的吞吐 [#1586](https://github.com/pingcap/tiflow/issues/1586) [#1501](https://github.com/pingcap/tiflow/issues/1501#issuecomment-820027078) [#1682](https://github.com/pingcap/tiflow/pull/1682) [#1393](https://github.com/pingcap/tiflow/issues/1393) [#1847](https://github.com/pingcap/tiflow/pull/1847) [#1905](https://github.com/pingcap/tiflow/issues/1905) [#1904](https://github.com/pingcap/tiflow/issues/1904)
         - 优化 sorter I/O 报错信息
 
 ## Bug 修复
@@ -124,12 +124,12 @@ TiDB 版本：5.0.3
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/ticdc/issues/1902)
-        - 修复写 MySQL 下游出错暂停时 MySQL 连接泄漏的问题 [#1946](https://github.com/pingcap/ticdc/pull/1946)
-        - 修复 TiCDC 读取 `/proc/meminfo` 失败时出现的 panic 问题 [#2024](https://github.com/pingcap/ticdc/pull/2024)
-        - 减少 TiCDC 运行时的内存使用 [#2012](https://github.com/pingcap/ticdc/pull/2012) [#1958](https://github.com/pingcap/ticdc/pull/1958)
-        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#1576](https://github.com/pingcap/ticdc/issues/1576)
-        - 修复 processor 潜在的死锁问题 [#2142](https://github.com/pingcap/ticdc/pull/2142)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/tiflow/issues/1902)
+        - 修复写 MySQL 下游出错暂停时 MySQL 连接泄漏的问题 [#1946](https://github.com/pingcap/tiflow/pull/1946)
+        - 修复 TiCDC 读取 `/proc/meminfo` 失败时出现的 panic 问题 [#2024](https://github.com/pingcap/tiflow/pull/2024)
+        - 减少 TiCDC 运行时的内存使用 [#2012](https://github.com/pingcap/tiflow/pull/2012) [#1958](https://github.com/pingcap/tiflow/pull/1958)
+        - 修复 resolved ts 计算慢导致 TiCDC panic 的问题 [#1576](https://github.com/pingcap/tiflow/issues/1576)
+        - 修复 processor 潜在的死锁问题 [#2142](https://github.com/pingcap/tiflow/pull/2142)
 
     + Backup & Restore (BR)
 
