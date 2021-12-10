@@ -57,7 +57,7 @@ TiDB 版本：4.0.11
 
     + TiCDC
 
-        - 在 `capture` 元信息中添加版本信息和在 `changefeed` 元信息中创建该 `changefeed` 的 CLI 版本 [#1342](https://github.com/pingcap/ticdc/pull/1342)
+        - 在 `capture` 元信息中添加版本信息和在 `changefeed` 元信息中创建该 `changefeed` 的 CLI 版本 [#1342](https://github.com/pingcap/tiflow/pull/1342)
 
     + TiDB Lightning
 
@@ -146,16 +146,16 @@ TiDB 版本：4.0.11
 
     + TiCDC
 
-        - 修复 TiCDC 服务在同时发生 `ErrTaskStatusNotExists` 和 `capture` 会话关闭的情况下的非预期的退出的问题 [#1240](https://github.com/pingcap/ticdc/pull/1240)
-        - 修复 `changefeed` 之间不同 Old Value 设置会互相影响的问题 [#1347](https://github.com/pingcap/ticdc/pull/1347)
-        - 修复 TiCDC 服务在遇见错误的 `sort-engine` 参数时卡住的问题 [#1309](https://github.com/pingcap/ticdc/pull/1309)
-        - 修复在非 Owner 节点上获取 debug 信息退出的问题 [#1349](https://github.com/pingcap/ticdc/pull/1349)
-        - 修复 `ticdc_processor_num_of_tables` 和 `ticdc_processor_table_resolved_ts` 两个监控指标在增删数据表时没有被正确更新的问题 [#1351](https://github.com/pingcap/ticdc/pull/1351)
-        - 修复 Processor 在添加同步数据表时退出而造成的潜在的数据丢失问题 [#1363](https://github.com/pingcap/ticdc/pull/1363)
-        - 修复 Owner 在数据表迁移期间造成非正常状态的 TiCDC 服务退出的问题 [#1352](https://github.com/pingcap/ticdc/pull/1352)
-        - 修复 TiCDC 服务在丢失 service GC safepoint 时没有及时退出的问题 [#1367](https://github.com/pingcap/ticdc/pull/1367)
-        - 修复 KV client 可能跳过创建 event feed 的问题 [#1336](https://github.com/pingcap/ticdc/pull/1336)
-        - 修复同步事务到下游时事务原子性被破坏的问题 [#1375](https://github.com/pingcap/ticdc/pull/1375)
+        - 修复 TiCDC 服务在同时发生 `ErrTaskStatusNotExists` 和 `capture` 会话关闭的情况下的非预期的退出的问题 [#1240](https://github.com/pingcap/tiflow/pull/1240)
+        - 修复 `changefeed` 之间不同 Old Value 设置会互相影响的问题 [#1347](https://github.com/pingcap/tiflow/pull/1347)
+        - 修复 TiCDC 服务在遇见错误的 `sort-engine` 参数时卡住的问题 [#1309](https://github.com/pingcap/tiflow/pull/1309)
+        - 修复在非 Owner 节点上获取 debug 信息退出的问题 [#1349](https://github.com/pingcap/tiflow/pull/1349)
+        - 修复 `ticdc_processor_num_of_tables` 和 `ticdc_processor_table_resolved_ts` 两个监控指标在增删数据表时没有被正确更新的问题 [#1351](https://github.com/pingcap/tiflow/pull/1351)
+        - 修复 Processor 在添加同步数据表时退出而造成的潜在的数据丢失问题 [#1363](https://github.com/pingcap/tiflow/pull/1363)
+        - 修复 Owner 在数据表迁移期间造成非正常状态的 TiCDC 服务退出的问题 [#1352](https://github.com/pingcap/tiflow/pull/1352)
+        - 修复 TiCDC 服务在丢失 service GC safepoint 时没有及时退出的问题 [#1367](https://github.com/pingcap/tiflow/pull/1367)
+        - 修复 KV client 可能跳过创建 event feed 的问题 [#1336](https://github.com/pingcap/tiflow/pull/1336)
+        - 修复同步事务到下游时事务原子性被破坏的问题 [#1375](https://github.com/pingcap/tiflow/pull/1375)
 
     + Backup & Restore (BR)
 
