@@ -53,7 +53,7 @@ TiDB 版本：4.0.16
     - 修复当 `sql_mode` 为空时，TiDB 无法插入 `null` 到非 null 列的问题 [#11648](https://github.com/pingcap/tidb/issues/11648)
     - 修正 `GREATEST` 和 `LEAST` 函数的返回值类型错误 [#29019](https://github.com/pingcap/tidb/issues/29019)
     - 修复 `grant` 和 `revoke` 操作在授予和撤销全局权限时，报 `privilege check fail` 错误的问题 [#29675](https://github.com/pingcap/tidb/issues/29675)
-    - 修复当 `CASE WHEN` 函数和 enum 类型一起使用时的崩溃问题 [#29357](https://github.com/pingcap/tidb/issues/29357)
+    - 修复当 `CASE WHEN` 函数和 `ENUM` 类型一起使用时的崩溃问题 [#29357](https://github.com/pingcap/tidb/issues/29357)
     - 修复 `microsecond` 函数的向量化表达式版本结果不正确的问题 [#29244](https://github.com/pingcap/tidb/issues/29244)
     - 修复 `hour` 函数在向量化表达式中执行结果错误的问题 [#28643](https://github.com/pingcap/tidb/issues/28643)
     - 修复乐观事务冲突可能导致事务相互阻塞的问题 [#11148](https://github.com/tikv/tikv/issues/11148)
