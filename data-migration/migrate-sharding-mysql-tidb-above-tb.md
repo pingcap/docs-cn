@@ -144,7 +144,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
 ```
 
-#### 执行导入操作
+### 执行导入操作
 
 启动 tidb-lightning 的步骤如下：
 
