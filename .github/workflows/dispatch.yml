@@ -1,18 +1,10 @@
-<<<<<<< HEAD
-name: Repsitory dispatch workflow from docs-cn-release-release-5.2
-=======
 name: Trigger docs site update
->>>>>>> 7451ea358 (chore: update dispatch for latest docs site (#7835))
 
 on:
   push:
     branches:
-<<<<<<< HEAD
-      - release-5.2
-=======
       - master
       - release-*
->>>>>>> 7451ea358 (chore: update dispatch for latest docs site (#7835))
 
 jobs:
   trigger:
@@ -29,12 +21,6 @@ jobs:
       uses: peter-evans/repository-dispatch@v1
       with:
           token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
-<<<<<<< HEAD
-          repository: pingcap/website-docs/
-          event-type: ${{ steps.extract_info.outputs.repo }}/${{ steps.extract_info.outputs.branch }}-${{ steps.extract_info.outputs.sha }}
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}", "repo": "${{ github.repository }}"}'
-=======
           repository: pingcap/website-docs
           event-type: ${{ github.repository }}/${{ github.ref_name }}-${{ steps.extract.outputs.sha }}
           client-payload: '{ "repo": "${{ github.repository }}", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}" }'
->>>>>>> 7451ea358 (chore: update dispatch for latest docs site (#7835))
