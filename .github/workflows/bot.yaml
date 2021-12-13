@@ -10,7 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run PR reminder
+        env:
+          WEBHOOK: ${{secrets.BOT_WEBHOOK_URL}}
         run: |
           wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/pr_reminder.py;
           pip3 install lxml;
-          python3 pr_reminder.py ${{secrets.BOT_WEBHOOK_URL}}
+          python3 pr_reminder.py "$WEBHOOK"
