@@ -336,7 +336,7 @@
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
-    - [Data Migration](https://pingcap.com/docs-cn/tidb-data-migration/stable/)
+    - [Data Migration](/dm/dm-overview.md)
     - TiDB Lightning
       - [概述](/tidb-lightning/tidb-lightning-overview.md)
       - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
@@ -360,7 +360,7 @@
     - [TiKV Control](/tikv-control.md)
     - [TiDB Control](/tidb-control.md)
     - [工具下载](/download-ecosystem-tools.md)
-- [TiDB in Kubernetes](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
+- [TiDB in Kubernetes](/tidb-in-kubernetes.md)
 - 常见问题 (FAQ)
   - [TiDB FAQ](/faq/tidb-faq.md)
   - [TiDB Lightning FAQ](/tidb-lightning/tidb-lightning-faq.md)
