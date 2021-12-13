@@ -91,7 +91,7 @@ CREATE TABLE `table5` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-### 第 1 步：用 Dumpling 导出全量数据备份
+## 第 1 步：用 Dumpling 导出全量数据备份
 
 如果需要导出的多个分表属于同一个上游 MySQL 实例，可以直接使用 Dumpling 的 `-f` 参数一次导出多个分表的结果。如果多个分表分布在不同的 MySQL 实例，可以使用 Dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。下面的例子中同时用到了上述两种方式，然后将导出的数据存放在同一父目录下。
 
