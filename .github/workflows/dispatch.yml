@@ -3,12 +3,8 @@ name: Trigger docs site update
 on:
   push:
     branches:
-<<<<<<< HEAD
-      - release-5.0
-=======
       - master
       - release-*
->>>>>>> 7451ea358 (chore: update dispatch for latest docs site (#7835))
 
 jobs:
   trigger:
