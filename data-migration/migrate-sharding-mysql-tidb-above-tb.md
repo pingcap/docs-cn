@@ -135,7 +135,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 
 关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
-#### 创建目标表结构
+### 创建目标表结构
 
 根据前述“分表数据冲突检查”修改后，手动在下游 TiDB 建 my_db 库和 table5 表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
 
