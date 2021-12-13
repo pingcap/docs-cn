@@ -83,7 +83,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboard_access'@'%';
     ```
 
-2. 为其他用户授权 `dashboard_access` 角色并设置为默认启用
+2. 为其他用户授权 `dashboard_access` 角色并设置为默认启用：
 
     ```sql
     CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
