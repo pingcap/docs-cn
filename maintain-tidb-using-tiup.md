@@ -19,7 +19,7 @@ tiup cluster list
 
 ## 启动集群
 
-启动集群操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer 的顺序启动整个 TiDB 集群所有组件（同时也会启动监控组件）：
+启动集群操作会按 PD -> TiKV -> Pump -> TiDB -> TiFlash -> Drainer -> TiCDC -> Prometheus -> Grafana -> Alertmanager 的顺序启动整个 TiDB 集群所有组件： 
 
 {{< copyable "shell-regular" >}}
 
