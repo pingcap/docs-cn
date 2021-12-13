@@ -29,7 +29,7 @@
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
   - 安装与启动
     - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-    - [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+    - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -173,6 +173,7 @@
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  - [TiDB Data Migration](/dm/dm-overview.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
