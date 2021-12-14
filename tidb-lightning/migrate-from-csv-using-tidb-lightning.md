@@ -34,7 +34,7 @@ CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。�
 separator = ','
 # 引用定界符，设置为空表示字符串未加引号。
 delimiter = '"'
-# 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行）均表示行尾。
+# 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
 terminator = ""
 # CSV 文件是否包含表头。
 # 如果为 true，首行将会被跳过。
@@ -87,7 +87,7 @@ trim-last-separator = false
 ### `terminator`
 
 - 指定行尾定界符。
-- 如果 `terminator` 为空，表示 "\n"（换行）和 "\r\n" （回车+换行）均表示行尾。
+- 如果 `terminator` 为空，表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
 - 对应 LOAD DATA 语句中的 `LINES TERMINATED BY` 项。
 
 ### `header`
