@@ -21,6 +21,6 @@ jobs:
       uses: peter-evans/repository-dispatch@v1
       with:
           token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
-          repository: pingcap/website-docs 
+          repository: pingcap/website-docs
           event-type: ${{ github.repository }}/${{ github.ref_name }}-${{ steps.extract.outputs.sha }}
           client-payload: '{ "repo": "${{ github.repository }}", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}" }'
