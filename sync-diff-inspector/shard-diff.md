@@ -71,7 +71,7 @@ target-table = "table-0"     # 目标表名
 
     source-instances = ["mysql1", "mysql2"]
 
-    target-instance = ["tidb0"]
+    target-instance = "tidb0"
 
     # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     target-check-tables = ["test.table-0"]
@@ -134,7 +134,7 @@ target-table = "table-0"     # 目标表名
 
     source-instances = ["mysql1", "mysql2"]
 
-    target-instance = ["tidb0"]
+    target-instance = "tidb0"
 
     # 需要比对的下游数据库的表，每个表需要包含数据库名和表名，两者由 `.` 隔开
     target-check-tables = ["test.table-0"]
