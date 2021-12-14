@@ -331,6 +331,7 @@ When the downstream is Kafka, the valid configuration items are as follows:
 * `kafka-addrs`
 * `kafka-version`
 * `kafka-max-messages`
+* `kafka-max-message-size`
 * `topic-name`
 
 ### syncer.to.checkpoint

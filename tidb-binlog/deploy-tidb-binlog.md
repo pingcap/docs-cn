@@ -370,9 +370,12 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
+        # The maximum number of messages (number of binlogs) in a broker request. If it is left blank or a value smaller than 0 is configured, the default value 1024 is used.
         # kafka-max-messages = 1024
+        # The maximum size of a broker request (unit: byte). The default value is 1 GiB and the maximum value is 2 GiB.
+        # kafka-max-message-size = 1073741824
 
-        # the topic name of the Kafka cluster that saves the binlog data. The default value is <cluster-id>_obinlog
+        # the topic name of the Kafka cluster that saves the binlog data. The default value is <cluster-id>_obinlog.
         # To run multiple Drainers to replicate data to the same Kafka cluster, you need to set different `topic-name`s for each Drainer.
         # topic-name = ""
         ```
