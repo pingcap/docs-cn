@@ -11,5 +11,5 @@ summary: 了解如何在 Kubernetes 上部署运维 TiDB
 
 TiDB Operator 的文档目前独立于 TiDB 文档。要查看如何使用 TiDB Operator 在 Kubernetes 上部署运维 TiDB 的详细步骤，请参阅对应版本的 TiDB Operator 文档：
 
-- [TiDB Operator v1.2 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2)
+- [TiDB Operator v1.2 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/)
 - [TiDB Operator v1.1 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/)
