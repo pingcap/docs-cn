@@ -404,7 +404,7 @@ I/O rate limiter 相关的配置项。
 
 ### `mode`
 
-+ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只读模式。
++ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。 
 + 可选值：write-only
 + 默认值：write-only
 
@@ -594,7 +594,7 @@ raftstore 相关的配置项。
 
 + 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
 + 默认值：10m
-+ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-check-interval * 2；Hibernate Region 功能关闭时，为 0。
++ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-state-check-interval * 2；Hibernate Region 功能关闭时，为 0。
 
 ### `max-leader-missing-duration`
 
