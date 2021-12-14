@@ -1,4 +1,4 @@
-name: Trigger docs site update
+name: Trigger docs site update 
 
 on:
   push:
