@@ -119,8 +119,6 @@ ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 
 将建表语句中的 `AUTO_INCREMENT` 改为 `AUTO_RANDOM` 即可使用该功能，适用于主键只需要保证唯一，不包含业务意义的场景。示例如下：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t (a BIGINT PRIMARY KEY AUTO_RANDOM, b varchar(255));
 INSERT INTO t (b) VALUES ("foo");
@@ -134,8 +132,6 @@ SELECT * FROM t;
 | 1073741825 | b |
 +------------+---+
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT LAST_INSERT_ID();
