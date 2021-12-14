@@ -215,7 +215,7 @@ The conversions of `DATE`:
 Conversions of `DATETIME` or `TIMESTAMP`:
 
 + When `DATETIME` or `TIMESTAMP` is converted to `DATE`, the time and fractional part is discarded. For example, '1999-12-31 23:59:59.499' is converted to '1999-12-31'
-+ When `DATETIME` or `TIMESTAMP` is converted to TIME, the time-portion is discarded, because `TIME` does not contain any time information
++ When `DATETIME` or `TIMESTAMP` is converted to TIME, the date-portion is discarded, because `TIME` does not contain any date information
 
 When we convert `TIME` to other time and date formats, the date-portion is automatically specified as `CURRENT_DATE()`. The final converted result is a date that consists of `TIME` and `CURRENT_DATE()`. This is to say that if the value of TIME is beyond the range from '00:00:00' to '23:59:59', the converted date-portion does not indicate the current day.
 
