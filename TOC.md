@@ -34,7 +34,7 @@
       - [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
       - [使用 Ansible 部署](/online-deployment-using-ansible.md)
       - [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
-      - [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+      - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 性能测试方法
     - [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -200,6 +200,7 @@
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  - [TiDB Data Migration](/dm/dm-overview.md)
   - TiCDC
     - [概述](/ticdc/ticdc-overview.md)
     - [安装部署](/ticdc/deploy-ticdc.md)
