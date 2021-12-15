@@ -130,17 +130,21 @@ delta_index_cache_size = 0
     advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
 [logger]
-    level = log 级别（支持 trace、debug、information、warning、error）
+    ## log 级别（支持 trace、debug、information、warning、error），默认是 debug
+    level = debug
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
-    size = 单个日志文件的大小
-    count = 最多保留日志文件个数
+    ## 单个日志文件的大小，默认是 100 MB
+    size = "100M"
+    ## 最多保留日志文件个数，默认是 10
+    count = 10
 
 [raft]
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
 
 [status]
-    metrics_port = Prometheus 拉取 metrics 信息的端口
+    ## Prometheus 拉取 metrics 信息的端口，默认是 8234
+    metrics_port = 8234
 
 [profiles]
 
@@ -180,8 +184,8 @@ delta_index_cache_size = 0
     apply-pool-size = 4
     ## 表示处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
     store-pool-size = 4
-    ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
-    snap-handle-pool-size = 2
+    ## 控制处理 snapshot 的线程数，默认为 4。设为 0 则关闭多线程优化
+    snap-handle-pool-size = 4
     ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
     store-batch-retry-recv-timeout = "4ms"
 ```
