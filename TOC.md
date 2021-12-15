@@ -337,7 +337,7 @@
     - [TiKV Control](/tikv-control.md)
     - [TiDB Control](/tidb-control.md)
     - [工具下载](/download-ecosystem-tools.md)
-- [TiDB in Kubernetes](/tidb-in-kubernetes.m)
+- [TiDB in Kubernetes](/tidb-in-kubernetes.md)
 - 常见问题 (FAQ)
   - [TiDB FAQ](/faq/tidb-faq.md)
   - [TiDB Lightning FAQ](/tidb-lightning/tidb-lightning-faq.md)
