@@ -14,7 +14,7 @@ summary: 介绍下游存在更多列的迁移场景。
 
 ## 使用 DM 迁移至存在更多列的下游
 
-DM 同步上游的 binlog 时，会尝试使用下游当前的表结构来解析 binlog 并生成相应的 DML 语句。如果上游的 binlog 里数据的列数与下游表结构的列数不一致，则会产生如下错误：
+DM 同步上游的 binlog 时，会尝试使用下游当前的表结构来解析 binlog 并生成相应的 DML 语句。如果上游的 binlog 里数据表的列数与下游表结构的列数不一致，则会产生如下错误：
 
 ```json
 "errors": [
@@ -55,7 +55,7 @@ CREATE TABLE `messages` (
 
 此时，你可以使用 `operate-schema` 命令来为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
 
-1. 在 DM 中，新建一个 `sql` 文件，并将上游表结构对应的 CREATE TABLE 语句保存到该文件。例如，将以下表结构保存到 `log.messages.sql` 中。
+1. 在 DM 中，新建一个 `.sql` 文件，并将上游表结构对应的 `CREATE TABLE` 语句添加到该文件。例如，将以下表结构保存到 `log.messages.sql` 中。
 
     ```sql
     # 上游表结构
@@ -65,7 +65,7 @@ CREATE TABLE `messages` (
     )
     ```
 
-2. 使用 `operate-schema` 命令为数据源中需要迁移的表设置表结构（此时数据迁移任务应该由于上述错误而处于 Paused 状态）。
+2. 使用 `operate-schema` 命令为数据源中需要迁移的表设置表结构（此时数据迁移任务应该由于上述 `Column count doesn't match` 错误而处于 Paused 状态）。
 
     {{< copyable "shell-regular" >}}
 
@@ -74,6 +74,7 @@ CREATE TABLE `messages` (
     ```
 
     该命令中的参数描述如下：
+
     |参数           |描述|
     |-              |-|
     |--master-addr  |指定 dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}。`{advertise-addr}` 表示 DM-master 向外界宣告的地址。|
