@@ -1,7 +1,6 @@
 ---
 title: 数据迁移场景综述
 summary: This document describes how to migrate data from databases or data formats (CSV/SQL).
-aliases: ['/docs/dev/migration-overview/']
 ---
 
 # 数据迁移场景综述
