@@ -140,7 +140,7 @@ sql-mode = ""
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --fetch-mode
+tidb-lightning-ctl --config tidb-lightning.toml --fetch-mode
 ```
 
 可执行以下命令强制切换回“普通模式” (normal mode)：
@@ -148,7 +148,7 @@ tidb-lightning-ctl --fetch-mode
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --switch-mode=normal
+tidb-lightning-ctl --config tidb-lightning.toml --switch-mode=normal
 ```
 
 ## TiDB Lightning 可以使用千兆网卡吗？
