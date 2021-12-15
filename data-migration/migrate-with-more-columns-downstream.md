@@ -70,13 +70,13 @@ CREATE TABLE `messages` (
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr ${advertise-addr} operate-schema set -s ${mysql-id} ${task-name} -d ${database-name} -t ${table-name} ${schema-file}>
+    tiup dmctl --master-addr ${advertise-addr} operate-schema set -s ${mysql-id} ${task-name} -d ${database-name} -t ${table-name} ${schema-file}
     ```
 
     该命令中的参数描述如下：
     |参数           |描述|
     |-              |-|
-    |--master-addr  |指定 dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}。|
+    |--master-addr  |指定 dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}。`{advertise-addr}` 表示 DM-master 向外界宣告的地址。|
     |operate-schema set|手动设置 schema 信息|
     |-s             |指定 source。`{mysql-id}` 表示 MySQL 数据源 ID。`{task-name}` 表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。|
     |-d             |指定 database。`{database-name}`表示上游数据库名。|
