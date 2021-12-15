@@ -142,11 +142,11 @@ summary: TiDB 集群中各组件的报警规则详解。
     * 重启 TiDB 以恢复服务。
     * 检查 TiDB Binlog 服务是否正常。
 
-#### `TiDB_tikvclient_backoff_total`
+#### `TiDB_tikvclient_backoff_seconds_count`
 
 * 报警规则：
 
-    `increase(tidb_tikvclient_backoff_total[10m]) > 10`
+    `increase(tidb_tikvclient_backoff_seconds_count[10m]) > 10`
 
 * 规则描述：
 
