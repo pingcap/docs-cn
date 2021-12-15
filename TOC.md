@@ -33,7 +33,7 @@
     - [Hybrid Topology](/hybrid-deployment-topology.md)
   - Install and Start
     - [Use TiUP (Recommended)](/production-deployment-using-tiup.md)
-    - [Deploy in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable)
+    - [Deploy in Kubernetes](/tidb-in-kubernetes.md)
   - [Verify Cluster Status](/post-installation-check.md)
   - Test Cluster Performance
     - [Test TiDB Using Sysbench](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -196,6 +196,7 @@
     - [Deploy](/tidb-lightning/deploy-tidb-lightning.md)
     - [Precheck](/tidb-lightning/tidb-lightning-prechecks.md)
     - [Configure](/tidb-lightning/tidb-lightning-configuration.md)
+  - [TiDB Data Migration](/dm/dm-overview.md)
     - Key Features
       - [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [Table Filter](/table-filter.md)
