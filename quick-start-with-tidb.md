@@ -275,7 +275,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-2. 声明全局环境变量。
+2. 声明全局环境变量：
 
     > **注意：**
     >
