@@ -19,7 +19,7 @@
     - [SQL 基本操作](/basic-sql-operations.md)
     - [读取历史数据](/read-historical-data.md)
     - [TiDB Binlog 教程](/get-started-with-tidb-binlog.md)
-    - [TiDB Data Migration 教程](https://pingcap.com/docs-cn/tidb-data-migration/stable/get-started/)
+    - [TiDB Data Migration 教程](/dm/dm-overview.md)
     - [TiDB Lightning 教程](/get-started-with-tidb-lightning.md)
     - [TiSpark 教程](/get-started-with-tispark.md)
   - 部署
