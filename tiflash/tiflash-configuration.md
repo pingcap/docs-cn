@@ -176,6 +176,10 @@ delta_index_cache_size = 0
 [server]
     engine-addr = 外部访问 TiFlash coprocessor 服务的地址
 [raftstore]
+    ## 处理 Raft 数据落盘的线程池中线程的数量
+    apply-pool-size = 4
+    ## 表示处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
+    store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
     ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
