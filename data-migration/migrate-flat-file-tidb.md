@@ -11,8 +11,8 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式，
 
 ## 前提条件
 
-- [安装 TiDB Lightning](/migration-tools.md)
-- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
+- [安装 TiDB Lightning](/migration-tools.md)。
+- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 第 1 步. 准备 CSV 文件
 
