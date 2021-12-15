@@ -181,7 +181,7 @@ target-table = "table5"
 [mydumper]
 # 源数据目录。设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
 data-source-dir = "${data-path}"
-# 由于 table1~4 合并为 table5。所以这里不创建表库，避免根据 Dumpling 的导出文件再下游创建出 table1~4。
+# 由于 table1~4 合并为 table5。所以这里不创建表库，避免根据 Dumpling 的导出文件在下游创建出 table1~4。
 no-schema = true
 # 配置通配符规则，默认规则会过滤 mysql、sys、INFORMATION_SCHEMA、PERFORMANCE_SCHEMA、METRICS_SCHEMA、INSPECTION_SCHEMA 系统数据库下的所有表
 # 若不配置该项，导入系统表时会出现“找不到 schema”的异常
@@ -252,12 +252,13 @@ tiup dmctl --master-addr 172.16.10.71:8261 operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
+
 |参数           |描述|
 |-              |-|
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}|
-|operate-source create|向 DM 集群加载、列出、移除数据源|
+|operate-source create  |  向 DM 集群加载数据源  |
 
-重复以上步骤直至所有 MySQL 实例被加入 DM
+重复以上步骤直至所有 MySQL 实例被加入 DM。
 
 ### 添加同步任务
 
@@ -292,7 +293,7 @@ routes:                               # 上游和下游表之间的路由 table 
     table-pattern: "table[1-2]"       # 表名匹配规则，支持通配符 "*" 和 "?"
     target-schema: "my_db"            # 目标库名称
     target-table: "table5"            # 目标表名称
-  route-rule-1:                       # 配置名称。将 my_db2 中的 table3 和 table4 合并导入下游 my_db.table5
+  route-rule-2:                       # 配置名称。将 my_db2 中的 table3 和 table4 合并导入下游 my_db.table5
     schema-pattern: "my_db2"          
     table-pattern: "table[3-4]"       
     target-schema: "my_db"            
@@ -348,7 +349,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 |参数|描述|
 |-|-|
-|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr},例如：172.16.10.71:8261|
+| --master-addr | dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261 |
 |start-task|命令用于创建数据迁移任务|
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
