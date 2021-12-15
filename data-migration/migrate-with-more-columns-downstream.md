@@ -12,9 +12,9 @@ summary: 介绍下游存在更多列的迁移场景。
 - [TB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
 - [TB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
 
-## 使用 DM 迁移至更多列的下游
+## 使用 DM 迁移至存在更多列的下游
 
-截至当前版本，DM 同步 binlog 时，会尝试使用上游当前的表结构来解析 binlog 并生成相应的 DML 语句。如果 binlog 里数据的列数与表结构的列数不一致则会产生如下错误：
+DM 同步 binlog 时，会尝试使用上游当前的表结构来解析 binlog 并生成相应的 DML 语句。如果 binlog 里数据的列数与表结构的列数不一致则会产生如下错误：
 
 ```json
 "errors": [
@@ -47,9 +47,9 @@ CREATE TABLE `messages` (
 )
 ```
 
-DM 尝试使用下游表结构解析上游产生的 binlog event 时，会报出上述`Column count doesn't match`错误。
+DM 尝试使用下游表结构解析上游产生的 binlog event 时，会报出上述 `Column count doesn't match` 错误。
 
-此时，我们可以使用`operate-schema`命令来为该表指定与 binlog event 匹配的表结构。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
+此时，你可以使用 `operate-schema` 命令来为该表指定与 binlog event 匹配的表结构。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
 
 第 1 步：为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。将对应的 CREATE TABLE 表结构语句并保存到文件，例如将以下表结构保存到`log.messages.sql` 中。
 
