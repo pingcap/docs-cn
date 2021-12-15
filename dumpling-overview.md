@@ -259,7 +259,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 默认情况下，导出的文件会存储到 `./export-<current local time>` 目录下。常用选项如下：
 
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
-- `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。
+- `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新时，该参数大于 0 表示使用 TiDB region 信息进行划分，具体取值将不再生效。
 
 利用以上选项可以提高 Dumpling 的导出速度。
 
@@ -346,7 +346,7 @@ SET GLOBAL tidb_gc_life_time = '10m';
 | --case-sensitive | table-filter 是否大小写敏感 | false，大小写不敏感 |
 | -h 或 --host| 连接的数据库主机的地址 | "127.0.0.1" |
 | -t 或 --threads | 备份并发线程数| 4 |
-| -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。|
+| -r 或 --rows | 将 table 划分成 row 行数据，一般针对大表操作并发生成多个文件。当上游为 TiDB 且版本为 v3.0 或更新时，该参数大于 0 表示使用 TiDB region 信息进行划分，具体取值将不再生效 |
 | -L 或 --logfile | 日志输出地址，为空时会输出到控制台 | "" |
 | --loglevel | 日志级别 {debug,info,warn,error,dpanic,panic,fatal} | "info" |
 | --logfmt | 日志输出格式 {text,json} | "text" |
