@@ -186,7 +186,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `format`
 
-+ 指定日志输出的格式，可选项为 [json, text, console]。
++ 指定日志输出的格式，可选项为 [json, text]。
 + 默认值："text"
 
 ### `enable-timestamp`
