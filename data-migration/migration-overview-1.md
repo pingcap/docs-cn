@@ -1,7 +1,6 @@
 ---
 title: 数据迁移场景综述
 summary: 描述数据迁移场景的各种场景，以及相应的文档地址
-aliases: ['/docs/dev/migration-overview/']
 ---
 
 # 数据迁移场景综述
