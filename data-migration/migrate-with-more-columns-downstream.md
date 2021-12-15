@@ -14,7 +14,7 @@ summary: 介绍下游存在更多列的迁移场景。
 
 ## 使用 DM 迁移至存在更多列的下游
 
-DM 同步 binlog 时，会尝试使用上游当前的表结构来解析 binlog 并生成相应的 DML 语句。如果 binlog 里数据的列数与表结构的列数不一致则会产生如下错误：
+DM 同步上游的 binlog 时，会尝试使用下游当前的表结构来解析 binlog 并生成相应的 DML 语句。如果上游的 binlog 里数据的列数与下游表结构的列数不一致，则会产生如下错误：
 
 ```json
 "errors": [
@@ -38,7 +38,11 @@ CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 )
+```
 
+例如下游表结构为：
+
+```sql
 # 下游表结构
 CREATE TABLE `messages` (
   `id` int(11) NOT NULL,
@@ -47,49 +51,57 @@ CREATE TABLE `messages` (
 )
 ```
 
-DM 尝试使用下游表结构解析上游产生的 binlog event 时，会报出上述 `Column count doesn't match` 错误。
+当 DM 尝试使用下游表结构解析上游产生的 binlog event 时，DM 会报出上述 `Column count doesn't match` 错误。
 
-此时，你可以使用 `operate-schema` 命令来为该表指定与 binlog event 匹配的表结构。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
+此时，你可以使用 `operate-schema` 命令来为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
 
-1. 为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。将对应的 CREATE TABLE 表结构语句保存到文件，例如将以下表结构保存到 `log.messages.sql` 中。
+1. 在 DM 中，新建一个 `sql` 文件，并将上游表结构对应的 CREATE TABLE 语句保存到该文件。例如，将以下表结构保存到 `log.messages.sql` 中。
 
-```sql
-# 上游表结构
-CREATE TABLE `messages` (
-  `id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-)
-```
+    ```sql
+    # 上游表结构
+    CREATE TABLE `messages` (
+    `id` int(11) NOT NULL,
+    PRIMARY KEY (`id`)
+    )
+    ```
 
-2. 使用 `operate-schema` 命令设置表结构（此时 task 应该由于上述错误而处于 Paused 状态）。
+2. 使用 `operate-schema` 命令为数据源中需要迁移的表设置表结构（此时数据迁移任务应该由于上述错误而处于 Paused 状态）。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-tiup dmctl --master-addr ${advertise-addr} operate-schema set -s mysql-01 task-test -d log -t message log.message.sql
-```
+    ```
+    tiup dmctl --master-addr ${advertise-addr} operate-schema set -s ${mysql-id} ${task-name} -d ${database-name} -t ${table-name} ${schema-file}>
+    ```
 
-该命令中的参数描述如下：
-|参数           |描述|
-|-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-schema set|手动设置 schema 信息|
-|-s             |指定 source|
-|-d             |指定 database|
-|-t             |指定 table|
+    该命令中的参数描述如下：
+    |参数           |描述|
+    |-              |-|
+    |--master-addr  |指定 dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}。|
+    |operate-schema set|手动设置 schema 信息|
+    |-s             |指定 source。`{mysql-id}` 表示 MySQL 数据源 ID。`{task-name}` 表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。|
+    |-d             |指定 database。`{database-name}`表示上游数据库名。|
+    |-t             |指定 table。`{table-name}` 表示上游数据表名。`{schema-file}` 表示将被设置的表结构文件。|
 
-3. 使用 `resume-task` 命令恢复处于 Paused 状态的任务。
+    例如：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-tiup dmctl --master-addr ${advertise-addr} resume-task ${task-name}
-```
+    ```
+    tiup dmctl --master-addr 172.16.10.71:8261 operate-schema set -s mysql-01 task-test -d log -t message log.message.sql
+    ```
+
+3. 使用 `resume-task` 命令恢复处于 Paused 状态的同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```
+    tiup dmctl --master-addr ${advertise-addr} resume-task ${task-name}
+    ```
 
 4. 使用 `query-status` 命令确认数据迁移任务是否运行正常。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-tiup dmctl --master-addr ${advertise-addr} query-status resume-task ${task-name}
-```
+    ```
+    tiup dmctl --master-addr ${advertise-addr} query-status resume-task ${task-name}
+    ```
