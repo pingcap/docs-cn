@@ -37,7 +37,7 @@
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 - 数据迁移
-  - [数据迁移综述](/data-migration/migration-overview-1.md)
+  - [数据迁移综述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
   - 数据迁移场景
     - [从 Aurora 迁移数据到 TiDB](/data-migration/migrate-aurora-tidb-from-snapshot.md)
