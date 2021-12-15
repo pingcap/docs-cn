@@ -8,7 +8,7 @@ title: TiDB 简介
 
 关于 TiDB 的关键技术创新，请观看以下视频。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/301_Lesson_05.mp4" width="600px" height="450px" controls="controls"></video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+01.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+1.png"></video>
 
 ## 五大核心特性
 
@@ -52,7 +52,7 @@ title: TiDB 简介
 
 关于 TiDB 典型应用场景和用户案例的介绍，请观看以下视频。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/301_Lesson_06.mp4" width="600px" height="450px" controls="controls"></video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+06.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+6.png"></video>
 
 ## 另请参阅
 
