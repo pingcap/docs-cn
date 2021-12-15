@@ -251,7 +251,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 日志文件的大小限制。
 + 默认值：300
 + 单位：MB
-+ 最大设置上限为 4GB。
++ 最大设置上限为 4096。
 
 #### `max-days`
 
@@ -471,10 +471,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 prepare 语句的 plan cache 设置。
 
-> **警告：**
->
-> 当前该功能仍为实验特性，不建议在生产环境中使用。
-
 ### `enabled`
 
 + 开启 prepare 语句的 plan cache。
@@ -555,7 +551,7 @@ prepare 语句的 plan cache 设置。
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 
-### `enable`
+### `enabled`
 
 + 开启或关闭事务内存锁
 + 默认值：false
@@ -607,7 +603,7 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
++ 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>

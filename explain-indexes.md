@@ -1,9 +1,11 @@
 ---
-title: 用 EXPLAIN 查看使用索引的 SQL 执行计划
+title: 用 EXPLAIN 查看索引查询的执行计划
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 ---
 
-# 用 EXPLAIN 查看使用索引的 SQL 执行计划
+# 用 EXPLAIN 查看索引查询的执行计划
+
+SQL 查询可能会使用索引，可以通过 `EXPLAIN` 语句来查看索引查询的执行计划。本文提供多个示例，以帮助用户理解索引查询是如何执行的。
 
 TiDB 支持以下使用索引的算子来提升查询速度：
 
@@ -39,7 +41,6 @@ TiDB 从二级索引检索数据时会使用 `IndexLookup` 算子。例如，以
 ```sql
 EXPLAIN SELECT * FROM t1 WHERE intkey = 123;
 EXPLAIN SELECT * FROM t1 WHERE intkey < 10;
-EXPLAIN SELECT * FROM t1 WHERE intkey BETWEEN 300 AND 310;
 EXPLAIN SELECT * FROM t1 WHERE intkey BETWEEN 300 AND 310;
 EXPLAIN SELECT * FROM t1 WHERE intkey IN (123,29,98);
 EXPLAIN SELECT * FROM t1 WHERE intkey >= 99 AND intkey <= 103;
@@ -347,3 +348,13 @@ EXPLAIN SELECT AVG(intkey), ANY_VALUE(pad1) FROM t1;
 +------------------------------+---------+-----------+---------------+-----------------------------------------------------------------------------------------------------------------------+
 5 rows in set (0.00 sec)
 ```
+
+## 其他类型查询的执行计划
+
++ [MPP 模式查询的执行计划](/explain-mpp.md)
++ [Join 查询的执行计划](/explain-joins.md)
++ [子查询的执行计划](/explain-subqueries.md)
++ [聚合查询的执行计划](/explain-aggregation.md)
++ [视图查询的执行计划](/explain-views.md)
++ [分区查询的执行计划](/explain-partitions.md)
++ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
