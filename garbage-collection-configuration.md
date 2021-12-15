@@ -33,10 +33,15 @@ select VARIABLE_NAME, VARIABLE_VALUE from mysql.tidb where VARIABLE_NAME like "t
 
 例如，如果需要将 GC 调整为保留最近一天以内的数据，只需执行下列语句即可：
 
+<<<<<<< HEAD
 {{< copyable "sql" >}}
 
 ```sql
 update mysql.tidb set VARIABLE_VALUE="24h" where VARIABLE_NAME="tikv_gc_life_time";
+=======
+```bash
+tikv-ctl --host=ip:port modify-tikv-config -n gc.max-write-bytes-per-sec -v 10MB
+>>>>>>> 5815d412b (Update tikv-ctl modify-tikv-config usage for gc (#7772))
 ```
 
 > **注意：**
