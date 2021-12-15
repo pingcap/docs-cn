@@ -1,51 +1,55 @@
 ---
-title: 从 Aurora 迁移数据到 TiDB
-summary: 介绍如何使用快照从 Aurora 迁移数据到 TiDB。
+title: 从 Amazon Aurora 迁移数据到 TiDB
+summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
 ---
 
-# 从 Aurora 迁移数据到 TiDB
+# 从 Amazon Aurora 迁移数据到 TiDB
 
-本文档介绍通过 Aurora 迁移数据到 TiDB，采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html) 导入可以节约大量的空间和时间成本。迁移过程包含两个过程：
+本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，可以节约大量的空间和时间成本。整个迁移包含两个过程：
 
 - 使用 Lightning 导入全量数据到 TiDB
 - 使用 DM 持续增量同步到 TiDB（可选）
 
 ## 前提条件
 
-- [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
-- [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
+- [安装 Dumpling 和 Lightning](/migration-tools.md)
+- [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 
-## 使用 Lightning 导入全量数据到 TiDB
+## 导入全量数据到 TiDB
 
 ### 第 1 步. 导出 Aurora 快照文件到 Amazon S3
 
-第 1 步：执行以下命令，查询当前 binlog 位置
+1. 执行以下命令，查询当前 binlog 位置：
 
-```shell
-mysql> SHOW MASTER STATUS;
-```
+    ```sql
+    mysql> SHOW MASTER STATUS;
+    ```
 
-您将得到类似以下的输出，请记录 binlog 名称和位置
+    你将得到类似以下的输出，请记录 binlog 名称和位置，供后续步骤使用：
 
-```
-+------------------+----------+--------------+------------------+-------------------+
-| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-+------------------+----------+--------------+------------------+-------------------+
-| mysql-bin.000002 |    52806 |              |                  |                   |
-+------------------+----------+--------------+------------------+-------------------+
-1 row in set (0.012 sec)
-```
+    ```
+    +------------------+----------+--------------+------------------+-------------------+
+    | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+    +------------------+----------+--------------+------------------+-------------------+
+    | mysql-bin.000002 |    52806 |              |                  |                   |
+    +------------------+----------+--------------+------------------+-------------------+
+    1 row in set (0.012 sec)
+    ```
 
-第 2 步：导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
 
-请注意，上述两项操作的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。最终您需要准备好以下信息：
+请注意，上述两步的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
-- 创建快照点时，Aurora binlog 名称及位置
-- 快照文件的 S3 路径，及具有访问权限的 SecretKey 和 AccessKey
+完成上述两步后，你需要准备好以下信息：
 
-### 第 2 步. 使用 Dumpling 导出 schema
+- 创建快照点时，Aurora binlog 的名称及位置。
+- 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
 
-因为 Aurora 生成的快照文件并不包含建表语句文件，所以您需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建。或者跳过此步骤以手动方式在下游自行创建。
+### 第 2 步. 导出 schema
+
+因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
+
+运行以下命令，导出 schema：
 
 {{< copyable "shell-regular" >}}
 
@@ -53,7 +57,7 @@ mysql> SHOW MASTER STATUS;
 tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no-data --output ./schema --filter "mydb.*"
 ```
 
-命令中所用参数描述如下，如需更多信息可参考：[Dumpling overview](/dumpling-overview.md).
+命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
 
 |参数               |说明|
 |-                  |-|
@@ -68,9 +72,9 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no
 |-B 或 --database   |导出指定数据库|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
 
-### 第 3 步. 编写 Lightning 配置文件 
+### 第 3 步. 编写 Lightning 配置文件
 
-根据一下内容创建`tidb-lighting.toml` 配置文件:
+根据以下内容创建`tidb-lighting.toml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -111,7 +115,7 @@ table = '$2'
 type = '$3'
 ```
 
-如果需要在 TiDB 开启 TLS ，请参考： [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)
+如果需要在 TiDB 开启 TLS ，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ### 第 4 步. 导入全量数据到 TiDB
 
@@ -150,46 +154,47 @@ type = '$3'
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
-## 使用 DM 持续增量同步数据到 TiDB（可选）
+## 持续增量同步数据到 TiDB（可选）
 
 ### 前提条件
 
-- [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
-- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
+- [安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
+- [获取 DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
 
 ### 第 1 步. 创建数据源
 
-新建`source1.yaml`文件, 写入以下内容：
+1. 新建`source1.yaml`文件, 写入以下内容：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```yaml
-# Configuration.
-source-id: "mysql-01"     # 唯一命名，不可重复
- 
-# DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-enable-gtid: false
+    ```yaml
+    # Configuration.
+    source-id: "mysql-01"     # 唯一命名，不可重复
 
-from:
-  host: "${host}"         # 例如：172.16.10.81
-  user: "root"
-  password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
-  port: 3306
-```
+    # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
+    enable-gtid: false
 
-在终端中执行下面的命令，使用`tiup dmctl`将数据源配置加载到 DM 集群中:
+    from:
+      host: "${host}"         # 例如：172.16.10.81
+      user: "root"
+      password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
+      port: 3306
+    ```
 
-{{< copyable "shell-regular" >}}
+2. 在终端中执行下面的命令，使用 `tiup dmctl` 将数据源配置加载到 DM 集群中:
 
-```shell
-tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
-```
+    {{< copyable "shell-regular" >}}
 
-该命令中的参数描述如下：
-|参数           |描述|
-|-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-source create|向 DM 集群加载数据源|
+    ```shell
+    tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
+    ```
+
+    该命令中的参数描述如下：
+
+    |参数           |描述|
+    |-              |-|
+    |`--master-addr`  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
+    |`operate-source create`|向 DM 集群加载数据源|
 
 ### 第 2 步. 创建迁移任务
 
@@ -200,7 +205,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```yaml
 # 任务名，多个同时运行的任务不能重名。
 name: "test"
-# 任务模式，可设为 
+# 任务模式，可设为
 # full：只进行全量数据迁移
 # incremental： binlog 实时同步
 # all： 全量 + binlog 迁移
@@ -219,7 +224,7 @@ block-allow-list:                     # 如果 DM 版本早于 v2.0.0-beta.2 则
     - db-name: "test_db"              # 需要迁移的表的库名。
       tbl-name: "test_table"          # 需要迁移的表的名称。
 
-## 配置数据源
+# 配置数据源
 mysql-instances:
   - source-id: "mysql-01"               # 数据源 ID，即 source1.yaml 中的 source-id
     block-allow-list: "listA"           # 引入上面黑白名单配置。
@@ -229,7 +234,7 @@ mysql-instances:
       binlog-pos: 109227
       # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
-   ## 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
+   # 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
    ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
    # syncers:            # sync 处理单元的运行配置参数。
    #  global:           # 配置名称。
@@ -237,11 +242,11 @@ mysql-instances:
 
 ```
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
 
 ### 第 3 步. 启动任务
 
-在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
+在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
 {{< copyable "shell-regular" >}}
 
@@ -261,14 +266,14 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 |参数|描述|
 |-|-|
-|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
-|start-task|命令用于创建数据迁移任务|
+|`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
+|`start-task`|命令用于创建数据迁移任务|
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+如果任务启动失败，可根据返回结果的提示进行配置变更后，再次执行上述命令，重新启动任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling)以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
 
 ### 第 4 步. 查看任务状态
 
-如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用`tiup dmctl`执行`query-status`命令进行查询：
+如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
 {{< copyable "shell-regular" >}}
 
@@ -276,18 +281,18 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)
+关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)。
 
 ### 第 5 步. 监控任务与查看日志
 
 要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
 
-如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
 DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
-- DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
-- DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
+- DM-master 日志目录：通过 DM-master 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
+- DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多
 
