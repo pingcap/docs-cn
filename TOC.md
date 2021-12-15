@@ -21,7 +21,7 @@
     - [SQL 基本操作](/basic-sql-operations.md)
     - [读取历史数据](/read-historical-data.md)
     - [TiDB Binlog 教程](/get-started-with-tidb-binlog.md)
-    - [TiDB Data Migration 教程](https://pingcap.com/docs-cn/tidb-data-migration/stable/get-started/)
+    - [TiDB Data Migration 教程](/dm/dm-overview.md)
     - [TiDB Lightning 教程](/get-started-with-tidb-lightning.md)
     - [TiSpark 教程](/get-started-with-tispark.md)
   - 部署
@@ -337,7 +337,7 @@
     - [TiKV Control](/tikv-control.md)
     - [TiDB Control](/tidb-control.md)
     - [工具下载](/download-ecosystem-tools.md)
-- [TiDB in Kubernetes](https://pingcap.com/docs-cn/tidb-in-kubernetes/stable/)
+- [TiDB in Kubernetes](/tidb-in-kubernetes.md)
 - 常见问题 (FAQ)
   - [TiDB FAQ](/faq/tidb-faq.md)
   - [TiDB Lightning FAQ](/tidb-lightning/tidb-lightning-faq.md)
