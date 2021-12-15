@@ -113,7 +113,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 |-r 或 --row        |单个文件的最大行数|
 |-F                 |指定单个文件的最大大小，单位为 MiB。强烈建议使用`-F`参数以避免单表过大导致备份过程中断|
 |-B 或 --database  | 导出指定数据库 |
-|-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。 `[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]`（导出除系统库外的所有库表） |
+|-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。|
 
 然后使用同样的方式从 my_db2 中导出表 table3 和 table4。注意路径在相同`${data-path}`下的不同子目录`my_db2`。
 
