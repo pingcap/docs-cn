@@ -164,7 +164,6 @@
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [适用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
-  - [Dumpling](/dumpling-overview.md)
   - TiUP
     - [文档地图](/tiup/tiup-documentation-guide.md)
     - [概览](/tiup/tiup-overview.md)
@@ -181,6 +180,7 @@
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](tidb-operator-overview.md)
+  - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - 主要功能
