@@ -28,7 +28,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 基本信息：
 
 - [TiDB Operator 架构](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/architecture)
-- [在 Kubernetes 上部署运维 TiDB 快速上手](/tiup/tiup-component-management.md)
+- [在 Kubernetes 上部署运维 TiDB 快速上手](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started/)
 - 适用 TiDB 版本：v2.1 及以上
 
 ## 数据管理工具
