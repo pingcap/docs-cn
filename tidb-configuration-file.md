@@ -190,7 +190,7 @@ Configuration items related to log.
 ### `format`
 
 - Specifies the log output format.
-- Value options: `json`, `text` and `console`.
+- Value options: `json` and `text`.
 - Default value: `text`
 
 ### `enable-timestamp`
