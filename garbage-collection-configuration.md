@@ -140,5 +140,5 @@ TiDB 在 3.0.6 版本开始支持 GC 流控，可通过配置 `gc.max-write-byte
 {{< copyable "shell-regular" >}}
 
 ```bash
-tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
+tikv-ctl --host=ip:port modify-tikv-config -n gc.max-write-bytes-per-sec -v 10MB
 ```
