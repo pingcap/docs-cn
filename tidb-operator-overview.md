@@ -9,6 +9,6 @@ summary: 了解 TiDB Operator
 
 对于当前 TiDB 版本，TiDB Operator 的适用版本为 v1.2。
 
-TiDB Operator 的文档目前独立于 TiDB 文档。要访问 TiDB Operator 的文档，请点击以下链接：
+TiDB Operator 的文档目前独立于 TiDB 文档，文档名称为 **TiDB in Kubernetes 用户文档**。要访问 TiDB Operator 的文档，请点击以下链接：
 
-- [TiDB Operator v1.2 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/)
+- [TiDB in Kubernetes 用户文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.2/)
