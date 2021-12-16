@@ -15,9 +15,12 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 
 [TiUP](/tiup/tiup-overview.md) 是在物理机或虚拟机上的 TiDB 包管理器，管理着 TiDB 的众多的组件，如 TiDB、PD、TiKV 等。当你想要运行 TiDB 生态中任何组件时，只需要执行一行 TiUP 命令即可。
 
+[TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster) 是 TiUP 提供的使用 Golang 编写的集群管理组件，通过 TiUP cluster 组件就可以进行日常的运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 TiDB 集群，以及管理 TiDB 集群参数。
+
 基本信息：
 
 - [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+- [使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)
 - [TiUP 组件管理](/tiup/tiup-component-management.md)
 - 适用 TiDB 版本：v4.0 及以上
 
