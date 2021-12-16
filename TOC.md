@@ -160,11 +160,27 @@
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
-- TiDB 生态工具
+- TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [适用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
   - [Dumpling](/dumpling-overview.md)
+  - TiUP
+    - [文档地图](/tiup/tiup-documentation-guide.md)
+    - [概览](/tiup/tiup-overview.md)
+    - [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    - [TiUP 组件管理](/tiup/tiup-component-management.md)
+    - [FAQ](/tiup/tiup-faq.md)
+    - [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    - [参考手册](/tiup/tiup-reference.md)
+    - [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
+    - [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
+    - TiUP 组件文档
+      - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
+      - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
+  - [TiDB Operator](tidb-operator.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - 主要功能
@@ -545,21 +561,6 @@
     - TiFlash
       - [TiFlash 简介](/tiflash/tiflash-overview.md)
       - [使用 TiFlash](/tiflash/use-tiflash.md)
-  - TiUP
-    - [文档地图](/tiup/tiup-documentation-guide.md)
-    - [概览](/tiup/tiup-overview.md)
-    - [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
-    - [TiUP 组件管理](/tiup/tiup-component-management.md)
-    - [FAQ](/tiup/tiup-faq.md)
-    - [故障排查](/tiup/tiup-troubleshooting-guide.md)
-    - [参考手册](/tiup/tiup-reference.md)
-    - [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
-    - [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
-    - TiUP 组件文档
-      - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
-      - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
-      - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
