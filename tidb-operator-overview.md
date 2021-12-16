@@ -1,6 +1,6 @@
 ---
 title: TiDB Operator
-summary: 了解 TiDB Operator
+summary: 了解 Kubernetes 上的 TiDB 集群自动部署运维工具 TiDB Operator。
 ---
 
 # TiDB Operator
