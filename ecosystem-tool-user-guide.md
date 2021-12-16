@@ -36,6 +36,8 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 
 ## 数据管理工具
 
+ TiDB 提供了丰富的数据管理工具，例如数据迁移、导入导出、备份恢复、增量同步、数据校验等。
+
 ### 数据迁入 - TiDB Data Migration (DM)
 
 [TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据的迁移和增量数据的复制。
@@ -137,6 +139,10 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
 
-## 在 TiKV 上运行 Spark SQL - TiSpark
+## OLAP 分析工具
+
+TiDB 提供了 OLAP 分析工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
+
+### 使用 Spark 查询 TiKV 数据源 - TiSpark
 
 [TiSpark](/tispark-overview.md) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
