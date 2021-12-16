@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 # TiDB 工具下载
 
-本页面汇总了 TiDB 周边工具官方维护版本的下载链接。
+本页面汇总了 TiDB 工具官方维护版本的下载链接。
 
 ## TiUP
 

@@ -9,7 +9,7 @@ TiDB 提供了丰富的工具，可以帮助你进行部署运维、数据管理
 
 ## 部署运维工具
 
-TiDB 提供了 TiUP 和 TiDB Operator 两种安装部署工具，满足你在不同系统环境下的部署运维需求。
+TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不同系统环境下的部署运维需求。
 
 ### 在本地部署运维 TiDB - TiUP
 
@@ -93,7 +93,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种安装部署工具，满足你在不
 >
 > 原 Loader 工具已停止维护，不再推荐使用。相关场景请使用 TiDB Lightning 的 `tidb` 模式进行替代，详细信息请参考 [TiDB Lightning TiDB-backend 文档](/tidb-lightning/tidb-lightning-backends.md#从-loader-迁移到-tidb-lightning-tidb-backend)。
 
-## 备份和恢复 - Backup & Restore
+### 备份和恢复 - Backup & Restore
 
 [Backup & Restore (BR)](/br/backup-and-restore-tool.md) 是一个对 TiDB 进行分布式备份和恢复的工具，可以高效地对大数据量的 TiDB 集群进行数据备份和恢复。
 
