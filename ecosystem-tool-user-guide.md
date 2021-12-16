@@ -11,9 +11,9 @@ TiDB 提供了丰富的工具，可以帮助你进行部署运维、数据管理
 
 TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不同系统环境下的部署运维需求。
 
-### 在本地部署运维 TiDB - TiUP
+### 在物理机或虚拟机上部署运维 TiDB - TiUP
 
-[TiUP](/tiup/tiup-overview.md) 是在本地环境的 TiDB 包管理器，管理着 TiDB 的众多的组件，如 TiDB、PD、TiKV 等。当你想要运行 TiDB 生态中任何组件时，只需要执行一行 TiUP 命令即可。
+[TiUP](/tiup/tiup-overview.md) 是在物理机或虚拟机上的 TiDB 包管理器，管理着 TiDB 的众多的组件，如 TiDB、PD、TiKV 等。当你想要运行 TiDB 生态中任何组件时，只需要执行一行 TiUP 命令即可。
 
 基本信息：
 

@@ -8,9 +8,9 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 本文档从生态工具的适用场景出发，介绍部分常见场景下的生态工具选择。
 
-## 在本地环境部署运维 TiDB
+## 在物理机或虚拟机上部署运维 TiDB
 
-当需要在本地环境部署运维 TiDB 时，你可以先安装 [TiUP](/tiup/tiup-overview.md)，再通过 TiUP 管理 TiDB 的众多组件，如 TiDB、PD、TiKV 等。
+当需要在物理机或虚拟机上部署运维 TiDB 时，你可以先安装 [TiUP](/tiup/tiup-overview.md)，再通过 TiUP 管理 TiDB 的众多组件，如 TiDB、PD、TiKV 等。
 
 ## 在 Kubernetes 上部署运维 TiDB
 
