@@ -14,7 +14,7 @@ summary: 介绍如何从 SQL 文件迁移数据到 TiDB。
 
 ## 第 1 步. 准备 SQL 文件
 
-将所有 SQL 文件放到统一目录下，例如`/data/my_datasource/`, Lighting 将递归地寻找该目录下及其子目录内的所有`.sql`文件。
+将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/`, Lighting 将递归地寻找该目录下及其子目录内的所有 `.sql` 文件。
 
 ## 第 2 步. 定义目标表结构
 
@@ -22,17 +22,17 @@ CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提�
 
 方法一：编写包含 DDL 语句的 SQL 文件。
 
-- 文件名格式为`${db_name}-schema-create.sql`,其内容需包含 CREATE DATABASE 语句；
-- 文件名格式为`${db_name}.${table_name}-schema.sql`,其内容需包含 CREATE TABLE 语句。
+- 文件名格式为 `${db_name}-schema-create.sql`,其内容需包含 CREATE DATABASE 语句；
+- 文件名格式为 `${db_name}.${table_name}-schema.sql`,其内容需包含 CREATE TABLE 语句。
 
-之后需要在导入过程中将`tidb-lightning.toml`中设置。
+之后需要在导入过程中将 `tidb-lightning.toml` 中设置。
 
 ```toml
 [mydumper] 
 no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
 ```
 
-方法二：手动在下游 TiDB 建库和表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
+方法二：手动在下游 TiDB 建库和表。之后需要在导入过程中将 `tidb-lightning.toml` 中设置。
 
 ```toml
 [mydumper] 
@@ -76,11 +76,11 @@ status-port = ${port}       # 例如：10080
 pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
-关于配置文件更多信息，可参阅：[TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
+关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
 
 ## 第 4 步. 执行导入
 
-运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 
 {{< copyable "shell-regular" >}}
 

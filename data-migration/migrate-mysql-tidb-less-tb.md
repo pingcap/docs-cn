@@ -16,7 +16,7 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 
 ## 第 1 步. 创建数据源
 
-新建`source1.yaml`文件, 写入以下内容：
+首先，新建 `source1.yaml` 文件, 写入以下内容：
 
 {{< copyable "" >}}
 
@@ -34,7 +34,7 @@ from:
   port: 3306
 ```
 
-在终端中执行下面的命令，使用`tiup dmctl`将数据源配置加载到 DM 集群中:
+其次，在终端中执行下面的命令后，使用 `tiup dmctl` 将数据源配置加载到 DM 集群中:
 
 {{< copyable "shell-regular" >}}
 
@@ -50,14 +50,14 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 ## 第 2 步. 创建迁移任务
 
-新建`task1.yaml`文件, 写入以下内容：
+新建 `task1.yaml` 文件, 写入以下内容：
 
 {{< copyable "" >}}
 
 ```yaml
 # 任务名，多个同时运行的任务不能重名。
 name: "test"
-# 任务模式，可设为 
+# 任务模式，可设为
 # full：只进行全量数据迁移
 # incremental： binlog 实时同步
 # all： 全量 + binlog 迁移
@@ -87,11 +87,11 @@ block-allow-list:                     # 如果 DM 版本早于 v2.0.0-beta.2 则
 
 ```
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)。
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)。
 
 ## 第 3 步. 启动任务
 
-在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
+在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
 {{< copyable "shell-regular" >}}
 
@@ -114,11 +114,11 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 |--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
 |start-task|命令用于创建数据迁移任务|
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
 
 ## 第 4 步. 查看任务状态
 
-如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用`tiup dmctl`执行`query-status`命令进行查询：
+如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
 {{< copyable "shell-regular" >}}
 
@@ -136,8 +136,8 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
-- DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
-- DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
+- DM-master 日志目录：通过 DM-master 进程参数 `--log-file `设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
+- DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多
 
