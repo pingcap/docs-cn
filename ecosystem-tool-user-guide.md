@@ -138,9 +138,9 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
 
-## OLAP 分析工具
+## OLAP 查询工具
 
-TiDB 提供了 OLAP 分析工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
+TiDB 提供了 OLAP 查询工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
 
 ### 使用 Spark 查询 TiKV 数据源 - TiSpark
 
