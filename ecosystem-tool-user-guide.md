@@ -1,11 +1,6 @@
 ---
-<<<<<<< HEAD
-title: TiDB 生态工具功能概览
-aliases: ['/docs-cn/stable/ecosystem-tool-user-guide/','/docs-cn/v4.0/ecosystem-tool-user-guide/','/docs-cn/stable/reference/tools/user-guide/','/docs-cn/stable/how-to/migrate/incrementally-from-mysql/']
-=======
 title: TiDB 工具功能概览
-aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrate/from-mysql/', '/docs-cn/dev/how-to/migrate/incrementally-from-mysql/', '/docs-cn/dev/how-to/migrate/overview/', '/docs-cn/dev/reference/tools/use-guide/']
->>>>>>> 8facfb3cf (Move TiUP docs to TiDB Tools and add entry for TiDB Operator (#7984))
+aliases: ['/docs-cn/stable/ecosystem-tool-user-guide/','/docs-cn/v4.0/ecosystem-tool-user-guide/','/docs-cn/stable/reference/tools/user-guide/','/docs-cn/stable/how-to/migrate/incrementally-from-mysql/']
 ---
 
 # TiDB 工具功能概览

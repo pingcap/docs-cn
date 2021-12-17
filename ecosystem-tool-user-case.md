@@ -1,13 +1,7 @@
 ---
-<<<<<<< HEAD
 title: TiDB 生态工具适用场景
 summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
 aliases: ['/docs-cn/stable/ecosystem-tool-user-case/','/docs-cn/v4.0/ecosystem-tool-user-case/']
-=======
-title: TiDB 工具适用场景
-summary: 本文档介绍 TiDB 工具的常见适用场景与工具选择。
-aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
->>>>>>> 8facfb3cf (Move TiUP docs to TiDB Tools and add entry for TiDB Operator (#7984))
 ---
 
 # TiDB 工具适用场景
