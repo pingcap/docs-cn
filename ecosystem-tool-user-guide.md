@@ -1,10 +1,5 @@
 ---
-<<<<<<< HEAD
 title: TiDB 生态工具功能概览
-=======
-title: TiDB 工具功能概览
-aliases: ['/docs-cn/dev/ecosystem-tool-user-guide/','/docs-cn/dev/reference/tools/user-guide/','/docs-cn/dev/how-to/migrate/from-mysql/', '/docs-cn/dev/how-to/migrate/incrementally-from-mysql/', '/docs-cn/dev/how-to/migrate/overview/', '/docs-cn/dev/reference/tools/use-guide/']
->>>>>>> 8facfb3cf (Move TiUP docs to TiDB Tools and add entry for TiDB Operator (#7984))
 ---
 
 # TiDB 工具功能概览
@@ -143,9 +138,9 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 - sync-diff-inspector 的输出：TiDB、MySQL
 - 适用 TiDB 版本：所有版本
 
-## OLAP 分析工具
+## OLAP 查询工具
 
-TiDB 提供了 OLAP 分析工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
+TiDB 提供了 OLAP 查询工具 TiSpark。通过 TiSpark，你可以像使用原生 Spark 一样查询 TiDB 表。
 
 ### 使用 Spark 查询 TiKV 数据源 - TiSpark
 
