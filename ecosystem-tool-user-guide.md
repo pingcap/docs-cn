@@ -1,5 +1,5 @@
 ---
-title: TiDB 生态工具功能概览
+title: TiDB 工具功能概览
 ---
 
 # TiDB 工具功能概览
