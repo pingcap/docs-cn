@@ -1,12 +1,16 @@
 ---
-title: TiDB 生态工具适用场景
-summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
+title: TiDB 工具适用场景
+summary: 本文档介绍 TiDB 工具的常见适用场景与工具选择。
 aliases: ['/docs-cn/v3.1/ecosystem-tool-user-case/']
 ---
 
-# TiDB 生态工具适用场景
+# TiDB 工具适用场景
 
-本文档从生态工具的适用场景出发，介绍部分常见场景下的生态工具选择。
+本文档从工具的适用场景出发，介绍部分常见场景下的工具选择。
+
+## 在 Kubernetes 上部署运维 TiDB
+
+当需要在 Kubernetes 上部署运维 TiDB 时，你可以先创建 Kubernetes 集群，部署[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)，然后使用 TiDB Operator 部署运维 TiDB 集群。
 
 ## 从 CSV 导入数据到 TiDB
 

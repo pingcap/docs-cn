@@ -1,11 +1,21 @@
 ---
-title: TiDB 生态工具功能概览
+title: TiDB 工具功能概览
 aliases: ['/docs-cn/v3.1/ecosystem-tool-user-guide/','/docs-cn/v3.1/reference/tools/user-guide/','/docs-cn/v3.1/how-to/migrate/from-mysql/', '/docs-cn/v3.1/how-to/migrate/incrementally-from-mysql/', '/docs-cn/v3.1/how-to/migrate/overview/', '/docs-cn/v3.1/reference/tools/use-guide/']
 ---
 
-# TiDB 生态工具功能概览
+# TiDB 工具功能概览
 
 本文档从生态工具的功能出发，介绍部分生态工具的功能以及它们之间的替代关系。
+
+## 在 Kubernetes 上部署运维 TiDB
+
+[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable) 是 Kubernetes 上的 TiDB 集群自动运维系统，提供包括部署、升级、扩缩容、备份恢复、配置变更的 TiDB 全生命周期管理。借助 TiDB Operator，TiDB 可以无缝运行在公有云或私有部署的 Kubernetes 集群上。
+
+基本信息：
+
+- [TiDB Operator 架构](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/architecture)
+- [在 Kubernetes 上部署运维 TiDB 快速上手](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started/)
+- 适用 TiDB 版本：v2.1 及以上
 
 ## 全量导出
 

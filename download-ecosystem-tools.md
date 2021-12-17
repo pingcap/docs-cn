@@ -5,7 +5,11 @@ aliases: ['/docs-cn/v3.1/download-ecosystem-tools/','/docs-cn/v3.1/reference/too
 
 # TiDB 工具下载
 
-本页面汇总了 TiDB 周边工具官方维护版本的下载链接。
+本页面汇总了 TiDB 工具官方维护版本的下载链接。
+
+## TiDB Operator
+
+TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，你可以选择在线或者离线部署 TiDB Operator。详情请参考[在 Kubernetes 上部署 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator)。
 
 ## TiDB Binlog
 
