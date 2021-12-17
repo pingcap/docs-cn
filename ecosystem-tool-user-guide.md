@@ -5,7 +5,7 @@ aliases: ['/docs-cn/v3.0/ecosystem-tool-user-guide/','/docs-cn/v3.0/reference/to
 
 # TiDB 工具功能概览
 
-本文档从生态工具的功能出发，介绍部分生态工具的功能以及它们之间的替代关系。
+本文档从工具的功能出发，介绍部分工具的功能以及它们之间的替代关系。
 
 ## 在 Kubernetes 上部署运维 TiDB
 
