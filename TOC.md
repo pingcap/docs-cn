@@ -160,8 +160,6 @@
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [适用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
-<<<<<<< HEAD
-=======
   - TiUP
     - [文档地图](/tiup/tiup-documentation-guide.md)
     - [概览](/tiup/tiup-overview.md)
@@ -196,7 +194,6 @@
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - [TiDB Data Migration](/dm/dm-overview.md)
->>>>>>> 8facfb3cf (Move TiUP docs to TiDB Tools and add entry for TiDB Operator (#7984))
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
