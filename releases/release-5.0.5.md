@@ -8,7 +8,6 @@ title: TiDB 5.0.5 Release Notes
 
 TiDB 版本：5.0.5
 
-
 ## Bug 修复
 
 + TiKV
