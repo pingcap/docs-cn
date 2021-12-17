@@ -1,8 +1,8 @@
 ---
-title: TiDB 5.0.5 Release Notes
+title: TiDB 5.0.5 Release Note
 ---
 
-# TiDB 5.0.5 Release Notes
+# TiDB 5.0.5 Release Note
 
 发版日期：2021 年 12 月 3 日
 
