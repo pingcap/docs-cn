@@ -112,13 +112,7 @@ Take the `/dev/nvme0n1` data disk as an example:
 
 ## Check and disable system swap
 
-This section describes how to disable swap.
-
-TiDB requires sufficient memory space for operation. It is not recommended to use swap as a buffer for insufficient memory, which might reduce performance. Therefore, it is recommended to disable the system swap permanently.
-
-Do not disable the system swap by executing `swapoff -a`, or this setting will be invalid after the machine is restarted.
-
-To disable the system swap, execute the following command:
+TiDB needs sufficient memory space for operation. When memory is insufficient, using swap as a buffer might degrade performance. Therefore, it is recommended to disable the system swap permanently by executing the following commands:
 
 {{< copyable "shell-regular" >}}
 
@@ -127,6 +121,12 @@ echo "vm.swappiness = 0">> /etc/sysctl.conf
 swapoff -a && swapon -a
 sysctl -p
 ```
+
+> **Note:**
+>
+> - Executing `swapoff -a` and then `swapon -a` is to refresh swap by dumping data to memory and cleaning up swap. If you drop the swappiness change and execute only `swapoff -a`, swap will be enabled again after you restart the system.
+>
+> - `sysctl -p` is to make the configuration effective without restarting the system.
 
 ## Check and stop the firewall service of target machines
 
@@ -192,17 +192,19 @@ To check whether the NTP service is installed and whether it synchronizes with t
     - If it returns `Unit ntpd.service could not be found.`, then try the following command to see whether your system is configured to use `chronyd` instead of `ntpd` to perform clock synchronization with NTP:
 
         {{< copyable "shell-regular" >}}
-    
+
         ```bash
-        sudo systemctl status cronyd.service
+        sudo systemctl status chronyd.service
         ```
-    
+
         ```
         chronyd.service - NTP client/server
         Loaded: loaded (/usr/lib/systemd/system/chronyd.service; enabled; vendor preset: enabled)
         Active: active (running) since Mon 2021-04-05 09:55:29 EDT; 3 days ago
         ```
-    
+
+        If the result shows that neither `chronyd` nor `ntpd` is configured, it means that neither of them is installed in your system. You should first install `chronyd` or `ntpd` and ensure that it can be automatically started. By default, `ntpd` is used.
+
         If your system is configured to use `chronyd`, proceed to step 3.
 
 2. Run the `ntpstat` command to check whether the NTP service synchronizes with the NTP server.
