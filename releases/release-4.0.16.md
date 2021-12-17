@@ -23,6 +23,10 @@ TiDB 版本：4.0.16
 
 ## 提升改进
 
++ TiDB
+
+    - 升级 Grafana 到 v7.5.11，规避老版本的安全漏洞
+
 + TiKV
 
     - 当使用 Backup & Restore 恢复数据或使用 TiDB Lightning 的 Local-backend 导入数据时，采用 zstd 算法压缩 SST 文件，从而减小磁盘使用空间 [#11469](https://github.com/tikv/tikv/issues/11469)
@@ -37,9 +41,6 @@ TiDB 版本：4.0.16
 
         - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过于频繁影响 PD 服务 [#3112](https://github.com/pingcap/ticdc/issues/3112)
         - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/ticdc/issues/3110)
-+ Grafana
-
-    - 升级到 v7.5.11，规避老版本的安全漏洞
 
 ## Bug 修复
 
