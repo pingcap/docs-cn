@@ -306,10 +306,11 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  - 周边工具
+  - 工具
     - [功能概览](/ecosystem-tool-user-guide.md)
     - [适用场景](/ecosystem-tool-user-case.md)
     - [表库过滤](/table-filter.md)
+    - [TiDB Operator](/tidb-operator-overview.md)
     - [Mydumper](/mydumper-overview.md)
     - [Loader](/loader-overview.md)
     - [Syncer](/syncer-overview.md)
