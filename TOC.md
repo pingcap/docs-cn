@@ -176,7 +176,6 @@
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
-  - [TiDB Data Migration](/dm/dm-overview.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
