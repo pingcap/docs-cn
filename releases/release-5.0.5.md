@@ -1,18 +1,12 @@
 ---
-title: TiDB 5.0.5 Release Notes
+title: TiDB 5.0.5 Release Note
 ---
 
-# TiDB 5.0.5 Release Notes
+# TiDB 5.0.5 Release Note
 
 发版日期：2021 年 12 月 3 日
 
 TiDB 版本：5.0.5
-
-## 提升改进
-
-+ TiDB
-
-    - 将 Grafana 版本从 7.5.7 升级至 7.5.11
 
 ## Bug 修复
 
