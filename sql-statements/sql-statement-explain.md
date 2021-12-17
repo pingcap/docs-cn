@@ -185,7 +185,9 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 如果未指定 `FORMAT`，或未指定 `FORMAT ="row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
 
-除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
+除 MySQL 标准结果格式外，TiDB 还支持如下输出格式。需按照下列所示指定，
+
+### `FORMAT ="dot"`
 
 {{< copyable "sql" >}}
 
@@ -242,6 +244,74 @@ The `xx.dot` is the result returned by the above statement.
 如果你的计算机上未安装 `dot` 程序，可将结果复制到[本网站](http://www.webgraphviz.com/)以获取树形图：
 
 ![Explain Dot](/media/explain_dot.png)
+
+### `FORMAT = "brief"`
+除了忽略执行 id 的前缀，和 row 格式没有区别。
+
+```sql
+MySQL [test]> desc format = 'brief' select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
++---------------------------+-------------+-----------+---------------+---------------------------------------------------------+
+| id                        | estRows     | task      | access object | operator info                                           |
++---------------------------+-------------+-----------+---------------+---------------------------------------------------------+
+| HashJoin                  | 33200100.00 | root      |               | CARTESIAN inner join, other cond:gt(test.t.a, test.t.b) |
+| ├─TableReader(Build)      | 3323.33     | root      |               | data:Selection                                          |
+| │ └─Selection             | 3323.33     | cop[tikv] |               | lt(test.t.a, 10), not(isnull(test.t.a))                 |
+| │   └─TableFullScan       | 10000.00    | cop[tikv] | table:A       | keep order:false, stats:pseudo                          |
+| └─TableReader(Probe)      | 9990.00     | root      |               | data:Selection                                          |
+|   └─Selection             | 9990.00     | cop[tikv] |               | not(isnull(test.t.b))                                   |
+|     └─TableFullScan       | 10000.00    | cop[tikv] | table:B       | keep order:false, stats:pseudo                          |
++---------------------------+-------------+-----------+---------------+---------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
+
+### `FORMAT = "hint"`
+输出执行 SQL 的 hint 信息。
+```sql
+MySQL [test]> desc format = 'hint' select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
++--------------------------------------------------------------------------------------------------+
+| hint                                                                                             |
++--------------------------------------------------------------------------------------------------+
+| use_index(@`sel_1` `test`.`a` ), use_index(@`sel_1` `test`.`b` ), hash_join(@`sel_1` `test`.`a`) |
++--------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+### `FORMAT = "verbose"`
+显示有关计划的附加信息。
+
+```sql
+MySQL [test]> explain format = 'verbose' select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
++------------------------------+-------------+-------------+-----------+---------------+---------------------------------------------------------+
+| id                           | estRows     | estCost     | task      | access object | operator info                                           |
++------------------------------+-------------+-------------+-----------+---------------+---------------------------------------------------------+
+| HashJoin_10                  | 33200100.00 | 20017265.38 | root      |               | CARTESIAN inner join, other cond:gt(test.t.a, test.t.b) |
+| ├─TableReader_13(Build)      | 3323.33     | 41801.47    | root      |               | data:Selection_12                                       |
+| │ └─Selection_12             | 3323.33     | 600020.00   | cop[tikv] |               | lt(test.t.a, 10), not(isnull(test.t.a))                 |
+| │   └─TableFullScan_11       | 10000.00    | 570020.00   | cop[tikv] | table:A       | keep order:false, stats:pseudo                          |
+| └─TableReader_16(Probe)      | 9990.00     | 45412.58    | root      |               | data:Selection_15                                       |
+|   └─Selection_15             | 9990.00     | 600020.00   | cop[tikv] |               | not(isnull(test.t.b))                                   |
+|     └─TableFullScan_14       | 10000.00    | 570020.00   | cop[tikv] | table:B       | keep order:false, stats:pseudo                          |
++------------------------------+-------------+-------------+-----------+---------------+---------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
+
+### `FORMAT = "traditional"`
+和 row 输出信息一致。
+```sql
+MySQL [test]> desc format = "brief" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
++---------------------------+-------------+-----------+---------------+---------------------------------------------------------+
+| id                        | estRows     | task      | access object | operator info                                           |
++---------------------------+-------------+-----------+---------------+---------------------------------------------------------+
+| HashJoin                  | 33200100.00 | root      |               | CARTESIAN inner join, other cond:gt(test.t.a, test.t.b) |
+| ├─TableReader(Build)      | 3323.33     | root      |               | data:Selection                                          |
+| │ └─Selection             | 3323.33     | cop[tikv] |               | lt(test.t.a, 10), not(isnull(test.t.a))                 |
+| │   └─TableFullScan       | 10000.00    | cop[tikv] | table:A       | keep order:false, stats:pseudo                          |
+| └─TableReader(Probe)      | 9990.00     | root      |               | data:Selection                                          |
+|   └─Selection             | 9990.00     | cop[tikv] |               | not(isnull(test.t.b))                                   |
+|     └─TableFullScan       | 10000.00    | cop[tikv] | table:B       | keep order:false, stats:pseudo                          |
++---------------------------+-------------+-----------+---------------+---------------------------------------------------------+
+7 rows in set (0.00 sec)
+```
 
 ## MySQL 兼容性
 
