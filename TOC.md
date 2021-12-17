@@ -540,6 +540,7 @@
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - v4.0
+    - [4.0.16](/releases/release-4.0.16.md)
     - [4.0.15](/releases/release-4.0.15.md)
     - [4.0.14](/releases/release-4.0.14.md)
     - [4.0.13](/releases/release-4.0.13.md)
