@@ -1,11 +1,11 @@
 ---
 title: 从 SQL 文件迁移数据到 TiDB
-summary: 介绍如何从 SQL 文件迁移数据到 TiDB。
+summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB
 ---
 
 # 从 SQL 文件迁移数据到 TiDB
 
-本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，请参考 Dumpling 文档中的[导出为 SQL 文件](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#%E5%AF%BC%E5%87%BA%E4%B8%BA-sql-%E6%96%87%E4%BB%B6)。
+本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，请参考 Dumpling 文档中的[导出为 SQL 文件](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出为-sql-文件)。
 
 ## 前提条件
 
@@ -14,30 +14,35 @@ summary: 介绍如何从 SQL 文件迁移数据到 TiDB。
 
 ## 第 1 步. 准备 SQL 文件
 
-将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/`, Lighting 将递归地寻找该目录下及其子目录内的所有 `.sql` 文件。
+将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/`。Lighting 将递归地寻找该目录下及其子目录内的所有 `.sql` 文件。
 
 ## 第 2 步. 定义目标表结构
 
 CSV 文件自身未包含表结构信息。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
-方法一：编写包含 DDL 语句的 SQL 文件。
 
-- 文件名格式为 `${db_name}-schema-create.sql`,其内容需包含 CREATE DATABASE 语句；
-- 文件名格式为 `${db_name}.${table_name}-schema.sql`,其内容需包含 CREATE TABLE 语句。
+* **方法一**：使用 TiDB Lightning 创建表结构。
 
-之后需要在导入过程中将 `tidb-lightning.toml` 中设置。
+    1. 编写包含 DDL 语句的 SQL 文件。
 
-```toml
-[mydumper] 
-no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
-```
+        - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
+        - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
 
-方法二：手动在下游 TiDB 建库和表。之后需要在导入过程中将 `tidb-lightning.toml` 中设置。
+    2. 后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
 
-```toml
-[mydumper] 
-no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
-```
+        ```toml
+        [mydumper]
+        no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
+        ```
+
+* **方法二**：手动在下游 TiDB 建库和表。
+
+    后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
+
+    ```toml
+    [mydumper]
+    no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
+    ```
 
 ## 第 3 步. 编写配置文件
 
@@ -59,10 +64,10 @@ backend = "local"
 sorted-kv-dir = "${sorted-kv-dir}"
 
 [mydumper]
-# 源数据目录。支持本地路径例如`/data/my_datasource/`或 S3 路径例如：`s3://bucket-name/data-path`
-data-source-dir = "${my_datasource}"
+# 源数据目录。支持本地路径（如 `/data/my_datasource/`）或 S3 路径（如 `s3://bucket-name/data-path`）。
+data-source-dir = "${my_datasource}"。
 
-# 不创建表库，当在 #Step 2 手动完成下游表结构创建时此项设为 true，否则为 false
+# 不创建表库，当在 #Step 2 手动完成下游表结构创建时，此项设为 true，否则为 false。
 no-schema = true
 
 # 目标集群的信息
@@ -71,8 +76,8 @@ port = 4000
 user = "${user_name}"
 password = "${password}"
 # 表结构信息在从 TiDB 的“状态端口”获取。
-status-port = ${port}       # 例如：10080
-# 集群 pd 的地址
+status-port = ${port}       # 例如 10080。
+# 集群 PD 的地址。
 pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
@@ -88,6 +93,6 @@ pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" �
 nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
-导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 tidb-lightning.log 的最后一行会显示 `tidb lightning exit`。
+导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 `tidb-lightning.log` 的最后一行会显示 `tidb lightning exit`。
 
 如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
