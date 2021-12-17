@@ -6,7 +6,8 @@ aliases: ['/docs-cn/v3.0/ecosystem-tool-user-case/']
 
 # TiDB 工具适用场景
 
-本文档从生态工具的适用场景出发，介绍部分常见场景下的工具选择。
+本文档从工具的适用场景出发，介绍部分常见场景下的工具选择。
+
 
 ## 在 Kubernetes 上部署运维 TiDB
 
