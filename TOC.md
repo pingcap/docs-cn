@@ -160,10 +160,26 @@
   - [Use Placement Rules](/configure-placement-rules.md)
   - [Use Load Base Split](/configure-load-base-split.md)
   - [Use Store Limit](/configure-store-limit.md)
-- TiDB Ecosystem Tools
+- TiDB Tools
   - [Overview](/ecosystem-tool-user-guide.md)
   - [Use Cases](/ecosystem-tool-user-case.md)
   - [Download](/download-ecosystem-tools.md)
+  - TiUP
+    - [Documentation Map](/tiup/tiup-documentation-guide.md)
+    - [Overview](/tiup/tiup-overview.md)
+    - [Terminology and Concepts](/tiup/tiup-terminology-and-concepts.md)
+    - [Manage TiUP Components](/tiup/tiup-component-management.md)
+    - [FAQ](/tiup/tiup-faq.md)
+    - [Troubleshooting Guide](/tiup/tiup-troubleshooting-guide.md)
+    - [Reference Guide](/tiup/tiup-reference.md)
+    - [Cluster Topology Reference](/tiup/tiup-cluster-topology-reference.md)
+    - [Mirror Reference Guide](/tiup/tiup-mirror-reference.md)
+    - TiUP Components
+      - [tiup-playground](/tiup/tiup-playground.md)
+      - [tiup-cluster](/tiup/tiup-cluster.md)
+      - [tiup-mirror](/tiup/tiup-mirror.md)
+      - [tiup-bench](/tiup/tiup-bench.md)
+  - [TiDB Operator](/tidb-operator-overview.md)
   - Backup & Restore (BR)
     - [BR Tool Overview](/br/backup-and-restore-tool.md)
     - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
@@ -196,7 +212,6 @@
     - [Deploy](/tidb-lightning/deploy-tidb-lightning.md)
     - [Precheck](/tidb-lightning/tidb-lightning-prechecks.md)
     - [Configure](/tidb-lightning/tidb-lightning-configuration.md)
-  - [TiDB Data Migration](/dm/dm-overview.md)
     - Key Features
       - [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [Table Filter](/table-filter.md)
@@ -207,6 +222,7 @@
     - [Monitor](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [Glossary](/tidb-lightning/tidb-lightning-glossary.md)
+  - [TiDB Data Migration](/dm/dm-overview.md)
   - TiCDC
     - [Overview](/ticdc/ticdc-overview.md)
     - [Deploy](/ticdc/deploy-ticdc.md)
@@ -544,21 +560,6 @@
     - TiFlash
       - [Overview](/tiflash/tiflash-overview.md)
       - [Use TiFlash](/tiflash/use-tiflash.md)
-  - TiUP
-    - [Documentation Map](/tiup/tiup-documentation-guide.md)
-    - [Overview](/tiup/tiup-overview.md)
-    - [Terminology and Concepts](/tiup/tiup-terminology-and-concepts.md)
-    - [Manage TiUP Components](/tiup/tiup-component-management.md)
-    - [FAQ](/tiup/tiup-faq.md)
-    - [Troubleshooting Guide](/tiup/tiup-troubleshooting-guide.md)
-    - [Reference Guide](/tiup/tiup-reference.md)
-    - [Cluster Topology Reference](/tiup/tiup-cluster-topology-reference.md)
-    - [Mirror Reference Guide](/tiup/tiup-mirror-reference.md)
-    - TiUP Components
-      - [tiup-playground](/tiup/tiup-playground.md)
-      - [tiup-cluster](/tiup/tiup-cluster.md)
-      - [tiup-mirror](/tiup/tiup-mirror.md)
-      - [tiup-bench](/tiup/tiup-bench.md)
   - [Telemetry](/telemetry.md)
   - [Errors Codes](/error-codes.md)
   - [Table Filter](/table-filter.md)

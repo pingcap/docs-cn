@@ -1,13 +1,44 @@
 ---
-title: TiDB Ecosystem Tools Overview
+title: TiDB Tools Overview
 aliases: ['/docs/dev/ecosystem-tool-user-guide/','/docs/dev/reference/tools/user-guide/','/docs/dev/how-to/migrate/from-mysql/','/docs/dev/how-to/migrate/incrementally-from-mysql/','/docs/dev/how-to/migrate/overview/']
 ---
 
-# TiDB Ecosystem Tools Overview
+# TiDB Tools Overview
 
-This document introduces the functionalities of TiDB ecosystem tools and their relationship.
+TiDB provides a rich set of tools to help you with deployment operations, data management (such as import and export, data migration, backup & recovery), and complex OLAP queries. You can select the applicable tools according to your needs.
 
-## Full data export
+## Deployment and operation Tools
+
+To meet your deployment and operation needs in different system environments, TiDB provides two deployment and Operation tools, TiUP and TiDB Operator.
+
+### Deploy and operate TiDB on physical or virtual machines
+
+[TiUP](/tiup/tiup-overview.md) is a TiDB package manager on physical or virtual machines. TiUP can manage multiple TiDB components such as TiDB, PD, TiKV. To start any component in the TiDB ecosystem, you just need to execute a single TiUP command.
+
+TiUP provides [TiUP cluster](https://github.com/pingcap/tiup/tree/master/components/cluster), a cluster management component written in Golang. By using TiUP cluster, you can easily perform daily database operations, including deploying, starting, stopping, destroying, scaling, and upgrading a TiDB cluster, and manage TiDB cluster parameters.
+
+The following are the basics of TiUP:
+
+- [Terminology and Concepts](/tiup/tiup-terminology-and-concepts.md)
+- [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md)
+- [Manage TiUP Components with TiUP Commands](/tiup/tiup-component-management.md)
+- Applicable TiDB versions: v4.0 and above
+
+### Deploy and operate TiDB in Kubernetes
+
+[TiDB Operator](https://github.com/pingcap/tidb-operator) is an automatic operation system for TiDB clusters in Kubernetes. It provides full life-cycle management for TiDB including deployment, upgrades, scaling, backup, fail-over, and configuration changes. With TiDB Operator, TiDB can run seamlessly in the Kubernetes clusters deployed on a public or private cloud.
+
+The following are the basics of TiDB Operator:
+
+- [TiDB Operator Architecture](https://docs.pingcap.com/tidb-in-kubernetes/stable/architecture)
+- [Get Started with TiDB Operator in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started/)
+- Applicable TiDB versions: v2.1 and above
+
+## Data management tools
+
+ TiDB provides multiple data management tools, such as import and export, backup and restore, data replication, data migration, incremental synchronization, and data validation.
+
+### Full data export
 
 [Dumpling](/dumpling-overview.md) is a tool for the logical full data export from MySQL or TiDB.
 
@@ -22,7 +53,7 @@ The following are the basics of Dumpling:
 >
 > PingCAP previously maintained a fork of the [mydumper project](https://github.com/maxbube/mydumper) with enhancements specific to TiDB. This fork has since been replaced by [Dumpling](/dumpling-overview.md), which has been rewritten in Go, and supports more optimizations that are specific to TiDB. It is strongly recommended that you use Dumpling instead of mydumper.
 
-## Full data import
+### Full data import
 
 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) (Lightning) is a tool used for the full import of large amounts of data into a TiDB cluster. Currently, TiDB Lightning supports reading SQL dump exported via Dumpling or CSV data source.
 
@@ -44,7 +75,7 @@ The following are the basics of TiDB Lightning:
 >
 > The Loader tool is no longer maintained. For scenarios related to Loader, it is recommended that you use the `tidb` mode of TiDB Lighting instead. For details, see [TiDB Lightning TiDB backends](/tidb-lightning/tidb-lightning-backends.md#migrating-from-loader-to-tidb-lightning-tidb-backend).
 
-## Backup and restore
+### Backup and restore
 
 [Backup & Restore](/br/backup-and-restore-tool.md) (BR) is a command-line tool for distributed backup and restore of the TiDB cluster data. BR can effectively back up and restore TiDB clusters of huge data volume.
 
@@ -54,7 +85,7 @@ The following are the basics of BR:
 - Supported TiDB versions: v3.1 and v4.0
 - Kubernetes support: Yes. See [Back up Data to S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br) and [Restore Data from S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br) for details.
 
-## Incremental data replication
+### Incremental data replication
 
 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) is a tool that collects binlog for TiDB clusters and provides near real-time sync and backup. It can be used for incremental data replication between TiDB clusters, such as making a TiDB cluster the secondary cluster of the primary TiDB cluster.
 
@@ -88,3 +119,11 @@ If the data volume is at the TB level, take the following steps:
 > **Note:**
 >
 > The Syncer tool is no longer maintained. For scenarios related to Syncer, it is recommended that you use DM's incremental task mode instead.
+
+## OLAP Query tool
+
+TiDB provides the OLAP query tool TiSpark, which allows you to query TiDB tables as if you were using native Spark.
+
+### Query TiKV data source using Spark
+
+[TiSpark](/tispark-overview.md) is a thin layer built for running Apache Spark on top of TiKV to answer the complex OLAP queries. It takes advantages of both the Spark platform and the distributed TiKV cluster and seamlessly glues to TiDB, and provides a one-stop Hybrid Transactional and Analytical Processing (HTAP) solution.
