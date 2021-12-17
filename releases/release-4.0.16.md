@@ -62,7 +62,7 @@ TiDB 版本：4.0.16
     - 修复当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
     - 修复 Grafana 上 Coprocessor Cache 监控面板不显示数据的问题。现在 Grafana 会显示 `hits`/`miss`/`evict` 的数据 [#26338](https://github.com/pingcap/tidb/issues/26338)
     - 修复并发 truncate 同一个分区会导致 DDL 语句执行卡住的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
-    - 修复 `CONCAT` 函数的参数为负浮点数时，该参数在返回结果中被截断末位数的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
+    - 修复将 `Decimal` 转为 `String` 时长度信息错误的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
     - 修复使用 `NATUAL JOIN` 连接多张表时，查询结果中多出一列的问题 [#29481](https://github.com/pingcap/tidb/issues/29481)
     - 修复 `IndexScan` 使用前缀索引时，`TopN` 被错误下推至 `indexPlan` 的问题 [#29711](https://github.com/pingcap/tidb/issues/29711)
     - 修复在 `DOUBLE` 类型的自增列上重试事务会导致数据错误的问题 [#29892](https://github.com/pingcap/tidb/issues/29892)
