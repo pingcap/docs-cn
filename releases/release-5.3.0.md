@@ -32,8 +32,8 @@ In v5.3, the key new features or improvements are as follows:
 | :---------- | :----------- | :----------- |
 | [`tidb_enable_noop_functions`](/system-variables.md#tidb_enable_noop_functions-new-in-v40) | Modified |  Temporary tables are now supported by TiDB so `CREATE TEMPORARY TABLE` and `DROP TEMPORARY TABLE` no longer require enabling `tidb_enable_noop_functions`. |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-new-in-v530) | Newly added | Controls the behavior of the optimizer when the statistics on a table expire. The default value is `ON`. When the number of modified rows in the table is greater than 80% of the total rows (This ratio can be adjusted by the configuration [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio)), the optimizer considers that the statistics other than the total number of rows are no longer reliable and use pseudo statistics instead. When you set the value as `OFF`, even if the statistics expire, the optimizer still uses them. |
-|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-new-in-v53) | Newly added  | Determines whether to enable or disable the TSO Follower Proxy feature. The default value is `OFF`, which means the TSO Follower Proxy feature is disabled. At this time, TiDB only gets TSO from PD leader. When this feature is enabled, TiDB evenly sends the requests to all PD nodes when acquiring TSO. The PD follower then forwards the TSO requests to reduce the CPU pressure of PD leader. |
-|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-new-in-v53) | Newly added |  Sets the maximum waiting time for a batch saving operation when TiDB requests TSO from PD. The default value is `0`, which means no additional waiting. |
+|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-new-in-v530) | Newly added  | Determines whether to enable or disable the TSO Follower Proxy feature. The default value is `OFF`, which means the TSO Follower Proxy feature is disabled. At this time, TiDB only gets TSO from PD leader. When this feature is enabled, TiDB evenly sends the requests to all PD nodes when acquiring TSO. The PD follower then forwards the TSO requests to reduce the CPU pressure of PD leader. |
+|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-new-in-v530) | Newly added |  Sets the maximum waiting time for a batch saving operation when TiDB requests TSO from PD. The default value is `0`, which means no additional waiting. |
 | [`tidb_tmp_table_max_size`](/system-variables.md#tidb_tmp_table_max_size-new-in-v530) | Newly added  | Limits the maximum size of a single [temporary table](/temporary-tables.md). If the temporary table exceeds this size, an error will occur. |
 
 ### Configuration file parameters
@@ -134,19 +134,19 @@ In v5.3, the key new features or improvements are as follows:
 
     TiDB optimizes its timestamp processing flow and reduces the timestamp processing load of PD by enabling PD Follower Proxy and modifying the batch waiting time required when the PD client requests TSO in batches. This helps improve the overall scalability of the system.
 
-    - Support enabling or disabling PD Follower Proxy through the system variable [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-new-in-v53). Suppose that the TSO requests load of PD is too high. In this case, enabling PD follower proxy can batch forward the TSO requests collected during the request cycle on followers to the leader nodes. This solution can effectively reduce the number of direct interactions between clients and leaders, reduce the pressure of the load on leaders, and improve the overall performance of TiDB. 
+    - Support enabling or disabling PD Follower Proxy through the system variable [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-new-in-v530). Suppose that the TSO requests load of PD is too high. In this case, enabling PD follower proxy can batch forward the TSO requests collected during the request cycle on followers to the leader nodes. This solution can effectively reduce the number of direct interactions between clients and leaders, reduce the pressure of the load on leaders, and improve the overall performance of TiDB. 
 
     > **Note:**
     >
     > When the number of clients is small and the PD leader CPU load is not full, it is NOT recommended to enable PD Follower Proxy.
 
-    - Support using the system variable [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-new-in-v53) to set the maximum waiting time needed for the PD client to batch request TSO. The unit of this time is milliseconds. In case that PD has a high TSO requests load, you can reduce the load and improve the throughput by increasing the waiting time to get a larger batch size.
+    - Support using the system variable [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-new-in-v530) to set the maximum waiting time needed for the PD client to batch request TSO. The unit of this time is milliseconds. In case that PD has a high TSO requests load, you can reduce the load and improve the throughput by increasing the waiting time to get a larger batch size.
 
     > **Note:**
     >
     > When the TSO request load is not high, it is NOT recommended to modify this variable value.
 
-    [User document](/system-variables.md#tidb_tso_client_batch_max_wait_time-new-in-v53), [#3149](https://github.com/tikv/pd/issues/3149)
+    [User document](/system-variables.md#tidb_tso_client_batch_max_wait_time-new-in-v530), [#3149](https://github.com/tikv/pd/issues/3149)
 
 ### Stability
 
