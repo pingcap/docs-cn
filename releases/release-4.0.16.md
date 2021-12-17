@@ -4,7 +4,7 @@ title: TiDB 4.0.16 Release Notes
 
 # TiDB 4.0.16 Release Notes
 
-发版日期：2021 年 12 月 10 日
+发版日期：2021 年 12 月 17 日
 
 TiDB 版本：4.0.16
 
@@ -59,7 +59,7 @@ TiDB 版本：4.0.16
     - 修复乐观事务冲突可能导致事务相互阻塞的问题 [#11148](https://github.com/tikv/tikv/issues/11148)
     - 修复 `auto analyze` 输出的日志信息不完整的问题 [#29188](https://github.com/pingcap/tidb/issues/29188)
     - 修复当 `SQL_MODE` 为 'NO_ZERO_IN_DATE' 时，使用非法的默认时间不报错的问题 [#26766](https://github.com/pingcap/tidb/issues/26766)
-    - 修复 Grafana 上 **Coprocessor Cache** 监控面板不显示数据的问题。现在 Grafana 会显示 `hits`/`miss`/`evict` 的数据 [#26338](https://github.com/pingcap/tidb/issues/26338)
+    - 修复 Grafana 上 Coprocessor Cache 监控面板不显示数据的问题。现在 Grafana 会显示 `hits`/`miss`/`evict` 的数据 [#26338](https://github.com/pingcap/tidb/issues/26338)
     - 修复并发 truncate 同一个分区会导致 DDL 语句执行卡住的问题 [#26229](https://github.com/pingcap/tidb/issues/26229)
     - 修复 `CONCAT` 函数的参数为负浮点数时，该参数在返回结果中被截断末位数的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
     - 修复使用 `NATUAL JOIN` 连接多张表时，查询结果中多出一列的问题 [#29481](https://github.com/pingcap/tidb/issues/29481)
@@ -100,7 +100,7 @@ TiDB 版本：4.0.16
         - 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/ticdc/issues/3174)
         - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/ticdc/issues/3111)
         - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/ticdc/issues/3061)
-        - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 panic 的问题 [#2386](https://github.com/pingcap/ticdc/issues/2386)
+        - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 Panic 的问题 [#2386](https://github.com/pingcap/ticdc/issues/2386)
         - 修复 TiCDC 产生的 Kafka 消息体积不受 `max-message-size` 约束的问题 [#2962](https://github.com/pingcap/ticdc/issues/2962)
         - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续更新的问题 [#11017](https://github.com/tikv/tikv/issues/11017)
         - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/ticdc/issues/2978)
