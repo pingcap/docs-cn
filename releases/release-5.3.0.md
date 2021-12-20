@@ -42,7 +42,7 @@ TiDB 版本：5.3.0
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
-| TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
+| TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 `memory-usage-limit` 参数， 升级后该参数值根据 `storage.block-cache.capacity` 来计算。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。|
 |  TiKV | [`raftstore.raft-write-size-limit`](/tikv-configuration-file.md#raft-write-size-limit-从-v530-版本开始引入) | 新增 | 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | [`raftstore.raft-msg-flush-interval`](/tikv-configuration-file.md#raft-msg-flush-interval-从-v530-版本开始引入) | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
@@ -68,7 +68,7 @@ TiDB 版本：5.3.0
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
 - 修复 v5.3.0 之前的版本中新增索引会导致在规定时间外触发 auto-analyze 的问题。在 v5.3.0 中，用户通过 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 设定时间段后，只会在该时间段内触发 auto-analyze。
 - plugin 默认存放目录从 `""` 改为 `/data/deploy/plugin`。
-- DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/tiflow/tree/master/dm)。DM 版本号从 v2.0.x 修改为 v5.3.0，用户可以无风险从 v2.0.x 升级至 v5.3.0。
+- DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/tiflow/tree/master/dm)。从 DM v5.3.0 起，DM 采用与 TiDB 相同的版本号。DM v2.0 的下一个主版本为 DM v5.3。DM v2.0 到 v5.3 无兼容性变更，升级过程与正常升级无差异。
 
 ## 新功能
 
