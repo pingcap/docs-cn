@@ -17,7 +17,7 @@ summary: 在事务执行时检查数据索引一致性，阻止写入不一致�
 
 - 对大多数使用场景，推荐开启默认配置，即 `tidb_enable_mutation_checker = 1`，`tidb_txn_assertion_level = FAST`。
 - 追求绝对性能的场景，推荐全部关闭，`tidb_enable_mutation_checker = 0`，`tidb_txn_assertion_level = OFF`。
-- 对性能要求不高，数据一致性要求更高的场景，推荐打开最高级别，`tidb_enable_mutation_checker = 1`，`tidb_txn_assertion_level = STRICT`
+- 对性能要求不高，数据索引一致性要求更高的场景，推荐打开最高级别，`tidb_enable_mutation_checker = 1`，`tidb_txn_assertion_level = STRICT`
 
 ## 使用方法
 
@@ -29,11 +29,11 @@ Mutation checker 在事务执行过程中检查事务写入的内容是否存在
 
 ### Assertion
 
-Assertion 在向 TiKV 读写数据时附加一系列断言，断言失败意味着存在数据索引不一致。Assertion 有 3 个级别，分别为：
+Assertion 在向 TiKV 读写数据时附加一系列断言，断言失败意味着存在数据索引不一致。Assertion 有 3 个级别，通过系统变量 `tidb_txn_assertion_level` 控制，可取值为：
 
 - `OFF`，不开启
-- `FAST`，开启对性能影响较小的部分检查
-- `STRICT`，开启全部检查，对悲观事务性能有较大影响
+- `FAST`，开启对性能几乎没有影响的检查项
+- `STRICT`，开启全部检查，对写入性能有影响
 
 ## 使用限制
 
