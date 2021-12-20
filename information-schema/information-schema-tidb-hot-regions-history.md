@@ -73,7 +73,7 @@ DESC tidb_hot_regions_history;
 
   > **Note:**
   >
-  > `UPDATE_TIME` 同样支持unix时间戳。例如: `update_time >TIMESTAMP('2012-08-18 21:40:00')` 或 `update_time > FROM_UNIXTIME(1629294000.000) `。
+  > `UPDATE_TIME` 同样支持unix时间戳。例如: `update_time >TIMESTAMP('2012-08-18 21:40:00')` 或 `update_time > FROM_UNIXTIME(1629294000.000)`。
 
 * 查询某张表指定时间内的热点regions，替换update_time, table_name 即可。
 
