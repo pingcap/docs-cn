@@ -15,8 +15,8 @@ TiDB version: 4.0.0
     - Optimize the error message of the large-sized transactions for easier troubleshooting [#17219](https://github.com/pingcap/tidb/pull/17219)
 
 * TiCDC
-    - Optimize the structure of the `Changefeed` configuration file to improve usability [#588](https://github.com/pingcap/ticdc/pull/588)
-    - Add the `ignore-txn-start-ts` configuration item, and change the condition from `commit_ts` to `start_ts` during transactions filtering [#589](https://github.com/pingcap/ticdc/pull/589)
+    - Optimize the structure of the `Changefeed` configuration file to improve usability [#588](https://github.com/pingcap/tiflow/pull/588)
+    - Add the `ignore-txn-start-ts` configuration item, and change the condition from `commit_ts` to `start_ts` during transactions filtering [#589](https://github.com/pingcap/tiflow/pull/589)
 
 ## Important Bug Fixes
 
@@ -58,10 +58,10 @@ TiDB version: 4.0.0
     + Backup & Restore (BR)
         - Support the backup and restore of `Sequence` and `View` [#242](https://github.com/pingcap/br/pull/242)
     + TiCDC
-        - Support checking the validity of `Sink URI` when creating `Changefeed` [#561](https://github.com/pingcap/ticdc/pull/561)
-        - Support checking whether the PD and TiKV versions meet the system requirements during system startup [#570](https://github.com/pingcap/ticdc/pull/570)
-        - Support scheduling multiple tables in the same scheduling task generation cycle [#572](https://github.com/pingcap/ticdc/pull/572)
-        - Add information about node roles in HTTP API [#591](https://github.com/pingcap/ticdc/pull/591)
+        - Support checking the validity of `Sink URI` when creating `Changefeed` [#561](https://github.com/pingcap/tiflow/pull/561)
+        - Support checking whether the PD and TiKV versions meet the system requirements during system startup [#570](https://github.com/pingcap/tiflow/pull/570)
+        - Support scheduling multiple tables in the same scheduling task generation cycle [#572](https://github.com/pingcap/tiflow/pull/572)
+        - Add information about node roles in HTTP API [#591](https://github.com/pingcap/tiflow/pull/591)
 
 ## Bug Fixes
 
@@ -111,6 +111,6 @@ TiDB version: 4.0.0
     + Backup & Restore (BR)
         - Fix the issue that the data restoration fails due to network issues when BR restores data from cloud storage [#298](https://github.com/pingcap/br/pull/298)
     + TiCDC
-        - Fix system panics caused by data race [#565](https://github.com/pingcap/ticdc/pull/565) [#566](https://github.com/pingcap/ticdc/pull/566)
-        - Fix resource leaks or system blockages caused by incorrect processing logic [#574](https://github.com/pingcap/ticdc/pull/574) [#586](https://github.com/pingcap/ticdc/pull/586)
-        - Fix the issue that the command line gets stuck because CLI cannot connect to PD [#579](https://github.com/pingcap/ticdc/pull/579)
+        - Fix system panics caused by data race [#565](https://github.com/pingcap/tiflow/pull/565) [#566](https://github.com/pingcap/tiflow/pull/566)
+        - Fix resource leaks or system blockages caused by incorrect processing logic [#574](https://github.com/pingcap/tiflow/pull/574) [#586](https://github.com/pingcap/tiflow/pull/586)
+        - Fix the issue that the command line gets stuck because CLI cannot connect to PD [#579](https://github.com/pingcap/tiflow/pull/579)

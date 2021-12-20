@@ -46,7 +46,7 @@ TiDB version: 4.0.7
 
     + TiCDC
 
-        - Support translating more execution-efficient SQL statements in MySQL sink when the old value feature is enabled [#955](https://github.com/pingcap/ticdc/pull/955)
+        - Support translating more execution-efficient SQL statements in MySQL sink when the old value feature is enabled [#955](https://github.com/pingcap/tiflow/pull/955)
 
     + Backup & Restore (BR)
 

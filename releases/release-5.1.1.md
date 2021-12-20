@@ -64,8 +64,8 @@ TiDB version: 5.1.1
 
     + TiCDC
 
-        - Remove `file sorter` [#2327](https://github.com/pingcap/ticdc/pull/2327)
-        - Improve the error message returned when a PD endpoint misses the certificate [#1973](https://github.com/pingcap/ticdc/issues/1973)
+        - Remove `file sorter` [#2327](https://github.com/pingcap/tiflow/pull/2327)
+        - Improve the error message returned when a PD endpoint misses the certificate [#1973](https://github.com/pingcap/tiflow/issues/1973)
 
     + TiDB Lightning
 
@@ -138,12 +138,12 @@ TiDB version: 5.1.1
 
     + TiCDC
 
-        - Fix the support for the new collation feature [#2301](https://github.com/pingcap/ticdc/issues/2301)
-        - Fix the issue that an unsynchronized access to a shared map at runtime might cause panic [#2300](https://github.com/pingcap/ticdc/pull/2300)
-        - Fix the potential DDL loss issue that occurs when the owner crashes while executing the DDL statement [#2290](https://github.com/pingcap/ticdc/pull/2290)
-        - Fix the issue of trying to resolve locks in TiDB prematurely [#2188](https://github.com/pingcap/ticdc/issues/2188)
-        - Fix a bug that might cause data loss if a TiCDC node is killed immediately after a table migration [#2033](https://github.com/pingcap/ticdc/pull/2033)
-        - Fix the handling logic of `changefeed update` on `--sort-dir` and `--start-ts` [#1921](https://github.com/pingcap/ticdc/pull/1921)
+        - Fix the support for the new collation feature [#2301](https://github.com/pingcap/tiflow/issues/2301)
+        - Fix the issue that an unsynchronized access to a shared map at runtime might cause panic [#2300](https://github.com/pingcap/tiflow/pull/2300)
+        - Fix the potential DDL loss issue that occurs when the owner crashes while executing the DDL statement [#2290](https://github.com/pingcap/tiflow/pull/2290)
+        - Fix the issue of trying to resolve locks in TiDB prematurely [#2188](https://github.com/pingcap/tiflow/issues/2188)
+        - Fix a bug that might cause data loss if a TiCDC node is killed immediately after a table migration [#2033](https://github.com/pingcap/tiflow/pull/2033)
+        - Fix the handling logic of `changefeed update` on `--sort-dir` and `--start-ts` [#1921](https://github.com/pingcap/tiflow/pull/1921)
 
     + Backup & Restore (BR)
 

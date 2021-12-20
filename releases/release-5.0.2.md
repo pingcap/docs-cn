@@ -14,7 +14,7 @@ TiDB version: 5.0.2
 
     + TiCDC
 
-        - Deprecate `--sort-dir` in the `cdc cli changefeed` command. Instead, users can set `--sort-dir` in the `cdc server` command. [#1795](https://github.com/pingcap/ticdc/pull/1795)
+        - Deprecate `--sort-dir` in the `cdc cli changefeed` command. Instead, users can set `--sort-dir` in the `cdc server` command. [#1795](https://github.com/pingcap/tiflow/pull/1795)
 
 ## New Features
 
@@ -45,9 +45,9 @@ TiDB version: 5.0.2
 
     + TiCDC
 
-        - Add monitoring metrics for the table memory consumption [#1885](https://github.com/pingcap/ticdc/pull/1885)
-        - Optimize the memory and CPU usages during the sorting stage [#1863](https://github.com/pingcap/ticdc/pull/1863)
-        - Delete some useless log information that might cause user confusion [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - Add monitoring metrics for the table memory consumption [#1885](https://github.com/pingcap/tiflow/pull/1885)
+        - Optimize the memory and CPU usages during the sorting stage [#1863](https://github.com/pingcap/tiflow/pull/1863)
+        - Delete some useless log information that might cause user confusion [#1759](https://github.com/pingcap/tiflow/pull/1759)
 
     + Backup & Restore (BR)
 
@@ -109,14 +109,14 @@ TiDB version: 5.0.2
 
     + TiCDC
 
-        - Fix the issue that the time zone information is lost in the Avro output [#1712](https://github.com/pingcap/ticdc/pull/1712)
-        - Support cleaning up stale temporary files in Unified Sorter and forbid sharing the `sort-dir` directory [#1742](https://github.com/pingcap/ticdc/pull/1742)
-        - Fix a deadlock bug in the KV client that occurs when many stale Regions exist [#1599](https://github.com/pingcap/ticdc/issues/1599)
-        - Fix the wrong help information in the `--cert-allowed-cn` flag [#1697](https://github.com/pingcap/ticdc/pull/1697)
-        - Revert the update for `explicit_defaults_for_timestamp` which requires the `SUPER` privilege when replicating data to MySQL [#1750](https://github.com/pingcap/ticdc/pull/1750)
-        - Support the sink flow control to reduce the risk of memory overflow [#1840](https://github.com/pingcap/ticdc/pull/1840)
-        - Fix a bug that the replication task might stop when moving a table [#1828](https://github.com/pingcap/ticdc/pull/1828)
-        - Fix the issue that the TiKV GC safe point is blocked due to the stagnation of TiCDC changefeed checkpoint [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - Fix the issue that the time zone information is lost in the Avro output [#1712](https://github.com/pingcap/tiflow/pull/1712)
+        - Support cleaning up stale temporary files in Unified Sorter and forbid sharing the `sort-dir` directory [#1742](https://github.com/pingcap/tiflow/pull/1742)
+        - Fix a deadlock bug in the KV client that occurs when many stale Regions exist [#1599](https://github.com/pingcap/tiflow/issues/1599)
+        - Fix the wrong help information in the `--cert-allowed-cn` flag [#1697](https://github.com/pingcap/tiflow/pull/1697)
+        - Revert the update for `explicit_defaults_for_timestamp` which requires the `SUPER` privilege when replicating data to MySQL [#1750](https://github.com/pingcap/tiflow/pull/1750)
+        - Support the sink flow control to reduce the risk of memory overflow [#1840](https://github.com/pingcap/tiflow/pull/1840)
+        - Fix a bug that the replication task might stop when moving a table [#1828](https://github.com/pingcap/tiflow/pull/1828)
+        - Fix the issue that the TiKV GC safe point is blocked due to the stagnation of TiCDC changefeed checkpoint [#1759](https://github.com/pingcap/tiflow/pull/1759)
 
     + Backup & Restore (BR)
 

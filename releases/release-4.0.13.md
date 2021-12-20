@@ -46,9 +46,9 @@ TiDB version: 4.0.13
 
     + TiCDC
 
-        - Implement the processor flow control to avoid memory overflow (OOM) [#1751](https://github.com/pingcap/ticdc/pull/1751)
-        - Support cleaning up stale temporary files in Unified Sorter and prevent multiple `cdc server` instances from sharing the same `sort-dir` directory [#1741](https://github.com/pingcap/ticdc/pull/1741)
-        - Add the HTTP handler for the failpoint [#1732](https://github.com/pingcap/ticdc/pull/1732)
+        - Implement the processor flow control to avoid memory overflow (OOM) [#1751](https://github.com/pingcap/tiflow/pull/1751)
+        - Support cleaning up stale temporary files in Unified Sorter and prevent multiple `cdc server` instances from sharing the same `sort-dir` directory [#1741](https://github.com/pingcap/tiflow/pull/1741)
+        - Add the HTTP handler for the failpoint [#1732](https://github.com/pingcap/tiflow/pull/1732)
 
 ## Bug Fixes
 
@@ -133,9 +133,9 @@ TiDB version: 4.0.13
 
     + TiCDC
 
-        - Fix the deadlock issue caused by the flow control when the sorter's input channel has been blocked [#1779](https://github.com/pingcap/ticdc/pull/1779)
-        - Fix the issue that the TiKV GC safe point is blocked due to the stagnation of TiCDC changefeed checkpoint [#1756](https://github.com/pingcap/ticdc/pull/1756)
-        - Revert the update in `explicit_defaults_for_timestamp` which requires the `SUPER` privilege when replicating data to MySQL [#1749](https://github.com/pingcap/ticdc/pull/1749)
+        - Fix the deadlock issue caused by the flow control when the sorter's input channel has been blocked [#1779](https://github.com/pingcap/tiflow/pull/1779)
+        - Fix the issue that the TiKV GC safe point is blocked due to the stagnation of TiCDC changefeed checkpoint [#1756](https://github.com/pingcap/tiflow/pull/1756)
+        - Revert the update in `explicit_defaults_for_timestamp` which requires the `SUPER` privilege when replicating data to MySQL [#1749](https://github.com/pingcap/tiflow/pull/1749)
 
     + TiDB Lightning
 

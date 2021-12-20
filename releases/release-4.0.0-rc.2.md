@@ -99,7 +99,7 @@ TiDB version: 4.0.0-rc.2
 
     - TiCDC
 
-        - Support managing the replication task by using `cdc cli` (changefeed) [#546](https://github.com/pingcap/ticdc/pull/546)
+        - Support managing the replication task by using `cdc cli` (changefeed) [#546](https://github.com/pingcap/tiflow/pull/546)
 
     - Backup & Restore (BR)
 
@@ -186,11 +186,11 @@ TiDB version: 4.0.0-rc.2
 
     - TiCDC
 
-        - Fix the issue of using the wrong time zone when the `TZ` environment variable is not set [#512](https://github.com/pingcap/ticdc/pull/512)
-        - Fix the issue that the owner does not clean up the resources when the server exits because some errors are not handled correctly [#528](https://github.com/pingcap/ticdc/pull/528)
-        - Fix the issue that TiCDC might be stuck when reconnecting to TiKV [#531](https://github.com/pingcap/ticdc/pull/531)
-        - Optimize the memory usage when initializing the table schema [#534](https://github.com/pingcap/ticdc/pull/534)
-        - Use the `watch` mode to monitor the replication status changes and perform quasi-real-time updates to reduce replication delay [#481](https://github.com/pingcap/ticdc/pull/481)
+        - Fix the issue of using the wrong time zone when the `TZ` environment variable is not set [#512](https://github.com/pingcap/tiflow/pull/512)
+        - Fix the issue that the owner does not clean up the resources when the server exits because some errors are not handled correctly [#528](https://github.com/pingcap/tiflow/pull/528)
+        - Fix the issue that TiCDC might be stuck when reconnecting to TiKV [#531](https://github.com/pingcap/tiflow/pull/531)
+        - Optimize the memory usage when initializing the table schema [#534](https://github.com/pingcap/tiflow/pull/534)
+        - Use the `watch` mode to monitor the replication status changes and perform quasi-real-time updates to reduce replication delay [#481](https://github.com/pingcap/tiflow/pull/481)
 
     + Backup & Restore (BR)
 

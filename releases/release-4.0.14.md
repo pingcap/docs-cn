@@ -70,11 +70,11 @@ TiDB version: 4.0.14
 
     + TiCDC
 
-        - Improve the error message returned when a PD endpoint misses the certificate [#1973](https://github.com/pingcap/ticdc/issues/1973)
-        - Make the sorter I/O errors more user-friendly [#1976](https://github.com/pingcap/ticdc/pull/1976)
-        - Add a concurrency limit on the Region incremental scan in the KV client to reduce the pressure of TiKV [#1926](https://github.com/pingcap/ticdc/pull/1926)
-        - Add metrics for the table memory consumption [#1884](https://github.com/pingcap/ticdc/pull/1884)
-        - Add `capture-session-ttl` to the TiCDC server configuration [#2169](https://github.com/pingcap/ticdc/pull/2169)
+        - Improve the error message returned when a PD endpoint misses the certificate [#1973](https://github.com/pingcap/tiflow/issues/1973)
+        - Make the sorter I/O errors more user-friendly [#1976](https://github.com/pingcap/tiflow/pull/1976)
+        - Add a concurrency limit on the Region incremental scan in the KV client to reduce the pressure of TiKV [#1926](https://github.com/pingcap/tiflow/pull/1926)
+        - Add metrics for the table memory consumption [#1884](https://github.com/pingcap/tiflow/pull/1884)
+        - Add `capture-session-ttl` to the TiCDC server configuration [#2169](https://github.com/pingcap/tiflow/pull/2169)
 
 ## Bug fixes
 
@@ -157,10 +157,10 @@ TiDB version: 4.0.14
 
     + TiCDC
 
-        - Fix the issue of extra partition dispatching after adding new table partitions [#2205](https://github.com/pingcap/ticdc/pull/2205)
-        - Fix the panic issue that occurs when TiCDC fails to read `/proc/meminfo` [#2023](https://github.com/pingcap/ticdc/pull/2023)
-        - Reduce TiCDC's runtime memory consumption [#2011](https://github.com/pingcap/ticdc/pull/2011) [#1957](https://github.com/pingcap/ticdc/pull/1957)
-        - Fix a bug that some MySQL connection might leak after MySQL sink meets the error and pauses [#1945](https://github.com/pingcap/ticdc/pull/1945)
-        - Fix the issue that TiCDC changefeed cannot be created when start TS is less than current TS minus GC TTL [#1839](https://github.com/pingcap/ticdc/issues/1839)
-        - Reduce memory `malloc` in sort heap to avoid too much CPU overhead [#1853](https://github.com/pingcap/ticdc/issues/1853)
-        - Fix a bug that the replication task might stop when moving a table [#1827](https://github.com/pingcap/ticdc/pull/1827)
+        - Fix the issue of extra partition dispatching after adding new table partitions [#2205](https://github.com/pingcap/tiflow/pull/2205)
+        - Fix the panic issue that occurs when TiCDC fails to read `/proc/meminfo` [#2023](https://github.com/pingcap/tiflow/pull/2023)
+        - Reduce TiCDC's runtime memory consumption [#2011](https://github.com/pingcap/tiflow/pull/2011) [#1957](https://github.com/pingcap/tiflow/pull/1957)
+        - Fix a bug that some MySQL connection might leak after MySQL sink meets the error and pauses [#1945](https://github.com/pingcap/tiflow/pull/1945)
+        - Fix the issue that TiCDC changefeed cannot be created when start TS is less than current TS minus GC TTL [#1839](https://github.com/pingcap/tiflow/issues/1839)
+        - Reduce memory `malloc` in sort heap to avoid too much CPU overhead [#1853](https://github.com/pingcap/tiflow/issues/1853)
+        - Fix a bug that the replication task might stop when moving a table [#1827](https://github.com/pingcap/tiflow/pull/1827)

@@ -29,10 +29,10 @@ TiDB version: 4.0.5
 
     + TiCDC
 
-        - Support Kafka SSL connection [#764](https://github.com/pingcap/ticdc/pull/764)
-        - Support outputting the old value [#708](https://github.com/pingcap/ticdc/pull/708)
-        - Add the column flags [#796](https://github.com/pingcap/ticdc/pull/796)
-        - Support outputting the DDL statements and table schema of the previous version [#799](https://github.com/pingcap/ticdc/pull/799)
+        - Support Kafka SSL connection [#764](https://github.com/pingcap/tiflow/pull/764)
+        - Support outputting the old value [#708](https://github.com/pingcap/tiflow/pull/708)
+        - Add the column flags [#796](https://github.com/pingcap/tiflow/pull/796)
+        - Support outputting the DDL statements and table schema of the previous version [#799](https://github.com/pingcap/tiflow/pull/799)
 
 ## Improvements
 
@@ -84,7 +84,7 @@ TiDB version: 4.0.5
 
     + TiCDC
 
-        - Lower the frequency of getting TSO [#801](https://github.com/pingcap/ticdc/pull/801)
+        - Lower the frequency of getting TSO [#801](https://github.com/pingcap/tiflow/pull/801)
 
     + Backup & Restore (BR)
 
@@ -165,11 +165,11 @@ TiDB version: 4.0.5
 
     + TiCDC
 
-        - Fix the issue that the failed `changefeed` cannot be removed [#782](https://github.com/pingcap/ticdc/pull/782)
-        - Fix invalid `delete` events by selecting one unique index as the handle index [#787](https://github.com/pingcap/ticdc/pull/787)
-        - Fix the bug that GC safepoint is forwarded beyond the checkpoint of stopped `changefeed` [#797](https://github.com/pingcap/ticdc/pull/797)
-        - Fix the bug that the network I/O waiting blocks tasks to exit [#825](https://github.com/pingcap/ticdc/pull/825)
-        - Fix the bug that some unnecessary data might be mistakenly replicated to the downstream [#743](https://github.com/pingcap/ticdc/issues/743)
+        - Fix the issue that the failed `changefeed` cannot be removed [#782](https://github.com/pingcap/tiflow/pull/782)
+        - Fix invalid `delete` events by selecting one unique index as the handle index [#787](https://github.com/pingcap/tiflow/pull/787)
+        - Fix the bug that GC safepoint is forwarded beyond the checkpoint of stopped `changefeed` [#797](https://github.com/pingcap/tiflow/pull/797)
+        - Fix the bug that the network I/O waiting blocks tasks to exit [#825](https://github.com/pingcap/tiflow/pull/825)
+        - Fix the bug that some unnecessary data might be mistakenly replicated to the downstream [#743](https://github.com/pingcap/tiflow/issues/743)
 
     + TiDB Lightning
 

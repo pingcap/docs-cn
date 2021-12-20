@@ -67,9 +67,9 @@ TiDB version: 4.0.2
 
     - TiCDC
 
-        - Support migrating sub-tasks to new `capture`s [#665](https://github.com/pingcap/ticdc/pull/665)
-        - Add a `cli` command to delete the TiCDC GC TTL [#652](https://github.com/pingcap/ticdc/pull/652)
-        - Support canal protocol in MQ sink [#649](https://github.com/pingcap/ticdc/pull/649)
+        - Support migrating sub-tasks to new `capture`s [#665](https://github.com/pingcap/tiflow/pull/665)
+        - Add a `cli` command to delete the TiCDC GC TTL [#652](https://github.com/pingcap/tiflow/pull/652)
+        - Support canal protocol in MQ sink [#649](https://github.com/pingcap/tiflow/pull/649)
 
 ## Improvements
 

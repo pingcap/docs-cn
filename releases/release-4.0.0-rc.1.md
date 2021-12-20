@@ -44,11 +44,11 @@ TiDB version: 4.0.0-rc.1
 
 + TiCDC
 
-    - Fix the replication failure that occurs because the schema internally maintained in TiCDC fails to correctly handle the timing issue of read and write operations [#438](https://github.com/pingcap/ticdc/pull/438) [#450](https://github.com/pingcap/ticdc/pull/450) [#478](https://github.com/pingcap/ticdc/pull/478) [#496](https://github.com/pingcap/ticdc/pull/496)
-    - Fix the bug that the TiKV client fails to correctly maintain the internal resources when encountering some TiKV anomalies [#499](https://github.com/pingcap/ticdc/pull/499) [#492](https://github.com/pingcap/ticdc/pull/492)
-    - Fix the bug that meta data is not correctly cleaned up and abnormally remains in the TiCDC nodes [#488](https://github.com/pingcap/ticdc/pull/488) [#504](https://github.com/pingcap/ticdc/pull/504)
-    - Fix the issue that the TiKV client fails to correctly handle the repeated sending of the prewrite event [#446](https://github.com/pingcap/ticdc/pull/446)
-    - Fix the issue that the TiKV client fails to correctly handle the redundant prewrite events received before the initialization [#448](https://github.com/pingcap/ticdc/pull/448)
+    - Fix the replication failure that occurs because the schema internally maintained in TiCDC fails to correctly handle the timing issue of read and write operations [#438](https://github.com/pingcap/tiflow/pull/438) [#450](https://github.com/pingcap/tiflow/pull/450) [#478](https://github.com/pingcap/tiflow/pull/478) [#496](https://github.com/pingcap/tiflow/pull/496)
+    - Fix the bug that the TiKV client fails to correctly maintain the internal resources when encountering some TiKV anomalies [#499](https://github.com/pingcap/tiflow/pull/499) [#492](https://github.com/pingcap/tiflow/pull/492)
+    - Fix the bug that meta data is not correctly cleaned up and abnormally remains in the TiCDC nodes [#488](https://github.com/pingcap/tiflow/pull/488) [#504](https://github.com/pingcap/tiflow/pull/504)
+    - Fix the issue that the TiKV client fails to correctly handle the repeated sending of the prewrite event [#446](https://github.com/pingcap/tiflow/pull/446)
+    - Fix the issue that the TiKV client fails to correctly handle the redundant prewrite events received before the initialization [#448](https://github.com/pingcap/tiflow/pull/448)
 
 + Backup & Restore (BR)
 
@@ -88,11 +88,11 @@ TiDB version: 4.0.0-rc.1
 
 + TiCDC
 
-    - Support sending messages in batches in the Kafka sink module [#426](https://github.com/pingcap/ticdc/pull/426)
-    - Support file sorting in the processor [#477](https://github.com/pingcap/ticdc/pull/477)
-    - Support automatic `resolve lock` [#459](https://github.com/pingcap/ticdc/pull/459)
-    - Add the feature that automatically updates the TiCDC service GC safe point to PD [#487](https://github.com/pingcap/ticdc/pull/487)
-    - Add the timezone setting for data replication [#498](https://github.com/pingcap/ticdc/pull/498)
+    - Support sending messages in batches in the Kafka sink module [#426](https://github.com/pingcap/tiflow/pull/426)
+    - Support file sorting in the processor [#477](https://github.com/pingcap/tiflow/pull/477)
+    - Support automatic `resolve lock` [#459](https://github.com/pingcap/tiflow/pull/459)
+    - Add the feature that automatically updates the TiCDC service GC safe point to PD [#487](https://github.com/pingcap/tiflow/pull/487)
+    - Add the timezone setting for data replication [#498](https://github.com/pingcap/tiflow/pull/498)
 
 + Backup and Restore (BR)
 

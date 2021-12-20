@@ -27,7 +27,7 @@ TiDB version: 5.1.2
 
     + TiCDC
 
-        - Set the compatible version from `5.1.0-alpha` to `5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
+        - Set the compatible version from `5.1.0-alpha` to `5.2.0-alpha` [#2659](https://github.com/pingcap/tiflow/pull/2659)
 
 ## Improvements
 
@@ -38,7 +38,7 @@ TiDB version: 5.1.2
 + TiKV
 
     - Support dynamically modifying TiCDC configurations [#10645](https://github.com/tikv/tikv/issues/10645)
-    - Reduce the size of Resolved TS message to save network bandwidth [#2448](https://github.com/pingcap/ticdc/issues/2448)
+    - Reduce the size of Resolved TS message to save network bandwidth [#2448](https://github.com/pingcap/tiflow/issues/2448)
     - Limit the counts of peer stats in the heartbeat message reported by a single store [#10621](https://github.com/tikv/tikv/pull/10621)
 
 + PD
@@ -58,11 +58,11 @@ TiDB version: 5.1.2
 
     + TiCDC
 
-        - Optimize memory management when the Unified Sorter is using memory to sort data [#2553](https://github.com/pingcap/ticdc/issues/2553)
-        - Optimize workerpool for fewer goroutines when concurrency is high  [#2211](https://github.com/pingcap/ticdc/issues/2211)
-        - Reduce goroutine usage when a table's Region transfer away from a TiKV node [#2284](https://github.com/pingcap/ticdc/issues/2284)
-        - Add a global gRPC connection pool and share gRPC connections among KV clients [#2534](https://github.com/pingcap/ticdc/pull/2534)
-        - Prohibit operating TiCDC clusters across major and minor versions [#2599](https://github.com/pingcap/ticdc/pull/2599)
+        - Optimize memory management when the Unified Sorter is using memory to sort data [#2553](https://github.com/pingcap/tiflow/issues/2553)
+        - Optimize workerpool for fewer goroutines when concurrency is high  [#2211](https://github.com/pingcap/tiflow/issues/2211)
+        - Reduce goroutine usage when a table's Region transfer away from a TiKV node [#2284](https://github.com/pingcap/tiflow/issues/2284)
+        - Add a global gRPC connection pool and share gRPC connections among KV clients [#2534](https://github.com/pingcap/tiflow/pull/2534)
+        - Prohibit operating TiCDC clusters across major and minor versions [#2599](https://github.com/pingcap/tiflow/pull/2599)
 
     + Dumpling
 
@@ -137,18 +137,18 @@ TiDB version: 5.1.2
     + Dumpling
 
         - Fix the issue that Dumpling is pending when `show table status` returns incorrect results in some MySQL versions (8.0.3 and 8.0.23) [#322](https://github.com/pingcap/dumpling/issues/322)
-        - Fix the CLI compatibility issue with 4.0.x clusters on the default `sort-engine` option [#2373](https://github.com/pingcap/ticdc/issues/2373)
+        - Fix the CLI compatibility issue with 4.0.x clusters on the default `sort-engine` option [#2373](https://github.com/pingcap/tiflow/issues/2373)
 
     + TiCDC
 
-        - Fix a bug that the JSON encoding might cause panic when processing a string type value that is `string` or `[]byte` [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - Reduce gRPC window size to avoid OOM [#2673](https://github.com/pingcap/ticdc/issues/2673)
-        - Fix a gRPC `keepalive` error under high memory pressure [#2202](https://github.com/pingcap/ticdc/issues/2202)
-        - Fix a bug that an unsigned `tinyint` causes TiCDC to panic [#2648](https://github.com/pingcap/ticdc/issues/2648)
-        - Fix an empty value issue in TiCDC Open Protocol. An empty value is no longer output when there is no change in one transaction. [#2612](https://github.com/pingcap/ticdc/issues/2612)
-        - Fix a bug in DDL handling during manual restarts [#2603](https://github.com/pingcap/ticdc/issues/2603)
-        - Fix the issue that `EtcdWorker`'s snapshot isolation might be wrongly violated when managing the metadata [#2559](https://github.com/pingcap/ticdc/pull/2559)
-        - Fix a bug that multiple processors might write data to the same table when TiCDC is rescheduling the table [#2230](https://github.com/pingcap/ticdc/issues/2230)
-        - Fix a bug that changefeed might be reset unexpectedly when TiCDC gets the `ErrSchemaStorageTableMiss` error [#2422](https://github.com/pingcap/ticdc/issues/2422)
-        - Fix a bug that changefeed cannot be removed when TiCDC gets the `ErrGCTTLExceeded` error [#2391](https://github.com/pingcap/ticdc/issues/2391)
-        - Fix a bug that TiCDC fails to synchronize large tables to cdclog [#1259](https://github.com/pingcap/ticdc/issues/1259) [#2424](https://github.com/pingcap/ticdc/issues/2424)
+        - Fix a bug that the JSON encoding might cause panic when processing a string type value that is `string` or `[]byte` [#2758](https://github.com/pingcap/tiflow/issues/2758)
+        - Reduce gRPC window size to avoid OOM [#2673](https://github.com/pingcap/tiflow/issues/2673)
+        - Fix a gRPC `keepalive` error under high memory pressure [#2202](https://github.com/pingcap/tiflow/issues/2202)
+        - Fix a bug that an unsigned `tinyint` causes TiCDC to panic [#2648](https://github.com/pingcap/tiflow/issues/2648)
+        - Fix an empty value issue in TiCDC Open Protocol. An empty value is no longer output when there is no change in one transaction. [#2612](https://github.com/pingcap/tiflow/issues/2612)
+        - Fix a bug in DDL handling during manual restarts [#2603](https://github.com/pingcap/tiflow/issues/2603)
+        - Fix the issue that `EtcdWorker`'s snapshot isolation might be wrongly violated when managing the metadata [#2559](https://github.com/pingcap/tiflow/pull/2559)
+        - Fix a bug that multiple processors might write data to the same table when TiCDC is rescheduling the table [#2230](https://github.com/pingcap/tiflow/issues/2230)
+        - Fix a bug that changefeed might be reset unexpectedly when TiCDC gets the `ErrSchemaStorageTableMiss` error [#2422](https://github.com/pingcap/tiflow/issues/2422)
+        - Fix a bug that changefeed cannot be removed when TiCDC gets the `ErrGCTTLExceeded` error [#2391](https://github.com/pingcap/tiflow/issues/2391)
+        - Fix a bug that TiCDC fails to synchronize large tables to cdclog [#1259](https://github.com/pingcap/tiflow/issues/1259) [#2424](https://github.com/pingcap/tiflow/issues/2424)

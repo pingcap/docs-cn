@@ -26,7 +26,7 @@ TiDB version: 4.0.6
 
     + TiCDC (GA since v4.0.6)
 
-        - Support outputting data in the `maxwell` format [#869](https://github.com/pingcap/ticdc/pull/869)
+        - Support outputting data in the `maxwell` format [#869](https://github.com/pingcap/tiflow/pull/869)
 
 ## Improvements
 
@@ -75,8 +75,8 @@ TiDB version: 4.0.6
 
     + TiCDC
 
-        - Skip resolved lock during puller initialization [#910](https://github.com/pingcap/ticdc/pull/910)
-        - Reduce PD write frequency [#937](https://github.com/pingcap/ticdc/pull/937)
+        - Skip resolved lock during puller initialization [#910](https://github.com/pingcap/tiflow/pull/910)
+        - Reduce PD write frequency [#937](https://github.com/pingcap/tiflow/pull/937)
 
     + Backup & Restore (BR)
 
@@ -177,10 +177,10 @@ TiDB version: 4.0.6
 
     + TiCDC
 
-        - Fix the issue that TiCDC leaks memory in some cases [#942](https://github.com/pingcap/ticdc/pull/942)
-        - Fix the issue that TiCDC might panic in Kafka sink [#912](https://github.com/pingcap/ticdc/pull/912)
-        - Fix the issue that CommitTs or ResolvedTs (CRTs) might be less than `resolvedTs` in puller [#927](https://github.com/pingcap/ticdc/pull/927)
-        - Fix the issue that `changefeed` might be blocked by MySQL driver [#936](https://github.com/pingcap/ticdc/pull/936)
+        - Fix the issue that TiCDC leaks memory in some cases [#942](https://github.com/pingcap/tiflow/pull/942)
+        - Fix the issue that TiCDC might panic in Kafka sink [#912](https://github.com/pingcap/tiflow/pull/912)
+        - Fix the issue that CommitTs or ResolvedTs (CRTs) might be less than `resolvedTs` in puller [#927](https://github.com/pingcap/tiflow/pull/927)
+        - Fix the issue that `changefeed` might be blocked by MySQL driver [#936](https://github.com/pingcap/tiflow/pull/936)
         - Fix the incorrect Resolved Ts interval of TiCDC [#8573](https://github.com/tikv/tikv/pull/8573)
 
     + Backup & Restore (BR)
