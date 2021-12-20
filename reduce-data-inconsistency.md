@@ -7,7 +7,7 @@ summary: 在事务执行时检查数据索引一致性，阻止写入不一致�
 
 本文档介绍数据索引不一致特性的作用范围、可能对用户可见的影响和控制方法。
 
-> ** 警告：**（可选）
+> **警告：**（可选）
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
@@ -18,7 +18,6 @@ summary: 在事务执行时检查数据索引一致性，阻止写入不一致�
 - 对大多数使用场景，推荐开启默认配置，即 `tidb_enable_mutation_checker = 1`，`tidb_txn_assertion_level = FAST`。
 - 追求绝对性能的场景，推荐全部关闭，`tidb_enable_mutation_checker = 0`，`tidb_txn_assertion_level = OFF`。
 - 对性能要求不高，数据一致性要求更高的场景，推荐打开最高级别，`tidb_enable_mutation_checker = 1`，`tidb_txn_assertion_level = STRICT`
-
 
 ## 使用方法
 
@@ -44,7 +43,6 @@ Assertion 对于 amend transaction 不生效。
 
 ## 常见问题
 
-如果一致性检查报错，但是报错信息发现并无不一致，且 `admin check table/index` 没有返回错误信息，则存在一致性检查误报的可能。
-可以暂时关闭一致性检查跳过此问题。
+如果一致性检查报错，但是报错信息发现并无不一致，且 `admin check table/index` 没有返回错误信息，则存在一致性检查误报的可能。可以暂时关闭一致性检查跳过此问题。
 
 不论是否误报，一致性检查报错时，请联系 PingCAP 工程师或 [上报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
