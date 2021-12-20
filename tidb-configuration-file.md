@@ -432,21 +432,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
 
-<<<<<<< HEAD
-### `nested-loop-join-cache-capacity`
-
-+ nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值。
-+ 单位：Byte
-+ 默认值：20971520
-+ 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
-=======
-### `enforce-mpp`
-
-+ 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
-+ 默认值：false
-+ 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
->>>>>>> e1d36cd42 (Delete the Configuration File Parameters about the nested-loop-join-cache-capacity (#7709))
-
 ## prepared-plan-cache
 
 prepare 语句的 plan cache 设置。
