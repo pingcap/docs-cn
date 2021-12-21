@@ -13,13 +13,14 @@ summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
 ## 前提条件
 
 - [安装 Dumpling 和 Lightning](/migration-tools.md)。
+- [获取 Dumpling 所需 上游数据库权限](/dumpling-overview#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 导入全量数据到 TiDB
 
 ### 第 1 步. 导出 Aurora 快照文件到 Amazon S3
 
-1. 执行以下命令，查询当前 binlog 位置：
+1. 在 Aurora 上，执行以下命令，查询当前 binlog 位置：
 
     ```sql
     mysql> SHOW MASTER STATUS;
