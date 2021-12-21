@@ -122,7 +122,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 第 3 步增量同步的时候所需的起始位点信息，在`${data-path}`目录下,`my_db1`和`my_db2`的`metadata`文件中，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息。
 
 ## 第 2 步：启动 TiDB Lightning 进行导入
-
+在启动TiDB Lightning进行迁移之前，建议先了解如何处理检查点，然后根据需要选择合适的方式进行迁移。
 ### 断点续传
 
 大量数据导入一般耗时数小时甚至数天，长时间运行的进程会有一定机率发生非正常中断。如果每次重启都从头开始，之前已成功导入的数据就会前功尽弃。为此，TiDB Lightning 提供了断点续传的功能，即使 TiDB Lightning 崩溃，在重启时仍然从断点开始继续工作。
