@@ -6,7 +6,9 @@ aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overvi
 
 # Data Migration 简介
 
-[TiDB Data Migration](https://github.com/pingcap/dm) (DM) 是一体化的数据迁移任务管理工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的数据迁移。DM 工具旨在降低数据迁移的运维成本。使用 DM 进行数据迁移的时候，需要执行以下操作：
+[TiDB Data Migration](https://github.com/pingcap/tiflow/tree/master/dm) (DM) 是一款便捷的数据迁移工具，支持从与 MySQL 协议兼容的数据库（MySQL、MariaDB、Aurora MySQL）到 TiDB 的全量数据迁移和增量数据同步。使用 DM 工具有利于简化数据迁移过程，降低数据迁移运维成本。
+
+使用 DM 进行数据迁移的时候，需要执行以下操作：
 
 - 部署 DM 集群
 - 创建上游数据源（source）对象，保存数据源访问信息
@@ -83,7 +85,7 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 
     > **警告：**
     >
-    > 支持从 MySQL v8.0 迁移数据是 DM v2.0 的实验特性，不建议在生产环境下使用。
+    > 使用 DM 从 MySQL v8.0 迁移数据到 TiDB 目前为实验特性（从 DM v2.0 引入），不建议在生产环境下使用。
 
 + DDL 语法兼容性限制
 
