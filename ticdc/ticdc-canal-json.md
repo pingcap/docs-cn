@@ -1,42 +1,45 @@
 ---
-title: TiCDC Support Canal-JSON Protocol
-aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json-protocol/','/docs-cn/dev/reference/tools/ticdc/canal-json/']
+title: TiCDC Support Canal-JSON
+aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/ticdc/canal-json/']
 ---
 
-# TiCDC Support Canal-JSON Protocol
+# TiCDC Support Canal-JSON
 
 ## 概述
 
-Canal-JSON 是由 Alibaba Canal 提供的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的实现，用于向 MQ(Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 提供的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的近似复刻实现。当使用 MQ(Message Queue) 作为下游 sink 时，用户可以在 sink-uri 中指定使用 Canal-JSON，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。Event 分为三类：
 
-当指定使用 Canal-JSON 时，TiCDC 将以 Event 为基本单位封装 Canal-JSON Message，向下游复制数据变更事件。Event 分为三类：
+* Row Changed Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
+* DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引偏移量为 0 的 MQ Partition。
+* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。仅当用户在 sink-uri 中设置 `enable-tidb-extension=true` 时生效。
 
-* Row Changed Event：代表一行的数据变化，在行发生变更时该 Event 被发出，包含变更后该行的相关信息。
-* DDL Event：代表 DDL 变更，在上游成功执行 DDL 后发出，DDL Event 会广播到每一个 MQ Partition 中。
-* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。
+### TiDB 自定义字段
 
-## 协议约束 -->
+TiCDC 支持在 sink-uri 中设置 `enable-tidb-extension=true`。开启该功能之后，Canal-JSON 将携带 TiCDC 自定义字段，内容如下：
 
+* TiCDC 将会发送 ResolvedEvent 事件。
+* TiCDC 发送的 Row Changed Event 和 DDL Event 类型事件中，将会含有一个名为 `_tidb` 的字段。
 
-* DDL Event 将被发送到索引偏移量为 0 的 MQ Partition。
+配置样例如下所示：
 
+{{< copyable "shell-regular" >}}
 
-<!-- * 在绝大多数情况下，一个版本的 Row Changed Event 只会发出一次，但是特殊情况（节点故障、网络分区等）下，同一版本的 Row Changed Event 可能会多次发送。
-* 同一张表中的每一个版本第一次发出的 Row Changed Event 在 Event 流中一定是按 TS (timestamp) 顺序递增的。
-* Resolved Event 会被周期性的广播到各个 MQ Partition，Resolved Event 意味着任何 TS 小于 Resolved Event TS 的 Event 已经发送给下游。 -->
+```shell
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
+```
 
-<!-- todo: 搞懂这句话的含义 -->
-<!-- * 一行数据的多个 Row Changed Event 一定会被发送到同一个 MQ Partition 中。 -->
+`enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
 
 ## Message 格式定义
+### DDL Event
 
-Canal-JSON 格式的基本字段格式如下：
+TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 ```
 {
     "id": 0,
-    "database": "database name",
-    "table": "table name",
+    "database": "test",
+    "table": "",
     "pkNames": null,
     "isDdl": true,
     "type": "QUERY",
@@ -46,7 +49,10 @@ Canal-JSON 格式的基本字段格式如下：
     "sqlType": null,
     "mysqlType": null,
     "data": null,
-    "old": null
+    "old": null,
+    "_tidb": {                             // 仅当 enable-tidb-extension=true 时存在该字段
+        "commitTs": 163963309467037594
+    }
 }
 ```
 
@@ -65,357 +71,466 @@ Canal-JSON 格式的基本字段格式如下：
 | mysqlType   | object | 当 isDdl 为 false 时，记录每一列数据类型 在 MySQL 中的类型表示 |
 | data        | Object | 当 isDdl 为 false 时，记录每一列的名字和其数据值 |
 | old         | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值|
-
-### DDL Event
-
-### Row Changed Event
-
-### Resolved Event
-
-
-## Event 格式定义
-
-本部分介绍 Row Changed Event、DDL Event 和 Resolved Event 的格式定义。
+| _tidb       | Object | 仅当 enable-tidb-extension 为 true 时，该字段存在。当前阶段，只含有 commitTs，其为造成 Row 变更的事务的 tso ｜
 
 ### Row Changed Event
 
-+ **Key:**
+对于一行数据变更事件，TiCDC 会将其编码成如下形式:
 
-    ```
-    {
-        "ts":<TS>,
-        "scm":<Schema Name>,
-        "tbl":<Table Name>,
-        "t":1
-    }
-    ```
-
-    | 参数         | 类型   | 说明                    |
-    | :---------- | :----- | :--------------------- |
-    | TS          | Number | 造成 Row 变更的事务的 TS  |
-    | Schema Name | String | Row 所在的 Schema 的名字 |
-    | Table Name  | String | Row 所在的 Table 的名字  |
-
-+ **Value:**
-
-    `Insert` 事件，输出新增的行数据。
-
-    ```
-    {
-        "u":{
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            },
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            }
+```
+{
+    "id": 0,
+    "database": "test",
+    "table": "tp_int",
+    "pkNames": [
+        "id"
+    ],
+    "isDdl": false,
+    "type": "INSERT",
+    "es": 1639633141221,
+    "ts": 1639633142960,
+    "sql": "",
+    "sqlType": {
+        "c_bigint": -5,
+        "c_int": 4,
+        "c_mediumint": 4,
+        "c_smallint": 5,
+        "c_tinyint": -6,
+        "id": 4
+    },
+    "mysqlType": {
+        "c_bigint": "bigint",
+        "c_int": "int",
+        "c_mediumint": "mediumint",
+        "c_smallint": "smallint",
+        "c_tinyint": "tinyint",
+        "id": "int"
+    },
+    "data": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "2147483647",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "127",
+            "id": "2"
         }
+    ],
+    "old": null,
+    "_tidb": {                             // 仅当 enable-tidb-extension=true 时存在该字段
+        "commitTs": 163963314122145239
     }
-    ```
-
-    `Update` 事件，输出新增的行数据 ("u") 以及修改前的行数据 ("p")，仅当 Old Value 特性开启时，才会输出修改前的行数据。
-
-    ```
-    {
-        "u":{
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            },
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            }
-        },
-        "p":{
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            },
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            }
-        }
-    }
-    ```
-
-    `Delete` 事件，输出被删除的行数据。当 Old Value 特性开启时，`Delete` 事件中包含被删除的行数据中的所有列；当 Old Value 特性关闭时，`Delete` 事件中仅包含 [HandleKey](#列标志位) 列。
-
-    ```
-    {
-        "d":{
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            },
-            <Column Name>:{
-                "t":<Column Type>,
-                "h":<Where Handle>,
-                "f":<Flag>,
-                "v":<Column Value>
-            }
-        }
-    }
-    ```
-
-| 参数         | 类型   | 说明                    |
-| :---------- | :----- | :--------------------- |
-| Column Name    | String | 列名   |
-| Column Type    | Number | 列类型，详见：[Column 的类型码](#column-的类型码) |
-| Where Handle   | Bool   | 表示该列是否可以作为 Where 筛选条件，当该列在表内具有唯一性时，Where Handle 为 true。 |
-| Flag           | Number | 列标志位，详见：[列标志位](#列标志位) |
-| Column Value   | Any    | 列值   |
-
-### DDL Event
-
-+ **Key:**
-
-    ```
-    {
-        "ts":<TS>,
-        "scm":<Schema Name>,
-        "tbl":<Table Name>,
-        "t":2
-    }
-    ```
-
-    | 参数         | 类型   | 说明                                 |
-    | :---------- | :----- | :---------------------------------- |
-    | TS          | Number | 进行 DDL 变更的事务的 TS               |
-    | Schema Name | String | DDL 变更的 Schema 的名字，可能为空字符串 |
-    | Table Name  | String | DDL 变更的 Table 的名字，可能为空字符串  |
-
-+ **Value:**
-
-    ```
-    {
-        "q":<DDL Query>,
-        "t":<DDL Type>
-    }
-    ```
-
-    | 参数       | 类型   | 说明           |
-    | :-------- | :----- | :------------ |
-    | DDL Query | String | DDL Query SQL |
-    | DDL Type  | String | DDL 类型，详见：[DDL 的类型码](#ddl-的类型码)  |
+}
+```
 
 ### Resolved Event
 
-+ **Key:**
-
-    ```
-    {
-        "ts":<TS>,
-        "t":3
+{
+    "id": 0,
+    "database": "",
+    "table": "",
+    "pkNames": null,
+    "isDdl": false,
+    "type": "TIDB_WATERMARK",
+    "es": 1640007049196,
+    "ts": 1640007050284,
+    "sql": "",
+    "sqlType": null,
+    "mysqlType": null,
+    "data": null,
+    "old": null,
+    "_tidb": {
+        "watermarkTs": 429918007904436226
     }
-    ```
+}
 
-    | 参数         | 类型   | 说明                                         |
-    | :---------- | :----- | :------------------------------------------ |
-    | TS          | Number | Resolved TS，任意小于该 TS 的 Event 已经发送完毕 |
+TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 Resolved Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其含义为当前 tso。当用户收到该类型事件时，可以得知，所有 tso 小于 `watermarkTs` 的事件，已经发送完毕。
 
-+ **Value:** None
+### 消费端数据解析
 
-## Event 流的输出示例
+从上面的示例中可知，Canal-JSON 具有统一的数据格式，针对不同的事件类型，有不同的字段填充规则。消费者可以使用统一的方法对该 JSON 格式的数据进行解析，然后通过判断字段值的方式，来确定具体事件类型：
 
-本部分展示并描述 Event 流的输出日志。
+* 当 `isDdl` 为 true 时，该消息含有一条 DDL Event。
+* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type ` 为 `TIDB_WATERMARK`，可得知其为 Resolved Event，反之则为 Row Changed Event。
 
-假设在上游执行以下 SQL 语句，MQ Partition 数量为 2：
+## MySQL Type 字段说明
 
-{{< copyable "sql" >}}
+Canal-JSON 格式会在 `mysqlType` 字段中记录每一列的 MySQL Type 的字符串表示。相关详情可以参考 [TiDB Data Types](/data-type-overview.md)。
+
+## SQL Type 字段说明
+
+Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，即每条数据在 JDBC 中对应的数据类型，其值可以通过 MySQL Type 和具体数据值计算得到。具体对应关系如下:
+
+| MySQL Type | Java SQL Type Code |
+| :----------| :----------------- | 
+| Boolean    | -6                 |
+| Float      | 7                  |
+| Double     | 8                  |
+| Decimal    | 3                  |
+| Char       | 1                  |
+| Varchar    | 12                 |
+| Binary     | 2004               |
+| Varbinary  | 2004               |
+| Tinytext   | 2005               |
+| Text       | 2005               |
+| Mediumtext | 2005               |
+| Longtext   | 2005               |
+| Tinyblob   | 2004               |
+| Blob       | 2004               |
+| Mediumblob | 2004               |
+| Longblob   | 2004               |
+| Date       | 91                 |
+| Datetime   | 93                 |
+| Timestamp  | 93                 |
+| Time       | 92                 |
+| Year       | 12                 |
+| Enum       | 4                  |
+| Set        | -7                 |
+| Bit        | -7                 |
+| JSON       | 12                 |
+
+### 整数类型
+
+[整数类型](/data-type-numeric.md#整数类型)，需要考虑是否有 `Unsigned` 限定，并且需要考虑当前取值大小，分别对应有不同的 Java SQL Type (Code)。
+
+| MySQL Type String  | Value Range                                 | Java SQL Type Code |
+| :------------------| :------------------------------------------ | :----------------- | 
+| tinyint            | [-128, 127]                                 | -6                 | 
+| tinyint unsigned   | [0, 127]                                    | -6                 |
+| tinyint unsigned   | [128, 255]                                  | 5                  |
+| smallint           | [-32768, 32767]                             | 5                  |
+| smallint unsigned  | [0, 32767]                                  | 5                  |
+| smallint unsigned  | [32768, 65535]                              | 4                  |
+| mediumint          | [-8388608, 8388607]                         | 4                  |
+| mediumint unsigned | [0, 8388607]                                | 4                  |
+| mediumint unsigned | [8388608, 16777215]                         | 4                  |
+| int                | [-2147483648, 2147483647]                   | 4                  |
+| int unsigned       | [0, 2147483647]                             | 4                  |
+| int unsigned       | [2147483648, 4294967295]                    | -5                 |
+| bigint             | [-9223372036854775808, 9223372036854775807] | -5                 |
+| bigint unsigned    | [0, 9223372036854775807]                    | -5                 |
+| bigint unsigned    | [9223372036854775808, 18446744073709551615] | 3                  |
+
+TiCDC 涉及的 Java SQL Type 及其 Code 映射关系如下所示:
+
+| Java SQL Type | Java SQL Type Code |
+| :-------------| :------------------|
+| CHAR          | 1                  |
+| DECIMAL       | 3                  |
+| INTEGER       | 4                  |
+| SMALLINT      | 5                  |
+| REAL          | 7                  |
+| DOUBLE        | 8                  |
+| VARCHAR       | 12                 |
+| DATE          | 91                 |
+| TIME          | 92                 |
+| TIMESTAMP     | 93                 |
+| BLOB          | 2004               |
+| CLOB          | 2005               |
+| BIGINT        | -5                 |
+| TINYINT       | -6                 |     
+| Bit           | -7                 |
+
+对 Java SQL Type 的更多解释，可以参考 [Java SQL Class Types](https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html)
+
+## TiCDC Canal-JSON 和 Canal 官方实现对比
+
+TiCDC 对 Canal-JSON 数据格式的实现，和官方有些许不同。具体如下：
+
+* 对于 `Update` 类型事件，Canal 官方实现中，`Old` 字段仅包含被修改的列数据，而 TiCDC 的实现则包含所有列数据。
+
+假设在上游 TiDB 按顺序执行如下 SQL 语句:
 
 ```sql
-CREATE TABLE test.t1(id int primary key, val varchar(16));
+create table tp_int
+(
+    id          int auto_increment,
+    c_tinyint   tinyint   null,
+    c_smallint  smallint  null,
+    c_mediumint mediumint null,
+    c_int       int       null,
+    c_bigint    bigint    null,
+    constraint pk
+        primary key (id)
+); 
+
+insert into tp_int(c_tinyint, c_smallint, c_mediumint, c_int, c_bigint)
+values (127, 32767, 8388607, 2147483647, 9223372036854775807);
+
+update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 ```
 
-如以下执行日志中的 Log 1、Log 3 所示，DDL Event 将被广播到所有 MQ Partition，Resolved Event 会被周期性地广播到各个 MQ Partition：
+对于 `update` 语句，TiCDC 将会输出一条 `type` 为 `UPDATE` 的事件消息，如下所示。该 `update` 语句，仅对 `c_int`, `c_tinyint` 两列进行了修改, 输出事件消息的 `Old` 字段，则含有所有列数据。
 
 ```
-1. [partition=0] [key="{\"ts\":415508856908021766,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":2}"] [value="{\"q\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"t\":3}"]
-2. [partition=0] [key="{\"ts\":415508856908021766,\"t\":3}"] [value=]
-3. [partition=1] [key="{\"ts\":415508856908021766,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":2}"] [value="{\"q\":\"CREATE TABLE test.t1(id int primary key, val varchar(16))\",\"t\":3}"]
-4. [partition=1] [key="{\"ts\":415508856908021766,\"t\":3}"] [value=]
+{
+    "id": 0,
+    ...
+    "type": "UPDATE",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        ...
+    },
+    "data": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "0",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "0",
+            "id": "2"
+        }
+    ],
+    "old": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "2147483647",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "127",
+            "id": "2"
+        }
+    ]
+}
 ```
 
-在上游执行以下 SQL 语句：
+* 对于 `mysqlType` 字段，Canal 官方实现中，对于含有参数的类型，会含有完整的参数信息, TiCDC 实现则没有类型参数信息。
 
-{{< copyable "sql" >}}
+假设在上游 TiDB 按顺序执行如下 SQL 语句:
 
 ```sql
-BEGIN;
-INSERT INTO test.t1(id, val) VALUES (1, 'aa');
-INSERT INTO test.t1(id, val) VALUES (2, 'aa');
-UPDATE test.t1 SET val = 'bb' WHERE id = 2;
-INSERT INTO test.t1(id, val) VALUES (3, 'cc');
-COMMIT;
+create table t (
+    id     int auto_increment,
+    c_decimal    decimal(10, 4) null,
+    c_char       char(16)      null,
+    c_varchar    varchar(16)   null,
+    c_binary     binary(16)    null,
+    c_varbinary  varbinary(16) null,
+
+    c_enum enum('a','b','c') null,
+    c_set  set('a','b','c')  null,
+    c_bit  bit(64)            null,
+    constraint pk
+        primary key (id)
+);
+
+insert into t (c_decimal, c_char, c_varchar, c_binary, c_varbinary, c_enum, c_set, c_bit) 
+values (123.456, "abc", "abc", "abc", "abc", 'a', 'a,b', b'1000001');
 ```
 
-+ 如以下执行日志中的 Log 5 和 Log 6 所示，同一张表内的 Row Changed Event 可能会根据主键被分派到不同的 Partition，但同一行的变更一定会分派到同一个 Partition，方便下游并发处理。
-+ 如 Log 6 所示，在一个事务内对同一行进行多次修改，只会发出一个 Row Changed Event。
-+ Log 8 是 Log 7 的重复 Event。Row Changed Event 可能重复，但每个版本的 Event 第一次发出的次序一定是有序的。
+在上面的表定义 SQL 语句中，如 decimal / char / varchar / enum 等类型，都还有参数。在下所示的输出 Canal-JSON 格式中，`mysqlType` 字段中的数据，只含有基本 MySQL Type 字符串表示。如果业务需要这部分类型参数信息，需要用户自行通过其他方式确定。
 
 ```
-5. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":1},\"val\":{\"t\":15,\"v\":\"YWE=\"}}}"]
-6. [partition=1] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":2},\"val\":{\"t\":15,\"v\":\"YmI=\"}}}"]
-7. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
-8. [partition=0] [key="{\"ts\":415508878783938562,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"Y2M=\"}}}"]
+{
+    "id": 0,
+    ...
+    "isDdl": false,
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        "c_binary": "binary",
+        "c_bit": "bit",
+        "c_char": "char",
+        "c_decimal": "decimal",
+        "c_enum": "enum",
+        "c_set": "set",
+        "c_varbinary": "varbinary",
+        "c_varchar": "varchar",
+        "id": "int"
+    },
+    "data": [
+        {
+            ...
+        }
+    ],
+    "old": null,
+}
 ```
 
-在上游执行以下 SQL 语句：
+### TiCDC Canal-JSON 特殊说明
 
-{{< copyable "sql" >}}
+TiCDC 自 vxx 引入了 Canal-JSON，并在 v5.4.0 对该功能进行 GA。 GA 前后两版 Canal-JSON 实现有些许不同，具体如下:
+
+* `Delete` 类型的事件，GA 后版本的 `Old` 字段的内容发生了变化。
+
+如下是一个 `DELETE` 事件的数据内容，在 GA 前的实现中，"old" 的内容和 "data" 相同，在 GA 后的实现中，"old" 将被设为 null。用户可以通过 "data" 字段获取到被删除数据，在删除之前的数据。
+
+```
+{
+    "id": 0,
+    "database": "test",
+    ...
+    "type": "DELETE",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        ...
+    },
+    "data": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "0",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "0",
+            "id": "2"
+        }
+    ],
+    "old": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "0",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "0",
+            "id": "2"
+        }
+    ]
+
+    // GA 后实现，`old` 设为 null
+    "old": null
+}
+```
+
+* `mysqlType` 字段，对于含有 `Unsigned` 约束的数值类型，GA 后的实现添加了 `unsigned` 关键字。
+
+假设执行如下 SQL 语句：
 
 ```sql
-BEGIN;
-DELETE FROM test.t1 WHERE id = 1;
-UPDATE test.t1 SET val = 'dd' WHERE id = 3;
-UPDATE test.t1 SET id = 4, val = 'ee' WHERE id = 2;
-COMMIT;
+create table tp_unsigned_int (
+     id          int auto_increment,
+     c_unsigned_tinyint   tinyint   unsigned null,
+     c_unsigned_smallint  smallint  unsigned null,
+     c_unsigned_mediumint mediumint unsigned null,
+     c_unsigned_int       int       unsigned null,
+     c_unsigned_bigint    bigint    unsigned null,
+     constraint pk
+         primary key (id)
+);
+
+insert into tp_unsigned_int (...) values (...);
 ```
 
-+ Log 9 是 `Delete` 类型的 Row Changed Event，这种类型的 Event 只包含主键列或唯一索引列。
-+ Log 13 和 Log 14 是 Resolved Event。Resolved Event 意味着在这个 Partition 中，任意小于 Resolved TS 的 Event（包括 Row Changed Event 和 DDL Event）已经发送完毕。
+如下所示为一个 GA 之前的实现示例。对于 `insert` 语句，在 `mysqlType` 中, 不含有 `unsigned` 关键字。
 
 ```
-9. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"d\":{\"id\":{\"t\":3,\"h\":true,\"v\":1}}}"]
-10. [partition=1] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"d\":{\"id\":{\"t\":3,\"h\":true,\"v\":2}}}"]
-11. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":3},\"val\":{\"t\":15,\"v\":\"ZGQ=\"}}}"]
-12. [partition=0] [key="{\"ts\":415508881418485761,\"scm\":\"test\",\"tbl\":\"t1\",\"t\":1}"] [value="{\"u\":{\"id\":{\"t\":3,\"h\":true,\"v\":4},\"val\":{\"t\":15,\"v\":\"ZWU=\"}}}"]
-13. [partition=0] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
-14. [partition=1] [key="{\"ts\":415508881038376963,\"t\":3}"] [value=]
+{
+    "id": 0,
+    ...
+    "type": "INSERT",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": { // 注意：列类型没有被标记为 unsigned
+        "c_unsigned_bigint": "bigint",
+        "c_unsigned_int": "int",
+        "c_unsigned_mediumint": "mediumint",
+        "c_unsigned_smallint": "smallint",
+        "c_unsigned_tinyint": "tinyint",
+        "id": "int"
+    },
+    "data": [
+        ...
+    ],
+    "old": [
+        null
+    ]
+}
 ```
 
-## 消费端协议解析
-
-目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析例子。你可以参考本文档提供的数据格式和以下例子实现消费端协议解析。
-
-- [Golang 例子](https://github.com/pingcap/ticdc/tree/master/cmd/kafka-consumer)
-- [Java 例子](https://github.com/pingcap/ticdc/tree/master/exapmles/java)
-
-## Column 的类型码
-
-Column 的类型码用于标识 Row Changed Event 中列的数据类型。
-
-| 类型                   | Code | 输出示例 | 说明 |
-| :-------------------- | :--- | :------ | :-- |
-| TINYINT/BOOL          | 1    | {"t":1,"v":1} | |
-| SMALLINT              | 2    | {"t":2,"v":1} | |
-| INT                   | 3    | {"t":3,"v":123} | |
-| FLOAT                 | 4    | {"t":4,"v":153.123} | |
-| DOUBLE                | 5    | {"t":5,"v":153.123} | |
-| NULL                  | 6    | {"t":6,"v":null} | |
-| TIMESTAMP             | 7    | {"t":7,"v":"1973-12-30 15:30:00"} | |
-| BIGINT                | 8    | {"t":8,"v":123} | |
-| MEDIUMINT             | 9    | {"t":9,"v":123} | |
-| DATE                  | 10/14   | {"t":10,"v":"2000-01-01"} | |
-| TIME                  | 11   | {"t":11,"v":"23:59:59"} | |
-| DATETIME              | 12   | {"t":12,"v":"2015-12-20 23:58:58"} | |
-| YEAR                  | 13   | {"t":13,"v":1970} | |
-| VARCHAR/VARBINARY     | 15/253   | {"t":15,"v":"测试"} / {"t":15,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} | value 编码为 UTF-8；当上游类型为 VARBINARY 时，将对不可见的字符转义 |
-| BIT                   | 16   | {"t":16,"v":81} | |
-| JSON                  | 245  | {"t":245,"v":"{\\"key1\\": \\"value1\\"}"} | |
-| DECIMAL               | 246  | {"t":246,"v":"129012.1230000"} | |
-| ENUM                  | 247  | {"t":247,"v":1} | |
-| SET                   | 248  | {"t":248,"v":3} | |
-| TINYTEXT/TINYBLOB     | 249  | {"t":249,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| MEDIUMTEXT/MEDIUMBLOB | 250  | {"t":250,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| LONGTEXT/LONGBLOB     | 251  | {"t":251,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| TEXT/BLOB             | 252  | {"t":252,"v":"5rWL6K+VdGV4dA=="} | value 编码为 Base64 |
-| CHAR/BINARY           | 254  | {"t":254,"v":"测试"} / {"t":254,"v":"\\\\x89PNG\\\\r\\\\n\\\\x1a\\\\n"} | value 编码为 UTF-8；当上游类型为 BINARY 时，将对不可见的字符转义 |
-| GEOMETRY              | 255  |  | 尚不支持 |
-
-## DDL 的类型码
-
-DDL 的类型码用于标识 DDL Event 中的 DDL 语句的类型。
-
-| 类型                               | Code |
-| :-------------------------------- | :- |
-| Create Schema                     | 1  |
-| Drop Schema                       | 2  |
-| Create Table                      | 3  |
-| Drop Table                        | 4  |
-| Add Column                        | 5  |
-| Drop Column                       | 6  |
-| Add Index                         | 7  |
-| Drop Index                        | 8  |
-| Add Foreign Key                   | 9  |
-| Drop Foreign Key                  | 10 |
-| Truncate Table                    | 11 |
-| Modify Column                     | 12 |
-| Rebase Auto ID                    | 13 |
-| Rename Table                      | 14 |
-| Set Default Value                 | 15 |
-| Shard RowID                       | 16 |
-| Modify Table Comment              | 17 |
-| Rename Index                      | 18 |
-| Add Table Partition               | 19 |
-| Drop Table Partition              | 20 |
-| Create View                       | 21 |
-| Modify Table Charset And Collate  | 22 |
-| Truncate Table Partition          | 23 |
-| Drop View                         | 24 |
-| Recover Table                     | 25 |
-| Modify Schema Charset And Collate | 26 |
-| Lock Table                        | 27 |
-| Unlock Table                      | 28 |
-| Repair Table                      | 29 |
-| Set TiFlash Replica               | 30 |
-| Update TiFlash Replica Status     | 31 |
-| Add Primary Key                   | 32 |
-| Drop Primary Key                  | 33 |
-| Create Sequence                   | 34 |
-| Alter Sequence                    | 35 |
-| Drop Sequence                     | 36 |
-
-## 列标志位
-
-列标志位以 Bit flags 形式标记列的相关属性。
-
-| 位移 | 值 | 名称 | 说明 |
-| :-- | :- | :- | :- |
-| 1   | 0x01 | BinaryFlag          | 该列是否为二进制编码列  |
-| 2   | 0x02 | HandleKeyFlag       | 该列是否为 Handle 列 |
-| 3   | 0x04 | GeneratedColumnFlag | 该列是否为生成列      |
-| 4   | 0x08 | PrimaryKeyFlag      | 该列是否为主键列      |
-| 5   | 0x10 | UniqueKeyFlag       | 该列是否为唯一索引列   |
-| 6   | 0x20 | MultipleKeyFlag     | 该列是否为组合索引列   |
-| 7   | 0x40 | NullableFlag        | 该列是否为可空列       |
-| 8   | 0x80 | UnsignedFlag        | 该列是否为无符号列     |
-
-示例：
-
-若某列 Flag 值为 85，则代表这一列为可空列、唯一索引列、生成列、二进制编码列。
-
+在 GA 后的实现输出内容如下:
 ```
-85 == 0b_101_0101
-   == NullableFlag | UniqueKeyFlag | GeneratedColumnFlag | BinaryFlag
+{
+    "id": 0,
+    ...
+    "type": "INSERT",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        "c_unsigned_bigint": "bigint unsigned",
+        "c_unsigned_int": "int unsigned",
+        "c_unsigned_mediumint": "mediumint unsigned",
+        "c_unsigned_smallint": "smallint unsigned",
+        "c_unsigned_tinyint": "tinyint unsigned",
+        "id": "int"
+    },
+    "data": [
+        ...
+    ],
+    "old": [
+        null
+    ]
+}
 ```
 
-若某列 Flag 值为 46，则代表这一列为组合索引列、主键列、生成列、Handle 列。
+* `sqlType` 字段，GA 前后实现, 相同 MySQL Type 对其取值有所不同。具体如下所示:
+
+| MySQL Type | Java SQL Type (Old) | Java SQL Type (New) |
+| :----------| :-------------------| :-------------------|
+| Boolean    | 5                   | -6                  | 
+| Tinyint    | 5                   | -6 / 5              |
+| Smallint   | 4                   | 5 / 4               |
+| Int        | -5                  | 4 / -5              |
+| Bigint     | 3                   | -5 / 3              |
+| Binary     | 1                   | 2004                |
+| Varbinary  | 12                  | 2004                |
+| Year       | 91                  | 12                  |
+| Enum       | 1                   | 4                   |
+| Set        | 1                   | -7                  |
+| Json       | -1                  | 12                  |
+
+在 GA 前的实现对 Java SQL Type 计算过程中，针对有 `unsigned` 约束的整数类型，未考虑取值因素，一律进行了类型提升。GA 后实现，考虑了取值因素，详细可以参考 [整数类型](#整数类型)。
+
+* `Old` 字段的表现形式发生改变。
+
+在 GA 前的实现中，如果 `Old` 字段为 null，其会被存放在一个数组中。
+```
+{
+    "id": 0,
+    ...
+    "type": "INSERT",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        ...
+    },
+    "data": [
+        ...
+    ],
+    "old": [
+        null
+    ]
+}
+```
+
+在 GA 后的实现中，如果 `Old` 字段为 null，则直接对其进行设置。
 
 ```
-46 == 0b_010_1110
-   == MultipleKeyFlag | PrimaryKeyFlag | GeneratedColumnFlag | HandleKeyFlag
+{
+    "id": 0,
+    ...
+    "type": "INSERT",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        ...
+    },
+    "data": [
+        ...
+    ],
+    "old": null
+}
 ```
-
-> **注意：**
->
-> + BinaryFlag 仅在列为 BLOB/TEXT（包括 TINYBLOB/TINYTEXT、BINARY/CHAR 等）类型时才有意义。当上游列为 BLOB 类型时，BinaryFlag 置 `1`；当上游列为 TEXT 类型时，BinaryFlag 置 `0`。
-> + 若要同步上游的一张表，TiCDC 会选择一个[有效索引](/ticdc/ticdc-overview.md#同步限制)作为 Handle Index。Handle Index 包含的列的 HandleKeyFlag 置 `1`。
