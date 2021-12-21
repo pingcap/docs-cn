@@ -430,7 +430,6 @@
       - [隔离级别](/transaction-isolation-levels.md)
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
-      - [数据索引一致性检查](/reduce-data-inconsistency.md)
     - 垃圾回收 (GC)
       - [GC 机制简介](/garbage-collection-overview.md)
       - [GC 配置](/garbage-collection-configuration.md)
