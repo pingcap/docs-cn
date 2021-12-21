@@ -69,7 +69,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 
 例如以下三个分表合并迁移到 TiDB：
 
-![optimistic-ddl-fail-example-1](/meida/dm/optimistic-ddl-fail-example-1.png)
+![optimistic-ddl-fail-example-1](/media/dm/optimistic-ddl-fail-example-1.png)
 
 在 `tbl01` 新增一列 `Age`，默认值定为 `0`：
 
@@ -77,7 +77,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 ALTER TABLE `tbl01` ADD COLUMN `Age` INT DEFAULT 0;
 ```
 
-![optimistic-ddl-fail-example-2](/meida/dm/optimistic-ddl-fail-example-2.png)
+![optimistic-ddl-fail-example-2](/media/dm/optimistic-ddl-fail-example-2.png)
 
  在 `tbl00` 新增一列 `Age`，但默认值定为 `-1`：
 
@@ -85,7 +85,7 @@ ALTER TABLE `tbl01` ADD COLUMN `Age` INT DEFAULT 0;
 ALTER TABLE `tbl00` ADD COLUMN `Age` INT DEFAULT -1;
 ```
 
-![optimistic-ddl-fail-example-3](/meida/dm/optimistic-ddl-fail-example-3.png)
+![optimistic-ddl-fail-example-3](/media/dm/optimistic-ddl-fail-example-3.png)
 
 此时所有来自 `tbl00` 的 `Age` 都不一致了。这是由于 `DEFAULT 0` 和 `DEFAULT -1` 互不兼容。虽然 DM 遇到这种情况会报错，但上下游不一致的问题就需要手动去解决。
 
@@ -93,13 +93,13 @@ ALTER TABLE `tbl00` ADD COLUMN `Age` INT DEFAULT -1;
 
 在“乐观协调”模式下，DM-worker 接收到来自上游的 DDL 后，会把更新后的表结构转送给 DM-master。DM-worker 会追踪各分表当前的表结构，DM-master 合并成可兼容来自每个分表 DML 的合成结构，然后把与此对应的 DDL 迁移到下游；对于 DML 会直接迁移到下游。
 
-![optimistic-ddl-flow](/meida/dm/optimistic-ddl-flow.png)
+![optimistic-ddl-flow](/media/dm/optimistic-ddl-flow.png)
 
 ### 例子
 
 例如上游 MySQL 有三个分表（`tbl00`, `tbl01` 以及 `tbl02`），使用 DM 迁移到下游 TiDB 的 `tbl` 表中，如下图所示：
 
-![optimistic-ddl-example-1](/meida/dm/optimistic-ddl-example-1.png)
+![optimistic-ddl-example-1](/media/dm/optimistic-ddl-example-1.png)
 
 在上游增加一列 `Level`：
 
@@ -107,11 +107,11 @@ ALTER TABLE `tbl00` ADD COLUMN `Age` INT DEFAULT -1;
 ALTER TABLE `tbl00` ADD COLUMN `Level` INT;
 ```
 
-![optimistic-ddl-example-2](/meida/dm/optimistic-ddl-example-2.png)
+![optimistic-ddl-example-2](/media/dm/optimistic-ddl-example-2.png)
 
 此时下游 TiDB 要准备接受来自 `tbl00` 有 `Level` 的 DML、以及来自 `tbl01` 和 `tbl02` 没有 `Level` 的 DML。
 
-![optimistic-ddl-example-3](/meida/dm/optimistic-ddl-example-3.png)
+![optimistic-ddl-example-3](/media/dm/optimistic-ddl-example-3.png)
 
 这时候如下的 DML 无需修改就可以迁移到下游：
 
@@ -120,7 +120,7 @@ UPDATE `tbl00` SET `Level` = 9 WHERE `ID` = 1;
 INSERT INTO `tbl02` (`ID`, `Name`) VALUES (27, 'Tony');
 ```
 
-![optimistic-ddl-example-4](/meida/dm/optimistic-ddl-example-4.png)
+![optimistic-ddl-example-4](/media/dm/optimistic-ddl-example-4.png)
 
 在 `tbl01` 同样增加一列 `Level`：
 
@@ -128,7 +128,7 @@ INSERT INTO `tbl02` (`ID`, `Name`) VALUES (27, 'Tony');
 ALTER TABLE `tbl01` ADD COLUMN `Level` INT;
 ```
 
-![optimistic-ddl-example-5](/meida/dm/optimistic-ddl-example-5.png)
+![optimistic-ddl-example-5](/media/dm/optimistic-ddl-example-5.png)
 
 此时下游已经有相同的 Level 列了，所以 DM-master 比较表结构之后不做任何操作。
 
@@ -138,7 +138,7 @@ ALTER TABLE `tbl01` ADD COLUMN `Level` INT;
 ALTER TABLE `tbl01` DROP COLUMN `Name`;
 ```
 
-![optimistic-ddl-example-6](/meida/dm/optimistic-ddl-example-6.png)
+![optimistic-ddl-example-6](/media/dm/optimistic-ddl-example-6.png)
 
 此时下游仍需要接收来自 `tbl00` 和 `tbl02` 含 `Name` 的 DML 语句，因此不会立刻删除该列。
 
@@ -149,7 +149,7 @@ INSERT INTO `tbl01` (`ID`, `Level`) VALUES (15, 7);
 UPDATE `tbl00` SET `Level` = 5 WHERE `ID` = 5;
 ```
 
-![optimistic-ddl-example-7](/meida/dm/optimistic-ddl-example-7.png)
+![optimistic-ddl-example-7](/media/dm/optimistic-ddl-example-7.png)
 
 在 `tbl02` 增加一列 `Level`：
 
@@ -157,7 +157,7 @@ UPDATE `tbl00` SET `Level` = 5 WHERE `ID` = 5;
 ALTER TABLE `tbl02` ADD COLUMN `Level` INT;
 ```
 
-![optimistic-ddl-example-8](/meida/dm/optimistic-ddl-example-8.png)
+![optimistic-ddl-example-8](/media/dm/optimistic-ddl-example-8.png)
 
 此时所有分表都已有 `Level` 列。
 
@@ -168,7 +168,7 @@ ALTER TABLE `tbl00` DROP COLUMN `Name`;
 ALTER TABLE `tbl02` DROP COLUMN `Name`;
 ```
 
-![optimistic-ddl-example-9](/meida/dm/optimistic-ddl-example-9.png)
+![optimistic-ddl-example-9](/media/dm/optimistic-ddl-example-9.png)
 
 到此步 `Name` 列也从所有分表消失了，所以可以安全从下游移除：
 
@@ -176,4 +176,4 @@ ALTER TABLE `tbl02` DROP COLUMN `Name`;
 ALTER TABLE `tbl` DROP COLUMN `Name`;
 ```
 
-![optimistic-ddl-example-10](/meida/dm/optimistic-ddl-example-10.png)
+![optimistic-ddl-example-10](/media/dm/optimistic-ddl-example-10.png)

@@ -20,7 +20,7 @@ DDL 是数据库应用中必然会使用的一类 SQL。MySQL 虽然在 5.6 的�
 3. 将 DDL 目标表的数据同步到镜像表；
 4. 在目标表与镜像表数据一致后，通过 `RENAME` 语句使镜像表替换掉目标表。
 
-![DM online-ddl](/meida/dm/dm-online-ddl-2.png)
+![DM online-ddl](/media/dm/dm-online-ddl-2.png)
 
 在使用 DM 完成 MySQL 到 TiDB 的数据迁移时，online-ddl 功能可以识别上述步骤 2 产生的 DDL，并在步骤 4 时向下游应用 DDL，从而降低镜像表的同步开销。
 
@@ -32,7 +32,7 @@ DDL 是数据库应用中必然会使用的一类 SQL。MySQL 虽然在 5.6 的�
 
 一般情况下建议开启 DM 的 `online-ddl` 配置，将产生以下效果：
 
-![DM online-ddl](/meida/dm/dm-online-ddl.png)
+![DM online-ddl](/media/dm/dm-online-ddl.png)
 
 - 下游 TiDB 无需创建和同步镜像表，节约相应存储空间和网络传输等开销；
 - 在分库分表合并场景下，忽略各分表镜像表的 RENAME 操作，保证同步正确性；

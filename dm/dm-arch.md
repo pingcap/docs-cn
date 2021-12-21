@@ -6,7 +6,7 @@ title: Data Migration 架构
 
 DM 主要包括三个组件：DM-master，DM-worker 和 dmctl。
 
-![Data Migration architecture](/meida/dm/dm-architecture-2.0.png)
+![Data Migration architecture](/media/dm/dm-architecture-2.0.png)
 
 ## 架构组件
 

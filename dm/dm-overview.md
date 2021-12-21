@@ -40,7 +40,7 @@ DM 工具的稳定版本包括 v5.3、v2.0、v1.0。其中，v1.0 为较旧的�
 
 本节介绍 DM 工具的核心功能模块。
 
-![DM Core Features](/meida/dm/dm-core-features.png)
+![DM Core Features](/media/dm/dm-core-features.png)
 
 ### Block & allow lists
 
