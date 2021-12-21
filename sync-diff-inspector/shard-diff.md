@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/shard-diff/','/docs-cn/dev/reference
 
 # 分库分表场景下的数据校验
 
-sync-diff-inspector 支持对分库分表场景进行数据校验。例如有多个 MySQL 实例，当你使用同步工具 [TiDB DM](dm/dm-overview.md) 同步到一个 TiDB 时，可以使用 sync-diff-inspector 对上下游数据进行校验。
+sync-diff-inspector 支持对分库分表场景进行数据校验。例如有多个 MySQL 实例，当你使用同步工具 [TiDB DM](/dm/dm-overview.md) 同步到一个 TiDB 时，可以使用 sync-diff-inspector 对上下游数据进行校验。
 
 ## 使用 datasource config 进行配置
 

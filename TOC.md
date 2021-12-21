@@ -282,7 +282,7 @@
       - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
     - [常见问题](/dm/dm-faq.md)
     - [术语表](/dm/dm-glossary.md)
-    - [版本发布历史](dm/dm-release-notes.md)
+    - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)

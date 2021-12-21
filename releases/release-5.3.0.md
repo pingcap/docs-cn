@@ -169,7 +169,7 @@ TiDB 版本：5.3.0
 
     当前 OpenAPI 功能为实验特性，默认关闭，不建议在生产环境中使用。
 
-    [用户文档](dm/dm-open-api.md)
+    [用户文档](/dm/dm-open-api.md)
 
 - **TiDB Lightning 并行导入**
 
