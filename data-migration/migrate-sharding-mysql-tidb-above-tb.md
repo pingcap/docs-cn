@@ -225,6 +225,8 @@ tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 
 ## 第 3 步. 使用 DM 持续复制增量数据到 TiDB (可选)
 
+基于 binlog 从指定位置同步数据库到 TiDB，可以使用 DM 来执行增量复制
+
 ### 添加数据源
 
 新建`source1.yaml`文件, 写入以下内容：
