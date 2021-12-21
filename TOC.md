@@ -31,7 +31,7 @@
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
   - 安装与启动
     - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-    - [在 Kubernetes 上部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)
+    - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
@@ -160,10 +160,26 @@
   - [Placement Rules 使用文档](/configure-placement-rules.md)
   - [Load Base Split 使用文档](/configure-load-base-split.md)
   - [Store Limit 使用文档](/configure-store-limit.md)
-- TiDB 生态工具
+- TiDB 工具
   - [功能概览](/ecosystem-tool-user-guide.md)
   - [适用场景](/ecosystem-tool-user-case.md)
   - [工具下载](/download-ecosystem-tools.md)
+  - TiUP
+    - [文档地图](/tiup/tiup-documentation-guide.md)
+    - [概览](/tiup/tiup-overview.md)
+    - [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
+    - [TiUP 组件管理](/tiup/tiup-component-management.md)
+    - [FAQ](/tiup/tiup-faq.md)
+    - [故障排查](/tiup/tiup-troubleshooting-guide.md)
+    - [参考手册](/tiup/tiup-reference.md)
+    - [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
+    - [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
+    - TiUP 组件文档
+      - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
+      - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
+      - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
+      - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
+  - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
@@ -181,6 +197,7 @@
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  - [TiDB Data Migration](/dm/dm-overview.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
@@ -544,21 +561,6 @@
     - TiFlash
       - [TiFlash 简介](/tiflash/tiflash-overview.md)
       - [使用 TiFlash](/tiflash/use-tiflash.md)
-  - TiUP
-    - [文档地图](/tiup/tiup-documentation-guide.md)
-    - [概览](/tiup/tiup-overview.md)
-    - [术语及核心概念](/tiup/tiup-terminology-and-concepts.md)
-    - [TiUP 组件管理](/tiup/tiup-component-management.md)
-    - [FAQ](/tiup/tiup-faq.md)
-    - [故障排查](/tiup/tiup-troubleshooting-guide.md)
-    - [参考手册](/tiup/tiup-reference.md)
-    - [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
-    - [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
-    - TiUP 组件文档
-      - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
-      - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
-      - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
-      - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
@@ -595,6 +597,7 @@
     - [5.0 GA](/releases/release-5.0.0.md)
     - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   - v4.0
+    - [4.0.16](/releases/release-4.0.16.md)
     - [4.0.15](/releases/release-4.0.15.md)
     - [4.0.14](/releases/release-4.0.14.md)
     - [4.0.13](/releases/release-4.0.13.md)
