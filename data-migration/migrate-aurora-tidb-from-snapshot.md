@@ -61,7 +61,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no
 
 |参数               |说明|
 |-                  |-|
-|-u 或 --user       |MySQL 数据库的用户|
+|-u 或 --user       |Aurora MySQL 数据库的用户|
 |-p 或 --password   |MySQL 数据库的用户密码|
 |-P 或 --port       |MySQL 数据库的端口|
 |-h 或 --host       |MySQL 数据库的 IP 地址|
