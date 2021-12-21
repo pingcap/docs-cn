@@ -31,32 +31,32 @@ filters:
 
 | Event           | 分类 | 说明                       |
 | --------------- | ---- | --------------------------|
-| all             |      | 过滤所有 events            |
+| all             |      | 匹配所有 events            |
 | all dml         |      | 匹配所有 DML events        |
-| all ddl         |      | 过滤所有 DDL events        |
-| none            |      | 不过滤任何 events          |
+| all ddl         |      | 匹配所有 DDL events        |
+| none            |      | 不匹配任何 events          |
 | none ddl        |      | 不包含任何 DDL events      |
 | none dml        |      | 不包含任何 DML events      |
-| insert          | DML  | 过滤 insert DML event      |
-| update          | DML  | 过滤 update DML event      |
-| delete          | DML  | 过滤 delete DML event      |
-| create database | DDL  | 过滤 create database event |
-| drop database   | DDL  | 过滤 drop database event   |
-| create table    | DDL  | 过滤 create table event    |
-| create index    | DDL  | 过滤 create index event    |
-| drop table      | DDL  | 过滤 drop table event      |
-| truncate table  | DDL  | 过滤 truncate table event  |
-| rename table    | DDL  | 过滤 rename table event    |
-| drop index      | DDL  | 过滤 drop index event      |
-| alter table     | DDL  | 过滤 alter table event     |
+| insert          | DML  | 匹配 insert DML event      |
+| update          | DML  | 匹配 update DML event      |
+| delete          | DML  | 匹配 delete DML event      |
+| create database | DDL  | 匹配 create database event |
+| drop database   | DDL  | 匹配 drop database event   |
+| create table    | DDL  | 匹配 create table event    |
+| create index    | DDL  | 匹配 create index event    |
+| drop table      | DDL  | 匹配 drop table event      |
+| truncate table  | DDL  | 匹配 truncate table event  |
+| rename table    | DDL  | 匹配 rename table event    |
+| drop index      | DDL  | 匹配 drop index event      |
+| alter table     | DDL  | 匹配 alter table event     |
 
-- `sql-pattern`：过滤指定的 DDL SQL 语句，支持正则表达式匹配。
+- `sql-pattern`：匹配指定的 DDL SQL 语句，支持正则表达式匹配。
 - `action`：可取值 Do 或 Ignore。
-    - `Do`：白名单。binlog event 如果满足下面两个条件之一就会被过滤掉：
-        - 不在该 rule 的 events 中。
-        - sql-pattern 不为空，且对应的 SQL 没有匹配上 sql-pattern 中任意一项。
+    - `Do`：白名单。binlog event 如果满足下面两个条件之一将会被同步：
+        - 符合 events 条件；
+        - sql-pattern 不为空，且对应的 SQL 可以匹配上 sql-pattern 中任意一项。
     - `Ignore`：黑名单。如果满足下面两个条件之一就会被过滤掉：
-        - 在该 rule 的 events 中。
+        - 符合 events 条件；
         - sql-pattern 不为空，且对应的 SQL 可以匹配上 sql-pattern 中任意一项
 
 ## 使用场景举例

@@ -77,7 +77,7 @@ CREATE TABLE `sale` (
 source-id: "mysql-01" # 唯一命令，不可重复
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-enable-gtid: false
+enable-gtid: true
 
 from:
   host: "${host}" # 例如：172.16.10.81

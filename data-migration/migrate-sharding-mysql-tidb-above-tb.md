@@ -234,7 +234,7 @@ tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 source-id: "mysql-01" # 唯一命名，不可重复
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-enable-gtid: false
+enable-gtid: true
 
 from:
   host: "${host}"           # 例如：172.16.10.81
@@ -315,9 +315,9 @@ mysql-instances:
 
 #       syncer-config-name: "global"  # 引用后面的 syncers 增量数据配置。
     meta:                             # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
-      binlog-name: "${binlog-name}"   # 第 1 步中 ${data-path}/my_db2/metadata 记录的日志位置，当上游存在主从切换时，必须使用 gtid。
-      binlog-pos: ${binlog-position}
-      # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
+      # binlog-name: "${binlog-name}"   # 第 1 步中 ${data-path}/my_db2/metadata 记录的日志位置，当上游存在主从切换时，必须使用 gtid。
+      # binlog-pos: ${binlog-position}
+      binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
 ## 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
 ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。

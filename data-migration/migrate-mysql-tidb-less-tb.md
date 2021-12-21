@@ -25,7 +25,7 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 source-id: "mysql-01"     # 唯一命名，不可重复
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-enable-gtid: false
+enable-gtid: true
 
 from:
   host: "${host}"         # 例如：172.16.10.81
@@ -75,11 +75,11 @@ mysql-instances:
   # 上游实例或者复制组 ID。
   source-id: "mysql-01"
   # 需要迁移的库名或表名的黑白名单的配置项名称，用于引用全局的黑白名单配置，全局配置见下面的 `block-allow-list` 的配置。
-  block-allow-list: "listA"          # 如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
+  block-allow-list: "listA"         
 
 
 # 黑白名单全局配置，各实例通过配置项名引用。
-block-allow-list:                     # 如果 DM 版本早于 v2.0.0-beta.2 则使用 black-white-list。
+block-allow-list:                     
   listA:                              # 名称
     do-tables:                        # 需要迁移的上游表的白名单。
     - db-name: "test_db"              # 需要迁移的表的库名。
@@ -136,7 +136,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
 
-- DM-master 日志目录：通过 DM-master 进程参数 `--log-file `设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
+- DM-master 日志目录：通过 DM-master 进程参数 `--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
 - DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多

@@ -48,9 +48,9 @@ online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容
 - 仅从镜像表同步数据；
 - 在下游执行 DDL 变更。
 
-这些变化将带来一些好处：
-
 ![dm-online-ddl](/media/dm/dm-online-ddl.png)
+
+这些变化将带来一些好处：
 
 - 下游 TiDB 无需创建和同步镜像表，节约相应存储空间和网络传输等开销；
 - 在分库分表合并场景下，自动忽略各分表镜像表的 RENAME 操作，保证同步正确性。
