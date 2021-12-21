@@ -439,9 +439,9 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 在 DM 进行 relay log 拉取与增量同步过程中，如果遇到了上游超过 4 GB 的 binlog 文件，就可能出现这两个错误。原因是 DM 在写 relay log 时需要依据 binlog position 及文件大小对 event 进行验证，且需要保存同步的 binlog position 信息作为 checkpoint。但是 MySQL binlog position 官方定义使用 uint32 存储，所以超过 4 GB 部分的 binlog position 的 offset 值会溢出，进而出现上面的错误。
 
-        - 对于 relay 处理单元，可通过官网步骤进行[手动处理](/dm/error-handling.md)。
+        - 对于 relay 处理单元，可通过官网步骤进行[手动处理](/dm/dm-error-handling.md)。
 
-        - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](/dm/error-handling.md)。
+        - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](/dm/dm-error-handling.md)。
 
 - 6.2.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`。
 
