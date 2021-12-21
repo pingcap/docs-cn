@@ -40,7 +40,7 @@ TiDB 版本：4.0.15
     - 分离处理读写的 ready 状态以减少读延迟 [#10475](https://github.com/tikv/tikv/issues/10475)
     - TiKV Coprocessor 慢日志只考虑处理请求所花费的时间 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 当 slogger 线程过载且队列已满时，删除日志而不是阻塞线程 [#10841](https://github.com/tikv/tikv/issues/10841)
-    - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
+    - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/tiflow/issues/2448)
 
 + PD
 
@@ -68,18 +68,18 @@ TiDB 版本：4.0.15
 
     + TiCDC
 
-        - TiCDC 总是内部从 TiKV 拉取 old value，提升 TiCDC 易用性 [#2397](https://github.com/pingcap/ticdc/pull/2397)
-        - 当某张表的 Region 从某个 TiKV 节点全部迁移走时，减少 goroutine 资源的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
-        - 在高并发下减少 workerpool 中创建的 goroutine 数量 [#2211](https://github.com/pingcap/ticdc/issues/2211)
-        - 异步执行 DDL 语句，不阻塞其他 changefeed [#2295](https://github.com/pingcap/ticdc/issues/2295)
-        - 为所有 KV 客户端创建全局共享的 gRPC 连接池 [#2531](https://github.com/pingcap/ticdc/pull/2531)
-        - 遇到无法恢复的 DML 错误立即退出，不进行重试 [#1724](https://github.com/pingcap/ticdc/issues/1724)
-        - 优化 Unified Sorter 使用内存排序时的内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
-        - 为执行 DDL 语句新增 Prometheus 监控指标 [#2595](https://github.com/pingcap/ticdc/issues/2595) [#2669](https://github.com/pingcap/ticdc/issues/2669)
-        - 禁止使用不同的 major 和 minor 版本启动 TiCDC 节点 [#2601](https://github.com/pingcap/ticdc/pull/2601)
-        - 移除 `file sorter` 文件排序器 [#2325](https://github.com/pingcap/ticdc/pull/2325)
-        - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2156](https://github.com/pingcap/ticdc/issues/2156)
-        - 优化 Region 初始化后的清锁算法 [#2188](https://github.com/pingcap/ticdc/issues/2188)
+        - TiCDC 总是内部从 TiKV 拉取 old value，提升 TiCDC 易用性 [#2397](https://github.com/pingcap/tiflow/pull/2397)
+        - 当某张表的 Region 从某个 TiKV 节点全部迁移走时，减少 goroutine 资源的使用 [#2284](https://github.com/pingcap/tiflow/issues/2284)
+        - 在高并发下减少 workerpool 中创建的 goroutine 数量 [#2211](https://github.com/pingcap/tiflow/issues/2211)
+        - 异步执行 DDL 语句，不阻塞其他 changefeed [#2295](https://github.com/pingcap/tiflow/issues/2295)
+        - 为所有 KV 客户端创建全局共享的 gRPC 连接池 [#2531](https://github.com/pingcap/tiflow/pull/2531)
+        - 遇到无法恢复的 DML 错误立即退出，不进行重试 [#1724](https://github.com/pingcap/tiflow/issues/1724)
+        - 优化 Unified Sorter 使用内存排序时的内存管理 [#2553](https://github.com/pingcap/tiflow/issues/2553)
+        - 为执行 DDL 语句新增 Prometheus 监控指标 [#2595](https://github.com/pingcap/tiflow/issues/2595) [#2669](https://github.com/pingcap/tiflow/issues/2669)
+        - 禁止使用不同的 major 和 minor 版本启动 TiCDC 节点 [#2601](https://github.com/pingcap/tiflow/pull/2601)
+        - 移除 `file sorter` 文件排序器 [#2325](https://github.com/pingcap/tiflow/pull/2325)
+        - 清理被删 changefeed 的监控数据和已退出处理节点的监控数据 [#2156](https://github.com/pingcap/tiflow/issues/2156)
+        - 优化 Region 初始化后的清锁算法 [#2188](https://github.com/pingcap/tiflow/issues/2188)
 
 ## Bug 修复
 
@@ -120,19 +120,19 @@ TiDB 版本：4.0.15
 
     + TiCDC
 
-        - 修复集成测试中遇到由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2422](https://github.com/pingcap/ticdc/issues/2422)
-        - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
-        - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/ticdc/issues/2388)
-        - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/ticdc/pull/2017)
-        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
-        - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/ticdc/pull/2557)
-        - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2552](https://github.com/pingcap/ticdc/issues/2552)
-        - 修复一个 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/ticdc/issues/2612)
-        - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
-        - 减小 gRPC 窗口来避免 Region 数量过多时触发内存溢出 [#2202](https://github.com/pingcap/ticdc/issues/2202)
-        - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2673](https://github.com/pingcap/ticdc/issues/2673)
-        - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/ticdc/issues/2389)
-        - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
-        - 修复 owner 在执行 DDL 语句时崩溃可能导致 DDL 任务丢失的问题 [#1260](https://github.com/pingcap/ticdc/issues/1260)
-        - 修复 `SinkManager` 中对 map 的不安全并发访问 [#2298](https://github.com/pingcap/ticdc/pull/2298)
+        - 修复集成测试中遇到由于 DDL Job 重复导致的 `ErrSchemaStorageTableMiss` 错误 [#2422](https://github.com/pingcap/tiflow/issues/2422)
+        - 修复遇到 `ErrGCTTLExceeded` 错误时 changefeed 无法被删除的问题 [#2391](https://github.com/pingcap/tiflow/issues/2391)
+        - 修复 `capture list` 命令输出中出现已过期 capture 的问题 [#2388](https://github.com/pingcap/tiflow/issues/2388)
+        - 修复 TiCDC processor 出现死锁的问题 [#2017](https://github.com/pingcap/tiflow/pull/2017)
+        - 修复重新调度一张表时多个处理器将数据写入同一张表引发的数据不一致的问题 [#2230](https://github.com/pingcap/tiflow/issues/2230)
+        - 修复元数据管理出现 `EtcdWorker` 快照隔离被破坏的问题 [#2557](https://github.com/pingcap/tiflow/pull/2557)
+        - 修复因为 DDL sink 错误导致 changefeed 不能被停止的问题 [#2552](https://github.com/pingcap/tiflow/issues/2552)
+        - 修复一个 TiCDC Open Protocol 的问题：当一个事务中没有任何数据写入时候，TiCDC 产生一个空消息 [#2612](https://github.com/pingcap/tiflow/issues/2612)
+        - 修复 TiCDC 在处理无符号 `TINYINT` 类型时崩溃的问题 [#2648](https://github.com/pingcap/tiflow/issues/2648)
+        - 减小 gRPC 窗口来避免 Region 数量过多时触发内存溢出 [#2202](https://github.com/pingcap/tiflow/issues/2202)
+        - 修复因 TiCDC capture 过多 Regions 出现的 OOM 问题 [#2673](https://github.com/pingcap/tiflow/issues/2673)
+        - 修复将 `mysql.TypeString, mysql.TypeVarString, mysql.TypeVarchar` 等类型的数据编码为 JSON 时进程崩溃的问题 [#2758](https://github.com/pingcap/tiflow/issues/2758)
+        - 修复在创建新的 changefeed 时可能发生的内存泄漏问题 [#2389](https://github.com/pingcap/tiflow/issues/2389)
+        - 修复同步任务从一个表结构变更的 finish TS 开始时 DDL 处理失败的问题 [#2603](https://github.com/pingcap/tiflow/issues/2603)
+        - 修复 owner 在执行 DDL 语句时崩溃可能导致 DDL 任务丢失的问题 [#1260](https://github.com/pingcap/tiflow/issues/1260)
+        - 修复 `SinkManager` 中对 map 的不安全并发访问 [#2298](https://github.com/pingcap/tiflow/pull/2298)
