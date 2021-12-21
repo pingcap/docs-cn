@@ -165,11 +165,11 @@ TiDB 版本：5.3.0
 
 - **增加 DM 的 OpenAPI 以更方便地管理集群（实验特性）**
 
-    DM 提供 OpenAPI 功能，用户可通过 OpenAPI 对 DM 集群进行查询和运维操作。OpenAPI 的总体功能和 [dmctl 工具](https://docs.pingcap.com/zh/tidb-data-migration/stable/dmctl-introduction)类似。
+    DM 提供 OpenAPI 功能，用户可通过 OpenAPI 对 DM 集群进行查询和运维操作。OpenAPI 的总体功能和 [dmctl 工具](/dm/dmctl-introduction.md)类似。
 
     当前 OpenAPI 功能为实验特性，默认关闭，不建议在生产环境中使用。
 
-    [用户文档](https://docs.pingcap.com/zh/tidb-data-migration/stable/open-api)
+    [用户文档](dm/dm-open-api.md)
 
 - **TiDB Lightning 并行导入**
 
