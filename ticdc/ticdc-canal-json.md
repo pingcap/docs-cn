@@ -13,9 +13,9 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引偏移量为 0 的 MQ Partition。
 * Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。仅当用户在 sink-uri 中设置 `enable-tidb-extension=true` 时生效。
 
-### TiDB 自定义字段
+### TiDB 扩展字段
 
-TiCDC 支持在 sink-uri 中设置 `enable-tidb-extension=true`。开启该功能之后，Canal-JSON 将携带 TiCDC 自定义字段，内容如下：
+CANAL-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 CANAL-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension=true` 后，Canal-JSON 将携带 TiCDC 扩展字段，内容如下：
 
 * TiCDC 将会发送 ResolvedEvent 事件。
 * TiCDC 发送的 Row Changed Event 和 DDL Event 类型事件中，将会含有一个名为 `_tidb` 的字段。
@@ -50,7 +50,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     "mysqlType": null,
     "data": null,
     "old": null,
-    "_tidb": {                             // 仅当 enable-tidb-extension=true 时存在该字段
+    "_tidb": { // 仅当 enable-tidb-extension=true 时存在该字段
         "commitTs": 163963309467037594
     }
 }
