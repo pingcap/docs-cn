@@ -15,7 +15,7 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 提供的一
 
 ### TiDB 扩展字段
 
-TiCDC 支持在 sink-uri 中设置 `enable-tidb-extension=true`。开启该功能之后，Canal-JSON 将携带 TiCDC 自定义字段，内容如下：
+CANAL-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 CANAL-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension=true` 后，Canal-JSON 将携带 TiCDC 扩展字段，内容如下：
 
 * TiCDC 将会发送 ResolvedEvent 事件。
 * TiCDC 发送的 Row Changed Event 和 DDL Event 类型事件中，将会含有一个名为 `_tidb` 的字段。
