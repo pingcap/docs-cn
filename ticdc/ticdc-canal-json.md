@@ -13,7 +13,7 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 提供的一
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引偏移量为 0 的 MQ Partition。
 * Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。仅当用户在 sink-uri 中设置 `enable-tidb-extension=true` 时生效。
 
-### TiDB 自定义字段
+### TiDB 扩展字段
 
 TiCDC 支持在 sink-uri 中设置 `enable-tidb-extension=true`。开启该功能之后，Canal-JSON 将携带 TiCDC 自定义字段，内容如下：
 
