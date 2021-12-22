@@ -102,7 +102,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 ```
 
 以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)
-|权限               |作用域|
+| 参数              |  描述 |
 |-                  |-|
 |-u 或 --user       |MySQL 数据库的用户|
 |-p 或 --password   |MySQL 数据库的用户密码|
@@ -198,7 +198,7 @@ user = "${user_name}"       # 例如："root"
 password = "${password}"    # 例如："rootroot"
 # 表架构信息在从 TiDB 的“状态端口”获取
 status-port = ${status-port} # 例如：10080
-# 集群 PD 的地址，Lighting 通过 PD 获取部分信息
+# PD 集群的地址，Lightning 通过 PD 获取部分信息。
 pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
