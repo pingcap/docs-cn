@@ -50,7 +50,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     "mysqlType": null,
     "data": null,
     "old": null,
-    "_tidb": {                             // 仅当 enable-tidb-extension=true 时存在该字段
+    "_tidb": { // 仅当 enable-tidb-extension=true 时存在该字段
         "commitTs": 163963309467037594
     }
 }
