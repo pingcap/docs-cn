@@ -221,7 +221,7 @@ URI 中可配置的的参数如下：
 
 * TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
 * 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
-* 建议使用 canal-json 协议。
+* 在大多数情况下，建议使用 canal-json 协议。
 
 > **注意：**
 >
