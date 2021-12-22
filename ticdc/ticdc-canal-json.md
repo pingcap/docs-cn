@@ -1,9 +1,9 @@
 ---
-title: TiCDC Support Canal-JSON
+title: TiCDC Canal-JSON Protocol
 aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/ticdc/canal-json/']
 ---
 
-# TiCDC Support Canal-JSON
+# TiCDC Canal-JSON Protocol
 
 ## 概述
 
