@@ -281,7 +281,6 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
-- 可选值：`OFF`，`ON`，`ENFORCE`
 - 这个变量用于控制是否使用 TiFlash 的 MPP 模式执行查询，可以设置的值包括：
     - 0 或 OFF，代表从不使用 MPP 模式
     - 1 或 ON，代表由优化器根据代价估算选择是否使用 MPP 模式（默认）
