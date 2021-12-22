@@ -440,7 +440,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "a",
-                                "text": "未合并",
+                                "text": "待翻译",
                                 "href": "${v54_zh_close_bigdata_tiup_diagnosis_url}"
                             }
                         ],
@@ -460,7 +460,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "a",
-                                "text": "未合并",
+                                "text": "待翻译",
                                 "href": "${v54_en_close_bigdata_tiup_diagnosis_url}"
                             }
                         ],
@@ -498,7 +498,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "a",
-                                "text": "未合并",
+                                "text": "待翻译",
                                 "href": "${v54_zh_close_transaction_security_url}"
                             }
                         ],
@@ -518,7 +518,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "a",
-                                "text": "未合并",
+                                "text": "待翻译",
                                 "href": "${v54_en_close_transaction_security_url}"
                             }
                         ],
