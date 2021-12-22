@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/t
 
 ## 概述
 
-Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 提供的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的近似复刻实现。当使用 MQ(Message Queue) 作为下游 sink 时，用户可以在 sink-uri 中指定使用 Canal-JSON，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。Event 分为三类：
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 提供的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的近似复刻实现。当使用 MQ(Message Queue) 作为下游 sink 时，用户可以在 sink-uri 中指定使用 canal-json，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。Event 分为三类：
 
 * Row Changed Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引偏移量为 0 的 MQ Partition。
