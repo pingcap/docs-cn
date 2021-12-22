@@ -30,7 +30,7 @@ title: 增量迁移数据到 TiDB
 
 你可以通过下面的方法获得对应数据源开启迁移的 binlog 位置点：
 
-- 使用 Dumpling/Mydumper 进行全量数据导出，然后使用其他工具，如 TiDB Lightning，进行全量数据导入，则可以通过导出数据的 [metadata 文件](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#%E8%BE%93%E5%87%BA%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F)获取同步位置；
+- 使用 Dumpling/Mydumper 进行全量数据导出，然后使用其他工具，如 TiDB Lightning，进行全量数据导入，则可以通过导出数据的 [metadata 文件](/dumpling-overview.md#输出文件格式)获取同步位置；
 
   ```file
   Started dump at: 2020-11-10 10:40:19

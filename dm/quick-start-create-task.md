@@ -228,4 +228,4 @@ routes:
 
 ## 数据校验
 
-修改上游 MySQL 分表中的数据，然后使用 [sync-diff-inspector](https://pingcap.com/docs-cn/stable/sync-diff-inspector/shard-diff/) 校验上下游数据是否一致，如果一致则说明迁移任务运行正常。
+修改上游 MySQL 分表中的数据，然后使用 [sync-diff-inspector](/sync-diff-inspector/shard-diff.md) 校验上下游数据是否一致，如果一致则说明迁移任务运行正常。
