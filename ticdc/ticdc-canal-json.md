@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/t
 
 ## 概述
 
-Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 提供的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的近似复刻实现。当使用 MQ(Message Queue) 作为下游 sink 时，用户可以在 sink-uri 中指定使用 canal-json，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。Event 分为三类：
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的实现。当使用 MQ(Message Queue) 作为下游 sink 时，用户可以在 sink-uri 中指定使用 canal-json，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。Event 分为三类：
 
 * Row Changed Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引偏移量为 0 的 MQ Partition。
@@ -123,7 +123,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 }
 ```
 
-### Resolved Event
+### WATERMARK Event
 
 {
     "id": 0,
@@ -348,189 +348,5 @@ values (123.456, "abc", "abc", "abc", "abc", 'a', 'a,b', b'1000001');
         }
     ],
     "old": null,
-}
-```
-
-### TiCDC Canal-JSON 特殊说明
-
-TiCDC 自 vxx 引入了 Canal-JSON，并在 v5.4.0 对该功能进行 GA。 GA 前后两版 Canal-JSON 实现有些许不同，具体如下:
-
-* `Delete` 类型的事件，GA 后版本的 `Old` 字段的内容发生了变化。
-
-如下是一个 `DELETE` 事件的数据内容，在 GA 前的实现中，"old" 的内容和 "data" 相同，在 GA 后的实现中，"old" 将被设为 null。用户可以通过 "data" 字段获取到被删除数据，在删除之前的数据。
-
-```
-{
-    "id": 0,
-    "database": "test",
-    ...
-    "type": "DELETE",
-    ...
-    "sqlType": {
-        ...
-    },
-    "mysqlType": {
-        ...
-    },
-    "data": [
-        {
-            "c_bigint": "9223372036854775807",
-            "c_int": "0",
-            "c_mediumint": "8388607",
-            "c_smallint": "32767",
-            "c_tinyint": "0",
-            "id": "2"
-        }
-    ],
-    "old": [
-        {
-            "c_bigint": "9223372036854775807",
-            "c_int": "0",
-            "c_mediumint": "8388607",
-            "c_smallint": "32767",
-            "c_tinyint": "0",
-            "id": "2"
-        }
-    ]
-
-    // GA 后实现，`old` 设为 null
-    "old": null
-}
-```
-
-* `mysqlType` 字段，对于含有 `Unsigned` 约束的数值类型，GA 后的实现添加了 `unsigned` 关键字。
-
-假设执行如下 SQL 语句：
-
-```sql
-create table tp_unsigned_int (
-     id          int auto_increment,
-     c_unsigned_tinyint   tinyint   unsigned null,
-     c_unsigned_smallint  smallint  unsigned null,
-     c_unsigned_mediumint mediumint unsigned null,
-     c_unsigned_int       int       unsigned null,
-     c_unsigned_bigint    bigint    unsigned null,
-     constraint pk
-         primary key (id)
-);
-
-insert into tp_unsigned_int (...) values (...);
-```
-
-如下所示为一个 GA 之前的实现示例。对于 `insert` 语句，在 `mysqlType` 中, 不含有 `unsigned` 关键字。
-
-```
-{
-    "id": 0,
-    ...
-    "type": "INSERT",
-    ...
-    "sqlType": {
-        ...
-    },
-    "mysqlType": { // 注意：列类型没有被标记为 unsigned
-        "c_unsigned_bigint": "bigint",
-        "c_unsigned_int": "int",
-        "c_unsigned_mediumint": "mediumint",
-        "c_unsigned_smallint": "smallint",
-        "c_unsigned_tinyint": "tinyint",
-        "id": "int"
-    },
-    "data": [
-        ...
-    ],
-    "old": [
-        null
-    ]
-}
-```
-
-在 GA 后的实现输出内容如下:
-```
-{
-    "id": 0,
-    ...
-    "type": "INSERT",
-    ...
-    "sqlType": {
-        ...
-    },
-    "mysqlType": {
-        "c_unsigned_bigint": "bigint unsigned",
-        "c_unsigned_int": "int unsigned",
-        "c_unsigned_mediumint": "mediumint unsigned",
-        "c_unsigned_smallint": "smallint unsigned",
-        "c_unsigned_tinyint": "tinyint unsigned",
-        "id": "int"
-    },
-    "data": [
-        ...
-    ],
-    "old": [
-        null
-    ]
-}
-```
-
-* `sqlType` 字段，GA 前后实现, 相同 MySQL Type 对其取值有所不同。具体如下所示:
-
-| MySQL Type | Java SQL Type (Old) | Java SQL Type (New) |
-| :----------| :-------------------| :-------------------|
-| Boolean    | 5                   | -6                  | 
-| Tinyint    | 5                   | -6 / 5              |
-| Smallint   | 4                   | 5 / 4               |
-| Int        | -5                  | 4 / -5              |
-| Bigint     | 3                   | -5 / 3              |
-| Binary     | 1                   | 2004                |
-| Varbinary  | 12                  | 2004                |
-| Year       | 91                  | 12                  |
-| Enum       | 1                   | 4                   |
-| Set        | 1                   | -7                  |
-| Json       | -1                  | 12                  |
-
-在 GA 前的实现对 Java SQL Type 计算过程中，针对有 `unsigned` 约束的整数类型，未考虑取值因素，一律进行了类型提升。GA 后实现，考虑了取值因素，详细可以参考 [整数类型](#整数类型)。
-
-* `Old` 字段的表现形式发生改变。
-
-在 GA 前的实现中，如果 `Old` 字段为 null，其会被存放在一个数组中。
-```
-{
-    "id": 0,
-    ...
-    "type": "INSERT",
-    ...
-    "sqlType": {
-        ...
-    },
-    "mysqlType": {
-        ...
-    },
-    "data": [
-        ...
-    ],
-    "old": [
-        null
-    ]
-}
-```
-
-在 GA 后的实现中，如果 `Old` 字段为 null，则直接对其进行设置。
-
-```
-{
-    "id": 0,
-    ...
-    "type": "INSERT",
-    ...
-    "sqlType": {
-        ...
-    },
-    "mysqlType": {
-        ...
-    },
-    "data": [
-        ...
-    ],
-    "old": null
 }
 ```
