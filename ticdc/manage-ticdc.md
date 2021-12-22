@@ -136,7 +136,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"open-protocol"},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -208,8 +208,8 @@ URI 中可配置的的参数如下：
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `1MB`） |
 | `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
-| `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 kafka 消息，该参数指定一条 kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `default` 时有效（可选，默认值为 `16`）|
+| `protocol` | 输出到 kafka 消息协议，可选值有 `open-protocol`、`canal`、`canal-json`、`avro`、`maxwell` |
+| `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 kafka 消息，该参数指定一条 kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `open-protocol` 时有效（可选，默认值为 `16`）|
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
@@ -224,7 +224,7 @@ URI 中可配置的的参数如下：
 
 > **注意：**
 >
-> 当 `protocol` 为 `default` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
+> 当 `protocol` 为 `open-protocol` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
 
 #### TiCDC 集成 Kafka Connect (Confluent Platform)
 
@@ -271,7 +271,7 @@ URI 中可配置的的参数如下：
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
-| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值为 `ZSTD`）|
+| `compressionType` | 设置发送消息时使用的压缩算法（可选 `NONE`，`LZ4`，`ZLIB` 和 `ZSTD`，默认值为 `NONE`）|
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
@@ -575,8 +575,8 @@ dispatchers = [
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
-protocol = "default"
+# 目前支持 open-protocol、canal、canal-json、avro 和 maxwell 五种协议。
+protocol = "open-protocol"
 
 ```
 
