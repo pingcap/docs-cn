@@ -116,20 +116,20 @@ TiDB 版本：5.0.6
 
 + TiFlash
 
-    - 修复当在同时使用且扩大主键列类型时，潜在的数据不一致问题。[#3572](https://github.com/pingcap/tics/pull/3572)
-    - 修复当 ARM 架构的机器在使用系统的 libnsl.so 编译 TiFlash 时的错误，修改 INSTALL_DIR 编译 libnsl.so 的选项。 [#3205](https://github.com/pingcap/tics/pull/3205)
-    - 修复 TiFlash 统计面板中的 store size 不准确的问题，当 PageStorage 中类型为 checkpoint 的文件删除时，没有减少空间。 [#3187](https://github.com/pingcap/tics/pull/3187)
-    - 修复当 PageStorage GC 时会误删新创建的 PageFile 导致的异常。[#3226](https://github.com/pingcap/tics/pull/3226)
-    - 修复当用户更新 TiFlash 版本后，同步表时发生的异常。[#2701](https://github.com/pingcap/tics/pull/2701)
-    - 修复当查询被取消时，TiFlash 偶发的崩溃问题。[#3448](https://github.com/pingcap/tics/pull/3448)
-    - 修复在 substringUTF8 中的常数异常。[#3266](https://github.com/pingcap/tics/pull/3266)
-    - 当 DAG 请求失败后，加了一个重试 DAG 请求。[#3678](https://github.com/pingcap/tics/pull/3678)
-    - 修复当查询带了 where <string> 会变成 int 类型的导致查询结构出错的问题。[#3477](https://github.com/pingcap/tics/pull/3477)
-    - 修复 main_capacity_quota_ 变量的检查问题。[#3425](https://github.com/pingcap/tics/pull/3425)
-    - 修复在 TiFlash 与 TiDB/TiKV 之间，关于 CastStringAsDecimal 行为不一致的问题。[#3674](https://github.com/pingcap/tics/pull/3674)
-    - 修复 Nullable(Int64) 与 Int64 类型不一致的异常，同步表后以避免类型不一致。[#3369](https://github.com/pingcap/tics/pull/3369)
-    - 修复列类型为 Nullable(Nothing) 导致的异常。[#3376](https://github.com/pingcap/tics/pull/3376)
-    - 修复 Decimal 类型比较时，可能导致数据溢出并比较失败的问题。 [#3097](https://github.com/pingcap/tics/pull/3097)
+    - 修复当在同时使用且扩大主键列类型时，潜在的数据不一致问题。
+    - 修复当 ARM 架构的机器在使用系统的 libnsl.so 编译 TiFlash 时的错误，修改 INSTALL_DIR 编译 libnsl.so 的选项。
+    - 修复 TiFlash 统计面板中的 store size 不准确的问题，当 PageStorage 中类型为 checkpoint 的文件删除时，没有减少空间。
+    - 修复当 PageStorage GC 时会误删新创建的 PageFile 导致的异常。
+    - 修复当用户更新 TiFlash 版本后，同步表时发生的异常。
+    - 修复当查询被取消时，TiFlash 偶发的崩溃问题。
+    - 修复在 substringUTF8 中的常数异常。
+    - 当 DAG 请求失败后，加了一个重试 DAG 请求。
+    - 修复当查询带了 where <string> 会变成 int 类型的导致查询结构出错的问题。
+    - 修复 main_capacity_quota_ 变量的检查问题。
+    - 修复在 TiFlash 与 TiDB/TiKV 之间，关于 CastStringAsDecimal 行为不一致的问题。
+    - 修复 Nullable(Int64) 与 Int64 类型不一致的异常，同步表后以避免类型不一致。
+    - 修复列类型为 Nullable(Nothing) 导致的异常。
+    - 修复 Decimal 类型比较时，可能导致数据溢出并比较失败的问题。
 
 + Tools
 
