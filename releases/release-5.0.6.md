@@ -44,11 +44,11 @@ TiDB 版本：5.0.6
         - 向 TiKV 注册的 GC safepoint TTL 延迟至1小时，有效支持增量扫时间过长的任务 [#2470](https://github.com/pingcap/tiflow/issues/2470)
         - 出现 ErrGCTTLExceeded 错误时支持快速失败 [#3111](https://github.com/pingcap/tiflow/issues/3111)
         - 增加限速逻辑控制 EtcdWorker tick 频率 [#3112](https://github.com/pingcap/tiflow/issues/3112)
-        - 支持消息 Batch 操作减少 EtcdWorker tick [#3391](https://github.com/pingcap/tiflow/pull/3391)
+        - 支持消息 Batch 操作减少 EtcdWorker tick [3112](https://github.com/pingcap/tiflow/issues/3112)
         - Unified sorter 组件支持 cgroup 限制，控制资源消耗 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3352](https://github.com/pingcap/tiflow/issues/3352)
         - Kafka sink 模块设置 `MaxMessageBytes` 默认值为 1MB [#3081](https://github.com/pingcap/tiflow/issues/3081)
-        - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#3834](https://github.com/pingcap/tiflow/pull/3834), "mounter row" [#2830](https://github.com/pingcap/tiflow/pull/2830), "table sink total row" [#2830](https://github.com/pingcap/tiflow/pull/2830), "buffer sink total row" [#2830](https://github.com/pingcap/tiflow/pull/2830), "go gc" [#2998](https://github.com/pingcap/tiflow/pull/2998), "go_max_procs" [#2998](https://github.com/pingcap/tiflow/pull/2998), "cached region" [#2733](https://github.com/pingcap/tiflow/pull/2733).
+        - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#3834](https://github.com/pingcap/tiflow/pull/3834), "mounter row", "table sink total row", "buffer sink total row" [#1606](https://github.com/pingcap/tiflow/issue/1606), "go gc", "go_max_procs" [#2998](https://github.com/pingcap/tiflow/pull/2998), "cached region" [#2733](https://github.com/pingcap/tiflow/pull/2733).
 
     + (Backup & Restore) BR
 
