@@ -40,7 +40,7 @@ TiDB 提供了 TiUP 和 TiDB Operator 两种部署运维工具，满足你在不
 
 ### 数据迁入 - TiDB Data Migration (DM)
 
-[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据的迁移和增量数据的复制。
+[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，支持全量数据的迁移和增量数据的复制。
 
 基本信息：
 
