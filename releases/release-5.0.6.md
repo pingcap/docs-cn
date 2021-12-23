@@ -14,21 +14,21 @@ TiDB 版本：5.0.6
 
     + TiCDC
 
-        - cdc server 命令错误输出从标准输出改成标准错误. [#3875](https://github.com/pingcap/tiflow/pull/3875)
+        - cdc server 命令错误输出从标准输出改成标准错误. [#3133](https://github.com/pingcap/tiflow/issues/3133)
 
 ## 提升改进
 
 + TiDB
 
     - 优化乐观事务写入冲突死锁情况下的回滚流程，降低阻塞延迟 [#11148](https://github.com/tikv/tikv/issues/11148)
-    - 避免 MPP 查询时候的日志 `invalid cop task execution summaries length`，以防用户疑惑 [#28262](https://github.com/pingcap/tidb/pull/28262)
+    - 避免 MPP 查询时候的日志 `invalid cop task execution summaries length`，以防用户疑惑 [#1791](https://github.com/pingcap/tics/issues/1791)
     - 优化 Coprocessor 的 debug 日志，在遇到锁时，打印语句内容，提高问题定位的效率 [#27718](https://github.com/pingcap/tidb/issues/27718)
 
 + TiKV
 
-    - 为 raft 日志回收模块增加了更多监控以定位问题. [#11374](https://github.com/tikv/tikv/issues/11374)
-    - 折叠了部分 Storage 相关的不常用监控 [#11001](https://github.com/tikv/tikv/pull/11001)
     - 将插入 SST 文件时的校验操作移动到了 import 线程池以提高 SST 文件插入速度. [#11239](https://github.com/tikv/tikv/issues/11239)
+    - 为 raft 日志回收模块增加了更多监控以定位问题. [#11374](https://github.com/tikv/tikv/issues/11374)
+    - 折叠了部分 Storage 相关的不常用监控 [#11681](https://github.com/tikv/tikv/issues/11681)
 
 + PD
 
@@ -43,16 +43,16 @@ TiDB 版本：5.0.6
         - 减少 Sink 模块锁冲突 [#2760](https://github.com/pingcap/tiflow/pull/2760)
         - 向 TiKV 注册的 GC safepoint TTL 延迟至1小时，有效支持增量扫时间过长的任务 [#2470](https://github.com/pingcap/tiflow/issues/2470)
         - 出现 ErrGCTTLExceeded 错误时支持快速失败 [#3111](https://github.com/pingcap/tiflow/issues/3111)
-        - 增加限速逻辑控制 EtcdWorker tick 频率 [#3268](https://github.com/pingcap/tiflow/pull/3268)
-        - 支持消息 Batch 操作减少 EtcdWorker tick [#3750](https://github.com/pingcap/tiflow/issues/3750)
-        - Unified sorter 组件支持 cgroup 限制，控制资源消耗 [#3441](https://github.com/pingcap/tiflow/pull/3441)
-        - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3539](https://github.com/pingcap/tiflow/pull/3539)
+        - 增加限速逻辑控制 EtcdWorker tick 频率 [#3112](https://github.com/pingcap/tiflow/issues/3112)
+        - 支持消息 Batch 操作减少 EtcdWorker tick [#3391](https://github.com/pingcap/tiflow/pull/3391)
+        - Unified sorter 组件支持 cgroup 限制，控制资源消耗 [#1798](https://github.com/pingcap/tiflow/issues/1798)
+        - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3352](https://github.com/pingcap/tiflow/issues/3352)
         - Kafka sink 模块设置 `MaxMessageBytes` 默认值为 1MB [#3081](https://github.com/pingcap/tiflow/issues/3081)
         - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#3834](https://github.com/pingcap/tiflow/pull/3834), "mounter row" [#2830](https://github.com/pingcap/tiflow/pull/2830), "table sink total row" [#2830](https://github.com/pingcap/tiflow/pull/2830), "buffer sink total row" [#2830](https://github.com/pingcap/tiflow/pull/2830), "go gc" [#2998](https://github.com/pingcap/tiflow/pull/2998), "go_max_procs" [#2998](https://github.com/pingcap/tiflow/pull/2998), "cached region" [#2733](https://github.com/pingcap/tiflow/pull/2733).
 
     + (Backup & Restore) BR
 
-        - 支持 pd request 和 TiKV IO 超时错误重试 [#1436](https://github.com/pingcap/br/pull/1436)
+        - 支持 pd request 和 TiKV IO 超时错误重试 [#27787](https://github.com/pingcap/tidb/issues/27787)
 
 ## Bug 修复
 
@@ -135,10 +135,10 @@ TiDB 版本：5.0.6
 
     + TiCDC
 
-        - 修复分区表没有唯一索引时无法复制下发表数据问题 [#2864](https://github.com/pingcap/tiflow/pull/2864)
-        - 修复 cdc cli 接收到非预期参数时截断用户参数，导致用户输入数据丢失问题 [#2888](https://github.com/pingcap/tiflow/pull/2888)
+        - 修复分区表没有唯一索引时无法复制下发表数据问题 [#2834](https://github.com/pingcap/tiflow/issues/2834)
+        - 修复 cdc cli 接收到非预期参数时截断用户参数，导致用户输入数据丢失问题 [#2303](https://github.com/pingcap/tiflow/issues/2303)
         - 修复 cdc 调度逻辑过早调用表问题 [#2625](https://github.com/pingcap/tiflow/issues/2625)
-        - 修复 Kafka asyncClient 出错导致的 Kafka_producer 死锁问题 [#3016](https://github.com/pingcap/tiflow/pull/3016)
+        - 修复 Kafka asyncClient 出错导致的 Kafka_producer 死锁问题 [#2978](https://github.com/pingcap/tiflow/issues/2978)
         - 修复 MQ sink 模块不支持非 binary json 类型列解析 [#2758](https://github.com/pingcap/tiflow/issues/2758)
         - 修复 Kafka sink 模块因为 `max-message-size` 参数过大导致的消息无法发送问题 [#2962](https://github.com/pingcap/tiflow/issues/2962)
         - 修复 TiKV 发生 region merge 导致的锁解析逻辑无法触发问题 [#3061](https://github.com/pingcap/tiflow/issues/3061)
@@ -148,10 +148,10 @@ TiDB 版本：5.0.6
         - 修复 MySQL sink 模块出现死锁时告警过于频繁问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
         - 修复 Avro sink 模块不支持 json type 列类型解析 [#3624](https://github.com/pingcap/tiflow/issues/3624)
         - 修复 TiKV 重启时 cdc 读取到错误的元数据快照问题 [#2603](https://github.com/pingcap/tiflow/issues/2603)
-        - 修复过多 DDL 导致的 OOM 问题和元数据 GC 逻辑异常问题 [#3275](https://github.com/pingcap/tiflow/pull/3275)
+        - 修复过多 DDL 导致的 OOM 问题和元数据 GC 逻辑异常问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
         - 修复 Canal 和 Maxwell 协议没有自动开启 old value 选项问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 cdc server 在一些 RHEL 系统(6.8, 6.9 etc)上运行出现的时区错误问题.  [#3584](https://github.com/pingcap/tiflow/issues/3584)
-        - 修复 Kafka sink 模块监控变量 txn_batch_size 不准确问题 [#3820](https://github.com/pingcap/tiflow/pull/3820)
+        - 修复 Kafka sink 模块监控变量 txn_batch_size 不准确问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
         - 修复 Kafka sink 模块当用户关闭 auto-create-topic 选项时没有检查分区数问题 [#3337](https://github.com/pingcap/tiflow/issues/3337)
         - 修复 Kafka message 过大导致的 broker 错误问题. [#3337](https://github.com/pingcap/tiflow/issues/3337)
         - 修复 EtcdWorker row 监控参数错误问题. [#4000](https://github.com/pingcap/tiflow/pull/4000)
@@ -160,7 +160,7 @@ TiDB 版本：5.0.6
 
     + (Backup & Restore) BR
 
-        - 修复 Grpc 错误没有重试问题 [#1438](https://github.com/pingcap/br/pull/1438)
+        - 修复 Grpc 错误没有重试问题 [#27421](https://github.com/pingcap/tidb/issues/27421)
         - 修复使用了 expression index 的表使用本地 backend 导入时出现错误问题. [#1404](https://github.com/pingcap/br/issues/1404)
         - 修复 BR 中平均速度不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
 
