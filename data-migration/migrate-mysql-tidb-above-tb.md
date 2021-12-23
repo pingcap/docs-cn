@@ -49,41 +49,41 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 ## 第 1 步. 从 MySQL 导出全量数据
 
-运行以下命令，从 MySQL 导出全量数据：
+1. 运行以下命令，从 MySQL 导出全量数据：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
-```
+    ```shell
+    tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
+    ```
 
-Dumpling 默认导出数据格式为 SQL 文件，你也可以通过设置 `--filetype` 指定导出文件的类型。
+    Dumpling 默认导出数据格式为 SQL 文件，你也可以通过设置 `--filetype` 指定导出文件的类型。
 
-以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)。
+    以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)。
 
-|参数               |说明|
-|-                  |-|
-|-u 或 --user       |MySQL 数据库的用户|
-|-p 或 --password   |MySQL 数据库的用户密码|
-|-P 或 --port       |MySQL 数据库的端口|
-|-h 或 --host       |MySQL 数据库的 IP 地址|
-|-t 或 --thread     |导出的线程数|
-|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
-|-r 或 --row        |单个文件的最大行数|
-|-F                 |指定单个文件的最大大小，单位为 MiB|
-|-B 或 --database  | 导出指定数据库 |
-|-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。例如，导出除系统库外的所有库表：`[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]` |
+    |参数               |说明|
+    |-                  |-|
+    |-u 或 --user       |MySQL 数据库的用户|
+    |-p 或 --password   |MySQL 数据库的用户密码|
+    |-P 或 --port       |MySQL 数据库的端口|
+    |-h 或 --host       |MySQL 数据库的 IP 地址|
+    |-t 或 --thread     |导出的线程数|
+    |-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
+    |-r 或 --row        |单个文件的最大行数|
+    |-F                 |指定单个文件的最大大小，单位为 MiB|
+    |-B 或 --database  | 导出指定数据库 |
+    |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。例如，导出除系统库外的所有库表：`[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]` |
 
-请确保 `${data-path}` 拥有足够的空间。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
+    请确保 `${data-path}` 拥有足够的空间。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
 
-查看在 `${data-path}` 目录下的 `metadata` 文件，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息，这将在第 3 步增量同步的时候使用。
+2. 查看在 `${data-path}` 目录下的 `metadata` 文件，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息，这将在第 3 步增量同步的时候使用。
 
-```
-SHOW MASTER STATUS:
-  Log: mysql-bin.000004
-  Pos: 109227
-  GTID:
-```
+    ```
+    SHOW MASTER STATUS:
+    Log: mysql-bin.000004
+    Pos: 109227
+    GTID:
+    ```
 
 ## 第 2 步. 导入全量数据到 TiDB
 
