@@ -12,7 +12,7 @@ For the frequently asked questions about migration-related tools, click the corr
 - [Backup & Restore FAQ](/br/backup-and-restore-faq.md)
 - [TiDB Binlog FAQ](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)
-- [TiDB Data Migration (DM) FAQs](https://docs.pingcap.com/tidb-data-migration/stable/faq)
+- [TiDB Data Migration (DM) FAQs](/dm/dm-faq.md)
 - [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
 
 ## Full data export and import
@@ -138,7 +138,7 @@ No. Currently, the data replication depends on the application itself.
 
 ### How to migrate the traffic quickly?
 
-It is recommended to migrate application data from MySQL to TiDB using [TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/v2.0/overview) tool. You can migrate the read and write traffic in batches by editing the network configuration as needed. Deploy a stable network LB (HAproxy, LVS, F5, DNS, etc.) on the upper layer, in order to implement seamless migration by directly editing the network configuration.
+It is recommended to migrate application data from MySQL to TiDB using [TiDB Data Migration](/dm/dm-overview.md) tool. You can migrate the read and write traffic in batches by editing the network configuration as needed. Deploy a stable network LB (HAproxy, LVS, F5, DNS, etc.) on the upper layer, in order to implement seamless migration by directly editing the network configuration.
 
 ### Is there a limit for the total write and read capacity in TiDB?
 

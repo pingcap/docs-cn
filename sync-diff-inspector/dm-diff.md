@@ -5,7 +5,7 @@ summary: Learn about how to set a specific `task-name` configuration from `DM-ma
 
 # Data Check in the DM Replication Scenario
 
-When using replication tools such as [TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/stable/overview), you need to check the data consistency before and after the replication process. You can set a specific `task-name` configuration from `DM-master` to perform a data check.
+When using replication tools such as [TiDB Data Migration](/dm/dm-overview.md), you need to check the data consistency before and after the replication process. You can set a specific `task-name` configuration from `DM-master` to perform a data check.
 
 The following is a simple configuration example. To learn the complete configuration, refer to [Sync-diff-inspector User Guide](/sync-diff-inspector/sync-diff-inspector-overview.md).
 

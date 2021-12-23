@@ -11,7 +11,7 @@ TiDB is highly compatible with the MySQL 5.7 protocol and the common features an
 However, some features of MySQL are not supported. This could be because there is now a better way to solve the problem (such as XML functions superseded by JSON), or a lack of current demand versus effort required (such as stored procedures and functions). Some features might also be difficult to implement as a distributed system.
 
 - In addition, TiDB does not support the MySQL replication protocol, but provides specific tools to replicate data with MySQL.
-    - Replicate data from MySQL: [TiDB Data Migration (DM)](https://docs.pingcap.com/tidb-data-migration/stable/overview) is a tool that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB.
+    - Replicate data from MySQL: [TiDB Data Migration (DM)](/dm/dm-overview.md) is a tool that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB.
     - Replicate data to MySQL: [TiCDC](/ticdc/ticdc-overview.md) is a tool for replicating the incremental data of TiDB by pulling TiKV change logs. TiCDC uses the [MySQL sink](/ticdc/ticdc-overview.md#sink-support) to replicate the incremental data of TiDB to MySQL.
 
 > **Note:**

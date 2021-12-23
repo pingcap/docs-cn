@@ -169,11 +169,11 @@ In v5.3, the key new features or improvements are as follows:
 
 - **Add DM OpenAPI to better maintain DM clusters (experimental feature)**
 
-    DM provides the OpenAPI feature for querying and operating the DM cluster. It is similar to the feature of [dmctl tools](https://docs.pingcap.com/zh/tidb-data-migration/stable/dmctl-introduction).
+    DM provides the OpenAPI feature for querying and operating the DM cluster. It is similar to the feature of [dmctl tools](/dm/dmctl-introduction.md).
 
     Currently, DM OpenAPI is an experimental feature and disabled by default. It is not recommended to use it in a production environment.
 
-    [User document](https://docs.pingcap.com/zh/tidb-data-migration/stable/open-api)
+    [User document](/dm/dm-open-api.md)
 
 - **TiDB Lightning Parallel Import**
 

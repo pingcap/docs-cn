@@ -99,7 +99,7 @@ The following are the basics of TiDB Binlog:
 
 ### Data migration
 
-[TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/stable) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB to TiDB.
+[TiDB Data Migration](/dm/dm-overview.md) (DM) is an integrated data replication task management platform that supports the full data migration and the incremental data replication from MySQL/MariaDB to TiDB.
 
 The following are the basics of DM:
 

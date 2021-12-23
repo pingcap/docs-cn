@@ -49,7 +49,7 @@ This document introduces the experimental features of TiDB in different versions
 
 ## Data migration
 
-+ [DM OpenAPI](https://docs.pingcap.com/tidb-data-migration/stable/open-api) (Introduced in v5.3)
++ [DM OpenAPI](/dm/dm-open-api.md) (Introduced in v5.3)
 
 ## Backup and restoration
 

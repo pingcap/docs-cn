@@ -6,7 +6,7 @@ aliases: ['/docs/dev/sync-diff-inspector/route-diff/','/docs/dev/reference/tools
 
 # Data Check for Tables with Different Schema or Table Names
 
-When using replication tools such as [TiDB Data Migration](https://docs.pingcap.com/tidb-data-migration/stable/overview), you can set `route-rules` to replicate data to a specified table in the downstream. sync-diff-inspector enables you to verify tables with different schema names or table names by setting `rules`.
+When using replication tools such as [TiDB Data Migration](/dm/dm-overview.md), you can set `route-rules` to replicate data to a specified table in the downstream. sync-diff-inspector enables you to verify tables with different schema names or table names by setting `rules`.
 
 The following is a simple configuration example. To learn the complete configuration, refer to [Sync-diff-inspector User Guide](/sync-diff-inspector/sync-diff-inspector-overview.md).
 

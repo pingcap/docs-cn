@@ -64,8 +64,8 @@ In the example, the configuration specifies that the `tidb` user is used to star
 
 `server_configs` is used to configure services and to generate configuration files for each component. Similar to the `global` section, the configurations in the `server_configs` section can be overwritten by the configurations with the same keys in an instance. `server_configs` mainly contains the following fields:
 
-- `master`: the configuration related to the DM-master service. For all the supported configuration items, see [DM-master Configuration File](https://docs.pingcap.com/tidb-data-migration/stable/dm-master-configuration-file).
-- `worker`: the configuration related to the DM-worker service, For all the supported configuration items, see [DM-worker Configuration File](https://docs.pingcap.com/tidb-data-migration/stable/dm-worker-configuration-file).
+- `master`: the configuration related to the DM-master service. For all the supported configuration items, see [DM-master Configuration File](/dm/dm-master-configuration-file.md).
+- `worker`: the configuration related to the DM-worker service, For all the supported configuration items, see [DM-worker Configuration File](/dm/dm-worker-configuration-file.md).
 
 A `server_configs` configuration example is as follows:
 
