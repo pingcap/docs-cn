@@ -20,9 +20,9 @@ TiDB 版本：5.0.6
 
 + TiDB
 
-    - 优化乐观事务写入冲突死锁情况下的回滚流程，降低阻塞延迟 [#11148](https://github.com/tikv/tikv/issues/11148)
-    - 避免 MPP 查询时候的日志 `invalid cop task execution summaries length`，以防用户疑惑 [#1791](https://github.com/pingcap/tics/issues/1791)
-    - 优化 Coprocessor 的 debug 日志，在遇到锁时，打印语句内容，提高问题定位的效率 [#27718](https://github.com/pingcap/tidb/issues/27718)
+    (dup) - 修复乐观事务冲突可能导致事务相互阻塞的问题 [#11148](https://github.com/tikv/tikv/issues/11148)
+    (dup) - 修复运行 MPP 查询时出现 `invalid cop task execution summaries length` 相关日志的问题 [#1791](https://github.com/pingcap/tics/issues/1791)
+    (dup) - 当 coprocessor 遇到锁时，在调试日志中显示受影响的 SQL 语句帮助诊断问题 [#27718](https://github.com/pingcap/tidb/issues/27718)
 
 + TiKV
 
@@ -32,20 +32,20 @@ TiDB 版本：5.0.6
 
 + PD
 
-    - 在 PD 切换 Leader 后加速调度器退出 [#4146](https://github.com/tikv/pd/issues/4146)
+    (dup) - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
     - 通过允许空 Region 调度和修复配置的方式使 scatter-range-scheduler运行更好 [#4116](https://github.com/tikv/pd/pull/4116)
 
 + Tools
 
     + TiCDC
 
-        - 优化 TiKV 重启时限速控制逻辑 [#3110](https://github.com/pingcap/tiflow/issues/3110)
+        (dup) - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
         - 减少 Sink 模块锁冲突 [#2760](https://github.com/pingcap/tiflow/pull/2760)
-        - 向 TiKV 注册的 GC safepoint TTL 延迟至1小时，有效支持增量扫时间过长的任务 [#2470](https://github.com/pingcap/tiflow/issues/2470)
-        - 出现 ErrGCTTLExceeded 错误时支持快速失败 [#3111](https://github.com/pingcap/tiflow/issues/3111)
-        - 增加限速逻辑控制 EtcdWorker tick 频率 [#3112](https://github.com/pingcap/tiflow/issues/3112)
+        (dup) - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/tiflow/issues/2470)
+        (dup) - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/tiflow/issues/3111)
+        (dup) - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过于频繁影响 PD 服务 [#3112](https://github.com/pingcap/tiflow/issues/3112)
         - 支持消息 Batch 操作减少 EtcdWorker tick [3112](https://github.com/pingcap/tiflow/issues/3112)
-        - Unified sorter 组件支持 cgroup 限制，控制资源消耗 [#1798](https://github.com/pingcap/tiflow/issues/1798)
+        (dup) - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3352](https://github.com/pingcap/tiflow/issues/3352)
         - Kafka sink 模块设置 `MaxMessageBytes` 默认值为 1MB [#3081](https://github.com/pingcap/tiflow/issues/3081)
         - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#3834](https://github.com/pingcap/tiflow/pull/3834), "mounter row", "table sink total row", "buffer sink total row" [#1606](https://github.com/pingcap/tiflow/issue/1606), "go gc", "go_max_procs" [#2998](https://github.com/pingcap/tiflow/pull/2998), "cached region" [#2733](https://github.com/pingcap/tiflow/pull/2733).
@@ -58,41 +58,41 @@ TiDB 版本：5.0.6
 
 + TiDB
 
-    - 修复在 grant/revoke 语句中，使用全局标识符 `*.*` 报错的问题 [#29675](https://github.com/pingcap/tidb/issues/29675)
+    (dup) - 修复 `grant` 和 `revoke` 操作在授予和撤销全局权限时，报 `privilege check fail` 错误的问题 [#29675](https://github.com/pingcap/tidb/issues/29675)
     - 修复 ADD INDEX 在某些场景下 panic 的问题 [#27687](https://github.com/pingcap/tidb/issues/27687)
     - 修复配置项 `enforce-mpp` 在 v5.0.4 中不生效的问题 [#29252](https://github.com/pingcap/tidb/issues/29252)
-    - 修复 `case-when` 表达式在入参为 `enum` 类型时 panic 的问题 [#29357](https://github.com/pingcap/tidb/issues/29357)
-    - 修复 `microsecond` 表达式在向量化模式下，计算结果出错的问题 [#29244](https://github.com/pingcap/tidb/issues/29244)
-    - 修复 auto analyze 失败时，日志中未记录 SQL 内容的问题 [#29188](https://github.com/pingcap/tidb/issues/29188)
-    - 修复 `hour` 表达式在向量化模式下，计算结果出错的问题  [#28643](https://github.com/pingcap/tidb/issues/28643)
-    - 修复查询在 MPP 模式下，报错 `tidb_cast to Int32 is not supported` 的问题 [#23907](https://github.com/pingcap/tidb/issues/23907)
-    - 修复在一些临界情况下, MPP 节点可用性检测失效的问题 [#3118](https://github.com/pingcap/tics/issues/3118)
-    - 修复分配 MPP 任务 id 时可能出现的 data-race 问题 [#27952](https://github.com/pingcap/tidb/issues/27952)
-    - 修复 SQL 中包含 `Union` 且运行在 MPP 模式时报错 `index out of range [-1]` 的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
+    (dup) - 修复当 `CASE WHEN` 函数和 `ENUM` 类型一起使用时的崩溃问题 [#29357](https://github.com/pingcap/tidb/issues/29357)
+    (dup) - 修复 `microsecond` 函数的向量化表达式版本结果不正确的问题 [#29244](https://github.com/pingcap/tidb/issues/29244)
+    (dup) - 修复 `auto analyze` 输出的日志信息不完整的问题 [#29188](https://github.com/pingcap/tidb/issues/29188)
+    (dup) - 修复 `hour` 函数在向量化表达式中执行结果错误的问题 [#28643](https://github.com/pingcap/tidb/issues/28643)
+    (dup) - 修复当不支持的 `cast` 被下推到 TiFlash 时出现的非预期错误，例如 `tidb_cast to Int32 is not supported` [#23907](https://github.com/pingcap/tidb/issues/23907)
+    (dup) - 修复 MPP 节点的可用性检测在某些边界场景中无法工作的问题 [#3118](https://github.com/pingcap/tics/issues/3118)
+    (dup) - 修复分配 `MPP task ID` 时出现 `DATA RACE` 的问题 [#27952](https://github.com/pingcap/tidb/issues/27952)
+    (dup) - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
     - 修复并行插入无效时间类型值时，TiDB panic 的问题 [#25393](https://github.com/pingcap/tidb/issues/25393)
     - 修复查询在 MPP 模式下，报错 `can not found column in Schema column` 的问题 [#28147](https://github.com/pingcap/tidb/pull/28147)
-    - 修复在 TiFlash 停机时，TiDB 可能会 panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
+    (dup) - 修复 TiDB 在 TiFlash 关闭时可能出现 panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
     - 修复优化器在进行 join reorder 优化时，报错 `index out of range` 的问题 [#24095](https://github.com/pingcap/tidb/issues/24095).
-    - 修复 `if`,`case-when`,`elt` 等表达式在入参为 enum 类型时，结果出错的问题 [#23114](https://github.com/pingcap/tidb/issues/23114)
+    (dup) - 修复当 `ENUM` 类型作为 `IF` 或 `CASE WHEN` 等控制函数的参数时，返回结果不正确的问题 [#23114](https://github.com/pingcap/tidb/issues/23114)
     - 修复 `concat(ifnull(time(3))` 计算结果出错的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
     - 修复 `greatest/least` 表达式在入参包含无符号整型时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
     - 修复当 SQL 中存在 json 类型列 与 char 类型列 join 时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
     - 修复 update 语句未更新索引处理优化，可能导致数据索引不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
     - 修复窗口函数在使用事务时，计算结果与不使用事务不一样的问题 [#29947](https://github.com/pingcap/tidb/issues/29947)
     - 修复 SQL 形如`cast(integer as char) union string` 计算结果出错的问题 [#29513](https://github.com/pingcap/tidb/issues/29513)
-    - 修复 `concat(decimal_col)` 结果出错的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
+    (dup) - 修复将 `Decimal` 转为 `String` 时长度信息错误的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
     - 修复使用 NATURAL JOIN 时，报错 `Column 'col_name' in field list is ambiguous` 的问题 [#25041](https://github.com/pingcap/tidb/issues/25041)
-    - 修复 `greatest` 表达式在开启及关闭 `tidb_enable_vectorized_expression` 时，计算结果不同的问题 [#29434](https://github.com/pingcap/tidb/issues/29434)
-    - 修复优化器在某些 join 场景下缓存无效的执行计划的问题 [#28087](https://github.com/pingcap/tidb/issues/28087)
+    (dup) - 修复由于 `tidb_enable_vectorized_expression` 设置的值不同（`on` 或 `off`）导致 `GREATEST` 函数返回结果不一致的问题 [#29434](https://github.com/pingcap/tidb/issues/29434)
+    (dup) - 修复在某些情况下 Planner 可能缓存无效 `join` 计划的问题 [#28087](https://github.com/pingcap/tidb/issues/28087)
     - 修复 SQL 在 join 上计算聚合函数时，报错 `index out of range [1] with length 1` 的问题 [#1978](https://github.com/pingcap/tics/issues/1978)
 
 + TiKV
 
     - 修复某个 TiKV 节点停机导致 Resolve Timestamp 进度落后的问题 [#11351](https://github.com/tikv/tikv/issues/11351)
-    - 修复多条日志合并在同一条消息导致消息发送失败的问题。 [#9714](https://github.com/tikv/tikv/issues/9714)
-    - 修复 `region` 合并以及发送快照、成员变更这三种情况同时发生时导致 TiKV 宕机的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
-    - 修复逆序范围查询时没有正确读到内存锁的问题. [#11440](https://github.com/tikv/tikv/issues/11440)
-    - 修复表达式除法计算中得到的结果为零时的正负符号问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
+    (dup) - 修复 Raft client 中 batch 消息过大的问题 [#9714](https://github.com/tikv/tikv/issues/9714)
+    (dup) - 修复在极端情况下同时进行 Region Merge、ConfChange 和 Snapshot 时，TiKV 会出现 Panic 的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
+    - 修复逆序范围查询时没有正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
+    (dup) - 修复 Decimal 除法计算的结果为 0 时符号为负的问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
     - 修复历史版本回收任务堆积导致的内存耗尽问题  [#11410](https://github.com/tikv/tikv/issues/11410)
     - 修复监控项  "gRPC average duration by-instance" 的错误表达式导致该监控不显示的问题. [#11299](https://github.com/tikv/tikv/issues/11299)
     - 修复 label 泄漏导致 OOM 的问题. [#11195](https://github.com/tikv/tikv/issues/11195)
