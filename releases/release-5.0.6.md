@@ -117,7 +117,7 @@ TiDB 版本：5.0.6
 + TiFlash
 
     - 修复当在同时使用且扩大主键列类型时，潜在的数据不一致问题。
-    - 修复当 ARM 架构的机器在使用系统的 libnsl.so 编译 TiFlash 时的错误，修改 INSTALL_DIR 编译 libnsl.so 的选项。
+    - 修复在某些平台 TiFlash 由于找不到 "libnsl.so" 而无法启动的问题，比如某些 ARM 平台
     - 修复 TiFlash 的 Store size 统计信息与实际容量不一致的问题
     - 修复 TiFlash 由于 "Cannot open file" 错误而导致的进程失败
     - 修复当查询被取消时，TiFlash 偶发的崩溃问题。
