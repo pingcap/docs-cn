@@ -125,7 +125,6 @@ TiDB 版本：5.0.6
     - 修复在 substringUTF8 中的常数异常。
     - 当 DAG 请求失败后，加了一个重试 DAG 请求。
     - 修复当查询带了 where <string> 会变成 int 类型的导致查询结构出错的问题。
-    - 修复 main_capacity_quota_ 变量的检查问题。
     - 修复在 TiFlash 与 TiDB/TiKV 之间，关于 CastStringAsDecimal 行为不一致的问题。
     - 修复由于 "different types: expected Nullable(Int64), got Int64" 错误而导致查询报错的问题
     - 修复由于 "Unexpected type of column: Nullable(Nothing)" 错误而导致的查询报错
