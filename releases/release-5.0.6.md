@@ -59,7 +59,7 @@ TiDB 版本：5.0.6
 + TiDB
 
     (dup) - 修复 `grant` 和 `revoke` 操作在授予和撤销全局权限时，报 `privilege check fail` 错误的问题 [#29675](https://github.com/pingcap/tidb/issues/29675)
-    - 修复 ADD INDEX 在某些场景下 panic 的问题 [#27687](https://github.com/pingcap/tidb/issues/27687)
+    - 修复在某些场景下执行 `ALTER TABLE.. ADD INDEX` 语句时 TiDB panic 的问题 [#27687](https://github.com/pingcap/tidb/issues/27687)
     - 修复配置项 `enforce-mpp` 在 v5.0.4 中不生效的问题 [#29252](https://github.com/pingcap/tidb/issues/29252)
     (dup) - 修复当 `CASE WHEN` 函数和 `ENUM` 类型一起使用时的崩溃问题 [#29357](https://github.com/pingcap/tidb/issues/29357)
     (dup) - 修复 `microsecond` 函数的向量化表达式版本结果不正确的问题 [#29244](https://github.com/pingcap/tidb/issues/29244)
@@ -70,12 +70,12 @@ TiDB 版本：5.0.6
     (dup) - 修复分配 `MPP task ID` 时出现 `DATA RACE` 的问题 [#27952](https://github.com/pingcap/tidb/issues/27952)
     (dup) - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
     - 修复并行插入无效时间类型值时，TiDB panic 的问题 [#25393](https://github.com/pingcap/tidb/issues/25393)
-    - 修复查询在 MPP 模式下，报错 `can not found column in Schema column` 的问题 [#28147](https://github.com/pingcap/tidb/pull/28147)
+    - 修复在 MPP 模式下查询时，报`can not found column in Schema column` 错误的问题 [#28147](https://github.com/pingcap/tidb/pull/28147)
     (dup) - 修复 TiDB 在 TiFlash 关闭时可能出现 panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
-    - 修复优化器在进行 join reorder 优化时，报错 `index out of range` 的问题 [#24095](https://github.com/pingcap/tidb/issues/24095).
+    - 修复优化器在进行 join reorder 优化时，报 `index out of range` 错误的问题 [#24095](https://github.com/pingcap/tidb/issues/24095)
     (dup) - 修复当 `ENUM` 类型作为 `IF` 或 `CASE WHEN` 等控制函数的参数时，返回结果不正确的问题 [#23114](https://github.com/pingcap/tidb/issues/23114)
-    - 修复 `concat(ifnull(time(3))` 计算结果出错的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
-    - 修复 `greatest/least` 表达式在入参包含无符号整型时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
+    - 修复 `CONCAT(IFNULL(TIME(3))` 计算结果出错的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
+    - 修复当 `GREATEST` 和 `LEAST`  函数传入无符号整型值时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
     - 修复当 SQL 中存在 json 类型列 与 char 类型列 join 时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
     - 修复 update 语句未更新索引处理优化，可能导致数据索引不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
     - 修复窗口函数在使用事务时，计算结果与不使用事务不一样的问题 [#29947](https://github.com/pingcap/tidb/issues/29947)
