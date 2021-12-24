@@ -129,7 +129,7 @@ TiDB 版本：5.0.6
     - 修复在 TiFlash 与 TiDB/TiKV 之间，关于 CastStringAsDecimal 行为不一致的问题。
     - 修复 Nullable(Int64) 与 Int64 类型不一致的异常，同步表后以避免类型不一致。
     - 修复列类型为 Nullable(Nothing) 导致的异常。
-    - 修复 Decimal 类型比较时，可能导致数据溢出并比较失败的问题。
+    - 修复 Decimal 类型比较时，可能导致数据溢出并导致查询失败的问题
 
 + Tools
 
