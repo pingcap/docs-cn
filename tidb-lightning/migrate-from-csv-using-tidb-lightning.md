@@ -87,7 +87,7 @@ trim-last-separator = false
 ### `terminator`
 
 - 指定行尾定界符。
-- 如果 `terminator` 为空，表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
+- 如果 `terminator` 为空，表示 "\\n"（换行）和 "\\r\\n" （回车+换行），均表示行尾。
 - 对应 LOAD DATA 语句中的 `LINES TERMINATED BY` 项。
 
 ### `header`
