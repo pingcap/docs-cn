@@ -122,7 +122,7 @@ TiDB 版本：5.0.6
     - 修复当 PageStorage GC 时会误删新创建的 PageFile 导致的异常。
     - 修复当用户更新 TiFlash 版本后，同步表时发生的异常。
     - 修复当查询被取消时，TiFlash 偶发的崩溃问题。
-    - 修复在 substringUTF8 中的常数异常。
+    - 修复查询报错 "3rd arguments of function substringUTF8 must be constants"
     - 提高了支持的查询 SQL 中表达式的层级数量，避免比如过多 "OR" 条件导致查询报错
     - 修复当查询带了 where <string> 会变成 int 类型的导致查询结构出错的问题。
     - 修复在 TiFlash 与 TiDB/TiKV 之间，关于 CastStringAsDecimal 行为不一致的问题。
