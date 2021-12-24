@@ -69,7 +69,7 @@ TiDB 版本：5.0.6
     (dup) - 修复 MPP 节点的可用性检测在某些边界场景中无法工作的问题 [#3118](https://github.com/pingcap/tics/issues/3118)
     (dup) - 修复分配 `MPP task ID` 时出现 `DATA RACE` 的问题 [#27952](https://github.com/pingcap/tidb/issues/27952)
     (dup) - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
-    - 修复并行插入无效时间类型值时，TiDB panic 的问题 [#25393](https://github.com/pingcap/tidb/issues/25393)
+    - 修复并行插入无效日期类型值时，TiDB panic 的问题 [#25393](https://github.com/pingcap/tidb/issues/25393)
     - 修复在 MPP 模式下查询时，报`can not found column in Schema column` 错误的问题 [#28147](https://github.com/pingcap/tidb/pull/28147)
     (dup) - 修复 TiDB 在 TiFlash 关闭时可能出现 panic 的问题 [#28096](https://github.com/pingcap/tidb/issues/28096)
     - 修复优化器在进行 join reorder 优化时，报 `index out of range` 错误的问题 [#24095](https://github.com/pingcap/tidb/issues/24095)
