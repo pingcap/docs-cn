@@ -119,7 +119,7 @@ TiDB 版本：5.0.6
     - 修复当在同时使用且扩大主键列类型时，潜在的数据不一致问题。
     - 修复当 ARM 架构的机器在使用系统的 libnsl.so 编译 TiFlash 时的错误，修改 INSTALL_DIR 编译 libnsl.so 的选项。
     - 修复 TiFlash 统计面板中的 store size 不准确的问题，当 PageStorage 中类型为 checkpoint 的文件删除时，没有减少空间。
-    - 修复当 PageStorage GC 时会误删新创建的 PageFile 导致的异常。
+    - 修复 TiFlash 由于 "Cannot open file" 错误而导致的进程失败
     - 修复当查询被取消时，TiFlash 偶发的崩溃问题。
     - 修复查询报错 "3rd arguments of function substringUTF8 must be constants"
     - 提高了支持的查询 SQL 中表达式的层级数量，避免比如过多 "OR" 条件导致查询报错
