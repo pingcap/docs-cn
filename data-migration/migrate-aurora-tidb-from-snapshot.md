@@ -75,12 +75,12 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no
 
 ### 第 3 步. 编写 Lightning 配置文件
 
-根据以下内容创建`tidb-lighting.toml` 配置文件：
+根据以下内容创建`tidb-lightning.toml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-vim tidb-lighting.toml
+vim tidb-lightning.toml
 ```
 
 {{< copyable "" >}}
@@ -94,7 +94,7 @@ port = ${port}                # 例如：4000
 user = "${user_name}"         # 例如："root"
 password = "${password}"      # 例如："rootroot"
 status-port = ${status-port}  # 表架构信息在从 TiDB 的“状态端口”获取例如：10080
-pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lighting 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
