@@ -78,12 +78,12 @@ no-schema = true
 
 # 定义 CSV 格式
 [mydumper.csv]
-# 字段分隔符，必须为 ASCII 字符。不建议源文件使用默认的“,”简单分隔符，推荐“|+|”等非常见字符组合
+# 字段分隔符，必须不为空。如果源文件中包含非字符串或数值类型的字段（如 binary, blob, bit 等），则不建议源文件使用默认的“,”简单分隔符，推荐“|+|”等非常见字符组合
 separator = ','
-# 引用定界符，可以为 ASCII 字符或空字符。
+# 引用定界符，可以为零或多个字符。
 delimiter = '"'
 # CSV 文件是否包含表头。
-# 如果为 true，首行将会被跳过。
+# 如果为 true，则 lightning 会使用首行内容解析字段的对应关系。
 header = true
 # CSV 是否包含 NULL。
 # 如果为 true，CSV 文件的任何列都不能解析为 NULL。
@@ -91,9 +91,9 @@ not-null = false
 # 如果 `not-null` 为 false（即 CSV 可以包含 NULL），
 # 为以下值的字段将会被解析为 NULL。
 null = '\N'
-# 是否解析字段内的反斜线转义符。
+# 是否将字符串中包含的反斜杠（'\'）字符作为转义字符处理
 backslash-escape = true
-# 是否移除以分隔符结束的行。
+# 是否移除行尾的最后一个分隔符。
 trim-last-separator = false
 
 # 目标集群的信息
@@ -107,9 +107,9 @@ status-port = ${port} # 例如：10080
 pd-addr = "${ip}:${port}" # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
-关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
+关于配置文件更多信息，可参阅 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
-## 第 4 步. 以更快的速度导入（可选）
+## 第 4 步. 导入性能优化（可选）
 
 导入文件的大小统一约为 256 MiB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 在默认配置下只能使用一个线程来处理，这会降低导入速度。
 
@@ -191,4 +191,4 @@ trim-last-separator = true
 
 ## 探索更多
 
-- [关于 mydumper.csv 内字段定义](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+- [CSV 支持与限制](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)

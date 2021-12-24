@@ -64,10 +64,10 @@ sorted-kv-dir = "${sorted-kv-dir}"
 
 [mydumper]
 # 源数据目录。支持本地路径（如 `/data/my_datasource/`）或 S3 路径（如 `s3://bucket-name/data-path`）。
-data-source-dir = "${my_datasource}"。
+data-source-dir = "${my_datasource}"
 
-# 不创建表库，当在 #Step 2 手动完成下游表结构创建时，此项设为 true，否则为 false。
-no-schema = true
+# 如果在 #Step 2 选择手动在下游创建表结构，则需要将此项设为 true，否则为 false。
+# no-schema = true
 
 # 目标集群的信息
 host = "${ip}"
@@ -89,7 +89,7 @@ pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" �
 {{< copyable "shell-regular" >}}
 
 ```shell
-nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 ```
 
 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 `tidb-lightning.log` 的最后一行会显示 `tidb lightning exit`。

@@ -93,7 +93,7 @@ host = ${host}                # 例如：172.16.32.1
 port = ${port}                # 例如：4000
 user = "${user_name}"         # 例如："root"
 password = "${password}"      # 例如："rootroot"
-status-port = ${status-port}  # 表架构信息在从 TiDB 的“状态端口”获取例如：10080
+status-port = ${status-port}  # 表结构信息在从 TiDB 的“状态端口”获取例如：10080
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 
 [tikv-importer]
@@ -199,7 +199,7 @@ type = '$3'
 
 ### 第 2 步. 创建迁移任务
 
-新建`task1.yaml`文件, 写入以下内容：
+新建 `task1.yaml` 文件, 写入以下内容：
 
 {{< copyable "" >}}
 

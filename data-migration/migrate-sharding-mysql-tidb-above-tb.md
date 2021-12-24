@@ -123,7 +123,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 
 ## 第 2 步：启动 TiDB Lightning 进行导入
 
-在启动TiDB Lightning进行迁移之前，建议先了解如何处理检查点，然后根据需要选择合适的方式进行迁移。
+在启动 TiDB Lightning 进行迁移之前，建议先了解如何处理检查点，然后根据需要选择合适的方式进行迁移。
 
 ### 断点续传
 
