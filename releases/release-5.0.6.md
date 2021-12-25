@@ -33,7 +33,7 @@ TiDB 版本：5.0.6
 + PD
 
     (dup) - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
-    - 通过允许空 Region 调度和修复配置的方式使 scatter-range-scheduler运行更好 [#4116](https://github.com/tikv/pd/pull/4116)
+    - 通过允许空 Region 调度和修复配置的方式使 scatter-range-scheduler运行更好 [#4497](https://github.com/tikv/pd/issues/4497)
 
 + Tools
 
@@ -48,7 +48,7 @@ TiDB 版本：5.0.6
         (dup) - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3352](https://github.com/pingcap/tiflow/issues/3352)
         - Kafka sink 模块设置 `MaxMessageBytes` 默认值为 1MB [#3081](https://github.com/pingcap/tiflow/issues/3081)
-        - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#3834](https://github.com/pingcap/tiflow/pull/3834), "mounter row", "table sink total row", "buffer sink total row" [#1606](https://github.com/pingcap/tiflow/issue/1606), "go gc", "go_max_procs" [#2998](https://github.com/pingcap/tiflow/pull/2998), "cached region" [#2733](https://github.com/pingcap/tiflow/pull/2733).
+        - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#4054](https://github.com/pingcap/tiflow/issues/4054), "mounter row", "table sink total row", "buffer sink total row" [#1606](https://github.com/pingcap/tiflow/issue/1606)
 
     + (Backup & Restore) BR
 
@@ -152,7 +152,6 @@ TiDB 版本：5.0.6
         - 修复 Kafka sink 模块监控变量 txn_batch_size 不准确问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
          (dup) - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         (dup) - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
-        - 修复 EtcdWorker row 监控参数错误问题. [#4000](https://github.com/pingcap/tiflow/pull/4000)
         (dup) - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续更新的问题 [#11017](https://github.com/tikv/tikv/issues/11017)
         (dup) - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
 
