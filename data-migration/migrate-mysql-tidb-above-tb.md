@@ -27,6 +27,7 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 
 - Dumpling 需要足够储存整个数据源的存储空间。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
+- 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
 

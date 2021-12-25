@@ -39,8 +39,9 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。�
 
 **磁盘空间**：
 
-- Dumpling 需要足够储存整个数据源的存储空间，推荐使用 SSD 介质。
+- Dumpling 需要足够储存整个数据源的存储空间。
 - Lightning 导入期间需要排序键值对的临时存放空间，至少需要数据源最大单表的空间。
+- 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
 
