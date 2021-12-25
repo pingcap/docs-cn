@@ -59,6 +59,8 @@ filters:
         - 符合 events 条件；
         - sql-pattern 不为空，且对应的 SQL 可以匹配上 sql-pattern 中任意一项
 
+注意：如果同时配置 `Do/Ignore`，则 `Ignore` 优先级更高。`binlog event` 不匹配白名单或者匹配黑名单都将被直接过滤。
+
 ## 使用场景举例
 
 ### 过滤分库分表的所有删除操作

@@ -1,9 +1,9 @@
 ---
 title: 上游使用 pt-osc/gh-ost 工具的持续同步场景
-summary: 介绍在使用 DM 持续增量数据同步，上游使用 pt/gh-ost 工具进行在线 DDL 变更时 DM 的处理方式和注意事项。
+summary: 介绍在使用 DM 持续增量数据同步，上游使用 pt-osc/gh-ost 工具进行在线 DDL 变更时 DM 的处理方式和注意事项。
 ---
 
-# 上游使用 pt/gh-ost 工具的持续同步场景
+# 上游使用 pt-osc/gh-ost 工具的持续同步场景
 
 在生产业务中执行 DDL 时，产生的锁表操作会一定程度阻塞数据库的读取或者写入。为了把对读写的影响降到最低，用户往往会选择 online DDL 工具执行 DDL。常见的 Online DDL 工具有 [gh-ost](https://github.com/github/gh-ost) 和 [pt-osc](https://www.percona.com/doc/percona-toolkit/3.0/pt-online-schema-change.html)。
 
@@ -27,7 +27,7 @@ name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full"、"incremental"、"all"
 shard-mode: "pessimistic"       # 如果为分库分表合并任务则需要配置该项。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
-online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容上游使用 gh-ost 、pt 两种工具的自动处理
+online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容上游使用 gh-ost 、pt-osc 两种工具的自动处理
 ```
 
 ## 开启 online-ddl 的影响

@@ -21,8 +21,8 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 {{< copyable "" >}}
 
 ```yaml
-# Configuration.
-source-id: "mysql-01"     # 唯一命名，不可重复
+# 唯一命名，不可重复。
+source-id: "mysql-01" 
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
 enable-gtid: true

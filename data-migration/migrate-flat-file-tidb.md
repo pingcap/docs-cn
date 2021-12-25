@@ -16,7 +16,7 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式，
 
 ## 第 1 步. 准备 CSV 文件
 
-将所有要导入的 CSV 文件放在同一目录下，若要 TiDB Lighting 识别所有 CSV 文件，文件名必须满足以下格式：
+将所有要导入的 CSV 文件放在同一目录下，若要 TiDB Lightning 识别所有 CSV 文件，文件名必须满足以下格式：
 
 - 包含整张表数据的 CSV 文件，需命名为 `${db_name}.${table_name}.csv`。
 - 如果一张表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续，但必须递增，并且需要用零填充数字部分，保证后缀为同样长度。
@@ -69,7 +69,7 @@ sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
 [mydumper]
 # 源数据目录。
-data-source-dir = "/data/my_datasource/"
+data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
 
 # 设置是否需要创建表库
 # 若需要 Lightning 创建库表，则设为 false
@@ -96,15 +96,14 @@ backslash-escape = true
 # 是否移除行尾的最后一个分隔符。
 trim-last-separator = false
 
+[tidb]
 # 目标集群的信息
-host = "${ip}"
-port = ${port}
-user = "${user_name}"
-password = "${password}"
-# 表结构信息在从 TiDB 的“状态端口”获取。
-status-port = ${port} # 例如：10080
-# 集群 pd 的地址
-pd-addr = "${ip}:${port}" # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+host = ${host}                # 例如：172.16.32.1
+port = ${port}                # 例如：4000
+user = "${user_name}"         # 例如："root"
+password = "${password}"      # 例如："rootroot"
+status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
+pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
 关于配置文件更多信息，可参阅 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
@@ -138,12 +137,22 @@ strict-format = true
 {{< copyable "shell-regular" >}}
 
 ```shell
-nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 ```
 
-导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 `tidb-lightning.log` 的最后一行会显示 `tidb lightning exit`。
+导入开始后，可以采用以下任意方式查看进度：
 
-如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
+- 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+- 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+- 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
+
+导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+
+> **注意：**
+>
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+
+如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
 ## 其他格式的文件
 

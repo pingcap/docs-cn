@@ -7,7 +7,7 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 
 通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度 (30~50 GiB/h) 可能令整个迁移周期过长。
 
-因此，本文档介绍使用 Dumpling 和 TiDB Lightning 进行全量数据迁移，其后端 (local backend) 模式导入速度可达每小时 500 GiB。完成全量数据迁移后，再使用 DM 完成增量数据迁移。
+因此，本文档介绍使用 Dumpling 和 TiDB Lightning 进行全量数据迁移，其本地导入 (local backend) 模式导入速度可达每小时 500 GiB。完成全量数据迁移后，再使用 DM 完成增量数据迁移。
 
 ## 前提条件
 
@@ -25,7 +25,7 @@ summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
 
 **磁盘空间**：
 
-- Dumpling 需要足够储存整个数据源的存储空间，推荐使用 SSD 介质。
+- Dumpling 需要足够储存整个数据源的存储空间。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
@@ -54,7 +54,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my_db1.table[12]' -o ${data-dir}
+    tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MiB -B my_db1 -f 'my_db1.table[12]' -o 's3://my-bucket/sql-backup?region=us-west-2'
     ```
 
     Dumpling 默认导出数据格式为 SQL 文件，你也可以通过设置 `--filetype` 指定导出文件的类型。
@@ -68,11 +68,11 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     |-P 或 --port       |MySQL 数据库的端口|
     |-h 或 --host       |MySQL 数据库的 IP 地址|
     |-t 或 --thread     |导出的线程数|
-    |-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
+    |-o 或 --output     |存储导出文件的目录，支持本地文件路径或 S3，参考[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
     |-r 或 --row        |单个文件的最大行数|
-    |-F                 |指定单个文件的最大大小，单位为 MiB|
+    |-F                 |指定单个文件的最大大小，单位为 MiB，建议 256MiB|
     |-B 或 --database  | 导出指定数据库 |
-    |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。例如，导出除系统库外的所有库表：`[\*.\*,!/^(mysql&#124;sys&#124;INFORMATION_SCHEMA&#124;PERFORMANCE_SCHEMA&#124;METRICS_SCHEMA&#124;INSPECTION_SCHEMA)$/.\*]` |
+    |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md) |
 
     请确保 `${data-path}` 拥有足够的空间。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
 
@@ -106,11 +106,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     [mydumper]
     # 源数据目录，即第 1 步中 Dumpling 保存数据的路径。
-    data-source-dir = "${data-path}"
-
-    # 配置通配符规则，默认规则会过滤 mysql、sys、INFORMATION_SCHEMA、PERFORMANCE_SCHEMA、METRICS_SCHEMA、INSPECTION_SCHEMA 系统数据库下的所有表
-    # 若不配置该项，导入系统表时会出现“找不到 schema”的异常
-    filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+    data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
 
     [tidb]
     # 目标集群的信息
@@ -118,23 +114,37 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     port = ${port}                # 例如：4000
     user = "${user_name}"         # 例如："root"
     password = "${password}"      # 例如："rootroot"
-    status-port = ${status-port}  # 表架构信息在从 TiDB 的“状态端口”获取例如：10080
-    pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lighting 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+    status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
+    pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
     ```
 
     关于更多 Lightning 的配置，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+  
+    若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
+    export AWS_ACCESS_KEY_ID=${access_key}
+    export AWS_SECRET_ACCESS_KEY=${secret_key}
+    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
     ```
 
-3. 导入完毕后，TiDB Lightning 会自动退出。若导入成功，日志 tidb-lightning.log 的最后一行会显示 `tidb lightning exit`。
+3. 导入开始后，可以采用以下任意方式查看进度：
 
-如果出错，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
+   - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+   - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+   - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
+
+4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+
+> **注意：**
+>
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+
+如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
 ## 第 3 步. 使用 DM 持续复制增量数据到 TiDB
 
@@ -145,8 +155,8 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     {{< copyable "" >}}
 
     ```yaml
-    # Configuration.
-    source-id: "mysql-01" # 唯一命名，不可重复
+    # 唯一命名，不可重复。
+    source-id: "mysql-01" 
 
     # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
     enable-gtid: true
@@ -202,7 +212,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
         # syncer-config-name: "global"    # 引用下面的 syncers 增量数据配置。
         meta:                            # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
           # binlog-name: "mysql-bin.000004"  # 第 1 步中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
-          #binlog-pos: 109227
+          # binlog-pos: 109227
           binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
 
     # 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。

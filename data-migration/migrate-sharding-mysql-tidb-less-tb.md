@@ -73,8 +73,8 @@ CREATE TABLE `sale` (
 {{< copyable "shell-regular" >}}
 
 ```yaml
-# Configuration.
-source-id: "mysql-01" # 唯一命令，不可重复
+# 唯一命名，不可重复。
+source-id: "mysql-01"
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
 enable-gtid: true
@@ -115,7 +115,7 @@ name: "shard_merge"
 # incremental： binlog 实时同步
 # all： 全量 + binlog 迁移
 task-mode: all
-# 分库分表合并任务则需要配置该项。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
+# 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 # 详细信息可参考：https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge
 shard-mode: "pessimistic"                       
 meta-schema: "dm_meta"                          # 将在下游数据库创建 schema 用于存放元数据

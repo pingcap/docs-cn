@@ -20,7 +20,7 @@ summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
 
 ### 第 1 步. 导出 Aurora 快照文件到 Amazon S3
 
-1. 在 Aurora 上，执行以下命令，查询当前 binlog 位置：
+1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
 
     ```sql
     mysql> SHOW MASTER STATUS;
@@ -39,7 +39,7 @@ summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
 
 2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
 
-请注意，上述两步的时间间隔最好不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
+请注意，上述两步的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
 
 完成上述两步后，你需要准备好以下信息：
 
@@ -50,12 +50,12 @@ summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
 
 因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
 
-运行以下命令，导出 schema：
+运行以下命令，建议使用 `--filter` 参数仅导出所需表的 schema：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no-data --output ./schema --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
 ```
 
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
@@ -69,9 +69,11 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --no
 |-t 或 --thread     |导出的线程数|
 |-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
 |-r 或 --row        |单个文件的最大行数|
-|-F                 |指定单个文件的最大大小，单位为 MiB|
+|-F                 |指定单个文件的最大大小，单位为 MiB, 建议值 256 MiB|
 |-B 或 --database   |导出指定数据库|
+|-T 或 --tables-list |导出指定数据表|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
+|-f 或 --filter     |导出能匹配模式的表，不可用 -T 一起使用，语法可参考[table filter](/table-filter.md)|
 
 ### 第 3 步. 编写 Lightning 配置文件
 
@@ -106,7 +108,7 @@ sorted-kv-dir = "${path}"
 
 [mydumper]
 # 快照文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://bucket-name/data-path
+data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup?region=us-west-2
 
 [[mydumper.files]]
 # 解析 parquet 文件所需的表达式
@@ -125,27 +127,26 @@ type = '$3'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup tidb-lightning -config tidb-lightning.toml -d ./schema -no-schema=false
+    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup?region=us-west-2' -no-schema=false
     ```
 
 2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
 
-    将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Dumpling 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
-
-    可以指定参数`--s3.region`，即表示 Amazon S3 存储所在的区域，例如`ap-northeast-1`。更多存储配置可以参考[外部存储](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages)。
+    将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out &
+    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
     ```
 
 3. 导入开始后，可以采用以下任意方式查看进度：
 
    - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-   - 通过监控面板查看进度，请参见 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+   - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+   - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
 4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
 
@@ -169,8 +170,8 @@ type = '$3'
     {{< copyable "" >}}
 
     ```yaml
-    # Configuration.
-    source-id: "mysql-01"     # 唯一命名，不可重复
+    # 唯一命名，不可重复。
+    source-id: "mysql-01" 
 
     # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
     enable-gtid: false

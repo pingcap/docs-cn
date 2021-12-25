@@ -13,7 +13,7 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB。�
 
 ![使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/media/lightning/shard-merge-using-lightning.png)
 
-在这个示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lighting 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
+在这个示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
 
 本文将以三个步骤演示导入流程：
 
@@ -93,7 +93,7 @@ CREATE TABLE `table5` (
 
 ## 第 1 步：用 Dumpling 导出全量数据备份
 
-如果需要导出的多个分表属于同一个上游 MySQL 实例，可以直接使用 Dumpling 的 `-f` 参数一次导出多个分表的结果。如果多个分表分布在不同的 MySQL 实例，可以使用 Dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。下面的例子中同时用到了上述两种方式，然后将导出的数据存放在同一父目录下。
+如果需要导出的多个分表属于同一个上游 MySQL 实例，建议直接使用 Dumpling 的 `-f` 参数一次导出多个分表的结果。如果多个分表分布在不同的 MySQL 实例，可以使用 Dumpling 分两次导出，并将两次导出的结果放置在相同的父目录下即可。下面的例子中同时用到了上述两种方式，然后将导出的数据存放在同一父目录下。
 
 首先使用 Dumpling 从 my_db1 中导出表 table1 和 table2，如下：
 
@@ -150,76 +150,77 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
 
 启动 tidb-lightning 的步骤如下：
 
-编写配置文件`tidb-lightning.toml`。
+1. 编写配置文件`tidb-lightning.toml`。
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```toml
-[lightning]
-# 日志
-level = "info"
-file = "tidb-lightning.log"
+    ```toml
+    [lightning]
+    # 日志
+    level = "info"
+    file = "tidb-lightning.log"
 
-[tikv-importer]
-# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
-backend = "local"
-# 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录，独占 IO 会获得更好的导入性能
-sorted-kv-dir = "${sorted-kv-dir}"
+    [tikv-importer]
+    # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+    # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
+    backend = "local"
+    # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录，独占 IO 会获得更好的导入性能
+    sorted-kv-dir = "${sorted-kv-dir}"
 
-# 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
-[[routes]]
-schema-pattern = "my_db1"
-table-pattern = "table[1-2]"
-target-schema = "my_db"
-target-table = "table5"
+    # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
+    [[routes]]
+    schema-pattern = "my_db1"
+    table-pattern = "table[1-2]"
+    target-schema = "my_db"
+    target-table = "table5"
 
-[[routes]]
-schema-pattern = "my_db2"
-table-pattern = "table[3-4]"
-target-schema = "my_db"
-target-table = "table5"
+    [[routes]]
+    schema-pattern = "my_db2"
+    table-pattern = "table[3-4]"
+    target-schema = "my_db"
+    target-table = "table5"
 
-[mydumper]
-# 源数据目录。设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
-data-source-dir = "${data-path}"
-# 由于 table1~4 合并为 table5。所以这里不创建表库，避免根据 Dumpling 的导出文件在下游创建出 table1~4。
-no-schema = true
-# 配置通配符规则，默认规则会过滤 mysql、sys、INFORMATION_SCHEMA、PERFORMANCE_SCHEMA、METRICS_SCHEMA、INSPECTION_SCHEMA 系统数据库下的所有表
-# 若不配置该项，导入系统表时会出现“找不到 schema”的异常
-filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
+    [mydumper]
+    # 源数据目录。设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
+    data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
+    # 由于 table1~4 合并为 table5。所以这里不创建表库，避免根据 Dumpling 的导出文件在下游创建出 table1~4。
+    no-schema = true
 
-# 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
-[tidb]
-# 目标集群的信息
-host = ${host}              # 例如：172.16.32.1
-port = ${port}              # 例如：4000
-user = "${user_name}"       # 例如："root"
-password = "${password}"    # 例如："rootroot"
-# 表架构信息在从 TiDB 的“状态端口”获取
-status-port = ${status-port} # 例如：10080
-# PD 集群的地址，Lightning 通过 PD 获取部分信息。
-pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
-```
+    # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
+    [tidb]
+    # 目标集群的信息
+    host = ${host}              # 例如：172.16.32.1
+    port = ${port}              # 例如：4000
+    user = "${user_name}"       # 例如："root"
+    password = "${password}"    # 例如："rootroot"
+    status-port = ${status-port} # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
+    # PD 集群的地址，Lightning 通过 PD 获取部分信息。
+    pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+    ```
 
-运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
 
-{{<copyable "shell-regular">}}
+    若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
-```shell
-tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    export AWS_ACCESS_KEY_ID=${access_key}
+    export AWS_SECRET_ACCESS_KEY=${secret_key}
+    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
+    ```
    
-导入开始后，可以采用以下任意方式查看进度：
+3. 导入开始后，可以采用以下任意方式查看进度：
 
-- 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-- 通过监控面板查看进度，请参见 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+   - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+   - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+   - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
@@ -234,8 +235,8 @@ tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 {{< copyable "" >}}
 
 ```yaml
-# Configuration.
-source-id: "mysql-01" # 唯一命名，不可重复
+# 唯一命名，不可重复。
+source-id: "mysql-01" 
  
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
 enable-gtid: true
@@ -252,7 +253,7 @@ from:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dmctl --master-addr 172.16.10.71:8261 operate-source create source1.yaml
+tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
@@ -273,7 +274,7 @@ tiup dmctl --master-addr 172.16.10.71:8261 operate-source create source1.yaml
 ```yaml
 name: task-test               # 任务名称，需要全局唯一。
 task-mode: incremental        # 任务模式，设为 "incremental" 即只进行增量数据迁移。
-# 分库分表合并任务则需要配置该项。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
+# 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 # 详细信息可参考：https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge
 shard-mode: "pessimistic"  
 
