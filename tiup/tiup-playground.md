@@ -31,8 +31,8 @@ The command-line flags of the playground component are described as follows:
 ```bash
 Flags:
       --db int                   Specify the number of TiDB instances (default: 1)
-      ----db.host host           Specify the listening address of TiDB
-      ----db.port int            Specify the port of TiDB
+      --db.host host           Specify the listening address of TiDB
+      --db.port int            Specify the port of TiDB
       --db.binpath string        Specify the TiDB instance binary path (optional, for debugging)
       --db.config string         Specify the TiDB instance configuration file (optional, for debugging)
       --db.timeout int           Specify TiDB maximum wait time in seconds for starting. 0 means no limit
