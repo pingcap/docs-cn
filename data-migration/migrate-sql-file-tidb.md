@@ -12,11 +12,11 @@ summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 T
 - [使用 TiUP 安装 TiDB Lightning](/migration-tools.md)
 - [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 
-## 第 1 步. 准备 SQL 文件
+## 第 1 步：准备 SQL 文件
 
 将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup?region=us-west-2`。Lightning 将递归地寻找该目录下及其子目录内的所有 `.sql` 文件。
 
-## 第 2 步. 定义目标表结构
+## 第 2 步：定义目标表结构
 
 要导入 TiDB，就必须为其提供表结构，如果使用 dumpling 工具导出，则自动导出表结构文件。其他方式导出的数据可以通过以下任一方法创建表结构：
 
@@ -43,7 +43,7 @@ summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 T
     no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
     ```
 
-## 第 3 步. 编写配置文件
+## 第 3 步：编写配置文件
 
 新建文件 `tidb-lightning.toml`，包含以下内容：
 
@@ -80,7 +80,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
 关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
 
-## 第 4 步. 执行导入
+## 第 4 步：执行导入
 
 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 

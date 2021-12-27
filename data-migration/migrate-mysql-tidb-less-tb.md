@@ -14,7 +14,7 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 - [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
 - [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
 
-## 第 1 步. 创建数据源
+## 第 1 步：创建数据源
 
 首先，新建 `source1.yaml` 文件, 写入以下内容：
 
@@ -48,7 +48,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
 |operate-source create|向 DM 集群加载数据源|
 
-## 第 2 步. 创建迁移任务
+## 第 2 步：创建迁移任务
 
 新建 `task1.yaml` 文件, 写入以下内容：
 
@@ -89,7 +89,7 @@ block-allow-list:
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)。
 
-## 第 3 步. 启动任务
+## 第 3 步：启动任务
 
 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
@@ -116,7 +116,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
 
-## 第 4 步. 查看任务状态
+## 第 4 步：查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
@@ -128,7 +128,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)。
 
-## 第 5 步. 监控任务与查看日志（可选）
+## 第 5 步：监控任务与查看日志（可选）
 
 要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
 
