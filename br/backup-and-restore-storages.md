@@ -17,6 +17,7 @@ TiDB 迁移工具支持以下存储服务：
 | 本地文件系统（分布在各节点上） | local | `local:///path/to/dest/` |
 | Amazon S3 及其他兼容 S3 的服务 | s3 | `s3://bucket-name/prefix/of/dest/` |
 | GCS | gcs, gs | `gcs://bucket-name/prefix/of/dest/` |
+| Azure Blob Storage | azure, azblob | `azure://container-name/prefix/of/dest/` |
 | 不写入任何存储（仅作为基准测试） | noop | `noop://` |
 
 ## URL 参数
@@ -99,6 +100,22 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 2. 工具节点上位于 `~/.config/gcloud/application_default_credentials.json` 的文件内容。
 3. 在 GCE 或 GAE 中运行时，从元数据服务器中获取的凭证。
 
+### Azblob 的 URL 参数
+
+| URL 参数 | 描述 |
+|----------:|-----|
+| `account-name` | 存储账户名 |
+| `account-key` | 访问密钥 |
+| `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`） |
+
+为了保证 TiKV 和迁移工具使用了同一个存储账户，`account-name` 由迁移工具决定（即默认 `send-credentials-to-tikv = true`），迁移工具按照以下顺序推断密钥：
+
+1. 若参数指定 `account-name` 和 `account-key`，则使用该密钥。
+2. 若未指定 `account-name` 或 `account-key` 任意一个，则尝试从工具节点上环境变量读取相关凭证。
+3. 迁移工具优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，同时允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` 访问。
+4. 若上述三个环境变量存在缺失，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
+5. 若 `步骤3` 和 `步骤4` 中，参数并未指定 `account-name`，则从工具节点上的环境变量中读取。且默认情况下（`send-credentials-to-tikv = true`）`account-key` 和 `account-key` 都是由迁移工具发送给 TiKV 的。 
+
 ## 命令行参数
 
 除了使用 URL 参数，BR 和 Dumpling 工具亦支持从命令行指定这些配置，例如：
@@ -132,6 +149,13 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 | `--gcs.credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
 | `--gcs.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
 | `--gcs.predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
+
+### Azblob 的命令行参数
+| 命令行参数 | 描述 |
+|----------:|-------|
+| `--azblob.account-name` | 存储账户名 |
+| `--azblob.account-key` | 访问密钥 |
+| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`） |
 
 ## BR 向 TiKV 发送凭证
 
