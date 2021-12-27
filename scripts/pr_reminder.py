@@ -415,7 +415,7 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
-                                "text": "sig/bigdata、sig/tiup 和 sig/diagnosis"
+                                "text": "- sig/bigdata、sig/tiup 和 sig/diagnosis"
                             }
                         ],
                         [
