@@ -40,7 +40,6 @@ TiDB 版本：5.0.6
     + TiCDC
 
         (dup) - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
-        - 减少 Sink 模块锁冲突 [#2760](https://github.com/pingcap/tiflow/pull/2760)
         (dup) - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/tiflow/issues/2470)
         (dup) - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/tiflow/issues/3111)
         (dup) - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过于频繁影响 PD 服务 [#3112](https://github.com/pingcap/tiflow/issues/3112)
