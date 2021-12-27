@@ -113,8 +113,8 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 1. 若参数指定 `account-name` 和 `account-key`，则使用该密钥。
 2. 若未指定 `account-name` 或 `account-key` 任意一个，则尝试从工具节点上环境变量读取相关凭证。
 3. 迁移工具优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，同时允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` 访问。
-4. 若上述三个环境变量存在缺失，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
-5. 若 `步骤3` 和 `步骤4` 中，参数并未指定 `account-name`，则从工具节点上的环境变量中读取。且默认情况下（`send-credentials-to-tikv = true`）`account-key` 和 `account-key` 都是由迁移工具发送给 TiKV 的。 
+4. 若上述三个环境变量在工具节点上存在缺失，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
+5. 若 `步骤3` 和 `步骤4` 中，参数并未指定 `account-name`，则从工具节点上的环境变量中读取。且默认情况下（`send-credentials-to-tikv = true`）`account-name` 和 `account-key` 都是由迁移工具发送给 TiKV 的。 
 
 ## 命令行参数
 
