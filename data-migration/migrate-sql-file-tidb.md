@@ -1,6 +1,6 @@
 ---
 title: 从 SQL 文件迁移数据到 TiDB
-summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB
+summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。
 ---
 
 # 从 SQL 文件迁移数据到 TiDB
@@ -82,9 +82,9 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
 ## 第 4 步：执行导入
 
-运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
+运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具。
 
-若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
+若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。
 
 {{< copyable "shell-regular" >}}
 
@@ -93,6 +93,8 @@ export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
 nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
 ```
+
+同时，Dumpling 还支持从 `~/.aws/credentials` 读取凭证文件。
 
 导入开始后，可以采用以下任意方式查看进度：
 
