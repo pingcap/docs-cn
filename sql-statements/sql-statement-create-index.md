@@ -300,7 +300,7 @@ CREATE UNIQUE INDEX c1 ON t1 (c1) INVISIBLE;
 * 无法向表中添加 `CLUSTERED` 类型的 `PRIMARY KEY`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 表达式索引与视图存在兼容性问题。通过视图进行查询时，无法使用上表达式索引。
 * 表达式索引与 Binding 存在兼容性问题。当表达式索引中的表达式存在常量时，对应查询所建的 Binding 会扩大范围。假设表达式索引中的表达式为 `a+1`，对应的查询条件为 `a+1 > 2`。则建立的 Binding 为 `a+? > ?`，这会导致像 `a+2 > 2` 这样的查询也会强制使用表达式索引，得到一个较差的执行计划。这同样影响 SQL Plan Management (SPM) 中的捕获和演进功能。
-* Index 的 `COMMENT` 属性最多支持 1024 个字符。
+* 索引的 `COMMENT` 属性最多支持 1024 个字符。
 
 ## 另请参阅
 
