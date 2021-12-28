@@ -88,20 +88,20 @@ TiDB 版本：5.0.6
 
 + TiKV
 
-    - 修复某个 TiKV 节点停机导致 Resolve Timestamp 进度落后的问题 [#11351](https://github.com/tikv/tikv/issues/11351)
+    - 修复某个 TiKV 节点停机会导致 Resolved Timestamp 进度落后的问题 [#11351](https://github.com/tikv/tikv/issues/11351)
     (dup) - 修复 Raft client 中 batch 消息过大的问题 [#9714](https://github.com/tikv/tikv/issues/9714)
     (dup) - 修复在极端情况下同时进行 Region Merge、ConfChange 和 Snapshot 时，TiKV 会出现 Panic 的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
-    - 修复逆序范围查询时没有正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
+    - 修复逆序扫表时 TiKV 无法正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
     (dup) - 修复 Decimal 除法计算的结果为 0 时符号为负的问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
-    (dup) - 修复历史版本回收任务堆积导致的内存耗尽问题 [#11410](https://github.com/tikv/tikv/issues/11410)
+    - 修复垃圾回收任务的堆积可能会导致 TiKV 内存耗尽的问题 [#11410](https://github.com/tikv/tikv/issues/11410)
     (dup) - 修复 TiKV 监控项中实例级别 gRPC 的平均延迟时间不准确的问题 [#11299](https://github.com/tikv/tikv/issues/11299)
-    - 修复 label 泄漏导致 OOM 的问题. [#11195](https://github.com/tikv/tikv/issues/11195)
+    (dup) - 修复因统计线程监控数据导致的内存泄漏 [#11195](https://github.com/tikv/tikv/issues/11195)
     (dup) - 修复在缺失下游数据库时出现 TiCDC Panic 的问题 [#11123](https://github.com/tikv/tikv/issues/11123)
     (dup) - 修复因 Congest 错误而导致的 CDC 频繁增加 scan 重试的问题 [#11082](https://github.com/tikv/tikv/issues/11082)
     (dup) - 修复因 channel 打满而导致的 Raft 断连的问题 [#11047](https://github.com/tikv/tikv/issues/11047)
-    - 修复 Lightning 导入数据期间 TiKV 因为文件不存在而宕机的问题 [#10438](https://github.com/tikv/tikv/issues/10438)
+    - 修复在 Lightning 导入数据时 TiKV 会因为文件不存在而出现 Panic 的问题 [#10438](https://github.com/tikv/tikv/issues/10438)
      (dup) - 修复由于无法在 `Max`/`Min` 函数中正确识别 Int64 是否为有符号整数，导致  `Max`/`Min` 函数的计算结果不正确的问题 [#10158](https://github.com/tikv/tikv/issues/10158)
-    - 修复从副本从主副本获取快照后未能正确修改元信息导致 TiKV 节点宕机的问题。  [#10225](https://github.com/tikv/tikv/issues/10225)
+    - 修复当 TiKV 副本节点获取了快照后，TiKV 会因为无法准确地修改元信息而导致该副本节点宕机的问题 [#10225](https://github.com/tikv/tikv/issues/10225)
     - 修复 backup 线程池泄漏的问题 [#10287](https://github.com/tikv/tikv/issues/10287)
     - 修复将不合法字符串转化为浮点数的问题 [#23322](https://github.com/pingcap/tidb/issues/23322)
 
