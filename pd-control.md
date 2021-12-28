@@ -527,7 +527,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 >> hot history startTime endTime [ <name> <value> ]
 ```
 
-例如查询时间`1634478065`到`1734478065`之间的历史hot_region信息:
+例如查询时间 `1634478065` 到 `1734478065` 之间的历史hot_region信息:
 
 {{< copyable "" >}}
 
@@ -557,7 +557,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ]
 ```
 
-对于参数的值为数组的请用[x,y,...]形式进行参数值的设置，如下所示:
+对于参数的值为数组的请用 [x, y, ...] 形式进行参数值的设置，如下所示:
 
 ```
 >hot history 1634478065 1634650865 hot_region_type write region_id [1,2,3] store_id [1,2,3] peer_id [1,2,3] is_leader false is_learner false
