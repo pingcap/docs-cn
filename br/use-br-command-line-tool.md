@@ -445,7 +445,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - 统计信息表（`mysql.stat_*`）；
 > - 系统变量表（`mysql.tidb`，`mysql.global_variables`）；
 > - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）；
-> - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+> - [其他系统表](https://github.com/pingcap/tidb/blob/v5.3.0/br/pkg/restore/systable_restore.go#L31)
 
 ### 解密恢复数据（实验性功能）
 
