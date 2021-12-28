@@ -206,7 +206,7 @@ URI 中可配置的的参数如下：
 | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始默认值从 64MB 调整至 10MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 Kafka 消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否自动创建该 topic（可选，默认值为 `true`） |
