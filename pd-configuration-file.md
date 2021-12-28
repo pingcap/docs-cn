@@ -279,7 +279,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `hot-regions-write-interval`
 
-* 设置 pd 存储 Hot Region 信息时间间隔。
+* 设置 PD 存储 Hot Region 信息时间间隔。
 * 默认值：10m
 
 > 注意：
@@ -288,7 +288,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `hot-regions-reserved-days`
 
-* 设置 pd 保留多久之前的 Hot Region 信息
+* 设置 PD 保留的 Hot Region 信息的最长时间
 * 默认值: 7天
 
 ## replication
