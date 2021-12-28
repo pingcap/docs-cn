@@ -9,8 +9,8 @@ summary: 介绍如何过滤 binlog 事件。
 
 - [从 TB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
 - [从 TB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
-- [TB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
-- [TB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
+- [TB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-sharding-mysql-tidb-less-tb.md)
+- [TB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-sharding-mysql-tidb-above-tb.md)
 
 ## 配置方式
 

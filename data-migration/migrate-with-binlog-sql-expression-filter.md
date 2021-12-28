@@ -3,18 +3,18 @@ title: 如何通过 SQL 表达式过滤 binlog
 summary: 介绍如何通过 SQL 表达式过滤 binlog。
 ---
 
-# 如何通过 SQL 表达式过滤掉特定 DML
+# 如何通过 SQL 表达式过滤 binlog
 
 本文档介绍使用 DM 持续增量数据同步时，如何更加精细的过滤 binlog 事件。具体迁移操作可参考已有数据迁移场景：
 
 - [从 TB 级以下 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-less-tb.md)
 - [从 TB 级以上 MySQL 迁移数据到 TiDB](/data-migration/migrate-mysql-tidb-above-tb.md)
-- [TB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-less-tb.md)
-- [TB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)
+- [TB 级以下分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-sharding-mysql-tidb-less-tb.md)
+- [TB 级以上分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-sharding-mysql-tidb-above-tb.md)
 
 在进行增量数据迁移时，可以通过[如何过滤 binlog 事件](/data-migration/migrate-with-binlog-event-filter.md)功能过滤某些类型的 binlog event，例如不向下游迁移 `DELETE` 事件以达到归档、审计等目的。但是 binlog event filter 无法以更细粒度判断某一行的 `DELETE` 事件是否要被过滤。
 
-为了解决上述问题，从 v2.0.5 起，DM 支持在增量数据同步阶段使用`binlog value filter`过滤迁移数据。DM 支持的 `ROW` 格式的 binlog 中，binlog event 带有所有列的值。用户可以基于这些值配置 SQL 表达式。如果该表达式对于某条行变更的计算结果是 `TRUE`，DM 就不会向下游迁移该条行变更。
+为了解决上述问题，从 v2.0.5 起，DM 支持在增量数据同步阶段使用`binlog value filter`过滤迁移数据。DM 支持的 `ROW` 格式的 binlog 中，binlog event 带有所有列的值。你可以基于这些值配置 SQL 表达式。如果该表达式对于某条行变更的计算结果是 `TRUE`，DM 就不会向下游迁移该条行变更。
 
 与[如何过滤 binlog 事件](/data-migration/migrate-with-binlog-event-filter.md)类似，表达式过滤需要在数据迁移任务配置文件里配置，详见下面配置样例。完整的配置及意义，可以参考 [DM 完整配置文件示例](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full#完整配置文件示例)：
 
@@ -67,9 +67,9 @@ MySQL [test]> select * from tbl;
 
 > **注意：**
 >
-> `update-old-value-expr` 可以与 `update-new-value-expr` 同时配置。
-> 当二者同时配置时，会将“更新+旧值“满足`update-old-value-expr` **且**”更新+新值“满足 `update-new-value-expr` 的行过滤掉。
-> 当只配置一者时，配置的这条表达式会决定是否过滤**整个行变更**，即旧值的删除和新值的插入会作为一个整体被过滤掉。
+> - `update-old-value-expr` 可以与 `update-new-value-expr` 同时配置。
+> - 当二者同时配置时，会将“更新+旧值“满足`update-old-value-expr` **且**”更新+新值“满足 `update-new-value-expr` 的行过滤掉。
+> - 当只配置一者时，配置的这条表达式会决定是否过滤**整个行变更**，即旧值的删除和新值的插入会作为一个整体被过滤掉。
 
 SQL 表达式可以涉及一列或多列，也可使用 TiDB 支持的 SQL 函数，例如 `c % 2 = 0`、`a*a + b*b = c*c`、`ts > NOW()`。
 
