@@ -143,23 +143,24 @@ TiDB 版本：5.0.6
         (dup) - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 Panic 的问题 [#2386](https://github.com/pingcap/tiflow/issues/2386)
         (dup) - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3288](https://github.com/pingcap/tiflow/issues/3288)
         (dup) - 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
-        - 修复 MySQL sink 模块出现死锁时告警过于频繁问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
-        - 修复 Avro sink 模块不支持 json type 列类型解析 [#3624](https://github.com/pingcap/tiflow/issues/3624)
-        - 修复 TiKV 重启时 cdc 读取到错误的元数据快照问题 [#2603](https://github.com/pingcap/tiflow/issues/2603)
+        - 修复 MySQL sink 模块出现死锁时告警过于频繁的问题 [#2706](https://github.com/pingcap/tiflow/issues/2706)
+        - 修复 Avro sink 模块不支持解析 JSON 类型列的问题 [#3624](https://github.com/pingcap/tiflow/issues/3624)
+        - 修复 TiKV owner 重启时 TiCDC 从 TiKV 读取到错误的元数据快照的问题 [#2603](https://github.com/pingcap/tiflow/issues/2603)
         (dup) - 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
-        - 修复 Canal 和 Maxwell 协议没有自动开启 old value 选项问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
-        - 修复 cdc server 在一些 RHEL 系统(6.8, 6.9 etc)上运行出现的时区错误问题.  [#3584](https://github.com/pingcap/tiflow/issues/3584)
-        - 修复 Kafka sink 模块监控变量 txn_batch_size 不准确问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
+        - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        - 修复 `cdc server` 命令在 Red Hat Enterprise Linux 系统的部分版本（如 6.8、6.9 等）上运行时出现时区错误的问题  [#3584](https://github.com/pingcap/tiflow/issues/3584)
+        - 修复当 Kafka 为下游时 `txn_batch_size` 监控指标数据不准确的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
          (dup) - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         (dup) - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         (dup) - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续更新的问题 [#11017](https://github.com/tikv/tikv/issues/11017)
         (dup) - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
+        - 修复人为删除 etcd 任务的状态时导致 TiCDC panic 的问题 [#2980](https://github.com/pingcap/tiflow/issues/2980)
 
-    + (Backup & Restore) BR
+    + Backup & Restore (BR)
 
         (dup) - 增强恢复的鲁棒性 [#27421](https://github.com/pingcap/tidb/issues/27421)
-        - 修复使用了 expression index 的表使用本地 backend 导入时出现错误问题. [#1404](https://github.com/pingcap/br/issues/1404)
-        - 修复 BR 中平均速度不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
+        - 修复 TiDB Lightning 在 Local 后端模式下导入使用了表达式索引的表时出现错误的问题 [#1404](https://github.com/pingcap/br/issues/1404)
+        - 修复 BR 中平均速度 (average-speed) 不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
 
     + Dumpling
 
