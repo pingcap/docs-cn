@@ -26,14 +26,14 @@ TiDB 版本：5.0.6
 
 + TiKV
 
-    - 将插入 SST 文件时的校验操作移动到了 import 线程池以提高 SST 文件插入速度. [#11239](https://github.com/tikv/tikv/issues/11239)
-    - 为 raft 日志回收模块增加了更多监控以定位问题. [#11374](https://github.com/tikv/tikv/issues/11374)
-    - 折叠了部分 Storage 相关的不常用监控 [#11681](https://github.com/tikv/tikv/issues/11681)
+    - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
+    - 在 Raft 日志垃圾回收模块中添加了更多监控，从而定位该模块中出现的性能问题 [#11374](https://github.com/tikv/tikv/issues/11374)
+    - 折叠了 Grafana dashboard 中与 Storage 相关的部分不常用监控 [#11681](https://github.com/tikv/tikv/issues/11681)
 
 + PD
 
     (dup) - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
-    - 通过允许空 Region 调度和修复配置的方式使 scatter-range-scheduler运行更好 [#4497](https://github.com/tikv/pd/issues/4497)
+    - 通过允许空 Region 调度和修复配置的方式，使 `scatter-range-scheduler` 调度器运行得更加均匀 [#4497](https://github.com/tikv/pd/issues/4497)
 
 + Tools
 
@@ -111,8 +111,8 @@ TiDB 版本：5.0.6
     (dup) - 修复 Operator 被 Down Store 阻塞的问题 [#3353](https://github.com/tikv/pd/issues/3353)
     (dup) - 修复因 Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936)
     (dup) - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
-    - 修复 Down Store 的 Remove Peer 速度受限问题[#4090](https://github.com/tikv/pd/issues/4090)
-    - 修复当 Region 心跳低于60秒导致热点 Cache 不能清空的问题 [#4390](https://github.com/tikv/pd/issues/4390)
+    - 修复当对宕机的节点进行修复时删除副本的速度会受限的问题 [#4090](https://github.com/tikv/pd/issues/4090)
+    - 修复当 Region 心跳低于 60 秒时热点 Cache 不能清空的问题 [#4390](https://github.com/tikv/pd/issues/4390)
 
 + TiFlash
 
