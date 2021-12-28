@@ -49,7 +49,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 ```
 
 * `checkpoint`：即为 TiCDC 已经将该时间点前的数据同步到了下游。
-* `state` 为该同步任务的状态：
+* `state`： 为该同步任务的状态：
     * `normal`：正常同步。
     * `stopped`：停止同步（手动暂停或出错）。
     * `removed`：已删除任务。
@@ -62,7 +62,7 @@ cdc cli changefeed list --pd=http://10.0.10.25:2379
 
 ### 如何判断 TiCDC 同步任务出现中断？
 
-- 通过 Grafana 检查同步任务的 `changefeed checkpoint` 监控项。注意选择正确的 `changefeed id`。如果该值不发生变化或者查看 `checkpoint lag` 是否不断增大，可能同步任务出现中断。
+- 通过 Grafana 检查同步任务的 `changefeed checkpoint` 监控项。注意选择正确的 `changefeed id`。如果该值不发生变化或者 `checkpoint lag` 值不断增大，则同步任务可能出现中断。
 - 通过 Grafana 检查 `exit error count` 监控项，该监控项大于 0 代表同步任务出现错误。
 - 通过 `cdc cli changefeed list` 和 `cdc cli changefeed query` 命令查看同步任务的状态信息。任务状态为 `stopped` 代表同步中断，`error` 项会包含具体的错误信息。任务出错后可以在 TiCDC server 日志中搜索 `error on running processor` 查看错误堆栈，帮助进一步排查问题。
 - 部分极端异常情况下 TiCDC 出现服务重启，可以在 TiCDC server 日志中搜索 `FATAL` 级别的日志排查问题。
@@ -110,7 +110,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id 28c43ffc-23
 
 ### 同步任务中断，尝试再次启动后 TiCDC 发生 OOM，应该如何处理？
 
-升级 TiDB 集群和 TiCDC 集群到最新版本。该 OOM 问题在 **v4.0.14 及之后的 v4.0 版本，v5.0.2 及之后的 v5.0 版本，更新的版本**上已得到缓解。
+升级 TiDB 集群和 TiCDC 集群到最新版本。该 OOM 问题已在 **v4.0.14 及之后的 v4.0 版本，v5.0.2 及之后的 v5.0 版本，以及更新的版本**上得到解决。
 
 在这些版本上，可以开启 Unified Sorter 排序功能，该功能会在系统内存不足时使用磁盘进行排序。启用的方式是创建同步任务时在 `cdc cli` 内传入 `--sort-engine=unified`，使用示例如下：
 
