@@ -57,6 +57,7 @@ TiDB 版本：5.0.6
 
 + TiDB
 
+    - 修复 DML 和 DDL 语句并发执行时可能发生 panic 的问题 [#30940](https://github.com/pingcap/tidb/issues/30940)
     (dup) - 修复 `grant` 和 `revoke` 操作在授予和撤销全局权限时，报 `privilege check fail` 错误的问题 [#29675](https://github.com/pingcap/tidb/issues/29675)
     - 修复在某些场景下执行 `ALTER TABLE.. ADD INDEX` 语句时 TiDB panic 的问题 [#27687](https://github.com/pingcap/tidb/issues/27687)
     - 修复配置项 `enforce-mpp` 在 v5.0.4 中不生效的问题 [#29252](https://github.com/pingcap/tidb/issues/29252)
