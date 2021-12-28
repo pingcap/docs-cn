@@ -28,12 +28,12 @@ TiDB 版本：5.0.6
 
     - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
     - 在 Raft 日志垃圾回收模块中添加了更多监控，从而定位该模块中出现的性能问题 [#11374](https://github.com/tikv/tikv/issues/11374)
-    - 折叠了 Grafana dashboard 中与 Storage 相关的部分不常用监控 [#11681](https://github.com/tikv/tikv/issues/11681)
+    - 折叠了 Grafana Dashboard 中与 Storage 相关的不常用的监控指标 [#11681](https://github.com/tikv/tikv/issues/11681)
 
 + PD
 
     (dup) - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
-    - 通过允许空 Region 调度和修复配置的方式，使 `scatter-range-scheduler` 调度器运行得更加均匀 [#4497](https://github.com/tikv/pd/issues/4497)
+    - 通过允许 `scatter-range-scheduler` 调度器调度空 Region 和修复该调度器的配置，使该调度器的调度结果更加均匀 [#4497](https://github.com/tikv/pd/issues/4497)
 
 + Tools
 
