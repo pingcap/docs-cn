@@ -116,15 +116,15 @@ TiDB 版本：5.0.6
 
 + TiFlash
 
-    - 修复当在扩大整数类型主键的列类型之后，可能会导致数据不一致的问题。
+    - 修复扩大整数类型主键的列类型之后，可能会导致数据不一致的问题
     - 修复在某些平台 TiFlash 由于找不到 "libnsl.so" 而无法启动的问题，比如某些 ARM 平台
     - 修复 TiFlash 的 Store size 统计信息与实际容量不一致的问题
     - 修复 TiFlash 由于 "Cannot open file" 错误而导致的进程失败
-    - 修复当查询被取消时，TiFlash 偶发的崩溃问题。
+    - 修复当查询被取消时，TiFlash 偶发的崩溃问题
     - 修复查询报错 "3rd arguments of function substringUTF8 must be constants"
-    - 提高了支持的查询 SQL 中表达式的层级数量，避免比如过多 "OR" 条件导致查询报错
-    - 修复当查询带了 where <string> 会变成 int 类型的导致查询结构出错的问题。
-    - 修复在 TiFlash 与 TiDB/TiKV 之间，由于 CastStringAsDecimal 行为不一致的问题。
+    - 修复由于过多 "OR" 条件导致的查询报错
+    - 修复 where <string> 查询结果出错的问题
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 CastStringAsDecimal 行为不一致的问题。
     - 修复由于 "different types: expected Nullable(Int64), got Int64" 错误而导致查询报错的问题
     - 修复由于 "Unexpected type of column: Nullable(Nothing)" 错误而导致的查询报错
     - 修复 Decimal 类型比较时，可能导致数据溢出并导致查询失败的问题
