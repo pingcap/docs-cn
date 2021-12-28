@@ -9,7 +9,7 @@ summary: 总体描述各种数据迁移场景和对应的数据迁移方案。
 
 - 全量数据迁移。
     - 数据导入：使用 TiDB Lightning 将 Aurora Snapshot，CSV 文件或 Mydumper SQL 文件的数据全量导入到 TiDB 集群。
-    - 数据导出：使用 TiDB Dumpling 将 TiDB 集群的数据全量导出至 CSV 文件或 Mydumper SQL 文件，从而更好地配合从 MySQL 数据库或 MariaDB 数据库进行数据迁移。
+    - 数据导出：使用 Dumpling 将 TiDB 集群的数据全量导出为 CSV 文件或 Mydumper SQL 文件，从而更好地配合从 MySQL 数据库或 MariaDB 数据库进行数据迁移。
     - TiDB DM (Data migration) 也提供了适合小规模数据量数据库（小于 1T）的全量数据迁移功能。
 
 - 快速初始化 TiDB 集群：TiDB Lightning 提供的快速导入功能可以实现快速初始化 TiDB 集群的指定表的效果。请注意，使用快速初始化 TiDB 集群的功能对 TiDB 集群的影响极大，在进行初始化的过程中，TiDB 集群不支持对外访问。
