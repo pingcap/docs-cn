@@ -76,15 +76,15 @@ TiDB 版本：5.0.6
     (dup) - 修复当 `ENUM` 类型作为 `IF` 或 `CASE WHEN` 等控制函数的参数时，返回结果不正确的问题 [#23114](https://github.com/pingcap/tidb/issues/23114)
     - 修复 `CONCAT(IFNULL(TIME(3))` 计算结果出错的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
     - 修复当 `GREATEST` 和 `LEAST`  函数传入无符号整型值时，计算结果出错的问题 [#30101](https://github.com/pingcap/tidb/issues/30101)
-    - 修复当 SQL 中存在 json 类型列 与 char 类型列 join 时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
-    - 修复 update 语句未更新索引处理优化，可能导致数据索引不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
-    - 修复窗口函数在使用事务时，计算结果与不使用事务不一样的问题 [#29947](https://github.com/pingcap/tidb/issues/29947)
-    - 修复 SQL 形如`cast(integer as char) union string` 计算结果出错的问题 [#29513](https://github.com/pingcap/tidb/issues/29513)
+    - 修复当 SQL 语句中存在 JSON 类型列与 `CHAR` 类型列连接时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
+    - 修复错误使用 lazy existence 检查和 untouched key optimization 可能导致数据索引不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
+    - 修复窗口函数在使用事务时，计算结果与不使用事务时的计算结果不一致的问题 [#29947](https://github.com/pingcap/tidb/issues/29947)
+    - 修复 SQL 语句中包含 `cast(integer as char) union string` 时计算结果出错的问题 [#29513](https://github.com/pingcap/tidb/issues/29513)
     (dup) - 修复将 `Decimal` 转为 `String` 时长度信息错误的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
-    - 修复使用 NATURAL JOIN 时，报错 `Column 'col_name' in field list is ambiguous` 的问题 [#25041](https://github.com/pingcap/tidb/issues/25041)
+    - 修复 SQL 语句中带有 NATURAL JOIN 时，执行意外报错 `Column 'col_name' in field list is ambiguous` 的问题 [#25041](https://github.com/pingcap/tidb/issues/25041)
     (dup) - 修复由于 `tidb_enable_vectorized_expression` 设置的值不同（`on` 或 `off`）导致 `GREATEST` 函数返回结果不一致的问题 [#29434](https://github.com/pingcap/tidb/issues/29434)
     (dup) - 修复在某些情况下 Planner 可能缓存无效 `join` 计划的问题 [#28087](https://github.com/pingcap/tidb/issues/28087)
-    - 修复 SQL 在 join 上计算聚合函数时，报错 `index out of range [1] with length 1` 的问题 [#1978](https://github.com/pingcap/tics/issues/1978)
+    - 修复在某些情况下 SQL 语句在 join 结果上计算聚合函数时，报错 `index out of range [1] with length 1` 的问题 [#1978](https://github.com/pingcap/tics/issues/1978)
 
 + TiKV
 
