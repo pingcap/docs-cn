@@ -270,7 +270,7 @@ mysql> SELECT * FROM t1;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：""
-- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 返回超时错误（对应的错误码为 ErrTiFlashServerTimeout）时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。 
+- 这个变量表示将 TiKV 作为备用存储引擎的存储引擎列表。当该列表中的存储引擎发生故障导致 SQL 语句执行失败时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。目前支持设置该变量为 "" 或者 "tiflash"。如果设置该变量为 "tiflash"，当 TiFlash 返回超时错误（对应的错误码为 ErrTiFlashServerTimeout）时，TiDB 会使用 TiKV 作为存储引擎再次执行该 SQL 语句。
 
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -881,7 +881,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
     - `forUpdateTS`：事务模式为悲观事务时，SQL 语句的当前时间戳。悲观事务内发生写冲突时，会重试当前执行语句，该时间戳会被更新。重试次数由 [`max-retry-count`](/tidb-configuration-file.md#max-retry-count) 配置。事务模式为乐观事务时，该条目与 `txnStartTS` 等价。
     - `isReadConsistency`：当前事务隔离级别是否是读已提交 (RC)
     - `current_db`：当前数据库名
-    - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式） 
+    - `txn_mode`：事务模式。可选值：`OPTIMISTIC`（乐观事务模式），或 `PESSIMISTIC`（悲观事务模式）
     - `sql`：当前查询对应的 SQL 语句
 
 ### `tidb_hash_join_concurrency`
@@ -1506,7 +1506,7 @@ set tidb_slow_log_threshold = 200;
 ### `wait_timeout`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`0`
+- 默认值：`28800`
 - 范围：`[0, 31536000]`
 - 单位：秒
 - 这个变量表示用户会话的空闲超时。`0` 代表没有时间限制。
