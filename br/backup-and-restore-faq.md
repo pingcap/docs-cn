@@ -180,7 +180,7 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 + 多个 BR 并行恢复的场景没有经过测试，无法保证成功。
 
 ## BR 带参数 `--ddl-batch-size` 恢复存档，立即遇到如下错误
-
+`entry too large, the max entry size is 6291456, the size of data is 7690800`
 + BR 带参数 `--ddl-batch-size` 恢复数据时，会调用内部接口 `BatchCreateTableWithInfo` 使用内部 ddl job `ActionCreateTables`, 每次按客户指定的 `--ddl-batch-size` 大小建表.
 + 因为 TiDB 在执行 DDL Job 时会把 Job 队列写到 TiKV 上，当前 TiDB 一次发送 Job message 最大值为 6MB (不推荐客户修改此值)，因此一次 batch size 的所有表的schema 总和不得超过 6MB。
 + 详细的限制请参考 TiKV 配置文件描述 raft-entry-max-size, 以及 TiDB 配置文件描述 txn-entry-size-limit 
