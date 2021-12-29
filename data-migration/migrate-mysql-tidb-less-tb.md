@@ -1,11 +1,11 @@
 ---
-title: 从 TB 级以下 MySQL 迁移数据到 TiDB
-summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
+title: 从小数据量 MySQL 迁移数据到 TiDB
+summary: 介绍如何从小数据量 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TB 级以下 MySQL 迁移数据到 TiDB
+# 从小数据量 MySQL 迁移数据到 TiDB
 
-本文档介绍如何使用 TiDB DM （以下简称 DM）以全量+增量的模式迁移 TB 以内数据到 TiDB。一般而言，受到表结构索引数目等信息、硬件以及网络环境影响，迁移速率在 30～50GB/h 不等。使用 TiDB DM 迁移的流程如下图所示。
+本文档介绍如何使用 TiDB DM （以下简称 DM）以全量+增量的模式数据到 TiDB。本文所称“小数据量”通常指 TiB 级别以下。一般而言，受到表结构索引数目等信息、硬件以及网络环境影响，迁移速率在 30～50GB/h 不等。使用 TiDB DM 迁移的流程如下图所示。
 
 ![dm](/media/dm/migrate-with-dm.png)
 
@@ -22,8 +22,8 @@ summary: 介绍如何从 TB 级以下 MySQL 迁移数据到 TiDB。
 
 ```yaml
 # 唯一命名，不可重复。
-source-id: "mysql-01" 
- 
+source-id: "mysql-01"
+
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
 enable-gtid: true
 
@@ -76,11 +76,11 @@ mysql-instances:
   # 上游实例或者复制组 ID。
   source-id: "mysql-01"
   # 需要迁移的库名或表名的黑白名单的配置项名称，用于引用全局的黑白名单配置，全局配置见下面的 `block-allow-list` 的配置。
-  block-allow-list: "listA"         
+  block-allow-list: "listA"
 
 
 # 黑白名单全局配置，各实例通过配置项名引用。
-block-allow-list:                     
+block-allow-list:
   listA:                              # 名称
     do-tables:                        # 需要迁移的上游表的白名单。
     - db-name: "test_db"              # 需要迁移的表的库名。

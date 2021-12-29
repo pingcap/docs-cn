@@ -1,11 +1,11 @@
 ---
-title: 从 TB 级以上 MySQL 迁移数据到 TiDB
-summary: 介绍如何从 TB 级以上 MySQL 迁移数据到 TiDB。
+title: 从大数据量 MySQL 迁移数据到 TiDB
+summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 ---
 
-# 从 TB 级以上 MySQL 迁移数据到 TiDB
+# 从大数据量 MySQL 迁移数据到 TiDB
 
-通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度 (30~50 GiB/h) 可能令整个迁移周期过长。
+通常数据量较低时，使用 DM 进行迁移较为简单，可直接完成全量+持续增量迁移工作。但当数据量较大时，DM 较低的数据导入速度 (30~50 GiB/h) 可能令整个迁移周期过长。本文所称“大数据量”通常指 TiB 级别以上。
 
 因此，本文档介绍使用 Dumpling 和 TiDB Lightning 进行全量数据迁移，其本地导入 (local backend) 模式导入速度可达每小时 500 GiB。完成全量数据迁移后，再使用 DM 完成增量数据迁移。
 
@@ -122,7 +122,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     关于更多 Lightning 的配置，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
 2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
-  
+
     若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
     {{< copyable "shell-regular" >}}
@@ -157,7 +157,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     ```yaml
     # 唯一命名，不可重复。
-    source-id: "mysql-01" 
+    source-id: "mysql-01"
 
     # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
     enable-gtid: true

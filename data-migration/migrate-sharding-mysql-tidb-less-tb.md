@@ -1,17 +1,17 @@
 ---
-title: TB 级以下分库分表 MySQL 合并迁移数据到 TiDB
+title: 从小数据量分库分表 MySQL 合并迁移数据到 TiDB
 summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
 aliases: ['zh/tidb-data-migration/stable/usage-scenario-shard-merge']
 ---
 
-# TB 级以下分库分表 MySQL 合并迁移数据到 TiDB
+# 从小数据量分库分表 MySQL 合并迁移数据到 TiDB
 
-如果你想把上游多个 MySQL 数据库实例合并迁移到下游的同一个 TiDB 数据库中，且数据量不太大（比如所有分表的总和小于 1 TB），你可以使用 DM 工具进行分库分表的合并迁移。本文举例介绍了合并迁移的操作步骤、注意事项、故障排查等。本文档适用于:
+如果你想把上游多个 MySQL 数据库实例合并迁移到下游的同一个 TiDB 数据库中，且数据量较小，你可以使用 DM 工具进行分库分表的合并迁移。本文所称“小数据量”通常指 TiB 级别以下。本文举例介绍了合并迁移的操作步骤、注意事项、故障排查等。本文档适用于:
 
 - TiB 级以内的分库分表数据合并迁移
 - 基于 MySQL binlog 的增量、持续分库分表合并迁移
 
-若要迁移分表总和 1 TB 以上的数据，则 DM 工具耗时较长，可参考[从 TiB 级以上分库分表 MySQL 迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)。
+若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从 TiB 级以上分库分表 MySQL 迁移数据到 TiDB](/data-migration/migrate-shared-mysql-tidb-above-tb.md)。
 
 本文以一个简单的场景为例，示例中的两个数据源 MySQL 实例的分库和分表数据迁移至下游 TiDB 集群。示意图如下。
 
@@ -74,7 +74,7 @@ CREATE TABLE `sale` (
 ```yaml
 # 唯一命名，不可重复。
 source-id: "mysql-01"
- 
+
 # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
 enable-gtid: true
 
@@ -109,14 +109,14 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 ```yaml
 name: "shard_merge"
-# 任务模式，可设为 
+# 任务模式，可设为
 # full：只进行全量数据迁移
 # incremental： binlog 实时同步
 # all： 全量 + binlog 迁移
 task-mode: all
 # 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 # 详细信息可参考：https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge
-shard-mode: "pessimistic"                       
+shard-mode: "pessimistic"
 meta-schema: "dm_meta"                          # 将在下游数据库创建 schema 用于存放元数据
 ignore-checking-items: ["auto_increment_ID"]    # 本示例中上游存在自增主键，因此需要忽略掉该检查项
 
@@ -140,7 +140,7 @@ mysql-instances:
 
 # 分表合并配置
 routes:
-  sale-route-rule:                              
+  sale-route-rule:
     schema-pattern: "store_*"
     table-pattern: "sale_*"
     target-schema: "store"
