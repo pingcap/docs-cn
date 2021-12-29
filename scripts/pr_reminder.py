@@ -18,6 +18,7 @@ sig_bigdata = '+label%3Asig%2Fbigdata'
 sig_diagnosis = '+label%3Asig%2Fdiagnosis'
 sig_transaction = '+label%3Asig%2Ftransaction'
 area_security = '+label%3Aarea%2Fsecurity'
+area_dm = '+label%3Aarea%2Fdm'
 v54 = '+label%3Av5.4'
 type_compatibility_change = '+label%3Atype%2Fcompatibility-or-feature-change'
 type_oncall = '+label%3AONCALL'
@@ -77,10 +78,10 @@ v5.4 发版文档，中文文档截止日期 2021-01-07，英文文档截止日�
     - docs-cn 仓库中有 {v54_zh_open_engine_scheduling} PR 未合并，有 {v54_zh_close_engine_scheduling} PR 待翻译
     - docs 仓库中有 {v54_en_open_engine_scheduling} PR 未合并，有 {v54_en_close_engine_scheduling} PR 待翻译
 
-- sig/migrate
+- sig/migrate 和 area/dm
 
-    - docs-cn 仓库中有 {v54_zh_open_migrate} PR 未合并，有 {v54_zh_close_migrate} PR 待翻译
-    - docs 仓库中有 v54_en_open_migrate PR 未合并，有 {v54_en_close_migrate} PR 待翻译
+    - docs-cn 仓库中有 {v54_zh_open_migrate_dm} PR 未合并，有 {v54_zh_close_migrate_dm} PR 待翻译
+    - docs 仓库中有 {v54_en_open_migrate_dm} PR 未合并，有 {v54_en_close_migrate_dm} PR 待翻译
 
 - sig/bigdata、sig/tiup 和 sig/diagnosis
 
@@ -132,10 +133,10 @@ if __name__ == "__main__":
         'v54_zh_close_engine_scheduling': str(get_pr_no(docs_cn_url + close_url+ sig_engine + v54) + get_pr_no(docs_cn_url + close_url+ sig_scheduling + v54)),
         'v54_en_open_engine_scheduling': str(get_pr_no(docs_url + open_url+ sig_engine + v54) + get_pr_no(docs_url + open_url+ sig_scheduling + v54)),
         'v54_en_close_engine_scheduling': str(get_pr_no(docs_url + close_url+ sig_engine + v54) + get_pr_no(docs_url + close_url+ sig_scheduling + v54)),
-        'v54_zh_open_migrate': str(get_pr_no(docs_cn_url + open_url + sig_migrate + v54)),
-        'v54_zh_close_migrate': str(get_pr_no(docs_cn_url + close_url + sig_migrate + v54)),
-        'v54_en_open_migrate': str(get_pr_no(docs_url + open_url + sig_migrate + v54)),
-        'v54_en_close_migrate': str(get_pr_no(docs_url + close_url + sig_migrate + v54)),
+        'v54_zh_open_migrate_dm': str(get_pr_no(docs_cn_url + open_url + sig_migrate + v54) + get_pr_no(docs_cn_url + open_url + area_dm + v54)),
+        'v54_zh_close_migrate_dm': str(get_pr_no(docs_cn_url + close_url + sig_migrate + v54) + get_pr_no(docs_cn_url + close_url + area_dm + v54)),
+        'v54_en_open_migrate_dm': str(get_pr_no(docs_url + open_url + sig_migrate + v54) + get_pr_no(docs_url + open_url + area_dm + v54)),
+        'v54_en_close_migrate_dm': str(get_pr_no(docs_url + close_url + sig_migrate + v54) + get_pr_no(docs_url + close_url + area_dm + v54)),
         'v54_zh_open_bigdata_tiup_diagnosis': str(get_pr_no(docs_cn_url + open_url + sig_bigdata + v54) + get_pr_no(docs_cn_url + open_url + sig_tiup + v54) + get_pr_no(docs_cn_url + open_url + sig_diagnosis + v54)),
         'v54_zh_close_bigdata_tiup_diagnosis': str(get_pr_no(docs_cn_url + close_url + sig_bigdata + v54) + get_pr_no(docs_cn_url + close_url + sig_tiup + v54) + get_pr_no(docs_cn_url + close_url + sig_diagnosis + v54)),
         'v54_en_open_bigdata_tiup_diagnosis': str(get_pr_no(docs_url + open_url + sig_bigdata + v54) + get_pr_no(docs_url + open_url + sig_tiup + v54) + get_pr_no(docs_url + open_url + sig_diagnosis + v54)),
@@ -157,25 +158,25 @@ if __name__ == "__main__":
         'bugfix_open_en': str(get_pr_no(bugfix_open_url_en)),
         'bugfix_close_en': str(get_pr_no(bugfix_close_url_en)),
         'v54_zh_open_sqlinfra_planner_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fsql-infra%2Csig%2Fplanner+label%3Av5.4+is%3Aopen',
-        'v54_zh_close_sqlinfra_planner_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fsql-infra%2Csig%2Fplanner+label%3Av5.4+is%3Aclosed',
+        'v54_zh_close_sqlinfra_planner_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fsql-infra%2Csig%2Fplanner+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
         'v54_en_open_sqlinfra_planner_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fsql-infra%2Csig%2Fplanner+label%3Av5.4+is%3Aopen',
-        'v54_en_close_sqlinfra_planner_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fsql-infra%2Csig%2Fplanner+label%3Av5.4+is%3Aclosed',
+        'v54_en_close_sqlinfra_planner_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fsql-infra%2Csig%2Fplanner+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing+',
         'v54_zh_open_engine_scheduling_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fengine%2Csig%2Fscheduling+label%3Av5.4+is%3Aopen+',
-        'v54_zh_close_engine_scheduling_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fengine%2Csig%2Fscheduling+label%3Av5.4+is%3Aclosed',
+        'v54_zh_close_engine_scheduling_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fengine%2Csig%2Fscheduling+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
         'v54_en_open_engine_scheduling_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fengine%2Csig%2Fscheduling+label%3Av5.4+is%3Aopen+',
-        'v54_en_close_engine_scheduling_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fengine%2Csig%2Fscheduling+label%3Av5.4+is%3Aclosed',
-        'v54_zh_open_migrate_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fmigrate+label%3Av5.4+is%3Aopen',
-        'v54_zh_close_migrate_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fmigrate+label%3Av5.4+is%3Aclosed',
-        'v54_en_open_migrate_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fmigrate+label%3Av5.4+is%3Aopen',
-        'v54_en_close_migrate_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fmigrate+label%3Av5.4+is%3Aclosed',
+        'v54_en_close_engine_scheduling_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fengine%2Csig%2Fscheduling+label%3Av5.4+label%3Atranslation%2Fdoing+is%3Aclosed',
+        'v54_zh_open_migrate_dm_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fmigrate%2Carea%2Fdm+label%3Av5.4+is%3Aopen+',
+        'v54_zh_close_migrate_dm_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fmigrate%2Carea%2Fdm+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
+        'v54_en_open_migrate_dm_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fmigrate%2Carea%2Fdm+label%3Av5.4+is%3Aopen+',
+        'v54_en_close_migrate_dm_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fmigrate%2Carea%2Fdm+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
         'v54_zh_open_bigdata_tiup_diagnosis_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fbigdata%2Csig%2Ftiup%2Csig%2Fdiagnosis+label%3Av5.4+is%3Aopen',
-        'v54_zh_close_bigdata_tiup_diagnosis_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fbigdata%2Csig%2Ftiup%2Csig%2Fdiagnosis+label%3Av5.4+is%3Aclosed',
+        'v54_zh_close_bigdata_tiup_diagnosis_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Fbigdata%2Csig%2Ftiup%2Csig%2Fdiagnosis+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
         'v54_en_open_bigdata_tiup_diagnosis_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fbigdata%2Csig%2Ftiup%2Csig%2Fdiagnosis+label%3Av5.4+is%3Aopen',
-        'v54_en_close_bigdata_tiup_diagnosis_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fbigdata%2Csig%2Ftiup%2Csig%2Fdiagnosis+label%3Av5.4+is%3Aclosed',
+        'v54_en_close_bigdata_tiup_diagnosis_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Fbigdata%2Csig%2Ftiup%2Csig%2Fdiagnosis+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing+',
         'v54_zh_open_transaction_security_url': 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Asig%2Ftransaction%2Carea%2Fsecurity+label%3Av5.4+is%3Aopen',
-        'v54_zh_close_transaction_security_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Ftransaction%2Carea%2Fsecurity+label%3Av5.4+is%3Aclosed',
+        'v54_zh_close_transaction_security_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Ftransaction%2Carea%2Fsecurity+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
         'v54_en_open_transaction_security_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Ftransaction%2Carea%2Fsecurity+label%3Av5.4+is%3Aopen',
-        'v54_en_close_transaction_security_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Ftransaction%2Carea%2Fsecurity+label%3Av5.4+is%3Aclosed',
+        'v54_en_close_transaction_security_url': 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Asig%2Ftransaction%2Carea%2Fsecurity+label%3Av5.4+is%3Aclosed+label%3Atranslation%2Fdoing',
         'compat_open_url_zh': compat_open_url_zh,
         'compat_close_url_zh': compat_close_url_zh,
         'compat_open_url_en': compat_open_url_en,
@@ -357,7 +358,7 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
-                                "text": "- sig/migrate"
+                                "text": "- sig/migrate 和 area/dm"
                             }
                         ],
                         [
@@ -369,41 +370,41 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
-                                "text": "    - docs-cn 仓库中有 ${v54_zh_open_migrate} PR"
+                                "text": "    - docs-cn 仓库中有 ${v54_zh_open_migrate_dm} PR"
                             },
                             {
                                 "tag": "a",
                                 "text": "未合并",
-                                "href": "${v54_zh_open_migrate_url}"
+                                "href": "${v54_zh_open_migrate_dm_url}"
                             },
                             {
                                 "tag": "text",
-                                "text": "，有 ${v54_zh_close_migrate} PR"
+                                "text": "，有 ${v54_zh_close_migrate_dm} PR"
                             },
                             {
                                 "tag": "a",
                                 "text": "待翻译",
-                                "href": "${v54_zh_close_migrate_url}"
+                                "href": "${v54_zh_close_migrate_dm_url}"
                             }
                         ],
                         [
                             {
                                 "tag": "text",
-                                "text": "    - docs 仓库中有 ${v54_en_open_migrate} PR"
+                                "text": "    - docs 仓库中有 ${v54_en_open_migrate_dm} PR"
                             },
                             {
                                 "tag": "a",
                                 "text": "未合并",
-                                "href": "${v54_en_open_migrate_url}"
+                                "href": "${v54_en_open_migrate_dm_url}"
                             },
                             {
                                 "tag": "text",
-                                "text": "，有 ${v54_en_close_migrate} PR"
+                                "text": "，有 ${v54_en_close_migrate_dm} PR"
                             },
                             {
                                 "tag": "a",
                                 "text": "待翻译",
-                                "href": "${v54_en_close_migrate_url}"
+                                "href": "${v54_en_close_migrate_dm_url}"
                             }
                         ],
                         [
