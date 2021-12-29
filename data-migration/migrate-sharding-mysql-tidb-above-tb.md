@@ -147,9 +147,11 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 根据前述“分表数据冲突检查”修改后，手动在下游 TiDB 建 my_db 库和 table5 表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
 
-```toml
+```
+
 [mydumper]
 no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
+
 ```
 
 ### 执行导入操作
@@ -160,7 +162,8 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
 
     {{< copyable "" >}}
 
-    ```toml
+    ```
+    
     [lightning]
     # 日志
     level = "info"
@@ -202,6 +205,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     status-port = ${status-port} # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
     # PD 集群的地址，Lightning 通过 PD 获取部分信息。
     pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
+    
     ```
 
 2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
@@ -241,6 +245,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
 {{< copyable "" >}}
 
 ```yaml
+
 # 唯一命名，不可重复。
 source-id: "mysql-01"
 
@@ -252,6 +257,7 @@ from:
   user: "root"
   password: "${password}"   # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
   port: 3306
+
 ```
 
 在终端中执行下面的命令，使用`tiup dmctl`将数据源配置加载到 DM 集群中:
@@ -278,6 +284,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 {{< copyable "" >}}
 
 ```yaml
+
 name: task-test               # 任务名称，需要全局唯一。
 task-mode: incremental        # 任务模式，设为 "incremental" 即只进行增量数据迁移。
 # 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
