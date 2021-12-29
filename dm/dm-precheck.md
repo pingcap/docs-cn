@@ -1,7 +1,7 @@
 ---
 title: 上游 MySQL 实例配置前置检查
 summary: 了解上游 MySQL 实例配置前置检查。
-aliases: ['/docs-cn/tidb-data-migration/dev/precheck/','/zh/tidb-data-migration/dev/precheck/']
+aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ---
 
 # 上游 MySQL 实例配置前置检查

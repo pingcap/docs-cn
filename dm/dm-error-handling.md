@@ -1,7 +1,7 @@
 ---
 title: 故障及处理方法
 summary: 了解 DM 的错误系统及常见故障的处理方法。
-aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data-migration/dev/troubleshoot-dm/','/docs-cn/tidb-data-migration/dev/error-system/','/zh/tidb-data-migration/dev/error-handling/']
+aliases: ['/docs-cn/tidb-data-migration/dev/error-handling/','/docs-cn/tidb-data-migration/dev/troubleshoot-dm/','/docs-cn/tidb-data-migration/dev/error-system/']
 ---
 
 # 故障及处理方法

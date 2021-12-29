@@ -1,7 +1,7 @@
 ---
 title: 使用 TiUP 运维 DM 集群
 summary: 学习如何使用 TiUP 运维 DM 集群。
-aliases: ['/docs-cn/tidb-data-migration/dev/cluster-operations/','/zh/tidb-data-migration/dev/cluster-operations']
+aliases: ['/docs-cn/tidb-data-migration/dev/cluster-operations/']
 ---
 
 # 使用 TiUP 运维 DM 集群
