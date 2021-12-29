@@ -208,7 +208,7 @@ URI 中可配置的的参数如下：
 | `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
 | `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始默认值从 64MB 调整至 10MB。|
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 Kafka 消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
+| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否自动创建该 topic（可选，默认值为 `true`） |
 | `enable-tidb-extension` | 输出协议为 `canal-json` 时，如果该值为 true，则发送 Resolved 事件并且在消息中添加 TiDB 扩展字段（可选，默认值 `false`）|
 | `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 Kafka 消息，该参数指定一条 Kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `open-protocol` 时有效（可选，默认值为 `16`）|
