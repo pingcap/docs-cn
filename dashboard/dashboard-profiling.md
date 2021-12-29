@@ -7,6 +7,13 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 该功能允许用户在不重启的情况下持续收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据。收集到的性能数据可显示为火焰图或有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，方便用户快速了解该实例 CPU 资源消耗细节。
 
+## 分析内容
+
+性能分析允许用户在不重启的情况下持续收集 TiDB、PD、TiKV、TiFlash 各个实例的性能数据。收集到的性能数据可显示为火焰图、有向无环图，等，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例性能消耗欺诳。目前支持的性能信息：
+
+- TiDB/PD: CPU profile、Heap、Mutex、Goroutine（debug=2）
+- TiKV/TiFlash: CPU Profile
+
 ## 访问页面
 
 可以通过以下两种方法访问实例性能分析页面：
