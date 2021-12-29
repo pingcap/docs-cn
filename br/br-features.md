@@ -56,4 +56,4 @@ V5.4.0 之后，TiKV 上将会新增一个配置项：`backup.enable-auto-tune`�
 2. 如果集群存在热点，热点 TiKV 可能会被过度限流，从而拉慢备份整体的进度。*如果遇到这种情况，可以想办法消除热点节点。或者（如果不在意集群性能降低）在热点节点上关闭自动调节。*
 3. 因为自动调节每隔 `auto-tune-refresh-interval`（默认为一分钟） 才会计算出新的限流，所以可能无法很好地对付流量抖动非常厉害的场景。*如果遇到这种情况，可以关闭自动调节。*
 
-自动调节支持使用 `tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>` 动态启动/停止，，无需重启集群。
+自动调节支持使用 `tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>` 动态启动/停止，无需重启集群。
