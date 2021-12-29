@@ -123,6 +123,8 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 
 ```shell
 tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my_db2.table[34]' -o ${data-path}/my_db2
+```
+
 这样所需的全量备份数据就全部导出到了 `${data-path}` 目录中。将所有源数据表格存储在一个目录中，是为了后续方便用 TiDB Lightning 导入。
 
 第 3 步增量同步的时候所需的起始位点信息，在`${data-path}`目录下,`my_db1`和`my_db2`的`metadata`文件中，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息。
@@ -148,10 +150,8 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 根据前述“分表数据冲突检查”修改后，手动在下游 TiDB 建 my_db 库和 table5 表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
 
 ```
-
 [mydumper]
 no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
-
 ```
 
 ### 执行导入操作
