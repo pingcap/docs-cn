@@ -5,7 +5,11 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-overview/','/docs-cn/dev/reference/tools/tic
 
 # TiCDC 简介
 
-[TiCDC](https://github.com/pingcap/ticdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
+[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
+
+要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+22.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
 
 ## TiCDC 架构
 
@@ -63,6 +67,10 @@ TiCDC 的系统架构如下图所示：
 
 ## 同步限制
 
+使用 TiCDC 进行同步的时候，请注意以下相关限制要求以及暂不支持的场景。
+
+### 有效索引的相关要求
+
 TiCDC 只能同步至少存在一个**有效索引**的表，**有效索引**的定义如下：
 
 - 主键 (`PRIMARY KEY`) 为有效索引。
@@ -82,7 +90,7 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 
 > **注意：**
 >
-> 从 v5.3.0 版本起， TiCDC 不再支持环形同步功能。
+> 从 v5.3.0 版本起，TiCDC 不再支持环形同步功能。
 
 ## TiCDC 安装和部署
 
@@ -99,7 +107,9 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 
 TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、缓存、全文索引、分析引擎、异构数据库的主从复制等提供数据源。TiCDC 遵循 TiCDC Open Protocol，向 MQ (Message Queue) 等第三方数据媒介复制 TiDB 的数据变更。详细信息参考 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)。
 
-## 兼容性问题提示
+## 兼容性问题
+
+本文介绍了兼容性相关的问题。
 
 ### 使用 TiCDC v5.0.0-rc 版本的 `cdc cli` 工具操作 v4.0.x 集群导致不兼容问题
 
@@ -120,7 +130,7 @@ TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、
 >
 > 上述问题仅在 `cdc cli` 的版本是 v5.0.0-rc 时存在。未来其他 v5.0.x 版本的 `cdc cli` 可以兼容 v4.0.x 版本的集群。
 
-## `sort-dir` 及 `data-dir` 配置项的兼容性说明
+### `sort-dir` 及 `data-dir` 配置项的兼容性说明
 
 `sort-dir` 配置项用于给 TiCDC 内部的排序器指定临时文件目录，其作用在各版本有过如下兼容性更改：
 
@@ -132,9 +142,11 @@ TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、
 
 ### 全局临时表兼容性说明
 
-TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。使用 TiCDC v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
+TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。
 
-如果 TiCDC 的上游集群包含全局临时表，下游集群必须是 TiDB 5.3.0 及以上版本，否则同步报错。
+你需要使用 TiCDC v5.3.0 及以上版本同步全局临时表到下游。低于该版本，会导致表定义错误。
+
+如果 TiCDC 的上游集群包含全局临时表，下游集群也必须是 TiDB 5.3.0 及以上版本，否则同步报错。
 
 ## TiCDC 常见问题
 

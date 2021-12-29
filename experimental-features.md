@@ -47,9 +47,9 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。（v4.0 实验特性）
 + TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
 
-<!--## 数据迁移
+## 数据迁移
 
-+ [DM 的 OpenAPI 功能](https://docs.pingcap.com/zh/tidb-data-migration/stable/open-api)。 （v5.3 实验特性）-->
++ [DM 的 OpenAPI 功能](/dm/dm-open-api.md)。 （v5.3 实验特性）
 
 ## 备份与恢复
 
