@@ -164,4 +164,4 @@ TiDB 版本：5.0.6
 
     + Dumpling
 
-        - 修复 dumping 包含 primary/unique key 表时出现的过慢问题. [#29386](https://github.com/pingcap/tidb/issues/29386)
+        - 修复 Dumpling 在导出包含复合主键或唯一约束的表时导出速度过慢的问题 [#29386](https://github.com/pingcap/tidb/issues/29386)
