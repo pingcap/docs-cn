@@ -54,6 +54,7 @@ log-level = "info"
 # stop-datetime = ""
 
 # start-tso、stop-tso 分别对应 start-datetime 和 stop-datetime，也是用于恢复指定时间范围内的 binlog，用 tso 的值来设置。如果已经设置了 start-datetime 和 stop-datetime，就不需要再设置 start-tso 和 stop-tso。
+# 在从全量或者上次增量位置继续同步时，start-tso 应当指定为全量 tso + 1 或者上次增量的 stop-tso + 1
 # start-tso = 0
 # stop-tso = 0
 
