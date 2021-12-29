@@ -108,7 +108,7 @@ TiDB 版本：5.0.6
 + PD
 
     (dup) - 修复 TiKV 节点缩容后可能导致 Panic 的问题 [#4344](https://github.com/tikv/pd/issues/4344)
-    (dup) - 修复 Operator 被 Down Store 阻塞的问题 [#3353](https://github.com/tikv/pd/issues/3353)
+    - 修复 Operator 被停止服务的节点阻塞的问题 [#3353](https://github.com/tikv/pd/issues/3353)
     (dup) - 修复因 Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936)
     (dup) - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
     - 修复当对宕机的节点进行修复时删除副本的速度会受限的问题 [#4090](https://github.com/tikv/pd/issues/4090)
