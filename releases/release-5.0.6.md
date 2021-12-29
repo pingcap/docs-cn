@@ -47,10 +47,9 @@ TiDB 版本：5.0.6
         - 支持消息 Batch 操作减少 EtcdWorker tick [3112](https://github.com/pingcap/tiflow/issues/3112)
         (dup) - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3352](https://github.com/pingcap/tiflow/issues/3352)
-        - Kafka sink 模块设置 `MaxMessageBytes` 默认值为 1MB [#3081](https://github.com/pingcap/tiflow/issues/3081)
         - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#4054](https://github.com/pingcap/tiflow/issues/4054), "mounter row", "table sink total row", "buffer sink total row" [#1606](https://github.com/pingcap/tiflow/issue/1606)
 
-    + (Backup & Restore) BR
+    + Backup & Restore (BR)
 
         - 支持 PD request 和 TiKV I/O 发生超时错误后进行重试 [#27787](https://github.com/pingcap/tidb/issues/27787)
 
@@ -117,18 +116,18 @@ TiDB 版本：5.0.6
 
 + TiFlash
 
-    - 修复扩大整数类型主键的列类型之后，可能会导致数据不一致的问题
-    - 修复在某些平台 TiFlash 由于找不到 "libnsl.so" 而无法启动的问题，比如某些 ARM 平台
+    - 修复整数类型主键的列类型设置为较大范围后数据可能不一致的问题
+    - 修复在某些平台 TiFlash 由于找不到 `libnsl.so` 库而无法启动的问题，比如某些 ARM 平台
     - 修复 TiFlash 的 Store size 统计信息与实际容量不一致的问题
-    - 修复 TiFlash 由于 "Cannot open file" 错误而导致的进程失败
-    - 修复当查询被取消时，TiFlash 偶发的崩溃问题
+    - 修复 TiFlash 由于 `Cannot open file` 错误而导致的进程失败
+    - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
     - 修复查询报错 "3rd arguments of function substringUTF8 must be constants"
-    - 修复由于过多 "OR" 条件导致的查询报错
-    - 修复 where <string> 查询结果出错的问题
-    - 修复在 TiFlash 与 TiDB/TiKV 之间 CastStringAsDecimal 行为不一致的问题。
+    - 修复由于过多 `OR` 条件导致的查询报错
+    - 修复 `where <string>` 查询结果出错的问题
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题。
     - 修复由于 "different types: expected Nullable(Int64), got Int64" 错误而导致查询报错的问题
     - 修复由于 "Unexpected type of column: Nullable(Nothing)" 错误而导致的查询报错
-    - 修复 Decimal 类型比较时，可能导致数据溢出并导致查询失败的问题
+    - 修复 `Decimal` 类型比较时，可能导致数据溢出并导致查询失败的问题
 
 + Tools
 
