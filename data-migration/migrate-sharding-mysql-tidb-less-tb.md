@@ -1,6 +1,7 @@
 ---
 title: TB 级以下分库分表 MySQL 合并迁移数据到 TiDB
 summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
+aliases: ['zh/tidb-data-migration/stable/usage-scenario-shard-merge']
 ---
 
 # TB 级以下分库分表 MySQL 合并迁移数据到 TiDB
@@ -15,8 +16,6 @@ summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
 本文以一个简单的场景为例，示例中的两个数据源 MySQL 实例的分库和分表数据迁移至下游 TiDB 集群。示意图如下。
 
 ![migrate-01](/media/lightning/migrate-shared-mysql-01.png)
-
-本示例中两个数据源实例的 schema 和表结构如下
 
 数据源 MySQL 实例 1 和 实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表
 
@@ -216,14 +215,18 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 ## 第 5 步. 监控任务与查看日志(可选)
 
-要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
+你可以通过 Grafana 或者日志查看迁移任务的历史状态以及各种内部运行指标。
 
-如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
+- 通过 Grafana 查看
 
-DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息。各组件的日志目录如下：
+    如果使用 TiUP 部署 DM 集群时，正确部署了 Prometheus、Alertmanager 与 Grafana，则使用部署时填写的 IP 及 端口进入 Grafana，选择 DM 的 dashboard 查看 DM 相关监控项。
 
-- DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
-- DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
+- 通过日志查看
+
+    DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息，其中包含迁移任务的相关信息。各组件的日志目录如下：
+
+    - DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
+    - DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多
 

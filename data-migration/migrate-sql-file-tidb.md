@@ -5,7 +5,7 @@ summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 T
 
 # 从 SQL 文件迁移数据到 TiDB
 
-本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，请参考 Dumpling 文档中的[导出为 SQL 文件](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview#导出为-sql-文件)。
+本文介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 TiDB。关于如何生成 MySQL SQL 文件，请参考 Dumpling 文档中的[导出为 SQL 文件](/dumpling-overview.md#导出为-sql-文件)。
 
 ## 前提条件
 
@@ -18,7 +18,7 @@ summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 T
 
 ## 第 2 步：定义目标表结构
 
-要导入 TiDB，就必须为其提供表结构，如果使用 dumpling 工具导出，则自动导出表结构文件。其他方式导出的数据可以通过以下任一方法创建表结构：
+要导入 TiDB，就必须为 SQL 文件提供表结构。如果使用 dumpling 工具导出数据，则会自动导出表结构文件。此外，其他方式导出的数据可以通过以下任一方法创建表结构：
 
 * **方法一**：使用 TiDB Lightning 创建表结构。
 
