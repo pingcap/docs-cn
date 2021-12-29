@@ -11,32 +11,36 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 持续性能分析是 TiDB v5.3.0 引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。
 
+在 TiDB 5.4.0，持续性能分析更新了火焰图显示，支持 TiFlash 组件，可以在 TiDB Operator 部署的集群上运行。
+
 该功能以低于 0.5% 的性能损耗，对数据库内部运行状态持续打快照（类似 CT 扫描），让原本“黑盒”的数据库变成“白盒”，具备更高的可观测性。该功能一键开启后自动运行，存储结果提供了保留时长的设定，过期的结果将会被回收，确保存储空间的有效利用。
 
 ## 使用限制
 
 使用持续性能分析时，应留意如下使用限制：
 
-- 该功能可在 x86 架构下支持 TiDB、TiKV、PD ，暂不支持 TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
+- 该功能可在 x86 架构下支持 TiDB、PD、TiKV、TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
 
-- 该功能暂时只用于使用 TiUP 部署和升级的集群，不支持 TiDB Operator 或二进制包部署和升级的集群。
+- 该功能适用于使用 TiUP/TiDB Operator 部署和升级的集群，不支持二进制包部署和升级的集群。
 
 ## 分析内容
 
-持续性能分析允许用户在不重启的情况下持续收集 TiDB、TiKV、PD 各个实例的性能数据，并且持久监控节点。收集到的性能数据可显示为有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例 CPU 资源消耗细节。目前支持的性能信息：
+持续性能分析允许用户在不重启的情况下持续收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据，并且持久监控节点。收集到的性能数据可显示为火焰图、有向无环图等，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例 CPU 资源消耗细节。目前支持的性能信息：
 
 - TiDB/PD: CPU profile、Heap、Mutex、Goroutine（debug=2）
-- TiKV: CPU Profile
+- TiKV/TiFlash: CPU Profile
 
 ## 启用持续性能分析
 
+### TiUP 部署集群
+
 启用持续性能分析，需要首先检查 TiUP 版本信息，然后配置中控机和 TiDB Dashboard 相关参数。
 
-### 检查版本
+#### 检查版本
 
-检查 TiUP Cluster 版本，若版本低于 1.7.0，则需要先升级 TiUP Cluster。
+检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
 
-1. 检查 TiUP 版本：
+1. 检查 TiUP Cluster 版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -44,37 +48,29 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
     tiup cluster --version
     ```
 
-    上述命令可查看 TiUP 的具体版本。显示为：
+    上述命令可查看 TiUP Cluster 的具体版本。显示为：
 
     ```
-    tiup version 1.7.0 tiup
+    tiup version 1.9.0 tiup
     Go Version: go1.17.2
-    Git Ref: v1.7.0
+    Git Ref: v1.9.0
     ```
 
-    若低于 v1.7.0，需要先升级 TiUP Cluster。
+    若低于 v1.9.0，需要先升级 TiUP Cluster。
 
 2. 升级 TiUP 和 TiUP Cluster 版本至最新。
 
-    - 升级 TiUP：
+    - 升级 TiUP 和 TiUP Cluster：
 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup update --self
-        ```
-
-    - 升级 TiUP Cluster：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup update cluster
+        tiup update --all
         ```
 
 升级后，完成启动前检查。
 
-### 配置中控机和 TiDB Dashboard
+#### 配置中控机和 TiDB Dashboard
 
 1. 在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
 
@@ -111,6 +107,10 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
     3. 点击**保存** (Save)。
 
     ![启用功能](/media/dashboard/dashboard-conprof-start.png)
+    
+### TiDB Operator 部署集群
+
+#### WIP
 
 ## 访问页面
 
