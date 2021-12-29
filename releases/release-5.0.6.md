@@ -14,7 +14,8 @@ TiDB 版本：5.0.6
 
     + TiCDC
 
-        - cdc server 命令错误输出从标准输出改成标准错误. [#3133](https://github.com/pingcap/tiflow/issues/3133)
+        - cdc server 命令的错误输出从标准输出 (stdout) 改为标准错误 (stderr) [#3133](https://github.com/pingcap/tiflow/issues/3133)
+        - 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `10M` [#3081](https://github.com/pingcap/tiflow/issues/3081)
 
 ## 提升改进
 
@@ -51,7 +52,7 @@ TiDB 版本：5.0.6
 
     + (Backup & Restore) BR
 
-        - 支持 pd request 和 TiKV IO 超时错误重试 [#27787](https://github.com/pingcap/tidb/issues/27787)
+        - 支持 PD request 和 TiKV I/O 发生超时错误后进行重试 [#27787](https://github.com/pingcap/tidb/issues/27787)
 
 ## Bug 修复
 
