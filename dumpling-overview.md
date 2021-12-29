@@ -80,7 +80,7 @@ dumpling \
 - `-h`、`-P`、`-u` 分别代表地址、端口、用户。如果需要密码验证，可以使用 `-p $YOUR_SECRET_PASSWORD` 将密码传给 Dumpling。
 - `-o` 用于选择存储导出文件的目录，支持本地文件路径或[外部存储 URL](/br/backup-and-restore-storages.md) 格式。
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。一般不超过 64。
-- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。
+- `-r` 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。当上游为 TiDB 且版本为 v3.0 或更新版本时，该参数大于 0 表示使用 TiDB region 信息进行划分，具体取值将不再生效。
 - `-F` 选项用于指定单个文件的最大大小，单位为 `MiB`，可接受类似 `5GiB` 或 `8KB` 的输入。如果你想使用 TiDB Lightning 将该文件加载到 TiDB 实例中，建议将 `-F` 选项的值保持在 256 MiB 或以下。
 
 > **注意：**
@@ -310,7 +310,7 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
 
-+ 设置 `-r` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。
++ 设置 `-r` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。当上游为 TiDB 且版本为 v3.0 或更新版本时，该参数大于 0 表示使用 TiDB region 信息进行划分，具体取值将不再生效。
 + 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。可控制 TiDB 单条查询语句的内存使用。
 + 调整 `--params "tidb_distsql_scan_concurrency=5"` 参数，即设置导出时的 session 变量 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 从而减少 TiDB scan 操作的并发度。
 
