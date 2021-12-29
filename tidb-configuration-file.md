@@ -187,7 +187,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `format`
 
-+ 指定日志输出的格式，可选项为 [json, text, console]。
++ 指定日志输出的格式，可选项为 [json, text]。
 + 默认值："text"
 
 ### `enable-timestamp`
@@ -249,8 +249,9 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 #### `max-size`
 
 + 日志文件的大小限制。
-+ 默认值：300MB
-+ 最大设置上限为 4GB。
++ 默认值：300
++ 单位：MB
++ 最大设置上限为 4096。
 
 #### `max-days`
 
@@ -453,13 +454,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
 
-### `nested-loop-join-cache-capacity`
-
-+ nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值。
-+ 单位：Byte
-+ 默认值：20971520
-+ 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
-
 ### `enforce-mpp`
 
 + 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
@@ -470,10 +464,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 prepare 语句的 plan cache 设置。
 
-> **警告：**
->
-> 当前该功能仍为实验特性，不建议在生产环境中使用。
-
 ### `enabled`
 
 + 开启 prepare 语句的 plan cache。
@@ -482,7 +472,7 @@ prepare 语句的 plan cache 设置。
 ### `capacity`
 
 + 缓存语句的数量。
-+ 默认值：100
++ 默认值：1000
 + 类型为 uint，小于 0 的值会被转化为大整数。
 
 ### `memory-guard-ratio`
@@ -554,7 +544,7 @@ prepare 语句的 plan cache 设置。
 
 事务内存锁相关配置，当本地事务冲突比较多时建议开启。
 
-### `enable`
+### `enabled`
 
 + 开启或关闭事务内存锁
 + 默认值：false
@@ -606,7 +596,7 @@ TiDB 服务状态相关配置。
 
 ### `record-db-qps`
 
-+ 输与 database 相关的 QPS metrics 到 Prometheus 的开关。
++ 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>

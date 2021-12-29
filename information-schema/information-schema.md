@@ -75,6 +75,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)          | 从 Prometheus 获取的指标的摘要。                               |
 | `METRICS_SUMMARY_BY_LABEL`                                                              | 参见 `METRICS_SUMMARY` 表。                                    |
 | [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)            | 为 `METRICS_SCHEMA` 中的表提供 PromQL 定义。                   |
+| [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md) | 对于所有被显式分配了放置规则的对象，该扩展表提供与这些对象相关的所有信息。 |
 | [`SEQUENCES`](/information-schema/information-schema-sequences.md)                      | 描述了基于 MariaDB 实现的 TiDB 序列。                          |
 | [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md)                    | 提供当前 TiDB 服务器上慢查询的信息。                           |
 | [`STATEMENTS_SUMMARY`](/statement-summary-tables.md)                                    | 类似于 MySQL 中的 performance_schema 语句摘要。                |

@@ -94,10 +94,10 @@ TiDB 版本：4.0.9
 
     + TiCDC
 
-        - 添加对 TiKV 开启 Hibernate Region 的告警规则 [#1120](https://github.com/pingcap/ticdc/pull/1120)
-        - 优化 schema storage 的内存使用 [#1127](https://github.com/pingcap/ticdc/pull/1127)
-        - 增加 Unified Sorter 功能，可以在数据量较大的情况下提升增量扫阶段的同步速度（实验特性）[#1122](https://github.com/pingcap/ticdc/pull/1122)
-        - 支持在 TiCDC Open Protocol 中配置单条 Kafka 消息的最大大小和包含的最大行变更数量（仅在 Kafka sink 生效）[#1079](https://github.com/pingcap/ticdc/pull/1079)
+        - 添加对 TiKV 开启 Hibernate Region 的告警规则 [#1120](https://github.com/pingcap/tiflow/pull/1120)
+        - 优化 schema storage 的内存使用 [#1127](https://github.com/pingcap/tiflow/pull/1127)
+        - 增加 Unified Sorter 功能，可以在数据量较大的情况下提升增量扫阶段的同步速度（实验特性）[#1122](https://github.com/pingcap/tiflow/pull/1122)
+        - 支持在 TiCDC Open Protocol 中配置单条 Kafka 消息的最大大小和包含的最大行变更数量（仅在 Kafka sink 生效）[#1079](https://github.com/pingcap/tiflow/pull/1079)
     + Dumpling
 
         - 对导出失败部分的数据进行重试 [#182](https://github.com/pingcap/dumpling/pull/182)
@@ -155,6 +155,7 @@ TiDB 版本：4.0.9
     - 修复了快照读能够命中 lock cache，返回错误结果的问题 [#21539](https://github.com/pingcap/tidb/pull/21539)
     - 修复了在同一个事务中读取大量数据时可能发生的内存泄漏问题 [#21129](https://github.com/pingcap/tidb/pull/21129)
     - 修复了在子查询中省略表别名时的语法解析错误问题 [#20367](https://github.com/pingcap/tidb/pull/20367)
+    - 修复了查询中 `IN` 函数的参数为 time 类型时可能返回错误结果的问题 [#21290](https://github.com/pingcap/tidb/issues/21290)
 
 + TiKV
 
@@ -198,18 +199,18 @@ TiDB 版本：4.0.9
 
     + TiCDC
 
-        - 修复某些异常情况下存在多个 Owner 的问题 [#1104](https://github.com/pingcap/ticdc/pull/1104)
-        - 修复在 TiKV 节点意外退出或重启恢复情况下 TiCDC 不能正常同步的问题，该 bug 在 v4.0.8 引入 [#1198](https://github.com/pingcap/ticdc/pull/1198)
-        - 修复在表初始化过程中会向 etcd 中重复写入元数据的问题 [#1191](https://github.com/pingcap/ticdc/pull/1191)
-        - 修复 schema storage 缓存 TiDB 表信息的过程中因更新表信息延迟或过早 GC 导致同步中断的问题 [#1114](https://github.com/pingcap/ticdc/pull/1114)
-        - 修复 schema storage 在 DDL 频繁的情况下会消耗过多内存的问题 [#1127](https://github.com/pingcap/ticdc/pull/1127)
-        - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/ticdc/pull/1075)
-        - 增加 Kafka producer 最大重试时间到 600s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/ticdc/pull/1118)
-        - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/ticdc/pull/1112)
-        - 修复当 TiCDC 与 PD 间网络出现抖动，并且同时操作 TiCDC changefeed 暂停和恢复，可能会出现部分表数据没有被同步的问题 [#1213](https://github.com/pingcap/ticdc/pull/1213)
-        - 修复 TiCDC 与 PD 网络不稳定情况下 TiCDC 可能出现进程非预期退出的问题 [#1218](https://github.com/pingcap/ticdc/pull/1218)
-        - 在 TiCDC 内部使用全局 PD client，以及修复 PD client 被错误关闭导致同步阻塞的问题 [#1217](https://github.com/pingcap/ticdc/pull/1217)
-        - 修复 TiCDC owner 节点可能在 etcd watch client 里消耗过多内存的问题 [#1224](https://github.com/pingcap/ticdc/pull/1224)
+        - 修复某些异常情况下存在多个 Owner 的问题 [#1104](https://github.com/pingcap/tiflow/pull/1104)
+        - 修复在 TiKV 节点意外退出或重启恢复情况下 TiCDC 不能正常同步的问题，该 bug 在 v4.0.8 引入 [#1198](https://github.com/pingcap/tiflow/pull/1198)
+        - 修复在表初始化过程中会向 etcd 中重复写入元数据的问题 [#1191](https://github.com/pingcap/tiflow/pull/1191)
+        - 修复 schema storage 缓存 TiDB 表信息的过程中因更新表信息延迟或过早 GC 导致同步中断的问题 [#1114](https://github.com/pingcap/tiflow/pull/1114)
+        - 修复 schema storage 在 DDL 频繁的情况下会消耗过多内存的问题 [#1127](https://github.com/pingcap/tiflow/pull/1127)
+        - 修复在同步任务暂停或取消之后会产生 goroutine 泄露的问题 [#1075](https://github.com/pingcap/tiflow/pull/1075)
+        - 增加 Kafka producer 最大重试时间到 600s，避免在下游 Kafka 服务或网络抖动情况下同步中断 [#1118](https://github.com/pingcap/tiflow/pull/1118)
+        - 修复 Kafka 消息所包含行变更数量不能正常生效的问题 [#1112](https://github.com/pingcap/tiflow/pull/1112)
+        - 修复当 TiCDC 与 PD 间网络出现抖动，并且同时操作 TiCDC changefeed 暂停和恢复，可能会出现部分表数据没有被同步的问题 [#1213](https://github.com/pingcap/tiflow/pull/1213)
+        - 修复 TiCDC 与 PD 网络不稳定情况下 TiCDC 可能出现进程非预期退出的问题 [#1218](https://github.com/pingcap/tiflow/pull/1218)
+        - 在 TiCDC 内部使用全局 PD client，以及修复 PD client 被错误关闭导致同步阻塞的问题 [#1217](https://github.com/pingcap/tiflow/pull/1217)
+        - 修复 TiCDC owner 节点可能在 etcd watch client 里消耗过多内存的问题 [#1224](https://github.com/pingcap/tiflow/pull/1224)
 
     + Dumpling
 

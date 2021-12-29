@@ -222,6 +222,32 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/b
 
 示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
 
+### 加密备份数据（实验性功能）
+
+自 TiDB v5.3.0 起， TiDB 开始支持备份加密功能，你可配置下列参数在备份过程中到达加密数据的效果：
+
+* `--crypter.method`：加密算法，支持 `aes128-ctr/aes192-ctr/aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
+* `--crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节
+* `--crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 crypter.key 不需要传入
+
+> **警告：**
+>
+> - 当前该功能为实验特性，不建议在生产环境中使用。
+> - 密钥丢失，备份的数据将无法恢复到集群中。
+> - 加密功能需在 br 工具和 TiDB 集群都不低于 v5.3.0 的版本上使用，且加密备份得到的数据无法在低于 v5.3.0 版本的集群上恢复。
+
+备份加密的示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --crypter.method aes128-ctr \
+    --crypter.key 0123456789abcdef0123456789abcdef
+```
+
 ### Raw KV 备份（实验性功能）
 
 > **警告：**
@@ -422,6 +448,24 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - GC 数据无法被恢复。
 > 
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
+
+### 解密恢复数据（实验性功能）
+
+> **警告：**
+>
+> - 当前该功能为实验特性，不建议在生产环境中使用。
+
+在对数据做加密备份后，恢复操作需传入相应的解密参数，解密算法或密钥不正确则无法恢复，解密参数和加密参数一致即可。解密恢复的示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br restore full\
+    --pd ${PDIP}:2379 \
+    -s local:///home/tidb/backupdata/incr \
+    --crypter.method aes128-ctr \
+    --crypter.key 0123456789abcdef0123456789abcdef
+```
 
 ### Raw KV 恢复（实验性功能）
 

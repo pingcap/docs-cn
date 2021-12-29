@@ -35,7 +35,7 @@ TiDB 提供完整的分布式事务，事务模型是在 [Google Percolator](htt
 
 + 悲观锁
 
-    TiDB 的悲观事务模型，悲观事务的行为和 MySQL 基本一致，在执行阶段就会上锁，先到先得，避免冲突情况下的重试，可以保证有较多冲突的事务的成功率。悲观锁同时解决了希望通过 `select for update` 对数据提前锁定的场景。但如果业务场景本身冲突较少，乐观锁的性能会更有优势。
+    TiDB 的悲观事务模式，悲观事务的行为和 MySQL 基本一致，在执行阶段就会上锁，先到先得，避免冲突情况下的重试，可以保证有较多冲突的事务的成功率。悲观锁同时解决了希望通过 `select for update` 对数据提前锁定的场景。但如果业务场景本身冲突较少，乐观锁的性能会更有优势。
 
 + 事务大小限制
 
@@ -140,14 +140,14 @@ TiDB 支持完整的二级索引，并且是全局索引，很多查询可以通
 
 建议无论是 Insert，Update 还是 Delete 语句，都通过分 Batch 或者是加 Limit 的方式限制。
 
-在删除大量数据的时候，建议使用 `Delete * from t where xx limit 5000;` 这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件。
+在删除大量数据的时候，建议使用 `Delete from t where xx limit 5000;` 这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件。
 
 如果一次删除的数据量非常大，这种循环的方式会越来越慢，因为每次删除都是从前向后遍历，前面的删除之后，短时间内会残留不少删除标记（后续会被 GC 清理掉），影响后面的 `Delete` 语句。如果有可能，建议把 `Where` 条件细化。举个例子，假设要删除 2017-05-26 当天的所有数据，那么可以这样做：
 
 ```SQL
 for i from 0 to 23:
     while affected_rows > 0:
-        delete * from t where insert_time >= i:00:00 and insert_time < (i+1):00:00 limit 5000;
+        delete from t where insert_time >= i:00:00 and insert_time < (i+1):00:00 limit 5000;
         affected_rows = select affected_rows()
 ```
 
