@@ -460,6 +460,18 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
+### `ballast-object-size`
+
++ 设置 Ballast 对象的初始大小，单位为字节。 
++ 默认值：`0`
++ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`， `ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
+
+### `max-ballast-object-size`
+
++ 设置 Ballast 对象的最大大小，单位为字节。 
++ 最小合法值：`0`
++ 如果 `max-ballast-object-size` 被配置为 `0` 或者没有被配置，将会使用默认值。默认值为接下来两个值中的最小值：`2147483648` 字节，或者当前系统中物理内存总大小的四分之一。
+
 ## prepared-plan-cache
 
 prepare 语句的 plan cache 设置。
@@ -481,18 +493,6 @@ prepare 语句的 plan cache 设置。
 + 默认值：0.1
 + 最小值：0
 + 最大值：1
-
-### `ballast-object-size`
-
-+ 设置 Ballast 对象的初始大小，单位为字节。 
-+ 默认值：`0`
-+ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`， `ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
-
-### `max-ballast-object-size`
-
-+ 设置 Ballast 对象的最大大小，单位为字节。 
-+ 最小合法值：`0`
-+ 如果 `max-ballast-object-size` 被配置为 `0` 或者没有被配置，将会使用默认值。默认值为接下来两个值中的最小值：`2147483648` 字节，或者当前系统中物理内存总大小的四分之一。
 
 ## tikv-client
 
