@@ -4,7 +4,7 @@ title: TiDB 5.0.6 Release Notes
 
 # TiDB 5.0.6 Release Notes
 
-发版日期：2021 年 12 月 28 日
+发版日期：2021 年 12 月 31 日
 
 TiDB 版本：5.0.6
 
@@ -47,12 +47,16 @@ TiDB 版本：5.0.6
         - 支持消息 Batch 操作减少 EtcdWorker tick [3112](https://github.com/pingcap/tiflow/issues/3112)
         (dup) - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - Kafka sink 模块支持默认的元数据获取超时时间 config.Metadata.Timeout [#3352](https://github.com/pingcap/tiflow/issues/3352)
-        - 增加更多 Promethous 和 grafana 监控告警参数，包括 "no owner alert" [#4054](https://github.com/pingcap/tiflow/issues/4054), "mounter row", "table sink total row", "buffer sink total row" [#1606](https://github.com/pingcap/tiflow/issue/1606)
+        - 将参数 `max-message-bytes` 的默认值设置为 `10M`，从而减少可能发生的 Kafka 不能发送消息的问题 [#3081](https://github.com/pingcap/tiflow/issues/3081)
+        - 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
 
     + Backup & Restore (BR)
 
-        - 支持 PD request 和 TiKV I/O 发生超时错误后进行重试 [#27787](https://github.com/pingcap/tidb/issues/27787)
+        - 遇到 PD 请求错误或 TiKV I/O 超时错误时重试 BR 任务 [#27787](https://github.com/pingcap/tidb/issues/27787)
 
+    + TiDB Lightning
+
+        - 支持导入数据到带有表达式索引或带有基于虚拟生成列的索引的表中 [#1404](https://github.com/pingcap/br/issues/1404)
 ## Bug 修复
 
 + TiDB
@@ -149,7 +153,6 @@ TiDB 版本：5.0.6
         - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 `cdc server` 命令在 Red Hat Enterprise Linux 系统的部分版本（如 6.8、6.9 等）上运行时出现时区错误的问题  [#3584](https://github.com/pingcap/tiflow/issues/3584)
         - 修复当 Kafka 为下游时 `txn_batch_size` 监控指标数据不准确的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
-         (dup) - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         (dup) - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         (dup) - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续更新的问题 [#11017](https://github.com/tikv/tikv/issues/11017)
         (dup) - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
@@ -158,7 +161,6 @@ TiDB 版本：5.0.6
     + Backup & Restore (BR)
 
         (dup) - 增强恢复的鲁棒性 [#27421](https://github.com/pingcap/tidb/issues/27421)
-        - 修复 TiDB Lightning 在 Local 后端模式下导入使用了表达式索引的表时出现错误的问题 [#1404](https://github.com/pingcap/br/issues/1404)
         - 修复 BR 中平均速度 (average-speed) 不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
 
     + Dumpling
