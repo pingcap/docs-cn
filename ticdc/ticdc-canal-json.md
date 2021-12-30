@@ -9,16 +9,16 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/t
 
 Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的实现。当使用 MQ(Message Queue) 作为下游 sink 时，用户可以在 sink-uri 中指定使用 canal-json，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。Event 分为三类：
 
-* Row Changed Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
+* DML Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引为 0 的 MQ Partition。
-* Resolved Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。仅当用户在 sink-uri 中设置 `enable-tidb-extension=true` 时生效。
+* WATERMARK Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。仅当用户在 sink-uri 中设置 `enable-tidb-extension=true` 时生效。
 
 ### TiDB 扩展字段
 
 Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension=true` 后，Canal-JSON 将携带 TiCDC 扩展字段，内容如下：
 
 * TiCDC 将会发送 ResolvedEvent 事件。
-* TiCDC 发送的 Row Changed Event 和 DDL Event 类型事件中，将会含有一个名为 `_tidb` 的字段。
+* TiCDC 发送的 DML Event 和 DDL Event 类型事件中，将会含有一个名为 `_tidb` 的字段。
 
 配置样例如下所示：
 
@@ -73,7 +73,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | old         | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值|
 | _tidb       | Object | 仅当 enable-tidb-extension 为 true 时，该字段存在。当前阶段，只含有 commitTs，其为造成 Row 变更的事务的 tso ｜
 
-### Row Changed Event
+### DML Event
 
 对于一行数据变更事件，TiCDC 会将其编码成如下形式:
 
@@ -151,7 +151,7 @@ TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 Resolved Event�
 从上面的示例中可知，Canal-JSON 具有统一的数据格式，针对不同的事件类型，有不同的字段填充规则。消费者可以使用统一的方法对该 JSON 格式的数据进行解析，然后通过判断字段值的方式，来确定具体事件类型：
 
 * 当 `isDdl` 为 true 时，该消息含有一条 DDL Event。
-* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type ` 为 `TIDB_WATERMARK`，可得知其为 Resolved Event，反之则为 Row Changed Event。
+* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type ` 为 `TIDB_WATERMARK`，可得知其为 Resolved Event，反之则为 DML Event。
 
 ## MySQL Type 字段说明
 
