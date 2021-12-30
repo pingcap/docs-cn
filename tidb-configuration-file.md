@@ -646,11 +646,11 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 ### `ballast-object-size`
 
 + 设置 Ballast 对象的初始大小，单位为字节。 
-+ 默认值：`0`。
++ 默认值：`0`
 + 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`， `ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
 
 ### `max-ballast-object-size`
 
 + 设置 Ballast 对象的最大大小，单位为字节。 
-+ 最小合法值为 `0`。
++ 最小合法值：`0`
 + 如果 `max-ballast-object-size` 被配置为 `0` 或者没有被配置，那么将会使用默认值。默认值为接下来两个值中的最小值：`2147483648` 字节，或者当前系统中物理内存总大小的四分之一。
