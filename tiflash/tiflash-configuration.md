@@ -182,7 +182,7 @@ delta_index_cache_size = 0
 [raftstore]
     ## 处理 Raft 数据落盘的线程池中线程的数量
     apply-pool-size = 4
-    ## 表示处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
+    ## 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
     store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 4。设为 0 则关闭多线程优化
     snap-handle-pool-size = 4
