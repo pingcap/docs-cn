@@ -151,6 +151,7 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 | `--gcs.predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
 
 ### Azblob 的命令行参数
+
 | 命令行参数 | 描述 |
 |----------:|-------|
 | `--azblob.account-name` | 存储账户名 |
