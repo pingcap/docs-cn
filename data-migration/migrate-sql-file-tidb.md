@@ -18,7 +18,9 @@ summary: 介绍如何使用 TiDB Lightning 从 MySQL SQL 文件迁移数据到 T
 
 ## 第 2 步：定义目标表结构
 
-要导入 TiDB，就必须为 SQL 文件提供表结构。如果使用 dumpling 工具导出数据，则会自动导出表结构文件。此外，其他方式导出的数据可以通过以下任一方法创建表结构：
+要导入 TiDB，就必须为 SQL 文件提供表结构。
+
+如果使用 Dumpling 工具导出数据，则会自动导出表结构文件。此外，其他方式导出的数据可以通过以下任一方法创建表结构：
 
 * **方法一**：使用 TiDB Lightning 创建表结构。
 
@@ -57,7 +59,7 @@ file = "tidb-lightning.log"
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TiB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# # "tidb"：TB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅 [TiDB Lightning 后端](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends)。
+# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参 https://docs.pingcap.com/tidb/stable/tidb-lightning-backends。
 # 设置排序的键值对的临时存放地址。目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。
 sorted-kv-dir = "${sorted-kv-dir}"
 

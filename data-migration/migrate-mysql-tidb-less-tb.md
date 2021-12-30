@@ -5,7 +5,9 @@ summary: 介绍如何从小数据量 MySQL 迁移数据到 TiDB。
 
 # 从小数据量 MySQL 迁移数据到 TiDB
 
-本文档介绍如何使用 TiDB DM （以下简称 DM）以全量+增量的模式数据到 TiDB。本文所称“小数据量”通常指 TiB 级别以下。一般而言，受到表结构索引数目等信息、硬件以及网络环境影响，迁移速率在 30～50GB/h 不等。使用 TiDB DM 迁移的流程如下图所示。
+本文档介绍如何使用 TiDB DM （以下简称 DM）以全量+增量的模式数据到 TiDB。本文所称“小数据量”通常指 TiB 级别以下。
+
+一般而言，受到表结构索引数目等信息、硬件以及网络环境影响，迁移速率在 30～50GB/h 不等。使用 TiDB DM 迁移的流程如下图所示。
 
 ![dm](/media/dm/migrate-with-dm.png)
 
@@ -46,8 +48,8 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 |参数           |描述|
 |-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-source create|向 DM 集群加载数据源|
+|`--master-addr`  |`dmctl` 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
+|`operate-source create` |向 DM 集群加载数据源|
 
 ## 第 2 步：创建迁移任务
 
@@ -92,7 +94,7 @@ block-allow-list:
 
 ## 第 3 步：启动任务
 
-在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
+在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以避免后期报错。
 
 {{< copyable "shell-regular" >}}
 
@@ -112,8 +114,8 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 |参数|描述|
 |-|-|
-|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
-|start-task|参数用于启动数据迁移任务|
+|`--master-addr`|`dmctl` 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
+|`start-task`|参数用于启动数据迁移任务|
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
 
