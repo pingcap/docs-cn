@@ -223,7 +223,7 @@ URI 中可配置的的参数如下：
 
 * TiCDC 建议用户总是指定 `max-message-bytes` 参数，该参数会被用于初始化 Kafka producer，其限制了 TiCDC 能够发送到 Kafka producer 的最大消息的大小，建议该值不小于业务可能产生的单条数据变更事件的大小。比如，如果业务单条数据变更事件的大小不超过 10M，那么可以将 `max-message-bytes` 设为 `10485760`。
 
-* TiCDC 推荐用户自行创建 Kafka Topic，你至少需要明确该 Topic 的 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 和该 Topic 的 `partitions` 数量。在创建 changefeed 的时候，使用这两项分别设置 `sink-uri` 中的 `max-message-bytes` 和 `partition-num` 参数。比如，如果 topic 有 `max.message.bytes` 为 `10485760`，`partitions` 为 3，可以参考如下 `sink-uri`:
+* TiCDC 推荐用户自行创建 Kafka Topic，你至少需要明确该 Topic 的 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes) 和该 Topic 的 partitions 个数。在创建 changefeed 的时候，使用这两项分别设置 `sink-uri` 中的 `max-message-bytes` 和 `partition-num` 参数。比如，如果 topic 有 `max.message.bytes` 为 `10485760`，和 partitions 的个数为 3，可以参考如下 `sink-uri`:
 
 ```shell
 --sink-uri="kafka://127.0.0.1:9092/topic-name?max-message-bytes=10485760&partition-num=3"
