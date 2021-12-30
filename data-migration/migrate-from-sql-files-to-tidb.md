@@ -60,6 +60,7 @@ file = "tidb-lightning.log"
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TiB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+backend = "local"
 # # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参 https://docs.pingcap.com/tidb/stable/tidb-lightning-backends。
 # 设置排序的键值对的临时存放地址。目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。
 sorted-kv-dir = "${sorted-kv-dir}"
@@ -97,7 +98,7 @@ export AWS_SECRET_ACCESS_KEY=${secret_key}
 nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
 ```
 
-同时，Dumpling 还支持从 `~/.aws/credentials` 读取凭证文件。
+同时，TiDB Lightning 还支持从 `~/.aws/credentials` 读取凭证文件。
 
 导入开始后，可以采用以下任意方式查看进度：
 
