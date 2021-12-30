@@ -462,9 +462,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `ballast-object-size`
 
-+ 设置 Ballast 对象的初始大小，单位为字节。 
++ 设置 Ballast 对象的初始大小，单位为字节。
 + 默认值：`0`
 + 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`，`ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
++ Ballast 是一个降低 Golang Runtime GC CPU 消耗的性能优化方法，但是会带来额外 `ballast-object-size` 字节的内存使用。如果发现 Golang Runtime GC CPU 消耗占比较高，可以尝试启用它。推荐将 `ballast-object-size` 配置为 `-1`，`max-ballast-object-size` 配置为 `0`。
 
 ### `max-ballast-object-size`
 
