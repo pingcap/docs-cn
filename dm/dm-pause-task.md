@@ -1,7 +1,6 @@
 ---
 title: Pause a Data Migration Task
 summary: Learn how to pause a data migration task in TiDB Data Migration.
-aliases: ['/tidb-data-migration/dev/pause-task/']
 ---
 
 # Pause a Data Migration Task

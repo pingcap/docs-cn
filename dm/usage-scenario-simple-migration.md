@@ -1,7 +1,7 @@
 ---
 title: Migrate Data from Multiple Data Sources to TiDB
 summary: Learn how to use Data Migration to migrate data from multiple data sources to TiDB.
-aliases: ['/docs/tidb-data-migration/dev/usage-scenario-simple-replication/','/tidb-data-migration/dev/usage-scenario-simple-replication']
+aliases: ['/docs/tidb-data-migration/dev/usage-scenario-simple-replication/']
 ---
 
 # Using Migrate Data from Multiple Data Sources to TiDB

@@ -1,7 +1,6 @@
 ---
 title: Manage Data Source Configurations
 summary: Learn how to manage upstream MySQL instances in TiDB Data Migration.
-aliases: ['/tidb-data-migration/dev/manage-source/']
 ---
 
 # Manage Data Source Configurations

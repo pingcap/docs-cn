@@ -1,7 +1,6 @@
 ---
 title: DM 5.3.0 Benchmark Report
 summary: Learn about the performance of 5.3.0.
-aliases: ['/tidb-data-migration/dev/benchmark-v5.3.0/']
 ---
 
 # DM 5.3.0 Benchmark Report

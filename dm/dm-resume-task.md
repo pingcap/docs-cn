@@ -1,7 +1,6 @@
 ---
 title: Resume a Data Migration Task
 summary: Learn how to resume a data migration task.
-aliases: ['/tidb-data-migration/dev/resume-task/']
 ---
 
 # Resume a Data Migration Task

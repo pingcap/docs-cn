@@ -1,7 +1,6 @@
 ---
 title: Command-line Flags
 summary: Learn about the command-line flags in DM.
-aliases: ['/tidb-data-migration/dev/command-line-flags/']
 ---
 
 # Command-line Flags

@@ -1,7 +1,7 @@
 ---
 title: Maintain a DM Cluster Using TiUP
 summary: Learn how to maintain a DM cluster using TiUP.
-aliases: ['/docs/tidb-data-migration/dev/cluster-operations/','/tidb-data-migration/dev/cluster-operations']
+aliases: ['/docs/tidb-data-migration/dev/cluster-operations/']
 ---
 
 # Maintain a DM Cluster Using TiUP

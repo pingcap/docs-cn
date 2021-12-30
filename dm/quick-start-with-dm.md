@@ -1,7 +1,7 @@
 ---
 title: TiDB Data Migration Quick Start
 summary: Learn how to quickly deploy a DM cluster using binary packages.
-aliases: ['/docs/tidb-data-migration/dev/get-started/','/tidb-data-migration/dev/get-started']
+aliases: ['/docs/tidb-data-migration/dev/get-started/']
 ---
 
 # Quick Start Guide for TiDB Data Migration

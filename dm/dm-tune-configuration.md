@@ -1,7 +1,6 @@
 ---
 title: Optimize Configuration of DM
 summary: Learn how to optimize the configuration of the data migration task to improve the performance of data migration.
-aliases: ['/tidb-data-migration/dev/tune-configuration/']
 ---
 
 # Optimize Configuration of DM

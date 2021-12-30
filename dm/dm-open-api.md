@@ -1,7 +1,6 @@
 ---
 title: Maintain DM Clusters Using OpenAPI
 summary: Learn about how to use OpenAPI interface to manage the cluster status and data replication.
-aliases: ['/tidb-data-migration/dev/open-api/']
 ---
 
 # Maintain DM Clusters Using OpenAPI

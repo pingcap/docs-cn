@@ -1,7 +1,6 @@
 ---
 title: Handle Alerts
 summary: Understand how to deal with the alert information in DM.
-aliases: ['/tidb-data-migration/dev/handle-alerts/']
 ---
 
 # Handle Alerts

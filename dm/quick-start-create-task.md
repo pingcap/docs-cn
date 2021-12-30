@@ -1,7 +1,7 @@
 ---
 title: Create a Data Migration Task
 summary: Learn how to create a migration task after the DM cluster is deployed.
-aliases: ['/docs/tidb-data-migration/dev/create-task-and-verify/','/tidb-data-migration/dev/create-task-and-verify']
+aliases: ['/docs/tidb-data-migration/dev/create-task-and-verify/']
 ---
 
 # Create a Data Migration Task

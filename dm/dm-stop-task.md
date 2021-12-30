@@ -1,7 +1,6 @@
 ---
 title: Stop a Data Migration Task
 summary: Learn how to stop a data migration task.
-aliases: ['/tidb-data-migration/dev/stop-task/']
 ---
 
 # Stop a Data Migration Task

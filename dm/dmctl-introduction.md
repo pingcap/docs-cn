@@ -1,7 +1,7 @@
 ---
 title: Maintain DM Clusters Using dmctl
 summary: Learn how to maintain a DM cluster using dmctl.
-aliases: ['/docs/tidb-data-migration/dev/manage-replication-tasks/','/tidb-data-migration/dev/manage-replication-tasks/']
+aliases: ['/docs/tidb-data-migration/dev/manage-replication-tasks/']
 ---
 
 # Maintain DM Clusters Using dmctl

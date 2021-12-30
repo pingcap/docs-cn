@@ -1,7 +1,7 @@
 ---
 title: Migrate from Databases that Use GH-ost/PT-osc
 summary: This document introduces the `online-ddl/online-ddl-scheme` feature of DM.
-aliases: ['/docs/tidb-data-migration/dev/online-ddl-scheme/','/tidb-data-migration/dev/online-ddl-scheme/','tidb-data-migration/dev/feature-online-ddl-scheme']
+aliases: ['/docs/tidb-data-migration/dev/online-ddl-scheme/','tidb-data-migration/dev/feature-online-ddl-scheme']
 ---
 
 # Migrate from Databases that Use GH-ost/PT-osc

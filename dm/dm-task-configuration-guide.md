@@ -1,7 +1,6 @@
 ---
 title: Data Migration Task Configuration Guide
 summary: Learn how to configure a data migration task in Data Migration (DM).
-aliases: ['/tidb-data-migration/dev/task-configuration-guide/']
 ---
 
 # Data Migration Task Configuration Guide

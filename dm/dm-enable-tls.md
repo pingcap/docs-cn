@@ -1,7 +1,6 @@
 ---
 title: Enable TLS for DM Connections
 summary: Learn how to enable TLS for DM connections.
-aliases: ['/tidb-data-migration/dev/enable-tls/']
 ---
 
 # Enable TLS for DM Connections

@@ -1,7 +1,6 @@
 ---
 title: Manage Table Schemas of Tables to be Migrated
 summary: Learn how to manage the schema of the table to be migrated in DM.
-aliases: ['/tidb-data-migration/dev/manage-schema/']
 ---
 
 # Manage Table Schemas of Tables to be Migrated

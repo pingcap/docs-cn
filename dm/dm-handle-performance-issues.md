@@ -1,7 +1,6 @@
 ---
 title: Handle Performance Issues
 summary: Learn about common performance issues that might exist in DM and how to deal with them.
-aliases: ['/tidb-data-migration/dev/handle-performance-issues/']
 ---
 
 # Handle Performance Issues

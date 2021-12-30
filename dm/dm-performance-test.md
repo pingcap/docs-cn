@@ -1,7 +1,6 @@
 ---
 title: DM Cluster Performance Test
 summary: Learn how to test the performance of DM clusters.
-aliases: ['/tidb-data-migration/dev/performance-test/']
 ---
 
 # DM Cluster Performance Test

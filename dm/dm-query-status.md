@@ -1,7 +1,7 @@
 ---
 title: Query Status
 summary: Learn how to query the status of a data replication task.
-aliases: ['/docs/tidb-data-migration/dev/query-status/','/tidb-data-migration/dev/query-error/','/tidb-data-migration/dev/query-status/']
+aliases: ['/docs/tidb-data-migration/dev/query-status/']
 ---
 
 # Query Status

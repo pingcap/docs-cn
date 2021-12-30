@@ -1,7 +1,6 @@
 ---
 title: Create a Data Migration Task
 summary: Learn how to create a data migration task in TiDB Data Migration.
-aliases: ['/tidb-data-migration/dev/create-task/']
 ---
 
 # Create a Data Migration Task
