@@ -482,6 +482,18 @@ prepare 语句的 plan cache 设置。
 + 最小值：0
 + 最大值：1
 
+### `ballast-object-size`
+
++ 设置 Ballast 对象的初始大小，单位为字节。 
++ 默认值：`0`
++ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`， `ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
+
+### `max-ballast-object-size`
+
++ 设置 Ballast 对象的最大大小，单位为字节。 
++ 最小合法值：`0`
++ 如果 `max-ballast-object-size` 被配置为 `0` 或者没有被配置，将会使用默认值。默认值为接下来两个值中的最小值：`2147483648` 字节，或者当前系统中物理内存总大小的四分之一。
+
 ## tikv-client
 
 ### `grpc-connection-count`
@@ -642,15 +654,3 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false
-
-### `ballast-object-size`
-
-+ 设置 Ballast 对象的初始大小，单位为字节。 
-+ 默认值：`0`
-+ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`， `ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
-
-### `max-ballast-object-size`
-
-+ 设置 Ballast 对象的最大大小，单位为字节。 
-+ 最小合法值：`0`
-+ 如果 `max-ballast-object-size` 被配置为 `0` 或者没有被配置，将会使用默认值。默认值为接下来两个值中的最小值：`2147483648` 字节，或者当前系统中物理内存总大小的四分之一。
