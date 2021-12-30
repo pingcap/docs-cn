@@ -258,6 +258,39 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
 
 更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
+## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
+
+可以在 `sink-uri` 中配置 `max-message-bytes`，它控制每次向 Kafka producer 发送的单条消息的最大大小。
+
+## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
+
+发生 `Message was too large` 的原因是，单条数据的大小，超过了 changefeed 的 `max-message-bytes`。如果遇到该问题，可以按照以下步骤解决该报错：
+
+1. 确认自身业务可能发送的单条数据最大大小，假设为 10M (10485760 bytes), 确保 Topic 的 `max.message.bytes` 不小于 10M。
+
+2. 使用 `cdc cli changefeed pause` 暂停同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
+    ```
+
+3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed update -c test-cf --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.0.1:9092/topic-name?max-message-bytes=10485760"
+    ```
+
+4. 使用 `cdc cli changefeed resume` 恢复同步任务。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
+    ```
 
 ## 为什么 TiCDC 到 Kafka 的同步任务延时越来越大？
 
@@ -270,10 +303,6 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 ## TiCDC 把数据同步到 Kafka 时，是把一个事务内的所有变更都写到一个消息中吗？如果不是，是根据什么划分的？
 
 不是，根据配置的分发策略不同，有不同的划分方式，包括 `default`、`row id`、`table`、`ts`。更多请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
-
-## TiCDC 把数据同步到 Kafka 时，能在 TiDB 中控制单条消息大小的上限吗？
-
-可以通过 `max-message-bytes` 控制每次向 Kafka broker 发送消息的最大数据量（可选，默认值 10MB）；通过 `max-batch-size` 参数指定每条 kafka 消息中变更记录的最大数量，目前仅对 Kafka 的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）。
 
 ## TiCDC 把数据同步到 Kafka 时，一条消息中会不会包含多种数据变更？
 
@@ -393,19 +422,6 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 TiCDC 创建 changefeed 时会默认指定 `safe-mode` 为 `true`，从而为上游的 `INSERT`/`UPDATE` 语句生成 `REPLACE INTO` 的执行语句。
 
 目前用户暂时无法修改 `safe-mode` 设置，因此该问题暂无解决办法。
-
-## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
-
-v4.0.8 或更低版本的 TiCDC，仅在 Sink URI 中为 Kafka 配置 `max-message-bytes` 参数不能有效控制输出到 Kafka 的消息大小，需要在 Kafka server 配置中加入如下配置以增加 Kafka 接收消息的字节数限制。
-
-```
-# broker 能接收消息的最大字节数
-message.max.bytes=2147483648
-# broker 可复制的消息的最大字节数
-replica.fetch.max.bytes=2147483648
-# 消费者端的可读取的最大消息字节数
-fetch.message.max.bytes=2147483648
-```
 
 ## TiCDC 同步时，在下游执行 DDL 语句失败会有什么表现，如何恢复？
 
