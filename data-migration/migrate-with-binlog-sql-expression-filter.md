@@ -1,6 +1,6 @@
 ---
-title: 如何通过 SQL 表达式过滤 binlog
-summary: 介绍如何通过 SQL 表达式过滤 binlog。
+title: 如何通过 SQL 表达式过滤 DML 
+summary: 介绍如何通过 SQL 表达式过滤 DML 事件
 ---
 
 # 如何通过 SQL 表达式过滤  DML
