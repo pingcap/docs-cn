@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/br-features/']
 
 # BR 特性
 
-## 自动调节（自 v5.4.0 引入）
+## 自动调节 <span class="version-mark">从 v5.4 版本开始引入</span>
 
 ### 背景
 
@@ -37,7 +37,7 @@ V5.4.0 之后，TiKV 上将会新增一个配置项：`backup.enable-auto-tune`�
 |--------| 系统总共有 8 颗逻辑 CPU。
 |****----| 默认配置 `backup.num-threads` 为 4，注意在任何时候自动调节都不会让线程池大小大于 backup.num-threads。
 |^^****--| 默认情况下，`auto-tune-remain-threads` = round(8 * 0.2) = 2, 自动调节会将 backup 的线程池大小调节至 4。
-|^^^^**--| 集群的工作负载加重了，自动调节将备份的线程池大小调节至 2。
+|^^^^**--| 集群的工作负载加重了，自动调节将备份的线程池大小调节至 2，如此集群中仍旧还有两个核心保持空闲。
 ```
 
 在监控面板的 “Backup CPU Utilization” 中，可以看到自动限流目前选择的线程池的大小：
