@@ -464,7 +464,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置 Ballast 对象的初始大小，单位为字节。 
 + 默认值：`0`
-+ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`， `ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
++ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值超出合法值范围，将会默认使用最大合法值。比如，如果 `max-ballast-object-size` 值为 `2147483648`，`ballast-object-size` 被配置为 `-1` 或者 `4294967296`，那么 `ballast-object-size` 默认为 `2147483648`。
 
 ### `max-ballast-object-size`
 
