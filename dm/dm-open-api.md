@@ -1,7 +1,6 @@
 ---
 title: 使用 OpenAPI 运维集群
 summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
-aliases: ['/zh/tidb-data-migration/dev/open-api/']
 ---
 
 # 使用 OpenAPI 运维集群

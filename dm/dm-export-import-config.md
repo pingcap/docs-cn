@@ -1,7 +1,6 @@
 ---
 title: 导出和导入集群的数据源和任务配置
 summary: 了解 TiDB Data Migration 导出和导入集群的数据源和任务配置。
-aliases: ['/zh/tidb-data-migration/dev/export-import-config/']
 ---
 
 # 导出和导入集群的数据源和任务配置
