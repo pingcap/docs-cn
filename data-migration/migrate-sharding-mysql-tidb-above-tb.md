@@ -163,7 +163,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     {{< copyable "" >}}
 
     ```
-    
+
     [lightning]
     # 日志
     level = "info"
@@ -205,7 +205,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     status-port = ${status-port} # 导入过程 Lightning 需要在从 TiDB 的“状态端口”获取表结构信息，例如：10080
     # PD 集群的地址，Lightning 通过 PD 获取部分信息。
     pd-addr = "${ip}:${port}"   # 例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
-    
+
     ```
 
 2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
@@ -234,7 +234,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
-## 第 3 步. 使用 DM 持续复制增量数据到 TiDB (可选)
+## 第 3 步： 使用 DM 持续复制增量数据到 TiDB (可选)
 
 基于 binlog 从指定位置同步数据库到 TiDB，可以使用 DM 来执行增量复制
 

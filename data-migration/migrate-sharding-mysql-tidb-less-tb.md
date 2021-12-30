@@ -64,7 +64,7 @@ CREATE TABLE `sale` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-## 第 1 步. 创建数据源
+## 第 1 步： 创建数据源
 
 新建`source1.yaml`文件, 写入以下内容：
 
@@ -100,7 +100,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 重复以上操作直至所有数据源均添加完成。
 
-## 第 2 步. 创建迁移任务
+## 第 2 步： 创建迁移任务
 
 新建`task1.yaml`文件, 写入以下内容：
 
@@ -173,7 +173,7 @@ block-allow-list:
 - [Binlog event filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#binlog-event-filter)
 - [Binlog expression filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-expression-filter)
 
-## 第 3 步. 启动任务
+## 第 3 步： 启动任务
 
 在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
@@ -200,7 +200,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
 
-## 第 4 步. 查看任务状态
+## 第 4 步： 查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用`tiup dmctl`执行`query-status`命令进行查询：
 
@@ -212,7 +212,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)
 
-## 第 5 步. 监控任务与查看日志(可选)
+## 第 5 步： 监控任务与查看日志(可选)
 
 你可以通过 Grafana 或者日志查看迁移任务的历史状态以及各种内部运行指标。
 

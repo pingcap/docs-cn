@@ -48,7 +48,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 * 索引会占据额外的空间。
 * RocksDB 的空间放大效应。
 
-## 第 1 步. 从 MySQL 导出全量数据
+## 第 1 步： 从 MySQL 导出全量数据
 
 1. 运行以下命令，从 MySQL 导出全量数据：
 
@@ -86,7 +86,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     GTID:
     ```
 
-## 第 2 步. 导入全量数据到 TiDB
+## 第 2 步： 导入全量数据到 TiDB
 
 1. 编写配置文件 `tidb-lightning.toml`：
 
@@ -147,7 +147,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
-## 第 3 步. 使用 DM 持续复制增量数据到 TiDB
+## 第 3 步： 使用 DM 持续复制增量数据到 TiDB
 
 ### 添加数据源
 

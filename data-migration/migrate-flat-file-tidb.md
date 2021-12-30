@@ -14,14 +14,14 @@ TiDB Lightning 支持读取 CSV 格式的文件，以及其他定界符格式，
 - [安装 TiDB Lightning](/migration-tools.md)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
-## 第 1 步. 准备 CSV 文件
+## 第 1 步： 准备 CSV 文件
 
 将所有要导入的 CSV 文件放在同一目录下，若要 TiDB Lightning 识别所有 CSV 文件，文件名必须满足以下格式：
 
 - 包含整张表数据的 CSV 文件，需命名为 `${db_name}.${table_name}.csv`。
 - 如果一张表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.003.csv`。数字部分不需要连续，但必须递增，并且需要用零填充数字部分，保证后缀为同样长度。
 
-## 第 2 步. 创建目标表结构
+## 第 2 步： 创建目标表结构
 
 CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必须为数据提供表结构。可以通过以下任一方法创建表结构：
 
@@ -48,7 +48,7 @@ CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必
     no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
     ```
 
-## 第 3 步. 编写配置文件
+## 第 3 步： 编写配置文件
 
 新建文件 `tidb-lightning.toml`，包含以下内容：
 
@@ -108,7 +108,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 
 关于配置文件更多信息，可参阅 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
-## 第 4 步. 导入性能优化（可选）
+## 第 4 步： 导入性能优化（可选）
 
 导入文件的大小统一约为 256 MiB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 在默认配置下只能使用一个线程来处理，这会降低导入速度。
 
@@ -130,7 +130,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 strict-format = true
 ```
 
-## 第 5 步. 执行导入
+## 第 5 步： 执行导入
 
 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 

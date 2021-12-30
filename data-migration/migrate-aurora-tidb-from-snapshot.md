@@ -19,7 +19,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ## 导入全量数据到 TiDB
 
-### 第 1 步. 导出 Aurora 快照文件到 Amazon S3
+### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
 
 1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
 
@@ -47,7 +47,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - 创建快照点时，Aurora binlog 的名称及位置。
 - 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
 
-### 第 2 步. 导出 schema
+### 第 2 步： 导出 schema
 
 因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
 
@@ -76,7 +76,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-d 或 --no-data    |不导出数据，仅导出 schema|
 |-f 或 --filter     |导出能匹配模式的表，不可用 -T 一起使用，语法可参考[table filter](/table-filter.md)|
 
-### 第 3 步. 编写 Lightning 配置文件
+### 第 3 步： 编写 Lightning 配置文件
 
 根据以下内容创建`tidb-lightning.toml` 配置文件：
 
@@ -121,7 +121,7 @@ type = '$3'
 
 如果需要在 TiDB 开启 TLS ，请参考 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
-### 第 4 步. 导入全量数据到 TiDB
+### 第 4 步： 导入全量数据到 TiDB
 
 1. 使用 Lightning 在下游 TiDB 建表:
 
@@ -164,7 +164,7 @@ type = '$3'
 - [安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
 - [获取 DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
 
-### 第 1 步. 创建数据源
+### 第 1 步： 创建数据源
 
 1. 新建`source1.yaml`文件, 写入以下内容：
 
@@ -199,7 +199,7 @@ type = '$3'
     |`--master-addr`  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
     |`operate-source create`|向 DM 集群加载数据源|
 
-### 第 2 步. 创建迁移任务
+### 第 2 步： 创建迁移任务
 
 新建 `task1.yaml` 文件, 写入以下内容：
 
@@ -247,7 +247,7 @@ mysql-instances:
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
 
-### 第 3 步. 启动任务
+### 第 3 步： 启动任务
 
 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
@@ -274,7 +274,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后，再次执行上述命令，重新启动任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling)以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
 
-### 第 4 步. 查看任务状态
+### 第 4 步： 查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
@@ -286,7 +286,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)。
 
-### 第 5 步. 监控任务与查看日志
+### 第 5 步： 监控任务与查看日志
 
 要查看迁移任务的历史状态以及更多的内部运行指标，可参考以下步骤。
 

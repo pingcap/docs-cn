@@ -29,7 +29,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 
 从 TiDB 4.0 开始，TiUP 作为软件包管理器，帮助你轻松管理 TiDB 生态系统中的不同集群组件。现在你可以只用一个 TiUP 命令行来管理任何组件。
 
-### 第 1 步. 安装 TiUP
+### 第 1 步： 安装 TiUP
 
 {{< copyable "shell-regular" >}}
 
@@ -45,7 +45,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 source ~/.bash_profile
 ```
 
-### 第 2 步. 安装组件
+### 第 2 步： 安装组件
 
 你可以通过以下命令查看所有可用组件:
 
@@ -89,7 +89,7 @@ tiup install dumpling tidb-lightning
 >
 > 如果需要安装特定版本，可以使用 `tiup install <component>[:version]` 命令.
 
-### 第 3 步. 更新 TiUP 及组件 (可选)
+### 第 3 步： 更新 TiUP 及组件 (可选)
 
 建议先查看新版本的更新日志及兼容性说明
 
