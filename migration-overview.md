@@ -49,7 +49,7 @@ summary: 总体描述各种数据迁移场景和对应的数据迁移方案。
 ## 从文件迁移数据到 TiDB
 
 - [从 CSV 文件迁移数据到 TiDB](/data-migration/migrate-flat-file-tidb.md)
-- [从 SQL 文件迁移数据到 TiDB](//data-migration/migrate-sql-file-tidb.md)
+- [从 SQL 文件迁移数据到 TiDB](/data-migration/migrate-sql-file-tidb.md)
 
 ## 更加复杂的迁移方式
 
@@ -58,4 +58,4 @@ DM 在实时同步过程中，多个已有特性可以使得同步过程更加�
 - [上游使用 pt/gh-ost 工具的持续同步场景](/data-migration/migrate-with-pt-ghost.md)
 - [如何过滤 binlog 事件](/data-migration/migrate-with-binlog-event-filter.md)
 - [如何通过 SQL 表达式过滤 binlog](/data-migration/migrate-with-binlog-sql-expression-filter.md)
-- [下游存在更多列的迁移场景](//data-migration/migrate-with-more-columns-downstream.md)
+- [下游存在更多列的迁移场景](/data-migration/migrate-with-more-columns-downstream.md)
