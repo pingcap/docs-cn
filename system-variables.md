@@ -588,7 +588,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
-### `tidb_restricted_read_only`
+### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`0`
