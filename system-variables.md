@@ -1528,3 +1528,5 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求。
+- 在 `IndexLookUp` 的回表场景下，如果 `IndexScan` 算子需要扫描大量数据并且只需要少部分数据时，由于要扫完整个 `IndexRange` 会产生比较大的延迟，也会使 TiKV 的 unified read pool 消耗大量的 CPU 资源。
+- 开启 `tidb_enable_paging` 之后，`IndexScan` 算子分 batch 返回结果，能够提前开始执行 `TableScan`，降低延迟，减少 `IndexScan` 和 `TableScan` 扫描的数据量。
