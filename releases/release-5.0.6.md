@@ -16,6 +16,7 @@ TiDB 版本：5.0.6
 
         - 将 cdc server 命令的错误输出从标准输出 (stdout) 改为标准错误 (stderr) [#3133](https://github.com/pingcap/tiflow/issues/3133)
         - 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `10M` [#3081](https://github.com/pingcap/tiflow/issues/3081)
+        - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
 
 ## 提升改进
 
@@ -33,23 +34,22 @@ TiDB 版本：5.0.6
 
     - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
     - 通过允许 `scatter-range-scheduler` 调度器调度空 Region 和修复该调度器的配置，使该调度器的调度结果更加均匀 [#4497](https://github.com/tikv/pd/issues/4497)
+    - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
 
 + Tools
 
     + TiCDC
 
         - 优化 TiKV 重新加载时的速率限制控制，缓解 changefeed 初始化时 gPRC 的拥堵问题 [#3110](https://github.com/pingcap/tiflow/issues/3110)
-        - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/tiflow/issues/2470)
-        - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/tiflow/issues/3111)
         - 为 EtcdWorker 添加 tick 频率限制，防止 PD 的 etcd 写入次数过于频繁影响 PD 服务 [#3112](https://github.com/pingcap/tiflow/issues/3112)
-        - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - Kafka sink 模块添加默认的元数据获取超时时间配置 (`config.Metadata.Timeout`) [#3352](https://github.com/pingcap/tiflow/issues/3352)
-        - 将参数 `max-message-bytes` 的默认值设置为 `10M`，从而减少可能发生的 Kafka 不能发送消息的问题 [#3081](https://github.com/pingcap/tiflow/issues/3081)
+        - 将参数 `max-message-bytes` 的默认值设置为 `10M`，减少 Kafka 不能发送消息的概率 [#3081](https://github.com/pingcap/tiflow/issues/3081)
         - 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
 
     + Backup & Restore (BR)
 
         - 遇到 PD 请求错误或 TiKV I/O 超时错误时重试 BR 任务 [#27787](https://github.com/pingcap/tidb/issues/27787)
+        - 增强恢复的鲁棒性 [#27421](https://github.com/pingcap/tidb/issues/27421)
 
     + TiDB Lightning
 
@@ -114,7 +114,6 @@ TiDB 版本：5.0.6
     - 修复 TiKV 节点缩容后可能导致 Panic 的问题 [#4344](https://github.com/tikv/pd/issues/4344)
     - 修复 Operator 被停止服务的节点阻塞的问题 [#3353](https://github.com/tikv/pd/issues/3353)
     - 修复因 Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936)
-    - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
     - 修复当对宕机的节点进行修复时删除副本的速度会受限的问题 [#4090](https://github.com/tikv/pd/issues/4090)
     - 修复当 Region 心跳低于 60 秒时热点 Cache 不能清空的问题 [#4390](https://github.com/tikv/pd/issues/4390)
 
@@ -141,7 +140,7 @@ TiDB 版本：5.0.6
         - 修复 cdc cli 接收到非预期参数时截断用户参数，导致用户输入数据丢失问题 [#2303](https://github.com/pingcap/tiflow/issues/2303)
         - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/tiflow/issues/2978)
         - 修复 MQ sink 模块不支持非 binary json 类型列解析 [#2758](https://github.com/pingcap/tiflow/issues/2758)
-        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB，防止 TiCDC 发送过大消息到 Kafka 集群 [#2962](https://github.com/pingcap/tiflow/issues/2962)
+        - 将参数 `max-message-bytes` 的默认值设置为 `10M`，减少 Kafka 发送过大消息的概率 [#3081](https://github.com/pingcap/tiflow/issues/3081)
         - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/tiflow/issues/3061)
         - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 Panic 的问题 [#2386](https://github.com/pingcap/tiflow/issues/2386)
         - 修复在多个 TiKV 崩溃或强制重启时可能遇到复制中断的问题 [#3288](https://github.com/pingcap/tiflow/issues/3288)
@@ -153,13 +152,14 @@ TiDB 版本：5.0.6
         - 修复 Canal 和 Maxwell 协议下 TiCDC 没有自动开启 `enable-old-value` 选项的问题 [#3676](https://github.com/pingcap/tiflow/issues/3676)
         - 修复 `cdc server` 命令在 Red Hat Enterprise Linux 系统的部分版本（如 6.8、6.9 等）上运行时出现时区错误的问题  [#3584](https://github.com/pingcap/tiflow/issues/3584)
         - 修复当 Kafka 为下游时 `txn_batch_size` 监控指标数据不准确的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
-        - 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
         - 修复 tikv_cdc_min_resolved_ts_no_change_for_1m 监控在没有 changefeed 的情况下持续更新的问题 [#11017](https://github.com/tikv/tikv/issues/11017)
         - 修复人为删除 etcd 任务的状态时导致 TiCDC panic 的问题 [#2980](https://github.com/pingcap/tiflow/issues/2980)
+        - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/tiflow/issues/3111)
+        - 修复当扫描存量数据耗时过长时，可能由于 TiKV 进行 GC 而导致存量数据扫描失败的问题 [#2470](https://github.com/pingcap/tiflow/issues/2470)
+        - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
 
     + Backup & Restore (BR)
 
-        - 增强恢复的鲁棒性 [#27421](https://github.com/pingcap/tidb/issues/27421)
         - 修复 BR 中平均速度 (average-speed) 不准确的问题 [#1405](https://github.com/pingcap/br/issues/1405)
 
     + Dumpling
