@@ -648,7 +648,7 @@ if __name__ == "__main__":
                             {
                                 "tag": "a",
                                 "text": "未合并",
-                                "href": "${tomshawn-en-author-open_url}"
+                                "href": "${tomshawn_en_author_open_url}"
                             }
                         ]
                     ]
