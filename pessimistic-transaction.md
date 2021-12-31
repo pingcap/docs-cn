@@ -41,9 +41,24 @@ BEGIN /*T! PESSIMISTIC */;
 
 悲观事务的行为和 MySQL 基本一致（不一致之处详见[和 MySQL InnoDB 的差异](#和-mysql-innodb-的差异)）：
 
-- `UPDATE`、`DELETE` 或 `INSERT` 语句都会读取已提交的**最新**数据来执行，并对所修改的行加悲观锁。
+- 悲观事务中引入快照读和当前读的概念:
 
-- `SELECT FOR UPDATE` 语句会对已提交的**最新**的数据而非所修改的行加上悲观锁。
+  快照读是一种不加锁读，读取的是可见版本，`SELECT` 语句中的读是快照读。
+  
+  当前读是一种加锁读，读取的是最新已提交的版本，`UPDATE`、`DELETE` 、`INSERT`、`SELECT FOR UPDATE` 语句中的读是当前读。
+
+  举例：
+  ```sql
+  CREATE TABLE t (id INT);
+  INSERT INTO T VALUES(1);
+  /* tx1 1*/ BEGIN /*T! PESSIMISTIC */;
+  /* tx1 2*/ UPDATE t SET a = a + 1; // 加锁
+  /* tx2 1*/ BEGIN /*T! PESSIMISTIC */;
+  /* tx2 2*/ SELECT * FROM t;  // 使用快照读，返回(1)
+  /* tx2 3*/ UPDATE t SET a = a + 1; // 使用当前读，等锁
+  /* tx1 3*/ COMMIT; // 此时，tx1 释放锁，tx2 的 UPDATE 操作获得锁，使用当前读，读到最新已提交的记录 (2) 执行更新操作成功
+  /* tx2 4*/ SELECT * FROM t; // union scan，memdb 中脏数据结果集与 快照结果集按照 rowid 进行 merge 后返回的结果集（3）
+  ```
 
 - 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
