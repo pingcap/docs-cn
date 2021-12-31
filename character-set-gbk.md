@@ -56,40 +56,42 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 * 在设置成 `character_set_client = gbk`、`character_set_connection = utf8mb4` 和 `character_set_table = gbk` 的情况下，TiDB 处理非法字符的情况与 MySQL 兼容。
 * 当设置 `names` 为 `gbk` 后 TiDB 处理非法字符的情况与 MySQL 有一些不一样。具体行为如下（其中 `insert` 语句所在表的建表语句：`create table gbk_table(a varchar(32) character set gbk);`）：
 
-|   DB    |    SQL_Mode          |   (Compatible)                       |   (Imcompatible)                     |
-|---------|----------------------|--------------------------------------|--------------------------------------|
+```sql
++---------+----------------------+--------------------------------------+--------------------------------------+
 |         |                      |   character_set_client = gbk <br>    |   character_set_client = gbk         |
-|    /    |          /           |   character_set_connection = utf8mb4 |   character_set_connection = gbk     |
+|    DB   |    SQL_Mode          |   character_set_connection = utf8mb4 |   character_set_connection = gbk     |
 |         |                      |   character_set_table = gbk          |   character_set_client = gbk         |
 |         |                      |   (Compatible)                       |   (Imcompatible)                     |
-|---------|----------------------|--------------------------------------|--------------------------------------|
++---------+----------------------+--------------------------------------+--------------------------------------+
 | MySQL   | STRICT_ALL_TABLES or | select hex('一a') (0xe4b88061)       | select hex('一a') (0xe4b88061)        |
 |         | STRICT_TRANS_TABLES  | e6b6933f                             | e4b88061                             |
 |         |                      |                                      |                                      |
 |         |                      | insert into gbk_table values('一a'); | insert into gbk_table values('一a');  |
 |         |                      | select hex(a) from gbk_table;        | Incorrect Error                      |
 |         |                      | e4b83f                               |                                      |
-|---------|----------------------|--------------------------------------|--------------------------------------|
++---------+----------------------+--------------------------------------+--------------------------------------+
 | TiDB    | STRICT_ALL_TABLES or | select hex('一a') (0xe4b88061)       | select hex('一a') (0xe4b88061)        |
 |         | STRICT_TRANS_TABLES  | e6b6933f                             | Incorrect Error                      |
 |         |                      |                                      |                                      |
 |         |                      | insert into gbk_table values('一a'); | insert into gbk_table values('一a');  |
 |         |                      | select hex(a) from gbk_table;        | Incorrect Error                      |
 |         |                      | e4b83f                               |                                      |
-|---------|----------------------|--------------------------------------|--------------------------------------|
++---------+----------------------+--------------------------------------+--------------------------------------+
 | MySQL   | not include          | select hex('一a') (0xe4b88061)       | select hex('一a') (0xe4b88061)        |
 |         | STRICT_ALL_TABLES or | e6b6933f                             | e4b88061                             |
 |         | STRICT_TRANS_TABLES  |                                      |                                      |
 |         |                      | insert into gbk_table values('一a'); | insert into gbk_table values('一a');  |
 |         |                      | select hex(a) from gbk_table;        | select hex(a) from gbk_table;        |
 |         |                      | e4b83f                               | e4b8                                 |
-|---------|----------------------|--------------------------------------|--------------------------------------|
++---------+----------------------+--------------------------------------+--------------------------------------+
 | TiDB    | not include          | select hex('一a') (0xe4b88061)       | select hex('一a') (0xe4b88061)        |
 |         | STRICT_ALL_TABLES or | e6b6933f                             | e4b83f                               |
 |         | STRICT_TRANS_TABLES  |                                      |                                      |
 |         |                      | insert into gbk_table values('一a'); | insert into gbk_table values('一a');  |
 |         |                      | select hex(a) from gbk_table;        | select hex(a) from gbk_table;        |
 |         |                      | e4b83f                               | e4b83f                               |
++---------+----------------------+--------------------------------------+--------------------------------------+
+```
 
 
 
@@ -106,3 +108,6 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
   ERROR 1115 (42000): Unsupported character introducer: 'gbk'
   ```
 
+## 其他组件兼容性
+
+* 目前不支持此功能的组件包括：TiCDC 和 TiFlash。
