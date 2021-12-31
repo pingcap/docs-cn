@@ -57,7 +57,7 @@ BEGIN /*T! PESSIMISTIC */;
   /* tx2 2*/ SELECT * FROM t;  // 使用快照读，返回(1)
   /* tx2 3*/ UPDATE t SET a = a + 1; // 使用当前读，等锁
   /* tx1 3*/ COMMIT; // 此时，tx1 释放锁，tx2 的 UPDATE 操作获得锁，使用当前读，读到最新已提交的记录 (2) 执行更新操作成功
-  /* tx2 4*/ SELECT * FROM t; // union scan，memdb 中脏数据结果集与 快照结果集按照 rowid 进行 merge 后返回的结果集（3）
+  /* tx2 4*/ SELECT * FROM t; // union scan，memdb 中脏数据结果集与快照结果集按照 rowid 进行 merge 后返回的结果集（3）
   ```
 
 - 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
