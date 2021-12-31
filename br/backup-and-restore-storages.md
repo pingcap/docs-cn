@@ -116,6 +116,8 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
 4. 若上述三个环境变量在工具节点上存在缺失，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
 5. 若 `步骤3` 和 `步骤4` 中，参数并未指定 `account-name`，则从工具节点上的环境变量中读取。且默认情况下（`send-credentials-to-tikv = true`）`account-name` 和 `account-key` 都是由迁移工具发送给 TiKV 的。 
 
++ `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和 客户端密码 `client_id`。
+
 ## 命令行参数
 
 除了使用 URL 参数，BR 和 Dumpling 工具亦支持从命令行指定这些配置，例如：
