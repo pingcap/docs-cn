@@ -40,15 +40,21 @@
     - [Test TiDB Using TPC-C](/benchmark/benchmark-tidb-using-tpcc.md)
 - Migrate
   - [Overview](/migration-overview.md)
-  - Migrate from MySQL
-    - [Migrate from Amazon Aurora MySQL Using TiDB Lightning](/migrate-from-aurora-using-lightning.md)
-    - [Migrate from MySQL SQL Files Using TiDB Lightning](/migrate-from-mysql-dumpling-files.md)
-    - [Migrate from Amazon Aurora MySQL Using DM](/migrate-from-aurora-mysql-database.md)
-  - Migrate from CSV Files
-    - [Use TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-    - [Use `LOAD DATA` Statement](/sql-statements/sql-statement-load-data.md)
-  - [Migrate from SQL Files](/migrate-from-mysql-dumpling-files.md)
-  - [Replicate Incremental Data between TiDB Clusters in Real Time](/incremental-replication-between-clusters.md)
+  - [Migration Tools](/migration-tools.md)
+  - Migration Scenarios
+    - [Migrate from Aurora](/migrate-aurora-to-tidb.md)
+    - [Migrate MySQL of Small Datasets](/migrate-small-mysql-to-tidb.md)
+    - [Migrate MySQL of Large Datasets](/migrate-large-mysql-to-tidb.md)
+    - [Migrate and Merge MySQL Shards of Small Datasets](/migrate-small-mysql-shards-to-tidb.md)
+    - [Migrate and Merge MySQL Shards of Large Datasets](/migrate-large-mysql-shards-to-tidb.md)
+    - [Migrate from CSV Files](/migrate-from-csv-files-to-tidb.md)
+    - [Migrate from SQL Files](/migrate-from-sql-files-to-tidb.md)
+    - [Replicate Incremental Data between TiDB Clusters](/incremental-replication-between-clusters.md)
+  - Advanced Migration
+    - [Continuous Replication with gh-ost or pt-osc](/migrate-with-pt-ghost.md)
+    - [Filter Binlog Events](/filter-binlog-event.md)
+    - [Filter DML Events Using SQL Expressions](/filter-dml-event.md)
+    - [Migrate to a Downstream Table with More Columns](/migrate-with-more-columns-downstream.md)
 - Maintain
   - Upgrade
     - [Use TiUP (Recommended)](/upgrade-tidb-using-tiup.md)

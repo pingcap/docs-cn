@@ -15,7 +15,7 @@ Currently, TiDB Lightning can mainly be used in the following two scenarios:
 
 Currently, TiDB Lightning supports:
 
-- The data source of the [Dumpling](/dumpling-overview.md), CSV or [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) exported formats.
+- The data source of the [Dumpling](/dumpling-overview.md), CSV or [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) exported formats.
 - Reading data from a local disk or from the Amazon S3 storage. For details, see [External Storages](/br/backup-and-restore-storages.md).
 
 ## TiDB Lightning architecture

@@ -1,68 +1,61 @@
 ---
-title: Migration Overview
-summary: This document describes how to migrate data from databases or data formats (CSV/SQL).
-aliases: ['/docs/dev/migration-overview/']
+title: Data Migration Overview
+summary: Learn the overview of data migration scenarios and the solutions.
 ---
 
-# Migration Overview
+# Data Migration Overview
 
-This document describes how to migrate data to TiDB, including migrating data from MySQL and from CSV/SQL files.
+This document gives an overview of the data migration solutions that you can use with TiDB. The data migration solutions are as follows:
 
-## Migrate from Aurora to TiDB
+- Full data migration.
+    - To import Amazon Aurora snapshots, CSV files, or Mydumper SQL files into TiDB, you can use TiDB Lightning to perform the full migration.
+    - To export all TiDB data as CSV files or Mydumper SQL files, you can use Dumpling to perform the full migration, which makes data migration from MySQL or MariaDB easier.
+    - To migrate all data from a database with a small data size volume (for example, less than 1 TiB), you can also use TiDB Data Migration (DM).
 
-In a cloud environment, you can directly migrate full data to TiDB by exporting snapshot from Aurora. For details, see [Migrate from Amazon Aurora MySQL Using TiDB Lightning](/migrate-from-aurora-using-lightning.md).
+- Quick initialization of TiDB. TiDB Lightning supports quickly importing data and can quickly initialize a specific table in TiDB. Before you use this feature, pay attention that the quick initialization has a great impact on TiDB and the cluster does not provide services during the initialization period.
+
+- Incremental replication. You can use TiDB DM to replicate binlogs from MySQL, MariaDB, or Aurora to TiDB, which greatly reduces the window downtime during the replication period.
+
+- Data replication between TiDB clusters. TiDB supports backup and restore. This feature can initialize a snapshot in an existing TiDB cluster to a new TiDB cluster.
+
+You might choose different migration solutions according to the database type, deployment location, application data size, and application needs. The following sections introduce some common migration scenarios, and you can refer to these sections to determine the most suitable solution according to your needs.
+
+## Migrate from Aurora MySQL to TiDB
+
+When you migrate data from Aurora to a TiDB cluster deployed on AWS, your data migration takes two operations: full data migration and incremental replication. You can choose the corresponding operation according to your application needs.
+
+- [Migrate Data from Amazon Aurora to TiDB](/migrate-aurora-to-tidb.md).
 
 ## Migrate from MySQL to TiDB
 
-To migrate data from MySQL to TiDB, it is recommended to use one of the following methods:
+If cloud storage (S3) service is not used, the network connectivity is good, and the network latency is low, you can use the following method to migrate data from MySQL to TiDB.
 
-- [Use Dumpling and TiDB Lightning](#use-dumpling-and-tidb-lightning-full-data) to migrate full data.
-- [Use TiDB Data Migration (DM)](#use-dm) to migrate full and incremental data.
+- [Migrate MySQL of Small Datasets to TiDB](/migrate-small-mysql-to-tidb.md)
 
-### Use Dumpling and TiDB Lightning (full data)
+If you have a high demand on migration speed, or if the data size is large (for example, larger than 1 TiB), and you do not allow other applications to write to TiDB during the migration period, you can use TiDB Lightning to quickly import data. Then, you can use DM to replicate incremental data (binlog) based on your application needs.
 
-#### Scenarios
+- [Migrate MySQL of Large Datasets to TiDB](/migrate-large-mysql-to-tidb.md)
 
-You can use Dumpling and TiDB Lightning to migrate full data when the data size is greater than 1 TB. If you need to replicate incremental data, it is recommended to [use DM](#use-dm) to create an incremental replication task.
+## Migrate and merge MySQL shards into TiDB
 
-#### Migration method
+Suppose that your application uses MySQL shards for data storage, and you need to migrate these shards into TiDB as one table. In this case, you can use DM to perform the shard merge and migration.
 
-1. Use Dumpling to export the full MySQL data.
-2. Use TiDB Lightning to import the full data to TiDB. For details, refer to [Migrate data using Dumpling and TiDB Lightning](/migrate-from-mysql-dumpling-files.md).
+- [Migrate and Merge MySQL Shards of Small Datasets to TiDB](/migrate-small-mysql-shards-to-tidb.md)
 
-### Use DM
+If the data size of the sharded tables is large (for example, larger than 1 TiB), and you do not allow other applications to write to TiDB during the migration period, you can use TiDB Lightning to quickly merge and import the sharded tables. Then, you can use DM to replicate incremental sharding data (binlog) based on your application needs.
 
-#### Scenarios
-
-You can use DM to migrate full MySQL data and to replicate incremental data. It is suggested that the size of the full data is less than 1 TB. Otherwise, it is recommended to use Dumpling and TiDB Lightning to import the full data, and then use DM to replicate the incremental data.
-
-#### Migration method
-
-For details, refer to [Migrate from MySQL (Amazon Aurora)](/dm/migrate-from-mysql-aurora.md).
+- [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md)
 
 ## Migrate data from files to TiDB
 
-You can migrate data from CSV/SQL files to TiDB.
+- [Migrate data from CSV files to TiDB](/migrate-from-csv-files-to-tidb.md)
+- [Migrate data from SQL files to TiDB](/migrate-from-sql-files-to-tidb.md)
 
-### Migrate data from CSV files to TiDB
+## More complex migration solutions
 
-#### Scenarios
+The following features can improve the migration process and might meet more needs in your application.
 
-You can migrate data from heterogeneous databases that are not compatible with the MySQL protocol to TiDB.
-
-#### Migration method
-
-1. Export full data to CSV files.
-2. Import CSV files to TiDB using one of the following methods:
-
-    - Use TiDB Lightning.
-
-        Its import speed is fast. It is recommended to use TiDB Lightning in the case of large amounts of data in CSV files. For details, refer to [TiDB Lightning CSV Support](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md).
-
-    - Use the `LOAD DATA` statement.
-
-        Execute the `LOAD DATA` statement in TiDB to import CSV files. This is more convenient, but if an error or interruption occurs during the import, manual intervention is required to check the consistency and integrity of the data. Therefore, it is **not recommended** to use this method in the production environment. For details, refer to [LOAD DATA](/sql-statements/sql-statement-load-data.md).
-
-### Migrate data from SQL files to TiDB
-
-Use Mydumper and TiDB Lightning to migrate data from SQL files to TiDB. For details, refer to [Use Dumpling and TiDB Lightning](#use-dumpling-and-tidb-lightning-full-data).
+- [Migrate with pt/gh-host](/migrate-with-pt-ghost.md)
+- [Migrate with Binlog Event Filter](/filter-binlog-event.md)
+- [Migrate with Filter Binlog Events Using SQL Expressions](/filter-dml-event.md)
+- [Migrate with More Columns in Downstream](/migrate-with-more-columns-downstream.md)

@@ -381,7 +381,7 @@ TiDB data migration tools support using Amazon S3 (and other S3-compatible stora
 To use this feature, refer to the following documents:
 
 - [Export data to Amazon S3 cloud storage](/dumpling-overview.md#export-data-to-amazon-s3-cloud-storage), [#8](https://github.com/pingcap/dumpling/issues/8)
-- [Migrate from Amazon Aurora MySQL Using TiDB Lightning](/migrate-from-aurora-using-lightning.md), [#266](https://github.com/pingcap/tidb-lightning/issues/266)
+- [Migrate from Amazon Aurora MySQL Using TiDB Lightning](/migrate-aurora-to-tidb.md), [#266](https://github.com/pingcap/tidb-lightning/issues/266)
 
 ### Optimize the data import performance of TiDB Cloud
 
