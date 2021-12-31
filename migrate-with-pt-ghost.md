@@ -11,10 +11,10 @@ summary: 介绍在使用 DM 持续增量数据同步，上游使用 pt-osc/gh-os
 
 具体迁移操作可参考已有数据迁移场景：
 
-- [从小数据量 MySQL 迁移数据到 TiDB](/data-migration/migrate-small-mysql-to-tidb.md)
-- [从大数据量 MySQL 迁移数据到 TiDB](/data-migration/migrate-large-mysql-to-tidb.md)
-- [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-small-mysql-shards-to-tidb.md)
-- [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-large-mysql-shards-to-tidb.md)
+- [从小数据量 MySQL 迁移数据到 TiDB](/migrate-small-mysql-to-tidb.md)
+- [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
+- [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
+- [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
 
 ## 开启 DM 的 online-ddl 特性
 

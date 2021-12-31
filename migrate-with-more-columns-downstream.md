@@ -7,10 +7,10 @@ summary: 介绍下游存在更多列的迁移场景。
 
 本文档介绍数据同步时，下游存在更多列的迁移场景需要的注意事项。具体迁移操作可参考已有数据迁移场景：
 
-- [从小数据量 MySQL 迁移数据到 TiDB](/data-migration/migrate-small-mysql-to-tidb.md)
-- [从大数据量 MySQL 迁移数据到 TiDB](/data-migration/migrate-large-mysql-to-tidb.md)
-- [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-small-mysql-shards-to-tidb.md)
-- [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-large-mysql-shards-to-tidb.md)
+- [从小数据量 MySQL 迁移数据到 TiDB](/migrate-small-mysql-to-tidb.md)
+- [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
+- [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
+- [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
 
 ## 使用 DM 迁移至存在更多列的下游
 

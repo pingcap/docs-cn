@@ -10,7 +10,7 @@ summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
 - TiB 级以内的分库分表数据合并迁移
 - 基于 MySQL binlog 的增量、持续分库分表合并迁移
 
-若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/data-migration/migrate-large-mysql-shards-to-tidb.md)。
+若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)。
 
 本文以一个简单的场景为例，示例中的两个数据源 MySQL 实例的分库和分表数据迁移至下游 TiDB 集群。示意图如下。
 
