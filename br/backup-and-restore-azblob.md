@@ -50,7 +50,7 @@ tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.ac
 
 ### 备份
 
-备份过程中需要用到 `account-name`, `account-key`, `access-tier` 三个参数，参数的详细介绍请参考[外部存储](/br/backup-and-restore-storages.md)。有以下两种命令方式。
+备份过程中需要用到 `account-name`, `account-key` 两个参数，`access-tier` 可以根据需要配置，本文展示了备份到 `cool tier` 的案例。
 
 #### 将信息放在 URL 参数中
 
