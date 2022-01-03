@@ -36,13 +36,11 @@ explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 
 > **注意：**
 >
-> 目前，TiDB 的 `IndexMerge` 特性在 v5.4.0 及之后的版本默认打开。同时 `IndexMerge` 目前支持的场景仅限于析取范式（`or` 连接的表达式），暂不支持合取范式（`and` 连接的表达式）。开启 `IndexMerge` 特性有以下方法：
->
-> - 设置系统变量 `tidb_enable_index_merge=1`；
->
-> - 在查询中使用 SQL 优化器 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-)。
->
-> SQL Hint 的优先级高于系统变量。
+> - TiDB 的 `IndexMerge` 特性在 v5.4.0 及之后的版本默认打开 (tidb_enable_index_merge)
+> - 在查询中使用 SQL 优化器 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 会强制使用 IndexMerge 且优先级比开关高
+> - `IndexMerge` 目前支持的场景仅限于析取范式（`or` 连接的表达式），暂不支持合取范式（`and` 连接的表达式）
+> - `IndexMerge` 目前无法在临时表上使用
+> - 过滤条件中有无法下推的表达式时，需要使用 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 才能使用 `IndexMerge`
 
 ## 其他类型查询的执行计划
 
