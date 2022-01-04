@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-data-migration/dev/relay-log/']
 
 The Data Migration (DM) relay log consists of several sets of numbered files containing events that describe database changes, and an index file that contains the names of all used relay log files.
 
-After DM-worker is started, it automatically migrates the upstream binlog to the local configuration directory (the default migration directory is `<deploy_dir>/relay_log` if DM is deployed using TiUP). When DM-worker is running, it migrates the upstream binlog to the local file in real time. The sync processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then migrates these statements to the downstream database.
+After DM-worker is started, it automatically migrates the upstream binlog to the local configuration directory (the default migration directory is `<deploy_dir>/<relay_log>` if DM is deployed using TiUP). The default value of `<relay_log>` is `relay-dir` and can be modified in [Upstream Database Configuration File](/dm/dm-source-configuration-file.md). When DM-worker is running, it migrates the upstream binlog to the local file in real time. The sync processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then migrates these statements to the downstream database.
 
 This document introduces the directory structure and initial migration rules DM relay logs, and how to pause, resume, and purge relay logs.
 
@@ -21,7 +21,7 @@ This document introduces the directory structure and initial migration rules DM 
 An example of the directory structure of the local storage for a relay log:
 
 ```
-<deploy_dir>/relay_log/
+<deploy_dir>/<relay_log>/
 |-- 7e427cc0-091c-11e9-9e45-72b7c59d52d7.000001
 |   |-- mysql-bin.000001
 |   |-- mysql-bin.000002
