@@ -647,7 +647,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 开启 `tidb_enable_paging` 能够优化使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求。
 - 在使用无法下推 `Limit` 的 `IndexLookUp` 算子的回表场景下，可能出现延迟高、TiKV 的 unified read pool CPU 使用高的情况。
 - 当由于 `Limit` 算子的限制只需要少部分数据时，开启 `tidb_enable_paging`，能够减少处理数据的数量，实现降低延迟，降低资源消耗的效果。
-- 开启 `tidb_enable_paging` 之后，`IndexScan` 算子分 batch 返回结果，能够提前开始执行 `TableScan`，降低延迟，减少 `IndexScan` 和 `TableScan` 扫描的数据量。
 
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
