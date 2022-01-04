@@ -254,7 +254,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${en_jin19_en_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${en_jin19_en_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -301,7 +301,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${shichun_0415_zh_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${shichun_0415_zh_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -330,7 +330,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${shichun_0415_en_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${shichun_0415_en_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -377,7 +377,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${hfxsd_zh_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${hfxsd_zh_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -406,7 +406,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${hfxsd_en_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${hfxsd_en_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -453,7 +453,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${ran_huang_zh_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${ran_huang_zh_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -482,7 +482,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${ran_huang_en_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${ran_huang_en_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -529,7 +529,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${qiancai_zh_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${qiancai_zh_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -558,7 +558,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${qiancai_en_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${qiancai_en_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -605,7 +605,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${tomshawn_zh_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${tomshawn_zh_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
@@ -634,7 +634,7 @@ if __name__ == "__main__":
                             },
                             {
                                 "tag": "text",
-                                "text": "有 ${tomshawn_en_assignee_close} 个已合源语 PR"
+                                "text": "，有 ${tomshawn_en_assignee_close} 个已合源语 PR"
                             },
                             {
                                 "tag": "a",
