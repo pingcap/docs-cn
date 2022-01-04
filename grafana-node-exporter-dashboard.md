@@ -46,9 +46,9 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 - Active/Inactive: 活跃或非活跃内存情况，非活跃的内存将会优先回收，活跃的内存，除非绝对必要否则不会回收
 - Writeback and Dirty: 回写和脏页。回写：准备主动回写硬盘的缓存页；临时回写：用于临时写回缓冲区的内存；脏页：需要写回磁盘的数据大小
 - Shared and Mapped: 共享内存和被映射占用的内存情况
-- Mlocked/Slab:
+- Mlocked/Slab: 内存的 Mlock 和 Slab 情况
 - KernelStack: 内存堆栈大小（常驻内存，不可回收）
-- Anonymous: 匿名内存页面的情况，
+- Anonymous: 匿名内存页面的情况
 - HugePages Size: 内存大页大小
 - HugePages Counter: 内存大页数量
 - Commit: 系统分配内存情况
@@ -82,11 +82,11 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 
 ## Vmstat - Compact
 
-- Compact Status: 内存整理状态
-- Compact Stall: 
-- Compact Isolated:
-- Compact Free Scanned:
-- Compact Migrate Scanned:
+- Compact Status: 内存压缩状态
+- Compact Stall: 开始执行内存碎片失败的页面数
+- Compact Isolated: 用于内存压缩隔离的页面情况
+- Compact Free Scanned: 扫描由压缩守护程序释放的页面情况
+- Compact Migrate Scanned: 通过内存压缩守护程序扫描以进行迁移的页面情况
 
 ## Load
 
