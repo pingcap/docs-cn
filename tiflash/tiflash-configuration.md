@@ -155,6 +155,9 @@ delta_index_cache_size = 0
     cop_pool_size = 0
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
+    ## 从 v5.4 引入，表示是否启用可自动扩展的线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 false。
+    # enable_elastic_threadpool = 0
+
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
