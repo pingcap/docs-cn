@@ -18,9 +18,9 @@ aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key
 - Total Swap: 可使用的交换内存大小
 - System Uptime: 系统启动时长
 - Node_exporter version: Node Exporter 使用版本
-- CPU Used: CPU 的使用率，最大为 100%
-- Memory Used: 内存的使用率，最大为 100%
-- Swap Used: 交换内存的使用率，最大为 100%
+- CPU Used: CPU 的使用率
+- Memory Used: 内存的使用率
+- Swap Used: 交换内存的使用率
 - Load1: 1 分钟的负载情况
 - Load5: 5 分钟的负载情况
 - Load15: 15 分钟的负载情况
@@ -36,7 +36,7 @@ aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key
 
 ## CPU
 
-- CPU Usage: CPU 的使用率，最大为 100%
+- CPU Usage: CPU 的使用率
 
 ## Memory
 
