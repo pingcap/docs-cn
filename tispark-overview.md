@@ -355,6 +355,25 @@ TiSpark 可以使用 TiDB 的统计信息：
 | --------   | -----:   | :----: |
 | spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
 
+## 安全
+
+目前 TiSpark (version >= 2.5.0) 可以通过 TiDB 进行认证与鉴权，该功能默认关闭
+
+在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
+
+```
+// 打开认证授权功能
+spark.sql.auth.enable   true
+
+// 配置 TiDB 信息 
+spark.sql.tidb.addr    $your_tidb_server_address
+spark.sql.tidb.port    $your_tidb_server_port
+spark.sql.tidb.user    $your_tidb_server_user
+spark.sql.tidb.password $your_tidb_server_password
+```
+
+详细使用手册请阅读[这份文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+
 ## TiSpark FAQ
 
 - Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？
