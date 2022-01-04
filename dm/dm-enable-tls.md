@@ -1,7 +1,6 @@
 ---
 title: 为 DM 的连接开启加密传输
 summary: 了解如何为 DM 的连接开启加密传输。
-aliases: ['/zh/tidb-data-migration/dev/enable-tls/']
 ---
 
 # 为 DM 的连接开启加密传输

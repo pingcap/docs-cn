@@ -1,6 +1,6 @@
 ---
 title: DM 配置简介
-aliases: ['/docs-cn/tidb-data-migration/dev/config-overview/','/zh/tidb-data-migration/dev/config-overview/']
+aliases: ['/docs-cn/tidb-data-migration/dev/config-overview/']
 ---
 
 # DM 配置简介
