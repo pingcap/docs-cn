@@ -26,7 +26,7 @@ TiDB 版本：5.4.0
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
 |  `tidb_backoff_lock_fast` | 修改 | 默认值由 `100` 修改为 `10` |
-|  |  |  |
+| `tidb_enable_paging`  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能出现延迟高、TiKV 的 unified read pool CPU 使用高的情况。在这种情况下，由于 `Limit` 算子限制只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，降低延迟，减少资源消耗。 |
 |  |  |  |
 
 ### 配置文件参数
@@ -36,7 +36,6 @@ TiDB 版本：5.4.0
 | TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。 在默认配置下，备份速度可能下降。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size`、`log-rotation-timespan` | 删除 | 废弃 TiKV log 参数，改为使用 TiDB 的 log 参数。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 参数，使用 TiDB log 参数。 |
 | PD | `log.level` | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感 |
-| PD | `log.disable-timestamp` | 删除 | v5.4.0 前该参数默认值为 `false`。自 v5.4.0 起废弃该参数。如果集群在升级至 v5.4.0 前该参数值不为 `false`，要保持兼容。 |
 
 ### 其他
 
@@ -120,11 +119,19 @@ TiDB 版本：5.4.0
 
     [用户文档](/)
 
-- **Raft Engine（实验特性）**
+- **新增 Raft Engine（实验特性）**
 
     支持使用 Raft Engine 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。
 
     由于 Raft Engine 涉及数据格式改动，目前仍属于实验特性，并默认关闭。同时请注意最新的 Raft Engine 不与 v5.4.0 版本前的 Raft Engine 兼容。因此在进行跨越 v5.4.0 版本的升级和降级之前，需要确保已有 TiKV 节点上的 Raft Engine 已被关闭。
+
+- TiFlash
+
+  - 支持将更多函数下推至 MPP 引擎
+      - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
+      - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
+  - 引入动态线程池，提升资源利用率
+  - 新增或修改一些 TiFlash 已有配置的默认值，提升 TiFlash 的性能和稳定性
 
 ### 稳定性
 
@@ -260,6 +267,10 @@ TiDB 版本：5.4.0
     [用户文档](/)
 
 ## 提升改进
+
++ TiDB
+
+    - 新增系统变量 `tidb_enable_paging`，开启该功能可显著降低使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 数据较小且无法下推到 `IndexScan` 上的读请求的延迟 [#30578](https://github.com/pingcap/tidb/issues/30578)
 
 
 ## Bug 修复
