@@ -31,7 +31,7 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 - Machine: 机器平台
 - Kernel version: 内核版本
 - Interrupts: 内核中断情况
-- Forks: 内核系统调用情况
+- Forks: Linux 下创建进程的系统调用情况
 - Context Switches: 内核上下文切换情况
 
 ## CPU
