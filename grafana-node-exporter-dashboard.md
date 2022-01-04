@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
+目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node_exporter、Overview 等。
 
 以下为 Node Exporter Dashboard 监控说明：
 
