@@ -137,6 +137,3 @@ aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key
 ## Processes:
 
 - Processes: 进程情况
-
-- Disk Write Latency（ms）: 硬盘写延迟（毫秒）情况
-- Disk Write Latency（ms）: 硬盘写延迟（毫秒）
