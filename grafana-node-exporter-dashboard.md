@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/referenc
 - Swap: 系统的交换内存情况
 - Swap Activity: 交换内存使用情况
 - Page/Swap in/out: 分页和交换内存的写入/写出情况
-- Mem Fault: 内存错误情况
+- Mem Fault: 内存缺页异常情况
 
 ## Vmstat - Page
 
