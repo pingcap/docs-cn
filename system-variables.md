@@ -639,6 +639,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_paging` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求。
+- 开启 `tidb_enable_paging` 能够优化使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求。
+- 在使用无法下推 `Limit` 的 `IndexLookUp` 算子的回表场景下，可能出现延迟高、TiKV 的 unified read pool CPU 使用高的情况。
+- 当 `Limit` 算子的限制只需要少部分数据时，开启 `tidb_enable_paging`，能够减少处理数据的数量，实现降低延迟，降低资源消耗的效果。
+- 开启 `tidb_enable_paging` 之后，`IndexScan` 算子分 batch 返回结果，能够提前开始执行 `TableScan`，降低延迟，减少 `IndexScan` 和 `TableScan` 扫描的数据量。
+
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1522,12 +1532,3 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_enable_paging` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`OFF`
-- 这个变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求。
-- 打开 `tidb_enable_paging` 能够优化使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求。
-- 在 `IndexLookUp` 的回表场景下，如果 `IndexScan` 算子需要扫描大量数据并且只需要少部分数据时，由于要扫完整个 `IndexRange` 会产生比较大的延迟，也会使 TiKV 的 unified read pool 消耗大量的 CPU 资源。
-- 开启 `tidb_enable_paging` 之后，`IndexScan` 算子分 batch 返回结果，能够提前开始执行 `TableScan`，降低延迟，减少 `IndexScan` 和 `TableScan` 扫描的数据量。
