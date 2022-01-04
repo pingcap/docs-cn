@@ -25,7 +25,7 @@ TiDB 版本：5.4.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-|  |  |  |
+|  `tidb_backoff_lock_fast` | 修改 | 默认值由 `100` 修改为 `10` |
 |  |  |  |
 |  |  |  |
 
@@ -33,16 +33,22 @@ TiDB 版本：5.4.0
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-|  |  |  |
-|  |  |  |
-|  |  |  |
+| TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。 在默认配置下，备份速度可能下降。 |
+| TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size`、`log-rotation-timespan` | 删除 | 废弃 TiKV log 参数，改为使用 TiDB 的 log 参数。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 参数，使用 TiDB log 参数。 |
+| PD | `log.level` | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感 |
+| PD | `log.disable-timestamp` | 删除 | v5.4.0 前该参数默认值为 `false`。自 v5.4.0 起废弃该参数。如果集群在升级至 v5.4.0 前该参数值不为 `false`，要保持兼容。 |
 
 ### 其他
 
--
--
--
--
+- TiDB Dashboard 默认不再使用 `root` + 空密码登录。
+
+    从 v5.4.0开始，使用 TiUP 启动集群时推荐使用 `start --initial`。执行该操作启动集群后，会为 `root` 账号自动生成一个随机密码，`root` 账号登录 Dashboard 需要使用这个密码。
+
+- TiFlash 不支持 GBK 字符
+- 如果 `character_set_client` 和 `character_set_connection` 都是 `gbk` 时，处理非法 GBK 字符与 MySQL 存在兼容性问题。
+- `character_set_client` 在处理 `prepare` 语句时可能出现兼容性问题。
+- TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
+- 从 TiDB v4.0（不包含 v4.0.0）升级到 v5.4.0 及更新的集群，`tidb_enable_index_merge` 变量默认关闭。
 
 ## 新功能
 
@@ -114,6 +120,12 @@ TiDB 版本：5.4.0
 
     [用户文档](/)
 
+- **Raft Engine（实验特性）**
+
+    支持使用 Raft Engine 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。
+
+    由于 Raft Engine 涉及数据格式改动，目前仍属于实验特性，并默认关闭。同时请注意最新的 Raft Engine 不与 v5.4.0 版本前的 Raft Engine 兼容。因此在进行跨越 v5.4.0 版本的升级和降级之前，需要确保已有 TiKV 节点上的 Raft Engine 已被关闭。
+
 ### 稳定性
 
 - **功能 7**
@@ -138,6 +150,21 @@ TiDB 版本：5.4.0
 
     [用户文档](/)
 
+- **优化备份对集群的影响**
+
+    Backup & Restore (BR) 增加了备份线程自动调节功能。该功能通过监控集群资源的使用率自动调节备份的线程数的方式，降低备份过程对集群的影响。在某些 Case 验证中，通过增加集群用于备份的资源和开启备份线程自动调节功能，备份的影响可以降低到 10% 以下。
+
+    该功能默认开启，但是如果你在离线环境中进行备份，可以关闭该功能来获得更高的备份速度。
+
+    详细文档请阅读 [BR 自动调节](/br/br-features.md#自动调节-从-v54-版本开始引入)。
+
+- **支持 Azure Blob Storage 作为备份目标存储（实验特性）**
+
+    BR 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
+
+    该功能目前是实验特性，详细情况参考 [BR 支持 Azure Blob Storage 远端存储](/br/backup-and-restore-azblob.md)。
+
+
 ### 数据迁移
 
 - **功能 9**
@@ -149,6 +176,29 @@ TiDB 版本：5.4.0
     <如果功能限制或此功能特定的兼容性问题，需要提及>
 
     [用户文档](/)
+
+- **为 TiDB Lightning 增加已存在数据表是否允许导入的开关**
+
+    为 TiDB Lightning 增加 `incremental-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
+
+- **在 TiDB Lightning 中添加重复数据的检测**
+
+    在 `backend=local` 模式下，数据导入完成之前 TiDB Lightning 会输出冲突数据，然后从数据库中删除这些冲突数据。用户可以在导入完成后解析冲突数据，并根据业务规则选择适合的数据进行插入。建议根据冲突数据清洗上游数据源，避免在后续增量数据迁移阶段遇到冲突数据而造成数据不一致。
+
+- **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
+
+    - 恢复 `source` 配置中 `enable-relay` 开关
+    - 增加 `start-relay` 或 `stop-relay` 命令中动态开启或关闭 relay log 的功能
+    - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态
+    - relay log 的存放路径移至 DM-worker 配置文件
+
+- **在 DM 中优化排序规则的处理方式**
+
+    增加 `collation_compatible` 开关，支持 `strict` 和 `loose`（默认）两种模式。如果对排序规则要求不严格，允许排序规则不一致，使用默认的 `loose` 模式可使同步正常进行；如果对排序规则要求严格，排序规则不一致导致报错，则可以使用 `strict` 模式。
+
+- **在 DM 中新增 `transfer source` 支持平滑执行同步任务**
+
+    当 DM-worker 所在各节点负载不均衡时，`transfer source` 命令可用于手动将某 `source` 配置迁移到其他节点。优化后的 `transfer source` 简化了用户操作步骤，不再要求先暂停所有关联 task 而是直接执行平滑迁移，DM 将在内部完成所需操作。
 
 ### 问题诊断效率
 
@@ -186,6 +236,16 @@ TiDB 版本：5.4.0
     <如果功能限制或此功能特定的兼容性问题，需要提及>
 
     [用户文档](/)
+
+- **持续性能分析（实验特性）**
+
+    - 支持更多组件：支持 TiFlash 组件查看 CPU Profiling
+    - 支持更方便的查看形式：支持以火焰图形式查看 CPU Profiling 和 Goroutine 结果。
+    - 支持更多部署环境：支持在 TiDB Operator 部署环境下启用持续性能分析功能。
+
+    该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启，开启方法见[用户文档](/dashboard/continuous-profiling.md)。
+
+    要使用持续性能分析功能，集群须由 TiUP v1.9.0 及以上版本或 TiDB Operator vx.x.x（TBD）及以上版本升级或安装。
 
 ## 遥测
 
