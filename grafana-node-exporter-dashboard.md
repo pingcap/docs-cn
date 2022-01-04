@@ -1,6 +1,6 @@
 ---
 title: Node Exporter 面板重要监控指标详解
-aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/overview-dashboard/']
+aliases: ['/docs-cn/dev/grafana-node-exporter-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/node-exporter-dashboard/']
 ---
 
 # Node Exporter 面板重要监控指标详解
