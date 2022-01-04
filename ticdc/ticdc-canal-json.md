@@ -13,19 +13,27 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引为 0 的 MQ Partition。
 * WATERMARK Event：代表一个特殊的时间点，表示在这个时间点前的收到的 Event 是完整的。仅当用户在 sink-uri 中设置 `enable-tidb-extension=true` 时生效。
 
+使用 `Canal-JSON` 时的配置样例如下所示：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json"
+```
+
 ### TiDB 扩展字段
 
 Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension=true` 后，Canal-JSON 将携带 TiCDC 扩展字段，内容如下：
 
-* TiCDC 将会发送 ResolvedEvent 事件。
-* TiCDC 发送的 DML Event 和 DDL Event 类型事件中，将会含有一个名为 `_tidb` 的字段。
+* TiCDC 将会发送 WATERMARK Event 消息。
+* TiCDC 发送的 DML Event 和 DDL Event 类型消息中，将会含有一个名为 `_tidb` 的字段。
 
 配置样例如下所示：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json"
 ```
 
 `enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
@@ -50,7 +58,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     "mysqlType": null,
     "data": null,
     "old": null,
-    "_tidb": { // 仅当 enable-tidb-extension=true 时存在该字段
+    "_tidb": {
         "commitTs": 163963309467037594
     }
 }
@@ -71,11 +79,13 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | mysqlType   | object | 当 isDdl 为 false 时，记录每一列数据类型 在 MySQL 中的类型表示 |
 | data        | Object | 当 isDdl 为 false 时，记录每一列的名字和其数据值 |
 | old         | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值|
-| _tidb       | Object | 仅当 enable-tidb-extension 为 true 时，该字段存在。当前阶段，只含有 commitTs，其为造成 Row 变更的事务的 tso ｜
+| _tidb       | Object | 造成 Row 变更的事务的 tso ｜
+
+仅当 `enable-tidb-extension`=true 时，TiCDC 发送的 Canal-JSON 格式中，含有 `_tidb` 字段，其中的 `commitTs` 值为造成 Row 变更的事务的 tso。
 
 ### DML Event
 
-对于一行数据变更事件，TiCDC 会将其编码成如下形式:
+对于一行 DML 数据变更事件，TiCDC 会将其编码成如下形式:
 
 ```
 {
@@ -117,7 +127,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
         }
     ],
     "old": null,
-    "_tidb": {                             // 仅当 enable-tidb-extension=true 时存在该字段
+    "_tidb": {
         "commitTs": 163963314122145239
     }
 }
@@ -144,14 +154,14 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     }
 }
 
-TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 Resolved Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其含义为当前 tso。当用户收到该类型事件时，可以得知，所有 tso 小于 `watermarkTs` 的事件，已经发送完毕。
+TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该时间发送时的 tso。当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
 ### 消费端数据解析
 
 从上面的示例中可知，Canal-JSON 具有统一的数据格式，针对不同的事件类型，有不同的字段填充规则。消费者可以使用统一的方法对该 JSON 格式的数据进行解析，然后通过判断字段值的方式，来确定具体事件类型：
 
 * 当 `isDdl` 为 true 时，该消息含有一条 DDL Event。
-* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type ` 为 `TIDB_WATERMARK`，可得知其为 Resolved Event，反之则为 DML Event。
+* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type ` 为 `TIDB_WATERMARK`，可得知其为 WATERMARK Event，反之则为 DML Event。
 
 ## MySQL Type 字段说明
 
