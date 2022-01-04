@@ -255,7 +255,7 @@ Starting /root/.tiup/components/cluster/v1.3.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.0.3
+TiDB Version: v5.0.6
 
 ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 
