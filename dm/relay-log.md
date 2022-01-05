@@ -123,7 +123,7 @@ Relay log 迁移的起始位置由如下规则决定：
 
 > **注意：**
 > 
-> 在 v2.0.2（包含）到 v5.3.0（包含）中，上游数据源配置中的 `enable-relay` 项已经失效。[加载数据源配置](/dm/dm-manage-source.md#数据源操作)时，如果发现配置中的 `enable-relay` 项为 `true`，DM 会给出如下信息提示：
+> 在 v2.0.2（包含）至 v5.3.0（包含）版本，上游数据源配置中的 `enable-relay` 项失效，仅能通过`start-relay`/`stop-relay`命令开启和关闭。[加载数据源配置](/dm/dm-manage-source.md#数据源操作)时，如果发现配置中的 `enable-relay` 项为 `true`，DM 会给出如下信息提示：
 > 
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
