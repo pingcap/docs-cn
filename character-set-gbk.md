@@ -8,7 +8,7 @@ title: GBK 字符集
 
 目前 TiDB 支持 GBK 字符集和排序规则情况：
 ```sql
-SHOW CHARACTER SET WHERE CHARSET = 'gbk';;
+SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 +---------+-------------------------------------+-------------------+--------+
 | Charset | Description                         | Default collation | Maxlen |
 +---------+-------------------------------------+-------------------+--------+
@@ -23,7 +23,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 +----------------+---------+------+---------+----------+---------+
 | gbk_bin        | gbk     |   87 |         | Yes      |       1 |
 +----------------+---------+------+---------+----------+---------+
-2 rows in set (0.00 sec)
+1 rows in set (0.00 sec)
 ```
 TiDB GBK 字符集默认排序规则与 MySQL 不一致，MySQL 的是 `gbk_chinese_ci`. 另外，目前 TiDB 支持的 `gbk_bin` 与 MySQL 使用的也不一致。TiDB 这边排序规则是在将 GBK 转换成 UTF8MB4 然后做二进制排序。
 如果需要兼容 MySQL 的排序规则，需要使用[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
