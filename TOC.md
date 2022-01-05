@@ -222,12 +222,6 @@
       - [快速上手试用](/dm/quick-start-with-dm.md)
       - [使用 TiUP 部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [创建数据源](/dm/quick-start-create-source.md)
-      - 数据迁移场景
-        - [数据迁移场景概述](/dm/quick-create-migration-task.md)
-        - [多数据源合并迁移到 TiDB](/dm/usage-scenario-simple-migration.md)
-        - [分表合并迁移到 TiDB](/dm/usage-scenario-shard-merge.md)
-        - [增量迁移数据到 TiDB](/dm/usage-scenario-incremental-migration.md)
-        - [下游 TiDB 表结构存在更多列的数据迁移](/dm/usage-scenario-downstream-more-columns.md)
     - 部署使用
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - 部署 DM 集群
@@ -260,9 +254,7 @@
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
     - 使用场景
-      - [从 Aurora 迁移数据到 TiDB](/dm/migrate-from-mysql-aurora.md)
-      - [TiDB 表结构存在更多列的迁移场景](/dm/usage-scenario-downstream-more-columns.md)
-      - [变更同步的 MySQL 实例](/dm/usage-scenario-master-slave-switch.md)
+      - [数据迁移场景概述](/dm/quick-create-migration-task.md)
     - 故障处理
       - [故障及处理方法](/dm/dm-error-handling.md)
       - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
