@@ -66,10 +66,10 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `max-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-+ 日志文件的大小限制。
++ 单个 log 文件最大大小，超过设定的参数值后，系统自动切分成多个文件。
 + 默认值：300
-+ 单位：MB
-+ 最大设置上限为 4096。
++ 最大值： 4096
++ 单位：MiB
 
 ### `max-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
