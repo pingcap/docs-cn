@@ -130,7 +130,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `format`
 
 + 日志格式。
-+ 可选值："text"，"json"，"console"
++ 可选值："text"，"json"
 + 默认值："text"
 
 ### `disable-timestamp`
