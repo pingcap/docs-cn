@@ -25,7 +25,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `slow-log-file`
 
 + 存储慢日志的文件。
-+ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 "stderr"。
++ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 "stderr"。如果两者都设置了，则日志输出到各自指定的日志文件中。
 + 默认值：""
 
 ### `slow-log-threshold`
@@ -66,18 +66,22 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `max-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-+ 触发日志轮换的文件大小。一旦日志文件大小超过指定的阈值，日志文件将被轮换，将旧文件被置于新文件中，新文件名即旧文件名加上时间戳后缀。最大值为 "4096MB"。
-+ 默认值："300MB"
++ 日志文件的大小限制。
++ 默认值：300
++ 单位：MB
++ 最大设置上限为 4096。
 
 ### `max-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-+ 日志文件保留天数，0d 代表不清理。
-+ 默认值："0d"
++ 日志文件保留天数。
++ 默认值：0
++ 默认不清理；如果设置了参数值，在 `max-days` 之后 TiKV 会清理过期的日志文件。
 
 ### `max-backups` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-+ 日志文件保存数量，0 代表不清理。
-+ 默认值："0"
++ 保留的日志的最大数量。
++ 默认值：0
++ 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
 ## server
 
