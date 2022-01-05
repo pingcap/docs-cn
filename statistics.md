@@ -118,7 +118,9 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
 
-以下语法收集 TableName 表中部分列的统计信息：
+##### 收集部分列的统计信息
+
+对于有很多列的宽表来说，收集所有列的统计信息可能会有较大的开销。而大多数情况下优化器只会用到一部分列的统计信息（比如出现在 WHERE/JOIN/ORDER BY/GROUP BY 子句中的列）。如下语法会收集指定列和索引列的统计信息以及所有索引的统计信息。
 
 {{< copyable "sql" >}}
 
@@ -126,13 +128,87 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-这个语法会收集指定列以及索引的统计信息，以及扩展统计信息所涉及列的统计信息。如果表的列数较多，需要统计信息的列可能只是表很小的一个子集，通过这个语法可以极大地减轻收集统计信息的负担。
+在以上语法中，`ColumnNameList` 不可为空。以上语法是全量收集的语法。第一次收集了列 a 和 列 b 的统计信息之后，如果还想要增加列 c 的统计信息，需要在语法中同时指定三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。如果表的列数较多，需要统计信息的列可能只是少数列，通过这个语法可以极大地减轻收集统计信息的负担。
 
-> **注意：**
+如果用户不确定哪些列的统计信息会被用到，可以将 `tidb_enable_column_tracking` 设置为 `1`，TiDB 会自动记录哪些列的统计信息会被优化器使用且每隔 `100 * stats-lease` 时间写入系统表 `mysql.column_stats_usage`。那些统计信息被查询优化用到的列被称为 `PREDICATE COLUMNS`。将 `tidb_enable_column_tracking` 设置为 `0` 会将记录的 `PREDICATE COLUMNS` 清除。如下语法会收集 `PREDICATE COLUMNS` 和索引列的统计信息以及所有索引的统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+如果 TableName 没有任何 `PREDICATE COLUMNS` 被记录在 `mysql.column_stats_usage` 中，执行以上语句会收集所有列的统计信息以及所有索引的统计信息。我们建议在查询模式稳定（workload 中所有查询都至少执行一遍）以后使用该语句对宽表收集统计信息。如果查询模式不稳定时使用该语句，优化器在遇到新的查询时可能会使用旧的或者 pseudo 的列统计信息，但下一次收集统计信息的时候就会采集该列的统计信息。
+
+`SHOW COLUMN_STATS_USAGE` 能够显示列统计信息的收集和使用情况，语法如下：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
+```
+
+目前 `SHOW STATS_HISTOGRAMS` 会输出 6 列，具体如下：
+
+| 语法元素 | 说明            |
+| -------- | ------------- |
+| db_name  |  数据库名    |
+| table_name | 表名 |
+| partition_name | 分区名 |
+| column_name | 列名 |
+| last_used_at | 该列统计信息在最近一次查询优化中被用到的时间 |
+| update_time | 该列统计信息最近一次被收集的时间 |
+
+我们可以用 `SHOW COLUMN_STATS_USAGE` 来查看哪些列是 `PREDICATE COLUMNS` 以及哪些列的统计信息在 `ANALYZE` 中被收集了，例如：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> SET GLOBAL tidb_enable_column_tracking = 1;
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> CREATE TABLE t (a INT, b INT, c INT, d INT, INDEX idx_c_d(c, d));
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> SELECT * FROM t WHERE b > 1;
+Empty set (0.00 sec)
+
+-- 等待一段时间（大约 100 * stats-lease 的时间），TiDB 将收集的 PREDICATE COLUMNS 写入 mysql.column_stats_usage。
+MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_analyzed_at IS NOT NULL;
++---------+------------+----------------+-------------+---------------------+------------------+
+| Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at |
++---------+------------+----------------+-------------+---------------------+------------------+
+| test    | t          |                | b           | 2022-01-05 17:21:33 | NULL             |
++---------+------------+----------------+-------------+---------------------+------------------+
+1 row in set (0.00 sec)
+
+MySQL [test]> ANALYZE TABLE t PREDICATE COLUMNS;
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't';
++---------+------------+----------------+-------------+---------------------+---------------------+
+| Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at    |
++---------+------------+----------------+-------------+---------------------+---------------------+
+| test    | t          |                | b           | 2022-01-05 17:21:33 | 2022-01-05 17:23:06 |
+| test    | t          |                | c           | NULL                | 2022-01-05 17:23:06 |
+| test    | t          |                | d           | NULL                | 2022-01-05 17:23:06 |
++---------+------------+----------------+-------------+---------------------+---------------------+
+3 rows in set (0.00 sec)
+```
+
+以上两种收集部分列统计信息的语法只支持 `tidb_analyze_version = 2` 的情况。在 `tidb_persist_analyze_options = true` 时，执行以上两种收集部分列统计信息的语法会自动记录 `COLUMNS ColumnNameList`/`PREDICATE COLUMNS` 的配置，`AUTO ANALYZE` 和未显式指定 `COLUMNS ColumnNameList`/`PREDICATE COLUMNS`/`ALL COLUMNS` 的手动 `ANALYZE` 会使用该配置。以下语句会收集所有列的统计信息以及所有索引的统计信息，并将持久化的配置设置为 `ALL COLUMNS`。
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
+
+> **警告：**
 >
-> + 以上语法只支持 `tidb_analyze_version = 2` 的情况。
-> + 在以上语法中，`ColumnNameList` 不可为空。
-> + 以上语法是全量收集的语法。第一次收集了列 a 和 列 b 的统计信息之后，如果还想要增加列 c 的统计信息，需要在语法中同时指定三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
+> - 当前收集部分列统计信息的功能为实验特性，不建议在生产环境中使用。
+
+##### 收集索引的统计信息
 
 收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
 
@@ -144,20 +220,18 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
 IndexNameList 为空时会收集所有索引列的统计信息。
 
+> **注意：**
+>
+> 为了保证前后统计信息的一致性，在设置 `tidb_analyze_version=2` 时，`ANALYZE TABLE TableName INDEX` 也会收集整个表而不是所给索引的统计信息。
+
+##### 收集分区的统计信息
+
 收集 TableName 中所有的 PartitionNameList 中分区的统计信息：
 
 {{< copyable "sql" >}}
 
 ```sql
 ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
-
-收集 TableName 中所有的 PartitionNameList 中分区的部分列统计信息：
-
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
@@ -168,9 +242,13 @@ ANALYZE TABLE TableName PARTITION PartitionNameList COLUMNS ColumnNameList [WITH
 ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-> **注意：**
->
-> 为了保证前后统计信息的一致性，在设置 `tidb_analyze_version=2` 时，`ANALYZE TABLE TableName INDEX` 也会收集整个表而不是所给索引的统计信息。
+在收集分区的统计信息时也可以设置列统计信息收集模式（实验特性，不建议在生产环境中使用）：
+
+{{< copyable "sql" >}}
+
+```sql
+ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+```
 
 #### 增量收集
 

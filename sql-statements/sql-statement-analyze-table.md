@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-analyze-table/','/docs-cn/d
 
 ```ebnf+diagram
 AnalyzeTableStmt ::=
-    'ANALYZE' ( 'TABLE' ( TableNameList | TableName ( 'INDEX' IndexNameList? | 'COLUMNS' ColumnNameList | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | 'COLUMNS' ColumnNameList )? )? ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList? ) AnalyzeOptionListOpt
+    'ANALYZE' ( 'TABLE' ( TableNameList ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' ) | TableName ( 'INDEX' IndexNameList? | AnalyzeColumnOption | 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList? | AnalyzeColumnOption )? )? ) | 'INCREMENTAL' 'TABLE' TableName ( 'PARTITION' PartitionNameList )? 'INDEX' IndexNameList? ) AnalyzeOptionListOpt
 
 AnalyzeOptionListOpt ::=
 ( WITH AnalyzeOptionList )?
@@ -26,6 +26,9 @@ AnalyzeOption ( ',' AnlyzeOption )*
 
 AnalyzeOption ::=
 ( NUM ( 'BUCKETS' | 'TOPN' | ( 'CMSKETCH' ( 'DEPTH' | 'WIDTH' ) ) | 'SAMPLES' ) ) | ( FLOATNUM 'SAMPLERATE' )
+
+AnalyzeColumnOption ::=
+( 'ALL COLUMNS' | 'PREDICATE COLUMNS' | 'COLUMNS' ColumnNameList )
 
 TableNameList ::=
     TableName (',' TableName)*

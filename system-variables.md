@@ -1522,3 +1522,9 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_enable_column_tracking`
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制是否开启对 `PREDICATE COLUMNS` 的收集。关闭该变量时，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见 [统计信息简介](/statistics.md)。
