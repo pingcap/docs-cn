@@ -1,10 +1,9 @@
 ---
-title: 数据迁移场景概述
+title: 使用场景
 summary: 了解在不同业务需求场景下如何配置数据迁移任务。
-aliases: ['/zh/tidb/dev/quick-create-migration-task']
 ---
 
-# 数据迁移场景概述
+# 使用场景概述
 
 > **注意：**
 >
