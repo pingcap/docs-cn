@@ -647,7 +647,7 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于设置统计信息同步加载的并发度
 + 默认值：5
-+ 目前的合法值范围 `[1, 128]
++ 目前的合法值范围 `[1, 128]`
 
 ### `stats-load-queue-size` <span class="version-mark">从 v5.4 版本开始引入</span>
 
