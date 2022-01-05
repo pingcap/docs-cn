@@ -23,7 +23,7 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一
 
 ### TiDB 扩展字段
 
-Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension=true` 后，Canal-JSON 将携带 TiCDC 扩展字段，内容如下：
+Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension` 为 true 后，TiCDC 生成 Canal-JSON 消息时的行为如下：
 
 * TiCDC 将会发送 WATERMARK Event 消息。
 * TiCDC 发送的 DML Event 和 DDL Event 类型消息中，将会含有一个名为 `_tidb` 的字段。
@@ -154,7 +154,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     }
 }
 
-TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该时间发送时的 tso。当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
+TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该时间发送时的 tso。当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕，因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
 ### 消费端数据解析
 
@@ -331,7 +331,7 @@ insert into t (c_decimal, c_char, c_varchar, c_binary, c_varbinary, c_enum, c_se
 values (123.456, "abc", "abc", "abc", "abc", 'a', 'a,b', b'1000001');
 ```
 
-在上面的表定义 SQL 语句中，如 decimal / char / varchar / enum 等类型，都还有参数。在下所示的输出 Canal-JSON 格式中，`mysqlType` 字段中的数据，只含有基本 MySQL Type 字符串表示。如果业务需要这部分类型参数信息，需要用户自行通过其他方式确定。
+TiCDC 输出内容如下：
 
 ```
 {
@@ -360,3 +360,35 @@ values (123.456, "abc", "abc", "abc", "abc", 'a', 'a,b', b'1000001');
     "old": null,
 }
 ```
+
+Canal 官方实现输出内容如下：
+
+```
+{
+    "id": 0,
+    ...
+    "isDdl": false,
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        "c_binary": "binary(16)",
+        "c_bit": "bit(64)",
+        "c_char": "char(16)",
+        "c_decimal": "decimal(10, 4)",
+        "c_enum": "enum('a','b','c')",
+        "c_set": "set('a','b','c')",
+        "c_varbinary": "varbinary(16)",
+        "c_varchar": "varchar(16)",
+        "id": "int"
+    },
+    "data": [
+        {
+            ...
+        }
+    ],
+    "old": null,
+}
+```
+
+在上面的表定义 SQL 语句中，如 decimal / char / varchar / enum 等类型，都含有参数。对比 TiCDC 和 Canal 官方实现分别生成的 Canal-JSON 格式数据可知，在 `mysqlType` 字段中的数据，TiCDC 实现只含有基本 MySQL Type。如果业务需要类型参数信息，需要用户自行通过其他方式确定。
