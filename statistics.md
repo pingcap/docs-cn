@@ -215,13 +215,11 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 > **注意：**
 >
-> 目前自动更新无法记录手动 ANALYZE 时输入的配置项。因此当通过 `WITH` 语句控制 ANALYZE 的收集行为时，目前需要手动设置定时任务收集统计信息。
->
-> {{< copyable "sql" >}}
->
-> ```sql
-> [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-> ```
+> 系统从 v5.4.0 开始支持 ANALYZE 配置项自动持久化的功能，该功能在 tidb_analyze_version = 2 且 tidb_persist_analyze_options = true 时开启，自动记录手动 ANALYZE 时通过 WITH 语句输入的配置项。持久化的配置项还在统计信息自动更新时被使用。
+
+> 多次手动 ANALYZE 并指定 WITH 配置项时会用最新一次指定的数据覆盖上一次持久化的配置。
+> 
+> 设置 tidb_analyze_version = 1 或者 tidb_persist_analyze_options = false 会关闭 ANALYZE 配置持久化功能，但已持久化的记录不会被清除。因此当再次开启持久化功能时，需要通过 ANALYZE WITH 语句指定最新的配置信息。
 
 在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
 

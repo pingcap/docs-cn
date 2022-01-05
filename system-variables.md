@@ -1522,3 +1522,15 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_stats_load_sync_wait`
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`0`
+- 这个变量用于控制是否开启统计信息的同步加载模式（不开启为异步加载），以及开启的情况下，SQL 执行同步等待多久后超时。
+
+### `tidb_stats_load_pseudo_timeout`
+
+- 作用域：GLOBAL
+- 默认值：`false`
+- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败还是退回使用 pseudo 的统计信息。
