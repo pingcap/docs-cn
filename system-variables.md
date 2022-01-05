@@ -1525,11 +1525,19 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_stats_load_sync_wait`
 
+> **警告：**
+>
+> 目前统计信息同步加载功能为实验特性，不建议在生产环境中使用。
+
 - 作用域：SESSION | GLOBAL
 - 默认值：`0`
 - 这个变量用于控制是否开启统计信息的同步加载模式（不开启为异步加载），以及开启的情况下，SQL 执行同步等待多久后超时。
 
 ### `tidb_stats_load_pseudo_timeout`
+
+> **警告：**
+>
+> 目前统计信息同步加载功能为实验特性，不建议在生产环境中使用。
 
 - 作用域：GLOBAL
 - 默认值：`false`
