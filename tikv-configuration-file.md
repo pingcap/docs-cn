@@ -40,7 +40,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `level` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + 日志等级。
-+ 可选值："trace"，"debug"，"info"，"warning"，"error"，"critical"
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
 + 默认值："info"
 
 ### `format` <span class="version-mark">从 v5.4.0 版本开始引入</span>
