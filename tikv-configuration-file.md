@@ -63,7 +63,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `filename` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-+ 日志文件。如果未设置该项，日志会默认输出到 "stderr"。
++ log 文件。如果未设置该参数，日志会默认输出到 `"stderr"`；如果设置了该参数，log 会输出到对应的文件中。
 + 默认值：""
 
 ### `max-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
