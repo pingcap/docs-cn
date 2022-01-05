@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/tidb-architecture/','/docs-cn/dev/architecture/']
 
 推荐先观看以下视频（时长约 14 分钟），快速了解 TiDB 的整体架构。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/302_Lesson_01_CHN.mp4" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/tidb-infrastructure-poster.png" width="600px" height="450px" controls="controls"></video>
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/302_Lesson_01_CHN.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/tidb-infrastructure-poster.png"></video>
 
 与传统的单机数据库相比，TiDB 具有以下优势：
 
