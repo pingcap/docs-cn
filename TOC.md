@@ -250,6 +250,7 @@
         - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
         - [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)
       - [手动处理 Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
+      - [变更同步的 MySQL 实例](/dm/usage-scenario-master-slave-switch.md)
       - [管理迁移表的表结构](/dm/dm-manage-schema.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
