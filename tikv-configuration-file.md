@@ -35,7 +35,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## log <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-日志相关的配置项。自 v5.4.0 版本起，原 log 参数 `log-level`、`log-format`、`log-file`、`log-rotation-size` 变更为以下参数，`log-rotation-timespan`  废弃，与 TiDB 的 log 参数保持了一致。如果只设置了原参数、且把该值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。
+日志相关的配置项。
+
+自 v5.4.0 版本起，废弃原 log 参数 `log-rotation-timespan`，并将 `log-level`、`log-format`、`log-file`、`log-rotation-size` 变更为下列参数，与 TiDB 的 log 参数保持一致。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。
 
 ### `level` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
