@@ -9,4 +9,4 @@ aliases: ['/zh/tidb/dev/feature-expression-filter/']
 
 为了解决上述问题，从 v2.0.5 起，DM 支持在增量数据同步阶段使用`binlog value filter`过滤迁移数据。DM 支持的 `ROW` 格式的 binlog 中，binlog event 带有所有列的值。你可以基于这些值配置 SQL 表达式。如果该表达式对于某条行变更的计算结果是 `TRUE`，DM 就不会向下游迁移该条行变更。
 
-具体实现细节，请参考 [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)。
+具体操作步骤和实现细节，请参考[如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)。
