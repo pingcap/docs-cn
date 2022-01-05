@@ -215,9 +215,9 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 > **注意：**
 >
-> 系统从 v5.4.0 开始支持 ANALYZE 配置项自动持久化的功能，该功能在 tidb_analyze_version = 2 且 tidb_persist_analyze_options = true 时开启，自动记录手动 ANALYZE 时通过 WITH 语句输入的配置项。持久化的配置项还在统计信息自动更新时被使用。
+> 系统从 v5.4.0 开始支持 ANALYZE 配置项自动持久化的功能，该功能在 tidb_analyze_version = 2 且 tidb_persist_analyze_options = true 时开启，自动记录手动 ANALYZE 时通过 WITH 语法输入的配置项。持久化的配置项会被后续自动采集和手动采集未指定配置项时使用。
 
-> 多次手动 ANALYZE 并指定 WITH 配置项时会用最新一次指定的数据覆盖上一次持久化的配置。
+> 多次手动 ANALYZE 并指定 WITH 配置项时，会用最新一次指定的覆盖上一次持久化的配置。
 > 
 > 设置 tidb_analyze_version = 1 或者 tidb_persist_analyze_options = false 会关闭 ANALYZE 配置持久化功能，但已持久化的记录不会被清除。因此当再次开启持久化功能时，需要通过 ANALYZE WITH 语句指定最新的配置信息。
 
