@@ -123,7 +123,8 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `level`
 
-+ 指定日志的输出级别，可选项为 [debug, info, warn, error, fatal]。
++ 指定日志的输出级别。
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
 + 默认值："info"
 
 ### `format`
