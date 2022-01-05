@@ -1,7 +1,6 @@
 ---
 title: BR 特性介绍
 summary: 了解 BR 特性的详细介绍。
-aliases: ['/docs-cn/dev/br/br-features/']
 ---
 
 # BR 特性

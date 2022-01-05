@@ -1363,7 +1363,7 @@ raftdb 相关配置项。
 + 默认值：CPU * 0.75，但最大为 32
 + 最小值：1
 
-### `enable-auto-tune`
+### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
 
 + 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源以求减少对集群的影响。
 + 默认值：true
