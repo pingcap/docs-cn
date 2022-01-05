@@ -424,7 +424,7 @@ DROP STATS TableName;
 
 ## 统计信息的加载
 
-和列上的统计信息 count、distinctCount、nullCount 等不同，直方图、TopN、CMSketch 默认是按需异步加载。也就是说，当某条 SQL 的物理优化阶段使用到了某个 Column 的 直方图等，此时才触发该 Column 的直方图等加载到内存。
+和列上的统计信息 count、distinctCount、nullCount 等不同，直方图、TopN、CMSketch 默认是按需异步加载。也就是说，当某条 SQL 的物理优化阶段使用到了某个 Column 的直方图等，此时才触发该 Column 的直方图等加载到内存。
 
 按需异步加载的好处是统计信息加载不会影响到 SQL 执行的性能，坏处是 SQL 物理优化时，有可能使用不完整的统计信息。
 
