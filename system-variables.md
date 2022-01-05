@@ -1523,7 +1523,14 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### `tidb_stats_load_sync_wait`
+### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`true`
+- 这个变量用于控制是否持久化 ANALYZE WITH 指定的配置项。
+
+
+### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 > **警告：**
 >
@@ -1535,7 +1542,7 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 4294967295]`
 - 这个变量用于控制是否开启统计信息的同步加载模式（不开启为异步加载），以及开启的情况下，SQL 执行同步等待多久后超时。
 
-### `tidb_stats_load_pseudo_timeout`
+### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 > **警告：**
 >
