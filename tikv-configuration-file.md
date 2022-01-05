@@ -52,7 +52,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `enable-timestamp` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 + 是否开启日志中的时间戳。
-+ 可选值："true", "false"
++ 可选值："true"，"false"
 + 默认值："true"
 
 ## log.file <span class="version-mark">从 v5.4.0 版本开始引入</span>
