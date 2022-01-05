@@ -73,9 +73,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `max-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-+ 日志文件保留天数。
++ 保留 log 文件的最长天数。如果未设置该参数，TiKV 默认不清理 log 文件；如果设置了参数值，在 `max-days` 之后，TiKV 会清理过期的日志文件。
 + 默认值：0
-+ 默认不清理；如果设置了参数值，在 `max-days` 之后 TiKV 会清理过期的日志文件。
 
 ### `max-backups` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
