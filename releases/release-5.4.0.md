@@ -78,27 +78,11 @@ max-backups = 0
 设置日志备份的最大保留文件数，默认全保留不清理。
 ```
 
-### 字符集与排序规则
-
-TiDB 从 v5.4.0 起支持 GBK 字符集。
-
-在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。为了更好的支持中文用户，TiDB 从 v5.4.0 版本开始支持 GBK 字符集，同时支持 `gbk_bin` 和 `gbk_chinese_ci` 两种排序规则。
-
-在使用 GBK 字符集时，请注意以下兼容性限制：
-
-- TiFlash 暂不支持 GBK 字符。
-- TiCDC 暂不支持 GBK 字符。
-- 如果 `character_set_client` 和 `character_set_connection` 都是 `gbk` 时，处理非法 GBK 字符与 MySQL 存在兼容性问题。
-- `character_set_client` 在处理 `prepare` 语句时可能出现兼容性问题。
-- TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
-- TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.3.0 之前不支持恢复 `charset=GBK` 的表。
-
 ### 其他
 
 - TiDB Dashboard 默认不再使用 `root` + 空密码登录。
 
     从 v5.4.0开始，使用 TiUP 启动集群时推荐使用 `start --initial`。执行该操作启动集群后，会为 `root` 账号自动生成一个随机密码，`root` 账号登录 Dashboard 需要使用这个密码。
-
 
 - 从 TiDB v4.0（不包含 v4.0.0）升级到 v5.4.0 及更新的集群，`tidb_enable_index_merge` 变量默认关闭。
 
@@ -117,15 +101,18 @@ TiDB 从 v5.4.0 起支持 GBK 字符集。
 
     [用户文档](/)
 
-- **功能 2**
+- **TiDB 从 v5.4.0 起支持 GBK 字符集**
 
-    <功能描述 （功能是什么 + 能给用户带来什么好处 + 需要用户注意什么）>
+    在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。为了更好的支持中文用户，TiDB 从 v5.4.0 版本开始支持 GBK 字符集，同时支持 `gbk_bin` 和 `gbk_chinese_ci` 两种排序规则。
 
-    <功能支持情况，告诉用户 TiDB 默认开始还是关闭此功能，如果默认关闭，如何开启>
+    在使用 GBK 字符集时，请注意以下兼容性限制：
 
-    <如果功能限制或此功能特定的兼容性问题，需要提及>
-
-    [用户文档](/)
+    - TiFlash 暂不支持 GBK 字符。
+    - TiCDC 暂不支持 GBK 字符。
+    - 如果 `character_set_client` 和 `character_set_connection` 都是 `gbk` 时，处理非法 GBK 字符与 MySQL 存在兼容性问题。
+    - `character_set_client` 在处理 `prepare` 语句时可能出现兼容性问题。
+    - TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
+    - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.3.0 之前不支持恢复 `charset=GBK` 的表。
 
 ### 事务
 
@@ -160,6 +147,12 @@ TiDB 从 v5.4.0 起支持 GBK 字符集。
     <如果功能限制或此功能特定的兼容性问题，需要提及>
 
     [用户文档](/)
+
+- **TiSpark 支持用户认证与鉴权**
+
+    TiSpark 提供数据库和表级别的读写授权验证以及数据库用户认证验证。开启该功能后，能避免业务侧未经授权运行抽数等批量任务获取数据，提高线上集群的稳定性和数据安全性。从 TiSpark v2.5.0 后开始支持。
+
+    该功能默认关闭。开启后，如果用户没有对应的权限，通过 TiSpark 操作会抛出对应的异常。
 
 ### 性能
 
