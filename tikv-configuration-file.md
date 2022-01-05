@@ -25,7 +25,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `slow-log-file`
 
 + 存储慢日志的文件。
-+ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 "stderr"。如果两者都设置了，则日志输出到各自指定的日志文件中。
++ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 `"stderr"`。如果同时设置了两项，慢日志则输出至各自指定的日志文件中。
 + 默认值：""
 
 ### `slow-log-threshold`
