@@ -1,7 +1,7 @@
 ---
 title: TiDB Release Notes 写作简要指南
 summary: 本文简要介绍如何
------------------
+---
 
 # TiDB Release Notes 写作简要指南
 
