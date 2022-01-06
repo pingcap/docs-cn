@@ -118,37 +118,38 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-
+    
         ...
-
+    
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-
+    
         ...
-
+    
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-
+    
         ...
-
+    
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-
+    
         ...
     ```
     
+
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
@@ -436,16 +437,16 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-
+        
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -453,12 +454,37 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```
 
         以上示例中，在 TiDB 和 TiFlash 中，`a/b` 在编译期推导出来的类型都为 `Decimal(7,4)`，而在 `Decimal(7,4)` 的约束下，`a/b` 返回的结果应该为 `0.0000`。但是在 TiDB 中，`a/b` 运行期的精度比 `Decimal(7,4)` 高，所以原表中的数据没有被 `where a/b` 过滤掉。而在 TiFlash 中 `a/b` 在运行期也是采用 `Decimal(7,4)` 作为结果类型，所以原表中的数据被 `where a/b` 过滤掉了。
+
+## DTFile 与数据校验
+
+### DTFile 简介
+
+DTFile（即 DeltaTree File）是 TiFlash 落盘数据的存储文件，目前共有三版格式：
+
+- **V1**: 传统格式，现已废弃。
+- **V2**: 在 V1 的基础上增加了列数据的统计信息，是现在的默认格式。
+- **V3**: 在 V2 的基础上完善了数据校验功能，提供了调整校验帧大小和校验算法的接口，于 v5.4 版本引入，目前需手动开启。
+
+DTFile 储存在数据文件夹目录下的 stable 文件夹内。目前启用的格式均为文件夹形式，即具体数据均储存在名字类似 `dmf_<file id>` 的文件夹下的多个子文件中。
+
+### 数据校验
+
+校验机制在不同版本上存在差异：
+
+- V2 版本含有基础的校验功能，仅对部分数据文件进行校验，使用固定的 City128 算法。
+- V3 版本对所有的数据文件，标记文件，元信息文件和统计文件添加校验，默认使用 XXH3 算法（可更改）。
+
+目前的设计基于的考量是：数据损坏通常意味着严重的硬件故障。在这种情形下，即使尝试自主修复，也会使得数据的可靠性下降。因此，一旦发现校验不符的情况，TiFlash 将立刻报错退出，避免因错误数据造成次生灾害。需要手动检查干预并重新同步数据才可以恢复节点的使用。
+
+### 校验工具
+
+除了 TiFlash 在读取所需数据时进行的自动校验，在 v5.4 版本时还引入了手动检查文件完整性的工具，详情请见 DTTool 的[使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
