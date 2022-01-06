@@ -16,7 +16,7 @@ Top SQL 会显示在一段时间内对某个 TiDB 或 TiKV 节点负载贡献较
 
 ## 启用
 
-打开 TiDB Dashboard，登陆后，在左侧菜单点击 “Top SQL”，然后在右上角点击齿轮按钮，即可在整个集群范围内启用或禁用该功能。
+打开 TiDB Dashboard，登陆后，在左侧菜单点击 “Top SQL”，然后在右上角点击齿轮按钮，即可在整个集群范围内启用或禁用该功能。也可以使用 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v54-版本开始引入) 来配置。
 
 > **注意：**
 >
@@ -36,14 +36,3 @@ Top SQL 会显示在一段时间内对某个 TiDB 或 TiKV 节点负载贡献较
 * 点击选中单个查询，可以进一步展示详情。针对这类查询，统计执行计划，以及这类查询和其中执行计划在这个节点上的 Call/sec （平均每秒请求数），Scan Rows/sec （平均每秒扫描行数），Scan Indexes/sec （平均每秒扫描索引数），以及 Latency/call （平均延迟）。
 
 ![Top SQL Details](/media/dashboard/top-sql-details.png)
-
-## 配置 Top SQL
-
-也可以使用 TiDB 系统变量的方式来配置 Top SQL，现在有如下系统变量：
-
-* `tidb_enable_top_sql`
-* `tidb_top_sql_precision_seconds`
-* `tidb_top_sql_max_statement_count`
-* `tidb_top_sql_report_interval_seconds`
-
-可以在[系统变量](/system-variables.md)中找到它们的定义。
