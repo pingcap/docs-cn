@@ -53,14 +53,14 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ### 非法字符兼容性
 
-* 在设置成 `character_set_client = gbk`、`character_set_connection = utf8mb4` 和 `character_set_table = gbk` 的情况下，TiDB 处理非法字符的情况与 MySQL 兼容。
-* 当设置 `names` 为 `gbk` 后 TiDB 处理非法字符的情况与 MySQL 有一些不一样。具体行为如下（其中 `insert` 语句所在表的建表语句：`create table gbk_table(a varchar(32) character set gbk);`）：
+* 在 `character_set_client` 和 `character_set_connection` 不都为 `gbk` 的情况下，TiDB 处理非法字符的情况与 MySQL 兼容。
+* 在 `character_set_client` 和 `character_set_connection` 都为 `gbk` 的情况下， TiDB 处理非法字符的情况与 MySQL 有一些不一样。具体行为如下（其中 `insert` 语句所在表的建表语句：`create table gbk_table(a varchar(32) character set gbk);`）：
 
 ```sql
 +---------+----------------------+--------------------------------------+--------------------------------------+
-|         |                      |   character_set_client = gbk <br>    |   character_set_client = gbk         |
+|         |                      |   character_set_client = gbk         |   character_set_client = gbk         |
 |    DB   |    SQL_Mode          |   character_set_connection = utf8mb4 |   character_set_connection = gbk     |
-|         |                      |   character_set_table = gbk          |   character_set_client = gbk         |
+|         |                      |   character_set_results = gbk        |   character_set_results = gbk        |
 |         |                      |   (Compatible)                       |   (Imcompatible)                     |
 +---------+----------------------+--------------------------------------+--------------------------------------+
 | MySQL   | STRICT_ALL_TABLES or | select hex('一a') (0xe4b88061)       | select hex('一a') (0xe4b88061)        |
@@ -107,6 +107,8 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
   insert into t values (_gbk'啊');
   ERROR 1115 (42000): Unsupported character introducer: 'gbk'
   ```
+
+* 对于 `ENUM` 类型中的二进制字符，目前都会将其作为 utf8mb4 字符集处理。
 
 ## 其他组件兼容性
 
