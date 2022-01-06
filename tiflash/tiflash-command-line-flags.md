@@ -26,13 +26,13 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
     - `--random`：随机数种子。如未提供，该值从系统熵池抽取。
     - `--encryption`：启用加密功能。
     - `--repeat`：性能测试采样次数，默认为 5。
-    - `--workdir`：临时数据文件夹，应指向需要测试的文件系统化，默认为 /tmp/test。
+    - `--workdir`：临时数据文件夹，应指向需要测试的文件系统下的路径，默认为 /tmp/test。
 
 ## `dttool inspect`
 
 - 检查 DTFile 的完整性。
 - 参数：
-    - `--config-file`：TiFlash 的配置文件应当与 server 保持一致；使用配置文件时，需要退出本地的 TiFlash 服务器实例。见 `--imitative` 选项。
+    - `--config-file`：dttool bench 的配置文件应当与 [server](/tiflash/tiflash-command-line-flags.md#server---config-file) 保持一致；使用配置文件时，需要退出本地的 TiFlash 服务器实例。见 `--imitative` 选项。
     - `--check`：进行哈希校验。
     - `--file-id`：对应 DTFile 的 ID，如 `dmf_123` 对应的 ID 是 123。
     - `--imitative`：当不使用 DTFile 的加密功能时，可以使用本选项避免使用配置文件和连接 PD。
