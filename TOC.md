@@ -48,11 +48,11 @@
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
-  - 复杂迁移操作
+  - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
+    - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
-    - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
