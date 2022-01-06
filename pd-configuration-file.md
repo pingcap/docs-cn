@@ -286,7 +286,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `hot-regions-reserved-days`
 
-* 设置 PD 保留的 Hot Region 信息的最长时间。
+* 设置 PD 保留的 Hot Region 信息的最长时间。单位为天。
 * 默认值: 7
 
 ## replication
