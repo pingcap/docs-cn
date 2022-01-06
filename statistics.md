@@ -233,13 +233,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 ### ANALYZE 配置持久化
 
-从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置项的持久化功能。该功能默认（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`）开启，用于记录手动 `ANALYZE` 时通过 `WITH` 语法输入的配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
-
-多次手动 `ANALYZE` 并指定 `WITH` 配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的 `WITH` 配置项覆盖上一次记录的持久化配置。
-
-要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置该系统变量一样会达到关闭配置持久化的效果。关闭该功能后，已持久化的记录不会被清除。因此当再次开启持久化功能时，需要通过 `ANALYZE...WITH...` 语句指定最新的配置信息。
-
-持久化的配置包括：
+从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置项的持久化功能。支持持久化的配置包括：
 
 | 配置项 | 对应的 ANALYZE 语法 |
 | --- | --- |
@@ -249,6 +243,12 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 | 采样率 | WITH FLOATNUM SAMPLERATE |
 | ANALYZE 的列的类型 | AnalyzeColumnOption ::= ( 'ALL COLUMNS' \| 'PREDICATE COLUMNS' \| 'COLUMNS' ColumnNameList ) |
 | ANALYZE 的列 | ColumnNameList ::= Identifier ( ',' Identifier )* |
+
+该功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`），用于记录手动 `ANALYZE` 时指定的配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+
+多次手动 `ANALYZE` 并指定配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
+
+要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置该系统变量一样会达到关闭配置持久化的效果。关闭该功能后，已持久化的记录不会被清除。当该功能再次开启时，之前持久化的配置可以被继续使用。如果再次开启时，之前持久化的配置已经不适用当前的数据，建议通过 `ANALYZE` 语句指定最新的配置信息。
 
 
 ### 查看 ANALYZE 状态
