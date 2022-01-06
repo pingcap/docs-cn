@@ -39,6 +39,7 @@ Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 C
 `enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
 
 ## Message 格式定义
+
 ### DDL Event
 
 TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
@@ -135,6 +136,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 ### WATERMARK Event
 
+```
 {
     "id": 0,
     "database": "",
@@ -153,6 +155,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
         "watermarkTs": 429918007904436226
     }
 }
+```
 
 TiCDC 仅当 `enable-tidb-extension` 为 `true` 时才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该时间发送时的 tso。当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕，因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
