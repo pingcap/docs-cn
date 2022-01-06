@@ -150,14 +150,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
-+ 默认：28
-+ 最小值为 1
++ 默认：0
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
-+ 默认：7
-+ 最小值为 1
++ 默认：0
 
 ## metric
 
@@ -185,7 +183,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `patrol-region-interval`
 
 + 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整
-+ 默认：100ms
++ 默认：10ms
 
 ### `split-merge-interval`
 
@@ -195,12 +193,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-snapshot-count`
 
 + 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。
-+ 默认：3
++ 默认：64
 
 ### `max-pending-peer-count`
 
 + 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。
-+ 默认值：16
++ 默认值：64
 
 ### `max-store-down-time`
 

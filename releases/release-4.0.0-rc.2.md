@@ -99,7 +99,7 @@ TiDB 版本：4.0.0-rc.2
 
     - TiCDC
 
-        - 支持通过 `cdc cli` 来管理同步任务 (changefeed) [#546](https://github.com/pingcap/ticdc/pull/546)
+        - 支持通过 `cdc cli` 来管理同步任务 (changefeed) [#546](https://github.com/pingcap/tiflow/pull/546)
 
     - Backup & Restore (BR)
 
@@ -186,11 +186,11 @@ TiDB 版本：4.0.0-rc.2
 
     - TiCDC
 
-        - 修复当环境变量 `TZ` 未设置时使用错误时区的问题 [#512](https://github.com/pingcap/ticdc/pull/512)
-        - 修复 owner 因为部分错误没有正确处理导致 server 退出时没有清理资源的问题 [#528](https://github.com/pingcap/ticdc/pull/528)
-        - 修复重连 TiKV 可能导致 TiCDC 阻塞的问题 [#531](https://github.com/pingcap/ticdc/pull/531)
-        - 优化初始化表结构时的内存使用 [#534](https://github.com/pingcap/ticdc/pull/534)
-        - 使用 watch 模式监听同步状态变更并进行准实时更新，减少同步延迟 [#481](https://github.com/pingcap/ticdc/pull/481)
+        - 修复当环境变量 `TZ` 未设置时使用错误时区的问题 [#512](https://github.com/pingcap/tiflow/pull/512)
+        - 修复 owner 因为部分错误没有正确处理导致 server 退出时没有清理资源的问题 [#528](https://github.com/pingcap/tiflow/pull/528)
+        - 修复重连 TiKV 可能导致 TiCDC 阻塞的问题 [#531](https://github.com/pingcap/tiflow/pull/531)
+        - 优化初始化表结构时的内存使用 [#534](https://github.com/pingcap/tiflow/pull/534)
+        - 使用 watch 模式监听同步状态变更并进行准实时更新，减少同步延迟 [#481](https://github.com/pingcap/tiflow/pull/481)
 
     - Backup & Restore (BR)
         - 修复 BR 恢复带有 `auto_random` 属性的表之后，插入数据有一定概率触发 duplicate entry 错误的问题 [#241](https://github.com/pingcap/br/issues/241)

@@ -279,7 +279,7 @@ SELECT * FROM t;
 
 目前在 TiDB 中使用 `AUTO_INCREMENT` 有以下限制：
 
-- 必须定义在主键或者唯一索引的列上。
+- 定义的列必须为主键或者索引的首列。
 - 只能定义在类型为整数、`FLOAT` 或 `DOUBLE` 的列上。
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
 - 不支持使用 `ALTER TABLE` 来添加 `AUTO_INCREMENT` 属性。
