@@ -28,7 +28,7 @@ Top SQL 功能默认关闭。要在整个集群范围内启用该功能，请进
 
 ## 使用 Top SQL
 
-要使用 Top SQL，只需要打开 TiDB Dashboard，登陆后，在左侧菜单点击 “Top SQL” 即可。
+开启 Top SQL 后， 只需要登录 TiDB Dashboard，然后点击左侧面板中的 **Top SQL** 即可使用 Top SQL。
 
 ![Top SQL](/media/dashboard/top-sql-overview.png)
 
