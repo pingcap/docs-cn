@@ -539,8 +539,8 @@
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
     - 字符集和排序
-      - [字符集和排序规则](/character-set-and-collation.md)
-      - [GBK 字符集](/character-set-gbk.md)
+      - [概述](/character-set-and-collation.md)
+      - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - [`mysql`](/mysql-schema.md)
