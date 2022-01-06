@@ -1,8 +1,7 @@
-***
-
+---
 title: TiDB Release Notes 写作简要指南
 summary: 本文简要介绍如何
------------------
+---
 
 # TiDB Release Notes 写作简要指南
 
@@ -10,11 +9,11 @@ summary: 本文简要介绍如何
 
 ## Release notes 写作原则
 
-*   类别明确
+* 类别明确
 
-*   表意清晰
+* 表意清晰
 
-*   用户视角
+* 用户视角
 
 包括参考 GitHub issue
 
@@ -45,6 +44,6 @@ Release notes 可分为以下 3 类：
 | Improvement 或 Feature enhancement |                                                                         |                                                                                                                                   |                                                                                                                                                                                                                  |
 | Improvement 或 Feature enhancement |                                                                         |                                                                                                                                   |                                                                                                                                                                                                                  |
 | Bug 修复                            |  lock_resolver: avoid pessimistic transactions using resolveLocksForWrite                                                                       |  来源：[tikv/client-go#213](https://github.com/tikv/client-go/pull/213) <br/> <ul><li>类别明确：❌</li><li>表意清晰：✅</li><li>用户视角：❌</li></ul>                                                                                                                                 |  Fix the issue that committing pessimistic transactions might cause write conflict                                                                                                                                      |
-| Bug 修复                            |                                                                         |                                                                                                                                   |                                                                                                                                                                                                                  |
+| Bug 修复                            |   retry when meeting stablish conn fails                                                                      |  来源：N/A <br/> <ul><li>类别明确：✅</li><li>表意清晰：❌</li><li>用户视角：❌</li></ul>                                                                                                                                 |  Fix the issue of unexpected results when TiFlash fails to establish MPP connections                                                                                                                                                                                                                |
 | Bug 修复                            |                                                                         |                                                                                                                                   |                                                                                                                                                                                                                  |
 | Bug 修复                            |                                                                         |                                                                                                                                   |                                                                                                                                                                                                                  |
