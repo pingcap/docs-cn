@@ -1,5 +1,5 @@
 ---
-TiDB 5.4 Release Notes
+title: TiDB 5.4 Release Notes
 ---
 
 # TiDB 5.4 Release Notes
