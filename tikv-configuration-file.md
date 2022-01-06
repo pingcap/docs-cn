@@ -1360,7 +1360,7 @@ raftdb 相关配置项。
 ### `num-threads`
 
 + 处理备份的工作线程数量。
-+ 默认值：CPU * 0.75，但最大为 32
++ 默认值：CPU * 0.5，但最大为 8 
 + 最小值：1
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>

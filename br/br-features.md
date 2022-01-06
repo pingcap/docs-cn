@@ -15,7 +15,7 @@ summary: 了解 BR 特性的详细介绍。
 
 ### 使用场景
 
-如果你希望减少 BR 备份对集群的影响，并且没有使用 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) 指定备份限速，那么你可以开启自动调节功能。此时 BR 会尝试在不过度影响集群的前提下以最快速度运行。
+如果你希望减少 BR 备份对集群的影响，并且没有使用 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) 或者 `--ratelimit` 参数进行备份限速，那么你可以开启自动调节功能。此时 BR 会尝试在不过度影响集群的前提下以最快速度运行。
 
 ### 使用方法
 
