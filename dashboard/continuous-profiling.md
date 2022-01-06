@@ -68,7 +68,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ![下载某次分析结果](/media/dashboard/dashboard-conprof-download.png)
 
-也可以点击列表中的单个实例，直接查看其性能分析结果：
+也可以点击列表中的单个实例，直接查看其性能分析结果（火焰图/有向无环图/文本），或者悬浮到 ... 按钮上，下载原始数据：
 
 ![查看单个实例分析结果](/media/dashboard/dashboard-conprof-single.png)
 
@@ -78,6 +78,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 2. 点击**设置** (Settings)，将**启用特性** (Enable Feature) 下方的开关关闭。
 3. 在弹出的**停用持续分析** (Disable Continuous Profiling Feature) 对话框中，选择**停用** (Disable)。
 4. 点击**保存** (Save)。
+5. 点击弹窗的**确认**（Disable）。
 
 ![停用功能](/media/dashboard/dashboard-conprof-stop.png)
 
