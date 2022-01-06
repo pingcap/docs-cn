@@ -213,14 +213,6 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-> **注意：**
->
-> 从 v5.4.0 起，TiDB 支持 ANALYZE 配置项的持久化功能。该功能默认（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`）开启，用于记录手动 ANALYZE 时通过 WITH 语法输入的配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
-
-> 多次手动 ANALYZE 并指定 `WITH` 配置项时，TiDB 会使用最新一次 ANALYZE 指定的 `WITH` 配置项覆盖上一次记录的持久化配置。
-> 
-> 设置 tidb_analyze_version = 1 或者 tidb_persist_analyze_options = false 会关闭 ANALYZE 配置持久化功能，但已持久化的记录不会被清除。因此当再次开启持久化功能时，需要通过 ANALYZE WITH 语句指定最新的配置信息。
-
 在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
 
 ### 控制 ANALYZE 并发度
@@ -238,6 +230,14 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 #### tidb_index_serial_scan_concurrency
 
 在执行分析索引列任务的时候，`tidb_index_serial_scan_concurrency` 可以用于控制一次读取的 Region 数量，其默认值是 1。
+
+### ANALYZE 配置持久化
+
+从 v5.4.0 起，TiDB 支持 ANALYZE 配置项的持久化功能。该功能默认（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`）开启，用于记录手动 ANALYZE 时通过 WITH 语法输入的配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+
+多次手动 ANALYZE 并指定 `WITH` 配置项时，TiDB 会使用最新一次 ANALYZE 指定的 `WITH` 配置项覆盖上一次记录的持久化配置。
+
+要关闭 ANALYZE 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 ANALYZE 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置该系统变量一样会达到关闭配置持久化的效果。关闭该功能后，已持久化的记录不会被清除。因此当再次开启持久化功能时，需要通过 ANALYZE WITH 语句指定最新的配置信息。
 
 ### 查看 ANALYZE 状态
 
@@ -424,15 +424,21 @@ DROP STATS TableName;
 
 ## 统计信息的加载
 
-在 v5.4.0 之前，列的统计信息中，count、distinctCount、nullCount 等，只要有数据更新就会加载进内存被 SQL 优化阶段使用。而直方图、TopN、CMSketch 不同，是按需异步加载，也就是说，当某条 SQL 的优化阶段使用到了某个 Column 的直方图等信息，才会触发该 Column 的直方图等信息加载到内存。
+默认情况下，依据不同统计信息占用空间的大小，TiDB 对列的统计信息的加载方式不同。
 
-按需异步加载的好处是统计信息加载不会影响到 SQL 执行的性能，坏处是 SQL 物理优化时，有可能使用不完整的统计信息。
+对于 count、distinctCount、nullCount 等占用空间较小的统计信息，只要有数据更新，TiDB 就会自动将对应的统计信息加载进内存被 SQL 优化阶段使用。
 
-从 v5.4.0 开始，引入了统计信息同步加载的特性。该特性在设置 tidb_stats_load_sync_wait 为正整数时开启，该配置的值同时为 SQL 优化等待加载列的完整统计信息的超时时间。超时后的行为由 tidb_stats_load_pseudo_timeout 控制，默认为 false，即超时后 SQL 执行失败；当为 true 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。
+对于直方图、TopN、CMSketch 等占用空间较大的统计信息，为了确保 SQL 执行的性能，TiDB 会按需进行异步加载。例如，对于直方图，只有当某条 SQL 语句的优化阶段使用到了某列的直方图统计信息时，TiDB 才会将该列的直方图信息加载到内存。按需异步加载的优势是统计信息加载不会影响到 SQL 执行的性能，但在 SQL 优化时有可能使用不完整的统计信息。
+
+从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高 SQL 优化时统计信息的完整性。
+
+统计信息同步加载特性默认关闭。要开启该特性，请将系统变量 `tidb_stats_load_sync_wait` 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 0，代表未开启。
+
+开启该特性后，你可以修改通过系统变量 `tidb_stats_load_pseudo_timeout` 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `false`，代表超时后 SQL 执行失败。当设置该变量为 `true` 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。
 
 > **警告：**
 >
-> 统计信息同步加载目前仍为实验性功能，不建议在生产环境中广泛使用。
+> 统计信息同步加载目前仍为实验性功能，不建议在生产环境中使用。
 
 
 ## 统计信息的导入导出
