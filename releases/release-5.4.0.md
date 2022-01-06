@@ -44,12 +44,15 @@ TiDB 版本：5.4.0
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。
 | PD | `log.level` | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感 |
 | PD | `hot-regions-write-interval` | 新增 |  设置 PD 存储 Hot Region 信息的时间间隔。默认值为 `10m`。 |
-| PD | `hot-regions-reserved-days` | 新增 | 设置 PD 保留的 Hot Region 信息的最长时间。默认为 7 天。
+| PD | `hot-regions-reserved-days` | 新增 | 设置 PD 保留的 Hot Region 信息的最长时间。默认值为 `7`。
 | TiFlash | `profile.default.enable_elastic_threadpool` | 新增  |  表示是否启用可自动扩展的线程池。打开该配置项可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认值为 `false`。|
 | TiDB Data Migration (DM) | `collation_compatible` | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
 | TiFlash | `storage.format_version` | 新增可选值 | 表示 DTFile 储存文件格式，默认值为 `2`。|
 | TiFlash | `logger.count` | 修改 | 默认值修改为 `10` |
 | TiFlash | `status.metrics_port` | 修改 | 默认值修改为 `8234` |
+| TiCDC | `enable-tidb-extension` | 新增 |  开启该配置项后，TiCDC 在 Canal-JSON 协议格式中附加 TiDB 扩展字段。                  |
+| TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `10M`  |
+| TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
 
 #### 统一各组件的日志格式和日志归档轮转规则
 
@@ -84,7 +87,7 @@ max-backups = 0
 
     从 v5.4.0开始，使用 TiUP 启动集群时推荐使用 `start --initial`。执行该操作启动集群后，会为 `root` 账号自动生成一个随机密码，`root` 账号登录 Dashboard 需要使用这个密码。
 
-- 从 TiDB v4.0（不包含 v4.0.0）升级到 v5.4.0 及更新的集群，`tidb_enable_index_merge` 变量默认关闭。
+- 为 TiDB 和 PD 之间新增接口。使用 `information_schema.TIDB_HOT_REGIONS_HISTORY` 系统表时，TiDB 需要使用匹配的 PD 版本。
 
 
 ## 新功能
