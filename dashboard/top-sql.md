@@ -14,7 +14,7 @@ Top SQL 会显示在一段时间内对某个 TiDB 或 TiKV 节点负载贡献较
 * 展示一段时间内前 5 CPU 负载贡献的查询。
 * 对某一查询，展示出 CPU 使用量，每秒请求数，平均延迟，查询计划等信息，用于改善潜在的性能优化点。
 
-## 启用
+## 启用 Top SQL
 
 打开 TiDB Dashboard，登陆后，在左侧菜单点击 “Top SQL”，然后在右上角点击齿轮按钮，即可在整个集群范围内启用或禁用该功能。也可以使用 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v54-版本开始引入) 来配置。
 
