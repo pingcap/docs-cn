@@ -323,7 +323,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 ### 其他限制
 
-* 所有包含 Bit/Set/Geometry 类型的表达式均不能下推到 TiFlash 
+* 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash 
 * date_add、date_sub、adddate 和 subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
     * DAY
     * WEEK
