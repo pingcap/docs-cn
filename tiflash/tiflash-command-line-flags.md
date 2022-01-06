@@ -30,13 +30,13 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 
 ## `dttool inspect`
 
-- 检查 DTFile 的完整性
-- 参数
-    - `--config-file` TiFlash 的配置文件，应当与 server 保持一致；当使用配置文件时，本地的 Tiflash 服务器实例需要退出；见 `--imitative` 选项
-    - `--check` 进行哈希校验
-    - `--file-id` 对应 DTFile 的 ID；如 dmf_123 对应的 ID 是 123
-    - `--imitative` 当不使用 DTFile 的加密功能时，可以使用本选项避免使用配置文件和连接PD
-    - `--workdir` 指向 dmf_xxx 的父级目录
+- 检查 DTFile 的完整性。
+- 参数：
+    - `--config-file`：TiFlash 的配置文件应当与 server 保持一致；使用配置文件时，需要退出本地的 TiFlash 服务器实例。见 `--imitative` 选项。
+    - `--check`：进行哈希校验。
+    - `--file-id`：对应 DTFile 的 ID，如 `dmf_123` 对应的 ID 是 123。
+    - `--imitative`：当不使用 DTFile 的加密功能时，可以使用本选项避免使用配置文件和连接 PD。
+    - `--workdir`：指向 `dmf_xxx` 的父级目录。
 
 ## `dttool migrate`
 
