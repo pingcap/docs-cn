@@ -31,7 +31,7 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
 
-{{< copyable "sql" >}}
+{{< copyable "" >}}
 
 ```sql
 /* 统计所有 schema 大小，单位 MiB，注意修改 ${schema_name} */
