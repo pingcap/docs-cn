@@ -551,12 +551,12 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 }
 ```
 
-对于参数的值为数组的请用 [x, y, ...] 形式进行参数值的设置，所有支持的参数如下所示:
+对于参数的值为数组的请用 x, y, ... 形式进行参数值的设置，所有支持的参数如下所示:
 
 {{< copyable "" >}}
 
 ```
->> hot history 1629294000000 1631980800000 hot_region_type read region_id [1,2,3] store_id [1,2,3] peer_id [1,2,3] is_leader true is_learner true
+>> hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true
 ```
 
 ```
