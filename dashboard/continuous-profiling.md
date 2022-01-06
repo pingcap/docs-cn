@@ -23,6 +23,8 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 - 该功能适用于使用 TiUP/TiDB Operator 部署和升级的集群，不支持二进制包部署和升级的集群。
 
+- 该功能需要 TiUP 1.9.0 及以上版本支持。
+
 ## 分析内容
 
 持续性能分析允许用户在不重启的情况下持续收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据，并且持久监控节点。收集到的性能数据可显示为火焰图、有向无环图等，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例 CPU 资源消耗细节。目前支持的性能信息：
@@ -34,83 +36,13 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ### TiUP 部署集群
 
-启用持续性能分析，需要首先检查 TiUP 版本信息，然后配置中控机和 TiDB Dashboard 相关参数。
-
-#### 检查版本
-
-检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
-
-1. 检查 TiUP Cluster 版本：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup cluster --version
-    ```
-
-    上述命令可查看 TiUP Cluster 的具体版本。显示为：
-
-    ```
-    tiup version 1.9.0 tiup
-    Go Version: go1.17.2
-    Git Ref: v1.9.0
-    ```
-
-    若低于 v1.9.0，需要先升级 TiUP Cluster。
-
-2. 升级 TiUP 和 TiUP Cluster 版本至最新。
-
-    - 升级 TiUP 和 TiUP Cluster：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup update --all
-        ```
-
-升级后，完成启动前检查。
-
-#### 配置中控机和 TiDB Dashboard
-
-1. 在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
-
-    1. 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup cluster edit-config ${cluster-name}
-        ```
-
-    2. 设置参数，在 [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers) 下面增加 “ng_port:${port}”：
-
-        ```
-        monitoring_servers:
-        - host: 172.16.6.6
-          ng_port: ${port}
-        ```
-
-    3. 重启 Prometheus 节点：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup cluster reload ${cluster-name} --role prometheus
-        ```
-
-    重启后，完成中控机所需的操作。
-
-2. 启用持续性能分析。
+1. 启用持续性能分析。
 
     1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)。
     2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
     3. 点击**保存** (Save)。
 
     ![启用功能](/media/dashboard/dashboard-conprof-start.png)
-    
-### TiDB Operator 部署集群
-
-#### WIP
 
 ## 访问页面
 
@@ -148,3 +80,71 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 4. 点击**保存** (Save)。
 
 ![停用功能](/media/dashboard/dashboard-conprof-stop.png)
+
+## FAQ
+
+### 界面提示「NgMonitoring 组件未能正常启用。请核对持续性能分析官方文档。」
+
+![未正常启用 NgMonitoring 组件](/media/dashboard/dashboard-conprof-has-not-NGM.png)
+
+因为 NgMonitoring 组件需要较高版本的部署工具支持（tiup 1.9.0 及以上），所以需要逐步排查，将 NgMonitoring 组件启用。
+
+需要首先检查 TiUP 版本信息，然后配置中控机和 TiDB Dashboard 相关参数。
+
+#### 检查 TiUP Cluster 版本
+
+检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
+
+1. 检查 TiUP Cluster 版本：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster --version
+    ```
+
+    上述命令可查看 TiUP Cluster 的具体版本。显示为：
+
+    ```
+    tiup version 1.9.0 tiup
+    Go Version: go1.17.2
+    Git Ref: v1.9.0
+    ```
+
+    若低于 v1.9.0，需要先升级 TiUP Cluster。
+
+2. 升级 TiUP 和 TiUP Cluster 版本至最新。
+
+    - 升级 TiUP 和 TiUP Cluster：
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup update --all
+        ```
+
+升级后，完成启动前检查。
+
+#### 重启 Prometheus 节点
+
+在中控机上，通过 TiUP 对 Prometheus 节点进行 reload 操作。
+
+1. 重启 Prometheus 节点：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster reload ${cluster-name} --role prometheus
+    ```
+
+重启后，完成中控机所需的操作。
+
+#### 配置 TiDB Dashboard
+
+在页面上启用持续性能分析。
+
+1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)。
+2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
+3. 点击**保存** (Save)。
+
+![启用功能](/media/dashboard/dashboard-conprof-start.png)
