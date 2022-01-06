@@ -321,9 +321,10 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
 * 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
 
-其他限制
+### 其他限制
+
 * 所有包含 Bit/Set/Geometry 类型的表达式均不能下推到 TiFlash 
-* date_add/date_sub,adddate,subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
+* date_add/date_sub、adddate 和 subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
     * DAY
     * WEEK
     * MONTH
