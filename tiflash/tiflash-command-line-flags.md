@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 ## `dttool bench`
 
 - 提供 DTFile 的简单 IO 速度测试。
-- 参数
+- 参数：
     - `--version`：DTFile 的版本，可选值为 1 和 2。1 为传统格式，2 为新版 checksum 对应的 DTFile 格式。
     - `--algorithm`：检验哈希算法，可选值为 xxh3，city128，crc32，crc64，none。
     - `--frame`：校验帧大小，默认为 1048576。
