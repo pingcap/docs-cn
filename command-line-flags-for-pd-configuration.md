@@ -61,7 +61,7 @@ PD 可以通过命令行参数或环境变量配置。
 
 + Log 级别。
 + 默认："info"
-+ 我们能选择 debug, info, warn, error 或者 fatal。
++ 可选："debug"，"info"，"warn"，"error"，"fatal"
 
 ## `--log-file`
 
