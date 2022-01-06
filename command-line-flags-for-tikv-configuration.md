@@ -58,7 +58,7 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 
 + Log 级别
 + 默认："info"
-+ 我们能选择 debug, info, warn, error, fatal
++ 可选："debug", "info", "warn", "error", "fatal"
 
 ## `--log-file`
 
