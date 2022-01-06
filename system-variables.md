@@ -1396,6 +1396,43 @@ set tidb_slow_log_threshold = 200;
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用控制是否开启 TopSQL 功能。
+
+### `tidb_top_sql_max_statement_count` <span class="version-mark">从 v5.4 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`100`
+- 范围：`[1, 5000]`
+- 这个变量用来设置 TiDB TopSQL 功能每秒保留 Top SQL 的数量，默认每秒保留 Top 100 的 SQL 数据。
+
+### `tidb_top_sql_max_collect` <span class="version-mark">从 v5.4 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`5000`
+- 范围：`[5000, 10000]`
+- 这个变量用来设置 TiDB TopSQL 功能每秒最多记录 SQL 文本的数量。
+
+### `tidb_top_sql_precision_seconds` <span class="version-mark">从 v5.4 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`1`
+- 范围：`[1, 60]`
+- 单位：秒
+- 这个变量用来设置 TiDB TopSQL 功能的数据的时间精度，默认是收集每 1 秒的 TopSQL 数据。
+- 推荐将该变量的值设置为 1。
+
+### `tidb_top_sql_report_interval_seconds` <span class="version-mark">从 v5.4 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`60`
+- 范围：`[1, 3600]`
+- 单位：秒
+- 这个变量用来设置 TiDB TopSQL 功能上报数据的时间间隔，默认每 60 秒上报一次。
+
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
 - 作用域：INSTANCE | GLOBAL
