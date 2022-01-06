@@ -25,15 +25,15 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一
 
 Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 sink-uri 中设置 `enable-tidb-extension` 为 true 后，TiCDC 生成 Canal-JSON 消息时的行为如下：
 
-* TiCDC 将会发送 WATERMARK Event 消息。
 * TiCDC 发送的 DML Event 和 DDL Event 类型消息中，将会含有一个名为 `_tidb` 的字段。
+* TiCDC 将会发送 WATERMARK Event 消息。
 
 配置样例如下所示：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json&enable-tidb-extension=true"
 ```
 
 `enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
@@ -59,7 +59,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     "mysqlType": null,
     "data": null,
     "old": null,
-    "_tidb": {
+    "_tidb": {     // tidb 扩展字段
         "commitTs": 163963309467037594
     }
 }
@@ -80,7 +80,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | mysqlType   | object | 当 isDdl 为 false 时，记录每一列数据类型 在 MySQL 中的类型表示 |
 | data        | Object | 当 isDdl 为 false 时，记录每一列的名字和其数据值 |
 | old         | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值|
-| _tidb       | Object | 造成 Row 变更的事务的 tso ｜
+| _tidb       | Object | tidb 扩展字段，仅当 `enable-tidb-extension` 开启时存在 ｜
 
 仅当 `enable-tidb-extension`=true 时，TiCDC 发送的 Canal-JSON 格式中，含有 `_tidb` 字段，其中的 `commitTs` 值为造成 Row 变更的事务的 tso。
 
@@ -128,7 +128,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
         }
     ],
     "old": null,
-    "_tidb": {
+    "_tidb": {     // tidb 扩展字段
         "commitTs": 163963314122145239
     }
 }
@@ -202,7 +202,7 @@ Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，�
 | Bit        | -7                 |
 | JSON       | 12                 |
 
-### 整数类型
+## 整数类型
 
 [整数类型](/data-type-numeric.md#整数类型)，需要考虑是否有 `Unsigned` 约束，并且需要考虑当前取值大小，分别对应有不同的 Java SQL Type (Code)。
 
@@ -312,7 +312,7 @@ update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 
 * 对于 `mysqlType` 字段，Canal 官方实现中，对于含有参数的类型，会含有完整的参数信息, TiCDC 实现则没有类型参数信息。
 
-假设在上游 TiDB 按顺序执行如下 SQL 语句:
+假设在上游数据库按顺序执行如下 SQL 语句:
 
 ```sql
 create table t (
