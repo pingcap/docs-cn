@@ -282,12 +282,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 > 注意：
 >
-> hot region的信息一般三分钟更新一次，如果设置时间间隔小于三分钟，中间部分更新可能没有意义。
+> Hot Region 的信息一般 3 分钟更新一次。如果设置时间间隔小于 3 分钟，中间部分的更新可能没有意义。
 
 ### `hot-regions-reserved-days`
 
-* 设置 PD 保留的 Hot Region 信息的最长时间
-* 默认值: 7天
+* 设置 PD 保留的 Hot Region 信息的最长时间。
+* 默认值: 7days
 
 ## replication
 
