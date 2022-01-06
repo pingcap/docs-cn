@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + Log 级别
 + 默认："info"
-+ 可选项为：debug、info、warn、error、fatal
++ 可选："debug"，"info"，"warn"，"error"，"fatal"
 
 ## `--lease`
 
