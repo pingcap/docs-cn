@@ -483,7 +483,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ]
 ```
 
-### `hot [read | write | store| history]`
+### `hot [read | write | store| history <start_time> <end_time> [<key> <value>]]`
 
 用于显示集群热点信息。示例如下。
 
