@@ -239,6 +239,18 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 要关闭 ANALYZE 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 ANALYZE 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置该系统变量一样会达到关闭配置持久化的效果。关闭该功能后，已持久化的记录不会被清除。因此当再次开启持久化功能时，需要通过 ANALYZE WITH 语句指定最新的配置信息。
 
+持久化的配置包括：
+
+| 配置项 | 对应的 ANALYZE 语法 |
+| --- | --- |
+| 直方图桶数 | WITH NUM BUCKETS |
+| TopN 个数 | WITH NUM TOPN |
+| 采样数 | WITH NUM SAMPLES |
+| 采样率 | WITH FLOATNUM SAMPLERATE |
+| ANALYZE 的列的类型 | AnalyzeColumnOption ::= ( 'ALL COLUMNS' | 'PREDICATE COLUMNS' | 'COLUMNS' ColumnNameList ) |
+| ANALYZE 的列 | ColumnNameList ::= Identifier ( ',' Identifier )* |
+
+
 ### 查看 ANALYZE 状态
 
 在执行 `ANALYZE` 时，可以通过 SQL 语句来查看当前 `ANALYZE` 的状态。
