@@ -213,7 +213,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 当某个表 `tbl` 的修改行数与总行数的比值大于 `tidb_auto_analyze_ratio`，并且当前时间在 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 之间时，TiDB 会在后台执行 `ANALYZE TABLE tbl` 语句自动更新这个表的统计信息。
 
-在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**对于 v5.0 版本，该功能默认关闭，暂不建议开启此功能。**
+在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 版本起，该功能默认关闭，暂不建议开启此功能。**
 
 ### 控制 ANALYZE 并发度
 
@@ -233,7 +233,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 ### ANALYZE 配置持久化
 
-从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置项的持久化功能。支持持久化的配置包括：
+从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置持久化功能。支持持久化的配置项包括：
 
 | 配置项 | 对应的 ANALYZE 语法 |
 | --- | --- |
@@ -244,11 +244,17 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 | ANALYZE 的列的类型 | AnalyzeColumnOption ::= ( 'ALL COLUMNS' \| 'PREDICATE COLUMNS' \| 'COLUMNS' ColumnNameList ) |
 | ANALYZE 的列 | ColumnNameList ::= Identifier ( ',' Identifier )* |
 
-该功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`），用于记录手动 `ANALYZE` 时指定的配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+`ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
 
-多次手动 `ANALYZE` 并指定配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
+多次手动执行 `ANALYZE` 语句并指定持久化配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
 
-要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置该系统变量一样会达到关闭配置持久化的效果。关闭该功能后，已持久化的记录不会被清除。当该功能再次开启时，之前持久化的配置可以被继续使用。如果再次开启时，之前持久化的配置已经不适用当前的数据，建议通过 `ANALYZE` 语句指定最新的配置信息。
+要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置该系统变量同样会达到关闭配置持久化的效果。
+
+关闭 `ANALYZE` 配置持久化功能后，已持久化的记录不会被清除。因此，当再次开启该功能时，TiDB 会继续使用之前记录的持久化配置。
+
+> **注意：**
+>
+> 当再次开启`ANALYZE` 配置持久化功能时，如果之前记录的持久化配置已经不适用当前的数据，建议通过 `ANALYZE` 语句重新指定最新的配置信息。
 
 
 ### 查看 ANALYZE 状态
@@ -436,16 +442,16 @@ DROP STATS TableName;
 
 ## 统计信息的加载
 
-默认情况下，依据不同统计信息占用空间的大小，TiDB 对列的统计信息的加载方式不同。
+默认情况下，依据统计信息占用空间的大小不同，TiDB 对列的统计信息的加载方式不同。
 
 - 对于 count、distinctCount、nullCount 等占用空间较小的统计信息，只要有数据更新，TiDB 就会自动将对应的统计信息加载进内存被 SQL 优化阶段使用。
 - 对于直方图、TopN、CMSketch 等占用空间较大的统计信息，为了确保 SQL 执行的性能，TiDB 会按需进行异步加载。例如，对于直方图，只有当某条 SQL 语句的优化阶段使用到了某列的直方图统计信息时，TiDB 才会将该列的直方图信息加载到内存。按需异步加载的优势是统计信息加载不会影响到 SQL 执行的性能，但在 SQL 优化时有可能使用不完整的统计信息。
 
-从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高 SQL 优化时统计信息的完整性。
+从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
 
 统计信息同步加载特性默认关闭。要开启该特性，请将系统变量 `tidb_stats_load_sync_wait` 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 0，代表未开启。
 
-开启该特性后，你可以修改通过系统变量 `tidb_stats_load_pseudo_timeout` 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `false`，代表超时后 SQL 执行失败。当设置该变量为 `true` 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch。
+开启该特性后，你可以修改通过系统变量 `tidb_stats_load_pseudo_timeout` 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `false`，代表超时后 SQL 执行失败。当设置该变量为 `true` 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch，而是退回使用 pseudo 的统计信息。
 
 > **警告：**
 >

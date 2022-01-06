@@ -1550,4 +1550,4 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：GLOBAL
 - 默认值：`false`
-- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（false）还是退回使用 pseudo 的统计信息（true）。
+- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`false`）还是退回使用 pseudo 的统计信息（`true`）。
