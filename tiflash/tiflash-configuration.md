@@ -120,13 +120,13 @@ delta_index_cache_size = 0
     log = pd buddy log 路径
 
 [flash.proxy]
-    addr = proxy 监听地址
+    addr = proxy 监听地址，不填则默认是 127.0.0.1:20170
     advertise-addr = 外部访问 addr 的地址，不填则默认是 addr
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
     log-level = proxy log 级别，默认为 "info"
-    status-addr = 拉取 proxy metrics｜status 信息的监听地址
+    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是127.0.0.1:20292
     advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
 
 [logger]
