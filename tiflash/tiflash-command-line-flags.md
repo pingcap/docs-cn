@@ -31,6 +31,11 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 ## `dttool inspect`
 
 - 检查 DTFile 的完整性。
+
+- 使用场景：
+    - 完成格式升降级后进行完整性检测。
+    - 将原有数据文件搬迁至新环境后进行完整性检测。
+
 - 参数：
     - `--config-file`：dttool bench 的配置文件应当与 [server](/tiflash/tiflash-command-line-flags.md#server---config-file) 保持一致；使用配置文件时，需要退出本地的 TiFlash 服务器实例。见 `--imitative` 选项。
     - `--check`：进行哈希校验。
@@ -38,9 +43,18 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
     - `--imitative`：当不使用 DTFile 的加密功能时，可以使用本选项避免使用配置文件和连接 PD。
     - `--workdir`：指向 `dmf_xxx` 的父级目录。
 
+> **注意：**
+>
+> 数据校验的单位为单个 DTFile。如果想进行整表校验，通常需要定位到所有形如 `<data dir>/t_<table id>/stable/dmf_<file id>` 的路径，逐一进行校验。可以结合脚本来自动进行这一操作。
+
 ## `dttool migrate`
 
-- 迁移 DTFile 的文件格式 （用于测试和原地降级）
+- 迁移 DTFile 的文件格式 （用于测试和原地降级）。
+
+- 使用场景：
+    - 当需要从开启 DTFile V3 的 v5.4 及以上版本的 TiFlash 降级回以前的版本时，可以使用此工具完成数据格式降级。
+    - 当升级到 TiFlash v5.4 并希望直接使用原有 DTFile 数据，且想使用 V3 格式来加固数据检验时，可以使用此工具完成数据格式升级。
+    - 测试不同配置的 DTFile 空间占用和读取速度。
 
 - 参数：
     - `--version`：目标文件格式版本，见 [dttool bench](#dttool-bench) 对应参数。
@@ -54,3 +68,16 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
     - `--config-file`：见 [dttool inspect](#dttool-inspect) 对应参数。
     - `--dry`：空跑模式，只输出迁移过程。
     - `--nokeep`：不保留原数据。不开启该选项时，会产生 `dmf_xxx.old` 文件。
+
+> **警告：**
+>
+> 虽然 TiFlash 可以读取自定义压缩算法和压缩等级的 DTFile，但目前正式支持的只有默认压缩等级的 LZ4 算法。自定义压缩参数并未经过大量测试，仅作实验。
+
+> **注意：**
+>
+> 数据迁移的单位为单个 DTFile。如果想进行整表迁移，通常需要定位到所有形如 `<data dir>/t_<table id>/stable/dmf_<file id>` 的路径，逐一进行迁移。可以结合脚本来自动进行这一操作。
+
+> **注意：**
+>
+> 为保证安全 DTTool 在迁移模式下会尝试对工作目录进行加锁，因此同一工作目录下同一时间只能有一个 DTTool 执行迁移工作。如果您在中途强制停止 DTTool，可能会因锁未释放导致后面在运行 DTTool 时工具拒绝进行迁移工作。
+> 如果您遇到这种情况，在保证安全的前提下，可以手动删除工作目录下的 LOCK 文件来释放锁。
