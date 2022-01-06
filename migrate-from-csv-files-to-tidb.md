@@ -121,7 +121,7 @@ To speed up the import, you can split a large CSV file into smaller ones. For a 
 In a strict-format CSV file, each field only takes up one line. It must meet the following requirements:
 
 - The delimiter is empty.
-- Each field does not contain CR (\r) or LF (\n).
+- Each field does not contain CR (`\r`) or LF (`\n`).
 
 If your CSV file meets the above requirements, you can speed up the import by enabling the `strict-format` mode as follows:
 
