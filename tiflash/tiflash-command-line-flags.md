@@ -17,16 +17,16 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 
 - 提供 DTFile 的简单 IO 速度测试。
 - 参数
-    - `--version` DTFile 的版本，支持数值 1， 2；1 为传统格式，2 为 checksum 改版后对应的 DTFile 格式
-    - `--algorithm`   检验哈希算法，支持：xxh3, city128, crc32, crc64, none
-    - `--frame` 校验帧大小，默认值 1048576
-    - `--column` 测试表宽度，默认 100
-    - `--size` 测试表长度，默认 1000
-    - `--field` 测试表字段长度上限，默认 1024
-    - `--random` 随机数种子 （不提供时从系统熵池抽取）
-    - `--encryption` 启用加密功能
-    - `--repeat` 性能测试采样次数， 默认 5
-    - `--workdir` 临时数据文件夹 （应指向需要测试的文件系统化），默认 /tmp/test
+    - `--version`：DTFile 的版本，可选值为 1 和 2。1 为传统格式，2 为新版 checksum 对应的 DTFile 格式。
+    - `--algorithm`：检验哈希算法，可选值为 xxh3，city128，crc32，crc64，none。
+    - `--frame`：校验帧大小，默认为 1048576。
+    - `--column`：测试表宽度，默认为 100。
+    - `--size`：测试表长度，默认为 1000。
+    - `--field`：测试表字段长度上限，默认为 1024。
+    - `--random`：随机数种子。如未提供，该值从系统熵池抽取。
+    - `--encryption`：启用加密功能。
+    - `--repeat`：性能测试采样次数，默认为 5。
+    - `--workdir`：临时数据文件夹，应指向需要测试的文件系统化，默认为 /tmp/test。
 
 ## `dttool inspect`
 
