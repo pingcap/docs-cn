@@ -58,13 +58,13 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 
 + Log 级别
 + 默认："info"
-+ 我们能选择 trace, debug, info, warn, error, 或者 off
++ 我们能选择 debug, info, warn, error, fatal
 
 ## `--log-file`
 
 + Log 文件
 + 默认：""
-+ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
++ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面。
 
 ## `--pd`
 
