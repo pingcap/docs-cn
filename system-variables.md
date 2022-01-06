@@ -1418,6 +1418,13 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[1, 5000]`
 - 这个变量用来设置 Top SQL 功能每个时间精度内保留最大负载 SQL 的数量，默认每个时间精度内保留 Top 100 负载的 SQL 种类。
 
+### `tidb_top_sql_max_collect` <span class="version-mark">从 v5.4 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`5000`
+- 范围：`[5000, 10000]`
+- 这个变量用来设置 Top SQL 功能每个时间精度内内存中统计的最多 SQL 种类数量，如果在某一个时间精度内的种类数量超过了这个值，那超出的 SQL 种类将会不被统计到。
+
 ### `tidb_top_sql_report_interval_seconds` <span class="version-mark">从 v5.4 版本开始引入</span>
 
 - 作用域：GLOBAL
