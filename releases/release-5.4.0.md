@@ -150,7 +150,7 @@ max-backups = 0
 
 - **TiSpark 支持用户认证与鉴权**
 
-    TiSpark 提供数据库和表级别的读写授权验证以及数据库用户认证验证。开启该功能后，能避免业务侧未经授权运行抽数等批量任务获取数据，提高线上集群的稳定性和数据安全性。从 TiSpark v2.5.0 后开始支持。
+    TiSpark 提供数据库和表级别的读写授权验证以及数据库用户认证验证。开启该功能后，能避免业务侧未经授权运行抽数等批量任务获取数据，提高线上集群的稳定性和数据安全性。从 TiSpark v2.5.0 起开始支持。
 
     该功能默认关闭。开启后，如果用户没有对应的权限，通过 TiSpark 操作会抛出对应的异常。
 
@@ -249,7 +249,7 @@ max-backups = 0
 
 - **支持 Azure Blob Storage 作为备份目标存储（实验特性）**
 
-    BR 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
+    Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
     该功能目前是实验特性，详细情况参考 [BR 支持 Azure Blob Storage 远端存储](/br/backup-and-restore-azblob.md)。
 
@@ -285,9 +285,14 @@ max-backups = 0
 
     增加 `collation_compatible` 开关，支持 `strict` 和 `loose`（默认）两种模式。如果对排序规则要求不严格，允许排序规则不一致，使用默认的 `loose` 模式可使同步正常进行；如果对排序规则要求严格，排序规则不一致导致报错，则可以使用 `strict` 模式。
 
-- **在 DM 中新增 `transfer source` 支持平滑执行同步任务**
+- **在 DM 中 优化 `transfer source`，支持平滑执行同步任务**
 
     当 DM-worker 所在各节点负载不均衡时，`transfer source` 命令可用于手动将某 `source` 配置迁移到其他节点。优化后的 `transfer source` 简化了用户操作步骤，不再要求先暂停所有关联 task 而是直接执行平滑迁移，DM 将在内部完成所需操作。
+
+- **DM OpenAPI 特性 GA**
+
+    DM 支持通过 API 的方式进行日常管理，包括增加数据源、管理任务等。本次更新 OpenAPI 从实验特性转为正式特性。
+
 
 - **优化 TiCDC 对集群的影响**
 
@@ -304,6 +309,12 @@ max-backups = 0
     <如果功能限制或此功能特定的兼容性问题，需要提及>
 
     [用户文档](/)
+
+- **Top SQL（实验特性）**
+
+    新推出实验性特性 Top SQL（默认关闭），帮助用户轻松找到节点中负载贡献较大的查询。
+
+    [用户文档](/dashboard/top-sql.md)
 
 ### TiDB 数据共享订阅
 
