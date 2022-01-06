@@ -42,15 +42,15 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 
 - 迁移 DTFile 的文件格式 （用于测试和原地降级）
 
-- 参数
-    - `--version` 目标文件格式版本；见 bench 对应参数
-    - `--algorithm` 目标检验哈希算法，仅在 version=2 时有用；见 bench 对应参数
-    - `--frame` 目标校验帧大小，仅在 version=2 时有用；见 bench 对应参数
-    - `--compression` 目标压缩算法，支持 lz4, lz4hc, zstd, none；默认值 lz4
-    - `--level` 目标压缩等级，默认值 -1 （表示自动模式）；不同压缩算法取值范围不同。
-    - `--file-id` 见 inspect 对应参数
-    - `--imitative` 见 inspect 对应参数
-    - `--workdir` 见 inspect 对应参数
-    - `--config-file` 见 inspect 对应参数
-    - `--dry` 空跑模式，只输出迁移过程
-    - `--nokeep` 不保留原数据（不开启时会产生 dmf_xxx.old 文件）
+- 参数：
+    - `--version`：目标文件格式版本，见 [dttool bench](#dttool-bench) 对应参数。
+    - `--algorithm`：目标检验哈希算法，仅在 version=2 时有用，见 [dttool bench](#dttool-bench) 对应参数。
+    - `--frame`：目标校验帧大小，仅在 version=2 时有用，见 [dttool bench](#dttool-bench) 对应参数。
+    - `--compression`：目标压缩算法，可选值为 lz4，lz4hc，zstd，none。默认值为 lz4。
+    - `--level`：目标压缩等级，默认值 -1 （表示自动模式）；不同压缩算法取值范围不同。
+    - `--file-id`：见 [dttool inspect](#dttool-inspect) 对应参数。
+    - `--imitative`：见 [dttool inspect](#dttool-inspect) 对应参数。
+    - `--workdir`：见 [dttool inspect](#dttool-inspect) 对应参数。
+    - `--config-file`：见 [dttool inspect](#dttool-inspect) 对应参数。
+    - `--dry`：空跑模式，只输出迁移过程。
+    - `--nokeep`：不保留原数据。不开启该选项时，会产生 `dmf_xxx.old` 文件。
