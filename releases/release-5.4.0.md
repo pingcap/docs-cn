@@ -40,7 +40,8 @@ TiDB 版本：5.4.0
 | TiDB | `stats-load-queue-size`   | 新增 |               |
 | TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源以求减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log.level`、`log.format`、`log.enable-timestamp`、`log.file.filename`、`log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
-| TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size`、`log-rotation-timespan` | 删除 | 废弃 TiKV log 参数，改为使用与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
+| TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 变更 | 将 TiKV log 参数名改为与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
+| TiKV  |  `log-rotation-timespan`  | 删除 |  轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。 |
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。
 | PD | `log.level` | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感 |
 | PD | `hot-regions-write-interval` | 新增 |  设置 PD 存储 Hot Region 信息的时间间隔。默认值为 `10m`。 |
@@ -50,6 +51,8 @@ TiDB 版本：5.4.0
 | TiFlash | `storage.format_version` | 新增可选值 | 表示 DTFile 储存文件格式，默认值为 `2`。|
 | TiFlash | `logger.count` | 修改 | 默认值修改为 `10` |
 | TiFlash | `status.metrics_port` | 修改 | 默认值修改为 `8234` |
+| TiFlash | `raftstore.apply-pool-size` | 新增 | 处理 Raft 数据落盘的线程池中线程的数量，默认值为 `4`。 |
+| TiFlash | `raftstore.store-pool-size` | 新增 | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小，默认值为 `4`。 |
 | TiCDC | `enable-tidb-extension` | 新增 |  开启该配置项后，TiCDC 在 Canal-JSON 协议格式中附加 TiDB 扩展字段。                  |
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `10M`  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
