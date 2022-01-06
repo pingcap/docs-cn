@@ -16,7 +16,11 @@ Top SQL 会显示在一段时间内对某个 TiDB 或 TiKV 节点负载贡献较
 
 ## 启用 Top SQL
 
-打开 TiDB Dashboard，登陆后，在左侧菜单点击 “Top SQL”，然后在右上角点击齿轮按钮，即可在整个集群范围内启用或禁用该功能。也可以使用 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v54-版本开始引入) 来配置。
+
+Top SQL 功能默认关闭。要在整个集群范围内启用该功能，请进行以下操作之一：
+
+- 登陆 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮。
+- 配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v54-版本开始引入)的值为 `ON`。
 
 > **注意：**
 >
