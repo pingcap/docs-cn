@@ -246,7 +246,48 @@ max-backups = 0
 
     - 新增系统变量 `tidb_enable_paging`，开启该功能可显著降低使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 数据较小且无法下推到 `IndexScan` 上的读请求的延迟 [#30578](https://github.com/pingcap/tidb/issues/30578)
 
++ TiKV
+
++ PD
+
++ TiFlash
+
++ Tools
+
+    + Backup & Restore (BR)
+
+    + TiCDC
+
+    + TiDB Data Migration (DM)
+
+    + TiDB Lightning
+
+    + Dumpling
+
+    + TiDB Binlog
 
 ## Bug 修复
+
++ TiDB
+
++ TiKV
+
++ PD
+
++ TiFlash
+
++ Tools
+
+    + Backup & Restore (BR)
+
+    + TiCDC
+
+    + TiDB Data Migration (DM)
+
+    + TiDB Lightning
+
+    + Dumpling
+
+    + TiDB Binlog
 
 
