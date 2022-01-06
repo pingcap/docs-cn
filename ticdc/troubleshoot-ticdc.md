@@ -258,6 +258,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 > * 目前 TiCDC 仅支持将 Canal 格式的变更数据输出到 MQ 类的 Sink（例如：Kafka，Pulsar）。
 
 更多信息请参考[创建同步任务](/ticdc/manage-ticdc.md#创建同步任务)。
+
 ## TiCDC 把数据同步到 Kafka 时，能在 TiCDC 中控制单条消息大小的上限吗？
 
 可以在 `sink-uri` 中配置 `max-message-bytes`，它控制每次向 Kafka producer 发送的单条消息的最大大小。如果 TiCDC 尝试发送的数据大小超过该值，则会报错 `Message was too large`。
