@@ -121,20 +121,20 @@ delta_index_cache_size = 0
 
 [flash.proxy]
     addr = proxy 监听地址，不填则默认是 127.0.0.1:20170
-    advertise-addr = 外部访问 addr 的地址，不填则默认是 addr
+    advertise-addr = 外部访问 addr 的地址，不填则默认是 "addr"
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
-    log-level = proxy log 级别，默认为 "info"
-    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是127.0.0.1:20292
-    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
+    log-level = proxy log 级别，默认是 "info"
+    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是 127.0.0.1:20292
+    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
 
 [logger]
-    ## log 级别（支持 trace、debug、information、warning、error），默认是 debug
+    ## log 级别（支持 trace、debug、information、warning、error），默认是 "debug"
     level = debug
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
-    ## 单个日志文件的大小，默认是 100 MB
+    ## 单个日志文件的大小，默认是 "100 M"
     size = "100M"
     ## 最多保留日志文件个数，默认是 10
     count = 10
@@ -186,7 +186,7 @@ delta_index_cache_size = 0
     store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
-    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
+    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 "4ms"，设为 "0ms" 则关闭该优化。
     store-batch-retry-recv-timeout = "4ms"
 ```
 
