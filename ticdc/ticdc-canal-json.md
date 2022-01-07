@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/t
 
 # TiCDC Canal-JSON Protocol
 
-Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的实现。当使用 MQ (Message Queue) 作为下游 sink 时，你可以在 sink-uri 中指定使用 canal-json，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的实现。当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Canal-JSON，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。
 
 Event 分为三类：
 
