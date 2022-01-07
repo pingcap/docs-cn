@@ -1400,7 +1400,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
-- 这个变量用控制是否开启 [Top SQL 功能](/dashboard/top-sql.md)。目前这个功能是实验特性，默认关闭，未来可能会默认打开。
+- 这个变量用控制是否开启 [Top SQL 功能](/dashboard/top-sql.md)。这个功能是实验特性，默认关闭。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
