@@ -1,7 +1,6 @@
 ---
 title: TiCDC Canal-JSON Protocol
 summary: 了解 TiCDC Canal-JSON Protocol 的概念和使用方法。
-aliases: ['/docs-cn/dev/ticdc/ticdc-canal-json/','/docs-cn/dev/reference/tools/ticdc/canal-json/']
 ---
 
 # TiCDC Canal-JSON Protocol
