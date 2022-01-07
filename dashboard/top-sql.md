@@ -18,7 +18,6 @@ Top SQL 用于展示在一段时间内对某个 TiDB 或 TiKV 节点消耗负载
 
 ## 启用 Top SQL
 
-
 Top SQL 功能默认关闭。要在整个集群范围内启用该功能，请进行以下操作之一：
 
 - 登陆 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮。
