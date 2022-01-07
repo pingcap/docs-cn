@@ -1,6 +1,6 @@
 ---
 title: Top SQL
-summary: Top SQL -- 找到负载贡献较大的查询
+summary: Top SQL -- 找到消耗负载较大的 SQL 查询
 ---
 
 # Top SQL
@@ -9,11 +9,11 @@ summary: Top SQL -- 找到负载贡献较大的查询
 >
 > Top SQL 目前为实验特性，不建议在生产环境中使用。
 
-Top SQL 用于展示在一段时间内对某个 TiDB 或 TiKV 节点负载贡献较大的 SQL 查询。例如，Top SQL 可以展示一个低负载的数据库上执行的一条消耗 99% 负载的分析查询。
+Top SQL 用于展示在一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。例如，Top SQL 可以辅助找出一个低负载的数据库上执行的一条消耗 99% 负载的分析查询。
 
 针对指定的 TiDB 或 TiKV 节点，Top SQL 可以提供以下功能：
 
-* 展示指定时间范围内前占 CPU 负载最多的 5 个查询。
+* 展示时间范围内消耗负载最多的 5 类 SQL 查询。
 * 展示某一查询的 CPU 使用量、每秒请求数、平均延迟、查询计划等信息，作为 TiDB 潜在的性能优化点。
 
 ## 启用 Top SQL
