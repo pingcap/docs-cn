@@ -47,7 +47,7 @@ Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 C
 
 TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
-```
+```json
 {
     "id": 0,
     "database": "test",
@@ -89,7 +89,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 对于一行 DML 数据变更事件，TiCDC 会将其编码成如下形式:
 
-```
+```json
 {
     "id": 0,
     "database": "test",
@@ -143,7 +143,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 WATERMARK Event 的示例如下：
 
-```
+```json
 {
     "id": 0,
     "database": "",
@@ -284,7 +284,7 @@ update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 
 对于 `update` 语句，TiCDC 将会输出一条 `type` 为 `UPDATE` 的事件消息，如下所示。该 `update` 语句，仅对 `c_int`, `c_tinyint` 两列进行了修改, 输出事件消息的 `Old` 字段，则含有所有列数据。
 
-```
+```json
 {
     "id": 0,
     ...
@@ -347,7 +347,7 @@ values (123.456, "abc", "abc", "abc", "abc", 'a', 'a,b', b'1000001');
 
 TiCDC 输出内容如下：
 
-```
+```json
 {
     "id": 0,
     ...
@@ -377,7 +377,7 @@ TiCDC 输出内容如下：
 
 Canal 官方实现输出内容如下：
 
-```
+```json
 {
     "id": 0,
     ...
