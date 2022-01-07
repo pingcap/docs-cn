@@ -57,10 +57,10 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 * 在 `character_set_client` 和 `character_set_connection` 不都为 `gbk` 的情况下，TiDB 处理非法字符的情况与 MySQL 兼容。
 * 在 `character_set_client` 和 `character_set_connection` 都为 `gbk` 的情况下， TiDB 处理非法字符的情况与 MySQL 有一些不一样。例如，以 `set names gbk` 为前提，具体行为如下（其中 `insert` 语句所在表的建表语句：`create table gbk_table(a varchar(32) character set gbk);`）：
 
-| DB    |    sql_mode:<br><br>  STRICT_ALL_TABLES or<br>  STRICT_TRANS_TABLES                                               | sql_mode:<br><br>not include    <br>  STRICT_ALL_TABLES or<br>  STRICT_TRANS_TABLES                                                                     |
+| DB    |    sql_mode:<br><br>  STRICT_ALL_TABLES or<br>  STRICT_TRANS_TABLES                                               | sql_mode 不包括： <br><br>  STRICT_ALL_TABLES or<br>  STRICT_TRANS_TABLES                                                                     |
 |-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| MySQL | select hex('一a'); (0xe4b88061)<br> e4b88061<br><br>insert into gbk_table values('一a');<br> Incorrect Error       | select hex('一a'); (0xe4b88061)<br> e4b88061<br><br>insert into gbk_table values('一a');<br>select hex(a) from gbk_table;<br> e4b8 |
-| TiDB  | select hex('一a') (0xe4b88061)<br> Incorrect Error<br><br>insert into gbk_table values('一a');<br> Incorrect Error | select hex('一a') (0xe4b88061)<br> e4b83f<br><br>insert into gbk_table values('一a');<br>select hex(a) from gbk_table;<br> e4b83f  |
+| MySQL | `select hex('一a');` (0xe4b88061)<br> e4b88061<br><br>`insert into gbk_table values('一a');`<br> Incorrect Error       | `select hex('一a');` (0xe4b88061)<br> e4b88061<br><br>`insert into gbk_table values('一a');`<br>`select hex(a) from gbk_table;`<br> e4b8 |
+| TiDB  | `select hex('一a');` (0xe4b88061)<br> Incorrect Error<br><br>`insert into gbk_table values('一a');`<br> Incorrect Error | `select hex('一a');` (0xe4b88061)<br> e4b83f<br><br>`insert into gbk_table values('一a');`<br>`select hex(a) from gbk_table;`<br> e4b83f  |
 
 ### 其它
 
