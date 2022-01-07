@@ -134,7 +134,7 @@ delta_index_cache_size = 0
     level = debug
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
-    ## 单个日志文件的大小，默认是 "100 M"
+    ## 单个日志文件的大小，默认是 "100M"
     size = "100M"
     ## 最多保留日志文件个数，默认是 10
     count = 10
