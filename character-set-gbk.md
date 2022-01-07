@@ -1,12 +1,13 @@
 ---
 title: GBK
+summary: 本文介绍 TiDB 对 GBK 字符集的支持情况。
 ---
 
 # GBK
 
-本文档介绍 TiDB 对 GBK 字符集的支持情况。
+本文档介绍 TiDB 对 GBK 字符集的支持和兼容性情况。
 
-目前 TiDB 支持 GBK 字符集和排序规则情况：
+从 TiDB v5.4.0 起，TiDB 支持 GBK 字符集。
 ```sql
 SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 +---------+-------------------------------------+-------------------+--------+
@@ -25,14 +26,14 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 +----------------+---------+------+---------+----------+---------+
 1 rows in set (0.00 sec)
 ```
-TiDB GBK 字符集默认排序规则与 MySQL 不一致，MySQL 的是 `gbk_chinese_ci`。 另外，目前 TiDB 支持的 `gbk_bin` 与 MySQL 使用的也不一致。TiDB 这边排序规则是在将 GBK 转换成 UTF8MB4 然后做二进制排序。
+TiDB GBK 字符集默认排序规则与 MySQL 不一致，TiDB GBK 字符集的默认排序规则为 `gbk_bin`，MySQL 的字符集默认排序规则是 `gbk_chinese_ci`。 另外，目前 TiDB 支持的 `gbk_bin` 与 MySQL 支持的 `gbk_bin` 也不一致，TiDB 是将 GBK 转换成 UTF8MB4 然后做二进制排序。
 
-如果需要兼容 MySQL 的排序规则，需要使用[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
+如果要兼容 MySQL 的 GBK 字符集排序规则，你需要在初次初始化集群时通过设置 TiDB 配置项[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `true`来开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
 
-利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)）下的结果：
+开启新的排序规则框架后，你可以通过以下 SQL 语句查看 GBK 字符集对应的排序规则：
 
 ```sql
-SHOW CHARACTER SET WHERE CHARSET = 'gbk';;
+SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 +---------+-------------------------------------+-------------------+--------+
 | Charset | Description                         | Default collation | Maxlen |
 +---------+-------------------------------------+-------------------+--------+
@@ -54,8 +55,8 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ### 非法字符兼容性
 
-* 在 `character_set_client` 和 `character_set_connection` 不都为 `gbk` 的情况下，TiDB 处理非法字符的情况与 MySQL 兼容。
-* 在 `character_set_client` 和 `character_set_connection` 都为 `gbk` 的情况下， TiDB 处理非法字符的情况与 MySQL 有一些不一样。例如，以 `set names gbk` 为前提，具体行为如下（其中 `insert` 语句所在表的建表语句：`create table gbk_table(a varchar(32) character set gbk);`）：
+* 在 `character_set_client` 和 `character_set_connection` 不同时为 `gbk` 的情况下，TiDB 处理非法字符的方式与 MySQL 一致。
+* 在 `character_set_client` 和 `character_set_connection` 同时为 `gbk` 的情况下， TiDB 处理非法字符的方式与 MySQL 有所区别。例如，以 `set names gbk` 为前提，具体行为如下（其中 `insert` 语句所在表的建表语句：`create table gbk_table(a varchar(32) character set gbk);`）：
 
 | DB    |    sql_mode:<br><br>  STRICT_ALL_TABLES or<br>  STRICT_TRANS_TABLES                                               | sql_mode 不包括： <br><br>  STRICT_ALL_TABLES or<br>  STRICT_TRANS_TABLES                                                                     |
 |-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
@@ -64,19 +65,19 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ### 其它
 
-* 目前不支持通过 `alter table` 语句将其它字符集类型改成 `gbk`，或者从 `gbk` 转成其它字符集。
+* 目前 TiDB 不支持通过 `ALTER TABLE` 语句将其它字符集类型改成 `gbk`，或者从 `gbk` 转成其它字符集类型。
 
-* 不支持使用 `_gbk`， 比如：
+* TiDB 不支持使用 `_gbk`， 比如：
 
   ```sql
-  create table t(a char(10) charset binary);
+  CREATE TABLE t(a CHAR(10) CHARSET BINARY);
   Query OK, 0 rows affected (0.00 sec)
-  insert into t values (_gbk'啊');
+  INSERT INTO t VALUES (_gbk'啊');
   ERROR 1115 (42000): Unsupported character introducer: 'gbk'
   ```
 
-* 对于 `ENUM` 类型中的二进制字符，目前都会将其作为 utf8mb4 字符集处理。
+* 对于 `ENUM` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
 
 ## 其他组件兼容性
 
-* 目前不支持此功能的组件包括：TiCDC 和 TiFlash。
+* 目前不支持 GBK 字符集的组件包括：TiCDC 和 TiFlash。
