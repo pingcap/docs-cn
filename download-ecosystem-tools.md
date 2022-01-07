@@ -5,7 +5,15 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 # TiDB 工具下载
 
-本页面汇总了 TiDB 周边工具官方维护版本的下载链接。
+本页面汇总了 TiDB 工具官方维护版本的下载链接。
+
+## TiUP
+
+TiUP 安装过程十分简洁，无论是 Darwin 还是 Linux 操作系统，执行一行命令即可安装成功。详情请参考[安装 TiUP](/tiup/tiup-overview.md#安装-tiup)。
+
+## TiDB Operator
+
+TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，你可以选择在线或者离线部署 TiDB Operator。详情请参考[在 Kubernetes 上部署 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator)。
 
 ## TiDB Binlog
 
@@ -45,7 +53,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 ## TiDB DM (Data Migration)
 
-使用下表中的链接下载 [DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview)：
+使用下表中的链接下载 [DM](/dm/dm-overview.md)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -53,7 +61,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v5.3.0` 版本的下载链接为 `https://download.pingcap.org/dm-v5.3.0-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/ticdc/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v5.3.0` 版本的下载链接为 `https://download.pingcap.org/dm-v5.3.0-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/tiflow/releases) 查看当前已发布版本。
 
 ## Dumpling
 
