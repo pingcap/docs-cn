@@ -14,7 +14,6 @@ TiDB 版本：5.4.0
 +
 +
 
-
 ## 兼容性变化
 
 > **注意：**
@@ -128,13 +127,15 @@ max-backups = 0
 
     [用户文档](/tikv-configuration-file.md#raft-engine)
 
-- TiFlash
+- **提升 TiFlash 性能和稳定性**
 
-  - 支持将更多函数下推至 MPP 引擎
-      - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
-      - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
-  - 引入动态线程池，提升资源利用率
-  - 新增或修改一些 TiFlash 已有配置的默认值，提升 TiFlash 的性能和稳定性
+    - 支持将更多函数下推至 MPP 引擎
+        - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
+        - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
+    - 引入动态线程池，提升资源利用率
+    - 新增或修改一些 TiFlash 已有配置的默认值，提升 TiFlash 的性能和稳定性
+    - 提升由行存到列存数据同步处理时对 raft log 的解码 (decoding) 效率， 此环节的 CPU 使用率最多可降低 90%
+    - TiFlash 调整了文件系统中 Delta Tree 相关的默认参数，使之更适合一般的生产环境
 
 - **通过 session 变量实现有界限过期数据读取**
 
