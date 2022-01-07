@@ -81,7 +81,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | sql       | String | 当 isDdl 为 true 时，记录对应的 DDL 语句                                    |
 | sqlType   | Object | 当 isDdl 为 false 时，记录每一列数据类型在 Java 中的类型表示                  |
 | mysqlType | object | 当 isDdl 为 false 时，记录每一列数据类型在 MySQL 中的类型表示                |
-| data      | Object | 当 isDdl 为 false 时，记录每一列的名字和其数据值                             |
+| data      | Object | 当 isDdl 为 false 时，记录每一列的名字及其数据值                             |
 | old       | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值  |
 | _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO  ｜
 
@@ -137,7 +137,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 ### WATERMARK Event
 
-仅当 `enable-tidb-extension` 为 `true` 时，TiCDC 才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该时间发送时的 TSO。
+仅当 `enable-tidb-extension` 为 `true` 时，TiCDC 才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该 Event 发送时的 TSO。
 
 当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
@@ -262,7 +262,7 @@ TiCDC 对 Canal-JSON 数据格式的实现，包括 `Update` 类型事件和 `my
 | 差异点            | TiCDC                  | Canal                                |
 |:----------------|:-------------------------|:-------------------------------------|
 | `Update` 类型事件 | `Old` 字段包含所有列数据 | `Old` 字段仅包含被修改的列数据          |
-| `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息         | 对于含有参数的类型，会含有完整的参数信息 |
+| `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息         | 对于含有参数的类型，会包含完整的参数信息 |
 
 
 ### `Update` 类型事件
@@ -329,7 +329,9 @@ update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 
 ### `mysqlType` 字段
 
-对于 `mysqlType` 字段，Canal 官方实现中，对于含有参数的类型，会包含完整的参数信息, TiCDC 实现则没有类型参数信息。
+对于 `mysqlType` 字段，Canal 官方实现中，对于含有参数的类型，会包含完整的参数信息，TiCDC 实现则没有类型参数信息。
+
+在下面示例的表定义 SQL 语句中，如 decimal / char / varchar / enum 等类型，都含有参数。对比 TiCDC 和 Canal 官方实现分别生成的 Canal-JSON 格式数据可知，在 `mysqlType` 字段中的数据，TiCDC 实现只包含基本 MySQL Type。如果业务需要类型参数信息，需要你自行通过其他方式实现。
 
 假设在上游数据库按顺序执行如下 SQL 语句:
 
@@ -412,5 +414,3 @@ Canal 官方实现输出内容如下：
     "old": null,
 }
 ```
-
-在上面的表定义 SQL 语句中，如 decimal / char / varchar / enum 等类型，都含有参数。对比 TiCDC 和 Canal 官方实现分别生成的 Canal-JSON 格式数据可知，在 `mysqlType` 字段中的数据，TiCDC 实现只含有基本 MySQL Type。如果业务需要类型参数信息，需要你自行通过其他方式确定。
