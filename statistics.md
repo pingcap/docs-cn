@@ -256,7 +256,6 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 >
 > 当再次开启`ANALYZE` 配置持久化功能时，如果之前记录的持久化配置已经不适用当前的数据，建议通过 `ANALYZE` 语句重新指定最新的配置信息。
 
-
 ### 查看 ANALYZE 状态
 
 在执行 `ANALYZE` 时，可以通过 SQL 语句来查看当前 `ANALYZE` 的状态。
@@ -456,7 +455,6 @@ DROP STATS TableName;
 > **警告：**
 >
 > 统计信息同步加载目前仍为实验性功能，不建议在生产环境中使用。
-
 
 ## 统计信息的导入导出
 

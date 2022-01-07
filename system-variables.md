@@ -1529,7 +1529,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`true`
 - 这个变量用于控制是否持久化执行 `ANALYZE` 语句时指定的配置项。
 
-
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 > **警告：**
