@@ -49,7 +49,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 
 - 使用场景：
     - 当需要从开启了数据校验功能 (`storage.format_version` >= 3) 的 TiFlash v5.4 及以上版本降级回以前的版本时，可以使用此工具完成数据格式降级。
-    - 当升级到 TiFlash v5.4 并希望直接使用原有 DTFile 数据，且想使用 V3 格式来加固数据检验时，可以使用此工具完成数据格式升级。
+    - 当升级到 TiFlash v5.4 及以上，并希望对存量数据也加上数据校验功能以加固数据检验时，可以使用此工具完成数据格式升级。
     - 测试不同配置的 DTFile 空间占用和读取速度。
 
 - 参数：
