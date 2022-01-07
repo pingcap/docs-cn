@@ -446,7 +446,7 @@ DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用�
 
 TiFlash 支持自动和手动进行数据校验：
 
-- 自动数据校验：
+- 自动数据校验 （`storage.format_version` 配置项）：
     - 默认使用 DTFile V2 版本校验机制。
     - 如需开启 DTFile V3 版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
 - 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
