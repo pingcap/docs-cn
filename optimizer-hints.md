@@ -251,7 +251,8 @@ SELECT /*+ NO_INDEX_MERGE() */ * FROM t WHERE t.a > 0 or t.b > 0;
 
 > **注意：**
 >
-> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。在有子查询时，`NO_INDEX_MERGE` 只能放在最外层才能生效。
+> - `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - 当存在子查询时，`NO_INDEX_MERGE` 放在最外层才能生效。
 
 ### USE_TOJA(boolean_value)
 
