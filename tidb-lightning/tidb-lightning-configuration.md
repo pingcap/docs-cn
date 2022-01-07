@@ -58,6 +58,10 @@ table-concurrency = 6
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
 
+# 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"
+# 如果未开启并行导入模式，无须设置此配置项。
+meta-schema-name = "lightning_metadata"
+
 [security]
 # 指定集群中用于 TLS 连接的证书和密钥。
 # CA 的公钥证书。如果留空，则禁用 TLS。
@@ -94,6 +98,8 @@ driver = "file"
 [tikv-importer]
 # 选择后端：“local” 或 “importer” 或 “tidb”
 # backend = "local"
+# 是否开启并行导入模式
+# incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 当后端是 “tidb” 时，插入重复数据时执行的操作。
