@@ -215,7 +215,7 @@
           - [悲观模式](/dm/feature-shard-merge-pessimistic.md)
           - [乐观模式](/dm/feature-shard-merge-optimistic.md)
         - [迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)
-        - [使用 SQL 表达式过滤某些行变更](/dm/feature-expression-filter.md)
+        - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
       - [DM 架构](/dm/dm-arch.md)
       - [性能数据](/dm/dm-benchmark-v5.3.0.md)
     - 快速上手
