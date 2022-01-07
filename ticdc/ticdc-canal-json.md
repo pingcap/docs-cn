@@ -83,7 +83,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | mysqlType | object | 当 isDdl 为 false 时，记录每一列数据类型 在 MySQL 中的类型表示                |
 | data      | Object | 当 isDdl 为 false 时，记录每一列的名字和其数据值                             |
 | old       | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值  |
-| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO。                  ｜
+| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO。  ｜
 
 ### DML Event
 
@@ -173,11 +173,13 @@ WATERMARK Event 的示例如下：
 
 ## 字段说明
 
-### MySQL Type 字段说明
+Canal-JSON 格式会在 `mysqlType` 字段和 `sqlType` 字段中记录对应的数据类型。
+
+### MySQL Type 字段
 
 Canal-JSON 格式会在 `mysqlType` 字段中记录每一列的 MySQL Type 的字符串表示。相关详情可以参考 [TiDB Data Types](/data-type-overview.md)。
 
-### SQL Type 字段说明
+### SQL Type 字段
 
 Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，即每条数据在 JDBC 中对应的数据类型，其值可以通过 MySQL Type 和具体数据值计算得到。具体对应关系如下:
 
@@ -211,7 +213,7 @@ Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，�
 
 ## 整数类型
 
-[整数类型](/data-type-numeric.md#整数类型)，需要考虑是否有 `Unsigned` 约束，并且需要考虑当前取值大小，分别对应有不同的 Java SQL Type (Code)。
+你需要考虑[整数类型](/data-type-numeric.md#整数类型)是否有 `Unsigned` 约束，以及当前取值大小，分别对应不同的 Java SQL Type (Code)。
 
 | MySQL Type String  | Value Range                                 | Java SQL Type Code |
 | :------------------| :------------------------------------------ | :----------------- |
@@ -251,11 +253,17 @@ TiCDC 涉及的 Java SQL Type 及其 Code 映射关系如下所示:
 | TINYINT       | -6                 |
 | Bit           | -7                 |
 
-想要了解 Java SQL Type 的更多解释，请参考 [Java SQL Class Types](https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html)。
+想要了解 Java SQL Type 的更多信息，请参考 [Java SQL Class Types](https://docs.oracle.com/javase/8/docs/api/java/sql/Types.html)。
 
 ## TiCDC Canal-JSON 和 Canal 官方实现对比
 
-TiCDC 对 Canal-JSON 数据格式的实现，和官方有些许不同。具体如下：
+TiCDC 对 Canal-JSON 数据格式的实现，包括 `Update` 类型事件和 `mysqlType` 字段，和官方有些许不同。主要差异见下表。
+
+| 差异点            | TiCDC                  | Canal                                |
+|:----------------|:-------------------------|:-------------------------------------|
+| `Update` 类型事件 | `Old` 字段包含所有列数据 | `Old` 字段仅包含被修改的列数据          |
+| `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息         | 对于含有参数的类型，会含有完整的参数信息 |
+
 
 ### `Update` 类型事件
 
