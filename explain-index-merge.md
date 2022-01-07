@@ -36,12 +36,10 @@ explain select * from t use index(idx_a, idx_b) where a > 1 or b > 1;
 
 > **注意：**
 >
-> - TiDB 的 `IndexMerge` 特性在 v5.4.0 及之后的版本默认打开 ([tidb_enable_index_merge](/system-variables.md#tidb_enable_index_merge-从-v4.0-版本开始引入))
-> - 在查询中使用 SQL 优化器 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 会强制使用 IndexMerge 且优先级比开关高
-> - `IndexMerge` 目前支持的场景仅限于析取范式（`or` 连接的表达式），暂不支持合取范式（`and` 连接的表达式）
+> - TiDB 的 `IndexMerge` 特性在 v5.4.0 及之后的版本默认打开，即 [tidb_enable_index_merge](/system-variables.md#tidb_enable_index_merge-从-v4.0-版本开始引入)) 设置为 `ON`
+> - 如果查询中使用了 SQL 优化器 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) ，无论是否开启 IndexMerge，都会强制使用该特性。当过滤条件中有无法下推的表达式时，必须使用 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 才能开启`IndexMerge`
+> - `IndexMerge` 目前仅支持析取范式（`or` 连接的表达式），不支持合取范式（`and` 连接的表达式）
 > - `IndexMerge` 目前无法在临时表上使用
-> - 过滤条件中有无法下推的表达式时，需要使用 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 才能使用 `IndexMerge`
-
 ## 其他类型查询的执行计划
 
 + [MPP 模式查询的执行计划](/explain-mpp.md)
