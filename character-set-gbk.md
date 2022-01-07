@@ -26,6 +26,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 1 rows in set (0.00 sec)
 ```
 TiDB GBK 字符集默认排序规则与 MySQL 不一致，MySQL 的是 `gbk_chinese_ci`。 另外，目前 TiDB 支持的 `gbk_bin` 与 MySQL 使用的也不一致。TiDB 这边排序规则是在将 GBK 转换成 UTF8MB4 然后做二进制排序。
+
 如果需要兼容 MySQL 的排序规则，需要使用[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
 
 利用以下的语句可以查看字符集对应的排序规则（以下是[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)）下的结果：

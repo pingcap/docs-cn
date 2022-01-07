@@ -420,7 +420,7 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、 `utf8mb4_unicode_ci`、 `gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
+在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
 
 使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 、 `utf8mb4_unicode_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
