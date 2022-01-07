@@ -31,11 +31,12 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 
 > **注意：**
 >
-> 这个配置默认即为 `true`，除了 v5.3.x 升级上来的集群以外均无需额外配置。
+> - v5.4.0 及以上集群，自动调节功能默认打开，无需额外配置。
+> - v5.4.0 以下的集群，在升级到 v5.4.0 及以上版本后，自动调节功能默认关闭。如需开启，需手动设置 `backup.enable-auto-tune` 为 `true`。
 
 ### 使用限制
 
-自动调节是一个粗粒度的限流方案：它的优势在无需手动调节，但是也有不够精确、可能无法彻底移除备份对集群的影响的缺点。
+自动调节是一个粗粒度的限流方案，它的优势在无需手动调节，但是调节粒度不够精确，也可能无法彻底移除备份对集群的影响。
 
 已知的问题包括：
 
@@ -68,4 +69,4 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 
 ![Grafana dashboard example of backup auto-tune metrics](/media/br/backup-auto-throttle.png)
 
-背景中黄色半透明的填充即为自动限流生效后 Backup 可用的线程。
+背景中黄色半透明的填充即为自动限流生效后 Backup 可用的线程，可以看到 Backup 的 CPU 使用率不会超过黄色部分。
