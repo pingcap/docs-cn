@@ -1,7 +1,7 @@
 ---
 title: TiDB Data Migration 术语表
 summary: 学习 TiDB Data Migration 相关术语
-aliases: ['/docs-cn/tidb-data-migration/dev/glossary/','/zh/tidb-data-migration/dev/glossary']
+aliases: ['/docs-cn/tidb-data-migration/dev/glossary/']
 ---
 
 # TiDB Data Migration 术语表
