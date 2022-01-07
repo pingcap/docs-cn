@@ -39,6 +39,7 @@ EXPLAIN SELECT /*+ USE_INDEX_MERGE(t) */ * FROM t WHERE a > 1 OR b > 1;
 > - 如果查询中使用了 SQL 优化器 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) ，无论开关是否开启，都会强制使用索引合并特性。当过滤条件中有无法下推的表达式时，必须使用 Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) 才能开启索引合并。
 > - 索引合并目前仅支持析取范式（`or` 连接的表达式），不支持合取范式（`and` 连接的表达式）。
 > - 索引合并目前无法在临时表上使用。
+
 ## 其他类型查询的执行计划
 
 + [MPP 模式查询的执行计划](/explain-mpp.md)
