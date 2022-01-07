@@ -106,7 +106,6 @@ tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.ac
 | `account-key` | 访问密钥 | | 是 |
 | `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`） | `Hot` | 否 |
 
-
 ### 命令行参数
 
 | 命令行参数 | 说明 | 默认值 | 是否必填 |
@@ -118,4 +117,3 @@ tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.ac
 ## 兼容信息
 
 仅兼容 `v5.4.0` 之后的版本
-

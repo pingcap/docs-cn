@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 
 # 外部存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 和 [Azure Blob Storage (Azblob)](/br/backup-and-restore-storages.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
@@ -22,7 +22,7 @@ TiDB 迁移工具支持以下存储服务：
 
 ## URL 参数
 
-S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
+S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
 
 * 用 Dumpling 导出数据到 S3
 
@@ -58,6 +58,15 @@ S3 和 GCS 等云存储有时需要额外的连接配置，你可以为这类配
     ```bash
     ./br backup full -u 127.0.0.1:2379 \
         -s 'gcs://bucket-name/prefix'
+    ```
+
+* 用 BR 备份到 Azblob
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./br backup full -u 127.0.0.1:2379 \
+        -s 'azure://container-name/prefix'
     ```
 
 ### S3 的 URL 参数
