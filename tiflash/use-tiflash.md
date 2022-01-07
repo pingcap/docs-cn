@@ -83,7 +83,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
 
-1. 在集群配置文件中为 TiFlash 节点指定 label. 
+1. 在集群配置文件中为 TiFlash 节点指定 label.
 
     ```
     tiflash_servers:
@@ -118,37 +118,37 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-    
+
         ...
-    
+
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-    
+
         ...
-    
+
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-    
+
         ...
-    
+
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-    
+
         ...
     ```
-    
+
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
@@ -371,18 +371,18 @@ Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的
 > **注意：**
 >
 > `tidb_enforce_mpp=1` 在生效时，TiDB 优化器会忽略代价估算选择 MPP 模式。但如果存在其它不支持 MPP 的因素，例如没有 TiFlash 副本、TiFlash 副本同步未完成、语句中含有 MPP 模式不支持的算子或函数等，那么 TiDB 仍然不会选择 MPP 模式。
-> 
+>
 > 如果由于代价估算之外的原因导致 TiDB 优化器无法选择 MPP，在你使用 `EXPLAIN` 语句查看执行计划时，会返回警告说明原因，例如：
-> 
+>
 > {{< copyable "sql" >}}
-> 
+>
 > ```sql
 > set @@session.tidb_enforce_mpp=1;
 > create table t(a int);
-> explain select count(*) from t; 
+> explain select count(*) from t;
 > show warnings;
 > ```
-> 
+>
 > ```
 > +---------+------+-----------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                     |
@@ -473,16 +473,16 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-        
+
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-        
+
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-        
+
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-        
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -490,10 +490,10 @@ TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-        
+
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-        
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```
