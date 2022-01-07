@@ -30,7 +30,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 
 ## `dttool inspect`
 
-- 检查 DTFile 的完整性。
+- 检查 DTFile 的完整性。数据校验的单位为单个 DTFile。如果想进行整表校验，通常需要定位到所有形如 `<data dir>/t_<table id>/stable/dmf_<file id>` 的路径，逐一进行校验。可以结合脚本来自动进行这一操作。
 
 - 使用场景：
     - 完成格式升降级后进行完整性检测。
@@ -43,13 +43,9 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
     - `--imitative`：当不使用 DTFile 的加密功能时，可以使用本选项避免使用配置文件和连接 PD。
     - `--workdir`：指向 `dmf_xxx` 的父级目录。
 
-> **注意：**
->
-> 数据校验的单位为单个 DTFile。如果想进行整表校验，通常需要定位到所有形如 `<data dir>/t_<table id>/stable/dmf_<file id>` 的路径，逐一进行校验。可以结合脚本来自动进行这一操作。
-
 ## `dttool migrate`
 
-- 迁移 DTFile 的文件格式 （用于测试和原地降级）。
+- 迁移 DTFile 的文件格式 （用于测试和原地降级）。数据迁移的单位为单个 DTFile。如果想进行整表迁移，通常需要定位到所有形如 `<data dir>/t_<table id>/stable/dmf_<file id>` 的路径，逐一进行迁移。可以结合脚本来自动进行这一操作。
 
 - 使用场景：
     - 当需要从开启 DTFile V3 的 v5.4 及以上版本的 TiFlash 降级回以前的版本时，可以使用此工具完成数据格式降级。
@@ -72,10 +68,6 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
 > **警告：**
 >
 > 虽然 TiFlash 可以读取自定义压缩算法和压缩等级的 DTFile，但目前正式支持的只有默认压缩等级的 LZ4 算法。自定义压缩参数并未经过大量测试，仅作实验。
-
-> **注意：**
->
-> 数据迁移的单位为单个 DTFile。如果想进行整表迁移，通常需要定位到所有形如 `<data dir>/t_<table id>/stable/dmf_<file id>` 的路径，逐一进行迁移。可以结合脚本来自动进行这一操作。
 
 > **注意：**
 >
