@@ -245,7 +245,7 @@ mysql-instances:
 
 ```
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full)
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
 ### 第 3 步： 启动任务
 

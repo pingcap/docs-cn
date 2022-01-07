@@ -171,7 +171,7 @@ block-allow-list:
 - [Table routing](/dm/dm-key-features.md#table-routing)
 - [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
 - [Binlog event filter](/dm/dm-key-features.md#binlog-event-filter)
-- [Binlog expression filter](/feature-expression-filter.md)
+- [Binlog expression filter](/dm/feature-expression-filter.md)
 
 ## 第 3 步： 启动任务
 
