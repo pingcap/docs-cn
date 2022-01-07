@@ -170,8 +170,8 @@ block-allow-list:
 
 - [Table routing](/dm/dm-key-features.md#table-routing)
 - [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
-- [Binlog event filter](/dm/dm-key-features.md#binlog-event-filter)
-- [Binlog expression filter](/dm/feature-expression-filter.md)
+- [如何过滤 binlog 事件](filter-binlog-event.md)
+- [如何通过 SQL 表达式过滤 DML](filter-dml-event.md)
 
 ## 第 3 步： 启动任务
 
