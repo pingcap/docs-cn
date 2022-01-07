@@ -10,9 +10,16 @@ TiDB 版本：5.4.0
 
 在 v5.4.0 版本中，你可以获得以下关键特性：
 
-+
-+
-+
++ 支持 GBK 字符集
++ 支持通过 session 变量实现有界限过期数据读取
++ 支持统计信息采集配置持久化
++ 支持使用 Raft Engine 作为 TiKV 的日志存储引擎
++ 优化备份对集群的影响
++ 支持 Azure Blob Storage 作为备份目标存储（实验特性）
++ 提升 TiFlash 性能和稳定性
++ 为 TiDB Lightning 增加已存在数据表是否允许导入的开关
++ 优化持续性能分析实验特性
++ TiSpark 支持用户认证与鉴权
 
 ## 兼容性变化
 
@@ -27,21 +34,25 @@ TiDB 版本：5.4.0
 |  `tidb_backoff_lock_fast` | 修改 | 默认值由 `100` 修改为 `10` |
 | `tidb_enable_index_merge` | 修改 | 默认值由 `OFF` 改为 `ON`。如果从 TiDB v4.0（不包含 v4.0.0）升级到 v5.4.0 及更新的集群，该变量值默认保持 `OFF`。 |
 | `tidb_enable_paging`  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能出现延迟高、TiKV 的 unified read pool CPU 使用高的情况。在这种情况下，由于 `Limit` 算子限制只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，降低延迟，减少资源消耗。 |
-| `tidb_read_staleness` | 新增 |  |
-| `tidb_stats_load_sync_wait` | 新增 |  |
-| `tidb_stats_load_pseudo_timeout` | 新增 |  |
+| `tidb_read_staleness` | 新增 | 用于设置当前会话期待读取的历史数据的所处时刻，默认值为 `0` |
+| `tidb_stats_load_sync_wait` | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
+| `tidb_stats_load_pseudo_timeout` | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败(`false`) 还是退回使用 pseudo 的统计信息 (`true`) |
+| `tidb_persist_analyze_options`  | 新增  | 这个变量用于控制是否持久化执行 `ANALYZE` 语句时指定的配置项 |
 
 ### 配置文件参数
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB | `stats-load-concurrency` | 新增 |               |
-| TiDB | `stats-load-queue-size`   | 新增 |               |
+| TiDB | `stats-load-concurrency` | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以并发处理多少列，默认值为 `5`             |
+| TiDB | `stats-load-queue-size`   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
 | TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源以求减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log.level`、`log.format`、`log.enable-timestamp`、`log.file.filename`、`log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 变更 | 将 TiKV log 参数名改为与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
 | TiKV  |  `log-rotation-timespan`  | 删除 |  轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。 |
-| TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。
+| TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
+| TiKV | `snap-generator-pool-size` | 新增 | `snap-generator` 线程池大小，默认值为 `2` |
+| TiKV | `raftstore.raft-log-gc-tick-interval` | 修改 | 默认值修改为 `3s` |
+| TiKV | `raftstore.raft-log-compact-sync-interval` | 新增 | 控制 CompactLog 命令的间隔，默认值为 `2s` |
 | PD | `log.level` | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感 |
 | PD | `hot-regions-write-interval` | 新增 |  设置 PD 存储 Hot Region 信息的时间间隔。默认值为 `10m`。 |
 | PD | `hot-regions-reserved-days` | 新增 | 设置 PD 保留的 Hot Region 信息的最长时间。默认值为 `7`。
@@ -256,6 +267,17 @@ max-backups = 0
 
 + TiKV
 
+    - Coprocessor 支持分页 API 进行流式处理 [#11448](https://github.com/tikv/tikv/issues/11448)
+    - 支持 `read-through-lock`，使读操作不需要等待清理 secondary lock [#11402](https://github.com/tikv/tikv/issues/11402)
+    - 增加了磁盘保护机制，尽量避免磁盘空间耗尽导致 panic [#10960](https://github.com/tikv/tikv/issues/10960) [#10959](https://github.com/tikv/tikv/issues/10959) [#10926](https://github.com/tikv/tikv/issues/10926) [#10925](https://github.com/tikv/tikv/issues/10925) [#10895](https://github.com/tikv/tikv/issues/10895) [#10894](https://github.com/tikv/tikv/issues/10894) [#10868](https://github.com/tikv/tikv/issues/10868) [#10840](https://github.com/tikv/tikv/issues/10840) [#10839](https://github.com/tikv/tikv/issues/10839) [#10819](https://github.com/tikv/tikv/issues/10819) [#10801](https://github.com/tikv/tikv/issues/10801)
+    - 日志支持存档和轮替 [#11651](https://github.com/tikv/tikv/issues/11651)
+    - 减少 Raft 客户端的系统调用并提高 CPU 效率 [#11309](https://github.com/tikv/tikv/issues/11309)
+    - Coprocessor 支持下推 substring 到 TiKV [#11495](https://github.com/tikv/tikv/issues/11495)
+    - 通过跳过读锁提高在 RC 隔离级别中扫描的性能 [#11485](https://github.com/tikv/tikv/issues/11485)
+    - 减少备份使用的默认线程池大小，并在压力大时限制其使用 [#11000](https://github.com/tikv/tikv/issues/11000)
+    - 支持动态调整 Apply 和 Store 线程池大小 [#11159](https://github.com/tikv/tikv/issues/11159)
+    - 支持配置 `snap-generator` 线程池大小 [#11247](https://github.com/tikv/tikv/issues/11247)
+
 + PD
 
 + TiFlash
@@ -279,6 +301,11 @@ max-backups = 0
 + TiDB
 
 + TiKV
+
+    + 修复 MVCC 删除记录可能不会被 GC 删除的问题 [#11217](https://github.com/tikv/tikv/issues/11217)
+    + 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
+    + 修复 GC 扫描导致的内存溢出 [#11410](https://github.com/tikv/tikv/issues/11410)
+    + 修复当达到磁盘容量满时 RocksDB flush 或 compaction 导致的 panic [#11224](https://github.com/tikv/tikv/issues/11224)
 
 + PD
 
