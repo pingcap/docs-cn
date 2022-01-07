@@ -10,8 +10,8 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一
 
 Event 分为三类：
 
-* DML Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引为 0 的 MQ Partition。
+* DML Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
 * WATERMARK Event：代表一个特殊的时间点，表示在这个时间点前收到的 Event 是完整的。仅当用户在 `sink-uri` 中设置 `enable-tidb-extension=true` 时生效。
 
 使用 `Canal-JSON` 时的配置样例如下所示：
@@ -62,7 +62,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     "mysqlType": null,
     "data": null,
     "old": null,
-    "_tidb": {     // tidb 扩展字段
+    "_tidb": {     // TiDB 的扩展字段
         "commitTs": 163963309467037594
     }
 }
@@ -70,20 +70,20 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 | 字段      | 类型   | 说明                                                                      |
 |:----------|:-------|:-------------------------------------------------------------------------|
-| id        | Number | TiCDC 默认该值为 0                                                        |
+| id        | Number | TiCDC 默认值为 0                                                        |
 | database  | String | Row 所在的 Database 的名字                                                |
 | table     | String | Row 所在的 Table 的名字                                                   |
 | pkNames   | Array  | 组成 primary key 的所有列的名字                                            |
 | isDdl     | Bool   | 该条消息是否为 DDL 事件                                                    |
 | type      | String | Canal-JSON 定义的事件类型                                                  |
-| es        | Number | 产生该条消息的事件发生时的 13位（毫秒级）时间戳                               |
-| ts        | Number | TiCDC 生成该条消息时的 13位（毫秒级）时间戳                                  |
+| es        | Number | 产生该条消息的事件发生时的 13 位（毫秒级）时间戳                               |
+| ts        | Number | TiCDC 生成该条消息时的 13 位（毫秒级）时间戳                                  |
 | sql       | String | 当 isDdl 为 true 时，记录对应的 DDL 语句                                    |
 | sqlType   | Object | 当 isDdl 为 false 时，记录每一列数据类型在 Java 中的类型表示                  |
-| mysqlType | object | 当 isDdl 为 false 时，记录每一列数据类型 在 MySQL 中的类型表示                |
+| mysqlType | object | 当 isDdl 为 false 时，记录每一列数据类型在 MySQL 中的类型表示                |
 | data      | Object | 当 isDdl 为 false 时，记录每一列的名字和其数据值                             |
 | old       | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值  |
-| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO。  ｜
+| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO  ｜
 
 ### DML Event
 
@@ -129,7 +129,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
         }
     ],
     "old": null,
-    "_tidb": {     // TiDB 扩展字段
+    "_tidb": {     // TiDB 的扩展字段
         "commitTs": 163963314122145239
     }
 }
@@ -139,7 +139,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 仅当 `enable-tidb-extension` 为 `true` 时，TiCDC 才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该时间发送时的 TSO。
 
-当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况，如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
+当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
 WATERMARK Event 的示例如下：
 
@@ -158,7 +158,7 @@ WATERMARK Event 的示例如下：
     "mysqlType": null,
     "data": null,
     "old": null,
-    "_tidb": {
+    "_tidb": {     // TiDB 的扩展字段
         "watermarkTs": 429918007904436226
     }
 }
@@ -169,7 +169,7 @@ WATERMARK Event 的示例如下：
 从上面的示例中可知，Canal-JSON 具有统一的数据格式，针对不同的事件类型，有不同的字段填充规则。消费者可以使用统一的方法对该 JSON 格式的数据进行解析，然后通过判断字段值的方式，来确定具体事件类型：
 
 * 当 `isDdl` 为 true 时，该消息含有一条 DDL Event。
-* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type` 为 `TIDB_WATERMARK`，可得知其为 WATERMARK Event，反之则为 DML Event。
+* 当 `isDdl` 为 false 时，需要对 `type` 字段加以判断。如果 `type` 为 `TIDB_WATERMARK`，可得知其为 WATERMARK Event，否则就是 DML Event。
 
 ## 字段说明
 
@@ -213,7 +213,7 @@ Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，�
 
 ## 整数类型
 
-你需要考虑[整数类型](/data-type-numeric.md#整数类型)是否有 `Unsigned` 约束，以及当前取值大小，分别对应不同的 Java SQL Type (Code)。
+你需要考虑[整数类型](/data-type-numeric.md#整数类型)是否有 `Unsigned` 约束，以及当前取值大小，分别对应不同的 Java SQL Type Code。如下表所示。
 
 | MySQL Type String  | Value Range                                 | Java SQL Type Code |
 | :------------------| :------------------------------------------ | :----------------- |
@@ -233,7 +233,7 @@ Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，�
 | bigint unsigned    | [0, 9223372036854775807]                    | -5                 |
 | bigint unsigned    | [9223372036854775808, 18446744073709551615] | 3                  |
 
-TiCDC 涉及的 Java SQL Type 及其 Code 映射关系如下所示:
+TiCDC 涉及的 Java SQL Type 及其 Code 映射关系如下表所示。
 
 | Java SQL Type | Java SQL Type Code |
 | :-------------| :------------------|
@@ -290,7 +290,7 @@ values (127, 32767, 8388607, 2147483647, 9223372036854775807);
 update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 ```
 
-对于 `update` 语句，TiCDC 将会输出一条 `type` 为 `UPDATE` 的事件消息，如下所示。该 `update` 语句，仅对 `c_int`, `c_tinyint` 两列进行了修改, 输出事件消息的 `Old` 字段，则含有所有列数据。
+对于 `update` 语句，TiCDC 将会输出一条 `type` 为 `UPDATE` 的事件消息，如下所示。该 `update` 语句仅对 `c_int` 和 `c_tinyint` 两列进行了修改。输出事件消息的 `Old` 字段，则包含所有列数据。
 
 ```json
 {
@@ -329,7 +329,7 @@ update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 
 ### `mysqlType` 字段
 
-对于 `mysqlType` 字段，Canal 官方实现中，对于含有参数的类型，会含有完整的参数信息, TiCDC 实现则没有类型参数信息。
+对于 `mysqlType` 字段，Canal 官方实现中，对于含有参数的类型，会包含完整的参数信息, TiCDC 实现则没有类型参数信息。
 
 假设在上游数据库按顺序执行如下 SQL 语句:
 
