@@ -62,4 +62,4 @@ online-ddl: true                # 开启 DM 的 online DDL 支持特性。兼容
 
 ## 探索更多
 
-- [DM 与 online DDL 工具协作细节](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-online-ddl#dm-与-online-ddl-工具协作细节)
+- [DM 与 online DDL 工具协作细节](/dm/feature-online-ddl.md#dm-与-online-ddl-工具协作细节)
