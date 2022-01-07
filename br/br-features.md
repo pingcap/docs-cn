@@ -3,7 +3,7 @@ title: BR 特性介绍
 summary: 了解 BR 特性的详细介绍。
 ---
 
-# BR 特性
+# BR 特性介绍
 
 ## 自动调节 <span class="version-mark">从 v5.4 版本开始引入</span>
 
@@ -33,7 +33,7 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 >
 > 这个配置默认即为 `true`，除了 v5.3.x 升级上来的集群以外均无需额外配置。
 
-### 使用限制 
+### 使用限制
 
 自动调节是一个粗粒度的限流方案：它的优势在无需手动调节，但是也有不够精确、可能无法彻底移除备份对集群的影响的缺点。
 
