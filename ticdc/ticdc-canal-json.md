@@ -5,7 +5,7 @@ summary: 了解 TiCDC Canal-JSON Protocol 的概念和使用方法。
 
 # TiCDC Canal-JSON Protocol
 
-Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。本文将主要介绍 TiCDC 对 Canal-JSON 数据格式的实现，包括 TiDB 扩展字段、Canal-JSON 数据格式定义，以及和官方实现进行对比等相关内容。通过本文，用户可以了解 Canal-JSON 的基本格式定义和使用方式，以及如何在 TiCDC 中指定使用 Canal-JSON 作为数据格式。
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。本文将主要介绍 TiCDC 对 Canal-JSON 数据格式的实现，包括 TiDB 扩展字段、Canal-JSON 数据格式定义，以及和官方实现进行对比等相关内容。通过本文，你可以了解 Canal-JSON 的基本格式定义和使用方式，以及如何在 TiCDC 中指定使用 Canal-JSON 作为数据格式。
 
 ## 使用 Canal-JSON
 
