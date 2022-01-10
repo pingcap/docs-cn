@@ -7,13 +7,13 @@ summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与�
 
 > **警告：**
 >
-> 该功能为实验特性，不建议在生产环境中使用。
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 从 TiDB v5.4.0 起，Backup & Restore (BR) 工具开始支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
 
 ## 使用场景
 
-Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上，当使用 azure 虚拟机来部署集群时，可以考虑将数据备份到 Azure Blob Storage 中。
+Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上。如果你在使用 Azure 虚拟机来部署集群，可以考虑将数据备份到 Azure Blob Storage 中。
 
 ## 使用方法
 
@@ -23,8 +23,8 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 在通常情况下，为了避免 `account-key` 等密钥信息记录在命令行中可能会存在的被泄漏的风险，推荐使用第一种 `使用 Azure AD 备份恢复` 方法。
 
-以下示例中的具体操作场景及目标如下：
-- 备份：将数据库的 `test` 库备份到 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间中
+以下为使用上述两种方式在 Azure Blob Storage 上进行备份与恢复的操作示例，其中，具体操作目标如下：
+- 备份：将数据库的 `test` 库备份到 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间中；
 - 恢复：将 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间恢复到数据库的 `test`库中。
 
 ### 使用 Azure AD 备份恢复
