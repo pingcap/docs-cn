@@ -210,7 +210,7 @@ ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKET
 
 ##### 收集索引的统计信息
 
-收集 TableName 中所有的 IndexNameList 中的索引列的统计信息：
+收集 TableName 中所有的 IndexNameList 中的索引的统计信息：
 
 {{< copyable "sql" >}}
 
