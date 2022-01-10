@@ -357,9 +357,9 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 ## 安全
 
-目前 TiSpark (version >= 2.5.0) 可以通过 TiDB 进行认证与鉴权，该功能默认关闭
+从 TiSpark v2.5.0 起，你可以通过 TiDB 对 TiSpark 进行认证与鉴权。该功能默认关闭。
 
-在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
+要开启认证与鉴权功能，请在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
 
 ```
 // 打开认证授权功能
@@ -372,7 +372,7 @@ spark.sql.tidb.user    $your_tidb_server_user
 spark.sql.tidb.password $your_tidb_server_password
 ```
 
-详细使用手册请阅读[这份文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+详细使用手册，请参考[这份文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
 
 ## TiSpark FAQ
 
