@@ -60,10 +60,10 @@ io-concurrency = 5
 
 # 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"。
 # 如果未开启并行导入模式，无须设置此配置项。
-# 注意：
-# 1. 对于同一批的并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入的正确性。
-# 2. 如果开启并行导入模式，需要确保导入使用的用户(对于 tidb.user 配置项)有权限创建和访问此配置对于的库。
-# 3. TiDB Lightning 在导入完成后会删除此 schema，因此最好不要将此配置设置为一个已存在的库名。
+# **注意：**
+# 1. 对于参与同一批并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入数据的正确性。
+# 2. 如果开启并行导入模式，需要确保导入使用的用户（对于 tidb.user 配置项）有权限创建和访问此配置对应的库。
+# 3. TiDB Lightning 在导入完成后会删除此 schema，因此不要使用已存在的库名配置该参数。
 meta-schema-name = "lightning_metadata"
 
 [security]
