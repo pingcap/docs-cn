@@ -15,9 +15,9 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 [环境与系统配置检查](/check-before-deployment.md)
 
-## 第 2 步：在中控机上安装 TiUP 组件
+## 第 2 步：在中控机上部署 TiUP 组件
 
-在中控机上安装 TiUP 组件有两种方式：在线部署和离线部署。
+在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。
 
 <SimpleTab>
 <div label="在线部署">
@@ -36,21 +36,21 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 2. 按如下步骤设置 TiUP 环境变量：
 
-    重新声明全局环境变量：
+    1. 重新声明全局环境变量：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    source .bash_profile
-    ```
+        ```shell
+        source .bash_profile
+         ```
 
-    确认 TiUP 工具是否安装：
+    2. 确认 TiUP 工具是否安装：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    which tiup
-    ```
+        ```shell
+        which tiup
+        ```
 
 3. 安装 TiUP cluster 组件：
 
@@ -240,15 +240,15 @@ source /home/tidb/.bash_profile
 
     下表列出了常用的 7 种场景，请根据链接中的拓扑说明以及配置文件模板配置`topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 
-    | 场景 | 配置文件模板 | 拓扑说明 |
-    | :-- | :-- | :-- |
-    | [最小拓扑架构](/minimal-deployment-topology.md) | [简单最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-mini.yaml)<br/>[详细最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-mini.yaml) | 最基本的集群拓扑，包括 tidb-server、tikv-server、pd-server，适合 OLTP 业务。 |
-    | [增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md) | [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tiflash.yaml)<br/>[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml) | 在最小拓扑的基础上部署 TiFlash。TiFlash 是列式存储引擎，已经逐步成为集群拓扑的标配。适合 Real-Time HTAP 业务。 |
-    | [增加 TiCDC 拓扑架构](/ticdc-deployment-topology.md) | [简单 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-cdc.yaml)<br/>[详细 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-cdc.yaml) | 在最小拓扑的基础上部署 TiCDC。[TiCDC](/ticdc/ticdc-overview.md) 是 4.0 版本引入的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。 |
-    | [增加 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md) | [简单 TiDB Binlog 配置模板（下游为 MySQL）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)<br/>[简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)<br/>[详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tidb-binlog.yaml) | 在最小拓扑的基础上部署 TiDB Binlog。[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。 |
-    | [增加 TiSpark 拓扑架构](/tispark-deployment-topology.md) | [简单 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tispark.yaml)<br/>[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml) | 在最小拓扑的基础上部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验特性。 |
-    | [混合部署拓扑架构](/hybrid-deployment-topology.md) | [简单混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-multi-instance.yaml)<br/>[详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml) | 适用于单台机器，混合部署多个实例的情况，也包括单机多实例，需要额外增加目录、端口、资源配比、label 等配置。 |
-    | [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md) | [跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml) | 以典型的两地三中心架构为例，介绍跨机房部署架构，以及需要注意的关键设置。 |
+    | 场景 | 配置任务 | 配置文件模板 | 拓扑说明 |
+    | :-- | :-- | :-- | :-- |
+    | OLTP 业务 | [最小拓扑架构](/minimal-deployment-topology.md) | [简单最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-mini.yaml)<br/>[详细最小配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-mini.yaml) | 最基本的集群拓扑，包括 tidb-server、tikv-server、pd-server。 |
+    | HTAP 业务 | [增加 TiFlash 拓扑架构](/tiflash-deployment-topology.md) | [简单 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tiflash.yaml)<br/>[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml) | 在最小拓扑的基础上部署 TiFlash。TiFlash 是列式存储引擎，已经逐步成为集群拓扑的标配。|
+    | 增量同步 | [增加 TiCDC 拓扑架构](/ticdc-deployment-topology.md) | [简单 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-cdc.yaml)<br/>[详细 TiCDC 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-cdc.yaml) | 在最小拓扑的基础上部署 TiCDC。[TiCDC](/ticdc/ticdc-overview.md) 是 4.0 版本引入的 TiDB 增量数据同步工具，支持多种下游 (TiDB/MySQL/MQ)。 |
+    | 增量同步<br/>实时备份和恢复 | [增加 TiDB Binlog 拓扑架构](/tidb-binlog-deployment-topology.md) | [简单 TiDB Binlog 配置模板（下游为 MySQL）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tidb-binlog.yaml)<br/>[简单 TiDB Binlog 配置模板（下游为 file）](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-file-binlog.yaml)<br/>[详细 TiDB Binlog 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tidb-binlog.yaml) | 在最小拓扑的基础上部署 TiDB Binlog。[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) 是目前广泛使用的增量同步组件，可提供准实时备份和同步功能。 |
+    | OLAP 业务 | [增加 TiSpark 拓扑架构](/tispark-deployment-topology.md) | [简单 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-tispark.yaml)<br/>[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml) | 在最小拓扑的基础上部署 TiSpark 组件。TiSpark 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。TiUP cluster 组件对 TiSpark 的支持目前为实验特性。 |
+    | 单台机器，多个实例 | [混合部署拓扑架构](/hybrid-deployment-topology.md) | [简单混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-multi-instance.yaml)<br/>[详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml) | 也包括单机多实例，需要额外增加目录、端口、资源配比、label 等配置。 |
+    | 跨机房部署 TiDB 集群 | [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md) | [跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml) | 以典型的两地三中心架构为例，介绍跨机房部署架构，以及需要注意的关键设置。 |
 
 > **注意：**
 >
@@ -268,15 +268,15 @@ source /home/tidb/.bash_profile
 > **注意：**
 >
 > 通过 TiUP 进行集群部署可以使用密钥或者交互密码方式来进行安全认证：
-
+>
 > - 如果是密钥方式，可以通过 -i 或者 --identity_file 来指定密钥的路径。
-
+>
 > - 如果是密码方式，可以通过 -p 进入密码交互窗口。
-
+>
 > - 如果已经配置免密登录目标机，则不需填写认证。
-
+>
 > 一般情况下 TiUP 会在目标机器上创建 topology.yaml 中约定的用户和组，以下情况例外：
-
+>
 > - `topology.yaml` 中设置的用户名在目标机器上已存在。
 >
 > - 在命令行上使用了参数 --skip-create-user 明确指定跳过创建用户的步骤。
