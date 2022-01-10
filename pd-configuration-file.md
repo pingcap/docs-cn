@@ -123,12 +123,14 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `level`
 
-+ 日志等级，可指定为 "DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
-+ 默认值："INFO"
++ 指定日志的输出级别。
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
++ 默认值："info"
 
 ### `format`
 
-+ 日志格式，可指定为"text"，"json"，"console"。
++ 日志格式。
++ 可选值："text"，"json"
 + 默认值："text"
 
 ### `disable-timestamp`
