@@ -243,7 +243,13 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKE
 ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-在收集分区的统计信息时也可以设置列统计信息收集模式（实验特性，不建议在生产环境中使用）：
+在收集分区的统计信息时也可以设置列统计信息收集模式：
+
+##### 收集部分列的统计信息
+
+> **警告：**
+>
+> 当前收集部分列统计信息的功能为实验特性，不建议在生产环境中使用。
 
 {{< copyable "sql" >}}
 
