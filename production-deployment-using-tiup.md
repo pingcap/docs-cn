@@ -20,9 +20,9 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 在中控机上安装 TiUP 组件有两种方式：在线部署和离线部署。
 
 <SimpleTab>
-<div label="在线部署 TiUP 组件">
+<div label="在线部署">
 
-### 方式一：在线部署 TiUP 组件
+### 在线部署
 
 使用普通用户登录中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
 
@@ -80,10 +80,9 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 </div>
 
-<SimpleTab>
-<div label="离线部署 TiUP 组件">
+<div label="离线部署">
 
-### 方式二：离线部署 TiUP 组件
+### 离线部署
 
 离线部署 TiUP 组件的操作步骤如下。
 
@@ -187,8 +186,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
     5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.7.0` 版本出现在结果中。
 
-</div>
-
 #### 部署离线环境 TiUP 组件
 
 将离线包发送到目标集群的中控机后，执行以下命令安装 TiUP 组件：
@@ -204,6 +201,9 @@ source /home/tidb/.bash_profile
 `local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
 
 若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
+
+</div>
+<SimpleTab>
 
 ## 第 3 步：初始化集群拓扑文件
 
