@@ -59,7 +59,7 @@ DESC tidb_hot_regions_history;
 
 > **注意：**
 >
-> + `TIDB_HOT_REGIONS_HISTORY` 表的 `UPDATE_TIME`、`REGION_ID`、`STORE_ID`、`PEER_ID`、`IS_LEARNER`, `IS_LEADER`、`TYPE` 字段会下推到 PD 服务器执行，所以为了降低使用该表的开销，必须指定搜索时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
+> + `TIDB_HOT_REGIONS_HISTORY` 表的 `UPDATE_TIME`、`REGION_ID`、`STORE_ID`、`PEER_ID`、`IS_LEARNER`、`IS_LEADER`、`TYPE` 字段会下推到 PD 服务器执行。所以为了降低使用该表的开销，必须指定搜索时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
 
 下面是一些常见的应用场景：
 
