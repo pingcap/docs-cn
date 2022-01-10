@@ -52,7 +52,7 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 这个特性还有两个配置项未在 TiKV 文档中列出，仅在内部调试使用，正常备份时**无需**配置这两个参数。
 
 - `backup.auto-tune-remain-threads`：
-    - 通过控制备份任务占用的资源，自动调节会保证集群中至少有该值的 CPU 核心数会保持空闲的状态。
+    - 通过控制备份任务占用的资源，自动调节会保证该节点中至少有该数量的核心会保持空闲的状态。
     - 默认值：`round(0.2 * vCPU)`
     - 单位：个
 - `backup.auto-tune-refresh-interval`：
