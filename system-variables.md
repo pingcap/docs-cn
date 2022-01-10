@@ -1525,6 +1525,10 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_enable_column_tracking` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
+> **警告：**
+>
+> 当前收集 `PREDICATE COLUMNS` 的功能为实验特性，不建议在生产环境中使用。
+
 - 作用域：GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否开启对 `PREDICATE COLUMNS` 的收集。关闭该变量时，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见 [统计信息简介](/statistics.md)。
