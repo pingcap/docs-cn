@@ -80,7 +80,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
   ERROR 1115 (42000): Unsupported character introducer: 'gbk'
   ```
 
-* 对于 `ENUM` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
+* 对于 `ENUM` 和 `SET` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
 
 ## 其他组件兼容性
 
