@@ -351,7 +351,14 @@ tiup cluster start tidb-test
 
 ## 第 8 步：验证集群运行状态
 
-操作步骤见[验证集群运行状态](/post-installation-check.md)。
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster display tidb-test
+```
+
+预期结果输出：各节点 Status 状态信息为 `Up` 说明集群状态正常。
+
 
 ## 探索更多
 
