@@ -36,16 +36,16 @@ TiDB 版本：5.4.0
 | `tidb_enable_index_merge` | 修改 | 默认值由 `OFF` 改为 `ON`。如果从 TiDB v4.0（不包含 v4.0.0）升级到 v5.4.0 及更新的集群，该变量值默认保持 `OFF`。 |
 | `tidb_enable_paging`  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能出现延迟高、TiKV 的 unified read pool CPU 使用高的情况。在这种情况下，由于 `Limit` 算子限制只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，降低延迟，减少资源消耗。 |
 | `tidb_read_staleness` | 新增 | 用于设置当前会话期待读取的历史数据的所处时刻，默认值为 `0` |
-| `tidb_stats_load_sync_wait` | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
-| `tidb_stats_load_pseudo_timeout` | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败(`false`) 还是退回使用 pseudo 的统计信息 (`true`) |
-| `tidb_persist_analyze_options`  | 新增  | 这个变量用于控制是否持久化执行 `ANALYZE` 语句时指定的配置项 |
+| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。 |
+| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败(`false`) 还是退回使用 pseudo 的统计信息 (`true`) |
+| [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 这个变量用于控制是否持久化执行 `ANALYZE` 语句时指定的配置项 |
 
 ### 配置文件参数
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB | `stats-load-concurrency` | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以并发处理多少列，默认值为 `5`             |
-| TiDB | `stats-load-queue-size`   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
+| TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 新增 |  用于设置 TiDB 统计信息同步加载功能可以并发处理的最大列数，默认值为 `5`             |
+| TiDB | [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入)   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
 | TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源以求减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log.level`、`log.format`、`log.enable-timestamp`、`log.file.filename`、`log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 变更 | 将 TiKV log 参数名改为与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
