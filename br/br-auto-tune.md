@@ -17,7 +17,13 @@ summary: 了解 BR 自动调节功能，在集群资源占用率较高的情况�
 
 ## 使用方法
 
-如需手动开启 BR 自动调节功能，可以通过把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `true` 的方式来完成。
+自动调节功能默认打开，无需额外配置。
+
+> **注意：**
+>
+> v5.4.0 以下的集群，在升级到 v5.4.0 及以上版本后，自动调节功能默认关闭，需手动开启。
+
+如需开启 BR 自动调节功能，可以通过把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `true` 的方式来完成。
 
 TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能，因此，在开启或关闭该功能时，无需重启集群。你可以运行以下命令动态启动或停止 BR 自动调节功能：
 
@@ -28,11 +34,6 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 ```
 
 在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份速度。
-
-> **注意：**
->
-> - v5.4.0 及以上集群，自动调节功能默认打开，无需额外配置。
-> - v5.4.0 以下的集群，在升级到 v5.4.0 及以上版本后，自动调节功能默认关闭。如需开启，需手动设置 `backup.enable-auto-tune` 为 `true`。
 
 ## 使用限制
 
