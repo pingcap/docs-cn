@@ -77,7 +77,6 @@ TiDB 版本：5.4.0
 - 为 TiDB 和 PD 之间新增接口。使用 `information_schema.TIDB_HOT_REGIONS_HISTORY` 系统表时，TiDB 需要使用匹配的 PD 版本。
 - TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
 
-
 ## 新功能
 
 ### SQL
@@ -94,10 +93,6 @@ TiDB 版本：5.4.0
     - `character_set_client` 在处理 `prepare` 语句时可能出现兼容性问题。
     - TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
     - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.3.0 之前不支持恢复 `charset=GBK` 的表。
-
-- **TiFlash IndexMerge GA**
-
-
 
 ### 安全
 
@@ -144,6 +139,21 @@ TiDB 版本：5.4.0
 
     通过该设置，可以实现就近选取 leader 或 follower 节点，并读取 5 秒钟前的最新过期数据，满足准实时场景下低延迟高吞吐数据访问的业务诉求，降低研发门槛，提升易用性。
 
+- **TiDB 正式发布索引合并 (Index Merge) 功能**
+
+    [索引合并](/explain-index-merge.md) 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。例如对以下的查询，若 `WHERE` 子句中两个 `OR` 连接的过滤条件在各自包含的 _key1_ 与 _key2_ 两个列上都存在索引，则 _索引合并_ 可以同时利用  _key1_ 与 _key2_ 上的索引分别进行过滤，然后合并出最终的结果。
+
+    ```sql
+    SELECT * FROM table WHERE key1 <= 100 OR key2 = 200;
+    ```
+
+    以往 TiDB 在一个表上的查询只能使用一个索引，无法同时使用多个索引进行条件过滤。相较以往，_索引合并_ 避免了此情况下可能不必要的大量数据扫描，也可以使得需要灵活查询不特定多列数据组合的用户利用单列上的索引达到高效稳定的查询，无需大量构建多列复合索引。
+
+    本版本正式发布了 _索引合并 (Index Merge)_ 特性，但仍存在以下的使用条件和限制（详情请参见[用户文档](/explain-index-merge.md)）：
+
+    目前 TiDB 的 _索引合并_ 优化只限于 _析取范式_ (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
+
+    如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果是从 v5.4.0 以前的版本升级到 v5.4.0 或以上的，默认保持升级前此特性的开闭状态（v4.0 之前无此项特性的版本也视同关闭），需要由用户自己决定是否开启。
 
 ### 稳定性
 
