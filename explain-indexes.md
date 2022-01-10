@@ -357,4 +357,4 @@ EXPLAIN SELECT AVG(intkey), ANY_VALUE(pad1) FROM t1;
 + [聚合查询的执行计划](/explain-aggregation.md)
 + [视图查询的执行计划](/explain-views.md)
 + [分区查询的执行计划](/explain-partitions.md)
-+ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
++ [索引合并查询的执行计划](/explain-index-merge.md)
