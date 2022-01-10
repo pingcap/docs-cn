@@ -103,7 +103,7 @@ driver = "file"
 # 选择后端：“local” 或 “importer” 或 “tidb”
 # backend = "local"
 # 是否允许向已存在数据的表导入数据。默认值为 false。
-# 当使用并行导入模式时，由于多个 Lightning 进程同时导入一张表，因此要求此开关必须为 true。 
+# 当使用并行导入模式时，由于多个 Lightning 实例同时导入一张表，因此要求此开关必须为 true。 
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
