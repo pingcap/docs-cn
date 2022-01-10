@@ -266,7 +266,7 @@ create table tp_int
     c_bigint    bigint    null,
     constraint pk
         primary key (id)
-); 
+);
 
 insert into tp_int(c_tinyint, c_smallint, c_mediumint, c_int, c_bigint)
 values (127, 32767, 8388607, 2147483647, 9223372036854775807);
