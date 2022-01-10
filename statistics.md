@@ -163,7 +163,7 @@ SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
 | last_used_at | 该列统计信息在最近一次查询优化中被用到的时间 |
 | update_time | 该列统计信息最近一次被收集的时间 |
 
-我们可以用 `SHOW COLUMN_STATS_USAGE` 来查看哪些列是 `PREDICATE COLUMNS` 以及哪些列的统计信息在 `ANALYZE` 中被收集了，例如：
+你可以用 `SHOW COLUMN_STATS_USAGE` 来查看哪些列是 `PREDICATE COLUMNS` 以及哪些列的统计信息在 `ANALYZE` 中被收集了，例如：
 
 {{< copyable "sql" >}}
 
@@ -189,7 +189,8 @@ MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't
 MySQL [test]> ANALYZE TABLE t PREDICATE COLUMNS;
 Query OK, 0 rows affected, 1 warning (0.03 sec)
 
-MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't';
+-- `b`，`c`，`d` 列的统计信息被收集，因为 `b` 列是 `PREDICATE COLUMN` 而 `c` 列和 `d` 列是索引列。
+MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_analyzed IS NOT NULL;
 +---------+------------+----------------+-------------+---------------------+---------------------+
 | Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at    |
 +---------+------------+----------------+-------------+---------------------+---------------------+
