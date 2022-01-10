@@ -63,7 +63,7 @@ DESC tidb_hot_regions_history;
 
 ## 常见使用场景
 
-* 查询一段时间内的所有热点 Regions，替换 update_time 即可。
+* 查询一段时间内的所有热点 Regions。将以下语句中的 `update_time` 替换为实际所需的时间即可。
 
   {{< copyable "sql" >}}
 
