@@ -35,7 +35,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 在 BR 运行环境和 TiKV 运行环境中，需要存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。当存在这三项变量时，BR 可以使用 Azure AD 访问 Azure Blob Storage 且不用配置 `account-key`。这种方式更安全，因此也推荐被使用。在这里，`$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_id`。
 
-#### 备份：
+#### 备份
 
 使用 Azure AD 进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
 
@@ -46,6 +46,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     ```
     tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&access-tier=Cool'
     ```
+
 - 将参数信息放在命令行参数中
     
     ```
@@ -61,6 +62,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     ```
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1'
     ```
+
 - 将参数信息放在命令行参数中
 
     ```
@@ -72,11 +74,11 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 #### 备份
 
 使用访问密钥进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
-	
+
 本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name` 和 `access-tier`：
-	
+
 - 将参数信息放在 URL 参数中：
-	
+
     ```
     tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&account-key=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==&access-tier=Cool'
     ```
