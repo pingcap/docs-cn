@@ -124,7 +124,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > - 当前收集部分列统计信息的功能为实验特性，不建议在生产环境中使用。
 
-对于有很多列的宽表来说，收集所有列的统计信息可能会有较大的开销。而大多数情况下优化器只会用到一部分列的统计信息（比如出现在 WHERE/JOIN/ORDER BY/GROUP BY 子句中的列）。如下语法会收集指定列和索引列的统计信息以及所有索引的统计信息。
+对于有很多列的宽表，收集所有列的统计信息有较大的开销。大多数情况下优化器只会用到一部分列的统计信息（比如 WHERE、JOIN、ORDER BY、GROUP BY 子句中用到的列），因此为了降低开销，你可以使用以下语法收集指定列和索引列的统计信息以及所有索引的统计信息。
 
 {{< copyable "sql" >}}
 
