@@ -67,6 +67,8 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 }
 ```
 
+以上 JSON 数据的字段解释如下：
+
 | 字段      | 类型   | 说明                                                                      |
 |:----------|:-------|:-------------------------------------------------------------------------|
 | id        | Number | TiCDC 默认值为 0                                                        |
@@ -138,7 +140,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 仅当 `enable-tidb-extension` 为 `true` 时，TiCDC 才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该 Event 发送时的 TSO。
 
-当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
+当你收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件均已发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
 WATERMARK Event 的示例如下：
 
