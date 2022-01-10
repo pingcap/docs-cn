@@ -85,3 +85,5 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 ## 其他组件兼容性
 
 * 目前不支持 GBK 字符集的 TiDB 组件包括：TiCDC 和 TiFlash。
+
+* TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。
