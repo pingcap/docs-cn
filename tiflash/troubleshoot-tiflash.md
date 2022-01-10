@@ -101,7 +101,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 ## TiFlash 分析慢
 
-检查 SQL 中是否含有 TiFlash 不支持的函数或算子，如果您的版本是 5.0 以下，可以参照[TiFlash支持的计算下推(v4.0)](https://docs.pingcap.com/zh/tidb/v4.0/use-tiflash#tiflash-支持的计算下推)；如果您的版本是 5.0 及以上，可以[使用 Explain 语句查询执行计划的 warnings](/tiflash/use-tiflash.md#控制是否选择-mpp-模式) 来查看。
+[使用 Explain 语句查询执行计划的 warnings](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)检查 SQL 中是否含有 TiFlash 不支持的函数或算子。
 
 ## TiFlash 数据不同步
 
@@ -109,10 +109,10 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 1. 检查同步操作是否执行。
 
-    执行 `alter table <tbl_name> set tiflash replica <num>` 操作，查看是否有正常返回:
+    执行 `ALTER table <tbl_name> set tiflash replica <num>` 操作，查看是否有正常返回:
 
     - 如果有正常返回，进入下一步。
-    - 如果无正常返回，请执行 `select * from information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。如果没有，请重新执行 `alter table ${tbl_name} set tiflash replica ${num}` 或者查看是否有其他执行语句（如 `add index` ）或 DDL 操作是否异常。
+    - 如果无正常返回，请执行 `SELECT * FROM information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。如果没有，请重新执行 `ALTER table ${tbl_name} set tiflash replica ${num}` 或者查看是否有其他执行语句（如 `add index` ）或 DDL 操作是否异常。
 
 2. 检查 TiFlash 进程是否正常。
 
@@ -139,7 +139,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
     > **注意：**
     >
-    > 测试环境可能会取 `max-replicas` 默认值 3，在生产环境中，TiKV 节点数一般大于该值。
+    > `max-replicas` 的默认值是 3。在生产环境中， TiKV 节点数一般大于该值；在测试环境中，可以修改为 1 。
 
     {{< copyable "shell-regular" >}}
 
@@ -219,7 +219,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 3. 查看 CPU 使用率。
 
-    选择 `TiFlash-Proxy-Details` > `Thread CPU` > `Region task worker pre-handle/generate snapshot CPU`，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
+    在 Grafana 界面，选择 `TiFlash-Proxy-Details` > `Thread CPU` > `Region task worker pre-handle/generate snapshot CPU`，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
 
     若曲线为一条直线，表示 TiFlash 发生卡死，可强制杀进程重启或联系 PingCAP 技术支持人员。
 
@@ -235,7 +235,7 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 2. 调整 TiFlash 侧负载。
 
-    TiFlash 负载过大会引起同步慢，可通过 Grafana 中的 TiFlash-Summary 面板查看各个指标的负载情况：
+    TiFlash 负载过大会引起同步慢，可通过 Grafana 中的 `TiFlash-Summary` 面板查看各个指标的负载情况：
 
     - `Applying snapshots Count`: `TiFlash-summary` > `raft` > `Applying snapshots Count`
     - `Snapshot Predecode Duration`: `TiFlash-summary` > `raft` > `Snapshot Predecode Duration`
