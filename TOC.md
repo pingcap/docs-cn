@@ -222,6 +222,7 @@
       - [快速上手试用](/dm/quick-start-with-dm.md)
       - [使用 TiUP 部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [创建数据源](/dm/quick-start-create-source.md)
+    - [使用场景](/dm/quick-create-migration-task.md)
     - 部署使用
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - 部署 DM 集群
@@ -254,7 +255,6 @@
       - [管理迁移表的表结构](/dm/dm-manage-schema.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-    - [使用场景](/dm/quick-create-migration-task.md)
     - 故障处理
       - [故障及处理方法](/dm/dm-error-handling.md)
       - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
