@@ -359,7 +359,6 @@ tiup cluster display tidb-test
 
 预期结果输出：各节点 Status 状态信息为 `Up` 说明集群状态正常。
 
-
 ## 探索更多
 
 如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
