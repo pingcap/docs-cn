@@ -132,9 +132,9 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-在以上语法中，`ColumnNameList` 不可为空。以上语法是全量收集的语法。第一次收集了列 a 和 列 b 的统计信息之后，如果还想要增加列 c 的统计信息，需要在语法中同时指定三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。如果表的列数较多，需要统计信息的列可能只是少数列，通过这个语法可以极大地减轻收集统计信息的负担。
+在以上语法中，`ColumnNameList` 不可为空。以上语法是全量收集的语法，第一次收集了列 a 和 列 b 的统计信息之后，如果还想要增加列 c 的统计信息，需要在语法中同时指定三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。如果表的列数较多，需要统计信息的列可能只是少数列，通过这个语法可以极大地减轻收集统计信息的负担。
 
-如果用户不确定哪些列的统计信息会被用到，可以将 `tidb_enable_column_tracking` 设置为 `1`，TiDB 会自动记录哪些列的统计信息会被优化器使用且每隔 `100 * stats-lease` 时间写入系统表 `mysql.column_stats_usage`。那些统计信息被查询优化用到的列被称为 `PREDICATE COLUMNS`。将 `tidb_enable_column_tracking` 设置为 `0` 会将记录的 `PREDICATE COLUMNS` 清除。如下语法会收集 `PREDICATE COLUMNS` 和索引列的统计信息以及所有索引的统计信息。
+如果用户不确定哪些列的统计信息会被用到，可以让 TiDB 自动记录哪些列的统计信息会被用到。将 `tidb_enable_column_tracking` 设置为 `1`，TiDB 会自动记录哪些列的统计信息会被优化器使用且每隔 `100 * stats-lease` 时间写入系统表 `mysql.column_stats_usage`。那些统计信息被查询优化用到的列被称为 `PREDICATE COLUMNS`。将 `tidb_enable_column_tracking` 设置为 `0` 会将记录的 `PREDICATE COLUMNS` 清除。如下语法会收集 `PREDICATE COLUMNS` 和索引列的统计信息以及所有索引的统计信息。
 
 {{< copyable "sql" >}}
 
@@ -142,7 +142,7 @@ ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH D
 ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-如果 TableName 没有任何 `PREDICATE COLUMNS` 被记录在 `mysql.column_stats_usage` 中，执行以上语句会收集所有列的统计信息以及所有索引的统计信息。我们建议在查询模式稳定（workload 中所有查询都至少执行一遍）以后使用该语句对宽表收集统计信息。如果查询模式不稳定时使用该语句，优化器在遇到新的查询时可能会使用旧的或者 pseudo 的列统计信息，但下一次收集统计信息的时候就会采集该列的统计信息。
+如果 TableName 没有任何 `PREDICATE COLUMNS` 被记录在 `mysql.column_stats_usage` 中，执行以上语句会收集所有列的统计信息以及所有索引的统计信息。如果使用该语句收集统计信息，优化器在遇到新的不同的查询时可能会暂时使用旧的或者 pseudo 的列统计信息，但下一次收集统计信息的时候就会采集该列的统计信息。你可以先将 `tidb_enable_column_tracking` 设置为 `1`，然后在查询模式稳定以后使用该语句对宽表收集统计信息。
 
 `SHOW COLUMN_STATS_USAGE` 能够显示列统计信息的收集和使用情况，语法如下：
 
@@ -243,7 +243,7 @@ ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKE
 ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-在收集分区的统计信息时也可以设置列统计信息收集模式（实验特性，不建议在生产环境中使用）：
+在收集分区的统计信息时也可以设置列统计信息收集模式（参见 [收集部分列的统计信息](#####收集部分列的统计信息)，实验特性，不建议在生产环境中使用）：
 
 {{< copyable "sql" >}}
 
