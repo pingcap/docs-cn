@@ -38,7 +38,7 @@ TiDB 版本：5.4.0
 | `tidb_read_staleness` | 新增 | 用于设置当前会话期待读取的历史数据的所处时刻，默认值为 `0` |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败(`false`) 还是退回使用 pseudo 的统计信息 (`true`) |
-| [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 这个变量用于控制是否持久化执行 `ANALYZE` 语句时指定的配置项 |
+| [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启[ ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性 |
 
 ### 配置文件参数
 
