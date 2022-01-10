@@ -5,7 +5,11 @@ summary: 了解 TiCDC Canal-JSON Protocol 的概念和使用方法。
 
 # TiCDC Canal-JSON Protocol
 
-Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。TiCDC 提供了对 Canal-JSON 数据格式的实现。当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Canal-JSON，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。本文将主要介绍 TiCDC 对 Canal-JSON 数据格式的实现，包括 TiDB 扩展字段、Canal-JSON 数据格式定义，以及和官方实现进行对比等相关内容。通过本文，用户可以了解 Canal-JSON 的基本格式定义和使用方式，以及如何在 TiCDC 中指定使用 Canal-JSON 作为数据格式。
+
+## 使用 Canal-JSON
+
+当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Canal-JSON，TiCDC 将以 Event 为基本单位封装构造 Canal-JSON Message，向下游发送 TiDB 的数据变更事件。
 
 Event 分为三类：
 
@@ -26,7 +30,7 @@ Event 分为三类：
 Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 CommitTS 事务唯一标识等重要字段。为了解决这个问题，TiCDC 在 Canal-JSON 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 后，TiCDC 生成 Canal-JSON 消息时的行为如下：
 
 * TiCDC 发送的 DML Event 和 DDL Event 类型消息中，将会含有一个名为 `_tidb` 的字段。
-* TiCDC 将会发送 WATERMARK Event 消息。
+* TiCDC 将会发送 WATERMARK Event 消息。·
 
 配置样例如下所示：
 
