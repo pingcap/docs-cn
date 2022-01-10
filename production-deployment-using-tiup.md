@@ -203,7 +203,7 @@ source /home/tidb/.bash_profile
 若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 </div>
-<SimpleTab>
+</SimpleTab>
 
 ## 第 3 步：初始化集群拓扑文件
 
