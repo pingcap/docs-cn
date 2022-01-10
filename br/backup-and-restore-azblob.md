@@ -29,25 +29,26 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 - 备份：将数据库的 `test` 库备份到 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间中；
 - 恢复：将 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间恢复到数据库的 `test`库中。
 
-### 使用 Azure AD 备份恢复
+### 方法一：使用 Azure AD 备份恢复（推荐）
 
-需要在 BR 运行环境和 TiKV 运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。使用了 Azure AD 后访问 Azure Blob Storage 不用配置 `account-key`，这种方式更安全，也是推荐的使用。
+在 BR 运行环境和 TiKV 运行环境中，需要存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。当存在这三项变量时，BR 可以使用 Azure AD 访问 Azure Blob Storage 且不用配置 `account-key`。这种方式更安全，因此也推荐被使用。在这里，`$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_id`。
 
-#### 备份
+#### 备份：
 
-该方法的备份过程中需要用到 `account-name` 这个参数, `access-tier` 可以根据需要配置，本文展示了备份到 `cool tier` 的案例。
+使用 Azure AD 进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
 
-##### 将信息放在 URL 参数中
+本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name` 和 `access-tier`：
 
-```
-tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&access-tier=Cool'
-```
-
-##### 将信息放在命令行参数中
-
-```
-tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1 --azblob.access-tier=Cool
-```
+- 将参数信息放在 URL 参数中：
+    
+    ```
+    tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&access-tier=Cool'
+    ```
+- 将参数信息放在命令行参数中
+    
+    ```
+    tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1 --azblob.access-tier=Cool
+    ```
 
 #### 恢复
 
