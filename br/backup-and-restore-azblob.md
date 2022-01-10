@@ -103,7 +103,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ## 参数说明
 
-备份和恢复过程中会用到 `account-name`, `account-key`, `access-tier` 三个参数，参数的详细介绍请参考[外部存储](/br/backup-and-restore-storages.md)。
+在进行备份和恢复过程中，你会用到 `account-name`, `account-key`, `access-tier` 三个参数。有关参数的详细介绍，请参阅[外部存储](/br/backup-and-restore-storages.md)。
 
 ### URL 参数
 
