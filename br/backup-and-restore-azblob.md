@@ -119,7 +119,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 |----------:|-------|-------|---------|
 | `--azblob.account-name` | 存储账户名 | | 是 |
 | `--azblob.account-key` | 访问密钥 | | 是 |
-| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`） | `Hot` | 否 |
+| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 | `Hot` | 否 |
 
 ## 兼容信息
 
