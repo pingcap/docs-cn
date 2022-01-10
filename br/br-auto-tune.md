@@ -25,6 +25,8 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 ```
 
+在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份速度。
+
 > **注意：**
 >
 > - v5.4.0 及以上集群，自动调节功能默认打开，无需额外配置。
@@ -49,8 +51,14 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 
 这个特性还有两个配置项未在 TiKV 文档中列出，仅在内部调试使用，正常备份时**无需**配置这两个参数。
 
-- `backup.auto-tune-remain-threads`：自动调节通过控制 backup 的资源占用，保证集群至少有 `auto-tune-remain-threads` 个核心保持空闲状态。这个参数的默认值是 `round(0.2 * vCPU)`。
-- `backup.auto-tune-refresh-interval`：每隔多长时间，自动调节会刷新统计信息并重新计算出备份核心数量上限。
+- `backup.auto-tune-remain-threads`：
+    - 通过控制备份任务占用的资源，自动调节会保证集群中至少有该值的 CPU 核心数会保持空闲的状态。
+    - 默认值：`round(0.2 * vCPU)`
+    - 单位：个
+- `backup.auto-tune-refresh-interval`：
+    - 每隔该值的时间段，自动调节会刷新统计信息并重新计算备份任务使用的 CPU 核心数的上限。
+    - 默认值：`1`
+    - 单位：分钟
 
 以下是一个使用自动调节功能的示例，其中 `*` 代表集群中被备份任务占用的 CPU，`^` 代表其它任务占用的 CPU，`-` 代表空闲 CPU。
 
