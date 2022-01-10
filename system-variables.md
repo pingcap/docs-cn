@@ -1536,3 +1536,31 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`true`
+- 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+
+### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`0`
+- 单位：毫秒
+- 范围：`[0, 4294967295]`
+- 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+
+### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`false`
+- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`false`），还是退回使用 pseudo 的统计信息（`true`）。
