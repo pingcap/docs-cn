@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/route-diff/','/docs-cn/dev/reference
 
 # 不同库名或表名的数据校验
 
-当你在使用 [TiDB DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 等同步工具时，可以设置 `route-rules` 将数据同步到下游指定表中。sync-diff-inspector 通过设置 `rules` 提供了校验不同库名、表名的表的功能。
+当你在使用 [TiDB DM](/dm/dm-overview.md) 等同步工具时，可以设置 `route-rules` 将数据同步到下游指定表中。sync-diff-inspector 通过设置 `rules` 提供了校验不同库名、表名的表的功能。
 
 下面是一个简单的配置文件说明，要了解完整配置，请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 
