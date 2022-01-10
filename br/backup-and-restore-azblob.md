@@ -18,12 +18,14 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 ## 使用方法
 
 使用 BR，你可以通过以下两种方法在 Azure Blob Storage 上进行备份与恢复：
+
 - 使用 Azure AD 备份恢复
 - 使用访问密钥备份恢复
 
 在通常情况下，为了避免 `account-key` 等密钥信息记录在命令行中可能会存在的被泄漏的风险，推荐使用第一种 `使用 Azure AD 备份恢复` 方法。
 
 以下为使用上述两种方式在 Azure Blob Storage 上进行备份与恢复的操作示例，其中，具体操作目标如下：
+
 - 备份：将数据库的 `test` 库备份到 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间中；
 - 恢复：将 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间恢复到数据库的 `test`库中。
 
