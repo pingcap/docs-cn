@@ -235,7 +235,7 @@ IndexNameList 为空时会收集所有索引的统计信息。
 ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
-收集 TableName 中所有的 PartitionNameList 中分区的索引列统计信息：
+收集 TableName 中所有的 PartitionNameList 中分区的索引统计信息：
 
 {{< copyable "sql" >}}
 
