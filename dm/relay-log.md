@@ -131,8 +131,6 @@ Relay log 迁移的起始位置由如下规则决定：
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
 
-在 v2.0.2（包含）到 v5.3.0（包含）中，`start-relay` 与 `stop-relay` 命令分别用于启动及停止 relay log 的拉取。
-
 `start-relay` 命令可以配置一个或多个 DM-worker 为指定数据源迁移 relay log，但只能指定空闲或者已绑定了该上游数据源的 DM-worker。使用示例如下：
 
 {{< copyable "" >}}
