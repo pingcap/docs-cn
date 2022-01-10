@@ -333,7 +333,6 @@
     - [Data Check for TiDB Upstream/Downstream Clusters](/sync-diff-inspector/upstream-downstream-diff.md)
     - [Data Check in the DM Replication Scenario](/sync-diff-inspector/dm-diff.md)
   - TiSpark
-    - [Quick Start](/get-started-with-tispark.md)
     - [User Guide](/tispark-overview.md)
 - Reference
   - Cluster Architecture
