@@ -233,7 +233,9 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 ### ANALYZE 配置持久化
 
-从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置持久化功能。支持持久化的配置项包括：
+从 v5.4.0 起，TiDB 支持 `ANALYZE` 配置持久化功能，方便后续收集统计信息时沿用已有配置项。
+
+TiDB 支持持久化的配置项包括：
 
 | 配置项 | 对应的 ANALYZE 语法 |
 | --- | --- |
@@ -254,11 +256,11 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置 `tidb_analyze_version = 1` 同样会达到关闭配置持久化的效果。
 
-关闭 `ANALYZE` 配置持久化功能后，已持久化的记录不会被清除。因此，当再次开启该功能时，TiDB 会继续使用之前记录的持久化配置。
+关闭 `ANALYZE` 配置持久化功能后，已持久化的配置记录不会被清除。因此，当再次开启该功能时，TiDB 会继续使用之前记录的持久化配置收集统计信息。
 
 > **注意：**
 >
-> 当再次开启 `ANALYZE` 配置持久化功能时，如果之前记录的持久化配置已经不适用当前的数据，建议通过 `ANALYZE` 语句重新指定最新的配置信息。
+> 当再次开启 `ANALYZE` 配置持久化功能时，如果之前记录的持久化配置项已经不适用当前的数据，请手动执行 `ANALYZE` 语句并指定新的持久化配置项。
 
 ### 查看 ANALYZE 状态
 
