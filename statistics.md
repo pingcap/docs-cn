@@ -122,15 +122,15 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 > **警告：**
 >
-> 收集部分列统计信息的功能目前为实验特性，不建议在生产环境中使用。
+> 收集部分列的统计信息目前为实验特性，不建议在生产环境中使用。
 
-执行 SQL 语句时，优化器在大多数情况下只会用到部分列（比如 WHERE、JOIN、ORDER BY、GROUP BY 子句中用到的列）的统计信息。这些被优化器用到的列称为 `PREDICATE COLUMNS`。
+执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中用到的列）的统计信息。这些被优化器用到的列称为 `PREDICATE COLUMNS`。
 
 对于一个有很多列的宽表，收集所有列的统计信息有较大的开销。为了降低开销，建议只收集指定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。
 
 > **注意：**
 >
-> 收集部分列的统计信息的功能仅在 `tidb_analyze_version = 2` 时可用。
+> 收集部分列的统计信息的功能仅适用于 `tidb_analyze_version = 2` 的情况。
 
 - 如果要收集指定列的统计信息，请使用以下语法：
 
@@ -140,13 +140,11 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
     ANALYZE TABLE TableName COLUMNS ColumnNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-    其中，`ColumnNameList` 表示指定列的名称列表。如果需要指定多列，请使用用逗号 `,` 分隔列名。例如, `ANALYZE table t columns a, b`。
-
-    该语法除了收集指定表指定列的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+    其中，`ColumnNameList` 表示指定列的名称列表。如果需要指定多列，请使用用逗号 `,` 分隔列名。例如, `ANALYZE table t columns a, b`。该语法除了收集指定表中指定列的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
 
     > **注意：**
     >
-    > 以上语法是全量收集的语法。例如，在使用该语法收集了列 a 和 列 b 的统计信息之后，如果还想要增加收集列 c 的统计信息，需要在语法中同时指定这三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
+    > 该语法属于全量收集。例如，在使用该语法收集了列 a 和 列 b 的统计信息之后，如果还想要增加收集列 c 的统计信息，需要在语法中同时指定这三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
 
 - 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
 
@@ -164,14 +162,14 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
         ANALYZE TABLE TableName PREDICATE COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
         ```
 
-        该语法除了收集指定表的 `PREDICATE COLUMNS` 的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
+        该语法除了收集指定表中 `PREDICATE COLUMNS` 的统计信息，将同时收集该表中索引列的统计信息以及所有索引的统计信息。
 
         > **注意：**
         >
         > - 如果系统表 `mysql.column_stats_usage` 中没有关于该表的`PREDICATE COLUMNS` 记录，执行以上语句会收集该表中所有列的统计信息以及所有索引的统计信息。
-        > - 使用该语法收集统计信息后，当执行新的不同类型的 SQL 查询语句时，优化器可能会暂时使用旧的或者 pseudo 的列统计信息，然后在下一次收集统计信息的时候会收集该列的统计信息。
+        > - 使用该语法收集统计信息后，当执行一种新的类型的 SQL 查询时，优化器可能会暂时使用旧的或者 pseudo 的列统计信息，然后在下一次收集统计信息的时候收集该列的统计信息。
 
-- 如果你想收集所有列的统计信息以及所有索引的统计信息，可以使用以下语法。
+- 如果要收集所有列的统计信息以及所有索引的统计信息，可以使用以下语法：
 
     {{< copyable "sql" >}}
 
@@ -179,11 +177,11 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
     ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-- 如果你想持久化执行 Analyze 语句时列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），可以将系统变量 `tidb_persist_analyze_options` 设置为`true` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+- 如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为`true` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
     开启 ANALYZE 配置持久化特性后：
 
-    - 当 TiDB 自动采集统计信息或者你手动执行 `ANALYZE` 语句收集统计信息但未指定列的配置时，TiDB 会继续沿用之前持久化的配置。
+    - 当 TiDB 自动收集统计信息或者你手动执行 `ANALYZE` 语句收集统计信息但未指定列的配置时，TiDB 会继续沿用之前持久化的配置。
     - 当多次手动执行 `ANALYZE` 语句并指定列的配置时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
 
 如果你想查看一个表中哪些列是 `PREDICATE COLUMNS` 以及哪些列的统计信息已经被收集，可以使用以下语法：
@@ -194,7 +192,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
 ```
 
-目前 `SHOW COLUMN_STATS_USAGE` 会输出 6 列，具体如下：
+`SHOW COLUMN_STATS_USAGE` 会输出 6 列，具体如下：
 
 | 语法元素 | 说明            |
 | -------- | ------------- |
@@ -205,7 +203,7 @@ SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
 | Last_used_at | 该列统计信息在最近一次查询优化中被用到的时间 |
 | Last_analyzed_at | 该列统计信息最近一次被收集的时间 |
 
-示例：
+在以下示例中，执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 后，TiDB 将收集 `b`，`c`，`d` 列的统计信息，因为 `b` 列是 `PREDICATE COLUMN`，而 `c` 列和 `d` 列是索引列。
 
 {{< copyable "sql" >}}
 
@@ -245,11 +243,9 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 3 rows in set (0.00 sec)
 ```
 
-以上示例中，当执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 语句后，TiDB 将收集 `b`，`c`，`d` 列的统计信息，因为 `b` 列是 `PREDICATE COLUMN`，而 `c` 列和 `d` 列是索引列。
-
 ##### 收集索引的统计信息
 
-收集 TableName 中所有的 IndexNameList 中的索引的统计信息：
+收集 TableName 中 IndexNameList 里所有索引的统计信息，请使用以下语法：
 
 {{< copyable "sql" >}}
 
@@ -257,31 +253,37 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
 ```
 
-IndexNameList 为空时会收集所有索引的统计信息。
+当 IndexNameList 为空时，该语法将收集 TableName 中所有索引的统计信息。
 
 > **注意：**
 >
-> 为了保证前后统计信息的一致性，在设置 `tidb_analyze_version=2` 时，该语句也会收集整个表的统计信息（包括所有列和所有索引的统计信息）而不限于索引的统计信息。
+> 为了保证前后统计信息的一致性，当设置 `tidb_analyze_version=2` 时，该语句也会收集整个表的统计信息（包括所有列和所有索引的统计信息）而不限于索引的统计信息。
 
 ##### 收集分区的统计信息
 
-收集 TableName 中所有的 PartitionNameList 中分区的统计信息：
+- 如果要收集 TableName 中所有的 PartitionNameList 中分区的统计信息，请使用以下语法：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
 
-收集 TableName 中所有的 PartitionNameList 中分区的索引统计信息：
+- 如果要收集 TableName 中所有的 PartitionNameList 中分区的索引统计信息，请使用以下语法：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
 
-在收集分区的统计信息时也可以设置列统计信息收集模式（参见收集部分列的统计信息，该特性是实验特性，不建议在生产环境中使用）：
+当收集分区的统计信息时，你也可以只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+
+> **警告：**
+>
+> 收集部分列的统计信息目前为实验特性，不建议在生产环境中使用。
+
+语法如下：
 
 {{< copyable "sql" >}}
 
