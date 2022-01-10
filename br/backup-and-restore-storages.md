@@ -117,15 +117,14 @@ S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为�
 | `account-key` | 访问密钥 |
 | `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
 
-为了保证 TiKV 和迁移工具使用了同一个存储账户，`account-name` 由迁移工具决定（即默认 `send-credentials-to-tikv = true`），迁移工具按照以下顺序推断密钥：
+为了保证 TiKV 和迁移工具使用了同一个存储账户，`account-name` 会由迁移工具决定（即默认 `send-credentials-to-tikv = true`），迁移工具按照以下顺序推断密钥：
 
-1. 若参数指定 `account-name` 和 `account-key`，则使用该密钥。
-2. 若未指定 `account-name` 或 `account-key` 任意一个，则尝试从工具节点上环境变量读取相关凭证。
-3. 迁移工具优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，同时允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` 访问。
-4. 若上述三个环境变量在工具节点上存在缺失，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
-5. 若 `步骤3` 和 `步骤4` 中，参数并未指定 `account-name`，则从工具节点上的环境变量中读取。且默认情况下（`send-credentials-to-tikv = true`）`account-name` 和 `account-key` 都是由迁移工具发送给 TiKV 的。 
-
-+ `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和 客户端密码 `client_id`。
+1. 如果已指定 `account-name` **和** `account-key`，则使用该密钥。
+2. 如果没有指定 `account-name` 或 `account-key` 中的任意一项，则尝试从工具节点上的环境变量读取相关凭证。
+    - 迁移工具会优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，与此同时，工具会允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` (Azure Active Directory) 访问。
+        - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_id`。
+3. 如果上述的三个环境变量不存在于工具节点中，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
+4. 如果第 2 步和第 3 步中没有指定 `account-name`，则从工具节点上的环境变量中读取。且默认情况（`send-credentials-to-tikv = true`）下，`account-name` 和 `account-key` 都会由迁移工具发送给 TiKV。 
 
 ## 命令行参数
 

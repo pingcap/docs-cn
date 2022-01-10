@@ -1,28 +1,32 @@
 ---
 title: 在 Azure Blob Storage 备份恢复
-summary: 在 Azure Blob Storage 备份恢复方法。
+summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与恢复时的方法。
 aliases: ['/docs-cn/dev/br/backup-and-restore-azblob/']
 ---
 
-# 在 Azure Blob Storage 备份恢复 <span class="version-mark">从 v5.4 版本开始引入</span>
+# 在 Azure Blob Storage 备份恢复
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。
+> 该功能为实验特性，不建议在生产环境中使用。
 
-本文档介绍 Azure Blob Storage 作为外部存储来进行备份恢复的使用场景、使用方法、使用限制和使用该功能的常见问题。
+从 TiDB v5.4.0 起，Backup & Restore (BR) 工具开始支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
 
 ## 使用场景
 
-azure 虚拟机可以将大规模数据快速地存放到 azure blob storage 上，当使用 azure 虚拟机来部署集群时，可以考虑将数据备份到 azure blob storage 中存储。
+Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上，当使用 azure 虚拟机来部署集群时，可以考虑将数据备份到 Azure Blob Storage 中。
 
-## 操作步骤
+## 使用方法
 
-BR 提供了 2 种在 Azure Blob Storage 上备份恢复的方法，分别是 `使用 Azure AD 备份恢复` 方法和 `使用访问密钥备份恢复` 方法。
+使用 BR，你可以通过以下两种方法在 Azure Blob Storage 上进行备份与恢复：
+- 使用 Azure AD 备份恢复
+- 使用访问密钥备份恢复
 
-在通常情况下，为了避免 `account-key` 等密钥信息在命令行存在的泄漏风险，推荐使用 `使用 Azure AD 备份恢复` 方法。
+在通常情况下，为了避免 `account-key` 等密钥信息记录在命令行中可能会存在的被泄漏的风险，推荐使用第一种 `使用 Azure AD 备份恢复` 方法。
 
-文档使用如下演示例子：在备份过程中，将库 `test` 备份到 Azure Blob Storage 上 `container=test`，路径前缀为 `t1` 的空间中；在恢复过程中，从 Azure Blob Storage 上 `container=test`, 路径前缀为 `t1` 的空间中恢复数据到库 `test`。
+以下示例中的具体操作场景及目标如下：
+- 备份：将数据库的 `test` 库备份到 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间中
+- 恢复：将 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间恢复到数据库的 `test`库中。
 
 ### 使用 Azure AD 备份恢复
 
