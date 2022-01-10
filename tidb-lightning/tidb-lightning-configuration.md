@@ -58,7 +58,7 @@ table-concurrency = 6
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
 
-# 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"
+# 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"。
 # 如果未开启并行导入模式，无须设置此配置项。
 # 注意：
 # 1. 对于同一批的并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入的正确性。
@@ -102,7 +102,8 @@ driver = "file"
 [tikv-importer]
 # 选择后端：“local” 或 “importer” 或 “tidb”
 # backend = "local"
-# 是否开启并行导入模式。true 表示开启并行导入模式，false 表示关闭并行导入模式。默认为 false。
+# 是否允许向已存在数据的表导入数据。默认值为 false。
+# 当使用并行导入模式时，由于多个 Lightning 进程同时导入一张表，因此要求此开关必须为 true。 
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
