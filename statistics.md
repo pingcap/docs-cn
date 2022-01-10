@@ -245,7 +245,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 
 ##### 收集索引的统计信息
 
-收集 TableName 中 IndexNameList 里所有索引的统计信息，请使用以下语法：
+如果要收集 TableName 中 IndexNameList 里所有索引的统计信息，请使用以下语法：
 
 {{< copyable "sql" >}}
 
@@ -277,19 +277,17 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-当收集分区的统计信息时，你也可以只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+- 当收集分区的统计信息时，如果想只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
 
-> **警告：**
->
-> 收集部分列的统计信息目前为实验特性，不建议在生产环境中使用。
+    > **警告：**
+    >
+    > 收集部分列的统计信息目前为实验特性，不建议在生产环境中使用。
 
-语法如下：
+    {{< copyable "sql" >}}
 
-{{< copyable "sql" >}}
-
-```sql
-ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
-```
+    ```sql
+    ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
+    ```
 
 #### 增量收集
 
