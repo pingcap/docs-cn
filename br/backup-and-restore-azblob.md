@@ -52,19 +52,18 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 #### 恢复
 
-该方法的恢复过程中用到 `account-name` 这个参数。
+使用 Azure AD 进行恢复时，需要指定参数 `account-name`。你可以通过以下两种方式指定 `account-name`：
 
-##### 将信息放在 URL 参数中
+- 将参数信息放在 URL 参数中
 
-```
-tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1'
-```
+    ```
+    tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1'
+    ```
+- 将参数信息放在命令行参数中
 
-##### 将信息放在命令行参数中
-
-```
-tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1
-```
+    ```
+    tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1
+    ```
 
 ### 使用访问密钥备份恢复
 
