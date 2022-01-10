@@ -71,7 +71,7 @@ DESC tidb_hot_regions_history;
   SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00';
   ```
 
-  > **Note:**
+  > **说明：**
   >
   > `UPDATE_TIME` 同样支持 Unix 时间戳。例如: `update_time >TIMESTAMP('2012-08-18 21:40:00')` 或 `update_time > FROM_UNIXTIME(1629294000.000)`。
 
