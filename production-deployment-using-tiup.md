@@ -19,6 +19,9 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 在中控机上安装 TiUP 组件有两种方式：在线部署和离线部署。
 
+<SimpleTab>
+<div label="在线部署 TiUP 组件">
+
 ### 方式一：在线部署 TiUP 组件
 
 使用普通用户登录中控机，以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
@@ -74,6 +77,11 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     ```shell
     tiup --binary cluster
     ```
+
+</div>
+
+<SimpleTab>
+<div label="离线部署 TiUP 组件">
 
 ### 方式二：离线部署 TiUP 组件
 
@@ -176,8 +184,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         ```bash
         tiup mirror merge tiup-custom-mirror-v1.7.0
         ```
-   
+
     5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.7.0` 版本出现在结果中。
+
+</div>
 
 #### 部署离线环境 TiUP 组件
 
