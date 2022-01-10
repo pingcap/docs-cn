@@ -120,6 +120,10 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 ##### 收集部分列的统计信息
 
+> **警告：**
+>
+> - 当前收集部分列统计信息的功能为实验特性，不建议在生产环境中使用。
+
 对于有很多列的宽表来说，收集所有列的统计信息可能会有较大的开销。而大多数情况下优化器只会用到一部分列的统计信息（比如出现在 WHERE/JOIN/ORDER BY/GROUP BY 子句中的列）。如下语法会收集指定列和索引列的统计信息以及所有索引的统计信息。
 
 {{< copyable "sql" >}}
@@ -174,7 +178,7 @@ MySQL [test]> SELECT * FROM t WHERE b > 1;
 Empty set (0.00 sec)
 
 -- 等待一段时间（大约 100 * stats-lease 的时间），TiDB 将收集的 PREDICATE COLUMNS 写入 mysql.column_stats_usage。
-MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_analyzed_at IS NOT NULL;
+MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_used_at IS NOT NULL;
 +---------+------------+----------------+-------------+---------------------+------------------+
 | Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at |
 +---------+------------+----------------+-------------+---------------------+------------------+
@@ -203,10 +207,6 @@ MySQL [test]> SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't
 ```sql
 ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
-
-> **警告：**
->
-> - 当前收集部分列统计信息的功能为实验特性，不建议在生产环境中使用。
 
 ##### 收集索引的统计信息
 
