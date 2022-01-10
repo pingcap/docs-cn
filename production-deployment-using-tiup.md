@@ -207,7 +207,7 @@ source /home/tidb/.bash_profile
 
 ## 第 3 步：初始化集群拓扑文件
 
-1. 生成集群拓扑文件
+1. 创建集群拓扑文件。
 
     根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。可以通过 TiUP 工具在中控机上面创建 YAML 格式集群配置文件，例如 `topology.yaml`:
 
@@ -221,7 +221,7 @@ source /home/tidb/.bash_profile
     >
     > 混合部署场景也可以使用 `tiup cluster template --full > topology.yaml` 生成的建议拓扑模板，跨机房部署场景可以使用 `tiup cluster template --multi-dc > topology.yaml` 生成的建议拓扑模板。
 
-2. 配置集群拓扑文件
+2. 配置集群拓扑文件。
 
    执行 `vi topology.yaml`，按实际场景配置以下参数：
 
@@ -238,7 +238,7 @@ source /home/tidb/.bash_profile
         - Grafana servers
         - ......
 
-    下表列出了常用的 7 种场景，请根据链接中的拓扑说明以及配置文件模板新建一个配置文件`topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
+    下表列出了常用的 7 种场景，请根据链接中的拓扑说明以及配置文件模板配置`topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 
     | 场景 | 配置文件模板 | 拓扑说明 |
     | :-- | :-- | :-- |
