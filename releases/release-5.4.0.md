@@ -11,6 +11,7 @@ TiDB 版本：5.4.0
 在 v5.4.0 版本中，你可以获得以下关键特性：
 
 + 支持 GBK 字符集
++ 支持索引合并 (Index Merge) 数据访问方法，能够合并多个列上索引的条件过滤结果
 + 支持通过 session 变量实现有界限过期数据读取
 + 支持统计信息采集配置持久化
 + 支持使用 Raft Engine 作为 TiKV 的日志存储引擎
@@ -46,8 +47,8 @@ TiDB 版本：5.4.0
 | TiDB | `stats-load-concurrency` | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以并发处理多少列，默认值为 `5`             |
 | TiDB | `stats-load-queue-size`   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
 | TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源以求减少对集群的影响。在默认配置下，备份速度可能下降。 |
-| TiKV | `log.level`、`log.format`、`log.enable-timestamp`、`log.file.filename`、`log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
-| TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 变更 | 将 TiKV log 参数名改为与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见[统一各组件的日志格式和日志归档轮转规则](#统一各组件的日志格式和日志归档轮转规则)。 |
+| TiKV | `log.level`、`log.format`、`log.enable-timestamp`、`log.file.filename`、`log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
+| TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 变更 | 将 TiKV log 参数名改为与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
 | TiKV  |  `log-rotation-timespan`  | 删除 |  轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。 |
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
 | TiKV | `snap-generator-pool-size` | 新增 | `snap-generator` 线程池大小，默认值为 `2` |
@@ -67,33 +68,6 @@ TiDB 版本：5.4.0
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `10M`  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
 
-#### 统一各组件的日志格式和日志归档轮转规则
-
-TiDB 提供了多个用户可见的组件，为了保证使用体验的一致性，从 v5.4.0 版本开始 TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。具体日志设置如下：
-
-```
-level = "info"
-设置日志输出等级，默认为 info，支持 debug, info, warn, error, fatal 五个等级。
-
-format = "text"
-设置日志输出格式，默认为 text，支持 text 和 json 两种格式。
-
-enable-timestamp = true
-设置时间戳输出开关，默认为 true。
-
-filename = ""
-设置日志文件名前缀，默认为无前缀。
-
-max-size = 300
-设置日志分割大小，默认为 300 MB，最大支持 4096 MB。
-
-max-days = 0
-设置日志最大保留天数，默认全保留不清理。
-
-max-backups = 0
-设置日志备份的最大保留文件数，默认全保留不清理。
-```
-
 ### 其他
 
 - TiDB Dashboard 默认不再使用 `root` + 空密码登录。
@@ -101,6 +75,7 @@ max-backups = 0
     从 v5.4.0开始，使用 TiUP 启动集群时推荐使用 `start --initial`。执行该操作启动集群后，会为 `root` 账号自动生成一个随机密码，`root` 账号登录 Dashboard 需要使用这个密码。
 
 - 为 TiDB 和 PD 之间新增接口。使用 `information_schema.TIDB_HOT_REGIONS_HISTORY` 系统表时，TiDB 需要使用匹配的 PD 版本。
+- TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
 
 
 ## 新功能
