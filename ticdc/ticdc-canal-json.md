@@ -13,7 +13,7 @@ Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一
 
 Event 分为三类：
 
-* DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 后发出，DDL Event 会被发送到索引为 0 的 MQ Partition。
+* DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 语句后发出，DDL Event 会被发送到索引为 0 的 MQ Partition。
 * DML Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
 * WATERMARK Event：代表一个特殊的时间点，表示在这个时间点前收到的 Event 是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 `enable-tidb-extension=true` 时生效。
 
@@ -70,6 +70,8 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
     }
 }
 ```
+
+以上 JSON 数据的字段解释如下：
 
 | 字段      | 类型   | 说明                                                                      |
 |:----------|:-------|:-------------------------------------------------------------------------|
@@ -142,7 +144,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 
 仅当 `enable-tidb-extension` 为 `true` 时，TiCDC 才会发送 WATERMARK Event，其 `type` 字段值为 `TIDB_WATERMARK`。该类型事件具有 `_tidb` 字段，当前只含有 `watermarkTs`，其值为该 Event 发送时的 TSO。
 
-当用户收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件，已经发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
+当你收到一个该类型的事件，所有 `commitTs` 小于 `watermarkTs` 的事件均已发送完毕。因为 TiCDC 提供 At Least Once 语义，可能出现重复发送数据的情况。如果后续收到有 `commitTs` 小于 `watermarkTs` 的事件，可以忽略。
 
 WATERMARK Event 的示例如下：
 
