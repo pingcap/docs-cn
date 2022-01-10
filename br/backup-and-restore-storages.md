@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 
 # 外部存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 和 [Azure Blob Storage (Azblob)](/br/backup-and-restore-storages.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 和 [Azure Blob Storage (Azblob)](/br/backup-and-restore-azblob.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
@@ -115,7 +115,7 @@ S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为�
 |----------:|-----|
 | `account-name` | 存储账户名 |
 | `account-key` | 访问密钥 |
-| `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`） |
+| `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
 
 为了保证 TiKV 和迁移工具使用了同一个存储账户，`account-name` 由迁移工具决定（即默认 `send-credentials-to-tikv = true`），迁移工具按照以下顺序推断密钥：
 
@@ -167,7 +167,7 @@ S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为�
 |----------:|-------|
 | `--azblob.account-name` | 存储账户名 |
 | `--azblob.account-key` | 访问密钥 |
-| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`） |
+| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
 
 ## BR 向 TiKV 发送凭证
 

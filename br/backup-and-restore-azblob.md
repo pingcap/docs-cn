@@ -4,7 +4,7 @@ summary: 在 Azure Blob Storage 备份恢复方法。
 aliases: ['/docs-cn/dev/br/backup-and-restore-azblob/']
 ---
 
-# 在 Azure Blob Storage 备份恢复
+# 在 Azure Blob Storage 备份恢复 <span class="version-mark">从 v5.4 版本开始引入</span>
 
 > **警告：**
 >
