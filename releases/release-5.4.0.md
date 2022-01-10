@@ -17,7 +17,7 @@ TiDB 版本：5.4.0
 + 支持使用 Raft Engine 作为 TiKV 的日志存储引擎
 + 优化备份对集群的影响
 + 支持 Azure Blob Storage 作为备份目标存储（实验特性）
-+ 提升 TiFlash 性能和稳定性
++ 持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能
 + 为 TiDB Lightning 增加已存在数据表是否允许导入的开关
 + 优化持续性能分析实验特性
 + TiSpark 支持用户认证与鉴权
@@ -112,7 +112,7 @@ TiDB 版本：5.4.0
 
     [用户文档](/tikv-configuration-file.md#raft-engine)
 
-- **提升 TiFlash 性能和稳定性**
+- **持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能**
 
     - 支持将更多函数下推至 MPP 引擎
         - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
