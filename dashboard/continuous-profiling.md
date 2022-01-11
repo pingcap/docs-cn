@@ -46,7 +46,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 启用持续性能分析功能后，你可以通过以下任一方式访问实例性能分析页面：
 
-- 登录后，左侧导航条点击**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **持续分析** (Continuous Profile)：
+- 登录后，左侧导航条点击**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)：
 
   ![访问页面](/media/dashboard/dashboard-conprof-access.png)
 
