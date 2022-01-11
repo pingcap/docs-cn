@@ -1,7 +1,7 @@
 ---
 title: 从 Amazon Aurora 迁移数据到 TiDB
 summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
-aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/']
+aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora']
 ---
 
 # 从 Amazon Aurora 迁移数据到 TiDB
@@ -161,8 +161,8 @@ type = '$3'
 
 ### 前提条件
 
-- [安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
-- [获取 DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
+- [安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
+- [获取 DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
 ### 第 1 步： 创建数据源
 
@@ -245,7 +245,7 @@ mysql-instances:
 
 ```
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
 ### 第 3 步： 启动任务
 
@@ -272,7 +272,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如： 172.16.10.71:8261|
 |`start-task`|命令用于创建数据迁移任务|
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后，再次执行上述命令，重新启动任务。遇到问题请参考[故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling)以及[常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
+如果任务启动失败，可根据返回结果的提示进行配置变更后，再次执行上述命令，重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
 ### 第 4 步： 查看任务状态
 
@@ -284,7 +284,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)。
+关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
 ### 第 5 步： 监控任务与查看日志
 
@@ -299,8 +299,8 @@ DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出�
 
 ## 探索更多
 
-- [暂停数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/pause-task)
-- [恢复数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/resume-task)
-- [停止数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/stop-task)
-- [导出和导入集群的数据源和任务配置](https://docs.pingcap.com/zh/tidb-data-migration/stable/export-import-config)
-- [处理出错的 DDL 语句](https://docs.pingcap.com/zh/tidb-data-migration/stable/handle-failed-ddl-statements)
+- [暂停数据迁移任务](/dm/dm-pause-task.md)
+- [恢复数据迁移任务](/dm/dm-resume-task.md)
+- [停止数据迁移任务](/dm/dm-stop-task.md)
+- [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
+- [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)

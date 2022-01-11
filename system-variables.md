@@ -610,8 +610,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`OFF`
+- 默认值：`ON` 
 - 这个变量用于控制是否开启 index merge 功能。
+
+> **注意：**
+>
+> - 当集群从 v4.0.0 以下版本升级到 v5.4.0 及以上版本时，该变量开关默认关闭，防止升级后计划发生变化导致回退。
+> - 当集群从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本时，该变量开关保持升级前的状态。
+> - 对于 v5.4.0 及以上版本的新建集群，该变量开关默认开启。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1530,3 +1536,31 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`true`
+- 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+
+### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`0`
+- 单位：毫秒
+- 范围：`[0, 4294967295]`
+- 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+
+### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`false`
+- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`false`），还是退回使用 pseudo 的统计信息（`true`）。

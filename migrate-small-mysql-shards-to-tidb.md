@@ -1,6 +1,7 @@
 ---
 title: 从小数据量分库分表 MySQL 合并迁移数据到 TiDB
 summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
+aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenario-simple-migration/']
 ---
 
 # 从小数据量分库分表 MySQL 合并迁移数据到 TiDB
@@ -31,12 +32,12 @@ summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
 
 ## 前提条件
 
-- [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
-- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
+- [使用 TiUP 安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
+- [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
 ## 分表数据冲突检查
 
-迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#跨分表数据在主键或唯一索引冲突处理)
+迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)
 
 在本示例中：`sale_01` 和 `sale_02` 具有相同的表结构如下：
 
@@ -51,7 +52,7 @@ CREATE TABLE `sale_01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-其中`id`列为主键，`sid`列为分片键，具有全局唯一性。`id`列具有自增属性，多个分表范围重复会引发数据冲突。`sid`可以保证全局满足唯一索引，因此可以按照参考[去掉自增主键的主键属性](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#去掉自增主键的主键属性)中介绍的操作绕过`id`列。在下游创建`sale`表时移除`id`列的唯一键属性
+其中`id`列为主键，`sid`列为分片键，具有全局唯一性。`id`列具有自增属性，多个分表范围重复会引发数据冲突。`sid`可以保证全局满足唯一索引，因此可以按照参考[去掉自增主键的主键属性](/dm/shard-merge-best-practices.md#去掉自增主键的主键属性)中介绍的操作绕过`id`列。在下游创建`sale`表时移除`id`列的唯一键属性
 
 ```sql
 CREATE TABLE `sale` (
@@ -114,7 +115,7 @@ name: "shard_merge"
 # all： 全量 + binlog 迁移
 task-mode: all
 # 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
-# 详细信息可参考：https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge
+# 详细信息可参考：https://docs.pingcap.com/zh/tidb/dev/feature-shard-merge/
 shard-mode: "pessimistic"
 meta-schema: "dm_meta"                          # 将在下游数据库创建 schema 用于存放元数据
 ignore-checking-items: ["auto_increment_ID"]    # 本示例中上游存在自增主键，因此需要忽略掉该检查项
@@ -164,14 +165,14 @@ block-allow-list:
 
 ```
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
 若想了解配置文件中`routes`，`filters`等更多用法，请参考：
 
-- [Table routing](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#table-routing)
-- [Block & Allow Table Lists](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#block--allow-table-lists)
-- [Binlog event filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/key-features#binlog-event-filter)
-- [Binlog expression filter](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-expression-filter)
+- [Table routing](/dm/dm-key-features.md#table-routing)
+- [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
+- [如何过滤 binlog 事件](/filter-binlog-event.md)
+- [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)
 
 ## 第 3 步： 启动任务
 
@@ -198,7 +199,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 |--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
 |start-task|命令用于创建数据迁移任务|
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)
 
 ## 第 4 步： 查看任务状态
 
@@ -210,7 +211,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)
+关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)
 
 ## 第 5 步： 监控任务与查看日志(可选)
 
@@ -229,8 +230,8 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 ## 探索更多
 
-- [分库分表合并中的悲观/乐观模式](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge)
-- [分表合并数据迁移最佳实践](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices)
-- [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling)
-- [性能问题及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/handle-performance-issues)
-- [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+- [分库分表合并中的悲观/乐观模式](/dm/feature-shard-merge.md)
+- [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
+- [故障及处理方法](/dm/dm-error-handling.md)
+- [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
+- [常见问题](/dm/dm-faq.md)
