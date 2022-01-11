@@ -127,7 +127,7 @@ S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为�
 
 > **注意**
 > 
-> 使用 Azure Blob Storage 的时候必须设置 `send-credentials-to-tikv = true`（即默认情况下），否则会备份失败。
+> 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
 
 ## 命令行参数
 
