@@ -60,7 +60,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 * 在系统变量 [`character_set_client`](/system-variables/#character_set_client) 和 [`character_set_connection`](/system-variables/#character_set_connection) 不同时设置为 `gbk` 的情况下，TiDB 处理非法字符的方式与 MySQL 一致。
 * 在 `character_set_client` 和 `character_set_connection` 同时为 `gbk` 的情况下， TiDB 处理非法字符的方式与 MySQL 有所区别。
 
-      例如，当 `SET NAMES gbk` 时，如果分别在 MySQL 和 TiDB 上通过 `CREATE TABLE gbk_table(a VARCHAR(32) CHARACTER SET gbk)` 语句建表，然后按照下表中的 SQL 语句进行操作，就能看到具体的区别。
+例如，当 `SET NAMES gbk` 时，如果分别在 MySQL 和 TiDB 上通过 `CREATE TABLE gbk_table(a VARCHAR(32) CHARACTER SET gbk)` 语句建表，然后按照下表中的 SQL 语句进行操作，就能看到具体的区别。
 
 | 数据库    |    如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES`                                               | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和  `STRICT_TRANS_TABLES`                                                                     |
 |-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
