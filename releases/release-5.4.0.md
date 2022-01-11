@@ -212,9 +212,12 @@ TiDB 版本：5.4.0
     - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态
     - relay log 的存放路径移至 DM-worker 配置文件
 
-- **在 DM 中优化排序规则的处理方式**
+- **在 DM 中优化[排序规则](/character-set-and-collation.md)的处理方式**
 
-    增加 `collation_compatible` 开关，支持 `strict` 和 `loose`（默认）两种模式。如果对排序规则要求不严格，允许排序规则在上下游不一致，使用默认的 `loose` 模式可使同步正常进行；如果对排序规则要求严格，排序规则在上下游不一致会导致业务报错，则可以使用 `strict` 模式。
+    增加 collation_compatible 开关，支持 strict 和 loose（默认）两种模式：
+
+    - 如果对排序规则要求不严格，允许上下游查询结果排序规则不一致，使用默认的 loose 模式可以避免报错。
+    - 如果对排序规则要求严格，业务要求排序规则必须一致，则应当使用 strict 模式。但如果下游不支持上游缺省的 collation，同步可能会报错。
 
 - **在 DM 中优化 `transfer source`，支持平滑执行同步任务**
 
