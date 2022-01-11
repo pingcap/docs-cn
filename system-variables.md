@@ -772,6 +772,14 @@ Constraint checking is always performed in place for pessimistic transactions (d
 >
 > Only the default value of `OFF` can be considered safe. Setting `tidb_enable_noop_functions=1` might lead to unexpected behaviors in your application, because it permits TiDB to ignore certain syntax without providing an error. For example, the syntax `START TRANSACTION READ ONLY` is permitted, but the transaction remains in read-write mode.
 
+### tidb_enable_paging <span class="version-mark">New in v5.4.0</span>
+
+- Scope: SESSION | GLOBAL
+- Default value: `OFF`
+- This variable controls whether to use the method of paging to send coprocessor requests in `IndexLookUp` operator.
+- User scenarios: For read queries that use `IndexLookup` and `Limit` and that `Limit` cannot be pushed down to `IndexScan`, there might be high latency for the read queries and high CPU usage for TiKV's `unified read pool`. In such cases, because the `Limit` operator only requires a small set of data, if you set `tidb_enable_paging` to `ON`, TiDB processes less data, which reduces query latency and resource consumption.
+- When `tidb_enable_paging` is enabled, for the `IndexLookUp` requests with `Limit` that cannot be pushed down and are fewer than `960`, TiDB uses the method of paging to send coprocessor requests. The fewer `Limit`, the more obvious the optimization.
+
 ### tidb_enable_parallel_apply <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
