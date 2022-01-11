@@ -87,13 +87,7 @@ TiDB 版本：5.4.0
 
     在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。为了更好的支持中文用户，TiDB 从 v5.4.0 版本开始支持 GBK 字符集，同时支持 `gbk_bin` 和 `gbk_chinese_ci` 两种排序规则（在使用这两种排序规则前需要开启 TiDB 配置项 `new_collations_enabled_on_first_bootstrap`）。
 
-    在使用 GBK 字符集时，请注意以下兼容性限制：
-
-    - TiFlash 暂不支持 GBK 字符。
-    - TiCDC 暂不支持 GBK 字符。
-    - 如果 `character_set_client` 和 `character_set_connection` 都是 `gbk` 时，处理非法 GBK 字符与 MySQL 存在兼容性问题。
-    - TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
-    - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。
+在使用 GBK 字符集时，需要注意兼容性限制，详情参考[字符集和排序 - GBK](/character-set-gbk.md)。
 
 ### 安全
 
@@ -169,10 +163,6 @@ TiDB 版本：5.4.0
     从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性（默认关闭），支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
     
     [用户文档](/statistics.md#统计信息的加载)
-
-- **优化 RocksDB 在大数据量下的锁争用问题**
-
-    RocksDB 依赖全局锁来维护多版本的文件信息，并当销毁读快照时对过期文件进行清理。在文件数较多且读写频繁的场景下，这一操作显著影响前台延迟。本版本针对这一问题进行优化，详见 [rocksdb#250](https://github.com/tikv/rocksdb/pull/250)。
 
 ### 稳定性
 
