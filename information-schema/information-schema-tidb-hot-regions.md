@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `TIDB_HOT_REGIONS`。
 
 # TIDB_HOT_REGIONS
 
-`TIDB_HOT_REGIONS` 表提供了关于当前热点 Region 的相关信息。历史热点信息可以在 `[TIDB_HOT_REGIONS_HISTORY](/information-schema/information-schema-tidb-hot-regions-history.md)` 表查看。
+`TIDB_HOT_REGIONS` 表提供了关于当前热点 Region 的相关信息。历史热点信息可以在 [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md) 表查看。
 
 {{< copyable "sql" >}}
 
