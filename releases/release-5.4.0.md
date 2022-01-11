@@ -95,7 +95,7 @@ TiDB 版本：5.4.0
     - TiCDC 暂不支持 GBK 字符。
     - 如果 `character_set_client` 和 `character_set_connection` 都是 `gbk` 时，处理非法 GBK 字符与 MySQL 存在兼容性问题。
     - TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
-    - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.3.0 之前不支持恢复 `charset=GBK` 的表。
+    - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。
 
 ### 安全
 
