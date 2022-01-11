@@ -148,11 +148,9 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 - 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
 
-    1. 设置系统变量 `tidb_enable_column_tracking` 的值为 `1` 以允许 TiDB 记录各表的 `PREDICATE COLUMNS` 信息。
+    1. 设置系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值为 `ON` 开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
 
-        设置后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file/#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。
-
-        如果你不再需要 `PREDICATE COLUMNS` 信息时，可以将 `tidb_enable_column_tracking` 设置为 `0` 清除记录信息。
+        开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file/#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。
 
     2. 在业务的查询模式稳定以后，使用以下语法收集 `PREDICATE COLUMNS` 的统计信息。
 
