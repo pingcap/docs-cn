@@ -1537,12 +1537,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：SESSION
-- 默认值：`0`
-- 这个变量用于设置当前会话期待读取的历史数据的所处时刻。设置后，TiDB 会从所设置的值的秒前至当前时间的范围内选出一个最合适的时间戳。随后，所有的读操作都会依据这个时间戳来读取数据。比如，当设置该值为 `-5` 时，TiDB 会从 5 秒前至当前时间的范围内选取一个合适的值，将其用作为时间戳。
-
 ### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1570,3 +1564,9 @@ set tidb_slow_log_threshold = 200;
 - 作用域：GLOBAL
 - 默认值：`false`
 - 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`false`），还是退回使用 pseudo 的统计信息（`true`）。
+
+### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`0`
+- 这个变量用于设置当前会话期待读取的历史数据的所处时刻。设置后，TiDB 会从所设置的值的秒前至当前时间的范围内选出一个尽可能新的时间戳。随后，所有的读操作都会依据这个时间戳来读取数据。比如，当设置该值为 `-5` 时，TiDB 会从 5 秒前至当前时间的范围内选取一个尽可能新的值，将其用作为时间戳。
