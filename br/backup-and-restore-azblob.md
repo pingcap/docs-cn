@@ -139,41 +139,41 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 当使用 Azure AD 备份恢复时，需要再 BR 运行环境和 TiKV 运行环境中配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 
-当使用 TiUP 启动的集群时，TiKV 会使用 systemd 服务。以下示例提供如何为 TiKV 配置上述的三个环境变量作为参数：
+- 当使用 TiUP 启动的集群时，TiKV 会使用 systemd 服务。以下示例提供如何为 TiKV 配置上述的三个环境变量作为参数：
 
-> **注意**
-> 
-> 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用方法二进行备份恢复。
+    > **注意**
+    > 
+    > 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用[方法二](#方法二使用访问密钥备份恢复简易]进行备份恢复。
 
-1. 假设该节点上 tikv 端口为 24000（即 systemd 服务名为 tikv-24000）
+    1. 假设该节点上 tikv 端口为 24000（即 systemd 服务名为 tikv-24000）
+
+        ```
+        systemctl edit tikv-24000
+        ```
+
+    2. 填入环境变量信息
+
+        ```
+        [Service]
+        Environment="AZURE_CLIENT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+        Environment="AZURE_TENANT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+        Environment="AZURE_CLIENT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        ```
+
+    3. 重新加载配置并重启 TiKV
+
+        ```
+        systemctl daemon-reload
+        systemctl restart tikv-24000
+        ```
+
+- 为命令行启动的 TiKV 和 BR 配置 Azure AD 的信息，只需要确定运行环境中存在 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。通过运行下列命令行，可以确认 BR 和 TiKV 运行环境中是否存在这三个环境变量：
 
     ```
-    systemctl edit tikv-24000
+    echo $AZURE_CLIENT_ID
+    echo $AZURE_TENANT_ID
+    echo $AZURE_CLIENT_SECRET
     ```
-
-2. 填入环境变量信息
-
-    ```
-    [Service]
-    Environment="AZURE_CLIENT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-    Environment="AZURE_TENANT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
-    Environment="AZURE_CLIENT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    ```
-
-3. 重新加载配置并重启 TiKV
-
-    ```
-    systemctl daemon-reload
-    systemctl restart tikv-24000
-    ```
-
-为命令行启动的 TiKV 和 BR 配置 Azure AD 信息只需要在运行环境中存在 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 即可。
-
-```
-echo $AZURE_CLIENT_ID
-echo $AZURE_TENANT_ID
-echo $AZURE_CLIENT_SECRET
-```
 
 ## 兼容信息
 
