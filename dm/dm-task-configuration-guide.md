@@ -1,6 +1,5 @@
 ---
 title: DM 数据迁移任务配置向导
-aliases: ['/zh/tidb-data-migration/dev/task-configuration-guide/']
 ---
 
 # 数据迁移任务配置向导

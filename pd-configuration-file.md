@@ -123,12 +123,14 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 ### `level`
 
-+ 日志等级，可指定为 "DEBUG"，"INFO"，"WARNING"，"ERROR"，"CRITICAL"。
-+ 默认值："INFO"
++ 指定日志的输出级别。
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
++ 默认值："info"
 
 ### `format`
 
-+ 日志格式，可指定为"text"，"json"，"console"。
++ 日志格式。
++ 可选值："text"，"json"
 + 默认值："text"
 
 ### `disable-timestamp`
@@ -274,6 +276,20 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 是否使用 Joint Consensus 进行副本调度。关闭该特性时，PD 将采用一次调度一个副本的方式进行调度。
 + 默认值：true
+
+### `hot-regions-write-interval` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+* 设置 PD 存储 Hot Region 信息时间间隔。
+* 默认值：10m
+
+> 注意：
+>
+> Hot Region 的信息一般 3 分钟更新一次。如果设置时间间隔小于 3 分钟，中间部分的更新可能没有意义。
+
+### `hot-regions-reserved-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+* 设置 PD 保留的 Hot Region 信息的最长时间。单位为天。
+* 默认值: 7
 
 ## replication
 

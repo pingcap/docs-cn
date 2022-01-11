@@ -8,7 +8,9 @@ aliases: ['/docs-cn/tidb-data-migration/dev/relay-log/']
 
 DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个索引文件组成。这些有编号的文件包含了描述数据库更改的事件。索引文件包含所有使用过的 relay log 的文件名。
 
-在启用 relay log 功能后，DM-worker 会自动将上游 binlog 迁移到本地配置目录（若使用 TiUP 部署 DM，则迁移目录默认为 `<deploy_dir> / <relay_log>`）。本地配置目录 `<relay_log>` 的默认值是 `relay-dir`，可在[上游数据库配置文件](/dm/dm-source-configuration-file.md)中进行修改）。DM-worker 在运行过程中，会将上游 binlog 实时迁移到本地文件。DM-worker 的 sync 处理单元会实时读取本地 relay log 的 binlog 事件，将这些事件转换为 SQL 语句，再将 SQL 语句迁移到下游数据库。
+在启用 relay log 功能后，DM-worker 会自动将上游 binlog 迁移到本地配置目录（若使用 TiUP 部署 DM，则迁移目录默认为 `<deploy_dir> / <relay_log>`）。本地配置目录 `<relay_log>` 的默认值是 `relay-dir`，可在[上游数据库配置文件](/dm/dm-source-configuration-file.md)中进行修改。自 v5.4.0 版本起，你可以在 DM-worker 配置文件中通过 `relay-dir` 配置本地配置目录，其优先级高于上游数据库的配置文件。
+
+DM-worker 在运行过程中，会将上游 binlog 实时迁移到本地文件。DM-worker 的 sync 处理单元会实时读取本地 relay log 的 binlog 事件，将这些事件转换为 SQL 语句，再将 SQL 语句迁移到下游数据库。
 
 > **注意：**
 >
@@ -95,17 +97,39 @@ Relay log 迁移的起始位置由如下规则决定：
 ## 启动、停止 relay log
 
 <SimpleTab>
-<div label="v2.0.2 及之后的版本">
+
+<div label="v5.4.0 及之后的版本">
+
+在 v5.4.0 及之后的版本中，你可以通过将 `enable-relay` 设为 `true` 开启 relay log。自 v5.4.0 起，DM-worker 在绑定上游数据源时，会检查上游数据源配置中的 `enable-relay` 项。如果 `enable-relay` 为 `true`，则为该数据源启用 relay log 功能。
+
+具体配置方式参见[上游数据源配置文件介绍](/dm/dm-source-configuration-file.md)
+    
+除此以外，你也可以通过 `start-relay` 或 `stop-relay` 命令动态调整数据源的 `enable-relay` 并即时开启或关闭 relay log。
+    
+{{< copyable "shell-regular" >}}
+
+```bash
+» start-relay -s mysql-replica-01
+```
+
+```
+{
+    "result": true,
+    "msg": ""
+}
+```
+
+</div> 
+    
+<div label="v2.0.2（包含）到 v5.3.0（包含）">
 
 > **注意：**
 > 
-> 自 v2.0.2 起，上游数据源配置中的 `enable-relay` 项已经失效。在[加载数据源配置](/dm/dm-manage-source.md#数据源操作)时，如果发现配置中的 `enable-relay` 项为 `true`，DM 会给出如下信息提示：
+> 在 v2.0.2 及之后的 v2.0 版本，以及在 v5.3.0 版本中，上游数据源配置中的 `enable-relay` 项失效，你只能通过`start-relay` 和 `stop-relay`命令开启和关闭 relay log。[加载数据源配置](/dm/dm-manage-source.md#数据源操作)时，如果 DM 发现配置中的 `enable-relay` 项为 `true`，会给出如下信息提示：
 > 
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
-
-在 v2.0.2 及之后的版本中，`start-relay` 与 `stop-relay` 命令分别用于启动及停止 relay log 的拉取。
 
 `start-relay` 命令可以配置一个或多个 DM-worker 为指定数据源迁移 relay log，但只能指定空闲或者已绑定了该上游数据源的 DM-worker。使用示例如下：
 

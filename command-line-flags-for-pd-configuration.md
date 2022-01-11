@@ -61,13 +61,13 @@ PD 可以通过命令行参数或环境变量配置。
 
 + Log 级别。
 + 默认："info"
-+ 我们能选择 debug, info, warn, error 或者 fatal。
++ 可选："debug"，"info"，"warn"，"error"，"fatal"
 
 ## `--log-file`
 
 + Log 文件。
 + 默认：""
-+ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面，在每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份。
++ 如果没设置这个参数，log 会默认输出到 "stderr"，如果设置了，log 就会输出到对应的文件里面。
 
 ## `--log-rotate`
 
