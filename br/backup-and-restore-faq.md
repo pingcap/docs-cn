@@ -15,6 +15,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 从 TiDB v5.4.0 起，TiKV 的备份新增了自动调节功能。对于 v5.4.0 及以上版本，该功能会默认开启。当集群负载较高时，该功能会自动限制备份任务使用的资源，从而减少备份对在线集群的性能造成的影响。如需了解关于自动调节功能的更多信息，请参见[自动调节](br/br-auto-tune.md)。
 
 TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能。因此，在开启或关闭该功能时，你不需要重启集群。以下为该功能的具体使用方法：
+
 - 关闭功能：把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `false`。
 - 开启功能：把 `backup.enable-auto-tune` 设置为 `true`。对于 v5.4.0 以下的集群，当 TiDB 升级到 v5.4.0 及以上版本后，自动调节功能会默认关闭。这时，你可以通过该方式手动开启此功能。
 
