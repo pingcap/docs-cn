@@ -15,6 +15,12 @@ summary: TiDB 升级与升级后的常见问题与解决办法。
 
 滚动升级 TiDB 服务，滚动升级期间不影响业务运行。需要配置最小集群拓扑 (TiDB \* 2、PD \* 3、TiKV \* 3)，如果集群环境中有 Pump 和 Drainer 服务，建议先停止 Drainer，然后滚动升级（升级 TiDB 时会升级 Pump）。
 
+### 集群在执行 DDL 请求期间可以进行升级操作吗？
+
+集群执行 `ADD INDEX` 等 DDL 请求期间，**请勿进行**升级操作。如需升级，须取消该 DDL 语句后再进行升级。
+
+另外，在升级 TiDB 集群的过程中**请勿执行** `ADD INDEX` 等 DDL 请求，否则可能会出现行为未定义的问题。
+
 ### Binary 如何升级？
 
 Binary 不是建议的安装方式，对升级支持也不友好，建议换成 [TiUP 部署](/production-deployment-using-tiup.md)。
