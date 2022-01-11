@@ -59,58 +59,58 @@ DESC tidb_hot_regions_history;
 
 > **注意：**
 >
-> + `TIDB_HOT_REGIONS_HISTORY` 表的 `UPDATE_TIME`、`REGION_ID`、`STORE_ID`、`PEER_ID`、`IS_LEARNER`、`IS_LEADER`、`TYPE` 字段会下推到 PD 服务器执行。所以为了降低使用该表的开销，必须指定搜索时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
+> `TIDB_HOT_REGIONS_HISTORY` 表的 `UPDATE_TIME`、`REGION_ID`、`STORE_ID`、`PEER_ID`、`IS_LEARNER`、`IS_LEADER`、`TYPE` 字段会下推到 PD 服务器执行。所以为了降低使用该表的开销，必须指定搜索时间范围，然后尽可能地指定更多的条件。例如 `select * from tidb_hot_regions_history where store_id = 11 and update_time > '2020-05-18 20:40:00' and update_time < '2020-05-18 21:40:00' and type='write'`。
 
 ## 常见使用场景
 
 * 查询一段时间内的所有热点 Regions。将以下语句中的 `update_time` 替换为实际所需的时间即可。
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-  ```sql
-  SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00';
-  ```
+    ```sql
+    SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00';
+    ```
 
-  > **注意：**
-  >
-  > `UPDATE_TIME` 同样支持 Unix 时间戳。例如: `update_time >TIMESTAMP('2012-08-18 21:40:00')` 或 `update_time > FROM_UNIXTIME(1629294000.000)`。
+    > **注意：**
+    >
+    > `UPDATE_TIME` 同样支持 Unix 时间戳。例如: `update_time >TIMESTAMP('2012-08-18 21:40:00')` 或 `update_time > FROM_UNIXTIME(1629294000.000)`。
 
-* 查询某张表指定时间内的热点 Regions，替换 update_time、table_name 即可。
+* 查询某张表指定时间内的热点 Regions，替换 `update_time`、`table_name` 即可。
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-  ```SQL
-  SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and TABLE_NAME = 'table_name';
-  ```
+    ```SQL
+    SELECT * FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and TABLE_NAME = 'table_name';
+    ```
 
-* 查询某张表指定时间内热点 Regions 的分布，替换 update_time、 table_name 即可。
+* 查询某张表指定时间内热点 Regions 的分布，替换 `update_time`、`table_name` 即可。
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-  ```sql
-  SELECT count(region_id) cnt, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' GROUP BY STORE_ID ORDER BY cnt DESC;
-  ```
+    ```sql
+    SELECT count(region_id) cnt, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' GROUP BY STORE_ID ORDER BY cnt DESC;
+    ```
 
-* 查询某张表指定时间内热点 Leader Regions 的分布，替换 update_time、table_name 即可。
+* 查询某张表指定时间内热点 Leader Regions 的分布，替换 `update_time`、`table_name` 即可。
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-  ```sql
-  SELECT count(region_id) cnt, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' and is_leader=1 GROUP BY STORE_ID ORDER BY cnt DESC;
-  ```
+    ```sql
+    SELECT count(region_id) cnt, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' and is_leader=1 GROUP BY STORE_ID ORDER BY cnt DESC;
+    ```
 
-* 查询某张表指定时间内热点 Index Regions 的分布，替换 update_time、table_name 即可。
+* 查询某张表指定时间内热点 Index Regions 的分布，替换 `update_time`、`table_name` 即可。
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-  ```sql
-  SELECT count(region_id) cnt, index_name, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' group by index_name, store_id order by index_name,cnt desc;
-  ```
+    ```sql
+    SELECT count(region_id) cnt, index_name, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2021-09-19 00:00:00' and table_name = 'table_name' group by index_name, store_id order by index_name,cnt desc;
+    ```
 
-* 查询某张表指定时间内热点 Index Leader Regions 的分布，替换 update_time、table_name 即可。
+* 查询某张表指定时间内热点 Index Leader Regions 的分布，替换 `update_time`、`table_name` 即可。
 
-  {{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-  ```sql
-  SELECT count(region_id) cnt, index_name, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2022-09-19 00:00:00' and table_name = 'table_name' and is_leader=1 group by index_name, store_id order by index_name,cnt desc;
-  ```
+    ```sql
+    SELECT count(region_id) cnt, index_name, store_id FROM INFORMATION_SCHEMA.TIDB_HOT_REGIONS_HISTORY WHERE update_time >'2021-08-18 21:40:00' and update_time <'2022-09-19 00:00:00' and table_name = 'table_name' and is_leader=1 group by index_name, store_id order by index_name,cnt desc;
+    ```
