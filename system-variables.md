@@ -1244,7 +1244,7 @@ explain select * from t where age=5;
 ### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 默认值：`true`
+- 默认值：`ON`
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1410,8 +1410,8 @@ set tidb_slow_log_threshold = 200;
 > 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
 
 - 作用域：GLOBAL
-- 默认值：`false`
-- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`false`），还是退回使用 pseudo 的统计信息（`true`）。
+- 默认值：`OFF`
+- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`OFF`），还是退回使用 pseudo 的统计信息（`ON`）。
 
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
 

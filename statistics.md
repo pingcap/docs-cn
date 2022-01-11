@@ -175,7 +175,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
     ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-- 如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为`true` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+- 如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为 `ON` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
     开启 ANALYZE 配置持久化特性后：
 
@@ -206,7 +206,7 @@ SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
 {{< copyable "sql" >}}
 
 ```sql
-SET GLOBAL tidb_enable_column_tracking = 1;
+SET GLOBAL tidb_enable_column_tracking = ON;
 Query OK, 0 rows affected (0.00 sec)
 
 CREATE TABLE t (a INT, b INT, c INT, d INT, INDEX idx_c_d(c, d));
@@ -248,7 +248,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_ana
 {{< copyable "sql" >}}
 
 ```sql
-ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH|SAMPLES]|[WITH FLOATNUM SAMPLERATE];
+ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
 ```
 
 当 IndexNameList 为空时，该语法将收集 TableName 中所有索引的统计信息。
@@ -363,13 +363,13 @@ TiDB 支持持久化的配置项包括：
 
 #### 开启 ANALYZE 配置持久化功能
 
-`ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+`ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = 1`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
 
 多次手动执行 `ANALYZE` 语句并指定持久化配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
 
 #### 关闭 ANALYZE 配置持久化功能
 
-要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options = false`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置 `tidb_analyze_version = 1` 同样会达到关闭配置持久化的效果。
+要关闭 `ANALYZE` 配置持久化功能，请设置系统变量 `tidb_persist_analyze_options` 为 `OFF`。由于 `ANALYZE` 配置持久化功能在 `tidb_analyze_version = 1` 的情况下不适用，因此设置 `tidb_analyze_version = 1` 同样会达到关闭配置持久化的效果。
 
 关闭 `ANALYZE` 配置持久化功能后，已持久化的配置记录不会被清除。因此，当再次开启该功能时，TiDB 会继续使用之前记录的持久化配置收集统计信息。
 
@@ -575,7 +575,7 @@ DROP STATS TableName;
 
 统计信息同步加载特性默认关闭。要开启该特性，请将系统变量 `tidb_stats_load_sync_wait` 的值设置为 SQL 优化等待加载列的完整统计信息的超时时间（单位为毫秒）。该变量默认值为 0，代表未开启。
 
-开启该特性后，你可以通过修改系统变量 `tidb_stats_load_pseudo_timeout` 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `false`，代表超时后 SQL 执行失败。当设置该变量为 `true` 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch，而是退回使用 pseudo 的统计信息。
+开启该特性后，你可以通过修改系统变量 `tidb_stats_load_pseudo_timeout` 的值控制 SQL 优化等待超时后的行为。该变量默认值为 `OFF`，代表超时后 SQL 执行失败。当设置该变量为 `ON` 时，整个 SQL 优化过程不会使用任何列上的直方图、TopN 或 CMSketch，而是退回使用 pseudo 的统计信息。
 
 ## 统计信息的导入导出
 
