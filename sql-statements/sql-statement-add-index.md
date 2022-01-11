@@ -10,8 +10,8 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-add-index/','/docs-cn/dev/r
 
 > **警告：**
 >
-> - 在升级 TiDB 集群的过程中请勿执行 `ADD INDEX` 等 DDL 请求，否则可能会出现行为未定义的问题。
-> - 集群执行 `ADD INDEX` 等 DDL 请求期间请勿进行升级操作。如需升级，须取消该 DDL 语句后再进行升级。
+> - 在升级 TiDB 集群的过程中，**请勿执行** `ADD INDEX` 等 DDL 请求，否则可能会出现行为未定义的问题。
+> - 集群执行 `ADD INDEX` 等 DDL 请求期间，**请勿进行**升级操作。如需升级，须取消该 DDL 语句后再进行升级。
 
 ## 语法图
 
