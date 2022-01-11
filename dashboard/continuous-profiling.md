@@ -41,6 +41,10 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
     ![启用功能](/media/dashboard/dashboard-conprof-start.png)
 
+### 使用 TiDB Operator 部署的集群
+
+详见 TiDB Operator 的 [访问 TiDB Dashboard 文档](/tidb-in-kubernetes/dev/access-dashboard/)
+
 ## 访问页面
 
 启用持续性能分析功能后，你可以通过以下任一方式访问实例性能分析页面：
