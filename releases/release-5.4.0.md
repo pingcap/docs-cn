@@ -261,7 +261,7 @@ TiDB 版本：5.4.0
 
     - Coprocessor 支持分页 API 进行流式处理 [#11448](https://github.com/tikv/tikv/issues/11448)
     - 支持 `read-through-lock`，使读操作不需要等待清理 secondary lock [#11402](https://github.com/tikv/tikv/issues/11402)
-    - 增加了磁盘保护机制，尽量避免磁盘空间耗尽导致 panic [#10960](https://github.com/tikv/tikv/issues/10960) [#10959](https://github.com/tikv/tikv/issues/10959) [#10926](https://github.com/tikv/tikv/issues/10926) [#10925](https://github.com/tikv/tikv/issues/10925) [#10895](https://github.com/tikv/tikv/issues/10895) [#10894](https://github.com/tikv/tikv/issues/10894) [#10868](https://github.com/tikv/tikv/issues/10868) [#10840](https://github.com/tikv/tikv/issues/10840) [#10839](https://github.com/tikv/tikv/issues/10839) [#10819](https://github.com/tikv/tikv/issues/10819) [#10801](https://github.com/tikv/tikv/issues/10801)
+    - 增加了磁盘保护机制，尽量避免磁盘空间耗尽导致 panic [#10537](https://github.com/tikv/tikv/issues/10537)
     - 日志支持存档和轮替 [#11651](https://github.com/tikv/tikv/issues/11651)
     - 减少 Raft 客户端的系统调用并提高 CPU 效率 [#11309](https://github.com/tikv/tikv/issues/11309)
     - Coprocessor 支持下推 substring 到 TiKV [#11495](https://github.com/tikv/tikv/issues/11495)
