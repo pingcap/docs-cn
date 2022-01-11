@@ -311,7 +311,6 @@ TiDB 版本：5.4.0
     - 修复并发的列类型变更导致 schema 与数据不一致的问题 [#31048](https://github.com/pingcap/tidb/issues/31048)
     - 修复当有子查询时 IndexMerge 的查询结果错误的问题 [#30913](https://github.com/pingcap/tidb/issues/30913)
     - 修复当客户端设置过大的 FetchSize 后 TiDB 执行会 panic 的问题 [#30896](https://github.com/pingcap/tidb/issues/30896)
-
     - 修复 LEFT JOIN 有时会被错误地转换成 INNER JOIN 的问题 [#20510](https://github.com/pingcap/tidb/issues/20510)
     - 修复当 `CASE-WHEN` 表达式与 collation 同时使用时可能 panic 的问题 [#30245](https://github.com/pingcap/tidb/issues/30245)
     - 修复当 `IN` 的值中带有二进制常量时查询结果错误的问题 [#31261](https://github.com/pingcap/tidb/issues/31261)
