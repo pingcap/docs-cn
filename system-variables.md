@@ -332,7 +332,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_backoff_lock_fast`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`100`
+- 默认值：`10`
 - 范围：`[1, 2147483647]`
 - 这个变量用来设置读请求遇到锁的 backoff 时间。
 
