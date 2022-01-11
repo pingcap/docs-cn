@@ -163,7 +163,6 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     systemctl restart tikv-24000
     ```
 
-
 ## 兼容信息
 
 该功能**仅兼容** TiDB v5.4.0及后续的版本。
