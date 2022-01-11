@@ -102,14 +102,11 @@ NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以�
     若低于 v1.9.0，需要先升级 TiUP Cluster。
 
 2. 升级 TiUP 和 TiUP Cluster 版本至最新。
-
-    - 升级 TiUP 和 TiUP Cluster：
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup update --all
-        ```
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    tiup update --all
+    ```
 
 #### 第 2 步：重启 Prometheus 节点
 
