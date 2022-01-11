@@ -212,6 +212,10 @@ TiDB 版本：5.4.0
 
     为 TiDB Lightning 增加 `incremental-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
 
+- **为 TiDB Lightning 增加新参数，用于在并行导入模式下保存各个 TiDB Lightning 实例元信息的 schema 名字 **
+
+     为 TiDB Lightning 增加 `meta-schema-name` 参数。在并行导入模式下，该参数用于在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认值为 "lightning_metadata"。对于参与同一批并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入数据的正确性。
+
 - **在 TiDB Lightning 中添加重复数据的检测（实验特性）**
 
     在 `backend=local` 模式下，数据导入完成之前 TiDB Lightning 会输出冲突数据，然后从数据库中删除这些冲突数据。用户可以在导入完成后解析冲突数据，并根据业务规则选择适合的数据进行插入。建议根据冲突数据清洗上游数据源，避免在后续增量数据迁移阶段遇到冲突数据而造成数据不一致。
