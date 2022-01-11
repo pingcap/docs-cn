@@ -47,7 +47,7 @@ show config;
 show config where type='tidb'
 show config where instance in (...)
 show config where name like '%log%'
-show config where type='tikv' and name='log-level'
+show config where type='tikv' and name='log.level'
 ```
 
 ### 在线修改 TiKV 配置
@@ -153,6 +153,8 @@ show warnings;
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
+| raftstore.apply-pool-size | apply 线程池大小 |
+| raftstore.store-pool-size | store 线程池大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
@@ -169,6 +171,7 @@ show warnings;
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
+| {db-name}.max-background-flushes | RocksDB flush 线程个数 |
 | {db-name}.max-open-files | RocksDB 可以打开的文件总数 |
 | {db-name}.compaction-readahead-size | Compaction 时候 readahead 的大小 |
 | {db-name}.bytes-per-sync | 异步同步的限速速率 |
