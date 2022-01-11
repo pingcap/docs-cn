@@ -64,8 +64,8 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 | 数据库    |    如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES`                                               | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和  `STRICT_TRANS_TABLES`                                                                     |
 |-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
-| MySQL | `SELECT HEX('一a');` <br> `e4b88061`<br><br>`INSERT INTO gbk_table values('一a');`<br> `Incorrect Error`       | `SELECT HEX('一a');` <br> `e4b88061`<br><br>`INSERT INTO gbk_table VALUES('一a');`<br>`SELECT HEX(a) FROM gbk_table;`<br> `e4b8` |
-| TiDB  | `SELECT HEX('一a');` <br> `Incorrect Error`<br><br>`INSERT INTO gbk_table VALUES('一a');`<br> `Incorrect Error` | `SELECT HEX('一a');` <br> `e4b83f`<br><br>`INSERT INTO gbk_table VALUES('一a');`<br>`SELECT HEX(a) FROM gbk_table;`<br> `e4b83f`  |
+| MySQL | `SELECT HEX('一a');` <br /> `e4b88061`<br /><br />`INSERT INTO gbk_table values('一a');`<br /> `Incorrect Error`       | `SELECT HEX('一a');` <br /> `e4b88061`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br />`SELECT HEX(a) FROM gbk_table;`<br /> `e4b8` |
+| TiDB  | `SELECT HEX('一a');` <br /> `Incorrect Error`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br /> `Incorrect Error` | `SELECT HEX('一a');` <br /> `e4b83f`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br />`SELECT HEX(a) FROM gbk_table;`<br /> `e4b83f`  |
 
 说明：该表中 `HEX('一a')` 转换为十六进制的真实结果为 `0xe4b88061`。
 
