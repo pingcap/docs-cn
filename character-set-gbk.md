@@ -65,7 +65,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 | 数据库    |    如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES`                                               | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和  `STRICT_TRANS_TABLES`                                                                     |
 |-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | MySQL | `SELECT HEX('一a');` (0xe4b88061)<br> e4b88061<br><br>`INSERT INTO gbk_table values('一a');`<br> Incorrect Error       | `SELECT HEX('一a');` (0xe4b88061)<br> e4b88061<br><br>`INSERT INTO gbk_table VALUES('一a');`<br>`SELECT HEX(a) FROM gbk_table;`<br> e4b8 |
-| TiDB  | `select hex('一a');` (0xe4b88061)<br> Incorrect Error<br><br>`insert into gbk_table values('一a');`<br> Incorrect Error | `select hex('一a');` (0xe4b88061)<br> e4b83f<br><br>`insert into gbk_table values('一a');`<br>`select hex(a) from gbk_table;`<br> e4b83f  |
+| TiDB  | `SELECT HEX('一a');` (0xe4b88061)<br> Incorrect Error<br><br>`INSERT INTO gbk_table VALUES('一a');`<br> Incorrect Error | `SELECT HEX('一a');` (0xe4b88061)<br> e4b83f<br><br>`INSERT INTO gbk_table VALUES('一a');`<br>`SELECT HEX(a) FROM gbk_table;`<br> e4b83f  |
 
 ### 其它
 
