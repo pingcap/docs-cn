@@ -118,11 +118,11 @@ NgMonitoring 组件需要较高版本的部署工具支持（tiup 1.9.0 及以�
 
 在中控机上，通过 TiUP 对 Prometheus 节点进行 reload 操作。
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```shell
-    tiup cluster reload ${cluster-name} --role prometheus
-    ```
+```shell
+tiup cluster reload ${cluster-name} --role prometheus
+```
 
 #### 配置 TiDB Dashboard
 
