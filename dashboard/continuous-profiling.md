@@ -58,7 +58,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ![历史结果](/media/dashboard/dashboard-conprof-history.png)
 
-性能分析会在后台运行，刷新或退出当前页面不会终止已经运行的性能分析任务。
+性能分析在后台运行，刷新或退出当前页面不会终止正在运行的性能分析任务。
 
 ## 下载性能分析结果
 
