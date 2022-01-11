@@ -30,7 +30,6 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ![开始分析](/media/dashboard/dashboard-profiling-start.png)
 
-
 ## 查看性能分析状态
 
 开始性能分析后，可以看到实时性能分析状态和进度：
