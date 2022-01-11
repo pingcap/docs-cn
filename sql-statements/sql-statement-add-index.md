@@ -7,6 +7,11 @@ summary: TiDB 数据库中 ADD INDEX 的使用概况。
 
 `ALTER TABLE.. ADD INDEX` 语句用于在已有表中添加一个索引。在 TiDB 中，`ADD INDEX` 为在线操作，不会阻塞表中的数据读写。
 
+> **警告：**
+>
+> - 在升级 TiDB 集群的过程中请勿执行 `ADD INDEX` 等 DDL 请求，否则可能会出现行为未定义的问题。
+> - 集群执行 `ADD INDEX` 等 DDL 请求期间请勿进行升级操作。如需升级，需要取消该 DDL 语句后再进行升级。
+
 ## 语法图
 
 ```ebnf+diagram
