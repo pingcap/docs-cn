@@ -62,7 +62,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
       例如，当 `SET NAMES gbk` 时，如果分别在 MySQL 和 TiDB 上通过 `CREATE TABLE gbk_table(a VARCHAR(32) CHARACTER SET gbk)` 语句建表，然后按照下表中的 SQL 语句进行操作，就能看到具体的区别。
 
-| DB    |    如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES`                                               | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和  `STRICT_TRANS_TABLES`                                                                     |
+| 数据库    |    如果设置的 SQL 模式包含 `STRICT_ALL_TABLES` 或 `STRICT_TRANS_TABLES`                                               | 如果设置的 SQL 模式不包含 `STRICT_ALL_TABLES` 和  `STRICT_TRANS_TABLES`                                                                     |
 |-------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | MySQL | `select hex('一a');` (0xe4b88061)<br> e4b88061<br><br>`insert into gbk_table values('一a');`<br> Incorrect Error       | `select hex('一a');` (0xe4b88061)<br> e4b88061<br><br>`insert into gbk_table values('一a');`<br>`select hex(a) from gbk_table;`<br> e4b8 |
 | TiDB  | `select hex('一a');` (0xe4b88061)<br> Incorrect Error<br><br>`insert into gbk_table values('一a');`<br> Incorrect Error | `select hex('一a');` (0xe4b88061)<br> e4b83f<br><br>`insert into gbk_table values('一a');`<br>`select hex(a) from gbk_table;`<br> e4b83f  |
