@@ -35,6 +35,8 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 在 BR 运行环境和 TiKV 运行环境中，需要存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。当存在这三项变量时，BR 可以使用 Azure AD 访问 Azure Blob Storage 且不用配置 `account-key`。这种方式更安全，因此也推荐被使用。在这里，`$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_id`。
 
+如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，请参考[配置环境变量作为参数](#配置环境变量作为参数)
+
 #### 备份
 
 使用 Azure AD 进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
@@ -135,11 +137,13 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ### 配置环境变量作为参数
 
-由 TiUP 启动的集群中 TiKV 是 systemd 服务，例子展示如何为 TiKV 配置参数：
+当使用 Azure AD 备份恢复时，需要再 BR 运行环境和 TiKV 运行环境中配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
+
+当使用 TiUP 启动的集群时，TiKV 会使用 systemd 服务。以下示例提供如何为 TiKV 配置上述的三个环境变量作为参数：
 
 > **注意**
 > 
-> 需要重启 TiKV
+> 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用方法二进行备份恢复。
 
 1. 假设该节点上 tikv 端口为 24000（即 systemd 服务名为 tikv-24000）
 
@@ -162,6 +166,14 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     systemctl daemon-reload
     systemctl restart tikv-24000
     ```
+
+为命令行启动的 TiKV 和 BR 配置 Azure AD 信息只需要在运行环境中存在 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 即可。
+
+```
+echo $AZURE_CLIENT_ID
+echo $AZURE_TENANT_ID
+echo $AZURE_CLIENT_SECRET
+```
 
 ## 兼容信息
 
