@@ -11,7 +11,7 @@ summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与�
 
 从 TiDB v5.4.0 起，Backup & Restore (BR) 工具开始支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。
 
-该功能**仅兼容** TiDB v5.4.0及后续的版本。如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
+该功能**仅兼容** TiDB v5.4.0 及后续的版本。如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
 
 ## 使用场景
 
@@ -69,7 +69,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1
     ```
 
-### 使用访问密钥备份恢复
+### 方法二：使用访问密钥备份恢复
 
 #### 备份
 
