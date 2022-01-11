@@ -66,7 +66,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ![下载某次分析结果](/media/dashboard/dashboard-conprof-download.png)
 
-也可以点击列表中的单个实例，直接查看其性能分析结果（火焰图/有向无环图/文本），或者悬浮到 ... 按钮上，下载原始数据：
+也可以点击列表中的单个实例查看其性能分析结果（火焰图/有向无环图/文本），或者悬浮在 ... 按钮上下载原始数据：
 
 ![查看单个实例分析结果](/media/dashboard/dashboard-conprof-single.png)
 
