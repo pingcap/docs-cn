@@ -61,7 +61,7 @@ TiDB 版本：5.4.0
 | PD | `hot-regions-reserved-days` | 新增 | 设置 PD 保留的 Hot Region 信息的最长时间。默认值为 `7`。
 | TiFlash | `profile.default.enable_elastic_threadpool` | 新增  |  表示是否启用可自动扩展的线程池。打开该配置项可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认值为 `false`。|
 | TiDB Data Migration (DM) | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
-| TiFlash | `storage.format_version` | 新增可选值 | 表示 DTFile 储存文件格式，默认值为 `2`。|
+| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 表示 DTFile 储存文件格式，默认值为 `2`，该格式在数据文件中内嵌哈希值。也可以设置为 `3`，该格式包含元数据，标记数据校验，支持多种哈希算法。|
 | TiFlash | `logger.count` | 修改 | 默认值修改为 `10` |
 | TiFlash | `status.metrics_port` | 修改 | 默认值修改为 `8234` |
 | TiFlash | `raftstore.apply-pool-size` | 新增 | 处理 Raft 数据落盘的线程池中线程的数量，默认值为 `4`。 |
