@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
 
 # TiDB Dashboard 常见问题
 
-本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。
+本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。若无法找到对应问题，或者根据指引操作后问题仍然存在，请联系 PingCAP 技术支持获取帮助。
 
 ## 访问
 
