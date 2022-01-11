@@ -33,8 +33,8 @@ TiDB 版本：5.4.0
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
 |  `tidb_backoff_lock_fast` | 修改 | 默认值由 `100` 修改为 `10` |
-| `tidb_enable_index_merge` | 修改 | 默认值由 `OFF` 改为 `ON`。如果从 TiDB v4.0（不包含 v4.0.0）升级到 v5.4.0 及更新的集群，该变量值默认保持 `OFF`。 |
-| `tidb_enable_paging`  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用 paging 方式发送 coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能出现延迟高、TiKV 的 unified read pool CPU 使用高的情况。在这种情况下，由于 `Limit` 算子限制只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，降低延迟，减少资源消耗。 |
+| `tidb_enable_index_merge` | 修改 | 默认值由 `OFF` 改为 `ON`。如果从低于 v4.0.0 版本升级到 v5.4.0 及以上版本的集群，该变量值默认保持 `OFF`。如果从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本的集群，该变量开关保持升级前的状态。对于 v5.4.0 及以上版本的新建集群，该变量开关默认保持 `ON`。 |
+| [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。 |
 | `tidb_read_staleness` | 新增 | 用于设置当前会话期待读取的历史数据的所处时刻，默认值为 `0` |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败(`false`) 还是退回使用 pseudo 的统计信息 (`true`) |
@@ -46,7 +46,7 @@ TiDB 版本：5.4.0
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 新增 |  用于设置 TiDB 统计信息同步加载功能可以并发处理的最大列数，默认值为 `5`             |
 | TiDB | [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入)   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
-| TiKV | `backup.enable-auto-tune` | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源以求减少对集群的影响。在默认配置下，备份速度可能下降。 |
+| TiKV | [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log.level`、`log.format`、`log.enable-timestamp`、`log.file.filename`、`log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 变更 | 将 TiKV log 参数名改为与 TiDB log 参数一致的命名方式，即 `log.level`、`log.format`、`log.enable-timestamp`。如果 TiKV log 参数为非默认值则保持兼容；如果同时配置 TiKV log 参数和 TiDB log 命名方式的参数，使用 TiDB log 命名方式的参数。详情参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
 | TiKV  |  `log-rotation-timespan`  | 删除 |  轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。 |
@@ -58,7 +58,7 @@ TiDB 版本：5.4.0
 | PD | `hot-regions-write-interval` | 新增 |  设置 PD 存储 Hot Region 信息的时间间隔。默认值为 `10m`。 |
 | PD | `hot-regions-reserved-days` | 新增 | 设置 PD 保留的 Hot Region 信息的最长时间。默认值为 `7`。
 | TiFlash | `profile.default.enable_elastic_threadpool` | 新增  |  表示是否启用可自动扩展的线程池。打开该配置项可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认值为 `false`。|
-| TiDB Data Migration (DM) | `collation_compatible` | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
+| TiDB Data Migration (DM) | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
 | TiFlash | `storage.format_version` | 新增可选值 | 表示 DTFile 储存文件格式，默认值为 `2`。|
 | TiFlash | `logger.count` | 修改 | 默认值修改为 `10` |
 | TiFlash | `status.metrics_port` | 修改 | 默认值修改为 `8234` |
@@ -90,7 +90,6 @@ TiDB 版本：5.4.0
     - TiFlash 暂不支持 GBK 字符。
     - TiCDC 暂不支持 GBK 字符。
     - 如果 `character_set_client` 和 `character_set_connection` 都是 `gbk` 时，处理非法 GBK 字符与 MySQL 存在兼容性问题。
-    - `character_set_client` 在处理 `prepare` 语句时可能出现兼容性问题。
     - TiDB 不支持 `_gbk"xxx"` 的用法，但是支持 `_utf8mb4"xxx"` 的用法。而 MySQL 对于 `_charset"xxx"` 的用法都支持。
     - TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。BR 在 v5.3.0 之前不支持恢复 `charset=GBK` 的表。
 
@@ -119,7 +118,7 @@ TiDB 版本：5.4.0
         - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
     - 引入动态线程池，提升资源利用率（实验特性）
     - 新增或修改一些 TiFlash 已有配置的默认值，提升 TiFlash 的性能和稳定性
-    - 提升由行存到列存数据同步处理时对 raft log 的解码 (decoding) 效率，此环节的 CPU 使用率最多可降低 90%
+    - 提升由行存到列存数据同步处理时对 raft log 的解码 (decoding) 效率，使 CPU 使用率降低达 90%
     - TiFlash 调整了文件系统中 Delta Tree 相关的默认参数，使之更适合一般的生产环境
 
 - **通过 session 变量实现有界限过期数据读取**
@@ -153,7 +152,7 @@ TiDB 版本：5.4.0
 
     目前 TiDB 的 _索引合并_ 优化只限于 _析取范式_ (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
 
-    如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果是从 v5.4.0 以前的版本升级到 v5.4.0 或以上的，默认保持升级前此特性的开闭状态（v4.0 之前无此项特性的版本也视同关闭），需要由用户自己决定是否开启。
+    如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
 - **支持统计信息的同步加载（实验特性）**
 
@@ -214,7 +213,7 @@ TiDB 版本：5.4.0
 
     增加 `collation_compatible` 开关，支持 `strict` 和 `loose`（默认）两种模式。如果对排序规则要求不严格，允许排序规则不一致，使用默认的 `loose` 模式可使同步正常进行；如果对排序规则要求严格，排序规则不一致导致报错，则可以使用 `strict` 模式。
 
-- **在 DM 中 优化 `transfer source`，支持平滑执行同步任务**
+- **在 DM 中优化 `transfer source`，支持平滑执行同步任务**
 
     当 DM-worker 所在各节点负载不均衡时，`transfer source` 命令可用于手动将某 `source` 配置迁移到其他节点。优化后的 `transfer source` 简化了用户操作步骤，不再要求先暂停所有关联 task 而是直接执行平滑迁移，DM 将在内部完成所需操作。
 
@@ -240,13 +239,13 @@ TiDB 版本：5.4.0
 
 - **持续性能分析（实验特性）**
 
-    - 支持更多组件：支持 TiFlash 组件查看 CPU Profiling
+    - 支持更多组件：除了 TiDB、PD 和 TiKV 外，v5.4.0 版本中还支持查看 TiFlash CPU Profiling
     - 支持更方便的查看形式：支持以火焰图形式查看 CPU Profiling 和 Goroutine 结果。
     - 支持更多部署环境：支持在 TiDB Operator 部署环境下启用持续性能分析功能。
 
     该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启，开启方法见[用户文档](/dashboard/continuous-profiling.md)。
 
-    要使用持续性能分析功能，集群须由 TiUP v1.9.0 及以上版本或 TiDB Operator vx.x.x（TBD）及以上版本升级或安装。
+    持续性能分析仅支持由 v1.9.0 及以上版本 TiUP 或 vx.x.x（TBD）及以上版本 TiDB Operator 升级或安装的集群。
 
 ## 提升改进
 
