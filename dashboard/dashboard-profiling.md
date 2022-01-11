@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ![下载分析结果](/media/dashboard/dashboard-profiling-download.png)
 
-也可以点击列表中的单个实例查看其性能分析结果（火焰图/有向无环图/文本），或者悬浮到 ... 按钮上下载原始数据：
+也可以点击列表中的单个实例查看其性能分析结果（包括火焰图、有向无环图、文本），或者悬浮到 ... 按钮上下载原始数据：
 
 ![在线查看分析结果](/media/dashboard/dashboard-profiling-view-single.png)
 
