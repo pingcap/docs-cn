@@ -39,6 +39,7 @@ TiDB 版本：5.4.0
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败(`false`) 还是退回使用 pseudo 的统计信息 (`true`) |
 | [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启[ ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性 |
+| `tidb_store_limit` | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置 |
 
 ### 配置文件参数
 
@@ -67,6 +68,8 @@ TiDB 版本：5.4.0
 | TiCDC | `enable-tidb-extension` | 新增 |  开启该配置项后，TiCDC 在 Canal-JSON 协议格式中附加 TiDB 扩展字段。                  |
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `10M`  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
+| TiDB Lightning | `meta-schema-name` |  新增  | 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认值为 "lightning_metadata"  |
+| TiDB Lightning | `incremental-import` | 新增 | 是否允许向已存在数据的表导入数据。默认值为 false |
 
 ### 其他
 
@@ -83,7 +86,7 @@ TiDB 版本：5.4.0
 
 - **TiDB 从 v5.4.0 起支持 GBK 字符集**
 
-    在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。为了更好的支持中文用户，TiDB 从 v5.4.0 版本开始支持 GBK 字符集，同时支持 `gbk_bin` 和 `gbk_chinese_ci` 两种排序规则。
+    在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。为了更好的支持中文用户，TiDB 从 v5.4.0 版本开始支持 GBK 字符集，同时支持 `gbk_bin` 和 `gbk_chinese_ci` 两种排序规则（在使用这两种排序规则前需要开启 TiDB 配置项 `new_collations_enabled_on_first_bootstrap`）。
 
     在使用 GBK 字符集时，请注意以下兼容性限制：
 
@@ -157,6 +160,10 @@ TiDB 版本：5.4.0
 - **支持统计信息的同步加载（实验特性）**
 
     从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
+
+- **优化 RocksDB 在大数据量下的锁争用问题**
+
+    RocksDB 依赖全局锁来维护多版本的文件信息，并当销毁读快照时对过期文件进行清理。在文件数较多且读写频繁的场景下，这一操作显著影响前台延迟。本版本针对这一问题进行优化，详见 [rocksdb#250](https://github.com/tikv/rocksdb/pull/250)。
 
 ### 稳定性
 
@@ -252,6 +259,7 @@ TiDB 版本：5.4.0
 + TiDB
 
     - 新增系统变量 `tidb_enable_paging`，开启该功能可显著降低使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 数据较小且无法下推到 `IndexScan` 上的读请求的延迟 [#30578](https://github.com/pingcap/tidb/issues/30578)
+    - 支持 `ADMIN {SESSION | INSTANCE | GLOBAL} PLAN_CACHE` 语法，用于清空缓存的查询计划 [#30370](https://github.com/pingcap/tidb/pull/30370)
 
 + TiKV
 
@@ -288,12 +296,28 @@ TiDB 版本：5.4.0
 
 + TiDB
 
+    - 修复当从 v4.x 版本升级到 v5.x 版本后 `tidb_analyze_version` 的值变化的问题 [#25422](https://github.com/pingcap/tidb/issues/25422)
+    - 修复在子查询中使用不同的 collation 导致查询结果错误的问题 [#30748](https://github.com/pingcap/tidb/issues/30748)
+    - 修复 `concat(ifnull(time(3))` 的结果与 MySQL 不一致的问题 [#29498](https://github.com/pingcap/tidb/issues/29498)
+    - 修复乐观事务下数据索引可能不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
+    - 修复当表达式不能下推给 TiKV 时 IndexMerge 查询计划错误的问题 [#30200](https://github.com/pingcap/tidb/issues/30200)
+    - 修复并发的列类型变更导致 schema 与数据不一致的问题 [#31048](https://github.com/pingcap/tidb/issues/31048)
+    - 修复当有子查询时 IndexMerge 的查询结果错误的问题 [#30913](https://github.com/pingcap/tidb/issues/30913)
+    - 修复当客户端设置过大的 FetchSize 后 TiDB 执行会 panic 的问题 [#30896](https://github.com/pingcap/tidb/issues/30896)
+
+    - 修复 LEFT JOIN 有时会被错误地转换成 INNER JOIN 的问题 [#20510](https://github.com/pingcap/tidb/issues/20510)
+    - 修复当 `CASE-WHEN` 表达式与 collation 同时使用时可能 panic 的问题 [#30245](https://github.com/pingcap/tidb/issues/30245)
+    - 修复当 `IN` 的值中带有二进制常量时查询结果错误的问题 [#31261](https://github.com/pingcap/tidb/issues/31261)
+    - 修复当 CTE 中带有子查询时查询结果错误的问题 [#31255](https://github.com/pingcap/tidb/issues/31255)
+    - 修复 `INSERT ... SELECT ... ON DUPLICATE KEY UPDATE` 语句 panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
+    - 修复 INDEX HASH JOIN 报 `send on closed channel` 的问题 [#31129](https://github.com/pingcap/tidb/issues/31129)
+
 + TiKV
 
-    + 修复 MVCC 删除记录可能不会被 GC 删除的问题 [#11217](https://github.com/tikv/tikv/issues/11217)
-    + 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
-    + 修复 GC 扫描导致的内存溢出 [#11410](https://github.com/tikv/tikv/issues/11410)
-    + 修复当达到磁盘容量满时 RocksDB flush 或 compaction 导致的 panic [#11224](https://github.com/tikv/tikv/issues/11224)
+    - 修复 MVCC 删除记录可能不会被 GC 删除的问题 [#11217](https://github.com/tikv/tikv/issues/11217)
+    - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
+    - 修复 GC 扫描导致的内存溢出 [#11410](https://github.com/tikv/tikv/issues/11410)
+    - 修复当达到磁盘容量满时 RocksDB flush 或 compaction 导致的 panic [#11224](https://github.com/tikv/tikv/issues/11224)
 
 + PD
 
@@ -308,6 +332,8 @@ TiDB 版本：5.4.0
     + TiDB Data Migration (DM)
 
     + TiDB Lightning
+
+        - 修复当 TiDB Lightning 没有权限访问 `mysql.tidb` 表时，导入的结果不正确的问题 [#31088](https://github.com/pingcap/tidb/issues/31088)
 
     + Dumpling
 
