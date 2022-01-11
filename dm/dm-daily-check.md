@@ -1,7 +1,7 @@
 ---
 title: TiDB Data Migration 日常巡检
 summary: 了解 DM 工具的日常巡检。
-aliases: ['/docs-cn/tidb-data-migration/dev/daily-check/','/zh/tidb-data-migration/dev/daily-check/']
+aliases: ['/docs-cn/tidb-data-migration/dev/daily-check/']
 ---
 
 # TiDB Data Migration 日常巡检

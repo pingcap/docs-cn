@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + Log 级别
 + 默认："info"
-+ 可选项为：debug、info、warn、error、fatal
++ 可选："debug"，"info"，"warn"，"error"，"fatal"
 
 ## `--lease`
 
@@ -66,7 +66,7 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + Log 文件
 + 默认：""
-+ 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。每天凌晨，log 会自动轮转使用一个新的文件，并且将以前的文件改名备份
++ 如果未设置该参数，log 会默认输出到 "stderr"；如果设置了该参数，log 会输出到对应的文件中。
 
 ## `--log-slow-query`
 

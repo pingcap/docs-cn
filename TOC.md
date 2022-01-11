@@ -37,17 +37,22 @@
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 - 数据迁移
-  - [数据迁移场景](/migration-overview.md)
+  - [数据迁移综述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
-  - 从 MySQL 迁移至 TiDB
-    - [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
-    - [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
-    - [使用 DM 工具从 Amazon Aurora MySQL 迁移数据](/migrate-from-aurora-mysql-database.md)
-  - 从 CSV 文件迁移至 TiDB
-    - [使用 TiDB Lightning 导入 CSV 文件](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-    - [使用 LOAD DATA 语句导入 CSV 文件](/sql-statements/sql-statement-load-data.md)
-  - [从 SQL 文件迁移到 TiDB](/migrate-from-mysql-dumpling-files.md)
-  - [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
+  - 数据迁移场景
+    - [从 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
+    - [从小数据量 MySQL 迁移数据到 TiDB](/migrate-small-mysql-to-tidb.md)
+    - [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
+    - [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)
+    - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
+    - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
+    - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+    - [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
+  - 复杂迁移操作
+    - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
+    - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
+    - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
+    - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
@@ -62,6 +67,8 @@
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       - [外部存储](/br/backup-and-restore-storages.md)
         - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
+      - BR 特性
+        - [自动调节](/br/br-auto-tune.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -289,6 +296,8 @@
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     - [外部存储](/br/backup-and-restore-storages.md)
+    - BR 特性
+      - [自动调节](/br/br-auto-tune.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -319,6 +328,7 @@
     - [报警规则](/ticdc/ticdc-alert-rules.md)
     - [TiCDC Open API](/ticdc/ticdc-open-api.md)
     - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+    - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
   - sync-diff-inspector
@@ -675,6 +685,7 @@
     - [5.1.1](/releases/release-5.1.1.md)
     - [5.1.0](/releases/release-5.1.0.md)
   - v5.0
+    - [5.0.6](/releases/release-5.0.6.md)
     - [5.0.5](/releases/release-5.0.5.md)
     - [5.0.4](/releases/release-5.0.4.md)
     - [5.0.3](/releases/release-5.0.3.md)
