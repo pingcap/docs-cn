@@ -8,7 +8,7 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 > **警告:**
 >
 > TiDB Lightning 错误处理功能是实验特性。**不建议**在生产环境中仅依赖该功能处理相关错误。
-从 TiDB 5.3.0 开始，你可以配置 TiDB Lightning 以跳过诸如无效类型转换、唯一键冲突等错误，让导入任务持续进行，就如同出现错误的行数据不存在一样。你可以依据生成的报告，手动修复这些错误。该功能适用于以下场景：
+从 TiDB 5.4.0 开始，你可以配置 TiDB Lightning 以跳过诸如无效类型转换、唯一键冲突等错误，让导入任务持续进行，就如同出现错误的行数据不存在一样。你可以依据生成的报告，手动修复这些错误。该功能适用于以下场景：
 
 - 要导入的数据有少许错误
 - 手动定位错误比较困难
@@ -46,7 +46,7 @@ max-error = 0
 
 ## 解决重复问题
 
-Local 后端模式下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB 后端模式不同，直到任务结束才会检测重复行。因此，Local 模式下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。
+Local-backend 模式下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB-backend 模式不同，TiDB Lightning 在 Local-backend 模式下直到任务结束才会检测重复行。因此，Local 模式下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。
 
 {{< copyable "" >}}
 
@@ -57,8 +57,8 @@ duplicate-resolution = 'none'
 
 `duplicate-resolution` 有以下三个选项：
 
-* **'none'**：不对重复数据进行检测。如果唯一键/主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
-* **'record'**：检测重复数据，但不会对重复数据进行修复。如果唯一键/主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
+* **'none'**：不对重复数据进行检测。如果唯一键或主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
+* **'record'**：检测重复数据，但不会对重复数据进行修复。如果唯一键或主键冲突确实存在，那么导入的表格里会出现不一致的数据和索引，checksum 检查的时候会失败。
 * **'remove'**：检测重复数据，并且删除*全部*重复行。导入的表格会保持一致，但是重复的行会被忽略，只能通过手动方式添加回来。
 
 TiDB Lightning 只能检测数据源的重复项，不能解决运行 TiDB Lightning 之前的存量数据的冲突问题。
@@ -169,7 +169,7 @@ CREATE TABLE conflict_error_v1 (
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cat <<EOF > example.t.1.sql
         INSERT INTO t (a, b) VALUES
         (0, NULL),              -- 列不为空
@@ -188,7 +188,7 @@ CREATE TABLE conflict_error_v1 (
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     cat <<EOF > config.toml
         [lightning]
         max-error = 10
@@ -211,7 +211,7 @@ CREATE TABLE conflict_error_v1 (
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
+    ```shell
     tiup tidb-lightning -c config.toml
     ```
 
@@ -229,7 +229,7 @@ CREATE TABLE conflict_error_v1 (
 
 6. 检查 `type_error_v1` 表是否捕获了涉及类型转换的三行：
 
-    ```console
+    ```sql
     $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from lightning_task_info.type_error_v1;' -E
     *************************** 1. row ***************************
         task_id: 1635888701843303564
@@ -259,7 +259,7 @@ CREATE TABLE conflict_error_v1 (
 
 7. 检查 `conflict_error_v1` 表是否捕获了具有唯一键/主键冲突的四行：
 
-    ```console
+    ```sql
     $ mysql -u root -h 127.0.0.1 -P 4000 -e 'select * from lightning_task_info.conflict_error_v1;' --binary-as-hex -E
     *************************** 1. row ***************************
         task_id: 1635888701843303564
