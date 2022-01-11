@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `TIDB_HOT_REGIONS_HISTORY`。
 
 # TIDB_HOT_REGIONS_HISTORY
 
-`TIDB_HOT_REGIONS_HISTORY` 表提供了关于历史热点 Region 的相关信息，这些信息由 PD 定期存储在本地，存储间隔为 [`hot-regions-write-interval`](/pd-configuration-file.md#hot-regions-write-interval) 的值（默认值为 10m)，历史热点信息保持的期限为 [`hot-regions-reserved-days`](/pd-configuration-file.md#hot-regions-reserved-days) 的值（默认值为 7days）。详情参见 [PD 配置文件描述](/pd-configuration-file.md#hot-regions-write-interval)。
+`TIDB_HOT_REGIONS_HISTORY` 表提供了关于历史热点 Region 的相关信息，这些信息由 PD 定期存储在本地，存储间隔为 [`hot-regions-write-interval`](/pd-configuration-file.md#hot-regions-write-interval-从-v540-版本开始引入) 的值（默认值为 10m)，历史热点信息保持的期限为 [`hot-regions-reserved-days`](/pd-configuration-file.md#hot-regions-reserved-days-从-v540-版本开始引入) 的值（默认值为 `7`），详情参见 [PD 配置文件描述](/pd-configuration-file.md#hot-regions-write-interval)。
 
 {{< copyable "sql" >}}
 
