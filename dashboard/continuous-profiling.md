@@ -32,7 +32,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ### 使用 TiUP 部署的集群
 
-如何启用持续性能分析。
+对于使用 TiUP 部署的集群，你可以通过以下步骤启用持续性能分析。
 
 1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
 
