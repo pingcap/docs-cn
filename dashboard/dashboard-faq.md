@@ -76,7 +76,6 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ### 界面提示 NgMonitoring 组件未能正常启用
 
-![未正常启用 NgMonitoring 组件](/media/dashboard/dashboard-conprof-has-not-NGM.png)
 
 如果 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 页面提示 NgMonitoring 组件未能正常启用，你可以通过以下步骤逐步排查。 
 
