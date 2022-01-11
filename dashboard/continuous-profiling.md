@@ -44,7 +44,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ### 使用 TiDB Operator 部署的集群
 
-详见 TiDB Operator 的 [访问 TiDB Dashboard 文档](/tidb-in-kubernetes/dev/access-dashboard/)
+详见 TiDB Operator 的 [访问 TiDB Dashboard 文档](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/access-dashboard/)
 
 ## 访问页面
 
