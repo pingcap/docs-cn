@@ -21,7 +21,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 - 该功能可在 x86 架构下支持 TiDB、PD、TiKV、TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
 
-- 该功能适用于使用 TiUP/TiDB Operator 部署和升级的集群，不支持二进制包部署和升级的集群。
+- 该功能适用于使用 1.9.0 及以上版本 TiUP 和 TiDB Operator 部署和升级的集群，不支持二进制包部署和升级的集群。
 
 - 该功能需要 TiUP 1.9.0 及以上版本支持。
 
