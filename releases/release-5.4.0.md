@@ -273,7 +273,7 @@ TiDB 版本：5.4.0
     - 减少备份使用的默认线程池大小，并在压力大时限制其使用 [#11000](https://github.com/tikv/tikv/issues/11000)
     - 支持动态调整 Apply 和 Store 线程池大小 [#11159](https://github.com/tikv/tikv/issues/11159)
     - 支持配置 `snap-generator` 线程池大小 [#11247](https://github.com/tikv/tikv/issues/11247)
-- 优化在文件数较多且读写频繁的场景下 RocksDB 的全局锁争用问题 [rocksdb#250](https://github.com/tikv/rocksdb/pull/250)
+    - 优化在文件数较多且读写频繁的场景下 RocksDB 的全局锁争用问题 [rocksdb#250](https://github.com/tikv/rocksdb/pull/250)
 
 + PD
 
