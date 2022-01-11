@@ -39,6 +39,10 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 使用 Azure AD 进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
 
+> **注意**
+> 
+> 使用 Azure Blob Storage 的时候必须设置 `send-credentials-to-tikv = true`（即默认情况下），否则会备份失败。
+
 本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name` 和 `access-tier`：
 
 - 将参数信息放在 URL 参数中：
@@ -69,11 +73,15 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1
     ```
 
-### 方法二：使用访问密钥备份恢复
+### 方法二：使用访问密钥备份恢复（简易）
 
 #### 备份
 
 使用访问密钥进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
+
+> **注意**
+> 
+> 使用 Azure Blob Storage 的时候必须设置 `send-credentials-to-tikv = true`（即默认情况下），否则会备份失败。
 
 本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name` 和 `access-tier`：
 
@@ -124,6 +132,37 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 | `--azblob.account-name` | 存储账户名 | | 是 |
 | `--azblob.account-key` | 访问密钥 | | 是 |
 | `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 | `Hot` | 否 |
+
+### 配置环境变量作为参数
+
+由 TiUP 启动的集群中 TiKV 是 systemd 服务，例子展示如何为 TiKV 配置参数：
+
+> **注意**
+> 
+> 需要重启 TiKV
+
+1. 假设该节点上 tikv 端口为 24000（即 systemd 服务名为 tikv-24000）
+
+    ```
+    systemctl edit tikv-24000
+    ```
+
+2. 填入环境变量信息
+
+    ```
+    [Service]
+    Environment="AZURE_CLIENT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+    Environment="AZURE_TENANT_ID=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"
+    Environment="AZURE_CLIENT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    ```
+
+3. 重新加载配置并重启 TiKV
+
+    ```
+    systemctl daemon-reload
+    systemctl restart tikv-24000
+    ```
+
 
 ## 兼容信息
 
