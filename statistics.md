@@ -182,7 +182,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
     - 当 TiDB 自动收集统计信息或者你手动执行 `ANALYZE` 语句收集统计信息但未指定列的配置时，TiDB 会继续沿用之前持久化的配置。
     - 当多次手动执行 `ANALYZE` 语句并指定列的配置时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
 
-如果你想查看一个表中哪些列是 `PREDICATE COLUMNS` 以及哪些列的统计信息已经被收集，可以使用以下语法：
+如果你想查看一个表中哪些列是 `PREDICATE COLUMNS`，哪些列的统计信息已经被收集，可以使用以下语法：
 
 {{< copyable "sql" >}}
 
