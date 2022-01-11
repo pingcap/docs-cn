@@ -212,12 +212,12 @@ Query OK, 0 rows affected (0.00 sec)
 CREATE TABLE t (a INT, b INT, c INT, d INT, INDEX idx_c_d(c, d));
 Query OK, 0 rows affected (0.00 sec)
 
--- 通过此查询优化器将用到 b 列。
+-- 在此查询中优化器用到了 b 列的统计信息。
 SELECT * FROM t WHERE b > 1;
 Empty set (0.00 sec)
 
 -- 等待一段时间（大约 100 * stats-lease 的时间），TiDB 将收集的 `PREDICATE COLUMNS` 写入 mysql.column_stats_usage。
--- 指定 `last_used_at IS NOT NULL` 表示显示指定表格中最近一次查询优化被用到的列。
+-- 指定 `last_used_at IS NOT NULL` 表示显示 TiDB 收集到的 `PREDICATE COLUMNS`。
 SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_used_at IS NOT NULL;
 +---------+------------+----------------+-------------+---------------------+------------------+
 | Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at |
@@ -229,7 +229,7 @@ SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_use
 ANALYZE TABLE t PREDICATE COLUMNS;
 Query OK, 0 rows affected, 1 warning (0.03 sec)
 
--- 指定 `last_analyzed IS NOT NULL` 表示显示指定表格中最近一次收集过统计信息的列。
+-- 指定 `last_analyzed IS NOT NULL` 表示显示收集过统计信息的列。
 SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_analyzed_at IS NOT NULL;
 +---------+------------+----------------+-------------+---------------------+---------------------+
 | Db_name | Table_name | Partition_name | Column_name | Last_used_at        | Last_analyzed_at    |
