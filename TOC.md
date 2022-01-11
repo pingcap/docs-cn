@@ -66,6 +66,8 @@
       - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       - [外部存储](/br/backup-and-restore-storages.md)
+      - BR 特性
+        - [自动调节](/br/br-auto-tune.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -293,6 +295,8 @@
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     - [外部存储](/br/backup-and-restore-storages.md)
+    - BR 特性
+      - [自动调节](/br/br-auto-tune.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
