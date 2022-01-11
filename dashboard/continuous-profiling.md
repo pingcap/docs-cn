@@ -32,7 +32,7 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ## 启用持续性能分析
 
-### TiUP 部署集群
+### 使用 TiUP 部署的集群
 
 1. 启用持续性能分析。
 
