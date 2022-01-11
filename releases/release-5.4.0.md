@@ -33,6 +33,7 @@ TiDB 版本：5.4.0
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
 |  `tidb_backoff_lock_fast` | 修改 | 默认值由 `100` 修改为 `10` |
+|  [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 新增 | 用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集，默认值为 `OFF` |
 | `tidb_enable_index_merge` | 修改 | 默认值由 `OFF` 改为 `ON`。如果从低于 v4.0.0 版本升级到 v5.4.0 及以上版本的集群，该变量值默认保持 `OFF`。如果从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本的集群，该变量开关保持升级前的状态。对于 v5.4.0 及以上版本的新建集群，该变量开关默认保持 `ON`。 |
 | [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。 |
 | `tidb_read_staleness` | 新增 | 用于设置当前会话期待读取的历史数据的所处时刻，默认值为 `0` |
@@ -157,9 +158,19 @@ TiDB 版本：5.4.0
 
     如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
+- **支持收集部分列的统计信息（实验特性）**
+    
+    执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中用到的列）的统计信息。这些被优化器用到的列称为 `PREDICATE COLUMNS`。
+    
+    从 v5.4.0 开始，TiDB 引入了收集部分列的统计信息的特性（默认关闭），支持只收集指定列或者 `PREDICATE COLUMNS` 的统计信息，极大地降低了收集统计信息的开销。
+    
+    [用户文档](/statistics.md#收集部分列的统计信息)
+    
 - **支持统计信息的同步加载（实验特性）**
 
-    从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性，支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
+    从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性（默认关闭），支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
+    
+    [用户文档](/statistics.md#统计信息的加载)
 
 - **优化 RocksDB 在大数据量下的锁争用问题**
 
@@ -171,15 +182,11 @@ TiDB 版本：5.4.0
 
     统计信息是优化器生成执行计划时所参考的基础信息之一，统计信息的准确性直接影响生成的执行计划是否合理。为了保证统计信息的准确性，有时候需要针对不同的表、分区、索引设置不同的采集配置项。
 
-    TiDB 从 v5.4.0 版本开始支持通过 `analyze` 命令采集统计信息并持久化指定的配置项，方便后续的统计信息采集沿用已有配置项。具体配置项信息请参考 [`Analyze` 文档](/sql-statements/sql-statement-analyze-table.md#analyze)的 `AnalyzeOption` 章节。
-
-    - 开启采集配置项持久化
-
-        设置 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true` 会开启配置项持久化。开启后，手动 analyze 指定的所有配置项会被持久化并覆盖已有选项。后续的手动或自动 analyze 任务会沿用已有配置项进行统计信息采集，直到持久化功能关闭或用户手动指定新的采集配置项。
-
-    - 关闭采集配置项持久化
-
-        设置 `tidb_analyze_version = 1` 或 `tidb_persist_analyze_options = false` 会关闭采集配置项持久化功能。持久化关闭后，已有配置项不会被删除，但不记录新增配置项。新采集任务不会沿用已有的持久化配置项，再次开启采集配置项持久化将会直接使用已有的配置项进行统计信息采集。如果需要更新已有的配置项，请手动执行 `analyze` 命令并指定新的采集配置项。
+    TiDB 从 v5.4.0 版本开始支持 `ANALYZE` 配置持久化功能，方便后续收集统计信息时沿用已有配置项。
+    
+    `ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = true`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+    
+    [用户文档](/statistics.md#analyze-配置持久化)
 
 
 ## 高可用和容灾
