@@ -126,7 +126,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中用到的列）的统计信息。这些被优化器用到的列称为 `PREDICATE COLUMNS`。
 
-对于一个有很多列的宽表，收集所有列的统计信息有较大的开销。为了降低开销，建议只收集指定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。
+如果一个表有很多列，收集所有列的统计信息会有较大的开销。为了降低开销，建议只收集指定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。
 
 > **注意：**
 >
