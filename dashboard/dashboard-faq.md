@@ -78,13 +78,12 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ![未正常启用 NgMonitoring 组件](/media/dashboard/dashboard-conprof-has-not-NGM.png)
 
-NgMonitoring 组件需要较高版本的部署工具支持（tiup 1.9.0 及以上），如果无法加载，应逐步排查。
+如果 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 页面提示 NgMonitoring 组件未能正常启用，你可以通过以下步骤逐步排查。 
 
-首先检查 TiUP 版本信息，然后配置中控机和 TiDB Dashboard 相关参数。
 
-#### 检查 TiUP Cluster 版本
+#### 第 1 步：检查 TiUP Cluster 版本
 
-检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
+NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以上）。检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
 
 1. 检查 TiUP Cluster 版本：
 
@@ -94,7 +93,7 @@ NgMonitoring 组件需要较高版本的部署工具支持（tiup 1.9.0 及以�
     tiup cluster --version
     ```
 
-    上述命令可查看 TiUP Cluster 的具体版本。显示为：
+    上述命令可查看 TiUP Cluster 的具体版本。例如：
 
     ```
     tiup version 1.9.0 tiup
@@ -114,7 +113,7 @@ NgMonitoring 组件需要较高版本的部署工具支持（tiup 1.9.0 及以�
         tiup update --all
         ```
 
-#### 重启 Prometheus 节点
+#### 第 2 步：重启 Prometheus 节点
 
 在中控机上，通过 TiUP 对 Prometheus 节点进行 reload 操作。
 
@@ -124,10 +123,10 @@ NgMonitoring 组件需要较高版本的部署工具支持（tiup 1.9.0 及以�
 tiup cluster reload ${cluster-name} --role prometheus
 ```
 
-#### 配置 TiDB Dashboard
+#### 第 3 步：配置 TiDB Dashboard
 
 1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
-2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
+2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Duration) 或保留默认值。
 3. 点击**保存** (Save)。
 
 ![启用功能](/media/dashboard/dashboard-conprof-start.png)
