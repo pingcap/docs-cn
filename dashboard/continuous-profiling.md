@@ -33,13 +33,15 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 
 ### 使用 TiUP 部署的集群
 
-1. 启用持续性能分析。
+如何启用持续性能分析。
 
-    1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
-    2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
-    3. 点击**保存** (Save)。
+1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
 
-    ![启用功能](/media/dashboard/dashboard-conprof-start.png)
+2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Period) 或保留默认值。
+
+3. 点击**保存** (Save)。
+
+![启用功能](/media/dashboard/dashboard-conprof-start.png)
 
 ### 使用 TiDB Operator 部署的集群
 
