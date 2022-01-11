@@ -263,7 +263,7 @@ TiDB 版本：5.4.0
 
     该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启，开启方法见[用户文档](/dashboard/continuous-profiling.md)。
 
-    持续性能分析仅支持由 v1.9.0 及以上版本 TiUP 或 vx.x.x（TBD）及以上版本 TiDB Operator 升级或安装的集群。
+    持续性能分析仅支持由 v1.9.0 及以上版本 TiUP 或 v1.3.0 及以上版本 TiDB Operator 升级或安装的集群。
 
 ## 提升改进
 
