@@ -1,7 +1,6 @@
 ---
 title: 生成自签名证书
 summary: 了解如何生成自签名证书。
-aliases: ['/zh/tidb-data-migration/dev/generate-self-signed-certificates/']
 ---
 
 # 生成自签名证书

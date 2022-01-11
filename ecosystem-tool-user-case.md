@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 ## 从 MySQL/Aurora 迁移数据
 
-当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](/dm/dm-overview.md) 完成[全量数据和增量数据的迁移](/dm/migrate-from-mysql-aurora.md)。
+当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](/dm/dm-overview.md) 完成[从 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)。
 
 如果全量数据量较大（TB 级别），则可先使用 [Dumpling](/dumpling-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。
 
