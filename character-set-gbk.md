@@ -61,7 +61,6 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
     - MySQL 处理非法 GBK 字符集时，对读和写操作的处理方式不同。
     - TiDB 处理非法 GBK 字符集时，对读和写操作的处理方式相同。TiDB 在严格模式下读写非法 GBK 字符都会报错，在非严格模式下，读写非法 GBK 字符都会用 `?` 替换。
- 
 
 例如，当 `SET NAMES gbk` 时，如果分别在 MySQL 和 TiDB 上通过 `CREATE TABLE gbk_table(a VARCHAR(32) CHARACTER SET gbk)` 语句建表，然后按照下表中的 SQL 语句进行操作，就能看到具体的区别。
 
