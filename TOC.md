@@ -86,7 +86,8 @@
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
   - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
-  - [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+  - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
+  - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
   - [SQL 语句统计](/statement-summary-tables.md)
   - [保存和恢复集群现场信息](/sql-plan-replayer.md)
   - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
@@ -607,6 +608,7 @@
       - [访问](/dashboard/dashboard-access.md)
       - [概况页面](/dashboard/dashboard-overview.md)
       - [集群信息页面](/dashboard/dashboard-cluster-info.md)
+      - [Top SQL](/dashboard/top-sql.md)
       - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       - [监控关系图](/dashboard/dashboard-metrics-relation.md)
       - SQL 语句分析
