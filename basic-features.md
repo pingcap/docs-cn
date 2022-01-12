@@ -167,7 +167,6 @@ This document lists the features supported in each TiDB version. Note that suppo
 | Ansible deployment                                                                                       | N            | N            | N            | N            | Deprecated   |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/)                                      | Y            | Y            | Y            | Y            | Y            |
 | [Built-in physical backup](/br/backup-and-restore-use-cases.md)                                          | Y            | Y            | Y            | Y            | Y            |
-| Top SQL                                                                                                  | Y            | Y            | N            | N            | N            |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y            | Y            | Experimental | Experimental | Experimental |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | Experimental | Experimental | Experimental | Experimental | Experimental |
