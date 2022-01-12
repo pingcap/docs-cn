@@ -124,7 +124,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > 收集部分列的统计信息目前为实验特性，不建议在生产环境中使用。
 
-执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中用到的列）的统计信息。这些被优化器用到的列称为 `PREDICATE COLUMNS`。
+执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些被用到的列称为 `PREDICATE COLUMNS`。
 
 如果一个表有很多列，收集所有列的统计信息会有较大的开销。为了降低开销，建议只收集指定列或者 `PREDICATE COLUMNS` 的统计信息供优化器使用。
 
@@ -144,7 +144,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 
     > **注意：**
     >
-    > 该语法属于全量收集。例如，在使用该语法收集了列 a 和 列 b 的统计信息之后，如果还想要增加收集列 c 的统计信息，需要在语法中同时指定这三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
+    > 该语法为全量收集。例如，在使用该语法收集了 a 列和 b 列的统计信息之后，如果还想要增加收集 c 列的统计信息，需要在语法中同时指定这三列 `ANALYZE table t columns a, b, c`，而不是只指定新增的那一列 `ANALYZE TABLE t COLUMNS c`。
 
 - 如果要收集 `PREDICATE COLUMNS` 的统计信息，请进行以下操作：
 
@@ -175,7 +175,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
     ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-- 如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为 `ON` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为 `ON` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
     开启 ANALYZE 配置持久化特性后：
 
@@ -201,7 +201,7 @@ SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
 | Last_used_at | 该列统计信息在最近一次查询优化中被用到的时间 |
 | Last_analyzed_at | 该列统计信息最近一次被收集的时间 |
 
-在以下示例中，执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 后，TiDB 将收集 `b`，`c`，`d` 列的统计信息，因为 `b` 列是 `PREDICATE COLUMN`，而 `c` 列和 `d` 列是索引列。
+在以下示例中，执行 `ANALYZE TABLE t PREDICATE COLUMNS;` 后，TiDB 将收集 `b`，`c`，`d` 列的统计信息，其中 `b` 列是 `PREDICATE COLUMN`，`c` 列和 `d` 列是索引列。
 
 {{< copyable "sql" >}}
 
@@ -275,7 +275,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-- 当收集分区的统计信息时，如果想只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
+- 当收集分区的统计信息时，如果要只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
 
     > **警告：**
     >
