@@ -113,6 +113,8 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 3 rows in set (0.00 sec)
 ```
 
+TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
+
 ## TiDB 中的 `utf8` 和 `utf8mb4`
 
 MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号 (emoji) 等字符。因此，建议改用字符集`utf8mb4`。

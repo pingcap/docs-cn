@@ -56,7 +56,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 ### 非法字符兼容性
 
 * 在系统变量 [`character_set_client`](/system-variables.md#character_set_client) 和 [`character_set_connection`](/system-variables.md#character_set_connection) 不同时设置为 `gbk` 的情况下，TiDB 处理非法字符的方式与 MySQL 一致。
-* 在 `character_set_client` 和 `character_set_connection` 同时为 `gbk` 的情况下， TiDB 处理非法字符的方式与 MySQL 有所区别。
+* 在 `character_set_client` 和 `character_set_connection` 同时为 `gbk` 的情况下， TiDB 处理非法字符的方式与 MySQL 有所区别。MySQL 处理非法 GBK 字符集时，对读和写操作的处理方式不一样，但在 TiDB 中处理方式是一样的。即 TiDB 在严格模式下读写非法 GBK 字符都会报错，在非严格模式下，读写非法 GBK 字符都会用 `?` 替换。
 
 例如，当 `SET NAMES gbk` 时，如果分别在 MySQL 和 TiDB 上通过 `CREATE TABLE gbk_table(a VARCHAR(32) CHARACTER SET gbk)` 语句建表，然后按照下表中的 SQL 语句进行操作，就能看到具体的区别。
 
@@ -65,7 +65,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 | MySQL | `SELECT HEX('一a');` <br /> `e4b88061`<br /><br />`INSERT INTO gbk_table values('一a');`<br /> `Incorrect Error`       | `SELECT HEX('一a');` <br /> `e4b88061`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br />`SELECT HEX(a) FROM gbk_table;`<br /> `e4b8` |
 | TiDB  | `SELECT HEX('一a');` <br /> `Incorrect Error`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br /> `Incorrect Error` | `SELECT HEX('一a');` <br /> `e4b83f`<br /><br />`INSERT INTO gbk_table VALUES('一a');`<br />`SELECT HEX(a) FROM gbk_table;`<br /> `e4b83f`  |
 
-说明：该表中 `HEX('一a')` 转换为十六进制的真实结果为 `0xe4b88061`。
+说明：该表中 `SELECT HEX('一a');` 在 `utf8mb4` 字节集下的结果为 `e4b88061`。
 
 ### 其它
 
