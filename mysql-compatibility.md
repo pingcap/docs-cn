@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
-* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
+* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
