@@ -100,6 +100,8 @@ Go Version: go version go1.16.4 linux/amd64
 
 1. 准备当前环境版本的 DM 软件包
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     mkdir -p /tmp/package
     tar -zxvf /root/.tiup/storage/dm/packages/dm-master-v5.3.0-linux-amd64.tar.gz -C /tmp/package/
@@ -108,7 +110,9 @@ Go Version: go version go1.16.4 linux/amd64
 
 2. 替换新的二进制文件
 
-    ```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
     # 解压 hotfix 压缩包并替换
     cd /root; tar -zxvf dm-linux-amd64.tar.gz 
     cp /root/dm-linux-amd64/bin/dm-master /tmp/package/dm-master/dm-master 
@@ -123,6 +127,8 @@ Go Version: go version go1.16.4 linux/amd64
 3. 应用补丁
 
     查询当前集群状态, 以集群名称`dm-test`为示例
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup dm display dm-test
@@ -148,6 +154,8 @@ Go Version: go version go1.16.4 linux/amd64
 
     指定节点或指定角色应用补丁，若`-R`和`-N`同时使用将会取其交集
 
+    {{< copyable "shell-regular" >}}
+
     ```
     # 为指定节点应用 patch
     tiup dm patch dm-test dm-master-hotfix-linux-amd64.tar.gz -N 172.16.100.21:8261
@@ -155,10 +163,12 @@ Go Version: go version go1.16.4 linux/amd64
 
     # 或者根据角色应用 patch
     tiup dm patch dm-test dm-master-hotfix-linux-amd64.tar.gz -R dm-master
-    tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -R dm-master
+    tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -R dm-worker
     ```
 
 4. 查看补丁应用结果
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     /home/tidb/dm/deploy/dm-master-8261/bin/dm-master/dm-master -V
@@ -175,6 +185,8 @@ Go Version: go version go1.16.4 linux/amd64
     ```
 
     集群信息也会有所变化
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup dm display dm-test
