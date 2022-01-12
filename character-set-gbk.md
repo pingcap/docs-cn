@@ -15,6 +15,7 @@ SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 | gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
 +---------+-------------------------------------+-------------------+--------+
 1 row in set (0.00 sec)
+
 SHOW COLLATION WHERE CHARSET = 'gbk';
 +----------------+---------+------+---------+----------+---------+
 | Collation      | Charset | Id   | Default | Compiled | Sortlen |
