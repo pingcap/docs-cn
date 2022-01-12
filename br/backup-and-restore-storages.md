@@ -22,7 +22,7 @@ TiDB 迁移工具支持以下存储服务：
 
 ## URL 参数
 
-S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
+S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
 
 * 用 Dumpling 导出数据到 S3
 
@@ -127,7 +127,7 @@ S3, GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为�
 3. 如果上述的三个环境变量不存在于工具节点中，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
     - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)
 
-> **注意**
+> **注意：**
 > 
 > 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
 

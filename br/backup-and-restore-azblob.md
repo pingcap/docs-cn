@@ -9,9 +9,9 @@ summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与�
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-从 TiDB v5.4.0 起，Backup & Restore (BR) 工具开始支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。
+Backup & Restore (BR) 工具支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。
 
-该功能**仅兼容** TiDB v5.4.0 及后续的版本。如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
+如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
 
 ## 使用场景
 
@@ -24,12 +24,12 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 - 使用 Azure AD 备份恢复
 - 使用访问密钥备份恢复
 
-在通常情况下，为了避免 `account-key` 等密钥信息记录在命令行中可能会存在的被泄漏的风险，推荐使用第一种方法，即使用 Azure AD 备份恢复。
+在通常情况下，为了避免 `account-key` 等密钥信息记录在命令行中被泄漏，推荐使用第一种方法，即使用 Azure AD 备份恢复。
 
 以下为使用上述两种方式在 Azure Blob Storage 上进行备份与恢复的操作示例，其中，具体操作目标如下：
 
 - 备份：将数据库的 `test` 库备份到 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间中；
-- 恢复：将 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间恢复到数据库的 `test`库中。
+- 恢复：将 Azure Blob Storage 的容器名为 `container=test` 且路径前缀为 `t1` 的空间恢复到数据库的 `test` 库中。
 
 ### 方法一：使用 Azure AD 备份恢复（推荐）
 
@@ -41,7 +41,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 使用 Azure AD 进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
 
-> **注意**
+> **注意：**
 > 
 > 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
 
@@ -81,7 +81,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 使用访问密钥进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
 
-> **注意**
+> **注意：**
 > 
 > 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
 
@@ -93,7 +93,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&account-key=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==&access-tier=Cool'
     ```
 
-- 将参数信息放在命令行参数中
+- 将参数信息放在命令行参数中：
 
     ```
     tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1 --azblob.account-key=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw== --azblob.access-tier=Cool
@@ -103,13 +103,13 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 使用访问密钥进行恢复时，需要指定参数 `account-name` 和 `account-key`。你可以通过以下两种方式指定这些参数：
 
-- 将参数信息放在 URL 参数中
+- 将参数信息放在 URL 参数中：
 
     ```
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&account-key=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw=='
     ```
 
-- 将参数信息放在命令行参数中
+- 将参数信息放在命令行参数中：
 
     ```
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1 --azblob.account-key=Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
@@ -117,7 +117,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ## 参数说明
 
-在进行备份和恢复过程中，你会用到 `account-name`, `account-key`, `access-tier` 三个参数。有关参数的详细介绍，请参阅[外部存储](/br/backup-and-restore-storages.md)。
+在进行备份和恢复过程中，你会用到 `account-name`、 `account-key`、 `access-tier` 三个参数。有关参数的详细介绍，请参阅[外部存储](/br/backup-and-restore-storages.md)。
 
 ### URL 参数
 
@@ -137,21 +137,21 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ### 配置环境变量作为参数
 
-当使用 Azure AD 备份恢复时，需要再 BR 运行环境和 TiKV 运行环境中配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
+当使用 Azure AD 备份恢复时，需要在 BR 运行环境和 TiKV 运行环境中配置环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。
 
 - 当使用 TiUP 启动的集群时，TiKV 会使用 systemd 服务。以下示例提供如何为 TiKV 配置上述的三个环境变量作为参数：
 
-    > **注意**
+    > **注意：**
     > 
     > 该流程在第 3 步中需要重启 TiKV。如果你的集群不适合重启，请使用[方法二](#方法二使用访问密钥备份恢复简易)进行备份恢复。
 
-    1. 假设该节点上 tikv 端口为 24000（即 systemd 服务名为 tikv-24000）
+    1. 假设该节点上 TiKV 端口为 24000（即 systemd 服务名为 tikv-24000）：
 
         ```
         systemctl edit tikv-24000
         ```
 
-    2. 填入环境变量信息
+    2. 填入环境变量信息：
 
         ```
         [Service]
@@ -160,7 +160,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
         Environment="AZURE_CLIENT_SECRET=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         ```
 
-    3. 重新加载配置并重启 TiKV
+    3. 重新加载配置并重启 TiKV：
 
         ```
         systemctl daemon-reload
@@ -177,4 +177,4 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ## 兼容信息
 
-该功能**仅兼容** TiDB v5.4.0及后续的版本。
+该功能**仅兼容** TiDB v5.4.0 及后续的版本。
