@@ -115,8 +115,8 @@ Go Version: go version go1.16.4 linux/amd64
     cp /root/dm-linux-amd64/bin/dm-worker /tmp/package/dm-worker/dm-worker
 
     # 重新打包
-    # 注意，master 和 worker 压缩包的层级不相同；其他部署方式可能也有变化
-    cd /tmp/package/dm-master/ && tar -czvf dm-master-hotfix-linux-amd64.tar.gz *
+    # 注意，其他部署方式可能有所不同
+    cd /tmp/package/ && tar -czvf dm-master-hotfix-linux-amd64.tar.gz dm-master/
     cd /tmp/package/ && tar -czvf dm-worker-hotfix-linux-amd64.tar.gz dm-worker/
     ```
 
