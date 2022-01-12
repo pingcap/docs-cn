@@ -85,7 +85,9 @@ TiDB 版本：5.4.0
 
 - **TiDB 从 v5.4.0 起支持 GBK 字符集**
 
-    在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。为了更好的支持中文用户，TiDB 从 v5.4.0 版本开始支持 GBK 字符集，同时支持 `gbk_bin` 和 `gbk_chinese_ci` 两种排序规则（在使用这两种排序规则前需要开启 TiDB 配置项 `new_collations_enabled_on_first_bootstrap`）。
+    在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。
+    
+    为了更好的支持中文用户，TiDB 从 v5.4.0 起支持 GBK 字符集。在初次初始化 TiDB 集群时开启 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，TiDB GBK 字符集同时支持 `gbk_bin` 和 `gbk_chinese_ci` 这两种排序规则。
 
 在使用 GBK 字符集时，需要注意兼容性限制，详情参考[字符集和排序 - GBK](/character-set-gbk.md)。
 
@@ -199,9 +201,9 @@ TiDB 版本：5.4.0
 
     为 TiDB Lightning 增加 `incremental-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
 
-- **为 TiDB Lightning 增加新参数，用于在并行导入模式下保存各个 TiDB Lightning 实例元信息的 schema 名字 **
+- **增加新配置允许自定义用于保存 TiDB Lightning 并行导入特性的元信息的 schema 名称**
 
-     为 TiDB Lightning 增加 `meta-schema-name` 参数。在并行导入模式下，该参数用于在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认值为 "lightning_metadata"。对于参与同一批并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入数据的正确性。
+     为 TiDB Lightning 增加 `meta-schema-name` 配置。在并行导入模式下，该参数用于在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名称，默认值为 "lightning_metadata"。对于参与同一批并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入数据的正确性。
 
 - **在 TiDB Lightning 中添加重复数据的检测**
 
