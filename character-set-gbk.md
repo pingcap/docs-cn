@@ -5,7 +5,7 @@ summary: 本文介绍 TiDB 对 GBK 字符集的支持情况。
 
 # GBK
 
-TiDB 从 v5.4.0 开始支持 GBK 字符集。本文档介绍 TiDB 对 GBK 字符集的支持和兼容性情况。
+TiDB 从 v5.4.0 开始支持 GBK 字符集。本文档介绍 TiDB 对 GBK 字符集的支持和兼容情况。
 
 ```sql
 SHOW CHARACTER SET WHERE CHARSET = 'gbk';
@@ -15,8 +15,6 @@ SHOW CHARACTER SET WHERE CHARSET = 'gbk';
 | gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
 +---------+-------------------------------------+-------------------+--------+
 1 row in set (0.00 sec)
-
-
 SHOW COLLATION WHERE CHARSET = 'gbk';
 +----------------+---------+------+---------+----------+---------+
 | Collation      | Charset | Id   | Default | Compiled | Sortlen |
@@ -71,7 +69,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ### 其它
 
-* 目前 TiDB 不支持通过 `ALTER TABLE` 语句将其它字符集类型改成 `gbk`，或者从 `gbk` 转成其它字符集类型。
+* 目前 TiDB 不支持通过 `ALTER TABLE` 语句将其它字符集类型改成 `gbk` 或者从 `gbk` 转成其它字符集类型。
 
 * TiDB 不支持使用 `_gbk`， 比如：
 
@@ -87,7 +85,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ## 组件兼容性
 
-* 目前不支持 GBK 字符集的 TiDB 组件包括：TiCDC 和 TiFlash。
+* TiCDC 和 TiFlash 目前不支持 GBK 字符集。
 
 * TiDB Data Migration (DM) 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
 
