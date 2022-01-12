@@ -277,7 +277,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 
     > **警告：**
     >
-    > 收集部分列的统计信息目前为实验特性，不建议在生产环境中使用。
+    > 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
 
     {{< copyable "sql" >}}
 
