@@ -152,7 +152,7 @@ apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151
 Use the `size` command to view the Region size:
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db size -r 2
+$ tikv-ctl --data-dir /path/to/tikv size -r 2
 region id: 2
 cf default region size: 799.703 MB
 cf write region size: 41.250 MB
@@ -164,7 +164,7 @@ cf lock region size: 27616
 The `--from` and `--to` options of the `scan` command accept two escaped forms of raw key, and use the `--show-cf` flag to specify the column families that you need to view.
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db scan --from 'zm' --limit 2 --show-cf lock,default,write
+$ tikv-ctl --data-dir /path/to/tikv scan --from 'zm' --limit 2 --show-cf lock,default,write
 key: zmBootstr\377a\377pKey\000\000\377\000\000\373\000\000\000\000\000\377\000\000s\000\000\000\000\000\372
          write cf value: start_ts: 399650102814441473 commit_ts: 399650102814441475 short_value: "20"
 key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371
@@ -177,7 +177,7 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 Similar to the `scan` command, the `mvcc` command can be used to view MVCC of a given key.
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
+$ tikv-ctl --data-dir /path/to/tikv mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
 key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371
          write cf value: start_ts: 399650105239273474 commit_ts: 399650105239273475 short_value: "\000\000\000\000\000\000\000\002"
          write cf value: start_ts: 399650105199951882 commit_ts: 399650105213059076 short_value: "\000\000\000\000\000\000\000\001"
@@ -192,7 +192,7 @@ The `raw-scan` command scans directly from the RocksDB. Note that to scan data k
 Use `--from` and `--to` options to specify the range to scan (unbounded by default). Use `--limit` to limit at most how many keys to print out (30 by default). Use `--cf` to specify which cf to scan (can be `default`, `write` or `lock`).
 
 ```bash
-$ ./tikv-ctl --db /var/lib/tikv/db/ raw-scan --from 'zt' --limit 2 --cf default
+$ ./tikv-ctl --data-dir /var/lib/tikv raw-scan --from 'zt' --limit 2 --cf default
 key: "zt\200\000\000\000\000\000\000\377\005_r\200\000\000\000\000\377\000\000\001\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002\002%\010\004\002\010root\010\006\002\000\010\010\t\002\010\n\t\002\010\014\t\002\010\016\t\002\010\020\t\002\010\022\t\002\010\024\t\002\010\026\t\002\010\030\t\002\010\032\t\002\010\034\t\002\010\036\t\002\010 \t\002\010\"\t\002\010s\t\002\010&\t\002\010(\t\002\010*\t\002\010,\t\002\010.\t\002\0100\t\002\0102\t\002\0104\t\002"
 key: "zt\200\000\000\000\000\000\000\377\025_r\200\000\000\000\000\377\000\000\023\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002&slow_query_log_file\010\004\002P/usr/local/mysql/data/localhost-slow.log"
 
@@ -236,7 +236,7 @@ Use the `compact` command to manually compact data of each TiKV. If you specify 
     - `force` means that the bottommost files are always included when TiKV performs compaction.
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db compact -d kv
+$ tikv-ctl --data-dir /path/to/tikv compact -d kv
 success!
 ```
 
@@ -263,7 +263,7 @@ Then use the `tikv-ctl` tool to set a Region to tombstone on the corresponding T
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
+tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>
 ```
 
 ```
@@ -275,7 +275,7 @@ However, in some cases, you cannot easily remove this Peer of this Region from P
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
+tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
 ```
 
 ```
@@ -312,7 +312,7 @@ This sub-command is used to parse a snapshot meta file at given path and print t
 To avoid checking the Regions while TiKV is started, you can use the `tombstone` command to set the Regions where the Raft state machine reports an error to Tombstone. Before running this command, use the `bad-regions` command to find out the Regions with errors, so as to combine multiple tools for automated processing.
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db bad-regions
+$ tikv-ctl --data-dir /path/to/tikv bad-regions
 all regions are healthy
 ```
 
@@ -323,7 +323,7 @@ If the command is successfully executed, it prints the above information. If the
 - To view in local the properties of Region 2 on the TiKV instance that is deployed in `/path/to/tikv`:
 
     ```bash
-    $ tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
+    $ tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
     ```
 
 - To view online the properties of Region 2 on the TiKV instance that is running on `127.0.0.1:20160`:
@@ -420,7 +420,7 @@ The `-s` option accepts multiple `store_id` separated by comma and uses the `-r`
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
+tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 ```
 
 ```
@@ -430,7 +430,7 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-regions
+tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 4,5 --all-regions
 ```
 
 Then, after you restart TiKV, the Regions can continue providing services with the remaining healthy replicas. This command is commonly used when multiple TiKV stores are damaged or deleted.
@@ -448,7 +448,7 @@ Use the `recover-mvcc` command in circumstances where TiKV cannot run normally c
 - Use the `-p` option to specify PD endpoints.
 
 ```bash
-$ tikv-ctl --db /path/to/tikv/db recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
+$ tikv-ctl --data-dir /path/to/tikv recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 success!
 ```
 
@@ -546,7 +546,7 @@ Damaged SST files in TiKV might cause the TiKV process to panic. To clean up the
 > Before running this command, stop the running TiKV instance.
 
 ```bash
-$ tikv-ctl bad-ssts --db </path/to/tikv/db> --pd <endpoint>
+$ tikv-ctl bad-ssts --data-dir </path/to/tikv> --pd <endpoint>
 ```
 
 ```bash
