@@ -150,11 +150,13 @@ TiDB 版本：5.4.0
 
     如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
-- **支持收集部分列的统计信息（实验特性）**
+- **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
+
+    执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。
     
-    执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中用到的列）的统计信息。这些被优化器用到的列称为 `PREDICATE COLUMNS`。
+    从 v5.4.0 开始，你可以设置系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值为 `ON` 开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
     
-    从 v5.4.0 开始，TiDB 引入了收集部分列的统计信息的特性（默认关闭），支持只收集指定列或者 `PREDICATE COLUMNS` 的统计信息，极大地降低了收集统计信息的开销。
+    开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。等到业务的查询模式稳定以后，使用 `ANALYZE TABLE TableName PREDICATE COLUMNS` 语法收集 `PREDICATE COLUMNS` 列的统计信息，可以极大地降低收集统计信息的开销。
     
     [用户文档](/statistics.md#收集部分列的统计信息)
     
