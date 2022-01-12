@@ -81,8 +81,6 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
   ```
 
 * 对于 `ENUM` 和 `SET` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
-
-
 ## 组件兼容性
 
 * TiCDC 和 TiFlash 目前不支持 GBK 字符集。
