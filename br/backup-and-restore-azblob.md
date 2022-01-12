@@ -33,7 +33,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ### 方法一：使用 Azure AD 备份恢复（推荐）
 
-在 BR 运行环境和 TiKV 运行环境中，需要存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。当存在这三项变量时，BR 可以使用 Azure AD 访问 Azure Blob Storage 且不用配置 `account-key`。这种方式更安全，因此也推荐被使用。在这里，`$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_id`。
+在 BR 运行环境和 TiKV 运行环境中，需要存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。当存在这三项变量时，BR 可以使用 Azure AD 访问 Azure Blob Storage 且不用配置 `account-key`。这种方式更安全，因此也推荐被使用。在这里，`$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_secret`。
 
 如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量作为参数](#配置环境变量作为参数)。
 
@@ -53,7 +53,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
     tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1&access-tier=Cool'
     ```
 
-- 将参数信息放在命令行参数中
+- 将参数信息放在命令行参数中：
     
     ```
     tiup br backup db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1 --azblob.access-tier=Cool
@@ -63,13 +63,13 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 使用 Azure AD 进行恢复时，需要指定参数 `account-name`。你可以通过以下两种方式指定 `account-name`：
 
-- 将参数信息放在 URL 参数中
+- 将参数信息放在 URL 参数中：
 
     ```
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?account-name=devstoreaccount1'
     ```
 
-- 将参数信息放在命令行参数中
+- 将参数信息放在命令行参数中：
 
     ```
     tiup br restore db --db test -u 127.0.0.1:2379 -s 'azure://test/t1?' --azblob.account-name=devstoreaccount1
@@ -122,7 +122,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 ### URL 参数
 
 | URL 参数 | 说明 | 默认值 | 是否必填 |
-|---------:|-----|-------|---------|
+|:---------|-----|-------|---------|
 | `account-name` | 存储账户名 | | 是 |
 | `account-key` | 访问密钥 | | 是 |
 | `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 | `Hot` | 否 |
@@ -130,7 +130,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 ### 命令行参数
 
 | 命令行参数 | 说明 | 默认值 | 是否必填 |
-|----------:|-------|-------|---------|
+|:----------|-------|-------|---------|
 | `--azblob.account-name` | 存储账户名 | | 是 |
 | `--azblob.account-key` | 访问密钥 | | 是 |
 | `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 | `Hot` | 否 |

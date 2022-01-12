@@ -24,7 +24,7 @@ TiDB 迁移工具支持以下存储服务：
 
 S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以为这类配置指定参数。例如：
 
-* 用 Dumpling 导出数据到 S3
+* 用 Dumpling 导出数据到 S3：
 
     {{< copyable "shell-regular" >}}
 
@@ -33,7 +33,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
         -o 's3://my-bucket/sql-backup?region=us-west-2'
     ```
 
-* 用 TiDB Lightning 从 S3 导入数据
+* 用 TiDB Lightning 从 S3 导入数据：
 
     {{< copyable "shell-regular" >}}
 
@@ -51,7 +51,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
         -d 's3://my-bucket/sql-backup?force-path-style=true&endpoint=http://10.154.10.132:8088'
     ```
 
-* 用 BR 备份到 GCS
+* 用 BR 备份到 GCS：
 
     {{< copyable "shell-regular" >}}
 
@@ -60,7 +60,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
         -s 'gcs://bucket-name/prefix'
     ```
 
-* 用 BR 备份到 Azblob
+* 用 BR 备份到 Azblob：
 
     {{< copyable "shell-regular" >}}
 
@@ -72,7 +72,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ### S3 的 URL 参数
 
 | URL 参数 | 描述 |
-|----------:|---------|
+|:----------|:---------|
 | `access-key` | 访问密钥 |
 | `secret-access-key` | secret 访问密钥 |
 | `region` | Amazon S3 服务区域（默认为 `us-east-1`） |
@@ -98,7 +98,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ### GCS 的 URL 参数
 
 | URL 参数 | 描述 |
-|----------:|---------|
+|:----------|:---------|
 | `credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
 | `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
 | `predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
@@ -112,7 +112,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ### Azblob 的 URL 参数
 
 | URL 参数 | 描述 |
-|----------:|-----|
+|:----------|:-----|
 | `account-name` | 存储账户名 |
 | `account-key` | 访问密钥 |
 | `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
@@ -122,10 +122,10 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 1. 如果已指定 `account-name` **和** `account-key`，则使用该参数指定的密钥。
 2. 如果没有指定 `account-key`，则尝试从工具节点上的环境变量读取相关凭证。
     - 迁移工具会优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。与此同时，工具会允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` (Azure Active Directory) 访问。
-        - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_id`。
+        - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_secret`。
         - 如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)
 3. 如果上述的三个环境变量不存在于工具节点中，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
-    - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)
+    - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)。
 
 > **注意：**
 > 
@@ -148,7 +148,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ### S3 的命令行参数
 
 | 命令行参数 | 描述 |
-|----------:|------|
+|:----------|:------|
 | `--s3.region` | Amazon S3 服务区域（默认为 `us-east-1`） |
 | `--s3.endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
 | `--s3.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`） |
@@ -160,7 +160,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ### GCS 的命令行参数
 
 | 命令行参数 | 描述 |
-|----------:|---------|
+|:----------|:---------|
 | `--gcs.credentials-file` | 迁移工具节点上的凭证 JSON 文件的路径 |
 | `--gcs.storage-class` | 上传对象的存储类别（例如 `STANDARD`、`COLDLINE`） |
 | `--gcs.predefined-acl` | 上传对象的预定义 ACL（例如 `private`、`project-private`） |
@@ -168,7 +168,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ### Azblob 的命令行参数
 
 | 命令行参数 | 描述 |
-|----------:|-------|
+|:----------|:-------|
 | `--azblob.account-name` | 存储账户名 |
 | `--azblob.account-key` | 访问密钥 |
 | `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 |
