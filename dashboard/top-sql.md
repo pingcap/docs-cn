@@ -1,6 +1,6 @@
 ---
 title: Top SQL
-summary: Top SQL -- 找到消耗负载较大的 SQL 查询
+summary: 本文介绍如何使用 Top SQL 找到消耗负载较大的 SQL 查询。
 ---
 
 # Top SQL
