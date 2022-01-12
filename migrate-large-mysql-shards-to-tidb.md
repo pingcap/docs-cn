@@ -145,15 +145,6 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
-### 创建目标表结构
-
-根据前述“分表数据冲突检查”修改后，手动在下游 TiDB 建 my_db 库和 table5 表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
-
-```
-[mydumper]
-no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
-```
-
 ### 执行导入操作
 
 启动 tidb-lightning 的步骤如下：
@@ -189,12 +180,6 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     target-schema = "my_db"
     target-table = "table5"
 
-    [mydumper]
-    # 源数据目录。设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
-    data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
-    # 由于 table1~4 合并为 table5。所以这里不创建表库，避免根据 Dumpling 的导出文件在下游创建出 table1~4。
-    no-schema = true
-
     # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
     [tidb]
     # 目标集群的信息
@@ -217,7 +202,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
+    nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
     ```
 
 3. 导入开始后，可以采用以下任意方式查看进度：
