@@ -121,7 +121,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 严格格式的 CSV 文件中，每个字段仅占一行，即必须满足以下条件之一：
 
 - delimiter 为空；
-- 每个字段不包含 CR (\r）或 LF（\n）。
+- 每个字段不包含 CR (\\r）或 LF（\\n）。
 
 如果你确认满足条件，可按如下配置开启 `strict-format` 模式以加快导入速度。
 

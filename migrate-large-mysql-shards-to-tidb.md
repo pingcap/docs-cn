@@ -7,7 +7,7 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 如果分表数据总规模特别大（例如大于 1 TiB），并且允许 TiDB 集群在迁移期间无其他业务写入，那么你可以使用 TiDB Lightning 对分表数据进行快速合并导入，然后根据业务需要选择是否使用 TiDB DM 进行增量数据的分表同步。本文所称“大数据量”通常指 TiB 级别以上。本文档举例介绍了导入数据的操作步骤。
 
-如果分库分表合并迁移在 1 TiB 以内，请参考[TiB 级以下分库分表 MySQL 迁移数据到 TiDB](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-shard-merge)，支持全量和增量且更为简单。
+如果分库分表合并迁移在 1 TiB 以内，请参考[从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)，支持全量和增量且更为简单。
 
 使用 TiDB Lightning 快速合并导入的原理如下图所示。
 
@@ -25,9 +25,9 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 ## 前提条件
 
-- [使用 TiUP 安装 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
+- [使用 TiUP 安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
-- [DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro)
+- [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 - [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
 
@@ -64,7 +64,7 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 
 ### 分表数据冲突检查
 
-迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](https://docs.pingcap.com/zh/tidb-data-migration/stable/shard-merge-best-practices#跨分表数据在主键或唯一索引冲突处理),这里做简要描述：
+迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理),这里做简要描述：
 
 假设 table1~4 具有相同的表结构如下：
 
@@ -288,7 +288,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 name: task-test               # 任务名称，需要全局唯一。
 task-mode: incremental        # 任务模式，设为 "incremental" 即只进行增量数据迁移。
 # 分库分表合并任务则需要配置 shard-mode。默认使用悲观协调模式 "pessimistic"，在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
-# 详细信息可参考：https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge
+# 详细信息可参考：https://docs.pingcap.com/zh/tidb/dev/feature-shard-merge/
 shard-mode: "pessimistic"
 
 ## 配置下游 TiDB 数据库实例访问信息
@@ -345,7 +345,7 @@ mysql-instances:
 
 ```
 
-关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
+关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
 在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
@@ -370,7 +370,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 | --master-addr | dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261 |
 |start-task|命令用于创建数据迁移任务|
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)
 
 ### 查看任务状态
 
@@ -382,7 +382,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)
+关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)
 
 ### 监控任务与查看日志
 
@@ -403,9 +403,10 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - [关于 Dumpling](/dumpling-overview.md)
 - [关于 Lightning](/tidb-lightning/tidb-lightning-overview.md)
-- [分库分表合并中的悲观/乐观模式](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge)
-- [暂停数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/pause-task)
-- [恢复数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/resume-task)
-- [停止数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/stop-task)
-- [导出和导入集群的数据源和任务配置](https://docs.pingcap.com/zh/tidb-data-migration/stable/export-import-config)
-- [处理出错的 DDL 语句](https://docs.pingcap.com/zh/tidb-data-migration/stable/handle-failed-ddl-statements)
+- [分库分表合并中的悲观/乐观模式](/dm/feature-shard-merge.md)
+- [暂停数据迁移任务](/dm/dm-pause-task.md)
+- [恢复数据迁移任务](/dm/dm-resume-task.md)
+- [停止数据迁移任务](/dm/dm-stop-task.md)
+- [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
+- [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)
+- [故障及处理方法](/dm/dm-error-handling.md)
