@@ -22,43 +22,72 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 默认值：false
 
-### `log-level`
-
-+ 日志等级。
-+ 可选值："trace"，"debug"，"info"，"warning"，"error"，"critical"
-+ 默认值："info"
-
-### `log-file`
-
-+ 日志文件。如果未设置该项，日志会默认输出到 "stderr"。
-+ 默认值：""
-
-### `log-format`
-
-+ 日志的格式。
-+ 可选值："json"，"text"
-+ 默认值："text"
-
-### `log-rotation-timespan`
-
-+ 轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。
-+ 默认值："24h"
-
-### `log-rotation-size`
-
-+ 触发日志轮换的文件大小。一旦日志文件大小超过指定的阈值，日志文件将被轮换，将旧文件被置于新文件中，新文件名即旧文件名加上时间戳后缀。
-+ 默认值："300MB"
-
 ### `slow-log-file`
 
 + 存储慢日志的文件。
-+ 如果未设置本项但设置了 `log-file`，慢日志将输出至 `log-file` 指定的日志文件中。如果本项和 `log-file` 均未设置，所有日志默认输出到 "stderr"。
++ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。
++ 如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 `"stderr"`。
++ 如果同时设置了两项，普通日志会输出至 `log.file.filename` 指定的日志文件中，而慢日志则会输出至本配置项指定的日志文件中。
 + 默认值：""
 
 ### `slow-log-threshold`
 
 + 输出慢日志的阈值。处理时间超过该阈值后会输出慢日志。
 + 默认值："1s"
+
+## log <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+日志相关的配置项。
+
+自 v5.4.0 版本起，废弃原 log 参数 `log-rotation-timespan`，并将 `log-level`、`log-format`、`log-file`、`log-rotation-size` 变更为下列参数，与 TiDB 的 log 参数保持一致。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。
+
+### `level` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 日志等级。
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
++ 默认值："info"
+
+### `format` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 日志的格式。
++ 可选值："json"，"text"
++ 默认值："text"
+
+### `enable-timestamp` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 是否开启日志中的时间戳。
++ 可选值："true"，"false"
++ 默认值："true"
+
+## log.file <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+日志文件相关的配置项。
+
+### `filename` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ log 文件。如果未设置该参数，日志会默认输出到 `"stderr"`；如果设置了该参数，log 会输出到对应的文件中。
++ 默认值：""
+
+### `max-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 单个 log 文件最大大小，超过设定的参数值后，系统自动切分成多个文件。
++ 默认值：300
++ 最大值：4096
++ 单位：MiB
+
+### `max-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 保留 log 文件的最长天数。
+    + 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 不清理 log 文件。
+    + 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiKV 会清理过期的日志文件。
++ 默认值：0
+
+### `max-backups` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 可保留的 log 文件的最大数量。
+    + 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 会保存所有的 log 文件；
+    + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
++ 默认值：0
 
 ## server
 
@@ -1360,8 +1389,13 @@ raftdb 相关配置项。
 ### `num-threads`
 
 + 处理备份的工作线程数量。
-+ 默认值：CPU * 0.75，但最大为 32
++ 默认值：CPU * 0.5，但最大为 8 
 + 最小值：1
+
+### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
+
++ 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
++ 默认值：true
 
 ## cdc
 

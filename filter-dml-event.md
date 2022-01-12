@@ -3,7 +3,7 @@ title: 如何通过 SQL 表达式过滤 DML
 summary: 介绍如何通过 SQL 表达式过滤 DML 事件
 ---
 
-# 如何通过 SQL 表达式过滤  DML
+# 如何通过 SQL 表达式过滤 DML
 
 本文档介绍使用 DM 持续增量数据同步时，如何更加精细的过滤 binlog 事件。具体迁移操作可参考已有数据迁移场景：
 
@@ -16,7 +16,7 @@ summary: 介绍如何通过 SQL 表达式过滤 DML 事件
 
 为了解决上述问题，从 v2.0.5 起，DM 支持在增量数据同步阶段使用`binlog value filter`过滤迁移数据。DM 支持的 `ROW` 格式的 binlog 中，binlog event 带有所有列的值。你可以基于这些值配置 SQL 表达式。如果该表达式对于某条行变更的计算结果是 `TRUE`，DM 就不会向下游迁移该条行变更。
 
-与[如何过滤 binlog 事件](/filter-binlog-event.md)类似，表达式过滤需要在数据迁移任务配置文件里配置，详见下面配置样例。完整的配置及意义，可以参考 [DM 完整配置文件示例](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full#完整配置文件示例)：
+与[如何过滤 binlog 事件](/filter-binlog-event.md)类似，表达式过滤需要在数据迁移任务配置文件里配置，详见下面配置样例。完整的配置及意义，可以参考 [DM 完整配置文件示例](/dm/task-configuration-file-full.md#完整配置文件示例)：
 
 ```yaml
 name: test

@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `TIDB_HOT_REGIONS`。
 
 # TIDB_HOT_REGIONS
 
-`TIDB_HOT_REGIONS` 表提供了关于热点 Region 的相关信息。
+`TIDB_HOT_REGIONS` 表提供了关于当前热点 Region 的相关信息。历史热点信息可以在 [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md) 表查看。
 
 {{< copyable "sql" >}}
 
@@ -42,5 +42,5 @@ DESC tidb_hot_regions;
 * REGION_ID：热点 Region 的 ID。
 * TYPE：热点 Region 的类型。
 * MAX_HOT_DEGREE：该 Region 的最大热度。
-* REGION_COUNT：所在实例的 Region 数量。
+* REGION_COUNT：所在实例的热点 Region 数量。
 * FLOW_BYTES：该 Region 内读写的字节数量。

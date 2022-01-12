@@ -26,11 +26,11 @@ aliases: ['/docs-cn/tidb-data-migration/dev/scenarios/']
 
 对于一些归档类场景，可能在上游会定期通过 `TRUNCATE TABLE`/`DROP TABLE` 或其他方式清理部分数据，但又期望下游 TiDB 中保留全部的数据，则可额外配置 `filter-rules` 过滤掉相关数据清理操作。
 
-对于此类场景，可参考 [Data Migration 简单使用场景](/dm/usage-scenario-simple-migration.md)。
+对于此类场景，可参考[从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)。
 
 ## 合库合表场景
 
-如果上游 MySQL/MariaDB 中的数据是以分库分表等形式存在的，在迁移到 TiDB 时通常会期望将其进行合并，这时可通过配置 `route-rules` 来将上游数据中的库名、表名等重命名后合并到下游同一个库或表中，具体可参考 [DM 分库分表合并场景](/dm/usage-scenario-shard-merge.md)以及[分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)。
+如果上游 MySQL/MariaDB 中的数据是以分库分表等形式存在的，在迁移到 TiDB 时通常会期望将其进行合并，这时可通过配置 `route-rules` 来将上游数据中的库名、表名等重命名后合并到下游同一个库或表中，具体可参考[从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)以及[分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)。
 
 对于 DDL 的迁移，DM 提供了特殊的支持，具体可参考[分库分表合并迁移](/dm/feature-shard-merge.md)。
 

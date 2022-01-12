@@ -11,9 +11,9 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 
 ## 前提条件
 
-- [部署 DM 集群](https://docs.pingcap.com/zh/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)。
+- [部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)。
 - [安装 Dumpling 和 TiDB Lightning](/migration-tools.md)。
-- [配置 DM 所需上下游数据库权限](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-intro#dm-worker-所需权限)。
+- [配置 DM 所需上下游数据库权限](/dm/dm-worker-intro.md#dm-worker-所需权限)。
 - [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)。
 
@@ -223,7 +223,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
     ```
 
-    以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full)
+    以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
     在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
@@ -248,7 +248,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr},例如：172.16.10.71:8261|
     |`start-task`|命令用于创建数据迁移任务|
 
-    如果任务启动失败，可根据返回结果的提示进行配置变更，再执行上述命令重新启动任务。遇到问题请参考 [故障及处理方法](https://docs.pingcap.com/zh/tidb-data-migration/stable/error-handling) 以及 [常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)。
+    如果任务启动失败，可根据返回结果的提示进行配置变更，再执行上述命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)。
 
 ### 查看任务状态
 
@@ -260,7 +260,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status)。
+关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
 ### 监控任务与查看日志
 
@@ -275,8 +275,8 @@ DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出�
 
 ## 探索更多
 
-- [暂停数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/pause-task)
-- [恢复数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/resume-task)
-- [停止数据迁移任务](https://docs.pingcap.com/zh/tidb-data-migration/stable/stop-task)
-- [导出和导入集群的数据源和任务配置](https://docs.pingcap.com/zh/tidb-data-migration/stable/export-import-config)
-- [处理出错的 DDL 语句](https://docs.pingcap.com/zh/tidb-data-migration/stable/handle-failed-ddl-statements)
+- [暂停数据迁移任务](/dm/dm-pause-task.md)
+- [恢复数据迁移任务](/dm/dm-resume-task.md)
+- [停止数据迁移任务](/dm/dm-stop-task.md)
+- [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
+- [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)
