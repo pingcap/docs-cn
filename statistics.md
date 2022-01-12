@@ -175,7 +175,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
     ANALYZE TABLE TableName ALL COLUMNS [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、或 `ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为 `ON` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。开启 ANALYZE 配置持久化特性后：
+如果要持久化 `ANALYZE` 语句中列的配置（包括 `COLUMNS ColumnNameList`、`PREDICATE COLUMNS`、`ALL COLUMNS`），请设置系统变量 `tidb_persist_analyze_options` 的值设置为 `ON` 以开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。开启 ANALYZE 配置持久化特性后：
 
 - 当 TiDB 自动收集统计信息或者你手动执行 `ANALYZE` 语句收集统计信息但未指定列的配置时，TiDB 会继续沿用之前持久化的配置。
 - 当多次手动执行 `ANALYZE` 语句并指定列的配置时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
@@ -273,7 +273,7 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
-- 当收集分区的统计信息时，如果要只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
+- 当收集分区的统计信息时，如果只[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)，请使用以下语法：
 
     > **警告：**
     >
