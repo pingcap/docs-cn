@@ -80,7 +80,6 @@ TiDB Lightning 并行导入可以用于以下场景：
 [lightning]
 status-addr = ":8289"
 
-
 [mydumper]
 # 设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
 data-source-dir = "/path/to/source-dir"
