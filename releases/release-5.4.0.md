@@ -64,7 +64,6 @@ TiDB 版本：5.4.0
 | TiFlash | `raftstore.apply-pool-size` | 新增 | 处理 Raft 数据落盘的线程池中线程的数量，默认值为 `4`。 |
 | TiFlash | `raftstore.store-pool-size` | 新增 | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小，默认值为 `4`。 |
 | TiDB Data Migration (DM) | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
-| TiCDC | `enable-tidb-extension` | 新增 |  开启该配置项后，TiCDC 在 Canal-JSON 协议格式中附加 TiDB 扩展字段。                  |
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `104857601`（10MB）  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
 | TiDB Lightning | `meta-schema-name` | 修改 | 此配置项控制 TiDB Lightning 在目标 TiDB 中保存 metadata 对应的 schema name。从 v5.4.0 开始，只在开启了并行导入功能时（对应配置为 `tikv-importer.incremental-import = true` ），才会在目标 TiDB 中创建此库。 |
