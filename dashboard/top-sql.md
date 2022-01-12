@@ -21,7 +21,7 @@ summary: 本文介绍如何使用 Top SQL 找到消耗负载较大的 SQL 查询
 Top SQL 功能默认关闭。你可以通过以下方法在整个集群范围内启用该功能：
 
 - 方法一：登录 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮。
-- 方法二：配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v54-版本开始引入)的值为 `ON`。
+- 方法二：配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入)的值为 `ON`。
 
 > **注意：**
 >

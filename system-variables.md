@@ -1396,7 +1396,7 @@ set tidb_slow_log_threshold = 200;
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
-### `tidb_enable_top_sql` <span class="version-mark">从 v5.4 版本开始引入</span>
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
