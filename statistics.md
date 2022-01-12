@@ -361,7 +361,7 @@ TiDB 支持持久化的配置项包括：
 
 #### 开启 ANALYZE 配置持久化功能
 
-`ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version = 2` 且 `tidb_persist_analyze_options = 1`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+`ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
 
 多次手动执行 `ANALYZE` 语句并指定持久化配置项时，TiDB 会使用最新一次 `ANALYZE` 指定的配置项覆盖上一次记录的持久化配置。
 
