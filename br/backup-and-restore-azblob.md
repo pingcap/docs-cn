@@ -117,23 +117,10 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ## 参数说明
 
-在进行备份和恢复过程中，你会用到 `account-name`、 `account-key`、 `access-tier` 三个参数。有关参数的详细介绍，请参阅[外部存储](/br/backup-and-restore-storages.md)。
+在进行备份和恢复过程中，你会用到 `account-name`、`account-key`、`access-tier` 三个参数。有关参数的详细介绍，请参阅[外部存储](/br/backup-and-restore-storages.md)。有关参数的详细介绍，请参阅以下内容：
 
-### URL 参数
-
-| URL 参数 | 说明 | 默认值 | 是否必填 |
-|:---------|-----|-------|---------|
-| `account-name` | 存储账户名 | | 是 |
-| `account-key` | 访问密钥 | | 是 |
-| `access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 | `Hot` | 否 |
-
-### 命令行参数
-
-| 命令行参数 | 说明 | 默认值 | 是否必填 |
-|:----------|-------|-------|---------|
-| `--azblob.account-name` | 存储账户名 | | 是 |
-| `--azblob.account-key` | 访问密钥 | | 是 |
-| `--azblob.access-tier` | 上传对象的存储类别（例如 `Hot`、`Cool`、`Archive`）。如果没有设置 `access-tier` 的值（该值为空），此值会默认设置为 `Hot`。 | `Hot` | 否 |
+- [URL 参数](/br/backup-and-restore-storages.md#Azblob 的 URL 参数)
+- [命令行参数](/br/backup-and-restore-storages.md#Azblob 的命令行参数)
 
 ### 配置环境变量作为参数
 
