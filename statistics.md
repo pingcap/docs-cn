@@ -214,7 +214,7 @@ Query OK, 0 rows affected (0.00 sec)
 SELECT * FROM t WHERE b > 1;
 Empty set (0.00 sec)
 
--- 等待一段时间（大约 100 * stats-lease）后，TiDB 将收集的 `PREDICATE COLUMNS` 写入 mysql.column_stats_usage。
+-- 等待一段时间（100 * stats-lease）后，TiDB 将收集的 `PREDICATE COLUMNS` 写入 mysql.column_stats_usage。
 -- 指定 `last_used_at IS NOT NULL` 表示显示 TiDB 收集到的 `PREDICATE COLUMNS`。
 SHOW COLUMN_STATS_USAGE WHERE db_name = 'test' AND table_name = 't' AND last_used_at IS NOT NULL;
 +---------+------------+----------------+-------------+---------------------+------------------+
