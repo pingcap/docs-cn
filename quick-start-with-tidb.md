@@ -18,6 +18,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 > - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
 > - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
 
+要快速了解 TiUP 的基本功能、使用 TiUP 快速搭建 TiDB 集群的方法与连接 TiDB 集群并执行 SQL 的方法，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解 [TiUP](/tiup/tiup-overview.md) 的具体使用方法和 [TiDB 快速上手具体操作步骤](#部署本地测试集群)，请以文档内容为准。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+7.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+7.png"></video>
+
 ## 部署本地测试集群
 
 - 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
@@ -276,7 +280,19 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-2. 安装 TiUP 的 cluster 组件：
+2. 声明全局环境变量：
+
+    > **注意：**
+    >
+    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    source .bash_profile
+    ```
+    
+3. 安装 TiUP 的 cluster 组件：
 
     {{< copyable "shell-regular" >}}
 
@@ -284,7 +300,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     tiup cluster
     ```
 
-3. 如果机器已经安装 TiUP cluster，需要更新软件版本：
+4. 如果机器已经安装 TiUP cluster，需要更新软件版本：
 
     {{< copyable "shell-regular" >}}
 
@@ -292,7 +308,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     tiup update --self && tiup update cluster
     ```
 
-4. 由于模拟多机部署，需要通过 `root` 用户调大 sshd 服务的连接数限制：
+5. 由于模拟多机部署，需要通过 `root` 用户调大 sshd 服务的连接数限制：
 
     1. 修改 `/etc/ssh/sshd_config` 将 `MaxSessions` 调至 20。
     2. 重启 sshd 服务：
@@ -303,7 +319,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         service sshd restart
         ```
 
-5. 创建并启动集群
+6. 创建并启动集群
 
     按下面的配置模板，编辑配置文件，命名为 `topo.yaml`，其中：
 
@@ -376,7 +392,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
      - host: 10.0.1.1
     ```
 
-6. 执行集群部署命令：
+7. 执行集群部署命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -394,7 +410,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     Input SSH password:
     ```
 
-7. 启动集群：
+8. 启动集群：
 
     {{< copyable "shell-regular" >}}
 
@@ -402,7 +418,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     tiup cluster start <cluster-name>
     ```
 
-8. 访问集群：
+9. 访问集群：
 
     - 安装 MySQL 客户端。如果已安装 MySQL 客户端则可跳过这一步骤。
 

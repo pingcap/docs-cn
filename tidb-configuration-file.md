@@ -187,7 +187,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `format`
 
-+ 指定日志输出的格式，可选项为 [json, text, console]。
++ 指定日志输出的格式，可选项为 [json, text]。
 + 默认值："text"
 
 ### `enable-timestamp`
@@ -454,13 +454,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该变量作为系统变量 [`tidb_opt_distinct_agg_push_down`](/system-variables.md#tidb_opt_distinct_agg_push_down) 的初始值。
 
-### `nested-loop-join-cache-capacity`
-
-+ nested loop join cache LRU 使用的最大内存限制。可以占用的最大内存阈值。
-+ 单位：Byte
-+ 默认值：20971520
-+ 当 `nested-loop-join-cache-capacity = 0` 时，默认关闭 nested loop join cache。 当 LRU 的 size 大于 `nested-loop-join-cache-capacity` 时，也会剔除 LRU 中的元素。
-
 ### `enforce-mpp`
 
 + 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
@@ -649,3 +642,23 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false
+
+### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
+
++ TiDB 统计信息同步加载功能可以并发处理的最大列数
++ 默认值：5
++ 目前的合法值范围：`[1, 128]`
+
+### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
+
++ 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
++ 默认值：1000
++ 目前的合法值范围： `[1, 100000]`

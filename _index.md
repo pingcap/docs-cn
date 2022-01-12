@@ -48,11 +48,9 @@ aliases: ['/docs-cn/dev/']
 <ColumnTitle>数据迁移</ColumnTitle>
 
 - [概述](/migration-overview.md)
-- [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
-- [从 Aurora 全量迁移](/migrate-from-aurora-using-lightning.md)
-- [从 Aurora/MySQL 持续迁移](/migrate-from-aurora-mysql-database.md)
-- [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-- [从 SQL 文件迁移](/migrate-from-mysql-dumpling-files.md)
+- [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
+- [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+- [从 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
 
 </NavColumn>
 

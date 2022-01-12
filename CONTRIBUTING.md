@@ -142,7 +142,7 @@ git add <file> ... # 如果你想提交所有的文档修改，可直接使用 `
 git commit -m "commit-message: update the xx"
 ```
 
-参考[如何写 commit message](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
+参考[如何写 commit message](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
 
 ### 第 6 步：保持新建 branch 与 upstream/master 一致
 

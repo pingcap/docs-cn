@@ -27,6 +27,7 @@ TiDB 历史版本发布声明如下：
 
 ## 5.0
 
+- [5.0.6](/releases/release-5.0.6.md)
 - [5.0.5](/releases/release-5.0.5.md)
 - [5.0.4](/releases/release-5.0.4.md)
 - [5.0.3](/releases/release-5.0.3.md)
@@ -37,6 +38,7 @@ TiDB 历史版本发布声明如下：
 
 ## 4.0
 
+- [4.0.16](/releases/release-4.0.16.md)
 - [4.0.15](/releases/release-4.0.15.md)
 - [4.0.14](/releases/release-4.0.14.md)
 - [4.0.13](/releases/release-4.0.13.md)

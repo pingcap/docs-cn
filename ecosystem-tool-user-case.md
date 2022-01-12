@@ -1,12 +1,20 @@
 ---
-title: TiDB 生态工具适用场景
-summary: 本文档介绍 TiDB 生态工具的常见适用场景与工具选择。
+title: TiDB 工具适用场景
+summary: 本文档介绍 TiDB 工具的常见适用场景与工具选择。
 aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 ---
 
-# TiDB 生态工具适用场景
+# TiDB 工具适用场景
 
 本文档从生态工具的适用场景出发，介绍部分常见场景下的生态工具选择。
+
+## 在物理机或虚拟机上部署运维 TiDB
+
+当需要在物理机或虚拟机上部署运维 TiDB 时，你可以先安装 [TiUP](/tiup/tiup-overview.md)，再通过 TiUP 管理 TiDB 的众多组件，如 TiDB、PD、TiKV 等。
+
+## 在 Kubernetes 上部署运维 TiDB
+
+当需要在 Kubernetes 上部署运维 TiDB 时，你可以先创建 Kubernetes 集群，部署[TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable)，然后使用 TiDB Operator 部署运维 TiDB 集群。
 
 ## 从 CSV 导入数据到 TiDB
 
@@ -18,7 +26,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 ## 从 MySQL/Aurora 迁移数据
 
-当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 完成[全量数据和增量数据的迁移](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/migrate-from-mysql-aurora)。
+当既需要从 MySQL/Aurora 导入全量数据，又需要迁移增量数据时，可使用 [TiDB Data Migration (DM)](/dm/dm-overview.md) 完成[从 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)。
 
 如果全量数据量较大（TB 级别），则可先使用 [Dumpling](/dumpling-overview.md) 与 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 完成全量数据的迁移，再使用 DM 完成增量数据的迁移。
 
