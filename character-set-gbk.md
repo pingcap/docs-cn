@@ -30,7 +30,7 @@ MySQL 的字符集默认排序规则是 `gbk_chinese_ci`。与 MySQL 不同，Ti
 
 如果要使 TiDB 兼容 MySQL 的 GBK 字符集排序规则，你需要在初次初始化 TiDB 集群时设置 TiDB 配置项[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 为 `true` 来开启[新的排序规则框架](/character-set-and-collation.md#新框架下的排序规则支持)。
 
-开启新的排序规则框架后，如果查看 GBK 字符集对应的排序规则，你可以看到 TiDB GBK 默认排序规则已经切换为 `gbk_chinese_ci `。
+开启新的排序规则框架后，如果查看 GBK 字符集对应的排序规则，你可以看到 TiDB GBK 默认排序规则已经切换为 `gbk_chinese_ci`。
 
 ```sql
 SHOW CHARACTER SET WHERE CHARSET = 'gbk';
@@ -81,6 +81,7 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
   ```
 
 * 对于 `ENUM` 和 `SET` 类型中的二进制字符，TiDB 目前都会将其作为 `utf8mb4` 字符集处理。
+
 ## 组件兼容性
 
 * TiCDC 和 TiFlash 目前不支持 GBK 字符集。
