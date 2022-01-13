@@ -52,6 +52,7 @@ TiDB 版本：5.3.0
 | PD | [`patrol-region-interval`](/pd-configuration-file.md#patrol-region-interval) | 修改 | 此配置项用于控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。默认值从 `100ms` 修改为 `10ms`。 |
 | PD | [`max-snapshot-count`](/pd-configuration-file.md#max-snapshot-count) | 修改 | 此配置项用于控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。默认值从 `3` 修改为 `64`。 |
 | PD | [`max-pending-peer-count`](/pd-configuration-file.md#max-pending-peer-count) | 修改 | 此配置项用于控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。默认值从 `16` 修改为 `64`。 |
+| TiD Lightning | `meta-schema-name` | 新增 | 在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认值为 "lightning_metadata"。 |
 
 ### 其他
 
