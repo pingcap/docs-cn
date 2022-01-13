@@ -33,8 +33,8 @@ title: 使用 TiUP 升级 TiDB
 
 > **警告：**
 >
-> - 在升级 TiDB 集群的过程中，**请勿执行** `ADD INDEX` 等 DDL 请求，否则可能会出现行为未定义的问题。
-> - 集群执行 `ADD INDEX` 等 DDL 请求期间，**请勿进行**升级操作。如需升级，须取消该 DDL 语句后再进行升级。
+> - 在升级 TiDB 集群的过程中，**请勿执行** ` DDL 语句，否则可能会出现行为未定义的问题。
+> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](sql-statement-admin-cancel-ddl) 命令取消该 DDL Job 后再进行升级。
 
 ### 2.1 升级 TiUP 或更新 TiUP 离线镜像
 
