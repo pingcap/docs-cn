@@ -21,9 +21,9 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
 
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
+| :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
+| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
@@ -483,7 +483,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ]
 ```
 
-### `hot [read | write | store]`
+### `hot [read | write | store| history <start_time> <end_time> [<key> <value>]]`
 
 用于显示集群热点信息。示例如下。
 
@@ -509,6 +509,76 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ```bash
 >> hot store
+```
+
+显示历史读写热点信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history startTime endTime [ <name> <value> ]
+```
+
+例如查询时间 `1629294000000` 到 `1631980800000` （毫秒）之间的历史热点 Region 信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1629294000000 1631980800000
+```
+
+```
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
+```
+
+对于参数的值为数组的请用 `x, y, ...` 的形式进行参数值的设置，所有支持的参数如下所示:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true
+```
+
+```
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
 ```
 
 ### `label [store <name> <value>]`

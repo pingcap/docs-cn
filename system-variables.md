@@ -585,6 +585,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON`
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
+### `tidb_enable_column_tracking` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 收集 `PREDICATE COLUMNS` 的统计信息目前为实验特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集。关闭该变量后，之前收集的 `PREDICATE COLUMNS` 会被清除。详情见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+
 ### `tidb_enable_enhanced_security`
 
 - 作用域：NONE
@@ -610,8 +620,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`OFF`
+- 默认值：`ON` 
 - 这个变量用于控制是否开启 index merge 功能。
+
+> **注意：**
+>
+> - 当集群从 v4.0.0 以下版本升级到 v5.4.0 及以上版本时，该变量开关默认关闭，防止升级后计划发生变化导致回退。
+> - 当集群从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本时，该变量开关保持升级前的状态。
+> - 对于 v5.4.0 及以上版本的新建集群，该变量开关默认开启。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1225,6 +1241,12 @@ explain select * from t where age=5;
 - 默认值：static
 - 这个变量用来设置是否开启分区表动态裁剪模式。关于动态裁剪模式的详细说明请参阅[分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
+### `tidb_persist_analyze_options` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`ON`
+- 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
+
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：INSTANCE
@@ -1369,6 +1391,28 @@ set tidb_slow_log_threshold = 200;
 - 默认值：""
 - 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 `"2017-11-11 20:20:20"` 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
+### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`0`
+- 单位：毫秒
+- 范围：`[0, 4294967295]`
+- 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
+
+### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载目前为实验性特性，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制统计信息同步加载超时后，SQL 是执行失败（`OFF`），还是退回使用 pseudo 的统计信息（`ON`）。
+
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1403,6 +1447,16 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[1, 2147483647]`
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
+
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+
+> **警告：**
+>
+> Top SQL 目前为实验特性，不建议在生产环境中使用。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 

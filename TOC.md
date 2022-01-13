@@ -48,11 +48,11 @@
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
-  - 复杂迁移操作
+  - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
+    - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
-    - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
@@ -65,7 +65,11 @@
       - [BR 工具简介](/br/backup-and-restore-tool.md)
       - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - [外部存储](/br/backup-and-restore-storages.md)
+      - 外部存储
+        - [外部存储概述](/br/backup-and-restore-storages.md)
+        - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
+      - BR 特性
+        - [自动调节](/br/br-auto-tune.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -84,7 +88,8 @@
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
   - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
-  - [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+  - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
+  - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
   - [SQL 语句统计](/statement-summary-tables.md)
   - [保存和恢复集群现场信息](/sql-plan-replayer.md)
   - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
@@ -215,19 +220,14 @@
           - [悲观模式](/dm/feature-shard-merge-pessimistic.md)
           - [乐观模式](/dm/feature-shard-merge-optimistic.md)
         - [迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)
-        - [使用 SQL 表达式过滤某些行变更](/dm/feature-expression-filter.md)
+        - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
       - [DM 架构](/dm/dm-arch.md)
       - [性能数据](/dm/dm-benchmark-v5.3.0.md)
     - 快速上手
       - [快速上手试用](/dm/quick-start-with-dm.md)
       - [使用 TiUP 部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [创建数据源](/dm/quick-start-create-source.md)
-      - 数据迁移场景
-        - [数据迁移场景概述](/dm/quick-create-migration-task.md)
-        - [多数据源合并迁移到 TiDB](/dm/usage-scenario-simple-migration.md)
-        - [分表合并迁移到 TiDB](/dm/usage-scenario-shard-merge.md)
-        - [增量迁移数据到 TiDB](/dm/usage-scenario-incremental-migration.md)
-        - [下游 TiDB 表结构存在更多列的数据迁移](/dm/usage-scenario-downstream-more-columns.md)
+    - [使用场景](/dm/quick-create-migration-task.md)
     - 部署使用
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - 部署 DM 集群
@@ -256,13 +256,10 @@
         - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
         - [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)
       - [手动处理 Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
+      - [变更同步的 MySQL 实例](/dm/usage-scenario-master-slave-switch.md)
       - [管理迁移表的表结构](/dm/dm-manage-schema.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-    - 使用场景
-      - [从 Aurora 迁移数据到 TiDB](/dm/migrate-from-mysql-aurora.md)
-      - [TiDB 表结构存在更多列的迁移场景](/dm/usage-scenario-downstream-more-columns.md)
-      - [变更同步的 MySQL 实例](/dm/usage-scenario-master-slave-switch.md)
     - 故障处理
       - [故障及处理方法](/dm/dm-error-handling.md)
       - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
@@ -293,6 +290,8 @@
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     - [外部存储](/br/backup-and-restore-storages.md)
+    - BR 特性
+      - [自动调节](/br/br-auto-tune.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -323,6 +322,7 @@
     - [报警规则](/ticdc/ticdc-alert-rules.md)
     - [TiCDC Open API](/ticdc/ticdc-open-api.md)
     - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+    - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
   - sync-diff-inspector
@@ -543,7 +543,9 @@
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
-    - [字符集和排序规则](/character-set-and-collation.md)
+    - 字符集和排序
+      - [概述](/character-set-and-collation.md)
+      - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - [`mysql`](/mysql-schema.md)
@@ -586,6 +588,7 @@
         - [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
         - [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)
         - [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
+        - [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)
         - [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
         - [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
         - [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
@@ -607,6 +610,7 @@
       - [访问](/dashboard/dashboard-access.md)
       - [概况页面](/dashboard/dashboard-overview.md)
       - [集群信息页面](/dashboard/dashboard-cluster-info.md)
+      - [Top SQL](/dashboard/top-sql.md)
       - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       - [监控关系图](/dashboard/dashboard-metrics-relation.md)
       - SQL 语句分析
