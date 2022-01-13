@@ -123,6 +123,8 @@ TiDB 版本：5.4.0
     - 新增或修改一些 TiFlash 已有配置的默认值，提升 TiFlash 的性能和稳定性
     - 提升由行存到列存数据同步处理时对 raft log 的解码 (decoding) 效率，数据同步性能提升 50%
 
+    用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
+    
 - **通过 session 变量实现有界限过期数据读取**
 
     TiDB 是基于 Raft 协议的多副本分布式数据库。面对高并发，高吞吐业务场景，可以通过follower 节点实现读性能扩展，构建读写分离架构。
@@ -142,7 +144,7 @@ TiDB 版本：5.4.0
 
 - **TiDB 正式发布索引合并 (Index Merge) 功能**
 
-    [索引合并](/explain-index-merge.md) 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。例如对以下的查询，若 `WHERE` 子句中两个 `OR` 连接的过滤条件在各自包含的 _key1_ 与 _key2_ 两个列上都存在索引，则 _索引合并_ 可以同时利用  _key1_ 与 _key2_ 上的索引分别进行过滤，然后合并出最终的结果。
+    _索引合并_ 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。例如对以下的查询，若 `WHERE` 子句中两个 `OR` 连接的过滤条件在各自包含的 _key1_ 与 _key2_ 两个列上都存在索引，则 _索引合并_ 可以同时利用  _key1_ 与 _key2_ 上的索引分别进行过滤，然后合并出最终的结果。
 
     ```sql
     SELECT * FROM table WHERE key1 <= 100 OR key2 = 200;
@@ -150,11 +152,13 @@ TiDB 版本：5.4.0
 
     以往 TiDB 在一个表上的查询只能使用一个索引，无法同时使用多个索引进行条件过滤。相较以往，_索引合并_ 避免了此情况下可能不必要的大量数据扫描，也可以使得需要灵活查询不特定多列数据组合的用户利用单列上的索引达到高效稳定的查询，无需大量构建多列复合索引。
 
-    本版本正式发布了 _索引合并 (Index Merge)_ 特性，但仍存在以下的使用条件和限制（详情请参见[用户文档](/explain-index-merge.md)）：
+    本版本正式发布了 _索引合并 (Index Merge)_ 特性，但仍存在以下的使用条件和限制：
 
-    目前 TiDB 的 _索引合并_ 优化只限于 _析取范式_ (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
+    - 目前 TiDB 的 _索引合并_ 优化只限于 _析取范式_ (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
 
-    如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
+    - 如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
+    
+    [用户文档](/explain-index-merge.md)
 
 - **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
 
@@ -190,14 +194,14 @@ TiDB 版本：5.4.0
 - **优化备份对集群的影响**
 
     Backup & Restore (BR) 增加了备份线程自动调节功能（默认开启）。该功能通过监控集群资源的使用率自动调节备份的线程数的方式，降低备份过程对集群的影响。在某些 Case 验证中，通过增加集群用于备份的资源和开启备份线程自动调节功能，备份的影响可以降低到 10% 以下。
-    详细文档请阅读 [BR 自动调节](/br/br-features.md#自动调节-从-v54-版本开始引入)。
+    
+    [用户文档](/br/br-features.md#自动调节-从-v54-版本开始引入)
 
 - **支持 Azure Blob Storage 作为备份目标存储（实验特性）**
 
     Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
-    该功能目前是实验特性，详细情况参考 [BR 支持 Azure Blob Storage 远端存储](/br/backup-and-restore-azblob.md)。
-
+    [用户文档](/br/backup-and-restore-azblob.md)
 
 ### 数据迁移
 
@@ -205,20 +209,28 @@ TiDB 版本：5.4.0
 
     为 TiDB Lightning 增加 `incremental-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
 
+    [用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
+
 - **增加新配置允许自定义用于保存 TiDB Lightning 并行导入特性的元信息的 schema 名称**
 
      为 TiDB Lightning 增加 `meta-schema-name` 配置。在并行导入模式下，该参数用于在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名称，默认值为 "lightning_metadata"。对于参与同一批并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入数据的正确性。
+
+    [用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
 
 - **在 TiDB Lightning 中添加重复数据的检测**
 
     在 `backend=local` 模式下，数据导入完成之前 TiDB Lightning 会输出冲突数据，然后从数据库中删除这些冲突数据。用户可以在导入完成后解析冲突数据，并根据业务规则选择适合的数据进行插入。建议根据冲突数据清洗上游数据源，避免在后续增量数据迁移阶段遇到冲突数据而造成数据不一致。
 
+    [用户文档](tidb-lightning/tidb-lightning-error-resolution.md)
+
 - **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
 
-    - 恢复 `source` 配置中 `enable-relay` 开关
-    - 增加 `start-relay` 或 `stop-relay` 命令中动态开启或关闭 relay log 的功能
-    - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态
-    - relay log 的存放路径移至 DM-worker 配置文件
+    - 恢复 `source` 配置中 `enable-relay` 开关。
+    - 增加 `start-relay` 或 `stop-relay` 命令中动态开启或关闭 relay log 的功能。
+    - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态。
+    - relay log 的存放路径移至 DM-worker 配置文件。
+    
+    [用户文档](/dm/relay-log.md)
 
 - **在 DM 中优化[排序规则](/character-set-and-collation.md)的处理方式**
 
@@ -227,6 +239,8 @@ TiDB 版本：5.4.0
     - 如果对排序规则要求不严格，允许上下游查询结果排序规则不一致，使用默认的 loose 模式可以避免报错。
     - 如果对排序规则要求严格，业务要求排序规则必须一致，则应当使用 strict 模式。但如果下游不支持上游缺省的 collation，同步可能会报错。
 
+    [用户文档](/dm/task-configuration-file-full.md#完整配置文件示例)
+    
 - **在 DM 中优化 `transfer source`，支持平滑执行同步任务**
 
     当 DM-worker 所在各节点负载不均衡时，`transfer source` 命令可用于手动将某 `source` 配置迁移到其他节点。优化后的 `transfer source` 简化了用户操作步骤，不再要求先暂停所有关联 task 而是直接执行平滑迁移，DM 将在内部完成所需操作。
@@ -234,6 +248,8 @@ TiDB 版本：5.4.0
 - **DM OpenAPI 特性 GA**
 
     DM 支持通过 API 的方式进行日常管理，包括增加数据源、管理任务等。本次更新 OpenAPI 从实验特性转为正式特性。
+
+    [用户文档](/dm/dm-open-api.md)
 
 ### 问题诊断效率
 
@@ -253,13 +269,15 @@ TiDB 版本：5.4.0
 
 - **持续性能分析（实验特性）**
 
-    - 支持更多组件：除了 TiDB、PD 和 TiKV 外，v5.4.0 版本中还支持查看 TiFlash CPU Profiling
+    - 支持更多组件：除了 TiDB、PD 和 TiKV 外，v5.4.0 版本中还支持查看 TiFlash CPU Profiling。
     - 支持更方便的查看形式：支持以火焰图形式查看 CPU Profiling 和 Goroutine 结果。
     - 支持更多部署环境：支持在 TiDB Operator 部署环境下启用持续性能分析功能。
 
-    该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启，开启方法见[用户文档](/dashboard/continuous-profiling.md)。
+    该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启。
 
     持续性能分析仅支持由 v1.9.0 及以上版本 TiUP 或 v1.3.0 及以上版本 TiDB Operator 升级或安装的集群。
+
+    [用户文档](/dashboard/continuous-profiling.md)
 
 ## 提升改进
 
