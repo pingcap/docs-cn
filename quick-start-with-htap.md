@@ -22,29 +22,17 @@ summary: 本文介绍如何快速上手体验 TiDB 的 HTAP 功能。
 
 ## 体验步骤
 
-本文的步骤以业界比较流行的 [TPC-H](http://www.tpc.org/tpch/) 数据集为例，通过其中一个查询场景来体验 TiDB HTAP 的便捷性和高性能。
+本文的步骤以 [TPC-H](http://www.tpc.org/tpch/) 数据集为例，通过其中一个查询场景来体验 TiDB HTAP 的便捷性和高性能。TPC-H 是业界较为流行的决策支持（Desision Support）业务 Benchmark。它包含大数据量下，一个业务决策分析系统所需要响应的不同类型高复杂度的即席查询。如果需要体验 TPC-H 完整的 22 条 SQL，可以访问 [tidb-bench 仓库](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries) 或者阅读 TPC-H 官网说明了解如何生成查询语句以及数据。
 
 ### 第 1 步：部署试用环境
 
-在试用 TiDB HTAP 功能前，请按照 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)中的步骤部署 TiDB 本地测试环境。
+在试用 TiDB HTAP 功能前，请按照 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)中的步骤准备 TiDB 本地测试环境，执行以下命令启动 TiDB 集群：
 
-在 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)中：
+{{< copyable "shell-regular" >}}
 
-- 推荐直接执行 `tiup playground` 命令启动最新版本的 TiDB 集群，此命令将自动部署 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup playground
-    ```
-
-- 如果想要指定 TiDB 版本以及各组件实例个数，请在部署命令中同时指定 TiFlash 实例的个数，示例如下：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup playground v5.1.0 --db 2 --pd 3 --kv 3 --tiflash 1 --monitor
-    ```
+```shell
+tiup playground
+```
 
 > **注意：**
 >
@@ -213,4 +201,4 @@ limit 10;
 
 - [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore-htap.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)  
+- [使用 TiFlash](/tiflash/use-tiflash.md)

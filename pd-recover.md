@@ -30,7 +30,7 @@ PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取
 
 > **注意：**
 >
-> `{version}` 是 TiDB 的版本号。例如，`v5.1.0` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.1.0-linux-amd64.tar.gz`。
+> `{version}` 是 TiDB 的版本号。例如，`v5.3.0` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.3.0-linux-amd64.tar.gz`。
 
 ## 快速开始
 
@@ -100,7 +100,7 @@ cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r | head -n 1
+cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
 ```
 
 ```bash

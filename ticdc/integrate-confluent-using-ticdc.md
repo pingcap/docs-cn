@@ -58,7 +58,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
     {{< copyable "shell-regular" >}}
 
     ```shell
-    curl -X POST -H "Content-Type: application/json" -d jdbc-sink-connector.json http://127.0.0.1:8083/connectors
+    curl -X POST -H "Content-Type: application/json" -d @jdbc-sink-connector.json http://127.0.0.1:8083/connectors
     ```
 
 3. 通过以下任一方式部署 TiCDC。如果已经部署了 TiCDC，可以跳过这一步。

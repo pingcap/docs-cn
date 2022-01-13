@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 # 与 MySQL 兼容性对比
 
-- TiDB 100% 兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
+- TiDB 高度兼容 MySQL 5.7 协议、MySQL 5.7 常用的功能及语法。MySQL 5.7 生态中的系统工具 (PHPMyAdmin、Navicat、MySQL Workbench、mysqldump、Mydumper/Myloader)、客户端等均适用于 TiDB。
 
 - 但 TiDB 尚未支持一些 MySQL 功能，可能的原因如下：
     - 有更好的解决方案，例如 JSON 取代 XML 函数。
@@ -14,12 +14,12 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
     - 一些功能在分布式系统上的实现难度较大。
 
 - 除此以外，TiDB 不支持 MySQL 复制协议，但提供了专用工具用于与 MySQL 复制数据
-    - 从 MySQL 复制：[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
+    - 从 MySQL 复制：[TiDB Data Migration (DM)](/dm/dm-overview.md) 是将 MySQL/MariaDB 数据迁移到 TiDB 的工具，可用于增量数据的复制。
     - 向 MySQL 复制：[TiCDC](/ticdc/ticdc-overview.md) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，可通过 [MySQL sink](/ticdc/ticdc-overview.md#sink-支持) 将 TiDB 增量数据复制到 MySQL。
 
 > **注意：**
 >
-> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模型](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息请查看各自具体页面。
+> 本页内容仅涉及 MySQL 与 TiDB 的总体差异。关于[安全特性](/security-compatibility-with-mysql.md)、[悲观事务模式](/pessimistic-transaction.md#和-mysql-innodb-的差异)相关的兼容信息请查看各自具体页面。
 
 ## 不支持的功能特性
 
@@ -28,9 +28,8 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
-* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
+* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
@@ -122,6 +121,10 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
 
+### 临时表
+
+详见 [TiDB 本地临时表与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)。
+
 ### 存储引擎
 
 - 仅在语法上兼容创建表时指定存储引擎，实际上 TiDB 会将元信息统一描述为 InnoDB 存储引擎。TiDB 支持类似 MySQL 的存储引擎抽象，但需要在系统启动时通过[`--store`](/command-line-flags-for-tidb-configuration.md#--store) 配置项来指定存储引擎。
@@ -130,7 +133,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
 
-- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
+- 不支持兼容模式，例如：`Oracle` 和 `PostgreSQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。 
 - TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 仅用于解决与 MySQL 的兼容性问题，并不适用于 TiDB。
 

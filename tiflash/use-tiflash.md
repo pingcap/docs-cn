@@ -3,6 +3,8 @@ title: 使用 TiFlash
 aliases: ['/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/']
 ---
 
+如果需要快速体验以 TPC-H 为例子，从导入到查询的完整流程，可以参考 [HTAP 快速上手指南](/quick-start-with-htap.md)
+
 # 使用 TiFlash
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表。
@@ -62,7 +64,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
-## 查看表同步进度
+### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
@@ -76,6 +78,78 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
+
+### 可用区设置
+
+在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
+
+1. 在集群配置文件中为 TiFlash 节点指定 label：
+
+    ```
+    tiflash_servers:
+      - host: 172.16.5.81
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.82
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.85
+        config:
+          flash.proxy.labels: zone=z2
+    ```
+
+2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+    ```
+
+    例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+    ```
+
+3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
+
+    ```shell
+    > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
+
+        ...
+
+        "address": "172.16.5.82:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 4,
+
+        ...
+
+        "address": "172.16.5.81:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 5,
+
+        ...
+
+        "address": "172.16.5.85:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z2" }
+        ],
+        "region_count": 9,
+
+        ...
+    ```
+
+关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
 
@@ -237,17 +311,27 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
-* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round(int), round(double), round(decimal), abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
+* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
 * 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
 * 位运算：`bitand, bitor, bigneg, bitxor`
-* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, position`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date`
+* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter`
 * JSON 函数：`json_length`
-* 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string)`
-* 聚合函数：`min, max, sum, count, avg, approx_count_distinct`
+* 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
+* 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
 * 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
 
-另外，所有包含 Time/Bit/Set/Enum/Geometry 类型的表达式均不能下推到 TiFlash。
+### 其他限制
+
+* 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash 
+* date_add、date_sub、adddate 和 subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
+    * DAY
+    * WEEK
+    * MONTH
+    * YEAR
+    * HOUR
+    * MINUTE
+    * SECOND
 
 如查询遇到不支持的下推计算，则需要依赖 TiDB 完成剩余计算，可能会很大程度影响 TiFlash 加速效果。对于暂不支持的算子/表达式，将会在后续版本中陆续支持。
 
@@ -297,18 +381,18 @@ Session 变量 `tidb_enforce_mpp` 的初始值等于这台 tidb-server 实例的
 > **注意：**
 >
 > `tidb_enforce_mpp=1` 在生效时，TiDB 优化器会忽略代价估算选择 MPP 模式。但如果存在其它不支持 MPP 的因素，例如没有 TiFlash 副本、TiFlash 副本同步未完成、语句中含有 MPP 模式不支持的算子或函数等，那么 TiDB 仍然不会选择 MPP 模式。
-> 
+>
 > 如果由于代价估算之外的原因导致 TiDB 优化器无法选择 MPP，在你使用 `EXPLAIN` 语句查看执行计划时，会返回警告说明原因，例如：
-> 
+>
 > {{< copyable "sql" >}}
-> 
+>
 > ```sql
 > set @@session.tidb_enforce_mpp=1;
 > create table t(a int);
-> explain select count(*) from t; 
+> explain select count(*) from t;
 > show warnings;
 > ```
-> 
+>
 > ```
 > +---------+------+-----------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                     |
@@ -348,9 +432,46 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
+## TiFlash 数据校验
+
+### 使用场景
+
+数据损坏通常意味着严重的硬件故障。在这种情形下，即使尝试自主修复，也会使得数据的可靠性下降。TiFlash 默认对数据文件进行基础的校验，使用固定的 City128 算法。一旦发现数据校验不符的情况，TiFlash 将立刻报错退出，避免因错误数据造成次生灾害。此时，您需要手动检查干预并重新同步数据，才可以恢复节点的使用。
+
+自 v5.4.0 起，TiFlash 完善了数据校验功能，默认使用 XXH3 算法，并允许用户调整校验帧大小和校验算法。
+
+### 校验机制简介
+
+TiFlash 的数据校验功能基于 DTFile（即 DeltaTree File）提供。DTFile 是 TiFlash 落盘数据的存储文件，共有三版格式：
+
+| 版本 | 状态 | 校验机制 | 备注 |
+| :-- | :-- | :-- |:-- |
+| V1 | 已废弃 | 在数据文件中内嵌哈希值 | |
+| V2 | 默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
+| V3 | 需手动开启 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
+
+DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用的格式均为文件夹形式，即具体数据均储存在名字类似 `dmf_<file id>` 的文件夹下的多个子文件中。
+
+#### 使用数据校验
+
+TiFlash 支持自动和手动进行数据校验：
+
+- 自动数据校验 （`storage.format_version` 配置项）：
+    - 默认使用 DTFile V2 版本校验机制。
+    - 如需开启 DTFile V3 版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+- 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
+
+> **警告：**
+>
+> 设置使用 V3 版本后，新生成的 DTFile 将无法被 v5.4.0 以前 TiFlash 直接正常读取。v5.4.0 后 TiFlash 同时支持 V2，V3 版本，不会主动进行版本的升降级。如果需要迁移到新的版本，或者需要回退到旧的版本，需要手动使用 DTTool 进行[版本切换](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
+
+#### 校验工具
+
+除了 TiFlash 在读取所需数据时进行的自动校验，在 v5.4.0 版本时还引入了手动检查文件完整性的工具，详情请见 DTTool 的[使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
+
 ## 注意事项
 
-TiFlash 目前尚不支持的一些功能，与原生 TiDB 可能存在不兼容的问题，具体如下：
+TiFlash 在以下情况与 TiDB 存在不兼容问题：
 
 * TiFlash 计算层：
     * 不支持检查溢出的数值。例如将两个 `BIGINT` 类型的最大值相加 `9223372036854775807 + 9223372036854775807`，该计算在 TiDB 中预期的行为是返回错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2` 且无报错。

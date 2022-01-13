@@ -85,10 +85,10 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-TiDB Lightning 只支持两种格式的数据源：
+目前，TiDB Lightning 支持：
 
-1. [Dumpling](/dumpling-overview.md) 生成的 SQL dump
-2. 储存在本地文件系统的 [CSV](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) 文件
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
+- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
@@ -228,19 +228,21 @@ strict-format = true
 
 ## `checksum failed: checksum mismatched remote vs local`
 
-**原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因：
+**原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因，可以通过检查日志中包含 `checksum mismatched` 的行进一步定位。
 
-1. 这张表可能本身已有数据，影响最终结果。
-2. 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
-3. 如果数据源是由机器生成而不是从 Dumpling 备份的，需确保数据符合表的限制，例如：
+包含 `checksum mismatched` 的行中有 `total_kvs: x vs y` 的信息，`x` 表示导入集群在完成导入后计算出的键值对（KV pairs）数目，`y` 表示本地数据源产生的键值对数目。
 
-    * 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
-    * 唯一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
-4. 如果 TiDB Lightning 之前失败停机过，但没有正确重启，可能会因为数据不同步而出现校验和不一致。
+- `x` 大，即导入集群键值对更多：
+    - 可能这张表在导入前已有数据，因此影响了数据校验。这也包括 TiDB Lightning 之前失败停机过，但没有正确重启。
+- `y` 大，即本地数据源键值对更多：
+    - 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
+    - 可能导出数据中包含重复数据，例如唯一键和主键 (UNIQUE and PRIMARY KEYs) 有重复的值、下游表结构为大小写不敏感而数据为大小写敏感。
+- 其他情况
+    - 如果数据源是由机器生成而不是从 Dumpling 备份的，需确保数据符合表的限制，例如自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
 
 **解决办法**：
 
-1. 使用 `tidb-lightning-ctl` 把出错的表删除，然后重启 TiDB Lightning 重新导入那些表。
+1. 使用 `tidb-lightning-ctl` 把出错的表删除，检查表结构与数据，重启 TiDB Lightning 重新导入此前出错的表。
 
     {{< copyable "shell-regular" >}}
 
@@ -367,7 +369,7 @@ header = false
     ```sh
     kill -USR1 <lightning-pid>
     ```
-   
+
     查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
 
 2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。

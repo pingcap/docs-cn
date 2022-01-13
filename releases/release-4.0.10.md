@@ -33,8 +33,8 @@ TiDB 版本：4.0.10
 
     + TiCDC
 
-        - 为 `maxwell` 协议默认开启 old value 特性 [#1144](https://github.com/pingcap/ticdc/pull/1144)
-        - 默认启用 unified sorter 特性 [#1230](https://github.com/pingcap/ticdc/pull/1230)
+        - 为 `maxwell` 协议默认开启 old value 特性 [#1144](https://github.com/pingcap/tiflow/pull/1144)
+        - 默认启用 unified sorter 特性 [#1230](https://github.com/pingcap/tiflow/pull/1230)
 
     + Dumpling
 
@@ -82,13 +82,13 @@ TiDB 版本：4.0.10
 
     + TiCDC
 
-        - 修复 `maxwell` 协议的问题，包括 `base64` 数据输出和将 TSO 转换成 unix timestamp [#1173](https://github.com/pingcap/ticdc/pull/1173)
-        - 修复过期的元数据可能引发新创建的 changefeed 异常的问题 [#1184](https://github.com/pingcap/ticdc/pull/1184)
-        - 修复在关闭的 notifier 上创建 receiver 的问题[#1199](https://github.com/pingcap/ticdc/pull/1199)
-        - 修复在 etcd 更新缓慢时导致内存访问量增长的问题 [#1227](https://github.com/pingcap/ticdc/pull/1227)
-        - 修复 `max-batch-size` 不生效的问题 [#1253](https://github.com/pingcap/ticdc/pull/1253)
-        - 修复清理过期任务信息的问题 [#1280](https://github.com/pingcap/ticdc/pull/1280)
-        - 修复 MySQL sink 中由于没有调用 `rollback` 而导致回收 db conn 卡住的问题 [#1285](https://github.com/pingcap/ticdc/pull/1285)
+        - 修复 `maxwell` 协议的问题，包括 `base64` 数据输出和将 TSO 转换成 unix timestamp [#1173](https://github.com/pingcap/tiflow/pull/1173)
+        - 修复过期的元数据可能引发新创建的 changefeed 异常的问题 [#1184](https://github.com/pingcap/tiflow/pull/1184)
+        - 修复在关闭的 notifier 上创建 receiver 的问题[#1199](https://github.com/pingcap/tiflow/pull/1199)
+        - 修复在 etcd 更新缓慢时导致内存访问量增长的问题 [#1227](https://github.com/pingcap/tiflow/pull/1227)
+        - 修复 `max-batch-size` 不生效的问题 [#1253](https://github.com/pingcap/tiflow/pull/1253)
+        - 修复清理过期任务信息的问题 [#1280](https://github.com/pingcap/tiflow/pull/1280)
+        - 修复 MySQL sink 中由于没有调用 `rollback` 而导致回收 db conn 卡住的问题 [#1285](https://github.com/pingcap/tiflow/pull/1285)
 
     + Dumpling
 

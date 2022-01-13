@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-
 
 TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上安装-tiup-组件)。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上部署-tiup-组件)。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -191,7 +191,11 @@ tiup cluster display <cluster-name>
 ```ini
 cdc_servers:
   - host: 10.0.1.3
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
   - host: 10.0.1.4
+    gc-ttl: 86400
+    data_dir: /data/deploy/install/data/cdc-8300
 ```
 
 ### 2. 运行扩容命令
@@ -232,7 +236,8 @@ tiup cluster display <cluster-name>
 
 > **注意：**
 >
-> 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+> - 移除 TiDB、PD 节点和移除 TiKV 节点的步骤类似。
+> - 由于 TiKV、TiFlash 和 TiDB Binlog 组件是异步下线的，且下线过程耗时较长，所以 TiUP 对 TiKV、TiFlash 和 TiDB Binlog 组件做了特殊处理，详情参考[下线特殊处理](/tiup/tiup-component-cluster-scale-in.md#下线特殊处理)。
 
 > **注意：**
 >
@@ -247,18 +252,20 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.5.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.7.0/cluster display <cluster-name> 
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.1.0
+TiDB Version: v5.3.0
 
 ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
 
 --              ----         ----        -----                            ------  --------                ----------
 
-10.0.1.3:8300   cdc         10.0.1.3     8300                                Up      -                       deploy/cdc-8300
-10.0.1.4:8300   cdc         10.0.1.4     8300                                Up      -                       deploy/cdc-8300
+10.0.1.3:8300   cdc          10.0.1.3    8300                             Up      data/cdc-8300           deploy/cdc-8300
+
+10.0.1.4:8300   cdc          10.0.1.4    8300                             Up      data/cdc-8300           deploy/cdc-8300
+
 10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
 
 10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
@@ -414,7 +421,7 @@ tiup cluster display <cluster-name>
 
 手动在 PD 中清除同步规则的步骤如下：
 
-1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
     {{< copyable "shell-regular" >}}
 

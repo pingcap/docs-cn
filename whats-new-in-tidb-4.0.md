@@ -39,7 +39,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 
 ## 事务
 
-+ 悲观事务正式 GA 并作为默认事务模式提供，支持 Read Committed 隔离级别以及 `SELECT FOR UPDATE NOWAIT` 语法。详情参阅：[悲观事务模型](/pessimistic-transaction.md)。
++ 悲观事务正式 GA 并作为默认事务模式提供，支持 Read Committed 隔离级别以及 `SELECT FOR UPDATE NOWAIT` 语法。详情参阅：[悲观事务模式](/pessimistic-transaction.md)。
 + 支持大事务，最大事务限制由 100 MB 提升到了 10 GB，同时支持乐观事务和悲观事务。详情参阅：[事务限制](/transaction-overview.md#事务限制)。
 
 ## SQL 功能
@@ -51,7 +51,7 @@ TiUP 是 4.0 版本中新推出的包管理器的工具，主要用于管理 TiD
 - 新增 `Flashback` 命令，支持恢复被 `Truncate` 的表。详情参阅：[`Flashback`](/sql-statements/sql-statement-flashback-table.md)。
 - 新增查询数据时将 Join、Sort 中间结果写入本地磁盘，防止查询语句占用内存过多导致系统 OOM 的问题，提升系统的稳定性。
 - 优化 `EXPLAIN` 和 `EXPLAIN ANALYZE` 的输出结果，显示更多的信息，提升排查问题的效率。详情参阅：[Explain Analyze](/sql-statements/sql-statement-explain-analyze.md)，[Explain](/sql-statements/sql-statement-explain.md)。
-- 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当查询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/explain-overview.md#indexmerge-示例)。
+- 支持 Index Merge 功能，Index Merge 是一种新的表访问方式，当查询只涉及到单张表时，优化器会自动根据查询条件读取多个索引数据并对结果求并集，提升查询单张表时的性能。详情参阅：[Index Merge](/explain-index-merge.md)。
 - 支持 AutoRandom Key 作为 TiDB 在列属性上的扩展语法，AutoRandom 被设计用于解决自增主键列的写热点问题，为使用自增主键列的用户提供最低成本的 MySQL 迁移方案。详情参阅：[AutoRandom Key](/auto-random.md)。
 - 新增集群拓扑、配置信息、日志信息、硬件信息、操作系统信息、慢查询信息等系统表等，帮助 DBA 通过 SQL 快速了解、分析系统的各项指标，详情参阅：[information_schema](/information-schema/information-schema.md)。具体信息如下：
 

@@ -78,7 +78,7 @@ TiDB 中文文档的日常更新特别活跃，相应地，[TiDB 英文文档](h
     - [常用 bot 命令](#常用-bot-命令)
 - [PingCAP 中文文档风格指南](/resources/pingcap-style-guide-zh.pdf)
 - [PingCAP 中英术语表](https://shimo.im/sheets/tTRyydP8Xkdv8yxq/MODOC)
-- [TiDB 中文用户文档模板](/resources/tidb-docs-template-zh-v1.0.pdf)
+- [TiDB 中文用户文档模板](/resources/doc-templates)
 - [必须遵循的 Markdown 规范](#必须遵循的-markdown-规范)
 - [代码注释规范](https://github.com/pingcap/community/blob/master/contributors/code-comment-style.md)
 - 图片风格：[Figma 快速上手教程](/resources/figma-quick-start-guide.md)
@@ -142,7 +142,7 @@ git add <file> ... # 如果你想提交所有的文档修改，可直接使用 `
 git commit -m "commit-message: update the xx"
 ```
 
-参考[如何写 commit message](https://github.com/pingcap/community/blob/master/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
+参考[如何写 commit message](https://github.com/pingcap/community/blob/master/contributors/commit-message-pr-style.md#how-to-write-a-good-commit-message)。
 
 ### 第 6 步：保持新建 branch 与 upstream/master 一致
 

@@ -183,9 +183,19 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
 ```
 
+### LIMIT_TO_COP()
+
+`LIMIT_TO_COP()` 提示优化器将指定查询块中的 `Limit` 和 `TopN` 算子下推到 coprocessor。优化器没有下推 `Limit` 或者 `TopN` 算子时建议尝试使用该提示。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
+```
+
 ### READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])
 
-`READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])` 提示优化器从指定的存储引擎来读取指定的表，目前支持的存储引擎参数有 `TIKV` 和 `TIFLASH`。例如：
+`READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])` 提示优化器从指定的存储引擎来读取指定的表，目前支持的存储引擎参数有 `TIKV` 和 `TIFLASH`。如果为表指定了别名，就只能使用表的别名作为 `READ_FROM_STORAGE()` 的参数；如果没有指定别名，则用表的本名作为其参数。例如：
 
 {{< copyable "sql" >}}
 
@@ -216,7 +226,6 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 目前该 Hint 生效的条件较为苛刻，包括：
 
 - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
-- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
 
 ## 查询范围生效的 Hint
 
@@ -242,7 +251,8 @@ SELECT /*+ NO_INDEX_MERGE() */ * FROM t WHERE t.a > 0 or t.b > 0;
 
 > **注意：**
 >
-> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - 当存在子查询时，`NO_INDEX_MERGE` 放在最外层才能生效。
 
 ### USE_TOJA(boolean_value)
 

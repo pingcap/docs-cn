@@ -43,7 +43,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 
 | Environment    | API                                      | Type                             | Notes                                    |
 | -------------- | ---------------------------------------- | -------------------------------- | ---------------------------------------- |
-| Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See [MySQL Bindings for GNU Ada](http://gnade.sourceforge.net/) |
+| Ada            | GNU Ada MySQL Bindings                   | `libmysqlclient`                 | See MySQL Bindings for GNU Ada. |
 | C              | C API                                    | `libmysqlclient`                 | See [MySQL C API](https://dev.mysql.com/doc/refman/5.7/en/c-api-info.html). |
 | C++            | Connector/C++                            | `libmysqlclient`                 | See [MySQL Connector/C++ Developer Guide](https://dev.mysql.com/doc/connector-cpp/en/). |
 |                | MySQL++                                  | `libmysqlclient`                 | See [MySQL++ Web site](http://tangentsoft.net/mysql++/doc/). |
@@ -73,7 +73,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | Ruby           | MySQL/Ruby                               | `libmysqlclient`                 | Uses `libmysqlclient`. See [Section 27.12.1, “The MySQL/Ruby API”](https://dev.mysql.com/doc/refman/5.7/en/apis-ruby-mysqlruby.html). |
 |                | Ruby/MySQL                               | Native Driver                    | See [Section 27.12.2, “The Ruby/MySQL API”](https://dev.mysql.com/doc/refman/5.7/en/apis-ruby-rubymysql.html). |
 | Scheme         | `Myscsh`                                 | `libmysqlclient`                 | See [`Myscsh`](https://github.com/aehrisch/myscsh). |
-| SPL            | `sql_mysql`                              | `libmysqlclient`                 | See [`sql_mysql` for SPL](http://www.clifford.at/spl/spldoc/sql_mysql.html). |
+| SPL            | `sql_mysql`                              | `libmysqlclient`                 | See `sql_mysql` for SPL. |
 | Tcl            | MySQLtcl                                 | `libmysqlclient`                 | See [Section 27.13, “MySQL Tcl API”](https://dev.mysql.com/doc/refman/5.7/en/apis-tcl.html). |
 
 ## TiDB 支持的连接器版本

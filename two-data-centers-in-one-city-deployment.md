@@ -13,7 +13,7 @@ TiDB 在 on-premises 部署的场景下，通常采用多中心部署方案，�
 
 同城两中心部署方案下，两个数据中心距离在 50 km 以内，通常位于同一个城市或两个相邻城市（例如北京和廊坊），数据中心间的网络连接延迟小于 1.5 ms，带宽大于 10 Gbps。
 
-## 架构
+## 部署架构
 
 本文以某城市为例，城里有两个数据中心 IDC1 和 IDC2，分为位于城东和城西。
 
@@ -45,11 +45,9 @@ global:
   ssh_port: 22
   deploy_dir: "/data/tidb_cluster/tidb-deploy"
   data_dir: "/data/tidb_cluster/tidb-data"
-
 server_configs:
   pd:
     replication.location-labels:  ["zone","rack","host"]
-
 pd_servers:
   - host: 10.63.10.10
     name: "pd-10"
@@ -57,14 +55,10 @@ pd_servers:
     name: "pd-11"
   - host: 10.63.10.12
     name: "pd-12"
-
-
 tidb_servers:
   - host: 10.63.10.10
   - host: 10.63.10.11
   - host: 10.63.10.12
-
-
 tikv_servers:
   - host: 10.63.10.30
     config:
@@ -78,21 +72,17 @@ tikv_servers:
   - host: 10.63.10.33
     config:
       server.labels: { zone: "west", rack: "west-2", host: "33" }
-
-
 monitoring_servers:
   - host: 10.63.10.60
-
 grafana_servers:
   - host: 10.63.10.60
-
 alertmanager_servers:
   - host: 10.63.10.60
 ```
 
 ### Placement Rules 规划
 
-为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 4 副本和 2 Voter 副本在主数据中心，1 Voter 和 1 Learner 在从数据中心的部署方式为例，可使用 Placement Rules 进行如下副本配置：
+为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 4 副本（2 Voter 副本在主数据中心，1 Voter 和 1 Learner 在从数据中心）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
 
 ```
 cat rule.json
