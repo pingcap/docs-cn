@@ -497,6 +497,8 @@ opentracing 的相关的设置。
 
 ## opentracing.sampler
 
+opentracing.sampler 相关的设置。
+
 ### `type`
 
 + opentracing 采样器的类型。
