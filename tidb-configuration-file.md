@@ -481,6 +481,78 @@ prepare 语句的 plan cache 设置。
 + 最小值：0
 + 最大值：1
 
+## opentracing
+
+opentracing 的相关的设置。
+
+### `enable`
+
++ 开启 opentracing 跟踪 TiDB 部分组件的调用开销。注意开启后会有一定的性能损失。
++ 默认值：false
+
+### `rpc-metrics`
+
++ 开启 rpc metrics。
++ 默认值：false
+
+## opentracing.sampler
+
+opentracing.sampler 相关的设置。
+
+### `type`
+
++ opentracing 采样器的类型。
++ 默认值："const"
++ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
+
+### `param`
+
++ 采样器参数。
+    - 对于 const 类型，可选值为 0 或 1，表示是否开启。
+    - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
+    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
++ 默认值：1.0
+
+### `sampling-server-url`
+
++ jaeger-agent 采样服务器的 HTTP URL 地址。
++ 默认值：""
+
+### `max-operations`
+
++ 采样器可追踪的最大操作数。如果一个操作没有被追踪，会启用默认的 probabilistic 采样器。
++ 默认值：0
+
+### `sampling-refresh-interval`
+
++ 控制远程轮询 jaeger-agent 采样策略的频率。
++ 默认值：0
+
+## opentracing.reporter
+
+opentracing.reporter 相关的设置。
+
+### `queue-size`
+
++ reporter 在内存中记录 spans 个数的队列容量。
++ 默认值：0
+
+### `buffer-flush-interval`
+
++ reporter 缓冲区的刷新频率。
++ 默认值：0
+
+### `log-spans`
+
++ 是否为所有提交的 span 打印日志。
++ 默认值：false
+
+### `local-agent-host-port`
+
++ reporter 向 jaeger-agent 发送 span 的地址。
++ 默认值：""
+
 ## tikv-client
 
 ### `grpc-connection-count`
