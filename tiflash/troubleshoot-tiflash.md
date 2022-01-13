@@ -101,7 +101,26 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 
 ## TiFlash 分析慢
 
-[使用 Explain 语句查询执行计划的 warnings](/tiflash/use-tiflash.md#控制是否选择-mpp-模式)检查 SQL 中是否含有 TiFlash 不支持的函数或算子。
+如果语句中含有 MPP 模式不支持的算子或函数等，TiDB 不会选择 MPP 模式，可能导致分析慢。此时，可以执行 `EXPLAIN` 语句检查 SQL 中是否含有 TiFlash 不支持的函数或算子。
+
+{{< copyable "sql" >}}
+
+```sql
+set @@session.tidb_enforce_mpp=1;
+create table t(a int);
+explain select count(*) from t;
+show warnings;
+```
+
+```
++---------+------+-----------------------------------------------------------------------------+
+> | Level   | Code | Message                                                                     |
++---------+------+-----------------------------------------------------------------------------+
+| Warning | 1105 | MPP mode may be blocked because there aren't tiflash replicas of table `t`. |
++---------+------+-----------------------------------------------------------------------------+
+```
+
+函数或算子。
 
 ## TiFlash 数据不同步
 
