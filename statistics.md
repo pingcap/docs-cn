@@ -16,7 +16,7 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >   {{< copyable "sql" >}}
 >
 >   ```sql
->   select distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
+>   select distinct(concat('ANALYZE TABLE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
 >    ```
 >
 > - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
@@ -25,6 +25,15 @@ TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `ti
 >
 >   ```sql
 >   select distinct(concat('DROP STATS ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
+>   ```
+>
+> - 如果上一条语句返回结果太长，不方便拷贝粘贴，可以将结果导出到临时文件后，再执行:
+>
+>   {{< copyable "sql" >}}
+>
+>   ```sql
+>   select distinct... into outfile '/tmp/sql.txt';
+>   mysql -h XXX -u user -P 4000 ... < '/tmp/sql.txt';
 >   ```
 
 两种版本中，TiDB 维护的统计信息如下：
