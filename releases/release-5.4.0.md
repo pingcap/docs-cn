@@ -89,7 +89,7 @@ TiDB 版本：5.4.0
 - **TiDB 从 v5.4.0 起支持 GBK 字符集**
 
     在 v5.4.0 前，TiDB 支持 `ascii`、`binary`、`latin1`、`utf8` 和 `utf8mb4` 字符集。
-    
+
     为了更好的支持中文用户，TiDB 从 v5.4.0 起支持 GBK 字符集。在初次初始化 TiDB 集群时开启 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，TiDB GBK 字符集同时支持 `gbk_bin` 和 `gbk_chinese_ci` 这两种排序规则。
 
 在使用 GBK 字符集时，需要注意兼容性限制，详情参考[字符集和排序 - GBK](/character-set-gbk.md)。
@@ -157,17 +157,17 @@ TiDB 版本：5.4.0
 - **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
 
     执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。
-    
+
     从 v5.4.0 开始，你可以设置系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值为 `ON` 开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
-    
+
     开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。等到业务的查询模式稳定以后，使用 `ANALYZE TABLE TableName PREDICATE COLUMNS` 语法收集 `PREDICATE COLUMNS` 列的统计信息，可以极大地降低收集统计信息的开销。
-    
+
     [用户文档](/statistics.md#收集部分列的统计信息)
-    
+
 - **支持统计信息的同步加载（实验特性）**
 
     从 v5.4.0 开始，TiDB 引入了统计信息同步加载的特性（默认关闭），支持执行当前 SQL 语句时将直方图、TopN、CMSketch 等占用空间较大的统计信息同步加载到内存，提高该 SQL 语句优化时统计信息的完整性。
-    
+
     [用户文档](/statistics.md#统计信息的加载)
 
 ### 稳定性
@@ -177,9 +177,9 @@ TiDB 版本：5.4.0
     统计信息是优化器生成执行计划时所参考的基础信息之一，统计信息的准确性直接影响生成的执行计划是否合理。为了保证统计信息的准确性，有时候需要针对不同的表、分区、索引设置不同的采集配置项。
 
     TiDB 从 v5.4.0 版本开始支持 `ANALYZE` 配置持久化功能，方便后续收集统计信息时沿用已有配置项。
-    
+
     `ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
-    
+
     [用户文档](/statistics.md#analyze-配置持久化)
 
 
@@ -290,6 +290,10 @@ TiDB 版本：5.4.0
 
     + TiCDC
 
+        - 减少 "EventFeed retry rate limited" 日志的数量 [#4006](https://github.com/pingcap/tiflow/issues/4006)
+        - 降低在同步大量表时的同步延时 [#3900](https://github.com/pingcap/tiflow/issues/3900)
+        - 减少 TiKV 节点宕机后 kv client 恢复的时间 [#3191](https://github.com/pingcap/tiflow/issues/3191)
+
     + TiDB Data Migration (DM)
 
     + TiDB Lightning
@@ -333,6 +337,21 @@ TiDB 版本：5.4.0
     + Backup & Restore (BR)
 
     + TiCDC
+
+        - 修复当 `min.insync.replicas` 小于 `replication-factor` 时不能同步的问题 [#3994](https://github.com/pingcap/tiflow/issues/3994)
+        - 修复 `cached region` 监控指标为负数的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
+        - 修复 `mq sink write row` 没有监控数据的问题 [#3431](https://github.com/pingcap/tiflow/issues/3431)
+        - 修复 `sql mode` 兼容性问题 [#3810](https://github.com/pingcap/tiflow/issues/3810)
+        - 修复在移除同步任务后潜在的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
+        - 修复输出默认列值时的 panic 问题和数据不一致的问题 [#3929](https://github.com/pingcap/tiflow/issues/3929)
+        - 修复不支持同步默认值的问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
+        - 修复潜在的同步流控死锁问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
+        - 修复在磁盘写满时无日志输出的问题 [#3362](https://github.com/pingcap/tiflow/issues/3362)
+        - 修复 DDL 特殊注释导致的同步停止的问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
+        - 修复在某些 RHEL 发行版上因时区问题导致服务无法启动的问题 [#3584](https://github.com/pingcap/tiflow/issues/3584)
+        - 修复因 checkpoint 不准确导致的潜在的数据丢失问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
+        - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
+        - 修复 `config.Metadata.Timeout` 没有正确配置而导致的同步停止问题 [#3352](https://github.com/pingcap/tiflow/issues/3352)
 
     + TiDB Data Migration (DM)
 
