@@ -16,6 +16,14 @@ This section lists some FAQs and their solutions when you upgrade TiDB.
 
 When you apply rolling updates to the TiDB services, the running application is not affected. You need to configure the minimum cluster topology (TiDB \* 2, PD \* 3, TiKV \* 3). If the Pump or Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you upgrade TiDB, Pump is also upgraded.
 
+### Can I upgrade the TiDB cluster during the DDL execution?
+
+**DO NOT** upgrade a TiDB cluster when a DDL statement is being executed in the cluster (usually for the time-consuming DDL statements such as `ADD INDEX` and the column type changes).
+
+Before the upgrade, it is recommended to use the [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) command to check whether the TiDB cluster has an ongoing DDL job. If the cluster has a DDL job, to upgrade the cluster, wait until the DDL execution is finished or use the [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) command to cancel the DDL job before you upgrade the cluster.
+
+In addition, during the cluster upgrade, **DO NOT** execute any DDL statement. Otherwise, the issue of undefined behavior might occur.
+
 ### How to upgrade TiDB using the binary?
 
 It is not recommended to deploy TiDB using the binary. The TiDB support for upgrading using Binary is not as friendly as using TiUP. It is recommended to [deploy TiDB using TiUP](/production-deployment-using-tiup.md).
