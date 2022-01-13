@@ -45,7 +45,7 @@ TiDB 版本：5.3.0
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 memory-usage-limit 参数， 升级后该参数值根据 storage.block-cache.capacity 来计算。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。|
 |  TiKV | [`raftstore.raft-write-size-limit`](/tikv-configuration-file.md#raft-write-size-limit-从-v530-版本开始引入) | 新增 | 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
-|  TiKV | [`raftstore.raft-msg-flush-interval`](/tikv-configuration-file.md#raft-msg-flush-interval-从-v530-版本开始引入) | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
+|  TiKV | `raftstore.raft-msg-flush-interval` | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | `raftstore.raft-reject-transfer-leader-duration` | 删除 | 控制迁移 leader 到新加节点的最小时间。|
 | PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 |
 | PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。 |
