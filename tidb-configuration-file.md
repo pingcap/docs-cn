@@ -531,6 +531,8 @@ opentracing.sampler 相关的设置。
 
 ## opentracing.reporter
 
+opentracing.reporter 相关的设置。
+
 ### `queue-size`
 
 + reporter 在内存中记录 spans 个数的队列容量。
