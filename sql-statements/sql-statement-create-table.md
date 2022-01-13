@@ -12,7 +12,10 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table/','/docs-cn/de
 
 ```ebnf+diagram
 CreateTableStmt ::=
-    'CREATE' OptTemporary 'TABLE' IfNotExists TableName ( TableElementListOpt CreateTableOptionListOpt PartitionOpt DuplicateOpt AsOpt CreateTableSelectOpt | LikeTableWithOrWithoutParen )
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName ( TableElementListOpt CreateTableOptionListOpt PartitionOpt DuplicateOpt AsOpt CreateTableSelectOpt | LikeTableWithOrWithoutParen ) OnCommitOpt
+
+OptTemporary ::=
+    ( 'TEMPORARY' | ('GLOBAL' 'TEMPORARY') )?
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -80,6 +83,9 @@ TableOption ::=
 |   'SECONDARY_ENGINE' EqOpt ( 'NULL' | StringName )
 |   'UNION' EqOpt '(' TableNameListOpt ')'
 |   'ENCRYPTION' EqOpt EncryptionOpt
+
+OnCommitOpt ::=
+    ('ON' 'COMMIT' 'DELETE' 'ROWS')?
 ```
 
 TiDB 支持以下 `table_option`。TiDB 会解析并忽略其他 `table_option` 参数，例如 `AVG_ROW_LENGTH`、`CHECKSUM`、`COMPRESSION`、`CONNECTION`、`DELAY_KEY_WRITE`、`ENGINE`、`KEY_BLOCK_SIZE`、`MAX_ROWS`、`MIN_ROWS`、`ROW_FORMAT` 和 `STATS_PERSISTENT`。
@@ -181,7 +187,6 @@ mysql> DESC t1;
 
 ## MySQL 兼容性
 
-* TiDB 不支持临时表。如果 [`tidb_enable_noop_functions = 0`](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) ，执行 `CREATE TEMPORARY TABLE` 语法会报错；如果 `tidb_enable_noop_functions = 1`，TiDB 会忽略 `TEMPORARY` 关键字。
 * 支持除空间类型以外的所有数据类型。
 * 不支持 `FULLTEXT`，`HASH` 和 `SPATIAL` 索引。
 * 为了与 MySQL 兼容，`index_col_name` 属性支持 length 选项，最大长度默认限制为 3072 字节。此长度限制可以通过配置项 `max-index-length` 更改，具体请参阅 [TiDB 配置文件描述](/tidb-configuration-file.md#max-index-length)。

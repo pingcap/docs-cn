@@ -260,18 +260,34 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 
 Region Merge 速度慢也很有可能是受到 limit 配置的限制（`merge-schedule-limit` 及 `region-schedule-limit`），或者是与其他调度器产生了竞争。具体来说，可有如下处理方式：
 
-- 假如已经从相关 Metrics 得知系统中有大量的空 Region，这时可以通过把 `max-merge-region-size` 和 `max-merge-region-keys` 调整为较小值来加快 Merge 速度。这是因为 Merge 的过程涉及到副本迁移，所以 Merge 的 Region 越小，速度就越快。如果生成 Merge Operator 的速度很快，想进一步加快 Region Merge 过程，还可以把 `patrol-region-interval` 调整为 "10ms" ，这个能加快巡检 Region 的速度，但是会消耗更多的 CPU 资源。
+- 假如已经从相关 Metrics 得知系统中有大量的空 Region，这时可以通过把 `max-merge-region-size` 和 `max-merge-region-keys` 调整为较小值来加快 Merge 速度。这是因为 Merge 的过程涉及到副本迁移，所以 Merge 的 Region 越小，速度就越快。如果生成 Merge Operator 的速度很快，想进一步加快 Region Merge 过程，还可以把 `patrol-region-interval` 调整为 "10ms" (从 v5.3.0 起，此配置项默认值为 "10ms")，这个能加快巡检 Region 的速度，但是会消耗更多的 CPU 资源。
 
 - 创建过大量表后（包括执行 `Truncate Table` 操作）又清空了。此时如果开启了 split table 特性，这些空 Region 是无法合并的，此时需要调整以下参数关闭这个特性：
 
     - TiKV: 将 `split-region-on-table` 设为 `false`，该参数不支持动态修改。
-    - PD: 
-        + `key-type` 设为 `txn` 或者 `raw`，该参数支持动态修改。
-        + 或者 `key-type` 保持 `table`，同时设置 `enable-cross-table-merge`为 `true`，该参数支持动态修改。
-       
+    - PD: 使用 PD Control，根据集群情况选择性地设置以下参数。
+
+        * 如果集群中不存在 TiDB 实例，将 [`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) 的值设置为 `raw` 或 `txn`。此时，无论 `enable-cross-table-merge` 设置如何，PD 均可以跨表合并 Region。该参数支持动态修改。
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        config set key-type txn
+        ```
+
+        * 如果集群中存在 TiDB 实例，将 `key-type` 的值设置为 `table`。此时将 `enable-cross-table-merge` 设置为 `true`，可以使 PD 跨表合并 Region。该参数支持动态修改。
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        config set enable-cross-table-merge true
+        ```
+
+        如果修改未生效，请参阅 [FAQ - 修改 TiKV/PD 的 toml 配置文件后没有生效](/faq/deploy-and-maintain-faq.md#为什么修改了-tikvpd-的-toml-配置文件却没有生效)。
+
         > **注意：**
         >
-        > 在开启 `placement-rules`后，请合理切换 `txn`和 `raw`，避免无法正常解码 key。
+        > 在开启 `placement-rules` 后，请合理切换 `key-type`，避免无法正常解码 key。
 
 - 对于 3.0.4 和 2.1.16 以前的版本，Region 中 Key 的个数 (`approximate_keys`) 在特定情况下（大部分发生在删表之后）统计不准确，造成 keys 的统计值很大，无法满足 `max-merge-region-keys` 的约束。你可以通过调大 `max-merge-region-keys` 来避免这个问题。
 

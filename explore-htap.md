@@ -11,6 +11,10 @@ summary: 本文介绍如何深入探索并使用 TiDB 的 HTAP 功能。
 >
 > 如果你对 TiDB HTAP 功能还不太了解，希望快速试用体验，请参阅[快速上手 HTAP](/quick-start-with-htap.md)。
 
+要快速了解 TiDB 在 HTAP 场景下的体系架构与 HTAP 的适用场景，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解详细的 HTAP 相关内容，请参阅下方的文档内容。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+04.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+4.png"></video>
+
 ## HTAP 适用场景
 
 TiDB HATP 可以满足企业海量数据的增产需求、降低运维的风险成本、与现有的大数据栈无缝缝合，从而实现数据资产价值的实时变现。
@@ -100,5 +104,5 @@ TiFlash 部署完成后并不会自动同步数据，你需要指定需要同步
 
 ## 探索更多
 
-- 如果要查看 TiFlash 版本，以及 TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
+- 如果要查看 TiFlash 版本、TiFlash 重要日志及系统表，请参阅 [TiFlash 集群运维](/tiflash/maintain-tiflash.md)。
 - 如果需要移除某个 TiFlash 节点，请参阅[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。

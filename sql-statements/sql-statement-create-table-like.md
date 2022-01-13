@@ -12,11 +12,17 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-table-like/','/docs-
 
 ```ebnf+diagram
 CreateTableLikeStmt ::=
-    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen
+    'CREATE' OptTemporary 'TABLE' IfNotExists TableName LikeTableWithOrWithoutParen OnCommitOpt
+
+OptTemporary ::=
+    ( 'TEMPORARY' | ('GLOBAL' 'TEMPORARY') )?
 
 LikeTableWithOrWithoutParen ::=
     'LIKE' TableName
 |   '(' 'LIKE' TableName ')'
+
+OnCommitOpt ::=
+    ('ON' 'COMMIT' 'DELETE' 'ROWS')?
 ```
 
 ## 示例

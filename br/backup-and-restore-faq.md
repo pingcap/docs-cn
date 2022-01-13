@@ -10,6 +10,21 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
+## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
+
+从 TiDB v5.4.0 起，TiKV 的备份新增了自动调节功能。对于 v5.4.0 及以上版本，该功能会默认开启。当集群负载较高时，该功能会自动限制备份任务使用的资源，从而减少备份对在线集群的性能造成的影响。如需了解关于自动调节功能的更多信息，请参见[自动调节](/br/br-auto-tune.md)。
+
+TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能。因此，在开启或关闭该功能时，你不需要重启集群。以下为该功能的具体使用方法：
+
+- 关闭功能：把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `false`。
+- 开启功能：把 `backup.enable-auto-tune` 设置为 `true`。对于 v5.4.0 以下的集群，当 TiDB 升级到 v5.4.0 及以上版本后，自动调节功能会默认关闭。这时，你可以通过该方式手动开启此功能。
+
+如需了解通过 `tikv-ctl` 在线修改自动调节功能的命令行，请参阅[自动调节功能的使用方法](/br/br-auto-tune.md#使用方法)。
+
+另外，该功能也降低了进行备份任务时默认使用的工作线程数量（详见 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)）。因此，你通过 Grafana 监控面板看到的备份速度、CPU 使用率、I/O 资源利用率都会小于 v5.4 之前的版本。在 v5.4 之前的版本中，`backup.num-threads` 的默认值为 CPU * 0.75，即处理备份任务的工作线程数量占了 75% 的逻辑 CPU，最大值为 `32`；在 v5.4 及之后的版本中，该配置项的默认值为 CPU * 0.5，最大值为 `8`。
+
+在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份任务的速度。
+
 ## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
 在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)，默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
@@ -18,9 +33,36 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 ## BR 备份时，对集群影响多大？
 
-使用 `sysbench` 的 `oltp_read_only` 场景全速备份到非服务盘，对集群的影响依照表结构的不同，对集群 QPS 的影响在 15%~25% 之间。
+- 对于 TiDB v5.4.0 及以后的版本：
 
-如果需要控制备份带来的影响，可以使用 `--ratelimit` 参数限速。
+    BR 不仅调低了备份任务会使用的默认 CPU 使用率，还引入了自动调节功能。开启该功能后，当在集群高负载的场景下进行备份时，BR 能够自动限制备份任务使用的资源，从而限制 BR 备份的速度。因此，在 v5.4.0 高负载集群中使用默认配置进行备份时，备份任务对其集群性能的影响会显著小于 v5.4.0 之前的版本。有关自动调节功能的具体内容，请参阅 [BR 自动调节](/br/br-auto-tune.md)。
+
+    以下为针对内部的一个单节点进行的内部测试。通过测试结果，可以确定在**全速备份**场景下使用 v5.4.0 版本及其前期版本的默认配置时，BR 备份对集群性能的影响有较大区别。具体测试结果如下：
+
+    - 使用 v5.3.0 的默认配置时，纯写负载的 QPS 降低了 75%；
+    - 使用 v5.4.0 的默认配置时，相同负载的 QPS 降低了 25%。不过，使用该配置时，BR 备份任务的耗时也相应得拉慢，其所需时间为 v5.3.0 配置下耗时的 1.7 倍。
+
+- 对于 5.3.0 及以前的版本：
+
+    在此类版本中，BR 默认的配置参数只为**离线备份**服务。在默认配置下，BR 备份任务可能会占用集群大量的 CPU 和 I/O 资源，从而导致集群的延迟上升。
+
+    通过内部测试发现，在默认配置下，BR 备份任务对集群性能有较大影响。具体测试情况如下：
+
+    - 测试环境：使用一个 6 TiKV 的集群、一个单表的数据集，进行以下混合操作，读写比例约为 `10:1`。
+    - 测试方法：
+        - 单点插入；
+        - 单点更新；
+        - 小范围的范围查询。
+    - 基准点：总 QPS 为 20K 左右，P95 延迟为 28ms 左右；P99 为 50ms 左右。
+    - 测试结果：通过限流将集群的总 CPU 利用率控制在 91% 时，具体结果如下。
+        - **写负载** 的 QPS 下降了 50%，P99 延迟上升了数倍；
+        - 相比之下，**读负载**受到的影响更小，其 QPS 甚至略有上升；
+        - 总体的 P99 延迟只上升了 50% 左右，QPS 约下降了 4%。
+
+如果需要手动控制 BR 备份对集群性能带来的影响，可以通过以下方案实现。这两种方案在减少 BR 备份对集群的影响的同时，也会降低备份任务的速度。
+
+- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的总大小的时候，请以备份日志中的 `backup data size(after compressed)` 为基准。
+- 调节 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)，限制备份任务使用的资源。该配置项决定处理备份任务的工作线程数量。过往的测试数据表明，当 BR 备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 60% 时，BR 备份任务对集群（无论读写负载）几乎没有影响。
 
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
 
@@ -141,7 +183,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 + 在 4.0.3 版本之前，BR 恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
 
-TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
 
 ## BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 

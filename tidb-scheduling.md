@@ -77,13 +77,13 @@ TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包�
 * 是否过载
 * labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
 
-通过使用 `pd-ctl` 可以查看到 Store 的状态信息。 TiKV Store 的状态具体分为 Up，Disconnect，Offline，Down，Tombstone。各状态的关系如下：
+通过使用 `pd-ctl` 可以查看到 TiKV Store 的状态信息。TiKV Store 的状态具体分为 Up，Disconnect，Offline，Down，Tombstone。各状态的关系如下：
 
-+ **Up**：表示当前的 Store 处于提供服务的状态。
-+ **Disconnect**：当 PD 和 TiKV 的心跳信息丢失超过 20 秒后，该 TiKV 的状态会变为 Disconnect 状态，当时间超过 `max-store-down-time` 指定的时间后，该 TiKV 会变为 Down 状态。
-+ **Down**：表示该 TiKV 与集群失去连接的时间已经超过了 `max-store-down-time` 指定的时间，默认 30 分钟。超过该时间后，对应的 TiKV 会变为 Down，并且开始在存活的 TiKV 上补足各个 Region 的副本。
-+ **Offline**：当对某个 TiKV 通过 pd-ctl 进行手动下线操作，该 TiKV 会变为 Offline 状态，该状态只是 TiKV 下线的中间状态，处于该状态的 TiKV 会进行 leader 的 transfer 和 Region balance 操作，当 `leader_count/region_count` (在 pd-ctl 中获取) 均显示 transfer 或 balance 完毕后，该 TiKV 会由 Offline 状态变为 Tombstone 状态。在 Offline 状态下，禁止关闭该 TiKV 服务以及其所在的物理服务器。
-+ **Tombstone**：表示该 TiKV 已处于完全下线状态，可以使用 `remove-tombstone` 接口安全地清理该状态的 TiKV。
++ **Up**：表示当前的 TiKV Store 处于提供服务的状态。
++ **Disconnect**：当 PD 和 TiKV Store 的心跳信息丢失超过 20 秒后，该 Store 的状态会变为 Disconnect 状态，当时间超过 `max-store-down-time` 指定的时间后，该 Store 会变为 Down 状态。
++ **Down**：表示该 TiKV Store 与集群失去连接的时间已经超过了 `max-store-down-time` 指定的时间，默认 30 分钟。超过该时间后，对应的 Store 会变为 Down，并且开始在存活的 Store 上补足各个 Region 的副本。
++ **Offline**：当对某个 TiKV Store 通过 PD Control 进行手动下线操作，该 Store 会变为 Offline 状态。该状态只是 Store 下线的中间状态，处于该状态的 Store 会进行 leader 的 transfer 和 Region balance 操作。当 `leader_count/region_count` (在 PD Control 中获取) 均显示 transfer 或 balance 完毕后，该 Store 会由 Offline 状态变为 Tombstone 状态。在 Offline 状态下，禁止关闭该 Store 服务以及其所在的物理服务器。
++ **Tombstone**：表示该 TiKV Store 已处于完全下线状态，可以使用 `remove-tombstone` 接口安全地清理该状态的 TiKV。
 
 ![TiKV store status relationship](/media/tikv-store-status-relationship.png)
 

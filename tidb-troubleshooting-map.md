@@ -321,7 +321,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 5.2.4 其他问题
 
-    - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，v3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情请参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
+    - PD 报 `FATAL` 错误，日志中有 `range failed to find revision pair`，v3.0.8 已经修复该问题，见 [#2040](https://github.com/pingcap/pd/pull/2040)。详情参考案例 [case-947](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case947.md)。
 
     - 其他原因，[需报 bug](https://github.com/pingcap/pd/issues/new?labels=kind%2Fbug&template=bug-report.md)。
 
@@ -415,7 +415,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 在所有 DM 配置文件中，数据库相关的密码都必须使用经 dmctl 加密后的密文（若数据库密码为空，则无需加密）。在 v1.0.6 及以后的版本可使用明文密码。
 
-    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/precheck)。
+    - 在 DM 运行过程中，上下游数据库的用户必须具备相应的读写权限。在启动同步任务过程中，DM 会自动进行[相应权限的检查](/dm/dm-precheck.md)。
 
     - 同一套 DM 集群，混合部署不同版本的 DM-worker/DM-master/dmctl，见案例 [AskTUG-1049](https://asktug.com/t/dm1-0-0-ga-access-denied-for-user/1049/5)。
 
@@ -439,9 +439,9 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 在 DM 进行 relay log 拉取与增量同步过程中，如果遇到了上游超过 4 GB 的 binlog 文件，就可能出现这两个错误。原因是 DM 在写 relay log 时需要依据 binlog position 及文件大小对 event 进行验证，且需要保存同步的 binlog position 信息作为 checkpoint。但是 MySQL binlog position 官方定义使用 uint32 存储，所以超过 4 GB 部分的 binlog position 的 offset 值会溢出，进而出现上面的错误。
 
-        - 对于 relay 处理单元，可通过官网步骤进行[手动处理](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/error-handling)。
+        - 对于 relay 处理单元，可通过官网步骤进行[手动处理](/dm/dm-error-handling.md)。
 
-        - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/error-handling)。
+        - 对于 binlog replication 处理单元，可通过官网步骤进行[手动处理](/dm/dm-error-handling.md)。
 
 - 6.2.6 DM 同步中断，日志报错 `ERROR 1236 (HY000) The slave is connecting using CHANGE MASTER TO MASTER_AUTO_POSITION = 1, but the master has purged binary logs containing GTIDs that the slave requires.`。
 

@@ -226,7 +226,6 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 目前该 Hint 生效的条件较为苛刻，包括：
 
 - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
-- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
 
 ## 查询范围生效的 Hint
 
@@ -252,7 +251,8 @@ SELECT /*+ NO_INDEX_MERGE() */ * FROM t WHERE t.a > 0 or t.b > 0;
 
 > **注意：**
 >
-> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - 当存在子查询时，`NO_INDEX_MERGE` 放在最外层才能生效。
 
 ### USE_TOJA(boolean_value)
 

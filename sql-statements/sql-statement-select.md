@@ -74,7 +74,14 @@ AsOfClause ::=
 
 **SelectLockOpt:**
 
-![SelectLockOpt](/media/sqlgram/SelectLockOpt.png)
+```ebnf+diagram
+SelectLockOpt ::= 
+    ( ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'? )
+|   ( 'LOCK' 'IN' 'SHARE' 'MODE' ) )?
+
+TableList ::=
+    TableName ( ',' TableName )*
+```
 
 **WindowClauseOptional**
 

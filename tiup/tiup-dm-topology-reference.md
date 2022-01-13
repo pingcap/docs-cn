@@ -64,8 +64,8 @@ global:
 
 `server_configs` 用于配置服务，生成各组件的配置文件，类似 `global` 区块，该区块内的配置可以在具体的实例中被覆盖。主要包含以下字段：
 
-- `master`：DM master 服务的相关配置，支持的完整配置请参考[DM-master 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-master-configuration-file)
-- `worker`：DM worker 服务的相关配置，支持的完整配置请参考[DM-worker 配置文件介绍](https://docs.pingcap.com/zh/tidb-data-migration/stable/dm-worker-configuration-file)
+- `master`：DM master 服务的相关配置，支持的完整配置请参考[DM-master 配置文件介绍](/dm/dm-master-configuration-file.md)
+- `worker`：DM worker 服务的相关配置，支持的完整配置请参考[DM-worker 配置文件介绍](/dm/dm-worker-configuration-file.md)
 
 `server_configs` 配置示例：
 

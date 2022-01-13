@@ -14,7 +14,7 @@ TiDB 版本：5.0.2
 
     + TiCDC
 
-        - 在 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir` [#1795](https://github.com/pingcap/ticdc/pull/1795)
+        - 在 `cdc cli changefeed` 命令中废弃 `--sort-dir` 参数，用户可在 `cdc server` 命令中设定 `--sort-dir` [#1795](https://github.com/pingcap/tiflow/pull/1795)
 
 ## 新功能
 
@@ -45,9 +45,9 @@ TiDB 版本：5.0.2
 
     + TiCDC
 
-        - 添加关于数据表内存使用情况的监控 [#1885](https://github.com/pingcap/ticdc/pull/1885)
-        - 优化排序阶段的内存和 CPU 使用 [#1863](https://github.com/pingcap/ticdc/pull/1863)
-        - 删除了一些可能让用户困惑的无用日志信息 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 添加关于数据表内存使用情况的监控 [#1885](https://github.com/pingcap/tiflow/pull/1885)
+        - 优化排序阶段的内存和 CPU 使用 [#1863](https://github.com/pingcap/tiflow/pull/1863)
+        - 删除了一些可能让用户困惑的无用日志信息 [#1759](https://github.com/pingcap/tiflow/pull/1759)
 
     + Backup & Restore (BR)
 
@@ -108,14 +108,14 @@ TiDB 版本：5.0.2
 
     + TiCDC
 
-        - 修复 Avro 输出中丢失时区信息的问题 [#1712](https://github.com/pingcap/ticdc/pull/1712)
-        - 支持清理 Unified Sorter 过期的文件并禁止共享 `sort-dir` 目录 [#1742](https://github.com/pingcap/ticdc/pull/1742)
-        - 修复存在大量过期 Region 信息时 KV 客户端可能锁死的问题 [#1599](https://github.com/pingcap/ticdc/issues/1599)
-        - 修复 `--cert-allowed-cn` 参数中错误的帮助消息 [#1697](https://github.com/pingcap/ticdc/pull/1697)
-        - 修复因更新 `explicit_defaults_for_timestamp` 而需要 MySQL `SUPER` 权限的问题 [#1750](https://github.com/pingcap/ticdc/pull/1750)
-        - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/ticdc/pull/1840)
-        - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/ticdc/pull/1828)
-        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1759](https://github.com/pingcap/ticdc/pull/1759)
+        - 修复 Avro 输出中丢失时区信息的问题 [#1712](https://github.com/pingcap/tiflow/pull/1712)
+        - 支持清理 Unified Sorter 过期的文件并禁止共享 `sort-dir` 目录 [#1742](https://github.com/pingcap/tiflow/pull/1742)
+        - 修复存在大量过期 Region 信息时 KV 客户端可能锁死的问题 [#1599](https://github.com/pingcap/tiflow/issues/1599)
+        - 修复 `--cert-allowed-cn` 参数中错误的帮助消息 [#1697](https://github.com/pingcap/tiflow/pull/1697)
+        - 修复因更新 `explicit_defaults_for_timestamp` 而需要 MySQL `SUPER` 权限的问题 [#1750](https://github.com/pingcap/tiflow/pull/1750)
+        - 添加 sink 流控以降低内存溢出的风险 [#1840](https://github.com/pingcap/tiflow/pull/1840)
+        - 修复调度数据表时可能发生的同步终止问题 [#1828](https://github.com/pingcap/tiflow/pull/1828)
+        - 修复 TiCDC changefeed 断点卡住导致 TiKV GC safe point 不推进的问题 [#1759](https://github.com/pingcap/tiflow/pull/1759)
 
     + Backup & Restore (BR)
 

@@ -22,43 +22,72 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 默认值：false
 
-### `log-level`
-
-+ 日志等级。
-+ 可选值："trace"，"debug"，"info"，"warning"，"error"，"critical"
-+ 默认值："info"
-
-### `log-file`
-
-+ 日志文件。如果未设置该项，日志会默认输出到 "stderr"。
-+ 默认值：""
-
-### `log-format`
-
-+ 日志的格式。
-+ 可选值："json"，"text"
-+ 默认值："text"
-
-### `log-rotation-timespan`
-
-+ 轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。
-+ 默认值："24h"
-
-### `log-rotation-size`
-
-+ 触发日志轮换的文件大小。一旦日志文件大小超过指定的阈值，日志文件将被轮换，将旧文件被置于新文件中，新文件名即旧文件名加上时间戳后缀。
-+ 默认值："300MB"
-
 ### `slow-log-file`
 
 + 存储慢日志的文件。
-+ 如果未设置本项但设置了 `log-file`，慢日志将输出至 `log-file` 指定的日志文件中。如果本项和 `log-file` 均未设置，所有日志默认输出到 "stderr"。
++ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。
++ 如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 `"stderr"`。
++ 如果同时设置了两项，普通日志会输出至 `log.file.filename` 指定的日志文件中，而慢日志则会输出至本配置项指定的日志文件中。
 + 默认值：""
 
 ### `slow-log-threshold`
 
 + 输出慢日志的阈值。处理时间超过该阈值后会输出慢日志。
 + 默认值："1s"
+
+## log <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+日志相关的配置项。
+
+自 v5.4.0 版本起，废弃原 log 参数 `log-rotation-timespan`，并将 `log-level`、`log-format`、`log-file`、`log-rotation-size` 变更为下列参数，与 TiDB 的 log 参数保持一致。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。
+
+### `level` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 日志等级。
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
++ 默认值："info"
+
+### `format` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 日志的格式。
++ 可选值："json"，"text"
++ 默认值："text"
+
+### `enable-timestamp` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 是否开启日志中的时间戳。
++ 可选值："true"，"false"
++ 默认值："true"
+
+## log.file <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+日志文件相关的配置项。
+
+### `filename` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ log 文件。如果未设置该参数，日志会默认输出到 `"stderr"`；如果设置了该参数，log 会输出到对应的文件中。
++ 默认值：""
+
+### `max-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 单个 log 文件最大大小，超过设定的参数值后，系统自动切分成多个文件。
++ 默认值：300
++ 最大值：4096
++ 单位：MiB
+
+### `max-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 保留 log 文件的最长天数。
+    + 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 不清理 log 文件。
+    + 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiKV 会清理过期的日志文件。
++ 默认值：0
+
+### `max-backups` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 可保留的 log 文件的最大数量。
+    + 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 会保存所有的 log 文件；
+    + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
++ 默认值：0
 
 ## server
 
@@ -81,7 +110,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-concurrency`
 
-+ gRPC 工作线程的数量。
++ gRPC 工作线程的数量。调整 gRPC 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：5
 + 最小值：1
 
@@ -99,7 +128,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `grpc-raft-conn-num`
 
-+ tikv 节点之间用于 raft 通讯的链接最大数量。
++ TiKV 节点之间用于 Raft 通讯的链接最大数量。
 + 默认值：1
 + 最小值：1
 
@@ -182,7 +211,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `max-thread-count`
 
-+ 统一处理读请求的线程池最多的线程数量。
++ 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：CPU * 0.8，但最少为 4
 
 ### `stack-size`
@@ -319,7 +348,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `scheduler-worker-pool-size`
 
-+ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。
++ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
 + 最小值：1
 
@@ -331,7 +360,9 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `reserve-space`
 
-+ TiKV 启动时预占额外空间的临时文件大小。临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。TiKV 磁盘空间耗尽无法正常启动需要紧急干预时，可以删除该文件，并且将 `reserve-space` 设置为 `0MB`。
++ TiKV 启动时会预留一块空间用于保护磁盘空间。当磁盘剩余空间小于该预留空间时，TiKV 会限制部分写操作。预留空间形式上分为两个部分：预留空间的 80% 用作磁盘空间不足时的运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。在回收空间的过程中，如果额外使用的磁盘空间过多，导致存储耗尽时，该临时文件会成为恢复服务的最后一道防御。
++ 临时文件名为 `space_placeholder_file`，位于 `storage.data-dir` 目录下。当 TiKV 因磁盘空间耗尽而下线时，重启 TiKV 会自动删除该临时文件，并自动尝试回收空间。
++ 当剩余空间不足时，TiKV 不会创建该临时文件。防御的有效性与预留空间的大小有关。预留空间大小的计算方式为磁盘容量的 5% 与该配置项之间的最大值。当该配置项的值为 `0MB` 时，TiKV 会关闭磁盘防护功能。
 + 默认值：5GB
 + 单位：MB|GB
 
@@ -402,7 +433,7 @@ I/O rate limiter 相关的配置项。
 
 ### `mode`
 
-+ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只读模式。
++ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。 
 + 可选值：write-only
 + 默认值：write-only
 
@@ -472,36 +503,30 @@ raftstore 相关的配置项。
 
 ### `raft-log-gc-tick-interval`
 
-+ 删除 raft 日志的轮询任务调度间隔时间，0 表示不启用。
++ 删除 Raft 日志的轮询任务调度间隔时间，0 表示不启用。
 + 默认值：10s
 + 最小值：0
 
 ### `raft-log-gc-threshold`
 
-+ 允许残余的 raft 日志个数，这是一个软限制。
++ 允许残余的 Raft 日志个数，这是一个软限制。
 + 默认值：50
 + 最小值：1
 
 ### `raft-log-gc-count-limit`
 
-+ 允许残余的 raft 日志个数，这是一个硬限制。默认值为按照每个日志 1MB 而计算出来的 3/4 region 大小所能容纳的日志个数。
++ 允许残余的 Raft 日志个数，这是一个硬限制。默认值为按照每个日志 1MB 而计算出来的 3/4 region 大小所能容纳的日志个数。
 + 最小值：0
 
 ### `raft-log-gc-size-limit`
 
-+ 允许残余的 raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
++ 允许残余的 Raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
 + 最小值：大于 0
 
 ### `raft-entry-cache-life-time`
 
 + 内存中日志 cache 允许的最长残留时间。
 + 默认值：30s
-+ 最小值：0
-
-### `raft-reject-transfer-leader-duration`
-
-+ 新节点保护时间，控制迁移 leader 到新加节点的最小时间，设置过小容易导致迁移 leader 失败。
-+ 默认值：3s
 + 最小值：0
 
 ### `hibernate-regions`
@@ -598,7 +623,7 @@ raftstore 相关的配置项。
 
 + 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
 + 默认值：10m
-+ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-check-interval * 2；Hibernate Region 功能关闭时，为 0。
++ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-state-check-interval * 2；Hibernate Region 功能关闭时，为 0。
 
 ### `max-leader-missing-duration`
 
@@ -690,7 +715,7 @@ raftstore 相关的配置项。
 
 ### `apply-pool-size`
 
-+ 处理数据落盘的线程池线程数。
++ 处理数据落盘的线程池中线程的数量。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
 + 最小值：大于 0
 
@@ -702,13 +727,19 @@ raftstore 相关的配置项。
 
 ### `store-pool-size`
 
-+ 处理 raft 的线程池线程数。
++ 表示处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
 + 最小值：大于 0
 
+### `store-io-pool-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
++ 表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
++ 默认值：0
++ 最小值：0
+
 ### `future-poll-size`
 
-+ 驱动 future 的线程池线程数。
++ 驱动 future 的线程池中线程的数量。
 + 默认值：1
 + 最小值：大于 0
 
@@ -723,6 +754,18 @@ raftstore 相关的配置项。
 + 根据超时的检测延迟的比例计算判断 TiKV 是否为慢节点。
 + 默认值：500ms
 + 最小值：1ms
+
+### `raft-write-size-limit` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
++ 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
++ 默认值：1MB
++ 最小值：0
+
+### `raft-msg-flush-interval` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
++ Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `store-io-pool-size` 的值为 `0` 时，该配置项不会生效。
++ 默认值：250us
++ 最小值：0
 
 ## coprocessor
 
@@ -767,13 +810,13 @@ rocksdb 相关的配置项。
 
 ### `max-background-jobs`
 
-+ RocksDB 后台线程个数。
++ RocksDB 后台线程个数。调整 RocksDB 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：8
 + 最小值：2
 
 ### `max-background-flushes`
 
-+ RocksDB 用于刷写 memtable 的最大后台线程数。
++ RocksDB 用于刷写 memtable 的最大后台线程数量。
 + 默认值：2
 + 最小值：1
 
@@ -1025,8 +1068,10 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compression-per-level`
 
-+ 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
-+ 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ 每一层默认压缩算法。
++ `defaultcf` 的默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `writecf` 的默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `lockcf` 的默认值：["no", "no", "no", "no", "no", "no", "no"]
 
 ### `bottommost-level-compression`
 
@@ -1245,7 +1290,7 @@ raftdb 相关配置项。
 
 ### `max-background-jobs`
 
-+ RocksDB 后台线程个数。
++ RocksDB 后台线程个数。调整 RocksDB 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
 + 最小值：2
 
@@ -1320,7 +1365,7 @@ raftdb 相关配置项。
 
 ### `num-threads`
 
-+ 处理 RPC 请求线程数。
++ 处理 RPC 请求的线程数量。
 + 默认值：8
 + 最小值：1
 
@@ -1343,9 +1388,14 @@ raftdb 相关配置项。
 
 ### `num-threads`
 
-+ 处理备份的工作线程数。
-+ 默认值：CPU * 0.75，但最大为 32
++ 处理备份的工作线程数量。
++ 默认值：CPU * 0.5，但最大为 8 
 + 最小值：1
+
+### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
+
++ 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
++ 默认值：true
 
 ## cdc
 
