@@ -503,7 +503,7 @@ opentracing.sampler 相关的设置。
 
 + opentracing 采样器的类型。
 + 默认值："const"
-+ 可选值：const, probabilistic, rateLimiting, remote。
++ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
 
 ### `param`
 
