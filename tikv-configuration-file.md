@@ -504,7 +504,7 @@ raftstore 相关的配置项。
 ### `raft-log-gc-tick-interval`
 
 + 删除 Raft 日志的轮询任务调度间隔时间，0 表示不启用。
-+ 默认值：10s
++ 默认值：3s
 + 最小值：0
 
 ### `raft-log-gc-threshold`
