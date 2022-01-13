@@ -16,7 +16,7 @@ TiDB 版本：5.4.0
 + 支持统计信息采集配置持久化
 + 支持使用 Raft Engine 作为 TiKV 的日志存储引擎
 + 优化备份对集群的影响
-+ 支持 Azure Blob Storage 作为备份目标存储（实验特性）
++ 支持 Azure Blob Storage 作为备份目标存储
 + 持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能
 + 为 TiDB Lightning 增加已存在数据表是否允许导入的开关
 + 优化持续性能分析实验特性
@@ -124,7 +124,7 @@ TiDB 版本：5.4.0
     - 提升由行存到列存数据同步处理时对 raft log 的解码 (decoding) 效率，数据同步性能提升 50%
 
     用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
-    
+
 - **通过 session 变量实现有界限过期数据读取**
 
     TiDB 是基于 Raft 协议的多副本分布式数据库。面对高并发，高吞吐业务场景，可以通过follower 节点实现读性能扩展，构建读写分离架构。
@@ -157,7 +157,7 @@ TiDB 版本：5.4.0
     - 目前 TiDB 的 _索引合并_ 优化只限于 _析取范式_ (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
 
     - 如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
-    
+
     [用户文档](/explain-index-merge.md)
 
 - **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
@@ -194,10 +194,10 @@ TiDB 版本：5.4.0
 - **优化备份对集群的影响**
 
     Backup & Restore (BR) 增加了备份线程自动调节功能（默认开启）。该功能通过监控集群资源的使用率自动调节备份的线程数的方式，降低备份过程对集群的影响。在某些 Case 验证中，通过增加集群用于备份的资源和开启备份线程自动调节功能，备份的影响可以降低到 10% 以下。
-    
+
     [用户文档](/br/br-features.md#自动调节-从-v54-版本开始引入)
 
-- **支持 Azure Blob Storage 作为备份目标存储（实验特性）**
+- **支持 Azure Blob Storage 作为备份目标存储**
 
     Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
@@ -229,7 +229,7 @@ TiDB 版本：5.4.0
     - 增加 `start-relay` 或 `stop-relay` 命令中动态开启或关闭 relay log 的功能。
     - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态。
     - relay log 的存放路径移至 DM-worker 配置文件。
-    
+
     [用户文档](/dm/relay-log.md)
 
 - **在 DM 中优化[排序规则](/character-set-and-collation.md)的处理方式**
@@ -240,7 +240,7 @@ TiDB 版本：5.4.0
     - 如果对排序规则要求严格，业务要求排序规则必须一致，则应当使用 strict 模式。但如果下游不支持上游缺省的 collation，同步可能会报错。
 
     [用户文档](/dm/task-configuration-file-full.md#完整配置文件示例)
-    
+
 - **在 DM 中优化 `transfer source`，支持平滑执行同步任务**
 
     当 DM-worker 所在各节点负载不均衡时，`transfer source` 命令可用于手动将某 `source` 配置迁移到其他节点。优化后的 `transfer source` 简化了用户操作步骤，不再要求先暂停所有关联 task 而是直接执行平滑迁移，DM 将在内部完成所需操作。
