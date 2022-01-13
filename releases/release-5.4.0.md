@@ -81,6 +81,7 @@ TiDB 版本：5.4.0
 
 - 为 TiDB 和 PD 之间新增接口。使用 `information_schema.TIDB_HOT_REGIONS_HISTORY` 系统表时，TiDB 需要使用匹配的 PD 版本。
 - TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
+- 自 v5.4.0 起，对于通过 Plan Cache 已经缓存的执行计划，如果为其创建绑定 (Binding)，会使得对应查询已经缓存的计划失效。v5.4.0 前已经缓存的计划不受新 Binding 的影响。
 
 ## 新功能
 
