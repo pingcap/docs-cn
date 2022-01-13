@@ -58,7 +58,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 ## 备份与恢复
 
 + [Raw KV 备份](/br/use-br-command-line-tool.md#raw-kv-备份实验性功能)。（v3.1 实验特性）
-+ [Backup & Restore 支持 Azure Blob 存储](/br/backup-and-restore-azblob.md)。（v5.4 实验特性）
 
 ## 垃圾回收
 
