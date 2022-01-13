@@ -28,13 +28,14 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 
-> **注意：**
->
-> 在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
-
 ## 2. 升级前准备
 
 本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
+
+> **警告：**
+>
+> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
+> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
 
 ### 2.1 升级 TiUP 或更新 TiUP 离线镜像
 
