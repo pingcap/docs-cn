@@ -488,7 +488,7 @@ opentracing 的相关的设置。
 
 ### `enable`
 
-+ 开启 opentracing 跟踪 TiDB 的部分组件调用开销。注意开启后会有一定的性能损失。
++ 开启 opentracing 跟踪 TiDB 部分组件的调用开销。注意开启后会有一定的性能损失。
 + 默认值：false
 
 ### `rpc-metrics`
