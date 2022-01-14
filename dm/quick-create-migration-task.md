@@ -9,8 +9,8 @@ summary: Learn how to configure a data migration task in different scenarios.
 >
 > Before creating a data migration task, you need to perform the following operations:
 >
-> 1. [Deploy a DM Cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)。
-> 2. [Create a Data Source](/dm/quick-start-create-source.md)。
+> 1. [Deploy a DM Cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md).
+> 2. [Create a Data Source](/dm/quick-start-create-source.md).
 
 This document introduces how to configure a data migration task in different scenarios. You can choose suitable documents to create your data migration task according to the specific scenario.
 

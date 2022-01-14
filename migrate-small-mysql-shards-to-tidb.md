@@ -231,7 +231,7 @@ You can view the history of a migration task and internal operational metrics th
 
 ## See also
 
-- [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md)。
+- [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md).
 - [Merge and Migrate Data from Sharded Tables](https://docs.pingcap.com/tidb-data-migration/stable/feature-shard-merge)
 - [Best Practices of Data Migration in the Shard Merge Scenario](https://docs.pingcap.com/tidb-data-migration/stable/shard-merge-best-practices)
 - [Handle Errors](https://docs.pingcap.com/tidb-data-migration/stable/error-handling)
