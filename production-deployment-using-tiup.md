@@ -356,7 +356,7 @@ tiup cluster display tidb-test
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster start tidb-test -init
+tiup cluster start tidb-test --init
 ```
 
 预期结果如下，表示启动成功。
