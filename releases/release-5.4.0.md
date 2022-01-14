@@ -39,6 +39,7 @@ TiDB 版本：5.4.0
 | [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF |
 | [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF` |
 | [`tidb_read_staleness`](/system-variables.md#tidb_read_staleness-从-v540-版本开始引入) | 新增 | 用于设置当前会话允许读取的历史数据范围，默认值为 `0` |
+| [`tidb_regard_null_as_point `](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `OFF` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败 (`OFF`) 还是退回使用 pseudo 的统计信息 (`ON`)，默认值为 `ON` |
 | [`tidb_store_limit`](/system-variables.md#tidb_store_limit-从-v304-和-v40-版本开始引入) | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置 |
@@ -304,14 +305,20 @@ TiDB 版本：5.4.0
 
 + PD
 
+    - 默认开启历史热点记录功能 [#25281](https://github.com/pingcap/tidb/issues/25281)
+    - 新增 HTTP Component 的签名，用于标识请求来源 [#4490 ](https://github.com/tikv/pd/issues/4490)
+    - TiDB Dashboard 更新至 v2021.12.31，新增 Top SQL，改善 Profiling 页面 [#4257](https://github.com/tikv/pd/issues/4257)
+
 + TiFlash
 
     - 优化本地算子通讯
-    - 调高 grpc 非临时线程数，避免频繁创建/销毁线程
+    - 调高 gRPC 非临时线程数，避免频繁创建/销毁线程
 
 + Tools
 
     + Backup & Restore (BR)
+
+        - 增加 BR 加密备份时，对密钥的合法性检查 [#29794](https://github.com/pingcap/tidb/issues/29794)
 
     + TiCDC
 
@@ -322,6 +329,8 @@ TiDB 版本：5.4.0
     + TiDB Data Migration (DM)
 
     + TiDB Lightning
+
+        - 在 TiDB-backend 模式下，默认改用乐观事务进行写入来提升性能 [#30953](https://github.com/pingcap/tidb/pull/30953)
 
     + Dumpling
 
@@ -355,6 +364,11 @@ TiDB 版本：5.4.0
 
 + PD
 
+    - 修复 Region 统计不受 `flow-round-by-digit` 影响的问题 [#4295](https://github.com/tikv/pd/issues/4295)
+    - 修复调度 Operator 因为目标 Store 处于 Down 的状态而无法快速失败的问题 [#3353](https://github.com/tikv/pd/issues/3353)
+    - 修复不能 Merge 在 Offline Store 上面的 Region 的问题 [#4119](https://github.com/tikv/pd/issues/4119)
+    - 修复热点统计中无法剔除冷热点数据的问题 [#4390](https://github.com/tikv/pd/issues/4390)
+
 + TiFlash
 
     - 修复查询报错 `Tree struct based executor must have executor id`
@@ -376,6 +390,10 @@ TiDB 版本：5.4.0
 + Tools
 
     + Backup & Restore (BR)
+
+        - 修复当恢复完成后，Region 有可能分布不均的问题 [#30425](https://github.com/pingcap/tidb/issues/30425)
+        - 修复当使用 `minio` 作为备份存储时，不能在 endpoint 指定 `'/'` 的问题 [#30104](https://github.com/pingcap/tidb/issues/30104)
+        - 修复因为并发备份系统表，导致表名更新失败，无法恢复系统表的问题 [#29710](https://github.com/pingcap/tidb/issues/29710)
 
     + TiCDC
 
@@ -399,6 +417,8 @@ TiDB 版本：5.4.0
     + TiDB Lightning
 
         - 修复当 TiDB Lightning 没有权限访问 `mysql.tidb` 表时，导入的结果不正确的问题 [#31088](https://github.com/pingcap/tidb/issues/31088)
+        - 修复 TiDB Lightning 重启时，跳过某些检查的问题 [#30772](https://github.com/pingcap/tidb/issues/30772)
+        - 修复当 S3 路径不存在时，TiDB Lightning 没有及时报错的问题 [#30674](https://github.com/pingcap/tidb/pull/30674)
 
     + Dumpling
 
