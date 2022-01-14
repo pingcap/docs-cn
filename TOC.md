@@ -200,6 +200,7 @@
       - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
       - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
+      - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - [快速上手教程](/get-started-with-tidb-lightning.md)
     - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
