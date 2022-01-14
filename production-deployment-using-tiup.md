@@ -341,13 +341,47 @@ tiup cluster display tidb-test
 
 ## 第 7 步：启动集群
 
+> **注意：**
+>
+> 安全启动方式是对 v5.4.0 以上版本新提供的部署方式，推荐使用安全启动方式启动集群：
+>
+> - 安全启动后会自动生成 root 用户的密码，并在命令行界面返回密码。
+>
+> - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，用户需要记录命令行返回的密码进行后续操作。
+>
+> - 该自动生成的密码只会返回一次，如果用户没有记录或者忘记该密码，请参照 [忘记 root 密码]（https://docs.pingcap.com/zh/tidb/stable/user-account-management#%E5%BF%98%E8%AE%B0-root-%E5%AF%86%E7%A0%81）文档修改密码。
+
+方式一：安全启动方式
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster start tidb-test -init
+```
+
+预期结果如下，表示启动成功。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+Started cluster `tidb-test` successfully.
+The root password of TiDB database has been changed.
+The new password is: 'y_+3Hwp=*AWz8971s6'.
+Copy and record it to somewhere safe, it is only displayed once, and will not be stored.
+The generated password can NOT be get and shown again.
+
+用户需要记录命令行返回结果中的密码信息，用于后续数据库登录。使用安全启动方式后，不能通过无密码的 root 用户登录数据库。
+
+
+方式二：普通启动方式
+
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster start tidb-test
 ```
 
-预期结果输出 ```Started cluster `tidb-test` successfully``` ，表示启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully``` ，表示启动成功。使用普通启动方式后，可通过无密码的 root 用户登录数据库。
 
 ## 第 8 步：验证集群运行状态
 
