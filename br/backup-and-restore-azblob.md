@@ -5,10 +5,6 @@ summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与�
 
 # 在 Azure Blob Storage 备份恢复
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。
-
 Backup & Restore (BR) 工具支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。
 
 如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
