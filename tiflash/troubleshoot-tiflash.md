@@ -114,6 +114,8 @@ explain select count(*) from t where subtime(a, '12:00:00') > '2022-01-01' group
 show warnings;
 ```
 
+示例中，warning 消息显示，因为 TiDB 5.4 及更早的版本尚不支持 `subtime` 函数的下推，因此 TiDB 没有选择 MPP 模式。
+
 ```
 +---------+------+-----------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                     |
@@ -121,8 +123,6 @@ show warnings;
 | Warning | 1105 | Scalar function 'subtime'(signature: SubDatetimeAndString, return type: datetime) is not supported to push down to tiflash now.       |
 +---------+------+-----------------------------------------------------------------------------+
 ```
-
-以上示例中，warning 消息显示，因为 TiDB 5.4 及更早的版本尚不支持 `subtime` 函数的下推，因此 TiDB 没有选择 MPP 模式。
 
 ## TiFlash 数据不同步
 
