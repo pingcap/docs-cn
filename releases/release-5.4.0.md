@@ -53,7 +53,6 @@ TiDB 版本：5.4.0
 | TiKV | [`snap-generator-pool-size`](/tidb-configuration-file.md#snap-generator-pool-size) | 新增 | `snap-generator` 线程池大小，默认值为 `2` |
 | TiKV | `log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log.file](/tikv-configuration-file.md#logfile-从-v540-版本开始引入)。 |
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
-| TiKV | [`raftstore.raft-log-compact-sync-interval`](/tikv-configuration-file.md#raft-log-compact-sync-interval) | 新增 | 控制 CompactLog 命令的间隔，默认值为 `2s` |
 | TiKV | [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 修改 | 将 TiKV log 参数名替换为与 TiDB log 参数一致的参数名，即 `log.level`、`log.format`、`log.file.filename`、`log.enable-timestamp`。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。详情参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
 | TiKV | [`raftstore.raft-log-gc-tick-interval`](/tikv-configuration-file.md#raft-log-gc-tick-interval) | 修改 | 默认值修改为 `3s` |
