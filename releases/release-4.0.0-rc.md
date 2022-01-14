@@ -46,7 +46,7 @@ TiUP 版本：0.0.3
 
 + TiDB
 
-    - 新增大小写敏感的排序规则，用户可在新集群上启用 `utf8mb4_general_ci` 和 `utf8_general_ci` [#33](https://github.com/pingcap/tidb/projects/33)
+    - 新增大小写不敏感的排序规则，用户可在新集群上启用 `utf8mb4_general_ci` 和 `utf8_general_ci` [#33](https://github.com/pingcap/tidb/projects/33)
     - 增强 `RECOVER TABLE` 语法，现在该语法支持恢复被 Truncate 的表 [#15398](https://github.com/pingcap/tidb/pull/15398)
     - 当 tidb-server 状态端口被占用时由原来打印一条告警日志改成拒绝启动 [#15177](https://github.com/pingcap/tidb/pull/15177)
     - 优化使用 Sequence 作为列的默认值时的写入性能 [#15216](https://github.com/pingcap/tidb/pull/15216)
