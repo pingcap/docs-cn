@@ -138,19 +138,19 @@ CREATE TABLE conflict_error_v1 (
 >
 > 错误报告记录的是文件偏移量，不是行号或列号，因为行号或列号的获取效率很低。你可以使用下列命令在字节位实现快速跳转（以 183 为例）：
 >
-> * shell, 输出前面几行——
+> * shell：输出前面几行
 >
->     ```sh
+>     ```shell
 >     head -c 183 file.csv | tail
 >     ```
 >
-> * shell, 输出后面几行——
+> * shell，输出后面几行
 >
->     ```sh
+>     ```shell
 >     tail -c +183 file.csv | head
 >     ```
 >
-> * vim — `:goto 183` 或 `183go`
+> * vim：`:goto 183` 或 `183go`
 
 ## 示例
 
