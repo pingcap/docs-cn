@@ -251,9 +251,9 @@ show warnings;
 
 1. 调整调度参数取值。
 
-    - 调大 [`store limit`](configure-store-limit.md#使用方法)，加快同步速度。
-    - 调小 [`config set patrol-region-interval 10ms`](pd-control.md#命令-command)，增加 TiKV 侧 checker 扫描 Region 的频率。
-    - 调大 [`region merge`](pd-control.md#命令-command) 参数，减少 Region 数量，从而减少扫描数量，提高检查频次。
+    - 调大 [`store limit`](/configure-store-limit.md#使用方法)，加快同步速度。
+    - 调小 [`config set patrol-region-interval 10ms`](/pd-control.md#命令-command)，增加 TiKV 侧 checker 扫描 Region 的频率。
+    - 调大 [`region merge`](/pd-control.md#命令-command) 参数，减少 Region 数量，从而减少扫描数量，提高检查频次。
 
 2. 调整 TiFlash 侧负载。
 
