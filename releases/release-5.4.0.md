@@ -66,7 +66,7 @@ TiDB 版本：5.4.0
 | TiFlash | [`status.metrics_port`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 默认值修改为 `8234` |
 | TiFlash | [`raftstore.apply-pool-size`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 新增 | 处理 Raft 数据落盘的线程池中线程的数量，默认值为 `4`。 |
 | TiFlash | [`raftstore.store-pool-size`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 新增 | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小，默认值为 `4`。 |
-| TiDB Data Migration (DM) | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
+| TiDB Data Migration (DM)  | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `104857601`（10MB）  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
 | TiDB Lightning | `meta-schema-name` | 修改 | 此配置项控制 TiDB Lightning 在目标 TiDB 中保存 metadata 对应的 schema name。从 v5.4.0 开始，只在开启了并行导入功能时（对应配置为 `tikv-importer.incremental-import = true` ），才会在目标 TiDB 中创建此库。 |
@@ -103,15 +103,9 @@ TiDB 版本：5.4.0
 
     该功能默认关闭。开启后，如果用户没有对应的权限，通过 TiSpark 操作会抛出对应的异常。
 
+    [用户文档](/tispark-overview.md#安全)
+
 ### 性能
-
-- **新增 Raft Engine（实验特性）**
-
-    支持使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。此外，Raft Engine 提升了日志回收效率，修复了极端条件下日志堆积的问题。
-
-    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级或者降级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
-
-    [用户文档](/tikv-configuration-file.md#raft-engine)
 
 - **持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能**
 
@@ -141,6 +135,8 @@ TiDB 版本：5.4.0
 
     通过该设置，TiDB 可以实现就近选取 leader 或 follower 节点，并读取 5 秒钟内的最新过期数据，满足准实时场景下低延迟高吞吐数据访问的业务诉求，降低研发门槛，提升易用性。
 
+    [用户文档](/tidb-read-staleness.md)
+
 - **TiDB 正式发布索引合并 (Index Merge) 功能**
 
     _索引合并_ 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。例如对以下的查询，若 `WHERE` 子句中两个 `OR` 连接的过滤条件在各自包含的 _key1_ 与 _key2_ 两个列上都存在索引，则 _索引合并_ 可以同时利用  _key1_ 与 _key2_ 上的索引分别进行过滤，然后合并出最终的结果。
@@ -158,6 +154,14 @@ TiDB 版本：5.4.0
     - 如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
     [用户文档](/explain-index-merge.md)
+
+- **新增 Raft Engine（实验特性）**
+
+    支持使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。此外，Raft Engine 提升了日志回收效率，修复了极端条件下日志堆积的问题。
+
+    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级或者降级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
+
+    [用户文档](/tikv-configuration-file.md#raft-engine)
 
 - **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
 
@@ -186,7 +190,6 @@ TiDB 版本：5.4.0
     `ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
 
     [用户文档](/statistics.md#analyze-配置持久化)
-
 
 ## 高可用和容灾
 
@@ -266,7 +269,7 @@ TiDB 版本：5.4.0
 
 ### 部署及运维
 
-- **持续性能分析（实验特性）**
+- **增强持续性能分析（实验特性）**
 
     - 支持更多组件：除了 TiDB、PD 和 TiKV 外，v5.4.0 版本中还支持查看 TiFlash CPU Profiling。
     - 支持更方便的查看形式：支持以火焰图形式查看 CPU Profiling 和 Goroutine 结果。
