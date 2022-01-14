@@ -81,7 +81,6 @@ TiDB Lightning 只能检测数据源的重复项，不能解决运行 TiDB Light
 task-info-schema-name = 'lightning_task_info'
 ```
 
-
 在此数据库中，TiDB Lightning 创建了 3 个表：
 
 ```sql
