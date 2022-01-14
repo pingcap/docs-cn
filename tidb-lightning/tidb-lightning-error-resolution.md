@@ -19,6 +19,8 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 你可以通过修改配置项 `lightning.max-error` 来增加数据类型相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个错误，而且会跳过这些错误，一旦超过这个错误数就会退出。默认值为 0，表示不允许出现错误。
 
+这些错误会被记录到数据库中。在导入完成后，你可以查看数据库中的数据，手动进行处理。请参见[错误报告](#错误报告)。
+
 {{< copyable "" >}}
 
 ```toml
@@ -45,9 +47,9 @@ max-error = 0
 
 在 Local 后端模式下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
 
-## 解决重复问题
+## Local-backend 模式下解决重复问题
 
-Local-backend 模式下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB-backend 模式不同，TiDB Lightning 在 Local-backend 模式下直到任务结束才会检测重复行。因此，Local 模式下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。
+Local-backend 模式下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB-backend 模式不同，TiDB Lightning 在 Local-backend 模式下直到任务结束才会检测重复行。因此，Local-backend 模式下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。你可以通过配置该参数的行为，来决定如何处理有冲突的数据。
 
 {{< copyable "" >}}
 
@@ -66,6 +68,10 @@ TiDB Lightning 只能检测数据源的重复项，不能解决运行 TiDB Light
 
 ## 错误报告
 
+所有错误都会写入下游 TiDB 集群 `lightning_task_info` 数据库中的表中。在导入完成后，你可以根据数据库中记录的内容，手动进行处理。
+
+你可以使用 `lightning.task-info-schema-name` 配置更改数据库名称。
+
 {{< copyable "" >}}
 
 ```toml
@@ -73,7 +79,6 @@ TiDB Lightning 只能检测数据源的重复项，不能解决运行 TiDB Light
 task-info-schema-name = 'lightning_task_info'
 ```
 
-所有错误都会写入下游 TiDB 集群 `lightning_task_info` 数据库中的表中。你可以使用 `lightning.task-info-schema-name` 配置更改数据库名称。
 
 在此数据库中，TiDB Lightning 创建了 3 个表：
 
