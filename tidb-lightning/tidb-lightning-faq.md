@@ -198,6 +198,11 @@ upload-speed-limit = "100MB"
 DROP DATABASE IF EXISTS `lightning_metadata`;
 ```
 
+> **注意：**
+> 
+> 在清理断点文件时，请务必清理残留的元信息库，否则有可能影响后续导入的正确性。
+>
+
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 
 报错原因是遍历本地排序的文件时出现异常，可能在 TiDB Lightning 打开的文件数量超过系统的上限时发生报错。在 Linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在导入期间将此设置调整为 `1000000`（即 `ulimit -n 1000000`）。
