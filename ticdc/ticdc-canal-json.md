@@ -5,7 +5,7 @@ summary: 了解 TiCDC Canal-JSON Protocol 的概念和使用方法。
 
 # TiCDC Canal-JSON Protocol
 
-Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。本文将主要介绍 TiCDC 对 Canal-JSON 数据格式的实现，包括 TiDB 扩展字段、Canal-JSON 数据格式定义，以及和官方实现进行对比等相关内容。通过本文，你可以了解 Canal-JSON 的基本格式定义和使用方式，以及如何在 TiCDC 中指定使用 Canal-JSON 作为数据格式。
+Canal-JSON 是由 [Alibaba Canal](https://github.com/alibaba/canal) 定义的一种数据交换格式协议。通过本文，你可以了解 TiCDC 对 Canal-JSON 数据格式的实现，包括 TiDB 扩展字段、Canal-JSON 数据格式定义，以及和官方实现进行对比等相关内容。
 
 ## 使用 Canal-JSON
 
@@ -88,7 +88,7 @@ TiCDC 会把一个 DDL Event 编码成如下 Canal-JSON 格式：
 | mysqlType | object | 当 isDdl 为 false 时，记录每一列数据类型在 MySQL 中的类型表示                |
 | data      | Object | 当 isDdl 为 false 时，记录每一列的名字及其数据值                             |
 | old       | Object | 仅当该条消息由 Update 类型事件产生时，记录每一列的名字，和 Update 之前的数据值  |
-| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO  ｜
+| _tidb     | Object | TiDB 扩展字段，仅当 `enable-tidb-extension` 为 true 时才会存在。其中的 `commitTs` 值为造成 Row 变更的事务的 TSO  |
 
 ### DML Event
 
@@ -266,12 +266,12 @@ TiCDC 对 Canal-JSON 数据格式的实现，包括 `Update` 类型事件和 `my
 
 | 差异点            | TiCDC                  | Canal                                |
 |:----------------|:-------------------------|:-------------------------------------|
-| `Update` 类型事件 | `Old` 字段包含所有列数据 | `Old` 字段仅包含被修改的列数据          |
+| `Update` 类型事件 | `old` 字段包含所有列数据 | `old` 字段仅包含被修改的列数据          |
 | `mysqlType` 字段  | 对于含有参数的类型，没有类型参数信息         | 对于含有参数的类型，会包含完整的参数信息 |
 
 ### `Update` 类型事件
 
-对于 `Update` 类型事件，Canal 官方实现中，`Old` 字段仅包含被修改的列数据，而 TiCDC 的实现则包含所有列数据。
+对于 `Update` 类型事件，Canal 官方实现中，`old` 字段仅包含被修改的列数据，而 TiCDC 的实现则包含所有列数据。
 
 假设在上游 TiDB 按顺序执行如下 SQL 语句:
 
@@ -294,7 +294,7 @@ values (127, 32767, 8388607, 2147483647, 9223372036854775807);
 update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
 ```
 
-对于 `update` 语句，TiCDC 将会输出一条 `type` 为 `UPDATE` 的事件消息，如下所示。该 `update` 语句仅对 `c_int` 和 `c_tinyint` 两列进行了修改。输出事件消息的 `Old` 字段，则包含所有列数据。
+对于 `update` 语句，TiCDC 将会输出一条 `type` 为 `UPDATE` 的事件消息，如下所示。该 `update` 语句仅对 `c_int` 和 `c_tinyint` 两列进行了修改。输出事件消息的 `old` 字段，则包含所有列数据。
 
 ```json
 {
@@ -318,14 +318,47 @@ update tp_int set c_int = 0, c_tinyint = 0 where c_smallint = 32767;
             "id": "2"
         }
     ],
-    "old": [
+    "old": [                                 // TiCDC 输出事件消息的 `old` 字段，则包含所有列数据。
         {
             "c_bigint": "9223372036854775807",
-            "c_int": "2147483647",
+            "c_int": "2147483647",           // 修改的列
             "c_mediumint": "8388607",
             "c_smallint": "32767",
-            "c_tinyint": "127",
+            "c_tinyint": "127",              // 修改的列
             "id": "2"
+        }
+    ]
+}
+```
+
+官方 Canal 输出事件消息的 `old` 字段仅包含被修改的列数据。示例如下。
+
+```json
+{
+    "id": 0,
+    ...
+    "type": "UPDATE",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        ...
+    },
+    "data": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "0",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "0",
+            "id": "2"
+        }
+    ],
+    "old": [                                    // Canal 输出事件消息的 `old` 字段，仅包含被修改的列的数据。
+        {
+            "c_int": "2147483647",              // 修改的列
+            "c_tinyint": "127",                 // 修改的列
         }
     ]
 }

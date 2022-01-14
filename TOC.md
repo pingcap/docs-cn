@@ -65,7 +65,9 @@
       - [BR 工具简介](/br/backup-and-restore-tool.md)
       - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - [外部存储](/br/backup-and-restore-storages.md)
+      - 外部存储
+        - [外部存储概述](/br/backup-and-restore-storages.md)
+        - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
@@ -86,7 +88,8 @@
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
   - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
-  - [定位消耗系统资源多的查询](/identify-expensive-queries.md)
+  - [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
+  - [通过日志定位消耗系统资源多的查询](/identify-expensive-queries.md)
   - [SQL 语句统计](/statement-summary-tables.md)
   - [保存和恢复集群现场信息](/sql-plan-replayer.md)
   - [TiDB 集群常见问题](/troubleshoot-tidb-cluster.md)
@@ -153,6 +156,7 @@
     - 使用 Stale Read 功能读取历史数据（推荐）
       - [Stale Read 使用场景介绍](/stale-read.md)
       - [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
+      - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb_read_staleness.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
@@ -541,7 +545,9 @@
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
-    - [字符集和排序规则](/character-set-and-collation.md)
+    - 字符集和排序
+      - [概述](/character-set-and-collation.md)
+      - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - 系统表
       - [`mysql`](/mysql-schema.md)
@@ -584,6 +590,7 @@
         - [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
         - [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)
         - [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
+        - [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)
         - [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
         - [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
         - [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
@@ -605,6 +612,7 @@
       - [访问](/dashboard/dashboard-access.md)
       - [概况页面](/dashboard/dashboard-overview.md)
       - [集群信息页面](/dashboard/dashboard-cluster-info.md)
+      - [Top SQL](/dashboard/top-sql.md)
       - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       - [监控关系图](/dashboard/dashboard-metrics-relation.md)
       - SQL 语句分析
