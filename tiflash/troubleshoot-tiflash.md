@@ -106,9 +106,11 @@ aliases: ['/docs-cn/dev/tiflash/troubleshoot-tiflash/','/docs-cn/dev/tiflash/tif
 {{< copyable "sql" >}}
 
 ```sql
+create table t(a datetime);
+alter table t set tiflash replica 1;
+insert into t values('2022-01-13');
 set @@session.tidb_enforce_mpp=1;
-create table t(a int);
-explain select count(*) from t;
+explain select count(*) from t where subtime(a, '12:00:00') > '2022-01-01' group by a;
 show warnings;
 ```
 
@@ -116,11 +118,11 @@ show warnings;
 +---------+------+-----------------------------------------------------------------------------+
 > | Level   | Code | Message                                                                     |
 +---------+------+-----------------------------------------------------------------------------+
-| Warning | 1105 | MPP mode may be blocked because there aren't tiflash replicas of table `t`. |
+| Warning | 1105 | Scalar function 'subtime'(signature: SubDatetimeAndString, return type: datetime) is not supported to push down to tiflash now.       |
 +---------+------+-----------------------------------------------------------------------------+
 ```
 
-
+在上例中，如 warning 信息所示，因为 TiDB 5.4 及更早的版本中尚不支持 `subtime` 函数的下推，因此 TiDB 没有选择 MPP 模式。
 ## TiFlash 数据不同步
 
 在部署完 TiFlash 节点且进行了数据的同步操作（ALTER 操作）之后，如果实际没有数据同步到 TiFlash 节点，你可以通过以下步骤确认或解决问题：
@@ -185,11 +187,11 @@ show warnings;
 
       - 检查日志文件中是否出现了 PD 相关关键字。
 
-        如果出现，请检查 TiFlash 配置文件中`raft.pd_addr` 对应 pd 地址是否有效，执行 `curl '{pd-addr}/pd/api/v1/config/rules'` 检查是否能在 5 秒内正常返回无报错。
+        如果出现，请检查 TiFlash 配置文件中`raft.pd_addr` 对应 pd 地址是否有效。检查方法： 执行 `curl '{pd-addr}/pd/api/v1/config/rules'` 检查是否能在 5 秒内正常返回无报错。
 
       - 检查日志文件中是否出现了 TiDB 相关关键字。
 
-        如果出现，请检查 TiFlash 配置文件中 `flash.tidb_status_addr` 对应 tidb 的 status 服务地址是否有效，执行 `curl '{tidb-status-addr}/tiflash/replica'` 检查是否能在 5 秒内正常返回无报错。
+        如果出现，请检查 TiFlash 配置文件中 `flash.tidb_status_addr` 对应 tidb 的 status 服务地址是否有效。检查方法：执行 `curl '{tidb-status-addr}/tiflash/replica'` 检查是否能在 5 秒内正常返回无报错。
 
       - 检查节点间能否相互连通。
 
@@ -230,14 +232,14 @@ show warnings;
 
     在 `flash_cluster_manager.log` 中，检查同步卡住的 table 对应的 `flash_region_count` 是否有更新。
 
-    - 没有更新，检查下一步；
+    - 没有更新，检查下一步。
     - 有更新，检查是否有 `down peer` （`down peer` 没有清理干净可能会导致同步卡住）
       - `pd-ctl region check-down-peer`
       - `pd-ctl operator add remove-peer\<region-id> \<tiflash-store-id>`
 
 3. 查看 CPU 使用率。
 
-    在 Grafana 界面，选择 `TiFlash-Proxy-Details` > `Thread CPU` > `Region task worker pre-handle/generate snapshot CPU`，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
+    在 Grafana 界面，选择 **TiFlash-Proxy-Details** > **Thread CPU** > **Region task worker pre-handle/generate snapshot CPU**，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
 
     若曲线为一条直线，表示 TiFlash 发生卡死，可强制杀进程重启或联系 PingCAP 技术支持人员。
 
@@ -253,7 +255,7 @@ show warnings;
 
 2. 调整 TiFlash 侧负载。
 
-    TiFlash 负载过大会引起同步慢，可通过 Grafana 中的 `TiFlash-Summary` 面板查看各个指标的负载情况：
+    TiFlash 负载过大会引起同步慢，可通过 Grafana 中的 **TiFlash-Summary** 面板查看各个指标的负载情况：
 
     - `Applying snapshots Count`: `TiFlash-summary` > `raft` > `Applying snapshots Count`
     - `Snapshot Predecode Duration`: `TiFlash-summary` > `raft` > `Snapshot Predecode Duration`
