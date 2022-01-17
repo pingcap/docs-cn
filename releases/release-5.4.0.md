@@ -50,7 +50,6 @@ TiDB 版本：5.4.0
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 新增 |  用于设置 TiDB 统计信息同步加载功能可以并发处理的最大列数，默认值为 `5`             |
 | TiDB | [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入)   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
-| TiDB | [`txn-total-size-limit`](/tidb-configuration-file.md#txn-total-size-limit) | 修改 | 配置 TiDB 单个事务大小的限制。该配置项的最大值由 `10737418240`（表示 10GB）调整至 `1099511627776`（表示 1TB）。|
 | TiKV | [`snap-generator-pool-size`](/tidb-configuration-file.md#snap-generator-pool-size) | 新增 | `snap-generator` 线程池大小，默认值为 `2` |
 | TiKV | `log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log.file](/tikv-configuration-file.md#logfile-从-v540-版本开始引入)。 |
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
@@ -170,7 +169,7 @@ TiDB 版本：5.4.0
 
     从 v5.4.0 开始，你可以设置系统变量 [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) 的值为 `ON` 开启 TiDB 对 `PREDICATE COLUMNS` 的收集。
 
-    开启后，TiDB 将每隔 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。等到业务的查询模式稳定以后，使用 `ANALYZE TABLE TableName PREDICATE COLUMNS` 语法收集 `PREDICATE COLUMNS` 列的统计信息，可以极大地降低收集统计信息的开销。
+    开启后，TiDB 将每隔 100 - [`stats-lease`](/tidb-configuration-file.md#stats-lease) 时间将 `PREDICATE COLUMNS` 信息写入系统表 `mysql.column_stats_usage`。等到业务的查询模式稳定以后，使用 `ANALYZE TABLE TableName PREDICATE COLUMNS` 语法收集 `PREDICATE COLUMNS` 列的统计信息，可以极大地降低收集统计信息的开销。
 
     [用户文档](/statistics.md#收集部分列的统计信息)
 
@@ -328,11 +327,16 @@ TiDB 版本：5.4.0
 
     + TiDB Data Migration (DM)
 
+        - 降低开启 relay 时的 CPU 使用率 [#2214](https://github.com/pingcap/dm/issues/2214)
+
     + TiDB Lightning
 
         - 在 TiDB-backend 模式下，默认改用乐观事务进行写入来提升性能 [#30953](https://github.com/pingcap/tidb/pull/30953)
 
     + Dumpling
+
+        - 提升 Dumpling 检查数据库版本时的兼容性 [#29500](https://github.com/pingcap/tidb/pull/29500)
+        - 在导出 `CREATE DATABASE` 和 `CREATE TABLE` 时添加默认的 collation [#3420](https://github.com/pingcap/tiflow/issues/3420)
 
     + TiDB Binlog
 
@@ -414,12 +418,18 @@ TiDB 版本：5.4.0
 
     + TiDB Data Migration (DM)
 
+        - 修复 `CREATE VIEW` 语句中断复制任务的问题 [#4173](https://github.com/pingcap/tiflow/issues/4173)
+        - 修复 skip DDL 后需要重置 Schema 的问题 [#4177](https://github.com/pingcap/tiflow/issues/4177)
+        - 修复 skip DDL 后未及时更新表检查点的问题 [#4184](https://github.com/pingcap/tiflow/issues/4184)
+        - 修复 TiDB 和 Parser 版本兼容问题 [#4298](https://github.com/pingcap/tiflow/issues/4298)
+        - 修复部分 syncer metrics 只有在查询状态时才得以更新的问题 [#4281](https://github.com/pingcap/tiflow/issues/4281)
+
     + TiDB Lightning
 
         - 修复当 TiDB Lightning 没有权限访问 `mysql.tidb` 表时，导入的结果不正确的问题 [#31088](https://github.com/pingcap/tidb/issues/31088)
         - 修复 TiDB Lightning 重启时，跳过某些检查的问题 [#30772](https://github.com/pingcap/tidb/issues/30772)
         - 修复当 S3 路径不存在时，TiDB Lightning 没有及时报错的问题 [#30674](https://github.com/pingcap/tidb/pull/30674)
 
-    + Dumpling
-
     + TiDB Binlog
+
+        - 修复 Drainer 不兼容 `CREATE PLACEMENT POLICY` 语句导致处理失败的问题 [#1118](https://github.com/pingcap/tidb-binlog/issues/1118)
