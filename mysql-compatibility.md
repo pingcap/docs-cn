@@ -125,6 +125,12 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 详见 [TiDB 本地临时表与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)。
 
+### 字符集和排序规则
+
+* 关于字符集和排序规则的支持情况，详见 [字符集和排序规则](/character-set-and-collation.md)。
+
+* 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#MySQL-兼容性)。
+
 ### 存储引擎
 
 - 仅在语法上兼容创建表时指定存储引擎，实际上 TiDB 会将元信息统一描述为 InnoDB 存储引擎。TiDB 支持类似 MySQL 的存储引擎抽象，但需要在系统启动时通过[`--store`](/command-line-flags-for-tidb-configuration.md#--store) 配置项来指定存储引擎。
