@@ -37,7 +37,7 @@ LRU 链表是设计成 session 级别的缓存，因为 `Prepare` / `Execute` �
 - 当前的 schema 版本，每条执行成功的 DDL 语句会修改 schema 版本；
 - 执行 `Execute` 时的 SQL Mode；
 - 当前设置的时区，即系统变量 `time_zone` 的值；
-- 系统变量 `sql_select_limit` 的值;
+- 系统变量 `sql_select_limit` 的值；
 
 key 中任何一项变动（如切换数据库，重命名 `Prepare` 语句，执行 DDL，或修改 SQL Mode / `time_zone` 的值），或 LRU 淘汰机制触发都会导致 `Execute` 时无法命中执行计划缓存。
 
