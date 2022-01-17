@@ -14,7 +14,6 @@ TiDB 版本：5.4.0
 + 支持索引合并 (Index Merge) 数据访问方法，能够合并多个列上索引的条件过滤结果
 + 支持通过 session 变量实现有界限过期数据读取
 + 支持统计信息采集配置持久化
-+ 支持使用 Raft Engine 作为 TiKV 的日志存储引擎
 + 优化备份对集群的影响
 + 支持 Azure Blob Storage 作为备份目标存储
 + 持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能
@@ -154,14 +153,6 @@ TiDB 版本：5.4.0
     - 如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
     [用户文档](/explain-index-merge.md)
-
-- **新增 Raft Engine（实验特性）**
-
-    支持使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。此外，Raft Engine 提升了日志回收效率，修复了极端条件下日志堆积的问题。
-
-    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级或者降级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
-
-    [用户文档](/tikv-configuration-file.md#raft-engine)
 
 - **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
 
