@@ -66,7 +66,7 @@ SHOW CHARACTER SET;
 | utf8    | UTF-8 Unicode                       | utf8_bin          |      3 |
 | utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin       |      4 |
 +---------+-------------------------------------+-------------------+--------+
-5 rows in set (0.00 sec)
+6 rows in set (0.00 sec)
 ```
 
 TiDB 支持以下排序规则：
@@ -83,7 +83,7 @@ mysql> show collation;
 | utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
 | gbk_bin     | gbk     |   87 | Yes     | Yes      |       1 |
 +-------------+---------+------+---------+----------+---------+
-5 rows in set (0.01 sec)
+6 rows in set (0.00 sec)
 ```
 
 > **警告：**
