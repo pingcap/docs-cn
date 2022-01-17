@@ -48,15 +48,15 @@ BEGIN /*T! PESSIMISTIC */;
 
 | session 1 | session 2 | session 3 |
 | :----| :---- | :---- |
-| CREATE TABLE t (id INT); |  |  |
+| CREATE TABLE t (a INT); |  |  |
 | INSERT INTO T VALUES(1); |  |  |
 | BEGIN PESSIMISTIC; |  |
 | UPDATE t SET a = a + 1; |  |  |
 |  | BEGIN PESSIMISTIC; |  |
-|  | SELECT * FROM t;  // 使用快照读，返回(1) |  |
+|  | SELECT * FROM t;  // 使用快照读，返回(a=1) |  |
 |  |  | UPDATE t SET a = a + 1; // 使用当前读，等锁 |
-| COMMIT; // 释放锁，Transaction3 的 UPDATE 操作获得锁，使用当前读，读到最新已提交的记录 (2) 执行更新操作成功 |  |  |
-|  | SELECT * FROM t; // union scan，memdb 中脏数据结果集与快照结果集按照 rowid 进行 merge 后返回的结果集（3） |  |
+| COMMIT; // 释放锁，session 3 的 UPDATE 操作获得锁，使用当前读，读到最新已提交的记录 (a=2) 执行更新操作成功 |  |  |
+|  | SELECT * FROM t; // union scan，memdb 中的结果集与快照结果集按照 rowid 进行 merge 后返回的结果集（a=3） |  |
 
 - 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
