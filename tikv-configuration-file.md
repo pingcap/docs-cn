@@ -673,11 +673,6 @@ raftstore 相关的配置项。
 + 为 true 时，以最大分裂 key 为起点的 region 复用原 region 的 key；否则以原 region 起点 key 作为起点的 region 复用原 region 的 key。
 + 默认值：true
 
-### `allow-remove-leader`
-
-+ 允许删除主开关。
-+ 默认值：false
-
 ### `merge-max-log-gap`
 
 + 进行 merge 时，允许的最大日志缺失个数。
@@ -759,12 +754,6 @@ raftstore 相关的配置项。
 
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
 + 默认值：1MB
-+ 最小值：0
-
-### `raft-msg-flush-interval` <span class="version-mark">从 v5.3.0 版本开始引入</span>
-
-+ Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `store-io-pool-size` 的值为 `0` 时，该配置项不会生效。
-+ 默认值：250us
 + 最小值：0
 
 ## coprocessor
