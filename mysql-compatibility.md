@@ -127,7 +127,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 ### 字符集和排序规则
 
-* 关于字符集和排序规则的支持情况，详见 [字符集和排序规则](/character-set-and-collation.md)。
+* 关于 TiDB 对字符集和排序规则的支持情况，详见[字符集和排序规则](/character-set-and-collation.md)。
 
 * 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#mysql-兼容性)。
 
