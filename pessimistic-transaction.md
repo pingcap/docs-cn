@@ -40,25 +40,28 @@ BEGIN /*T! PESSIMISTIC */;
 ## 悲观事务模式的行为
 
 悲观事务的行为和 MySQL 基本一致（不一致之处详见[和 MySQL InnoDB 的差异](#和-mysql-innodb-的差异)）：
-
-- 悲观事务中引入快照读和当前读的概念:
-
-  快照读是一种不加锁读，读取的是可见版本，`SELECT` 语句中的读是快照读。
+- 悲观事务中引入快照读和当前读的概念：
+  * 快照读是一种不加锁读，在可重复读隔离级别下，只能读到该事务启动时已经提交的其他事务修改的数据，未提交的数据或在事务启动后其他事务提交的数据是不可见的，对于本事务而言，事务语句可以看到之前的语句做出的修改。`SELECT` 语句中的读是快照读。
+  * 当前读是一种加锁读，读取的是最新已提交的版本，`UPDATE`、`DELETE` 、`INSERT`、`SELECT FOR UPDATE` 语句中的读是当前读。
   
-  当前读是一种加锁读，读取的是最新已提交的版本，`UPDATE`、`DELETE` 、`INSERT`、`SELECT FOR UPDATE` 语句中的读是当前读。
-
   举例：
+  
+  创建如下表：
   ```sql
   CREATE TABLE t (id INT);
   INSERT INTO T VALUES(1);
-  /* tx1 1*/ BEGIN /*T! PESSIMISTIC */;
-  /* tx1 2*/ UPDATE t SET a = a + 1; // 加锁
-  /* tx2 1*/ BEGIN /*T! PESSIMISTIC */;
-  /* tx2 2*/ SELECT * FROM t;  // 使用快照读，返回(1)
-  /* tx2 3*/ UPDATE t SET a = a + 1; // 使用当前读，等锁
-  /* tx1 3*/ COMMIT; // 此时，tx1 释放锁，tx2 的 UPDATE 操作获得锁，使用当前读，读到最新已提交的记录 (2) 执行更新操作成功
-  /* tx2 4*/ SELECT * FROM t; // union scan，memdb 中脏数据结果集与快照结果集按照 rowid 进行 merge 后返回的结果集（3）
   ```
+  执行如下事务：
+  
+| Transaction1 | Transaction2 | Transaction3 |
+| :----| :---- | :---- |
+| BEGIN PESSIMISTIC; |  |
+| UPDATE t SET a = a + 1; |  |  |
+|  | BEGIN PESSIMISTIC; |  |
+|  | SELECT * FROM t;  // 使用快照读，返回(1) |  |
+|  |  | UPDATE t SET a = a + 1; // 使用当前读，等锁 |
+| COMMIT; // 释放锁，Transaction3 的 UPDATE 操作获得锁，使用当前读，读到最新已提交的记录 (2) 执行更新操作成功 |  |  |
+|  | SELECT * FROM t; // union scan，memdb 中脏数据结果集与快照结果集按照 rowid 进行 merge 后返回的结果集（3） |  |
 
 - 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
@@ -95,8 +98,8 @@ BEGIN /*T! PESSIMISTIC */;
 
     ```sql
     BEGIN /*T! PESSIMISTIC */;
-    INSERT INTO t1 (id) VALUES (6); -- 仅 MySQL 中出现阻塞。
-    UPDATE t1 SET pad1='new value' WHERE id = 5; -- MySQL 和 TiDB 处于等待阻塞状态。
+    INSERT INTO t1 (id) VALUES (6); // 仅 MySQL 中出现阻塞。
+    UPDATE t1 SET pad1='new value' WHERE id = 5; // MySQL 和 TiDB 处于等待阻塞状态。
     ```
 
     产生这一行为是因为 TiDB 当前不支持 _gap locking_（间隙锁）。
