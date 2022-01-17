@@ -25,7 +25,7 @@ join = "http://127.0.0.1:8261,http://127.0.0.1:8361,http://127.0.0.1:8461"
 
 keepalive-ttl = 60
 relay-keepalive-ttl = 1800 # 版本 2.0.2 新增
-# relay-dir = "relay_log" # 版本 5.4.0 新增
+# relay-dir = "relay_log" # 版本 5.4.0 新增。使用相对路径时注意结合部署、启动方式确认路径位置。
 
 ssl-ca = "/path/to/ca.pem"
 ssl-cert = "/path/to/cert.pem"
