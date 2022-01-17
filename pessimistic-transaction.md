@@ -44,17 +44,12 @@ BEGIN /*T! PESSIMISTIC */;
   * 快照读是一种不加锁读，在可重复读隔离级别下，只能读到该事务启动时已经提交的其他事务修改的数据，未提交的数据或在事务启动后其他事务提交的数据是不可见的，对于本事务而言，事务语句可以看到之前的语句做出的修改。`SELECT` 语句中的读是快照读。
   * 当前读是一种加锁读，读取的是最新已提交的版本，`UPDATE`、`DELETE` 、`INSERT`、`SELECT FOR UPDATE` 语句中的读是当前读。
   
-  举例：
-  
-  创建如下表：
-  ```sql
-  CREATE TABLE t (id INT);
-  INSERT INTO T VALUES(1);
-  ```
-  执行如下事务：
-  
-| Transaction1 | Transaction2 | Transaction3 |
+  通过下面的例子对快照读和当前读进行详细说明：
+
+| session 1 | session 2 | session 3 |
 | :----| :---- | :---- |
+| CREATE TABLE t (id INT); |  |  |
+| INSERT INTO T VALUES(1); |  |  |
 | BEGIN PESSIMISTIC; |  |
 | UPDATE t SET a = a + 1; |  |  |
 |  | BEGIN PESSIMISTIC; |  |
