@@ -13,8 +13,8 @@ The migration speed varies from 30 GB/h to 50 GB/h, depending on multiple factor
 
 ## Prerequisites
 
-- [Deploy a DM Cluster Using TiUP](https://docs.pingcap.com/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
-- [Grant the required privileges for the source database and the target database of DM](https://docs.pingcap.com/tidb-data-migration/stable/dm-worker-intro)
+- [Deploy a DM Cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
+- [Grant the required privileges for the source database and the target database of DM](/dm/dm-worker-intro.md)
 
 ## Step 1. Create the data source
 
@@ -89,7 +89,7 @@ block-allow-list:
 
 ```
 
-The above is the minimum task configuration to perform the migration. For more configuration items regarding the task, refer to [DM task complete configuration file introduction](https://docs.pingcap.com/zh/tidb-data-migration/stable/task-configuration-file-full/).
+The above is the minimum task configuration to perform the migration. For more configuration items regarding the task, refer to [DM task complete configuration file introduction](/dm/task-configuration-file-full.md).
 
 ## Step 3. Start the migration task
 
@@ -116,7 +116,7 @@ The parameters used in the command above are described as follows:
 |`--master-addr`| The {advertise-addr} of any DM-master node in the cluster where `dmctl` is to connect. For example: 172.16.10.71:8261. |
 |`start-task`| Start the migration task |
 
-If the task fails to start, after changing the configuration according to the returned result, you can run the `start-task task.yaml` command to restart the task. If you encounter problems, refer to [Handle Errors](https://docs.pingcap.com/tidb-data-migration/stable/error-handling/) and [FAQ](https://docs.pingcap.com/tidb-data-migration/stable/faq).
+If the task fails to start, after changing the configuration according to the returned result, you can run the `start-task task.yaml` command to restart the task. If you encounter problems, refer to [Handle Errors](/dm/dm-error-handling.md) and [FAQ](/dm/dm-faq.md).
 
 ## Step 4: Check the migration task status
 
@@ -128,7 +128,7 @@ To learn whether the DM cluster has an ongoing migration task, the task status a
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-For a detailed interpretation of the results, refer to [Query Status](https://docs.pingcap.com/tidb-data-migration/stable/query-status).
+For a detailed interpretation of the results, refer to [Query Status](/dm/dm-query-status.md).
 
 ## Step 5. Monitor the task and view logs （optional)
 
@@ -141,8 +141,8 @@ If you have deployed Prometheus, Alertmanager, and Grafana when deploying DM usi
 
 ## What's next
 
-- [Pause the migration task](https://docs.pingcap.com/tidb-data-migration/stable/pause-task)
-- [Resume the migration task](https://docs.pingcap.com/tidb-data-migration/stable/resume-task)
-- [Stop the migration task](https://docs.pingcap.com/tidb-data-migration/stable/stop-task)
-- [Export and import the cluster data source and task configuration](https://docs.pingcap.com/tidb-data-migration/stable/export-import-config)
-- [Handle failed DDL statements](https://docs.pingcap.com/tidb-data-migration/stable/handle-failed-ddl-statements)
+- [Pause the migration task](/dm/dm-pause-task.md)
+- [Resume the migration task](/dm/dm-resume-task.md)
+- [Stop the migration task](/dm/dm-stop-task.md)
+- [Export and import the cluster data source and task configuration](/dm/dm-export-import-config.md)
+- [Handle failed DDL statements](/dm/handle-failed-ddl-statements.md)

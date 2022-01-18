@@ -14,9 +14,9 @@ This document describes how to migrate large datasets from MySQL to TiDB. The wh
 
 ## Prerequisites
 
-- [Install DM](https://docs.pingcap.com/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup).
+- [Install DM](/dm/deploy-a-dm-cluster-using-tiup.md).
 - [Install Dumpling and TiDB Lightning](/migration-tools.md).
-- [Grant the source database and target database privileges required for DM](https://docs.pingcap.com/tidb-data-migration/stable/dm-worker-intro).
+- [Grant the source database and target database privileges required for DM](/dm/dm-worker-intro.md).
 - [Grant the target database privileges required for TiDB Lightning](/tidb-lightning/tidb-lightning-faq.md#what-are-the-privilege-requirements-for-the-target-database).
 - [Grant the source database privileges required for Dumpling](/dumpling-overview.md#export-data-from-tidbmysql).
 
@@ -226,7 +226,7 @@ If the import fails, refer to [TiDB Lightning FAQ](/tidb-lightning/tidb-lightnin
     #     safe-mode: true # If this field is set to true, DM changes INSERT of the data source to REPLACE for the target database, and changes UPDATE of the data source to DELETE and REPLACE for the target database. This is to ensure that when the table schema contains a primary key or unique index, DML statements can be imported repeatedly. In the first minute of starting or resuming an incremental replication task, DM automatically enables the safe mode.
     ```
 
-    The YAML above is the minimum configuration required for the migration task. For more configuration items, refer to [DM Advanced Task Configuration File](https://docs.pingcap.com/tidb-data-migration/stable/task-configuration-file-full).
+    The YAML above is the minimum configuration required for the migration task. For more configuration items, refer to [DM Advanced Task Configuration File](/dm/task-configuration-file-full.md).
 
     Before you start the migration task, to reduce the probability of errors, it is recommended to confirm that the configuration meets the requirements of DM by running the `check-task` command:
 
@@ -253,7 +253,7 @@ If the import fails, refer to [TiDB Lightning FAQ](/tidb-lightning/tidb-lightnin
 
     If the task fails to start, check the prompt message and fix the configuration. After that, you can re-run the command above to start the task.
 
-    If you encounter any problem, refer to [DM error handling](https://docs.pingcap.com/tidb-data-migration/stable/error-handling) and [DM FAQ](https://docs.pingcap.com/tidb-data-migration/stable/faq).
+    If you encounter any problem, refer to [DM error handling](/dm/dm-error-handling.md) and [DM FAQ](/dm/dm-faq.md).
 
 ### Check the migration task status
 
@@ -265,7 +265,7 @@ To learn whether the DM cluster has an ongoing migration task and view the task 
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-For a detailed interpretation of the results, refer to [Query Status](https://docs.pingcap.com/tidb-data-migration/stable/query-status).
+For a detailed interpretation of the results, refer to [Query Status](/dm/dm-query-status.md).
 
 ### Monitor the task and view logs
 
@@ -280,8 +280,8 @@ When DM is running, DM-worker, DM-master, and dmctl print the related informatio
 
 ## What's next
 
-- [Pause the migration task](https://docs.pingcap.com/tidb-data-migration/stable/pause-task).
-- [Resume the migration task](https://docs.pingcap.com/tidb-data-migration/stable/resume-task).
-- [Stop the migration task](https://docs.pingcap.com/tidb-data-migration/stable/stop-task).
-- [Export and import the cluster data source and task configuration](https://docs.pingcap.com/tidb-data-migration/stable/export-import-config).
-- [Handle failed DDL statements](https://docs.pingcap.com/tidb-data-migration/stable/handle-failed-ddl-statements).
+- [Pause a Data Migration Task](/dm/dm-pause-task.md)
+- [Resume a Data Migration Task](/dm/dm-resume-task.md)
+- [Stop a Data Migration Task](/dm/dm-stop-task.md)
+- [Export and Import Data Sources and Task Configuration of Clusters](/dm/dm-export-import-config.md)
+- [Handle Failed DDL Statements](/dm/handle-failed-ddl-statements.md)

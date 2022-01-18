@@ -64,4 +64,4 @@ The change in the workflow brings the following advantages:
 
 ## See also
 
-[Working details for DM with online DDL tools](https://docs.pingcap.com/tidb-data-migration/stable/feature-online-ddl/#working-details-for-dm-with-online-ddl-tools)
+[Working details for DM with online DDL tools](/dm/feature-online-ddl.md#working-details-for-dm-with-online-ddl-tools)

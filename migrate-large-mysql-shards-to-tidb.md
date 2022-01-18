@@ -32,9 +32,9 @@ In this document, you can migrate data following this procedure:
 
 Before getting started, see the following documents to prepare for the migration task.
 
-- [Deploy a DM Cluster Using TiUP](https://docs.pingcap.com/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
+- [Deploy a DM Cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [Use TiUP to Deploy Dumpling and Lightning](/migration-tools.md)
-- [Privileges required by DM-worker](https://docs.pingcap.com/tidb-data-migration/stable/dm-worker-intro#privileges-required-by-dm-worker)
+- [Privileges required by DM-worker](/dm/dm-worker-intro.md)
 - [Upstream Permissions for Lightning](/tidb-lightning/tidb-lightning-faq.md#what-are-the-privilege-requirements-for-the-target-database)
 - [Downstream Permissions for Dumpling](/dumpling-overview.md#export-data-from-tidbmysql)
 
@@ -71,7 +71,7 @@ The target TiKV cluster must have enough disk space to store the imported data. 
 
 ### Check conflicts for Sharded Tables
 
-If the migration involves merging data from different sharded tables, primary key or unique index conflicts may occur during the merge. Therefore, before migration, you need to take a deep look at the current sharding scheme from the business point of view, and find a way to avoid the conflicts. For more details, see [Handle conflicts between primary keys or unique indexes across multiple sharded tables](https://docs.pingcap.com/tidb-data-migration/stable/shard-merge-best-practices#handle-conflicts-between-primary-keys-or-unique-indexes-across-multiple-sharded-tables). The following is a brief description.
+If the migration involves merging data from different sharded tables, primary key or unique index conflicts may occur during the merge. Therefore, before migration, you need to take a deep look at the current sharding scheme from the business point of view, and find a way to avoid the conflicts. For more details, see [Handle conflicts between primary keys or unique indexes across multiple sharded tables](/dm/shard-merge-best-practices.md#handle-conflicts-between-primary-keys-or-unique-indexes-across-multiple-sharded-tables). The following is a brief description.
 
 Assume that tables 1~4 have the same table structure as follows.
 
@@ -307,7 +307,7 @@ name: task-test               # The name of the task. Should be globally unique.
 task-mode: incremental        # The mode of the task. "incremental" means full data migration is skipped and only incremental replication is performed.
 # Required for incremental replication from sharded tables. By default, the "pessimistic" mode is used.
 # If you have a deep understanding of the principles and usage limitations of the optimistic mode, you can also use the "optimistic" mode.
-# For more information, see [Merge and Migrate Data from Sharded Tables](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-shard-merge).
+# For more information, see [Merge and Migrate Data from Sharded Tables](https://docs.pingcap.com/zh/tidb/dev/feature-shard-merge/).
 
 shard-mode: "pessimistic"
 
@@ -365,7 +365,7 @@ mysql-instances:
 #    safe-mode: true
 ```
 
-For more configurations, see [DM Advanced Task Configuration File](https://docs.pingcap.com/tidb-data-migration/stable/task-configuration-file-full/).
+For more configurations, see [DM Advanced Task Configuration File](/dm/task-configuration-file-full.md).
 
 Before you start the data migration task, it is recommended to use the `check-task` subcommand in `tiup dmctl` to check if the configuration meets the DM configuration requirements.
 
@@ -390,7 +390,7 @@ The parameters in this command are described as follows.
 |--master-addr| {advertise-addr} of any DM-master node in the cluster that dmctl connects to. For example: 172.16.10.71:8261 |
 |start-task   | Starts the data migration task. |
 
-If the task fails to start, first make configuration changes according to the prompt messages from the returned result, and then run the `start-task task.yaml` subcommand in `tiup dmctl` to restart the task. If you encounter problems, see [Handle Errors](https://docs.pingcap.com/tidb-data-migration/stable/error-handling) and [TiDB Data Migration FAQ](https://docs.pingcap.com/tidb-data-migration/stable/faq).
+If the task fails to start, first make configuration changes according to the prompt messages from the returned result, and then run the `start-task task.yaml` subcommand in `tiup dmctl` to restart the task. If you encounter problems, see [Handle Errors](/dm/dm-error-handling.md) and [TiDB Data Migration FAQ](/dm/dm-faq.md).
 
 ### Check the migration status
 
@@ -402,7 +402,7 @@ You can check if there are running migration tasks in the DM cluster and their s
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-For more information, see [Query Status](https://docs.pingcap.com/zh/tidb-data-migration/stable/query-status).
+For more information, see [Query Status](/dm/dm-query-status.md).
 
 ### Monitor tasks and view logs
 
@@ -423,9 +423,10 @@ You can view the history of a migration task and internal operational metrics th
 
 - [Dumpling](/dumpling-overview.md)
 - [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)
-- [Pessimistic mode and optimistic mode](https://docs.pingcap.com/tidb-data-migration/stable/feature-shard-merge)
-- [Pause a Data Migration Task](https://docs.pingcap.com/tidb-data-migration/stable/pause-task)
-- [Resume a Data Migration Task](https://docs.pingcap.com/tidb-data-migration/stable/resume-task)
-- [Stop a Data Migration Task](https://docs.pingcap.com/tidb-data-migration/stable/stop-task)
-- [Export and Import Data Sources and Task Configuration of Clusters](https://docs.pingcap.com/tidb-data-migration/stable/export-import-config)
-- [Handle Failed DDL Statements](https://docs.pingcap.com/tidb-data-migration/stable/handle-failed-ddl-statements)
+- [Pessimistic mode and optimistic mode](/dm/feature-shard-merge.md)
+- [Pause a Data Migration Task](/dm/dm-pause-task.md)
+- [Resume a Data Migration Task](/dm/dm-resume-task.md)
+- [Stop a Data Migration Task](/dm/dm-stop-task.md)
+- [Export and Import Data Sources and Task Configuration of Clusters](/dm/dm-export-import-config.md)
+- [Handle Failed DDL Statements](/dm/handle-failed-ddl-statements.md)
+- [Handle Errors](/dm/dm-error-handling.md)

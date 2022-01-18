@@ -162,8 +162,8 @@ If you encounter any problem during the import, refer to [TiDB Lightning FAQ](/t
 
 ### Prerequisites
 
-- [Install DM](https://docs.pingcap.com/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup).
-- [Get the source database and target database privileges required for DM](https://docs.pingcap.com/tidb-data-migration/stable/dm-worker-intro).
+- [Install DM](/dm/deploy-a-dm-cluster-using-tiup.md).
+- [Get the source database and target database privileges required for DM](/dm/dm-worker-intro.md).
 
 ### Step 1: Create the data source
 
@@ -244,7 +244,7 @@ mysql-instances:
    #     safe-mode: true  # If this field is set to true, DM changes INSERT of the data source to REPLACE for the target database, and changes UPDATE of the data source to DELETE and REPLACE for the target database. This is to ensure that when the table schema contains a primary key or unique index, DML statements can be imported repeatedly. In the first minute of starting or resuming an incremental replication task, DM automatically enables the safe mode.
 ```
 
-The YAML file above is the minimum configuration required for the migration task. For more configuration items, refer to [DM Advanced Task Configuration File](https://docs.pingcap.com/tidb-data-migration/stable/task-configuration-file-full).
+The YAML file above is the minimum configuration required for the migration task. For more configuration items, refer to [DM Advanced Task Configuration File](/dm/task-configuration-file-full.md).
 
 ### Step 3. Run the migration task
 
@@ -273,7 +273,7 @@ The parameters used in the command above are described as follows:
 
 If the task fails to start, check the prompt message and fix the configuration. After that, you can re-run the command above to start the task.
 
-If you encounter any problem, refer to [DM error handling](https://docs.pingcap.com/tidb-data-migration/stable/error-handling) and [DM FAQ](https://docs.pingcap.com/tidb-data-migration/stable/faq).
+If you encounter any problem, refer to [DM error handling](/dm/dm-error-handling.md) and [DM FAQ](/dm/dm-faq.md).
 
 ### Step 4. Check the migration task status
 
@@ -285,7 +285,7 @@ To learn whether the DM cluster has an ongoing migration task and the task statu
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-For a detailed interpretation of the results, refer to [Query Status](https://docs.pingcap.com/tidb-data-migration/stable/query-status).
+For a detailed interpretation of the results, refer to [Query Status](/dm/dm-query-status.md).
 
 ### Step 5. Monitor the task and view logs
 
@@ -300,8 +300,8 @@ When DM is running, DM-worker, DM-master, and dmctl print the related informatio
 
 ## What's next
 
-- [Pause the migration task](https://docs.pingcap.com/tidb-data-migration/stable/pause-task).
-- [Resume the migration task](https://docs.pingcap.com/tidb-data-migration/stable/resume-task).
-- [Stop the migration task](https://docs.pingcap.com/tidb-data-migration/stable/stop-task).
-- [Export and import the cluster data source and task configuration](https://docs.pingcap.com/tidb-data-migration/stable/export-import-config).
-- [Handle failed DDL statements](https://docs.pingcap.com/tidb-data-migration/stable/handle-failed-ddl-statements).
+- [Pause the migration task](/dm/dm-pause-task.md).
+- [Resume the migration task](/dm/dm-resume-task.md).
+- [Stop the migration task](/dm/dm-stop-task.md).
+- [Export and import the cluster data source and task configuration](/dm/dm-export-import-config.md).
+- [Handle failed DDL statements](/dm/handle-failed-ddl-statements.md).

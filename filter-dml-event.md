@@ -16,7 +16,7 @@ When performing incremental data replication, you can use the [Binlog Event Filt
 
 To address the issue, since v2.0.5, DM supports using `binlog value filter` in incremental data replication to filter data. Among the DM-supported and `ROW`-formatted binlog, the binlog events carry values of all columns, and you can configure SQL expressions based on these values. If the expression calculates a row change as `TRUE`, DM does not replicate this row change to the downstream.
 
-Similar to [Binlog Event Filter](/filter-binlog-event.md), you need to configure `binlog value filter` in the task configuration file. For details, see the following configuration example. For the advanced task configuration and the description, refer to [DM advanced task configuration file](https://docs.pingcap.com/tidb-data-migration/stable/task-configuration-file-full#task-configuration-file-template-advanced).
+Similar to [Binlog Event Filter](/filter-binlog-event.md), you need to configure `binlog value filter` in the task configuration file. For details, see the following configuration example. For the advanced task configuration and the description, refer to [DM advanced task configuration file](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced).
 
 ```yaml
 name: test

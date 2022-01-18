@@ -30,12 +30,12 @@ Target schemas and tables：
 
 Before starting the migration, make sure you have completed the following tasks:
 
-- [Deploy a DM Cluster Using TiUP](https://docs.pingcap.com/tidb-data-migration/stable/deploy-a-dm-cluster-using-tiup)
-- [Privileges required by DM-worker](https://docs.pingcap.com/tidb-data-migration/stable/dm-worker-intro#privileges-required-by-dm-worker)
+- [Deploy a DM Cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
+- [Privileges required by DM-worker](/dm/dm-worker-intro.md)
 
 ### Check conflicts for the sharded tables
 
-If the migration involves merging data from different sharded tables, primary key or unique index conflicts may occur during the merge. Therefore, before migration, you need to take a deep look at the current sharding scheme from the business point of view, and find a way to avoid the conflicts. For more details, see [Handle conflicts between primary keys or unique indexes across multiple sharded tables](https://docs.pingcap.com/tidb-data-migration/stable/shard-merge-best-practices#handle-conflicts-between-primary-keys-or-unique-indexes-across-multiple-sharded-tables). The following is a brief description.
+If the migration involves merging data from different sharded tables, primary key or unique index conflicts may occur during the merge. Therefore, before migration, you need to take a deep look at the current sharding scheme from the business point of view, and find a way to avoid the conflicts. For more details, see [Handle conflicts between primary keys or unique indexes across multiple sharded tables](/dm/shard-merge-best-practices.md#handle-conflicts-between-primary-keys-or-unique-indexes-across-multiple-sharded-tables). The following is a brief description.
 
 In this example, `sale_01` and `sale_02` have the same table structure as follows
 
@@ -52,7 +52,7 @@ CREATE TABLE `sale_01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-The `id` column is the primary key, and the `sid` column is the sharding key. The `id` column is auto-incremental, and duplicated multiple sharded table ranges will cause data conflicts. The `sid` can ensure that the index is globally unique, so you can follow the steps in [Remove the primary key attribute of the auto-incremental primary key](https://docs.pingcap.com/tidb-data-migration/stable/shard-merge-best-practices#remove-the-primary-key-attribute-from-the-column) to bypasses the `id` column.
+The `id` column is the primary key, and the `sid` column is the sharding key. The `id` column is auto-incremental, and duplicated multiple sharded table ranges will cause data conflicts. The `sid` can ensure that the index is globally unique, so you can follow the steps in [Remove the primary key attribute of the auto-incremental primary key](/dm/shard-merge-best-practices.md#remove-the-primary-key-attribute-from-the-column) to bypasses the `id` column.
 
 {{< copyable "sql" >}}
 
@@ -119,7 +119,7 @@ name: "shard_merge"               # The name of the task. Should be globally uni
 task-mode: all
 # Required for the MySQL shards. By default, the "pessimistic" mode is used.
 # If you have a deep understanding of the principles and usage limitations of the optimistic mode, you can also use the "optimistic" mode.
-# For more information, see [Merge and Migrate Data from Sharded Tables](https://docs.pingcap.com/tidb-data-migration/stable/feature-shard-merge)
+# For more information, see [Merge and Migrate Data from Sharded Tables](https://docs.pingcap.com/tidb/dev/feature-shard-merge/)
 shard-mode: "pessimistic"
 meta-schema: "dm_meta"                        # A schema will be created in the downstream database to store the metadata
 ignore-checking-items: ["auto_increment_ID"]  # In this example, there are auto-incremental primary keys upstream, so you do not need to check this item.
@@ -168,14 +168,14 @@ block-allow-list:           # filter or only migrate all operations of some data
     do-dbs: ["store_*"]     # The allow list of the schemas to be migrated, similar to replicate-do-db in MySQL.
 ```
 
-The above example is the minimum configuration to perform the migration task. For more information, see [DM Advanced Task Configuration File](https://docs.pingcap.com/tidb-data-migration/stable/task-configuration-file-full).
+The above example is the minimum configuration to perform the migration task. For more information, see [DM Advanced Task Configuration File](/dm/task-configuration-file-full.md).
 
 For more information on `routes`, `filters` and other configurations in the task file, see the following documents:
 
-- [Table routing](https://docs.pingcap.com/tidb-data-migration/stable/key-features#table-routing)
-- [Block & Allow Table Lists](https://docs.pingcap.com/tidb-data-migration/stable/key-features#block-and-allow-table-lists)
-- [Binlog event filter](https://docs.pingcap.com/tidb-data-migration/stable/key-features#binlog-event-filter)
-- [Filter Certain Row Changes Using SQL Expressions](https://docs.pingcap.com/tidb-data-migration/stable/feature-expression-filter)
+- [Table routing](/dm/dm-key-features.md#table-routing)
+- [Block & Allow Table Lists](/dm/dm-key-features.md#block-and-allow-table-lists)
+- [Binlog event filter](/filter-binlog-event.md)
+- [Filter Certain Row Changes Using SQL Expressions](/filter-dml-event.md)
 
 ## Step 3. Start the task
 
@@ -200,7 +200,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 |--master-addr| {advertise-addr} of any DM-master node in the cluster that dmctl connects to. For example: 172.16.10.71:8261 |
 |start-task   | Starts the data migration task. |
 
-If the migration task fails to start, modify the configuration information according to the error information, and then run `start-task task.yaml` again to start the migration task. If you encounter problems, see [Handle Errors](https://docs.pingcap.com/tidb-data-migration/stable/error-handling) and [FAQ](https://docs.pingcap.com/tidb-data-migration/stable/faq).
+If the migration task fails to start, modify the configuration information according to the error information, and then run `start-task task.yaml` again to start the migration task. If you encounter problems, see [Handle Errors](/dm/dm-error-handling.md) and [FAQ](/dm/dm-faq.md).
 
 ## Step 4. Check the task
 
@@ -212,7 +212,7 @@ After starting the migration task, you can use `dmtcl tiup` to run `query-status
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-If you encounter errors, use `query-status <name of the error task>` to view more detailed information. For details about the query results, task status and sub task status of the `query-status` command, see [TiDB Data Migration Query Status](https://docs.pingcap.com/tidb-data-migration/stable/query-status).
+If you encounter errors, use `query-status <name of the error task>` to view more detailed information. For details about the query results, task status and sub task status of the `query-status` command, see [TiDB Data Migration Query Status](/dm/dm-query-status.md).
 
 ## Step 5. Monitor tasks and check logs (optional)
 
@@ -232,8 +232,8 @@ You can view the history of a migration task and internal operational metrics th
 ## See also
 
 - [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md).
-- [Merge and Migrate Data from Sharded Tables](https://docs.pingcap.com/tidb-data-migration/stable/feature-shard-merge)
-- [Best Practices of Data Migration in the Shard Merge Scenario](https://docs.pingcap.com/tidb-data-migration/stable/shard-merge-best-practices)
-- [Handle Errors](https://docs.pingcap.com/tidb-data-migration/stable/error-handling)
-- [Handle Performance Issues](https://docs.pingcap.com/zh/tidb-data-migration/stable/handle-performance-issues)
-- [FAQ](https://docs.pingcap.com/tidb-data-migration/stable/faq)
+- [Merge and Migrate Data from Sharded Tables](/dm/feature-shard-merge.md)
+- [Best Practices of Data Migration in the Shard Merge Scenario](/dm/shard-merge-best-practices.md)
+- [Handle Errors](/dm/dm-error-handling.md)
+- [Handle Performance Issues](/dm/dm-handle-performance-issues.md)
+- [FAQ](/dm/dm-faq.md)
