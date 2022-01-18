@@ -362,7 +362,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 要开启认证与鉴权功能，请在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
 
 ```
-// 打开认证授权功能
+// 开启认证授权功能
 spark.sql.auth.enable   true
 
 // 配置 TiDB 信息 
