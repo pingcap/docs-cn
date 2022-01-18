@@ -23,9 +23,9 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-目前 TiSpark 支持版本的兼容情况如下图所示，用户可以根据自身情况选择相应 TiSpark 版本。
+目前 TiSpark 支持版本的兼容情况如下所示，你可以根据自身情况选择相应的 TiSpark 版本。
 
-| TiSpark Version | TiDB/TiKV/PD Version | Spark Version | Scala Version |
+| TiSpark 版本 | TiDB、TiKV、PD 版本 | Spark 版本 | Scala 版本 |
 | --------------- | -------------------- | ------------- | ------------- |
 | 2.4.x           | 5.x, 4.x             | 2.3.x, 2.4.x  | 2.11          |
 | 2.5.x           | 5.x, 4.x             | 3.0.x, 3.1.x  | 2.12          |
@@ -360,12 +360,12 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 ## 安全
 
-从 TiSpark v2.5.0 起，你可以通过 TiDB 对 TiSpark 进行认证与鉴权。该功能默认关闭。
+从 TiSpark v2.5.0 起，你可以通过 TiDB 对 TiSpark 进行鉴权与授权。该功能默认关闭。
 
-要开启认证与鉴权功能，请在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
+要开启鉴权与授权功能，请在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
 
 ```
-// 开启认证授权功能
+// 开启鉴权与授权功能
 spark.sql.auth.enable   true
 
 // 配置 TiDB 信息 
@@ -375,7 +375,7 @@ spark.sql.tidb.user    $your_tidb_server_user
 spark.sql.tidb.password $your_tidb_server_password
 ```
 
-详细使用手册，请参考[这份文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+更多详细信息，请参考[TiSpark 鉴权与授权文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
 
 ## TiSpark FAQ
 
