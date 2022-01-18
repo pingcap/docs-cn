@@ -1,9 +1,10 @@
 ---
 title: Load Base Split
 summary: 介绍 Load Base Split 功能。
+aliases: ['/docs-cn/dev/configure-load-base-split/']
 ---
 
-# Load Base Split
+# Load Base Split 
 
 Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访问分布不均匀造成的热点问题，比如小表的全表扫描。
 
@@ -41,16 +42,16 @@ Load Base Split 后的 Region 不会短时间内被 Merge，因为 PD 的 `Merge
 以`split.qps-threshold`为例，目前有两种办法修改配置：
 
 - 通过 SQL 语句修改，例如：
-  
+
   {{< copyable "sql" >}}
-  
+
   ```sql
   set config tikv split.qps-threshold=3000
   ```
 - 通过 TiKV 修改，例如：
-  
+
   {{< copyable "shell-regular" >}}
-  
+
   ```shell
   curl -X POST "http://ip:status_port/config" -H "accept: application/json" -d '{"split.qps-threshold":"3000"}'
   ```
@@ -58,16 +59,16 @@ Load Base Split 后的 Region 不会短时间内被 Merge，因为 PD 的 `Merge
 同理，目前也有两种办法查看配置：
 
 - 通过 SQL 查看，例如：
-  
+
   {{< copyable "sql" >}}
-  
+
   ```sql
   show config where type='tikv' and name like '%split.qps-threshold%'
   ```
 - 通过 TiKV 查看，例如：
-  
+
   {{< copyable "shell-regular" >}}
-  
+
   ```shell
   curl "http://ip:status_port/config"
   ```
@@ -85,7 +86,7 @@ Load Base Split 后的 Region 不会短时间内被 Merge，因为 PD 的 `Merge
 后者则可以看到每个 store 中 QPS 超过阈值的 Region，默认显示 Top1，最多能显示 Top10。值得一提的是，如果想查看更详细的信息，可以通过 pd-ctl 使用 `pd-ctl hot read` 去查询。
 
 > **注意：**
-> 
+>
 > 从 v4.0.0-rc.2 起可以使用 SQL 语句来修改和查看配置。
-> 
+>
 
