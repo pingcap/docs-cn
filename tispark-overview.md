@@ -23,7 +23,7 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 版本兼容情况如下图所示，用户可以根据自身情况选择相应 TiSpark 版本。
+目前 TiSpark 支持版本的兼容情况如下图所示，用户可以根据自身情况选择相应 TiSpark 版本。
 
 | TiSpark Version | TiDB/TiKV/PD Version | Spark Version | Scala Version |
 | --------------- | -------------------- | ------------- | ------------- |
