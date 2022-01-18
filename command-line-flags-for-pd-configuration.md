@@ -37,13 +37,13 @@ PD is configurable using command-line flags and environment variables.
 ## `--config`
 
 - The configuration file
-- Default: ""
+- Default: `""`
 - If you set the configuration using the command line, the same setting in the configuration file will be overwritten.
 
 ## `--data-dir`
 
 - The path to the data directory
-- Default: "default.${name}"
+- Default: `"default.${name}"`
 
 ## `--initial-cluster`
 
@@ -59,49 +59,49 @@ PD is configurable using command-line flags and environment variables.
 ## `--join`
 
 - Join the cluster dynamically
-- Default: ""
+- Default: `""`
 - If you want to join an existing cluster, you can use `--join="${advertise-client-urls}"`, the `advertise-client-url` is any existing PD's, multiply advertise client urls are separated by comma.
 
 ## `-L`
 
 - The log level
-- Default: "info"
-- You can choose from debug, info, warn, error, or fatal.
+- Default: `"info"`
+- Optional values: `"debug"`, `"info"`, `"warn"`, `"error"`, `"fatal"`
 
 ## `--log-file`
 
 - The log file
-- Default: ""
-- If this flag is not set, logs will be written to stderr. Otherwise, logs will be stored in the log file which will be automatically rotated every day.
+- Default: `""`
+- If this flag is not set, logs will be written to "stderr". If this flag is set, logs are output to the corresponding file.
 
 ## `--log-rotate`
 
 - To enable or disable log rotation
-- Default: true
+- Default: `true`
 - When the value is true, follow the `[log.file]` in PD configuration files.
 
 ## `--name`
 
 - The human-readable unique name for this PD member
-- Default: "pd"
+- Default: `"pd"`
 - If you want to start multiply PDs, you must use different name for each one.
 
 ## `--cacert`
 
 - The file path of CA, used to enable TLS
-- Default: ""
+- Default: `""`
 
 ## `--cert`
 
 - The path of the PEM file including the X509 certificate, used to enable TLS
-- Default: ""
+- Default: `""`
 
 ## `--key`
 
 - The path of the PEM file including the X509 key, used to enable TLS
-- Default: ""
+- Default: `""`
 
 ## `--metrics-addr`
 
 - The address of Prometheus Pushgateway, which does not push data to Prometheus by default.
-- Default: ""
+- Default: `""`
