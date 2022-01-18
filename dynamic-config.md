@@ -151,7 +151,6 @@ The following TiKV configuration items can be modified online:
 | `raftstore.peer-stale-state-check-interval` | The time interval to check whether a peer is without a leader |
 | `raftstore.consistency-check-interval` | The time interval to check consistency |
 | `raftstore.raft-store-max-leader-lease` | The longest trusted period of a Raft leader |
-| `raftstore.allow-remove-leader` | Determines whether to allow deleting the main switch |
 | `raftstore.merge-check-tick-interval` | The time interval for merge check |
 | `raftstore.cleanup-import-sst-interval` | The time interval to check expired SST files |
 | `raftstore.local-read-batch-size` | The maximum number of read requests processed in one batch |

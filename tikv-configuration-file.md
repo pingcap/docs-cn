@@ -643,11 +643,6 @@ Configuration items related to Raftstore
 + Default value: `"9s"`
 + Minimum value: `0`
 
-### `allow-remove-leader`
-
-+ Determines whether to allow deleting the main switch
-+ Default value: `false`
-
 ### `merge-max-log-gap`
 
 + The maximum number of missing logs allowed when `merge` is performed
@@ -729,12 +724,6 @@ Configuration items related to Raftstore
 
 + Determines the threshold at which Raft data is written into the disk. If the data size is larger than the value of this configuration item, the data is written to the disk. When the value of `store-io-pool-size` is `0`, this configuration item does not take effect.
 + Default value: `1MB`
-+ Minimum value: `0`
-
-### `raft-msg-flush-interval` <span class="version-mark">New in v5.3.0</span>
-
-+ Determines the interval at which Raft messages are sent in batches. The Raft messages in batches are sent at every interval specified by this configuration item. When the value of `store-io-pool-size` is `0`, this configuration item does not take effect.
-+ Default value: `250us`
 + Minimum value: `0`
 
 ## Coprocessor
