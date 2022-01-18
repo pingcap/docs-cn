@@ -375,7 +375,7 @@ spark.sql.tidb.user    $your_tidb_server_user
 spark.sql.tidb.password $your_tidb_server_password
 ```
 
-更多详细信息，请参考[TiSpark 鉴权与授权文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+更多详细信息，请参考 [TiSpark 鉴权与授权文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
 
 ## TiSpark FAQ
 
