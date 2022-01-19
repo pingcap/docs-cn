@@ -299,13 +299,13 @@ TiDB 版本：5.4.0
     - 减少备份使用的默认线程池大小，并在压力大时限制其使用 [#11000](https://github.com/tikv/tikv/issues/11000)
     - 支持动态调整 Apply 和 Store 线程池大小 [#11159](https://github.com/tikv/tikv/issues/11159)
     - 支持配置 `snap-generator` 线程池大小 [#11247](https://github.com/tikv/tikv/issues/11247)
-    - 优化在文件数较多且读写频繁的场景下 RocksDB 的全局锁争用问题 [rocksdb#250](https://github.com/tikv/rocksdb/pull/250)
+    - 优化在文件数较多且读写频繁的场景下 RocksDB 的全局锁争用问题 [#250](https://github.com/tikv/rocksdb/pull/250)
 
 + PD
 
     - 默认开启历史热点记录功能 [#25281](https://github.com/pingcap/tidb/issues/25281)
     - 新增 HTTP Component 的签名，用于标识请求来源 [#4490 ](https://github.com/tikv/pd/issues/4490)
-    - TiDB Dashboard 更新至 v2021.12.31，新增 Top SQL，改善 Profiling 页面 [#4257](https://github.com/tikv/pd/issues/4257)
+    - TiDB Dashboard 更新至 v2021.12.31 [#4257](https://github.com/tikv/pd/issues/4257)
 
 + TiFlash
 
@@ -388,14 +388,14 @@ TiDB 版本：5.4.0
     - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
     - 修复查询报错 `DB::Exception: Encode type of coprocessor response is not CHBlock`
     - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal ` 行为不一致的问题。
-    - 修复 TiFlash 的 `date_add_string_xxx` 函数返回值与 mysql 不一致的问题
+    - 修复 TiFlash 的 `date_add_string_xxx` 函数返回值与 MySQL 不一致的问题
 
 + Tools
 
     + Backup & Restore (BR)
 
         - 修复当恢复完成后，Region 有可能分布不均的问题 [#30425](https://github.com/pingcap/tidb/issues/30425)
-        - 修复当使用 `minio` 作为备份存储时，不能在 endpoint 指定 `'/'` 的问题 [#30104](https://github.com/pingcap/tidb/issues/30104)
+        - 修复当使用 `minio` 作为备份存储时，不能在 endpoint 中指定 `'/'` 的问题 [#30104](https://github.com/pingcap/tidb/issues/30104)
         - 修复因为并发备份系统表，导致表名更新失败，无法恢复系统表的问题 [#29710](https://github.com/pingcap/tidb/issues/29710)
 
     + TiCDC
