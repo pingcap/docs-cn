@@ -112,8 +112,8 @@ TiDB 版本：5.4.0
         - 字符串函数：`LPAD()`、`RPAD()`、`STRCMP()`
         - 日期时间函数：`ADDDATE()`、`DATE_ADD()`、`DATE_SUB()`、`SUBDATE()`、`QUARTER()`
     - 引入动态线程池，提升资源利用率（实验特性）
-    - 新增或修改一些 TiFlash 已有配置的默认值，提升 TiFlash 的性能和稳定性
-    - 提升由行存到列存数据同步处理时对 raft log 的解码 (decoding) 效率，数据同步性能提升 50%
+    - 提升从 TiKV 同步数据时，由行存格式到列存格式的数据转换效率，整体的数据同步性能提升 50%
+    - 调整一些配置项的默认值，提升 TiFlash 的性能和稳定性。HTAP 混合负载下，单表简单查询的性能最高提升 20%
 
     用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
