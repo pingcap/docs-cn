@@ -196,7 +196,7 @@ TiDB 版本：5.4.0
 
     Backup & Restore (BR) 增加了备份线程自动调节功能（默认开启）。该功能通过监控集群资源的使用率自动调节备份的线程数的方式，降低备份过程对集群的影响。在某些 Case 验证中，通过增加集群用于备份的资源和开启备份线程自动调节功能，备份的影响可以降低到 10% 以下。
 
-    [用户文档](/br/br-features.md#自动调节-从-v54-版本开始引入)
+    [用户文档](/br/br-auto-tune.md)
 
 - **支持 Azure Blob Storage 作为备份目标存储**
 
@@ -222,7 +222,7 @@ TiDB 版本：5.4.0
 
     在 `backend=local` 模式下，数据导入完成之前 TiDB Lightning 会输出冲突数据，然后从数据库中删除这些冲突数据。用户可以在导入完成后解析冲突数据，并根据业务规则选择适合的数据进行插入。建议根据冲突数据清洗上游数据源，避免在后续增量数据迁移阶段遇到冲突数据而造成数据不一致。
 
-    [用户文档](tidb-lightning/tidb-lightning-error-resolution.md)
+    [用户文档](/tidb-lightning/tidb-lightning-error-resolution.md)
 
 - **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
 
