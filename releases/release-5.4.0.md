@@ -322,7 +322,7 @@ TiDB 版本：5.4.0
 
         - 减少 "EventFeed retry rate limited" 日志的数量 [#4006](https://github.com/pingcap/tiflow/issues/4006)
         - 降低在同步大量表时的同步延时 [#3900](https://github.com/pingcap/tiflow/issues/3900)
-        - 减少 TiKV 节点宕机后 kv client 恢复的时间 [#3191](https://github.com/pingcap/tiflow/issues/3191)
+        - 减少 TiKV 节点宕机后 KV client 恢复的时间 [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
     + TiDB Data Migration (DM)
 
