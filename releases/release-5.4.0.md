@@ -32,9 +32,7 @@ TiDB 版本：5.4.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-|  [`tidb_backoff_lock_fast`](/system-variables.md#tidb_backoff_lock_fast) | 修改 | 默认值由 `100` 修改为 `10` |
 |  [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 新增 | 用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集，默认值为 `OFF` |
-| [`tidb_enable_index_merge`](/system-variables.md#tidb_enable_index_merge-从-v40-版本开始引入) | 修改 | 默认值由 `OFF` 改为 `ON`。如果从低于 v4.0.0 版本升级到 v5.4.0 及以上版本的集群，该变量值默认保持 `OFF`。如果从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本的集群，该变量开关保持升级前的状态。对于 v5.4.0 及以上版本的新建集群，该变量开关默认保持 `ON`。 |
 | [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。 |
 | [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF |
 | [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF` |
@@ -42,6 +40,8 @@ TiDB 版本：5.4.0
 | [`tidb_regard_null_as_point`](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败 (`OFF`) 还是退回使用 pseudo 的统计信息 (`ON`)，默认值为 `ON` |
+|  [`tidb_backoff_lock_fast`](/system-variables.md#tidb_backoff_lock_fast) | 修改 | 默认值由 `100` 修改为 `10` |
+| [`tidb_enable_index_merge`](/system-variables.md#tidb_enable_index_merge-从-v40-版本开始引入) | 修改 | 默认值由 `OFF` 改为 `ON`。如果从低于 v4.0.0 版本升级到 v5.4.0 及以上版本的集群，该变量值默认保持 `OFF`。如果从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本的集群，该变量开关保持升级前的状态。对于 v5.4.0 及以上版本的新建集群，该变量开关默认保持 `ON`。 |
 | [`tidb_store_limit`](/system-variables.md#tidb_store_limit-从-v304-和-v40-版本开始引入) | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置 |
 
 ### 配置文件参数
