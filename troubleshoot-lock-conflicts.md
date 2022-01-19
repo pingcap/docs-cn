@@ -6,21 +6,151 @@ aliases: ['/docs-cn/dev/troubleshoot-lock-conflicts/']
 
 # TiDB 锁冲突问题处理
 
-TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与悲观事务两种事务模式。本文介绍在使用乐观事务或者悲观事务的过程中常见的锁冲突问题以及解决思路。
+TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](/optimistic-transaction)与[悲观事务](/pessimistic-transaction)两种事务模式。本文介绍如果使用 Lock View 排查锁相关的问题，以及如何处理使用乐观事务或者悲观事务的过程中常见的锁冲突问题。
 
-## 乐观锁
+## 使用 Lock View 排查锁相关的问题
 
-TiDB 中事务使用两阶段提交，分为 Prewrite 和 Commit 两个阶段，示意图如下。
+自 v5.1 版本起，TiDB 支持 Lock View 功能。该功能在 `information_schema` 中内置了若干系统表，用于提供更多关于锁冲突和锁等待的信息。
 
-![TiDB 中乐观事务的两阶段提交](/media/troubleshooting-lock-pic-01.png)
+> **注意：**
+>
+> Lock View 功能目前仅支持用于排查悲观锁相关的问题。
 
-相关细节本节不再赘述，详情可阅读 [Percolator 和 TiDB 事务算法](https://pingcap.com/blog-cn/percolator-and-txn/)。
+关于这些表的详细说明，请参考相关系统表的文档：
 
-### Prewrite 阶段
+* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上或整个集群上所有运行中的事务的信息，包括事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
+* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁信息，包括阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句的 Digest 和发生等待的 key。
+* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上或整个集群上最近发生过的若干次死锁的相关信息，包括死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
 
-在两阶段提交的 Prewrite 阶段，TiDB 会对目标 key 分别上 primary lock 和 secondary lock。在冲突严重的场景中，会出现写冲突 (write conflict)、keyislocked 等报错。具体而言，这个阶段可能会遇到的锁相关的报错信息如下。
+> **注意：**
+>
+> Lock View 所属的系统表中展示的 SQL 语句为归一化的 SQL 语句（即去除了格式和参数的形式的 SQL 语句），由 SQL Digest 内部查询获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
 
-#### 读写冲突
+以下为排查部分问题的示例。
+
+### 死锁错误
+
+要获取最近发生的死锁错误的信息，可查询 `DEADLOCKS` 或 `CLUSTER_DEADLOCKS` 表，示例如下：
+
+{{< copyable "sql" >}}
+
+```sql
+select * from information_schema.deadlocks;
+```
+
+```sql
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
+| DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | CURRENT_SQL_DIGEST_TEXT                 | KEY                                    | KEY_INFO                                                                                           | TRX_HOLDING_LOCK   |
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
+|           1 | 2021-08-05 11:09:03.230341 |         0 | 426812829645406216 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | update `t` set `v` = ? where `id` = ? ; | 7480000000000000355F728000000000000002 | {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"2"} | 426812829645406217 |
+|           1 | 2021-08-05 11:09:03.230341 |         0 | 426812829645406217 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | update `t` set `v` = ? where `id` = ? ; | 7480000000000000355F728000000000000001 | {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"1"} | 426812829645406216 |
++-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
+```
+
+查询结果会显示死锁错误中多个事务之间的等待关系和各个事务当前正在执行的 SQL 语句的归一化形式（即去掉参数和格式的形式），以及发生冲突的 key 及其从 key 中解读出的一些信息。
+
+例如在上述例子中，第一行意味着 ID 为 `426812829645406216` 的事务当前正在执行形如 ``update `t` set `v` = ? where `id` = ? ;`` 的语句，被另一个 ID 为 `426812829645406217` 的事务阻塞；而 `426812829645406217` 同样也在执行一条形如 ``update `t` set `v` = ? where `id` = ? ;`` 的语句，并被 ID 为 `426812829645406216` 的事务阻塞，两个事务因而构成死锁。
+
+### 少数热点 key 造成锁排队
+
+`DATA_LOCK_WAITS` 系统表提供 TiKV 节点上的等锁情况。查询该表时，TiDB 将自动从所有 TiKV 节点上获取当前时刻的等锁信息。当少数热点 key 频繁被上锁并阻塞较多事务时，你可以查询 `DATA_LOCK_WAITS` 表并按 key 对结果进行聚合，以尝试找出经常发生问题的 key：
+
+{{< copyable "sql" >}}
+
+```sql
+select `key`, count(*) as `count` from information_schema.data_lock_waits group by `key` order by `count` desc;
+```
+
+```sql
++----------------------------------------+-------+
+| key                                    | count |
++----------------------------------------+-------+
+| 7480000000000000415F728000000000000001 |     2 |
+| 7480000000000000415F728000000000000002 |     1 |
++----------------------------------------+-------+
+```
+
+为避免偶然性，你可考虑进行多次查询。
+
+如果已知频繁出问题的 key，可尝试从 `TIDB_TRX` 或 `CLUSTER_TIDB_TRX` 表中获取试图上锁该 key 的事务的信息。
+
+需要注意 `TIDB_TRX` 和 `CLUSTER_TIDB_TRX` 表所展示的信息也是对其进行查询的时刻正在运行的事务的信息，并不展示已经结束的事务。如果并发的事务数量很大，该查询的结果集也可能很大，可以考虑添加 limit 子句，或用 where 子句筛选出等锁时间较长的事务。需要注意，对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而不同表中的信息可能并不同步。
+
+{{< copyable "sql" >}}
+
+```sql
+select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
+```
+
+```sql
+*************************** 1. row ***************************
+                     ID: 426831815660273668
+             START_TIME: 2021-08-06 07:16:00.081000
+     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
+CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
+                  STATE: LockWaiting
+     WAITING_START_TIME: 2021-08-06 07:16:00.087720
+        MEM_BUFFER_KEYS: 0
+       MEM_BUFFER_BYTES: 0
+             SESSION_ID: 77
+                   USER: root
+                     DB: test
+        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
+*************************** 2. row ***************************
+                     ID: 426831818019569665
+             START_TIME: 2021-08-06 07:16:09.081000
+     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
+CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
+                  STATE: LockWaiting
+     WAITING_START_TIME: 2021-08-06 07:16:09.290271
+        MEM_BUFFER_KEYS: 0
+       MEM_BUFFER_BYTES: 0
+             SESSION_ID: 75
+                   USER: root
+                     DB: test
+        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
+2 rows in set (0.00 sec)
+```
+
+### 事务被长时间阻塞
+
+如果已知一个事务被另一事务（或多个事务）阻塞，且已知当前事务的 `start_ts`（即事务 ID），则可使用如下方式获取导致该事务阻塞的事务的信息。注意对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而可能不同表中的信息可能并不同步。
+
+{{< copyable "sql" >}}
+
+```sql
+select l.key, trx.*, tidb_decode_sql_digests(trx.all_sql_digests) as sqls from information_schema.data_lock_waits as l join information_schema.cluster_tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 426831965449355272\G
+```
+
+```sql
+*************************** 1. row ***************************
+                    key: 74800000000000004D5F728000000000000001
+               INSTANCE: 127.0.0.1:10080
+                     ID: 426832040186609668
+             START_TIME: 2021-08-06 07:30:16.581000
+     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
+CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
+                  STATE: LockWaiting
+     WAITING_START_TIME: 2021-08-06 07:30:16.592763
+        MEM_BUFFER_KEYS: 1
+       MEM_BUFFER_BYTES: 19
+             SESSION_ID: 113
+                   USER: root
+                     DB: test
+        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
+                   sqls: ["begin ;","select * from `t` where `id` = ? for update ;","update `t` set `v` = `v` + ? where `id` = ? ;"]
+1 row in set (0.01 sec)
+```
+
+上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，以尝试将该列（内容为一组 SQL Digest）转换为其对应的归一化 SQL 语句，以便于阅读。
+
+如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。
+
+## 处理乐观锁冲突问题
+
+对于乐观锁，可能会遇到的锁相关的报错包括读写冲突、KeyIsLocked 错误、锁被清除 (LockNotFound) 等错误。
+
+### 读写冲突
 
 在 TiDB 中，读取数据时，会获取一个包含当前物理时间且全局唯一递增的时间戳作为当前事务的 start_ts。事务在读取时，需要读到目标 key 的 commit_ts 小于这个事务的 start_ts 的最新的数据版本。当读取时发现目标 key 上存在 lock 时，因为无法知道上锁的那个事务是在 Commit 阶段还是 Prewrite 阶段，所以就会出现读写冲突的情况，如下图：
 
@@ -83,7 +213,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
     row_id: -9223372036854775558
     ```
 
-#### KeyIsLocked 错误
+### KeyIsLocked 错误
 
 事务在 Prewrite 阶段的第一步就会检查是否有写写冲突，第二步会检查目标 key 是否已经被另一个事务上锁。当检测到该 key 被 lock 后，会在 TiKV 端报出 KeyIsLocked。目前该报错信息没有打印到 TiDB 以及 TiKV 的日志中。与读写冲突一样，在出现 KeyIsLocked 时，后台会自动进行 backoff 重试。
 
@@ -100,11 +230,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 * 如果出现大量的 txnLock，需要从业务的角度评估下冲突的原因。
 * 使用悲观锁模式。
 
-### Commit 阶段
-
-当 Prewrite 全部完成时，客户端便会取得 commit_ts，然后继续两阶段提交的第二阶段。这里需要注意的是，由于 primary key 是否提交成功标志着整个事务是否提交成功，因而客户端需要在单独 commit primary key 之后再继续 commit 其余的 key。
-
-#### 锁被清除 (LockNotFound) 错误
+### 锁被清除 (LockNotFound) 错误
 
 TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
 
@@ -144,39 +270,15 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
 
 * 在关闭 TiDB 事务重试的情况下，需要在应用端捕获异常，并进行重试。
 
-## 悲观锁
+## 处理悲观锁冲突问题
 
-在 v3.0.8 之前，TiDB 默认使用的乐观事务模式会导致事务提交时因为冲突而失败。为了保证事务的成功率，需要修改应用程序，加上重试的逻辑。悲观事务模式可以避免这个问题，应用程序无需添加重试逻辑，就可以正常执行。
+对于悲观锁，可能会遇到的锁相关的报错包括读写冲突、pessimistic lock retry limit reached 错误、Lock wait timeout exceeded 错误、TTL manager has timed out 错误、Deadlock found when trying to get lock 等错误。
 
-TiDB 悲观锁复用了乐观锁的两阶段提交逻辑，重点在 DML 执行时做了改造。
-
-![TiDB 悲观事务的提交逻辑](/media/troubleshooting-lock-pic-05.png)
-
-在两阶段提交之前增加了 Acquire Pessimistic Lock 阶段，简要步骤如下。
-
-1. （同乐观锁）TiDB 收到来自客户端的 begin 请求，获取当前版本号作为本事务的 StartTS。
-2. TiDB 收到来自客户端的更新数据的请求：TiDB 向 TiKV 发起加悲观锁请求，该锁持久化到 TiKV。
-3. （同乐观锁）客户端发起 commit，TiDB 开始执行与乐观锁一样的两阶段提交。
-
-![TiDB 中的悲观事务](/media/troubleshooting-lock-pic-06.png)
-
-相关细节本节不再赘述，详情可阅读 [TiDB 悲观锁实现原理](https://asktug.com/t/topic/33550)。
-
-### Prewrite 阶段
-
-在悲观锁模式下，在事务的提交阶段沿用的仍然是乐观锁模式，所以在 Prewrite 阶段乐观锁遇到的锁相关的一些报错，在悲观锁模式同样会遇到。
-
-#### 读写冲突
+### 读写冲突
 
 报错信息以及处理建议同乐观锁模式。
 
-### Commit 阶段
-
-在乐观模型下，会出现 TxnLockNotFound 错误，而在悲观锁模型下，不会出现这个问题。同样的，悲观锁也有一个 TTL 的时间。txn heartbeat 会自动的更新事务的 TTL，以确保第二个事务不会将第一个事务的锁清掉。
-
-### 其他锁相关错误
-
-#### pessimistic lock retry limit reached
+### pessimistic lock retry limit reached
 
 在冲突非常严重的场景下，或者当发生 write conflict 时，乐观事务会直接终止，而悲观事务会尝试用最新数据重试该语句直到没有 write conflict。因为 TiDB 的加锁操作是一个写入操作，且操作过程是先读后写，需要 2 次 RPC。如果在这中间发生了 write conflict，那么会重试。每次重试都会打印日志，不用特别关注。重试次数由 [pessimistic-txn.max-retry-count](/tidb-configuration-file.md#max-retry-count) 定义。
 
@@ -192,7 +294,7 @@ err="pessimistic lock retry limit reached"
 
 * 如果上述报错出现的比较频繁，建议从业务的角度进行调整。
 
-#### Lock wait timeout exceeded
+### Lock wait timeout exceeded
 
 在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](/system-variables.md#innodb_lock_wait_timeout) 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
 
@@ -208,7 +310,7 @@ ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
 
 * 如果出现的次数非常频繁，建议从业务逻辑的角度来进行调整。
 
-#### TTL manager has timed out
+### TTL manager has timed out
 
 除了有不能超出 GC 时间的限制外，悲观锁的 TTL 有上限，默认为 1 小时，所以执行时间超过 1 小时的悲观事务有可能提交失败。这个超时时间由 TiDB 参数 [performance.max-txn-ttl](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) 指定。
 
@@ -226,7 +328,7 @@ TTL manager has timed out, pessimistic locks may expire, please commit or rollba
 
 * 可适当调整相关参数，使其符合事务要求。
 
-#### Deadlock found when trying to get lock
+### Deadlock found when trying to get lock
 
 死锁是指两个或两个以上的事务在执行过程中，由于竞争资源而造成的一种阻塞的现象，若无外力作用，它们都将无法推进下去，将永远在互相等待。此时，需要终止其中一个事务使其能够继续推进下去。
 
@@ -240,135 +342,3 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 
 * 如果难以确认产生死锁的原因，对于 v5.1 及以后的版本，建议尝试查询 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。详情请参考[死锁错误](#死锁错误)小节和 [`DEADLOCKS` 表](/information-schema/information-schema-deadlocks.md)文档。
 * 如果出现非常频繁，需要调整业务代码来降低死锁发生概率。
-
-### 使用 Lock View 排查悲观锁相关的问题
-
-自 v5.1 版本起，TiDB 支持 Lock View 功能。该功能在 `information_schema` 中内置了若干系统表，用于提供更多关于悲观锁的锁冲突和锁等待的信息。关于这些表的详细说明，请参考相关系统表的文档：
-
-* [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上或整个集群上所有运行中的事务的信息，包括事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
-* [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁信息，包括阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句的 Digest 和发生等待的 key。
-* [`DEADLOCKS` 与 `CLUSTER_DEADLOCKS`](/information-schema/information-schema-deadlocks.md)：提供当前 TiDB 节点上或整个集群上最近发生过的若干次死锁的相关信息，包括死锁环中事务之间的等待关系、事务当前正在执行的语句的 Digest 和发生等待的 key。
-
-> **注意：**
->
-> Lock View 所属的系统表中展示的 SQL 语句为归一化的 SQL 语句（即去除了格式和参数的形式的 SQL 语句），由 SQL Digest 内部查询获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
-
-以下为排查部分问题的示例。
-
-#### 死锁错误
-
-要获取最近发生的死锁错误的信息，可查询 `DEADLOCKS` 或 `CLUSTER_DEADLOCKS` 表，示例如下：
-
-{{< copyable "sql" >}}
-
-```sql
-select * from information_schema.deadlocks;
-```
-
-```sql
-+-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
-| DEADLOCK_ID | OCCUR_TIME                 | RETRYABLE | TRY_LOCK_TRX_ID    | CURRENT_SQL_DIGEST                                               | CURRENT_SQL_DIGEST_TEXT                 | KEY                                    | KEY_INFO                                                                                           | TRX_HOLDING_LOCK   |
-+-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
-|           1 | 2021-08-05 11:09:03.230341 |         0 | 426812829645406216 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | update `t` set `v` = ? where `id` = ? ; | 7480000000000000355F728000000000000002 | {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"2"} | 426812829645406217 |
-|           1 | 2021-08-05 11:09:03.230341 |         0 | 426812829645406217 | 22230766411edb40f27a68dadefc63c6c6970d5827f1e5e22fc97be2c4d8350d | update `t` set `v` = ? where `id` = ? ; | 7480000000000000355F728000000000000001 | {"db_id":1,"db_name":"test","table_id":53,"table_name":"t","handle_type":"int","handle_value":"1"} | 426812829645406216 |
-+-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
-```
-
-查询结果会显示死锁错误中多个事务之间的等待关系和各个事务当前正在执行的 SQL 语句的归一化形式（即去掉参数和格式的形式），以及发生冲突的 key 及其从 key 中解读出的一些信息。
-
-例如在上述例子中，第一行意味着 ID 为 `426812829645406216` 的事务当前正在执行形如 ``update `t` set `v` = ? where `id` = ? ;`` 的语句，被另一个 ID 为 `426812829645406217` 的事务阻塞；而 `426812829645406217` 同样也在执行一条形如 ``update `t` set `v` = ? where `id` = ? ;`` 的语句，并被 ID 为 `426812829645406216` 的事务阻塞，两个事务因而构成死锁。
-
-#### 少数热点 key 造成锁排队
-
-`DATA_LOCK_WAITS` 系统表提供 TiKV 节点上的等锁情况。查询该表时，TiDB 将自动从所有 TiKV 节点上获取当前时刻的等锁信息。当少数热点 key 频繁被上锁并阻塞较多事务时，你可以查询 `DATA_LOCK_WAITS` 表并按 key 对结果进行聚合，以尝试找出经常发生问题的 key：
-
-{{< copyable "sql" >}}
-
-```sql
-select `key`, count(*) as `count` from information_schema.data_lock_waits group by `key` order by `count` desc;
-```
-
-```sql
-+----------------------------------------+-------+
-| key                                    | count |
-+----------------------------------------+-------+
-| 7480000000000000415F728000000000000001 |     2 |
-| 7480000000000000415F728000000000000002 |     1 |
-+----------------------------------------+-------+
-```
-
-为避免偶然性，你可考虑进行多次查询。
-
-如果已知频繁出问题的 key，可尝试从 `TIDB_TRX` 或 `CLUSTER_TIDB_TRX` 表中获取试图上锁该 key 的事务的信息。
-
-需要注意 `TIDB_TRX` 和 `CLUSTER_TIDB_TRX` 表所展示的信息也是对其进行查询的时刻正在运行的事务的信息，并不展示已经结束的事务。如果并发的事务数量很大，该查询的结果集也可能很大，可以考虑添加 limit 子句，或用 where 子句筛选出等锁时间较长的事务。需要注意，对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而不同表中的信息可能并不同步。
-
-{{< copyable "sql" >}}
-
-```sql
-select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
-```
-
-```sql
-*************************** 1. row ***************************
-                     ID: 426831815660273668
-             START_TIME: 2021-08-06 07:16:00.081000
-     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
-CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
-                  STATE: LockWaiting
-     WAITING_START_TIME: 2021-08-06 07:16:00.087720
-        MEM_BUFFER_KEYS: 0
-       MEM_BUFFER_BYTES: 0
-             SESSION_ID: 77
-                   USER: root
-                     DB: test
-        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
-*************************** 2. row ***************************
-                     ID: 426831818019569665
-             START_TIME: 2021-08-06 07:16:09.081000
-     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
-CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
-                  STATE: LockWaiting
-     WAITING_START_TIME: 2021-08-06 07:16:09.290271
-        MEM_BUFFER_KEYS: 0
-       MEM_BUFFER_BYTES: 0
-             SESSION_ID: 75
-                   USER: root
-                     DB: test
-        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
-2 rows in set (0.00 sec)
-```
-
-#### 事务被长时间阻塞
-
-如果已知一个事务被另一事务（或多个事务）阻塞，且已知当前事务的 `start_ts`（即事务 ID），则可使用如下方式获取导致该事务阻塞的事务的信息。注意对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而可能不同表中的信息可能并不同步。
-
-{{< copyable "sql" >}}
-
-```sql
-select l.key, trx.*, tidb_decode_sql_digests(trx.all_sql_digests) as sqls from information_schema.data_lock_waits as l join information_schema.cluster_tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 426831965449355272\G
-```
-
-```sql
-*************************** 1. row ***************************
-                    key: 74800000000000004D5F728000000000000001
-               INSTANCE: 127.0.0.1:10080
-                     ID: 426832040186609668
-             START_TIME: 2021-08-06 07:30:16.581000
-     CURRENT_SQL_DIGEST: 06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7
-CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
-                  STATE: LockWaiting
-     WAITING_START_TIME: 2021-08-06 07:30:16.592763
-        MEM_BUFFER_KEYS: 1
-       MEM_BUFFER_BYTES: 19
-             SESSION_ID: 113
-                   USER: root
-                     DB: test
-        ALL_SQL_DIGESTS: ["0fdc781f19da1c6078c9de7eadef8a307889c001e05f107847bee4cfc8f3cdf3","a4e28cc182bdd18288e2a34180499b9404cd0ba07e3cc34b6b3be7b7c2de7fe9","06da614b93e62713bd282d4685fc5b88d688337f36e88fe55871726ce0eb80d7"]
-                   sqls: ["begin ;","select * from `t` where `id` = ? for update ;","update `t` set `v` = `v` + ? where `id` = ? ;"]
-1 row in set (0.01 sec)
-```
-
-上述查询中，对 `CLUSTER_TIDB_TRX` 表的 `ALL_SQL_DIGESTS` 列使用了 [`TIDB_DECODE_SQL_DIGESTS`](/functions-and-operators/tidb-functions.md#tidb_decode_sql_digests) 函数，以尝试将该列（内容为一组 SQL Digest）转换为其对应的归一化 SQL 语句，以便于阅读。
-
-如果当前事务的 `start_ts` 未知，可以尝试从 `TIDB_TRX` / `CLUSTER_TIDB_TRX` 表或者 [`PROCESSLIST` / `CLUSTER_PROCESSLIST`](/information-schema/information-schema-processlist.md) 表中的信息进行判断。
