@@ -14,6 +14,7 @@ TiDB 版本：5.4.0
 + 支持索引合并 (Index Merge) 数据访问方法，能够合并多个列上索引的条件过滤结果
 + 支持通过 session 变量实现有界限过期数据读取
 + 支持统计信息采集配置持久化
++ 支持使用 Raft Engine 作为 TiKV 的日志存储引擎
 + 优化备份对集群的影响
 + 支持 Azure Blob Storage 作为备份目标存储
 + 持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能
@@ -39,7 +40,7 @@ TiDB 版本：5.4.0
 | [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF` |
 | [`tidb_read_staleness`](/system-variables.md#tidb_read_staleness-从-v540-版本开始引入) | 新增 | 用于设置当前会话允许读取的历史数据范围，默认值为 `0` |
 | [`tidb_regard_null_as_point `](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引 |
-| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `OFF` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
+| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败 (`OFF`) 还是退回使用 pseudo 的统计信息 (`ON`)，默认值为 `ON` |
 | [`tidb_store_limit`](/system-variables.md#tidb_store_limit-从-v304-和-v40-版本开始引入) | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置 |
 
@@ -54,7 +55,6 @@ TiDB 版本：5.4.0
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
 | TiKV | [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 修改 | 将 TiKV log 参数名替换为与 TiDB log 参数一致的参数名，即 `log.level`、`log.format`、`log.file.filename`、`log.enable-timestamp`。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。详情参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
-| TiKV | [`raftstore.raft-log-gc-tick-interval`](/tikv-configuration-file.md#raft-log-gc-tick-interval) | 修改 | 默认值修改为 `3s` |
 | TiKV  |  `log-rotation-timespan`  | 删除 |  轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。 |
 | TiKV | `allow-remove-leader` | 删除  | 决定是否允许删除主开关 |
 | TiKV | `raft-msg-flush-interval` | 删除 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。 |
@@ -79,7 +79,7 @@ TiDB 版本：5.4.0
     从 v5.4.0开始，使用 TiUP 启动集群时推荐使用 `start --initial`。执行该操作启动集群后，会为 `root` 账号自动生成一个随机密码，`root` 账号登录 Dashboard 需要使用这个密码。
 
 - 为 TiDB 和 PD 之间新增接口。使用 `information_schema.TIDB_HOT_REGIONS_HISTORY` 系统表时，TiDB 需要使用匹配的 PD 版本。
-- TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
+- 对 log 相关参数，TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
 - 自 v5.4.0 起，对于通过 Plan Cache 已经缓存的执行计划，如果为其创建绑定 (Binding)，会使得对应查询已经缓存的计划失效。v5.4.0 前已经缓存的计划不受新 Binding 的影响。
 
 ## 新功能
@@ -153,6 +153,14 @@ TiDB 版本：5.4.0
     - 如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
     [用户文档](/explain-index-merge.md)
+
+- **新增 Raft Engine（实验特性）**
+
+    支持使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。此外，Raft Engine 提升了日志回收效率，修复了极端条件下日志堆积的问题。
+
+    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级或者降级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
+
+    [用户文档](/tikv-configuration-file.md#raft-engine)
 
 - **支持收集 `PREDICATE COLUMNS` 的统计信息（实验特性）**
 
