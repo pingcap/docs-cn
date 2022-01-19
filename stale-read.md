@@ -21,4 +21,4 @@ TiDB 提供语句级别与会话级别的 Stale Read 使用方式，具体使用
     - 指定一个精确的时间点（**推荐**）：如需 TiDB 读取一个时间点上保证全局事务记录一致性的数据并且不破坏隔离级别，你可以指定这个时间点对应的时间戳。要使用该方式，请参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式)文档。
     - 指定时间范围：如需 TiDB 读取在一个时间范围内尽可能新的数据并且不破坏隔离级别，你可以指定一个时间范围。在指定时间范围内，TiDB 会选择一个合适的时间戳，该时间戳能保证所访问的副本上不存在开始于这个时间戳之前且还没有提交的相关事务，即能保证在所访问的可用副本上可执行读取操作而且不会被阻塞。要使用该方式，请参阅 [`AS OF TIMESTAMP` 语法](/as-of-timestamp.md#语法方式)文档和该文档中 [`TIDB_BOUNDED_STALENESS` 函数](/as-of-timestamp.md#语法方式)部分的介绍。
 - 会话级别：
-    - 指定时间范围：在会话级别中，如需 TiDB 在后续的查询中读取一个时间范围内尽可能新的数据并且不破坏隔离级别，你可以通过设置一个 session 变量 `tidb_read_staleness` 来指定一个时间范围。要使用该方式，请参阅[通过系统变量 `tidb_read_staleness` 读取历史数据](/tidb_read_staleness.md)。
+    - 指定时间范围：在会话级别中，如需 TiDB 在后续的查询中读取一个时间范围内尽可能新的数据并且不破坏隔离级别，你可以通过设置一个 session 变量 `tidb_read_staleness` 来指定一个时间范围。要使用该方式，请参阅[通过系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)。
