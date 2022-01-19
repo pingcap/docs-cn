@@ -39,7 +39,7 @@ TiDB 版本：5.4.0
 | [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF |
 | [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF` |
 | [`tidb_read_staleness`](/system-variables.md#tidb_read_staleness-从-v540-版本开始引入) | 新增 | 用于设置当前会话允许读取的历史数据范围，默认值为 `0` |
-| [`tidb_regard_null_as_point `](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引 |
+| [`tidb_regard_null_as_point`](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引 |
 | [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
 | [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败 (`OFF`) 还是退回使用 pseudo 的统计信息 (`ON`)，默认值为 `ON` |
 | [`tidb_store_limit`](/system-variables.md#tidb_store_limit-从-v304-和-v40-版本开始引入) | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置 |
@@ -304,7 +304,7 @@ TiDB 版本：5.4.0
 + PD
 
     - 默认开启历史热点记录功能 [#25281](https://github.com/pingcap/tidb/issues/25281)
-    - 新增 HTTP Component 的签名，用于标识请求来源 [#4490 ](https://github.com/tikv/pd/issues/4490)
+    - 新增 HTTP Component 的签名，用于标识请求来源 [#4490](https://github.com/tikv/pd/issues/4490)
     - TiDB Dashboard 更新至 v2021.12.31 [#4257](https://github.com/tikv/pd/issues/4257)
 
 + TiFlash
@@ -387,7 +387,7 @@ TiDB 版本：5.4.0
     - 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
     - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
     - 修复查询报错 `DB::Exception: Encode type of coprocessor response is not CHBlock`
-    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal ` 行为不一致的问题。
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题。
     - 修复 TiFlash 的 `date_add_string_xxx` 函数返回值与 MySQL 不一致的问题
 
 + Tools
