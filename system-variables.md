@@ -1282,6 +1282,12 @@ explain select * from t where age=5;
 SET tidb_query_log_max_len = 20;
 ```
 
+### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`0`
+- 这个变量用于设置当前会话允许读取的历史数据范围。设置后，TiDB 会从参数允许的范围内选出一个尽可能新的时间戳，并影响后继的所有读操作。比如，如果该变量的值设置为 `-5`，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
+
 ### `tidb_record_plan_in_slow_log`
 
 - 作用域：INSTANCE

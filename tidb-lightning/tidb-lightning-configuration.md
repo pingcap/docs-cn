@@ -59,6 +59,14 @@ table-concurrency = 6
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
 
+# 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"。
+# 如果未开启并行导入模式，无须设置此配置项。
+# **注意：**
+# - 对于参与同一批并行导入的每个 TiDB Lightning 实例，该参数设置的值必须相同，否则将无法确保导入数据的正确性。
+# - 如果开启并行导入模式，需要确保导入使用的用户（对于 tidb.user 配置项）有权限创建和访问此配置对应的库。
+# - TiDB Lightning 在导入完成后会删除此 schema，因此不要使用已存在的库名配置该参数。
+meta-schema-name = "lightning_metadata"
+
 [security]
 # 指定集群中用于 TLS 连接的证书和密钥。
 # CA 的公钥证书。如果留空，则禁用 TLS。
@@ -93,8 +101,12 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# 选择后端：“local” 或 “importer” 或 “tidb”
+# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。 
 # backend = "local"
+# 是否允许向已存在数据的表导入数据。默认值为 false。
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。 
+# incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 当后端是 “tidb” 时，插入重复数据时执行的操作。
@@ -102,6 +114,12 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
+# 当后端模式为 'local' 时，设置是否检测和解决重复的记录（唯一键冲突）。
+# 目前支持三种解决方法：
+#  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
+#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+#  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
+# duplicate-resolution = 'none'
 # 当后端是 “local” 时，一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
 # 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
