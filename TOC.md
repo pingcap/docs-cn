@@ -586,6 +586,7 @@
         - [`TABLE_CONSTRAINTS`](/information-schema/information-schema-table-constraints.md)
         - [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)
         - [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)
+        - [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)
         - [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)
         - [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)
         - [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)

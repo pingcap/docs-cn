@@ -83,6 +83,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | [`STATEMENTS_SUMMARY_HISTORY`](/statement-summary-tables.md)                            | Similar to performance_schema statement summary history in MySQL. |
 | [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)  | Provides details about table sizes in storage. |
 | [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)        | Provides statistics about which regions are hot. |
+| [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md) | Provides history statistics about which Regions are hot. |
 | [`TIDB_INDEXES`](/information-schema/information-schema-tidb-indexes.md)                | Provides index information about TiDB tables. |
 | [`TIDB_SERVERS_INFO`](/information-schema/information-schema-tidb-servers-info.md)      | Provides a list of TiDB servers (namely, tidb-server component) |
 | [`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md) | Provides the information of the transactions that are being executed on the TiDB node. |
