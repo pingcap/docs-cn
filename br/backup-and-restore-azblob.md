@@ -81,7 +81,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 > 
 > 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
 
-本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name` 和 `access-tier`：
+本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name`、`account-key` 和 `access-tier`：
 
 - 将参数信息放在 URL 参数中：
 
