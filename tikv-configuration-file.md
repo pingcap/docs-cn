@@ -1305,6 +1305,7 @@ Configuration items related to Raft Engine.
 ### `purge-threshold`
 
 + Specifies the threshold size of the main log queue. When this configuration value is exceeded, the main log queue is purged.
++ This configuration can be used to adjust the disk space usage of Raft Engine.
 + Default value: `"10GB"`
 
 ### `recovery-mode`
