@@ -30,13 +30,17 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](
 
 ### 死锁错误
 
-要获取最近发生的死锁错误的信息，可查询 `DEADLOCKS` 或 `CLUSTER_DEADLOCKS` 表，示例如下：
+要获取最近发生的死锁错误的信息，可查询 `DEADLOCKS` 或 `CLUSTER_DEADLOCKS` 表。
+
+以查询 `DEADLOCKS` 表为例，请执行以下 SQL 语句：
 
 {{< copyable "sql" >}}
 
 ```sql
 select * from information_schema.deadlocks;
 ```
+
+示例输出：
 
 ```sql
 +-------------+----------------------------+-----------+--------------------+------------------------------------------------------------------+-----------------------------------------+----------------------------------------+----------------------------------------------------------------------------------------------------+--------------------+
@@ -61,6 +65,8 @@ select * from information_schema.deadlocks;
 select `key`, count(*) as `count` from information_schema.data_lock_waits group by `key` order by `count` desc;
 ```
 
+示例输出：
+
 ```sql
 +----------------------------------------+-------+
 | key                                    | count |
@@ -76,11 +82,15 @@ select `key`, count(*) as `count` from information_schema.data_lock_waits group 
 
 需要注意 `TIDB_TRX` 和 `CLUSTER_TIDB_TRX` 表所展示的信息也是对其进行查询的时刻正在运行的事务的信息，并不展示已经结束的事务。如果并发的事务数量很大，该查询的结果集也可能很大，可以考虑添加 limit 子句，或用 where 子句筛选出等锁时间较长的事务。需要注意，对 Lock View 中的多张表进行 join 时，不同表之间的数据并不保证在同一时刻获取，因而不同表中的信息可能并不同步。
 
+以用 where 子句筛选出等锁时间较长的事务为例，请执行以下 SQL 语句：
+
 {{< copyable "sql" >}}
 
 ```sql
 select trx.* from information_schema.data_lock_waits as l left join information_schema.tidb_trx as trx on l.trx_id = trx.id where l.key = "7480000000000000415F728000000000000001"\G
 ```
+
+示例输出：
 
 ```sql
 *************************** 1. row ***************************
@@ -121,6 +131,8 @@ CURRENT_SQL_DIGEST_TEXT: update `t` set `v` = `v` + ? where `id` = ? ;
 ```sql
 select l.key, trx.*, tidb_decode_sql_digests(trx.all_sql_digests) as sqls from information_schema.data_lock_waits as l join information_schema.cluster_tidb_trx as trx on l.current_holding_trx_id = trx.id where l.trx_id = 426831965449355272\G
 ```
+
+示例输出：
 
 ```sql
 *************************** 1. row ***************************
