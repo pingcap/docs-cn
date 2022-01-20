@@ -94,8 +94,8 @@ BEGIN /*T! PESSIMISTIC */;
 
     ```sql
     BEGIN /*T! PESSIMISTIC */;
-    INSERT INTO t1 (id) VALUES (6); // 仅 MySQL 中出现阻塞。
-    UPDATE t1 SET pad1='new value' WHERE id = 5; // MySQL 和 TiDB 处于等待阻塞状态。
+    INSERT INTO t1 (id) VALUES (6); -- 仅 MySQL 中出现阻塞。
+    UPDATE t1 SET pad1='new value' WHERE id = 5; -- MySQL 和 TiDB 处于等待阻塞状态。
     ```
 
     产生这一行为是因为 TiDB 当前不支持 _gap locking_（间隙锁）。
