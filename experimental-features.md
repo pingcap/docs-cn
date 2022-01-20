@@ -10,11 +10,11 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 性能
 
-[自动扩展 TiFlash 线程池](/tiflash/tiflash-configuration.md)。（v5.4 实验特性）
-[统计信息同步加载](/statistics.md)。（v5.4 实验特性）
-[Raft Engine](/tikv-configuration-file.md#raft-engine)（v5.4 实验特性）
-[支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
-[支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
++ [自动扩展 TiFlash 线程池](/tiflash/tiflash-configuration.md)。（v5.4 实验特性）
++ [统计信息同步加载](/statistics.md)。（v5.4 实验特性）
++ [Raft Engine](/tikv-configuration-file.md#raft-engine)（v5.4 实验特性）
++ [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
++ [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
 
 ## 稳定性
 
