@@ -283,6 +283,20 @@ Configuration items related to scheduling
 + Controls whether to use Joint Consensus for replica scheduling. If this configuration is disabled, PD schedules one replica at a time.
 + Default value: `true`
 
+### `hot-regions-write-interval` <span class="version-mark">New in v5.4.0</span>
+
++ The time interval at which PD stores hot Region information.
++ Default value: `10m`
+
+> **Note:**
+> 
+> The information about hot Regions is updated every three minutes. If the interval is set to less than three minutes, updates during the interval might be meaningless.
+
+### `hot-regions-reserved-days` <span class="version-mark">New in v5.4.0</span>
+
++ Specifies how many days the hot Region information is retained.
++ Default value: `7`
+
 ## `replication`
 
 Configuration items related to replicas

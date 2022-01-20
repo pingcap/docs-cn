@@ -22,9 +22,9 @@ To use PD Control, execute the `tiup ctl:<cluster-version> pd -u http://<pd_ip>:
 
 If you want to download the latest version of `pd-ctl`, directly download the TiDB package, because `pd-ctl` is included in the TiDB package.
 
-| Package download link | OS | Architecture | SHA256 checksum |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| Package download link                                                     | OS    | Architecture | SHA256 checksum                                                  |
+| :------------------------------------------------------------------------ | :---- | :----------- | :--------------------------------------------------------------- |
+| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64        | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
 
 > **Note:**
 >
@@ -358,16 +358,58 @@ Usage:
 ]
 ```
 
-### `hot [read | write | store]`
+### `hot [read | write | store|  history <start_time> <end_time> [<key> <value>]]`
 
 Use this command to view the hot spot information of the cluster.
 
 Usage:
 
 ```bash
->> hot read                             // Display hot spot for the read operation
->> hot write                            // Display hot spot for the write operation
->> hot store                            // Display hot spot for all the read and write operations
+>> hot read                                // Display hot spot for the read operation
+>> hot write                               // Display hot spot for the write operation
+>> hot store                               // Display hot spot for all the read and write operations
+>> hot history 1629294000000 1631980800000 // Display history hot spot for the specified period (milliseconds). 1629294000000 is the start time and 1631980800000 is the end time.
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
+>> hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true // Display history hotspot for the specified period with more conditions
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
 ```
 
 ### `label [store <name> <value>]`
