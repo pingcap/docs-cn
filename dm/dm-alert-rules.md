@@ -1,7 +1,7 @@
 ---
 title: DM 告警信息
 summary: 介绍 DM 的告警信息。
-aliases: ['/docs-cn/tidb-data-migration/dev/alert-rules/','/zh/tidb-data-migration/dev/alert-rules/']
+aliases: ['/docs-cn/tidb-data-migration/dev/alert-rules/']
 ---
 
 # DM 告警信息

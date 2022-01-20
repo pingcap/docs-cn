@@ -375,7 +375,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 该功能使用方法可以参照以下文档：
 
 + [将 MySQL/Aurora 数据导出到 Amazon S3](/dumpling-overview.md#导出到-amazon-s3-云盘)，[#8](https://github.com/pingcap/dumpling/issues/8)
-+ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-from-aurora-using-lightning.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
++ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-aurora-to-tidb.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
 
 ### TiDB Cloud 数据导入性能优化
 

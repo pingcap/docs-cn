@@ -1,7 +1,7 @@
 ---
 title: DM 配置优化
 summary: 介绍如何通过优化配置来提高数据迁移性能。
-aliases: ['/docs-cn/tidb-data-migration/dev/tune-configuration/','/zh/tidb-data-migration/dev/tune-configuration/']
+aliases: ['/docs-cn/tidb-data-migration/dev/tune-configuration/']
 ---
 
 # DM 配置优化

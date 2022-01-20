@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
 
 # TiDB Dashboard 常见问题
 
-本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。
+本文汇总了使用 TiDB Dashboard 过程中的常见问题与解决办法。若无法找到对应问题，或者根据指引操作后问题仍然存在，请联系 PingCAP 技术支持获取帮助。
 
 ## 访问
 
@@ -62,9 +62,9 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 2. 打开浏览器的开发者工具。各浏览器的打开方式不同。
 
-    - Firefox：菜单 ➤ Web 开发者 ➤ 切换工具箱（译者注：此处修改为最新的 Firefox Quantum），或者工具栏 ➤ 切换工具箱。 
-    - Chrome：菜单 ➤ 更多工具 ➤ 开发者工具。
-    - Safari：Develop ➤ Show Web Inspector。如果你看不到 Develop 菜单，点开 Preferences ➤ Advanced，然后点击 Show Develop menu in menu bar 复选框。
+    - Firefox：**菜单** > **Web 开发者** > **切换工具箱**（译者注：此处修改为最新的 Firefox Quantum），或者**工具栏** > **切换工具箱**。
+    - Chrome：**菜单** > **更多工具** > **开发者工具**。
+    - Safari：**Develop** > **Show Web Inspector**。如果你看不到 Develop 菜单，选择 **Preferences** > **Advanced**，然后点击 **Show Develop menu in menu bar** 复选框。
 
     以 Chrome 为例：
 
@@ -73,3 +73,57 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 3. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中 **TiDB Dashboard 页面的域名**，点击 **Clear All**。
 
     ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
+
+### 界面提示 NgMonitoring 组件未能正常启用
+
+如果 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 页面提示 NgMonitoring 组件未能正常启用，你可以通过以下步骤逐步排查。 
+
+#### 第 1 步：检查 TiUP Cluster 版本
+
+NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以上）。检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
+
+1. 检查 TiUP Cluster 版本：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster --version
+    ```
+
+    上述命令可查看 TiUP Cluster 的具体版本。例如：
+
+    ```
+    tiup version 1.9.0 tiup
+    Go Version: go1.17.2
+    Git Ref: v1.9.0
+    ```
+
+    若低于 v1.9.0，需要先升级 TiUP Cluster。
+
+2. 升级 TiUP 和 TiUP Cluster 版本至最新。
+
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    tiup update --all
+    ```
+
+#### 第 2 步：重启 Prometheus 节点
+
+在中控机上，通过 TiUP 对 Prometheus 节点进行 reload 操作。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster reload ${cluster-name} --role prometheus
+```
+
+#### 第 3 步：配置 TiDB Dashboard
+
+1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
+2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Duration) 或保留默认值。
+3. 点击**保存** (Save)。
+
+![启用功能](/media/dashboard/dashboard-conprof-start.png)
+
+如果执行以上操作后，NgMonitoring 依然无法加载，请联系 PingCAP 技术支持获取帮助。

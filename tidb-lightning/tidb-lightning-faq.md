@@ -87,7 +87,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 目前，TiDB Lightning 支持：
 
-- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
 - 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
@@ -369,7 +369,7 @@ header = false
     ```sh
     kill -USR1 <lightning-pid>
     ```
-   
+
     查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
 
 2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。

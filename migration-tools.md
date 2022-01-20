@@ -24,3 +24,82 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 | [TiCDC](/ticdc/ticdc-overview.md)| 通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，支持其他系统订阅数据变更。|TiDB | TiDB，MySQL，Apache Pulsar，Kafka，Confluent|提供开放数据协议 (TiCDC Open Protocol)。 | TiCDC 只能同步至少存在一个有效索引的表。暂不支持以下场景：暂不支持单独使用 RawKV 的 TiKV 集群。暂不支持在 TiDB 中创建 SEQUENCE 的 DDL 操作和 SEQUENCE 函数。|
 |[TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) | 用于 TiDB 集群间的增量数据同步，如将其中一个 TiDB 集群作为另一个 TiDB 集群的从集群。| TiDB | TiDB，MySQL，Kafka，增量备份文件|支持实时备份和恢复。备份 TiDB 集群数据，同时可以用于 TiDB 集群故障时恢复。 |与部分 TiDB 版本不兼容，不能一起使用。|
 |[sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) | 用于校验 MySQL/TiDB 中两份数据的一致性。|TiDB，MySQL | TiDB，MySQL| 提供了修复数据的功能，适用于修复少量不一致的数据。|对于 MySQL 和 TiDB 之间的数据同步不支持在线校验。不支持 JSON、BIT、BINARY、BLOB 等类型的数据。 |
+
+## 使用 TiUP 快速安装
+
+从 TiDB 4.0 开始，TiUP 作为软件包管理器，帮助你轻松管理 TiDB 生态系统中的不同集群组件。现在你可以只用一个 TiUP 命令行来管理任何组件。
+
+### 第 1 步： 安装 TiUP
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+```
+
+重新声明全局环境变量
+
+{{< copyable "shell-regular" >}}
+
+```shell
+source ~/.bash_profile
+```
+
+### 第 2 步： 安装组件
+
+你可以通过以下命令查看所有可用组件:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup list
+```
+
+以下输出为所有可用组件：
+
+```bash
+Available components:
+Name            Owner    Description
+----            -----    -----------
+bench           pingcap  Benchmark database with different workloads
+br              pingcap  TiDB/TiKV cluster backup restore tool
+cdc             pingcap  CDC is a change data capture tool for TiDB
+client          pingcap  Client to connect playground
+cluster         pingcap  Deploy a TiDB cluster for production
+ctl             pingcap  TiDB controller suite
+dm              pingcap  Data Migration Platform manager
+dmctl           pingcap  dmctl component of Data Migration Platform
+errdoc          pingcap  Document about TiDB errors
+pd-recover      pingcap  PD Recover is a disaster recovery tool of PD, used to recover the PD cluster which cannot start or provide services normally
+playground      pingcap  Bootstrap a local TiDB cluster for fun
+tidb            pingcap  TiDB is an open source distributed HTAP database compatible with the MySQL protocol
+tidb-lightning  pingcap  TiDB Lightning is a tool used for fast full import of large amounts of data into a TiDB cluster
+tiup            pingcap  TiUP is a command-line component management tool that can help to download and install TiDB platform components to the local system
+```
+
+选择所需要的组件进行安装
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup install dumpling tidb-lightning
+```
+
+> **Note:**
+>
+> 如果需要安装特定版本，可以使用 `tiup install <component>[:version]` 命令.
+
+### 第 3 步： 更新 TiUP 及组件 (可选)
+
+建议先查看新版本的更新日志及兼容性说明
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self && tiup update dm
+```
+
+## 探索更多
+
+- [离线方式安装 TiUP](/production-deployment-using-tiup.md)
+- [以二进制包形式安装各工具](/download-ecosystem-tools.md)

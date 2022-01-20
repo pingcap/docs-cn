@@ -1,7 +1,6 @@
 ---
 title: 管理迁移表的表结构
 summary: 了解如何管理待迁移表在 DM 内部的表结构。
-aliases: ['/zh/tidb-data-migration/dev/manage-schema/']
 ---
 
 # 管理迁移表的表结构

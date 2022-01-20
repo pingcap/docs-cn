@@ -1,7 +1,7 @@
 ---
 title: 管理上游数据源
 summary: 了解如何管理上游 MySQL 实例。
-aliases: ['/docs-cn/tidb-data-migration/dev/manage-source/','/zh/tidb-data-migration/dev/manage-source/']
+aliases: ['/docs-cn/tidb-data-migration/dev/manage-source/']
 ---
 
 # 管理上游数据源配置

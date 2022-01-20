@@ -1,7 +1,7 @@
 ---
 title: DM 集群软硬件环境需求
 summary: 了解部署 DM 集群的软件和硬件要求。
-aliases: ['/docs-cn/tidb-data-migration/dev/hardware-and-software-requirements/','/zh/tidb-data-migration/dev/hardware-and-software-requirements/']
+aliases: ['/docs-cn/tidb-data-migration/dev/hardware-and-software-requirements/']
 ---
 
 # DM 集群软硬件环境需求
