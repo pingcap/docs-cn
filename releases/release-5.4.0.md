@@ -373,11 +373,6 @@ TiDB 版本：5.4.0
 
 + TiFlash
 
-    - 修复查询报错 `Tree struct based executor must have executor id`
-    - 修复查询报错 `Illegal column type UInt32 for the second argument of function tidbRoundWithFrac`
-    - 修复查询报错 `Unexpected type of column: Nullable(Nothing)`
-    - 修复 `collation` 对 `nullable` 类型失效的问题
-    - 修复 `coalesce` 错误地从结果列中删除 `nullable` 标志的问题
     - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
     - 修复 `where <string>` 查询结果出错的问题
     - 修复整数类型主键的列类型设置为较大范围后数据可能不一致的问题
