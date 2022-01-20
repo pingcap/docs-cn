@@ -376,7 +376,6 @@ TiDB 版本：5.4.0
     - 修复查询报错 `Tree struct based executor must have executor id`
     - 修复查询报错 `Illegal column type UInt32 for the second argument of function tidbRoundWithFrac`
     - 修复查询报错 `Unexpected type of column: Nullable(Nothing)`
-    - 修复查询报错 `source region at right may be considered at left when merging`
     - 修复 `collation` 对 `nullable` 类型失效的问题
     - 修复 `coalesce` 错误地从结果列中删除 `nullable` 标志的问题
     - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
@@ -386,7 +385,7 @@ TiDB 版本：5.4.0
     - 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
     - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
     - 修复查询报错 `DB::Exception: Encode type of coprocessor response is not CHBlock`
-    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题。
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题
     - 修复 TiFlash 的 `date_add_string_xxx` 函数返回值与 MySQL 不一致的问题
 
 + Tools
