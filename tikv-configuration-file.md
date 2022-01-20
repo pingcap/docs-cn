@@ -416,6 +416,11 @@ raftstore 相关的配置项。
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
 + 默认值：true
 
+### capacity
+
++ 存储容量，即允许的最大数据存储大小，如果没有设置，则使用当前磁盘容量。[同盘部署需要修改此参数](https://docs.pingcap.com/zh/tidb/dev/hybrid-deployment-topology/#%E6%B7%B7%E5%90%88%E9%83%A8%E7%BD%B2%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D)
++ 默认值：0
+
 ### `raftdb-path`
 
 + raft 库的路径，默认存储在 storage.data-dir/raft 下。
