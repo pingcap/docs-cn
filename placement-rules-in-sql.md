@@ -173,6 +173,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 * Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
+* 使用 BR 来恢复一个设置了放置规则的库或者表时会失败。见 [issue #31455](https://github.com/pingcap/tidb/issues/31455)。
 * 临时表不支持放置选项，直接放置和放置策略均不支持。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 * 不能通过放置规则语法配置 TiFlash 副本。
