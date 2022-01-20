@@ -16,7 +16,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](
 >
 > Lock View 功能目前仅提供悲观锁的冲突和等待信息。
 
-关于这些表的详细说明，请参考相关系统表的文档：
+关于这些系统表的详细说明，请参考以下文档：
 
 * [`TIDB_TRX` 与 `CLUSTER_TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)：提供当前 TiDB 节点上或整个集群上所有运行中的事务的信息，包括事务是否处于等锁状态、等锁时间和事务曾经执行过的语句的 Digest 等信息。
 * [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)：提供关于 TiKV 内的悲观锁等锁信息，包括阻塞和被阻塞的事务的 `start_ts`、被阻塞的 SQL 语句的 Digest 和发生等待的 key。
