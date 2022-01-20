@@ -21,7 +21,7 @@ summary: 了解 BR 自动调节功能，在集群资源占用率较高的情况�
 
 > **注意：**
 >
-> v5.4.0 以下的集群，在升级到 v5.4.0 及以上版本后，自动调节功能默认关闭，需手动开启。
+> 存在一个例外：v5.3.x 版本的集群，在升级到 v5.4.0 及以上版本后，自动调节功能默认关闭，需手动开启。
 
 如需开启 BR 自动调节功能，可以通过把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `true` 的方式来完成。
 
@@ -60,11 +60,10 @@ tikv-ctl modify-tikv-config -n backup.enable-auto-tune -v <true|false>
 - `backup.auto-tune-remain-threads`：
     - 通过控制备份任务占用的资源，自动调节会保证该节点中至少有该数量的核心会保持空闲的状态。
     - 默认值：`round(0.2 * vCPU)`
-    - 单位：个
+
 - `backup.auto-tune-refresh-interval`：
     - 每隔该值的时间段，自动调节会刷新统计信息并重新计算备份任务使用的 CPU 核心数的上限。
-    - 默认值：`1`
-    - 单位：分钟
+    - 默认值：`1m`
 
 以下是一个使用自动调节功能的示例，其中 `*` 代表集群中被备份任务占用的 CPU，`^` 代表其它任务占用的 CPU，`-` 代表空闲 CPU。
 
