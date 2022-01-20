@@ -1307,7 +1307,7 @@ Raft engine 相关的配置项。
 
 + 存储 Raft 日志文件的目录。如果该目录不存在，则在启动 TiKV 时创建该目录。
 + 如果未设置此配置，则使用 `{data-dir}/raft-engine`。
-+ 如果您的机器上有多个磁盘，建议将 Raft Engine 的数据存储在不同的磁盘上，以提高 TiKV 性能。
++ 如果你的机器上有多个磁盘，建议将 Raft Engine 的数据存储在不同的磁盘上，以提高 TiKV 性能。
 + 默认值：`""`
 
 ### `batch-compression-threshold`
