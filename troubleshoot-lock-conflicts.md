@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/troubleshoot-lock-conflicts/']
 
 # TiDB 锁冲突问题处理
 
-TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](/optimistic-transaction)与[悲观事务](/pessimistic-transaction)两种事务模式。本文介绍如果使用 Lock View 排查锁相关的问题，以及如何处理使用乐观事务或者悲观事务的过程中常见的锁冲突问题。
+TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模式。本文介绍如何使用 Lock View 排查锁相关的问题，以及如何处理使用乐观事务或者悲观事务的过程中常见的锁冲突问题。
 
 ## 使用 Lock View 排查锁相关的问题
 
@@ -14,7 +14,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](
 
 > **注意：**
 >
-> Lock View 功能目前仅支持用于排查悲观锁相关的问题。
+> Lock View 功能目前仅提供悲观锁的冲突和等待信息。
 
 关于这些表的详细说明，请参考相关系统表的文档：
 
@@ -24,7 +24,7 @@ TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](
 
 > **注意：**
 >
-> Lock View 所属的系统表中展示的 SQL 语句为归一化的 SQL 语句（即去除了格式和参数的形式的 SQL 语句），由 SQL Digest 内部查询获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
+> Lock View 所属的系统表中展示的 SQL 语句为归一化的 SQL 语句（即去除了格式和参数的 SQL 语句），通过内部查询从 SQL Digest 获得，因而无法获取包括格式和参数在内的完整语句。有关 SQL Digest 和归一化 SQL 语句的详细介绍，请参阅 [Statement Summary Tables](/statement-summary-tables.md)。
 
 以下为排查部分问题的示例。
 
@@ -274,6 +274,10 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
 
 对于悲观锁，可能会遇到的锁相关的报错包括读写冲突、pessimistic lock retry limit reached 错误、Lock wait timeout exceeded 错误、TTL manager has timed out 错误、Deadlock found when trying to get lock 等错误。
 
+> 注意：
+>
+> 即使设置了悲观事务模式，autocommit 事务仍然会优先尝试使用乐观事务模式进行提交，并在发生冲突后、自动重试时切换为悲观事务模式。
+
 ### 读写冲突
 
 报错信息以及处理建议同乐观锁模式。
@@ -341,4 +345,4 @@ TiDB 在使用悲观锁的情况下，多个事务之间出现了死锁，必定
 处理建议：
 
 * 如果难以确认产生死锁的原因，对于 v5.1 及以后的版本，建议尝试查询 `INFORMATION_SCHEMA.DEADLOCKS` 或 `INFORMATION_SCHEMA.CLUSTER_DEADLOCKS` 系统表来获取死锁的等待链信息。详情请参考[死锁错误](#死锁错误)小节和 [`DEADLOCKS` 表](/information-schema/information-schema-deadlocks.md)文档。
-* 如果出现非常频繁，需要调整业务代码来降低死锁发生概率。
+* 如果死锁出现非常频繁，需要调整业务代码来降低发生概率。
