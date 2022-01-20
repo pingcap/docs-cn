@@ -74,9 +74,9 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
     ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
 
-### 界面提示 NgMonitoring 组件未能正常启用
+### 界面提示 `集群中未启动必要组件 NgMonitoring`
 
-如果 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 页面提示 NgMonitoring 组件未能正常启用，你可以通过以下步骤逐步排查。 
+部署 TiDB 集群时，NgMonitoring 会自部署，无需手动操作。如果 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 页面提示 NgMonitoring 组件未能正常启用，你可以通过以下步骤逐步排查。
 
 #### 第 1 步：检查 TiUP Cluster 版本
 
@@ -98,12 +98,10 @@ NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以�
     Git Ref: v1.9.0
     ```
 
-    若低于 v1.9.0，需要先升级 TiUP Cluster。
-
-2. 升级 TiUP 和 TiUP Cluster 版本至最新。
+2. 如果 TiUP 版本低于 v1.9.0，升级 TiUP 和 TiUP Cluster 版本至最新。
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     tiup update --all
     ```
