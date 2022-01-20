@@ -1296,7 +1296,7 @@ raftdb 相关配置项。
 
 ## raft-engine
 
-Raft engine 相关的配置项。
+Raft Engine 相关的配置项。
 
 ### `enable`
 
