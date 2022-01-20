@@ -27,6 +27,7 @@ join = "http://127.0.0.1:8261,http://127.0.0.1:8361,http://127.0.0.1:8461"
 
 keepalive-ttl = 60
 relay-keepalive-ttl = 1800 # New in DM v2.0.2.
+# relay-dir = "relay_log" # New in 5.4.0. When you use a relative path, check the deployment and start method of DM-worker to determine the full path.
 
 ssl-ca = "/path/to/ca.pem"
 ssl-cert = "/path/to/cert.pem"
@@ -48,6 +49,7 @@ cert-allowed-cn = ["dm"]
 | `join` | Corresponds to one or more [`master-addr`s](/dm/dm-master-configuration-file.md#global-configuration) in the DM-master configuration file. |
 | `keepalive-ttl` | The keepalive time (in seconds) of a DM-worker node to the DM-master node if the upstream data source of the DM-worker node does not enable the relay log. The default value is 60s.|
 | `relay-keepalive-ttl` | The keepalive time (in seconds) of a DM-worker node to the DM-master node if the upstream data source of the DM-worker node enables the relay log. The default value is 1800s. This parameter is added since DM v2.0.2.|
+| `relay-dir` | When relay log is enabled in the bound upstream data source, DM-worker stores the relay log in this directory. This parameter is new in v5.4.0 and takes precedence over the configuration of the upstream data source. |
 | `ssl-ca` | The path of the file that contains list of trusted SSL CAs for DM-worker to connect with other components. |
 | `ssl-cert` | The path of the file that contains X509 certificate in PEM format for DM-worker to connect with other components. |
 | `ssl-key` | The path of the file that contains X509 key in PEM format for DM-worker to connect with other components. |

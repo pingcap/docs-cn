@@ -8,7 +8,9 @@ aliases: ['/docs/tidb-data-migration/dev/relay-log/']
 
 The Data Migration (DM) relay log consists of several sets of numbered files containing events that describe database changes, and an index file that contains the names of all used relay log files.
 
-After DM-worker is started, it automatically migrates the upstream binlog to the local configuration directory (the default migration directory is `<deploy_dir>/<relay_log>` if DM is deployed using TiUP). The default value of `<relay_log>` is `relay-dir` and can be modified in [Upstream Database Configuration File](/dm/dm-source-configuration-file.md). When DM-worker is running, it migrates the upstream binlog to the local file in real time. The sync processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then migrates these statements to the downstream database.
+After relay log is enabled, DM-worker automatically migrates the upstream binlog to the local configuration directory (the default migration directory is `<deploy_dir>/<relay_log>` if DM is deployed using TiUP). The default value of `<relay_log>` is `relay-dir` and can be modified in [Upstream Database Configuration File](/dm/dm-source-configuration-file.md). Since v5.4.0, you can configure the local configuration directory through `relay-dir` in the [DM-worker configuration file](/dm/dm-worker-configuration-file.md), which takes precedence over the configuration file of the upstream database.
+
+When DM-worker is running, it migrates the upstream binlog to the local file in real time. The sync processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then migrates these statements to the downstream database.
 
 This document introduces the directory structure and initial migration rules DM relay logs, and how to pause, resume, and purge relay logs.
 
@@ -86,25 +88,47 @@ The starting position of the relay log migration is determined by the following 
 ## Start and stop the relay log feature
 
 <SimpleTab>
-<div label="v2.0.2 and later versions">
+
+<div label="v5.4.0 and later versions">
+
+In v5.4.0 and later versions, you can enable relay log by setting `enable-relay` to `true`. Since v5.4.0, when binding the upstream data source, DM-worker checks the `enable-relay` item in the configuration of the data source. If `enable-relay` is `true`, the relay log feature is enabled for this data source.
+
+For the detailed configuration method, see [Upstream Database Configuration File](/dm/dm-source-configuration-file.md).
+
+In addition, you can also dynamically adjust the `enable-relay` configuration of the data source using the `start-relay` or `stop-relay` command to enable or disable relay log in time.
+
+{{< copyable "shell-regular" >}}
+
+```bash
+» start-relay -s mysql-replica-01
+```
+
+```
+{
+    "result": true,
+    "msg": ""
+}
+```
+
+</div>
+
+<div label="versions between v2.0.2 (included) and v5.3.0 (included)">
 
 > **Note:**
-> 
-> Since DM v2.0.2, the configuration item `enable-relay` in the source configuration file is no longer valid. If DM finds that `enable-relay` is set to `true` when [loading the data source configuration](/dm/dm-manage-source.md#operate-data-source), it outputs the following message:
-> 
+>
+> In DM v2.0.x later than DM v2.0.2 and in v5.3.0, the configuration item `enable-relay` in the source configuration file is no longer valid, and you can only use `start-relay` and `stop-relay` to enable and disable relay log. If DM finds that `enable-relay` is set to `true` when [loading the data source configuration](/dm/dm-manage-source.md#operate-data-source), it outputs the following message:
+>
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
 
-In DM v2.0.2 and later versions, you can use the command `start-relay` to start pulling relay logs and use `stop-relay` to stop the process. See the following examples:
+In the command `start-relay`, you can configure one or more DM-workers to migrate relay logs for the specified data source, but the DM-workers specified in the parameter must be free or have been bound to the upstream data source. Examples are as follows:
 
 {{< copyable "" >}}
 
 ```bash
 » start-relay -s mysql-replica-01 worker1 worker2
 ```
-
-In the command `start-relay`, you can configure one or more DM-workers to migrate relay logs for the specified data source, but the DM-workers specified in the parameter must be free or have been bound to the upstream data source.
 
 ```
 {
