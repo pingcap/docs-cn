@@ -25,10 +25,10 @@ The following is the task configuration file template which allows you to perfor
 name: test                      # The name of the task. Should be globally unique.
 task-mode: all                  # The task mode. Can be set to `full`(only migrates full data)/`incremental`(replicates binlogs synchronously)/`all` (replicates both full data and incremental binlogs).
 is-sharding: true               # `is-sharding` has been deprecated since v2.0.0, so it is recommended to directly use `shard-mode`
-shard-mode: "pessimistic"       # The shard merge mode. Optional modes are ""/"pessimistic"/"optimistic". The "" mode is used by default which means sharding DDL merge is disabled. If the task is a shard merge task, set it to the "pessimistic" mode. 
+shard-mode: "pessimistic"       # The shard merge mode. Optional modes are ""/"pessimistic"/"optimistic". The "" mode is used by default which means sharding DDL merge is disabled. If the task is a shard merge task, set it to the "pessimistic" mode.
                                 # After understanding the principles and restrictions of the "optimistic" mode, you can set it to the "optimistic" mode.
 meta-schema: "dm_meta"          # The downstream database that stores the `meta` information.
-timezone: "Asia/Shanghai"       # The timezone.
+timezone: "Asia/Shanghai"       # The timezone used in SQL Session. By default, DM uses the global timezone setting in the target cluster, which ensures the correctness automatically. A customized timezone does not affect data migration but is unnecessary.
 case-sensitive: false           # Determines whether the schema/table is case-sensitive.
 online-ddl: true                # Supports automatic processing of upstream "gh-ost" and "pt".
 online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` has been deprecated in v2.0.6, so it is recommended to use `online-ddl`.
