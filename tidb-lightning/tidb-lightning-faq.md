@@ -197,11 +197,11 @@ upload-speed-limit = "100MB"
 
     使用下面命令清理元信息：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-DROP DATABASE IF EXISTS `lightning_metadata`;
-```
+    ```sql
+    DROP DATABASE IF EXISTS `lightning_metadata`;
+    ```
 
 
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
