@@ -1294,6 +1294,62 @@ raftdb 相关配置项。
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
 
+## raft-engine
+
+Raft Engine 相关的配置项。
+
+### `enable`
+
++ 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。
++ 默认值：`"false"`
+
+### `dir`
+
++ 存储 Raft 日志文件的目录。如果该目录不存在，则在启动 TiKV 时创建该目录。
++ 如果未设置此配置，则使用 `{data-dir}/raft-engine`。
++ 如果你的机器上有多个磁盘，建议将 Raft Engine 的数据存储在单独的磁盘上，以提高 TiKV 性能。
++ 默认值：`""`
+
+### `batch-compression-threshold`
+
++ 指定日志批处理的阈值大小。大于此配置的日志批次将被压缩。如果将此配置项设置为 `0`，则禁用压缩。
++ 默认值：`"8KB"`
+
+### `bytes-per-sync`
+
++ 指定缓存写入的最大累积大小。当超过此配置值时，缓存的写入将被刷写到磁盘。
++ 如果将此配置项设置为 `0`，则禁用增量同步。
++ 默认值：`"4MB"`
+
+### `target-file-size`
+
++ 指定日志文件的最大大小。当日志文件大于此值时，将对其进行轮转。
++ 默认值：`"128MB"`
+
+### `purge-threshold`
+
++ 指定主日志队列的阈值大小。当超过此配置值时，将对主日志队列执行垃圾回收。
++ 此参数可用于调整 Raft Engine 的空间占用大小。
++ 默认值：`"10GB"`
+
+### `recovery-mode`
+
++ 确定在日志恢复过程中如何处理文件损坏。
++ 可选值：`"absolute-consistency"`, `"tolerate-tail-corruption"`, `"tolerate-any-corruption"`
++ 默认值：`"tolerate-tail-corruption"`
+
+### `recovery-read-block-size`
+
++ 恢复期间读取日志文件的最小 I/O 大小。
++ 默认值：`"16KB"`
++ 最小值：`"512B"`
+
+### `recovery-threads`
+
++ 用于扫描和恢复日志文件的线程数。
++ 默认值：`4`
++ 最小值：`1`
+
 ## security
 
 安全相关配置项。
