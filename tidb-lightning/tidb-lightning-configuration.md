@@ -60,7 +60,7 @@ table-concurrency = 6
 io-concurrency = 5
 
 # TiDB Lightning 停止迁移任务之前能容忍的最大非严重（non-fatal errors）错误数。
-# 在忽略非严重错误所在的几行数据之后，迁移任务可以继续执行。
+# 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
 # 该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
 # 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
 max-error = 0
