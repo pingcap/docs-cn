@@ -328,7 +328,6 @@ TiDB 版本：5.4.0
         - 提升 Dumpling 检查数据库版本时的兼容性 [#29500](https://github.com/pingcap/tidb/pull/29500)
         - 在导出 `CREATE DATABASE` 和 `CREATE TABLE` 时添加默认的 collation [#3420](https://github.com/pingcap/tiflow/issues/3420)
 
-
 ## Bug 修复
 
 + TiDB
