@@ -1,5 +1,6 @@
 ---
 title: TiCDC Open Protocol
+summary: Learn the concept of TiCDC Open Protocol and how to use it.
 aliases: ['/docs/dev/ticdc/ticdc-open-protocol/','/docs/dev/reference/tools/ticdc/open-protocol/','/docs/dev/ticdc/column-ddl-type-codes/']
 ---
 
