@@ -63,6 +63,15 @@ table-concurrency = 6
 # medium, this value might need to be adjusted for optimal performance.
 io-concurrency = 5
 
+# The maximum number of non-fatal errors to tolerate before stopping TiDB Lightning.
+# Non-fatal errors are localized to a few rows, and ignoring those rows allows the import process to continue.
+# Setting this to N means that TiDB Lightning will stop as soon as possible when the (N+1)-th error is encountered.
+# The skipped rows will be inserted into tables inside the "task info" schema on the target TiDB, which can be configured below.
+max-error = 0
+# task-info-schema-name is the name of the schema or database that stores TiDB Lightning execution results.
+# To disable error recording, set this to an empty string.
+# task-info-schema-name = 'lightning_task_info'
+
 # In parallel import mode, the schema name that stores the meta information for each TiDB Lightning instance in the target cluster. By default, the value is "lightning_metadata".
 # Configure this parameter only if parallel import is enabled.
 # **Note:**
@@ -120,6 +129,13 @@ addr = "172.16.31.10:8287"
 #  - ignore: keep the existing entry, and ignore the new entry
 #  - error: report error and quit the program
 # on-duplicate = "replace"
+# Whether to detect and resolve duplicate records (unique key conflict) when the backend is 'local'.
+# The following resolution algorithms are supported:
+#  - record: only records duplicate records to the `lightning_task_info.conflict_error_v1` table on the target TiDB. Note that the
+#    required version of the target TiKV is no earlier than v5.2.0; otherwise it falls back to 'none'.
+#  - none: does not detect duplicate records, which has the best performance of the three algorithms, but might lead to
+#    inconsistent data in the target TiDB.
+#  - remove: records all duplicate records to the lightning_task_info database, like the 'record' algorithm. But it removes all duplicate records from the target table to ensure a consistent
 #    state in the target TiDB.
 # duplicate-resolution = 'none'
 # The number of KV pairs sent in one request in the "local" backend.
