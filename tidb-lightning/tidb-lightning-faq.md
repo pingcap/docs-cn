@@ -195,7 +195,7 @@ upload-speed-limit = "100MB"
     - 对于 v5.1.x 和 v5.2.x 版本的 TiDB Lightning, tidb-lightning-ctl 命令没有同时清理存储在目标集群的 metadata 库，需要手动清理。
     - 如果手动删除过断点文件，则需要手动清理下游的元信息库，否则可能影响后续导入的正确性。
 
-使用下面命令清理元信息：
+    使用下面命令清理元信息：
 
 {{< copyable "sql" >}}
 
