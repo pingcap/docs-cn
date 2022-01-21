@@ -678,14 +678,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认情况下（即该变量值为 `ON` 时），某张表上的统计信息过期后，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。
 - 如果表数据修改较频繁，没有及时对表执行 `ANALYZE`，但又希望执行计划保持稳定，可以将该变量值设为 `OFF`。
 
-### `tidb_regard_null_as_point` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`ON`
-- 这个变量用来控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引。
-- 比如在有多列索引 `index(a, b)` 及查询条件 `a<=>null and b=1` 的情况下，如果关闭开关，则不能把 `b=1` 用来进行索引访问，因为 null 值不能被当做固定前缀。
-- 如果开启该变量，则可以同时用 `a<=>null and b=1` 进行索引访问，能减少需要访问的索引数据量，提高查询执行速度。
-
 ### `tidb_enable_rate_limit_action`
 
 - 作用域：SESSION | GLOBAL
@@ -1308,6 +1300,14 @@ SET tidb_query_log_max_len = 20;
 - 默认值：`OFF`
 - 这个变量用于控制在记录 TiDB 日志和慢日志时，是否将 SQL 中的用户信息遮蔽。
 - 将该变量设置为 `1` 即开启后，假设执行的 SQL 为 `insert into t values (1,2)`，在日志中记录的 SQL 会是 `insert into t values (?,?)`，即用户输入的信息被遮蔽。
+
+### `tidb_regard_null_as_point` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用来控制优化器是否可以把 null 值当做点值并作为前缀条件来访问索引。
+- 比如在有多列索引 `index(a, b)` 及查询条件 `a<=>null and b=1` 的情况下，如果关闭开关，则不能把 `b=1` 用来进行索引访问，因为 null 值不能被当做固定前缀。
+- 如果开启该变量，则可以同时用 `a<=>null and b=1` 进行索引访问，能减少需要访问的索引数据量，提高查询执行速度。
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
