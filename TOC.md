@@ -68,6 +68,8 @@
       - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
       - [BR Use Cases](/br/backup-and-restore-use-cases.md)
       - [External Storages](/br/backup-and-restore-storages.md)
+      - BR Features
+        - [Auto Tune](/br/br-auto-tune.md)
       - [BR FAQ](/br/backup-and-restore-faq.md)
   - [Configure Time Zone](/configure-time-zone.md)
   - [Daily Checklist](/daily-check.md)
@@ -191,6 +193,8 @@
     - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
     - [BR Use Cases](/br/backup-and-restore-use-cases.md)
     - [External Storages](/br/backup-and-restore-storages.md)
+    - BR Features
+      - [Auto Tune](/br/br-auto-tune.md)
     - [BR FAQ](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [Overview](/tidb-binlog/tidb-binlog-overview.md)

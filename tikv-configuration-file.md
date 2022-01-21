@@ -1328,7 +1328,7 @@ Configuration items related to Raft Engine.
 
 ### `target-file-size`
 
-+ Specifies the maximum size of log files. When a log file is larger than this value, it is rotated. 
++ Specifies the maximum size of log files. When a log file is larger than this value, it is rotated.
 + Default value: `"128MB"`
 
 ### `purge-threshold`
@@ -1444,8 +1444,13 @@ Configuration items related to BR backup.
 ### `num-threads`
 
 + The number of worker threads to process backup
-+ Default value: `MIN(CPU * 0.75, 32)`.
++ Default value: `MIN(CPU * 0.5, 8)`.
 + Minimum value: `1`
+
+### `enable-auto-tune` <span class="version-mark">New in v5.4.0</span>
+
++ Controls whether to limit the resources used by backup tasks to reduce the impact on the cluster when the cluster resource utilization is high. For more information, refer to [BR Auto-Tune](/br/br-auto-tune.md).
++ Default value: `true`
 
 ## cdc
 
