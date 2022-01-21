@@ -1299,62 +1299,6 @@ Configuration items related to `raftdb`
 + The directory in which WAL files are stored
 + Default value: `"/tmp/tikv/store"`
 
-## raft-engine
-
-Configuration items related to Raft Engine.
-
-### `enable`
-
-+ Determines whether to use Raft Engine to store raft logs. When it is enabled, configurations of `raftdb` are ignored.
-+ Default value: `"false"`
-
-### `dir`
-
-+ The directory at which raft log files are stored. If the directory does not exist, it will be created when TiKV is started.
-+ When this configuration is not set, `{data-dir}/raft-engine` is used.
-+ If there are multiple disks on your machine, it is recommended to store the data of Raft Engine on a different disk to improve TiKV performance.
-+ Default value: `""`
-
-### `batch-compression-threshold`
-
-+ Specifies the threshold size of a log batch. A log batch larger than this configuration is compressed. If you set this configuration item to `0`, compression is disabled.
-+ Default value: `"8KB"`
-
-### `bytes-per-sync`
-
-+ Specifies the maximum accumulative size of buffered writes. When this configuration value is exceeded, buffered writes are flushed to the disk.
-+ If you set this configuration item to `0`, incremental sync is disabled.
-+ Default value: `"4MB"`
-
-### `target-file-size`
-
-+ Specifies the maximum size of log files. When a log file is larger than this value, it is rotated.
-+ Default value: `"128MB"`
-
-### `purge-threshold`
-
-+ Specifies the threshold size of the main log queue. When this configuration value is exceeded, the main log queue is purged.
-+ This configuration can be used to adjust the disk space usage of Raft Engine.
-+ Default value: `"10GB"`
-
-### `recovery-mode`
-
-+ Determines how to deal with file corruption during recovery.
-+ Value options: `"absolute-consistency"`, `"tolerate-tail-corruption"`, `"tolerate-any-corruption"`
-+ Default value: `"tolerate-tail-corruption"`
-
-### `recovery-read-block-size`
-
-+ The minimum I/O size for reading log files during recovery.
-+ Default value: `"16KB"`
-+ Minimum value: `"512B"`
-
-### `recovery-threads`
-
-+ The number of threads used to scan and recover log files.
-+ Default value: `4`
-+ Minimum value: `1`
-
 ## security
 
 Configuration items related to security.
