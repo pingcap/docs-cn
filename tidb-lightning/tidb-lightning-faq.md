@@ -204,10 +204,6 @@ upload-speed-limit = "100MB"
 DROP DATABASE IF EXISTS `lightning_metadata`;
 ```
 
-> **注意：**
-> 
-> 在清理断点文件时，请务必清理残留的元信息库，否则有可能影响后续导入的正确性。
->
 
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 
