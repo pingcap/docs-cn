@@ -365,14 +365,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/sources/{source-name}/start-relay`
+ `POST /api/v1/sources/{source-name}/start-relay`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/start-relay' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -392,14 +392,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/sources/{source-name}/stop-relay`
+ `POST /api/v1/sources/{source-name}/stop-relay`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/stop-relay' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -416,14 +416,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/sources/{source-name}/pause-relay`
+ `POST /api/v1/sources/{source-name}/pause-relay`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/pause-relay' \
   -H 'accept: */*'
 ```
@@ -434,14 +434,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/sources/{source-name}/resume-relay`
+ `POST /api/v1/sources/{source-name}/resume-relay`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/resume-relay' \
   -H 'accept: */*'
 ```
@@ -452,14 +452,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/sources/{source-name}/transfer`
+ `POST /api/v1/sources/{source-name}/transfer`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/transfer' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -923,14 +923,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/tasks/task-1/pause`
+ `POST /api/v1/tasks/task-1/pause`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/tasks/task-1/pause' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -945,14 +945,14 @@ This API is an asynchronous interface. If the request is successful, the status 
 
 ### Request URI
 
- `PATCH /api/v1/tasks/task-1/resume`
+ `POST /api/v1/tasks/task-1/resume`
 
 ### Example
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/tasks/task-1/resume' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -1041,7 +1041,7 @@ This API is a synchronous interface. If the request is successful, the status co
 
 ### Request URI
 
- `PATCH /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+ `POST /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### Example
 
