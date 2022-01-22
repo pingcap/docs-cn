@@ -281,7 +281,7 @@ For more information, refer to [Replication task configuration file](/ticdc/mana
 
 ## When TiCDC replicates data to Kafka, can I control the maximum size of a single message in TiDB?
 
-Yes. You can set the `max-message-bytes` parameter to control the maximum size of data sent to the Kafka broker each time (optional, `64MB` by default). You can also set `max-batch-size` to specify the maximum number of change records in each Kafka message. Currently, the setting only takes effect when Kafka's protocol is `default` (optional, `4096` by default).
+Yes. You can set the `max-message-bytes` parameter to control the maximum size of data sent to the Kafka broker each time (optional, `10MB` by default). You can also set `max-batch-size` to specify the maximum number of change records in each Kafka message. Currently, the setting only takes effect when Kafka's `protocol` is `open-protocol` (optional, `16` by default).
 
 ## When TiCDC replicates data to Kafka, does a message contain multiple types of data changes?
 
@@ -359,7 +359,9 @@ If you encounter an error above, it is recommended to use BR to restore the incr
 
 ## After I upgrade the TiCDC cluster to v4.0.8, the `[CDC:ErrKafkaInvalidConfig]Canal requires old value to be enabled` error is reported when I execute a changefeed
 
-Since v4.0.8, if the `canal` or `maxwell` protocol is used for output in a changefeed, TiCDC enables the old value feature automatically. However, if you have upgraded TiCDC from an earlier version to v4.0.8 or later, when the changefeed uses the `canal` or `maxwell` protocol and the old value feature is disabled, this error is reported. To fix the error, take the following steps:
+Since v4.0.8, if the `canal-json`, `canal` or `maxwell` protocol is used for output in a changefeed, TiCDC enables the old value feature automatically. However, if you have upgraded TiCDC from an earlier version to v4.0.8 or later, when the changefeed uses the `canal-json`, `canal` or `maxwell` protocol and the old value feature is disabled, this error is reported.
+
+To fix the error, take the following steps:
 
 1. Set the value of `enable-old-value` in the changefeed configuration file to `true`.
 2. Execute `cdc cli changefeed pause` to pause the replication task.
