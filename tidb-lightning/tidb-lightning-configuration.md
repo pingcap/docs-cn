@@ -64,7 +64,7 @@ io-concurrency = 5
 # 该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
 # 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
 max-error = 0
-# 配置参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
+# 参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
 # 要关闭该功能，需要将该值设置为空字符串。
 # task-info-schema-name = 'lightning_task_info'
 
