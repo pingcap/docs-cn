@@ -218,7 +218,7 @@ TiDB 版本：5.4.0
 - **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
 
     - 恢复 `source` 配置中 `enable-relay` 开关。
-    - 增加 `start-relay` 或 `stop-relay` 命令中动态开启或关闭 relay log 的功能。
+    - 增加通过 `start-relay` 和 `stop-relay` 命令动态开启和关闭 relay log 的功能。
     - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态。
     - relay log 的存放路径移至 DM-worker 配置文件。
 
