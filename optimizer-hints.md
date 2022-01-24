@@ -236,7 +236,6 @@ When multiple `USE_INDEX_MERGE` hints are made to the same table, the optimizer 
 This hint takes effect on strict conditions, including:
 
 - If the query can select a single index scan in addition to full table scan, the optimizer does not select index merge.
-- If the query is in an explicit transaction, and if the statements before this query has already written data, the optimizer does not select index merge.
 
 ## Hints that take effect in the whole query
 
@@ -262,7 +261,8 @@ In addition to this hint, setting the `tidb_enable_index_merge` system variable 
 
 > **Note:**
 >
-> `NO_INDEX_MERGE` has a higher priority over `USE_INDEX_MERGE`. When both hints are used, `USE_INDEX_MERGE` does not take effect.
+> - `NO_INDEX_MERGE` has a higher priority over `USE_INDEX_MERGE`. When both hints are used, `USE_INDEX_MERGE` does not take effect. 
+> - For a subquery, `NO_INDEX_MERGE` only takes effect when it is placed at the outermost level of the subquery.
 
 ### USE_TOJA(boolean_value)
 

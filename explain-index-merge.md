@@ -36,10 +36,10 @@ For the scan operation that is performed on a specific range of data, such as `I
 
 > **Note:**
 >
-> At present, the `IndexMerge` feature is disabled by default in TiDB 4.0.0-rc.1. In addition, the currently supported scenarios of `IndexMerge` in TiDB 4.0 are limited to the disjunctive normal form (expressions connected by `or`). The conjunctive normal form (expressions connected by `and`) will be supported in later versions. Enable the `IndexMerge` in one of two ways:
+> - The Index Merge feature is enabled by default from v5.4.0. That is, [`tidb_enable_index_merge`](/system-variables.md#tidb_enable_index_merge-new-in-v40) is `ON`.
 >
-> - Set `tidb_enable_index_merge=1`;
+> - You can use the SQL hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) to force the optimizer to apply Index Merge, regardless of the setting of `tidb_enable_index_merge`. To enable Index Merge when the filtering conditions contain expressions that cannot be pushed down, you must use the SQL hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-).
 >
-> - Use the SQL Hint [`USE_INDEX_MERGE`](/optimizer-hints.md#use_index_merget1_name-idx1_name--idx2_name-) in the query.
+> - Index Merge supports only disjunctive normal form (expressions connected by `or`) and does not support conjunctive normal form (expressions connected by `and`).
 >
-> SQL Hint has a higher priority than system variables.
+> - Index Merge is not supported in [tempoaray tables](/temporary-tables.md) for now.
