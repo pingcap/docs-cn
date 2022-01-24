@@ -144,7 +144,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
     {"matcher":["test1.*", "test2.*"], "dispatcher":"ts"},
     {"matcher":["test3.*", "test4.*"], "dispatcher":"rowid"}
   ],
-  "protocol":"canal-json"
+  "protocol":"default"
 }
 ```
 
@@ -157,7 +157,7 @@ curl -X GET http://127.0.0.1:8300/api/v1/health
 
 `matcher`：匹配语法和过滤器规则语法相同。
 
-`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 `canal-json`、`open-protocol`、`canal`、`avro` 和 `maxwell` 五种协议。
+`protocol`：对于 MQ 类的 Sink，可以指定消息的协议格式。目前支持 default、canal、avro 和 maxwell 四种协议，默认为 TiCDC Open Protocol。
 
 ### 使用样例
 
