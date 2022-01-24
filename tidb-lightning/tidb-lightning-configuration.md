@@ -59,6 +59,15 @@ table-concurrency = 6
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
 
+# TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数。
+# 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
+# 将该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
+# 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
+max-error = 0
+# 参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
+# 要关闭该功能，需要将该值设置为空字符串。
+# task-info-schema-name = 'lightning_task_info'
+
 # 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"。
 # 如果未开启并行导入模式，无须设置此配置项。
 # **注意：**
