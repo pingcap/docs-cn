@@ -549,7 +549,9 @@
     - [Views](/views.md)
     - [Partitioning](/partitioned-table.md)
     - [Temporary Tables](/temporary-tables.md)
-    - [Character Set and Collation](/character-set-and-collation.md)
+    - [Character Set and Collation]
+      - [Overview](/character-set-and-collation.md)
+      - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
     - System Tables
       - [`mysql`](/mysql-schema.md)

@@ -57,16 +57,17 @@ SHOW CHARACTER SET;
 ```
 
 ```sql
-+---------|---------------|-------------------|--------+
-| Charset | Description   | Default collation | Maxlen |
-+---------|---------------|-------------------|--------+
-| utf8    | UTF-8 Unicode | utf8_bin          |      3 |
-| utf8mb4 | UTF-8 Unicode | utf8mb4_bin       |      4 |
-| ascii   | US ASCII      | ascii_bin         |      1 |
-| latin1  | Latin1        | latin1_bin        |      1 |
-| binary  | binary        | binary            |      1 |
-+---------|---------------|-------------------|--------+
-5 rows in set (0.00 sec)
++---------+-------------------------------------+-------------------+--------+
+| Charset | Description                         | Default collation | Maxlen |
++---------+-------------------------------------+-------------------+--------+
+| ascii   | US ASCII                            | ascii_bin         |      1 |
+| binary  | binary                              | binary            |      1 |
+| gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
+| latin1  | Latin1                              | latin1_bin        |      1 |
+| utf8    | UTF-8 Unicode                       | utf8_bin          |      3 |
+| utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin       |      4 |
++---------+-------------------------------------+-------------------+--------+
+6 rows in set (0.00 sec)
 ```
 
 TiDB supports the following collations:
@@ -81,8 +82,9 @@ mysql> show collation;
 | binary      | binary  |   63 | Yes     | Yes      |       1 |
 | ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
 | utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
+| gbk_bin     | gbk     |   87 | Yes     | Yes      |       1 |
 +-------------+---------+------+---------+----------+---------+
-5 rows in set (0.01 sec)
+6 rows in set (0.00 sec)
 ```
 
 > **Warning:**
@@ -111,6 +113,8 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 +--------------------+---------+------+---------+----------+---------+
 3 rows in set (0.00 sec)
 ```
+
+For details about the TiDB support of the GBK character set, see [GBK](/character-set-gbk.md).
 
 ## `utf8` and `utf8mb4` in TiDB
 
@@ -416,9 +420,9 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-Under the new framework, TiDB support the `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, and `utf8mb4_unicode_ci` collations which are compatible with MySQL.
+Under the new framework, TiDB supports the `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, `utf8mb4_unicode_ci`, `gbk_chinese_ci`, and `gbk_bin` collations, which is compatible with MySQL.
 
-When one of `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, and `utf8mb4_unicode_ci` is used, the string comparison is case-insensitive and accent-insensitive. At the same time, TiDB also corrects the collation's `PADDING` behavior:
+When one of `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, `utf8mb4_unicode_ci`, and `gbk_chinese_ci` is used, the string comparison is case-insensitive and accent-insensitive. At the same time, TiDB also corrects the collation's `PADDING` behavior:
 
 {{< copyable "sql" >}}
 

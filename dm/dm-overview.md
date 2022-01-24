@@ -101,3 +101,7 @@ Before using the DM tool, note the following restrictions:
 + Switch of MySQL instances for data sources
 
     When DM-worker connects the upstream MySQL instance via a virtual IP (VIP), if you switch the VIP connection to another MySQL instance, DM might connect to the new and old MySQL instances at the same time in different connections. In this situation, the binlog migrated to DM is not consistent with other upstream status that DM receives, causing unpredictable anomalies and even data damage. To make necessary changes to DM manually, see [Switch DM-worker connection via virtual IP](/dm/usage-scenario-master-slave-switch.md#switch-dm-worker-connection-via-virtual-ip).
+
++ GBK character set compatibility
+
+    - DM does not support migrating `charset=GBK` tables to TiDB clusters earlier than v5.4.0.

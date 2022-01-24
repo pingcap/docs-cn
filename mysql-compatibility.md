@@ -27,7 +27,7 @@ However, some features of MySQL are not supported. This could be because there i
 + `FOREIGN KEY` constraints [#18209](https://github.com/pingcap/tidb/issues/18209)
 + `FULLTEXT` syntax and indexes [#1793](https://github.com/pingcap/tidb/issues/1793)
 + `SPATIAL` (also known as `GIS`/`GEOMETRY`) functions, data types and indexes [#6347](https://github.com/pingcap/tidb/issues/6347)
-+ Character sets other than `utf8`, `utf8mb4`, `ascii`, `latin1` and `binary`
++ Character sets other than `ascii`, `latin1`, `binary`, `utf8`, `utf8mb4`, and `gbk`.
 + SYS schema
 + Optimizer trace
 + XML Functions
@@ -131,6 +131,12 @@ Views in TiDB are not updatable. They do not support write operations such as `U
 ### Temporary tables
 
 For details, see [Compatibility between TiDB local temporary tables and MySQL temporary tables](/temporary-tables.md#compatibility-with-mysql-temporary-tables).
+
+### Character sets and collations
+
+* To learn the details of the character sets and collations supported by TiDB, see [Character Set and Collation Overview](/character-set-and-collation.md).
+
+* To learn the MySQL compatibility of the GBK character set, see [GBK compatibility](/character-set-gbk.md#mysql-compatibility) .
 
 ### Storage engines
 
