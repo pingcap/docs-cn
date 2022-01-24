@@ -142,28 +142,32 @@ delta_index_cache_size = 0
     log = The pd buddy log path.
 
 [flash.proxy]
-    addr = The listening address of proxy.
-    advertise-addr = The external access address of addr. If it is left empty, addr is used by default.
+    addr = The listening address of proxy. If it is left empty, 127.0.0.1:20170 is used by default.
+    advertise-addr = The external access address of addr. If it is left empty, "addr" is used by default.
     data-dir = The data storage path of proxy.
-    config = The proxy configuration file path.
-    log-file = The proxy log path.
-    log-level = The proxy log level. "info" is used by default.
-    status-addr = The listening address from which the proxy metrics | status information is pulled.
-    advertise-status-addr = The external access address of status-addr. If it is left empty, status-addr is used by default.
+    config = The configuration file path of proxy.
+    log-file = The log path of proxy.
+    log-level = The log level of proxy. "info" is used by default.
+    status-addr = The listening address from which the proxy pulls metrics | status information. If it is left empty, 127.0.0.1:20292 is used by default.
+    advertise-status-addr = The external access address of status-addr. If it is left empty, "status-addr" is used by default.
 
 [logger]
-    level = log level (available options: trace, debug, information, warning, error).
-    log = The TiFlash log path.
-    errorlog = The TiFlash error log path.
-    size = The size of a single log file.
-    count = The maximum number of log files to save.
+    ## log level (available options: trace, debug, information, warning, error). The default value is `debug`.
+    level = debug
+    log = TiFlash log path
+    errorlog = TiFlash error log path
+    ## Size of a single log file. The default value is "100M".
+    size = "100M"
+    ## Maximum number of log files to save. The default value is 10.
+    count = 10
 
 [raft]
     ## PD service address. Multiple addresses are separated with commas.
     pd_addr = "10.0.1.11:2379,10.0.1.12:2379,10.0.1.13:2379"
 
 [status]
-    metrics_port = The port through which Prometheus pulls metrics information.
+    ## The port through which Prometheus pulls metrics information. The default value is 8234.
+    metrics_port = 8234
 
 [profiles]
 
@@ -214,19 +218,25 @@ delta_index_cache_size = 0
 [server]
     engine-addr = The external access address of the TiFlash coprocessor service.
 [raftstore]
-    ## Specifies the number of threads that handle snapshots.
+    ## The allowable number of threads in the pool that flushes Raft data to storage.
+    apply-pool-size = 4
+
+    ## The allowable number of threads that process Raft, which is the size of the Raftstore thread pool.
+    store-pool-size = 4
+
+    ## The number of threads that handle snapshots.
     ## The default number is 2.
     ## If you set it to 0, the multi-thread optimization is disabled.
     snap-handle-pool-size = 2
 
-    ## Specifies the shortest interval at which Raft store persists WAL.
+    ## The shortest interval at which Raft store persists WAL.
     ## You can properly increase the latency to reduce IOPS usage.
     ## The default value is "4ms".
     ## If you set it to 0ms, the optimization is disabled.
     store-batch-retry-recv-timeout = "4ms"
 [security]
     ## New in v5.0. This configuration item enables or disables log redaction.
-    ## If the configuration value is set to true,
+    ## If the configuration value is set to "true",
     ## all user data in the log will be replaced by ?. The default value is false.
     redact-info-log = false
 ```
