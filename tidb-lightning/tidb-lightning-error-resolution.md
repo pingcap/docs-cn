@@ -115,11 +115,9 @@ CREATE TABLE conflict_error_v1 (
 );
 ```
 
-/**
-
+<!--
 **syntax_error_v1** is intended to record syntax error from files. It is not implemented yet.
-
-**/
+-->
 
 **type_error_v1** records all [type errors](#type-error) managed by the `max-error` configuration. There is one row per error.
 
