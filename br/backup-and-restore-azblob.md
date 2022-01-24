@@ -75,13 +75,13 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 #### 备份
 
-使用访问密钥进行备份时，需要指定参数 `account-name` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
+使用访问密钥进行备份时，需要指定参数 `account-name`、`account-key` 和 `access-tier`。其中，如果没有设置 `access-tier`（即该值为空），该值会默认设置为 `Hot`。
 
 > **注意：**
 > 
 > 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
 
-本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name` 和 `access-tier`：
+本节中展示了备份到 `cool tier`，即上传对象的存储类别为 `Cool` 的案例。你可以通过以下两种方式指定 `account-name`、`account-key` 和 `access-tier`：
 
 - 将参数信息放在 URL 参数中：
 
@@ -113,7 +113,7 @@ Azure 虚拟机可以将大规模数据快速地存放到 Azure Blob Storage 上
 
 ## 参数说明
 
-在进行备份和恢复过程中，你会用到 `account-name`、`account-key`、`access-tier` 三个参数。有关参数的详细介绍，请参阅[外部存储](/br/backup-and-restore-storages.md)。有关参数的详细介绍，请参阅以下内容：
+在进行备份和恢复过程中，你会用到 `account-name`、`account-key`、`access-tier` 三个参数。有关参数的详细介绍，请参阅以下内容：
 
 - [URL 参数](/br/backup-and-restore-storages.md#azblob-的-url-参数)
 - [命令行参数](/br/backup-and-restore-storages.md#azblob-的命令行参数)
