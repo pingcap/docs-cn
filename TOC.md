@@ -9,7 +9,7 @@
   - 性能测试报告
     - [Sysbench 性能对比 - v5.3 对比 v5.2](/benchmark/benchmark-sysbench-v5.3.0-vs-v5.2.2.md)
     - [TPC-C 性能对比 - v5.3 对比 v5.2](/benchmark/v5.3-performance-benchmarking-with-tpcc.md)
-    - [TPC-H 100 性能对比 - v5.3 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.3-performance-benchmarking-with-tpch.md)
+    - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -156,6 +156,7 @@
     - 使用 Stale Read 功能读取历史数据（推荐）
       - [Stale Read 使用场景介绍](/stale-read.md)
       - [使用 `AS OF TIMESTAMP` 语法读取历史数据](/as-of-timestamp.md)
+      - [使用系统变量 `tidb_read_staleness` 读取历史数据](/tidb-read-staleness.md)
     - [使用系统变量 `tidb_snapshot` 读取历史数据](/read-historical-data.md)
   - 最佳实践
     - [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
@@ -199,6 +200,7 @@
       - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
       - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
       - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
+      - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - [快速上手教程](/get-started-with-tidb-lightning.md)
     - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
