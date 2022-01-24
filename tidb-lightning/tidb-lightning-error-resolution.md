@@ -117,7 +117,7 @@ CREATE TABLE conflict_error_v1 (
 );
 ```
 
-**syntax_error_v1** 记录文件中的语法错误。目前尚未生效。
+<!--   **syntax_error_v1** 记录文件中的语法错误。目前尚未生效。-->
 
 **type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
