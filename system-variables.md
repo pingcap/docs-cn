@@ -628,7 +628,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
-- 这个变量用于设置是否开启 mutation checker，可用于临时跳过部分 [数据索引一致性报错](/reduce-data-inconsistency.md)。
+- 这个变量用于设置是否开启 mutation checker，可用于临时跳过部分 [数据索引一致性报错](/data-inconsistency-errors.md)。
 
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1441,7 +1441,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`FAST`
 - 可选值：`OFF`，`FAST`，`STRICT`
-- 这个变量用于设置 assertion，可用于临时跳过部分 [数据索引一致性报错](/reduce-data-inconsistency.md)。
+- 这个变量用于设置 assertion，可用于临时跳过部分 [数据索引一致性报错](/data-inconsistency-errors.md)。
 
 ### `tidb_txn_mode`
 
