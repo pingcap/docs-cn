@@ -6,7 +6,7 @@ aliases: ['/docs/dev/br/backup-and-restore-storages/']
 
 # External Storages
 
-Backup & Restore (BR), TiDB Lighting, and Dumpling support reading and writing data on the local filesystem and on Amazon S3. BR also supports reading and writing data on the Google Cloud Storage (GCS). These are distinguished by the URL scheme in the `--storage` parameter passed into BR, in the `-d` parameter passed into TiDB Lightning, and in the `--output` (`-o`) parameter passed into Dumpling.
+Backup & Restore (BR), TiDB Lighting, and Dumpling support reading and writing data on the local filesystem and on Amazon S3. BR also supports reading and writing data on the Google Cloud Storage (GCS) and [Azure Blob Storage (Azblob)](/br/backup-and-restore-azblob.md). These are distinguished by the URL scheme in the `--storage` parameter passed into BR, in the `-d` parameter passed into TiDB Lightning, and in the `--output` (`-o`) parameter passed into Dumpling.
 
 ## Schemes
 
@@ -17,11 +17,12 @@ The following services are supported:
 | Local filesystem, distributed on every node | local | `local:///path/to/dest/` |
 | Amazon S3 and compatible services | s3 | `s3://bucket-name/prefix/of/dest/` |
 | Google Cloud Storage (GCS) | gcs, gs | `gcs://bucket-name/prefix/of/dest/` |
+| Azure Blob Storage | azure, azblob | `azure://container-name/prefix/of/dest/` |
 | Write to nowhere (for benchmarking only) | noop | `noop://` |
 
 ## URL parameters
 
-Cloud storages such as S3 and GCS sometimes require additional configuration for connection. You can specify parameters for such configuration. For example:
+Cloud storages such as S3, GCS and Azblob sometimes require additional configuration for connection. You can specify parameters for such configuration. For example:
 
 + Use Dumpling to export data to S3:
 
@@ -59,10 +60,19 @@ Cloud storages such as S3 and GCS sometimes require additional configuration for
         -s 'gcs://bucket-name/prefix'
     ```
 
++ Use BR to back up data to Azblob:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./br backup full -u 127.0.0.1:2379 \
+        -s 'azure://container-name/prefix'
+    ```
+
 ### S3 URL parameters
 
 | URL parameter | Description |
-|----------:|---------|
+|:----------|:---------|
 | `access-key` | The access key |
 | `secret-access-key` | The secret access key |
 | `region` | Service Region for Amazon S3 (default to `us-east-1`) |
@@ -88,7 +98,7 @@ Cloud storages such as S3 and GCS sometimes require additional configuration for
 ### GCS URL parameters
 
 | URL parameter | Description |
-|----------:|---------|
+|:----------|:---------|
 | `credentials-file` | The path to the credentials JSON file on the tool node |
 | `storage-class` | Storage class of the uploaded objects (for example, `STANDARD`, `COLDLINE`) |
 | `predefined-acl` | Predefined ACL of the uploaded objects (for example, `private`, `project-private`) |
@@ -98,6 +108,27 @@ When `credentials-file` is not specified, the migration tool will try to infer t
 1. Content of the file on the tool node at the path specified by the `$GOOGLE_APPLICATION_CREDENTIALS` environment variable
 2. Content of the file on the tool node at `~/.config/gcloud/application_default_credentials.json`
 3. When running in GCE or GAE, the credentials fetched from the metadata server.
+
+### Azblob URL parameters
+
+| URL parameter | Description |
+|:----------|:-----|
+| `account-name` | The account name of the storage |
+| `account-key` | The access key|
+| `access-tier` | Access tier of the uploaded objects (for example, `Hot`, `Cool`, `Archive`). If `access-tier` is not set (the value is empty), the value is `Hot` by default. |
+
+To ensure that TiKV and BR use the same storage account, BR determines the value of `account-name`. That is, `send-credentials-to-tikv = true` is set by default. BR infers these keys from the environment in the following order:
+
+1. If both `account-name` **and** `account-key` are specified, the key specified by this parameter is used.
+2. If `account-key` is not specified, then BR tries to read the related credentials from environment variables on the node of BR.
+    - BR reads `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` first. At the same time, BR allows TiKV to read the above three environment variables from the respective nodes and access using Azure AD (Azure Active Directory).
+        - `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` respectively refer to the application ID `client_id`, the tenant ID `tenant_id`, and the client password `client_secret` of Azure application.
+        - To learn how to check whether the operating system has configured `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET`, or if you need to configure these variables as parameters, refer to [Configure environment variables as parameters](/br/backup-and-restore-azblob.md#configure-environment-variables-as-parameters).
+3. If the above three environment variables are not configured in the BR node, BR tries to read `$AZURE_STORAGE_KEY` using an access key.
+
+> **Note:**
+>
+> When using Azure Blob Storage as the external storage, you must set `send-credentials-to-tikv = true` (which is set by default). Otherwise, the backup task will fail.
 
 ## Command-line parameters
 
@@ -116,7 +147,7 @@ If you have specified URL parameters and command-line parameters at the same tim
 ### S3 command-line parameters
 
 | Command-line parameter | Description |
-|----------:|------|
+|:----------|:------|
 | `--s3.region` | Amazon S3's service region, which defaults to `us-east-1`. |
 | `--s3.endpoint` | The URL of custom endpoint for S3-compatible services. For example, `https://s3.example.com/`. |
 | `--s3.storage-class` | The storage class of the upload object. For example, `STANDARD` and `STANDARD_IA`. |
@@ -128,14 +159,21 @@ If you have specified URL parameters and command-line parameters at the same tim
 ### GCS command-line parameters
 
 | Command-line parameter | Description |
-|----------:|---------|
+|:----------|:------|
 | `--gcs.credentials-file` |  The path of the JSON-formatted credential on the tool node. |
 | `--gcs.storage-class` | The storage type of the upload object, such as `STANDARD` and `COLDLINE`.  |
 | `--gcs.predefined-acl` | The pre-defined ACL of the upload object, such as `private` and `project-private`. |
 
+### Azblob command-line parameters
+
+| Command-line parameter | Description |
+| `--azblob.account-name` | The account name of the storage |
+| `--azblob.account-key` | The access key |
+| `--azblob.access-tier` | Access tier of the uploaded objects (for example, `Hot`, `Cool`, `Archive`). If `access-tier` is not set (the value is empty), the value is `Hot` by default. |
+
 ## BR sending credentials to TiKV
 
-By default, when using S3 and GCS destinations, BR will send the credentials to every TiKV nodes to reduce setup complexity.
+By default, when using S3, GCS, or Azblob destinations, BR will send the credentials to every TiKV node to reduce setup complexity.
 
 However, this is unsuitable on cloud environment, where every node has their own role and permission. In such cases, you need to disable credentials sending with `--send-credentials-to-tikv=false` (or the short form `-c=0`):
 

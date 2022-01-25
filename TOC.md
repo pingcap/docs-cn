@@ -67,7 +67,9 @@
       - [BR Tool Overview](/br/backup-and-restore-tool.md)
       - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
       - [BR Use Cases](/br/backup-and-restore-use-cases.md)
-      - [External Storages](/br/backup-and-restore-storages.md)
+      - External Storages
+        - [External Storages Overview](/br/backup-and-restore-storages.md)
+        - [Back up and Restore Data on Azure Blob Storage](/br/backup-and-restore-azblob.md)
       - BR Features
         - [Auto Tune](/br/br-auto-tune.md)
       - [BR FAQ](/br/backup-and-restore-faq.md)
