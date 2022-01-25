@@ -5,7 +5,7 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 # 数据索引一致性报错
 
-数据索引一致性错误指 record key-value 和 index key-value 不一致，例如多索引、缺索引等。发生此错误时，应当联系 PingCAP 工程师。
+数据索引一致性错误指 record key-value 和 index key-value 不一致，例如多索引、缺索引等。发生此错误时，应当联系 PingCAP 技术支持。
 
 ## 错误样例解读
 
@@ -61,4 +61,4 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 对于错误代码为 8141 的错误，如果通过错误信息判断为误报，可以通过设置 `tidb_txn_assertion_level` 为 `OFF` 来跳过检查。
 
-不论是否误报，一致性检查报错时，请立即联系 PingCAP 工程师或 [上报 bug](https://github.com/pingcap/tidb/issues/new?labels=type%2Fbug&template=bug-report.md)。
+不论是否误报，一致性检查报错时，请立即联系 PingCAP 技术支持。
