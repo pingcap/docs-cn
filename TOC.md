@@ -7,8 +7,8 @@
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v5.3 对比 v5.2](/benchmark/benchmark-sysbench-v5.3.0-vs-v5.2.2.md)
-    - [TPC-C 性能对比 - v5.3 对比 v5.2](/benchmark/v5.3-performance-benchmarking-with-tpcc.md)
+    - [Sysbench 性能对比 - v5.4 对比 v5.3](/benchmark/benchmark-sysbench-v5.4.0-vs-v5.3.0.md)
+    - [TPC-C 性能对比 - v5.4 对比 v5.3](/benchmark/v5.4-performance-benchmarking-with-tpcc.md)
     - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
