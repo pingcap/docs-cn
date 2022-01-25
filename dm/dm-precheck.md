@@ -23,7 +23,7 @@ Upstream and downstream database users must have the corresponding read and writ
 
     > **Warning:**
     >
-    > Support for MySQL 8.0 is an experimental feature of TiDB Data Migration v2.0. It is **NOT** recommended that you use it in a production environment.
+    > Support for MySQL 8.0 is an experimental feature of TiDB Data Migration v2.0 and later versions. It is **NOT** recommended that you use it in a production environment.
 
 + Database configuration
 

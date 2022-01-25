@@ -188,7 +188,7 @@ TiUP supports managing multiple DM clusters. The command above outputs informati
 ```log
 Name  User  Version  Path                                  PrivateKey
 ----  ----  -------  ----                                  ----------
-dm-test  tidb  v2.0.3  /root/.tiup/storage/dm/clusters/dm-test  /root/.tiup/storage/dm/clusters/dm-test/ssh/id_rsa
+dm-test  tidb  ${version}  /root/.tiup/storage/dm/clusters/dm-test  /root/.tiup/storage/dm/clusters/dm-test/ssh/id_rsa
 ```
 
 ## Step 5: Check the status of the deployed DM cluster

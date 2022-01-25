@@ -28,11 +28,11 @@ Enter the interactive mode to interact with DM-master:
 
 ```
 Welcome to dmctl
-Release Version: v2.0.3
+Release Version: ${version}
 Git Commit Hash: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-Git Branch: release-2.0
+Git Branch: release-x.x
 UTC Build Time: yyyy-mm-dd hh:mm:ss
-Go Version: go version go1.13 linux/amd64
+Go Version: go version gox.xx linux/amd64
 
 » help
 DM control

@@ -73,7 +73,7 @@ tiup dm list
 ```
 Name  User  Version  Path                                  PrivateKey
 ----  ----  -------  ----                                  ----------
-prod-cluster  tidb  v2.0.3  /root/.tiup/storage/dm/clusters/test  /root/.tiup/storage/dm/clusters/test/ssh/id_rsa
+prod-cluster  tidb  ${version}  /root/.tiup/storage/dm/clusters/test  /root/.tiup/storage/dm/clusters/test/ssh/id_rsa
 ```
 
 ## Start the cluster
@@ -100,7 +100,7 @@ tiup dm display prod-cluster
 
 ```
 dm Cluster: prod-cluster
-dm Version: v2.0.3
+dm Version: ${version}
 ID                 Role          Host          Ports      OS/Arch       Status     Data Dir                           Deploy Dir
 --                 ----          ----          -----      -------       ------     --------                           ----------
 172.19.0.101:9093  alertmanager  172.19.0.101  9093/9094  linux/x86_64  Up         /home/tidb/data/alertmanager-9093  /home/tidb/deploy/alertmanager-9093
@@ -191,12 +191,12 @@ The rolling upgrade process is made as transparent as possible to the applicatio
 
 ### Upgrade command
 
-You can run the `tiup dm upgrade` command to upgrade a DM cluster. For example, the following command upgrades the cluster to v2.0.1:
+You can run the `tiup dm upgrade` command to upgrade a DM cluster. For example, the following command upgrades the cluster to `${version}`. Modify `${version}` to your needed version before running this command:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup dm upgrade prod-cluster v2.0.1
+tiup dm upgrade prod-cluster ${version}
 ```
 
 ## Update configuration
@@ -285,7 +285,7 @@ For example, to import a cluster deployed using DM Ansible:
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup dm import --dir=/path/to/dm-ansible --cluster-version v2.0.3
+tiup dm import --dir=/path/to/dm-ansible --cluster-version ${version}
 ```
 
 Execute `tiup list dm-master` to view the latest cluster version supported by TiUP.
@@ -322,7 +322,7 @@ ID      Time                  Command
 --      ----                  -------
 4D5kQY  2020-08-13T05:38:19Z  tiup dm display test
 4D5kNv  2020-08-13T05:36:13Z  tiup dm list
-4D5kNr  2020-08-13T05:36:10Z  tiup dm deploy -p prod-cluster v2.0.3 ./examples/dm/minimal.yaml
+4D5kNr  2020-08-13T05:36:10Z  tiup dm deploy -p prod-cluster ${version} ./examples/dm/minimal.yaml
 ```
 
 The first column is `audit-id`. To view the execution log of a certain command, pass the `audit-id` argument as follows:
@@ -367,10 +367,10 @@ Run the following command to use dmctl:
 tiup dmctl [args]
 ```
 
-Specify the version of dmctl:
+Specify the version of dmctl. Modify `${version}` to your needed version before running this command:
 
 ```
-tiup dmctl:v2.0.3 [args]
+tiup dmctl:${version} [args]
 ```
 
 The previous dmctl command to add a source is `dmctl --master-addr master1:8261 operate-source create /tmp/source1.yml`. After dmctl is integrated into TiUP, the command is:
