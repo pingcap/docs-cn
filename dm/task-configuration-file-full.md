@@ -106,7 +106,15 @@ loaders:                             # load 处理单元的运行配置参数
   global:                            # 配置名称
     pool-size: 16                    # load 处理单元并发执行 dump 处理单元的 SQL 文件的线程数量，默认值为 16，当有多个实例同时向 TiDB 迁移数据时可根据负载情况适当调小该值
     dir: "./dumped_data"             # dump 处理单元输出 SQL 文件的目录，同时也是 load 处理单元读取文件的目录。该配置项的默认值为 "./dumped_data"。同实例对应的不同任务必须配置不同的目录
-
+    # 全量阶段数据导入的模式。可以设置为如下几种模式：
+    # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
+    # - "loader"。使用 Loader 导入。此模式仅作为兼容模式保留，目前用于支持 TiDB Lightning 尚未包含的功能，预计在 6.0 版本完全废弃。
+    import-mode: "sql"
+    # 全量导入阶段针对冲突数据的解决方式：
+    # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
+    # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
+    # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
+    on-dupicate: "replace"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
