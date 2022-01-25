@@ -224,7 +224,7 @@
         - [迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)
         - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
       - [DM 架构](/dm/dm-arch.md)
-      - [性能数据](/dm/dm-benchmark-v5.3.0.md)
+      - [性能数据](/dm/dm-benchmark-v5.4.0.md)
     - 快速上手
       - [快速上手试用](/dm/quick-start-with-dm.md)
       - [使用 TiUP 部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
