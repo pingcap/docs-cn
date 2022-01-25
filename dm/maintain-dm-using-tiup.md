@@ -266,6 +266,7 @@ tiup dm patch prod-cluster /tmp/dm-master-hotfix.tar.gz -R dm-master
 ```bash
 tiup dm patch prod-cluster /tmp/dm--hotfix.tar.gz -N 172.16.4.5:8261
 ```
+
 ## 导入和升级使用 DM-Ansible 部署的 DM 1.0 集群
 
 >
