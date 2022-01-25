@@ -142,25 +142,27 @@ Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
 适用场景：集群所在的网络可以直接连接 Clinic Server 
 操作方式：
 对于在第二步收集的数据包文件夹，直接执行上传命令如下：
+
  {{< copyable "shell-regular" >}}
 ```bash
  tiup diag upload <filepath> -u=username -p='password'
  ```
+
+{{< copyable "shell-regular" >}}
+```bash
+[root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
+Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+Enter Username: username
+Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+Completed!
+Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
+```
   - 上传需要提供用户名和密码，目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
   - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。
-  上传返回示例：
-  {{< copyable "shell-regular" >}}
-  ```bash
-  [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-  Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-  Enter Username: Asktug
-  Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-  Completed!
-  Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
-  ```
+  
 
 #### 先打包后上传
-适用场景：集群是离线部署，所在的网络无法直接连接 Clinic Server  
+适用场景：集群是离线部署，所在的网络无法直接连接 Clinic Server ，需要先在内网打包，然后发送到网络连通的设备上进行上传。
 操作方式：
 1. 先使用 Package 命令对第二步收集的数据包进行压缩和加密，然后将压缩后的文件传到非隔离网络。
  {{< copyable "shell-regular" >}}
@@ -179,10 +181,19 @@ packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
 2. 在可以连通 Clinic Server 的网络环境下上传压缩包：
  {{< copyable "shell-regular" >}}
 ```bash
-tiup diag upload filepath -u=clinic@pingcap.com -p='pingcap-clinic!@#'
+tiup diag upload filepath -u=username -p='password'
+```
+{{< copyable "shell-regular" >}}
+```bash
+[root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
+Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+Enter Username: username
+Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+Completed!
+Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
   - 上传需要提供用户名和密码，目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
-  -  上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。
+  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。
 
 ### 可选操作：本地查看数据
 所有收集到的数据被按来源存储在以机器名和端口号命名的独立子目录中，对每个节点，其中的配置、日志等文件均按照其在真实服务器上相同的相对路径存放。
