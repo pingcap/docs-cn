@@ -368,7 +368,7 @@ Started cluster `tidb-test` successfully.
 The root password of TiDB database has been changed.
 The new password is: 'y_+3Hwp=*AWz8971s6'.
 Copy and record it to somewhere safe, it is only displayed once, and will not be stored.
-The generated password can NOT be get and shown again.
+The generated password can NOT be got again in future.
 ```
 
 用户需要记录命令行返回结果中的密码信息，用于后续数据库登录。使用安全启动方式后，不能通过无密码的 root 用户登录数据库。
