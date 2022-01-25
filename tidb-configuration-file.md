@@ -648,3 +648,23 @@ The `experimental` section, introduced in v3.1.0, describes the configurations r
 
 + Controls whether an expression index can be created. Since TiDB v5.2.0, if the function in an expression is safe, you can create an expression index directly based on this function without enabling this configuration. If you want to create an expression index based on other functions, you can enable this configuration, but correctness issues might exist. By querying the `tidb_allow_function_for_expression_index` variable, you can get the functions that are safe to be directly used for creating an expression.
 + Default value: `false`
+
+### `stats-load-concurrency` <span class="version-mark">New in v5.4.0</span>
+
+> **WARNING:**
+>
+> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
+
++ The maximum number of columns that the TiDB synchronously loading statistics feature can process concurrently.
++ Default value: `5`
++ Currently, the valid value range is `[1, 128]`.
+
+### `stats-load-queue-size` <span class="version-mark">New in v5.4.0</span>
+
+> **WARNING:**
+>
+> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
+
++ The maximum number of column requests that the TiDB synchronously loading statistics feature can cache.
++ Default value: `1000`
++ Currently, the valid value range is `[1, 100000]`.
