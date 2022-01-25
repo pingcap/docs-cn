@@ -1585,6 +1585,16 @@ SET tidb_slow_log_threshold = 200;
 - Unit: Seconds
 - This variable is used to set the refresh time of [statement summary tables](/statement-summary-tables.md).
 
+### `tidb_enable_top_sql` <span class="version-mark">New in v5.4.0</span>
+
+- Scope: GLOBAL
+- Default value: `OFF`
+- This variable is used to control whether to enable the [Top SQL](/dashboard/top-sql.md) feature.
+
+> **Warning:**
+>
+> Currently, Top SQL is an experimental feature. It is not recommended that you use it for production environments.
+
 ### tidb_store_limit <span class="version-mark">New in v3.0.4 and v4.0</span>
 
 - Scope: GLOBAL
