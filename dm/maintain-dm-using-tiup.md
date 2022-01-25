@@ -275,7 +275,7 @@ tiup dm patch prod-cluster /tmp/dm--hotfix.tar.gz -N 172.16.4.5:8261
 > - 导入 DM 集群前，应终止运行原始集群。
 > - 如果目标版本是 2.0，不可执行 `stop-run` 命令。
 > - TiUP 仅支持导入 v2.0.0-rc.2 或以上版本的 DM 集群。
-> - `import` 命令用于将数据从 DM 1.0 集群导入到一个新的 DM 2.0 集群。如果你需要将 DM 迁移任务导入一个现有的 DM 2.0 集群，可以参考 [TiDB Data Migration 1.0.x 到 2.0+ 手动升级](/manually-upgrade-dm-1.0-to-2.0.md)。
+> - `import` 命令用于将数据从 DM 1.0 集群导入到一个新的 DM 2.0 集群。如果你需要将 DM 迁移任务导入一个现有的 DM 2.0 集群，可以参考 [TiDB Data Migration 1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 > - 一些组件的部署目录与原始集群的部署目录不同，可以执行 `display` 命令来查看相关信息。
 > - 导入前，请运行 `tiup update --self && tiup update dm`，以确保 DM 组件是最新版本。
 > - 导入后，集群中只存在一个 DM-master 节点。请参考 [Scale out a cluster](#scale-out-a-cluster) 来扩展 DM-master。
@@ -292,7 +292,7 @@ tiup dm import --dir=/path/to/dm-ansible --cluster-version ${version}
 
 `import` 命令的执行过程如下：
 
-1. 根据之前使用 DM-Ansible 部署的 DM集群，TiUP 生成一个拓扑文件 [`topology.yml`](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
+1. 根据之前使用 DM-Ansible 部署的 DM 集群，TiUP 生成一个拓扑文件 [`topology.yml`](https://github.com/pingcap/tiup/blob/master/embed/examples/dm/topology.example.yaml)。
 2. 确认拓扑文件生成后，你可以用这个文件来部署 v2.0 或更高版本的 DM 集群。
 
 部署完成后，你可以执行 `tiup dm start` 命令来启动集群和开始 DM 内核升级流程。
