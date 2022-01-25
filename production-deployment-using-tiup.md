@@ -349,7 +349,7 @@ tiup cluster display tidb-test
 >
 > - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，用户需要记录命令行返回的密码进行后续操作。
 >
-> - 该自动生成的密码只会返回一次，如果用户没有记录或者忘记该密码，请参照 [忘记 root 密码](https://docs.pingcap.com/zh/tidb/stable/user-account-management#%E5%BF%98%E8%AE%B0-root-%E5%AF%86%E7%A0%81) 修改密码。
+> - 该自动生成的密码只会返回一次，如果用户没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
 
 方式一：安全启动方式
 
