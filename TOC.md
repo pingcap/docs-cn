@@ -156,6 +156,7 @@
     - Use Stale Read (Recommended)
       - [Usage Scenarios of Stale Read](/stale-read.md)
       - [Perform Stale Read Using `As OF TIMESTAMP`](/as-of-timestamp.md)
+      - [Perform Stale Read Using `tidb_read_staleness`](/tidb-read-staleness.md)
     - [Use the `tidb_snapshot` System Variable](/read-historical-data.md)
   - Best Practices
     - [Use TiDB](/best-practices/tidb-best-practices.md)

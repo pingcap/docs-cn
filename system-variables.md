@@ -1435,6 +1435,12 @@ Usage example:
 SET tidb_query_log_max_len = 20
 ```
 
+### `tidb_read_staleness` <span class="version-mark">New in v5.4.0</span>
+
+- Scope: SESSION
+- Default value: `0`
+- This variable is used to set the time range of historical data that TiDB can read in the current session. After setting the value, TiDB selects a timestamp as new as possible from the range allowed by this variable, and all subsequent read operations are performed against this timestamp. For example, if the value of this variable is set to `-5`, on the condition that TiKV has the corresponding historical version's data, TiDB selects a timestamp as new as possible within a 5-second time range.
+
 ### tidb_record_plan_in_slow_log
 
 - Scope: INSTANCE
