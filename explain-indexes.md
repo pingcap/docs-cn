@@ -146,7 +146,7 @@ EXPLAIN SELECT * FROM t1 ORDER BY intkey DESC LIMIT 10;
 4 rows in set (0.00 sec)
 ```
 
-以上示例中，TiDB 从 `intkey` 索引读取最后 20 行，然后从表数据中检索这些行的 `RowID` 值。
+以上示例中，TiDB 从 `intkey` 索引读取最后 10 行，然后从表数据中检索这些行的 `RowID` 值。
 
 ## IndexReader
 
