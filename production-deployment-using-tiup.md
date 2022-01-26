@@ -341,7 +341,7 @@ tiup cluster display tidb-test
 
 ## 第 7 步：启动集群
 
-安全启动方式是为 TiUP cluster v1.9.0 及后续版本提供的新部署方式，采用该模式登录数据库可以提高数据库安全性。推荐使用安全启动方式启动集群。
+安全启动是 TiUP cluster v1.9.0 引入的一种新的启动方式，采用该方式登录数据库可以提高数据库安全性。推荐使用安全启动方式启动集群。
 
 安全启动后，TiUP 会自动生成 TiDB root 用户的密码，并在命令行界面返回密码。
 
@@ -379,7 +379,7 @@ The generated password can NOT be got again in future.
 tiup cluster start tidb-test
 ```
 
-预期结果输出 ```Started cluster `tidb-test` successfully``` ，表示启动成功。使用普通启动方式后，可通过无密码的 root 用户登录数据库。
+预期结果输出 ```Started cluster `tidb-test` successfully```，表示启动成功。使用普通启动方式后，可通过无密码的 root 用户登录数据库。
 
 ## 第 8 步：验证集群运行状态
 
