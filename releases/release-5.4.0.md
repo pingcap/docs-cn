@@ -109,7 +109,7 @@ TiDB 版本：5.4.0
 
     集群启动命令增加了 `--init` 参数，有了该参数，在 TiUP 部署场景，TiUP 会为数据库 root 用户生成一个初始的强密码，避免 root 用户使用空密码所带来的安全风险，增强数据库的安全性。
 
-    [User document](/production-deployment-using-tiup.md##第-7-步启动集群)
+    [User document](/production-deployment-using-tiup.md#第-7-步启动集群)
 
 ### 性能
 
