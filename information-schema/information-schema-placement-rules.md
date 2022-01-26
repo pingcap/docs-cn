@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `PLACEMENT_RULES`。
 
 # PLACEMENT_RULES
 
-`PLACEMENT_RULES` 表展示所有已显式配置的 [Placement Rules in SQL](/placement-rules-in-sql.md) 信息，包括通过放置策略 (placement policy) 和通过直接放置 (directly placement) 进行配置的信息。
+`PLACEMENT_RULES` 表展示所有已显式配置的 [Placement Rules in SQL](/placement-rules-in-sql.md) 信息，包括通过放置规则 (placement policy) 和通过直接放置 (directly placement) 进行配置的信息。
 
 {{< copyable "sql" >}}
 
@@ -39,7 +39,7 @@ DESC placement_rules;
 
 ## 示例
 
-`PLACEMENT_RULES` 表只展示显式配置的规则。如要查看 Placement Rules 放置规则的规范版本（包括附加到表格的放置策略），请改用 `SHOW PLACEMENT` 语句：
+`PLACEMENT_RULES` 表只展示显式配置的规则。如要查看 Placement Rules 放置规则的规范版本（包括附加到表格的放置规则），请改用 `SHOW PLACEMENT` 语句：
 
 {{< copyable "sql" >}}
 

@@ -19,23 +19,51 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 - 把热点数据的 leader 放到高性能的 TiKV 实例上
 - 将冷数据分离到不同的存储中以提高可用性
 
-## 指定放置选项
+## 指定放置规则
 
-要使用 Placement Rules in SQL 特性，你需要在 SQL 语句中指定一个或多个放置选项 (placement option)。可通过*直接放置 (direct placement)* 或*放置策略 (placement policy)* 来指定放置选项。
-
-以下示例中，表 `t1` 和 `t2` 的放置规则相同。`t1` 是通过直接放置指定的规则，而 `t2` 是通过放置策略来指定的规则。
+指定放置规则，首先需要创建*放置规则 (placement policy)*。
 
 ```sql
-CREATE TABLE t1 (a INT) PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
-CREATE PLACEMENT POLICY eastandwest PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
-CREATE TABLE t2 (a INT) PLACEMENT POLICY=eastandwest;
+CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 ```
 
-为了能够更轻松地管理放置规则，推荐使用放置策略来指定规则。当你通过 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 更改放置策略后，此更改会自动传播至所有数据库对象。
+然后就可以用 `CREATE TABLE` 或者 `ALTER TABLE` 绑定规则。
 
-如果你使用直接放置选项，你需要为每个对象（例如表和分区）都单独更改放置规则。
+```sql
+CREATE TABLE t1 (a INT) PLACEMENT POLICY myplacementpolicy;
+CREATE TABLE t2 (a INT);
+ALTER TABLE t2 PLACEMENT POLICY myplacementpolicy;
+```
 
-`PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置策略时，无需任何额外的权限。
+`PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置规则时，无需任何额外的权限。
+
+## 查看放置规则
+
+如果一张表绑定了放置规则，你就可以用 `SHOW CREATE TABLE` 来查看。还可以用 `SHOW CREATE PLACEMENT POLICY` 来查看已经创建的规则。
+
+```sql
+tidb> SHOW CREATE TABLE t1\G
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`myplacementpolicy` */
+1 row in set (0.00 sec)
+tidb> SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
+*************************** 1. row ***************************
+       Policy: myplacementpolicy
+Create Policy: CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1"
+1 row in set (0.00 sec)
+```
+
+`information_schema` 下的 `tables` 表和 `partitions` 表也有一列 `tidb_placement_policy_name`，可用来查找所有绑定了放置规则的对象：
+
+```sql
+SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
+SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
+```
+
+所有绑定规则的对象都是 *异步调度* 的。可以用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 来查看放置规则的调度进程。
 
 ## 放置选项参考
 
@@ -133,7 +161,7 @@ ALTER DATABASE test FOLLOWERS=2;  -- 再次更改默认的放置选项，此更�
 CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置规则 FOLLOWERS=2 生效。
 ```
 
-由于只有在创建表时才会从数据库继承放置选项，因此推荐使用 `PLACEMENT POLICY` 放置策略来设置默认的放置选项。使用后，用户可以通过改动放置策略，改变继承自数据库的放置选项。
+由于只有在创建表时才会从数据库继承放置选项，因此推荐使用 `PLACEMENT POLICY` 放置规则来设置默认的放置选项。使用后，用户可以通过改动放置规则，改变继承自数据库的放置选项。
 
 ### 高级放置
 
@@ -167,9 +195,9 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 目前已知 Placement Rules in SQL 实验特性存在以下限制：
 
-* Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
+* Dumpling 不支持导出放置规则，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
-* 临时表不支持放置选项，直接放置和放置策略均不支持。
+* 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 * 不能通过放置规则语法配置 TiFlash 副本。
 * 放置规则仅保证静态数据被放置在正确的 TiKV 节点上。该规则不保证传输中的数据（通过用户查询或内部操作）只出现在特定区域内。
