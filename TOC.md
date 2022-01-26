@@ -7,9 +7,9 @@
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v5.3 对比 v5.2](/benchmark/benchmark-sysbench-v5.3.0-vs-v5.2.2.md)
-    - [TPC-C 性能对比 - v5.3 对比 v5.2](/benchmark/v5.3-performance-benchmarking-with-tpcc.md)
-    - [TPC-H 100 性能对比 - v5.3 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.3-performance-benchmarking-with-tpch.md)
+    - [Sysbench 性能对比 - v5.4 对比 v5.3](/benchmark/benchmark-sysbench-v5.4.0-vs-v5.3.0.md)
+    - [TPC-C 性能对比 - v5.4 对比 v5.3](/benchmark/v5.4-performance-benchmarking-with-tpcc.md)
+    - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -224,7 +224,7 @@
         - [迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)
         - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
       - [DM 架构](/dm/dm-arch.md)
-      - [性能数据](/dm/dm-benchmark-v5.3.0.md)
+      - [性能数据](/dm/dm-benchmark-v5.4.0.md)
     - 快速上手
       - [快速上手试用](/dm/quick-start-with-dm.md)
       - [使用 TiUP 部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
