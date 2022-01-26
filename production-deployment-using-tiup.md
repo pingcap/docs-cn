@@ -371,8 +371,6 @@ Copy and record it to somewhere safe, it is only displayed once, and will not be
 The generated password can NOT be got again in future.
 ```
 
-你需要记录命令行返回结果中的密码信息，用于后续数据库登录。使用安全启动方式后，不能通过无密码的 root 用户登录数据库。
-
 方式二：普通启动方式
 
 {{< copyable "shell-regular" >}}
