@@ -76,7 +76,7 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
 ### 界面提示 `集群中未启动必要组件 NgMonitoring`
 
-NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用于支撑 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 和 **Top SQL** 等功能。使用 TiUP 部署集群时，NgMonitoring 会自动部署；使用 TiDB Operator 部署集群时，需要依据[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard/#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)手工部署 NgMonitoring。
+NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用于支撑 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 和 **Top SQL** 等功能。使用 TiUP 部署集群时，NgMonitoring 会自动部署；使用 TiDB Operator 部署集群时，需要依据[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard/#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)手动部署 NgMonitoring。
 
 如果界面提示 `集群中未启动必要组件 NgMonitoring`，需要按 TiDB 集群部署方式排查问题。
 
@@ -84,7 +84,7 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
 
 第 1 步：检查 TiUP Cluster 版本
 
-  1. 检查 TiUP Cluster 版本，NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以上）：
+  1. 检查 TiUP Cluster 版本，NgMonitoring 组件需要较高版本的部署工具支持（TiUP v1.9.0 及以上）：
 
         {{< copyable "shell-regular" >}}
 
