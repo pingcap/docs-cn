@@ -27,20 +27,7 @@ oom-action = "cancel"
 mem-quota-query = 34359738368
 ```
 
-此外还可通过如下几个 session 变量来控制一条 Query 中的内存使用，大多数用户只需要设置 `tidb_mem_quota_query` 即可，其他变量是高级配置，大多数用户不需要关心：
-
-| 变量名                            | 作用                                              | 单位  | 默认值    |
-|:-----------------------------------|:---------------------------------------------------|:-------|:-----------|
-| tidb_mem_quota_query              | 配置整条 SQL 的内存使用阈值                       | Byte  | 1 << 30 (1 GB)  |
-| tidb_mem_quota_hashjoin           | 配置 Hash Join 的内存使用阈值                     | Byte  | 32 << 30  |
-| tidb_mem_quota_mergejoin          | 配置 Merge Join 的内存使用阈值                    | Byte  | 32 << 30  |
-| tidb_mem_quota_sort               | 配置 Sort 的内存使用阈值                          | Byte  | 32 << 30  |
-| tidb_mem_quota_topn               | 配置 TopN 的内存使用阈值                          | Byte  | 32 << 30  |
-| tidb_mem_quota_indexlookupreader  | 配置 Index Lookup Reader 的内存使用阈值           | Byte  | 32 << 30  |
-| tidb_mem_quota_indexlookupjoin    | 配置 Index Lookup Join 的内存使用阈值             | Byte  | 32 << 30  |
-| tidb_mem_quota_nestedloopapply    | 配置 Nested Loop Apply 的内存使用阈值             | Byte  | 32 << 30  |
-
-几个使用例子：
+此外还可通过 session 变量 `tidb_mem_quota_query` 来控制一条 Query 中的内存使用。几个使用例子：
 
 配置整条 SQL 的内存使用阈值为 8GB：
 
