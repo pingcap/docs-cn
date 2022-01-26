@@ -26,9 +26,10 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 目前 TiSpark 支持版本的兼容情况如下所示，你可以根据需要选择相应的 TiSpark 版本。
 
 | TiSpark 版本 | TiDB、TiKV、PD 版本 | Spark 版本 | Scala 版本 |
-| --------------- | -------------------- | ------------- | ------------- |
-| 2.4.x           | 5.x，4.x             | 2.3.x，2.4.x  | 2.11          |
-| 2.5.x           | 5.x，4.x             | 3.0.x，3.1.x  | 2.12          |
+| ---------------  | -------------------- | ------------- | ------------- |
+| 2.4.x-scala_2.11 | 5.x，4.x             | 2.3.x，2.4.x   | 2.11          |
+| 2.4.x-scala_2.12 | 5.x，4.x             | 2.4.x         | 2.12          |
+| 2.5.x            | 5.x，4.x             | 3.0.x，3.1.x   | 2.12          |
 
 TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
@@ -376,6 +377,10 @@ spark.sql.tidb.password $your_tidb_server_password
 ```
 
 更多详细信息，请参考 [TiSpark 鉴权与授权文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+
+> **注意：**
+>
+> 开启鉴权功能后，TiSpark Spark SQL 只能使用 TiDB 作为数据源，切换到其他数据源（例如 Hive）会导致数据表不可见。
 
 ## TiSpark FAQ
 
