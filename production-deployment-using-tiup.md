@@ -343,13 +343,13 @@ tiup cluster display tidb-test
 
 > **注意：**
 >
-> 安全启动方式是在 tiup cluster v1.9.0 及后续版本中提供的新部署方式，推荐使用安全启动方式启动集群：
+> 安全启动方式是为 TiUP cluster v1.9.0 及后续版本提供的新部署方式，推荐使用安全启动方式启动集群：
 >
-> - 安全启动后会自动生成 root 用户的密码，并在命令行界面返回密码。
+> - 安全启动后会自动生成 TiDB root 用户的密码，并在命令行界面返回密码。
 >
-> - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，用户需要记录命令行返回的密码进行后续操作。
+> - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，你需要记录命令行返回的密码进行后续操作。
 >
-> - 该自动生成的密码只会返回一次，如果用户没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
+> - 该自动生成的密码只会返回一次，如果没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
 
 方式一：安全启动方式
 
@@ -371,7 +371,7 @@ Copy and record it to somewhere safe, it is only displayed once, and will not be
 The generated password can NOT be got again in future.
 ```
 
-用户需要记录命令行返回结果中的密码信息，用于后续数据库登录。使用安全启动方式后，不能通过无密码的 root 用户登录数据库。
+你需要记录命令行返回结果中的密码信息，用于后续数据库登录。使用安全启动方式后，不能通过无密码的 root 用户登录数据库。
 
 方式二：普通启动方式
 
