@@ -187,7 +187,7 @@ backslash-escape = true
 trim-last-separator = false
 
 # [[mydumper.files]]
-# # 解析 parquet 文件所需的表达式
+# # 解析 aws aurora parquet 文件所需的表达式
 # pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
 # schema = '$1'
 # table = '$2'
