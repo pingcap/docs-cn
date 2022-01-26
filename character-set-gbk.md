@@ -25,7 +25,9 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 1 rows in set (0.00 sec)
 ```
 
-## MySQL 兼容性
+## 与 MySQL 的兼容性
+
+本节介绍 TiDB 中 GBK 字符集与 MySQL 的兼容情况。
 
 ### 排序规则兼容性
 
