@@ -46,7 +46,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 通过以下链接获取 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）：
 
-- **v5.0.0**: [tidb-toolkit-v5.0.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.0.0-linux-amd64.tar.gz)
+- **v5.3.0**: [tidb-toolkit-v5.3.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.3.0-linux-amd64.tar.gz)
 
 ### 第 3 步：启动 `tidb-lightning`
 
