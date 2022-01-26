@@ -34,7 +34,7 @@ TiDB 版本：5.4.0
 | :---------- | :----------- | :----------- |
 |  [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 新增 | 用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集，默认值为 `OFF` |
 | [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。 |
-| [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF |
+| [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF |
 | [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF` |
 | [`tidb_read_staleness`](/system-variables.md#tidb_read_staleness-从-v540-版本开始引入) | 新增 | 用于设置当前会话允许读取的历史数据范围，默认值为 `0` |
 | [`tidb_regard_null_as_point`](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以将包含 null 的等值条件作为前缀条件来访问索引 |
@@ -50,7 +50,7 @@ TiDB 版本：5.4.0
 | :---------- | :----------- | :----------- | :----------- |
 | TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 新增 |  用于设置 TiDB 统计信息同步加载功能可以并发处理的最大列数，默认值为 `5`             |
 | TiDB | [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入)   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
-| TiKV | [`snap-generator-pool-size`](/tidb-configuration-file.md#snap-generator-pool-size) | 新增 | `snap-generator` 线程池大小，默认值为 `2` |
+| TiKV | [`snap-generator-pool-size`](/tikv-configuration-file.md#snap-generator-pool-size-从-v540-版本开始引入) | 新增 | `snap-generator` 线程池大小，默认值为 `2` |
 | TiKV | `log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log.file](/tikv-configuration-file.md#logfile-从-v540-版本开始引入)。 |
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
 | TiKV | [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。在默认配置下，备份速度可能下降。 |
