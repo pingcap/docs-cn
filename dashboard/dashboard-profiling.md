@@ -6,13 +6,17 @@ aliases: ['/docs/dev/dashboard/dashboard-profiling/']
 
 # Manual Instance Profiling Page
 
-On the manual instance profiling page, you can collect continuous performance data of TiDB, TiKV, PD, and TiFlash instances without restarting any of them. The data collected can be displayed on a flame graph or a directed acyclic graph. The graph visually shows what internal operations are performed on the instances during the performance summary period and the corresponding proportions. With this graph, you can quickly learn the CPU resource consumption of these instances.
+On the manual instance profiling page, you can collect performance data of TiDB, TiKV, PD, and TiFlash instances. The data collected can be displayed on a flame graph or a directed acyclic graph. The graph visually shows what internal operations are performed on the instances during the performance summary period and the corresponding proportions. With this graph, you can quickly learn the CPU resource consumption of these instances.
+
+## Profiling content
+
+With Manual Profiling, you can collect performance data of TiDB, PD, TiKV, and TiFlash instances. The data collected can be displayed in forms such as a flame graph or a directed acyclic graph. The data displayed visually shows what internal operations are performed on the instances during the performance profiling period and the corresponding proportions. With such data, you can quickly learn the CPU resource consumption of these instances.
 
 ## Access the page
 
 You can access the instance profiling page using either of the following methods:
 
-- After logging into TiDB Dashboard, click **Advanced Debugging** > **Profile Instances** > **Manually Profile** on the left navigation bar.
+- After logging into TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Manual Profiling** on the left navigation bar.
 
   ![Access instance profiling page](/media/dashboard/dashboard-profiling-access.png)
 
@@ -40,7 +44,7 @@ After the profiling of all instances is completed, you can click **Download Prof
 
 ![Download profiling result](/media/dashboard/dashboard-profiling-download.png)
 
-You can also click a single instance on the list to directly view its profiling result.
+You can also click an individual instance in the table to view its profiling result (including flame charts, directed acyclic graphs, and texts). Alternatively, you can hover on ... to download raw data.
 
 ![Single instance result](/media/dashboard/dashboard-profiling-view-single.png)
 

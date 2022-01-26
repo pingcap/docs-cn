@@ -18,111 +18,44 @@ With less than 0.5% performance loss, this feature takes continuous snapshots (s
 
 Before enabling the Continuous Profiling feature, pay attention to the following restrictions:
 
-- Under the x86 architecture, this feature supports TiDB, TiKV, and PD, but does not support TiFlash. This feature is not fully compatible with the ARM architecture and cannot be enabled under this architecture.
+- Under the x86 architecture, this feature supports TiDB, PD, TiKV, and TiFlash. This feature is not fully compatible with the ARM architecture and cannot be enabled under this architecture.
 
-- Currently, this feature is only available for clusters deployed or upgraded using TiUP, and is unavailable for clusters deployed or upgraded by using TiDB Operator or binary packages.
+- This feature is available for clusters deployed or upgraded using TiUP of v1.9.0 or later or TiDB Operator of v1.3.0 or later. This feature is unavailable for clusters deployed or upgraded by using binary packages.
 
 ## Profiling content
 
-With Continuous Profiling, you can collect continuous performance data of TiDB, TiKV, and PD instances, and have the nodes monitored day and night without restarting any of them. The data collected can be displayed on a flame graph or a directed acyclic graph. The graph visually shows what internal operations are performed on the instances during the performance summary period and the corresponding proportions. With this graph, you can quickly learn the CPU resource consumption of these instances.
+With Continuous Profiling, you can collect continuous performance data of TiDB, PD, TiKV, and TiFlash instances, and have the nodes monitored day and night without restarting any of them. The data collected can be displayed in forms such as a flame graph or a directed acyclic graph. The data displayed visually shows what internal operations are performed on the instances during the performance profiling period and the corresponding proportions. With such data, you can quickly learn the CPU resource consumption of these instances.
 
 Currently, Continuous Profiling can display the following performance data:
 
 - TiDB/PD: CPU profile, Heap, Mutex, Goroutine (debug=2)
-- TiKV: CPU profile
+- TiKV/TiFlash: CPU profile
 
 ## Enable Continuous Profiling
 
-To enable Continuous Profiling, you need to first check the version information and then configure related settings on the control machine and TiDB Dashboard.
+This section describes how to enable Continuous Profiling on TiDB clusters deployed using TiUP and TiDB Operator respectively.
 
-### Check versions
+### Clusters deployed using TiUP
 
-Before enabling this feature, check the version of the TiUP cluster and ensure that it is 1.7.0 or above. If it is earlier than 1.7.0, upgrade it first.
+To enable Continuous Profiling on clusters deployed using TiUP, perform the following steps:
 
-1. Check the TiUP version:
+1. On TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling**.
 
-    {{< copyable "shell-regular" >}}
+2. In the displayed window, click **Open Settings**.  In the **Settings** area on the right, switch **Enable Feature** on, and modify the default value of **Retention Duration** if necessary.
 
-    ```shell
-    tiup cluster --version
-    ```
+3. Click **Save** to enable this feature.
 
-    The command output shows the TiUP version, as shown below:
+![Enable the feature](/media/dashboard/dashboard-conprof-start.png)
 
-    ```shell
-    tiup version 1.7.0 tiup
-    Go Version: go1.17.2
-    Git Ref: v1.7.0
-    ```
+### Clusters deployed using TiDB Operator
 
-    - If `tiup version` is earlier than 1.7.0, upgrade the TiUP cluster by referring to the next step.
-    - If `tiup version` is 1.7.0 or above, you can directly reload Prometheus.
-
-2. Upgrade TiUP and TiUP cluster to the latest version.
-
-    - Upgrade TiUP:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup update --self
-        ```
-
-    - Upgrade the TiUP cluster:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup update cluster
-        ```
-
-After TiUP and the TiUP cluster are upgraded to the latest version, version check is completed.
-
-### Configure the control machine and TiDB Dashboard
-
-1. On the control machine, add the `ng_port` configuration item by using TiUP.
-
-    1. Open the configuration file of the cluster in the editing mode:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup cluster edit-config ${cluster-name}
-        ```
-
-    2. Set parameters: add `ng_port:${port}` under [monitoring_servers](/tiup/tiup-cluster-topology-reference.md#monitoring_servers).
-
-        ```shell
-        monitoring_servers:
-        - host: 172.16.6.6
-          ng_port: ${port}
-        ```
-
-    3. Reload Prometheus:
-
-        {{< copyable "shell-regular" >}}
-
-        ```shell
-        tiup cluster reload ${cluster-name} --role prometheus
-        ```
-
-    After reloading Prometheus, you have finished operations on the control machine.
-
-2. Enable the Continuous Profiling feature.
-
-    1. On TiDB Dashboard, click **Advanced Debugging** > **Profile Instances** > **Continuous Profile**.
-
-    2. In the displayed window, switch on the button under **Enable Feature** on the right. Modify the value of **Retention Duration** as required or retain the default value.
-
-    3. Click **Save** to enable this feature.
-
-    ![Enable the feature](/media/dashboard/dashboard-conprof-start.png)
+See [Enable continuous profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard#enable-continuous-profiling).
 
 ## Access the page
 
-You can access the instance profiling page using either of the following methods:
+You can access the continuous profiling page using either of the following methods:
 
-- After logging into TiDB Dashboard, click **Advanced Debugging** > **Profile Instances** > **Continuous Profile** on the left navigation bar.
+- After logging into TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling** on the left navigation bar.
 
     ![Access](/media/dashboard/dashboard-conprof-access.png)
 
@@ -142,13 +75,13 @@ On the profiling result page, you can click **Download Profiling Result** in the
 
 ![Download profiling result](/media/dashboard/dashboard-conprof-download.png)
 
-You can also click an individual instance to view its profiling result:
+You can also click an individual instance in the table to view its profiling result (including flame charts, directed acyclic graphs, and texts). Alternatively, you can hover on ... to download raw data.
 
 ![View the profiling result of an instance](/media/dashboard/dashboard-conprof-single.png)
 
 ## Disable Continuous Profiling
 
-1. On TiDB Dashboard, click **Advanced Debugging** > **Profile Instances** > **Continuous Profile** on the left navigation bar. Click **Settings**.
+1. On TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling** on the left navigation bar. Click **Settings**.
 
 2. In the popped-up window, switch off the button under **Enable Feature**.
 
@@ -156,4 +89,6 @@ You can also click an individual instance to view its profiling result:
 
 4. Click **Save**.
 
-    ![Disable the feature](/media/dashboard/dashboard-conprof-stop.png)
+5. In the popped-up window, click **Disable**.
+
+![Disable the feature](/media/dashboard/dashboard-conprof-stop.png)

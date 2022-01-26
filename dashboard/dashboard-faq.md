@@ -6,7 +6,7 @@ aliases: ['/docs/dev/dashboard/dashboard-faq/']
 
 # TiDB Dashboard FAQ
 
-This document summarizes the frequently asked questions (FAQs) and answers about TiDB Dashboard.
+This document summarizes the frequently asked questions (FAQs) and answers about TiDB Dashboard. If a problem cannot be located or persists after you perform as instructed, contact PingCAP technical support for help.
 
 ## Access-related FAQ
 
@@ -69,9 +69,9 @@ To clear your browser cache, take the following steps:
 
 2. Open Developer Tools. Different browsers have different ways of opening Developer Tools. After clicking the **Menu Bar**:
 
-    - Firefox: Menu ➤ Web Developer ➤ Toggle Tools, or Tools ➤ Web Developer ➤ Toggle Tools.
-    - Chrome: More tools ➤ Developer tools.
-    - Safari: Develop ➤ Show Web Inspector. If you can't see the Develop menu, go to Safari ➤ Preferences ➤ Advanced, and check the Show Develop menu in the menu bar checkbox.
+    - Firefox: **Menu** > **Web Developer** > **Toggle Tools**, or **Tools** > **Web Developer** > **Toggle Tools**.
+    - Chrome: **More tools** > **Developer tools**.
+    - Safari: **Develop** > **Show Web Inspector**. If you can't see the **Develop** menu, go to **Safari** > **Preferences** > **Advanced**, and check the **Show Develop** menu in menu bar checkbox.
 
     In the following example, Chrome is used.
 
@@ -80,3 +80,53 @@ To clear your browser cache, take the following steps:
 3. Select the **Application** panel, expand the **Local Storage** menu and select the **TiDB Dashboard page domain**. Click the **Clear All** button.
 
     ![Clear the Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
+
+### A `required component NgMonitoring is not started` error is shown
+
+NgMonitoring is an advanced monitoring component built in TiDB clusters of v5.4.0 and later versions. It supports such features as **Continuous Profiling** and **Top SQL**. In a TiDB cluster deployed using TiUP, NgMonitoring is deployed automatically. In a TiDB cluster deployed using TiDB Operator, you need to deploy NgMonitoring manually by referring to [Enable Continuous Profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard/#enable-continuous-profiling).
+
+If the **Continuous Profiling** page shows `required component NgMonitoring is not started`, address the problem based on the deployment method of the TiDB cluster.
+
+#### Clusters deployed using TiUP
+
+Step 1. Check versions
+
+1. Check the TiUP cluster version. NgMonitoring is available only when TiUP is v1.9.0 or later.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster --version
+    ```
+
+    The command output shows the TiUP version. For example:
+
+    ```
+    tiup version 1.9.0 tiup
+    Go Version: go1.17.2
+    Git Ref: v1.9.0
+    ```
+
+2. If the TiUP cluster version is earlier than v1.9.0, upgrade TiUP and TiUP cluster to the latest version:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup update --all
+    ```
+
+Step 2. Reload Prometheus
+
+On the control machine, reload Prometheus by using TiUP:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster reload ${cluster-name} --role prometheus
+```
+
+After performing the preceding steps, enable Continuous Profiling on TiDB Dashboard. If NgMonitoring still fails to be started, contact PingCAP technical support for help.
+
+#### Clusters deployed using TiDB Operator
+
+Deploy NgMonitoring by referring to [Enable Continuous Profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard/#enable-continuous-profiling).
