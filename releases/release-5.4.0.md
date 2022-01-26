@@ -105,6 +105,12 @@ TiDB 版本：5.4.0
 
     [用户文档](/tispark-overview.md#安全)
 
+- **TiUP 部署方式支持为 root 用户生成初始密码**
+
+    集群启动命令增加了 `--init` 参数，有了该参数，在 TiUP 部署场景，TiUP 会为数据库 root 用户生成一个初始的强密码，避免 root 用户使用空密码所带来的安全风险，增强数据库的安全性。
+
+    [User document](/production-deployment-using-tiup.md##第-7-步启动集群)
+
 ### 性能
 
 - **持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能**
