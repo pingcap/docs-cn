@@ -252,7 +252,7 @@
         - [Migrate from MySQL Databases that Use GH-ost/PT-osc](/dm/feature-online-ddl.md)
         - [Filter Certain Row Changes Using SQL Expressions](/dm/feature-expression-filter.md)
       - [DM Architecture](/dm/dm-arch.md)
-      - [Benchmarks](/dm/dm-benchmark-v5.3.0.md)
+      - [Benchmarks](/dm/dm-benchmark-v5.4.0.md)
     - Quick Start
       - [Quick Start](/dm/quick-start-with-dm.md)
       - [Deploy a DM cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
