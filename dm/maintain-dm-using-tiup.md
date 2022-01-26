@@ -279,7 +279,7 @@ tiup dm patch prod-cluster /tmp/dm--hotfix.tar.gz -N 172.16.4.5:8261
 > - `import` 命令用于将数据从 DM 1.0 集群导入到一个新的 DM 2.0 集群。如果你需要将 DM 迁移任务导入一个现有的 DM 2.0 集群，可以参考 [TiDB Data Migration 1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)。
 > - 一些组件的部署目录与原始集群的部署目录不同，可以执行 `display` 命令来查看相关信息。
 > - 导入前，请运行 `tiup update --self && tiup update dm`，以确保 DM 组件是最新版本。
-> - 导入后，集群中只存在一个 DM-master 节点。请参考 [Scale out a cluster](#scale-out-a-cluster) 来扩展 DM-master。
+> - 导入后，集群中只存在一个 DM-master 节点。请参考 [扩容节点](#扩容节点) 来扩展 DM-master。
 
 在 TiUP 发布之前，DM-Ansible 经常用于部署 DM 集群。为了使 TiUP 能够接管由 DM-Ansible 部署的 DM 1.0 集群，需要执行 `import` 命令：
 
