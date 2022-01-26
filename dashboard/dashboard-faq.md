@@ -74,41 +74,41 @@ QPS 及 Latency 监控依赖于集群中已正常部署 Prometheus 监控实例�
 
     ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
 
-### 界面提示 NgMonitoring 组件未能正常启用
+### 界面提示 `集群中未启动必要组件 NgMonitoring`
 
-如果 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 页面提示 NgMonitoring 组件未能正常启用，你可以通过以下步骤逐步排查。 
+NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用于支撑 TiDB Dashboard 的 **持续分析** (Continuous Profiling) 和 **Top SQL** 等功能。使用 TiUP 部署集群时，NgMonitoring 会自动部署；使用 TiDB Operator 部署集群时，需要依据[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard/#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)手动部署 NgMonitoring。
 
-#### 第 1 步：检查 TiUP Cluster 版本
+如果界面提示 `集群中未启动必要组件 NgMonitoring`，需要按 TiDB 集群部署方式排查问题。
 
-NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以上）。检查 TiUP Cluster 版本，若版本低于 1.9.0，则需要先升级 TiUP Cluster。
+#### 使用 TiUP 部署的集群
 
-1. 检查 TiUP Cluster 版本：
+第 1 步：检查 TiUP Cluster 版本
 
-    {{< copyable "shell-regular" >}}
+  1. 检查 TiUP Cluster 版本，NgMonitoring 组件需要较高版本的部署工具支持（TiUP v1.9.0 及以上）：
 
-    ```shell
-    tiup cluster --version
-    ```
+        {{< copyable "shell-regular" >}}
 
-    上述命令可查看 TiUP Cluster 的具体版本。例如：
+        ```shell
+        tiup cluster --version
+        ```
 
-    ```
-    tiup version 1.9.0 tiup
-    Go Version: go1.17.2
-    Git Ref: v1.9.0
-    ```
+        上述命令可查看 TiUP Cluster 的具体版本。例如：
 
-    若低于 v1.9.0，需要先升级 TiUP Cluster。
+        ```
+        tiup version 1.9.0 tiup
+        Go Version: go1.17.2
+        Git Ref: v1.9.0
+        ```
 
-2. 升级 TiUP 和 TiUP Cluster 版本至最新。
+  2. 如果 TiUP 版本低于 v1.9.0，升级 TiUP 和 TiUP Cluster 版本至最新。
 
-    {{< copyable "shell-regular" >}}
-    
-    ```shell
-    tiup update --all
-    ```
+        {{< copyable "shell-regular" >}}
 
-#### 第 2 步：重启 Prometheus 节点
+        ```shell
+        tiup update --all
+        ```
+
+第 2 步：重启 Prometheus 节点
 
 在中控机上，通过 TiUP 对 Prometheus 节点进行 reload 操作。
 
@@ -118,12 +118,8 @@ NgMonitoring 组件需要较高版本的部署工具支持（TiUP 1.9.0 及以�
 tiup cluster reload ${cluster-name} --role prometheus
 ```
 
-#### 第 3 步：配置 TiDB Dashboard
+执行完以上操作后，在 TiDB Dashboard 上启用持续性能分析特性。如果 NgMonitoring 依然无法加载，请联系 PingCAP 技术支持获取帮助。
 
-1. 进入 TiDB Dashboard，选择**高级调试** (Advanced Debugging) > **实例性能分析** (Profiling Instances) > **持续分析** (Continuous Profiling)。
-2. 点击**打开设置** (Open Settings)。在右侧**设置** (Settings) 页面，将**启用特性** (Enable Feature) 下方的开关打开。设置**保留时间** (Retention Duration) 或保留默认值。
-3. 点击**保存** (Save)。
+#### 使用 TiDB Operator 部署的集群
 
-![启用功能](/media/dashboard/dashboard-conprof-start.png)
-
-如果执行以上操作后，NgMonitoring 依然无法加载，请联系 PingCAP 技术支持获取帮助。
+参考[启用持续性能分析](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/access-dashboard/#%E5%90%AF%E7%94%A8%E6%8C%81%E7%BB%AD%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90)中的步骤部署 NgMonitoring。
