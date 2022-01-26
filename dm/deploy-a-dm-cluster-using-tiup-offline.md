@@ -46,7 +46,7 @@ summary: 学习如何使用 TiUP DM 组件来离线部署 TiDB Data Migration �
         {{< copyable "shell-regular" >}}
 
         ```bash
-        # 将 ${version} 修改成实际需要的版本
+        # 将 ${version} 修改成实际需要的版本 
         tiup mirror clone tidb-dm-${version}-linux-amd64 --os=linux --arch=amd64 \
             --dm-master=${version} --dm-worker=${version} --dmctl=${version} \
             --alertmanager=v0.17.0 --grafana=v4.0.3 --prometheus=v4.0.3 \
