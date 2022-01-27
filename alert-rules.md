@@ -423,7 +423,7 @@ aliases: ['/docs-cn/v3.1/alert-rules/','/docs-cn/v3.1/reference/alert-rules/']
 
 * 报警规则：
 
-    `sum(increase(tidb_tikvclient_gc_action_result{type="success"}[6h])) < 1`
+    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1`
 
     > **注意：**
     >
@@ -431,7 +431,7 @@ aliases: ['/docs-cn/v3.1/alert-rules/','/docs-cn/v3.1/reference/alert-rules/']
 
 * 规则描述：
 
-    在 6 小时内 Region 上没有成功执行 GC，说明 GC 不能正常工作了。短期内 GC 不运行不会造成太大的影响，但如果 GC 一直不运行，版本会越来越多，从而导致查询变慢。
+    在 24 小时内一个 TiKV 实例上没有成功执行 GC，说明 GC 不能正常工作了。短期内 GC 不运行不会造成太大的影响，但如果 GC 一直不运行，版本会越来越多，从而导致查询变慢。
 
 * 处理方法：
 
