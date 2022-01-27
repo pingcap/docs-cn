@@ -58,7 +58,7 @@ Java 应用尽管可以选择在不同的框架中封装，但在最底层一般
 
     使用流式读取数据时，需要将 `resultset` 读取完成或 close 后，才能继续使用该语句进行下次查询，否则会报错 `No statements may be issued when any streaming result sets are open and in use on a given connection. Ensure that you have called .close() on any active streaming result sets before attempting more queries.`。
     
-    如果需要在 `resultset` 读取完成或 close 前进行查询避免上述报错，可在 URL 中添加配置参数 `clobberStreamingResults=true`，这样会自动 close `resultset`，但之前流式查询未被读取的结果集会丢失。
+    如果需要在 `resultset` 读取完成或 close 前进行查询避免上述报错，可在 URL 中添加配置参数 `clobberStreamingResults=true`，这样会自动 close `resultset`，但之前流式查询未被读取的结果集会丢失。 
 
 - 使用 Cursor Fetch，首先需[设置 `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) 为正整数，且在 JDBC URL 中配置 `useCursorFetch = true`。
 
