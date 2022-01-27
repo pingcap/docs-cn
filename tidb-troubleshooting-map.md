@@ -91,10 +91,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
     - Cause 1：The TiDB server that is executing the DML statement is stopped by `graceful kill` and prepares to exit. The execution time of the transaction that contains the DML statement exceeds one DDL lease. An error is reported when the transaction is committed.
 
-    - Cause 2: The TiDB server cannot connect to PD or TiKV when it is executing the DML statement, which causes the following problems:
-
-        - The TiDB server did not load the new schema within one DDL lease (`45s` by default); or
-        - The TiDB server disconnects from PD with the `keep alive` setting.
+    - Cause 2: The TiDB server cannot connect to PD or TiKV when it is executing the DML statement. As a result, the TiDB server did not load the new schema within one DDL lease (`45s` by default), or the TiDB server disconnects from PD with the `keep alive` setting.
 
     - Cause 3: TiKV has high load or network timed out. Check the node loads in **Grafana** -> **TiDB** and **TiKV**.
 
