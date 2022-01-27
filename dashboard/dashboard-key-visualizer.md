@@ -38,7 +38,7 @@ This section introduces the basic concepts that relate to Key Visualizer.
 
 In a TiDB cluster, the stored data is distributed among TiKV instances. Logically, TiKV is a huge and orderly key-value map. The whole key-value space is divided into many segments and each segment consists of a series of adjacent keys. Such segment is called a `Region`.
 
-For detailed introduction of Region, refer to [TiDB Internal (I) - Data Storage](https://pingcap.com/blog/2017-07-11-tidbinternal1/#region).
+For detailed introduction of Region, refer to [TiDB Internal (I) - Data Storage](https://en.pingcap.com/blog/tidb-internal-data-storage/).
 
 ### Hotspot
 

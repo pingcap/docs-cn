@@ -10,9 +10,9 @@ This document summarizes the best practices of using TiDB, including the use of 
 
 Before you read this document, it is recommended that you read three blog posts that introduce the technical principles of TiDB:
 
-* [TiDB Internal (I) - Data Storage](https://pingcap.com/blog/2017-07-11-tidbinternal1/)
-* [TiDB Internal (II) - Computing](https://pingcap.com/blog/2017-07-11-tidbinternal2/)
-* [TiDB Internal (III) - Scheduling](https://pingcap.com/blog/2017-07-20-tidbinternal3/)
+* [TiDB Internal (I) - Data Storage](https://en.pingcap.com/blog/tidb-internal-data-storage/)
+* [TiDB Internal (II) - Computing](https://en.pingcap.com/blog/tidb-internal-computing/)
+* [TiDB Internal (III) - Scheduling](https://en.pingcap.com/blog/tidb-internal-scheduling/)
 
 ## Preface
 
@@ -68,7 +68,7 @@ Placement Driver (PD) balances the load of the cluster according to the status o
 
 ### SQL on KV
 
-TiDB automatically maps the SQL structure into Key-Value structure. For details, see [TiDB Internal (II) - Computing](https://pingcap.com/blog/2017-07-11-tidbinternal2/).
+TiDB automatically maps the SQL structure into Key-Value structure. For details, see [TiDB Internal (II) - Computing](https://en.pingcap.com/blog/tidb-internal-computing/).
 
 Simply put, TiDB performs the following operations:
 

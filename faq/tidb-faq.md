@@ -74,15 +74,15 @@ As a standalone database, MySQL can only implement across-database transactions 
 
 #### TiKV for data storage
 
-See [TiDB Internal (I) - Data Storage](https://pingcap.com/blog/2017-07-11-tidbinternal1/).
+See [TiDB Internal (I) - Data Storage](https://en.pingcap.com/blog/tidb-internal-data-storage/).
 
 #### TiDB for data computing
 
-See [TiDB Internal (II) - Computing](https://pingcap.com/blog/2017-07-11-tidbinternal2/).
+See [TiDB Internal (II) - Computing](https://en.pingcap.com/blog/tidb-internal-computing/).
 
 #### PD for scheduling
 
-See [TiDB Internal (III) - Scheduling](https://pingcap.com/blog/2017-07-20-tidbinternal3/).
+See [TiDB Internal (III) - Scheduling](https://en.pingcap.com/blog/tidb-internal-scheduling/).
 
 ## Deployment on the cloud
 

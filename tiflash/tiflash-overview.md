@@ -16,7 +16,7 @@ In TiFlash, the columnar replicas are asynchronously replicated according to the
 
 The above figure is the architecture of TiDB in its HTAP form, including TiFlash nodes.
 
-TiFlash provides the columnar storage, with a layer of coprocessors efficiently implemented by ClickHouse. Similar to TiKV, TiFlash also has a Multi-Raft system, which supports replicating and distributing data in the unit of Region (see [Data Storage](https://pingcap.com/blog/2017-07-11-tidbinternal1/) for details).
+TiFlash provides the columnar storage, with a layer of coprocessors efficiently implemented by ClickHouse. Similar to TiKV, TiFlash also has a Multi-Raft system, which supports replicating and distributing data in the unit of Region (see [Data Storage](https://en.pingcap.com/blog/tidb-internal-data-storage/) for details).
 
 TiFlash conducts real-time replication of data in the TiKV nodes at a low cost that does not block writes in TiKV. Meanwhile, it provides the same read consistency as in TiKV and ensures that the latest data is read. The Region replica in TiFlash is logically identical to those in TiKV, and is split and merged along with the Leader replica in TiKV at the same time.
 

@@ -130,7 +130,7 @@ Yes. The exception being that `LOAD DATA` does not currently support the `REPLAC
 
 ## Why does the query speed get slow after data is deleted?
 
-Deleting a large amount of data leaves a lot of useless keys, affecting the query efficiency. Currently the [Region Merge](/best-practices/massive-regions-best-practices.md) feature is in development, which is expected to solve this problem. For details, see the [deleting data section in TiDB Best Practices](https://pingcap.com/blog/2017-07-24-tidbbestpractice/#write).
+Deleting a large amount of data leaves a lot of useless keys, affecting the query efficiency. Currently the [Region Merge](/best-practices/massive-regions-best-practices.md) feature is in development, which is expected to solve this problem. For details, see the [deleting data section in TiDB Best Practices](https://en.pingcap.com/blog/tidb-best-practice/#write).
 
 ## What should I do if it is slow to reclaim storage space after deleting data?
 
