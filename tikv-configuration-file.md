@@ -1515,9 +1515,9 @@ Raft Engine 相关的配置项。
 + 默认值：1s
 + 最小值：1ms
 
-### `wait-up-delay-duration`
+### `wake-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wait-up-delay-duration` 之后被唤醒。
++ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
 + 默认值：20ms
 
 ### `pipelined`
