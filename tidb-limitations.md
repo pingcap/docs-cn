@@ -40,7 +40,7 @@ title: TiDB 使用限制
 | Indexs    | 默认为 64，最大可调至 512        |
 | Rows      | 无限制                         |
 | Size      | 无限制                         |
-| Partitions| 1024                          |
+| Partitions| 8192                          |
 
 * Columns 的最大限制可通过 [`table-column-count-limit`](/tidb-configuration-file.md#table-column-count-limit-从-v50-版本开始引入) 修改。
 * Indexs 的最大限制可通过 [`index-limit`](/tidb-configuration-file.md#index-limit-从-v50-版本开始引入) 修改。
