@@ -204,7 +204,7 @@ delta_index_cache_size = 0
     ## 是否开启日志脱敏
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 默认值为 false
-    redact_info_log = false
+    redact-info-log = false
 ```
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
