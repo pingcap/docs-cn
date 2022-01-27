@@ -5,7 +5,6 @@ summary: 学习如何使用 TiUP DM 组件来离线部署 TiDB Data Migration �
 
 # 使用 TiUP 离线镜像部署 DM 集群
 
-
 本文介绍如何使用 TiUP 离线部署 DM 集群，具体的操作步骤如下。
 
 ## 第 1 步：准备 TiUP 离线组件包
