@@ -448,7 +448,7 @@ raftstore 相关的配置项。
 
 ### capacity
 
-+ 存储容量，即允许的最大数据存储大小，如果没有设置，则使用当前磁盘容量。[同盘部署需要修改此参数](https://docs.pingcap.com/zh/tidb/dev/hybrid-deployment-topology/#%E6%B7%B7%E5%90%88%E9%83%A8%E7%BD%B2%E7%9A%84%E5%85%B3%E9%94%AE%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D)
++ 存储容量，即允许的最大数据存储大小。如果没有设置，则使用当前磁盘容量。如果要将多个 TiKV 实例部署在同一块物理磁盘上，需要在 TiKV 配置中添加该参数，参见[混合部署的关键参数介绍](/hybrid-deployment-topology.md#混合部署的关键参数介绍)。
 + 默认值：0
 
 ### `raftdb-path`
