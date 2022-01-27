@@ -190,7 +190,7 @@ SHOW COLUMN_STATS_USAGE [ShowLikeOrWhere];
 
 `SHOW COLUMN_STATS_USAGE` 会输出 6 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | Db_name  |  数据库名    |
 | Table_name | 表名 |
@@ -391,7 +391,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 目前 `SHOW ANALYZE STATUS` 会输出 7 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | table_schema  |  数据库名    |
 | table_name | 表名 |
@@ -421,7 +421,7 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -448,7 +448,7 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 目前，`SHOW STATS_HEALTHY` 会输出 4 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | :-------- | :------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -471,7 +471,7 @@ SHOW STATS_HISTOGRAMS [ShowLikeOrWhere];
 
 目前 `SHOW STATS_HISTOGRAMS` 会输出 10 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -506,7 +506,7 @@ SHOW STATS_BUCKETS [ShowLikeOrWhere];
 
 目前 `SHOW STATS_BUCKETS` 会输出 11 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
@@ -534,7 +534,7 @@ SHOW STATS_TOPN [ShowLikeOrWhere];
 
 目前 `SHOW STATS_TOPN` 会输出 7 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
