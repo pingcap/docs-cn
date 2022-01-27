@@ -64,8 +64,8 @@ TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在�
 
 - 每个 TiDB Lightning 实例的 tikv-importer.sorted-kv-dir 必须设置为不同的路径。多个实例共享相同的路径会导致非预期的行为，可能导致导入失败或数据出错。
 - 每个 TiDB Lightning 的 checkpoint 需要分开存储，checkpoint 的详细配置见 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-  - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
-  - 如果设置 checkpoint.driver = "mysql", 需要为为每个实例设置不同的 schema。
+    - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
+    - 如果设置 checkpoint.driver = "mysql", 需要为为每个实例设置不同的 schema。
 - 每个 TiDB Lightning 的 log 文件应该设置为不同的路径。共享同一个 log 文件将不利于日志的查询和排查问题。
 - 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md) 或 Debug API, 需要为每个实例的 `lightning.status-addr` 设至不同地址，否则会导致 TiDB Lightning 进程由于端口冲突无法启动。
 
