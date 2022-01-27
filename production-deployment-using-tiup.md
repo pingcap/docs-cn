@@ -353,7 +353,39 @@ tiup cluster display tidb-test
 
 Expected output includes the instance ID, role, host, listening port, and status (because the cluster is not started yet, so the status is `Down`/`inactive`), and directory information.
 
-## Step 7: Start the TiDB cluster
+## Step 7: Start a TiDB cluster
+
+Since TiUP cluster v1.9.0, safe start is introduced as a new start method. Starting a database using this method improves the security of the database. It is recommended that you use this method.
+
+After safe start, TiUP automatically generates a password for the TiDB root user and returns the password in the command-line interface.
+
+> **Note:**
+>
+> - After safe start of a TiDB cluster, you cannot log in to TiDB using a root user without a password. Therefore, you need to record the password returned in the command output for future logins.
+>
+> - The password is generated only once. If you do not record it or you forgot it, refer to [Forget the `root` password](/user-account-management.md#forget-the-root-password) to change the password.
+
+Method 1: Safe start
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster start tidb-test --init
+```
+
+If the output is as follows, the start is successful:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+Started cluster `tidb-test` successfully.
+The root password of TiDB database has been changed.
+The new password is: 'y_+3Hwp=*AWz8971s6'.
+Copy and record it to somewhere safe, it is only displayed once, and will not be stored.
+The generated password can NOT be got again in future.
+```
+
+Method 2: Standard start
 
 {{< copyable "shell-regular" >}}
 
@@ -361,7 +393,7 @@ Expected output includes the instance ID, role, host, listening port, and status
 tiup cluster start tidb-test
 ```
 
-If the output log includes ```Started cluster `tidb-test` successfully```, the start is successful.
+If the output log includes ```Started cluster `tidb-test` successfully```, the start is successful. After standard start, you can log in to a database using a root user without a password.
 
 ## Step 8: Verify the running status of the TiDB cluster
 
