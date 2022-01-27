@@ -351,7 +351,7 @@ tiup cluster display tidb-test
 >
 > - 该自动生成的密码只会返回一次，如果没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
 
-方式一：安全启动方式
+方式一：安全启动
 
 {{< copyable "shell-regular" >}}
 
@@ -371,7 +371,7 @@ Copy and record it to somewhere safe, it is only displayed once, and will not be
 The generated password can NOT be got again in future.
 ```
 
-方式二：普通启动方式
+方式二：普通启动
 
 {{< copyable "shell-regular" >}}
 
