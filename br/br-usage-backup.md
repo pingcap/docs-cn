@@ -57,7 +57,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/202
 注意增量备份有以下限制：
 
 - 增量备份数据需要与前一次快照备份数据保存在不同的路径下；
-- GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time)。
+- GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
 
 {{< copyable "shell-regular" >}}
 

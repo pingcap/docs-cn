@@ -34,7 +34,7 @@ summary: 了解如何将 TiDB 集群的增量数据实时同步到另一集群�
 
 1. 使用以下任一工具将集群 A 的数据全局一致地导出到指定路径下：
 
-    - 使用 [BR 全量备份](/br/use-br-command-line-tool.md#备份全部集群数据)
+    - 使用 [BR 全量备份](/br/br-usage-backup.md#备份-tidb-集群快照)
 
     - 使用 [Dumpling 全量导出](/dumpling-overview.md)
 
