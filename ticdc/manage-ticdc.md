@@ -109,7 +109,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -350,13 +350,6 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
         "dispatchers": null,
         "protocol": "default"
       },
-      "cyclic-replication": {
-        "enable": false,
-        "replica-id": 0,
-        "filter-replica-ids": null,
-        "id-buckets": 0,
-        "sync-ddl": false
-      },
       "scheduler": {
         "type": "table-number",
         "polling-time": -1
@@ -378,8 +371,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
       "status": {
         "tables": {
           "47": {
-            "start-ts": 419036036249681921,
-            "mark-table-id": 0
+            "start-ts": 419036036249681921
           }
         },
         "operation": null,
@@ -503,8 +495,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
       "status": {
         "tables": {
           "56": {    # 56 表示同步表 id，对应 TiDB 中表的 tidb_table_id
-            "start-ts": 417474117955485702,
-            "mark-table-id": 0  # mark-table-id 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id
+            "start-ts": 417474117955485702
           }
         },
         "operation": null,
@@ -521,7 +512,6 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 以上命令中：
 
 - `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
-- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id。
 - `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
 
@@ -652,133 +642,12 @@ dispatchers = [
 # 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
 protocol = "default"
 
-[cyclic-replication]
-# 是否开启环形同步
-enable = false
-# 当前 TiCDC 的复制 ID
-replica-id = 1
-# 需要过滤掉的同步 ID
-filter-replica-ids = [2,3]
-# 是否同步 DDL
-sync-ddl = true
 ```
 
 ### 配置文件兼容性的注意事项
 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
-
-## 环形同步
-
-> **警告：**
->
-> 目前环形同步属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
-
-环形同步功能支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 `test.user_data`，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 `test.user_data` 的写入同步其它集群上，使三个集群上的 `test.user_data` 达到最终一致。
-
-### 环形同步使用示例
-
-在三个集群 A、B 和 C 上开启环形复制，其中 A 到 B 的同步使用两个 TiCDC。A 作为三个集群的 DDL 入口。
-
-![TiCDC cyclic replication](/media/cdc-cyclic-replication.png)
-
-使用环形同步功能时，需要设置同步任务的创建参数：
-
-+ `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
-+ `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
-+ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游。
-
-环形同步任务创建步骤如下：
-
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](/ticdc/deploy-ticdc.md)。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    # 在 TiDB 集群 A 上启动 TiCDC 组件。
-    cdc server \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
-        --log-file=ticdc_1.log \
-        --addr=0.0.0.0:8301 \
-        --advertise-addr=127.0.0.1:8301
-
-    # 在 TiDB 集群 B 上启动 TiCDC 组件。
-    cdc server \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
-        --log-file=ticdc_2.log \
-        --addr=0.0.0.0:8301 \
-        --advertise-addr=127.0.0.1:8301
-
-    # 在 TiDB 集群 C 上启动 TiCDC 组件。
-    cdc server \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
-        --log-file=ticdc_3.log \
-        --addr=0.0.0.0:8301 \
-        --advertise-addr=127.0.0.1:8301
-    ```
-
-2. 在 TiDB 集群 A，B 和 C 上创建环形同步需要使用的标记数据表 (`mark table`)。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    # 在 TiDB 集群 A 上创建标记数据表。
-    cdc cli changefeed cyclic create-marktables \
-        --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
-
-    # 在 TiDB 集群 B 上创建标记数据表。
-    cdc cli changefeed cyclic create-marktables \
-        --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
-
-    # 在 TiDB 集群 C 上创建标记数据表。
-    cdc cli changefeed cyclic create-marktables \
-        --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
-    ```
-
-3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    # 在 TiDB 集群 A 上创建环形同步任务。
-    cdc cli changefeed create \
-        --sink-uri="mysql://root@${TiDB_B_HOST}/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
-        --cyclic-replica-id 1 \
-        --cyclic-filter-replica-ids 2 \
-        --cyclic-sync-ddl true
-
-    # 在 TiDB 集群 B 上创建环形同步任务。
-    cdc cli changefeed create \
-        --sink-uri="mysql://root@${TiDB_C_HOST}/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
-        --cyclic-replica-id 2 \
-        --cyclic-filter-replica-ids 3 \
-        --cyclic-sync-ddl true
-
-    # 在 TiDB 集群 C 上创建环形同步任务。
-    cdc cli changefeed create \
-        --sink-uri="mysql://root@${TiDB_A_HOST}/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
-        --cyclic-replica-id 3 \
-        --cyclic-filter-replica-ids 1 \
-        --cyclic-sync-ddl false
-    ```
-
-### 环形同步使用说明
-
-1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形同步功能使用到的标记表。
-2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
-3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
-4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
-5. 在多集群同时写入时，为了避免业务出错，请避免执行 DDL 语句，比如 `ADD COLUMN`/`DROP COLUMN` 等。
-6. 如果想在线执行 DDL 语句，需要确保满足以下条件：
-    + 业务兼容 DDL 语句执行前后的表结构。
-    + 多个集群的 TiCDC 组件构成一个单向 DDL 同步链，不能成环。例如以上在 TiDB 集群 A，B 和 C 上创建环形同步任务的示例中，只有 C 集群的 TiCDC 组件关闭了 `sync-ddl`。
-    + DDL 语句必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
