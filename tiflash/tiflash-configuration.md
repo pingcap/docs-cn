@@ -57,7 +57,6 @@ delta_index_cache_size = 0
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
-<<<<<<< HEAD
     ## [实验特性] 自 v5.0 引入，限制后台任务每秒写入的字节数。目前为实验特性，不推荐在生产环境中使用。
     ## 以 byte 为单位。目前不支持如 "10GB" 的设置。
     ## 默认为 0，代表没有限制。
@@ -65,16 +64,6 @@ delta_index_cache_size = 0
     ## 提升 TiFlash 查询性能的稳定性。在该场景下推荐配置为磁盘带宽的 50%。
     ## 其他场景下不建议修改该配置。
     bg_task_io_rate_limit = 0
-=======
-    ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
-    # bg_task_io_rate_limit = 0
-
-    ## DTFile 储存文件格式
-    ## * format_version = 1 老旧文件格式，已废弃
-    ## * format_version = 2 默认文件格式
-    ## * format_version = 3 新文件格式，具有更完善的检验功能
-    # format_version = 2
->>>>>>> 32d28a869 (Add log redaction to learner toml (#8202))
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
