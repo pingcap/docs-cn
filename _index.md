@@ -110,7 +110,7 @@ aliases: ['/docs-cn/dev/']
 - [高可用 FAQ](/faq/high-availability-faq.md)
 - [SQL FAQ](/faq/sql-faq.md)
 - [部署运维 FAQ](/faq/deploy-and-maintain-faq.md)
-- [升级 FAQ](/faq/upgrade-faq.md)
+- [关于升级 FAQ](/faq/upgrade-faq.md)
 - [迁移 FAQ](/faq/migration-tidb-faq.md)
 
 </NavColumn>
