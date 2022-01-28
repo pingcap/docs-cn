@@ -9,7 +9,7 @@ summary: 了解如何使用 BR 命令行从备份恢复恢复。
 
 ## 恢复快照备份数据
 
-`br` 支持在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。
+BR 支持在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。
 
 用例：将 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中属于 '2022-01-30 07:42:23' 时刻点的快照数据恢复到目标肌群 。
 
@@ -23,7 +23,10 @@ br restore full \
     --log-file restorefull.log
 ```
 
-以上命令中，`--ratelimit` 选项限制了**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
+以上命令中，
+
+- `--ratelimit` 选项限制了**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）；
+- `--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
 
 恢复期间还有进度条会在终端中显示，当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。进度条效果如下：
 
@@ -50,13 +53,13 @@ br restore full \
 
 ## 恢复备份数据中指定库表的数据
 
-BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢复过程中过滤掉不需要的数据，可以用于往已经存在的 TiDB 集群上恢复指定库/表的数据。
+BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢复过程中过滤掉不需要的数据，可以用于往 TiDB 集群上恢复指定库/表的数据。
 
 ### 恢复单个数据库的数据
 
 要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。该命令的使用帮助可以通过 `br restore db --help` 来获取。
 
-用例：将 s3 中名为 `backup-data` 的 bucket 下的 `2022-01-30/` 中的 `test` 库的相关的数据恢复的集群中。
+用例：将 s3 中名为 `backup-data` 的 bucket 下的 `db-test/2022-01-30/` 中的 `test` 库的相关的数据恢复的集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -65,7 +68,7 @@ br restore db \
     --pd "${PDIP}:2379" \
     --db "test" \
     --ratelimit 128 \
-    --storage "s3://backup-data/2022-01-30/" \
+    --storage "s3://backup-data/db-test/2022-01-30/" \
     --log-file restorefull.log
 ```
 
@@ -79,7 +82,7 @@ br restore db \
 
 要将备份数据中的某张数据表恢复到集群中，可以使用 `br restore table` 命令。该命令的使用帮助可通过 `br restore table --help` 来获取。
 
-用例：将 s3 中名为 `backup-data` 的 bucket 下的 `2022-01-30/` 中的 `test`.`usertable` 表的相关的数据恢复的集群中。
+用例：将 s3 中名为 `backup-data` 的 bucket 下的 `table-db-usertable/2022-01-30/` 中的 `test`.`usertable` 表的相关的数据恢复的集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -89,7 +92,7 @@ br restore table \
     --db "test" \
     --table "usertable" \
     --ratelimit 128 \
-    --storage "s3://backup-data/2022-01-30/" \
+    --storage "s3://backup-data/table-db-usertable/2022-01-30/" \
     --log-file restorefull.log
 ```
 
@@ -99,7 +102,7 @@ br restore table \
 
 如果你需要用复杂的过滤条件来恢复多个表，执行 `br restore full` 命令，并用 `--filter` 或 `-f` 指定使用[表库过滤](/table-filter.md)。
 
-用例：将 s3 中名为 `backup-data` 的 bucket 下的 `2022-01-30/` 中能匹配上 `db*.tbl*`的表的相关的数据恢复的集群中。
+用例：将 s3 中名为 `backup-data` 的 bucket 下的 `table-filter/2022-01-30/` 中能匹配上 `db*.tbl*`的表的相关的数据恢复的集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -107,7 +110,7 @@ br restore table \
 br restore full \
     --pd "${PDIP}:2379" \
     --filter 'db*.tbl*' \
-    --storage "s3://backup-data/2022-01-30/"  \
+    --storage "s3://backup-data/table-filter/2022-01-30/"  \
     --log-file restorefull.log
 ```
 
@@ -124,7 +127,7 @@ br restore full \
 ```shell
 br restore full\
     --pd ${PDIP}:2379 \
-    -s local:///home/tidb/backupdata/incr \
+    --storage "s3://backup-data/2022-01-30/" \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
@@ -145,7 +148,6 @@ BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NF
 > **注意：**
 >
 > 备份数据的恢复速度，与集群配置、部署、运行的业务都有比较大的关系，以上结论，经过多个场景的仿真测试，并且在部分合作用户场景中，得到验证，具有一定的参考意义。 但是在不同用户场景中恢复速度，最好以用户自己的测试结论为准。
-
 
 ## 恢复创建在 `mysql` 数据库下的表（实验性功能）
 

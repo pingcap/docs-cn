@@ -11,17 +11,19 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 ![br-arch](/media/br-arch.png)
 
+## BR 设计
+
 备份恢复流程的详细设计可以参考[备份恢复设计方案](https://github.com/pingcap/br/blob/980627aa90e5d6f0349b423127e0221b4fa09ba0/docs/cn/2019-08-05-new-design-of-backup-restore.md)。
 
 ## 备份文件介绍
 
-下面介绍一下 BR 备份产生的文件。
+下面介绍一下 BR 会生成的备份文件格式设计。
 
 ### 备份文件的类型
 
 备份路径下会生成以下几种类型文件：
 
-- SST 文件：存储 TiKV 备份下来的数据信息
+- `SST` 文件：存储 TiKV 备份下来的数据信息
 - `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
 - `backup.lock` 文件：用于防止多次备份到同一目录
 
@@ -37,6 +39,5 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 ### SST 文件存储格式
 
-SST 文件存储格式可以参考这篇 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
-
-SST 文件中存储的备份数据编码格式可以参考 [TiDB 表数据与 Key-Value 的映射关系](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/#%E8%A1%A8%E6%95%B0%E6%8D%AE%E4%B8%8E-key-value-%E7%9A%84%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB)。
+- SST 文件存储格式可以参考这篇 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
+- SST 文件中存储的备份数据编码格式可以参考 [TiDB 表数据与 Key-Value 的映射关系](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/#%E8%A1%A8%E6%95%B0%E6%8D%AE%E4%B8%8E-key-value-%E7%9A%84%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB)。

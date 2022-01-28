@@ -9,9 +9,9 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 ## 备份 TiDB 集群快照
 
-TiDB 集群快照数据是只包含某个物理时间点上集群的最新的，满足事务一致性的数据。 使用 `br backup full` 就可以备份 TiDB 最新的或者指定时间点的快照数据。该命令的使用帮助可以通过 `br backup full --help` 来获取。
+TiDB 集群快照数据是只包含某个物理时间点上集群的最新的、满足事务一致性的数据。 使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。该命令的使用帮助可以通过 `br backup full --help` 来获取。
 
-用例：将集群属于 '2022-01-30 07:42:23' 时刻点的快照数据备份到 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中。
+用例：将集群属于 '2022-01-30 07:42:23' 的快照数据备份到 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中。
 
 {{< copyable "shell-regular" >}}
 
@@ -27,7 +27,7 @@ br backup full \
 以上命令中：
 
 - `--ratelimit` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中；
-- `--backupts` 选项指定了要备份的快照。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果用户没有指定该参数，那么 BR 会选取备份开始的时间点对应的快照。
+- `--backupts` 选项指定了快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果用户没有指定该参数，那么 BR 会选取备份开始的时间点所对应的快照。
 
 备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。进度条效果如下：
 
@@ -44,14 +44,20 @@ Full Backup <---------/................................................> 17.12%.
 
 ## 备份 TiDB 集群增量数据
 
-TiDB 集群增量数据包含某个时间段的起始和结束两个物理时间点对应的快照的差异变化的数据。 增量数据相对比快照数据而言数据量更小，适合配合快照备份一起使用，来减少备份的数据量。
+TiDB 集群增量数据包含某个时间段的起始和结束两个快照的差异变化的数据。 增量数据相对比快照数据而言数据量更小，适合配合快照备份一起使用，来减少备份的数据量。
 
-如果想要备份增量数据，只需要使用 `br backup` 进行备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。
+如果想要备份增量数据，只需要使用 `br backup` 进行备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1`
+```
 
 注意增量备份有以下限制：
 
-- 增量备份需要与前一次快照备份在不同的路径下；
-- GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即 TiDB 只支持备份 10 min 内的增量数据，如何你希望备份更长时间的增量变量则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time)。
+- 增量备份数据需要与前一次快照备份数据保存在不同的路径下；
+- GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time)。
 
 {{< copyable "shell-regular" >}}
 
@@ -65,17 +71,9 @@ br backup full\
 
 以上命令会备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
 
-你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1`
-```
-
 ## 备份 TiDB 集群的指定库表的数据
 
-BR 支持只备份集群快照数据和增量数据中指定库/表的局部数据。该功能在快照备份和增量数据备份的基础上，过滤掉不需要的数据，帮助用户备份实现只备份关键业务的数据。
+BR 支持只备份集群快照和增量数据中指定库/表的局部数据。该功能在快照备份和增量数据备份的基础上，过滤掉不需要的数据，帮助用户备份实现只备份关键业务的数据。
 
 ### 备份单个数据库的数据
 
@@ -94,7 +92,7 @@ br backup db \
     --log-file backuptable.log
 ```
 
-`db` 子命令的选项为 `--db`，用来指定数据库名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
+`db` 子命令的选项为 `--db`，用来指定数据库名。其他选项的含义与[备份 TiDB 集群快照](#备份-tidb-集群快照)相同。
 
 ### 备份单张表的数据
 
@@ -114,7 +112,7 @@ br backup table \
     --log-file backuptable.log
 ```
 
-`table` 子命令有 `--db` 和 `--table` 两个选项，分别用来指定数据库名和表名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
+`table` 子命令有 `--db` 和 `--table` 两个选项，分别用来指定数据库名和表名。其他选项的含义与[备份 TiDB 集群快照](#备份-tidb-集群快照)相同。
 
 ### 使用表库过滤功能备份多张表的数据
 
@@ -158,7 +156,7 @@ BR 支持在备份端，或备份到 Amazon S3 的时候在存储服务端，进
 ```shell
 br backup full\
     --pd ${PDIP}:2379 \
-    -s local:///home/tidb/backupdata/incr \
+    --storage "s3://backup-data/2022-01-30/"  \
     --crypter.method aes128-ctr \
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
@@ -177,9 +175,9 @@ BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NF
 
 ## 备份性能和影响
 
-TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，但是用户可以通过调整备份的线程数 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) ，以及增加集群配置，来降低备份对集群性能的影响。 
+TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，但是可以通过调整备份的线程数 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) ，以及增加集群配置，来降低备份对集群性能的影响。 
 
-为了更加具体说明备份对集群的影响，这里列举了多次快照备份测试后的结论来说明影响的范围：
+为了更加具体说明备份对集群的影响，这里列举了多次快照备份测试结论来说明影响的范围：
 
 - （使用 5.3 及之前版本）BR 在单 TiKV 存储节点上备份线程数量是节点 CPU 总数量的 75% 的时候，QPS 会下降到备份之前的 30% 左右；
 - （使用 5.4 及以后版本）当 BR 在单 TiKV 存储节点上备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 80% 时，BR 备份任务对集群（无论读写负载）影响最大在 20% 左右；
@@ -192,6 +190,6 @@ TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，�
 >
 > 备份的影响和速度，与集群配置、部署、运行的业务都有比较大的关系，以上结论，经过多个场景的仿真测试，并且在部分合作用户场景中，得到验证，具有一定的参考意义。 但是在不同用户场景中最大影响和性能，最好以用户自己的测试结论为准。
 
-如果需要关于备份影响和性能的更多细节，可以参考遗下文档：
+如果需要关于备份影响和性能的更多细节，可以参考以下文档：
 
 - BR 在 5.3 版本引入自动调节备份线程数的功能（默认开启），它可以帮助用户将备份期间集群总 CPU 使用率尽量维持在 80% 以下，具体介绍可以参考 [备份线程自动调节](/br/br-auto-tune.md)。
