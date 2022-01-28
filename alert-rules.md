@@ -683,34 +683,6 @@ summary: TiDB 集群中各组件的报警规则详解。
 
     参考 [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds) 的处理方法。
 
-#### `TiKV_coprocessor_request_error`
-
-* 报警规则：
-
-    `increase(tikv_coprocessor_request_error{reason=!"meet_lock"}[10m]) > 100`
-
-* 规则描述：
-
-    Coprocessor 的请求错误。
-
-* 处理方法：
-
-    Coprocessor 错误的主要原因分为 "lock"、"outdated" 和 "full" 等。"outdated" 表示请求超时，很可能是由于排队时间过久，或者单个请求的耗时比较长。"full" 表示 Coprocessor 的请求队列已经满了，可能是正在执行的请求比较耗时，导致新来的请求都在排队。耗时比较长的查询需要查看下对应的执行计划是否正确。
-
-#### `TiKV_coprocessor_request_lock_error`
-
-* 报警规则：
-
-    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 10000`
-
-* 规则描述：
-
-    Coprocessor 请求锁的错误。
-
-* 处理方法：
-
-    Coprocessor 错误的主要原因分为 "lock"、"outdated"、"full" 等。"lock" 表示读到的数据正在写入，需要等待一会再读（TiDB 内部会自动重试）。少量这种错误不用关注，如果有大量这种错误，需要查看写入和查询是否有冲突。
-
 #### `TiKV_coprocessor_pending_request`
 
 * 报警规则：
