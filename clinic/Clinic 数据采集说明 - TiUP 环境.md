@@ -1,6 +1,6 @@
 --
 title: Clinic 数据采集说明 - TiUP 环境
-summary: 详细说明 clinic 采集哪些诊断数据
+summary: 详细说明 Clinic 采集哪些诊断数据
 ---
 
 # Clinic 数据采集说明 - TiUP 环境
