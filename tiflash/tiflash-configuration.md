@@ -207,11 +207,6 @@ delta_index_cache_size = 0
     # cert_path = "/path/to/tiflash-server.pem"
     ## Path of the file that contains X509 key in PEM format.
     # key_path = "/path/to/tiflash-server-key.pem"
-
-    ## New in v5.0. This configuration item enables or disables log redaction. If the configuration value
-    ## is set to true, all user data in the log will be replaced by ?.
-    ## Note that you also need to set security.redact-info-log for tiflash-learner's logging in tiflash-learner.toml.
-    # redact_info_log = false
 ```
 
 ### Configure the `tiflash-learner.toml` file
@@ -238,7 +233,7 @@ delta_index_cache_size = 0
     store-batch-retry-recv-timeout = "4ms"
 [security]
     ## New in v5.0. This configuration item enables or disables log redaction.
-    ## If the configuration value is set to "true",
+    ## If the configuration value is set to true,
     ## all user data in the log will be replaced by ?. The default value is false.
     redact-info-log = false
 ```
