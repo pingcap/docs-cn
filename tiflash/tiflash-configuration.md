@@ -61,6 +61,15 @@ delta_index_cache_size = 0
 [storage]
     ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
     # bg_task_io_rate_limit = 0
+<<<<<<< HEAD
+=======
+
+    ## DTFile 储存文件格式
+    ## * format_version = 1 老旧文件格式，已废弃
+    ## * format_version = 2 默认文件格式
+    ## * format_version = 3 新文件格式，具有更完善的检验功能
+    # format_version = 2
+>>>>>>> 32d28a869 (Add log redaction to learner toml (#8202))
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -157,6 +166,7 @@ delta_index_cache_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
+    ## 从 v5.0 引入，控制是否开启日志脱敏
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
     # redact_info_log = false
@@ -174,11 +184,18 @@ delta_index_cache_size = 0
 ```toml
 [server]
     engine-addr = 外部访问 TiFlash coprocessor 服务的地址
+
 [raftstore]
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
     ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
     store-batch-retry-recv-timeout = "4ms"
+
+[security]
+    ## 从 v5.0 引入，控制是否开启日志脱敏
+    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 默认值为 false
+    redact-info-log = false
 ```
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
