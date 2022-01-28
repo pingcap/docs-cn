@@ -23,9 +23,13 @@ TiSpark 是将 Spark SQL 直接运行在分布式存储引擎 TiKV 上的 OLAP �
 
 ## 环境准备
 
-现有 TiSpark 2.x 版本支持 Spark 2.3.x 和 Spark 2.4.x。如果你希望使用 Spark 2.1.x 版本，需使用 TiSpark 1.x。
+目前 TiSpark 支持版本的兼容情况如下所示，你可以根据需要选择相应的 TiSpark 版本。
 
-TiSpark 需要 JDK 1.8+ 以及 Scala 2.11（Spark2.0+ 默认 Scala 版本）。
+| TiSpark 版本 | TiDB、TiKV、PD 版本 | Spark 版本 | Scala 版本 |
+| ---------------  | -------------------- | ------------- | ------------- |
+| 2.4.x-scala_2.11 | 5.x，4.x             | 2.3.x，2.4.x   | 2.11          |
+| 2.4.x-scala_2.12 | 5.x，4.x             | 2.4.x         | 2.12          |
+| 2.5.x            | 5.x，4.x             | 3.0.x，3.1.x   | 2.12          |
 
 TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
@@ -354,6 +358,29 @@ TiSpark 可以使用 TiDB 的统计信息：
 | Property Name | Default | Description
 | --------   | -----:   | :----: |
 | spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
+
+## 安全
+
+从 TiSpark v2.5.0 起，你可以通过 TiDB 对 TiSpark 进行鉴权与授权。
+
+该功能默认关闭。要开启该功能，请在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
+
+```
+// 开启鉴权与授权功能
+spark.sql.auth.enable   true
+
+// 配置 TiDB 信息 
+spark.sql.tidb.addr    $your_tidb_server_address
+spark.sql.tidb.port    $your_tidb_server_port
+spark.sql.tidb.user    $your_tidb_server_user
+spark.sql.tidb.password $your_tidb_server_password
+```
+
+更多详细信息，请参考 [TiSpark 鉴权与授权文档](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
+
+> **注意：**
+>
+> 开启鉴权功能后，TiSpark Spark SQL 只能使用 TiDB 作为数据源，切换到其他数据源（例如 Hive）会导致数据表不可见。
 
 ## TiSpark FAQ
 

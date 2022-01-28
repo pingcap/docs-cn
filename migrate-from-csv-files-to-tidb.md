@@ -32,21 +32,7 @@ CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必
         - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
         - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
 
-    2. 后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
-
-        ```toml
-        [mydumper]
-        no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
-        ```
-
 * **方法二**：手动在下游 TiDB 建库和表。
-
-    后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
-
-    ```toml
-    [mydumper]
-    no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
-    ```
 
 ## 第 3 步： 编写配置文件
 
@@ -70,11 +56,6 @@ sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 [mydumper]
 # 源数据目录。
 data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
-
-# 设置是否需要创建表库
-# 若需要 Lightning 创建库表，则设为 false
-# 若已手动完成下游表结构创建，则设为 true
-no-schema = true
 
 # 定义 CSV 格式
 [mydumper.csv]

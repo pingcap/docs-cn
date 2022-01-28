@@ -371,7 +371,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_capture_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`OFF`
 - 这个变量用于控制是否开启[自动捕获绑定](/sql-plan-management.md#自动捕获绑定-baseline-capturing)功能。该功能依赖 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 - 开启该功能后会定期遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动创建绑定。
@@ -606,6 +606,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
+### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`0`
+- 可选值：`0` 和 `1`
+- 该变量可以控制整个集群的只读状态，开启后，整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
+- 在变量开启时，正在执行的 SQL 语句不会受影响，只对新执行的 SQL 语句进行是否只读的检查。如果有尚未提交的只读事务，可正常提交该事务。如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。如果未提交的事务已经有数据改动，其提交也会被拒绝。
+- 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
+- 拥有 `RESTRICTED_VARIABLES_ADMIN` 或 `SUPER` 权限的用户可以修改该变量。如果用户开启了[安全增强模式 (Security Enhanced Mode)](/system-variables.md#tidb_enable_enhanced_security)，则只有 `RESTRICTED_VARIABLES_ADMIN` 权限的用户才能修改该变量。
+
 ### `tidb_enable_fast_analyze`
 
 > **警告：**
@@ -682,7 +692,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
-- 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_disql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
+- 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
 - 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#oom-use-tmp-storage)。
 
 ### `tidb_enable_slow_log`
@@ -693,7 +703,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_stmt_summary` <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`ON`
 - 这个变量用来控制是否开启 statement summary 功能。如果开启，SQL 的耗时等执行信息将被记录到系统表 `information_schema.STATEMENTS_SUMMARY` 中，用于定位和排查 SQL 性能问题。
 
@@ -1428,34 +1438,34 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_stmt_summary_history_size` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`24`
 - 范围：`[0, 255]`
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`OFF`
 - 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
 
 ### `tidb_stmt_summary_max_sql_length` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
 - 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`3000`
 - 范围：`[1, 32767]`
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`1800`
 - 范围：`[1, 2147483647]`
 - 单位：秒
@@ -1577,6 +1587,18 @@ set tidb_slow_log_threshold = 200;
 - 作用域：NONE
 - 默认值：(string)
 - 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
+
+### `version_compile_os`
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是 TiDB 所在操作系统的名称。
+
+### `version_compile_machine` 
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是运行 TiDB 的 CPU 架构的名称。
 
 ### `wait_timeout`
 
