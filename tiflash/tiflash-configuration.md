@@ -171,7 +171,7 @@ delta_index_cache_size = 0
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
-    ## 是否开启日志脱敏
+    ## 从 v5.0 引入，控制是否开启日志脱敏
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
     # redact_info_log = false
@@ -201,7 +201,7 @@ delta_index_cache_size = 0
     store-batch-retry-recv-timeout = "4ms"
 
 [security]
-    ## 是否开启日志脱敏
+    ## 从 v5.0 引入，控制是否开启日志脱敏
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 默认值为 false
     redact-info-log = false
