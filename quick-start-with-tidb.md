@@ -251,7 +251,7 @@ Prepare a target machine that meets the following requirements:
 
 The smallest TiDB cluster topology is as follows:
 
-**Note:**
+> **Note:**
 >
 > The IP address of the following instances only serves as an example IP. In your actual deployment, you need to replace the IP with your actual IP.
 
