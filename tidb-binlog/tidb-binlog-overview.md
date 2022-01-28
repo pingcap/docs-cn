@@ -16,6 +16,10 @@ TiDB Binlog 支持以下功能场景：
 >
 > TiDB Binlog 与 TiDB v5.0 版本开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
+要快速了解 Binlog 的基本原理和使用方法，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+21.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+21.png"></video>
+
 ## TiDB Binlog 整体架构
 
 ![TiDB Binlog 架构](/media/tidb-binlog-cluster-architecture.png)

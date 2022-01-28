@@ -123,13 +123,6 @@ set global tidb_stmt_summary_history_size = 24;
 
 以上配置生效后，`statements_summary` 每 30 分钟清空一次，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
 
-以上几个系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
-
-- 设置 global 变量后整个集群立即生效
-- 设置 session 变量后当前 TiDB server 立即生效，这对于调试单个 TiDB server 比较有用
-- 优先读 session 变量，没有设置过 session 变量才会读 global 变量
-- 把 session 变量设为空字符串，将会重新读 global 变量
-
 > **注意：**
 >
 > `tidb_stmt_summary_history_size`、`tidb_stmt_summary_max_stmt_count`、`tidb_stmt_summary_max_sql_length` 这些配置都影响内存占用，建议根据实际情况调整，不宜设置得过大。

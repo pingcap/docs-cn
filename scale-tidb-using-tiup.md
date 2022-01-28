@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-
 
 TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上安装-tiup-组件)。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上部署-tiup-组件)。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -421,7 +421,7 @@ tiup cluster display <cluster-name>
 
 手动在 PD 中清除同步规则的步骤如下：
 
-1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
     {{< copyable "shell-regular" >}}
 

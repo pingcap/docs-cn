@@ -87,7 +87,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 目前，TiDB Lightning 支持：
 
-- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-from-aurora-using-lightning.md) 输出格式的数据源。
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
 - 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
@@ -140,7 +140,7 @@ sql-mode = ""
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --fetch-mode
+tidb-lightning-ctl --config tidb-lightning.toml --fetch-mode
 ```
 
 可执行以下命令强制切换回“普通模式” (normal mode)：
@@ -148,7 +148,7 @@ tidb-lightning-ctl --fetch-mode
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --switch-mode=normal
+tidb-lightning-ctl --config tidb-lightning.toml --switch-mode=normal
 ```
 
 ## TiDB Lightning 可以使用千兆网卡吗？
@@ -190,6 +190,19 @@ upload-speed-limit = "100MB"
 2. 如果使用 Local-backend，删除配置中 `sorted-kv-dir` 对应的目录；如果使用 Importer-backend，删除 `tikv-importer` 所在机器上的整个 `import` 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
+
+4. 清理残留的元信息。如果存在以下任意一种情况，需要手动清理元信息库：
+    
+    - 对于 v5.1.x 和 v5.2.x 版本的 TiDB Lightning, tidb-lightning-ctl 命令没有同时清理存储在目标集群的 metadata 库，需要手动清理。
+    - 如果手动删除过断点文件，则需要手动清理下游的元信息库，否则可能影响后续导入的正确性。
+
+    使用下面命令清理元信息：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    DROP DATABASE IF EXISTS `lightning_metadata`;
+    ```
 
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 
@@ -369,7 +382,7 @@ header = false
     ```sh
     kill -USR1 <lightning-pid>
     ```
-   
+
     查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
 
 2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。
