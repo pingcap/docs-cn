@@ -1370,13 +1370,18 @@ Raft Engine 相关的配置项。
 
 ### `cert-path`
 
-+ 包含 X509 证书的 PEM 文件路径
++ 包含 X.509 证书的 PEM 文件路径
 + 默认值：""
 
 ### `key-path`
 
-+ 包含 X509 key 的 PEM 文件路径
++ 包含 X.509 key 的 PEM 文件路径
 + 默认值：""
+
+### `cert-allowed-cn`
+
++ 客户端提供的证书中，可接受的 X.509 通用名称列表。仅当提供的通用名称与列表中的条目之一完全匹配时，才会允许其请求。
++ 默认值：`[]`。这意味着默认情况下禁用客户端证书 CN 检查。
 
 ### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
