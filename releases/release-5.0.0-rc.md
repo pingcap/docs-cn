@@ -156,8 +156,8 @@ Region 在完成成员变更时，由于“添加”和“删除”成员操作�
 
 ## 备份与恢复
 
-+ BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档]((/br/backup-storage-S3.md))）
-+ BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档]((/br/backup-storage-S3.md)）
++ BR 支持将数据备份到 AWS S3、Google Cloud GCS（[用户文档](/br/backup-storage-S3.md)）
++ BR 支持从 AWS S3、Google Cloud GCS 恢复数据到 TiDB（[用户文档](/br/backup-storage-S3.md)）
 + 相关 issue：[#89](https://github.com/pingcap/br/issues/89)
 
 ## 数据的导入和导出
