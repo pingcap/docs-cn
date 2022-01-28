@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 
 # 外部存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 和 [Azure Blob Storage (Azblob)](/br/backup-and-restore-azblob.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 Google Cloud Storage (GCS) 和 [Azure Blob Storage (Azblob)](/br/backup-storage-azblob.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
@@ -123,9 +123,9 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 2. 如果没有指定 `account-key`，则尝试从工具节点上的环境变量读取相关凭证。
     - 迁移工具会优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。与此同时，工具会允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` (Azure Active Directory) 访问。
         - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`，租户 ID `tenant_id` 和客户端密码 `client_secret`。
-        - 如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)
+        - 如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量作为参数](/br/backup-storage-azblob.md#配置环境变量作为参数)
 3. 如果上述的三个环境变量不存在于工具节点中，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
-    - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-and-restore-azblob.md#配置环境变量作为参数)。
+    - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-storage-azblob.md#配置环境变量作为参数)。
 
 > **注意：**
 > 

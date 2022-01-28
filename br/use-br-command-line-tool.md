@@ -58,7 +58,7 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 - [备份单张表的数据](/br/br-usage-backup.md#备份单张表的数据)
 - [使用表库过滤功能备份多张表的数据](/br/br-usage-backup.md#使用表库过滤功能备份多张表的数据)
 - [增量备份](/br/br-usage-backup.md#备份-tidb-集群增量数据)
-- [备份数据到 Amazon S3 后端存储](br/backup-storage-S3.md)
+- [备份数据到 Amazon S3 后端存储](/br/backup-storage-S3.md)
 - [加密备份数据（实验性功能）](/br/br-usage-backup.md#备份端加密备份数据实验性功能)
 
 ## 使用 BR 命令行恢复集群数据示例
@@ -70,5 +70,5 @@ BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version`
 - [恢复单张表的数据](/br/br-usage-restore.md#恢复单张表的数据)
 - [使用表库功能过滤恢复数据](/br/br-usage-restore.md#使用表库功能过滤恢复数据)
 - [增量恢复](/br/br-usage-restore.md#恢复增量备份数据)
-- [从 Amazon S3 后端存储恢复数据](br/backup-storage-S3.md)
+- [从 Amazon S3 后端存储恢复数据](/br/backup-storage-S3.md)
 - [解密恢复数据（实验性功能）](/br/br-usage-restore.md#恢复加密的备份数据)
