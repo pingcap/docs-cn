@@ -1495,13 +1495,13 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：NONE
 - 默认值：(string)
-- 这个变量的值是运行 TiDB 的操作系统的名称。
+- 这个变量值是 TiDB 所在操作系统的名称。
 
 ### `version_compile_machine`
 
 - 作用域：NONE
 - 默认值：(string)
-- 这个变量的值是运行 TiDB 的 CPU 架构的名称。
+- 这个变量值是运行 TiDB 的 CPU 架构的名称。
 
 ### `wait_timeout`
 
