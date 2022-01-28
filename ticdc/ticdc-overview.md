@@ -85,7 +85,9 @@ TiCDC 从 v4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 - 暂不支持 [TiKV Hibernate Region](/best-practices/massive-regions-best-practices.md#方法四开启-hibernate-region-功能)。TiCDC 会使 Region 无法进入静默状态。
 - 对上游存在较大事务的场景提供部分支持，详见：[FAQ：TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/troubleshoot-ticdc.md#ticdc-支持同步大事务吗有什么风险吗)。
 
-### 从 TiCDC v4.0.15 版本开始, 环形同步功能被移除
+> **注意：**
+>
+> 从 v4.0.15 版本起，TiCDC 不再支持环形同步功能。
 
 ## TiCDC 安装和部署
 
