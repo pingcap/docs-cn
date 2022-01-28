@@ -61,15 +61,6 @@ delta_index_cache_size = 0
 [storage]
     ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
     # bg_task_io_rate_limit = 0
-<<<<<<< HEAD
-=======
-
-    ## DTFile 储存文件格式
-    ## * format_version = 1 老旧文件格式，已废弃
-    ## * format_version = 2 默认文件格式
-    ## * format_version = 3 新文件格式，具有更完善的检验功能
-    # format_version = 2
->>>>>>> 32d28a869 (Add log redaction to learner toml (#8202))
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
