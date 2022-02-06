@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     4. 按本文档说明将集群升级到 5.3 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
-- 对于从 5.3 之前版本的集群升级到5.3 版本及后续修订版本，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，新版本提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit ](https\://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
+- 对于从 5.3 之前版本的集群升级到 5.3 及后续修订版本，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https\://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
 
 
 ## 2. 升级前准备
