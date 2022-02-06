@@ -35,7 +35,7 @@ Clinic 工具主要用于以下两个场景，方便用户快速获取诊断数�
 
 ## 使用 Clinic 工具采集诊断数据
 
-Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控数据、日志、配置信息等。在以下场景中使用/有优势：
+Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控数据、日志、配置信息等。适于在以下场景中使用：
 
 - 遇到问题咨询 PingCAP 技术支持，需要提供诊断数据协助定位问题。
 - 保留诊断数据做后期分析。
@@ -158,7 +158,7 @@ Completed!
 Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
   - 上传需要提供用户名和密码，目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
-  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。
+  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
   
 
 #### 先打包后上传
@@ -193,7 +193,7 @@ Completed!
 Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
   - 上传需要提供用户名和密码，目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
-  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。
+  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
 
 ### 可选操作：本地查看数据
 所有收集到的数据被按来源存储在以机器名和端口号命名的独立子目录中，对每个节点，其中的配置、日志等文件均按照其在真实服务器上相同的相对路径存放。

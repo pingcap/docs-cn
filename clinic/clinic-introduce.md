@@ -1,4 +1,4 @@
---
+---
 title: Clinic 诊断服务简介
 summary: 详细介绍 Clinic 服务
 ---
