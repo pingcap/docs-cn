@@ -230,6 +230,39 @@ mysql> SELECT * FROM t1;
 - 范围：`[0, 65535]`
 - 使用 MySQL 协议时 tidb-server 监听的端口。
 
+### `rand_seed1`
+
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
+- 该变量的行为与 MySQL 兼容。
+
+### rand_seed2
+
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
+- 该变量的行为与 MySQL 兼容。
+
+### skip_name_resolve <span class="version-mark">从 v5.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 该变量控制 `tidb-server` 实例是否将主机名作为连接握手的一部分来解析。
+- 当 DNS 不可靠时，可以启用该变量来提高网络性能。
+
+> **注意：**
+>
+> 当 `skip_name_resolve` 设置为 `ON` 时，身份信息中包含主机名的用户将无法登录服务器。例如：
+>
+> ```sql
+> CREATE USER 'appuser'@'apphost' IDENTIFIED BY 'app-password';
+> ```
+>
+> 该示例中，建议将 `apphost` 替换为 IP 地址或通配符（`%`）。
+
 ### `socket`
 
 - 作用域：NONE
@@ -332,7 +365,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_backoff_lock_fast`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`100`
+- 默认值：`10`
 - 范围：`[1, 2147483647]`
 - 这个变量用来设置读请求遇到锁的 backoff 时间。
 
@@ -1483,7 +1516,7 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
-- 作用域：INSTANCE | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
