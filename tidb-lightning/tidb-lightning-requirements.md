@@ -111,4 +111,3 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 **存储空间**：配置项 `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间。建议与 `data-source-dir` 使用不同的存储设备，独占 IO 会获得更好的导入性能，且建议优先考虑配置闪存等高性能存储介质。
 
 **网络**： 建议使用带宽 >=10Gbps 的网卡。
-    
