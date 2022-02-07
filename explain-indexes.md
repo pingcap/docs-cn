@@ -145,7 +145,7 @@ EXPLAIN SELECT * FROM t1 ORDER BY intkey DESC LIMIT 10;
 
 ```
 
-In the above example, the last 20 rows are read from the index `intkey`. These `RowID` values are then retrieved from the table data.
+In the above example, the last 10 rows are read from the index `intkey`. These `RowID` values are then retrieved from the table data.
 
 ## IndexReader
 
