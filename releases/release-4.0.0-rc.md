@@ -46,7 +46,7 @@ TiUP version: 0.0.3
 
 + TiDB
 
-    - Add the case-sensitive collation so that users can enable `utf8mb4_general_ci` and `utf8_general_ci` in a new cluster [#33](https://github.com/pingcap/tidb/projects/33)
+    - Add the case-insensitive collation so that users can enable `utf8mb4_general_ci` and `utf8_general_ci` in a new cluster [#33](https://github.com/pingcap/tidb/projects/33)
     - Enhance the `RECOVER TABLE` syntax to support recovering truncated tables [#15398](https://github.com/pingcap/tidb/pull/15398)
     - Refuse to get started instead of returning an alert log when the the tidb-server status port is occupied [#15177](https://github.com/pingcap/tidb/pull/15177)
     - Optimize the write performance of using a sequence as the default column values [#15216](https://github.com/pingcap/tidb/pull/15216)
