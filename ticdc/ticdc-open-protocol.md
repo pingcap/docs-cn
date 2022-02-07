@@ -1,5 +1,6 @@
 ---
 title: TiCDC Open Protocol
+summary: 了解 TiCDC Open Protocol 的概念和使用方法。
 aliases: ['/docs-cn/dev/ticdc/ticdc-open-protocol/','/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
 ---
 
@@ -274,10 +275,10 @@ COMMIT;
 
 ## 消费端协议解析
 
-目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析 demo。用户可以参考本文档提供的数据格式和以下 demo 实现消费端协议解析。
+目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析例子。你可以参考本文档提供的数据格式和以下例子实现消费端协议解析。
 
-- [Golang demo](https://github.com/pingcap/ticdc/tree/master/cmd/kafka-consumer)
-- [Java demo](https://github.com/pingcap/ticdc/tree/master/demo/java)
+- [Golang 例子](https://github.com/pingcap/tiflow/tree/master/cmd/kafka-consumer)
+- [Java 例子](https://github.com/pingcap/tiflow/tree/master/examples/java)
 
 ## Column 的类型码
 

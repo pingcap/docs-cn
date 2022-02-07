@@ -9,7 +9,7 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 > **注意：** 
 > 
-> - 目前 TiDB 仅支持为表或分区添加 `merge_option` 属性，用于控制 Region 合并。
+> - 目前 TiDB 仅支持为表或分区添加 `merge_option` 属性，用于控制 Region 合并。该属性仅能处理部分热点问题。如需了解更多的热点问题处理相关内容，请参阅 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 > - 当使用 TiDB Binlog 或 TiCDC 进行同步或者使用 BR 进行增量备份时，同步和备份会跳过设置表属性的 DDL 语句。如需在下游或者备份集群使用表属性，需要在下游或者备份集群手动执行该 DDL 语句以设置表属性。
 
 ## 使用方法
@@ -19,31 +19,31 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 + 设置表或分区属性
 
     ```sql
-    alter table t [partition p ]attributes[=]'key=value[, key1=value1...]';
+    ALTER TABLE t [PARTITION p] ATTRIBUTES [=] 'key=value[, key1=value1...]';
     ```
 
 + 重置表或分区属性
 
     ```sql
-    alter table t [partition p ]attributes[=]default;
+    ALTER TABLE t [PARTITION p] ATTRIBUTES [=] DEFAULT;
     ```
 
 + 查看全部表及分区属性
 
     ```sql
-    select * from information_schema.attributes;
+    SELECT * FROM information_schema.attributes;
     ```
 
 + 查看某一张表或分区配置的属性
 
     ```sql
-    select * from information_schema.attributes where id='schema/t[/p]';
+    SELECT * FROM information_schema.attributes WHERE id='schema/t[/p]';
     ```
 
 + 查看拥有某属性的所有表及分区
 
     ```sql
-    select * from information_schema.attributes where attributes like '%key%';
+    SELECT * FROM information_schema.attributes WHERE attributes LIKE '%key%';
     ```
 
 ## 覆盖关系
@@ -51,8 +51,8 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 为分区表配置的属性会对表的所有分区生效。一种例外情况是，如果分区表和分区都配置了相同属性但属性值不同，分区属性将覆盖分区表属性。例如，当分区表 `t` 配置属性 `key=value`，同时分区 `p` 配置属性 `key=value1` 时：
 
 ```sql
-alter table t attributes[=]'key=value';
-alter table t partition p attributes[=]'key=value1';
+ALTER TABLE t ATTRIBUTES[=]'key=value';
+ALTER TABLE t PARTITION p ATTRIBUTES[=]'key=value1';
 ```
 
 分区 `p` 实际生效的属性为 `key=value1`。
@@ -73,47 +73,49 @@ alter table t partition p attributes[=]'key=value1';
 
 ### 使用方法
 
+使用方法如下，其中 `t` 为所要修改的表名，`p` 为所要修改的分区名。
+
 + 禁止属于某个表的 Region 被合并
 
     ```sql
-    alter table t attributes[=]'merge_option=deny';
+    ALTER TABLE t ATTRIBUTES 'merge_option=deny';
     ```
 
 + 允许属于某个表的 Region 被合并
 
     ```sql
-    alter table t attributes[=]'merge_option=allow';
+    ALTER TABLE t ATTRIBUTES 'merge_option=allow';
     ```
 
 + 重置某个表的属性
 
     ```sql
-    alter table t attributes[=]default；
+    ALTER TABLE t ATTRIBUTES DEFAULT;
     ```
 
 + 禁止属于某个分区的 Region 被合并
 
     ```sql
-    alter table t partition p attributes[=]'merge_option=deny';
+    ALTER TABLE t PARTITION p ATTRIBUTES 'merge_option=deny';
     ```
 
 + 允许属于某个分区的 Region 被合并
 
     ```sql
-    alter table t partition p attributes[=]'merge_option=allow';
+    ALTER TABLE t PARTITION p attributes 'merge_option=allow';
     ```
 
 + 查看所有配置了 `merge_option` 属性的表或分区
 
     ```sql
-    select * from information_schema.attributes where attributes like '%merge_option%';
+    SELECT * FROM information_schema.attributes WHERE attributes LIKE '%merge_option%';
     ```
 
 ### 覆盖关系
 
 ```sql
-alter table t attributes[=]'merge_option=deny';
-alter table t partition p attributes[=]'merge_option=allow';
+ALTER TABLE t ATTRIBUTES 'merge_option=deny';
+ALTER TABLE t PARTITION p ATTRIBUTES 'merge_option=allow';
 ```
 
 同时配置上述两个属性时，实际分区 `p` 的 Region 可以被合并。当分区的属性被重置时，分区 `p` 则会继承表 `t` 的属性，Region 无法被合并。

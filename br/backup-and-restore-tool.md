@@ -66,6 +66,9 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 BR 和 TiDB 集群的兼容性问题分为以下两方面：
 
 + BR 部分版本和 TiDB 集群的接口不兼容
+
+  BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 5.4.0 之前的 TiDB 集群。
+  
 + 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间如果没有统一开启或关闭，就会带来不兼容的问题
 
 下表整理了会导致 KV 格式发生变化的功能。

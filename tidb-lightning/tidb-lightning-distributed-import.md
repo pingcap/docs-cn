@@ -5,14 +5,14 @@ summary: 本文档介绍了 TiDB Lightning 分布式并行导入的概念、使�
 
 # TiDB Lightning 分布式并行导入
 
-TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
+TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-local-backend)从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
 TiDB Lightning 并行导入可以用于以下场景：
 
 - 并行导入分库分表的数据。在该场景中，来自上游多个数据库实例中的多个表，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。
-- 并行导入单表的数据。在该场景中，存放在某个目录中或云存储（如 Amazon S3）中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。
+- 并行导入单表的数据。在该场景中，存放在某个目录中或云存储（如 Amazon S3）中的多个单表文件，分别由不同的 TiDB Lightning 实例并行导入到下游 TiDB 数据库中。该功能为 v5.3.0 版本引入的新功能。
 
 >**注意：**
 >
@@ -43,6 +43,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)。同时，在使用 TiDB Lightning 并行导入模式时，为达到最优性能，建议进行如下限制：
 
+- 每个 TiDB Lightning 部署在单独的机器上面。TiDB Lightning 默认会消耗所有的 CPU 资源，在单台机器上面部署多个实例并不能提升性能。
 - 每个 TiDB Lightning 实例导入的源文件总大小不超过 5 TiB
 - TiDB Lightning 实例的总数量不超过 10 个
 
@@ -56,6 +57,17 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 - 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 - 示例 2：使用 TiDB Lightning 并行导入单表数据
+
+### 使用限制
+
+TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在单台机器上面部署多个 TiDB Lightning 实例(不建议生产环境使用)或多台机器共享磁盘存储时，需要注意如下使用限制：
+
+- 每个 TiDB Lightning 实例的 tikv-importer.sorted-kv-dir 必须设置为不同的路径。多个实例共享相同的路径会导致非预期的行为，可能导致导入失败或数据出错。
+- 每个 TiDB Lightning 的 checkpoint 需要分开存储。checkpoint 的详细配置见 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
+    - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
+    - 如果设置 checkpoint.driver = "mysql", 需要为为每个实例设置不同的 schema。
+- 每个 TiDB Lightning 的 log 文件应该设置为不同的路径。共享同一个 log 文件将不利于日志的查询和排查问题。
+- 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md) 或 Debug API, 需要为每个实例的 `lightning.status-addr` 设至不同地址，否则会导致 TiDB Lightning 进程由于端口冲突无法启动。
 
 ## 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 
@@ -85,7 +97,11 @@ status-addr = ":8289"
 data-source-dir = "/path/to/source-dir"
 
 [tikv-importer]
-# 使用 Local 后端
+# 是否允许向已存在数据的表导入数据。默认值为 false。
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。 
+incremental-import = true
+# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。 
 backend = "local"
 
 # 设置本地排序数据的路径
@@ -142,20 +158,20 @@ TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amaz
 ```
 [[mydumper.files]]
 # db schema 文件
-pattern = '(?i)^(?:[^/]*/)my_db-schema-create\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db-schema-create\.sql'
 schema = "my_db"
 type = "schema-schema"
 
 [[mydumper.files]]
 # table schema 文件
-pattern = '(?i)^(?:[^/]*/)my_db\.my_table-schema\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db\.my_table-schema\.sql'
 schema = "my_db"
 table = "my_table"
 type = "table-schema"
 
 [[mydumper.files]]
 # 只导入 00001~05000 这些数据文件并忽略其他文件
-pattern = '(?i)^(?:[^/]*/)my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
+pattern = '(?i)^(?:[^/]*/)*my_db\.my_table\.(0[0-4][0-9][0-9][0-9]|05000)\.sql'
 schema = "my_db"
 table = "my_table"
 type = "sql"

@@ -54,7 +54,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     ```
 
-- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，你可以通过执行以下示例 SQL 语句创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin`：
+- 当所连接的 TiDB 服务器启用了[安全增强模式 (SEM)](/system-variables.md#tidb_enable_enhanced_security) 时，先关闭 SEM，然后执行以下示例 SQL 语句创建一个允许登录 TiDB Dashboard 的 SQL 用户 `dashboardAdmin` ，创建完成后，再重新开启 SEM：
 
     ```sql
     CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
@@ -68,6 +68,31 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
     -- 如果要使自定义的 SQL 用户能修改 TiDB Dashboard 界面上的各项配置，可以增加以下权限
     GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboardAdmin'@'%';
     ```
+
+## 示例：通过 RBAC 授权 SQL 用户登录 TiDB Dashboard
+
+以下示例演示了如何在[基于角色的访问控制（RBAC）](/role-based-access-control.md)机制下创建角色及用户来登录 TiDB Dashboard。
+
+1. 创建一个包含登录 TiDB Dashboard 所需权限的角色 `dashboard_access`：
+
+    ```sql
+    CREATE ROLE 'dashboard_access';
+    GRANT PROCESS, CONFIG ON *.* TO 'dashboard_access'@'%';
+    GRANT SHOW DATABASES ON *.* TO 'dashboard_access'@'%';
+    GRANT DASHBOARD_CLIENT ON *.* TO 'dashboard_access'@'%';
+    GRANT SYSTEM_VARIABLES_ADMIN ON *.* TO 'dashboard_access'@'%';
+    ```
+
+2. 为其他用户授权 `dashboard_access` 角色并设置为默认启用：
+
+    ```sql
+    CREATE USER 'dashboardAdmin'@'%' IDENTIFIED BY '<YOUR_PASSWORD>';
+    GRANT 'dashboard_access' TO 'dashboardAdmin'@'%';
+    -- 需要默认启用 dashboard_access 角色
+    SET DEFAULT ROLE dashboard_access to 'dashboardAdmin'@'%';
+    ```
+
+完成以上步骤后，可以用 `dashboardAdmin` 用户登录 TiDB Dashboard。
 
 ## 登录 TiDB Dashboard
 

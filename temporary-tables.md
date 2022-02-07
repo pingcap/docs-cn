@@ -164,7 +164,7 @@ TiDB 本地临时表与 MySQL 临时表有以下方面不兼容：
 - 当声明存储引擎为 `MEMORY` 时，TiDB 本地临时表没有 `MEMORY` 存储引擎的限制
 - 当声明存储引擎为 `INNODB` 或 `MYISAM` 时，TiDB 本地临时表忽略 InnoDB 临时表特有的系统变量
 - MySQL 不允许在同一条 SQL 中多次引用同一张临时表，而 TiDB 本地临时表没有该限制
-- TiDB 中的系统表 `information_schema.INNODB_TEMP_TABLE_INFO` 不显示本地临时表
+- MySQL 中用于显示临时表的 `information_schema.INNODB_TEMP_TABLE_INFO` 表在 TiDB 中不存在。TiDB 暂无用于显示本地临时表的系统表。
 - TiDB 没有内部临时表，MySQL 针对内部临时表的系统变量对 TiDB 不生效
 
 ## 全局临时表

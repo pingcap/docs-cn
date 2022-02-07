@@ -26,7 +26,7 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
-        - 将兼容版本从 `5.1.0-alpha` 改为 `5.2.0-alpha` [#2659](https://github.com/pingcap/ticdc/pull/2659)
+        - 将兼容版本从 `5.1.0-alpha` 改为 `5.2.0-alpha` [#2659](https://github.com/pingcap/tiflow/pull/2659)
 
 ## 改进提升
 
@@ -37,7 +37,7 @@ TiDB 版本：5.1.2
 + TiKV
 
     - 支持动态更改 TiCDC 配置项 [#10645](https://github.com/tikv/tikv/issues/10645)
-    - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/ticdc/issues/2448)
+    - 减少 Resolved TS 消息的大小以节省网络带宽 [#2448](https://github.com/pingcap/tiflow/issues/2448)
     - 支持限制每个 Store 发送的心跳包信息中 peer stats 的数量 [#10621](https://github.com/tikv/tikv/pull/10621)
 
 + PD
@@ -57,11 +57,11 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
-        - 当统一分类器使用内存进行分类时，优化内存管理 [#2553](https://github.com/pingcap/ticdc/issues/2553)
-        - 当并发性高时，优化 workerpool 以减少 goroutines 的数量 [#2488](https://github.com/pingcap/ticdc/pull/2488)
-        - 当一个表的区域从一个 TiKV 节点转移出去时，减少 goroutine 的使用 [#2284](https://github.com/pingcap/ticdc/issues/2284)
-        - 添加一个全局 gRPC 连接池并在 KV 客户端之间共享 gRPC 连接 [#2534](https://github.com/pingcap/ticdc/pull/2534)
-        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/ticdc/pull/2599)
+        - 当统一分类器使用内存进行分类时，优化内存管理 [#2553](https://github.com/pingcap/tiflow/issues/2553)
+        - 当并发性高时，优化 workerpool 以减少 goroutines 的数量 [#2488](https://github.com/pingcap/tiflow/pull/2488)
+        - 当一个表的区域从一个 TiKV 节点转移出去时，减少 goroutine 的使用 [#2284](https://github.com/pingcap/tiflow/issues/2284)
+        - 添加一个全局 gRPC 连接池并在 KV 客户端之间共享 gRPC 连接 [#2534](https://github.com/pingcap/tiflow/pull/2534)
+        - 禁止跨主要和次要版本操作 TiCDC 集群 [#2599](https://github.com/pingcap/tiflow/pull/2599)
 
     + Dumpling
 
@@ -136,18 +136,18 @@ TiDB 版本：5.1.2
     + Dumpling
 
         - 修复特定 MySQL 版本（8.0.3，8.0.23）下，`show table status` 返回结果不正确导致 dump 阶段卡死的问题 [#333](https://github.com/pingcap/dumpling/pull/333)
-        - 修复 CLI 在默认 `sort-engine` 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/ticdc/issues/2373)
+        - 修复 CLI 在默认 `sort-engine` 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/tiflow/issues/2373)
 
     + TiCDC
 
-        - 修复未充分考虑字符串类型的值可能是 `string` 或 `[]byte` 时，转换为 JSON 格式可能导致 TiCDC 进程崩溃的问题 [#2758](https://github.com/pingcap/ticdc/issues/2758)
-        - 降低 gRPC 的 window size 以避免出现 OOM 的情况 [#2673](https://github.com/pingcap/ticdc/issues/2673)
-        - 修复内存压力较高时 gRPC 的 `keepalive` 错误 [#2202](https://github.com/pingcap/ticdc/issues/2202)
-        - 修复 `unsigned tinyint` 导致 TiCDC 崩溃的问题 [#2648](https://github.com/pingcap/ticdc/issues/2648)
-        - 修复 TiCDC Open Protocol 下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值 [#2612](https://github.com/pingcap/ticdc/issues/2612)
-        - 修复手动重启 TiCDC 时 DDL 处理存在的问题 [#2603](https://github.com/pingcap/ticdc/issues/2603)
-        - 修复操作元数据时，`EtcdWorker` 的快照隔离可能被破坏的问题 [#2559](https://github.com/pingcap/ticdc/pull/2559)
-        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
-        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2422](https://github.com/pingcap/ticdc/issues/2422)
-        - 修复 TiCDC 遇到 `ErrGCTTLExceeded` 错误时 changefeed 不能被移除的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
-        - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259)[#2424](https://github.com/pingcap/ticdc/issues/2424)
+        - 修复未充分考虑字符串类型的值可能是 `string` 或 `[]byte` 时，转换为 JSON 格式可能导致 TiCDC 进程崩溃的问题 [#2758](https://github.com/pingcap/tiflow/issues/2758)
+        - 降低 gRPC 的 window size 以避免出现 OOM 的情况 [#2673](https://github.com/pingcap/tiflow/issues/2673)
+        - 修复内存压力较高时 gRPC 的 `keepalive` 错误 [#2202](https://github.com/pingcap/tiflow/issues/2202)
+        - 修复 `unsigned tinyint` 导致 TiCDC 崩溃的问题 [#2648](https://github.com/pingcap/tiflow/issues/2648)
+        - 修复 TiCDC Open Protocol 下输出空值的问题。修复后，在开放协议下，未包含变更的事务 TiCDC 处理时不再输出空值 [#2612](https://github.com/pingcap/tiflow/issues/2612)
+        - 修复手动重启 TiCDC 时 DDL 处理存在的问题 [#2603](https://github.com/pingcap/tiflow/issues/2603)
+        - 修复操作元数据时，`EtcdWorker` 的快照隔离可能被破坏的问题 [#2559](https://github.com/pingcap/tiflow/pull/2559)
+        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2230](https://github.com/pingcap/tiflow/issues/2230)
+        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2422](https://github.com/pingcap/tiflow/issues/2422)
+        - 修复 TiCDC 遇到 `ErrGCTTLExceeded` 错误时 changefeed 不能被移除的问题 [#2391](https://github.com/pingcap/tiflow/issues/2391)
+        - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#1259](https://github.com/pingcap/tiflow/issues/1259)[#2424](https://github.com/pingcap/tiflow/issues/2424)

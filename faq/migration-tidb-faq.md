@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 - [Backup & Restore 常见问题](/br/backup-and-restore-faq.md)
 - [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
-- [Data Migration 常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+- [Data Migration 常见问题](/dm/dm-faq.md)
 - [TiCDC 常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
 
 ## 全量数据导出导入
@@ -135,7 +135,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ### 如何快速迁移业务流量？
 
-我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 [TiDB Data Migration](/dm/dm-overview.md) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### TiDB 总读写流量有限制吗？
 

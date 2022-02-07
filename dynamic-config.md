@@ -47,7 +47,7 @@ show config;
 show config where type='tidb'
 show config where instance in (...)
 show config where name like '%log%'
-show config where type='tikv' and name='log-level'
+show config where type='tikv' and name='log.level'
 ```
 
 ### 在线修改 TiKV 配置
@@ -129,7 +129,6 @@ show warnings;
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
-| raftstore.raft-reject-transfer-leader-duration | 控制迁移 leader 到新加节点的最小时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
 | raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
@@ -149,11 +148,12 @@ show warnings;
 | raftstore.peer-stale-state-check-interval | 触发检验副本是否处于无主状态的时间间隔 |
 | raftstore.consistency-check-interval | 触发一致性检查的时间间隔 |
 | raftstore.raft-store-max-leader-lease | Region 主可信任期的最长时间 |
-| raftstore.allow-remove-leader | 允许删除主开关 |
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
+| raftstore.apply-pool-size | apply 线程池大小 |
+| raftstore.store-pool-size | store 线程池大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
@@ -170,6 +170,7 @@ show warnings;
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
+| {db-name}.max-background-flushes | RocksDB flush 线程个数 |
 | {db-name}.max-open-files | RocksDB 可以打开的文件总数 |
 | {db-name}.compaction-readahead-size | Compaction 时候 readahead 的大小 |
 | {db-name}.bytes-per-sync | 异步同步的限速速率 |
