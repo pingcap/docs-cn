@@ -63,7 +63,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在单台机器上面部署多个 TiDB Lightning 实例(不建议生产环境使用)或多台机器共享磁盘存储时，需要注意如下使用限制：
 
 - 每个 TiDB Lightning 实例的 tikv-importer.sorted-kv-dir 必须设置为不同的路径。多个实例共享相同的路径会导致非预期的行为，可能导致导入失败或数据出错。
-- 每个 TiDB Lightning 的 checkpoint 需要分开存储，checkpoint 的详细配置见 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+- 每个 TiDB Lightning 的 checkpoint 需要分开存储。checkpoint 的详细配置见 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
     - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
     - 如果设置 checkpoint.driver = "mysql", 需要为为每个实例设置不同的 schema。
 - 每个 TiDB Lightning 的 log 文件应该设置为不同的路径。共享同一个 log 文件将不利于日志的查询和排查问题。
