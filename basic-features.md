@@ -78,6 +78,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [MPP 执行引擎](/explain-mpp.md)                                                                   | Y           | Y            | Y            | Y            | Y            | N            |
 | [Index Merge Join](/explain-index-merge.md)                                                              | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Placement Rules in SQL](/placement-rules-in-sql.md) | 实验特性 | 实验特性 | N | N | N | N |
+
 ## 数据定义语言 (DDL)
 
 | 数据定义语言 (DDL)                                                                       | 5.4   | 5.3      | 5.2      | 5.1      | 5.0      | 4.0      |
