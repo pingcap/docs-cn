@@ -43,6 +43,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 由于 TiDB Lightning 需要将生成的 Key-Value 数据上传到对应 Region 的每一个副本所在的 TiKV 节点，其导入速度受目标集群规模的限制。在通常情况下，建议确保目标 TiDB 集群中的 TiKV 实例数量与 TiDB Lightning 的实例数量大于 n:1 (n 为 Region 的副本数量)。同时，在使用 TiDB Lightning 并行导入模式时，为达到最优性能，建议进行如下限制：
 
+- 每个 TiDB Lightning 部署在单独的机器上面。TiDB Lightning 默认会消耗所有的 CPU 资源，在单台机器上面部署多个实例并不能提升性能。
 - 每个 TiDB Lightning 实例导入的源文件总大小不超过 5 TiB
 - TiDB Lightning 实例的总数量不超过 10 个
 
@@ -56,6 +57,17 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 - 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 - 示例 2：使用 TiDB Lightning 并行导入单表数据
+
+### 使用限制
+
+TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在单台机器上面部署多个 TiDB Lightning 实例(不建议生产环境使用)或多台机器共享磁盘存储时，需要注意如下使用限制：
+
+- 每个 TiDB Lightning 实例的 tikv-importer.sorted-kv-dir 必须设置为不同的路径。多个实例共享相同的路径会导致非预期的行为，可能导致导入失败或数据出错。
+- 每个 TiDB Lightning 的 checkpoint 需要分开存储。checkpoint 的详细配置见 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
+    - 如果设置 checkpoint.driver = "file"（默认值），需要确保每个实例设置的 checkpoint 的路径不同。
+    - 如果设置 checkpoint.driver = "mysql", 需要为为每个实例设置不同的 schema。
+- 每个 TiDB Lightning 的 log 文件应该设置为不同的路径。共享同一个 log 文件将不利于日志的查询和排查问题。
+- 如果开启 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md) 或 Debug API, 需要为每个实例的 `lightning.status-addr` 设至不同地址，否则会导致 TiDB Lightning 进程由于端口冲突无法启动。
 
 ## 示例 1：使用 Dumpling + TiDB Lightning 并行导入分库分表数据至 TiDB
 
