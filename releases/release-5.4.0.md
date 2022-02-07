@@ -78,6 +78,7 @@ TiDB 版本：5.4.0
 - 对 log 相关参数，TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
 - 自 v5.4.0 起，对于通过 Plan Cache 已经缓存的执行计划，如果为其创建绑定 (Binding)，会使得对应查询已经缓存的计划失效。v5.4.0 前已经缓存的计划不受新 Binding 的影响。
 - 在 v5.3 及更早版本中，[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v5.3/) 文档独立于 TiDB 文档。自 v5.4 起，TiDB Data Migration 的文档已合并入相同版本的 TiDB 文档，无需跳转到 DM 文档站，你可以直接在 TiDB 文档站阅读 [DM 文档](/dm/dm-overview.md)。
+- 移除 cdclog。自 v5.4 起，不再支持 cdclog。
 
 ## 新功能
 
