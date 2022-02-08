@@ -61,6 +61,40 @@ SELECT /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * FROM (SELECT t1.a, t1.b FROM t t1
 >
 > Hint 声明的位置必须在指定生效的查询块之中或之前，不能是在之后的查询块中，否则无法生效。
 
+## Hint 中的表名
+
+在使用诸如 [MERGE_JOIN](#MERGE_JOIN(t1_name-[,-tl_name-...])) 的 Hint 时，我们会需要在 Hint 中提供表名。为了让语法解析时对表名的处理逻辑与 MySQL 的处理逻辑相同。在使用 Hint 中使用表名时，需要注意如下的限制：
+
+如果这个表有别名，那么只有的使用它的别名可以生效。如果这个表不在当前通过 `USE DATABASE` 命令所指定的数据库中，那么我们需要使用 `数据库名.别名` 的方式指定这个表。
+
+{{< copyable "sql" >}}
+
+```sql
+USE test;
+DROP TABLE IF EXISTS test_hint;
+CREATE TABLE test_hint(a int);
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test.t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint) */ * FROM test_hint t1, test_hint t2;
+DROP DATABASE IF EXISTS test_hint_db;
+CREATE DATABASE test_hint_db;
+CREATE TABLE test_hint_db.test_hint(a int);
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint_db.t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint_db.test_hint) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+```
+
+在上述的例子中只有如下几个 SQL 是可以被使用 Hint 的，其他 Hint 都会提示找不到 Hint 所指定的表名。
+
+```sql
+USE test;
+DROP TABLE IF EXISTS test_hint;
+CREATE TABLE test_hint(a int);
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test.t1) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint_db.t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+```
+
 ### QB_NAME
 
 当查询语句是包含多层嵌套子查询的复杂语句时，识别某个查询块的序号和名字很可能会出错，Hint `QB_NAME` 可以方便我们使用查询块。`QB_NAME` 是 Query Block Name 的缩写，用于为某个查询块指定新的名字，同时查询块原本默认的名字依然有效。例如：
@@ -202,10 +236,6 @@ SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
 ```sql
 SELECT /*+ READ_FROM_STORAGE(TIFLASH[t1], TIKV[t2]) */ t1.a FROM t t1, t t2 WHERE t1.a = t2.a;
 ```
-
-> **注意：**
->
-> 如果需要提示优化器使用的表不在同一个数据库内，需要显式指定数据库名。例如 `SELECT /*+ READ_FROM_STORAGE(TIFLASH[test1.t1,test2.t2]) */ t1.a FROM test1.t t1, test2.t t2 WHERE t1.a = t2.a;`。
 
 ### USE_INDEX_MERGE(t1_name, idx1_name [, idx2_name ...])
 
