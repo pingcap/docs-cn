@@ -5,11 +5,11 @@ summary: 了解 TiDB Lightning 运行时所需要的各种要求。
 
 # 使用 Lightning 时所需要的前提条件
 
-使用 Lightning 导入数据之前，预先检查环境确认是否满足要求，有助于减少导入过程的错误，避免导入失败的情况。
+使用 Lightning 导入数据前，先检查环境是否满足要求，这有助于减少导入过程的错误，避免导入失败的情况。
 
 ## 下游数据库权限要求
 
-Lightning 导入数据时，根据所使用的导入方式，启用的特性等，需要下游数据库用户具备不同的权限，可参考下表：
+Lightning 导入数据时，根据导入方式和启用特性等，需要下游数据库用户具备不同的权限，可参考下表：
 
 <table border=1>
    <tr>
@@ -59,21 +59,21 @@ Lightning 导入数据时，根据所使用的导入方式，启用的特性等�
       <td>冲突检测，max-error</td>
       <td>lightning.task-info-schema-name 配置的 schema</td>
       <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
-      <td>如不需要，该值必需设为""</td>
+      <td>如不需要，该值必须设为""</td>
    </tr>
    <tr>
       <td>可选</td>
       <td>并行导入</td>
       <td>lightning.meta-schema-name 配置的 schema</td>
       <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
-      <td>如不需要，该值必需设为""</td>
+      <td>如不需要，该值必须设为""</td>
    </tr>
    <tr>
       <td>可选</td>
       <td>checkpoint.driver = “mysql”</td>
       <td>checkpoint.schema 设置</td>
       <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
-      <td>使用数据库而非文件形式存放 checkpoint 信息时</td>
+      <td>使用数据库而非文件形式存放 checkpoint 信息时需要</td>
    </tr>
 </table>
 
@@ -110,4 +110,4 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 
 **存储空间**：配置项 `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间。建议与 `data-source-dir` 使用不同的存储设备，独占 IO 会获得更好的导入性能，且建议优先考虑配置闪存等高性能存储介质。
 
-**网络**： 建议使用带宽 >=10Gbps 的网卡。
+**网络**：建议使用带宽 >=10Gbps 的网卡。
