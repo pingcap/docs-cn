@@ -163,7 +163,7 @@ TiDB 版本：5.2.0
 
 TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes 以及 On-Premises 环境下提供更友好的运维方式。(实验特性）
 
-[#2411](https://github.com/pingcap/ticdc/issues/2411)
+[#2411](https://github.com/pingcap/tiflow/issues/2411)
 
 ### 部署及运维
 
@@ -175,9 +175,9 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
 
     + TiCDC
 
-        - 新增专为 TiDB 设计的比基于 JSON 的开放协议更紧凑的二进制 MQ 格式 [#1621](https://github.com/pingcap/ticdc/pull/1621)
-        - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/ticdc/pull/2114)
-        - 支持日志轮替配置 [#2182](https://github.com/pingcap/ticdc/pull/2182)
+        - 新增专为 TiDB 设计的比基于 JSON 的开放协议更紧凑的二进制 MQ 格式 [#1621](https://github.com/pingcap/tiflow/pull/1621)
+        - 移除对 file sorter 的支持 [#2114](https://github.com/pingcap/tiflow/pull/2114)
+        - 支持日志轮替配置 [#2182](https://github.com/pingcap/tiflow/pull/2182)
 
     + TiDB Lightning
 
@@ -228,11 +228,11 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
 + Tools
 
     + TiCDC
-        - 为 kv client 增量扫添加并发限制 [#1899](https://github.com/pingcap/ticdc/pull/1899)
-        - 始终在 TiCDC 内部拉取 old value [#2271](https://github.com/pingcap/ticdc/pull/2271)
-        - 当遇到不可恢复的 DML 错误，TiCDC 快速失败并退出 [#1928](https://github.com/pingcap/ticdc/pull/1928)
-        - 在 Region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/ticdc/pull/2235)
-        - 优化 workerpool 以降低在高并发情况下 goroutine 的数量 [#2201](https://github.com/pingcap/ticdc/pull/2201)
+        - 为 kv client 增量扫添加并发限制 [#1899](https://github.com/pingcap/tiflow/pull/1899)
+        - 始终在 TiCDC 内部拉取 old value [#2271](https://github.com/pingcap/tiflow/pull/2271)
+        - 当遇到不可恢复的 DML 错误，TiCDC 快速失败并退出 [#1928](https://github.com/pingcap/tiflow/pull/1928)
+        - 在 Region 初始化后不立即执行 resolve lock [#2235](https://github.com/pingcap/tiflow/pull/2235)
+        - 优化 workerpool 以降低在高并发情况下 goroutine 的数量 [#2201](https://github.com/pingcap/tiflow/pull/2201)
 
     + Dumpling
         - 通过 `tidb_rowid` 对 TiDB v3.x 的表进行数据划分以节省 TiDB 的内存 [#301](https://github.com/pingcap/dumpling/pull/301)
@@ -289,15 +289,15 @@ TiCDC 支持 HTTP 协议 OpenAPI 对 TiCDC 任务进行管理，在 Kubernetes �
 
     + TiCDC
 
-        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/ticdc/issues/1902)
-        - 修复 changefeed 创建成功后立即失败的问题 [#2113](https://github.com/pingcap/ticdc/issues/2113)
-        - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#1625](https://github.com/pingcap/ticdc/issues/1625)
-        - 修复 TiCDC Owner 崩溃时潜在的 DDL 丢失问题 [#1260](https://github.com/pingcap/ticdc/issues/1260)
-        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/ticdc/issues/2373)
-        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2422](https://github.com/pingcap/ticdc/issues/2422)
-        - 修复 TiCDC 遇到 `ErrGCTTLExceeded` 错误时 changefeed 不能被 remove 的问题 [#2391](https://github.com/pingcap/ticdc/issues/2391)
-        - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#1259](https://github.com/pingcap/ticdc/issues/1259) [#2424](https://github.com/pingcap/ticdc/issues/2424)
-        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2230](https://github.com/pingcap/ticdc/issues/2230)
+        - 修复 TiCDC owner 在刷新 checkpoint 时异常退出的问题 [#1902](https://github.com/pingcap/tiflow/issues/1902)
+        - 修复 changefeed 创建成功后立即失败的问题 [#2113](https://github.com/pingcap/tiflow/issues/2113)
+        - 修复不合法格式的 rules filter 导致 changefeed 失败的问题 [#1625](https://github.com/pingcap/tiflow/issues/1625)
+        - 修复 TiCDC Owner 崩溃时潜在的 DDL 丢失问题 [#1260](https://github.com/pingcap/tiflow/issues/1260)
+        - 修复 CLI 在默认的 sort-engine 选项上与 4.0.x 集群的兼容性问题 [#2373](https://github.com/pingcap/tiflow/issues/2373)
+        - 修复 TiCDC 遇到 `ErrSchemaStorageTableMiss` 错误时可能导致 changefeed 被意外重置的问题 [#2422](https://github.com/pingcap/tiflow/issues/2422)
+        - 修复 TiCDC 遇到 `ErrGCTTLExceeded` 错误时 changefeed 不能被 remove 的问题 [#2391](https://github.com/pingcap/tiflow/issues/2391)
+        - 修复 TiCDC 同步大表到 cdclog 失败的问题 [#1259](https://github.com/pingcap/tiflow/issues/1259) [#2424](https://github.com/pingcap/tiflow/issues/2424)
+        - 修复 TiCDC 在重新调度 table 时多个 processors 可能向同一个 table 写数据的问题 [#2230](https://github.com/pingcap/tiflow/issues/2230)
 
     + Backup & Restore (BR)
 

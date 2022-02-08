@@ -97,7 +97,7 @@ TiUP 版本：0.0.3
         * 修复 backend 是 TiDB 时由于字符转换错误导致数据错误的问题 [#283](https://github.com/pingcap/tidb-lightning/pull/283)
 
     - TiCDC
-        * 修复 MySQL sink 执行 DDL 时，若下游没有 test 库系统报错的问题 [#353](https://github.com/pingcap/ticdc/pull/353)
-        * CDC cli 新增实时交互模式功能 [#351](https://github.com/pingcap/ticdc/pull/351)
-        * 同步数据时增加对上游表是否可同步的检查 [#368](https://github.com/pingcap/ticdc/pull/368)
-        * 新增异步写入 Kafka 的功能 [#344](https://github.com/pingcap/ticdc/pull/344)
+        * 修复 MySQL sink 执行 DDL 时，若下游没有 test 库系统报错的问题 [#353](https://github.com/pingcap/tiflow/pull/353)
+        * CDC cli 新增实时交互模式功能 [#351](https://github.com/pingcap/tiflow/pull/351)
+        * 同步数据时增加对上游表是否可同步的检查 [#368](https://github.com/pingcap/tiflow/pull/368)
+        * 新增异步写入 Kafka 的功能 [#344](https://github.com/pingcap/tiflow/pull/344)

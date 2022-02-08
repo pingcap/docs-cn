@@ -4,6 +4,10 @@ title: 执行计划缓存
 
 # 执行计划缓存
 
+> **警告：**
+>
+> 该功能目前为实验特性，不建议在生产环境中使用。
+
 TiDB 支持对 `Prepare` / `Execute` 请求的执行计划缓存。其中包括以下两种形式的预处理语句：
 
 - 使用 `COM_STMT_PREPARE` 和 `COM_STMT_EXECUTE` 的协议功能；

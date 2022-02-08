@@ -401,7 +401,7 @@ I/O rate limiter 相关的配置项。
 
 ### `mode`
 
-+ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只读模式。
++ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。 
 + 可选值：write-only
 + 默认值：write-only
 
@@ -413,6 +413,11 @@ raftstore 相关的配置项。
 
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
 + 默认值：true
+
+### `capacity`
+
++ 存储容量，即允许的最大数据存储大小。如果没有设置，则使用当前磁盘容量。如果要将多个 TiKV 实例部署在同一块物理磁盘上，需要在 TiKV 配置中添加该参数，参见[混合部署的关键参数介绍](/hybrid-deployment-topology.md#混合部署的关键参数介绍)。
++ 默认值：0
 
 ### `raftdb-path`
 
@@ -597,7 +602,7 @@ raftstore 相关的配置项。
 
 + 副本允许的最长未响应时间，超过将被标记为 down，后续 PD 会尝试将其删掉。
 + 默认值：10m
-+ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-check-interval * 2；Hibernate Region 功能关闭时，为 0。
++ 最小值：当 Hibernate Region 功能启用时，为 peer-stale-state-check-interval * 2；Hibernate Region 功能关闭时，为 0。
 
 ### `max-leader-missing-duration`
 
@@ -1024,8 +1029,10 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compression-per-level`
 
-+ 每一层默认压缩算法，默认：前两层为 No，后面 5 层为 lz4。
-+ 默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ 每一层默认压缩算法。
++ `defaultcf` 的默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `writecf` 的默认值：["no", "no", "lz4", "lz4", "lz4", "zstd", "zstd"]
++ `lockcf` 的默认值：["no", "no", "no", "no", "no", "no", "no"]
 
 ### `bottommost-level-compression`
 

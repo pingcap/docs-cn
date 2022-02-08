@@ -2,7 +2,9 @@
 title: CSV 支持
 ---
 
-# CSV 支持
+# CSV 支持与限制
+
+本文介绍如何使用 TiDB Lightning 从 CSV 文件迁移数据到 TiDB。关于如何从 MySQL 生成 CSV 文件，可以参考[使用 Dumpling 导出到 CSV 文件](/dumpling-overview.md#导出为-csv-文件)。
 
 TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他定界符格式如 TSV（制表符分隔值）。
 
@@ -27,10 +29,12 @@ CSV 格式可在 `tidb-lightning.toml` 文件中 `[mydumper.csv]` 下配置。�
 
 ```toml
 [mydumper.csv]
-# 字段分隔符，必须为 ASCII 字符。
+# 字段分隔符，支持一个或多个字符，默认值为 ','。如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符例如'|+|'。
 separator = ','
-# 引用定界符，可以为 ASCII 字符或空字符。
+# 引用定界符，设置为空表示字符串未加引号。
 delimiter = '"'
+# 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
+terminator = ""
 # CSV 文件是否包含表头。
 # 如果为 true，首行将会被跳过。
 header = true
@@ -46,16 +50,23 @@ backslash-escape = true
 trim-last-separator = false
 ```
 
+对于诸如 `separator`，`delimiter` 和 `terminator` 等取值为字符串的配置项，如果需要设置的字符串中包含特殊字符，可以通过使用反斜杠 `\` 转义的方式进行输入，输入的转义序列必须被包含在一对*双引号* `"` 之间。例如，设置 `separator = "\u001f"` 表示使用 ASCII 字符 0X1F 作为字符串定界符。另外，也可以使用*单引号*字符串 `'...'` 禁止对字符进行转义。另外，设置 `separator = '\n'` 表示使用两个字符 `\` + `n` 作为字符串定界符，而不是转义后的换行符 `\n`。
+
+更多详细的内容请参考 [TOML v1.0.0 标准]。
+
 [`LOAD DATA`]: https://dev.mysql.com/doc/refman/8.0/en/load-data.html
+
+[TOML v1.0.0 标准]: https://toml.io/cn/v1.0.0#%E5%AD%97%E7%AC%A6%E4%B8%B2
 
 ### `separator`
 
 - 指定字段分隔符。
-- 必须为单个 ASCII 字符。
+- 可以为一个或多个字符，不能为空。
 - 常用值：
 
     * CSV 用 `','`
     * TSV 用 `"\t"`
+    * "\u0001" 表示使用 ASCII 字符 0x01
 
 - 对应 LOAD DATA 语句中的 `FIELDS TERMINATED BY` 项。
 
@@ -71,6 +82,12 @@ trim-last-separator = false
 - 对应 LOAD DATA 语句中的 `FIELDS ENCLOSED BY` 项。
 
 [RFC 4180]: https://tools.ietf.org/html/rfc4180
+
+### `terminator`
+
+- 指定行尾定界符。
+- 如果 `terminator` 为空，表示 "\\n"（换行）和 "\\r\\n" （回车+换行），均表示行尾。
+- 对应 LOAD DATA 语句中的 `LINES TERMINATED BY` 项。
 
 ### `header`
 
@@ -124,15 +141,28 @@ trim-last-separator = false
 
 - 当 `trim-last-separator = false`，该文件会被解析为包含 5 个字段的行 `('A', '', 'B', '', '')`。
 - 当 `trim-last-separator = true`，该文件会被解析为包含 3 个字段的行 `('A', '', 'B')`。
+- 此配置项已被弃用，建议使用兼容性更好的 `terminator`。
+
+    如果有如下旧的配置：
+
+    ```toml
+    separator = ','
+    trim-last-separator = true
+    ```
+
+    建议修改为：
+
+    ```toml
+    separator = ','
+    terminator = ",\n" # 请根据文件实际使用的换行符指定为 ",\n" 或 ",\r\n"
+    ```
 
 ### 不可配置项
 
 TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
-* 行终止符只能是 CR（`\r`），LF（`\n`）或 CRLF（`\r\n`），也就是说，无法自定义 `LINES TERMINATED BY`。
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
-* 定界符和分隔符只能为单个 ASCII 字符。
 
 ## 设置 `strict-format` 启用严格格式
 
@@ -148,7 +178,7 @@ strict-format = true
 严格格式的 CSV 文件中，每个字段仅占一行，即必须满足以下条件之一：
 
 * 分隔符为空；
-* 每个字段不包含 CR (`\r`）或 LF（`\n`）。
+* 每个字段不包含 `terminator` 对应的字符串。在默认配置下，对应每个字段不包含 CR (`\r`）或 LF（`\n`）。
 
 如果 CSV 文件不是严格格式但 `strict-format` 被误设为 `true`，跨多行的单个完整字段会被分割成两部分，导致解析失败，甚至不报错地导入已损坏的数据。
 
@@ -160,13 +190,12 @@ strict-format = true
 
 ```toml
 [mydumper.csv]
-separator = ','
+separator = ',' # 如果数据中可能有逗号，建议源文件导出时分隔符使用非常见组合字符例如'|+|'
 delimiter = '"'
 header = true
 not-null = false
 null = '\N'
 backslash-escape = true
-trim-last-separator = false
 ```
 
 示例内容：
@@ -189,7 +218,6 @@ header = true
 not-null = false
 null = 'NULL'
 backslash-escape = false
-trim-last-separator = false
 ```
 
 示例内容：
@@ -208,10 +236,10 @@ ID    Region    Count
 [mydumper.csv]
 separator = '|'
 delimiter = ''
+terminator = "|\n"
 header = false
 not-null = true
 backslash-escape = false
-trim-last-separator = true
 ```
 
 示例内容：
