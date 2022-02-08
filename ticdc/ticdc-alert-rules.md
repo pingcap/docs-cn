@@ -1,18 +1,17 @@
 ---
-title: TiCDC 集群监控报警
+title: TiCDC 集群监控报警规则
+summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 ---
 
-# TiCDC 集群监控报警
+# TiCDC 集群监控报警规则
 
 本文介绍了 TiCDC 组件的报警项及相应的报警规则。根据严重级别，报警项按照严重程度由高到低依次为：重要级别 (Critical)、警告级别 (Warning)。
 
-## 监控报警规则
-
-### 重要级别报警项
+## 重要级别报警项
 
 对于重要级别的报警，需要密切关注异常指标。
 
-#### `cdc_checkpoint_high_delay`
+### `cdc_checkpoint_high_delay`
 
 * 报警规则：
 
@@ -26,7 +25,7 @@ title: TiCDC 集群监控报警
 
     参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
-#### `cdc_resolvedts_high_delay`
+### `cdc_resolvedts_high_delay`
 
 * 报警规则：
 
@@ -40,7 +39,7 @@ title: TiCDC 集群监控报警
 
     该告警与同步任务中断类似，可参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
-#### `ticdc_processor_exit_with_error_count`
+### `ticdc_processor_exit_with_error_count`
 
 * 报警规则：
 
@@ -54,14 +53,14 @@ title: TiCDC 集群监控报警
 
     参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
-### 警告级别报警项
+## 警告级别报警项
 
 警告级别的报警是对某一问题或错误的提醒。
 
-#### `cdc_multiple_owners`
+### `cdc_multiple_owners`
 
 * 报警规则：
-    
+
     `sum(rate(ticdc_owner_ownership_counter[30s])) >= 2`
 
 * 规则描述：
@@ -72,7 +71,7 @@ title: TiCDC 集群监控报警
 
     收集 TiCDC 日志，定位原因。
 
-#### `ticdc_mounter_unmarshal_and_mount_time_more_than_1s`
+### `ticdc_mounter_unmarshal_and_mount_time_more_than_1s`
 
 * 报警规则：
 
@@ -86,7 +85,7 @@ title: TiCDC 集群监控报警
 
     收集 TiCDC 日志，定位原因。
 
-#### `cdc_sink_execute_duration_time_more_than_10s`
+### `cdc_sink_execute_duration_time_more_than_10s`
 
 * 报警规则：
 
@@ -100,7 +99,7 @@ title: TiCDC 集群监控报警
 
     检查下游是否出现问题。
 
-#### `cdc_processor_checkpoint_tso_no_change_for_1m`
+### `cdc_processor_checkpoint_tso_no_change_for_1m`
 
 * 报警规则：
 
@@ -114,7 +113,7 @@ title: TiCDC 集群监控报警
 
     参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
 
-#### `ticdc_puller_entry_sorter_sort_bucket`
+### `ticdc_puller_entry_sorter_sort_bucket`
 
 * 报警规则：
 
@@ -128,7 +127,7 @@ title: TiCDC 集群监控报警
 
     收集 TiCDC 日志，定位原因。
 
-#### `ticdc_puller_entry_sorter_merge_bucket`
+### `ticdc_puller_entry_sorter_merge_bucket`
 
 * 报警规则：
 
@@ -142,7 +141,7 @@ title: TiCDC 集群监控报警
 
     收集 TiCDC 日志，定位原因。
 
-#### `tikv_cdc_min_resolved_ts_no_change_for_1m`
+### `tikv_cdc_min_resolved_ts_no_change_for_1m`
 
 * 报警规则：
 
@@ -156,7 +155,7 @@ title: TiCDC 集群监控报警
 
     收集 TiKV 日志，定位原因。
 
-#### `tikv_cdc_scan_duration_seconds_more_than_10min`
+### `tikv_cdc_scan_duration_seconds_more_than_10min`
 
 * 报警规则：
 
@@ -170,7 +169,7 @@ title: TiCDC 集群监控报警
 
     收集 TiCDC 监控和 TiKV 日志，定位原因。
 
-#### `ticdc_sink_mysql_execution_error`
+### `ticdc_sink_mysql_execution_error`
 
 * 报警规则：
 
@@ -182,9 +181,9 @@ title: TiCDC 集群监控报警
 
 * 处理方法：
 
-    MySQL 报错的情况较多，参考[`TiCDC 常见问题和故障处理`](/ticdc/troubleshoot-ticdc.md)
+    MySQL 报错的情况较多，参考[`TiCDC 常见问题和故障处理`](/ticdc/troubleshoot-ticdc.md)。
 
-#### `ticdc_memory_abnormal`
+### `ticdc_memory_abnormal`
 
 * 报警规则：
 
@@ -193,7 +192,7 @@ title: TiCDC 集群监控报警
 * 规则描述：
 
     TiCDC 堆内存使用量超过 10 GiB。
-    
+
 * 处理方法：
 
     收集 TiCDC 监控和 TiCDC 日志，定位原因。

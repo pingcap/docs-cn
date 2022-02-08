@@ -6,6 +6,8 @@ title: tiup cluster scale-in
 
 `tiup cluster scale-in` 命令用于集群缩容，缩容即下线服务，最终会将指定的节点从集群中移除，并删除遗留的相关文件。
 
+## 下线特殊处理
+
 由于 TiKV，TiFlash 和 TiDB Binlog 组件的下线是异步的（需要先通过 API 执行移除操作）并且下线过程耗时较长（需要持续观察节点是否已经下线成功），所以对 TiKV，TiFlash 和 TiDB Binlog 组件做了特殊处理：
 
 - 对 TiKV，TiFlash 及 TiDB Binlog 组件的操作:
@@ -39,9 +41,9 @@ tiup cluster scale-in <cluster-name> [flags]
 - 数据类型：`BOOLEAN`
 - 该选项默认关闭，默认值为 `false`。在命令中添加该选项，并传入 `true` 值或不传值，均可开启此功能。
 
-> **注意：**
+> **警告：**
 >
-> 强制移除 TiKV 节点不会等待数据调度，移除一个以上正在提供服务的 TiKV 节点会有数据丢失的风险。
+> 使用该选项强制移除正在服务和下线中的 TiKV / TiFlash 节点时，这些节点会被直接删除，不等待数据调度完成，因此这个场景下存在较大概率丢失数据的风险。不建议对未宕机的节点使用该选项。
 
 ### --transfer-timeout（uint，默认 300）
 
