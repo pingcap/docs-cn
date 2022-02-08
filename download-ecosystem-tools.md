@@ -4,7 +4,15 @@ title: TiDB 工具下载
 
 # TiDB 工具下载
 
-本页面汇总了 TiDB 周边工具官方维护版本的下载链接。
+本页面汇总了 TiDB 工具官方维护版本的下载链接。
+
+## TiUP
+
+TiUP 安装过程十分简洁，无论是 Darwin 还是 Linux 操作系统，执行一行命令即可安装成功。详情请参考[安装 TiUP](/tiup/tiup-overview.md#安装-tiup)。
+
+## TiDB Operator
+
+TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，你可以选择在线或者离线部署 TiDB Operator。详情请参考[在 Kubernetes 上部署 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator)。
 
 ## TiDB Binlog
 
@@ -16,7 +24,7 @@ title: TiDB 工具下载
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.0.4` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.0.4-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.0.6` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.0.6-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
@@ -28,7 +36,7 @@ title: TiDB 工具下载
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v5.0.4` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.4-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v5.0.6` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.6-linux-amd64.tar.gz`。
 
 ## 备份和恢复 (BR) 工具
 
@@ -40,7 +48,7 @@ title: TiDB 工具下载
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v5.0.4` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.4-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v5.0.6` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.6-linux-amd64.tar.gz`。
 
 ## TiDB DM (Data Migration)
 
@@ -64,7 +72,7 @@ title: TiDB 工具下载
 
 > **注意：**
 >
-> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v5.0.4` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.4-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
+> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v5.0.6` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.0.6-linux-amd64.tar.gz`。可以通过 [Dumpling Release](https://github.com/pingcap/dumpling/releases) 查看当前已发布版本。
 > - Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
 ## sync-diff-inspector

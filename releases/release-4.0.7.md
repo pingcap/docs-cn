@@ -46,7 +46,7 @@ TiDB 版本：4.0.7
 
     + TiCDC
 
-        - 提升开启 Old Value 后 MySQL Sink 的同步效率 [#955](https://github.com/pingcap/ticdc/pull/955)
+        - 提升开启 Old Value 后 MySQL Sink 的同步效率 [#955](https://github.com/pingcap/tiflow/pull/955)
 
     + Backup & Restore (BR)
 
