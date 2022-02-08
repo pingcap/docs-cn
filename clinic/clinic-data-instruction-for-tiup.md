@@ -61,7 +61,6 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 | 日志 | ticdc.log | --include=log|
 | Error 日志 |ticdc_stderr.log| --include=log|
 |  配置文件 |  ticdc.toml| --include=config|
-|  实时配置| config.json| --include=config |
 
 
 ### Prometheus 监控数据

@@ -132,12 +132,27 @@ diag-collector   NodePort   10.111.143.227   <none>            4917:31917/TCP   
 {{< copyable "shell-regular" >}}
 
 ```bash
-curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2021-12-08 12:00 +0800","to": "2021-12-08 18:00 +0800"}'
+curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
 ```
 API 调用参数说明：
 - clusterName 为 TiDB 集群名称
 - namespace 为 TiDB 集群所在的 namespace 名称（不是 TiDB Operator 所在的 namespace）
-- from 和 to 分别为采集的起止时间，“+0800” 代表时区。
+- from 和 to 分别为采集的起止时间，“+0800” 代表时区。支持的时间格式如下：
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    "2006-01-02T15:04:05Z07:00"
+    "2006-01-02T15:04:05.999999999Z07:00"
+    "2006-01-02 15:04:05 -0700",
+    "2006-01-02 15:04 -0700",
+    "2006-01-02 15 -0700",
+    "2006-01-02 -0700",
+    "2006-01-02 15:04:05",
+    "2006-01-02 15:04",
+    "2006-01-02 15",
+    "2006-01-02",
+    ```
+
 
 
 请求响应：
@@ -251,24 +266,21 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload
 {{< copyable "shell-regular" >}}
 
 ```bash
-kubectl get pod -n  ${namespace}   | grep diag
-```
+kubectl get pod --all-namespaces  | grep diag
+tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
 
-（2）进入 Pod
+```
+- 在上述例子中， diag pod 的名称为 diag-collector-69bf78478c-nvt47， 其所在的 namespace 为 tidb-admin。
+
+（2）进入 Pod 并查看数据
 {{< copyable "shell-regular" >}}
 
 ```bash
 kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
+/ # cd diag-${id}
 ```
 其中
 - ${namespace} 替换为 TiDB Operator 所在的 namespace 名称（通常为 tidb-admin, 下同）
-
-（3）查看数据
-{{< copyable "shell-regular" >}}
-
-```bash
- ~ cd /diag-${id}
-```
 
 # 使用 Clinic 工具快速诊断集群
 
@@ -289,3 +301,61 @@ curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["co
 ```
 其中：
 - 请求中的 id 为采集数据任务的 ID 编号，在上述例子中为 fMcXDZ4hNzs。
+- 响应中会列出发现的配置风险和建议配置的知识库链接。
+诊断响应示例：
+{{< copyable "shell-regular" >}}
+
+```bash
+stdout:
+# Check Result Report
+basic 2022-02-07T12:00:00+08:00
+
+## 1. Cluster Information
+- Cluster ID: 7039963340562527412
+- Cluster Name: basic
+- Cluster Version: v5.4.0
+
+## 2. Sample Information
+- Sample ID: fPrz0RnDxRn
+- Sampling Date: 2022-02-07T12:00:00+08:00
+- Sample Content:: [monitor config]
+
+## 3. Main results and abnormalities
+In this inspection, 21 rules were executed.
+The results of **3** rules were abnormal and needed to be further discussed with support team.
+The following is the details of the abnormalities.
+
+### Configuration Summary
+The configuration rules are all derived from PingCAP’s OnCall Service.
+If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
+There were **3** abnormal results.
+
+#### Rule Name: tidb-max-days
+- RuleID: 100
+- Variation: TidbConfig.log.file.max-days
+- For more information, please visit: https://s.tidb.io/msmo6awg
+- Check Result: 
+  TidbConfig_172.20.21.213:4000   TidbConfig.log.file.max-days:0   warning  
+
+
+#### Rule Name: pdconfig-max-days
+- RuleID: 209
+- Variation: PdConfig.log.file.max-days
+- For more information, please visit: https://s.tidb.io/jkdqxudq
+- Check Result: 
+  PdConfig_172.20.22.100:2379   PdConfig.log.file.max-days:0   warning  
+  PdConfig_172.20.14.102:2379   PdConfig.log.file.max-days:0   warning  
+  PdConfig_172.20.15.222:2379   PdConfig.log.file.max-days:0   warning  
+
+
+#### Rule Name: pdconfig-max-backups
+- RuleID: 210
+- Variation: PdConfig.log.file.max-backups
+- For more information, please visit: https://s.tidb.io/brd9zy53
+- Check Result: 
+  PdConfig_172.20.22.100:2379   PdConfig.log.file.max-backups:0   warning  
+  PdConfig_172.20.14.102:2379   PdConfig.log.file.max-backups:0   warning  
+  PdConfig_172.20.15.222:2379   PdConfig.log.file.max-backups:0   warning  
+
+Result report and record are saved at /diag-fPrz0RnDxRn/report-220208030210
+```
