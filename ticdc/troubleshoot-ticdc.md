@@ -261,13 +261,13 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
 
 ## TiCDC 把数据同步到 Kafka 时，能在 TiCDC 中控制单条消息大小的上限吗？
 
-可以在 `sink-uri` 中配置 `max-message-bytes`，它控制每次向 Kafka producer 发送的单条消息的最大大小。如果 TiCDC 尝试发送的数据大小超过该值，则会报错 `Message was too large`。
+可以在 `sink-uri` 中配置 `max-message-bytes`，它控制每次向 Kafka producer 发送的单条消息的最大大小。
 
 ## 使用 TiCDC 同步消息到 Kafka 时 Kafka 报错 `Message was too large`
 
-发生 `Message was too large` 的原因是，单条数据的大小，超过了 changefeed 的 `max-message-bytes`。如果遇到该问题，可以按照以下步骤解决该报错：
+发生 `Message was too large` 的原因是，TiCDC Kafka Producer 尝试发送的单条数据的大小，超过了 Topic 的 [`max.message.bytes`](https://kafka.apache.org/documentation/#topicconfigs_max.message.bytes)。为了解决该问题，需要保证 TiCDC Kafka Producer 不会发送超过该大小的数据。可以通过调大 `max.message.bytes` 参数解决问题。操作步骤如下：
 
-1. 确认自身业务可能发送的单条数据最大大小，假设为 10M (10485760 bytes), 确保 Topic 的 `max.message.bytes` 不小于 10M。
+1. 确认自身业务可能发送的单条数据最大大小。假设为 10M (10485760 bytes), 确保 Topic 的 `max.message.bytes` 不小于 10M。
 
 2. 使用 `cdc cli changefeed pause` 暂停同步任务。
 
@@ -277,7 +277,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="kafka://127.0.
     cdc cli changefeed pause -c test-cf --pd=http://10.0.10.25:2379
     ```
 
-3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置。
+3. 使用 `cdc cli changefeed update` 更新原有 changefeed 的配置，使得 sink-uri 中的 `max-message-bytes` 等于 Topic 的 `max.message.bytes`。
 
     {{< copyable "shell-regular" >}}
 

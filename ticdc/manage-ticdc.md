@@ -225,7 +225,7 @@ URI 中可配置的的参数如下：
 * TiCDC 建议用户总是指定 `max-message-bytes` 参数，该参数会被用于初始化 Kafka producer，其限制了 TiCDC 能够发送到 Kafka producer 的最大消息的大小，建议该值不小于业务可能产生的单条数据变更事件的大小。比如，如果业务单条数据变更事件的大小不超过 10M，那么可以将 `max-message-bytes` 设为 `10485760`。
 * TiCDC 建议使用 `canal-json` 协议。
 
-如果 topic 已经存在，并且有 `max.message.bytes` 为 `10485760`，partitions 的个数为 3，可以参考如下 `sink-uri`:
+如果 Topic 已经存在，并且有 `max.message.bytes` 为 `10485760`，partitions 的个数为 3，可以参考如下 `sink-uri`:
 
 ```shell
 --sink-uri="kafka://127.0.0.1:9092/topic-name?max-message-bytes=10485760&partition-num=3&protocol=canal-json"
@@ -234,9 +234,9 @@ URI 中可配置的的参数如下：
  如果在创建 changefeed 时指定的 Topic 尚未存在：
  
 * TiCDC 将会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建该 Topic，建议明确指定这两个参数，`replication-factor` 参数值不能小于 broker 的 [`min.insync.replicas`](https://kafka.apache.org/documentation/#brokerconfigs_min.insync.replicas) 参数。
-* 被创建的 Topic 的 `max.message.bytes` 参数由 Kafka broker 的 [`message.max.bytes`](https://kafka.apache.org/documentation/#brokerconfigs_message.max.bytes) 参数确定。建议在 `sink-uri` 里明确指定 `max-message-bytes` 参数，保证其不大于 topic 的 `max.message.bytes` 参数。
+* 被创建的 Topic 的 `max.message.bytes` 参数由 Kafka broker 的 [`message.max.bytes`](https://kafka.apache.org/documentation/#brokerconfigs_message.max.bytes) 参数确定。建议在 `sink-uri` 里明确指定 `max-message-bytes` 参数，保证其不大于 Topic 的 `max.message.bytes` 参数。
 
-如果需要 TiCDC 自动创建 topic，可以参考如下 `sink-uri`:
+如果需要 TiCDC 自动创建 Topic，可以参考如下 `sink-uri`:
 
 ```shell
 --sink-uri="kafka://127.0.0.1:9092/topic-name?partition-num=3&replication-factor=1&max-message-bytes=10485760&protocol=canal-json"
