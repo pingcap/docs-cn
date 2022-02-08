@@ -101,11 +101,6 @@ kubectl apply -n ${namespace} -f manifest
 kubectl get pod --all-namespaces | grep diag
 tidb-admin   diag-collector-69bf78478c-d24sn        1/1   Running      0     2m16s
 ```
-
-- 如果状态一直不能变成 running ，可查看该 Pod 日志确认是否有报错。
-
-
-
 ## 使用概述
 Clinic 工具主要用于以下两个场景，方便用户快速获取诊断数据和做基础集群诊断：
 - [使用 Clinic diag 工具采集诊断数据](/clinic-uyser-guide-for-operator.md#使用-clinic-diag-工具采集诊断数据)
