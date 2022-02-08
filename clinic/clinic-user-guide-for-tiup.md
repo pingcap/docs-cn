@@ -41,7 +41,7 @@ Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控�
 - 保留诊断数据做后期分析。
 
 ### 第一步：确定需要采集的数据
-Clinic 支持采集的详细数据列表在[Clinic 数据采集说明 - TiUP 环境]()，建议收集完整的监控数据、日志、配置信息等数据，有助于提升后续诊断效率。  
+Clinic 支持采集的详细数据列表在[Clinic 数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)，建议收集完整的监控数据、日志、配置信息等数据，有助于提升后续诊断效率。  
 
 ### 第二步：采集数据
 Clinic 支持采集 TiDB 集群和 DM 集群的数据，将分别进行介绍。
@@ -176,7 +176,7 @@ packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
 ```
   - 打包时会同时进行加密和压缩。测试环境中 800MB 数据压缩后变为 57MB。
   - 打包后文件将会是 xxxx.diag，是可以被正常上传的，不需要进行额外处理。
-  - 如果用户想直接转发收集的数据并不从 Clinic Server查看，可以自行压缩转发。 Package 命令压缩后的数据包必须上传到 Clinic Server 后才能解密查看。
+  - 如果用户想直接转发收集的数据并不在 Clinic Server 查看，可以自行压缩转发。 Package 命令压缩后的数据包必须上传到 Clinic Server 后才能解密查看。
 
 2. 在可以连通 Clinic Server 的网络环境下上传压缩包：
  {{< copyable "shell-regular" >}}
@@ -203,9 +203,9 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
 - 内核参数列表在 sysctl.conf 中
 - 内核日志在 dmesg.log 中
 - 采集当时的网络连接情况在 ss.txt 中
-- 配置数据在每节点目录下的config.json中
+- 配置数据在每节点目录下的 config.json 中
 - 集群本身的元信息在 meta.yaml 中，此文件位于采集数据存储目录的顶层。
-- 监控数据在/monitor文件目录中，默认经过压缩，无法直接查看，如需直接查看监控指标的 JSON 文件内容，可在采集时通过 --compress-metrics=false 参数禁用压缩。
+- 监控数据在 /monitor 文件目录中，默认经过压缩，无法直接查看，如需直接查看监控指标的 JSON 文件内容，可在采集时通过 --compress-metrics=false 参数禁用压缩。
 
 ## 使用 Clinic 工具快速诊断集群
 

@@ -6,7 +6,7 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 # Clinic 数据采集说明 - TiUP 环境
 
 ## 数据用途
-仅用集群问题分析和诊断。
+仅用于集群问题分析和诊断。
 
 ## 数据存储和安全
 数据存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器，数据诊断分析服务器位于 PingCAP 内网，在中国境内。
@@ -24,8 +24,8 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 |  日志 | tidb.log | --include=log|
-|  Error 日志 | meta.yaml| --include=log|
-|  慢日志| tidb_stderr.log|--include=log |
+|  Error 日志 | tidb_stderr.log| --include=log|
+|  慢日志| tidb_slow_query.log|--include=log |
 | 配置文件 |  tidb.toml|--include=config |
 |  实时配置| config.json |--include=config |
 
@@ -84,9 +84,7 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 | 基础的系统和硬件信息|insight.json| --include=system |
 |  系统 /etc/security/limits.conf 中的内容|limits.conf| --include=system |
 | 内核参数列表 |sysctl.conf| --include=system |
-|  基础的系统和硬件信息|insight.json| --include=system |
 |  socket 统计信息，ss 命令结果|ss.txt| --include=system |
-
 
 
 ## DM 集群数据采集范围

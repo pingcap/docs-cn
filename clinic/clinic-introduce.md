@@ -1,14 +1,17 @@
 ---
 title: Clinic 诊断服务简介
-summary: 详细介绍 Clinic 服务
+summary: 详细介绍 Clinic 诊断服务，包括工具组件、工作原理和使用场景。
 ---
 
-# Clinic 诊断服务简介
+## Clinic 诊断服务简介
+Clinic 是 PingCAP 对 TiDB 集群提供的诊断服务，包括集群侧工具和云服务，用于从全生命周期确保 TiDB 集群稳定运行、预测并降低问题出现概率、快速定位并修复问题。该工具支持对[使用 TiUP 部署的集群](clinic/clinic-data-instruction-for-tiup.md)和[使用 TiDB Operator 部署的集群](clinic/clinic-user-guide-for-operator.md)进行数据采集和快速检查。
+> **注意：**
+>
+> Clinic 的集群侧工具暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采样。
 
-Clinic 诊断服务是 PingCAP 对 TiDB 集群提供的诊断工具和服务产品。产品旨在从全生命周期确保集群稳定运行，预测并降低问题出现概率，快速定位并修复问题。
-Clinic 诊断服务包括 2 个组件：
-- Diag： 部署在客户集群侧，支持诊断数据采集（collect）、本地快速健康检查（check）、诊断数据上传等功能。
-- Clinic server ：部署在云端，提供 SaaS 模式的诊断服务, 接收诊断数据的上传，提供诊断数据的存储、在线查看、在线诊断以及诊断报告。 Clinic Beta 版本的 Server 端功能暂不开放给外部用户使用。
+Clinic 包括 2 个组件：
+- Diag：部署在客户集群侧。该组件支持诊断数据采集 (collect) 、本地快速健康检查 (check)、诊断数据上传等功能。
+- Clinic Server：部署在云端。该组件提供 SaaS 模式的诊断服务，可接收上传到该组件的的诊断数据，也可提供诊断数据的存储、在线查看、在线诊断以及诊断报告。Clinic Beta 版本的 Server 端功能暂不开放给外部用户使用。
 
 本文介绍了 Clinic 的工作原理和使用场景。
 
