@@ -66,19 +66,19 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 | Error 日志 | `ticdc_stderr.log` | `--include=log` |
 |  配置文件 | `ticdc.toml` | `--include=config` |
 
-
 ### Prometheus 监控数据
+
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 所有的 Metrics 数据|XXXXX.json| --include=monitor |
-|  Alert 配置 |alerts.json| --include=monitor |
+| 所有的 Metrics 数据 | `XXXXX.json` | `--include=monitor` |
+|  Alert 配置 | `alerts.json` | `--include=monitor` |
 
 ### TiDB 系统变量 
+
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 获取 tidb 系统变量（默认不采集，采集需要额外提供 db 帐号） |mysql.tidb.csv| --include=db_vars|
-| |global_variables.csv| --include=db_vars |
-
+| 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars` |
+| | `global_variables.csv` | `--include=db_vars` |
 
 ### 集群系统信息
 
