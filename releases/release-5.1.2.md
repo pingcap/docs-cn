@@ -26,6 +26,12 @@ TiDB 版本：5.1.2
 
     + TiCDC
 
+        - 从 v5.1.2 版本起，TiCDC 不再支持环形同步功能
+
++ Tools
+
+    + TiCDC
+
         - 将兼容版本从 `5.1.0-alpha` 改为 `5.2.0-alpha` [#2659](https://github.com/pingcap/tiflow/pull/2659)
 
 ## 改进提升
