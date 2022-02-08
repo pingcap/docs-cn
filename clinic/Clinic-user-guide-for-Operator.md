@@ -59,9 +59,9 @@ roleRef:
 
 对于 cert.yaml ，默认无需修改。如需更换上传前对压缩包加密所使用的证书，可编辑 cert.yaml 替换证书内容。
 
-### 部署 diag pod
+### 第 2 步：部署 Diag Pod
 
-编辑修改 manifest 文件完成后，使用 kubectl 命令将其应用到 Kubernetes 集群中以实际创建 diag pod：
+完成对 MANIFEST 文件的编辑与修改后，使用 kubectl 命令把其应用到 Kubernetes 集群中，从而实际创建 Diag Pod：
 
 {{< copyable "shell-regular" >}}
 
