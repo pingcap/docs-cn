@@ -50,19 +50,21 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 | tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show 输出 | `placement-rule.json` | `--include=config` |
 
 ### TiFlash 诊断数据
+
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | tiflash.log | --include=log|
-| Error 日志 |tiflash_stderr.log| --include=log|
-|  配置文件 |  tiflash-learner.toml, tiflash-preprocessed.toml, tiflash.toml| --include=config|
-|  实时配置| config.json| --include=config |
+| 日志 | `tiflash.log` | `--include=log` |
+| Error 日志 | `tiflash_stderr.log` | `--include=log` |
+|  配置文件 |  `tiflash-learner.toml`，`tiflash-preprocessed.toml`，`tiflash.toml` | `--include=config` |
+|  实时配置 | `config.json` | `--include=config` |
 
 ### TiCDC 诊断数据
+
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | ticdc.log | --include=log|
-| Error 日志 |ticdc_stderr.log| --include=log|
-|  配置文件 |  ticdc.toml| --include=config|
+| 日志 | `ticdc.log` | `--include=log`|
+| Error 日志 | `ticdc_stderr.log` | `--include=log` |
+|  配置文件 | `ticdc.toml` | `--include=config` |
 
 
 ### Prometheus 监控数据
