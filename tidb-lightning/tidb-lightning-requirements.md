@@ -1,5 +1,5 @@
 ---
-title: 使用 TiDB Lightning 所需要的前提条件
+title: TiDB Lightning 使用前提
 summary: 了解 TiDB Lightning 运行时所需要的各种要求。
 ---
 
