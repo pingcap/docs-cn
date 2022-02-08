@@ -75,7 +75,9 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 ```
 
-对于 cert.yaml ，默认无需修改。如需更换上传前对压缩包加密所使用的证书，可编辑 cert.yaml 替换证书内容。
+#### `cert.yaml ` 文件
+
+该文件的内容默认无需修改。如需更换上传前对压缩包加密所使用的证书，可在该文件中替换证书内容。
 
 ### 第 2 步：部署 Diag Pod
 
