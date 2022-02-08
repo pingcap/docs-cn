@@ -90,8 +90,11 @@ kubectl apply -n ${namespace} -f manifest
 ```
 其中，`${namespace}` 应替换为 TiDB Operator 所在的 `namespace` 名称，其通常为 `tidb-admin`（下同）。
 
-### 查看 diag pod 的运行状态
-使用以下命令查看名为 diag-collector-xxx 的 pod, 待其状态变为 Running 后进行下一步操作。
+### 第 3 步：查看 Diag Pod 的运行状态
+
+使用以下命令，查看名为 `diag-collector-xxx` 的 Pod。
+
+待其状态变为 Running 后，再进行下一步操作。如果状态一直不能变成 Running，可查看该 Pod 日志确认是否有报错。
 {{< copyable "shell-regular" >}}
 
 ```bash
