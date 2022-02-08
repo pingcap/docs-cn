@@ -262,7 +262,11 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
     - 写 RocksDB 比较慢，**RocksDB kv**/`max write duration` 比较高（单个 Raft log 可能包含很多个 kv，写 RocksDB 的时候会把 128 个 kv 放在一个 write batch 写入到 RocksDB，所以一次 apply log 可能涉及到多次 RocksDB 的 write）；
     - 其他情况，[需报 bug](https://github.com/tikv/tikv/issues/new?template=bug-report.md)。
 
-- 4.5.6 其他情况，请参考 [Performance Map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 上的写入路径来分析。
+- 4.5.6 Raft commit log 慢了。
+
+    - TiKV Grafana 的 **Raft IO**/`commit log duration` 比较高（4.x 版本的 Grafana 才有该 metric）。每个 Region 对应一个独立的 Raft group，Raft 本身是有流控机制的，类似 TCP 的滑动窗口机制，通过参数 `[raftstore] raft-max-inflight-msgs = 256` 来控制滑动窗口的大小，如果有热点写入并且 `commit log duration` 比较高可以适度调大该参数，比如 1024。
+
+- 4.5.7 其他情况，请参考 [Performance Map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png) 上的写入路径来分析。
 
 ## 5. PD 问题
 
