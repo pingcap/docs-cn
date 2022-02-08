@@ -24,19 +24,16 @@ summary: 详细说明 Clinic 在 Operator 集群中能够采集哪些诊断数�
 ### TiDB 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 配置文件 |  tidb.toml|--include=config |
 | 实时配置 | config.json |--include=config |
 
 ### TiKV 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 配置文件 |  tikv.toml|--include=config |
 | 实时配置 | config.json |--include=config |
 
 ### PD 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 配置文件 |  pd.toml|--include=config |
 | 实时配置 | config.json |--include=config |
 | tiup ctl pd -u http://${pd IP}:${PORT} store  输出 | store.json|--include=config|
 | tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show 输出 |placement-rule.json|--include=config |
@@ -44,7 +41,11 @@ summary: 详细说明 Clinic 在 Operator 集群中能够采集哪些诊断数�
 ### TiFlash 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 配置文件 |  tiflash-learner.toml，tiflash-preprocessed.toml，tiflash.toml|--include=config |
+| 实时配置 | config.json |--include=config |
+
+### Ticdc 诊断数据
+|诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| :------ | :------ |:-------- |
 | 实时配置 | config.json |--include=config |
 
 ### Prometheus 监控数据
