@@ -34,6 +34,12 @@ TiDB 版本：5.0.4
         - 修复了 `prepared` 语句和直接查询的结果可能不一致的问题 [#22949](https://github.com/pingcap/tidb/issues/22949)
         - 修复了当 `YEAR` 类型与字符串或整数类型比较时，结果可能错误的问题 [#23262](https://github.com/pingcap/tidb/issues/23262)
 
++ Tools
+
+    + TiCDC
+
+        - 从 v5.0.4 版本起，TiCDC 不再支持环形同步功能
+
 ## 功能增强
 
 + TiDB
