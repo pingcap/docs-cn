@@ -48,10 +48,15 @@ summary: 在 Operator 部署的集群上如何使用 Clinic 工具进行数据�
           value: "password
 ```
 
-其中：
-- CLINIC_USERNAME 为上传所需的用户名。
-- CLINIC_PASSWORD 为上传所需的密码。
-- 模板中使用的镜像地址为 https://drive.google.com/file/d/1sNRQDFhKgi_Gl6wPt7dHbQLuQXbd03YW/view?usp=sharing 。
+
+参数说明：
+- `CLINIC_USERNAME`：上传所需的用户名
+- `CLINIC_PASSWORD`：上传所需的密码
+- 模板中使用的镜像地址：https://drive.google.com/file/d/1sNRQDFhKgi_Gl6wPt7dHbQLuQXbd03YW/view?usp=sharing
+
+#### `rbac.yaml` 文件
+
+在 `rbac.yaml` 文件中，需要将 `${namespace}` 占位符修改为部署 TiDB Operator 所在的 `namespace` 名称（通常为 tidb-admin）。
 
 {{< copyable "shell-regular" >}}
 
