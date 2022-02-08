@@ -67,7 +67,7 @@ Assume that the upstream library is named `my_db`, and the name of each sharded 
 
 Export two sharded tables on the 5 nodes where TiDB Lightning is deployed:
 
-- If the two sharded tables are in the same MySQL instance, you can use the `-f` parameter of Dumpling to directly export them. When using TiDB Lightning to import, you can specify `data-source-dir` as the directory where Dumpling exports data to;
+- If the two sharded tables are in the same MySQL instance, you can use the `--filter` parameter of Dumpling to directly export them. When using TiDB Lightning to import, you can specify `data-source-dir` as the directory where Dumpling exports data to;
 - If the data of the two sharded tables are distributed on different MySQL nodes, you need to use Dumpling to separately export them. The exported data needs to be placed in the same parent directory <b>but in different sub-directories</b>. When using TiDB Lightning to perform parallel import, you need to specify `data-source-dir` as the parent directory.
 
 For more information on how to use Dumpling to export data, see [Dumpling](/dumpling-overview.md).
@@ -103,7 +103,7 @@ target-schema = "my_db"
 target-table = "my_table"
 ```
 
-If the data source is stored in a distributed storage cache such as Amazon S3 or GCS, see [External Storages](/br/backup-and-restore-storages.md).
+If the data source is stored in external storage such as Amazon S3 or GCS, see [External Storages](/br/backup-and-restore-storages.md).
 
 ### Step 3: Start TiDB Lightning to import data
 
@@ -113,7 +113,7 @@ Start TiDB Lightning on each server in turn. If you use `nohup` to directly star
 
 ```shell
 # !/bin/bash
-nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
 During parallel import, TiDB Lightning automatically performs the following checks after starting the task.
@@ -139,7 +139,7 @@ TiDB Lightning also supports parallel import of single tables. For example, impo
 
 > **Note:**
 >
->In the local environment, you can use the --where parameter of Dumpling to divide the data of a single table into different parts and export it to the local disks of multiple servers in advance. This way, you can still perform parallel import. The configuration is the same as Example 1.
+>In the local environment, you can use the `--filesize` or `--where` parameter of Dumpling to divide the data of a single table into different parts and export it to the local disks of multiple servers in advance. This way, you can still perform parallel import. The configuration is the same as Example 1.
 
 Assuming that the source files are stored in Amazon S3, the table files are `my_db.my_table.00001.sql` ~ `my_db.my_table.10000.sql`, a total of 10,000 SQL files. If you want to use 2 TiDB Lightning instances to speed up the import, you need to add the following settings in the configuration file:
 
