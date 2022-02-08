@@ -11,14 +11,27 @@ summary: 在 Operator 部署的集群上如何使用 Clinic 工具进行数据�
 
 在 Operator 部署的集群中， Clinic Diag 数据采集工具需要部署为一个独立的 pod。本文介绍如何通过 kubectl 命令创建并部署 Diag pod ，然后通过 API 调用继续数据采集和快速检查。
 
-## 工具安装
-### manifest 说明
-使用下面 的 yaml 文件为 manifest 模板，按照后续的说明修改其中的关键参数为实际值。manifest 模版包括以下三个文件：
-- diag.yaml
-- rbac.yaml
-- cert.yaml
+## Clinic 工具安装
 
-在 diag.yaml 中, 需要将文件中的用户名和密码配置修改为真实的用户名和密码。目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
+本节详细介绍了安装 Clinic 工具的步骤。
+
+### 第 1 步：编辑 MANIFEST 文件模板
+
+安装 Clinic 工具时，可以使用以下 3 个 yaml 文件为 MANIFEST 文件模板：
+
+- `diag.yaml`
+- `rbac.yaml`
+- `cert.yaml`
+
+使用文件时，请按照下文中的具体说明将文件的关键参数修改为实际值。
+
+#### `diag.yaml`
+
+在 `diag.yaml` 中，需要将文件中的用户名和密码修改为真实的用户名和密码。
+
+> **注意：**
+>
+> 目前 Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员或 clinic-trail@pingcap.com 获取试用账号。
 
 {{< copyable "shell-regular" >}}
 
