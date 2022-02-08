@@ -609,7 +609,7 @@ sync-ddl = true
 
 在三个集群 A、B 和 C 上开启环形复制，其中 A 到 B 的同步使用两个 TiCDC。A 作为三个集群的 DDL 入口。
 
-![TiCDC cyclic replication](/media/cdc-cyclic-replication.png)
+![TiCDC cyclic replication](/media/ticdc/cdc-cyclic-replication.png)
 
 使用环形同步功能时，需要设置同步任务的创建参数：
 
