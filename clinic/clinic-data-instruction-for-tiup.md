@@ -30,22 +30,24 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 |  实时配置| config.json |--include=config |
 
 ### TiKV 诊断数据
+
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | tikv.log | --include=log|
-|  Error 日志 | tikv_stderr.log| --include=log|
-| 配置文件 |  tikv.toml|--include=config|
-|  实时配置| config.json|--include=config |
+| 日志 | `tikv.log` | `--include=log` |
+|  Error 日志 | `tikv_stderr.log` | `--include=log` |
+| 配置文件 |  `tikv.toml` | `--include=config` |
+|  实时配置  | `config.json` | `--include=config` |
 
 ### PD 诊断数据
+
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 日志 | pd.log | --include=log|
-| Error 日志 |pd_stderr.log| --include=log|
-|  配置文件 | pd.toml|--include=config|
-|  实时配置| config.json|--include=config |
-| tiup ctl pd -u http://${pd IP}:${PORT} store  输出 | store.json|--include=config|
-|  tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show 输出 |placement-rule.json|--include=config |
+| 日志 | `pd.log` | `--include=log` |
+| Error 日志 | `pd_stderr.log` | `--include=log` |
+| 配置文件 | `pd.toml` | `--include=config` |
+| 实时配置| `config.json` | `--include=config` |
+| tiup ctl pd -u http://${pd IP}:${PORT} store 输出 | `store.json` | `--include=config` |
+| tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show 输出 | `placement-rule.json` | `--include=config` |
 
 ### TiFlash 诊断数据
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
