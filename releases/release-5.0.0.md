@@ -393,7 +393,7 @@ Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型�
 
 ### TiCDC 支持 TiDB 集群之间环形同步（**实验特性**）
 
-[用户文档](/ticdc/manage-ticdc.md#环形同步)，[#471](https://github.com/pingcap/tiflow/issues/471)
+[用户文档](https://docs.pingcap.com/zh/tidb/v5.0/manage-ticdc/#环形同步)，[#471](https://github.com/pingcap/tiflow/issues/471)
 
 由于地理位置差异导致的通讯延迟等问题，存在以下场景：用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 之间相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
 
