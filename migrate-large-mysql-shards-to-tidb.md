@@ -29,6 +29,7 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
 - [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+- [下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
 - [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
 ### 资源要求
@@ -37,7 +38,7 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 ### 分表数据冲突检查
 
-迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理),这里做简要描述：
+迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)，这里做简要描述：
 
 假设 table1~4 具有相同的表结构如下：
 

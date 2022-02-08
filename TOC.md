@@ -196,8 +196,8 @@
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - 前置需求
       - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
       - [权限要求](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
     - 主要功能
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [表库过滤](/table-filter.md)
