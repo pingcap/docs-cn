@@ -99,7 +99,7 @@ tiup cluster edit-config <cluster-name>
 
 #### 同步任务状态流转
 
-本功能适用于 v5.1.2 及更新版本。
+本功能适用于 v5.0.2 及更新版本。
 
 同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
 
@@ -707,7 +707,7 @@ sync-ddl = true
 
 在三个集群 A、B 和 C 上开启环形复制，其中 A 到 B 的同步使用两个 TiCDC。A 作为三个集群的 DDL 入口。
 
-![TiCDC cyclic replication](/media/cdc/cdc-cyclic-replication.png)
+![TiCDC cyclic replication](/media/ticdc/cdc-cyclic-replication.png)
 
 使用环形同步功能时，需要设置同步任务的创建参数：
 
