@@ -28,8 +28,8 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 - [使用 TiUP 安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
-- [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
-- [下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
+- [TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+- [TiDB Lightning 下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
 - [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
 ### 分表数据冲突检查
