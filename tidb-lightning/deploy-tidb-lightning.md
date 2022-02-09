@@ -20,20 +20,6 @@ title: TiDB Lightning 部署与执行
     bin/tidb-lightning-ctl --switch-mode=normal
     ```
 
-- TiDB Lightning 需要下游 TiDB 有如下权限：
-
-    | 权限 | 作用域 |
-    |:----|:------|
-    | SELECT | Tables |
-    | INSERT | Tables |
-    | UPDATE | Tables |
-    | DELETE | Tables |
-    | CREATE | Databases, tables |
-    | DROP | Databases, tables |
-    | ALTER | Tables |
-
-  如果配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
-
 ## 硬件需求
 
 `tidb-lightning`为资源密集程序，为了优化效能，建议硬件配置如下：

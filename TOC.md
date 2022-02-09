@@ -183,6 +183,10 @@
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
+    - 前置需求
+      - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
+      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
     - 主要功能
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [表库过滤](/table-filter.md)
@@ -191,7 +195,6 @@
       - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
     - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
