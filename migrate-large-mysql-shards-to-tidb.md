@@ -32,10 +32,6 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 - [下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
 - [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
-### 资源要求
-
-关于 Lightning 运行时所需资源，全量文件空间估算，及导入时下游数据库所需空间请参考 [Lightning 所需前提条件](/tidb-lightning/tidb-lightning-requirements.md)
-
 ### 分表数据冲突检查
 
 迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)，这里做简要描述：
