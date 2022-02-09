@@ -58,7 +58,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 下表列出了 TiDB 中所有的关键字。其中保留字用 `(R)` 来标识。[窗口函数](/functions-and-operators/window-functions.md)的保留字用 `(R-Window)` 来标识：
 
-{{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
+<TabsPanel letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 
 <a id="A" class="letter" href="#A">A</a>
 
