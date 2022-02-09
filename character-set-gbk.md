@@ -27,6 +27,8 @@ SHOW COLLATION WHERE CHARSET = 'gbk';
 
 ## MySQL compatibility
 
+This section provides the compatibility information between MySQL and TiDB.
+
 ### Collations
 
 The default collation of the GBK character set in MySQL is `gbk_chinese_ci`. Unlike MySQL, the default collation of the GBK character set in TiDB is `gbk_bin`. Additionally, because TiDB converts GBK to UTF8MB4 and then uses a binary collation, the `gbk_bin` collation in TiDB is not the same as the `gbk_bin` collation in MySQL.
