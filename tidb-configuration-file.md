@@ -60,7 +60,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lower-case-table-names`
 
-+ 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
++ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
 + 默认值：2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
 
