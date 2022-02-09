@@ -3,13 +3,13 @@ title: TiDB Lightning 使用前提
 summary: 了解 TiDB Lightning 运行时所需要的各种要求。
 ---
 
-# 使用 Lightning 时所需要的前提条件
+# TiDB Lightning 使用前提
 
-使用 Lightning 导入数据前，先检查环境是否满足要求，这有助于减少导入过程的错误，避免导入失败的情况。
+使用 TiDB Lightning 导入数据前，先检查环境是否满足要求，这有助于减少导入过程的错误，避免导入失败的情况。
 
 ## 下游数据库权限要求
 
-Lightning 导入数据时，根据导入方式和启用特性等，需要下游数据库用户具备不同的权限，可参考下表：
+TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要下游数据库用户具备不同的权限，可参考下表：
 
 <table border=1>
    <tr>
@@ -102,7 +102,7 @@ select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/
 select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
 ```
 
-## Lightning 运行时资源要求
+## TiDB Lightning 运行时资源要求
 
 **操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，你可以在本地虚拟化一台主机，或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程中，默认会占满 CPU，建议单独部署在一台主机上。如果条件不允许，你可以将 TiDB Lightning 和其他组件（比如`tikv-server`）部署在同一台机器上，然后设置`region-concurrency` 配置项的值为逻辑 CPU 数的 75%，以限制 TiDB Lightning 对 CPU 资源的使用。
 

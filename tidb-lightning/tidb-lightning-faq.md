@@ -17,7 +17,7 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 
 ## TiDB Lightning 对下游数据库的账号权限要求是怎样的？
 
-详细权限描述参考 [使用 Lightning 时所需要的前提条件](/tidb-lightning/tidb-lightning-requirements.md)
+详细权限描述参考 [TiDB Lightning 使用前提](/tidb-lightning/tidb-lightning-requirements.md)。
 
 ## TiDB Lightning 在导数据过程中某个表报错了，会影响其他表吗？进程会马上退出吗？
 
