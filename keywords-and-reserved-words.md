@@ -30,7 +30,7 @@ Query OK, 0 rows affected (0.08 sec)
 
 下表列出了在 TiDB 中的关键字跟保留字，保留字用 (R) 来标识：
 
-{{< tabs-panel "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z" >}}
+<TabsPanel letters="ABCDEFGHIJKLMNOPQRSTUVWXYZ" />
 
 <a name="A" class="letter" href="#A">A</a>
 
