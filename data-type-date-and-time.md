@@ -82,7 +82,7 @@ Invalid `DATE`, `DATETIME`, `TIMESTAMP` values are automatically converted to th
 
 ### `DATE` type
 
-`DATE` only contains date-portion and no time-portion, displayed in `YYYY-MM-DD` format. The supported range is '1000-01-01' to '9999-12-31':
+`DATE` only contains date-portion and no time-portion, displayed in `YYYY-MM-DD` format. The supported range is '0000-01-01' to '9999-12-31':
 
 ```sql
 DATE
@@ -102,7 +102,7 @@ TIME[(fsp)]
 
 ### `DATETIME` type
 
-`DATETIME` contains both date-portion and time-portion. Valid values range from '1000-01-01 00:00:00.000000' to '9999-12-31 23:59:59.999999'.
+`DATETIME` contains both date-portion and time-portion. Valid values range from '0000-01-01 00:00:00.000000' to '9999-12-31 23:59:59.999999'.
 
 TiDB displays `DATETIME` values in `YYYY-MM-DD HH:MM:SS[.fraction]` format, but permits assignment of values to `DATETIME` columns using either strings or numbers.  An optional fsp value in the range from 0 to 6 may be given to specify fractional seconds precision. If omitted, the default precision is 0:
 

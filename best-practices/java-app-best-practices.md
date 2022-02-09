@@ -65,6 +65,11 @@ In most scenarios, to improve execution efficiency, JDBC obtains query results i
 Usually, there are two kinds of processing methods in JDBC:
 
 - [Set `FetchSize` to `Integer.MIN_VALUE`](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html#ResultSet) to ensure that the client does not cache. The client will read the execution result from the network connection through `StreamingResult`.
+
+    When the client uses the streaming read method, it needs to finish reading or close `resultset` before continuing to use the statement to make a query. Otherwise, the error `No statements may be issued when any streaming result sets are open and in use on a given connection. Ensure that you have called .close() on any active streaming result sets before attempting more queries.` is returned.
+
+    To avoid such an error in queries before the client finishes reading or closes `resultset`, you can add the `clobberStreamingResults=true` parameter in the URL. Then, `resultset` is automatically closed but the result set to be read in the previous streaming query is lost.
+
 - To use Cursor Fetch, first [set `FetchSize`](http://makejavafaster.blogspot.com/2015/06/jdbc-fetch-size-performance.html) as a positive integer and configure `useCursorFetch=true` in the JDBC URL.
 
 TiDB supports both methods, but it is preferred that you use the first method, because it is a simpler implementation and has a better execution efficiency.
