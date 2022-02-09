@@ -1,7 +1,7 @@
 ---
 title: Migrate Data from Amazon Aurora to TiDB
 summary: Learn how to migrate data from Amazon Aurora to TiDB using DB snapshot.
-aliases: ['/tidb/dev/migrate-from-aurora-using-lightning','/docs/dev/migrate-from-aurora-mysql-database/','/docs/dev/how-to/migrate/from-mysql-aurora/','/docs/dev/how-to/migrate/from-aurora/', '/tidb/dev/migrate-from-aurora-mysql-database']
+aliases: ['/tidb/dev/migrate-from-aurora-using-lightning','/docs/dev/migrate-from-aurora-mysql-database/','/docs/dev/how-to/migrate/from-mysql-aurora/','/docs/dev/how-to/migrate/from-aurora/', '/tidb/dev/migrate-from-aurora-mysql-database/', 'tidb/dev/migrate-from-mysql-aurora/']
 ---
 
 # Migrate Data from Amazon Aurora to TiDB

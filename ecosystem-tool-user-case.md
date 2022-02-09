@@ -26,7 +26,7 @@ If you need to import full data from MySQL/Aurora, use [Dumpling](/dumpling-over
 
 ## Migrate data from MySQL/Aurora
 
-If you need to migrate both full data and incremental data from MySQL/Aurora, use [TiDB Data Migration](/dm/dm-overview.md) (DM) to perform the [full and incremental data migration](/dm/migrate-from-mysql-aurora.md).
+If you need to migrate both full data and incremental data from MySQL/Aurora, use [TiDB Data Migration](/dm/dm-overview.md) (DM) to perform the [Migrate Data from Amazon Aurora to TiDB](/migrate-aurora-to-tidb.md).
 
 If the full data volume is large (at the TB level), you can first use [Dumpling](/dumpling-overview.md) and [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to perform the full data migration, and then use DM to perform the incremental data migration.
 

@@ -1,6 +1,7 @@
 ---
 title: Migrate Data to a Downstream TiDB Table with More Columns
 summary: Learn how to migrate data to a downstream TiDB table with more columns than the corresponding upstream table.
+aliases: ['/tidb/dev/usage-scenario-downstream-more-columns/']
 ---
 
 # Migrate Data to a Downstream TiDB Table with More Columns

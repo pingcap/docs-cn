@@ -20,13 +20,13 @@ This document gives an overview of the data migration solutions that you can use
 
 You might choose different migration solutions according to the database type, deployment location, application data size, and application needs. The following sections introduce some common migration scenarios, and you can refer to these sections to determine the most suitable solution according to your needs.
 
-## Migrate from Aurora MySQL to TiDB
+## Migrate data from Aurora MySQL to TiDB
 
 When you migrate data from Aurora to a TiDB cluster deployed on AWS, your data migration takes two operations: full data migration and incremental replication. You can choose the corresponding operation according to your application needs.
 
 - [Migrate Data from Amazon Aurora to TiDB](/migrate-aurora-to-tidb.md).
 
-## Migrate from MySQL to TiDB
+## Migrate data from MySQL to TiDB
 
 If cloud storage (S3) service is not used, the network connectivity is good, and the network latency is low, you can use the following method to migrate data from MySQL to TiDB.
 
@@ -51,11 +51,11 @@ If the data size of the sharded tables is large (for example, larger than 1 TiB)
 - [Migrate data from CSV files to TiDB](/migrate-from-csv-files-to-tidb.md)
 - [Migrate data from SQL files to TiDB](/migrate-from-sql-files-to-tidb.md)
 
-## More complex migration solutions
+## More advanced migration solutions
 
 The following features can improve the migration process and might meet more needs in your application.
 
-- [Migrate with pt/gh-host](/migrate-with-pt-ghost.md)
-- [Migrate with Binlog Event Filter](/filter-binlog-event.md)
-- [Migrate with Filter Binlog Events Using SQL Expressions](/filter-dml-event.md)
-- [Migrate with More Columns in Downstream](/migrate-with-more-columns-downstream.md)
+- [Continuous Replication from Databases that Use gh-ost or pt-osc](/migrate-with-pt-ghost.md)
+- [Migrate Data to a Downstream TiDB Table with More Columns](/migrate-with-more-columns-downstream.md)
+- [Filter Binlog Events](/filter-binlog-event.md)
+- [Filter DML Events Using SQL Expressions](/filter-dml-event.md)

@@ -1,6 +1,7 @@
 ---
 title: Migrate and Merge MySQL Shards of Small Datasets to TiDB
 summary: Learn how to migrate and merge small datasets of shards from MySQL to TiDB.
+aliases: ['/tidb/dev/usage-scenario-shard-merge/', '/tidb/dev/usage-scenario-simple-migration/']
 ---
 
 # Migrate and Merge MySQL Shards of Small Datasets to TiDB

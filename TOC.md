@@ -52,9 +52,9 @@
     - [Replicate Incremental Data between TiDB Clusters](/incremental-replication-between-clusters.md)
   - Advanced Migration
     - [Continuous Replication with gh-ost or pt-osc](/migrate-with-pt-ghost.md)
+    - [Migrate to a Downstream Table with More Columns](/migrate-with-more-columns-downstream.md)
     - [Filter Binlog Events](/filter-binlog-event.md)
     - [Filter DML Events Using SQL Expressions](/filter-dml-event.md)
-    - [Migrate to a Downstream Table with More Columns](/migrate-with-more-columns-downstream.md)
 - Maintain
   - Upgrade
     - [Use TiUP (Recommended)](/upgrade-tidb-using-tiup.md)
@@ -250,19 +250,14 @@
           - [Pessimistic Mode](/dm/feature-shard-merge-pessimistic.md)
           - [Optimistic Mode](/dm/feature-shard-merge-optimistic.md)
         - [Migrate from MySQL Databases that Use GH-ost/PT-osc](/dm/feature-online-ddl.md)
-        - [Filter Certain Row Changes Using SQL Expressions](/dm/feature-expression-filter.md)
+        - [Filter DMLs Using SQL Expressions](/dm/feature-expression-filter.md)
       - [DM Architecture](/dm/dm-arch.md)
       - [Benchmarks](/dm/dm-benchmark-v5.4.0.md)
     - Quick Start
       - [Quick Start](/dm/quick-start-with-dm.md)
       - [Deploy a DM cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [Create a Data Source](/dm/quick-start-create-source.md)
-      - Data Migration Scenarios
-        - [Data Migration Scenario Overview](/dm/quick-create-migration-task.md)
-        - [Migrate Data from Multiple Data Sources to TiDB](/dm/usage-scenario-simple-migration.md)
-        - [Migrate Sharded Schemas and Tables to TiDB](/dm/usage-scenario-shard-merge.md)
-        - [Migrate Incremental Data to TiDB](/dm/usage-scenario-incremental-migration.md)
-        - [Migrate Tables when There Are More Columns Downstream](/dm/usage-scenario-downstream-more-columns.md)
+    - [Data Migration Scenarios](/dm/quick-create-migration-task.md)
     - Deploy
       - [Software and Hardware Requirements](/dm/dm-hardware-and-software-requirements.md)
       - Deploy a DM Cluster
@@ -291,13 +286,10 @@
         - [Export and Import Data Sources and Task Configuration of Clusters](/dm/dm-export-import-config.md)
         - [Handle Failed DDL Statements](/dm/handle-failed-ddl-statements.md)
       - [Manually Handle Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
+      - [Switch the MySQL Instance to Be Migrated](/dm/usage-scenario-master-slave-switch.md)
       - [Manage Schemas of Tables to be Migrated](/dm/dm-manage-schema.md)
       - [Handle Alerts](/dm/dm-handle-alerts.md)
       - [Daily Check](/dm/dm-daily-check.md)
-    - Usage Scenarios
-      - [Migrate from Aurora to TiDB](/dm/migrate-from-mysql-aurora.md)
-      - [Migrate when TiDB Tables Have More Columns](/dm/usage-scenario-downstream-more-columns.md)
-      - [Switch the MySQL Instance to Be Migrated](/dm/usage-scenario-master-slave-switch.md)
     - Troubleshoot
       - [Handle Errors](/dm/dm-error-handling.md)
       - [Handle Performance Issues](/dm/dm-handle-performance-issues.md)
