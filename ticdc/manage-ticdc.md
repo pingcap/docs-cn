@@ -374,6 +374,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
       },
       "sink": {
         "dispatchers": null,
+        "protocol": "default"
       },
       "scheduler": {
         "type": "table-number",
