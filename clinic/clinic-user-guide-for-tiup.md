@@ -7,7 +7,7 @@ summary: 在 TiUP 部署的集群上如何使用 Clinic 工具进行数据采集
 
 > **注意：**
 >
-> 本文档只针对 TiUP 部署的集群。Clinic 工具暂时不支持开启了 TLS 加密的集群和 Ansible 部署的集群。
+> 本文档只针对 TiUP 部署的集群。Clinic Diag 工具暂时不支持开启了 TLS 加密的集群和 Ansible 部署的集群。
 
 
 ## 工具安装
@@ -26,14 +26,15 @@ tiup update diag
 ```
 > **注意：**
 >
-> 对于离线集群，需要离线部署 diag 组件，可以参照[离线部署 TiUP 组件](/production-deployment-using-tiup.md)文档进行离线部署。
+> 对于离线集群，需要离线部署 Diag 工具，可以参照[离线部署 TiUP 组件](/production-deployment-using-tiup.md)文档进行离线部署。
 > Diag 工具尚未 GA，暂时不包含在官方下载页面中的 TiDB server 离线镜像包中。
-## 使用概述
-Clinic 工具主要用于以下两个场景，方便用户快速获取诊断数据和做基础集群诊断：
-- [使用 Clinic 工具采集诊断数据](/TiUP 环境操作手册.md#使用-clinic-工具采集诊断数据)
-- [使用 Clinic 工具快速诊断集群](/TiUP 环境操作手册.md#使用-clinic-工具快速诊断集群)
 
-## 使用 Clinic 工具采集诊断数据
+## 使用概述
+Clinic Diag 工具主要用于以下两个场景，方便用户快速获取诊断数据和做基础集群诊断：
+- [使用 Clinic Diag 工具采集诊断数据](/clinic/clinic-user-guide-for-tiup.md#使用-clinic-diag-工具采集诊断数据)
+- [使用 Clinic Diag 工具快速诊断集群](/clinic/clinic-user-guide-for-tiup.md#使用-clinic-diag-工具快速诊断集群)
+
+## 使用 Clinic Diag 工具采集诊断数据
 
 Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控数据、日志、配置信息等。适于在以下场景中使用：
 
@@ -41,10 +42,10 @@ Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控�
 - 保留诊断数据做后期分析。
 
 ### 第一步：确定需要采集的数据
-Clinic 支持采集的详细数据列表在[Clinic 数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)，建议收集完整的监控数据、日志、配置信息等数据，有助于提升后续诊断效率。  
+Clinic Diag 支持采集的详细数据列表在[Clinic 数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)，建议收集完整的监控数据、日志、配置信息等数据，有助于提升后续诊断效率。  
 
 ### 第二步：采集数据
-Clinic 支持采集 TiDB 集群和 DM 集群的数据，将分别进行介绍。
+Clinic Diag 支持采集 TiDB 集群和 DM 集群的数据，将分别进行介绍。
 
 #### TiDB 集群数据采集操作步骤
 一条命令收集从4小时前到2小时前的诊断数据：
@@ -158,7 +159,7 @@ Completed!
 Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
   - 上传需要提供用户名和密码，目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
-  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
+  - 上传完成后返回数据访问链接，请将 `Download URL` 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
   
 
 #### 先打包后上传
@@ -176,7 +177,7 @@ packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
 ```
   - 打包时会同时进行加密和压缩。测试环境中 800MB 数据压缩后变为 57MB。
   - 打包后文件将会是 xxxx.diag，是可以被正常上传的，不需要进行额外处理。
-  - 如果用户想直接转发收集的数据并不在 Clinic Server 查看，可以自行压缩转发。 Package 命令压缩后的数据包必须上传到 Clinic Server 后才能解密查看。
+  - 如果用户想直接转发收集的数据并不在 Clinic Server 查看，可以自行压缩转发。 `Package` 命令压缩后的数据包必须上传到 Clinic Server 后才能解密查看。
 
 2. 在可以连通 Clinic Server 的网络环境下上传压缩包：
  {{< copyable "shell-regular" >}}
@@ -193,23 +194,23 @@ Completed!
 Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
   - 上传需要提供用户名和密码，目前 Clinic 在 Beta 受邀测试使用阶段，请联系与您对接的 PingCAP 技术人员或者联系 clinic-trail@pingcap.com 获取试用账号。
-  - 上传完成后返回数据访问链接，请将 Download URL 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
+  - 上传完成后返回数据访问链接，请将 `Download URL` 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
 
 ### 可选操作：本地查看数据
 所有收集到的数据被按来源存储在以机器名和端口号命名的独立子目录中，对每个节点，其中的配置、日志等文件均按照其在真实服务器上相同的相对路径存放。
 其中：
-- 基础的系统和硬件信息在 insight.json 中
-- 系统 /etc/security/limits.conf 中的内容在 limits.conf 中
-- 内核参数列表在 sysctl.conf 中
-- 内核日志在 dmesg.log 中
-- 采集当时的网络连接情况在 ss.txt 中
-- 配置数据在每节点目录下的 config.json 中
-- 集群本身的元信息在 meta.yaml 中，此文件位于采集数据存储目录的顶层。
-- 监控数据在 /monitor 文件目录中，默认经过压缩，无法直接查看，如需直接查看监控指标的 JSON 文件内容，可在采集时通过 --compress-metrics=false 参数禁用压缩。
+- 基础的系统和硬件信息在 `insight.json` 中
+- 系统 `/etc/security/limits.conf` 中的内容在 `limits.conf` 中
+- 内核参数列表在 `sysctl.conf` 中
+- 内核日志在 `dmesg.log` 中
+- 采集当时的网络连接情况在 `ss.txt` 中
+- 配置数据在每节点目录下的 `config.json` 中
+- 集群本身的元信息在 `meta.yaml` 中，此文件位于采集数据存储目录的顶层。
+- 监控数据在 `/monitor` 文件目录中，默认经过压缩，无法直接查看，如需直接查看监控指标的 JSON 文件内容，可在采集时通过 `--compress-metrics=false` 参数禁用压缩。
 
-## 使用 Clinic 工具快速诊断集群
+## 使用 Clinic Diag 工具快速诊断集群
 
-Clinic 工具支持对集群的健康状态进行快速的诊断，目前版本主要支持配置项内容检查，快速发现不合理的配置项。
+Clinic Diag 工具支持对集群的健康状态进行快速的诊断，目前版本主要支持配置项内容检查，快速发现不合理的配置项。
 
 ### 使用步骤
 （1）采集配置数据 
@@ -224,7 +225,7 @@ tiup diag collect <cluster-name> --include="config"
 ```bash
 tiup diag check <subdir-in-output-data> 
 ```
-- <sudir-in-output-data>  是用 diag collect 命令收集数据后包含 meta.yaml 的目录 。
+- <sudir-in-output-data>  是用 `diag collect` 命令收集数据后包含 `meta.yaml` 的目录 。
 
 ### 诊断输出示例：
 诊断结果会在命令行返回，示例如下：
@@ -279,7 +280,7 @@ Result report and record are saved at diag-fNTnz5MGhr6/report-220125153215
 
 2. 上传后返回的数据访问链接用户无法打开，怎么办？
 
-  回答： Clinic 工具目前在 Beta 试用阶段，数据访问链接未开放给外部用户，只有经授权的 PingCAP 内部技术支持人员能打开查看数据。
+  回答： Clinic 诊断服务目前在 Beta 试用阶段，数据访问链接未开放给外部用户，只有经授权的 PingCAP 内部技术支持人员能打开查看数据。
 
 3. 数据上传 Clinic Server 后会保存多久？
 

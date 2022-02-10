@@ -1,23 +1,25 @@
 ---
 title: Operator 环境的 Clinic 操作手册
-summary: 在 Operator 部署的集群上如何使用 Clinic 工具进行数据采集和快速检查
+summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clinic Diag 工具进行数据采集和快速检查。
 ---
 
 # Operator 环境的 Clinic 操作手册
 
+Clinic Diag 诊断工具可以为使用 TiDB Operator 部署的集群进行数据采集和快速检查。
+
 > **注意：**
 >
-> 本文档只针对 Operator 部署的集群。Clinic 工具暂时不支持开启了 TLS 加密的集群和 Ansible 部署的集群。
+>  本文档**仅**适用于使用 TiDB Operator 部署的集群。Clinic Diag 工具暂时不支持对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
 
-在 Operator 部署的集群中， Clinic Diag 数据采集工具需要部署为一个独立的 pod。本文介绍如何通过 kubectl 命令创建并部署 Diag pod ，然后通过 API 调用继续数据采集和快速检查。
+在使用 TiDB Operator 部署的集群中，Clinic 的客户端 Diag 需要部署为一个独立的 Pod。本文介绍如何通过 `kubectl` 命令创建并部署 Diag pod，其后通过 API 调用继续数据采集和快速检查。
 
-## Clinic 工具安装
+## Clinic Diag 工具安装
 
-本节详细介绍了安装 Clinic 工具的步骤。
+本节详细介绍了安装 Clinic Diag 工具的步骤。
 
 ### 第 1 步：编辑 MANIFEST 文件模板
 
-安装 Clinic 工具时，可以使用以下 3 个 yaml 文件为 MANIFEST 文件模板：
+安装 Clinic Diag 工具时，可以使用以下 3 个 yaml 文件为 MANIFEST 文件模板：
 
 - `diag.yaml`
 - `rbac.yaml`
@@ -25,7 +27,7 @@ summary: 在 Operator 部署的集群上如何使用 Clinic 工具进行数据�
 
 使用文件时，请按照下文中的具体说明将文件的关键参数修改为实际值。
 
-#### `diag.yaml`
+#### `diag.yaml` 文件
 
 在 `diag.yaml` 中，需要将文件中的用户名和密码修改为真实的用户名和密码。
 
@@ -47,7 +49,6 @@ summary: 在 Operator 部署的集群上如何使用 Clinic 工具进行数据�
         - name: CLINIC_PASSWORD
           value: "password
 ```
-
 
 参数说明：
 - `CLINIC_USERNAME`：上传所需的用户名
@@ -81,7 +82,7 @@ roleRef:
 
 ### 第 2 步：部署 Diag Pod
 
-完成对 MANIFEST 文件的编辑与修改后，使用 kubectl 命令把其应用到 Kubernetes 集群中，从而实际创建 Diag Pod：
+完成对 MANIFEST 文件的编辑与修改后，使用 `kubectl` 命令把其应用到 Kubernetes 集群中，从而实际创建 Diag Pod：
 
 {{< copyable "shell-regular" >}}
 
@@ -106,7 +107,7 @@ Clinic 工具主要用于以下两个场景，方便用户快速获取诊断数�
 - [使用 Clinic diag 工具采集诊断数据](/clinic-uyser-guide-for-operator.md#使用-clinic-diag-工具采集诊断数据)
 - [使用 Clinic diag 工具快速诊断集群](/clinic-uyser-guide-for-operator.md#使用-clinic-diag-工具快速诊断集群)
 
-## 使用 Clinic diag 工具采集诊断数据
+## 使用 Clinic Diag 工具采集诊断数据
 
 Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控数据、配置信息等。适于在以下场景中使用：
 
@@ -151,9 +152,9 @@ diag-collector   NodePort   10.111.143.227   <none>            4917:31917/TCP   
 curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
 ```
 API 调用参数说明：
-- clusterName 为 TiDB 集群名称
-- namespace 为 TiDB 集群所在的 namespace 名称（不是 TiDB Operator 所在的 namespace）
-- from 和 to 分别为采集的起止时间，“+0800” 代表时区。支持的时间格式如下：
+- `clusterName` 为 TiDB 集群名称
+- `namespace` 为 TiDB 集群所在的 namespace 名称（不是 TiDB Operator 所在的 namespace）
+- `from` 和 `to` 分别为采集的起止时间，“+0800” 代表时区。支持的时间格式如下：
     {{< copyable "shell-regular" >}}
 
     ```bash
@@ -188,9 +189,9 @@ API 调用参数说明：
 
 ```
 API 返回信息说明：
-- date 为采集任务发起的时间。
-- id 为此任务的 ID 编号，在之后的操作中都将使用此 ID 来唯一定位到此次任务。
-- status 为此任务的当前状态，accepted 代表采集任务进入队列。
+- `date` 为采集任务发起的时间。
+- `id` 为此任务的 ID 编号，在之后的操作中都将使用此 ID 来唯一定位到此次任务。
+- `status` 为此任务的当前状态，`accepted` 代表采集任务进入队列。
 
 > **注意：**
 >
@@ -218,9 +219,9 @@ curl -s http://${host}:${port}/api/v1/collectors/${id}
 ```
 
 说明：
-- 请求中的 id 为任务的 ID 编号，在上述例子中为 fMcXDZ4hNzs。
+- 请求中的 `id`为任务的 ID 编号，在上述例子中为 fMcXDZ4hNzs。
 - 响应格式与发起采集任务的接口响应格式相同。
-- 待该任务的状态变为 “finished” 即表示采集已完成。
+- 待该任务的状态变为 `finished` 即表示采集已完成。
 
 #### 查看采集的数据集信息
 
@@ -270,12 +271,12 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload
 }
 ```
 说明： 
-- 待状态变为 “finished” 后表示打包与上传均已完成，此时 “result” 中的内容即为 Clinic Server 查看此数据集的链接。
-- 请将 result 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
+- 待状态变为 `finished` 后表示打包与上传均已完成，此时 `result` 中的内容即为 Clinic Server 查看此数据集的链接。
+- 请将 `result` 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
   
 ### 可选操作：本地查看数据
 
-采集完成的数据会保存在 pod 的 /diag-${id} 目录中，可以通过以下方法进入 pod 进行查看：
+采集完成的数据会保存在 Pod 的 /diag-${id} 目录中，可以通过以下方法进入 Pod 进行查看：
 
 （1）获取 diag-collector-pod-name
 
@@ -286,7 +287,7 @@ kubectl get pod --all-namespaces  | grep diag
 tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
 
 ```
-- 在上述例子中， diag pod 的名称为 diag-collector-69bf78478c-nvt47， 其所在的 namespace 为 tidb-admin。
+- 在上述例子中， Diag Pod 的名称为 diag-collector-69bf78478c-nvt47， 其所在的 namespace 为 `tidb-admin`。
 
 （2）进入 Pod 并查看数据
 {{< copyable "shell-regular" >}}
@@ -296,7 +297,7 @@ kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
 / # cd diag-${id}
 ```
 其中
-- ${namespace} 替换为 TiDB Operator 所在的 namespace 名称（通常为 tidb-admin, 下同）
+- `${namespace}` 替换为 TiDB Operator 所在的 namespace 名称（通常为 `tidb-admin`, 下同）
 
 # 使用 Clinic 工具快速诊断集群
 
@@ -304,7 +305,7 @@ Clinic 工具支持对集群的健康状态进行快速的诊断，目前版本�
 
 ### 使用步骤
 第一步：采集数据
-采集数据方法可参考[使用 Clinic diag 工具采集诊断数据](/clinic-uyser-guide-for-operator.md#使用-clinic-diag-工具采集诊断数据)内容，进行数据采集。
+采集数据方法可参考[使用 Clinic diag 工具采集诊断数据](/clinic/clinic-uyser-guide-for-operator.md#使用-clinic-diag-工具采集诊断数据)内容，进行数据采集。
 
 第二步：快速诊断
 
