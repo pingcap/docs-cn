@@ -44,7 +44,7 @@ When using [Local-backend mode](/tidb-lightning/tidb-lightning-backends.md#tidb-
 Because TiDB Lightning needs to upload the generated Key-Value data to the TiKV node where each copy of the corresponding Region is located, the import speed is limited by the size of the target cluster. It is recommended to ensure that the number of TiKV instances in the target TiDB cluster and the number of TiDB Lightning instances are greater than n:1 (n is the number of copies of the Region). At the same time, you need to meet the following requirements to achieve the optimal import performance:
 
 - The total size of source files for each TiDB Lightning instances performing parallel import should be smaller than 5 TiB
-- The total number of TiDB Ligntning instances should be smaller than 10
+- The total number of TiDB Lightning instances should be smaller than 10
 
 When using TiDB Lightning to import shared databases and tables in parallel, choose an appropriate number of TiDB Lightning instances according to the amount of data.
 
