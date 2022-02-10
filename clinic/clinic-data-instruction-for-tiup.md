@@ -114,18 +114,20 @@ summary: 详细说明 Clinic 采集哪些诊断数据
 |  配置文件 |  dm-work.toml | --include=config|
 
 ### Prometheus 监控数据
+
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 所有的 Metrics 数据|XXXXX.json| --include=monitor |
-|  Alert 配置 |alerts.json| --include=monitor |
+| 所有的 Metrics 数据 | `XXXXX.json` | `--include=monitor` |
+| Alert 配置 | `alerts.json` | `--include=monitor` |
 
 ### 集群系统信息
 
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+
 | :------ | :------ |:-------- |
-|内核日志 |dmesg.log| --include=system |
-| 基础的系统和硬件信息|insight.json| --include=system |
-|  系统 /etc/security/limits.conf 中的内容|limits.conf| --include=system |
-| 内核参数列表 |sysctl.conf| --include=system |
-|  基础的系统和硬件信息|insight.json| --include=system |
-|  socket 统计信息，ss 命令结果|ss.txt| --include=system |
+|内核日志 | `dmesg.log` | `--include=system` |
+| 基础的系统和硬件信息 | `insight.json` | `--include=system` |
+| 系统 /etc/security/limits.conf 中的内容| `limits.conf` | `--include=system` |
+| 内核参数列表 | `sysctl.conf` | `--include=system` |
+| 基础的系统和硬件信息 | `insight.json` | `--include=system` |
+| socket 统计信息，ss 命令结果| `ss.txt` | `--include=system` |
