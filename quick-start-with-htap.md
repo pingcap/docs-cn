@@ -9,7 +9,7 @@ This guide walks you through the quickest way to get started with TiDB's one-sto
 
 > **Note:**
 >
-> The steps provided in this guide is ONLY for quick start in the test environment. For production environments, [explore HTAP](/explore-htap.md) is recommended. 
+> The steps provided in this guide is ONLY for quick start in the test environment. For production environments, [explore HTAP](/explore-htap.md) is recommended.
 
 ## Basic concepts
 
@@ -22,9 +22,9 @@ Before using TiDB HTAP, you need to have some basic knowledge about [TiKV](/tikv
 
 ## Steps
 
-In this document, you can experience the convenience and high performance of TiDB HTAP by querying an example table in a popular [TPC-H](http://www.tpc.org/tpch/) dataset.
+In this document, you can experience the convenience and high performance of TiDB HTAP by querying an example table in a [TPC-H](http://www.tpc.org/tpch/) dataset. TPC-H is a popular decision support benchmark that consists of a suite of business oriented ad-hoc queries with large volumes of data and a high degree of complexity. To experience 22 complete SQL queries using TPC-H, visit [tidb-bench repo](https://github.com/pingcap/tidb-bench/tree/master/tpch/queries) or [TPC-H](http://www.tpc.org/tpch/) for instructions on how to generate query statements and data.
 
-### Step 1. Deploy a local test environment 
+### Step 1. Deploy a local test environment
 
 Before using TiDB HTAP, follow the steps in the [Quick Start Guide for the TiDB Database Platform](/quick-start-with-tidb.md) to prepare a local test environment, and run the following command to deploy a TiDB cluster:
 
@@ -69,15 +69,15 @@ In the following steps, you can create a [TPC-H](http://www.tpc.org/tpch/) datas
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT 
-      CONCAT(table_schema,'.',table_name) AS 'Table Name', 
-      table_rows AS 'Number of Rows', 
-      FORMAT_BYTES(data_length) AS 'Data Size', 
-      FORMAT_BYTES(index_length) AS 'Index Size', 
-      FORMAT_BYTES(data_length+index_length) AS'Total' 
-    FROM 
-      information_schema.TABLES 
-    WHERE 
+    SELECT
+      CONCAT(table_schema,'.',table_name) AS 'Table Name',
+      table_rows AS 'Number of Rows',
+      FORMAT_BYTES(data_length) AS 'Data Size',
+      FORMAT_BYTES(index_length) AS 'Index Size',
+      FORMAT_BYTES(data_length+index_length) AS'Total'
+    FROM
+      information_schema.TABLES
+    WHERE
       table_schema='test';
     ```
 
