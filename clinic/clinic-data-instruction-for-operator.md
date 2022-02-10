@@ -18,38 +18,38 @@ summary: 详细说明 Clinic 在 Operator 集群中能够采集哪些诊断数�
 ### Cluster 基础信息
 |  诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 集群基础信息，包括集群 ID | cluster.json | 每次收集默认采集 |
-|  集群详细信息 | tidbcluster.json|每次收集默认采集 |
+| 集群基础信息，包括集群 ID | `cluster.json` | 每次收集默认采集 |
+|  集群详细信息 | `tidbcluster.json` |每次收集默认采集 |
 
 ### TiDB 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 实时配置 | config.json |--include=config |
+| 实时配置 | `config.json` |`--include=config` |
 
 ### TiKV 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 实时配置 | config.json |--include=config |
+| 实时配置 | `config.json` | `--include=config` |
 
 ### PD 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 实时配置 | config.json |--include=config |
-| tiup ctl pd -u http://${pd IP}:${PORT} store  输出 | store.json|--include=config|
-| tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show 输出 |placement-rule.json|--include=config |
+| 实时配置 | `config.json` |`--include=config` |
+| `tiup ctl pd -u http://${pd IP}:${PORT} store`  的输出结果 | `store.json`|`--include=config`|
+| `tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 |`placement-rule.json`|`--include=config` |
 
 ### TiFlash 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 实时配置 | config.json |--include=config |
+| 实时配置 | `config.json` |`--include=config` |
 
 ### Ticdc 诊断数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 实时配置 | config.json |--include=config |
+| 实时配置 | `config.json` |`--include=config` |
 
 ### Prometheus 监控数据
 |诊断数据类型 | 输出文文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
-| 所有的 Metrics 数据|XXXXX.json| --include=monitor |
-|  Alert 配置 |alerts.json| --include=monitor |
+| 所有的 Metrics 数据| `{metric_name}.json` | `--include=monitor` |
+|  Alert 配置 |`alerts.json`| `--include=monitor` |
