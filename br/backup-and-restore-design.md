@@ -40,4 +40,4 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 ### SST 文件存储格式
 
 - SST 文件存储格式可以参考这篇 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
-- SST 文件中存储的备份数据编码格式可以参考 [TiDB 表数据与 Key-Value 的映射关系](https://docs.pingcap.com/zh/tidb/stable/tidb-computing/#%E8%A1%A8%E6%95%B0%E6%8D%AE%E4%B8%8E-key-value-%E7%9A%84%E6%98%A0%E5%B0%84%E5%85%B3%E7%B3%BB)。
+- SST 文件中存储的备份数据编码格式可以参考 [TiDB 表数据与 Key-Value 的映射关系](/tidb-computing.md#表数据与-key-value-的映射关系)。

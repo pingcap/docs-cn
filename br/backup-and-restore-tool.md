@@ -42,7 +42,7 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 ### 推荐部署配置
 
-- 生产环境中，推荐 BR 运行在（8 核+/16 GB+）的节点上。 操作系统版本要求可参考 [Linux 操作系统版本要求](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements/#linux-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%89%88%E6%9C%AC%E8%A6%81%E6%B1%82);
+- 生产环境中，推荐 BR 运行在（8 核+/16 GB+）的节点上。 操作系统版本要求可参考 [Linux 操作系统版本要求](/hardware-and-software-requirements.md#linux-操作系统版本要求);
 - 推荐使用支持 Amazon S3/GCS/Azure Blob Storage 来保存备份数据；
 - 推荐为备份和恢复配置足够的资源
 
