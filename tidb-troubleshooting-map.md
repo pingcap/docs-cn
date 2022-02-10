@@ -88,10 +88,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     - 原因 1：执行 DML 的 TiDB 被 `graceful kill` 后准备退出，且此 DML 对应的事务执行时间超过一个 DDL lease，在事务提交的时候会报此错。
 
-    - 原因 2：TiDB 在执行 DML 时，有一段时间连不上 PD 和 TiKV，导致以下问题
-
-        - TiDB 在超过一个 DDL Lease（默认 `45s`）的时间内没有加载到新的 schema；或者
-        - TiDB 断开与 PD 之间带 `keep alive` 设置的连接。
+    - 原因 2：TiDB 在执行 DML 时，有一段时间连不上 PD 和 TiKV，导致 TiDB 在一个 DDL Lease（默认 `45s`）内没有加载新的 schema，或者 TiDB 断开与 PD 之间带 `keep alive` 设置的连接。
 
     - 原因 3：TiKV 压力大或网络超时，通过监控 **Grafana** -> TiDB 和 TiKV 节点的负载情况来确认是否是该原因。
 
