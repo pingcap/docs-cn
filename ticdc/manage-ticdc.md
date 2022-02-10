@@ -108,7 +108,7 @@ If you deploy TiCDC using TiUP, replace `cdc cli` in the following commands with
 
 The state of a replication task represents the running status of the replication task. During the running of TiCDC, replication tasks might fail with errors, be manually paused, resumed, or reach the specified `TargetTs`. These behaviors can lead to the change of the replication task state. This section describes the states of TiCDC replication tasks and the transfer relationships between states.
 
-![TiCDC state transfer](/media/ticdc-state-transfer.png)
+![TiCDC state transfer](/media/ticdc/ticdc-state-transfer.png)
 
 The states in the above state transfer diagram are described as follows:
 
