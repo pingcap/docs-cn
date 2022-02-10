@@ -52,7 +52,7 @@ br backup raw --pd $PD_ADDR \
 
 ## 恢复 RawKV（实验性功能）
 
-和 [备份 RawKV](#备份-rawkv-实验性功能)相似，恢复 RawKV 的命令如下：
+和 [备份 RawKV](#备份-rawkv实验性功能)相似，恢复 RawKV 的命令如下：
 
 {{< copyable "shell-regular" >}}
 
