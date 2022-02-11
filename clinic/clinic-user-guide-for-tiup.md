@@ -41,8 +41,9 @@ Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控�
 - 遇到问题咨询 PingCAP 技术支持，需要提供诊断数据协助定位问题。
 - 保留诊断数据做后期分析。
 
-### 第一步：确定需要采集的数据
-Clinic Diag 支持采集的详细数据列表在[Clinic 数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)，建议收集完整的监控数据、日志、配置信息等数据，有助于提升后续诊断效率。  
+### 第 1 步：确定需要采集的数据
+
+如需查看 Clinic Diag 支持在 TiDB 采集和 DM 集群采集的数据详细列表，请参阅 [Clinic 数据采集说明 - TiUP 环境](clinic/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
 
 ### 第二步：采集数据
 
