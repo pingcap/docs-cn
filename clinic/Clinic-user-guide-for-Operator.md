@@ -20,6 +20,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clin
 
 - [使用 Clinic Diag 工具采集诊断数据](#使用-clinic-diag-工具采集诊断数据)
 - [使用 Clinic Diag 工具快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
+
 ## Clinic Diag 工具安装
 
 本节详细介绍了安装 Clinic Diag 工具的步骤。
@@ -269,82 +270,87 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
 把诊断数据提供给 PingCAP 技术支持人员时，需要将数据上传到 Clinic Server，然后将其数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供更安全的诊断数据存储和共享。
 
-#### 发起上传任务
-通过 API 请求打包并上传收集完成的数据集：
-{{< copyable "shell-regular" >}}
+1. 发起上传任务
 
-```bash
-curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
-{
-        "date": "2021-12-10T11:26:39Z",
-        "id": "fMcXDZ4hNzs",
-        "status": "accepted"
-}
-```
-说明：收到响应只代表数据上传任务开始，并不是已经上传完成，需要通过后续介绍的查看上传任务状态接口了解上传任务是否完成。
+    通过 API 请求打包并上传收集完成的数据集：
 
-#### 查看上传任务状态
-通过 API 请求查看上传任务的状态：
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-curl -s http://${host}:${port}/api/v1/data/${id}/upload
-{
-        "date": "2021-12-10T10:23:36Z",
-        "id": "fMcXDZ4hNzs",
-        "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
-        "status": "finished"
-}
-```
-说明： 
-- 待状态变为 `finished` 后表示打包与上传均已完成，此时 `result` 中的内容即为 Clinic Server 查看此数据集的链接。
-- 请将 `result` 中的数据访问链接发给 PingCAP 技术支持人员。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
-  
-### 可选操作：本地查看数据
+    ```bash
+    curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
+    {
+            "date": "2021-12-10T11:26:39Z",
+            "id": "fMcXDZ4hNzs",
+            "status": "accepted"
+    }
+    ```
 
-采集完成的数据会保存在 Pod 的 /diag-${id} 目录中，可以通过以下方法进入 Pod 进行查看：
+    返回命令结果只代表上传任务开始已经开始，并不表示已完成上传。要了解上传任务是否完成，需要通过下一步操作来查看任务状态。
 
-（1）获取 diag-collector-pod-name
+2. 查看上传任务状态
 
-{{< copyable "shell-regular" >}}
+    通过 API 请求，查看上传任务的状态：
 
-```bash
-kubectl get pod --all-namespaces  | grep diag
-tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
+    {{< copyable "shell-regular" >}}
 
-```
-- 在上述例子中， Diag Pod 的名称为 diag-collector-69bf78478c-nvt47， 其所在的 namespace 为 `tidb-admin`。
+    ```bash
+    curl -s http://${host}:${port}/api/v1/data/${id}/upload
+    {
+            "date": "2021-12-10T10:23:36Z",
+            "id": "fMcXDZ4hNzs",
+            "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
+            "status": "finished"
+    }
+    ```
 
-（2）进入 Pod 并查看数据
-{{< copyable "shell-regular" >}}
+    状态变为 `finished` 表示打包与上传均已完成。此时，`result` 表示 Clinic Server 查看此数据集的链接，即需要发给 PingCAP 技术支持人员的数据访问链接。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
 
-```bash
-kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
-/ # cd diag-${id}
-```
-其中
-- `${namespace}` 替换为 TiDB Operator 所在的 namespace 名称（通常为 `tidb-admin`, 下同）
+#### 可选操作：本地查看数据
 
-# 使用 Clinic 工具快速诊断集群
+采集完成的数据会保存在 Pod 的 `/diag-${id}` 目录中，可以通过以下方法进入 Pod 查看此数据：
 
-Clinic 工具支持对集群的健康状态进行快速的诊断，目前版本主要支持配置项内容检查，快速发现不合理的配置项。
+1. 获取 `diag-collector-pod-name`
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl get pod --all-namespaces  | grep diag
+    tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
+    ```
+
+    其中，Diag Pod 的名称为 `diag-collector-69bf78478c-nvt47`，其所在的 `namespace` 为 `tidb-admin`。
+
+2. 进入 Pod 并查看数据
+    {{< copyable "shell-regular" >}}
+    ```bash
+    kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
+    / # cd diag-${id}
+    ```
+
+    其中，`${namespace}` 需要替换为 TiDB Operator 所在的 `namespace` 名称（通常为 `tidb-admin`）。
+
+## 使用 Clinic Diag 工具快速诊断集群
+
+Clinic 诊断服务支持对集群的健康状态进行快速地诊断，主要支持检查配置项内容，快速发现不合理的配置项。
 
 ### 使用步骤
 第一步：采集数据
-采集数据方法可参考[使用 Clinic diag 工具采集诊断数据](/clinic/clinic-uyser-guide-for-operator.md#使用-clinic-diag-工具采集诊断数据)内容，进行数据采集。
+
+有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#第2步采集数据)内。
 
 第二步：快速诊断
 
-通过 API 请求在本地进行快速诊断：
+通过 API 请求，在本地对集群进行快速诊断：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
 curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["config"]}'
 ```
-其中：
-- 请求中的 id 为采集数据任务的 ID 编号，在上述例子中为 fMcXDZ4hNzs。
-- 响应中会列出发现的配置风险和建议配置的知识库链接。
+其中，`id` 为采集数据任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。
+
+请求结果中会列出已发现的配置风险内容和建议配置的知识库链接，具体示例如下：
+
 诊断响应示例：
 {{< copyable "shell-regular" >}}
 
@@ -380,7 +386,6 @@ There were **3** abnormal results.
 - Check Result: 
   TidbConfig_172.20.21.213:4000   TidbConfig.log.file.max-days:0   warning  
 
-
 #### Rule Name: pdconfig-max-days
 - RuleID: 209
 - Variation: PdConfig.log.file.max-days
@@ -389,7 +394,6 @@ There were **3** abnormal results.
   PdConfig_172.20.22.100:2379   PdConfig.log.file.max-days:0   warning  
   PdConfig_172.20.14.102:2379   PdConfig.log.file.max-days:0   warning  
   PdConfig_172.20.15.222:2379   PdConfig.log.file.max-days:0   warning  
-
 
 #### Rule Name: pdconfig-max-backups
 - RuleID: 210
@@ -402,22 +406,23 @@ There were **3** abnormal results.
 
 Result report and record are saved at /diag-fPrz0RnDxRn/report-220208030210
 ```
-说明：
-- 第一部分展示诊断集群名称等基础信息。
-- 第二部分展示诊断数据来源信息。
-- 第三部分展示诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，用户可以打开链接查看详细的配置建议。在上面示例中，相关链接为：https://s.tidb.io/msmo6awg 。
-- 最后一行展示诊断结果文档的保存路径。
+在上述示例中，
+
+    - 第一部分为诊断集群名称等基础信息。
+    - 第二部分为断数据来源信息。
+    - 第三部分为诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，用户可以打开链接查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg` 。
+    - 最后一行为诊断结果文档的保存路径。
 
 ## 常见问题
 
-1. 上传失败可以重新上传么？
+1. 如果数据上传失败了，可以重新上传吗？
 
-  回答： 上传支持断点上传，如果失败了，可以直接再次上传。
+    数据上传支持断点上传，如果失败了，可以直接再次上传。
 
-2. 上传后返回的数据访问链接用户无法打开，怎么办？
+2. 数据上传后，用户无法打开返回的数据访问链接，怎么办？
 
-  回答： Clinic 工具目前在 Beta 试用阶段，数据访问链接未开放给外部用户，只有经授权的 PingCAP 内部技术支持人员能打开查看数据。
+    Clinic 诊断服务目前在 Beta 试用阶段，数据访问链接未对外部用户开放，只有经授权的 PingCAP 内部技术支持人员能打开链接并查看数据。
 
-3. 数据上传 Clinic Server 后会保存多久？
+3. 上传到 Clinic Server 的数据后会保存多久？
 
-  回答：数据将在对应的技术支持 Case 关闭后90天内永久删除或匿名化处理。
+    在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
