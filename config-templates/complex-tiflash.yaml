@@ -112,12 +112,12 @@ tiflash_servers:
     #   ## Check https://docs.pingcap.com/tidb/stable/tiflash-configuration#multi-disk-deployment for more details.
     #   ## Example1:
     #   # storage.main.dir: [ "/nvme_ssd0_512/tiflash", "/nvme_ssd1_512/tiflash" ]
-    #   # storage.main.capacity = [ 536870912000, 536870912000 ]
+    #   # storage.main.capacity: [ 536870912000, 536870912000 ]
     #   ## Example2:
     #   # storage.main.dir: [ "/sata_ssd0_512/tiflash", "/sata_ssd1_512/tiflash", "/sata_ssd2_512/tiflash" ]
     #   # storage.latest.dir: [ "/nvme_ssd0_150/tiflash" ]
-    #   # storage.main.capacity = [ 536870912000, 536870912000 ]
-    #   # storage.latest.capacity = [ 161061273600 ]
+    #   # storage.main.capacity: [ 536870912000, 536870912000, 536870912000 ]
+    #   # storage.latest.capacity: [ 161061273600 ]
     # learner_config:
     #   log-level: "info"
   # - host: 10.0.1.12
