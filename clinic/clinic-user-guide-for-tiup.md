@@ -20,7 +20,8 @@ summary: 在 TiUP 部署的集群上如何使用 Clinic 工具进行数据采集
 ```bash
 tiup install diag 
 ```
-若已安装，可以直接升级至最新版本：
+
+若已安装 TiUP，可以将其直接升级至最新版本：
 
 {{< copyable "shell-regular" >}}
 
