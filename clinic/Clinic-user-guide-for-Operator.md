@@ -194,19 +194,20 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
         "2006-01-02",
         ```
         命令输出结果示例如下：
-{{< copyable "shell-regular" >}}
 
-```bash
-        "clusterName": "${cluster-namespace}/${cluster-name}",
-        "collectors": [
-            "config",
-            "monitor"
-        ],
-        "date": "2021-12-10T10:10:54Z",
-        "from": "2021-12-08 12:00 +0800",
-        "id": "fMcXDZ4hNzs",
-        "status": "accepted",
-        "to": "2021-12-08 18:00 +0800"
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+            "clusterName": "${cluster-namespace}/${cluster-name}",
+            "collectors": [
+                "config",
+                "monitor"
+            ],
+            "date": "2021-12-10T10:10:54Z",
+            "from": "2021-12-08 12:00 +0800",
+            "id": "fMcXDZ4hNzs",
+            "status": "accepted",
+            "to": "2021-12-08 18:00 +0800"
 
 ```
 API 返回信息说明：
