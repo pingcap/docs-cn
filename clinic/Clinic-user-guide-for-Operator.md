@@ -136,28 +136,32 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明 - Operator 环境](clinic/clinic-data-instruction-for-operator.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。  
 
-### 第二步：采集数据
+#### 第 2 步：采集数据
 
-#### API 调用说明
-Clinic Diag 的各项操作均通过 API 完成，访问节点 http://${host}:${port}/api/v1 可查看完整的 API 定义文档。
+Clinic Diag 工具的各项操作均会通过 API 完成。
 
-可通过以下命令查看节点 IP ：
-{{< copyable "shell-regular" >}}
+- 如需查看完整的 API 定义文档，请访问节点 `http://${host}:${port}/api/v1`。
 
-```bash
-kubectl get node | grep node
-```
+- 如需查看节点 IP，可使用以下命令：
 
-通过以下命令查看 diag-collector service 的端口号：
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-kubectl get service -n tidb-admin
-NAME                 TYPE           CLUSTER-IP           EXTERNAL-IP   PORT(S)              AGE
-diag-collector   NodePort   10.111.143.227   <none>            4917:31917/TCP   18m
-```
-- 在上述例子中，从 Kubernetes 集群外访问该 Service 的端口为 31917.
-- 该 Service 类型为 NodePort, 可通过 Kubernetes 集群中任一宿主机的 IP 地址 ${host} 和端口号 ${port} 进行访问。
+    ```bash
+    kubectl get node | grep node
+    ```
+
+- 如需查看 `diag-collector service` 的端口号，可使用以下命令：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl get service -n tidb-admin
+    NAME                 TYPE           CLUSTER-IP           EXTERNAL-IP   PORT(S)              AGE
+    diag-collector   NodePort   10.111.143.227   <none>            4917:31917/TCP   18m
+    ```
+
+    - 从 Kubernetes 集群外访问该 Service 的端口为 `31917`。
+    - 该 Service 类型为 NodePort。你可以通过 Kubernetes 集群中任一宿主机的 IP 地址 `${host}` 和端口号 `${port}` 访问该服务。
 
 #### 发起采集数据请求
 通过 API 请求发起一次数据采集任务：
