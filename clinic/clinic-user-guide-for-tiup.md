@@ -45,7 +45,8 @@ Clinic 提供 TiDB 集群诊断数据快速抓取的方法，可以抓取监控�
 Clinic Diag 支持采集的详细数据列表在[Clinic 数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)，建议收集完整的监控数据、日志、配置信息等数据，有助于提升后续诊断效率。  
 
 ### 第二步：采集数据
-Clinic Diag 支持采集 TiDB 集群和 DM 集群的数据，将分别进行介绍。
+
+Clinic Diag 支持对使用 TiUP 部署的 TiDB 集群和 DM 集群采集数据，具体方法如下：
 
 #### TiDB 集群数据采集操作步骤
 一条命令收集从4小时前到2小时前的诊断数据：
