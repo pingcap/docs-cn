@@ -62,14 +62,10 @@
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   - 备份与恢复
     - 使用 BR 工具（推荐）
-      - [BR 工具简介](/br/backup-and-restore-tool.md)
+      - [BR 工具简介](/br/backup-and-restore-overview.md)
+      - [BR 设计简介](/br/backup-and-restore-design.md)
       - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - 外部存储
-        - [外部存储概述](/br/backup-and-restore-storages.md)
-        - [在 Azure Blob Storage 备份恢复](/br/backup-storage-azblob.md
-      - BR 特性
-        - [自动调节](/br/br-auto-tune.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -291,7 +287,7 @@
     - [术语表](/dm/dm-glossary.md)
     - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
-    - [BR 工具简介](/br/backup-and-restore-tool.md)
+    - [BR 工具简介](/br/backup-and-restore-overview.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     - [外部存储](/br/backup-and-restore-storages.md)

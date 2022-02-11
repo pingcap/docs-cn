@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/ecosystem-tool-user-case/']
 
 ## TiDB 集群备份与恢复
 
-当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-tool.md)。
+当需要对 TiDB 集群进行备份或在之后对 TiDB 集群进行恢复时，可使用 [BR](/br/backup-and-restore-overview.md)。
 
 另外，BR 也可以对 TiDB 的数据进行[增量备份](/br/br-usage-backup.md#备份-tidb-集群增量数据)和[增量恢复](/br/br-usage-restore.md#恢复增量备份数据)。
 

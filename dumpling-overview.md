@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 TiDB 还提供了其他工具，你可以根据需要选择使用：
 
-- 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-tool.md)。
+- 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-overview.md)。
 - 如果需要实时的增量备份，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
 - 所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导回到 TiDB。
 
