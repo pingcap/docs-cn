@@ -104,15 +104,6 @@ Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
 - --include : 只收集某类型的数据，支持[system, monitor, log, config, db_vars]
 - --exclude : 不收集某类型的数据，支持[system, monitor, log, config, db_vars]。
 
-> **注意：**
-> db_vars （系统变量）数据收集需要额外提供系统变量可读权限数据库访问的用户名和密码，默认不收集此项。
-> 如果需要收集包括系统变量在内的全量诊断数据，可使用以下命令。
-> {{< copyable "shell-regular" >}}
-> 
-> ```bash
-> tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars"
-> ```
-
 - 更多参数也可以通过命令查看
   {{< copyable "shell-regular" >}}
   ```bash
