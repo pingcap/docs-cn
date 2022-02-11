@@ -30,6 +30,10 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 | 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
 
+> **注意：**
+>
+> 严禁使用多个 Lightning 进程向同一目标导入时混用不同的 backend，例如同时使用 local-backend 和 tidb-backend 导入同一 TiDB 集群是不允许的。
+
 ## 如何选择后端模式
 
 - 如果导入的目标集群为 v4.0 或以上版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能也较其他两个模式更高
