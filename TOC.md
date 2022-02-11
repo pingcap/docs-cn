@@ -190,12 +190,12 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  - Clinic （Beta）
-    - [Clinic 诊断服务简介](/clinic/clinic-introduce.md)
-    - [TiUP 环境的 Clinic 操作手册](/clinic/clinic-user-guide-for-tiup.md)
-    - [Clinic 数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)
-    - [Operator 环境的 Clinic 操作手册](/clinic/clinic-user-guide-for-operator.md)
-    - [Clinic 数据采集说明 - Operator 环境](/clinic/clinic-data-instruction-for-operator.md)
+  - TiDB Clinic 诊断服务 (Beta)
+    - [功能简介](/clinic/clinic-introduce.md)
+    - [操作手册 - TiUP 环境](/clinic/clinic-user-guide-for-tiup.md)
+    - [数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)
+    - [操作手册 - Operator 环境](/clinic/clinic-user-guide-for-operator.md)
+    - [数据采集说明 - Operator 环境](/clinic/clinic-data-instruction-for-operator.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
