@@ -27,44 +27,14 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 - [使用 TiUP 安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
-- [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
-- [Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
-
-### 资源要求
-
-**操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，您可以在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程默认会占满 CPU，建议单独部署。如果条件不允许，可以和其他组件（比如 `tikv-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 TiDB Lightning 使用 CPU 资源。混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-
-**内存和 CPU**：因为 TiDB Lightning 对计算机资源消耗较高，建议分配 64 GB 以上的内存以及 32 核以上的 CPU，而且确保 CPU 核数和内存（GB）比为 1:2 以上，以获取最佳性能。
-
-**磁盘空间**：
-
-- Dumpling 需要足够储存整个数据源的存储空间。
-- Lightning 导入期间需要排序键值对的临时存放空间，至少需要数据源最大单表的空间。
-- 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
-
-**说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 data_length 字段估算数据量：
-
-{{< copyable "sql" >}}
-
-```sql
-# 统计所有 schema 大小，单位 MiB，注意修改 ${schema_name}
-select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
-
-# 统计最大单表，单位 MiB，注意修改 ${schema_name}
-select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
-```
-
-### 目标 TiKV 集群的磁盘空间要求
-
-**磁盘空间**：目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/deploy-and-maintain-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。公式中的 2 倍可能难以理解，其依据是以下因素的估算空间占用：
-
-* 索引会占据额外的空间
-* RocksDB 的空间放大效应
+- [TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+- [TiDB Lightning 下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
+- [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
 ### 分表数据冲突检查
 
-迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理),这里做简要描述：
+迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)，这里做简要描述：
 
 假设 table1~4 具有相同的表结构如下：
 
@@ -145,15 +115,6 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
-### 创建目标表结构
-
-根据前述“分表数据冲突检查”修改后，手动在下游 TiDB 建 my_db 库和 table5 表。之后需要在导入过程中将`tidb-lightning.toml`中设置。
-
-```
-[mydumper]
-no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
-```
-
 ### 执行导入操作
 
 启动 tidb-lightning 的步骤如下：
@@ -189,12 +150,6 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     target-schema = "my_db"
     target-table = "table5"
 
-    [mydumper]
-    # 源数据目录。设置为 Dumpling 导出数据的路径，如果 Dumpling 执行了多次并分属不同的目录，请将多次导出的数据置放在相同的父目录下并指定此父目录即可。
-    data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
-    # 由于 table1~4 合并为 table5。所以这里不创建表库，避免根据 Dumpling 的导出文件在下游创建出 table1~4。
-    no-schema = true
-
     # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
     [tidb]
     # 目标集群的信息
@@ -217,7 +172,7 @@ no-schema = true # 若已经在下游创建好库和表，此项设为 true 表�
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
+    nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
     ```
 
 3. 导入开始后，可以采用以下任意方式查看进度：

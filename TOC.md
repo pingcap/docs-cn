@@ -7,8 +7,8 @@
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v5.3 对比 v5.2](/benchmark/benchmark-sysbench-v5.3.0-vs-v5.2.2.md)
-    - [TPC-C 性能对比 - v5.3 对比 v5.2](/benchmark/v5.3-performance-benchmarking-with-tpcc.md)
+    - [Sysbench 性能对比 - v5.4 对比 v5.3](/benchmark/benchmark-sysbench-v5.4.0-vs-v5.3.0.md)
+    - [TPC-C 性能对比 - v5.4 对比 v5.3](/benchmark/v5.4-performance-benchmarking-with-tpcc.md)
     - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -194,6 +194,10 @@
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
+    - 前置需求
+      - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
+      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
     - 主要功能
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [表库过滤](/table-filter.md)
@@ -203,7 +207,6 @@
       - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
     - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)

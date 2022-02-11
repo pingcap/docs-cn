@@ -144,12 +144,12 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
     如果从官网下载的离线镜像不满足你的具体需求，或者希望对已有的离线镜像内容进行调整，例如增加某个组件的新版本等，可以采取以下步骤进行操作：
 
-    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.7.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
+    1. 在制作离线镜像时，可通过参数指定具体的组件和版本等信息，获得不完整的离线镜像。例如，要制作一个只包括 v1.9.0 版本 TiUP 和 TiUP Cluster 的离线镜像，可执行如下命令：
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.7.0 --tiup v1.7.0 --cluster v1.7.0
+        tiup mirror clone tiup-custom-mirror-v1.9.0 --tiup v1.9.0 --cluster v1.9.0
         ```
 
         如果只需要某一特定平台的组件，也可以通过 `--os` 和 `--arch` 参数来指定。
@@ -181,10 +181,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.7.0
+        tiup mirror merge tiup-custom-mirror-v1.9.0
         ```
 
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.7.0` 版本出现在结果中。
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.9.0` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
@@ -304,13 +304,13 @@ source /home/tidb/.bash_profile
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster deploy tidb-test v5.3.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v5.4.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 以上部署示例中：
 
 - `tidb-test` 为部署的集群名称。
-- `v5.3.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
+- `v5.4.0` 为部署的集群版本，可以通过执行 `tiup list tidb` 来查看 TiUP 支持的最新可用版本。
 - 初始化配置文件为 `topology.yaml`。
 - `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
 - [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
@@ -341,13 +341,45 @@ tiup cluster display tidb-test
 
 ## 第 7 步：启动集群
 
+安全启动是 TiUP cluster 从 v1.9.0 起引入的一种新的启动方式，采用该方式启动数据库可以提高数据库安全性。推荐使用安全启动。
+
+安全启动后，TiUP 会自动生成 TiDB root 用户的密码，并在命令行界面返回密码。
+
+> **注意：**
+>
+> - 使用安全启动方式后，不能通过无密码的 root 用户登录数据库，你需要记录命令行返回的密码进行后续操作。
+>
+> - 该自动生成的密码只会返回一次，如果没有记录或者忘记该密码，请参照[忘记 root 密码](/user-account-management.md#忘记-root-密码)修改密码。
+
+方式一：安全启动
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup cluster start tidb-test --init
+```
+
+预期结果如下，表示启动成功。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+Started cluster `tidb-test` successfully.
+The root password of TiDB database has been changed.
+The new password is: 'y_+3Hwp=*AWz8971s6'.
+Copy and record it to somewhere safe, it is only displayed once, and will not be stored.
+The generated password can NOT be got again in future.
+```
+
+方式二：普通启动
+
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup cluster start tidb-test
 ```
 
-预期结果输出 ```Started cluster `tidb-test` successfully``` ，表示启动成功。
+预期结果输出 ```Started cluster `tidb-test` successfully```，表示启动成功。使用普通启动方式后，可通过无密码的 root 用户登录数据库。
 
 ## 第 8 步：验证集群运行状态
 

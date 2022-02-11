@@ -446,6 +446,11 @@ raftstore 相关的配置项。
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
 + 默认值：true
 
+### `capacity`
+
++ 存储容量，即允许的最大数据存储大小。如果没有设置，则使用当前磁盘容量。如果要将多个 TiKV 实例部署在同一块物理磁盘上，需要在 TiKV 配置中添加该参数，参见[混合部署的关键参数介绍](/hybrid-deployment-topology.md#混合部署的关键参数介绍)。
++ 默认值：0
+
 ### `raftdb-path`
 
 + raft 库的路径，默认存储在 storage.data-dir/raft 下。
@@ -453,11 +458,19 @@ raftstore 相关的配置项。
 
 ### `raft-base-tick-interval`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 状态机 tick 一次的间隔时间。
 + 默认值：1s
 + 最小值：大于 0
 
 ### `raft-heartbeat-ticks`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 发送心跳时经过的 tick 个数，即每隔 raft-base-tick-interval * raft-heartbeat-ticks 时间发送一次心跳。
 + 默认值：2
@@ -465,11 +478,19 @@ raftstore 相关的配置项。
 
 ### `raft-election-timeout-ticks`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 发起选举时经过的 tick 个数，即如果处于无主状态，大约经过 raft-base-tick-interval * raft-election-timeout-ticks 时间以后发起选举。
 + 默认值：10
 + 最小值：raft-heartbeat-ticks
 
 ### `raft-min-election-timeout-ticks`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 发起选举时至少经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks，不能比 raft-election-timeout-ticks 小。
 + 默认值：0
@@ -477,11 +498,19 @@ raftstore 相关的配置项。
 
 ### `raft-max-election-timeout-ticks`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 发起选举时最多经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks * 2。
 + 默认值：0
 + 最小值：0
 
 ### `raft-max-size-per-msg`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
@@ -490,9 +519,13 @@ raftstore 相关的配置项。
 
 ### `raft-max-inflight-msgs`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 待确认日志个数的数量，如果超过这个数量将会减缓发送日志的个数。
 + 默认值：256
-+ 最小值：大于0
++ 最小值：大于 0
 
 ### `raft-entry-max-size`
 
@@ -1365,13 +1398,18 @@ Raft Engine 相关的配置项。
 
 ### `cert-path`
 
-+ 包含 X509 证书的 PEM 文件路径
++ 包含 X.509 证书的 PEM 文件路径
 + 默认值：""
 
 ### `key-path`
 
-+ 包含 X509 key 的 PEM 文件路径
++ 包含 X.509 key 的 PEM 文件路径
 + 默认值：""
+
+### `cert-allowed-cn`
+
++ 客户端提供的证书中，可接受的 X.509 通用名称列表。仅当提供的通用名称与列表中的条目之一完全匹配时，才会允许其请求。
++ 默认值：`[]`。这意味着默认情况下禁用客户端证书 CN 检查。
 
 ### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
@@ -1510,9 +1548,9 @@ Raft Engine 相关的配置项。
 + 默认值：1s
 + 最小值：1ms
 
-### `wait-up-delay-duration`
+### `wake-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wait-up-delay-duration` 之后被唤醒。
++ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
 + 默认值：20ms
 
 ### `pipelined`
