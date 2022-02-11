@@ -1,9 +1,9 @@
 ---
-title: Operator 环境的 Clinic 操作手册
+title: Operator 环境的 Clinic 诊断服务操作手册
 summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clinic Diag 工具进行数据采集和快速检查。
 ---
 
-# Operator 环境的 Clinic 操作手册
+# Operator 环境的 Clinic 诊断服务操作手册
 
 Clinic Diag 诊断工具可以为使用 TiDB Operator 部署的集群进行数据采集和快速检查。
 
