@@ -16,9 +16,21 @@ TiDB 版本：5.1.4
 
 + PD
 
++ TiDB Dashboard
+
 + TiFlash
 
 + Tools
+
+    - Backup & Restore (BR)
+
+    - TiCDC
+
+    - Dumpling
+
+    - TiDB Binlog
+
+    - TiDB Lightning
 
 ## 功能增强
 
