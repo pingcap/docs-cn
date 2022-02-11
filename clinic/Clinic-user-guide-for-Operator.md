@@ -88,7 +88,7 @@ roleRef:
 
 ### 第 2 步：部署 Diag Pod
 
-完成对 MANIFEST 文件的编辑与修改后，使用 `kubectl` 命令把其应用到 Kubernetes 集群中，从而实际创建 Diag Pod：
+编写 MANIFEST 文件后，通过使用 `kubectl` 命令把该文件应用到 Kubernetes 集群来实际创建 Diag Pod：
 
 {{< copyable "shell-regular" >}}
 
