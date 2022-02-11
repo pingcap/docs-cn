@@ -1,7 +1,6 @@
 ---
 title: 应用场景
 summary: 了解 TiDB Data Migration 支持的主要应用场景。
-aliases: ['/docs-cn/tidb-data-migration/dev/scenarios/']
 ---
 
 # 应用场景

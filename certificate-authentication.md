@@ -1,7 +1,6 @@
 ---
 title: TiDB 证书鉴权使用指南
 summary: 了解使用 TiDB 的证书鉴权功能。
-aliases: ['/docs-cn/dev/certificate-authentication/','/docs-cn/dev/reference/security/cert-based-authentication/']
 ---
 
 # TiDB 证书鉴权使用指南
