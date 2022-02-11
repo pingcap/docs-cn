@@ -128,8 +128,13 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 >
 > 对于使用 TiDB Operator 部署的集群，暂不支持收集日志、配置文件、系统硬件信息等诊断数据。
 
-### 第一步：确定需要采集的数据
-Clinic 支持采集的详细数据列表在[Clinic 数据采集说明 - Operator 环境]()，建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。  
+### 使用方法
+
+本节详细介绍如何通过 Clinic Diag 工具为使用 TiDB Operator 部署的集群进行采集诊断数据。
+
+#### 第 1 步：确定需要采集的数据
+
+如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明 - Operator 环境](clinic/clinic-data-instruction-for-operator.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。  
 
 ### 第二步：采集数据
 
