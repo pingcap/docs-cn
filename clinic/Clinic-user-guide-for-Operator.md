@@ -57,7 +57,7 @@ Clinic Diag 诊断工具可以为使用 TiDB Operator 部署的集群进行数�
 
 #### `rbac.yaml` 文件
 
-在 `rbac.yaml` 文件中，需要将 `${namespace}` 占位符修改为部署 TiDB Operator 所在的 `namespace` 名称（通常为 tidb-admin）。
+在使用以下的 `rbac.yaml` 模板时，需要把 `${namespace}` 占位符修改为部署 TiDB Operator 所在的 `namespace` 名称（通常为 tidb-admin）。
 
 {{< copyable "shell-regular" >}}
 
