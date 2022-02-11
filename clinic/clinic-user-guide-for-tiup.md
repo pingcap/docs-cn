@@ -1,6 +1,6 @@
 ---
-title: TiUP 环境的 Clinic 操作手册
-summary: 在 TiUP 部署的集群上如何使用 Clinic 工具进行数据采集和快速检查
+title: TiUP 环境的 Clinic 诊断服务操作手册
+summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic Diag 工具进行数据采集和快速检查。
 ---
 
 # TiUP 环境的 Clinic 诊断服务操作手册
