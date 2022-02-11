@@ -169,8 +169,8 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
     {{< copyable "shell-regular" >}}
 
-```bash
-curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
+    ```bash
+    curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
 ```
 API 调用参数说明：
 - `clusterName` 为 TiDB 集群名称
