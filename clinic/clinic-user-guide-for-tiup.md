@@ -103,6 +103,25 @@ Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
   tiup diag collect -h 
   ```
 
+> **注意：**
+> 
+> 由于 `db_vars`（系统变量）数据收集需要通过数据库访问的用户名和密码额外获取系统变量可读权限，因此默认不收集此项。
+> 如果需要收集包括系统变量在内的全量诊断数据，可使用以下命令：
+>
+>    {{< copyable "shell-regular" >}}
+> 
+>    ```bash
+>     tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars"
+>     ```
+
+3. 完成采集后，结果中会提示采集数据所在的文件夹路径，示例如下：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
+    ```
+
 ### DM 集群数据采集操作步骤
 一条命令收集从4小时前到2小时前的诊断数据：
 
