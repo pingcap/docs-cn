@@ -124,19 +124,16 @@ Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
     Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
     ```
 
-### DM 集群数据采集操作步骤
-一条命令收集从4小时前到2小时前的诊断数据：
+### 采集 DM 集群的数据
 
-{{< copyable "shell-regular" >}}
+1. 通过以下命令，收集从 4 小时前到 2 小时前的诊断数据：
 
-```bash
-tiup diag collectdm <cluster-name> -f="-4h" -t="-2h"
-```
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
-```
+    ```bash
+    tiup diag collectdm <cluster-name> -f="-4h" -t="-2h"
+    ```
+
 2. 输入上述命令后，开始采集数据前，Diag 会先预估数据量大小，并询问用户是否进行数据收集。
 
     输入 `Y` 后，Diag 会开始数据采集。采集数据需要一定的时间，具体所需时间与需要收集的数据量有关，比如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
