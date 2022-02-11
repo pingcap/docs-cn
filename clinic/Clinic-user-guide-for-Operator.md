@@ -60,7 +60,6 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clin
 参数说明：
 - `CLINIC_USERNAME`：上传所需的用户名
 - `CLINIC_PASSWORD`：上传所需的密码
-- 模板中使用的镜像地址：https://drive.google.com/file/d/1sNRQDFhKgi_Gl6wPt7dHbQLuQXbd03YW/view?usp=sharing
 
 #### `rbac.yaml` 文件
 
