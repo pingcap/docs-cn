@@ -163,9 +163,11 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
     - 从 Kubernetes 集群外访问该 Service 的端口为 `31917`。
     - 该 Service 类型为 NodePort。你可以通过 Kubernetes 集群中任一宿主机的 IP 地址 `${host}` 和端口号 `${port}` 访问该服务。
 
-#### 发起采集数据请求
-通过 API 请求发起一次数据采集任务：
-{{< copyable "shell-regular" >}}
+1. 发起采集数据请求
+
+    通过 API 请求发起一次数据采集任务：
+
+    {{< copyable "shell-regular" >}}
 
 ```bash
 curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
