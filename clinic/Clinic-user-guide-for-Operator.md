@@ -89,7 +89,8 @@ roleRef:
 ```bash
 kubectl apply -n ${namespace} -f manifest
 ```
-其中，`${namespace}` 应替换为 TiDB Operator 所在的 `namespace` 名称，其通常为 `tidb-admin`（下同）。
+
+其中，`${namespace}` 应替换为 TiDB Operator 所在的 `namespace` 名称，该名称通常为 `tidb-admin`（下同）。
 
 ### 第 3 步：查看 Diag Pod 的运行状态
 
