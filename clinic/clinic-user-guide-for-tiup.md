@@ -137,8 +137,17 @@ tiup diag collectdm <cluster-name> -f="-4h" -t="-2h"
 ```bash
 Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
 ```
-采集过程中会先预估数据量大小，并询问用户是否进行数据收集。用户输入“Y” 后，开始数据采集。采集数据需要一定的时间，所需时间与收集的数据量有关，测试环境中收集 1GB 数据，大概需要 10 分钟。
-采集完成后，会提示采集数据所在的文件夹路径。
+2. 输入上述命令后，开始采集数据前，Diag 会先预估数据量大小，并询问用户是否进行数据收集。
+
+    输入 `Y` 后，Diag 会开始数据采集。采集数据需要一定的时间，具体所需时间与需要收集的数据量有关，比如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
+
+3. 采集完成后，会提示采集数据所在的文件夹路径，示例如下：
+
+    {{< copyable "shell-regular" >}}
+    ```bash
+    Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
+    ```
+
 
 采集参数说明：
 - -f/--from: 采集时间起始点，默认为当前时刻的2小时前，如果不带时区（+0800）默认为 UTC， 也支持 -f="-4h" 这种格式，指定收集数据开始时间为4小时前。
