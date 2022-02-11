@@ -254,13 +254,13 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
     {{< copyable "shell-regular" >}}
 
     ```bash
-curl -s http://${host}:${port}/api/v1/data/${id}
-{
-        "clusterName": "${cluster-namespace}/${cluster-name}",
-        "date": "2021-12-10T10:10:54Z",
-        "id": "fMcXDZ4hNzs",
-        "size": 1788980746
-}
+    curl -s http://${host}:${port}/api/v1/data/${id}
+    {
+            "clusterName": "${cluster-namespace}/${cluster-name}",
+            "date": "2021-12-10T10:10:54Z",
+            "id": "fMcXDZ4hNzs",
+            "size": 1788980746
+    }
 ```
 
 说明：本接口只能查看数据集的文件包大小，不能查看具体数据，如需查看数据内容，请参考[可选操作：本地查看数据](/clinic-uyser-guide-for-operator.md#可选操作：本地查看数据)。
