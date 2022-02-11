@@ -17,15 +17,15 @@ Clinic Diag 诊断工具可以为使用 TiDB Operator 部署的集群进行数�
 
 本节详细介绍了安装 Clinic Diag 工具的步骤。
 
-### 第 1 步：编辑 MANIFEST 文件模板
+### 第 1 步：编辑 MANIFEST 文件
 
-安装 Clinic Diag 工具时，可以使用以下 3 个 yaml 文件为 MANIFEST 文件模板：
+安装 Clinic Diag 工具时，可以使用以下 3 个 yaml 文件模板为 MANIFEST 文件：
 
 - `diag.yaml`
 - `rbac.yaml`
 - `cert.yaml`
 
-使用文件时，请按照下文中的具体说明将文件的关键参数修改为实际值。
+使用文件模板时，请按照下文中的具体说明将文件的关键参数修改为实际值。
 
 #### `diag.yaml` 文件
 
