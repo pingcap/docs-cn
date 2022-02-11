@@ -1,6 +1,5 @@
 ---
 title: TiSpark 快速上手
-aliases: ['/docs-cn/dev/get-started-with-tispark/','/docs-cn/dev/how-to/get-started/tispark/']
 ---
 
 # TiSpark 快速上手
