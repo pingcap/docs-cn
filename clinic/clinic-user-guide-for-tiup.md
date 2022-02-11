@@ -61,14 +61,15 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 Clinic Diag 支持对使用 TiUP 部署的 TiDB 集群和 DM 集群采集数据，具体方法如下：
 
-#### TiDB 集群数据采集操作步骤
-一条命令收集从4小时前到2小时前的诊断数据：
+#### 采集 TiDB 集群的数据
 
-{{< copyable "shell-regular" >}}
+1. 通过以下命令，收集从 4 小时前到 2 小时前的诊断数据：
 
-```bash
-tiup diag collect <cluster-name> -f="-4h" -t="-2h"
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag collect <cluster-name> -f="-4h" -t="-2h"
+    ```
 2. 输入上述命令后，开始采集数据前，Diag 会先预估数据量大小，并询问用户是否进行数据收集，示例如下：
 
     {{< copyable "shell-regular" >}}
