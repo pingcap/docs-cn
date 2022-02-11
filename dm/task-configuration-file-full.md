@@ -1,6 +1,5 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/']
 ---
 
 # DM 任务完整配置文件介绍
