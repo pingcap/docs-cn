@@ -55,22 +55,24 @@ Clinic Diag 支持采集 TiDB 集群和 DM 集群的数据，将分别进行介�
 ```bash
 tiup diag collect <cluster-name> -f="-4h" -t="-2h"
 ```
-采集过程中会先预估数据量大小，并询问用户是否进行数据收集，示例如下：
-{{< copyable "shell-regular" >}}
+2. 输入上述命令后，开始采集数据前，Diag 会先预估数据量大小，并询问用户是否进行数据收集，示例如下：
 
-```bash
-Estimated size of data to collect:
-Host               Size       Target
-----               ----       ------
-172.16.7.129:9090  43.57 MB   1775 metrics, compressed
-172.16.7.87        0 B        /tidb-deploy/tidb-4000/log/tidb_stderr.log
-... ...
-172.16.7.179       325 B      /tidb-deploy/tikv-20160/conf/tikv.toml
-Total              2.01 GB    (inaccurate)
-These data will be stored in /home/qiaodan/diag-fNTnz5MGhr6
-Do you want to continue? [y/N]: (default=N) 
-```
-用户输入“Y” 后，开始数据采集。采集数据需要一定的时间，所需时间与收集的数据量有关，测试环境中收集 1GB 数据，大概需要 10 分钟。
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    Estimated size of data to collect:
+    Host               Size       Target
+    ----               ----       ------
+    172.16.7.129:9090  43.57 MB   1775 metrics, compressed
+    172.16.7.87        0 B        /tidb-deploy/tidb-4000/log/tidb_stderr.log
+    ... ...
+    172.16.7.179       325 B      /tidb-deploy/tikv-20160/conf/tikv.toml
+    Total              2.01 GB    (inaccurate)
+    These data will be stored in /home/qiaodan/diag-fNTnz5MGhr6
+    Do you want to continue? [y/N]: (default=N) 
+    ```
+
+    输入 `Y` 后，Diag 会开始数据采集。采集数据需要一定的时间，具体所需时间与需要收集的数据量有关，比如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
 采集完成后，会提示采集数据所在的文件夹路径，示例如下：
 {{< copyable "shell-regular" >}}
 
