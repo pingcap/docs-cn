@@ -247,12 +247,13 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
     该任务的状态变为 `finished`，表示数据采集已完成。
 
-#### 查看采集的数据集信息
+3. 查看已采集的数据集信息
 
-在采集任务完成后，可以通过 API 请求获取数据集的采集时间和数据大小信息：
-{{< copyable "shell-regular" >}}
+    完成采集任务后，可以通过 API 请求来获取数据集的采集时间和数据大小信息：
+    
+    {{< copyable "shell-regular" >}}
 
-```bash
+    ```bash
 curl -s http://${host}:${port}/api/v1/data/${id}
 {
         "clusterName": "${cluster-namespace}/${cluster-name}",
