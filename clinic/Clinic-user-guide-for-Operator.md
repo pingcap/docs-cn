@@ -36,7 +36,9 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clin
 
 #### `diag.yaml` 文件
 
-在 `diag.yaml` 中，需要将文件中的用户名和密码修改为真实的用户名和密码。
+在使用 `diag.yaml` 文件模板时，需要将文件中的用户名和密码修改为真实的用户名和密码。
+
+在该模板中使用的镜像地址为 `https://drive.google.com/file/d/1sNRQDFhKgi_Gl6wPt7dHbQLuQXbd03YW/view?usp=sharing`。
 
 > **注意：**
 >
