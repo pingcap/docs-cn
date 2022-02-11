@@ -28,15 +28,11 @@ tiup install diag
 ```bash
 tiup update diag
 ```
+
 > **注意：**
 >
-> 对于离线集群，需要离线部署 Diag 工具，可以参照[离线部署 TiUP 组件](/production-deployment-using-tiup.md)文档进行离线部署。
-> Diag 工具尚未 GA，暂时不包含在官方下载页面中的 TiDB server 离线镜像包中。
-
-## 使用概述
-Clinic Diag 工具主要用于以下两个场景，方便用户快速获取诊断数据和做基础集群诊断：
-- [使用 Clinic Diag 工具采集诊断数据](/clinic/clinic-user-guide-for-tiup.md#使用-clinic-diag-工具采集诊断数据)
-- [使用 Clinic Diag 工具快速诊断集群](/clinic/clinic-user-guide-for-tiup.md#使用-clinic-diag-工具快速诊断集群)
+> 对于离线集群，需要离线部署 Diag 工具。具体的离线部署办法，可以参照[离线部署 TiUP 组件](/production-deployment-using-tiup.md)。
+> Diag 工具暂不属于正式功能，该工具不包含在 TiDB 官方下载页面中的 TiDB Server 离线镜像包中。
 
 ## 使用 Clinic Diag 工具采集诊断数据
 
