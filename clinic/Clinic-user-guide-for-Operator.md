@@ -220,12 +220,13 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
     >
     > 返回命令结果只代表数据采集任务已经开始，并不表示采集已完成。要了解采集是否全部完成，需要通过下一步操作来查看采集任务的状态。
 
-#### 查看采集数据任务状态
-通过 API 请求获取采集任务的状态：
+2. 查看采集数据任务状态
 
-{{< copyable "shell-regular" >}}
+    通过 API 请求，获取采集任务的状态：
 
-```bash
+    {{< copyable "shell-regular" >}}
+
+    ```bash
 curl -s http://${host}:${port}/api/v1/collectors/${id}
 {
             "clusterName": "${cluster-namespace}/${cluster-name}",
