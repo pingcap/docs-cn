@@ -8,7 +8,7 @@ Clinic 是 PingCAP 对 TiDB 集群提供的诊断服务，包括集群侧工具�
 
 > **注意：**
 >
-> Clinic 的集群侧工具 Diag 暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采样。
+> Clinic 服务的集群侧工具 Diag 暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采样。
 
 Clinic 诊断服务包括 2 个组件：
 
