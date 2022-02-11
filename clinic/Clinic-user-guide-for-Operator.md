@@ -14,6 +14,12 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clin
 
 在使用 TiDB Operator 部署的集群中，Clinic Diag 需要部署为一个独立的 Pod。本文介绍如何使用 kubectl 命令创建并部署 Diag pod 后，通过 API 调用继续数据采集和快速检查。
 
+## 使用场景
+
+通过 Clinic 诊断服务的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
+
+- [使用 Clinic Diag 工具采集诊断数据](#使用-clinic-diag-工具采集诊断数据)
+- [使用 Clinic Diag 工具快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
 ## Clinic Diag 工具安装
 
 本节详细介绍了安装 Clinic Diag 工具的步骤。
