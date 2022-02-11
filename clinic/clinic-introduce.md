@@ -4,7 +4,11 @@ summary: 详细介绍 Clinic 诊断服务，包括工具组件、工作原理和
 ---
 
 ## Clinic 诊断服务简介
-Clinic 是 PingCAP 对 TiDB 集群提供的诊断服务，包括集群侧工具和云服务，用于从全生命周期确保 TiDB 集群稳定运行、预测并降低问题出现概率、快速定位并修复问题。该工具支持对[使用 TiUP 部署的集群](clinic/clinic-data-instruction-for-tiup.md)和[使用 TiDB Operator 部署的集群](clinic/clinic-user-guide-for-operator.md)进行数据采集和快速检查。
+
+Clinic 是 PingCAP 对 TiDB 集群提供的诊断服务，包括集群侧工具和云服务，用于从全生命周期确保 TiDB 集群稳定运行、预测并降低问题出现概率、快速定位并修复问题。该服务支持对使用 TiUP 部署和 TiDB Operator 部署的集群进行数据采集和快速检查，如需查看具体的操作方法，请分别参阅以下内容：
+
+- [TiUP 环境的 Clinic 操作手册](clinic/clinic-data-instruction-for-tiup.md)
+- [Operator 环境的 Clinic 操作手册](clinic/clinic-user-guide-for-operator.md)
 
 > **注意：**
 >
