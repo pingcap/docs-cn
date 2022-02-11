@@ -3,11 +3,14 @@ title: TiUP 环境的 Clinic 操作手册
 summary: 在 TiUP 部署的集群上如何使用 Clinic 工具进行数据采集和快速检查
 ---
 
-# TiUP 环境的 Clinic 操作手册
+# TiUP 环境的 Clinic 诊断服务操作手册
+
+对于使用 TiUP 部署的集群，Clinic 诊断服务可以通过 Clinic Diag 工具与 Clinic Server 云服务对该集群进行数据采集和集群快速诊断。
 
 > **注意：**
 >
-> 本文档只针对 TiUP 部署的集群。Clinic Diag 工具暂时不支持开启了 TLS 加密的集群和 Ansible 部署的集群。
+> 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 TiDB Operator 部署的集群，请参阅[Operator 环境的 Clinic 操作手册](clinic/clinic-user-guide-for-operator.md)。
+> Clinic 诊断服务暂时不支持对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
 
 
 ## 工具安装
