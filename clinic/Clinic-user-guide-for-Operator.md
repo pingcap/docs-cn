@@ -171,12 +171,15 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
     ```bash
     curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
-```
-API 调用参数说明：
-- `clusterName` 为 TiDB 集群名称
-- `namespace` 为 TiDB 集群所在的 namespace 名称（不是 TiDB Operator 所在的 namespace）
-- `from` 和 `to` 分别为采集的起止时间，“+0800” 代表时区。支持的时间格式如下：
-    {{< copyable "shell-regular" >}}
+    ```
+
+    API 调用参数说明：
+
+    - `clusterName`：TiDB 集群名称
+    - `namespace`：TiDB 集群所在的 `namespace 名称`（不是 TiDB Operator 所在的 `namespace`）
+    - `from` 和 `to`：分别为采集的起止时间。`+0800` 代表时区，支持的时间格式如下：
+
+        {{< copyable "shell-regular" >}}
 
     ```bash
     "2006-01-02T15:04:05Z07:00"
