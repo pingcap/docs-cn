@@ -13,8 +13,16 @@ summary: 在 TiUP 部署的集群上如何使用 Clinic 工具进行数据采集
 > Clinic 诊断服务暂时不支持对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
 
 
-## 工具安装
-在安装有 TiUP 的中控机上，执行以下命令安装工具：
+## 使用场景
+	
+	通过 Clinic 诊断服务的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
+	
+	- [使用 Clinic Diag 工具采集诊断数据](#使用-clinic-diag-工具采集诊断数据)
+	- [使用 Clinic Diag 工具快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
+
+## 安装 Clinic Diag 工具
+
+在已安装 TiUP 的中控机上，通过执行以下命令安装 Clinic Diag 工具：
 {{< copyable "shell-regular" >}}
 
 ```bash
