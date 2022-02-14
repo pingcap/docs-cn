@@ -10,9 +10,9 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clin
 > **注意：**
 >
 > 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](clinic/clinic-user-guide-for-tiup.md)。
-> Clinic 诊断服务暂时不支持对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
+> Clinic 诊断服务暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
 
-在使用 TiDB Operator 部署的集群中，Clinic Diag 需要部署为一个独立的 Pod。本文介绍如何使用 kubectl 命令创建并部署 Diag pod 后，通过 API 调用继续数据采集和快速检查。
+对于使用 TiDB Operator 部署的集群，Clinic Diag 需要部署为一个独立的 Pod。本文介绍如何使用 kubectl 命令创建并部署 Diag pod 后，通过 API 调用继续数据采集和快速检查。
 
 ## 使用场景
 
@@ -43,7 +43,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Clin
 
 > **注意：**
 >
-> 目前 Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员或 clinic-trail@pingcap.com 获取试用账号。
+> 目前 Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 {{< copyable "shell-regular" >}}
 
@@ -99,7 +99,7 @@ roleRef:
 kubectl apply -n ${namespace} -f manifest
 ```
 
-其中，`${namespace}` 应替换为 TiDB Operator 所在的 `namespace` 名称，该名称通常为 `tidb-admin`（下同）。
+其中，`${namespace}` 应替换为 TiDB Operator 所在的 `namespace` 名称，该名称通常为 `tidb-admin`。
 
 ### 第 3 步：查看 Diag Pod 的运行状态
 
@@ -129,19 +129,15 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 >
 > 对于使用 TiDB Operator 部署的集群，暂不支持收集日志、配置文件、系统硬件信息等诊断数据。
 
-### 使用方法
+### 第 1 步：确定需要采集的数据
 
-本节详细介绍如何通过 Clinic Diag 工具为使用 TiDB Operator 部署的集群进行采集诊断数据。
+如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明 - Operator 环境](clinic/clinic-data-instruction-for-operator.md)。建议采集完整的监控数据、配置信息等数据，以便提升诊断效率。
 
-#### 第 1 步：确定需要采集的数据
-
-如需查看 Clinic Diag 支持采集的数据详细列表，请参阅 [Clinic 数据采集说明 - Operator 环境](clinic/clinic-data-instruction-for-operator.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。  
-
-#### 第 2 步：采集数据
+### 第 2 步：采集数据
 
 Clinic Diag 工具的各项操作均会通过 API 完成。
 
-- 如需查看完整的 API 定义文档，请访问节点 `http://${host}:${port}/api/v1`。
+- 如需查看完整的 API 定义文档，可访问节点 `http://${host}:${port}/api/v1`。
 
 - 如需查看节点 IP，可使用以下命令：
 
@@ -164,181 +160,182 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
     - 从 Kubernetes 集群外访问该 Service 的端口为 `31917`。
     - 该 Service 类型为 NodePort。你可以通过 Kubernetes 集群中任一宿主机的 IP 地址 `${host}` 和端口号 `${port}` 访问该服务。
 
-1. 发起采集数据请求
+#### 1. 发起采集数据请求
 
-    通过 API 请求发起一次数据采集任务：
+通过 API 请求发起一次数据采集任务：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
-    ```
+```bash
+curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${cluster-name}","namespace": "${cluster-namespace}","from": "2022-02-08 12:00 +0800","to": "2022-02-08 18:00 +0800"}'
+```
 
-    API 调用参数说明：
+API 调用参数说明：
 
-    - `clusterName`：TiDB 集群名称
-    - `namespace`：TiDB 集群所在的 `namespace 名称`（不是 TiDB Operator 所在的 `namespace`）
-    - `from` 和 `to`：分别为采集的起止时间。`+0800` 代表时区，支持的时间格式如下：
+- `clusterName`：TiDB 集群名称
+- `namespace`：TiDB 集群所在的 `namespace 名称`（不是 TiDB Operator 所在的 `namespace`）
+- `from` 和 `to`：分别为采集的起止时间。`+0800` 代表时区，支持的时间格式如下：
 
-        {{< copyable "shell-regular" >}}
+ {{< copyable "shell-regular" >}}
 
-        ```bash
-        "2006-01-02T15:04:05Z07:00"
-        "2006-01-02T15:04:05.999999999Z07:00"
-        "2006-01-02 15:04:05 -0700",
-        "2006-01-02 15:04 -0700",
-        "2006-01-02 15 -0700",
-        "2006-01-02 -0700",
-        "2006-01-02 15:04:05",
-        "2006-01-02 15:04",
-        "2006-01-02 15",
-        "2006-01-02",
-        ```
-        命令输出结果示例如下：
+```bash
+"2006-01-02T15:04:05Z07:00"
+"2006-01-02T15:04:05.999999999Z07:00"
+"2006-01-02 15:04:05 -0700",
+"2006-01-02 15:04 -0700",
+"2006-01-02 15 -0700",
+"2006-01-02 -0700",
+"2006-01-02 15:04:05",
+"2006-01-02 15:04",
+"2006-01-02 15",
+"2006-01-02",
+```
 
-    {{< copyable "shell-regular" >}}
+命令输出结果示例如下：
 
-    ```bash
+{{< copyable "shell-regular" >}}
+
+```bash
+    "clusterName": "${cluster-namespace}/${cluster-name}",
+    "collectors"            "config",
+        "monitor"
+    ],
+    "date": "2021-12-10T10:10:54Z",
+    "from": "2021-12-08 12:00 +0800",
+    "id": "fMcXDZ4hNzs",
+    "status": "accepted",
+    "to": "2021-12-08 18:00 +0800"
+
+```
+
+API 返回信息说明：
+
+- `date`：采集任务发起的时间。
+- `id`：此任务的 ID 编号。在之后的操作中，此 ID 为定位到此次任务的唯一信息。
+ - `status` 为此任务的当前状态，`accepted` 代表采集任务进入队列。
+
+> **注意：**
+>
+> 返回命令结果只代表数据采集任务已经开始，并不表示采集已完成。要了解采集是否全部完成，需要通过下一步操作来查看采集任务的状态。
+
+#### 2. 查看采集数据任务状态
+
+通过 API 请求，获取采集任务的状态：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+curl -s http://${host}:${port}/api/v1/collectors/${id}
+{
             "clusterName": "${cluster-namespace}/${cluster-name}",
-            "collectors": [
-                "config",
-                "monitor"
-            ],
-            "date": "2021-12-10T10:10:54Z",
-            "from": "2021-12-08 12:00 +0800",
-            "id": "fMcXDZ4hNzs",
-            "status": "accepted",
-            "to": "2021-12-08 18:00 +0800"
+        "collectors": [
+            "config",
+            "monitor"
+        ],
+        "date": "2021-12-10T10:10:54Z",
+        "from": "2021-12-08 12:00 +0800",
+        "id": "fMcXDZ4hNzs",
+        "status": "finished",
+        "to": "2021-12-08 18:00 +0800"
+}
+```
 
-    ```
-    API 返回信息说明：
+其中，`id` 为任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。该步骤命令返回格式与上一步（[发起采集数据请求](#发起采集数据请求)）的是相同的。
 
-    - `date`：采集任务发起的时间。
-    - `id`：此任务的 ID 编号。在之后的操作中，此 ID 为定位到此次任务的唯一信息。
-    - `status` 为此任务的当前状态，`accepted` 代表采集任务进入队列。
+如果该任务的状态变为 `finished`，则表示数据采集已完成。
 
-    > **注意：**
-    >
-    > 返回命令结果只代表数据采集任务已经开始，并不表示采集已完成。要了解采集是否全部完成，需要通过下一步操作来查看采集任务的状态。
+#### 3. 查看已采集的数据集信息
 
-2. 查看采集数据任务状态
-
-    通过 API 请求，获取采集任务的状态：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    curl -s http://${host}:${port}/api/v1/collectors/${id}
-    {
-                "clusterName": "${cluster-namespace}/${cluster-name}",
-            "collectors": [
-                "config",
-                "monitor"
-            ],
-            "date": "2021-12-10T10:10:54Z",
-            "from": "2021-12-08 12:00 +0800",
-            "id": "fMcXDZ4hNzs",
-            "status": "finished",
-            "to": "2021-12-08 18:00 +0800"
-    }
-    ```
-
-    - `id`：任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。
-    - 该步骤与上一步（[发起采集数据请求](#发起采集数据请求)）的命令返回格式是相同的。
-
-    该任务的状态变为 `finished`，表示数据采集已完成。
-
-3. 查看已采集的数据集信息
-
-    完成采集任务后，可以通过 API 请求来获取数据集的采集时间和数据大小信息：
+完成采集任务后，可以通过 API 请求来获取数据集的采集时间和数据大小信息：
     
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    curl -s http://${host}:${port}/api/v1/data/${id}
-    {
-            "clusterName": "${cluster-namespace}/${cluster-name}",
-            "date": "2021-12-10T10:10:54Z",
-            "id": "fMcXDZ4hNzs",
-            "size": 1788980746
-    }
-    ```
+```bash
+curl -s http://${host}:${port}/api/v1/data/${id}
+{
+        "clusterName": "${cluster-namespace}/${cluster-name}",
+        "date": "2021-12-10T10:10:54Z",
+        "id": "fMcXDZ4hNzs",
+        "size": 1788980746
+}
+```
 
-    通过本命令，**只能**查看数据集的文件包大小，不能查看具体数据。如需查看数据内容，请参阅[可选操作：本地查看数据](/clinic-user-guide-for-operator.md#可选操作本地查看数据)。
+通过本命令，**只能**查看数据集的文件包大小，不能查看具体数据。如需查看数据内容，请参阅[可选操作：本地查看数据](/clinic-user-guide-for-operator.md#可选操作本地查看数据)。
 
-#### 第 3 步：上传数据集
+### 第 3 步：上传数据集
 
 把诊断数据提供给 PingCAP 技术支持人员时，需要将数据上传到 Clinic Server，然后将其数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供更安全的诊断数据存储和共享。
 
-1. 发起上传任务
+#### 1. 发起上传任务
 
-    通过 API 请求打包并上传收集完成的数据集：
+通过 API 请求打包并上传收集完成的数据集：
 
-    {{< copyable "shell-regular" >}}
+ {{< copyable "shell-regular" >}}
 
-    ```bash
-    curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
-    {
-            "date": "2021-12-10T11:26:39Z",
-            "id": "fMcXDZ4hNzs",
-            "status": "accepted"
-    }
-    ```
+```bash
+curl -s http://${host}:${port}/api/v1/data/${id}/upload -XPOST
+{
+        "date": "2021-12-10T11:26:39Z",
+        "id": "fMcXDZ4hNzs",
+        "status": "accepted"
+}
+```
 
-    返回命令结果只代表上传任务开始已经开始，并不表示已完成上传。要了解上传任务是否完成，需要通过下一步操作来查看任务状态。
+返回命令结果只代表上传任务开始已经开始，并不表示已完成上传。要了解上传任务是否完成，需要通过下一步操作来查看任务状态。
 
-2. 查看上传任务状态
+#### 2. 查看上传任务状态
 
-    通过 API 请求，查看上传任务的状态：
+通过 API 请求，查看上传任务的状态：
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    curl -s http://${host}:${port}/api/v1/data/${id}/upload
-    {
-            "date": "2021-12-10T10:23:36Z",
-            "id": "fMcXDZ4hNzs",
-            "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
-            "status": "finished"
-    }
-    ```
+```bash
+curl -s http://${host}:${port}/api/v1/data/${id}/upload
+{
+        "date": "2021-12-10T10:23:36Z",
+        "id": "fMcXDZ4hNzs",
+        "result": "\"https://clinic.pingcap.com:4433/diag/files?uuid=ac6083f81cddf15f-34e3b09da42f74ec-ec4177dce5f3fc70\"",
+        "status": "finished"
+}
+```
 
-    状态变为 `finished` 表示打包与上传均已完成。此时，`result` 表示 Clinic Server 查看此数据集的链接，即需要发给 PingCAP 技术支持人员的数据访问链接。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
+如果状态变为 `finished`，则表示打包与上传均已完成。此时，`result` 表示 Clinic Server 查看此数据集的链接，即需要发给 PingCAP 技术支持人员的数据访问链接。目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
 
-#### 可选操作：本地查看数据
+### 可选操作：本地查看数据
 
 采集完成的数据会保存在 Pod 的 `/diag-${id}` 目录中，可以通过以下方法进入 Pod 查看此数据：
 
-1. 获取 `diag-collector-pod-name`
+#### 1. 获取 `diag-collector-pod-name`
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    kubectl get pod --all-namespaces  | grep diag
-    tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
-    ```
+```bash
+kubectl get pod --all-namespaces  | grep diag
+tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
+```
 
-    其中，Diag Pod 的名称为 `diag-collector-69bf78478c-nvt47`，其所在的 `namespace` 为 `tidb-admin`。
+其中，Diag Pod 的名称为 `diag-collector-69bf78478c-nvt47`，其所在的 `namespace` 为 `tidb-admin`。
 
-2. 进入 Pod 并查看数据
-    {{< copyable "shell-regular" >}}
-    ```bash
-    kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
-    / # cd diag-${id}
-    ```
+#### 2. 进入 Pod 并查看数据
 
-    其中，`${namespace}` 需要替换为 TiDB Operator 所在的 `namespace` 名称（通常为 `tidb-admin`）。
+{{< copyable "shell-regular" >}}
+
+```bash
+kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
+/ # cd diag-${id}
+```
+
+其中，`${namespace}` 需要替换为 TiDB Operator 所在的 `namespace` 名称（通常为 `tidb-admin`）。
 
 ## 使用 Clinic Diag 工具快速诊断集群
 
 Clinic 诊断服务支持对集群的健康状态进行快速地诊断，主要支持检查配置项内容，快速发现不合理的配置项。
 
-### 使用步骤
-第一步：采集数据
+### 第一步：采集数据
 
-有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#第2步采集数据)内。
+有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#第2步采集数据)。
 
-第二步：快速诊断
+### 第二步：快速诊断
 
 通过 API 请求，在本地对集群进行快速诊断：
 
@@ -347,11 +344,11 @@ Clinic 诊断服务支持对集群的健康状态进行快速地诊断，主要�
 ```bash
 curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["config"]}'
 ```
+
 其中，`id` 为采集数据任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。
 
 请求结果中会列出已发现的配置风险内容和建议配置的知识库链接，具体示例如下：
 
-诊断响应示例：
 {{< copyable "shell-regular" >}}
 
 ```bash
@@ -406,12 +403,13 @@ There were **3** abnormal results.
 
 Result report and record are saved at /diag-fPrz0RnDxRn/report-220208030210
 ```
+
 在上述示例中，
 
-    - 第一部分为诊断集群名称等基础信息。
-    - 第二部分为断数据来源信息。
-    - 第三部分为诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，用户可以打开链接查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg` 。
-    - 最后一行为诊断结果文档的保存路径。
+- 第一部分为诊断集群名称等基础信息。
+- 第二部分为断数据来源信息。
+- 第三部分为诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`
+- 最后一行为诊断结果文档的保存路径。
 
 ## 常见问题
 
