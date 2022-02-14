@@ -20,7 +20,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Continuous profiling
 
-Continuous profiling（持续性能分析）是在 TiDB v5.3.0 引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
+Continuous profiling（持续性能分析）是从 TiDB v5.3.0 引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
 
 ## I
 
@@ -73,7 +73,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ## Raft Engine
 
-一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。在 v5.4 中，支持使用 Raft Engine 作为 TiKV 的日志存储引擎（实验特性，默认关闭）。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。
+一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎（实验特性，默认关闭）。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。
 
 ### Region/Peer/Raft Group
 
@@ -108,7 +108,7 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### Top SQL
 
-在 v5.4 中引入的实验特性，用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。详情参见 [Top SQL 用户文档](/dashboard/top-sql.md)。
+从 v5.4 起引入的实验特性，用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。详情参见 [Top SQL 用户文档](/dashboard/top-sql.md)。
 
 ### TSO
 
