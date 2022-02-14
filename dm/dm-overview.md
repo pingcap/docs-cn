@@ -21,13 +21,13 @@ The data migration task includes two stages: full data migration and incremental
 
 ## DM versions
 
-The stable versions of DM include v1.0, v2.0, and v5.3. It is recommended to use DM v5.3 (the latest stable version of DM) and not recommended to use v1.0 (the earliest stable version of DM).
+This document is applicable to DM v5.4, the latest stable version of DM.
 
-For v5.3 and earlier releases, the DM documentation is independent of the TiDB documentation. To access the DM documentation, click one of the following links:
+Before v5.4, the DM documentation is independent of the TiDB documentation. To access these earlier versions of the DM documentation, click one of the following links:
 
 - [DM v5.3 documentation](https://docs.pingcap.com/tidb-data-migration/v5.3)
 - [DM v2.0 documentation](https://docs.pingcap.com/tidb-data-migration/v2.0/)
-- [DM v1.0 documentation](https://docs.pingcap.com/tidb-data-migration/v1.0/)
+- [DM v1.0 documentation](https://docs.pingcap.com/tidb-data-migration/v1.0/) (Not recommended, because it the earliest stable version of DM)
 
 > **Note:**
 >
