@@ -94,6 +94,10 @@ pd_servers:
 
 执行 scale-out 命令前，先使用 `check` 及 `check --apply` 命令，检查和自动修复集群存在的潜在风险：
 
+> **注意：**
+>
+> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.0 及后续版本中支持，请操作前先升级 tiup cluster 版本。
+
 （1）检查集群存在的潜在风险：
 
     {{< copyable "shell-regular" >}}
