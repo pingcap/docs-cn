@@ -100,12 +100,16 @@ job = "tikv"
 # 如果机器上有多块磁盘，可以将 Raft RocksDB 的数据放在不同的盘上，提高 TiKV 的性能。
 # raftdb-path = "/tmp/tikv/store/raft"
 
-region-max-size = "384MB"
-# Region 分裂阈值
-region-split-size = "256MB"
 # 当 Region 写入的数据量超过该阈值的时候，TiKV 会检查该 Region 是否需要分裂。为了减少检查过程
 # 中扫描数据的成本，数据过程中可以将该值设置为32MB，正常运行状态下使用默认值即可。
 region-split-check-diff = "32MB"
+
+[coprocessor]
+
+## 当 Region [a,e) 的大小超过 `region_max_size`, 这个 Region 就会尝试进行分裂，比如分裂成[a,b),
+## [b,c), [c,d), [d,e) 后，这些 Region [a,b), [b,c), [c,d) 的大小会是 `region_split_size` (或者稍大于）
+# region-max-size = "144MB"
+# region-split-size = "96MB"
 
 [rocksdb]
 # RocksDB 进行后台任务的最大线程数，后台任务包括 compaction 和 flush。具体 RocksDB 为什么需要进行 compaction，
