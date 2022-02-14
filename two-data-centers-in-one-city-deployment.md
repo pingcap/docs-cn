@@ -156,6 +156,12 @@ cat rule.json
 ]
 ```
 
+你可以使用如下命令使用 rule.json 中的配置来覆盖原有的设置：
+
+```bash
+pd-ctl config placement-rules rule-bundle save --in="rule.json"
+```
+
 ### 启用自适应同步模式
 
 副本的复制模式由 PD 节点控制。如果要使用 DR Auto-sync 自适应同步模式，需要在部署集群前先配置好 PD 的配置文件，如下所示：
