@@ -18,9 +18,9 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ## C
 
-### Continuous profiling
+### Continuous Profiling
 
-Continuous profiling（持续性能分析）是从 TiDB v5.3.0 引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
+Continuous Profiling（持续性能分析）是从 TiDB v5.3 起引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。详情参见 [TiDB Dashboard 实例性能分析 - 持续分析页面](/dashboard/continuous-profiling.md)。
 
 ## I
 
