@@ -92,17 +92,39 @@ pd_servers:
 
 ### 2. 执行扩容命令
 
-{{< copyable "shell-regular" >}}
+执行 scale-out 命令前，先使用 `check` 及 `check --apply` 命令，检查和自动修复集群存在的潜在风险：
 
-```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
-```
+（1）检查集群存在的潜在风险：
 
-> **注意：**
->
-> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
+    {{< copyable "shell-regular" >}}
 
-预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
+    ```shell
+    tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
+
+（2）自动修复集群存在的潜在风险：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
+
+（3）执行 scale-out 命令扩容 TiDB 集群：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster scale-out <cluster-name> scale-out.yaml [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
+
+以上操作示例中：
+
+- 扩容配置文件为 `scale-out.yaml`。
+- `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
+
+预期日志结尾输出 ```Scaled cluster `<cluster-name>` out successfully``` 信息，表示扩容操作成功。
 
 ### 3. 检查集群状态
 
