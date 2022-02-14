@@ -105,7 +105,7 @@ region-max-size = "384MB"
 # Region 分裂阈值
 region-split-size = "256MB"
 # 当 Region 写入的数据量超过该阈值的时候，TiKV 会检查该 Region 是否需要分裂。为了减少检查过程
-# 中扫描数据的成本，数据过程中可以将该值设置为32MB，正常运行状态下使用默认值即可。
+# 中扫描数据的成本，导入数据过程中可以将该值设置为 32MB，正常运行状态下使用默认值即可。
 region-split-check-diff = "32MB"
 
 [rocksdb]
