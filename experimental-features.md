@@ -29,7 +29,7 @@ This document introduces the experimental features of TiDB in different versions
 
 ## SQL
 
-+ [Use SQL interface to set placement rules for data] (/placement-rules-in-sql.md) (Introduced in v5.3)
++ [Use SQL interface to set placement rules for data](/placement-rules-in-sql.md) (Introduced in v5.3)
 + List Partition (Introduced in v5.0)
 + List COLUMNS Partition (Introduced in v5.0)
 + [Dynamic Pruning Mode for Partitioned Tables](/partitioned-table.md#dynamic-pruning-mode). (Introduced in v5.1)
