@@ -8,8 +8,6 @@ aliases: ['/docs-cn/stable/tidb-binlog/bidirectional-replication-between-tidb-cl
 > **警告：**
 >
 > 目前双向同步属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
-
-
 本文档介绍如何将一个 TiDB 集群的数据双向同步到另一个 TiDB 集群、双向同步的实现原理、如何开启双向同步、以及如何同步 DDL 操作。
 
 ## 使用场景
