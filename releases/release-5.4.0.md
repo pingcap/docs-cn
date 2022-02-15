@@ -196,7 +196,7 @@ In v5.4, the key new features or improvements are as follows:
 
     [User document](/statistics.md#persist-analyze-configurations)
 
-## High availability and disaster recovery
+### High availability and disaster recovery
 
 - **Reduce the impact of backup tasks on the cluster**
 
