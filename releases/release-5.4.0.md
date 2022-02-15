@@ -90,7 +90,9 @@ TiDB 版本：5.4.0
 
     为了更好的支持中文用户，TiDB 从 v5.4.0 起支持 GBK 字符集。在初次初始化 TiDB 集群时开启 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，TiDB GBK 字符集同时支持 `gbk_bin` 和 `gbk_chinese_ci` 这两种排序规则。
 
-在使用 GBK 字符集时，需要注意兼容性限制，详情参考[字符集和排序 - GBK](/character-set-gbk.md)。
+    在使用 GBK 字符集时，需要注意兼容性限制。
+
+    [用户文档](/character-set-gbk.md)。
 
 ### 安全
 
