@@ -17,14 +17,14 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### Cluster 基础信息
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 集群基础信息，包括集群 ID | `cluster.json` | 每次收集默认采集 |
 | 集群详细信息 | `meta.yaml` | 每次收集默认采集 |
 
 ### TiDB 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志 | `tidb.log` | `--include=log` |
 | Error 日志 | `tidb_stderr.log` | `--include=log` |
@@ -34,7 +34,7 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### TiKV 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志 | `tikv.log` | `--include=log` |
 | Error 日志 | `tikv_stderr.log` | `--include=log` |
@@ -43,7 +43,7 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### PD 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志 | `pd.log` | `--include=log` |
 | Error 日志 | `pd_stderr.log` | `--include=log` |
@@ -54,7 +54,7 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### TiFlash 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志 | `tiflash.log` | `--include=log` |
 | Error 日志 | `tiflash_stderr.log` | `--include=log` |
@@ -63,7 +63,7 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### TiCDC 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志 | `ticdc.log` | `--include=log`|
 | Error 日志 | `ticdc_stderr.log` | `--include=log` |
@@ -71,21 +71,21 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### Prometheus 监控数据
 
-|诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+|诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 所有的 Metrics 数据 | `{metric_name}.json` | `--include=monitor` |
 | Alert 配置 | `alerts.json` | `--include=monitor` |
 
 ### TiDB 系统变量 
 
-|诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+|诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars` |
 | | `global_variables.csv` | `--include=db_vars` |
 
 ### 集群系统信息
 
-|诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+|诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 内核日志 | `dmesg.log` | `--include=system` |
 | 基础的系统和硬件信息 | `insight.json` | `--include=system` |
@@ -99,14 +99,14 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### Cluster 基础信息
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 集群基础信息，包括集群 ID | `cluster.json`| 每次收集默认采集 |
 | 集群详细信息 | `meta.yaml` | 每次收集默认采集 |
 
 ### dm-master 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志 | `m-master.log` | `--include=log` |
 | Error 日志 | `dm-master_stderr.log` | `--include=log` |
@@ -114,7 +114,7 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### dm-worker 诊断数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 日志| `dm-worker.log` | `--include=log`|
 | Error 日志 | `dm-worker_stderr.log` | `--include=log` |
@@ -122,14 +122,14 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### Prometheus 监控数据
 
-| 诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 所有的 Metrics 数据 | `{metric_name}.json` | `--include=monitor` |
 | Alert 配置 | `alerts.json` | `--include=monitor` |
 
 ### 集群系统信息
 
-|诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+|诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 内核日志 | `dmesg.log` | `--include=system` |
 | 基础的系统和硬件信息 | `insight.json` | `--include=system` |
