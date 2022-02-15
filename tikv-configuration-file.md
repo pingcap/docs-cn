@@ -626,6 +626,13 @@ raftstore 相关的配置项。
 + 默认值：4h
 + 最小值：0
 
+### `snap-generator-pool-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 用于配置 `snap-generator` 线程池的大小。
++ 为了让 TiKV 在恢复场景下加快 Region 生成 Snapshot 的速度，需要调大对应 Worker 的 `snap-generator` 线程数量。可通过本配置项调大对应线程的数量。
++ 默认值：2
++ 最小值：0
+
 ### `lock-cf-compact-interval`
 
 + 触发对 lock CF compact 检查的时间间隔。
