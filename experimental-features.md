@@ -8,6 +8,13 @@ aliases: ['/tidb/dev/experimental-features-4.0/']
 
 This document introduces the experimental features of TiDB in different versions. It is **NOT** recommended to use these features in the production environment.
 
+## Performance
+
++ [Automatically scale TiFlash thread pool](/tiflash/tiflash-configuration.md). (Introduced in v5.4)
++ [Raft Engine](/tikv-configuration-file.md#raft-engine). (Introduced in v5.4)
++ [Support collecting statistics for `PREDICATE COLUMNS`](/statistics.md#collect-statistics-on-some-columns) (Introduced in v5.4)
++ [Support synchronously loading statistics](/statistics.md#load-statistics). (Introduced in v5.4)
+
 ## Stability
 
 + TiFlash limits the use of I/O resources by compressing or sorting data, mitigating the contention for I/O resources between background tasks and front-end data reading and writing (Introduced in v5.0)
@@ -47,10 +54,6 @@ This document introduces the experimental features of TiDB in different versions
 + [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental) (Introduced in v4.0)
 + TiFlash supports distributing the new data of the storage engine on multiple hard drives to share the I/O pressure. (Introduced in v4.0)
 
-## Data migration
-
-+ [DM OpenAPI](/dm/dm-open-api.md) (Introduced in v5.3)
-
 ## Backup and restoration
 
 + [Back up Raw KV](/br/use-br-command-line-tool.md#back-up-raw-kv-experimental-feature) (Introduced in v3.1)
@@ -65,3 +68,4 @@ This document introduces the experimental features of TiDB in different versions
 + [Cluster diagnostics](/dashboard/dashboard-diagnostics-access.md) (Introduced in v4.0)
 + [Continuous profiling](/dashboard/continuous-profiling.md) (Introduced in v5.3)
 + [Online Unsafe Recovery](/online-unsafe-recovery.md) (Introduced in v5.3)
++ [Top SQL](/dashboard/top-sql.md) (Introduced in v5.4)
