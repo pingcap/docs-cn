@@ -6,6 +6,10 @@ aliases: ['/docs/dev/tidb-binlog/bidirectional-replication-between-tidb-clusters
 
 # Bidirectional Replication between TiDB Clusters
 
+> **Warning:**
+>
+> Currently, bidirectional replication is still an experimental feature. It is **NOT** recommended to use it in the production environment.
+
 This document describes the bidirectional replication between two TiDB clusters, how the replication works, how to enable it, and how to replicate DDL operations.
 
 ## User scenario
