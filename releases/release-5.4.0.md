@@ -110,7 +110,7 @@ In v5.4, the key new features or improvements are as follows:
 
 ### Performance
 
-- **Continue improving the stability and performance of  the columnar storage engine TiFlash and the computing engine MPP**
+- **Continue improving the stability and performance of the columnar storage engine TiFlash and the computing engine MPP**
 
     - Support pusing down more functions to the MPP engine:
 
@@ -152,11 +152,11 @@ In v5.4, the key new features or improvements are as follows:
 
     Before TiDB v4.0, a query on a table supports using only one index for filtering at one time. If you want to query multiple columns of data, you can enable Index Merge to get the exact query result in a short time by using the indexes in individual columns. Index Merge avoids unnecessary full table scans and does not require establishing a large number of composite indexes.
 
-    In v5.4.0, Inex Merge becomes  GA. However, you still need to pay attention to the following restrictions:
+    In v5.4.0, Index Merge becomes GA. However, you still need to pay attention to the following restrictions:
 
     - Index Merge supports only disjunctive normal form (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>). That is, this feature only works when filtering conditions in a `WHERE` clause are connected by `OR`.
 
-    - For newly deployed TiDB clusters of v5.4.0 or later,  this feature is enabled by default. For v5.4.0 or later TiDB clusters upgraded from earlier versions, this feature inherits the setting before the upgrade and you can change the setting as required (for TiDB clusters earlier than v4.0, this feature does not exist and is disabled by default).
+    - For newly deployed TiDB clusters of v5.4.0 or later, this feature is enabled by default. For v5.4.0 or later TiDB clusters upgraded from earlier versions, this feature inherits the setting before the upgrade and you can change the setting as required (for TiDB clusters earlier than v4.0, this feature does not exist and is disabled by default).
 
     [User document](/explain-index-merge.md)
 
@@ -383,7 +383,7 @@ In v5.4, the key new features or improvements are as follows:
 + TiFlash
 
     - Fix the issue that TiFlash might panic when an MPP query is stopped
-    - Fix the issue that queries with the `where <string>` clause return wrong results 
+    - Fix the issue that queries with the `where <string>` clause return wrong results
     - Fix the potential issue of data inconsistency that might occur when setting the column type of an integer primary key to a larger range
     - Fix the issue that when an input time is earlier than 1970-01-01 00:00:01 UTC, the behavior of `unix_timestamp` is inconsistent with that of TiDB or MySQL
     - Fix the issue that TiFlash might return the `EstablishMPPConnection` error after it is restarted
