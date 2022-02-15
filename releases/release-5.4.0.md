@@ -32,45 +32,45 @@ TiDB 版本：5.4.0
 
 |  变量名    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- |
-|  [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 新增 | 用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集，默认值为 `OFF` |
+|  [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-从-v540-版本开始引入) | 新增 | 用于控制是否开启 TiDB 对 `PREDICATE COLUMNS` 的收集，默认值为 `OFF`。 |
 | [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)  | 新增 | 此变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求，默认值为 `OFF`。对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。 |
-| [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF |
-| [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF` |
-| [`tidb_read_staleness`](/system-variables.md#tidb_read_staleness-从-v540-版本开始引入) | 新增 | 用于设置当前会话允许读取的历史数据范围，默认值为 `0` |
-| [`tidb_regard_null_as_point`](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以将包含 null 的等值条件作为前缀条件来访问索引 |
-| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时 |
-| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败 (`OFF`) 还是退回使用 pseudo 的统计信息 (`ON`)，默认值为 `ON` |
-|  [`tidb_backoff_lock_fast`](/system-variables.md#tidb_backoff_lock_fast) | 修改 | 默认值由 `100` 修改为 `10` |
+| [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入) | 新增 | 用于控制是否开启 Top SQL 特性，默认值为 OFF。 |
+| [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入)  | 新增  | 用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性，默认值为 `OFF`。 |
+| [`tidb_read_staleness`](/system-variables.md#tidb_read_staleness-从-v540-版本开始引入) | 新增 | 用于设置当前会话允许读取的历史数据范围，默认值为 `0`。 |
+| [`tidb_regard_null_as_point`](/system-variables.md#tidb_regard_null_as_point-从-v540-版本开始引入) | 新增 | 用于控制优化器是否可以将包含 null 的等值条件作为前缀条件来访问索引。 |
+| [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-从-v540-版本开始引入) | 新增 | 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。 |
+| [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-从-v540-版本开始引入) | 新增 | 用于控制统计信息同步加载超时后，SQL 是执行失败 (`OFF`) 还是退回使用 pseudo 的统计信息 (`ON`)，默认值为 `ON`。 |
+|  [`tidb_backoff_lock_fast`](/system-variables.md#tidb_backoff_lock_fast) | 修改 | 默认值由 `100` 修改为 `10`。 |
 | [`tidb_enable_index_merge`](/system-variables.md#tidb_enable_index_merge-从-v40-版本开始引入) | 修改 | 默认值由 `OFF` 改为 `ON`。如果从低于 v4.0.0 版本升级到 v5.4.0 及以上版本的集群，该变量值默认保持 `OFF`。如果从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本的集群，该变量开关保持升级前的状态。对于 v5.4.0 及以上版本的新建集群，该变量开关默认保持 `ON`。 |
-| [`tidb_store_limit`](/system-variables.md#tidb_store_limit-从-v304-和-v40-版本开始引入) | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置 |
+| [`tidb_store_limit`](/system-variables.md#tidb_store_limit-从-v304-和-v40-版本开始引入) | 修改 | v5.4.0 前支持实例级别及集群级别的设置，现在只支持集群级别的设置。 |
 
 ### 配置文件参数
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 新增 |  用于设置 TiDB 统计信息同步加载功能可以并发处理的最大列数，默认值为 `5`             |
-| TiDB | [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入)   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`             |
-| TiKV | [`snap-generator-pool-size`](/tikv-configuration-file.md#snap-generator-pool-size-从-v540-版本开始引入) | 新增 | 配置 `snap-generator` 线程池大小，默认值为 `2` |
+| TiDB | [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-从-v540-版本开始引入) | 新增 |  用于设置 TiDB 统计信息同步加载功能可以并发处理的最大列数，默认值为 `5`。             |
+| TiDB | [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-从-v540-版本开始引入)   | 新增 |  用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求，默认值为 `1000`。             |
+| TiKV | [`snap-generator-pool-size`](/tikv-configuration-file.md#snap-generator-pool-size-从-v540-版本开始引入) | 新增 | 配置 `snap-generator` 线程池大小，默认值为 `2`。 |
 | TiKV | `log.file.max-size`、`log.file.max-days`、`log.file.max-backups` | 新增  | 参数说明见 [TiKV 配置文件 - log.file](/tikv-configuration-file.md#logfile-从-v540-版本开始引入)。 |
 | TiKV | `raft-engine` | 新增 | 包含 `enable`、`dir`、`batch-compression-threshold`、`bytes-per-sync`、`target-file-size`、`purge-threshold`、`recovery-mode`、`recovery-read-block-size`、`recovery-read-block-size`、`recovery-threads`，详情参见 [TiKV 配置文件：raft-engine](/tikv-configuration-file.md#raft-engine)。|
 | TiKV | [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) | 修改 | 在 v5.3.0 中默认值为 `false`，自 v5.4.0 起默认值改为 `true`。表示在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。在默认配置下，备份速度可能下降。 |
 | TiKV | `log-level`、`log-format`、`log-file`、`log-rotation-size` | 修改 | 将 TiKV log 参数名替换为与 TiDB log 参数一致的参数名，即 `log.level`、`log.format`、`log.file.filename`、`log.enable-timestamp`。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。详情参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。 |
 | TiKV  |  `log-rotation-timespan`  | 删除 |  轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。 |
-| TiKV | `allow-remove-leader` | 删除  | 决定是否允许删除主开关 |
+| TiKV | `allow-remove-leader` | 删除  | 决定是否允许删除主开关。 |
 | TiKV | `raft-msg-flush-interval` | 删除 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。 |
-| PD | [`log.level`](/pd-configuration-file.md#level) | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感 |
+| PD | [`log.level`](/pd-configuration-file.md#level) | 修改 | 默认值由 "INFO" 改为 "info"，保证大小写不敏感。 |
 | TiFlash | [`profile.default.enable_elastic_threadpool`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增  |  表示是否启用可自动扩展的线程池。打开该配置项可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认值为 `false`。|
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 表示 DTFile 储存文件格式，默认值为 `2`，该格式在数据文件中内嵌哈希值。也可以设置为 `3`，该格式包含元数据，标记数据校验，支持多种哈希算法。|
-| TiFlash | [`logger.count`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 默认值修改为 `10` |
-| TiFlash | [`status.metrics_port`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 默认值修改为 `8234` |
+| TiFlash | [`logger.count`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 默认值修改为 `10`。 |
+| TiFlash | [`status.metrics_port`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 默认值修改为 `8234`。 |
 | TiFlash | [`raftstore.apply-pool-size`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 新增 | 处理 Raft 数据落盘的线程池中线程的数量，默认值为 `4`。 |
 | TiFlash | [`raftstore.store-pool-size`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 新增 | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小，默认值为 `4`。 |
 | TiDB Data Migration (DM)  | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
-| TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `104857601`（10MB）  |
-| TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition |
+| TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `104857601`（10MB）。  |
+| TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition。 |
 | TiDB Lightning | `meta-schema-name` | 修改 | 此配置项控制 TiDB Lightning 在目标 TiDB 中保存 metadata 对应的 schema name。从 v5.4.0 开始，只在开启了并行导入功能时（对应配置为 `tikv-importer.incremental-import = true` ），才会在目标 TiDB 中创建此库。 |
 | TiDB Lightning | `task-info-schema-name` |  新增  | 用于配置当 TiDB Lightning 检测到冲突数据时，对应冲突数据存储的库名，默认值为 "lightning_task_info"。如果没有开启冲突检测功能，则无需配置此参数。  |
-| TiDB Lightning | `incremental-import` | 新增 | 是否允许向已存在数据的表导入数据。默认值为 false |
+| TiDB Lightning | `incremental-import` | 新增 | 是否允许向已存在数据的表导入数据。默认值为 false。 |
 
 ### 其他
 
@@ -78,7 +78,7 @@ TiDB 版本：5.4.0
 - 对 log 相关参数，TiDB Server、PD Server 和 TiKV Server 将采用统一的参数命名方式来管理日志命名、输出格式、轮转和过期的规则。参见 [TiKV 配置文件 - log](/tikv-configuration-file.md#log-从-v540-版本开始引入)。
 - 自 v5.4.0 起，对于通过 Plan Cache 已经缓存的执行计划，如果为其创建绑定 (Binding)，会使得对应查询已经缓存的计划失效。v5.4.0 前已经缓存的计划不受新 Binding 的影响。
 - 在 v5.3 及更早版本中，[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v5.3/) 文档独立于 TiDB 文档。自 v5.4 起，TiDB Data Migration 的文档已合并入相同版本的 TiDB 文档，无需跳转到 DM 文档站，你可以直接在 TiDB 文档站阅读 [DM 文档](/dm/dm-overview.md)。
-- 移除 cdclog。自 v5.4 起，不再支持 cdclog。
+- 移除 cdclog。自 v5.4.0 起，不再支持 cdclog。
 
 ## 新功能
 
@@ -90,7 +90,9 @@ TiDB 版本：5.4.0
 
     为了更好的支持中文用户，TiDB 从 v5.4.0 起支持 GBK 字符集。在初次初始化 TiDB 集群时开启 TiDB 配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，TiDB GBK 字符集同时支持 `gbk_bin` 和 `gbk_chinese_ci` 这两种排序规则。
 
-在使用 GBK 字符集时，需要注意兼容性限制，详情参考[字符集和排序 - GBK](/character-set-gbk.md)。
+    在使用 GBK 字符集时，需要注意兼容性限制。
+
+    [用户文档](/character-set-gbk.md)
 
 ### 安全
 
@@ -106,7 +108,7 @@ TiDB 版本：5.4.0
 
     集群启动命令增加了 `--init` 参数，有了该参数，在 TiUP 部署场景，TiUP 会为数据库 root 用户生成一个初始的强密码，避免 root 用户使用空密码所带来的安全风险，增强数据库的安全性。
 
-    [User document](/production-deployment-using-tiup.md#第-7-步启动集群)
+    [用户文档](/production-deployment-using-tiup.md#第-7-步启动集群)
 
 ### 性能
 
@@ -140,19 +142,19 @@ TiDB 版本：5.4.0
 
     [用户文档](/tidb-read-staleness.md)
 
-- **TiDB 正式发布索引合并 (Index Merge) 功能**
+- **TiDB 正式发布索引合并功能**
 
-    _索引合并_ 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。例如对以下的查询，若 `WHERE` 子句中两个 `OR` 连接的过滤条件在各自包含的 _key1_ 与 _key2_ 两个列上都存在索引，则 _索引合并_ 可以同时利用  _key1_ 与 _key2_ 上的索引分别进行过滤，然后合并出最终的结果。
+    索引合并 (Index Merge) 是在 TiDB v4.0 版本中作为实验特性引入的一种查询执行方式的优化，可以大幅提高查询在扫描多列数据时条件过滤的效率。例如对以下的查询，若 `WHERE` 子句中两个 `OR` 连接的过滤条件在各自包含的 key1 与 key2 两个列上都存在索引，则索引合并可以同时利用 key1 与 key2 上的索引分别进行过滤，然后合并出最终的结果。
 
     ```sql
     SELECT * FROM table WHERE key1 <= 100 OR key2 = 200;
     ```
 
-    以往 TiDB 在一个表上的查询只能使用一个索引，无法同时使用多个索引进行条件过滤。相较以往，_索引合并_ 避免了此情况下可能不必要的大量数据扫描，也可以使得需要灵活查询不特定多列数据组合的用户利用单列上的索引达到高效稳定的查询，无需大量构建多列复合索引。
+    以往 TiDB 在一个表上的查询只能使用一个索引，无法同时使用多个索引进行条件过滤。相较以往，索引合并避免了此情况下可能不必要的大量数据扫描，也可以使得需要灵活查询不特定多列数据组合的用户利用单列上的索引达到高效稳定的查询，无需大量构建多列复合索引。
 
-    本版本正式发布了 _索引合并 (Index Merge)_ 特性，但仍存在以下的使用条件和限制：
+    本版本正式发布了索引合并特性，但仍存在以下的使用条件和限制：
 
-    - 目前 TiDB 的 _索引合并_ 优化只限于 _析取范式_ (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
+    - 目前 TiDB 的索引合并优化只限于*析取范式* (X<sub>1</sub> ⋁ X<sub>2</sub> ⋁ …X<sub>n</sub>)，即 `WHERE` 子句中过滤条件连接词为 `OR`。
 
     - 如果全新部署的集群版本为 v5.4.0 或以上，此特性默认开启。如果从 v5.4.0 以前的版本升级到 v5.4.0 或以上，默认保持升级前此特性的开关状态（v4.0.0 之前无此项特性的版本默认关闭），由用户决定是否开启。
 
@@ -194,7 +196,7 @@ TiDB 版本：5.4.0
 
     [用户文档](/statistics.md#analyze-配置持久化)
 
-## 高可用和容灾
+### 高可用和容灾
 
 - **优化备份对集群的影响**
 
@@ -239,7 +241,7 @@ TiDB 版本：5.4.0
 
 - **在 DM 中优化[排序规则](/character-set-and-collation.md)的处理方式**
 
-    增加 collation_compatible 开关，支持 strict 和 loose（默认）两种模式：
+    增加 `collation_compatible` 开关，支持 strict 和 loose（默认）两种模式：
 
     - 如果对排序规则要求不严格，允许上下游查询结果排序规则不一致，使用默认的 loose 模式可以避免报错。
     - 如果对排序规则要求严格，业务要求排序规则必须一致，则应当使用 strict 模式。但如果下游不支持上游缺省的 collation，同步可能会报错。
