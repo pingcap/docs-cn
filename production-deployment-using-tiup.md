@@ -78,7 +78,6 @@ title: 使用 TiUP 部署 TiDB 集群
     ```
 
 </div>
-
 <div label="离线部署">
 
 ### 离线部署
