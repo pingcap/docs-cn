@@ -32,7 +32,7 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiDB Operator 部署的集
 
 ### PD 诊断数据
 
-|诊断数据类型 | 输出文文件 | Clinic 采集参数 |
+|诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 实时配置 | `config.json` |`--include=config` |
 | `tiup ctl pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
