@@ -646,7 +646,7 @@ Configuration items related to Raftstore.
 
 + The longest inactive duration allowed for a peer. A peer with timeout is marked as `down`, and PD tries to delete it later.
 + Default value: `"10m"`
-+ Minimum value: When Hibernate Region is enabled, the minimum value is `peer-stale-check-interval * 2`; when Hibernate Region is disabled, the minimum value is `0`.
++ Minimum value: When Hibernate Region is enabled, the minimum value is `peer-stale-state-check-interval * 2`; when Hibernate Region is disabled, the minimum value is `0`.
 
 ### `max-leader-missing-duration`
 
