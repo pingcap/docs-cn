@@ -4,9 +4,9 @@ title: TiDB Data Migration 版本发布历史
 
 # TiDB Data Migration 版本发布历史
 
-从 DM v5.4 起，TiDB Data Migration 的 Release Notes 合入相同版本号的 TiDB Release Notes。
+从 DM v5.4.0 起，TiDB Data Migration 的 Release Notes 合并入相同版本号的 TiDB Release Notes。
 
-- 如需阅读 v5.4 及之后版本的 DM Release Notes，请查看对应版本的 TiDB Release Notes 中 DM 相关的内容。
+- 如需阅读 v5.4.0 及之后版本的 DM Release Notes，请查看对应版本的 TiDB Release Notes 中 DM 相关的内容。
 - 如需阅读 v5.3.0 及更早版本的 DM Release Notes，请参考以下链接：
 
 ## 5.3
