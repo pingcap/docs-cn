@@ -8,7 +8,6 @@ summary: Learn how to enable Continuous Profiling and observe system conditions 
 > **Warning:**
 >
 > Continuous Profiling is currently an experimental feature and is not recommended for use in production environments.
->
 
 Introduced in TiDB 5.3.0, Continuous Profiling is a way to observe resource overhead at the system call level. With the support of Continuous Profiling, TiDB provides performance insight as clear as directly looking into the database source code, and helps R&D and operation and maintenance personnel to locate the root cause of performance problems using a flame graph.
 
