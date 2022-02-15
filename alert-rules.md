@@ -686,34 +686,6 @@ This section gives the alert rules for the TiKV component.
 
     Refer to [`TiKV_coprocessor_request_wait_seconds`](#tikv_coprocessor_request_wait_seconds).
 
-#### `TiKV_coprocessor_request_error`
-
-* Alert rule:
-
-    `increase(tikv_coprocessor_request_error{reason=!"meet_lock"}[10m]) > 100`
-
-* Description:
-
-    The request error of Coprocessor.
-
-* Solution:
-
-    The reasons for the Coprocessor error can be divided into three types: "lock", “outdated” and “full”. “outdated” indicates that the request has a timeout. It might be caused by a long queue time or a long time to handle a single request. “full” indicates that the request queue is full. It is possibly because the running request is time-consuming, which sends all new requests in the queue. You need to check whether the time-consuming query’s execution plan is correct.
-
-#### `TiKV_coprocessor_request_lock_error`
-
-* Alert rule:
-
-    `increase(tikv_coprocessor_request_error{reason="meet_lock"}[10m]) > 10000`
-
-* Description:
-
-    The lock requesting error of Coprocessor.
-
-* Solution:
-
-    The reasons for the Coprocessor error can be divided into three types: "lock", “outdated” and “full”. “lock” indicates that the read data is being written and you need to wait a while and read again (the automatic retry happens inside TiDB). If just a few errors of this kind occur, you can ignore them; but if there are a lot of them, you need to check whether there is a conflict between the write and the query.
-
 #### `TiKV_coprocessor_pending_request`
 
 * Alert rule:
