@@ -1119,4 +1119,4 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 * 处理方法：
 
     * 在 Grafana Blackbox Exporter 页面上检查两个节点间的 ping 延迟是否太高。
-    * 在 Grafana Node Exporter 页面 的 TCP 面板上检查是否有丢包。
+    * 在 Grafana Node Exporter 页面的 TCP 面板上检查是否有丢包。
