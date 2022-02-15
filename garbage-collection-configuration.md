@@ -25,7 +25,7 @@ You can dynamically modify this configuration using tikv-ctl:
 {{< copyable "shell-regular" >}}
 
 ```bash
-tikv-ctl --host=ip:port modify-tikv-config -m server -n gc.max_write_bytes_per_sec -v 10MB
+tikv-ctl --host=ip:port modify-tikv-config -n gc.max-write-bytes-per-sec -v 10MB
 ```
 
 ## Changes in TiDB 5.0
