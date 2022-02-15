@@ -92,7 +92,7 @@ TiDB 版本：5.4.0
 
     在使用 GBK 字符集时，需要注意兼容性限制。
 
-    [用户文档](/character-set-gbk.md)。
+    [用户文档](/character-set-gbk.md)
 
 ### 安全
 
