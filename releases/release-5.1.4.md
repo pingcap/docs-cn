@@ -21,6 +21,7 @@ TiDB 版本：5.1.4
     + TiCDC
 
         - 将 `max-message-bytes` 默认值设置为 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
+
 ## 功能增强
 
 + TiDB
@@ -33,8 +34,8 @@ TiDB 版本：5.1.4
     + TiCDC
 
         - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
-        - 优化多表场景下的 checkpoint 同步延迟 [#3900](https://github.com/pingcap/tiflow/issues/3900) 
-        - 增加观察 incremental scan 剩余时间的指标 [#2985](https://github.com/pingcap/tiflow/issues/2985) 
+        - 优化多表场景下的 checkpoint 同步延迟 [#3900](https://github.com/pingcap/tiflow/issues/3900)
+        - 增加观察 incremental scan 剩余时间的指标 [#2985](https://github.com/pingcap/tiflow/issues/2985)
         - 降低 TiKV 遇到 OOM 错误时，TiCDC 打印 "EventFeed retry rate limited" 日志的频率 [#4006](https://github.com/pingcap/tiflow/issues/4006)
 
 ## Bug 修复
