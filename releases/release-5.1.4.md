@@ -16,7 +16,7 @@ TiDB 版本：5.1.4
 
 + TiKV
 
-    - 开启了 `storage.enable-ttl` 的 TiKV 会拒绝 TiDB 的请求。
+    - 开启了 `storage.enable-ttl` 的 TiKV 会拒绝 TiDB 的请求。[#27303](https://github.com/pingcap/tidb/issues/27303)
 
     + TiCDC
 
