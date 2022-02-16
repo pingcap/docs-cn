@@ -3,7 +3,7 @@
 
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 5.4 Release Notes](/releases/release-5.4.0.md)
+  - [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
@@ -84,6 +84,7 @@
   - [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
+  - [TiUP 管理下的监控组件的自定义配置](/tiup/customized-montior-in-tiup-environment.md)
 - 故障诊断
   - [定位慢查询](/identify-slow-queries.md)
   - [分析慢查询](/analyze-slow-queries.md)
@@ -675,8 +676,6 @@
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
-  - v5.4
-    - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)
