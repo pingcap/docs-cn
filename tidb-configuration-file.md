@@ -706,6 +706,15 @@ TiDB 服务状态相关配置。
 + 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
 + 默认值：false
 
+### pessimistic-auto-commit
+
++ 用来控制开始全局悲观事务模式下（`tidb_txn_mode='pessimistic'`)时，自动提交的事务使用的事务模式。默认情况下，即使开始全局悲观事务模式，自动提交事务依然使用乐观事务方式来执行。
+当开启本开关后（设置为 true），在全局悲观事务模式下，自动提交事务将也使用悲观事务模式执行。行为与其他显示提交的悲观事务相同。
+对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的业务尖刺。
+对于不存在冲突的场景，如果有大量自动提交事务且单个事务操作数据量较大的情况下，开启本开关会造成性能回退，如，自动提交的`insert into select`语句。
+
++ 默认值：false
+
 ## experimental
 
 experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 开始引入。
