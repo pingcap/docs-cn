@@ -221,7 +221,7 @@ source /home/tidb/.bash_profile
 
 2. 配置集群拓扑文件。
 
-   执行 `vi topology.yaml`，按实际场景配置以下参数：
+    执行 `vi topology.yaml`，按实际场景配置以下参数：
 
     - Global 参数
         - user
