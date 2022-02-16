@@ -35,6 +35,13 @@ TiDB 版本：5.1.4
     - Improve raft client error log report [#11959](https://github.com/tikv/tikv/issues/11959)
     - Avoid false "GC can not work" alert under low write flow. [#10664](https://github.com/tikv/tikv/pull/10664)
 
++ TiFlash
+
+    - 添加了 `ADDDATE()` 和 `DATE_ADD()` 到 TiFlash 的下推支持
+    - 添加了 `INET6_ATON()` 和 `INET6_NTOA()` 到 TiFlash 的下推支持
+    - 添加了 `INET_ATON()` 和 `INET_NTOA()` 到 TiFlash 的下推支持
+    - 把 DAG Request 中表达式或者执行计划树的最大深度限制从 100 提升到 200
+
 + PD
 
     (dup) - Speed up the exit process of schedulers [#4146](https://github.com/tikv/pd/issues/4146)
@@ -74,6 +81,24 @@ TiDB 版本：5.1.4
     (dup) - Fix the `DATA RACE` issue when assigning `MPP task ID` [#27952](https://github.com/pingcap/tidb/issues/27952)
     (dup) - Fix the `INDEX OUT OF RANGE` error for a MPP query after deleting an empty `dual table` [#28250](https://github.com/pingcap/tidb/issues/28250)
     (dup) - Fix the issue of false positive error log `invalid cop task execution summaries length` for MPP queries [#1791](https://github.com/pingcap/tics/issues/1791)
+
++ TiFlash
+
+    - 修复了 `str_to_date()` 函数对微秒前导零的错误解析
+    - 修复了 TiFlash 在内存限制打开时的崩溃
+    - 对齐了 TiFlash 与 TiDB/MySQL 的当时间早于 1970-01-01 00:00:01 UTC 时函数 `unix_timestamp` 的行为
+    - 修复了扩宽为 handle 的主键列时潜在的数据不一致性问题
+    - 修复了 Decimal 之间比较时可能导致的溢出问题和 `Can't compare` 报错
+    - 修复了非预期错误 `3rd arguments of function substringUTF8 must be constants.`
+    - 修复了在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
+    - 修复了到 Decimal 类型转换时的溢出问题
+    - 修复了 TiFlash 上 `CastStringAsReal` 函数与 TiDB/TiKV 行为不一致的问题
+    - 修复了 TiFlash 重启后随机的 `EstablishMPPConnection` 失败错误
+    - 修复了当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
+    - 修复了 TiFlash 上 `CastStringAsDecimal` 函数与 TiDB/TiKV 行为不一致的问题
+    - 修复了 TiFlash 上 `where <string>` 中因为字符串被转换为整数类型导致错误结果的问题
+    - 修复了当 MPP 查询被终止后 TiFlash 随机奔溃的问题
+    - 修复了非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
 
 + TiKV
 
