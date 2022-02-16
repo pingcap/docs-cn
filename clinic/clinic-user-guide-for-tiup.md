@@ -11,8 +11,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic Diag �
 >
 > 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 TiDB Operator 部署的集群，请参阅[Operator 环境的 Clinic 操作手册](clinic/clinic-user-guide-for-operator.md)。
 > Clinic 诊断服务暂时不支持对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
-
-
 ## 使用场景
 	
 通过 Clinic 诊断服务的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
@@ -174,7 +172,6 @@ Clinic Diag 支持对使用 TiUP 部署的 TiDB 集群和 DM 集群采集数据�
 
 当集群所在的网络可以直接连接 Clinic Server 时，可以直接通过以下命令上传在[第 2 步](#第2步采集数据)中收集的数据包文件夹：
 
-
  {{< copyable "shell-regular" >}}
 ```bash
  tiup diag upload <filepath> -u=username -p='password'
@@ -227,6 +224,7 @@ packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
 ```bash
 tiup diag upload filepath -u=username -p='password'
 ```
+
 > **注意：**
 >
 > 目前 Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
@@ -284,6 +282,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。目前 Clin
 诊断结果会在命令行中返回，示例如下：
 
  {{< copyable "shell-regular" >}}
+ 
 ```bash
 Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag check diag-fNTnz5MGhr6
 # Check Result Report
@@ -320,6 +319,7 @@ There were **1** abnormal results.
 
 Result report and record are saved at diag-fNTnz5MGhr6/report-220125153215
 ```
+
 在上述示例中，
     - 第一部分为诊断集群名称等基础信息。
     - 第二部分为诊断数据来源信息。
