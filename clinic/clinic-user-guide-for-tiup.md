@@ -11,6 +11,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic Diag �
 >
 > 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 TiDB Operator 部署的集群，请参阅[Operator 环境的 Clinic 操作手册](clinic/clinic-user-guide-for-operator.md)。
 > Clinic 诊断服务暂时不支持对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
+
 ## 使用场景
 	
 通过 Clinic 诊断服务的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
@@ -37,7 +38,7 @@ tiup update diag
 
 > **注意：**
 >
-> 对于离线集群，需要离线部署 Diag 工具。具体的离线部署办法，可以参照[离线部署 TiUP 组件](/production-deployment-using-tiup.md)。
+> 对于离线集群，需要离线部署 Diag 工具。具体的离线部署办法，可以参照[离线部署 TiUP 组件](/production-deployment-using-tiup#离线部署)。
 > Diag 工具暂不属于正式功能，该工具不包含在 TiDB 官方下载页面中的 TiDB Server 离线镜像包中。
 
 ## 使用 Clinic Diag 工具采集诊断数据
