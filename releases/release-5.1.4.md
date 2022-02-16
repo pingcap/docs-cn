@@ -56,8 +56,9 @@ TiDB 版本：5.1.4
         - 优化多表场景下的 checkpoint 同步延迟 [#3900](https://github.com/pingcap/tiflow/issues/3900)
         - 增加观察 incremental scan 剩余时间的指标 [#2985](https://github.com/pingcap/tiflow/issues/2985)
         - 降低 TiKV 遇到 OOM 错误时，TiCDC 打印 "EventFeed retry rate limited" 日志的频率 [#4006](https://github.com/pingcap/tiflow/issues/4006)
-        (dup) - Reduce the frequency of CDC reporting "EventFeed retry rate limited" logs when TiKV  encounters OOM error [#4006](https://github.com/pingcap/tiflow/issues/4006)
-        (dup)- Optimize checkpoint lag when capturing many tables [#3900](https://github.com/pingcap/tiflow/issues/3900)
+
+        (dup) - Reduce the frequency of CDC reporting "EventFeed retry rate limited" logs when TiKV encounters OOM error [#4006](https://github.com/pingcap/tiflow/issues/4006)
+        (dup) - Optimize checkpoint lag when capturing many tables [#3900](https://github.com/pingcap/tiflow/issues/3900)
         (dup) - Add more Promethous and Grafana monitoring metrics and alerts, including `no owner alert`, `mounter row`, `table sink total row`, and `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
         (dup) - Optimize rate limiting control on TiKV reloads to reduce gPRC congestion during changefeed initialization [#3110](https://github.com/pingcap/ticdc/issues/3110)
 
@@ -71,6 +72,7 @@ TiDB 版本：5.1.4
     - 修复使用 Enum 类型进行 Join 时结果可能不正确的问题。[#27831](https://github.com/pingcap/tidb/issues/27831)
     - 修复使用 `IndexHashJoin` 时可能报错 `send on closed channel` 的问题。[#31129](https://github.com/pingcap/tidb/issues/31129)
     - 修复使用 ['BatchCommands'](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-batch-size) 时，某些情况下会 TiDB 数据请求无法及时发送到 TiKV 的问题。[#27678](https://github.com/pingcap/tidb/pull/27678)
+
     (dup) - Fix the data inconsistency issue caused by incorrect usage of lazy existence check and untouched key optimization [#30410](https://github.com/pingcap/tidb/issues/30410)
     (dup) - Fix the issue that window functions might return different results when using a transaction or not [#29947](https://github.com/pingcap/tidb/issues/29947)
     (dup) - Fix the issue that the length information is wrong when casting `Decimal` to `String` [#29417](https://github.com/pingcap/tidb/issues/29417)
@@ -116,6 +118,7 @@ TiDB 版本：5.1.4
     - 修复了 resolved_ts 模块中的协程泄漏.  [#10965](https://github.com/tikv/tikv/issues/10965)
     - 避免低写入流量时误报 GC can not work 警告 [#9910](https://github.com/tikv/tikv/issues/9910)
     - 修复了 tikv-ctl 无法正确输出 region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
+
     (dup) - Fix the issue that a down TiKV node causes the resolved timestamp to lag [#11351](https://github.com/tikv/tikv/issues/11351)
     (dup) - Fix a panic issue that occurs when Region merge, ConfChange, and Snapshot happen at the same time in extreme conditions [#11475](https://github.com/tikv/tikv/issues/11475)
     (dup) - Fix the issue that TiKV cannot detect the memory lock when TiKV perform a reverse table scan [#11440](https://github.com/tikv/tikv/issues/11440)
@@ -131,6 +134,7 @@ TiDB 版本：5.1.4
 
     - Fix the bug that the region scatterer may generate the schedule with too few peers. [#4565](https://github.com/tikv/pd/issues/4565)
     - Fix the bug that region statistics are not updated after `flow-round-by-digit` change. [#4295](https://github.com/tikv/pd/issues/4295)
+
     (dup) - Fix slow leader election caused by stucked region syncer [#3936](https://github.com/tikv/pd/issues/3936)
     (dup) - Support that the evict leader scheduler can schedule regions with unhealthy peers [#4093](https://github.com/tikv/pd/issues/4093)
     (dup) - Fix the issue that the hotspot cache cannot be cleared when the Region heartbeat is less than 60 seconds [#4390](https://github.com/tikv/pd/issues/4390)
@@ -174,8 +178,8 @@ TiDB 版本：5.1.4
 
     + Backup & Restore (BR)
 
-        + 修复 restoring 后可能出现的 region 不平衡的问题 [#30425](https://github.com/pingcap/tidb/issues/30425) [#31034](https://github.com/pingcap/tidb/issues/31034)
+        + 修复 restoring 后可能出现的 Region 不平衡的问题 [#30425](https://github.com/pingcap/tidb/issues/30425) [#31034](https://github.com/pingcap/tidb/issues/31034)
 
     + TiDB Lightning
 
-        + 修复 S3 存储路径不存在时 Lightning 不报错的问题 [#28031](https://github.com/pingcap/tidb/issues/28031) [#30709](https://github.com/pingcap/tidb/issues/30709)
+        + 修复 S3 存储路径不存在时 TiDB Lightning 不报错的问题 [#28031](https://github.com/pingcap/tidb/issues/28031) [#30709](https://github.com/pingcap/tidb/issues/30709)
