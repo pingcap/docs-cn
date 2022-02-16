@@ -113,7 +113,7 @@ TiDB 版本：5.1.4
     - 修复了 resource-metering.enabled 配置不生效的问题 [#11235](https://github.com/tikv/tikv/issues/11235)
     - 修复了 resolved_ts 模块中的协程泄漏.  [#10965](https://github.com/tikv/tikv/issues/10965)
     - 避免低写入流量时误报 GC can not work 警告 [#9910](https://github.com/tikv/tikv/issues/9910)
-    - Make tikv-ctl detect raft db correctly [#11393](https://github.com/tikv/tikv/issues/11393)
+    - 修复了 tikv-ctl 无法正确输出 region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
     (dup) - Fix the issue that a down TiKV node causes the resolved timestamp to lag [#11351](https://github.com/tikv/tikv/issues/11351)
     (dup) - Fix a panic issue that occurs when Region merge, ConfChange, and Snapshot happen at the same time in extreme conditions [#11475](https://github.com/tikv/tikv/issues/11475)
     (dup) - Fix the issue that TiKV cannot detect the memory lock when TiKV perform a reverse table scan [#11440](https://github.com/tikv/tikv/issues/11440)
