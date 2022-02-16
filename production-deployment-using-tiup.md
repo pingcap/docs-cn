@@ -175,8 +175,13 @@ title: 使用 TiUP 部署 TiDB 集群
         ```bash
         tiup mirror merge tiup-custom-mirror-v1.5.2
         ```
+<<<<<<< HEAD
     
     5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
+=======
+
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.7.0` 版本出现在结果中。
+>>>>>>> c1809292e (fix a number in tiup prod deployment (#8402))
 
 #### 部署离线环境 TiUP 组件
 
@@ -239,7 +244,7 @@ alertmanager_servers:
   - host: 10.0.1.4
 ```
 
-这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，修改配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据标准模板自行调整。
+这里举出常见的几种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，修改配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据标准模板自行调整。
 
 - [最小拓扑架构](/minimal-deployment-topology.md)
 
