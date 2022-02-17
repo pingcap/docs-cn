@@ -39,9 +39,9 @@ TiDB 版本：5.1.4
 
 + TiFlash
 
-    - 添加了 `ADDDATE()` 和 `DATE_ADD()` 到 TiFlash 的下推支持
-    - 添加了 `INET6_ATON()` 和 `INET6_NTOA()` 到 TiFlash 的下推支持
-    - 添加了 `INET_ATON()` 和 `INET_NTOA()` 到 TiFlash 的下推支持
+    - 添加 `ADDDATE()` 和 `DATE_ADD()` 到 TiFlash 的下推支持
+    - 添加 `INET6_ATON()` 和 `INET6_NTOA()` 到 TiFlash 的下推支持
+    - 添加 `INET_ATON()` 和 `INET_NTOA()` 到 TiFlash 的下推支持
     - 把 DAG Request 中表达式或者执行计划树的最大深度限制从 100 提升到 200
 
 + PD
@@ -87,8 +87,8 @@ TiDB 版本：5.1.4
 
 + TiFlash
 
-    - 修复了 `str_to_date()` 函数对微秒前导零的错误解析
-    - 修复了 TiFlash 在内存限制打开时的崩溃
+    - 修复 `str_to_date()` 函数对微秒前导零的错误解析
+    - 修复启用内存限制后 TiFlash 崩溃的问题
     - 修复当时间早于 1970-01-01 00:00:01 UTC 时 TiFlash 中 `unix_timestamp` 函数与 TiDB/MySQL 不一致的行为
     - 修复当主键为 handle 时，扩宽主键列可能导致的数据不一致问题
     - 修复 Decimal 类型比较时可能出现的数据溢出问题和 `Can't compare` 报错
