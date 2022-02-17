@@ -81,7 +81,7 @@ alertmanager_servers:
 
 ### Placement Rules
 
-To deploy a cluster based on the planned topology, you need to use [placement rules](/configure-placement-rules.md) to determine the locations of the cluster replicas. If 4 replicas and 2 Voter replicas are at the primary center and 1 Voter replica and 1 Learner replica are at the DR center, you can use the placement rules to configure the replicas as follows:
+To deploy a cluster based on the planned topology, you need to use [Placement Rules](/configure-placement-rules.md) to determine the locations of the cluster replicas. Taking the deployment of 4 replicas (2 Voter replicas are at the primary center, 1 Voter replica and 1 Learner replica are at the DR center) as an example, you can use the Placement Rules to configure the replicas as follows:
 
 ```
 cat rule.json
@@ -177,7 +177,7 @@ wait-sync-timeout = "1m"
 In the configuration above:
 
 + `replication-mode` is the replication mode to be enabled. In the above example, it is set to `dr-auto-sync`. By default, the majority protocol is used.
-+ `label-key` is used to distinguish different data centers and needs to match placement rules. In this example, the primary data center is "east" and the DR data center is "west".
++ `label-key` is used to distinguish different data centers and needs to match Placement Rules. In this example, the primary data center is "east" and the DR data center is "west".
 + `primary-replicas` is the number of Voter replicas in the primary data center.
 + `dr-replicas` is the number of Voter replicas in the DR data center.
 + `wait-store-timeout` is the waiting time for switching to asynchronous replication mode when network isolation or failure occurs. If the time of network failure exceeds the waiting time, asynchronous replication mode is enabled. The default waiting time is 60 seconds.
