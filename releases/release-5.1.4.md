@@ -84,18 +84,18 @@ TiDB 版本：5.1.4
 
     - 修复 `str_to_date()` 函数对微秒前导零的错误解析
     - 修复启用内存限制后 TiFlash 崩溃的问题
-    - 修复当时间早于 1970-01-01 00:00:01 UTC 时 TiFlash 中 `unix_timestamp` 函数与 TiDB/MySQL 不一致的行为
+    - 修复输入早于 1970-01-01 00:00:01 UTC 时，`unix_timestamp` 行为与 TiDB/MySQL 不一致的问题
     - 修复当主键为 handle 时，扩宽主键列可能导致的数据不一致问题
     - 修复 Decimal 类型比较时可能出现的数据溢出问题和 `Can't compare` 报错
     - 修复非预期的 `3rd arguments of function substringUTF8 must be constants.` 报错
     - 修复在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
     - 修复 Decimal 类型转换时的数据溢出问题
-    - 修复 TiFlash 上 `CastStringAsReal` 函数与 TiDB/TiKV 行为不一致的问题
-    - 修复 TiFlash 重启后随机出现 `EstablishMPPConnection` 失败的错误
+    - (dup) 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题
+    - (dup) 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
     - 修复当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
-    - 修复 TiFlash 上 `CastStringAsDecimal` 函数与 TiDB/TiKV 行为不一致的问题
-    - 修复 TiFlash 上 `where <string>` 中因为字符串被转换为整数类型导致错误结果的问题
-    - 修复当 MPP 查询被终止后 TiFlash 随机崩溃的问题
+    - (dup) 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
+    - (dup) 修复 `where <string>` 查询结果出错的问题
+    - (dup) 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
     - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
 
 + TiKV
@@ -125,8 +125,8 @@ TiDB 版本：5.1.4
 
 + PD
 
-    - Fix the bug that the region scatterer may generate the schedule with too few peers. [#4565](https://github.com/tikv/pd/issues/4565)
-    - Fix the bug that region statistics are not updated after `flow-round-by-digit` change. [#4295](https://github.com/tikv/pd/issues/4295)
+    - 修复了 region scatter 生成的调度可能导致 peer 数量减少的问题 [#4565](https://github.com/tikv/pd/issues/4565)
+   (dup) - Fix the issue that Region statistics are not affected by `flow-round-by-digit` [#4295](https://github.com/tikv/pd/issues/4295)
     - 修复因 Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936)
     - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
     - 修复当 Region 心跳低于 60 秒时热点 Cache 不能清空的问题 [#4390](https://github.com/tikv/pd/issues/4390)
@@ -168,7 +168,7 @@ TiDB 版本：5.1.4
 
     + Backup & Restore (BR)
 
-        + 修复 restoring 后可能出现的 Region 不平衡的问题 [#30425](https://github.com/pingcap/tidb/issues/30425) [#31034](https://github.com/pingcap/tidb/issues/31034)
+        + 修复当恢复完成后，Region 有可能分布不均的问题 [#30425](https://github.com/pingcap/tidb/issues/30425) [#31034](https://github.com/pingcap/tidb/issues/31034)
 
     + TiDB Lightning
 
