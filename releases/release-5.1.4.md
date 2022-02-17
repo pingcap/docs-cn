@@ -152,12 +152,11 @@ TiDB 版本：5.1.4
 (dup) - 修复潜在的同步流控死锁问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
 (dup) - 修复 DDL 特殊注释导致的同步停止的问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
         - 修复 EtcdWorker 可能阻塞 owner 和 processor 的问题 [#3750](https://github.com/pingcap/tiflow/issues/3750)
-        - 修复集群升级后处于 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
+        - 修复集群升级后 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
         - 修复 TiCDC 与 TiDB amend 机制在数据类型上的兼容性问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
         - 修复 TiCDC 默认值填充异常导致的数据不一致问题 [#3918](https://github.com/pingcap/tiflow/issues/3918) [#3929](https://github.com/pingcap/tiflow/issues/3929)
         - 修复当 PD leader 故障后转移到其他节点时 owner 卡住的问题 [#3615](https://github.com/pingcap/tiflow/issues/3615)
         - 修复在 TiKV 部分节点故障后 TiCDC `kv client` 恢复时间过长的问题 [#3191](https://github.com/pingcap/tiflow/issues/3191)
-        - Nond [#2983](https://github.com/pingcap/tiflow/issues/2983)
 
         (dup) - Fix the TiCDC panic issue that occurs when manually cleaning the task status in etcd [#2980](https://github.com/pingcap/tiflow/issues/2980)
         (dup) - Fix the timezone error that occurs when the `cdc server` command runs on some Red Hat Enterprise Linux releases (such as 6.8 and 6.9) [#3584](https://github.com/pingcap/tiflow/issues/3584)
