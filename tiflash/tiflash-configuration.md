@@ -168,7 +168,7 @@ delta_index_cache_size = 0
     redact-info-log = false
 ```
 
-除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
+除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 多盘部署
 
