@@ -12,11 +12,11 @@ TiDB 版本：5.1.4
 
 + TiDB
 
-    - 修改系统变量 [`tidb_analyze_version`](https://docs.pingcap.com/zh/tidb/v5.1/system-variables#tidb_analyze_version-%E4%BB%8E-v510-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5) 默认值为 '1'。[#31748](https://github.com/pingcap/tidb/issues/31748)
+    - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改`1` [#31748](https://github.com/pingcap/tidb/issues/31748)
 
 + TiKV
 
-    - 开启了 `storage.enable-ttl` 的 TiKV 会拒绝 TiDB 的请求。[#27303](https://github.com/pingcap/tidb/issues/27303)
+    - 开启了 `storage.enable-ttl` 的 TiKV 会拒绝 TiDB 的请求 [#27303](https://github.com/pingcap/tidb/issues/27303)
 
 + Tools
 
@@ -28,8 +28,8 @@ TiDB 版本：5.1.4
 
 + TiDB
 
-    - Range 类型分区表裁剪增加对 `IN` 表达式进行分区裁剪的能力。[#26739](https://github.com/pingcap/tidb/issues/26739)
-    - 增强 `IndexJoin` 执行过程中内存占用追踪的准确度。[#28650](https://github.com/pingcap/tidb/issues/28650)
+    - 支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪 [#26739](https://github.com/pingcap/tidb/issues/26739)
+    - 提高在 `IndexJoin` 执行过程中追踪内存占用的准确度 [#28650](https://github.com/pingcap/tidb/issues/28650)
 
 + TiKV
 
@@ -66,13 +66,12 @@ TiDB 版本：5.1.4
 
 + TiDB
 
-    - 修复系统变量 `@@tidb_analyze_version = 2` 时的内存泄露问题。[#29305](https://github.com/pingcap/tidb/pull/29305)
-    - 修复 `MaxDays` 和 `MaxBackups` 配置项对慢日志不生效的问题。[#25716](https://github.com/pingcap/tidb/issues/25716)
+    - 修复当系统变量 `@@tidb_analyze_version = 2` 时出现的内存泄露问题 [#29305](https://github.com/pingcap/tidb/pull/29305)
+    - 修复 `MaxDays` 和 `MaxBackups` 配置项对慢日志不生效的问题 [#25716](https://github.com/pingcap/tidb/issues/25716)
     - 修复使用 `ON DUPLICATE KEY UPDATE` 语法时，TiDB Server 可能 panic 的问题。[#28078](https://github.com/pingcap/tidb/issues/28078)
-    - 修复使用 Enum 类型进行 Join 时结果可能不正确的问题。[#27831](https://github.com/pingcap/tidb/issues/27831)
-    - 修复使用 `IndexHashJoin` 时可能报错 `send on closed channel` 的问题。[#31129](https://github.com/pingcap/tidb/issues/31129)
-    - 修复使用 ['BatchCommands'](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-batch-size) 时，某些情况下会 TiDB 数据请求无法及时发送到 TiKV 的问题。[#27678](https://github.com/pingcap/tidb/pull/27678)
-
+    - 修复使用 `ENUM` 类型的列进行 Join 时结果可能不正确的问题 [#27831](https://github.com/pingcap/tidb/issues/27831)
+    - 修复使用 `IndexHashJoin` 时可能报错 `send on closed channel` 的问题 [#31129](https://github.com/pingcap/tidb/issues/31129)
+    - 修复使用 [`BatchCommands`](/tidb-configuration-file.md#max-batch-size) 时，少数情况下 TiDB 数据请求无法及时发送到 TiKV 的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
     (dup) - Fix the data inconsistency issue caused by incorrect usage of lazy existence check and untouched key optimization [#30410](https://github.com/pingcap/tidb/issues/30410)
     (dup) - Fix the issue that window functions might return different results when using a transaction or not [#29947](https://github.com/pingcap/tidb/issues/29947)
     (dup) - Fix the issue that the length information is wrong when casting `Decimal` to `String` [#29417](https://github.com/pingcap/tidb/issues/29417)
