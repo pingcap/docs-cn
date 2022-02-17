@@ -144,14 +144,14 @@ TiDB 版本：5.1.4
 
     + TiCDC
 
-        - 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace SQL` 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
+        - 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace` SQL 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
         - 修复 `kv client cached regions` 指标可能为负数的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
-        - 修复当 `min.insync.replicas` 小于 `replication-factor` 时, TiCDC 无法发送消息的问题 [#3994](https://github.com/pingcap/tiflow/issues/3994)
-        - 修复从 etcd 中删除 changefeed 信息时可能发生的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
-        - 修复 checkpointTs 非预计向前推进的问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
-        - 修复 Table 调度时可能卡住 changefeed 的问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
-        - 修复 TiCDC 同步带特殊注释 DDL 时出现的语法错误问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
-        - 修复 EtcdWorker 可能阻塞 owner 和 processor 的错误[#3750](https://github.com/pingcap/tiflow/issues/3750)
+(dup)- 修复当 `min.insync.replicas` 小于 `replication-factor` 时不能同步的问题 [#3994](https://github.com/pingcap/tiflow/issues/3994)
+(dup)- 修复在移除同步任务后潜在的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
+(dup) - 修复因 checkpoint 不准确导致的潜在的数据丢失问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
+(dup) - 修复潜在的同步流控死锁问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
+(dup) - 修复 DDL 特殊注释导致的同步停止的问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
+        - 修复 EtcdWorker 可能阻塞 owner 和 processor 的问题 [#3750](https://github.com/pingcap/tiflow/issues/3750)
         - 修复集群升级后处于 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
         - 修复 TiCDC 与 TiDB amend 机制在数据类型上的兼容性问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
         - 修复 TiCDC 默认值填充异常导致的数据不一致问题 [#3918](https://github.com/pingcap/tiflow/issues/3918) [#3929](https://github.com/pingcap/tiflow/issues/3929)
