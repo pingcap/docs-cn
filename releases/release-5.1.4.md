@@ -12,7 +12,7 @@ TiDB 版本：5.1.4
 
 + TiDB
 
-    - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改`1` [#31748](https://github.com/pingcap/tidb/issues/31748)
+    - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
 
 + TiKV
 
@@ -71,7 +71,7 @@ TiDB 版本：5.1.4
     - 修复使用 `ON DUPLICATE KEY UPDATE` 语法时，TiDB Server 可能 panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
     - 修复使用 `ENUM` 类型的列进行 Join 时结果可能不正确的问题 [#27831](https://github.com/pingcap/tidb/issues/27831)
     - 修复使用 `IndexHashJoin` 时可能报错 `send on closed channel` 的问题 [#31129](https://github.com/pingcap/tidb/issues/31129)
-    - 修复使用 [`BatchCommands`](/tidb-configuration-file.md#max-batch-size) 时，少数情况下 TiDB 数据请求无法及时发送到 TiKV 的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
+    - 修复使用 [`BatchCommands`](/tidb-configuration-file.md#max-batch-size) API 时，少数情况下 TiDB 数据请求无法及时发送到 TiKV 的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
     (dup) - Fix the data inconsistency issue caused by incorrect usage of lazy existence check and untouched key optimization [#30410](https://github.com/pingcap/tidb/issues/30410)
     (dup) - Fix the issue that window functions might return different results when using a transaction or not [#29947](https://github.com/pingcap/tidb/issues/29947)
     (dup) - Fix the issue that the length information is wrong when casting `Decimal` to `String` [#29417](https://github.com/pingcap/tidb/issues/29417)
