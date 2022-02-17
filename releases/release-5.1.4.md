@@ -13,10 +13,8 @@ TiDB 版本：5.1.4
 + TiDB
 
     - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
+  - TiKV 开启 `storage.enable-ttl` 后会拒绝 TiDB 的请求 [#27303](https://github.com/pingcap/tidb/issues/27303)
 
-+ TiKV
-
-    - 开启了 `storage.enable-ttl` 的 TiKV 会拒绝 TiDB 的请求 [#27303](https://github.com/pingcap/tidb/issues/27303)
 
 + Tools
 
@@ -33,9 +31,8 @@ TiDB 版本：5.1.4
 
 + TiKV
 
-    - Update procfs to 0.12.0 [#11702](https://github.com/tikv/tikv/issues/11702)
-    - Improve raft client error log report [#11959](https://github.com/tikv/tikv/issues/11959)
-    - Avoid false "GC can not work" alert under low write flow. [#10664](https://github.com/tikv/tikv/pull/10664)
+    - 将 proc filesystem (procfs) 升级至 0.12.0 版本 [#11702](https://github.com/tikv/tikv/issues/11702)
+    - 优化 raft client 错误日志的收集 [#11959](https://github.com/tikv/tikv/issues/11959)
 
 + TiFlash
 
@@ -105,18 +102,18 @@ TiDB 版本：5.1.4
 
 + TiKV
 
-    - 修复了 GC worker 繁忙后无法执行范围删除的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
-    - 避免删除 peer 造成潜在的高延迟 [#10210](https://github.com/tikv/tikv/issues/10210)
-    - 修复了 region 没有数据时 `any_value` 函数结果错误 [#11735](https://github.com/tikv/tikv/issues/11735)
-    - 修复了删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
-    - 修复了在新选举但未能通知隔离了的 peer 后 prepare merge 造成元数据损坏的问题 [#11526](https://github.com/tikv/tikv/issues/11526)
-    - 修复了协程执行太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
-    - 避免抓取火焰图时潜在的死锁和内存泄漏 [#11108](https://github.com/tikv/tikv/issues/11108)
-    - 修复了悲观事务中重试 prewrite 有可能破坏数据一致性的问题 [#11187](https://github.com/tikv/tikv/issues/11187)
-    - 修复了 resource-metering.enabled 配置不生效的问题 [#11235](https://github.com/tikv/tikv/issues/11235)
-    - 修复了 resolved_ts 模块中的协程泄漏.  [#10965](https://github.com/tikv/tikv/issues/10965)
-    - 避免低写入流量时误报 GC can not work 警告 [#9910](https://github.com/tikv/tikv/issues/9910)
-    - 修复了 tikv-ctl 无法正确输出 region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
+    - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
+    - 避免删除 Peer 可能造成高延迟 [#10210](https://github.com/tikv/tikv/issues/10210)
+    - 修复 Region 没有数据时 `any_value` 函数结果错误的问题 [#11735](https://github.com/tikv/tikv/issues/11735)
+    - 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
+    - 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#11526](https://github.com/tikv/tikv/issues/11526)
+    - 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
+    - 避免分析火焰图时潜在的死锁和内存泄漏 [#11108](https://github.com/tikv/tikv/issues/11108)
+    - 修复在悲观事务中重试 prewrite 可能会影响数据一致性的问题 [#11187](https://github.com/tikv/tikv/issues/11187)
+    - 修复 `resource-metering.enabled` 配置不生效的问题 [#11235](https://github.com/tikv/tikv/issues/11235)
+    - 修复 `resolved_ts` 中协程泄漏的问题 [#10965](https://github.com/tikv/tikv/issues/10965)
+    - 避免在低写入流量下误报 "GC can not work" 错误 [#9910](https://github.com/tikv/tikv/issues/9910)
+    - 修复 tikv-ctl 无法正确输出 Region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
 
     (dup) - Fix the issue that a down TiKV node causes the resolved timestamp to lag [#11351](https://github.com/tikv/tikv/issues/11351)
     (dup) - Fix a panic issue that occurs when Region merge, ConfChange, and Snapshot happen at the same time in extreme conditions [#11475](https://github.com/tikv/tikv/issues/11475)
