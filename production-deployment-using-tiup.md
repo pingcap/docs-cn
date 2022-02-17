@@ -75,7 +75,7 @@ aliases: ['/docs-cn/stable/production-deployment-using-tiup/','/docs-cn/v4.0/pro
 
 请根据不同的集群拓扑，编辑 TiUP 所需的集群初始化配置文件。
 
-这里举出常见的 6 种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
+这里举出常见的几种场景，请根据链接中的拓扑说明，以及给出的配置文件模板，新建一个配置文件 `topology.yaml`。如果有其他组合场景的需求，请根据多个模板自行调整。
 
 - [最小拓扑架构](/minimal-deployment-topology.md)
 
