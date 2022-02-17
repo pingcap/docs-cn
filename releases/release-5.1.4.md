@@ -32,6 +32,7 @@ TiDB 版本：5.1.4
 
     - 将 proc filesystem (procfs) 升级至 0.12.0 版本 [#11702](https://github.com/tikv/tikv/issues/11702)
     - 优化 raft client 错误日志的收集 [#11959](https://github.com/tikv/tikv/issues/11959)
+    - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
 
 + TiFlash
 
@@ -114,7 +115,6 @@ TiDB 版本：5.1.4
     - 修复在极端情况下同时进行 Region Merge、ConfChange 和 Snapshot 时，TiKV 会出现 Panic 的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
     - 修复逆序扫表时 TiKV 无法正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
     - 修复 Decimal 除法计算的结果为 0 时符号为负的问题 [#29586](https://github.com/pingcap/tidb/issues/29586)
-    - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
     - 修复因统计线程监控数据导致的内存泄漏 [#11195](https://github.com/tikv/tikv/issues/11195)
     - 修复在缺失下游数据库时出现 TiCDC Panic 的问题 [#11123](https://github.com/tikv/tikv/issues/11123)
     - 修复因 Congest 错误而导致的 TiCDC 频繁增加 scan 重试的问题 [#11082](https://github.com/tikv/tikv/issues/11082)
