@@ -89,19 +89,19 @@ TiDB 版本：5.1.4
 
     - 修复了 `str_to_date()` 函数对微秒前导零的错误解析
     - 修复了 TiFlash 在内存限制打开时的崩溃
-    - 对齐了 TiFlash 与 TiDB/MySQL 的当时间早于 1970-01-01 00:00:01 UTC 时函数 `unix_timestamp` 的行为
-    - 修复了扩宽为 handle 的主键列时潜在的数据不一致性问题
-    - 修复了 Decimal 之间比较时可能导致的溢出问题和 `Can't compare` 报错
-    - 修复了非预期错误 `3rd arguments of function substringUTF8 must be constants.`
-    - 修复了在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
-    - 修复了到 Decimal 类型转换时的溢出问题
-    - 修复了 TiFlash 上 `CastStringAsReal` 函数与 TiDB/TiKV 行为不一致的问题
-    - 修复了 TiFlash 重启后随机的 `EstablishMPPConnection` 失败错误
-    - 修复了当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
-    - 修复了 TiFlash 上 `CastStringAsDecimal` 函数与 TiDB/TiKV 行为不一致的问题
-    - 修复了 TiFlash 上 `where <string>` 中因为字符串被转换为整数类型导致错误结果的问题
-    - 修复了当 MPP 查询被终止后 TiFlash 随机奔溃的问题
-    - 修复了非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
+    - 修复当时间早于 1970-01-01 00:00:01 UTC 时 TiFlash 中 `unix_timestamp` 函数与 TiDB/MySQL 不一致的行为
+    - 修复当主键为 handle 时，扩宽主键列可能导致的数据不一致问题
+    - 修复 Decimal 类型比较时可能出现的数据溢出问题和 `Can't compare` 报错
+    - 修复非预期的 `3rd arguments of function substringUTF8 must be constants.` 报错
+    - 修复在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
+    - 修复 Decimal 类型转换时的数据溢出问题
+    - 修复 TiFlash 上 `CastStringAsReal` 函数与 TiDB/TiKV 行为不一致的问题
+    - 修复 TiFlash 重启后随机出现 `EstablishMPPConnection` 失败的错误
+    - 修复当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
+    - 修复 TiFlash 上 `CastStringAsDecimal` 函数与 TiDB/TiKV 行为不一致的问题
+    - 修复 TiFlash 上 `where <string>` 中因为字符串被转换为整数类型导致错误结果的问题
+    - 修复当 MPP 查询被终止后 TiFlash 随机崩溃的问题
+    - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
 
 + TiKV
 
