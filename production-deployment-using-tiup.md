@@ -175,13 +175,8 @@ title: 使用 TiUP 部署 TiDB 集群
         ```bash
         tiup mirror merge tiup-custom-mirror-v1.5.2
         ```
-<<<<<<< HEAD
-    
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
-=======
 
-    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.7.0` 版本出现在结果中。
->>>>>>> c1809292e (fix a number in tiup prod deployment (#8402))
+    5. 上述步骤完成后，通过 `tiup list` 命令检查执行结果。在本文例子中，使用 `tiup list tiup` 和 `tiup list cluster` 均应能看到对应组件的 `v1.5.2` 版本出现在结果中。
 
 #### 部署离线环境 TiUP 组件
 
