@@ -12,11 +12,8 @@ TiDB 版本：5.1.4
 
 + TiDB
 
-    - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改`1` [#31748](https://github.com/pingcap/tidb/issues/31748)
-
-+ TiKV
-
-    - 开启了 `storage.enable-ttl` 的 TiKV 会拒绝 TiDB 的请求 [#27303](https://github.com/pingcap/tidb/issues/27303)
+    - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
+    - TiKV 开启 `storage.enable-ttl` 后会拒绝 TiDB 的请求 [#27303](https://github.com/pingcap/tidb/issues/27303)
 
 + Tools
 
@@ -33,15 +30,14 @@ TiDB 版本：5.1.4
 
 + TiKV
 
-    - Update procfs to 0.12.0 [#11702](https://github.com/tikv/tikv/issues/11702)
-    - Improve raft client error log report [#11959](https://github.com/tikv/tikv/issues/11959)
-    - Avoid false "GC can not work" alert under low write flow. [#10664](https://github.com/tikv/tikv/pull/10664)
+    - 将 proc filesystem (procfs) 升级至 0.12.0 版本 [#11702](https://github.com/tikv/tikv/issues/11702)
+    - 优化 raft client 错误日志的收集 [#11959](https://github.com/tikv/tikv/issues/11959)
 
 + TiFlash
 
-    - 添加了 `ADDDATE()` 和 `DATE_ADD()` 到 TiFlash 的下推支持
-    - 添加了 `INET6_ATON()` 和 `INET6_NTOA()` 到 TiFlash 的下推支持
-    - 添加了 `INET_ATON()` 和 `INET_NTOA()` 到 TiFlash 的下推支持
+    - 添加 `ADDDATE()` 和 `DATE_ADD()` 到 TiFlash 的下推支持
+    - 添加 `INET6_ATON()` 和 `INET6_NTOA()` 到 TiFlash 的下推支持
+    - 添加 `INET_ATON()` 和 `INET_NTOA()` 到 TiFlash 的下推支持
     - 把 DAG Request 中表达式或者执行计划树的最大深度限制从 100 提升到 200
 
 + PD
@@ -71,7 +67,7 @@ TiDB 版本：5.1.4
     - 修复使用 `ON DUPLICATE KEY UPDATE` 语法时，TiDB Server 可能 panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
     - 修复使用 `ENUM` 类型的列进行 Join 时结果可能不正确的问题 [#27831](https://github.com/pingcap/tidb/issues/27831)
     - 修复使用 `IndexHashJoin` 时可能报错 `send on closed channel` 的问题 [#31129](https://github.com/pingcap/tidb/issues/31129)
-    - 修复使用 [`BatchCommands`](/tidb-configuration-file.md#max-batch-size) 时，少数情况下 TiDB 数据请求无法及时发送到 TiKV 的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
+    - 修复使用 [`BatchCommands`](/tidb-configuration-file.md#max-batch-size) API 时，少数情况下 TiDB 数据请求无法及时发送到 TiKV 的问题 [#27678](https://github.com/pingcap/tidb/pull/27678)
     (dup) - Fix the data inconsistency issue caused by incorrect usage of lazy existence check and untouched key optimization [#30410](https://github.com/pingcap/tidb/issues/30410)
     (dup) - Fix the issue that window functions might return different results when using a transaction or not [#29947](https://github.com/pingcap/tidb/issues/29947)
     (dup) - Fix the issue that the length information is wrong when casting `Decimal` to `String` [#29417](https://github.com/pingcap/tidb/issues/29417)
@@ -87,36 +83,36 @@ TiDB 版本：5.1.4
 
 + TiFlash
 
-    - 修复了 `str_to_date()` 函数对微秒前导零的错误解析
-    - 修复了 TiFlash 在内存限制打开时的崩溃
-    - 对齐了 TiFlash 与 TiDB/MySQL 的当时间早于 1970-01-01 00:00:01 UTC 时函数 `unix_timestamp` 的行为
-    - 修复了扩宽为 handle 的主键列时潜在的数据不一致性问题
-    - 修复了 Decimal 之间比较时可能导致的溢出问题和 `Can't compare` 报错
-    - 修复了非预期错误 `3rd arguments of function substringUTF8 must be constants.`
-    - 修复了在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
-    - 修复了到 Decimal 类型转换时的溢出问题
-    - 修复了 TiFlash 上 `CastStringAsReal` 函数与 TiDB/TiKV 行为不一致的问题
-    - 修复了 TiFlash 重启后随机的 `EstablishMPPConnection` 失败错误
-    - 修复了当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
-    - 修复了 TiFlash 上 `CastStringAsDecimal` 函数与 TiDB/TiKV 行为不一致的问题
-    - 修复了 TiFlash 上 `where <string>` 中因为字符串被转换为整数类型导致错误结果的问题
-    - 修复了当 MPP 查询被终止后 TiFlash 随机奔溃的问题
-    - 修复了非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
+    - 修复 `str_to_date()` 函数对微秒前导零的错误解析
+    - 修复启用内存限制后 TiFlash 崩溃的问题
+    - 修复当时间早于 1970-01-01 00:00:01 UTC 时 TiFlash 中 `unix_timestamp` 函数与 TiDB/MySQL 不一致的行为
+    - 修复当主键为 handle 时，扩宽主键列可能导致的数据不一致问题
+    - 修复 Decimal 类型比较时可能出现的数据溢出问题和 `Can't compare` 报错
+    - 修复非预期的 `3rd arguments of function substringUTF8 must be constants.` 报错
+    - 修复在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
+    - 修复 Decimal 类型转换时的数据溢出问题
+    - 修复 TiFlash 上 `CastStringAsReal` 函数与 TiDB/TiKV 行为不一致的问题
+    - 修复 TiFlash 重启后随机出现 `EstablishMPPConnection` 失败的错误
+    - 修复当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
+    - 修复 TiFlash 上 `CastStringAsDecimal` 函数与 TiDB/TiKV 行为不一致的问题
+    - 修复 TiFlash 上 `where <string>` 中因为字符串被转换为整数类型导致错误结果的问题
+    - 修复当 MPP 查询被终止后 TiFlash 随机崩溃的问题
+    - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
 
 + TiKV
 
-    - 修复了 GC worker 繁忙后无法执行范围删除的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
-    - 避免删除 peer 造成潜在的高延迟 [#10210](https://github.com/tikv/tikv/issues/10210)
-    - 修复了 region 没有数据时 `any_value` 函数结果错误 [#11735](https://github.com/tikv/tikv/issues/11735)
-    - 修复了删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
-    - 修复了在新选举但未能通知隔离了的 peer 后 prepare merge 造成元数据损坏的问题 [#11526](https://github.com/tikv/tikv/issues/11526)
-    - 修复了协程执行太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
-    - 避免抓取火焰图时潜在的死锁和内存泄漏 [#11108](https://github.com/tikv/tikv/issues/11108)
-    - 修复了悲观事务中重试 prewrite 有可能破坏数据一致性的问题 [#11187](https://github.com/tikv/tikv/issues/11187)
-    - 修复了 resource-metering.enabled 配置不生效的问题 [#11235](https://github.com/tikv/tikv/issues/11235)
-    - 修复了 resolved_ts 模块中的协程泄漏.  [#10965](https://github.com/tikv/tikv/issues/10965)
-    - 避免低写入流量时误报 GC can not work 警告 [#9910](https://github.com/tikv/tikv/issues/9910)
-    - 修复了 tikv-ctl 无法正确输出 region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
+    - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
+    - 避免删除 Peer 可能造成高延迟 [#10210](https://github.com/tikv/tikv/issues/10210)
+    - 修复 Region 没有数据时 `any_value` 函数结果错误的问题 [#11735](https://github.com/tikv/tikv/issues/11735)
+    - 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
+    - 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#11526](https://github.com/tikv/tikv/issues/11526)
+    - 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
+    - 避免分析火焰图时潜在的死锁和内存泄漏 [#11108](https://github.com/tikv/tikv/issues/11108)
+    - 修复在悲观事务中重试 prewrite 可能会影响数据一致性的问题 [#11187](https://github.com/tikv/tikv/issues/11187)
+    - 修复 `resource-metering.enabled` 配置不生效的问题 [#11235](https://github.com/tikv/tikv/issues/11235)
+    - 修复 `resolved_ts` 中协程泄漏的问题 [#10965](https://github.com/tikv/tikv/issues/10965)
+    - 避免在低写入流量下误报 "GC can not work" 错误 [#9910](https://github.com/tikv/tikv/issues/9910)
+    - 修复 tikv-ctl 无法正确输出 Region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
 
     (dup) - Fix the issue that a down TiKV node causes the resolved timestamp to lag [#11351](https://github.com/tikv/tikv/issues/11351)
     (dup) - Fix a panic issue that occurs when Region merge, ConfChange, and Snapshot happen at the same time in extreme conditions [#11475](https://github.com/tikv/tikv/issues/11475)
@@ -144,20 +140,19 @@ TiDB 版本：5.1.4
 
     + TiCDC
 
-        - 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace SQL` 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
+        - 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace` SQL 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
         - 修复 `kv client cached regions` 指标可能为负数的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
-        - 修复当 `min.insync.replicas` 小于 `replication-factor` 时, TiCDC 无法发送消息的问题 [#3994](https://github.com/pingcap/tiflow/issues/3994)
-        - 修复从 etcd 中删除 changefeed 信息时可能发生的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
-        - 修复 checkpointTs 非预计向前推进的问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
-        - 修复 Table 调度时可能卡住 changefeed 的问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
-        - 修复 TiCDC 同步带特殊注释 DDL 时出现的语法错误问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
-        - 修复 EtcdWorker 可能阻塞 owner 和 processor 的错误[#3750](https://github.com/pingcap/tiflow/issues/3750)
-        - 修复集群升级后处于 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
+(dup)- 修复当 `min.insync.replicas` 小于 `replication-factor` 时不能同步的问题 [#3994](https://github.com/pingcap/tiflow/issues/3994)
+(dup)- 修复在移除同步任务后潜在的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
+(dup) - 修复因 checkpoint 不准确导致的潜在的数据丢失问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
+(dup) - 修复潜在的同步流控死锁问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
+(dup) - 修复 DDL 特殊注释导致的同步停止的问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
+        - 修复 EtcdWorker 可能阻塞 owner 和 processor 的问题 [#3750](https://github.com/pingcap/tiflow/issues/3750)
+        - 修复集群升级后 `stopped` 状态的 changefeed 自动恢复的问题 [#3473](https://github.com/pingcap/tiflow/issues/3473)
         - 修复 TiCDC 与 TiDB amend 机制在数据类型上的兼容性问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
         - 修复 TiCDC 默认值填充异常导致的数据不一致问题 [#3918](https://github.com/pingcap/tiflow/issues/3918) [#3929](https://github.com/pingcap/tiflow/issues/3929)
         - 修复当 PD leader 故障后转移到其他节点时 owner 卡住的问题 [#3615](https://github.com/pingcap/tiflow/issues/3615)
         - 修复在 TiKV 部分节点故障后 TiCDC `kv client` 恢复时间过长的问题 [#3191](https://github.com/pingcap/tiflow/issues/3191)
-        - Nond [#2983](https://github.com/pingcap/tiflow/issues/2983)
 
         (dup) - Fix the TiCDC panic issue that occurs when manually cleaning the task status in etcd [#2980](https://github.com/pingcap/tiflow/issues/2980)
         (dup) - Fix the timezone error that occurs when the `cdc server` command runs on some Red Hat Enterprise Linux releases (such as 6.8 and 6.9) [#3584](https://github.com/pingcap/tiflow/issues/3584)
