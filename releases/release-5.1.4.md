@@ -90,12 +90,12 @@ TiDB 版本：5.1.4
     - 修复非预期的 `3rd arguments of function substringUTF8 must be constants.` 报错
     - 修复在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
     - 修复 Decimal 类型转换时的数据溢出问题
-    - (dup) 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题
-    - (dup) 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题
+    - 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
     - 修复当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
-    - (dup) 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
-    - (dup) 修复 `where <string>` 查询结果出错的问题
-    - (dup) 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
+    - 修复 `where <string>` 查询结果出错的问题
+    - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
     - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
 
 + TiKV
@@ -126,7 +126,7 @@ TiDB 版本：5.1.4
 + PD
 
     - 修复了 region scatter 生成的调度可能导致 peer 数量减少的问题 [#4565](https://github.com/tikv/pd/issues/4565)
-   (dup) - Fix the issue that Region statistics are not affected by `flow-round-by-digit` [#4295](https://github.com/tikv/pd/issues/4295)
+    - 修复 Region 统计不受 `flow-round-by-digit` 影响的问题 [#4295](https://github.com/tikv/pd/issues/4295)
     - 修复因 Region syncer 卡住而导致 leader 选举慢的问题 [#3936](https://github.com/tikv/pd/issues/3936)
     - 允许 Evict Leader 调度器调度拥有不健康副本的 Region [#4093](https://github.com/tikv/pd/issues/4093)
     - 修复当 Region 心跳低于 60 秒时热点 Cache 不能清空的问题 [#4390](https://github.com/tikv/pd/issues/4390)
