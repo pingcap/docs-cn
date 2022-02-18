@@ -11,11 +11,11 @@ summary: 了解 Kubernetes 上的 TiDB 集群自动部署运维工具 TiDB Opera
 
 | TiDB 版本 | 适用的 TiDB Operator 版本 |
 |:---|:---|
-| TiDB >= v3.0 | dev |
-| TiDB >= v3.0 | **v1.3（推荐）**|
-| v3.0 <= TiDB < v5.4.0 | v1.2 |
-| v3.0 <= TiDB < v5.1.0 | v1.1 |
-| v2.1 <= TiDB < v3.1 | v1.0（停止维护）|
+| dev               | dev                 |
+| TiDB >= 5.4       | 1.3                 |
+| 5.1 <= TiDB < 5.4 | 1.3（推荐），1.2      |
+| 3.0 <= TiDB < 5.1 | 1.3（推荐），1.2，1.1 |
+| 2.1 <= TiDB < v3.0| 1.0（停止维护）       |
 
 TiDB Operator 的文档目前独立于 TiDB 文档，文档名称为 **TiDB in Kubernetes 用户文档**。要访问 TiDB Operator 的文档，请点击以下链接：
 
