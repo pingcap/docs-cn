@@ -66,23 +66,28 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 
 对于 increment/all 模式，将检查
 
-+ 数据库用户是否具备 replication 权限（必须）
++ （必须）数据库用户是否具备 replication 权限
 
     - 检查 REPLiCATION CLIENT 权限；
     - 检查 REPLICATION SLAVE 权限。
 
-+ 数据库主从配置（必须）
++ （必须）数据库主从配置
 
     - 需设置 `server_id`。
 
-+ MySQL binlog 配置（必须）
++ （必须）MySQL binlog 配置
 
     - binlog 是否开启（DM 要求 binlog 必须开启）；
     - 是否有 `binlog_format=ROW`（DM 只支持 ROW 格式的 binlog 迁移）；
     - 是否有 `binlog_row_image=FULL`（DM 只支持 `binlog_row_image=FULL`）；
     - 如果配置 `binlog_do_db` 或者 `binlog_ignore_db`，那么检查需要迁移的库表，是否满足 `binlog_do_db` 和 `binlog_ignore_db` 的条件。
 
-+ 检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。
++ （必须）检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。如果处于 online-DDL 中，则检查报错，请等待 DDL 结束后重试。
+
+> **注意：**
+>
+> + 标注（必须）的检查项检查失败，则返回错误，无法 `start-task/resume-task`。请满足检查项要求后重试；
+> + 未标注（必须）的检查项检查失败，则返回警告，仍可以 `start-task/resume-task`。
 
 ## 相关配置
 
