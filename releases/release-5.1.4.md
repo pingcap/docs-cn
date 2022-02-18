@@ -13,7 +13,7 @@ TiDB 版本：5.1.4
 + TiDB
 
     - 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
-    - TiKV 开启 `storage.enable-ttl` 后会拒绝 TiDB 的请求 [#27303](https://github.com/pingcap/tidb/issues/27303)
+    - 自 v5.1.4 起，TiKV 在开启 `storage.enable-ttl` 后会拒绝 TiDB 的请求，因为 TiKV 的 TTL 功能[仅支持 RawKV 模式](https://tikv.org/docs/5.1/concepts/explore-tikv-features/ttl/) [#27303](https://github.com/pingcap/tidb/issues/27303)
 
 + Tools
 
