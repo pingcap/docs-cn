@@ -196,4 +196,3 @@ type = "sql"
 ### 导入过程中报错 "target table is calculating checksum, please wait unit the checksum is finished and try again"
 
 在部分并行导入的场景，如果的表比较多或者一些需要并行导入的表的数据量比较小，可能会出现当一个或多个任务开始处理某个表的时候，此表对应的其他任务已经完成，并正在校验数据的一致性，此时，由于校验数据一致性的时候，不支持其他数据的写入，因此对应的任务会返回 "target table is calculating checksum, please wait unit the checksum is finished and try again" 错误。遇到这个错误时，可以等当前正在执行校验的任务完成校验后，再启动这些失败的任务即可，不会影响数据的正确性。
-
