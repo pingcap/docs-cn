@@ -1,6 +1,6 @@
 ---
-title: 任务的前置检查
-summary: 了解任务的前置检查。
+title: DM 执行任务时的前置检查
+summary: 了解 DM 执行数据迁移任务时将进行的前置检查。
 aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ---
 
@@ -66,12 +66,12 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 
 对于 increment/all 模式，将检查
 
-+ 上游 replication 权限（必须）
++ 数据库用户是否具备 replication 权限（必须）
 
     - 检查 REPLiCATION CLIENT 权限；
     - 检查 REPLICATION SLAVE 权限。
 
-+ 数据库配置（必须）
++ 数据库主从配置（必须）
 
     - 需设置 `server_id`。
 
