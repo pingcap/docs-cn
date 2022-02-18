@@ -56,10 +56,10 @@
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
-    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
+    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
-    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
+    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
     - 使用 BR 工具（推荐）
       - [BR 工具简介](/br/backup-and-restore-tool.md)
@@ -239,7 +239,7 @@
         - [使用 TiUP（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
         - [使用 TiUP 离线镜像](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
         - [使用 Binary](/dm/deploy-a-dm-cluster-using-binary.md)
-        - [使用 Kubernetes](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
+        - [使用 Kubernetes](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-dm)
       - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
       - [测试 DM 性能](/dm/dm-performance-test.md)
     - 运维操作
