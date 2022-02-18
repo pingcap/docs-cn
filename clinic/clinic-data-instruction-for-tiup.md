@@ -1,9 +1,9 @@
 ---
-title: Clinic 数据采集说明 - TiUP 环境
+title: Clinic 数据采集说明
 summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集群中采集哪些诊断数据。
 ---
 
-# Clinic 数据采集说明 - TiUP 环境
+# Clinic 数据采集说明
 
 通过 Clinic 诊断服务对使用 TiUP Cluster 部署的集群采集的数据会**仅**用于集群问题诊断与分析。
 
@@ -71,25 +71,25 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 ### Prometheus 监控数据
 
-|诊断数据类型 | 输出文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 所有的 Metrics 数据 | `{metric_name}.json` | `--include=monitor` |
 | Alert 配置 | `alerts.json` | `--include=monitor` |
 
-### TiDB 系统变量 
+### TiDB 系统变量
 
-|诊断数据类型 | 输出文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars` |
 | | `global_variables.csv` | `--include=db_vars` |
 
 ### 集群系统信息
 
-|诊断数据类型 | 输出文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 内核日志 | `dmesg.log` | `--include=system` |
 | 基础的系统和硬件信息 | `insight.json` | `--include=system` |
-| 系统 /etc/security/limits.conf 中的内容 | `limits.conf` | `--include=system` |
+| 系统 `/etc/security/limits.conf` 中的内容 | `limits.conf` | `--include=system` |
 | 内核参数列表 | `sysctl.conf` | `--include=system` |
 | socket 统计信息，ss 命令结果| `ss.txt` | `--include=system` |
 
@@ -133,6 +133,6 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 | :------ | :------ |:-------- |
 | 内核日志 | `dmesg.log` | `--include=system` |
 | 基础的系统和硬件信息 | `insight.json` | `--include=system` |
-| 系统 /etc/security/limits.conf 中的内容 | `limits.conf` | `--include=system` |
+| 系统 `/etc/security/limits.conf` 中的内容 | `limits.conf` | `--include=system` |
 | 内核参数列表 | `sysctl.conf` | `--include=system` |
 | socket 统计信息，ss 命令结果 | `ss.txt` | `--include=system` |

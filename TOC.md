@@ -192,10 +192,8 @@
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - TiDB Clinic 诊断服务 (Beta)
     - [概述](/clinic/clinic-introduction.md)
-    - [使用 Clinic - TiUP 环境](/clinic/clinic-user-guide-for-tiup.md)
-    - [数据采集说明 - TiUP 环境](/clinic/clinic-data-instruction-for-tiup.md)
-    - [使用 Clinic - Operator 环境](/clinic/clinic-user-guide-for-operator.md)
-    - [数据采集说明 - Operator 环境](/clinic/clinic-data-instruction-for-operator.md)
+    - [Clinic 操作手册](/clinic/clinic-user-guide-for-tiup.md)
+    - [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
