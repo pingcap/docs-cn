@@ -79,7 +79,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     ```
 
 </div>
-
 <div label="离线部署">
 
 ### 离线部署
@@ -223,7 +222,7 @@ source /home/tidb/.bash_profile
 
 2. 配置集群拓扑文件。
 
-   执行 `vi topology.yaml`，按实际场景配置以下参数：
+    执行 `vi topology.yaml`，按实际场景配置以下参数：
 
     - Global 参数
         - user

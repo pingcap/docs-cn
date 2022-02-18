@@ -56,7 +56,7 @@ Value: null
 
 性能问题不一定是热点造成的，也可能存在多个因素共同影响，在排查前需要先确认是否与热点相关。
 
-- 判断写热点依据：打开监控面板 TiKV-Trouble-Shooting 中 Hot Write 面板（如下图所示），观察 Raftstore CPU 监控是否存在个别 TiKV 节点的指标明显高于其他节点的现象。
+- 判断写热点依据：打开监控面板 TiKV-Trouble-Shooting 中 Hot Write 面板，观察 Raftstore CPU 监控是否存在个别 TiKV 节点的指标明显高于其他节点的现象。
 
 - 判断读热点依据：打开监控面板 TIKV-Details 中 Thread_CPU，查看 coprocessor cpu 有没有明显的某个 TiKV 特别高。
 
