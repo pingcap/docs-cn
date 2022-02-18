@@ -208,7 +208,7 @@ TiDB 版本：5.4.0
 
     Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
-    [用户文档](/br/backup-and-restore-azblob.md)
+    [用户文档](/br/backup-storage-azblob.md)
 
 ### 数据迁移
 
