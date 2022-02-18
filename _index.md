@@ -59,7 +59,7 @@ aliases: ['/docs-cn/dev/']
 
 - [升级 TiDB 版本](/upgrade-tidb-using-tiup.md)
 - [扩容与缩容](/scale-tidb-using-tiup.md)
-- [备份与恢复](/br/backup-and-restore-tool.md)
+- [备份与恢复](/br/backup-and-restore-overview.md)
 - [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
 - [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
 - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)

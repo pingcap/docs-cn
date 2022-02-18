@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/backup-and-restore-using-dumpling-lightning/','/docs-cn/
 
 > **警告：**
 >
-> 本文提供的备份恢复方法已不再推荐，强烈推荐使用 [BR 工具](/br/backup-and-restore-tool.md)进行备份恢复，以获得更好的工具体验。
+> 本文提供的备份恢复方法已不再推荐，强烈推荐使用 [BR 工具](/br/backup-and-restore-overview.md)进行备份恢复，以获得更好的工具体验。
 
 本文档将详细介绍如何使用 Dumpling/TiDB Lightning 对 TiDB 进行全量备份与恢复。增量备份和同步可使用 [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)。
 

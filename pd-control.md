@@ -876,21 +876,66 @@ Encoding 格式示例：
 }
 ```
 
-### `region startkey [--format=raw|encode|hex] <key> <limit>`
+### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询从某个 key 开始的所有 Region。
+用于查询从某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
 
-示例：
+显示从 a 开始的所有 Region 信息，数量上限为 16：
 
 {{< copyable "" >}}
 
 ```bash
->> region startkey --format=raw abc
+>> region keys --format=raw a
 ```
 
 ```
 {
   "count": 16,
+  "regions": [......],
+}
+```
+
+显示从 a 开始的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a "" 20 
+```
+
+```
+{
+  "count": 20,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，没有数量上限：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z
+```
+
+```
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z 20
+```
+
+```
+{
+  "count": 20,
   "regions": [......],
 }
 ```

@@ -41,7 +41,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 ## 备份和恢复 (BR) 工具
 
-使用下表中的链接下载 [BR 工具](/br/backup-and-restore-tool.md)：
+使用下表中的链接下载 [BR 工具](/br/backup-and-restore-overview.md)：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|

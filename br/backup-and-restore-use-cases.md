@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 # BR 备份与恢复场景示例
 
-[BR](/br/backup-and-restore-tool.md) 是一款分布式的快速备份和恢复工具。
+[BR](/br/backup-and-restore-overview.md) 是一款分布式的快速备份和恢复工具。
 
 本文展示了以下几种备份和恢复场景下的 BR 操作过程：
 
@@ -25,7 +25,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 你需要对 TiDB 和 TiKV 有一定的了解。
 
-在阅读本文前，请确保你已通读[备份与恢复工具 BR 简介](/br/backup-and-restore-tool.md)，尤其是[使用限制](/br/backup-and-restore-tool.md#使用限制)和[最佳实践](/br/backup-and-restore-tool.md#最佳实践)这两节。
+在阅读本文前，请确保你已通读[备份与恢复工具 BR 简介](/br/backup-and-restore-overview.md)，尤其是[使用限制](/br/backup-and-restore-overview.md#使用限制)和[最佳实践](/br/backup-and-restore-overview.md#最佳实践)这两节。
 
 ## 环境准备
 
@@ -277,7 +277,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 ![img](/media/br/restore-region.png)
 
-**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
+**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
 
 ![img](/media/br/restore-process-sst.png)
 

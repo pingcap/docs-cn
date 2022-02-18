@@ -62,14 +62,10 @@
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   - 备份与恢复
     - 使用 BR 工具（推荐）
-      - [BR 工具简介](/br/backup-and-restore-tool.md)
+      - [BR 工具简介](/br/backup-and-restore-overview.md)
+      - [BR 设计简介](/br/backup-and-restore-design.md)
       - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - 外部存储
-        - [外部存储概述](/br/backup-and-restore-storages.md)
-        - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
-      - BR 特性
-        - [自动调节](/br/br-auto-tune.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -194,6 +190,10 @@
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
+    - 前置需求
+      - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
+      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
     - 主要功能
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [表库过滤](/table-filter.md)
@@ -203,7 +203,6 @@
       - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
     - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
@@ -288,10 +287,11 @@
     - [术语表](/dm/dm-glossary.md)
     - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
-    - [BR 工具简介](/br/backup-and-restore-tool.md)
+    - [BR 工具简介](/br/backup-and-restore-overview.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     - [外部存储](/br/backup-and-restore-storages.md)
+    - [RawKV 的备份恢复](/br/rawkv-backup-and-restore.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
