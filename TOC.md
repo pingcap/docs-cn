@@ -51,10 +51,10 @@
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
-    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
+    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
-    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
+    - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
     - 使用 BR 工具（推荐）
       - [BR 工具简介](/br/backup-and-restore-tool.md)
@@ -112,7 +112,7 @@
       - [子查询的执行计划](/explain-subqueries.md)
       - [聚合查询的执行计划](/explain-aggregation.md)
       - [视图查询的执行计划](/explain-views.md)
-      - [分区查询的执行计划](/explain-partitions.md) 
+      - [分区查询的执行计划](/explain-partitions.md)
       - [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
     - SQL 优化流程
       - [SQL 优化流程概览](/sql-optimization-concepts.md)
