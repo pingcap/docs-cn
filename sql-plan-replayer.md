@@ -43,7 +43,7 @@ TiDB 根据 `sql-statement` 整理出以下集群现场信息：
 ```sql
 use test;
 create table t(a int, b int);
-insert into t valuse(1,1), (2, 2), (3, 3);
+insert into t values(1,1), (2, 2), (3, 3); 
 analyze table t;
 
 plan replayer dump explain select * from t;

@@ -79,7 +79,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     ```
 
 </div>
-
 <div label="离线部署">
 
 ### 离线部署
