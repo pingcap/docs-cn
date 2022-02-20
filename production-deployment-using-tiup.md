@@ -260,21 +260,21 @@ alertmanager_servers:
 
 针对两种常用的部署场景，可以通过以下命令生成建议拓扑模板：
 
-    - 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md) 。
+- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md) 。
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```shell
-        tiup cluster template --full > topology.yaml
-        ```
+    ```shell
+    tiup cluster template --full > topology.yaml
+    ```
     
-    - 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
+- 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```shell
-        tiup cluster template --multi-dc > topology.yaml
-        ```
+    ```shell
+    tiup cluster template --multi-dc > topology.yaml
+    ```
 
 > **注意：**
 >
