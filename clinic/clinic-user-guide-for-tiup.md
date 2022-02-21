@@ -113,11 +113,11 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```bash
-        Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
-        ```
+    ```bash
+    Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
+    ```
 
 #### 采集 DM 集群的数据
 
