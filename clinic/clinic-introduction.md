@@ -13,7 +13,7 @@ Clinic 是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP �
 
 Clinic 服务提供以下两个组件进行集群诊断：
 
-- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect）、对集群进行本地快速健康检查 (check)、上传诊断数据。如需了解 Diag 工具采集的详细的数据列表，请参阅 [Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)。
+- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect）、对集群进行本地快速健康检查 (check)、上传诊断数据。如需了解 Diag 工具采集的详细的数据列表，请参阅 [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
@@ -63,5 +63,5 @@ Clinic 服务提供以下两个组件进行集群诊断：
 
 ## 探索更多
 
- - [使用 Clinic](clinic/clinic-data-instruction-for-tiup.md)
- - [Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)
+ - [使用 Clinic](/clinic/clinic-data-instruction-for-tiup.md)
+ - [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
