@@ -34,16 +34,16 @@ TiDB 版本：5.1.4
     - 优化 raft client 错误日志的收集 [#11959](https://github.com/tikv/tikv/issues/11959)
     - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
 
++ PD
+
+    - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
+
 + TiFlash
 
     - 添加 `ADDDATE()` 和 `DATE_ADD()` 到 TiFlash 的下推支持
     - 添加 `INET6_ATON()` 和 `INET6_NTOA()` 到 TiFlash 的下推支持
     - 添加 `INET_ATON()` 和 `INET_NTOA()` 到 TiFlash 的下推支持
     - 把 DAG Request 中表达式或者执行计划树的最大深度限制从 100 提升到 200
-
-+ PD
-
-    - 优化调度器退出的速度 [#4146](https://github.com/tikv/pd/issues/4146)
 
 + Tools
 
@@ -79,24 +79,6 @@ TiDB 版本：5.1.4
     - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
     - 修复运行 MPP 查询时出现 `invalid cop task execution summaries length` 相关日志的问题 [#1791](https://github.com/pingcap/tics/issues/1791)
 
-+ TiFlash
-
-    - 修复 `str_to_date()` 函数对微秒前导零的错误解析
-    - 修复启用内存限制后 TiFlash 崩溃的问题
-    - 修复输入早于 1970-01-01 00:00:01 UTC 时，`unix_timestamp` 行为与 TiDB/MySQL 不一致的问题
-    - 修复当主键为 handle 时，扩宽主键列可能导致的数据不一致问题
-    - 修复 Decimal 类型比较时可能出现的数据溢出问题和 `Can't compare` 报错
-    - 修复非预期的 `3rd arguments of function substringUTF8 must be constants.` 报错
-    - 修复在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
-    - 修复 Decimal 类型转换时的数据溢出问题
-    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题
-    - 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
-    - 修复当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
-    - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
-    - 修复 `where <string>` 查询结果出错的问题
-    - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
-    - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
-
 + TiKV
 
     - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
@@ -130,6 +112,24 @@ TiDB 版本：5.1.4
     - 修复热点统计中无法剔除冷热点数据的问题 [#4390](https://github.com/tikv/pd/issues/4390)
     - 修复 TiKV 节点缩容后可能导致 Panic 的问题 [#4344](https://github.com/tikv/pd/issues/4344)
     - 修复调度 Operator 因为目标 Store 处于 Down 的状态而无法快速失败的问题 [#3353](https://github.com/tikv/pd/issues/3353)
+
++ TiFlash
+
+    - 修复 `str_to_date()` 函数对微秒前导零的错误解析
+    - 修复启用内存限制后 TiFlash 崩溃的问题
+    - 修复输入早于 1970-01-01 00:00:01 UTC 时，`unix_timestamp` 行为与 TiDB/MySQL 不一致的问题
+    - 修复当主键为 handle 时，扩宽主键列可能导致的数据不一致问题
+    - 修复 Decimal 类型比较时可能出现的数据溢出问题和 `Can't compare` 报错
+    - 修复非预期的 `3rd arguments of function substringUTF8 must be constants.` 报错
+    - 修复在没有 `nsl` 库的平台上 TiFlash 无法启动的问题
+    - 修复 Decimal 类型转换时的数据溢出问题
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `castStringAsReal` 行为不一致的问题
+    - 修复 TiFlash 重启时偶发的 `EstablishMPPConnection` 错误
+    - 修复当设置 TiFlash 副本数为 0（即删除数据）后数据无法回收的问题
+    - 修复在 TiFlash 与 TiDB/TiKV 之间 `CastStringAsDecimal` 行为不一致的问题
+    - 修复 `where <string>` 查询结果出错的问题
+    - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
+    - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 报错
 
 + Tools
 
