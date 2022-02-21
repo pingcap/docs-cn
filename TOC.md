@@ -241,7 +241,7 @@
     - About TiDB Data Migration
       - [DM Overview](/dm/dm-overview.md)
       - Basic Features
-        - [Table Routing](/dm/dm-key-features.md#table-routing)
+        - [Table Routing](/dm/dm-key-features.md)
         - [Block and Allow Lists](/dm/dm-key-features.md#block-and-allow-table-lists)
         - [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)
       - Advanced Features
@@ -545,7 +545,7 @@
     - [Views](/views.md)
     - [Partitioning](/partitioned-table.md)
     - [Temporary Tables](/temporary-tables.md)
-    - [Character Set and Collation]
+    - Character Set and Collation
       - [Overview](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
     - [Placement Rules in SQL](/placement-rules-in-sql.md)
@@ -624,7 +624,7 @@
         - [View Diagnostics Report](/dashboard/dashboard-diagnostics-report.md)
         - [Use Diagnostics](/dashboard/dashboard-diagnostics-usage.md)
       - [Search Logs Page](/dashboard/dashboard-log-search.md)
-      - [Instance Profiling]
+      - Instance Profiling
         - [Manual Profiling](/dashboard/dashboard-profiling.md)
         - [Continuous Profiling](/dashboard/continuous-profiling.md)
       - Session Management and Configuration
