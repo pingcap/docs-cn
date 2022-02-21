@@ -96,8 +96,11 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ```yaml
 mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
-    threads: 4                       # dump 处理单元从上游数据库实例导出数据和执行前置检查时访问上游的线程数量，默认值为 4，建议不要超过 64。
+    threads: 4                       # dump 处理单元从上游数据库实例导出数据和执行前置检查时访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
     extra-args: "--consistency none" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
-
 ```
+
+> **注意：**
+>
+> `threads` 参数和上游的连接数有关，过大的 `threads` 可能会加大上游的负载，请注意控制大小。
