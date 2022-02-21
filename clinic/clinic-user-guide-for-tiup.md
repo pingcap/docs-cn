@@ -1,17 +1,16 @@
 ---
-title: Clinic 操作手册
-summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic Diag 工具远程采集集群诊断数据和本地检查集群问题。
+title: 使用 Clinic
+summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic 诊断服务远程定位集群问题、本地快速检查集群健康状态并诊断问题。
 ---
 
-# Clinic 操作手册
+# 使用 Clinic
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，Clinic 诊断服务可以通过 Clinic Diag 工具与 Clinic Server 云服务实现远程定位集群问题、本地快速诊断集群问题。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，Clinic 诊断服务可以通过 Clinic Diag 工具与 Clinic Server 云服务实现远程定位集群问题、本地快速检查集群健康状态并诊断问题。
 
 > **注意：**
 >
-> Clinic 诊断服务目前处于 Beta 受邀测试使用阶段，不建议在生产场景中直接使用。
-> 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 TiDB Operator 部署的集群，请参阅[Operator 环境的 Clinic 操作手册](XXX)。
-> Clinic 诊断服务暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
+> - Clinic 诊断服务目前处于 Beta 受邀测试使用阶段，不建议在生产场景中直接使用。
+> - Clinic 诊断服务暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
@@ -26,13 +25,13 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic Diag �
 
     - 当集群出现问题，但无法马上进行问题分析时，你可以使用 Diag 工具采集数据后先将其保存下来，用于自己后期再进行问题分析。
 
-- [本地快速检查集群状态](#本地快速检查集群状态)
+- [本地快速检查集群健康状态并诊断问题](#本地快速检查集群状态)
 
     即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
 
 ## 准备工作
 
-如果你的中控机上已经安装了 TiUP，则通过以下命令一键安装 Clinic Diag 工具：
+如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Clinic Diag 工具：
 
 {{< copyable "shell-regular" >}}
 
@@ -40,7 +39,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic Diag �
 tiup install diag
 ```
 
-若已安装了 Diga，也可以通过以下命令，将本地的 Diag 一键升级至最新版本：
+若已安装了 Diag，也可以通过以下命令，将本地的 Diag 一键升级至最新版本：
 
 {{< copyable "shell-regular" >}}
 
@@ -50,8 +49,8 @@ tiup update diag
 
 > **注意：**
 >
-> 对于离线集群，需要离线部署 Diag 工具。具体的离线部署办法，可以参照[离线部署 TiUP 组件：方式二](/production-deployment-using-tiup#离线部署)。
-> Clinic Diag 工具处于 Beta 阶段，暂不包含在 TiDB 官方下载页面中的 TiDB Server 离线镜像包中。
+> - 对于离线集群，需要离线部署 Diag 工具。具体方法，可以参照[离线部署 TiUP 组件：方式二](/production-deployment-using-tiup#离线部署)。
+> - Clinic Diag 工具处于 Beta 阶段，暂未包含在 TiDB 官方下载页面中的 TiDB Server 离线镜像包中。
 
 ## 远程定位集群问题
 
@@ -59,15 +58,17 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 1 步：确定需要采集的数据
 
-如需查看 Clinic Diag 支持在 TiDB 采集和 DM 集群采集的数据详细列表，请参阅 [Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
+如需查看 Clinic Diag 支持采集的数据的详细列表，请参阅 [Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
 
 ### 第 2 步：采集数据
 
-Clinic Diag 支持对使用 TiUP 部署的 TiDB 集群和 DM 集群采集数据，具体方法如下：
+你可以使用 Clinic Diag 采集通过使用 TiUP 部署的 TiDB 集群和 DM 集群的数据，具体方法如下：
 
 #### 采集 TiDB 集群的数据
 
-1. 通过以下命令，收集从 4 小时前到 2 小时前的诊断数据：
+1. 运行 Diag 数据采集命令。
+
+    例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -77,29 +78,19 @@ Clinic Diag 支持对使用 TiUP 部署的 TiDB 集群和 DM 集群采集数据�
 
     使用参数说明：
 
-    - `-f/--from`：采集时间的起始点，默认值为当前时刻的 2 小时前。如需修改参数值，可通过 `-f="-4h"` 的语法设定，该示例表示需要采集开始时间为当前时间的 4 小时前。另外，如果该参数中没带时区信息，如 `+0800`，时区则默认为 UTC。如需修改时区，可通过 `-f="12:30 +0900"` 的语法设定。
-	   - `-t/--to`：采集时间的结束点，默认值为当前时刻。如需修改参数值，可通过 `-t="-2h"` 的语法设定，该示例表示需要采集结束时间为当前时间的 2 小时前。另外，如果该参数中没带时区信息，如 `+0800`，时区则默认为 UTC。如需修改时区，可通过 `-f="12:30 +0900"` 的语法设定。
+    - `-f/--from`：指定采集时间的起始点。如果不指定该参数，默认起始点为当前时间的 2 小时前。如需修改时区，可通过 `-f="12:30 +0900"` 的语法。如果该参数中未指定时区信息，如 `+0800`，则默认时区为 UTC。
+    -`-t/--to`：指定采集时间的结束点。如果不指定该参数，默认结束点为当前时刻。如需修改时区，可通过 `-f="12:30 +0900"` 的语法。如果该参数中未指定时区信息，如 `+0800`，则默认时区为 UTC。
 
     > **提示：**
     >
-    > 如需查看更多参数，可以执行以下命令。
-    >
-    > {{< copyable "shell-regular" >}}
-    >
-    > ```bash
-    > tiup diag collect -h
-    > ```
-    >
-    > 使用 Diag 工具时会使用的参数包括但不限于以下内容：
+    > 除了指定采集时间，你还可以使用 Diag 指定更多参数。如需查看完整参数，请使用 `tiup diag collect -h` 命令。
     >
     > - `-l`：传输文件时的带宽限制，单位为 Kbit/s, 默认值为 `100000`（即 scp 的 `-l` 参数）。
-    > - `-N/--node`：支持只收集直接节点的数据，格式为 `ip:port`。
+    > - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
     > - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。
     > - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。
 
-    输入上述命令后，开始采集数据前，Diag 会先预估数据量大小，并询问用户是否进行数据收集。
-
-    命令示例如下：
+     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
 
     {{< copyable "shell-regular" >}}
 
@@ -116,17 +107,17 @@ Clinic Diag 支持对使用 TiUP 部署的 TiDB 集群和 DM 集群采集数据�
     Do you want to continue? [y/N]: (default=N)
     ```
 
-2. 输入 `Y`，使 Diag 开始采集数据。
+2. 如果确认要开始采集数据，请输入 `Y`。
 
-    采集数据需要一定的时间，具体所需时间与需要收集的数据量有关，比如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
+    采集数据需要一定的时间，具体所需时间与需要收集的数据量有关。例如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
 
-3. 完成采集后，结果中会提示采集数据所在的文件夹路径，示例如下：
+    采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```bash
-    Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
-    ```
+        ```bash
+        Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
+        ```
 
 #### 采集 DM 集群的数据
 

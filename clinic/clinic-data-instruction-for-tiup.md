@@ -5,9 +5,9 @@ summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集�
 
 # Clinic 数据采集说明
 
-通过 Clinic 诊断服务对使用 TiUP Cluster 部署的集群采集的数据会**仅**用于集群问题诊断与分析。
+通过 Clinic 诊断服务对使用 TiUP Cluster 部署的集群采集的数据**仅**用于集群问题诊断与分析。
 
-采集的数据会存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器，数据诊断分析服务器位于 PingCAP 内网（中国境内）。PingCAP 对于数据访问权限进行了严格的访问控制，只有经授权的内部技术人员能够访问该数据。
+Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数据上传到了 Clinic Server 供 PingCAP 技术人员远程定位集群问题，这些数据将存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器。PingCAP 对于数据访问权限进行了严格的访问控制，只有经授权的内部技术人员能够访问该数据。
 
 在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
 
