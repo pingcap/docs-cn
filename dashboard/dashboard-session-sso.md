@@ -217,11 +217,11 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
    ```
    http://DASHBOARD_IP:PORT/dashboard/?sso_callback=1
    ```
-   
+
    在以上内容中，将 `DASHBOARD_IP:PORT` 替换为你在浏览器中实际访问 TiDB Dashboard 所使用的域名（或 IP）及端口。   
 
    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-2.png)
-   
+
 6. 其他设置保留默认值，点击**保存 & 退出**。
 
 7. 保存页面上的**客户端 ID**。
@@ -232,6 +232,6 @@ TiDB Dashboard 支持基于 [OIDC](https://openid.net/connect/) 协议的单点�
 
 2. 将 Casdoor 部署地址加上 `https://` 前缀和 `/` 后缀后填入 **OIDC Discovery URL** 中，例如 `https://casdoor.example.com/`。完成授权并保存配置即可。
 
-        ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-3.png)
+    ![Settings](/media/dashboard/dashboard-session-sso-casdoor-settings-3.png)
 
 至此，TiDB Dashboard 已被配置为使用 Casdoor 进行 SSO 登录。
