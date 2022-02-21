@@ -156,8 +156,9 @@ cat rule.json
 ]
 ```
 
-你可以使用如下命令使用 rule.json 中的配置来覆盖原有的设置：
+如果需要使用 `rule.json` 中的配置，你可以通过如下命令覆盖原有的配置：
 
+{{< copyable "shell-regular" >}}
 ```bash
 pd-ctl config placement-rules rule-bundle save --in="rule.json"
 ```
