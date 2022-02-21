@@ -1,11 +1,11 @@
 ---
 title: Clinic 诊断服务简介
-summary: 介绍 Clinic 诊断服务，包括工具组件、工作原理和使用场景。
+summary: 介绍 Clinic 诊断服务，包括工具组件、使用场景和工作原理。
 ---
 
 ## Clinic 诊断服务简介
 
-Clinic 是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行一键数据采集和快速检查，用于从全生命周期确保 TiDB 集群稳定运行、预测并降低问题出现概率、快速定位并修复问题。
+Clinic 是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测并降低问题出现概率、快速定位并修复问题。
 
 > **注意：**
 >
@@ -13,12 +13,12 @@ Clinic 是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP �
 
 Clinic 服务提供以下两个组件进行集群诊断：
 
-- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect）、对集群进行本地快速健康检查 (check)、上传诊断数据。如需了解 Diag 工具采集数据内容，请参阅 [TiUP 环境下的 Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)。
+- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect）、对集群进行本地快速健康检查 (check)、上传诊断数据。如需了解 Diag 工具采集的详细的数据列表，请参阅 [Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
-    > Diag 暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采样。
-    > 目前 Clinic 处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与您对接的 PingCAP 技术人员获取试用账号。
+    > - Diag 暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采样。
+    > - 目前 Clinic 处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 - Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，可接收上传到该组件的诊断数据，也可提供诊断数据的存储、在线查看、在线诊断以及诊断报告。
 
@@ -30,9 +30,9 @@ Clinic 服务提供以下两个组件进行集群诊断：
 
 - 远程定位集群问题：
 
-    当集群出现无法快速修复的问题时，可以求助社区论坛或者联系 PingCAP 技术支持。当申请远程协助时，你需要保存问题现场的各种诊断数据后，将其转发给相关技术人员。此时，你可以使用 Clinic 的 Diag 工具，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
+    当集群出现无法快速修复的问题时，可以求助社区论坛或者联系 PingCAP 技术支持。当申请远程协助时，你需要先保存问题现场的各种诊断数据后，将其转发给相关技术人员。此时，你可以使用 Clinic Diag 工具，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
 
-    目前 Clinic 处于 Beta 受邀测试使用阶段，如需上传数据到 Clinic Server，请联系与您对接的 PingCAP 技术人员获取试用账号。
+    目前 Clinic 处于 Beta 受邀测试使用阶段，如需将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 - 本地快速检查集群状态：
 

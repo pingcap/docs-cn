@@ -1,11 +1,11 @@
 ---
 title: 使用 Clinic
-summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic 诊断服务远程定位集群问题、本地快速检查集群健康状态并诊断问题。
+summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
 ---
 
 # 使用 Clinic
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，Clinic 诊断服务可以通过 Clinic Diag 工具与 Clinic Server 云服务实现远程定位集群问题、本地快速检查集群健康状态并诊断问题。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，Clinic 诊断服务可以通过 Clinic Diag 工具与 Clinic Server 云服务实现远程定位集群问题和本地快速检查集群状态。
 
 > **注意：**
 >
@@ -16,16 +16,16 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic 诊断
 
 - [远程定位集群问题](#远程定位集群问题)：
 
-    - 当集群出现问题，需要远程咨询 PingCAP 技术支持时，你可以使用 Clinic Diag 工具采集诊断数据，将其数据上传到 Clinic Server 后，把数据链接提供给技术支持人员，协助远程定位集群问题。
+    - 当集群出现问题，需要远程咨询 PingCAP 技术支持时，你可以先使用 Clinic Diag 工具采集诊断数据，将其数据上传到 Clinic Server 后，把数据链接提供给技术支持人员，协助远程定位集群问题。
 
     > **注意：**
     >
-    > 目前 Clinic 处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与您对接的 PingCAP 技术人员获取试用账号。
-    > Clinic Beta 版本的 Server 端功能暂未开放给外部用户使用。当你将采集好的数据上传到 Clinic Server 并获取了数据链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
+    > - 目前 Clinic 处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
+    > - Clinic Beta 版本的 Server 端功能暂未开放给外部用户使用。当你将采集好的数据上传到 Clinic Server 并获取了数据链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
 
     - 当集群出现问题，但无法马上进行问题分析时，你可以使用 Diag 工具采集数据后先将其保存下来，用于自己后期再进行问题分析。
 
-- [本地快速检查集群健康状态并诊断问题](#本地快速检查集群状态)
+- [本地快速检查集群状态](#本地快速检查集群状态)：
 
     即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
 
@@ -49,7 +49,7 @@ tiup update diag
 
 > **注意：**
 >
-> - 对于离线集群，需要离线部署 Diag 工具。具体方法，可以参照[离线部署 TiUP 组件：方式二](/production-deployment-using-tiup#离线部署)。
+> - 对于离线集群，需要离线部署 Diag 工具。具体方法，可以参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
 > - Clinic Diag 工具处于 Beta 阶段，暂未包含在 TiDB 官方下载页面中的 TiDB Server 离线镜像包中。
 
 ## 远程定位集群问题
@@ -58,11 +58,11 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 1 步：确定需要采集的数据
 
-如需查看 Clinic Diag 支持采集的数据的详细列表，请参阅 [Clinic 数据采集说明](clinic/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
+如需查看 Clinic Diag 支持采集的数据的详细列表，请参阅 [Clinic 数据采集说明](/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
 
 ### 第 2 步：采集数据
 
-你可以使用 Clinic Diag 采集通过使用 TiUP 部署的 TiDB 集群和 DM 集群的数据，具体方法如下：
+你可以使用 Clinic Diag 采集使用 TiUP 部署的 TiDB 集群和 DM 集群的数据，具体方法如下：
 
 #### 采集 TiDB 集群的数据
 
@@ -90,7 +90,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
     > - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。
     > - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。
 
-     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
+    运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
 
     {{< copyable "shell-regular" >}}
 
@@ -131,7 +131,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
     tiup diag collectdm <cluster-name> -f="-4h" -t="-2h"
     ```
 
-    如需了解在上述命令中使用的参数说明或需查看使用 Diag 工具时会使用的其他参数，请参阅[Diag 工具相关参数说明](#采集-TiDB-集群的数据)。
+    如需了解在上述命令中使用的参数说明或需查看使用 Diag 工具时会使用的其他参数，请参阅 [Diag 工具相关参数说明](#采集-TiDB-集群的数据)。
 
 2. 如果确认要开始采集数据，请输入 `Y`。
 
@@ -160,7 +160,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 4 步：上传数据
 
-如需将集群诊断数据提供给 PingCAP 技术支持人员，请将数据上传到 Clinic Server，然后将数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供安全的诊断数据存储和共享。
+如需将集群诊断数据提供给 PingCAP 技术支持人员，请将数据上传到 Clinic Server，然后再将数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供安全的诊断数据存储和共享。
 
 根据集群的网络连接情况，你可以选择以下上传方式之一：
 
@@ -206,51 +206,51 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
 
 1. 压缩并加密在[第 2 步](#第2步采集数据)采集的数据包：
 
- {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-tiup diag package <filepath>
-```
+    ```bash
+    tiup diag package <filepath>
+    ```
 
-打包时，Diag 会同时对数据进行加密和压缩。在测试环境中，800 MB 数据压缩后变为 57 MB。示例输出如下：
+    打包时，Diag 会同时对数据进行加密和压缩。在测试环境中，800 MB 数据压缩后变为 57 MB。示例输出如下：
 
-```bash
-Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag package diag-fNTnz5MGhr6
-packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
-```
+    ```bash
+    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag package diag-fNTnz5MGhr6
+    packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
+    ```
 
-通过上面的 `package` 命令完成打包后，数据为 `.diag` 格式，只有上传到 Clinic Server 后才能解密查看。如需直接转发已收集的数据，而不在 Clinic Server 中查看，可以自行压缩后转发。
+    通过上面的 `package` 命令完成打包后，数据为 `.diag` 格式，只有上传到 Clinic Server 后才能解密查看。如需直接转发已收集的数据，而不在 Clinic Server 中查看，可以自行压缩后转发。
 
 2. 在可以连通 Clinic Server 的网络环境下上传压缩包。
 
- {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-tiup diag upload filepath -u=username -p='password'
-```
+    ```bash
+    tiup diag upload filepath -u=username -p='password'
+    ```
 
-> **注意：**
->
-> 目前 Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
+    > **注意：**
+    >
+    > 目前 Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
-输出结果示例如下：
+    输出结果示例如下：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-[root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Enter Username: username
-Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-Completed!
-Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
-```
+    ```bash
+    [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
+    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+    Enter Username: username
+    Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+    Completed!
+    Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
+    ```
 
-完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+    完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
-> **注意：**
->
-> 目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
+    > **注意：**
+    >
+    > 目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
 
 ## 本地快速检查集群状态
 

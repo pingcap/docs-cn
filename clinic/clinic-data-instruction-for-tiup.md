@@ -1,11 +1,11 @@
 ---
 title: Clinic 数据采集说明
-summary: 详细说明 Clinic 诊断服务会在使用 TiUP Cluster 部署的集群中采集哪些诊断数据。
+summary: 详细说明 Clinic 诊断服务会在使用 TiUP 部署的集群中采集哪些诊断数据。
 ---
 
 # Clinic 数据采集说明
 
-通过 Clinic 诊断服务对使用 TiUP Cluster 部署的集群采集的数据**仅**用于集群问题诊断与分析。
+通过 Clinic 诊断服务对使用 TiUP 部署的集群采集的数据**仅**用于集群问题诊断与分析。
 
 Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数据上传到了 Clinic Server 供 PingCAP 技术人员远程定位集群问题，这些数据将存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器。PingCAP 对于数据访问权限进行了严格的访问控制，只有经授权的内部技术人员能够访问该数据。
 
@@ -13,7 +13,7 @@ Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数
 
 ## TiDB 集群数据采集范围
 
-本节列出了 Clinic Diag 诊断工具在 TiDB 集群中采集的详细的诊断数据。
+本节列出了 Clinic Diag 诊断工具在使用 TiUP 部署的 TiDB 集群中采集的详细的诊断数据。
 
 ### Cluster 基础信息
 
@@ -95,7 +95,7 @@ Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数
 
 ## DM 集群数据采集范围
 
-本节列出了 Clinic Diag 诊断工具在 DM 集群中采集的详细的诊断数据。
+本节列出了 Clinic Diag 诊断工具在使用 TiUP 部署的 DM 集群中采集的详细的诊断数据。
 
 ### Cluster 基础信息
 
@@ -129,7 +129,7 @@ Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数
 
 ### 集群系统信息
 
-|诊断数据类型 | 输出文件 | Clinic 采集参数 |
+| 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 内核日志 | `dmesg.log` | `--include=system` |
 | 基础的系统和硬件信息 | `insight.json` | `--include=system` |
