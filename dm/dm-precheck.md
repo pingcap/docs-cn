@@ -58,7 +58,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
     
     + 乐观协调模式下，检查所有分表结构是否满足[乐观协调兼容](https://github.com/pingcap/tiflow/blob/master/dm/docs/RFCS/20191209_optimistic_ddl.md#modifying-column-types)；
 
-    + 如果之前成功 `start-task` 过，那么将不会对一致性进行检查。
+    + 如果曾经通过 `start-task` 命令成功启动任务，那么将不会对一致性进行检查。
 
 + 分表中自增主键检查
 
@@ -73,7 +73,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 
 + （必须）数据库主从配置
 
-    - 需设置 `server_id`。
+    - 上游数据库必需设置 `server_id`（非 AWS Aurora 环境建议开启 GTID）。
 
 + （必须）MySQL binlog 配置
 
@@ -96,7 +96,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 ```yaml
 mydumpers:                           # dump 处理单元的运行配置参数
   global:                            # 配置名称
-    threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
+    threads: 4                       # dump 处理单元从上游数据库实例导出数据和执行前置检查时访问上游的线程数量，默认值为 4，建议不要超过 64。
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
     extra-args: "--consistency none" # dump 处理单元的其他参数，不需要在 extra-args 中配置 table-list，DM 会自动生成
 
