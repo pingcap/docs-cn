@@ -31,7 +31,7 @@ TiDB 版本：5.1.4
 + TiKV
 
     - 将 proc filesystem (procfs) 升级至 0.12.0 版本 [#11702](https://github.com/tikv/tikv/issues/11702)
-    - 优化 raft client 错误日志的收集 [#11959](https://github.com/tikv/tikv/issues/11959)
+    - 优化 Raft client 错误日志的收集 [#11959](https://github.com/tikv/tikv/issues/11959)
     - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
 
 + PD
@@ -82,16 +82,16 @@ TiDB 版本：5.1.4
 + TiKV
 
     - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
-    - 避免删除 Peer 可能造成高延迟 [#10210](https://github.com/tikv/tikv/issues/10210)
+    - 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
     - 修复 Region 没有数据时 `any_value` 函数结果错误的问题 [#11735](https://github.com/tikv/tikv/issues/11735)
     - 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
     - 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#11526](https://github.com/tikv/tikv/issues/11526)
     - 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
-    - 避免分析火焰图时潜在的死锁和内存泄漏 [#11108](https://github.com/tikv/tikv/issues/11108)
+    - 修复分析火焰图时潜在的死锁和内存泄漏的问题 [#11108](https://github.com/tikv/tikv/issues/11108)
     - 修复悲观事务中 prewrite 请求重试在极少数情况下影响数据一致性的风险 [#11187](https://github.com/tikv/tikv/issues/11187)
     - 修复 `resource-metering.enabled` 配置不生效的问题 [#11235](https://github.com/tikv/tikv/issues/11235)
     - 修复 `resolved_ts` 中协程泄漏的问题 [#10965](https://github.com/tikv/tikv/issues/10965)
-    - 避免在低写入流量下误报 "GC can not work" 错误 [#9910](https://github.com/tikv/tikv/issues/9910)
+    - 修复在低写入流量下误报 "GC can not work" 错误的问题 [#9910](https://github.com/tikv/tikv/issues/9910)
     - 修复 tikv-ctl 无法正确输出 Region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
     - 修复某个 TiKV 节点停机会导致 Resolved Timestamp 进度落后的问题 [#11351](https://github.com/tikv/tikv/issues/11351)
     - 修复在极端情况下同时进行 Region Merge、ConfChange 和 Snapshot 时，TiKV 会出现 Panic 的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
