@@ -121,7 +121,9 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 #### 采集 DM 集群的数据
 
-1. 通过以下命令，收集从 4 小时前到 2 小时前的诊断数据：
+1. 运行 Diag 数据采集命令。
+
+    例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -129,13 +131,13 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
     tiup diag collectdm <cluster-name> -f="-4h" -t="-2h"
     ```
 
-    如需了解在上述命令中使用的参数说明或需查看使用 Diag 工具时会使用的其他参数，请参阅[Diag 工具相关参数说明](#采集TiDB集群的数据)。
+    如需了解在上述命令中使用的参数说明或需查看使用 Diag 工具时会使用的其他参数，请参阅[Diag 工具相关参数说明](#采集-TiDB-集群的数据)。
 
-2. 输入 `Y`，让 Diag 开始数据采集。
+2. 如果确认要开始采集数据，请输入 `Y`。
 
-    采集数据需要一定的时间，具体所需时间与需要收集的数据量有关，比如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
+    采集数据需要一定的时间，具体所需时间与需要收集的数据量有关。例如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
 
-3. 采集完成后，会提示采集数据所在的文件夹路径，示例如下：
+    采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
 
     {{< copyable "shell-regular" >}}
 
@@ -145,7 +147,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 3 步：本地查看数据（可选步骤）
 
-已收集的数据会根据其数据来源存储至每个独立的子目录中，这些子目录会以机器名和端口号来命名。每个节点的配置、日志等文件的存放位置与在真实服务器中存放的相对路径相同，其中：
+已收集的数据会根据其数据来源存储于独立的子目录中，这些子目录以机器名和端口号来命名。每个节点的配置、日志等文件的存放位置与在真实服务器中存放的相对路径相同，其中：
 
 - 基础的系统和硬件信息： 位于 `insight.json`
 - 系统 `/etc/security/limits.conf` 中的内容：位于 `limits.conf`
@@ -158,16 +160,16 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 4 步：上传数据
 
-把诊断数据提供给 PingCAP 技术支持人员时，需要将数据上传到 Clinic Server，然后将其数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供更安全的诊断数据存储和共享。
+如需将集群诊断数据提供给 PingCAP 技术支持人员，请将数据上传到 Clinic Server，然后将数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供安全的诊断数据存储和共享。
 
-根据集群可连接的网络情况，Clinic 诊断服务提供不同的上传方式：
+根据集群的网络连接情况，你可以选择以下上传方式之一：
 
-- 如果集群所在的网络可以直接连接 Clinic Server，可以[通过上传命令直接上传数据](#直接上传)。
-- 如果是离线部署的集群，需要[打包后再上传数据](先打包后上传)。
+- 如果集群所在的网络可以直接连接 Clinic Server，可以[通过上传命令直接上传数据](#方式-1直接上传)。
+- 如果集群所在的网络无法直接连接 Clinic Server，需要[打包后再上传数据](#方式-2打包后上传)。
 
 #### 方式 1：直接上传
 
-当集群所在的网络可以直接连接 Clinic Server 时，可以直接通过以下命令上传在[第 2 步](#第2步采集数据)中收集的数据包文件夹：
+当集群所在的网络可以直接连接 Clinic Server 时，可以直接通过以下命令上传在[第 2 步](#第-2-步采集数据)中收集的数据包文件夹：
 
 {{< copyable "shell-regular" >}}
 
@@ -192,19 +194,17 @@ Completed!
 Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
 
-完成上传后，需要把 `Download URL` 中的数据访问链接发给 PingCAP 技术支持人员。
+完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
 > **注意：**
 >
 > 目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时无法打开该链接。
 
-#### 方式 2：先打包、后上传
+#### 方式 2：打包后上传
 
 如果是离线部署的集群，由于其所在的网络无法直接连接 Clinic Server，需要先在内网打包数据后，再将其发送到网络连通的设备上进行上传。具体操作方法如下：
 
-1. 压缩并加密数据包。
-
-通过以下的 Package 命令，压缩和加密在[第 2 步](#第2步采集数据)采集的数据包。
+1. 压缩并加密在[第 2 步](#第2步采集数据)采集的数据包：
 
  {{< copyable "shell-regular" >}}
 
@@ -212,20 +212,16 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
 tiup diag package <filepath>
 ```
 
-打包时会同时对数据进行加密和压缩，在测试环境中，800 MB 数据压缩后变为 57 MB。`xxxx.diag` 为可以正常上传的文件格式，不需要对其进行额外处理。
-
-2. 把压缩文件上传到非隔离网络。
-
- {{< copyable "shell-regular" >}}
+打包时，Diag 会同时对数据进行加密和压缩。在测试环境中，800 MB 数据压缩后变为 57 MB。示例输出如下：
 
 ```bash
 Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag package diag-fNTnz5MGhr6
 packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
 ```
 
-通过 `Package` 命令压缩的数据包必须上传到 Clinic Server 后才能解密查看。如需直接转发已收集的数据，而不在 Clinic Server 中查看，可以自行压缩后转发。
+通过上面的 `package` 命令完成打包后，数据为 `.diag` 格式，只有上传到 Clinic Server 后才能解密查看。如需直接转发已收集的数据，而不在 Clinic Server 中查看，可以自行压缩后转发。
 
-3. 在可以连通 Clinic Server 的网络环境下上传压缩包。
+2. 在可以连通 Clinic Server 的网络环境下上传压缩包。
 
  {{< copyable "shell-regular" >}}
 
@@ -250,7 +246,7 @@ Completed!
 Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
 ```
 
-完成上传后，需要把 `Download URL` 中的数据访问链接发给 PingCAP 技术支持人员。
+完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
 > **注意：**
 >
@@ -258,7 +254,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
 
 ## 本地快速检查集群状态
 
-Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
+你可以使用 Clinic Diag 工具对集群的健康状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。目前 Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
 
 1. 采集配置数据。
 
@@ -268,7 +264,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集�
     tiup diag collect <cluster-name> --include="config"
     ```
 
-    采集数据会默认存放至当前路径下。配置文件数据较小，测试环境中的 18 节点集群数据量小于 10 KB。
+    配置文件数据较小，采集后会默认存放至当前路径下。在测试环境中，对于一个 18 个节点的集群，配置文件数据量小于 10 KB。
 
 2. 诊断配置数据。
 
@@ -278,7 +274,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集�
     tiup diag check <subdir-in-output-data>
     ```
 
-    其中，`<sudir-in-output-data>` 是用 `diag collect` 命令存放已收集的数据的目录，其中包含 `meta.yaml` 文件。
+    其中，`<sudir-in-output-data>` 为采集数据的存放路径，其中包含 `meta.yaml` 文件。
 
 3. 查看诊断结果。
 
@@ -289,7 +285,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集�
     ```bash
     Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag check diag-fNTnz5MGhr6
 
-    # Check Result Report
+    # 诊断结果
     lili 2022-01-24T09:33:57+08:00
 
     ## 1. 诊断集群名称等基础信息
@@ -307,7 +303,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集�
     The results of **1** rules were abnormal and needed to be further discussed with support team.
     The following is the details of the abnormalities.
 
-    ### Configuration Summary
+    ### 诊断结果摘要
     The configuration rules are all derived from PingCAP’s OnCall Service.
     If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
     There were **1** abnormal results.
@@ -324,7 +320,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集�
     Result report and record are saved at diag-fNTnz5MGhr6/report-220125153215
     ```
 
-    在上述示例的诊断结果信息（第三部分）中，对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`。
+    在上述示例的诊断结果信息（第 3 部分）中，对于每条发现的配置问题，Diag 都会提供对应的知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`。
 
 ## 常见问题
 
@@ -332,7 +328,7 @@ Clinic Diag 工具支持对集群的健康状态进行快速诊断。即使集�
 
     数据上传支持断点上传，如果失败了，可以直接再次上传。
 
-2. 数据上传后，用户无法打开返回的数据访问链接，怎么办？
+2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
     Clinic 诊断服务目前在 Beta 试用阶段，数据访问链接未对外部用户开放，只有经授权的 PingCAP 内部技术支持人员能打开链接并查看数据。
 
