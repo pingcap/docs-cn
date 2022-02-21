@@ -167,6 +167,10 @@ TiDB 版本：5.1.4
 
         + 修复当恢复完成后，Region 有可能分布不均的问题 [#30425](https://github.com/pingcap/tidb/issues/30425) [#31034](https://github.com/pingcap/tidb/issues/31034)
 
+    + TiDB Binlog
+
+        修复 `strict-format` 为 `true` 且 CSV 文件大小为 256 MB 时，CSV 文件导入报 `InvalidRange` 的问题 [#27763](https://github.com/pingcap/tidb/issues/27763)
+
     + TiDB Lightning
 
         + 修复 S3 存储路径不存在时 TiDB Lightning 不报错的问题 [#28031](https://github.com/pingcap/tidb/issues/28031) [#30709](https://github.com/pingcap/tidb/issues/30709)
