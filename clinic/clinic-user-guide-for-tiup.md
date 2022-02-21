@@ -58,7 +58,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 1 步：确定需要采集的数据
 
-如需查看 Clinic Diag 支持采集的数据的详细列表，请参阅 [Clinic 数据采集说明](/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
+如需查看 Clinic Diag 支持采集的数据的详细列表，请参阅 [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。建议收集完整的监控数据、配置信息等数据，有助于提升后续诊断效率。
 
 ### 第 2 步：采集数据
 
