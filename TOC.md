@@ -214,8 +214,7 @@
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
-    - 快速上手
-      - [快速上手试用](/dm/quick-start-with-dm.md)
+    - [快速开始](/dm/quick-start-with-dm.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - [使用 TiUP（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
@@ -262,34 +261,34 @@
         - [管理迁移表的表结构](/dm/dm-manage-schema.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-   - 参考手册
-      - 架构
-        - [DM 架构简介](/dm/dm-arch.md)
-        - [DM-worker 说明](/dm/dm-worker-intro.md)
-      - 命令行
-        - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
-      - 配置文件
-        - [概述](/dm/dm-config-overview.md)
-        - [数据源配置](/dm/dm-source-configuration-file.md)
-        - [迁移任务配置](/dm/task-configuration-file-full.md)
-        - [DM-master 配置](/dm/dm-master-configuration-file.md)
-        - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
-      - [OpenAPI](/dm/dm-open-api.md)
-      - 安全
-        - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
-        - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-      - 监控告警 
-        - [监控指标](/dm/monitor-a-dm-cluster.md)
-        - [告警信息](/dm/dm-alert-rules.md)
-      - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
-      - [术语表](/dm/dm-glossary.md)
-    - 使用示例
-      - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
-    - 故障解决
-      - [常见问题](/dm/dm-faq.md)
-      - [故障及处理方法](/dm/dm-error-handling.md)
-      - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
-    - [版本发布历史](/dm/dm-release-notes.md)
+     - 参考手册
+        - 架构
+          - [DM 架构简介](/dm/dm-arch.md)
+          - [DM-worker 说明](/dm/dm-worker-intro.md)
+        - 命令行
+          - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+        - 配置文件
+          - [概述](/dm/dm-config-overview.md)
+          - [数据源配置](/dm/dm-source-configuration-file.md)
+          - [迁移任务配置](/dm/task-configuration-file-full.md)
+          - [DM-master 配置](/dm/dm-master-configuration-file.md)
+          - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+        - [OpenAPI](/dm/dm-open-api.md)
+        - 安全
+          - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
+          - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
+        - 监控告警 
+          - [监控指标](/dm/monitor-a-dm-cluster.md)
+          - [告警信息](/dm/dm-alert-rules.md)
+        - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
+        - [术语表](/dm/dm-glossary.md)
+      - 使用示例
+        - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+      - 故障解决
+        - [常见问题](/dm/dm-faq.md)
+        - [故障及处理方法](/dm/dm-error-handling.md)
+        - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
+      - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
