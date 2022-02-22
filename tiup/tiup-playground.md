@@ -79,7 +79,7 @@ nightly 就是这个集群的版本号，这里指定为每日构建版本。
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground nightly 
+tiup playground nightly
 ```
 
 该命令会在 9090 端口启动 Prometheus 用于展示集群内部的时序数据。
@@ -111,7 +111,7 @@ tiup playground --db.binpath /xx/tidb-server
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground v5.4.0 --db 3 --pd 3 --kv 3
+tiup playground nightly --db 3 --pd 3 --kv 3
 ```
 
 ## 快速连接到由 playground 启动的 TiDB 集群
