@@ -124,7 +124,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `new_collations_enabled_on_first_bootstrap`
 
 + 用于开启新的 collation 支持
-+ 默认值：false
++ 默认值：true
 + 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
 
 ### `max-server-connections`
