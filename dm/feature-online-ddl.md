@@ -204,3 +204,7 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 > **注意：**
 >
 > 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 [pt-osc 官方文档](https://www.percona.com/doc/percona-toolkit/2.2/pt-online-schema-change.html)。
+
+## 探索更多
+
+- [适配 online schema change 工具自定义的临时表名](/dm/dm-custom-online-ddl.md)
