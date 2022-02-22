@@ -78,6 +78,8 @@ TiDB 版本：5.1.4
     - 修复分配 `MPP task ID` 时出现 `DATA RACE` 的问题 [#27952](https://github.com/pingcap/tidb/issues/27952)
     - 修复删除空的 `dual table` 后 MPP 查询出现 `index out of range` 报错的问题 [#28250](https://github.com/pingcap/tidb/issues/28250)
     - 修复运行 MPP 查询时出现 `invalid cop task execution summaries length` 相关日志的问题 [#1791](https://github.com/pingcap/tics/issues/1791)
+    - 修复 SET GLOBAL tidb_skip_isolation_level_check=1 无法在新会话中生效的问题 [#27897](https://github.com/pingcap/tidb/issues/27897)
+
 
 + TiKV
 
