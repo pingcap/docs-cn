@@ -217,8 +217,8 @@
     - [快速开始](/dm/quick-start-with-dm.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
-      - [使用 TiUP（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
-      - [使用 TiUP 离线镜像](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
+      - [使用 TiUP 在线部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
+      - [使用 TiUP 离线部署](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
       - [使用 Binary](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
