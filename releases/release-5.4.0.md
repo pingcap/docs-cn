@@ -192,7 +192,7 @@ TiDB 版本：5.4.0
 
     TiDB 从 v5.4.0 版本开始支持 `ANALYZE` 配置持久化功能，方便后续收集统计信息时沿用已有配置项。
 
-    `ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，`tidb_persist_analyze_options` 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
+    `ANALYZE` 配置持久化功能默认开启（系统变量 `tidb_analyze_version` 为默认值 `2`，[`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-从-v540-版本开始引入) 为默认值 `ON`），用于记录手动执行 `ANALYZE` 语句时指定的持久化配置项。记录后，当 TiDB 下一次自动更新统计信息或者你手动收集统计信息但未指定配置项时，TiDB 会按照记录的配置项收集统计信息。
 
     [用户文档](/statistics.md#analyze-配置持久化)
 
@@ -290,7 +290,7 @@ TiDB 版本：5.4.0
 
 + TiDB
 
-    - 新增系统变量 `tidb_enable_paging`，开启该功能可显著降低使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 数据较小且无法下推到 `IndexScan` 上的读请求的延迟 [#30578](https://github.com/pingcap/tidb/issues/30578)
+    - 新增系统变量 [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-从-v540-版本开始引入)，开启该功能可显著降低使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 数据较小且无法下推到 `IndexScan` 上的读请求的延迟 [#30578](https://github.com/pingcap/tidb/issues/30578)
     - 支持 `ADMIN {SESSION | INSTANCE | GLOBAL} PLAN_CACHE` 语法，用于清空缓存的查询计划 [#30370](https://github.com/pingcap/tidb/pull/30370)
 
 + TiKV
