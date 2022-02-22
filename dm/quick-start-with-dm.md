@@ -62,7 +62,7 @@ tiup dmctl --master-addr=127.0.0.1:8261 operate-source create mysql-01.yaml # --
 {{< copyable "shell-regular" >}}
 
 ```shell
-mkdir /tmp/mysqltest
+mkdir -p /tmp/mysqltest && cd /tmp/mysqltest
 
 cat > my.cnf <<EOF
 [mysqld]
