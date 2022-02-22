@@ -193,7 +193,7 @@
   - TiDB Clinic 诊断服务 (Beta)
     - [概述](/clinic/clinic-introduction.md)
     - [使用 Clinic](/clinic/clinic-user-guide-for-tiup.md)
-    - [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
+    - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
