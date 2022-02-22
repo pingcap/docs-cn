@@ -99,7 +99,7 @@ tiup playground --db.binpath /xx/tidb-server
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground v3.0.10 --db 3 --pd 3 --kv 3
+tiup playground --db 3 --pd 3 --kv 3
 ```
 
 ## 快速连接到由 playground 启动的 TiDB 集群
