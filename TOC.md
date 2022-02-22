@@ -216,8 +216,7 @@
     - [关于 Data Migration](/dm/dm-overview.md)
     - 快速上手
       - [快速上手试用](/dm/quick-start-with-dm.md)
-    - [使用场景](/dm/quick-create-migration-task.md)
-    - 部署使用
+    - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - [使用 TiUP（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [使用 TiUP 离线镜像](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
