@@ -80,7 +80,6 @@ TiDB 版本：5.1.4
     - 修复运行 MPP 查询时出现 `invalid cop task execution summaries length` 相关日志的问题 [#1791](https://github.com/pingcap/tics/issues/1791)
     - 修复 SET GLOBAL tidb_skip_isolation_level_check=1 无法在新会话中生效的问题 [#27897](https://github.com/pingcap/tidb/issues/27897)
 
-
 + TiKV
 
     - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
