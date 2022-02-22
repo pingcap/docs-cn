@@ -160,7 +160,6 @@ TiDB 版本：5.1.4
         - 修复当发生 ErrGCTTLExceeded 错误时，changefeed 不快速失败的问题 [#3111](https://github.com/pingcap/tiflow/issues/3111)
         - 修复当上游 TiDB 实例意外退出时，TiCDC 同步任务推进可能停滞的问题 [#3061](https://github.com/pingcap/tiflow/issues/3061)
         - 修复当 TiKV 向同一 Region 发送重复请求时，TiCDC 进程 Panic 的问题 [#2386](https://github.com/pingcap/tiflow/issues/2386)
-        - 将 Kafka Sink `max-message-bytes` 的默认值改为 1 MB，防止 TiCDC 发送过大消息到 Kafka 集群 [#2962](https://github.com/pingcap/tiflow/issues/2962)
         - 将参数 `max-message-bytes` 的默认值设置为 `10M`，减少 Kafka 发送过大消息的概率 [#3081](https://github.com/pingcap/tiflow/issues/3081)
         - 修复当写入 Kafka 消息发生错误时，TiCDC 同步任务推进可能停滞的问题 [#2978](https://github.com/pingcap/tiflow/issues/2978)
 
