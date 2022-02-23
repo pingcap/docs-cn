@@ -12,13 +12,13 @@ DM 支持自动识别和优化上游数据库的 online schema change 变更操�
 但是在某些场景下，管理人员可能需要变更 online schema change 工具的默认行为，自定义`ghost table`和 `trash table`的名称；或者期望使用`gh-ost`和`pt-osc`之外的工具（原理和变更流程仍然保持一致）。此时则需要自行编写正则表达式以匹配`ghost table` 和 `trash table`。
 
 - gh-ost 默认临时表命名规则
-    - ghost table : \_\*\_gho
-    - trash table : \_\*\_ghc、\_\*\_del
-    - real table : 执行 online-ddl 的 origin table
+    - ghost table : _{origin_table}_gho
+    - trash table : _{origin_table}_del
+    - real table : 执行 online schema change 的 origin table
 - pt-osc 默认临时表命名规则
-    - ghost table : \_\*\_new
-    - trash table : \_\*\_old
-    - real table : 执行的 online-ddl 的 origin table
+    - ghost table : _{origin_table}_new
+    - trash table : _{origin_table}_old
+    - real table : 执行的 online schema change 的 origin table
 
 自 v2.0.7 起 DM 实验性支持修改过的 online schema change 工具。在 DM 任务配置中设置 `online-ddl=true` 后，配合`shadow-table-rules`和`trash-table-rules`即可支持通过正则表达式来匹配修改过的临时表。
 
