@@ -7,13 +7,9 @@ summary: 介绍 Clinic 诊断服务，包括工具组件、使用场景和工作
 
 Clinic 是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测并降低问题出现概率、快速定位并修复问题。
 
-> **注意：**
->
-> Clinic 诊断服务目前处于 Beta 受邀测试使用阶段，不建议在生产场景中直接使用。
+目前，Clinic 诊断服务目前处于 Beta 受邀测试使用阶段。该服务提供以下两个组件进行集群诊断：
 
-Clinic 服务提供以下两个组件进行集群诊断：
-
-- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect）、对集群进行本地快速健康检查 (check)、上传诊断数据。如需了解 Diag 工具采集的详细的数据列表，请参阅 [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
+- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect）、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具采集的详细的数据列表，请参阅 [Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
@@ -32,7 +28,6 @@ Clinic 服务提供以下两个组件进行集群诊断：
 
     当集群出现无法快速修复的问题时，可以求助社区论坛或者联系 PingCAP 技术支持。当申请远程协助时，你需要先保存问题现场的各种诊断数据后，将其转发给相关技术人员。此时，你可以使用 Clinic Diag 工具，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
 
-    目前 Clinic 处于 Beta 受邀测试使用阶段，如需将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 - 本地快速检查集群状态：
 
@@ -44,9 +39,9 @@ Clinic 服务提供以下两个组件进行集群诊断：
 
 首先，Diag 需要从部署工具 TiUP (tiup-cluster) 或 TiDB Operator (tidb-operator) 获取集群拓扑信息，然后通过不同的数据采集方式来采集不同类型的诊断数据，具体采集方式如下：
 
-- 通过 SCP 方式传输服务器文件
+- 通过 SCP (Secure copy protocol) 传输服务器文件
 
-    对于使用 TiUP 部署的集群，Diag 可通过 SCP 方式直接从目标组件的节点采集日志文件和配置文件。
+    对于使用 TiUP 部署的集群，Diag 可通过 SCP 直接从目标组件的节点采集日志文件和配置文件。
 
 - 通过 SSH 远程执行命令采集数据
 

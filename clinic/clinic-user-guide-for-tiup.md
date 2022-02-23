@@ -5,11 +5,12 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 Clinic 诊断
 
 # 使用 Clinic
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，Clinic 诊断服务可以通过 Clinic Diag 工具与 Clinic Server 云服务实现远程定位集群问题和本地快速检查集群状态。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，Clinic 诊断服务可以通过 Clinic Diag 诊断工具（以下简称为 Diag）与 Clinic Server 云服务（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
+
+目前，Clinic 诊断服务目前处于 Beta 受邀测试使用阶段。
 
 > **注意：**
 >
-> - Clinic 诊断服务目前处于 Beta 受邀测试使用阶段，不建议在生产场景中直接使用。
 > - Clinic 诊断服务暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
@@ -50,7 +51,7 @@ tiup update diag
 > **注意：**
 >
 > - 对于离线集群，需要离线部署 Diag 工具。具体方法，可以参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
-> - Clinic Diag 工具处于 Beta 阶段，暂未包含在 TiDB 官方下载页面中的 TiDB Server 离线镜像包中。
+> - Clinic Diag 工具**仅**包含在 v5.4.0 及后续版本的 TiDB Server 离线镜像包中。
 
 ## 远程定位集群问题
 
@@ -73,13 +74,13 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag collect <cluster-name> -f="-4h" -t="-2h"
+    tiup diag collect ${cluster-name} -f="-4h" -t="-2h"
     ```
 
     采集参数说明：
 
-    - `-f/--from`：指定采集时间的起始点。如果不指定该参数，默认起始点为当前时间的 2 小时前。如需修改时区，可通过 `-f="12:30 +0900"` 的语法。如果该参数中未指定时区信息，如 `+0800`，则默认时区为 UTC。
-    - `-t/--to`：指定采集时间的结束点。如果不指定该参数，默认结束点为当前时刻。如需修改时区，可通过 `-f="12:30 +0900"` 的语法。如果该参数中未指定时区信息，如 `+0800`，则默认时区为 UTC。
+    - `-f/--from`：指定采集时间的起始点。如果不指定该参数，默认起始点为当前时间的 2 小时前。如需修改时区，可通过 `-f="12:30 +0800"` 的语法。如果没有在该参数中指定时区信息，如 `+0800`，则默认时区为 UTC。
+    - `-t/--to`：指定采集时间的结束点。如果不指定该参数，默认结束点为当前时刻。如需修改时区，可通过 `-f="12:30 +0800"` 的语法。如果没有在该参数中指定时区信息，如 `+0800`，则默认时区为 UTC。
 
     > **提示：**
     >
@@ -128,7 +129,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag collectdm <cluster-name> -f="-4h" -t="-2h"
+    tiup diag collectdm ${cluster-name} -f="-4h" -t="-2h"
     ```
 
     如需了解在上述命令中使用的参数说明或需查看使用 Diag 工具时会使用的其他参数，请参考 [采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
@@ -149,7 +150,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 已收集的数据会根据其数据来源存储于独立的子目录中，这些子目录以机器名和端口号来命名。每个节点的配置、日志等文件的存放位置与在真实服务器中存放的相对路径相同，其中：
 
-- 基础的系统和硬件信息： 位于 `insight.json`
+- 基础的系统和硬件信息：位于 `insight.json`
 - 系统 `/etc/security/limits.conf` 中的内容：位于 `limits.conf`
 - 内核参数列表：位于 `sysctl.conf`
 - 内核日志：位于 `dmesg.log`
@@ -160,7 +161,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 
 ### 第 4 步：上传数据
 
-如需将集群诊断数据提供给 PingCAP 技术支持人员，请将数据上传到 Clinic Server，然后再将数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供安全的诊断数据存储和共享。
+如需将集群诊断数据提供给 PingCAP 技术支持人员，请先将数据上传到 Clinic Server，然后再把数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供安全的诊断数据存储和共享。
 
 根据集群的网络连接情况，你可以选择以下上传方式之一：
 
@@ -174,7 +175,7 @@ Clinic Diag 工具可以快速抓取 TiDB 集群的诊断数据，其中包括�
 {{< copyable "shell-regular" >}}
 
 ```bash
- tiup diag upload <filepath> -u=username -p='password'
+ tiup diag upload ${filepath} -u=username -p='password'
  ```
 
 > **注意：**
@@ -191,7 +192,7 @@ Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/
 Enter Username: username
 Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
 Completed!
-Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
+Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 ```
 
 完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
@@ -209,7 +210,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag package <filepath>
+    tiup diag package ${filepath}
     ```
 
     打包时，Diag 会同时对数据进行加密和压缩。在测试环境中，800 MB 数据压缩后变为 57 MB。示例输出如下：
@@ -226,7 +227,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag upload filepath -u=username -p='password'
+    tiup diag upload ${filepath} -u=username -p='password'
     ```
 
     > **注意：**
@@ -243,7 +244,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
     Enter Username: username
     Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
     Completed!
-    Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-82efa642ce241f81-8694e4a10c5736ce"
+    Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     ```
 
     完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
@@ -261,7 +262,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag collect <cluster-name> --include="config"
+    tiup diag collect ${cluster-name} --include="config"
     ```
 
     配置文件数据较小，采集后会默认存放至当前路径下。在测试环境中，对于一个 18 个节点的集群，配置文件数据量小于 10 KB。
@@ -271,10 +272,10 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag check <subdir-in-output-data>
+    tiup diag check ${subdir-in-output-data}
     ```
 
-    其中，`<sudir-in-output-data>` 为采集数据的存放路径，其中包含 `meta.yaml` 文件。
+    其中，`${subdir-in-output-data}` 为采集数据的存放路径，其中包含 `meta.yaml` 文件。
 
 3. 查看诊断结果。
 
@@ -308,7 +309,8 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=52679daa98304e43-
     If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
     There were **1** abnormal results.
 
-    #### 诊断结果文档的保存路径 Rule Name: tidb-max-days
+    #### 诊断结果文档的保存路径 
+    Rule Name: tidb-max-days
     - RuleID: 100
     - Variation: TidbConfig.log.file.max-days
     - For more information, please visit: https://s.tidb.io/msmo6awg
