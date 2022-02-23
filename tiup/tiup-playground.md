@@ -68,10 +68,10 @@ Flags:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground version
+tiup playground ${version}
 ```
 
-将 version 替换为实际需要的版本号。
+将 ${version} 替换为所需的版本号。
 
 ### 使用每日构建版启动一个 TiDB 集群
 
