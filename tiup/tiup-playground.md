@@ -11,7 +11,7 @@ TiDB 集群是由多个组件构成的分布式系统，一个典型的 TiDB 集
 playground 组件的基本用法：
 
 ```bash
-tiup playground [version] [flags]
+tiup playground ${version} [flags]
 ```
 
 如果直接执行 `tiup playground` 命令，则 TiUP playground 会使用本地安装的 TiDB/TiKV/PD 组件或者安装这些组件的稳定版本，来启动一个由 1 个 TiKV、1 个 TiDB、1 个 PD 和 1 个 TiFlash 实例构成的集群。该命令实际做了以下事情：
