@@ -54,7 +54,7 @@
     - [从 SQL 文件迁移](/migrate-from-mysql-mydumper-files.md)
   - 运维
     - [Ansible 常见运维操作](/maintain-tidb-using-ansible.md)
-    - [备份与恢复]
+    - 备份与恢复
       - [使用 Mydumper 和 TiDB Lightning 进行备份与恢复](/backup-and-restore-using-mydumper-lightning.md)
       - [使用 Dumpling 导出或备份 TiDB 数据](/export-or-backup-using-dumpling.md)
     - 定位异常查询
