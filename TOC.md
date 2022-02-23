@@ -58,10 +58,10 @@
 - Maintain
   - Upgrade
     - [Use TiUP (Recommended)](/upgrade-tidb-using-tiup.md)
-    - [Use TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/upgrade-a-tidb-cluster)
+    - [Use TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
   - Scale
     - [Use TiUP (Recommended)](/scale-tidb-using-tiup.md)
-    - [Use TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
+    - [Use TiDB Operator](https://docs.pingcap.com/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - Backup and Restore
     - Use BR Tool (Recommended)
       - [BR Tool Overview](/br/backup-and-restore-tool.md)
@@ -264,7 +264,7 @@
         - [Use TiUP (Recommended)](/dm/deploy-a-dm-cluster-using-tiup.md)
         - [Use TiUP Offline](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
         - [Use Binary](/dm/deploy-a-dm-cluster-using-binary.md)
-        - [Use Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-tidb-dm)
+        - [Use Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-dm)
       - [Migrate Data Using DM](/dm/migrate-data-using-dm.md)
       - [Test DM Performance](/dm/dm-performance-test.md)
     - Maintain
