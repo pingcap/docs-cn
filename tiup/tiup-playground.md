@@ -12,7 +12,7 @@ TiDB 集群是由多个组件构成的分布式系统，一个典型的 TiDB 集
 playground 组件的基本用法：
 
 ```bash
-tiup playground [version] [flags]
+tiup playground ${version} [flags]
 ```
 
 如果直接执行 `tiup playground` 命令，则 TiUP playground 会使用本地安装的 TiDB/TiKV/PD 组件或者安装这些组件的稳定版本，来启动一个由 1 个 TiKV、1 个 TiDB、1 个 PD 和 1 个 TiFlash 实例构成的集群。该命令实际做了以下事情：
@@ -64,7 +64,25 @@ Flags:
 
 ## 使用示例
 
-### 使用每日构建版启动一个 TiDB 集群
+### 查看可用的 TiDB 版本
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup list tidb
+```
+
+### 启动一个指定版本的 TiDB 集群
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground ${version}
+```
+
+将 `${version}` 替换为所需的版本号。
+
+### 启动一个每日构建版的 TiDB 集群
 
 {{< copyable "shell-regular" >}}
 
@@ -73,16 +91,6 @@ tiup playground nightly
 ```
 
 nightly 就是这个集群的版本号，这里指定为每日构建版本。
-
-### 启动一个带监控的集群
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup playground nightly
-```
-
-该命令会在 9090 端口启动 Prometheus 用于展示集群内部的时序数据。
 
 ### 覆盖 PD 的默认配置
 
