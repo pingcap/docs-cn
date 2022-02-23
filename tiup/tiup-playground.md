@@ -80,7 +80,7 @@ tiup list tidb
 tiup playground ${version}
 ```
 
-将 ${version} 替换为所需的版本号。
+将 `${version}` 替换为所需的版本号。
 
 ### 启动一个每日构建版的 TiDB 集群
 
