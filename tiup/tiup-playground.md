@@ -63,6 +63,16 @@ Flags:
 
 ## 使用示例
 
+### 启动一个指定版本的 TiDB 集群
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground version
+```
+
+将 version 替换为实际需要的版本号。
+
 ### 使用每日构建版启动一个 TiDB 集群
 
 {{< copyable "shell-regular" >}}
@@ -73,15 +83,6 @@ tiup playground nightly
 
 nightly 就是这个集群的版本号，这里指定为每日构建版本。
 
-### 启动一个带监控的集群
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup playground nightly 
-```
-
-该命令会在 9090 端口启动 Prometheus 用于展示集群内部的时序数据。
 
 ### 覆盖 PD 的默认配置
 
