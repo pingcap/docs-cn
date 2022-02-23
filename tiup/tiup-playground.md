@@ -82,7 +82,7 @@ tiup playground ${version}
 
 将 ${version} 替换为所需的版本号。
 
-### 使用每日构建版启动一个 TiDB 集群
+### 启动一个每日构建版的 TiDB 集群
 
 {{< copyable "shell-regular" >}}
 
