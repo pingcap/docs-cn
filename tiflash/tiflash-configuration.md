@@ -55,7 +55,7 @@ delta_index_cache_size = 0
 # path_realtime_mode = false
 
 ## TiFlash 临时文件的存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
-# tmp_path = "/tidb-data/tiflash-9000/tmp"
+tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
 [storage]
