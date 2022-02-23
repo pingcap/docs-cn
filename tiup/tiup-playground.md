@@ -60,9 +60,6 @@ Flags:
 tiup list tidb
 ```
 
-<<<<<<< HEAD
-nightly 就是这个集群的版本号，类似的可以 `tiup playground v5.0.0` 等。
-=======
 ### 启动一个指定版本的 TiDB 集群
 
 {{< copyable "shell-regular" >}}
@@ -72,24 +69,16 @@ tiup playground ${version}
 ```
 
 将 `${version}` 替换为所需的版本号。
->>>>>>> c5b5b7ef9 (Remove version from tiup playground and add two examples (#8462))
 
 ### 启动一个每日构建版的 TiDB 集群
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-tiup playground nightly --monitor
-```
-
-该命令会在 9090 端口启动 prometheus 用于展示集群内部的时序数据。
-=======
 tiup playground nightly
 ```
 
 nightly 就是这个集群的版本号，这里指定为每日构建版本。
->>>>>>> c5b5b7ef9 (Remove version from tiup playground and add two examples (#8462))
 
 ### 覆盖 PD 的默认配置
 
@@ -118,11 +107,7 @@ tiup playground --db.binpath /xx/tidb-server
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-tiup playground v3.0.10 --db 3 --pd 3 --kv 3
-=======
 tiup playground --db 3 --pd 3 --kv 3
->>>>>>> c5b5b7ef9 (Remove version from tiup playground and add two examples (#8462))
 ```
 
 ## 快速连接到由 playground 启动的 TiDB 集群
