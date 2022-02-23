@@ -18,7 +18,7 @@ DM 支持自动识别和优化上游数据库的 online schema change 变更操�
 - pt-osc 默认临时表命名规则
     - ghost table : _{origin_table}_new
     - trash table : _{origin_table}_old
-    - real table : 执行的 online schema change 的 origin table
+    - real table : 执行 online schema change 的 origin table
 
 自 v2.0.7 起 DM 实验性支持修改过的 online schema change 工具。在 DM 任务配置中设置 `online-ddl=true` 后，配合`shadow-table-rules`和`trash-table-rules`即可支持通过正则表达式来匹配修改过的临时表。
 
