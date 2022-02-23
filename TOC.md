@@ -253,7 +253,7 @@
       - 性能调优
         - [性能数据](/dm/dm-benchmark-v5.4.0.md)
         - [配置调优](/dm/dm-tune-configuration.md)
-        - [测试 DM 性能](/dm/dm-performance-test.md)
+        - [如何进行压力测试](/dm/dm-performance-test.md)
       - 数据源
         - [变更同步的数据源地址](/dm/usage-scenario-master-slave-switch.md)
       - 迁移任务
