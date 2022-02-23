@@ -118,11 +118,7 @@ tiup playground --db.binpath /xx/tidb-server
 {{< copyable "shell-regular" >}}
 
 ```shell
-<<<<<<< HEAD
-tiup playground v5.3.0 --db 3 --pd 3 --kv 3
-=======
 tiup playground --db 3 --pd 3 --kv 3
->>>>>>> c5b5b7ef9 (Remove version from tiup playground and add two examples (#8462))
 ```
 
 ## 快速连接到由 playground 启动的 TiDB 集群
