@@ -63,6 +63,14 @@ Flags:
 
 ## 使用示例
 
+### 查看可用的 TiDB 版本
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup list tidb
+```
+
 ### 启动一个指定版本的 TiDB 集群
 
 {{< copyable "shell-regular" >}}
