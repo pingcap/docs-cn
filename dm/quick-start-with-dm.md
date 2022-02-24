@@ -21,13 +21,13 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 2. 生成 DM 集群最小拓扑文件。
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```
-tiup dm template
-```
+    ```
+    tiup dm template
+    ```
 
-1. 复制输出的配置信息，修改 IP 地址后保存为`topology.yaml`文件，使用`tiup`命令部署。
+3. 复制输出的配置信息，修改 IP 地址后保存为`topology.yaml`文件，使用`tiup`命令部署。
 
     {{< copyable "shell-regular" >}}
 
@@ -37,7 +37,7 @@ tiup dm template
 
 ## 准备数据源
 
-可以使用一个或多个 MySQL 实例作为上游数据源。为每一个数据源编写如下配置文件，并增加至 DM 集群
+可以使用一个或多个 MySQL 实例作为上游数据源。为每一个数据源编写如下配置文件，并增加至 DM 集群。
 
 {{< copyable "shell-regular" >}}
 
@@ -84,7 +84,12 @@ EOF
 docker run --name mysql-01 -v /tmp/mysqltest:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d -p 3308:3306  mysql:5.7
 ```
 
-稍等 1 分钟待 MySQL 启动后，即可连接该实例。仅适用于体验数据迁移过程，并不能用于生产环境和压力测试。
+稍等 1 分钟待 MySQL 启动后，即可连接该实例。
+
+> **注意：**
+>
+> - 该命令仅适用于体验数据迁移过程，不能用于生产环境和压力测试。
+
 
 {{< copyable "shell-regular" >}}
 

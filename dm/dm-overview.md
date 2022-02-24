@@ -57,7 +57,7 @@ tiup install dm dmctl
 
 ## Contributing
 
-欢迎参与 DM 开源项目并万分感谢您的贡献，可以在[CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/master/dm/CONTRIBUTING.md)查看更多信息。
+欢迎参与 DM 开源项目并万分感谢您的贡献，可以查看 [CONTRIBUTING.md](https://github.com/pingcap/tiflow/blob/master/dm/CONTRIBUTING.md) 了解更多信息。
 
 ## 社区技术支持
 
@@ -73,7 +73,6 @@ DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/bl
 
 ## 版本变更说明
 
-本文档中的说明基于 DM 的最新稳定版本 v5.4。
 
 在 v5.4 之前，DM 工具的文档独立于 TiDB 文档。要访问这些早期版本的 DM 文档，请点击以下链接：
 
