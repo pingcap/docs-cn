@@ -219,7 +219,7 @@
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
       - [使用 TiUP 联网部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
       - [使用 TiUP 离线部署](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
-      - [使用 Binary](/dm/deploy-a-dm-cluster-using-binary.md)
+      - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
         - [数据源操作](/dm/dm-manage-source.md)
@@ -235,7 +235,6 @@
             - [暂停任务](/dm/dm-pause-task.md)
             - [恢复任务](/dm/dm-resume-task.md)
             - [停止任务](/dm/dm-stop-task.md)
-            - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
@@ -254,11 +253,12 @@
         - [性能数据](/dm/dm-benchmark-v5.4.0.md)
         - [配置调优](/dm/dm-tune-configuration.md)
         - [如何进行压力测试](/dm/dm-performance-test.md)
-      - 数据源
+      - 数据源管理
         - [变更同步的数据源地址](/dm/usage-scenario-master-slave-switch.md)
-      - 迁移任务
+      - 任务管理
         - [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)
         - [管理迁移表的表结构](/dm/dm-manage-schema.md)
+      - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
