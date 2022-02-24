@@ -35,7 +35,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 - regionID：Region 编号
 - regionEpoch：Region 版本号
 - keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
-- cf：RocksDB 的 ColumnFamily（默认为 `default` 或 `write`）
+- cf：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
 
 ### SST 文件存储格式
 

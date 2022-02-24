@@ -69,7 +69,7 @@ br restore db \
     --db "test" \
     --ratelimit 128 \
     --storage "s3://backup-data/db-test/2022-01-30/" \
-    --log-file restorefull.log
+    --log-file restore_db.log
 ```
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名字。其余选项的含义与[恢复快照备份数据](#恢复快照备份数据)相同。
@@ -93,7 +93,7 @@ br restore table \
     --table "usertable" \
     --ratelimit 128 \
     --storage "s3://backup-data/table-db-usertable/2022-01-30/" \
-    --log-file restorefull.log
+    --log-file restore_table.log
 ```
 
 以上命令中 `--table` 选项指定了需要恢复的表名。其余选项的含义与[恢复单个数据库](#恢复单个数据库的数据)相同。
