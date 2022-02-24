@@ -878,7 +878,7 @@ Encoding 格式示例：
 
 ### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询从某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
 
 显示从 a 开始的所有 Region 信息，数量上限为 16：
 
