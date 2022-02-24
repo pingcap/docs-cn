@@ -76,7 +76,7 @@ summary: 了解 TiDB 的基本功能。
 | [通过系统变量 tidb_snapshot 读取历史数据](/read-historical-data.md)                                         | Y            | Y            | Y            | Y            | Y            |
 | [Optimizer hints](/optimizer-hints.md)                                                                   | Y            | Y            | Y            | Y            | Y            |
 | [MPP 执行引擎](/explain-mpp.md)                                                                   | Y            | Y            | Y            | Y            | N            |
-| [Index Merge Join](/explain-index-merge.md)                                                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [索引合并](/explain-index-merge.md)                                                              | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 [Placement Rules in SQL](/placement-rules-in-sql.md)                                             | 实验特性 |   N  |   N   |  N  |   N  |
 =======
 | 高级 SQL 功能                                                                                | 5.4       | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
