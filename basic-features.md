@@ -76,7 +76,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [Read historical data (tidb_snapshot)](/read-historical-data.md) | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Optimizer hints](/optimizer-hints.md)                       | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [MPP Exection Engine](/explain-mpp.md)                       | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
-| [Index Merge Join](/explain-index-merge.md)                  | Y            | Experimental | Experimental | Experimental | Experimental | Experimental |
+| [Index Merge](/explain-index-merge.md)                  | Y            | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Placement Rules in SQL](/placement-rules-in-sql.md)         | Experimental | Experimental |      N       |      N       |      N       |      N       |
 
 ## Data definition language (DDL)
