@@ -76,7 +76,7 @@ Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数
 | 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 所有的 Metrics 数据 | `{metric_name}.json` | `--include=monitor` |
-| Alert 配置 | `alerts.json` | `--include=monitor` |
+| Alert 列表 | `alerts.json` | `--include=monitor` |
 
 ### TiDB 系统变量
 
@@ -127,7 +127,7 @@ Clinic Server 位于 PingCAP 内网（中国境内）。如果你将采集的数
 | 诊断数据类型 | 输出文件 | Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 所有的 Metrics 数据 | `{metric_name}.json` | `--include=monitor` |
-| Alert 配置 | `alerts.json` | `--include=monitor` |
+| Alert 列表 | `alerts.json` | `--include=monitor` |
 
 ### 集群系统信息
 
