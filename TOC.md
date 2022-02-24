@@ -196,7 +196,7 @@
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - 前置需求
       - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md)
       - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
     - 主要功能
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
@@ -216,7 +216,7 @@
     - 关于 TiDB Data Migration
       - [TiDB Data Migration 简介](/dm/dm-overview.md)
       - 基本功能
-        - [Table routing](/dm/dm-key-features.md#table-routing)
+        - [Table routing](/dm/dm-key-features.md)
         - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
         - [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)
       - 高级功能
