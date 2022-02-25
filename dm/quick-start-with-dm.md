@@ -37,7 +37,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
 ## 准备数据源
 
-可以使用一个或多个 MySQL 实例作为上游数据源。为每一个数据源编写如下配置文件，并增加至 DM 集群。
+可以使用一个或多个 MySQL 实例作为上游数据源。为每一个数据源编写如下配置文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -53,6 +53,7 @@ from:
 
 {{< copyable "shell-regular" >}}
 
+使用如下命令将该 source 增加至 DM 集群：
 ```bash
 tiup dmctl --master-addr=127.0.0.1:8261 operate-source create mysql-01.yaml # --master-addr 填写 master_servers 其中之一。
 ```
@@ -81,7 +82,7 @@ EOF
 {{< copyable "shell-regular" >}}
 
 ```shell
-docker run --name mysql-01 -v /tmp/mysqltest:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d -p 3308:3306  mysql:5.7
+docker run --name mysql-01 -v /tmp/mysqltest:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d -p 3306:3306  mysql:5.7
 ```
 
 稍等 1 分钟待 MySQL 启动后，即可连接该实例。
@@ -94,7 +95,7 @@ docker run --name mysql-01 -v /tmp/mysqltest:/etc/mysql/conf.d -e MYSQL_ROOT_PAS
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql -uroot -pmy-secret-pw -h 127.0.0.1 -P 3308
+mysql -uroot -p -h 127.0.0.1 -P 3306
 ```
 
 ## 准备下游数据库
