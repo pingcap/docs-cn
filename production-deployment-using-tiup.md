@@ -214,6 +214,24 @@ source /home/tidb/.bash_profile
 tiup cluster template > topology.yaml
 ```
 
+针对两种常用的部署场景，也可以通过以下命令生成建议的拓扑模板：
+
+- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md) 。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster template --full > topology.yaml
+    ```
+    
+- 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster template --multi-dc > topology.yaml
+    ```
+
 执行 vi topology.yaml，查看配置文件的内容：
 
 {{< copyable "shell-regular" >}}
@@ -257,24 +275,6 @@ alertmanager_servers:
 | 单台机器，多个实例 | [混合部署拓扑架构](/hybrid-deployment-topology.md) | [简单混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/simple-multi-instance.yaml)<br/>[详细混部配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-multi-instance.yaml) | 也适用于单机多实例需要额外增加目录、端口、资源配比、label 等配置的场景。 |
 | 跨机房部署 TiDB 集群 | [跨机房部署拓扑架构](/geo-distributed-deployment-topology.md) | [跨机房配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/geo-redundancy-deployment.yaml) | 以典型的两地三中心架构为例，介绍跨机房部署架构，以及需要注意的关键设置。 |
 
-针对两种常用的部署场景，可以通过以下命令生成建议拓扑模板：
-
-- 混合部署场景：单台机器部署多个实例，详情参见[混合部署拓扑架构](/hybrid-deployment-topology.md) 。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup cluster template --full > topology.yaml
-    ```
-    
-- 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup cluster template --multi-dc > topology.yaml
-    ```
-
 > **注意：**
 >
 > - 对于需要全局生效的参数，请在配置文件中 `server_configs` 的对应组件下配置。
@@ -284,7 +284,6 @@ alertmanager_servers:
 > - 配置的层次结构使用 `.` 表示。如：`log.slow-threshold`。更多格式参考 [TiUP 配置参数模版](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml)。
 >
 > - 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
->
 
 更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)、[PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
 
