@@ -414,12 +414,12 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 
 > **警告：**
 >
-> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现非预期的状况，已知的异常如下：
+> 系统表（例如 `mysql.tidb`）可以通过 BR 备份，但系统表恢复有限制，如下系统表不能通过 BR 恢复，即便是使用了 `-filter` 设置：
 >
-> - 统计信息表（`mysql.stat_*`）无法被恢复。
-> - 系统变量表（`mysql.tidb`，`mysql.global_variables`）无法被恢复。
-> - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）无法被恢复。
-> - GC 数据无法被恢复。
+> - 统计信息表（`mysql.stat_*`）
+> - 系统变量表（`mysql.tidb`，`mysql.global_variables`）
+> - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）
+> - [其他系统表](https://github.com/pingcap/tidb/blob/v5.3.0/br/pkg/restore/systable_restore.go#L31)
 > 
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
