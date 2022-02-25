@@ -206,7 +206,7 @@ source /home/tidb/.bash_profile
 
 ## 第 3 步：初始化集群拓扑文件
 
-根据不同的集群拓扑，编辑如下命令生成的集群初始化配置文件。
+执行如下命令，生成集群初始化配置文件：
 
 {{< copyable "shell-regular" >}}
 
