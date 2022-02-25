@@ -253,6 +253,7 @@
         - [性能数据](/dm/dm-benchmark-v5.4.0.md)
         - [配置调优](/dm/dm-tune-configuration.md)
         - [如何进行压力测试](/dm/dm-performance-test.md)
+        - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
       - 数据源管理
         - [变更同步的数据源地址](/dm/usage-scenario-master-slave-switch.md)
       - 任务管理
@@ -284,10 +285,9 @@
         - [术语表](/dm/dm-glossary.md)
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
-      - 故障解决
+      - 异常解决
         - [常见问题](/dm/dm-faq.md)
-        - [故障及处理方法](/dm/dm-error-handling.md)
-        - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
+        - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
