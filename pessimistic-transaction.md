@@ -47,20 +47,20 @@ BEGIN /*T! PESSIMISTIC */;
     - 快照读是一种不加锁读，读的是该事务开始时刻前已提交的版本。`SELECT` 语句中的读是快照读。
     - 当前读是一种加锁读，读取的是最新已提交的版本，`UPDATE`、`DELETE` 、`INSERT`、`SELECT FOR UPDATE` 语句中的读是当前读。
 
-通过下面的例子对快照读和当前读进行详细说明：
+    以下示例是对快照读和当前读的详细说明：
 
-| session 1 | session 2 | session 3 |
-| :----| :---- | :---- |
-| CREATE TABLE t (a INT); |  |  |
-| INSERT INTO T VALUES(1); |  |  |
-| BEGIN PESSIMISTIC; |  |
-| UPDATE t SET a = a + 1; |  |  |
-|  | BEGIN PESSIMISTIC; |  |
-|  | SELECT * FROM t;  -- 使用快照读，读取本事务开始前已提交的版本，返回(a=1) |  |
-|  |  | BEGIN PESSIMISTIC;
-|  |  | SELECT * FROM t FOR UPDATE; -- 使用当前读，等锁 |
-| COMMIT; -- 释放锁，session 3 的 SELECT FOR UPDATE 操作获得锁，使用当前读，读到最新已提交的版本 (a=2) |  |  |
-|  | SELECT * FROM t; -- 使用快照读，读取本事务开始前已提交的版本，返回(a=1) |  |
+    | session 1 | session 2 | session 3 |
+    | :----| :---- | :---- |
+    | CREATE TABLE t (a INT); |  |  |
+    | INSERT INTO T VALUES(1); |  |  |
+    | BEGIN PESSIMISTIC; |  |
+    | UPDATE t SET a = a + 1; |  |  |
+    |  | BEGIN PESSIMISTIC; |  |
+    |  | SELECT * FROM t;  -- 使用快照读，读取本事务开始前已提交的版本，返回(a=1) |  |
+    |  |  | BEGIN PESSIMISTIC;
+    |  |  | SELECT * FROM t FOR UPDATE; -- 使用当前读，等锁 |
+    | COMMIT; -- 释放锁，session 3 的 SELECT FOR UPDATE 操作获得锁，使用当前读，读到最新已提交的版本 (a=2) |  |  |
+    |  | SELECT * FROM t; -- 使用快照读，读取本事务开始前已提交的版本，返回(a=1) |  |
 
 - 悲观锁会在事务提交或回滚时释放。其他尝试修改这一行的写事务会被阻塞，等待悲观锁的释放。其他尝试*读取*这一行的事务不会被阻塞，因为 TiDB 采用多版本并发控制机制 (MVCC)。
 
