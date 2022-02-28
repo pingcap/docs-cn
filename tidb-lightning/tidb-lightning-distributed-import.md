@@ -194,6 +194,6 @@ type = "sql"
 
 3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个失败的节点上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints#--checkpoint-error-destroy)。此命令会删除下游导入失败表中已导入的数据，因此，应在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，可以配置 filters 参数只导入报错失败的表。
 
-### 导入过程中报错 "target table is calculating checksum, please wait unit the checksum is finished and try again"
+### 导入过程中报错 "Target table is calculating checksum. Please wait until the checksum is finished and try again"
 
 在部分并行导入场景，如果表比较多或者一些表的数据量比较小，可能会出现当一个或多个任务开始处理某个表的时候，此表对应的其他任务已经完成，并开始数据一致性校验。此时，由于数据一致性校验不支持写入其他数据，对应的任务会返回 "target table is calculating checksum, please wait unit the checksum is finished and try again" 错误。等校验任务完成，重启这些失败的任务，报错会消失，数据的正确性也不会受影响。
