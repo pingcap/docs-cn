@@ -185,14 +185,14 @@ type = "sql"
 
 ### 部分 TiDB Lightning 节点异常终止
 
-在并行导入过程中，如果一个或多个 TiDB Lightning 节点异常终止，需要首先根据日志中的报错明确异常退出的原因，然后根据错误类型做不不同处理：
+在并行导入过程中，如果一个或多个 TiDB Lightning 节点异常终止，需要首先根据日志中的报错明确异常退出的原因，然后根据错误类型做不同处理：
 
-1. 如果是非异常型退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
+1. 如果是正常退出(如手动 Kill 等)，或内存溢出被操作系统终止等，可以在适当调整配置后直接重启 TiDB Lightning，无须任何其他操作。
 
-2. 如果是不影响数据正确性的报错，如网络超时等错误，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后直接重启这些异常的节点直接从断点位置继续导入即可，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints#--checkpoint-error-ignore)
+2. 如果是不影响数据正确性的报错，如网络超时，可以在每一个失败的节点上使用 tidb-lightning-ctl 工具清除断点续传源数据中记录的错误，然后重启这些异常的节点，从断点位置继续导入，详见 [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints#--checkpoint-error-ignore)。
 
-3. 如果是影响数据正确性的报错，如 Checksum mismatch, 源文件中有非法的数据等导致的报错，需要在每一个失败的节点上使用 tidb-lightning-ctl 工具清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints#--checkpoint-error-destroy)。由于此命令会删除掉下游导入失败表中的所有已导入的数据，因此在所有 TiDB Lightning 节点上面（包括任务正常结束的）重新配置和导入失败的表对应的数据，此时可以配置 filters 参数只导入报错失败相关的表即可。
+3. 如果是影响数据正确性的报错，如 checksum mismatched，表示源文件中有非法的数据，则需要在每一个失败的节点上使用 tidb-lightning-ctl 工具，清除失败的表中已导入的数据及断点续传相关的源数据，详见 [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints#--checkpoint-error-destroy)。此命令会删除下游导入失败表中已导入的数据，因此，应在所有 TiDB Lightning 节点（包括任务正常结束的）重新配置和导入失败的表的数据，可以配置 filters 参数只导入报错失败的表。
 
 ### 导入过程中报错 "target table is calculating checksum, please wait unit the checksum is finished and try again"
 
-在部分并行导入的场景，如果的表比较多或者一些需要并行导入的表的数据量比较小，可能会出现当一个或多个任务开始处理某个表的时候，此表对应的其他任务已经完成，并正在校验数据的一致性，此时，由于校验数据一致性的时候，不支持其他数据的写入，因此对应的任务会返回 "target table is calculating checksum, please wait unit the checksum is finished and try again" 错误。遇到这个错误时，可以等当前正在执行校验的任务完成校验后，再启动这些失败的任务即可，不会影响数据的正确性。
+在部分并行导入场景，如果表比较多或者一些表的数据量比较小，可能会出现当一个或多个任务开始处理某个表的时候，此表对应的其他任务已经完成，并开始数据一致性校验。此时，由于数据一致性校验不支持写入其他数据，对应的任务会返回 "target table is calculating checksum, please wait unit the checksum is finished and try again" 错误。等校验任务完成，重启这些失败的任务，报错会消失，数据的正确性也不会受影响。
