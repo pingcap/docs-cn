@@ -54,7 +54,7 @@ delta_index_cache_size = 0
 ## 默认为 false。如果设为 true，且 path 配置了多个目录，表示在第一个目录存放最新数据，在其他目录存放较旧的数据。
 # path_realtime_mode = false
 
-## TiFlash 临时文件的存放路径。默认使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
+## TiFlash 临时文件的存放路径。通常使用 [`path` 或者 `storage.latest.dir` 的第一个目录] + "/tmp"
 tmp_path = "/tidb-data/tiflash-9000/tmp"
 
 ## 存储路径相关配置，从 v4.0.9 开始生效
