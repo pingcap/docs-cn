@@ -196,7 +196,7 @@
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - 前置需求
       - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md)
       - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
     - 主要功能
       - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
@@ -684,6 +684,7 @@
     - [5.2.1](/releases/release-5.2.1.md)
     - [5.2.0](/releases/release-5.2.0.md)
   - v5.1
+    - [5.1.4](/releases/release-5.1.4.md)
     - [5.1.3](/releases/release-5.1.3.md)
     - [5.1.2](/releases/release-5.1.2.md)
     - [5.1.1](/releases/release-5.1.1.md)
