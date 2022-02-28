@@ -31,31 +31,36 @@ cdc cli changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0
 
 至此即完成了使用 TiCDC 同步 TiDB 事件变更记录同步到 Kafka 的整个过程。
 
+## 配置 Kafka changefeed 相关参数
 
-================================================
+用户可以在 `sink-uri` 中指定 Kafka changefeed 相关参数，具体内容如下表所示:
 
-URI 中可配置的的参数如下：
-
-| 参数               | 解析                                                         |
-| :------------------ | :------------------------------------------------------------ |
-| `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
-| `9092`               | 下游 Kafka 的连接端口                                          |
-| `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
-| `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
-| `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
-| `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
-| `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`） |
+| 参数                     | 解析                                                                                                                    |
+| :---------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `127.0.0.1:9092`        | 下游 Kafka 对外提供服务的 IP:PORT 地址。支持配置多个 Kafka broker 地址                                                        |
+| `topic-name`            | Kafka Topic 名字，事件变更数据将会被写入该 Topic                                                                            |
+| `kafka-version`         | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
+| `kafka-client-id`       | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）                                        |
+| `partition-num`         | 下游 Kafka partition 数量（默认值 `3`，不能大于实际的 Topic partition 数量，否则创建同步任务会失败）                              |
+| `max-message-bytes`     | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。  |
+| `replication-factor`    | Kafka 消息保存副本数（可选，默认值 `1`）                                                                                   |
+| `protocol`              | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell`                                  |
+| `auto-create-topic`     | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）                                 |
 | `enable-tidb-extension` | 当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段（可选，默认值 `false`）|
-| `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
-| `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
-| `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
-| `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
-| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
-| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `max-batch-size`        |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
+| `ca`                    | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
+| `cert`                  | 连接下游 Kafka 实例所需的证书文件路径（可选） |
+| `key`                   | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+| `sasl-user`             | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
+| `sasl-password`         | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
+| `sasl-mechanism`        | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+
+### 参数详解
+
+* `partition-num`
+* `replication-factor`
+* `max-message-bytes`
+* `max-batch-size`
 
 最佳实践：
 
@@ -86,13 +91,9 @@ URI 中可配置的的参数如下：
 
 集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
-
-
 * kafka producer 说明，以及相关配置项
 * changefeed 创建过程说明，sink-uri 示例
 * 介绍常用配置 filter / dispatcher
-
-
 
 ## Protocol
 
