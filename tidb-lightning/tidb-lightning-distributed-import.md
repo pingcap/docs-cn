@@ -20,7 +20,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 > 
 > 2. 并行导入一般用于 local-backend 模式。
 >
-> 3. 严禁使用多个 Lightning 进程向同一目标导入时混用不同的 backend，例如同时使用 local-backend 和 tidb-backend 导入同一 TiDB 集群是不允许的。
+> 3. 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群.
 
 下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
 
