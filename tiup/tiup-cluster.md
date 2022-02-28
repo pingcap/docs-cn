@@ -110,12 +110,12 @@ tidb_servers:
 ...
 ```
 
-假如我们想要使用 TiDB 的 v5.2.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v5.2.3 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy -p prod-cluster v5.2.0 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v5.2.3 /tmp/topology.yaml
 ```
 
 执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码（-p 表示使用密码）：
@@ -123,7 +123,7 @@ tiup cluster deploy -p prod-cluster v5.2.0 /tmp/topology.yaml
 ```bash
 Please confirm your topology:
 TiDB Cluster: prod-cluster
-TiDB Version: v5.2.0
+TiDB Version: v5.2.3
 Type        Host          Ports        Directories
 ----        ----          -----        -----------
 pd          172.16.5.134  2379/2380    deploy/pd-2379,data/pd-2379
@@ -163,7 +163,7 @@ tiup cluster list
 Starting /root/.tiup/components/cluster/v1.5.5/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
-prod-cluster  tidb  v5.2.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
+prod-cluster  tidb  v5.2.3    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
 ```
 
 ## 启动集群
@@ -189,7 +189,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.5.5/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v5.2.0
+TiDB Version: v5.2.3
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
@@ -254,7 +254,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.5.5/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v5.2.0
+TiDB Version: v5.2.3
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
@@ -351,12 +351,12 @@ Global Flags:
   -y, --yes               跳过所有的确认步骤
 ```
 
-例如，把集群升级到 v5.2.0 的命令为：
+例如，把集群升级到 v5.2.3 的命令为：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-tiup cluster upgrade tidb-test v5.2.0
+tiup cluster upgrade tidb-test v5.2.3
 ```
 
 ## 更新配置
@@ -536,11 +536,11 @@ tiup cluster audit
 Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.5.5/cluster audit
 ID      Time                       Command
 --      ----                       -------
-4BLhr0  2020-04-29T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.0 /tmp/topology.yaml
-4BKWjF  2020-04-28T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.0 /tmp/topology.yaml
-4BKVwH  2020-04-28T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.0 /tmp/topology.yaml
+4BLhr0  2020-04-29T13:25:09+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.3 /tmp/topology.yaml
+4BKWjF  2020-04-28T23:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.3 /tmp/topology.yaml
+4BKVwH  2020-04-28T23:02:08+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.3 /tmp/topology.yaml
 4BKKH1  2020-04-28T16:39:04+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster destroy test
-4BKKDx  2020-04-28T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.0 /tmp/topology.yaml
+4BKKDx  2020-04-28T16:36:57+08:00  /home/tidb/.tiup/components/cluster/v1.5.5/cluster deploy test v5.2.3 /tmp/topology.yaml
 ```
 
 第一列为 audit-id，如果想看某个命令的执行日志，则传入这个 audit-id：
