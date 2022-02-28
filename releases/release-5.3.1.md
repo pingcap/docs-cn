@@ -10,28 +10,154 @@ TiDB 版本：5.3.1
 
 ## 兼容性更改
 
+## 功能增强
+
 TiDB
+
+    - 整理用户登录模式匹配的逻辑，增强 MySQL 兼容 [#30450](https://github.com/pingcap/tidb/pull/30450)
 
 TiKV
 
+    - 通过减少需要 resolve 锁的 region 数来减少 CDC 恢复时间。 [#11993](https://github.com/tikv/tikv/issues/11993)
+    - 通过调整  raftlog GC 写入的 batch 大小来加速 GC。[#11404](https://github.com/tikv/tikv/issues/11404)
+
+    (dup) - Update the proc filesystem (procfs) to v0.12.0 [#11702](https://github.com/tikv/tikv/issues/11702)
+
 PD
 
-TiDB Dashboard
-
-TiFlash
+    - Improve DR_STATE file content format [#4341](https://github.com/tikv/pd/issues/4341)
 
 Tools
 
-   Backup & Restore (BR)
-
    TiCDC
 
-   Dumpling
+      - 暴露 Kafka Producer 配置参数以使之在 cdc 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
+      - Add pre clean up process when s3 enable [#3878](https://github.com/pingcap/tiflow/issues/3878)
+      - TiCDC 客户端现在可以在未指定证书名字的情况下工作了 [#3882](https://github.com/pingcap/tiflow/pull/3882)
+      - 为 CDC 每个表维护单独的 Checkpoint，避免 Checkpoint 被意外推进 [#4083](https://github.com/pingcap/tiflow/pull/4083)
 
-   TiDB Binlog
+      (dup) - Add the exponential backoff mechanism for restarting a changefeed. [#3329](https://github.com/pingcap/tiflow/issues/3329)
+      (dup) - Change the default value of Kafka Sink `partition-num` to 3 so that TiCDC distributes messages across Kafka partitions more evenly [#3337](https://github.com/pingcap/tiflow/issues/3337)
+      (dup) - Reduce the count of "EventFeed retry rate limited" logs [#4006](https://github.com/pingcap/tiflow/issues/4006)
+      (dup) - Set the default value of `max-message-bytes` to 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
+      (dup) - Add more Promethous and Grafana monitoring metrics and alerts, including `no owner alert`, `mounter row`, `table sink total row`, and `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
+      (dup) - Reduce the time for the KV client to recover when a TiKV store is down [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
-   TiDB Lightning
+    Lightning
 
-## 功能增强
+        - Make tidb-lightning pre-check output message clearer [#30395](https://github.com/pingcap/tiflow/issues/30395)
 
 ## Bug 修复
+
+TiDB
+
+    - 修复 date_format 对 '\n' 处理与 MySQL 不兼容的问题 [#32503](https://github.com/pingcap/tidb/pull/32503)
+    - 修复 `alter column set default` 错误修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
+    - 修复打开 tidb_restricted_read_only 后 tidb_super_read_only 没有自动打开的问题 [#31745](https://github.com/pingcap/tidb/issues/31745)
+    - 修复 greatest/least 表达式 collation 处理错误的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
+    - 修复 mpp task list 为空时 TiDB 报错的问题 [#31636](https://github.com/pingcap/tidb/issues/31636)
+    - 修复 innerWorker panic 导致的 index join 结果错误的问题 [#31494](https://github.com/pingcap/tidb/issues/31494)
+    - 修复将 float 列改为 double 后结果错误问题 [#31372](https://github.com/pingcap/tidb/issues/31372)
+    - 修复 IndexLookUpJoin 以及 Union 算子并发启动 worker 导致事务报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
+    - 修复针对 Order By 的优化导致的结果错误问题 [#30271](https://github.com/pingcap/tidb/issues/30271)
+    - 修复慢查询日志 `MaxDays` 以及 `MaxBackups` 不生效的问题 [#25716](https://github.com/pingcap/tidb/issues/25716)
+
+    (dup) - 修复 `INSERT ... SELECT ... ON DUPLICATE KEY UPDATE` panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
+
+TiKV
+
+    - 修复 peer 在 Applying 状态下时快照文件被删除造成的 panic [#11746](https://github.com/tikv/tikv/issues/11746)
+    - 修复 `level0_slowdown_trigger` 被显式设置，且流量控制开启时的 QPS 回退。 [#11424](https://github.com/tikv/tikv/issues/11424)
+    - 修复 cgroup controller 没有被挂载造成的 panic。[#11569](https://github.com/tikv/tikv/issues/11569)
+    - 修复 TiKV 停止后 resolved ts 的延迟增加。 [#11352](https://github.com/tikv/tikv/pull/11352)
+
+    (dup) - Fix a bug that TiKV cannot delete a range of data (`unsafe_destroy_range` cannot be executed) when the GC worker is busy [#11903](https://github.com/tikv/tikv/issues/11903)
+    (dup) - Fix the issue that destroying a peer might cause high latency [#10210](https://github.com/tikv/tikv/issues/10210)
+    (dup) - Fix a bug that the `any_value` function returns a wrong result when regions are empty [#11735](https://github.com/tikv/tikv/issues/11735)
+    (dup) - Fix the issue that deleting an uninitialized replica might cause an old replica to be recreated [#10533](https://github.com/tikv/tikv/issues/10533)
+    (dup) - Fix the metadata corruption issue when `Prepare Merge` is triggered after a new election is finished but the isolated peer is not informed [#11526](https://github.com/tikv/tikv/issues/11526)
+    (dup) - Fix the deadlock issue that happens occasionally when coroutines run too fast [#11549](https://github.com/tikv/tikv/issues/11549)
+    (dup) - Fix the issue that a down TiKV node causes the resolved timestamp to lag [#11351](https://github.com/tikv/tikv/issues/11351)
+    (dup) - Fix the issue that batch messages are too large in Raft client implementation [#9714](https://github.com/tikv/tikv/issues/9714)
+    (dup) - Fix a panic issue that occurs when Region merge, ConfChange, and Snapshot happen at the same time in extreme conditions [#11475](https://github.com/tikv/tikv/issues/11475)
+    (dup) - Fix the issue that TiKV cannot detect the memory lock when TiKV perform a reverse table scan [#11440](https://github.com/tikv/tikv/issues/11440)
+    (dup) - Fix the issue that RocksDB flush or compaction causes panic when the disk capacity is full [#11224](https://github.com/tikv/tikv/issues/11224)
+    (dup) - Fix a bug that tikv-ctl cannot return the correct Region-related information [#11393](https://github.com/tikv/tikv/issues/11393)
+    (dup) - Fix the issue that the average latency of the by-instance gRPC requests is inaccurate in TiKV metrics [#11299](https://github.com/tikv/tikv/issues/11299)
+
+TiFlash
+
+    - 修复 cast(arg as decimal(x,y)) 在入参 arg 大于 decimal(x,y) 表示范围时，计算结果出错的问题
+    - 修复启用 max_memory_usage 和 max_memory_usage_for_all_queries 配置项时，TiFlash 崩溃的问题
+    - 修复 cast(string ad real) 在部分场景下计算结果出错的问题
+    - 修复 cast(string ad decimal) 在部分场景下计算结果出错的问题
+    - 修复在修改主键列类型为一个范围更大的整型类型时，数据索引不一致的问题
+    - 修复 in 表达式在形如 (arg0, arg1) in (x,y) 的多个参数的情况下计算结果出错的问题
+    - 修复 MPP 查询被 kill 时，TiFlash 崩溃的问题
+    - 修复 str_to_date 函数在入参以 0 开头时计算结果出错的问题
+    - 修复当查询的过滤条件形如 where <string> 时，计算结果出错的问题
+    - 修复 cast(string as datetime) 在入参形如 %Y-%m-%d\n%H:%i:%s 时，查询结果出错的问题
+
+PD
+
+    - 修复特定情况的调度会带有不需要的 JointConsensus 步骤的问题 [#4362](https://github.com/tikv/pd/issues/4362)
+    - 修复对 Voter 直接进行降级的调度无法执行的问题 [#4444](https://github.com/tikv/pd/issues/4444)
+    - 修复更新副本同步模式配置时的数据竞争问题 [#4325](https://github.com/tikv/pd/issues/4325)
+    - 修复特定情况下读锁不释放的问题 [#4354](https://github.com/tikv/pd/issues/4354)
+
+    (dup) - Fix the issue that the cold hotspot data cannot be deleted from the hotspot statistics [#4390](https://github.com/tikv/pd/issues/4390)
+
+Tools
+
+    Backup & Restore (BR)
+
+        - Fix a bug that caused region unbalanced after restoring. [#31034](https://github.com/pingcap/tiflow/issues/31034)
+
+    TiCDC
+
+        - 修复了 varchar 类型值长度过长时的 "Column length too big" 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
+        - 修复了 CDC 程序在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
+        - 修复了 UPDATE 预计在安全模式下导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
+        - 修复了监控面板中 cached region 项出现负值的问题 [#4290](https://github.com/pingcap/tiflow/pull/4290)
+        - 修复了 HTTP API 在查询的组件不存在时导致 CDC 挂掉的问题 [#3840](https://github.com/pingcap/tiflow/issues/3840)
+        - 修复了 DM 的 master/worker 线程以特定顺序重启后中继状态错误的问题 [#3478](https://github.com/pingcap/tiflow/issues/3478)
+        - 修复了 DM worker 在重启后无法完成初始化的问题 [#3344](https://github.com/pingcap/tiflow/issues/3344)
+        - 修复了 DM 任务在分区表相关 DDL 执行时间过长时失败的问题 [#3854](https://github.com/pingcap/tiflow/issues/3854)
+        - 修复了 DM 在上游是 MySQL 8.0 时报错 "invalid sequence" 的问题 [#3847](https://github.com/pingcap/tiflow/issues/3847)
+        - 修复了移除一个暂停的同步时，CDC Redo Log 无法被正确清理的问题 [#3919](https://github.com/pingcap/tiflow/pull/3919)
+        - 改进了 DM 的失败重试策略以避免潜在的数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
+        - 修复容器环境中的 OOM 现象 [#3439](https://github.com/pingcap/tiflow/pull/3439)
+        - 修复了停掉处于加载阶段的任务会导致它被意外调度走的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
+        - 纠正了在 Loader 上 query-status 查询到错误的进度的问题 [#3252](https://github.com/pingcap/tiflow/issues/3252)
+        - 修复了 CDC 的 HTTP API 在集群中存在不同版本 CDC 结点时无法正常工作的问题 [#3483](https://github.com/pingcap/tiflow/issues/3483)
+        - 修复了当 CDC Redo Log 配置在 S3 存储上时的异常退出问题 [#3523](https://github.com/pingcap/tiflow/issues/3523)
+
+        (dup) - Fix the issue that default values cannot be replicated [#3793](https://github.com/pingcap/tiflow/issues/3793)
+        (dup) - Fix a bug that MySQL sink generates duplicated `replace` SQL statements if `batch-replace-enable` is disabled [#4501](https://github.com/pingcap/tiflow/issues/4501)
+        (dup) - Fix the issue that syncer metrics are updated only when querying the status [#4281](https://github.com/pingcap/tiflow/issues/4281)
+        (dup) - Fix the issue that `mq sink write row` does not have monitoring data [#3431](https://github.com/pingcap/tiflow/issues/3431)
+        (dup) - Fix the issue that replication cannot be performed when `min.insync.replicas` is smaller than `replication-factor` [#3994](https://github.com/pingcap/tiflow/issues/3994)
+        (dup) - Fix the issue that the `CREATE VIEW` statement interrupts data replication [#4173](https://github.com/pingcap/tiflow/issues/4173)
+        (dup) - Fix the issue the schema needs to be reset after a DDL statement is skipped [#4177](https://github.com/pingcap/tiflow/issues/4177)
+        (dup) - Fix the issue that `mq sink write row` does not have monitoring data [#3431](https://github.com/pingcap/tiflow/issues/3431)
+        (dup) - Fix the potential panic issue that occurs when a replication task is removed [#3128](https://github.com/pingcap/tiflow/issues/3128)
+        (dup) - Fix the potential issue that the deadlock causes a replication task to get stuck [#4055](https://github.com/pingcap/tiflow/issues/4055)
+        (dup) - Fix the TiCDC panic issue that occurs when manually cleaning the task status in etcd [#2980](https://github.com/pingcap/tiflow/issues/2980)
+        (dup) - Fix the issue that special comments in DDL statements cause the replication task to stop [#3755](https://github.com/pingcap/tiflow/issues/3755)
+        (dup) - Fix the issue of replication stop caused by the incorrect configuration of `config.Metadata.Timeout` [#3352](https://github.com/pingcap/tiflow/issues/3352)
+        (dup) - Fix the issue that the service cannot be started because of a timezone issue in the RHEL release [#3584](https://github.com/pingcap/tiflow/issues/3584)
+        (dup) - Fix the issue that `stopped` changefeeds resume automatically after a cluster upgrade [#3473](https://github.com/pingcap/tiflow/issues/3473)
+        (dup) - Fix the issue that default values cannot be replicated [#3793](https://github.com/pingcap/tiflow/issues/3793)
+        (dup) - Fix the issue of overly frequent warnings caused by MySQL sink deadlock [#2706](https://github.com/pingcap/tiflow/issues/2706)
+        (dup) - Fix the bug that the `enable-old-value` configuration item is not automatically set to `true` on Canal and Maxwell protocols [#3676](https://github.com/pingcap/tiflow/issues/3676)
+        (dup) - Fix the issue that Avro sink does not support parsing JSON type columns [#3624](https://github.com/pingcap/tiflow/issues/3624)
+        (dup) - Fix the negative value error in the changefeed checkpoint lag [#3010](https://github.com/pingcap/tiflow/issues/3010)
+
+    TiDB Lightning
+
+        - Fix the bug that lightning may not clean up metadata schema when some of the import contains no source files. [#28144](https://github.com/pingcap/tidb/issues/28144)
+        - Fix the bug that lighting return error if gcs url starts with gs:// [#30254](https://github.com/pingcap/tidb/pull/30254)
+        - Avoid tikv trigger auto region split by lower the ingest kv count threshold [#30018](https://github.com/pingcap/tidb/issues/30018)
+        - Fix log doesn't output to stdout when passing --log-file="-" [#29876](https://github.com/pingcap/tiflow/issues/29876)
+
+        (dup) - Fix the issue that TiDB Lightning does not report errors when the S3 storage path does not exist #28031 [#30709](https://github.com/pingcap/tiflow/issues/30709)
