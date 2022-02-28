@@ -110,7 +110,7 @@ tidb_servers:
 ...
 ```
 
-假如我们想要使用 TiDB 的 v5.0.0 版本，集群名字为 `prod-cluster`，则执行以下命令：
+假如我们想要使用 TiDB 的 v5.0.6 版本，集群名字为 `prod-cluster`，则执行以下命令：
 
 {{< copyable "shell-regular" >}}
 
