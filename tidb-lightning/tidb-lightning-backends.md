@@ -33,7 +33,7 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 
 > **注意：**
 >
-> - 使用多个 Lightning 进程向同一目标导入时混用不同的 backend，例如同时使用 local-backend 和 tidb-backend 导入同一 TiDB 集群是不允许的。
+> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群.
 > - 默认情况下不应同时启动多个 Lightning 实例导入同一 TiDB 集群，应考虑使用并行导入特性。
 
 ## 如何选择后端模式
