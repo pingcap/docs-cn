@@ -12,24 +12,24 @@ TiDB 版本：5.3.1
 
 ## 功能增强
 
-TiDB
+- TiDB
 
     - 整理用户登录模式匹配的逻辑，增强 MySQL 兼容 [#30450](https://github.com/pingcap/tidb/pull/30450)
 
-TiKV
+- TiKV
 
     - 通过减少需要 resolve 锁的 region 数来减少 CDC 恢复时间。 [#11993](https://github.com/tikv/tikv/issues/11993)
     - 通过调整  raftlog GC 写入的 batch 大小来加速 GC。[#11404](https://github.com/tikv/tikv/issues/11404)
 
     (dup) - Update the proc filesystem (procfs) to v0.12.0 [#11702](https://github.com/tikv/tikv/issues/11702)
 
-PD
+- PD
 
     - Improve DR_STATE file content format [#4341](https://github.com/tikv/pd/issues/4341)
 
-Tools
+- Tools
 
-   TiCDC
+   - TiCDC
 
       - 暴露 Kafka Producer 配置参数以使之在 cdc 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
       - Add pre clean up process when s3 enable [#3878](https://github.com/pingcap/tiflow/issues/3878)
@@ -43,13 +43,13 @@ Tools
       (dup) - Add more Promethous and Grafana monitoring metrics and alerts, including `no owner alert`, `mounter row`, `table sink total row`, and `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
       (dup) - Reduce the time for the KV client to recover when a TiKV store is down [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
-    Lightning
+    - Lightning
 
         - Make tidb-lightning pre-check output message clearer [#30395](https://github.com/pingcap/tiflow/issues/30395)
 
 ## Bug 修复
 
-TiDB
+- TiDB
 
     - 修复 date_format 对 '\n' 处理与 MySQL 不兼容的问题 [#32503](https://github.com/pingcap/tidb/pull/32503)
     - 修复 `alter column set default` 错误修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
@@ -64,7 +64,7 @@ TiDB
 
     (dup) - 修复 `INSERT ... SELECT ... ON DUPLICATE KEY UPDATE` panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
 
-TiKV
+- TiKV
 
     - 修复 peer 在 Applying 状态下时快照文件被删除造成的 panic [#11746](https://github.com/tikv/tikv/issues/11746)
     - 修复 `level0_slowdown_trigger` 被显式设置，且流量控制开启时的 QPS 回退。 [#11424](https://github.com/tikv/tikv/issues/11424)
@@ -85,7 +85,7 @@ TiKV
     (dup) - Fix a bug that tikv-ctl cannot return the correct Region-related information [#11393](https://github.com/tikv/tikv/issues/11393)
     (dup) - Fix the issue that the average latency of the by-instance gRPC requests is inaccurate in TiKV metrics [#11299](https://github.com/tikv/tikv/issues/11299)
 
-TiFlash
+- TiFlash
 
     - 修复 cast(arg as decimal(x,y)) 在入参 arg 大于 decimal(x,y) 表示范围时，计算结果出错的问题
     - 修复启用 max_memory_usage 和 max_memory_usage_for_all_queries 配置项时，TiFlash 崩溃的问题
@@ -98,7 +98,7 @@ TiFlash
     - 修复当查询的过滤条件形如 where <string> 时，计算结果出错的问题
     - 修复 cast(string as datetime) 在入参形如 %Y-%m-%d\n%H:%i:%s 时，查询结果出错的问题
 
-PD
+- PD
 
     - 修复特定情况的调度会带有不需要的 JointConsensus 步骤的问题 [#4362](https://github.com/tikv/pd/issues/4362)
     - 修复对 Voter 直接进行降级的调度无法执行的问题 [#4444](https://github.com/tikv/pd/issues/4444)
@@ -107,13 +107,13 @@ PD
 
     (dup) - Fix the issue that the cold hotspot data cannot be deleted from the hotspot statistics [#4390](https://github.com/tikv/pd/issues/4390)
 
-Tools
+- Tools
 
-    Backup & Restore (BR)
+    - Backup & Restore (BR)
 
         - Fix a bug that caused region unbalanced after restoring. [#31034](https://github.com/pingcap/tiflow/issues/31034)
 
-    TiCDC
+    - TiCDC
 
         - 修复了 varchar 类型值长度过长时的 "Column length too big" 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
         - 修复了 CDC 程序在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
@@ -153,7 +153,7 @@ Tools
         (dup) - Fix the issue that Avro sink does not support parsing JSON type columns [#3624](https://github.com/pingcap/tiflow/issues/3624)
         (dup) - Fix the negative value error in the changefeed checkpoint lag [#3010](https://github.com/pingcap/tiflow/issues/3010)
 
-    TiDB Lightning
+    - TiDB Lightning
 
         - Fix the bug that lightning may not clean up metadata schema when some of the import contains no source files. [#28144](https://github.com/pingcap/tidb/issues/28144)
         - Fix the bug that lighting return error if gcs url starts with gs:// [#30254](https://github.com/pingcap/tidb/pull/30254)
