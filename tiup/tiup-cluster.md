@@ -115,7 +115,7 @@ tidb_servers:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy -p prod-cluster v5.0.0 /tmp/topology.yaml
+tiup cluster deploy -p prod-cluster v5.0.6 /tmp/topology.yaml
 ```
 
 执行过程中会再次确认拓扑结构并提示输入目标机器上的 root 密码（-p 表示使用密码）：
@@ -123,7 +123,7 @@ tiup cluster deploy -p prod-cluster v5.0.0 /tmp/topology.yaml
 ```bash
 Please confirm your topology:
 TiDB Cluster: prod-cluster
-TiDB Version: v5.0.0
+TiDB Version: v5.0.6
 Type        Host          Ports        Directories
 ----        ----          -----        -----------
 pd          172.16.5.134  2379/2380    deploy/pd-2379,data/pd-2379
@@ -163,7 +163,7 @@ tiup cluster list
 Starting /root/.tiup/components/cluster/v1.4.0/cluster list
 Name          User  Version    Path                                               PrivateKey
 ----          ----  -------    ----                                               ----------
-prod-cluster  tidb  v5.0.0    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
+prod-cluster  tidb  v5.0.6    /root/.tiup/storage/cluster/clusters/prod-cluster  /root/.tiup/storage/cluster/clusters/prod-cluster/ssh/id_rsa
 ```
 
 ## 启动集群
@@ -189,7 +189,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.4.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v5.0.0
+TiDB Version: v5.0.6
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
@@ -254,7 +254,7 @@ tiup cluster display prod-cluster
 ```
 Starting /root/.tiup/components/cluster/v1.4.0/cluster display prod-cluster
 TiDB Cluster: prod-cluster
-TiDB Version: v5.0.0
+TiDB Version: v5.0.6
 ID                  Role        Host          Ports        Status     Data Dir              Deploy Dir
 --                  ----        ----          -----        ------     --------              ----------
 172.16.5.134:3000   grafana     172.16.5.134  3000         Up         -                     deploy/grafana-3000
