@@ -16,11 +16,11 @@ TiDB Lightning 并行导入可以用于以下场景：
 
 >**注意：**
 >
-> 1. 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
+> - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 > 
-> 2. 并行导入一般用于 local-backend 模式。
+> - 并行导入一般用于 local-backend 模式。
 >
-> 3. 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群.
+> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
 
 下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
 
