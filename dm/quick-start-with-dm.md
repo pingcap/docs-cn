@@ -54,6 +54,7 @@ from:
 {{< copyable "shell-regular" >}}
 
 使用如下命令将该 source 增加至 DM 集群：
+
 ```bash
 tiup dmctl --master-addr=127.0.0.1:8261 operate-source create mysql-01.yaml # --master-addr 填写 master_servers 其中之一。
 ```
