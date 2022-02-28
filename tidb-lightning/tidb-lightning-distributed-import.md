@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 并行导入
-summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景、使用说明和使用方法。
+summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景和使用方法。
 ---
 
 # TiDB Lightning 并行导入
