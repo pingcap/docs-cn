@@ -37,15 +37,15 @@ cdc cli changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0
 
 | 参数                     | 解析                                                                                                                    |
 | :---------------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| `127.0.0.1:9092`        | 下游 Kafka 对外提供服务的 IP:PORT 地址。支持配置多个 Kafka broker 地址                                                        |
-| `topic-name`            | Kafka Topic 名字，事件变更数据将会被写入该 Topic                                                                            |
+| `127.0.0.1:9092`        | 下游 Kafka 对外提供服务的 IP:PORT 地址。建议配置多个 Kafka broker 地址，用 `,` 分割 |
+| `topic-name`            | Kafka Topic 名字，事件变更数据将会被写入该 Topic |
 | `kafka-version`         | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
-| `kafka-client-id`       | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）                                        |
-| `partition-num`         | 下游 Kafka partition 数量（默认值 `3`，不能大于实际的 Topic partition 数量，否则创建同步任务会失败）                              |
-| `max-message-bytes`     | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。  |
-| `replication-factor`    | Kafka 消息保存副本数（可选，默认值 `1`）                                                                                   |
-| `protocol`              | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell`                                  |
-| `auto-create-topic`     | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）                                 |
+| `kafka-client-id`       | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`）|
+| `partition-num`         | 下游 Kafka partition 数量（默认值 `3`）|
+| `max-message-bytes`     | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
+| `replication-factor`    | Kafka 消息保存副本数（可选，默认值 `1`）|
+| `protocol`              | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
+| `auto-create-topic`     | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`）|
 | `enable-tidb-extension` | 当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段（可选，默认值 `false`）|
 | `max-batch-size`        |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
 | `ca`                    | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
@@ -57,10 +57,14 @@ cdc cli changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0
 
 ### 参数详解
 
-* `partition-num`
-* `replication-factor`
+* `partition-num`: TiCDC 会参考该值，将数据分发到不同的 partition 中。该参数为 Topic 的 partitions 数量，设置在 sink-uri 中的该值，不能大于实际的 Topic partitions 数量，否则创建 changefeed 会失败。
+* `replication-factor`：
 * `max-message-bytes`
 * `max-batch-size`
+
+## TiCDC 创建 Topic 行为解释
+
+当创建 changefeed 的时候，用户指定的 Topic 如果不存在，那么 TiCDC 根据 `auto-create-topic` 参数决定是否自行创建该 Topic。TiCDC 在创建 Topic 时，将会使用用户在 sink-uri 中指定的 `partition-num`(默认值为 3) 和 `replication-factor`(默认值为 1) 参数，
 
 最佳实践：
 
