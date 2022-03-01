@@ -116,7 +116,7 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 
 ### 使用 pd-recover
 
-`pd-recover` 仅在一个 PD 节点中执行即可。
+只需在一个 PD 节点上执行 `pd-recover` 即可。
 
 {{< copyable "shell-regular" >}}
 
