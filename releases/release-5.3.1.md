@@ -23,14 +23,14 @@ TiDB 版本：5.3.1
 
 - TiKV
 
-    - 通过减少需要 resolve 锁的 region 数来减少 CDC 恢复时间。 [#11993](https://github.com/tikv/tikv/issues/11993)
-    - 通过调整  raftlog GC 写入的 batch 大小来加速 GC。[#11404](https://github.com/tikv/tikv/issues/11404)
+    - 通过减少需要进行 Resolve Locks（清理锁）步骤的 Region 数量来减少 CDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
+    - 通过增加对 Raft log 进行垃圾回收 (GC) 时的 write batch 大小来加快 GC 速度 [#11404](https://github.com/tikv/tikv/issues/11404)
 
     (dup) - Update the proc filesystem (procfs) to v0.12.0 [#11702](https://github.com/tikv/tikv/issues/11702)
 
 - PD
 
-    - Improve DR_STATE file content format [#4341](https://github.com/tikv/pd/issues/4341)
+    - 优化 `DR_STATE` 文件内容的格式 [#4341](https://github.com/tikv/pd/issues/4341)
 
 - Tools
 
@@ -71,10 +71,10 @@ TiDB 版本：5.3.1
 
 - TiKV
 
-    - 修复 peer 在 Applying 状态下时快照文件被删除造成的 panic [#11746](https://github.com/tikv/tikv/issues/11746)
-    - 修复 `level0_slowdown_trigger` 被显式设置，且流量控制开启时的 QPS 回退。 [#11424](https://github.com/tikv/tikv/issues/11424)
-    - 修复 cgroup controller 没有被挂载造成的 panic。[#11569](https://github.com/tikv/tikv/issues/11569)
-    - 修复 TiKV 停止后 resolved ts 的延迟增加。 [#11352](https://github.com/tikv/tikv/pull/11352)
+    - 修复 peer 状态为 Applying 时快照文件被删除会造成 Panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
+    - 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
+    - 修复 cgroup controller 没有被挂载会造成 Panic 的问题 [#11569](https://github.com/tikv/tikv/issues/11569)
+    - 修复 TiKV 停止后 Resolved TS 延迟会增加的问题 [#11352](https://github.com/tikv/tikv/pull/11352)
 
     (dup) - Fix a bug that TiKV cannot delete a range of data (`unsafe_destroy_range` cannot be executed) when the GC worker is busy [#11903](https://github.com/tikv/tikv/issues/11903)
     (dup) - Fix the issue that destroying a peer might cause high latency [#10210](https://github.com/tikv/tikv/issues/10210)
@@ -105,9 +105,9 @@ TiDB 版本：5.3.1
 
 - PD
 
-    - 修复特定情况的调度会带有不需要的 JointConsensus 步骤的问题 [#4362](https://github.com/tikv/pd/issues/4362)
-    - 修复对 Voter 直接进行降级的调度无法执行的问题 [#4444](https://github.com/tikv/pd/issues/4444)
-    - 修复更新副本同步模式配置时的数据竞争问题 [#4325](https://github.com/tikv/pd/issues/4325)
+    - 修复特定情况下调度带有不需要的 JointConsensus 步骤的问题 [#4362](https://github.com/tikv/pd/issues/4362)
+    - 修复无法执行对 Voter 直接进行降级的调度的问题 [#4444](https://github.com/tikv/pd/issues/4444)
+    - 修复更新副本同步模式的配置时出现的数据竞争问题 [#4325](https://github.com/tikv/pd/issues/4325)
     - 修复特定情况下读锁不释放的问题 [#4354](https://github.com/tikv/pd/issues/4354)
 
     (dup) - Fix the issue that the cold hotspot data cannot be deleted from the hotspot statistics [#4390](https://github.com/tikv/pd/issues/4390)
