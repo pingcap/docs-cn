@@ -23,7 +23,7 @@ TiDB 版本：5.3.1
 
 - TiKV
 
-    - 通过减少需要进行 Resolve Locks（清理锁）步骤的 Region 数量来减少 CDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
+    - 通过减少需要进行 Resolve Locks（清理锁）步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
     - 通过增加对 Raft log 进行垃圾回收 (GC) 时的 write batch 大小来加快 GC 速度 [#11404](https://github.com/tikv/tikv/issues/11404)
 
     (dup) - Update the proc filesystem (procfs) to v0.12.0 [#11702](https://github.com/tikv/tikv/issues/11702)
@@ -89,6 +89,15 @@ TiDB 版本：5.3.1
     (dup) - Fix the issue that RocksDB flush or compaction causes panic when the disk capacity is full [#11224](https://github.com/tikv/tikv/issues/11224)
     (dup) - Fix a bug that tikv-ctl cannot return the correct Region-related information [#11393](https://github.com/tikv/tikv/issues/11393)
     (dup) - Fix the issue that the average latency of the by-instance gRPC requests is inaccurate in TiKV metrics [#11299](https://github.com/tikv/tikv/issues/11299)
+
+- PD
+
+    - 修复特定情况下调度带有不需要的 JointConsensus 步骤的问题 [#4362](https://github.com/tikv/pd/issues/4362)
+    - 修复对单个 Voter 直接进行降级时无法执行调度的问题 [#4444](https://github.com/tikv/pd/issues/4444)
+    - 修复更新副本同步模式的配置时出现的数据竞争问题 [#4325](https://github.com/tikv/pd/issues/4325)
+    - 修复特定情况下读锁不释放的问题 [#4354](https://github.com/tikv/pd/issues/4354)
+
+    (dup) - Fix the issue that the cold hotspot data cannot be deleted from the hotspot statistics [#4390](https://github.com/tikv/pd/issues/4390)
 
 - TiFlash
 
