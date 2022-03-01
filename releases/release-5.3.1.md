@@ -37,7 +37,7 @@ TiDB 版本：5.3.1
 
    - TiCDC
 
-      - 暴露 Kafka producer 配置参数以使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
+      - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
       - 在 S3 启动前增加一个预清理进程 [#3878](https://github.com/pingcap/tiflow/issues/3878)
       - TiCDC 客户端能在未指定证书名的情况下工作 [#3627](https://github.com/pingcap/tiflow/issues/3627)
       - 为每个表维护单独的 checkpoint，避免 checkpoint 被意外推进 [#3545](https://github.com/pingcap/tiflow/issues/3545)
