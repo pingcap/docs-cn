@@ -112,9 +112,11 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 
 ### 部署一套新的 PD 集群
 
-部署新的 PD 集群之前，需要停止当前的 PD 集群，然后删除旧的数据目录（用 `--data-dir` 指定）。
+部署新的 PD 集群之前，需要停止当前的 PD 集群，然后删除旧的数据目录（或者用 `--data-dir` 指定新的数据目录）。
 
 ### 使用 pd-recover
+
+`pd-recover` 仅在一个 PD 节点中执行即可。
 
 {{< copyable "shell-regular" >}}
 
