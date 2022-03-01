@@ -9,6 +9,7 @@ title: TiDB 5.3.1 Release Notes
 TiDB 版本：5.3.1
 
 ## 兼容性更改
+
 - Tools
 
     - Lightning
