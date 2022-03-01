@@ -112,15 +112,6 @@ TiDB 版本：5.3.1
     - 修复当查询的过滤条件形如 `where <string>` 时，计算结果出错的问题
     - 修复 `cast(string as datetime)` 在入参形如 `%Y-%m-%d\n%H:%i:%s` 时，查询结果出错的问题
 
-- PD
-
-    - 修复特定情况下调度带有不需要的 JointConsensus 步骤的问题 [#4362](https://github.com/tikv/pd/issues/4362)
-    - 修复无法执行对 Voter 直接进行降级的调度的问题 [#4444](https://github.com/tikv/pd/issues/4444)
-    - 修复更新副本同步模式的配置时出现的数据竞争问题 [#4325](https://github.com/tikv/pd/issues/4325)
-    - 修复特定情况下读锁不释放的问题 [#4354](https://github.com/tikv/pd/issues/4354)
-
-    (dup) - Fix the issue that the cold hotspot data cannot be deleted from the hotspot statistics [#4390](https://github.com/tikv/pd/issues/4390)
-
 - Tools
 
     - Backup & Restore (BR)
