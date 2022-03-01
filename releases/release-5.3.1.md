@@ -9,6 +9,11 @@ title: TiDB 5.3.1 Release Notes
 TiDB 版本：5.3.1
 
 ## 兼容性更改
+- Tools
+
+    - Lightning
+    
+        - 将 Region max-keys 的默认值从 1_440_000 调整为 1_280_000，以避免数据导入后出现过多空 Region [#30018](https://github.com/pingcap/tidb/issues/30018)
 
 ## 功能增强
 
@@ -45,7 +50,7 @@ TiDB 版本：5.3.1
 
     - Lightning
 
-        - Make tidb-lightning pre-check output message clearer [#30395](https://github.com/pingcap/tiflow/issues/30395)
+        - 优化了本地磁盘空间检查失败时前置检查的提示信息 [#30395](https://github.com/pingcap/tiflow/issues/30395)
 
 ## Bug 修复
 
@@ -111,7 +116,7 @@ TiDB 版本：5.3.1
 
     - Backup & Restore (BR)
 
-        - Fix a bug that caused region unbalanced after restoring. [#31034](https://github.com/pingcap/tiflow/issues/31034)
+        - 修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tiflow/issues/31034)
 
     - TiCDC
 
@@ -155,9 +160,8 @@ TiDB 版本：5.3.1
 
     - TiDB Lightning
 
-        - Fix the bug that lightning may not clean up metadata schema when some of the import contains no source files. [#28144](https://github.com/pingcap/tidb/issues/28144)
-        - Fix the bug that lighting return error if gcs url starts with gs:// [#30254](https://github.com/pingcap/tidb/pull/30254)
-        - Avoid tikv trigger auto region split by lower the ingest kv count threshold [#30018](https://github.com/pingcap/tidb/issues/30018)
-        - Fix log doesn't output to stdout when passing --log-file="-" [#29876](https://github.com/pingcap/tiflow/issues/29876)
+        - 修复在某些导入操作没有包含源文件时，Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
+        - 修复存储 URL 前缀为 "gs://xxx" 而不是 "gcs://xxx" 时，Lightning 报错的问题 [#30254](https://github.com/pingcap/tidb/pull/30254)
+        - 修复设置 --log-file="-" 时，没有 log 输出到 stdout 的问题 [#29876](https://github.com/pingcap/tidb/issues/29876) 
 
         (dup) - Fix the issue that TiDB Lightning does not report errors when the S3 storage path does not exist #28031 [#30709](https://github.com/pingcap/tiflow/issues/30709)
