@@ -19,7 +19,7 @@ TiDB 版本：5.3.1
 
 - TiDB
 
-    - 整理用户登录模式匹配的逻辑，增强 MySQL 兼容 [#30450](https://github.com/pingcap/tidb/pull/30450)
+    - 优化用户登录模式匹配的逻辑，增强与 MySQL 的兼容性 [#30450](https://github.com/pingcap/tidb/pull/30450)
 
 - TiKV
 
@@ -56,16 +56,16 @@ TiDB 版本：5.3.1
 
 - TiDB
 
-    - 修复 date_format 对 '\n' 处理与 MySQL 不兼容的问题 [#32503](https://github.com/pingcap/tidb/pull/32503)
-    - 修复 `alter column set default` 错误修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
-    - 修复打开 tidb_restricted_read_only 后 tidb_super_read_only 没有自动打开的问题 [#31745](https://github.com/pingcap/tidb/issues/31745)
-    - 修复 greatest/least 表达式 collation 处理错误的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
-    - 修复 mpp task list 为空时 TiDB 报错的问题 [#31636](https://github.com/pingcap/tidb/issues/31636)
+    - 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32503](https://github.com/pingcap/tidb/pull/32503)
+    - 修复 `alter column set default` 错误地修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
+    - 修复开启 `tidb_restricted_read_only` 后 `tidb_super_read_only` 没有自动开启的问题 [#31745](https://github.com/pingcap/tidb/issues/31745)
+    - 修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
+    - 修复执行查询时报 MPP task list 为空错误的问题 [#31636](https://github.com/pingcap/tidb/issues/31636)
     - 修复 innerWorker panic 导致的 index join 结果错误的问题 [#31494](https://github.com/pingcap/tidb/issues/31494)
-    - 修复将 float 列改为 double 后结果错误问题 [#31372](https://github.com/pingcap/tidb/issues/31372)
-    - 修复 IndexLookUpJoin 以及 Union 算子并发启动 worker 导致事务报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
-    - 修复针对 Order By 的优化导致的结果错误问题 [#30271](https://github.com/pingcap/tidb/issues/30271)
-    - 修复慢查询日志 `MaxDays` 以及 `MaxBackups` 不生效的问题 [#25716](https://github.com/pingcap/tidb/issues/25716)
+    - 修复将 `FLOAT` 列改为 `DOUBLE` 列后查询结果有误的问题 [#31372](https://github.com/pingcap/tidb/issues/31372)
+    - 修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
+    - 修复针对 `Order By` 的优化导致查询结果有误的问题 [#30271](https://github.com/pingcap/tidb/issues/30271)
+    - 修复 `MaxDays` 和 `MaxBackups` 的配置对慢查询日志不生效的问题 [#25716](https://github.com/pingcap/tidb/issues/25716)
 
     (dup) - 修复 `INSERT ... SELECT ... ON DUPLICATE KEY UPDATE` panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
 
