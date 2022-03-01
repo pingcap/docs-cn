@@ -577,6 +577,7 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - v5.3
+    - [5.3.1](/releases/release-5.3.0.md)
     - [5.3.0](/releases/release-5.3.0.md)
   - v5.2
     - [5.2.3](/releases/release-5.2.3.md)
