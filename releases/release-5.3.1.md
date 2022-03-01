@@ -4,7 +4,7 @@ title: TiDB 5.3.1 Release Notes
 
 # TiDB 5.3.1 Release Notes
 
-发版日期：2021 年 x 月 x 日
+发版日期：2022 年 x 月 x 日
 
 TiDB 版本：5.3.1
 
@@ -31,10 +31,10 @@ TiDB 版本：5.3.1
 
    - TiCDC
 
-      - 暴露 Kafka Producer 配置参数以使之在 cdc 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
-      - Add pre clean up process when s3 enable [#3878](https://github.com/pingcap/tiflow/issues/3878)
-      - TiCDC 客户端现在可以在未指定证书名字的情况下工作了 [#3882](https://github.com/pingcap/tiflow/pull/3882)
-      - 为 CDC 每个表维护单独的 Checkpoint，避免 Checkpoint 被意外推进 [#4083](https://github.com/pingcap/tiflow/pull/4083)
+      - 暴露 Kafka producer 配置参数以使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
+      - 在 S3 启动前增加一个预清理进程 [#3878](https://github.com/pingcap/tiflow/issues/3878)
+      - TiCDC 客户端能在未指定证书名的情况下工作 [#3627](https://github.com/pingcap/tiflow/issues/3627)
+      - 为每个表维护单独的 checkpoint，避免 checkpoint 被意外推进 [#3545](https://github.com/pingcap/tiflow/issues/3545)
 
       (dup) - Add the exponential backoff mechanism for restarting a changefeed. [#3329](https://github.com/pingcap/tiflow/issues/3329)
       (dup) - Change the default value of Kafka Sink `partition-num` to 3 so that TiCDC distributes messages across Kafka partitions more evenly [#3337](https://github.com/pingcap/tiflow/issues/3337)
@@ -115,22 +115,22 @@ TiDB 版本：5.3.1
 
     - TiCDC
 
-        - 修复了 varchar 类型值长度过长时的 "Column length too big" 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
-        - 修复了 CDC 程序在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
-        - 修复了 UPDATE 预计在安全模式下导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
-        - 修复了监控面板中 cached region 项出现负值的问题 [#4290](https://github.com/pingcap/tiflow/pull/4290)
+        - 修复了 varchar 类型值长度过长时的 `Column length too big` 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
+        - 修复了 TiCDC 进程在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
+        - 修复了 UPDATE 语句在安全模式下执行错误会导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
+        - 修复了监控面板中 cached region 项出现负值的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
         - 修复了 HTTP API 在查询的组件不存在时导致 CDC 挂掉的问题 [#3840](https://github.com/pingcap/tiflow/issues/3840)
         - 修复了 DM 的 master/worker 线程以特定顺序重启后中继状态错误的问题 [#3478](https://github.com/pingcap/tiflow/issues/3478)
         - 修复了 DM worker 在重启后无法完成初始化的问题 [#3344](https://github.com/pingcap/tiflow/issues/3344)
         - 修复了 DM 任务在分区表相关 DDL 执行时间过长时失败的问题 [#3854](https://github.com/pingcap/tiflow/issues/3854)
         - 修复了 DM 在上游是 MySQL 8.0 时报错 "invalid sequence" 的问题 [#3847](https://github.com/pingcap/tiflow/issues/3847)
         - 修复了移除一个暂停的同步时，CDC Redo Log 无法被正确清理的问题 [#3919](https://github.com/pingcap/tiflow/pull/3919)
-        - 改进了 DM 的失败重试策略以避免潜在的数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
-        - 修复容器环境中的 OOM 现象 [#3439](https://github.com/pingcap/tiflow/pull/3439)
-        - 修复了停掉处于加载阶段的任务会导致它被意外调度走的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
+        - 修复了 DM 采用细粒度失败重试策略导致数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
+        - 修复容器环境中的 OOM 现象 [#1798](https://github.com/pingcap/tiflow/issues/1798)
+        - 修复了停止加载中的任务会导致它被意外调度的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
         - 纠正了在 Loader 上 query-status 查询到错误的进度的问题 [#3252](https://github.com/pingcap/tiflow/issues/3252)
-        - 修复了 CDC 的 HTTP API 在集群中存在不同版本 CDC 结点时无法正常工作的问题 [#3483](https://github.com/pingcap/tiflow/issues/3483)
-        - 修复了当 CDC Redo Log 配置在 S3 存储上时的异常退出问题 [#3523](https://github.com/pingcap/tiflow/issues/3523)
+        - 修复了 HTTP API 在集群中存在不同版本 TiCDC 节点时无法正常工作的问题 [#3483](https://github.com/pingcap/tiflow/issues/3483)
+        - 修复了当 CDC Redo Log 配置在 S3 存储上时 TiCDC 异常退出问题 [#3523](https://github.com/pingcap/tiflow/issues/3523)
 
         (dup) - Fix the issue that default values cannot be replicated [#3793](https://github.com/pingcap/tiflow/issues/3793)
         (dup) - Fix a bug that MySQL sink generates duplicated `replace` SQL statements if `batch-replace-enable` is disabled [#4501](https://github.com/pingcap/tiflow/issues/4501)
