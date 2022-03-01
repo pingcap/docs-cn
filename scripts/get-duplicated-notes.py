@@ -12,21 +12,32 @@ def store_exst_rn(ext_path,main_path):
 
     exst_notes = []
     exst_issue_nums = []
+    exst_note_levels = []
 
     for maindir, subdir, files in os.walk(ext_path):
         for afile in files:
             file_path = (os.path.join(maindir, afile))
             if file_path.endswith('.md') and not os.path.samefile(file_path,main_path):
                 with open(file_path,'r', encoding='utf-8') as fp:
+                    level1 = level2 = level3 = ""
                     for line in fp:
                         exst_issue_num = re.search(r'https://github.com/(pingcap|tikv)/\w+/(issues|pull)/\d+', line)
                         if exst_issue_num:
                             if exst_issue_num.group() not in exst_issue_nums:
-                                note_pair = [exst_issue_num.group(),line,afile]
+                                note_level = level1 + level2 + level3
+                                note_pair = [exst_issue_num.group(),line,afile, note_level]
                                 exst_issue_nums.append(exst_issue_num.group())
                                 exst_notes.append(note_pair)
                             else:
                                 continue
+                        elif line.startswith("##"):
+                            level1 = "> " + line.replace("##","").strip()
+                            level2 = level3 = ""
+                        elif line.startswith ("+") or line.startswith ("-"):
+                            level2 = "> " + line.replace("+","").replace("-","").strip()
+                            level3 = ""
+                        elif line.startswith ("    +") or line.startswith ("    -"):
+                            level3 = "> " + line.replace("    +","").replace("    -","").strip()
                         else:
                             continue
             else:
@@ -53,9 +64,9 @@ def check_exst_rn(note_pairs, main_path):
                 if issue_num:
                      NoteNum +=1
                      for note_pair in note_pairs:
-                        if issue_num.group() == note_pair[0] and "(dup)" not in line:
+                        if issue_num.group() == note_pair[0] and not line.strip().startswith("(dup"):
                             print('A duplicated note is found in line ' + str(LineNum) + " from " + note_pair[2] + note_pair[1])
-                            line = re.sub(r'-.*$', '(dup) {} '.format(note_pair[2]) + note_pair[1].strip(), line)
+                            line = re.sub(r'-.*$', '(dup: {} '.format(note_pair[2]) + note_pair[3] + ")" + note_pair[1].strip(), line)
                             print('The duplicated note is replaced with ' + line)
                             DupNum += 1
                             break
