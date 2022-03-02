@@ -57,5 +57,5 @@ TiDB Clinic 目前处于 Beta 受邀测试使用阶段。该服务提供以下�
 
 ## 探索更多
 
- - [使用 TiDB Clinic](/clinic/clinic-user-guide-for-tiup.md)
- - [TiDB Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
+- [使用 TiDB Clinic](/clinic/clinic-user-guide-for-tiup.md)
+- [TiDB Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
