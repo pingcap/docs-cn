@@ -55,7 +55,7 @@ TiDB 版本：5.3.1
 
 + TiDB
 
-    - 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32503](https://github.com/pingcap/tidb/pull/32503)
+    - 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
     - 修复 `alter column set default` 错误地修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
     - 修复开启 `tidb_restricted_read_only` 后 `tidb_super_read_only` 没有自动开启的问题 [#31745](https://github.com/pingcap/tidb/issues/31745)
     - 修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
