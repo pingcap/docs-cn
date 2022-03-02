@@ -108,15 +108,32 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
         tiup update --all
         ```
 
-第 2 步：重启 Prometheus 节点
+第 2 步：在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
 
-在中控机上，通过 TiUP 对 Prometheus 节点进行 reload 操作。
+  1. 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
 
-{{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-```shell
-tiup cluster reload ${cluster-name} --role prometheus
-```
+        ```shell
+        tiup cluster edit-config ${cluster-name}
+        ```
+
+  2. 设置参数，在 monitoring_servers 下面增加 “ng_port:${port}”：
+
+        ```
+        monitoring_servers:
+        - host: 172.16.6.6
+          ng_port: ${port}
+        ```
+
+  3. 重启 Prometheus 节点：
+
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        tiup cluster reload ${cluster-name} --role prometheus
+        ```
 
 执行完以上操作后，在 TiDB Dashboard 上启用持续性能分析特性。如果 NgMonitoring 依然无法加载，请联系 PingCAP 技术支持获取帮助。
 
