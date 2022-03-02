@@ -1114,7 +1114,7 @@ raftdb 相关配置项。
 + 默认值：1000
 + 最小值：1
 
-### `wait-up-delay-duration`
+### `wake-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wait-up-delay-duration` 毫秒之后被唤醒。
++ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 毫秒之后被唤醒。
 + 默认值：20
