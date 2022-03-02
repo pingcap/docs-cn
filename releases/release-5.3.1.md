@@ -72,7 +72,7 @@ TiDB 版本：5.3.1
     - 修复 Peer 状态为 Applying 时快照文件被删除会造成 Panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
     - 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
     - 修复 cgroup controller 没有被挂载会造成 Panic 的问题 [#11569](https://github.com/tikv/tikv/issues/11569)
-    - 修复 TiKV 停止后 Resolved TS 延迟会增加的问题 [#11352](https://github.com/tikv/tikv/pull/11352)
+    - 修复 TiKV 停止后 Resolved TS 延迟会增加的问题 [#11351](https://github.com/tikv/tikv/issues/11351)
     - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
     - 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
     - 修复 Region 没有数据时 `any_value` 函数结果错误的问题 [#11735](https://github.com/tikv/tikv/issues/11735)
