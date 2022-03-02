@@ -20,7 +20,7 @@ TiDB 版本：5.3.1
 
 + TiDB
 
-    - 优化用户登录模式匹配的逻辑，增强与 MySQL 的兼容性 [#30450](https://github.com/pingcap/tidb/pull/30450)
+    - 优化用户登录模式匹配的逻辑，增强与 MySQL 的兼容性 [#30450](https://github.com/pingcap/tidb/issues/32648)
 
 + TiKV
 
