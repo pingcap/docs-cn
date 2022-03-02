@@ -1527,9 +1527,9 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 - Default value: `"1s"`
 - Minimum value: `"1ms"`
 
-### `wait-up-delay-duration`
+### `wake-up-delay-duration`
 
-- When pessimistic transactions release the lock, among all the transactions waiting for lock, only the transaction with the smallest `start_ts` is woken up. Other transactions will be woken up after `wait-up-delay-duration`.
+- When pessimistic transactions release the lock, among all the transactions waiting for lock, only the transaction with the smallest `start_ts` is woken up. Other transactions will be woken up after `wake-up-delay-duration`.
 - Default value: `"20ms"`
 
 ### `pipelined`
