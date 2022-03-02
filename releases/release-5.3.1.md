@@ -66,7 +66,7 @@ TiDB 版本：5.3.1
     - 修复将 `FLOAT` 列改为 `DOUBLE` 列后查询结果有误的问题 [#31372](https://github.com/pingcap/tidb/issues/31372)
     - 修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
     - 修复针对 `Order By` 的优化导致查询结果有误的问题 [#30271](https://github.com/pingcap/tidb/issues/30271)
-    - 修复 `MaxDays` 和 `MaxBackups` 的配置对慢查询日志不生效的问题 [#25716](https://github.com/pingcap/tidb/issues/25716)
+    - 修复慢查询日志 `MaxDays` 和 `MaxBackups` 不生效的问题 [#25716](https://github.com/pingcap/tidb/issues/25716)
 
     (dup) - 修复 `INSERT ... SELECT ... ON DUPLICATE KEY UPDATE` panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
 
