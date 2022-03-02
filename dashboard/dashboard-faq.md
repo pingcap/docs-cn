@@ -108,9 +108,9 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
         tiup update --all
         ```
 
-第 2 步：在中控机上，通过 TiUP 添加 ng_port 配置项，并对 Prometheus 节点进行 reload 操作。
+第 2 步：在中控机上，通过 TiUP 添加 ng_port 配置项，然后重启 Prometheus 节点。
 
-  1. 使用集群中控机，使用 TiUP 工具，以编辑模式打开该集群的配置文件：
+  1. 以编辑模式打开集群的配置文件：
 
         {{< copyable "shell-regular" >}}
 
@@ -118,7 +118,7 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
         tiup cluster edit-config ${cluster-name}
         ```
 
-  2. 设置参数，在 monitoring_servers 下面增加 “ng_port:${port}”：
+  2. 在 `monitoring_servers` 下面增加 `ng_port:${port}` 参数：
 
         ```
         monitoring_servers:
@@ -127,7 +127,6 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
         ```
 
   3. 重启 Prometheus 节点：
-
 
         {{< copyable "shell-regular" >}}
 
