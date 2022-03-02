@@ -102,14 +102,14 @@ TiDB 版本：5.3.1
 
 - TiFlash
 
-    - 修复 `cast(arg as decimal(x,y))` 在入参 `arg` 大于 `decimal(x,y)` 表示范围时，计算结果出错的问题
-    - 修复启用 `max_memory_usage` 和 `max_memory_usage_for_all_queries` 配置项时，TiFlash 崩溃的问题
+    - 修复 `cast(arg as decimal(x,y))` 在入参 `arg` 大于 `decimal(x,y)` 的表示范围时，计算结果出错的问题
+    - 修复开启 `max_memory_usage` 和 `max_memory_usage_for_all_queries` 配置项时，TiFlash 崩溃的问题
     - 修复 `cast(string as real)` 在部分场景下计算结果出错的问题
     - 修复 `cast(string as decimal)` 在部分场景下计算结果出错的问题
-    - 修复在修改主键列类型为一个范围更大的整型类型时，数据索引不一致的问题
+    - 修复在把主键列类型修改为一个范围更大的整型类型时，数据索引可能不一致的问题
     - 修复 `in` 表达式在形如 `(arg0, arg1) in (x,y)` 的多个参数的情况下计算结果出错的问题
     - (dup) 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题
-    - 修复 `str_to_date` 函数在入参以 0 开头时计算结果出错的问题
+    - 修复 `str_to_date` 函数在入参以 0 开头时，计算结果出错的问题
     - 修复当查询的过滤条件形如 `where <string>` 时，计算结果出错的问题
     - 修复 `cast(string as datetime)` 在入参形如 `%Y-%m-%d\n%H:%i:%s` 时，查询结果出错的问题
 
