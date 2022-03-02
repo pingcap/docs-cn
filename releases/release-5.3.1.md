@@ -129,7 +129,7 @@ TiDB 版本：5.3.1
         - 修复了 DM 采用细粒度失败重试策略导致数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - 修复了停止加载中的任务会导致它被意外调度的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
-        - 纠正了在 Loader 上 query-status 查询到错误的进度的问题 [#3252](https://github.com/pingcap/tiflow/issues/3252)
+        - 纠正了在 Loader 上使用 `query-status` 命令查询到错误的进度的问题 [#3252](https://github.com/pingcap/tiflow/issues/3252)
         - 修复了 HTTP API 在集群中存在不同版本 TiCDC 节点时无法正常工作的问题 [#3483](https://github.com/pingcap/tiflow/issues/3483)
         - 修复了当 TiCDC Redo Log 配置在 S3 存储上时 TiCDC 异常退出问题 [#3523](https://github.com/pingcap/tiflow/issues/3523)
         - 修复不支持同步默认值的问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
