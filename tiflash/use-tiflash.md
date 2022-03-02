@@ -151,6 +151,45 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
+## 按库构建 TiFlash 副本
+
+类似于按表构建 TiFlash 副本，可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的库中的所有表建立 TiFlash 副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE db_name SET TIFLASH REPLICA count
+```
+
+该命令的参数说明如下：
+
+- count 表示副本数，0 表示删除。
+
+为库中的所有表建立 2 个副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE `tpch50` SET TIFLASH REPLICA 2
+```
+
+删除副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER TABLE `tpch50` SET TIFLASH REPLICA 0
+```
+
+注意事项：
+1. 从命令执行开始到该库中所有表都已**同步完成**之前，若对该库下的表再执行 DDL ，则最终状态可能非预期。包括：
+    设置 TIFLASH REPLICA 数量分别为 2 ，如在库中所有的表都同步完成前，再设置 TIFLASH REPLICA 数量为 1 ，不能保证最终所有表的 replica数量都为 1 或都为 2。
+    从命令执行开始到执行结束，如果期间有该库下的 `CREATE TABLE` 语句，则**可能**会对这些新增表创建 TIFLASH REPLICA。
+    从命令执行开始到执行结束，如果期间对该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
+
+
+### 查看库同步进度
+
 ## 使用 TiDB 读取 TiFlash
 
 TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本，而没有做任何 engine 的配置，则默认使用 CBO 方式。
