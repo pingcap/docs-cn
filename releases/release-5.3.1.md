@@ -12,7 +12,7 @@ TiDB 版本：5.3.1
 
 - Tools
 
-    - Lightning
+    - TiDB Lightning
     
         - 将 `regionMaxKeyCount` 的默认值从 1_440_000 调整为 1_280_000，以避免数据导入后出现过多空 Region [#30018](https://github.com/pingcap/tidb/issues/30018)
 
@@ -49,7 +49,7 @@ TiDB 版本：5.3.1
       (dup) - Add more Promethous and Grafana monitoring metrics and alerts, including `no owner alert`, `mounter row`, `table sink total row`, and `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
       (dup) - Reduce the time for the KV client to recover when a TiKV store is down [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
-    - Lightning
+    - TiDB Lightning
 
         - 优化了本地磁盘空间检查失败时前置检查的提示信息 [#30395](https://github.com/pingcap/tiflow/issues/30395)
 
@@ -136,7 +136,7 @@ TiDB 版本：5.3.1
         - 修复了停止加载中的任务会导致它被意外调度的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
         - 纠正了在 Loader 上 query-status 查询到错误的进度的问题 [#3252](https://github.com/pingcap/tiflow/issues/3252)
         - 修复了 HTTP API 在集群中存在不同版本 TiCDC 节点时无法正常工作的问题 [#3483](https://github.com/pingcap/tiflow/issues/3483)
-        - 修复了当 CDC Redo Log 配置在 S3 存储上时 TiCDC 异常退出问题 [#3523](https://github.com/pingcap/tiflow/issues/3523)
+        - 修复了当 TiCDC Redo Log 配置在 S3 存储上时 TiCDC 异常退出问题 [#3523](https://github.com/pingcap/tiflow/issues/3523)
 
         (dup) - Fix the issue that default values cannot be replicated [#3793](https://github.com/pingcap/tiflow/issues/3793)
         (dup) - Fix a bug that MySQL sink generates duplicated `replace` SQL statements if `batch-replace-enable` is disabled [#4501](https://github.com/pingcap/tiflow/issues/4501)
@@ -161,8 +161,8 @@ TiDB 版本：5.3.1
 
     - TiDB Lightning
 
-        - 修复在某些导入操作没有包含源文件时，Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
-        - 修复存储 URL 前缀为 "gs://xxx" 而不是 "gcs://xxx" 时，Lightning 报错的问题 [#30254](https://github.com/pingcap/tidb/pull/30254)
+        - 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
+        - 修复存储 URL 前缀为 "gs://xxx" 而不是 "gcs://xxx" 时，TiDB Lightning 报错的问题 [#30254](https://github.com/pingcap/tidb/pull/30254)
         - 修复设置 --log-file="-" 时，没有 log 输出到 stdout 的问题 [#29876](https://github.com/pingcap/tidb/issues/29876) 
 
         (dup) - Fix the issue that TiDB Lightning does not report errors when the S3 storage path does not exist #28031 [#30709](https://github.com/pingcap/tiflow/issues/30709)
