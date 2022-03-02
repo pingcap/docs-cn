@@ -1112,15 +1112,5 @@ raftdb 相关配置项。
 
 ### `wake-up-delay-duration`
 
-<<<<<<< HEAD
-+ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wait-up-delay-duration` 毫秒之后被唤醒。
++ 悲观事务释放锁时，只会唤醒等锁事务中 start ts 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 毫秒之后被唤醒。
 + 默认值：20
-=======
-+ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
-+ 默认值：20ms
-
-### `pipelined`
-
-+ 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
-+ 默认值：true
->>>>>>> a170aad8a (Fix config name of wake-up-delay-duration in TiKV config file (#8185))
