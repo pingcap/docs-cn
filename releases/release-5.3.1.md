@@ -125,7 +125,7 @@ TiDB 版本：5.3.1
         - 修复了 DM worker 在重启后无法完成初始化的问题 [#3344](https://github.com/pingcap/tiflow/issues/3344)
         - 修复了 DM 任务在分区表相关 DDL 执行时间过长时失败的问题 [#3854](https://github.com/pingcap/tiflow/issues/3854)
         - 修复了 DM 在上游是 MySQL 8.0 时报错 "invalid sequence" 的问题 [#3847](https://github.com/pingcap/tiflow/issues/3847)
-        - 修复了移除一个暂停的同步时，CDC Redo Log 无法被正确清理的问题 [#3919](https://github.com/pingcap/tiflow/pull/3919)
+        - 修复了移除一个暂停的同步时，CDC Redo Log 无法被正确清理的问题 [#4740](https://github.com/pingcap/tiflow/issues/4740)
         - 修复了 DM 采用细粒度失败重试策略导致数据丢失问题 [#3487](https://github.com/pingcap/tiflow/issues/3487)
         - 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - 修复了停止加载中的任务会导致它被意外调度的问题 [#3771](https://github.com/pingcap/tiflow/issues/3771)
@@ -156,6 +156,6 @@ TiDB 版本：5.3.1
     + TiDB Lightning
 
         - 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
-        - 修复存储 URL 前缀为 "gs://xxx" 而不是 "gcs://xxx" 时，TiDB Lightning 报错的问题 [#30254](https://github.com/pingcap/tidb/pull/30254)
+        - 修复存储 URL 前缀为 "gs://xxx" 而不是 "gcs://xxx" 时，TiDB Lightning 报错的问题 [#32742](https://github.com/pingcap/tidb/issues/32742)
         - 修复设置 --log-file="-" 时，没有 log 输出到 stdout 的问题 [#29876](https://github.com/pingcap/tidb/issues/29876)
         - 修复 S3 存储路径不存在时 TiDB Lightning 不报错的问题 [#30709](https://github.com/pingcap/tiflow/issues/30709)
