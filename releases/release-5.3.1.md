@@ -37,7 +37,7 @@ TiDB 版本：5.3.1
     + TiCDC
 
         - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
-        - 在 S3 启动前增加一个预清理进程 [#3878](https://github.com/pingcap/tiflow/issues/3878)
+        - 当指定 S3 为存储后端时，在 TiCDC 启动前增加预清理逻辑 [#3878](https://github.com/pingcap/tiflow/issues/3878)
         - TiCDC 客户端能在未指定证书名的情况下工作 [#3627](https://github.com/pingcap/tiflow/issues/3627)
         - 修复因 checkpoint 不准确导致的潜在的数据丢失问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
         - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
