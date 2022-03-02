@@ -158,4 +158,4 @@ TiDB 版本：5.3.1
         - 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - 修复存储 URL 前缀为 "gs://xxx" 而不是 "gcs://xxx" 时，TiDB Lightning 报错的问题 [#30254](https://github.com/pingcap/tidb/pull/30254)
         - 修复设置 --log-file="-" 时，没有 log 输出到 stdout 的问题 [#29876](https://github.com/pingcap/tidb/issues/29876)
-        - Fix the issue that TiDB Lightning does not report errors when the S3 storage path does not exist #28031 [#30709](https://github.com/pingcap/tiflow/issues/30709)
+        - Fix the issue that TiDB Lightning does not report errors when the S3 storage path does not exist [#30709](https://github.com/pingcap/tiflow/issues/30709)
