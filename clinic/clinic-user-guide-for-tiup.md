@@ -256,7 +256,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     ```
 
-    完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+3. 完成上传后，将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
     > **注意：**
     >
