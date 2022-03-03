@@ -112,7 +112,7 @@ TiDB 版本：5.3.1
 
     + Backup & Restore (BR)
 
-        - 修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tiflow/issues/31034)
+        - 修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tidb/issues/31034)
 
     + TiCDC
 
