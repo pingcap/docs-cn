@@ -49,7 +49,7 @@ TiDB 版本：5.3.1
 
     - TiDB Lightning
 
-        - 优化了本地磁盘空间检查失败时前置检查的提示信息 [#30395](https://github.com/pingcap/tiflow/issues/30395)
+        - 优化了本地磁盘空间检查失败时前置检查的提示信息 [#30395](https://github.com/pingcap/tidb/issues/30395)
 
 ## Bug 修复
 
