@@ -1652,3 +1652,11 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_table_cache_lease`
+
+- 作用域：GLOBAL
+- 默认值：`3`
+- 范围：`[1, 10]`
+- 单位：秒
+- 这个变量用来控制[缓存表](/table-cache.md)的 lease 时间，默认值是 3 秒。它会影响缓存表的修改操作，在缓存表上面执行修改，最长可能出现 `tidb_table_cache_lease` 这么久的等待。如果业务表是只读，或者可以承受很高的写入延迟，可以将这个值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
