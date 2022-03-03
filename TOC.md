@@ -286,7 +286,7 @@
   - Backup & Restore (BR)
     - [BR 简介](/br/backup-and-restore-overview.md)
     - [部署和使用 BR](/br/br-deployment.md)
-    - [使用 BR 备份集群](/br/br-usage-backup.md/)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
     - [使用 BR 恢复集群](/br/br-usage-restore.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
     - BR 特性
