@@ -11,7 +11,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 TiDB Clinic �
 
 > **注意：**
 >
-> TiDB Clinic 诊断服务暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采集。
+> TiDB Clinic 诊断服务暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
