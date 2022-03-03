@@ -108,21 +108,19 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 
 **内存和 CPU**
 
-因为 TiDB Lightning 对计算机资源消耗较高，建议分配 64 GB 以上的内存以及 32 核以上的 CPU，而且确保 CPU 核数和内存（GB）比为 1:2 以上，以获取最佳性能。
-
-另外，TiDB Lightning 内存使用在不同 backend 模式下有所不同，具体如下：
+TiDB Lightning 在不同 backend 模式下对 CPU 和内存等资源的要求不同，在部署时，建议根据使用的 backend 选择合适的环境以获取最佳导入性能。
 
 - Local-backend
-    
-    此模式下，TiDB Lightning 内存占用主要来自于将源数据编码为 TiKV 键值对的过程。在此过程中，为了加快数据编码的过程，TiDB Lightning 利用内存当作缓存，每次编码一批键值对。编码过程的并发通过 `region-concurrency` 参数控制。根据测试经验表明，在导入大量数据时，一个并发对内存的占用在 2 GiB 左右，也就是说总内存占用最大可达到 region-concurrency * 2 GiB。`region-concurrency` 默认与逻辑 CPU 的数量相同。如果内存的大小（GiB）小于逻辑 CPU 数量的两倍，需要手动配置 `region-concurrency` 参数以避免 TiDB Lightning OOM。
+
+   Local-backend 模式对 CPU 和内存的需求都比较高，建议为 TiDB Lightning 分配 32 核以上的 CPU 以获取最佳的性能。此模式下，TiDB Lightning 内存占用主要来自于将源数据编码为 TiKV 键值对的过程。在此过程中，为了加快数据编码的过程，TiDB Lightning 利用内存当作缓存，每次编码一批键值对。编码过程的并发通过 `region-concurrency` 参数控制。根据测试经验表明，在导入大量数据时，一个并发对内存的占用在 2 GiB 左右，也就是说总内存占用最大可达到 region-concurrency * 2 GiB。`region-concurrency` 默认与逻辑 CPU 的数量相同。如果内存的大小（GiB）小于逻辑 CPU 数量的两倍或运行时出现 OOM，需要手动调低 `region-concurrency` 参数以避免 TiDB Lightning OOM。
 
 - TiDB-backend
 
-    TiDB Lightning 以 SQL 的方式将数据导入到 TiDB 中。一般而言，TiDB-backend 模式下没有显著（5GiB 以上）的内存占用。如在此模式下需仍然需要控制 TiDB Lightning 内存用量，可适当调低 `region-concurrency` 参数。
+    TiDB Lightning 以 SQL 的方式将数据导入到 TiDB 中，此模式下，主要的性能瓶颈在 TiDB，因此通常分配 4 核 CPU 和 8GB 内存就基本可以达到最优性能。如果实际导入时，发现 TiDB 集群并没有达到写入的上限，可以适当调大 `region-concurrency` 配置参数。
 
 - Importer-backend
 
-    Importer-backend 在 TiDB Lightning v5.0 后几乎不再使用，计划在 v6.0 移除该功能。
+    Importer backend 模式下的导入原理与资源消耗基本与 Local-backend 相同，如无特殊需求，请优先使用 Local-backend。Importer-backend 在 TiDB Lightning v5.0 后几乎不再使用，计划在 v6.0 移除该功能。
 
 **存储空间**：配置项 `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间。建议与 `data-source-dir` 使用不同的存储设备，独占 IO 会获得更好的导入性能，且建议优先考虑配置闪存等高性能存储介质。
 
