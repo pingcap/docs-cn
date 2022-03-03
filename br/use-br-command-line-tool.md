@@ -418,7 +418,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - 系统变量表（`mysql.tidb`，`mysql.global_variables`）无法被恢复。
 > - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）无法被恢复。
 > - GC 数据无法被恢复。
-> 
+>
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
 ### Raw KV 恢复（实验性功能）
