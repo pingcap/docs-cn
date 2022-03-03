@@ -13,7 +13,7 @@ TiDB Clinic 目前处于 Beta 受邀测试使用阶段。该服务提供以下�
 
     > **注意：**
     >
-    > - Diag 暂时**不支持**对开启了 TLS 加密的集群和使用 TiDB Ansible 部署的集群进行数据采样。
+    > - Diag 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
     > - TiDB Clinic 目前处于 Beta 受邀测试使用阶段，如需使用 Diag 把数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 - Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。
