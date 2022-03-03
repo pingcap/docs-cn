@@ -1124,5 +1124,5 @@ This section gives the alert rules for the Blackbox_exporter TCP, ICMP, and HTTP
 
 * Solution:
 
-    * View the ping latency between the two nodes on the Grafana Blackbox Exporter dashboard to check whether it is too high.
-    * Check the tcp panel on the Grafana Node Exporter dashboard to check whether there is any packet loss.
+    * View the ping latency between the two nodes on the Grafana Blackbox Exporter page to check whether it is too high.
+    * Check the TCP panel on the Grafana Node Exporter page to check whether there is any packet loss.
