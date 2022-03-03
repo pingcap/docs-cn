@@ -108,7 +108,7 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 
 **内存和 CPU**
 
-TiDB Lightning 在不同 backend 模式下对 CPU 和内存等资源的要求不同，在部署时，建议根据使用的 backend 选择合适的环境以获取最佳导入性能。
+TiDB Lightning 在不同 backend 模式下对 CPU 和内存的要求不同，在部署时，建议根据使用的 backend 选择合适的环境以获取最佳导入性能。
 
 - Local-backend
 
