@@ -115,15 +115,31 @@ Step 1. Check versions
     tiup update --all
     ```
 
-Step 2. Reload Prometheus
+Step 2. Add the ng_port configuration item on the control machine by using TiUP. Then reload Prometheus.
 
-On the control machine, reload Prometheus by using TiUP:
+1. Open the cluster configuration file in editing mode:
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tiup cluster reload ${cluster-name} --role prometheus
-```
+    ```shell
+    tiup cluster edit-config ${cluster-name}
+    ```
+
+2. Under `monitoring_servers`, add the `ng_port:${port}` parameter:
+
+    ```
+    monitoring_servers:
+    - host: 172.16.6.6
+      ng_port: ${port}
+    ```
+
+3. Reload Prometheus:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup cluster reload ${cluster-name} --role prometheus
+    ```
 
 After performing the preceding steps, enable Continuous Profiling on TiDB Dashboard. If NgMonitoring still fails to be started, contact PingCAP technical support for help.
 
