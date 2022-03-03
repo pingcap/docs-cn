@@ -61,12 +61,10 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/scale-a-tidb-cluster)
   - 备份与恢复
-    - 使用 BR 工具（推荐）
-      - [BR 工具简介](/br/backup-and-restore-overview.md)
-      - [BR 设计简介](/br/backup-and-restore-design.md)
-      - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+    - 使用 BR 工具
+      - [使用 BR 备份集群](/br/br-usage-backup.md/)
+      - [使用 BR 恢复集群](/br/br-usage-restore.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -287,13 +285,17 @@
     - [术语表](/dm/dm-glossary.md)
     - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
-    - [BR 工具简介](/br/backup-and-restore-overview.md)
-    - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+    - [BR 简介](/br/backup-and-restore-overview.md)
+    - [部署和使用 BR](/br/br-deployment.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md/)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - [外部存储](/br/backup-and-restore-storages.md)
-    - [RawKV 的备份恢复](/br/rawkv-backup-and-restore.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
+    - 参考指南
+      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
+      - [外部存储](/br/backup-and-restore-storages.md)
+      - [RawKV 的备份恢复](/br/rawkv-backup-and-restore.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
