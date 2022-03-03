@@ -31,8 +31,8 @@ oncall_open_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3
 oncall_close_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3AONCALL+is%3Aclosed+label%3Atranslation%2Fdoing+'
 bugfix_open_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atype%2Fbug-fix+is%3Aopen+'
 bugfix_close_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atype%2Fbug-fix+is%3Aclosed+label%3Atranslation%2Fdoing'
-# enhance_open_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Aopen+is%3Apr+label%3Atype%2Fenhancement'
-# enhance_close_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atype%2Fenhancement+is%3Aclosed+label%3Atranslation%2Fdoing'
+enhance_open_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Aopen+is%3Apr+label%3Atype%2Fenhancement'
+enhance_close_url_zh = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr+label%3Atype%2Fenhancement+is%3Aclosed+label%3Atranslation%2Fdoing'
 # docs PR URL lists
 compat_open_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Aopen+is%3Apr+label%3Atype%2Fcompatibility-or-feature-change'
 compat_close_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Aclosed+is%3Apr+label%3Atype%2Fcompatibility-or-feature-change+label%3Atranslation%2Fdoing'
@@ -40,8 +40,8 @@ oncall_open_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3AON
 oncall_close_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3AONCALL+is%3Aclosed+label%3Atranslation%2Fdoing+'
 bugfix_open_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Atype%2Fbug-fix+is%3Aopen+'
 bugfix_close_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Atype%2Fbug-fix+is%3Aclosed+label%3Atranslation%2Fdoing'
-# enhance_open_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Aopen+is%3Apr+label%3Atype%2Fenhancement'
-# enhance_close_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Atype%2Fenhancement+is%3Aclosed+label%3Atranslation%2Fdoing'
+enhance_open_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Aopen+is%3Apr+label%3Atype%2Fenhancement'
+enhance_close_url_en = 'https://github.com/pingcap/docs/pulls?q=is%3Apr+label%3Atype%2Fenhancement+is%3Aclosed+label%3Atranslation%2Fdoing'
 
 
 def get_pr_no(url):
@@ -89,6 +89,13 @@ type/bug-fix 文档 bug 影响用户体验，请尽快处理：
 - docs-cn 仓库中有 {bugfix_open_zh} PR 未合并，有 {bugfix_close_zh} PR 待翻译
 - docs 仓库中有 {bugfix_open_en} PR 未合并，有 {bugfix_close_en} PR 待翻译
 *************************************************
+
+type/enhancement 文档优化，优化后的文档更易用哦：
+
+- docs-cn 仓库中有 {enhance_open_zh} PR 未合并，有 {enhance_close_zh} PR 待翻译
+- docs 仓库中有 {enhance_open_en} PR 未合并，有 {enhance_close_en} PR 待翻译
+*************************************************
+
 '''
 
 
@@ -108,6 +115,10 @@ if __name__ == "__main__":
         'bugfix_close_zh': str(get_pr_no(bugfix_close_url_zh)),
         'bugfix_open_en': str(get_pr_no(bugfix_open_url_en)),
         'bugfix_close_en': str(get_pr_no(bugfix_close_url_en)),
+        'enhance_open_zh': str(get_pr_no(enhance_open_url_zh)),
+        'enhance_close_zh': str(get_pr_no(enhance_close_url_zh)),
+        'enhance_open_en': str(get_pr_no(enhance_open_url_en)),
+        'enhance_close_en': str(get_pr_no(enhance_close_url_en)),
         'compat_open_url_zh': compat_open_url_zh,
         'compat_close_url_zh': compat_close_url_zh,
         'compat_open_url_en': compat_open_url_en,
@@ -119,7 +130,11 @@ if __name__ == "__main__":
         'bugfix_open_url_zh': bugfix_open_url_zh,
         'bugfix_close_url_zh': bugfix_close_url_zh,
         'bugfix_open_url_en': bugfix_open_url_en,
-        'bugfix_close_url_en': bugfix_close_url_en
+        'bugfix_close_url_en': bugfix_close_url_en,
+        'enhance_open_url_zh': enhance_open_url_zh,
+        'enhance_close_url_zh': enhance_close_url_zh,
+        'enhance_open_url_en': enhance_open_url_en,
+        'enhance_close_url_en': enhance_close_url_en
     }
 
     #    report = TEMPLATE.format(**data)
@@ -325,6 +340,18 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
+                                "text": "type/bug-fix 标签"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": ""
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
                                 "text": "P3：已知文档 bug 影响用户体验，让我们一起扫除小虫子吧~"
                             }
                         ],
@@ -372,6 +399,82 @@ if __name__ == "__main__":
                                 "tag": "a",
                                 "text": "待翻译",
                                 "href": "${bugfix_close_url_en}"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": "*************************************************"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": ""
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": "type/enhancement 标签"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": ""
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": "P4：优化后的文档，更易读易懂哦~"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": ""
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": "- docs-cn 仓库中有 ${enhance_open_zh} PR "
+                            },
+                            {
+                                "tag": "a",
+                                "text": "未合并",
+                                "href": "${enhance_open_url_zh}"
+                            },
+                            {
+                                "tag": "text",
+                                "text": "，有 ${enhance_close_zh} PR "
+                            },
+                            {
+                                "tag": "a",
+                                "text": "待翻译",
+                                "href": "${enhance_close_url_zh}"
+                            }
+                        ],
+                        [
+                            {
+                                "tag": "text",
+                                "text": "- docs 仓库中有 ${enhance_open_en} PR "
+                            },
+                            {
+                                "tag": "a",
+                                "text": "未合并",
+                                "href": "${enhance_open_url_en}"
+                            },
+                            {
+                                "tag": "text",
+                                "text": "，有 ${enhance_close_en} PR "
+                            },
+                            {
+                                "tag": "a",
+                                "text": "待翻译",
+                                "href": "${enhance_close_url_en}"
                             }
                         ]
                     ]
