@@ -62,7 +62,7 @@
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
     - 使用 BR 工具
-      - [使用 BR 备份集群](/br/br-usage-backup.md/)
+      - [使用 BR 备份集群](/br/br-usage-backup.md)
       - [使用 BR 恢复集群](/br/br-usage-restore.md)
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
   - [修改时区](/configure-time-zone.md)
