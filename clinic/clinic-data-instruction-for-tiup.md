@@ -17,7 +17,7 @@ After a technical support case is closed, PingCAP permanently deletes or anonymi
 
 This section lists the types of diagnostic data that can be collected by Diag from the TiDB clusters deployed using TiUP.
 
-### Basic information of the cluster
+### TiDB cluster information
 
 | Data type | Exported file | Parameter for data collection by TiDB Clinic |
 | :------ | :------ |:-------- |
@@ -85,7 +85,7 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | TiDB system variables (Diag does not collect this data type by default; if you need to collect this data type, database credential is required) | `mysql.tidb.csv` | `--include=db_vars` |
 | | `global_variables.csv` | `--include=db_vars` |
 
-### System information of the cluster
+### System information of the cluster node
 
 | Data type | Exported file | Parameter for data collection by TiDB Clinic |
 | :------ | :------ |:-------- |
@@ -99,7 +99,7 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 
 This section lists the types of diagnostic data that can be collected by Diag from the DM clusters deployed using TiUP.
 
-### Basic information of the cluster
+### DM cluster information
 
 | Data type | Exported file | Parameter for data collection by TiDB Clinic |
 | :------ | :------ |:-------- |
@@ -129,7 +129,7 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | All metrics data | `{metric_name}.json` | `--include=monitor` |
 | All alerts data | `alerts.json` | `--include=monitor` |
 
-### System information of the cluster
+### System information of the cluster node
 
 | Data type | Exported file | Parameter for data collection by TiDB Clinic |
 | :------ | :------ |:-------- |

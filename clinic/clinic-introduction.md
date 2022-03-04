@@ -1,9 +1,9 @@
 ---
-title: Overview of TiDB Clinic
+title: TiDB Clinic Overview
 summary: Learn about the TiDB Clinic Diagnostic Service (TiDB Clinic), including tool components, user scenarios, and implementation principles.
 ---
 
-## Overview of TiDB Clinic
+## TiDB Clinic Overview
 
 TiDB Clinic Diagnostic Service (TiDB Clinic) is a diagnostic service provided by PingCAP for TiDB clusters that are deployed using either TiUP or TiDB Operator. This service helps to troubleshoot cluster problems remotely and provides a quick check of cluster status locally. With TiDB Clinic, you can ensure the stable operation of your TiDB cluster for its full life-cycle, predict potential problems, reduce the probability of problems, troubleshoot cluster problems quickly, and fix cluster problems.
 
