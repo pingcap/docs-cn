@@ -158,7 +158,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE db_name SET TIFLASH REPLICA count
+ALTER DATABASE db_name SET TIFLASH REPLICA count
 ```
 
 该命令的参数说明如下：
@@ -170,7 +170,7 @@ ALTER TABLE db_name SET TIFLASH REPLICA count
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50` SET TIFLASH REPLICA 2
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
 ```
 
 删除副本：
@@ -178,13 +178,13 @@ ALTER TABLE `tpch50` SET TIFLASH REPLICA 2
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50` SET TIFLASH REPLICA 0
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 ```
 
 注意事项：
 
-+ 该操作实际是为用户执行一系列 DDL 操作。
-
++ 该命令实际是为用户执行一系列 DDL 操作。如果在执行过程中出现中断，未执行的操作不会继续执行。
+    
 + 从命令执行开始到该库中所有表都已**同步完成**之前，若对该库下的表再执行 DDL ，则最终状态可能非预期。包括：
 
     + 设置 TIFLASH REPLICA 数量分别为 2，在库中所有的表都同步完成前，再设置 TIFLASH REPLICA 数量为 1，不能保证最终所有表的 replica 数量都为 1 或都为 2。
@@ -193,11 +193,11 @@ ALTER TABLE `tpch50` SET TIFLASH REPLICA 0
     
     + 从命令执行开始到执行结束，如果期间对该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
 
-+ 该命令对系统表、视图等不生效。
++ 该命令会跳过系统表、视图、临时表，以及使用 TiFlash 不支持字符集的表。
 
 ### 查看库同步进度
 
-可以通过下面的 SQL 检查数据库中所有已设置 TiFlash Replica 表的同步进度
+该命令在设置完副本后即返回，而不会等待所有表都同步完成。可以通过下面的 SQL 检查数据库中所有已设置 TiFlash Replica 表的同步进度
 
 {{< copyable "sql" >}}
 
