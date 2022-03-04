@@ -21,7 +21,7 @@ TiDB version: 5.1.4
 
         - Set the default value of `max-message-bytes` to 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
 
-## Feature enhancements
+## Improvements
 
 + TiDB
 

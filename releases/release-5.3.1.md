@@ -16,7 +16,7 @@ TiDB version: 5.3.1
 
         - Change the default value of `regionMaxKeyCount` from 1_440_000 to 1_280_000, to avoid too many empty Regions after data import [#30018](https://github.com/pingcap/tidb/issues/30018)
 
-## Feature enhancements
+## Improvements
 
 - TiDB
 
