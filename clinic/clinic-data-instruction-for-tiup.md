@@ -17,7 +17,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 
 本节列出了 Diag 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
 
-### Cluster 基础信息
+### TiDB 集群信息
 
 | 诊断数据类型 | 输出文件 | TiDB Clinic 采集参数 |
 | :------ | :------ |:-------- |
@@ -85,7 +85,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 获取 TiDB 系统变量（默认不采集，采集需要额外提供数据库帐号） | `mysql.tidb.csv` | `--include=db_vars` |
 | | `global_variables.csv` | `--include=db_vars` |
 
-### 集群系统信息
+### 集群节点的系统信息
 
 | 诊断数据类型 | 输出文件 | TiDB Clinic 采集参数 |
 | :------ | :------ |:-------- |
@@ -99,7 +99,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 
 本节列出了 Diag 在使用 TiUP 部署的 DM 集群中能够采集的诊断数据类型。
 
-### Cluster 基础信息
+### DM 集群信息
 
 | 诊断数据类型 | 输出文件 | TiDB Clinic 采集参数 |
 | :------ | :------ |:-------- |
@@ -129,7 +129,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 所有的 Metrics 数据 | `{metric_name}.json` | `--include=monitor` |
 | Alert 列表 | `alerts.json` | `--include=monitor` |
 
-### 集群系统信息
+### 集群节点的系统信息
 
 | 诊断数据类型 | 输出文件 | TiDB Clinic 采集参数 |
 | :------ | :------ |:-------- |
