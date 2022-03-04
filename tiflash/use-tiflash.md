@@ -153,7 +153,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 ## 按库构建 TiFlash 副本
 
-类似于按表构建 TiFlash 副本，可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的库中的所有表建立 TiFlash 副本：
+类似于按表构建 TiFlash 副本的方式，可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的库中的所有表建立 TiFlash 副本：
 
 {{< copyable "sql" >}}
 
@@ -182,13 +182,29 @@ ALTER TABLE `tpch50` SET TIFLASH REPLICA 0
 ```
 
 注意事项：
+1. 该操作实际是为用户执行一系列 DDL 操作。
 1. 从命令执行开始到该库中所有表都已**同步完成**之前，若对该库下的表再执行 DDL ，则最终状态可能非预期。包括：
-    设置 TIFLASH REPLICA 数量分别为 2 ，如在库中所有的表都同步完成前，再设置 TIFLASH REPLICA 数量为 1 ，不能保证最终所有表的 replica数量都为 1 或都为 2。
-    从命令执行开始到执行结束，如果期间有该库下的 `CREATE TABLE` 语句，则**可能**会对这些新增表创建 TIFLASH REPLICA。
+    设置 TIFLASH REPLICA 数量分别为 2，在库中所有的表都同步完成前，再设置 TIFLASH REPLICA 数量为 1，不能保证最终所有表的 replica 数量都为 1 或都为 2。
+    从命令执行开始到执行结束，如果期间在该库下创建表，则**可能**会对这些新增表创建 TIFLASH REPLICA。
     从命令执行开始到执行结束，如果期间对该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
 
 
 ### 查看库同步进度
+可以通过下面的 SQL 检查数据库中所有已设置 TiFlash Replica 表的同步进度
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
+```
+
+可以通过下面的 SQL 检查数据库中尚未设置 TiFlash Replica 的表名
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
+```
 
 ## 使用 TiDB 读取 TiFlash
 
