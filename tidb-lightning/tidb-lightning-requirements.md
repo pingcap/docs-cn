@@ -106,7 +106,7 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 
 **操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，你可以在本地虚拟化一台主机，或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程中，默认会占满 CPU，建议单独部署在一台主机上。如果条件不允许，你可以将 TiDB Lightning 和其他组件（比如`tikv-server`）部署在同一台机器上，然后设置`region-concurrency` 配置项的值为逻辑 CPU 数的 75%，以限制 TiDB Lightning 对 CPU 资源的使用。
 
-**内存和 CPU**
+**内存和 CPU**：
 
 TiDB Lightning 在不同 backend 模式下对 CPU 和内存的要求不同，在部署时，建议根据使用的 backend 选择合适的环境以获取最佳导入性能。
 
