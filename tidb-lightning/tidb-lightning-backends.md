@@ -62,7 +62,7 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 
 使用 TiDB-backend 时， TiDB Lightning 的速度仅受限于 TiDB 执行 SQL 语句的速度。因此，即使是低配的机器也足够发挥出最佳性能。推荐的硬件配置如下：
 
-* 16 逻辑核 CPU
+* 4-8 逻辑核 CPU
 * 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
 * 千兆网卡
 
