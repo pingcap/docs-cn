@@ -16,7 +16,7 @@ TiDB 版本：5.3.1
 
         - 将 `regionMaxKeyCount` 的默认值从 1_440_000 调整为 1_280_000，以避免数据导入后出现过多空 Region [#30018](https://github.com/pingcap/tidb/issues/30018)
 
-## 功能增强
+## 提升改进
 
 + TiDB
 
