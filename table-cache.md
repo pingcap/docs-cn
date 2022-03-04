@@ -172,8 +172,31 @@ Query OK, 0 rows affected (0.01 sec)
 
 缓存表写入延时高的原因是受到实现的限制。存在多个 TiDB 实例时，一个 TiDB 实例并不知道其它的 TiDB 实例是否缓存了数据，如果它直接执行了修改操作，而其它 TiDB 依然读取旧的缓存数据，就会读到错误的结果。
 为了保证正确性，缓存表的实现使用了一套复杂的基于 lease 的机制：读操作在缓存数据同时，还会对于缓存设置一个有效期，也就是 lease。在 lease 过期之前，保证修改操作无法执行。
-因为必须等待 lease 过期，所以会出现写入延迟。
+因为修改操作必须等待 lease 过期，所以会出现写入延迟。
 
+
+**注意： 对于缓存表执行 DDL 语句会失败，需要去掉缓存属性，将缓存表改回普通表后，才能执行。**
+
+
+{{< copyable "sql" >}}
+
+```sql
+TRUNCATE TABLE users;
+```
+
+```
+ERROR 8242 (HY000): 'Truncate Table' is unsupported on cache tables.
+```
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> ALTER TABLE users ADD INDEX k_id(id);
+```
+
+```
+ERROR 8242 (HY000): 'Alter Table' is unsupported on cache tables.
+```
 
 通过 `ALTER TABLE t NOCACHE` 语句 可以将缓存表恢复成普通表。
 
@@ -187,8 +210,6 @@ ALTER TABLE users NOCACHE
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
-**注意： 对于缓存表执行 DDL 语句会失败，需要去掉缓存属性，将缓存表改回普通表后，才能执行。**
 
 
 ## 缓存表大小限制
@@ -223,6 +244,7 @@ ERROR 8242 (HY000): 'table too large' is unsupported on cache tables.
 
 - 使用 Stale Read 功能
 - 设置系统变量 `tidb_snapshot` 读取历史数据
+- 执行修改操作期间，会使缓存失效，直到下次数据被再次加载
 
 ## TiDB 生态工具兼容性
 
