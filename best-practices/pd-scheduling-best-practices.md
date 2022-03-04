@@ -188,8 +188,8 @@ You can check the scheduling configuration using the `config show` command in pd
 
 - `leader-schedule-limit`: Controls the concurrency of transferring leader scheduling
 - `region-schedule-limit`: Controls the concurrency of adding/deleting peer scheduling
-- `disable-replace-offline-replica`: Determines whether to disable the scheduling to take nodes offline
-- `disable-location-replacement`: Determines whether to disable the scheduling that handles the isolation level of regions
+- `enable-replace-offline-replica`: Determines whether to enable the scheduling to take nodes offline
+- `enable-location-replacement`: Determines whether to enable the scheduling that handles the isolation level of regions
 - `max-snapshot-count`: Controls the maximum concurrency of sending/receiving snapshots for each store
 
 ## PD scheduling in common scenarios
@@ -214,7 +214,7 @@ If there is a big difference in the rating of different stores, you need to exam
 - When operators are generated normally but the scheduling process is slow, it is possible that:
 
     - The scheduling speed is limited by default for load balancing purpose. You can adjust `leader-schedule-limit` or `region-schedule-limit` to larger values without significantly impacting regular services. In addition, you can also properly ease the restrictions specified by `max-pending-peer-count` and `max-snapshot-count`.
-    - Other scheduling tasks are running concurrently, which slows down the balancing. In this case, if the balancing takes precedence over other scheduling tasks, you can stop other tasks or limit their speeds. For example, if you take some nodes offline when balancing is in progress, both operations consume the quota of `region-schedule-limit`. In this case, you can limit the speed of scheduler to remove nodes, or simply set `disable-replace-offline-replica = true` to temporarily disable it.
+    - Other scheduling tasks are running concurrently, which slows down the balancing. In this case, if the balancing takes precedence over other scheduling tasks, you can stop other tasks or limit their speeds. For example, if you take some nodes offline when balancing is in progress, both operations consume the quota of `region-schedule-limit`. In this case, you can limit the speed of scheduler to remove nodes, or simply set `enable-replace-offline-replica = false` to temporarily disable it.
     - The scheduling process is too slow. You can check the **Operator step duration** metric to confirm the cause. Generally, steps that do not involve sending and receiving snapshots (such as `TransferLeader`, `RemovePeer`, `PromoteLearner`) should be completed in milliseconds, while steps that involve snapshots (such as `AddLearner` and `AddPeer`) are expected to be completed in tens of seconds. If the duration is obviously too long, it could be caused by high pressure on TiKV or bottleneck in network, etc., which needs specific analysis.
 
 - PD fails to generate the corresponding balancing scheduler. Possible reasons include:
