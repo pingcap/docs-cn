@@ -110,7 +110,7 @@ select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(ind
 
 TiDB Lightning 在不同 backend 模式下对 CPU 和内存的要求不同，在部署时，建议根据使用的 backend 选择合适的环境以获取最佳导入性能。
 
-- Local-backend：该模式对 CPU 和内存的需求都比较高，建议为 TiDB Lightning 分配 32 核以上的 CPU 和 64 GB 以上内存。
+- Local-backend：该模式对 CPU 和内存的需求都比较高，建议为 TiDB Lightning 分配 32 核以上的 CPU 和 64 GiB 以上内存。
 
 > **说明：**
 >
