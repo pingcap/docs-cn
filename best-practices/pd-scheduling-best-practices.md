@@ -187,8 +187,8 @@ PD 支持直接通过 pd-ctl 来创建或删除 Operator，如：
 
 - `leader-schedule-limit`：控制 Transfer Leader 调度的并发数
 - `region-schedule-limit`：控制增删 Peer 调度的并发数
-- `disable-replace-offline-replica`：停止处理节点下线的调度
-- `disable-location-replacement`：停止处理调整 Region 隔离级别相关的调度
+- `enable-replace-offline-replica`：开启节点下线的调度
+- `enable-location-replacement`：开启调整 Region 隔离级别相关的调度
 - `max-snapshot-count`：每个 Store 允许的最大收发 Snapshot 的并发数
 
 ## 典型场景分析与处理
@@ -213,7 +213,7 @@ PD 的打分机制决定了一般情况下，不同 Store 的 Leader Count 和 R
 - 生成的调度是正常的，但是调度的速度很慢。可能的原因有：
 
     - 调度速度受限于 limit 配置。PD 默认配置的 limit 比较保守，在不对正常业务造成显著影响的前提下，可以酌情将 `leader-schedule-limit` 或 `region-schedule-limit` 调大一些。此外，`max-pending-peer-count` 以及 `max-snapshot-count` 限制也可以放宽。
-    - 系统中同时运行有其他的调度任务产生竞争，导致 balance 速度上不去。这种情况下如果 balance 调度的优先级更高，可以先停掉其他的调度或者限制其他调度的速度。例如 Region 没均衡的情况下做下线节点操作，下线的调度与 Region Balance 会抢占 `region-schedule-limit` 配额，此时你可以调小 `replica-schedule-limit` 以限制下线调度的速度，或者设置 `disable-replace-offline-replica = true` 来暂时关闭下线流程。
+    - 系统中同时运行有其他的调度任务产生竞争，导致 balance 速度上不去。这种情况下如果 balance 调度的优先级更高，可以先停掉其他的调度或者限制其他调度的速度。例如 Region 没均衡的情况下做下线节点操作，下线的调度与 Region Balance 会抢占 `region-schedule-limit` 配额，此时你可以调小 `replica-schedule-limit` 以限制下线调度的速度，或者设置 `enable-replace-offline-replica = false` 来暂时关闭下线流程。
     - 调度执行得太慢。可以通过 **Operator step duration** 进行判断。通常不涉及到收发 Snapshot 的 Step（比如 `TransferLeader`，`RemovePeer`，`PromoteLearner` 等）的完成时间应该在毫秒级，涉及到 Snapshot 的 Step（如 `AddLearner`，`AddPeer` 等）的完成时间为数十秒。如果耗时明显过高，可能是 TiKV 压力过大或者网络等方面的瓶颈导致的，需要具体情况具体分析。
 
 - 没能生成对应的 balance 调度。可能的原因有：
