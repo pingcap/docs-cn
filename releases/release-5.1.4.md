@@ -21,7 +21,7 @@ TiDB 版本：5.1.4
 
         - 将 `max-message-bytes` 默认值设置为 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
 
-## 功能增强
+## 提升改进
 
 + TiDB
 
