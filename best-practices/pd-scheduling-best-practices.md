@@ -188,8 +188,8 @@ PD 支持直接通过 pd-ctl 来创建或删除 Operator，如：
 
 - `leader-schedule-limit`：控制 Transfer Leader 调度的并发数
 - `region-schedule-limit`：控制增删 Peer 调度的并发数
-- `enable-replace-offline-replica`：开启处理节点下线的调度
-- `enable-location-replacement`：开启处理调整 Region 隔离级别相关的调度
+- `enable-replace-offline-replica`：开启节点下线的调度
+- `enable-location-replacement`：开启调整 Region 隔离级别相关的调度
 - `max-snapshot-count`：每个 Store 允许的最大收发 Snapshot 的并发数
 
 ## 典型场景分析与处理
