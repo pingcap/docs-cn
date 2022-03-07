@@ -226,10 +226,10 @@
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   - TiDB Lightning
     - [Overview](/tidb-lightning/tidb-lightning-overview.md)
-    - [Tutorial](/get-started-with-tidb-lightning.md)
-    - [Deploy](/tidb-lightning/deploy-tidb-lightning.md)
-    - [Precheck](/tidb-lightning/tidb-lightning-prechecks.md)
-    - [Configure](/tidb-lightning/tidb-lightning-configuration.md)
+    - Prechecks and requirements
+      - [Prechecks](/tidb-lightning/tidb-lightning-prechecks.md)
+      - [Downstream privilege requirements](/tidb-lightning/tidb-lightning-requirements.md)
+      - [Downstream storage space requirements](/tidb-lightning/tidb-lightning-requirements.md#downstream-storage-space-requirements)
     - Key Features
       - [Checkpoints](/tidb-lightning/tidb-lightning-checkpoints.md)
       - [Table Filter](/table-filter.md)
@@ -238,6 +238,9 @@
       - [Import Data in Parallel](/tidb-lightning/tidb-lightning-distributed-import.md)
       - [Error Resolution](/tidb-lightning/tidb-lightning-error-resolution.md)
       - [Web Interface](/tidb-lightning/tidb-lightning-web-interface.md)
+    - [Tutorial](/get-started-with-tidb-lightning.md)
+    - [Deploy](/tidb-lightning/deploy-tidb-lightning.md)
+    - [Configure](/tidb-lightning/tidb-lightning-configuration.md)
     - [Monitor](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [Glossary](/tidb-lightning/tidb-lightning-glossary.md)

@@ -20,20 +20,6 @@ Before starting TiDB Lightning, note that:
     bin/tidb-lightning-ctl --switch-mode=normal
     ```
 
-- TiDB Lightning is required to have the following privileges in the downstream TiDB:
-
-    | Privilege | Scope |
-    |----:|:------|
-    | SELECT | Tables |
-    | INSERT | Tables |
-    | UPDATE | Tables |
-    | DELETE | Tables |
-    | CREATE | Databases, tables |
-    | DROP | Databases, tables |
-    | ALTER | Tables |
-
-    If the `checksum` configuration item of TiDB Lightning is set to `true`, then the admin user privileges in the downstream TiDB need to be granted to TiDB Lightning.
-
 ## Hardware requirements
 
 `tidb-lightning` is a resource-intensive program. It is recommended to deploy it as follows.

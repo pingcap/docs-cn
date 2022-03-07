@@ -62,7 +62,7 @@ When using the TiDB-backend, deploying `tikv-importer` is not necessary. Compare
 
 The speed of TiDB Lightning using TiDB-backend is limited by the SQL processing speed of TiDB. Therefore, even a lower-end machine may max out the possible performance. The recommended hardware configuration is:
 
-* 16 logical cores CPU
+* 4 logical cores CPU
 * An SSD large enough to store the entire data source, preferring higher read speed
 * 1 Gigabit network card
 
