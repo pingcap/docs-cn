@@ -650,7 +650,7 @@ tispark_workers:
 
 - `numa_node`: Allocates the NUMA policy to the instance. Before specifying this field, you need to make sure that the target machine has [numactl](https://linux.die.net/man/8/numactl) installed. If this field is specified, cpubind and membind policies are allocated using [numactl](https://linux.die.net/man/8/numactl). This field is the string type. The field value is the ID of the NUMA node, such as "0,1".
 
-- `storage_retention`: The retention time of the Prometheus monitoring data. The default value is `"15d"`.
+- `storage_retention`: The retention time of the Prometheus monitoring data. The default value is `"30d"`.
 
 - `rule_dir`: Specifies a local directory that should contain complete `*.rules.yml` files. These files are transferred to the target machine during the initialization phase of the cluster configuration as the rules for Prometheus.
 - `remote_config`: Supports writing Prometheus data to the remote, or reading data from the remote. This field has two configurations:
