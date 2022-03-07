@@ -27,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.3.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -878,7 +878,7 @@ Encoding 格式示例：
 
 ### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询从某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
 
 显示从 a 开始的所有 Region 信息，数量上限为 16：
 
