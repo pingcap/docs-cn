@@ -30,6 +30,12 @@ TiDB Lightning 的[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)�
 | 支持 TiDB 集群版本 | >= v4.0.0 | 全部 | 全部 |
 | 是否影响 TiDB 对外提供服务 | 是 | 是 | 否 |
 
+> **注意：**
+>
+> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+>
+> - 默认情况下，不应同时启动多个 TiDB Lightning 实例导入同一 TiDB 集群，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
+
 ## 如何选择后端模式
 
 - 如果导入的目标集群为 v4.0 或以上版本，请优先考虑使用 Local-backend 模式。Local-backend 部署更简单并且性能也较其他两个模式更高
