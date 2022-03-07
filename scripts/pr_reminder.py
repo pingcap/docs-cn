@@ -302,7 +302,7 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
-                                "text": "- docs-cn 仓库中有 ${oncall_open_en} PR "
+                                "text": "- docs 仓库中有 ${oncall_open_en} PR "
                             },
                             {
                                 "tag": "a",
