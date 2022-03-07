@@ -13,7 +13,7 @@ TiDB Lightning 有以下两个主要的使用场景：
 
 目前，TiDB Lightning 支持：
 
-- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
+- 导入 [Dumpling](/dumpling-overview.md)输出的数据、CSV 文件或 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。
 - 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 要快速了解 Lightning 的基本原理和使用方法，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
@@ -57,3 +57,5 @@ TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据：`tidb-lig
 * TiDB Lightning 与 TiDB 一起使用时需要注意：
 
     TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。
+
+* 如果源数据是 Apache Parquet 文件，TiDB Lightning 目前只支持由 Amazon Aurora 生成的 Apache Parquet 文件。
