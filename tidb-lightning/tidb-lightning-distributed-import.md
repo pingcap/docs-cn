@@ -180,3 +180,19 @@ type = "sql"
 You can modify the configuration of the other instance to only import the `05001 ~ 10000` data files.
 
 For other steps, see the relevant steps in Example 1.
+
+## Handle errors
+
+### Some TiDB Lightning nodes exit abnormally
+
+If one or more TiDB Lightning nodes exit abnormally during a parallel import, identify the cause based on the logged error, and handle the error according to the error type:
+
+- If the error shows normal exit (for example, exit in response to a kill command) or termination by the operating system due to OOM, adjust the configuration and then restart the TiDB Lightning nodes.
+
+- If the error has no impact on data accuracy, for example, network timeout, run `checkpoint-error-ignore` by using tidb-lightning-ctl on all failed nodes to clean errors in the checkpoint source data. Then restart these nodes to continue importing data from checkpoints. For details, see [checkpoint-error-ignore](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-ignore).
+
+- If the log reports errors resulting in data inaccuracy, for example, checksum mismatched, which indicates invalid data in the source file, run `checkpoint-error-destroy` by using tidb-lightning-ctl on all failed nodes to clean data imported to the failed tables as well as the checkpoint source data. For details, see [checkpoint-error-destroy](/tidb-lightning/tidb-lightning-checkpoints.md#--checkpoint-error-destroy). This command removes the data imported to the failed tables downstream. Therefore, you need to re-configure and import the data of the failed tables on all TiDB Lightning nodes (including those that exit normally) by using the `filters` parameter.
+
+### During an import, an error "Target table is calculating checksum. Please wait until the checksum is finished and try again" is reported
+
+Some parallel imports involve a large number of tables or tables with a small volume of data. In this case, it is possible that before one or more tasks start processing a table, other tasks of this table have finished and data checksum is in progress. At this time, an error `Target table is calculating checksum. Please wait until the checksum is finished and try again` is reported. In this case, you can wait for the completion of checksum and then restart the failed tasks. The error disappears and data accuracy is not affected.
