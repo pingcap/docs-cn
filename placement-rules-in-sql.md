@@ -27,7 +27,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 ```
 
-然后就可以用 `CREATE TABLE` 或者 `ALTER TABLE` 绑定规则。
+然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将规则绑定至表或分区表：
 
 ```sql
 CREATE TABLE t1 (a INT) PLACEMENT POLICY myplacementpolicy;
