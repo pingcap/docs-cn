@@ -63,7 +63,7 @@ SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT 
 SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
 ```
 
-所有绑定规则的对象都是 *异步调度* 的。可以用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 来查看放置规则的调度进程。
+所有绑定规则的对象都是异步调度的。可以用 [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md) 来查看放置规则的调度进度。
 
 ## 放置选项参考
 
