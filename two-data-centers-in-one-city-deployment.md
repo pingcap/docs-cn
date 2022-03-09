@@ -155,6 +155,14 @@ cat rule.json
 ]
 ```
 
+To use the configurations in `rule.json`, override the existing configurations by running the following command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl config placement-rules rule-bundle save --in="rule.json"
+```
+
 ### Enable the DR Auto-Sync mode
 
 The replication mode is controlled by PD. When deploying a cluster, you can configure the replication mode in the PD configuration file. For example:
