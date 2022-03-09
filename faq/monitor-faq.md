@@ -1,7 +1,6 @@
 ---
 title: 监控 FAQ
 summary: 介绍在监控 TiDB 集群时的常见问题、原因及解决方法。
-aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
 # 监控 FAQ

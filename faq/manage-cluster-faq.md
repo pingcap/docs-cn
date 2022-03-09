@@ -1,7 +1,6 @@
 ---
 title: 集群管理 FAQ
 summary: 介绍 TiDB 集群管理的常见问题、原因及解决方法。
-aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
 # 集群管理 FAQ
