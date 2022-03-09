@@ -233,7 +233,7 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 >
 > 当要扫描数据 key 时，需要在 key 前添加 `'z'` 前缀。
 
-`raw-scan` 命令的 `--from` 和 `--to` 参数可指定扫描范围（默认不限范围），`--limit` 参数可限制能够打印出的 key 的数量（默认为 `30`），`--cf` 参数可指定进行扫描的 CF（可选  `default`，`write` ，`lock`）。
+`raw-scan` 命令的 `--from` 和 `--to` 参数可指定扫描范围（默认不限范围），`--limit` 参数可以限制能够打印出的 key 的数量（默认为 `30`），`--cf` 参数可以指定进行扫描的 CF（可选值为 `default`，`write`，`lock`）。
 
 {{< copyable "shell-regular" >}}
 
@@ -395,21 +395,21 @@ all regions are healthy
 
 ### 查看 Region 属性
 
-本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
+- 本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
-```
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
+    ```
 
-在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
+- 在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
-```
+    ```shell
+    tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
+    ```
 
 ### 动态修改 TiKV 的配置
 
