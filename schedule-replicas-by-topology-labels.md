@@ -41,7 +41,15 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 
 根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
 
-PD 上的配置叫做 `location-labels`，在集群初始化之前，可以通过 PD 的配置文件进行配置。
+PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置的每一项与 TiKV 的 `labels` 的 key 是对应的，而且其中每个 key 的顺序代表了不同标签的层次关系。
+
+`location-labels` **没有**默认值，因此，你可以根据具体需求来设置该值，包括 `zone`、`rack`、`host` 等等。此外，`location-labels` 对标签级别的数量也**没有**限制（即不限定仅能有 3 个级别），只要其级别与 TiKV 服务器的标签匹配，则可以成功进行配置。
+
+> **注意：**
+>
+> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
+
+在集群初始化之前，可以通过 PD 的配置文件进行配置。
 
 {{< copyable "" >}}
 
@@ -57,12 +65,6 @@ location-labels = ["zone", "rack", "host"]
 ```bash
 pd-ctl config set location-labels zone,rack,host
 ```
-
-其中，`location-labels` 配置是一个字符串数组，每一项与 TiKV 的 `labels` 的 key 是对应的，且其中每个 key 的顺序代表了不同标签的层次关系。
-
-> **注意：**
->
-> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
 
 ### 设置 PD 的 `isolation-level` 配置
 
