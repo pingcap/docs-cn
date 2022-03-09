@@ -192,7 +192,7 @@ In v5.4, the key new features or improvements are as follows:
 
     Since v5.4.0, TiDB supports persisting some `ANALYZE` configurations. With this feature, the existing configurations can be easily reused for future statistics collection.
 
-    The `ANALYZE` configuration persistence feature is enabled by default (the system variable `tidb_analyze_version` is `2` and `tidb_persist_analyze_options` is `ON` by default). You can use this feature to record the persistence configurations specified in the `ANALYZE` statement when executing the statement manually. Once recorded, the next time TiDB automatically updates statistics or you manually collect statistics without specifying these configurations, TiDB will collect statistics according to the recorded configurations.
+    The `ANALYZE` configuration persistence feature is enabled by default (the system variable `tidb_analyze_version` is `2` and [`tidb_persist_analyze_options`](/system-variables.md#tidb_persist_analyze_options-new-in-v540) is `ON` by default). You can use this feature to record the persistence configurations specified in the `ANALYZE` statement when executing the statement manually. Once recorded, the next time TiDB automatically updates statistics or you manually collect statistics without specifying these configurations, TiDB will collect statistics according to the recorded configurations.
 
     [User document](/statistics.md#persist-analyze-configurations)
 
@@ -284,7 +284,7 @@ In v5.4, the key new features or improvements are as follows:
 
     - More deployment environments supported: Continuous Profiling can also be used for clusters deployed using TiDB Operator.
 
-   Continuous Profiling is disabled by default and can be enabled on TiDB Dashboard. 
+   Continuous Profiling is disabled by default and can be enabled on TiDB Dashboard.
 
     Continuous Profiling is applicable to clusters deployed or upgraded using TiUP of v1.9.0 or later or TiDB Operator of v1.3.0 or later.
 
@@ -294,7 +294,7 @@ In v5.4, the key new features or improvements are as follows:
 
 + TiDB
 
-    - Add a new system variable `tidb_enable_paging` to determine whether to use paging to send Coprocessor requests. Enabling this feature can reduce the amount of data to process and to reduce latency and resource consumption [#30578](https://github.com/pingcap/tidb/issues/30578)
+    - Add a new system variable [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-new-in-v540) to determine whether to use paging to send Coprocessor requests. Enabling this feature can reduce the amount of data to process and to reduce latency and resource consumption [#30578](https://github.com/pingcap/tidb/issues/30578)
     - Support the `ADMIN {SESSION | INSTANCE | GLOBAL} PLAN_CACHE` syntax to clear the cached query plan [#30370](https://github.com/pingcap/tidb/pull/30370)
 
 + TiKV
