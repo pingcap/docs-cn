@@ -164,8 +164,7 @@ SELECT * FROM users;
 1 row in set (0.00 sec)
 ```
 
-**注意： 缓存表的写入，有可能出现数秒级别的慢查询**，具体最长耗时受到全局环境变量 `@@tidb_table_cache_lease` 的控制。该变量的默认值是 3s，取值范围是 [1, 10]。
-用户需要根据自己的业务能否承受此限制，决定是否适合使用缓存表功能。比如完全只读的场景，可以把 `@@tidb_table_cache_lease` 调大：
+**注意： 缓存表的写入，有可能出现数秒级别的慢查询**，具体最长耗时受到全局环境变量 [`@@tidb_table_cache_lease`](/system-variables.md#tidb_txn_mode) 的控制。用户需要根据自己的业务能否承受此限制，决定是否适合使用缓存表功能。比如完全只读的场景，可以把 `@@tidb_table_cache_lease` 调大：
 
 
 {{< copyable "sql" >}}
@@ -228,19 +227,6 @@ Query OK, 0 rows affected (0.00 sec)
 
 目前 TiDB 对于缓存表的大小限制为 64M。如果表的数据超过了这个大小，执行 `ALTER TABLE t CACHE` 会失败。
 
-```
-mysql> SELECT count(*) FROM t1;
-+----------+
-| count(*) |
-+----------+
-|   114688 |
-+----------+
-1 row in set (0.04 sec)
-
-mysql> ALTER TABLE t1 CACHE;
-ERROR 8242 (HY000): 'table too large' is unsupported on cache tables.
-```
-
 ## 与其他 TiDB 功能的兼容性限制
 
 以下是缓存表不支持的功能：
@@ -248,11 +234,11 @@ ERROR 8242 (HY000): 'table too large' is unsupported on cache tables.
 - 不支持对分区表执行 `ALTER TABLE t CACHE` 操作
 - 不支持对临时表执行 `ALTER TABLE t CACHE` 操作
 - 不支持对视图执行 `ALTER TABLE t CACHE` 操作
+- 不支持 Stale Read 功能
 - 不支持对缓存表直接做 DDL 操作，需要先通过 `ALTER TABLE t NOCACHE` 改回普通表
 
 以下是缓存表无法使用缓存的场景：
 
-- 使用 Stale Read 功能
 - 设置系统变量 `tidb_snapshot` 读取历史数据
 - 执行修改操作期间，会使缓存失效，直到下次数据被再次加载
 
