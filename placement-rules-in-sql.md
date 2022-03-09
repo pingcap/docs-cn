@@ -39,7 +39,7 @@ ALTER TABLE t2 PLACEMENT POLICY myplacementpolicy;
 
 ## 查看放置规则
 
-如果一张表绑定了放置规则，你就可以用 `SHOW CREATE TABLE` 来查看。还可以用 `SHOW CREATE PLACEMENT POLICY` 来查看已经创建的规则。
+如果一张表绑定了放置规则，你可以用 `SHOW CREATE TABLE` 来查看。还可以用 `SHOW CREATE PLACEMENT POLICY` 来查看已经创建的规则。
 
 ```sql
 tidb> SHOW CREATE TABLE t1\G
