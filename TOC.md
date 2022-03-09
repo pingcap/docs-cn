@@ -239,6 +239,7 @@
             - [暂停任务](/dm/dm-pause-task.md)
             - [恢复任务](/dm/dm-resume-task.md)
             - [停止任务](/dm/dm-stop-task.md)
+        - [通过 WebUI 管理](/dm/dm-webui-guide.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
