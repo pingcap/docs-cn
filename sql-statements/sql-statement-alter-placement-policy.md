@@ -11,7 +11,7 @@ summary: TiDB 数据库中 ALTER PLACEMENT POLICY 的使用概况。
 
 `ALTER PLACEMENT POLICY` 用于修改已创建的放置规则。此修改会自动更新至所有使用这些放置规则的表和分区。
 
-`ALTER PLACEMENT POLICY` 会 *完全替换* 之前定义的规则，而不会和之前的规则 *合并*，比如在下面的例子中，`FOLLOWERS=4` 就被 `ALTER PLACEMENT POLICY` 语句覆盖了：
+`ALTER PLACEMENT POLICY` 会*完全替换*之前定义的规则，而不会和之前的规则*合并*，比如在下面的例子中，`FOLLOWERS=4` 就被 `ALTER PLACEMENT POLICY` 语句覆盖了：
 
 ```sql
 CREATE PLACEMENT POLICY p1 FOLLOWERS=4;
