@@ -11,7 +11,7 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 
 `SHOW PLACEMENT FOR` 用于汇总所有放置规则 (placement policy) ，并用统一的形式呈现特定表、数据库或分区的信息。
 
-本语句返回结果中的 `Scheduling_State` 列标识了 Placement Driver (PD) 在当前对象上的调度进程，有以下可能结果：
+本语句返回结果中的 `Scheduling_State` 列标识了 Placement Driver (PD) 在当前对象上的调度进度，有以下可能的结果：
 
 * `PENDING`: PD 没有进行调度。可能的原因之一是放置规则虽然语法上正确，但集群拓扑并不满足。比如指定 `FOLLOWERS=4` 但只有 3 个可用作 follower 的 TiKV 实例。
 * `INPROGRESS`: PD 正在进行调度。
