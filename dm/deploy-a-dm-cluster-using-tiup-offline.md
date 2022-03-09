@@ -110,9 +110,6 @@ monitoring_servers:
 
 grafana_servers:
   - host: 172.19.0.101
-    config:
-      auth.anonymous.enabled: true
-      security.allow_embedding: true
 
 alertmanager_servers:
   - host: 172.19.0.101

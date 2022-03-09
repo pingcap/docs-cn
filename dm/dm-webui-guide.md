@@ -34,7 +34,7 @@ Dashboard 是内嵌了 DM 的 Grafana Dashboard，包含两个视图`Standard`�
       - host: 10.0.1.14
         # port: 3000
         # deploy_dir: /tidb-deploy/grafana-3000
-        config:
+        config:       # 请确保 tiup dm -v 版本在 v1.9.0 以上
           auth.anonymous.enabled: true
           security.allow_embedding: true
     ```
@@ -55,7 +55,7 @@ allow_embedding = true
 
 ## 任务列表
 
-任务列表用于管理所有的迁移任务。与 v6.0 以下版本不同，WebUI 首先使用了新的生命周期管理（dmctl 预计将在 v6.1 版本同步修改）。这将导致操作方式与之前版本有所不同，可能需要一些适应。
+任务列表用于管理所有的迁移任务。与 v6.0 以下版本不同，WebUI 首先使用了新的生命周期管理（dmctl 预计将在后续版本同步修改）。这将导致操作方式与之前版本有所不同，并且由于部分内部机制尚未完全修改完成，可能出现潜在问题，因此请勿用于生产环境。
 
 原有 task 生命周期
 

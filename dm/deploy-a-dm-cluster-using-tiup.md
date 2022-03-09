@@ -121,9 +121,6 @@ grafana_servers:
   - host: 10.0.1.14
     port: 3000
     # deploy_dir: /tidb-deploy/grafana-3000
-    config:
-      auth.anonymous.enabled: true
-      security.allow_embedding: true
 
 alertmanager_servers:
   - host: 10.0.1.15
