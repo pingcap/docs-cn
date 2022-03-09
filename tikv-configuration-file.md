@@ -1343,14 +1343,10 @@ raftdb 相关配置项。
 
 Raft Engine 相关的配置项。
 
-> **警告：**
->
-> Raft Engine 目前为实验特性，不建议在生产环境中使用。
-
 ### `enable`
 
 + 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。
-+ 默认值：`"false"`
++ 默认值：`"true"`
 
 ### `dir`
 
