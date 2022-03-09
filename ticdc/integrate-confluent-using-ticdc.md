@@ -28,7 +28,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
     {{< copyable "shell-regular" >}}
 
     ```shell
-    confluent local services connects connector list
+    confluent local services connect connector list
     ```
 
 ## 集成步骤
