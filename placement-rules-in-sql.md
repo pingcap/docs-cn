@@ -56,7 +56,7 @@ Create Policy: CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east
 1 row in set (0.00 sec)
 ```
 
-`information_schema.tables` 表和 `information_schema.partitions` 表也有一列 `tidb_placement_policy_name`，可用来查找所有绑定了放置规则的对象：
+`information_schema.tables` 表和 `information_schema.partitions` 表也有一列 `tidb_placement_policy_name`，用于展示所有绑定了放置规则的对象：
 
 ```sql
 SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
