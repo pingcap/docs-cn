@@ -113,3 +113,20 @@ grafana_servers:
 ...
 ```
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 config 字段的内容会添加到 grafana 的配置文件 grafana.ini 中。
+
+# 自定义 Alertmanager 配置
+
+目前 TiUP 可以支持自定义 alertmanager 的监听地址配置。
+
+TiUP 部署的 Alertmanager 默认监听 alertmanager_servers.host，如果客户的 Alertmanager 是通过代理访问的，则无法访问。通过在集群配置文件 topology.yaml 中添加 listen_host 指定监听地址，使得 Alertmanager 可以通过代理访问。 推荐配置为 0.0.0.0。 
+
+以下例子配置了 listen_host 字段。
+
+alertmanager_servers:
+  # # The ip address of the Alertmanager Server.
+  - host: 172.16.7.147
+    listen_host: 0.0.0.0
+    # # SSH port of the server.
+    ssh_port: 22
+
+上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 listen_host 字段的内容会添加到 Alertmanager 启动参数的 '--web.listen-address' 中。
