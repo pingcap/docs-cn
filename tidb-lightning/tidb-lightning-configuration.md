@@ -52,7 +52,7 @@ table-concurrency = 6
 
 # 数据的并发数。默认与逻辑 CPU 的数量相同。
 # 混合部署的情况下可以将其大小配置为逻辑 CPU 数的 75%，以限制 CPU 的使用。
-# region-concurrency = 
+# region-concurrency =
 
 # I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
 # 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
@@ -145,7 +145,7 @@ addr = "172.16.31.10:8287"
 # 使用 Physical Import Mode 时，配置 TiDB Lightning 本地临时文件使用的磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
 # 需要同时配合把 `backend` 设置为 `local` 模式才能生效。
 # 默认值为 MaxInt64 字节，即 9223372036854775807 字节。
-# disk-quota = "10GB" 
+# disk-quota = "10GB"
 
 # Physical Import Mode 是否通过 SQL 方式添加索引。默认为 `false`，表示 TiDB Lightning 会将行数据以及索引数据都编码成 KV pairs 后一同导入 TiKV，实现机制和历史版本保持一致。如果设置为 `true`，即 TiDB Lightning 会在导入数据完成后，使用 add index 的 SQL 来添加索引。
 # 通过 SQL 方式添加索引的优点是将导入数据与导入索引分开，可以快速导入数据，即使导入数据后，索引添加失败，也不会影响数据的一致性。
@@ -353,6 +353,7 @@ log-progress = "5m"
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
 | --key *file* | TLS 连接的私钥路径 | `security.key-path` |
 | --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
+| --check-only | 仅进行前置检查和数据采样检查，数据采样检查会对一定比例的数据文件的前 N 行进行数据检查，主要的检查项为：数据行数是否与列数匹配，字符类型列是否存在非法字符。<br/>可选择值为 `--check-only=default`，此时数据采样检查文件比例为1%，每个文件检查前 `1000` 行；或 `--check-only=rate,rows`，其中 `rate` 是`(0, 1]`范围内的浮点数，`rows` 为正整数或`-1`，`-1` 代表对文件的所有行进行检查。 | 仅在命令行生效，无对应配置项 |
 
 如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
 
