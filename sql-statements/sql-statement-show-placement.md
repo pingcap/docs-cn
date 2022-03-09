@@ -11,7 +11,13 @@ summary: The usage of SHOW PLACEMENT in TiDB.
 >
 > If you understand the risks, you can enable this experiment feature by executing `SET GLOBAL tidb_enable_alter_placement = 1;`.
 
-`SHOW PLACEMENT` summarizes all placement options from direct placement and placement policies, and presents them in canonical form.
+`SHOW PLACEMENT` summarizes all placement options from placement policies, and presents them in canonical form.
+
+The statement returns a result set in which the `Scheduling_State` field indicates the current progress that the Placement Driver (PD) has made in scheduling the placement:
+
+* `PENDING`: The PD has not yet started scheduling the placement. This might indicate that that the placement rules are semantically correct, but can not currently be satisfied by the cluster. For example, if `FOLLOWERS=4` but there are only 3 TiKV stores which are candidates for followers.
+* `INPROGRESS`: The PD is currently scheduling the placement.
+* `SCHEDULED`: The PD has successfully scheduled the placement.
 
 ## Synopsis
 
@@ -27,14 +33,11 @@ ShowStmt ::=
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4;
 CREATE TABLE t1 (a INT) PLACEMENT POLICY=p1;
-CREATE TABLE t2 (a INT) PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4;
 SHOW PLACEMENT;
 ```
 
 ```
 Query OK, 0 rows affected (0.01 sec)
-
-Query OK, 0 rows affected (0.00 sec)
 
 Query OK, 0 rows affected (0.00 sec)
 
@@ -44,7 +47,6 @@ Query OK, 0 rows affected (0.00 sec)
 | POLICY p1     | PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4 | NULL             |
 | DATABASE test | PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4 | INPROGRESS       |
 | TABLE test.t1 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4 | INPROGRESS       |
-| TABLE test.t2 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4 | INPROGRESS       |
 +---------------+----------------------------------------------------------------------+------------------+
 4 rows in set (0.00 sec)
 ```

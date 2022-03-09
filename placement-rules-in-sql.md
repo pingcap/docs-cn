@@ -19,23 +19,52 @@ The detailed user scenarios are as follows:
 - Schedule the leaders of hotspot data to high-performance TiKV instances
 - Separate cold data to lower-cost storage mediums to improve cost efficiency
 
-## Specify placement options
+## Specify placement rules
 
-To use Placement Rules in SQL, you need to specify one or more placement options in a SQL statement. To specify the Placement options, you can either use _direct placement_ or use a _placement policy_.
-
-In the following example, both tables `t1` and `t2` have the same rules. `t1` is specified rules using a direct placement while `t2` is specified rules using a placement policy.
+To specify placement rules, first create a placement policy:
 
 ```sql
-CREATE TABLE t1 (a INT) PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
-CREATE PLACEMENT POLICY eastandwest PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
-CREATE TABLE t2 (a INT) PLACEMENT POLICY=eastandwest;
+CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 ```
 
-It is recommended to use placement policies for simpler rule management. When you change a placement policy (via [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)), the change automatically propagates to all database objects.
+Then attach the policy to a table or partition using either `CREATE TABLE` or `ALTER TABLE`:
 
-If you use direct placement options, you have to alter rules for each object (for example, tables and partitions).
+```sql
+CREATE TABLE t1 (a INT) PLACEMENT POLICY myplacementpolicy;
+CREATE TABLE t2 (a INT);
+ALTER TABLE t2 PLACEMENT POLICY myplacementpolicy;
+```
 
-`PLACEMENT POLICY` is not associated with any database schema and has the global scope. Therefore, assigning a placement policy does not require any additional privileges over the `CREATE TABLE` privilege.
+A placement policy is not associated with any database schema and has the global scope. Therefore, assigning a placement policy does not require any additional privileges over the `CREATE TABLE` privilege.
+
+## View current placement rules
+
+If a table has placement rules attached, you can view the placement rules in the output of `SHOW CREATE TABLE`. To view the definition of the policy available, execute `SHOW CREATE PLACEMENT POLICY`:
+
+```sql
+tidb> SHOW CREATE TABLE t1\G
+*************************** 1. row ***************************
+       Table: t1
+Create Table: CREATE TABLE `t1` (
+  `a` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`myplacementpolicy` */
+1 row in set (0.00 sec)
+
+tidb> SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
+*************************** 1. row ***************************
+       Policy: myplacementpolicy
+Create Policy: CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1"
+1 row in set (0.00 sec)
+```
+
+The `information_schema.tables` and `information_schema.partitions` tables also include a column for `tidb_placement_policy_name`, which shows all objects with placement rules attached:
+
+```sql
+SELECT * FROM information_schema.tables WHERE tidb_placement_policy_name IS NOT NULL;
+SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS NOT NULL;
+```
+
+Rules that are attached to objects are applied _asynchronously_. To view the current scheduling progress of placement, use [`SHOW PLACEMENT`](/sql-statements/sql-statement-show-placement.md).
 
 ## Option reference
 
@@ -173,7 +202,7 @@ The following known limitations exist in the experimental release of Placement R
 
 * Dumpling does not support dumping placement policies. See [issue #29371](https://github.com/pingcap/tidb/issues/29371).
 * TiDB tools, including Backup & Restore (BR), TiCDC, TiDB Lightning, and TiDB Data Migration (DM), do not yet support placement rules.
-* Temporary tables do not support placement options (either via direct placement or placement policies).
+* Temporary tables do not support placement options.
 * Syntactic sugar rules are permitted for setting `PRIMARY_REGION` and `REGIONS`. In the future, we plan to add varieties for `PRIMARY_RACK`, `PRIMARY_ZONE`, and `PRIMARY_HOST`. See [issue #18030](https://github.com/pingcap/tidb/issues/18030).
 * TiFlash learners are not configurable through Placement Rules syntax.
 * Placement rules only ensure that data at rest resides on the correct TiKV store. The rules do not guarantee that data in transit (via either user queries or internal operations) only occurs in a specific region.

@@ -23,11 +23,11 @@ PolicyName ::=
     Identifier
 
 PlacementOptionList ::=
-    DirectPlacementOption
-|   PlacementOptionList DirectPlacementOption
-|   PlacementOptionList ',' DirectPlacementOption
+    PlacementOption
+|   PlacementOptionList PlacementOption
+|   PlacementOptionList ',' PlacementOption
 
-DirectPlacementOption ::=
+PlacementOption ::=
     "PRIMARY_REGION" EqOpt stringLit
 |   "REGIONS" EqOpt stringLit
 |   "FOLLOWERS" EqOpt LengthNum
