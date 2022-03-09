@@ -59,11 +59,11 @@ allow_embedding = true
 
 原有 task 生命周期
 
-![dm-task-state-old](dm-task-state-old.jpg)
+![dm-task-state-old](/media/dm/dm-task-state-old.jpg)
 
 新的 task 生命周期
 
-![dm-task-state-new](dm-task-state-new.jpg)
+![dm-task-state-new](/media/dm/dm-task-state-new.jpg)
 
 创建新的任务前，需要在侧边栏-上游配置页面中添加上游数据库信息。
 
