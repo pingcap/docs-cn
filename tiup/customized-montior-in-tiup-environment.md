@@ -95,6 +95,7 @@ grafana_servers:
     dashboard_dir: /home/tidb/dashboards   # grafana dashboard dir on TiUP machine
 ...
 ```
+
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/dashboards 路径下的自定义 Dashboard ，然后将该配置发送到 Grafana Server， 替换默认配置规则。
 
 ## 2. 自定义 Grafana 其他配置
