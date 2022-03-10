@@ -167,6 +167,12 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
 
 默认情况下各节点服务器会在日志中输出标准错误，如果启动的时候通过 `--log-file` 参数指定了日志文件，那么日志会输出到指定的文件中，并且按天做 rotation。
 
+#### TiDB、TiKV、PD 节点的各类文件存放在哪里？
+
+如需快速了解 TiDB 节点、TiKV 节点、PD 节点的配置文件、数据文件及日志文件的相关介绍与其存放位置，建议观看下面的培训视频（时长 9 分钟）。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+12.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+12.png"></video>
+
 #### 如何规范停止 TiDB？
 
 可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。

@@ -69,7 +69,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t2);
 8 rows in set (0.00 sec)
 ```
 
-由上述查询结果可知，TiDB 首先执行 `Index Join` 索引连接操作，开始读取 `t2.t1_id` 列的索引。先是 `└─HashAgg_31` 算子的部分任务在 TiKV 中对 `t1_id` 值进行去重，然后`├─HashAgg_38(Build)` 算子的部分任务在 TiDB 中对 `t1_id` 值再次进行去重。去重操作由聚合函数 `firstrow(test.t2.t1_id)` 执行，之后会将操作结果与 `t1` 表的主键相连接。
+由上述查询结果可知，TiDB 通过索引连接操作 `| IndexJoin_14` 将子查询做了连接转化。该执行计划首先在 TiKV 侧通过索引扫描算子 `└─IndexFullScan_31` 读取 `t2.t1_id` 列的值，然后由 `└─StreamAgg_39` 算子的部分任务在 TiKV 中对 `t1_id` 值进行去重，然后采用 `├─StreamAgg_49(Build)` 算子的部分任务在 TiDB 中对 `t1_id` 值再次进行去重，去重操作由聚合函数 `firstrow(test.t2.t1_id)` 执行；之后将操作结果与 `t1` 表的主键相连接，连接条件是 `eq(test.t1.id, test.t2.t1_id)`。
 
 ## Inner join（有 `UNIQUE` 约束的子查询）
 
@@ -156,4 +156,4 @@ EXPLAIN SELECT * FROM t3 WHERE t1_id NOT IN (SELECT id FROM t1 WHERE int_col < 1
 + [聚合查询的执行计划](/explain-aggregation.md)
 + [视图查询的执行计划](/explain-views.md)
 + [分区查询的执行计划](/explain-partitions.md)
-+ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
++ [索引合并查询的执行计划](/explain-index-merge.md)

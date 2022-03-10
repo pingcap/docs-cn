@@ -14,7 +14,8 @@ summary: TiDB 数据库中 SHOW CREATE PLACEMENT POLICY 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-"SHOW" "CREATE" "PLACEMENT" "POLICY" PolicyName
+ShowCreatePlacementPolicyStmt ::=
+    "SHOW" "CREATE" "PLACEMENT" "POLICY" PolicyName
 
 PolicyName ::=
     Identifier

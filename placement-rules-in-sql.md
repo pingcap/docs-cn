@@ -196,11 +196,15 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-该约束可通过列表形式 (`[+disk=ssd]`) 或字典形式 (`{+disk=ssd:1,+disk=hdd:2}`) 指定。
+该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd:1,+disk=hdd:2}`) 指定。
 
-在列表形式中，约束以键值对列表形式指定。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
+在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
 
-在字典形式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
+
+> **注意：**
+>
+> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=hdd:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
 
 ## 使用限制
 

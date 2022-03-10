@@ -59,6 +59,23 @@ table-concurrency = 6
 # 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
 io-concurrency = 5
 
+# TiDB Lightning 停止迁移任务之前能容忍的最大非严重 (non-fatal errors) 错误数。
+# 在忽略非严重错误所在的行数据之后，迁移任务可以继续执行。
+# 将该值设置为 N，表示 TiDB Lightning 会在遇到第 (N+1) 个错误时停止迁移任务。
+# 被忽略的行会被记录到位于目标集群的 "task info" 数据库中。最大错误数可以通过下面参数配置。
+max-error = 0
+# 参数 task-info-schema-name 指定用于存储 TiDB Lightning 执行结果的数据库。
+# 要关闭该功能，需要将该值设置为空字符串。
+# task-info-schema-name = 'lightning_task_info'
+
+# 在并行导入模式下，在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名字，默认为 "lightning_metadata"。
+# 如果未开启并行导入模式，无须设置此配置项。
+# **注意：**
+# - 对于参与同一批并行导入的每个 TiDB Lightning 实例，该参数设置的值必须相同，否则将无法确保导入数据的正确性。
+# - 如果开启并行导入模式，需要确保导入使用的用户（对于 tidb.user 配置项）有权限创建和访问此配置对应的库。
+# - TiDB Lightning 在导入完成后会删除此 schema，因此不要使用已存在的库名配置该参数。
+meta-schema-name = "lightning_metadata"
+
 [security]
 # 指定集群中用于 TLS 连接的证书和密钥。
 # CA 的公钥证书。如果留空，则禁用 TLS。
@@ -93,8 +110,12 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# 选择后端：“local” 或 “importer” 或 “tidb”
+# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。 
 # backend = "local"
+# 是否允许向已存在数据的表导入数据。默认值为 false。
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。 
+# incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 当后端是 “tidb” 时，插入重复数据时执行的操作。
@@ -102,6 +123,12 @@ addr = "172.16.31.10:8287"
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
+# 当后端模式为 'local' 时，设置是否检测和解决重复的记录（唯一键冲突）。
+# 目前支持三种解决方法：
+#  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
+#  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+#  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
+# duplicate-resolution = 'none'
 # 当后端是 “local” 时，一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
 # 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
@@ -111,12 +138,12 @@ addr = "172.16.31.10:8287"
 
 [mydumper]
 # 设置文件读取的区块大小，确保该值比数据源的最长字符串长。
-read-block-size = 65536 # Byte (默认为 64 KB)
+read-block-size = "64KiB" # 默认值
 
 # 引擎文件需按顺序导入。由于并行处理，多个数据引擎几乎在同时被导入，
 # 这样形成的处理队列会造成资源浪费。因此，为了合理分配资源，TiDB Lightning
 # 稍微增大了前几个区块的大小。该参数也决定了比例系数，即在完全并发下
-# “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GB 大小的
+# “导入”和“写入”过程的持续时间比。这个值可以通过计算 1 GiB 大小的
 # 单张表的（导入时长/写入时长）得到。在日志文件中可以看到精确的时间。
 # 如果“导入”更快，区块大小的差异就会更小；比值为 0 时则说明区块大小一致。
 # 取值范围为（0 <= batch-import-ratio < 1）。
@@ -160,17 +187,19 @@ data-invalid-char-replace = "\uFFFD"
 strict-format = false
 
 # 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
-# max-region-size = 268_435_456 # Byte（默认是 256 MB）
+# max-region-size = "256MiB" # 默认值
 
 # 只导入与该通配符规则相匹配的表。详情见相应章节。
-filter = ['*.*']
+filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
 
 # 配置 CSV 文件的解析方式。
 [mydumper.csv]
-# 字段分隔符，应为单个 ASCII 字符。
+# 字段分隔符，支持一个或多个字符，默认值为 ','。
 separator = ','
-# 引用定界符，可为单个 ASCII 字符或空字符串。
+# 引用定界符，设置为空表示字符串未加引号。
 delimiter = '"'
+# 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
+terminator = ""
 # CSV 文件是否包含表头。
 # 如果 header = true，将跳过首行。
 header = true
@@ -184,6 +213,26 @@ null = '\N'
 backslash-escape = true
 # 如果有行以分隔符结尾，删除尾部分隔符。
 trim-last-separator = false
+
+# [[mydumper.files]]
+# 解析 AWS Aurora parquet 文件所需的表达式
+# pattern = '(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$'
+# schema = '$1'
+# table = '$2'
+# type = '$3'
+# 
+# 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表，以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
+# [[routes]]
+# schema-pattern = "my_db1"
+# table-pattern = "table[1-2]"
+# target-schema = "my_db"
+# target-table = "table5"
+# 
+# [[routes]]
+# schema-pattern = "my_db2"
+# table-pattern = "table[3-4]"
+# target-schema = "my_db"
+# target-table = "table5"
 
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
@@ -234,14 +283,17 @@ max-allowed-packet = 67_108_864
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Compact -> Analyze。
 [post-restore]
-# 设置对所有表逐个执行 `ADMIN CHECKSUM TABLE <table>` 操作的行为，用于验证数据的完整性。
-# 有以下选项:
-# - "off"：不执行 checksum。
-# - "optional"：执行 admin checksum，如果 checksum 失败，则忽略出现的错误。
-# - "required"：执行 admin checksum，如果 checksum 失败，TiDB Lightning 退出。
+# 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
+# 可选的配置项：
+# - "required"（默认）。在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。
+# - "optional"。在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。
+# - "off"。导入结束后不执行 CHECKSUM 检查。
 # 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
-# 说明：为了保持兼容性，布尔值 "true" 和 "false" 仍然支持。其中 "true" 等同于 "required"，"false" 等于 "off"。
-checksum = required
+# 注意：考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和  `false` 两个布尔值，其效果与 "required" 和 `off` 相同。
+checksum = "required"
+# 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
+# 此配置的可选配置项与 `post-restore` 相同，但默认值为 "optional"。
+analyze = "optional"
 
 # 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
 # 默认值为 false。
@@ -251,14 +303,6 @@ level-1-compact = false
 # 默认值为 false。
 compact = false
 
-# 设置对所有表逐个执行 `ANALYZE TABLE <table>` 操作的行为。
-# 有以下选项:
-# - "off"：不执行 analyze。
-# - "optional"：执行 analyze，如果 analyze 失败，则忽略出现的错误。
-# - "required"：执行 analyze，如果 analyze 失败，TiDB Lightning 退出。
-# 默认值为 "optional"。从 v4.0.8 开始，analyze 的默认值由此前的 "true" 改为 "optional"。
-# 说明：为了保持兼容性，布尔值"true" 和 "false" 仍然支持。 其中"true" 等同于 "required"，"false" 等于 "off"。
-analyze = optional
 
 # 设置周期性后台操作。
 # 支持的单位：h（时）、m（分）、s（秒）。
@@ -373,8 +417,8 @@ min-available-ratio = 0.05
 | --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
 | --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-| --analyze *bool* | 导入后分析表信息 (默认值为 optional) | `post-restore.analyze` |
-| --checksum *bool* | 导入后比较校验和 (默认值为 required) | `post-restore.checksum` |
+| --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
+| --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
 | --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
 | --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
 | --cert *file* | TLS 连接的证书路径 | `security.cert-path` |

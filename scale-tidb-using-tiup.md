@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/scale-tidb-using-tiup/','/docs-cn/dev/how-to/scale/with-
 
 TiDB 集群可以在不中断线上服务的情况下进行扩容和缩容。
 
-本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上安装-tiup-组件)。
+本文介绍如何使用 TiUP 扩容缩容集群中的 TiDB、TiKV、PD、TiCDC 或者 TiFlash 节点。如未安装 TiUP，可参考[部署文档中的步骤](/production-deployment-using-tiup.md#第-2-步在中控机上部署-tiup-组件)。
 
 你可以通过 `tiup cluster list` 查看当前的集群名称列表。
 
@@ -92,17 +92,43 @@ pd_servers:
 
 ### 2. 执行扩容命令
 
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup cluster scale-out <cluster-name> scale-out.yaml
-```
+执行 scale-out 命令前，先使用 `check` 及 `check --apply` 命令，检查和自动修复集群存在的潜在风险：
 
 > **注意：**
 >
-> 此处假设当前执行命令的用户和新增的机器打通了互信，如果不满足已打通互信的条件，需要通过 `-p` 来输入新机器的密码，或通过 `-i` 指定私钥文件。
+> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.0 及后续版本中支持，请操作前先升级 tiup cluster 版本。
 
-预期输出 Scaled cluster `<cluster-name>` out successfully 信息，表示扩容操作成功。
+（1）检查集群存在的潜在风险：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
+
+（2）自动修复集群存在的潜在风险：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
+
+（3）执行 scale-out 命令扩容 TiDB 集群：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  tiup cluster scale-out <cluster-name> scale-out.yaml [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
+
+以上操作示例中：
+
+- 扩容配置文件为 `scale-out.yaml`。
+- `--user root` 表示通过 root 用户登录到目标主机完成集群部署，该用户需要有 ssh 到目标机器的权限，并且在目标机器有 sudo 权限。也可以用其他有 ssh 和 sudo 权限的用户完成部署。
+- [-i] 及 [-p] 为可选项，如果已经配置免密登录目标机，则不需填写。否则选择其一即可，[-i] 为可登录到目标机的 root 用户（或 --user 指定的其他用户）的私钥，也可使用 [-p] 交互式输入该用户的密码。
+
+预期日志结尾输出 ```Scaled cluster `<cluster-name>` out successfully``` 信息，表示扩容操作成功。
 
 ### 3. 检查集群状态
 
@@ -118,11 +144,11 @@ tiup cluster display <cluster-name>
 
 | 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.3   | TiDB + TiFlash  |
 | 10.0.1.4   | TiDB + PD   |
 | 10.0.1.5   | **TiDB** + TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiFlash 节点
 
@@ -172,11 +198,11 @@ tiup cluster display <cluster-name>
 
 | 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.3   | TiDB + TiFlash  |
 | 10.0.1.4   | TiDB + PD + **TiFlash**    |
 | 10.0.1.5   | TiDB+ TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiCDC 节点
 
@@ -227,8 +253,8 @@ tiup cluster display <cluster-name>
 | 10.0.1.3   | TiDB + TiFlash + **TiCDC**  |
 | 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  |
 | 10.0.1.5   | TiDB+ TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 缩容 TiDB/PD/TiKV 节点
 
@@ -252,43 +278,43 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.7.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.9.0/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.3.0
+TiDB Version: v5.4.0
 
-ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
+ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
---              ----         ----        -----                            ------  --------                ----------
+--       ----         ----      -----                            ------  --------        ----------
 
-10.0.1.3:8300   cdc          10.0.1.3    8300                             Up      data/cdc-8300           deploy/cdc-8300
+10.0.1.3:8300  cdc          10.0.1.3    8300                            Up      data/cdc-8300      deploy/cdc-8300
 
-10.0.1.4:8300   cdc          10.0.1.4    8300                             Up      data/cdc-8300           deploy/cdc-8300
+10.0.1.4:8300  cdc          10.0.1.4    8300                            Up      data/cdc-8300      deploy/cdc-8300
 
-10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
+10.0.1.4:2379  pd           10.0.1.4    2379/2380                        Healthy data/pd-2379      deploy/pd-2379
 
-10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.1:20160 tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.2:20160  tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.2:20160 tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.5:20160  tikv         10.0.1.5    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.5:20160 tikv        10.0.1.5    20160/20180                     Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.3:4000   tidb         10.0.1.3    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.3:4000  tidb        10.0.1.3    4000/10080                      Up      -                 deploy/tidb-4000
 
-10.0.1.4:4000   tidb         10.0.1.4    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.4:4000  tidb        10.0.1.4    4000/10080                      Up      -                 deploy/tidb-4000
 
-10.0.1.5:4000   tidb         10.0.1.5    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.5:4000  tidb         10.0.1.5    4000/10080                       Up      -            deploy/tidb-4000
 
 10.0.1.3:9000   tiflash      10.0.1.3    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
 10.0.1.4:9000   tiflash      10.0.1.4    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
-10.0.1.5:9090   prometheus   10.0.1.5    9090                             Up      data/prometheus-9090    deploy/prometheus-9090
+10.0.1.5:9090  prometheus   10.0.1.5    9090                             Up      data/prometheus-9090  deploy/prometheus-9090
 
-10.0.1.5:3000   grafana      10.0.1.5    3000                             Up      -                       deploy/grafana-3000
+10.0.1.5:3000  grafana      10.0.1.5    3000                             Up      -            deploy/grafana-3000
 
-10.0.1.5:9093   alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093  deploy/alertmanager-9093
+10.0.1.5:9093  alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093 deploy/alertmanager-9093
 ```
 
 ### 2. 执行缩容操作
@@ -321,11 +347,11 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
 | 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiFlash 节点
 
@@ -421,7 +447,7 @@ tiup cluster display <cluster-name>
 
 手动在 PD 中清除同步规则的步骤如下：
 
-1. 查询当前 PD 实例中所有与 TiFlash 相关的的数据同步规则。
+1. 查询当前 PD 实例中所有与 TiFlash 相关的数据同步规则。
 
     {{< copyable "shell-regular" >}}
 
@@ -474,11 +500,11 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
 | 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiCDC 节点
 
@@ -506,8 +532,8 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
 | 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |

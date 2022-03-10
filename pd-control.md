@@ -21,13 +21,13 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
 
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
+| 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
+| :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
+| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.2.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.2.2-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -483,7 +483,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ]
 ```
 
-### `hot [read | write | store]`
+### `hot [read | write | store| history <start_time> <end_time> [<key> <value>]]`
 
 用于显示集群热点信息。示例如下。
 
@@ -509,6 +509,76 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ```bash
 >> hot store
+```
+
+显示历史读写热点信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history startTime endTime [ <name> <value> ]
+```
+
+例如查询时间 `1629294000000` 到 `1631980800000` （毫秒）之间的历史热点 Region 信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1629294000000 1631980800000
+```
+
+```
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
+```
+
+对于参数的值为数组的请用 `x, y, ...` 的形式进行参数值的设置，所有支持的参数如下所示:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true
+```
+
+```
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
 ```
 
 ### `label [store <name> <value>]`
@@ -806,21 +876,66 @@ Encoding 格式示例：
 }
 ```
 
-### `region startkey [--format=raw|encode|hex] <key> <limit>`
+### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询从某个 key 开始的所有 Region。
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
 
-示例：
+显示从 a 开始的所有 Region 信息，数量上限为 16：
 
 {{< copyable "" >}}
 
 ```bash
->> region startkey --format=raw abc
+>> region keys --format=raw a
 ```
 
 ```
 {
   "count": 16,
+  "regions": [......],
+}
+```
+
+显示从 a 开始的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a "" 20 
+```
+
+```
+{
+  "count": 20,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，没有数量上限：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z
+```
+
+```
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z 20
+```
+
+```
+{
+  "count": 20,
   "regions": [......],
 }
 ```
