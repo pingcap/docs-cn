@@ -55,12 +55,12 @@ Query OK, 0 rows affected (0.01 sec)
 
 #### 验证是否为缓存表
 
-之后观察 `SHOW CREATE TABLE` 会出现 `CACHED ON` 的属性：
+要验证一张表是否为缓存表，使用 `SHOW CREATE TABLE` 语句。如果为缓存表，返回结果中会带有 `CACHED ON` 属性：
 
 {{< copyable "sql" >}}
 
 ```sql
-show create table users;
+SHOW CREATE TABLE users;
 ```
 
 ```
@@ -76,12 +76,12 @@ show create table users;
 1 row in set (0.00 sec)
 ```
 
-对缓存表的读取，会触发将数据加载到 TiDB 内存中，使用 `trace` 可以观察到，当缓存还未加载时，会访问 TiKV（出现了 `regionRequest.SendReqCtx`）。
+从缓存表读取数据后，TiDB 会将数据加载到内存中。你可使用 `trace` 语句查看 TiDB 是否已将数据加载到内存中。当缓存还未加载时，语句的返回结果会出现 `regionRequest.SendReqCtx`，表示 TiDB 从 TiKV 读取了数据。
 
 {{< copyable "sql" >}}
 
 ```sql
-trace  select * from users;
+TRACE SELECT * FROM users;
 ```
 
 ```
@@ -104,7 +104,7 @@ trace  select * from users;
 12 rows in set (0.01 sec)
 ```
 
-而再次执行 `trace` 时，已经不用访问 TiKV 了：
+而再次执行 `trace`，返回结果中不再有 `regionRequest.SendReqCtx`，表示 TiDB 已经不再从 TiKV 读取数据，而是直接从内存中读取：
 
 ```
 +----------------------------------------+-----------------+------------+
@@ -121,7 +121,7 @@ trace  select * from users;
 7 rows in set (0.00 sec)
 ```
 
-读取缓存表会使用 `UnionScan` 算子，所以通过 `explain` 查看缓存表的执行计划时，可能会在结果中看到 `UnionScan`：
+注意，读取缓存表会使用 `UnionScan` 算子，所以通过 `explain` 查看缓存表的执行计划时，可能会在结果中看到 `UnionScan`：
 
 ```sql
 +-------------------------+---------+-----------+---------------+--------------------------------+
@@ -136,7 +136,7 @@ trace  select * from users;
 
 #### 往缓存表写入数据
 
-缓存表仍然是支持写入的，往 `users` 中插入一条记录：
+缓存表支持写入数据。例如，往 `users` 表中插入一条记录：
 
 {{< copyable "sql" >}}
 
@@ -163,23 +163,23 @@ SELECT * FROM users;
 1 row in set (0.00 sec)
 ```
 
-**注意： 缓存表的写入，有可能出现数秒级别的慢查询**，具体最长耗时受到全局环境变量 [`@@tidb_table_cache_lease`](/system-variables.md#tidb_txn_mode) 的控制。用户需要根据自己的业务能否承受此限制，决定是否适合使用缓存表功能。比如完全只读的场景，可以把 `@@tidb_table_cache_lease` 调大：
+> **注意：** 
+>
+> 往缓存表写入数据时，有可能出现秒级别的写入延迟。延迟的时长由全局环境变量 [`tidb_table_cache_lease`]/system-variables.md#tidb_table_cache_lease-从-v600-版本开始引入) 控制。你可根据实际业务能否承受此限制带来的延迟，决定是否适合使用缓存表功能。例如，对于完全只读的场景，可以将 `tidb_table_cache_lease` 调大：
+>
+> {{< copyable "sql" >}}
+>
+> ```sql
+> set @@global.tidb_table_cache_lease = 10;
+> ```
+>
+> 缓存表的写入延时高是受到实现的限制。存在多个 TiDB 实例时，一个 TiDB 实例并不知道其它的 TiDB 实例是否缓存了数据，如果该实例直接修改了表数据，而其它 TiDB 实例依然读取旧的缓存数据，就会读到错误的结果。为了保证数据正确性，缓存表的实现使用了一套复杂的基于 lease 的机制：读操作在缓存数据同时，还会对于缓存设置一个有效期，也就是 lease。在 lease 过期之前，无法执行对数据执行修改操作。因为修改操作必须等待 lease 过期，所以会出现写入延迟。
 
-{{< copyable "sql" >}}
+#### 将缓存表恢复为普通表
 
-```sql
-set @@global.tidb_table_cache_lease = 10;
-```
-
-```
-Query OK, 0 rows affected (0.01 sec)
-```
-
-缓存表写入延时高的原因是受到实现的限制。存在多个 TiDB 实例时，一个 TiDB 实例并不知道其它的 TiDB 实例是否缓存了数据，如果它直接执行了修改操作，而其它 TiDB 依然读取旧的缓存数据，就会读到错误的结果。为了保证正确性，缓存表的实现使用了一套复杂的基于 lease 的机制：读操作在缓存数据同时，还会对于缓存设置一个有效期，也就是 lease。在 lease 过期之前，保证修改操作无法执行。因为修改操作必须等待 lease 过期，所以会出现写入延迟。
-
-#### 将缓存表设为普通表
-
-**注意： 对于缓存表执行 DDL 语句会失败，需要去掉缓存属性，将缓存表改回普通表后，才能执行。**
+> **注意：**
+>
+> 对缓存表执行 DDL 语句会失败。若要对表执行 DDL语句，需要先去掉缓存属性，将缓存表设回普通表后，才能执行。
 
 {{< copyable "sql" >}}
 
@@ -201,7 +201,7 @@ mysql> ALTER TABLE users ADD INDEX k_id(id);
 ERROR 8242 (HY000): 'Alter Table' is unsupported on cache tables.
 ```
 
-通过 `ALTER TABLE t NOCACHE` 语句 可以将缓存表恢复成普通表。
+使用 `ALTER TABLE t NOCACHE` 语句可以将缓存表恢复成普通表：
 
 {{< copyable "sql" >}}
 
@@ -215,9 +215,9 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## 缓存表大小限制
 
-缓存表会将整张表的全部数据，加载到 TiDB 进程的内存中，并且执行修改操作后，缓存会失效，需要重新加载，因此只适用于表比较小的场景。
+由于 TiDB 将整张缓存表的数据加载到 TiDB 进程的内存中，并且执行修改操作后缓存会失效，需要重新加载，所以 TiDB 缓存表只适用于表比较小的场景。
 
-目前 TiDB 对于缓存表的大小限制为 64M。如果表的数据超过了这个大小，执行 `ALTER TABLE t CACHE` 会失败。
+目前 TiDB 对于每张缓存表的大小限制为 64 MB。如果表的数据超过了 64 MB，执行 `ALTER TABLE t CACHE` 会失败。
 
 ## 与其他 TiDB 功能的兼容性限制
 
@@ -227,18 +227,18 @@ Query OK, 0 rows affected (0.00 sec)
 - 不支持对临时表执行 `ALTER TABLE t CACHE` 操作
 - 不支持对视图执行 `ALTER TABLE t CACHE` 操作
 - 不支持 Stale Read 功能
-- 不支持对缓存表直接做 DDL 操作，需要先通过 `ALTER TABLE t NOCACHE` 改回普通表
+- 不支持对缓存表直接做 DDL 操作，需要先通过 `ALTER TABLE t NOCACHE` 将缓存表改回普通表后再进行 DDL 操作。
 
 以下是缓存表无法使用缓存的场景：
 
 - 设置系统变量 `tidb_snapshot` 读取历史数据
-- 执行修改操作期间，会使缓存失效，直到下次数据被再次加载
+- 执行修改操作期间，已有缓存会失效，直到数据被再次加载
 
 ## TiDB 生态工具兼容性
 
-缓存表并不是标准 MySQL 功能，而是 TiDB 扩展，并且只有 TiDB 识别 `ALTER TABLE CACHE` 语句。所有的 TiDB 生态工具，并不支持这一项功能，包括 br, cdc, dumpling 等组件，它们会将缓存表当作普通表处理。
+缓存表并不是标准的 MySQL 功能，而是 TiDB 扩展。只有 TiDB 能识别 `ALTER TABLE CACHE` 语句。所有的 TiDB 生态工具均不支持缓存表功能，包括 Backup & Restore (BR)、TiCDC、Dumpling 等组件，它们会将缓存表当作普通表处理。
 
-这意味着，备份恢复一张缓存表，它会变成一张普通表。如果下游集群是另一套 TiDB 并且您希望仍然用上缓存表，可以对下游集群中的表执行 `ALTER TABLE CACHE` 手动开启。
+这意味着，备份恢复一张缓存表时，它会变成一张普通表。如果下游集群是另一套 TiDB 集群并且你希望继续使用缓存表功能，可以对下游集群中的表执行 `ALTER TABLE CACHE` 手动开启缓存表功能。
 
 ## 另请参阅
 
