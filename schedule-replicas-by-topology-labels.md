@@ -41,34 +41,36 @@ labels = "zone=<zone>,rack=<rack>,host=<host>"
 
 根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
 
-PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置的每一项与 TiKV 的 `labels` 的 key 是对应的，而且其中每个 key 的顺序代表了不同标签的层次关系。
+PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置的每一项与 TiKV 的 `labels` 的 key 是对应的，而且其中每个 key 的顺序代表不同标签的级别关系（从左到右依次递减）。
 
-`location-labels` **没有**默认值，因此，你可以根据具体需求来设置该值，包括 `zone`、`rack`、`host` 等等。此外，`location-labels` 对标签级别的数量也**没有**限制（即不限定仅能有 3 个级别），只要其级别与 TiKV 服务器的标签匹配，则可以成功进行配置。
+`location-labels` 没有默认值，你可以根据具体需求来设置该值，包括 `zone`、`rack`、`host` 等等。同时，`location-labels` 对标签级别的数量也**没有**限制（即不限定于 3 个），只要其级别与 TiKV 服务器的标签匹配，则可以配置成功。
 
 > **注意：**
 >
 > 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
 
-在集群初始化之前，可以通过 PD 的配置文件进行配置。
+你可以根据集群状态来选择不同的配置方式：
 
-{{< copyable "" >}}
+- 在集群初始化之前，可以通过 PD 的配置文件进行配置：
 
-```toml
-[replication]
-location-labels = ["zone", "rack", "host"]
-```
+    {{< copyable "" >}}
 
-如果需要在 PD 集群初始化完成后进行配置，则需要使用 pd-ctl 工具进行在线更改：
+    ```toml
+    [replication]
+    location-labels = ["zone", "rack", "host"]
+    ```
 
-{{< copyable "shell-regular" >}}
+- 如果需要在 PD 集群初始化完成后进行配置，则需要使用 pd-ctl 工具进行在线更改：
 
-```bash
-pd-ctl config set location-labels zone,rack,host
-```
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    pd-ctl config set location-labels zone,rack,host
+    ```
 
 ### 设置 PD 的 `isolation-level` 配置
 
-在配置了 `location-labels` 的前提下，用户可以还通过 `isolation-level` 配置来进一步加强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：机房 (zone) -> 机架 (rack) -> 主机 (host)，并对 `isolation-level` 作如下配置
+在配置了 `location-labels` 的前提下，用户可以还通过 `isolation-level` 配置来进一步加强对 TiKV 集群的拓扑隔离要求。假设按照上面的说明通过 `location-labels` 将集群的拓扑结构分成三层：机房 (zone) -> 机架 (rack) -> 主机 (host)，并对 `isolation-level` 作如下配置：
 
 {{< copyable "" >}}
 
