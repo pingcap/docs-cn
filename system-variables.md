@@ -1441,7 +1441,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`FAST`
 - 可选值：`OFF`，`FAST`，`STRICT`
-- 这个变量用于设置 assertion，可用于临时跳过部分 [数据索引一致性报错](/data-inconsistency-errors.md)。
+- 这个变量用于设置 assertion，设为 `OFF` 可临时跳过部分 [数据索引一致性报错](/data-inconsistency-errors.md)。
 
 ### `tidb_txn_mode`
 
