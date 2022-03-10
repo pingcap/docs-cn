@@ -5,7 +5,7 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 # 数据索引一致性报错
 
-数据索引一致性错误指 record key-value 和 index key-value 不一致，例如多索引、缺索引等，其中的“数据”通常指代 record。发生此错误时，应当联系 PingCAP 技术支持。
+数据索引一致性错误指 record key-value 和 index key-value 不一致，即存储行数据的 key 和存储其对应索引的 key 之间不一致，例如多索引、缺索引等。发生此错误时，应当联系 PingCAP 技术支持。
 
 ## 错误样例解读
 
