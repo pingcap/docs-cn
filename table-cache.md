@@ -84,7 +84,6 @@ show create table users;
 trace  select * from users;
 ```
 
-
 ```
 +------------------------------------------------+-----------------+------------+
 | operation                                      | startTS         | duration   |
@@ -166,7 +165,6 @@ SELECT * FROM users;
 
 **注意： 缓存表的写入，有可能出现数秒级别的慢查询**，具体最长耗时受到全局环境变量 [`@@tidb_table_cache_lease`](/system-variables.md#tidb_txn_mode) 的控制。用户需要根据自己的业务能否承受此限制，决定是否适合使用缓存表功能。比如完全只读的场景，可以把 `@@tidb_table_cache_lease` 调大：
 
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -177,13 +175,11 @@ set @@global.tidb_table_cache_lease = 10;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-
 缓存表写入延时高的原因是受到实现的限制。存在多个 TiDB 实例时，一个 TiDB 实例并不知道其它的 TiDB 实例是否缓存了数据，如果它直接执行了修改操作，而其它 TiDB 依然读取旧的缓存数据，就会读到错误的结果。为了保证正确性，缓存表的实现使用了一套复杂的基于 lease 的机制：读操作在缓存数据同时，还会对于缓存设置一个有效期，也就是 lease。在 lease 过期之前，保证修改操作无法执行。因为修改操作必须等待 lease 过期，所以会出现写入延迟。
 
 #### 将缓存表设为普通表
 
 **注意： 对于缓存表执行 DDL 语句会失败，需要去掉缓存属性，将缓存表改回普通表后，才能执行。**
-
 
 {{< copyable "sql" >}}
 
@@ -207,7 +203,6 @@ ERROR 8242 (HY000): 'Alter Table' is unsupported on cache tables.
 
 通过 `ALTER TABLE t NOCACHE` 语句 可以将缓存表恢复成普通表。
 
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -217,7 +212,6 @@ ALTER TABLE users NOCACHE
 ```
 Query OK, 0 rows affected (0.00 sec)
 ```
-
 
 ## 缓存表大小限制
 
