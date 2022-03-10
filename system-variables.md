@@ -230,6 +230,39 @@ mysql> SELECT * FROM t1;
 - 范围：`[0, 65535]`
 - 使用 MySQL 协议时 tidb-server 监听的端口。
 
+### `rand_seed1`
+
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
+- 该变量的行为与 MySQL 兼容。
+
+### rand_seed2
+
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
+- 该变量的行为与 MySQL 兼容。
+
+### skip_name_resolve <span class="version-mark">从 v5.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 该变量控制 `tidb-server` 实例是否将主机名作为连接握手的一部分来解析。
+- 当 DNS 不可靠时，可以启用该变量来提高网络性能。
+
+> **注意：**
+>
+> 当 `skip_name_resolve` 设置为 `ON` 时，身份信息中包含主机名的用户将无法登录服务器。例如：
+>
+> ```sql
+> CREATE USER 'appuser'@'apphost' IDENTIFIED BY 'app-password';
+> ```
+>
+> 该示例中，建议将 `apphost` 替换为 IP 地址或通配符（`%`）。
+
 ### `socket`
 
 - 作用域：NONE
@@ -299,7 +332,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.1.0 以前的版本中，该变量的默认值为 `1`。在 v5.1.0 中，该变量的默认值为 `2`，作为实验特性使用，具体可参照[统计信息简介](/statistics.md)文档。
+- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，作为实验特性启用，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 ### `tidb_auto_analyze_end_time`
 
@@ -332,7 +365,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_backoff_lock_fast`
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`100`
+- 默认值：`10`
 - 范围：`[1, 2147483647]`
 - 这个变量用来设置读请求遇到锁的 backoff 时间。
 
@@ -606,6 +639,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `RESTRICTED_VARIABLES_ADMIN`：能够在 `SHOW [GLOBAL] VARIABLES` 和 `SET` 命令中查看和设置包含敏感内容的变量。
     - `RESTRICTED_USER_ADMIN`：能够阻止其他用户更改或删除用户帐户。
 
+### `tidb_restricted_read_only` <span class="version-mark">从 v5.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`0`
+- 可选值：`0` 和 `1`
+- 该变量可以控制整个集群的只读状态，开启后，整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
+- 在变量开启时，正在执行的 SQL 语句不会受影响，只对新执行的 SQL 语句进行是否只读的检查。如果有尚未提交的只读事务，可正常提交该事务。如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。如果未提交的事务已经有数据改动，其提交也会被拒绝。
+- 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
+- 拥有 `RESTRICTED_VARIABLES_ADMIN` 或 `SUPER` 权限的用户可以修改该变量。如果用户开启了[安全增强模式 (Security Enhanced Mode)](/system-variables.md#tidb_enable_enhanced_security)，则只有 `RESTRICTED_VARIABLES_ADMIN` 权限的用户才能修改该变量。
+
 ### `tidb_enable_fast_analyze`
 
 > **警告：**
@@ -633,7 +676,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **警告：**
 >
-> 目前 List partition 和 List COLUMNS partition 为实验特性，不建议在生产环境中使用。
+> 目前 List 分区和 List COLUMNS 分区类型为实验特性，不建议在生产环境中使用。
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
@@ -1473,7 +1516,7 @@ set tidb_slow_log_threshold = 200;
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
-- 作用域：INSTANCE | GLOBAL
+- 作用域：GLOBAL
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
@@ -1577,6 +1620,18 @@ set tidb_slow_log_threshold = 200;
 - 作用域：NONE
 - 默认值：(string)
 - 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
+
+### `version_compile_os`
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是 TiDB 所在操作系统的名称。
+
+### `version_compile_machine` 
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是运行 TiDB 的 CPU 架构的名称。
 
 ### `wait_timeout`
 

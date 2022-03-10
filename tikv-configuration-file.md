@@ -369,8 +369,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `enable-ttl`
 
 + TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
-+ 注意：TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式的不同，用户只能在新建集群时设置好该功能，在已有集群上修改该项配置会使得启动报错。
 + 默认值：false
+
+> **警告：**
+>
+> TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式不同，你只能在新建集群时设置该功能。
+> **禁止**在已有集群上修改该项配置，否则会导致启动报错。
+> **禁止**在有 TiDB 节点的集群中使用该参数，以免导致数据写坏等严重后果。
 
 ### `ttl-check-poll-interval`
 
@@ -458,11 +463,19 @@ raftstore 相关的配置项。
 
 ### `raft-base-tick-interval`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 状态机 tick 一次的间隔时间。
 + 默认值：1s
 + 最小值：大于 0
 
 ### `raft-heartbeat-ticks`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 发送心跳时经过的 tick 个数，即每隔 raft-base-tick-interval * raft-heartbeat-ticks 时间发送一次心跳。
 + 默认值：2
@@ -470,11 +483,19 @@ raftstore 相关的配置项。
 
 ### `raft-election-timeout-ticks`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 发起选举时经过的 tick 个数，即如果处于无主状态，大约经过 raft-base-tick-interval * raft-election-timeout-ticks 时间以后发起选举。
 + 默认值：10
 + 最小值：raft-heartbeat-ticks
 
 ### `raft-min-election-timeout-ticks`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 发起选举时至少经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks，不能比 raft-election-timeout-ticks 小。
 + 默认值：0
@@ -482,11 +503,19 @@ raftstore 相关的配置项。
 
 ### `raft-max-election-timeout-ticks`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 发起选举时最多经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks * 2。
 + 默认值：0
 + 最小值：0
 
 ### `raft-max-size-per-msg`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
@@ -495,9 +524,13 @@ raftstore 相关的配置项。
 
 ### `raft-max-inflight-msgs`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 待确认日志个数的数量，如果超过这个数量将会减缓发送日志的个数。
 + 默认值：256
-+ 最小值：大于0
++ 最小值：大于 0
 
 ### `raft-entry-max-size`
 
@@ -597,6 +630,13 @@ raftstore 相关的配置项。
 
 + snapshot 文件的最长保存时间。
 + 默认值：4h
++ 最小值：0
+
+### `snap-generator-pool-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 用于配置 `snap-generator` 线程池的大小。
++ 为了让 TiKV 在恢复场景下加快 Region 生成 Snapshot 的速度，需要调大对应 Worker 的 `snap-generator` 线程数量。可通过本配置项调大对应线程的数量。
++ 默认值：2
 + 最小值：0
 
 ### `lock-cf-compact-interval`
@@ -1370,13 +1410,18 @@ Raft Engine 相关的配置项。
 
 ### `cert-path`
 
-+ 包含 X509 证书的 PEM 文件路径
++ 包含 X.509 证书的 PEM 文件路径
 + 默认值：""
 
 ### `key-path`
 
-+ 包含 X509 key 的 PEM 文件路径
++ 包含 X.509 key 的 PEM 文件路径
 + 默认值：""
+
+### `cert-allowed-cn`
+
++ 客户端提供的证书中，可接受的 X.509 通用名称列表。仅当提供的通用名称与列表中的条目之一完全匹配时，才会允许其请求。
++ 默认值：`[]`。这意味着默认情况下禁用客户端证书 CN 检查。
 
 ### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 

@@ -27,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.3.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.3.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -876,21 +876,66 @@ Encoding 格式示例：
 }
 ```
 
-### `region startkey [--format=raw|encode|hex] <key> <limit>`
+### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询从某个 key 开始的所有 Region。
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 `16`，设为 `-1` 则表示无数量限制。示例如下：
 
-示例：
+显示从 a 开始的所有 Region 信息，数量上限为 16：
 
 {{< copyable "" >}}
 
 ```bash
->> region startkey --format=raw abc
+>> region keys --format=raw a
 ```
 
 ```
 {
   "count": 16,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，数量上限为 16：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z
+```
+
+```
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，无数量上限：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z -1
+```
+
+```
+{
+  "count": ...,
+  "regions": [......],
+}
+```
+
+显示从 a 开始的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a "" 20 
+```
+
+```
+{
+  "count": 20,
   "regions": [......],
 }
 ```

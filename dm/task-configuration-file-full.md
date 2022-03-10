@@ -7,8 +7,6 @@ aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/doc
 
 本文档主要介绍 Data Migration (DM) 的任务完整的配置文件，包含[全局配置](#全局配置) 和[实例配置](#实例配置) 两部分。
 
-关于各配置项的功能和配置，请参阅[数据迁移功能](/dm/dm-overview.md#基本功能)。
-
 ## 关键概念
 
 关于包括 `source-id` 和 DM-worker ID 在内的关键概念的介绍，请参阅[关键概念](/dm/dm-config-overview.md#关键概念)。
@@ -32,7 +30,7 @@ meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
 
 case-sensitive: false           # schema/table 是否大小写敏感
 online-ddl: true                # 支持上游 "gh-ost" 、"pt" 的自动处理
-online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 在未来将会被弃用，建议使用 `online-ddl` 代替 `online-ddl-scheme`
+online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 已被弃用，建议使用 `online-ddl`。
 clean-dump-file: true           # 是否清理 dump 阶段产生的文件，包括 metadata 文件、建库建表 SQL 文件以及数据导入 SQL 文件
 collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。 
 
