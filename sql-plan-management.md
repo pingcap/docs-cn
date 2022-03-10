@@ -161,6 +161,10 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 >
 > 对于 `PREPARE`/`EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE`/`EXECUTE` 语句。
 
+> **注意：**
+>
+> 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
+
 ### 删除绑定
 
 {{< copyable "sql" >}}
@@ -189,6 +193,18 @@ explain select * from t1,t2 where t1.id = t2.id;
 >
 > 执行 `DROP GLOBAL BINDING` 会删除当前 tidb-server 实例缓存中的绑定，并将系统表中对应行的状态修改为 'deleted'。该语句不会直接删除系统表中的记录，因为其他 tidb-server 实例需要读取系统表中的 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 `update_time` 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 实例已经读取过这个 'deleted' 状态并更新完缓存）的回收清除操作。
 
+### 变更绑定状态
+
+{{< copyable "sql" >}}
+
+```sql
+SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
+```
+
+该语句可以在 GLOBAL 作用域内变更指定的执行计划绑定的状态，作用域不可指定，默认作用域为 GLOBAL。
+
+该语句可以将绑定的状态设置成 `Enabled` 或者 `Disabled` 状态，其中只有 `Disabled` 状态的绑定可以被设置成 `Enabled` 状态，只有 `Enabled` 状态的绑定可以被设置成 `Disabled` 状态。如果当前没有可以改变状态的绑定，则会在日志中输出一条警告日志进行提示。需要注意的是当绑定的状态被设置成 `Disabled` 状态的时候，该绑定不会被查询语句所使用。
+
 ### 查看绑定
 
 {{< copyable "sql" >}}
@@ -204,7 +220,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | original_sql  |  参数化后的原始 SQL |
 | bind_sql | 带 Hint 的绑定 SQL |
 | default_db | 默认数据库名 |
-| status | 状态，包括 using（正在使用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
+| status | 状态，包括 enabled（可用，从 V6.0 的版本开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
 | create_time | 创建时间 |
 | update_time | 更新时间 |
 | charset | 字符集 |
@@ -213,15 +229,11 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 ### 排查绑定
 
+绑定的排查通常有两种方式：
+
+1. 通过使用使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
+
 {{< copyable "sql" >}}
-
-```sql
-SELECT @@[SESSION.]last_plan_from_binding;
-```
-
-该语句使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
-
-另外，当使用 `explain format = 'verbose'` 语句查看一条 SQL 语句的查询计划时，如果该 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
 
 ```sql
 -- 创建一个 global binding
@@ -229,7 +241,30 @@ SELECT @@[SESSION.]last_plan_from_binding;
 create global binding for
     select * from t
 using
-    select * from t;
+    select /*+ USE_INDEX(t, idx_a) */ * from t;
+
+select * from t;
+SELECT @@[SESSION.]last_plan_from_binding;
+```
+
+```sql
++--------------------------+
+| @@last_plan_from_binding |
++--------------------------+
+|                        1 |
++--------------------------+
+1 row in set (0.00 sec)
+```
+
+2. 可以使用 `explain format = 'verbose'` 语句查看一条 SQL 语句的查询计划时，如果该 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
+
+```sql
+-- 创建一个 global binding
+
+create global binding for
+    select * from t
+using
+    select /*+ USE_INDEX(t, idx_a) */ * from t;
 
 -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
 
@@ -237,7 +272,40 @@ explain format = 'verbose' select * from t;
 show warnings;
 ```
 
+```sql
++-------+------+--------------------------------------------------------------------------+
+| Level | Code | Message                                                                  |
++-------+------+--------------------------------------------------------------------------+
+| Note  | 1105 | Using the bindSQL: SELECT /*+ USE_INDEX(`t` `idx_a`)*/ * FROM `test`.`t` |
++-------+------+--------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+
+```
+
+### 绑定的缓存
+
+在每个 TiDB 实例上都有一个 LRU Cache 对绑定进行缓存，该缓存的容量由系统变量 [tidb_mem_quota_binding_cache](/system-variables#tidb_mem_quota_binding_cache) 进行控制。缓存会影响绑定的使用和查看，在使用和查看绑定的时候，只能使用和查看那些存在于缓存中的绑定。当缓存的容量不足以存放所有的绑定时，系统无法保证缓存中绑定的内容，并且系统会在日志中增加警告日志进行提示。在这种情况下，强烈建议调大缓存的容量，并执行语句 `admin reload bindings` 重新加载系统表中的绑定，以此来保证所有可用的绑定能正常被使用。
+
+可以通过执行语句 `show binding_cache status` 来查看绑定的使用情况，该语句无法指定作用域，默认作用域为 Global。该语句查看的内容包括缓存中可用绑定的数量，系统中所有可用绑定的梳理，缓存中所有绑定的内存使用量，缓存的内存容量。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT binding_cache status;
+```
+
+```sql
++--------------+----------------+--------------+-----------------+
+| num_bindings | total_bindings | memory_usage | memory_capacity |
++--------------+----------------+--------------+-----------------+
+|            0 |              0 | 0 Bytes      | 64 MB           |
++--------------+----------------+--------------+-----------------+
+1 row in set (0.00 sec)
+```
+
 ## 自动捕获绑定 (Baseline Capturing)
+
+### 使用方式
 
 通过将 `tidb_capture_plan_baselines` 的值设置为 `on`（其默认值为 `off`）可以打开自动捕获绑定功能。
 
@@ -251,13 +319,22 @@ show warnings;
 
 - EXPLAIN 和 EXPLAIN ANALYZE 语句；
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
-- 存在手动创建的执行计划绑定的 SQL 语句；
+- 已经存在 `Enabled`, `Disabled` 状态的绑定对应的语句；
+- 满足绑定黑名单过滤条件的语句；
 
 对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
 > **注意：**
 >
 > 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动捕获绑定时会默认屏蔽内嵌 SQL。
+
+### 绑定过滤黑名单
+
+
+
+### 验证自动捕获的绑定
+
+自动捕获通常被用于确保升级前后执行计划没有回退。当在升级后需要对捕获的绑定进行验证时，可以先通过[变更绑定状态](#变更绑定状态)为 `Disabled` 状态，然后再对相应的查询执行 `Explain` 语句检查其执行计划是否符合预期，如果执行计划符合预期则可以将捕获得到的绑定进行删除。如果执行计划不符合预期，则可以通过[变更绑定状态](#变更绑定状态)为 `Enabled` 状态来保证执行计划不发生回退。
 
 ## 自动演进绑定 (Baseline Evolution)
 
@@ -350,11 +427,11 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
     ```sql
     -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
-  
+
     select @@global.tidb_evolve_plan_baselines;
-  
+
     -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
-  
+
     set global tidb_evolve_plan_baselines = off;
     ```
 
@@ -366,15 +443,15 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
     ```sql
     -- 在待升级的版本上检查现有可用绑定对应的查询语句。
-  
+
     select bind_sql from mysql.bind_info where status = 'using';
-  
+
     -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
-  
+
     bind_sql_0;
     bind_sql_1;
     ...
-  
+
     -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
     -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
     ```
