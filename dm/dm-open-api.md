@@ -16,6 +16,8 @@ openapi = true
 > - DM 提供符合 OpenAPI 3.0.0 标准的 [Spec 文档](https://github.com/pingcap/tiflow/blob/master/dm/openapi/spec/dm.yaml)，其中包含了所有 API 的请求参数和返回体，你可自行复制到如 [Swagger Editor](https://editor.swagger.io/) 等工具中在线预览文档。
 >
 > - 部署 DM-master 后，你可访问 `http://{master-addr}/api/v1/docs` 在线预览文档。
+>
+> - OpenAPI v6.0.0 版本中有较大改动。
 
 你可以通过 OpenAPI 完成 DM 集群的如下运维操作：
 
@@ -29,13 +31,16 @@ openapi = true
 ## 数据源相关 API
 
 * [创建数据源](#创建数据源)
-* [获取数据源列表](#获取数据源列表)
+* [获取数据源](#获取数据源)
 * [删除数据源](#删除数据源)
+* [更新数据源](#更新数据源)
+* [开启数据源](#开启数据源)
+* [关闭数据源](#关闭数据源)
 * [获取数据源状态](#获取数据源状态)
+* [获取数据源列表](#获取数据源列表)
 * [对数据源开启 relay-log 功能](#对数据源开启-relay-log-功能)
 * [对数据源停止 relay-log 功能](#对数据源停止-relay-log-功能)
-* [对数据源暂停 relay-log 功能](#对数据源暂停-relay-log-功能)
-* [对数据源恢复 relay-log 功能](#对数据源恢复-relay-log-功能)
+* [清除对数据源上多余的 relay-log 文件](#清除对数据源上多余的relay-log文件)
 * [更改数据源和 DM-worker 的绑定关系](#更改数据源和-dm-worker-的绑定关系)
 * [获取数据源的数据库名列表](#获取数据源的数据库名列表)
 * [获取数据源的指定数据库的表名列表](#获取数据源的指定数据库的表名列表)
@@ -192,6 +197,7 @@ curl -X 'POST' \
   "port": 3306,
   "user": "root",
   "password": "123456",
+  "enable": true,
   "enable_gtid": false,
   "security": {
     "ssl_ca_content": "",
@@ -216,6 +222,7 @@ curl -X 'POST' \
   "port": 3306,
   "user": "root",
   "password": "123456",
+  "enable": true,
   "enable_gtid": false,
   "security": {
     "ssl_ca_content": "",
@@ -246,6 +253,209 @@ curl -X 'POST' \
     }
   ]
 }
+```
+
+## 获取数据源
+
+该接口是一个同步接口，请求成功会返回数据源列表信息。
+
+### 请求 URI
+
+ `GET /api/v1/sources/{source-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'GET' \
+  'http://127.0.0.1:8261/api/v1/sources/source-1?with_status=true' \
+  -H 'accept: application/json'
+```
+
+```json
+{
+  "source_name": "mysql-01",
+  "host": "127.0.0.1",
+  "port": 3306,
+  "user": "root",
+  "password": "123456",
+  "enable_gtid": false,
+  "enable": false,
+  "flavor": "mysql",
+  "task_name_list": [
+    "task1"
+  ],
+  "security": {
+    "ssl_ca_content": "",
+    "ssl_cert_content": "",
+    "ssl_key_content": "",
+    "cert_allowed_cn": [
+      "string"
+    ]
+  },
+  "purge": {
+    "interval": 3600,
+    "expires": 0,
+    "remain_space": 15
+  },
+  "status_list": [
+    {
+      "source_name": "mysql-replica-01",
+      "worker_name": "worker-1",
+      "relay_status": {
+        "master_binlog": "(mysql-bin.000001, 1979)",
+        "master_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+        "relay_dir": "./sub_dir",
+        "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+        "relay_catch_up_master": true,
+        "stage": "Running"
+      },
+      "error_msg": "string"
+    }
+  ],
+  "relay_config": {
+    "enable_relay": true,
+    "relay_binlog_name": "mysql-bin.000002",
+    "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+    "relay_dir": "./relay_log"
+  }
+}
+```
+
+## 删除数据源
+
+该接口是一个同步接口，请求成功后返回体的 Status Code 是 204。
+
+### 请求 URI
+
+ `DELETE /api/v1/sources/{source-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'DELETE' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01?force=true' \
+  -H 'accept: application/json'
+```
+
+## 更新数据源
+
+该接口是一个同步接口，请求成功会返回对应数据源信息。
+
+### 请求 URI
+
+ `PUT /api/v1/sources/{source-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'PUT' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "source": {
+    "source_name": "mysql-01",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123456",
+    "enable_gtid": false,
+    "enable": false,
+    "flavor": "mysql",
+    "task_name_list": [
+      "task1"
+    ],
+    "security": {
+      "ssl_ca_content": "",
+      "ssl_cert_content": "",
+      "ssl_key_content": "",
+      "cert_allowed_cn": [
+        "string"
+      ]
+    },
+    "purge": {
+      "interval": 3600,
+      "expires": 0,
+      "remain_space": 15
+    },
+    "relay_config": {
+      "enable_relay": true,
+      "relay_binlog_name": "mysql-bin.000002",
+      "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+      "relay_dir": "./relay_log"
+    }
+  }
+}'
+
+```
+
+```json
+{
+  "source_name": "mysql-01",
+  "host": "127.0.0.1",
+  "port": 3306,
+  "user": "root",
+  "password": "123456",
+  "enable": true,
+  "enable_gtid": false,
+  "security": {
+    "ssl_ca_content": "",
+    "ssl_cert_content": "",
+    "ssl_key_content": "",
+    "cert_allowed_cn": [
+      "string"
+    ]
+  },
+  "purge": {
+    "interval": 3600,
+    "expires": 0,
+    "remain_space": 15
+  }
+}
+```
+
+## 开启数据源
+
+这是一个同步接口，请求成功的时会批量开启当前 worker 上运行的同步任务。
+
+### 请求 URI
+
+ `POST /api/v1/sources/{source-name}/enable`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/enable' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json'
+```
+
+## 关闭数据源
+
+这是一个同步接口，请求成功的时会批量停止当前 worker 上运行的同步任务。
+
+### 请求 URI
+
+ `POST /api/v1/sources/{source-name}/enable`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/disable' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json'
 ```
 
 ## 获取数据源列表
@@ -302,24 +512,6 @@ curl -X 'GET' \
 }
 ```
 
-## 删除数据源
-
-该接口是一个同步接口，请求成功后返回体的 Status Code 是 204。
-
-### 请求 URI
-
- `DELETE /api/v1/sources/{source-name}`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'DELETE' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01?force=true' \
-  -H 'accept: application/json'
-```
-
 ## 获取数据源状态
 
 该接口是一个同步接口，请求成功会返回对应节点的状态信息。
@@ -365,7 +557,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `POST /api/v1/sources/{source-name}/start-relay`
+ `POST /api/v1/sources/{source-name}/enable`
 
 ### 使用样例
 
@@ -373,7 +565,7 @@ curl -X 'GET' \
 
 ```shell
 curl -X 'POST' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/start-relay' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/enable' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -392,7 +584,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `POST /api/v1/sources/{source-name}/stop-relay`
+ `POST /api/v1/sources/{source-name}/disable`
 
 ### 使用样例
 
@@ -400,7 +592,7 @@ curl -X 'POST' \
 
 ```shell
 curl -X 'POST' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/stop-relay' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/disable' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -408,42 +600,6 @@ curl -X 'POST' \
     "worker-1"
   ]
 }'
-```
-
-## 对数据源暂停 relay-log 功能
-
-这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取数据源状态](#获取数据源状态)接口获取最新的状态。
-
-### 请求 URI
-
- `POST /api/v1/sources/{source-name}/pause-relay`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'POST' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/pause-relay' \
-  -H 'accept: */*'
-```
-
-## 对数据源恢复 relay-log 功能
-
-这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取数据源状态](#获取数据源状态)接口获取最新的状态。
-
-### 请求 URI
-
- `POST /api/v1/sources/{source-name}/resume-relay`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'POST' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/resume-relay' \
-  -H 'accept: */*'
 ```
 
 ## 更改数据源和 DM-worker 的绑定关系
