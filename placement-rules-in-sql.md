@@ -11,6 +11,9 @@ summary: 了解如何通过 SQL 接口调度表和分区的放置位置。
 
 Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群中的放置位置。通过该功能，用户可以将表和分区指定部署至不同的地域、机房、机柜、主机。适用场景包括低成本优化数据高可用策略、保证本地的数据副本可用于本地 Stale Read 读取、遵守数据本地要求等。
 
+> **注意：**
+> Placement Rules in SQL 底层实现依赖 PD 提供的放置规则 (placement rules) 功能，参考 [Placement Rules 使用文档](/configure-placement-rules.md)。在 Placement Rules in SQL 语境下，放置规则既可以代指绑定对象的放置策略 (placement policy)，也可以代指 TiDB 发给 PD 的放置规则。
+
 该功能可以实现以下业务场景：
 
 - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本
@@ -21,13 +24,13 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 ## 指定放置规则
 
-指定放置规则，首先需要创建*放置规则 (placement policy)*。
+指定放置规则，首先需要创建*放置策略 (placement policy)*。
 
 ```sql
 CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 ```
 
-然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将规则绑定至表或分区表：
+然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将规则绑定至表或分区表，这样就在表或分区上指定了放置规则：
 
 ```sql
 CREATE TABLE t1 (a INT) PLACEMENT POLICY myplacementpolicy;
@@ -90,7 +93,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 | `SCHEDULE`                 |  用于调度 follower 放置位置的策略。可选值为 `EVEN`（默认值）或 `MAJORITY_IN_PRIMARY`。 |
 | `FOLLOWERS`                |  Follower 的数量。例如 `FOLLOWERS=2` 表示数据有 3 个副本（2 个 follower 和 1 个 leader）。 |
 
-除以上配置选项外，你还可以使用高级配置，详细介绍见[高级放置](#高级放置)。
+除以上配置选项外，你还可以使用高级配置，详细介绍见[高级放置选项](#高级放置选项)。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
@@ -127,7 +130,7 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 >
 > 以下示例使用的 List 分区目前为 TiDB 实验特性。在表的分区功能中，要求主键里包含所有分区函数中使用的列。
 
-除了将放置选项分配给表之外，你还可以将选项分配给表分区。示例如下：
+除了给表绑定放置策略之外，你还可以给表分区绑定放置策略。示例如下：
 
 ```sql
 CREATE PLACEMENT POLICY europe PRIMARY_REGION="eu-central-1" REGIONS="eu-central-1,eu-west-1";
@@ -145,25 +148,33 @@ CREATE TABLE t1 (
 
 ### 为数据库配置默认的放置规则
 
-你可以为某个数据库指定默认的放置选项，类似于为数据库设置默认字符集或排序规则。如果没有指定其他选项，就会使用数据库上指定的配置。示例如下：
+你可以为某个数据库指定默认的放置策略，类似于为数据库设置默认字符集或排序规则。如果没有指定其他选项，就会使用数据库上指定的配置。示例如下：
 
 ```sql
-CREATE TABLE t1 (a INT);  -- 创建表 t1，且未指定放置选项。
+CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2";  -- 创建放置策略
 
-ALTER DATABASE test FOLLOWERS=4;  -- 更改默认的放置选项，但更改不影响已有的表 t1。
+CREATE PLACEMENT POLICY p2 FOLLOWERS=4;
 
-CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置规则 FOLLOWERS=4 在 t2 上生效。
+CREATE PLACEMENT POLICY p3 FOLLOWERS=2;
 
-CREATE TABLE t3 (a INT) PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2";  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 FOLLOWERS=4 规则在 t3 上不生效。
+CREATE TABLE t1 (a INT);  -- 创建表 t1，且未指定放置规则。
 
-ALTER DATABASE test FOLLOWERS=2;  -- 再次更改默认的放置选项，此更改不影响已有的表。
+ALTER DATABASE test POLICY=p2;  -- 更改默认的放置规则，但更改不影响已有的表 t1。
 
-CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置规则 FOLLOWERS=2 生效。
+CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置策略 p2 在 t2 上生效。
+
+CREATE TABLE t3 (a INT) POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 p2 策略在 t3 上不生效。
+
+ALTER DATABASE test POLICY=p3;  -- 再次更改默认的放置规则，此更改不影响已有的表。
+
+CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
+
+ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是t4，会采用 FOLLOWERS=3。
 ```
 
-由于只有在创建表时才会从数据库继承放置选项，因此推荐使用 `PLACEMENT POLICY` 放置规则来设置默认的放置选项。使用后，用户可以通过改动放置规则，改变继承自数据库的放置选项。
+用户可以通过改变放置策略 [ALTER PLACEMENT POLICY](/sql-statements/sql-statement-alter-placement-policy.md)，改变已从数据库继承放置规则的表。
 
-### 高级放置
+### 高级放置选项
 
 放置选项 `PRIMARY_REGION`、`REGIONS` 和 `SCHEDULE` 可满足数据放置的基本需求，但会缺乏一些灵活性。在较复杂的场景下，若需要更灵活地放置数据，可以使用高级放置选项 `CONSTRAINTS` 和 `FOLLOWER_CONSTRAINTS`。`PRIMARY_REGION`、`REGIONS` 和 `SCHEDULE` 选项不可与 `CONSTRAINTS` 选项同时指定，否则会报错。
 
