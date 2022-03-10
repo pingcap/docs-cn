@@ -100,27 +100,27 @@ pd_servers:
 
 （1）检查集群存在的潜在风险：
 
-    {{< copyable "shell-regular" >}}
+  {{< copyable "shell-regular" >}}
 
-    ```shell
-    tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-    ```
+  ```shell
+  tiup cluster check <cluster-name> scale-out.yaml --cluster --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
 
 （2）自动修复集群存在的潜在风险：
 
-    {{< copyable "shell-regular" >}}
+  {{< copyable "shell-regular" >}}
 
-    ```shell
-    tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
-    ```
+  ```shell
+  tiup cluster check <cluster-name> scale-out.yaml --cluster --apply --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
 
 （3）执行 scale-out 命令扩容 TiDB 集群：
 
-    {{< copyable "shell-regular" >}}
+  {{< copyable "shell-regular" >}}
 
-    ```shell
-    tiup cluster scale-out <cluster-name> scale-out.yaml [-p] [-i /home/root/.ssh/gcp_rsa]
-    ```
+  ```shell
+  tiup cluster scale-out <cluster-name> scale-out.yaml [-p] [-i /home/root/.ssh/gcp_rsa]
+  ```
 
 以上操作示例中：
 
@@ -144,11 +144,11 @@ tiup cluster display <cluster-name>
 
 | 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.3   | TiDB + TiFlash  |
 | 10.0.1.4   | TiDB + PD   |
 | 10.0.1.5   | **TiDB** + TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiFlash 节点
 
@@ -198,11 +198,11 @@ tiup cluster display <cluster-name>
 
 | 主机 IP   | 服务   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash   |
+| 10.0.1.3   | TiDB + TiFlash  |
 | 10.0.1.4   | TiDB + PD + **TiFlash**    |
 | 10.0.1.5   | TiDB+ TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 扩容 TiCDC 节点
 
@@ -253,8 +253,8 @@ tiup cluster display <cluster-name>
 | 10.0.1.3   | TiDB + TiFlash + **TiCDC**  |
 | 10.0.1.4   | TiDB + PD + TiFlash + **TiCDC**  |
 | 10.0.1.5   | TiDB+ TiKV + Monitor   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV   |
+| 10.0.1.2   | TiKV   |
 
 ## 缩容 TiDB/PD/TiKV 节点
 
@@ -278,43 +278,43 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.9.0/cluster display <cluster-name> 
+Starting /root/.tiup/components/cluster/v1.9.0/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
 TiDB Version: v5.4.0
 
-ID              Role         Host        Ports                            Status  Data Dir                Deploy Dir
+ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
---              ----         ----        -----                            ------  --------                ----------
+--       ----         ----      -----                            ------  --------        ----------
 
-10.0.1.3:8300   cdc          10.0.1.3    8300                             Up      data/cdc-8300           deploy/cdc-8300
+10.0.1.3:8300  cdc          10.0.1.3    8300                            Up      data/cdc-8300      deploy/cdc-8300
 
-10.0.1.4:8300   cdc          10.0.1.4    8300                             Up      data/cdc-8300           deploy/cdc-8300
+10.0.1.4:8300  cdc          10.0.1.4    8300                            Up      data/cdc-8300      deploy/cdc-8300
 
-10.0.1.4:2379   pd           10.0.1.4    2379/2380                        Healthy data/pd-2379            deploy/pd-2379
+10.0.1.4:2379  pd           10.0.1.4    2379/2380                        Healthy data/pd-2379      deploy/pd-2379
 
-10.0.1.1:20160  tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.1:20160 tikv         10.0.1.1    20160/20180                      Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.2:20160  tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.2:20160 tikv         10.0.1.2    20160/20180                      Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.5:20160  tikv         10.0.1.5    20160/20180                      Up      data/tikv-20160         deploy/tikv-20160
+10.0.1.5:20160 tikv        10.0.1.5    20160/20180                     Up      data/tikv-20160     deploy/tikv-20160
 
-10.0.1.3:4000   tidb         10.0.1.3    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.3:4000  tidb        10.0.1.3    4000/10080                      Up      -                 deploy/tidb-4000
 
-10.0.1.4:4000   tidb         10.0.1.4    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.4:4000  tidb        10.0.1.4    4000/10080                      Up      -                 deploy/tidb-4000
 
-10.0.1.5:4000   tidb         10.0.1.5    4000/10080                       Up      -                       deploy/tidb-4000
+10.0.1.5:4000  tidb         10.0.1.5    4000/10080                       Up      -            deploy/tidb-4000
 
 10.0.1.3:9000   tiflash      10.0.1.3    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
 10.0.1.4:9000   tiflash      10.0.1.4    9000/8123/3930/20170/20292/8234  Up      data/tiflash-9000       deploy/tiflash-9000
 
-10.0.1.5:9090   prometheus   10.0.1.5    9090                             Up      data/prometheus-9090    deploy/prometheus-9090
+10.0.1.5:9090  prometheus   10.0.1.5    9090                             Up      data/prometheus-9090  deploy/prometheus-9090
 
-10.0.1.5:3000   grafana      10.0.1.5    3000                             Up      -                       deploy/grafana-3000
+10.0.1.5:3000  grafana      10.0.1.5    3000                             Up      -            deploy/grafana-3000
 
-10.0.1.5:9093   alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093  deploy/alertmanager-9093
+10.0.1.5:9093  alertmanager 10.0.1.5    9093/9094                        Up      data/alertmanager-9093 deploy/alertmanager-9093
 ```
 
 ### 2. 执行缩容操作
@@ -347,11 +347,11 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
-| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.4   | TiDB + PD + TiFlash + TiCDC |
 | 10.0.1.5   | TiDB + Monitor**（TiKV 已删除）**   |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiFlash 节点
 
@@ -500,11 +500,11 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
 | 10.0.1.4   | TiDB + PD + TiCDC **（TiFlash 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
 
 ## 缩容 TiCDC 节点
 
@@ -532,8 +532,8 @@ tiup cluster display <cluster-name>
 
 | Host IP   | Service   |
 |:----|:----|
-| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
+| 10.0.1.3   | TiDB + TiFlash + TiCDC  |
 | 10.0.1.4   | TiDB + PD + **(TiCDC 已删除）**  |
 | 10.0.1.5   | TiDB + Monitor  |
-| 10.0.1.1   | TiKV    |
-| 10.0.1.2   | TiKV    |
+| 10.0.1.1   | TiKV    |
+| 10.0.1.2   | TiKV    |
