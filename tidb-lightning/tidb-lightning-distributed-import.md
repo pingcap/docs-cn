@@ -83,7 +83,7 @@ TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在�
 
 在部署 TiDB Lightning 的 5 个节点上面分别导出两个分表的数据：
 
-- 如果两个分表位于同一个 MySQL 实例中，可以直接使用 Dumpling 的 `-filter` 参数一次性导出。此时在使用 TiDB Lightning 导入时，指定 `data-source-dir` 为 Dumpling 数据导出的目录即可；
+- 如果两个分表位于同一个 MySQL 实例中，可以直接使用 Dumpling 的 `--filter` 参数一次性导出。此时在使用 TiDB Lightning 导入时，指定 `data-source-dir` 为 Dumpling 数据导出的目录即可；
 - 如果两个分表的数据分布在不同的 MySQL 节点上，则需要使用 Dumpling 分别导出，两次导出数据需要放置在同一父目录下<b>不同子目录里</b>，然后在使用 TiDB Lightning 导入时，`data-source-dir` 指定为此父级目录。
 
 使用 Dumpling 导出数据的步骤，请参考 [Dumpling](/dumpling-overview.md)。
