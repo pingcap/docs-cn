@@ -1,9 +1,9 @@
 ---
-title: 监控组件的自定义配置
+title: 自定义监控组件的配置
 summary: 了解如何自定义 TiUP 管理的监控组件的配置。
 ---
 
-# 监控组件的自定义配置
+# 自定义监控组件的配置
 
 使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。
 
