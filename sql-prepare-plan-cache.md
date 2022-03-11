@@ -131,3 +131,56 @@ MySQL [test]> select @@last_plan_from_cache;
 +------------------------+
 1 row in set (0.00 sec)
 ```
+
+# 手动清空计划缓存
+
+TiDB 支持手动清空计划缓存，方式为 `admin flush session/instance plan_cache`，`session` 和 `instance` 用于指定需要清空的缓存级别；
+
+下面是一个清空计划缓存的例子：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> create table t (a int);
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> prepare stmt from 'select * from t';
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> execute stmt;
+Empty set (0.00 sec)
+
+MySQL [test]> execute stmt;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache; -- 可以命中缓存
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+
+MySQL [test]> admin flush session plan_cache; -- 清空当前 session 的计划缓存
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> execute stmt;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache; -- 由于缓存被情况此时无法再次命中
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      0 |
++------------------------+
+1 row in set (0.00 sec)
+```
+
+目前 TiDB 暂不支持清空 `global` 级别的计划缓存，即一次性清空整个集群的计划缓存，使用时会报错：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> admin flush global plan_cache;
+ERROR 1105 (HY000): Do not support the 'admin flush global scope.'
+```
