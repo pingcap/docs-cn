@@ -129,7 +129,7 @@ drainer_servers:
       syncer.to.password: ""
       syncer.to.port: 4000
       syncer.to.checkpoint:
-        schema: "tidb-binlog"
+        schema: "tidb_binlog"
         type: "tidb"
         host: "10.0.1.14"
         user: "root"
