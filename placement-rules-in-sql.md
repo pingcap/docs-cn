@@ -172,7 +172,7 @@ CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
 ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是t4，会采用 FOLLOWERS=3。
 ```
 
-用户可以通过改变放置策略 [ALTER PLACEMENT POLICY](/sql-statements/sql-statement-alter-placement-policy.md)，改变已从数据库继承放置规则的表。
+用户可以通过使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 改变放置策略，从而改变已从数据库继承放置规则的表。
 
 ### 高级放置选项
 
