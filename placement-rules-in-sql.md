@@ -25,7 +25,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 ## 指定放置规则
 
-指定放置规则，首先需要创建*放置策略 (placement policy)*。
+指定放置规则，首先需要创建放置策略 (placement policy)。
 
 ```sql
 CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
