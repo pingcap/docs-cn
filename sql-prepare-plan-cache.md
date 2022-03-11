@@ -184,3 +184,64 @@ MySQL [test]> select @@last_plan_from_cache; -- 由于缓存被情况此时无�
 MySQL [test]> admin flush global plan_cache;
 ERROR 1105 (HY000): Do not support the 'admin flush global scope.'
 ```
+
+# 忽略 `COM_STMT_CLOSE` 指令和 `DEALLOCATE PREPARE` 语句
+
+Prepared Statement 推荐的使用方式是，Prepare 一次，然后 Execute 多次，最后 Close，如：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> prepare stmt from '...'; -- prepare 一次
+MySQL [test]> execute stmt using ...;  -- execute 一次
+MySQL [test]> ...
+MySQL [test]> execute stmt using ...;  -- execute 多次
+MySQL [test]> deallocate prepare stmt; -- 使用完成后释放
+```
+
+但是部分用户的使用习惯是在每次 Execute 后，都进行 Close，如：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> prepare stmt from '...'; -- 第一次 prepare
+MySQL [test]> execute stmt using ...;
+MySQL [test]> deallocate prepare stmt; -- 一次使用后立即释放
+MySQL [test]> prepare stmt from '...'; -- 第二次 prepare
+MySQL [test]> execute stmt using ...;
+MySQL [test]> deallocate prepare stmt; -- 再次释放
+```
+
+这样的使用方式会让第一次执行得到的计划被立即清理，不能在第二次被复用；
+
+为了兼容这样的使用方式，TiDB 支持 `tidb_ignore_close_stmt_cmd` 变量，打开后会忽略掉关闭 Preapre Statement 的信号，解决上述问题，如：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> set @@tidb_ignore_close_stmt_cmd=1;  -- 打开开关
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> prepare stmt from 'select * from t'; -- 第一次 prepare
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute stmt;                        -- 第一次 execute
+Empty set (0.00 sec)
+
+mysql> deallocate prepare stmt;             -- 第一次执行完后立即释放
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> prepare stmt from 'select * from t'; -- 第二次 prepare
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute stmt;                        -- 第二次 execute
+Empty set (0.00 sec)
+
+mysql> select @@last_plan_from_cache;       -- 因为开关打开，第二次依旧能复用上一次的计划
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+```
