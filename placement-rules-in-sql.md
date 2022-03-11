@@ -211,7 +211,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 目前已知 Placement Rules in SQL 实验特性存在以下限制：
 
-* Dumpling 不支持导出放置规则，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
+* Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
