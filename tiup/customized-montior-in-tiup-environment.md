@@ -15,7 +15,7 @@ summary: 了解如何自定义 TiUP 管理的监控组件的配置。
 
 ## 场景说明
 
- 使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署监控组件，并且在集群扩容中自动为新增节点添加监控配置。需要注意的是，TiUP 会使用自己的配置参数覆盖监控组件的配置，如果你直接修改监控组件的配置文件，修改的配置文件可能在集群的 deploy/scale-out/scale-in/reload 等操作中被覆盖，导致配置不生效。
+ 使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署监控组件，并且在集群扩容中自动为新增节点添加监控配置。需要注意的是，TiUP 会使用自己的配置参数覆盖监控组件的配置，如果你直接修改监控组件的配置文件，修改的配置文件可能在对集群进行 deploy/scale-out/scale-in/reload 等操作中被 TiUP 所覆盖，导致配置不生效。
 
  在TiUP 部署方式中，如果需要对 Promethues 和 Grafana 进行自定义配置，请参考本文的配置规则。
 
@@ -32,13 +32,11 @@ summary: 了解如何自定义 TiUP 管理的监控组件的配置。
 topology.yaml 文件中 monitoring_servers 的配置示例：
 
 ```
-...
 # # Server configs are used to specify the configuration of Prometheus Server.
 monitoring_servers:
   # # The ip address of the Monitoring Server.
   - host: 127.0.0.1
     rule_dir: /home/tidb/prometheus_rule   # prometheus rule dir on TiUP machine
-...
 ```
 
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/prometheus_rule 路径下的自定义 rule，然后将该配置发送到 Prometheus Server， 替换默认配置规则。
@@ -52,7 +50,6 @@ monitoring_servers:
 topology.yaml 文件中 monitoring_servers 的配置示例:
 
 ```
-...
 monitoring_servers:
 - host: xxxxxxx
   ssh_port: 22
@@ -73,7 +70,6 @@ monitoring_servers:
         separator: ;
         regex: tikv_thread_cpu_seconds_total;(tokio|rocksdb).+
         action: drop
-...
 ```
 
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 additional_scrape_conf 字段的内容会添加到 Prometheus 配置文件的对应参数中。
@@ -92,13 +88,11 @@ monitoring_servers:
 topology.yaml 文件中 monitoring_servers 的配置示例：
 
 ```
-...
 # # Server configs are used to specify the configuration of Grafana Servers.
 grafana_servers:
   # # The ip address of the Grafana Server.
   - host: 127.0.0.1
     dashboard_dir: /home/tidb/dashboards   # grafana dashboard dir on TiUP machine
-...
 ```
 
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 将读取**本机** /home/tidb/dashboards 路径下的自定义 Dashboard ，然后将该配置发送到 Grafana Server， 替换默认配置规则。
@@ -112,7 +106,6 @@ grafana_servers:
 以下例子配置了 [log.file] level 字段以及 smtp 的相关配置项。
 
 ```
-...
 # # Server configs are used to specify the configuration of Grafana Servers.
 grafana_servers:
   # # The ip address of the Grafana Server.
@@ -124,7 +117,6 @@ grafana_servers:
       smtp.user: example@pingcap.com
       smtp.password: {password}
       smtp.skip_verify: true
-...
 ```
 
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 config 字段的内容会添加到 grafana 的配置文件 grafana.ini 中。
@@ -137,11 +129,13 @@ TiUP 部署的 Alertmanager 默认监听 alertmanager_servers.host，如果你�
 
 以下示例将 listen_host 字段设置为 `0.0.0.0`。
 
+```
 alertmanager_servers:
   # # The ip address of the Alertmanager Server.
   - host: 172.16.7.147
     listen_host: 0.0.0.0
     # # SSH port of the server.
     ssh_port: 22
+```
 
 上述配置后，在集群进行 deploy/scale-out/scale-in/reload 操作时， TiUP 会将 listen_host 字段的内容会添加到 Alertmanager 启动参数的 '--web.listen-address' 中。
