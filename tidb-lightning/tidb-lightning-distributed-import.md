@@ -79,7 +79,7 @@ TiDB Lightning 在运行时，需要独占部分资源，因此如果需要在�
 
 在部署 TiDB Lightning 的 5 个节点上面分别导出两个分表的数据：
 
-- 如果两个分表位于同一个 MySQL 实例中，可以直接使用 Dumpling 的 `-f` 参数一次性导出。此时在使用 TiDB Lightning 导入时，指定 `data-source-dir` 为 Dumpling 数据导出的目录即可；
+- 如果两个分表位于同一个 MySQL 实例中，可以直接使用 Dumpling 的 `--filter` 参数一次性导出。此时在使用 TiDB Lightning 导入时，指定 `data-source-dir` 为 Dumpling 数据导出的目录即可；
 - 如果两个分表的数据分布在不同的 MySQL 节点上，则需要使用 Dumpling 分别导出，两次导出数据需要放置在同一父目录下<b>不同子目录里</b>，然后在使用 TiDB Lightning 导入时，`data-source-dir` 指定为此父级目录。
 
 使用 Dumpling 导出数据的步骤，请参考 [Dumpling](/dumpling-overview.md)。
@@ -99,10 +99,10 @@ data-source-dir = "/path/to/source-dir"
 [tikv-importer]
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
-# 注意: 此参数为 v5.3.1 版本新增，对于 v5.3.0 版本，无须设置此参数。
+# 注意: 此参数为 v5.3.1 版本新增，对于 v5.3.0 版本，无需设置此参数。
 incremental-import = true
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。 
+# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。
 backend = "local"
 
 # 设置本地排序数据的路径
@@ -114,9 +114,9 @@ schema-pattern = "my_db"
 table-pattern = "my_table_*"
 target-schema = "my_db"
 target-table = "my_table"
-``` 
+```
 
-如果数据源存放在 Amazon S3 或 GCS 等分布式存储缓存，请参考[外部存储](/br/backup-and-restore-storages.md)。
+如果数据源存放在 Amazon S3 或 GCS 等外部存储中，请参考[外部存储](/br/backup-and-restore-storages.md)。
 
 ### 第 3 步：开启 TiDB Lightning 进行数据导入
 
@@ -126,7 +126,7 @@ target-table = "my_table"
 
 ```shell
 # !/bin/bash
-nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out &
 ```
 
 在并行导入的场景下，TiDB Lightning 在启动任务之后，会自动进行下列检查：
@@ -152,7 +152,7 @@ TiDB Lightning 也支持并行导入单表的数据。例如，将存放在 Amaz
 
 > **注意：**
 >
-> 在本地环境下，可以使用 Dumpling 的 --where 参数，预先将单表的数据划分成不同的部分导出至多台机器的本地磁盘，此时依然可以使用并行导入功能，其配置与示例 1 相同。
+> 在本地环境下，可以使用 Dumpling 的 `--filesize` 或 `--where` 参数，预先将单表的数据划分成不同的部分导出至多台机器的本地磁盘，此时依然可以使用并行导入功能，其配置与示例 1 相同。
 
 假设通过 Dumpling 导出的源文件存放在 Amazon S3 云存储中，数据文件为 `my_db.my_table.00001.sql` ~ `my_db.my_table.10000.sql` 共计 10000 个 SQL 文件。如果希望使用 2 个 TiDB Lightning 实例加速导入，则需要在配置文件中增加如下设置：
 
