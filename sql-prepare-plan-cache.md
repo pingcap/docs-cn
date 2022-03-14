@@ -134,7 +134,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## 手动清空计划缓存
 
-TiDB 支持手动清空计划缓存，方式为 `admin flush session/instance plan_cache`，`session` 和 `instance` 用于指定需要清空的缓存级别；
+你可手动清空计划缓存，方式为使用 `ADMIN FLUSH [SESSION | INSTANCE] PLAN_CACHE` 语句， 其中 `SESSION` 和 `INSTANCE` 用于指定需要清空的缓存级别。
 
 下面是一个清空计划缓存的例子：
 
