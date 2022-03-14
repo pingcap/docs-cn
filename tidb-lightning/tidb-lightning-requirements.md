@@ -11,7 +11,7 @@ Before using TiDB Lightning, you need to check whether the environment meets the
 
 Based on the import mode and features enabled, downstream database users should be granted with different privileges. The following table provides a reference.
 
-<table border=1>
+<table border="1">
    <tr>
       <td></td>
       <td>Feature</td>
