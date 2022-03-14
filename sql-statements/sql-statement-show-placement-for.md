@@ -5,10 +5,6 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 
 # SHOW PLACEMENT FOR
 
-> **警告：**
->
-> Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
-
 `SHOW PLACEMENT FOR` 用于汇总直接放置 (direct placement) 和放置策略 (placement policy) 中所有的放置选项，并为特定表、数据库或分区以规范形式呈现这些选项信息。
 
 ## 语法图

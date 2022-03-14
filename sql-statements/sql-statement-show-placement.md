@@ -5,10 +5,6 @@ summary: TiDB 数据库中 SHOW PLACEMENT 的使用概况。
 
 # SHOW PLACEMENT
 
-> **警告：**
->
-> Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
-
 `SHOW PLACEMENT` 汇总了直接放置 (direct placement) 和放置策略 (placement policy) 中的所有放置选项，并以规范的形式呈现这些选项信息。
 
 ## 语法图
