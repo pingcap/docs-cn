@@ -994,7 +994,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置是否忽略关闭 Prepared Statement 的指令。
 - 如果开关打开，Binary 协议的 `COM_STMT_CLOSE` 信号和文本协议的 `DEALLOCATE PREPARE` 都会被忽略。
 
-
 ### `tidb_index_join_batch_size`
 
 - 作用域：SESSION | GLOBAL
