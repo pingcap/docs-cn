@@ -11,6 +11,8 @@ title: TiDB 数据库快速上手指南
 
 > **注意：**
 >
+> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+>
 > 本指南中的 TiDB 部署方式仅适用于快速上手体验，不适用于生产环境。
 >
 > - 如需在生产环境部署 TiDB，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。
@@ -466,7 +468,3 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 - 如果你想使用 TiFlash 作为数据分析的解决方案，可参阅以下文档：
     - [使用 TiFlash](/tiflash/use-tiflash.md)
     - [TiFlash 简介](/tiflash/tiflash-overview.md)
-
-> **注意：**
->
-> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
