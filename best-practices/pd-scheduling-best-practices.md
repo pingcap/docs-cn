@@ -265,13 +265,29 @@ Similar to slow scheduling, the speed of region merge is most likely limited by 
 - A lot of tables have been created and then emptied (including truncated tables). These empty Regions cannot be merged if the split table attribute is enabled. You can disable this attribute by adjusting the following parameters:
 
     - TiKV: Set `split-region-on-table` to `false`. You cannot modify the parameter dynamically.
-    - PD
-        - Set `key-type` to `"txn"` or `"raw"`. You can modify the parameter dynamically.
-        - Or keep `key-type` as `table` and set `enable-cross-table-merge` to `true`. You can modify the parameter dynamically.
+    - PD: Use PD Control to set the parameters required by your cluster situation.
+
+        - Suppose that your cluster has no TiDB instance, and the value of [`key-type`](/pd-control.md#config-show--set-option-value--placement-rules) is set to `raw` or `txn`. In this case, PD can merge Regions across tables, regardless of the value of `enable-cross-table-merge setting`. You can modify the `key-type` parameter dynamically.
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        config set key-type txn
+        ```
+
+        - Suppose that your cluster has a TiDB instance, and the value of `key-type` is set to `table`. In this case, PD can merge Regions across tables only if the value of `enable-cross-table-merge` is set to `true`. You can modify the `key-type` parameter dynamically.
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        config set enable-cross-table-merge true
+        ```
+
+        If the modification does not take effect, refer to [FAQ - Why the modified `toml` configuration for TiKV/PD does not take effect?](/faq/deploy-and-maintain-faq.md#why-the-modified-toml-configuration-for-tikvpd-does-not-take-effect).
 
         > **Note:**
         >
-        > After placement rules are enabled, properly switch the value of `key-type` between `txn` and `raw` to avoid the failure of decoding.
+        > After enabling Placement Rules, properly switch the value of `key-type` to avoid the failure of decoding.
 
 For v3.0.4 and v2.1.16 or earlier, the `approximate_keys` of regions are inaccurate in specific circumstances (most of which occur after dropping tables), which makes the number of keys break the constraints of `max-merge-region-keys`. To avoid this problem, you can adjust `max-merge-region-keys` to a larger value.
 
@@ -281,4 +297,4 @@ If a TiKV node fails, PD defaults to setting the corresponding node to the **dow
 
 Practically, if a node failure is considered unrecoverable, you can immediately take it offline. This makes PD replenish replicas soon in another node and reduces the risk of data loss. In contrast, if a node is considered recoverable, but the recovery cannot be done in 30 minutes, you can temporarily adjust `max-store-down-time` to a larger value to avoid unnecessary replenishment of the replicas and resources waste after the timeout.
 
-In TiDB v5.2.0, TiKV introduces the mechanism of slow TiKV node detection. By sampling the requests in TiKV, it calculates a score ranging from 1 to 100. A TiKV node with a score greater than or equal to 80 is marked as slow. You can add [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config) to detect and schedule slow nodes. When one and only one slow node appears, and the slow score reaches the upper limit (100 by default), all leaders in the node will be evicted. 
+In TiDB v5.2.0, TiKV introduces the mechanism of slow TiKV node detection. By sampling the requests in TiKV, this mechanism works out a score ranging from 1 to 100. A TiKV node with a score higher than or equal to 80 is marked as slow. You can add [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config) to detect and schedule slow nodes. If only one TiKV is detected as slow, and the slow score reaches the upper limit (100 by default), the leader in this node will be evicted (similar to the effect of `evict-leader-scheduler`). 
