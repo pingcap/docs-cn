@@ -185,7 +185,7 @@ MySQL [test]> admin flush global plan_cache;
 ERROR 1105 (HY000): Do not support the 'admin flush global scope.'
 ```
 
-# 忽略 `COM_STMT_CLOSE` 指令和 `DEALLOCATE PREPARE` 语句
+## 忽略 `COM_STMT_CLOSE` 指令和 `DEALLOCATE PREPARE` 语句
 
 Prepared Statement 推荐的使用方式是，Prepare 一次，然后 Execute 多次，最后 Close，如：
 
