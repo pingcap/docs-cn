@@ -7,7 +7,7 @@ summary: 学习如何使用 WebUI 来方便的管理数据迁移任务
 
 DM WebUI 是为了方便大量迁移任务的管理、简化操作步骤的目的开发，其主要特性包含运行状态监控，上游数据源配置，以及迁移任务管理等。DM WebUI 可以从任意 master 节点访问，其端口与 OpenAPI 保持一致，默认为 8261。访问地址示例：`http://{master_ip}:{master_port}/dashboard/`。
 
-![webui](/media/dm/dm-webui-preview-en.png)
+![webui](/media/dm/dm-webui-preview-cn.png)
 
 > **注意：**
 >
