@@ -1578,7 +1578,6 @@ Raft Engine 相关的配置项。
 >
 > Quota Limiter 目前为实验特性，设置较小的限额可能发生性能下降的现象。
 
-
 ### `forefront-cpu-time`
 
 + 限制处理前端请求的 CPU 耗时，单位为 millicpu，即 1500 代表 1.5vCPU。
