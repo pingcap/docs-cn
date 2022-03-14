@@ -53,7 +53,7 @@ CREATE TABLE `sale_01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-The `id` column is the primary key, and the `sid` column is the sharding key. The `id` column is auto-incremental, and duplicated multiple sharded table ranges will cause data conflicts. The `sid` can ensure that the index is globally unique, so you can follow the steps in [Remove the primary key attribute of the auto-incremental primary key](/dm/shard-merge-best-practices.md#remove-the-primary-key-attribute-from-the-column) to bypasses the `id` column.
+The `id` column is the primary key, and the `sid` column is the sharding key. The `id` column is auto-incremental, and duplicated multiple sharded table ranges will cause data conflicts. The `sid` can ensure that the index is globally unique, so you can follow the steps in [Remove the primary key attribute of the auto-increment primary key](/dm/shard-merge-best-practices.md#remove-the-primary-key-attribute-from-the-column) to bypasses the `id` column.
 
 {{< copyable "sql" >}}
 
