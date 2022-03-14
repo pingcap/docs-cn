@@ -1,7 +1,7 @@
 ---
 title: TiDB Data Migration 术语表
 summary: 学习 TiDB Data Migration 相关术语
-aliases: ['/docs-cn/tidb-data-migration/dev/glossary/','/zh/tidb-data-migration/dev/glossary']
+aliases: ['/docs-cn/tidb-data-migration/dev/glossary/']
 ---
 
 # TiDB Data Migration 术语表
@@ -20,7 +20,7 @@ MySQL/MariaDB 生成的 Binlog 文件中的数据变更信息，具体请参考 
 
 ### Binlog event filter
 
-比 Block & allow table list 更加细粒度的过滤功能，具体可参考 [Binlog Event Filter](/dm/dm-overview.md#binlog-event-filter)。
+比 Block & allow table list 更加细粒度的过滤功能，具体可参考 [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)。
 
 ### Binlog position
 
@@ -32,7 +32,7 @@ DM-worker 内部用于读取上游 Binlog 或本地 Relay log 并迁移到下游
 
 ### Block & allow table list
 
-针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-overview.md#block--allow-lists)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
+针对上游数据库实例表的黑白名单过滤功能，具体可参考 [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)。该功能与 [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html) 及 [MariaDB Replication Filters](https://mariadb.com/kb/en/library/replication-filters/) 类似。
 
 ## C
 

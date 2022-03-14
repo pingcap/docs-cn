@@ -1,13 +1,9 @@
 ---
-title: 使用 TiUP 离线镜像部署 DM 集群（实验特性）
+title: 使用 TiUP 离线镜像部署 DM 集群
 summary: 学习如何使用 TiUP DM 组件来离线部署 TiDB Data Migration 工具。
 ---
 
-# 使用 TiUP 离线镜像部署 DM 集群（实验特性）
-
-> **警告：**
->
-> 本文描述特性仍为实验特性，不建议在生产环境下使用 TiUP 离线镜像部署 DM 集群。
+# 使用 TiUP 离线镜像部署 DM 集群
 
 本文介绍如何使用 TiUP 离线部署 DM 集群，具体的操作步骤如下。
 
@@ -46,7 +42,7 @@ summary: 学习如何使用 TiUP DM 组件来离线部署 TiDB Data Migration �
         {{< copyable "shell-regular" >}}
 
         ```bash
-        export version=v2.0.3  # 可修改成实际需要的版本
+        # 将 ${version} 修改成实际需要的版本 
         tiup mirror clone tidb-dm-${version}-linux-amd64 --os=linux --arch=amd64 \
             --dm-master=${version} --dm-worker=${version} --dmctl=${version} \
             --alertmanager=v0.17.0 --grafana=v4.0.3 --prometheus=v4.0.3 \
@@ -72,7 +68,7 @@ summary: 学习如何使用 TiUP DM 组件来离线部署 TiDB Data Migration �
 {{< copyable "shell-regular" >}}
 
 ```bash
-export version=v2.0.3 # 可修改成实际需要的版本
+# 将 ${version} 修改成实际需要的版本
 tar xzvf tidb-dm-${version}-linux-amd64.tar.gz
 sh tidb-dm-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
@@ -185,7 +181,7 @@ TiUP 支持管理多个 DM 集群，该命令会输出当前通过 TiUP DM 管�
 ```log
 Name  User  Version  Path                                  PrivateKey
 ----  ----  -------  ----                                  ----------
-dm-test  tidb  v2.0.3  /root/.tiup/storage/dm/clusters/dm-test  /root/.tiup/storage/dm/clusters/dm-test/ssh/id_rsa
+dm-test  tidb  ${version}  /root/.tiup/storage/dm/clusters/dm-test  /root/.tiup/storage/dm/clusters/dm-test/ssh/id_rsa
 ```
 
 ## 第 6 步：检查部署的 DM 集群情况

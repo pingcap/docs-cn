@@ -5,7 +5,14 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 # TiDB Dashboard 实例性能手动分析页面
 
-该功能允许用户在不重启的情况下持续收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据。收集到的性能数据可显示为火焰图或有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，方便用户快速了解该实例 CPU 资源消耗细节。
+该功能允许用户收集 TiDB、TiKV、PD、TiFlash 各个实例的性能数据。收集到的性能数据可显示为火焰图或有向无环图，直观展现实例在性能收集的时间段内执行的各种内部操作及比例，方便用户快速了解该实例 CPU 资源消耗细节。
+
+## 分析内容
+
+性能分析允许用户收集 TiDB、PD、TiKV、TiFlash 各个实例的性能数据。收集到的性能数据可显示为火焰图、有向无环图等，直观展现实例在性能收集的时间段内执行的各种内部操作及其比例，方便用户快速了解该实例性能消耗情况。目前支持的性能信息：
+
+- TiDB/PD: CPU profile、Heap、Mutex、Goroutine（debug=2）
+- TiKV/TiFlash: CPU Profile
 
 ## 访问页面
 
@@ -19,11 +26,9 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ## 开始性能分析
 
-在实例性能分析页面，选择至少一个想要分析的目标实例，点击**开始分析** (Start Profiling) 按钮即可开始性能分析：
+在实例性能分析页面，选择至少一个目标实例和分析类型，确定性能分析时长（默认为 30 秒）。点击**开始分析** (Start Profiling) ：
 
 ![开始分析](/media/dashboard/dashboard-profiling-start.png)
-
-在开始性能分析前可以修改性能分析时长。性能分析所需时间取决于分析时长，默认为 30 秒。30 秒的性能分析大约需要 30 秒完成。
 
 ## 查看性能分析状态
 
@@ -39,7 +44,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ![下载分析结果](/media/dashboard/dashboard-profiling-download.png)
 
-也可以点击列表中的单个实例，直接查看其性能分析结果：
+也可以点击列表中的单个实例查看其性能分析结果（包括火焰图、有向无环图、文本），或者悬浮到 ... 按钮上下载原始数据：
 
 ![在线查看分析结果](/media/dashboard/dashboard-profiling-view-single.png)
 

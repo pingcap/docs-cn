@@ -1,7 +1,7 @@
 ---
 title: 处理告警
 summary: 了解 DM 中各主要告警信息的处理方法。
-aliases: ['/docs-cn/tidb-data-migration/dev/handle-alerts/','/zh/tidb-data-migration/dev/handle-alerts/']
+aliases: ['/docs-cn/tidb-data-migration/dev/handle-alerts/']
 ---
 
 # 处理告警

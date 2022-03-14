@@ -277,7 +277,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 ![img](/media/br/restore-region.png)
 
-**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
+**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
 
 ![img](/media/br/restore-process-sst.png)
 

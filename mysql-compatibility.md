@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
 * 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
-* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
+* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
@@ -47,7 +47,7 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 
 ### 自增 ID
 
-- TiDB 的自增列仅保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性，建议不要将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
+- TiDB 的自增列既能保证唯一，也能保证在单个 TiDB server 中自增，但不保证多个 TiDB server 中自增，不保证自动分配的值的连续性。不建议将缺省值和自定义值混用，若混用可能会收到 `Duplicated Error` 的错误信息。
 
 - TiDB 可通过 `tidb_allow_remove_auto_inc` 系统变量开启或者关闭允许移除列的 `AUTO_INCREMENT` 属性。删除列属性的语法是：`ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE`。
 
@@ -124,6 +124,12 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 ### 临时表
 
 详见 [TiDB 本地临时表与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)。
+
+### 字符集和排序规则
+
+* 关于 TiDB 对字符集和排序规则的支持情况，详见[字符集和排序规则](/character-set-and-collation.md)。
+
+* 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)。
 
 ### 存储引擎
 

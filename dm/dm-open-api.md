@@ -1,19 +1,13 @@
 ---
 title: 使用 OpenAPI 运维集群
 summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步。
-aliases: ['/zh/tidb-data-migration/dev/open-api/']
 ---
 
 # 使用 OpenAPI 运维集群
 
-> **警告：**
->
-> 当前该功能为实验特性，默认关闭，不建议在生产环境中使用。
-
-DM 提供 OpenAPI 功能，你可以通过 OpenAPI 对 DM 集群进行查询和运维操作。OpenAPI 的总体功能和 [dmctl 工具](/dm/dmctl-introduction.md)类似。如需开启该功能，请在 DM-master 的配置文件中增加如下配置项：
+DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。如需开启 OpenAPI，请在 DM-master 的配置文件中增加如下配置项：
 
 ```toml
-[experimental]
 openapi = true
 ```
 
@@ -371,14 +365,14 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/start-relay`
+ `POST /api/v1/sources/{source-name}/start-relay`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/start-relay' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -398,14 +392,14 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/stop-relay`
+ `POST /api/v1/sources/{source-name}/stop-relay`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/stop-relay' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -422,14 +416,14 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/pause-relay`
+ `POST /api/v1/sources/{source-name}/pause-relay`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/pause-relay' \
   -H 'accept: */*'
 ```
@@ -440,14 +434,14 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/resume-relay`
+ `POST /api/v1/sources/{source-name}/resume-relay`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/resume-relay' \
   -H 'accept: */*'
 ```
@@ -458,14 +452,14 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/transfer`
+ `POST /api/v1/sources/{source-name}/transfer`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/transfer' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -929,14 +923,14 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `PATCH /api/v1/tasks/task-1/pause`
+ `POST /api/v1/tasks/task-1/pause`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/tasks/task-1/pause' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -951,14 +945,14 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/tasks/task-1/resume`
+ `POST /api/v1/tasks/task-1/resume`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/tasks/task-1/resume' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -1047,7 +1041,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `PATCH /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+ `POST /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 

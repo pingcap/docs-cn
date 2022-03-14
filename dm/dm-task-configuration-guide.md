@@ -1,6 +1,5 @@
 ---
 title: DM 数据迁移任务配置向导
-aliases: ['/zh/tidb-data-migration/dev/task-configuration-guide/']
 ---
 
 # 数据迁移任务配置向导
@@ -177,6 +176,7 @@ shard-mode: "pessimistic"       # 默认值为 "" 即无需协调。如果为分
 name: test                      # 任务名称，需要全局唯一
 shard-mode: "pessimistic"       # 默认值为 "" 即无需协调。如果为分库分表合并任务，请设置为悲观协调模式 "pessimistic"。在深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 迁移"
+# timezone: "UTC"               # 指定数据迁移任务时 SQL Session 使用的时区。DM 默认使用目标库的全局时区配置进行数据迁移，并且自动确保同步数据的正确性。使用自定义时区依然可以确保整个流程的正确性，但一般不需要手动指定。
 
 ## ******** 数据源配置 **********
 mysql-instances:

@@ -1,7 +1,7 @@
 ---
 title: 使用 TiUP 部署 DM 集群
 summary: 学习如何使用 TiUP DM 组件来部署 TiDB Data Migration 工具。
-aliases: ['/docs-cn/tidb-data-migration/dev/deploy-a-dm-cluster-using-ansible/','/zh/tidb-data-migration/dev/deploy-a-dm-cluster-using-ansible']
+aliases: ['/docs-cn/tidb-data-migration/dev/deploy-a-dm-cluster-using-ansible/']
 ---
 
 # 使用 TiUP 部署 DM 集群
@@ -192,7 +192,7 @@ TiUP 支持管理多个 DM 集群，该命令会输出当前通过 TiUP DM 管�
 ```log
 Name  User  Version  Path                                  PrivateKey
 ----  ----  -------  ----                                  ----------
-dm-test  tidb  v2.0.3  /root/.tiup/storage/dm/clusters/dm-test  /root/.tiup/storage/dm/clusters/dm-test/ssh/id_rsa
+dm-test  tidb  ${version}  /root/.tiup/storage/dm/clusters/dm-test  /root/.tiup/storage/dm/clusters/dm-test/ssh/id_rsa
 ```
 
 ## 第 5 步：检查部署的 DM 集群情况

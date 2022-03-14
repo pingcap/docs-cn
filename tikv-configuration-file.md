@@ -22,43 +22,72 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 默认值：false
 
-### `log-level`
-
-+ 日志等级。
-+ 可选值："trace"，"debug"，"info"，"warning"，"error"，"critical"
-+ 默认值："info"
-
-### `log-file`
-
-+ 日志文件。如果未设置该项，日志会默认输出到 "stderr"。
-+ 默认值：""
-
-### `log-format`
-
-+ 日志的格式。
-+ 可选值："json"，"text"
-+ 默认值："text"
-
-### `log-rotation-timespan`
-
-+ 轮换日志的时间跨度。当超过该时间跨度，日志文件会被轮换，即在当前日志文件的文件名后附加一个时间戳，并创建一个新文件。
-+ 默认值："24h"
-
-### `log-rotation-size`
-
-+ 触发日志轮换的文件大小。一旦日志文件大小超过指定的阈值，日志文件将被轮换，将旧文件被置于新文件中，新文件名即旧文件名加上时间戳后缀。
-+ 默认值："300MB"
-
 ### `slow-log-file`
 
 + 存储慢日志的文件。
-+ 如果未设置本项但设置了 `log-file`，慢日志将输出至 `log-file` 指定的日志文件中。如果本项和 `log-file` 均未设置，所有日志默认输出到 "stderr"。
++ 如果未设置本项但设置了 `log.file.filename`，慢日志将输出至 `log.file.filename` 指定的日志文件中。
++ 如果本项和 `log.file.filename` 均未设置，所有日志默认输出到 `"stderr"`。
++ 如果同时设置了两项，普通日志会输出至 `log.file.filename` 指定的日志文件中，而慢日志则会输出至本配置项指定的日志文件中。
 + 默认值：""
 
 ### `slow-log-threshold`
 
 + 输出慢日志的阈值。处理时间超过该阈值后会输出慢日志。
 + 默认值："1s"
+
+## log <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+日志相关的配置项。
+
+自 v5.4.0 版本起，废弃原 log 参数 `log-rotation-timespan`，并将 `log-level`、`log-format`、`log-file`、`log-rotation-size` 变更为下列参数，与 TiDB 的 log 参数保持一致。如果只设置了原参数、且把其值设为非默认值，原参数与新参数会保持兼容；如果同时设置了原参数和新参数，则会使用新参数。
+
+### `level` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 日志等级。
++ 可选值："debug"，"info"，"warn"，"error"，"fatal"
++ 默认值："info"
+
+### `format` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 日志的格式。
++ 可选值："json"，"text"
++ 默认值："text"
+
+### `enable-timestamp` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 是否开启日志中的时间戳。
++ 可选值："true"，"false"
++ 默认值："true"
+
+## log.file <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+日志文件相关的配置项。
+
+### `filename` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ log 文件。如果未设置该参数，日志会默认输出到 `"stderr"`；如果设置了该参数，log 会输出到对应的文件中。
++ 默认值：""
+
+### `max-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 单个 log 文件最大大小，超过设定的参数值后，系统自动切分成多个文件。
++ 默认值：300
++ 最大值：4096
++ 单位：MiB
+
+### `max-days` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 保留 log 文件的最长天数。
+    + 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 不清理 log 文件。
+    + 如果把此参数设置为非 `0` 的值，在 `max-days` 之后，TiKV 会清理过期的日志文件。
++ 默认值：0
+
+### `max-backups` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 可保留的 log 文件的最大数量。
+    + 如果未设置本参数或把此参数设置为默认值 `0`，TiKV 会保存所有的 log 文件；
+    + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
++ 默认值：0
 
 ## server
 
@@ -340,8 +369,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `enable-ttl`
 
 + TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
-+ 注意：TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式的不同，用户只能在新建集群时设置好该功能，在已有集群上修改该项配置会使得启动报错。
 + 默认值：false
+
+> **警告：**
+>
+> TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式不同，你只能在新建集群时设置该功能。
+> **禁止**在已有集群上修改该项配置，否则会导致启动报错。
+> **禁止**在有 TiDB 节点的集群中使用该参数，以免导致数据写坏等严重后果。
 
 ### `ttl-check-poll-interval`
 
@@ -417,6 +451,11 @@ raftstore 相关的配置项。
 + 开启 Prevote 的开关，开启有助于减少隔离恢复后对系统造成的抖动。
 + 默认值：true
 
+### `capacity`
+
++ 存储容量，即允许的最大数据存储大小。如果没有设置，则使用当前磁盘容量。如果要将多个 TiKV 实例部署在同一块物理磁盘上，需要在 TiKV 配置中添加该参数，参见[混合部署的关键参数介绍](/hybrid-deployment-topology.md#混合部署的关键参数介绍)。
++ 默认值：0
+
 ### `raftdb-path`
 
 + raft 库的路径，默认存储在 storage.data-dir/raft 下。
@@ -424,11 +463,19 @@ raftstore 相关的配置项。
 
 ### `raft-base-tick-interval`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 状态机 tick 一次的间隔时间。
 + 默认值：1s
 + 最小值：大于 0
 
 ### `raft-heartbeat-ticks`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 发送心跳时经过的 tick 个数，即每隔 raft-base-tick-interval * raft-heartbeat-ticks 时间发送一次心跳。
 + 默认值：2
@@ -436,11 +483,19 @@ raftstore 相关的配置项。
 
 ### `raft-election-timeout-ticks`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 发起选举时经过的 tick 个数，即如果处于无主状态，大约经过 raft-base-tick-interval * raft-election-timeout-ticks 时间以后发起选举。
 + 默认值：10
 + 最小值：raft-heartbeat-ticks
 
 ### `raft-min-election-timeout-ticks`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 发起选举时至少经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks，不能比 raft-election-timeout-ticks 小。
 + 默认值：0
@@ -448,11 +503,19 @@ raftstore 相关的配置项。
 
 ### `raft-max-election-timeout-ticks`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 发起选举时最多经过的 tick 个数，如果为 0，则表示使用 raft-election-timeout-ticks * 2。
 + 默认值：0
 + 最小值：0
 
 ### `raft-max-size-per-msg`
+
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
@@ -461,9 +524,13 @@ raftstore 相关的配置项。
 
 ### `raft-max-inflight-msgs`
 
+> **注意：**
+>
+> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
+
 + 待确认日志个数的数量，如果超过这个数量将会减缓发送日志的个数。
 + 默认值：256
-+ 最小值：大于0
++ 最小值：大于 0
 
 ### `raft-entry-max-size`
 
@@ -565,6 +632,13 @@ raftstore 相关的配置项。
 + 默认值：4h
 + 最小值：0
 
+### `snap-generator-pool-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
++ 用于配置 `snap-generator` 线程池的大小。
++ 为了让 TiKV 在恢复场景下加快 Region 生成 Snapshot 的速度，需要调大对应 Worker 的 `snap-generator` 线程数量。可通过本配置项调大对应线程的数量。
++ 默认值：2
++ 最小值：0
+
 ### `lock-cf-compact-interval`
 
 + 触发对 lock CF compact 检查的时间间隔。
@@ -643,11 +717,6 @@ raftstore 相关的配置项。
 
 + 为 true 时，以最大分裂 key 为起点的 region 复用原 region 的 key；否则以原 region 起点 key 作为起点的 region 复用原 region 的 key。
 + 默认值：true
-
-### `allow-remove-leader`
-
-+ 允许删除主开关。
-+ 默认值：false
 
 ### `merge-max-log-gap`
 
@@ -730,12 +799,6 @@ raftstore 相关的配置项。
 
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
 + 默认值：1MB
-+ 最小值：0
-
-### `raft-msg-flush-interval` <span class="version-mark">从 v5.3.0 版本开始引入</span>
-
-+ Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `store-io-pool-size` 的值为 `0` 时，该配置项不会生效。
-+ 默认值：250us
 + 最小值：0
 
 ## coprocessor
@@ -1276,6 +1339,66 @@ raftdb 相关配置项。
 + WAL 存储目录。
 + 默认值：/tmp/tikv/store
 
+## raft-engine
+
+Raft Engine 相关的配置项。
+
+> **警告：**
+>
+> Raft Engine 目前为实验特性，不建议在生产环境中使用。
+
+### `enable`
+
++ 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。
++ 默认值：`"false"`
+
+### `dir`
+
++ 存储 Raft 日志文件的目录。如果该目录不存在，则在启动 TiKV 时创建该目录。
++ 如果未设置此配置，则使用 `{data-dir}/raft-engine`。
++ 如果你的机器上有多个磁盘，建议将 Raft Engine 的数据存储在单独的磁盘上，以提高 TiKV 性能。
++ 默认值：`""`
+
+### `batch-compression-threshold`
+
++ 指定日志批处理的阈值大小。大于此配置的日志批次将被压缩。如果将此配置项设置为 `0`，则禁用压缩。
++ 默认值：`"8KB"`
+
+### `bytes-per-sync`
+
++ 指定缓存写入的最大累积大小。当超过此配置值时，缓存的写入将被刷写到磁盘。
++ 如果将此配置项设置为 `0`，则禁用增量同步。
++ 默认值：`"4MB"`
+
+### `target-file-size`
+
++ 指定日志文件的最大大小。当日志文件大于此值时，将对其进行轮转。
++ 默认值：`"128MB"`
+
+### `purge-threshold`
+
++ 指定主日志队列的阈值大小。当超过此配置值时，将对主日志队列执行垃圾回收。
++ 此参数可用于调整 Raft Engine 的空间占用大小。
++ 默认值：`"10GB"`
+
+### `recovery-mode`
+
++ 确定在日志恢复过程中如何处理文件损坏。
++ 可选值：`"absolute-consistency"`, `"tolerate-tail-corruption"`, `"tolerate-any-corruption"`
++ 默认值：`"tolerate-tail-corruption"`
+
+### `recovery-read-block-size`
+
++ 恢复期间读取日志文件的最小 I/O 大小。
++ 默认值：`"16KB"`
++ 最小值：`"512B"`
+
+### `recovery-threads`
+
++ 用于扫描和恢复日志文件的线程数。
++ 默认值：`4`
++ 最小值：`1`
+
 ## security
 
 安全相关配置项。
@@ -1287,13 +1410,18 @@ raftdb 相关配置项。
 
 ### `cert-path`
 
-+ 包含 X509 证书的 PEM 文件路径
++ 包含 X.509 证书的 PEM 文件路径
 + 默认值：""
 
 ### `key-path`
 
-+ 包含 X509 key 的 PEM 文件路径
++ 包含 X.509 key 的 PEM 文件路径
 + 默认值：""
+
+### `cert-allowed-cn`
+
++ 客户端提供的证书中，可接受的 X.509 通用名称列表。仅当提供的通用名称与列表中的条目之一完全匹配时，才会允许其请求。
++ 默认值：`[]`。这意味着默认情况下禁用客户端证书 CN 检查。
 
 ### `redact-info-log` <span class="version-mark">从 v4.0.8 版本开始引入</span>
 
@@ -1360,8 +1488,13 @@ raftdb 相关配置项。
 ### `num-threads`
 
 + 处理备份的工作线程数量。
-+ 默认值：CPU * 0.75，但最大为 32
++ 默认值：CPU * 0.5，但最大为 8 
 + 最小值：1
+
+### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
+
++ 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
++ 默认值：true
 
 ## cdc
 
@@ -1427,9 +1560,9 @@ raftdb 相关配置项。
 + 默认值：1s
 + 最小值：1ms
 
-### `wait-up-delay-duration`
+### `wake-up-delay-duration`
 
-+ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wait-up-delay-duration` 之后被唤醒。
++ 悲观事务释放锁时，只会唤醒等锁事务中 `start_ts` 最小的事务，其他事务将会延迟 `wake-up-delay-duration` 之后被唤醒。
 + 默认值：20ms
 
 ### `pipelined`

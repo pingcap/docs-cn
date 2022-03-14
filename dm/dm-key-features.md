@@ -1,7 +1,7 @@
 ---
 title: 主要特性
 summary: 了解 DM 的各主要功能特性或相关的配置选项。
-aliases: ['/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/','/zh/tidb-data-migration/dev/key-features/']
+aliases: ['/docs-cn/tidb-data-migration/dev/key-features/','/docs-cn/tidb-data-migration/dev/feature-overview/']
 ---
 
 # 主要特性
