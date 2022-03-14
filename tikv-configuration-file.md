@@ -1572,7 +1572,7 @@ Raft Engine 相关的配置项。
 
 ## quota
 
-前端限流的相关配置。
+前端限流的相关配置，以下参数的限制采用近似统计。
 
 > **警告：**
 >
@@ -1581,7 +1581,7 @@ Raft Engine 相关的配置项。
 
 ### `forefront-cpu-time`
 
-+ 限制处理前端请求的 CPU 耗时，单位为 millicpu，即 1500 代表 1.5vCPU。该参数的限制采用近似统计。
++ 限制处理前端请求的 CPU 耗时，单位为 millicpu，即 1500 代表 1.5vCPU。
 + 默认值：0，即不设限
 
 ### `forefront-req-rate`
