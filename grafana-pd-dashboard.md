@@ -77,7 +77,7 @@ The following is the description of PD Dashboard metrics items:
 - Store Write rate keys: The total written keys on each TiKV instance
 - Hot cache write entry number: The number of peers on each TiKV instance that are in the write hotspot statistics module
 - Selector events: The event count of Selector in the hotspot scheduling module
-- Direction of hotspot move leader: The direction of leader movement in the hotsport scheduling. The positive number means scheduling into the instance. The negtive number means scheduling out of the instance
+- Direction of hotspot move leader: The direction of leader movement in the hotspot scheduling. The positive number means scheduling into the instance. The negtive number means scheduling out of the instance
 - Direction of hotspot move peer: The direction of peer movement in the hotspot scheduling. The positive number means scheduling into the instance. The negative number means scheduling out of the instance
 
 ![PD Dashboard - Hot write metrics](/media/pd-dashboard-hotwrite-v4.png)

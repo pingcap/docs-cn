@@ -335,7 +335,7 @@ The value (ID) implicitly assigned to auto-increment columns satisfies the follo
 
 Currently, `AUTO_INCREMENT` has the following restrictions when used in TiDB:
 
-- It must be defined on the column of the primary key or unique index.
+- It must be defined on the first column of the primary key or the first column of an index.
 - It must be defined on the column of `INTEGER`, `FLOAT`, or `DOUBLE` type.
 - It cannot be specified on the same column with the `DEFAULT` column value.
 - `ALTER TABLE` cannot be used to add the `AUTO_INCREMENT` attribute.
