@@ -15,7 +15,7 @@ DM WebUI 是为了方便大量迁移任务的管理、简化操作步骤的目�
 > 
 > - DM WebUI 中 task 的生命周期有所改变，不建议与 dmctl 同时使用。
 
-## 实验特性开关
+## 特性开关
 
 若要使用 DM WebUI，需要在 master 配置中开启`openapi`配置：
 
