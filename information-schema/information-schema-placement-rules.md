@@ -5,7 +5,7 @@ summary: Learn the `PLACEMENT_RULES` information_schema table.
 
 # PLACEMENT_RULES
 
-The `PLACEMENT_RULES` table provides information on all explicitly configured [Placement Rules in SQL](/placement-rules-in-sql.md). The information includes both placement policies and directly attached rules.
+The `PLACEMENT_RULES` table provides information on all explicitly configured [Placement Rules in SQL](/placement-rules-in-sql.md), which means all placement policies.
 
 {{< copyable "sql" >}}
 
@@ -45,11 +45,10 @@ The `PLACEMENT_RULES` table only shows explicitly configured rules. To see the c
 
 ```sql
 CREATE TABLE t1 (a INT); 
-CREATE TABLE t2 (a INT) primary_region="us-east-1" regions="us-east-1";
 CREATE PLACEMENT POLICY p1 primary_region="us-east-1" regions="us-east-1";
-CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;
-SHOW PLACEMENT; -- Includes t3.
-SELECT * FROM information_schema.placement_rules; -- Does not include t3.
+CREATE TABLE t2 (a INT) PLACEMENT POLICY=p1;
+SHOW PLACEMENT; -- Includes t2.
+SELECT * FROM information_schema.placement_rules; -- Does not include t2.
 ```
 
 ```sql
@@ -66,15 +65,13 @@ Query OK, 0 rows affected (0.11 sec)
 +---------------+------------------------------------------------+
 | POLICY p1     | PRIMARY_REGION="us-east-1" REGIONS="us-east-1" |
 | TABLE test.t2 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1" |
-| TABLE test.t3 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1" |
 +---------------+------------------------------------------------+
-3 rows in set (0.00 sec)
+2 rows in set (0.00 sec)
 
 +-----------+--------------+-------------+-------------+------------+----------------+----------------+-----------+-------------+--------------------+----------------------+---------------------+----------+-----------+----------+
 | POLICY_ID | CATALOG_NAME | POLICY_NAME | SCHEMA_NAME | TABLE_NAME | PARTITION_NAME | PRIMARY_REGION | REGIONS   | CONSTRAINTS | LEADER_CONSTRAINTS | FOLLOWER_CONSTRAINTS | LEARNER_CONSTRAINTS | SCHEDULE | FOLLOWERS | LEARNERS |
 +-----------+--------------+-------------+-------------+------------+----------------+----------------+-----------+-------------+--------------------+----------------------+---------------------+----------+-----------+----------+
 |         3 | def          | p1          | NULL        | NULL       | NULL           | us-east-1      | us-east-1 |             |                    |                      |                     |          |         0 |        0 |
-|      NULL | def          | NULL        | test        | t2         | NULL           | us-east-1      | us-east-1 |             |                    |                      |                     |          |         0 |        0 |
 +-----------+--------------+-------------+-------------+------------+----------------+----------------+-----------+-------------+--------------------+----------------------+---------------------+----------+-----------+----------+
 2 rows in set (0.00 sec)
 ```

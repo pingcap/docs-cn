@@ -9,6 +9,10 @@ summary: Learn how to schedule placement of tables and partitions using SQL stat
 >
 > Placement Rules in SQL is an experimental feature introduced in v5.3.0. The syntax might change before its GA, and there might also be bugs. If you understand the risks, you can enable this experiment feature by executing `SET GLOBAL tidb_enable_alter_placement = 1;`.
 
+> **Note：**
+>
+> The implementation of *Placement Rules in SQL* relies on the *placement rules feature* of PD. For details, refer to [Configure Placement Rules](/configure-placement-rules.md). In the context of Placement Rules in SQL, *placement rules* might refer to *placement policies* attached to other objects, or to rules that are sent from TiDB to PD.
+
 Placement Rules in SQL is a feature that enables you to specify where data is stored in a TiKV cluster using SQL interfaces. Using this feature, tables and partitions are scheduled to specific regions, data centers, racks, or hosts. This is useful for scenarios including optimizing a high availability strategy with lower cost, ensuring that local replicas of data are available for local stale reads, and adhering to data locality requirements.
 
 The detailed user scenarios are as follows:
@@ -27,7 +31,7 @@ To specify placement rules, first create a placement policy:
 CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
 ```
 
-Then attach the policy to a table or partition using either `CREATE TABLE` or `ALTER TABLE`:
+Then attach the policy to a table or partition using either `CREATE TABLE` or `ALTER TABLE`. Then, the placement rules are specified on the table or the partition:
 
 ```sql
 CREATE TABLE t1 (a INT) PLACEMENT POLICY myplacementpolicy;
@@ -91,7 +95,7 @@ Rules that are attached to objects are applied _asynchronously_. To view the cur
 | `SCHEDULE`                 | The strategy used to schedule the placement of followers. The value options are `EVEN` (default) or `MAJORITY_IN_PRIMARY`. |
 | `FOLLOWERS`                | The number of followers. For example, `FOLLOWERS=2` means that there will be 3 replicas of the data (2 followers and 1 leader). |
 
-In addition to the placement options above, you can also use the advance configurations. For details, see [Advance placement](#advanced-placement).
+In addition to the placement options above, you can also use the advance configurations. For details, see [Advance placement options](#advanced-placement-options).
 
 | Option Name                | Description                                                                                    |
 | --------------| ------------ |
@@ -146,25 +150,33 @@ CREATE TABLE t1 (
 
 ### Set the default placement for a schema
 
-You can directly attach the default placement options to a database schema. This works similar to setting the default character set or collation for a schema. Your specified placement options apply when no other options are specified. For example:
+You can directly attach the default placement rules to a database schema. This works similar to setting the default character set or collation for a schema. Your specified placement options apply when no other options are specified. For example:
 
 ```sql
+CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2";  -- Create placement policies
+
+CREATE PLACEMENT POLICY p2 FOLLOWERS=4;
+
+CREATE PLACEMENT POLICY p3 FOLLOWERS=2;
+
 CREATE TABLE t1 (a INT);  -- Creates a table t1 with no placement options.
 
-ALTER DATABASE test FOLLOWERS=4;  -- Changes the default placement option, and does not apply to the existing table t1.
+ALTER DATABASE test POLICY=p2;  -- Changes the default placement option, and does not apply to the existing table t1.
 
-CREATE TABLE t2 (a INT);  -- Creates a table t2 with the default placement of FOLLOWERS=4.
+CREATE TABLE t2 (a INT);  -- Creates a table t2 with the default placement policy p2.
 
-CREATE TABLE t3 (a INT) PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-east-2";  -- Creates a table t3 without the default FOLLOWERS=4 placement, because this statement has specified another placement.
+CREATE TABLE t3 (a INT) POLICY=p1;  -- Creates a table t3 without the default policy p2, because this statement has specified another placement rule.
 
-ALTER DATABASE test FOLLOWERS=2;  -- Changes the default placement, and does not apply to existing tables.
+ALTER DATABASE test POLICY=p3;  -- Changes the default policy, and does not apply to existing tables.
 
-CREATE TABLE t4 (a INT);  -- Creates a table t4 with the default FOLLOWERS=2 option.
+CREATE TABLE t4 (a INT);  -- Creates a table t4 with the default policy p3.
+
+ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- The table with policy p3 (t4) will have FOLLOWERS=3.
 ```
 
-Because placement options are only inherited from the database schema when a table is created, it is recommended to set the default placement option using a `PLACEMENT POLICY`. This ensures that future changes to the policy propagate to existing tables.
+You can use [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) to change a policy, and the changes will propagate to all objects with the corresponding policy.
 
-### Advanced placement
+### Advanced placement options
 
 The placement options `PRIMARY_REGION`, `REGIONS`, and `SCHEDULE` meet the basic needs of data placement at the loss of some flexibility. For more complex scenarios with the need for higher flexibility, you can also use the advanced placement options of `CONSTRAINTS` and `FOLLOWER_CONSTRAINTS`. You cannot specify the `PRIMARY_REGION`, `REGIONS`, or `SCHEDULE` option with the `CONSTRAINTS` option at the same time. If you specify both at the same time, an error will be returned.
 
