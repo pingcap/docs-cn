@@ -116,10 +116,6 @@ BR 工具已支持自适应 GC，会自动将 `backupTS`（默认是最新的 PD
 
 #### 运行备份
 
-备份操作前，在 TiDB 中使用 `admin checksum table order_line` 命令获得备份目标表 `--db batchmark --table order_line` 的统计信息。统计信息示例如下：
-
-![img](/media/br/total-data.png)
-
 运行 BR 备份命令：
 
 {{< copyable "shell-regular" >}}
@@ -363,10 +359,6 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 ![img](/media/br/backup-local-deploy.png)
 
 #### 运行备份
-
-备份前在 TiDB 里通过 `admin checksum table order_line` 获得备份的目标表 `--db batchmark --table order_line` 的统计信息。统计信息示例如下：
-
-![img](/media/br/total-data.png)
 
 运行 `br backup` 命令：
 
