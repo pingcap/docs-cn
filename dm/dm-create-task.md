@@ -59,7 +59,8 @@ start-task [ -s "mysql-replica-01"] ./task.yaml
     - 如果设置，则在启动指定任务时会移除该任务之前存在的 metadata
 + `start-time`:
     - 可选
-    - 对于增量任务，可以通过该参数大致指定任务起始位点，无需在任务配置文件中指定 binlog 位置。当该任务存在 checkpoint 时，如果通过这种方式启动任务，DM 会自动开启 safe mode 直到同步过 checkpoint，以避免重置任务到更早位置时遇到数据重复的报错
+    - 对于增量任务，可以通过该参数大致指定任务起始位点，无需在任务配置文件中指定 binlog 位置，该参数的优先级比任务配置文件中的 binlog 位置更高
+    - 当该任务存在 checkpoint 时，如果通过这种方式启动任务，DM 会自动开启 safe mode 直到同步过 checkpoint，以避免重置任务到更早位置时遇到数据重复的报错
     - 格式为 `'2021-10-21 00:01:00'` 或 `2021-10-21T00:01:00`
     - 指定了过早的时间时，会从最早的 binlog 开始同步
     - 指定了过晚的时间时，会报错 `start-time {input-time} is too late, no binlog location matches it`
