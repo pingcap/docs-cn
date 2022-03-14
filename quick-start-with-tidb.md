@@ -13,15 +13,13 @@ This guide walks you through the quickest way to get started with TiDB. For non-
 
 > **Note:**
 >
-> TiDB, TiUP and TiDB Dashboard share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
-
-> **Note:**
+> - TiDB, TiUP and TiDB Dashboard share usage details with PingCAP to help understand how to improve the product. For details about what is shared and how to disable the sharing, see [Telemetry](/telemetry.md).
 >
-> The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production.
+> - The deployment method provided in this guide is **ONLY FOR** quick start, **NOT FOR** production.
 >
-> - To deploy an on-premises production cluster, see [production installation guide](/production-deployment-using-tiup.md).
-> - To deploy TiDB in Kubernetes, see [Get Started with TiDB in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started).
-> - To manage TiDB in the cloud, see [TiDB Cloud Quick Start](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart).
+>     - To deploy an on-premises production cluster, see [production installation guide](/production-deployment-using-tiup.md).
+>     - To deploy TiDB in Kubernetes, see [Get Started with TiDB in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/get-started).
+>     - To manage TiDB in the cloud, see [TiDB Cloud Quick Start](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart).
 
 ## Deploy a local test cluster
 
