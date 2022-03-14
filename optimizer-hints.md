@@ -63,9 +63,9 @@ SELECT /*+ HASH_JOIN(@sel_1 t1@sel_1, t3) */ * FROM (SELECT t1.a, t1.b FROM t t1
 
 ## Hint 中的表名
 
-在使用诸如 [MERGE_JOIN](#MERGE_JOIN(t1_name-[,-tl_name-...])) 的 Hint 时，我们会需要在 Hint 中提供表名。为了让语法解析时对表名的处理逻辑与 MySQL 的处理逻辑相同。在使用 Hint 中使用表名时，需要注意如下的限制：
+在使用诸如 [MERGE_JOIN](#MERGE_JOIN(t1_name-[,-tl_name-...])) 的 Hint 时，我们会需要在 Hint 中提供表名。为了让语法解析时对表名的处理逻辑与 MySQL 的处理逻辑相同，在使用 Hint 中使用表名时，需要注意如下的限制：
 
-如果这个表有别名，那么只有的使用它的别名可以生效。如果这个表不在当前通过 `USE DATABASE` 命令所指定的数据库中，那么我们需要使用 `数据库名.别名` 的方式指定这个表。
+如果这个表有别名，那么只有使用它的别名可以生效。如果这个表不在当前通过 `USE DATABASE` 命令所指定的数据库中，那么我们需要使用 `数据库名.别名` 的方式指定这个表。
 
 {{< copyable "sql" >}}
 
@@ -75,13 +75,13 @@ DROP TABLE IF EXISTS test_hint;
 CREATE TABLE test_hint(a int);
 SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint t1, test_hint t2;
 SELECT /*+ HASH_JOIN(test.t1) */ * FROM test_hint t1, test_hint t2;
-SELECT /*+ HASH_JOIN(test_hint) */ * FROM test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint) */ * FROM test_hint t1, test_hint t2;  /* hint 不生效，因为未使用别名 */
 DROP DATABASE IF EXISTS test_hint_db;
 CREATE DATABASE test_hint_db;
 CREATE TABLE test_hint_db.test_hint(a int);
-SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;  /* hint 不生效，因为当前默认数据库不是 test_hint_db */
 SELECT /*+ HASH_JOIN(test_hint_db.t1) */ * FROM test_hint_db.test_hint t1, test_hint t2;
-SELECT /*+ HASH_JOIN(test_hint_db.test_hint) */ * FROM test_hint_db.test_hint t1, test_hint t2;
+SELECT /*+ HASH_JOIN(test_hint_db.test_hint) */ * FROM test_hint_db.test_hint t1, test_hint t2;  /* hint 不生效，因为未使用别名 */
 ```
 
 在上述的例子中只有如下几个 SQL 是可以被使用 Hint 的，其他 Hint 都会提示找不到 Hint 所指定的表名。
