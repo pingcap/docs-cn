@@ -513,14 +513,11 @@ raftstore 相关的配置项。
 
 ### `raft-max-size-per-msg`
 
-> **注意：**
->
-> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
-
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
 + 最小值：0
-+ 单位：MB
++ 最大值: 3GB
++ 单位：MB|GB
 
 ### `raft-max-inflight-msgs`
 
@@ -752,6 +749,7 @@ raftstore 相关的配置项。
 + 一轮处理数据落盘的最大请求个数。
 + 默认值：256
 + 最小值：大于 0
++ 最大值: 10240
 
 ### `apply-pool-size`
 
@@ -764,6 +762,7 @@ raftstore 相关的配置项。
 + 一轮处理的最大请求个数。
 + 如果开启 `hibernate-regions`，默认值为 256；如果关闭 `hibernate-regions`，默认值为 1024
 + 最小值：大于 0
++ 最大值: 10240
 
 ### `store-pool-size`
 
