@@ -214,12 +214,12 @@ MySQL [test]> deallocate prepare stmt; -- 再次释放
 
 这样的使用方式会让第一次执行得到的计划被立即清理，不能在第二次被复用；
 
-为了兼容这样的使用方式，TiDB 支持 `tidb_ignore_close_stmt_cmd` 变量，打开后会忽略掉关闭 Preapre Statement 的信号，解决上述问题，如：
+为了兼容这样的使用方式，TiDB 支持 `tidb_ignore_prepared_cache_close_stmt` 变量，打开后会忽略掉关闭 Preapre Statement 的信号，解决上述问题，如：
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set @@tidb_ignore_close_stmt_cmd=1;  -- 打开开关
+mysql> set @@tidb_ignore_prepared_cache_close_stmt=1;  -- 打开开关
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> prepare stmt from 'select * from t'; -- 第一次 prepare
