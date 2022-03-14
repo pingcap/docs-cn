@@ -134,7 +134,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## 手动清空计划缓存
 
-你可手动清空计划缓存，方式为使用 `ADMIN FLUSH [SESSION | INSTANCE] PLAN_CACHE` 语句， 其中 `SESSION` 和 `INSTANCE` 用于指定需要清空的缓存级别。
+你可手动清空计划缓存，方式为使用 `ADMIN FLUSH [SESSION | INSTANCE] PLAN_CACHE` 语句，在不指定作用域的时候，默认作用域为 SESSION，其中 `SESSION` 和 `INSTANCE` 用于指定需要清空的缓存级别。
 
 下面是一个清空计划缓存的例子：
 
