@@ -551,7 +551,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > **注意：**
 >
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 TiCDC 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
@@ -577,7 +577,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > **注意：**
 >
 > - 对于新创建的集群，默认值为 ON。对于升级版本的集群，如果升级前是 v5.0 以下版本，升级后默认值为 `OFF`。
-> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
+> - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 TiCDC 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
 ### `tidb_enable_auto_increment_in_generated`
@@ -776,7 +776,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - 作用域：GLOBAL
 - 默认值：`ON`
-- 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+- 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。
 
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
 
@@ -1474,27 +1474,27 @@ set tidb_slow_log_threshold = 200;
 - 作用域：GLOBAL
 - 默认值：`24`
 - 范围：`[0, 255]`
-- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的历史记录容量。
+- 这个变量设置了 statement summary tables 的历史记录容量。
 
 ### `tidb_stmt_summary_internal_query` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
-- 这个变量用来控制是否在 [statement summary tables](/statement-summary-tables.md) 中包含 TiDB 内部 SQL 的信息。
+- 这个变量用来控制是否在 statement summary tables 中包含 TiDB 内部 SQL 的信息。
 
 ### `tidb_stmt_summary_max_sql_length` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`4096`
 - 范围：`[0, 2147483647]`
-- 这个变量控制 [statement summary tables](/statement-summary-tables.md) 显示的 SQL 字符串长度。
+- 这个变量控制 statement summary tables 显示的 SQL 字符串长度。
 
 ### `tidb_stmt_summary_max_stmt_count` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`3000`
 - 范围：`[1, 32767]`
-- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 在内存中保存的语句的最大数量。
+- 这个变量设置了 statement summary tables 在内存中保存的语句的最大数量。
 
 ### `tidb_stmt_summary_refresh_interval` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1502,7 +1502,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`1800`
 - 范围：`[1, 2147483647]`
 - 单位：秒
-- 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
+- 这个变量设置了 statement summary tables 的刷新时间。
 
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 

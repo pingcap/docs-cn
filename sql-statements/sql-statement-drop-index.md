@@ -113,7 +113,6 @@ Query OK, 0 rows affected (0.30 sec)
 ## 另请参阅
 
 * [SHOW INDEX](/sql-statements/sql-statement-show-index.md)
-* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
 * [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)

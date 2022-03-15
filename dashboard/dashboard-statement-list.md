@@ -20,8 +20,6 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-statement-list/']
 
 - 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/statement>（将 `127.0.0.1:2379` 替换为实际 PD 实例地址和端口）。
 
-SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统表，参见 [Statement Summary Tables](/statement-summary-tables.md) 文档了解该系统表的详细情况。
-
 > **注意：**
 >
 > 在 SQL 语句分析页面的 **Mean Latency** 列中，蓝色条表示平均耗时。如果某条 SQL 语句的蓝色条上有黄色的线，黄色线的左右两侧分别代表最近一个收集周期内该 SQL 语句耗时的最小值和最大值。
@@ -61,8 +59,6 @@ SQL 语句分析页面所展示的所有数据都来自于 TiDB Statement 系统
     如果这个时间范围过长，则统计的粒度粗，不利用定位问题；如果太短，则统计的粒度细，方便定位问题，但会导致在相同的数据保留时间内产生更多的记录，产生更多的内存占用。因此需要根据实际情况调整，在需要定位问题时适当地将值调低。
 
 - 数据保留时间：默认 1 天，统计信息保留的时间，超过这个时间的数据会被从系统表中删除。
-
-参见 [Statement Summary Tables 参数设置](/statement-summary-tables.md#参数配置)文档了解详细情况。
 
 > **注意：**
 >

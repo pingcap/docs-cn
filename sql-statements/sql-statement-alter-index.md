@@ -148,7 +148,6 @@ Query OK, 0 rows affected (0.02 sec)
 ## 另请参阅
 
 * [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
-* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [ADD INDEX](/sql-statements/sql-statement-add-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)

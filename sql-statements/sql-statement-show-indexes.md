@@ -104,4 +104,3 @@ MySQL 中的 `Cardinality` 列返回该索引上不同值的个数，而 TiDB �
 
 * [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
-* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)

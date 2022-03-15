@@ -60,7 +60,7 @@ DESC statistics;
 * `COMMENT`：其他与索引有关的信息。
 * `INDEX_COMMENT`：在创建索引时为索引提供的带有注释属性的任何注释。
 * `IS_VISIBLE`：优化器能否使用该索引。
-* `Expression` 对于非表达式部分的索引键，这个值为 `NULL`；对于表达式部分的索引键，这个值为表达式本身。可参考[表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引)
+* `Expression` 对于非表达式部分的索引键，这个值为 `NULL`；对于表达式部分的索引键，这个值为表达式本身。
 
 下列语句是等价的：
 

@@ -78,8 +78,8 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md) | 对于所有被显式分配了放置规则的对象，该扩展表提供与这些对象相关的所有信息。 |
 | [`SEQUENCES`](/information-schema/information-schema-sequences.md)                      | 描述了基于 MariaDB 实现的 TiDB 序列。                          |
 | [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md)                    | 提供当前 TiDB 服务器上慢查询的信息。                           |
-| [`STATEMENTS_SUMMARY`](/statement-summary-tables.md)                                    | 类似于 MySQL 中的 performance_schema 语句摘要。                |
-| [`STATEMENTS_SUMMARY_HISTORY`](/statement-summary-tables.md)                            | 类似于 MySQL 中的 performance_schema 语句摘要历史。            |
+| `STATEMENTS_SUMMARY`                                   | 类似于 MySQL 中的 performance_schema 语句摘要。                |
+| `STATEMENTS_SUMMARY_HISTORY`                            | 类似于 MySQL 中的 performance_schema 语句摘要历史。            |
 | [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md)  | 提供存储的表的大小的详细信息。                                 |
 | [`TIDB_HOT_REGIONS`](/information-schema/information-schema-tidb-hot-regions.md)        | 提供有关哪些 Region 访问次数最多的统计信息。                   |
 | [`TIDB_HOT_REGIONS_HISTORY`](/information-schema/information-schema-tidb-hot-regions-history.md)| 提供有关哪些 Region 访问次数最多的历史统计信息。                   |

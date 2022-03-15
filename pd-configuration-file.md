@@ -304,13 +304,13 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + TiKV 集群的拓扑信息。
 + 默认值：[]
-+ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
++ 配置集群拓扑
 
 ### `isolation-level`
 
 + TiKV 集群的最小强制拓扑隔离级别。
 + 默认值：""
-+ [配置集群拓扑](/schedule-replicas-by-topology-labels.md)
++ 配置集群拓扑
 
 ### `strictly-match-label`
 
@@ -321,7 +321,6 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 
 + 打开 `placement-rules`
 + 默认值：false
-+ 参考[Placement Rules 使用文档](/configure-placement-rules.md)
 + 4.0 实验性特性
 
 ### `flow-round-by-digit` <span class="version-mark">从 v5.1 版本开始引入</span>
@@ -376,4 +375,3 @@ PD 中内置的 [TiDB Dashboard](/dashboard/dashboard-intro.md) 相关配置项�
 
 + 是否启用 TiDB Dashboard 遥测功能。
 + 默认值：true
-+ 参阅[遥测](/telemetry.md)了解该功能详情。

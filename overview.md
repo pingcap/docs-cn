@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 
 - 兼容 MySQL 5.7 协议和 MySQL 生态
 
-    兼容 MySQL 5.7 协议、MySQL 常用的功能、MySQL 生态，应用无需或者修改少量代码即可从 MySQL 迁移到 TiDB。提供丰富的[数据迁移工具](/ecosystem-tool-user-guide.md)帮助应用便捷完成数据迁移。
+    兼容 MySQL 5.7 协议、MySQL 常用的功能、MySQL 生态，应用无需或者修改少量代码即可从 MySQL 迁移到 TiDB。提供丰富的数据迁移工具帮助应用便捷完成数据迁移。
 
 ## 四大核心应用场景
 

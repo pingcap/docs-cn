@@ -156,7 +156,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 是否开启 TiDB 遥测功能。
 + 默认值：true
-+ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。参阅[遥测](/telemetry.md)了解该功能详情。
++ 如果所有 TiDB 实例上该选项都设置为 `false`，那么将完全禁用 TiDB 遥测功能，且忽略 [`tidb_enable_telemetry`](/system-variables.md#tidb_enable_telemetry-从-v402-版本开始引入) 系统变量。
 
 ### `enable-tcp4-only` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -673,16 +673,16 @@ TiDB 服务状态相关配置。
 
 ## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
-系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
+系统表 statement summary tables 的相关配置。
 
 ### max-stmt-count
 
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
++ 系统表 statement summary tables 中保存的 SQL 种类的最大数量。
 + 默认值：3000
 
 ### max-sql-length
 
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
++ 系统表 statement summary tables 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
 + 默认值：4096
 
 ## pessimistic-txn

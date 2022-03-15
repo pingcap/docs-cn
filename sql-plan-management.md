@@ -243,7 +243,7 @@ show warnings;
 
 > **注意：**
 >
-> 自动绑定功能依赖于 [Statement Summary](/statement-summary-tables.md)，因此在使用自动绑定之前需打开 Statement Summary 开关。
+> 自动绑定功能依赖于 Statement Summary，因此在使用自动绑定之前需打开 Statement Summary 开关。
 
 开启自动绑定功能后，每隔 `bind-info-lease`（默认值为 `3s`）会遍历一次 Statement Summary 中的历史 SQL 语句，并为至少出现两次的 SQL 语句自动捕获绑定。绑定的执行计划为 Statement Summary 中记录执行这条语句时使用的执行计划。
 

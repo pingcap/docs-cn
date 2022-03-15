@@ -167,7 +167,6 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 
 * [索引的选择](/choose-index.md)
 * [错误索引的解决方案](/wrong-index-solution.md)
-* [CREATE INDEX](/sql-statements/sql-statement-create-index.md)
 * [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
 * [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
 * [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
