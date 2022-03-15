@@ -1087,19 +1087,20 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> scheduler show                                 // 显示所有的 schedulers
->> scheduler add grant-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 调度到 store 1
->> scheduler add evict-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
->> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
->> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
->> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
->> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
->> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
->> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
->> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
->> scheduler resume all                           // 继续运行所有的调度器
->> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
+>> scheduler show                                         // 显示所有已经创建的 schedulers
+>> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
+>> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
+>> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
+>> scheduler add shuffle-leader-scheduler                 // 随机交换不同 store 上的 leader
+>> scheduler add shuffle-region-scheduler                 // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
+>> scheduler remove grant-leader-scheduler-1              // 把对应的调度器删掉，`-1` 对应 store ID
+>> scheduler pause balance-region-scheduler 10            // 暂停运行 balance-region 调度器 10 秒
+>> scheduler pause all 10                                 // 暂停运行所有的调度器 10 秒
+>> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
+>> scheduler resume all                                   // 继续运行所有的调度器
+>> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
+>> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器的 batch 设置为 3
 ```
 
 ### `scheduler config balance-hot-region-scheduler`
