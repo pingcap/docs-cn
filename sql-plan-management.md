@@ -19,7 +19,11 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前支持的可创建执行计划绑定的 SQL 类型 (BindableStmt) 包括：`SELECT`，`DELETE`，`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前支持的可创建执行计划绑定的 SQL 类型 (BindableStmt) 包括：`SELECT`，`DELETE`，`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`RELACE`。
+
+> **注意：**
+>
+> 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
 
 其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
 
@@ -161,10 +165,6 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 >
 > 对于 `PREPARE`/`EXECUTE` 语句组，或者用二进制协议执行的查询，创建执行计划绑定的对象应当是查询语句本身，而不是 `PREPARE`/`EXECUTE` 语句。
 
-> **注意：**
->
-> 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
-
 ### 删除绑定
 
 {{< copyable "sql" >}}
@@ -203,7 +203,7 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 
 该语句可以在 GLOBAL 作用域内变更指定的执行计划绑定的状态，作用域不可指定，默认作用域为 GLOBAL。
 
-该语句可以将绑定的状态设置成 `Enabled` 或者 `Disabled` 状态，其中只有 `Disabled` 状态的绑定可以被设置成 `Enabled` 状态，只有 `Enabled` 状态的绑定可以被设置成 `Disabled` 状态。如果当前没有可以改变状态的绑定，则会在日志中输出一条警告日志进行提示。需要注意的是当绑定的状态被设置成 `Disabled` 状态的时候，该绑定不会被查询语句所使用。
+该语句可以将绑定的状态设置成 `Enabled` 或者 `Disabled` 状态，其中只有 `Disabled` 状态的绑定可以被设置成 `Enabled` 状态，只有 `Enabled` 状态的绑定可以被设置成 `Disabled` 状态。如果当前没有可以改变状态的绑定，则会在日志中输出一条内容为 `The memory usage of all available bindings exceeds the cache's mem quota. As a result, all available bindings cannot be held on the cache. Please increase the system variable 'tidb_mem_quota_binding_cache' and execute 'admin reload bindings' to ensure that all bindings are available normally` 的警告日志进行提示。需要注意的是当绑定的状态被设置成 `Disabled` 状态的时候，该绑定不会被查询语句所使用。
 
 ### 查看绑定
 
@@ -295,12 +295,12 @@ SELECT binding_cache status;
 ```
 
 ```sql
-+--------------+----------------+--------------+-----------------+
-| num_bindings | total_bindings | memory_usage | memory_capacity |
-+--------------+----------------+--------------+-----------------+
-|            0 |              0 | 0 Bytes      | 64 MB           |
-+--------------+----------------+--------------+-----------------+
-1 row in set (0.00 sec)
++-------------------+-------------------+--------------+--------------+
+| bindings_in_cache | bindings_in_table | memory_usage | memory_quota |
++-------------------+-------------------+--------------+--------------+
+|                 0 |                 0 | 0 Bytes      | 64 MB        |
++-------------------+-------------------+--------------+--------------+
+1 row in set (0.01 sec)
 ```
 
 ## 自动捕获绑定 (Baseline Capturing)
@@ -320,7 +320,11 @@ SELECT binding_cache status;
 - EXPLAIN 和 EXPLAIN ANALYZE 语句；
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
 - 已经存在 `Enabled`, `Disabled` 状态的绑定对应的语句；
-- 满足绑定黑名单过滤条件的语句；
+- 满足捕获绑定黑名单过滤条件的语句；
+
+> **注意：**
+>
+> 当前绑定是通过生成一组 Hints 来实现对计划的固定，从而确保绑定后的查询语句生成的计划能够不发生变化。但是受限于当前 Hints 种类的局限，导致在一些情况下，无法保证计划在绑定前后完全一致，其中包括 Join Order, PointGet 和 MPP 相关的计划。
 
 对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
@@ -328,9 +332,41 @@ SELECT binding_cache status;
 >
 > 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动捕获绑定时会默认屏蔽内嵌 SQL。
 
-### 绑定过滤黑名单
+### 捕获绑定过滤黑名单
 
+捕获绑定过滤黑名单支持在捕获的过程中排除对满足黑名单规则查询的捕获。黑名单支持的[过滤维度](#过滤维度)包括表名，频率和用户名进行过滤。
 
+#### 过滤维度
+
+| **过滤维度** | **维度名称** | **简介**                                                     | 注意事项                                                     |
+| :----------- | :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+| 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](#直接使用表名)和[使用通配符](#使用通配符)。 | 字母大小写不敏感，当插入了非法内容会在日志中输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告日志进行提示。 |
+| 频率         | frequency    | 默认执行超过一次的语句会被捕获。可以通过插入更大频率的值来变更对捕获语句执行频率的要求。 | 插入小于 1 的值会被认为是非法值，并会在日志中输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告日志进行提示。同时如果插入了多条变更频率，会选取频率最大的值的作为过滤条件进行过滤。 |
+| 用户名       | user         | 被加入到过滤黑名单的用户名所执行的语句不会被捕获。           | 如果存在一条语句被多个用户名所执行，只有当执行该语句所有的用户名都在黑名单的时候，该语句才不会被捕获。 |
+
+> **注意：**
+>
+> 以下操作都需要数据库的 super privilege 权限。当插入了非法的过滤类型时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 警告日志进行提示。
+
+#### 使用方法
+
+将相应的过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，在整个集群范围内执行下一次捕获操作时都能生效。
+
+{{< copyable "sql" >}}
+
+```sql
+-- 按照表名进行过滤
+insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.t')
+
+-- 通过正则表达式来实现按照数据库名进行过滤
+insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'mysql.*')
+
+-- 按照执行频率进行过滤
+insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('frequency', '2')
+
+-- 按照用户名进行过滤
+insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('user', 'root')
+```
 
 ### 验证自动捕获的绑定
 

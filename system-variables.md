@@ -1081,7 +1081,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
 - `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
 
-### `tidb_mem_quota_binding_cache` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `tidb_mem_quota_binding_cache` 从 v6.0 版本开始引入
 
 - 作用域：GLOBAL
 - 默认值：`67108864` (64 MiB)
