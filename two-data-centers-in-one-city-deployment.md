@@ -253,7 +253,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 5. 启动 PD 和 TiKV 服务。
 
-6. 如果需要进行 ACID 一致性恢复（原 PD 的 DR_STATE 文件内状态为 sync-recover），使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md/#恢复-ACID-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 DR_STATE 中的 `min_resolved_ts` 查得。
+6. 如果需要进行 ACID 一致性恢复（原 PD 的 DR_STATE 文件内状态为 sync-recover），使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md/#恢复-acid-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 DR_STATE 中的 `min_resolved_ts` 查得。
 
 7. 开启 TiDB 服务，检查数据的完整性和一致性。
 
