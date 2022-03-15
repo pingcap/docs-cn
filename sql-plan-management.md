@@ -356,16 +356,16 @@ SELECT binding_cache status;
 
 ```sql
 -- 按照表名进行过滤
-insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.t')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.t')
 
 -- 通过正则表达式来实现按照数据库名进行过滤
-insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'mysql.*')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'mysql.*')
 
 -- 按照执行频率进行过滤
-insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('frequency', '2')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('frequency', '2')
 
 -- 按照用户名进行过滤
-insert into mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('user', 'root')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('user', 'root')
 ```
 
 ### 验证自动捕获的绑定
