@@ -258,7 +258,7 @@
         - [tiup dm template](/tiup/tiup-component-dm-template.md)
         - [tiup dm upgrade](/tiup/tiup-component-dm-upgrade.md)
     - [TiDB 集群拓扑文件配置](/tiup/tiup-cluster-topology-reference.md)
-    - [DM 集群的拓扑文件配置](/tiup/tiup-dm-topology-reference.md)
+    - [DM 集群拓扑文件配置](/tiup/tiup-dm-topology-reference.md)
     - [TiUP 镜像参考指南](/tiup/tiup-mirror-reference.md)
     - TiUP 组件文档
       - [tiup-playground 运行本地测试集群](/tiup/tiup-playground.md)
