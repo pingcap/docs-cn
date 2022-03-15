@@ -212,6 +212,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-thread-count`
 
 + 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
++ 可调整范围：`min-thread-count` ~ `max(初始 max-thread-count, CPU)`
 + 默认值：CPU * 0.8，但最少为 4
 
 ### `stack-size`
@@ -1489,6 +1490,7 @@ Raft Engine 相关的配置项。
 
 + 处理备份的工作线程数量。
 + 默认值：CPU * 0.5，但最大为 8 
++ 可调整范围：1 ~ CPU
 + 最小值：1
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>

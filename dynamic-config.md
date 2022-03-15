@@ -123,6 +123,7 @@ show warnings;
 
 | 配置项 | 简介 |
 | --- | --- |
+| raftstore.raft-max-inflight-msgs | 待确认日志个数的数量，如果超过这个数量将会减缓发送日志的个数 |
 | raftstore.raft-entry-max-size | 单个日志最大大小 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
@@ -154,6 +155,7 @@ show warnings;
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
 | raftstore.apply-pool-size | apply 线程池大小 |
 | raftstore.store-pool-size | store 线程池大小 |
+| readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
