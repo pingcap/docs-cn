@@ -346,6 +346,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 * 恢复吞吐：`avg speed(MB/s)` 从 `367.42` 提升到 `796.47`
 * 单个 TiKV 实例的吞吐：`avg speed(MB/s)`/`tikv_count` 从 `91.8` 提升到 `199.1`
 * 单个 TiKV 实例的平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` 从 `87.4` 提升到 `162.3`
+
 ### 将单表数据备份到本地磁盘（推荐测试环境试用）
 
 使用 `br backup 命令`，将单表数据 `--db batchmark --table order_line` 备份到指定的本地磁盘路径 `local:///home/tidb/backup_local` 下。
