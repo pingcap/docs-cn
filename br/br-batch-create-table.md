@@ -5,7 +5,7 @@ summary: 了解 BR 数据恢复批量建表功能，在集群 restore 的情况�
 
 # BR 批量建表 <span class="version-mark">从 v6.0 版本开始引入</span>
 
-在 TiDB v6.0.0 之前，使用 BR 工具进行恢复任务时会使用的 TiDB 接口先做建库建表操作，而后进行数据恢复。在建表过程中，BR 调用 TiDB 接口，类似于 SQL 的 create table。对于恢复中大量的建表， 每个 SQL Create Table 由 TiDB ddl owner 依次串行执行。这导致表比较多的场景中，建表时间过长。为了减少恢复任务建表时间过长，从 TiDB v6.0.0 起，BR 引入了恢复批量建表功能，此功能会默认开启。BR 可以通过该功能加速建表，从而减少数据恢复的时间。
+在 TiDB v6.0.0 之前，使用 BR 工具进行恢复任务时会先做建库建表操作，而后进行数据恢复。在建表过程中，BR 调用 TiDB 接口，类似于 SQL 的 create table。对于恢复中大量的建表， 每个 SQL Create Table 由 TiDB ddl owner 依次串行执行。这导致表比较多的场景中，建表时间过长。为了减少恢复任务建表时间过长，从 TiDB v6.0.0 起，BR 引入了恢复批量建表功能，此功能会默认开启。BR 可以通过该功能加速建表，从而减少数据恢复的时间。
 
 ## 使用场景
 
@@ -15,7 +15,7 @@ summary: 了解 BR 数据恢复批量建表功能，在集群 restore 的情况�
 
 数据恢复批量建表功能默认打开，并默认设置 `--ddl-batch-size=128` 来恢复数据，无需额外配置。该参数在 restore 阶段并发的批量创建表。如需要关闭此功能，只需要设置 `--ddl-batch-size=0`， BR 会以老的方式来串行建表。
 
-在 restore 数据中存在大量的表，可以尝试增加并发参数 `--concurrency=1024` 与 `--ddl-batch-size=256` 一起使用，示例如下：
+在 restore 数据中存在大量的表（如 > 5w），推荐增加并发参数 `--concurrency=1024` 与 `--ddl-batch-size=256` 一起使用，示例如下：
 
 {{< copyable "shell-regular" >}}
 
