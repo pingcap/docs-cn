@@ -346,17 +346,6 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd
 * 恢复吞吐：`avg speed(MB/s)` 从 `367.42` 提升到 `796.47`
 * 单个 TiKV 实例的吞吐：`avg speed(MB/s)`/`tikv_count` 从 `91.8` 提升到 `199.1`
 * 单个 TiKV 实例的平均恢复速度：`total size(MB)`/(`split time` + `restore time`)/`tikv_count` 从 `87.4` 提升到 `162.3`
-#### 性能调优
-
-在 restore 数据中存在大量的表，可以尝试增加参数 `--ddl-batch-size=128` 该参数在restore阶段并发的批量创建表（默认为 `0` 表示不批量创建表），示例如下：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-bin/br restore table --db batchmark --table order_line -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --concurrency 1024 --ddl-batch-size=128
-```
-* 此参数在数据恢复时，可以加速建表速度，测试显示6万张表恢复建表时间仅需几分钟
-
 ### 将单表数据备份到本地磁盘（推荐测试环境试用）
 
 使用 `br backup 命令`，将单表数据 `--db batchmark --table order_line` 备份到指定的本地磁盘路径 `local:///home/tidb/backup_local` 下。
