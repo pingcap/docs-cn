@@ -247,13 +247,13 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 2. 在从中心启动新的 PD 服务，并使用 [PD Recover 工具](/pd-recover.md) 进行恢复。
 
-3. 使用 [TiKV Control 工具的 unsafe-recover](/tikv-control.md/#强制-region-从多副本失败状态恢复服务慎用) 处理从中心的 TiKV 数据，参数为主中心所有 Store ID 的列表。
+3. 使用 [TiKV Control 工具的 unsafe-recover](/tikv-control.md#强制-region-从多副本失败状态恢复服务慎用) 处理从中心的 TiKV 数据，参数为主中心所有 Store ID 的列表。
 
 4. 使用 [PD Control 工具](/pd-control.md) 写入新的 placement rule 配置，其中 Region 的 Voter 副本数配置为原集群在从中心的副本数。
 
 5. 启动 PD 和 TiKV 服务。
 
-6. 如果需要进行 ACID 一致性恢复（原 PD 的 DR_STATE 文件内状态为 sync-recover），使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md/#恢复-acid-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 DR_STATE 中的 `min_resolved_ts` 查得。
+6. 如果需要进行 ACID 一致性恢复（原 PD 的 DR_STATE 文件内状态为 sync-recover），使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md#恢复-acid-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 DR_STATE 中的 `min_resolved_ts` 查得。
 
 7. 开启 TiDB 服务，检查数据的完整性和一致性。
 
@@ -265,10 +265,10 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 1. 停止从中心所有的 PD / TiKV / TiDB 服务。
 
-2. 使用 [TiKV Control 工具的 unsafe-recover](/tikv-control.md/#强制-region-从多副本失败状态恢复服务慎用) 处理所有 TiKV 数据，参数为发生故障的所有 Store ID 的列表。
+2. 使用 [TiKV Control 工具的 unsafe-recover](/tikv-control.md#强制-region-从多副本失败状态恢复服务慎用) 处理所有 TiKV 数据，参数为发生故障的所有 Store ID 的列表。
 
 3. 启动 PD 和 TiKV 服务。
 
-4. 使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md/#恢复-ACID-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 PD 的 HTTP 接口 `/pd/api/v1/min-resolved-ts` 查得。
+4. 使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md#恢复-ACID-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 PD 的 HTTP 接口 `/pd/api/v1/min-resolved-ts` 查得。
 
 5. 开启 TiDB 服务，检查数据的完整性和一致性。
