@@ -177,7 +177,7 @@ apply state: Some(applied_index: 314617 truncated_state {index: 313474 term: 151
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db size -r 2
+tikv-ctl --data-dir /path/to/tikv size -r 2
 ```
 
 ```
@@ -194,7 +194,7 @@ cf lock region size: 27616
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db scan --from 'zm' --limit 2 --show-cf lock,default,write
+tikv-ctl --data-dir /path/to/tikv scan --from 'zm' --limit 2 --show-cf lock,default,write
 ```
 
 ```
@@ -212,7 +212,7 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
+tikv-ctl --data-dir /path/to/tikv mvcc -k "zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\000\000\000\371" --show-cf=lock,write,default
 ```
 
 ```
@@ -224,6 +224,31 @@ key: zmDB:29\000\000\377\000\374\000\000\000\000\000\000\377\000H\000\000\000\00
 > **注意：**
 >
 > 该命令中，key 同样需要是 escaped 形式的 raw key。
+
+### 扫描 raw key
+
+使用 `raw-scan` 命令，TiKV 可直接在 RocksDB 中扫描 raw key。
+
+> **注意：**
+>
+> 如果要扫描数据 key，需要在 key 前添加 `'z'` 前缀。
+
+- 要指定扫描范围，可在 `raw-scan` 命令中使用 `--from` 和 `--to` 参数（默认不限范围）
+- 要限制能够打印出的 key 的数量（默认为 `30`），可在命令中使用 `--limit` 参数
+- 要指定扫描的 CF，可在命令中使用 `--cf` 参数（可选值为 `default`，`write`，`lock`）
+
+{{< copyable "shell-regular" >}}
+
+```bash
+$ ./tikv-ctl --data-dir /var/lib/tikv raw-scan --from 'zt' --limit 2 --cf default
+```
+
+```
+key: "zt\200\000\000\000\000\000\000\377\005_r\200\000\000\000\000\377\000\000\001\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002\002%\010\004\002\010root\010\006\002\000\010\010\t\002\010\n\t\002\010\014\t\002\010\016\t\002\010\020\t\002\010\022\t\002\010\024\t\002\010\026\t\002\010\030\t\002\010\032\t\002\010\034\t\002\010\036\t\002\010 \t\002\010\"\t\002\010s\t\002\010&\t\002\010(\t\002\010*\t\002\010,\t\002\010.\t\002\0100\t\002\0102\t\002\0104\t\002"
+key: "zt\200\000\000\000\000\000\000\377\025_r\200\000\000\000\000\377\000\000\023\000\000\000\000\000\372\372b2,^\033\377\364", value: "\010\002\002&slow_query_log_file\010\004\002P/usr/local/mysql/data/localhost-slow.log"
+
+Total scanned keys: 2
+```
 
 ### 打印某个 key 的值
 
@@ -269,7 +294,7 @@ middle_key_by_approximate_size:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --host 127.0.0.1:20160 compact -d kv
+tikv-ctl --data-dir /path/to/tikv compact -d kv
 ```
 
 ```
@@ -297,7 +322,7 @@ pd-ctl>> operator add remove-peer <region_id> <store_id>
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>
+tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>
 ```
 
 ```
@@ -309,7 +334,7 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
+tikv-ctl --data-dir /path/to/tikv tombstone -p 127.0.0.1:2379 -r <region_id>,<region_id> --force
 ```
 
 ```
@@ -361,7 +386,7 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db bad-regions
+tikv-ctl --data-dir /path/to/tikv bad-regions
 ```
 
 ```
@@ -372,21 +397,21 @@ all regions are healthy
 
 ### 查看 Region 属性
 
-本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
+- 本地查看部署在 `/path/to/tikv` 的 TiKV 上面 Region 2 的 properties 信息：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tikv-ctl --db /path/to/tikv/data/db region-properties -r 2
-```
+    ```shell
+    tikv-ctl --data-dir /path/to/tikv/data region-properties -r 2
+    ```
 
-在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
+- 在线查看运行在 `127.0.0.1:20160` 的 TiKV 上面 Region 2 的 properties 信息：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
-```
+    ```shell
+    tikv-ctl --host 127.0.0.1:20160 region-properties -r 2
+    ```
 
 ### 动态修改 TiKV 的配置
 
@@ -476,7 +501,7 @@ success
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 3 -r 1001,1002
+tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 3 -r 1001,1002
 ```
 
 ```
@@ -486,7 +511,7 @@ success!
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-regions
+tikv-ctl --data-dir /path/to/tikv unsafe-recover remove-fail-stores -s 4,5 --all-regions
 ```
 
 之后启动 TiKV，这些 Region 便可以使用剩下的健康副本继续提供服务了。此命令常用于多个 TiKV store 损坏或被删除的情况。
@@ -506,7 +531,7 @@ tikv-ctl --db /path/to/tikv/db unsafe-recover remove-fail-stores -s 4,5 --all-re
 {{< copyable "shell-regular" >}}
 
 ```shell
-tikv-ctl --db /path/to/tikv/db recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
+tikv-ctl --data-dir /path/to/tikv recover-mvcc -r 1001,1002 -p 127.0.0.1:2379
 ```
 
 ```
