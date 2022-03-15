@@ -269,6 +269,6 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 3. 启动 PD 和 TiKV 服务。
 
-4. 使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md#恢复-ACID-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 PD 的 HTTP 接口 `/pd/api/v1/min-resolved-ts` 查得。
+4. 使用 [TiKV Control 工具的 reset-to-version](/tikv-control.md#恢复-acid-不一致的数据) 处理 TiKV 数据，所使用的 version 参数可以从 PD 的 HTTP 接口 `/pd/api/v1/min-resolved-ts` 查得。
 
 5. 开启 TiDB 服务，检查数据的完整性和一致性。
