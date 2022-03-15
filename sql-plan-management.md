@@ -350,7 +350,7 @@ SELECT binding_cache status;
 
 #### 使用方法
 
-将相应的过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，在整个集群范围内执行下一次捕获操作时都能生效。
+将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，执行下一次捕获时，该过滤规则会在整个集群范围内生效。
 
 {{< copyable "sql" >}}
 
