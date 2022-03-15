@@ -1350,7 +1350,7 @@ Raft Engine 相关的配置项。
 
 > **注意：**
 >
-> v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容。因此，把 TiDB 集群降级至 v5.4.0 以前的版本之前，需要先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`）后重启 TiKV，否则会导致降级后集群无法开启。
+> v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容。因此，在把 TiDB 集群降级至 v5.4.0 以前的版本**之前**，需要先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`）后重启 TiKV，否则会导致降级后集群无法开启。
 
 ### `dir`
 
