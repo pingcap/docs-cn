@@ -898,7 +898,7 @@ curl -X 'POST' \
 
 ## 获取同步任务
 
-这是一个同接口，请求成功的 Status Code 是 200
+这是一个同步接口，请求成功的 Status Code 是 200
 
 ### 请求 URI
 
