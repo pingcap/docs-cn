@@ -319,7 +319,7 @@ SELECT binding_cache status;
 
 - EXPLAIN 和 EXPLAIN ANALYZE 语句；
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
-- 已经存在 `Enabled`, `Disabled` 状态的绑定对应的语句；
+- 已经存在 `Enabled`、`Disabled` 状态的绑定对应的语句；
 - 满足捕获绑定黑名单过滤条件的语句；
 
 > **注意：**
