@@ -239,11 +239,11 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 -- 创建一个 global binding
 
 create global binding for
-    select * from t
+    SELECT * FROM t
 using
-    select /*+ USE_INDEX(t, idx_a) */ * from t;
+    SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
 
-select * from t;
+SELECT * FROM t;
 SELECT @@[SESSION.]last_plan_from_binding;
 ```
 
