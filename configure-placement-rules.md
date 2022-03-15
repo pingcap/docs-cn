@@ -360,7 +360,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
   "start_key": "6d00000000000000f8",
   "end_key": "6e00000000000000f8",
   "role": "voter",
-  "count": "5",
+  "count": 5,
   "location_labels": ["zone", "rack", "host"]
 }
 ```
