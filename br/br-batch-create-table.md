@@ -40,7 +40,7 @@ bin/br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file resto
 
 ### 以下集群配置测试结果
 
-* 集群配置：15 个 TiKV 配备 16 个 CPU 80G 内存， 3 个 TiDB, 3 个 PD.
+* 集群配置：15 个 TiKV 配备 16 个 CPU 80G 内存， 3 个 TiDB， 3 个 PD。
 * 数据规模：`total-kv-size=16.16TB`
 * TiKV [import.num-threads](/tikv-configuration-file.md#num-threads) 设置为 16
 
