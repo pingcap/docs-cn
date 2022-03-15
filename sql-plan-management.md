@@ -264,7 +264,7 @@ SELECT @@[SESSION.]last_plan_from_binding;
 create global binding for
     select * from t
 using
-    select /*+ USE_INDEX(t, idx_a) */ * from t;
+    SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
 
 -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
 
