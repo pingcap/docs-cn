@@ -231,7 +231,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 绑定的排查通常有两种方式：
 
-1. 通过使用使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
+1. 使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行语句是否采用 binding 的执行计划。
 
 {{< copyable "sql" >}}
 
