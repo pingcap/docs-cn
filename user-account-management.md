@@ -1,0 +1,231 @@
+---
+title: TiDB 用户账户管理
+aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/security/user-account-management/']
+---
+
+# TiDB 用户账户管理
+
+本文档主要介绍如何管理 TiDB 用户账户。
+
+要快速了解 TiDB 如何进行认证与赋权并创建与管理用户账户，建议先观看下面的培训视频（时长 22 分钟）。注意本视频只作为学习参考，如需了解具体的用户账户管理方法，请参考本文档的内容。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+11.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+11.png"></video>
+
+## 用户名和密码
+
+TiDB 将用户账户存储在 `mysql.user` 系统表里面。每个账户由用户名和 host 作为标识。每个账户可以设置一个密码。
+
+通过 MySQL 客户端连接到 TiDB 服务器，通过指定的账户和密码登录：
+
+{{< copyable "shell-regular" >}}
+
+```
+mysql --port 4000 --user xxx --password
+```
+
+使用缩写的命令行参数则是：
+
+{{< copyable "shell-regular" >}}
+
+```
+mysql -P 4000 -u xxx -p
+```
+
+## 添加用户
+
+添加用户有两种方式：
+
+* 通过标准的用户管理的 SQL 语句创建用户以及授予权限，比如 `CREATE USER` 和 `GRANT`。
+* 直接通过 `INSERT`、`UPDATE` 和 `DELETE` 操作授权表。
+
+推荐使用第一种方式。第二种方式修改容易导致一些不完整的修改，因此不推荐。还有另一种可选方式是使用第三方工具的图形化界面工具。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER [IF NOT EXISTS] user [IDENTIFIED BY 'auth_string'];
+```
+
+设置登录密码后，`auth_string` 会被 TiDB 经过加密存储在 `mysql.user` 表中。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'test'@'127.0.0.1' IDENTIFIED BY 'xxx';
+```
+
+TiDB 的用户账户名由一个用户名和一个主机名组成。账户名的语法为 `'user_name'@'host_name'`。
+
+- `user_name` 大小写敏感。
+- `host_name` 可以是一个主机名或 IP 地址。主机名或 IP 地址中允许使用通配符 `%` 和 `_`。例如，名为 `'%'` 的主机名可以匹配所有主机，`'192.168.1.%'` 可以匹配子网中的所有主机。
+
+host 支持模糊匹配，比如：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'test'@'192.168.10.%';
+```
+
+允许 `test` 用户从 `192.168.10` 子网的任何一个主机登录。
+
+如果没有指定 host，则默认是所有 IP 均可登录。如果没有指定密码，默认为空：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'test';
+```
+
+等价于：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'test'@'%' IDENTIFIED BY '';
+```
+
+为一个不存在的用户授权时，是否会自动创建用户的行为受 `sql_mode` 影响。如果 `sql_mode` 中包含 `NO_AUTO_CREATE_USER`，则 `GRANT` 不会自动创建用户并报错。
+
+假设 `sql_mode` 不包含 `NO_AUTO_CREATE_USER`，下面的例子用 `CREATE USER` 和 `GRANT` 语句创建了四个账户：
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'finley'@'localhost' IDENTIFIED BY 'some_pass';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'finley'@'localhost' WITH GRANT OPTION;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'finley'@'%' IDENTIFIED BY 'some_pass';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT ALL PRIVILEGES ON *.* TO 'finley'@'%' WITH GRANT OPTION;
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin_pass';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+GRANT RELOAD,PROCESS ON *.* TO 'admin'@'localhost';
+```
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE USER 'dummy'@'localhost';
+```
+
+使用 `SHOW GRANTS` 可以看到为一个用户授予的权限：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW GRANTS FOR 'admin'@'localhost';
+```
+
+```
++-----------------------------------------------------+
+| Grants for admin@localhost                          |
++-----------------------------------------------------+
+| GRANT RELOAD, PROCESS ON *.* TO 'admin'@'localhost' |
++-----------------------------------------------------+
+```
+
+## 删除用户
+
+使用 `DROP USER` 语句可以删除用户，例如：
+
+{{< copyable "sql" >}}
+
+```sql
+DROP USER 'test'@'localhost';
+```
+
+这个操作会清除用户在 `mysql.user` 表里面的记录项，并且清除在授权表里面的相关记录。
+
+## 保留用户账户
+
+TiDB 在数据库初始化时会生成一个 `'root'@'%'` 的默认账户。
+
+## 设置资源限制
+
+暂不支持。
+
+## 设置密码
+
+TiDB 将密码存在 `mysql.user` 系统数据库里面。只有拥有 `CREATE USER` 权限，或者拥有 `mysql` 数据库权限（`INSERT` 权限用于创建，`UPDATE` 权限用于更新）的用户才能够设置或修改密码。
+
+- 在 `CREATE USER` 创建用户时通过 `IDENTIFIED BY` 指定密码：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE USER 'test'@'localhost' IDENTIFIED BY 'mypass';
+    ```
+
+- 为一个已存在的账户修改密码，可以通过 `SET PASSWORD FOR` 或者 `ALTER USER` 语句完成：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SET PASSWORD FOR 'root'@'%' = 'xxx';
+    ```
+
+    或者：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER USER 'test'@'localhost' IDENTIFIED BY 'mypass';
+    ```
+
+## 忘记 `root` 密码
+
+1. 修改配置文件，在 `security` 部分添加 `skip-grant-table`：
+
+    {{< copyable "" >}}
+
+    ```
+    [security]
+    skip-grant-table = true
+    ```
+
+2. 使用修改之后的配置启动 TiDB，然后使用 `root` 登录后修改密码：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    mysql -h 127.0.0.1 -P 4000 -u root
+    ```
+
+设置 `skip-grant-table` 之后，启动 TiDB 进程会增加操作系统用户检查，只有操作系统的 `root` 用户才能启动 TiDB 进程。
+
+## `FLUSH PRIVILEGES`
+
+用户以及权限相关的信息都存储在 TiKV 服务器中，TiDB 在进程内部会缓存这些信息。一般通过 `CREATE USER`，`GRANT` 等语句来修改相关信息时，可在整个集群迅速生效。如果遇到网络或者其它因素影响，由于 TiDB 会周期性地更新缓存信息，正常情况下，最多 15 分钟左右生效。
+
+如果授权表已被直接修改，则不会通知 TiDB 节点更新缓存，运行如下命令可使改动立即生效：
+
+{{< copyable "sql" >}}
+
+```sql
+FLUSH PRIVILEGES;
+```
+
+详情参见[权限管理](/privilege-management.md)。
