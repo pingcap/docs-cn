@@ -220,7 +220,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | original_sql  |  参数化后的原始 SQL |
 | bind_sql | 带 Hint 的绑定 SQL |
 | default_db | 默认数据库名 |
-| status | 状态，包括 enabled（可用，从 V6.0 的版本开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
+| status | 状态，包括 enabled（可用，从 v6.0 开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
 | create_time | 创建时间 |
 | update_time | 更新时间 |
 | charset | 字符集 |
