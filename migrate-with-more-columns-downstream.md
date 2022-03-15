@@ -54,7 +54,7 @@ CREATE TABLE `messages` (
 
 当 DM 尝试使用下游表结构解析上游产生的 binlog event 时，DM 会报出上述 `Column count doesn't match` 错误。
 
-此时，你可以使用 `operate-schema` 命令来为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
+此时，你可以使用 `binlog-schema` 命令来为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
 
 1. 在 DM 中，新建一个 `.sql` 文件，并将上游表结构对应的 `CREATE TABLE` 语句添加到该文件。例如，将以下表结构保存到 `log.messages.sql` 中。
 
@@ -66,12 +66,12 @@ CREATE TABLE `messages` (
     )
     ```
 
-2. 使用 `operate-schema` 命令为数据源中需要迁移的表设置表结构（此时数据迁移任务应该由于上述 `Column count doesn't match` 错误而处于 Paused 状态）。
+2. 使用 `binlog-schema` 命令为数据源中需要迁移的表设置表结构（此时数据迁移任务应该由于上述 `Column count doesn't match` 错误而处于 Paused 状态）。
 
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr ${advertise-addr} operate-schema set -s ${source-id} ${task-name} -d ${database-name} -t ${table-name} ${schema-file}
+    tiup dmctl --master-addr ${advertise-addr} binlog-schema update -s ${source-id} ${task-name} ${database-name} ${table-name} ${schema-file}
     ```
 
     该命令中的参数描述如下：
@@ -79,17 +79,20 @@ CREATE TABLE `messages` (
     | 参数            |  描述 |
     | :---           | :--- |
     | --master-addr  | 指定 dmctl 要连接的集群的任意 DM-master 节点的 `${advertise-addr}`。`${advertise-addr}` 表示 DM-master 向外界宣告的地址。 |
-    | operate-schema set| 手动设置 schema 信息 |
-    | -s             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。`${task-name}` 表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。 |
-    | -d             | 指定 database。`${database-name}`表示上游数据库名。 |
-    | -t             | 指定 table。`${table-name}` 表示上游数据表名。`${schema-file}` 表示将被设置的表结构文件。 |
+    | binlog-schema update| 手动更新 schema 信息 |
+    | -s             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。 |
+    | `${task-name}` | 指定 task。表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。|
+    | `${database-name}` | 指定 database。表示上游数据库名。 |
+    | `${table-name}` | 指定 table。表示上游数据表名。表示将被设置的表结构文件。 |
+    | `${schema-file}` | 指定表的 schema 文件。表示将被设置的表结构文件。 |
+    
 
     例如：
 
     {{< copyable "shell-regular" >}}
 
     ```
-    tiup dmctl --master-addr 172.16.10.71:8261 operate-schema set -s mysql-01 task-test -d log -t message log.message.sql
+    tiup dmctl --master-addr 172.16.10.71:8261 binlog-schema update -s mysql-01 task-test -d log -t message log.message.sql
     ```
 
 3. 使用 `resume-task` 命令恢复处于 Paused 状态的同步任务。

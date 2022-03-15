@@ -30,65 +30,49 @@ summary: 了解如何管理待迁移表在 DM 内部的表结构。
 
 此外，在其他一些场景下（如：下游比上游多部分列），`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。
 
-为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `operate-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。
+为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `binlog-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。
 
 ## 命令介绍
 
 {{< copyable "" >}}
 
 ```bash
-help operate-schema
+help binlog-schema
 ```
 
 ```
-`get`/`set`/`remove` the schema for an upstream table.
+manage or show table schema in schema tracker
 
 Usage:
-  dmctl operate-schema <operate-type> <-s source ...> <task-name | task-file> <-d database> <-t table> [schema-file] [--flush] [--sync] [flags]
+  dmctl binlog-schema [command]
+
+Available Commands:
+  delete      delete table schema structure
+  list        show table schema structure
+  update      update tables schema structure
 
 Flags:
-  -d, --database string   database name of the table
-      --flush             flush the table info and checkpoint immediately
-  -h, --help              help for operate-schema
-      --sync              sync the table info to master to resolve shard ddl lock, only for optimistic mode now
-  -t, --table string      table name
+  -h, --help   help for binlog-schema
 
 Global Flags:
   -s, --source strings   MySQL Source ID.
+
+Use "dmctl binlog-schema [command] --help" for more information about a command.
 ```
 
 > **注意：**
 >
-> - 由于表结构在数据迁移过程中可能会发生变更，为获取确定性的表结构，当前 `operate-schema` 命令仅能在数据迁移任务处于 `Paused` 状态时可用。
+> - 由于表结构在数据迁移过程中可能会发生变更，为获取确定性的表结构，当前 `binlog-schema` 命令仅能在数据迁移任务处于 `Paused` 状态时可用。
 > - 强烈建议在修改表结构前，首先获取并备份表结构，以免误操作导致数据丢失。
 
 ## 参数解释
 
-+ `operate-type`:
-    - 必选
-    - 指定对于 schema 的操作类型，可以为 `get`、`set` 或 `remove`
++ `delete`: 删除表结构
++ `list`: 获取查看表结构
++ `update`: 更新设置表结构
 + `-s`:
     - 必选
     - 指定操作将应用到的 MySQL 源
-+ `task-name | task-file`:
-    - 必选
-    - 指定任务名称或任务文件路径
-+ `-d`:
-    - 必选
-    - 指定数据表所属的上游数据库名
-+ `-t`:
-    - 必选
-    - 指定数据表对应的上游表名
-+ `schema-file`:
-    - `set` 操作时必选，其他操作不需指定
-    - 将被设置的表结构文件，文件内容应为一个合法的 `CREATE TABLE` 语句
-+ `--flush`:
-    - 可选
-    - 同时将表结构写入 checkpoint，从而在任务重启后加载到该表结构
-    - 默认值为 `true`
-+ `--sync`:
-    - 可选
-    - 仅在乐观协调 DDL 出错时使用。使用该表结构更新乐观协调元数据中的表结构
 
 ## 使用示例
 
@@ -99,7 +83,7 @@ Global Flags:
 {{< copyable "" >}}
 
 ```bash
-operate-schema get -s mysql-replica-01 task_single -d db_single -t t1
+binlog-schema list -s mysql-replica-01 task_single db_single t1
 ```
 
 ```
@@ -134,7 +118,7 @@ CREATE TABLE `t1` (
 {{< copyable "" >}}
 
 ```bash
-operate-schema set -s mysql-replica-01 task_single -d db_single -t t1 db_single.t1-schema.sql
+binlog-schema update -s mysql-replica-01 task_single db_single t1 db_single.t1-schema.sql
 ```
 
 ```
@@ -163,7 +147,7 @@ operate-schema set -s mysql-replica-01 task_single -d db_single -t t1 db_single.
 {{< copyable "" >}}
 
 ```bash
-operate-schema remove -s mysql-replica-01 task_single -d db_single -t t1
+binlog-schema remove -s mysql-replica-01 task_single db_single t1
 ```
 
 ```
