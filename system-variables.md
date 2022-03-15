@@ -1334,6 +1334,7 @@ SET tidb_query_log_max_len = 20;
 > **注意：**
 >
 > 该特性与 [replica-read](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts`的读请求无法使用 [replica-read](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两项特性。
+> 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
 
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
