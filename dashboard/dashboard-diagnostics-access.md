@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 集群诊断页面
-aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
 ---
 
 # TiDB Dashboard 集群诊断页面
@@ -13,7 +12,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-diagnostics-access/']
 
 > **注意：**
 >
-> 集群诊断功能依赖于集群中部署有 Prometheus 监控组件，参见 [TiUP](/tiup/tiup-overview.md) 部署文档了解如何部署监控组件。若集群中没有部署监控组件，生成的诊断报告中将提示生成失败。
+> 集群诊断功能依赖于集群中部署有 Prometheus 监控组件，参见 TiUP 部署文档了解如何部署监控组件。若集群中没有部署监控组件，生成的诊断报告中将提示生成失败。
 
 ## 访问
 

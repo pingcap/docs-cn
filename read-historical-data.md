@@ -1,6 +1,5 @@
 ---
 title: 通过系统变量 tidb_snapshot 读取历史数据
-aliases: ['/docs-cn/dev/read-historical-data/','/docs-cn/dev/how-to/get-started/read-historical-data/']
 ---
 
 # 通过系统变量 tidb_snapshot 读取历史数据
@@ -221,4 +220,4 @@ SET GLOBAL tidb_gc_life_time="60m";
 
 - 对于简单场景，在设置 `tidb_snapshot` 变量后使用 `SELECT` 语句并复制粘贴输出结果，或者使用 `SELECT ... INTO LOCAL OUTFLE` 语句并使用 `LOAD DATA` 语句来导入数据。
 
-- 使用 [Dumpling](/dumpling-overview.md#导出-tidb-的历史数据快照) 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时有较好的性能。
+- 使用 Dumpling 导出 TiDB 的历史数据快照。Dumpling 在导出较大的数据集时有较好的性能。

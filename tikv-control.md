@@ -1,6 +1,5 @@
 ---
 title: TiKV Control 使用说明
-aliases: ['/docs-cn/dev/tikv-control/','/docs-cn/dev/reference/tools/tikv-control/']
 ---
 
 # TiKV Control 使用说明
@@ -416,7 +415,7 @@ all regions are healthy
 
 ### 动态修改 TiKV 的配置
 
-使用 `modify-tikv-config` 命令可以动态修改配置参数。目前可动态修改的 TiKV 配置与具体的修改行为与 SQL 动态修改配置功能相同，可参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)。
+使用 `modify-tikv-config` 命令可以动态修改配置参数。目前可动态修改的 TiKV 配置与具体的修改行为与 SQL 动态修改配置功能相同，可参考在线修改 TiKV 配置。
 
 - `-n` 用于指定完整的配置名。支持动态修改的配置名可以参考[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)中支持的配置项列表。
 - `-v` 用于指定配置值。

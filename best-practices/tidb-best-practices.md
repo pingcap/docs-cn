@@ -1,6 +1,5 @@
 ---
 title: TiDB 最佳实践
-aliases: ['/docs-cn/dev/best-practices/tidb-best-practices/']
 ---
 
 # TiDB 最佳实践
@@ -124,7 +123,7 @@ TiDB 支持完整的二级索引，并且是全局索引，很多查询可以通
 
 在部署之前请务必阅读 [TiDB 部署建议以及对硬件的需求](/hardware-and-software-requirements.md)。
 
-推荐通过 [TiUP](/production-deployment-using-tiup.md) 部署 TiDB 集群，这个工具可以部署、停止、销毁、升级整个集群，非常方便易用。非常不推荐手动部署，后期的维护和升级会很麻烦。
+推荐通过 TiUP 部署 TiDB 集群，这个工具可以部署、停止、销毁、升级整个集群，非常方便易用。非常不推荐手动部署，后期的维护和升级会很麻烦。
 
 ### 导入数据
 
@@ -179,7 +178,7 @@ TiDB [使用 Grafana + Prometheus 监控系统状态](/tidb-monitoring-framework
 
 了解一个系统或者解决使用中的问题最好的方法是阅读文档，明白实现原理。TiDB 有大量的官方文档，希望大家在遇到问题的时候能先尝试通过文档或者搜索 Issue list 寻找解决方案。官方文档查看 [docs-cn](https://github.com/pingcap/docs-cn)。如果希望阅读英文文档，可以查看 [docs](https://github.com/pingcap/docs)。
 
-其中的 [FAQ](/faq/tidb-faq.md) 和[故障诊断](/troubleshoot-tidb-cluster.md)章节建议大家仔细阅读。另外 TiDB 还有一些不错的工具，也有配套的文档，具体的见各项工具的 GitHub 页面。
+其中的 [FAQ](/faq/tidb-faq.md) 章节建议大家仔细阅读。另外 TiDB 还有一些不错的工具，也有配套的文档，具体的见各项工具的 GitHub 页面。
 
 ## TiDB 的最佳适用场景
 

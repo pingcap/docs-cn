@@ -1,6 +1,5 @@
 ---
 title: 部署 TiDB Dashboard
-aliases: ['/docs-cn/dev/dashboard/dashboard-ops-deploy/']
 ---
 
 # 部署 TiDB Dashboard
@@ -9,8 +8,6 @@ TiDB Dashboard 界面内置于 TiDB 4.0 或更高版本的 PD 组件中，无需
 
 请参阅下列文档了解如何部署标准 TiDB 集群：
 
-- [快速试用 TiDB 集群](/quick-start-with-tidb.md)
-- [生产环境部署](/production-deployment-using-tiup.md)
 - [Kubernetes 环境部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/access-dashboard/)
 
 > **注意：**

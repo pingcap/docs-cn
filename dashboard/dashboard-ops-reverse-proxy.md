@@ -1,6 +1,5 @@
 ---
 title: 通过反向代理使用 TiDB Dashboard
-aliases: ['/docs-cn/dev/dashboard/dashboard-ops-reverse-proxy/']
 ---
 
 # 通过反向代理使用 TiDB Dashboard
@@ -121,7 +120,7 @@ server_configs:
 <details>
   <summary>使用 TiUP 部署全新集群时修改配置</summary>
 
-若要全新部署集群，可在 TiUP 拓扑文件 `topology.yaml` 中加入上述配置项后进行部署，具体步骤参阅 [TiUP 部署文档](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)。
+若要全新部署集群，可在 TiUP 拓扑文件 `topology.yaml` 中加入上述配置项后进行部署。
 
 </details>
 
@@ -171,8 +170,6 @@ server_configs:
    ```shell
    tiup cluster reload CLUSTER_NAME -R pd
    ```
-
-   详情请参阅 [TiUP 常见运维操作 - 修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
 </details>
 

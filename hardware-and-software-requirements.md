@@ -1,6 +1,5 @@
 ---
 title: TiDB 软件和硬件环境建议配置
-aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-to/deploy/hardware-recommendations/']
 ---
 
 # TiDB 软件和硬件环境建议配置
@@ -36,7 +35,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
 > **注意：**
 >
-> 中控机需要部署 [TiUP 软件](/tiup/tiup-documentation-guide.md)来完成 TiDB 集群运维管理。
+> 中控机需要部署 TiUP 软件来完成 TiDB 集群运维管理。
 
 ### 目标主机建议配置软件
 
@@ -65,7 +64,6 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 > - 验证测试环境中的 TiDB 和 PD 可以部署在同一台服务器上。
 > - 如进行性能相关的测试，避免采用低性能存储和网络硬件配置，防止对测试结果的正确性产生干扰。
 > - TiKV 的 SSD 盘推荐使用 NVME 接口以保证读写更快。
-> - 如果仅验证功能，建议使用 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)进行单机功能测试。
 > - TiDB 对于磁盘的使用以存放日志为主，因此在测试环境中对于磁盘类型和容量并无特殊要求。
 
 ### 生产环境

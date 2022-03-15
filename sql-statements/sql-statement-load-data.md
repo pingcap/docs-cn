@@ -1,7 +1,6 @@
 ---
 title: LOAD DATA
 summary: TiDB 数据库中 LOAD DATA 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-load-data/','/docs-cn/dev/reference/sql/statements/load-data/']
 ---
 
 # LOAD DATA
@@ -109,4 +108,3 @@ LOAD DATA LOCAL INFILE '/mnt/evo970/data-sets/bikeshare-data/2017Q4-capitalbikes
 
 * [INSERT](/sql-statements/sql-statement-insert.md)
 * [乐观事务模型](/optimistic-transaction.md)
-* [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)

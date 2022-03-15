@@ -1,6 +1,5 @@
 ---
 title: 统计信息简介
-aliases: ['/docs-cn/dev/statistics/','/docs-cn/dev/reference/performance/statistics/']
 ---
 
 # 统计信息简介
@@ -116,7 +115,7 @@ ANALYZE TABLE TableNameList [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH
 >
 > 目前采样率基于自适应算法进行计算。当你通过 [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md) 可以观察到一个表的行数时，可通过这个行数去计算采集 10 万行所对应的采样率。如果你观察不到这个值，可通过 [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) 表的 `TABLE_KEYS` 列作为另一个参考来计算采样率。
 >
-> 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
+> 通常情况下，`STATS_META` 相对 `TABLE_KEYS` 更可信，但是通过 TiDB Lightning 等方式导入数据结束后，`STATS_META` 结果是 `0`。为了处理这个情况，你可以在 `STATS_META` 的结果远小于 `TABLE_KEYS` 的结果时，使用 `TABLE_KEYS` 计算采样率。
 
 ##### 收集部分列的统计信息
 

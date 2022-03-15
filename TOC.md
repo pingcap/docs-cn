@@ -3,6 +3,7 @@
   - [TiDB 5.4 版本新特性](/releases/release-5.4.0.md)
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
+  - [TiDB 使用限制](/tidb-limitations.md)
 - SQL 参考指南
   - SQL 语言结构和语法
     - 属性
@@ -30,7 +31,6 @@
     - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
     - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
     - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
-    - [`BACKUP`](/sql-statements/sql-statement-backup.md)
     - [`BEGIN`](/sql-statements/sql-statement-begin.md)
     - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
     - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
@@ -265,7 +265,9 @@
   - [tikv-server](/tikv-configuration-file.md)
   - [tiflash-server](/tiflash/tiflash-configuration.md)
   - [pd-server](/pd-configuration-file.md)
+  - [动态配置变更](/dynamic-config.md)
 - [系统变量说明](/system-variables.md)
+- [使用放置规则](/configure-placement-rules.md)
 - 读取历史数据
   - 使用 Stale Read 功能读取历史数据（推荐）
     - [Stale Read 使用场景介绍](/stale-read.md)
@@ -279,6 +281,7 @@
   - [将 Grafana 监控数据导出成快照](/exporting-grafana-snapshots.md)
   - [TiDB 集群报警规则与处理方法](/alert-rules.md)
   - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
+  - [错误码](/error-codes.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)

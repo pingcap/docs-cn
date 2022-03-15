@@ -26,7 +26,7 @@ TiDB 版本：5.4.0
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB v5.4.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Notes](/releases/release-notes.md)。
+> 当从一个早期的 TiDB 版本升级到 TiDB v5.4.0 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 Release Notes。
 
 ### 系统变量
 
@@ -65,7 +65,7 @@ TiDB 版本：5.4.0
 | TiFlash | [`status.metrics_port`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 默认值修改为 `8234`。 |
 | TiFlash | [`raftstore.apply-pool-size`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 新增 | 处理 Raft 数据落盘的线程池中线程的数量，默认值为 `4`。 |
 | TiFlash | [`raftstore.store-pool-size`](/tiflash/tiflash-configuration.md#配置文件-tiflash-learnertoml) | 新增 | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小，默认值为 `4`。 |
-| TiDB Data Migration (DM)  | [`collation_compatible`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
+| TiDB Data Migration (DM)  | `collation_compatible` | 新增 | 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。 |
 | TiCDC | `max-message-bytes` | 修改 | 将 Kafka sink 模块的 `max-message-bytes` 默认值设置为 `104857601`（10MB）。  |
 | TiCDC | `partition-num`      | 修改 | 将 Kafka Sink `partition-num` 的默认值改由 `4` 为 `3`，使 TiCDC 更加平均地分发消息到各个 Kafka partition。 |
 | TiDB Lightning | `meta-schema-name` | 修改 | 此配置项控制 TiDB Lightning 在目标 TiDB 中保存 metadata 对应的 schema name。从 v5.4.0 开始，只在开启了并行导入功能时（对应配置为 `tikv-importer.incremental-import = true` ），才会在目标 TiDB 中创建此库。 |
@@ -107,8 +107,6 @@ TiDB 版本：5.4.0
 
     集群启动命令增加了 `--init` 参数，有了该参数，在 TiUP 部署场景，TiUP 会为数据库 root 用户生成一个初始的强密码，避免 root 用户使用空密码所带来的安全风险，增强数据库的安全性。
 
-    [用户文档](/production-deployment-using-tiup.md#第-7-步启动集群)
-
 ### 性能
 
 - **持续提升 TiFlash 列式存储引擎和 MPP 计算引擎的稳定性和性能**
@@ -120,7 +118,7 @@ TiDB 版本：5.4.0
     - 提升从 TiKV 同步数据时，由行存格式到列存格式的数据转换效率，整体的数据同步性能提升 50%
     - 调整一些配置项的默认值，提升 TiFlash 的性能和稳定性。HTAP 混合负载下，单表简单查询的性能最高提升 20%
 
-    用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
+    用户文档：[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
 - **通过 session 变量实现有界限过期数据读取**
 
@@ -205,27 +203,19 @@ TiDB 版本：5.4.0
 
     Backup & Restore (BR) 支持 Azure Blob Storage 作为备份的远端目标存储。在 Azure Cloud 环境部署 TiDB 的用户，可以支持使用该功能将集群数据备份到 Azure Blob Storage 服务中。
 
-    [用户文档](/br/backup-and-restore-azblob.md)
-
 ### 数据迁移
 
 - **为 TiDB Lightning 增加已存在数据表是否允许导入的开关**
 
     为 TiDB Lightning 增加 `incremental-import` 开关。默认值为 `false`，表明目标表已存在数据时将不会执行导入。将默认值改为 `true` 则继续导入。注意，当使用并行导入特性时，需要将该配置项设为 `true`。
 
-    [用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
-
 - **增加新配置允许自定义用于保存 TiDB Lightning 并行导入特性的元信息的 schema 名称**
 
      为 TiDB Lightning 增加 `meta-schema-name` 配置。在并行导入模式下，该参数用于在目标集群保存各个 TiDB Lightning 实例元信息的 schema 名称，默认值为 "lightning_metadata"。对于参与同一批并行导入的每个 TiDB Lightning 实例，必须将此配置项设置为相同的值，否则将无法确保导入数据的正确性。
 
-    [用户文档](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置)
-
 - **在 TiDB Lightning 中添加重复数据的检测**
 
     在 `backend=local` 模式下，数据导入完成之前 TiDB Lightning 会输出冲突数据，然后从数据库中删除这些冲突数据。用户可以在导入完成后解析冲突数据，并根据业务规则选择适合的数据进行插入。建议根据冲突数据清洗上游数据源，避免在后续增量数据迁移阶段遇到冲突数据而造成数据不一致。
-
-    [用户文档](/tidb-lightning/tidb-lightning-error-resolution.md)
 
 - **在 TiDB Data Migration (DM) 中 优化 relay log 的使用方式**
 
@@ -234,16 +224,12 @@ TiDB 版本：5.4.0
     - relay log 的开启状态与 `source` 绑定，source 迁移到任意 DM-worker 均保持原有开启或关闭状态。
     - relay log 的存放路径移至 DM-worker 配置文件。
 
-    [用户文档](/dm/relay-log.md)
-
 - **在 DM 中优化[排序规则](/character-set-and-collation.md)的处理方式**
 
     增加 `collation_compatible` 开关，支持 strict 和 loose（默认）两种模式：
 
     - 如果对排序规则要求不严格，允许上下游查询结果排序规则不一致，使用默认的 loose 模式可以避免报错。
     - 如果对排序规则要求严格，业务要求排序规则必须一致，则应当使用 strict 模式。但如果下游不支持上游缺省的 collation，同步可能会报错。
-
-    [用户文档](/dm/task-configuration-file-full.md#完整配置文件示例)
 
 - **在 DM 中优化 `transfer source`，支持平滑执行同步任务**
 
@@ -252,8 +238,6 @@ TiDB 版本：5.4.0
 - **DM OpenAPI 特性 GA**
 
     DM 支持通过 API 的方式进行日常管理，包括增加数据源、管理任务等。本次更新 OpenAPI 从实验特性转为正式特性。
-
-    [用户文档](/dm/dm-open-api.md)
 
 ### 问题诊断效率
 

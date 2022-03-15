@@ -1,11 +1,10 @@
 ---
 title: 数据类型概述
-aliases: ['/docs-cn/dev/data-type-overview/','/docs-cn/dev/reference/sql/data-types/overview/']
 ---
 
 # 数据类型概述
 
-TiDB 支持除空间类型 (`SPATIAL`) 之外的所有 MySQL 数据类型，包括[数值型类型](/data-type-numeric.md)、[字符串类型](/data-type-string.md)、[时间和日期类型](/data-type-date-and-time.md)、[JSON 类型](/data-type-json.md)。
+TiDB 支持除空间类型 (`SPATIAL`) 之外的所有 MySQL 数据类型，包括[数值型类型](/data-type-numeric.md)、[字符串类型](/data-type-string.md)、[时间和日期类型](/data-type-date-and-time.md)。
 
 数据类型定义一般为 `T(M[, D])`，其中：
 

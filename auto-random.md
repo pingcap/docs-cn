@@ -1,7 +1,6 @@
 ---
 title: AUTO_RANDOM
 summary: 本文介绍了 TiDB 的 `AUTO_RANDOM` 列属性。
-aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/auto-random/']
 ---
 
 # AUTO_RANDOM <span class="version-mark">从 v3.1.0 版本开始引入</span>
@@ -12,7 +11,7 @@ aliases: ['/docs-cn/dev/auto-random/','/docs-cn/dev/reference/sql/attributes/aut
 
 ## 使用场景
 
-`AUTO_RANDOM` 用于解决大批量写数据入 TiDB 时因含有**整型自增主键列**的表而产生的热点问题。详情参阅 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。
+`AUTO_RANDOM` 用于解决大批量写数据入 TiDB 时因含有**整型自增主键列**的表而产生的热点问题。
 
 以下面语句建立的表为例：
 

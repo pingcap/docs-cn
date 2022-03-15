@@ -1,11 +1,10 @@
 ---
 title: Split Region 使用文档
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-split-region/','/docs-cn/dev/reference/sql/statements/split-region/']
 ---
 
 # Split Region 使用文档
 
-在 TiDB 中新建一个表后，默认会单独切分出 1 个 [Region](/tidb-storage.md#region) 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 Region 中的数据超过默认 Region 大小限制后，这个 Region 会开始分裂成 2 个 Region。
+在 TiDB 中新建一个表后，默认会单独切分出 1 个 Region 来存储这个表的数据，这个默认行为由配置文件中的 `split-table` 控制。当这个 Region 中的数据超过默认 Region 大小限制后，这个 Region 会开始分裂成 2 个 Region。
 
 上述情况中，如果在新建的表上发生大批量写入，则会造成热点，因为开始只有一个 Region，所有的写请求都发生在该 Region 所在的那台 TiKV 上。
 
@@ -428,7 +427,7 @@ region4:   [ 3<<61     ,  +inf  )
 
 ## 注意事项
 
-Split Region 语句切分的 Region 会受到 PD 中 [Region merge](/best-practices/pd-scheduling-best-practices.md#region-merge) 调度的控制，需要[动态修改](/pd-control.md) Region merge 相关的配置项，避免新切分的 Region 不久后又被 PD 重新合并的情况。
+Split Region 语句切分的 Region 会受到 PD 中 Region merge 调度的控制，需要[动态修改](/pd-control.md) Region merge 相关的配置项，避免新切分的 Region 不久后又被 PD 重新合并的情况。
 
 ## MySQL 兼容性
 

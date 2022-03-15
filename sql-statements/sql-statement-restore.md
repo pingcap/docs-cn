@@ -1,14 +1,13 @@
 ---
 title: RESTORE
 summary: TiDB 数据库中 RESTORE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-restore/']
 ---
 
 # RESTORE
 
 `RESTORE` 语句用于执行分布式恢复，把 [`BACKUP` 语句](/sql-statements/sql-statement-backup.md)生成的备份文件恢复到 TiDB 集群中。
 
-`RESTORE` 语句使用的引擎与 [BR](/br/backup-and-restore-use-cases.md) 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
+`RESTORE` 语句使用的引擎与 BR 相同，但恢复过程是由 TiDB 本身驱动，而非单独的 BR 工具。BR 工具的优势和警告也适用于 `RESTORE` 语句。需要注意的是，**`RESTORE` 语句目前不遵循 ACID 原则**。
 
 执行 `RESTORE` 语句前，确保集群已满足以下要求：
 
@@ -100,8 +99,6 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 ```sql
 RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
 ```
-
-有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
 
 当运行在云环境中时，不能分发凭证，可设置 `SEND_CREDENTIALS_TO_TIKV` 选项为 `FALSE`：
 

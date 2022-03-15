@@ -1,6 +1,5 @@
 ---
 title: TiDB 简介
-aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 ---
 
 # TiDB 简介
@@ -19,7 +18,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 
 - 实时 HTAP
 
-    提供行存储引擎 [TiKV](/tikv-overview.md)、列存储引擎 [TiFlash](/tiflash/tiflash-overview.md) 两款存储引擎，TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保行存储引擎 TiKV 和列存储引擎 TiFlash 之间的数据强一致。TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
+    提供行存储引擎 TiKV、列存储引擎 TiFlash 两款存储引擎，TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保行存储引擎 TiKV 和列存储引擎 TiFlash 之间的数据强一致。TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
 
 - 云原生的分布式数据库
 
@@ -46,10 +45,3 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 - 数据汇聚、二次加工处理的场景
 
     当前绝大部分企业的业务数据都分散在不同的系统中，没有一个统一的汇总，随着业务的发展，企业的决策层需要了解整个公司的业务状况以便及时做出决策，故需要将分散在各个系统的数据汇聚在同一个系统并进行二次加工处理生成 T+0 或 T+1 的报表。传统常见的解决方案是采用 ETL + Hadoop 来完成，但 Hadoop 体系太复杂，运维、存储成本太高无法满足用户的需求。与 Hadoop 相比，TiDB 就简单得多，业务通过 ETL 工具或者 TiDB 的同步工具将数据同步到 TiDB，在 TiDB 中可通过 SQL 直接生成报表。
-
-## 另请参阅
-
-- [TiDB 整体架构](/tidb-architecture.md)
-- [TiDB 数据库的存储](/tidb-storage.md)
-- [TiDB 数据库的计算](/tidb-computing.md)
-- [TiDB 数据库的调度](/tidb-scheduling.md)

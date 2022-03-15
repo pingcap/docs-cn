@@ -1,7 +1,6 @@
 ---
 title: SQL 操作常见问题
 summary: 介绍 SQL 操作相关的常见问题。
-aliases: ['/docs-cn/dev/faq/sql-faq/']
 ---
 
 # SQL 操作常见问题
@@ -127,7 +126,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ## 数据删除后查询速度为何会变慢？
 
-大量删除数据后，会有很多无用的 key 存在，影响查询效率。可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
+大量删除数据后，会有很多无用的 key 存在，影响查询效率。可以尝试开启 Region Merge 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
 
 ## 对数据做删除操作之后，空间回收比较慢，如何处理？
 
@@ -137,7 +136,7 @@ TiDB 采用了多版本并发控制 (MVCC)，为了使并发事务能查看到�
 
 TiDB 的 `SHOW PROCESSLIST` 与 MySQL 的 `SHOW PROCESSLIST` 显示内容基本一样，不会显示系统进程号，而 ID 表示当前的 session ID。其中 TiDB 的 `show processlist` 和 MySQL 的 `show processlist` 区别如下：
 
-+ 由于 TiDB 是分布式数据库，TiDB server 实例是无状态的 SQL 解析和执行引擎（详情可参考 [TiDB 整体架构](/tidb-architecture.md)），用户使用 MySQL 客户端登录的是哪个 TiDB server ，`show processlist` 就会显示当前连接的这个 TiDB server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
++ 由于 TiDB 是分布式数据库，TiDB server 实例是无状态的 SQL 解析和执行引擎，用户使用 MySQL 客户端登录的是哪个 TiDB server ，`show processlist` 就会显示当前连接的这个 TiDB server 中执行的 session 列表，不是整个集群中运行的全部 session 列表；而 MySQL 是单机数据库，`show processlist` 列出的是当前整个 MySQL 数据库的全部执行 SQL 列表。
 
 + 在查询执行期间，TiDB 中的 `State` 列不会持续更新。由于 TiDB 支持并行查询，每个语句可能同时处于多个状态，因此很难显示为某一种状态。
 

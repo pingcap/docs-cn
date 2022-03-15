@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群报警规则
 summary: TiDB 集群中各组件的报警规则详解。
-aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 ---
 
 # TiDB 集群报警规则
@@ -756,11 +755,11 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 ## TiDB Binlog 报警规则
 
-关于 TiDB Binlog 报警规则的详细描述，参见 [TiDB Binlog 集群监控报警文档](/tidb-binlog/monitor-tidb-binlog-cluster.md#监控报警规则)。
+关于 TiDB Binlog 报警规则的详细描述，参见 TiDB Binlog 集群监控报警文档。
 
 ## TiCDC 报警规则
 
-关于TiCDC 报警规则的详细描述，参见 [TiCDC 集群监控报警](/ticdc/ticdc-alert-rules.md)。
+关于TiCDC 报警规则的详细描述，参见 TiCDC 集群监控报警。
 
 ## Node_exporter 主机报警规则
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB Dashboard 流量可视化页面
-aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-to/monitor/key-visualizer/','/docs-cn/dev/key-visualizer-monitoring-tool/']
 ---
 
 # TiDB Dashboard 流量可视化页面
@@ -170,7 +169,3 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-key-visualizer/','/docs-cn/dev/how-t
 > **注意：**
 >
 > 这里只是列出了几种常见的热力图模式。流量可视化页面中实际展示的是整个集群上所有数据库、数据表的热力图，因此非常有可能在不同的区域观察到不同的热力图模式，也可能观察到多种热力图模式的混合结果。使用的时候应当视实际情况灵活判断。
-
-## 解决热点问题
-
-TiDB 内置了不少帮助缓解常见热点问题的功能，深入了解请参考 [TiDB 高并发写入场景最佳实践](/best-practices/high-concurrency-best-practices.md)。

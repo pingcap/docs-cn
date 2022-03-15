@@ -1,14 +1,13 @@
 ---
 title: TiDB Dashboard 慢查询页面
 summary: 了解如何在 TiDB Dashboard 中查看慢查询。
-aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 ---
 
 # TiDB Dashboard 慢查询页面
 
 该页面上能检索和查看集群中所有慢查询。
 
-默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到[慢查询日志](/identify-slow-queries.md)中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
+默认情况下，执行时间超过 300ms 的 SQL 查询就会被视为慢查询，被记录到慢查询日志中，并可通过本功能对记录到的慢查询进行查询。可调整 [`tidb_slow_log_threshold`](/system-variables.md#tidb_slow_log_threshold) SESSION 变量或 TiDB [`slow-threshold`](/tidb-configuration-file.md#slow-threshold) 参数调整慢查询阈值。
 
 > **注意：**
 >
@@ -24,7 +23,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 * 在浏览器中访问 <http://127.0.0.1:2379/dashboard/#/slow_query>（将 `127.0.0.1:2379` 替换为任意实际 PD 地址和端口）。
 
-慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见[慢查询日志](/identify-slow-queries.md)文档了解详细情况。
+慢查询页面所展示的所有数据都来自于 TiDB 慢查询系统表及慢查询日志，参见慢查询日志文档了解详细情况。
 
 ### 修改列表过滤条件
 
