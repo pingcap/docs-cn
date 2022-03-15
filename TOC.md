@@ -234,7 +234,7 @@
         - [tiup cluster stop](/tiup/tiup-component-cluster-stop.md)
         - [tiup cluster template](/tiup/tiup-component-cluster-template.md)
         - [tiup cluster upgrade](/tiup/tiup-component-cluster-upgrade.md)
-       - TiUP DM 命令
+      - TiUP DM 命令
         - [TiUP DM 命令概览](/tiup/tiup-component-dm.md)
         - [tiup dm audit](/tiup/tiup-component-dm-audit.md)
         - [tiup dm deploy](/tiup/tiup-component-dm-deploy.md)
