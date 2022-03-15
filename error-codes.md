@@ -30,7 +30,9 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8004
 
-    单个事务过大，原因及解决方法请参考[这里](/faq/migration-tidb-faq.md#transaction-too-large-是什么原因怎么解决)
+    单个事务过大。TiDB 限制了单条 KV entry 不超过 6MB，可以修改配置文件中的 `txn-entry-size-limit` 配置项进行调整，最大可以修改到 120MB。
+
+    分布式事务要做两阶段提交，而且底层还需要做 Raft 复制。如果一个事务非常大，提交过程会非常慢，事务写冲突概率会增加，而且事务失败后回滚会导致不必要的性能开销。所以我们设置了 `key-value entry` 的总大小默认不超过 100MB。如果业务需要使用大事务，可以修改配置文件中的 `txn-total-size-limit` 配置项进行调整，最大可以修改到 10G。实际的大小限制还受机器的物理内存影响。
 
 * Error Number: 8005
 
@@ -347,7 +349,3 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 9013
 
     TiFlash 操作繁忙。该错误一般出现在数据库负载比较高时。请检查 TiFlash Server 的状态/监控/日志。
-
-## 故障诊断
-
-参见[故障诊断文档](/troubleshoot-tidb-cluster.md)以及 [FAQ](/faq/tidb-faq.md)。

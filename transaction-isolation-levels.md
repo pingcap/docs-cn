@@ -5,7 +5,7 @@ summary: 了解 TiDB 事务的隔离级别。
 
 # TiDB 事务隔离级别
 
-事务隔离级别是数据库事务处理的基础，[ACID](/glossary.md#acid) 中的 “I”，即 Isolation，指的就是事务的隔离性。
+事务隔离级别是数据库事务处理的基础，ACID 中的 “I”，即 Isolation，指的就是事务的隔离性。
 
 SQL-92 标准定义了 4 种隔离级别：读未提交 (READ UNCOMMITTED)、读已提交 (READ COMMITTED)、可重复读 (REPEATABLE READ)、串行化 (SERIALIZABLE)。详见下表：
 
