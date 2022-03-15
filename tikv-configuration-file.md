@@ -1572,33 +1572,38 @@ Raft Engine 相关的配置项。
 
 ## quota
 
-前端限流的相关配置，以下参数的限制采用近似统计。
+用于前台限流相关的配置项。
+
+当【XXX，XXX 等物理资源有限】  时，如果 TiKV 前台处理的读写请求量过大，会导致前台和后台处理请求时占用彼此的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以通过开启前台限流 (Quota Limiter) 相关的 quota 配置项限制前台各类请求所占用的资源。
 
 > **警告：**
 >
-> Quota Limiter 目前为实验特性，设置较小的限额可能发生性能下降的现象。
+> - 前台限流是 TiDB 在 v6.0 中引入的实验特性，不建议在生产环境中使用。
+> - 如果 quota 相关配置项的值较小（【XXX举例给出一个具体数字，提示用户多小是“较小”】），可能发生 TiKV 性能下降的情况。
 
-### `forefront-cpu-time`
+### `forefront-cpu-time` <span class="version-mark">从 v6.0 版本开始引入</span>
 
-+ 限制处理前端请求的 CPU 耗时，单位为 millicpu，即 1500 代表 1.5vCPU。
-+ 默认值：0，即不设限
++ 限制 CPU 为处理 TiKV 前台读写请求所花费的时间，这是一个软限制。
++ 达到该限制后，新的请求则会进入 sleep 状态。如需 CPU 继续处理处于 sleep 状态的新请求，【XXX操作方法】。
++ 默认值：0（即无限制）
++ 单位：millicpu（即当该参数值为 `1500` 时，前端请求会消耗 1.5vCPU）
 
-### `forefront-req-rate`
+### `forefront-req-rate` <span class="version-mark">从 v6.0 版本开始引入</span>
 
-+ 限制处理前端请求的速率，被限制的前端请求仅包含事务读写相关的请求。
-+ 默认值：0，即不设限
++ 限制在 TiKV 前台处理事务读写请求的速率，这是一个软限制。
++ 默认值：0（即无限制）
 
-### `write-kvs`
+### `write-kvs` <span class="version-mark">从 v6.0 版本开始引入</span>
 
-+ 限制写入的键值对速率，被限制写入的键值对仅包含事务写入的部分。
-+ 默认值：0，即不设限
++ 限制事务写入键值对的速率，这是一个软限制。
++ 默认值：0（即无限制）
 
-### `write-bandwidth`
+### `write-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
 
-+ 限制写入带宽，被限制的写入带宽仅包含事务写入的部分。
-+ 默认值：0kb，即不设限
++ 限制事务写入的带宽，这是一个软限制。
++ 默认值：0KB（即无限制）
 
-### `read-bandwidth`
+### `read-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
 
-+ 限制读取带宽，被限制的读取带宽仅包含事务读和 coprocessor 相关的部分。
-+ 默认值：0kb，即不设限
++ 限制事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
++ 默认值：0KB（即无限制）
