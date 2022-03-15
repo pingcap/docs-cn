@@ -45,11 +45,6 @@ If the data size of the sharded tables is large (for example, larger than 1 TiB)
 
 - [Migrate and Merge MySQL Shards of Large Datasets to TiDB](/migrate-large-mysql-shards-to-tidb.md)
 
-## Migrate data from files to TiDB
-
-- [Migrate data from CSV files to TiDB](/migrate-from-csv-files-to-tidb.md)
-- [Migrate data from SQL files to TiDB](/migrate-from-sql-files-to-tidb.md)
-
 ## More advanced migration solutions
 
 The following features can improve the migration process and meet more needs in your application.
