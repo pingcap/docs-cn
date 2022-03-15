@@ -5,10 +5,20 @@ summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步�
 
 # 使用 OpenAPI 运维集群
 
-DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。如需开启 OpenAPI，请在 DM-master 的配置文件中增加如下配置项：
+DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。
+
+如需开启 OpenAPI，并且是通过二进制直接部署的 DM 集群则需要在 DM Master 的配置文件中添加如下配置：
 
 ```toml
 openapi = true
+```
+
+如需开启 OpenAPI，并且是通过 tiup 部署的 DM 集群则需要在拓扑文件中添加如下配置：
+
+```yaml
+server_configs:
+  master:
+    openapi: true
 ```
 
 > **注意：**
