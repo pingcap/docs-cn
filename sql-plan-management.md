@@ -203,7 +203,7 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 
 该语句可以在 GLOBAL 作用域内变更指定执行计划的绑定状态，默认作用域为 GLOBAL，该作用域不可更改。
 
-该语句可以将绑定的状态设置成 `Enabled` 或者 `Disabled` 状态，其中只有 `Disabled` 状态的绑定可以被设置成 `Enabled` 状态，只有 `Enabled` 状态的绑定可以被设置成 `Disabled` 状态。如果当前没有可以改变状态的绑定，则会在日志中输出一条内容为 `The memory usage of all available bindings exceeds the cache's mem quota. As a result, all available bindings cannot be held on the cache. Please increase the system variable 'tidb_mem_quota_binding_cache' and execute 'admin reload bindings' to ensure that all bindings are available normally` 的警告日志进行提示。需要注意的是当绑定的状态被设置成 `Disabled` 状态的时候，该绑定不会被查询语句所使用。
+使用时，只能将 `Disabled` 的绑定改为 `Enabled` 状态，或将 `Enabled` 的绑定改为 `Disabled` 状态。如果没有可以改变状态的绑定，则会输出一条警告日志：`The memory usage of all available bindings exceeds the cache's mem quota. As a result, all available bindings cannot be held on the cache. Please increase the system variable 'tidb_mem_quota_binding_cache' and execute 'admin reload bindings' to ensure that all bindings are available normally`。需要注意的是，当绑定被设置成 `Disabled` 状态时，查询语句不会使用该绑定。
 
 ### 查看绑定
 
