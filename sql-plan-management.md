@@ -365,7 +365,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) va
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('frequency', '2')
 
 -- 按照用户名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('user', 'root')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('user', 'user1')
 ```
 
 ### 验证自动捕获的绑定
