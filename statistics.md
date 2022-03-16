@@ -328,6 +328,28 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 在 v5.0 版本之前，执行查询语句时，TiDB 会以 [`feedback-probability`](/tidb-configuration-file.md#feedback-probability) 的概率收集反馈信息，并将其用于更新直方图和 Count-Min Sketch。**从 v5.0 版本起，该功能默认关闭，暂不建议开启此功能。**
 
+从 v6.0 版本开始，如果 TiDB 在后台执行 `ANALYZE` 消耗大量资源影响业务，用户可以主动杀掉后台 `ANALYZE` 任务。具体操作如下所示：
+
+1. 执行以下 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT ci.instance as instance, cp.id as id FROM information_schema.cluster_info ci, information_schema.cluster_processlist cp WHERE ci.status_address = cp.instance and ci.type = 'tidb' and cp.info like 'analyze table %' and cp.user = '' and cp.host = '';
+```
+
+2. 客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，执行以下 `KILL` 语句，其中 `id` 是第 1 步查询得到的后台 `ANALYZE` 任务的 `ID`。
+
+{{< copyable "sql" >}}
+
+```sql
+KILL TIDB id;
+```
+
+> **注意：**
+>
+> 客户端必须连接到执行后台 `ANALYZE` 任务的 TiDB 实例执行 `KILL` 语句才能杀死后台 `ANALYZE` 任务。如果客户端连接到其他 TiDB 实例或者客户端和 TiDB 中间有代理，`KILL` 语句不能杀死后台 `ANALYZE` 任务。参见 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
+
 ### 控制 ANALYZE 并发度
 
 执行 ANALYZE 语句的时候，你可以通过一些参数来调整并发度，以控制对系统的影响。
