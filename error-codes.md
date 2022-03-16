@@ -34,7 +34,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8005
 
-    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考这里
+    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考 TiDB FAQ 文档。
 
 * Error Number: 8018
 
@@ -330,7 +330,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9007
 
-    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考这里。
+    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考 TiDB FAQ 文档。
 
 * Error Number: 9008
 
