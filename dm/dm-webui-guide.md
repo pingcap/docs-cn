@@ -28,6 +28,8 @@ openapi = true
 server_configs:
   master:
     openapi: true
+```
+
 ## Dashboard
 
 Dashboard 是内嵌了 DM 的 Grafana Dashboard，包含两个视图`Standard`和`Professional`分别展示了不同角度的监控信息。
