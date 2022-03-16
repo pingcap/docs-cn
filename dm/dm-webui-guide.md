@@ -22,7 +22,12 @@ DM WebUI 是为了方便大量迁移任务的管理、简化操作步骤的目�
 ```
 openapi = true
 ```
+如需开启 OpenAPI，并且是通过 tiup 部署的 DM 集群则需要在拓扑文件中添加如下配置：
 
+```yaml
+server_configs:
+  master:
+    openapi: true
 ## Dashboard
 
 Dashboard 是内嵌了 DM 的 Grafana Dashboard，包含两个视图`Standard`和`Professional`分别展示了不同角度的监控信息。
