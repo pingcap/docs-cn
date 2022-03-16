@@ -346,7 +346,7 @@ SELECT binding_cache status;
 
 > **注意：**
 >
-> 以下操作都需要数据库的 super privilege 权限。当插入了非法的过滤类型时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 警告日志进行提示。
+> 修改黑名单需要数据库的 super privilege 权限。如果黑名单包含了非法的过滤内容时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
 
 #### 使用方法
 
