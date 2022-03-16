@@ -293,11 +293,11 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 ```sql
 -- 创建一个绑定
 
-create global binding for
-    select * from t
-using
+CREATE GLOBAL BINDING for
+    SELECT * FROM t
+USING
     SELECT * FROM t;
-    
+
 -- 查看当前绑定缓存使用情况
 
 SELECT binding_cache status;
