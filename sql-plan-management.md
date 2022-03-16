@@ -359,7 +359,8 @@ SELECT binding_cache status;
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.t')
 
 -- 通过通配符来实现按照数据库名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'mysql.*')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.table_*')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'db_*.table_*')
 
 -- 按照执行频率进行过滤
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('frequency', '2')
