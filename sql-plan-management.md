@@ -324,7 +324,7 @@ SELECT binding_cache status;
 
 > **注意：**
 >
-> 当前的绑定通过生成一组 Hints 来实现对计划的固定，从而确保绑定后的查询语句生成的计划不发生变化。但是受限于当前 Hints 种类，在一些情况下，TiDB 无法保证计划在绑定前后完全一致，其中包括 Join Order、PointGet 和 MPP 相关的计划。
+> 当前的绑定通过生成一组 Hints 来实现对计划的固定，从而确保绑定后的查询语句生成的计划不发生变化。但是受限于当前 Hints 的完善程度，一些较为复杂的查询，如 2 表以上的 Join 和复杂的 AP、MPP 类查询，TiDB 无法保证计划在绑定前后完全一致。对于大多数 TP 查询，TiDB 能够保证计划前后一致，如使用相同的索引、相同的 Join 方式（如 HashJoin、IndexJoin）等。
 
 对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
