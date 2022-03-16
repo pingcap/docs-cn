@@ -357,7 +357,7 @@ You only need to add a rule that limits the key range to the range of metadata, 
   "start_key": "6d00000000000000f8",
   "end_key": "6e00000000000000f8",
   "role": "voter",
-  "count": "5",
+  "count": 5,
   "location_labels": ["zone", "rack", "host"]
 }
 ```
