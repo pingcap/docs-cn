@@ -271,7 +271,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8141
 
-    事务写入时，对 key 的存在性断言报错，请参考[数据索引一致性检查](/data-inconsistency-errors.md)
+    事务写入时，对 key 的存在性断言报错，请参考[数据索引一致性检查](/data-inconsistency-errors.md)。
 
 * Error Number: 8200
 

@@ -628,7 +628,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
-- 这个变量用于设置是否开启 mutation checker，mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
+- 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
 
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1441,10 +1441,11 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`FAST`
 - 可选值：`OFF`，`FAST`，`STRICT`
-- 这个变量用于设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查，如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
-- `OFF`: 关闭该项检查。
-- `FAST`: 仅开启对性能影响微小的检查，包含了大部分检查效果。
-- `STRICT`: 开启全部检查，对悲观事务性能有一定影响。
+- 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
+
+    - `OFF`: 关闭该项检查。
+    - `FAST`: 仅开启对性能影响微小的检查，包含大部分检查效果。
+    - `STRICT`: 开启全部检查，对悲观事务性能有一定影响。
 
 ### `tidb_txn_mode`
 
