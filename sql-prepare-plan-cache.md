@@ -167,7 +167,7 @@ Query OK, 0 rows affected (0.00 sec)
 MySQL [test]> execute stmt;
 Empty set (0.00 sec)
 
-MySQL [test]> select @@last_plan_from_cache; -- 由于缓存被情况此时无法再次命中
+MySQL [test]> select @@last_plan_from_cache; -- 由于缓存被清空，此时无法再次选中
 +------------------------+
 | @@last_plan_from_cache |
 +------------------------+
