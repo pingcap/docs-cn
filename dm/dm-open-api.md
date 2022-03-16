@@ -1020,7 +1020,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `DELETE /api/v1/tasks/{task-name}`
+`DELETE /api/v1/tasks/{task-name}`
 
 ### 使用样例
 
@@ -1042,7 +1042,7 @@ curl -X 'DELETE' \
 
 ### 请求 URI
 
- `PUT /api/v1/tasks/{task-name}`
+`PUT /api/v1/tasks/{task-name}`
 
 ### 使用样例
 
@@ -1238,7 +1238,7 @@ curl -X 'PUT' \
 
 ### 请求 URI
 
- `POST /api/v1/tasks/{task-name}/start`
+`POST /api/v1/tasks/{task-name}/start`
 
 ### 使用样例
 
@@ -1345,7 +1345,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks`
+`GET /api/v1/tasks`
 
 ### 使用样例
 
@@ -1457,7 +1457,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/migrate_targets`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/migrate_targets`
 
 ### 使用样例
 
