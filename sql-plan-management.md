@@ -28,39 +28,39 @@ CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
 
 ```sql
--- 类型一：使用 `join` 关键字但不通过 `using` 关键字指定关联列的笛卡尔积
-create global binding for
-    select * from t t1 join t t2
-using
-    select * from t t1 join t t2;
+-- 类型一：使用 `JOIN` 关键字但不通过 `USING` 关键字指定关联列的笛卡尔积
+CREATE GLOBAL BINDING for
+    SELECT * FROM t t1 JOIN t t2
+USING
+    SELECT * FROM t t1 JOIN t t2;
 
--- 类型二：包含了 `using` 关键字的 `delete` 语句
-create global binding for
-    delete from t1 using t1 join t2 on t1.a = t2.a
-using
-    delete from t1 using t1 join t2 on t1.a = t2.a;
+-- 类型二：包含了 `USING` 关键字的 `delete` 语句
+CREATE GLOBAL BINDING for
+    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a
+USING
+    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a;
 ```
 
 可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
 
 ```sql
--- 类型一的第一种改写：为 `join` 关键字添加 `using` 子句
-create global binding for
-    select * from t t1 join t t2 using (a)
-using
-    select * from t t1 join t t2 using (a);
+-- 类型一的第一种改写：为 `JOIN` 关键字添加 `USING` 子句
+CREATE GLOBAL BINDING for
+    SELECT * FROM t t1 JOIN t t2 USING (a)
+USING
+    SELECT * FROM t t1 JOIN t t2 USING (a);
 
--- 类型一的第二种改写：去掉 `join` 关键字
-create global binding for
-    select * from t t1, t t2
-using
-    select * from t t1, t t2;
+-- 类型一的第二种改写：去掉 `JOIN` 关键字
+CREATE GLOBAL BINDING for
+    SELECT * FROM t t1, t t2
+USING
+    SELECT * FROM t t1, t t2;
 
--- 类型二的改写：去掉 `delete` 语句中的 `using` 关键字
-create global binding for
-    delete t1 from t1 join t2 on t1.a = t2.a
-using
-    delete t1 from t1 join t2 on t1.a = t2.a;
+-- 类型二的改写：去掉 `delete` 语句中的 `USING` 关键字
+CREATE GLOBAL BINDING for
+    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a
+USING
+    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a;
 ```
 
 > **注意：**
@@ -71,16 +71,16 @@ using
 
 ```sql
 -- Hint 能生效的用法
-create global binding for
-    insert into t1 select * from t2 where a > 1 and b = 1
-using
-    insert into t1 select /*+ use_index(@sel_1 t2, a) */ * from t2 where a > 1 and b = 1;
+CREATE GLOBAL BINDING for
+    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+USING
+    INSERT INTO t1 SELECT /*+ use_index(@sel_1 t2, a) */ * FROM t2 WHERE a > 1 AND b = 1;
 
 -- Hint 不能生效的用法
-create global binding for
-    insert into t1 select * from t2 where a > 1 and b = 1
-using
-    insert /*+ use_index(@sel_1 t2, a) */ into t1 select * from t2 where a > 1 and b = 1;
+CREATE GLOBAL BINDING for
+    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+USING
+    insert /*+ use_index(@sel_1 t2, a) */ into t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
 ```
 
 如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
@@ -88,9 +88,9 @@ using
 `标准化`：把 SQL 中的常量变成变量参数，对空格和换行符等做标准化处理，并对查询引用到的表显式指定数据库。例如：
 
 ```sql
-select * from t where a >    1
+SELECT * FROM t WHERE a >    1
 -- 以上语句标准化后如下：
-select * from test . t where a > ?
+SELECT * FROM test . t WHERE a > ?
 ```
 
 > **注意：**
@@ -98,19 +98,19 @@ select * from test . t where a > ?
 > 在进行标准化的时候，被逗号 `,` 连接起来的多个常量会被标准化为 `...` 而不是 `?`。
 >
 > 例如：
-> 
+>
 > ```sql
-> select * from t limit 10
-> select * from t limit 10, 20
-> select * from t where a in (1)
-> select * from t where a in (1,2,3)
+> SELECT * FROM t limit 10
+> SELECT * FROM t limit 10, 20
+> SELECT * FROM t WHERE a IN (1)
+> SELECT * FROM t WHERE a IN (1,2,3)
 > -- 以上语句标准化后如下：
-> select * from test . t limit ? 
-> select * from test . t limit ...
-> select * from test . t where a in ( ? ) 
-> select * from test . t where a in ( ... )
+> SELECT * FROM test . t limit ?
+> SELECT * FROM test . t limit ...
+> SELECT * FROM test . t WHERE a IN ( ? )
+> SELECT * FROM test . t WHERE a IN ( ... )
 > ```
-> 
+>
 > 因此包含单个常量的 SQL 语句和包含被逗号连接起来多个常量的 SQL 语句，在被绑定时会被 TiDB 视作不同的 SQL 语句，需要分别创建绑定。
 
 值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
@@ -119,25 +119,25 @@ select * from test . t where a > ?
 
 ```sql
 -- 创建一个 global binding，指定其使用 sort merge join
-create global binding for
-    select * from t1, t2 where t1.id = t2.id
-using
-    select /*+ merge_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+CREATE GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ merge_join(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
-explain select * from t1, t2 where t1.id = t2.id;
+explain SELECT * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 创建另一个 session binding，指定其使用 hash join
-create binding for
-    select * from t1, t2 where t1.id = t2.id
-using
-    select /*+ hash_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+CREATE BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ hash_join(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 session binding 中指定的 hash join，而不是 global binding 中指定的 sort merge join
-explain select * from t1, t2 where t1.id = t2.id;
+explain SELECT * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
-第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `sm_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `hash_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 HashJoin。
+第一个 `SELECT` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `sm_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 MergeJoin。而第二个 `SELECT` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `hash_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 HashJoin。
 
 每个标准化的 SQL 只能同时有一个通过 `CREATE BINDING` 创建的绑定。对相同的标准化 SQL 创建多个绑定时，会保留最后一个创建的绑定，之前的所有绑定（创建的和演进出来的）都会被删除。但 session 绑定和 global 绑定仍然允许共存，不受这个逻辑影响。
 
@@ -151,7 +151,7 @@ explain select * from t1, t2 where t1.id = t2.id;
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE a > 2;
 ```
 
-可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `select * from test . t where a > ?`，而
+可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `SELECT * FROM test . t WHERE a > ?`，而
 
 {{< copyable "sql" >}}
 
@@ -159,7 +159,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2;
 ```
 
-则不可以创建成功，因为原始 SQL 在经过处理后是 `select * from test . t where a > ?`，而绑定 SQL 在经过处理后是 `select * from test . t where b > ?`。
+则不可以创建成功，因为原始 SQL 在经过处理后是 `SELECT * FROM test . t WHERE a > ?`，而绑定 SQL 在经过处理后是 `SELECT * FROM test . t WHERE b > ?`。
 
 > **注意：**
 >
@@ -181,13 +181,13 @@ DROP [GLOBAL | SESSION] BINDING FOR BindableStmt;
 
 ```sql
 -- 删除 session 中创建的 binding
-drop session binding for select * from t1, t2 where t1.id = t2.id;
+DROP session binding for SELECT * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 重新查看该 SQL 的执行计划
-explain select * from t1,t2 where t1.id = t2.id;
+explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 ```
 
-在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
+在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
 > **注意：**
 >
@@ -233,54 +233,54 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 1. 使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行语句是否采用 binding 的执行计划。
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
--- 创建一个 global binding
+    ```sql
+    -- 创建一个 global binding
 
-create global binding for
-    SELECT * FROM t
-using
-    SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
+    CREATE GLOBAL BINDING for
+        SELECT * FROM t
+    USING
+        SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
 
-SELECT * FROM t;
-SELECT @@[SESSION.]last_plan_from_binding;
-```
+    SELECT * FROM t;
+    SELECT @@[SESSION.]last_plan_from_binding;
+    ```
 
-```sql
-+--------------------------+
-| @@last_plan_from_binding |
-+--------------------------+
-|                        1 |
-+--------------------------+
-1 row in set (0.00 sec)
-```
+    ```sql
+    +--------------------------+
+    | @@last_plan_from_binding |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    1 row in set (0.00 sec)
+    ```
 
 2. 使用 `explain format = 'verbose'` 语句查看 SQL 语句的查询计划。如果 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
 
-```sql
--- 创建一个 global binding
+    ```sql
+    -- 创建一个 global binding
 
-create global binding for
-    select * from t
-using
-    SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
+    CREATE GLOBAL BINDING for
+        SELECT * FROM t
+    USING
+        SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
 
--- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
+    -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
 
-explain format = 'verbose' select * from t;
-show warnings;
-```
+    explain format = 'verbose' SELECT * FROM t;
+    show warnings;
+    ```
 
-```sql
-+-------+------+--------------------------------------------------------------------------+
-| Level | Code | Message                                                                  |
-+-------+------+--------------------------------------------------------------------------+
-| Note  | 1105 | Using the bindSQL: SELECT /*+ USE_INDEX(`t` `idx_a`)*/ * FROM `test`.`t` |
-+-------+------+--------------------------------------------------------------------------+
-1 row in set (0.01 sec)
+    ```sql
+    +-------+------+--------------------------------------------------------------------------+
+    | Level | Code | Message                                                                  |
+    +-------+------+--------------------------------------------------------------------------+
+    | Note  | 1105 | Using the bindSQL: SELECT /*+ USE_INDEX(`t` `idx_a`)*/ * FROM `test`.`t` |
+    +-------+------+--------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
 
-```
+    ```
 
 ### 对绑定进行缓存
 
@@ -356,17 +356,17 @@ SELECT binding_cache status;
 
 ```sql
 -- 按照表名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.t')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t')
 
 -- 通过通配符来实现按照数据库名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.table_*')
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'db_*.table_*')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*')
 
 -- 按照执行频率进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('frequency', '2')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2')
 
 -- 按照用户名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('user', 'user1')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1')
 ```
 
 ### 验证自动捕获的绑定
@@ -397,7 +397,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) va
 {{< copyable "sql" >}}
 
 ```sql
-set global tidb_evolve_plan_baselines = on;
+SET GLOBAL tidb_evolve_plan_baselines = ON;
 ```
 
 `tidb_evolve_plan_baselines` 的默认值为 `off`。
@@ -415,7 +415,7 @@ set global tidb_evolve_plan_baselines = on;
 {{< copyable "sql" >}}
 
 ```sql
-create table t(a int, b int, key(a), key(b));
+CREATE TABLE t(a INT, b INT, KEY(a), KEY(b));
 ```
 
 在表 `t` 上进行如下查询：
@@ -423,7 +423,7 @@ create table t(a int, b int, key(a), key(b));
 {{< copyable "sql" >}}
 
 ```sql
-select * from t where a < 100 and b < 100;
+SELECT * FROM t WHERE a < 100 AND b < 100;
 ```
 
 表上满足条件 `a < 100` 的行很少。但由于某些原因，优化器没能选中使用索引 `a` 这个最优执行计划，而是误选了速度慢的全表扫，那么用户首先可以通过如下语句创建一个绑定：
@@ -431,7 +431,7 @@ select * from t where a < 100 and b < 100;
 {{< copyable "sql" >}}
 
 ```sql
-create global binding for select * from t where a < 100 and b < 100 using select * from t use index(a) where a < 100 and b < 100;
+CREATE GLOBAL BINDING for SELECT * FROM t WHERE a < 100 AND b < 100 USING SELECT * FROM t use index(a) WHERE a < 100 AND b < 100;
 ```
 
 当以上查询语句再次执行时，优化器会在刚创建绑定的干预下选择使用索引 `a`，进而降低查询时间。
@@ -474,7 +474,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
     ```sql
     -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
 
-    select @@global.tidb_evolve_plan_baselines;
+    SELECT @@global.tidb_evolve_plan_baselines;
 
     -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
 
@@ -490,7 +490,7 @@ create global binding for select * from t where a < 100 and b < 100 using select
     ```sql
     -- 在待升级的版本上检查现有可用绑定对应的查询语句。
 
-    select bind_sql from mysql.bind_info where status = 'using';
+    SELECT bind_sql FROM mysql.bind_info WHERE status = 'using';
 
     -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
 
