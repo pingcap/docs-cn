@@ -291,6 +291,15 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 {{< copyable "sql" >}}
 
 ```sql
+-- 创建一个绑定
+
+create global binding for
+    select * from t
+using
+    SELECT * FROM t;
+    
+-- 查看当前绑定缓存使用情况
+
 SELECT binding_cache status;
 ```
 
@@ -298,9 +307,9 @@ SELECT binding_cache status;
 +-------------------+-------------------+--------------+--------------+
 | bindings_in_cache | bindings_in_table | memory_usage | memory_quota |
 +-------------------+-------------------+--------------+--------------+
-|                 0 |                 0 | 0 Bytes      | 64 MB        |
+|                 1 |                 1 | 159 Bytes    | 64 MB        |
 +-------------------+-------------------+--------------+--------------+
-1 row in set (0.01 sec)
+1 row in set (0.00 sec)
 ```
 
 ## 自动捕获绑定 (Baseline Capturing)
@@ -340,17 +349,21 @@ SELECT binding_cache status;
 
 | **过滤维度** | **维度名称** | **说明**                                                     | 注意事项                                                     |
 | :----------- | :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
-| 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](#直接使用表名)和[使用通配符](#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
+| 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
 | 频率         | frequency    | 默认捕获执行超过一次的语句。可以设置较大值来增加捕获语句的频率。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条变更频率，频率最大的值会被用作过滤条件。 |
-| 用户名       | user         |  黑名单用户名执行的语句不会被捕获。           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
+| 用户名       | user         | 黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
 
 > **注意：**
 >
-> 修改黑名单需要数据库的 super privilege 权限。如果黑名单包含了非法的过滤内容时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
+> 如果黑名单包含了非法的过滤内容时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
 
 #### 使用方法
 
 将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，执行下一次捕获时，该过滤规则会在整个集群范围内生效。
+
+> **注意：**
+>
+> 修改黑名单需要数据库的 super privilege 权限。
 
 {{< copyable "sql" >}}
 
@@ -375,12 +388,12 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 
 #### 使用方法
 
-1. 根据[变更绑定状态](#变更绑定状态)，将目标绑定变更为 `Disabled`。
+1. 创建一个单独的 Session 进行验证，在该 Session 上设置 `set @@session.tidb_use_plan_baselines = false`，使得在当前 Session 上的绑定不生效。
 
-2. 对目标查询执行 `Explain` 语句，检查其执行计划是否符合预期。
+2. 逐一检查通过捕获得到的绑定，对绑定中的目标查询执行 `Explain` 语句，检查其执行计划是否符合预期。
 
-    - 符合预期，则可以删除捕获的绑定。
-    - 不符合预期，则可以[变更绑定状态](#变更绑定状态)为 `Enabled`，确保执行计划不发生回退。
+    - 符合预期，则可以删除通过捕获得到的绑定。
+    - 不符合预期，则保留对应的绑定，确保执行计划不发生回退。
 
 ## 自动演进绑定 (Baseline Evolution)
 
