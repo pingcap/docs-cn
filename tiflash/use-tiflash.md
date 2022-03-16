@@ -183,9 +183,9 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 
 注意事项：
 
-+ 该命令实际是为用户执行一系列 DDL 操作。如果在执行过程中出现中断，未执行的操作不会继续执行。
++ 该命令实际是为用户执行一系列 DDL 操作。如果在执行过程中出现中断，已经执行成功的操作不会回退，未执行的操作不会继续执行。
     
-+ 从命令执行开始到该库中所有表都已**同步完成**之前，若对该库下的表再执行按库构建 TiFlash 副本或其他 DDL 操作，则最终状态可能非预期。包括：
++ 从命令执行开始到该库中所有表都已**同步完成**之前，不建议执行和该库相关的设置 TiFlash 副本或其他 DDL 操作，否则最终状态可能非预期。包括：
 
     + 设置 TIFLASH REPLICA 数量分别为 2，在库中所有的表都同步完成前，再设置 TIFLASH REPLICA 数量为 1，不能保证最终所有表的 replica 数量都为 1 或都为 2。
 
@@ -218,6 +218,8 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本，而没有做任何 engine 的配置，则默认使用 CBO 方式。
 
 ### 智能选择
+
+对于创建了 TiFlash 副本的表，TiDB 优化器会自动根据代价估算选择是否使用 TiFlash 副本。具体有没有选择 TiFlash 副本，可以通过 `desc` 或 `explain analyze` 语句查看，例如：
 
 {{< copyable "sql" >}}
 
