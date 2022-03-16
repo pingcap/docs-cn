@@ -176,7 +176,7 @@ MySQL [test]> select @@last_plan_from_cache; -- 由于缓存被清空，此时�
 1 row in set (0.00 sec)
 ```
 
-目前 TiDB 暂不支持清空 `global` 级别的计划缓存，即不支持一次性清空整个集群的计划缓存，使用时会报错：
+TiDB 暂不支持清空 `GLOBAL` 级别的计划缓存，即不支持一次性清空整个集群的计划缓存，使用时会报错：
 
 {{< copyable "sql" >}}
 
