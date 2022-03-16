@@ -592,7 +592,7 @@ protocol = "canal-json"
 >
 > 目前输出行变更历史值属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
 
-在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
+在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 新的 Collation 框架，也不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
 
 从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
 

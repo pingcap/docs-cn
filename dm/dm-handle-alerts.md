@@ -42,7 +42,7 @@ summary: 了解 DM 中各主要告警信息的处理方法。
 当 relay log 所在磁盘的剩余可用容量小于 10G 时会触发该告警，对应的处理方法包括：
 
 - 手动清理该磁盘上其他无用数据以增加可用容量。
-- 尝试调整 relay log 的[自动清理策略](/dm/relay-log.md#自动数据清理)或执行[手动清理](/dm/relay-log.md#手动数据清理)。
+- 尝试调整 relay log 的自动清理策略或执行手动清理。
 - 使用 `pause-relay` 命令暂停 relay log 的拉取，并在磁盘空间合适之后使用 `resume-relay` 命令恢复。需要注意上游数据源不要清理尚未拉取的 binlog。
 
 ### `DM_relay_log_data_corruption`

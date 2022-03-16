@@ -48,7 +48,7 @@ summary: 了解上游 MySQL 实例配置前置检查。
     TiDB 和 MySQL 的兼容性存在以下一些区别：
 
     - TiDB 不支持外键
-    - 字符集的兼容性不同，详见 [TiDB 支持的字符集](/character-set-and-collation.md)
+    - 字符集的兼容性不同，详见 TiDB 支持的字符集
 
     DM 还会检查上游表中是否存在主键或唯一键约束，在 v1.0.7 版本引入。
 

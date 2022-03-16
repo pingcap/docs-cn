@@ -109,7 +109,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ## 查询调度状态
 
-你可以通过观察 PD 相关的 Metrics 或使用 pd-ctl 工具等方式查看调度系统状态。更具体的信息可以参考 [PD 监控](/grafana-pd-dashboard.md)和 [PD Control](/pd-control.md)。
+你可以通过观察 PD 相关的 Metrics 或使用 pd-ctl 工具等方式查看调度系统状态。更具体的信息可以参考 [PD 监控](/grafana-pd-dashboard.md)和 PD Control。
 
 ### Operator 状态
 
@@ -162,7 +162,7 @@ Region merge 指的是为了避免删除数据后大量小甚至空的 Region �
 
 ## 调度策略控制
 
-使用 pd-ctl 可以从以下三个方面来调整 PD 的调度策略。更具体的信息可以参考 [PD Control](/pd-control.md)。
+使用 pd-ctl 可以从以下三个方面来调整 PD 的调度策略。更具体的信息可以参考 PD Control。
 
 ### 启停调度器
 

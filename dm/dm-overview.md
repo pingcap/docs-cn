@@ -49,11 +49,11 @@ summary: 了解 TiDB Data Migration
 
 ### Binlog event filter
 
-[Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter) 用于过滤源数据库中特定表的特定类型操作，比如过滤掉表 `test`.`sbtest` 的 `INSERT` 操作或者过滤掉库 `test` 下所有表的 `TRUNCATE TABLE` 操作。
+Binlog Event Filter 用于过滤源数据库中特定表的特定类型操作，比如过滤掉表 `test`.`sbtest` 的 `INSERT` 操作或者过滤掉库 `test` 下所有表的 `TRUNCATE TABLE` 操作。
 
 ### Table routing
 
-[Table Routing](/dm/dm-key-features.md#table-routing) 是将源数据库的表迁移到下游指定表的路由功能，比如将源数据表 `test`.`sbtest1` 的表结构和数据迁移到 TiDB 的表 `test`.`sbtest2`。它也是分库分表合并迁移所需的一个核心功能。
+Table Routing 是将源数据库的表迁移到下游指定表的路由功能，比如将源数据表 `test`.`sbtest1` 的表结构和数据迁移到 TiDB 的表 `test`.`sbtest2`。它也是分库分表合并迁移所需的一个核心功能。
 
 ## 高级功能
 
@@ -88,13 +88,13 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 
 + DDL 语法兼容性限制
 
-    - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 [TiDB DDL 语法支持](/mysql-compatibility.md#ddl-的限制)。
+    - 目前，TiDB 部分兼容 MySQL 支持的 DDL 语句。因为 DM 使用 TiDB parser 来解析处理 DDL 语句，所以目前仅支持 TiDB parser 支持的 DDL 语法。详见 TiDB DDL 语法支持。
 
     - DM 遇到不兼容的 DDL 语句时会报错。要解决此报错，需要使用 dmctl 手动处理，要么跳过该 DDL 语句，要么用指定的 DDL 语句来替换它。详见[如何处理不兼容的 DDL 语句](/dm/dm-faq.md#如何处理不兼容的-ddl-语句)。
 
 + 分库分表数据冲突合并
 
-    - 如果业务分库分表之间存在数据冲突，可以参考[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)来解决；否则不推荐使用 DM 进行迁移，如果进行迁移则有冲突的数据会相互覆盖造成数据丢失。
+    - 如果业务分库分表之间存在数据冲突，可以参考自增主键冲突处理来解决；否则不推荐使用 DM 进行迁移，如果进行迁移则有冲突的数据会相互覆盖造成数据丢失。
     - 分库分表 DDL 同步限制，参见[悲观模式下分库分表合并迁移使用限制](/dm/feature-shard-merge-pessimistic.md#使用限制)以及[乐观模式下分库分表合并迁移使用限制](/dm/feature-shard-merge-optimistic.md#使用限制)。
 
 + 数据源 MySQL 实例切换

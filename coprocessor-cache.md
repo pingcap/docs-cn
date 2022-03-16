@@ -8,7 +8,7 @@ TiDB 从 4.0 起支持下推计算结果缓存（即 Coprocessor Cache 功能）
 
 ## 配置
 
-Coprocessor Cache 的配置均位于 TiDB 的 `tikv-client.copr-cache` 配置项中。Coprocessor 的具体开启和配置方法，见 [TiDB 配置文件描述](/tidb-configuration-file.md#tikv-clientcopr-cache-从-v400-版本开始引入)。
+Coprocessor Cache 的配置均位于 TiDB 的 `tikv-client.copr-cache` 配置项中。Coprocessor 的具体开启和配置方法，见 TiDB 配置文件描述。
 
 ## 特性说明
 

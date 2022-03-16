@@ -22,7 +22,7 @@ title: TiDB 简介
 
 - 实时 HTAP
 
-    提供行存储引擎 [TiKV](/tikv-overview.md)、列存储引擎 [TiFlash](/tiflash/tiflash-overview.md) 两款存储引擎，TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保行存储引擎 TiKV 和列存储引擎 TiFlash 之间的数据强一致。TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
+    提供行存储引擎 TiKV、列存储引擎 TiFlash 两款存储引擎，TiFlash 通过 Multi-Raft Learner 协议实时从 TiKV 复制数据，确保行存储引擎 TiKV 和列存储引擎 TiFlash 之间的数据强一致。TiKV、TiFlash 可按需部署在不同的机器，解决 HTAP 资源隔离的问题。
 
 - 云原生的分布式数据库
 
@@ -57,6 +57,6 @@ title: TiDB 简介
 ## 另请参阅
 
 - [TiDB 整体架构](/tidb-architecture.md)
-- [TiDB 数据库的存储](/tidb-storage.md)
-- [TiDB 数据库的计算](/tidb-computing.md)
-- [TiDB 数据库的调度](/tidb-scheduling.md)
+- TiDB 数据库的存储
+- TiDB 数据库的计算
+- TiDB 数据库的调度

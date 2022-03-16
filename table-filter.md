@@ -26,7 +26,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
     #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
-* [Dumpling](/backup-and-restore-using-dumpling-lightning.md)：
+* Dumpling：
 
     {{< copyable "shell-regular" >}}
 
@@ -78,7 +78,7 @@ db2.tbl2
 db3.tbl3
 ```
 
-表名只由有效的[标识符](/schema-object-names.md)组成，例如：
+表名只由有效的标识符组成，例如：
 
 * 数字（`0` 到 `9`）
 * 字母（`a` 到 `z`，`A` 到 `Z`）

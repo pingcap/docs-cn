@@ -38,7 +38,7 @@ DM 在悲观模式下进行分表 DDL 的迁移有以下几点使用限制：
 
 - 增量复制任务需要确认开始迁移的 binlog position 上各分表的表结构必须一致，才能确保来自不同分表的 DML 语句能够迁移到表结构确定的下游，并且后续各分表的 DDL 语句能够正确匹配与迁移。
 
-- 如果需要变更 [table routing 规则](/dm/dm-key-features.md#table-routing)，必须先等所有 sharding DDL 语句迁移完成。
+- 如果需要变更 table routing 规则，必须先等所有 sharding DDL 语句迁移完成。
 
     - 在 sharding DDL 语句迁移过程中，使用 dmctl 尝试变更 router-rules 会报错。
 
@@ -108,7 +108,7 @@ DM 在悲观模式下进行分表 DDL 的迁移有以下几点使用限制：
 
 - 如果 sharding group 的所有成员都收到了某一条相同的 DDL 语句，则表明上游分表在该 DDL 执行前的 DML 语句都已经迁移完成，此时可以执行该 DDL 语句，并继续后续的 DML 迁移。
 
-- 上游所有分表的 DDL 在经过 [table router](/dm/dm-key-features.md#table-routing) 转换后需要保持一致，因此仅需 DDL 锁的 owner 执行一次该 DDL 语句即可，其他 DM-worker 可直接忽略对应的 DDL 语句。
+- 上游所有分表的 DDL 在经过 table router 转换后需要保持一致，因此仅需 DDL 锁的 owner 执行一次该 DDL 语句即可，其他 DM-worker 可直接忽略对应的 DDL 语句。
 
 在上面的示例中，每个 DM-worker 对应的上游 MySQL 实例中只有一个待合并的分表。但在实际场景下，一个 MySQL 实例可能有多个分库内的多个分表需要进行合并，这种情况下，sharding DDL 的协调迁移过程将更加复杂。
 

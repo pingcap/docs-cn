@@ -84,7 +84,7 @@ TiCDC 从 4.0.8 版本开始，可通过修改任务配置来同步**没有有�
 目前 TiCDC 暂不支持的场景如下：
 
 - 暂不支持单独使用 RawKV 的 TiKV 集群。
-- 暂不支持在 TiDB 中[创建 SEQUENCE 的 DDL 操作](/sql-statements/sql-statement-create-sequence.md)和 [SEQUENCE 函数](/sql-statements/sql-statement-create-sequence.md#sequence-函数)。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
+- 暂不支持在 TiDB 中创建 SEQUENCE 的 DDL 操作和 SEQUENCE 函数。在上游 TiDB 使用 SEQUENCE 时，TiCDC 将会忽略掉上游执行的 SEQUENCE DDL 操作/函数，但是使用 SEQUENCE 函数的 DML 操作可以正确地同步。
 - 对上游存在较大事务的场景提供部分支持，详见 [TiCDC 是否支持同步大事务？有什么风险吗？](/ticdc/troubleshoot-ticdc.md#ticdc-支持同步大事务吗有什么风险吗)
 
 > **注意：**
@@ -141,7 +141,7 @@ TiCDC Open Protocol 是一种行级别的数据变更通知协议，为监控、
 
 ### 全局临时表兼容性说明
 
-TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。
+TiCDC 从 v5.3.0 开始支持全局临时表。
 
 你需要使用 TiCDC v5.3.0 及以上版本同步全局临时表到下游。低于该版本，会导致表定义错误。
 

@@ -119,7 +119,7 @@ tiup ctl tikv --host=${ip:port} modify-tikv-config -n gc.max_write_bytes_per_sec
 
 一般通过系统变量调整 TiDB 执行算子的优化参数，例如 `tidb_hash_join_concurrency`、`tidb_index_lookup_join_concurrency` 等。
 
-本测试中没有对这些参数进行调整。如果实际的业务负载测试中，出现执行算子消耗过多 CPU 资源的情况，可以针对业务场景对特定的算子资源使用量进行限制。这部分内容可以参考 [TiDB 系统变量文档](/system-variables.md)。
+本测试中没有对这些参数进行调整。如果实际的业务负载测试中，出现执行算子消耗过多 CPU 资源的情况，可以针对业务场景对特定的算子资源使用量进行限制。这部分内容可以参考 TiDB 系统变量文档。
 
 #### `performance.max-procs`
 

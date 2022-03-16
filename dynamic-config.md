@@ -205,7 +205,7 @@ show warnings;
 - 当 `db-name` 为 `rocksdb` 时，`cf-name` 的可取值有：`defaultcf`、`writecf`、`lockcf`、`raftcf`；
 - 当 `db-name` 为 `raftdb` 时，`cf-name` 的可取值有：`defaultcf`。
 
-具体配置项的意义可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
+具体配置项的意义可参考 TiKV 配置文件描述
 
 ### 在线修改 PD 配置
 
@@ -266,11 +266,11 @@ Query OK, 0 rows affected (0.01 sec)
 | pd-server.dashboard-address | 用于设置 dashboard 的地址 |
 | replication-mode.replication-mode | 备份的模式 |
 
-具体配置项意义可参考 [PD 配置文件描述](/pd-configuration-file.md)。
+具体配置项意义可参考 PD 配置文件描述。
 
 ### 在线修改 TiDB 配置
 
-在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过[系统变量](/system-variables.md)来完成修改。
+在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过系统变量来完成修改。
 
 下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。
 

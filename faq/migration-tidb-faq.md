@@ -115,14 +115,14 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 该问题可能有如下原因：
 
-- 数据库主键分布不均匀，例如启用了 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md)
+- 数据库主键分布不均匀，例如启用了 SHARD_ROW_ID_BITS
 - 上游数据库为 TiDB，导出表是分区表
 
 在上述情况下，Dumpling 划分导出子范围时，会划分出过大的子范围，从而向上游发送结果过大的查询。请联系 [AskTUG 社区专家](https://asktug.com/)获取实验版本的 Dumpling。
 
 ### TiDB 有像 Oracle 那样的 Flashback Query 功能么，DDL 支持么？
 
-有，也支持 DDL。详细参考 [TiDB 历史数据回溯](/read-historical-data.md)。
+有，也支持 DDL。详细参考 TiDB 历史数据回溯。
 
 ## 在线数据同步
 

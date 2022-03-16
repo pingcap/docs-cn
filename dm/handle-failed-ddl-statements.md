@@ -7,7 +7,7 @@ summary: 了解在使用 TiDB Data Migration 迁移数据时，如何处理出�
 
 本文介绍了如何使用 DM 来处理出错的 DDL 语句。
 
-目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 [DDL 的限制](/mysql-compatibility.md#ddl-的限制)）。当使用 DM 从 MySQL 迁移数据到 TiDB 时，如果 TiDB 不支持对应的 DDL 语句，可能会造成错误并中断迁移任务。在这种情况下，DM 提供 `handle-error` 命令来恢复迁移。
+目前，TiDB 并不完全兼容所有的 MySQL 语法（详见 DDL 的限制）。当使用 DM 从 MySQL 迁移数据到 TiDB 时，如果 TiDB 不支持对应的 DDL 语句，可能会造成错误并中断迁移任务。在这种情况下，DM 提供 `handle-error` 命令来恢复迁移。
 
 ## 使用限制
 

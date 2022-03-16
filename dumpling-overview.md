@@ -43,7 +43,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
     - 支持配置 TiDB 单条 SQL 内存限制。
     - 针对 TiDB v4.0.0 及更新版本支持自动调整 TiDB GC 时间。
     - 使用 TiDB 的隐藏列 `_tidb_rowid` 优化了单表内数据的并发导出性能。
-    - 对于 TiDB 可以设置 [tidb_snapshot](/read-historical-data.md#操作流程) 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
+    - 对于 TiDB 可以设置 tidb_snapshot 的值指定备份数据的时间点，从而保证备份的一致性，而不是通过 `FLUSH TABLES WITH READ LOCK` 来保证备份一致性。
 
 ## 从 TiDB/MySQL 导出数据
 
@@ -293,7 +293,7 @@ $ ls -lh /tmp/test | awk '{print $5 "\t" $9}'
 
 ### 导出 TiDB 的历史数据快照
 
-Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-historical-data.md#操作流程) 的数据。
+Dumpling 可以通过 `--snapshot` 指定导出某个 tidb_snapshot 的数据。
 
 `--snapshot` 选项可设为 TSO（`SHOW MASTER STATUS` 输出的 `Position` 字段）或有效的 `datetime` 时间（`YYYY-MM-DD hh:mm:ss` 形式），例如：
 

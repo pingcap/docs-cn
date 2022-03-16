@@ -31,4 +31,4 @@ title: Join Reorder 算法简介
 - 目前并不支持 Outer Join 的 Join Reorder
 - 受结果集的计算算法所限并不会保证一定会选到合适的 Join order
 
-目前 TiDB 中支持使用 `STRAIGHT_JOIN` 语法来强制指定一种 Join 顺序，参见[语法元素说明](/sql-statements/sql-statement-select.md#语法元素说明)。
+目前 TiDB 中支持使用 `STRAIGHT_JOIN` 语法来强制指定一种 Join 顺序，参见语法元素说明。

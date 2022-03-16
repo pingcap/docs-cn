@@ -46,7 +46,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考 [TiDB 命令行参数](/command-line-flags-for-tidb-configuration.md)。
+    请参考 TiDB 命令行参数。
 
 + 端口被占用：`lsof -i:port`
 
@@ -64,7 +64,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考 [TiKV 启动参数](/command-line-flags-for-tikv-configuration.md)文档。
+    请参考 TiKV 启动参数文档。
 
 + 端口被占用：`lsof -i:port`
 
@@ -84,7 +84,7 @@ tidb-server 无法启动的常见情况包括：
 
 + 启动参数错误
 
-    请参考 [PD 命令行参数](/command-line-flags-for-pd-configuration.md)文档。
+    请参考 PD 命令行参数文档。
 
 + 端口被占用：`lsof -i:port`
 

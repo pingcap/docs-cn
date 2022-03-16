@@ -93,10 +93,10 @@ monitored:
 
 `server_configs` 用于配置服务，生成各组件的配置文件，类似 `global` 区块，该区块内的配置可以在具体的实例中被覆盖。主要包含以下字段：
 
-- `tidb`：TiDB 服务的相关配置，支持的完整配置请参考 [TiDB 配置文件描述](/tidb-configuration-file.md)
-- `tikv`：TiKV 服务的相关配置，支持的完整配置请参考 [TiKV 配置文件描述](/tikv-configuration-file.md)
-- `pd`：PD 服务的相关配置，支持的完整配置请参考 [PD 配置文件描述](/pd-configuration-file.md)
-- `tiflash`：TiFlash 服务的相关配置，支持的完整配置请参考 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)
+- `tidb`：TiDB 服务的相关配置，支持的完整配置请参考 TiDB 配置文件描述
+- `tikv`：TiKV 服务的相关配置，支持的完整配置请参考 TiKV 配置文件描述
+- `pd`：PD 服务的相关配置，支持的完整配置请参考 PD 配置文件描述
+- `tiflash`：TiFlash 服务的相关配置，支持的完整配置请参考 TiFlash 配置参数
 - `tiflash_learner`：每个 TiFlash 中内置了一个特殊的 TiKV，该配置项用于配置这个特殊的 TiKV，一般不建议修改这个配置项下的内容
 - `pump`：Pump 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
 - `drainer`：Drainer 服务的相关配置，支持的完整配置请参考 [TiDB Binlog 配置说明](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)

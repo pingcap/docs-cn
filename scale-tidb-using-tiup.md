@@ -368,7 +368,7 @@ tiup cluster display <cluster-name>
     alter table <db-name>.<table-name> set tiflash replica 0;
     ```
 
-2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
+2. 等待相关表的 TiFlash 副本被删除（按照查看表同步进度一节操作，查不到相关表的同步信息时即为副本被删除）。
 
 ### 2. 执行缩容操作
 

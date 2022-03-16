@@ -73,7 +73,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ## Raft Engine
 
-一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎（实验特性，默认关闭）。详情参见 [Raft Engine](/tikv-configuration-file.md#raft-engine)。 
+一种内置的持久化存储引擎，有着日志结构的设计，为 TiKV 提供 multi-Raft 日志存储。从 v5.4 起，TiDB 支持使用 Raft Engine 作为 TiKV 的日志存储引擎（实验特性，默认关闭）。详情参见 Raft Engine。 
 
 ### Region/Peer/Raft Group
 

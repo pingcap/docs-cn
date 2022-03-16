@@ -5,7 +5,7 @@ summary: 了解 TiDB 锁冲突问题以及处理方式。
 
 # TiDB 锁冲突问题处理
 
-TiDB 支持完整的分布式事务，自 v3.0 版本起，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)两种事务模式。本文介绍如何使用 Lock View 排查锁相关的问题，以及如何处理使用乐观事务或者悲观事务的过程中常见的锁冲突问题。
+TiDB 支持完整的分布式事务，自 v3.0 版本起，提供乐观事务与悲观事务两种事务模式。本文介绍如何使用 Lock View 排查锁相关的问题，以及如何处理使用乐观事务或者悲观事务的过程中常见的锁冲突问题。
 
 ## 使用 Lock View 排查锁相关的问题
 
@@ -215,7 +215,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 * 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 100 ms，单次最大 3000 ms，总共最大 20000 ms
 
-* 可以使用 TiDB Control 的子命令 [decoder](/tidb-control.md#decoder-命令) 来查看指定 key 对应的行的 table id 以及 rowid：
+* 可以使用 TiDB Control 的子命令 decoder 来查看指定 key 对应的行的 table id 以及 rowid：
 
     ```sh
     ./tidb-ctl decoder -f table_row -k "t\x00\x00\x00\x00\x00\x00\x00\x1c_r\x00\x00\x00\x00\x00\x00\x00\xfa"
@@ -243,7 +243,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 ### 锁被清除 (LockNotFound) 错误
 
-TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB [自动重试事务](/system-variables.md#tidb_retry_limit)的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
+TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间。当要提交时，发现被其他事务给 Rollback 掉了。在开启 TiDB 自动重试事务的情况下，会自动在后台进行事务重试（注意显示和隐式事务的差别）。
 
 你可以通过如下两种途径来查看 LockNotFound 报错信息：
 
@@ -311,7 +311,7 @@ err="pessimistic lock retry limit reached"
 
 ### Lock wait timeout exceeded
 
-在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 [innodb_lock_wait_timeout](/system-variables.md#innodb_lock_wait_timeout) 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
+在悲观锁模式下，事务之间出现会等锁的情况。等锁的超时时间由 TiDB 的 innodb_lock_wait_timeout 参数来定义，这个是 SQL 语句层面的最大允许等锁时间，即一个 SQL 语句期望加锁，但锁一直获取不到，超过这个时间，TiDB 不会再尝试加锁，会向客户端返回相应的报错信息。
 
 可通过查看 TiDB 日志查看报错信息：
 
@@ -339,7 +339,7 @@ TTL manager has timed out, pessimistic locks may expire, please commit or rollba
 
 处理建议：
 
-* 当遇到该报错时，建议确认下业务逻辑是否可以进行优化，如将大事务拆分为小事务。在未使用[大事务](/tidb-configuration-file.md#txn-total-size-limit)的前提下，大事务可能会触发 TiDB 的事务限制。
+* 当遇到该报错时，建议确认下业务逻辑是否可以进行优化，如将大事务拆分为小事务。在未使用大事务的前提下，大事务可能会触发 TiDB 的事务限制。
 
 * 可适当调整相关参数，使其符合事务要求。
 

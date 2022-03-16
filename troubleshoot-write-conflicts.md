@@ -11,7 +11,7 @@ summary: 介绍 TiDB 中乐观锁下写写冲突出现的原因以及解决方�
 
 ## 出现写写冲突的原因
 
-TiDB 中使用 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型来实现 TiDB 中的事务。Percolator 总体上就是一个二阶段提交的实现。具体的二阶段提交过程可参考[乐观事务文档](/optimistic-transaction.md)。
+TiDB 中使用 [Percolator](https://www.usenix.org/legacy/event/osdi10/tech/full_papers/Peng.pdf) 事务模型来实现 TiDB 中的事务。Percolator 总体上就是一个二阶段提交的实现。具体的二阶段提交过程可参考乐观事务文档。
 
 当客户端发起 `COMMIT` 请求的时候，TiDB 开始两阶段提交：
 

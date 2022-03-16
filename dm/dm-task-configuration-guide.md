@@ -89,7 +89,7 @@ target-database:       # 目标 TiDB 配置
 
 如果不需要过滤特定库或者特定表的特定操作，可以跳过该项配置。
 
-配置过滤特定操作，则需要添加两个定义，详细配置规则参考 [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)：
+配置过滤特定操作，则需要添加两个定义，详细配置规则参考 Binlog Event Filter：
 
 1. 定义全局的数据源操作过滤规则
 
@@ -122,7 +122,7 @@ target-database:       # 目标 TiDB 配置
 
 如果不需要将数据源表路由到不同名的目标 TiDB 表，可以跳过该项配置。分库分表合并迁移的场景必须配置该规则。
 
-配置数据源表迁移到目标 TiDB 表的路由规则，则需要添加两个定义，详细配置规则参考 [Table Routing](/dm/dm-key-features.md#table-routing)：
+配置数据源表迁移到目标 TiDB 表的路由规则，则需要添加两个定义，详细配置规则参考 Table Routing：
 
 1. 定义全局的路由规则
 
@@ -167,7 +167,7 @@ shard-mode: "pessimistic"       # 默认值为 "" 即无需协调。如果为分
 
 ## 其他配置
 
-下面是本数据迁移任务配置向导的完整示例。完整的任务配置参见 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)，其他各配置项的功能和配置也可参阅[数据迁移功能](/dm/dm-key-features.md)。
+下面是本数据迁移任务配置向导的完整示例。完整的任务配置参见 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)，其他各配置项的功能和配置也可参阅数据迁移功能。
 
 ```yaml
 ---

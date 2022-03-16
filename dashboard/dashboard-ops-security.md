@@ -14,7 +14,7 @@ TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下�
 
 建议的措施：
 
-- 为 TiDB 的 `root` 用户设置一个强密码（请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情），或禁用 `root` 账户。
+- 为 TiDB 的 `root` 用户设置一个强密码（请参见 TiDB 用户账户管理了解详情），或禁用 `root` 账户。
 
 ### 为 TiDB Dashboard 创建最小权限用户
 

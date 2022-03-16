@@ -182,7 +182,7 @@ Canal-JSON 格式会在 `mysqlType` 字段和 `sqlType` 字段中记录对应的
 
 ### MySQL Type 字段
 
-Canal-JSON 格式会在 `mysqlType` 字段中记录每一列的 MySQL Type 的字符串表示。相关详情可以参考 [TiDB Data Types](/data-type-overview.md)。
+Canal-JSON 格式会在 `mysqlType` 字段中记录每一列的 MySQL Type 的字符串表示。相关详情可以参考 TiDB Data Types。
 
 ### SQL Type 字段
 
@@ -218,7 +218,7 @@ Canal-JSON 格式会在 `sqlType` 字段中记录每一列的 Java SQL Type，�
 
 ## 整数类型
 
-你需要考虑[整数类型](/data-type-numeric.md#整数类型)是否有 `Unsigned` 约束，以及当前取值大小，分别对应不同的 Java SQL Type Code。如下表所示。
+你需要考虑整数类型是否有 `Unsigned` 约束，以及当前取值大小，分别对应不同的 Java SQL Type Code。如下表所示。
 
 | MySQL Type String  | Value Range                                 | Java SQL Type Code |
 | :------------------| :------------------------------------------ | :----------------- |

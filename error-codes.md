@@ -34,7 +34,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8005
 
-    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)
+    事务在 TiDB 中遇到了写入冲突，原因及解决方法请参考这里
 
 * Error Number: 8018
 
@@ -128,7 +128,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8050
 
-    设置了不支持的权限类型，遇到该错误请参考 [TiDB 权限说明](/privilege-management.md#tidb-各操作需要的权限)进行调整。
+    设置了不支持的权限类型，遇到该错误请参考 TiDB 权限说明进行调整。
 
 * Error Number: 8051
 
@@ -142,11 +142,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     当前快照过旧，数据可能已经被 GC。可以调大 [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入) 的值来避免该问题。从 TiDB v4.0.8 版本起，TiDB 会自动为长时间运行的事务保留数据，一般不会遇到该错误。
 
-    有关 GC 的介绍和配置可以参考 [GC 机制简介](/garbage-collection-overview.md)和 [GC 配置](/garbage-collection-configuration.md)文档。
+    有关 GC 的介绍和配置可以参考 GC 机制简介和 GC 配置文档。
 
 * Error Number: 8059
 
-    自动随机量可用次数用尽无法进行分配。当前没有恢复这类错误的方法。建议在使用 auto random 功能时使用 bigint 以获取最大的可分配次数，并尽量避免手动给 auto random 列赋值。相关的介绍和使用建议可以参考 [auto random 功能文档](/auto-random.md)。
+    自动随机量可用次数用尽无法进行分配。当前没有恢复这类错误的方法。建议在使用 auto random 功能时使用 bigint 以获取最大的可分配次数，并尽量避免手动给 auto random 列赋值。相关的介绍和使用建议可以参考 auto random 功能文档。
 
 * Error Number: 8060
 
@@ -258,7 +258,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8200
 
-    尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
+    尚不支持的 DDL 语法。请参考与 MySQL DDL 的兼容性。
 
 * Error Number: 8214
 
@@ -270,7 +270,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8216
 
-    自动随机列使用的方法不正确，请参考 [auto random 功能文档](/auto-random.md)进行修改。
+    自动随机列使用的方法不正确，请参考 auto random 功能文档进行修改。
 
 * Error Number: 8223
 
@@ -290,11 +290,11 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8227
 
-    创建 Sequence 时使用了不支持的选项，支持的选项的列表可以参考 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#参数说明)。
+    创建 Sequence 时使用了不支持的选项，支持的选项的列表可以参考 Sequence 使用文档。
 
 * Error Number: 8228
 
-    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 [Sequence 使用文档](/sql-statements/sql-statement-create-sequence.md#示例)中找到。
+    在 Sequence 上使用 `setval` 时指定了不支持的类型，该函数的示例可以在 Sequence 使用文档中找到。
 
 * Error Number: 8229
 
@@ -330,7 +330,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 9007
 
-    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考[这里](/faq/tidb-faq.md#三故障排除)。
+    事务在 TiKV 中遇到了写入冲突，原因及解决方法请参考这里。
 
 * Error Number: 9008
 
@@ -350,4 +350,4 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 ## 故障诊断
 
-参见[故障诊断文档](/troubleshoot-tidb-cluster.md)以及 [FAQ](/faq/tidb-faq.md)。
+参见[故障诊断文档](/troubleshoot-tidb-cluster.md)以及 FAQ。

@@ -148,7 +148,7 @@ region = "us-west-2"
 * Encryption meta file size：加密元数据文件的大小。
 * Read/Write encryption meta duration：对用于加密的元数据进行操作带来的额外开销。
 
-在调试方面，可使用 `tikv-ctl` 命令查看加密元数据（例如使用的加密方法和数据密钥列表）。该操作可能会暴露密钥，因此不推荐在生产环境中使用。详情参阅 [TiKV Control](/tikv-control.md#打印加密元数据)。
+在调试方面，可使用 `tikv-ctl` 命令查看加密元数据（例如使用的加密方法和数据密钥列表）。该操作可能会暴露密钥，因此不推荐在生产环境中使用。详情参阅 TiKV Control。
 
 ### TiKV 版本间兼容性
 

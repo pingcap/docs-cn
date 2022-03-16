@@ -184,7 +184,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 ./br backup full -c=0 -u pd-service:2379 -s 's3://bucket-name/prefix'
 ```
 
-使用 SQL 进行[备份](/sql-statements/sql-statement-backup.md)[恢复](/sql-statements/sql-statement-restore.md)时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
+使用 SQL 进行备份恢复时，可加上 `SEND_CREDENTIALS_TO_TIKV = FALSE` 选项：
 
 {{< copyable "sql" >}}
 

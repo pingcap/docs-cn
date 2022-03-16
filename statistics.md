@@ -624,4 +624,4 @@ LOAD STATS 'file_name';
 
 ## 另请参阅
 
-* [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
+* DROP STATS

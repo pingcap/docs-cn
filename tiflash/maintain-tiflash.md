@@ -4,7 +4,7 @@ title: TiFlash 集群运维
 
 # TiFlash 集群运维
 
-本文介绍 [TiFlash](/tiflash/tiflash-overview.md) 集群运维的一些常见操作，包括查看 TiFlash 版本、TiFlash 重要日志及系统表。
+本文介绍 TiFlash 集群运维的一些常见操作，包括查看 TiFlash 版本、TiFlash 重要日志及系统表。
 
 ## 查看 TiFlash 版本
 

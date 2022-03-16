@@ -84,7 +84,7 @@ DM-worker 内部用于将全量导出数据导入到下游的处理单元，每�
 
 DM-worker 从上游 MySQL/MariaDB 拉取 Binlog 后存储在本地的文件，当前其格式为标准的 Binlog 格式，可使用版本兼容的 [mysqlbinlog](https://dev.mysql.com/doc/refman/8.0/en/mysqlbinlog.html) 等工具进行解析。其作用与 [MySQL Relay Log](https://dev.mysql.com/doc/refman/5.7/en/replica-logs-relaylog.html) 及 [MariaDB Relay Log](https://mariadb.com/kb/en/library/relay-log/) 相近。
 
-有关 TiDB DM 内 Relay log 的目录结构、初始迁移规则、数据清理等内容，可参考 [TiDB DM Relay Log](/dm/relay-log.md)。
+有关 TiDB DM 内 Relay log 的目录结构、初始迁移规则、数据清理等内容，可参考 TiDB DM Relay Log。
 
 ### Relay 处理单元
 
@@ -127,7 +127,7 @@ DM-worker 内部用于从上游拉取 Binlog 并写入数据到 Relay log 的处
 
 ### Table routing
 
-用于支持将上游 MySQL/MariaDB 实例的某些表迁移到下游指定表的路由功能，可以用于分库分表的合并迁移，具体可参考 [Table routing](/dm/dm-key-features.md#table-routing)。
+用于支持将上游 MySQL/MariaDB 实例的某些表迁移到下游指定表的路由功能，可以用于分库分表的合并迁移，具体可参考 Table routing。
 
 ### Task
 

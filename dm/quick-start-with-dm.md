@@ -10,8 +10,8 @@ summary: 了解如何快速上手部署试用 TiDB Data Migration 工具。
 如需在生产环境中部署 DM，请参考以下文档：
 
 - [使用 TiUP 部署 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
-- [创建数据源](/dm/quick-start-create-source.md)
-- [创建数据迁移任务](/dm/quick-create-migration-task.md)
+- 创建数据源
+- 创建数据迁移任务
 
 ## 使用样例
 

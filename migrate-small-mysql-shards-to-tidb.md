@@ -36,7 +36,7 @@ summary: 介绍如何从 TB 级以下分库分表 MySQL 迁移数据到 TiDB。
 
 ## 分表数据冲突检查
 
-迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)
+迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考跨分表数据在主键或唯一索引冲突处理
 
 在本示例中：`sale_01` 和 `sale_02` 具有相同的表结构如下：
 
@@ -51,7 +51,7 @@ CREATE TABLE `sale_01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-其中`id`列为主键，`sid`列为分片键，具有全局唯一性。`id`列具有自增属性，多个分表范围重复会引发数据冲突。`sid`可以保证全局满足唯一索引，因此可以按照参考[去掉自增主键的主键属性](/dm/shard-merge-best-practices.md#去掉自增主键的主键属性)中介绍的操作绕过`id`列。在下游创建`sale`表时移除`id`列的唯一键属性
+其中`id`列为主键，`sid`列为分片键，具有全局唯一性。`id`列具有自增属性，多个分表范围重复会引发数据冲突。`sid`可以保证全局满足唯一索引，因此可以按照参考去掉自增主键的主键属性中介绍的操作绕过`id`列。在下游创建`sale`表时移除`id`列的唯一键属性
 
 ```sql
 CREATE TABLE `sale` (
@@ -168,7 +168,7 @@ block-allow-list:
 
 若想了解配置文件中`routes`，`filters`等更多用法，请参考：
 
-- [Table routing](/dm/dm-key-features.md#table-routing)
+- Table routing
 - [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
 - [如何过滤 binlog 事件](/filter-binlog-event.md)
 - [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)
@@ -230,7 +230,7 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ## 探索更多
 
 - [分库分表合并中的悲观/乐观模式](/dm/feature-shard-merge.md)
-- [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
+- 分表合并数据迁移最佳实践
 - [故障及处理方法](/dm/dm-error-handling.md)
 - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
 - [常见问题](/dm/dm-faq.md)
