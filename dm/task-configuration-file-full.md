@@ -106,7 +106,7 @@ loaders:                             # load 处理单元的运行配置参数
 
     # dump 处理单元输出 SQL 文件的目录，同时也是 load 处理单元读取文件的目录。该配置项的默认值为 "./dumped_data"。
     # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?region=us-west-2&endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
-    # 注意：同实例对应的不同任务必须配置不同的目录
+    # 注意：当使用 S3 时同实例对应的不同任务必须配置不同的目录
     dir: "./dumped_data"             
 
 
