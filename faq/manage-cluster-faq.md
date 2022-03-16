@@ -13,7 +13,11 @@ summary: 介绍 TiDB 集群管理的常见问题、原因及解决方法。
 
 和 MySQL 登录方式一样，可以按照下面例子进行登录。
 
-`mysql -h 127.0.0.1 -uroot -P4000`
+{{< copyable "shell-regular" >}}
+
+```shell
+mysql -h 127.0.0.1 -uroot -P4000
+```
 
 ### TiDB 如何修改数据库系统变量？
 
