@@ -5,7 +5,7 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 # 数据索引一致性报错
 
-当执行事务或执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statement-admin-check-table-index.md) 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
+当执行事务或执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 命令时，TiDB 会对数据索引的一致性进行检查。如果检查发现 record key-value 和 index key-value 不一致，即存储行数据的键值对和存储其对应索引的键值对之间不一致（例如多索引或缺索引），TiDB 会报数据索引一致性错误，并在日志文件中打印相关错误日志。
 
 本文对数据索引一致性的报错信息进行了说明，并提供了一些绕过检查的方法。发生此错误时，请联系 PingCAP 技术支持进行修复或排查。
 
@@ -49,7 +49,7 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 ### Admin check 中出现
 
-本节列出了当执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statement-admin-check-table-index.md) 系列语句时 TiDB 可能出现的数据索引不一致性的报错，并通过举例对这些信息的含义进行了解释。
+本节列出了当执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 系列语句时 TiDB 可能出现的数据索引不一致性的报错，并通过举例对这些信息的含义进行了解释。
 
 #### Error 8003
 
