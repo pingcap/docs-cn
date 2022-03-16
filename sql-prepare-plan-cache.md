@@ -228,7 +228,7 @@ Query OK, 0 rows affected (0.00 sec)
 mysql> execute stmt;                        -- 第一次 execute
 Empty set (0.00 sec)
 
-mysql> deallocate prepare stmt;             -- 第一次执行完后立即释放
+mysql> deallocate prepare stmt;             -- 第一次 execute 后立即释放
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> prepare stmt from 'select * from t'; -- 第二次 prepare
