@@ -48,7 +48,7 @@ DM WebUI 主要包含以下界面：
 
         ```yaml
         server_configs:
-        master:
+          master:
             openapi: true
         ```
 
