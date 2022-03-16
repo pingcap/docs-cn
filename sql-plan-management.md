@@ -358,7 +358,7 @@ SELECT binding_cache status;
 -- 按照表名进行过滤
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'test.t')
 
--- 通过正则表达式来实现按照数据库名进行过滤
+-- 通过通配符来实现按照数据库名进行过滤
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) values('table', 'mysql.*')
 
 -- 按照执行频率进行过滤
