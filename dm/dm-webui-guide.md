@@ -22,7 +22,7 @@ DM WebUI 是为了方便大量迁移任务的管理、简化操作步骤的目�
 ```
 openapi = true
 ```
-如需开启 OpenAPI，并且是通过 tiup 部署的 DM 集群则需要在拓扑文件中添加如下配置：
+如果通过 tiup 部署的 DM 集群则需要在拓扑文件中添加如下配置：
 
 ```yaml
 server_configs:
