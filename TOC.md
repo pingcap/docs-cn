@@ -192,7 +192,8 @@
         - [tiup help](/tiup/tiup-command-help.md)
         - [tiup install](/tiup/tiup-command-install.md)
         - [tiup list](/tiup/tiup-command-list.md)
-        - [tiup mirror 命令](/tiup/tiup-command-mirror.md)
+        - tiup mirror
+          - [概览](/tiup/tiup-command-mirror.md)
           - [tiup mirror clone](/tiup/tiup-command-mirror-clone.md)
           - [tiup mirror genkey](/tiup/tiup-command-mirror-genkey.md)
           - [tiup mirror grant](/tiup/tiup-command-mirror-grant.md)
@@ -207,7 +208,8 @@
         - [tiup telemetry](/tiup/tiup-command-telemetry.md)
         - [tiup uninstall](/tiup/tiup-command-uninstall.md)
         - [tiup update](/tiup/tiup-command-update.md)
-      - [TiUP Cluster 命令](/tiup/tiup-component-cluster.md)
+      - TiUP Cluster 命令
+        - [概览](/tiup/tiup-component-cluster.md)
         - [tiup cluster audit](/tiup/tiup-component-cluster-audit.md)
         - [tiup cluster check](/tiup/tiup-component-cluster-check.md)
         - [tiup cluster clean](/tiup/tiup-component-cluster-clean.md)
@@ -232,7 +234,8 @@
         - [tiup cluster stop](/tiup/tiup-component-cluster-stop.md)
         - [tiup cluster template](/tiup/tiup-component-cluster-template.md)
         - [tiup cluster upgrade](/tiup/tiup-component-cluster-upgrade.md)
-      - [TiUP DM 命令](/tiup/tiup-component-dm.md)
+      - TiUP DM 命令
+        - [概览](/tiup/tiup-component-dm.md)
         - [tiup dm audit](/tiup/tiup-component-dm-audit.md)
         - [tiup dm deploy](/tiup/tiup-component-dm-deploy.md)
         - [tiup dm destroy](/tiup/tiup-component-dm-destroy.md)
