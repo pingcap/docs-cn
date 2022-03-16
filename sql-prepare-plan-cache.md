@@ -153,7 +153,7 @@ Empty set (0.00 sec)
 MySQL [test]> execute stmt;
 Empty set (0.00 sec)
 
-MySQL [test]> select @@last_plan_from_cache; -- 可以命中缓存
+MySQL [test]> select @@last_plan_from_cache; -- 选择计划缓存
 +------------------------+
 | @@last_plan_from_cache |
 +------------------------+
