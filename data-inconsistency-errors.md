@@ -27,7 +27,7 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 `ERROR 8138 (HY000): writing inconsistent data in table: t, expected-values:{KindString green} != record-values:{KindString GREEN}`
 
-上述错误表明，即将写入的数据中，编码后的行数据与即将写入的数据不符，编解码过程存在问题。
+上述错误表明，即将写入的数据中，编码后的行数据与编码前的原始数据不符，编解码过程存在问题。
 
 #### Error 8139
 
