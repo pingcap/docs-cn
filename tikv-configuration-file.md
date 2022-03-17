@@ -1581,19 +1581,19 @@ Raft Engine 相关的配置项。
 > - 前台限流是 TiDB 在 v6.0 中引入的实验特性，不建议在生产环境中使用。
 > - 该功能适合在资源有限的环境中（如 4vCPU，16G 内存）提高长期运行的稳定性，但启用该功能则会在资源丰富的机型环境出现 TiKV 峰值性能下降的情况。
 
-### `forefront-cpu-time` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `foreground_cpu_time` <span class="version-mark">从 v6.0 版本开始引入</span>
 
 + 限制 CPU 为处理 TiKV 前台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 触发该限制的请求则会被强制等待一段时间以让出 CPU 资源。
 + 默认值：0（即无限制）
 + 单位：millicpu（即当该参数值为 `1500` 时，前端请求会消耗 1.5vCPU）
 
-### `write-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `foreground_write-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
 
 + 限制事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `read-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `foreground_read-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
 
 + 限制事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
