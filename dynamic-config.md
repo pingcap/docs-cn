@@ -128,7 +128,7 @@ show warnings;
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
-| raftstore.raft-max-size-per-msg | 产生的单个消息包的大小限制，软限制 |
+| raftstore.raft-max-size-per-msg | 限制产生的单个消息包的大小，软限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
@@ -153,10 +153,10 @@ show warnings;
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
-| raftstore.apply-pool-size | apply 线程池大小 |
-| raftstore.store-pool-size | store 线程池大小 |
-| raftstore.apply-max-batch-size | apply 线程一轮处理数据落盘的最大请求个数 |
-| raftstore.store-max-batch-size | store 线程一轮处理数据落盘的最大请求个数 |
+| raftstore.apply-pool-size | Apply 线程池大小 |
+| raftstore.store-pool-size | Store 线程池大小 |
+| raftstore.apply-max-batch-size | Apply 线程一轮处理数据落盘的最大请求个数 |
+| raftstore.store-max-batch-size | Store 线程一轮处理数据落盘的最大请求个数 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
@@ -194,7 +194,7 @@ show warnings;
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
-| storage.scheduler-worker-pool-size | scheduler 线程个数 |
+| storage.scheduler-worker-pool-size | Scheduler 线程个数 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
