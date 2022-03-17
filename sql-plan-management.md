@@ -80,7 +80,7 @@ USING
 CREATE GLOBAL BINDING for
     INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
 USING
-    insert /*+ use_index(@sel_1 t2, a) */ into t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
+    INSERT /*+ use_index(@sel_1 t2, a) */ INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
 ```
 
 如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
@@ -284,9 +284,9 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 ### 对绑定进行缓存
 
-在每个 TiDB 实例上都有一个 LRU Cache 对绑定进行缓存，该缓存的容量由系统变量 [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache) 进行控制。缓存会影响绑定的使用和查看。在使用和查看绑定的时候，你只能使用和查看那些存在于缓存中的绑定。当缓存的容量不足以存放所有的绑定时，系统无法保证缓存中绑定的内容，并且系统会在日志中增加警告日志进行提示。在这种情况下，强烈建议调大缓存的容量，并执行语句 `admin reload bindings` 重新加载系统表中的绑定，以此来保证所有可用的绑定能正常被使用。
+每个 TiDB 实例都有一个 LRU Cache 对绑定进行缓存，缓存的容量由系统变量 [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) 进行控制。缓存会影响绑定的使用和查看，你只能使用和查看存在于缓存中的绑定。
 
-可以通过执行语句 `show binding_cache status` 来查看绑定的使用情况，该语句无法指定作用域，默认作用域为 Global。该语句查看的内容包括缓存中可用绑定的数量、系统中所有可用绑定的梳理、缓存中所有绑定的内存使用量、缓存的内存容量。
+可以通过执行语句 `show binding_cache status` 来查看绑定的使用情况，该语句无法指定作用域，默认作用域为 GLOBAL。该语句可查看缓存中可用绑定的数量、系统中所有可用绑定的梳理、缓存中所有绑定的内存使用量及缓存的内存容量。
 
 {{< copyable "sql" >}}
 
@@ -328,12 +328,12 @@ SELECT binding_cache status;
 
 - EXPLAIN 和 EXPLAIN ANALYZE 语句；
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
-- 已经存在 `Enabled`、`Disabled` 状态的绑定对应的语句；
-- 满足捕获绑定黑名单过滤条件的语句；
+- `Enabled` 和 `Disabled` 状态绑定的语句；
+- 满足捕获绑定黑名单过滤条件的语句。
 
 > **注意：**
 >
-> 当前的绑定通过生成一组 Hints 来实现对计划的固定，从而确保绑定后的查询语句生成的计划不发生变化。但是受限于当前 Hints 的完善程度，一些较为复杂的查询，如 2 表以上的 Join 和复杂的 AP、MPP 类查询，TiDB 无法保证计划在绑定前后完全一致。对于大多数 TP 查询，TiDB 能够保证计划前后一致，如使用相同的索引、相同的 Join 方式（如 HashJoin、IndexJoin）等。
+> 当前的绑定通过生成一组 Hints 来实现对计划的固定，从而确保绑定后的查询语句生成的计划不发生变化。对于大多数 TP 查询，TiDB 能够保证计划前后一致，如使用相同的索引、相同的 Join 方式（如 HashJoin、IndexJoin）等。但是，受限于当前 Hints 的完善程度，一些较为复杂的查询，如两个表以上的 Join 和复杂的 AP、MPP 类查询，TiDB 无法保证计划在绑定前后完全一致。
 
 对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
@@ -343,7 +343,7 @@ SELECT binding_cache status;
 
 ### 过滤捕获绑定
 
-使用本功能，你可以过滤满足黑名单规则的查询，将其排除在捕获范围之外。黑名单支持的[过滤维度](#过滤维度)包括表名、频率和用户名。
+使用本功能，你可以设置黑名单，将满足黑名单规则的查询排除在捕获范围之外。黑名单支持的[过滤维度](#过滤维度)包括表名、频率和用户名。
 
 #### 过滤维度
 
