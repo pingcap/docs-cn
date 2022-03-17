@@ -203,7 +203,7 @@ SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
 
 该语句可以在 GLOBAL 作用域内变更指定执行计划的绑定状态，默认作用域为 GLOBAL，该作用域不可更改。
 
-使用时，只能将 `Disabled` 的绑定改为 `Enabled` 状态，或将 `Enabled` 的绑定改为 `Disabled` 状态。如果没有可以改变状态的绑定，则会输出一条警告日志：`The memory usage of all available bindings exceeds the cache's mem quota. As a result, all available bindings cannot be held on the cache. Please increase the system variable 'tidb_mem_quota_binding_cache' and execute 'admin reload bindings' to ensure that all bindings are available normally`。需要注意的是，当绑定被设置成 `Disabled` 状态时，查询语句不会使用该绑定。
+使用时，只能将 `Disabled` 的绑定改为 `Enabled` 状态，或将 `Enabled` 的绑定改为 `Disabled` 状态。如果没有可以改变状态的绑定，则会输出一条内容为 `There are no bindings can be set the status. Please check the SQL text` 的 warning 警告进行提示。需要注意的是，当绑定被设置成 `Disabled` 状态时，查询语句不会使用该绑定。
 
 ### 查看绑定
 
@@ -369,31 +369,46 @@ SELECT binding_cache status;
 
 ```sql
 -- 按照表名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t');
 
 -- 通过通配符来实现按照数据库名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*')
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*');
 
 -- 按照执行频率进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2');
 
 -- 按照用户名进行过滤
-INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1')
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
 ```
 
-### 验证自动捕获的绑定
+### 升级时的计划回退防护
 
-升级后，可以使用自动捕获检查执行计划的状态，确保不发生执行计划回退。
+利用自动捕获绑定，可以在 TiDB 集群升级时，对潜在的计划回退风险起到一定程度的防护作用，具体流程为：
 
-#### 使用方法
+1. 升级前打开自动捕获一段时间，让大多数重要的计划（出现过两次及以上）都能被捕获到；
+2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变；
+3. 升级完成后，根据情况手动对这些绑定进行删除；
 
-1. 创建一个单独的 Session 进行验证，在该 Session 上设置 `set @@session.tidb_use_plan_baselines = false`，使得在当前 Session 上的绑定不生效。
+> **注意：**
+>
+> 经过测试发现，长期打开自动捕获的开关对集群负载的性能影响很小。打开自动捕获开关的时间最好足够久，确保重要的查询都能被捕获到。
 
-2. 逐一检查通过捕获得到的绑定，对绑定中的目标查询执行 `Explain` 语句，检查其执行计划是否符合预期。
+在对绑定进行删除时，可以根据 `Source` 字段对绑定的来源进行区分，是通过捕获(`capture`) 得到的还是通过手动创建(`manual`) 得到的。
 
-    - 符合预期，则可以删除通过捕获得到的绑定。
-    - 不符合预期，则保留对应的绑定，确保执行计划不发生回退。
+在删除某个绑定前，建议检查下这个绑定是否正在发挥作用，避免在删除绑定后计划发生变化，具体的检查方式为：
+
+```
+-- 查看在绑定生效情况下的计划
+SET @@SESSION.TIDB_USE_PLAN_BASELINES = true;
+EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+
+-- 查看绑定不能生效情况下的计划，可通过设置变量 TIDB_USE_PLAN_BASELINES 来屏蔽掉绑定的影响
+SET @@SESSION.TIDB_USE_PLAN_BASELINES = false;
+EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+```
+
+如果屏蔽绑定前后，查询得到的计划一致，则可以安全删除此绑定；如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作，在这种情况下需要保留此绑定，确保计划不发生变化。
 
 ## 自动演进绑定 (Baseline Evolution)
 
