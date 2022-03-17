@@ -18,7 +18,6 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 | [控制流运算](/functions-and-operators/control-flow-functions.md) | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#operator_case), [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#function_if), [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#function_ifnull) |
 | [JSON运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br/> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br/> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br/> [JSON_ARRAY([val[, val] ...])][json_array],<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br/> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br/> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
 | [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
-| [数据类型](/data-type-overview.md) | [BIT](/data-type-numeric.md#bit-类型), [ENUM](/data-type-string.md#enum-类型) |
 
 ## 禁止特定表达式下推
 
@@ -50,6 +49,13 @@ tidb> desc mysql.expr_pushdown_blacklist;
 > **注意：**
 >
 > `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
+
+当数据列的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止列下推, 目前仅支持 `ENUM` 和 `BIT`。
+
+```sql
+mysql> insert into mysql.expr_pushdown_blacklist values('bit', 'tikv','');
+Query OK, 1 row affected (0.01 sec)
+```
 
 ### 加入黑名单
 
