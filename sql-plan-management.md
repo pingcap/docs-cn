@@ -291,14 +291,6 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 {{< copyable "sql" >}}
 
 ```sql
--- 创建一个绑定
-
-CREATE GLOBAL BINDING for
-    SELECT * FROM t
-USING
-    SELECT * FROM t;
-
--- 查看当前绑定缓存使用情况
 
 SHOW binding_cache status;
 ```
