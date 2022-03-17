@@ -153,10 +153,10 @@ show warnings;
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
-| raftstore.apply-pool-size | Apply 线程池大小 |
-| raftstore.store-pool-size | Store 线程池大小 |
-| raftstore.apply-max-batch-size | Apply 线程一轮处理数据落盘的最大 FSM 个数 |
-| raftstore.store-max-batch-size | Store 线程一轮处理数据落盘的最大 FSM 个数 |
+| raftstore.apply-pool-size | 处理数据落盘的线程池中线程的数量 |
+| raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量 |
+| raftstore.apply-max-batch-size | 处理数据落盘的线程一轮处理的最大 FSM 个数 |
+| raftstore.store-max-batch-size | 处理 Raft 的线程一轮处理的最大 FSM 个数 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
