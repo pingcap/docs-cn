@@ -320,7 +320,7 @@ SHOW binding_cache status;
 
 - EXPLAIN 和 EXPLAIN ANALYZE 语句；
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
-- `Enabled` 和 `Disabled` 状态绑定的语句；
+- 存在 `Enabled` 或 `Disabled` 状态绑定的语句；
 - 满足捕获绑定黑名单过滤条件的语句。
 
 > **注意：**
@@ -339,7 +339,7 @@ SHOW binding_cache status;
 
 #### 使用方式
 
-将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，执行下一次捕获时，该过滤规则会在整个集群范围内生效。
+将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，该过滤规则即刻起会在整个集群范围内生效。
 
 {{< copyable "sql" >}}
 
@@ -385,7 +385,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 
     - 检查绑定来源：
 
-        根据 `Source` 字段对绑定的来源进行区分，确认是 (`capture`) 得到还是通过手动创建(`manual`)。
+        根据 `Source` 字段对绑定的来源进行区分，确认是通过捕获(`capture`) 生成还是通过手动创建(`manual`) 生成。
 
     - 确定 `capture` 的绑定是否需要保留：
 
