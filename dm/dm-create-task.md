@@ -34,7 +34,6 @@ Global Flags:
       --ssl-cert string      Path of file that contains X509 certificate in PEM format for connection.
       --ssl-key string       Path of file that contains X509 key in PEM format for connection.
   -V, --version              Prints version and exit.
-
 ```
 
 ## 命令用法示例
