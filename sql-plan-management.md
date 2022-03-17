@@ -300,7 +300,7 @@ USING
 
 -- 查看当前绑定缓存使用情况
 
-SELECT binding_cache status;
+SHOW binding_cache status;
 ```
 
 ```sql
@@ -345,25 +345,9 @@ SELECT binding_cache status;
 
 使用本功能，你可以设置黑名单，将满足黑名单规则的查询排除在捕获范围之外。黑名单支持的[过滤维度](#过滤维度)包括表名、频率和用户名。
 
-#### 过滤维度
-
-| **过滤维度** | **维度名称** | **说明**                                                     | 注意事项                                                     |
-| :----------- | :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
-| 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
-| 频率         | frequency    | 默认捕获执行超过一次的语句。可以设置较大值来增加捕获语句的频率。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条变更频率，频率最大的值会被用作过滤条件。 |
-| 用户名       | user         | 黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
-
-> **注意：**
->
-> 如果黑名单包含了非法的过滤内容时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
-
-#### 使用方法
+#### 使用方式
 
 将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，执行下一次捕获时，该过滤规则会在整个集群范围内生效。
-
-> **注意：**
->
-> 修改黑名单需要数据库的 super privilege 权限。
 
 {{< copyable "sql" >}}
 
@@ -382,33 +366,50 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
 ```
 
+| **过滤维度** | **维度名称** | **说明**                                                     | 注意事项                                                     |
+| :----------- | :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+| 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
+| 频率         | frequency    | 默认捕获执行超过一次的语句。可以设置较大值来增加捕获语句的频率。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条变更频率，频率最大的值会被用作过滤条件。 |
+| 用户名       | user         | 黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
+
+> **注意：**
+>
+> - 修改黑名单需要数据库的 super privilege 权限。
+>
+> - 如果黑名单包含了非法的过滤内容时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
+
 ### 升级时的计划回退防护
 
 利用自动捕获绑定，可以在 TiDB 集群升级时，对潜在的计划回退风险起到一定程度的防护作用，具体流程为：
 
-1. 升级前打开自动捕获一段时间，让大多数重要的计划（出现过两次及以上）都能被捕获到；
-2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变；
-3. 升级完成后，根据情况手动对这些绑定进行删除；
+1. 升级前打开自动捕获一段时间，让大多数重要的计划（出现过两次及以上）都能被捕获到。
 
-> **注意：**
->
-> 经过测试发现，长期打开自动捕获的开关对集群负载的性能影响很小。打开自动捕获开关的时间最好足够久，确保重要的查询都能被捕获到。
+    > **注意：**
+    >
+    > 经测试，长期打开自动捕获对集群负载的性能影响很小。尽量长期打开自动捕获，以确保重要的查询都能被捕获到。
 
-在对绑定进行删除时，可以根据 `Source` 字段对绑定的来源进行区分，是通过捕获(`capture`) 得到的还是通过手动创建(`manual`) 得到的。
+2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变。
+3. 升级完成后，根据情况手动删除绑定。
 
-在删除某个绑定前，建议检查下这个绑定是否正在发挥作用，避免在删除绑定后计划发生变化，具体的检查方式为：
+    - 检查绑定来源：
 
-```
--- 查看在绑定生效情况下的计划
-SET @@SESSION.TIDB_USE_PLAN_BASELINES = true;
-EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+        根据 `Source` 字段对绑定的来源进行区分，确认是 (`capture`) 得到还是通过手动创建(`manual`)。
 
--- 查看绑定不能生效情况下的计划，可通过设置变量 TIDB_USE_PLAN_BASELINES 来屏蔽掉绑定的影响
-SET @@SESSION.TIDB_USE_PLAN_BASELINES = false;
-EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
-```
+    - 确定 `capture` 的绑定是否需要保留：
 
-如果屏蔽绑定前后，查询得到的计划一致，则可以安全删除此绑定；如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作，在这种情况下需要保留此绑定，确保计划不发生变化。
+        ```
+        -- 查看绑定生效时的计划
+        SET @@SESSION.TIDB_USE_PLAN_BASELINES = true;
+        EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+
+        -- 查看绑定不生效时的计划
+        SET @@SESSION.TIDB_USE_PLAN_BASELINES = false;
+        EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+        ```
+
+        - 如果屏蔽绑定前后，查询得到的计划一致，则可以安全删除此绑定。
+
+        - 如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作，在这种情况下需要保留此绑定，确保计划不发生变化。
 
 ## 自动演进绑定 (Baseline Evolution)
 
