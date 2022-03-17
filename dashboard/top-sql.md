@@ -31,5 +31,5 @@ Top SQL 功能默认开启。要使用该功能，只需在登录 TiDB Dashboard
 
 Top SQL 会对集群的性能产生轻微的影响。如需在整个集群范围内关闭该功能，你可以使用以下任一方法：
 
-- 方法一：登录 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮，并打开 Top SQL 功能开关。
+- 方法一：登录 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮，关闭 Top SQL 功能开关。
 - 方法二：配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入)的值为 `OFF`。
