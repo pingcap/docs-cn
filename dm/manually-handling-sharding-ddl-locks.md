@@ -15,35 +15,52 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 > - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并迁移原理](/dm/feature-shard-merge-pessimistic.md#实现原理)。
 
 ## 命令介绍
-
-### `show-ddl-locks`
-
-该命令用于查询当前 DM-master 上存在的 DDL lock 信息。
-
-#### 命令示例
+### `shard-ddl-lock`
+该命令用于查看 DDL lock 和主动请求 DM-master 解除指定的 DDL lock。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `show-ddl-locks` 和 `unlock-ddl-lock` 命令。
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-show-ddl-locks [--source=mysql-replica-01] [task-name | task-file]
+shard-ddl-lock -h
+```
+
+```
+maintain or show shard-ddl locks information
+
+Usage:
+  dmctl shard-ddl-lock [task] [flags]
+  dmctl shard-ddl-lock [command]
+
+Available Commands:
+  unlock      Unlock un-resolved DDL locks forcely
+
+Flags:
+  -h, --help   help for shard-ddl-lock
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+
+Use "dmctl shard-ddl-lock [command] --help" for more information about a command.
 ```
 
 #### 参数解释
 
-+ `source`：
-    - flag 参数，string，`--source`，可选
-    - 不指定时，查询所有 MySQL source 相关的 lock 信息；指定时，仅查询与该 MySQL source 相关的 lock 信息，可重复多次指定
++ `shard-ddl-lock [task] [flags]`:
+    - 用于查询当前 DM-master 上存在的 DDL lock 信息
 
-+ `task-name | task-file`：
-    - 非 flag 参数，string，可选
-    - 不指定时，查询与所有任务相关的 lock 信息；指定时，仅查询特定任务相关的 lock 信息
++ `shard-ddl-lock [command]`
+    - 用于主动请求 DM-master 解除指定的 DDL lock, `command` 只支持 `unlock`
 
-#### 返回结果示例
+#### 命令示例
+##### `shard-ddl-lock [task] [flags]` 
+
+用于查询当前 DM-master 上存在的 DDL lock 信息。
+##### 返回结果示例
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-show-ddl-locks test
+shard-ddl-lock test
 ```
 
 ```
@@ -69,44 +86,59 @@ show-ddl-locks test
     ]
 }
 ```
+##### `shard-ddl-lock unlock` 
 
-### `unlock-ddl-lock`
-
-该命令用于主动请求 DM-master 解除指定的 DDL lock，包括的操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
-
+用于主动请求 DM-master 解除指定的 DDL lock，包括的操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息
 > **注意：**
 >
-> `unlock-ddl-lock` 当前仅对悲观协调模式 (`pessimistic`) 下产生的 lock 有效。
+> `shard-ddl-lock unlock` 当前仅对悲观协调模式 (`pessimistic`) 下产生的 lock 有效。
 
-#### 命令示例
+##### 命令示例
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-unlock-ddl-lock [--owner] [--force-remove] <lock-ID>
+shard-ddl-lock unlock -h
+```
+```
+Unlock un-resolved DDL locks forcely
+
+Usage:
+  dmctl shard-ddl-lock unlock <lock-id> [flags]
+
+Flags:
+  -a, --action string     accept skip/exec values which means whether to skip or execute ddls (default "skip")
+  -d, --database string   database name of the table
+  -f, --force-remove      force to remove DDL lock
+  -h, --help              help for unlock
+  -o, --owner string      source to replace the default owner
+  -t, --table string      table name
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
 ```
 
-#### 参数解释
+##### 参数解释
 
-+ `owner`：
-    - flag 参数，string，`--owner`，可选
-    - 不指定时，请求默认的 owner（`show-ddl-locks` 返回结果中的 `owner`）执行 DDL 操作；指定时，请求该 MySQL source（替代默认的 owner）执行 DDL 操作
++ `-o, --owner`：
+    - flag 参数，string，可选
+    - 不指定时，请求默认的 owner（`shard-ddl-lock` 返回结果中的 `owner`）执行 DDL 操作；指定时，请求该 MySQL source（替代默认的 owner）执行 DDL 操作
     - 除非原 owner 已经从集群中移除，否则不应该指定新的 owner
 
-+ `force-remove`：
-    - flag 参数，boolean，`--force-remove`，可选
++ `-f, --force-remove`：
+    - flag 参数，boolean，可选
     - 不指定时，仅在 owner 执行 DDL 成功时移除 lock 信息；指定时，即使 owner 执行 DDL 失败也强制移除 lock 信息（此后将无法再次查询或操作该 lock）
 
-+ `lock-ID`：
++ `lock-id`：
     - 非 flag 参数，string，必选
-    - 指定需要执行 unlock 操作的 DDL lock ID（即 `show-ddl-locks` 返回结果中的 `ID`）
+    - 指定需要执行 unlock 操作的 DDL lock ID（即 `shard-ddl-lock` 返回结果中的 `ID`）
 
-#### 返回结果示例
+##### 返回结果示例
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-unlock-ddl-lock test-`shard_db`.`shard_table`
+shard-ddl-lock unlock test-`shard_db`.`shard_table`
 ```
 
 ```
@@ -118,7 +150,7 @@ unlock-ddl-lock test-`shard_db`.`shard_table`
 
 ## 支持场景
 
-目前，使用 `unlock-ddl-lock` 命令仅支持处理以下两种 sharding DDL lock 异常情况。
+目前，使用 `shard-ddl-lock unlock` 命令仅支持处理以下两种 sharding DDL lock 异常情况。
 
 ### 场景一：部分 MySQL source 被移除
 
@@ -174,12 +206,12 @@ MySQL 及 DM 操作与处理流程如下：
     ```
 
 2. DM-worker 接受到 `mysql-replica-01` 两个分表的 DDL 之后，将对应的 DDL 信息发送给 DM-master，DM-master 创建相应的 DDL lock。
-3. 使用 `show-ddl-lock` 查看当前的 DDL lock 信息。
+3. 使用 `shard-ddl-lock` 查看当前的 DDL lock 信息。
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    show-ddl-locks test
+    shard-ddl-lock test
     ```
 
     ```
@@ -209,7 +241,7 @@ MySQL 及 DM 操作与处理流程如下：
 4. 由于业务需要，`mysql-replica-02` 对应的数据不再需要迁移到下游 TiDB，对 `mysql-replica-02` 执行了移除操作。
 5. DM-master 上 ID 为 ```test-`shard_db`.`shard_table` ``` 的 lock 无法等到 `mysql-replica-02` 的 DDL 操作信息。
 
-    `show-ddl-locks` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
+    `shard-ddl-lock` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
 
 6. 使用 `unlock-dll-lock` 来请求 DM-master 主动 unlock 该 DDL lock。
 
@@ -219,7 +251,7 @@ MySQL 及 DM 操作与处理流程如下：
         {{< copyable "shell-regular" >}}
 
         ```bash
-        unlock-ddl-lock test-`shard_db`.`shard_table`
+        shard-ddl-lock unlock test-`shard_db`.`shard_table`
         ```
 
         ```
@@ -231,7 +263,7 @@ MySQL 及 DM 操作与处理流程如下：
 7. 使用 `show-dd-locks` 确认 DDL lock 是否被成功 unlock。
 
     ```bash
-    show-ddl-locks test
+    shard-ddl-lock test
     ```
 
     ```
@@ -267,7 +299,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### 手动处理后的影响
 
-使用 `unlock-ddl-lock` 手动执行 unlock 操作后，由于该任务的配置信息中仍然包含了已下线的 MySQL source，如果不进行处理，则当下次 sharding DDL 到达时，仍会出现 lock 无法自动完成迁移的情况。
+使用 `shard-ddl-lock unlock` 手动执行 unlock 操作后，由于该任务的配置信息中仍然包含了已下线的 MySQL source，如果不进行处理，则当下次 sharding DDL 到达时，仍会出现 lock 无法自动完成迁移的情况。
 
 因此，在手动解锁 DDL lock 后，需要再执行以下操作：
 
@@ -277,7 +309,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 > **注意：**
 >
-> 在 `unlock-ddl-lock` 之后，如果已下线的 MySQL source 重新加载并尝试对其中的分表进行数据迁移，则会由于数据与下游的表结构不匹配而发生错误。
+> 在 `shard-ddl-lock unlock` 之后，如果已下线的 MySQL source 重新加载并尝试对其中的分表进行数据迁移，则会由于数据与下游的表结构不匹配而发生错误。
 
 ### 场景二：unlock 过程中部分 DM-worker 异常停止或网络中断
 
@@ -304,14 +336,14 @@ MySQL 及 DM 操作与处理流程如下：
 
 处理流程如下：
 
-1. 使用 `show-ddl-locks` 确认 DM-master 上存在该 DDL 操作对应的 lock。
+1. 使用 `shard-ddl-lock` 确认 DM-master 上存在该 DDL 操作对应的 lock。
 
     应该仅有 `mysql-replica-02` 处于 `synced` 状态：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    show-ddl-locks
+    shard-ddl-lock
     ```
 
     ```
@@ -338,14 +370,14 @@ MySQL 及 DM 操作与处理流程如下：
     }
     ```
 
-2. 使用 `unlock-ddl-lock` 请求 DM-master unlock 该 lock。
+2. 使用 `shard-ddl-lock unlock` 请求 DM-master unlock 该 lock。
 
     - Lock 过程中会尝试再次向下游执行该 DDL 操作（重启前的原 owner 已向下游执行过该 DDL 操作），需要确保该 DDL 操作可被多次执行。
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        unlock-ddl-lock test-`shard_db`.`shard_table`
+        shard-ddl-lock unlock test-`shard_db`.`shard_table`
         ```
 
         ```
@@ -355,7 +387,7 @@ MySQL 及 DM 操作与处理流程如下：
         }
         ```
 
-3. 使用 `show-ddl-locks` 确认 DDL lock 是否被成功 unlock。
+3. 使用 `shard-ddl-lock` 确认 DDL lock 是否被成功 unlock。
 4. 使用 `query-status` 确认迁移任务是否正常。
 
 #### 手动处理后的影响

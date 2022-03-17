@@ -30,7 +30,7 @@ summary: 了解如何管理待迁移表在 DM 内部的表结构。
 
 此外，在其他一些场景下（如：下游比上游多部分列），`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。
 
-为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `binlog-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。
+为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `binlog-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。`binlog-schema` 命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `operate-schema` 命令。
 
 ## 命令介绍
 
@@ -75,8 +75,25 @@ Use "dmctl binlog-schema [command] --help" for more information about a command.
     - 指定操作将应用到的 MySQL 源
 
 ## 使用示例
+#### binlog-schema list 命令
 
-### 获取表结构
+```bash
+help binlog-schema list
+```
+
+```
+show table schema structure
+
+Usage:
+  dmctl binlog-schema list <task-name> <database> <table> [flags]
+
+Flags:
+  -h, --help   help for list
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
+#### 获取表结构
 
 假设要获取 `db_single` 任务对应于 `mysql-replica-01` MySQL 源的 ``` `db_single`.`t1` ``` 表的表结构，则执行如下命令：
 
@@ -100,8 +117,29 @@ binlog-schema list -s mysql-replica-01 task_single db_single t1
     ]
 }
 ```
+### binlog-schema update 命令
 
-### 设置表结构
+```bash
+help binlog-schema update
+```
+
+```
+update tables schema structure
+
+Usage:
+  dmctl binlog-schema update <task-name> <database> <table> [schema-file] [flags]
+
+Flags:
+      --flush         flush the table info and checkpoint immediately (default true)
+      --from-source   use the schema from upstream database as the schema of the specified tables
+      --from-target   use the schema from downstream database as the schema of the specified tables
+  -h, --help          help for update
+      --sync          sync the table info to master to resolve shard ddl lock, only for optimistic mode now (default true)
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
+#### 更新设置表结构
 
 假设要设置 `db_single` 任务对应于 `mysql-replica-01` MySQL 源的 ``` `db_single`.`t1` ``` 表的表结构为
 
@@ -135,8 +173,24 @@ binlog-schema update -s mysql-replica-01 task_single db_single t1 db_single.t1-s
     ]
 }
 ```
+### binlog-schema delete 命令
+```bash
+help binlog-schema delete
+```
 
-### 删除表结构
+```
+delete table schema structure
+
+Usage:
+  dmctl binlog-schema delete <task-name> <database> <table> [flags]
+
+Flags:
+  -h, --help   help for delete
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
+#### 删除表结构
 
 > **注意：**
 >
@@ -147,7 +201,7 @@ binlog-schema update -s mysql-replica-01 task_single db_single t1 db_single.t1-s
 {{< copyable "" >}}
 
 ```bash
-binlog-schema remove -s mysql-replica-01 task_single db_single t1
+binlog-schema delete -s mysql-replica-01 task_single db_single t1
 ```
 
 ```
