@@ -108,6 +108,15 @@ loaders:                             # load 处理单元的运行配置参数
     # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?region=us-west-2&endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
     dir: "./dumped_data"             
 
+    # 全量阶段数据导入的模式。可以设置为如下几种模式：
+    # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
+    # - "loader"。使用 Loader 导入。此模式仅作为兼容模式保留，目前用于支持 TiDB Lightning 尚未包含的功能，预计会在后续的版本废弃。
+    import-mode: "sql"
+    # 全量导入阶段针对冲突数据的解决方式：
+    # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
+    # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
+    # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
+    on-dupicate: "replace"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
