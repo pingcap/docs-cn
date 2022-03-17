@@ -155,8 +155,8 @@ show warnings;
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
 | raftstore.apply-pool-size | Apply 线程池大小 |
 | raftstore.store-pool-size | Store 线程池大小 |
-| raftstore.apply-max-batch-size | Apply 线程一轮处理数据落盘的最大请求个数 |
-| raftstore.store-max-batch-size | Store 线程一轮处理数据落盘的最大请求个数 |
+| raftstore.apply-max-batch-size | Apply 线程一轮处理数据落盘的最大 FSM 个数 |
+| raftstore.store-max-batch-size | Store 线程一轮处理数据落盘的最大 FSM 个数 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
@@ -194,7 +194,7 @@ show warnings;
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
-| storage.scheduler-worker-pool-size | Scheduler 线程个数 |
+| storage.scheduler-worker-pool-size | Scheduler worker 的线程池大小 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
