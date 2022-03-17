@@ -28,7 +28,7 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-command-line-flags/']
     - `--algorithm`：检验哈希算法，可选值为 xxh3，city128，crc32，crc64，none，默认为 xxh3，仅在 version=2 时有用。
     - `--frame`：校验帧大小，默认为 1048576，仅在 version=2 时有用。
     - `--compression`：目标压缩算法，可选值为 LZ4（默认）、LZ4HC、zstd 和 none。
-    - `--level`：目标压缩等级，不指定则根据压缩算法默认使用推荐的压缩级别。如果 `compression` 设置为 `LZ4`，则默认设置为 1；如果 `compression` 设置为 `zstd`，则默认设置为 1；如果 `compression` 设置为 `LZ4HC`，则默认设置为 9。
+    - `--level`：目标压缩等级，不指定则根据压缩算法默认使用推荐的压缩级别。如果 `compression` 设置为 `LZ4` 或 `zstd`，则默认设置为 1；如果 `compression` 设置为 `LZ4HC`，则默认设置为 9。
     - `--config-file`：dttool migrate 的配置文件应当与 server 模式下的[配置文件](/tiflash/tiflash-command-line-flags.md#server---config-file)保持一致；使用配置文件时，需要退出本地的 TiFlash 服务器实例。见 `--imitative` 选项。
     - `--file-id`：对应 DTFile 的 ID，如 `dmf_123` 对应的 ID 是 123。
     - `--workdir`：指向 `dmf_xxx` 的父级目录。
