@@ -1328,7 +1328,7 @@ SET tidb_query_log_max_len = 20;
 ### `tidb_rc_read_check_ts` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`0`
+- 默认值：`OFF`
 - 适用于悲观事务 `READ-COMMITTED` 隔离级别下，读写冲突较少场景，优化事务内读语句延迟。如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。
 
 > **说明：**
