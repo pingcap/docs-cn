@@ -401,7 +401,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 
         - 如果屏蔽绑定前后，查询得到的计划一致，则可以安全删除此绑定。
 
-        - 如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作，在这种情况下需要保留此绑定，确保计划不发生变化。
+        - 如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作。在这种情况下需要保留此绑定，确保计划不发生变化。
 
 ## 自动演进绑定 (Baseline Evolution)
 
