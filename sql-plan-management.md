@@ -368,7 +368,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 >
 > - 修改黑名单需要数据库的 super privilege 权限。
 >
-> - 如果黑名单包含了非法的过滤内容时，会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
+> - 如果黑名单包含了非法的过滤内容时，TiDB 会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
 
 ### 升级时的计划回退防护
 
