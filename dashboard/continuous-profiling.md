@@ -8,6 +8,8 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 > **警告：**
 >
 > 持续性能分析目前为实验特性，不建议在生产环境中使用。
+> 
+> 在 TiKV 和 TiFlash 实例中有偶发性失败，将会导致实例重启。
 
 持续性能分析是 TiDB v5.3.0 引入的一种从系统调用层面解读资源开销的方法。引入该方法后，TiDB 可提供数据库源码级性能观测，通过火焰图的形式帮助研发、运维人员定位性能问题的根因。
 
@@ -20,8 +22,6 @@ summary: TiDB Dashboard 持续性能分析功能 (Continuous Profiling)
 - 该功能可在 x86 架构下支持 TiDB、PD、TiKV、TiFlash；而在 ARM 框架下还未完全兼容，不可开启。
 
 - 该功能适用于使用 v1.9.0 及以上版本 TiUP 或 v1.3.0 及以上版本 TiDB Operator 部署和升级的集群，不支持二进制包部署和升级的集群。
-
-- 在 TiKV 和 TiFlash 实例中有偶发性失败，将会导致实例重启。
 
 ## 分析内容
 
