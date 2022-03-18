@@ -86,7 +86,7 @@ TiDB 版本：5.3.0
     - 把热点数据的 leader 放到高性能的 TiKV 实例上。
     - 将冷数据分离到不同的存储中以提高可用性。
 
-    [用户文档](/information-schema/information-schema-placement-rules.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
+    [用户文档](/placement-rules-in-sql.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
 
 - **临时表**
 
