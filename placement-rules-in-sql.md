@@ -213,7 +213,7 @@ CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
 ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4，会采用 FOLLOWERS=3。
 ```
 
-注意分区与表之间的继承和这里的继承不同。改变表的放置策略，也会让分区应用新的策略。但是只有建表时没有指定放置策略才会从数据库继承。
+注意分区与表之间的继承和这里的继承不同。改变表的放置策略，也会让分区应用新的策略。但是只有建表时没有指定放置策略，表才会从数据库继承，且之后再改变数据库也不影响已经继承的表。
 
 ### 高级放置选项
 
@@ -251,7 +251,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 目前已知 Placement Rules in SQL 实验特性存在以下限制：
 
-* TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
+* TiDB 生态工具，包括 TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 * 不能通过放置规则语法配置 TiFlash 副本。
