@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `PLACEMENT_POLICIES`。
 
 # PLACEMENT_POLICIES
 
-`PLACEMENT_POLICIES` 表展示所有已显式配置的 [Placement Rules in SQL](/placement-rules-in-sql.md) 信息，即所有放置策略 (placement policy) 的信息。
+`PLACEMENT_POLICIES` 表展示所有放置策略 (placement policy) 的信息。见：[Placement Rules in SQL](/placement-rules-in-sql.md)
 
 {{< copyable "sql" >}}
 
