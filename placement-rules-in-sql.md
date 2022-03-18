@@ -248,7 +248,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 ## 使用限制
 
-目前已知 Placement Rules in SQL 实验特性存在以下限制：
+目前已知 Placement Rules in SQL 特性存在以下限制：
 
 * TiDB Lightning 不支持放置规则。
 * 临时表不支持放置规则。
