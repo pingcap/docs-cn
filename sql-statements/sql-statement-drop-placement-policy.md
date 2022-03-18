@@ -23,20 +23,20 @@ PolicyName ::=
 
 ## 示例
 
-删除放置策略时，确保该策略未被任何表或分区引用，否则会删除失败。
+删除放置规则时，确保该策略未被任何表或分区引用，否则会删除失败。
 
 {{< copyable "sql" >}}
 
 ```sql
 CREATE PLACEMENT POLICY p1 FOLLOWERS=4;
 CREATE TABLE t1 (a INT PRIMARY KEY) PLACEMENT POLICY=p1;
-DROP PLACEMENT POLICY p1;  -- 该语句执行失败，因为放置策略 p1 被引用。
+DROP PLACEMENT POLICY p1;  -- 该语句执行失败，因为放置规则 p1 被引用。
 
--- 查看引用放置策略的表和分区。
+-- 查看引用放置规则的表和分区。
 SELECT table_schema, table_name FROM information_schema.tables WHERE tidb_placement_policy_name='p1';
 SELECT table_schema, table_name FROM information_schema.partitions WHERE tidb_placement_policy_name='p1';
 
-ALTER TABLE t1 PLACEMENT POLICY=default;  -- 移除表 t1 上的默认放置策略。
+ALTER TABLE t1 PLACEMENT POLICY=default;  -- 移除表 t1 上的默认放置规则。
 DROP PLACEMENT POLICY p1;  -- 执行成功。
 ```
 
