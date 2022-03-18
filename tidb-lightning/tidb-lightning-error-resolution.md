@@ -11,10 +11,6 @@ This document introduces how to use the type error feature (`lightning.max-error
 
 ## Type error
 
-> **Warning:**
->
-> The TiDB Lightning type error (`lightning.max-error`) is an experimental feature. It is **NOT** recommended to only rely on it to resolve errors in the production environment.
-
 You can use the `lightning.max-error` configuration to increase the tolerance of errors related to data types. If this configuration is set to *N*, TiDB Lightning allows and skips up to *N* errors from the data source before it exists. The default value `0` means that no error is allowed.
 
 These errors are recorded in a database. After the import is completed, you can view the errors in the database and process them manually. For more information, see [Error Report](#error-report).
@@ -66,7 +62,21 @@ TiDB Lightning duplicate resolution can detect duplicate data only within the da
 
 ## Error report
 
-All errors are written to tables in the `lightning_task_info` database in the downstream TiDB cluster. After the import is completed, you can view the errors in the database and process them manually.
+If TiDB Lightning encounters errors during the import, it outputs a statistics summary about these errors in both your terminal and the log file when it exits.
+
+* The error report in the terminal is similar to the following table:
+
+    | # | ERROR TYPE | ERROR COUNT | ERROR DATA TABLE |
+    | - | --- | --- | ------ |
+    | 1 | Data Type | 1000 | `lightning_task_info`.`type_error_v1` |
+
+* The error report in the TiDB Lightning log file is as follows:
+
+    ```shell
+    [2022/03/13 05:33:57.736 +08:00] [WARN] [errormanager.go:459] ["Detect 1000 data type errors in total, please refer to table `lightning_task_info`.`type_error_v1` for more details"]
+    ```
+
+All errors are written to tables in the `lightning_task_info` database in the downstream TiDB cluster. After the import is completed, if the error data is collected, you can view the errors in the database and process them manually.
 
 You can change the database name by configuring `lightning.task-info-schema-name`.
 
