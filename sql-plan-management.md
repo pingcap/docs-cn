@@ -256,7 +256,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
     1 row in set (0.00 sec)
     ```
 
-2. 使用 `explain format = 'verbose'` 语句查看 SQL 语句的查询计划。如果 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
+- 使用 `explain format = 'verbose'` 语句查看 SQL 语句的查询计划。如果 SQL 语句使用了 binding，`explain` 语句会输出警告。此时可以通过 `show warnings` 了解该 SQL 语句使用了哪一条 binding。
 
     ```sql
     -- 创建一个 global binding
