@@ -167,7 +167,7 @@ SELECT /*+ USE_INDEX(t1, idx1, idx2) */ * FROM t1;
 
 `FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` 的使用方法、作用和 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 相同。
 
-下面的四个例子效果相同：
+以下四个查询语句的效果相同：
 
 {{< copyable "sql" >}}
 
