@@ -25,7 +25,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 ## 指定放置规则
 
-指定放置规则，首先需要创建放置策略 (placement policy)。
+指定放置规则，首先需要通过 [`CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-create-placement-policy.md) 语句创建*放置策略 (placement policy)*。
 
 ```sql
 CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
@@ -34,16 +34,28 @@ CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us
 然后可以使用 `CREATE TABLE` 或者 `ALTER TABLE` 将规则绑定至表或分区表，这样就在表或分区上指定了放置规则：
 
 ```sql
-CREATE TABLE t1 (a INT) PLACEMENT POLICY myplacementpolicy;
+CREATE TABLE t1 (a INT) PLACEMENT POLICY=myplacementpolicy;
 CREATE TABLE t2 (a INT);
-ALTER TABLE t2 PLACEMENT POLICY myplacementpolicy;
+ALTER TABLE t2 PLACEMENT POLICY=myplacementpolicy;
 ```
 
 `PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置规则时，无需任何额外的权限。
 
+也可以通过 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句来修改放置策略，改动将传播倒所有绑定此放置策略的对象。
+
+```sql
+ALTER PLACEMENT POLICY myplacementpolicy FOLLOWERS=5;
+```
+
+最后, 你可以用 [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md) 删除没有绑定任何分区或表的放置策略：
+
+```sql
+DROP PLACEMENT POLICY myplacementpolicy;
+```
+
 ## 查看放置规则
 
-如果一张表绑定了放置规则，你可以用 `SHOW CREATE TABLE` 来查看。还可以用 `SHOW CREATE PLACEMENT POLICY` 来查看已经创建的规则。
+如果一张表绑定了放置规则，你可以用 [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md) 来查看。还可以用 [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md) 来查看已经创建的规则。
 
 ```sql
 tidb> SHOW CREATE TABLE t1\G
@@ -58,6 +70,26 @@ tidb> SHOW CREATE PLACEMENT POLICY myplacementpolicy\G
        Policy: myplacementpolicy
 Create Policy: CREATE PLACEMENT POLICY myplacementpolicy PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1"
 1 row in set (0.00 sec)
+```
+
+你也可以用 [`INFORMATION_SCHEMA.PLACEMENT_POLICIES`](/information-schema/information-schema-placement-policies.md) 系统表查看所有放置策略的定义。
+
+```sql
+tidb> select * from information_schema.placement_policies\G
+***************************[ 1. row ]***************************
+POLICY_ID            | 1
+CATALOG_NAME         | def
+POLICY_NAME          | p1
+PRIMARY_REGION       | us-east-1
+REGIONS              | us-east-1,us-west-1
+CONSTRAINTS          | 
+LEADER_CONSTRAINTS   | 
+FOLLOWER_CONSTRAINTS | 
+LEARNER_CONSTRAINTS  | 
+SCHEDULE             | 
+FOLLOWERS            | 4
+LEARNERS             | 0
+1 row in set
 ```
 
 `information_schema.tables` 表和 `information_schema.partitions` 表也有一列 `tidb_placement_policy_name`，用于展示所有绑定了放置规则的对象：
@@ -98,8 +130,11 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
-| `CONSTRAINTS`              |  适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]`。      |
-| `FOLLOWER_CONSTRAINTS`     |  仅适用于 follower 的约束列表。                                           |
+| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]`。      |
+| `LEADER_CONSTRAINTS`       | 仅适用于 leader 的约束列表。                                         |
+| `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
+| `LEARNER_CONSTRAINTS`     | 仅适用于 learner 的约束列表。                                           |
+| `LEARNERS`                 | 指定 learner 的数量。     |
 
 ## 示例
 
@@ -134,6 +169,7 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 除了给表绑定放置策略之外，你还可以给表分区绑定放置策略。示例如下：
 
 ```sql
+CREATE PLACEMENT POLICY p1 FOLLOWERS=5;
 CREATE PLACEMENT POLICY europe PRIMARY_REGION="eu-central-1" REGIONS="eu-central-1,eu-west-1";
 CREATE PLACEMENT POLICY northamerica PRIMARY_REGION="us-east-1" REGIONS="us-east-1";
 
@@ -141,11 +177,15 @@ SET tidb_enable_list_partition = 1;
 CREATE TABLE t1 (
   country VARCHAR(10) NOT NULL,
   userdata VARCHAR(100) NOT NULL
-) PARTITION BY LIST COLUMNS (country) (
+) PLACEMENT POLICY=p1 PARTITION BY LIST COLUMNS (country) (
   PARTITION pEurope VALUES IN ('DE', 'FR', 'GB') PLACEMENT POLICY=europe,
   PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica
+  PARTITION pAsia VALUES IN ('CN', 'KR', 'JP')
 );
 ```
+
+If partitions have no attached policies, it will try to apply possibly existed policy on the table. For example, `pEurope` will apply `europe` policy, but `pAsia` will apply policy `p1` from table `t1`. If `t1` has no assigned policies, `pAsia` will not apply any policy, too.
+如果分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`pEurope` 分区将会应用 `europe` 策略，而 `pAsia` 分区将会应用表 `t1` 的放置策略 `p1`。如果 `t1` 没有绑定任何策略，`pAsia` 就不会应用任何策略。
 
 ### 为数据库配置默认的放置规则
 
@@ -173,7 +213,7 @@ CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
 ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4，会采用 FOLLOWERS=3。
 ```
 
-用户可以通过使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 改变放置策略，从而改变已从数据库继承放置规则的表。
+注意分区与表之间的继承和这里的继承不同。改变表的放置策略，也会让分区应用新的策略。但是只有建表时没有指定放置策略才会从数据库继承。
 
 ### 高级放置选项
 
@@ -211,7 +251,6 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 目前已知 Placement Rules in SQL 实验特性存在以下限制：
 
-* Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
