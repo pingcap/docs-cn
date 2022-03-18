@@ -201,7 +201,7 @@ MySQL [test]> execute stmt using ...;  -- execute 多次
 MySQL [test]> deallocate prepare stmt; -- 使用完成后释放
 ```
 
-但是部分用户的使用习惯是在每次 Execute 后，都进行 Close，如：
+如果你习惯于在每次 execute 后都立即执行 deallocate prepare，如：
 
 {{< copyable "sql" >}}
 
