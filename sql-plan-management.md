@@ -286,7 +286,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 每个 TiDB 实例都有一个 LRU (Least Recently Used) Cache 对绑定进行缓存，缓存的容量由系统变量 [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) 进行控制。缓存会影响绑定的使用和查看，因此你只能使用和查看存在于缓存中的绑定。
 
-可以通过执行语句 `show binding_cache status` 来查看绑定的使用情况，该语句无法指定作用域，默认作用域为 GLOBAL。该语句可查看缓存中可用绑定的数量、系统中所有可用绑定的梳理、缓存中所有绑定的内存使用量及缓存的内存容量。
+如需查看绑定的使用情况，可以执行 `SHOW binding_cache status` 语句。该语句无法指定作用域，默认作用域为 GLOBAL。该语句可查看缓存中可用绑定的数量、系统中所有可用绑定的数量、缓存中所有绑定的内存使用量及缓存的内存容量。
 
 {{< copyable "sql" >}}
 
