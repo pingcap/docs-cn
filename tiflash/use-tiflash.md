@@ -205,7 +205,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
 ```
 
-可以通过下面的 SQL 检查数据库中尚未设置 TiFlash Replica 的表名
+可以通过下面的 SQL 检查数据库中尚未设置 TiFlash Replica 的表名：
 
 {{< copyable "sql" >}}
 
