@@ -14,7 +14,7 @@ summary: 本文介绍如何使用 Top SQL 找到消耗负载较大的 SQL 查询
 
 ## 使用 Top SQL
 
-Top SQL 功能默认开启。要使用该功能，只需在登录 TiDB Dashboard 后点击左侧面板中的 **Top SQL** 即可。
+Top SQL 功能默认开启。要使用该功能查看消耗负载较大的 SQL 查询，只需在登录 TiDB Dashboard 后点击左侧面板中的 **Top SQL** 即可。
 
 ![Top SQL](/media/dashboard/top-sql-overview.png)
 
