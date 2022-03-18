@@ -23,7 +23,7 @@ CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 
 > **注意：**
 >
-> 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句时，该语句中控制优化器行为的 Hint 不会生效，但是，其他类别的 Hint 仍然能够生效。
+> 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句时，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
 
 其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
 
