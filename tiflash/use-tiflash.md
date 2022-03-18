@@ -197,7 +197,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 
 ### 查看库同步进度
 
-该命令在设置完副本后即返回，而不会等待所有表都同步完成。可以通过下面的 SQL 检查数据库中所有已设置 TiFlash Replica 表的同步进度
+该命令在设置完副本后即返回，而不会等待所有表都同步完成。可以通过下面的 SQL 检查数据库中所有已设置 TiFlash Replica 表的同步进度：
 
 {{< copyable "sql" >}}
 
