@@ -189,7 +189,7 @@ ERROR 1105 (HY000): Do not support the 'admin flush global scope.'
 
 ## 忽略 `COM_STMT_CLOSE` 指令和 `DEALLOCATE PREPARE` 语句
 
-Prepared Statement 推荐的使用方式是，prepare 一次，然后 execute 多次，最后 close，如：
+为了减少每次执行 SQL 语句的语法分析，Prepared Statement 推荐的使用方式是，prepare 一次，然后 execute 多次，最后 deallocate prepare。例如：
 
 {{< copyable "sql" >}}
 
