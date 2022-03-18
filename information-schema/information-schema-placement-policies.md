@@ -59,7 +59,7 @@ Query OK, 0 rows affected (0.08 sec)
 | Target        | Placement                                      | Scheduling_State |
 +---------------+------------------------------------------------+------------------+
 | POLICY p1     | PRIMARY_REGION="us-east-1" REGIONS="us-east-1" | NULL             |
-| TABLE test.t3 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1" | PENDING          |
+| TABLE test.t3 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1" | SCHEDULED        |
 +---------------+------------------------------------------------+------------------+
 2 rows in set (0.00 sec)
 

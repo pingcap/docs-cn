@@ -184,7 +184,6 @@ CREATE TABLE t1 (
 );
 ```
 
-If partitions have no attached policies, it will try to apply possibly existed policy on the table. For example, `pEurope` will apply `europe` policy, but `pAsia` will apply policy `p1` from table `t1`. If `t1` has no assigned policies, `pAsia` will not apply any policy, too.
 如果分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`pEurope` 分区将会应用 `europe` 策略，而 `pAsia` 分区将会应用表 `t1` 的放置策略 `p1`。如果 `t1` 没有绑定任何策略，`pAsia` 就不会应用任何策略。
 
 ### 为数据库配置默认的放置规则
@@ -251,7 +250,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 目前已知 Placement Rules in SQL 实验特性存在以下限制：
 
-* TiDB 生态工具，包括 TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
+* TiDB Lightning 不支持放置规则。
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 * 不能通过放置规则语法配置 TiFlash 副本。
