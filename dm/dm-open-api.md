@@ -93,7 +93,7 @@ DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行�
 
 ### 请求 URI
 
- `GET /api/v1/cluster/masters`
+`GET /api/v1/cluster/masters`
 
 ### 使用样例
 
@@ -125,7 +125,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `DELETE /api/v1/cluster/masters/{master-name}`
+`DELETE /api/v1/cluster/masters/{master-name}`
 
 ### 使用样例
 
@@ -143,7 +143,7 @@ curl -X 'DELETE' \
 
 ### 请求 URI
 
- `GET /api/v1/cluster/workers`
+`GET /api/v1/cluster/workers`
 
 ### 使用样例
 
@@ -175,7 +175,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `DELETE /api/v1/cluster/workers/{worker-name}`
+`DELETE /api/v1/cluster/workers/{worker-name}`
 
 ### 使用样例
 
@@ -193,7 +193,7 @@ curl -X 'DELETE' \
 
 ### 请求 URI
 
- `POST /api/v1/sources`
+`POST /api/v1/sources`
 
 ### 使用样例
 
@@ -480,7 +480,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `GET /api/v1/sources`
+`GET /api/v1/sources`
 
 ### 使用样例
 
@@ -534,7 +534,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/sources/{source-name}/status`
+`GET /api/v1/sources/{source-name}/status`
 
 ### 使用样例
 
@@ -600,7 +600,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `POST /api/v1/sources/{source-name}/relay/disable`
+`POST /api/v1/sources/{source-name}/relay/disable`
 
 ### 使用样例
 
@@ -624,7 +624,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `POST /api/v1/sources/{source-name}/relay/purge`
+`POST /api/v1/sources/{source-name}/relay/purge`
 
 ### 使用样例
 
@@ -647,7 +647,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `POST /api/v1/sources/{source-name}/transfer`
+`POST /api/v1/sources/{source-name}/transfer`
 
 ### 使用样例
 
@@ -669,7 +669,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `GET /api/v1/sources/{source-name}/schemas`
+`GET /api/v1/sources/{source-name}/schemas`
 
 ### 使用样例
 
@@ -693,7 +693,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/sources/{source-name}/schemas/{schema-name}`
+`GET /api/v1/sources/{source-name}/schemas/{schema-name}`
 
 ### 使用样例
 
@@ -717,7 +717,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `POST /api/v1/tasks`
+`POST /api/v1/tasks`
 
 ### 使用样例
 
@@ -913,7 +913,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}?with_status=true`
+`GET /api/v1/tasks/{task-name}?with_status=true`
 
 ### 使用样例
 
@@ -1256,7 +1256,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `POST /api/v1/tasks/{task-name}/stop`
+`POST /api/v1/tasks/{task-name}/stop`
 
 ### 使用样例
 
@@ -1274,7 +1274,7 @@ curl -X 'POST' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/task-1/status`
+`GET /api/v1/tasks/task-1/status`
 
 ### 使用样例
 
@@ -1489,7 +1489,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas`
 
 ### 使用样例
 
@@ -1513,7 +1513,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}`
 
 ### 使用样例
 
@@ -1537,7 +1537,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 
@@ -1563,7 +1563,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `POST /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+`POST /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 
@@ -1587,7 +1587,7 @@ curl -X 'PUT' \
 
 ### 请求 URI
 
- `DELETE /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+`DELETE /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 
