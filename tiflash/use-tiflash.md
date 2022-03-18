@@ -197,7 +197,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 
 ### 查看库同步进度
 
-类似于按表构建，按库构建 TiFlash 副本的命令执行成功同样不代表所有表都已同步完成。可以通过下面的 SQL 检查数据库中所有已设置 TiFlash Replica 表的同步进度：
+类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
 
 {{< copyable "sql" >}}
 
@@ -205,7 +205,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
 ```
 
-可以通过下面的 SQL 检查数据库中尚未设置 TiFlash Replica 的表名：
+可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
 
 {{< copyable "sql" >}}
 
