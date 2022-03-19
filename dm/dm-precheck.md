@@ -6,11 +6,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 
 # 任务前置检查
 
-本文介绍了 DM 提供的任务前置检查功能，此功能用于在启动数据迁移任务时提前检测出上游 MySQL 实例配置中可能存在的一些错误。
-
-## 使用场景
-
-当使用 DM 创建数据迁移任务或恢复迁移任务时，DM 会在任务启动时自动触发任务前置检查并返回检查结果。只有当前置检查通过后，DM 才开始执行该任务。
+本文介绍了 DM 提供的任务前置检查功能，DM 会在任务启动时自动触发任务前置检查并返回检查结果。只有当前置检查通过后，DM 才开始执行该任务。此功能用于在启动数据迁移任务时提前检测出上游 MySQL 实例配置中可能存在的一些错误。
 
 如果你想要手动触发前置检查，运行 `check-task` 命令即可。例如：
 
@@ -18,9 +14,12 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 
 ```bash
 tiup dmctl check-task ./task.yaml
-```
 
-检查结束后，DM 会返回检查结果。
+
+
+
+
+
 
 ## 检查项说明
 
@@ -53,7 +52,11 @@ tiup dmctl check-task ./task.yaml
         - （必须）检查字符集是否存在兼容性差异，详见 [TiDB 支持的字符集](/character-set-and-collation.md)。
         - （必须）检查上游表中是否存在主键或唯一键约束（从 v1.0.7 版本引入）。
 
-- 全量数据迁移模式（`task-mode: full`）相关的检查项
+## 使用场景
+
+本节介绍各场景的具体检查项。
+
+### 全量数据迁移模式（`task-mode: full`）
 
     + （必须）上游数据库的 dump 权限
 
@@ -80,7 +83,7 @@ tiup dmctl check-task ./task.yaml
 
         - 分表存在自增主键时返回警告。如果存在自增主键冲突，请参照[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)解决。
 
-- 增量数据迁移模式（`task-mode: incremental`）相关的检查项
+### 增量数据迁移模式（`task-mode: incremental`）
 
     + （必须）上游数据库的 REPLICATION 权限
 
@@ -100,7 +103,7 @@ tiup dmctl check-task ./task.yaml
 
     + （必须）检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。如果处于 online-DDL 中，则检查报错，请等待 DDL 结束后重试。
 
-- 全量加增量数据迁移模式 （`task-mode: all`）的检查项
+### 全量加增量数据迁移模式 （`task-mode: all`）
 
     对于全量加增量数据迁移模式，除了通用检查项外，前置检查还将包含全量数据迁移模式（`task-mode: full`）相关的检查项，以及增量数据迁移模式（`task-mode: incremental`）相关的检查项。
 
