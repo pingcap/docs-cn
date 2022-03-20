@@ -153,7 +153,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
 ## 按库构建 TiFlash 副本
 
-类似于按表构建 TiFlash 副本的方式，可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的库中的所有表建立 TiFlash 副本：
+类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
 
 {{< copyable "sql" >}}
 
