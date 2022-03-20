@@ -165,7 +165,9 @@ ALTER DATABASE db_name SET TIFLASH REPLICA count
 
 - count 表示副本数，0 表示删除。
 
-为库中的所有表建立 2 个副本：
+命令示例：
+
+执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
 
 {{< copyable "sql" >}}
 
