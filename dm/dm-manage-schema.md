@@ -30,7 +30,11 @@ summary: 了解如何管理待迁移表在 DM 内部的表结构。
 
 此外，在其他一些场景下（如：下游比上游多部分列），`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。
 
-为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `binlog-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。`binlog-schema` 命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `operate-schema` 命令。
+为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `binlog-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。
+
+> **注意：**
+>
+> `binlog-schema` 命令仅在 DM v6.0 及其以后版本支持，之前版本可使用 `operate-schema` 命令。
 
 ## 命令介绍
 
