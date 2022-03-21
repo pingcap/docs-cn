@@ -36,7 +36,7 @@ DESC placement_policies;
 
 ## 示例
 
-`PLACEMENT_POLICIES` 表只展示放置策略 (placement policy) 的信息。如要查看所有对象的放置规则，请改用 `SHOW PLACEMENT` 语句：
+`PLACEMENT_POLICIES` 表只展示放置策略 (placement policy) 的信息。如需查看所有信息的规范版本（放置策略，以及绑定放置策略的对象），请改用 `SHOW PLACEMENT` 语句：
 
 {{< copyable "sql" >}}
 
@@ -44,8 +44,8 @@ DESC placement_policies;
 CREATE TABLE t1 (a INT);
 CREATE PLACEMENT POLICY p1 primary_region="us-east-1" regions="us-east-1";
 CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;
-SHOW PLACEMENT; -- 包含 t3。
-SELECT * FROM information_schema.placement_policies; -- 不包含 t3。
+SHOW PLACEMENT; -- 显示所有信息，包含 t3。
+SELECT * FROM information_schema.placement_policies; -- 只显示放置策略，不包含 t3。
 ```
 
 ```sql
