@@ -387,7 +387,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 
     - 通过[`SHOW BINDINGS`](#查看绑定)语句检查绑定来源：
 
-        根据输出中的 `Source` 字段对绑定的来源进行区分，确认是通过捕获(`capture`) 生成还是通过手动创建(`manual`) 生成。
+        根据输出中的 `Source` 字段对绑定的来源进行区分，确认是通过捕获 (`capture`) 生成还是通过手动创建 (`manual`) 生成。
 
     - 确定 `capture` 的绑定是否需要保留：
 
