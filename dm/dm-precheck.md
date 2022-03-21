@@ -97,7 +97,7 @@ tiup dmctl check-task ./task.yaml
 
 * （必须）检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。如果处于 online-DDL 中，则检查报错，请等待 DDL 结束后重试。
 
-### 全量加增量数据迁移模式 （ `task-mode: all` ）
+### 全量加增量数据迁移模式 （`task-mode: all`）
 
 对于全量加增量数据迁移模式，除了通用检查项外，前置检查还将包含全量数据迁移模式（ `task-mode: full` ）相关的检查项，以及增量数据迁移模式（ `task-mode: incremental` ）相关的检查项。
 
