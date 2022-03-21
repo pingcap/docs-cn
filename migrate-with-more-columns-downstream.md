@@ -86,7 +86,6 @@ CREATE TABLE `messages` (
     | `${table-name}` | 指定 table。表示上游数据表名。表示将被设置的表结构文件。 |
     | `${schema-file}` | 指定表的 schema 文件。表示将被设置的表结构文件。 |
     
-
     例如：
 
     {{< copyable "shell-regular" >}}

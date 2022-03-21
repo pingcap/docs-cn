@@ -15,7 +15,9 @@ DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作
 > - 在手动处理异常的 DDL lock 前，请确保已经了解 DM 的[分库分表合并迁移原理](/dm/feature-shard-merge-pessimistic.md#实现原理)。
 
 ## 命令介绍
+
 ### `shard-ddl-lock`
+
 该命令用于查看 DDL lock 和主动请求 DM-master 解除指定的 DDL lock。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `show-ddl-locks` 和 `unlock-ddl-lock` 命令。
 
 {{< copyable "shell-regular" >}}
@@ -52,10 +54,12 @@ Use "dmctl shard-ddl-lock [command] --help" for more information about a command
     - 用于主动请求 DM-master 解除指定的 DDL lock, `command` 只支持 `unlock`
 
 #### 命令示例
+
 ##### `shard-ddl-lock [task] [flags]` 
 
 用于查询当前 DM-master 上存在的 DDL lock 信息。
-##### 返回结果示例
+
+###### 返回结果示例
 
 {{< copyable "shell-regular" >}}
 
@@ -86,6 +90,7 @@ shard-ddl-lock test
     ]
 }
 ```
+
 ##### `shard-ddl-lock unlock` 
 
 用于主动请求 DM-master 解除指定的 DDL lock，包括的操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息
@@ -93,13 +98,12 @@ shard-ddl-lock test
 >
 > `shard-ddl-lock unlock` 当前仅对悲观协调模式 (`pessimistic`) 下产生的 lock 有效。
 
-##### 命令示例
-
 {{< copyable "shell-regular" >}}
 
 ```bash
 shard-ddl-lock unlock -h
 ```
+
 ```
 Unlock un-resolved DDL locks forcely
 
@@ -118,7 +122,7 @@ Global Flags:
   -s, --source strings   MySQL Source ID.
 ```
 
-##### 参数解释
+###### 参数解释
 
 + `-o, --owner`：
     - flag 参数，string，可选
@@ -133,7 +137,7 @@ Global Flags:
     - 非 flag 参数，string，必选
     - 指定需要执行 unlock 操作的 DDL lock ID（即 `shard-ddl-lock` 返回结果中的 `ID`）
 
-##### 返回结果示例
+###### 返回结果示例
 
 {{< copyable "shell-regular" >}}
 
