@@ -269,6 +269,9 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
     -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划
 
     explain format = 'verbose' SELECT * FROM t;
+
+    -- 通过执行 `show warnings` 了解该 SQL 语句使用了哪一条 binding
+
     show warnings;
     ```
 
