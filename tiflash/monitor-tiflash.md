@@ -50,7 +50,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Estimated Thread Usage and Limit：每个 TiFlash 实例上当前正在运行的所有任务占用的估计的线程使用量，以及该实例上任务调度器设置的估计线程使用量的软限制和硬限制。
 - Active and Waiting Queries Count：每个 TiFlash 实例上当前正在运行的查询和等待的查询数目。
 - Active and Waiting Tasks Count：每个 TiFlash 实例上当前正在运行的任务和等待的任务数目。
-- Hard Limit Exceeded Count：每个 TiFlash 实例上正在运行的任务的估计的线程使用量超过硬限制的次数，正常情况下是 0，非 0 情况有查询报错，需要进行排查。
+- Hard Limit Exceeded Count：每个 TiFlash 实例上正在运行的任务的估计的线程使用量超过硬限制的次数。
 - Task Waiting Duration：每个 TiFlash 实例上任务初始化之后等待被调度的时长。
 
 ## DDL
