@@ -253,7 +253,6 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiDB Lightning、TiCDC、TiDB Binlog 在 6.0 之前不支持放置规则。
 * 从 6.0 版本开始 Backup & Restore (BR) 支持放置规则的导入与导出。
 * 从 6.0 版本开始 TiCDC、TiDB Binlog 可以在设置了放置规则的集群中正常使用，且不会将放置规则同步到下游集群。
-* TiDB Lightning 目前暂不支持放置规则。
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 * 不能通过放置规则语法配置 TiFlash 副本。
