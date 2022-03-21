@@ -50,7 +50,7 @@ tiup dmctl check-task ./task.yaml
 
 本节介绍各场景的具体检查项。
 
-### 全量数据迁移模式（ `task-mode: full` ）
+### 全量数据迁移模式（`task-mode: full`）
 
 * （必须）上游数据库的 dump 权限
 
