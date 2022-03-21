@@ -36,10 +36,10 @@ aliases: ['/docs-cn/tidb-data-migration/dev/skip-or-replace-abnormal-sql-stateme
 
 `binlog` 命令管理和查看binlog操作。命令仅在 DM v6.0 及其以后版本支持, 之前版本可使用 `handle-error` 命令。
 
-### 命令用法
+`binlog` 命令用法如下：
 
 ```bash
-» binlog -h
+binlog -h
 ```
 
 ```
@@ -65,38 +65,25 @@ Global Flags:
 Use "dmctl binlog [command] --help" for more information about a command.
 ```
 
-### 参数解释
+`binlog` 支持如下子命令：
 
-+ `inject`：
-    - sub-command。
-    - 在 DDL binlog 位置插入 DDL 语句, binlog 位置指定方式参考 `-b, --binlog-pos`。
++ `inject`：在 DDL binlog 位置插入 DDL 语句，binlog 位置指定方式参考 `-b, --binlog-pos`。
++ `list`：查看 binlog 位置以及此位置之后的有效 inject/skip/replace 操作，binlog 位置指定方式参考 `-b, --binlog-pos`。
++ `replace`：替代 DDL binlog 位置的 DDL 语句，binlog 位置指定方式参考 `-b, --binlog-pos`。
++ `revert`：重置 binlog 位置的 inject/skip/replace 操作，仅在先前的操作没有最终生效前执行，binlog 位置指定方式参考 `-b, --binlog-pos`
++ `skip`：跳过 binlog 位置的 DDL 语句, binlog 位置指定方式参考 `-b, --binlog-pos`。
 
-+ `list`：
-    - sub-command。
-    - 查看 binlog 位置以及此位置之后的有效 inject/skip/replace 操作, binlog 位置指定方式参考 `-b, --binlog-pos`。
-
-+ `replace`：
-    - sub-command。
-    - 替代 DDL binlog 位置的 DDL 语句, binlog 位置指定方式参考 `-b, --binlog-pos`。
-
-+ `revert`：
-    - sub-command。
-    - 重置 binlog 位置的 inject/skip/replace 操作, 仅在先前的操作没有最终生效前执行, binlog 位置指定方式参考 `-b, --binlog-pos`。
-
-+ `skip`：
-    - sub-command。
-    - 跳过 binlog 位置 DDL 语句, binlog 位置指定方式参考 `-b, --binlog-pos`。
+`binlog` 支持如下参数：
 
 + `-b, --binlog-pos`：
-    - flag 参数，string。
-    - 指定 binlog 位置。
-    - 若不指定，DM 会默认置为当前出错的 DDL 语句的 binlog 位置。
-    - 在指定时表示操作将在 `binlog-pos` 与 binlog event 的 position 匹配时生效，格式为 `binlog-filename:binlog-pos`，如 `mysql-bin|000001.000003:3270`。
+    - 类型：string。
+    - 指定 binlog 位置，表示操作将在 `binlog-pos` 与 binlog event 的 position 匹配时生效。若不指定，DM 会默认置为当前出错的 DDL 语句的 binlog 位置。
+    - 格式：`binlog-filename:binlog-pos`，例如 `mysql-bin|000001.000003:3270`。
     - 在迁移执行出错后，binlog position 可直接从 `query-status` 返回的 `startLocation` 中的 `position` 获得；在迁移执行出错前，binlog position 可在上游 MySQL 中使用 [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) 获得。
 
 + `-s, --source strings`：
-    - flag 参数，string，`--source`；
-    - `source` 指定预设操作将生效的 MySQL 实例
+    - 类型：string。
+    - `source` 指定预设操作将生效的 MySQL 实例。
 
 + 其他参数参考 `-h` 提示。
 

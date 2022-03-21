@@ -8,7 +8,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/manually-handling-sharding-ddl-locks
 DM (Data Migration) 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。绝大多数情况下，该锁定机制可自动完成；但在部分异常情况发生时，需要使用 `shard-ddl-lock` 手动处理异常的 DDL lock。
 
 > **注意：**
-> 
+>
 > - 本文档只适用于悲观协调模式下 sharding DDL lock 的处理。
 > - 本文档的命令在交互模式中进行，因此在以下命令示例中未添加转义字符。在命令行模式中，你需要添加转义字符，防止报错。
 > - 不要轻易使用 `shard-ddl-lock unlock` 命令，除非完全明确当前场景下使用这些命令可能会造成的影响，并能接受这些影响。
@@ -53,19 +53,20 @@ Use "dmctl shard-ddl-lock [command] --help" for more information about a command
 + `shard-ddl-lock [command]`
     - 用于主动请求 DM-master 解除指定的 DDL lock, `command` 只支持 `unlock`
 
-#### 命令示例
+## 命令示例
 
-##### `shard-ddl-lock [task] [flags]` 
+### `shard-ddl-lock [task] [flags]`
 
-用于查询当前 DM-master 上存在的 DDL lock 信息。
+使用 `shard-ddl-lock [task] [flags]` 命令，查询当前 DM-master 上存在的 DDL lock 信息。
 
-###### 返回结果示例
-
-{{< copyable "shell-regular" >}}
+例如：
 
 ```bash
 shard-ddl-lock test
 ```
+
+<details>
+<summary>期望输出</summary>
 
 ```
 {
@@ -91,9 +92,12 @@ shard-ddl-lock test
 }
 ```
 
-##### `shard-ddl-lock unlock` 
+</details>
 
-用于主动请求 DM-master 解除指定的 DDL lock，包括的操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息
+### `shard-ddl-lock unlock`
+
+用于主动请求 DM-master 解除指定的 DDL lock，包括的操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
+
 > **注意：**
 >
 > `shard-ddl-lock unlock` 当前仅对悲观协调模式 (`pessimistic`) 下产生的 lock 有效。
@@ -122,7 +126,7 @@ Global Flags:
   -s, --source strings   MySQL Source ID.
 ```
 
-###### 参数解释
+`shard-ddl-lock unlock` 命令支持以下参数：
 
 + `-o, --owner`：
     - flag 参数，string，可选
@@ -137,7 +141,7 @@ Global Flags:
     - 非 flag 参数，string，必选
     - 指定需要执行 unlock 操作的 DDL lock ID（即 `shard-ddl-lock` 返回结果中的 `ID`）
 
-###### 返回结果示例
+以下是一个使用 `shard-ddl-lock unlock` 命令的示例：
 
 {{< copyable "shell-regular" >}}
 
