@@ -77,7 +77,7 @@ tiup dmctl check-task ./task.yaml
 
     - 分表存在自增主键时返回警告。如果存在自增主键冲突，请参照[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)解决。
 
-### 增量数据迁移模式（ `task-mode: incremental` ）
+### 增量数据迁移模式（`task-mode: incremental`）
 
 * （必须）上游数据库的 REPLICATION 权限
 
@@ -101,7 +101,7 @@ tiup dmctl check-task ./task.yaml
 
 对于全量加增量数据迁移模式，除了通用检查项外，前置检查还将包含全量数据迁移模式（ `task-mode: full` ）相关的检查项，以及增量数据迁移模式（ `task-mode: incremental` ）相关的检查项。
 
-## 检查配置
+## 配置检查参数
 
 任务前置检查支持多线程并行。即使分表数目达到万级别，检查也可以在分钟级完成。
 
