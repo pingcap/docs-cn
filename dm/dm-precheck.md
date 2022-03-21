@@ -14,12 +14,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/precheck/']
 
 ```bash
 tiup dmctl check-task ./task.yaml
-
-
-
-
-
-
+```
 
 ## 检查项说明
 
