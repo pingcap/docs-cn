@@ -42,7 +42,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 - Request Handle Duration：所有 TiFlash 实例处理 coprocessor 请求处理时间，处理时间为该 coprocessor 请求开始执行到执行结束的时间。
 - Response Bytes/Seconds：所有 TiFlash 实例应答总字节数。
 - Cop task memory usage：所有 TiFlash 实例处理 coprocessor 请求占用的总内存。
-- Handling Request Number：所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的相同.
+- Handling Request Number：所有 TiFlash 实例正在处理的 coprocessor 请求数量之和。请求的分类与 Request QPS 中的分类相同。
 - Threads of RPC：每个 TiFlash 实例使用的实时 RPC 线程数。
 - Max Threads of RPC：最近一段时间每个 TiFlash 实例使用的 RPC 线程数峰值。
 - Threads：每个 TiFlash 实例使用的实时线程数。
