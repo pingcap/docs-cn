@@ -9,7 +9,13 @@ summary: TiDB 数据库中 SHOW PLACEMENT FOR 的使用概况。
 >
 > Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
 
-`SHOW PLACEMENT FOR` 用于汇总直接放置 (direct placement) 和放置策略 (placement policy) 中所有的放置选项，并为特定表、数据库或分区以规范形式呈现这些选项信息。
+`SHOW PLACEMENT FOR` 用于汇总所有放置策略 (placement policy) ，并用统一的形式呈现特定表、数据库或分区的信息。
+
+本语句返回结果中的 `Scheduling_State` 列标识了 Placement Driver (PD) 在当前对象上的调度进度，有以下可能的结果：
+
+* `PENDING`: PD 没有进行调度。可能的原因之一是放置规则虽然语法上正确，但集群拓扑并不满足。比如指定 `FOLLOWERS=4` 但只有 3 个可用作 follower 的 TiKV 实例。
+* `INPROGRESS`: PD 正在进行调度。
+* `SCHEDULED`: PD 调度完成。
 
 ## 语法图
 
@@ -32,14 +38,11 @@ CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west
 use test;
 ALTER DATABASE test PLACEMENT POLICY=p1;
 CREATE TABLE t1 (a INT);
-CREATE TABLE t2 (a INT) PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4;
 SHOW PLACEMENT FOR DATABASE test;
 SHOW PLACEMENT FOR TABLE t1;
 SHOW CREATE TABLE t1\G
-SHOW PLACEMENT FOR TABLE t2;
-CREATE TABLE t3 (a INT) PARTITION BY RANGE (a) (PARTITION p1 VALUES LESS THAN (10), PARTITION p2 VALUES LESS THAN (20) FOLLOWERS=4);
+CREATE TABLE t3 (a INT) PARTITION BY RANGE (a) (PARTITION p1 VALUES LESS THAN (10), PARTITION p2 VALUES LESS THAN (20));
 SHOW PLACEMENT FOR TABLE t3 PARTITION p1;
-SHOW PLACEMENT FOR TABLE t3 PARTITION p2;
 ```
 
 ```sql
@@ -72,27 +75,11 @@ Create Table: CREATE TABLE `t1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin /*T![placement] PLACEMENT POLICY=`p1` */
 1 row in set (0.00 sec)
 
-+---------------+----------------------------------------------------------------------+------------------+
-| Target        | Placement                                                            | Scheduling_State |
-+---------------+----------------------------------------------------------------------+------------------+
-| TABLE test.t2 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1" FOLLOWERS=4 | INPROGRESS       |
-+---------------+----------------------------------------------------------------------+------------------+
-1 row in set (0.00 sec)
-
-Query OK, 0 rows affected (0.14 sec)
-
 +----------------------------+-----------------------------------------------------------------------+------------------+
 | Target                     | Placement                                                             | Scheduling_State |
 +----------------------------+-----------------------------------------------------------------------+------------------+
 | TABLE test.t3 PARTITION p1 | PRIMARY_REGION="us-east-1" REGIONS="us-east-1,,us-west-1" FOLLOWERS=4 | INPROGRESS       |
 +----------------------------+-----------------------------------------------------------------------+------------------+
-1 row in set (0.00 sec)
-
-+----------------------------+-------------+------------------+
-| Target                     | Placement   | Scheduling_State |
-+----------------------------+-------------+------------------+
-| TABLE test.t3 PARTITION p2 | FOLLOWERS=4 | INPROGRESS       |
-+----------------------------+-------------+------------------+
 1 row in set (0.00 sec)
 ```
 

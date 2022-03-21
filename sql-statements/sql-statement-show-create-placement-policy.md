@@ -9,7 +9,7 @@ summary: TiDB 数据库中 SHOW CREATE PLACEMENT POLICY 的使用概况。
 >
 > Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
 
-`SHOW CREATE PLACEMENT POLICY` 语句可用于查看放置策略当前的定义，并在另一个 TiDB 集群中重新创建该策略。
+`SHOW CREATE PLACEMENT POLICY` 语句可用于查看放置规则当前的定义，并在另一个 TiDB 集群中重新创建该策略。
 
 ## 语法图
 
