@@ -173,7 +173,7 @@ ALTER DATABASE db_name SET TIFLASH REPLICA count
 ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
 ```
 
-删除副本：
+执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
 
 {{< copyable "sql" >}}
 
