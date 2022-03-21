@@ -16,12 +16,12 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 | [比较运算](/functions-and-operators/operators.md#比较方法和操作符) | <, <=, =, != (`<>`), >, >=, [`<=>`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#operator_equal-to), [`IN()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_in), IS NULL, LIKE, IS TRUE, IS FALSE, [`COALESCE()`](https://dev.mysql.com/doc/refman/5.7/en/comparison-operators.html#function_coalesce) |
 | [数值运算](/functions-and-operators/numeric-functions-and-operators.md) | +, -, *, /, [`ABS()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_abs), [`CEIL()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceil), [`CEILING()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_ceiling), [`FLOOR()`](https://dev.mysql.com/doc/refman/5.7/en/mathematical-functions.html#function_floor) |
 | [控制流运算](/functions-and-operators/control-flow-functions.md) | [`CASE`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#operator_case), [`IF()`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#function_if), [`IFNULL()`](https://dev.mysql.com/doc/refman/5.7/en/flow-control-functions.html#function_ifnull) |
-| [JSON运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br/> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br/> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br/> [JSON_ARRAY([val[, val] ...])][json_array],<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br/> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br/> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
+| [JSON 运算](/functions-and-operators/json-functions.md) | [JSON_TYPE(json_val)][json_type],<br/> [JSON_EXTRACT(json_doc, path[, path] ...)][json_extract],<br/> [JSON_OBJECT(key, val[, key, val] ...)][json_object],<br/> [JSON_ARRAY([val[, val] ...])][json_array],<br/> [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge],<br/> [JSON_SET(json_doc, path, val[, path, val] ...)][json_set],<br/> [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert],<br/> [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace],<br/> [JSON_REMOVE(json_doc, path[, path] ...)][json_remove] |
 | [日期运算](/functions-and-operators/date-and-time-functions.md) | [`DATE_FORMAT()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_date-format)  |
 
 ## 禁止特定表达式下推
 
-当函数的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将上述支持的函数或运算符名加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。
+当上述支持的函数或特定的数据类型（**仅支持** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程由于下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名，运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[加入黑名单](#加入黑名单)。
 
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
 
@@ -39,8 +39,8 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以上结果字段解释如下：
 
-+ `name`：禁止下推的函数名。
-+ `store_type`：用于指明希望禁止该函数下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
++ `name`：禁止下推的函数名或数据类型。
++ `store_type`：用于指明希望禁止该函数或数据类型下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
     - `store_type` 为 `tidb` 时表示在读取 TiDB 内存表时，是否允许该函数在其他 TiDB Server 上执行。
     - `store_type` 为 `tikv` 时表示是否允许该函数在 TiKV Server 的 Coprocessor 模块中执行。
     - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
@@ -50,30 +50,27 @@ tidb> desc mysql.expr_pushdown_blacklist;
 >
 > `tidb` 是一种特殊的 store_type，其含义是 TiDB 内存表，比如：`PERFORMANCE_SCHEMA.events_statements_summary_by_digest`，属于系统表的一种，非特殊情况不用考虑这种存储引擎。
 
-当数据列的计算过程由于下推而出现异常时，可通过黑名单功能禁止其下推来快速恢复业务。具体而言，你可以将数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止列下推, 目前仅支持 `ENUM` 和 `BIT`。
-
-```sql
-mysql> insert into mysql.expr_pushdown_blacklist values('bit', 'tikv','');
-Query OK, 1 row affected (0.01 sec)
-```
-
 ### 加入黑名单
 
 执行以下步骤，可将一个或多个函数或运算符加入黑名单：
 
-1. 向 `mysql.expr_pushdown_blacklist` 插入对应的函数名或运算符名以及希望禁止下推的存储类型集合。
+1. 向 `mysql.expr_pushdown_blacklist` 插入以下两种类型的内容：
+
+    - 希望禁止下推的[函数名，运算符名](#已支持下推的表达式列表），或数据类型（**仅支持** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
+    - 希望禁止下推的存储类型集合
+
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 ### 移出黑名单
 
 执行以下步骤，可将一个或多个函数及运算符移出黑名单：
 
-1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名或运算符名。
+1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名，运算符名，或数据类型。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
-### 黑名单用法示例
+### 黑名单功能使用示例
 
-以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
+以下示例首先将运算符 `DATE_FORMAT()`、`>` 及 `BIT` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/explain-overview.md)）。
 
@@ -91,7 +88,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 +-------------------------+----------+-----------+---------------+------------------------------------+
 3 rows in set (0.00 sec)
 
-tidb> insert into mysql.expr_pushdown_blacklist values('<', 'tikv',''), ('>','tikv','');
+tidb> insert into mysql.expr_pushdown_blacklist values('date_format()', 'tikv',''), ('>','tikv',''), ('bit','tikv','');
 Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 
