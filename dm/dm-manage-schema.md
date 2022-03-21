@@ -71,15 +71,18 @@ Use "dmctl binlog-schema [command] --help" for more information about a command.
 
 ## 参数解释
 
-+ `delete`: 删除表结构
-+ `list`: 获取查看表结构
-+ `update`: 更新设置表结构
-+ `-s`:
++ `delete`：删除表结构
++ `list`：获取查看表结构
++ `update`：更新设置表结构
++ `-s` 或 `--source`:
     - 必选
     - 指定操作将应用到的 MySQL 源
 
 ## 使用示例
-#### binlog-schema list 命令
+
+### 获取表结构
+
+如需获取表结构，可使用 `binlog-schema list` 命令：
 
 ```bash
 help binlog-schema list
@@ -97,7 +100,6 @@ Flags:
 Global Flags:
   -s, --source strings   MySQL Source ID.
 ```
-#### 获取表结构
 
 假设要获取 `db_single` 任务对应于 `mysql-replica-01` MySQL 源的 ``` `db_single`.`t1` ``` 表的表结构，则执行如下命令：
 
@@ -121,7 +123,10 @@ binlog-schema list -s mysql-replica-01 task_single db_single t1
     ]
 }
 ```
-### binlog-schema update 命令
+
+### 更新设置表结构
+
+如需更新设置表结构，可使用 `binlog-schema update` 命令：
 
 ```bash
 help binlog-schema update
@@ -143,9 +148,8 @@ Flags:
 Global Flags:
   -s, --source strings   MySQL Source ID.
 ```
-#### 更新设置表结构
 
-假设要设置 `db_single` 任务对应于 `mysql-replica-01` MySQL 源的 ``` `db_single`.`t1` ``` 表的表结构为
+假设要设置 `db_single` 任务对应于 `mysql-replica-01` MySQL 源的 ``` `db_single`.`t1` ``` 表的表结构为如下所示：
 
 ```sql
 CREATE TABLE `t1` (
@@ -155,7 +159,7 @@ CREATE TABLE `t1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin
 ```
 
-则将上述 `CREATE TABLE` 语句保存为文件（如 `db_single.t1-schema.sql`）后执行如下命令：
+则将上述 `CREATE TABLE` 语句保存为文件（如 `db_single.t1-schema.sql`）后，执行如下命令：
 
 {{< copyable "" >}}
 
@@ -177,7 +181,11 @@ binlog-schema update -s mysql-replica-01 task_single db_single t1 db_single.t1-s
     ]
 }
 ```
-### binlog-schema delete 命令
+
+### 删除表结构
+
+如需删除表结构，可使用 `binlog-schema delete` 命令：
+
 ```bash
 help binlog-schema delete
 ```
@@ -194,7 +202,6 @@ Flags:
 Global Flags:
   -s, --source strings   MySQL Source ID.
 ```
-#### 删除表结构
 
 > **注意：**
 >

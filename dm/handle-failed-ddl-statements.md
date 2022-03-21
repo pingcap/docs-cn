@@ -12,7 +12,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/skip-or-replace-abnormal-sql-stateme
 
 ## 使用限制
 
-如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代或插入其他 DDL语句，则不适合使用此方式进行处理。
+如果业务不能接受下游 TiDB 跳过异常的 DDL 语句，也不接受使用其他 DDL 语句作为替代，不接受插入其他 DDL 语句，则不适合使用此方式进行处理。
 
 比如：`DROP PRIMARY KEY`，这种情况下，只能在下游重建一个（DDL 执行完后的）新表结构对应的表，并将原表的全部数据重新导入该新表。
 
@@ -21,7 +21,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/skip-or-replace-abnormal-sql-stateme
 迁移过程中，上游执行了 TiDB 不支持的 DDL 语句并迁移到了 DM，造成迁移任务中断。
 
 - 如果业务能接受下游 TiDB 不执行该 DDL 语句，则使用 `binlog skip <task-name>` 跳过对该 DDL 语句的迁移以恢复迁移任务。
-- 如果业务能接受下游 TiDB 执行其他 DDL 语句来作为替代，则使用 `binlog replace <task-name> ` 替代该 DDL 的迁移以恢复迁移任务。
+- 如果业务能接受下游 TiDB 执行其他 DDL 语句来作为替代，则使用 `binlog replace <task-name>` 替代该 DDL 的迁移以恢复迁移任务。
 - 如果业务能接受下游 TiDB 插入执行其他 DDL 语句，则使用 `binlog inject <task-name>` 插入其他 DDL 以恢复迁移任务。
 
 ## 命令介绍
@@ -101,10 +101,13 @@ Use "dmctl binlog [command] --help" for more information about a command.
 + 其他参数参考 `-h` 提示。
 
 ## 使用示例
-### binlog skip 命令
+
+### 迁移中断执行跳过操作
+
+如需在迁移中断时执行跳过操作，可使用 `binlog skip` 命令：
 
 ```bash
-» binlog skip -h
+binlog skip -h
 ```
 
 ```
@@ -120,9 +123,8 @@ Global Flags:
   -b, --binlog-pos string   position used to match binlog event if matched the binlog operation will be applied. The format like "mysql-bin|000001.000003:3270"
   -s, --source strings      MySQL Source ID.
 ```
-#### 迁移中断执行跳过操作
 
-##### 非合库合表场景
+#### 非合库合表场景
 
 假设现在需要将上游的 `db1.tbl1` 表迁移到下游 TiDB，初始时表结构为：
 
@@ -165,7 +167,7 @@ ERROR 8200 (HY000): Unsupported modify column: can't change decimal column preci
     {{< copyable "" >}}
 
     ```bash
-    » binlog skip test 
+    » binlog skip test
     ```
 
     ```
@@ -240,7 +242,7 @@ ERROR 8200 (HY000): Unsupported modify column: can't change decimal column preci
 
     可以看到任务运行正常，错误的 DDL 被跳过。
 
-##### 合库合表场景
+#### 合库合表场景
 
 假设现在存在如下四个上游表需要合并迁移到下游的同一个表 ``` `shard_db`.`shard_table` ```，任务模式为悲观协调模式：
 
@@ -457,10 +459,12 @@ ALTER TABLE `shard_db_*`.`shard_table_*` CHARACTER SET LATIN1 COLLATE LATIN1_DAN
 
     可以看到任务运行正常，无错误信息。四条 DDL 全部被跳过。
 
-### binlog replace 命令
+### 迁移中断执行替代操作
+
+如需在迁移中断时执行替代操作，可使用 `binlog replace` 命令：
 
 ```bash
-» binlog replace -h
+binlog replace -h
 ```
 
 ```
@@ -476,9 +480,8 @@ Global Flags:
   -b, --binlog-pos string   position used to match binlog event if matched the binlog operation will be applied. The format like "mysql-bin|000001.000003:3270"
   -s, --source strings      MySQL Source ID.
 ```
-#### 迁移中断执行替代操作
 
-##### 非合库合表场景
+#### 非合库合表场景
 
 假设现在需要将上游的 `db1.tbl1` 表迁移到下游 TiDB，初始时表结构为：
 
@@ -598,7 +601,7 @@ ALTER TABLE `db1`.`tbl1` ADD COLUMN new_col INT UNIQUE;
 
     可以看到任务运行正常，错误的 DDL 已被替换且执行成功。
 
-##### 合库合表场景
+#### 合库合表场景
 
 假设现在存在如下四个上游表需要合并迁移到下游的同一个表 ``` `shard_db`.`shard_table` ```，任务模式为悲观协调模式：
 
@@ -846,4 +849,7 @@ ALTER TABLE `shard_db_*`.`shard_table_*` ADD COLUMN new_col INT UNIQUE;
     </details>
 
     可以看到任务运行正常，无错误信息。四条 DDL 全部被替换。
-#### binlog 其他命令的使用请参考上述 skip, replace 命令使用方式。
+
+### 其他命令
+
+binlog 其他命令的使用，请参考上述 `binlog skip`、`binlog replace` 命令的使用方式。
