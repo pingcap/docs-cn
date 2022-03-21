@@ -251,7 +251,7 @@ MySQL 及 DM 操作与处理流程如下：
 
     `shard-ddl-lock` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
 
-6. 使用 `unlock-dll-lock` 来请求 DM-master 主动 unlock 该 DDL lock。
+6. 使用 `shard-ddl-lock unlock` 来请求 DM-master 主动 unlock 该 DDL lock。
 
     - 如果 DDL lock 的 owner 也已经被移除，可以使用 `--owner` 参数指定其他 MySQL source 作为新 owner 来执行 DDL。
     - 当存在任意 MySQL source 报错时，`result` 将为 `false`，此时请仔细检查各 MySQL source 的错误是否是预期可接受的。
@@ -268,7 +268,7 @@ MySQL 及 DM 操作与处理流程如下：
             "msg": ""
         ```
 
-7. 使用 `show-dd-locks` 确认 DDL lock 是否被成功 unlock。
+7. 使用 `shard-ddl-lock` 确认 DDL lock 是否被成功 unlock。
 
     ```bash
     shard-ddl-lock test
