@@ -266,7 +266,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
     USING
         SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
 
-    -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
+    -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划
 
     explain format = 'verbose' SELECT * FROM t;
     show warnings;
