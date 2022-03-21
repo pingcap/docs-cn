@@ -65,8 +65,8 @@ delta_index_cache_size = 0
 
     ## DTFile 储存文件格式
     ## * format_version = 1 老旧文件格式，已废弃
-    ## * format_version = 2 默认文件格式
-    ## * format_version = 3 新文件格式，具有更完善的检验功能
+    ## * format_version = 2 v6.0.0 以前版本的默认文件格式
+    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
     # format_version = 2
 
     [storage.main]
