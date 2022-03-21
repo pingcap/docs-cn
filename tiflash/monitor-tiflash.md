@@ -46,7 +46,7 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 
 ## Task Scheduler
 
-- Min TSO：每个 TiFlash 实例上正在运行的查询语句中 TSO 最小值，默认值是 Uint64 的最大值。正常负载运行情况下，min TSO 不断在演进，呈现出一条斜向上的直线。如果某一阶段变成水平线段，表示这一段时间内都一直是当前 TSO 的查询在运行。更坏情况是当前有效 min TSO 一直不变，表示当前 TSO 对应的查询 hang 住，需要结合日志进一步排查。
+- Min TSO：每个 TiFlash 实例上正在运行的查询语句中 TSO 最小值，TiFlash 会维护该值以确保具有更小 TSO 的查询可以被调度到。如果当前没有正在运行的查询，则该值为 `uint64` 最大值。
 - Estimated Thread Usage and Limit：每个 TiFlash 实例上当前正在运行的所有任务占用的估计的线程使用量，以及该实例上任务调度器设置的估计线程使用量的软限制和硬限制。
 - Active and Waiting Queries Count：每个 TiFlash 实例上当前正在运行的查询和等待的查询数目。
 - Active and Waiting Tasks Count：每个 TiFlash 实例上当前正在运行的任务和等待的任务数目。
