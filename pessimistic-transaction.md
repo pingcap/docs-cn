@@ -177,3 +177,26 @@ pipelined = false
 ```sql
 set config tikv pessimistic-txn.pipelined='false';
 ```
+
+## 内存悲观锁
+
+TiKV 6.0 引入了内存悲观锁功能。开启内存悲观锁功能后，悲观锁通常只会被存储在 region leader 的内存中，而不会将锁持久化到磁盘，也不会通过 Raft 协议将锁同步到其他副本。当内存悲观锁占用的内存达到 region 或节点的阈值时，加悲观锁会回退为使用 [pipelined 加锁流程](#pipelined-加锁流程)。当 region 发生合并或 leader 迁移时，为避免悲观锁丢失，TiKV 会将内存悲观锁写入磁盘并同步到其他副本。
+
+内存悲观锁实现了和 [pipelined 加锁](#pipelined-加锁流程)类似的表现，即集群无异常时不影响加锁表现，但当 TiKV 出现网络隔离或者节点宕机时，事务加的悲观锁可能丢失。
+
+如果业务逻辑依赖加锁或等锁机制，或者即使在集群异常情况下也要尽可能保证事务提交的成功率，应**关闭**内存悲观锁功能。
+
+该功能默认开启，可修改 TiKV 配置关闭：
+
+```toml
+[pessimistic-txn]
+in-memory = false
+```
+
+也可通过[在线修改 TiKV 配置](/dynamic-config.md#在线修改-tikv-配置)功能动态关闭该功能：
+
+{{< copyable "sql" >}}
+
+```sql
+set config tikv pessimistic-txn.in-memory='false';
+```
