@@ -178,7 +178,7 @@ if the DDL is not needed, you can use a filter rule with \"*\" schema-pattern to
 
 出现报错的原因是 TiDB parser 无法解析上游的 DDL，例如 `ALTER EVENT`，所以 `sql-skip` 不会按预期生效。可以在任务配置文件中添加 [Binlog 过滤规则](/dm/dm-key-features.md#binlog-event-filter)进行过滤，并设置 `schema-pattern: "*"`。从 DM 2.0.1 版本开始，已预设过滤了 `EVENT` 相关语句。
 
-在 DM v6.0 版本之后 `sql-skip`, `handle-error` 均已经被已经被 `binlog` 替代，`binlog` 可以跳过该类错误。
+在 DM v6.0 版本之后 `sql-skip`, `handle-error` 均已经被 `binlog` 替代，`binlog` 可以跳过该类错误。
 
 ## DM 同步时下游长时间出现 REPLACE 语句
 
