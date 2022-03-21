@@ -71,7 +71,7 @@ TiDB 会根据 `tidb_disable_txn_auto_retry` 和 `tidb_retry_limit` 参数设置
 {{< copyable "" >}}
 
 ```shell
-./pd-ctl -u https://127.0.0.1:2379 tso {TIMESTAMP}
+tiup ctl pd -u https://127.0.0.1:2379 tso {TIMESTAMP}
 ```
 
 通过 tableID 查找具体的表名：
