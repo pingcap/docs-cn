@@ -161,9 +161,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 ALTER DATABASE db_name SET TIFLASH REPLICA count
 ```
 
-该命令的参数说明如下：
-
-- count 表示副本数，0 表示删除。
+在该命令中，`${count}` 表示 TiFlash 的副本数。当设置 `${count}` 值为 0 时，表示删除现有的 TiFlash 副本。
 
 命令示例：
 
