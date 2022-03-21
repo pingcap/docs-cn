@@ -174,7 +174,7 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 可以尝试降低并发大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
 
-为 `--ddl-batch-size` 设置了非 `0` 的值后，在使用 BR 恢复数据时，TiDB 会将执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 6 MB（**不建议**修改此值），单次发送的所有表的 schema 大小的总和不可以超过 6 MB。因此，如果你设置的  `--ddl-batch-size`  的值过大，导致单次发送的批量表的 schema 大小超出规定值，BR 会报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
+为 `--ddl-batch-size` 设置了大于 `1` 的值后，在使用 BR 恢复数据时，TiDB 会将执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 6 MB（**不建议**修改此值），单次发送的所有表的 schema 大小的总和不可以超过 6 MB。因此，如果你设置的  `--ddl-batch-size`  的值过大，导致单次发送的批量表的 schema 大小超出规定值，BR 会报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
 
 具体 `--ddl-batch-size` 参数相关内容，请参阅 [BR 批量建表](/br/br-batch-create-table.md)。如需了解可单次写入的请求数据量的限制，请参阅 TiDB 配置项 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-span-classversion-mark从-v50-版本开始引入span) 和 TiKV 配置项 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)。
 
