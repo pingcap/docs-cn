@@ -383,7 +383,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变。
 3. 升级完成后，根据情况手动删除绑定。
 
-    - 检查绑定来源：
+    - 通过[`SHOW BINDINGS`](#查看绑定)语句检查绑定来源：
 
         根据输出中的 `Source` 字段对绑定的来源进行区分，确认是通过捕获(`capture`) 生成还是通过手动创建(`manual`) 生成。
 
