@@ -306,6 +306,8 @@ SHOW binding_cache status;
 
 ## 自动捕获绑定 (Baseline Capturing)
 
+自动绑定会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于[升级时的计划回退防护](#升级时的计划回退防护)。
+
 ### 使用方式
 
 通过将 `tidb_capture_plan_baselines` 的值设置为 `on`（其默认值为 `off`）可以打开自动捕获绑定功能。
