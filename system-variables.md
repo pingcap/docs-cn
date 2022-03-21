@@ -1507,12 +1507,8 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
-
-> **警告：**
->
-> Top SQL 目前为实验特性，不建议在生产环境中使用。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 

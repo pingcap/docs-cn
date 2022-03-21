@@ -109,7 +109,7 @@ PD 中的 Store 指的是集群中的存储节点，也就是 tikv-server 实例
 
 ### Top SQL
 
-从 v5.4 起引入的实验特性，用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。详情参见 [Top SQL 用户文档](/dashboard/top-sql.md)。
+Top SQL 用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。详情参见 [Top SQL 用户文档](/dashboard/top-sql.md)。
 
 ### TSO
 

@@ -68,4 +68,3 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。（v4.0 实验特性）
 + [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
 + [持续性能分析](/dashboard/continuous-profiling.md)。（v5.3 实验特性）
-+ [Top SQL](/dashboard/top-sql.md)。（v5.4 实验特性）
