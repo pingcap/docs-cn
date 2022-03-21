@@ -52,54 +52,54 @@ tiup dmctl check-task ./task.yaml
 
 ### 全量数据迁移模式（ `task-mode: full` ）
 
-    - （必须）上游数据库的 dump 权限
+* （必须）上游数据库的 dump 权限
 
-        - 检查是否有 INFORMATION_SCHEMA 和 dump 表的 SELECT 权限。
-        - 如果 consistency=flush，将检查是否有 RELOAD 权限。
-        - 如果 consistency=flush/lock，将检查是否有 dump 表的 LOCK TABLES 权限。
+    - 检查是否有 INFORMATION_SCHEMA 和 dump 表的 SELECT 权限。
+    - 如果 consistency=flush，将检查是否有 RELOAD 权限。
+    - 如果 consistency=flush/lock，将检查是否有 dump 表的 LOCK TABLES 权限。
 
-    - （必须）上游 MySQL 多实例分库分表的一致性
+* （必须）上游 MySQL 多实例分库分表的一致性
 
-        + 悲观协调模式下，检查所有分表的表结构是否一致，检查内容包括：
+    - 悲观协调模式下，检查所有分表的表结构是否一致，检查内容包括：
 
-            - Column 数量
-            - Column 名称
-            - Column 顺序
-            - Column 类型
-            - 主键
-            - 唯一索引
+        - Column 数量
+        - Column 名称
+        - Column 顺序
+        - Column 类型
+        - 主键
+        - 唯一索引
 
-        + 乐观协调模式下，检查所有分表结构是否满足[乐观协调兼容](https://github.com/pingcap/tiflow/blob/master/dm/docs/RFCS/20191209_optimistic_ddl.md#modifying-column-types)。
+    - 乐观协调模式下，检查所有分表结构是否满足[乐观协调兼容](https://github.com/pingcap/tiflow/blob/master/dm/docs/RFCS/20191209_optimistic_ddl.md#modifying-column-types)。
 
-        + 如果曾经通过 `start-task` 命令成功启动任务，那么将不会对一致性进行检查。
+    - 如果曾经通过 `start-task` 命令成功启动任务，那么将不会对一致性进行检查。
 
-    - 分表中自增主键检查
+* 分表中自增主键检查
 
-        - 分表存在自增主键时返回警告。如果存在自增主键冲突，请参照[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)解决。
+    - 分表存在自增主键时返回警告。如果存在自增主键冲突，请参照[自增主键冲突处理](/dm/shard-merge-best-practices.md#自增主键冲突处理)解决。
 
 ### 增量数据迁移模式（ `task-mode: incremental` ）
 
-    - （必须）上游数据库的 REPLICATION 权限
+* （必须）上游数据库的 REPLICATION 权限
 
-        - 检查是否有 REPLICATION CLIENT 权限。
-        - 检查是否有 REPLICATION SLAVE 权限。
+    - 检查是否有 REPLICATION CLIENT 权限。
+    - 检查是否有 REPLICATION SLAVE 权限。
 
-    - （必须）数据库主从配置
+* （必须）数据库主从配置
 
-        - 上游数据库必须设置数据库 ID `server_id`（非 AWS Aurora 环境建议开启 GTID）。
+    - 上游数据库必须设置数据库 ID `server_id`（非 AWS Aurora 环境建议开启 GTID）。
 
-    - （必须）MySQL binlog 配置
+* （必须）MySQL binlog 配置
 
-        - 检查 binlog 是否开启（DM 要求 binlog 必须开启）。
-        - 检查是否有 `binlog_format=ROW`（DM 只支持 ROW 格式的 binlog 迁移）。
-        - 检查是否有 `binlog_row_image=FULL`（DM 只支持 `binlog_row_image=FULL`）。
-        - 如果配置了 `binlog_do_db` 或者 `binlog_ignore_db`，那么检查需要迁移的库表，是否满足 `binlog_do_db` 和 `binlog_ignore_db` 的条件。
+    - 检查 binlog 是否开启（DM 要求 binlog 必须开启）。
+    - 检查是否有 `binlog_format=ROW`（DM 只支持 ROW 格式的 binlog 迁移）。
+    - 检查是否有 `binlog_row_image=FULL`（DM 只支持 `binlog_row_image=FULL`）。
+    - 如果配置了 `binlog_do_db` 或者 `binlog_ignore_db`，那么检查需要迁移的库表，是否满足 `binlog_do_db` 和 `binlog_ignore_db` 的条件。
 
-    - （必须）检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。如果处于 online-DDL 中，则检查报错，请等待 DDL 结束后重试。
+* （必须）检查上游是否处于 [Online-DDL](/dm/feature-online-ddl.md) 过程中，即创建了 `ghost` 表，但还未执行 `rename` 的阶段。如果处于 online-DDL 中，则检查报错，请等待 DDL 结束后重试。
 
 ### 全量加增量数据迁移模式 （ `task-mode: all` ）
 
-    对于全量加增量数据迁移模式，除了通用检查项外，前置检查还将包含全量数据迁移模式（ `task-mode: full` ）相关的检查项，以及增量数据迁移模式（ `task-mode: incremental` ）相关的检查项。
+对于全量加增量数据迁移模式，除了通用检查项外，前置检查还将包含全量数据迁移模式（ `task-mode: full` ）相关的检查项，以及增量数据迁移模式（ `task-mode: incremental` ）相关的检查项。
 
 ## 检查配置
 
