@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 
 ## 禁止特定表达式下推
 
-当上述支持的函数或特定的数据类型（**仅支持** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程由于下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名，运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[加入黑名单](#加入黑名单)。
+当上述的函数，运算符，或特定的数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程因下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名，运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[加入黑名单](#加入黑名单)。
 
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
 
@@ -39,8 +39,8 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以上结果字段解释如下：
 
-+ `name`：禁止下推的函数名或数据类型。
-+ `store_type`：用于指明希望禁止该函数或数据类型下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
++ `name`：禁止下推的函数名，运算符名，或数据类型。
++ `store_type`：用于指明希望禁止该函数，运算符，或数据类型下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
     - `store_type` 为 `tidb` 时表示在读取 TiDB 内存表时，是否允许该函数在其他 TiDB Server 上执行。
     - `store_type` 为 `tikv` 时表示是否允许该函数在 TiKV Server 的 Coprocessor 模块中执行。
     - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
@@ -54,10 +54,10 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 执行以下步骤，可将一个或多个函数或运算符加入黑名单：
 
-1. 向 `mysql.expr_pushdown_blacklist` 插入以下两种类型的内容：
+1. 向 `mysql.expr_pushdown_blacklist` 插入以下内容：
 
-    - 希望禁止下推的[函数名，运算符名](#已支持下推的表达式列表），或数据类型（**仅支持** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
-    - 希望禁止下推的存储类型集合
+    - 希望禁止下推的[函数名，运算符名](#已支持下推的表达式列表），或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
+    - 希望禁止下推的存储引擎
 
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
@@ -70,7 +70,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 ### 黑名单功能使用示例
 
-以下示例首先将运算符 `DATE_FORMAT()`、`>` 及 `BIT` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
+以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及 数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
 
 黑名单是否生效可以从 `explain` 结果中进行观察（参见[如何理解 `explain` 结果](/explain-overview.md)）。
 
