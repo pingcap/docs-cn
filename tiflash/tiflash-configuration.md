@@ -172,11 +172,12 @@ delta_index_cache_size = 0
 [profiles]
 
 [profiles.default]
-    ## The default value is true. This parameter determines whether the segment
+    ## The default value is false. This parameter determines whether the segment
     ## of DeltaTree Storage Engine uses logical split.
-    ## Using the logical split can reduce the write amplification, and improve the write speed.
+    ## Using the logical split can reduce the write amplification.
     ## However, these are at the cost of disk space waste.
-    dt_enable_logical_split = true
+    ## Modifying the default value is not recommended.
+    # dt_enable_logical_split = false
 
     ## The memory usage limit for the generated intermediate data when a single
     ## coprocessor query is executed. The default value is 0, which means no limit.
