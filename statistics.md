@@ -439,11 +439,13 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 {{< copyable "sql" >}}
 
-其中，`ShowLikeOrWhereOpt` 部分的语法图为：
-
 ```sql
 SHOW STATS_META [ShowLikeOrWhere];
 ```
+
+其中，`ShowLikeOrWhereOpt` 部分的语法图为：
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
@@ -464,13 +466,17 @@ SHOW STATS_META [ShowLikeOrWhere];
 
 通过 `SHOW STATS_HEALTHY` 可以查看表的统计信息健康度，并粗略估计表上统计信息的准确度。当 `modify_count` >= `row_count` 时，健康度为 0；当 `modify_count` < `row_count` 时，健康度为 (1 - `modify_count`/`row_count`) * 100。
 
+语法如下：
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW SHOW STATS_HEALTHY [ShowLikeOrWhere];
+```
+
 `SHOW STATS_HEALTHY` 的语法图为：
 
 ![ShowStatsHealthy](/media/sqlgram/ShowStatsHealthy.png)
-
-其中，`ShowLikeOrWhereOpt` 部分的语法图为：
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 目前，`SHOW STATS_HEALTHY` 会输出 4 列，具体如下：
 
