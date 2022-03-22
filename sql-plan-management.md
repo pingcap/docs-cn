@@ -366,7 +366,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 | **过滤维度** | **维度名称** | **说明**                                                     | 注意事项                                                     |
 | :----------- | :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
 | 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
-| 频率         | frequency    | 默认捕获执行超过一次的语句。可以设置较大值来增加捕获语句的频率。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条变更频率，频率最大的值会被用作过滤条件。 |
+| 频率         | frequency    | 默认捕获执行超过一次的语句。可以设置较大值来增加捕获语句的频率。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条频率过滤规则，频率最大的值会被用作过滤条件。 |
 | 用户名       | user         | 黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
 
 > **注意：**
