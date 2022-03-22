@@ -69,7 +69,7 @@ BR 和 TiDB 集群的兼容性问题有以下几方面：
 
     + BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 5.4.0 之前的 TiDB 集群。
 
-    + BR 在 v6.0.0 之前不支持绑定[放置规则](/placement-rules-in-sql.md)的表。确保使用 BR v6.0.0 及以上版本，配合 `--with-tidb-placement-mode=strict/ignore` 命令行选项进行备份和恢复。当值为 `strict`，BR 将会导入放置规则，否则导入时会忽略。
+    + BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。 BR v6.0.0 及以上版本开始支持并提供了命令行选项 `--with-tidb-placement-mode=strict/ignore` 来控制放置规则的导入模式。 默认值为 `strict` 代表导入并检查放置规则，否则当其设置为 `ignore` 时忽略所有的放置规则。
   
 + 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间如果没有统一开启或关闭，就会带来不兼容的问题
 
