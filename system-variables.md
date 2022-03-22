@@ -294,13 +294,6 @@ This variable is an alias for `last_insert_id`.
 >
 > Unlike in MySQL, the `max_execution_time` system variable currently works on all kinds of statements in TiDB, not only restricted to the `SELECT` statement. The precision of the timeout value is roughly 100ms. This means the statement might not be terminated in accurate milliseconds as you specify.
 
-### placement_checks <span class="version-mark">New in v5.3.0</span>
-
-- Scope: SESSION | GLOBAL
-- Default value: `ON`
-- This variable controls whether DDL statements validate [Placement Rules in SQL](/placement-rules-in-sql.md).
-- It is intended to be used by logical dump/restore tools to ensure that tables can always be created even if placement rules are violated. This is similar to how mysqldump writes `SET FOREIGN_KEY_CHECKS=0;` to the start of every dump file.
-
 ### plugin_dir
 
 - Scope: INSTANCE
@@ -427,7 +420,7 @@ This variable is an alias for `last_insert_id`.
 ### tidb_allow_function_for_expression_index <span class="version-mark">New in v5.2.0</span>
 
 - Scope: NONE
-- Default value: `lower, md5, reverse, upper, vitess_hash`
+- Default value: `lower, md5, reverse, tidb_shard, upper, vitess_hash`
 - This variable is used to show the functions that are allowed to be used for creating expression indexes.
 
 ### tidb_allow_mpp <span class="version-mark">New in v5.0</span>
@@ -520,7 +513,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_capture_plan_baselines <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION | GLOBAL
+- Scope: GLOBAL
 - Default value: `OFF`
 - This variable is used to control whether to enable the [baseline capturing](/sql-plan-management.md#baseline-capturing) feature. This feature depends on the statement summary, so you need to enable the statement summary before you use baseline capturing.
 - After this feature is enabled, the historical SQL statements in the statement summary are traversed periodically, and bindings are automatically created for SQL statements that appear at least twice.
@@ -659,16 +652,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
 > - If you have enabled TiDB Binlog, enabling this variable cannot improve the performance. To improve the performance, it is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead.
 > - Enabling this parameter only means that one-phase commit becomes an optional mode of transaction commit. In fact, the most suitable mode of transaction commit is determined by TiDB.
 
-### tidb_enable_alter_placement
-
-> **Warning:**
->
-> Currently, Placement Rules in SQL is an experimental feature. It is not recommended that you use it in production environments.
-
-- Scope: GLOBAL
-- Default value: `OFF`
-- This variable enables or disables [Placement Rules in SQL](/placement-rules-in-sql.md).
-
 ### tidb_enable_amend_pessimistic_txn <span class="version-mark">New in v4.0.7</span>
 
 - Scope: SESSION | GLOBAL
@@ -767,10 +750,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_index_merge <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION | GLOBAL
-- Default value: `ON`
-- This variable is used to control whether to enable the index merge feature.
-
 > **Note:**
 >
 > - After upgrading a TiDB cluster from versions earlier than v4.0.0 to v5.4.0 or later, this variable is disabled by default to prevent performance regression due to changes of execution plans.
@@ -778,6 +757,10 @@ Constraint checking is always performed in place for pessimistic transactions (d
 > - After upgrading a TiDB cluster from v4.0.0 or later to v5.4.0 or later, this variable remains the setting before the upgrade.
 >
 > - Since v5.4.0, for a newly deployed TiDB cluster, this variable is enabled by default.
+
+- Scope: SESSION | GLOBAL
+- Default value: `ON`
+- This variable is used to control whether to enable the index merge feature.
 
 ### tidb_enable_list_partition <span class="version-mark">New in v5.0</span>
 
@@ -844,7 +827,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_stmt_summary <span class="version-mark">New in v3.0.4</span>
 
-- Scope: SESSION | GLOBAL
+- Scope: GLOBAL
 - Default value: `ON`
 - This variable is used to control whether to enable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `information_schema.STATEMENTS_SUMMARY` system table to identify and troubleshoot SQL performance issues.
 
@@ -887,6 +870,16 @@ Query OK, 0 rows affected (0.09 sec)
 - Scope: GLOBAL
 - Default value: `ON`
 - This variable is used to dynamically control whether the telemetry collection in TiDB is enabled. By setting the value to `OFF`, the telemetry collection is disabled. If the [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) TiDB configuration item is set to `false` on all TiDB instances, the telemetry collection is always disabled and this system variable will not take effect. See [Telemetry](/telemetry.md) for details.
+
+### tidb_enable_top_sql <span class="version-mark">New in v5.4.0</span>
+
+> **Warning:**
+>
+> Currently, Top SQL is an experimental feature. It is not recommended that you use it for production environments.
+
+- Scope: GLOBAL
+- Default value: `OFF`
+- This variable is used to control whether to enable the [Top SQL](/dashboard/top-sql.md) feature.
 
 ### tidb_enable_tso_follower_proxy <span class="version-mark">New in v5.3.0</span>
 
@@ -1451,10 +1444,10 @@ Usage example:
 SET tidb_query_log_max_len = 20
 ```
 
-### `tidb_read_staleness` <span class="version-mark">New in v5.4.0</span>
+### tidb_read_staleness <span class="version-mark">New in v5.4.0</span>
 
 - Scope: SESSION
-- Default value: `0`
+- Default value: ""
 - This variable is used to set the time range of historical data that TiDB can read in the current session. After setting the value, TiDB selects a timestamp as new as possible from the range allowed by this variable, and all subsequent read operations are performed against this timestamp. For example, if the value of this variable is set to `-5`, on the condition that TiKV has the corresponding historical version's data, TiDB selects a timestamp as new as possible within a 5-second time range.
 
 ### tidb_record_plan_in_slow_log
@@ -1567,21 +1560,9 @@ SET tidb_slow_log_threshold = 200;
 - Default value: ""
 - This variable is used to set the time point at which the data is read by the session. For example, when you set the variable to "2017-11-11 20:20:20" or a TSO number like "400036290571534337", the current session reads the data of this moment.
 
-### tidb_stats_load_sync_wait <span class="version-mark">New in v5.4.0</span>
+### tidb_stats_load_pseudo_timeout <span class="version-mark">New in v5.4.0</span>
 
-> **WARNING:**
->
-> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
-
-- Scope: SESSION | GLOBAL
-- Default value: `0`
-- Unit: milliseconds
-- Range: `[0, 4294967295]`
-- This variable controls whether to enable the synchronously loading statistics feature. The default value `0` means that the feature is disabled. To enable the feature, you can set this variable to a timeout (in milliseconds) that SQL optimization can wait for at most to synchronously load complete column statistics. For details, see [Load statistics](/statistics.md#load-statistics).
-
-### `tidb_stats_load_pseudo_timeout` <span class="version-mark">New in v5.4.0</span>
-
-> **WARNING:**
+> **Warning:**
 >
 > Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
 
@@ -1589,50 +1570,52 @@ SET tidb_slow_log_threshold = 200;
 - Default value: `OFF`
 - This variable controls how TiDB behaves when the waiting time of SQL optimization reaches the timeout to synchronously load complete column statistics. The default value `OFF` means that SQL execution fails after the timeout. If you set this variable to `ON`, the SQL optimization gets back to using pseudo statistics after the timeout.
 
-### tidb_stmt_summary_history_size <span class="version-mark">New in v4.0</span>
+### tidb_stats_load_sync_wait <span class="version-mark">New in v5.4.0</span>
+
+> **Warning:**
+>
+> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
 
 - Scope: SESSION | GLOBAL
+- Default value: `0`
+- Range: `[0, 2147483647]`
+- Unit: Milliseconds
+- This variable controls whether to enable the synchronously loading statistics feature. The default value `0` means that the feature is disabled. To enable the feature, you can set this variable to a timeout (in milliseconds) that SQL optimization can wait for at most to synchronously load complete column statistics. For details, see [Load statistics](/statistics.md#load-statistics).
+
+### tidb_stmt_summary_history_size <span class="version-mark">New in v4.0</span>
+
+- Scope: GLOBAL
 - Default value: `24`
 - Range: `[0, 255]`
 - This variable is used to set the history capacity of [statement summary tables](/statement-summary-tables.md).
 
 ### tidb_stmt_summary_internal_query <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION | GLOBAL
+- Scope: GLOBAL
 - Default value: `OFF`
 - This variable is used to control whether to include the SQL information of TiDB in [statement summary tables](/statement-summary-tables.md).
 
 ### tidb_stmt_summary_max_sql_length <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION | GLOBAL
+- Scope: GLOBAL
 - Default value: `4096`
 - Range: `[0, 2147483647]`
 - This variable is used to control the length of the SQL string in [statement summary tables](/statement-summary-tables.md).
 
 ### tidb_stmt_summary_max_stmt_count <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION | GLOBAL
+- Scope: GLOBAL
 - Default value: `3000`
 - Range: `[1, 32767]`
 - This variable is used to set the maximum number of statements that [statement summary tables](/statement-summary-tables.md) store in memory.
 
 ### tidb_stmt_summary_refresh_interval <span class="version-mark">New in v4.0</span>
 
-- Scope: SESSION | GLOBAL
+- Scope: GLOBAL
 - Default value: `1800`
 - Range: `[1, 2147483647]`
 - Unit: Seconds
 - This variable is used to set the refresh time of [statement summary tables](/statement-summary-tables.md).
-
-### `tidb_enable_top_sql` <span class="version-mark">New in v5.4.0</span>
-
-- Scope: GLOBAL
-- Default value: `OFF`
-- This variable is used to control whether to enable the [Top SQL](/dashboard/top-sql.md) feature.
-
-> **Warning:**
->
-> Currently, Top SQL is an experimental feature. It is not recommended that you use it for production environments.
 
 ### tidb_store_limit <span class="version-mark">New in v3.0.4 and v4.0</span>
 
