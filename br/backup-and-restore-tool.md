@@ -63,7 +63,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 ### 兼容性
 
-BR 和 TiDB 集群的兼容性问题有以下几种：
+BR 和 TiDB 集群的兼容性问题有以下几方面：
 
 + BR 部分版本和 TiDB 集群的接口不兼容
 
