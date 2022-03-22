@@ -196,6 +196,6 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # 必须指定 -c 参数，意义为操作次数，默认 READ 流量占 95%, UPDATE 
+    # 必须指定 -c 参数，意义为操作次数，默认 READ 流量占 95%, UPDATE 占 5%
     tiup bench ycsb prepare -c 10000
     ```
