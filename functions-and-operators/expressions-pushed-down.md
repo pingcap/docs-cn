@@ -21,7 +21,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/expressions-pushed-down/','/docs
 
 ## 禁止特定表达式下推
 
-当上述支持的函数或特定的数据类型（**仅支持** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程由于下推而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名，运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[加入黑名单](#加入黑名单)。
+当上述支持的函数或特定的数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）的计算过程因下推至 TiKV 而出现异常时，你可以使用黑名单功能禁止其下推，从而快速恢复 TiDB 业务。具体而言，你可以将函数名，运算符名，或数据列类型加入黑名单 `mysql.expr_pushdown_blacklist` 中，以禁止特定表达式下推。具体方法，请参阅[加入黑名单](#加入黑名单)。
 
 `mysql.expr_pushdown_blacklist` 的 schema 如下：
 
@@ -56,7 +56,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 1. 向 `mysql.expr_pushdown_blacklist` 插入以下两种类型的内容：
 
-    - 希望禁止下推的[函数名，运算符名](#已支持下推的表达式列表），或数据类型（**仅支持** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
+    - 希望禁止下推的[函数名，运算符名](#已支持下推的表达式列表），或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
     - 希望禁止下推的存储类型集合
 
 2. 执行 `admin reload expr_pushdown_blacklist;`。
