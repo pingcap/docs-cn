@@ -309,6 +309,7 @@
         - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
         - 迁移任务操作
             - [任务前置检查](/dm/dm-precheck.md)
+            - [配置文件](/dm/task-configuration-file.md)
             - [创建任务](/dm/dm-create-task.md)
             - [查询状态](/dm/dm-query-status.md)
             - [暂停任务](/dm/dm-pause-task.md)
@@ -345,6 +346,7 @@
         - 架构
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [relay log](/dm/relay-log.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -353,6 +355,7 @@
           - [迁移任务配置](/dm/task-configuration-file-full.md)
           - [DM-master 配置](/dm/dm-master-configuration-file.md)
           - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+          - [Table selector](/dm/table-selector.md)
         - [OpenAPI](/dm/dm-open-api.md)
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
@@ -364,6 +367,7 @@
         - [术语表](/dm/dm-glossary.md)
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+        - [快速创建迁移任务](/dm/quick-create-migration-task.md)
       - 异常解决
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
