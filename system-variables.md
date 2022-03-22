@@ -844,6 +844,17 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`ON`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> Top SQL 目前是实验性功能，不建议在生产环境中使用。
+
+- 作用域：GLOBAL
+- 集群持久化：是
+- 默认值：`ON`
+- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1621,13 +1632,6 @@ set tidb_slow_log_threshold = 200;
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
 
-### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 集群持久化：是
-- 默认值：`ON`
-- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
-
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1718,6 +1722,12 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`SYSTEM`
 - 数据库所使用的时区。这个变量值可以写成时区偏移的形式，如 '-8:00'，也可以写成一个命名时区，如 'America/Los_Angeles'。
 - 默认值 `SYSTEM` 表示时区应当与系统主机的时区相同。系统的时区可通过 [`system_time_zone`](#system_time_zone) 获取。
+
+### `timestamp`
+
+- 作用域：SESSION
+- 默认值：`0`
+- 一个 Unix 时间戳，用于表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳的一个非空值。该变量通常用于数据恢复或数据复制。
 
 ### `transaction_isolation`
 
