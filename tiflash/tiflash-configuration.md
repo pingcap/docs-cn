@@ -168,7 +168,7 @@ delta_index_cache_size = 0
     ## 从 v5.4.0 引入，表示是否启用可自动扩展的线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 false。该功能为实验特性，不推荐在生产环境中开启。
     # enable_elastic_threadpool = false
 
-    ## 从 v5.4.0 引入，表示触发 TiFlash PageFile（log 类型） 进行 hardlink 时最小的 valid rate 值。默认为 2.0，即不开启 PageFile 的 hardlink 功能。如果 GC 时间过长，建议将该值修改成 0.8 以开启 hardlink 功能。
+    ## 从 v5.4.0 引入，表示触发 TiFlash PageFile（log 类型） 进行 hardlink 时最小的 valid rate 值，取值范围为 [0.1,1.0]。取值越小，hardlink 越频繁；取值越大，触发 hardlink 条件越苛刻。默认为 2.0，即不开启 PageFile 的 hardlink 功能。如果 GC 时间过长，建议将该值修改成 0.8 以开启 hardlink 功能。
     dt_storage_pool_log_gc_force_hardlink_rate = 2.0
 
 ## 安全相关配置，从 v4.0.5 开始生效
