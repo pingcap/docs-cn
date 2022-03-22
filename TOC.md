@@ -346,7 +346,7 @@
         - 架构
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
-          - [relay log](/dm/relay-log.md)
+          - [Relay Log](/dm/relay-log.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -355,7 +355,7 @@
           - [迁移任务配置](/dm/task-configuration-file-full.md)
           - [DM-master 配置](/dm/dm-master-configuration-file.md)
           - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
-          - [Table selector](/dm/table-selector.md)
+          - [Table Selector](/dm/table-selector.md)
         - [OpenAPI](/dm/dm-open-api.md)
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
