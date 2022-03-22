@@ -246,13 +246,19 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 >
 > 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=hdd:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
 
+## 工具兼容性
+
+工具名称 | 最低兼容版本 | 说明
+--- | --- | ---
+Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性]
+TiDB Lightning | 暂时不支持 |
+TiCDC | 6.0 | 忽略放置规则
+TiDB Binlog | 6.0 | 忽略放置规则，不同步到下游集群
+
 ## 使用限制
 
 目前已知 Placement Rules in SQL 特性存在以下限制：
 
-* TiDB 生态工具，包括 Backup & Restore (BR)、TiDB Lightning、TiCDC、TiDB Binlog 在 6.0 之前不支持放置规则。
-* 从 6.0 版本开始 Backup & Restore (BR) 支持放置规则的导入与导出。
-* 从 6.0 版本开始 TiCDC、TiDB Binlog 可以在设置了放置规则的集群中正常使用，且不会将放置规则同步到下游集群。
 * 临时表不支持放置规则。
 * 设置 `PRIMARY_REGION` 和 `REGIONS` 时允许存在语法糖。但在未来版本中，我们计划为 `PRIMARY_RACK`、`PRIMARY_ZONE` 和 `PRIMARY_HOST` 添加变体支持，见 [issue #18030](https://github.com/pingcap/tidb/issues/18030)。
 * 不能通过放置规则语法配置 TiFlash 副本。
