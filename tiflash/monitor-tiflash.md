@@ -48,8 +48,8 @@ TiFlash 面板一共包括 **TiFlash-Summary**、**TiFlash-Proxy-Summary**、**T
 
 - Min TSO：每个 TiFlash 实例上正在运行的查询语句中的最小 TSO，该值确保具有最小 TSO 的查询可以被调度。如果当前没有正在运行的查询，则该值为 `uint64` 整数型最大值。
 - Estimated Thread Usage and Limit：每个 TiFlash 实例上正在运行的所有任务占用的线程估值，以及该实例上任务调度器设置的估算线程用量的软限制和硬限制。
-- Active and Waiting Queries Count：每个 TiFlash 实例上正在运行的查询数量和等待的查询数量。
-- Active and Waiting Tasks Count：每个 TiFlash 实例上正在运行的任务数量和等待的任务数量。
+- Active and Waiting Queries Count：每个 TiFlash 实例上正在运行的查询数量和正在等待的查询数量。
+- Active and Waiting Tasks Count：每个 TiFlash 实例上正在运行的任务数量和正在等待的任务数量。
 - Hard Limit Exceeded Count：每个 TiFlash 实例上运行中任务的估算线程用量超过硬限制的次数。
 - Task Waiting Duration：每个 TiFlash 实例上任务从初始化到被调度的等待时长。
 
