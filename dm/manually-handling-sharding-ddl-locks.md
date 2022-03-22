@@ -135,6 +135,7 @@ shard-ddl-lock test
 ### `shard-ddl-lock unlock`
 
 用于主动请求 DM-master 解除指定的 DDL lock。
+
 1. 悲观模式 `unlock` 包括操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
 2. 乐观模式 `unlock` 包括操作：请求指定的处于冲突状态的上游表 执行/跳过 冲突 DDL 操作，对其他非指定的表不会进行任何操作，若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
 
@@ -203,7 +204,6 @@ Global Flags:
 + `lock-id`：
     - 非 flag 参数，string，必选
     - 指定需要执行 unlock 操作的 DDL lock ID（即 `shard-ddl-lock` 返回结果中的 `ID`）
-
 
 以下是一个使用 `shard-ddl-lock unlock` 命令的示例：
 
@@ -555,7 +555,6 @@ MySQL 及 DM 操作与处理流程如下：
     }
     ```
 
-
 4. 由于业务需要，`mysql-replica-02` 对应的分表添加的列默认值为 -1，但下游最终结构希望默认值为 0。
 5. DM-worker 接受到 `mysql-replica-02` 分表的 DDL 之后，将对应的 DDL 信息发送给 DM-master，DM-master 无法生成兼容表结构，MySQL-2 上的同步暂停。此时使用 `shard-ddl-lock` 和 `query-status test` 命令可以查到具体问题：
 
@@ -625,9 +624,7 @@ MySQL 及 DM 操作与处理流程如下：
     ...
     ```
 
-6. DM-master 上 ID 为 ```test-`shardddl`.`tb` ``` 的 lock 无法为 `mysql-replica-02` 上的 `shardddl1`.`tb1` 的 DDL 生成兼容表结构，
-
-`shard-ddl-lock` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
+6. DM-master 上 ID 为 ```test-`shardddl`.`tb` ``` 的 lock 无法为 `mysql-replica-02` 上的 `shardddl1`.`tb1` 的 DDL 生成兼容表结构，`shard-ddl-lock` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
 
 7. 使用 `shard-ddl-lock unlock` 来请求 DM-master 主动 unlock 该 DDL lock。
 
