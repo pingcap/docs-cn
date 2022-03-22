@@ -180,6 +180,7 @@ Flags:
     ```shell
     tiup bench tpch cleanup
     ```
+
 ## 使用 YCSB 测试 TiKV
 
 1. 准备数据：
