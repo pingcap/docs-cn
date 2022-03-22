@@ -128,7 +128,7 @@ show warnings;
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
-| raftstore.raft-max-size-per-msg | 限制产生的单个消息包的大小，软限制 |
+| raftstore.raft-max-size-per-msg | 允许生成的单个消息包的大小，软限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
@@ -153,10 +153,10 @@ show warnings;
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
-| raftstore.apply-pool-size | 处理数据落盘的线程池中线程的数量 |
-| raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量 |
-| raftstore.apply-max-batch-size | 处理数据落盘的线程一轮处理的最大 FSM 个数 |
-| raftstore.store-max-batch-size | 处理 Raft 的线程一轮处理的最大 FSM 个数 |
+| raftstore.apply-pool-size | 处理数据落盘的线程池中线程的数量，即 Apply 线程池大小 |
+| raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |
+| raftstore.apply-max-batch-size | 可以被 BatchSystem 批量调度到处理数据落盘的线程上执行请求的 Raft 状态机的最大个数。 |
+| raftstore.store-max-batch-size | 可以被 BatchSystem 批量调度到处理 Raft 的线程上执行请求的 Raft 状态机的最大个数。 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |

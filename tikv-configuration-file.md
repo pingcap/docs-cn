@@ -746,7 +746,7 @@ raftstore 相关的配置项。
 
 ### `apply-max-batch-size`
 
-+ 一轮处理数据落盘的最大请求个数。
++ 可以被 BatchSystem 批量调度到处理数据落盘的线程上执行请求的 Raft 状态机的最大个数。
 + 默认值：256
 + 最小值：大于 0
 + 最大值: 10240
@@ -759,7 +759,7 @@ raftstore 相关的配置项。
 
 ### `store-max-batch-size`
 
-+ 一轮处理的最大请求个数。
++ 可以被 BatchSystem 批量调度到处理 Raft 的线程上执行请求的 Raft 状态机的最大个数。
 + 如果开启 `hibernate-regions`，默认值为 256；如果关闭 `hibernate-regions`，默认值为 1024
 + 最小值：大于 0
 + 最大值: 10240
