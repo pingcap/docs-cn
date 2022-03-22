@@ -1283,7 +1283,7 @@ explain select * from t where age=5;
 - 默认值：`ON`
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
-### `tidb_placement_mode` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+### `tidb_placement_mode`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`STRICT`
