@@ -216,13 +216,6 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
-### `placement_checks`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`ON`
-- 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。
-- 该变量可由逻辑转储或逻辑恢复工具使用，确保即使违反放置规则也始终可以创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件的开头部分。
-
 ### `port`
 
 - 作用域：NONE
@@ -308,6 +301,7 @@ mysql> SELECT * FROM t1;
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：NONE
+- 默认值：`lower, md5, reverse, tidb_shard, upper, vitess_hash`
 - 这个变量用于显示创建表达式索引所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -662,15 +656,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
-- 默认值：`ON` 
-- 这个变量用于控制是否开启 index merge 功能。
-
 > **注意：**
 >
 > - 当集群从 v4.0.0 以下版本升级到 v5.4.0 及以上版本时，该变量开关默认关闭，防止升级后计划发生变化导致回退。
 > - 当集群从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本时，该变量开关保持升级前的状态。
 > - 对于 v5.4.0 及以上版本的新建集群，该变量开关默认开启。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用于控制是否开启 index merge 功能。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -771,6 +765,12 @@ Query OK, 0 rows affected (0.09 sec)
     - 默认值 `ON` 表示开启 TiDB 当前已实现了的分区表类型，目前 Range partition、Hash partition 以及 Range column 单列的场景会生效。
     - `AUTO` 目前作用和 `ON` 一样。
     - `OFF` 表示关闭 `TABLE PARTITION` 特性，此时语法还是保持兼容，只是创建的表并不是真正的分区表，而是普通的表。
+
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`ON`
+- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
@@ -1328,7 +1328,7 @@ SET tidb_query_log_max_len = 20;
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值：`0`
+- 默认值：""
 - 这个变量用于设置当前会话允许读取的历史数据范围。设置后，TiDB 会从参数允许的范围内选出一个尽可能新的时间戳，并影响后继的所有读操作。比如，如果该变量的值设置为 `-5`，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
 ### `tidb_record_plan_in_slow_log`
@@ -1456,7 +1456,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`0`
 - 单位：毫秒
-- 范围：`[0, 4294967295]`
+- 范围：`[0, 2147483647]`
 - 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
@@ -1503,12 +1503,6 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[1, 2147483647]`
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
-
-### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 默认值：`ON`
-- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
