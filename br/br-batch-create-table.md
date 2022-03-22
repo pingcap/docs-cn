@@ -39,7 +39,7 @@ bin/br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file resto
 
 批量建表功能采用了并发批量建表方案。从 v6.0 起，在默认情况下，BR 会以 128 张表为一批，并发创建多批表。采用该方案后，BR 每建一批表时，TiDB schema 版本只会变更一次。此方法极大地提高了建表速度。
 
-以下为在 TiDB v6.0 集群中测试批量建表功能的内容。具体的测试条件如下：
+以下是在 TiDB v6.0 集群中测试批量建表功能的内容。具体的测试条件如下：
 
 - 集群配置：
     - 15 个 TiKV
@@ -50,12 +50,10 @@ bin/br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file resto
     - 3 个 PD
 - 待恢复数据的规模：16.16 TB
 
-开启 BR 批量建表功能前，在同等条件下，单个 TiKV 实例的平均恢复速度为 50 MB/s ~ 90 MB/s。
-
-开启该功能后，具体测试结果如下：
+测试结果如下：
 
 ```
 ‘[2022/03/12 22:37:49.060 +08:00] [INFO] [collector.go:67] ["Full restore success summary"] [total-ranges=751760] [ranges-succeed=751760] [ranges-failed=0] [split-region=1h33m18.078448449s] [restore-ranges=542693] [total-take=1h41m35.471476438s] [restore-data-size(after-compressed)=8.337TB] [Size=8336694965072] [BackupTS=431773933856882690] [total-kv=148015861383] [total-kv-size=16.16TB] [average-speed=2.661GB/s]’
 ```
 
-从结果可见，开启 BR 批量建表功能后，单个 TiKV 实例的平均恢复速度有了明显的提升，其速度高达 181.65 MB/s （`average-speed(GB/s)`/`tikv_count` = `181.65(MB/s)`）。
+从结果可见，单个 TiKV 实例的平均恢复速度高达 181.65 MB/s （`average-speed(GB/s)`/`tikv_count` = `181.65(MB/s)`）。
