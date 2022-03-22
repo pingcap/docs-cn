@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/information-schema-placement-rules']
 
 # PLACEMENT_POLICIES
 
-`PLACEMENT_POLICIES` 表展示所有放置策略 (placement policy) 的信息。见：[Placement Rules in SQL](/placement-rules-in-sql.md)
+`PLACEMENT_POLICIES` 表展示所有放置策略 (placement policy) 的信息，见 [Placement Rules in SQL](/placement-rules-in-sql.md)。
 
 {{< copyable "sql" >}}
 
