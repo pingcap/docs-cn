@@ -720,6 +720,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 当集群从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本时，该变量开关保持升级前的状态。
 > - 对于 v5.4.0 及以上版本的新建集群，该变量开关默认开启。
 
+### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 集群持久化：是
+- 默认值：`ON` 
+- 这个变量用于允许对 `INSTANCE` 作用域的变量使用 `SET SESSION` (像使用 `SET GLOBAL` 那样) 进行设置。
+- 为了兼容之前的 TiDB 版本，这个选项默认为 `ON`。
+
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 > **警告：**
@@ -1009,7 +1017,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_general_log`
 
 - 作用域：GLOBAL
-- 集群持久化：是
 - 集群持久化：否
 - 默认值：`OFF`
 - 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
