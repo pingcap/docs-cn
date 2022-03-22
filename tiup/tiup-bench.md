@@ -180,3 +180,22 @@ Flags:
     ```shell
     tiup bench tpch cleanup
     ```
+## 使用 YCSB 测试 TiKV
+
+1. 准备数据：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 必须指定 -c 参数，意义为插入数据条数
+    tiup bench ycsb prepare -c 10000
+    ```
+
+2. 运行 YCSB 测试：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 必须指定 -c 参数，意义为操作次数，默认 READ 流量占 95%, UPDATE 
+    tiup bench ycsb prepare -c 10000
+    ```
