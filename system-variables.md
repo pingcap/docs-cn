@@ -1555,7 +1555,7 @@ set tidb_slow_log_threshold = 200;
 - 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 - 将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
 
-### `tidb_use_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
+### `tidb_use_plan_baselines`（从 v4.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
