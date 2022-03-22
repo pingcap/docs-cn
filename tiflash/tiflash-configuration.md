@@ -167,6 +167,10 @@ delta_index_cache_size = 0
     batch_cop_pool_size = 0
     ## 从 v5.4.0 引入，表示是否启用可自动扩展的线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 false。该功能为实验特性，不推荐在生产环境中开启。
     # enable_elastic_threadpool = false
+    # TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
+    dt_compression_method = "LZ4"
+    # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
+    dt_compression_level = 1
 
 
 ## 安全相关配置，从 v4.0.5 开始生效
