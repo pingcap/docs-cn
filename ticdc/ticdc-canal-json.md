@@ -453,6 +453,7 @@ Canal 官方实现输出内容如下：
 ```
 
 ## TiCDC Canal-JSON 改动说明
+
 ### `Delete` 类型事件中 `Old` 字段的变化说明
 
 TiCDC 实现的 Canal-JSON 格式，v5.4.0 及以后版本的实现，和之前的有些许不同，具体如下：
