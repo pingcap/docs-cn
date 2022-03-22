@@ -471,7 +471,7 @@ SHOW STATS_META [ShowLikeOrWhere];
 {{< copyable "sql" >}}
 
 ```sql
-SHOW SHOW STATS_HEALTHY [ShowLikeOrWhere];
+SHOW STATS_HEALTHY [ShowLikeOrWhere];
 ```
 
 `SHOW STATS_HEALTHY` 的语法图为：
