@@ -46,6 +46,10 @@ The following sections introduce the default monitoring information of **TiFlash
 - Response Bytes/Seconds: The total bytes of the response from all TiFlash instances.
 - Cop task memory usage: The total memory usage of all TiFlash instances processing coprocessor requests.
 - Handling Request Number: The total number of all TiFlash instances processing coprocessor requests. The classification of the requests is the same as that of Request QPS.
+- Threads of RPC: The real-time number of RPC threads used in each TiFlash instance.
+- Max Threads of RPC: The maximum number of RPC threads recently used in each TiFlash instance.
+- Threads: The real-time number of threads used in each TiFlash instance.
+- Max Threads: The maximum number of threads recently used in each TiFlash instance.
 
 ## DDL
 
