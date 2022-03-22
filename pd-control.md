@@ -1100,7 +1100,7 @@ Encoding 格式示例：
 >> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
 >> scheduler resume all                                   // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
->> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器的 batch 设置为 3
+>> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
 ```
 
 ### `scheduler config balance-hot-region-scheduler`
