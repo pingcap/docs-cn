@@ -216,7 +216,7 @@ MySQL [test]> deallocate prepare stmt; -- 再次释放
 
 这样的使用方式会让第一次执行得到的计划被立即清理，不能在第二次被复用。
 
-为了兼容这样的使用方式，从 v6.0 起，TiDB 支持 [`tidb_ignore_prepared_cache_close_stmt`](system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) 变量。打开该变量后，TiDB 会忽略关闭 Preapre Statement 的信号，解决上述问题，如：
+为了兼容这样的使用方式，从 v6.0 起，TiDB 支持 [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) 变量。打开该变量后，TiDB 会忽略关闭 Preapre Statement 的信号，解决上述问题，如：
 
 {{< copyable "sql" >}}
 
