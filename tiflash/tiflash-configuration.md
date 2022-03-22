@@ -155,8 +155,8 @@ delta_index_cache_size = 0
 [profiles]
 
 [profiles.default]
-    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 false
-    dt_enable_logical_split = false
+    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。不建议修改默认选项。
+    # dt_enable_logical_split = false
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage = 0
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
