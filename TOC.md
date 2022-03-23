@@ -309,7 +309,7 @@
         - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
         - 迁移任务操作
             - [任务前置检查](/dm/dm-precheck.md)
-            - [配置文件](/dm/task-configuration-file.md)
+            - [任务配置](/dm/task-configuration-file.md)
             - [创建任务](/dm/dm-create-task.md)
             - [查询状态](/dm/dm-query-status.md)
             - [暂停任务](/dm/dm-pause-task.md)
