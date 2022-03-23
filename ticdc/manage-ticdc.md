@@ -222,6 +222,7 @@ URI 中可配置的的参数如下：
 | `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
 | `write-timeout`| 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
 
+
 最佳实践：
 
 * TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
