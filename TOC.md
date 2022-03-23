@@ -279,6 +279,7 @@
           - [DM-master 配置](/dm/dm-master-configuration-file.md)
           - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
         - [OpenAPI](/dm/dm-open-api.md)
+        - [兼容性目录](/dm/dm-compatibility-catalog.md)
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
           - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
