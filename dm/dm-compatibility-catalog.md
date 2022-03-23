@@ -20,7 +20,7 @@ DM 数据同步软件支持从不同类型的数据源迁移到 TiDB 集群。�
 |MySQL 5.6|GA|
 |MySQL 5.7|GA|
 |MySQL 8.0|Experimental|
-|MariaDB ＜ 10.1.2|Incompatible|时间类型的 binlog 不兼容|
+|MariaDB < 10.1.2|Incompatible|时间类型的 binlog 不兼容|
 |MariaDB 10.1.2 ~ 10.5.10|Experimental|
 |MariaDB > 10.5.10|Incompatible|检查环节存在权限报错|
 
