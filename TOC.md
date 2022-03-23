@@ -360,7 +360,7 @@
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
           - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警 
+        - 监控告警
           - [监控指标](/dm/monitor-a-dm-cluster.md)
           - [告警信息](/dm/dm-alert-rules.md)
         - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
