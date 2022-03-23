@@ -70,7 +70,7 @@ target-table = "table-0"     # The name of the target table
 
     source-instances = ["mysql1", "mysql2"]
 
-    target-instance = ["tidb0"]
+    target-instance = "tidb0"
 
     # The tables of downstream databases to be compared. Each table needs to contain the schema name and the table name, separated by '.'
     target-check-tables = ["test.table-0"]
@@ -126,7 +126,7 @@ target-table = "table-0"     # The name of the target table
     output-dir = "./output"
     source-instances = ["mysql1", "mysql2"]
 
-    target-instance = ["tidb0"]
+    target-instance = "tidb0"
 
     # The tables of downstream databases to be compared. Each table needs to contain the schema name and the table name, separated by '.'
     target-check-tables = ["test.table-0"]
