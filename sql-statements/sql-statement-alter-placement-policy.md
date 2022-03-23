@@ -5,11 +5,7 @@ summary: TiDB 数据库中 ALTER PLACEMENT POLICY 的使用概况。
 
 # ALTER PLACEMENT POLICY
 
-> **警告：**
->
-> Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
-
-`ALTER PLACEMENT POLICY` 用于修改已创建的放置策略。此修改会自动更新至所有绑定这些放置策略的表和分区。
+`ALTER PLACEMENT POLICY` 用于修改已创建的放置策略。此修改会自动更新至所有使用这些放置策略的表和分区。
 
 `ALTER PLACEMENT POLICY` 会完全替换之前定义的规则，而不会和之前的规则合并，比如在下面的例子中，`FOLLOWERS=4` 就被 `ALTER PLACEMENT POLICY` 语句覆盖了：
 

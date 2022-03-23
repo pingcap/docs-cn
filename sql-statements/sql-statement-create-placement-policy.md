@@ -5,11 +5,7 @@ summary: TiDB 数据库中 CREATE PLACEMENT POLICY 的使用概况。
 
 # CREATE PLACEMENT POLICY
 
-> **警告：**
->
-> Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
-
-`CREATE PLACEMENT POLICY` 用于创建命名的放置策略，随后可以将该策略绑定到表、分区或数据库上。
+`CREATE PLACEMENT POLICY` 用于创建命名的放置策略，随后可以将该策略分配给表、分区或数据库。
 
 ## 语法图
 
