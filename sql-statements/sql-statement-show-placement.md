@@ -5,12 +5,6 @@ summary: The usage of SHOW PLACEMENT in TiDB.
 
 # SHOW PLACEMENT
 
-> **Warning:**
->
-> Placement Rules in SQL is an experimental feature. The syntax might change before its GA, and there might also be bugs.
->
-> If you understand the risks, you can enable this experiment feature by executing `SET GLOBAL tidb_enable_alter_placement = 1;`.
-
 `SHOW PLACEMENT` summarizes all placement options from placement policies, and presents them in canonical form.
 
 The statement returns a result set in which the `Scheduling_State` field indicates the current progress that the Placement Driver (PD) has made in scheduling the placement:
