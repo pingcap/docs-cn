@@ -19,7 +19,7 @@ TiDB 版本：5.3.0
 + 支持“一键”保存和恢复现场问题的相关信息，提升查询计划问题诊断的效率
 + 支持持续性能分析 (Continuous Profiling) 实验特性，提高数据库性能的可观测性
 + 持续优化存储和计算引擎，提升系统性能和稳定性
-+ 降低 TiKV 写入延迟，从 Raftstore 线程池中分离出 IO 线程池(默认不开启)。具体调优详见 [TiKV 线程池性能调优](/tune-tikv-thread-performance.md)
++ 降低 TiKV 写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）
 
 ## 兼容性变化
 
