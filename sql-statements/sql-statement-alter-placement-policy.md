@@ -33,16 +33,23 @@ PlacementOptionList ::=
 |   PlacementOptionList ',' PlacementOption
 
 PlacementOption ::=
+    CommonPlacementOption
+|   SugarPlacementOption
+|   AdvancedPlacementOption
+
+CommonPlacementOption ::=
+    "FOLLOWERS" EqOpt LengthNum
+
+SugarPlacementOption ::=
     "PRIMARY_REGION" EqOpt stringLit
 |   "REGIONS" EqOpt stringLit
-|   "FOLLOWERS" EqOpt LengthNum
-|   "VOTERS" EqOpt LengthNum
-|   "LEARNERS" EqOpt LengthNum
 |   "SCHEDULE" EqOpt stringLit
+
+AdvancedPlacementOption ::=
+    "LEARNERS" EqOpt LengthNum
 |   "CONSTRAINTS" EqOpt stringLit
 |   "LEADER_CONSTRAINTS" EqOpt stringLit
 |   "FOLLOWER_CONSTRAINTS" EqOpt stringLit
-|   "VOTER_CONSTRAINTS" EqOpt stringLit
 |   "LEARNER_CONSTRAINTS" EqOpt stringLit
 ```
 
@@ -56,8 +63,9 @@ PlacementOption ::=
 
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
-ALTER PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4;
-SHOW CREATE PLACEMENT POLICY p1\G
+CREATE TABLE t1 (i INT) PLACEMENT POLICY=p1; -- 绑定放置策略 p1 到表 t1。
+ALTER PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4; -- t1 上的放置规则会自动更新。
+SHOW CREATE PLACEMENT POLICY p1\G;
 ```
 
 ```
@@ -65,9 +73,9 @@ Query OK, 0 rows affected (0.08 sec)
 
 Query OK, 0 rows affected (0.10 sec)
 
-*************************** 1. row ***************************
-       Policy: p1
-Create Policy: CREATE PLACEMENT POLICY `p1` PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4
+***************************[ 1. row ]***************************
+Policy        | p1
+Create Policy | CREATE PLACEMENT POLICY `p1` PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4
 1 row in set (0.00 sec)
 ```
 
