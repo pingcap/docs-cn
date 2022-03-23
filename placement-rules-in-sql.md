@@ -41,13 +41,13 @@ ALTER TABLE t2 PLACEMENT POLICY=myplacementpolicy;
 
 `PLACEMENT POLICY` 为全局作用域，不与任何数据库表结构相关联。因此，通过 `CREATE TABLE` 指定放置规则时，无需任何额外的权限。
 
-也可以通过 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句来修改放置策略，改动将传播到所有绑定此放置策略的对象。
+要修改放置策略，你可以使用 [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md) 语句。修改将传播到所有绑定此放置策略的对象。
 
 ```sql
 ALTER PLACEMENT POLICY myplacementpolicy FOLLOWERS=5;
 ```
 
-最后, 你可以用 [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md) 删除没有绑定任何分区或表的放置策略：
+要删除没有绑定任何分区或表的放置策略，你可以使用 [`DROP PLACEMENT POLICY`](/sql-statements/sql-statement-drop-placement-policy.md)：
 
 ```sql
 DROP PLACEMENT POLICY myplacementpolicy;
