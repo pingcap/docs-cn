@@ -83,9 +83,9 @@ CREATE TABLE `messages` (
     | -s             | 指定 source。`${source-id}` 表示 MySQL 数据源 ID。 |
     | `${task-name}` | 指定 task。表示数据同步任务配置文件 `task.yaml` 中定义的同步任务名称。|
     | `${database-name}` | 指定 database。表示上游数据库名。 |
-    | `${table-name}` | 指定 table。表示上游数据表名。表示将被设置的表结构文件。 |
-    | `${schema-file}` | 指定表的 schema 文件。表示将被设置的表结构文件。 |
-    
+    | `${table-name}` | 指定 table。表示上游数据表名。|
+    | `${schema-file}` | 指定表的 schema 文件。表示将被设置的表结构文件。|
+
     例如：
 
     {{< copyable "shell-regular" >}}

@@ -1,26 +1,26 @@
 ---
-title: TiDB Clinic 诊断服务简介
-summary: 介绍 TiDB Clinic 诊断服务，包括工具组件、使用场景和工作原理。
+title: PingCAP Clinic 诊断服务简介
+summary: 介绍 PingCAP Clinic 诊断服务，包括工具组件、使用场景和工作原理。
 ---
 
-## TiDB Clinic 诊断服务简介
+# PingCAP Clinic 诊断服务简介
 
-TiDB Clinic 诊断服务（以下简称为 TiDB Clinic）是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
+PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
 
-TiDB Clinic 目前处于 Beta 受邀测试使用阶段。该服务提供以下两个组件进行集群诊断：
+PingCAP Clinic 目前处于 Beta 受邀测试使用阶段。该服务提供以下两个组件进行集群诊断：
 
-- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [TiDB Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
+- Diag：部署在集群侧的工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
     > - Diag 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
-    > - TiDB Clinic 目前处于 Beta 受邀测试使用阶段，如需使用 Diag 把数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
+    > - PingCAP Clinic 目前处于 Beta 受邀测试使用阶段，如需使用 Diag 把数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 - Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。
 
     > **注意：**
     >
-    > TiDB Clinic Beta 版本的 Server 端功能暂**未开放**给外部用户使用。当你将采集好的数据上传到 Clinic Server 并获取了数据链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
+    > PingCAP Clinic Beta 版本的 Server 端功能暂**未开放**给外部用户使用。当你将采集好的数据上传到 Clinic Server 并获取了数据链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
 
 ## 使用场景
 
@@ -30,11 +30,11 @@ TiDB Clinic 目前处于 Beta 受邀测试使用阶段。该服务提供以下�
 
 - 本地快速检查集群状态
 
-    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。TiDB Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 TiDB Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
+    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 PingCAP Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
 
 ## 工作原理
 
-本章节主要介绍 TiDB Clinic 的集群侧工具 Diag 采集集群诊断数据的工作原理。
+本章节主要介绍 PingCAP Clinic 的集群侧工具 Diag 采集集群诊断数据的工作原理。
 
 首先，Diag 需要从部署工具 TiUP (tiup-cluster) 或 TiDB Operator (tidb-operator) 获取集群拓扑信息，然后通过不同的数据采集方式来采集不同类型的诊断数据，具体采集方式如下：
 
@@ -57,5 +57,5 @@ TiDB Clinic 目前处于 Beta 受邀测试使用阶段。该服务提供以下�
 
 ## 探索更多
 
-- [使用 TiDB Clinic](/clinic/clinic-user-guide-for-tiup.md)
-- [TiDB Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
+- [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+- [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)

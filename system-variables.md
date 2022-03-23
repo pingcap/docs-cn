@@ -987,6 +987,13 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
+### `tidb_ignore_prepared_cache_close_stmt`（从 v6.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用来设置是否忽略关闭 Prepared Statement 的指令。
+- 如果变量值设为 `ON`，Binary 协议的 `COM_STMT_CLOSE` 信号和文本协议的 [`DEALLOCATE PREPARE`](/sql-statements/sql-statement-deallocate.md) 语句都会被忽略。
+
 ### `tidb_index_join_batch_size`
 
 - 作用域：SESSION | GLOBAL
@@ -1080,6 +1087,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：字节
 - 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
 - `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
+
+### `tidb_mem_quota_binding_cache`（从 v6.0 版本开始引入）
+
+- 作用域：GLOBAL
+- 默认值：`67108864` (64 MiB)
+- 范围：`[0, 2147483647]`
+- 单位：字节
+- 这个变量用来设置存放 `binding` 的缓存的内存使用阈值。
+- 如果一个系统创建或者捕获了过多的绑定，导致绑定所使用的内存空间超过该阈值，TiDB 会在日志中增加警告日志进行提示。这种情况下，缓存无法存放所有可用的绑定，并且无法保证哪些绑定存在于缓存中，因此，可能存在一些查询无法使用可用绑定的情况。此时，可以调大该变量的值，从而保证所有可用绑定都能正常使用。修改变量值以后，需要执行命令 `admin reload bindings` 重新加载绑定，确保变更生效。
 
 ### `tidb_mem_quota_query`
 
