@@ -1657,4 +1657,4 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
-- 这个变量用于控制 `sydate` 函数是否替换为 `NOW` 函数，效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
+- 这个变量用于控制 `SYSDATE` 函数是否可以替换为 `NOW` 函数，效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
