@@ -272,7 +272,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 优化 raft client 错误日志的收集 [#10944](https://github.com/tikv/tikv/pull/10944)
     - 优化日志线程以避免其成为性能瓶颈 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 添加更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
-    - 降低写入延迟，从 Raftstore 线程池中分离出 IO 线程池(默认不开启)。具体调优详见 [TiKV 线程池性能调优](/tune-tikv-thread-performance.md) [#10289](https://github.com/tikv/tikv/pull/10289)
+    - 降低写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）。具体调优操作，请参考 [TiKV 线程池性能调优](/tune-tikv-thread-performance.md) [#10540](https://github.com/tikv/tikv/issues/10540)
 
 + PD
 
