@@ -28,16 +28,23 @@ PlacementOptionList ::=
 |   PlacementOptionList ',' PlacementOption
 
 PlacementOption ::=
+    CommonPlacementOption
+|   SugarPlacementOption
+|   AdvancedPlacementOption
+
+CommonPlacementOption ::=
+    "FOLLOWERS" EqOpt LengthNum
+
+SugarPlacementOption ::=
     "PRIMARY_REGION" EqOpt stringLit
 |   "REGIONS" EqOpt stringLit
-|   "FOLLOWERS" EqOpt LengthNum
-|   "VOTERS" EqOpt LengthNum
-|   "LEARNERS" EqOpt LengthNum
 |   "SCHEDULE" EqOpt stringLit
+
+AdvancedPlacementOption ::=
+    "LEARNERS" EqOpt LengthNum
 |   "CONSTRAINTS" EqOpt stringLit
 |   "LEADER_CONSTRAINTS" EqOpt stringLit
 |   "FOLLOWER_CONSTRAINTS" EqOpt stringLit
-|   "VOTER_CONSTRAINTS" EqOpt stringLit
 |   "LEARNER_CONSTRAINTS" EqOpt stringLit
 ```
 
