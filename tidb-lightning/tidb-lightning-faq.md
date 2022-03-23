@@ -119,7 +119,7 @@ If `tidb-lightning` abnormally exited, the cluster might be stuck in the "import
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --fetch-mode
+tidb-lightning-ctl --config tidb-lightning.toml --fetch-mode
 ```
 
 You can force the cluster back to "normal mode" using the following command:
@@ -127,7 +127,7 @@ You can force the cluster back to "normal mode" using the following command:
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --switch-mode=normal
+tidb-lightning-ctl --config tidb-lightning.toml --fetch-mode
 ```
 
 ## Can TiDB Lightning be used with 1-Gigabit network card?
