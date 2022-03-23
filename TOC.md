@@ -301,6 +301,7 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
+        - [创建数据源](/dm/quick-start-create-source.md)
         - [数据源操作](/dm/dm-manage-source.md)
         - [任务配置向导](/dm/dm-task-configuration-guide.md)
         - [Table routing](/dm/dm-key-features.md#table-routing)
@@ -309,7 +310,6 @@
         - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
         - 迁移任务操作
             - [任务前置检查](/dm/dm-precheck.md)
-            - [任务配置](/dm/task-configuration-file.md)
             - [创建任务](/dm/dm-create-task.md)
             - [查询状态](/dm/dm-query-status.md)
             - [暂停任务](/dm/dm-pause-task.md)
