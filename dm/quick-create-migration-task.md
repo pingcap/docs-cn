@@ -45,11 +45,6 @@ summary: 了解在不同业务需求场景下如何配置数据迁移任务。
 
 - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
 
-## 从文件迁移数据到 TiDB
-
-- [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
-- [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
-
 ## 复杂迁移场景
 
 DM 在实时同步过程中，多个已有特性可以使得同步过程更加灵活，适应各类业务需求：
