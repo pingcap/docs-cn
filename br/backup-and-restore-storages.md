@@ -156,6 +156,18 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
 | `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
 
+导出到非 AWS 的 S3 云服务时，需要指定供应商名字，以阿里云的 OSS 存储为例：
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./dumpling -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+   -o "s3://my-bucket/dumpling/" \
+   --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+   --s3.provider="alibaba" \
+   -r 200000 -F 256MiB
+```
+
 ### GCS 的命令行参数
 
 | 命令行参数 | 描述 |
