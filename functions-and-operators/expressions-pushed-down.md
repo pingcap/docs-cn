@@ -39,8 +39,8 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 以上结果字段解释如下：
 
-+ `name`：禁止下推的函数名，运算符名，或数据类型。
-+ `store_type`：用于指明希望禁止该函数，运算符，或数据类型下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
++ `name`：禁止下推的函数名、运算符名或数据类型。
++ `store_type`：用于指定希望禁止该函数、运算符或数据类型下推到哪些组件进行计算。组件可选 `tidb`、`tikv` 和 `tiflash`。`store_type` 不区分大小写，如果需要禁止向多个存储引擎下推，各个存储之间需用逗号隔开。
     - `store_type` 为 `tidb` 时表示在读取 TiDB 内存表时，是否允许该函数在其他 TiDB Server 上执行。
     - `store_type` 为 `tikv` 时表示是否允许该函数在 TiKV Server 的 Coprocessor 模块中执行。
     - `store_type` 为 `tiflash` 时表示是否允许该函数在 TiFlash Server 的 Coprocessor 模块中执行。
@@ -56,7 +56,7 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 1. 向 `mysql.expr_pushdown_blacklist` 插入以下内容：
 
-    - 希望禁止下推的[函数名，运算符名](#已支持下推的表达式列表），或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
+    - 希望禁止下推的[函数名、运算符名](#已支持下推的表达式列表)或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
     - 希望禁止下推的存储引擎
 
 2. 执行 `admin reload expr_pushdown_blacklist;`。
@@ -65,10 +65,10 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 执行以下步骤，可将一个或多个函数及运算符移出黑名单：
 
-1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名，运算符名，或数据类型。
+1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名、运算符名或数据类型。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
-### 黑名单功能使用示例
+### 黑名单使用示例
 
 以下示例首先将函数 `DATE_FORMAT()`、运算符 `>` 及 数据类型 `BIT` 加入黑名单，然后再将运算符 `>` 从黑名单中移出。
 
