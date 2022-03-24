@@ -119,8 +119,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 慢查询日志默认记录到 tidb.log 中，如果希望生成单独的慢查询日志文件，修改 inventory.ini 配置文件的参数 `enable_slow_query_log` 为 True。
 
-如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log`
-文件中记录慢查询日志。
+如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log` 文件中记录慢查询日志。
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
@@ -276,6 +275,10 @@ PD 启动参数中的 `--initial-cluster` 包含了某个不属于该集群的�
 #### Client 连接是如何寻找 PD 的？
 
 Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD 与 TiKV 对 Client 透明。当 TiDB 连接任意一台 PD 的时候，PD 会告知 TiDB 当前的 leader 是谁，如果此台 PD 不是 leader，TiDB 将会重新连接至 leader PD。
+
+#### TiKV 节点 (Store) 各状态 (Up, Disconnect, Offline, Down, Tombstone) 之间的关系是什么？
+
+使用 `pd-ctl` 可以查看 TiKV 节点的状态信息。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 #### PD 参数中 leader-schedule-limit 和 region-schedule-limit 调度有什么区别？
 
