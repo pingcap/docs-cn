@@ -1531,7 +1531,21 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：GLOBAL
 - 默认值：`ON`
-- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+- 这个变量用于控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+
+### `tidb_top_sql_max_meta_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`5000`
+- 范围：`[1, 10000]`
+- 这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 种类的数量。
+
+### `tidb_top_sql_max_time_series_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`100`
+- 范围：`[1, 5000]`
+- 这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留 Top-N 的 SQL 数据。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
