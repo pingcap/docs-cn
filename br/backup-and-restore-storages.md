@@ -156,7 +156,9 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
 | `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
 
-导出到非 AWS 的 S3 云服务时，需要指定供应商名字，以阿里云的 OSS 存储为例：
+导出到非 AWS 的 S3 云服务时，需要指定云服务商名字，对应是否使用 virtual hosted style。以阿里云的 OSS 存储为例：
+
+* Dumpling 使用 OSS 存储
 
 {{< copyable "shell-regular" >}}
 
@@ -166,6 +168,29 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
    --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
    --s3.provider="alibaba" \
    -r 200000 -F 256MiB
+```
+
+* BR 使用 OSS 存储
+
+{{< copyable "shell-regular" >}}
+
+```bash
+./br backup full --pd "127.0.0.1:2379" \
+    --storage "s3://my-bucket/full/" \
+    --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+    --s3.provider="alibaba" \
+    --send-credentials-to-tikv=true \
+    --ratelimit 128 \
+    --log-file backuptable.log
+```
+
+* Lightning 使用 OSS 存储的 Yaml 文件
+
+{{< copyable "yaml" >}}
+
+```yaml
+[mydumper]
+data-source-dir = "s3://my-bucket/dumpling/?endpoint=http://oss-cn-hangzhou-internal.aliyuncs.com&provider=alibaba"
 ```
 
 ### GCS 的命令行参数
