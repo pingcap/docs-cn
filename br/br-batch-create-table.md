@@ -21,31 +21,31 @@ summary: 了解如何使用 BR 批量建表功能。在恢复备份数据时，B
 
 ## 使用方法
 
-BR 默认开启了批量建表功能，在 v6.0 或以上版本中默认设置了 `--ddl-batch-size=128`。因此，你不需要额外配置该参数。
+BR 默认开启了批量建表功能，在 v6.0 或以上版本中默认设置了 `--ddl-batch-size=128`，以加快恢复时的建表速度。因此，你不需要额外配置该参数。
 
 如果需要关闭此功能，你可以通过以下命令将 `--ddl-batch-size` 的值设置为 `0`：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-bin/br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore-concurrency.log --ddl-batch-size=0
+br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore.log --ddl-batch-size=0
 ```
 
 关闭批量建表功能后，BR 会采用原来的[串行建表方案](#实现原理)。
 
 ## 实现原理
 
-- v6.0 前的串行建表方案：在 v6.0 之前的版本，BR 采用了串行建表方案。在使用 BR 执行数据恢复任务时，BR 会先在下游 TiDB 创建库和表后，再开始进行数据恢复。建表时，BR 会在调用 TiDB 接口后，使用 SQL 语句 `Create Table` 创建表。建表任务由 TiDB DDL owner 依次串行执行。在每张表被创建时，各会引起一次 schema 版本的变更，而每次的 schema 版本的变更都需要同步到其他 BR 和其他 TiDB DDL worker。因此，当需要创建的表的数量比较多时，串行建表方案会导致建表时间过长。
+- v6.0 前的串行建表方案：在 v6.0 之前的版本，BR 采用了串行建表方案。在使用 BR 执行数据恢复任务时，BR 会先在目标 TiDB 创建库和表后，再开始进行数据恢复。建表时，BR 会在调用 TiDB 接口后，使用 SQL 语句 `Create Table` 创建表。建表任务由 TiDB DDL owner 依次串行执行。在每张表被创建时，各会引起一次 schema 版本的变更，而每次的 schema 版本的变更都需要同步到其他 BR 和其他 TiDB DDL worker。因此，当需要创建的表的数量比较多时，串行建表方案会导致建表时间过长。
 - v6.0 起的批量建表方案：批量建表功能采用了并发批量建表方案。从 v6.0 起，在默认情况下，BR 会以 128 张表为一批，并发创建多批表。采用该方案后，BR 每建一批表时，TiDB schema 版本只会变更一次。此方法极大地提高了建表速度。
 
-### 功能测试
+## 功能测试
 
 以下是在 TiDB v6.0 集群中测试批量建表功能的内容。具体的测试环境如下：
 
 - 集群配置：
-    - 15 个 TiKV 实例，共有 16 个 CPU 核心、32 GB 内存、16 个处理 RPC 请求的线程（即 [`import.num-threads`](/tikv-configuration-file.md#num-threads) = 16）
-    - 3 个 TiDB 实例
-    - 3 个 PD 实例
+    - 15 个 TiKV 实例，每个 TiKV 实例共有 16 个 CPU 核心、80 GB 内存、16 个处理 RPC 请求的线程（即 [`import.num-threads`](/tikv-configuration-file.md#num-threads) = 16）
+    - 3 个 TiDB 实例，每个 TiKV 实例共有 16 个 CPU 核心、32 GB 内存。
+    - 3 个 PD 实例，每个 PD 实例共有 16 个 CPU 核心、32 GB 内存。
 - 待恢复数据的规模：16.16 TB
 
 测试结果如下：
