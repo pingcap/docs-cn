@@ -216,13 +216,6 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
-### `placement_checks`
-
-- 作用域：SESSION | GLOBAL
-- 默认值：`ON`
-- 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。
-- 该变量可由逻辑转储或逻辑恢复工具使用，确保即使违反放置规则也始终可以创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件的开头部分。
-
 ### `port`
 
 - 作用域：NONE
@@ -682,6 +675,12 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
+### `tidb_enable_mutation_checker`（从 v6.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
+
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -987,6 +986,13 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 这个变量用来设置并行 hash aggregation 算法 partial 阶段的执行并发度。对于聚合函数参数不为 distinct 的情况，HashAgg 分为 partial 和 final 阶段分别并行执行。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
 
+### `tidb_ignore_prepared_cache_close_stmt`（从 v6.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用来设置是否忽略关闭 Prepared Statement 的指令。
+- 如果变量值设为 `ON`，Binary 协议的 `COM_STMT_CLOSE` 信号和文本协议的 [`DEALLOCATE PREPARE`](/sql-statements/sql-statement-deallocate.md) 语句都会被忽略。
+
 ### `tidb_index_join_batch_size`
 
 - 作用域：SESSION | GLOBAL
@@ -1080,6 +1086,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：字节
 - 这个变量用来设置 `Apply` 算子中局部 Cache 的内存使用阈值。
 - `Apply` 算子中局部 Cache 用来加速 `Apply` 算子的计算，该变量可以设置 `Apply` Cache 的内存使用阈值。设置变量值为 `0` 可以关闭 `Apply` Cache 功能。
+
+### `tidb_mem_quota_binding_cache`（从 v6.0 版本开始引入）
+
+- 作用域：GLOBAL
+- 默认值：`67108864` (64 MiB)
+- 范围：`[0, 2147483647]`
+- 单位：字节
+- 这个变量用来设置存放 `binding` 的缓存的内存使用阈值。
+- 如果一个系统创建或者捕获了过多的绑定，导致绑定所使用的内存空间超过该阈值，TiDB 会在日志中增加警告日志进行提示。这种情况下，缓存无法存放所有可用的绑定，并且无法保证哪些绑定存在于缓存中，因此，可能存在一些查询无法使用可用绑定的情况。此时，可以调大该变量的值，从而保证所有可用绑定都能正常使用。修改变量值以后，需要执行命令 `admin reload bindings` 重新加载绑定，确保变更生效。
 
 ### `tidb_mem_quota_query`
 
@@ -1290,6 +1305,14 @@ explain select * from t where age=5;
 - 默认值：`ON`
 - 这个变量用于控制是否开启 [ANALYZE 配置持久化](/statistics.md#analyze-配置持久化)特性。
 
+### `tidb_placement_mode`（从 v6.0.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`STRICT`
+- 可选值：`STRICT`，`IGNORE`
+- 该变量用于控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。变量值为 `IGNORE` 时将忽略所有放置规则选项。
+- 该变量可由逻辑转储或逻辑恢复工具使用，确保即使绑定了不合适的放置规则，也始终可以成功创建表。这类似于 mysqldump 将 `SET FOREIGN_KEY_CHECKS=0;` 写入每个转储文件的开头部分。
+
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：INSTANCE
@@ -1324,6 +1347,18 @@ explain select * from t where age=5;
 ```sql
 SET tidb_query_log_max_len = 20;
 ```
+
+### `tidb_rc_read_check_ts`（从 v6.0.0 版本开始引入）
+
+> **警告：**
+>
+> - 该特性与 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [`replica-read`](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两项特性。
+> - 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
+- 如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
 
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1507,12 +1542,8 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
-
-> **警告：**
->
-> Top SQL 目前为实验特性，不建议在生产环境中使用。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
@@ -1520,6 +1551,14 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`0`
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
+
+### `tidb_table_cache_lease`（从 v6.0.0 版本开始引入）
+
+- 作用域：GLOBAL
+- 默认值：`3`
+- 范围：`[1, 10]`
+- 单位：秒
+- 这个变量用来控制[缓存表](/table-cache.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
 
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
@@ -1547,6 +1586,17 @@ set tidb_slow_log_threshold = 200;
 >
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
 
+### `tidb_txn_assertion_level`（从 v6.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`FAST`
+- 可选值：`OFF`，`FAST`，`STRICT`
+- 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
+
+    - `OFF`: 关闭该项检查。
+    - `FAST`: 仅开启对性能影响微小的检查，包含大部分检查效果。
+    - `STRICT`: 开启全部检查，对悲观事务性能有一定影响。
+
 ### `tidb_txn_mode`
 
 - 作用域：SESSION | GLOBAL
@@ -1556,7 +1606,7 @@ set tidb_slow_log_threshold = 200;
 - 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模式，即**只有新创建的集群才会默认使用悲观事务模式**。
 - 将该变量设置为 "optimistic" 或 "" 时，将会使用[乐观事务模式](/optimistic-transaction.md)。
 
-### `tidb_use_plan_baselines` <span class="version-mark">从 v4.0 版本开始引入</span>
+### `tidb_use_plan_baselines`（从 v4.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
@@ -1652,3 +1702,9 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_sysdate_is_now`（从 v6.0.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。

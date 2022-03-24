@@ -82,12 +82,12 @@ tiup dmctl --master-addr <master-addr> operate-source create ./source-mysql-01.y
 
 创建数据源后，可以使用如下命令查看创建的数据源：
 
-- 如果知道数据源的 `source-id`，可以通过 `dmctl get-config source <source-id>` 命令直接查看数据源配置：
+- 如果知道数据源的 `source-id`，可以通过 `dmctl config source <source-id>` 命令直接查看数据源配置：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup dmctl --master-addr <master-addr> get-config source mysql-01
+    tiup dmctl --master-addr <master-addr> config source mysql-01
     ```
     
     ```

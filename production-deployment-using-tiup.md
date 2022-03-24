@@ -9,6 +9,10 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 目前 TiUP 可以支持部署 TiDB、TiFlash、TiDB Binlog、TiCDC 以及监控系统。本文将介绍不同集群拓扑的具体部署步骤。
 
+> **注意：**
+>
+> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
+
 ## 第 1 步：软硬件环境需求及前置检查
 
 [软硬件环境需求](/hardware-and-software-requirements.md)
@@ -428,7 +432,3 @@ tiup cluster display tidb-test
 
 - [TiCDC 任务管理](/ticdc/manage-ticdc.md)
 - [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
-
-> **注意：**
->
-> TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些信息分享给 PingCAP 用于改善产品。若要了解所收集的信息详情及如何禁用该行为，请参见[遥测](/telemetry.md)。
