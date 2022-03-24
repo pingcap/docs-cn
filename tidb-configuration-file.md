@@ -575,7 +575,7 @@ opentracing.reporter 相关的设置。
 
 ### `grpc-compression-type`
 
-+ 控制 TiDB 与 TiKV 节点 rpc 通信传输的数据使用的压缩类型。默认值为 "none" 即不使用压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。
++ 控制 TiDB 向 TiKV 节点传输数据使用的压缩算法类型。默认值为 "none" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。
 + 默认值："none"
 + 可选值："none", "gzip"
 
