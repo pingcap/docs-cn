@@ -315,6 +315,7 @@
             - [暂停任务](/dm/dm-pause-task.md)
             - [恢复任务](/dm/dm-resume-task.md)
             - [停止任务](/dm/dm-stop-task.md)
+        - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
