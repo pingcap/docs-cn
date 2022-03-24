@@ -155,8 +155,8 @@ show warnings;
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
 | raftstore.apply-pool-size | 处理数据落盘的线程池中线程的数量，即 Apply 线程池大小 |
 | raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |
-| raftstore.apply-max-batch-size | 在处理数据落盘的线程上执行请求的 Raft 状态机的最大个数，这些 Raft 状态机由 BatchSystem 批量调度到该线程。 |
-| raftstore.store-max-batch-size | 在处理 Raft 的线程上执行请求的 Raft 状态机的最大个数，这些 Raft 状态机由 BatchSystem 批量调度到该线程。 |
+| raftstore.apply-max-batch-size | 一些 Raft 状态机由 BatchSystem 批量调度到处理数据落盘的线程上执行请求，该配置项指定这些 Raft 状态机的最大个数。 |
+| raftstore.store-max-batch-size |  一些 Raft 状态机由 BatchSystem 批量调度到处理 Raft 的线程上执行请求，该配置项指定这些 Raft 状态机的最大个数。 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
