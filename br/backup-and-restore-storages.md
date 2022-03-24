@@ -78,7 +78,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `region` | Amazon S3 服务区域（默认为 `us-east-1`） |
 | `use-accelerate-endpoint` | 是否在 Amazon S3 上使用加速端点（默认为 `false`） |
 | `endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
-| `force-path-style` | 使用 path-style，而不是 virtual-hosted style（默认为 `false`） |
+| `force-path-style` | 使用 path-style，而不是 virtual-hosted style（默认为 `true`） |
 | `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`） |
 | `sse` | 用于加密上传的服务器端加密算法（可以设置为空，`AES256` 或 `aws:kms`） |
 | `sse-kms-key-id` | 如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
