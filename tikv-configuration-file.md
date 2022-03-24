@@ -13,7 +13,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ## 全局配置
 
-### abort-on-panic
+### `abort-on-panic`
 
 + 设置 TiKV panic 时是否调用 `abort()` 退出进程。此选项影响 TiKV 是否允许系统生成 core dump 文件。
 
@@ -1572,33 +1572,32 @@ Raft Engine 相关的配置项。
 
 ## quota
 
-用于前台限流相关的配置项。
+用于前台限流 (Quota Limiter) 相关的配置项。
 
-当 TiKV 部署的机型资源受限时，如果前台处理的读写请求量过大，会导致后台处理请求的 CPU 资源被前台占用，最终影响 TiKV 性能的稳定性。此时，你可以通过开启前台限流 (Quota Limiter) 相关的 quota 配置项限制前台各类请求所占用的资源。
+当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用前台限流相关的 quota 配置项以限制前台各类请求占用的 CPU 资源。触发该限制的请求则会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration从-v600-版本开始引入) 的值。
 
 > **警告：**
 >
-> - 前台限流是 TiDB 在 v6.0 中引入的实验特性，不建议在生产环境中使用。
-> - 该功能适合在资源有限的环境中（如 4vCPU，16G 内存）提高长期运行的稳定性，但启用该功能则会在资源丰富的机型环境出现 TiKV 峰值性能下降的情况。
+> - 前台限流是 TiDB 在 v6.0.0 中引入的实验特性，不建议在生产环境中使用。
+> - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
 
-### `foreground-cpu-time` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `foreground-cpu-time`（从 v6.0.0 版本开始引入）
 
-+ 限制 CPU 为处理 TiKV 前台读写请求所使用的 CPU 资源使用量，这是一个软限制。
-+ 触发该限制的请求则会被强制等待一段时间以让出 CPU 资源。
++ 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 默认值：0（即无限制）
-+ 单位：millicpu（即当该参数值为 `1500` 时，前端请求会消耗 1.5vCPU）
++ 单位：millicpu （当该参数值为 `1500` 时，前端请求会消耗 1.5v CPU）。
 
-### `foreground-write-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `foreground-write-bandwidth`（从 v6.0.0 版本开始引入）
 
 + 限制事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `foreground-read-bandwidth` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `foreground-read-bandwidth`（从 v6.0.0 版本开始引入）
 
 + 限制事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `max-delay-duration` <span class="version-mark">从 v6.0 版本开始引入</span>
+### `max-delay-duration`（从 v6.0.0 版本开始引入）
 
 + 单次前台读写请求被强制等待的最大时间。
 + 默认值：500ms
