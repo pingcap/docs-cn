@@ -514,10 +514,10 @@ raftstore 相关的配置项。
 ### `raft-max-size-per-msg`
 
 + 产生的单个消息包的大小限制，软限制。
-+ 默认值：1MiB
++ 默认值：1MB
 + 最小值：0
-+ 最大值: 3GiB
-+ 单位：KiB|MiB|GiB
++ 最大值: 3GB
++ 单位：KB|MB|GB
 
 ### `raft-max-inflight-msgs`
 
