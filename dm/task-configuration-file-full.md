@@ -109,10 +109,18 @@ mydumpers:
 loaders:
   global:                            # The configuration name of the processing unit.
     pool-size: 16                    # The number of threads that concurrently execute dumped SQL files in the load processing unit (16 by default). When multiple instances are migrating data to TiDB at the same time, slightly reduce the value according to the load.
-
     # The directory that stores full data exported from the upstream ("./dumped_data" by default).
     # Supoprts a local filesystem path or an Amazon S3 path. For example, "s3://dm_bucket/dumped_data?region=us-west-2&endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true"
     dir: "./dumped_data"
+    # The import mode during the full import phase. In most cases you don't need to care about this configuration. 
+    # - "sql" (default). Use [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend mode to import data.
+    # - "loader". Use Loader mode to import data. This mode is only for compatibility with features that TiDB Lightning does not support yet. It will be deprecated in the future.
+    import-mode: "sql"
+    #  Methods to resolve conflicts during the full import phase. You can set it to the following:
+    # - "replace" (default). Only supports the import mode "sql". In this method, it uses the new data to replace the existing data.
+    # - "ignore". Only supports the import mode "sql". It keeps the existing data, and ignores the new data.
+    # - "error". Only supports the import mode "loader". It reports errors when inserting duplicated data, and then stops the replication task.
+    on-dupicate: "replace"
 
 # Configuration arguments of the sync processing unit.
 syncers:
