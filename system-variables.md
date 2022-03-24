@@ -1332,7 +1332,7 @@ SET tidb_query_log_max_len = 20;
 - 适用于悲观事务 `READ-COMMITTED` 隔离级别下，读写冲突较少场景，优化事务内读语句延迟。如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。
 
 > **说明：**
-> 更详细的说明，请参考[文档](/transaction-isolation-levels.md## 读已提交隔离级别)。
+> 更详细的说明，请参考[文档](/transaction-isolation-levels.md)。
 
 > **警告：**
 >
