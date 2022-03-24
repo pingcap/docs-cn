@@ -60,7 +60,14 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 >
 > Read Committed 隔离级别仅在[悲观事务模式](/pessimistic-transaction.md)下生效。在[乐观事务模式](/optimistic-transaction.md)下设置事务隔离级别为 Read Committed 将不会生效，事务将仍旧使用可重复读隔离级别。
 
-从 TiDB [v6.0.0](/releases/release-6.0.0.md#tidb) 版本开始，TiDB 支持使用系统变量 [tidb_rc_read_check_ts](/system-variables.md#tidb_rc_read_check_ts) 对于读写冲突较少情况，优化 ts 获取。当开启此变量之后，`SELECT` 语句会尝试使用前一个有效的 timestamp 进行数据读取，初始值为事务的 `start_ts`。如果整个读取过程没有遇到更新版本，则返回结果给客户端且 `SELECT` 语句执行成功。当读的过程中遇到更新的版本时，如果当前 TiDB 尚未向客户端回复数据，则尝试重新获取一个新的 timestamp 重试此语句。如果已经向客户端返回部分数据，则 TiDB 会向客户端报错。每次向客户端回复的数据量受 `tidb_init_chunk_size` 和 `tidb_max_chunk_size` 控制。在使用 `READ-COMMITTED` 隔离级别且单个事务中 `SELECT` 语句较多，读写冲突较少的场景，可通过开启此变量用以避免获取全局 timestamp 带来的延迟和开销。
+从 v6.0.0 版本开始，TiDB 支持使用系统变量 [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) 对读写冲突较少情况下优化时间戳的获取。开启此变量后，`SELECT` 语句会尝试使用前一个有效的时间戳进行数据读取，初始值为事务的 `start_ts`。
+
+- 如果整个读取过程没有遇到更新的数据版本，则返回结果给客户端且 `SELECT` 语句执行成功。
+- 如果读取过程中遇到更新的数据版本：
+    - 如果当前 TiDB 尚未向客户端回复数据，则尝试重新获取一个新的时间戳重试此语句。
+    - 如果 TiDB 已经向客户端返回部分数据，则 TiDB 会向客户端报错。每次向客户端回复的数据量受 `tidb_init_chunk_size` 和 `tidb_max_chunk_size` 控制。
+    
+在使用 `READ-COMMITTED` 隔离级别且单个事务中 `SELECT` 语句较多、读写冲突较少的场景，可通过开启此变量来避免获取全局 timestamp 带来的延迟和开销。
 
 ### 与 MySQL Read Committed 隔离级别的区别
 
