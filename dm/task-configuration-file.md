@@ -75,7 +75,7 @@ Refer to the comments in the [template](#task-configuration-file-template-basic)
 > **Note:**
 >
 > DM uses dumpling to execute full backups. During the full backup process, [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) is used to temporarily interrupt the DML and DDL operations of the replica database, to ensure the consistency of the backup connections, and to record the binlog position (POS) information for incremental replications. The lock is released after all backup connections start transactions.
-> 
+>
 > It is recommended to perform full backups during off-peak hours or on the MySQL replica database.
 
 ### Feature configuration set
@@ -112,7 +112,7 @@ To illustrate how to modify the task configuration, the following is an example 
     start-task <config-file>
     ```
 
-4. In DM v2.0.1 and later versions, you can check whether the configuration takes effect by executing the `get-config` command:
+4. In DM v6.0 and later versions, you can check whether the configuration takes effect by executing the `config` command:
 
     {{< copyable "" >}}
 

@@ -30,76 +30,83 @@ However, during the migration with [optimistic mode sharding DDL support](/dm/fe
 
 In addition, in some scenarios (such as when the downstream table has more columns than the upstream table), `schema-D` might be inconsistent with `schema-B` and `schema-I`.
 
-To support the scenarios mentioned above and handle other migration interruptions caused by schema inconsistency, DM provides the `operate-schema` command to obtain, modify, and delete the `schema-I` table schema maintained in DM.
+To support the scenarios mentioned above and handle other migration interruptions caused by schema inconsistency, DM provides the `binlog-schema` command to obtain, modify, and delete the `schema-I` table schema maintained in DM.
+
+> **Note:**
+>
+> The `binlog-schema` command is supported only in DM v6.0 or later versions. For earlier versions, you must use the `operate-schema` command.
 
 ## Command
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-help operate-schema
+help binlog-schema
 ```
 
 ```
-`get`/`set`/`remove` the schema for an upstream table.
+manage or show table schema in schema tracker
 
 Usage:
-  dmctl operate-schema <operate-type> <-s source ...> <task-name | task-file> <-d database> <-t table> [schema-file] [--flush] [--sync] [flags]
+  dmctl binlog-schema [command]
+
+Available Commands:
+  delete      delete table schema structure
+  list        show table schema structure
+  update      update tables schema structure
 
 Flags:
-  -d, --database string   database name of the table
-      --flush             flush the table info and checkpoint immediately
-  -h, --help              help for operate-schema
-      --sync              sync the table info to master to resolve shard ddl lock, only for optimistic mode now
-  -t, --table string      table name
+  -h, --help   help for binlog-schema
 
 Global Flags:
   -s, --source strings   MySQL Source ID.
+
+Use "dmctl binlog-schema [command] --help" for more information about a command.
 ```
 
 > **Note:**
 >
-> - Because a table schema might change during data migration, to obtain a predictable table schema, currently the `operate-schema` command can be used only when the data migration task is in the `Paused` state.
+> - Because a table schema might change during data migration, to obtain a predictable table schema, currently the `binlog-schema` command can be used only when the data migration task is in the `Paused` state.
 > - To avoid data loss due to mishandling, it is **strongly recommended** to get and backup the table schema firstly before you modify the schema.
 
 ## Parameters
 
-* `operate-type`:
-    - Required.
-    - Specifies the type of operation on the schema. The optional values are `get`, `set`, and `remove`.
-* `-s`:
+* `delete`: Deletes the table schema.
+* `list`: Lists the table schema.
+* `update`: Updates the table schema.
+* `-s` or `--source`:
     - Required.
     - Specifies the MySQL source that the operation is applied to.
-* `task-name | task-file`:
-    - Required.
-    - Specifies the task name or task file path.
-* `-d`:
-    - Required.
-    - Specifies the name of the upstream database the table belongs to.
-* `-t`:
-    - Required.
-    - Specifies the name of the upstream table corresponding to the table.
-* `schema-file`:
-    - Required when the operation type is `set`. Optional for other operation types.
-    - The table schema file to be set. The file content should be a valid `CREATE TABLE` statement.
-* `--flush`:
-    - Optional.
-    - Writes the schema to the checkpoint so that DM can load it after restarting the task.
-    - The default value is `true`.
-* `--sync`:
-    - Optional. Only used when an error occurs in the optimistic sharding DDL mode.
-    - Updates the optimistic sharding metadata with this schema.
 
 ## Usage example
 
 ### Get the table schema
+
+To get the table schema, run the `binlog-schema list` command:
+
+```bash
+help binlog-schema list
+```
+
+```
+show table schema structure
+
+Usage:
+  dmctl binlog-schema list <task-name> <database> <table> [flags]
+
+Flags:
+  -h, --help   help for list
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
 
 If you want to get the table schema of the ``` `db_single`.`t1` ``` table corresponding to the `mysql-replica-01` MySQL source in the `db_single` task, run the following command:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-operate-schema get -s mysql-replica-01 task_single -d db_single -t t1
+binlog-schema list -s mysql-replica-01 task_single db_single t1
 ```
 
 ```
@@ -117,7 +124,32 @@ operate-schema get -s mysql-replica-01 task_single -d db_single -t t1
 }
 ```
 
-### Set the table schema
+### Update the table schema
+
+To update the table schema, run the `binlog-schema update` command:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+help binlog-schema update
+```
+
+```
+update tables schema structure
+
+Usage:
+  dmctl binlog-schema update <task-name> <database> <table> [schema-file] [flags]
+
+Flags:
+      --flush         flush the table info and checkpoint immediately (default true)
+      --from-source   use the schema from upstream database as the schema of the specified tables
+      --from-target   use the schema from downstream database as the schema of the specified tables
+  -h, --help          help for update
+      --sync          sync the table info to master to resolve shard ddl lock, only for optimistic mode now (default true)
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
 
 If you want to set the table schema of the ``` `db_single`.`t1` ``` table corresponding to the `mysql-replica-01` MySQL source in the `db_single` task as follows:
 
@@ -152,7 +184,26 @@ operate-schema set -s mysql-replica-01 task_single -d db_single -t t1 db_single.
 }
 ```
 
-### Delete table schema
+### Delete the table schema
+
+To delete the table schema, run the `binlog-schema delete` command:
+
+```bash
+help binlog-schema delete
+```
+
+```
+delete table schema structure
+
+Usage:
+  dmctl binlog-schema delete <task-name> <database> <table> [flags]
+
+Flags:
+  -h, --help   help for delete
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
 
 > **Note:**
 >
@@ -167,7 +218,7 @@ If you want to delete the table schema of the ``` `db_single`.`t1` ``` table cor
 {{< copyable "shell-regular" >}}
 
 ```bash
-operate-schema remove -s mysql-replica-01 task_single -d db_single -t t1
+binlog-schema delete -s mysql-replica-01 task_single db_single t1
 ```
 
 ```

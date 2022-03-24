@@ -94,14 +94,14 @@ The following is an example of the returned result:
 
 > **Note:**
 >
-> The `get-config` command is only supported in DM v2.0.1 and later versions.
+> The `config` command is only supported in DM v6.0 and later versions. For earlier versions, you must use the `get-config` command.
 
-If you know the `source-id`, you can run `dmctl --master-addr <master-addr> get-config source <source-id>` to get the data source configuration.
+If you know the `source-id`, you can run `dmctl --master-addr <master-addr> config source <source-id>` to get the data source configuration.
 
 {{< copyable "" >}}
 
 ```bash
-get-config source mysql-replica-01
+config source mysql-replica-01
 ```
 
 ```

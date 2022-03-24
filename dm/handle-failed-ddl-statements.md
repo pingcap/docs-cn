@@ -8,11 +8,15 @@ aliases: ['/docs/tidb-data-migration/dev/skip-or-replace-abnormal-sql-statements
 
 This document introduces how to handle failed DDL statements when you're using the TiDB Data Migration (DM) tool to migrate data.
 
-Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/mysql-compatibility.md#ddl)). Therefore, when DM is migrating data from MySQL to TiDB and TiDB does not support the corresponding DDL statement, an error might occur and break the migration process. In this case, you can use the `handle-error` command of DM to resume the migration.
+Currently, TiDB is not completely compatible with all MySQL syntax (see [the DDL statements supported by TiDB](/mysql-compatibility.md#ddl)). Therefore, when DM is migrating data from MySQL to TiDB and TiDB does not support the corresponding DDL statement, an error might occur and break the migration process. In this case, you can use the `binlog` command of DM to resume the migration.
 
 ## Restrictions
 
-If it is unacceptable in the actual production environment that the failed DDL statement is skipped in the downstream TiDB and it cannot be replaced with other DDL statements, then do not use this command.
+Do not use this command in the following situations:
+
+* It is unacceptable in the actual production environment that the failed DDL statement is skipped in the downstream TiDB.
+* The failed DDL statement cannot be replaced with other DDL statements.
+* Other DDL statements must not be injected into the downstream TiDB.
 
 For example, `DROP PRIMARY KEY`. In this scenario, you can only create a new table in the downstream with the new table schema (after executing the DDL statement), and re-import all the data into this new table.
 
@@ -20,64 +24,94 @@ For example, `DROP PRIMARY KEY`. In this scenario, you can only create a new tab
 
 During the migration, the DDL statement unsupported by TiDB is executed in the upstream and migrated to the downstream, and as a result, the migration task gets interrupted.
 
-- If it is acceptable that this DDL statement is skipped in the downstream TiDB, then you can use `handle-error <task-name> skip` to skip migrating this DDL statement and resume the migration.
-- If it is acceptable that this DDL statement is replaced with other DDL statements, then you can use `handle-error <task-name> replace` to replace this DDL statement and resume the migration.
+- If it is acceptable that this DDL statement is skipped in the downstream TiDB, then you can use `binlog skip <task-name>` to skip migrating this DDL statement and resume the migration.
+- If it is acceptable that this DDL statement is replaced with other DDL statements, then you can use `binlog replace <task-name>` to replace this DDL statement and resume the migration.
+- If it is acceptable that other DDL statements are injected to the downstream TiDB, then you can use `binlog inject <task-name>` to inject other DDL statements and resume the migration.
 
-## Command
+## Commands
 
-When you use dmctl to manually handle the failed DDL statements, the commonly used commands include `query-status` and `handle-error`.
+When you use dmctl to manually handle the failed DDL statements, the commonly used commands include `query-status` and `binlog`.
 
 ### query-status
 
 The `query-status` command is used to query the current status of items such as the subtask and the relay unit in each MySQL instance. For details, see [query status](/dm/dm-query-status.md).
 
-### handle-error
+### binlog
 
-The `handle-error` command is used to handle the failed DDL statements.
+The `binlog` command is used to manage and show binlog operations. This command is only supported in DM v6.0 and later versions. For earlier versions, use the `handle-error` command.
 
-### Command usage
+The usage of `binlog` is as follows:
 
 ```bash
-» handle-error -h
+binlog -h
 ```
 
 ```
+manage or show binlog operations
+
 Usage:
-  dmctl handle-error <task-name | task-file> [-s source ...] [-b binlog-pos] <skip/replace/revert> [replace-sql1;replace-sql2;] [flags]
+  dmctl binlog [command]
+
+Available Commands:
+  inject      inject the current error event or a specific binlog position (binlog-pos) with some ddls
+  list        list error handle command at binlog position (binlog-pos) or after binlog position (binlog-pos)
+  replace     replace the current error event or a specific binlog position (binlog-pos) with some ddls
+  revert      revert the current binlog operation or a specific binlog position (binlog-pos) operation
+  skip        skip the current error event or a specific binlog position (binlog-pos) event
 
 Flags:
-  -b, --binlog-pos string   position used to match binlog event if matched the handler-error operation will be applied. The format like "mysql-bin|000001.000003:3270"
-  -h, --help                help for handle-error
+  -b, --binlog-pos string   position used to match binlog event if matched the binlog operation will be applied. The format like "mysql-bin|000001.000003:3270"
+  -h, --help                help for binlog
 
 Global Flags:
-  -s, --source strings   MySQL Source ID
+  -s, --source strings   MySQL Source ID.
+
+Use "dmctl binlog [command] --help" for more information about a command.
 ```
 
-### Flags descriptions
+`binlog` supports the following sub-commands:
 
-+ `task-name`:
-    - Non-flag parameter, string, required
-    - `task-name` specifies the name of the task in which the presetted operation is going to be executed.
+* `inject`: injects DDL statements into the current error event or a specific binlog position. To specify the binlog position, refer to `-b, --binlog-pos`.
+* `list`: lists all valid `inject`, `skip`, and `replace` operations at the current binlog position or after the current binlog position. To specify the binlog position, refer to `-b, --binlog-pos`.
+* `replace`: replaces the DDL statement at a specific binlog position with another DDL statement. To specify the binlog position, refer to `-b, --binlog-pos`.
+* `revert`: reverts the `inject`, `skip` or `replace` operation at a specified binlog operation, only if the previous operation does not take effect. To specify the binlog position, refer to `-b, --binlog-pos`.
+* `skip`: skips the DDL statement at a specific binlog position. To specify the binlog position, refer to `-b, --binlog-pos`.
 
-+ `source`:
-    - Flag parameter, string, `--source`
-    - `source` specifies the MySQL instance in which the preset operation is to be executed.
+`binlog` supports the following flags:
 
-+ `skip`: Skip the error
-
-+ `replace`: Replace the failed DDL statement
-
-+ `revert`: Reset the previous skip/replace operation before the error occurs (only reset it when the previous skip/replace operation has not finally taken effect)
-
-+ `binlog-pos`:
-    - Flag parameter, string, `--binlog-pos`
-    - If it is not specified, DM automatically handles the currently failed DDL statement.
-    - If it is specified, the skip operation is executed when `binlog-pos` matches with the position of the binlog event. The format is `binlog-filename:binlog-pos`, for example, `mysql-bin|000001.000003:3270`.
++ `-b, --binlog-pos`:
+    - Type: string.
+    - Specifies a binlog position. When the position of the binlog event matches `binlog-pos`, the operation is executed. If it is not specified, DM automatically sets `binlog-pos` to the currently failed DDL statement.
+    - Format: `binlog-filename:binlog-pos`, for example, `mysql-bin|000001.000003:3270`.
     - After the migration returns an error, the binlog position can be obtained from `position` in `startLocation` returned by `query-status`. Before the migration returns an error, the binlog position can be obtained by using [`SHOW BINLOG EVENTS`](https://dev.mysql.com/doc/refman/5.7/en/show-binlog-events.html) in the upstream MySQL instance.
+
++ `-s, --source`:
+    - Type: string.
+    - Specifies the MySQL instance in which the preset operation is to be executed.
 
 ## Usage examples
 
 ### Skip DDL if the migration gets interrupted
+
+If you need to skip the DDL statement when the migration gets interrupted, run the `binlog skip` command:
+
+```bash
+binlog skip -h
+```
+
+```
+skip the current error event or a specific binlog position (binlog-pos) event
+
+Usage:
+  dmctl binlog skip <task-name> [flags]
+
+Flags:
+  -h, --help   help for skip
+
+Global Flags:
+  -b, --binlog-pos string   position used to match binlog event if matched the binlog operation will be applied. The format like "mysql-bin|000001.000003:3270"
+  -s, --source strings      MySQL Source ID.
+```
 
 #### Non-shard-merge scenario
 
@@ -115,14 +149,14 @@ Because this DDL statement is not supported by TiDB, the migration task of DM ge
 ERROR 8200 (HY000): Unsupported modify column: can't change decimal column precision
 ```
 
-Assume that it is acceptable in the actual production environment that this DDL statement is not executed in the downstream TiDB (namely, the original table schema is retained). Then you can use `handle-error <task-name> skip` to skip this DDL statement to resume the migration. The procedures are as follows:
+Assume that it is acceptable in the actual production environment that this DDL statement is not executed in the downstream TiDB (namely, the original table schema is retained). Then you can use `binlog skip <task-name>` to skip this DDL statement to resume the migration. The procedures are as follows:
 
-1. Execute `handle-error <task-name> skip` to skip the currently failed DDL statement:
+1. Execute `binlog skip <task-name>` to skip the currently failed DDL statement:
 
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test skip
+    » binlog skip test
     ```
 
     ```
@@ -247,14 +281,14 @@ Because this DDL statement is not supported by TiDB, the migration task of DM ge
 }
 ```
 
-Assume that it is acceptable in the actual production environment that this DDL statement is not executed in the downstream TiDB (namely, the original table schema is retained). Then you can use `handle-error <task-name> skip` to skip this DDL statement to resume the migration. The procedures are as follows:
+Assume that it is acceptable in the actual production environment that this DDL statement is not executed in the downstream TiDB (namely, the original table schema is retained). Then you can use `binlog skip <task-name>` to skip this DDL statement to resume the migration. The procedures are as follows:
 
-1. Execute `handle-error <task-name> skip` to skip the currently failed DDL statements in MySQL instance 1 and 2:
+1. Execute `binlog skip <task-name>` to skip the currently failed DDL statements in MySQL instance 1 and 2:
 
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test skip
+    » binlog skip test
     ```
 
     ```
@@ -294,7 +328,7 @@ Assume that it is acceptable in the actual production environment that this DDL 
     }
     ```
 
-3. Execute `handle-error <task-name> skip` again to skip the currently failed DDL statements in MySQL instance 1 and 2:
+3. Execute `binlog skip <task-name>` again to skip the currently failed DDL statements in MySQL instance 1 and 2:
 
     {{< copyable "" >}}
 
@@ -416,6 +450,26 @@ Assume that it is acceptable in the actual production environment that this DDL 
 
 ### Replace DDL if the migration gets interrupted
 
+If you need to replace the DDL statement when the migration gets interrupted, run the `binlog replace` command:
+
+```bash
+binlog replace -h
+```
+
+```
+replace the current error event or a specific binlog position (binlog-pos) with some ddls
+
+Usage:
+  dmctl binlog replace <task-name> <replace-sql1> <replace-sql2>... [flags]
+
+Flags:
+  -h, --help   help for replace
+
+Global Flags:
+  -b, --binlog-pos string   position used to match binlog event if matched the binlog operation will be applied. The format like "mysql-bin|000001.000003:3270"
+  -s, --source strings      MySQL Source ID.
+```
+
 #### Non-shard-merge scenario
 
 Assume that you need to migrate the upstream table `db1.tbl1` to the downstream TiDB. The initial table schema is:
@@ -461,7 +515,7 @@ You can replace this DDL statement with two equivalent DDL statements. The steps
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test replace "ALTER TABLE `db1`.`tbl1` ADD COLUMN `new_col` INT;ALTER TABLE `db1`.`tbl1` ADD UNIQUE(`new_col`)";
+    » binlog replace test "ALTER TABLE `db1`.`tbl1` ADD COLUMN `new_col` INT;ALTER TABLE `db1`.`tbl1` ADD UNIQUE(`new_col`)";
     ```
 
     ```
@@ -593,7 +647,7 @@ You can replace this DDL statement with two equivalent DDL statements. The steps
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test -s mysql-replica-01 replace "ALTER TABLE `shard_db_1`.`shard_table_1` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_1`.`shard_table_1` ADD UNIQUE(`new_col`)";
+    » binlog replace test -s mysql-replica-01 "ALTER TABLE `shard_db_1`.`shard_table_1` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_1`.`shard_table_1` ADD UNIQUE(`new_col`)";
     ```
 
     ```
@@ -614,7 +668,7 @@ You can replace this DDL statement with two equivalent DDL statements. The steps
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test -s mysql-replica-02 replace "ALTER TABLE `shard_db_2`.`shard_table_1` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_2`.`shard_table_1` ADD UNIQUE(`new_col`)";
+    » binlog replace test -s mysql-replica-02 "ALTER TABLE `shard_db_2`.`shard_table_1` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_2`.`shard_table_1` ADD UNIQUE(`new_col`)";
     ```
 
     ```
@@ -651,7 +705,7 @@ You can replace this DDL statement with two equivalent DDL statements. The steps
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test -s mysql-replica-01 replace "ALTER TABLE `shard_db_1`.`shard_table_2` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_1`.`shard_table_2` ADD UNIQUE(`new_col`)";
+    » binlog replace test -s mysql-replica-01 "ALTER TABLE `shard_db_1`.`shard_table_2` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_1`.`shard_table_2` ADD UNIQUE(`new_col`)";
     ```
 
     ```
@@ -672,7 +726,7 @@ You can replace this DDL statement with two equivalent DDL statements. The steps
     {{< copyable "" >}}
 
     ```bash
-    » handle-error test -s mysql-replica-02 replace "ALTER TABLE `shard_db_2`.`shard_table_2` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_2`.`shard_table_2` ADD UNIQUE(`new_col`)";
+    » binlog replace test -s mysql-replica-02 "ALTER TABLE `shard_db_2`.`shard_table_2` ADD COLUMN `new_col` INT;ALTER TABLE `shard_db_2`.`shard_table_2` ADD UNIQUE(`new_col`)";
     ```
 
     ```
@@ -784,3 +838,7 @@ You can replace this DDL statement with two equivalent DDL statements. The steps
     </details>
 
     You can see that the task runs normally with no error and all four wrong DDL statements are replaced.
+
+### Other commands
+
+For the usage of other commands of `binlog`, refer to the `binlog skip` and `binlog replace` examples above.

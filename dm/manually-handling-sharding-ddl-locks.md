@@ -6,44 +6,59 @@ aliases: ['/docs/tidb-data-migration/dev/feature-manually-handling-sharding-ddl-
 
 # Handle Sharding DDL Locks Manually in DM
 
-DM uses the sharding DDL lock to ensure operations are performed in the correct order. This locking mechanism resolves sharding DDL locks automatically in most cases, but you need to use the `unlock-ddl-lock` command to manually handle the abnormal DDL locks in some abnormal scenarios.
+DM uses the sharding DDL lock to ensure operations are performed in the correct order. This locking mechanism resolves sharding DDL locks automatically in most cases, but you need to use the `shard-ddl-lock` command to manually handle the abnormal DDL locks in some abnormal scenarios.
 
 > **Note:**
 >
-> - This document only applies to the processing of sharding DDL lock in pessimistic coordination mode. 
+> - This document only applies to the processing of sharding DDL lock in pessimistic coordination mode.
 > - The commands in the Command usage sections in this document are in interactive mode. In command-line mode, you need to add the escape characters to avoid an error report.
-> - Do not use `unlock-ddl-lock` or `break-ddl-lock` unless you are totally aware of the possible impacts brought by the command and you can accept them.
+> - Do not use `shard-ddl-lock unlock` unless you are totally aware of the possible impacts brought by the command and you can accept them.
 > - Before manually handling the abnormal DDL locks, make sure that you have already read the DM [shard merge principles](/dm/feature-shard-merge-pessimistic.md#principles).
 
 ## Command
 
-### `show-ddl-locks`
+### `shard-ddl-lock`
 
-This command queries the current DDL lock information on `DM-master`.
-
-#### Command usage
+You can use this command to view the DDL lock and request DM-master to release the specified DDL lock. This command is only supported in DM v6.0 and later. For earlier versions, you must use the `show-ddl-locks` and `unlock-ddl-locks` commands.
 
 ```bash
-show-ddl-locks [--source=mysql-replica-01] [task-name | task-file]
+shard-ddl-lock -h
+```
+
+```
+maintain or show shard-ddl locks information
+Usage:
+  dmctl shard-ddl-lock [task] [flags]
+  dmctl shard-ddl-lock [command]
+Available Commands:
+  unlock      Unlock un-resolved DDL locks forcely
+Flags:
+  -h, --help   help for shard-ddl-lock
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+Use "dmctl shard-ddl-lock [command] --help" for more information about a command.
 ```
 
 #### Arguments description
 
-+ `source`:
+* `shard-ddl-lock [task] [flags]`: view the DDL lock information on the current DM-master.
 
-    - Flag; string; `--source`; optional
-    - It can be specified repeatedly multiple times.
-    - If it is not specified, this command queries the lock information related to all MySQL sources; if it is specified, this command queries the lock information related only to the specified MySQL source.
++ `shard-ddl-lock [command]`: request DM-master to release the specified DDL lock. `[command]` only accepts `unlock` as a value.
 
-+ `task-name | task-file`:
+## Usage examples
 
-    - Non-flag; string; optional
-    - If it is not specified, this command queries the lock information related to all tasks; if it is specified, this command queries the lock information related only to the specified task.
+### `shard-ddl-lock [task] [flags]`
 
-#### Example of results
+You can use `shard-ddl-lock [task] [flags]` to view the DDL lock information on the current DM-master. For example:
 
 ```bash
-» show-ddl-locks test
+shard-ddl-lock test
+```
+
+<details>
+<summary>Expected output</summary>
+
+```
 {
     "result": true,                                        # The result of the query for the lock information.
     "msg": "",                                             # The additional message for the failure to query the lock information or other descriptive information (for example, the lock task does not exist).
@@ -67,42 +82,65 @@ show-ddl-locks [--source=mysql-replica-01] [task-name | task-file]
 }
 ```
 
-### `unlock-ddl-lock`
+</details>
+
+### `shard-ddl-lock unlock`
 
 This command actively requests `DM-master` to unlock the specified DDL lock, including requesting the owner to execute the DDL statement, requesting all other DM-workers that are not the owner to skip the DDL statement, and removing the lock information on `DM-master`.
 
 > **Note:**
 >
-> Currently, `unlock DDL lock` takes effect only for the lock in the `pessimistic` mode.
-
-#### Command usage
+> Currently, `shard-ddl-lock unlock` takes effect only for the lock in the `pessimistic` mode.
 
 ```bash
-unlock-ddl-lock [--owner] [--force-remove] <lock-ID>
+shard-ddl-lock unlock -h
 ```
 
-#### Arguments description
+```
+Unlock un-resolved DDL locks forcely
 
-+ `owner`:
+Usage:
+  dmctl shard-ddl-lock unlock <lock-id> [flags]
 
-    - Flag; string; `--owner`; optional
-    - If it is not specified, this command requests for the default owner (the owner in the result of `show-ddl-locks`) to execute the DDL statement; if it is specified, this command requests for the MySQL source (the alternative of the default owner) to execute the DDL statement.
+Flags:
+  -a, --action string     accept skip/exec values which means whether to skip or execute ddls (default "skip")
+  -d, --database string   database name of the table
+  -f, --force-remove      force to remove DDL lock
+  -h, --help              help for unlock
+  -o, --owner string      source to replace the default owner
+  -t, --table string      table name
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
+
+`shard-ddl-lock unlock` accepts the following arguments:
+
++ `-o, --owner`:
+
+    - Flag; string; optional
+    - If it is not specified, this command requests for the default owner (the owner in the result of `shard-ddl-lock`) to execute the DDL statement; if it is specified, this command requests for the MySQL source (the alternative of the default owner) to execute the DDL statement.
     - The new owner should not be specified unless the original owner is already removed from the cluster.
 
-+ `force-remove`:
++ `-f, --force-remove`:
 
-    - Flag; boolean; `--force-remove`; optional
+    - Flag; boolean; optional
     - If it is not specified, this command removes the lock information only when the owner succeeds to execute the DDL statement; if it is specified, this command forcefully removes the lock information even though the owner fails to execute the DDL statement (after doing this you cannot query or operate on the lock again).
 
-+ `lock-ID`:
++ `lock-id`:
 
     - Non-flag; string; required
-    - It specifies the ID of the DDL lock that needs to be unlocked (the `ID` in the result of `show-ddl-locks`).
+    - It specifies the ID of the DDL lock that needs to be unlocked (the `ID` in the result of `shard-ddl-lock`).
 
-#### Example of results
+The following is an example of the `shard-ddl-lock unlock` command:
+
+{{< copyable "shell-regular" >}}
 
 ```bash
-» unlock-ddl-lock test-`shard_db`.`shard_table`
+shard-ddl-lock unlock test-`shard_db`.`shard_table`
+```
+
+```
 {
     "result": true,                                        # The result of the unlocking operation.
     "msg": "",                                             # The additional message for the failure to unlock the lock.
@@ -111,7 +149,7 @@ unlock-ddl-lock [--owner] [--force-remove] <lock-ID>
 
 ## Supported scenarios
 
-Currently, the `unlock-ddl-lock` command only supports handling sharding DDL locks in the following two abnormal scenarios.
+Currently, the `shard-ddl-lock unlock` command only supports handling sharding DDL locks in the following two abnormal scenarios.
 
 ### Scenario 1: Some MySQL sources are removed
 
@@ -160,10 +198,10 @@ The operation processes of MySQL and DM are as follows:
     ```
 
 2. DM-worker sends the received DDL information of the two sharded tables of `mysql-replica-01` to DM-master, and DM-master creates the corresponding DDL lock.
-3. Use `show-ddl-lock` to check the information of the current DDL lock.
+3. Use `shard-ddl-lock` to check the information of the current DDL lock.
 
     ```bash
-    » show-ddl-locks test
+    » shard-ddl-lock test
     {
         "result": true,
         "msg": "",
@@ -190,15 +228,17 @@ The operation processes of MySQL and DM are as follows:
 4. Due to the application demand, the data corresponding to `mysql-replica-02` is no longer needed to be migrated to the downstream TiDB, and `mysql-replica-02` is removed.
 5. The lock whose ID is ```test-`shard_db`.`shard_table` ``` on `DM-master` cannot receive the DDL information of `mysql-replica-02`.
 
-    - The returned result `unsynced` by `show-ddl-locks` has always included the information of `mysql-replica-02`.
-6. Use `unlock-dll-lock` to ask `DM-master` to actively unlock the DDL lock.
+    - The returned result `unsynced` by `shard-ddl-lock` has always included the information of `mysql-replica-02`.
+
+6. Use `shard-ddl-lock unlock` to request `DM-master` to actively unlock the DDL lock.
+
     - If the owner of the DDL lock has gone offline, you can use the parameter `--owner` to specify another DM-worker as the new owner to execute the DDL.
     - If any MySQL source reports an error, `result` will be set to `false`, and at this point you should check carefully if the errors of each MySQL source is acceptable and within expectations.
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        unlock-ddl-lock test-`shard_db`.`shard_table`
+        shard-ddl-lock unlock test-`shard_db`.`shard_table`
         ```
 
         ```
@@ -207,10 +247,10 @@ The operation processes of MySQL and DM are as follows:
             "msg": ""
         ```
 
-7. Use `show-ddl-locks` to confirm if the DDL lock is unlocked successfully.
+7. Use `shard-ddl-lock` to confirm if the DDL lock is unlocked successfully.
 
     ```bash
-    » show-ddl-locks test
+    » shard-ddl-lock test
     {
         "result": true,
         "msg": "no DDL lock exists",
@@ -238,7 +278,7 @@ The operation processes of MySQL and DM are as follows:
 
 #### Impact
 
-After you have manually unlocked the lock by using `unlock-ddl-lock`, if you don't deal with the offline MySQL sources included in the task configuration information, the lock might still be unable to be migrated automatically when the next sharding DDL event is received.
+After you have manually unlocked the lock by using `shard-ddl-lock unlock`, if you don't deal with the offline MySQL sources included in the task configuration information, the lock might still be unable to be migrated automatically when the next sharding DDL event is received.
 
 Therefore, after you have manually unlocked the DDL lock, you should perform the following operations:
 
@@ -248,7 +288,7 @@ Therefore, after you have manually unlocked the DDL lock, you should perform the
 
 > **Note:**
 >
-> After you run `unlock-ddl-lock`, if the MySQL source that went offline is reloaded and the DM-worker tries to migrate the data of the sharded tables, a match error between the data and the downstream table structure might occur.
+> After you run `shard-ddl-lock unlock`, if the MySQL source that went offline is reloaded and the DM-worker tries to migrate the data of the sharded tables, a match error between the data and the downstream table structure might occur.
 
 ### Scenario 2: Some DM-workers stop abnormally or the network failure occurs during the DDL unlocking process
 
@@ -275,12 +315,12 @@ After the data migration subtask corresponding to `mysql-replica-02` restores, a
 
 The operation processes are:
 
-1. Use `show-ddl-locks` to confirm if the corresponding lock of the DDL exists on `DM-master`.
+1. Use `shard-ddl-lock` to confirm if the corresponding lock of the DDL exists on `DM-master`.
 
     Only `mysql-replica-02` is at the `synced` state.
 
     ```bash
-    » show-ddl-locks
+    » shard-ddl-lock
     {
         "result": true,
         "msg": "",
@@ -304,19 +344,19 @@ The operation processes are:
     }
     ```
 
-2. Use `unlock-ddl-lock` to ask `DM-master` to unlock the lock.
+2. Use `shard-ddl-lock` to ask `DM-master` to unlock the lock.
 
     - During the unlocking process, the owner tries to execute the DDL operation to the downstream again (the original owner before restarting has executed the DDL operation to the downstream once). Make sure that the DDL operation can be executed multiple times.
 
         ```bash
-        unlock-ddl-lock test-`shard_db`.`shard_table`
+        shard-ddl-lock unlock test-`shard_db`.`shard_table`
         {
             "result": true,
             "msg": "",
         }
         ```
 
-3. Use `show-ddl-locks` to confirm if the DDL lock has been successfully unlocked.
+3. Use `shard-ddl-lock` to confirm if the DDL lock has been successfully unlocked.
 4. Use `query-status` to confirm if the migration task is normal.
 
 #### Impact
