@@ -81,7 +81,7 @@ TiDB 版本：5.4.0
 - 移除 cdclog。自 v5.4.0 起，不再支持 cdclog。
 - 改进了给系统变量设置为字符串 "DEFAULT" 的行为，以便与 MySQL 更兼容 [#29680](https://github.com/pingcap/tidb/pull/29680)
 - 将系统变量 `lc_time_names` 改成只读 [#30084](https://github.com/pingcap/tidb/pull/30084)
-- 系统变量 `tidb_store_limit` 已经从 INSTANCE 或 GLOBAL 作用域更改为只有 GLOBAL 作用域 [#30756](https://github.com/pingcap/tidb/pull/30756)
+- 将系统变量 `tidb_store_limit` 的作用域从 INSTANCE 或 GLOBAL 更改为 GLOBAL [#30756](https://github.com/pingcap/tidb/pull/30756)
 - 当列数据中有零时，禁止列从整型类型转成时间类型 [#25728](https://github.com/pingcap/tidb/pull/25728)
 - 修复插入浮点值时对 `Inf` 和 `NaN` 值不报错问题 [#30148](https://github.com/pingcap/tidb/pull/30148)
 - 修复了当 Auto ID 超出范围时，`REPLACE` 语句更改其他行 ID 值的问题 [#30301](https://github.com/pingcap/tidb/pull/30301)
