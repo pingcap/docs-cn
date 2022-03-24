@@ -1334,7 +1334,6 @@ SET tidb_query_log_max_len = 20;
 > **说明：**
 > 悲观事务中当 `READ-COMMITTED` 隔离级别启用之后，每个事务中 `SELECT` 语句会尝试获取一个新的 timestamp 用于数据读取。当开启此变量之后，`SELECT` 语句会尝试使用前一个有效的 timestamp 进行数据读取，初始值为事务的 `start_ts`。如果整个读取过程没有遇到更新版本，则返回结果给客户端且 `SELECT` 语句执行成功。当读的过程中遇到更新的版本时，如果当前 TiDB 尚未向客户端回复数据，则尝试重新获取一个新的 timestamp 重试此语句。如果已经向客户端返回部分数据，则 TiDB 会向客户端报错。每次向客户端回复的数据量受 `tidb_init_chunk_size` 和 `tidb_max_chunk_size` 控制。在使用 `READ-COMMITTED` 隔离级别且单个事务中 `SELECT` 语句较多，读写冲突较少的场景，可通过开启此变量用以避免获取全局 timestamp 带来的延迟和开销。
 
-
 > **注意：**
 >
 > 该特性与 [replica-read](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts`的读请求无法使用 [replica-read](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两项特性。
