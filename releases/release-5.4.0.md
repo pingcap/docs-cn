@@ -79,6 +79,12 @@ TiDB 版本：5.4.0
 - 自 v5.4.0 起，对于通过 Plan Cache 已经缓存的执行计划，如果为其创建绑定 (Binding)，会使得对应查询已经缓存的计划失效。v5.4.0 前已经缓存的计划不受新 Binding 的影响。
 - 在 v5.3 及更早版本中，[TiDB Data Migration (DM)](https://docs.pingcap.com/zh/tidb-data-migration/v5.3/) 文档独立于 TiDB 文档。自 v5.4 起，TiDB Data Migration 的文档已合并入相同版本的 TiDB 文档，无需跳转到 DM 文档站，你可以直接在 TiDB 文档站阅读 [DM 文档](/dm/dm-overview.md)。
 - 移除 cdclog。自 v5.4.0 起，不再支持 cdclog。
+- 改进了给系统变量设置为字符串 "DEFAULT" 的行为，以便与 MySQL 更兼容 [#29680](https://github.com/pingcap/tidb/pull/29680)
+- 将系统变量 `lc_time_names` 改成只读 [#30084](https://github.com/pingcap/tidb/pull/30084)
+- 系统变量 `tidb_store_limit` 已经从 INSTANCE 或 GLOBAL 作用域更改为只有 GLOBAL 作用域 [#30756](https://github.com/pingcap/tidb/pull/30756)
+- 在列数据中有零时，禁止列从整型类型转成时间类型 [#25728](https://github.com/pingcap/tidb/pull/25728)
+- 修复插入浮点值时对 `Inf` 和 `NaN` 值不报错问题 [#30148](https://github.com/pingcap/tidb/pull/30148)
+- 修复了当 auto ID 超出范围时，`REPLACE` 语句更改其他行 ID 值的问题 [#30301](https://github.com/pingcap/tidb/pull/30301)
 
 ## 新功能
 
