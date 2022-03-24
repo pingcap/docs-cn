@@ -318,7 +318,7 @@ max-allowed-packet = 67_108_864
 # "true" is equivalent to "required" and "false" is equivalent to "off".
 checksum = "required"
 # Specifies whether to perform `ANALYZE TABLE <table>` for each table after checksum is done.
-# Options available for this field are the same as `post-restore`. However, the default value for this field is "optional".
+# Options available for this field are the same as `checksum`. However, the default value for this field is "optional".
 analyze = "optional"
 
 # If the value is set to `true`, a level-1 compaction is performed
