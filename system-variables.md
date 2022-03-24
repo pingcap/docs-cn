@@ -1325,7 +1325,7 @@ explain select * from t where age=5;
 SET tidb_query_log_max_len = 20;
 ```
 
-### `tidb_rc_read_check_ts` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+### `tidb_rc_read_check_ts`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
