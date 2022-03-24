@@ -76,8 +76,6 @@ TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包�
 * 是否过载
 * labels 标签信息（标签是具备层级关系的一系列 Tag，能够[感知拓扑信息](/schedule-replicas-by-topology-labels.md)）
 
-<<<<<<< HEAD
-=======
 通过使用 `pd-ctl` 可以查看到 TiKV Store 的状态信息。TiKV Store 的状态具体分为 Up，Disconnect，Offline，Down，Tombstone。各状态的关系如下：
 
 + **Up**：表示当前的 TiKV Store 处于提供服务的状态。
@@ -88,7 +86,6 @@ TiKV 节点 (Store) 与 PD 之间存在心跳包，一方面 PD 通过心跳包�
 
 ![TiKV store status relationship](/media/tikv-store-status-relationship.png)
 
->>>>>>> 690312bfa (docs: update the TiKV store status description (#8723))
 **每个 Raft Group 的 Leader 会定期向 PD 汇报 Region 的状态信息**
 
 每个 Raft Group 的 Leader 和 PD 之间存在心跳包，用于汇报这个 [Region 的状态](https://github.com/pingcap/kvproto/blob/master/proto/pdpb.proto#L312)，主要包括下面几点信息：
