@@ -1547,6 +1547,10 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[1, 5000]`
 - 这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留 Top-N 的 SQL 数据。
 
+> **注意：**
+>
+> TiDB-Dashboard 中 TopSQL 界面目前总是只显示 Top-5 的数据，这与 `tidb_top_sql_max_time_series_count` 配置无关。
+
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
