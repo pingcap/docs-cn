@@ -73,7 +73,6 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 
 MySQL 的 Read Committed 隔离级别大部分符合一致性读特性，但其中存在某些特例，如半一致性读 ([semi-consistent read](https://dev.mysql.com/doc/refman/8.0/en/innodb-transaction-isolation-levels.html))，TiDB 没有兼容这个特殊行为。
 
-
 ## 更多阅读
 
 - [TiDB 的乐观事务模型](https://pingcap.com/blog-cn/best-practice-optimistic-transaction/)
