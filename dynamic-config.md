@@ -163,6 +163,7 @@ show warnings;
 | pessimistic-txn.wait-for-lock-timeout | 悲观事务遇到锁后的最长等待时间 |
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
+| pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
