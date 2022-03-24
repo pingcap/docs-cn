@@ -573,6 +573,12 @@ opentracing.reporter 相关的设置。
 + 默认值：3
 + 单位：秒
 
+### `grpc-compression-type`
+
++ 控制 TiDB 与 TiKV 节点 rpc 通信传输的数据使用的压缩类型。默认值为 "none" 即不使用压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。
++ 默认值："none"
++ 可选值："none", "gzip"
+
 ### `commit-timeout`
 
 + 执行事务提交时，最大的超时时间。
