@@ -1346,7 +1346,7 @@ Raft Engine 相关的配置项。
 ### `enable`
 
 + 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。
-+ 
+ 
     > **注意：**
     >
     > TiDB v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容。因此，当要将 TiDB 集群降级至 v5.4.0 以前的版本时，你需要在降级**之前**先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`），并重启 TiKV 使配置生效，否则会导致集群降级后无法正常开启。
