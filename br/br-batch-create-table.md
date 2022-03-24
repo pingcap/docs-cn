@@ -40,15 +40,12 @@ bin/br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file resto
 
 ### 功能测试
 
-以下是在 TiDB v6.0 集群中测试批量建表功能的内容。具体的测试条件如下：
+以下是在 TiDB v6.0 集群中测试批量建表功能的内容。具体的测试环境如下：
 
 - 集群配置：
-    - 15 个 TiKV
-
-        - 有 16 个 CPU 核心、32 GB 内存、16 个处理 RPC 请求的线程（即 [`import.num-threads`](/tikv-configuration-file.md#num-threads) = 16）
-
-    - 3 个 TiDB
-    - 3 个 PD
+    - 15 个 TiKV 实例，共有 16 个 CPU 核心、32 GB 内存、16 个处理 RPC 请求的线程（即 [`import.num-threads`](/tikv-configuration-file.md#num-threads) = 16）
+    - 3 个 TiDB 实例
+    - 3 个 PD 实例
 - 待恢复数据的规模：16.16 TB
 
 测试结果如下：
