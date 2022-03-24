@@ -1653,7 +1653,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### `tidb_sysdate_is_now` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+### `tidb_sysdate_is_now`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`OFF`
