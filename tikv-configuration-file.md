@@ -1493,7 +1493,7 @@ Raft Engine 相关的配置项。
 
 + 处理备份的工作线程数量。
 + 默认值：CPU * 0.5，但最大为 8 
-+ 可调整范围：`[1, CPU]`
++ 可调整范围：[1, CPU]
 + 最小值：1
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
