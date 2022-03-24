@@ -97,14 +97,14 @@ operate-source create ./source.yaml
 
 > **注意：**
 >
-> `get-config` 命令仅在 DM v2.0.1 及其以后版本支持。
+> `config` 命令仅在 DM v6.0 及其以后版本支持，之前版本可使用 `get-config` 命令。
 
-如果知道 source-id，可以通过 `dmctl --master-addr <master-addr> get-config source <source-id>` 命令直接查看数据源配置。
+如果知道 source-id，可以通过 `dmctl --master-addr <master-addr> config source <source-id>` 命令直接查看数据源配置。
 
 {{< copyable "" >}}
 
 ```bash
-get-config source mysql-replica-01
+config source mysql-replica-01
 ```
 
 ```

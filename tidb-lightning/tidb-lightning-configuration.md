@@ -239,6 +239,7 @@ trim-last-separator = false
 host = "172.16.31.1"
 port = 4000
 user = "root"
+# 设置连接 TiDB 的密码，可为明文或 Base64 编码。
 password = ""
 # 表结构信息从 TiDB 的“status-port”获取。
 status-port = 10080
@@ -292,7 +293,7 @@ max-allowed-packet = 67_108_864
 # 注意：考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和  `false` 两个布尔值，其效果与 "required" 和 `off` 相同。
 checksum = "required"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
-# 此配置的可选配置项与 `post-restore` 相同，但默认值为 "optional"。
+# 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
 
 # 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
@@ -414,7 +415,7 @@ min-available-ratio = 0.05
 | --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
-| --tidb-password *password* | 连接到 TiDB 的密码 | `tidb.password` |
+| --tidb-password *password* | 连接到 TiDB 的密码，可为明文或 Base64 编码 | `tidb.password` |
 | --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |

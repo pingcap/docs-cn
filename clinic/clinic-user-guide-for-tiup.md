@@ -1,17 +1,17 @@
 ---
-title: 使用 TiDB Clinic
-summary: 详细介绍在使用 TiUP 部署的集群上如何通过 TiDB Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
+title: 使用 PingCAP Clinic
+summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
 ---
 
-# 使用 TiDB Clinic
+# 使用 PingCAP Clinic
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，TiDB Clinic 诊断服务（以下简称为 TiDB Clinic）可以通过 Clinic Diag 诊断工具（以下简称为 Diag）与 Clinic Server 云服务（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Clinic Diag 诊断工具（以下简称为 Diag）与 Clinic Server 云服务（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
-目前，TiDB Clinic 诊断服务目前处于 Beta 受邀测试使用阶段。
+目前，PingCAP Clinic 诊断服务目前处于 Beta 受邀测试使用阶段。
 
 > **注意：**
 >
-> TiDB Clinic 诊断服务暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
+> PingCAP Clinic 诊断服务暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
@@ -21,14 +21,14 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 TiDB Clinic �
 
     > **注意：**
     >
-    > - TiDB Clinic 目前处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
-    > - TiDB Clinic Beta 版本的 Server 端功能暂**未开放**给外部用户使用。当你把采集好的数据上传到 Clinic Server 并通过 Diag 获取了数据访问链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
+    > - PingCAP Clinic 目前处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
+    > - PingCAP Clinic Beta 版本的 Server 端功能暂**未开放**给外部用户使用。当你把采集好的数据上传到 Clinic Server 并通过 Diag 获取了数据访问链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
 
     - 当集群出现问题，但无法马上进行问题分析时，你可以先使用 Diag 采集数据，并将其数据保存下来，用于自己后期进行问题分析。
 
 - [本地快速检查集群状态](#本地快速检查集群状态)
 
-    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。TiDB Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 TiDB Clinic Beta 版本主要对集群配置项提供合理性检查，用于发现不合理的配置，并提供修改建议。
+    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 PingCAP Clinic Beta 版本主要对集群配置项提供合理性检查，用于发现不合理的配置，并提供修改建议。
 
 ## 准备工作
 
@@ -59,7 +59,7 @@ tiup update diag
 
 ### 第 1 步：确定需要采集的数据
 
-如需查看 Diag 支持采集的数据的详细列表，请参阅 [TiDB Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
+如需查看 Diag 支持采集的数据的详细列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
 建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考 [采集 TiDB 集群的数据](采集-TiDB-集群的数据]。
 
@@ -170,7 +170,7 @@ tiup update diag
 
 ### 第 4 步：上传数据
 
-如需将集群诊断数据提供给 PingCAP 技术支持人员，请先将数据上传到 Clinic Server 后，再把获取到的数据访问链接发送给技术支持人员。Clinic Server 为 TiDB Clinic 的云服务，可提供安全的诊断数据存储和共享。
+如需将集群诊断数据提供给 PingCAP 技术支持人员，请先将数据上传到 Clinic Server 后，再把获取到的数据访问链接发送给技术支持人员。Clinic Server 为 PingCAP Clinic 的云服务，可提供安全的诊断数据存储和共享。
 
 根据集群的网络连接情况，你可以选择以下上传方式之一：
 
@@ -189,7 +189,7 @@ tiup update diag
 
 > **注意：**
 >
-> 目前 TiDB Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
+> 目前 PingCAP Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 输出结果示例如下：
 
@@ -241,7 +241,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
     > **注意：**
     >
-    > 目前 TiDB Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
+    > 目前 PingCAP Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
     输出结果示例如下：
 
@@ -264,7 +264,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
 ## 本地快速检查集群状态
 
-你可以使用 Diag 对集群状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。目前 TiDB Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
+你可以使用 Diag 对集群状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。目前 PingCAP Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
 
 1. 采集配置数据：
 
@@ -341,7 +341,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    TiDB Clinic 目前处于 Beta 受邀测试使用阶段，数据访问链接**未开放**给外部用户使用，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
+    PingCAP Clinic 目前处于 Beta 受邀测试使用阶段，数据访问链接**未开放**给外部用户使用，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 

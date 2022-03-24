@@ -352,7 +352,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `scheduler-worker-pool-size`
 
-+ scheduler 线程个数，主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
++ Scheduler 线程池中线程的数量。Scheduler 线程主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
 + 最小值：1
 
@@ -517,14 +517,11 @@ raftstore 相关的配置项。
 
 ### `raft-max-size-per-msg`
 
-> **注意：**
->
-> 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
-
 + 产生的单个消息包的大小限制，软限制。
 + 默认值：1MB
-+ 最小值：0
-+ 单位：MB
++ 最小值：大于 0
++ 最大值: 3GB
++ 单位：KB|MB|GB
 
 ### `raft-max-inflight-msgs`
 
@@ -753,9 +750,10 @@ raftstore 相关的配置项。
 
 ### `apply-max-batch-size`
 
-+ 一轮处理数据落盘的最大请求个数。
++ Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
 + 默认值：256
 + 最小值：大于 0
++ 最大值: 10240
 
 ### `apply-pool-size`
 
@@ -765,9 +763,10 @@ raftstore 相关的配置项。
 
 ### `store-max-batch-size`
 
-+ 一轮处理的最大请求个数。
++ Raft 状态机由 BatchSystem 批量执行日志落盘请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
 + 如果开启 `hibernate-regions`，默认值为 256；如果关闭 `hibernate-regions`，默认值为 1024
 + 最小值：大于 0
++ 最大值: 10240
 
 ### `store-pool-size`
 
@@ -1347,14 +1346,14 @@ raftdb 相关配置项。
 
 Raft Engine 相关的配置项。
 
-> **警告：**
+> **注意：**
 >
-> Raft Engine 目前为实验特性，不建议在生产环境中使用。
+> TiDB v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容。因此，当要将 TiDB 集群降级至 v5.4.0 以前的版本时，你需要在降级**之前**先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`），并重启 TiKV 使配置生效，否则会导致集群降级后无法正常开启。
 
 ### `enable`
 
-+ 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。
-+ 默认值：`"false"`
++ 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效
++ 默认值：`"true"`
 
 ### `dir`
 
@@ -1574,3 +1573,9 @@ Raft Engine 相关的配置项。
 
 + 开启流水线式加悲观锁流程。开启该功能后，TiKV 在检测数据满足加锁要求后，立刻通知 TiDB 执行后面的请求，并异步写入悲观锁，从而降低大部分延迟，显著提升悲观事务的性能。但有较低概率出现悲观锁异步写入失败的情况，可能会导致悲观事务提交失败。
 + 默认值：true
+
+### `in-memory`（从 v6.0.0 版本开始引入）
+
++ 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。
++ 默认值：true
++ 注意：`in-memory` 仅在 `pipelined` 为 true 时生效。
