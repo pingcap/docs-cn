@@ -297,9 +297,6 @@ TiDB 版本：5.4.0
 + TiDB
 
     - 支持 `ADMIN {SESSION | INSTANCE | GLOBAL} PLAN_CACHE` 语法，用于清空缓存的查询计划 [#30370](https://github.com/pingcap/tidb/pull/30370)
-    - 改进了给系统变量设置为字符串 "DEFAULT" 的行为，以便与 MySQL 更兼容 [#29680](https://github.com/pingcap/tidb/pull/29680)
-    - 将系统变量 `lc_time_names` 改成只读 [#30084](https://github.com/pingcap/tidb/pull/30084)
-    - 系统变量 `tidb_store_limit` 已经从 INSTANCE 或 GLOBAL 作用域更改为只有 GLOBAL 作用域 [#30756](https://github.com/pingcap/tidb/pull/30756)
 
 + TiKV
 
@@ -369,9 +366,6 @@ TiDB 版本：5.4.0
     - 修复当 CTE 中带有子查询时查询结果错误的问题 [#31255](https://github.com/pingcap/tidb/issues/31255)
     - 修复 `INSERT ... SELECT ... ON DUPLICATE KEY UPDATE` 语句 panic 的问题 [#28078](https://github.com/pingcap/tidb/issues/28078)
     - 修复 INDEX HASH JOIN 报 `send on closed channel` 的问题 [#31129](https://github.com/pingcap/tidb/issues/31129)
-    - 在列数据中有零时，禁止列从整型类型转成时间类型 [#25728](https://github.com/pingcap/tidb/pull/25728)
-    - 修复插入浮点值时对 `Inf` 和 `NaN` 值不报错问题 [#30148](https://github.com/pingcap/tidb/pull/30148)
-    - 修复了当 auto ID 超出范围时，`REPLACE` 语句更改其他行 ID 值的问题 [#30301](https://github.com/pingcap/tidb/pull/30301)
 
 + TiKV
 
