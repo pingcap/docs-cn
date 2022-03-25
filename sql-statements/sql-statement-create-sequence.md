@@ -250,7 +250,7 @@ You can control a sequence through the following expression functions:
     {{< copyable "sql" >}}
 
     ```sql
-    CRATE table t(a int default next value for seq2);
+    CREATE table t(a int default next value for seq2);
     ```
 
     ```
