@@ -62,6 +62,4 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert`：TiCDC 创建 TLS 连接时使用的证书文件路径，PEM 格式，可选。
 - `cert-allowed-cn`：TiCDC 创建 TLS 连接时使用的通用名称文件路径，可选。
 - `key`：TiCDC 创建 TLS 连接时使用的证书密钥文件路径，PEM 格式，可选。
-- owner-flush-interval: owner 节点刷新 changefeed 当前状态的周期间隔，默认 200ms。
-- processor-flush-interval: processor 更新同步任务状态的周期间隔，默认 100ms。
 - `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
