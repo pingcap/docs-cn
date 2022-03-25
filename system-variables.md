@@ -1545,7 +1545,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：GLOBAL
 - 默认值：`100`
 - 范围：`[1, 5000]`
-- 这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留 Top-N 的 SQL 数据。
+-  这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N) 的数据。
 
 > **注意：**
 >
