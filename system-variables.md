@@ -1549,7 +1549,7 @@ set tidb_slow_log_threshold = 200;
 
 > **注意：**
 >
-> TiDB-Dashboard 中 TopSQL 界面目前总是只显示 Top-5 的数据，这与 `tidb_top_sql_max_time_series_count` 配置无关。
+> TiDB Dashboard 中的 Top SQL 页面目前只显示消耗负载最多的 5 类 SQL 查询，这与 `tidb_top_sql_max_time_series_count` 的配置无关。
 
 ### `tidb_store_limit` <span class="version-mark">从 v3.0.4 和 v4.0 版本开始引入</span>
 
