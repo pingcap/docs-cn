@@ -212,7 +212,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-thread-count`
 
 + 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：CPU * 0.8，但最少为 4
++ 可调整范围：`[min-thread-count, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
++ 默认值：MAX(4, CPU * 0.8)
 
 ### `stack-size`
 
@@ -525,7 +526,7 @@ raftstore 相关的配置项。
 >
 > 该配置项不支持通过 SQL 语句查询，但支持在配置文件中进行配置。
 
-+ 待确认日志个数的数量，如果超过这个数量将会减缓发送日志的个数。
++ 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度。
 + 默认值：256
 + 最小值：大于 0
 
@@ -753,7 +754,7 @@ raftstore 相关的配置项。
 
 ### `apply-pool-size`
 
-+ 处理数据落盘的线程池中线程的数量。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
++ 处理数据落盘的线程池中线程的数量，即 Apply 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
 + 最小值：大于 0
 
@@ -1488,6 +1489,7 @@ Raft Engine 相关的配置项。
 
 + 处理备份的工作线程数量。
 + 默认值：CPU * 0.5，但最大为 8 
++ 可调整范围：[1, CPU]
 + 最小值：1
 
 ### `enable-auto-tune` <span class="version-mark">从 v5.4 版本开始引入</span>
