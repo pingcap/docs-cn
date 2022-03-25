@@ -52,18 +52,18 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 ### 加入黑名单
 
-执行以下步骤，可将一个或多个函数或运算符加入黑名单：
+执行以下步骤，可将一个或多[函数名、运算符名](#已支持下推的表达式列表)或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）加入黑名单：
 
 1. 向 `mysql.expr_pushdown_blacklist` 插入以下内容：
 
-    - 希望禁止下推的[函数名、运算符名](#已支持下推的表达式列表)或数据类型（**仅限** [`ENUM` 类型](/data-type-string.md#enum-类型) 和 [`BIT` 类型](/data-type-numeric.md#bit-类型)）
+    - 希望禁止下推的函数名、运算符名或数据类型
     - 希望禁止下推的存储引擎
 
 2. 执行 `admin reload expr_pushdown_blacklist;`。
 
 ### 移出黑名单
 
-执行以下步骤，可将一个或多个函数及运算符移出黑名单：
+执行以下步骤，可将一个或多个函数名、运算符名或数据类型移出黑名单：
 
 1. 从 `mysql.expr_pushdown_blacklist` 表中删除对应的函数名、运算符名或数据类型。
 2. 执行 `admin reload expr_pushdown_blacklist;`。
