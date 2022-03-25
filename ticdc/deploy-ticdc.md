@@ -50,7 +50,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 对于 `cdc server` 命令中可用选项解释如下：
 
-- `addr`：TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。默认为 127.0.0.1:8300
+- `addr`：TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址，默认为 `127.0.0.1:8300`。
 - `advertise-addr`：TiCDC 对外开放地址，供客户端访问，如果未设置，等于 `addr`
 - `pd`：TiCDC 监听的 pd 节点地址，用 ',' 来分隔多个 pd 节点地址。
 - `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
