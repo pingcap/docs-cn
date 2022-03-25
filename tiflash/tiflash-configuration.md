@@ -75,9 +75,9 @@ delta_index_cache_size = 0
 
     ## DTFile format
     ## * format_version = 1, the old format, deprecated.
-    ## * format_version = 2, the default format.
-    ## * format_version = 3, the new format, which provides more data validation features.
-    # format_version = 2
+    ## * format_version = 2, the default format for versions < v6.0.0.
+    ## * format_version = 3, the default format for versions >= v6.0.0, which provides more data validation features.
+    # format_version = 3
 
     [storage.main]
     ## The list of directories to store the main data. More than 90% of the total data is stored in

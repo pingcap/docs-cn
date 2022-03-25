@@ -385,8 +385,8 @@ The validation mechanism builds upon the DeltaTree File (DTFile). DTFile is the 
 | Version | State | Validation mechanism | Notes |
 | :-- | :-- | :-- |:-- |
 | V1 | Deprecated | Hashes are embedded in data files. | |
-| V2 | Default | Hashes are embedded in data files. | Compared to V1, V2 adds statistics of column data. |
-| V3 | Manually enable | V3 contains metadata and token data checksum, and supports multiple hash algorithms. | New in v5.4.0. |
+| V2 | Default for versions < v6.0.0 | Hashes are embedded in data files. | Compared to V1, V2 adds statistics of column data. |
+| V3 | Default for versions >= v6.0.0 | V3 contains metadata and token data checksum, and supports multiple hash algorithms. | New in v5.4.0. |
 
 DTFile is stored in the `stable` folder in the data file directory. All formats currently enabled are in folder format, which means the data is stored in multiple files under a folder with a name like `dmf_<file id>`.
 
@@ -395,8 +395,9 @@ DTFile is stored in the `stable` folder in the data file directory. All formats 
 TiFlash supports both automatic and manual data validation:
 
 * Automatic data validation:
-    * TiFlash enables the V2 validation mechanism by default.
-    * To enable V3 validation mechanism, refer to [TiFlash configuration file](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file).
+    * v6.0.0 and later versions use the V3 validation mechanism by default.
+    * Versions earlier than v6.0.0 use the V2 validation mechanism by default.
+    * To manually switch the validation mechanism, refer to [TiFlash configuration file](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file). However, the default configuration is verified by tests and therefore recommended.
 * Manual data validation. Refer to [`DTTool inspect`](/tiflash/tiflash-command-line-flags.md#dttool-inspect).
 
 > **Warning:**
