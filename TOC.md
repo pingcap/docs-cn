@@ -316,7 +316,6 @@
             - [暂停任务](/dm/dm-pause-task.md)
             - [恢复任务](/dm/dm-resume-task.md)
             - [停止任务](/dm/dm-stop-task.md)
-        - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
@@ -330,6 +329,7 @@
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
       - 集群运维工具
+        - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
         - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
       - 性能调优
         - [性能数据](/dm/dm-benchmark-v5.4.0.md)
@@ -630,6 +630,7 @@
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
+    - [缓存表](/table-cache.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
