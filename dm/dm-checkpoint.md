@@ -18,7 +18,7 @@ DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog �
 
 除了 global checkpoint，table checkpoints 也会从数据库中恢复。它代表已经同步到下游的各表的 binlog 位置。因此，如果某个 binlog 小于某个 table checkpoint，它一定不需要被恢复。
 
-而 safe mode exit point 则代表之前已经被 DM 捕获的 binlog 位置。因为小于该位置的 binlog 有可能已经被同步过，但还没有 flushed，因此，在 global checkpoint 到 safe mode exit point 之间的 binlog 需要开启 safe mode，来避免重复同步造成的错误。
+而 safe mode exit point 则代表之前已经被 DM 捕获的 binlog 位置。因为小于该位置的 binlog 有可能已经被同步过，但还没有 flushed，因此，在 global checkpoint 到 safe mode exit point 之间的 binlog 需要开启 safe mode，**来避免重复同步造成的错误**。当重启之后，binlog position 超过 safe mode exit point 之后，safe mode 关闭。
 
 ### 内存 checkpoint 的更新时机
 
@@ -41,6 +41,16 @@ DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog �
 
 在配置文件中定义的 position 只有在第一次启动任务且模式是 incremental 的情况下生效。如果任务经历暂停、重启等，syncer 会根据 checkpoint 中记录的 position 启动。如果模式是 all 且第一次启动，则会根据全量导入产生的 meta 文件来确定 position。
 
+DM position 处理优先级：
+- start-task 时指定了 --start-time (6.0 新 Feature）
+- dm_meta 表中记录的 checkpoint 位置
+- task 配置文件中指定的 position
+
 ### 如何清理 checkpoint
 
-checkpoint 一般存放在下游数据库中。如果配置文件没有定义 meta 信息的库名，则一般在 dm_meta 库中。不同的任务的同步进度存放在以任务名为表名的表中。可以通过清理这些表内容的方式来清理 checkpoint。
+checkpoint 一般存放在下游数据库中。如果配置文件没有定义 meta 信息的库名，则一般在 dm_meta 库中。不同的任务的同步进度存放在以任务名为表名的表中。可以通过清理这些表内容的方式来清理 checkpoint（不建议），或者在下次启动任务时新增 `--remove-meta` flag 来清理过去的 checkpoint。
+
+### async checkpoint 的机制？
+同步 checkpoint 在 flush 之前，必须保证所有的 job worker 把所有的 jobs 都执行完之后，才将 checkpoint 写入。这个过程会导致后续的 event 必须等前面的 job 都执行完才分配给 job worker 执行，从而导致性能下降。async checkpoint 则会让 worker 来通知 async checkpoint routine 是否已经之前的 job 都 flush 完毕，而期间 worker 会正常活动；当所有 worker flush 完成后，则触发 checkpoint flush。
+
+async checkpoint 会在 syncer 内部维护复数个 casuality map（用来检查冲突），当 checkpoint 的同步比较慢时，内部可能会有多个 casaulity map，而每次检查冲突都要遍历检查这些 map 导致性能下降。大部分情况下，async checkpoint 性能更高。
