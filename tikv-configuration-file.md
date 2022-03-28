@@ -961,7 +961,7 @@ rocksdb 相关的配置项。
 
 ### `enable-pipelined-write`
 
-+ 不再使用此参数来控制 Pipelined Write 的开关。开启时会使用原来的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。
++ 控制是否开启 Pipelined Write。开启时会使用的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。
 + 默认值：false
 
 ### `bytes-per-sync`
