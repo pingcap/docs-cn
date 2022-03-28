@@ -116,7 +116,7 @@ loaders:                             # load 处理单元的运行配置参数
     # - "replace"（默认值）。仅支持 import-mode 为 "sql"，表示用最新数据替代已有数据。
     # - "ignore"。仅支持 import-mode 为 "sql"，保留已有数据，忽略新数据。
     # - "error"。仅支持 import-mode 为 "loader"。插入重复数据时报错并停止同步任务。
-    on-dupicate: "replace"
+    on-duplicate: "replace"
 
 syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
