@@ -170,6 +170,12 @@ TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ti
 
 会的，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
 
+## 使用 BR 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
+
+你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
+
+在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
+
 ## 使用 BR 恢复备份数据后，SQL 查询报错 `region is unavailable`
 
 如果 BR 备份的集群有 TiFlash，恢复时会将 TiFlash 信息存进 `TableInfo`。此时如果恢复的集群没有 TiFlash，则会报该错误。计划在未来版本中修复该错误。

@@ -293,7 +293,7 @@ max-allowed-packet = 67_108_864
 # 注意：考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和  `false` 两个布尔值，其效果与 "required" 和 `off` 相同。
 checksum = "required"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
-# 此配置的可选配置项与 `post-restore` 相同，但默认值为 "optional"。
+# 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
 
 # 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
