@@ -432,7 +432,7 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
-### MPP 与分区表
+### MPP 模式访问分区表
 
 当 TiDB 以 [`dynamic` 模式](/partitioned-table.md#动态裁剪模式)访问分区表且查询涉及分区表时，该查询可以使用 MPP 模式。
 
