@@ -48,7 +48,7 @@ DM position 处理优先级：
 
 ### 如何清理 checkpoint
 
-checkpoint 一般存放在下游数据库中。如果配置文件没有定义 meta 信息的库名，则一般在 dm_meta 库中。不同的任务的同步进度存放在以任务名为表名的表中。可以通过清理这些表内容的方式来清理 checkpoint（不建议），或者在下次启动任务时新增 `--remove-meta` flag 来清理过去的 checkpoint。
+checkpoint 一般存放在下游数据库中。如果配置文件没有定义 meta 信息的库名，则默认在 dm_meta 库中。不同的任务的同步进度存放在以任务名为表名的表中。可以通过清理这些表内容的方式来清理 checkpoint（不建议），或者在下次启动任务时新增 `--remove-meta` flag 来清理已存在的 checkpoint。
 
 ### async checkpoint 的机制？
 同步 checkpoint 在 flush 之前，必须保证所有的 job worker 把所有的 jobs 都执行完之后，才将 checkpoint 写入。这个过程会导致后续的 event 必须等前面的 job 都执行完才分配给 job worker 执行，从而导致性能下降。async checkpoint 则会让 worker 来通知 async checkpoint routine 是否已经之前的 job 都 flush 完毕，而期间 worker 会正常活动；当所有 worker flush 完成后，则触发 checkpoint flush。
