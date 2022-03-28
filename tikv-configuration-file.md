@@ -845,13 +845,13 @@ rocksdb 相关的配置项。
 ### `max-background-jobs`
 
 + RocksDB 后台线程个数。调整 RocksDB 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：9
++ 默认值：9，在 CPU 核数量为 8 时默认为 7。
 + 最小值：2
 
 ### `max-background-flushes`
 
 + RocksDB 用于刷写 memtable 的最大后台线程数量。
-+ 默认值：3
++ 默认值：3，在 CPU 核数量为 8 时默认为 2。
 + 最小值：1
 
 ### `max-sub-compactions`
