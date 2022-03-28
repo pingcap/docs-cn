@@ -120,7 +120,7 @@ loaders:
     # - "replace" (default). Only supports the import mode "sql". In this method, it uses the new data to replace the existing data.
     # - "ignore". Only supports the import mode "sql". It keeps the existing data, and ignores the new data.
     # - "error". Only supports the import mode "loader". It reports errors when inserting duplicated data, and then stops the replication task.
-    on-dupicate: "replace"
+    on-duplicate: "replace"
 
 # Configuration arguments of the sync processing unit.
 syncers:
