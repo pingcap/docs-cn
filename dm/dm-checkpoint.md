@@ -40,7 +40,8 @@ DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog �
 在配置文件中定义的 position 只有在第一次启动任务且模式是 incremental 的情况下生效。如果任务经历暂停、重启等，syncer 会根据 checkpoint 中记录的 position 启动。如果模式是 all 且第一次启动，则会根据全量导入产生的 meta 文件来确定 position。
 
 DM 启动任务时，binlog position 同步的处理优先级如下：
-- start-task 时指定了 --start-time (6.0 新 Feature）
+
+- `start-task` 时指定了 `--start-time` (6.0 新 Feature）
 - dm_meta 表中记录的 checkpoint 位置
 - task 配置文件中指定的 position
 
@@ -49,6 +50,7 @@ DM 启动任务时，binlog position 同步的处理优先级如下：
 checkpoint 一般存放在下游数据库中。如果配置文件没有定义 meta 信息的库名，则默认在 dm_meta 库中。不同的任务的同步进度存放在以任务名为表名的表中。可以通过清理这些表内容的方式来清理 checkpoint（不建议），或者在下次启动任务时新增 `--remove-meta` flag 来清理已存在的 checkpoint。
 
 ### async checkpoint 的机制？
+
 同步 checkpoint 在 flush 之前，必须保证所有的 job worker 把所有的 jobs 都执行完之后，才将 checkpoint 写入。这个过程会导致后续的 event 必须等前面的 job 都执行完才分配给 job worker 执行，从而导致性能下降。async checkpoint 则会让 worker 来通知 async checkpoint routine 是否已经之前的 job 都 flush 完毕，而期间 worker 会正常活动；当所有 worker flush 完成后，则触发 checkpoint flush。
 
 async checkpoint 会在 syncer 内部维护复数个 casuality map（用来检查冲突），当 checkpoint 的同步比较慢时，内部可能会有多个 casaulity map，而每次检查冲突都要遍历检查这些 map 导致性能下降。大部分情况下，async checkpoint 性能更高。
