@@ -112,9 +112,9 @@ The CPU and memory consumed by TiDB Lightning vary with the backend mode. Run Ti
 
 > **Note**:
 >
-> When data to be imported is large, one parallel import may consume about 2 GiB memory. In this case, the total memory usage can be `region-concurrency` x 2 GiB. `region-concurrency` is the same as the number of logical CPUs. If the memory size (GiB) is less than twice of the CPU or OOM ocurs during the import, you can decrease `region-concurrency` to address OOM.
+> When data to be imported is large, one parallel import may consume about 2 GiB memory. In this case, the total memory usage can be `region-concurrency` x 2 GiB. `region-concurrency` is the same as the number of logical CPUs. If the memory size (GiB) is less than twice of the CPU or OOM occurs during the import, you can decrease `region-concurrency` to address OOM.
 
-- TiDB-backend: In this mode, the performance bottlneck lies in TiDB. It is recommended that you allocate 4-core CPU and 8 GiB memory for TiDB Lightning. If the TiDB cluster does not reach the write threshold in an import, you can increase `region-concurrency`.
+- TiDB-backend: In this mode, the performance bottleneck lies in TiDB. It is recommended that you allocate 4-core CPU and 8 GiB memory for TiDB Lightning. If the TiDB cluster does not reach the write threshold in an import, you can increase `region-concurrency`.
 - Importer-backend: In this mode, resource consumption is nearly the same as that in Local-backend. Importer-backend is not recommended and you are advised to use Local-backend if you have no particular requirements.
 
-**Storage space**: The `sorted-kv-dir` configuration item specifies the temporary storage directory for the sorted key-value files. The directory must be empty, and the storage space must be enough to store the largest single table from the data source. For better import performance, it is recommended to use a directory different from `data-source-dir` and use flash storage and exclusive I/O for the directory.
+**Storage space**: The `sorted-kv-dir` configuration item specifies the temporary storage directory for the sorted key-value files. The directory must be empty, and the storage space must be greater than the size of the dataset to be imported. For better import performance, it is recommended to use a directory different from `data-source-dir` and use flash storage and exclusive I/O for the directory.

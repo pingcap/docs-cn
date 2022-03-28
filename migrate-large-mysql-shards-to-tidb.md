@@ -160,7 +160,7 @@ Follow these steps to start `tidb-lightning`:
     # For more information, see [TiDB Lightning Backends](https://docs.pingcap.com/tidb/stable/tidb-lightning-backends)
     backend = "local"
     # Set the temporary directory for the sorted key value pairs. It must be empty.
-    # The free space must be greater than the largest single table of the data source.
+    # The free space must be greater than the size of the dataset to be imported.
     # It is recommended that you use a directory different from `data-source-dir` to get better migration performance by consuming I/O resources exclusively.
     sorted-kv-dir = "${sorted-kv-dir}"
 
