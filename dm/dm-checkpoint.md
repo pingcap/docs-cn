@@ -41,7 +41,7 @@ DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog �
 
 在配置文件中定义的 position 只有在第一次启动任务且模式是 incremental 的情况下生效。如果任务经历暂停、重启等，syncer 会根据 checkpoint 中记录的 position 启动。如果模式是 all 且第一次启动，则会根据全量导入产生的 meta 文件来确定 position。
 
-DM position 处理优先级：
+DM 启动任务时，binlog position 同步的处理优先级如下：
 - start-task 时指定了 --start-time (6.0 新 Feature）
 - dm_meta 表中记录的 checkpoint 位置
 - task 配置文件中指定的 position
