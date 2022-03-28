@@ -434,7 +434,7 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 ### MPP 模式访问分区表
 
-当 TiDB 以[动态裁剪模式](/partitioned-table.md#动态裁剪模式)访问分区表时，分区表上的查询可以在 MPP 模式执行。
+如果希望使用 MPP 模式访问分区表，需要先开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
 > **警告：**
 >
