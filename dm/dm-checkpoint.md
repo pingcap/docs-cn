@@ -5,7 +5,7 @@ DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog �
 对于两种 checkpoint，都包含以下三个信息：
 
 - global checkpoint：下次重启任务时开始同步的 binlog 位置。小于这个位置的所有 binlog 一定已经被同步。内存的 global checkpoint 在重启时由 flushed checkpoint 重新加载。
-- table checkpoints：每个表同步的 binlog 位置。内存里的 table checkpoints 不代表这个 binlog 已经成功同步；而 flushed checkpoint 里的一定已经完成同步。
+- table checkpoints：每个表同步的 binlog 位置以及此时的表结构（以 TiDB TableInfo JSON 表示）。
 - safe mode exit point：如果不为空，小于这个 checkpoint 的 binlog 有可能在同步队列中，但大于它的则一定不在。在任务从错误恢复重启时，它可以清楚地标识出可能已经同步过的 binlog，因此 (table checkpoint, safe mode exit point] 之间的同步作业必须开启 safe mode，以免出现重复处理而导致的下游报错。
 
 由它们的语义我们可以知道，这三个信息的顺序是：global checkpoint ≤ table checkpoints ≤ safe mode exit point。
