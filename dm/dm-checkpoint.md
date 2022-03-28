@@ -33,7 +33,7 @@ DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog �
 1. 当 XID event 或者 rows event 被处理完，会调用 checkShouldFlush 函数，如果超过一定 interval 都还没有 flush 过，会尝试将 checkpoint 写入到下游。
 2. 处理完 DDL event 会尝试将内存 checkpoint 写入到下游。
 3. 在尝试写入 checkpoint 时，会先判断 global checkpoint 和 table checkpoints 的值是否有改变，没有改变会不写。
-4. safe mode exit point：上面两种 checkpoint 写入时会一起写入。
+4. safe mode exit point：只在 syncer 退出时，等待同步队列写入下游后 flush。
 
 ## Q&A
 
