@@ -439,7 +439,7 @@ I/O rate limiter 相关的配置项。
 
 ### `mode`
 
-+ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。 
++ 确定哪些类型的 I/O 操作被计数并受 `max-bytes-per-sec` 阈值的限流。当前 TiKV 只支持 write-only 只写模式。
 + 可选值：write-only
 + 默认值：write-only
 
@@ -845,13 +845,13 @@ rocksdb 相关的配置项。
 ### `max-background-jobs`
 
 + RocksDB 后台线程个数。调整 RocksDB 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：8
++ 默认值：9，在 CPU 核数量为 8 时默认为 7。
 + 最小值：2
 
 ### `max-background-flushes`
 
 + RocksDB 用于刷写 memtable 的最大后台线程数量。
-+ 默认值：2
++ 默认值：3，在 CPU 核数量为 8 时默认为 2。
 + 最小值：1
 
 ### `max-sub-compactions`
@@ -961,8 +961,8 @@ rocksdb 相关的配置项。
 
 ### `enable-pipelined-write`
 
-+ 开启 Pipelined Write 的开关。
-+ 默认值：true
++ 控制是否开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。
++ 默认值：false
 
 ### `bytes-per-sync`
 
