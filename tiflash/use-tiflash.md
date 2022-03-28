@@ -434,24 +434,30 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 ### MPP 与分区表
 
-如果 query 中涉及到分区表，则分区表部分能否使用 MPP 取决于 TiDB 中使用的分区裁剪模式，TiDB 支持[两种模式的分区裁剪](/partitioned-table.md### 动态裁剪模式)，在 `static` 模式下不能使用 MPP，在 `dynamic` 模式下能够使用 MPP（注意目前分区表的 dynamic 分区裁剪模式本身为实验特性，不建议在生产环境中使用），示例如下：
+当 TiDB 以 [`dynamic` 模式](/partitioned-table.md#动态裁剪模式)访问分区表且查询涉及分区表时，该查询可以使用 MPP 模式。
+
+> **注意：**
+>
+> 目前，分区表的 `dynamic` 分区裁剪模式为实验特性，不建议在生产环境中使用。
+
+示例如下：
 
 ```sql
-mysql> drop table if exists test.employees;                       
+mysql> DROP TABLE if exists test.employees;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 mysql> CREATE TABLE test.employees (  id int(11) NOT NULL,  fname varchar(30) DEFAULT NULL,  lname varchar(30) DEFAULT NULL,  hired date NOT NULL DEFAULT '1970-01-01',  separated date DEFAULT '99
 99-12-31',  job_code int(11) DEFAULT NULL,  store_id int(11) NOT NULL  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin  PARTITION BY RANGE (store_id)  (PARTITION p0 VALUES LESS THAN (
 6),  PARTITION p1 VALUES LESS THAN (11),  PARTITION p2 VALUES LESS THAN (16), PARTITION p3 VALUES LESS THAN (MAXVALUE));
-Query OK, 0 rows affected (0.10 sec)   
+Query OK, 0 rows affected (0.10 sec)
 
-mysql> alter table test.employees set tiflash replica 1;          
-Query OK, 0 rows affected (0.09 sec)     
+mysql> ALTER table test.employees SET tiflash replica 1;
+Query OK, 0 rows affected (0.09 sec)
 
-mysql> set tidb_partition_prune_mode=static;           
+mysql> SET tidb_partition_prune_mode=static;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> explain select count(*) from test.employees;
+mysql> explain SELECT count(*) FROM test.employees;
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
 | id                               | estRows  | task              | access object                 | operator info                     |
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
@@ -476,10 +482,10 @@ mysql> explain select count(*) from test.employees;
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
 18 rows in set, 4 warnings (0.00 sec)
 
-mysql> set tidb_partition_prune_mode=dynamic;
+mysql> SET tidb_partition_prune_mode=dynamic;
 Query OK, 0 rows affected (0.00 sec)
 
-mysql> explain select count(*) from test.employees;
+mysql> explain SELECT count(*) FROM test.employees;
 +------------------------------+----------+-------------------+-----------------+----------------------------------+
 | id                           | estRows  | task              | access object   | operator info                    |
 +------------------------------+----------+-------------------+-----------------+----------------------------------+
@@ -490,6 +496,7 @@ mysql> explain select count(*) from test.employees;
 |       └─TableFullScan_20     | 10000.00 | batchCop[tiflash] | table:employees | keep order:false, stats:pseudo   |
 +------------------------------+----------+-------------------+-----------------+----------------------------------+
 ```
+
 ## TiFlash 数据校验
 
 ### 使用场景
