@@ -165,7 +165,8 @@ The following TiKV configuration items can be modified online:
 | `coprocessor.region-split-keys` | The number of keys in the newly split Region |
 | `pessimistic-txn.wait-for-lock-timeout` | The longest duration that a pessimistic transaction waits for the lock |
 | `pessimistic-txn.wake-up-delay-duration` | The duration after which a pessimistic transaction is woken up |
-| `pessimistic-txn.pipelined` | Whether to enable the pipelined pessimistic locking process |
+| `pessimistic-txn.pipelined` | Determines whether to enable the pipelined pessimistic locking process |
+| `pessimistic-txn.in-memory` | Determines whether to enable the in-memory pessimistic lock |
 | `gc.ratio-threshold` | The threshold at which Region GC is skipped (the number of GC versions/the number of keys) |
 | `gc.batch-keys` | The number of keys processed in one batch |
 | `gc.max-write-bytes-per-sec` | The maximum bytes that can be written into RocksDB per second |

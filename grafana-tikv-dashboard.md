@@ -355,15 +355,17 @@ This document provides a detailed description of these key metrics on the **TiKV
 - Blob GC output file size: The size of Titan GC output file
 - Blob GC file count: The count of blob files involved in Titan GC
 
-## Lock manager
+## Pessimistic Locking
 
-- Thread CPU: The CPU utilization of the lock manager thread
-- Handled tasks: The number of tasks handled by lock manager
+- Lock Manager Thread CPU: The CPU utilization of the lock manager thread
+- Lock Manager Handled tasks: The number of tasks handled by lock manager
 - Waiter lifetime duration: The waiting time of the transaction for the lock to be released
 - Wait table: The status information of wait table, including the number of locks and the number of transactions waiting for the lock
 - Deadlock detect duration: The time consumed for detecting deadlock
 - Detect error: The number of errors encountered when detecting deadlock, including the number of deadlocks
 - Deadlock detector leader: The information of the node where the deadlock detector leader is located
+- Total pessimistic locks memory size: The memory size occupied by the in-memory pessimistic locks
+- In-memory pessimistic locking result: The result of only saving pessimistic locks to memory. `full` means the number of times that the pessimistic lock is not saved to memory because the memory limit is exceeded.
 
 ## Memory
 

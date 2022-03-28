@@ -1537,3 +1537,9 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 
 - This configuration item enables the pipelined process of adding the pessimistic lock. With this feature enabled, after detecting that data can be locked, TiKV immediately notifies TiDB to execute the subsequent requests and write the pessimistic lock asynchronously, which reduces most of the latency and significantly improves the performance of pessimistic transactions. But there is a still low probability that the asynchronous write of the pessimistic lock fails, which might cause the failure of pessimistic transaction commits.
 - Default value: `true`
+
+### `in-memory` (New in v6.0.0)
+
++ Enables the in-memory pessimistic lock feature. With this feature enabled, pessimistic transactions try to store their locks in memory, instead of writing the locks to disk or replicating the locks to other replicas. This improves the performance of pessimistic transactions. However, there is a still low probability that the pessimistic lock gets lost and causes the pessimistic transaction commits to fail.
++ Default value: `true`
++ Note that `in-memory` takes effect only when the value of `pipelined` is `true`.

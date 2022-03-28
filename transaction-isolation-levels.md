@@ -54,7 +54,7 @@ The Repeatable Read isolation level in TiDB differs from that in MySQL. The MySQ
 
 ## Read Committed isolation level
 
-Starting from TiDB [v4.0.0-beta](/releases/release-4.0.0-beta.md#tidb), TiDB supports the Read Committed isolation level. 
+Starting from TiDB [v4.0.0-beta](/releases/release-4.0.0-beta.md#tidb), TiDB supports the Read Committed isolation level.
 
 For historical reasons, the Read Committed isolation level of current mainstream databases is essentially the [Consistent Read isolation level defined by Oracle](https://docs.oracle.com/cd/B19306_01/server.102/b14220/consist.htm). In order to adapt to this situation, the Read Committed isolation level in TiDB pessimistic transactions is also a consistent read behavior in essence.
 

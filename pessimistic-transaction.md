@@ -63,9 +63,9 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
 ## Difference with MySQL InnoDB
 
 1. When TiDB executes DML or `SELECT FOR UPDATE` statements that use range in the WHERE clause, concurrent DML statements within the range are not blocked.
-    
+
     For example:
-    
+
     ```sql
     CREATE TABLE t1 (
      id INT NOT NULL PRIMARY KEY,
@@ -73,18 +73,18 @@ Pessimistic transactions in TiDB behave similarly to those in MySQL. See the min
     );
     INSERT INTO t1 (id) VALUES (1),(5),(10);
     ```
-    
+
     ```sql
     BEGIN /*T! PESSIMISTIC */;
     SELECT * FROM t1 WHERE id BETWEEN 1 AND 10 FOR UPDATE;
     ```
-    
+
     ```sql
     BEGIN /*T! PESSIMISTIC */;
     INSERT INTO t1 (id) VALUES (6); -- blocks only in MySQL
     UPDATE t1 SET pad1='new value' WHERE id = 5; -- blocks waiting in both MySQL and TiDB
     ```
-    
+
     This behavior is because TiDB does not currently support _gap locking_.
 
 2. TiDB does not support `SELECT LOCK IN SHARE MODE`.
@@ -146,4 +146,29 @@ If the TiKV cluster is v4.0.9 or later, you can also dynamically disable this fe
 
 ```sql
 set config tikv pessimistic-txn.pipelined='false';
+```
+
+## In-memory pessimistic lock
+
+In v6.0.0, TiKV introduces the feature of in-memory pessimistic lock. When this feature is enabled, pessimistic locks are usually stored in the memory of the Region leader only, and are not persisted to disk or replicated through Raft to other replicas. This feature can greatly reduce the overhead of acquiring pessimistic locks and improve the throughput of pessimistic transactions.
+
+When the memory usage of in-memory pessimistic locks exceeds the memory threshold of the Region or the TiKV node, the acquisition of pessimistic locks turns to the [pipelined locking process](#pipelined-locking-process). When the Region is merged or the leader is transferred, to avoid the loss of the pessimistic lock, TiKV writes the in-memory pessimistic lock to disk and replicates it to other replicas.
+
+The in-memory pessimistic lock performs similarly to the pipelined locking process, which does not affect the lock acquisition when the cluster is healthy. However, when network isolation occurs in TiKV or a TiKV node is down, the acquired pessimistic lock might be lost.
+
+If the application logic relies on the lock acquiring or lock waiting mechanism, or if you want to guarantee as much as possible the success rate of transaction commits even when the cluster is in an abnormal state, you need to **disable** the in-memory pessimistic lock feature.
+
+This feature is enabled by default. To disable it, modify the TiKV configuration:
+
+```toml
+[pessimistic-txn]
+in-memory = false
+```
+
+To dynamically disable this feature, modify the TiKV configuration online:
+
+{{< copyable "sql" >}}
+
+```sql
+set config tikv pessimistic-txn.in-memory='false';
 ```
