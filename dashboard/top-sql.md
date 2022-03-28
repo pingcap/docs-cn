@@ -12,11 +12,16 @@ summary: 本文介绍如何使用 Top SQL 找到消耗负载较大的 SQL 查询
 * 展示指定时间范围内消耗负载最多的 5 类 SQL 查询。
 * 展示某一查询的 CPU 使用量、每秒请求数、平均延迟、查询计划等信息，作为改善业务的潜在性能优化点。
 
-## 使用 Top SQL
+## 启用 Top SQL
 
-Top SQL 功能默认开启。要使用该功能查看消耗负载较大的 SQL 查询，只需在登录 TiDB Dashboard 后点击左侧面板中的 **Top SQL** 即可。
+Top SQL 功能默认关闭。你可以通过以下方法在整个集群范围内启用该功能：
 
-![Top SQL](/media/dashboard/top-sql-overview.png)
+- 方法一：登录 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮，并打开 Top SQL 功能开关。
+- 方法二：配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入)的值为 `ON`。
+
+> **注意：**
+>
+> 启用 Top SQL 会对集群的性能产生轻微的影响。
 
 使用提示：
 
@@ -29,7 +34,7 @@ Top SQL 功能默认开启。要使用该功能查看消耗负载较大的 SQL �
 
 ## 关闭 Top SQL
 
-Top SQL 会对集群的性能产生轻微的影响。如需在整个集群范围内关闭该功能，你可以使用以下任一方法：
+如需在整个集群范围内关闭该功能，你可以使用以下任一方法：
 
 - 方法一：登录 TiDB Dashboard，点击左侧面板中的 **Top SQL**，然后点击页面右上角的齿轮按钮，关闭 Top SQL 功能开关。
 - 方法二：配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入)的值为 `OFF`。
