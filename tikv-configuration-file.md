@@ -823,13 +823,19 @@ Configuration items related to RocksDB
 ### `max-background-jobs`
 
 + The number of background threads in RocksDB. When you modify the size of the RocksDB thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
-+ Default value: `8`
++ Default value:
+    + When the number of CPU cores is 10, the default value is `9`.
+    + When the number of CPU cores is 8, the default value is `7`.
+    + When the number of CPU cores is `N`, the default value is `max(2, min(N - 1, 9))`.
 + Minimum value: `2`
 
 ### `max-background-flushes`
 
 + The maximum number of concurrent background memtable flush jobs
-+ Default value: `2`
++ Default value:
+    + When the number of CPU cores is 10, the default value is `3`.
+    + When the number of CPU cores is 8, the default value is `2`.
+    + When the number of CPU cores is `N`, the default value is `[(max-background-jobs + 3) / 4]`.
 + Minimum value: `1`
 
 ### `max-sub-compactions`
@@ -934,8 +940,8 @@ Configuration items related to RocksDB
 
 ### `enable-pipelined-write`
 
-+ Enables or disables Pipelined Write
-+ Default value: `true`
++ Controls whether to enable Pipelined Write. When this configuration is enabled, the previous Pipelined Write is used. When this configuration is disabled, the new Pipelined Commit mechanism is used.
++ Default value: `false`
 
 ### `bytes-per-sync`
 
