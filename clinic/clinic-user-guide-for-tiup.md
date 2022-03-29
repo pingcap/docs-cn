@@ -1,17 +1,17 @@
 ---
-title: Use TiDB Clinic
-summary: Learn how to use the TiDB Clinic Diagnostic Service to troubleshoot cluster problems remotely and perform a quick check of the cluster status on a cluster deployed using TiUP.
+title: Use PingCAP Clinic
+summary: Learn how to use the PingCAP Clinic Diagnostic Service to troubleshoot cluster problems remotely and perform a quick check of the cluster status on a cluster deployed using TiUP.
 ---
 
-# Use TiDB Clinic
+# Use PingCAP Clinic
 
-For TiDB clusters and DM clusters deployed using TiUP, you can use TiDB Clinic Diagnostic Service (TiDB Clinic) to troubleshoot cluster problems remotely and perform a quick check on a cluster status locally using a Clinic diagnostic tool Diag (Diag) and a Clinic Server cloud service (Clinic Server).
+For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on a cluster status locally using a Clinic diagnostic tool Diag (Diag) and a Clinic Server cloud service (Clinic Server).
 
-TiDB Clinic is currently in the Beta testing stage.
+PingCAP Clinic is currently in the Beta testing stage.
 
 > **Note:**
 >
-> TiDB Clinic temporarily **does not support** collecting data from the clusters deployed using TiDB Ansible.
+> PingCAP Clinic temporarily **does not support** collecting data from the clusters deployed using TiDB Ansible.
 
 ## User scenarios
 
@@ -21,14 +21,14 @@ TiDB Clinic is currently in the Beta testing stage.
 
     > **Note:**
     >
-    > - TiDB Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
-    > - For the TiDB Clinic Beta version, external users **cannot use** the features of the Clinic Server. After you upload collected data to the Clinic Server and get a data link using Diag, only authorized PingCAP technical support staff can access the link and view the data.
+    > - PingCAP Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
+    > - For the PingCAP Clinic Beta version, external users **cannot use** the features of the Clinic Server. After you upload collected data to the Clinic Server and get a data link using Diag, only authorized PingCAP technical support staff can access the link and view the data.
 
     - When your cluster has some problems, if you cannot analyze the problems immediately, you can use Diag to collect and save the data for later analysis.
 
 - [Perform a quick check on the cluster status locally](#perform-a-quick-check-on-the-cluster-status-locally)
 
-    Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. You can check the potential health risks of a cluster using the local quick check feature provided by TiDB Clinic. The TiDB Clinic Beta version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
+    Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. You can check the potential health risks of a cluster using the local quick check feature provided by PingCAP Clinic. The PingCAP Clinic Beta version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
 
 ## Prerequisites
 
@@ -59,7 +59,7 @@ You can use Diag to quickly collect diagnostic data from TiDB clusters and DM cl
 
 ### Step 1. Check the data to be collected
 
-For a detailed list of data that can be collected by Diag, see [TiDB Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md). 
+For a detailed list of data that can be collected by Diag, see [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md). 
 
 To improve the efficiency of the later diagnosis, you are recommended to collect full diagnostic data including monitoring data and configuration information. For details, see [Collect data from TiDB clusters](#collect-data-from-tidb-clusters].
 
@@ -189,7 +189,7 @@ If the network where the cluster is located can access the internet, you can dir
 
 > **Note:**
 >
-> TiDB Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
+> PingCAP Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
 
 The following is an example output:
 
@@ -241,7 +241,7 @@ If the network where your cluster is located cannot access the internet, you nee
 
     > **Note:**
     >
-    > TiDB Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
+    > PingCAP Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
 
     The following is an example output:
 
@@ -264,7 +264,7 @@ If the network where your cluster is located cannot access the internet, you nee
 
 ## Perform a quick check on the cluster status locally
 
-You can have a quick check on the cluster status locally using Diag. Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. The TiDB Clinic Beta version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
+You can have a quick check on the cluster status locally using Diag. Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. The PingCAP Clinic Beta version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
 
 1. Collect configuration data:
 
@@ -341,7 +341,7 @@ You can have a quick check on the cluster status locally using Diag. Even if you
 
 2. After uploading data, I cannot open the returned data access link. What should I do?
 
-    TiDB Clinic is currently in the Beta testing stage, and external users **cannot visit** the data access link. Only authorized PingCAP technical support staff can access the link and view the data.
+    PingCAP Clinic is currently in the Beta testing stage, and external users **cannot visit** the data access link. Only authorized PingCAP technical support staff can access the link and view the data.
 
 3. How long will the uploaded data be kept on the Clinic Server?
 
