@@ -298,7 +298,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
 
     - 提供了 512 位 SIMD 支持
     - 增强了对过期的数据版本的清理算法，减少磁盘使用量及提高读文件性能
-    - 解决了用户在某些非Linux平台系统上查看 dashboard 时，无法获取内存或CPU等相关信息
+    - 解决了用户在某些非 Linux 平台系统上查看 dashboard 时，无法获取内存或CPU等相关信息
     - 统一 TiFlash 日志文件的命名风格（与 TiKV 保持一致），并支持动态修改 logger.count、logger.size
     - 完善了列存文件的数据校验能力（checksums，实验功能）
 
