@@ -76,7 +76,7 @@ summary: 了解 TiDB 的基本功能。
 | [Optimizer hints](/optimizer-hints.md)                              |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
 | [索引合并](/explain-index-merge.md)                                 |    Y    |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Placement Rules in SQL](/placement-rules-in-sql.md)                |    Y    | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
+| [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
 
 ## 数据定义语言 (DDL)
 
