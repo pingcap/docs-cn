@@ -332,18 +332,26 @@ select tidb_decode_sql_digests(@digests, 10);
 
 ## TIDB_SHARD
 
-`TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而导致的热点时，索引的前缀 `tidb_shard(a)` 将热点打散，从而提升集群扩展性。
+`TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以`TIDB_SHARD` 函数为前缀的表达式索引。
 
-在高吞吐写入、点查询、批量点查询场景下，你可以在保留原有的查询条件的情况下使用该函数，以提升写入性能。
+### SHARD INDEX
 
-> **注意 SHARD INDEX 使用场景限制：**
->
-> - 二级唯一索引上 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值
-> - 业务中 SQL 语句根据该二级索引的全部字段做等值查询，查询可以是单独的 SELECT，也可以是 UPDATE/DELETE 等产生的内部查询，等值查询包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式
+- 创建方式：
 
-```SQL
-create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
-```
+    当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群扩展性。
+
+- 适用场景：
+
+    你可以在高吞吐写入、点查询、批量点查询场景中使用 SHARD INDEX。在该类场景下使用时，你可以在保留原有的查询条件的同时使用该函数，以提升写入性能。
+
+- 使用限制：
+
+        - 当二级唯一索引上的 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值时，不应该使用 SHARD INDEX，否则 【XXX】
+        - 当业务中的 SQL 语句根据该二级索引的全部字段进行等值查询（包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式），且查询是单独的 SELECT 语句产生的查询，或是 UPDATE、DELETE 等语句产生的内部查询时，不应该使用 SHARD INDEX，否则 【XXX】。
+
+        ```SQL
+        create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
+        ```
 
 ### 语法图
 
@@ -354,30 +362,32 @@ TIDBShardExpr ::=
 
 ### 示例
 
-{{< copyable "sql" >}}
+- 使用 `TIDB_SHARD` 函数计算 【XXX】 的 SHARD 值
 
-```sql
-select TIDB_SHARD(12373743746);
-```
+    以下示例提供如何使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
 
-```sql
-+-------------------------+
-| TIDB_SHARD(12373743746) |
-+-------------------------+
-|                     184 |
-+-------------------------+
-1 row in set (0.00 sec)
-```
+    {{< copyable "sql" >}}
 
-上述示例会使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
+    ```sql
+    select TIDB_SHARD(12373743746);
+    ```
 
-{{< copyable "sql" >}}
+    ```sql
+    +-------------------------+
+    | TIDB_SHARD(12373743746) |
+    +-------------------------+
+    |                     184 |
+    +-------------------------+
+    1 row in set (0.00 sec)
+    ```
 
-```sql
-create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
-```
+- 使用 `TIDB_SHARD` 函数创建 SHARD INDEX
 
-上述示例使用 `TIDB_SHARD` 函数创建 SHARD INDEX。
+    {{< copyable "sql" >}}
+
+    ```sql
+    create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
+    ```
 
 ### MySQL 兼容性
 
