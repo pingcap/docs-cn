@@ -342,16 +342,21 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 适用场景：
 
-    你可以在高吞吐写入、点查询、批量点查询场景中使用 SHARD INDEX。在该类场景下使用时，你可以在保留原有的查询条件的同时使用该函数，以提升写入性能。
+    - 二级唯一索引上 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值
+    - 业务中 SQL 语句根据该二级索引的全部字段做等值查询，查询可以是单独的 SELECT，也可以是 UPDATE/DELETE 等产生的内部查询，等值查询包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式
 
 - 使用限制：
 
-        - 当二级唯一索引上的 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值时，不应该使用 SHARD INDEX，否则 【XXX】
-        - 当业务中的 SQL 语句根据该二级索引的全部字段进行等值查询（包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式），且查询是单独的 SELECT 语句产生的查询，或是 UPDATE、DELETE 等语句产生的内部查询时，不应该使用 SHARD INDEX，否则 【XXX】。
-
-        ```SQL
-        create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
-        ```
+        - 非等值或 IN 查询无法使用索引
+        - 查询条件中 AND 和 OR 混合且最外层是 AND 算子时无法使用 Shard Index索引
+        - GROUP BY 无法使用 Shard Index
+        - ORDER BY 无法使用 Shard Index
+        - ON 子句无法使用 Shard Index
+        - WHERE 子查询无法使用 Shard Index
+        - Shard Index 只能打散整形字段的唯一索引
+        - Shard Index 联合索引可能失效
+        - Shard Index 无法走 FastPlan流程
+        - Shard Index 无法使用 Prepare Plan Cache
 
 ### 语法图
 
