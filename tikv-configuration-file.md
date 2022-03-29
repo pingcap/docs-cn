@@ -351,7 +351,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + Scheduler 线程池中线程的数量。Scheduler 线程主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
-+ 最小值：1
++ 可调整范围：`[1, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
 
 ### `scheduler-pending-write-threshold`
 
@@ -529,6 +529,7 @@ raftstore 相关的配置项。
 + 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度。
 + 默认值：256
 + 最小值：大于 0
++ 最大值: 16384
 
 ### `raft-entry-max-size`
 
@@ -756,7 +757,7 @@ raftstore 相关的配置项。
 
 + 处理数据落盘的线程池中线程的数量，即 Apply 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
-+ 最小值：大于 0
++ 可调整范围：[1, CPU * 10]
 
 ### `store-max-batch-size`
 
@@ -769,7 +770,7 @@ raftstore 相关的配置项。
 
 + 表示处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
-+ 最小值：大于 0
++ 可调整范围：[1, CPU * 10]
 
 ### `store-io-pool-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
