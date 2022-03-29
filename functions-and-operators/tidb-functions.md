@@ -336,9 +336,10 @@ select tidb_decode_sql_digests(@digests, 10);
 
 在高吞吐写入、点查询、批量点查询场景下，你可以在保留原有的查询条件的情况下使用该函数，以提升写入性能。
 
-> **注意：**
+> **注意 SHARD INDEX 使用场景限制：**
 >
-> 如果业务中使用范围查询打散后的数据，可能造成性能回退，请验证后使用。
+> - 二级唯一索引上 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值
+> - 业务中 SQL 语句根据该二级索引的全部字段做等值查询，查询可以是单独的 SELECT，也可以是 UPDATE/DELETE 等产生的内部查询，等值查询包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式
 
 
 ```SQL
@@ -354,8 +355,6 @@ TIDBShardExpr ::=
 
 ### 示例
 
-本示例会使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
-
 {{< copyable "sql" >}}
 
 ```sql
@@ -370,6 +369,16 @@ select TIDB_SHARD(12373743746);
 +-------------------------+
 1 row in set (0.00 sec)
 ```
+
+上述示例会使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
+
+{{< copyable "sql" >}}
+
+```sql
+create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
+```
+
+上述示例使用 `TIDB_SHARD` 函数创建 SHARD INDEX。
 
 ### MySQL 兼容性
 
