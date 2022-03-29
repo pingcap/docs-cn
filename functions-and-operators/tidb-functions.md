@@ -341,7 +341,6 @@ select tidb_decode_sql_digests(@digests, 10);
 > - 二级唯一索引上 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值
 > - 业务中 SQL 语句根据该二级索引的全部字段做等值查询，查询可以是单独的 SELECT，也可以是 UPDATE/DELETE 等产生的内部查询，等值查询包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式
 
-
 ```SQL
 create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
 ```
@@ -383,4 +382,3 @@ create table test(id int primary key clustered, a int, b int, unique key uk((tid
 ### MySQL 兼容性
 
 `TIDB_SHARD` 是 TiDB 特有的函数，和 MySQL 不兼容。
-
