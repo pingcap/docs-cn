@@ -332,7 +332,14 @@ select tidb_decode_sql_digests(@digests, 10);
 
 ## TIDB_SHARD
 
-TIDB_SHARD 函数用于创建一个 SHARD INDEX 来打散热点索引，如下所示。二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在单调递增或递减而导致的热点，前缀 `tidb_shard(a)` 将热点打散，提升集群扩展性。
+`TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而导致的热点时，索引的前缀 `tidb_shard(a)` 将热点打散，从而提升集群扩展性。
+
+在高吞吐写入、点查询、批量点查询场景下，你可以在保留原有的查询条件的情况下使用该函数，以提升写入性能。
+
+> **注意：**
+>
+> 如果业务中使用范围查询打散后的数据，可能造成性能回退，请验证后使用。
+
 
 ```SQL
 create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
@@ -346,6 +353,8 @@ TIDBShardExpr ::=
 ```
 
 ### 示例
+
+本示例会使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
 
 {{< copyable "sql" >}}
 
@@ -361,8 +370,6 @@ select TIDB_SHARD(12373743746);
 +-------------------------+
 1 row in set (0.00 sec)
 ```
-
-以上示例使用 `TIDB_SHARD` 计算 `12373743746` 的 SHARD 值。
 
 ### MySQL 兼容性
 
