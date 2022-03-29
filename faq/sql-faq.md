@@ -124,10 +124,6 @@ Two solutions:
 
 None of the `DELETE`, `TRUNCATE` and `DROP` operations release data immediately. For the `TRUNCATE` and `DROP` operations, after the TiDB GC (Garbage Collection) time (10 minutes by default), the data is deleted and the space is released. For the `DELETE` operations, the data is deleted but the space is not immediately released until the compaction is performed.
 
-## Does TiDB support the `REPLACE INTO` syntax?
-
-Yes. The exception being that `LOAD DATA` does not currently support the `REPLACE INTO` syntax.
-
 ## Why does the query speed get slow after data is deleted?
 
 Deleting a large amount of data leaves a lot of useless keys, affecting the query efficiency. Currently the [Region Merge](/best-practices/massive-regions-best-practices.md) feature is in development, which is expected to solve this problem. For details, see the [deleting data section in TiDB Best Practices](https://en.pingcap.com/blog/tidb-best-practice/#write).

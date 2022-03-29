@@ -293,7 +293,7 @@ Requires the `DROP` privilege for the table.
 
 ### LOAD DATA
 
-Requires the `INSERT` privilege for the table.
+Requires the `INSERT` privilege for the table. When you use `REPLACE INTO`, the `DELETE` privilege is also required.
 
 ### TRUNCATE TABLE
 
