@@ -57,7 +57,7 @@ summary: 了解 TiDB 各版本的实验特性。
 
 ## 数据迁移
 
-+ [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
++ [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
 
 ## 垃圾回收
 
