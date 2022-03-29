@@ -344,9 +344,10 @@
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
-        - 架构
+        - 架构及组件原理
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [Checkpoint](/dm/dm-checkpoint.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件

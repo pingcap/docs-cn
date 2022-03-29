@@ -1,3 +1,7 @@
+---
+title: DM Checkpoint 作用机制
+---
+
 # Checkpoint 作用机制
 
 DM 里有两种 checkpoint，一个是内存 checkpoint，表示这个 binlog 已经被 DM 接收，正处在同步队列中（状态可能是：还未同步/正在同步/已经同步）；而 flushed checkpoint 指的是已经写入下游数据库中的同步进度，表示某个位置的 binlog 一定已经成功同步到了下游。
