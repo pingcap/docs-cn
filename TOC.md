@@ -102,7 +102,7 @@
   - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-  - [数据索引不一致报错](/data-inconsistency-errors.md)
+  - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
   - 系统调优
     - [操作系统性能参数调优](/tune-operating-system.md)
