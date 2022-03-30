@@ -66,7 +66,7 @@ TiDB 版本：6.0.0-DMR
 | [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level从-v60-版本开始引入) | 新增 | 设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验。默认仅开启对性能影响微小的检查，包含大部分检查效果。 |
 | `placement_checks` | 删除 | 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。已被 `tidb_placement_mode` 替代。 |
 | `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
-| `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB 5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB 6.0.0 起，代码中也正式移除这些变量。 |
+| `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB v5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB v6.0.0 起，代码中也正式移除这些变量。 |
 
 ### 配置文件参数
 
@@ -327,7 +327,7 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/pd-control.md#scheduler-show--add--remove--pause--resume--config)
 
-- 支持手动取消自动统计信息的自动更新
+- 支持手动取消统计信息的自动更新
 
     统计信息是影响 SQL 性能的最重要基础数据之一，为了保证统计信息的完整性和及时性，TiDB 会在后台定期自动更新对象的统计信息。为了避免统计信息的自动更新造成资源争抢，影响业务 SQL 性能，TiDB 6.0 支持手动取消统计信息的自动更新。
 
@@ -348,9 +348,9 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     - 消除 MPP 聚合查询中可能冗余的 Exchange 操作，提高查询效率 [#31762](https://github.com/pingcap/tidb/issues/31762)
     - 允许在 `TRUNCATE PARTITION` 和 `DROP PARTITION` 语句中使用重复的分区名，提高与 MySQL 的兼容性 [#31681](https://github.com/pingcap/tidb/issues/31681)
     - 支持在 `ADMIN SHOW DDL JOBS` 语句的执行结果中显示 `​​CREATE_TIME` 信息[#23494](https://github.com/pingcap/tidb/issues/23494)
-    - 新增内置函数 `CHARSET()`  [#3931](https://github.com/pingcap/tidb/issues/3931)
-    - 支持通过用户名过滤自动捕获的黑名单[#32558](https://github.com/pingcap/tidb/issues/32558)
-    - 优化 `ADMIN SHOW DDL JOBS` 和 `SHOW TABLE STATUS` 语句的执行结果，支持根据当前的 `time_zone` 显示结果中的时间[#26642](​​https://github.com/pingcap/tidb/issues/26642)
+    - 新增内置函数 `CHARSET()` [#3931](https://github.com/pingcap/tidb/issues/3931)
+    - 支持通过用户名过滤自动捕获的黑名单 [#32558](https://github.com/pingcap/tidb/issues/32558)
+    - 优化 `ADMIN SHOW DDL JOBS` 和 `SHOW TABLE STATUS` 语句的执行结果，支持根据当前的 `time_zone` 显示结果中的时间 [#26642](​​https://github.com/pingcap/tidb/issues/26642)
     - 支持下推 `DAYNAME()`和 `MONTHNAME()` 函数到 TiFlash [#32594](https://github.com/pingcap/tidb/issues/32594)
     - 支持下推 `REGEXP` 函数到 TiFlash [#32637](https://github.com/pingcap/tidb/issues/32637)
     - 支持追踪 `UnionScan` 算子的执行情况 [#32631](https://github.com/pingcap/tidb/issues/32631)
@@ -365,7 +365,6 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     - 支持下推 `DAYOFWEEK()` 和 `DAYOFYEAR()` 函数到 TiFlash [#33130](https://github.com/pingcap/tidb/issues/33130)
     - 支持下推 ` IS_TRUE`，`IS_FALSE`, `IS_TRUE_WITH_NULL` 函数到 TiFlash [#33047](https://github.com/pingcap/tidb/issues/33047)
     - 支持在动态裁剪模式的分区表上执行 MPP 计划 [#32347](https://github.com/pingcap/tidb/issues/32347)
-    - 支持 read-consistency 读取可在 `READ-COMMITTED` 隔离级别下打开优化事务内读语句延迟 [#33159](https://github.com/pingcap/tidb/issues/33159)
     - 支持对公共表表达式 (CTE) 进行谓词下推 [#28163](https://github.com/pingcap/tidb/issues/28163)
     - 简化 `Statement Summary` 和 `Capture Plan Baselines` 的配置为只在全局基础上可用 [#30557](https://github.com/pingcap/tidb/issues/30557)
     - 通过更新 gopsutil 版本到 v3.21.12，从而避免在 macOS 12 上构建二进制时出现警告 [#31607](https://github.com/pingcap/tidb/issues/31607)
