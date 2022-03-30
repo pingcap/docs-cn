@@ -211,7 +211,8 @@ Configuration items related to the single thread pool serving read requests. Thi
 ### `max-thread-count`
 
 + The maximum working thread count of the unified read pool or the UnifyReadPool thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
-+ Default value: `MAX(4, CPU * 0.8)`
++ Value range: `[min-thread-count, MAX(4, CPU)]`. In `MAX(4, CPU)`, `CPU` means the number of your CPU cores. `MAX(4, CPU)` takes the greater value out of `4` and the `CPU`.
++ Default value: MAX(4, CPU * 0.8)
 
 ### `stack-size`
 
@@ -495,7 +496,7 @@ Configuration items related to Raftstore.
 
 ### `raft-max-inflight-msgs`
 
-+ The number of Raft logs to be confirmed. If this number is exceeded, log sending slows down.
++ The number of Raft logs to be confirmed. If this number is exceeded, the Raft state machine slows down log sending.
 + Default value: `256`
 + Minimum value: greater than `0`
 
@@ -733,7 +734,7 @@ Configuration items related to Raftstore.
 
 ### `apply-pool-size`
 
-+ The allowable number of threads in the pool that flushes data to storage. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
++ The allowable number of threads in the pool that flushes data to storage, which is the size of the Apply thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `2`
 + Minimum value: greater than `0`
 
@@ -1462,7 +1463,8 @@ Configuration items related to BR backup.
 ### `num-threads`
 
 + The number of worker threads to process backup
-+ Default value: `MIN(CPU * 0.5, 8)`.
++ Default value: `MIN(CPU * 0.5, 8)`
++ Value range: `[1, CPU]`
 + Minimum value: `1`
 
 ### `enable-auto-tune` <span class="version-mark">New in v5.4.0</span>

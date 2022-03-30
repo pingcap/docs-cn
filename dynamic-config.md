@@ -126,7 +126,7 @@ The following TiKV configuration items can be modified online:
 
 | Configuration item | Description |
 | :--- | :--- |
-| `raftstore.raft-entry-max-size` | The maximum size of a single log |
+| `raftstore.raft-max-inflight-msgs` | The number of Raft logs to be confirmed. If this number is exceeded, the Raft state machine slows down log sending. |
 | `raftstore.raft-log-gc-tick-interval` | The time interval at which the polling task of deleting Raft logs is scheduled |
 | `raftstore.raft-log-gc-threshold` | The soft limit on the maximum allowable number of residual Raft logs |
 | `raftstore.raft-log-gc-count-limit` | The hard limit on the allowable number of residual Raft logs |
@@ -157,6 +157,7 @@ The following TiKV configuration items can be modified online:
 | `raftstore.hibernate-timeout` | The shortest wait duration before entering hibernation upon start. Within this duration, TiKV does not hibernate (not released). |
 | `raftstore.apply-pool-size` | The number of apply thread pool size |
 | `raftstore.store-pool-size` | The number of store thread pool size |
+| `readpool.unified.max-thread-count` | The maximum number of threads in the thread pool that uniformly processes read requests, which is the size of the UnifyReadPool thread pool |
 | `coprocessor.split-region-on-table` | Enables to split Region by table |
 | `coprocessor.batch-split-limit` | The threshold of Region split in batches |
 | `coprocessor.region-max-size` | The maximum size of a Region |
