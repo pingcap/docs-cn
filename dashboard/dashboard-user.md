@@ -5,7 +5,7 @@ summary: 了解如何创建 SQL 用户用于访问 TiDB Dashboard
 
 # TiDB Dashboard 用户管理
 
-TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式。你可以通过控制和管理 TiDB SQL 用户，从而限制和约束这些用户对 TiDB Dashboard 的访问。本文描述了 TiDB SQL 用户访问 TiDB Dashboard 所需的最小权限，并提供了如何创建最小权限 SQL 用户的示例。
+TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式。你可以通过控制和管理 TiDB SQL 用户，从而限制和约束这些用户对 TiDB Dashboard 的访问。本文描述了 TiDB SQL 用户访问 TiDB Dashboard 所需的最小权限，并提供了如何创建最小权限 SQL 用户、如何通过 RBAC 授权 SQL 用户登录的示例。
 
 要了解如何控制和管理 TiDB SQL 用户，请参见 [TiDB 用户账户管理](/user-account-management.md)。
 
