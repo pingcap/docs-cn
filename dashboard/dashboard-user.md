@@ -71,7 +71,7 @@ TiDB Dashboard 与 TiDB 使用相同的用户权限体系和登录验证方式�
 
 ## 示例：通过 RBAC 授权 SQL 用户登录 TiDB Dashboard
 
-以下示例演示了如何在[基于角色的访问控制（RBAC）](/role-based-access-control.md)机制下创建角色及用户来登录 TiDB Dashboard。
+以下示例演示了如何在[基于角色的访问控制 (RBAC)](/role-based-access-control.md)机制下创建角色及用户来登录 TiDB Dashboard。
 
 1. 创建一个包含登录 TiDB Dashboard 所需权限的角色 `dashboard_access`：
 
