@@ -66,7 +66,6 @@ TiDB 版本：6.0.0-DMR
 | `tidb_txn_assertion_level` | 新增 | 设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验。默认仅开启对性能影响微小的检查，包含大部分检查效果。 |
 | `placement_checks` | 删除 | 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。已被 `tidb_placement_mode` 替代。 |
 | `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
-| `tidb-enable-streaming` | 删除 |  |
 | `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB 5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB 6.0.0 起，代码中也正式移除这些变量。 |
 
 ### 配置文件参数
@@ -153,7 +152,7 @@ TiDB 版本：6.0.0-DMR
     [用户文档](/dashboard/top-sql.md)
 
 * Continuous Profiling 成为正式功能 (GA)
-    
+
     该功能默认不开启，可在 TiDB Dashboard 界面一键启用。
 
 ### 性能
@@ -198,18 +197,23 @@ TiDB 版本：6.0.0-DMR
 
     在该模式下，分区表的数据也可以使用 MPP 引擎读取和计算，大大提升了分区表的查询性能。
 
-    [用户文档](/tiflash/use-tiflash.md) [issue 号]()
+    [用户文档](/use-tiflash.md#mpp-模式访问分区表) [issue 号]()
 
 * 持续提升 MPP 引擎计算性能
+
     * 支持更多函数和算子下推至 MPP 引擎
+
         * 逻辑函数： `IS`，`IS NOT`
         * 字符串函数：`REGEXP()`，`NOT REGEXP()`
         * 数学函数：`GREATEST(int/real)`，`LEAST(int/real)`
         * 日期函数：`DAYOFNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
         * 算子：Anti Left Outer Semi Join, Left Outer Semi Join
+
+        [用户文档](/use-tiflash.md#tiflash-支持的计算下推)
+
     * 正式引入动态线程池，提升 CPU 利用率，默认开启此功能
 
-    [用户文档]()，[issue 号]()
+        [用户文档](/tiflash-configuration.md#配置文件-tiflashtoml)
 
 ### 稳定性
 
@@ -318,9 +322,9 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/pd-control.md#scheduler-show--add--remove--pause--resume--config)
 
-* 支持手动取消自动统计信息的自动更新采样任务
+* 支持手动取消自动统计信息的自动更新
 
-    统计信息是影响 SQL 性能的最重要基础数据之一，为了保证统计信息的完整性和及时性，TiDB 会在后台定期自动更新收集对象的统计信息。为了避免自动统计信息的自动更新采集造成资源争抢，影响业务 SQL 性能，TiDB 6.0 支持手动取消自动统计信息的自动更新采样任务。
+    统计信息是影响 SQL 性能的最重要基础数据之一，为了保证统计信息的完整性和及时性，TiDB 会在后台定期自动更新对象的统计信息。为了避免统计信息的自动更新造成资源争抢，影响业务 SQL 性能，TiDB 6.0 支持手动取消统计信息的自动更新。
 
     [用户文档](/statistics.md#自动更新)
 
@@ -331,18 +335,13 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
 ## 提升改进
 
 * TiDB
+
     * 当通过 `FLASHBACK` 或 `RECOVER` 语句恢复一张表之后，自动清除该表的放置规则信息 [#31668](https://github.com/pingcap/tidb/issues/31668)
     * 新增一个性能概览监控面板，展示典型关键路径上的核心性能指标，使 TiDB 上的指标分析更加容易 [#31676](https://github.com/pingcap/tidb/issues/31676)
     * 支持在 `LOAD DATA LOCAL INFILE` 语句中使用 `REPLACE` 关键字 [#24515](https://github.com/pingcap/tidb/issues/24515)
     * (dup: release-5.1.4.md > Improvements> TiDB)- Support partition pruning for the built-in `IN` expression in Range partition tables [#26739](https://github.com/pingcap/tidb/issues/26739)
     * 消除 MPP 聚合查询中可能冗余的 Exchange 操作，提高查询效率 [#31762](https://github.com/pingcap/tidb/issues/31762)
     * 允许在 `TRUNCATE PARTITION` 和 `DROP PARTITION` 语句中使用重复的分区名，提高与 MySQL 的兼容性 [#31681](https://github.com/pingcap/tidb/issues/31681)
-    * 当未指定 follower 时读取 `information_schema.placement_policies`， 显示 follower 的默认值 2 [#31702](https://github.com/pingcap/tidb/issues/31702)
-    * 禁止创建索引时指定列前缀长度为 0 [#31972](https://github.com/pingcap/tidb/issues/31972)
-    * ​​禁止分区名以空格结尾 [#31785](https://github.com/pingcap/tidb/issues/31535)
-    * 新增 [`pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) 配置项，支持在悲观锁模式下开启自动事务提交从而避免死锁 [#31135](https://github.com/pingcap/tidb/issues/31135)
-    * 修正优化 `RENAME TABLE` 语句的报错信息 [#29893](https://github.com/pingcap/tidb/issues/29893)
-    * 新增系统变量 `tidb_sysdate_is_now` ，开启后 `SYSDATE` 函数将会使用 `NOW` 函数的结果 [#31872](https://github.com/pingcap/tidb/issues/31872)
     * 支持在 `ADMIN SHOW DDL JOBS` 语句的执行结果中显示 `​​CREATE_TIME` 信息[#23494](https://github.com/pingcap/tidb/issues/23494)
     * 新增内置函数 `CHARSET()`  [#3931](https://github.com/pingcap/tidb/issues/3931)
     * 支持通过用户名过滤自动捕获的黑名单[#32558](https://github.com/pingcap/tidb/issues/32558)
@@ -350,33 +349,28 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 支持下推 `DAYNAME()`和 `MONTHNAME()` 函数到 TiFlash [#32594](https://github.com/pingcap/tidb/issues/32594)
     * 支持下推 `REGEXP` 函数到 TiFlash (#32637)[https://github.com/pingcap/tidb/issues/32637]
     * 支持追踪 `UnionScan` 算子的执行情况 [#32631](https://github.com/pingcap/tidb/issues/32631)
-    * 执行 SHOW TABLE STATUS 根据当前的 time_zone 对结果进行调节 [#32449](https://github.com/pingcap/tidb/pull/32449)
     * 支持下推 `GREATEST` 和 `LEAST` 函数到 TiFlash [#32787](https://github.com/pingcap/tidb/issues/32787)
     * 支持读取 `_tidb_rowid` 列的查询能够使用 PointGet 计划 [#31543](https://github.com/pingcap/tidb/issues/31543)
     * 支持在自动捕获的黑名单中使用通配符 [#32714](https://github.com/pingcap/tidb/issues/32714)
     * 支持在 `EXPLAIN` 语句的输出中显示原有的分区名而不转换为小写[#32719](https://github.com/pingcap/tidb/issues/32719)
     * 支持对 RANGE COLUMNS 分区表在 IN 条件和字符串类型上进行分区裁剪 [#32626](https://github.com/pingcap/tidb/issues/32626)
-    * 移除废弃的的系统变量 `tidb_mem_quota_hashjoin`, `tidb_mem_quota_mergejoin`, `tidb_mem_quota_sort`, `tidb_mem_quota_topn`, `tidb_mem_quota_indexlookupreader`, `tidb_mem_quota_indexlookupjoin` [#32286](https://github.com/pingcap/tidb/issues/32286)
     * 当设置系统变量为 NULL 时提供错误提示 [#32850](https://github.com/pingcap/tidb/issues/32850)
     * 移除非 MPP 模式的 Broadcast Join [#31465](https://github.com/pingcap/tidb/issues/31465)
-    * 移除废弃的系统变量 `tidb-enable-streaming` [#32679](https://github.com/pingcap/tidb/issues/32679)
     * 支持下推 ` DAYOFMONTH()`，`LAST_DAY()` 函数到 TiFlash [#33012](https://github.com/pingcap/tidb/issues/33012)
     * 支持下推 `DAYOFWEEK()` 和 `DAYOFYEAR()` 函数到 TiFlash [#33130](https://github.com/pingcap/tidb/issues/33130)
     * 支持下推 ` IS_TRUE`，`IS_FALSE`, `IS_TRUE_WITH_NULL` 函数到 TiFlash [#33047](https://github.com/pingcap/tidb/issues/33047)
     * 支持在动态裁剪模式的分区表上执行 MPP 计划 [#32347](https://github.com/pingcap/tidb/issues/32347)
-    * 支持 instance 级别的系统变量  [#32887](https://github.com/pingcap/tidb/issues/32887)
     * 支持 read-consistency 读取可在 `READ-COMMITTED` 隔离级别下打开优化事务内读语句延迟 [#33159](https://github.com/pingcap/tidb/issues/33159)
     * 支持对公共表表达式 (CTE) 进行谓词下推 [#28163](https://github.com/pingcap/tidb/issues/28163)
     * 简化 `Statement Summary` 和 `Capture Plan Baselines` 的配置为只在全局基础上可用 [#30557](https://github.com/pingcap/tidb/issues/30557)
-    * 在 v5.4（仅 v5.4）中，一些 noop 系统变量可能允许设置不正确的值。此修改后，不会允许设置不正确的值  [#31538](https://github.com/pingcap/tidb/issues/31538)
-    * 通过更新 gopsutil 版本到 v3.21.12，从而避免修复在 macOS 12 上构建二进制时出现的警告 [#31607](https://github.com/pingcap/tidb/issues/31607)
+    * 通过更新 gopsutil 版本到 v3.21.12，从而避免在 macOS 12 上构建二进制时出现警告 [#31607](https://github.com/pingcap/tidb/issues/31607)
 
 * TiKV
+
     * (dup: release-5.4.0.md > Improvements> TiKV)- Support archiving and rotating logs [#11651](https://github.com/tikv/tikv/issues/11651)
     * 提升 Raftstore 对大 key range batch 的采样准确度 [#11039](https://github.com/tikv/tikv/pull/11039)
     * 为 `debug/pprof/profile` 添加正确的 Content-Type，使 Profile 更容易被识别 [#11521](https://github.com/tikv/tikv/issues/11521)
     * 当 Raftstore 在心跳或处理读请求时，通过更新其租约时间来无限延长 leader 的租约时间，减少 leader 切换导致的延迟抖动  [#11579](https://github.com/tikv/tikv/pull/11579)
-    * 使 Raft Engine 默认存储 Raft log [#11119](https://github.com/tikv/tikv/issues/11119)
     * 切换 leader 时以选择代价最小的 store 为目标，提升性能稳定性 [#10602](https://github.com/tikv/tikv/issues/10602)
     * 异步获取 Raft log，减少阻塞 Raftstore 带来的性能抖动 [#11320](https://github.com/tikv/tikv/issues/11320)
     * 向量计算支持 `QUARTER` 函数 [#5751](https://github.com/tikv/tikv/issues/5751)
@@ -399,19 +393,27 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 通过全局的前台限流器来控制 CPU 与带宽的使用，增加 TiKV 性能的稳定性 [#11855](https://github.com/tikv/tikv/issues/11855)
     * 支持动态修改 `readpool.unified.max-thread-count`（UnifyReadPool 线程池中线程的数量） [#11781](https://github.com/tikv/tikv/issues/11781)
     * 使用 TiKV 内部的 pipeline 替代 RocksDB pipeline，废弃 `rocksdb.enable-multibatch-write` 参数 [#12059](https://github.com/tikv/tikv/issues/12059)
+
 * PD
+
     * 支持驱逐 leader 时自动选择最快的目标进行迁移，加速驱逐过程 [#4229](https://github.com/tikv/pd/issues/4229)
     * 禁止直接从有 2 副本的Raft Group 中删除一个 Voter，防止 Region 不可用 [#4564](https://github.com/tikv/pd/pull/4564)
     * 提升 Balance Leader 的调度速度 [#4652](https://github.com/tikv/pd/pull/4652)
+
 * TiFlash
+
     * 禁止了 TiFlash 文件的逻辑分裂（默认参数调整为：`profiles.default.dt_enable_logical_split = false`，详见[用户文档](/tiflash/tiflash-configuration.md#tiflash-配置参数)），优化了 TiFlash 列存储的空间使用效率，使得同一个表在同步到 TiFlash 后所占用空间与 TiKV 相近
     * TiFlash 优化了集群管理和 replica 数据同步机制。将原有的集群管理模块迁移整合进了 TiDB，并提高了为小表创建 tiflash replica 的速度 [#29924](https://github.com/pingcap/tidb/issues/29924)
+
 * Tools
+
     * Backup & Restore (BR)
+
         * 默认开启批量建表功能，备份数据恢复速度提升。在模拟测试中恢复 16 TB 的备份数据到 15 个节点的 TiKV 集群（每个节点有 16 个 CPU 核心），恢复吞吐可以达到 2.66 GiB/s [#27036](https://github.com/pingcap/tidb/issues/27036)
         * 支持导入与导出放置规则 (Placement Rule) 。增加参数 `--with-tidb-placement-mode` 来控制导入时是否忽略放置规则 [#32290](https://github.com/pingcap/tidb/issues/32290) \
 
     * TiCDC
+
         * 在 Grafana 中添加 `Lag analyze` 监控面板 [#4891](https://github.com/pingcap/tiflow/issues/4891)
         * 支持放置规则 (placement rules) [#4846)](https://github.com/pingcap/tiflow/issues/4846)
         * 同步处理 HTTP API [#1710](https://github.com/pingcap/tiflow/issues/1710)
@@ -419,12 +421,16 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
         * 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
         * 在创建 changefeed 时验证参数合法，优化报错信息 [#1716](https://github.com/pingcap/tiflow/issues/1716) [#1718](https://github.com/pingcap/tiflow/issues/1718) [#1719](https://github.com/pingcap/tiflow/issues/1719) [#4472](https://github.com/pingcap/tiflow/issues/4472)
         * (dup) 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
+
     * TiDB Data Migration (DM)
+
         * 支持在“乐观协调”模式（optimistic）下，上游表结构不一致的情况下仍能启动任务 [#3903](https://github.com/pingcap/tiflow/pull/3903)
         * 支持在 `stopped` 状态下创建任务  [#4510](https://github.com/pingcap/tiflow/pull/4510)
         * 支持 Syncer 使用 DM-worker 的工作目录写内部文件，不再使用  /tmp 目录。任务停止后会清理掉该目录 [#4732](https://github.com/pingcap/tiflow/pull/4732)
         * 优化了 Precheck 功能。不再允许跳过某些重要的检查  [#3608](https://github.com/pingcap/tiflow/issues/3608)
+
     * TiDB Lightning
+
         * 增加了更多重试错误类型  [#31484](https://github.com/pingcap/tidb/pull/31484)
         * 在数据导入过程中，如果 TiKV 节点地址发生变化，任务不受影响 [#32876](https://github.com/pingcap/tidb/pull/32876)
         * 支持 base64 格式的密码字符串 [#31194](https://github.com/pingcap/tidb/issues/31194)
@@ -433,6 +439,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
 ## Bug 修复
 
 * TiDB
+
     * 修复了当 `SCHEDULE = majority_in_primary`，且 `PrimaryRegion` 和 `Regions` 的值相同时 placement rule 会报错的问题 [#31271](https://github.com/pingcap/tidb/issues/31271)
     * (dup: release-5.3.1.md > Bug fixes> TiDB)- Fix the `invalid transaction` error when executing a query using index lookup join [#30468](https://github.com/pingcap/tidb/issues/30468)
     * 修复了当授予大于等于 2 个权限时 `show grants` 返回不正确的结果的问题 [#30855](https://github.com/pingcap/tidb/issues/30855)
@@ -479,10 +486,11 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 修正 `RENAME TABLE` 语句的报错信息 [#29893](https://github.com/pingcap/tidb/issues/29893)
 
 * TiKV
+
     * (dup: release-5.3.1.md > Bug fixes> TiKV)- Fix the panic issue caused by deleting snapshot files when the peer status is `Applying` [#11746](https://github.com/tikv/tikv/issues/11746)修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
     * (dup: release-5.3.1.md > Bug fixes> TiKV)- Fix the issue of QPS drop when flow control is enabled and `level0_slowdown_trigger` is set explicitly [#11424](https://github.com/tikv/tikv/issues/11424)修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
     * (dup: release-5.3.1.md > Bug fixes> TiKV)- Fix the issue that destroying a peer might cause high latency [#10210](https://github.com/tikv/tikv/issues/10210)修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
-    * (dup: release-5.3.1.md > Bug fixes> TiKV)- Fix a bug that TiKV cannot delete a range of data (`unsafe_destroy_range` cannot be executed) when the GC worker is busy [#11903](https://github.com/tikv/tikv/issues/11903)修复在某些 corner case 下 storeMeta 内数据被意外删除引发 panic 的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
+    * (dup: release-5.3.1.md > Bug fixes> TiKV)- Fix a bug that TiKV cannot delete a range of data (`unsafe_destroy_range` cannot be executed) when the GC worker is busy [#11903](https://github.com/tikv/tikv/issues/11903)
     * 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
     * 修复在某些某些边界场景中 `StoreMeta` 内数据被意外删除会引发 TiKV panic 的问题 [#11852](https://github.com/tikv/tikv/issues/11852)
     * 修复在 ARM 平台上进行性能分析造成 TiKV panic 的问题 [#10658](https://github.com/tikv/tikv/issues/10658)
@@ -496,12 +504,16 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12049](https://github.com/tikv/tikv/pull/12049)
     * 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     * 修复 TiKV 在退出时可能误报 panic 的问题 [#12231](https://github.com/tikv/tikv/issues/12231)
+
 * PD
+
     * 修复 PD 产生带有无意义的 Joint Consensus 步骤的 operator 的问题 [#4534](https://github.com/tikv/pd/pull/4534)
     * 修复 PD Client 获取 TSO 在关闭链接的情况下卡住的问题 [#4550](https://github.com/tikv/pd/pull/4550)
     * 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4570](https://github.com/tikv/pd/pull/4570)
     * 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4653](https://github.com/tikv/pd/pull/4653)
+
 * TiFlash
+
     * 修复启用内存限制时 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     * 修复过期数据回收缓慢的问题 [#4146]([https://github.com/pingcap/tiflash/issues/](https://github.com/pingcap/tiflash/issues/3902)4146)
     * 修复并发执行多个 DDL 操作和 Apply Snapshot 操作时 TiFlash 可能会崩溃问题 [#4072]([https://github.com/pingcap/tiflash/issues/](https://github.com/pingcap/tiflash/issues/3902)4072)
@@ -519,11 +531,14 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 修复 MPP 任务可能永远泄漏线程的问题 [#4238](https://github.com/pingcap/tiflash/issues/4238)
 
 * Tools
+
     * Backup & Restore (BR)
+
         * 修复了当恢复操作遇到一些无法恢复的错误时，BR 被卡住的问题 [#33200](https://github.com/pingcap/tidb/issues/33200)
         * 修复了在备份重试过程中加密信息丢失导致的恢复操作失败的问题 [#32423](https://github.com/pingcap/tidb/issues/32423)
 
     * TiCDC
+
         * (dup) 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace` SQL 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
         * (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC) 修复了 TiCDC 进程在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
         * 修复使用某些版本 MySQL sink 时可能遇到 `Unknown system variable 'transaction_isolation'` 报错的问题 [#4504](https://github.com/pingcap/tiflow/issues/4504)
@@ -535,6 +550,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
         * 修复 TiCDC 无法退出的问题 [#4699](https://github.com/pingcap/tiflow/issues/4699)
 
     * TiDB Data Migration (DM)
+
         * (dup: release-5.4.0.md > Bug fixes> Tools> TiDB Data Migration (DM))- Fix the issue that syncer metrics are updated only when querying the status [#4281](https://github.com/pingcap/tiflow/issues/4281)
         * (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC)- Fix the issue that execution errors of the update statement in safemode may cause the DM-worker panic [#4317](https://github.com/pingcap/tiflow/issues/4317)
         * (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC)- Fix a bug that long varchars report an error `Column length too big` [#4637](https://github.com/pingcap/tiflow/issues/4637)
@@ -543,14 +559,17 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
         * 修复了悲观模式下对上游增量数据进行分库分表合并迁移时有可能会丢 DML 的问题。[#5002](https://github.com/pingcap/tiflow/issues/5002)
 
     * TiDB Lightning
+
         * (dup: release-5.3.1.md > Bug fixes> Tools> TiDB Lightning)- Fix the bug that TiDB Lightning may not delete the metadata schema when some import tasks do not contain source files [#28144](https://github.com/pingcap/tidb/issues/28144)
         * 修复了源文件和目标集群中的表格名称不一致导致数据迁移失败的问题 [#31771](https://github.com/pingcap/tidb/issues/31771)
         * 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
         * 修复了检查空表失败导致 TiDB Lightning 卡住的问题[#31797](https://github.com/pingcap/tidb/issues/31797)
 
     * Dumpling
+
         * 修复了执行 `dumpling --sql $query` 进度显示不准确的问题 [#30532](https://github.com/pingcap/tidb/issues/30532)
         * 修复了 Amazon S3 无法正确计算压缩数据大小的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
 
     * TiDB Binlog
+
         * 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题。 [#1136](https://github.com/pingcap/tidb-binlog/issues/1136)
