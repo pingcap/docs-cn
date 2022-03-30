@@ -301,6 +301,7 @@ mysql> SELECT * FROM t1;
 ### `tidb_allow_function_for_expression_index` <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
 - 作用域：NONE
+- 默认值：`lower, md5, reverse, tidb_shard, upper, vitess_hash`
 - 这个变量用于显示创建表达式索引所允许使用的函数。
 
 ### `tidb_allow_mpp` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -655,15 +656,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_index_merge` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION | GLOBAL
-- 默认值：`ON` 
-- 这个变量用于控制是否开启 index merge 功能。
-
 > **注意：**
 >
 > - 当集群从 v4.0.0 以下版本升级到 v5.4.0 及以上版本时，该变量开关默认关闭，防止升级后计划发生变化导致回退。
 > - 当集群从 v4.0.0 及以上版本升级到 v5.4.0 及以上版本时，该变量开关保持升级前的状态。
 > - 对于 v5.4.0 及以上版本的新建集群，该变量开关默认开启。
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`ON`
+- 这个变量用于控制是否开启 index merge 功能。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -776,6 +777,12 @@ Query OK, 0 rows affected (0.09 sec)
 - 作用域：GLOBAL
 - 默认值：`ON`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
 
@@ -1363,7 +1370,7 @@ SET tidb_query_log_max_len = 20;
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值：`0`
+- 默认值：`""`
 - 这个变量用于设置当前会话允许读取的历史数据范围。设置后，TiDB 会从参数允许的范围内选出一个尽可能新的时间戳，并影响后继的所有读操作。比如，如果该变量的值设置为 `-5`，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
 ### `tidb_record_plan_in_slow_log`
@@ -1491,7 +1498,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION | GLOBAL
 - 默认值：`0`
 - 单位：毫秒
-- 范围：`[0, 4294967295]`
+- 范围：`[0, 2147483647]`
 - 这个变量用于控制是否开启统计信息的同步加载模式（默认为 `0` 代表不开启，即为异步加载模式），以及开启的情况下，SQL 执行同步加载完整统计信息等待多久后会超时。更多信息，请参考[统计信息的加载](/statistics.md#统计信息的加载)。
 
 ### `tidb_stats_load_pseudo_timeout` <span class="version-mark">从 v5.4.0 版本开始引入</span>
@@ -1538,12 +1545,6 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[1, 2147483647]`
 - 单位：秒
 - 这个变量设置了 [statement summary tables](/statement-summary-tables.md) 的刷新时间。
-
-### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 默认值：`OFF`
-- 这个变量用于控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
 ### `tidb_top_sql_max_meta_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
