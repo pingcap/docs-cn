@@ -43,6 +43,16 @@ Assume that the topology has three layers: zone > rack > host, and you can use t
 
 According to the description above, the label can be any key-value pair used to describe TiKV attributes. But PD cannot identify the location-related labels and the layer relationship of these labels. Therefore, you need to make the following configuration for PD to understand the TiKV node topology.
 
+Defined as an array of strings, `location-labels` is the configuration for PD. Each item of this configuration corresponds to the key of TiKV `labels`. Besides, the sequence of each key represents the layer relationship of different labels (the isolation levels decrease from left to right).
+
+You can customize the value of `location-labels`, such as `zone`, `rack`, or `host`, because the configuration does not have default values. Also, this configuration has **no** restriction in the number of label levels (not mandatory for 3 levels) as long as they match with TiKV server labels.
+
+> **Note:**
+>
+> To make configurations take effect, you must configure `location-labels` for PD and `labels` for TiKV at the same time. Otherwise, PD does not perform scheduling according to the topology.
+
+To configure `location-labels`, choose one of the following methods according to your cluster situation:
+
 + If the PD cluster is not initialized, configure `location-labels` in the PD configuration file:
 
     {{< copyable "" >}}
@@ -59,12 +69,6 @@ According to the description above, the label can be any key-value pair used to 
     ```bash
     pd-ctl config set location-labels zone,rack,host
     ```
-
-The `location-labels` configuration is an array of strings, and each item corresponds to the key of TiKV `labels`. The sequence of each key represents the layer relationship of different labels.
-
-> **Note:**
->
-> You must configure `location-labels` for PD and `labels` for TiKV at the same time for the configurations to take effect. Otherwise, PD does not perform scheduling according to the topology.
 
 ### Configure `isolation-level` for PD
 
