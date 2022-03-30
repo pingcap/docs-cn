@@ -158,7 +158,6 @@ TiDB 版本：6.0.0-DMR
     该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启。
     
     [用户文档](/dashboard/continuous-profiling.md)
-        ```
 
 ### 性能
 
