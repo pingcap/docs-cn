@@ -147,9 +147,18 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/dashboard/top-sql.md)
 
-* Continuous Profiling 成为正式功能 (GA)
+* 持续性能分析成为正式功能 (GA)
     
-    该功能默认不开启，可在 TiDB Dashboard 界面一键启用。
+    TiDB Dashboard 引入持续性能分析功能，提供在集群运行状态时自动保存实例性能分析结果的能力，通过火焰图的形式提高了 TiDB 集群性能的可观测性，有助于缩短故障诊断时间。
+    
+    该功能支持 TiDB、PD、TiKV 实例的分析，支持以火焰图形式查看 Profiling 结果。
+    
+    持续性能分析适用于使用 v1.9.0 及以上版本 TiUP 或 v1.3.0 及以上版本 TiDB Operator 部署和升级的集群。
+    
+    该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启。
+    
+    [用户文档](/dashboard/continuous-profiling.md)
+        ```
 
 ### 性能
 
@@ -252,7 +261,7 @@ TiDB 版本：6.0.0-DMR
     * 同步状态查询
     * Master/Worker 管理
 
-    此特性为实验性，尚存在不完善之处。建议仅用于体验，且已知与 dmctl 操作同一任务可能存在问题，此现象将于下个版本改进。
+    此特性为实验性，尚存在不完善之处。建议仅用于体验，且已知与 dmctl 操作同一任务可能存在问题，此现象将于后续版本改进。
 
     [用户文档](/dm/dm-webui-guide.md)
 
@@ -343,7 +352,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 支持通过用户名过滤自动捕获的黑名单[#32558](https://github.com/pingcap/tidb/issues/32558)
     * 优化 `ADMIN SHOW DDL JOBS` 和 `SHOW TABLE STATUS` 语句的执行结果，支持根据当前的 `time_zone` 显示结果中的时间[#26642](​​https://github.com/pingcap/tidb/issues/26642)
     * 支持下推 `DAYNAME()`和 `MONTHNAME()` 函数到 TiFlash [#32594](https://github.com/pingcap/tidb/issues/32594)
-    * 支持下推 `REGEXP` 函数到 TiFlash (#32637)[https://github.com/pingcap/tidb/issues/32637]
+    * 支持下推 `REGEXP` 函数到 TiFlash [#32637](https://github.com/pingcap/tidb/issues/32637)
     * 支持追踪 `UnionScan` 算子的执行情况 [#32631](https://github.com/pingcap/tidb/issues/32631)
     * 执行 SHOW TABLE STATUS 根据当前的 time_zone 对结果进行调节 [#32449](https://github.com/pingcap/tidb/pull/32449)
     * 支持下推 `GREATEST` 和 `LEAST` 函数到 TiFlash [#32787](https://github.com/pingcap/tidb/issues/32787)
