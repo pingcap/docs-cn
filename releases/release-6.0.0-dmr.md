@@ -80,7 +80,6 @@ TiDB 版本：6.0.0-DMR
 | TiKV | `rocksdb.enable-pipelined-write` | 修改 | 修改默认值为 `false`，表示不开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
 | TiKV | `rocksdb.max-background-flushes` | 修改 | 在 CPU 核数为 10 时修改默认值为 `3`，在 CPU 核数量为 8 时默认为 `2`。 |
 | TiKV | `rocksdb.max-background-jobs` | 修改 | 在 CPU 核数为 10 时修改默认值为 `9`，在 CPU 核数量为 8 时默认为 `7`。 |
-| TiKV | `enable-io-snoop` | 删除 | 删除 `enable-io-snoop` 配置项。 |
 | TiKV | [`raft-engine.enable`](/tikv-configuration-file.md#raft-engine) | 修改 | 修改默认值改为 `true`，使 Raft Engine 默认存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。。 |
 | TiKV | `raftstore.apply-max-batch-size` | 修改 | 修改最大值为 `10240`。 |
 | TiKV | `backup.num-threads` | 修改 | 修改可调整范围为 `[1, CPU]`。 |
