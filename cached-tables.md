@@ -165,7 +165,7 @@ SELECT * FROM users;
 1 row in set (0.00 sec)
 ```
 
-> **注意：** 
+> **注意：**
 >
 > 往缓存表写入数据时，有可能出现秒级别的写入延迟。延迟的时长由全局环境变量 [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) 控制。你可根据实际业务能否承受此限制带来的延迟，决定是否适合使用缓存表功能。例如，对于完全只读的场景，可以将 `tidb_table_cache_lease` 调大：
 >
@@ -238,9 +238,9 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## TiDB 生态工具兼容性
 
-缓存表并不是标准的 MySQL 功能，而是 TiDB 扩展。只有 TiDB 能识别 `ALTER TABLE CACHE` 语句。所有的 TiDB 生态工具均不支持缓存表功能，包括 Backup & Restore (BR)、TiCDC、Dumpling 等组件，它们会将缓存表当作普通表处理。
+缓存表并不是标准的 MySQL 功能，而是 TiDB 扩展。只有 TiDB 能识别 `ALTER TABLE ... CACHE` 语句。所有的 TiDB 生态工具均不支持缓存表功能，包括 Backup & Restore (BR)、TiCDC、Dumpling 等组件，它们会将缓存表当作普通表处理。
 
-这意味着，备份恢复一张缓存表时，它会变成一张普通表。如果下游集群是另一套 TiDB 集群并且你希望继续使用缓存表功能，可以对下游集群中的表执行 `ALTER TABLE CACHE` 手动开启缓存表功能。
+这意味着，备份恢复一张缓存表时，它会变成一张普通表。如果下游集群是另一套 TiDB 集群并且你希望继续使用缓存表功能，可以对下游集群中的表执行 `ALTER TABLE ... CACHE` 手动开启缓存表功能。
 
 ## 另请参阅
 
