@@ -92,10 +92,14 @@ relay log  的清理 DM 提供了两种方式，手动清理和自动清理，�
 
     当该数据源被添加到 DM 集群中时并手动开启 relay log 时 DM-Worker 会每隔 `interval`即 10s 对所有的 relay log  文件进行过期检查。当发现文件过期或者磁盘空间小于`remain-space`即 15G 时，会删除该 relay log。
 
-## DM 从什么位置开始拉取 binlog 呢？
+## DM 从什么位置开始拉取 binlog ？
 
 开始拉取 relay log 的位点有以下三种情况，优先级从高到低：
 
 1. 当前 worker 上已经有同步任务时，会从所有同步任务中找到当前需要的最小的同步位点开始拉取 binlog；
 2. 当 Source/Worker 的配置文件中配置了 relay log  的位点时，会从该位点开始拉取；
 3. 当不满足上述条件时，从当前上游的最新位点（show master status）开始拉取。
+
+## 更多
+
+- [DM 源码阅读系列文章（六）relay log 的实现丨TiDB 工具](https://pingcap.com/zh/blog/dm-source-code-reading-6)
