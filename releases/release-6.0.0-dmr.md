@@ -76,7 +76,7 @@ TiDB 版本：6.0.0-DMR
 | TiDB | `new_collations_enabled_on_first_bootstrap` | 修改 | 用于开启新的 collation 支持。自 v6.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
 | TiDB | `stmt-summary.enable` <br/> `stmt-summary.enable-internal-query` <br/> `stmt-summary.history-size` <br/> `stmt-summary.max-sql-length` <br/> `stmt-summary.max-stmt-count` <br/> `stmt-summary.refresh-interval` | 删除 | 系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置，所有配置项现已移除，统一改成用 SQL variable 控制。 |
 | TiKV | `pessimistic-txn.in-memory` | 新增 | 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。该参数默认值为 `true`。 |
-| TiKV | `quota` | 新增 | 用于前台限流相关的配置项，可以限制前台各类请求所占用的资源。该功能为实验特性，默认关闭。新增的相关配置项为 `foreground-cpu-time`、`foreground-write-bandwidth`、`foreground-read-bandwidth`、`max-delay-duration`。 |
+| TiKV | `quota` | 新增 | 新增前台限流相关的配置项，可以限制前台各类请求所占用的资源。前台限流功能为实验特性，默认关闭。新增的相关配置项为 `foreground-cpu-time`、`foreground-write-bandwidth`、`foreground-read-bandwidth`、`max-delay-duration`。 |
 | TiKV | `rocksdb.enable-pipelined-write` | 修改 | 修改默认值为 `false`，表示不开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
 | TiKV | `rocksdb.max-background-flushes` | 修改 | 在 CPU 核数为 10 时修改默认值为 `3`，在 CPU 核数量为 8 时默认为 `2`。 |
 | TiKV | `rocksdb.max-background-jobs` | 修改 | 在 CPU 核数为 10 时修改默认值为 `9`，在 CPU 核数量为 8 时默认为 `7`。 |
@@ -86,6 +86,7 @@ TiDB 版本：6.0.0-DMR
 | TiKV | `readpool.unified.max-thread-count` | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
 | TiKV | `raft-max-size-per-msg` | 修改 | 修改最小值（由 `0` 修改为大于 `0`）<br/>添加最大值为 `3 GB`<br/>添加单位（由 `MB` 增加为 `KB\|MB\|GB`） |
 | TiKV | `raftstore.store-max-batch-size` | 修改 | 添加最大值为 `10240`。 |
+| TiKV | `enable-io-snoop` | 删除 | 删除 `enable-io-snoop` 配置项。 |
 | TiFlash | `profiles.default.dt_compression_method` | 新增 | TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。 |
 | TiFlash | `profiles.default.dt_compression_level` | 新增 | TiFlash 存储引擎的压缩级别，默认为 1。 |
 | TiFlash | `profiles.default.dt_enable_logical_split` | 修改 | 存储引擎的 segment 分裂是否使用逻辑分裂。自 v6.0 起默认值从 `true` 改为 `false。` |
@@ -123,9 +124,11 @@ TiDB 版本：6.0.0-DMR
 
 * 基于 SQL 的数据放置规则
 
-    TiDB 是具有优秀扩展能力的分布式数据库，通常数据横跨多个服务器甚至多数据中心部署，数据调度管理是 TiDB 最重要的基础能力之一。大多数情况下客户无需关心数据如何调度管理，但是随着业务复杂度的提升，因隔离性和访问延迟导致的数据部署变更是 TiDB 面对的新的挑战。TiDB 从 6.0 版本开始正式提供基于 SQL 接口的数据调度管理能力，支持针对任意数据提供副本数、角色类型、放置位置等维度的灵活调度管理能力，在多业务共享集群，跨 AZ 部署下提供更灵活的数据放置管理能力，详细请参考[用户文档](/placement-rules-in-sql.md)。
+    TiDB 是具有优秀扩展能力的分布式数据库，通常数据横跨多个服务器甚至多数据中心部署，数据调度管理是 TiDB 最重要的基础能力之一。大多数情况下客户无需关心数据如何调度管理，但是随着业务复杂度的提升，因隔离性和访问延迟导致的数据部署变更是 TiDB 面对的新的挑战。TiDB 从 6.0 版本开始正式提供基于 SQL 接口的数据调度管理能力，支持针对任意数据提供副本数、角色类型、放置位置等维度的灵活调度管理能力，在多业务共享集群、跨 AZ 部署下提供更灵活的数据放置管理能力，详细请参考[用户文档](/placement-rules-in-sql.md)。
 
-* 新增按库构建 TiFlash 副本功能。用户仅需使用一条 SQL 即可对某一个数据库中所有的表添加 TiFlash 副本，极大地节约了运维成本，关于该功能的使用方式、效果以及限制请参考 [用户文档](https://docs.pingcap.com/zh/tidb/dev/use-tiflash#按库构建-tiflash-副本)。
+* 新增按库构建 TiFlash 副本功能。用户仅需使用一条 SQL 即可对某一个数据库中所有的表添加 TiFlash 副本，极大地节约了运维成本。
+
+    [用户文档](/tiflash/use-tiflash.md#按库构建-tiflash-副本)。
 
 ### 事务
 
@@ -179,7 +182,7 @@ TiDB 版本：6.0.0-DMR
 
 * RC 隔离级别下优化 TSO 获取开销
 
-    在 [RC 隔离级别](https://docs.pingcap.com/zh/tidb/stable/transaction-isolation-levels)下，增加 `tidb_rc_read_check_ts` 变量，用于在读写冲突较少情况下，减少不必要 TSO 获取，从而降低查询延迟。该参数默认关闭，开启后，在没有读写冲突的场景下，该优化几乎可以避免重复 TSO 获取，降低延迟。但是在高读写冲突场景下，开启该参数有可能造成性能回退，请验证后使用。
+    在 [RC 隔离级别](/transaction-isolation-levels.md#read-committed-isolation-level)下，增加 `tidb_rc_read_check_ts` 变量，用于在读写冲突较少情况下，减少不必要 TSO 获取，从而降低查询延迟。该参数默认关闭，开启后，在没有读写冲突的场景下，该优化几乎可以避免重复 TSO 获取，降低延迟。但是在高读写冲突场景下，开启该参数有可能造成性能回退，请验证后使用。
 
     [用户文档]()，[issue 号]()
 
