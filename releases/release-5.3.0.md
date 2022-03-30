@@ -64,7 +64,7 @@ TiDB 版本：5.3.0
     - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
     - 关于临时表的更多兼容性信息，请参考[与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
 
-- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 "|Warning | 1292 | Truncated incorrect xxx: 'xx'" 的警告。
+- 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 `|Warning | 1292 | Truncated incorrect xxx: 'xx'` 的警告。
 - 修复 `SHOW CREATE VIEW` 不需要 `SHOW VIEW` 权限的问题，现在用户必须具有 `SHOW VIEW` 权限才允许执行 `SHOW CREATE VIEW` 语句。
 - 系统变量 `sql_auto_is_null` 被加入 Noop Function 中，当 `tidb_enable_noop_functions = 0/OFF` 时，修改该变量会报错。
 - 不再允许执行 `GRANT ALL ON performance_schema.*` 语法，在 TiDB 上执行该语句会报错。
@@ -298,7 +298,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
 
     - 提供了 512 位 SIMD 支持
     - 增强了对过期的数据版本的清理算法，减少磁盘使用量及提高读文件性能
-    - 解决了用户在某些非 Linux 平台系统上查看 dashboard 时，无法获取内存或 CPU 等相关信息
+    - 解决了用户在某些非 Linux 平台系统上查看 dashboard 时，无法获取内存或 CPU 等相关信息的问题
     - 统一 TiFlash 日志文件的命名风格（与 TiKV 保持一致），并支持动态修改 logger.count、logger.size
     - 完善了列存文件的数据校验能力（checksums，实验功能）
 
