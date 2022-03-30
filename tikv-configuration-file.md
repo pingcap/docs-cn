@@ -755,13 +755,13 @@ raftstore 相关的配置项。
 
 ### `apply-pool-size`
 
-+ 处理数据落盘的线程池中线程的数量，即 Apply 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
++ Apply 线程池负责把数据落盘至磁盘。该配置项为 Apply 线程池中线程的数量，即 Apply 线程池的大小。调整 Apply 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
 + 可调整范围：[1, CPU * 10]
 
 ### `store-max-batch-size`
 
-+ Raft 状态机由 BatchSystem 批量执行日志落盘请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
++ Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
 + 如果开启 `hibernate-regions`，默认值为 256；如果关闭 `hibernate-regions`，默认值为 1024
 + 最小值：大于 0
 + 最大值: 10240
