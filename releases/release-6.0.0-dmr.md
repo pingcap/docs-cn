@@ -366,7 +366,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 支持 read-consistency 读取可在 `READ-COMMITTED` 隔离级别下打开优化事务内读语句延迟 [#33159](https://github.com/pingcap/tidb/issues/33159)
     * 支持对公共表表达式 (CTE) 进行谓词下推 [#28163](https://github.com/pingcap/tidb/issues/28163)
     * 简化 `Statement Summary` 和 `Capture Plan Baselines` 的配置为只在全局基础上可用 [#30557](https://github.com/pingcap/tidb/issues/30557)
-    * 在 v5.4（仅 v5.4）中，一些 noop 系统变量可能允许设置不正确的值。此修改后，不会允许设置不正确的值  [#31538]([https://github.com/pingcap/tidb/issues/31538](https://github.com/pingcap/tidb/issues/31538))
+    * 在 v5.4（仅 v5.4）中，一些 noop 系统变量可能允许设置不正确的值。此修改后，不会允许设置不正确的值  [#31538](https://github.com/pingcap/tidb/issues/31538)
     * 通过更新 gopsutil 版本到 v3.21.12，从而避免修复在 macOS 12 上构建二进制时出现的警告 [#31607](https://github.com/pingcap/tidb/issues/31607)
 
 * TiKV
@@ -432,7 +432,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
 
 * TiDB
     * 修复了当 `SCHEDULE = majority_in_primary`，且 `PrimaryRegion` 和 `Regions` 的值相同时 placement rule 会报错的问题 [#31271](https://github.com/pingcap/tidb/issues/31271)
-    * (dup: release-5.3.1.md > Bug fixes> TiDB)- Fix the `invalid transaction` error when executing a query using index lookup join [#30468]([https://github.com/pingcap/tidb/issues/30468](https://github.com/pingcap/tidb/issues/30468))
+    * (dup: release-5.3.1.md > Bug fixes> TiDB)- Fix the `invalid transaction` error when executing a query using index lookup join [#30468](https://github.com/pingcap/tidb/issues/30468)
     * 修复了当授予大于等于 2 个权限时 `show grants` 返回不正确的结果的问题 [#30855](https://github.com/pingcap/tidb/issues/30855)
     * 修复了在默认值为 `CURRENT_TIMESTAMP` 的字段执行 `INSERT INTO t SET tsCol = DEFAULT` 语句时插入零值的问题 [#29926](https://github.com/pingcap/tidb/issues/29926)
     * 通过避免编码字符串类型的最大值和最小非空值，修复读取结果时的报错问题 [#31721](https://github.com/pingcap/tidb/issues/31721)
@@ -461,12 +461,12 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 修复在事务中使用动态模式读取分区表时结果不正确的问题 [#29851](https://github.com/pingcap/tidb/issues/29851)
     * 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
     * 修复 `timdiff` 函数在输入包含毫秒时可能出现结果错误的问题 [#31680](https://github.com/pingcap/tidb/issues/31680)
-    * 修复显式读取分区并使用 IndexJoin 计划时可能出现结果错误的问题 [#32007]([https://github.com/pingcap/tidb/issues/32007](https://github.com/pingcap/tidb/issues/32007))
+    * 修复显式读取分区并使用 IndexJoin 计划时可能出现结果错误的问题 [#32007](https://github.com/pingcap/tidb/issues/32007)
     * 修复重命名列时并发修改列类型会导致重命名错误的问题 [#31075](https://github.com/pingcap/tidb/issues/31075)
     * 修复 TiFlash 执行计划网络成本计算公式未与 TiKV 对齐的问题 [#30103](https://github.com/pingcap/tidb/issues/30103)
     * 修复 `KILL TIDB` 在空闲链接上无法立即生效的问题 [#24031](https://github.com/pingcap/tidb/issues/24031)
     * 修复读取生成列时可能出现结果错误的问题 [#33038](https://github.com/pingcap/tidb/issues/33038)
-    * 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321]([https://github.com/pingcap/tidb/issues/31321](https://github.com/pingcap/tidb/issues/31321))
+    * 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321](https://github.com/pingcap/tidb/issues/31321)
     * 修复 `subtime` 函数在出现 Overflow 时可能返回错误结果的问题 [#31868](https://github.com/pingcap/tidb/issues/31868)
     * 修复当聚合查询包含 having 条件时 selection 算子不能被下推的问题 [#33166](https://github.com/pingcap/tidb/issues/33166)
     * 修复查询报错时可能阻塞 CTE 的问题 [#31302](https://github.com/pingcap/tidb/issues/31302)
@@ -500,21 +500,21 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     * 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4570](https://github.com/tikv/pd/pull/4570)
     * 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4653](https://github.com/tikv/pd/pull/4653)
 * TiFlash
-    * 修复启用内存限制时 TiFlash 崩溃的问题 [#3902]([https://github.com/pingcap/tiflash/issues/3902](https://github.com/pingcap/tiflash/issues/3902))
+    * 修复启用内存限制时 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     * 修复过期数据回收缓慢的问题 [#4146]([https://github.com/pingcap/tiflash/issues/](https://github.com/pingcap/tiflash/issues/3902)4146)
     * 修复并发执行多个 DDL 操作和 Apply Snapshot 操作时 TiFlash 可能会崩溃问题 [#4072]([https://github.com/pingcap/tiflash/issues/](https://github.com/pingcap/tiflash/issues/3902)4072)
-    * 修复在读取工作量大时添加列后可能出现的查询错误 [#3967]([https://github.com/pingcap/tiflash/issues/3967](https://github.com/pingcap/tiflash/issues/3967))
-    * 修复 `SQRT` 函数中传入负值后返回 `NaN` 而不是 `Null` 的问题 [#3598]([https://github.com/pingcap/tiflash/issues/3598](https://github.com/pingcap/tiflash/issues/3598))
-    * 修复将 `INT` 类型转换为 `DECIMAL` 类型可能造成溢出的问题 [#3920]([https://github.com/pingcap/tiflash/issues/3920](https://github.com/pingcap/tiflash/issues/3920))
-    * 修复 `IN` 函数的结果在多值表达式中不正确的问题 [#4016]([https://github.com/pingcap/tiflash/issues/4016](https://github.com/pingcap/tiflash/issues/4016))
-    * 修复日期格式将 `'\n'` 处理为非法分隔符的问题 [#4036]([https://github.com/pingcap/tiflash/issues/4036](https://github.com/pingcap/tiflash/issues/4036))
-    * 修复在高并发场景下 Learner 读过程时间过长的问题 [#3555]([https://github.com/pingcap/tiflash/issues/3555](https://github.com/pingcap/tiflash/issues/3555))
-    * 修复将 `DATETIME` 转换为 `DECIMAL` 时结果错误的问题 [#4151]([https://github.com/pingcap/tiflash/issues/4151](https://github.com/pingcap/tiflash/issues/4151))
-    * 修复查询被取消时出现的内存泄露问题 [#4098]([https://github.com/pingcap/tiflash/issues/4098](https://github.com/pingcap/tiflash/issues/4098))
-    * 修复启用 Elastic 线程池可能导致内存泄漏的问题 [#4098]([https://github.com/pingcap/tiflash/issues/4098](https://github.com/pingcap/tiflash/issues/4098))
-    * 修复启用本地隧道时取消 MPP 查询可能导致任务永远挂起的问题 [#4229]([https://github.com/pingcap/tiflash/issues/4229](https://github.com/pingcap/tiflash/issues/4229))
-    * 修复 HashJoin 构建端失败可能导致 MPP 查询永远挂起的问题 [#4195]([https://github.com/pingcap/tiflash/issues/4195](https://github.com/pingcap/tiflash/issues/4195))
-    * 修复 MPP 任务可能永远泄漏线程的问题 [#4238]([https://github.com/pingcap/tiflash/issues/4238](https://github.com/pingcap/tiflash/issues/4238))
+    * 修复在读取工作量大时添加列后可能出现的查询错误 [#3967](https://github.com/pingcap/tiflash/issues/3967)
+    * 修复 `SQRT` 函数中传入负值后返回 `NaN` 而不是 `Null` 的问题 [#3598](https://github.com/pingcap/tiflash/issues/3598)
+    * 修复将 `INT` 类型转换为 `DECIMAL` 类型可能造成溢出的问题 [#3920](https://github.com/pingcap/tiflash/issues/3920)
+    * 修复 `IN` 函数的结果在多值表达式中不正确的问题 [#4016](https://github.com/pingcap/tiflash/issues/4016)
+    * 修复日期格式将 `'\n'` 处理为非法分隔符的问题 [#4036](https://github.com/pingcap/tiflash/issues/4036)
+    * 修复在高并发场景下 Learner 读过程时间过长的问题 [#3555](https://github.com/pingcap/tiflash/issues/3555)
+    * 修复将 `DATETIME` 转换为 `DECIMAL` 时结果错误的问题 [#4151](https://github.com/pingcap/tiflash/issues/4151)
+    * 修复查询被取消时出现的内存泄露问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
+    * 修复启用 Elastic 线程池可能导致内存泄漏的问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
+    * 修复启用本地隧道时取消 MPP 查询可能导致任务永远挂起的问题 [#4229](https://github.com/pingcap/tiflash/issues/4229)
+    * 修复 HashJoin 构建端失败可能导致 MPP 查询永远挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
+    * 修复 MPP 任务可能永远泄漏线程的问题 [#4238](https://github.com/pingcap/tiflash/issues/4238)
 
 * Tools
     * Backup & Restore (BR)
@@ -536,8 +536,8 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
         * (dup: release-5.4.0.md > Bug fixes> Tools> TiDB Data Migration (DM))- Fix the issue that syncer metrics are updated only when querying the status [#4281](https://github.com/pingcap/tiflow/issues/4281)
         * (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC)- Fix the issue that execution errors of the update statement in safemode may cause the DM-worker panic [#4317](https://github.com/pingcap/tiflow/issues/4317)
         * (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC)- Fix a bug that long varchars report an error `Column length too big` [#4637](https://github.com/pingcap/tiflow/issues/4637)
-        * 修复了多个 DM-worker 写入来自同一上游的数据导致的冲突问题。[#3737]([https://github.com/pingcap/tiflow/issues/3737](https://github.com/pingcap/tiflow/issues/3737))
-        * 修复了日志中出现数百条 "checkpoint has no change, skip sync flush checkpoint" 以及迁移性能下降的问题。[#4619]([https://github.com/pingcap/tiflow/issues/4619](https://github.com/pingcap/tiflow/issues/4619))
+        * 修复了多个 DM-worker 写入来自同一上游的数据导致的冲突问题。[#3737](https://github.com/pingcap/tiflow/issues/3737)
+        * 修复了日志中出现数百条 "checkpoint has no change, skip sync flush checkpoint" 以及迁移性能下降的问题。[#4619](https://github.com/pingcap/tiflow/issues/4619)
         * 修复了悲观模式下对上游增量数据进行分库分表合并迁移时有可能会丢 DML 的问题。[#5002](https://github.com/pingcap/tiflow/issues/5002)
 
     * TiDB Lightning
@@ -547,8 +547,8 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
         * 修复了检查空表失败导致 TiDB Lightning 卡住的问题[#31797](https://github.com/pingcap/tidb/issues/31797)
 
     * Dumpling
-        * 修复了执行 `dumpling --sql $query` 进度显示不准确的问题 [#30532]([https://github.com/pingcap/tidb/issues/30532](https://github.com/pingcap/tidb/issues/30532))
-        * 修复了 Amazon S3 无法正确计算压缩数据大小的问题 [#30534]([https://github.com/pingcap/tidb/issues/30534](https://github.com/pingcap/tidb/issues/30534))
+        * 修复了执行 `dumpling --sql $query` 进度显示不准确的问题 [#30532](https://github.com/pingcap/tidb/issues/30532)
+        * 修复了 Amazon S3 无法正确计算压缩数据大小的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
 
     * TiDB Binlog
-        * 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题。 [#1136]([https://github.com/pingcap/tidb-binlog/issues/1136](https://github.com/pingcap/tidb-binlog/issues/1136))
+        * 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题。 [#1136](https://github.com/pingcap/tidb-binlog/issues/1136)
