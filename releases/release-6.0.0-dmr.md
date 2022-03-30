@@ -75,12 +75,7 @@ TiDB 版本：6.0.0-DMR
 |:---:|:---:|:---:|:---:|
 | TiDB | `pessimistic-txn.pessimistic-auto-commit` | 新增 | 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。 |
 | TiDB | `new_collations_enabled_on_first_bootstrap` | 修改 | 用于开启新的 collation 支持。自 v6.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
-| TiDB | `stmt-summary.enable` | 删除 | 系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置，所有配置项现已移除，统一改成用 SQL variable 控制。 |
-| TiDB | `stmt-summary.enable-internal-query` | 删除 |  |
-| TiDB | `stmt-summary.history-size` | 删除 |  |
-| TiDB | `stmt-summary.max-sql-length` | 删除 |  |
-| TiDB | `stmt-summary.max-stmt-count` | 删除 |  |
-| TiDB | `stmt-summary.refresh-interval` | 删除 |  |
+| TiDB | `stmt-summary.enable` <br/> `stmt-summary.enable-internal-query` <br/> `stmt-summary.history-size` <br/> `stmt-summary.max-sql-length` <br/> `stmt-summary.max-stmt-count` <br/> `stmt-summary.refresh-interval` | 删除 | 系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置，所有配置项现已移除，统一改成用 SQL variable 控制。 |
 | TiKV | `pessimistic-txn.in-memory` | 新增 | 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。该参数默认值为 `true`。 |
 | TiKV | `quota` | 新增 | 用于前台限流相关的配置项，可以限制前台各类请求所占用的资源。该功能为实验特性，默认关闭。新增的相关配置项为 `foreground-cpu-time`、`foreground-write-bandwidth`、`foreground-read-bandwidth`、`max-delay-duration`。 |
 | TiKV | `rocksdb.enable-pipelined-write` | 修改 | 修改默认值为 `false`，表示不开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
