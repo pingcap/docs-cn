@@ -54,10 +54,10 @@ TiDB 版本：6.0.0-DMR
 
 | 变量名 | 修改类型 | 描述 |
 |:---:|:---:|:---:|
-| `tidb_enable_mutation_checker` | 新增 | 设置是否开启 mutation checker，默认开启。 |
-| `tidb_ignore_prepared_cache_close_stmt` | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
-| `tidb_mem_quota_binding_cache` | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
-| `tidb_placement_mode` | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
+| [`tidb_enable_mutation_checker`](/system-variables.md#tidb_enable_mutation_checker) | 新增 | 设置是否开启 mutation checker，默认开启。 |
+| [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidbignorepreparedcacheclosestmt从-v60-版本开始引入) | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
+| [`tidb_mem_quota_binding_cache`](/system-variables.md#tidbmemquotabindingcache从-v60-版本开始引入) | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
+| [`tidb_placement_mode`](/system-variables.md#tidbplacementmode从-v600-版本开始引入) | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
 | `tidb_rc_read_check_ts` | 新增 | - 优化事务内读语句延迟。如果读写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。默认关闭。- 该变量与 [replica-read](#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [replica-read](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两个变量。 |
 | `tidb_sysdate_is_now` | 新增 | 控制 `sydate` 函数是否替换为 `NOW` 函数，效果与 MySQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。默认值为 `OFF`。 |
 | `tidb_table_cache_lease` | 新增 | 用来控制缓存表 (新增 feature) 的 lease 时间，默认值是 3 秒。 |
