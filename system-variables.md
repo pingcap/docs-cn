@@ -676,7 +676,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
-### `tidb_enable_mutation_checker`（从 v6.0 版本开始引入）
+### `tidb_enable_mutation_checker`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`ON`
@@ -1611,7 +1611,7 @@ set tidb_slow_log_threshold = 200;
 >
 > 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
 
-### `tidb_txn_assertion_level`（从 v6.0 版本开始引入）
+### `tidb_txn_assertion_level`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
 - 默认值：`FAST`
