@@ -671,20 +671,6 @@ TiDB 服务状态相关配置。
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
-## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
-
-系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
-
-### max-stmt-count
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
-+ 默认值：3000
-
-### max-sql-length
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
-+ 默认值：4096
-
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
