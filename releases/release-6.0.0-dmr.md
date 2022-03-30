@@ -152,7 +152,9 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/dashboard/top-sql.md)
 
-* Continuous Profiling 成为正式功能 (GA)。该功能默认不开启禁用，可在 TiDB Dashboard 界面一键启用其用。
+* Continuous Profiling 成为正式功能 (GA)
+    
+    该功能默认不开启，可在 TiDB Dashboard 界面一键启用。
 
 ### 性能
 
