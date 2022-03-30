@@ -13,7 +13,7 @@ PingCAP Clinic 目前处于 Technical Preview 受邀测试使用阶段。该服�
 
     > **注意：**
     >
-    > - Diag 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
+    > - Diag 诊断客户端暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
 
 - Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。
 
@@ -21,7 +21,7 @@ PingCAP Clinic 目前处于 Technical Preview 受邀测试使用阶段。该服�
 
 - 远程定位集群问题
 
-    当集群出现无法快速修复的问题时，可以求助社区论坛或者联系 PingCAP 技术支持。当申请远程协助时，你需要先保存问题现场的各种诊断数据，然后将其转发给相关技术人员。此时，你可以使用 Clinic Diag 诊断客户端，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
+    当集群出现无法快速修复的问题时，可以求助社区论坛或者联系 PingCAP 技术支持。当申请远程协助时，你需要先保存问题现场的各种诊断数据，然后将其转发给相关技术人员。此时，你可以使用 Diag 诊断客户端，对诊断数据进行一键采集，快速收集完整的诊断数据，替代复杂的手动数据采集操作。随后，你可以将其诊断数据上传到 Clinic Server，供 PingCAP 技术人员查看。Clinic Server 为诊断数据提供了安全的存储，并支持在线诊断，提升了技术人员进行问题定位的效率。
 
 - 本地快速检查集群状态
 
@@ -52,5 +52,6 @@ PingCAP Clinic 目前处于 Technical Preview 受邀测试使用阶段。该服�
 
 ## 探索更多
 
-- [使用 Clinic Diag 诊断客户端](/clinic/clinic-user-guide-for-tiup.md)
+- [快速上手 PingCAP Clinic](/clinic/quick-start-with-clinic)
+- [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
 - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)

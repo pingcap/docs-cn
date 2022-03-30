@@ -19,7 +19,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 
 ### TiDB 集群信息
 
-| 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 | 
+| 诊断数据类型 | 输出文件 | PingCAP Clinic 采集参数 |
 | :------ | :------ |:-------- |
 | 集群基础信息，包括集群 ID | `cluster.json` | 每次收集默认采集 |
 | 集群详细信息 | `meta.yaml` | 每次收集默认采集 |
@@ -33,8 +33,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 慢日志| `tidb_slow_query.log` | `--include=log` |
 | 配置文件 | `tidb.toml` | `--include=config` |
 | 实时配置| `config.json` | `--include=config` |
-| 性能数据| `cpu_profile.proto`, `mem_heap.proto`,`goroutine.txt`,`mutex.txt` | `--include=perf` |
-
+| 性能数据| `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf` |
 
 ### TiKV 诊断数据
 
@@ -56,7 +55,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 实时配置 | `config.json` | `--include=config` |
 | `tiup ctl pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
 | `tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
-| 性能数据| `cpu_profile.proto`, `mem_heap.proto`,`goroutine.txt`,`mutex.txt` | `--include=perf` |
+| 性能数据| `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf` |
 
 ### TiFlash 诊断数据
 
@@ -75,8 +74,8 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 日志 | `ticdc.log` | `--include=log`|
 | Error 日志 | `ticdc_stderr.log` | `--include=log` |
 | 配置文件 | `ticdc.toml` | `--include=config` |
-| 性能数据| `cpu_profile.proto`, `mem_heap.proto`,`goroutine.txt`,`mutex.txt` | `--include=perf` |
-| Debug数据| `info.txt`,`status.txt`,`changefeeds.txt`,`captures.txt`,`processors.txt` | `--include=debug` |
+| 性能数据| `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf` |
+| Debug 数据| `info.txt`，`status.txt`，`changefeeds.txt`，`captures.txt`，`processors.txt` | `--include=debug` |
 
 ### Prometheus 监控数据
 

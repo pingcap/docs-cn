@@ -1,11 +1,11 @@
 ---
-title: 使用 PingCAP Clinic Diag 诊断客户端
+title: 使用 PingCAP Clinic
 summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic Diag 诊断客户端采集 TiDB 集群数据和本地快速检查集群状态。
 ---
 
-# 使用 PingCAP Clinic Diag 诊断客户端
+# 使用 PingCAP Clinic
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Clinic Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com/clinic/#/login)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com/clinic/#/login)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
 目前，PingCAP Clinic 诊断服务目前处于 Technical Preview 受邀测试使用阶段。
 
@@ -26,34 +26,51 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 ## 准备工作
 
-如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
+1. 安装数据采集组件 Diag
 
-{{< copyable "shell-regular" >}}
+    为采集诊断数据，你需要安装 Diag。
 
-```bash
-tiup install diag
-```
+    - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
-若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
+        {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
+        ```bash
+        tiup install diag
+        ```
 
-```bash
-tiup update diag
-```
+    - 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
 
-登录[ PingCAP Clinic 服务](https://clinic.pingcap.com/clinic/#/login)，获取上传 Token，并在 Diag 工具中设置上传 Token
-{{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-```bash
-tiup diag config --token=${token-value}
-```
+        ```bash
+        tiup update diag
+        ```
 
-> **注意：**
->
-> - Token 用于 Diag 客户端上传数据时进行用户认证，保证数据的安全隔离。Token 获取方法可以参考[PingCAP Clinic 快速上手](/quick-start-with-clinic.md)。
-> - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
-> - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
+    > **注意：**
+    >
+    > - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
+    > - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
+
+2. 准备数据上传环境
+
+    为上传数据，你需要在 Clinic Server 获取 Token后，在 Diag 中设置 Token。Token 用于使用 Diag 客户端上传数据时进行用户认证，以保证数据上传到用户创建的组织后可以被安全隔离。
+
+    首先，进入 [Clinic Server 登录页面](https://clinic.pingcap.com/clinic/#/login)后，通过以下方式获取 Token：点击页面上的上传图标，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
+
+    【XXX 请补充截图】
+
+    > **注意：**
+    >
+    > - 登录 Clinic Server 时，你需要使用 TiDB 社区帐号（即 AskTUG 账号）
+    > - 如果你之前没有登录过 Clinic Server，请参考 [快速上手指南：准备数据上传环境](/quick-start-with-clinic.md#第-2-步-准备数据上传环境)中的相关步骤。
+
+    然后，通过以下命令在 Diag 工具中设置 Token。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag config --token=${token-value}
+    ```
 
 ## 远程定位集群问题
 
@@ -85,21 +102,21 @@ tiup diag config --token=${token-value}
 
     - `-f/--from`：指定采集时间的起始点。如果不指定该参数，默认起始点为当前时间的 2 小时前。如需修改时区，可使用 `-f="12:30 +0800"` 语法。如果没有在该参数中指定时区信息，如 `+0800`，则默认时区为 UTC。
     - `-t/--to`：指定采集时间的结束点。如果不指定该参数，默认结束点为当前时刻。如需修改时区，可使用 `-f="12:30 +0800"` 语法。如果没有在该参数中指定时区信息，如 `+0800`，则默认时区为 UTC。
-    - `-l`：传输文件时的带宽限制，单位为 Kbit/s, 默认值为 `100000`（即 scp 的 `-l` 参数）。
-    - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
-    - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`，`perf`，`debug`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
-    - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。`db_vars`，`perf`，`debug`为默认不采集的数据类型，不需要额外指定 exclude 参数。
 
     参数使用提示：
-    
+
     除了指定采集时间，你还可以使用 Diag 指定更多参数。如需查看所有参数，请使用 `tiup diag collect -h` 命令。
-    
+
     > **注意：**
-    > 
+    >
     > - Diag 默认**不收集**系统变量数据 (`db_vars`)。如需收集该数据，你需要额外提供开启了系统变量可读权限的数据库用户名和密码。
     > - Diag 默认**不收集**性能数据 (`perf`)和 debug 数据 (`debug`)。
     > - 如需收集全量诊断数据，可以使用命令 `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars,perf,debug"`。
 
+    - `-l`：传输文件时的带宽限制，单位为 Kbit/s, 默认值为 `100000`（即 scp 的 `-l` 参数）。
+    - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
+    - `--include`：只收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
+    - `--exclude`：不收集特定类型的数据，可选值为 `system`，`monitor`，`log`，`config`，`db_vars`。如需同时列出多种类型的数据，你可以使用逗号 `,` 来分割不同的数据类型。
 
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
 
@@ -143,7 +160,7 @@ tiup diag config --token=${token-value}
     ```
 
     如需了解在上述命令中使用的参数说明或需要查看使用 Diag 工具时会使用的其他参数，请参考[采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
-    
+
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。
 
 2. 如果确认要开始采集数据，请输入 `Y`。
@@ -187,12 +204,12 @@ tiup diag config --token=${token-value}
 {{< copyable "shell-regular" >}}
 
 ```bash
- tiup diag upload 
+ tiup diag upload
  ```
 
 > **注意：**
 >
-> 如果尚未配置 Token，会上传失败，并提示你设置 Token。Token 获取方法可以参考[PingCAP Clinic 快速上手](/quick-start-with-clinic.md)。
+> 如果没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备环境：准备数据上传环境（第 2 步）](/quick-start-with-clinic.md#准备环境)。
 
 输出结果示例如下：
 
@@ -239,7 +256,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
     > **注意：**
     >
-    > 如果尚未配置 Token，会上传失败，并提示你设置 Token 。Token 获取方法可以参考[PingCAP Clinic 快速上手](/quick-start-with-clinic.md)。
+    > 如果没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备环境：准备数据上传环境（第 2 步）](/quick-start-with-clinic.md#准备环境)。
 
     输出结果示例如下：
 
@@ -253,7 +270,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     ```
 
-3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接进行数据查看，也可以将`Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
 ## 本地快速检查集群状态
 
@@ -303,15 +320,19 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
     ## 3. 诊断结果信息，包括发现的可能的配置问题
     In this inspection, 22 rules were executed.
+
     The results of **1** rules were abnormal and needed to be further discussed with support team.
+
     The following is the details of the abnormalities.
 
     ### 诊断结果摘要
     The configuration rules are all derived from PingCAP’s OnCall Service.
+
     If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
+
     There were **1** abnormal results.
 
-    #### 诊断结果文档的保存路径 
+    #### 诊断结果文档的保存路径
     Rule Name: tidb-max-days
     - RuleID: 100
     - Variation: TidbConfig.log.file.max-days
@@ -334,7 +355,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    需要登录并有相应的数据访问权限，才可以打开返回的数据访问链接。请登录或请数据所有人添加权限后进行访问。
+    请先登录 Clinic Server。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，请联系数据所有人添加权限后再在登录 Clinic Server 的情况下访问链接。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 
