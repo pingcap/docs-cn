@@ -90,4 +90,4 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 ### 改写 SQL
 
-关闭上面提到的 `tidb_txn_assertion_level` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 误报，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
+关闭上面提到的 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 误报，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
