@@ -21,7 +21,7 @@ When TiDB reads data from TiKV, TiDB tries to push down some expressions (includ
 
 ## Blocklist specific expressions
 
-If unexpected behavior occurs during the calculation of a function caused by its pushdown, you can quickly restore the application by blocklisting that function. Specifically, you can prohibit an expression from being pushed down by adding the corresponding functions or operator to the blocklist `mysql.expr_pushdown_blacklist`.
+If unexpected behavior occurs in the calculation process when pushing down the [supported expressions](#supported-expressions-for-pushdown) or specific data types (**only** the [`ENUM` type](/data-type-string.md#enum-type) and the [`BIT` type](/data-type-numeric.md#bit-type)), you can restore the application quickly by prohibiting the pushdown of the corresponding functions, operators, or data types. Specifically, you can prohibit the functions, operators, or data types from being pushed down by adding them to the blocklist `mysql.expr_pushdown_blacklist`. For details, refer to [Add to the blocklist](#add-to-the-blocklist).
 
 The schema of `mysql.expr_pushdown_blacklist` is as follows:
 
@@ -39,29 +39,32 @@ tidb> desc mysql.expr_pushdown_blacklist;
 
 Field description:
 
-+ `name`: the name of the function that is prohibited from being pushed down.
-+ `store_type`: specifies to which storage engine the function is prohibited from being pushed down. Currently, TiDB supports the three storage engines: `tikv`, `tidb`, and `tiflash`. `store_type` is case-insensitive. If a function is prohibited from being pushed down to multiple storage engines, use a comma to separate each engine.
++ `name`: the name of the function, operator, or data type that is prohibited from being pushed down.
++ `store_type`: specifies to which storage engine the function, operator, or data type is prohibited from being pushed down. Currently, TiDB supports the three storage engines: `tikv`, `tidb`, and `tiflash`. `store_type` is case-insensitive. If a function is prohibited from being pushed down to multiple storage engines, use a comma to separate each engine.
 + `reason` : The reason why the function is blocklisted.
 
 ### Add to the blocklist
 
-To add one or more functions or operators to the blocklist, perform the following steps:
+To add one or more [functions, operators](#supported-expressions-for-pushdown), or data types (**only** the [`ENUM` type](/data-type-string.md#enum-type) and the [`BIT` type](/data-type-numeric.md#bit-type)) to the blocklist, perform the following steps:
 
-1. Insert the function or operator name and the collection of storage types to be prohibited from the function pushdown to `mysql.expr_pushdown_blacklist`.
+1. Insert the followings to `mysql.expr_pushdown_blacklist`:
+
+    - the name of the function, operator, or data type to be prohibited from being pushed down
+    - the storage engine to be prohibited from being pushed down
 
 2. Execute the `admin reload expr_pushdown_blacklist;` command.
 
 ### Remove from the blocklist
 
-To remove one or more functions or operators from the blocklist, perform the following steps:
+To remove one or more functions, operators, or data types from the blocklist, perform the following steps:
 
-1. Delete the function or operator name in `mysql.expr_pushdown_blacklist`.
+1. Delete the name of the function, operator, or data type in `mysql.expr_pushdown_blacklist`.
 
 2. Execute the `admin reload expr_pushdown_blacklist;` command.
 
 ### Blocklist usage examples
 
-The following example demonstrates how to add the `<` and `>` operators to the blocklist, then remove `>` from the blocklist.
+The following example demonstrates how to add the `DATE_FORMAT()` function, `>` operator, and `BIT` data type to the blocklist, then remove `>` from the blocklist.
 
 You can see whether the blocklist takes effect by checking the results returned by `EXPLAIN` statement (See [Understanding `EXPLAIN` results](/explain-overview.md)).
 
@@ -79,7 +82,7 @@ tidb> explain select * from t where a < 2 and a > 2;
 +-------------------------+----------+-----------+---------------+------------------------------------+
 3 rows in set (0.00 sec)
 
-tidb> insert into mysql.expr_pushdown_blacklist values('<', 'tikv',''), ('>','tikv','');
+tidb> insert into mysql.expr_pushdown_blacklist values('date_format()', 'tikv',''), ('>','tikv',''), ('bit','tikv','');
 Query OK, 2 rows affected (0.01 sec)
 Records: 2  Duplicates: 0  Warnings: 0
 

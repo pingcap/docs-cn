@@ -1644,6 +1644,12 @@ SET tidb_slow_log_threshold = 200;
 - Range: `[0, 9223372036854775807]`
 - This variable is used to limit the maximum number of requests TiDB can send to TiKV at the same time. 0 means no limit.
 
+### tidb_sysdate_is_now （New in v6.0.0）
+
+- Scope: SESSION | GLOBAL
+- Default value: `OFF`
+- This variable is used to control whether the `SYSDATE` function can be replaced by the `NOW` function. This configuration item has the same effect as the MySQL option [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now).
+
 ### tidb_tmp_table_max_size <span class="version-mark">New in v5.3.0</span>
 
 - Scope: SESSION | GLOBAL
