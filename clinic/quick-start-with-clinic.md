@@ -1,13 +1,13 @@
 ---
 title: PingCAP Clinic 快速上手
-summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包括如何在使用 TiUP 部署的集群中通过 PingCAP Clinic 收集数据，并将该数据上传到 Clinic Server 进行诊断。
+summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包括如何在使用 TiUP 部署的集群中通过 Diag 客户端采集数据，并将该数据上传到 Clinic Server 云服务平台。
 ---
 
 # PingCAP Clinic 快速上手指南
 
 本指南介绍如何在使用 TiUP 部署的集群中快速上手体验 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic），包括采集、上传和分析诊断数据的方法。
 
-当集群出现问题，需要远程咨询 PingCAP 技术支持时，你可以先使用 Diag 客户端采集诊断数据，然后将该数据上传到 Clinic Server 云服务，最后再把数据链接提供给技术支持人员，以协助远程定位集群问题。有关 Diag 客户端和 Clinic Server 云服务的介绍可以参考 [PingCAP Clinic 组件](/clinic-introduction.md)。
+当集群出现问题，需要远程咨询 PingCAP 技术支持时，你可以先使用 Diag 客户端采集诊断数据，然后将该数据上传到 Clinic Server 云服务平台，最后再把数据链接提供给技术支持人员，以协助远程定位集群问题。有关 Diag 客户端和 Clinic Server 云服务的介绍可以参考 [PingCAP Clinic 组件](/clinic-introduction.md)。
 
 > **注意：**
 >
@@ -45,6 +45,8 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
     ```
 
 ### 第 2 步：准备数据上传环境
+
+为上传已采集的诊断数据，你需要使用 Clinic Server。
 
 1. 注册并登录 Clinic Server
 
