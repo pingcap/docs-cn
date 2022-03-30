@@ -50,16 +50,16 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 对于 `cdc server` 命令中可用选项解释如下：
 
-- `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，和 TiCDC 同步任务所能够停滞的时长。单位为秒，默认值为 `86400`，即 24 小时。注意：TiCDC 同步任务的停滞会影响 TiCDC GC safepoint 的推进，即会影响上游 TiDB GC 的推进，详情可以参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md#ticdc-gc-safepoint-的完整行为是什么) 。
-- `pd`：PD client 的 URL。
-- `addr`：TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址。
-- `advertise-addr`：TiCDC 对外访问地址。
-- `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
-- `log-file`：TiCDC 进程运行日志的地址，默认为 `cdc.log`。
-- `log-level`：TiCDC 进程运行时默认的日志级别，默认为 `info`。
-- `ca`：TiCDC 使用的 CA 证书文件路径，PEM 格式，可选。
-- `cert`：TiCDC 使用的证书文件路径，PEM 格式，可选。
-- `key`：TiCDC 使用的证书密钥文件路径，PEM 格式，可选。
+- `addr`：TiCDC 的监听地址，提供服务的 HTTP API 查询地址和 Prometheus 查询地址，默认为 `127.0.0.1:8300`。
+- `advertise-addr`：TiCDC 对外开放地址，供客户端访问。如果未设置该参数值，地址默认与 `addr` 相同。
+- `pd`：TiCDC 监听的 PD 节点地址，用 `,` 来分隔多个 PD 节点地址。
 - `config`：可选项，表示 TiCDC 使用的配置文件地址。TiCDC 从 v5.0.0 开始支持该选项，TiUP 从 v1.4.0 开始支持在部署 TiCDC 时使用该配置。
 - `data-dir`：指定 TiCDC 需要使用磁盘储存文件时使用的目录。目前 Unified Sorter 会使用该目录储存临时文件，请确保该目录所在设备可用空间充足。对于使用 TiUP 的用户，本选项可以通过配置 `cdc_servers` 小节中的 `data_dir` 来指定或默认使用 `global` 中 `data_dir` 路径。
-- `sort-dir`：指定排序引擎使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
+- `gc-ttl`：TiCDC 在 PD 设置的服务级别 GC safepoint 的 TTL (Time To Live) 时长，和 TiCDC 同步任务所能够停滞的时长。单位为秒，默认值为 `86400`，即 24 小时。注意：TiCDC 同步任务的停滞会影响 TiCDC GC safepoint 的推进，即会影响上游 TiDB GC 的推进，详情可以参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md#ticdc-gc-safepoint-的完整行为是什么) 。
+- `log-file`：TiCDC 进程运行时日志输出地址，未设置时默认为标准输出(stdout)。
+- `log-level`：TiCDC 进程运行时默认的日志级别，默认为 `info`。
+- `ca`：TiCDC 创建 TLS 连接时使用的 CA 证书文件路径，PEM 格式，可选。
+- `cert`：TiCDC 创建 TLS 连接时使用的证书文件路径，PEM 格式，可选。
+- `cert-allowed-cn`：TiCDC 创建 TLS 连接时使用的通用名称文件路径，可选。
+- `key`：TiCDC 创建 TLS 连接时使用的证书密钥文件路径，PEM 格式，可选。
+- `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 timestamp 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）

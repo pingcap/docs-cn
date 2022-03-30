@@ -124,8 +124,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `new_collations_enabled_on_first_bootstrap`
 
 + 用于开启新的 collation 支持
-+ 默认值：false
-+ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
++ 默认值：true
++ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 或更高版本时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
 
 ### `max-server-connections`
 
@@ -670,20 +670,6 @@ TiDB 服务状态相关配置。
 
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
-
-## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
-
-系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
-
-### max-stmt-count
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
-+ 默认值：3000
-
-### max-sql-length
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
-+ 默认值：4096
 
 ## pessimistic-txn
 
