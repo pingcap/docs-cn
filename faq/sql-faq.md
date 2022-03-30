@@ -121,10 +121,6 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 
 DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作，TiDB 的 GC 机制会删除数据，但不会立即释放空间，而是等到后续进行 compaction 时释放空间。
 
-## TiDB 是否支持 `REPLACE INTO` 语法？
-
-支持，例外是当前 `LOAD DATA` 不支持 `REPLACE INTO` 语法。
-
 ## 数据删除后查询速度为何会变慢？
 
 大量删除数据后，会有很多无用的 key 存在，影响查询效率。可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
