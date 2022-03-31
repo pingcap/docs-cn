@@ -246,7 +246,7 @@ TiDB 版本：6.0.0-DMR
 
     > **警告：**
     >
-    > 新版本数据格式将不支持原地降级为早于 5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](https://docs.pingcap.com/zh/tidb/stable/tiflash-command-line-flags#dttool-migrate)。
+    > 新版本数据格式将不支持原地降级为早于 5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](/tiflash-command-line-flags.md#dttool-migrate)。
 
     [用户文档](/use-tiflash.md#使用数据校验)
 
