@@ -5,11 +5,7 @@ summary: TiDB 数据库中 ALTER PLACEMENT POLICY 的使用概况。
 
 # ALTER PLACEMENT POLICY
 
-> **警告：**
->
-> Placement Rules in SQL 是 TiDB 在 v5.3.0 中引入的实验特性，其语法在 GA 前可能会发生变化，还可能存在 bug。如果你知晓潜在的风险，可通过执行 `SET GLOBAL tidb_enable_alter_placement = 1;` 来开启该实验特性。
-
-`ALTER PLACEMENT POLICY` 用于修改已创建的放置策略。此修改会自动更新至所有绑定这些放置策略的表和分区。
+`ALTER PLACEMENT POLICY` 用于修改已创建的放置策略。此修改会自动更新至所有使用这些放置策略的表和分区。
 
 `ALTER PLACEMENT POLICY` 会完全替换之前定义的规则，而不会和之前的规则合并，比如在下面的例子中，`FOLLOWERS=4` 就被 `ALTER PLACEMENT POLICY` 语句覆盖了：
 
@@ -33,16 +29,23 @@ PlacementOptionList ::=
 |   PlacementOptionList ',' PlacementOption
 
 PlacementOption ::=
+    CommonPlacementOption
+|   SugarPlacementOption
+|   AdvancedPlacementOption
+
+CommonPlacementOption ::=
+    "FOLLOWERS" EqOpt LengthNum
+
+SugarPlacementOption ::=
     "PRIMARY_REGION" EqOpt stringLit
 |   "REGIONS" EqOpt stringLit
-|   "FOLLOWERS" EqOpt LengthNum
-|   "VOTERS" EqOpt LengthNum
-|   "LEARNERS" EqOpt LengthNum
 |   "SCHEDULE" EqOpt stringLit
+
+AdvancedPlacementOption ::=
+    "LEARNERS" EqOpt LengthNum
 |   "CONSTRAINTS" EqOpt stringLit
 |   "LEADER_CONSTRAINTS" EqOpt stringLit
 |   "FOLLOWER_CONSTRAINTS" EqOpt stringLit
-|   "VOTER_CONSTRAINTS" EqOpt stringLit
 |   "LEARNER_CONSTRAINTS" EqOpt stringLit
 ```
 
@@ -56,8 +59,9 @@ PlacementOption ::=
 
 ```sql
 CREATE PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
-ALTER PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4;
-SHOW CREATE PLACEMENT POLICY p1\G
+CREATE TABLE t1 (i INT) PLACEMENT POLICY=p1; -- 绑定放置策略 p1 到表 t1。
+ALTER PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4; -- t1 上的放置规则会自动更新。
+SHOW CREATE PLACEMENT POLICY p1\G;
 ```
 
 ```
@@ -65,9 +69,9 @@ Query OK, 0 rows affected (0.08 sec)
 
 Query OK, 0 rows affected (0.10 sec)
 
-*************************** 1. row ***************************
-       Policy: p1
-Create Policy: CREATE PLACEMENT POLICY `p1` PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4
+***************************[ 1. row ]***************************
+Policy        | p1
+Create Policy | CREATE PLACEMENT POLICY `p1` PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1,us-west-2" FOLLOWERS=4
 1 row in set (0.00 sec)
 ```
 
