@@ -16,9 +16,9 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
 ## 准备工作
 
-### 第 1 步：安装数据采集组件 Diag
+在开始体验 PingCAP Clinic 功能之前，你需要先安装数据采集组件 Diag 并准备数据上传环境。
 
-为采集诊断数据，你需要安装 Diag 客户端。
+### 第 1 步：安装数据采集组件 Diag
 
 - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
@@ -38,13 +38,8 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
 ### 第 2 步：准备数据上传环境
 
-为上传已采集的诊断数据，你需要使用 Clinic Server。
 
-1. 注册并登录 Clinic Server
-
-    你需要使用 TiDB 社区帐号（即 AskTUG 账号）登录 Clinic Server。
-
-    首先，进入 [Clinic Server 登录页面](https://clinic.pingcap.com/clinic/#/login)，其次，选择 "Sign in with AskTUG"，最后，进入社区帐号登录界面。如果你还没有 TiDB 社区帐号，可以在该界面进行注册。
+1. 访问 [Clinic Server 登录页面](https://clinic.pingcap.com/clinic/#/login)，选择 **Sign in with AskTUG** 进入社区帐号登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
 2. 创建组织并获取 Token
 
@@ -58,7 +53,7 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
         > **注意：**
         >
-        > 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+        > 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
         > 该 Token 只用于数据上传，并不用于数据的访问。
 
 3. 在 Diag 诊断客户端中设置上传 Token
@@ -71,7 +66,7 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
     ```
 ## 体验步骤
 
-1. 采集数据：运行 Diag 客服端，采集诊断数据
+1. 运行 Diag 客服端，采集诊断数据。
 
     例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
 
@@ -85,7 +80,7 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。
 
-2. 上传数据： 把诊断数据上传到 Clinic Server
+2. 上传诊断数据上传到 Clinic Server。
 
     如果你的集群所在的网络可以访问互联网，你可以直接通过以下命令上传在上一步收集的数据包文件夹：
 
@@ -114,9 +109,9 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
     > - 数据文件大小不得超过 10 GB。
     > - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体内容，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md##方式-2-打包后上传)。
 
-3. 分析数据：通过 Clinic Server 查看并分析诊断数据
+3. 查看数据：通过 Clinic Server 查看并分析诊断数据
 
-    诊断数据上传后，你可以在 Clinic Server 上直接查看到诊断数据，包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
+    上传诊断数据上传后，你可以在 Clinic Server 上直接查看到诊断数据，包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
 
 ## 探索更多
 
