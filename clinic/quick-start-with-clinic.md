@@ -20,9 +20,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 在开始体验 PingCAP Clinic 功能之前，你需要先安装 Diag 并准备数据上传环境。
 
-### 第 1 步：安装数据采集组件
-
-为采集诊断数据，你需要使用 Diag。
+### 第 1 步：安装数据采集组件 Diag
 
 - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
@@ -54,10 +52,10 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
     > **注意：**
     >
-    > - 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+    > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-4. 上传 Token。为使用已创建的 Token，你需要通过以下命令在 Diag 中设置 Token：
+4. 在 Diag 中设置 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -67,7 +65,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 ## 体验步骤
 
-1. 采集数据：运行 Diag
+1. 运行 Diag 客服端，采集诊断数据。
 
     例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
 
@@ -81,7 +79,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。
 
-2. 上传数据：将诊断数据上传到 Clinic Server
+2. 上传诊断数据上传到 Clinic Server。
 
     - 如果你的集群所在的网络可以访问互联网，你可以直接通过以下命令上传已采集的数据包文件夹：
 
@@ -107,7 +105,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
         > - 使用该方式进行上传时，你需要使用 Diag v0.7.0 及以上版本。
         > - 数据包文件夹的大小不得超过 10 GB。
 
-    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体内容，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
+    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
 3. 访问数据：打开数据链接。
 
