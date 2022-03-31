@@ -338,7 +338,7 @@ Before the node goes down, make sure that the number of remaining nodes in the T
     alter table <db-name>.<table-name> set tiflash replica 0;
     ```
 
-2. Wait for the TiFlash replicas of the related tables to be deleted. [Check the table replication progress](/tiflash/use-tiflash.md#check-the-replication-progress) and the replicas are deleted if the replication information of the related tables is not found.
+2. Wait for the TiFlash replicas of the related tables to be deleted. [Check the table replication progress](/tiflash/use-tiflash.md#check-replication-progress) and the replicas are deleted if the replication information of the related tables is not found.
 
 ### 2. Perform the scale-in operation
 

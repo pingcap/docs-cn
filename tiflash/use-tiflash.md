@@ -64,7 +64,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * In v5.1 and later versions, setting the replicas for the system tables is no longer supported. Before upgrading the cluster, you need to clear the replicas of the relevant system tables. Otherwise, you cannot modify the replica settings of the system tables after you upgrade the cluster to a later version.
 
-## Check the replication progress
+### Check replication progress
 
 You can check the status of the TiFlash replicas of a specific table using the following statement. The table is specified using the `WHERE` clause. If you remove the `WHERE` clause, you will check the replica status of all tables.
 
@@ -78,6 +78,65 @@ In the result of above statement:
 
 * `AVAILABLE` indicates whether the TiFlash replicas of this table is available or not. `1` means available and `0` means unavailable. Once the replicas become available, this status does not change. If you use DDL statements to modify the number of replicas, the replication status will be recalculated.
 * `PROGRESS` means the progress of the replication. The value is between `0.0` and `1.0`. `1` means at least one replica is replicated.
+
+## Create TiFlash replicas for databases
+
+Similar to creating TiFlash replicas for tables, you can send a DDL statement to TiDB through a MySQL client to create a TiFlash replica for all tables in a specific database:
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE db_name SET TIFLASH REPLICA count
+```
+
+In this statement, `count` indicates the number of replicas. When you set it to `0`, replicas are deleted.
+
+Examples:
+
+- Create two replicas for all tables in the database `tpch50`:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
+    ```
+
+- Delete TiFlash replicas created for the database `tpch50`:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
+    ```
+
+> **Note:**
+>
+> - This statement actually performs a series of DDL operations, which are resource-intensive. If the statement is interrupted during the execution, executed operations are not rolled back and unexecuted operations do not continue.
+>
+> - After executing the statement, do not set the number of TiFlash replicas or perform DDL operations on this database until **all tables in this database are replicated**. Otherwise, unexpected results might occur, which include:
+>     - If you set the number of TiFlash replicas to 2 and then change the number to 1 before all tables in the database are replicated, the final number of TiFlash replicas of all the tables is not necessarily 1 or 2.
+>     - After executing the statement, if you create tables in this database before the completion of the statement execution, TiFlash replicas **may or may not** be created for these new tables.
+>     - After executing the statement, if you add indexes for tables in the database before the completion of the statement execution, the statement might hang and resume only after the indexes are added.
+>
+> - This statement skips system tables, views, temporary tables, and tables with character sets not supported by TiFlash.
+
+### Check replication progress
+
+Similar to creating TiFlash replicas for tables, successful execution of the DDL statement does not mean the completion of replication. You can execute the following SQL statement to check the progress of replication on target tables:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
+```
+
+To check tables without TiFlash replicas in the database, you can execute the following SQL statement:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
+```
 
 ## Use TiDB to read TiFlash replicas
 
@@ -230,12 +289,10 @@ TiFlash supports the push-down of the following operators:
 * TopN: Performs the TopN calculation.
 * Limit: Performs the limit calculation.
 * Project: Performs the projection calculation.
-* HashJoin (Equi Join): Performs the join calculation based on the [Hash Join](/explain-joins.md#hash-join) algorithm, but with the following conditions:
+* HashJoin: Performs the join calculation using the [Hash Join](/explain-joins.md#hash-join) algorithm, but with the following conditions:
     * The operator can be pushed down only in the [MPP mode](#use-the-mpp-mode).
-    * The push-down of `Full Outer Join` is not supported.
-* HashJoin (Non-Equi Join): Performs the Cartesian Join algorithm, but with the following conditions:
-    * The operator can be pushed down only in the [MPP mode](#use-the-mpp-mode).
-    * Cartesian Join is supported only in Broadcast Join.
+    * Supported joins are Inner Join, Left Join, Semi Join, Anti Semi Join, Left Semi Join, and Anti Left Semi Join.
+    * The preceding joins support both Equi Join and Non-Equi Join (Cartesian Join). When calculating Cartesian Join, the Broadcast algorithm, instead of the Shuffle Hash Join algorithm, is used.
 
 In TiDB, operators are organized in a tree structure. For an operator to be pushed down to TiFlash, all of the following prerequisites must be met:
 
@@ -244,11 +301,11 @@ In TiDB, operators are organized in a tree structure. For an operator to be push
 
 Currently, TiFlash supports the following push-down expressions:
 
-* Mathematical functions: `+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
-* Logical functions: `and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
+* Mathematical functions: `+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32, greatest(int/real), least(int/real)`
+* Logical functions: `and, or, not, case when, if, ifnull, isnull, in, like, coalesce, is`
 * Bitwise operations: `bitand, bitor, bigneg, bitxor`
-* String functions: `substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp`
-* Date functions: `date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter`
+* String functions: `substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp, regexp`
+* Date functions: `date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname`
 * JSON function: `json_length`
 * Conversion functions: `cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
 * Aggregate functions: `min, max, sum, count, avg, approx_count_distinct, group_concat`
