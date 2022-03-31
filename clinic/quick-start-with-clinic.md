@@ -16,7 +16,7 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
 ## 准备工作
 
-### 第 1 步：安装数据采集组件
+### 第 1 步：安装数据采集组件 Diag
 
 为采集诊断数据，你需要安装 Diag 客户端。
 
@@ -36,14 +36,6 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
     tiup update diag
     ```
 
-    安装后，你需要设置 Diag 的上传 Token
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tiup diag config --token=${token-value}
-    ```
-
 ### 第 2 步：准备数据上传环境
 
 为上传已采集的诊断数据，你需要使用 Clinic Server。
@@ -54,33 +46,29 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
     首先，进入 [Clinic Server 登录页面](https://clinic.pingcap.com/clinic/#/login)，其次，选择 "Sign in with AskTUG"，最后，进入社区帐号登录界面。如果你还没有 TiDB 社区帐号，可以在该界面进行注册。
 
-2. 创建组织
+2. 创建组织并获取 Token
 
-    第一次成功登录到 Clinic Server 后，你需要创建组织。【XXX 简单说明组织的用途（类似于下面的 Token）】
+    第一次成功登录到 Clinic Server 后，你需要创建组织。组织是一系列 TiDB 集群的集合，用户创建组织后，即可以在组织中上传集群的诊断数据。
 
-    根据页面提示输入组织名称即可创建组织。创建成功后，在组织界面上，你可以通过以下两种方式上传已采集的诊断数据：
+    根据页面提示输入组织名称即可创建组织。创建成功后，需要获取数据上传的 Token。Token 用于使用 Diag 客户端上传数据时进行用户认证，以保证数据上传到用户创建的组织后可以被安全隔离。
 
-    - 方法 1：获取 Token 后，通过 Diag 客户端的命令行或接口上传数据（推荐）
+    - Token 获取方法：点击页面上的上传图标，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
 
-        Token 用于使用 Diag 客户端上传数据时进行用户认证，以保证数据上传到用户创建的组织后可以被安全隔离。
-
-        点击页面上的上传图标，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
-
-        【XXX 补充截图】
+          ![获取 Token 截图](/media/clinic-get-token.png)
 
         > **注意：**
         >
         > 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+        > 该 Token 只用于数据上传，并不用于数据的访问。
 
-    - 方法 2：通过 Diag 客户端直接上传数据
+3. 在 Diag 诊断客户端中设置上传 Token
 
-        点击页面的上传图标，选择 "Diag Package (.diag) Upload" 后，选择本地的 Diag 数据文件并进行上传。
+    运行以下命令设置 Token：
+    {{< copyable "shell-regular" >}}
 
-        > **注意：**
-        >
-        > - 使用该方式进行上传时，你需要选择使用 v0.7.0 及以上 Diag 客户端采集并通过 Package 命令打包的数据。
-        > - 数据文件大小不得超过 10 GB。
-
+    ```bash
+    tiup diag config token.clinic ${token-value}
+    ```
 ## 体验步骤
 
 1. 采集数据：运行 Diag 客服端，采集诊断数据
@@ -98,8 +86,6 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
     采集完成后，Diag 会提示采集数据所在的文件夹路径。
 
 2. 上传数据： 把诊断数据上传到 Clinic Server
-
-    【XXX 在这一个模块中，可以说明一下要怎么使用 Token 吗？因为在上面说推荐使用了，下面一起说明一下比较好】
 
     如果你的集群所在的网络可以访问互联网，你可以直接通过以下命令上传在上一步收集的数据包文件夹：
 
@@ -124,7 +110,9 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
     > **注意：**
     >
-    > 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体内容，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md##方式-2-打包后上传)。
+    > - 使用该方式进行上传时，你需要选择使用 v0.7.0 及以上 Diag 客户端。
+    > - 数据文件大小不得超过 10 GB。
+    > - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体内容，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md##方式-2-打包后上传)。
 
 3. 分析数据：通过 Clinic Server 查看并分析诊断数据
 
