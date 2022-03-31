@@ -20,10 +20,9 @@ TiDB 版本：6.0.0-DMR
 - 函数查询增强
 - TiKV 过载资源保护增强（实验特性)
 - 小表缓存
-- 批量更新热点索引
 - 内存悲观锁优化
 - TiDB Enterprise Manager 企业级数据库管理平台
-- PingCAP Clinic 自动诊断服务
+- PingCAP Clinic 自动诊断服务（Technical Preview 版本）
 - Top SQL 成为正式功能 (GA)
 - 性能提升 X 倍的 HTAP 能力
 - 强化的容灾能力
@@ -34,15 +33,15 @@ TiDB 版本：6.0.0-DMR
 
 从 TiDB 6.0.0 版本开始，TiDB 的发版会有两个系列：
 
-- 长期支持版本（Long-Term Support Releases）
+- 长期支持版本 (Long-Term Support Releases)
 
     长期支持版本约每六个月发布一次，会引入新的功能和改进，并会在版本生命周期内发布 Patch release。例如：v5.4.0，v6.1.0。
 
-- Development Milestone Releases (DMR)
+- 开发里程碑版 (Development Milestone Releases, DMR)
 
-    DMR 版本约每两个月发布一次，会引入新的功能和改进。DMR 版本不会提供 Patch release, 不推荐 on-premises 商业用户在生产环境使用。例如：6.0.0-DMR。
+    DMR 版本约每两个月发布一次，会引入新的功能和改进。TiDB 不提供基于 DMR 的 Bug 修订版本，不推荐在生产环境使用。例如：6.0.0-DMR。
 
-6.0.0 是 Develop MileStone Releases，版本名称为 6.0.0-DMR。
+6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 ## 兼容性变化
 
@@ -60,9 +59,9 @@ TiDB 版本：6.0.0-DMR
 | [`tidb_placement_mode`](/system-variables.md#tidb_placement_mode从-v600-版本开始引入) | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
 | [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) | 新增 | <ul><li> 优化事务内读语句延迟。如果读写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。默认关闭。</li><li>该变量与 [replica-read](system-variables.md#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [replica-read](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两个变量。</li></ul> |
 | [`tidb_sysdate_is_now`](/system-variables.md#tidb_sysdate_is_now从-v600-版本开始引入) | 新增 | 控制 `sydate` 函数是否替换为 `NOW` 函数，效果与 MySQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。默认值为 `OFF`。 |
-| [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) | 新增 | 用来控制缓存表 (新增 feature) 的 lease 时间，默认值是 3 秒。 |
-| [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量，默认值为 5000。 |
-| [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N) 的数据，默认值为 100。 |
+| [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) | 新增 | 用来控制缓存表（新增 feature）的 lease 时间，默认值是 3 秒。 |
+| [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量，默认值为 `5000`。 |
+| [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N）的数据，默认值为 `100`。 |
 | [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level从-v60-版本开始引入) | 新增 | 设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验。默认仅开启对性能影响微小的检查，包含大部分检查效果。 |
 | `placement_checks` | 删除 | 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。已被 `tidb_placement_mode` 替代。 |
 | `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
@@ -88,10 +87,10 @@ TiDB 版本：6.0.0-DMR
 | TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
 | TiKV | `enable-io-snoop` | 删除 | 删除 `enable-io-snoop` 配置项。 |
 | TiFlash | [`profiles.default.dt_compression_method`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。 |
-| TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认为 1。 |
+| TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认值 `1`。 |
 | TiFlash | [`profiles.default.dt_enable_logical_split`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 存储引擎的 segment 分裂是否使用逻辑分裂。自 v6.0 起默认值从 `true` 改为 `false。` |
 | TiFlash | [`profiles.default.enable_elastic_threadpool`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 是否启用可自动扩展的线程池。自 v6.0 起默认值从 `false` 改为 `true`。 |
-| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 该配置项控制 TiFlash 存储引擎的校验功能，自 v6.0 起默认值从 2 改为 3。`format_version` 设置为 3 时， 支持对 TiFlash 的所有数据的读操作进行一致性校验，避免由于硬件故障而读到错误的数据。<br/>注意：新版本数据格式不支持原地降级为早于 5.4 的版本。 |
+| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 该配置项控制 TiFlash 存储引擎的校验功能，自 v6.0 起默认值从 `2` 改为 `3`。`format_version` 设置为 `3` 时， 支持对 TiFlash 的所有数据的读操作进行一致性校验，避免由于硬件故障而读到错误的数据。<br/>注意：新版本数据格式不支持原地降级为早于 5.4 的版本。 |
 | DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量阶段数据导入的模式。自 v6.0 起全量阶段默认使用 TiDB Lightning 的 TiDB-backend 方式导入，替换原来的 Loader 组件。此变动为内部组件替换，对日常使用没有明显影响。<br/>默认值 `sql` 表示启用 tidb-backend 组件，可能在极少数场景下存在未能完全兼容的情况，可以通过配置为 "loader" 回退。 |
 | DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量导入阶段出现的冲突数据的解决方式。默认值为 `replace` ，覆盖重复数据。 |
 | TiCDC | `read-timeout` | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
@@ -144,9 +143,8 @@ TiDB 版本：6.0.0-DMR
 
     Top SQL 是一个面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能，集成于 TiDB Dashboard 图形化界面，用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
 
-    Top SQL 默认禁用，可一键启用。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点最近 30 天内的 CPU 负载情况，你可以直观了解各节点的高 CPU 负载是来自于哪些 SQL 语句，从而快速分析诸如数据库热点、突发的负载升高等问题。
+    Top SQL 默认关闭，可一键启用。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点最近 30 天内的 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 找出一个低负载的数据库上执行的一条消耗 99% 负载的分析查询。
 
-    例如，你可以通过 Top SQL 找出一个低负载的数据库上执行的一条消耗 99% 负载的分析查询。
 
     [用户文档](/dashboard/top-sql.md)
 
@@ -168,7 +166,7 @@ TiDB 版本：6.0.0-DMR
 
     默认使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 长尾延迟。
 
-    [用户文档](/tikv-configuration-file#raft-engine)
+    [用户文档](/tikv-configuration-file#raft-engine)，[#11119](https://github.com/tikv/tikv/issues/11119)
 
 - 热点小表缓存
 
@@ -204,7 +202,7 @@ TiDB 版本：6.0.0-DMR
 
     在该模式下，分区表的数据也可以使用 MPP 引擎读取和计算，大大提升了分区表的查询性能。
 
-    [用户文档](/use-tiflash.md#mpp-模式访问分区表) [issue 号]()
+    [用户文档](/use-tiflash.md#mpp-模式访问分区表)
 
 - 持续提升 MPP 引擎计算性能
 
@@ -234,7 +232,7 @@ TiDB 版本：6.0.0-DMR
 
     当 TiKV 部署的机型资源受限时，如果前台处理的读写请求量过大，会导致后台处理请求的 CPU 资源被前台占用，最终影响 TiKV 性能的稳定性。TiDB 6.0 支持手动限制 TiKV 前台各类请求的资源用量，包括 CPU、读写带宽等，以提升集群在长期高负载压力下的稳定性。
 
-    [用户文档](/tikv-configuration-file.md#quota)
+    [用户文档](/tikv-configuration-file.md#quota)，[#12264](https://github.com/tikv/tikv/pull/12264)
 
 - TiFlash 新增支持 zstd 压缩算法。
 
@@ -242,9 +240,9 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/tiflash-configuration.md#配置文件-tiflashtoml)
 
-- TiFlash 默认开启支持所有 IO 的校验 （Checksum）。
+- TiFlash 默认开启支持所有 I/O 的校验 (Checksum)。
 
-    此项功能曾作为实验特性在 5.4 释出。除增强了数据的正确性安全性外，对用户使用不产生明显的直接影响。
+    此项功能曾作为实验特性在 v5.4 释出。除增强了数据的正确性安全性外，对用户使用不产生明显的直接影响。
 
     > **警告：**
     >
@@ -260,7 +258,7 @@ TiDB 版本：6.0.0-DMR
 
 #### DM
 
-- WebUI （实验特性）
+- WebUI（实验特性）
 
     新增 WebUI 方便地通过图形化的方式管理大量迁移任务。已支持的功能有：
 
@@ -314,9 +312,6 @@ TiDB 版本：6.0.0-DMR
 - 支持高达 100K 张表的同时同步
 
     TiCDC 针对数据处理流程进行了优化，降低了处理每张表的增量数据时所需要的资源，极大地提升了 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率。在测试中，TiCDC 可以稳定支持 100K 张表的增量数据的同时同步。
-
-    [用户文档]()
-
 ### 部署及运维
 
 - 默认采用新 collation 规则
@@ -333,7 +328,7 @@ TiDB 版本：6.0.0-DMR
 
 - 支持手动取消统计信息的自动更新
 
-    统计信息是影响 SQL 性能的最重要基础数据之一，为了保证统计信息的完整性和及时性，TiDB 会在后台定期自动更新对象的统计信息。为了避免统计信息的自动更新造成资源争抢，影响业务 SQL 性能，TiDB 6.0 支持手动取消统计信息的自动更新。
+    统计信息是影响 SQL 性能的最重要基础数据之一，为了保证统计信息的完整性和及时性，TiDB 会在后台定期自动更新对象的统计信息。但是，统计信息自动更新可能造成资源争抢，影响业务 SQL 性能。为了避免这个问题，TiDB 6.0 支持手动取消统计信息的自动更新。
 
     [用户文档](/statistics.md#自动更新)
 
@@ -376,7 +371,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     - 支持下推 `GREATEST` 和 `LEAST` 函数到 TiFlash [#32787](https://github.com/pingcap/tidb/issues/32787)
     - 支持读取 `_tidb_rowid` 列的查询能够使用 PointGet 计划 [#31543](https://github.com/pingcap/tidb/issues/31543)
     - 支持在自动捕获的黑名单中使用通配符 [#32714](https://github.com/pingcap/tidb/issues/32714)
-    - 支持在 `EXPLAIN` 语句的输出中显示原有的分区名而不转换为小写[#32719](https://github.com/pingcap/tidb/issues/32719)
+    - 支持在 `EXPLAIN` 语句的输出中显示原有的分区名而不转换为小写 [#32719](https://github.com/pingcap/tidb/issues/32719)
     - 支持对 RANGE COLUMNS 分区表在 IN 条件和字符串类型上进行分区裁剪 [#32626](https://github.com/pingcap/tidb/issues/32626)
     - 当设置系统变量为 NULL 时提供错误提示 [#32850](https://github.com/pingcap/tidb/issues/32850)
     - 移除非 MPP 模式的 Broadcast Join [#31465](https://github.com/pingcap/tidb/issues/31465)
@@ -384,6 +379,7 @@ TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() �
     - 支持下推 `DAYOFWEEK()` 和 `DAYOFYEAR()` 函数到 TiFlash [#33130](https://github.com/pingcap/tidb/issues/33130)
     - 支持下推 ` IS_TRUE`，`IS_FALSE`, `IS_TRUE_WITH_NULL` 函数到 TiFlash [#33047](https://github.com/pingcap/tidb/issues/33047)
     - 支持在动态裁剪模式的分区表上执行 MPP 计划 [#32347](https://github.com/pingcap/tidb/issues/32347)
+    - 支持 read-consistency 读取可在 `READ-COMMITTED` 隔离级别下打开优化事务内读语句延迟 [#33159](https://github.com/pingcap/tidb/issues/33159) 
     - 支持对公共表表达式 (CTE) 进行谓词下推 [#28163](https://github.com/pingcap/tidb/issues/28163)
     - 简化 `Statement Summary` 和 `Capture Plan Baselines` 的配置为只在全局基础上可用 [#30557](https://github.com/pingcap/tidb/issues/30557)
     - 更新 gopsutil 的版本到 v3.21.12，避免在 macOS 12 上构建二进制时出现警告 [#31607](https://github.com/pingcap/tidb/issues/31607)
