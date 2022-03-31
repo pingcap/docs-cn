@@ -1,6 +1,6 @@
 ---
 title: PingCAP Clinic 快速上手
-summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包括在使用 TiUP 部署的集群上通过本地 Diag 客户端采集数据的方法、通过 PingCAP Clinic 网页将该数据上传到 Clinic Server 云服务平台的方法，以及在本地 Diag 客户端查看已上传的数据的方法。
+summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包括在使用 TiUP 部署的集群上通过 Diag 客户端采集数据的方法、使用 Diag 客户端将采集到的数据上传到 PingCAP Clinic 页面的方法，以及在 PingCAP Clinic 页面上查看采集到的数据的方法。
 ---
 
 # PingCAP Clinic 快速上手指南
@@ -42,7 +42,6 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 ### 第 2 步：准备数据上传环境
 
-
 1. 登录 PingCAP Clinic 页面。访问 [PingCAP Clinic 登录页面](https://clinic.pingcap.com/clinic/#/login)，选择 **Sign in with AskTUG** 进入 TiDB 社区帐号 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
 2. 创建组织 (form)。第一次成功登录到 PingCAP Clinic 后，你需要创建组织。组织是一系列 TiDB 集群的集合。创建组织后，你可以在组织上上传集群的诊断数据。根据页面上的提示输入组织名称即可创建组织。
@@ -55,10 +54,10 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
     > **注意：**
     >
-    > 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
-    > 该 Token 只用于数据上传，访问数据时不需要使用 Token。
+    > - 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+    > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-3. 上传 Token。为使用已创建的 Token，你需要通过以下命令在 Diag 中设置 Token：
+4. 上传 Token。为使用已创建的 Token，你需要通过以下命令在 Diag 中设置 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -108,12 +107,12 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
         > - 使用该方式进行上传时，你需要使用 Diag v0.7.0 及以上版本。
         > - 数据包文件夹的大小不得超过 10 GB。
 
-    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体内容，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md##方式-2-打包后上传)。
+    - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体内容，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
 3. 访问数据：打开数据链接。
 
     完成数据上传后，你可以打开命令返回结果中 `Download URL` 部分的数据访问链接。打开链接后，你可以在 PingCAP Clinic 网页上查看已上传的诊断数据，具体内容包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
-    
+
     你可以使用功能该数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
 
 ## 探索更多
