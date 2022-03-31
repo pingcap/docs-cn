@@ -5,11 +5,7 @@ summary: This document describes how to use Top SQL to locate SQL queries that c
 
 # Top SQL
 
-> **Warning:**
->
-> Currently, Top SQL is an experimental feature. It is not recommended that you use it for production environments.
-
-This document describes how to use Top SQL to locate SQL queries that contribute to a high load of a TiDB or TiKV node in a specified time range. For example, you can use Top SQL to locate an analytic query that consumes 99% of the load for a low-load database.
+This document describes how to locate SQL queries that contribute to a high load of a TiDB or TiKV node in a specified time range on the Top SQL page. For example, you can use Top SQL to locate an analytic query that consumes 99% of the load for a low-load database.
 
 For a specified TiDB or TiKV node, Top SQL provides the following features:
 
@@ -41,3 +37,10 @@ Usage tips：
 * You can select a query type in the list to view the execution plan of that query type on this node and the execution details such as the Call/sec, Scan Rows/sec, Scan Indexes/sec, and Latency/call.
 
 ![Top SQL Details](/media/dashboard/top-sql-details.png)
+
+## Disable Top SQL
+
+If you want to disable Top SQL for the entire cluster, use either of the following methods:
+
+- Method 1: Log in to TiDB Dashboard, click **Top SQL** in the left pane, click the gear button in the upper-right corner of the page, and then disable the Top SQL feature.
+- Method 2: Set the value of the TiDB system variable [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-new-in-v540) to `OFF`.

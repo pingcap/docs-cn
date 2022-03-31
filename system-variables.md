@@ -881,6 +881,24 @@ Query OK, 0 rows affected (0.09 sec)
 - Default value: `OFF`
 - This variable is used to control whether to enable the [Top SQL](/dashboard/top-sql.md) feature.
 
+### tidb_top_sql_max_meta_count (New in v6.0.0)
+
+- Scope: GLOBAL
+- Default value: `5000`
+- Range: `[1, 10000]`
+- This variable is used to control the maximum number of SQL statement types collected by [Top SQL](/dashboard/top-sql.md) per minute.
+
+### tidb_top_sql_max_time_series_count (New in v6.0.0)
+
+- Scope: GLOBAL
+- Default value: `100`
+- Range: `[1, 5000]`
+- This variable is used to control how many SQL statements that contribute the most to the load (that is, top N) can be recorded by [Top SQL](/dashboard/top-sql.md) per minute.
+
+> **Note:**
+>
+> Currently, the Top SQL page in TiDB Dashboard only displays the top 5 types of SQL queries that contribute the most to the load, which is irrelevant with the configuration of `tidb_top_sql_max_time_series_count`.
+
 ### tidb_enable_tso_follower_proxy <span class="version-mark">New in v5.3.0</span>
 
 - Scope: GLOBAL

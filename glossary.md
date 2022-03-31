@@ -112,7 +112,7 @@ A store refers to the storage node in the TiKV cluster (an instance of `tikv-ser
 
 ### Top SQL
 
-Top SQL is an experimental feature introduced in v5.4. It helps locate SQL queries that contribute to a high load of a TiDB or TiKV node in a specified time range. For details, see [Top SQL user document](/dashboard/top-sql.md).
+Top SQL helps locate SQL queries that contribute to a high load of a TiDB or TiKV node in a specified time range. For details, see [Top SQL user document](/dashboard/top-sql.md).
 
 ### TSO
 
