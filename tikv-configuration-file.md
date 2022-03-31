@@ -349,9 +349,9 @@ Configuration items related to storage.
 
 ### `scheduler-worker-pool-size`
 
-+ The number of `scheduler` threads, mainly used for checking transaction consistency before data writing. If the number of CPU cores is greater than or equal to `16`, the default value is `8`; otherwise, the default value is `4`. When you modify the size of the Scheduler thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
++ The number of threads in the Scheduler thread pool. Scheduler threads are mainly used for checking transaction consistency before data writing. If the number of CPU cores is greater than or equal to `16`, the default value is `8`; otherwise, the default value is `4`. When you modify the size of the Scheduler thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `4`
-+ Minimum value: `1`
++ Value range: `[1, MAX(4, CPU)]`. In `MAX(4, CPU)`, `CPU` means the number of your CPU cores. `MAX(4, CPU)` takes the greater value out of `4` and the `CPU`.
 
 ### `scheduler-pending-write-threshold`
 
@@ -491,14 +491,16 @@ Configuration items related to Raftstore.
 
 + The soft limit on the size of a single message packet
 + Default value: `"1MB"`
-+ Minimum value: `0`
-+ Unit: MB
++ Minimum value: greater than `0`
++ Maximum value: `3GB`
++ Unit: KB|MB|GB
 
 ### `raft-max-inflight-msgs`
 
 + The number of Raft logs to be confirmed. If this number is exceeded, the Raft state machine slows down log sending.
 + Default value: `256`
 + Minimum value: greater than `0`
++ Maximum value: `16384`
 
 ### `raft-entry-max-size`
 
@@ -728,27 +730,29 @@ Configuration items related to Raftstore.
 
 ### `apply-max-batch-size`
 
-+ The maximum number of requests for data flushing in one batch
++ Raft state machines process data write requests in batches by the BatchSystem. This configuration item specifies the maximum number of Raft state machines that can process the requests in one batch.
 + Default value: `256`
 + Minimum value: greater than `0`
++ Maximum value: `10240`
 
 ### `apply-pool-size`
 
-+ The allowable number of threads in the pool that flushes data to storage, which is the size of the Apply thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
++ The allowable number of threads in the pool that flushes data to the disk, which is the size of the Apply thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `2`
-+ Minimum value: greater than `0`
++ Value ranges: `[1, CPU * 10]`. `CPU` means the number of your CPU cores.
 
 ### `store-max-batch-size`
 
-+ The maximum number of requests processed in one batch
++ Raft state machines process requests for flushing logs into the disk in batches by the BatchSystem. This configuration item specifies the maximum number of Raft state machines that can process the requests in one batch.
 + If `hibernate-regions` is enabled, the default value is `256`. If `hibernate-regions` is disabled, the default value is `1024`.
 + Minimum value: greater than `0`
++ Maximum value: `10240`
 
 ### `store-pool-size`
 
-+ The allowable number of threads that process Raft, which is the size of the Raftstore thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
++ The allowable number of threads in the pool that processes Raft, which is the size of the Raftstore thread pool. When you modify the size of this thread pool, refer to [Performance tuning for TiKV thread pools](/tune-tikv-thread-performance.md#performance-tuning-for-tikv-thread-pools).
 + Default value: `2`
-+ Minimum value: greater than `0`
++ Value ranges: `[1, CPU * 10]`. `CPU` means the number of your CPU cores.
 
 ### `store-io-pool-size` <span class="version-mark">New in v5.3.0</span>
 
