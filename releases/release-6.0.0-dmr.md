@@ -192,7 +192,7 @@ TiDB 版本：6.0.0-DMR
 
     SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享，但是在 Prepared 语句 close 时会主动清空对应的 Plan Cache，对于重复执行的 SQL 造成不必要的解析，影响语句执行效率。TiDB 从 6.0 开始支持通过 `tidb_ignore_clost_stmt_cmd` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭，开启后可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，提升执行计划的复用率。
 
-    [用户文档]()，[issue 号]()
+    [用户文档](/sql-prepare-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
 
 - 函数查询增强
 
@@ -228,7 +228,7 @@ TiDB 版本：6.0.0-DMR
 
     增强了执行计划自动捕获的易用性，增加了黑名单功能，支持表名、频率和用户名三个维度的黑名单设置。引入新的算法来优化绑定缓存的内存管理机制。开启自动捕获后，可以为绝大多数 OLTP 类查询自动创建绑定，从而固定被绑定语句的执行计划，避免因执行计划变动导致的性能问题。通常用于大版本升级，集群迁移等场景下使用，可以有效减少因计划回退造成的性能问题。
 
-    [用户文档](/sql-plan-management.md)
+    [用户文档](sql-plan-management.md#自动捕获绑定-baseline-capturing)，[#32466](https://github.com/pingcap/tidb/issues/32466)
 
 - TiKV 过载资源保护增强 (实验特性）
 
@@ -352,8 +352,6 @@ TiDB Enterprise Manager (TiEM) 是一款以 TiDB 数据库为核心的企业级�
 TiEM 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
 TiEM 当前为企业版特性。要获取 TiEM 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
-
-
 ## 离线包变更
 
 TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() 和 [v6.0.0 TiDB-community-toolkit 软件包]()。在 6.0.0 版本中，两个离线包的内容物有调整。 离线包的具体内容，参考[TiDB 离线包](/xxx.md)。
