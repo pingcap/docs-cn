@@ -742,6 +742,17 @@ Usage:
 >> scheduler resume balance-region-scheduler      // Continue to run the balance-region scheduler
 >> scheduler resume all                           // Continue to run all schedulers
 >> scheduler config balance-hot-region-scheduler  // Display the configuration of the balance-hot-region scheduler
+```
+
+### `scheduler config balance-leader-scheduler`
+
+Use this command to view and control the `balance-leader-scheduler` policy.
+
+Since TiDB v6.0.0, PD introduces the `Batch` parameter for `balance-leader-scheduler` to control the speed at which the balance-leader processes tasks. To use this parameter, you can modify the `balance-leader batch` configuration item using pd-ctl.
+
+Before v6.0.0, PD does not have this configuration item, which means `balance-leader batch=1`. In v6.0.0 or later versions, the default value of `balance-leader batch` is `4`. To set this configuration item to a value greater than `4`, you need to set a greater value for [`scheduler-max-waiting-operator`](#config-show--set-option-value--placement-rules) (whose default value is `5`) at the same time. You can get the expected acceleration effect only after modifying both configuration items.
+
+```bash
 >> scheduler config balance-leader-scheduler set batch 3 // Set the size of the operator that the balance-leader scheduler can execute in a batch to 3
 ```
 
