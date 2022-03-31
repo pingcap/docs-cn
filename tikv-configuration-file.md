@@ -1182,7 +1182,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `disable-auto-compactions`
 
-+ 开启自动 compaction 的开关。
++ 是否关闭自动 compaction
 + 默认值：false
 
 ### `soft-pending-compaction-bytes-limit`
