@@ -266,6 +266,12 @@ PD can tolerate any synchronization error, but a larger error value means a larg
 
 The client connection can only access the cluster through TiDB. TiDB connects PD and TiKV. PD and TiKV are transparent to the client. When TiDB connects to any PD, the PD tells TiDB who is the current leader. If this PD is not the leader, TiDB reconnects to the leader PD.
 
+#### What is the relationship between each status (Up, Disconnect, Offline, Down, Tombstone) of a TiKV store?
+
+For the relationship between each status, refer to [Relationship between each status of a TiKV store](/tidb-scheduling.md#information-collection).
+
+You can use PD Control to check the status information of a TiKV store. 
+
 #### What is the difference between the `leader-schedule-limit` and `region-schedule-limit` scheduling parameters in PD?
 
 - The `leader-schedule-limit` scheduling parameter is used to balance the Leader number of different TiKV servers, affecting the load of query processing.
