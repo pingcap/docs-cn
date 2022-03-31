@@ -218,6 +218,9 @@ URI 中可配置的的参数如下：
 | `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
 | `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
 | `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
+| `write-timeout`| 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
 
 最佳实践：
 
@@ -569,7 +572,7 @@ worker-num = 16
 # 支持 default、ts、rowid、table 四种分发器，分发规则如下：
 # - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
 # - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
-# - rowid：以表的主键或者唯一索引列名和列值做 Hash 计算并进行 event 分发
+# - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 # - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [

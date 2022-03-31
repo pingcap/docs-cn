@@ -118,38 +118,97 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-
+    
         ...
-
+    
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-
+    
         ...
-
+    
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-
+    
         ...
-
+    
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-
+    
         ...
     ```
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
+
+## 按库构建 TiFlash 副本
+
+类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE db_name SET TIFLASH REPLICA count
+```
+
+在该命令中，`count` 表示 TiFlash 的副本数。当设置 `count` 值为 0 时，表示删除现有的 TiFlash 副本。
+
+命令示例：
+
+执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
+```
+
+执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
+```
+
+> **注意：**
+>
+> - 该命令实际是为用户执行一系列 DDL 操作，对资源要求比较高。如果在执行过程中出现中断，已经执行成功的操作不会回退，未执行的操作不会继续执行。
+>
+> - 从命令执行开始到该库中所有表都已**同步完成**之前，不建议执行和该库相关的 TiFlash 副本数量设置或其他 DDL 操作，否则最终状态可能非预期。非预期场景包括：
+>     - 先设置 TiFlash 副本数量为 2，在库中所有的表都同步完成前，再设置 TiFlash 副本数量为 1，不能保证最终所有表的 TiFlash 副本数量都为 1 或都为 2。
+>     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
+>     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
+>
+> - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
+
+### 查看库同步进度
+
+类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
+```
+
+可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
+```
 
 ## 使用 TiDB 读取 TiFlash
 
@@ -302,20 +361,18 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * TopN：该算子对数据求 TopN 运算
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
-* HashJoin（带等值 Join 条件）：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算，但有以下使用条件：
+* HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算：
     * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
-    * 不支持下推 `Full Outer Join`
-* HashJoin（不带等值 Join 条件，即 Cartesian Join）：该算子实现了 Cartesian Join，但有以下使用条件：
-    * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
-    * 只有在 Broadcast Join 中才支持 Cartesian Join
+    * 支持的 Join 类型包括 Inner Join、Left Join、Semi Join、Anti Semi Join、Left Semi Join、Anti Left Semi Join
+    * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join）；在计算 Cartesian Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
-* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32`
-* 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce`
+* 数学函数：`+, -, /, *, %, >=, <=, =, !=, <, >, round, abs, floor(int), ceil(int), ceiling(int), sqrt, log, log2, log10, ln, exp, pow, sign, radians, degrees, conv, crc32, greatest(int/real), least(int/real)`
+* 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce, is`
 * 位运算：`bitand, bitor, bigneg, bitxor`
-* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter`
+* 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp, regexp`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname`
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
@@ -432,6 +489,71 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
+### MPP 模式访问分区表
+
+如果希望使用 MPP 模式访问分区表，需要先开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
+
+> **警告：**
+>
+> 目前，分区表的动态裁剪模式为实验特性，不建议在生产环境中使用。
+
+示例如下：
+
+```sql
+mysql> DROP TABLE if exists test.employees;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> CREATE TABLE test.employees (  id int(11) NOT NULL,  fname varchar(30) DEFAULT NULL,  lname varchar(30) DEFAULT NULL,  hired date NOT NULL DEFAULT '1970-01-01',  separated date DEFAULT '99
+99-12-31',  job_code int(11) DEFAULT NULL,  store_id int(11) NOT NULL  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin  PARTITION BY RANGE (store_id)  (PARTITION p0 VALUES LESS THAN (
+6),  PARTITION p1 VALUES LESS THAN (11),  PARTITION p2 VALUES LESS THAN (16), PARTITION p3 VALUES LESS THAN (MAXVALUE));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> ALTER table test.employees SET tiflash replica 1;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> SET tidb_partition_prune_mode=static;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> explain SELECT count(*) FROM test.employees;
++----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
+| id                               | estRows  | task              | access object                 | operator info                     |
++----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
+| HashAgg_19                       | 1.00     | root              |                               | funcs:count(Column#10)->Column#9  |
+| └─PartitionUnion_21              | 4.00     | root              |                               |                                   |
+|   ├─StreamAgg_40                 | 1.00     | root              |                               | funcs:count(Column#12)->Column#10 |
+|   │ └─TableReader_41             | 1.00     | root              |                               | data:StreamAgg_27                 |
+|   │   └─StreamAgg_27             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#12         |
+|   │     └─TableFullScan_39       | 10000.00 | batchCop[tiflash] | table:employees, partition:p0 | keep order:false, stats:pseudo    |
+|   ├─StreamAgg_63                 | 1.00     | root              |                               | funcs:count(Column#14)->Column#10 |
+|   │ └─TableReader_64             | 1.00     | root              |                               | data:StreamAgg_50                 |
+|   │   └─StreamAgg_50             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#14         |
+|   │     └─TableFullScan_62       | 10000.00 | batchCop[tiflash] | table:employees, partition:p1 | keep order:false, stats:pseudo    |
+|   ├─StreamAgg_86                 | 1.00     | root              |                               | funcs:count(Column#16)->Column#10 |
+|   │ └─TableReader_87             | 1.00     | root              |                               | data:StreamAgg_73                 |
+|   │   └─StreamAgg_73             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#16         |
+|   │     └─TableFullScan_85       | 10000.00 | batchCop[tiflash] | table:employees, partition:p2 | keep order:false, stats:pseudo    |
+|   └─StreamAgg_109                | 1.00     | root              |                               | funcs:count(Column#18)->Column#10 |
+|     └─TableReader_110            | 1.00     | root              |                               | data:StreamAgg_96                 |
+|       └─StreamAgg_96             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#18         |
+|         └─TableFullScan_108      | 10000.00 | batchCop[tiflash] | table:employees, partition:p3 | keep order:false, stats:pseudo    |
++----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
+18 rows in set, 4 warnings (0.00 sec)
+
+mysql> SET tidb_partition_prune_mode=dynamic;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> explain SELECT count(*) FROM test.employees;
++------------------------------+----------+-------------------+-----------------+----------------------------------+
+| id                           | estRows  | task              | access object   | operator info                    |
++------------------------------+----------+-------------------+-----------------+----------------------------------+
+| HashAgg_21                   | 1.00     | root              |                 | funcs:count(Column#11)->Column#9 |
+| └─TableReader_23             | 1.00     | root              | partition:all   | data:ExchangeSender_22           |
+|   └─ExchangeSender_22        | 1.00     | batchCop[tiflash] |                 | ExchangeType: PassThrough        |
+|     └─HashAgg_9              | 1.00     | batchCop[tiflash] |                 | funcs:count(1)->Column#11        |
+|       └─TableFullScan_20     | 10000.00 | batchCop[tiflash] | table:employees | keep order:false, stats:pseudo   |
++------------------------------+----------+-------------------+-----------------+----------------------------------+
+```
+
 ## TiFlash 数据校验
 
 ### 使用场景
@@ -447,8 +569,8 @@ TiFlash 的数据校验功能基于 DTFile（即 DeltaTree File）提供。DTFil
 | 版本 | 状态 | 校验机制 | 备注 |
 | :-- | :-- | :-- |:-- |
 | V1 | 已废弃 | 在数据文件中内嵌哈希值 | |
-| V2 | 默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
-| V3 | 需手动开启 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
+| V2 | v6.0.0 之前的默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
+| V3 | v6.0.0 及之后的默认格式 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
 
 DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用的格式均为文件夹形式，即具体数据均储存在名字类似 `dmf_<file id>` 的文件夹下的多个子文件中。
 
@@ -457,8 +579,9 @@ DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用�
 TiFlash 支持自动和手动进行数据校验：
 
 - 自动数据校验 （`storage.format_version` 配置项）：
-    - 默认使用 DTFile V2 版本校验机制。
-    - 如需开启 DTFile V3 版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+    - v6.0.0 之后默认使用 DTFile V3 版本校验机制。
+    - v6.0.0 之前默认使用 DTFile V2 版本校验机制。
+    - 如需切换版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。默认配置经过大量测试，不推荐修改。
 - 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
 
 > **警告：**
@@ -483,16 +606,16 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-
+        
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -500,10 +623,10 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```

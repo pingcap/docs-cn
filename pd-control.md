@@ -878,7 +878,7 @@ Encoding 格式示例：
 
 ### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 `16`，设为 `-1` 则表示无数量限制。示例如下：
 
 显示从 a 开始的所有 Region 信息，数量上限为 16：
 
@@ -895,22 +895,7 @@ Encoding 格式示例：
 }
 ```
 
-显示从 a 开始的所有 Region 信息，数量上限为 20：
-
-{{< copyable "" >}}
-
-```bash
->> region keys --format=raw a "" 20 
-```
-
-```
-{
-  "count": 20,
-  "regions": [......],
-}
-```
-
-显示 [a, z) 范围内的所有 Region 信息，没有数量上限：
+显示 [a, z) 范围内的所有 Region 信息，数量上限为 16：
 
 {{< copyable "" >}}
 
@@ -925,12 +910,27 @@ Encoding 格式示例：
 }
 ```
 
-显示 [a, z) 范围内的所有 Region 信息，数量上限为 20：
+显示 [a, z) 范围内的所有 Region 信息，无数量上限：
 
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a z 20
+>> region keys --format=raw a z -1
+```
+
+```
+{
+  "count": ...,
+  "regions": [......],
+}
+```
+
+显示从 a 开始的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a "" 20 
 ```
 
 ```
@@ -1100,7 +1100,6 @@ Encoding 格式示例：
 >> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
 >> scheduler resume all                                   // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
->> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器的 batch 设置为 3
 ```
 
 ### `scheduler config balance-leader-scheduler`
@@ -1110,7 +1109,7 @@ Encoding 格式示例：
 从 TiDB v6.0 起，PD 为 `balance-leader-scheduler` 引入了 `Batch` 参数，用于控制 balance-leader 的速度。你可以通过 pd-ctl 修改 `balance-leader batch` 配置项设置该功能。在 v6.0 前，无该配置（可以认为 `balance-leader batch=1`），在 v6.0 或更高版本中，该配置项的默认值为 `4`。如果想调整 `Batch` 到大于 `4` ，请同时调大 `scheduler-max-waiting-operator`, 这样才能获得期望的加速 balance leader 的效果。
 
 ```bash
->> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器的 batch 设置为 3
+>> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
 ```
 
 ### `scheduler config balance-hot-region-scheduler`
@@ -1295,7 +1294,7 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> * 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
 > * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
