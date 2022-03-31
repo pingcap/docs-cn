@@ -164,7 +164,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Statements summary tables](/statement-summary-tables.md)                 |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [慢查询日志](/identify-slow-queries.md)                                   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [TiUP 部署](/tiup/tiup-overview.md)                                       |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| Ansible 部署                                                              |    Y     |    N     |    N     |    N     |    N     |    N     | 已废弃   |
+| Ansible 部署                                                              |    N     |    N     |    N     |    N     |    N     |    N     | 已废弃   |
 | [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [内置物理备份](/br/backup-and-restore-use-cases.md)                       |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                      | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
