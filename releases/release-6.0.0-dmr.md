@@ -350,6 +350,7 @@ TiEM 当前为企业版特性。要获取 TiEM 及其文档，请在 [TiDB 产�
 当 TiDB 集群出现问题，需要邀请 PingCAP 技术支持人员协助定位问题时，你可以通过 PingCAP Clinic 服务采集并上传诊断数据，从而大大提高定位问题的速度。
 
 [用户文档](/clinic-introduction.md)
+
 ## 离线包变更
 
 TiDB 提供两个离线包下载：[v6.0.0 TiDB-community-server 软件包]() 和 [v6.0.0 TiDB-community-toolkit 软件包]()。在 6.0.0 版本中，两个离线包的内容物有调整。 离线包的具体内容，参考[TiDB 离线包](/xxx.md)。
