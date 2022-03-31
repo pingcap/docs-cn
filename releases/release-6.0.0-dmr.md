@@ -312,6 +312,7 @@ TiDB 版本：6.0.0-DMR
 - 支持高达 100K 张表的同时同步
 
     TiCDC 针对数据处理流程进行了优化，降低了处理每张表的增量数据时所需要的资源，极大地提升了 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率。在测试中，TiCDC 可以稳定支持 100K 张表的增量数据的同时同步。
+
 ### 部署及运维
 
 - 默认采用新 collation 规则
@@ -324,7 +325,7 @@ TiDB 版本：6.0.0-DMR
 
     TiKV 节点重启后，需要将分布不均匀的 leader 重分配以达到负载均衡的效果。在大规模集群下，leader 平衡时间与 Region 数量正相关。例如，在 100K Region 下，leader 平衡耗时可能达到 20-30 分钟，容易引发负载不均导致的性能问题，造成稳定性风险。TiDB 6.0 提供了 leader 平衡的并发度参数控制，并调整默认值为原来的 4 倍，大幅缩短 leader 重平衡的时间，提升 TiKV 节点重启后的业务恢复速度。
 
-    [用户文档](/pd-control.md#scheduler-show--add--remove--pause--resume--config)
+    [用户文档](/pd-control.md#scheduler-config-balance-leader-scheduler)，[#4610](https://github.com/tikv/pd/issues/4610)
 
 - 支持手动取消统计信息的自动更新
 
