@@ -7,13 +7,13 @@ summary: 介绍 PingCAP Clinic 诊断服务，包括工具组件、使用场景�
 
 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
 
-[PingCAP Clinic 诊断服务](https://clinic.pingcap.com.cn)目前处于 Technical Preview 受邀测试使用阶段。该服务提供以下两个组件进行集群诊断：
+[PingCAP Clinic 诊断服务](https://clinic.pingcap.com.cn)目前处于 Technical Preview 阶段。该服务提供以下两个组件进行集群诊断：
 
 - Diag 诊断客户端：部署在集群侧的工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
     > **注意：**
     >
-    > - Diag 诊断客户端暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
+    > Diag 诊断客户端暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
 
 - Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。
 
@@ -29,7 +29,7 @@ PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 T
 
 ## 工作原理
 
-本章节主要介绍 PingCAP Clinic 的诊断客户端 Diag 采集集群诊断数据的工作原理。
+本章节主要介绍 Diag 诊断客户端（以下简称为 Diag）采集集群诊断数据的工作原理。
 
 首先，Diag 需要从部署工具 TiUP (tiup-cluster) 或 TiDB Operator (tidb-operator) 获取集群拓扑信息，然后通过不同的数据采集方式来采集不同类型的诊断数据，具体采集方式如下：
 
@@ -48,7 +48,7 @@ PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 T
 
 - 通过 SQL 语句查询数据库参数
 
-    通过 SQL 语句，Diag 可查询 TiDB 数据库的系统参数等信息。对于这种方式，你需要在采集数据时**额外提供**访问 TiDB 数据库的用户名和密码。
+    通过 SQL 语句，Diag 可以查询 TiDB 数据库的系统参数等信息。对于这种方式，你需要在采集数据时**额外提供**访问 TiDB 数据库的用户名和密码。
 
 ## 探索更多
 

@@ -1,17 +1,17 @@
 ---
 title: 使用 PingCAP Clinic
-summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic Diag 诊断客户端采集 TiDB 集群数据和本地快速检查集群状态。
+summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
 ---
 
 # 使用 PingCAP Clinic
 
 对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
-目前，PingCAP Clinic 诊断服务目前处于 Technical Preview 受邀测试使用阶段。
+目前，PingCAP Clinic 诊断服务处于 Technical Preview 阶段。
 
 > **注意：**
 >
-> PingCAP Clinic 诊断服务暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
+> PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
@@ -26,45 +26,47 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 ## 准备工作
 
-1. 安装数据采集组件 Diag
+### 第 1 步：安装数据采集组件
 
-    为采集诊断数据，你需要安装 Diag。
+为采集诊断数据，你需要安装 Diag。
 
-    - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
+- 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```bash
-        tiup install diag
-        ```
+    ```bash
+    tiup install diag
+    ```
 
-    - 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
+- 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
 
-        {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```bash
-        tiup update diag
-        ```
+    ```bash
+    tiup update diag
+    ```
+
+> **注意：**
+>
+> - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
+> - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
+
+### 第 2 步：准备数据上传环境
+
+1. 获取 Token：
+
+    为上传采集到的数据，你需要在 Clinic Server 获取 Token 后，在 Diag 中设置 Token。上传数据时，你需要通过 Token 在 Diag 上进行进行用户认证，以保证数据上传的数据能够被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
+
+    登录 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），进入【XXX页面名称】页面【XXX 方向，比如右上侧】的上传图标后，选择 "Get Access Token For Diag Tool"，在弹出窗口（如图）中复制并保存 Token 信息。
+
+    ![Token 示例](/media/clinic-get-token.png)
 
     > **注意：**
     >
-    > - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
-    > - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
+    > - 登录 Clinic Server 页面时，你需要使用 TiDB 社区 AskTUG 的账号。如果你之前没有登录过该页面且为在 Clinic Server 中未设置过组织 (form)，请执行 [快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#第-2-步-准备数据上传环境)中的相关步骤。
+    > - 你**只能**在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
 
-2. 准备数据上传环境
-
-    为上传数据，你需要在 Clinic Server 获取 Token 后，在 Diag 中设置 Token。Token 用于使用 Diag 客户端上传数据时进行用户认证，以保证数据上传到用户创建的组织后可以被安全隔离。
-
-    首先，你需要通过以下方式获取 Token：进入 [Clinic Server 登录页面](https://clinic.pingcap.com.cn)，点击页面上的上传图标后，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
-
-    ![获取 Token 截图](/media/clinic-get-token.png)
-
-    > **注意：**
-    >
-    > - 登录 Clinic Server 时，你需要使用 TiDB 社区帐号（即 AskTUG 账号）。如果你之前没有登录过 Clinic Server，请参考 [快速上手指南中准备数据上传环境](/clinic/quick-start-with-clinic.md#第-2-步-准备数据上传环境)内的相关步骤。
-    > - 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
-
-    然后，通过以下命令在 Diag 工具中设置 Token。
+2. 在 Diag 中设置 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -199,7 +201,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 > **注意：**
 >
-> 如果在上传前没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备环境：准备数据上传环境（第 2 步）](#准备环境)。
+> 如果在上传前没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备数据上传环境（第 2 步）](#第-2-步准备数据上传环境)。
 
 #### 方式 1：直接上传
 
@@ -266,7 +268,7 @@ Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
     Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
     ```
 
-3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
 ## 本地快速检查集群状态
 
@@ -351,7 +353,7 @@ Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    请先登录 Clinic Server。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，请联系数据所有人添加权限后再在登录 Clinic Server 的情况下访问链接。
+    你可以先尝试登录 Clinic Server 页面。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 
