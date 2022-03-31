@@ -62,7 +62,7 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag config token.clinic ${token-value}
+    tiup diag config clinic.token ${token-value}
     ```
 ## 体验步骤
 
