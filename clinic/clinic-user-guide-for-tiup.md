@@ -55,13 +55,13 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     为上传数据，你需要在 Clinic Server 获取 Token 后，在 Diag 中设置 Token。Token 用于使用 Diag 客户端上传数据时进行用户认证，以保证数据上传到用户创建的组织后可以被安全隔离。
 
-    首先，进入 [Clinic Server 登录页面](https://clinic.pingcap.com/clinic/#/login)后，通过以下方式获取 Token：点击页面上的上传图标，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
+    首先，你需要通过以下方式获取 Token：进入 [Clinic Server 登录页面](https://clinic.pingcap.com/clinic/#/login)，点击页面上的上传图标后，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
 
     【XXX 请补充截图】
 
     > **注意：**
     >
-    > - 登录 Clinic Server 时，你需要使用 TiDB 社区帐号（即 AskTUG 账号）。如果你之前没有登录过 Clinic Server，请参考 [快速上手指南：准备数据上传环境](/quick-start-with-clinic.md#第-2-步-准备数据上传环境)中的相关步骤。
+    > - 登录 Clinic Server 时，你需要使用 TiDB 社区帐号（即 AskTUG 账号）。如果你之前没有登录过 Clinic Server，请参考 [快速上手指南中准备数据上传环境](/clinic/quick-start-with-clinic.md#第-2-步-准备数据上传环境)内的相关步骤。
     > - 你只能在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
 
     然后，通过以下命令在 Diag 工具中设置 Token。
@@ -197,6 +197,10 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 - 方式 1：如果集群所在的网络能访问互联网，你可以[通过上传命令直接上传数据](#方式-1直接上传)。
 - 方式 2：如果集群所在的网络不能访问互联网，你需要[打包后再上传数据](#方式-2打包后上传)。
 
+> **注意：**
+>
+> 如果在上传前没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备环境：准备数据上传环境（第 2 步）](#准备环境)。
+
 #### 方式 1：直接上传
 
 如果你的集群所在的网络可以访问互联网，你可以直接通过以下命令上传在[第 2 步：采集数据](#第-2-步采集数据)中收集的数据包文件夹：
@@ -206,10 +210,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 ```bash
  tiup diag upload
  ```
-
-> **注意：**
->
-> 如果没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备环境：准备数据上传环境（第 2 步）](/quick-start-with-clinic.md#准备环境)。
 
 输出结果示例如下：
 
@@ -253,10 +253,6 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     ```bash
     tiup diag upload ${filepath}
     ```
-
-    > **注意：**
-    >
-    > 如果没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备环境：准备数据上传环境（第 2 步）](/quick-start-with-clinic.md#准备环境)。
 
     输出结果示例如下：
 
