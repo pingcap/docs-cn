@@ -69,7 +69,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag config --token=${token-value}
+    tiup diag config clinic.token ${token-value}
     ```
 
 ## 远程定位集群问题
