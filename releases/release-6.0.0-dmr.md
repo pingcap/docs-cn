@@ -335,6 +335,14 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/statistics.md#自动更新)
 
+- PingCAP Clinic 诊断服务 Technical Preview 版本上线
+
+    [PingCAP Clinic](https://clinic.pingcap.com.cn) 为 TiDB 集群提供诊断服务，支持远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
+
+    当 TiDB 集群出现问题，需要邀请 PingCAP 技术支持人员协助定位问题时，你可以通过 PingCAP Clinic 服务采集并上传诊断数据，从而大大提高定位问题的速度。
+
+    [用户文档](/clinic-introduction.md)
+
 ### 企业级数据库管理平台 TiDB Enterprise Manager
 
 TiDB Enterprise Manager (TiEM) 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premise) 或公有云环境中部署、监控、备份、扩展 TiDB 集群。
@@ -343,13 +351,6 @@ TiEM 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一
 
 TiEM 当前为企业版特性。要获取 TiEM 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
 
-### PingCAP Clinic 诊断服务 Technical Preview 版本上线
-
-[PingCAP Clinic](https://clinic.pingcap.com.cn) 为 TiDB 集群提供诊断服务，支持远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
-
-当 TiDB 集群出现问题，需要邀请 PingCAP 技术支持人员协助定位问题时，你可以通过 PingCAP Clinic 服务采集并上传诊断数据，从而大大提高定位问题的速度。
-
-[用户文档](/clinic-introduction.md)
 
 ## 离线包变更
 
