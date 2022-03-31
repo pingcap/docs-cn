@@ -124,11 +124,13 @@ TiDB 版本：6.0.0-DMR
 
 - 基于 SQL 的数据放置规则
 
-    TiDB 是具有优秀扩展能力的分布式数据库，通常数据横跨多个服务器甚至多数据中心部署，数据调度管理是 TiDB 最重要的基础能力之一。大多数情况下客户无需关心数据如何调度管理，但是随着业务复杂度的提升，因隔离性和访问延迟导致的数据部署变更是 TiDB 面对的新的挑战。TiDB 从 6.0 版本开始正式提供基于 SQL 接口的数据调度管理能力，支持针对任意数据提供副本数、角色类型、放置位置等维度的灵活调度管理能力，在多业务共享集群、跨 AZ 部署下提供更灵活的数据放置管理能力，详细请参考[用户文档](/placement-rules-in-sql.md)。
+    TiDB 是具有优秀扩展能力的分布式数据库，通常数据横跨多个服务器甚至多数据中心部署，数据调度管理是 TiDB 最重要的基础能力之一。大多数情况下客户无需关心数据如何调度管理，但是随着业务复杂度的提升，因隔离性和访问延迟导致的数据部署变更是 TiDB 面对的新的挑战。TiDB 从 6.0 版本开始正式提供基于 SQL 接口的数据调度管理能力，支持针对任意数据提供副本数、角色类型、放置位置等维度的灵活调度管理能力，在多业务共享集群、跨 AZ 部署下提供更灵活的数据放置管理能力。
+
+    [用户文档](/placement-rules-in-sql.md)
 
 - 新增按库构建 TiFlash 副本功能。用户仅需使用一条 SQL 即可对某一个数据库中所有的表添加 TiFlash 副本，极大地节约了运维成本。
 
-    [用户文档](/tiflash/use-tiflash.md#按库构建-tiflash-副本)。
+    [用户文档](/tiflash/use-tiflash.md#按库构建-tiflash-副本)
 
 ### 事务
 
@@ -166,25 +168,25 @@ TiDB 版本：6.0.0-DMR
 
     默认使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 长尾延迟。
 
-    [用户文档](/tikv-configuration-file#raft-engine)，[issue 号]()
+    [用户文档](/tikv-configuration-file#raft-engine)
 
 - 热点小表缓存
 
     客户业务遇到热点小表访问场景下，支持显式将热点表缓存于内存中，大幅提高访问性能，提升吞吐，降低访问延迟。该方案可以有效避免引入三方缓存中间件，降低架构复杂性，减少运维管理成本，适用于高频访问低频更新的小表场景，例如配置表，汇率表等。
 
-    [用户文档]()，[issue 号]()
+    [用户文档](/cached-tables.md)，[#25293](https://github.com/pingcap/tidb/issues/25293)
 
 - 内存悲观锁优化
 
     TiDB 从 6.0 开始默认开启内存悲观锁功能。开启后，悲观事务锁管理将在内存中完成，避免悲观锁持久化，也避免了锁信息的 Raft 复制，大大降低悲观事务锁管理的开销。在悲观锁性能瓶颈下，通过悲观锁内存优化，可以有效降低 10% 延迟， 提升 10% QPS。
 
-    [用户文档]()，[issue 号]()
+    [用户文档](/pessimistic-transaction.md#内存悲观锁)，[#11452](https://github.com/tikv/tikv/issues/11452)
 
 - RC 隔离级别下优化 TSO 获取开销
 
-    在 [RC 隔离级别](/transaction-isolation-levels.md#read-committed-isolation-level)下，增加 `tidb_rc_read_check_ts` 变量，用于在读写冲突较少情况下，减少不必要 TSO 获取，从而降低查询延迟。该参数默认关闭，开启后，在没有读写冲突的场景下，该优化几乎可以避免重复 TSO 获取，降低延迟。但是在高读写冲突场景下，开启该参数有可能造成性能回退，请验证后使用。
+    在 [RC 隔离级别](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)下，增加 `tidb_rc_read_check_ts` 变量，用于在读写冲突较少情况下，减少不必要 TSO 获取，从而降低查询延迟。该参数默认关闭，开启后，在没有读写冲突的场景下，该优化几乎可以避免重复 TSO 获取，降低延迟。但是在高读写冲突场景下，开启该参数有可能造成性能回退，请验证后使用。
 
-    [用户文档]()，[issue 号]()
+    [用户文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)，[#33159](https://github.com/pingcap/tidb/issues/33159)
 
 - 增强 Prepared Statement 执行计划共享
 
