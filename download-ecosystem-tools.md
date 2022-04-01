@@ -24,7 +24,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v6.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v6.0.0-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
@@ -36,7 +36,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB Lightning 的版本号。例如，`v6.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v6.0.0-linux-amd64.tar.gz`。
 
 ## 备份和恢复 (BR) 工具
 
@@ -48,7 +48,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 BR 的版本号。例如，`v6.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v6.0.0-linux-amd64.tar.gz`。
 
 ## TiDB DM (Data Migration)
 
@@ -60,7 +60,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v5.4.0` 版本的下载链接为 `https://download.pingcap.org/dm-v5.4.0-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/tiflow/releases) 查看当前已发布版本。
+> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v6.0.0` 版本的下载链接为 `https://download.pingcap.org/dm-v6.0.0-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/tiflow/releases) 查看当前已发布版本。
 
 ## Dumpling
 
@@ -72,7 +72,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 > **注意：**
 >
-> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz`。可以通过 [TiDB Release](https://github.com/pingcap/tidb/releases) 查看当前已发布版本。
+> - 下载链接中的 `{version}` 为 Dumpling 的版本号。例如，`v6.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v6.0.0-linux-amd64.tar.gz`。可以通过 [TiDB Release](https://github.com/pingcap/tidb/releases) 查看当前已发布版本。
 > - Dumpling 已支持 arm64 linux，将下载链接中的 amd64 替换为 arm64，即表示 arm64 版 Dumpling。
 
 ## sync-diff-inspector
