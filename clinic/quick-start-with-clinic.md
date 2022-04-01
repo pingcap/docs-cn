@@ -99,7 +99,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 3. 完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
 
-	诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
+    诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
 
     你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
 
