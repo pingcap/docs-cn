@@ -1617,9 +1617,9 @@ set tidb_slow_log_threshold = 200;
 - 可选值：`OFF`，`FAST`，`STRICT`
 - 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
 
-    - `OFF`: 关闭该项检查。
-    - `FAST`: 仅开启对性能影响微小的检查，包含大部分检查效果。
-    - `STRICT`: 开启全部检查，对悲观事务性能有一定影响。
+    - `OFF`: 关闭该检查。
+    - `FAST`: 开启大多数检查项，对性能几乎无影响。
+    - `STRICT`: 开启全部检查项，当负载较高时，对悲观事务的性能有较小影响。
 
 ### `tidb_txn_mode`
 
