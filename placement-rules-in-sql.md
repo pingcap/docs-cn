@@ -127,7 +127,7 @@ In addition to the placement options above, you can also use the advance configu
 
 | Option Name                | Description                                                                                    |
 | --------------| ------------ |
-| `CONSTRAINTS`              | A list of constraints that apply to all roles. For example, `CONSTRAINTS="[+disk=ssd]`.       |
+| `CONSTRAINTS`              | A list of constraints that apply to all roles. For example, `CONSTRAINTS="[+disk=ssd]"`.       |
 | `LEADER_CONSTRAINTS`       | A list of constraints that only apply to leader.                                      |
 | `FOLLOWER_CONSTRAINTS`     | A list of constraints that only apply to followers.                                   |
 | `LEARNER_CONSTRAINTS`      | A list of constraints that only apply to learners.                                     |
@@ -247,7 +247,7 @@ In dictionary format, constraints also indicate a number of instances that apply
 
 | Tool Name | Minimum supported version | Description |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | Supports importing and exporting placement rules. Refer to [BR Compatibility](/br/backup-and-restore-tool.md#compatibility] for details. |
+| Backup & Restore (BR) | 6.0 | Supports importing and exporting placement rules. Refer to [BR Compatibility](/br/backup-and-restore-tool.md#compatibility) for details. |
 | TiDB Lightning | Not compatible yet | |
 | TiCDC | 6.0 | Ignores placement rules, and does not replicate the rules to the downstream |
 | TiDB Binlog | 6.0 | Ignores placement rules, and does not replicate the rules to the downstream |
