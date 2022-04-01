@@ -101,7 +101,12 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 
 从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。
 
-从 br v6.0 开始，br 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项，同时在恢复时会检查此配置项是否与下游集群相同。若配置不相同，会拒绝恢复，并报告此配置项不匹配的错误。如果用户需要将旧版本的备份数据恢复到 TiDB v6.0 中，用户需要自行检查上下游集群中的此配置项是否相同，若相同，则在恢复命令中添加 `--check-requirements=false` 可跳过此项配置检查，若配置不相同的情况下强行恢复，会报告[数据校验错误](/br/backup-and-restore-tool.md#使用限制)。
+从 v6.0.0 开始，BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项，同时在恢复时会检查此配置项是否与下游集群相同。若上下游的该配置不相同，BR 会拒绝恢复，并报告此配置项不匹配的错误。
+
+如果你需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要自行检查上下游集群中的该配置项是否相同：
+
+- 若该配置项相同，则可在恢复命令中添加 `--check-requirements=false` 以跳过此项配置检查。
+- 若该配置项不相同，且进行强行恢复，BR 会报告[数据校验错误](/br/backup-and-restore-tool.md#使用限制)。
 
 ### 备份和恢复 `mysql` 系统库下的表数据（实验特性）
 
