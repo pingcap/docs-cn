@@ -18,7 +18,7 @@ title: 执行计划管理 (SPM)
 CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`RELACE`。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
 
 > **注意：**
 >
@@ -329,7 +329,7 @@ SHOW binding_cache status;
 
 > **注意：**
 >
-> 当前的绑定通过生成一组 Hints 来实现对计划的固定，从而确保绑定后的查询语句生成的计划不发生变化。对于大多数 OLTP 查询，TiDB 能够保证计划前后一致，如使用相同的索引、相同的 Join 方式（如 HashJoin、IndexJoin）等。但是，受限于当前 Hints 的完善程度，对于一些较为复杂的查询，如两个表以上的 Join 和复杂的 OLAP、MPP 类查询，TiDB 无法保证计划在绑定前后完全一致。
+> 当前，绑定通过生成一组 Hints 来固定查询语句生成的执行计划，从而确保执行计划不发生变化。对于大多数 OLTP 查询，TiDB 能够保证计划前后一致，如使用相同的索引、相同的 Join 方式（如 HashJoin、IndexJoin）等。但是，受限于当前 Hints 的完善程度，对于一些较为复杂的查询，如两个表以上的 Join 和复杂的 OLAP、MPP 类查询，TiDB 无法保证计划在绑定前后完全一致。
 
 对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
@@ -362,11 +362,11 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
 ```
 
-| **过滤维度** | **维度名称** | **说明**                                                     | 注意事项                                                     |
-| :----------- | :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
-| 表名         | table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
-| 频率         | frequency    | 默认捕获执行超过一次的语句。可以设置较大值来增加捕获语句的频率。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条频率过滤规则，频率最大的值会被用作过滤条件。 |
-| 用户名       | user         | 黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
+| **维度名称** | **说明**                                                     | 注意事项                                                     |
+| :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+| table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
+| frequency    | 按照频率进行过滤，默认捕获执行超过一次的语句。可以设置较大值来捕获执行频繁的语句。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条频率过滤规则，频率最大的值会被用作过滤条件。 |
+| user         | 按照用户名进行过滤，黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
 
 > **注意：**
 >
@@ -378,16 +378,16 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 
 当需要升级 TiDB 集群时，你可以利用自动捕获绑定对潜在的计划回退风险进行一定程度的防护，具体流程为：
 
-1. 升级前打开自动捕获一段时间，让大多数重要的计划（出现过两次及以上）都能被捕获到。
+1. 升级前打开自动捕获一段时间。
 
     > **注意：**
     >
-    > 经测试，长期打开自动捕获对集群负载的性能影响很小。尽量长期打开自动捕获，以确保重要的查询都能被捕获到。
+    > 经测试，长期打开自动捕获对集群负载的性能影响很小。尽量长期打开自动捕获，以确保重要的查询（出现过两次及以上）都能被捕获到。
 
 2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变。
 3. 升级完成后，根据情况手动删除绑定。
 
-    - 通过[`SHOW BINDINGS`](#查看绑定)语句检查绑定来源：
+    - 通过[`SHOW GLOBAL BINDINGS`](#查看绑定)语句检查绑定来源：
 
         根据输出中的 `Source` 字段对绑定的来源进行区分，确认是通过捕获 (`capture`) 生成还是通过手动创建 (`manual`) 生成。
 
@@ -429,9 +429,9 @@ SET GLOBAL tidb_evolve_plan_baselines = ON;
 
 > **警告：**
 >
-> 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
+> - 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
 >
-> 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
+> - 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
 
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 
