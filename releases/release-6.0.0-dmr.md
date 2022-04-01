@@ -12,7 +12,6 @@ TiDB 版本：6.0.0-DMR
 
 - 基于 SQL 的数据放置规则
 - 内核层面增加数据索引一致性检查
-- Raft Engine 增强
 - TiKV 节点重启后 leader 平衡加速
 - 支持手动取消统计信息的自动更新
 - RC 隔离级别下优化 TSO 获取开销
@@ -79,7 +78,6 @@ TiDB 版本：6.0.0-DMR
 | TiKV | [`rocksdb.enable-pipelined-write`](/tikv-configuration-file.md#enable-pipelined-write) | 修改 | 修改默认值为 `false`，表示不开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
 | TiKV | [`rocksdb.max-background-flushes`](/tikv-configuration-file.md#max-background-flushes) | 修改 | 在 CPU 核数为 10 时修改默认值为 `3`，在 CPU 核数量为 8 时默认为 `2`。 |
 | TiKV | [`rocksdb.max-background-jobs`](/tikv-configuration-file.md#max-background-jobs) | 修改 | 在 CPU 核数为 10 时修改默认值为 `9`，在 CPU 核数量为 8 时默认为 `7`。 |
-| TiKV | [`raft-engine.enable`](/tikv-configuration-file.md#raft-engine) | 修改 | 修改默认值改为 `true`，使 Raft Engine 默认存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效。。 |
 | TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 修改最大值为 `10240`。 |
 | TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | 修改 | 修改可调整范围为 `[1, CPU]`。 |
 | TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
@@ -161,12 +159,6 @@ TiDB 版本：6.0.0-DMR
     [用户文档](/dashboard/continuous-profiling.md)
 
 ### 性能
-
-- Raft Engine 增强
-
-    默认使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 长尾延迟。
-
-    [用户文档](/tikv-configuration-file#raft-engine)，[#11119](https://github.com/tikv/tikv/issues/11119)
 
 - 热点小表缓存
 
