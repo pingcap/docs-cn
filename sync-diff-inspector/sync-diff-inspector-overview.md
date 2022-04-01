@@ -1,6 +1,5 @@
 ---
 title: sync-diff-inspector 用户文档
-aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/docs-cn/dev/reference/tools/sync-diff-inspector/overview/']
 ---
 
 # sync-diff-inspector 用户文档
@@ -207,7 +206,7 @@ The data of `sbtest`.`sbtest99` is not equal
 The data of `sbtest`.`sbtest96` is not equal
 
 The rest of tables are all equal.
-The patch file has been generated in 
+The patch file has been generated in
         'output/fix-on-tidb2/'
 You can view the comparision details through 'output/sync_diff.log'
 ```
@@ -275,11 +274,11 @@ Average Speed: 113.277149MB/s
 -- table: sbtest.sbtest99
 -- range in sequence: (3690708) < (id) <= (3720581)
 /*
-  DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`       
+  DIFF COLUMNS ╏   `K`   ╏                `C`                 ╏               `PAD`
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'                
+  source data  ╏ 2501808 ╏ 'hello'                            ╏ 'world'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
-  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'  
+  target data  ╏ 5003616 ╏ '0709824117-9809973320-4456050422' ╏ '1714066100-7057807621-1425865505'
 ╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╋╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍╍
 */
 REPLACE INTO `sbtest`.`sbtest99`(`id`,`k`,`c`,`pad`) VALUES (3700000,2501808,'hello','world');

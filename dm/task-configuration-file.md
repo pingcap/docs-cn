@@ -1,6 +1,5 @@
 ---
 title: DM 任务配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file/']
 ---
 
 # DM 任务配置文件介绍
@@ -73,7 +72,7 @@ mysql-instances:
 > **注意：**
 >
 > DM 2.0 及更新的版本使用 dumpling 工具执行全量备份。全量备份过程中会使用 [`FLUSH TABLES WITH READ LOCK`](https://dev.mysql.com/doc/refman/8.0/en/flush.html#flush-tables-with-read-lock) 短暂地中断备份库的 DML 和 DDL 操作，从而保证并发备份连接的一致性并记录 binlog 位置用于增量复制。所有的并发备份连接启动事务后释放该锁。
-> 
+>
 > 推荐在业务低峰或者 MySQL 备库上进行全量备份。
 
 ### 功能配置集

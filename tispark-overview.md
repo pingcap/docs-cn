@@ -1,6 +1,5 @@
 ---
 title: TiSpark 用户指南
-aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 ---
 
 # TiSpark 用户指南
@@ -369,7 +368,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 // 开启鉴权与授权功能
 spark.sql.auth.enable   true
 
-// 配置 TiDB 信息 
+// 配置 TiDB 信息
 spark.sql.tidb.addr    $your_tidb_server_address
 spark.sql.tidb.port    $your_tidb_server_port
 spark.sql.tidb.user    $your_tidb_server_user

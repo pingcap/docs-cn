@@ -1,7 +1,6 @@
 ---
 title: TiDB 集群报警规则
 summary: TiDB 集群中各组件的报警规则详解。
-aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 ---
 
 # TiDB 集群报警规则
@@ -199,7 +198,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。 
+    PD 长时间（默认配置是 30 分钟）没有收到 TiKV/TiFlash 心跳。
 
 * 处理方法：
 

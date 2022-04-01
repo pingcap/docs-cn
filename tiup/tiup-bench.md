@@ -1,6 +1,5 @@
 ---
 title: 使用 TiUP bench 组件压测 TiDB
-aliases: ['/docs-cn/dev/tiup/tiup-bench/','/docs-cn/dev/reference/tools/tiup/bench/']
 ---
 
 # 使用 TiUP bench 组件压测 TiDB
@@ -14,7 +13,7 @@ tiup bench
 ```
 
 ```
-Starting component `bench`: /home/tidb/.tiup/components/bench/v1.5.0/bench 
+Starting component `bench`: /home/tidb/.tiup/components/bench/v1.5.0/bench
 Benchmark database with different workloads
 
 Usage:
@@ -34,8 +33,8 @@ Flags:
   -H, --host string         数据库的主机地址 (默认 "127.0.0.1")
       --ignore-error        忽略压测时数据库报出的错误
       --interval duration   两次报告输出时间的间隔 (默认 10s)
-      --isolation int       隔离级别 0: Default, 1: ReadUncommitted, 
-                            2: ReadCommitted, 3: WriteCommitted, 4: RepeatableRead, 
+      --isolation int       隔离级别 0: Default, 1: ReadUncommitted,
+                            2: ReadCommitted, 3: WriteCommitted, 4: RepeatableRead,
                             5: Snapshot, 6: Serializable, 7: Linerizable
       --max-procs int       runtime.GOMAXPROCS
   -p, --password string     数据库密码

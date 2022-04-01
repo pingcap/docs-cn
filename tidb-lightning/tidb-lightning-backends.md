@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 后端
 summary: 了解使用 TiDB Lightning 导入数据时，如何选择不同的后端。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/','/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/dev/loader-overview/']
 ---
 
 # TiDB Lightning 后端
@@ -155,7 +154,7 @@ backend = "tidb"
 
 [mydumper]
 # 设置文件读取的区块大小(默认为 64 KiB)，确保该值比数据源的最长字符串长。
-# read-block-size = "64KiB" 
+# read-block-size = "64KiB"
 
 # （源数据文件）单个导入区块大小的最小值（默认为 100 GiB）。
 # TiDB Lightning 根据该值将一张大表分割为多个数据引擎文件。

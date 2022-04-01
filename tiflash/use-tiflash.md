@@ -1,6 +1,5 @@
 ---
 title: 使用 TiFlash
-aliases: ['/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/']
 ---
 
 如果需要快速体验以 TPC-H 为例子，从导入到查询的完整流程，可以参考 [HTAP 快速上手指南](/quick-start-with-htap.md)
@@ -118,34 +117,34 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-    
+
         ...
-    
+
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-    
+
         ...
-    
+
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-    
+
         ...
-    
+
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-    
+
         ...
     ```
 
@@ -380,7 +379,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 ### 其他限制
 
-* 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash 
+* 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash
 * date_add、date_sub、adddate 和 subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
     * DAY
     * WEEK
@@ -608,16 +607,16 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-        
+
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-        
+
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-        
+
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-        
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -625,10 +624,10 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-        
+
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-        
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```

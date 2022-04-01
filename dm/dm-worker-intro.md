@@ -1,6 +1,5 @@
 ---
 title: DM-worker 简介
-aliases: ['/docs-cn/tidb-data-migration/dev/dm-worker-intro/']
 ---
 
 # DM-worker 简介

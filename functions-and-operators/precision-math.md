@@ -1,6 +1,5 @@
 ---
 title: 精度数学
-aliases: ['/docs-cn/dev/functions-and-operators/precision-math/','/docs-cn/dev/reference/sql/functions-and-operators/precision-math/']
 ---
 
 # 精度数学
@@ -49,7 +48,7 @@ DECIMAL 列的值采用二进制进行存储，其将每 9 位十进制数字包
 
 例如：
 
-+ 定义类型为 DECIMAL(18, 9) 的列，其小数点两侧均各包含 9 位十进制数字。因此，分别需要 4 个字节的存储空间。 
++ 定义类型为 DECIMAL(18, 9) 的列，其小数点两侧均各包含 9 位十进制数字。因此，分别需要 4 个字节的存储空间。
 
 + 定义类型为 DECIMAL(20, 6) 的列，其小数部分包含 6 位十进制数字，整数部分包含 14 位十进制数字。整数部分中 9 位数字需要 4 个字节进行存储，其余 5 位数字需要 3 个字节进行存储。小数部分 6 位数字需要 3 个字节进行存储。
 

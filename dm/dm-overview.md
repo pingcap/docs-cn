@@ -1,7 +1,6 @@
 ---
 title: Data Migration 简介
 summary: 了解 TiDB Data Migration
-aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/']
 ---
 
 # 产品简介
@@ -21,7 +20,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overvi
 - **集中管理。** DM 支持上千个节点的集群规模，可同时运行并集中管理大量数据迁移同步任务。
 - **对第三方 Online Schema Change 工具变更过程的同步优化。** 在 MySQL 生态中，gh-ost 与 pt-osc 等工具被广泛使用，DM 对其变更过程进行了特殊的优化，以避免对不必要的中间数据进行迁移。详细信息可参考 [online-ddl](/dm/dm-key-features.md#online-ddl-工具支持)。
 - **高可用。** 支持迁移任务在不同节点自由调度，少量工作节点宕机并不会影响进行中的任务。
-  
+
 ## 快速安装
 
 {{< copyable "shell-regular" >}}

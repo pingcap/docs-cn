@@ -1,7 +1,6 @@
 ---
 title: 乐观模式下分库分表合并迁移
 summary: 介绍 DM 提供的乐观模式下分库分表的合并迁移功能。
-aliases: ['/docs-cn/tidb-data-migration/dev/feature-shard-merge-optimistic/']
 ---
 
 # 乐观模式下分库分表合并迁移
@@ -50,7 +49,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 - TiDB 不支持的 DDL 语句在 DM 也不支持。
 - 新增列的默认值不能包含 `current_timestamp`、`rand()`、`uuid()` 等，否则会造成上下游数据不一致。
 
-## 风险 
+## 风险
 
 使用乐观模式迁移时，由于 DDL 会即时迁移到下游，若使用不当，可能导致上下游数据不一致。
 
@@ -81,7 +80,7 @@ ALTER TABLE `tbl01` ADD COLUMN `Age` INT DEFAULT 0;
 
  在 `tbl00` 新增一列 `Age`，但默认值定为 `-1`：
 
-```SQL 
+```SQL
 ALTER TABLE `tbl00` ADD COLUMN `Age` INT DEFAULT -1;
 ```
 

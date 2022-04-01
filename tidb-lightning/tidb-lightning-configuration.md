@@ -1,7 +1,6 @@
 ---
 title: TiDB Lightning 配置参数
 summary: 使用配置文件或命令行配置 TiDB Lightning。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-configuration/','/docs-cn/dev/reference/tools/tidb-lightning/config/']
 ---
 
 # TiDB Lightning 配置参数
@@ -111,10 +110,10 @@ driver = "file"
 
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。 
+# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。
 # backend = "local"
 # 是否允许向已存在数据的表导入数据。默认值为 false。
-# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。 
+# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
@@ -220,14 +219,14 @@ trim-last-separator = false
 # schema = '$1'
 # table = '$2'
 # type = '$3'
-# 
+#
 # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表，以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
 # [[routes]]
 # schema-pattern = "my_db1"
 # table-pattern = "table[1-2]"
 # target-schema = "my_db"
 # target-table = "table5"
-# 
+#
 # [[routes]]
 # schema-pattern = "my_db2"
 # table-pattern = "table[3-4]"

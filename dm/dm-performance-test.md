@@ -1,7 +1,6 @@
 ---
 title: DM 集群性能测试
 summary: 了解如何测试 DM 集群的性能。
-aliases: ['/docs-cn/tidb-data-migration/dev/performance-test/']
 ---
 
 # DM 集群性能测试
@@ -104,7 +103,7 @@ sysbench --test=oltp_insert --tables=4 --mysql-host=172.16.4.40 --mysql-port=330
 
 ### 增量复制性能测试用例
 
-#### 初始化表 
+#### 初始化表
 
 使用 `sysbench` 在上游创建测试表。
 
