@@ -26,43 +26,48 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 ## 准备工作
 
-### 第 1 步：安装数据采集组件 Diag
+在使用 PingCAP Clinic 功能之前，你需要先安装数据采集组件 Diag 并准备数据上传环境。
 
-- 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
+1. 安装数据采集组件 Diag
 
-    {{< copyable "shell-regular" >}}
+    - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
-    ```bash
-    tiup install diag
-    ```
+        {{< copyable "shell-regular" >}}
 
-- 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
+        ```bash
+        tiup install diag
+        ```
 
-    {{< copyable "shell-regular" >}}
+    - 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
 
-    ```bash
-    tiup update diag
-    ```
+        {{< copyable "shell-regular" >}}
 
-> **注意：**
->
-> - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
-> - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
+        ```bash
+        tiup update diag
+        ```
 
-### 第 2 步：准备数据上传环境
+    > **注意：**
+    >
+    > - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
+    > - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
 
-1. 获取 Token：成功创建组织后，你获取用于上传数据的 Upload Token（以下简称为 Token）。使用 Diag 上传数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
+2. 获取并设置用于上传数据的 Access Token（以下简称为 Token）。
 
-    点击 Cluster 页面右下角的图标，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
+    使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可忽略此步骤。
+
+    具体获取与设置方法如下：
+
+    登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
 
     ![Token 示例](/media/clinic-get-token.png)
 
     > **注意：**
     >
-    > - 如果你第一次访问 Clinic Server，你需要使用 TiDB 社区 AskTUG 的账号完成登录后，创建组织 (Organization)并获取 Token。具体步骤，请参考 [快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#第-2-步-准备数据上传环境)。
+    > - 如果你第一次访问 Clinic Server，请参考 [快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#第-2-步-准备数据上传环境) 的相关步骤。
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+    > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-2. 在 Diag 中设置 Token：
+    成功获取后，参考以下命令行，在 Diag 中设置该 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -197,7 +202,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 > **注意：**
 >
-> 如果在上传前没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备数据上传环境（第 2 步）](#第-2-步准备数据上传环境)。
+> 如果在上传前没有在 Diag 中设置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
 
 #### 方式 1：直接上传
 
