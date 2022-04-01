@@ -9,6 +9,11 @@ summary: The usage of ALTER PLACEMENT POLICY in TiDB.
 
 `ALTER PLACEMENT POLICY` _replaces_ the previous policy with the new definition. It does not _merge_ the old policy with the new one. In the following example, `FOLLOWERS=4` is lost when the `ALTER PLACEMENT POLICY` is executed:
 
+```sql
+CREATE PLACEMENT POLICY p1 FOLLOWERS=4;
+ALTER PLACEMENT POLICY p1 PRIMARY_REGION="us-east-1" REGIONS="us-east-1,us-west-1";
+```
+
 ## Synopsis
 
 ```ebnf+diagram
