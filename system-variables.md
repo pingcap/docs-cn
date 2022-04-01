@@ -1583,7 +1583,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`3`
 - 范围：`[1, 10]`
 - 单位：秒
-- 这个变量用来控制[缓存表](/table-cache.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
+- 这个变量用来控制[缓存表](/cached-tables.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
 
 ### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
 
