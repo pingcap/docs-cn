@@ -42,11 +42,11 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 1. 登录 Clinic Server。访问 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），选择 **Sign in with AskTUG** 进入 TiDB 社区帐号 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
-2. 创建组织 (form)。第一次成功登录到 Clinic Server 后，你需要创建组织。根据【XXX页面名称】上的提示输入组织名称即可创建组织。组织是一系列 TiDB 集群的集合。创建组织后，你可以在组织上上传集群的诊断数据。
+2. 创建组织 (Organization)。第一次成功登录到 Clinic Server 后，你需要创建组织。根据页面提示输入组织名称即可创建组织。组织是一系列 TiDB 集群的集合。创建组织后，你可以在组织上上传集群的诊断数据。
 
 3. 获取 Token。成功创建组织后，你获取用于上传数据的 Upload Token（以下简称为 Token）。使用 Diag 上传数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
 
-    点击【XXX页面名称，比如，首页】页面【XXX 方向，比如右上侧】的上传图标，选择 "Get Access Token For Diag Tool"，在弹出窗口（如图）中复制并保存 Token 信息。
+    点击 Cluster 页面右下角的图标，选择 "Get Access Token For Diag Tool"，在弹出窗口（如图）中复制并保存 Token 信息。
 
     ![Token 示例](/media/clinic-get-token.png)
 
