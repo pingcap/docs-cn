@@ -99,7 +99,7 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 
 #### 对 `new_collations_enabled_on_first_bootstrap` 的检查
 
-从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。 
 
 从 v6.0.0 开始，BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项，同时在恢复时会检查此配置项是否与下游集群相同。若上下游的该配置不相同，BR 会拒绝恢复，并报告此配置项不匹配的错误。
 
