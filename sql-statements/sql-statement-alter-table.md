@@ -42,6 +42,8 @@ AlterTableSpec ::=
 |   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
 |   'SECONDARY_LOAD'
 |   'SECONDARY_UNLOAD'
+|   ( 'AUTO_INCREMENT' | 'AUTO_ID_CACHE' | 'AUTO_RANDOM_BASE' | 'SHARD_ROW_ID_BITS' ) EqOpt LengthNum
+|   ( 'CACHE' | 'NOCACHE' )
 ```
 
 ## Examples
@@ -161,6 +163,8 @@ The following major restrictions apply to `ALTER TABLE` in TiDB:
 * Changes of some data types (for example, some TIME, Bit, Set, Enum, and JSON types) are not supported due to the compatibility issues of the `CAST` function's behavior between TiDB and MySQL.
 
 * Spatial data types are not supported.
+
+* `ALTER TABLE t CACHE | NOCACHE` is a TiDB extension to MySQL syntax. For details, see [Cached Tables](/cached-tables.md).
 
 For further restrictions, see [MySQL Compatibility](/mysql-compatibility.md#ddl).
 
