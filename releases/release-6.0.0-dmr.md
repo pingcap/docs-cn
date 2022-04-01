@@ -166,7 +166,7 @@ TiDB 版本：6.0.0-DMR
 
 - 内存悲观锁优化
 
-    TiDB 从 6.0 开始默认开启内存悲观锁功能。开启后，悲观事务锁管理将在内存中完成，避免悲观锁持久化，也避免了锁信息的 Raft 复制，大大降低悲观事务锁管理的开销。在悲观锁性能瓶颈下，通过悲观锁内存优化，可以有效降低 10% 延迟， 提升 10% QPS。
+    TiDB 从 6.0.0 开始默认开启内存悲观锁功能。开启后，悲观事务锁管理将在内存中完成，避免悲观锁持久化，也避免了锁信息的 Raft 复制，大大降低悲观事务锁管理的开销。在悲观锁性能瓶颈下，通过悲观锁内存优化，可以有效降低 10% 延迟， 提升 10% QPS。
 
     [用户文档](/pessimistic-transaction.md#内存悲观锁)，[#11452](https://github.com/tikv/tikv/issues/11452)
 
@@ -184,7 +184,7 @@ TiDB 版本：6.0.0-DMR
 
 - 函数查询增强
 
-    TiDB 是原生计算存储分离架构，算子下推可以在存储层过滤无效数据，大大减少 TiDB 与 TiKV 的数据传输，提升查询效率。TiDB 在 v6.0 支持更多的表达式和 `BIT` 数据类型下推至 TiKV，以提升运算该类内容时的查询效率。
+    TiDB 是原生计算存储分离架构，算子下推可以在存储层过滤无效数据，大大减少 TiDB 与 TiKV 的数据传输，提升查询效率。TiDB 在 v6.0.0 支持更多的表达式和 `BIT` 数据类型下推至 TiKV，以提升运算该类内容时的查询效率。
 
     [用户文档](/functions-and-operators/expressions-pushed-down.md#加入黑名单)，[#12037](https://github.com/tikv/tikv/pull/12037)
 
@@ -305,9 +305,9 @@ TiDB 版本：6.0.0-DMR
 
 ### 部署及运维
 
-- 默认采用新 collation 规则
+- 默认采用新 Collation 规则
 
-    TiDB 从 v4.0 开始支持新 collation 规则，在大小写不敏感、口音不敏感、padding 规则 上与 MySQL 行为保持一致。新 collation 规则可以通过 `new_collations_enabled_on_first_bootstrap` 参数控制，默认关闭。从 v6.0 开始，TiDB 默认开启新 Collation 规则，请注意该配置只有在集群初始化时可以设置。
+    TiDB 从 v4.0 开始支持新 collation 规则，在大小写不敏感、口音不敏感、padding 规则 上与 MySQL 行为保持一致。新 Collation 规则可以通过 `new_collations_enabled_on_first_bootstrap` 参数控制，默认关闭。从 v6.0 开始，TiDB 默认开启新 Collation 规则，请注意该配置只有在集群初始化时可以设置。
 
     [用户文档](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)
 
@@ -459,7 +459,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 + PD
 
     - 支持驱逐 leader 时自动选择最快的目标进行迁移，加速驱逐过程 [#4229](https://github.com/tikv/pd/issues/4229)
-    - 禁止直接从有 2 副本的Raft Group 中删除一个 Voter，防止 Region 不可用 [#4564](https://github.com/tikv/pd/pull/4564)
+    - 禁止直接从有 2 副本的 Raft Group 中删除一个 Voter，防止 Region 不可用 [#4564](https://github.com/tikv/pd/pull/4564)
     - 提升 Balance Leader 的调度速度 [#4652](https://github.com/tikv/pd/pull/4652)
 
 + TiFlash
