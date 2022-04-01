@@ -7,7 +7,7 @@ summary: 介绍 PingCAP Clinic 诊断服务，包括工具组件、使用场景�
 
 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 TiDB 集群提供的诊断服务，支持对使用 TiUP 或 TiDB Operator 部署的集群进行远程定位集群问题和本地快速检查集群状态，用于从全生命周期确保 TiDB 集群稳定运行、预测可出现的集群问题、降低问题出现概率、快速定位并修复问题。
 
-[PingCAP Clinic 诊断服务](https://clinic.pingcap.com.cn)目前处于 Technical Preview 阶段。该服务提供以下两个组件进行集群诊断：
+PingCAP Clinic 目前处于 Technical Preview 阶段。该服务提供以下两个组件进行集群诊断：
 
 - Diag 诊断客户端：部署在集群侧的工具，用于采集集群的诊断数据 (collect)、上传诊断数据到 Clinic Server、对集群进行本地快速健康检查 (check)。如需了解 Diag 工具可采集的详细的数据列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
@@ -15,7 +15,7 @@ PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）是 PingCAP 为 T
     >
     > Diag 诊断客户端暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采样。
 
-- Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。
+- [Clinic Server](](https://clinic.pingcap.com.cn))：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。
 
 ## 使用场景
 

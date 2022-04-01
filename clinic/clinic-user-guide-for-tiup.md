@@ -26,9 +26,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 ## 准备工作
 
-### 第 1 步：安装数据采集组件
-
-为采集诊断数据，你需要安装 Diag。
+### 第 1 步：安装数据采集组件 Diag
 
 - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
@@ -57,14 +55,14 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     为上传采集到的数据，你需要在 Clinic Server 获取 Token 后，在 Diag 中设置 Token。上传数据时，你需要通过 Token 在 Diag 上进行进行用户认证，以保证数据上传的数据能够被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
 
-    登录 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），进入【XXX页面名称】页面【XXX 方向，比如右上侧】的上传图标后，选择 "Get Access Token For Diag Tool"，在弹出窗口（如图）中复制并保存 Token 信息。
+    登录 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），进入【XXX页面名称，比如，首页】页面【XXX 方向，比如右上侧】的上传图标后，选择 "Get Access Token For Diag Tool"，在弹出窗口（如图）中复制并保存 Token 信息。
 
     ![Token 示例](/media/clinic-get-token.png)
 
     > **注意：**
     >
     > - 登录 Clinic Server 页面时，你需要使用 TiDB 社区 AskTUG 的账号。如果你之前没有登录过该页面且为在 Clinic Server 中未设置过组织 (form)，请执行 [快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#第-2-步-准备数据上传环境)中的相关步骤。
-    > - 你**只能**在创建 Token 时看到 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+    > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
 
 2. 在 Diag 中设置 Token：
 
