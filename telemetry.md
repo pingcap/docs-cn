@@ -262,4 +262,4 @@ To meet compliance requirements in different countries or regions, the usage inf
 - For IP addresses from the Chinese mainland, usage information is sent to and stored on cloud servers in the Chinese mainland.
 - For IP addresses from outside of the Chinese mainland, usage information is sent to and stored on cloud servers in the US.
 
-See [PingCAP Privacy Policy](https://pingcap.com/privacy-policy) for details.
+See [PingCAP Privacy Policy](https://en.pingcap.com/privacy-policy/) for details.
