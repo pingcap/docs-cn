@@ -5,9 +5,9 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
 # PingCAP Clinic 快速上手指南
 
-本指南介绍在使用 TiUP 部署的集群上如何快速上手体验 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic），包括采集、上传和查看诊断数据的方法。
+本指南介绍如何使用 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）快速采集、上传、查看集群诊断数据。
 
-当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了协助技术人员远程定位集群问题，以提高定位问题的效率，你可以先使用 Diag 客户端（以下简称为 Diag）采集诊断数据，然后使用 Diag 将该数据上传到 [Clinic Server 云服务平台]((https://clinic.pingcap.com.cn))（以下简称为 Clinic Server）并获取数据链接，最后把其数据链接提供给技术支持人员。有关 Diag 和 Clinic Server 的介绍可以参考 [PingCAP Clinic 组件](/clinic/clinic-introduction.md)。
+当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位问题的效率，你可以先使用 Diag 客户端（以下简称为 Diag）采集诊断数据，然后使用 Diag 将该数据上传到 [Clinic Server 云服务平台]((https://clinic.pingcap.com.cn))（以下简称为 Clinic Server）并获取数据链接，最后把其数据链接提供给技术支持人员。有关 Diag 和 Clinic Server 的介绍可以参考 [PingCAP Clinic 组件](/clinic/clinic-introduction.md)。
 
 PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
@@ -20,9 +20,9 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 在开始体验 PingCAP Clinic 功能之前，你需要先安装 Diag 并准备数据上传环境。
 
-### 第 1 步：安装数据采集组件 Diag
+1. 安装数据采集组件 Diag
 
-- 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
+    如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
     {{< copyable "shell-regular" >}}
 
@@ -30,21 +30,11 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
     tiup install diag
     ```
 
-- 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
+2. 登录 Clinic Server。访问 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
-    {{< copyable "shell-regular" >}}
+3. 创建组织 (Organization)。第一次成功登录到 Clinic Server 后，你需要创建组织。根据页面提示输入组织名称即可创建组织。组织是一系列 TiDB 集群的集合。创建组织后，你可以在组织上上传集群的诊断数据。
 
-    ```bash
-    tiup update diag
-    ```
-
-### 第 2 步：准备数据上传环境
-
-1. 登录 Clinic Server。访问 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
-
-2. 创建组织 (Organization)。第一次成功登录到 Clinic Server 后，你需要创建组织。根据页面提示输入组织名称即可创建组织。组织是一系列 TiDB 集群的集合。创建组织后，你可以在组织上上传集群的诊断数据。
-
-3. 获取 Token。成功创建组织后，你获取用于上传数据的 Access Token（以下简称为 Token）。使用 Diag 上传数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
+4. 获取 Token。成功创建组织后，获取用于上传数据的 Access Token（以下简称为 Token）。使用 Diag 上传数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
 
     点击 Cluster 页面右下角的图标，选择 "Get Access Token For Diag Tool"，在弹出窗口中复制并保存 Token 信息。
 
@@ -55,7 +45,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-4. 在 Diag 中设置 Token：
+5. 在 Diag 中设置 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -81,7 +71,7 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
 
 2. 上传诊断数据上传到 Clinic Server。
 
-    - 如果你的集群所在的网络可以访问互联网，你可以直接通过以下命令上传已采集的数据包文件夹：
+    - 如果你的集群所在的网络可以访问互联网，你可以通过以下命令上传已采集的数据包文件夹：
 
         {{< copyable "shell-regular" >}}
 
@@ -103,15 +93,15 @@ PingCAP Clinic 诊断服务目前处于 Technical Preview 阶段。
         > **注意：**
         >
         > - 使用该方式进行上传时，你需要使用 Diag v0.7.0 及以上版本。
-        > - 数据包文件夹的大小不得超过 10 GB。
+        > - 数据包文件夹的大小不得超过 10 GB，否则会导致上传失败。
 
     - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
-3. 访问数据链接，查看采集到的数据。
+3. 完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
 
-    完成数据上传后，你可以打开命令返回结果中 `Download URL` 部分的数据访问链接。打开链接后，你可以查看已上传的诊断数据，具体内容包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
+	诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
 
-    你可以使用功能该数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
+    你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
 
 ## 探索更多
 
