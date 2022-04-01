@@ -431,7 +431,9 @@ To access partitioned tables in the MPP mode, you need to enable [dynamic prunin
 
 > **Warning:**
 >
-> Currently, dynamic pruning mode for partitioned tables is still an experimental feature and is not recommended for production environments.
+> - Currently, dynamic pruning mode for partitioned tables is an experimental feature and is not recommended for production environments.
+>
+> - Do not enable dynamic pruning mode when a partitioned table contains columns of the `time` type. Otherwise, TiFlash crashes when a query selects a column of the `time` type.
 
 Example:
 
