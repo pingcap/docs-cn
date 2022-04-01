@@ -13,7 +13,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
 > **注意：**
 >
-> - 本指南提供的采集和上传数据的方式仅适用于使用 TiUP 部署的集群。
+> - 本指南提供的采集和上传数据的方式仅适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。
 > - 通过 PingCAP Clinic 采集和上传的数据**仅**用于定位和诊断集群问题。
 
 ## 准备工作
@@ -30,7 +30,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     tiup install diag
     ```
 
-2. 登录 Clinic Server。访问 [Clinic Server](https://clinic.pingcap.com.cn)（页面名为 PingCAP Clinic），选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+2. 登录 [Clinic Server](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
 3. 创建组织 (Organization)。第一次成功登录到 Clinic Server 后，你需要创建组织。根据页面提示输入组织名称即可创建组织。组织是一系列 TiDB 集群的集合。完成创建后，你可以在组织上上传采集到的集群诊断数据。
 
