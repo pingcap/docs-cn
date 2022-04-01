@@ -13,7 +13,10 @@ tiup bench
 ```
 
 ```
+<<<<<<< HEAD
 Starting component `bench`: /home/tidb/.tiup/components/bench/v1.5.0/bench
+=======
+>>>>>>> 84ac4fa3e (tiup-bump-version-6.0 (#8816))
 Benchmark database with different workloads
 
 Usage:
