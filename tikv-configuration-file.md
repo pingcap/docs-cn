@@ -1324,13 +1324,14 @@ Configuration items related to Raft Engine.
 
 > **Note:**
 >
+> - Raft Engine is an experimental feature. It is not recommended to use it in the production environment.
 > - When you enable Raft Engine for the first time, TiKV transfers its data from RocksDB to Raft Engine. Therefore, you need to wait extra tens of seconds for TiKV to start.
 > - The data format of Raft Engine in TiDB v5.4.0 is not compatible with earlier TiDB versions. Therefore, if you need to downgrade a TiDB cluster from v5.4.0 to an earlier version, **before** downgrading, disable Raft Engine by setting `enable` to `false` and restart TiKV for the configuration to take effect.
 
 ### `enable`
 
 + Determines whether to use Raft Engine to store Raft logs. When it is enabled, configurations of `raftdb` are ignored.
-+ Default value: `"true"`
++ Default value: `"false"`
 
 ### `dir`
 
