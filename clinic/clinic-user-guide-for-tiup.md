@@ -28,7 +28,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 在使用 PingCAP Clinic 功能之前，你需要先安装数据采集组件 Diag 并准备数据上传环境。
 
-1. 安装数据采集组件 Diag
+1. 安装 Diag
 
     - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
@@ -53,9 +53,9 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 2. 获取并设置用于上传数据的 Access Token（以下简称为 Token）。
 
-    使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可忽略此步骤。
+    使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可跳过此步骤。
 
-    具体获取与设置方法如下：
+    首先，通过以下方法获取 Token：
 
     登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
 
@@ -67,7 +67,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - Token 只用于上传数据。
 
-    成功获取后，参考以下命令行，在 Diag 中设置该 Token：
+    然后，参考以下命令行，在 Diag 中设置该 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -113,7 +113,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > **注意：**
     >
     > - Diag 默认**不收集**系统变量数据 (`db_vars`)。如需收集该数据，你需要额外提供开启了系统变量可读权限的数据库用户名和密码。
-    > - Diag 默认**不收集**性能数据 (`perf`)和 debug 数据 (`debug`)。
+    > - Diag 默认**不收集**性能数据 (`perf`)和 Debug 数据 (`debug`)。
     > - 如需收集全量诊断数据，可以使用命令 `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars,perf,debug"`。
 
     - `-l`：传输文件时的带宽限制，单位为 Kbit/s, 默认值为 `100000`（即 scp 的 `-l` 参数）。
@@ -354,7 +354,7 @@ Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    你可以先尝试登录 Clinic Server 页面。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
+    你可以先尝试登录 [Clinic Server](https://clinic.pingcap.com.cn)。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 
