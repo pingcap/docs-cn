@@ -7,7 +7,10 @@ summary: 本文介绍如何快速上手体验 PingCAP Clinic 诊断服务，包�
 
 本指南介绍如何使用 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）快速采集、上传、查看集群诊断数据。
 
-当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位问题的效率，你可以先使用 Diag 客户端（以下简称为 Diag）采集诊断数据，然后使用 Diag 将该数据上传到 [Clinic Server 云服务平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）并获取数据链接，最后把其数据链接提供给技术支持人员。有关 Diag 和 Clinic Server 的介绍可以参考 [PingCAP Clinic 组件](/clinic/clinic-introduction.md)。
+
+PingCAP Clinic 由 Diag 客户端（以下简称为 Diag）和 [Clinic Server 云服务平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
+
+当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位和解决问题的效率，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并获取数据链接，然后将数据链接提供给技术支持人员。
 
 PingCAP Clinic 目前处于 Technical Preview 阶段。
 
