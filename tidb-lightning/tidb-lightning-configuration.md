@@ -262,6 +262,7 @@ trim-last-separator = false
 host = "172.16.31.1"
 port = 4000
 user = "root"
+# Configure the password to connect to TiDB. The password can either be plaintext or Base64 encoded.
 password = ""
 # Table schema information is fetched from TiDB via this status-port.
 status-port = 10080
@@ -440,7 +441,7 @@ min-available-ratio = 0.05
 | --tidb-port *port* | TiDB server port (default = 4000) | `tidb.port` |
 | --tidb-status *port* | TiDB status port (default = 10080) | `tidb.status-port` |
 | --tidb-user *user* | User name to connect to TiDB | `tidb.user` |
-| --tidb-password *password* | Password to connect to TiDB | `tidb.password` |
+| --tidb-password *password* | Password to connect to TiDB. The password can either be plaintext or Base64 encoded. | `tidb.password` |
 | --no-schema | Ignore schema files, get schema directly from TiDB | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | Whether to enable checkpoints (default = true) | `checkpoint.enable` |
 | --analyze *level* | Analyze tables after importing. Available values are "required", "optional" (default value), and "off" | `post-restore.analyze` |
