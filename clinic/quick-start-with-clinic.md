@@ -88,8 +88,6 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
         {{< copyable "shell-regular" >}}
 
         ```bash
-        [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-        Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
         Completed!
         Download URL: "https://clinic.pingcap.com/clinic/#/orgs/75/clusters/7055188676317281573 "
         ```
