@@ -121,7 +121,7 @@ TiDB 版本：6.0.0-DMR
 
 - 基于 SQL 的数据放置规则
 
-    TiDB 是具有优秀扩展能力的分布式数据库，通常数据横跨多个服务器甚至多数据中心部署，数据调度管理是 TiDB 最重要的基础能力之一。大多数情况下客户无需关心数据如何调度管理，但是随着业务复杂度的提升，因隔离性和访问延迟导致的数据部署变更是 TiDB 面对的新的挑战。TiDB 从 6.0 版本开始正式提供基于 SQL 接口的数据调度管理能力，支持针对任意数据提供副本数、角色类型、放置位置等维度的灵活调度管理能力，在多业务共享集群、跨 AZ 部署下提供更灵活的数据放置管理能力。
+    TiDB 是具有优秀扩展能力的分布式数据库，通常数据横跨多个服务器甚至多数据中心部署，数据调度管理是 TiDB 最重要的基础能力之一。大多数情况下客户无需关心数据如何调度管理，但是随着业务复杂度的提升，因隔离性和访问延迟导致的数据部署变更是 TiDB 面对的新的挑战。TiDB 从 6.0.0 版本开始正式提供基于 SQL 接口的数据调度管理能力，支持针对任意数据提供副本数、角色类型、放置位置等维度的灵活调度管理能力，在多业务共享集群、跨 AZ 部署下提供更灵活的数据放置管理能力。
 
     [用户文档](/placement-rules-in-sql.md)
 
@@ -142,8 +142,6 @@ TiDB 版本：6.0.0-DMR
     Top SQL 是一个面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能，集成于 TiDB Dashboard 图形化界面，用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
 
     Top SQL 默认关闭，可一键启用。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点最近 30 天内的 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 找出一个低负载的数据库上执行的一条消耗 99% 负载的分析查询。
-
-
     [用户文档](/dashboard/top-sql.md)
 
 - 持续性能分析成为正式功能 (GA)
@@ -180,7 +178,7 @@ TiDB 版本：6.0.0-DMR
 
 - 增强 Prepared Statement 执行计划共享
 
-    SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享，但是在 Prepared 语句 close 时会主动清空对应的 Plan Cache，对于重复执行的 SQL 造成不必要的解析，影响语句执行效率。TiDB 从 6.0 开始支持通过 `tidb_ignore_clost_stmt_cmd` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭，开启后可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，提升执行计划的复用率。
+    SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享，但是在 Prepared 语句 close 时会主动清空对应的 Plan Cache，对于重复执行的 SQL 造成不必要的解析，影响语句执行效率。TiDB 从 6.0.0 开始支持通过 `tidb_ignore_clost_stmt_cmd` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭，开启后可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，提升执行计划的复用率。
 
     [用户文档](/sql-prepare-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
 
