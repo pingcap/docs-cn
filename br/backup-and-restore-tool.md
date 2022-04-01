@@ -97,7 +97,7 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
 
-#### new_collations_enabled_on_first_bootstrap 检查
+#### 对 `new_collations_enabled_on_first_bootstrap` 的检查
 
 从 TiDB v6.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置的默认值由 `false` 改为 `true`，当上下游集群的此项配置相同时，才可以将上游集群的备份数据安全地恢复到下游集群中，具体原因见[排序规则支持](/character-set-and-collation.md#排序规则支持)。
 
