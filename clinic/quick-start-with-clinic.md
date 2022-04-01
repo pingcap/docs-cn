@@ -103,7 +103,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
     - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
-4.  完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
+4. 完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
 
     诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
 
