@@ -67,7 +67,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 `ERROR 8223 (HY000): data inconsistency in table: t2, index: i1, handle: {hello, hello}, index-values:"" != record-values:"handle: {hello, hello}, values: [KindString hello KindString hello]"`
 
-上述错误表明，`index-value` 为空，`record-values` 不为空，说明不存在对应的索引，但存在对应的行， 存在不一致。
+上述错误表明，`index-values` 为空，`record-values` 不为空，说明不存在对应的索引，但存在对应的行， 存在不一致。
 
 ## 报错的原因及处理方法
 
