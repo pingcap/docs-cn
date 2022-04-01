@@ -38,7 +38,7 @@ br restore full -s local:///br_data/ --pd 172.16.5.198:2379 --log-file restore.l
 
 - v6.0.0 前的串行建表方案：
 
-    在使用 BR 执行数据恢复任务时，BR 会先在目标 TiDB 集群创建库和表后，再开始进行数据恢复。建表时，BR 会在调用 TiDB 内部接口后，使用 SQL 语句 `Create Table` 创建表。建表任务由 TiDB DDL owner 依次串行执行。在每张表被创建时，各会引起一次 DDL schema 版本的变更，而每次的 schema 版本的变更都需要同步到其他 TiDB DDL worker（含 BR）。因此，当需要创建的表的数量比较多时，串行建表方案会导致建表时间过长。
+    在使用 BR 执行数据恢复任务时，BR 会先在目标 TiDB 集群创建库和表后，再开始进行数据恢复。建表时，BR 会调用 TiDB 内部 API 后创建表，其运作方式看似像 BR 在执行 SQL `Create Table` 语句。建表任务由 TiDB DDL owner 依次串行执行。在每张表被创建时，各会引起一次 DDL schema 版本的变更，而每次的 schema 版本的变更都需要同步到其他 TiDB DDL worker（含 BR）。因此，当需要创建的表的数量比较多时，串行建表方案会导致建表时间过长。
 
 - v6.0.0 起的批量建表方案：
 
