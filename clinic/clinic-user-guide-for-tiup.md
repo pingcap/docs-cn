@@ -28,7 +28,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 在使用 PingCAP Clinic 功能之前，你需要先安装数据采集组件 Diag 并准备数据上传环境。
 
-1. 安装 Diag
+1. 安装 Diag。
 
     - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
@@ -55,9 +55,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可跳过此步骤。
 
-    首先，通过以下方法获取 Token：
-
-    登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+    首先，通过以下方法获取 Token：登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
 
     ![Token 示例](/media/clinic-get-token.png)
 
