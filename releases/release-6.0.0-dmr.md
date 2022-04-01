@@ -16,7 +16,7 @@ TiDB 版本：6.0.0-DMR
 - 支持手动取消统计信息的自动更新
 - RC 隔离级别下优化 TSO 获取开销
 - 增强 Prepared Statement 执行计划共享
-- 函数查询增强
+- 增强查询的下推功能
 - TiKV 过载资源保护增强（实验特性)
 - 小表缓存
 - 内存悲观锁优化
@@ -182,7 +182,7 @@ TiDB 版本：6.0.0-DMR
 
     [用户文档](/sql-prepare-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
 
-- 函数查询增强
+- 增强查询的下推功能
 
     TiDB 是原生计算存储分离架构，算子下推可以在存储层过滤无效数据，大大减少 TiDB 与 TiKV 的数据传输，提升查询效率。TiDB 在 v6.0.0 支持更多的表达式和 `BIT` 数据类型下推至 TiKV，以提升运算该类内容时的查询效率。
 
