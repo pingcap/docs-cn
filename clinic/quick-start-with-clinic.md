@@ -52,9 +52,9 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
 2. 获取并设置 Token。
 
-    完成数据采集后，使用 Diag 上传数据时，你需要使用 Access Token（以下简称为 Token）在 Diag 上进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
+    完成数据采集后，使用 Diag 上传数据前，你需要先使用 Access Token（以下简称为 Token）在 Diag 上进行用户认证，以保证数据上传到组织后可以被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
 
-    登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token，复制并保存 Token 信息。
+    登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
 
     ![Token 示例](/media/clinic-get-token.png)
 
@@ -64,7 +64,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-    完成获取后，在 Diag 中设置 Token：
+    完成获取后，参考以下命令，在 Diag 中设置 Token：
 
     {{< copyable "shell-regular" >}}
 
@@ -79,6 +79,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     > 上传数据（数据包文件夹）的大小不得超过 10 GB，否则会导致上传失败。
 
     - 如果你的集群所在的网络可以访问互联网，你可以通过以下命令上传已采集的数据包文件夹：
+
         {{< copyable "shell-regular" >}}
 
         ```bash
