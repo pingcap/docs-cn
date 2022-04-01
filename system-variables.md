@@ -1,6 +1,5 @@
 ---
 title: 系统变量
-aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration/tidb-server/mysql-variables/','/docs-cn/dev/tidb-specific-system-variables/','/docs-cn/dev/reference/configuration/tidb-server/tidb-specific-variables/','/zh/tidb/dev/tidb-specific-system-variables/']
 ---
 
 # 系统变量
@@ -1702,7 +1701,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：(string)
 - 这个变量值是 TiDB 所在操作系统的名称。
 
-### `version_compile_machine` 
+### `version_compile_machine`
 
 - 作用域：NONE
 - 默认值：(string)

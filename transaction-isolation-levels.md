@@ -1,7 +1,6 @@
 ---
 title: TiDB 事务隔离级别
 summary: 了解 TiDB 事务的隔离级别。
-aliases: ['/docs-cn/dev/transaction-isolation-levels/','/docs-cn/dev/reference/transactions/transaction-isolation/']
 ---
 
 # TiDB 事务隔离级别
@@ -66,7 +65,7 @@ MySQL 可重复读隔离级别在更新时并不检验当前版本是否可见�
 - 如果读取过程中遇到更新的数据版本：
     - 如果当前 TiDB 尚未向客户端回复数据，则尝试重新获取一个新的时间戳重试此语句。
     - 如果 TiDB 已经向客户端返回部分数据，则 TiDB 会向客户端报错。每次向客户端回复的数据量受 `tidb_init_chunk_size` 和 `tidb_max_chunk_size` 控制。
-    
+
 在使用 `READ-COMMITTED` 隔离级别且单个事务中 `SELECT` 语句较多、读写冲突较少的场景，可通过开启此变量来避免获取全局 timestamp 带来的延迟和开销。
 
 ### 与 MySQL Read Committed 隔离级别的区别

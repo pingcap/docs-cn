@@ -1,6 +1,5 @@
 ---
 title: TiKV 简介
-aliases: ['/docs-cn/dev/tikv-overview/']
 ---
 
 # TiKV 简介

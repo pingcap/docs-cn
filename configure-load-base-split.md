@@ -1,10 +1,9 @@
 ---
 title: Load Base Split
 summary: 介绍 Load Base Split 功能。
-aliases: ['/docs-cn/dev/configure-load-base-split/']
 ---
 
-# Load Base Split 
+# Load Base Split
 
 Load Base Split 是 TiKV 在 4.0 版本引入的特性，旨在解决 Region 访问分布不均匀造成的热点问题，比如小表的全表扫描。
 

@@ -1,6 +1,5 @@
 ---
 title: TiDB 数据库快速上手指南
-aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started/local-cluster/install-from-docker-compose/']
 ---
 
 # TiDB 数据库快速上手指南
@@ -293,7 +292,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     ```shell
     source .bash_profile
     ```
-    
+
 3. 安装 TiUP 的 cluster 组件：
 
     {{< copyable "shell-regular" >}}

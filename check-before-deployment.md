@@ -1,7 +1,6 @@
 ---
 title: TiDB 环境与系统配置检查
 summary: 了解部署 TiDB 前的环境检查操作。
-aliases: ['/docs-cn/dev/check-before-deployment/']
 ---
 
 # TiDB 环境与系统配置检查
@@ -198,7 +197,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
       若发现系统既没有配置 `chronyd` 也没有配置 `ntpd` ，则表示系统尚未安装任一服务。此时，应先安装其中一个服务，并保证它可以自动启动，默认使用 `ntpd`。
 
-        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。 
+        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。
 
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 

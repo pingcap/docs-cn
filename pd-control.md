@@ -1,6 +1,5 @@
 ---
 title: PD Control 使用说明
-aliases: ['/docs-cn/dev/pd-control/','/docs-cn/dev/reference/tools/pd-control/']
 ---
 
 # PD Control 使用说明
@@ -930,7 +929,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a "" 20 
+>> region keys --format=raw a "" 20
 ```
 
 ```

@@ -1,7 +1,6 @@
 ---
 title: CHANGE COLUMN
 summary: TiDB 数据库中 CHANGE COLUMN 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-change-column/','/docs-cn/dev/reference/sql/statements/change-column/']
 ---
 
 # CHANGE COLUMN
@@ -10,7 +9,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-change-column/','/docs-cn/d
 
 从 v5.1.0 版本起，TiDB 开始支持 Reorg 数据的类型变更，包括但不限于：
 
-- 从 varchar 转换为 bigint 
+- 从 varchar 转换为 bigint
 - decimal 精度修改
 - 从 varchar(10) 到 varchar(5) 的长度压缩
 

@@ -1,6 +1,5 @@
 ---
 title: PD 配置文件描述
-aliases: ['/docs-cn/dev/pd-configuration-file/','/docs-cn/dev/reference/configuration/pd-server/configuration-file/']
 ---
 
 # PD 配置文件描述
@@ -262,7 +261,7 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + 设置是否开启跨表 merge。
 + 默认值：true
 
-### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span> 
+### `region-score-formula-version` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 + 设置 Region 算分公式版本。
 + 默认值：v2

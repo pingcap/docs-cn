@@ -1,6 +1,5 @@
 ---
 title: TiKV 配置文件描述
-aliases: ['/docs-cn/dev/tikv-configuration-file/','/docs-cn/dev/reference/configuration/tikv-server/configuration-file/']
 ---
 
 # TiKV 配置文件描述
@@ -1497,7 +1496,7 @@ Raft Engine 相关的配置项。
 ### `num-threads`
 
 + 处理备份的工作线程数量。
-+ 默认值：CPU * 0.5，但最大为 8 
++ 默认值：CPU * 0.5，但最大为 8
 + 可调整范围：[1, CPU]
 + 最小值：1
 

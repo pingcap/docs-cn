@@ -1,7 +1,6 @@
 ---
 title: DM Relay Log
 summary: 了解目录结构、初始迁移规则和 DM relay log 的数据清理。
-aliases: ['/docs-cn/tidb-data-migration/dev/relay-log/']
 ---
 
 # DM Relay Log
@@ -103,9 +102,9 @@ Relay log 迁移的起始位置由如下规则决定：
 在 v5.4.0 及之后的版本中，你可以通过将 `enable-relay` 设为 `true` 开启 relay log。自 v5.4.0 起，DM-worker 在绑定上游数据源时，会检查上游数据源配置中的 `enable-relay` 项。如果 `enable-relay` 为 `true`，则为该数据源启用 relay log 功能。
 
 具体配置方式参见[上游数据源配置文件介绍](/dm/dm-source-configuration-file.md)
-    
+
 除此以外，你也可以通过 `start-relay` 或 `stop-relay` 命令动态调整数据源的 `enable-relay` 并即时开启或关闭 relay log。
-    
+
 {{< copyable "shell-regular" >}}
 
 ```bash
@@ -119,14 +118,14 @@ Relay log 迁移的起始位置由如下规则决定：
 }
 ```
 
-</div> 
-    
+</div>
+
 <div label="v2.0.2（包含）到 v5.3.0（包含）">
 
 > **注意：**
-> 
+>
 > 在 v2.0.2 及之后的 v2.0 版本，以及在 v5.3.0 版本中，上游数据源配置中的 `enable-relay` 项失效，你只能通过`start-relay` 和 `stop-relay`命令开启和关闭 relay log。[加载数据源配置](/dm/dm-manage-source.md#数据源操作)时，如果 DM 发现配置中的 `enable-relay` 项为 `true`，会给出如下信息提示：
-> 
+>
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
@@ -262,12 +261,12 @@ Relay log 迁移的起始位置由如下规则决定：
     ]
 }
 ```
-    
+
 {{< copyable "" >}}
 
 ```bash
 » resume-relay -s mysql-replica-01
-```    
+```
 
 ```
 {

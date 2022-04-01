@@ -1,7 +1,6 @@
 ---
 title: SHUTDOWN
 summary: TiDB 数据库中 SHUTDOWN 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-shutdown/']
 ---
 
 # SHUTDOWN

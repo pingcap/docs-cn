@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1 GA Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.1.0-ga/','/docs-cn/dev/releases/3.1.0-ga/']
 ---
 
 # TiDB 3.1 GA Release Notes
@@ -88,6 +87,6 @@ TiDB Ansible 版本：3.1.0 GA
         * 修复因为 TiFlash 相关的 DDL job 导致 Drainer 同步中断的问题 [#948](https://github.com/pingcap/tidb-binlog/pull/948) [#942](https://github.com/pingcap/tidb-binlog/pull/942)
 
     - BR
-    
+
         * 修复关闭 checksum 情况下，仍然执行 checksum 的问题 [#223](https://github.com/pingcap/br/pull/223)
         * 修复 TiDB 开启 auto-random 或 alter-pk 时，增量备份失败的问题 [#230](https://github.com/pingcap/br/pull/230) [#231](https://github.com/pingcap/br/pull/231)
