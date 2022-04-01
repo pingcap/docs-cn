@@ -34,6 +34,25 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
 3. 在 Clinic Server 中，依据页面提示创建组织 (Organization)。组织是一系列 TiDB 集群的集合。你可以在所创建的组织上上传诊断数据。
 
+4. 获取用于上传数据的 Access Token（以下简称为 Token）。使用 Diag 上传数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
+
+    点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+
+    ![Token 示例](/media/clinic-get-token.png)
+
+    > **注意：**
+    >
+    > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+    > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
+
+5. 在 Diag 中设置 Token：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag config clinic.token ${token-value}
+    ```
+
 ## 体验步骤
 
 1. 运行 Diag，采集诊断数据。
@@ -50,29 +69,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。
 
-2. 获取并设置 Token。
-
-    完成数据采集后，使用 Diag 上传数据前，你需要先使用 Access Token（以下简称为 Token）在 Diag 上进行用户认证，以保证数据上传到组织后可以被安全地隔离。获取一个 Token 后，你可以重复使用该 Token，具体获取方法如下：
-
-    登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
-
-    ![Token 示例](/media/clinic-get-token.png)
-
-    > **注意：**
-    >
-    > - 如果在上传前没有配置 Token，Diag 会提示上传失败，并提醒你设置 Token。
-    > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
-    > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
-
-    完成获取后，参考以下命令，在 Diag 中设置 Token：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    tiup diag config clinic.token ${token-value}
-    ```
-
-3. 将采集到的数据上传到 Clinic Server。
+2. 将采集到的数据上传到 Clinic Server。
 
     > **注意：**
     >
@@ -103,7 +100,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
     - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
-4.  完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
+3. 完成数据上传后，通过上传输出结果中的 `Download URL` 获取诊断数据的链接。
 
     诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard。
 
