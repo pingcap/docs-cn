@@ -31,7 +31,7 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ### Cached Table
 
-缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。
+缓存表 (Cached Table) 是指 TiDB 把整张表的数据加载到服务器的内存中，直接从内存中获取表数据，避免从 TiKV 获取表数据，从而提升读性能。详情参见 [缓存表](/table-cache.md)。
 
 ### Continuous Profiling
 
@@ -98,7 +98,7 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 
 ### Quota Limiter
 
-前台限流 (Quota Limiter) 是在 TiDB v6.0.0 版本中作为实验特性引入的功能。当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，开启前台限流相关的 quota 配置项可以限制前台各类请求占用的 CPU 资源。详情参见[quota 相关配置项](/tikv-configuration-file.md#quota)。
+前台限流 (Quota Limiter) 是在 TiDB v6.0.0 版本中作为实验特性引入的功能。当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，开启前台限流相关的 [quota 相关配置项](/tikv-configuration-file.md#quota)可以限制前台各类请求占用的 CPU 资源。
 
 ## R
 
