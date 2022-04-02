@@ -5,9 +5,9 @@ summary: Learn how to use the PingCAP Clinic Diagnostic Service to troubleshoot 
 
 # Use PingCAP Clinic
 
-For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on a cluster status locally using a Clinic diagnostic tool Diag (Diag) and a Clinic Server cloud service (Clinic Server).
+For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on cluster status locally using Diag client (Diag) and [Clinic Server China](https://clinic.pingcap.com.cn) (Clinic Server). For details about Diag and Clinic Server, see [PingCAP Clinic components](/clinic/clinic-introduction.md).
 
-PingCAP Clinic is currently in the Beta testing stage.
+PingCAP Clinic is currently in the Technical Preview stage.
 
 > **Note:**
 >
@@ -18,40 +18,60 @@ PingCAP Clinic is currently in the Beta testing stage.
 - [Troubleshoot cluster problems remotely](#troubleshoot-cluster-problems-remotely)
 
     - When your cluster has some problems, if you need to contact PingCAP technical support, you can perform the following operations to facilitate the remote troubleshooting: collect diagnostic data with Diag, upload the collected data to the Clinic Server, and provide the data access link to the technical support staff.
-
-    > **Note:**
-    >
-    > - PingCAP Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
-    > - For the PingCAP Clinic Beta version, external users **cannot use** the features of the Clinic Server. After you upload collected data to the Clinic Server and get a data link using Diag, only authorized PingCAP technical support staff can access the link and view the data.
-
     - When your cluster has some problems, if you cannot analyze the problems immediately, you can use Diag to collect and save the data for later analysis.
 
 - [Perform a quick check on the cluster status locally](#perform-a-quick-check-on-the-cluster-status-locally)
 
-    Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. You can check the potential health risks of a cluster using the local quick check feature provided by PingCAP Clinic. The PingCAP Clinic Beta version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
+    Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. You can check the potential health risks of a cluster using the local quick check feature provided by PingCAP Clinic. The PingCAP Clinic Technical Preview version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
 
 ## Prerequisites
 
-If you have installed TiUP on your control machine, run the following command to install Diag:
+Before using PingCAP Clinic, you need to install Diag (a component to collect data provided by PingCAP Clinic) and prepare the environment to upload data.
 
-{{< copyable "shell-regular" >}}
+1. Install Diag.
 
-```bash
-tiup install diag
-```
+   - If you have installed TiUP on your control machine, run the following command to install Diag:
 
-If you have installed Diag, you can use the following command to upgrade Diag to the latest version:
+        {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
+        ```bash
+        tiup install diag
+        ```
 
-```bash
-tiup update diag
-```
+    - If you have installed Diag, you can use the following command to upgrade Diag to the latest version:
 
-> **Note:**
->
-> - For clusters without an internet connection, you need to deploy Diag offline. For details, refer to [Deploy TiUP offline: Method 2](/production-deployment-using-tiup.md#method-2-deploy-tiup-offline).
-> - Diag is **only** provided in the TiDB Server offline mirror package of v5.4.0 or later.
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup update diag
+        ```
+
+    > **Note:**
+    >
+    > - For clusters without an internet connection, you need to deploy Diag offline. For details, refer to [Deploy TiUP offline: Method 2](/production-deployment-using-tiup.md#method-2-deploy-tiup-offline).
+    > - Diag is **only** provided in the TiDB Server offline mirror package of v5.4.0 or later.
+
+2. Get and set an access token (token) to upload data.
+
+    When uploading collected data through Diag, you need a token for user authentication. If you already set a token Diag, you can reuse the token and skip this step.
+
+    To get a token, log in to [Clinic Server](https://clinic.pingcap.com.cn) and click the icon in the lower-right corner of the Cluster page. Next, select **Get Access Token For Diag Tool**, click **+** in the pop-up window, and then copy and save the displayed token information.
+
+    ![Get the Token](/media/clinic-get-token.png)
+
+    > **Note:**
+    >
+    > - When accessing Clinic Server for the first time, before getting a token, you need to log in to [Clinic Server](https://clinic.pingcap.com.cn) using your AskTUG account and create an organization first.
+    > - For data security, TiDB only displays the token information when it is created. If you lost the information, you can delete the old token and create a new one.
+    > - A token is only used for uploading data.
+
+    Then, set the token in Diag. For example:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag config clinic.token ${token-value}
+    ```
 
 ## Troubleshoot cluster problems remotely
 
@@ -59,9 +79,9 @@ You can use Diag to quickly collect diagnostic data from TiDB clusters and DM cl
 
 ### Step 1. Check the data to be collected
 
-For a detailed list of data that can be collected by Diag, see [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md). 
+For a full list of data that can be collected by Diag, see [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md).
 
-To improve the efficiency of the later diagnosis, you are recommended to collect full diagnostic data including monitoring data and configuration information. For details, see [Collect data from TiDB clusters](#collect-data-from-tidb-clusters].
+To improve the efficiency of the later diagnosis, you are recommended to collect full diagnostic data including monitoring data and configuration information. For details, see [Collect data from TiDB clusters](#collect-data-from-tidb-clusters).
 
 ### Step 2. Collect data
 
@@ -89,9 +109,10 @@ With Diag, you can collect data from the TiDB clusters and the DM clusters deplo
     In addition to specifying the data collection time, you can use Diag to specify more parameters. To get all parameters, run the `tiup diag collect -h` command.
 
     > **Note:**
-    > 
+    >
     > - Diag does not collect system variables data (db_vars) by default. To collect this data, you need to additionally provide a username and password that can access the database. Note that the reading access to system variables should be enabled in this database.
-    > - To collect full diagnostic data including system variables, use the command `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars"`.
+    > - Diag does not collect performance data (`perf`) and debug data (`debug`) by default.
+    > - To collect full diagnostic data including system variables, use the command `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars,perf,debug"`.
 
     - `-l`: the bandwidth limit for transferring files, the unit is Kbit/s, and the default value is `100000` (the `-l` parameter of scp).
     - `-N/--node`: only collects data from a specified node. The format is `ip:port`.
@@ -177,6 +198,10 @@ Depending on the network connection of the cluster, you can choose one of the fo
 - Methods 1: if the network where the cluster is located can access the internet, you can [directly upload data using the upload command](#method-1-upload-directly).
 - Methods 2: if the network where the cluster is located cannot access the internet, you need to [pack the data and then upload it](#method-2-pack-and-upload-data).
 
+> **Note:**
+>
+> If you did not set a token in Diag before uploading data, Diag reports the upload failure and reminds you to set a token. To set a token, see [the second step in Prerequisites](#prerequisites).
+
 #### Method 1. Upload directly
 
 If the network where the cluster is located can access the internet, you can directly upload the folder with collected data obtained in [Step 2: Collect data](#step-2-collect-data) using the following command:
@@ -184,12 +209,8 @@ If the network where the cluster is located can access the internet, you can dir
 {{< copyable "shell-regular" >}}
 
 ```bash
- tiup diag upload ${filepath} -u=username -p='password'
+tiup diag upload
 ```
-
-> **Note:**
->
-> PingCAP Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
 
 The following is an example output:
 
@@ -197,18 +218,13 @@ The following is an example output:
 
 ```bash
 [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Enter Username: username
-Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
 Completed!
-Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
+Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
 ```
 
-After the upload is complete, you need to send the data access link of `Download URL` to the PingCAP technical support staff you contacted before.
-
-> **Note:**
->
-> Currently, only PingCAP technical support staff can open the data access link. External users temporary **cannot** open the link.
+After the upload is complete, you can open the link of `Download URL` to see the uploaded data or send the link to the PingCAP technical support staff you contacted before.
 
 #### Method 2. Pack and upload data
 
@@ -225,7 +241,7 @@ If the network where your cluster is located cannot access the internet, you nee
     During packaging, Diag encrypts and compresses the data at the same time. In the test environment, 800 MB of data was compressed to 57 MB. The following is an example output:
 
     ```bash
-    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag package diag-fNTnz5MGhr6
+    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag package diag-fNTnz5MGhr6
     packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
     ```
 
@@ -236,12 +252,8 @@ If the network where your cluster is located cannot access the internet, you nee
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag upload ${filepath} -u=username -p='password'
+    tiup diag upload ${filepath}
     ```
-
-    > **Note:**
-    >
-    > PingCAP Clinic is currently in the Beta testing stage for invited users only. If you need to upload data to the Clinic Server using Diag, contact [PingCAP technical support](https://en.pingcap.com/contact-us/) to get a trial account first.
 
     The following is an example output:
 
@@ -249,22 +261,17 @@ If the network where your cluster is located cannot access the internet, you nee
 
     ```bash
     [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    Enter Username: username
-    Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
     Completed!
-    Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
+    Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
     ```
 
-3. After the upload is complete, send the data access link of `Download URL` to the PingCAP technical support staff you contacted before.
-
-    > **Note:**
-    >
-    > Currently, only PingCAP technical support staff can open the data access link. External users temporary **cannot** open the link.
+3. After the upload is complete, you can open the link of `Download URL` to see the uploaded data or send the link to the PingCAP technical support staff you contacted before.
 
 ## Perform a quick check on the cluster status locally
 
-You can have a quick check on the cluster status locally using Diag. Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. The PingCAP Clinic Beta version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
+You can have a quick check on the cluster status locally using Diag. Even if your cluster runs stably now, it is necessary to periodically check the cluster to avoid potential stability risks. The PingCAP Clinic Technical Preview version provides a rationality check on cluster configuration items to discover unreasonable configurations and provide modification suggestions.
 
 1. Collect configuration data:
 
@@ -293,7 +300,7 @@ You can have a quick check on the cluster status locally using Diag. Even if you
     {{< copyable "shell-regular" >}}
 
     ```bash
-    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag check diag-fNTnz5MGhr6
+    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag check diag-fNTnz5MGhr6
 
     # Diagnostic result
     lili 2022-01-24T09:33:57+08:00
@@ -310,15 +317,20 @@ You can have a quick check on the cluster status locally using Diag. Even if you
 
     ## 3. Diagnostic result, including potential configuration problems
     In this inspection, 22 rules were executed.
+
     The results of **1** rules were abnormal and needed to be further discussed with support team.
+
     The following is the details of the abnormalities.
 
     ### Diagnostic result summary
     The configuration rules are all derived from PingCAP’s OnCall Service.
+
     If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
+
     There were **1** abnormal results.
 
     #### Path to save the diagnostic result file
+
     Rule Name: tidb-max-days
     - RuleID: 100
     - Variation: TidbConfig.log.file.max-days
@@ -341,7 +353,7 @@ You can have a quick check on the cluster status locally using Diag. Even if you
 
 2. After uploading data, I cannot open the returned data access link. What should I do?
 
-    PingCAP Clinic is currently in the Beta testing stage, and external users **cannot visit** the data access link. Only authorized PingCAP technical support staff can access the link and view the data.
+    Try logging in to [Clinic Server](https://clinic.pingcap.com.cn) first. If you still cannot open the link, check whether you have permission to view the data. If not, contact the data owner for permission. After getting the permission, try logging in to Clinic Server and opening the link again.
 
 3. How long will the uploaded data be kept on the Clinic Server?
 

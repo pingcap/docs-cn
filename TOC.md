@@ -194,7 +194,7 @@
       - [tiup-cluster](/tiup/tiup-cluster.md)
       - [tiup-mirror](/tiup/tiup-mirror.md)
       - [tiup-bench](/tiup/tiup-bench.md)
-  - PingCAP Clinic Diagnostic Service (Beta)
+  - PingCAP Clinic Diagnostic Service (Technical Preview)
     - [Overview](/clinic/clinic-introduction.md)
     - [Use PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md)
