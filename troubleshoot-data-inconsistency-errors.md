@@ -1,6 +1,6 @@
 ---
 title: 数据索引一致性错误
-summary: 在主动或被动进行数据索引一致性检查时，报出错误。
+summary: 了解如何处理数据索引一致性检查的报错。
 ---
 
 # 数据索引一致性报错
@@ -67,7 +67,7 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 `ERROR 8223 (HY000): data inconsistency in table: t2, index: i1, handle: {hello, hello}, index-values:"" != record-values:"handle: {hello, hello}, values: [KindString hello KindString hello]"`
 
-上述错误表明，`index-value` 为空，`record-values` 不为空，说明不存在对应的索引，但存在对应的行， 存在不一致。
+上述错误表明，`index-values` 为空，`record-values` 不为空，说明不存在对应的索引，但存在对应的行， 存在不一致。
 
 ## 报错的原因及处理方法
 
@@ -90,4 +90,4 @@ summary: 在主动或被动进行数据索引一致性检查时，报出错误�
 
 ### 改写 SQL
 
-关闭上面提到的 `tidb_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 误报，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
+关闭上面提到的 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 误报，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
