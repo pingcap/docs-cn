@@ -76,7 +76,9 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 2. 将数据源写入到同样的机器。
 
-3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。`sorted-kv-dir`需要设置为一个空的目录，并且确保所在的磁盘有较多空闲的空间。
+3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。
+
+    `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。详情参见 [TiDB Lightning 运行时资源要求](/tidb-lightning/tidb-lightning-requirements.md#tidb-lightning-运行时资源要求)。
 
     ```toml
     [lightning]
