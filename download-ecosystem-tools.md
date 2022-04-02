@@ -26,7 +26,7 @@ If you want to download the latest version of [TiDB Binlog](/tidb-binlog/tidb-bi
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of TiDB. For example, the download link for `v5.4.0` is `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`.
+> `{version}` in the above download link indicates the version number of TiDB. For example, the download link for `v6.0.0` is `https://download.pingcap.org/tidb-v6.0.0-linux-amd64.tar.gz`.
 
 ## TiDB Lightning
 
@@ -38,7 +38,7 @@ Download [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) by using t
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of TiDB Lightning. For example, the download link for `v5.4.0` is `https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz`.
+> `{version}` in the above download link indicates the version number of TiDB Lightning. For example, the download link for `v6.0.0` is `https://download.pingcap.org/tidb-toolkit-v6.0.0-linux-amd64.tar.gz`.
 
 ## BR (backup and restore)
 
@@ -50,7 +50,7 @@ Download [BR](/br/backup-and-restore-tool.md) by using the download link in the 
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of BR. For example, the download link for `v5.4.0` is `https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz`.
+> `{version}` in the above download link indicates the version number of BR. For example, the download link for `v6.0.0` is `https://download.pingcap.org/tidb-toolkit-v6.0.0-linux-amd64.tar.gz`.
 
 ## TiDB DM (Data Migration)
 
@@ -62,7 +62,7 @@ Download [DM](/dm/dm-overview.md) by using the download link in the following ta
 
 > **Note:**
 >
-> `{version}` in the above download link indicates the version number of DM. For example, the download link for `v5.4.0` is `https://download.pingcap.org/dm-v5.4.0-linux-amd64.tar.gz`. You can check the published DM versions in the [DM Release](https://github.com/pingcap/dm/releases) page.
+> `{version}` in the above download link indicates the version number of DM. For example, the download link for `v6.0.0` is `https://download.pingcap.org/dm-v6.0.0-linux-amd64.tar.gz`. You can check the published DM versions in the [DM Release](https://github.com/pingcap/dm/releases) page.
 
 ## Dumpling
 
@@ -74,7 +74,7 @@ Download [Dumpling](/dumpling-overview.md) from the links below:
 
 > **Note:**
 >
-> The `{version}` in the download link is the version number of Dumpling. For example, the link for downloading the `v5.4.0` version of Dumpling is `https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz`. You can view the currently released versions in [TiDB Releases](https://github.com/pingcap/tidb/releases).
+> The `{version}` in the download link is the version number of Dumpling. For example, the link for downloading the `v6.0.0` version of Dumpling is `https://download.pingcap.org/tidb-toolkit-v6.0.0-linux-amd64.tar.gz`. You can view the currently released versions in [TiDB Releases](https://github.com/pingcap/tidb/releases).
 >
 > Dumpling supports arm64 linux. You can replace `amd64` in the download link with `arm64`, which means the `arm64` version of Dumpling.
 
