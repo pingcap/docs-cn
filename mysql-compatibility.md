@@ -27,7 +27,8 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-* 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
+* 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
+* 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
 * 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
 * SYS schema
 * MySQL 追踪优化器
@@ -113,7 +114,9 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 - 不支持 `SELECT ... INTO @变量` 语法。
 - 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
-- TiDB 中的 `SELECT .. GROUP BY expr` 的返回结果与 MySQL 5.7 并不一致。MySQL 5.7 的结果等价于 `GROUP BY expr ORDER BY expr`。而 TiDB 中该语法所返回的结果并不承诺任何顺序，与 MySQL 8.0 的行为一致。
+- TiDB 中的 `SELECT .. GROUP BY expr` 的返回结果与 MySQL 5.7 并不一致。
+
+详情参见 [`SELECT`](/sql-statements/sql-statement-select.md)。
 
 ### 视图
 
