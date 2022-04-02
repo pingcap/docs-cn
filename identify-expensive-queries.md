@@ -19,7 +19,7 @@ TiDB 会将执行时间超过 [`tidb_expensive_query_time_threshold`](/system-va
 基本字段：
 
 * `cost_time`：日志打印时语句已经花费的执行时间。
-* `stats`：语句涉及到的表或索引使用的统计信息版本。值为 pesudo 时表示无可用统计信息，需要对表或索引进行 analyze。
+* `stats`：语句涉及到的表或索引使用的统计信息版本。值为 `pseudo` 时表示无可用统计信息，需要对表或索引进行 analyze。
 * `table_ids`：语句涉及到的表的 ID。
 * `txn_start_ts`：事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `sql`：SQL 语句。
