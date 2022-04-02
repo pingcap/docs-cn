@@ -336,7 +336,7 @@ pump_servers:
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成
 - `data_dir`：指定数据目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `data_dir` 生成
 - `log_dir`：指定日志目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `log_dir` 生成
-- `commit_ts`：Drainer 启动的时候会去读取 checkpoint，如果读取不到，就会使用该字段做为初次启动开始的同步时间点，该字段默认为 -1（从 PD 总获取最新时间戳作为 commit_ts）
+- `commit_ts`：[已废弃]Drainer 启动的时候会去读取 checkpoint，如果读取不到，就会使用该字段做为初次启动开始的同步时间点，该字段默认为 -1（从 PD 总获取最新时间戳作为 commit_ts）
 - `numa_node`：为该实例分配 NUMA 策略，如果指定了该参数，需要确保目标机装了 [numactl](https://linux.die.net/man/8/numactl)，在指定该参数的情况下会通过 [numactl](https://linux.die.net/man/8/numactl) 分配 cpubind 和 membind 策略。该字段参数为 string 类型，字段值填 NUMA 节点的 ID，例如 "0,1"
 - `config`：该字段配置规则和 `server_configs` 里的 `drainer` 配置规则相同，若配置了该字段，会将该字段内容和 `server_configs` 里的 `drainer` 内容合并（若字段重叠，以本字段内容为准），然后生成配置文件并下发到 `host` 指定的机器
 - `os`：`host` 字段所指定的机器的操作系统，若不指定该字段，则默认为 `global` 中的 `os`
@@ -350,9 +350,10 @@ pump_servers:
 - `deploy_dir`
 - `data_dir`
 - `log_dir`
-- `commit_ts`
 - `arch`
 - `os`
+
+其中 `commit_ts` 字段自 tiup cluster v1.9.2 开始已经废弃，不再被记录到 drainer 的启动脚本中，需要将其配置为非默认值的用户，请参照下例在 `config` 中配置 `initial-commit-ts` 字段。
 
 `drainer_servers` 配置示例：
 
@@ -360,6 +361,7 @@ pump_servers:
 drainer_servers:
   - host: 10.0.1.21
     config:
+      initial-commit-ts: -1
       syncer.db-type: "mysql"
       syncer.to.host: "127.0.0.1"
       syncer.to.user: "root"
