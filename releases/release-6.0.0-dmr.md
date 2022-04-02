@@ -25,7 +25,7 @@ TiDB 版本：6.0.0-DMR
 - PingCAP Clinic 自动诊断服务（Technical Preview 版本）
 - TiDB Enterprise Manager 企业级数据库管理平台
 
-另：作为 TiDB HTAP 方案的核心组件，TiFlash<sup>TM</sup> 于本次发布同时正式开放源码。详见 [GitHub](https://github.com/pingcap/tiflash).
+另：作为 TiDB HTAP 方案的核心组件，TiFlash<sup>TM</sup> 于本次发布同时正式开放源码。详见 [GitHub](https://github.com/pingcap/tiflash)。
 
 ## 版本策略变更
 
