@@ -433,11 +433,11 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
     - 提升 Raftstore 对大 key range batch 的采样准确度 [#11039](https://github.com/tikv/tikv/pull/11039)
     - 为 `debug/pprof/profile` 添加正确的 Content-Type，使 Profile 更容易被识别 [#11521](https://github.com/tikv/tikv/issues/11521)
-    - 当 Raftstore 在心跳或处理读请求时，通过更新其租约时间来无限延长 leader 的租约时间，减少 leader 切换导致的延迟抖动  [#11579](https://github.com/tikv/tikv/pull/11579)
+    - 当 Raftstore 在心跳或处理读请求时，通过更新其租约时间来无限延长 leader 的租约时间，减少 leader 切换导致的延迟抖动 [#11579](https://github.com/tikv/tikv/issues/11579)
     - 切换 leader 时以选择代价最小的 store 为目标，提升性能稳定性 [#10602](https://github.com/tikv/tikv/issues/10602)
     - 异步获取 Raft log，减少阻塞 Raftstore 带来的性能抖动 [#11320](https://github.com/tikv/tikv/issues/11320)
     - 向量计算支持 `QUARTER` 函数 [#5751](https://github.com/tikv/tikv/issues/5751)
-    - 支持 `BIT` 数据类型下推至 TiKV [#12037](https://github.com/tikv/tikv/pull/12037)
+    - 支持 `BIT` 数据类型下推至 TiKV [#30738](https://github.com/pingcap/tidb/issues/30738)
     - 支持 `MOD` 函数和 `SYSDATE` 函数下推至 TiKV [#11916](https://github.com/tikv/tikv/issues/11916)
     - (dup: release-5.3.1.md > Improvements> TiKV)通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
     - 支持动态修改 `raftstore.raft-max-inflight-msgs` [#11865](https://github.com/tikv/tikv/issues/11865)
@@ -487,15 +487,15 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
     + TiDB Data Migration (DM)
 
-        - 支持在“乐观协调”模式（optimistic）下，上游表结构不一致的情况下仍能启动任务 [#3903](https://github.com/pingcap/tiflow/pull/3903)
-        - 支持在 `stopped` 状态下创建任务  [#4510](https://github.com/pingcap/tiflow/pull/4510)
-        - 支持 Syncer 使用 DM-worker 的工作目录写内部文件，不再使用  /tmp 目录。任务停止后会清理掉该目录 [#4732](https://github.com/pingcap/tiflow/pull/4732)
-        - 优化了 Precheck 功能。不再允许跳过某些重要的检查  [#3608](https://github.com/pingcap/tiflow/issues/3608)
+        - 支持在“乐观协调”模式（optimistic）下，上游表结构不一致的情况下仍能启动任务 [#3629](https://github.com/pingcap/tiflow/issues/3629) [#3708](https://github.com/pingcap/tiflow/issues/3708) [#3786](https://github.com/pingcap/tiflow/issues/3786)
+        - 支持在 `stopped` 状态下创建任务 [#4484](https://github.com/pingcap/tiflow/issues/4484)
+        - 支持 Syncer 使用 DM-worker 的工作目录写内部文件，不再使用 /tmp 目录。任务停止后会清理掉该目录 [#4107](https://github.com/pingcap/tiflow/issues/4107)
+        - 优化了 Precheck 功能。不再允许跳过某些重要的检查 [#3608](https://github.com/pingcap/tiflow/issues/3608)
 
     + TiDB Lightning
 
-        - 增加了更多重试错误类型  [#31484](https://github.com/pingcap/tidb/pull/31484)
-        - 在数据导入过程中，如果 TiKV 节点地址发生变化，任务不受影响 [#32876](https://github.com/pingcap/tidb/pull/32876)
+        - 增加了更多重试错误类型 [#31376](https://github.com/pingcap/tidb/issues/31376)
+        - 在数据导入过程中，如果 TiKV 节点地址发生变化，任务不受影响 [#32875](https://github.com/pingcap/tidb/issues/32875)
         - 支持 base64 格式的密码字符串 [#31194](https://github.com/pingcap/tidb/issues/31194)
         - 标准化错误码和错误输出 [#32239](https://github.com/pingcap/tidb/issues/32239)
 
@@ -506,7 +506,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复了当 `SCHEDULE = majority_in_primary`，且 `PrimaryRegion` 和 `Regions` 的值相同时 placement rule 会报错的问题 [#31271](https://github.com/pingcap/tidb/issues/31271)
     - (dup: release-5.3.1.md > Bug fixes> TiDB)修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
     - 修复了当授予大于等于 2 个权限时 `show grants` 返回不正确的结果的问题 [#30855](https://github.com/pingcap/tidb/issues/30855)
-    - 修复了在默认值为 `CURRENT_TIMESTAMP` 的字段执行 `INSERT INTO t SET tsCol = DEFAULT` 语句时插入零值的问题 [#29926](https://github.com/pingcap/tidb/issues/29926)
+    - 修复了在默认值为 `CURRENT_TIMESTAMP` 的字段执行 `INSERT INTO t1 SET tsCol = DEFAULT` 语句时插入零值的问题 [#29926](https://github.com/pingcap/tidb/issues/29926)
     - 通过避免编码字符串类型的最大值和最小非空值，修复读取结果时的报错问题 [#31721](https://github.com/pingcap/tidb/issues/31721)
     - 修复 LOAD DATA 语句处理跳脱符时可能 panic 的问题 [#31589](https://github.com/pingcap/tidb/issues/31589)
     - (dup: release-5.3.1.md > Bug fixes> TiDB)修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
@@ -569,10 +569,10 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + PD
 
-    - 修复 PD 产生带有无意义的 Joint Consensus 步骤的 operator 的问题 [#4534](https://github.com/tikv/pd/pull/4534)
-    - 修复 PD Client 获取 TSO 在关闭链接的情况下卡住的问题 [#4550](https://github.com/tikv/pd/pull/4550)
-    - 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4570](https://github.com/tikv/pd/pull/4570)
-    - 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4653](https://github.com/tikv/pd/pull/4653)
+    - 修复 PD 产生带有无意义的 Joint Consensus 步骤的 operator 的问题 [#4362](https://github.com/tikv/pd/issues/4362) [#4444](https://github.com/tikv/pd/issues/4444)
+    - 修复 PD Client 获取 TSO 在关闭链接的情况下卡住的问题 [#4549](https://github.com/tikv/pd/issues/4549)
+    - 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4565](https://github.com/tikv/pd/issues/4565)
+    - 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
 
 + TiFlash
 
