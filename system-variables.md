@@ -772,6 +772,12 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: `OFF`
 - This variable is used to set whether to enable the `LIST (COLUMNS) TABLE PARTITION` feature.
 
+### `tidb_enable_mutation_checker` (New in v6.0.0)
+
+- Scope: SESSION | GLOBAL
+- Default value: `ON`
+- This variable is used to control whether to enable TiDB mutation checker, which is a tool used to check consistency between data and indexes during the execution of DML statements. If the checker returns an error for a statement, TiDB rolls back the execution of the statement. Enabling this variable causes a slight increase in CPU usage. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md ).
+
 ### tidb_enable_noop_functions <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -1717,6 +1723,17 @@ SET tidb_slow_log_threshold = 200;
 > **Notes:**
 >
 > Suppose that the TSO RPC latency increases for reasons other than a CPU usage bottleneck of the PD leader (such as network issues). In this case, increasing the value of `tidb_tso_client_batch_max_wait_time` might increase the execution latency in TiDB and affect the QPS performance of the cluster.
+
+### `tidb_txn_assertion_level` (New in v6.0.0)
+
+- Scope: SESSION | GLOBAL
+- Default value: `FAST`
+- Possible values: `OFF`, `FAST`, `STRICT`
+- This variable is used to control the assertion level. Assertion is a consistency check between data and indexes, which checks whether a key being written exists in the transaction commit process. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md ).
+
+    - `OFF`: Disable this check.
+    - `FAST`: Enable most of the check items, with almost no impact on performance.
+    - `STRICT`: Enable all check items, with a minor impact on pessimistic transaction performance when the system workload is high.
 
 ### tidb_txn_mode
 

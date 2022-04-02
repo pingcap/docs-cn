@@ -328,6 +328,22 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     TiDB does not yet support JSON objects with the key length >= 65536.
 
+* Error Number: 8138
+
+    The transaction attempts to write an incorrect row value. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md#error-8138).
+
+* Error Number: 8139
+
+    The transaction attempts to write a row whose handle is inconsistent with that in the index. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md#error-8139).
+
+* Error Number: 8140
+
+   The transaction attempts to write a row whose data is inconsistent with the index data. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md#error-8140).
+
+* Error Number: 8141
+
+    When a transaction is being committed, the existence assertion of a key fails. For more information,see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md#error-8141).
+
 * Error Number: 8200
 
     The DDL syntax is not yet supported.
