@@ -34,7 +34,7 @@ TiDB 版本：6.0.0-DMR
 
 - 长期支持版本 (Long-Term Support Releases)
 
-    长期支持版本约每六个月发布一次，会引入新的功能和改进，并会在版本生命周期内发布 Patch release。例如：v5.4.0，v6.1.0。
+    长期支持版本约每六个月发布一次，会引入新的功能和改进，并会在版本生命周期内发布 Patch release。例如：v6.1.0。
 
 - 开发里程碑版 (Development Milestone Releases, DMR)
 
@@ -52,6 +52,9 @@ TiDB 版本：6.0.0-DMR
 
 | 变量名 | 修改类型 | 描述 |
 |:---|:---|:---|
+| `placement_checks` | 删除 | 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。已被 `tidb_placement_mode` 替代。 |
+| `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
+| `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB v5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB v6.0.0 起，代码中也正式移除这些变量。 |
 | [`tidb_enable_mutation_checker`](/system-variables.md#tidb_enable_mutation_checker从-v60-版本开始引入) | 新增 | 设置是否开启 mutation checker，默认开启。 |
 | [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
 | [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
@@ -62,33 +65,30 @@ TiDB 版本：6.0.0-DMR
 | [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量，默认值为 `5000`。 |
 | [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N）的数据，默认值为 `100`。 |
 | [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level从-v60-版本开始引入) | 新增 | 设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验。默认仅开启对性能影响微小的检查，包含大部分检查效果。 |
-| `placement_checks` | 删除 | 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。已被 `tidb_placement_mode` 替代。 |
-| `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
-| `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB v5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB v6.0.0 起，代码中也正式移除这些变量。 |
 
 ### 配置文件参数
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 |:---|:---|:---|:---|
-| TiDB | [`pessimistic-txn.pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) | 新增 | 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。 |
-| TiDB | [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) | 修改 | 用于开启新的 collation 支持。自 v6.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
 | TiDB | `stmt-summary.enable` <br/> `stmt-summary.enable-internal-query` <br/> `stmt-summary.history-size` <br/> `stmt-summary.max-sql-length` <br/> `stmt-summary.max-stmt-count` <br/> `stmt-summary.refresh-interval` | 删除 | 系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置，所有配置项现已移除，统一改成用 SQL variable 控制。 |
-| TiKV | [`pessimistic-txn.in-memory`](/tikv-configuration-file.md#in-memory从-v600-版本开始引入) | 新增 | 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。该参数默认值为 `true`。 |
-| TiKV | [`quota`](/tikv-configuration-file.md#quota) | 新增 | 新增前台限流相关的配置项，可以限制前台各类请求所占用的资源。前台限流功能为实验特性，默认关闭。新增的相关配置项为 `foreground-cpu-time`、`foreground-write-bandwidth`、`foreground-read-bandwidth`、`max-delay-duration`。 |
+| TiKV | `enable-io-snoop` | 删除 | 删除 `enable-io-snoop` 配置项。 |
+| TiDB | [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) | 修改 | 用于开启新的 collation 支持。自 v6.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
+| TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | 修改 | 修改可调整范围为 `[1, CPU]`。 |
+| TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 修改最大值为 `10240`。 |
+| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | 修改最小值（由 `0` 修改为大于 `0`）<br/>添加最大值为 `3 GB`<br/>添加单位（由 `MB` 增加为 `KB\|MB\|GB`） |
+| TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
+| TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
 | TiKV | [`rocksdb.enable-pipelined-write`](/tikv-configuration-file.md#enable-pipelined-write) | 修改 | 修改默认值为 `false`，表示不开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
 | TiKV | [`rocksdb.max-background-flushes`](/tikv-configuration-file.md#max-background-flushes) | 修改 | 在 CPU 核数为 10 时修改默认值为 `3`，在 CPU 核数量为 8 时默认为 `2`。 |
 | TiKV | [`rocksdb.max-background-jobs`](/tikv-configuration-file.md#max-background-jobs) | 修改 | 在 CPU 核数为 10 时修改默认值为 `9`，在 CPU 核数量为 8 时默认为 `7`。 |
-| TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 修改最大值为 `10240`。 |
-| TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | 修改 | 修改可调整范围为 `[1, CPU]`。 |
-| TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
-| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | 修改最小值（由 `0` 修改为大于 `0`）<br/>添加最大值为 `3 GB`<br/>添加单位（由 `MB` 增加为 `KB\|MB\|GB`） |
-| TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
-| TiKV | `enable-io-snoop` | 删除 | 删除 `enable-io-snoop` 配置项。 |
-| TiFlash | [`profiles.default.dt_compression_method`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。 |
-| TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认值 `1`。 |
 | TiFlash | [`profiles.default.dt_enable_logical_split`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 存储引擎的 segment 分裂是否使用逻辑分裂。自 v6.0 起默认值从 `true` 改为 `false。` |
 | TiFlash | [`profiles.default.enable_elastic_threadpool`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 是否启用可自动扩展的线程池。自 v6.0 起默认值从 `false` 改为 `true`。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 该配置项控制 TiFlash 存储引擎的校验功能，自 v6.0 起默认值从 `2` 改为 `3`。`format_version` 设置为 `3` 时， 支持对 TiFlash 的所有数据的读操作进行一致性校验，避免由于硬件故障而读到错误的数据。<br/>注意：新版本数据格式不支持原地降级为早于 5.4 的版本。 |
+| TiDB | [`pessimistic-txn.pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) | 新增 | 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。 |
+| TiKV | [`pessimistic-txn.in-memory`](/tikv-configuration-file.md#in-memory从-v600-版本开始引入) | 新增 | 开启内存悲观锁功能。开启该功能后，悲观事务会尽可能在 TiKV 内存中存储悲观锁，而不将悲观锁写入磁盘，也不将悲观锁同步给其他副本，从而提升悲观事务的性能。但有较低概率出现悲观锁丢失的情况，可能会导致悲观事务提交失败。该参数默认值为 `true`。 |
+| TiKV | [`quota`](/tikv-configuration-file.md#quota) | 新增 | 新增前台限流相关的配置项，可以限制前台各类请求所占用的资源。前台限流功能为实验特性，默认关闭。新增的相关配置项为 `foreground-cpu-time`、`foreground-write-bandwidth`、`foreground-read-bandwidth`、`max-delay-duration`。 |
+| TiFlash | [`profiles.default.dt_compression_method`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。 |
+| TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认值 `1`。 |
 | DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量阶段数据导入的模式。自 v6.0 起全量阶段默认使用 TiDB Lightning 的 TiDB-backend 方式导入，替换原来的 Loader 组件。此变动为内部组件替换，对日常使用没有明显影响。<br/>默认值 `sql` 表示启用 tidb-backend 组件，可能在极少数场景下存在未能完全兼容的情况，可以通过配置为 "loader" 回退。 |
 | DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量导入阶段出现的冲突数据的解决方式。默认值为 `replace` ，覆盖重复数据。 |
 | TiCDC | `read-timeout` | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
