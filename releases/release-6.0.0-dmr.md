@@ -145,15 +145,9 @@ TiDB 版本：6.0.0-DMR
     Top SQL 功能功能默认关闭。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点实时 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 分析某个 TiKV 节点上正在消耗 90% CPU 负载的 SQL 查询语句的具体内容及执行情况。
     [用户文档](/dashboard/top-sql.md)
 
-- 持续性能分析成为正式功能 (GA)
+- 持续性能分析
 
-    TiDB Dashboard 引入持续性能分析功能，提供在集群运行状态时自动保存实例性能分析结果的能力，通过火焰图的形式提高了 TiDB 集群性能的可观测性，有助于缩短故障诊断时间。
-
-    该功能支持 TiDB、PD、TiKV 实例的分析，支持以火焰图形式查看 Profiling 结果。
-
-    持续性能分析适用于使用 v1.9.0 及以上版本 TiUP 或 v1.3.0 及以上版本 TiDB Operator 部署和升级的集群。
-
-    该功能默认关闭，需进入 TiDB Dashboard 持续性能分析页面开启。
+    持续性能分析（Continuous Profiling）功能集成于 TiDB Dashboard，在 TiDB v6.0 中正式发布。该功能默认关闭，启用该功能后，集群将以极低的开销自动收集各 TiDB、TiKV 及 PD 实例每时每刻的性能数据。通过这些历史性能数据，技术专家可以在事后回溯、分析该集群任意时刻（如曾经出现过高内存占用）的问题根因，无需等待问题复现，从而有助于缩短故障诊断时间。
 
     [用户文档](/dashboard/continuous-profiling.md)
 
