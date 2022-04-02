@@ -63,11 +63,13 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式
 
 ### 兼容性
 
-BR 和 TiDB 集群的兼容性问题分为以下两方面：
+BR 和 TiDB 集群的兼容性问题有以下几方面：
 
 + BR 部分版本和 TiDB 集群的接口不兼容
 
-  BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 5.4.0 之前的 TiDB 集群。
+    + BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 5.4.0 之前的 TiDB 集群。
+
+    + BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。 BR v6.0.0 及以上版本开始支持并提供了命令行选项 `--with-tidb-placement-mode=strict/ignore` 来控制放置规则的导入模式。 默认值为 `strict` 代表导入并检查放置规则，否则当其设置为 `ignore` 时忽略所有的放置规则。
   
 + 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间如果没有统一开启或关闭，就会带来不兼容的问题
 
@@ -94,6 +96,17 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | 用 BR v5.0 备份 TiDB v5.0 | ✅ | ✅ | ❌（如果恢复了使用非整数类型聚簇主键的表到 v4.0 的 TiDB 集群，BR 会无任何警告地导致数据错误）
 | 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
+
+#### 对 `new_collations_enabled_on_first_bootstrap` 的检查
+
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。
+
+从 v6.0.0 开始，BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项，同时在恢复时会检查此配置项是否与下游集群相同。若上下游的该配置不相同，BR 会拒绝恢复，并报告此配置项不匹配的错误。
+
+如果你需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要自行检查上下游集群中的该配置项是否相同：
+
+- 若该配置项相同，则可在恢复命令中添加 `--check-requirements=false` 以跳过此项配置检查。
+- 若该配置项不相同，且进行强行恢复，BR 会报告[数据校验错误](/br/backup-and-restore-tool.md#使用限制)。
 
 ### 备份和恢复 `mysql` 系统库下的表数据（实验特性）
 

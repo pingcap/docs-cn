@@ -118,34 +118,34 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-
+    
         ...
-
+    
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-
+    
         ...
-
+    
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-
+    
         ...
-
+    
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-
+    
         ...
     ```
 
@@ -489,6 +489,73 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 - [`tidb_broadcast_join_threshold_size`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为 bytes。如果表大小（字节数）小于该值，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 - [`tidb_broadcast_join_threshold_count`](/system-variables.md#tidb_broadcast_join_threshold_count-从-v50-版本开始引入)，单位为行数。如果 join 的对象为子查询，优化器无法估计子查询结果集大小，在这种情况下通过结果集行数判断。如果子查询的行数估计值小于该变量，则选择 Broadcast Hash Join 算法。否则选择 Shuffled Hash Join 算法。
 
+### MPP 模式访问分区表
+
+如果希望使用 MPP 模式访问分区表，需要先开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
+
+> **警告：**
+>
+> - 目前，分区表的动态裁剪模式为实验特性，不建议在生产环境中使用。
+>
+> - 如果分区表中包含 `time` 类型的列，不能开启动态裁剪模式。否则，当查询选择了 `time` 类型的列时，TiFlash 会崩溃。
+
+示例如下：
+
+```sql
+mysql> DROP TABLE if exists test.employees;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> CREATE TABLE test.employees (  id int(11) NOT NULL,  fname varchar(30) DEFAULT NULL,  lname varchar(30) DEFAULT NULL,  hired date NOT NULL DEFAULT '1970-01-01',  separated date DEFAULT '99
+99-12-31',  job_code int(11) DEFAULT NULL,  store_id int(11) NOT NULL  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin  PARTITION BY RANGE (store_id)  (PARTITION p0 VALUES LESS THAN (
+6),  PARTITION p1 VALUES LESS THAN (11),  PARTITION p2 VALUES LESS THAN (16), PARTITION p3 VALUES LESS THAN (MAXVALUE));
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> ALTER table test.employees SET tiflash replica 1;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> SET tidb_partition_prune_mode=static;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> explain SELECT count(*) FROM test.employees;
++----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
+| id                               | estRows  | task              | access object                 | operator info                     |
++----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
+| HashAgg_19                       | 1.00     | root              |                               | funcs:count(Column#10)->Column#9  |
+| └─PartitionUnion_21              | 4.00     | root              |                               |                                   |
+|   ├─StreamAgg_40                 | 1.00     | root              |                               | funcs:count(Column#12)->Column#10 |
+|   │ └─TableReader_41             | 1.00     | root              |                               | data:StreamAgg_27                 |
+|   │   └─StreamAgg_27             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#12         |
+|   │     └─TableFullScan_39       | 10000.00 | batchCop[tiflash] | table:employees, partition:p0 | keep order:false, stats:pseudo    |
+|   ├─StreamAgg_63                 | 1.00     | root              |                               | funcs:count(Column#14)->Column#10 |
+|   │ └─TableReader_64             | 1.00     | root              |                               | data:StreamAgg_50                 |
+|   │   └─StreamAgg_50             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#14         |
+|   │     └─TableFullScan_62       | 10000.00 | batchCop[tiflash] | table:employees, partition:p1 | keep order:false, stats:pseudo    |
+|   ├─StreamAgg_86                 | 1.00     | root              |                               | funcs:count(Column#16)->Column#10 |
+|   │ └─TableReader_87             | 1.00     | root              |                               | data:StreamAgg_73                 |
+|   │   └─StreamAgg_73             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#16         |
+|   │     └─TableFullScan_85       | 10000.00 | batchCop[tiflash] | table:employees, partition:p2 | keep order:false, stats:pseudo    |
+|   └─StreamAgg_109                | 1.00     | root              |                               | funcs:count(Column#18)->Column#10 |
+|     └─TableReader_110            | 1.00     | root              |                               | data:StreamAgg_96                 |
+|       └─StreamAgg_96             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#18         |
+|         └─TableFullScan_108      | 10000.00 | batchCop[tiflash] | table:employees, partition:p3 | keep order:false, stats:pseudo    |
++----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
+18 rows in set, 4 warnings (0.00 sec)
+
+mysql> SET tidb_partition_prune_mode=dynamic;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> explain SELECT count(*) FROM test.employees;
++------------------------------+----------+-------------------+-----------------+----------------------------------+
+| id                           | estRows  | task              | access object   | operator info                    |
++------------------------------+----------+-------------------+-----------------+----------------------------------+
+| HashAgg_21                   | 1.00     | root              |                 | funcs:count(Column#11)->Column#9 |
+| └─TableReader_23             | 1.00     | root              | partition:all   | data:ExchangeSender_22           |
+|   └─ExchangeSender_22        | 1.00     | batchCop[tiflash] |                 | ExchangeType: PassThrough        |
+|     └─HashAgg_9              | 1.00     | batchCop[tiflash] |                 | funcs:count(1)->Column#11        |
+|       └─TableFullScan_20     | 10000.00 | batchCop[tiflash] | table:employees | keep order:false, stats:pseudo   |
++------------------------------+----------+-------------------+-----------------+----------------------------------+
+```
+
 ## TiFlash 数据校验
 
 ### 使用场景
@@ -504,8 +571,8 @@ TiFlash 的数据校验功能基于 DTFile（即 DeltaTree File）提供。DTFil
 | 版本 | 状态 | 校验机制 | 备注 |
 | :-- | :-- | :-- |:-- |
 | V1 | 已废弃 | 在数据文件中内嵌哈希值 | |
-| V2 | 默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
-| V3 | 需手动开启 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
+| V2 | v6.0.0 之前的默认格式 | 在数据文件中内嵌哈希值 | 在 V1 的基础上增加了列数据的统计信息 |
+| V3 | v6.0.0 及之后的默认格式 | 包含元数据，标记数据校验，支持多种哈希算法 | 于 v5.4 版本引入 |
 
 DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用的格式均为文件夹形式，即具体数据均储存在名字类似 `dmf_<file id>` 的文件夹下的多个子文件中。
 
@@ -514,8 +581,9 @@ DTFile 存储在数据文件夹目录下的 stable 文件夹内。目前启用�
 TiFlash 支持自动和手动进行数据校验：
 
 - 自动数据校验 （`storage.format_version` 配置项）：
-    - 默认使用 DTFile V2 版本校验机制。
-    - 如需开启 DTFile V3 版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。
+    - v6.0.0 之后默认使用 DTFile V3 版本校验机制。
+    - v6.0.0 之前默认使用 DTFile V2 版本校验机制。
+    - 如需切换版本校验机制，参见 [TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)。默认配置经过大量测试，不推荐修改。
 - 手动数据校验，参见 [DTTool 使用文档](/tiflash/tiflash-command-line-flags.md#dttool-inspect)。
 
 > **警告：**
@@ -540,16 +608,16 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-
+        
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -557,10 +625,10 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-
+        
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-
+        
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```

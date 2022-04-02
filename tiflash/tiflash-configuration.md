@@ -65,9 +65,9 @@ delta_index_cache_size = 0
 
     ## DTFile 储存文件格式
     ## * format_version = 1 老旧文件格式，已废弃
-    ## * format_version = 2 默认文件格式
-    ## * format_version = 3 新文件格式，具有更完善的检验功能
-    # format_version = 2
+    ## * format_version = 2 v6.0.0 以前版本的默认文件格式
+    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
+    # format_version = 3
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -165,8 +165,8 @@ delta_index_cache_size = 0
     cop_pool_size = 0
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
-    ## 从 v5.4.0 引入，表示是否启用可自动扩展的线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 false。该功能为实验特性，不推荐在生产环境中开启。
-    # enable_elastic_threadpool = false
+    ## 从 v5.4.0 引入，表示是否启用可自动扩展的线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 true。
+    # enable_elastic_threadpool = true
     # TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
     dt_compression_method = "LZ4"
     # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。

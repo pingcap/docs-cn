@@ -70,6 +70,7 @@
         - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
       - BR 特性
         - [自动调节](/br/br-auto-tune.md)
+        - [批量建表](/br/br-batch-create-table.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -101,6 +102,7 @@
   - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
+  - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
   - 系统调优
     - [操作系统性能参数调优](/tune-operating-system.md)
@@ -267,6 +269,7 @@
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
+    - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -327,6 +330,7 @@
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
       - 集群运维工具
+        - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
         - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
       - 性能调优
         - [性能数据](/dm/dm-benchmark-v5.4.0.md)
@@ -375,6 +379,7 @@
     - [外部存储](/br/backup-and-restore-storages.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
+      - [批量建表](/br/br-batch-create-table.md)
     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -626,6 +631,7 @@
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
+    - [缓存表](/cached-tables.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)
@@ -659,7 +665,7 @@
         - [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)
         - [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)
         - [`PARTITIONS`](/information-schema/information-schema-partitions.md)
-        - [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md)
+        - [`PLACEMENT_POLICIES`](/information-schema/information-schema-placement-policies.md)
         - [`PROCESSLIST`](/information-schema/information-schema-processlist.md)
         - [`REFERENTIAL_CONSTRAINTS`](/information-schema/information-schema-referential-constraints.md)
         - [`SCHEMATA`](/information-schema/information-schema-schemata.md)
