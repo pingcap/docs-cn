@@ -784,14 +784,14 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`OFF`
 - 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
 
-### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
+### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
 - 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
 - 适合开启 TSO Follower Proxy 的场景：
     * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
-    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
+    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
 
 > **注意：**
 >
@@ -1058,10 +1058,11 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
-### `tidb_log_file_max_days` <span class="version-mark">从 v5.3 版本开始引入</span>
+### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION
 - 默认值：`0`
+- 范围：`[0, 2147483647]`
 - 这个变量可以调整当前 TiDB 实例上日志的最大保留天数。默认值是实例配置文件中指定的值，见配置项 [`max-days`](/tidb-configuration-file.md#max-days)。此变量只影响当前 TiDB 实例上的配置，重启后丢失，且配置文件不受影响。
 
 ### `tidb_low_resolution_tso`
@@ -1593,7 +1594,7 @@ set tidb_slow_log_threshold = 200;
 - 单位：字节
 - 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
 
-### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3 版本开始引入</span>
+### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：`0`
@@ -1702,7 +1703,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：(string)
 - 这个变量值是 TiDB 所在操作系统的名称。
 
-### `version_compile_machine` 
+### `version_compile_machine`
 
 - 作用域：NONE
 - 默认值：(string)
