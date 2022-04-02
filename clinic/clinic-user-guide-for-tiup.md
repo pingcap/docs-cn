@@ -61,7 +61,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     > **注意：**
     >
-    > - 如果你第一次访问 Clinic Server，请参考 [快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#准备工作) 的相关步骤。
+    > - 如果你第一次访问 Clinic Server，请参考[快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#准备工作)的相关步骤。
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - Token 只用于上传数据。
 
