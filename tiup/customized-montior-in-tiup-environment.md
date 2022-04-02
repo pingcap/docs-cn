@@ -82,7 +82,7 @@ monitoring_servers:
 
 2. 在 TiDB 集群的拓扑配置 topology.yaml 文件中，将自定义规则文件目录 dashboard_dir 设置为实际放置 Dashboard 配置文件的目录。
 
-以下为 topology.yaml 文件中的 monitoring_servers 配置示例：
+以下为 topology.yaml 文件中的 grafana_servers 配置示例：
 
 ```
 # # Server configs are used to specify the configuration of Grafana Servers.
