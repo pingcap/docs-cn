@@ -22,7 +22,8 @@ TiDB 版本：6.0.0-DMR
 - 内存悲观锁优化
 - TiDB Enterprise Manager 企业级数据库管理平台
 - PingCAP Clinic 自动诊断服务（Technical Preview 版本）
-- Top SQL 成为正式功能 (GA)
+- 面向非专家的 SQL 性能诊断功能 Top SQL
+- 支持持续性能分析
 - 性能提升 X 倍的 HTAP 能力
 - 强化的容灾能力
 
@@ -137,11 +138,13 @@ TiDB 版本：6.0.0-DMR
 
 ### 可观测性
 
-- Top SQL 成为正式功能 (GA)
+- Top SQL：面向非专家的 SQL 性能诊断功能
 
-    Top SQL 是一个面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能，集成于 TiDB Dashboard 图形化界面，用于找到一段时间内对某个 TiDB 或 TiKV 节点消耗负载较大的 SQL 查询。与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
+    Top SQL 是一个面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能，集成于 TiDB Dashboard 图形化界面，在 TiDB v6.0 正式发布。
+    
+    与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
 
-    Top SQL 默认关闭，可一键启用。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点最近 30 天内的 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 找出一个低负载的数据库上执行的一条消耗 99% 负载的分析查询。
+    Top SQL 功能功能默认关闭。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点实时 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 分析某个 TiKV 节点上正在消耗 90% CPU 负载的 SQL 查询语句的具体内容及执行情况。
     [用户文档](/dashboard/top-sql.md)
 
 - 持续性能分析成为正式功能 (GA)
