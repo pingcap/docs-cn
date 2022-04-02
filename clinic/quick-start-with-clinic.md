@@ -94,7 +94,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
         > **注意：**
         >
-        > 使用该方式进行上传时，你需要使用 Diag v0.7.0 及以上版本。
+        > 使用该方式进行上传时，你需要使用 Diag v0.7.0 及以上版本。Diag 会在运行时提示版本信息。如果你早期安装过 v0.7.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令一键升级至最新版。
 
     - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
