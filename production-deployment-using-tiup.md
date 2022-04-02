@@ -141,12 +141,12 @@ To prepare the TiUP offline component package, manually pack an offline componen
 
     If you want to adjust an existing offline mirror (such as adding a new version of a component), take the following steps:
 
-    1. When pulling an offline mirror, you can get an incomplete offline mirror by specifying specific information via parameters, such as the component and version information. For example, you can pull an offline mirror that includes only the offline mirror of TiUP v1.9.0 and TiUP Cluster v1.9.0 by running the following command:
+    1. When pulling an offline mirror, you can get an incomplete offline mirror by specifying specific information via parameters, such as the component and version information. For example, you can pull an offline mirror that includes only the offline mirror of TiUP v1.9.3 and TiUP Cluster v1.9.3 by running the following command:
 
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror clone tiup-custom-mirror-v1.9.0 --tiup v1.9.0 --cluster v1.9.0
+        tiup mirror clone tiup-custom-mirror-v1.9.3 --tiup v1.9.3 --cluster v1.9.3
         ```
 
         If you only need the components for a particular platform, you can specify them using the `--os`  or `--arch` parameters.
@@ -178,10 +178,10 @@ To prepare the TiUP offline component package, manually pack an offline componen
         {{< copyable "shell-regular" >}}
 
         ```bash
-        tiup mirror merge tiup-custom-mirror-v1.9.0
+        tiup mirror merge tiup-custom-mirror-v1.9.3
         ```
 
-    5. When the above steps are completed, check the result by running the `tiup list` command. In this document's example, the outputs of both `tiup list tiup` and `tiup list cluster` show that the corresponding components of `v1.9.0` are available.
+    5. When the above steps are completed, check the result by running the `tiup list` command. In this document's example, the outputs of both `tiup list tiup` and `tiup list cluster` show that the corresponding components of `v1.9.3` are available.
 
 #### Step 2: Deploy the offline TiUP component
 
@@ -310,13 +310,13 @@ Then execute the `deploy` command to deploy the TiDB cluster:
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup cluster deploy tidb-test v5.4.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+tiup cluster deploy tidb-test v6.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
 ```
 
 In the above command:
 
 - The name of the deployed TiDB cluster is `tidb-test`.
-- You can see the latest supported versions by running `tiup list tidb`. This document takes `v5.4.0` as an example.
+- You can see the latest supported versions by running `tiup list tidb`. This document takes `v6.0.0` as an example.
 - The initialization configuration file is `topology.yaml`.
 - `--user root`: Log in to the target machine through the `root` key to complete the cluster deployment, or you can use other users with `ssh` and `sudo` privileges to complete the deployment.
 - `[-i]` and `[-p]`: optional. If you have configured login to the target machine without password, these parameters are not required. If not, choose one of the two parameters. `[-i]` is the private key of the `root` user (or other users specified by `--user`) that has access to the target machine. `[-p]` is used to input the user password interactively.
