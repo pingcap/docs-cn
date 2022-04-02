@@ -186,6 +186,11 @@ delta_index_cache_size = 0
     # cert_path = "/path/to/tiflash-server.pem"
     ## 包含 PEM 格式的 X509 key 文件路径
     # key_path = "/path/to/tiflash-server-key.pem"
+
+## CPU 相关配置
+[cpu]
+    ## 从 v5.3 引入的实验特性，控制查询线程可以使用的 CPU 百分比，取值范围 [0, 100)。默认 0，关闭该功能。
+    # query_cpu_percent = 0
 ```
 
 ### 配置文件 tiflash-learner.toml
