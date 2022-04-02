@@ -52,6 +52,6 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。该服务提供以下两�
 
 ## 探索更多
 
-- [快速上手 PingCAP Clinic](/clinic/quick-start-with-clinic)
+- [快速上手 PingCAP Clinic](/clinic/quick-start-with-clinic.md)
 - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
 - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
