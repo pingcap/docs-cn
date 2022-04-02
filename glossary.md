@@ -19,6 +19,10 @@ ACID 是指数据库管理系统在写入或更新资料的过程中，为保证
 
 ## B
 
+### Batch Create Table
+
+批量建表 (Batch Create Table) 是在 TiDB v6.0.0 中引入的新功能，此功能默认开启。当需要恢复的数据中带有大量的表（约 50000 张）时，批量建表功能显著提升数据恢复的速度。详情参见 [批量建表](/br/br-batch-create-table.md)。
+
 ### Baseline Capturing
 
 自动捕获绑定 (Baseline Capturing) 会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于升级时的[计划回退防护](/sql-plan-management.md#升级时的计划回退防护)。
@@ -89,6 +93,12 @@ Pending 和 Down 是 Peer 可能出现的两种特殊状态。其中 Pending 表
 ### Predicate columns
 
 执行 SQL 语句时，优化器在大多数情况下只会用到部分列（例如， `WHERE`、`JOIN`、`ORDER BY`、`GROUP BY` 子句中出现的列）的统计信息，这些用到的列称为 `PREDICATE COLUMNS`。详情参见[收集部分列的统计信息](/statistics.md#收集部分列的统计信息)。
+
+## Q
+
+### Quota Limiter
+
+前台限流 (Quota Limiter) 是在 TiDB v6.0.0 版本中作为实验特性引入的功能。当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，开启前台限流相关的 quota 配置项可以限制前台各类请求占用的 CPU 资源。详情参见[quota 相关配置项](/tikv-configuration-file.md/#quota)。
 
 ## R
 
