@@ -10,22 +10,20 @@ TiDB 版本：6.0.0-DMR
 
 在 6.0.0-DMR 版本中，你可以获得以下关键特性：
 
-- 基于 SQL 的数据放置规则
-- 内核层面增加数据索引一致性检查
-- TiKV 节点重启后 leader 平衡加速
-- 支持手动取消统计信息的自动更新
-- RC 隔离级别下优化 TSO 获取开销
-- 增强 Prepared Statement 执行计划共享
-- 增强查询的下推功能
-- TiKV 过载资源保护增强（实验特性)
-- 小表缓存
-- 内存悲观锁优化
-- TiDB Enterprise Manager 企业级数据库管理平台
+- 基于 SQL 的数据放置规则，提供更灵活的数据放置管理能力。
+- 内核层面的数据索引一致性检查，通过极低的资源开销提升系统稳定性和健壮性。
+- SQL 性能诊断功能 Top SQL，提供面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能。
+- 持续性能分析，在集群运行状态时自动保存实例性能分析结果，缩短故障诊断时间。
+- 热点小表缓存，大幅提高访问性能，提升吞吐，降低访问延迟。
+- 内存悲观锁优化，在悲观锁性能瓶颈下，可以有效降低 10% 延迟，提升 10% QPS。
+- 增强 Prepared Statement 执行计划共享，降低 CPU 资源消耗，提升 SQL 执行效率。
+- 提升 MPP 引擎计算性能，支持更多函数和算子下推，正式引入动态线程池。
+- 新增 DM WebUI，方便地通过图形化的方式管理大量迁移任务。
+- 提升 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率，支持高达 100K 张表的同时同步。
+- TiKV 节点重启后 leader 平衡加速，提升业务恢复速度。
+- 支持手动取消统计信息的自动更新，减少资源争抢，降低对业务 SQL 性能的影响。
 - PingCAP Clinic 自动诊断服务（Technical Preview 版本）
-- 面向非专家的 SQL 性能诊断功能 Top SQL
-- 支持持续性能分析
-- 性能提升 X 倍的 HTAP 能力
-- 强化的容灾能力
+- TiDB Enterprise Manager 企业级数据库管理平台
 
 另：作为 TiDB HTAP 方案的核心组件，TiFlash<sup>TM</sup> 于本次发布同时正式开放源码。详见 [GitHub](https://github.com/pingcap/tiflash).
 
@@ -141,7 +139,7 @@ TiDB 版本：6.0.0-DMR
 - Top SQL：面向非专家的 SQL 性能诊断功能
 
     Top SQL 是一个面向运维人员及应用开发者的一体化、自助的数据库性能观测和诊断功能，集成于 TiDB Dashboard 图形化界面，在 TiDB v6.0 正式发布。
-    
+
     与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
 
     Top SQL 功能功能默认关闭。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点实时 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 分析某个 TiKV 节点上正在消耗 90% CPU 负载的 SQL 查询语句的具体内容及执行情况。
@@ -347,7 +345,7 @@ TiDB 版本：6.0.0-DMR
     使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。通过在 `topology.yaml` 文件中添加对应的配置项，你可以对监控组件进行自定义配置。
 
     [用户文档](/customized-montior-in-tiup-environment.md)
-     
+
 ## 离线包变更
 
 TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：`v6.0.0 TiDB-community-server` 软件包和 `v6.0.0 TiDB-community-toolkit` 软件包。
