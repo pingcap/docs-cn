@@ -1094,6 +1094,8 @@ Encoding 格式示例：
 >> store remove-tombstone              // 删除所有 tombstone 状态的 store
 ```
 
+`store limit` 命令的的使用方法可以参考 [Store Limit](/configure-store-limit.md)。
+
 > **注意：**
 >
 > * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
