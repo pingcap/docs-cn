@@ -472,7 +472,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     + Backup & Restore (BR)
 
         - 默认开启批量建表功能，备份数据恢复速度提升。在模拟测试中恢复 16 TB 的备份数据到 15 个节点的 TiKV 集群（每个节点有 16 个 CPU 核心），恢复吞吐可以达到 2.66 GiB/s [#27036](https://github.com/pingcap/tidb/issues/27036)
-        - 支持导入与导出放置规则 (Placement Rule) 。增加参数 `--with-tidb-placement-mode` 来控制导入时是否忽略放置规则 [#32290](https://github.com/pingcap/tidb/issues/32290) \
+        - 支持导入与导出放置规则 (Placement Rule)。增加参数 `--with-tidb-placement-mode` 来控制导入时是否忽略放置规则 [#32290](https://github.com/pingcap/tidb/issues/32290)
 
     + TiCDC
 
