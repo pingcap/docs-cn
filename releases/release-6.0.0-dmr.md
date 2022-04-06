@@ -174,7 +174,7 @@ TiDB 版本：6.0.0-DMR
 
 - 增强 Prepared Statement 执行计划共享
 
-    SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享，但是在 Prepared 语句 close 时会主动清空对应的 Plan Cache，对于重复执行的 SQL 造成不必要的解析，影响语句执行效率。TiDB 从 6.0.0 开始支持通过 `tidb_ignore_clost_stmt_cmd` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭，开启后可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，提升执行计划的复用率。
+    SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享。但是在 Prepared Statement close 时，TiDB 会主动清空对应的 Plan Cache。这会对重复执行的 SQL 造成不必要的解析，影响语句的执行效率。TiDB 从 6.0.0 开始支持通过 `tidb_ignore_clost_stmt_cmd` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭。开启该参数后，TiDB 可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，从而提升执行计划的复用率。
 
     [用户文档](/sql-prepare-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
 
@@ -186,7 +186,7 @@ TiDB 版本：6.0.0-DMR
 
 - TiFlash MPP 引擎支持分区表的动态裁剪模式（实验特性）
 
-    在该模式下，分区表的数据也可以使用 MPP 引擎读取和计算，大大提升了分区表的查询性能。
+    在该模式下，TiDB 也可以使用 TiFlash MPP 引擎读取和计算分区表的数据，从而大大提升分区表的查询性能。
 
     [用户文档](/tiflash/use-tiflash.md#mpp-模式访问分区表)
 
