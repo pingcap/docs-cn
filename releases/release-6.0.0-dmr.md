@@ -570,7 +570,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + PD
 
-    - 修复 PD 产生带有无意义的 Joint Consensus 步骤的 operator 的问题 [#4362](https://github.com/tikv/pd/issues/4362) [#4444](https://github.com/tikv/pd/issues/4444)
+    - 修复 PD 产生带有无意义的 Joint Consensus 步骤的 operator 的问题 [#4362](https://github.com/tikv/pd/issues/4362)，[#4444](https://github.com/tikv/pd/issues/4444)
     - 修复 PD Client 获取 TSO 在关闭链接的情况下卡住的问题 [#4549](https://github.com/tikv/pd/issues/4549)
     - 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4565](https://github.com/tikv/pd/issues/4565)
     - 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
