@@ -495,7 +495,6 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     + TiDB Lightning
 
         - 增加了更多重试错误类型 [#31376](https://github.com/pingcap/tidb/issues/31376)
-        - 在数据导入过程中，如果 TiKV 节点地址发生变化，任务不受影响 [#32875](https://github.com/pingcap/tidb/issues/32875)
         - 支持 base64 格式的密码字符串 [#31194](https://github.com/pingcap/tidb/issues/31194)
         - 标准化错误码和错误输出 [#32239](https://github.com/pingcap/tidb/issues/32239)
 
