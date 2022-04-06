@@ -459,8 +459,8 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 + PD
 
     - 支持驱逐 leader 时自动选择最快的目标进行迁移，加速驱逐过程 [#4229](https://github.com/tikv/pd/issues/4229)
-    - 禁止直接从有 2 副本的 Raft Group 中删除一个 Voter，防止 Region 不可用 [#4411](https://github.com/tikv/pd/issues/4411)
-    - 提升 Balance Leader 的调度速度 [#4610](https://github.com/tikv/pd/issues/4610)
+    - 禁止直接从有 2 副本的 Raft Group 中删除一个 Voter，防止 Region 不可用 [#4564](https://github.com/tikv/pd/issues/4564)
+    - 提升 Balance Leader 的调度速度 [#4652](https://github.com/tikv/pd/issues/4652)
 
 + TiFlash
 
