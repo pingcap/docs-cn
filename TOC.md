@@ -3,7 +3,7 @@
 
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md.0.md)
+  - [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
