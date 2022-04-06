@@ -16,7 +16,7 @@ Designed for the cloud, TiDB provides flexible scalability, reliability and secu
 
 - [TiDB Introduction](/overview.md)
 - [Basic Features](/basic-features.md)
-- [TiDB 5.4 Release Notes](/releases/release-5.4.0.md)
+- [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
 - [TiDB Release Timeline](/releases/release-timeline.md)
 - [Compatibility with MySQL](/mysql-compatibility.md)
 - [Usage Limitations](/tidb-limitations.md)
