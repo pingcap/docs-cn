@@ -176,12 +176,18 @@ CREATE TABLE t1 (
   userdata VARCHAR(100) NOT NULL
 ) PLACEMENT POLICY=p1 PARTITION BY LIST COLUMNS (country) (
   PARTITION pEurope VALUES IN ('DE', 'FR', 'GB') PLACEMENT POLICY=europe,
-  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica
+  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica,
   PARTITION pAsia VALUES IN ('CN', 'KR', 'JP')
 );
 ```
 
 If a partition has no attached policies, it tries to apply possibly existing policies on the table. For example, the `pEurope` partition will apply the `europe` policy, but the `pAsia` partition will apply the `p1` policy from table `t1`. If `t1` has no assigned policies, `pAsia` will not apply any policy, too.
+
+You can also alter the placement policies assigned to a specific partition. For example:
+
+```sql
+ALTER TABLE t1 PARTITION pEurope PLACEMENT POLICY=p1;
+```
 
 ### Set the default placement for a schema
 
