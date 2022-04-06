@@ -1,9 +1,9 @@
 ---
-title: EXPLAIN 概览
+title: TiDB 执行计划概览
 summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划。
 ---
 
-# `EXPLAIN` 概览
+# TiDB 执行计划概览
 
 > **注意：**
 >
