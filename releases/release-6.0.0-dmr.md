@@ -58,7 +58,7 @@ TiDB 版本：6.0.0-DMR
 | [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
 | [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
 | [`tidb_placement_mode`](/system-variables.md#tidb_placement_mode从-v600-版本开始引入) | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
-| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) | 新增 | <ul><li> 优化事务内读语句延迟。如果读写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。默认关闭。</li><li>该变量与 [replica-read](system-variables.md#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [replica-read](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两个变量。</li></ul> |
+| [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) | 新增 | <ul><li> 优化事务内读语句延迟。如果读写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。默认关闭。</li><li>该变量与 [replica-read](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [replica-read](#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两个变量。</li></ul> |
 | [`tidb_sysdate_is_now`](/system-variables.md#tidb_sysdate_is_now从-v600-版本开始引入) | 新增 | 控制 `sydate` 函数是否替换为 `NOW` 函数，效果与 MySQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。默认值为 `OFF`。 |
 | [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) | 新增 | 用来控制缓存表（新增 feature）的 lease 时间，默认值是 3 秒。 |
 | [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量，默认值为 `5000`。 |
@@ -143,6 +143,7 @@ TiDB 版本：6.0.0-DMR
     与现有 TiDB Dashboard 中各个面向数据库专家的诊断功能不同的是，Top SQL 完全面向非专家：你不需要观察几千张监控图表寻找相关性，也不需要理解诸如 Raft Snapsnot、RocksDB、MVCC、TSO 等 TiDB 内部机制，仅需要知道常见的数据库概念，如索引、锁冲突、执行计划等，就可以通过 Top SQL 快速分析数据库负载情况，并提升应用程序的性能。
 
     Top SQL 功能功能默认关闭。启用后，通过 Top SQL 提供的各个 TiDB 或 TiKV 节点实时 CPU 负载情况，你可以直观了解各节点的高 CPU 负载来自哪些 SQL 语句，从而快速分析诸如数据库热点和负载陡升等问题。例如，你可以通过 Top SQL 分析某个 TiKV 节点上正在消耗 90% CPU 负载的 SQL 查询语句的具体内容及执行情况。
+
     [用户文档](/dashboard/top-sql.md)
 
 - 持续性能分析
@@ -420,9 +421,9 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 支持对 RANGE COLUMNS 分区表在 IN 条件和字符串类型上进行分区裁剪 [#32626](https://github.com/pingcap/tidb/issues/32626)
     - 当设置系统变量为 NULL 时提供错误提示 [#32850](https://github.com/pingcap/tidb/issues/32850)
     - 移除非 MPP 模式的 Broadcast Join [#31465](https://github.com/pingcap/tidb/issues/31465)
-    - 支持下推 ` DAYOFMONTH()`，`LAST_DAY()` 函数到 TiFlash [#33012](https://github.com/pingcap/tidb/issues/33012)
+    - 支持下推 `DAYOFMONTH()`，`LAST_DAY()` 函数到 TiFlash [#33012](https://github.com/pingcap/tidb/issues/33012)
     - 支持下推 `DAYOFWEEK()` 和 `DAYOFYEAR()` 函数到 TiFlash [#33130](https://github.com/pingcap/tidb/issues/33130)
-    - 支持下推 ` IS_TRUE`，`IS_FALSE`, `IS_TRUE_WITH_NULL` 函数到 TiFlash [#33047](https://github.com/pingcap/tidb/issues/33047)
+    - 支持下推 `IS_TRUE`、`IS_FALSE`、`IS_TRUE_WITH_NULL` 函数到 TiFlash [#33047](https://github.com/pingcap/tidb/issues/33047)
     - 支持在动态裁剪模式的分区表上执行 MPP 计划 [#32347](https://github.com/pingcap/tidb/issues/32347)
     - 支持 read-consistency 读取可在 `READ-COMMITTED` 隔离级别下打开优化事务内读语句延迟 [#33159](https://github.com/pingcap/tidb/issues/33159)
     - 支持对公共表表达式 (CTE) 进行谓词下推 [#28163](https://github.com/pingcap/tidb/issues/28163)
