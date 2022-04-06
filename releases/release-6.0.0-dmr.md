@@ -501,7 +501,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + TiDB
 
-    - 修复了当 `SCHEDULE = majority_in_primary`，且 `PrimaryRegion` 和 `Regions` 的值相同时 placement rule 会报错的问题 [#31271](https://github.com/pingcap/tidb/issues/31271)
+    - 修复了当 `SCHEDULE = majority_in_primary`，且 `PrimaryRegion` 和 `Regions` 的值相同时创建 placement rule 会报错的问题 [#31271](https://github.com/pingcap/tidb/issues/31271)
     - 修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
     - 修复了当授予大于等于 2 个权限时 `show grants` 返回不正确的结果的问题 [#30855](https://github.com/pingcap/tidb/issues/30855)
     - 修复了在默认值为 `CURRENT_TIMESTAMP` 的字段执行 `INSERT INTO t1 SET tsCol = DEFAULT` 语句时插入零值的问题 [#29926](https://github.com/pingcap/tidb/issues/29926)
