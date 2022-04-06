@@ -126,7 +126,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
-| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]`。      |
+| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]"`。      |
 | `LEADER_CONSTRAINTS`       | 仅适用于 leader 的约束列表。                                         |
 | `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
 | `LEARNER_CONSTRAINTS`     | 仅适用于 learner 的约束列表。                                           |
@@ -246,7 +246,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性] |
+| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性) |
 | TiDB Lightning | 暂时不兼容 | |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
