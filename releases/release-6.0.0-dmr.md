@@ -132,7 +132,7 @@ TiDB 版本：6.0.0-DMR
 
 - 内核层面增加数据索引一致性检查
 
-    在事务执行过中增加数据索引一致性检查，通过极低的资源开销提升系统稳定性和健壮性。你可以通过 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 参数控制检查行为。默认配置下，大多数场景下 QPS 下降控制在 2% 以内。关于数据索引一致性检查的报错说明，请参考[用户文档](/data-inconsistency-errors.md)。
+    在事务执行过中增加数据索引一致性检查，通过极低的资源开销提升系统稳定性和健壮性。你可以通过 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 参数控制检查行为。默认配置下，大多数场景下 QPS 下降控制在 2% 以内。关于数据索引一致性检查的报错说明，请参考[用户文档](/troubleshoot-data-inconsistency-errors.md)。
 
 ### 可观测性
 
@@ -188,7 +188,7 @@ TiDB 版本：6.0.0-DMR
 
     在该模式下，分区表的数据也可以使用 MPP 引擎读取和计算，大大提升了分区表的查询性能。
 
-    [用户文档](/use-tiflash.md#mpp-模式访问分区表)
+    [用户文档](/tiflash/use-tiflash.md#mpp-模式访问分区表)
 
 - 持续提升 MPP 引擎计算性能
 
@@ -200,11 +200,11 @@ TiDB 版本：6.0.0-DMR
         - 日期函数：`DAYOFNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
         - 算子：Anti Left Outer Semi Join, Left Outer Semi Join
 
-        [用户文档](/use-tiflash.md#tiflash-支持的计算下推)
+        [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)
 
     - 正式引入动态线程池，提升 CPU 利用率，默认开启此功能
 
-        [用户文档](/tiflash-configuration.md#配置文件-tiflashtoml)
+        [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
 ### 稳定性
 
@@ -212,7 +212,7 @@ TiDB 版本：6.0.0-DMR
 
     增强了执行计划自动捕获的易用性，增加了黑名单功能，支持表名、频率和用户名三个维度的黑名单设置。引入新的算法来优化绑定缓存的内存管理机制。开启自动捕获后，可以为绝大多数 OLTP 类查询自动创建绑定，从而固定被绑定语句的执行计划，避免因执行计划变动导致的性能问题。通常用于大版本升级，集群迁移等场景下使用，可以有效减少因计划回退造成的性能问题。
 
-    [用户文档](sql-plan-management.md#自动捕获绑定-baseline-capturing)，[#32466](https://github.com/pingcap/tidb/issues/32466)
+    [用户文档](/sql-plan-management.md#自动捕获绑定-baseline-capturing)，[#32466](https://github.com/pingcap/tidb/issues/32466)
 
 - TiKV 过载资源保护增强 (实验特性）
 
@@ -232,13 +232,13 @@ TiDB 版本：6.0.0-DMR
 
     > **警告：**
     >
-    > 新版本数据格式将不支持原地降级为早于 5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](/tiflash-command-line-flags.md#dttool-migrate)。
+    > 新版本数据格式将不支持原地降级为早于 5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
-    [用户文档](/use-tiflash.md#使用数据校验)
+    [用户文档](/tiflash/use-tiflash.md#使用数据校验)
 
 - TiFlash 引入异步 GRPC 和 Min-TSO 调度机制，更好的管理线程使用，防止线程数过高导致的系统崩溃。
 
-    [用户文档](/monitor-tiflash.md#coprocessor)
+    [用户文档](/tiflash/monitor-tiflash.md#coprocessor)
 
 ### 数据迁移
 
@@ -325,7 +325,7 @@ TiDB 版本：6.0.0-DMR
 
     当 TiDB 集群出现问题，需要邀请 PingCAP 技术支持人员协助定位问题时，你可以通过 PingCAP Clinic 服务采集并上传诊断数据，从而大大提高定位问题的速度。
 
-    [用户文档](/clinic-introduction.md)
+    [用户文档](/clinic/clinic-introduction.md)
 
 - 企业级数据库管理平台 TiDB Enterprise Manager
 
@@ -339,7 +339,7 @@ TiDB 版本：6.0.0-DMR
 
     使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。通过在 `topology.yaml` 文件中添加对应的配置项，你可以对监控组件进行自定义配置。
 
-    [用户文档](/customized-montior-in-tiup-environment.md)
+    [用户文档](/tiup/customized-montior-in-tiup-environment.md)
 
 ## 离线包变更
 
