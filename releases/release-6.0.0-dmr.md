@@ -37,7 +37,7 @@ TiDB 版本：6.0.0-DMR
 
 - 开发里程碑版 (Development Milestone Releases, DMR)
 
-    DMR 版本约每两个月发布一次，会引入新的功能和改进。TiDB 不提供基于 DMR 的 Bug 修订版本，不推荐在生产环境使用。例如：6.0.0-DMR。
+    DMR 版本约每两个月发布一次，会引入新的功能和改进。TiDB 不提供基于 DMR 的 Bug 修订版本，不推荐在生产环境使用。例如：v6.0.0-DMR。
 
 v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
