@@ -102,7 +102,7 @@
   - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
   - [锁冲突与 TTL 超时](/troubleshoot-lock-conflicts.md)
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-  - [数据索引不一致报错](/data-inconsistency-errors.md)
+  - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
   - 系统调优
     - [操作系统性能参数调优](/tune-operating-system.md)
@@ -267,8 +267,9 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  - PingCAP Clinic 诊断服务 (Beta)
+  - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
+    - [快速上手](/clinic/quick-start-with-clinic.md)
     - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
@@ -630,7 +631,7 @@
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
-    - [缓存表](/table-cache.md)
+    - [缓存表](/cached-tables.md)
     - 字符集和排序
       - [概述](/character-set-and-collation.md)
       - [GBK](/character-set-gbk.md)

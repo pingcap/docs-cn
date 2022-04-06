@@ -573,6 +573,12 @@ opentracing.reporter 相关的设置。
 + 默认值：3
 + 单位：秒
 
+### `grpc-compression-type`
+
++ 控制 TiDB 向 TiKV 节点传输数据使用的压缩算法类型。默认值为 "none" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。
++ 默认值："none"
++ 可选值："none", "gzip"
+
 ### `commit-timeout`
 
 + 执行事务提交时，最大的超时时间。
@@ -670,20 +676,6 @@ TiDB 服务状态相关配置。
 
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
-
-## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
-
-系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
-
-### max-stmt-count
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
-+ 默认值：3000
-
-### max-sql-length
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
-+ 默认值：4096
 
 ## pessimistic-txn
 
