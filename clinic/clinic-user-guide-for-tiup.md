@@ -81,7 +81,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 如需查看 Diag 支持采集的数据的详细列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
-建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考 [采集 TiDB 集群的数据](采集-TiDB-集群的数据]。
+建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考[采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
 
 ### 第 2 步：采集数据
 
