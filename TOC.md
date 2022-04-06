@@ -3,7 +3,7 @@
 
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 5.4 Release Notes](/releases/release-5.4.0.md)
+  - [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
@@ -361,7 +361,7 @@
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
           - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警 
+        - 监控告警
           - [监控指标](/dm/monitor-a-dm-cluster.md)
           - [告警信息](/dm/dm-alert-rules.md)
         - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
@@ -761,6 +761,8 @@
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
+  - v6.0
+    - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
