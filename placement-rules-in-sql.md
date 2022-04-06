@@ -175,12 +175,18 @@ CREATE TABLE t1 (
   userdata VARCHAR(100) NOT NULL
 ) PLACEMENT POLICY=p1 PARTITION BY LIST COLUMNS (country) (
   PARTITION pEurope VALUES IN ('DE', 'FR', 'GB') PLACEMENT POLICY=europe,
-  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica
+  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica,
   PARTITION pAsia VALUES IN ('CN', 'KR', 'JP')
 );
 ```
 
 如果分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`pEurope` 分区将会应用 `europe` 策略，而 `pAsia` 分区将会应用表 `t1` 的放置策略 `p1`。如果 `t1` 没有绑定任何策略，`pAsia` 就不会应用任何策略。
+
+给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
+
+```sql
+ALTER TABLE t1 PARTITION pEurope PLACEMENT POLICY=p1;
+```
 
 ### 为数据库配置默认的放置规则
 
@@ -247,7 +253,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
 | Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性) |
-| TiDB Lightning | 暂时不兼容 | |
+| TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 
