@@ -262,8 +262,8 @@ TiDB 版本：6.0.0-DMR
 
     当迁移任务中断时，增加更多命令以方便的解决遇到的错误。例如：
 
-- 遇到 schema 错误时，可以通过 `binlog-schema update` 命令的 `--from-source`/`--from-target` 参数直接更新，无需单独编写 schema 文件；
-- 可以指定某个 binlog position，inject/replace/skip/revert DDL 语句；
+    - 遇到 schema 错误时，可以通过 `binlog-schema update` 命令的 `--from-source`/`--from-target` 参数直接更新，无需单独编写 schema 文件。
+    - 可以指定某个 binlog position，inject/replace/skip/revert DDL 语句。
 
     [用户文档](/dm/dm-manage-schema.md)
 
