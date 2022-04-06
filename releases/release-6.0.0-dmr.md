@@ -4,7 +4,7 @@ title: TiDB 6.0.0 Release Notes
 
 # TiDB 6.0.0 Release Notes
 
-发版日期：2022 年 x 月 x 日
+发版日期：2022 年 4 月 7 日
 
 TiDB 版本：6.0.0-DMR
 
@@ -29,11 +29,11 @@ TiDB 版本：6.0.0-DMR
 
 ## 版本策略变更
 
-从 TiDB 6.0.0 版本开始，TiDB 的发版会有两个系列：
+从 TiDB v6.0.0 开始，TiDB 的发版会有两个系列：
 
 - 长期支持版本 (Long-Term Support Releases)
 
-    长期支持版本约每六个月发布一次，会引入新的功能和改进，并会按需在版本生命周期内发布 Patch release。例如：v6.1.0。
+    长期支持版本约每六个月发布一次，会引入新的功能和改进，并会按需在版本生命周期内发布 Bug 修订版本。例如：v6.1.0。
 
 - 开发里程碑版 (Development Milestone Releases, DMR)
 
