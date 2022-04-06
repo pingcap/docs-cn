@@ -614,16 +614,16 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
         - 修复部分 syncer metrics 只有在查询状态时才得以更新的问题 [#4281](https://github.com/pingcap/tiflow/issues/4281)
         - 修复了 UPDATE 语句在安全模式下执行错误会导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
         - 修复了 varchar 类型值长度过长时的 `Column length too big` 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
-        - 修复了多个 DM-worker 写入来自同一上游的数据导致的冲突问题。[#3737](https://github.com/pingcap/tiflow/issues/3737)
-        - 修复了日志中出现数百条 "checkpoint has no change, skip sync flush checkpoint" 以及迁移性能下降的问题。[#4619](https://github.com/pingcap/tiflow/issues/4619)
-        - 修复了悲观模式下对上游增量数据进行分库分表合并迁移时有可能会丢 DML 的问题。[#5002](https://github.com/pingcap/tiflow/issues/5002)
+        - 修复了多个 DM-worker 写入来自同一上游的数据导致的冲突问题 [#3737](https://github.com/pingcap/tiflow/issues/3737)
+        - 修复了日志中出现数百条 "checkpoint has no change, skip sync flush checkpoint" 以及迁移性能下降的问题 [#4619](https://github.com/pingcap/tiflow/issues/4619)
+        - 修复了悲观模式下对上游增量数据进行分库分表合并迁移时有可能会丢 DML 的问题 [#5002](https://github.com/pingcap/tiflow/issues/5002)
 
     + TiDB Lightning
 
         - 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - 修复了源文件和目标集群中的表格名称不一致导致数据迁移失败的问题 [#31771](https://github.com/pingcap/tidb/issues/31771)
         - 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
-        - 修复了检查空表失败导致 TiDB Lightning 卡住的问题[#31797](https://github.com/pingcap/tidb/issues/31797)
+        - 修复了检查空表失败导致 TiDB Lightning 卡住的问题 [#31797](https://github.com/pingcap/tidb/issues/31797)
 
     + Dumpling
 
@@ -632,4 +632,4 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
     + TiDB Binlog
 
-        - 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题。 [#1136](https://github.com/pingcap/tidb-binlog/issues/1136)
+        - 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题 [#1136](https://github.com/pingcap/tidb-binlog/issues/1136)
