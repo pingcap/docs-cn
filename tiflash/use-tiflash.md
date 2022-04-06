@@ -14,7 +14,11 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 - [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash)
 - [使用 TiSpark 读取 TiFlash](#使用-tispark-读取-tiflash)
 
-## 按表构建 TiFlash 副本
+## 构建 TiFlash 副本
+
+本章节介绍如何按表和库构建 TiFlash副本，以及如何设置可用区来调度副本。
+
+### 按表构建 TiFlash 副本
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
 
@@ -64,7 +68,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
-### 查看表同步进度
+#### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
@@ -79,79 +83,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
-### 可用区设置
-
-在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
-
-1. 在集群配置文件中为 TiFlash 节点指定 label：
-
-    ```
-    tiflash_servers:
-      - host: 172.16.5.81
-        config:
-          flash.proxy.labels: zone=z1
-      - host: 172.16.5.82
-        config:
-          flash.proxy.labels: zone=z1
-      - host: 172.16.5.85
-        config:
-          flash.proxy.labels: zone=z2
-    ```
-
-2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
-    ```
-
-    例如：
-
-    {{< copyable "sql" >}}
-
-    ```sql
-    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
-    ```
-
-3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
-
-    ```shell
-    > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-    
-        ...
-    
-        "address": "172.16.5.82:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z1" }
-        ],
-        "region_count": 4,
-    
-        ...
-    
-        "address": "172.16.5.81:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z1" }
-        ],
-        "region_count": 5,
-    
-        ...
-    
-        "address": "172.16.5.85:23913",
-        "labels": [
-          { "key": "engine", "value": "tiflash"},
-          { "key": "zone", "value": "z2" }
-        ],
-        "region_count": 9,
-    
-        ...
-    ```
-
-关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
-
-## 按库构建 TiFlash 副本
+### 按库构建 TiFlash 副本
 
 类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
 
@@ -192,7 +124,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 >
 > - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
 
-### 查看库同步进度
+#### 查看库同步进度
 
 类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
 
@@ -209,6 +141,78 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 ```sql
 SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
 ```
+
+### 设置可用区
+
+在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
+
+1. 在集群配置文件中为 TiFlash 节点指定 label：
+
+    ```
+    tiflash_servers:
+      - host: 172.16.5.81
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.82
+        config:
+          flash.proxy.labels: zone=z1
+      - host: 172.16.5.85
+        config:
+          flash.proxy.labels: zone=z2
+    ```
+
+2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+    ```
+
+    例如：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    ALTER TABLE t SET TIFLASH REPLICA 2 LOCATION LABELS "zone";
+    ```
+
+3. 此时 PD 会根据设置的 label 进行调度，将表 `t` 的两个副本分别调度到两个可用区中。可以通过监控或 pd-ctl 来验证这一点：
+
+    ```shell
+    > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
+
+        ...
+
+        "address": "172.16.5.82:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 4,
+
+        ...
+
+        "address": "172.16.5.81:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z1" }
+        ],
+        "region_count": 5,
+
+        ...
+
+        "address": "172.16.5.85:23913",
+        "labels": [
+          { "key": "engine", "value": "tiflash"},
+          { "key": "zone", "value": "z2" }
+        ],
+        "region_count": 9,
+
+        ...
+    ```
+
+关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
 
