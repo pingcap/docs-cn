@@ -72,7 +72,7 @@ TiDB 版本：6.0.0-DMR
 | TiDB | `stmt-summary.enable` <br/> `stmt-summary.enable-internal-query` <br/> `stmt-summary.history-size` <br/> `stmt-summary.max-sql-length` <br/> `stmt-summary.max-stmt-count` <br/> `stmt-summary.refresh-interval` | 删除 | 系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置，所有配置项现已移除，统一改成用 SQL variable 控制。 |
 | TiDB | [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) | 修改 | 用于开启新的 collation 支持。自 v6.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
 | TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | 修改 | 修改可调整范围为 `[1, CPU]`。 |
-| TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 修改最大值为 `10240`。 |
+| TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
 | TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | <ul><li>修改最小值（由 `0` 修改为大于 `0`）</li><li>添加最大值为 `3GB`</li><li>添加单位（由 `MB` 增加为 `KB\|MB\|GB`）</li></ul> |
 | TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
 | TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
