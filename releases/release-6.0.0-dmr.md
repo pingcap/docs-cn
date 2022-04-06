@@ -404,7 +404,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 当通过 `FLASHBACK` 或 `RECOVER` 语句恢复一张表之后，自动清除该表的放置规则信息 [#31668](https://github.com/pingcap/tidb/issues/31668)
     - 新增一个性能概览监控面板，展示典型关键路径上的核心性能指标，使 TiDB 上的指标分析更加容易 [#31676](https://github.com/pingcap/tidb/issues/31676)
     - 支持在 `LOAD DATA LOCAL INFILE` 语句中使用 `REPLACE` 关键字 [#24515](https://github.com/pingcap/tidb/issues/24515)
-    - (dup: release-5.1.4.md > Improvements> TiDB)支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪 [#26739](https://github.com/pingcap/tidb/issues/26739)
+    - 支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪 [#26739](https://github.com/pingcap/tidb/issues/26739)
     - 消除 MPP 聚合查询中可能冗余的 Exchange 操作，提高查询效率 [#31762](https://github.com/pingcap/tidb/issues/31762)
     - 允许在 `TRUNCATE PARTITION` 和 `DROP PARTITION` 语句中使用重复的分区名，提高与 MySQL 的兼容性 [#31681](https://github.com/pingcap/tidb/issues/31681)
     - 支持在 `ADMIN SHOW DDL JOBS` 语句的执行结果中显示 `​​CREATE_TIME` 信息[#23494](https://github.com/pingcap/tidb/issues/23494)
@@ -440,7 +440,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 向量计算支持 `QUARTER` 函数 [#5751](https://github.com/tikv/tikv/issues/5751)
     - 支持 `BIT` 数据类型下推至 TiKV [#30738](https://github.com/pingcap/tidb/issues/30738)
     - 支持 `MOD` 函数和 `SYSDATE` 函数下推至 TiKV [#11916](https://github.com/tikv/tikv/issues/11916)
-    - (dup: release-5.3.1.md > Improvements> TiKV)通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
+    - 通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
     - 支持动态修改 `raftstore.raft-max-inflight-msgs` [#11865](https://github.com/tikv/tikv/issues/11865)
     - 支持 `EXTRA_PHYSICAL_TABLE_ID_COL_ID`，以实现动态裁剪模式 [#11888](https://github.com/tikv/tikv/issues/11888)
     - 支持以 buckets 为单位进行计算 [#11759](https://github.com/tikv/tikv/issues/11759)
@@ -481,10 +481,10 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
         - 在 Grafana 中添加 `Lag analyze` 监控面板 [#4891](https://github.com/pingcap/tiflow/issues/4891)
         - 支持放置规则 (placement rules) [#4846)](https://github.com/pingcap/tiflow/issues/4846)
         - 同步处理 HTTP API [#1710](https://github.com/pingcap/tiflow/issues/1710)
-        - (dup) 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
+        - 为 changefeed 重启操作添加指数退避机制 [#3329](https://github.com/pingcap/tiflow/issues/3329)
         - 设置 MySQL sink 的默认隔离级别为 Read Committed，以减少MySQL 中的死锁 [#3589](https://github.com/pingcap/tiflow/issues/3589)
         - 在创建 changefeed 时验证参数合法，优化报错信息 [#1716](https://github.com/pingcap/tiflow/issues/1716) [#1718](https://github.com/pingcap/tiflow/issues/1718) [#1719](https://github.com/pingcap/tiflow/issues/1719) [#4472](https://github.com/pingcap/tiflow/issues/4472)
-        - (dup) 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
+        - 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
 
     + TiDB Data Migration (DM)
 
@@ -505,22 +505,22 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 + TiDB
 
     - 修复了当 `SCHEDULE = majority_in_primary`，且 `PrimaryRegion` 和 `Regions` 的值相同时 placement rule 会报错的问题 [#31271](https://github.com/pingcap/tidb/issues/31271)
-    - (dup: release-5.3.1.md > Bug fixes> TiDB)修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
+    - 修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
     - 修复了当授予大于等于 2 个权限时 `show grants` 返回不正确的结果的问题 [#30855](https://github.com/pingcap/tidb/issues/30855)
     - 修复了在默认值为 `CURRENT_TIMESTAMP` 的字段执行 `INSERT INTO t1 SET tsCol = DEFAULT` 语句时插入零值的问题 [#29926](https://github.com/pingcap/tidb/issues/29926)
     - 通过避免编码字符串类型的最大值和最小非空值，修复读取结果时的报错问题 [#31721](https://github.com/pingcap/tidb/issues/31721)
     - 修复 LOAD DATA 语句处理跳脱符时可能 panic 的问题 [#31589](https://github.com/pingcap/tidb/issues/31589)
-    - (dup: release-5.3.1.md > Bug fixes> TiDB)修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
+    - 修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
     - 修复 date_add 和 date_sub 函数可能返回错误数据类型的问题 [#31809](https://github.com/pingcap/tidb/issues/31809)
     - 修复使用 insert 语句插入数据到虚拟生成列时可能出现 panic 的问题 [#31735](https://github.com/pingcap/tidb/issues/31735)
     - 修复创建 list column 分区表时出现重复列不报错的问题 [#31784](https://github.com/pingcap/tidb/issues/31784)
     - 修复 `select for update union select` 语句使用错误快照导致结果可能错误的问题 [#31530](https://github.com/pingcap/tidb/issues/31530)
-    - (dup: release-5.3.1.md > Bug fixes> Tools> Backup & Restore (BR))修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tidb/issues/31034)
+    - 修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tidb/issues/31034)
     - 修复 `json` 类型 Coercibility 值不正确的问题 [#31541](https://github.com/pingcap/tidb/issues/31541)
     - 修复了 `json` 类型在 builtin-func 中推导 collation 错误的问题 [#31320](https://github.com/pingcap/tidb/issues/31320)
     - 修复当设置 TiFlash 副本数为 0 时 PD 规则没有被删除的问题 [#32190](https://github.com/pingcap/tidb/issues/32190)
-    - (dup: release-5.3.1.md > Bug fixes> TiDB)修复 `alter column set default` 错误地修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
-    - (dup: release-5.3.1.md > Bug fixes> TiDB)修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
+    - 修复 `alter column set default` 错误地修改表定义的问题 [#31074](https://github.com/pingcap/tidb/issues/31074)
+    - 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
     - 修复使用 join 更新分区表时可能报错的问题 [#31629](https://github.com/pingcap/tidb/issues/31629)
     - 修复 Nulleq 函数作用在 Enum 类型上可能出现结果错误的问题 [#32428](https://github.com/pingcap/tidb/issues/32428)
     - 修复 upper 和 lower 函数可能造成 panic 的问题 [#32488](https://github.com/pingcap/tidb/issues/32488)
@@ -551,15 +551,15 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + TiKV
 
-    - (dup: release-5.3.1.md > Bug fixes> TiKV)- 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
-    - (dup: release-5.3.1.md > Bug fixes> TiKV)- 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
-    - (dup: release-5.3.1.md > Bug fixes> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
+    - 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
+    - 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
+    - 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
     - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
     - 修复在某些某些边界场景中 `StoreMeta` 内数据被意外删除会引发 TiKV panic 的问题 [#11852](https://github.com/tikv/tikv/issues/11852)
     - 修复在 ARM 平台上进行性能分析造成 TiKV panic 的问题 [#10658](https://github.com/tikv/tikv/issues/10658)
     - 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
     - 修复因缺少 SSE 指令集导致的 ARM64 架构下的编译问题 [#12034](https://github.com/tikv/tikv/issues/12034)
-    - (dup: release-5.3.1.md > Bug fixes> TiKV)- 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
+    - 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
     - 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
     - 修复 TsSet 转换可能发生未定义行为 (UB) 的问题 [#12070](https://github.com/tikv/tikv/issues/12070)
     - 修复 Replica Read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
@@ -602,8 +602,8 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
     + TiCDC
 
-        - (dup) 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace` SQL 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
-        - (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC) 修复了 TiCDC 进程在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
+        - 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace` SQL 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
+        - 修复了 TiCDC 进程在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
         - 修复使用某些版本 MySQL sink 时可能遇到 `Unknown system variable 'transaction_isolation'` 报错的问题 [#4504](https://github.com/pingcap/tiflow/issues/4504)
         - 修复 `Canal-JSON` 错误处理 `string` 格式可能导致的 TiCDC panic 问题 [#4635](https://github.com/pingcap/tiflow/issues/4635)
         - 修复某些情况下序列对象被错误同步的问题 [#4552](https://github.com/pingcap/tiflow/issues/4552)
@@ -614,16 +614,16 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
     + TiDB Data Migration (DM)
 
-        - (dup: release-5.4.0.md > Bug fixes> Tools> TiDB Data Migration (DM))- 修复部分 syncer metrics 只有在查询状态时才得以更新的问题 [#4281](https://github.com/pingcap/tiflow/issues/4281)
-        - (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC)- 修复了 UPDATE 语句在安全模式下执行错误会导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
-        - (dup: release-5.3.1.md > Bug fixes> Tools> TiCDC)- 修复了 varchar 类型值长度过长时的 `Column length too big` 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
+        - 修复部分 syncer metrics 只有在查询状态时才得以更新的问题 [#4281](https://github.com/pingcap/tiflow/issues/4281)
+        - 修复了 UPDATE 语句在安全模式下执行错误会导致 DM 进程挂掉的问题 [#4317](https://github.com/pingcap/tiflow/issues/4317)
+        - 修复了 varchar 类型值长度过长时的 `Column length too big` 错误 [#4637](https://github.com/pingcap/tiflow/issues/4637)
         - 修复了多个 DM-worker 写入来自同一上游的数据导致的冲突问题。[#3737](https://github.com/pingcap/tiflow/issues/3737)
         - 修复了日志中出现数百条 "checkpoint has no change, skip sync flush checkpoint" 以及迁移性能下降的问题。[#4619](https://github.com/pingcap/tiflow/issues/4619)
         - 修复了悲观模式下对上游增量数据进行分库分表合并迁移时有可能会丢 DML 的问题。[#5002](https://github.com/pingcap/tiflow/issues/5002)
 
     + TiDB Lightning
 
-        - (dup: release-5.3.1.md > Bug fixes> Tools> TiDB Lightning)- 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
+        - 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - 修复了源文件和目标集群中的表格名称不一致导致数据迁移失败的问题 [#31771](https://github.com/pingcap/tidb/issues/31771)
         - 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
         - 修复了检查空表失败导致 TiDB Lightning 卡住的问题[#31797](https://github.com/pingcap/tidb/issues/31797)
