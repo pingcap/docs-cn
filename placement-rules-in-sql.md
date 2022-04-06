@@ -247,7 +247,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
 | Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性) |
-| TiDB Lightning | 暂时不兼容 | 目前不支持放置策略的导入 |
+| TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 
