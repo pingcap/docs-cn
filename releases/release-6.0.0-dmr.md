@@ -286,7 +286,7 @@ TiDB 版本：6.0.0-DMR
 
     增加 `max-error` 配置项，默认值为 0 以保持原有行为。当值 > 0 时，表示 max-error 功能开启。Lightning 在进行编码时，如果出现报错，则会在 `type_error_v1` 中增加一条记录包含此报错行的信息，并忽略此行；当出现的报错行数超过配置值时 Lightning 将立即退出。
 
-    与之相匹配的配置项 `lightning_task_info` 用于定义保存出错数据记录的库名。
+    与之相匹配的配置项 `lightning.task-info-schema-name` 用于定义保存出错数据记录的库名。
 
     此特性尚不能涵盖所有类型的错误，例如 syntax error。
 
