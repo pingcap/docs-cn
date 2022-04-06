@@ -224,7 +224,7 @@ TiDB 版本：6.0.0-DMR
 
     新增 `profiles.default.dt_compression_method` 和 `profiles.default.dt_compression_level` 两个参数，用户可根据对性能和容量的平衡，选择不同的压缩算法。
 
-    [用户文档](/tiflash-configuration.md#配置文件-tiflashtoml)
+    [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
 - TiFlash 默认开启支持所有 I/O 的校验 (Checksum)。
 
@@ -410,7 +410,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 支持在 `ADMIN SHOW DDL JOBS` 语句的执行结果中显示 `​​CREATE_TIME` 信息[#23494](https://github.com/pingcap/tidb/issues/23494)
     - 新增内置函数 `CHARSET()` [#3931](https://github.com/pingcap/tidb/issues/3931)
     - 支持通过用户名过滤自动捕获的黑名单 [#32558](https://github.com/pingcap/tidb/issues/32558)
-    - 优化 `ADMIN SHOW DDL JOBS` 和 `SHOW TABLE STATUS` 语句的执行结果，支持根据当前的 `time_zone` 显示结果中的时间 [#26642](​​https://github.com/pingcap/tidb/issues/26642)
+    - 优化 `ADMIN SHOW DDL JOBS` 和 `SHOW TABLE STATUS` 语句的执行结果，支持根据当前的 `time_zone` 显示结果中的时间 [#26642](https://github.com/pingcap/tidb/issues/26642​​)
     - 支持下推 `DAYNAME()`和 `MONTHNAME()` 函数到 TiFlash [#32594](https://github.com/pingcap/tidb/issues/32594)
     - 支持下推 `REGEXP` 函数到 TiFlash [#32637](https://github.com/pingcap/tidb/issues/32637)
     - 支持追踪 `UnionScan` 算子的执行情况 [#32631](https://github.com/pingcap/tidb/issues/32631)
