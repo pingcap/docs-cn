@@ -302,7 +302,7 @@ TiDB 版本：6.0.0-DMR
 
 - 默认采用新 Collation 规则
 
-    TiDB 从 v4.0 开始支持新 collation 规则，在大小写不敏感、口音不敏感、padding 规则 上与 MySQL 行为保持一致。新 Collation 规则可以通过 `new_collations_enabled_on_first_bootstrap` 参数控制，默认关闭。从 v6.0 开始，TiDB 默认开启新 Collation 规则，请注意该配置只有在集群初始化时可以设置。
+    TiDB 从 v4.0 开始支持新 collation 规则，在大小写不敏感、口音不敏感、padding 规则上与 MySQL 行为保持一致。新 Collation 规则可以通过 `new_collations_enabled_on_first_bootstrap` 参数控制，默认关闭。从 v6.0 开始，TiDB 默认开启新 Collation 规则，请注意该配置仅在集群初始化时生效。
 
     [用户文档](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)
 
@@ -506,7 +506,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复了当授予大于等于 2 个权限时 `show grants` 返回不正确的结果的问题 [#30855](https://github.com/pingcap/tidb/issues/30855)
     - 修复了在默认值为 `CURRENT_TIMESTAMP` 的字段执行 `INSERT INTO t1 SET tsCol = DEFAULT` 语句时插入零值的问题 [#29926](https://github.com/pingcap/tidb/issues/29926)
     - 通过避免编码字符串类型的最大值和最小非空值，修复读取结果时的报错问题 [#31721](https://github.com/pingcap/tidb/issues/31721)
-    - 修复 LOAD DATA 语句处理跳脱符时可能 panic 的问题 [#31589](https://github.com/pingcap/tidb/issues/31589)
+    - 修复 LOAD DATA 语句处理转义字符时可能 panic 的问题 [#31589](https://github.com/pingcap/tidb/issues/31589)
     - 修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
     - 修复 date_add 和 date_sub 函数可能返回错误数据类型的问题 [#31809](https://github.com/pingcap/tidb/issues/31809)
     - 修复使用 insert 语句插入数据到虚拟生成列时可能出现 panic 的问题 [#31735](https://github.com/pingcap/tidb/issues/31735)
@@ -530,7 +530,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复使用 MySQL 5.5/5.6 客户端连接 TiDB 无密码用户时可能失败的问题 [#32334](https://github.com/pingcap/tidb/issues/32334)
     - 修复在事务中使用动态模式读取分区表时结果不正确的问题 [#29851](https://github.com/pingcap/tidb/issues/29851)
     - 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
-    - 修复 `timdiff` 函数在输入包含毫秒时可能出现结果错误的问题 [#31680](https://github.com/pingcap/tidb/issues/31680)
+    - 修复 `timdiff` 函数的输入包含毫秒时可能出现结果错误的问题 [#31680](https://github.com/pingcap/tidb/issues/31680)
     - 修复显式读取分区并使用 IndexJoin 计划时可能出现结果错误的问题 [#32007](https://github.com/pingcap/tidb/issues/32007)
     - 修复重命名列时并发修改列类型会导致重命名错误的问题 [#31075](https://github.com/pingcap/tidb/issues/31075)
     - 修复 TiFlash 执行计划网络成本计算公式未与 TiKV 对齐的问题 [#30103](https://github.com/pingcap/tidb/issues/30103)
