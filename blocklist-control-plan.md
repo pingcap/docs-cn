@@ -139,7 +139,7 @@ DESC mysql.expr_pushdown_blacklist;
 
 以下示例首先将运算符 `<` 及 `>` 加入黑名单，然后将运算符 `>` 从黑名单中移出。
 
-黑名单是否生效可以从 `explain` 结果中进行观察（参见 [`EXPLAIN` 简介](/explain-overview.md)）。
+黑名单是否生效可以从 `explain` 结果中进行观察（参见 [TiDB 执行计划概览](/explain-overview.md)）。
 
 1. 对于以下 SQL 语句，`where` 条件中的 `a < 2` 和 `a > 2` 可以下推到 TiKV 进行计算。
 
