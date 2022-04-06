@@ -33,7 +33,7 @@ TiDB 版本：6.0.0-DMR
 
 - 长期支持版本 (Long-Term Support Releases)
 
-    长期支持版本约每六个月发布一次，会引入新的功能和改进，并会在版本生命周期内发布 Patch release。例如：v6.1.0。
+    长期支持版本约每六个月发布一次，会引入新的功能和改进，并会按需在版本生命周期内发布 Patch release。例如：v6.1.0。
 
 - 开发里程碑版 (Development Milestone Releases, DMR)
 
@@ -296,7 +296,7 @@ TiDB 版本：6.0.0-DMR
 
 - 支持高达 10 万张表的同时同步
 
-    TiCDC 针对数据处理流程进行了优化，降低了处理每张表的增量数据时所需要的资源，极大地提升了 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率。在测试中，TiCDC 可以稳定支持 10 万张表的增量数据的同时同步。
+    TiCDC 针对数据处理流程进行了优化，降低了处理每张表增量数据时所需要的资源，极大地提升了 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率。在测试中，TiCDC 可以稳定支持 10 万张表的增量数据的同时同步。
 
 ### 部署及运维
 
@@ -430,7 +430,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + TiKV
 
-    - 提升 Raftstore 对大 key range batch 的采样准确度 [#11039](https://github.com/tikv/tikv/pull/11039)
+    - 提升 Raftstore 对大 key range batch 的采样准确度 [#12327](https://github.com/tikv/tikv/issues/12327)
     - 为 `debug/pprof/profile` 添加正确的 Content-Type，使 Profile 更容易被识别 [#11521](https://github.com/tikv/tikv/issues/11521)
     - 当 Raftstore 在心跳或处理读请求时，通过更新其租约时间来无限延长 leader 的租约时间，减少 leader 切换导致的延迟抖动 [#11579](https://github.com/tikv/tikv/issues/11579)
     - 切换 leader 时以选择代价最小的 store 为目标，提升性能稳定性 [#10602](https://github.com/tikv/tikv/issues/10602)
