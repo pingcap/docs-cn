@@ -217,7 +217,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     当 TiKV 部署的机型资源受限时，如果前台处理的读写请求量过大，会导致后台处理请求的 CPU 资源被前台占用，最终影响 TiKV 性能的稳定性。TiDB v6.0.0 支持手动限制 TiKV 前台各类请求的资源用量，包括 CPU、读写带宽等，以提升集群在长期高负载压力下的稳定性。
 
-    [用户文档](/tikv-configuration-file.md#quota)，[#12264](https://github.com/tikv/tikv/pull/12264)
+    [用户文档](/tikv-configuration-file.md#quota)，[#12131](https://github.com/tikv/tikv/issues/12131)
 
 - TiFlash 新增支持 zstd 压缩算法。
 
@@ -430,7 +430,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + TiKV
 
-    - 提升 Raftstore 对大 key range batch 的采样准确度 [#12327](https://github.com/tikv/tikv/issues/12327)
+    - 提升 Raftstore 对含有较多 key ranges 的 batch 的采样准确度 [#12327](https://github.com/tikv/tikv/issues/12327)
     - 为 `debug/pprof/profile` 添加正确的 Content-Type，使 Profile 更容易被识别 [#11521](https://github.com/tikv/tikv/issues/11521)
     - 当 Raftstore 在心跳或处理读请求时，通过更新其租约时间来无限延长 leader 的租约时间，减少 leader 切换导致的延迟抖动 [#11579](https://github.com/tikv/tikv/issues/11579)
     - 切换 leader 时以选择代价最小的 store 为目标，提升性能稳定性 [#10602](https://github.com/tikv/tikv/issues/10602)
@@ -561,7 +561,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复 TsSet 转换可能发生未定义行为 (UB) 的问题 [#12070](https://github.com/tikv/tikv/issues/12070)
     - 修复 Replica Read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
     - 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
-    - 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12049](https://github.com/tikv/tikv/pull/12049)
+    - 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12329](https://github.com/tikv/tikv/issues/12329)
     - 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     - 修复 TiKV 在退出时可能误报 panic 的问题 [#12231](https://github.com/tikv/tikv/issues/12231)
 
@@ -585,7 +585,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复在高并发场景下 Learner 读过程时间过长的问题 [#3555](https://github.com/pingcap/tiflash/issues/3555)
     - 修复将 `DATETIME` 转换为 `DECIMAL` 时结果错误的问题 [#4151](https://github.com/pingcap/tiflash/issues/4151)
     - 修复查询被取消时出现的内存泄露问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
-    - 修复启用 Elastic 线程池可能导致内存泄漏的问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
+    - 修复开启可扩缩容弹性线程池可能导致内存泄漏的问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
     - 修复启用本地隧道时取消 MPP 查询可能导致任务永远挂起的问题 [#4229](https://github.com/pingcap/tiflash/issues/4229)
     - 修复 HashJoin 构建端失败可能导致 MPP 查询永远挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
     - 修复 MPP 任务可能永远泄漏线程的问题 [#4238](https://github.com/pingcap/tiflash/issues/4238)
