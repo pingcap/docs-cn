@@ -424,7 +424,6 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 当设置系统变量为 NULL 时提供错误提示 [#32850](https://github.com/pingcap/tidb/issues/32850)
     - 移除非 MPP 模式的 Broadcast Join [#31465](https://github.com/pingcap/tidb/issues/31465)
     - 支持在动态裁剪模式的分区表上执行 MPP 计划 [#32347](https://github.com/pingcap/tidb/issues/32347)
-    - 支持 read-consistency 读取可在 `READ-COMMITTED` 隔离级别下打开优化事务内读语句延迟 [#33159](https://github.com/pingcap/tidb/issues/33159)
     - 支持对公共表表达式 (CTE) 进行谓词下推 [#28163](https://github.com/pingcap/tidb/issues/28163)
     - 简化 `Statement Summary` 和 `Capture Plan Baselines` 的配置为只在全局基础上可用 [#30557](https://github.com/pingcap/tidb/issues/30557)
     - 更新 gopsutil 的版本到 v3.21.12，避免在 macOS 12 上构建二进制时出现警告 [#31607](https://github.com/pingcap/tidb/issues/31607)
