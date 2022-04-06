@@ -59,7 +59,7 @@ TiDB 版本：6.0.0-DMR
 | [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
 | [`tidb_placement_mode`](/system-variables.md#tidb_placement_mode从-v600-版本开始引入) | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
 | [`tidb_rc_read_check_ts`](/system-variables.md#tidb_rc_read_check_ts从-v600-版本开始引入) | 新增 | <ul><li> 优化事务内读语句延迟。如果读写冲突较为严重，开启此变量会增加额外开销和延迟，造成性能回退。默认关闭。</li><li>该变量与 [replica-read](/system-variables.md#tidb_replica_read-从-v40-版本开始引入) 尚不兼容，开启 `tidb_rc_read_check_ts` 的读请求无法使用 [replica-read](/system-variables.md#tidb_replica_read-从-v40-版本开始引入)，请勿同时开启两个变量。</li></ul> |
-| [`tidb_sysdate_is_now`](/system-variables.md#tidb_sysdate_is_now从-v600-版本开始引入) | 新增 | 控制 `sydate` 函数是否替换为 `NOW` 函数，效果与 MySQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。默认值为 `OFF`。 |
+| [`tidb_sysdate_is_now`](/system-variables.md#tidb_sysdate_is_now从-v600-版本开始引入) | 新增 | 控制 `SYSDATE` 函数是否替换为 `NOW` 函数，效果与 MySQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。默认值为 `OFF`。 |
 | [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) | 新增 | 用来控制缓存表（新增 feature）的 lease 时间，默认值是 3 秒。 |
 | [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量，默认值为 `5000`。 |
 | [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N）的数据，默认值为 `100`。 |
@@ -74,13 +74,13 @@ TiDB 版本：6.0.0-DMR
 | TiDB | [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) | 修改 | 用于开启新的 collation 支持。自 v6.0 起默认值从 false 改为 true。该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架。 |
 | TiKV | [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) | 修改 | 修改可调整范围为 `[1, CPU]`。 |
 | TiKV | [`raftstore.apply-max-batch-size`](/tikv-configuration-file.md#apply-max-batch-size) | 修改 | 修改最大值为 `10240`。 |
-| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | 修改最小值（由 `0` 修改为大于 `0`）<br/>添加最大值为 `3 GB`<br/>添加单位（由 `MB` 增加为 `KB\|MB\|GB`） |
+| TiKV | [`raftstore.raft-max-size-per-msg`](/tikv-configuration-file.md#raft-max-size-per-msg) | 修改 | <ul><li>修改最小值（由 `0` 修改为大于 `0`）</li><li>添加最大值为 `3GB`</li><li>添加单位（由 `MB` 增加为 `KB\|MB\|GB`）</li></ul> |
 | TiKV | [`raftstore.store-max-batch-size`](/tikv-configuration-file.md#store-max-batch-size) | 修改 | 添加最大值为 `10240`。 |
 | TiKV | [`readpool.unified.max-thread-count`](/tikv-configuration-file.md#max-thread-count) | 修改 | 修改可调整范围为 `[min-thread-count, MAX(4, CPU)]`。 |
-| TiKV | [`rocksdb.enable-pipelined-write`](/tikv-configuration-file.md#enable-pipelined-write) | 修改 | 修改默认值为 `false`，表示不开启 Pipelined Write。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
+| TiKV | [`rocksdb.enable-pipelined-write`](/tikv-configuration-file.md#enable-pipelined-write) | 修改 | 修改默认值为 `false`。开启时会使用旧的 Pipelined Write，关闭时会使用新的 Pipelined Commit 机制。 |
 | TiKV | [`rocksdb.max-background-flushes`](/tikv-configuration-file.md#max-background-flushes) | 修改 | 在 CPU 核数为 10 时修改默认值为 `3`，在 CPU 核数量为 8 时默认为 `2`。 |
 | TiKV | [`rocksdb.max-background-jobs`](/tikv-configuration-file.md#max-background-jobs) | 修改 | 在 CPU 核数为 10 时修改默认值为 `9`，在 CPU 核数量为 8 时默认为 `7`。 |
-| TiFlash | [`profiles.default.dt_enable_logical_split`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 存储引擎的 segment 分裂是否使用逻辑分裂。自 v6.0 起默认值从 `true` 改为 `false。` |
+| TiFlash | [`profiles.default.dt_enable_logical_split`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 存储引擎的 segment 分裂是否使用逻辑分裂。自 v6.0 起默认值从 `true` 改为 `false`。 |
 | TiFlash | [`profiles.default.enable_elastic_threadpool`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 是否启用可自动扩展的线程池。自 v6.0 起默认值从 `false` 改为 `true`。 |
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 修改 | 该配置项控制 TiFlash 存储引擎的校验功能，自 v6.0 起默认值从 `2` 改为 `3`。`format_version` 设置为 `3` 时， 支持对 TiFlash 的所有数据的读操作进行一致性校验，避免由于硬件故障而读到错误的数据。<br/>注意：新版本数据格式不支持原地降级为早于 5.4 的版本。 |
 | TiDB | [`pessimistic-txn.pessimistic-auto-commit`](/tidb-configuration-file.md#pessimistic-auto-commit) | 新增 | 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。 |
@@ -89,29 +89,29 @@ TiDB 版本：6.0.0-DMR
 | TiFlash | [`profiles.default.dt_compression_method`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。 |
 | TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | TiFlash 存储引擎的压缩级别，默认值 `1`。 |
 | DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量阶段数据导入的模式。自 v6.0 起全量阶段默认使用 TiDB Lightning 的 TiDB-backend 方式导入，替换原来的 Loader 组件。此变动为内部组件替换，对日常使用没有明显影响。<br/>默认值 `sql` 表示启用 tidb-backend 组件，可能在极少数场景下存在未能完全兼容的情况，可以通过配置为 "loader" 回退。 |
-| DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量导入阶段出现的冲突数据的解决方式。默认值为 `replace` ，覆盖重复数据。 |
-| TiCDC | `read-timeout` | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
-| TiCDC | `write-timeout` | 新增 | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
-| TiCDC | `dial-timeout` | 新增 | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | 该配置项控制全量导入阶段出现的冲突数据的解决方式。默认值为 `replace`，覆盖重复数据。 |
+| TiCDC | [`dial-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| TiCDC | [`read-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 读取下游 Kafka 返回的 response 的超时时长，默认值 `10s` |
+| TiCDC | [`write-timeout`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
 
 ### 其他
 
 - 数据放置策略的兼容性变更：
-    - 不支持绑定，并从语法中删除直接放置 (direct placement) 选项
-    - `CREATE PLACEMENT POLICY` 和 `ALTER PLACEMENT POLICY` 语句不再支持 `VOTERS` 和 `VOTER_CONSTRAINTS` 放置选项
+    - 不支持绑定，并从语法中删除直接放置 (direct placement) 选项。
+    - `CREATE PLACEMENT POLICY` 和 `ALTER PLACEMENT POLICY` 语句不再支持 `VOTERS` 和 `VOTER_CONSTRAINTS` 放置选项。
     - TiDB 生态工具（TiDB Binlog、TiCDC、BR）现在兼容 placement rules。Placement 选项移到 binlog 的特殊注释中。
     - 系统表 `information_schema.placement_rules` 重命名为 `information_schema.placement_policies`。此表现在只展示放置策略的信息。
     - 系统变量 `placement_checks` 被 `tidb_placement_mode` 替代。
     - 禁止在有 TiFlash 副本的表上添加带放置规则的分区。
     - 将 `TIDB_DIRECT_PLACEMENT` 列从 `INFORMATION_SCHEMA` 表中删除。
 - 执行计划管理（SPM）绑定的 status 值变更：
-    - 删除 `using。`
-    - 新增 `enabled`（可用），取代之前版本的 `using` 状态
+    - 删除 `using`。
+    - 新增 `enabled`（可用），取代之前版本的 `using` 状态。
     - 新增 `disabled`（不可用）。
 - DM 修改 OpenAPI 接口
     - 由于内部机制变更，任务管理相关接口与之前的实验特性版本无法保持兼容，需要参阅新的 [OpenAPI 文档](/dm/dm-open-api.md)进行适配。
 - DM 全量数据冲突处理方式变化
-    - 新增 `loader.&lt;name>.on-duplicate` 参数，默认值为 `replace`，表示覆盖冲突数据。若希望保持以前版本的行为，可以改为 `error`。此参数仅影响全量数据导入阶段的行为。
+    - 新增 `loader.<name>.on-duplicate` 参数，默认值为 `replace`，表示覆盖冲突数据。若希望保持以前版本的行为，可以改为 `error`。此参数仅影响全量数据导入阶段的行为。
 - 在 v5.4（仅 v5.4）中，TiDB 允许将一些 noop 系统变量设置为不正确的值。从 v6.0 起，TiDB 不再允许将系统变量设置为不正确的值 [#31538](https://github.com/pingcap/tidb/issues/31538)
 
 ## 新功能
