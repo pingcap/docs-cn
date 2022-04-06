@@ -453,7 +453,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 支持动态修改 `raftstore.apply_max_batch_size` 和 `raftstore.store_max_batch_size` [#11982](https://github.com/tikv/tikv/issues/11982)
     - 支持 RawKV API V2 在收到 `raw_get` 或 `raw_scan` 请求时会返回最新的版本 [#11965](https://github.com/tikv/tikv/issues/11965)
     - 支持 RCCheckTS 的一致性读 [#12097](https://github.com/tikv/tikv/issues/12097)
-    - 支持动态修改 `storage.scheduler-worker-pool-size`（Scheduler 线程池中线程的数量） [#12067](https://github.com/tikv/tikv/pull/12067)
+    - 支持动态修改 `storage.scheduler-worker-pool-size`（Scheduler 线程池中线程的数量） [#12067](https://github.com/tikv/tikv/issues/12067)
     - 通过全局的前台限流器来控制 CPU 与带宽的使用，增加 TiKV 性能的稳定性 [#11855](https://github.com/tikv/tikv/issues/11855)
     - 支持动态修改 `readpool.unified.max-thread-count`（UnifyReadPool 线程池中线程的数量） [#11781](https://github.com/tikv/tikv/issues/11781)
     - 使用 TiKV 内部的 pipeline 替代 RocksDB pipeline，废弃 `rocksdb.enable-multibatch-write` 参数 [#12059](https://github.com/tikv/tikv/issues/12059)
@@ -461,8 +461,8 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 + PD
 
     - 支持驱逐 leader 时自动选择最快的目标进行迁移，加速驱逐过程 [#4229](https://github.com/tikv/pd/issues/4229)
-    - 禁止直接从有 2 副本的 Raft Group 中删除一个 Voter，防止 Region 不可用 [#4564](https://github.com/tikv/pd/pull/4564)
-    - 提升 Balance Leader 的调度速度 [#4652](https://github.com/tikv/pd/pull/4652)
+    - 禁止直接从有 2 副本的 Raft Group 中删除一个 Voter，防止 Region 不可用 [#4411](https://github.com/tikv/pd/issues/4411)
+    - 提升 Balance Leader 的调度速度 [#4610](https://github.com/tikv/pd/issues/4610)
 
 + TiFlash
 
