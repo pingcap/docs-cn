@@ -11,7 +11,11 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 - [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash)
 - [使用 TiSpark 读取 TiFlash](#使用-tispark-读取-tiflash)
 
-## 按表构建 TiFlash 副本
+## 构建 TiFlash 副本
+
+本章节介绍如何按表构建 TiFlash副本，以及如何设置可用区来调度副本。
+
+### 按表构建 TiFlash 副本
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
 
@@ -61,7 +65,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
-### 查看表同步进度
+#### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
@@ -76,11 +80,11 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
-### 可用区设置
+### 设置可用区
 
 在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
 
-1. 在集群配置文件中为 TiFlash 节点指定 label. 
+1. 在集群配置文件中为 TiFlash 节点指定 label。
 
     ```
     tiflash_servers:
@@ -145,7 +149,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
         ...
     ```
-    
+
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
