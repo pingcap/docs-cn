@@ -27,15 +27,10 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-<<<<<<< HEAD
 * 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
-* 全文/空间函数与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
-* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
-=======
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
-* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
->>>>>>> 305541663 (align multiple pr sql (#8830))
+* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
@@ -137,11 +132,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 TiDB 支持大部分 [SQL 模式](/sql-mode.md)。不支持的 SQL 模式如下：
 
-<<<<<<< HEAD
-- 不支持兼容模式，例如：`ORACLE` 和 `POSTGRESQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
-=======
 - 不支持兼容模式，例如：`Oracle` 和 `PostgreSQL`（TiDB 解析但会忽略这两个兼容模式），MySQL 5.7 已弃用兼容模式，MySQL 8.0 已移除兼容模式。
->>>>>>> 305541663 (align multiple pr sql (#8830))
 - TiDB 的 `ONLY_FULL_GROUP_BY` 模式与 MySQL 5.7 相比有细微的[语义差别](/functions-and-operators/aggregate-group-by-functions.md#与-mysql-的区别)。
 - `NO_DIR_IN_CREATE` 和 `NO_ENGINE_SUBSTITUTION` 仅用于解决与 MySQL 的兼容性问题，并不适用于 TiDB。
 
