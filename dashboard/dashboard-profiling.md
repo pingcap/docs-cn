@@ -21,9 +21,13 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 目前支持收集并分析以下性能数据：
 
 - CPU：TiDB、TiKV、PD、TiFlash 实例上各个内部函数的 CPU 开销情况
+
   > ARM 环境中暂不支持对 TiKV 和 TiFlash 的 CPU 开销情况进行分析。
+
 - Heap：TiDB、PD 实例上各个内部函数的内存占用开销情况
+
 - Mutex：TiDB、PD 实例上各个处于等待状态的 Mutex 情况
+
 - Goroutine：TiDB、PD 实例上各个 Goroutine 的运行状态及调用栈情况
 
 ## 访问页面

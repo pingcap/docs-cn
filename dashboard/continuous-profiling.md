@@ -30,9 +30,13 @@ summary: 了解如何持续地收集 TiDB、TiKV、PD 各个实例的性能数�
 除了 TiFlash CPU 开销情况由于稳定性原因没有收集以外，其他所有[手工性能分析](/dashboard/dashboard-profiling.md#支持的性能数据)中的性能数据都会在该功能中收集：
 
 - CPU：TiDB、TiKV、PD 实例上各个内部函数的 CPU 开销情况
+
   > ARM 环境中暂不支持对 TiKV 的 CPU 开销情况进行分析。
+
 - Heap：TiDB、PD 实例上各个内部函数的内存占用开销情况
+
 - Mutex：TiDB、PD 实例上各个处于等待状态的 Mutex 情况
+
 - Goroutine：TiDB、PD 实例上各个 Goroutine 的运行状态及调用栈情况
 
 ## 访问页面
