@@ -27,7 +27,6 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 * 事件
 * 自定义函数
 * 外键约束 [#18209](https://github.com/pingcap/tidb/issues/18209)
-<<<<<<< HEAD
 * 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
