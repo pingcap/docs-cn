@@ -30,7 +30,7 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 * 临时表 [#1248](https://github.com/pingcap/tidb/issues/1248)
 * 全文语法与索引 [#1793](https://github.com/pingcap/tidb/issues/1793)
 * 空间类型的函数（即 `GIS`/`GEOMETRY`）、数据类型和索引 [#6347](https://github.com/pingcap/tidb/issues/6347)
-* 非 `ascii`、`latin1`、`binary`、`utf8`、`utf8mb4`、`gbk` 的字符集
+* 非 `ascii`/`latin1`/`binary`/`utf8`/`utf8mb4` 的字符集
 * SYS schema
 * MySQL 追踪优化器
 * XML 函数
