@@ -57,8 +57,8 @@ This document only describes the parameters that are not included in command-lin
 ### `enable-timestamp` <span class="version-mark">New in v5.4.0</span>
 
 + Determines whether to enable or disable the timestamp in the log
-+ Optional values: `"true"`, `"false"`
-+ Default value: `"true"`
++ Optional values: `true`, `false`
++ Default value: `true`
 
 ## log.file <span class="version-mark">New in v5.4.0</span>
 
@@ -1186,7 +1186,7 @@ Configuration items related to `rocksdb.defaultcf`, `rocksdb.writecf`, and `rock
 
 ### `disable-auto-compactions`
 
-+ Enables or disables automatic compaction
++ Determines whether to disable auto compaction.
 + Default value: `false`
 
 ### `soft-pending-compaction-bytes-limit`
@@ -1331,7 +1331,7 @@ Configuration items related to Raft Engine.
 ### `enable`
 
 + Determines whether to use Raft Engine to store Raft logs. When it is enabled, configurations of `raftdb` are ignored.
-+ Default value: `"false"`
++ Default value: `false`
 
 ### `dir`
 
