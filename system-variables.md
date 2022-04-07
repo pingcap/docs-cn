@@ -637,6 +637,28 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`ON`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
+<<<<<<< HEAD
+=======
+### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+
+### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
+- 适合开启 TSO Follower Proxy 的场景：
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
+    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
+
+> **注意：**
+>
+> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `tidb_enable_vectorized_expression` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -879,6 +901,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
+<<<<<<< HEAD
+=======
+### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 这个变量可以调整当前 TiDB 实例上日志的最大保留天数。默认值是实例配置文件中指定的值，见配置项 [`max-days`](/tidb-configuration-file.md#max-days)。此变量只影响当前 TiDB 实例上的配置，重启后丢失，且配置文件不受影响。
+
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `tidb_low_resolution_tso`
 
 - 作用域：SESSION
@@ -1274,6 +1306,60 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[0, 9223372036854775807]`
 - 这个变量用于限制 TiDB 同时向 TiKV 发送的请求的最大数量，0 表示没有限制。
 
+<<<<<<< HEAD
+=======
+### `tidb_sysdate_is_now`（从 v6.0.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`OFF`
+- 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
+
+### `tidb_table_cache_lease`（从 v6.0.0 版本开始引入）
+
+- 作用域：GLOBAL
+- 默认值：`3`
+- 范围：`[1, 10]`
+- 单位：秒
+- 这个变量用来控制[缓存表](/cached-tables.md)的 lease 时间，默认值是 3 秒。该变量值的大小会影响缓存表的修改。在缓存表上执行修改操作后，最长可能出现 `tidb_table_cache_lease` 变量值时长的等待。如果业务表为只读表，或者能接受很高的写入延迟，则可以将该变量值调大，从而增加缓存的有效时间，减少 lease 续租的频率。
+
+### `tidb_tmp_table_max_size` <span class="version-mark">从 v5.3 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`67108864`
+- 范围：`[1048576, 137438953472]`
+- 单位：字节
+- 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
+
+### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`0`
+- 范围：`[0, 10]`
+- 单位：毫秒
+- 这个变量用来设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。
+- 在向 PD 获取 TSO 请求时，TiDB 使用的 PD Client 会一次尽可能多地收集同一时刻的 TSO 请求，将其攒批合并成一个 RPC 请求后再发送给 PD，从而减轻 PD 的压力。
+- 将这个变量值设置为非 0 后，TiDB 会在每一次攒批结束前进行一个最大时长为其值的等待，目的是为了收集到更多的 TSO 请求，从而提高攒批效果。
+- 适合调高这个变量值的场景：
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
+    * 集群中 TiDB 实例的数量不多，但每一台 TiDB 实例上的并发量较高。
+- 在实际使用中，推荐将该变量尽可能设置为一个较小的值。
+
+> **注意：**
+>
+> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，调高 `tidb_tso_client_batch_max_wait_time` 可能会导致 TiDB 的语句执行延迟上升，影响集群的 QPS 表现。
+
+### `tidb_txn_assertion_level`（从 v6.0.0 版本开始引入）
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`FAST`
+- 可选值：`OFF`，`FAST`，`STRICT`
+- 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
+
+    - `OFF`: 关闭该检查。
+    - `FAST`: 开启大多数检查项，对性能几乎无影响。
+    - `STRICT`: 开启全部检查项，当系统负载较高时，对悲观事务的性能有较小影响。
+
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `tidb_txn_mode`
 
 - 作用域：SESSION | GLOBAL
@@ -1348,6 +1434,21 @@ set tidb_slow_log_threshold = 200;
 - 默认值：(string)
 - 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
 
+<<<<<<< HEAD
+=======
+### `version_compile_os`
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是 TiDB 所在操作系统的名称。
+
+### `version_compile_machine`
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是运行 TiDB 的 CPU 架构的名称。
+
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `wait_timeout`
 
 - 作用域：SESSION | GLOBAL
