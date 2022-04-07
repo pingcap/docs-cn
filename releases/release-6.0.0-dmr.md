@@ -229,9 +229,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     此项功能曾作为实验特性在 v5.4 释出。除增强了数据的正确性安全性外，对用户使用不产生明显的直接影响。
 
-    > **警告：**
-    >
-    > 新版本数据格式将不支持原地降级为早于 v5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
+    警告：新版本数据格式将不支持原地降级为早于 v5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
     [用户文档](/tiflash/use-tiflash.md#使用数据校验)
 
