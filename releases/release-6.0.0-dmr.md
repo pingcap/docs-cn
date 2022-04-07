@@ -233,7 +233,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     [用户文档](/tiflash/use-tiflash.md#使用数据校验)
 
-- TiFlash 引入异步 GRPC 和 Min-TSO 调度机制，更好的管理线程使用，防止线程数过高导致的系统崩溃。
+- TiFlash 引入异步 gRPC 和 Min-TSO 调度机制，更好的管理线程使用，防止线程数过高导致的系统崩溃。
 
     [用户文档](/tiflash/monitor-tiflash.md#coprocessor)
 
