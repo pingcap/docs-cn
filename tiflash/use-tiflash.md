@@ -80,64 +80,6 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
-### 按库构建 TiFlash 副本
-
-类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER DATABASE db_name SET TIFLASH REPLICA count
-```
-
-在该命令中，`count` 表示 TiFlash 的副本数。当设置 `count` 值为 0 时，表示删除现有的 TiFlash 副本。
-
-命令示例：
-
-执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
-```
-
-执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
-```
-
-> **注意：**
->
-> - 该命令实际是为用户执行一系列 DDL 操作，对资源要求比较高。如果在执行过程中出现中断，已经执行成功的操作不会回退，未执行的操作不会继续执行。
->
-> - 从命令执行开始到该库中所有表都已**同步完成**之前，不建议执行和该库相关的 TiFlash 副本数量设置或其他 DDL 操作，否则最终状态可能非预期。非预期场景包括：
->     - 先设置 TiFlash 副本数量为 2，在库中所有的表都同步完成前，再设置 TiFlash 副本数量为 1，不能保证最终所有表的 TiFlash 副本数量都为 1 或都为 2。
->     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
->     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
->
-> - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
-
-#### 查看库同步进度
-
-类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
-```
-
-可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
-```
 
 ### 设置可用区
 
@@ -208,7 +150,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
         ...
     ```
-    
+
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
 
 ## 使用 TiDB 读取 TiFlash
