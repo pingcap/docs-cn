@@ -9,14 +9,6 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 
 用户可以使用 TiDB 或者 TiSpark 读取 TiFlash，TiDB 适合用于中等规模的 OLAP 计算，而 TiSpark 适合大规模的 OLAP 计算，用户可以根据自己的场景和使用习惯自行选择。具体参见：
 
-- [使用 TiFlash](#使用-tiflash)
-  - [按表构建 TiFlash 副本](#按表构建-tiflash-副本)
-    - [查看表同步进度](#查看表同步进度)
-  - [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash)
-    - [智能选择](#智能选择)
-    - [Engine 隔离](#engine-隔离)
-    - [手工 Hint](#手工-hint)
-    - [三种方式之间关系的总结](#三种方式之间关系的总结)
   - [使用 TiSpark 读取 TiFlash](#使用-tispark-读取-tiflash)
   - [TiFlash 支持的计算下推](#tiflash-支持的计算下推)
 
