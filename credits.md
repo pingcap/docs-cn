@@ -15,6 +15,7 @@ TiDB developers contribute to new feature development, performance improvement, 
 - [tikv/tikv](https://github.com/tikv/tikv/graphs/contributors)
 - [pingcap/parser](https://github.com/pingcap/parser/graphs/contributors)
 - [tikv/pd](https://github.com/tikv/pd/graphs/contributors)
+- [pingcap/tiflash](https://github.com/pingcap/tiflash/graphs/contributors)
 - [pingcap/tidb-operator](https://github.com/pingcap/tidb-operator/graphs/contributors)
 - [pingcap/tiup](https://github.com/pingcap/tiup/graphs/contributors)
 - [pingcap/br](https://github.com/pingcap/br/graphs/contributors)
