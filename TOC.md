@@ -361,7 +361,7 @@
         - 安全
           - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
           - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警 
+        - 监控告警
           - [监控指标](/dm/monitor-a-dm-cluster.md)
           - [告警信息](/dm/dm-alert-rules.md)
         - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
@@ -699,7 +699,7 @@
       - [访问](/dashboard/dashboard-access.md)
       - [概况页面](/dashboard/dashboard-overview.md)
       - [集群信息页面](/dashboard/dashboard-cluster-info.md)
-      - [Top SQL](/dashboard/top-sql.md)
+      - [Top SQL 页面](/dashboard/top-sql.md)
       - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       - [监控关系图](/dashboard/dashboard-metrics-relation.md)
       - SQL 语句分析
