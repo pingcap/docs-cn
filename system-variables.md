@@ -720,17 +720,7 @@ Query OK, 0 rows affected (0.09 sec)
 - 默认值：`ON`
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `OFF` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
 
-<<<<<<< HEAD
-### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3 版本开始引入</span>
-=======
-### `tidb_enable_top_sql` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 默认值：`OFF`
-- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
-
 ### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
->>>>>>> 305541663 (align multiple pr sql (#8830))
 
 - 作用域：GLOBAL
 - 默认值：`OFF`
@@ -1523,8 +1513,6 @@ set tidb_slow_log_threshold = 200;
 - 默认值：(string)
 - 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
 
-<<<<<<< HEAD
-=======
 ### `version_compile_os`
 
 - 作用域：NONE
@@ -1536,8 +1524,6 @@ set tidb_slow_log_threshold = 200;
 - 作用域：NONE
 - 默认值：(string)
 - 这个变量值是运行 TiDB 的 CPU 架构的名称。
-
->>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `wait_timeout`
 
 - 作用域：SESSION | GLOBAL
