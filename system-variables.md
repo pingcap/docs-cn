@@ -372,11 +372,30 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - 注意，目前 TiDB 只支持 range partition 和 hash partition。
 
+<<<<<<< HEAD
 ### `tidb_enable_telemetry` <span class="version-mark">从 v4.0.2 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 默认值：1
 - 这个变量用于动态地控制 TiDB 遥测功能是否开启。设置为 `0` 可以关闭 TiDB 遥测功能。当所有 TiDB 实例都设置 [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-从-v402-版本开始引入) 为 `false` 时将忽略该系统变量并总是关闭 TiDB 遥测功能。参阅[遥测](/telemetry.md)了解该功能详情。
+=======
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用控制是否开启 [Top SQL 特性](/dashboard/top-sql.md)。
+
+### `tidb_enable_tso_follower_proxy` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 这个变量用来开启 TSO Follower Proxy 特性。当该值为 `OFF` 时，TiDB 仅会从 PD leader 获取 TSO。开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。
+- 适合开启 TSO Follower Proxy 的场景：
+    * PD leader 因高压力的 TSO 请求而达到 CPU 瓶颈，导致 TSO RPC 请求的延迟较高。
+    * 集群中的 TiDB 实例数量较多，且调高 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 并不能缓解 TSO RPC 请求延迟高的问题。
+
+> **注意：**
+>
+> 如果 PD leader 的 TSO RPC 延迟升高，但其现象并非由 CPU 使用率达到瓶颈而导致（可能存在网络等问题），此时，打开 TSO Follower Proxy 可能会导致 TiDB 的语句执行延迟上升，从而影响集群的 QPS 表现。
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 
 ### `tidb_enable_vectorized_expression` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -547,6 +566,16 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 - 默认值：tikv, tiflash, tidb
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
+<<<<<<< HEAD
+=======
+### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：`0`
+- 范围：`[0, 2147483647]`
+- 这个变量可以调整当前 TiDB 实例上日志的最大保留天数。默认值是实例配置文件中指定的值，见配置项 [`max-days`](/tidb-configuration-file.md#max-days)。此变量只影响当前 TiDB 实例上的配置，重启后丢失，且配置文件不受影响。
+
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `tidb_low_resolution_tso`
 
 - 作用域：SESSION
@@ -907,7 +936,17 @@ set tidb_slow_log_threshold = 200;
 
 - 默认值："pessimistic"
 
+<<<<<<< HEAD
 - 这个变量用于设置事务模式。TiDB v3.0 支持了悲观事务，自 v3.0.8 开始，默认使用[悲观事务模式](/pessimistic-transaction.md)。
+=======
+- 作用域：SESSION | GLOBAL
+- 默认值：`67108864`
+- 范围：`[1048576, 137438953472]`
+- 单位：字节
+- 这个变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。
+
+### `tidb_tso_client_batch_max_wait_time` <span class="version-mark">从 v5.3.0 版本开始引入</span>
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 
 - 但如果从 3.0.7 及之前的版本升级到 >= 3.0.8 的版本，不会改变默认事务模型，即**只有新创建的集群才会默认使用悲观事务模型**。
 
@@ -967,6 +1006,21 @@ set tidb_slow_log_threshold = 200;
 - 默认值：(string)
 - 这个变量的值是 TiDB 版本号的其他信息，例如 'TiDB Server (Apache License 2.0) Community Edition, MySQL 5.7 compatible'。
 
+<<<<<<< HEAD
+=======
+### `version_compile_os`
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是 TiDB 所在操作系统的名称。
+
+### `version_compile_machine`
+
+- 作用域：NONE
+- 默认值：(string)
+- 这个变量值是运行 TiDB 的 CPU 架构的名称。
+
+>>>>>>> 305541663 (align multiple pr sql (#8830))
 ### `wait_timeout`
 
 - 作用域：SESSION | GLOBAL
