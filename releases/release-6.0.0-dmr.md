@@ -17,7 +17,7 @@ TiDB 版本：6.0.0-DMR
 - 热点小表缓存，大幅提高访问性能，提升吞吐，降低访问延迟。
 - 内存悲观锁优化，在悲观锁性能瓶颈下，可以有效降低 10% 延迟，提升 10% QPS。
 - 增强 Prepared Statement 执行计划共享，降低 CPU 资源消耗，提升 SQL 执行效率。
-- 提升 MPP 引擎计算性能，支持更多函数和算子下推，正式引入可扩缩容弹性线程池。
+- 提升 MPP 引擎计算性能，支持更多表达式下推，正式引入可扩缩容弹性线程池。
 - 新增 DM WebUI，方便地通过图形化的方式管理大量迁移任务。
 - 提升 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率，支持高达 10 万张表的同时同步。
 - TiKV 节点重启后 leader 平衡加速，提升业务恢复速度。
@@ -147,7 +147,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 持续性能分析
 
-    持续性能分析（Continuous Profiling）功能集成于 TiDB Dashboard，在 TiDB v6.0.0 中正式发布。该功能默认关闭，启用该功能后，集群将以极低的开销自动收集各 TiDB、TiKV 及 PD 实例每时每刻的性能数据。通过这些历史性能数据，技术专家可以在事后回溯、分析该集群任意时刻（如曾经出现过高内存占用）的问题根因，无需等待问题复现，从而有助于缩短故障诊断时间。
+    持续性能分析 (Continuous Profiling) 功能集成于 TiDB Dashboard，在 TiDB v6.0.0 中正式发布。该功能默认关闭，启用该功能后，集群将以极低的开销自动收集各 TiDB、TiKV 及 PD 实例每时每刻的性能数据。通过这些历史性能数据，技术专家可以在事后回溯、分析该集群任意时刻（如曾经出现过高内存占用）的问题根因，无需等待问题复现，从而有助于缩短故障诊断时间。
 
     [用户文档](/dashboard/continuous-profiling.md)
 
@@ -461,8 +461,8 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + TiFlash
 
-    - 禁止了 TiFlash 文件的逻辑分裂（默认参数调整为：`profiles.default.dt_enable_logical_split = false`，详见[用户文档](/tiflash/tiflash-configuration.md#tiflash-配置参数)），优化了 TiFlash 列存储的空间使用效率，使得同一个表在同步到 TiFlash 后所占用空间与 TiKV 相近
-    - TiFlash 优化了集群管理和 replica 数据同步机制。将原有的集群管理模块迁移整合进了 TiDB，并提高了为小表创建 tiflash replica 的速度 [#29924](https://github.com/pingcap/tidb/issues/29924)
+    - 禁止了 TiFlash 文件的逻辑分裂（默认参数调整为 `profiles.default.dt_enable_logical_split = false`，详见[用户文档](/tiflash/tiflash-configuration.md#tiflash-配置参数)），优化了 TiFlash 列存储的空间使用效率，使得同一个表在同步到 TiFlash 后所占用空间与 TiKV 相近
+    - TiFlash 优化了集群管理和 replica 数据同步机制。将原有的集群管理模块迁移整合进了 TiDB，并提高了为小表创建 TiFlash replica 的速度 [#29924](https://github.com/pingcap/tidb/issues/29924)
 
 + Tools
 
@@ -548,8 +548,8 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
     - 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
     - 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
-    - 修复 GC worker 繁忙后无法执行范围删除（即执行 `unsafe_destroy_range` 参数）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
-    - 修复在某些某些边界场景中 `StoreMeta` 内数据被意外删除会引发 TiKV panic 的问题 [#11852](https://github.com/tikv/tikv/issues/11852)
+    - 修复 GC worker 繁忙后无法执行范围删除（即执行内部命令 `unsafe_destroy_range`）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
+    - 修复在某些边界场景中 `StoreMeta` 内数据被意外删除会引发 TiKV panic 的问题 [#11852](https://github.com/tikv/tikv/issues/11852)
     - 修复在 ARM 平台上进行性能分析造成 TiKV panic 的问题 [#10658](https://github.com/tikv/tikv/issues/10658)
     - 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
     - 修复因缺少 SSE 指令集导致的 ARM64 架构下的编译问题 [#12034](https://github.com/tikv/tikv/issues/12034)
@@ -564,8 +564,8 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
 
 + PD
 
-    - 修复 PD 产生带有无意义的 Joint Consensus 步骤的 operator 的问题 [#4362](https://github.com/tikv/pd/issues/4362)，[#4444](https://github.com/tikv/pd/issues/4444)
-    - 修复 PD Client 获取 TSO 在关闭链接的情况下卡住的问题 [#4549](https://github.com/tikv/pd/issues/4549)
+    - 修复 PD 生成带有无意义的 Joint Consensus 步骤的 Operator 的问题 [#4362](https://github.com/tikv/pd/issues/4362)
+    - 修复关闭 PD Client 时撤销 TSO 的流程可能会卡住的问题 [#4549](https://github.com/tikv/pd/issues/4549)
     - 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4565](https://github.com/tikv/pd/issues/4565)
     - 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
 
