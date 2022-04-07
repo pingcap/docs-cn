@@ -404,7 +404,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 支持在 Range 类型分区表中对 `IN` 表达式进行分区裁剪 [#26739](https://github.com/pingcap/tidb/issues/26739)
     - 消除 MPP 聚合查询中可能冗余的 Exchange 操作，提高查询效率 [#31762](https://github.com/pingcap/tidb/issues/31762)
     - 允许在 `TRUNCATE PARTITION` 和 `DROP PARTITION` 语句中使用重复的分区名，提高与 MySQL 的兼容性 [#31681](https://github.com/pingcap/tidb/issues/31681)
-    - 支持在 `ADMIN SHOW DDL JOBS` 语句的执行结果中显示 `​​CREATE_TIME` 信息[#23494](https://github.com/pingcap/tidb/issues/23494)
+    - 支持在 `ADMIN SHOW DDL JOBS` 语句的执行结果中显示 `​​CREATE_TIME` 信息 [#23494](https://github.com/pingcap/tidb/issues/23494)
     - 新增内置函数 `CHARSET()` [#3931](https://github.com/pingcap/tidb/issues/3931)
     - 支持通过用户名过滤自动捕获的黑名单 [#32558](https://github.com/pingcap/tidb/issues/32558)
     - 支持在自动捕获的黑名单中使用通配符 [#32714](https://github.com/pingcap/tidb/issues/32714)
@@ -539,7 +539,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复查询报错时可能阻塞 CTE 的问题 [#31302](https://github.com/pingcap/tidb/issues/31302)
     - 修复了在非严格模式下，创建表时 varbinary 或 varchar 类型列的长度太大导致报错的问题 [#30328](https://github.com/pingcap/tidb/issues/30328)
     - 修复未指定 follower 时 `information_schema.placement_policies` 中显示的 follower 值有误的问题 [#31702](https://github.com/pingcap/tidb/issues/31702)
-    - 修复创建索引时允许指定列前缀长度为 0 的问题[#31972](https://github.com/pingcap/tidb/issues/31972)
+    - 修复创建索引时允许指定列前缀长度为 0 的问题 [#31972](https://github.com/pingcap/tidb/issues/31972)
     - ​​修复允许分区名以空格结尾的问题 [#31535](https://github.com/pingcap/tidb/issues/31535)
     - 修正 `RENAME TABLE` 语句的报错信息 [#29893](https://github.com/pingcap/tidb/issues/29893)
 
