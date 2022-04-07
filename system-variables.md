@@ -1524,6 +1524,7 @@ set tidb_slow_log_threshold = 200;
 - 作用域：NONE
 - 默认值：(string)
 - 这个变量值是运行 TiDB 的 CPU 架构的名称。
+
 ### `wait_timeout`
 
 - 作用域：SESSION | GLOBAL
