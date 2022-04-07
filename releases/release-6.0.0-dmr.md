@@ -444,7 +444,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 将 RawKV API V2 的 Value 编码为 `user-value` + `ttl` + `ValueMeta`，并且将 `delete` 编码在 `ValueMeta` 中 [#11965](https://github.com/tikv/tikv/issues/11965)
     - 支持动态修改 `raftstore.raft-max-size-per-msg` [#12017](https://github.com/tikv/tikv/issues/12017)
     - 使 Grafana 支持 multi-k8s 的监控 [#12104](https://github.com/tikv/tikv/issues/12104)
-    - 通过将 leader 转让给 CDC Observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
+    - 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
     - 支持动态修改 `raftstore.apply_max_batch_size` 和 `raftstore.store_max_batch_size` [#11982](https://github.com/tikv/tikv/issues/11982)
     - 支持 RawKV API V2 在收到 `raw_get` 或 `raw_scan` 请求时会返回最新的版本 [#11965](https://github.com/tikv/tikv/issues/11965)
     - 支持 RCCheckTS 的一致性读 [#12097](https://github.com/tikv/tikv/issues/12097)
