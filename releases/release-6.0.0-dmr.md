@@ -17,7 +17,7 @@ TiDB 版本：6.0.0-DMR
 - 热点小表缓存，大幅提高访问性能，提升吞吐，降低访问延迟。
 - 内存悲观锁优化，在悲观锁性能瓶颈下，可以有效降低 10% 延迟，提升 10% QPS。
 - 增强 Prepared Statement 执行计划共享，降低 CPU 资源消耗，提升 SQL 执行效率。
-- 提升 MPP 引擎计算性能，支持更多表达式下推，正式引入可扩缩容弹性线程池。
+- 提升 MPP 引擎计算性能，支持更多表达式下推，正式引入弹性线程池。
 - 新增 DM WebUI，方便地通过图形化的方式管理大量迁移任务。
 - 提升 TiCDC 在大规模集群下同步数据的稳定性和资源利用效率，支持高达 10 万张表的同时同步。
 - TiKV 节点重启后 leader 平衡加速，提升业务恢复速度。
@@ -201,7 +201,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
         [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)
 
-    - 正式引入可扩缩容弹性线程池，提升 CPU 利用率，默认开启此功能
+    - 正式引入弹性线程池，提升 CPU 利用率，默认开启此功能
 
         [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
@@ -582,7 +582,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复在高并发场景下 Learner 读过程时间过长的问题 [#3555](https://github.com/pingcap/tiflash/issues/3555)
     - 修复将 `DATETIME` 转换为 `DECIMAL` 时结果错误的问题 [#4151](https://github.com/pingcap/tiflash/issues/4151)
     - 修复查询被取消时出现的内存泄露问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
-    - 修复开启可扩缩容弹性线程池可能导致内存泄漏的问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
+    - 修复开启弹性线程池可能导致内存泄漏的问题 [#4098](https://github.com/pingcap/tiflash/issues/4098)
     - 修复启用本地隧道时取消 MPP 查询可能导致任务永远挂起的问题 [#4229](https://github.com/pingcap/tiflash/issues/4229)
     - 修复 HashJoin 构建端失败可能导致 MPP 查询永远挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
     - 修复 MPP 任务可能永远泄漏线程的问题 [#4238](https://github.com/pingcap/tiflash/issues/4238)
