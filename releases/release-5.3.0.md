@@ -33,8 +33,8 @@ TiDB 版本：5.3.0
 | :---------- | :----------- | :----------- |
 | [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 由于 TiDB v5.3.0 支持临时表，此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
-|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭 TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
-|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
+|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭 TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
+|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
 | [tidb_tmp_table_max_size](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增  | 此变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。 |
 
 ### 配置文件参数
@@ -133,19 +133,19 @@ TiDB 版本：5.3.0
 
     优化 TiDB 时间戳处理流程，支持通过开启 PD Follower Proxy 和调整 PD client 批量请求 TSO 时所需的 batch 等待时间的方式来降低 PD leader 时间戳处理负载，提升系统整体可扩展性。
 
-    - 支持通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) 设置 PD Follower Proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD Follower Proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，从而有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
+    - 支持通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 设置 PD Follower Proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD Follower Proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，从而有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
 
         > **注意：**
         >
         > 在 client 数较少、PD leader 负载不高的情况下，不建议开启 PD Follower Proxy 功能。
 
-    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 系统变量设置 PD client 批量请求 TSO 时所需的最大 batch 等待时间，单位为毫秒。在 PD TSO 请求负载过高的情况下，可以通过调大等待时间获得更大的 batch size，从而降低 PD 负载，提升吞吐。
+    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 系统变量设置 PD client 批量请求 TSO 时所需的最大 batch 等待时间，单位为毫秒。在 PD TSO 请求负载过高的情况下，可以通过调大等待时间获得更大的 batch size，从而降低 PD 负载，提升吞吐。
 
         > **注意：**
         >
         > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
-        [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
+        [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
 
 ### 稳定性
 
