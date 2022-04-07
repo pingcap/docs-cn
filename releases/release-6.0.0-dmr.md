@@ -14,10 +14,10 @@ In 6.0.0-DMR, the key new features or improvements are as follows:
 - Add a consistency check between data and indexes at the kernel level, which improves system stability and robustness, with only very low resource overhead.
 - Provide Top SQL, a self-serving database performance monitoring and diagnosis feature for non-experts.
 - Support Continuous Profiling that collects cluster performance data all the time, reducing MTTR for technical experts.
-- Cache hotspot small tables in memory, which greatly improves the access performance, improves the throughput, and reduces access latency.
+- Cache hotspot small tables in memory, which greatly improves the access performance, improves the throughput and reduces access latency.
 - Optimize in-memory pessimistic locking. Under the performance bottleneck caused by pessimistic locks, memory optimization for pessimistic locks can effectively reduce latency by 10% and increase QPS by 10%.
 - Enhance prepared statements to share execution plans, which lessens CPU resource consumption and improves SQL execution efficiency.
-- Improve the computing performance of the MPP engine by supporting pushing down more functions and operators and the general availability (GA) of the elastic thread pool.
+- Improve the computing performance of the MPP engine by supporting pushing down more expressions and the general availability (GA) of the elastic thread pool.
 - Add DM WebUI to facilitate managing a large number of migration tasks.
 - Improve the stability and efficiency of TiCDC when replicating data in large clusters. TiCDC now supports replicating 100,000 tables simultaneously.
 - Accelerate leader balancing after restarting TiKV nodes, which improves the speed of business recovery after a restart.
@@ -65,7 +65,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 | [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-new-in-v600) | Newly added | Controls how many SQL statements that contribute the most to the load (that is, top N) can be recorded by [Top SQL](/dashboard/top-sql.md) per minute. The default value is `100`. |
 | [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level-new-in-v600) | Newly added | Controls the assertion level. The assertion is a consistency check between data and indexes, which checks whether a key being written exists in the transaction commit process. By default, the check enables most of the check items, with almost no impact on performance.  |
 
-## Configuration file parameters
+### Configuration file parameters
 
 | Configuration file | Configuration | Change type | Description |
 |:---|:---|:---|:---|
@@ -119,7 +119,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 - SQL-based placement rules for data
 
-    TiDB is a distributed database with excellent scalability. Usually, data is deployed across multiple servers or even multiple data centers. Therefore, data scheduling management is one of the most important basic capabilities of TiDB. In most cases, customers do not need to care about how to schedule and manage data. However, with the increasing application complexity, deployment changes caused by isolation and access latency have become new challenges for TiDB. Since v6.0.0, TiDB officially provides data scheduling and management capabilities based on SQL interfaces. It supports flexible scheduling and management in dimensions such as replica counts, role types, and placement locations for any data. TiDB also supports more flexible management for data placement in multi-service shared clusters and cross-AZ deployments.
+    TiDB is a distributed database with excellent scalability. Usually, data is deployed across multiple servers or even multiple data centers. Therefore, data scheduling management is one of the most important basic capabilities of TiDB. In most cases, users do not need to care about how to schedule and manage data. However, with the increasing application complexity, deployment changes caused by isolation and access latency have become new challenges for TiDB. Since v6.0.0, TiDB officially provides data scheduling and management capabilities based on SQL interfaces. It supports flexible scheduling and management in dimensions such as replica counts, role types, and placement locations for any data. TiDB also supports more flexible management for data placement in multi-service shared clusters and cross-AZ deployments.
 
     [User document](/placement-rules-in-sql.md)
 
@@ -155,7 +155,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 - Cache hotspot small tables
 
-    For customer applications in scenarios where hotspot small tables are accessed, TiDB supports explicitly caching the hotspot tables in memory, which greatly improves the access performance, improves the throughput, and reduces access latency. This solution can effectively avoid introducing a third-party cache middleware, reduce the complexity of the architecture, and cut the cost of operation and maintenance. The solution is suitable for scenarios where small tables are frequently accessed but rarely updated, such as the configuration tables or exchange rate tables.
+    For user applications in scenarios where hotspot small tables are accessed, TiDB supports explicitly caching the hotspot tables in memory, which greatly improves the access performance, improves the throughput, and reduces access latency. This solution can effectively avoid introducing a third-party cache middleware, reduce the complexity of the architecture, and cut the cost of operation and maintenance. The solution is suitable for scenarios where small tables are frequently accessed but rarely updated, such as the configuration tables or exchange rate tables.
 
     [User document](/cached-tables.md), [#25293](https://github.com/pingcap/tidb/issues/25293)
 
@@ -173,7 +173,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 - Enhance prepared statements to share execution plans
 
-    Reusing SQL execution plans can effectively reduce the time for parsing SQL statements, lessen CPU resource consumption, and improve SQL execution efficiency. One of the important methods of SQL tuning is to reuse SQL execution plans effectively. TiDB has supported sharing execution plans with prepared statements. However, when the prepared statements are closed, TiDB automatically clears the corresponding plan cache. After that, TiDB might unnecessarily parse the repeated SQL statements, affecting the execution efficiency. Since v6.0.0, TiDB supports controlling whether to ignore the `COM_STMT_CLOSE` directive through the `tidb_ignore_clost_stmt_cmd` parameter (disabled by default). When the parameter is enabled, TiDB ignores the directive of closing prepared statements and keeps the execution plan in the cache, improving the reuse rate of the execution plan.
+    Reusing SQL execution plans can effectively reduce the time for parsing SQL statements, lessen CPU resource consumption, and improve SQL execution efficiency. One of the important methods of SQL tuning is to reuse SQL execution plans effectively. TiDB has supported sharing execution plans with prepared statements. However, when the prepared statements are closed, TiDB automatically clears the corresponding plan cache. After that, TiDB might unnecessarily parse the repeated SQL statements, affecting the execution efficiency. Since v6.0.0, TiDB supports controlling whether to ignore the `COM_STMT_CLOSE` command through the `tidb_ignore_clost_stmt_cmd` parameter (disabled by default). When the parameter is enabled, TiDB ignores the command of closing prepared statements and keeps the execution plan in the cache, improving the reuse rate of the execution plan.
 
     [User document](/sql-prepare-plan-cache.md#ignore-the-com_stmt_close-command-and-the-deallocate-prepare-statement), [#31056](https://github.com/pingcap/tidb/issues/31056)
 
@@ -217,7 +217,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
     If your machine deployed with TiKV has limited resources and the foreground is burdened by an excessively large amount of requests, background CPU resources are occupied by the foreground, causing TiKV performance unstable. In TiDB v6.0.0, you can use the quota-related configuration items to limit the resources used by the foreground, including CPU and read/write bandwidth. This greatly improves stability of clusters under long-term heavy workloads.
 
-    [User document](/tikv-configuration-file.md#quota), [#12264](https://github.com/tikv/tikv/pull/12264)
+    [User document](/tikv-configuration-file.md#quota), [#12131](https://github.com/tikv/tikv/issues/12131)
 
 - Support the zstd compression algorithm in TiFlash
 
@@ -235,11 +235,11 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 - Improve thread utilization
 
-    TiFlash introduces asynchronous GRPC and Min-TSO scheduling mechanisms. Such mechanisms ensure more efficient use of threads and avoid system crashes caused by excessive threads.
+    TiFlash introduces asynchronous gRPC and Min-TSO scheduling mechanisms. Such mechanisms ensure more efficient use of threads and avoid system crashes caused by excessive threads.
 
     [User document](/tiflash/monitor-tiflash.md#coprocessor)
 
-### Data Migration
+### Data migration
 
 #### TiDB Data Migration (DM)
 
@@ -292,7 +292,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
     [User document](/tidb-lightning/tidb-lightning-error-resolution.md#type-error)
 
-### Data sharing and subscription
+### TiDB data share subscription
 
 - Support replicating 100,000 tables simultaneously
 
@@ -374,7 +374,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 + TiKV
 
-    - Improve the Raftstore sampling accuracy for large key range batches [#12327](https://github.com/tikv/tikv/issues/12327)
+    - Improve the sampling accuracy of the Raftstore for batches with many key ranges [#12327](https://github.com/tikv/tikv/issues/12327)
     - Add the correct "Content-Type" for `debug/pprof/profile` to make the Profile more easily identified [#11521](https://github.com/tikv/tikv/issues/11521)
     - Renew the lease time of the leader infinitely when the Raftstore has heartbeats or handles read requests, which helps reduce latency jitter [#11579](https://github.com/tikv/tikv/issues/11579)
     - Choose the store with the least cost when switching the leader, which helps improve performance stability [#10602](https://github.com/tikv/tikv/issues/10602)
@@ -388,7 +388,6 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
     - Support calculation in buckets [#11759](https://github.com/tikv/tikv/issues/11759)
     - Encode the keys of RawKV API V2 as `user-key` + `memcomparable-padding` + `timestamp` [#11965](https://github.com/tikv/tikv/issues/11965)
     - Encode the values of RawKV API V2 as `user-value` + `ttl` + `ValueMeta` and encode `delete` in `ValueMeta` [#11965](https://github.com/tikv/tikv/issues/11965)
-    - TiKV Coprocessor supports the Projection operator [#12114](https://github.com/tikv/tikv/issues/12114)
     - Support dynamically modifying `raftstore.raft-max-size-per-msg` [#12017](https://github.com/tikv/tikv/issues/12017)
     - Support monitoring multi-k8s in Grafana [#12014](https://github.com/tikv/tikv/issues/12014)
     - Transfer the leadership to CDC observer to reduce latency jitter [#12111](https://github.com/tikv/tikv/issues/12111)
@@ -403,12 +402,12 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 + PD
 
     - Support automatically selecting the fastest object for transfer when evicting the leader, which helps speed up the eviction process [#4229](https://github.com/tikv/pd/issues/4229)
-    - Forbid deleting a voter from a 2-replica Raft group in case that the Region becomes unavailable [#4564](https://github.com/tikv/pd/issues/4564)
+    - Forbid deleting a voter from a 2-replica Raft group in case the Region becomes unavailable [#4564](https://github.com/tikv/pd/issues/4564)
     - Speed up the scheduling of the balance leader [#4652](https://github.com/tikv/pd/issues/4652)
 
 + TiFlash
 
-    - Forbid the logical splitting of TiFlash files (by adjusting the default value of `profiles.default.dt_enable_logical_split` to `false`. See [user document](/tiflash/tiflash-configuration.md#tiflash-configuration-parameters) for details) and improve the space usage efficiency of the TiFlash columnar storage so that the space occupation of a table synchronized to TiFlash is similar to the space occupation of the table in TiKV.
+    - Forbid the logical splitting of TiFlash files (by adjusting the default value of `profiles.default.dt_enable_logical_split` to `false`. See [user document](/tiflash/tiflash-configuration.md#tiflash-configuration-parameters) for details) and improve the space usage efficiency of the TiFlash columnar storage so that the space occupation of a table synchronized to TiFlash is similar to the space occupation of the table in TiKV
     - Optimize the cluster management and replica replication mechanism for TiFlash by integrating the previous cluster management module into TiDB, which accelerates replica creation for small tables [#29924](https://github.com/pingcap/tidb/issues/29924)
 
 + Tools
@@ -442,14 +441,14 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
         - Support the base64 format password string [#31194](https://github.com/pingcap/tidb/issues/31194)
         - Standardize error codes and error outputs [#32239](https://github.com/pingcap/tidb/issues/32239)
 
-## Bug Fixes
+## Bug fixes
 
 + TiDB
 
     - Fix a bug that TiDB fails to create tables with placement rules  when `SCHEDULE = majority_in_primary`, and `PrimaryRegion` and `Regions` are of the same value [#31271](https://github.com/pingcap/tidb/issues/31271)
     - Fix the `invalid transaction` error when executing a query using index lookup join [#30468](https://github.com/pingcap/tidb/issues/30468)
     - Fix a bug that `show grants` returns incorrect results when two or more privileges are granted [#30855](https://github.com/pingcap/tidb/issues/30855)
-    - Fix a bug that `INSERT INTO t1 SET timestamp_col = DEFAULT` would set the timestamp to the zero timestamp for the field defaulted to `CURRENT_TIMESTAMP` [#29926)](https://github.com/pingcap/tidb/issues/29926)
+    - Fix a bug that `INSERT INTO t1 SET timestamp_col = DEFAULT` would set the timestamp to the zero timestamp for the field defaulted to `CURRENT_TIMESTAMP` [#29926](https://github.com/pingcap/tidb/issues/29926)
     - ​Fix errors reported in reading the results by avoiding encoding the maximum value and minimum non-null value of the string type [#31721](https://github.com/pingcap/tidb/issues/31721)
     - Fix load data panic if the data is broken at an escape character [#31589](https://github.com/pingcap/tidb/issues/31589)
     - Fix the issue that the `greatest` or `least` function with collation gets a wrong result [#31789](https://github.com/pingcap/tidb/issues/31789)
@@ -496,7 +495,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
     - Fix the panic issue caused by deleting snapshot files when the peer status is `Applying` [#11746](https://github.com/tikv/tikv/issues/11746)
     - Fix the issue of QPS drop when flow control is enabled and `level0_slowdown_trigger` is set explicitly [#11424](https://github.com/tikv/tikv/issues/11424)
     - Fix the issue that destroying a peer might cause high latency [#10210](https://github.com/tikv/tikv/issues/10210)
-    - Fix a bug that TiKV cannot delete a range of data (`unsafe_destroy_range` cannot be executed) when the GC worker is busy [#11903](https://github.com/tikv/tikv/issues/11903)
+    - Fix a bug that TiKV cannot delete a range of data (which means the internal command `unsafe_destroy_range` is executed) when the GC worker is busy [#11903](https://github.com/tikv/tikv/issues/11903)
     - Fix a bug that TiKV panics when the data in `StoreMeta` is accidentally deleted in some corner cases [#11852](https://github.com/tikv/tikv/issues/11852)
     - Fix a bug that TiKV panics when performing profiling on an ARM platform [#10658](https://github.com/tikv/tikv/issues/10658)
     - Fix a bug that TiKV might panic if it has been running for 2 years or more [#11940](https://github.com/tikv/tikv/issues/11940)
@@ -506,20 +505,20 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
     - Fix the issue that undefined behavior (UB) might occur in TsSet conversions [#12070](https://github.com/tikv/tikv/issues/12070)
     - Fix a bug that replica reads might violate the linearizability [#12109](https://github.com/tikv/tikv/issues/12109)
     - Fix the potential panic issue that occurs when TiKV performs profiling on Ubuntu 18.04 [#9765](https://github.com/tikv/tikv/issues/9765)
-    - Fix the issue that tikv-ctl returns an incorrect result due to its wrong string match [#12049](https://github.com/tikv/tikv/pull/12049)
+    - Fix the issue that tikv-ctl returns an incorrect result due to its wrong string match [#12329](https://github.com/tikv/tikv/issues/12329)
     - Fix the issue of intermittent packet loss and out of memory (OOM) caused by the overflow of memory metrics [#12160](https://github.com/tikv/tikv/issues/12160)
     - Fix the potential issue of mistakenly reporting TiKV panics when exiting TiKV [#12231](https://github.com/tikv/tikv/issues/12231)
 
 + PD
 
-    - Fix the issue that the operator creates steps with meaningless Joint Consensus [#4362](https://github.com/tikv/pd/issues/4362), [#4444](https://github.com/tikv/pd/issues/4444)
-    - Fix a bug that the TSO revoking might get stuck when closing the PD client [#4549](https://github.com/tikv/pd/issues/4549)
-    - Fix the issue that the Region scatterer scheduling might cause lost peers [#4565](https://github.com/tikv/pd/issues/4565)
+    - Fix the issue that PD generates the operator with meaningless steps of Joint Consensus [#4362](https://github.com/tikv/pd/issues/4362)
+    - Fix a bug that the TSO revoking process might get stuck when closing the PD client [#4549](https://github.com/tikv/pd/issues/4549)
+    - Fix the issue that the Region scatterer scheduling lost some peers [#4565](https://github.com/tikv/pd/issues/4565)
     - Fix the issue that `Duration` fields of `dr-autosync` cannot be dynamically configured [#4651](https://github.com/tikv/pd/issues/4651)
 
 + TiFlash
 
-    - Fix the issue of TiFlash panic when the memory limit is enabled [#3902](https://github.com/pingcap/tiflash/issues/3902)
+    - Fix the TiFlash panic issue that occurs when the memory limit is enabled [#3902](https://github.com/pingcap/tiflash/issues/3902)
     - Fix the issue that expired data is recycled slowly [#4146](https://github.com/pingcap/tiflash/issues/4146)
     - Fix the potential issue of TiFlash panic when `Snapshot` is applied simultaneously with multiple DDL operations [#4072](https://github.com/pingcap/tiflash/issues/4072)
     - Fix the potential query error after adding columns under heavy read workload [#3967](https://github.com/pingcap/tiflash/issues/3967)
@@ -530,9 +529,9 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
     - Fix the issue that the learner-read process takes too much time under high concurrency scenarios [#3555](https://github.com/pingcap/tiflash/issues/3555)
     - Fix the wrong result that occurs when casting `DATETIME` to `DECIMAL` [#4151](https://github.com/pingcap/tiflash/issues/4151)
     - Fix the issue of memory leak that occurs when a query is canceled [#4098](https://github.com/pingcap/tiflash/issues/4098)
-    - Fix bug that enabling the elastic thread pool might introduce memory leak [#4098](https://github.com/pingcap/tiflash/issues/4098)
+    - Fix a bug that enabling the elastic thread pool might cause a memory leak [#4098](https://github.com/pingcap/tiflash/issues/4098)
     - Fix a bug that canceled MPP queries might cause tasks to hang forever when the local tunnel is enabled [#4229](https://github.com/pingcap/tiflash/issues/4229)
-    - Fix a bug that the failure of HashJoin build side might cause MPP queries to hang forever [#4195](https://github.com/pingcap/tiflash/issues/4195)
+    - Fix a bug that the failure of the HashJoin build side might cause MPP queries to hang forever [#4195](https://github.com/pingcap/tiflash/issues/4195)
     - Fix a bug that MPP tasks might leak threads forever [#4238](https://github.com/pingcap/tiflash/issues/4238)
 
 + Tools
