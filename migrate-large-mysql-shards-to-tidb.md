@@ -138,17 +138,17 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
     sorted-kv-dir = "${sorted-kv-dir}"
 
     # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
-    [[routes]]
-    schema-pattern = "my_db1"
-    table-pattern = "table[1-2]"
-    target-schema = "my_db"
-    target-table = "table5"
+    [[mydumper.files]]
+    # 将匹配到的文件，导入到指定目标表
+    pattern = 'my_db1/my_db1\.table[1-2].*'
+    schema = "my_db"
+    table = "table5"
 
-    [[routes]]
-    schema-pattern = "my_db2"
-    table-pattern = "table[3-4]"
-    target-schema = "my_db"
-    target-table = "table5"
+    [[mydumper.files]]
+    # 将匹配到的文件，导入到指定目标表
+    pattern = 'my_db2/my_db2\.table[3-4].*'
+    schema = "my_db"
+    table = "table5"
 
     # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
     [tidb]
