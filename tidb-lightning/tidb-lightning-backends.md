@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/r
 
 # TiDB Lightning 导入模式
 
-TiDB Lightning 目前支持两种导入模式，简称[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)。不同的后端决定 Lightning 如何将将数据导入到目标 TiDB 集群。
+TiDB Lightning 目前支持两种导入模式，简称[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)。不同的后端决定 Lightning 如何将数据导入到目标 TiDB 集群。
 
 - **Local-backend**：Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对以 SST 文件的形式上传到各个 TiKV 节点，然后由 TiKV 将这些 SST 文件 Ingest 到集群中。如果用于初始化导入，请优先考虑使用 Local-backend 模式，其拥有较高的导入速度。
 
