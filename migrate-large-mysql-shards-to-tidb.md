@@ -115,6 +115,10 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
+### 在下游 创建schema
+
+在`${data-path}`中使用`my_db1-schema-create.sql`文件，编辑后手工在下游创建`mydb.table5`。
+
 ### 执行导入操作
 
 启动 tidb-lightning 的步骤如下：
@@ -139,14 +143,12 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
     # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
     [[mydumper.files]]
-    # 将匹配到的文件，导入到指定目标表
-    pattern = 'my_db1/my_db1\.table[1-2].*'
+    pattern = '(?i)^[^/]*/testdm\.t[1-2].*\.sql$'
     schema = "my_db"
     table = "table5"
 
     [[mydumper.files]]
-    # 将匹配到的文件，导入到指定目标表
-    pattern = 'my_db2/my_db2\.table[3-4].*'
+    pattern = '(?i)^[^/]*/testdm\.t[3-4].*\.sql$'
     schema = "my_db"
     table = "table5"
 
