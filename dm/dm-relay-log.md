@@ -3,7 +3,6 @@ title: DM relay log
 summary: 介绍 DM relay log 的作用及原理
 ---
 
-
 # DM relay log
 
 relay log 是 DM 的一项可供选择性开启的特性。在执行增量数据同步过程中，DM 会将自己的伪装成 Mysql 的 Slave，从上游 Mysql 拉取 binlog。未开启 relay log 的情况下，多个迁移任务共用上游将会从上游 MySQL 拉取重复的 binlog，造成额外的压力。开启 relay log 后 DM 则会将 binlog 写入到本地硬盘，不仅可以减轻上游压力，而且在上游 binlog 存储空间不足的情况下，DM 还可以缓存足够的 binlog 避免同步中断。
