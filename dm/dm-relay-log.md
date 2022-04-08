@@ -32,15 +32,15 @@ data/worker1/relay-dir
 └── server-uuid.index
 ```
 
-- server-uuid.index 是当前有效的 relay log  子目录列表索引文件，DM 需要利用该文件去找到对应上游的 relay log  的存放目录
+- server-uuid.index 是当前有效的 relay log 子目录列表索引文件，DM 需要利用该文件去找到对应上游的 relay log  的存放目录
 - 3b96fdee-f4cd-11eb-b8e5-4167400b7735.000001 是存放当前上游的 relay log 文件的文件夹
-- mysql-bin.000007 是当前正在写入的 relay log  文件
+- mysql-bin.000007 是当前正在写入的 relay log 文件
 - relay.meta 记录了当前写入的 relay log  的进度信息，具体内容如下
 
 ```
 binlog-name = "mysql-bin.000007" # 当前写的 binlog 文件
 binlog-pos = 2415 # 当前 binlog 的位点
-binlog-gtid = "3b96fdee-f4cd-11eb-b8e5-4167400b7735:1-168" # 当前 binlog 的 gtid
+binlog-gtid = "3b96fdee-f4cd-11eb-b8e5-4167400b7735:1-168" # 当前写的 binlog 的 gtid
 ```
 
 ## Relay log  的清理策略
@@ -53,7 +53,7 @@ relay log  的清理 DM 提供了两种方式，手动清理和自动清理，�
 > 
 > 过期的 relay log  定义：该 relay log  文件最后被改动的时间与当前时间差值大于配置文件中的 `expires` 字段。
 > 
-> 活跃的 relay log  当前只在 Syncer Unit 被更新和写入，假设一个为 All 模式的同步任务在全量导出/导入阶段花费了超过数据源 purge 里配置的过期时间，该 relay log  依旧会被清除
+> 活跃的 relay log 当前只在 Syncer Unit 被更新和写入，假设一个为 All 模式的同步任务在全量导出/导入阶段花费了超过数据源 purge 里配置的过期时间，该 relay log  依旧会被清除。
 
 1. 用 dmctl 手动清理指定的 relay log  文件：
 
