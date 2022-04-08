@@ -356,6 +356,7 @@
         - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
         - [上游数据库配置](/dm/dm-source-configuration-file.md)
         - [数据迁移任务配置向导](/dm/dm-task-configuration-guide.md)
+      - [兼容性目录](/dm/dm-compatibility-catalog.md)
       - 安全
         - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
         - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
