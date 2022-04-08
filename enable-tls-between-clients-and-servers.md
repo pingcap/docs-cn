@@ -8,7 +8,7 @@ aliases: ['/docs/dev/enable-tls-between-clients-and-servers/','/docs/dev/how-to/
 
 Non-encrypted connection between TiDB's server and clients is allowed by default, which enables third parties that monitor channel traffic to know the data sent and received between the server and the client, including but not limited to query content, query results, and so on. If a channel is untrustworthy (such as if the client is connected to the TiDB server via a public network), then a non-encrypted connection is prone to information leakage. In this case, for security reasons, it is recommended to require an encrypted connection.
 
-The TiDB server supports the encrypted connection based on the TLS (Transport Layer Security). The protocol is consistent with MySQL encrypted connections and is directly supported by existing MySQL clients such as MySQL Client, MySQL Shell and MySQL drivers. TLS is sometimes referred to as SSL (Secure Sockets Layer). Because the SSL protocol has [known security vulnerabilities](https://en.wikipedia.org/wiki/Transport_Layer_Security), TiDB does not support SSL. TiDB supports the following protocols: TLS 1.0, TLS 1.1, TLS 1.2 and TLS 1.3.
+The TiDB server supports the encrypted connection based on the TLS (Transport Layer Security). The protocol is consistent with MySQL encrypted connections and is directly supported by existing MySQL clients such as MySQL Client, MySQL Shell and MySQL drivers. TLS is sometimes referred to as SSL (Secure Sockets Layer). Because the SSL protocol has [known security vulnerabilities](https://en.wikipedia.org/wiki/Transport_Layer_Security), TiDB does not support SSL. TiDB supports the following protocols: TLSv1.0, TLSv1.1, TLSv1.2 and TLSv1.3.
 
 When an encrypted connection is used, the connection has the following security properties:
 
@@ -41,6 +41,7 @@ See the following descriptions about the related parameters to enable secure con
 - [`ssl-cert`](/tidb-configuration-file.md#ssl-cert): specifies the file path of the SSL certificate
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key): specifies the private key that matches the certificate
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca): (optional) specifies the file path of the trusted CA certificate
+- [`tls-version`](/tidb-configuration-file.md#tls-version): (optional) specifies the minimum TLS version, e.g. "TLSv1.2"
 
 `auto-tls` allows secure connections but does not provide client certificate validation. For certificate validation, and to control how certificates are generated, see the advice on configuring the `ssl-cert`, `ssl-key` and `ssl-ca` variables below.
 
@@ -130,10 +131,14 @@ The crypto policy for your operating system and the client library you are using
 
 ### Supported TLS versions
 
-- TLS 1.0
-- TLS 1.1
-- TLS 1.2
-- TLS 1.3
+- TLSv1.0 (disabled by default)
+- TLSv1.1
+- TLSv1.2
+- TLSv1.3
+
+The `tls-version` configuration option can be used to limit the TLS versions that can be used.
+
+The actual TLS versions that can be used depend on the OS crypto policy, MySQL client version and the SSL/TLS libary that is used by the client.
 
 ### Supported key exchange protocols and encryption algorithms
 
