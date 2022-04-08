@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 > **注意：**
 >
-> 该功能面向技术专家，建议在 PingCAP 专业技术人员的指导下使用该功能。
+> 该功能面向数据库技术专家，建议非专家用户在 PingCAP 专业技术人员的指导下使用该功能。
 
 该页面允许用户**按需地**一键收集 TiDB、TiKV、PD、TiFlash 各个实例的当前性能数据。收集到的性能数据可显示为火焰图或有向无环图形式。
 
