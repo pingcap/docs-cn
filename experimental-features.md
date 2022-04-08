@@ -8,12 +8,19 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 本文介绍 TiDB 各版本中的实验特性。**不建议**在生产环境中使用实验特性。
 
+## 性能
+
++ [Raft Engine](/tikv-configuration-file.md#raft-engine)（v5.4 实验特性）
++ [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
++ [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
+
 ## 稳定性
 
 + TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（v5.0 实验特性）
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
     + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。
++ 当 TiKV 部署的机型资源有限时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用[前台限流](/tikv-configuration-file.md#quota)以限制前台各类请求占用的 CPU 资源。（v6.0 实验特性）
 
 ## 调度功能
 
@@ -22,7 +29,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## SQL 功能
 
-+ [使用 SQL 接口设置数据放置规则](/placement-rules-in-sql.md)。(v5.3 实验特性)
 + List 分区表 (List Partition)。（v5.0 实验特性）
 + List Column 分区表 (List Column Partition)。（v5.0 实验特性）
 + [分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。（v5.1 实验特性）
@@ -47,13 +53,13 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。（v4.0 实验特性）
 + TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
 
-## 数据迁移
-
-+ [DM 的 OpenAPI 功能](/dm/dm-open-api.md)。 （v5.3 实验特性）
-
 ## 备份与恢复
 
 + [Raw KV 备份](/br/use-br-command-line-tool.md#raw-kv-备份实验性功能)。（v3.1 实验特性）
+
+## 数据迁移
+
++ [使用 WebUI](/dm/dm-webui-guide.md) 管理 DM 迁移任务。（v6.0 实验特性）
 
 ## 垃圾回收
 
@@ -64,4 +70,3 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。（v4.0 实验特性）
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。（v4.0 实验特性）
 + [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
-+ [持续性能分析](/dashboard/continuous-profiling.md)。（v5.3 实验特性）

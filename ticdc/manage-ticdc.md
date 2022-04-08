@@ -9,14 +9,14 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.3.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.0.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v5.3.0
+tiup cluster upgrade <cluster-name> v6.0.0
 ```
 
 ### 升级的注意事项
@@ -102,7 +102,7 @@ tiup cluster edit-config <cluster-name>
 
 同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
 
-![TiCDC state transfer](/media/ticdc-state-transfer.png)
+![TiCDC state transfer](/media/ticdc/ticdc-state-transfer.png)
 
 以上状态流转图中的状态说明如下：
 
@@ -218,6 +218,9 @@ URI 中可配置的的参数如下：
 | `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
 | `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
 | `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
+| `write-timeout`| 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
 
 最佳实践：
 
@@ -569,7 +572,7 @@ worker-num = 16
 # 支持 default、ts、rowid、table 四种分发器，分发规则如下：
 # - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
 # - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
-# - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
+# - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 # - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [

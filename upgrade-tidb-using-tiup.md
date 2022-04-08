@@ -7,34 +7,34 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 5.3 及后续修订版本。
-- 使用 TiUP 从 TiDB 5.0 版本升级至 TiDB 5.3 及后续修订版本。
-- 使用 TiUP 从 TiDB 5.1 版本升级至 TiDB 5.3 及后续修订版本。
-- 使用 TiUP 从 TiDB 5.2 版本升级至 TiDB 5.3 及后续修订版本。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 6.0 及后续修订版本。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 6.0 及后续修订版本。
 
 > **注意：**
 >
-> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 5.3 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 5.3 及后续修订版本。
+> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 6.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 6.0 及后续修订版本。
 
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 5.3 版本及后续修订版本。
-- 若要将 3.0 之前的版本升级至 5.3 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.0 版本及后续修订版本。
+- 若要将 3.0 之前的版本升级至 6.0 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
-    4. 按本文档说明将集群升级到 5.3 版本。
+    4. 按本文档说明将集群升级到 6.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
-
-> **注意：**
->
-> 在升级的过程中不要执行 DDL 请求，否则可能会出现行为未定义的问题。
+- 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
 
 ## 2. 升级前准备
 
 本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
+
+> **警告：**
+>
+> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
+> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
 
 ### 2.1 升级 TiUP 或更新 TiUP 离线镜像
 
@@ -44,7 +44,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >
 > 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳到步骤 2.2 使用离线升级方式。
 
-1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.7.0`）：
+1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.9.3`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -53,7 +53,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     tiup --version
     ```
 
-2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.7.0`）：
+2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.9.3`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -95,7 +95,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `5.3` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `6.0` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -111,9 +111,9 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 5.3 版本前，请确认已在 4.0 修改的参数在 5.3 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 6.0 版本前，请确认已在 4.0 修改的参数在 6.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 >
-> 以下 TiKV 参数在 TiDB v5.3 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
+> 以下 TiKV 参数在 TiDB v5.0 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
 >
 > - pessimistic-txn.enabled
 > - server.request-batch-enable-cross-command
@@ -147,12 +147,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 5.3.0 版本为例：
+以升级到 6.0.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v5.3.0
+tiup cluster upgrade <cluster-name> v6.0.0
 ```
 
 > **注意：**
@@ -200,7 +200,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v5.3.0
+Cluster version:    v6.0.0
 ```
 
 > **注意：**
@@ -250,10 +250,10 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v5.3.0
+tiup install ctl:v6.0.0
 ```
 
-## 5. TiDB 5.3 兼容性变化
+## 5. TiDB 6.0 兼容性变化
 
-- 兼容性变化请参考 5.3 Release Notes。
+- 兼容性变化请参考 6.0 Release Notes。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。

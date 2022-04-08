@@ -60,7 +60,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ### `lower-case-table-names`
 
-+ 这个选项可以设置 TiDB 的系统变量 `lower-case-table-names` 的值。
++ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
 + 默认值：2
 + 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
 
@@ -124,8 +124,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `new_collations_enabled_on_first_bootstrap`
 
 + 用于开启新的 collation 支持
-+ 默认值：false
-+ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
++ 默认值：true
++ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 或更高版本时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
 
 ### `max-server-connections`
 
@@ -368,7 +368,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + TiDB 单个事务大小限制
 + 默认值：104857600
 + 单位：Byte
-+ 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `10737418240`（表示 10GB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
++ 单个事务中，所有 key-value 记录的总大小不能超过该限制。该配置项的最大值不超过 `1099511627776`（表示 1TB）。注意，如果使用了以 `Kafka` 为下游消费者的 `binlog`，如：`arbiter` 集群，该配置项的值不能超过 `1073741824`（表示 1GB），因为这是 `Kafka` 的处理单条消息的最大限制，超过该限制 `Kafka` 将会报错。
 
 ### `max-txn-ttl`
 
@@ -482,6 +482,78 @@ prepare 语句的 plan cache 设置。
 + 最小值：0
 + 最大值：1
 
+## opentracing
+
+opentracing 的相关的设置。
+
+### `enable`
+
++ 开启 opentracing 跟踪 TiDB 部分组件的调用开销。注意开启后会有一定的性能损失。
++ 默认值：false
+
+### `rpc-metrics`
+
++ 开启 rpc metrics。
++ 默认值：false
+
+## opentracing.sampler
+
+opentracing.sampler 相关的设置。
+
+### `type`
+
++ opentracing 采样器的类型。
++ 默认值："const"
++ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
+
+### `param`
+
++ 采样器参数。
+    - 对于 const 类型，可选值为 0 或 1，表示是否开启。
+    - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
+    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
++ 默认值：1.0
+
+### `sampling-server-url`
+
++ jaeger-agent 采样服务器的 HTTP URL 地址。
++ 默认值：""
+
+### `max-operations`
+
++ 采样器可追踪的最大操作数。如果一个操作没有被追踪，会启用默认的 probabilistic 采样器。
++ 默认值：0
+
+### `sampling-refresh-interval`
+
++ 控制远程轮询 jaeger-agent 采样策略的频率。
++ 默认值：0
+
+## opentracing.reporter
+
+opentracing.reporter 相关的设置。
+
+### `queue-size`
+
++ reporter 在内存中记录 spans 个数的队列容量。
++ 默认值：0
+
+### `buffer-flush-interval`
+
++ reporter 缓冲区的刷新频率。
++ 默认值：0
+
+### `log-spans`
+
++ 是否为所有提交的 span 打印日志。
++ 默认值：false
+
+### `local-agent-host-port`
+
++ reporter 向 jaeger-agent 发送 span 的地址。
++ 默认值：""
+
 ## tikv-client
 
 ### `grpc-connection-count`
@@ -500,6 +572,12 @@ prepare 语句的 plan cache 设置。
 + TiDB 与 TiKV 节点 rpc keepalive 检查的超时时间
 + 默认值：3
 + 单位：秒
+
+### `grpc-compression-type`
+
++ 控制 TiDB 向 TiKV 节点传输数据使用的压缩算法类型。默认值为 "none" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。
++ 默认值："none"
++ 可选值："none", "gzip"
 
 ### `commit-timeout`
 
@@ -599,20 +677,6 @@ TiDB 服务状态相关配置。
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
-## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
-
-系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
-
-### max-stmt-count
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
-+ 默认值：3000
-
-### max-sql-length
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
-+ 默认值：4096
-
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
@@ -632,6 +696,14 @@ TiDB 服务状态相关配置。
 ### deadlock-history-collect-retryable
 
 + 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
++ 默认值：false
+
+### pessimistic-auto-commit
+
++ 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。默认情况下，即使开启全局悲观事务模式，自动提交事务依然使用乐观事务模式来执行。当开启该配置项后（设置为 `true`），在全局悲观事务模式下，自动提交事务将也使用悲观事务模式执行。行为与其他显式提交的悲观事务相同。
++ 对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的时延尖刺。
++ 对于不存在冲突的场景，如果有大量自动提交事务且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
+
 + 默认值：false
 
 ## experimental

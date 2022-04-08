@@ -17,22 +17,7 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 
 ## TiDB Lightning 对下游数据库的账号权限要求是怎样的？
 
-TiDB Lightning 需要以下权限：
-
-* SELECT
-* UPDATE
-* ALTER
-* CREATE
-* DROP
-
-如果选择 [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 模式，或目标数据库用于存储断点，则 TiDB Lightning 额外需要以下权限：
-
-* INSERT
-* DELETE
-
-Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接被 Ingest 到 TiKV 中，所以绕过了 TiDB 的权限系统。只要 TiKV、TiKV Importer 和 TiDB Lightning 的端口在集群之外不可访问，就可以保证安全。
-
-如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
+详细权限描述参考 [TiDB Lightning 使用前提](/tidb-lightning/tidb-lightning-requirements.md)。
 
 ## TiDB Lightning 在导数据过程中某个表报错了，会影响其他表吗？进程会马上退出吗？
 
@@ -140,7 +125,7 @@ sql-mode = ""
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --fetch-mode
+tidb-lightning-ctl --config tidb-lightning.toml --fetch-mode
 ```
 
 可执行以下命令强制切换回“普通模式” (normal mode)：
@@ -148,7 +133,7 @@ tidb-lightning-ctl --fetch-mode
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --switch-mode=normal
+tidb-lightning-ctl --config tidb-lightning.toml --switch-mode=normal
 ```
 
 ## TiDB Lightning 可以使用千兆网卡吗？
@@ -190,6 +175,19 @@ upload-speed-limit = "100MB"
 2. 如果使用 Local-backend，删除配置中 `sorted-kv-dir` 对应的目录；如果使用 Importer-backend，删除 `tikv-importer` 所在机器上的整个 `import` 文件目录。
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
+
+4. 清理残留的元信息。如果存在以下任意一种情况，需要手动清理元信息库：
+    
+    - 对于 v5.1.x 和 v5.2.x 版本的 TiDB Lightning, tidb-lightning-ctl 命令没有同时清理存储在目标集群的 metadata 库，需要手动清理。
+    - 如果手动删除过断点文件，则需要手动清理下游的元信息库，否则可能影响后续导入的正确性。
+
+    使用下面命令清理元信息：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    DROP DATABASE IF EXISTS `lightning_metadata`;
+    ```
 
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 

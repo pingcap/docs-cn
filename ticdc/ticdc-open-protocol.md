@@ -278,7 +278,7 @@ COMMIT;
 目前 TiCDC 没有提供 Open Protocol 协议解析的标准实现，但是提供了 Golang 版本和 Java 版本的解析例子。你可以参考本文档提供的数据格式和以下例子实现消费端协议解析。
 
 - [Golang 例子](https://github.com/pingcap/tiflow/tree/master/cmd/kafka-consumer)
-- [Java 例子](https://github.com/pingcap/tiflow/tree/master/exapmles/java)
+- [Java 例子](https://github.com/pingcap/tiflow/tree/master/examples/java)
 
 ## Column 的类型码
 

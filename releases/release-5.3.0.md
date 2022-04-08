@@ -19,6 +19,7 @@ TiDB 版本：5.3.0
 + 支持“一键”保存和恢复现场问题的相关信息，提升查询计划问题诊断的效率
 + 支持持续性能分析 (Continuous Profiling) 实验特性，提高数据库性能的可观测性
 + 持续优化存储和计算引擎，提升系统性能和稳定性
++ 降低 TiKV 写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）
 
 ## 兼容性变化
 
@@ -32,8 +33,8 @@ TiDB 版本：5.3.0
 | :---------- | :----------- | :----------- |
 | [tidb_enable_noop_functions](/system-variables.md#tidb_enable_noop_functions-从-v40-版本开始引入) | 修改 | 由于 TiDB v5.3.0 支持临时表，此变量的控制范围不再包括 `CREATE TEMPORARY TABLE` 和 `DROP TEMPORARY TABLE` 行为。 |
 | [`tidb_enable_pseudo_for_outdated_stats`](/system-variables.md#tidb_enable_pseudo_for_outdated_stats-从-v530-版本开始引入) | 新增 | 此变量用于控制优化器在一张表上的统计信息过期时的行为。默认值为 `ON`，当表数据被修改的行数大于该表总行数的 80% （该比例可通过 [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) 配置项调整） 时，优化器认为该表上除总行数以外的统计信息不再可靠，转而使用 pseudo 统计信息。将该变量值设为 `OFF` 后，即使统计信息过期，优化器也仍会使用该表上的统计信息。|
-|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭 TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
-|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
+|[`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) | 新增  | 此变量用于开启或关闭 TSO Follower Proxy 特性。默认值为 `OFF`，代表关闭 TSO Follower Proxy 特性。此时，TiDB 仅会从 PD leader 获取 TSO。当开启该特性之后，TiDB 在获取 TSO 时会将请求均匀地发送到所有 PD 节点上，通过 PD follower 转发 TSO 请求，从而降低 PD leader 的 CPU 压力。 |
+|[`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) | 新增 | 此变量用于设置 TiDB 向 PD 请求 TSO 时进行一次攒批操作的最大等待时长。默认值为 `0`，即不进行额外的等待。 |
 | [tidb_tmp_table_max_size](/system-variables.md#tidb_tmp_table_max_size-从-v53-版本开始引入) | 新增  | 此变量用于限制单个[临时表](/temporary-tables.md)的最大大小，临时表超出该大小后报错。 |
 
 ### 配置文件参数
@@ -45,7 +46,7 @@ TiDB 版本：5.3.0
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 `memory-usage-limit` 参数， 升级后该参数值根据 `storage.block-cache.capacity` 来计算。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。|
 |  TiKV | [`raftstore.raft-write-size-limit`](/tikv-configuration-file.md#raft-write-size-limit-从-v530-版本开始引入) | 新增 | 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
-|  TiKV | [`raftstore.raft-msg-flush-interval`](/tikv-configuration-file.md#raft-msg-flush-interval-从-v530-版本开始引入) | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
+|  TiKV | `raftstore.raft-msg-flush-interval` | 新增 | Raft 消息攒批发出的间隔时间。每隔该配置项指定的间隔，Raft 消息会攒批发出。当 `raftstore.store-io-pool-size` 的值为 `0` 时，该配置项不生效。|
 |  TiKV | `raftstore.raft-reject-transfer-leader-duration` | 删除 | 控制迁移 leader 到新加节点的最小时间。|
 | PD | [`log.file.max-days`](/pd-configuration-file.md#max-days) | 修改 | 此配置项用于控制日志保留的最长天数。默认值从 `1` 修改为 `0`。 |
 | PD | [`log.file.max-backups`](/pd-configuration-file.md#max-backups) | 修改 | 此配置项用于控制日志文件保留的最大个数。默认值从 `7` 修改为 `0`。 |
@@ -70,6 +71,7 @@ TiDB 版本：5.3.0
 - 修复 v5.3.0 之前的版本中新增索引会导致在规定时间外触发 auto-analyze 的问题。在 v5.3.0 中，用户通过 `tidb_auto_analyze_start_time` 和 `tidb_auto_analyze_end_time` 设定时间段后，只会在该时间段内触发 auto-analyze。
 - plugin 默认存放目录从 `""` 改为 `/data/deploy/plugin`。
 - DM 代码迁移至 [TiCDC 代码仓库的 dm 文件夹](https://github.com/pingcap/tiflow/tree/master/dm)。从 DM v5.3.0 起，DM 采用与 TiDB 相同的版本号。DM v2.0 的下一个主版本为 DM v5.3。DM v2.0 到 v5.3 无兼容性变更，升级过程与正常升级无差异。
+- 默认部署 Prometheus [v2.27.1](https://github.com/prometheus/prometheus/releases/tag/v2.27.1) ，它是 2021 年 5 月发布的版本，提供了更多的功能并解决了安全风险。相对于 5.3.0 之前版本 TiDB 默认使用的 Prometheus v2.8.1，v2.27.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
 
 ## 新功能
 
@@ -85,7 +87,7 @@ TiDB 版本：5.3.0
     - 把热点数据的 leader 放到高性能的 TiKV 实例上。
     - 将冷数据分离到不同的存储中以提高可用性。
 
-    [用户文档](/information-schema/information-schema-placement-rules.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
+    [用户文档](/placement-rules-in-sql.md)，[#18030](https://github.com/pingcap/tidb/issues/18030)
 
 - **临时表**
 
@@ -131,19 +133,19 @@ TiDB 版本：5.3.0
 
     优化 TiDB 时间戳处理流程，支持通过开启 PD Follower Proxy 和调整 PD client 批量请求 TSO 时所需的 batch 等待时间的方式来降低 PD leader 时间戳处理负载，提升系统整体可扩展性。
 
-    - 支持通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v53-版本开始引入) 设置 PD Follower Proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD Follower Proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，从而有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
+    - 支持通过系统变量 [`tidb_enable_tso_follower_proxy`](/system-variables.md#tidb_enable_tso_follower_proxy-从-v530-版本开始引入) 设置 PD Follower Proxy 功能开关。在 PD 时间戳请求负载过高的情况下，通过开启 PD Follower Proxy，可以将 follower 上请求周期内收集到的 TSO request 批量转发到 leader 节点，从而有效减少 client 与 leader 的直接交互次数，降低 leader 的负载，提升 TiDB 整体性能。
 
         > **注意：**
         >
         > 在 client 数较少、PD leader 负载不高的情况下，不建议开启 PD Follower Proxy 功能。
 
-    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入) 系统变量设置 PD client 批量请求 TSO 时所需的最大 batch 等待时间，单位为毫秒。在 PD TSO 请求负载过高的情况下，可以通过调大等待时间获得更大的 batch size，从而降低 PD 负载，提升吞吐。
+    - 支持通过 [`tidb_tso_client_batch_max_wait_time`](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入) 系统变量设置 PD client 批量请求 TSO 时所需的最大 batch 等待时间，单位为毫秒。在 PD TSO 请求负载过高的情况下，可以通过调大等待时间获得更大的 batch size，从而降低 PD 负载，提升吞吐。
 
         > **注意：**
         >
         > 在 TSO 请求负载不高的情况下，不建议调整该参数。
 
-        [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v53-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
+        [用户文档](/system-variables.md#tidb_tso_client_batch_max_wait_time-从-v530-版本开始引入)，[#3149](https://github.com/tikv/pd/issues/3149)
 
 ### 稳定性
 
@@ -270,6 +272,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 优化 raft client 错误日志的收集 [#10944](https://github.com/tikv/tikv/pull/10944)
     - 优化日志线程以避免其成为性能瓶颈 [#10841](https://github.com/tikv/tikv/issues/10841)
     - 添加更多的写入查询统计类型 [#10507](https://github.com/tikv/tikv/issues/10507)
+    - 降低写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）。具体调优操作，请参考 [TiKV 线程池性能调优](/tune-tikv-thread-performance.md) [#10540](https://github.com/tikv/tikv/issues/10540)
 
 + PD
 
@@ -295,7 +298,7 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
 
     - 提供了 512 位 SIMD 支持
     - 增强了对过期的数据版本的清理算法，减少磁盘使用量及提高读文件性能
-    - 解决了用户在某些非Linux平台系统上查看 dashboard 时，无法获取内存或CPU等相关信息
+    - 解决了用户在某些非 Linux 平台系统上查看 dashboard 时，无法获取内存或 CPU 等相关信息的问题
     - 统一 TiFlash 日志文件的命名风格（与 TiKV 保持一致），并支持动态修改 logger.count、logger.size
     - 完善了列存文件的数据校验能力（checksums，实验功能）
 

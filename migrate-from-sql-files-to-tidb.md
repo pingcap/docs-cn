@@ -32,19 +32,7 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
     2. 后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
 
-        ```toml
-        [mydumper]
-        no-schema = false # 通过 Lightning 在下游创建库和表，此项设为 false。
-        ```
-
 * **方法二**：手动在下游 TiDB 建库和表。
-
-    后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
-
-    ```toml
-    [mydumper]
-    no-schema = true # 若已经在下游创建好库和表，此项设为 true 表示不进行 schema 创建
-    ```
 
 ## 第 3 步：编写配置文件
 
@@ -61,16 +49,13 @@ file = "tidb-lightning.log"
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TiB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 backend = "local"
-# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参 https://docs.pingcap.com/tidb/stable/tidb-lightning-backends。
+# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参 https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends。
 # 设置排序的键值对的临时存放地址。目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。
 sorted-kv-dir = "${sorted-kv-dir}"
 
 [mydumper]
 # 源数据目录
 data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
-
-# 如果在 #Step 2 选择手动在下游创建表结构，则需要将此项设为 true，否则为 false。
-# no-schema = true
 
 [tidb]
 # 目标集群的信息
@@ -95,7 +80,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
-nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
+nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
 ```
 
 同时，TiDB Lightning 还支持从 `~/.aws/credentials` 读取凭证文件。

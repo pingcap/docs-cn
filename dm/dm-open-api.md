@@ -5,11 +5,23 @@ summary: 了解如何使用 OpenAPI 接口来管理集群状态和数据同步�
 
 # 使用 OpenAPI 运维集群
 
-DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。如需开启 OpenAPI，请在 DM-master 的配置文件中增加如下配置项：
+DM 提供 OpenAPI 功能，您可以通过 OpenAPI 方便地对 DM 集群进行查询和运维操作。OpenAPI 的功能范围和 [dmctl 工具](/dm/dmctl-introduction.md)相当。
 
-```toml
-openapi = true
-```
+如需开启 OpenAPI，可通过以下方法：
+
++ 如果你的 DM 集群是通过二进制直接部署的，则在 DM-master 的配置文件中添加如下配置：
+
+    ```toml
+    openapi = true
+    ```
+
++ 如果你的 DM 集群是通过 TiUP 部署的，则在拓扑文件中添加如下配置：
+
+    ```yaml
+    server_configs:
+      master:
+        openapi: true
+    ```
 
 > **注意：**
 >
@@ -29,13 +41,16 @@ openapi = true
 ## 数据源相关 API
 
 * [创建数据源](#创建数据源)
-* [获取数据源列表](#获取数据源列表)
+* [获取数据源](#获取数据源)
 * [删除数据源](#删除数据源)
+* [更新数据源](#更新数据源)
+* [启用数据源](#启用数据源)
+* [停用数据源](#停用数据源)
 * [获取数据源状态](#获取数据源状态)
+* [获取数据源列表](#获取数据源列表)
 * [对数据源开启 relay-log 功能](#对数据源开启-relay-log-功能)
 * [对数据源停止 relay-log 功能](#对数据源停止-relay-log-功能)
-* [对数据源暂停 relay-log 功能](#对数据源暂停-relay-log-功能)
-* [对数据源恢复 relay-log 功能](#对数据源恢复-relay-log-功能)
+* [清除数据源不需要的 relay-log 文件](#清除数据源不需要的-relay-log-文件)
 * [更改数据源和 DM-worker 的绑定关系](#更改数据源和-dm-worker-的绑定关系)
 * [获取数据源的数据库名列表](#获取数据源的数据库名列表)
 * [获取数据源的指定数据库的表名列表](#获取数据源的指定数据库的表名列表)
@@ -43,11 +58,14 @@ openapi = true
 ## 同步任务相关 API
 
 * [创建同步任务](#创建同步任务)
-* [获取同步任务列表](#获取同步任务列表)
+* [获取同步任务](#获取同步任务)
+* [删除同步任务](#删除同步任务)
+* [更新同步任务](#更新同步任务)
+* [开始同步任务](#开始同步任务)
 * [停止同步任务](#停止同步任务)
 * [获取同步任务状态](#获取同步任务状态)
-* [暂停同步任务](#暂停同步任务)
-* [恢复同步任务](#恢复同步任务)
+* [获取同步任务列表](#获取同步任务列表)
+* [获取同步任务的同步规则列表](#获取同步任务的同步规则列表)
 * [获取同步任务关联数据源的数据库名列表](#获取同步任务关联数据源的数据库名列表)
 * [获取同步任务关联数据源的数据表名列表](#获取同步任务关联数据源的数据表名列表)
 * [获取同步任务关联数据源的数据表的创建语句](#获取同步任务关联数据源的数据表的创建语句)
@@ -75,7 +93,7 @@ openapi = true
 
 ### 请求 URI
 
- `GET /api/v1/cluster/masters`
+`GET /api/v1/cluster/masters`
 
 ### 使用样例
 
@@ -107,7 +125,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `DELETE /api/v1/cluster/masters/{master-name}`
+`DELETE /api/v1/cluster/masters/{master-name}`
 
 ### 使用样例
 
@@ -125,7 +143,7 @@ curl -X 'DELETE' \
 
 ### 请求 URI
 
- `GET /api/v1/cluster/workers`
+`GET /api/v1/cluster/workers`
 
 ### 使用样例
 
@@ -157,7 +175,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `DELETE /api/v1/cluster/workers/{worker-name}`
+`DELETE /api/v1/cluster/workers/{worker-name}`
 
 ### 使用样例
 
@@ -175,7 +193,7 @@ curl -X 'DELETE' \
 
 ### 请求 URI
 
- `POST /api/v1/sources`
+`POST /api/v1/sources`
 
 ### 使用样例
 
@@ -192,6 +210,7 @@ curl -X 'POST' \
   "port": 3306,
   "user": "root",
   "password": "123456",
+  "enable": true,
   "enable_gtid": false,
   "security": {
     "ssl_ca_content": "",
@@ -216,6 +235,7 @@ curl -X 'POST' \
   "port": 3306,
   "user": "root",
   "password": "123456",
+  "enable": true,
   "enable_gtid": false,
   "security": {
     "ssl_ca_content": "",
@@ -248,13 +268,219 @@ curl -X 'POST' \
 }
 ```
 
+## 获取数据源
+
+该接口是一个同步接口，请求成功会返回数据源列表信息。
+
+### 请求 URI
+
+`GET /api/v1/sources/{source-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'GET' \
+  'http://127.0.0.1:8261/api/v1/sources/source-1?with_status=true' \
+  -H 'accept: application/json'
+```
+
+```json
+{
+  "source_name": "mysql-01",
+  "host": "127.0.0.1",
+  "port": 3306,
+  "user": "root",
+  "password": "123456",
+  "enable_gtid": false,
+  "enable": false,
+  "flavor": "mysql",
+  "task_name_list": [
+    "task1"
+  ],
+  "security": {
+    "ssl_ca_content": "",
+    "ssl_cert_content": "",
+    "ssl_key_content": "",
+    "cert_allowed_cn": [
+      "string"
+    ]
+  },
+  "purge": {
+    "interval": 3600,
+    "expires": 0,
+    "remain_space": 15
+  },
+  "status_list": [
+    {
+      "source_name": "mysql-replica-01",
+      "worker_name": "worker-1",
+      "relay_status": {
+        "master_binlog": "(mysql-bin.000001, 1979)",
+        "master_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+        "relay_dir": "./sub_dir",
+        "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+        "relay_catch_up_master": true,
+        "stage": "Running"
+      },
+      "error_msg": "string"
+    }
+  ],
+  "relay_config": {
+    "enable_relay": true,
+    "relay_binlog_name": "mysql-bin.000002",
+    "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+    "relay_dir": "./relay_log"
+  }
+}
+```
+
+## 删除数据源
+
+该接口是一个同步接口，请求成功后返回的 Status Code 是 204。
+
+### 请求 URI
+
+`DELETE /api/v1/sources/{source-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'DELETE' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01?force=true' \
+  -H 'accept: application/json'
+```
+
+## 更新数据源
+
+该接口是一个同步接口，请求成功会返回对应的数据源信息。
+
+> **注意：**
+>
+> 更新数据源配置时，须确保当前数据源下没有任何正在运行的同步任务。
+
+### 请求 URI
+
+`PUT /api/v1/sources/{source-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'PUT' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "source": {
+    "source_name": "mysql-01",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123456",
+    "enable_gtid": false,
+    "enable": false,
+    "flavor": "mysql",
+    "task_name_list": [
+      "task1"
+    ],
+    "security": {
+      "ssl_ca_content": "",
+      "ssl_cert_content": "",
+      "ssl_key_content": "",
+      "cert_allowed_cn": [
+        "string"
+      ]
+    },
+    "purge": {
+      "interval": 3600,
+      "expires": 0,
+      "remain_space": 15
+    },
+    "relay_config": {
+      "enable_relay": true,
+      "relay_binlog_name": "mysql-bin.000002",
+      "relay_binlog_gtid": "e9a1fc22-ec08-11e9-b2ac-0242ac110003:1-7849",
+      "relay_dir": "./relay_log"
+    }
+  }
+}'
+```
+
+```json
+{
+  "source_name": "mysql-01",
+  "host": "127.0.0.1",
+  "port": 3306,
+  "user": "root",
+  "password": "123456",
+  "enable": true,
+  "enable_gtid": false,
+  "security": {
+    "ssl_ca_content": "",
+    "ssl_cert_content": "",
+    "ssl_key_content": "",
+    "cert_allowed_cn": [
+      "string"
+    ]
+  },
+  "purge": {
+    "interval": 3600,
+    "expires": 0,
+    "remain_space": 15
+  }
+}
+```
+
+## 启用数据源
+
+这是一个同步接口，请求成功后会启用此数据源，并批量开始数据迁移任务中依赖该数据源的所有子任务。
+
+### 请求 URI
+
+`POST /api/v1/sources/{source-name}/enable`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/enable' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json'
+```
+
+## 停用数据源
+
+这是一个同步接口，请求成功后会停用此数据源，并批量停止数据迁移任务中依赖该数据源的所有子任务。
+
+### 请求 URI
+
+`POST /api/v1/sources/{source-name}/disable`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/disable' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json'
+```
+
 ## 获取数据源列表
 
 该接口是一个同步接口，请求成功会返回数据源列表信息。
 
 ### 请求 URI
 
- `GET /api/v1/sources`
+`GET /api/v1/sources`
 
 ### 使用样例
 
@@ -302,31 +528,13 @@ curl -X 'GET' \
 }
 ```
 
-## 删除数据源
-
-该接口是一个同步接口，请求成功后返回体的 Status Code 是 204。
-
-### 请求 URI
-
- `DELETE /api/v1/sources/{source-name}`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'DELETE' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01?force=true' \
-  -H 'accept: application/json'
-```
-
 ## 获取数据源状态
 
 该接口是一个同步接口，请求成功会返回对应节点的状态信息。
 
 ### 请求 URI
 
- `GET /api/v1/sources/{source-name}/status`
+`GET /api/v1/sources/{source-name}/status`
 
 ### 使用样例
 
@@ -365,15 +573,15 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/start-relay`
+`POST /api/v1/sources/{source-name}/relay/enable`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/start-relay' \
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/relay/enable' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -392,15 +600,15 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/stop-relay`
+`POST /api/v1/sources/{source-name}/relay/disable`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/stop-relay' \
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/relay/disable' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -410,40 +618,27 @@ curl -X 'PATCH' \
 }'
 ```
 
-## 对数据源暂停 relay-log 功能
+## 清除数据源不需要的 relay-log 文件
 
 这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取数据源状态](#获取数据源状态)接口获取最新的状态。
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/pause-relay`
+`POST /api/v1/sources/{source-name}/relay/purge`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/pause-relay' \
-  -H 'accept: */*'
-```
-
-## 对数据源恢复 relay-log 功能
-
-这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取数据源状态](#获取数据源状态)接口获取最新的状态。
-
-### 请求 URI
-
- `PATCH /api/v1/sources/{source-name}/resume-relay`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'PATCH' \
-  'http://127.0.0.1:8261/api/v1/sources/mysql-01/resume-relay' \
-  -H 'accept: */*'
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/sources/mysql-01/relay/purge' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "relay_binlog_name": "mysql-bin.000002",
+  "relay_dir": "string"
+}'
 ```
 
 ## 更改数据源和 DM-worker 的绑定关系
@@ -452,14 +647,14 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `PATCH /api/v1/sources/{source-name}/transfer`
+`POST /api/v1/sources/{source-name}/transfer`
 
 ### 使用样例
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-curl -X 'PATCH' \
+curl -X 'POST' \
   'http://127.0.0.1:8261/api/v1/sources/mysql-01/transfer' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
@@ -474,7 +669,7 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `GET /api/v1/sources/{source-name}/schemas`
+`GET /api/v1/sources/{source-name}/schemas`
 
 ### 使用样例
 
@@ -498,7 +693,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/sources/{source-name}/schemas/{schema-name}`
+`GET /api/v1/sources/{source-name}/schemas/{schema-name}`
 
 ### 使用样例
 
@@ -518,11 +713,11 @@ curl -X 'GET' \
 
 ## 创建同步任务
 
-这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取同步任务状态](#获取同步任务状态)接口获取最新的状态。
+这是一个同步接口，请求成功的 Status Code 是 200，请求成功会返回对应的同步任务信息。
 
 ### 请求 URI
 
- `POST /api/v1/tasks`
+`POST /api/v1/tasks`
 
 ### 使用样例
 
@@ -534,7 +729,6 @@ curl -X 'POST' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json' \
   -d '{
-  "remove_meta": false,
   "task": {
     "name": "task-1",
     "task_mode": "all",
@@ -620,10 +814,7 @@ curl -X 'POST' \
         }
       ]
     }
-  },
-  "source_name_list": [
-    "source-1"
-  ]
+  }
 }'
 ```
 
@@ -716,13 +907,445 @@ curl -X 'POST' \
 }
 ```
 
-## 获取同步任务列表
+## 获取同步任务
 
-该接口是一个同步接口，请求成功会返回对应的同步任务信息。
+这是一个同步接口，请求成功的 Status Code 是 200。
 
 ### 请求 URI
 
- `GET /api/v1/tasks`
+`GET /api/v1/tasks/{task-name}?with_status=true`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'GET' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1?with_status=true' \
+  -H 'accept: application/json'
+```
+
+```json
+{
+  "name": "task-1",
+  "task_mode": "all",
+  "shard_mode": "pessimistic",
+  "meta_schema": "dm-meta",
+  "enhance_online_schema_change": true,
+  "on_duplicate": "overwrite",
+  "target_config": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123456",
+    "security": {
+      "ssl_ca_content": "",
+      "ssl_cert_content": "",
+      "ssl_key_content": "",
+      "cert_allowed_cn": [
+        "string"
+      ]
+    }
+  },
+  "binlog_filter_rule": {
+    "rule-1": {
+      "ignore_event": [
+        "all dml"
+      ],
+      "ignore_sql": [
+        "^Drop"
+      ]
+    },
+    "rule-2": {
+      "ignore_event": [
+        "all dml"
+      ],
+      "ignore_sql": [
+        "^Drop"
+      ]
+    },
+    "rule-3": {
+      "ignore_event": [
+        "all dml"
+      ],
+      "ignore_sql": [
+        "^Drop"
+      ]
+    }
+  },
+  "table_migrate_rule": [
+    {
+      "source": {
+        "source_name": "source-name",
+        "schema": "db-*",
+        "table": "tb-*"
+      },
+      "target": {
+        "schema": "db1",
+        "table": "tb1"
+      },
+      "binlog_filter_rule": [
+        "rule-1",
+        "rule-2",
+        "rule-3",
+      ]
+    }
+  ],
+  "source_config": {
+    "full_migrate_conf": {
+      "export_threads": 4,
+      "import_threads": 16,
+      "data_dir": "./exported_data",
+      "consistency": "auto"
+    },
+    "incr_migrate_conf": {
+      "repl_threads": 16,
+      "repl_batch": 100
+    },
+    "source_conf": [
+      {
+        "source_name": "mysql-replica-01",
+        "binlog_name": "binlog.000001",
+        "binlog_pos": 4,
+        "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
+      }
+    ]
+  }
+}
+```
+
+## 删除同步任务
+
+该接口是一个同步接口，请求成功后返回的 Status Code 是 204。
+
+### 请求 URI
+
+`DELETE /api/v1/tasks/{task-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'DELETE' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1' \
+  -H 'accept: application/json'
+```
+
+## 更新同步任务
+
+该接口是一个同步接口，请求成功会返回对应同步任务的信息。
+
+> **注意：**
+>
+> 更新同步任务配置时，须确保该任务处于暂停状态，并已经运行到增量同步的阶段，且仅有部分字段可以更新。
+
+### 请求 URI
+
+`PUT /api/v1/tasks/{task-name}`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'PUT' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "task": {
+    "name": "task-1",
+    "task_mode": "all",
+    "shard_mode": "pessimistic",
+    "meta_schema": "dm-meta",
+    "enhance_online_schema_change": true,
+    "on_duplicate": "overwrite",
+    "target_config": {
+      "host": "127.0.0.1",
+      "port": 3306,
+      "user": "root",
+      "password": "123456",
+      "security": {
+        "ssl_ca_content": "",
+        "ssl_cert_content": "",
+        "ssl_key_content": "",
+        "cert_allowed_cn": [
+          "string"
+        ]
+      }
+    },
+    "binlog_filter_rule": {
+      "rule-1": {
+        "ignore_event": [
+          "all dml"
+        ],
+        "ignore_sql": [
+          "^Drop"
+        ]
+      },
+      "rule-2": {
+        "ignore_event": [
+          "all dml"
+        ],
+        "ignore_sql": [
+          "^Drop"
+        ]
+      },
+      "rule-3": {
+        "ignore_event": [
+          "all dml"
+        ],
+        "ignore_sql": [
+          "^Drop"
+        ]
+      }
+    },
+    "table_migrate_rule": [
+      {
+        "source": {
+          "source_name": "source-name",
+          "schema": "db-*",
+          "table": "tb-*"
+        },
+        "target": {
+          "schema": "db1",
+          "table": "tb1"
+        },
+        "binlog_filter_rule": [
+          "rule-1",
+          "rule-2",
+          "rule-3",
+        ]
+      }
+    ],
+    "source_config": {
+      "full_migrate_conf": {
+        "export_threads": 4,
+        "import_threads": 16,
+        "data_dir": "./exported_data",
+        "consistency": "auto"
+      },
+      "incr_migrate_conf": {
+        "repl_threads": 16,
+        "repl_batch": 100
+      },
+      "source_conf": [
+        {
+          "source_name": "mysql-replica-01",
+          "binlog_name": "binlog.000001",
+          "binlog_pos": 4,
+          "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
+        }
+      ]
+    }
+  }
+}'
+```
+
+```json
+{
+  "name": "task-1",
+  "task_mode": "all",
+  "shard_mode": "pessimistic",
+  "meta_schema": "dm-meta",
+  "enhance_online_schema_change": true,
+  "on_duplicate": "overwrite",
+  "target_config": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123456",
+    "security": {
+      "ssl_ca_content": "",
+      "ssl_cert_content": "",
+      "ssl_key_content": "",
+      "cert_allowed_cn": [
+        "string"
+      ]
+    }
+  },
+  "binlog_filter_rule": {
+    "rule-1": {
+      "ignore_event": [
+        "all dml"
+      ],
+      "ignore_sql": [
+        "^Drop"
+      ]
+    },
+    "rule-2": {
+      "ignore_event": [
+        "all dml"
+      ],
+      "ignore_sql": [
+        "^Drop"
+      ]
+    },
+    "rule-3": {
+      "ignore_event": [
+        "all dml"
+      ],
+      "ignore_sql": [
+        "^Drop"
+      ]
+    }
+  },
+  "table_migrate_rule": [
+    {
+      "source": {
+        "source_name": "source-name",
+        "schema": "db-*",
+        "table": "tb-*"
+      },
+      "target": {
+        "schema": "db1",
+        "table": "tb1"
+      },
+      "binlog_filter_rule": [
+        "rule-1",
+        "rule-2",
+        "rule-3",
+      ]
+    }
+  ],
+  "source_config": {
+    "full_migrate_conf": {
+      "export_threads": 4,
+      "import_threads": 16,
+      "data_dir": "./exported_data",
+      "consistency": "auto"
+    },
+    "incr_migrate_conf": {
+      "repl_threads": 16,
+      "repl_batch": 100
+    },
+    "source_conf": [
+      {
+        "source_name": "mysql-replica-01",
+        "binlog_name": "binlog.000001",
+        "binlog_pos": 4,
+        "binlog_gtid": "03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170"
+      }
+    ]
+  }
+}
+```
+
+## 开始同步任务
+
+这是一个异步接口，请求成功的 Status Code 是 200。可通过[获取同步任务状态](#获取同步任务状态)接口获取最新的任务状态。
+
+### 请求 URI
+
+`POST /api/v1/tasks/{task-name}/start`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1/start' \
+  -H 'accept: */*'
+```
+
+## 停止同步任务
+
+这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取同步任务状态](#获取同步任务状态)接口获取最新的任务状态。
+
+### 请求 URI
+
+`POST /api/v1/tasks/{task-name}/stop`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'POST' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1/stop' \
+  -H 'accept: */*'
+```
+
+## 获取同步任务状态
+
+该接口是一个同步接口，请求成功会返回对应节点的状态信息。
+
+### 请求 URI
+
+`GET /api/v1/tasks/task-1/status`
+
+### 使用样例
+
+{{< copyable "shell-regular" >}}
+
+```shell
+curl -X 'GET' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1/status?stage=running' \
+  -H 'accept: application/json'
+```
+
+```json
+{
+  "total": 1,
+  "data": [
+    {
+      "name": "string",
+      "source_name": "string",
+      "worker_name": "string",
+      "stage": "runing",
+      "unit": "sync",
+      "unresolved_ddl_lock_id": "string",
+      "load_status": {
+        "finished_bytes": 0,
+        "total_bytes": 0,
+        "progress": "string",
+        "meta_binlog": "string",
+        "meta_binlog_gtid": "string"
+      },
+      "sync_status": {
+        "total_events": 0,
+        "total_tps": 0,
+        "recent_tps": 0,
+        "master_binlog": "string",
+        "master_binlog_gtid": "string",
+        "syncer_binlog": "string",
+        "syncer_binlog_gtid": "string",
+        "blocking_ddls": [
+          "string"
+        ],
+        "unresolved_groups": [
+          {
+            "target": "string",
+            "ddl_list": [
+              "string"
+            ],
+            "first_location": "string",
+            "synced": [
+              "string"
+            ],
+            "unsynced": [
+              "string"
+            ]
+          }
+        ],
+        "synced": true,
+        "binlog_type": "string",
+        "seconds_behind_master": 0
+      }
+    }
+  ]
+}
+```
+
+## 获取同步任务列表
+
+该接口是一个同步接口，请求成功会返回对应的同步任务列表。
+
+### 请求 URI
+
+`GET /api/v1/tasks`
 
 ### 使用样例
 
@@ -828,31 +1451,13 @@ curl -X 'GET' \
 }
 ```
 
-## 停止同步任务
+## 获取同步任务的同步规则列表
 
-这是一个异步接口，请求成功的 Status Code 是 204，可通过[获取同步任务状态](#获取同步任务状态)接口获取最新的状态。
-
-### 请求 URI
-
- `DELETE /api/v1/tasks/{task-name}`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'DELETE' \
-  'http://127.0.0.1:8261/api/v1/tasks/task-1' \
-  -H 'accept: */*'
-```
-
-## 获取同步任务状态
-
-该接口是一个同步接口，请求成功会返回对应节点的状态信息。
+该接口是一个同步接口，请求成功会返回对应同步任务的同步规则列表。
 
 ### 请求 URI
 
- `GET /api/v1/tasks/task-1/status`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/migrate_targets`
 
 ### 使用样例
 
@@ -860,105 +1465,22 @@ curl -X 'DELETE' \
 
 ```shell
 curl -X 'GET' \
-  'http://127.0.0.1:8261/api/v1/tasks/task-1/status?stage=running' \
+  'http://127.0.0.1:8261/api/v1/tasks/task-1/sources/source-1/migrate_targets' \
   -H 'accept: application/json'
 ```
 
 ```json
 {
-  "total": 1,
+  "total": 0,
   "data": [
     {
-      "name": "string",
-      "source_name": "string",
-      "worker_name": "string",
-      "stage": "runing",
-      "unit": "sync",
-      "unresolved_ddl_lock_id": "string",
-      "load_status": {
-        "finished_bytes": 0,
-        "total_bytes": 0,
-        "progress": "string",
-        "meta_binlog": "string",
-        "meta_binlog_gtid": "string"
-      },
-      "sync_status": {
-        "total_events": 0,
-        "total_tps": 0,
-        "recent_tps": 0,
-        "master_binlog": "string",
-        "master_binlog_gtid": "string",
-        "syncer_binlog": "string",
-        "syncer_binlog_gtid": "string",
-        "blocking_ddls": [
-          "string"
-        ],
-        "unresolved_groups": [
-          {
-            "target": "string",
-            "ddl_list": [
-              "string"
-            ],
-            "first_location": "string",
-            "synced": [
-              "string"
-            ],
-            "unsynced": [
-              "string"
-            ]
-          }
-        ],
-        "synced": true,
-        "binlog_type": "string",
-        "seconds_behind_master": 0
-      }
+      "source_schema": "db1",
+      "source_table": "tb1",
+      "target_schema": "db1",
+      "target_table": "tb1"
     }
   ]
 }
-```
-
-## 暂停同步任务
-
-这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取同步任务状态](#获取同步任务状态)接口获取最新的状态。
-
-### 请求 URI
-
- `PATCH /api/v1/tasks/task-1/pause`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'PATCH' \
-  'http://127.0.0.1:8261/api/v1/tasks/task-1/pause' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '[
-  "source-1"
-]'
-```
-
-## 恢复同步任务
-
-这是一个异步接口，请求成功的 Status Code 是 200，可通过[获取同步任务状态](#获取同步任务状态)接口获取最新的状态。
-
-### 请求 URI
-
- `PATCH /api/v1/tasks/task-1/resume`
-
-### 使用样例
-
-{{< copyable "shell-regular" >}}
-
-```shell
-curl -X 'PATCH' \
-  'http://127.0.0.1:8261/api/v1/tasks/task-1/resume' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '[
-  "source-1"
-]'
 ```
 
 ## 获取同步任务关联数据源的数据库名列表
@@ -967,7 +1489,7 @@ curl -X 'PATCH' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas`
 
 ### 使用样例
 
@@ -991,7 +1513,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}`
 
 ### 使用样例
 
@@ -1015,7 +1537,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+`GET /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 
@@ -1041,7 +1563,7 @@ curl -X 'GET' \
 
 ### 请求 URI
 
- `PATCH /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+`POST /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 
@@ -1065,7 +1587,7 @@ curl -X 'PUT' \
 
 ### 请求 URI
 
- `DELETE /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
+`DELETE /api/v1/tasks/{task-name}/sources/{source-name}/schemas/{schema-name}/{table-name}`
 
 ### 使用样例
 
