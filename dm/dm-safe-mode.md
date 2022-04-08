@@ -42,7 +42,7 @@ REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 888999, 'a
 
 从 checkpoint 进行恢复增量同步任务时，DM 会根据下面的判断逻辑来开启安全模式：
 
-- 如果 checkpoint 信息里面额外记录了 safemode_exit_point ，说明之前是异常暂停。如果恢复时发现待恢复的 checkpoint 的 binlog 位置点 < safemode_exit_point，那么说明从这个 checkpoint 到 safemode_exit_point 之间的 binlog 可能已经在下游被执行了，在这里要被重复执行。所以这段 binlog 范围内需要开启安全模式。直到当前的binlog 位置点超过了 safemode_exit_point，DM 才会考虑关闭安全模式。
+- 如果 checkpoint 信息里面额外记录了 safemode_exit_point ，说明之前是异常暂停。如果恢复时发现待恢复的 checkpoint 的 binlog 位置点 < safemode_exit_point，那么说明从这个 checkpoint 到 safemode_exit_point 之间的 binlog 可能已经在下游被执行了，在这里要被重复执行。所以这段 binlog 范围内需要开启安全模式。直到当前的binlog 位置点超过了 safemode_exit_point，DM 才会关闭安全模式（未手动开启 safe-moded 情况下）。
 
 - 如果 checkpoint 信息里面没有 safemode_exit_point 信息，一种可能是说明这是一个全新的任务或者之前该任务是正常暂停。但是，还有一种可能是之前异常暂停时，记录 safemode_exit_point 的时候失败了，甚至可能是之前 DM 进程异常退出了。这种情况下，DM 并不知道哪些 checkpoint 之后的 binlog 已经被执行过了。所以，这种情况下，为了保险起见，只要没有在 checkpoint 找到 safemode_exit_point 信息，DM 就会在前2个 checkpoint 间隔中都开启安全模式，确保这段时间的重复执行 binlog 都没有问题。默认的 checkpoint 间隔是30秒，也就是说，一个正常的增量同步任务开始时，前 2 * 30 = 60秒会自动强制开启安全模式。通过设置任务配置中 syncer的配置 “checkpoint-flush-interval” 来调整 checkpoint 的间隔，从而影响增量同步任务开始时安全模式的持续时间（一般情况下不建议调整，如有需要应优先使用后文所述的`手动开启`）。
 
