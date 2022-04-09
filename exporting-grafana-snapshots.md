@@ -3,6 +3,11 @@ title: 将 Grafana 监控数据导出成快照
 summary: 了解如何将 Grafana 监控数据导出为快照以及如何将快照文件可视化。
 ---
 
+> **警告：**
+>
+> 该工具已经不再维护，功能可能存在异常。
+> 需要导出监控数据的用户，请使用 [PingCAP Clinic 诊断服务](/clinic/clinic-introduction.md)，支持一键导出监控数据、日志、集群拓扑、配置、参数等诊断信息。
+
 # 将 Grafana 监控数据导出成快照
 
 在故障诊断中，监控数据十分重要。当你请求远程协助时，技术支持人员有时需要查看 Grafana Dashboard 以确认问题所在。[MetricsTool](https://metricstool.pingcap.com/) 用于将 Grafana Dashboard 的快照导出为本地文件，并将快照可视化。因此，你可以在不泄露 Grafana 服务器上其他敏感信息的前提下，将监控数据以快照形式分享给外部人员，同时也方便外部人员准确识读数据图表。
