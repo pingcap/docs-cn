@@ -48,7 +48,7 @@ Top SQL 具有以下功能：
 
 > **注意：**
 >
-> 你必须使用 TiUP（v1.9.0 及以上版本）或 TiDB Operator（v1.3.0 及以上版本）部署或升级集群，才可以使用该功能。如果你已经使用旧版本 TiUP 或 TiDB Operator 进行了集群升级，请参见 [FAQ](/dashboard/dashboard-faq.md#界面提示-集群中未启动必要组件-ngmonitoring) 进行处理。
+> 要使用 Top SQL，你需要使用 TiUP（v1.9.0 及以上版本）或 TiDB Operator（v1.3.0 及以上版本）部署或升级集群。如果你已经使用旧版本 TiUP 或 TiDB Operator 进行了集群升级，请参见 [FAQ](/dashboard/dashboard-faq.md#界面提示-集群中未启动必要组件-ngmonitoring) 进行处理。
 
 Top SQL 开启后会对集群性能产生轻微的影响（平均 3% 以内），因此该功能默认关闭。你可以通过以下方法启用 Top SQL：
 
@@ -68,7 +68,7 @@ Top SQL 开启后会对集群性能产生轻微的影响（平均 3% 以内）�
 
 ## 使用 Top SQL 
 
-以下是 Top SQL 的通常使用步骤：
+以下是 Top SQL 的常用步骤：
 
 1. 访问 [Top SQL 页面](#访问页面)。
 
@@ -82,7 +82,7 @@ Top SQL 开启后会对集群性能产生轻微的影响（平均 3% 以内）�
 
    ![图表表格](/media/dashboard/top-sql-usage-chart.png)
 
-   柱状图中色块的大小代表了 SQL 语句在该时刻消耗的 CPU 资源的多少，不同颜色区分了不同的 SQL 语句。大多数情况下，你都应该关注图表中相应时间范围内 CPU 资源开销较大的 SQL 语句。
+   柱状图中色块的大小代表了 SQL 语句在该时刻消耗的 CPU 资源的多少，不同颜色区分了不同类型的 SQL 语句。大多数情况下，你都应该关注图表中相应时间范围内 CPU 资源开销较大的 SQL 语句。
 
 4. 点击表格中的某一个 SQL 语句后，可以展开查看该语句不同执行计划的执行情况，例如 Call/sec（平均每秒请求数）、Scan Indexes/sec（平均每秒扫描索引数）等。
 
