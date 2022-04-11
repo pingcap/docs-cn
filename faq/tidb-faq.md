@@ -615,8 +615,7 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 #### 3.3.12 可以使用 Hints 控制优化器行为吗？
 
-在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，比如 [Optimizer Hints](/optimizer-hints.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：
-`select column_name from table_name use index（index_name）where where_condition;`
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，比如 [Optimizer Hints](/optimizer-hints.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：`select column_name from table_name use index（index_name）where where_condition;`
 
 #### 3.3.13 触发 Information schema is changed 错误的原因？
 
@@ -855,9 +854,11 @@ sqoop export \
 
 下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
-- job_name: &#39;syncer_ops&#39; // 任务名字
+```yaml
+    - job_name: 'syncer_ops' // 任务名字
     static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+        - targets: ['10.10.1.1:10096'] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+```
 
 重启 Prometheus 即可。
 
