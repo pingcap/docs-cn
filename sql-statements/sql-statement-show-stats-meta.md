@@ -10,7 +10,7 @@ You can use `SHOW STATS_META` to view how many rows are in a table and how many 
 
 Currently, the `SHOW STATS_META` statement outputs 6 columns：
 
-| Syntax element | Description            |
+| Column name | Description            |
 | -------- | ------------- |
 | db_name  |  Database name    |
 | table_name | Table name |
