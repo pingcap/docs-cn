@@ -421,7 +421,6 @@
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiSpark
-    - [TiSpark 快速上手](/get-started-with-tispark.md)
     - [TiSpark 用户指南](/tispark-overview.md)
 - 参考指南
   - 架构
