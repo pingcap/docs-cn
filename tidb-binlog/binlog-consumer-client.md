@@ -117,7 +117,11 @@ message Binlog {
 }
 ```
 
+<<<<<<< HEAD
 查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/release-4.0/tidb-binlog/proto/proto/binlog.proto)。
+=======
+查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/secondary_binlog.proto)。
+>>>>>>> b603c7932 (update binlog proto URI (#8864))
 
 ### Driver
 
