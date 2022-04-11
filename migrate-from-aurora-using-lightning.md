@@ -46,7 +46,7 @@ summary: 了解如何使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量�
     [tikv-importer]
     # 使用 Local-backend
     backend = "local"
-    # 本地临时文件的存储路径。请确保对应的路径不存在或目录为空，并且所在的磁盘中有足够大的存储空间
+    # 本地临时文件的存储路径。请确保对应的路径不存在或目录为空，并且所在的磁盘空间须大于待导入数据集的大小。
     sorted-kv-dir = "/path/to/local-temp-dir"
     ```
 
