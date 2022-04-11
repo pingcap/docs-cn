@@ -154,7 +154,7 @@ TiDB Lightning 可随 TiDB 集群一起用 [TiDB Ansible 部署](/online-deploym
 
 3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。
 
-    `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。详情参见 [TiDB Lightning 运行时资源要求](/tidb-lightning/tidb-lightning-requirements.md#tidb-lightning-运行时资源要求)。
+    `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。
 
     ```toml
     [lightning]
