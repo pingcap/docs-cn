@@ -22,6 +22,7 @@ REPLACE 操作是 MySQL 特有的数据插入语法，它在插入数据时，�
 ```
 INSERT INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 999, 'abc');
 UPDATE dummydb.dummytbl SET int_value = 888999 WHERE int_value = 999；   # 假设没有其他 int_value = 999的数据
+UPDATE dummydb.dummytbl SET id = 999 WHERE id = 888；    # 更新主键操作
 ```
 
 经过安全模式的 SQL 改写，再次在下游执行时会变成执行下面的 SQL 语句：
@@ -30,6 +31,8 @@ UPDATE dummydb.dummytbl SET int_value = 888999 WHERE int_value = 999；   # 假�
 REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 999, 'abc');
 DELETE FROM dummydb.dummytbl WHERE id = 123;
 REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 888999, 'abc')；
+DELETE FROM dummydb.dummytbl WHERE id = 888;
+REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'abc888');    # 更新主键的改写解释了为什么 UPDATE 要 替换为 DELETE + REPLACE, 而不是 DELETE + INSERT ：如果这里使用INSERT，那么id = 999 的记录在已经存在的情况下重复插入时会报错主键冲突，而REPLACE则会替换之前已经插入的记录
 ```
 
 通过这样的语句改写，在进行重复的插入或更新操作时，都会把执行该操作后的行数据覆盖之前已经存在的行数据。这样保证了插入和更新操作的可重复执行。
@@ -71,5 +74,6 @@ mysql-instances:
 
 - 安全模式对于增量同步有额外开销。这是因为频繁的 DELETE + REPLACE 操作会带来主键 / 唯一索引的频繁变化，带来了比单纯 UPDATE 语句更大的性能开销。
 - 由于安全模式会强制替换主键相同的记录，带来的问题就是之前的记录数据丢失。如果由于上游分片表合并导入下游的配置不当，可能导致在上游合并导入到下游数据库的时候，出现大量的主键 / 唯一索引冲突。如果此时全程开启安全模式，会导致下游大量的数据丢失，并且可能无法从任务中看到有任何的异常，导致数据的大量不一致。
+- 安全模式依赖于通过主键 / 唯一索引来判断冲突。如果下游 DB 对应的表没有主键 / 唯一索引，会导致 REPLACE 语句起不到替换插入的目的，这样即使开启了安全模式，对于INSERT语句的改写成REPLACE并执行后，依旧会向下游插入重复记录。
 
 因此，如果上游存在主键重复的数据，业务对于重复数据的丢失和性能损失可以接受，可以开启 safe mode 忽略数据重复错误。
