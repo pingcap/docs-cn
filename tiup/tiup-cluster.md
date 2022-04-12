@@ -181,6 +181,8 @@ tiup cluster start prod-cluster
 
 If you forget the name of your cluster, view the cluster list by running `tiup cluster list`.
 
+TiUP uses `systemd` to start a daemon process. If the process terminates unexpectedly, it will be pulled up after 15 seconds.
+
 ## Check the cluster status
 
 TiUP provides the `tiup cluster display` command to view the status of each component in the cluster. With this command, you don't have to log in to each machine to see the component status. The usage of the command is as follows:
