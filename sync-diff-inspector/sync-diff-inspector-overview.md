@@ -15,9 +15,9 @@ sync-diff-inspector 是一个用于校验 MySQL／TiDB 中两份数据是否一�
 * 支持[分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
 * 支持 [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
 
-GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/master/sync_diff_inspector)
+GitHub 地址：[sync-diff-inspector](https://github.com/pingcap/tidb-tools/tree/v3.0.15/sync_diff_inspector)
 
-下载地址：[tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz)
+下载地址：[tidb-community-toolkit-v3.0.15-linux-amd64](https://download.pingcap.org/tidb-community-toolkit-v3.0.15-linux-amd64.tar.gz)
 
 ## sync-diff-inspector 的使用
 
