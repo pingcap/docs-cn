@@ -321,7 +321,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 #### 2.2.3 Docker Compose 快速构建集群（单机部署）
 
-使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境，详细可参考[官方文档](https://pingcap.com/docs-cn/dev/how-to/get-started/deploy-tidb-from-docker-compose/)。
+使用 docker-compose 在本地一键拉起一个集群，包括集群监控，还可以根据需求自定义各个组件的软件版本和实例个数，以及自定义配置文件，这种只限于开发环境。
 
 #### 2.2.4 如何单独记录 TiDB 中的慢查询日志，如何定位慢查询 SQL？
 
@@ -329,8 +329,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 慢查询日志默认记录到 tidb.log 中，如果希望生成单独的慢查询日志文件，修改 inventory.ini 配置文件的参数 `enable_slow_query_log` 为 True。
 
-如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log`
-文件中记录慢查询日志。
+如上配置修改之后，需要执行 `ansible-playbook rolling_update.yml --tags=tidb`，对 tidb-server 实例进行滚动升级，升级完成后，tidb-server 将在 `tidb_slow_query.log` 文件中记录慢查询日志。
 
 2）如果出现了慢查询，可以从 Grafana 监控定位到出现慢查询的 tidb-server 以及时间点，然后在对应节点查找日志中记录的 SQL 信息。
 
@@ -616,8 +615,7 @@ TiDB 支持改变 [per-session](/tidb-specific-system-variables.md#tidb_force_pr
 
 #### 3.3.12 可以使用 Hints 控制优化器行为吗？
 
-在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，比如 [Optimizer Hints](/optimizer-hints.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：
-`select column_name from table_name use index（index_name）where where_condition;`
+在 TiDB 中，你可以用多种方法控制查询优化器的默认行为，比如 [Optimizer Hints](/optimizer-hints.md)。基本用法同 MySQL 中的一致，还包含若干 TiDB 特有的用法，示例如下：`select column_name from table_name use index（index_name）where where_condition;`
 
 #### 3.3.13 触发 Information schema is changed 错误的原因？
 
@@ -856,9 +854,11 @@ sqoop export \
 
 下载 [Syncer Json](https://github.com/pingcap/tidb-ansible/blob/master/scripts/syncer.json) 导入到 Grafana，修改 Prometheus 配置文件，添加以下内容：
 
-- job_name: &#39;syncer_ops&#39; // 任务名字
+```yaml
+    - job_name: 'syncer_ops' // 任务名字
     static_configs:
-- targets: [&#39;10.10.1.1:10096&#39;] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+        - targets: ['10.10.1.1:10096'] // Syncer 监听地址与端口，通知 prometheus 拉取 Syncer 的数据。
+```
 
 重启 Prometheus 即可。
 
