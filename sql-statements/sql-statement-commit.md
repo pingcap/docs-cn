@@ -39,6 +39,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ## MySQL compatibility
 
+* Currently, TiDB does not use Metadata Locking (MDL) to prevent DDL statements from modifying tables used by transactions. If the definition of a table has changed, committing a transaction will result in an `Information schema is changed` error. In this event, the transaction is rolled back automatically.
 * By default, TiDB 3.0.8 and later versions use [Pessimistic Locking](/pessimistic-transaction.md). When using [Optimistic Locking](/optimistic-transaction.md), it is important to consider that a `COMMIT` statement might fail because rows have been modified by another transaction.
 * When Optimistic Locking is enabled, `UNIQUE` and `PRIMARY KEY` constraint checks are deferred until statement commit. This results in additional situations where a a `COMMIT` statement might fail. This behavior can be changed by setting `tidb_constraint_check_in_place=TRUE`.
 * TiDB parses but ignores the syntax `ROLLBACK AND [NO] RELEASE`. This functionality is used in MySQL to disconnect the client session immediately after committing the transaction. In TiDB, it is recommended to instead use the `mysql_close()` functionality of your client driver.
