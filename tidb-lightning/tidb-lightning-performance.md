@@ -12,3 +12,4 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-performance/','/docs-cn/de
 
 ## 总结
 1. 如果数据量非常大，dumpling时，不建议导出成一个文件，这会影响导入速度。
+![第一行速度面板](/media/lightning/lightning-concurrency.png)
