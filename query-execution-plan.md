@@ -1,6 +1,6 @@
 ---
 title: 理解 TiDB 执行计划
-aliases: ['/docs-cn/v3.0/query-execution-plan/','/docs-cn/v3.0/reference/performance/understanding-the-query-execution-plan/','/docs-cn/sql/understanding-the-query-execution-plan/','/zh/tidb/v3.0/query-execution-plan/']
+aliases: ['/docs-cn/v3.0/query-execution-plan/','/docs-cn/v3.0/reference/performance/understanding-the-query-execution-plan/','/docs-cn/sql/understanding-the-query-execution-plan/']
 ---
 
 # 理解 TiDB 执行计划
