@@ -157,7 +157,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 管理，可视化诊断和工具                                                    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 | ------------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [TiDB Dashboard 界面](/dashboard/dashboard-intro.md)                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
 | [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                      |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
 | [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
