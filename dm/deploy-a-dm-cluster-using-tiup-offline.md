@@ -1,13 +1,9 @@
 ---
-title: Deploy a DM Cluster Offline Using TiUP (Experimental)
+title: Deploy a DM Cluster Offline Using TiUP
 summary: Introduce how to deploy a DM cluster offline using TiUP.
 ---
 
-# Deploy a DM Cluster Offline Using TiUP (Experimental)
-
-> **Warning:**
->
-> Using TiUP to deploy a DM cluster offline is still an experimental feature. It is **NOT** recommended to use this feature in production.
+# Deploy a DM Cluster Offline Using TiUP
 
 This document describes how to deploy a DM cluster offline using TiUP.
 
