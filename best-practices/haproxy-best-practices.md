@@ -45,15 +45,16 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 #### 操作系统
 
-| 操作系统版本               | 架构                                       |
-|:-------------------------|:------------------------------------------|
-| Linux 2.4                | x86、x86_64、Alpha、SPARC、MIPS 和 PA-RISC  |
-| Linux 2.6 或 3.x         | x86、x86_64、ARM、SPARC 和 PPC64            |
-| Solaris 8 或 9           | UltraSPARC II 和 UltraSPARC III            |
-| Solaris 10               | Opteron 和 UltraSPARC                      |
-| FreeBSD 4.10 ~ 10        | x86                                        |
-| OpenBSD 3.1 及以上版本     | i386、AMD64、macppc、Alpha 和 SPARC64       |
-| AIX 5.1 ~ 5.3            | Power™                                     |
+| Linux 操作系统平台       | 版本         |
+| :----------------------- | :----------: |
+| Red Hat Enterprise Linux | 7 或者 8   |
+| CentOS                   | 7 或者 8   |
+| Oracle Enterprise Linux  | 7 或者 8   |
+| Ubuntu LTS               | 20.04 或者 18.04 |
+
+> **注意：**
+>
+> - 其他操作系统支持情况，详见 [HAProxy 官方文档](https://www.haproxy.com/documentation/hapee/latest/getting-started/installation/linux/)
 
 #### 依赖包
 
