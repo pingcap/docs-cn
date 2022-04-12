@@ -188,6 +188,12 @@ CREATE TABLE `t1` (
 
     ```sql
     CREATE TABLE t (a int primary key);
+    ALTER TABLE t MODIFY COLUMN a INT(10) UNSIGNED;
+    ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
+    ```
+
+    ```sql
+    CREATE TABLE t (a int primary key);
     ALTER TABLE t MODIFY COLUMN a bigint;
     Query OK, 0 rows affected (0.01 sec)
     ```
