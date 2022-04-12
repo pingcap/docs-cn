@@ -34,7 +34,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 可以通过以下两种方法访问实例性能分析页面：
 
-- 登录后，左侧导航条点击**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **手动分析** (Manually Profile)：
+- 登录后，左侧导航条点击**高级调试** (Advanced Debugging) > **实例性能分析** (Profile Instances) > **手动分析** (Manual Profiling)：
 
   ![访问页面](/media/dashboard/dashboard-profiling-access.png)
 
@@ -73,4 +73,3 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 ![历史列表](/media/dashboard/dashboard-profiling-history.png)
 
 关于状态详情页的操作，参见[查看性能分析状态](#查看性能分析状态)章节。
-
