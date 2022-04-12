@@ -1,5 +1,6 @@
 ---
 title: TiSpark 用户指南
+summary: 使用 TiSpark 为用户一站式解决 HTAP 的需求。
 aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 ---
 
