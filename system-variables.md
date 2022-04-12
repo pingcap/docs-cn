@@ -277,7 +277,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 可选值：`1` 和 `2`
-- 默认值：`2`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
 - `tidb_analyze_version` 在 TiDB v5.1.x 各版本的默认值说明如下，具体可参照[统计信息简介](/statistics.md)文档。
 
