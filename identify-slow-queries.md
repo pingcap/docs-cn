@@ -70,7 +70,7 @@ Slow Query 基础信息：
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
 * `Plan_from_binding`: 表示这个语句的是否用的绑定的执行计划。
-* `Has_more_results`: 表示这个语句的查询结果是否还有更多的数据待用户发起 `Fetch` 命令获取。
+* `Has_more_results`: 表示这个语句的查询结果是否还有更多的数据待用户发起 `fetch` 命令获取。
 * `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
 * `Preproc_subqueries`：表示这个语句中被提前执行的子查询个数，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
 * `Preproc_subqueries_time`：表示这个语句中被提前执行的子查询耗时。
