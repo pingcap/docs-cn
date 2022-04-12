@@ -26,6 +26,7 @@ This document is targeted for the following upgrade paths:
     4. Upgrade the cluster to v6.0 according to this document.
 - Support upgrading the versions of TiDB Binlog, TiCDC, TiFlash, and other components.
 - For detailed compatibility changes of different versions, see the [Release Notes](/releases/release-notes.md) of each version. Modify your cluster configuration according to the "Compatibility Changes" section of the corresponding release notes.
+- For clusters that upgrade from versions earlier than v5.3 to v5.3 or later versions, the default deployed Prometheus will upgrade from v2.8.1 to v2.27.1. Prometheus v2.27.1 provides more features and fixes a security issue. Compared with v2.8.1, alert time representation in v2.27.1 is changed. For more details, see [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06) for more details.
 
 ## Preparations
 
