@@ -20,7 +20,7 @@ It is recommended that you set a strong password for the TiDB `root` user. See [
 
 The account system of TiDB Dashboard is consistent with that of TiDB SQL. Users accessing TiDB Dashboard are authenticated and authorized based on TiDB SQL user's privileges. Therefore, TiDB Dashboard requires limited privileges, or merely the read-only privilege. You can configure users to access TiDB Dashboard based on the principle of least privilege, thus avoiding access of high-privileged users.
 
-It is recommended that you create a least-privileged SQL user to access and sign in with TiDB Dashboard. This avoids access of high-privileged users and improves security. See [TiDB Dashboard User Management](/dashboard/dashboard-user.md) for details.
+It is recommended that you create a least-privileged SQL user to access and sign in to TiDB Dashboard. This avoids access of high-privileged users and improves security. See [TiDB Dashboard User Management](/dashboard/dashboard-user.md) for details.
 
 ## Use a firewall to block untrusted access
 
