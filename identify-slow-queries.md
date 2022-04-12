@@ -115,7 +115,7 @@ Slow Query 基础信息：
 * `Process_time`：执行 SQL 在 TiKV 的处理时间之和，因为数据会并行的发到 TiKV 执行，这个值可能会超过 `Query_time`。
 * `Wait_time`：表示这个语句在 TiKV 的等待时间之和，因为 TiKV 的 Coprocessor 线程数是有限的，当所有的 Coprocessor 线程都在工作的时候，请求会排队；当队列中有某些请求耗时很长的时候，后面的请求的等待时间都会增加。
 * `Process_keys`：表示 Coprocessor 处理的 key 的数量。相比 total_keys，processed_keys 不包含 MVCC 的旧版本。如果 processed_keys 和 total_keys 相差很大，说明旧版本比较多。
-* `Num_cop_tasks`: 表示这个语句发送的 Coprocessor 请求的数量。
+* `Num_cop_tasks`：表示这个语句发送的 Coprocessor 请求的数量。
 * `Cop_proc_avg`：cop-task 的平均执行时间，包括一些无法统计的等待时间，如 RocksDB 内的 mutex。
 * `Cop_proc_p90`：cop-task 的 P90 分位执行时间。
 * `Cop_proc_max`：cop-task 的最大执行时间。
