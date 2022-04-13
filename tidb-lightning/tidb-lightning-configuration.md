@@ -23,7 +23,7 @@ status-addr = ':8289'
 
 # 切换为服务器模式并使用 web 界面
 # 详情参见“TiDB Lightning web 界面”文档
-server-mode = false
+server-mode = true
 
 # 日志
 level = "info"
