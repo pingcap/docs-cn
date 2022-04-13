@@ -96,7 +96,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/quick-start-with-dm/','/docs-cn/tidb
 
     > **注意：**
     >
-    > - 该命令仅适用于体验数据迁移过程，不能用于生产环境和压力测试。
+    > 该命令仅适用于体验数据迁移过程，不能用于生产环境和压力测试。
 
     {{< copyable "shell-regular" >}}
 
