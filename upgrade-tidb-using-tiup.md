@@ -12,6 +12,12 @@ title: 使用 TiUP 升级 TiDB
 - 使用 TiUP 从 TiDB 5.2 版本升级至 TiDB 5.4 及后续修订版本。
 - 使用 TiUP 从 TiDB 5.3 版本升级至 TiDB 5.4 及后续修订版本。
 
+> **警告：**
+>
+> - MPP 功能开启可能会导致 TiDB 升级失败。因此，升级前，应将 `set global tidb_allow_mpp` 设为 `0` 来关闭 MPP 功能。等升级成功后，再将 `set global tidb_allow_mpp` 设为 `1` 开启 MPP 功能。
+> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
+> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
+
 > **注意：**
 >
 > 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 5.4 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 5.4 及后续修订版本。
@@ -32,11 +38,6 @@ title: 使用 TiUP 升级 TiDB
 ## 2. 升级前准备
 
 本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
-
-> **警告：**
->
-> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
-> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
 
 ### 2.1 升级 TiUP 或更新 TiUP 离线镜像
 
