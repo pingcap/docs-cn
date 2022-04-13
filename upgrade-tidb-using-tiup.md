@@ -14,7 +14,7 @@ title: 使用 TiUP 升级 TiDB
 
 > **警告：**
 >
-> - TiFlash 从之前的版本升级到 v5.3 的过程中，查询可能会出现错误结果。因此，升级前，应执行 `set global tidb_allow_mpp = 0` 命令，等 MPP 模式运行的查询结束之后，再将 TiFlash 升级到 v5.3，然后执行 `set global tidb_allow_mpp = 1` 命令启用 MPP 模式。
+> - TiFlash 组件从 5.3 之前的老版本升级到 5.3 及之后的新版本不支持滚动升级，只能先将所有老版本 TiFlash 实例都关闭，然后再启用新版本的方式升级，详见下面的**不停机升级**中的注意事项。
 > - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
 > - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
 
@@ -163,6 +163,7 @@ tiup cluster upgrade <cluster-name> v5.4.0
 > - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
 > - 使用 `--force` 参数可以在不驱逐 leader 的前提下快速升级集群至新版本，但是该方式会忽略所有升级中的错误，在升级失败后得不到有效提示，请谨慎使用。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
+> - 跨 5.3 版本升级 TiFlash 的过程不支持滚动升级，只能先将 TiFlash 实例关闭（`tiup cluster stop <cluster-name> -R tiflash`），然后 offline 地升级集群 (`tiup cluster upgrade <cluster-name> <version> --offline`)，最后 reload 整个集群(`tiup cluster reload <cluster-name>`)的方式升级，保证除 TiFlash 之外的组件不停机升级。
 
 #### 停机升级
 
