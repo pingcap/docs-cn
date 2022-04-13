@@ -22,7 +22,7 @@ Event 分为三类：
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json"
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json"
 ```
 
 ## TiDB 扩展字段
@@ -37,7 +37,7 @@ Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 C
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json&enable-tidb-extension=true"
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=canal-json&enable-tidb-extension=true"
 ```
 
 `enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
