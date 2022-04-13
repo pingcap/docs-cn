@@ -122,15 +122,9 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 
 其中 `spark.tispark.pd.addresses` 允许输入按逗号 (',') 分隔的多个 PD 服务器，请指定每个服务器的端口号。例如，当你的多个 PD 服务器在 `10.16.20.1,10.16.20.2,10.16.20.3` 的 2379 端口上时，配置 `spark.tispark.pd.addresses` 为 `10.16.20.1:2379,10.16.20.2:2379,10.16.20.3:2379`。
 
-CentOS 上 `firewalld` 的默认设置阻止了 TiSpark 所需的通信。因此，请执行如下命令关闭 `firewalld` 以确保 TiSpark 的正常运行。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-sudo systemctl stop firewalld.service
-sudo systemctl disable firewalld.service
-sudo systemctl mask --now firewalld.service
-```
+> **注意：**
+>
+> 如果 TiSpark 无法正常使用，请检查防火墙配置。你可以自行配置防火墙策略或者禁用防火墙。
 
 ### 启动 Master 节点
 
@@ -159,7 +153,7 @@ cd $SPARKPATH
 >
 > 如果在同一主机上启动 Master 节点和 Worker 节点，那么不能使用 `127.0.0.1` 或 `localhost`。因为 Master 进程默认仅监听外部。
 
-命令返回以后，即可通过刚才的面板查看这个 Worker 是否已经正确地加入了 Spark 集群。在所有 Worker 节点重复刚才的命令。确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
+命令返回以后，即可通过刚才的面板查看这个 Worker 是否已经正确地加入了 Spark 集群。在所有 Worker 节点重复刚才的命令,确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
 ### 在已有 Spark 集群上部署 TiSpark
 
