@@ -410,15 +410,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[统计信息简介](/statistics.md)了解如何进行表分析。
 
-从 TiSpark 2.0 开始，统计信息将会默认被读取。可以在 `spark-defaults.conf` 中开启或关闭统计信息读取：
-
-| 参数 | 默认值 | 描述
-| --------   | -----:   | :----: |
-| spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
-
-> **注意：**
->
-> 统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。Note that table statistics are cached in the memory of your Spark driver node, so you need to make sure that your memory size is large enough for your statistics information.
+从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
 ## 安全性
 
