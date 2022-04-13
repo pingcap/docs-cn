@@ -356,7 +356,7 @@ Drainer="192.168.0.13"
         # kafka-addrs 和 zookeeper-addrs 只需要一个，两者都有时程序会优先用 zookeeper 中的 kafka 地址
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
-        # kafka-version = "2.4.0"
+        # kafka-version = "0.8.2.0"
         # 配置单条 broker request 中的最大 message 数（即 binlog 数），不配置或配置小于等于 0 时会使用默认值 1024
         # kafka-max-messages = 1024
         # 配置单条 broker request 的最大 size（单位为 Byte），默认为 1 GiB，最大可配置为 2 GiB
