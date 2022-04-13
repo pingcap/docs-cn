@@ -162,7 +162,7 @@ tiup cluster upgrade <cluster-name> v5.3.0
 > - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
 > - 如果不希望驱逐 leader，而希望快速升级集群至新版本，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
-> - 跨 5.3 版本升级 TiFlash 的过程不支持滚动升级，只能先停止 TiFlash 实例（`tiup cluster stop <cluster-name> -R tiflash`），然后 offline 模式升级集群 (`tiup cluster upgrade <cluster-name> <version> --offline`)，最后 reload 整个集群(`tiup cluster reload <cluster-name>`)，保证除 TiFlash 之外的组件不停机升级。
+> - 跨 5.3 版本升级 TiFlash 的过程不支持滚动升级，只能先停止 TiFlash 实例，然后 offline 模式升级集群，最后 reload 整个集群，保证除 TiFlash 之外的组件不停机升级。
 
 #### 停机升级
 
