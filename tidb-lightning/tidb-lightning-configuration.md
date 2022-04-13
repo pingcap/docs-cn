@@ -17,7 +17,7 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 ### tidb-lightning 全局配置
 
 [lightning]
-# 用于拉取 web 界面和 Prometheus 监控项的 HTTP 端口。设置为 0 时为禁用状态。
+# 仅用于展示进度的 web 界面和拉取 Prometheus 监控项的 HTTP 端口。设置为 0 时为禁用状态。
 status-addr = ':8289'
 
 # 切换为服务器模式并使用 web 界面
