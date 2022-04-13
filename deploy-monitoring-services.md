@@ -29,7 +29,7 @@ aliases: ['/docs-cn/dev/deploy-monitoring-services/','/docs-cn/dev/monitor-a-tid
 ```bash
 wget https://download.pingcap.org/prometheus-2.27.1.linux-amd64.tar.gz
 wget https://download.pingcap.org/node_exporter-0.17.0.linux-amd64.tar.gz
-wget https://download.pingcap.org/grafana-6.1.6.linux-amd64.tar.gz
+wget https://download.pingcap.org/grafana-7.5.11.linux-amd64.tar.gz
 ```
 
 解压二进制包：
@@ -39,7 +39,7 @@ wget https://download.pingcap.org/grafana-6.1.6.linux-amd64.tar.gz
 ```bash
 tar -xzf prometheus-2.27.1.linux-amd64.tar.gz
 tar -xzf node_exporter-0.17.0.linux-amd64.tar.gz
-tar -xzf grafana-6.1.6.linux-amd64.tar.gz
+tar -xzf grafana-7.5.11.linux-amd64.tar.gz
 ```
 
 ### 第 2 步：在 Node1，Node2，Node3，Node4 上启动 `node_exporter`
@@ -138,7 +138,7 @@ scrape_configs:
 编辑 Grafana 的配置文件：
 
 ```bash
-cd grafana-6.1.6 &&
+cd grafana-7.5.11 &&
 vi conf/grafana.ini
 ```
 
