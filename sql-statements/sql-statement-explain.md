@@ -245,7 +245,6 @@ If the `dot` program is not installed on your computer, copy the result to [this
 
 * Both the format of `EXPLAIN` and the potential execution plans in TiDB differ substaintially from MySQL.
 * TiDB does not support the `FORMAT=JSON`  or `FORMAT=TREE` options.
-* TiDB does not currently support `EXPLAIN` for insert statements.
 
 ### `EXPLAIN FOR CONNECTION`
 

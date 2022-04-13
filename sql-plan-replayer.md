@@ -43,7 +43,7 @@ Based on `sql-statement`, TiDB sorts out and exports the following on-site infor
 ```sql
 use test;
 create table t(a int, b int);
-insert into t valuse(1,1), (2, 2), (3, 3);
+insert into t values(1,1), (2, 2), (3, 3);
 analyze table t;
 
 plan replayer dump explain select * from t;

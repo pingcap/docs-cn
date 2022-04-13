@@ -127,7 +127,7 @@ You can also specify the expression index when you create the table:
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index((lower(col1))));
+CREATE TABLE t1(col1 char(10), col2 char(10), index((lower(col1))));
 ```
 
 > **Note**
