@@ -40,16 +40,30 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
+    安装完成后会提示如下信息：
+
+    ```log
+    Successfully set mirror to https://tiup-mirrors.pingcap.com
+    Detected shell: zsh
+    Shell profile:  /Users/user/.zshrc
+    /Users/user/.zshrc has been modified to add tiup to PATH
+    open a new terminal or source /Users/user/.zshrc to use it
+    Installed path: /Users/user/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
+
 2. 声明全局环境变量。
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+    > TiUP 安装完成后会提示 Shell profile 文件的绝对路径。在执行以下 `source` 命令前，需要将 `${your_shell_profile}` 修改为 Shell profile 文件的实际位置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. 在当前 session 执行以下命令启动集群。
@@ -114,9 +128,9 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 8. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
+    1. 按下 `Ctrl-C` 键停掉上述启用的 TiDB 服务。
 
-    2. 执行以下命令：
+    2. 等待服务退出之后，执行以下命令：
 
         {{< copyable "shell-regular" >}}
 
@@ -141,16 +155,30 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
+    安装完成后会提示如下信息：
+
+    ```log
+    Successfully set mirror to https://tiup-mirrors.pingcap.com
+    Detected shell: bash
+    Shell profile:  /home/user/.bashrc
+    /home/user/.bashrc has been modified to add tiup to PATH
+    open a new terminal or source /home/user/.bashrc to use it
+    Installed path: /home/user/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
+
 2. 声明全局环境变量。
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+    > TiUP 安装完成后会提示 Shell profile 文件的绝对路径。在执行以下 `source` 命令前，需要将 `${your_shell_profile}` 修改为 Shell profile 文件的实际位置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. 在当前 session 执行以下命令启动集群。
