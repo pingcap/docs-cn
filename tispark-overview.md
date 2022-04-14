@@ -118,8 +118,6 @@ cp conf/spark-defaults.conf.template conf/spark-defaults.conf
 
 在 `spark-defaults.conf` 文件中添加如下内容：
 
-{{< copyable "" >}}
-
 ```
 spark.tispark.pd.addresses $pd_host:$pd_port
 spark.sql.extensions org.apache.spark.sql.TiExtensions
@@ -158,7 +156,7 @@ cd $SPARKPATH
 >
 > 如果在同一主机上启动 Master 节点和 Worker 节点，则不能使用 `127.0.0.1` 或 `localhost` 作为主机地址。这是因为默认情况下 Master 进程仅监听外部接口。
 
-命令返回以后，即可通过刚才的面板 <http://spark-master-hostname:8080> 查看这个 Worker 是否已经正确地加入了 Spark 集群。对所有 Worker 节点重复刚才的启动命令，确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
+命令返回以后，即可通过刚才的面板 <http://spark-master-hostname:8080> 查看这个 Worker 是否已经正确地加入了 Spark 集群。对所有 Worker 节点重复执行刚才的启动命令，确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
 
 ### 在已有 Spark 集群上部署 TiSpark
 
