@@ -254,9 +254,17 @@ Time taken: 0.673 seconds, Fetched 1 row(s)
 
 你可以使用 JDBC 支持的 beeline 等工具连接 Thrift Server。下面以 beeline 为例：
 
-```
+首先，通过如下命令启用 beeline：
+
+{{< copyable "shell-regular" >}}
+
+```shell
 ./bin/beeline jdbc:hive2://localhost:10000
-Beeline version 1.2.2 by Apache Hive
+```
+
+然后，你可以运行如下查询命令：
+
+```
 1: jdbc:hive2://localhost:10000> use testdb;
 +---------+--+
 | Result  |
