@@ -71,7 +71,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `LONGTEXT` 类型
 
-类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中单列存储最大不超过 6MB。
+类似于 [`TEXT`](#text-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中单列存储最大不超过 6 MB。
 
 {{< copyable "sql" >}}
 
@@ -131,7 +131,7 @@ MEDIUMBLOB
 
 ### `LONGBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中单列存储最大不超过 6MB。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 4,294,967,295。但由于 [TiDB 单列的限制](/tidb-limitations.md#单列的限制)，TiDB 中单列存储最大不超过 6 MB。
 
 {{< copyable "sql" >}}
 
