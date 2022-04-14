@@ -371,7 +371,7 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
-## 安全性
+## 安全
 
 从 TiSpark v2.5.0 起，你可以通过 TiDB 对 TiSpark 进行鉴权与授权。
 
