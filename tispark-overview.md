@@ -305,10 +305,10 @@ TiSpark 批量写入相比 Spark + JDBC 写入，有以下特点：
 以下通过 scala API 演示如何使用 TiSpark 批量写入：
 
 ```scala
-// select data to write
+// 选择需要写入的数据
 val df = spark.sql("select * from tpch.ORDERS")
 
-// write data to tidb
+// 将数据写入 tidb
 df.write.
   format("tidb").
   option("tidb.addr", "127.0.0.1").
@@ -327,7 +327,7 @@ df.write.
 UPDATE mysql.tidb SET VARIABLE_VALUE="6h" WHERE VARIABLE_NAME="tikv_gc_life_time";
 ```
 
-详细使用手册请参考 [TiDB API 用户指南](https://github.com/pingcap/tispark/blob/master/docs/datasource_api_userguide.md)。
+详细使用手册请参考 [TiDB 数据源 API 用户指南](https://github.com/pingcap/tispark/blob/master/docs/datasource_api_userguide.md)。
 
 ## 通过 JDBC 将 Dataframe 写入 TiDB
 
@@ -337,21 +337,20 @@ UPDATE mysql.tidb SET VARIABLE_VALUE="6h" WHERE VARIABLE_NAME="tikv_gc_life_time
 import org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions
 
 val customer = spark.sql("select * from customer limit 100000")
-// You might repartition the source to make it balance across nodes
-// and increase the concurrency.
+// 为了平衡各节点以及提高并发数，你可以将数据源重新分区
 val df = customer.repartition(32)
 df.write
 .mode(saveMode = "append")
 .format("jdbc")
 .option("driver", "com.mysql.jdbc.Driver")
- // Replace the host and port with that of your own and be sure to use the rewrite batch
+ // 替换为你的主机和端口地址，并确保开启了重写批处理
 .option("url", "jdbc:mysql://127.0.0.1:4000/test?rewriteBatchedStatements=true")
 .option("useSSL", "false")
-// As tested, 150 is good practice
+// 作为测试建议设置为 150
 .option(JDBCOptions.JDBC_BATCH_INSERT_SIZE, 150)
-.option("dbtable", s"cust_test_select") // database name and table name here
-.option("isolationLevel", "NONE") // recommended to set isolationLevel to NONE if you have a large DF to load.
-.option("user", "root") // TiDB user here
+.option("dbtable", s"cust_test_select") // 数据库名和表名
+.option("isolationLevel", "NONE") // 如果需要写入较大 Dataframe 那么推荐将 isolationLevel 设置为 NONE
+.option("user", "root") // TiDB 用户名
 .save()
 ```
 
