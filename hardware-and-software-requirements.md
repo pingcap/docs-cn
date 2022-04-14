@@ -110,7 +110,8 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Pump | 8250 | Pump 通信端口 |
 | Drainer | 8249 | Drainer 通信端口 |
 | CDC | 8300 | CDC 通信接口 |
-| Prometheus | 9090 | Prometheus 服务通信端口 |
+| Monitoring | 9090 | Prometheus 服务通信端口 |
+| Monitoring | 20120 | NgMonitoring 服务通信端口 |
 | Node_exporter | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |
