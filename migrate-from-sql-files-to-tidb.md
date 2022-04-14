@@ -25,12 +25,10 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
 * **方法一**：使用 TiDB Lightning 创建表结构。
 
-    1. 编写包含 DDL 语句的 SQL 文件。
+    编写包含 DDL 语句的 SQL 文件：
 
-        - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
-        - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
-
-    2. 后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
+    - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
+    - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
 
 * **方法二**：手动在下游 TiDB 建库和表。
 
