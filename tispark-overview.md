@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 
 [TiSpark](https://github.com/pingcap/tispark) 是 PingCAP 为解决用户复杂 OLAP 需求而推出的产品。它借助 Spark 平台，同时融合 TiKV 分布式集群的优势，和 TiDB 一起为用户一站式解决 HTAP (Hybrid Transactional/Analytical Processing) 的需求。
 
-[TiFlash](/tiflash/tiflash-overview.md) 是另一个实现 HTAP 的产品。TiFlash 和 TiSpark 都可以实现在 OLTP 数据上使用多主机执行 OLAP 的需求。TiFlash 是列式存储，这提供了效率更高的分析查询。TiFlash 和 TiSpark 可以同时使用。
+[TiFlash](/tiflash/tiflash-overview.md) 也是一个解决 HTAP 需求的产品。TiFlash 和 TiSpark 都允许使用多个主机在 OLTP 数据上执行 OLAP 查询。TiFlash 是列式存储，这提供了更高效的分析查询。TiFlash 和 TiSpark 可以同时使用。
 
 TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要你搭建一个 Spark 集群。本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html)了解 Spark 的相关信息。
 
@@ -44,7 +44,7 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 
 TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
-本部分描述了 TiKV 与 TiSpark 集群分开部署、Spark 与 TiSpark 集群独立部署，以及 TiKV 与 TiSpark 集群混合部署的建议配置。
+本部分描述了 TiKV 与 TiSpark 集群分开部署、Spark 与 TiSpark 集群独立部署、TiKV 与 TiSpark 集群混合部署，以及通过 Spark Standalone 模式部署 TiSpark的建议配置。
 
 关于如何通过 TiUP 部署 TiSpark，参见 [TiSpark 部署拓扑](/tispark-deployment-topology.md)。
 
@@ -52,9 +52,9 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 对于 TiKV 与 TiSpark 分开部署的场景，可以参考如下建议配置：
 
-+ 硬件配置建议
-
-    普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/hardware-and-software-requirements.md)，但是如果是偏重分析的场景，可以将 TiKV 节点增加到至少 64G 内存。
++ 硬件配置
+    - 普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/hardware-and-software-requirements.md)。
+    - 如果是更偏重于分析的场景，可以将 TiKV 节点的内存增加到至少 64G
 
 ### Spark 与 TiSpark 集群独立部署的配置
 
