@@ -8,6 +8,11 @@ aliases: ['/docs/dev/functions-and-operators/date-and-time-functions/','/docs/de
 
 TiDB supports all of the [date and time functions](https://dev.mysql.com/doc/refman/5.7/en/numeric-functions.html) available in MySQL 5.7.
 
+> **Note:**
+>
+> - MySQL will often accept the incorrectly formatted date and time values. For example, `'2020-01-01\n\t01:01:01'` and `'2020-01_01\n\t01:01'` are treated as valid date and time values.
+> - TiDB makes the best effort to match MySQL's behavior, but it might not match in all instances. It is recommended to correctly format dates, because the intended behavior for incorrectly formatted values is not documented, and is often inconsistent.
+
 **Date/Time functions:**
 
 | Name                                     | Description                              |
@@ -74,6 +79,25 @@ TiDB supports all of the [date and time functions](https://dev.mysql.com/doc/ref
 | [`YEARWEEK()`](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html#function_yearweek) | Return the year and week                 |
 
 For details, see [Date and Time Functions](https://dev.mysql.com/doc/refman/5.7/en/date-and-time-functions.html).
+
+## MySQL compatibility
+
+The function `str_to_date()` is supported by TiDB, but is unable to parse all date and time values. In addition, the following date and time formatting options are **not implemented**:
+
+| Format | Description                                                                           |
+|--------|---------------------------------------------------------------------------------------|
+| "%a"   | Abbreviated weekday name (Sun..Sat)                                                   |
+| "%D"   | Day of the month with English suffix (0th, 1st, 2nd, 3rd)                             |
+| "%U"   | Week (00..53), where Sunday is the first day of the week; WEEK() mode 0               |
+| "%u"   | Week (00..53), where Monday is the first day of the week; WEEK() mode 1               |
+| "%V"   | Week (01..53), where Sunday is the first day of the week; WEEK() mode 2; used with %X |
+| "%v"   | Week (01..53), where Monday is the first day of the week; WEEK() mode 3; used with %x |
+| "%W"   | Weekday name (Sunday..Saturday)                                                       |
+| "%w"   | Day of the week (0=Sunday..6=Saturday)                                                |
+| "%X"   | Year for the week where Sunday is the first day of the week, numeric, four digits.    |
+| "%x"   | Year for the week, where Monday is the first day of the week, numeric, four digits.   |
+
+See [issue #30082](https://github.com/pingcap/tidb/issues/30082) for more details.
 
 ## Related system variables
 
