@@ -54,7 +54,7 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 
 > **注意：**
 >
-> - 其他操作系统支持情况，详见 [HAProxy 官方文档](https://www.haproxy.com/documentation/hapee/latest/getting-started/installation/linux/)。
+> - 其他操作系统支持情况，详见 [HAProxy 文档](https://github.com/haproxy/haproxy/blob/master/INSTALL)。
 
 #### 依赖包
 
