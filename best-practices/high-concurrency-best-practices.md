@@ -67,7 +67,25 @@ This table is simple in structure. In addition to `id` as the primary key, no se
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
+SET SESSION cte_max_recursion_depth = 1000000;
+INSERT INTO TEST_HOTSPOT
+SELECT
+  n,                                       -- ID
+  RAND()*80,                               -- Number between 0 and 80
+  CONCAT('user-',n),
+  CONCAT(
+    CHAR(65 + (RAND() * 25) USING ascii),  -- Number between 65 and 65+25, converted to a character, A-Z
+    '-user-',
+    n,
+    '@example.com'
+  )
+FROM
+  (WITH RECURSIVE nr(n) AS 
+    (SELECT 1                              -- Start CTE at 1
+      UNION ALL SELECT n + 1               -- increase n with 1 every loop
+      FROM nr WHERE n < 1000000            -- stop loop at 1_000_000 
+    ) SELECT n FROM nr
+  ) a;
 ```
 
 The load comes from executing the above statement intensively in a short time.
