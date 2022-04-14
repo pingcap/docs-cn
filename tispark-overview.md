@@ -242,7 +242,7 @@ select count(*) from lineitem;
 Time taken: 0.673 seconds, Fetched 1 row(s)
 ```
 
-## 使用 JDBC 连接 Thrift Server
+## 通过 JDBC 连接 Thrift Server
 
 你可以在没有 JDBC 支持的情况下使用 Spark Shell 或 Spark SQL，但是对于 beeline 等工具来说，JDBC 是必要的。Thrift Server 提供了 JDBC 支持。你可以通过如下命令启用 Spark 的 Thrift Server：
 
@@ -254,26 +254,17 @@ Time taken: 0.673 seconds, Fetched 1 row(s)
 
 你可以使用 JDBC 支持的 beeline 等工具连接 Thrift Server。下面以 beeline 为例：
 
-通过如下命令启用 beeline：
-
-{{< copyable "shell-regular" >}}
-
-```shell
+```
 ./bin/beeline jdbc:hive2://localhost:10000
-```
+Beeline version 1.2.2 by Apache Hive
+1: jdbc:hive2://localhost:10000> use testdb;
++---------+--+
+| Result  |
++---------+--+
++---------+--+
+No rows selected (0.013 seconds)
 
-你可以运行如下查询命令：
-
-{{< copyable "" >}}
-
-```scala
-use testdb;
 select count(*) from account;
-```
-
-结果为：
-
-```
 +-----------+--+
 | count(1)  |
 +-----------+--+
