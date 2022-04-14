@@ -78,7 +78,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
-nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 ```
 
 同时，TiDB Lightning 还支持从 `~/.aws/credentials` 读取凭证文件。
