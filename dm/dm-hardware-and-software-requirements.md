@@ -47,3 +47,28 @@ DM can be deployed and run on a 64-bit generic hardware server platform (Intel x
 >
 > - In the production environment, it is not recommended to deploy and run DM-master and DM-worker on the same server, because when DM-worker writes data to disks, it might interfere with the use of disks by DM-master's high availability component.
 > - If a performance issue occurs, you are recommended to modify the task configuration file according to the [Optimize Configuration of DM](/dm/dm-tune-configuration.md) document. If the performance is not effectively optimized by tuning the configuration file, you can try to upgrade the hardware of your server.
+
+## Downstream storage space requirements
+
+The target TiKV cluster must have enough disk space to store the imported data. In addition to the [standard hardware requirements](/hardware-and-software-requirements.md), the storage space of the target TiKV cluster must be larger than **the size of the data source x the number of replicas x 2**. For example, if the cluster uses 3 replicas by default, the target TiKV cluster must have a storage space larger than 6 times the size of the data source. The formula has `x 2` because:
+
+- Indexes might take extra space.
+- RocksDB has a space amplification effect.
+
+You can estimate the data volume by using the following SQL statements to summarize the `data-length` field:
+
+- Calculate the size of all schemas, in MiB. Replace `${schema_name}` with your schema name.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
+    ```
+
+- Calculate the size of the largest table, in MiB. Replace ${schema_name} with your schema name.
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
+    ```

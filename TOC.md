@@ -273,35 +273,7 @@
     - [Use PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
-  - Backup & Restore (BR)
-    - [BR Tool Overview](/br/backup-and-restore-tool.md)
-    - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
-    - [BR Use Cases](/br/backup-and-restore-use-cases.md)
-    - [External Storages](/br/backup-and-restore-storages.md)
-    - BR Features
-      - [Auto Tune](/br/br-auto-tune.md)
-      - [Batch Create Table](/br/br-batch-create-table.md)
-    - [BR FAQ](/br/backup-and-restore-faq.md)
-  - TiDB Binlog
-    - [Overview](/tidb-binlog/tidb-binlog-overview.md)
-    - [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
-    - [Deploy](/tidb-binlog/deploy-tidb-binlog.md)
-    - [Maintain](/tidb-binlog/maintain-tidb-binlog-cluster.md)
-    - [Configure](/tidb-binlog/tidb-binlog-configuration-file.md)
-      - [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
-      - [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
-    - [Upgrade](/tidb-binlog/upgrade-tidb-binlog.md)
-    - [Monitor](/tidb-binlog/monitor-tidb-binlog-cluster.md)
-    - [Reparo](/tidb-binlog/tidb-binlog-reparo.md)
-    - [binlogctl](/tidb-binlog/binlog-control.md)
-    - [Binlog Consumer Client](/tidb-binlog/binlog-consumer-client.md)
-    - [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
-    - [Bidirectional Replication Between TiDB Clusters](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
-    - [Glossary](/tidb-binlog/tidb-binlog-glossary.md)
-    - Troubleshoot
-      - [Troubleshoot](/tidb-binlog/troubleshoot-tidb-binlog.md)
-      - [Handle Errors](/tidb-binlog/handle-tidb-binlog-errors.md)
-    - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
+  - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [Overview](/tidb-lightning/tidb-lightning-overview.md)
     - Prechecks and requirements
@@ -323,84 +295,111 @@
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [Glossary](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
-    - About TiDB Data Migration
-      - [DM Overview](/dm/dm-overview.md)
-      - Basic Features
-        - [Table Routing](/dm/dm-key-features.md)
-        - [Block and Allow Lists](/dm/dm-key-features.md#block-and-allow-table-lists)
-        - [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)
-      - Advanced Features
-        - Merge and Migrate Data from Sharded Tables
-          - [Overview](/dm/feature-shard-merge.md)
-          - [Pessimistic Mode](/dm/feature-shard-merge-pessimistic.md)
-          - [Optimistic Mode](/dm/feature-shard-merge-optimistic.md)
-        - [Migrate from MySQL Databases that Use GH-ost/PT-osc](/dm/feature-online-ddl.md)
-        - [Filter DMLs Using SQL Expressions](/dm/feature-expression-filter.md)
-      - [DM Architecture](/dm/dm-arch.md)
-      - [Benchmarks](/dm/dm-benchmark-v5.4.0.md)
-    - Quick Start
-      - [Quick Start](/dm/quick-start-with-dm.md)
-      - [Deploy a DM cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
-      - [Create a Data Source](/dm/quick-start-create-source.md)
-    - [Data Migration Scenarios](/dm/quick-create-migration-task.md)
-    - Deploy
-      - [Software and Hardware Requirements](/dm/dm-hardware-and-software-requirements.md)
-      - Deploy a DM Cluster
-        - [Use TiUP (Recommended)](/dm/deploy-a-dm-cluster-using-tiup.md)
-        - [Use TiUP Offline](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
-        - [Use Binary](/dm/deploy-a-dm-cluster-using-binary.md)
-        - [Use Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-tidb-dm)
-      - [Migrate Data Using DM](/dm/migrate-data-using-dm.md)
-      - [Test DM Performance](/dm/dm-performance-test.md)
-    - Maintain
-      - Tools
-        - [Maintain DM Clusters Using TiUP (Recommended)](/dm/maintain-dm-using-tiup.md)
-        - [Maintain DM Clusters Using dmctl](/dm/dmctl-introduction.md)
-        - [Maintain DM Clusters Using OpenAPI](/dm/dm-open-api.md)
-      - Cluster Upgrade
-        - [Manually Upgrade from v1.0.x to v2.0+](/dm/manually-upgrade-dm-1.0-to-2.0.md)
-      - [Manage Data Source](/dm/dm-manage-source.md)
+    - [About TiDB Data Migration](/dm/dm-overview.md)
+    - [Quick Start](/dm/quick-start-with-dm.md)
+    - Deploy a DM cluster
+      - [Hardware and Software Requirements](/dm/dm-hardware-and-software-requirements.md)
+      - [Use TiUP (Recommended)](/dm/deploy-a-dm-cluster-using-tiup.md)
+      - [Use TiUP Offline](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
+      - [Use Binary](/dm/deploy-a-dm-cluster-using-binary.md)
+      - [Use Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/dev/deploy-tidb-dm)
+    - Tutorials
+      - [Manage Data Sources](/dm/dm-manage-source.md)
+      - [Configure Tasks](/dm/dm-task-configuration-guide.md)
+      - [Table Routing](/dm/dm-key-features.md)
+      - [Block and Allow Lists](/dm/dm-key-features.md#block-and-allow-table-lists)
+      - [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)
+      - [Filter DMLs Using SQL Expressions](/dm/feature-expression-filter.md)
       - Manage a Data Migration Task
-        - [Task Configuration Guide](/dm/dm-task-configuration-guide.md)
         - [Precheck a Task](/dm/dm-precheck.md)
         - [Create a Task](/dm/dm-create-task.md)
         - [Query Status](/dm/dm-query-status.md)
         - [Pause a Task](/dm/dm-pause-task.md)
         - [Resume a Task](/dm/dm-resume-task.md)
         - [Stop a Task](/dm/dm-stop-task.md)
-        - [Export and Import Data Sources and Task Configuration of Clusters](/dm/dm-export-import-config.md)
+    - Advanced Tutorials
+      - Merge and Migrate Data from Sharded Tables
+        - [Overview](/dm/feature-shard-merge.md)
+        - [Pessimistic Mode](/dm/feature-shard-merge-pessimistic.md)
+        - [Optimistic Mode](/dm/feature-shard-merge-optimistic.md)
+        - [Manually Handle Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
+      - [Migrate from MySQL Databases that Use GH-ost/PT-osc](/dm/feature-online-ddl.md)
+      - [Migrate Data to a Downstream TiDB Table with More Columns](/migrate-with-more-columns-downstream.md)
+    - Maintain
+      - Cluster Upgrade
+        - [Maintain DM Clusters Using TiUP (Recommended)](/dm/maintain-dm-using-tiup.md)
+        - [Manually Upgrade from v1.0.x to v2.0+](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+      - Tools
+        - [Manage Using WebUI](/dm/dm-webui-guide.md)
+        - [Manage Using dmctl](/dm/dmctl-introduction.md)
+      - Performance Tuning
+        - [Benchmarks](/dm/dm-benchmark-v5.4.0.md)
+        - [Optimize Configurations](/dm/dm-tune-configuration.md)
+        - [Test DM Performance](/dm/dm-performance-test.md)
+        - [Handle Performance Issues](/dm/dm-handle-performance-issues.md)
+      - Manage Data Sources
+        - [Switch the MySQL Instance to Be Migrated](/dm/usage-scenario-master-slave-switch.md)
+      - Manage Tasks
         - [Handle Failed DDL Statements](/dm/handle-failed-ddl-statements.md)
-        - [Use WebUI to Manage Tasks](/dm/dm-webui-guide.md)
-      - [Manually Handle Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
-      - [Switch the MySQL Instance to Be Migrated](/dm/usage-scenario-master-slave-switch.md)
-      - [Manage Schemas of Tables to be Migrated](/dm/dm-manage-schema.md)
+        - [Manage Schemas of Tables to be Migrated](/dm/dm-manage-schema.md)
+      - [Export and Import Data Sources and Task Configurations of Clusters](/dm/dm-export-import-config.md)
       - [Handle Alerts](/dm/dm-handle-alerts.md)
       - [Daily Check](/dm/dm-daily-check.md)
-    - Troubleshoot
-      - [Handle Errors](/dm/dm-error-handling.md)
-      - [Handle Performance Issues](/dm/dm-handle-performance-issues.md)
-    - Performance Tuning
-      - [Optimize Configuration](/dm/dm-tune-configuration.md)
     - Reference
       - Architecture
-        - [DM Architecture Overview](/dm/dm-overview.md)
+        - [DM Architecture](/dm/dm-arch.md)
         - [DM-worker](/dm/dm-worker-intro.md)
-      - [Command-line Flags](/dm/dm-command-line-flags.md)
-      - Configuration
+      - Command Line
+        - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+      - Configuration Files
         - [Overview](/dm/dm-config-overview.md)
+        - [Upstream Database Configurations](/dm/dm-source-configuration-file.md)
+        - [Task Configurations](/dm/task-configuration-file-full.md)
         - [DM-master Configuration](/dm/dm-master-configuration-file.md)
         - [DM-worker Configuration](/dm/dm-worker-configuration-file.md)
-        - [Upstream Database Configuration](/dm/dm-source-configuration-file.md)
-        - [Data Migration Task Configuration](/dm/dm-task-configuration-guide.md)
-    - Secure
-      - [Enable TLS for DM Connections](/dm/dm-enable-tls.md)
-      - [Generate Self-signed Certificates](/dm/dm-generate-self-signed-certificates.md)
-      - [Monitoring Metrics](/dm/monitor-a-dm-cluster.md)
-      - [Alert Rules](/dm/dm-alert-rules.md)
+      - [OpenAPI](/dm/dm-open-api.md)
+      - Secure
+        - [Enable TLS for DM Connections](/dm/dm-enable-tls.md)
+        - [Generate Self-signed Certificates](/dm/dm-generate-self-signed-certificates.md)
+      - Monitoring and Alerts
+        - [Monitoring Metrics](/dm/monitor-a-dm-cluster.md)
+        - [Alert Rules](/dm/dm-alert-rules.md)
       - [Error Codes](/dm/dm-error-handling.md#handle-common-errors)
-    - [FAQ](/dm/dm-faq.md)
-    - [Glossary](/dm/dm-glossary.md)
+      - [Glossary](/dm/dm-glossary.md)
+    - Example
+      - [Migrate Data Using DM](/dm/migrate-data-using-dm.md)
+    - Troubleshoot
+      - [FAQ](/dm/dm-faq.md)
+      - [Handle Errors](/dm/dm-error-handling.md)
     - [Release Notes](/dm/dm-release-notes.md)
+  - Backup & Restore (BR)
+    - [BR Tool Overview](/br/backup-and-restore-tool.md)
+    - [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md)
+    - [BR Use Cases](/br/backup-and-restore-use-cases.md)
+    - [External Storages](/br/backup-and-restore-storages.md)
+    - BR Features
+      - [Auto Tune](/br/br-auto-tune.md)
+    - [BR FAQ](/br/backup-and-restore-faq.md)
+  - TiDB Binlog
+    - [Overview](/tidb-binlog/tidb-binlog-overview.md)
+    - [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
+    - [Deploy](/tidb-binlog/deploy-tidb-binlog.md)
+    - [Maintain](/tidb-binlog/maintain-tidb-binlog-cluster.md)
+    - [Configure](/tidb-binlog/tidb-binlog-configuration-file.md)
+      - [Pump](/tidb-binlog/tidb-binlog-configuration-file.md#pump)
+      - [Drainer](/tidb-binlog/tidb-binlog-configuration-file.md#drainer)
+    - [Upgrade](/tidb-binlog/upgrade-tidb-binlog.md)
+    - [Monitor](/tidb-binlog/monitor-tidb-binlog-cluster.md)
+    - [Reparo](/tidb-binlog/tidb-binlog-reparo.md)
+    - [binlogctl](/tidb-binlog/binlog-control.md)
+    - [Binlog Consumer Client](/tidb-binlog/binlog-consumer-client.md)
+    - [TiDB Binlog Relay Log](/tidb-binlog/tidb-binlog-relay-log.md)
+    - [Bidirectional Replication Between TiDB Clusters](/tidb-binlog/bidirectional-replication-between-tidb-clusters.md)
+    - [Glossary](/tidb-binlog/tidb-binlog-glossary.md)
+    - Troubleshoot
+      - [Troubleshoot](/tidb-binlog/troubleshoot-tidb-binlog.md)
+      - [Handle Errors](/tidb-binlog/handle-tidb-binlog-errors.md)
+    - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
   - TiCDC
     - [Overview](/ticdc/ticdc-overview.md)
     - [Deploy](/ticdc/deploy-ticdc.md)

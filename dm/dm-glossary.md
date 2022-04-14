@@ -20,7 +20,7 @@ Binlog events are information about data modification made to a MySQL or MariaDB
 
 ### Binlog event filter
 
-[Binlog event filter](/dm/dm-key-features.md#binlog-event-filter) is a more fine-grained filtering feature than the block and allow lists filtering rule. Refer to [binlog event filter](/dm/dm-overview.md#binlog-event-filtering) for details.
+[Binlog event filter](/dm/dm-key-features.md#binlog-event-filter) is a more fine-grained filtering feature than the block and allow lists filtering rule. Refer to [binlog event filter](/dm/dm-key-features.md#binlog-event-filter) for details.
 
 ### Binlog position
 
@@ -32,7 +32,7 @@ Binlog replication processing unit is the processing unit used in DM-worker to r
 
 ### Block & allow table list
 
-Block & allow table list is the feature that filters or only migrates all operations of some databases or some tables. Refer to [block & allow table lists](/dm/dm-overview.md#block-and-allow-lists-migration-at-the-schema-and-table-levels) for details. This feature is similar to [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html) and [MariaDB Replication Filters](https://mariadb.com/kb/en/replication-filters/).
+Block & allow table list is the feature that filters or only migrates all operations of some databases or some tables. Refer to [block & allow table lists](/dm/dm-key-features.md#block-and-allow-table-lists) for details. This feature is similar to [MySQL Replication Filtering](https://dev.mysql.com/doc/refman/5.6/en/replication-rules.html) and [MariaDB Replication Filters](https://mariadb.com/kb/en/replication-filters/).
 
 ## C
 
