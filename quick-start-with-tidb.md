@@ -122,11 +122,13 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
 
-7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
 
-8. 测试完成之后，可以通过执行以下步骤来清理集群：
+8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+
+9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
     1. 按下 `Ctrl-C` 键停掉上述启用的 TiDB 服务。
 
@@ -243,9 +245,9 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
+    1. 按下 `Ctrl-C` 键停掉上述启用的 TiDB 服务。
 
-    2. 执行以下命令：
+    2. 等待服务退出之后，执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
