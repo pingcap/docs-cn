@@ -77,7 +77,7 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 你可以从 [Apache Spark Archive](https://archive.apache.org/dist/spark/) 下载 Spark 2.x 版本。
 
-当你不需要 Hadoop 支持的时候，选择 Spark **2.4.x** 版本、带有任意版本 Hadoop 依赖的预编译二进制包，例如 `spark-2.4.8-bin-hadoop2.7.tgz`。如果需要使用 Hadoop 集群（如 Hadoop 2.6 版本），则选择相应的 Hadoop 版本号，例如 `spark-2.4.8-bin-hadoop2.6.tgz`。对于 Hadoop 2.x 之前的版本，你可以从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)。
+如果你不需要 Hadoop 支持，请选择 Spark **2.4.x** 版本、带有任意版本 Hadoop 依赖的预编译二进制包，例如 `spark-2.4.8-bin-hadoop2.7.tgz`。如果需要使用 Hadoop 集群（如 Hadoop 2.6 版本），则选择相应的 Hadoop 版本号，例如 `spark-2.4.8-bin-hadoop2.6.tgz`。对于 Hadoop 2.x 之前的版本，你可以从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)。
 
 下面为 `spark-2.4.8-bin-hadoop2.7.tgz` 的下载与安装示例：
 
