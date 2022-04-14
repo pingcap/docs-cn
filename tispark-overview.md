@@ -54,14 +54,14 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 + 硬件配置
     - 普通场景可以参考 [TiDB 和 TiKV 硬件配置建议](/hardware-and-software-requirements.md)。
-    - 如果是更偏重于分析的场景，可以将 TiKV 节点的内存增加到至少 64G
+    - 如果是更偏重于分析的场景，可以将 TiKV 节点的内存增加到至少 64G。
 
 ### Spark 与 TiSpark 集群独立部署的配置
 
 关于 Spark 的详细硬件推荐配置请参考 [Spark 硬件配置](https://spark.apache.org/docs/latest/hardware-provisioning.html)，如下是 TiSpark 所需环境的简单描述：
 
 - 建议为 Spark 分配 32G 以上的内存，并为操作系统和缓存保留至少 25% 的内存。
-- 建议每台机器至少为 Spark 分配 8 到 16 核 CPU，你可以初始设定所有 CPU 核分配给 Spark。
+- 建议每台机器至少为 Spark 分配 8 到 16 核 CPU。起初，你可以设定将所有 CPU 核分配给 Spark。
 
 ### TiKV 与 TiSpark 集群混合部署的配置
 
