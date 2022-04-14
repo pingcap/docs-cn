@@ -22,8 +22,8 @@ gh-ost 在实现 online-schema-change 的过程会产生 3 种 table：
 
 DM 在迁移过程中会把上述 table 分成 3 类：
 
-- ghostTable : `\_\*\_gho`
-- trashTable : `\_\*\_ghc`、`\_\*\_del`
+- ghostTable : `_*_gho`
+- trashTable : `_*_ghc`、`_*_del`
 - realTable : 执行 online-ddl 的 origin table
 
 **gh-ost** 涉及的主要 SQL 以及 DM 的处理：
@@ -49,7 +49,7 @@ DM 在迁移过程中会把上述 table 分成 3 类：
     Create /* gh-ost */ table `test`.`_test4_gho` like `test`.`test4` ;
     ```
 
-    DM：不执行 `_test4_gho` 的创建操作，根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}\_onlineddl` 的记录，清理内存中的相关信息。
+    DM：不执行 `_test4_gho` 的创建操作，根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}_onlineddl` 的记录，清理内存中的相关信息。
 
     ```sql
     DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table};
@@ -61,7 +61,7 @@ DM 在迁移过程中会把上述 table 分成 3 类：
     Alter /* gh-ost */ table `test`.`_test4_gho` add column cl1 varchar(20) not null ;
     ```
 
-    DM：不执行 `_test4_gho` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}\_onlineddl` 以及内存中。
+    DM：不执行 `_test4_gho` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}_onlineddl` 以及内存中。
 
     ```sql
     REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......);
@@ -70,11 +70,11 @@ DM 在迁移过程中会把上述 table 分成 3 类：
 4. 往 `_ghc` 表写入数据，以及往 `_gho` 表同步 origin table 的数据：
 
     ```sql
-    Insert /* gh-ost */ into `test`.`_test4_ghc` values (......);
+    INSERT /* gh-ost */ INTO `test`.`_test4_ghc` VALUES (......);
 
-    Insert /* gh-ost `test`.`test4` */ ignore into `test`.`_test4_gho` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`)
-      (select `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2` from `test`.`test4` force index (`PRIMARY`)
-        where (((`id` > _binary'1') or ((`id` = _binary'1'))) and ((`id` < _binary'2') or ((`id` = _binary'2')))) lock in share mode
+    INSERT /* gh-ost `test`.`test4` */ ignore INTO `test`.`_test4_gho` (`id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2`)
+      (SELECT `id`, `date`, `account_id`, `conversion_price`, `ocpc_matched_conversions`, `ad_cost`, `cl2` FROM `test`.`test4` FORCE INDEX (`PRIMARY`)
+        WHERE (((`id` > _binary'1') OR ((`id` = _binary'1'))) AND ((`id` < _binary'2') OR ((`id` = _binary'2')))) lock IN share mode
       )   ;
     ```
 
@@ -113,12 +113,12 @@ pt-osc 在实现 online-schema-change 的过程会产生 2 种 table：
 
 - `new`：用于应用 DDL，待表中数据同步到与 origin table 一致后，再通过 rename 的方式替换 origin table。
 - `old`：对 origin table 执行 rename 操作后生成。
-- 3 种 **trigger**：`pt_osc\_\*\_ins`、`pt_osc\_\*\_upd`、`pt_osc\_\*\_del`，用于在 pt_osc 过程中，同步 origin table 新产生的数据到 `new`。
+- 3 种 **trigger**：`pt_osc_*_ins`、`pt_osc_*_upd`、`pt_osc_*_del`，用于在 pt_osc 过程中，同步 origin table 新产生的数据到 `new`。
 
 DM 在迁移过程中会把上述 table 分成 3 类：
 
-- ghostTable : `\_\*\_new`
-- trashTable : `\_\*\_old`
+- ghostTable : `_*_new`
+- trashTable : `_*_old`
 - realTable : 执行的 online-ddl 的 origin table
 
 pt-osc 主要涉及的 SQL 以及 DM 的处理：
@@ -130,7 +130,7 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
     date date DEFAULT NULL, account_id bigint(20) DEFAULT NULL, conversion_price decimal(20,3) DEFAULT NULL,  ocpc_matched_conversions bigint(20) DEFAULT NULL, ad_cost decimal(20,3) DEFAULT NULL,cl2 varchar(20) COLLATE utf8mb4_bin NOT NULL,cl1 varchar(20) COLLATE utf8mb4_bin NOT NULL,PRIMARY KEY (id) ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin ;
     ```
 
-    DM: 不执行 `_test4_new` 的创建操作。根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}\_onlineddl` 的记录，清理内存中的相关信息。
+    DM: 不执行 `_test4_new` 的创建操作。根据 ghost_schema、ghost_table 以及 dm_worker 的 `server_id`，删除下游 `dm_meta.{task_name}_onlineddl` 的记录，清理内存中的相关信息。
 
     ```sql
     DELETE FROM dm_meta.{task_name}_onlineddl WHERE id = {server_id} and ghost_schema = {ghost_schema} and ghost_table = {ghost_table};
@@ -142,7 +142,7 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
     ALTER TABLE `test`.`_test4_new` add column c3 int;
     ```
 
-    DM: 不执行 `_test4_new` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}\_onlineddl` 以及内存中。
+    DM: 不执行 `_test4_new` 的 DDL 操作，而是把该 DDL 记录到 `dm_meta.{task_name}_onlineddl` 以及内存中。
 
     ```sql
     REPLACE INTO dm_meta.{task_name}_onlineddl (id, ghost_schema , ghost_table , ddls) VALUES (......);
