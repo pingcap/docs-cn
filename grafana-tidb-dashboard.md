@@ -23,14 +23,14 @@ summary: 了解 Grafana Dashboard 中展示的关键指标。
     - Command Per Second：TiDB 按照执行结果成功或失败来统计每秒处理的命令数。
     - QPS：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上每秒执行的 SQL 语句数量。
     - CPS By Instance：按照命令和执行结果成功或失败来统计每个 TiDB 实例上的命令。
-    - Failed Query OPM：每个 TiDB 实例上，对每秒钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码。
+    - Failed Query OPM：每个 TiDB 实例上，对每分钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码。
     - Slow query：慢查询的处理时间（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间），慢查询分为 internal 和 general SQL 语句。
     - Connection Idle Duration：空闲连接的持续时间。
     - 999/99/95/80 Duration：不同类型的 SQL 语句执行耗时（不同百分位）。
 
 - Query Detail
     - Duration 80/95/99/999 By Instance：每个 TiDB 实例执行 SQL 语句的耗时（不同百分位）。
-    - Failed Query OPM Detail：每个 TiDB 实例执行 SQL 语句发生的错误按照错误类型统计（例如语法错误、主键冲突等）。
+    - Failed Query OPM Detail：每个 TiDB 实例上，对每分钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。
     - Internal SQL OPS：整个 TiDB 集群内部 SQL 语句执行的 QPS。内部 SQL 语句是指 TiDB 内部自动执行的 SQL 语句，一般由用户 SQL 语句来触发或者内部定时任务触发。
 
 - Server
