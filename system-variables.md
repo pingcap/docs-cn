@@ -520,6 +520,16 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着一阶段提交成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
+### `tidb_enable_alter_placement`
+
+> **警告：**
+>
+> 在 v5.4 中 Placement Rules in SQL 仍为实验特性，不推荐在生产环境中使用。
+
+- 作用域：GLOBAL
+- 默认值：`OFF`
+- 该变量用于开启或关闭 [Placement Rules in SQL](/placement-rules-in-sql.md)。
+
 ### `tidb_enable_amend_pessimistic_txn` <span class="version-mark">从 v4.0.7 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
