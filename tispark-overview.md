@@ -30,7 +30,7 @@ TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个�
 
 > **警告：**
 >
-> 由于 TiSpark 直接访问 TiKV，所以 TiDB Server 使用的访问控制机制并不适用于 TiSpark。
+> 由于 TiSpark 直接访问 TiKV，所以 TiDB Server 使用的访问控制机制并不适用于 TiSpark。TiSpark v2.5.0 及以上版本实现了部分鉴权与授权功能，具体信息请参考[安全](/tispark-overview.md#安全)。
 
 ## 环境准备
 
