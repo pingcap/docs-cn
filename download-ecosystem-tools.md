@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR。
 
-> ***注意*
+> **注意：**
 >
 > 如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
 
@@ -24,7 +24,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 2. 点击 **同意 PingCAP 社区软件许可协议**。
 3. 找到 **TiDB-community-toolkit 软件包**，点击**立即下载**。
 
-> **注意**
+> **注意：**
 >
 > - 点击**立即下载**后，默认下载当前 TiDB 的最新版本。如需下载历史版本，请在 [TiDB 社区版](https://pingcap.com/zh/product-community/) 页面底部查看历史版本下载信息。
 > - 如果需要在 Kubernetes 上部署运维 TiDB，无需下载 TiDB-community-toolkit 软件包， 请参考[离线安装 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator#离线安装-tidb-operator)。
