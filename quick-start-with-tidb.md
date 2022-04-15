@@ -412,6 +412,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     Input SSH password:
     ```
 
+    > **注意：**
+    >
+    > 如果本部署主机通过密钥进行 SSH 认证，请使用 `-i` 参数指定密钥文件路径。
+
 8. 启动集群：
 
     {{< copyable "shell-regular" >}}
