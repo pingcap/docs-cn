@@ -40,7 +40,7 @@ title: 使用 TiUP 升级 TiDB
 
 > **注意：**
 >
-> 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳到步骤 2.2 使用离线升级方式。
+> 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳过本步骤，然后[更新 TiUP 离线镜像](#更新-tiup-离线镜像)。
 
 1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.5.0`）：
 
