@@ -124,7 +124,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
 
-7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 `admin`。
 
 8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
@@ -239,7 +239,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
 
-7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 `admin`。
 
 8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
@@ -472,7 +472,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 访问 TiDB 的 Grafana 监控：
 
-        通过 <http://{grafana-ip}:3000> 访问集群 Grafana 监控页面，默认用户名和密码均为 admin。
+        通过 <http://{grafana-ip}:3000> 访问集群 Grafana 监控页面，默认用户名和密码均为 `admin`。
 
     - 访问 TiDB 的 Dashboard：
 
