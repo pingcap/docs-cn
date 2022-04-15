@@ -198,6 +198,40 @@ information_schema 库中的 tables 表里的 create_time 即为表的真实创�
 
 TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条数据就认为这条 query 是 expensive query。可以通过修改 tidb-server 配置参数来对这个门限值进行调整，调整后需要重新启动 tidb-server。
 
+### 如何预估 TiDB 中一张表的大小？
+
+要预估 TiDB 中一张表的大小，你可以参考使用以下查询语句：
+
+```sql
+SELECT
+    db_name,
+    table_name,
+    SUM(total_size / cnt)                   Approximate_Size,
+    SUM(total_size / cnt / @amplification)  Disk_Size
+FROM
+    (SELECT
+        db_name,
+            table_name,
+            region_id,
+            SUM(Approximate_Size) total_size,
+            COUNT(*) cnt
+    FROM
+        information_schema.TIKV_REGION_STATUS
+    WHERE
+        db_name = @dbname
+        AND table_name in (@table_name)
+    GROUP BY db_name , table_name , region_id) tabinfo
+GROUP BY db_name , table_name;
+```
+
+在使用以上语句时，你需要根据实际情况填写并替换掉语句里的以下字段：
+
+- `@dbname`：数据库名称
+- `@table_name`：目标表的名称
+- `@size_amplification`：集群压缩比的平均值。要获取该信息，查看 PD 监控下 **statistics balance** 面板下各节点的 `Size amplification` 指标，集群压缩比的平均值即为所有节点的 `Size amplification` 平均值。
+
+此外，以上语句中 `Approximate_Size` 表示压缩前表的大小，`Disk_Size` 表示压缩后表的大小。
+
 ## TiKV 管理
 
 ### TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
