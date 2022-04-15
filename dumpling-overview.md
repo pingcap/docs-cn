@@ -64,15 +64,7 @@ Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 `--filet
 {{< copyable "shell-regular" >}}
 
 ```shell
-dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  --filetype sql \
-  -t 8 \
-  -o /tmp/test \
-  -r 200000 \
-  -F 256MiB
+dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000 -F256MiB
 ```
 
 以上命令中：
@@ -94,13 +86,7 @@ dumpling \
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -o /tmp/test \
-  --filetype csv \
-  --sql 'select * from `test`.`sbtest1` where id < 100'
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'select * from `test`.`sbtest1` where id < 100'
 ```
 
 > **注意：**
@@ -192,13 +178,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -r 200000 \
-  -o "s3://${Bucket}/${Folder}" \
-  --s3.region "${region}"
+./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}" --s3.region "${region}"
 ```
 
 ### 筛选导出的数据
@@ -210,12 +190,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -o /tmp/test \
-  --where "id < 100"
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --where "id < 100"
 ```
 
 上述命令将会导出各个表的 id < 100 的数据。注意 `--where` 参数无法与 `--sql` 一起使用。
@@ -227,14 +202,7 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -o /tmp/test \
-  -r 200000 \
-  --filter "employees.*" \
-  --filter "*.WorkOrder"
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test -r 200000 --filter "employees.*" --filter "*.WorkOrder"
 ```
 
 上述命令将会导出 `employees` 数据库的所有表，以及所有数据库中的 `WorkOrder` 表。
