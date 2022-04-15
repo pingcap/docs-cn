@@ -1,6 +1,6 @@
 ---
 title: 执行计划缓存
-aliases: ['/docs-cn/dev/sql-prepare-plan-cache/','/zh/tidb/dev/sql-prepare-plan-cache/']
+aliases: ['/docs-cn/dev/sql-prepare-plan-cache/']
 ---
 
 # 执行计划缓存
