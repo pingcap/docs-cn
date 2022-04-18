@@ -13,8 +13,6 @@ TiDB 版本：5.2.4
 
 + TiDB
 
-    - Fix the issue that system variable `max_allowed_packet` does not work. [#31422](https://github.com/pingcap/tidb/issues/31422)
-    - Fix an issue that REPLACE statement changing other rows when the auto ID is out of range [#29483](https://github.com/pingcap/tidb/issues/29483)
     - (dup: release-5.1.4.md > 兼容性更改> TiDB)- 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
     - (dup: release-5.3.1.md > 兼容性更改> Tools> TiDB Lightning)- 将 `regionMaxKeyCount` 的默认值从 1_440_000 调整为 1_280_000，以避免数据导入后出现过多空 Region [#30018](https://github.com/pingcap/tidb/issues/30018)
 
