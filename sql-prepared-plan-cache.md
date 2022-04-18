@@ -1,9 +1,6 @@
 ---
 title: 执行计划缓存
-<<<<<<< HEAD:sql-prepare-plan-cache.md
-=======
-aliases: ['/docs-cn/dev/sql-prepare-plan-cache/','zh/tidb/dev/sql-prepare-plan-cache']
->>>>>>> c48d4c44c (*: rename prepare-plan-cache to prepared-plan-cache (#8991)):sql-prepared-plan-cache.md
+aliases: ['/zh/tidb/v5.4/sql-prepare-plan-cache','/zh/tidb/stable/sql-prepare-plan-cache']
 ---
 
 # 执行计划缓存

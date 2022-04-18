@@ -65,10 +65,9 @@ summary: 了解 TiDB 的基本功能。
 
 ## 高级 SQL 功能
 
-<<<<<<< HEAD
 | 高级 SQL 功能                                                                                | 5.4       | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|----------------------------------------------------------------------------------------------------------|
-| [执行计划缓存](/sql-prepare-plan-cache.md)                                                   | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [执行计划缓存](/sql-prepared-plan-cache.md)                                                   | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                                                     | Y           | Y            | Y            | Y            | Y            | Y            |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)                                                               | Y           | Y            | Y            | Y            | Y            | 实验特性 |
 | [Stale Read](/stale-read.md)                                                                             | Y           | Y            | Y            | Y            | N            | N            |
@@ -78,20 +77,6 @@ summary: 了解 TiDB 的基本功能。
 | [MPP 执行引擎](/explain-mpp.md)                                                                   | Y           | Y            | Y            | Y            | Y            | N            |
 | [索引合并](/explain-index-merge.md)                                                              | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Placement Rules in SQL](/placement-rules-in-sql.md) | 实验特性 | 实验特性 | N | N | N | N |
-=======
-| 高级 SQL 功能                                                       |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
-| ------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
-| [执行计划缓存](/sql-prepared-plan-cache.md)                          |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [执行计划管理 (SPM)](/sql-plan-management.md)                       |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 |
-| [Stale Read](/stale-read.md)                                        |    Y    |    Y     |    Y     |    Y     |    Y     |    N     | N        |
-| [Follower Read](/follower-read.md)                                  |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [通过系统变量 tidb_snapshot 读取历史数据](/read-historical-data.md) |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Optimizer hints](/optimizer-hints.md)                              |   Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [MPP 执行引擎](/explain-mpp.md)                                     |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | N        |
-| [索引合并](/explain-index-merge.md)                                 |    Y    |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [基于 SQL 的数据放置规则](/placement-rules-in-sql.md)                |    Y    | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
->>>>>>> c48d4c44c (*: rename prepare-plan-cache to prepared-plan-cache (#8991))
 
 ## 数据定义语言 (DDL)
 
