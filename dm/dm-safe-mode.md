@@ -9,15 +9,24 @@ summary: 介绍 DM safe mode 作用和原理
 
 安全模式的目的是在增量同步过程中，同一条 binlog event 能够在下游被重复同步且保证幂等性，从而确保增量同步能够“安全”进行。 
 
-最早引入安全模式是为了解决从 DM checkpoint 恢复后，某些 binlog 事件可能被重复执行而产生的问题。在进行增量同步过程中， DML 执行 和写 checkpoint 操作并不是同步的，并且写 checkpoint 操作和写下游数据也并不能保证原子性，当 DM 因为某些原因异常退出时，checkpoint 可能只记录到退出时刻之前的一个恢复点，因此当同步任务重启，从之前保存的 checkpoint 重新开始增量数据同步时，有一些 checkpoint 之后的数据可能已经在异常退出前被处理过了，这里会被重复处理。如果重复执行插入操作，会导致主键 / 唯一索引冲突导致同步中断；如果重复执行更新操作，会导致不能根据筛选条件找到之前对应的更新记录。安全模式通过改写 SQL 的方法能很好解决上述问题。
+DM 从 checkpoint 恢复数据同步任务后，可能重复执行某些 binlog 事件而导致下述问题：
+
+1. 在进行增量同步过程中，执行 DML 的操作和写 checkpoint 的操作并不是同步的；写 checkpoint 的操作和写下游数据的操作也并不能保证原子性。因此，**当 DM 异常退出时，checkpoint 可能只记录到退出时刻之前的一个恢复点**。
+2. 当 DM 重启同步任务，并从 checkpoint 重新开始增量数据同步时，checkpoint 之后的部分数据可能已经在异常退出前被处理过了，从而**导致部分 SQL 语句重复执行**。
+3. 如果重复执行 `INSERT` 操作，会导致主键或唯一索引冲突，引发同步中断；如果重复执行 `UPDATE` 操作，会导致不能根据筛选条件找到之前对应的更新记录。
+
+在安全模式下，通过改写 SQL 语句，DM 可以解决上述问题。
 
 ## safe mode 原理
 
-安全模式原理是通过 SQL 语句改写来完成。具体来说，在安全模式下，所有的 INSERT 语句会被改写成 REPLACE 语句，而 UPDATE 语句会被分析，得到该语句涉及的行的主键 / 唯一索引的值，然后改写成 DELETE + REPLACE 语句 ：先根据主键 / 唯一索引的定位删除对应的行，然后使用REPLACE语句插入一条最新值的行记录。
+安全模式通过 SQL 语句改写来保证 binlog event 的幂等性。具体来说，在安全模式下：
 
-REPLACE 操作是 MySQL 特有的数据插入语法，它在插入数据时，如果发现新插入的数据和现有数据存在主键或唯一约束冲突，它会把所有冲突的记录先删除，然后再执行插入记录操作。相当于“强制插入”的操作。具体请参考[MySQL 官方文档的 REPLACE 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
+* `INSERT` 语句会被改写成 `REPLACE` 语句。
+* `UPDATE` 语句会被分析，得到该语句涉及的行的主键或唯一索引的值，然后改写成 `DELETE` + `REPLACE` 语句 ：先根据主键或唯一索引的定位删除对应的行，然后使用 `REPLACE` 语句插入一条最新值的行记录。
 
-比如，如果假设一张表`dummydb.dummytbl`，主键是`id`，并且下面的 SQL 被重复执行：
+`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作。相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
+
+比如，假设一张表 `dummydb.dummytbl` 的主键是 `id`，在这张表中重复执行下面的 SQL 语句：
 
 ```
 INSERT INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 999, 'abc');
@@ -25,17 +34,19 @@ UPDATE dummydb.dummytbl SET int_value = 888999 WHERE int_value = 999；   # 假�
 UPDATE dummydb.dummytbl SET id = 999 WHERE id = 888；    # 更新主键操作
 ```
 
-经过安全模式的 SQL 改写，再次在下游执行时会变成执行下面的 SQL 语句：
+启用安全模式后，上述 SQL 语句再次在下游执行时，会被改写为下面的 SQL 语句：
 
 ```
 REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 999, 'abc');
 DELETE FROM dummydb.dummytbl WHERE id = 123;
 REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (123, 888999, 'abc')；
 DELETE FROM dummydb.dummytbl WHERE id = 888;
-REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'abc888');    # 更新主键的改写解释了为什么 UPDATE 要 替换为 DELETE + REPLACE, 而不是 DELETE + INSERT ：如果这里使用INSERT，那么id = 999 的记录在已经存在的情况下重复插入时会报错主键冲突，而REPLACE则会替换之前已经插入的记录
+REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'abc888');    
 ```
 
-通过这样的语句改写，在进行重复的插入或更新操作时，都会把执行该操作后的行数据覆盖之前已经存在的行数据。这样保证了插入和更新操作的可重复执行。
+上述语句中，`UPDATE` 被改写为 `DELETE` + `REPLACE`，而不是 `DELETE` + `INSERT`。如果这里使用 `INSERT`，那么 `id = 999` 的记录在已经存在的情况下重复插入时会报错主键冲突，而 `REPLACE` 则会替换之前已经插入的记录。
+
+通过这样的语句改写，在进行重复的插入或更新操作时，DM 都会使用执行该操作后的行数据来覆盖之前已经存在的行数据。这样保证了插入和更新操作的可重复执行。
 
 ## 如何开启 safe mode
 
