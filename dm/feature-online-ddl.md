@@ -205,6 +205,16 @@ pt-osc 主要涉及的 SQL 以及 DM 的处理：
 >
 > 具体 pt-osc 的 SQL 会根据工具执行时所带的参数而变化。本文只列出主要的 SQL ，具体可以参考 [pt-osc 官方文档](https://www.percona.com/doc/percona-toolkit/2.2/pt-online-schema-change.html)。
 
-## 探索更多
+## 其他 Online Schema Change 工具
 
-- [适配 online schema change 工具自定义的临时表名](/dm/dm-custom-online-ddl.md)
+在某些场景下，管理人员可能需要变更 online schema change 工具的默认行为，自定义`ghost table`和 `trash table`的名称；或者期望使用`gh-ost`和`pt-osc`之外的工具（原理和变更流程仍然保持一致）。此时则需要自行编写正则表达式以匹配`ghost table` 和 `trash table`。
+
+自 v2.0.7 起 DM 实验性支持修改过的 online schema change 工具。在 DM 任务配置中设置 `online-ddl=true` 后，配合`shadow-table-rules`和`trash-table-rules`即可支持通过正则表达式来匹配修改过的临时表。
+
+假设自定义 pt-osc 的`ghost table`规则为`_{origin_table}_pcnew` 以及`trash table`规则为`_{origin_table}_pcold`, 那么自定义规则需配置如下：
+
+```yaml
+online-ddl: true
+shadow-table-rules: ["^_(.+)_(?:pcnew)$"]
+trash-table-rules: ["^_(.+)_(?:pcold)$"]
+```
