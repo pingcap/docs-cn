@@ -6,9 +6,9 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/r
 
 # TiDB Lightning 导入模式
 
-TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)。不同的后端决定 Lightning 如何将将数据导入到目标 TiDB 集群。
+TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb-lightning-glossary.md#backend)。不同的后端决定 Lightning 如何将数据导入到目标 TiDB 集群。
 
-- **Local-backend**：Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值上传到各个 TiKV 节点，然后由 TiKV 将其 Ingest 到集群中。如果用于初始化导入，请优先考虑使用 Local-backend 模式，其拥有较高的导入速度。
+- **Local-backend**：Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对上传到各个 TiKV 节点，最后调用 TiKV Ingest 接口将数据插入到 TiKV 的 RocksDB 中。如果用于初始化导入，请优先考虑使用 Local-backend 模式，其拥有较高的导入速度。
 
 - **TiDB-backend**：Lightning 先将数据编码成 SQL，然后直接运行这些 SQL 语句进行数据导入。如果需要导入的集群为生产环境线上集群，或需要导入的表中已包含有数据，则应使用 TiDB-backend 模式。
 
@@ -79,9 +79,9 @@ pd-addr = "172.16.31.4:2379"
 
 `duplicate-resolution` 配置提供了三种策略处理可能存在的冲突数据。
 
-- none: 默认值。不检测冲突记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+- none: 默认值。不检测冲突记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据索引不一致的情况。
 - record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
-- remove: 记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
+- remove: 记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据索引保持一致。
 
 以上三种模式中，如果不确定数据源是否存在冲突数据，推荐使用`remove`方式。`none`和`record` 方式由于不会移除目标表的冲突数据，意味着 Lightning 无法为其生成唯一索引，您需要手动处理冲突数据后自行创建索引，通常会花费更多的时间。
 
