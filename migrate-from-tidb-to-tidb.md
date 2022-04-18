@@ -228,6 +228,7 @@ aliases: ['zh/tidb/dev/incremental-replication-between-clusters']
     ```
 
     以上命令中：
+
      - --pd：实际的上游集群的地址
      - --sink-uri：同步任务下游的地址
      - --changefeed-id：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
