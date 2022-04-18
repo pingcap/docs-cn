@@ -9,7 +9,7 @@ title: 连接器和 API
 TiDB 兼容 MySQL(5.6, 5.7) 的所有连接器和 API，包括：
 
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)
-+ [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)
++ [MySQL Connector/J](https://dev.mysql.com/doc/refman/8.0/en/connector-j-info.html)
 + [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)
 + [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)
 + [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)
@@ -27,7 +27,7 @@ TiDB 兼容 MySQL(5.6, 5.7) 的所有连接器和 API，包括：
 Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 
 + [MySQL Connector/C++](https://dev.mysql.com/doc/refman/5.7/en/connector-cpp-info.html)：C++ 语言的客户端库
-+ [MySQL Connector/J](https://dev.mysql.com/doc/refman/5.7/en/connector-j-info.html)：Java 语言的客户端库，基于标准 JDBC 接口
++ [MySQL Connector/J](https://dev.mysql.com/doc/refman/8.0/en/connector-j-info.html)：Java 语言的客户端库，基于标准 JDBC 接口
 + [MySQL Connector/Net](https://dev.mysql.com/doc/refman/5.7/en/connector-net-info.html)：.Net 语言的客户端库，[MySQL for Visual Studio](https://dev.mysql.com/doc/visual-studio/en/)使用这个库，支持 Microsoft Visual Studio 2012，2013，2015和2017版本
 + [MySQL Connector/ODBC](https://dev.mysql.com/doc/refman/5.7/en/connector-odbc-info.html)：标准的 ODBC 接口，支持 Windows，Unix 和 OS X
 + [MySQL Connector/Python](https://dev.mysql.com/doc/refman/5.7/en/connector-python-info.html)：Python 语言的客户端包，和 [Python DB API version 2.0](http://www.python.org/dev/peps/pep-0249/) 一致
@@ -54,7 +54,7 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | Erlang         | `erlang-mysql-driver`                    | `libmysqlclient`                 | See [`erlang-mysql-driver`.](http://code.google.com/p/erlang-mysql-driver/) |
 | Haskell        | Haskell MySQL Bindings                   | Native Driver                    | See [Brian O'Sullivan's pure Haskell MySQL bindings](http://www.serpentine.com/blog/software/mysql/). |
 |                | `hsql-mysql`                             | `libmysqlclient`                 | See [MySQL driver for Haskell](http://hackage.haskell.org/cgi-bin/hackage-scripts/package/hsql-mysql-1.7). |
-| Java/JDBC      | Connector/J                              | Native Driver                    | See [MySQL Connector/J 5.1 Developer Guide](https://dev.mysql.com/doc/connector-j/5.1/en/). |
+| Java/JDBC      | Connector/J                              | Native Driver                    | See [MySQL Connector/J 8.0 Developer Guide](https://dev.mysql.com/doc/connector-j/8.0/en/). 说明：目前 MySQL Connector/J 有一个 [critical bug](https://bugs.mysql.com/bug.php?id=106252)，可能会导致 v6.0.4 至 v8.0 版本的 MySQL Connector/J 连接较早版本的 MySQL server 或兼容 MySQL 协议的服务器时，出现卡住的问题。该 bug 预计会在后续版本修复。请关注 [MySQL Connector/J 8.0 Release Notes](https://dev.mysql.com/doc/relnotes/connector-j/8.0/en/) 后续的更新。|
 | Lua            | LuaSQL                                   | `libmysqlclient`                 | See [LuaSQL](http://keplerproject.github.io/luasql/manual.html). |
 | .NET/Mono      | Connector/Net                            | Native Driver                    | See [MySQL Connector/Net Developer Guide](https://dev.mysql.com/doc/connector-net/en/). |
 | Objective Caml | OBjective Caml MySQL Bindings            | `libmysqlclient`                 | See [MySQL Bindings for Objective Caml](http://raevnos.pennmush.org/code/ocaml-mysql/). |
@@ -81,10 +81,14 @@ Oracle 官方提供了以下 API，TiDB 可以兼容所有这些 API。
 | ---------------- | ---------------------------- |
 | Connector/C      | 6.1.0 GA                     |
 | Connector/C++    | 1.0.5 GA                     |
-| Connector/J      | 5.1.8                        |
+| Connector/J      | 8.0                        |
 | Connector/Net    | 6.9.9 GA                     |
 | Connector/Net    | 6.8.8 GA                     |
 | Connector/ODBC   | 5.1                          |
 | Connector/ODBC   | 3.51 (Unicode not supported) |
 | Connector/Python | 2.0                          |
 | Connector/Python | 1.2                          |
+
+> **说明：**
+>
+> 目前 MySQL Connector/J 有一个 [critical bug](https://bugs.mysql.com/bug.php?id=106252)，可能会导致 v6.0.4 至 v8.0 版本的 MySQL Connector/J 连接较早版本的 MySQL server 或兼容 MySQL 协议的服务器时，出现卡住的问题。该 bug 预计会在后续版本修复。请关注 [MySQL Connector/J 8.0 Release Notes](https://dev.mysql.com/doc/relnotes/connector-j/8.0/en/) 后续的更新。
