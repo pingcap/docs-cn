@@ -460,11 +460,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ## prepared-plan-cache
 
-<<<<<<< HEAD
-prepare 语句的 plan cache 设置。
-=======
 prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
->>>>>>> c48d4c44c (*: rename prepare-plan-cache to prepared-plan-cache (#8991))
 
 ### `enabled`
 
