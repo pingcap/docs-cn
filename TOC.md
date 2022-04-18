@@ -368,6 +368,7 @@
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
         - [快速创建迁移任务](/dm/quick-start-create-task.md)
+        - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
       - 异常解决
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
