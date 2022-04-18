@@ -143,7 +143,7 @@
         - [统计信息简介](/statistics.md)
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
-      - [执行计划缓存](/sql-prepare-plan-cache.md)
+      - [执行计划缓存](/sql-prepared-plan-cache.md)
     - 控制执行计划
       - [控制执行计划概览](/control-execution-plan.md)
       - [Optimizer Hints](/optimizer-hints.md)
