@@ -202,6 +202,8 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 
 要预估 TiDB 中一张表的大小，你可以参考使用以下查询语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT
     db_name,
