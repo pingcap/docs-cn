@@ -67,7 +67,7 @@ summary: 了解 TiDB 的基本功能。
 
 | 高级 SQL 功能                                                       |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 | ------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
-| [执行计划缓存](/sql-prepare-plan-cache.md)                          |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [执行计划缓存](/sql-prepared-plan-cache.md)                          |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                       |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 |
 | [Stale Read](/stale-read.md)                                        |    Y    |    Y     |    Y     |    Y     |    Y     |    N     | N        |
