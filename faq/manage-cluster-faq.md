@@ -228,7 +228,7 @@ GROUP BY db_name , table_name;
 
 - `@dbname`：数据库名称
 - `@table_name`：目标表的名称
-- `@size_amplification`：集群压缩比的平均值。要获取该信息，查看 PD 监控下 **statistics balance** 面板下各节点的 `Size amplification` 指标，集群压缩比的平均值即为所有节点的 `Size amplification` 平均值。
+- `@size_amplification`：集群压缩比的平均值。要获取该信息，查看 Grafana 监控下 **PD - statistics balance** 面板下各节点的 `Size amplification` 指标，集群压缩比的平均值即为所有节点的 `Size amplification` 平均值。
 
 此外，以上语句中 `Approximate_Size` 表示压缩前表的大小，`Disk_Size` 表示压缩后表的大小。
 
