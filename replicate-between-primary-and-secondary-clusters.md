@@ -150,7 +150,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     | Destination          | Size     | BackupTS           | Queue Time          | Execution Time      |
     +----------------------+----------+--------------------+---------------------+---------------------+
     | local:///tmp/backup/ | 10315858 | 431434047157698561 | 2022-02-25 19:57:59 | 2022-02-25 19:57:59 |
-
     +----------------------+----------+--------------------+---------------------+---------------------+
 
     1 row in set (2.11 sec)
@@ -195,9 +194,6 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     export-fix-sql = true
     check-struct-only = false
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
     ######################### Datasource config #########################
     [data-sources]
     [data-sources.upstream]
