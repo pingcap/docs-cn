@@ -59,7 +59,7 @@ Top SQL 开启后会对集群性能产生轻微的影响（平均 3% 以内）�
 
 你仅能看到开启功能之后的 CPU 负载细节情况，在开启功能之前的 CPU 负载细节无法在界面上呈现。另外，数据有至多 1 分钟左右的延迟，因此你可能需要等待片刻才能看到数据。
 
-除了通过图形化界面以外，你也可以配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v5-40-版本开始引入) 来启用 Top SQL 功能：
+除了通过图形化界面以外，你也可以配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入) 来启用 Top SQL 功能：
 
 {{< copyable "sql" >}}
 
