@@ -61,6 +61,8 @@ Top SQL 开启后会对集群性能产生轻微的影响（平均 3% 以内）�
 
 除了通过图形化界面以外，你也可以配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入) 来启用 Top SQL 功能：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET GLOBAL tidb_enable_top_sql = 1;
 ```
@@ -109,6 +111,8 @@ SET GLOBAL tidb_enable_top_sql = 1;
 4. 在弹出的**关闭 Top SQL 功能** (Disable Top SQL Feature) 对话框中，点击**确认** (Disable)。
 
 除了通过图形化界面以外，你也可以配置 TiDB 系统变量 [`tidb_enable_top_sql`](/system-variables.md#tidb_enable_top_sql-从-v540-版本开始引入) 来停用 Top SQL 功能：
+
+{{< copyable "sql" >}}
 
 ```sql
 SET GLOBAL tidb_enable_top_sql = 0;
