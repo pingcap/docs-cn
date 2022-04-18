@@ -94,8 +94,8 @@ aliases: ['zh/tidb/dev/incremental-replication-between-clusters']
 
     上述的命令行启动了一个单节点的 minio server 模拟 s3 服务，其相关参数为：
 
-     - Endpoint :  http://${HOST_IP}:6060/
-     - Access-key : minio
+     - Endpoint: "http://${HOST_IP}:6060/"
+     - Access-key: minio
      - Secret-access-key: miniostorage
      - Bucket: backup
 

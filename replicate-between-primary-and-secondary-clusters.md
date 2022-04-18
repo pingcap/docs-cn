@@ -17,7 +17,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 1. 部署集群。
 
-    使用 tiup playground 快速部署 TiDB 上下游测试集群。生产环境可以参考[ tiup 官方文档](/tiup/tiup-cluster.md)根据业务需求来部署集群。
+    使用 tiup playground 快速部署 TiDB 上下游测试集群。生产环境可以参考 [tiup 官方文档](/tiup/tiup-cluster.md)根据业务需求来部署集群。
 
     为了方便展示和理解，我们简化部署结构，需要以下准备两台机器，分别来部署上游主集群，下游从集群。假设 IP 地址分别为:
 
@@ -176,7 +176,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 4. （可选）校验数据。
 
-    通过[ sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份和恢复命令的输出可以看到，上游集群备份的时间点为 431434047157698561，下游集群完成数据恢复的时间点为 431434141450371074。
+    通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份和恢复命令的输出可以看到，上游集群备份的时间点为 431434047157698561，下游集群完成数据恢复的时间点为 431434141450371074。
 
     {{< copyable "shell-regular" >}}
 
