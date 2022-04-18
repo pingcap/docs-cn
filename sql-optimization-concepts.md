@@ -14,4 +14,4 @@ After parsing the original query text by `parser` and some simple validity check
 
 Through these equivalent changes, this query becomes easier to handle in the logical execution plan. After the equivalent change is done, TiDB obtains a query plan structure equivalent to the original query, and then obtains a final execution plan based on the data distribution and the specific execution cost of an operator. For details, see [SQL Physical Optimization](/sql-physical-optimization.md).
 
-At the same time, when TiDB executes the [`PREPARE`](/sql-statements/sql-statement-prepare.md) statement, you can choose to enable caching to reduce the cost of generating the execution plan in TiDB. For details, see [Execution Plan Cache](/sql-prepare-plan-cache.md).
+At the same time, when TiDB executes the [`PREPARE`](/sql-statements/sql-statement-prepare.md) statement, you can choose to enable caching to reduce the cost of generating the execution plan in TiDB. For details, see [Execution Plan Cache](/sql-prepared-plan-cache.md).

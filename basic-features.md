@@ -68,7 +68,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 
 | Advanced SQL features                                    | 6.0 | 5.4          |   5.3    |   5.2    |   5.1    |   5.0   |   4.0    |
 | ------------------------------------------------------------ | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :----------: |
-| [Prepared statement cache](/sql-prepare-plan-cache.md)       | Y | Y            |      Y       | Experimental | Experimental | Experimental | Experimental |
+| [Prepared statement cache](/sql-prepared-plan-cache.md)       | Y | Y            |      Y       | Experimental | Experimental | Experimental | Experimental |
 | [SQL plan management (SPM)](/sql-plan-management.md)         | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Coprocessor cache](/coprocessor-cache.md)                   | Y | Y            |      Y       |      Y       |      Y       |      Y       | Experimental |
 | [Stale Read](/stale-read.md)                                 | Y | Y            |      Y       |      Y       |      Y       |      N       |      N       |
