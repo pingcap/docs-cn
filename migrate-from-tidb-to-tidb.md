@@ -23,7 +23,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 1. 部署集群。
 
-    使用 tiup playground 快速部署 5.4.0 上下游测试集群。更多部署信息，请参考 [tiup 官方文档](//tiup/tiup-cluster.md)。
+    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](//tiup/tiup-cluster.md)。
 
     {{< copyable "shell-regular" >}}
 
@@ -38,7 +38,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 2. 初始化数据。
 
-    测试集群中默认创建了 test 数据库，因此可以使用 sysbench 工具生成测试数据，用以模拟真实集群中的历史数据。
+    测试集群中默认创建了 test 数据库，因此可以使用 [sysbench](https://github.com/akopytov/sysbench#linux) 工具生成测试数据，用以模拟真实集群中的历史数据。
 
     {{< copyable "shell-regular" >}}
 
@@ -46,7 +46,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
-    这里通过 [sysbench](https://github.com/akopytov/sysbench#linux) 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 1w 行初始数据。tidb-config 的配置如下：
+    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 10000 行初始数据。tidb-config 的配置如下：
 
     {{< copyable "shell-regular" >}}
 
@@ -92,7 +92,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     ./minio server ./data --address :6060 &
     ```
 
-    上述的命令行启动了一个单节点的 minio server 模拟 s3 服务，其相关参数为：
+    上述的命令行启动了一个单节点的 minio server 模拟 S3 服务，其相关参数为：
 
      - Endpoint: <http://${HOST_IP}:6060/>
      - Access-key: minio
