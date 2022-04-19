@@ -342,8 +342,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
 
-+ tidb-server 实例内存的使用限制，单位为字节。<!-- 从 TiDB v5.0 起 -->该配置项完全取代原有的 [`max-memory`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-memory)。
-
++ 设置 tidb-server 实例的最大内存用量，单位为字节。
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
@@ -462,7 +461,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ## prepared-plan-cache
 
-prepare 语句的 plan cache 设置。
+prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
 
 ### `enabled`
 
@@ -477,7 +476,7 @@ prepare 语句的 plan cache 设置。
 
 ### `memory-guard-ratio`
 
-+ 用于防止超过 performance.max-memory, 超过 max-memory * (1 - prepared-plan-cache.memory-guard-ratio) 会剔除 LRU 中的元素。
++ 用于防止 prepare plan cache 的内存用量超过 performance.server-memory-quota。当 prepare plan cache 的内存用量超过 server-memory-quota * (1 - prepared-plan-cache.memory-guard-ratio) 时，TiDB 会剔除 LRU 中的元素。
 + 默认值：0.1
 + 最小值：0
 + 最大值：1
