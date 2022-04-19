@@ -5,11 +5,11 @@ title: TiDB 性能分析和优化手册
 # TiDB 性能分析和优化手册
 
 ## 目标
-数据库性能分析和优化是一件困难的事情，在 TiDB 这样一个分布式的数据库进行性能分析和优化更加困难。本文的目标是提供 TiDB 用户一种自顶向下的，可靠的方法，让普通的 TiDB 用户可以自行进行系统的性能分析和优化。
+对于分布式数据库 TiDB 用户来说, 数据库性能分析和优化是一件困难的事情。本文的目标是介绍基于数据库时间的系统优化方法论，使得 TiDB 用户可以从全局、自顶向下的角度看待用户响应时间和数据库时间，并进行可靠的性能分析和优化。
 
 ## 用户响应时间和数据库时间
 ### 用户响应时间
-用户响应时间是指应用系统为用户返回请求结果所花的时间。一个典型的用户请求的处理时序图如下，包含了用户和应用系统的网络延迟，应用的处理时间，应用和数据库的交互次数和网络延迟，数据库时间等。用户响应时间受到请求链路上所有子系统的影响，比如网络延迟和带宽，系统并发用户数和请求类型，以及应用和数据库服务器 CPU、IO 和网络等资源使用率等。只有知道用户响应时间的的瓶颈，才能针对性的对整个系统进行优化。
+用户响应时间是指应用系统为用户返回请求结果所花的时间。一个典型的用户请求的处理时序图如下，包含了用户和应用系统的网络延迟，应用的处理时间，应用和数据库的交互次数和网络延迟，数据库时间等。用户响应时间受到请求链路上所有子系统的影响，比如网络延迟和带宽，系统并发用户数和请求类型，服务器 CPU和IO和资源使用率等。只有知道用户响应时间的的瓶颈，才能对整个系统进行有效的优化。
 `ΔT` 时间内总的用户响应时间等于平均 TPS 乘以平均的用户响应时间乘以 `ΔT`
 
 ```
@@ -296,14 +296,16 @@ v5.4.0
 
 Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
 - 如果 TiKV CPU 资源充足，考虑增加 Store 线程，`raftstore.store-pool-size`
-- 版本 >= v5.4.0，考虑启用 [`raft-engine`](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#raft-engine), `raft-engine.enable: true`
-- 如果 TiKV CPU 资源充足，版本 >= v5.3.0，考虑启用 asyncio, `raftstore.store-io-pool-size: 1`
+- 版本 >= v5.4.0，考虑启用 [`Raft Engine`](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#raft-engine), Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和 写入请求的尾延迟，请启用方式：`raft-engine.enable: true`
+- 如果 TiKV CPU 资源充足，版本 >= v5.3.0，考虑启用 [`StoreWriter`](https://docs.pingcap.com/zh/tidb/stable/tune-tikv-thread-performance#tikv-%E7%BA%BF%E7%A8%8B%E6%B1%A0%E8%B0%83%E4%BC%98)，启用方式：`raftstore.store-io-pool-size: 1`
 
 ![Store](/media/performance/performance-overview/cloud_append_commit_apply.png)
 
 ## 总结
+本文介绍了用户响应时间和数据库时间的概念， 以及基于数据库时间进行系统优化的方法论。借助 TiDB Performance Overview 面板，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解， 定位数据库内部的瓶颈点，并进行针对性的优化。
 
-## 老版本如何使用 Performance overview
-需要手工导入 Performance Overview 面板
+## 老版本如何使用 Performance overview 面板
+Performance Overview 面板在 >= v6.0.0 版本内置。发版 <= v5.4.0 的集群，需要手工导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)
 
-https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json
+导入方法如图所示：
+![Store](/media/performance/performance-overview/import_dashboard.png)
