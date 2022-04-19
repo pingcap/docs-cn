@@ -73,6 +73,10 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 发生报错时，不要自行处理，请立即联系 PingCAP 技术支持进行修复或排查。如果业务急需跳过此类报错，可以使用以下方法绕过检查。
 
+### 改写 SQL
+
+关闭上面提到的 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 语句报错，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
+
 ### 关闭错误检查
 
 对于事务执行中出现的一些报错，可以使用以下方法绕过检查：
@@ -81,7 +85,3 @@ summary: 了解如何处理数据索引一致性检查的报错。
 - 对于错误代码为 8141 的错误，可以通过设置 `set @@tidb_txn_assertion_level=OFF` 跳过检查。
 
 对于其它错误代码，包括执行 `ADMIN CHECK [TABLE|INDEX]` 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。
-
-### 改写 SQL
-
-关闭上面提到的 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 语句报错，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
