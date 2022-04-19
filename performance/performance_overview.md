@@ -72,7 +72,9 @@ DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每�
 - 第三个图，execute 阶段，主要消耗时间为 kv 请求 Prewrite 和 Commit。
     > **注意：**
     >
-    > kv request 时间比的总和大于 execute 时间长是正常的，因为 TiDB 执行器可能并发向多个 TiKV 发送 kv 请求，导致总的 kv 请求等待时间大于执行时间。TPC-C 负载中，事务提交时，TiDB 会向多个 TiKV 并行发送 Prewrite 和 Commit，所以这个例子中 Prewrite、Commit 和 PessimisticsLock 请求的总和明显大于 execute 时间。
+    > kv request 总时间大于 execute 时间长是正常的，因为 TiDB 执行器可能并发向多个 TiKV 发送 kv 请求，导致总的 kv 请求等待时间大于执行时间。TPC-C 负载中，事务提交时，TiDB 会向多个 TiKV 并行发送 Prewrite 和 Commit，所以这个例子中 Prewrite、Commit 和 PessimisticsLock 请求的总和明显大于 execute 时间。
+    > 
+    > execute 时间也可能明显大于 kv request 总时间 加上 tso_wait 时间，意味着 SQL 执行阶段主要时间花在 TiDB 执行器内部，比如 TiDB 执行器从 TiKV 读取大量数据之后，需要在 TiDB 内部进行负载的关联和聚合。
 
 ![TPC-C](/media/performance/performance-overview/tpcc_db_time.png)
 
@@ -89,6 +91,7 @@ DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每�
 1. 第三个图，execute 阶段，主要消耗时间为 kv 请求 BatchGet。
 
 ![OLTP](/media/performance/performance-overview/oltp_long_compile_db_time.png)
+
     > **注意：**
     >
     > BatchGet 请求的总时间远大于 execute 时间，是因为 select 语句需要从多个 TiKV 并行读取几千行数据。
@@ -97,11 +100,13 @@ DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每�
 
 #### Query Per Second，Command Per Second, Prepared-Plan-Cache
  第一个图 QPS 面板包含应用的 SQL 语句类型执行次数分布。第二图 CPS 表示 Command Per Second，这里的 Command 代表着 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。第三个图 Queries Using Plan Cache OPS TiDB 集群每秒命中执行计划缓存的次数。通过观察这三个面板，可以了解应用的负载类型，与 TiDB 的交互方式，以及是否能有效的利用 TiDB 的执行计划缓存。 
+
 ##### 例子 1 TPC-C 负载
 TPC-C 负载类型主要已 Update、Select 和 Insert 语句为主。总的 QPS 等于 每秒 StmtExecute 次数，并且 StmtExecute 每秒的数据基本等于 Queries Using Plan Cache OPS. 这是 OLTP 负载理想的情况，客户端执行使用 prepared statement，并且在客户端缓存了 prepared statement 对象，执行每条 SQL 语句时直接调用 Statement Execute。执行执行时都命中执行计划缓存，不需要重新 compile 生成执行计划.
 ![TPC-C](/media/performance/performance-overview/tpcc_qps.png)
+
 ##### 例子 2 只读 OLTP 负载，使用 query 命令无法使用执行计划缓存
-这个负载中 Commit = Rollback = Select，应用开启了 auto-commit 并发每次从连接池获取连接都会执行 rollback，所以这三种语句的次数是相同的。 图中出现红色加粗的线为 Failed Query，坐标的值为右边的 Y 轴。非 0 代表这负载中存在少量的错误语句。总的 QPS 等于 CPS 面板中的 Query。说明应用使用 query 命令，Queries Using Plan Cache OPS 面板没有数据，因为不使用 prepared statement 接口，无法使用 TiDB 的执行计划缓存， 意味着应用的每一条 query，TiDB 都需要重新解析，重新生成执行计划。通常会导致 compile 时间变长以及 TiDB CPU 消耗的增加。
+这个负载中 Commit qps = Rollback qps = Select qps，应用开启了 auto-commit 并发每次从连接池获取连接都会执行 rollback，所以这三种语句的执行次数是相同的。 图中出现红色加粗的线为 Failed Query，坐标的值为右边的 Y 轴。非 0 代表这负载中存在错误语句。总的 QPS 等于 CPS 面板中的 Query。说明应用使用 query 命令，Queries Using Plan Cache OPS 面板没有数据，因为不使用 prepared statement 接口，无法使用 TiDB 的执行计划缓存， 意味着应用的每一条 query，TiDB 都需要重新解析，重新生成执行计划。通常会导致 compile 时间变长以及 TiDB CPU 消耗的增加。
 ![OLTP-Query](/media/performance/performance-overview/oltp_long_compile_qps.png)
 
 #### 例子 3 OLTP 负载，使用 prepared statement  接口无法使用执行计划缓存
@@ -151,8 +156,8 @@ Duration 面板包含了所有语句 99 延迟和每种 SQL 类型的平均延�
 
 现实的客户负载中，瓶颈在数据库外面的情况并不少见，列举几个例子：
 - 客户端服务器配置过低，CPU 资源不够
-- 使用 HAProxy 作为 TiDB 集群代理，但是 CPU 资源不够
-- 使用 HaProxy 作为 TiDB 集群代理，但是高负载下网络流量打满
+- 使用 HAProxy 作为 TiDB 集群代理，但是 HAProxy CPU 资源不够
+- 使用 HAProxy 作为 TiDB 集群代理，但是高负载下 HAProxy 服务器的网络带宽被打满
 - 应用服务器到数据库延迟过高，比如公有云环境应用和 TiDB 集群不在一个地区，比如数据库的 DNS 均衡器和 TiDB 集群不在一个地区
 - 客户端程序存在瓶颈，无法充分利用服务器的多CPU 或者多 Numa 资源，比如应用只使用一个 JVM 向 TiDB 建立上千个 JDBC 连接 
 
@@ -166,12 +171,12 @@ Duration 面板包含了所有语句 99 延迟和每种 SQL 类型的平均延�
 
 
 #### Parse、Compile 和 Execute Duration
-在 TiDB 中，从输入的查询文本到返回结果的[`典型处理流程`](/sql-optimization-concepts.md)。
-SQL 的在 TiDB 内部的处理分为四个阶段，get token、parse、compile 和 execute
+在 TiDB 中，从输入查询文本到返回结果的[`典型处理流程`](/sql-optimization-concepts.md)。
+SQL 在 TiDB 内部的处理分为四个阶段，get token、parse、compile 和 execute
 - get token 通常只有几微秒的时间，可以忽略
 - parse 阶段 query 语句解析为抽象语法树 abstract syntax tree (AST)
-- compile 阶段，基于成本的优化器， 根据 Parse 阶段输出的 AST 和统计信息，编译出执行计划。整个过程还会被分为逻辑优化与物理优化，前者通过一些规则对查询计划进行优化，例如基于关系代数的列裁剪等，后者则通过具体物理实现的时间复杂度、资源消耗和物理属性等统计信息来确定代价，并选择整体成本最小的物理执行计划。
-- execute 执行器根据执行计划中的算子，执行 sql 语句，包含等待 tso、kv 请求的时间和 tidb 执行器本身处理数据的时间
+- compile 阶段根据 Parse 阶段输出的 AST 和统计信息，编译出执行计划。整个过程主要步骤为逻辑优化与物理优化，前者通过一些规则对查询计划进行优化，例如基于关系代数的列裁剪等，后者通过统计信息和基于成本的优化器，对执行计划的成本进行估算，并选择整体成本最小的物理执行计划。
+- execute 阶段 视情况先等待全局唯一的时间戳 TSO，之后执行器根据执行计划中算子涉及的 Key 范围，构建出 TiKV 的 API 请求，分发到 TiKV。execute 时间包含 TSO 等待时间、KV 请求的时间和 TiDB 执行器本身处理数据的时间。
 
 如果应用统一使用 query 或者 StmtExecute MySQL 命令接口，可以使用以下公式来定位平均延迟的瓶颈。
 ```
@@ -187,7 +192,7 @@ avg Query Duration = avg Get Token + avg Parse Duration + avg Comiple Duration +
 ![Compile](/media/performance/performance-overview/long_compile.png)
 
 ##### 例子 2 数据库瓶颈在 execute 阶段
-下图 TPC-C 负载中，平均的 parse、compile 和 execute 分别为 7.39us、38.1us 和 12.8ms。query 延迟的瓶颈在于 execute 阶段。
+下图 TPC-C 负载中，平均的 parse、compile 和 execute 延迟分别为 7.39us、38.1us 和 12.8ms。query 延迟的瓶颈在于 execute 阶段。
 ![Execute](/media/performance/performance-overview/long_execute.png)
 
 #### KV 和 TSO Request Duration
@@ -241,6 +246,9 @@ Storage Async Write Duration 指标记录写请求进入 raftstore 之后的延�
 ```
 avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
 ```
+    > **注意：**
+    >
+    > Store Duration 和 Apply Duration 从 v5.3.0 版本开始支持。
 
 ##### 例子 1  同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比
 v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。应用以上公式
