@@ -288,10 +288,26 @@
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
+<<<<<<< HEAD
     - 关于 TiDB Data Migration
       - [TiDB Data Migration 简介](/dm/dm-overview.md)
       - 基本功能
         - [Table routing](/dm/dm-key-features.md)
+=======
+    - [关于 Data Migration](/dm/dm-overview.md)
+    - [快速开始](/dm/quick-start-with-dm.md)
+    - 部署 DM 集群
+      - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
+      - [使用 TiUP 联网部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
+      - [使用 TiUP 离线部署](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
+      - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
+      - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
+    - 入门指南
+        - [创建数据源](/dm/quick-start-create-source.md)
+        - [数据源操作](/dm/dm-manage-source.md)
+        - [任务配置向导](/dm/dm-task-configuration-guide.md)
+        - [Table routing](/dm/dm-key-features.md#table-routing)
+>>>>>>> e75483574 (Relink some missed docs (#8724))
         - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
         - [Binlog Event Filter](/dm/dm-key-features.md#binlog-event-filter)
       - 高级功能
@@ -340,6 +356,7 @@
       - [管理迁移表的表结构](/dm/dm-manage-schema.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
+<<<<<<< HEAD
     - 故障处理
       - [故障及处理方法](/dm/dm-error-handling.md)
       - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
@@ -366,6 +383,40 @@
     - [常见问题](/dm/dm-faq.md)
     - [术语表](/dm/dm-glossary.md)
     - [版本发布历史](/dm/dm-release-notes.md)
+=======
+     - 参考手册
+        - 架构组件
+          - [DM 架构简介](/dm/dm-arch.md)
+          - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [Relay Log](/dm/relay-log.md)
+        - 命令行
+          - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+        - 配置文件
+          - [概述](/dm/dm-config-overview.md)
+          - [数据源配置](/dm/dm-source-configuration-file.md)
+          - [迁移任务配置](/dm/task-configuration-file-full.md)
+          - [DM-master 配置](/dm/dm-master-configuration-file.md)
+          - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+          - [Table Selector](/dm/table-selector.md)
+        - [OpenAPI](/dm/dm-open-api.md)
+        - [兼容性目录](/dm/dm-compatibility-catalog.md)
+        - 安全
+          - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
+          - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
+        - 监控告警
+          - [监控指标](/dm/monitor-a-dm-cluster.md)
+          - [告警信息](/dm/dm-alert-rules.md)
+        - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
+        - [术语表](/dm/dm-glossary.md)
+      - 使用示例
+        - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+        - [快速创建迁移任务](/dm/quick-start-create-task.md)
+        - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
+      - 异常解决
+        - [常见问题](/dm/dm-faq.md)
+        - [错误处理及恢复](/dm/dm-error-handling.md)
+      - [版本发布历史](/dm/dm-release-notes.md)
+>>>>>>> e75483574 (Relink some missed docs (#8724))
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
