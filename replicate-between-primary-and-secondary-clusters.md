@@ -7,9 +7,9 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 本文档介绍如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL 从集群，并将增量数据实时从主集群同步到从集群，主要包含以下内容：
 
-* 配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL 从集群。
-* 将增量数据实时从主集群同步到从集群。
-* 在主集群发生灾难利用 Redo log 恢复一致性数据。
+1. 配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL 从集群。
+2. 将增量数据实时从主集群同步到从集群。
+3. 在主集群发生灾难利用 Redo log 恢复一致性数据。
 
 如果你需要配置一个运行中的 TiDB 集群和其从集群，以进行实时增量数据同步，可使用 [Backup & Restore (BR)](/br/backup-and-restore-tool.md) 和 [TiCDC](/ticdc/ticdc-overview.md)。
 
@@ -19,7 +19,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     使用 tiup playground 快速部署 TiDB 上下游测试集群。生产环境可以参考 [tiup 官方文档](/tiup/tiup-cluster.md)根据业务需求来部署集群。
 
-    为了方便展示和理解，我们简化部署结构，需要以下准备两台机器，分别来部署上游主集群，下游从集群。假设 IP 地址分别为:
+    为了方便展示和理解，我们简化部署结构，需要准备以下两台机器，分别来部署上游主集群和下游从集群。假设 IP 地址分别为:
 
     - NodeA: `172.16.6.123`，部署上游 TiDB
 
@@ -39,7 +39,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 2. 初始化数据。
 
-    测试集群中默认创建了 test 数据库，因此可以使用 sysbench 工具生成测试数据，用以模拟真实集群中的历史数据。
+    测试集群中默认创建了 test 数据库，因此可以使用 [sysbench](https://github.com/akopytov/sysbench#linux) 工具生成测试数据，用以模拟真实集群中的历史数据。
 
     {{< copyable "shell-regular" >}}
 
@@ -47,7 +47,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
-    这里通过 [sysbench](https://github.com/akopytov/sysbench#linux) 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 1w 行初始数据。tidb-config 的配置如下：
+    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 10000 行初始数据。tidb-config 的配置如下：
 
     {{< copyable "shell-regular" >}}
 
@@ -183,7 +183,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     sync_diff_inspector -C ./config.yaml
     ```
 
-    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置为：
+    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)。在本文中，相应的配置为：
 
     {{< copyable "shell-regular" >}}
 
@@ -285,8 +285,8 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://172.16.6.123:6060&force-path-style=true" --tmp-dir /tmp/redo --sink-uri "mysql://root:@172.16.6.124:4000"
 ```
 
-- `--storage`：指定 redo log 所在的 s3 位置以及 credential
-- `--tmp-dir`：为从 s3 下载 redo log 的缓存目录
+- `--storage`：指定 redo log 所在的 S3 位置以及 credential
+- `--tmp-dir`：为从 S3 下载 redo log 的缓存目录
 - `--sink-uri`：指定下游集群的地址
 
 ## 第 6 步：恢复主集群及业务
