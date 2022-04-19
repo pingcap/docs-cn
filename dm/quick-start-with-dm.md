@@ -6,137 +6,118 @@ aliases: ['/docs/tidb-data-migration/dev/get-started/']
 
 # Quick Start Guide for TiDB Data Migration
 
-This document describes how to migrate data from MySQL to TiDB using [TiDB Data Migration](https://github.com/pingcap/dm) (DM).
+This document describes how to migrate data from MySQL to TiDB using [TiDB Data Migration](https://github.com/pingcap/dm) (DM). This guide is a quick demo of DM features and is not recommended for any production environment.
 
-If you need to deploy DM in the production environment, refer to the following documents:
+## Step 1: Deploy a DM cluster
 
-- [Deploy a DM cluster Using TiUP](/dm/deploy-a-dm-cluster-using-tiup.md)
-- [Create a Data Source](/dm/quick-start-create-source.md)
-- [Create a Data Migration Task](/dm/quick-create-migration-task.md)
+1. Install TiUP, and install [`dmctl`](/dm/dmctl-introduction.md) using TiUP:
 
-## Sample scenario
+    {{< copyable "shell-regular" >}}
 
-Suppose you deploy DM-master and DM-worker instances in an on-premise environment, and migrate data from an upstream MySQL instance to a downstream TiDB instance.
+    ```shell
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    tiup install dm dmctl
+    ```
 
-The detailed information of each instance is as follows:
+2. Generate the minimal deployment topology file of a DM cluster:
 
-| Instance        | Server Address   | Port |
-| :---------- | :----------- | :----------- |
-| DM-master  | 127.0.0.1 | 8261, 8291 (Internal port) |
-| DM-worker  | 127.0.0.1 | 8262 |
-| MySQL-3306 | 127.0.0.1 | 3306 |
-| TiDB       | 127.0.0.1 | 4000 |
+    {{< copyable "shell-regular" >}}
 
-## Deploy DM using the binary package
+    ```
+    tiup dm template
+    ```
 
-### Download DM binary package
+3. Copy the configuration information in the output, and save it as the `topology.yaml` file with the modified IP address. Deploy the DM cluster with the `topology.yaml` file using TiUP:
 
-Download DM latest binary package or compile the package manually.
+    {{< copyable "shell-regular" >}}
 
-#### Method 1: Download the latest version of binary package
+    ```shell
+    tiup dm deploy dm-test 6.0.0 topology.yaml -p
+    ```
+
+## Step 2: Prepare the data source
+
+You can use one or multiple MySQL instances as an upstream data source.
+
+1. Create a configuration file for each data source as follows:
+
+    {{< copyable "shell-regular" >}}
+
+    ```yaml
+    source-id: "mysql-01"
+    from:
+      host: "127.0.0.1"
+      user: "root"
+      password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="  # encrypt with `tiup dmctl --encrypt "123456"`
+      port: 3306
+    ```
+
+2. Add the source to the DM cluster by running the following command. `mysql-01.yaml` is the configuration file created in the previous step.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup dmctl --master-addr=127.0.0.1:8261 operate-source create mysql-01.yaml # use one of master_servers as the argument of --master-addr
+    ```
+
+If you do not have a MySQL instance for testing, you can create a MySQL instance in Docker by taking the following steps:
+
+1. Create a MySQL configuration file:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    mkdir -p /tmp/mysqltest && cd /tmp/mysqltest
+
+    cat > my.cnf <<EOF
+    [mysqld]
+    bind-address     = 0.0.0.0
+    character-set-server=utf8
+    collation-server=utf8_bin
+    default-storage-engine=INNODB
+    transaction-isolation=READ-COMMITTED
+    server-id        = 100
+    binlog_format    = row
+    log_bin          = /var/lib/mysql/mysql-bin.log
+    show_compatibility_56 = ON
+    EOF
+    ```
+
+2. Start the MySQL instance using Docker:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    docker run --name mysql-01 -v /tmp/mysqltest:/etc/mysql/conf.d -e MYSQL_ROOT_PASSWORD=my-secret-pw -d -p 3306:3306 mysql:5.7
+    ```
+
+3. After the MySQL instance is started, access the instance:
+
+    > **Note:**
+    >
+    > This command is only suitable for trying out data migration, and cannot be used in production environments or stress tests.
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    mysql -uroot -p -h 127.0.0.1 -P 3306
+    ```
+
+## Step 3: Prepare a downstream database
+
+You can choose an existing TiDB cluster as a target for data migration.
+
+If you do not have a TiDB cluster for testing, you can quickly build a demonstration environment by running the following command:
 
 {{< copyable "shell-regular" >}}
 
-```bash
-wget http://download.pingcap.org/dm-nightly-linux-amd64.tar.gz
-tar -xzvf dm-nightly-linux-amd64.tar.gz
-cd dm-nightly-linux-amd64
+```shell
+tiup playground
 ```
 
-#### Method 2: Compile the latest version of binary package
+## Step 4: Prepare test data
 
-{{< copyable "shell-regular" >}}
-
-```bash
-git clone https://github.com/pingcap/dm.git
-cd dm
-make
-```
-
-### Deploy DM-master
-
-Execute the following command to start the DM-master:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-nohup bin/dm-master --master-addr='127.0.0.1:8261' --log-file=/tmp/dm-master.log --name="master1" >> /tmp/dm-master.log 2>&1 &
-```
-
-### Deploy DM-worker
-
-Execute the following command to start the DM-worker:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-nohup bin/dm-worker --worker-addr='127.0.0.1:8262' --log-file=/tmp/dm-worker.log --join='127.0.0.1:8261' --name="worker1" >> /tmp/dm-worker.log 2>&1 &
-```
-
-### Check deployment status
-
-To check whether the DM cluster has been deployed successfully, execute the following command:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-bin/dmctl --master-addr=127.0.0.1:8261 list-member
-```
-
-A normal DM cluster returns the following information:
-
-```bash
-{
-    "result": true,
-    "msg": "",
-    "members": [
-        {
-            "leader": {
-                "msg": "",
-                "name": "master1",
-                "addr": "127.0.0.1:8261"
-            }
-        },
-        {
-            "master": {
-                "msg": "",
-                "masters": [
-                    {
-                        "name": "master1",
-                        "memberID": "11007177379717700053",
-                        "alive": true,
-                        "peerURLs": [
-                            "http://127.0.0.1:8291"
-                        ],
-                        "clientURLs": [
-                            "http://127.0.0.1:8261"
-                        ]
-                    }
-                ]
-            }
-        },
-        {
-            "worker": {
-                "msg": "",
-                "workers": [
-                    {
-                        "name": "worker1",
-                        "addr": "127.0.0.1:8262",
-                        "stage": "free",
-                        "source": ""
-                    }
-                ]
-            }
-        }
-    ]
-}
-```
-
-## Migrate data from MySQL to TiDB
-
-### Prepare sample data
-
-Before using DM, insert the following sample data to `MySQL-3306`:
+Create a test table and data in one or multiple data sources. If you use an existing MySQL database, and the database contains available data, you can skip this step.
 
 {{< copyable "sql" >}}
 
@@ -144,156 +125,54 @@ Before using DM, insert the following sample data to `MySQL-3306`:
 drop database if exists `testdm`;
 create database `testdm`;
 use `testdm`;
-create table t1 (id bigint, uid int, name varchar(80), info varchar(100), primary key (`id`), unique key(`uid`)) DEFAULT CHARSET=utf8mb4;
-create table t2 (id bigint, uid int, name varchar(80), info varchar(100), primary key (`id`), unique key(`uid`)) DEFAULT CHARSET=utf8mb4;
+create table t1 (id bigint, uid int, name varchar(80), info varchar(100), primary key (`id`), unique key(`uid`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+create table t2 (id bigint, uid int, name varchar(80), info varchar(100), primary key (`id`), unique key(`uid`)) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 insert into t1 (id, uid, name) values (1, 10001, 'Gabriel García Márquez'), (2, 10002, 'Cien años de soledad');
 insert into t2 (id, uid, name) values (3, 20001, 'José Arcadio Buendía'), (4, 20002, 'Úrsula Iguarán'), (5, 20003, 'José Arcadio');
 ```
 
-### Load data source configurations
+## Step 5: Create a data migration task
 
-Before running a data migration task, you need to first load the configuration file of the corresponding data source (that is, `MySQL-3306` in the example) to DM.
-
-#### Encrypt the data source password
-
-> **Note:**
->
-> + You can skip this step if the data source does not have a password.
-> + You can use the plaintext password to configure the data source information in DM v2.0 and later versions.
-
-For safety reasons, it is recommended to configure and use encrypted passwords for data sources. Suppose the password is "123456":
-
-{{< copyable "shell-regular" >}}
-
-```bash
-./bin/dmctl --encrypt "123456"
-```
-
-```
-fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg=
-```
-
-Save this encrypted value, and use it for creating a MySQL data source in the following steps.
-
-#### Edit the source configuration file of the MySQL instance
-
-Write the following configurations to `conf/source1.yaml`.
-
-```yaml
-# MySQL1 Configuration.
-source-id: "mysql-replica-01"
-from:
-  host: "127.0.0.1"
-  user: "root"
-  password: "fCxfQ9XKCezSzuCD0Wf5dUD+LsKegSg="
-  port: 3306
-```
-
-#### Load data source configuration file
-
-To load the data source configuration file of MySQL to the DM cluster using dmctl, run the following command in the terminal:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-./bin/dmctl --master-addr=127.0.0.1:8261 operate-source create conf/source1.yaml
-```
-
-The following is an example of the returned results:
-
-```bash
-{
-    "result": true,
-    "msg": "",
-    "sources": [
-        {
-            "result": true,
-            "msg": "",
-            "source": "mysql-replica-01",
-            "worker": "worker1"
-        }
-    ]
-}
-```
-
-Now you successfully add the data source `MySQL-3306` to the DM cluster.
-
-### Create a data migration task
-
-After inserting the [sample data](#prepare-sample-data) into `MySQL-3306`, take the following steps to migrate the tables `testdm`.`t1` and `testdm`.`t2` to the downstream TiDB instance:
-
-1. Create a task configuration file `testdm-task.yaml`, and add the following configurations to the file.
+1. Create a task configuration file `testdm-task.yaml`:
 
     {{< copyable "" >}}
 
     ```yaml
-    ---
     name: testdm
     task-mode: all
+
     target-database:
       host: "127.0.0.1"
       port: 4000
       user: "root"
-      password: "" # If the password is not null, it is recommended to use password encrypted with dmctl.
+      password: "" # If the password is not empty, it is recommended to use a password encrypted with dmctl.
+
+    # Configure the information of one or multiple data sources
     mysql-instances:
-      - source-id: "mysql-replica-01"
+      - source-id: "mysql-01"
         block-allow-list:  "ba-rule1"
+
     block-allow-list:
       ba-rule1:
         do-dbs: ["testdm"]
     ```
 
-2. Load the task configuration file using dmctl:
+2. Create the task using dmctl:
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./bin/dmctl --master-addr 127.0.0.1:8261 start-task testdm-task.yaml
+    tiup dmctl --master-addr 127.0.0.1:8261 start-task testdm-task.yaml
     ```
 
-    The following is an example of the returned results:
+You have successfully created a task that migrates data from a `mysql-01` database to TiDB.
 
-    ```bash
-    {
-        "result": true,
-        "msg": "",
-        "sources": [
-            {
-                "result": true,
-                "msg": "",
-                "source": "mysql-replica-01",
-                "worker": "worker1"
-            }
-        ]
-    }
-    ```
+## Step 6: Check the status of the task
 
-Now you successfully create a data migration task that migrates data from `MySQL-3306` to the downstream TiDB instance.
-
-### Check status of the data migration task 
-
-After the data migration task is created, you can use `dmtcl query-status` to check the status of the task. See the following example:
+After the task is created, you can use the `dmctl query-status` command to check the status of the task:
 
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dmctl --master-addr 127.0.0.1:8261 query-status
-```
-
-The following is an example of the returned results:
-
-```bash
-{
-    "result": true,
-    "msg": "",
-    "tasks": [
-        {
-            "taskName": "testdm",
-            "taskStatus": "Running",
-            "sources": [
-                "mysql-replica-01"
-            ]
-        }
-    ]
-}
+tiup dmctl --master-addr 127.0.0.1:8261 query-status testdm
 ```
