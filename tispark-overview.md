@@ -343,7 +343,7 @@ df.write
 .mode(saveMode = "append")
 .format("jdbc")
 .option("driver", "com.mysql.jdbc.Driver")
- // 替换为你的主机和端口地址，并确保开启了重写批处理
+// 替换为你的主机名和端口地址，并确保开启了重写批处理
 .option("url", "jdbc:mysql://127.0.0.1:4000/test?rewriteBatchedStatements=true")
 .option("useSSL", "false")
 // 作为测试建议设置为 150
