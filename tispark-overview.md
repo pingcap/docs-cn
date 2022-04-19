@@ -14,9 +14,9 @@ aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
 
 TiSpark 依赖于 TiKV 集群和 Placement Driver (PD)，也需要你搭建一个 Spark 集群。本文简单介绍如何部署和使用 TiSpark。本文假设你对 Spark 有基本认知。你可以参阅 [Apache Spark 官网](https://spark.apache.org/docs/latest/index.html)了解 Spark 的相关信息。
 
-TiSpark 深度整合了 Spark Catalyst 引擎，可以对计算进行精确地控制，使 Spark 能够高效地读取 TiKV 中的数据。TiSpark 还提供了索引支持以实现高速的点查。
+TiSpark 深度整合了 Spark Catalyst 引擎，可以对计算进行精确的控制，使 Spark 能够高效地读取 TiKV 中的数据。TiSpark 还提供索引支持，帮助实现高速点查。
 
-TiSpark 通过将计算下推到 TiKV 中提升了数据查询的效率，减少了 Spark SQL 需要处理的数据大小，通过利用 TiDB 内置的统计信息选择更优的查询计划。
+TiSpark 通过将计算下推到 TiKV 中提升了数据查询的效率，减少了 Spark SQL 需要处理的数据量，通过利用 TiDB 内置的统计信息选择最优的查询计划。
 
 TiSpark 和 TiDB 可以让用户无需创建和维护 ETL，直接在同一个平台上进行事务和统计分析两种任务。这简化了系统架构，降低了运维成本。
 
