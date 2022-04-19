@@ -651,16 +651,17 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 ## 灾难场景的最终一致性复制
 
-从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到 S3 存储或 NFS 文件系统，当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
+从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
-目前 TiCDC 支持将 TiDB 集群的增量数据复制 TiDB 或 MySQL 兼容的数据库系统（包括：Aurora/MySQL/MariaDB）, 当 TiCDC 正常运行，且上游 TiDB 集群没有出现导致数据复制延迟大幅度增加的大多数情况下，当上游发生灾难时，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
+目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。当上游发生灾难时，如果 TiCDC 正常运行且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
 
 当上游 TiDB 集群出现以下情况时，会导致 TiCDC 延迟上升，进而影响 RPO：
- - TPS 短时间内大幅度上升
- - 上游出现大事务或者长事务
- - Reload/Upgrade 上游 TiKV 集群或 TiCDC 集群
- - 执行耗时很长的DDL 语句，例如：add index
- - 过于激进的PD 调度策略导致的频繁 region leader 迁移、region merge/split
+
+- TPS 短时间内大幅度上升
+- 上游出现大事务或者长事务
+- Reload 或 Upgrade 上游 TiKV 集群或 TiCDC 集群
+- 执行耗时很长的 DDL 语句，例如：add index
+- 使用过于激进的 PD 调度策略，导致频繁 region leader 迁移或 region merge/split
 
 ### 使用前提
 
