@@ -75,7 +75,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 ### 改写 SQL
 
-关闭上面提到的 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的检查。如果只有某一条 SQL 语句报错，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
+如果只有某一条 SQL 语句报错，可以尝试将其改写为其它等价的 SQL 形式，以使用不同的执行算子来尝试绕过。
 
 ### 关闭错误检查
 
@@ -83,5 +83,9 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 - 对于错误代码为 8138、8139 和 8140 的错误，可以通过设置 `set @@tidb_enable_mutation_checker=0` 跳过检查。
 - 对于错误代码为 8141 的错误，可以通过设置 `set @@tidb_txn_assertion_level=OFF` 跳过检查。
+
+> **注意：**
+>
+> 关闭 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的对应检查。
 
 对于其它错误代码，包括执行 `ADMIN CHECK [TABLE|INDEX]` 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。
