@@ -324,6 +324,7 @@
         - [使用 OpenAPI 运维集群](/dm/dm-open-api.md)
       - 升级版本
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+      - [创建数据源](/dm/quick-start-create-source.md)
       - [管理数据源](/dm/dm-manage-source.md)
       - 管理迁移任务
         - [任务配置向导](/dm/dm-task-configuration-guide.md)
@@ -349,6 +350,7 @@
       - 架构
         - [DM 架构简介](/dm/dm-arch.md)
         - [DM-worker 简介](/dm/dm-worker-intro.md)
+        - [Relay Log](/dm/relay-log.md)
       - [DM 命令行参数](/dm/dm-command-line-flags.md)
       - 配置
         - [概述](/dm/dm-config-overview.md)
@@ -356,6 +358,7 @@
         - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
         - [上游数据库配置](/dm/dm-source-configuration-file.md)
         - [数据迁移任务配置向导](/dm/dm-task-configuration-guide.md)
+        - [Table Selector](/dm/table-selector.md)
       - [兼容性目录](/dm/dm-compatibility-catalog.md)
       - 安全
         - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
@@ -365,6 +368,9 @@
       - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
     - [常见问题](/dm/dm-faq.md)
     - [术语表](/dm/dm-glossary.md)
+    - 使用示例
+      - [快速创建迁移任务](/dm/quick-start-create-task.md)
+      - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
     - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
