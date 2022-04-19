@@ -212,6 +212,40 @@ The `create_time` of tables in the `information_schema` is the creation time.
 
 When TiDB is executing a SQL statement, the query will be `EXPENSIVE_QUERY` if each operator is estimated to process over 10000 pieces of data. You can modify the `tidb-server` configuration parameter to adjust the threshold and then restart the `tidb-server`.
 
+### How do I estimate the size of a table in TiDB?
+
+To estimate the size of a table in TiDB, you can use the following query statement.
+
+```sql
+SELECT
+    db_name,
+    table_name,
+    SUM(total_size / cnt)                   Approximate_Size,
+    SUM(total_size / cnt / @amplification)  Disk_Size
+FROM
+    (SELECT
+        db_name,
+            table_name,
+            region_id,
+            SUM(Approximate_Size) total_size,
+            COUNT(*) cnt
+    FROM
+        information_schema.TIKV_REGION_STATUS
+    WHERE
+        db_name = @dbname
+        AND table_name in (@table_name)
+    GROUP BY db_name , table_name , region_id) tabinfo
+GROUP BY db_name , table_name;
+```
+
+When using the above statement, you need to fill in and replace the following fields in the statement as appropriate.
+
+- `@dbname`: the name of the database.
+- `@table_name`: the name of the target table.
+- `@size_amplification`: the average of the cluster compression ratio. To get this information, check the **Size amplification** metric for each node on the **Grafana Monitoring PD - statistics balance** panel. The average of the cluster compression ratio is the average of the Size amplification for all nodes.
+
+In addition, `Approximate_Size` in the above statement indicates the size of the table before compression and `Disk_Size` indicates the size of the table after compression.
+
 ## TiKV server management
 
 ### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
