@@ -80,12 +80,14 @@ DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每�
 - 第一个图，Database Time by SQL Type， 主要消耗时间的语句为 select、commit、update和 insert 语句。select 占据绝大部分的数据库时间。
 - 第二个图，Ddatabase Time By SQL Phase，主要消耗时间的为 execute 阶段。
 - 第三个图，execute 阶段，主要消耗时间为 pd tso_wait 和 kv Get、Prewrite 和 Commit。
+
 ![OLTP](/media/performance/performance-overview/oltp_normal_db_time.png)
 
 #### 例子 3 只读 OLTP 负载
 1. 第一个图，Database Time by SQL Type， 几乎所有语句为 select。
 1. 第二个图，Ddatabase Time By SQL Phase，主要消耗时间的为 compile 和 execute 阶段。
 1. 第三个图，execute 阶段，主要消耗时间为 kv 请求 BatchGet。
+
 ![OLTP](/media/performance/performance-overview/oltp_long_compile_db_time.png)
     > **注意：**
     >
@@ -220,20 +222,84 @@ Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的差值跟网络流量
 下图的 TiDB 集群部署在同一个地区的不同机房，TiDB 侧平均 Commit 请求延迟 12.7ms，TiKV 内部 kv_commit 平均处理延迟 10.2ms，相差 2.5ms 左右。TSO wait 平均延迟为 3.12ms，rpc 时间为 693us。
 ![Cloud Env ](/media/performance/performance-overview/cloud_kv_tso.png)
 
-##### 例子 2 公有云集群，资源严重过载例子
+##### 例子 3 公有云集群，资源严重过载例子
 下图的 TiDB 集群部署在同一个地区的不同机房，TiDB 网络和 CPU 资源严重过载。TiDB 侧平均 BatchGet 请求延迟 38.6 ms，TiKV 内部 kv_batch_get 平均处理延迟 6.15ms，相差超过 32 ms，远高于正常值。TSO wait 平均延迟为 9.45ms，rpc 时间为 14.3ms。
 ![Cloud Env, TiDB Overloaded](/media/performance/performance-overview/cloud_kv_tso_overloaded.png)
 
 #### Storage Async Write Duration、Store Duration 和 Apply Duration
-Storage Async Write Duration 记录 tikv 写操作的延迟，采集的粒度是具体是针对每个请求的级别
+
+TiKV 对于写请求的处理流程如下图
+- `scheduler worker` 首先会处理写请求，进行事务一致性检查，并把写请求转化成键值对，发送到 `raftstore` 模块。
+- `raftstore` 为 TiKV 的 共识模块，使用 Raft 共识算法，使多个 TiKV 组成的存储层可以容错。Raftstore 分为两种线程：
+  *  store 线程和 apply 线程。store 线程负载处理 Raft 消息和新的 `proposals`。 当收到新的 `proposals` 时，leader 节点的 store 线程会写入本地 Raft db，并将消息复制到多个 follower 节点。当这个 `proposals` 在多数实例持久化成功之后，`proposals` 成功的被提交。
+  * apply 线程会负载将提交的内容写入到 KV DB 中。当写操作的内容被成功的写入到 kv 数据库中，apply 线程会通知外层请求写请求已经完成。
+
+![TiKV Write](/media/performance/performance-overview/store_apply.png)
+
+Storage Async Write Duration 指标记录写请求进入 raftstore 之后的延迟，采集的粒度是具体是针对每个请求的级别。Storage Async Write Duration 分为 Store Duration 和 Apply Duration。
+可以通过以下公式定位写请求的瓶颈主要是 Store 还是 Apply 步骤。
+```
 avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
-这个例子中：
-620us ~= 289us + 312us
-通过这三个面板，可以快速的确定 tikv 的写操作是 store 瓶颈还是 apply 瓶颈，再通过 tikv-detail、tikv-fast-tune或者 tikv-troubleshooting 面板进一步确认写延迟的瓶颈点。
+```
+
+##### 例子 1  同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比
+v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。应用以上公式
+- v5.3.0: 24.4ms ~= 17.7ms + 6.59ms
+- v5.4.0: 21.4ms ~= 14.0ms + 7.33ms
+
+因为 v5.4.0 版本中, TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度， 相比 v5.3.0 降低了 Store Duration。
+v5.3.0
+![v5.3.0](/media/performance/performance-overview/v5.3.0_store_apply.png)
+v5.4.0
+![v5.4.0](/media/performance/performance-overview/v5.4.0_store_apply.png)
+
+##### 例子 2 Store Duration 瓶颈明显的例子
+应用以上公式: 10.1ms ~= 9.81ms + 0.304，写请求的延迟瓶颈在 Store Duration。
+![Store](/media/performance/performance-overview/cloud_store_apply.png)
 
 #### Commit Log Duration、Append Log Duration 和 Apply Log Duration
-三这个延迟是 tikv 内部每个操作的延迟记录，采集的粒度是 batch 操作，每个操作会把多个请求合并在一起，不能直接和上文的 store duration 和 apply duration  直接对应起来。
-commit log duration 和 append log duration 为 store 部分的操作; commit log 需要复制 raft 日志到其他 tikv 节点，保证 raft-log 的持久化。一般包含两次append log duration, 一次 leader，一次 follower 的。消耗的延迟会明显高于 append log ；apply log duration 是 apply 部分的操作。
+Commit Log Duration、Append Log Duration 和 Apply Log Duration 三这个延迟是 raftstore 内部关键操作的延迟记录，采集的粒度是 batch 操作，每个操作会把多个写请求合并在一起，不能直接和上文的 store duration 和 apply duration 直接对应起来。
+Commit Log Duration 和 Append Log Duration 为 store  线程的操作; Commit Log Duration 包含复制 Raft 日志到其他 TiKV 节点，保证 raft-log 的持久化，Commit Log Duration 一般包含两次 Append Log Duration, 一次 leader，一次 follower 的。Commit Log Duration 延迟通常会明显高于 Append Log Duration，因为包含了通过网络复制 Raft 日志到其他 tikv 的时间。 Apply Log Duration  记录了 apply 线程 Apply Raft 日志 的延迟。
+
+Commit Log Duration 慢的常见场景：
+- TiKV CPU 资源存在瓶颈，调度延迟高
+- `raftstore.store-pool-sizS` 设置过小或者过大（是的，过大也可能导致性能下降）
+- IO 延迟高，导致 Append Log Duration 延迟高
+- TiKV 之间的网络延迟比较高
+- TiKV 的 gRPC 线程数设置过小或者多个 gRPC CPU 资源使用不均衡
+
+Apply Log Duration 慢的常见场景：
+- TiKV CPU 资源存在瓶颈，调度延迟高
+- `raftstore.apply-pool-size` 设置过小或者过大（是的，过大也可能导致性能下降）
+- IO 延迟比较高
+
+##### 例子 1  同一个 OLTP 负载在 v5.3.0 和 v5.4.0 版本的对比
+v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。 对比这三个关键延迟：
+| Avg Duration   | v5.3.0(ms)   |    v5.4.0(ms)  |
+|:----------|:----------|:----------|
+| Append Log Duration  | 0.27 | 0.303|
+| Commit Log Duration  | 13   | 8.68 |
+| Apply Log Duration   | 0.457|0.514  |
+
+因为 v5.4.0 版本中, TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度， 相比 v5.3.0 降低了 Store Duration。
+v5.3.0
+![v5.3.0](/media/performance/performance-overview/v5.3.0_commit_append_apply.png)
+v5.4.0
+![v5.4.0](/media/performance/performance-overview/v5.4.0_commit_append_apply.png)
+
+##### 例子 2 Store Duration 瓶颈明显的例子
+
+ 如下图：
+ - 平均 Append Log Duration = 4.38ms
+ - 平均 Commit Log Duration = 7.92ms
+ - 平均 Apply Log Duration = 172us。
+
+Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
+- 如果 TiKV CPU 资源充足，考虑增加 Store 线程，`raftstore.store-pool-size`
+- 版本 >= v5.4.0，考虑启用 [`raft-engine`](https://docs.pingcap.com/zh/tidb/stable/tikv-configuration-file#raft-engine), `raft-engine.enable: true`
+- 如果 TiKV CPU 资源充足，版本 >= v5.3.0，考虑启用 asyncio, `raftstore.store-io-pool-size: 1`
+
+![Store](/media/performance/performance-overview/cloud_append_commit_apply.png)
 
 ## 总结
 
