@@ -16,3 +16,22 @@ jobs:
       run: ./scripts/verify-links.sh
     - name: Verify internal link anchors
       run: ./scripts/verify-link-anchors.sh
+
+  vale:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+    - name: Vale Linter
+      uses: errata-ai/vale-action@v1.4.3
+      with:
+        # Optional
+        # Specify file path to lint
+        #files: .
+
+        # Optional
+        onlyAnnotateModifiedLines: true
+      env:
+        # Required, set by GitHub actions automatically:
+        # https://docs.github.com/en/actions/security-guides/automatic-token-authentication#about-the-github_token-secret
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
