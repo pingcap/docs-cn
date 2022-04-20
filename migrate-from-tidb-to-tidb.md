@@ -109,9 +109,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，开始迁移数据。如果之前没有迁移过数据，则需要先进行全量迁移，再根据需要迁移增量数据。
-
-全量迁移可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能。BR 全称为 Backup & Restore，是 TiDB 分布式备份恢复的命令行工具，用于对 TiDB 集群进行数据备份和恢复，也可以在保证兼容性前提下用来做大规模的数据迁移。BR 工具有多种[使用方式](/br/backup-and-restore-tool.md#使用方式)，本文中使用 SQL 语句 [BACKUP](/sql-statements/sql-statement-backup.md#backup) 和 [RESTORE](/sql-statements/sql-statement-restore.md#restore) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/backup-and-restore-tool.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >
