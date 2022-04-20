@@ -364,10 +364,14 @@ QPS 从 34.9k 上升到 40.9k，Execute 时间中占比最高的 kv 请求类型
 ```
 useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=1000&prepStmtCacheSqlLimit=20480&useConfigs=maxPerformance
 ```
-同时，我们展示了 TiDB 的执行计划缓存对于 OLTP 发挥着至关重要的作用，同时，v6.0.0 GA 的 `RC Read` 和小表缓存，在本文的负载的深度优化中，发挥了重要的作用。
+同时，我们展示了 TiDB 的执行计划缓存对于 OLTP 发挥着至关重要的作用，同时，v6.0.0 GA 的 `RC Read` 和小表缓存，在这个负载的深度优化中，发挥了重要的作用。
 
+在性能分析和优化过程中，我们使用了 TiDB Dashboard 最新的 Feature，TopSQL 功能、持续性能分析功能和 Performance Overview 面板。
+- [Top SQL](https://docs.pingcap.com/zh/tidb/v6.0/top-sql) 功能允许你可视化地监控和探索数据库中各个 SQL 语句在执行过程中的 CPU 开销情况，从而对数据库性能问题进行优化和处理。
+- [持续性能分析功能](https://docs.pingcap.com/zh/tidb/v6.0/continuous-profiling) 可以持续地收集 TiDB、TiKV、PD 各个实例的性能数据。文本中我们观察到应用使用不同接口跟 TiDB 交互时，TiDB 的 CPU 消耗有着巨大的差距。
+- [Performance Overview 面板]() 提供了数据库时间的概览和 SQL 执行时间分解信息，借助这个 Granafa 面板，用户可以进行基于数据库时间的性能分析和诊断。确认整个系统的性能瓶颈是否处于 TiDB 中；如果瓶颈在 TiDB 中，通过数据库时间和延迟的分解，以及集群关键指标和资源使用情况，确认 TiDB 内部的性能瓶颈，并进行针对性的优化。
 
-
+综合使用以上几个功能，读者可以针对现实中的应用进行高效的性能分析和优化。
 
 
 
