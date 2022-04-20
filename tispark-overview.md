@@ -1,10 +1,5 @@
 ---
 title: TiSpark 用户指南
-<<<<<<< HEAD
-=======
-summary: 使用 TiSpark 一站式解决用户的 HTAP 需求。
-aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
->>>>>>> 6b557a9b0 (Update TiSpark documentation (#8985))
 ---
 
 # TiSpark 用户指南
@@ -344,15 +339,9 @@ TiSpark 可以使用 TiDB 的统计信息：
 spark.sql.auth.enable true
 
 // 配置 TiDB 信息
-<<<<<<< HEAD
-spark.sql.tidb.addr    $your_tidb_server_address
-spark.sql.tidb.port    $your_tidb_server_port
-spark.sql.tidb.user    $your_tidb_server_user
-=======
 spark.sql.tidb.addr $your_tidb_server_address
 spark.sql.tidb.port $your_tidb_server_port
 spark.sql.tidb.user $your_tidb_server_user
->>>>>>> 6b557a9b0 (Update TiSpark documentation (#8985))
 spark.sql.tidb.password $your_tidb_server_password
 ```
 
