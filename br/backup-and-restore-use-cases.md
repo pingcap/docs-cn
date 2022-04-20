@@ -34,7 +34,7 @@ title: BR 备份与恢复场景示例
 
 ### 部署方式
 
-推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复-br-工具) 获取 BR 工具。
+推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md) 获取 BR 工具。
 
 ### 集群版本
 
