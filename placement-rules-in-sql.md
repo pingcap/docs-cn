@@ -206,7 +206,7 @@ ALTER DATABASE test POLICY=p2;  -- Changes the default placement option, and doe
 
 CREATE TABLE t2 (a INT);  -- Creates a table t2 with the default placement policy p2.
 
-CREATE TABLE t3 (a INT) POLICY=p1;  -- Creates a table t3 without the default policy p2, because this statement has specified another placement rule.
+CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- Creates a table t3 without the default policy p2, because this statement has specified another placement rule.
 
 ALTER DATABASE test POLICY=p3;  -- Changes the default policy, and does not apply to existing tables.
 
@@ -243,7 +243,7 @@ You can either specify constraints in list format (`[+disk=ssd]`) or in dictiona
 
 In list format, constraints are specified as a list of key-value pairs. The key starts with either a `+` or a `-`. `+disk=ssd` indicates that the label `disk` must be set to `ssd`, and `-disk=hdd` indicates that the label `disk` must not be `hdd`.
 
-In dictionary format, constraints also indicate a number of instances that apply to that rule. For example, `FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1,+any: 1}";` indicates that 1 follower is in us-east-1, 1 follower is in us-east-2, 1 follower is in us-west-1, and 1 follower can be in any region. For another example, `FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` indicates that 1 follower is in us-east-1 with an hdd disk, and 1 follower is in us-west-1.
+In dictionary format, constraints also indicate a number of instances that apply to that rule. For example, `FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` indicates that 1 follower is in us-east-1, 1 follower is in us-east-2 and 1 follower is in us-west-1. For another example, `FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` indicates that 1 follower is in us-east-1 with an hdd disk, and 1 follower is in us-west-1.
 
 > **Note:**
 >
