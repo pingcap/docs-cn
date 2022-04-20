@@ -52,7 +52,7 @@ DM 里有两种 checkpoint：
 DM 启动任务时，binlog position 同步的处理优先级如下：
 
 - 使用 [`start-task` 命令](/dm/dm-create-task.md)创建任务时，以 `--start-time` 参数指定的任务起始位点（6.0 新功能）
-- dm_meta 表中记录的 checkpoint 位置
+- meta 信息中记录的 checkpoint 位置
 - 任务配置文件中指定的 position
 
 ### 如何清理 checkpoint
