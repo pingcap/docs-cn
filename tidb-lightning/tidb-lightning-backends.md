@@ -436,7 +436,7 @@ password = ""
 
 ##### 第 2 步：下载 TiDB Lightning 安装包
 
-参考[ TiDB 工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
+参考 [TiDB 工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
 
 ##### 第 3 步：启动 `tikv-importer`
 
