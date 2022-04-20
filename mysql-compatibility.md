@@ -137,6 +137,8 @@ For details, see [Compatibility between TiDB local temporary tables and MySQL te
 
 * To learn the MySQL compatibility of the GBK character set, see [GBK compatibility](/character-set-gbk.md#mysql-compatibility) .
 
+* TiDB inherits the character set used in the table as the national character set.
+
 ### Storage engines
 
 For compatibility reasons, TiDB supports the syntax to create tables with alternative storage engines. In implementation, TiDB describes the metadata as the InnoDB storage engine.
