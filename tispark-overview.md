@@ -48,6 +48,8 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 
 关于如何通过 TiUP 部署 TiSpark，参见 [TiSpark 部署拓扑](/tispark-deployment-topology.md)。
 
+## 推荐配置
+
 ### TiKV 与 TiSpark 集群分开部署的配置
 
 对于 TiKV 与 TiSpark 分开部署的场景，可以参考如下建议配置：
@@ -66,30 +68,6 @@ TiSpark 可以在 YARN，Mesos，Standalone 等任意 Spark 模式下运行。
 ### TiKV 与 TiSpark 集群混合部署的配置
 
 对于 TiKV 与 TiSpark 混合部署的场景，需在原有 TiKV 预留资源之外累加 Spark 所需部分，并分配 25% 的内存作为系统本身占用。
-
-### 通过 Spark Standalone 模式部署 TiSpark
-
-关于 Spark Standalone 的具体配置方式，请参考 [Spark Standalone](https://spark.apache.org/docs/latest/spark-standalone.html)。
-
-推荐使用 Spark Standalone 模式部署 Spark。如果遇到问题，可以去 [Spark 官网](https://spark.apache.org/docs/latest/spark-standalone.html)寻求帮助，也欢迎在 TiSpark 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
-
-#### 下载并安装
-
-你可以从 [Apache Spark Archive](https://archive.apache.org/dist/spark/) 下载 Spark 2.x 版本。
-
-如果你不需要 Hadoop 支持，请选择 Spark **2.4.x** 版本、带有任意版本 Hadoop 依赖的预编译二进制包，例如 `spark-2.4.8-bin-hadoop2.7.tgz`。如果需要使用 Hadoop 集群（如 Hadoop 2.6 版本），则选择相应的 Hadoop 版本号，例如 `spark-2.4.8-bin-hadoop2.6.tgz`。对于 Hadoop 2.x 之前的版本，你可以从源代码[自行构建](https://spark.apache.org/docs/latest/building-spark.html)。
-
-下面为 `spark-2.4.8-bin-hadoop2.7.tgz` 的下载与安装示例：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-wget https://archive.apache.org/dist/spark/spark-2.4.8/spark-2.4.8-bin-hadoop2.7.tgz
-tar zxf spark-2.4.8-bin-hadoop2.7.tgz
-mv spark-2.4.8-bin-hadoop2.7 spark
-export SPARKPATH=~/spark # 同样添加到 ~/.bashrc
-cd spark
-```
 
 ## 部署 TiSpark 集群
 
@@ -129,35 +107,6 @@ spark.sql.extensions org.apache.spark.sql.TiExtensions
 >
 > 如果 TiSpark 无法正常使用，请检查防火墙设置。你可以自行配置防火墙策略或者禁用防火墙。
 
-### 启动 Master 节点
-
-执行如下命令启动 Master 节点：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-cd $SPARKPATH
-./sbin/start-master.sh
-```
-
-在这步完成以后，屏幕上会打印出一个 log 文件。检查 log 文件内容确认 Spark-Master 是否启动成功。你可以打开 <http://${spark-master-hostname}:8080> 查看集群信息（如果你没有改动 Spark-Master 默认端口号）。在启动 Spark-Worker 的时候，也可以通过这个面板来确认 Worker 是否已经加入集群。
-
-### 启动 Worker 节点
-
-类似地，可以用如下命令启动 Worker 节点：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-./sbin/start-slave.sh spark://${spark-master-hostname}:7077
-```
-
-> **注意：**
->
-> 如果在同一主机上启动 Master 节点和 Worker 节点，则不能使用 `127.0.0.1` 或 `localhost` 作为主机地址。这是因为默认情况下 Master 进程仅监听外部接口。
-
-命令返回以后，即可通过刚才的面板 <http://${spark-master-hostname}:8080> 查看这个 Worker 是否已经正确地加入了 Spark 集群。对所有 Worker 节点重复执行刚才的启动命令，确认所有的 Worker 都可以正确连接 Master，这样你就拥有了一个 Standalone 模式的 Spark 集群。
-
 ### 在已有 Spark 集群上部署 TiSpark
 
 如果在已有 Spark 集群上运行 TiSpark，则无需重启集群，你可以使用 Spark 的 `--jars` 参数将 TiSpark 作为依赖引入：
@@ -167,6 +116,10 @@ cd $SPARKPATH
 ```shell
 spark-shell --jars $TISPARK_FOLDER/tispark-${name_with_version}.jar
 ```
+
+### 没有 Spark 集群的部署方式
+
+如果没有使用中的 Spark 集群，推荐使用 Spark Standalone 模式部署 Spark，请参考 [Spark Standalone](https://spark.apache.org/docs/latest/spark-standalone.html)。如果遇到问题，可以去 [Spark 官网](https://spark.apache.org/docs/latest/spark-standalone.html)寻求帮助，也欢迎在 TiSpark 上提 [issue](https://github.com/pingcap/tispark/issues/new)。
 
 ## 使用 Spark Shell 和 Spark SQL
 
