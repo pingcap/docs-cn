@@ -52,6 +52,10 @@ TiDB 版本：5.2.4
 
         -
 
+    + Data Migration (DM)
+
+        -
+
     + TiCDC
 
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 将 Kafka Sink `partition-num` 的默认值改为 3，使 TiCDC 更加平均地分发消息到各个 Kafka partition [#3337](https://github.com/pingcap/tiflow/issues/3337)
@@ -143,6 +147,10 @@ TiDB 版本：5.2.4
 
         -
 
+    + Data Migration (DM)
+
+        -
+
     + TiCDC
 
         -
@@ -172,7 +180,6 @@ TiDB 版本：5.2.4
         - (dup: release-5.3.1.md > Bug 修复> Tools> TiCDC)- 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - (dup: release-5.0.6.md > Bug 修复> Tools> TiCDC)- 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
-
 
     + Dumpling
 
