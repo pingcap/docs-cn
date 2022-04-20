@@ -69,7 +69,7 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog consumer protocol 进行定制处理，参考 [Binlog Consumer Client 用户文档](/tidb-binlog/binlog-consumer-client.md)。
 
-* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog/binlog.pb.go)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
+* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/pb_binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
 
     关于 `db-type` 的取值，应注意：
 
