@@ -1,10 +1,5 @@
 ---
 title: TiSpark 用户指南
-<<<<<<< HEAD
-=======
-summary: 使用 TiSpark 一站式解决用户的 HTAP 需求。
-aliases: ['/docs-cn/dev/tispark-overview/','/docs-cn/dev/reference/tispark/']
->>>>>>> 6b557a9b0 (Update TiSpark documentation (#8985))
 ---
 
 # TiSpark 用户指南
@@ -328,37 +323,6 @@ TiSpark 可以使用 TiDB 的统计信息：
 如果你希望 TiSpark 使用统计信息支持，需要确保所涉及的表已经被分析。请阅读[统计信息简介](/statistics.md)了解如何进行表分析。
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
-
-<<<<<<< HEAD
-统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。可以在`spark-defaults.conf`中开启或关闭统计信息读取：
-
-| Property Name | Default | Description
-| --------   | -----:   | :----: |
-| spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
-=======
-## 安全
-
-从 TiSpark v2.5.0 起，你可以通过 TiDB 对 TiSpark 进行鉴权与授权。
-
-该功能默认关闭。要开启该功能，请在 Spark 配置文件 `spark-defaults.conf` 中添加以下配置项：
-
-```
-// 开启鉴权与授权功能
-spark.sql.auth.enable true
-
-// 配置 TiDB 信息
-spark.sql.tidb.addr $your_tidb_server_address
-spark.sql.tidb.port $your_tidb_server_port
-spark.sql.tidb.user $your_tidb_server_user
-spark.sql.tidb.password $your_tidb_server_password
-```
-
-更多详细信息，请参考 [TiSpark 鉴权与授权指南](https://github.com/pingcap/tispark/blob/master/docs/authorization_userguide.md)。
-
-> **注意：**
->
-> 开启鉴权功能后，TiSpark Spark SQL 只能使用 TiDB 作为数据源，切换到其他数据源（例如 Hive）会导致数据表不可见。
->>>>>>> 6b557a9b0 (Update TiSpark documentation (#8985))
 
 ## TiSpark FAQ
 
