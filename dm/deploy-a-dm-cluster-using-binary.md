@@ -53,7 +53,7 @@ DM-master 提供[命令行参数](#使用命令行参数部署-dm-master)和[配
 DM-master 的命令行参数说明：
 
 ```bash
-../dm-master --help
+./bin/dm-master --help
 ```
 
 ```
@@ -123,7 +123,7 @@ initial-cluster = "master1=http://192.168.0.4:8291,master2=http://192.168.0.5:82
 > 执行该命令后控制台不会输出日志，可以通过 `tail -f dm-master.log` 查看运行日志。
 
 ```bash
-../dm-master -config conf/dm-master1.toml
+./bin/dm-master -config conf/dm-master1.toml
 ```
 
 对于 DM-master2 和 DM-master3，修改配置文件中的 `name` 为 `master2` 和 `master3`，并将 `peer-urls` 的值改为 `192.168.0.5:8291` 和 `192.168.0.6:8291` 即可。
@@ -139,7 +139,7 @@ DM-worker 提供[命令行参数](#使用命令行参数部署-dm-worker)和[配
 {{< copyable "shell-regular" >}}
 
 ```bash
-../dm-worker --help
+./bin/dm-worker --help
 ```
 
 ```
@@ -196,7 +196,7 @@ join = "192.168.0.4:8261,192.168.0.5:8261,192.168.0.6:8261"
 {{< copyable "shell-regular" >}}
 
 ```bash
-../dm-worker -config conf/dm-worker1.toml
+./bin/dm-worker -config conf/dm-worker1.toml
 ```
 
 对于 DM-worker2，修改配置文件中的 `name` 为 `worker2` 即可。
