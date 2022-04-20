@@ -94,7 +94,7 @@ mv tidb-latest-linux-amd64/bin/tidb-server ./
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dmctl encrypt "123456"
+./dmctl encrypt "123456"
 ```
 
 ```
@@ -133,7 +133,7 @@ from:
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dmctl --master-addr=127.0.0.1:8261 operate-source create conf/source1.yaml
+./dmctl --master-addr=127.0.0.1:8261 operate-source create conf/source1.yaml
 ```
 
 对于 MySQL2，将上面命令中的配置文件替换成 MySQL2 对应的配置文件。
@@ -197,7 +197,7 @@ routes:
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dmctl --master-addr 127.0.0.1:8261 start-task conf/task.yaml
+./dmctl --master-addr 127.0.0.1:8261 start-task conf/task.yaml
 ```
 
 结果如下：
