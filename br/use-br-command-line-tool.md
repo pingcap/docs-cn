@@ -127,7 +127,7 @@ br backup db \
     --db test \
     --storage "local:///tmp/backup" \
     --ratelimit 128 \
-    --log-file backuptable.log
+    --log-file backupdb.log
 ```
 
 In the above command, `--db` specifies the name of the database to be backed up. For descriptions of other options, see [Back up all the cluster data](#use-br-command-line-to-back-up-cluster-data).
@@ -212,7 +212,7 @@ br backup full \
     --s3.region "${region}" \
     --send-credentials-to-tikv=true \
     --ratelimit 128 \
-    --log-file backuptable.log
+    --log-file backupfull.log
 ```
 
 ### Back up incremental data
@@ -367,7 +367,7 @@ br restore db \
     --db "test" \
     --ratelimit 128 \
     --storage "local:///tmp/backup" \
-    --log-file restorefull.log
+    --log-file restoredb.log
 ```
 
 In the above command, `--db` specifies the name of the database to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-the-backup-data)).
@@ -393,7 +393,7 @@ br restore table \
     --table "usertable" \
     --ratelimit 128 \
     --storage "local:///tmp/backup" \
-    --log-file restorefull.log
+    --log-file restoretable.log
 ```
 
 In the above command, `--table` specifies the name of the table to be restored. For descriptions of other options, see [Restore all backup data](#restore-all-the-backup-data) and [Restore a database](#restore-a-database).
