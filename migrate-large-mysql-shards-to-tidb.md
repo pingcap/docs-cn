@@ -143,12 +143,12 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
     # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
     [[mydumper.files]]
-    pattern = '(?i)^[^/]*/testdm\.t[1-2].*\.sql$'
+    pattern = '(?i)^[^/]*/my_db1\.t[1-2].*\.sql$'
     schema = "my_db"
     table = "table5"
 
     [[mydumper.files]]
-    pattern = '(?i)^[^/]*/testdm\.t[3-4].*\.sql$'
+    pattern = '(?i)^[^/]*/my_db2\.t[3-4].*\.sql$'
     schema = "my_db"
     table = "table5"
 
