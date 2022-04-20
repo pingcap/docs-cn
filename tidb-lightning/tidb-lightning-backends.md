@@ -74,7 +74,7 @@ TiDB Lightning Local-backend 模式的部署方法见 [TiDB Lightning 部署与�
 
 #### 手动部署
 
-手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
+手动部署时，你无需下载和配置 `tikv-importer`，TiDB Lightning 可[在此下载](/download-ecosystem-tools.md)。
 
 在运行 `tidb-lightning` 之前，在配置文件中加上如下几行：
 
@@ -436,7 +436,7 @@ password = ""
 
 ##### 第 2 步：下载 TiDB Lightning 安装包
 
-在[工具下载](/download-ecosystem-tools.md#tidb-lightning)页面下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
+参考[ TiDB 工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（需选择与 TiDB 集群相同的版本）。
 
 ##### 第 3 步：启动 `tikv-importer`
 
