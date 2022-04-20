@@ -96,7 +96,7 @@ pd_servers:
 
 > **注意：**
 >
-> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.0 及后续版本中支持，请操作前先升级 tiup cluster 版本。
+> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.3 及后续版本中支持，请操作前先升级 tiup cluster 版本。
 
 （1）检查集群存在的潜在风险：
 
@@ -278,11 +278,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.9.0/cluster display <cluster-name>
+Starting /root/.tiup/components/cluster/v1.9.3/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.4.0
+TiDB Version: v6.0.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 

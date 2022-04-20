@@ -355,15 +355,17 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - Blob GC output file size：Titan GC 输出文件的大小
 - Blob GC file count：Titan GC 涉及的 blob 文件数量
 
-## Lock manager
+## Pessimistic Locking
 
-- Thread CPU：lock manager 的线程 CPU 使用率
-- Handled tasks：lock manager 处理的任务数量
+- Lock Manager Thread CPU：lock manager 的线程 CPU 使用率
+- Lock Manager Handled tasks：lock manager 处理的任务数量
 - Waiter lifetime duration：事务等待锁释放的时间
 - Wait table：wait table 的状态信息，包括锁的数量和等锁事务的数量
 - Deadlock detect duration：处理死锁检测请求的耗时
 - Detect error：死锁检测遇到的错误数量，包含死锁的数量
 - Deadlock detector leader：死锁检测器 leader 所在节点的信息
+- Total pessimistic locks memory size：内存悲观锁占用内存的总大小
+- In-memory pessimistic locking result：将悲观锁仅保存到内存的结果，其中 full 表示因为超过内存限制而无法将悲观锁保存至内存的次数
 
 ## Memory
 

@@ -9,14 +9,14 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.4.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.0.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v5.4.0
+tiup cluster upgrade <cluster-name> v6.0.0
 ```
 
 ### 升级的注意事项
@@ -572,7 +572,7 @@ worker-num = 16
 # 支持 default、ts、rowid、table 四种分发器，分发规则如下：
 # - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
 # - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
-# - rowid：以表的主键或者唯一索引列名和列值做 Hash 计算并进行 event 分发
+# - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 # - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
@@ -651,9 +651,17 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 ## 灾难场景的最终一致性复制
 
-从 v5.3.0 版本开始，TiCDC 开始提供灾难场景下的最终一致性复制能力。具体解决的场景是，当生产集群（即 TiCDC 同步的上游集群）发生灾难、且短时间内无法恢复对外提供服务，TiCDC 需要具备保证从集群数据一致性的能力，并允许业务快速的将流量切换至从集群，避免数据库长时间不可用而对业务造成影响。
+从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
-该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 5 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 30 分钟。即 RTO <= 5min，RPO <= 30min。
+目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。当上游发生灾难时，如果 TiCDC 正常运行且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
+
+当上游 TiDB 集群出现以下情况时，会导致 TiCDC 延迟上升，进而影响 RPO：
+
+- TPS 短时间内大幅度上升
+- 上游出现大事务或者长事务
+- Reload 或 Upgrade 上游 TiKV 集群或 TiCDC 集群
+- 执行耗时很长的 DDL 语句，例如：add index
+- 使用过于激进的 PD 调度策略，导致频繁 region leader 迁移或 region merge/split
 
 ### 使用前提
 
