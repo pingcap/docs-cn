@@ -1,6 +1,6 @@
 ---
 title: 执行计划缓存
-aliases: ['/docs-cn/dev/sql-prepare-plan-cache/']
+aliases: ['/docs-cn/dev/sql-prepare-plan-cache/','zh/tidb/dev/sql-prepare-plan-cache']
 ---
 
 # 执行计划缓存
@@ -53,7 +53,7 @@ key 中任何一项变动（如切换数据库，重命名 `Prepare` 语句，�
 - 考虑到不同 `Execute` 的参数会不同，执行计划缓存为了保证适配性会禁止一些和具体参数值密切相关的激进查询优化手段，导致对特定的一些参数值，查询计划可能不是最优。比如查询的过滤条件为 `where a > ? and a < ?`，第一次 `Execute` 时参数分别为 2 和 1，考虑到这两个参数下次执行时可能会是 1 和 2，优化器不会生成对当前参数最优的 `TableDual` 执行计划。
 - 如果不考虑缓存失效和淘汰，一份执行计划缓存会对应各种不同的参数取值，理论上也会导致某些取值下执行计划非最优。比如查询过滤条件为 `where a < ?`，假如第一次执行 `Execute` 时用的参数值为 1，此时优化器生成最优的 `IndexScan` 执行计划放入缓存，在后续执行 `Exeucte` 时参数变为 10000，此时 `TableScan` 可能才是更优执行计划，但由于执行计划缓存，执行时还是会使用先前生成的 `IndexScan`。因此执行计划缓存更适用于查询较为简单（查询编译耗时占比较高）且执行计划较为固定的业务场景。
 
-目前执行计划缓存功能默认关闭，可以通过打开配置文件中 [`prepare-plan-cache` 项](/tidb-configuration-file.md#prepared-plan-cache)启用这项功能。
+目前执行计划缓存功能默认关闭，可以通过打开配置文件中 [`prepared-plan-cache` 项](/tidb-configuration-file.md#prepared-plan-cache)启用这项功能。
 
 > **注意：**
 >
@@ -128,6 +128,122 @@ MySQL [test]> select @@last_plan_from_cache;
 | @@last_plan_from_cache |
 +------------------------+
 | 0                      |
++------------------------+
+1 row in set (0.00 sec)
+```
+
+## 手动清空计划缓存
+
+通过执行 `ADMIN FLUSH [SESSION | INSTANCE] PLAN_CACHE` 语句，你可以手动清空计划缓存。
+
+该语句中的作用域 `[SESSION | INSTANCE]` 用于指定需要清空的缓存级别，可以为 `SESSION` 或 `INSTANCE`。如果不指定作用域，该语句默认清空 `SESSION` 级别的缓存。
+
+下面是一个清空计划缓存的例子：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> create table t (a int);
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> prepare stmt from 'select * from t';
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> execute stmt;
+Empty set (0.00 sec)
+
+MySQL [test]> execute stmt;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache; -- 选择计划缓存
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
++------------------------+
+1 row in set (0.00 sec)
+
+MySQL [test]> admin flush session plan_cache; -- 清空当前 session 的计划缓存
+Query OK, 0 rows affected (0.00 sec)
+
+MySQL [test]> execute stmt;
+Empty set (0.00 sec)
+
+MySQL [test]> select @@last_plan_from_cache; -- 由于缓存被清空，此时无法再次选中
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      0 |
++------------------------+
+1 row in set (0.00 sec)
+```
+
+TiDB 暂不支持清空 `GLOBAL` 级别的计划缓存，即不支持一次性清空整个集群的计划缓存，使用时会报错：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> admin flush global plan_cache;
+ERROR 1105 (HY000): Do not support the 'admin flush global scope.'
+```
+
+## 忽略 `COM_STMT_CLOSE` 指令和 `DEALLOCATE PREPARE` 语句
+
+为了减少每次执行 SQL 语句的语法分析，Prepared Statement 推荐的使用方式是，prepare 一次，然后 execute 多次，最后 deallocate prepare。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> prepare stmt from '...'; -- prepare 一次
+MySQL [test]> execute stmt using ...;  -- execute 一次
+MySQL [test]> ...
+MySQL [test]> execute stmt using ...;  -- execute 多次
+MySQL [test]> deallocate prepare stmt; -- 使用完成后释放
+```
+
+如果你习惯于在每次 execute 后都立即执行 deallocate prepare，如：
+
+{{< copyable "sql" >}}
+
+```sql
+MySQL [test]> prepare stmt from '...'; -- 第一次 prepare
+MySQL [test]> execute stmt using ...;
+MySQL [test]> deallocate prepare stmt; -- 一次使用后立即释放
+MySQL [test]> prepare stmt from '...'; -- 第二次 prepare
+MySQL [test]> execute stmt using ...;
+MySQL [test]> deallocate prepare stmt; -- 再次释放
+```
+
+这样的使用方式会让第一次执行得到的计划被立即清理，不能在第二次被复用。
+
+为了兼容这样的使用方式，从 v6.0 起，TiDB 支持 [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) 变量。打开该变量后，TiDB 会忽略关闭 Prepare Statement 的信号，解决上述问题，如：
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> set @@tidb_ignore_prepared_cache_close_stmt=1;  -- 打开开关
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> prepare stmt from 'select * from t'; -- 第一次 prepare
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute stmt;                        -- 第一次 execute
+Empty set (0.00 sec)
+
+mysql> deallocate prepare stmt;             -- 第一次 execute 后立即释放
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> prepare stmt from 'select * from t'; -- 第二次 prepare
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> execute stmt;                        -- 第二次 execute
+Empty set (0.00 sec)
+
+mysql> select @@last_plan_from_cache;       -- 因为开关打开，第二次依旧能复用上一次的计划
++------------------------+
+| @@last_plan_from_cache |
++------------------------+
+|                      1 |
 +------------------------+
 1 row in set (0.00 sec)
 ```

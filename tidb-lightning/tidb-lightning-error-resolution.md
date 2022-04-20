@@ -15,10 +15,6 @@ summary: 介绍了如何解决导入数据过程中的类型转换和冲突错�
 
 ## 类型错误 (Type error)
 
-> **警告:**
->
-> TiDB Lightning 类型错误处理功能（`lightning.max-error`）是实验特性。**不建议**在生产环境中仅依赖该功能处理相关错误。
-
 你可以通过修改配置项 `lightning.max-error` 来增加数据类型相关的容错数量。如果设置为 *N*，那么 TiDB Lightning 允许数据源中出现 *N* 个错误，而且会跳过这些错误，一旦超过这个错误数就会退出。默认值为 0，表示不允许出现错误。
 
 这些错误会被记录到数据库中。在导入完成后，你可以查看数据库中的数据，手动进行处理。请参见[错误报告](#错误报告)。
@@ -70,7 +66,21 @@ TiDB Lightning 只能检测数据源的重复项，不能解决运行 TiDB Light
 
 ## 错误报告
 
-所有错误都会写入下游 TiDB 集群 `lightning_task_info` 数据库中的表中。在导入完成后，你可以根据数据库中记录的内容，手动进行处理。
+如果 TiDB Lightning 在运行过程中收集到报错的记录，则在退出时会同时在终端和日志中输出各个类型报错数量的统计信息。
+
+* 输出在终端的报错统计如下表所示：
+
+    | # | ERROR TYPE | ERROR COUNT | ERROR DATA TABLE |
+    | - | --- | --- | ------ |
+    | 1 | Data Type | 1000 | `lightning_task_info`.`type_error_v1` |
+
+* 输出在 TiDB Lightning 的 log 文件的结尾如下：
+
+    ```shell
+    [2022/03/13 05:33:57.736 +08:00] [WARN] [errormanager.go:459] ["Detect 1000 data type errors in total, please refer to table `lightning_task_info`.`type_error_v1` for more details"]
+    ```
+
+所有错误都会写入下游 TiDB 集群 `lightning_task_info` 数据库中的表中。在导入完成后，如果收集到报错的数据，你可以根据数据库中记录的内容，手动进行处理。
 
 你可以使用 `lightning.task-info-schema-name` 配置更改数据库名称。
 

@@ -124,8 +124,8 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `new_collations_enabled_on_first_bootstrap`
 
 + 用于开启新的 collation 支持
-+ 默认值：false
-+ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
++ 默认值：true
++ 注意：该配置项只有在初次初始化集群时生效，初始化集群后，无法通过更改该配置项打开或关闭新的 collation 框架；4.0 版本之前的 TiDB 集群升级到 4.0 或更高版本时，由于集群已经初始化过，该参数无论如何配置，都作为 false 处理。
 
 ### `max-server-connections`
 
@@ -342,8 +342,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 >
 > `server-memory-quota` 目前为实验性特性，不建议在生产环境中使用。
 
-+ tidb-server 实例内存的使用限制，单位为字节。<!-- 从 TiDB v5.0 起 -->该配置项完全取代原有的 [`max-memory`](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#max-memory)。
-
++ 设置 tidb-server 实例的最大内存用量，单位为字节。
 + 默认值：0
 + 默认值为 0 表示无内存限制。
 
@@ -462,7 +461,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 ## prepared-plan-cache
 
-prepare 语句的 plan cache 设置。
+prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
 
 ### `enabled`
 
@@ -477,7 +476,7 @@ prepare 语句的 plan cache 设置。
 
 ### `memory-guard-ratio`
 
-+ 用于防止超过 performance.max-memory, 超过 max-memory * (1 - prepared-plan-cache.memory-guard-ratio) 会剔除 LRU 中的元素。
++ 用于防止 prepare plan cache 的内存用量超过 performance.server-memory-quota。当 prepare plan cache 的内存用量超过 server-memory-quota * (1 - prepared-plan-cache.memory-guard-ratio) 时，TiDB 会剔除 LRU 中的元素。
 + 默认值：0.1
 + 最小值：0
 + 最大值：1
@@ -572,6 +571,12 @@ opentracing.reporter 相关的设置。
 + TiDB 与 TiKV 节点 rpc keepalive 检查的超时时间
 + 默认值：3
 + 单位：秒
+
+### `grpc-compression-type`
+
++ 控制 TiDB 向 TiKV 节点传输数据使用的压缩算法类型。默认值为 "none" 即不压缩。修改为 "gzip" 可以使用 gzip 算法压缩数据。
++ 默认值："none"
++ 可选值："none", "gzip"
 
 ### `commit-timeout`
 
@@ -671,20 +676,6 @@ TiDB 服务状态相关配置。
 + 输出与 database 相关的 QPS metrics 到 Prometheus 的开关。
 + 默认值：false
 
-## stmt-summary <span class="version-mark">从 v3.0.4 版本开始引入</span>
-
-系统表 [statement summary tables](/statement-summary-tables.md) 的相关配置。
-
-### max-stmt-count
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中保存的 SQL 种类的最大数量。
-+ 默认值：3000
-
-### max-sql-length
-
-+ 系统表 [statement summary tables](/statement-summary-tables.md) 中 `DIGEST_TEXT` 和 `QUERY_SAMPLE_TEXT` 列的最大显示长度。
-+ 默认值：4096
-
 ## pessimistic-txn
 
 悲观事务使用方法请参考 [TiDB 悲观事务模式](/pessimistic-transaction.md)。
@@ -704,6 +695,14 @@ TiDB 服务状态相关配置。
 ### deadlock-history-collect-retryable
 
 + 控制 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表中是否收集可重试的死锁错误信息。详见 `DEADLOCKS` 表文档的[可重试的死锁错误](/information-schema/information-schema-deadlocks.md#可重试的死锁错误)小节。
++ 默认值：false
+
+### pessimistic-auto-commit
+
++ 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。默认情况下，即使开启全局悲观事务模式，自动提交事务依然使用乐观事务模式来执行。当开启该配置项后（设置为 `true`），在全局悲观事务模式下，自动提交事务将也使用悲观事务模式执行。行为与其他显式提交的悲观事务相同。
++ 对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的时延尖刺。
++ 对于不存在冲突的场景，如果有大量自动提交事务且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
+
 + 默认值：false
 
 ## experimental

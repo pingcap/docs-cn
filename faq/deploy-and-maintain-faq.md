@@ -1,12 +1,12 @@
 ---
-title: 部署运维 FAQ
-summary: 介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
+title: 安装部署 FAQ
+summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
-# 部署运维 FAQ
+# 安装部署 FAQ
 
-本文介绍 TiDB 集群运维部署的常见问题、原因及解决方法。
+本文介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 
 ## 环境准备 FAQ
 
@@ -269,7 +269,7 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 
 可以，目前只能调整全局的 replica 数量。首次启动时 PD 会读配置文件 (conf/pd.yml)，使用其中的 max-replicas 配置，之后修改需要使用 pd-ctl 配置命令 `config set max-replicas $num`，配置后可通过 `config show all` 来查看已生效的配置。调整的时候，不会影响业务，会在后台添加，注意总 TiKV 实例数总是要大于等于设置的副本数，例如 3 副本需要至少 3 个 TiKV。增加副本数量之前需要预估额外的存储需求。pd-ctl 的详细用法可参考 [PD Control 使用说明](/pd-control.md)。
 
-#### 缺少命令行集群管理工具，整个集群的健康度当前是否正常，不好确认？
+#### 缺少命令行集群管理工具，如何确认整个集群的健康度？
 
 可以通过 pd-ctl 等工具来判断集群大概的状态，详细的集群状态还是需要通过监控来确认。
 
@@ -469,9 +469,9 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 TiDB 使用 Prometheus + Grafana 组成 TiDB 数据库系统的监控系统。用户在 Grafana 上通过 dashboard 可以监控到 TiDB 的各类运行指标，包括
 
-+ 系统资源的监控指标 
-+ 客户端连接与 SQL 运行的指标 
-+ 内部通信和 Region 调度的指标 
++ 系统资源的监控指标
++ 客户端连接与 SQL 运行的指标
++ 内部通信和 Region 调度的指标
 
 通过这些指标，可以让数据库管理员更好的了解到系统的运行状态，运行瓶颈等内容。在监控指标的过程中，我们按照 TiDB 不同的模块，分别列出了各个模块重要的指标项，一般用户只需要关注这些常见的指标项。具体指标请参见[官方文档](/grafana-overview-dashboard.md)。
 

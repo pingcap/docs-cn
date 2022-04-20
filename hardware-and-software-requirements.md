@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/hardware-and-software-requirements/','/docs-cn/dev/how-t
 
 # TiDB 软件和硬件环境建议配置
 
-TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
+TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
 
 ## Linux 操作系统版本要求
 
@@ -14,6 +14,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 | Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本   |
 | CentOS                   | 7.3 及以上的 7.x 版本   |
 | Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
+| Amazon Linux             | 2 |
 | Ubuntu LTS               | 16.04 及以上的版本      |
 
 > **注意：**
@@ -47,7 +48,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好的部署和运�
 
 ## 服务器建议配置
 
-TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。对于开发，测试，及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
+TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器平台或者 ARM 架构的硬件服务器平台。对于开发、测试及生产环境的服务器硬件配置（不包含操作系统 OS 本身的占用）有以下要求和建议：
 
 ### 开发及测试环境
 
@@ -80,7 +81,7 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 > **注意：**
 >
-> - 生产环境中的 TiDB 和 PD 可以部署和运行在同服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
+> - 生产环境中的 TiDB 和 PD 可以部署和运行在同一台服务器上，如对性能和可靠性有更高的要求，应尽可能分开部署。
 > - 生产环境强烈推荐使用更高的配置。
 > - TiKV 硬盘大小配置建议 PCI-E SSD 不超过 2 TB，普通 SSD 不超过 1.5 TB。
 > - TiFlash 支持[多盘部署](/tiflash/tiflash-configuration.md#多盘部署)。
@@ -110,7 +111,8 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Pump | 8250 | Pump 通信端口 |
 | Drainer | 8249 | Drainer 通信端口 |
 | CDC | 8300 | CDC 通信接口 |
-| Prometheus | 9090 | Prometheus 服务通信端口 |
+| Monitoring | 9090 | Prometheus 服务通信端口 |
+| Monitoring | 20120 | NgMonitoring 服务通信端口 |
 | Node_exporter | 9100 | TiDB 集群每个节点的系统信息上报通信端口 |
 | Blackbox_exporter | 9115 | Blackbox_exporter 通信端口，用于 TiDB 集群端口监控 |
 | Grafana | 3000 | Web 监控服务对外服务和客户端(浏览器)访问端口 |

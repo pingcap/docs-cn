@@ -20,7 +20,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/shard-merge-best-practices/']
 
 从[分库分表合并迁移的实现原理部分](/dm/feature-shard-merge-pessimistic.md#实现原理)我们可以知道，DM 中的 sharding DDL lock 是用于协调不同上游分表向下游执行 DDL 的一种机制，本身并不是异常。
 
-因此，当通过 `show-ddl-locks` 查看到 DM-master 上存在 sharding DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `unlock-ddl-lock` 尝试去手动解除 sharding DDL lock。
+因此，当通过 `shard-ddl-lock` 查看到 DM-master 上存在 sharding DDL lock 时，或通过 `query-status` 查看到某些 DM-worker 有 `unresolvedGroups` 或 `blockingDDLs` 时，并不要急于使用 `shard-ddl-lock unlock` 尝试去手动解除 sharding DDL lock。
 
 只有在确认当前未能自动解除 sharding DDL lock 是文档中所列的[支持场景](/dm/manually-handling-sharding-ddl-locks.md#支持场景)之一时，才能参照对应支持场景中的手动处理示例进行处理。对于其他未被支持的场景，我们建议完整重做整个数据迁移任务，即清空下游数据库中的数据以及该数据迁移任务相关的 `dm_meta` 信息后，重新执行全量数据及增量数据的迁移。
 

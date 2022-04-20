@@ -27,7 +27,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.0.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v6.0.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -878,7 +878,7 @@ Encoding 格式示例：
 
 ### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 16，不带 `endKey` 时的默认值是 `-1`（表示没有限制)。示例如下：
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 `16`，设为 `-1` 则表示无数量限制。示例如下：
 
 显示从 a 开始的所有 Region 信息，数量上限为 16：
 
@@ -895,22 +895,7 @@ Encoding 格式示例：
 }
 ```
 
-显示从 a 开始的所有 Region 信息，数量上限为 20：
-
-{{< copyable "" >}}
-
-```bash
->> region keys --format=raw a "" 20 
-```
-
-```
-{
-  "count": 20,
-  "regions": [......],
-}
-```
-
-显示 [a, z) 范围内的所有 Region 信息，没有数量上限：
+显示 [a, z) 范围内的所有 Region 信息，数量上限为 16：
 
 {{< copyable "" >}}
 
@@ -925,12 +910,27 @@ Encoding 格式示例：
 }
 ```
 
-显示 [a, z) 范围内的所有 Region 信息，数量上限为 20：
+显示 [a, z) 范围内的所有 Region 信息，无数量上限：
 
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a z 20
+>> region keys --format=raw a z -1
+```
+
+```
+{
+  "count": ...,
+  "regions": [......],
+}
+```
+
+显示从 a 开始的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a "" 20 
 ```
 
 ```
@@ -1087,19 +1087,31 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> scheduler show                                 // 显示所有的 schedulers
->> scheduler add grant-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 调度到 store 1
->> scheduler add evict-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
->> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
->> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
->> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
->> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
->> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
->> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
->> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
->> scheduler resume all                           // 继续运行所有的调度器
->> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
+>> scheduler show                                         // 显示所有已经创建的 schedulers
+>> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
+>> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
+>> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
+>> scheduler add shuffle-leader-scheduler                 // 随机交换不同 store 上的 leader
+>> scheduler add shuffle-region-scheduler                 // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
+>> scheduler remove grant-leader-scheduler-1              // 把对应的调度器删掉，`-1` 对应 store ID
+>> scheduler pause balance-region-scheduler 10            // 暂停运行 balance-region 调度器 10 秒
+>> scheduler pause all 10                                 // 暂停运行所有的调度器 10 秒
+>> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
+>> scheduler resume all                                   // 继续运行所有的调度器
+>> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
+```
+
+### `scheduler config balance-leader-scheduler`
+
+用于查看和控制 `balance-leader-scheduler` 策略。
+
+从 TiDB v6.0.0 起，PD 为 `balance-leader-scheduler` 引入了 `Batch` 参数，用于控制 balance-leader 执行任务的速度。你可以通过 pd-ctl 修改 `balance-leader batch` 配置项设置该功能。
+
+在 v6.0.0 前，PD 不带有该配置（即 `balance-leader batch=1`）。在 v6.0.0 或更高版本中，`balance-leader batch` 的默认值为 `4`。如果你想为该配置项设置大于 `4` 的值，你需要同时调大 [`scheduler-max-waiting-operator`](#config-show--set-option-value--placement-rules)（默认值 `5`）。同时调大两个配置项后，你才能体验预期的加速效果。
+
+```bash
+>> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
 ```
 
 ### `scheduler config balance-hot-region-scheduler`
@@ -1284,7 +1296,7 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> * 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
 > * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
