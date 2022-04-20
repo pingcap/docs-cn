@@ -7,7 +7,7 @@ summary: Learn about common performance issues that might exist in DM and how to
 
 This document introduces common performance issues that might exist in DM and how to deal with them.
 
-Before diagnosing an issue, you can refer to the [DM 2.0-GA Benchmark Report](/dm/dm-benchmark-v5.3.0.md).
+Before diagnosing an issue, you can refer to the [DM Benchmark Report](https://github.com/pingcap/docs-dm/blob/release-5.3/en/dm-benchmark-v5.3.0.md).
 
 When diagnosing and handling performance issues, make sure that:
 
