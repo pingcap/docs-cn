@@ -126,7 +126,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
-| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]`。      |
+| `CONSTRAINTS`              | 适用于所有角色 (role) 的约束列表。例如，`CONSTRAINTS="[+disk=ssd]"`。      |
 | `LEADER_CONSTRAINTS`       | 仅适用于 leader 的约束列表。                                         |
 | `FOLLOWER_CONSTRAINTS`     | 仅适用于 follower 的约束列表。                                           |
 | `LEARNER_CONSTRAINTS`     | 仅适用于 learner 的约束列表。                                           |
@@ -175,12 +175,18 @@ CREATE TABLE t1 (
   userdata VARCHAR(100) NOT NULL
 ) PLACEMENT POLICY=p1 PARTITION BY LIST COLUMNS (country) (
   PARTITION pEurope VALUES IN ('DE', 'FR', 'GB') PLACEMENT POLICY=europe,
-  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica
+  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica,
   PARTITION pAsia VALUES IN ('CN', 'KR', 'JP')
 );
 ```
 
 如果分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`pEurope` 分区将会应用 `europe` 策略，而 `pAsia` 分区将会应用表 `t1` 的放置策略 `p1`。如果 `t1` 没有绑定任何策略，`pAsia` 就不会应用任何策略。
+
+给分区绑定放置策略后，你可以更改指定分区的放置策略。示例如下：
+
+```sql
+ALTER TABLE t1 PARTITION pEurope PLACEMENT POLICY=p1;
+```
 
 ### 为数据库配置默认的放置规则
 
@@ -195,13 +201,13 @@ CREATE PLACEMENT POLICY p3 FOLLOWERS=2;
 
 CREATE TABLE t1 (a INT);  -- 创建表 t1，且未指定放置规则。
 
-ALTER DATABASE test POLICY=p2;  -- 更改默认的放置规则，但更改不影响已有的表 t1。
+ALTER DATABASE test PLACEMENT POLICY=p2;  -- 更改默认的放置规则，但更改不影响已有的表 t1。
 
 CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置策略 p2 在 t2 上生效。
 
-CREATE TABLE t3 (a INT) POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 p2 策略在 t3 上不生效。
+CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 p2 策略在 t3 上不生效。
 
-ALTER DATABASE test POLICY=p3;  -- 再次更改默认的放置规则，此更改不影响已有的表。
+ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改默认的放置规则，此更改不影响已有的表。
 
 CREATE TABLE t4 (a INT);  -- 创建表 t4，默认的放置策略 p3 生效。
 
@@ -232,11 +238,11 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd:1,+disk=hdd:2}`) 指定。
+该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=hdd: 2}`) 指定。
 
 在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
 
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
 
 > **注意：**
 >
@@ -246,8 +252,8 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性] |
-| TiDB Lightning | 暂时不兼容 | |
+| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性) |
+| TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 

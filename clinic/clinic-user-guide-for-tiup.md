@@ -5,53 +5,73 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 # 使用 PingCAP Clinic
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Clinic Diag 诊断工具（以下简称为 Diag）与 Clinic Server 云服务（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
-目前，PingCAP Clinic 诊断服务目前处于 Beta 受邀测试使用阶段。
+目前，PingCAP Clinic 处于 Technical Preview 阶段。
 
 > **注意：**
 >
-> PingCAP Clinic 诊断服务暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
+> PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
 - [远程定位集群问题](#远程定位集群问题)
 
     - 当集群出现问题，需要远程咨询 PingCAP 技术支持时，你可以先使用 Diag 采集诊断数据，然后将其数据上传到 Clinic Server，最后把数据链接提供给技术支持人员，协助远程定位集群问题。
-
-    > **注意：**
-    >
-    > - PingCAP Clinic 目前处于 Beta 受邀测试使用阶段，如需使用 Diag 将数据上传到 Clinic Server，请联系与你对接的 PingCAP 技术人员获取试用账号。
-    > - PingCAP Clinic Beta 版本的 Server 端功能暂**未开放**给外部用户使用。当你把采集好的数据上传到 Clinic Server 并通过 Diag 获取了数据访问链接后，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
-
     - 当集群出现问题，但无法马上进行问题分析时，你可以先使用 Diag 采集数据，并将其数据保存下来，用于自己后期进行问题分析。
 
 - [本地快速检查集群状态](#本地快速检查集群状态)
 
-    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 PingCAP Clinic Beta 版本主要对集群配置项提供合理性检查，用于发现不合理的配置，并提供修改建议。
+    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 PingCAP Clinic Technical Preview 版本主要对集群配置项提供合理性检查，用于发现不合理的配置，并提供修改建议。
 
 ## 准备工作
 
-如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
+在使用 PingCAP Clinic 功能之前，你需要先安装数据采集组件 Diag 并准备数据上传环境。
 
-{{< copyable "shell-regular" >}}
+1. 安装 Diag。
 
-```bash
-tiup install diag
-```
+    - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
-若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
+        {{< copyable "shell-regular" >}}
 
-{{< copyable "shell-regular" >}}
+        ```bash
+        tiup install diag
+        ```
 
-```bash
-tiup update diag
-```
+    - 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
 
-> **注意：**
->
-> - 对于离线集群，你需要离线部署 Diag 工具。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
-> - Diag 工具**仅**包含在 v5.4.0 及后续版本的 TiDB Server 离线镜像包中。
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup update diag
+        ```
+
+    > **注意：**
+    >
+    > - 对于离线集群，你需要离线部署 Diag 诊断客户端。具体方法，请参照[离线部署 TiUP 组件：方式 2](/production-deployment-using-tiup.md#离线部署)。
+    > - Diag 诊断客户端**仅**包含在 v6.0.0 及后续版本的 TiDB Server 离线镜像包中。
+
+2. 获取并设置用于上传数据的 Access Token（以下简称为 Token）。
+
+    使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可跳过此步骤。
+
+    首先，通过以下方法获取 Token：登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+
+    ![Token 示例](/media/clinic-get-token.png)
+
+    > **注意：**
+    >
+    > - 如果你第一次访问 Clinic Server，请参考[快速上手指南：准备数据上传环境](/clinic/quick-start-with-clinic.md#准备工作)的相关步骤。
+    > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
+    > - Token 只用于上传数据。
+
+    然后，参考以下命令行，在 Diag 中设置该 Token：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag config clinic.token ${token-value}
+    ```
 
 ## 远程定位集群问题
 
@@ -61,7 +81,7 @@ tiup update diag
 
 如需查看 Diag 支持采集的数据的详细列表，请参阅 [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)。
 
-建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考 [采集 TiDB 集群的数据](采集-TiDB-集群的数据]。
+建议收集监控数据、配置信息等全量诊断数据，有助于提升后续诊断效率。具体方法，请参考[采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
 
 ### 第 2 步：采集数据
 
@@ -85,13 +105,14 @@ tiup update diag
     - `-t/--to`：指定采集时间的结束点。如果不指定该参数，默认结束点为当前时刻。如需修改时区，可使用 `-f="12:30 +0800"` 语法。如果没有在该参数中指定时区信息，如 `+0800`，则默认时区为 UTC。
 
     参数使用提示：
-    
+
     除了指定采集时间，你还可以使用 Diag 指定更多参数。如需查看所有参数，请使用 `tiup diag collect -h` 命令。
-    
+
     > **注意：**
-    > 
+    >
     > - Diag 默认**不收集**系统变量数据 (`db_vars`)。如需收集该数据，你需要额外提供开启了系统变量可读权限的数据库用户名和密码。
-    > - 如需收集包括系统变量在内的全量诊断数据，可以使用命令 `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars"`。
+    > - Diag 默认**不收集**性能数据 (`perf`)和 Debug 数据 (`debug`)。
+    > - 如需收集全量诊断数据，可以使用命令 `tiup diag collect <cluster-name> --include="system,monitor,log,config,db_vars,perf,debug"`。
 
     - `-l`：传输文件时的带宽限制，单位为 Kbit/s, 默认值为 `100000`（即 scp 的 `-l` 参数）。
     - `-N/--node`：支持只收集指定节点的数据，格式为 `ip:port`。
@@ -140,7 +161,7 @@ tiup update diag
     ```
 
     如需了解在上述命令中使用的参数说明或需要查看使用 Diag 工具时会使用的其他参数，请参考[采集 TiDB 集群的数据](#采集-tidb-集群的数据)。
-    
+
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。
 
 2. 如果确认要开始采集数据，请输入 `Y`。
@@ -177,6 +198,10 @@ tiup update diag
 - 方式 1：如果集群所在的网络能访问互联网，你可以[通过上传命令直接上传数据](#方式-1直接上传)。
 - 方式 2：如果集群所在的网络不能访问互联网，你需要[打包后再上传数据](#方式-2打包后上传)。
 
+> **注意：**
+>
+> 如果在上传前没有在 Diag 中设置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
+
 #### 方式 1：直接上传
 
 如果你的集群所在的网络可以访问互联网，你可以直接通过以下命令上传在[第 2 步：采集数据](#第-2-步采集数据)中收集的数据包文件夹：
@@ -184,12 +209,8 @@ tiup update diag
 {{< copyable "shell-regular" >}}
 
 ```bash
- tiup diag upload ${filepath} -u=username -p='password'
+ tiup diag upload
  ```
-
-> **注意：**
->
-> 目前 PingCAP Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
 输出结果示例如下：
 
@@ -197,18 +218,13 @@ tiup update diag
 
 ```bash
 [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Enter Username: username
-Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
 Completed!
-Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
+Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
 ```
 
-完成上传后，你需要将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
-
-> **注意：**
->
-> 目前，Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时**无法**打开该链接。
+完成上传后，你可以打开 `Download URL` 中的数据访问链接进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
 #### 方式 2：打包后上传
 
@@ -225,7 +241,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     打包时，Diag 会同时对数据进行压缩和加密。在测试环境中，800 MB 数据压缩后变为 57 MB。示例输出如下：
 
     ```bash
-    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag package diag-fNTnz5MGhr6
+    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag package diag-fNTnz5MGhr6
     packaged data set saved to /home/qiaodan/diag-fNTnz5MGhr6.diag
     ```
 
@@ -236,12 +252,8 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup diag upload ${filepath} -u=username -p='password'
+    tiup diag upload ${filepath}
     ```
-
-    > **注意：**
-    >
-    > 目前 PingCAP Clinic 在 Beta 受邀测试使用阶段，请联系与你对接的 PingCAP 技术人员获取试用账号。
 
     输出结果示例如下：
 
@@ -249,22 +261,17 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
     ```bash
     [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    Enter Username: username
-    Enter Password: >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
+    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
+    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
     Completed!
-    Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
+    Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
     ```
 
-3. 完成上传后，将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
-
-    > **注意：**
-    >
-    > 目前 Clinic Server 的数据访问链接只对 PingCAP 技术支持人员开放，上传数据的外部用户暂时**无法**打开该链接。
+3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
 
 ## 本地快速检查集群状态
 
-你可以使用 Diag 对集群状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。目前 PingCAP Clinic Beta 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
+你可以使用 Diag 对集群状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。目前 PingCAP Clinic Technical Preview 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
 
 1. 采集配置数据：
 
@@ -293,7 +300,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
     {{< copyable "shell-regular" >}}
 
     ```bash
-    Starting component `diag`: /root/.tiup/components/diag/v0.5.1/diag check diag-fNTnz5MGhr6
+    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag check diag-fNTnz5MGhr6
 
     # 诊断结果
     lili 2022-01-24T09:33:57+08:00
@@ -310,15 +317,19 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
     ## 3. 诊断结果信息，包括发现的可能的配置问题
     In this inspection, 22 rules were executed.
+
     The results of **1** rules were abnormal and needed to be further discussed with support team.
+
     The following is the details of the abnormalities.
 
     ### 诊断结果摘要
     The configuration rules are all derived from PingCAP’s OnCall Service.
+
     If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
+
     There were **1** abnormal results.
 
-    #### 诊断结果文档的保存路径 
+    #### 诊断结果文档的保存路径
     Rule Name: tidb-max-days
     - RuleID: 100
     - Variation: TidbConfig.log.file.max-days
@@ -341,7 +352,7 @@ Download URL: "https://clinic.pingcap.com:4433/diag/files?uuid=XXXX"
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    PingCAP Clinic 目前处于 Beta 受邀测试使用阶段，数据访问链接**未开放**给外部用户使用，只有经过授权的 PingCAP 技术支持人员可以访问其链接并查看数据。
+    你可以先尝试登录 [Clinic Server](https://clinic.pingcap.com.cn)。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 

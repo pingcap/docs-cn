@@ -104,7 +104,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，lightning 通过 PD 获取
 # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
 
-# 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能。
 sorted-kv-dir = "${path}"
 
 [mydumper]

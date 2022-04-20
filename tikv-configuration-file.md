@@ -351,7 +351,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + Scheduler 线程池中线程的数量。Scheduler 线程主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：4
-+ 最小值：1
++ 可调整范围：`[1, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
 
 ### `scheduler-pending-write-threshold`
 
@@ -369,14 +369,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `enable-ttl`
 
-+ TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
-+ 默认值：false
-
 > **警告：**
 >
-> TTL 暂时只适用于 RawKV 接口。由于所涉及底层数据格式不同，你只能在新建集群时设置该功能。
-> **禁止**在已有集群上修改该项配置，否则会导致启动报错。
-> **禁止**在有 TiDB 节点的集群中使用该参数，以免导致数据写坏等严重后果。
+> - 你**只能**在部署新的 TiKV 集群时将 `enable-ttl` 的值设置为 `true` 或 `false`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于该配置项为 `true` 和 `false` 的 TiKV 集群所存储的数据格式不相同，如果你在已有的 TiKV 集群中修改该配置项的值，会造成不同格式的数据存储在同一个集群，导致重启对应的 TiKV 集群时 TiKV 报 "can't enable ttl on a non-ttl instance" 错误。
+> - 你**只能**在 TiKV 集群中使用 `enable-ttl`，**不能**在有 TiDB 节点的集群中使用该配置项（即在此类集群中把 `enable-ttl` 设置为 `true`），否则会导致数据损坏、TiDB 集群升级失败等严重后果。
+
++ TTL 即 Time to live。数据超过 TTL 时间后会被自动删除。用户需在客户端写入请求中指定 TTL。不指定 TTL 即表明相应数据不会被自动删除。
++ 默认值：false
 
 ### `ttl-check-poll-interval`
 
@@ -529,6 +528,7 @@ raftstore 相关的配置项。
 + 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度。
 + 默认值：256
 + 最小值：大于 0
++ 最大值: 16384
 
 ### `raft-entry-max-size`
 
@@ -754,13 +754,13 @@ raftstore 相关的配置项。
 
 ### `apply-pool-size`
 
-+ 处理数据落盘的线程池中线程的数量，即 Apply 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
++ Apply 线程池负责把数据落盘至磁盘。该配置项为 Apply 线程池中线程的数量，即 Apply 线程池的大小。调整 Apply 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
-+ 最小值：大于 0
++ 可调整范围：[1, CPU * 10]
 
 ### `store-max-batch-size`
 
-+ Raft 状态机由 BatchSystem 批量执行日志落盘请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
++ Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。
 + 如果开启 `hibernate-regions`，默认值为 256；如果关闭 `hibernate-regions`，默认值为 1024
 + 最小值：大于 0
 + 最大值: 10240
@@ -769,7 +769,7 @@ raftstore 相关的配置项。
 
 + 表示处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
 + 默认值：2
-+ 最小值：大于 0
++ 可调整范围：[1, CPU * 10]
 
 ### `store-io-pool-size` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
@@ -1214,7 +1214,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `disable-auto-compactions`
 
-+ 开启自动 compaction 的开关。
++ 是否关闭自动 compaction
 + 默认值：false
 
 ### `soft-pending-compaction-bytes-limit`
@@ -1351,12 +1351,14 @@ Raft Engine 相关的配置项。
 
 > **注意：**
 >
-> TiDB v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容。因此，当要将 TiDB 集群降级至 v5.4.0 以前的版本时，你需要在降级**之前**先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`），并重启 TiKV 使配置生效，否则会导致集群降级后无法正常开启。
+> - Raft Engine 目前为实验特性，不建议在生产环境中使用。
+> - 第一次开启 Raft Engine 时，TiKV 会将原有的 RocksDB 数据转移至 Raft Engine 中。因此，TiKV 的启动时间会比较长，你需要额外等待几十秒。
+> - TiDB v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容。因此，当要将 TiDB 集群降级至 v5.4.0 以前的版本时，你需要在降级**之前**先关闭 Raft Engine（即把 `enable` 配置项设置为 `false`，并重启 TiKV 使配置生效），否则会导致集群降级后无法正常开启。
 
 ### `enable`
 
 + 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效
-+ 默认值：`"true"`
++ 默认值：`"false"`
 
 ### `dir`
 
