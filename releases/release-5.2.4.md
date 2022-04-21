@@ -55,7 +55,6 @@ TiDB 版本：5.2.4
     - (dup: release-5.4.0.md > Bug 修复> TiDB)- 修复并发的列类型变更导致 schema 与数据不一致的问题 [#31048](https://github.com/pingcap/tidb/issues/31048)
     - (dup: release-5.4.0.md > Bug 修复> TiDB)- 修复乐观事务下数据索引可能不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
     - (dup: release-5.0.6.md > Bug 修复> TiDB)- 修复当 SQL 语句中存在 JSON 类型列与 `CHAR` 类型列连接时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
-    - executor: fix pipelined window invalid memory address [#30326](https://github.com/pingcap/tidb/issues/30326)
     - (dup: release-5.0.6.md > Bug 修复> TiDB)- 修复窗口函数在使用事务时，计算结果与不使用事务时的计算结果不一致的问题 [#29947](https://github.com/pingcap/tidb/issues/29947)
     - (dup: release-5.0.6.md > Bug 修复> TiDB)- 修复 SQL 语句中带有 NATURAL JOIN 时，意外报错 `Column 'col_name' in field list is ambiguous` 的问题 [#25041](https://github.com/pingcap/tidb/issues/25041)
     - (dup: release-5.0.6.md > Bug 修复> TiDB)- 修复将 `Decimal` 转为 `String` 时长度信息错误的问题 [#29417](https://github.com/pingcap/tidb/issues/29417)
