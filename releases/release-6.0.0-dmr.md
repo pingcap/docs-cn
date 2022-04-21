@@ -525,7 +525,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
     - Fix the potential issue of TiFlash panic when `Snapshot` is applied simultaneously with multiple DDL operations [#4072](https://github.com/pingcap/tiflash/issues/4072)
     - Fix the potential query error after adding columns under heavy read workload [#3967](https://github.com/pingcap/tiflash/issues/3967)
     - Fix the issue that the `SQRT` function with a negative argument returns `NaN` instead of `Null` [#3598](https://github.com/pingcap/tiflash/issues/3598)
-    - Fix the issue that casting `INI` to `DECIMAL` might cause overflow [#3920](https://github.com/pingcap/tiflash/issues/3920)
+    - Fix the issue that casting `INT` to `DECIMAL` might cause overflow [#3920](https://github.com/pingcap/tiflash/issues/3920)
     - Fix the issue that the result of `IN` is incorrect in multi-value expressions [#4016](https://github.com/pingcap/tiflash/issues/4016)
     - Fix the issue that the date format identifies `'\n'` as an invalid separator [#4036](https://github.com/pingcap/tiflash/issues/4036)
     - Fix the issue that the learner-read process takes too much time under high concurrency scenarios [#3555](https://github.com/pingcap/tiflash/issues/3555)
