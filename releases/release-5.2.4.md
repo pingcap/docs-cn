@@ -71,16 +71,16 @@ TiDB 版本：5.2.4
     - 修复窗口函数执行时本应报错但是让 TiDB 崩溃的问题 [#30326](https://github.com/pingcap/tidb/issues/30326)
     - 修复特定情况下 Merge Join 执行结果错误的问题 [#33042](https://github.com/pingcap/tidb/issues/33042)
     - 修复关联子查询返回结果中有常量时导致执行结果出错的问题  [#32089](https://github.com/pingcap/tidb/issues/32089)
-    - 修复 ENUM/SET 因为编码错误导致写入数据错误的问题 [#32302](https://github.com/pingcap/tidb/issues/32302)
-    - 修复开启 new_collation 时，作用在 ENUM/SET 列上的 MAX/MIN 函数结果出错的问题 [#31638](https://github.com/pingcap/tidb/issues/31638)
+    - 修复 `ENUM` 或 `SET` 类型的列因为编码错误导致写入数据错误的问题 [#32302](https://github.com/pingcap/tidb/issues/32302)
+    - 修复开启 New Collation 时，作用在 `ENUM` 或`SET` 列上的 `MAX` 或 `MIN` 函数结果出错的问题 [#31638](https://github.com/pingcap/tidb/issues/31638)
     - 修复某些情况下 IndexHashJoin 算子没有正常退出的问题 [#31062](https://github.com/pingcap/tidb/issues/31062)
-    - 修复有虚拟列时可能导致读到错误数据的问题 [#30965](https://github.com/pingcap/tidb/issues/30965)
-    - 修复设置日志级别没有对慢查询日志生效的问题 [#30309](https://github.com/pingcap/tidb/issues/30309)
-    - 修复某些情况下分区表没有办法充分利用索引扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
+    - 修复有虚拟列时可能导致 TiDB 读到错误数据的问题 [#30965](https://github.com/pingcap/tidb/issues/30965)
+    - 修复日志级别的设置没有对慢查询日志生效的问题 [#30309](https://github.com/pingcap/tidb/issues/30309)
+    - 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
     - 修复 TiDB 的后台 HTTP 服务可能没有正确关闭导致集群状态异常的问题 [#30571](https://github.com/pingcap/tidb/issues/30571)
-    - 修复 TiDB 会错误打印很多鉴权失败相关的日志的问题 [#29709](https://github.com/pingcap/tidb/issues/29709)
+    - 修复 TiDB 会非预期地打印很多鉴权失败相关日志的问题 [#29709](https://github.com/pingcap/tidb/issues/29709)
     - 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
-    - 修复当 auto ID 超出范围时，REPLACE 语句修改了错误的行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
+    - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
 
 + TiKV
 
