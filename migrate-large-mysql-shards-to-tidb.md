@@ -117,7 +117,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 ### 在下游 创建schema
 
-在`${data-path}`中使用`my_db1-schema-create.sql`文件，编辑后手工在下游创建`mydb.table5`。
+在 `${data-path}` 中使用 `my_db1-schema-create.sql` 文件，编辑后手工在下游创建 `mydb.table5`。
 
 ### 执行导入操作
 
