@@ -8,7 +8,7 @@ aliases: ['/docs/dev/br/backup-and-restore-tool/','/docs/dev/reference/tools/br/
 
 [BR](http://github.com/pingcap/br) (Backup & Restore) is a command-line tool for distributed backup and restoration of the TiDB cluster data.
 
-Compared with [`dumpling`](/backup-and-restore-using-dumpling-lightning.md), BR is more suitable for scenarios involved huge data volumes.
+Compared with [Dumpling](/dumpling-overview.md), BR is more suitable for scenarios involved huge data volumes.
 
 In addition to regular backup and restoration, you can also use BR for large-scale data migration as long as compatibility is ensured.
 
