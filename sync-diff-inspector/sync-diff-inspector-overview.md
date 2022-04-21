@@ -17,7 +17,7 @@ title: sync-diff-inspector 用户文档
 
 你可通过以下方式下载 sync-diff-inspector：
 
-+ Binary 包。点击 [tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) 进行下载。
++ Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 + Docker 镜像。执行以下命令进行下载：
 
     {{< copyable "shell-regular" >}}

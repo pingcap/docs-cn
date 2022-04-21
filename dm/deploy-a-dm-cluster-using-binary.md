@@ -10,19 +10,9 @@ title: 使用 DM binary 部署 DM 集群
 >
 > 对于生产环境，推荐[使用 TiUP 部署 DM 集群及相关监控组件](/dm/deploy-a-dm-cluster-using-tiup.md)。
 
-## 准备工作
+## 下载 DM 安装包
 
-使用下表中的链接下载官方 binary：
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/dm-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/dm-{version}-linux-amd64.sha256` |
-
-> **注意：**
->
-> 下载链接中的 `{version}` 为 DM 的版本号。例如，`v1.0.1` 版本的下载链接为 `https://download.pingcap.org/dm-v1.0.1-linux-amd64.tar.gz`。可以通过 [DM Release](https://github.com/pingcap/tiflow/releases) 查看当前已发布版本。
-
-下载的文件中包括子目录 bin 和 conf。bin 目录下包含 dm-master、dm-worker 以及 dmctl 的二进制文件。conf 目录下有相关的示例配置文件。
+DM 安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ## 使用样例
 
@@ -63,7 +53,7 @@ DM-master 提供[命令行参数](#使用命令行参数部署-dm-master)和[配
 DM-master 的命令行参数说明：
 
 ```bash
-./bin/dm-master --help
+./dm-master --help
 ```
 
 ```
@@ -133,7 +123,7 @@ initial-cluster = "master1=http://192.168.0.4:8291,master2=http://192.168.0.5:82
 > 执行该命令后控制台不会输出日志，可以通过 `tail -f dm-master.log` 查看运行日志。
 
 ```bash
-./bin/dm-master -config conf/dm-master1.toml
+./dm-master -config conf/dm-master1.toml
 ```
 
 对于 DM-master2 和 DM-master3，修改配置文件中的 `name` 为 `master2` 和 `master3`，并将 `peer-urls` 的值改为 `192.168.0.5:8291` 和 `192.168.0.6:8291` 即可。
@@ -149,7 +139,7 @@ DM-worker 提供[命令行参数](#使用命令行参数部署-dm-worker)和[配
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dm-worker --help
+./dm-worker --help
 ```
 
 ```
@@ -206,7 +196,7 @@ join = "192.168.0.4:8261,192.168.0.5:8261,192.168.0.6:8261"
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dm-worker -config conf/dm-worker1.toml
+./dm-worker -config conf/dm-worker1.toml
 ```
 
 对于 DM-worker2，修改配置文件中的 `name` 为 `worker2` 即可。

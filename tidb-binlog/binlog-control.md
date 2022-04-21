@@ -25,30 +25,7 @@ binlogctl 支持如下这些功能：
 >
 > 建议使用的 Control 工具版本与集群版本保持一致。
 
-binlogctl 下载链接：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
-```
-
-检查文件完整性，返回 ok 则正确：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-{version}-linux-amd64.sha256
-```
-
-检查文件完整性，返回 ok 则正确：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-```
+binlogctl 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ## binlogctl 使用说明
 
