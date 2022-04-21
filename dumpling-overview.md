@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 你可以通过下列任意方式获取 Dumpling：
 
 - TiUP 执行 `tiup install dumpling` 命令。获取后，使用 `tiup dumpling ...` 命令运行 Dumpling。
-- 下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools.md#dumpling)。
+- 下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools.md)。
 
 更多详情，可以使用 --help 选项查看，或参考 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
