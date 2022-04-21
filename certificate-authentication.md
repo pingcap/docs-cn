@@ -285,7 +285,7 @@ The user certificate information can be specified by `require subject`, `require
         {{< copyable "shell-regular" >}}
 
         ```shell
-        openssl x509 -noout -ext subjectAltName -in client.crt
+        openssl x509 -noout -extensions subjectAltName -in client.crt
         ```
 
     + `require san` currently supports the following `Subject Alternative Name` check items:
