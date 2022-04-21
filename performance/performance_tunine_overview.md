@@ -79,7 +79,7 @@ User Response time = Service time + Queuing delay + Coherency deplay
 - 如果瓶颈不在数据库中，需要借助数据库外部搜集的资源利用率，或者对应用程序进行 Profile，以确定数据库外部的瓶颈，常见场景比如应用程序或者代理服务器资源不足，应用程序存在串行点无法充分利用硬件资源等。
 - 如果瓶颈存在数据库中，工程师可以通过数据库完善的调优工具进行数据库内部性能分析和诊断，常见场景比如存在慢 SQL，应用程序使用数据库的方式不合理，数据库存在读写热点等。
 
-TiDB 用户可使用基于数据库时间的优化方法论，具体的分析诊断手册、TiDB 提供的工具和实际案例参考 [优化手册](/performance/performance_tuning_guideline.md) 和 [OLTP 负载优化案例](/performanc/real-world-tuning-case)
+TiDB 用户可使用基于数据库时间的优化方法论，具体的分析诊断手册、TiDB 提供的工具和实际案例参考 [优化手册](/performance/performance_tuning_guide.md) 和 [OLTP 负载优化案例](/performanc/real-world-tuning-case)
 
 ### 提出优化方案，评估每种方案的收益、风险和成本
 
