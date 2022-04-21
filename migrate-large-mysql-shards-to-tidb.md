@@ -121,7 +121,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 {{< copyable "shell-regular" >}}
 
-```
+```shell
 vim ${data-path}/my_db1/my_db1-schema-create.sql
 ```
 
