@@ -113,7 +113,7 @@ title: TiDB Dashboard 流量可视化页面
 你可以通过「指标选择框」（以上界面中 **Write (bytes)** 处）来查看你关心的指标：
 
 * `Read (bytes)`：读取字节量
-* `Write (bytes)`：读取字节量
+* `Write (bytes)`：写入字节量
 * `Read (keys)`：读取次数
 * `Write (keys)`：写入次数
 * `All`：所有（读写流量的总和）
