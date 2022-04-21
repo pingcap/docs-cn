@@ -286,10 +286,10 @@ mysql -utest -h0.0.0.0 -P4000 --ssl-cert /path/to/client-cert.new.pem --ssl-key 
         {{< copyable "shell-regular" >}}
 
         ```shell
-        openssl x509 -noout -ext subjectAltName -in client.crt
+        openssl x509 -noout -extensions subjectAltName -in client.crt
         ```
 
-    + `require san` 目前支持以下 `Subject Alternative Name` 检查项：
+    + `require san` 目前支持以下 `Subject Alternative Name` 检查项： 
 
         - URI
         - IP
