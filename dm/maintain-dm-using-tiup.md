@@ -187,7 +187,7 @@ tiup dm scale-in prod-cluster -N 172.16.5.140:8262
 >
 > 对于 v2.0.5 之前版本的集群，可使用 v2.0.5 及之后版本的 dmctl 导出和导入集群配置。
 >
-> 对于 v2.0.2 之后的版本，导入集群配置时暂不支持自动恢复 relay worker 相关配置，可手动执行 `start-relay` 命令[开启 relay log](/dm/relay-log.md#启动停止-relay-log)。
+> 对于 v2.0.2 之后的版本，导入集群配置时暂不支持自动恢复 relay worker 相关配置，可手动执行 `start-relay` 命令[开启 relay log](/dm/relay-log.md#开启/关闭 relay log)。
 
 滚动升级过程中尽量保证对前端业务透明、无感知，其中对不同节点有不同的操作。
 

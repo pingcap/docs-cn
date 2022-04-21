@@ -74,7 +74,7 @@ config import [--dir directory]
 
 > **注意：**
 >
-> 对于 v2.0.2 版本之后的集群，暂不支持自动导入 relay worker 的相关配置，可以手动使用 `start-relay` 命令[开启 relay log](/dm/relay-log.md#启动停止-relay-log)。
+> 对于 v2.0.2 版本之后的集群，暂不支持自动导入 relay worker 的相关配置，可以手动使用 `start-relay` 命令[开启 relay log](/dm/relay-log.md#开启/关闭 relay log)。
 
 ### 参数解释
 
