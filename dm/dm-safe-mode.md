@@ -67,7 +67,6 @@ REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'a
     
     你可以配置 syncer 的配置项 `checkpoint-flush-interval` 来调整 checkpoint 的间隔，从而影响增量同步任务开始时安全模式的持续时间。一般情况下不建议调整，如有需要，应优先使用[手动开启](#手动开启)。
 
-
 ### 手动开启
 
 你可以通过调整增量任务配置文件中 syncer 的配置项 `safe-mode`，控制是否需要全程开启安全模式。`safe-mode` 是布尔类型参数，默认为 `false`。如果设置为 `true`，则表示在增量同步的全过程中都会开启安全模式。例如，下面是一个开启了安全模式的任务配置示例：
