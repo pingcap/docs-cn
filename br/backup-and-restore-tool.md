@@ -7,7 +7,7 @@ summary: 了解 BR 工具是什么、有什么用。
 
 [BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
-相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合**大数据量**的场景。
+相比 [Dumpling](/dumpling-overview.md)，BR 更适合**大数据量**的场景。
 
 本文介绍了 BR 的工作原理、推荐部署配置、使用限制以及几种使用方式。
 
