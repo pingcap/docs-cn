@@ -89,68 +89,75 @@ cat rule.json
 [
   {
     "group_id": "pd",
-    "id": "zone-east",
-    "start_key": "",
-    "end_key": "",
-    "role": "voter",
-    "count": 2,
-    "label_constraints": [
+    "group_index": 0,
+    "group_override": false,
+    "rules": [
       {
-        "key": "zone",
-        "op": "in",
-        "values": [
-          "east"
+        "group_id": "pd",
+        "id": "zone-east",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 2,
+        "label_constraints": [
+          {
+            "key": "zone",
+            "op": "in",
+            "values": [
+              "east"
+            ]
+          }
+        ],
+        "location_labels": [
+          "zone",
+          "rack",
+          "host"
+        ]
+      },
+      {
+        "group_id": "pd",
+        "id": "zone-west",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 1,
+        "label_constraints": [
+          {
+            "key": "zone",
+            "op": "in",
+            "values": [
+              "west"
+            ]
+          }
+        ],
+        "location_labels": [
+          "zone",
+          "rack",
+          "host"
+        ]
+      },
+      {
+        "group_id": "pd",
+        "id": "zone-west",
+        "start_key": "",
+        "end_key": "",
+        "role": "learner",
+        "count": 1,
+        "label_constraints": [
+          {
+            "key": "zone",
+            "op": "in",
+            "values": [
+              "west"
+            ]
+          }
+        ],
+        "location_labels": [
+          "zone",
+          "rack",
+          "host"
         ]
       }
-    ],
-    "location_labels": [
-      "zone",
-      "rack",
-      "host"
-    ]
-  },
-  {
-    "group_id": "pd",
-    "id": "zone-west",
-    "start_key": "",
-    "end_key": "",
-    "role": "voter",
-    "count": 1,
-    "label_constraints": [
-      {
-        "key": "zone",
-        "op": "in",
-        "values": [
-          "west"
-        ]
-      }
-    ],
-    "location_labels": [
-      "zone",
-      "rack",
-      "host"
-    ]
-  },
-  {
-    "group_id": "pd",
-    "id": "zone-west",
-    "start_key": "",
-    "end_key": "",
-    "role": "learner",
-    "count": 1,
-    "label_constraints": [
-      {
-        "key": "zone",
-        "op": "in",
-        "values": [
-          "west"
-        ]
-      }
-    ],
-    "location_labels": [
-      "zone",
-      "rack",
-      "host"
     ]
   }
 ]
@@ -158,7 +165,9 @@ cat rule.json
 
 ### 启用自适应同步模式
 
-副本的复制模式由 PD 节点控制。如果要使用 DR Auto-sync 自适应同步模式，需要在部署集群前先配置好 PD 的配置文件，如下所示：
+副本的复制模式由 PD 节点控制。如果要使用 DR Auto-sync 自适应同步模式，需要修改 PD 的配置。
+
++ 方法一：在部署集群前先配置好 PD 的配置文件，如下所示：
 
 {{< copyable "" >}}
 
@@ -173,6 +182,19 @@ primary-replicas = 2
 dr-replicas = 1
 wait-store-timeout = "1m"
 wait-sync-timeout = "1m"
+```
+
++ 方法二：如果集群已经部署，使用 pd-ctl 命令进行修改，如下所示：
+
+{{< copyable "" >}}
+
+```shell
+config set replication-mode dr-auto-sync
+config set replication-mode dr-auto-sync label-key zone
+config set replication-mode dr-auto-sync primary east
+config set replication-mode dr-auto-sync dr west
+config set replication-mode dr-auto-sync primary-replicas 2
+config set replication-mode dr-auto-sync dr-replicas 1
 ```
 
 在以上配置文件中：
