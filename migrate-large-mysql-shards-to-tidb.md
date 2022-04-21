@@ -149,14 +149,16 @@ vim ${data-path}/my_db1/my_db1-schema-create.sql
 
     # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
     [[mydumper.files]]
-    pattern = '(?i)^[^/]*/my_db1\.t[1-2].*\.sql$'
+    pattern = '(^|/)my_db1\.table[1-2].*\.sql$'
     schema = "my_db"
     table = "table5"
+    type = "sql"
 
     [[mydumper.files]]
-    pattern = '(?i)^[^/]*/my_db2\.t[3-4].*\.sql$'
+    pattern = '(^|/)my_db1\.table[1-2].*\.sql$'
     schema = "my_db"
     table = "table5"
+    type = "sql"
 
     # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
     [tidb]
