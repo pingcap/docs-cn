@@ -155,7 +155,7 @@ vim ${data-path}/my_db1/my_db1-schema-create.sql
     type = "sql"
 
     [[mydumper.files]]
-    pattern = '(^|/)my_db1\.table[1-2].*\.sql$'
+    pattern = '(^|/)my_db2\.table[3-4].*\.sql$'
     schema = "my_db"
     table = "table5"
     type = "sql"
