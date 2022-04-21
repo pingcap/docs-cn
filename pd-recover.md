@@ -109,9 +109,11 @@ Or you can simply run the above command in all PD servers to find the largest on
 
 ### Deploy a new PD cluster
 
-Before deploying a new PD cluster, you need to stop the the existing PD cluster and then delete the previous data directory which is specified by `--data-dir`.
+Before deploying a new PD cluster, you need to stop the the existing PD cluster and then delete the previous data directory or specify a new data directory using `--data-dir`.
 
 ### Use pd-recover
+
+You only need to run `pd-recover` on one PD node.
 
 {{< copyable "shell-regular" >}}
 
