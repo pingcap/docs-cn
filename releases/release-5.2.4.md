@@ -14,50 +14,24 @@ TiDB 版本：5.2.4
 + TiDB
 
     - (dup: release-5.1.4.md > 兼容性更改> TiDB)- 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
-    - (dup: release-5.3.1.md > 兼容性更改> Tools> TiDB Lightning)- 将 `regionMaxKeyCount` 的默认值从 1_440_000 调整为 1_280_000，以避免数据导入后出现过多空 Region [#30018](https://github.com/pingcap/tidb/issues/30018)
 
 + Tools
 
-    + Backup & Restore (BR)
+    + TiDB Lightning
 
-        -
-        -
+        - (dup: release-5.3.1.md > 兼容性更改> Tools> TiDB Lightning)- 将 `regionMaxKeyCount` 的默认值从 1_440_000 调整为 1_280_000，以避免数据导入后出现过多空 Region [#30018](https://github.com/pingcap/tidb/issues/30018)
 
 ## 提升改进
-
-+ TiDB
-
-    -
 
 + TiKV
 
     - (dup: release-6.0.0-dmr.md > 提升改进> TiKV)- 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
     - (dup: release-6.0.0-dmr.md > 提升改进> TiKV)- 通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
-    - 将 proc filesystem (procfs) 升级至 0.12.0 版本 [#11702](https://github.com/tikv/tikv/issues/11702)
-    - 通过增加对 Raft log 进行垃圾回收 (GC) 时的 write batch 大小来加快 GC 速度 [#11404](https://github.com/tikv/tikv/issues/11404)
-    - 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
-
-+ PD
-
-    -
-
-+ TiDB Dashboard
-
-    -
-
-+ TiFlash
-
-    -
+    - (dup: release-5.3.1.md > 提升改进> TiKV)- 将 proc filesystem (procfs) 升级至 0.12.0 版本 [#11702](https://github.com/tikv/tikv/issues/11702)
+    - (dup: release-5.3.1.md > 提升改进> TiKV)- 通过增加对 Raft log 进行垃圾回收 (GC) 时的 write batch 大小来加快 GC 速度 [#11404](https://github.com/tikv/tikv/issues/11404)
+    - (dup: release-5.0.6.md > 提升改进> TiKV)- 将插入 SST 文件时的校验操作从 Apply 线程池移动到 Import 线程池，从而提高 SST 文件的插入速度 [#11239](https://github.com/tikv/tikv/issues/11239)
 
 + Tools
-
-    + Backup & Restore (BR)
-
-        -
-
-    + Data Migration (DM)
-
-        -
 
     + TiCDC
 
@@ -71,17 +45,6 @@ TiDB 版本：5.2.4
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
         - 在 grafana 监控面板中支持 multi-k8s  [#4665](https://github.com/pingcap/tiflow/issues/4665)
         - 添加 channgeed checkpoint 预计多久追上 (ETA) 监控指标 [#3311](https://github.com/pingcap/tiflow/pull/3311)
-    + Dumpling
-
-        -
-
-    + TiDB Lightning
-
-        - note 1
-
-    + TiDB Binlog
-
-        - note 1
 
 ## Bug 修复
 
@@ -117,10 +80,11 @@ TiDB 版本：5.2.4
     - 修复某些情况下分区表没有办法充分利用索引扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
     - 修复 TiDB 的后台 HTTP 服务可能没有正确关闭导致集群状态异常的问题 [#30571](https://github.com/pingcap/tidb/issues/30571)
     - 修复 TiDB 会错误打印很多鉴权失败相关的日志的问题 [#29709](https://github.com/pingcap/tidb/issues/29709)
+    - 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
+    - 修复当 auto ID 超出范围时，REPLACE 语句修改了错误的行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
 
 + TiKV
 
-    -
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
@@ -139,22 +103,18 @@ TiDB 版本：5.2.4
     - 修复因伪造 merge target 导致的 TiKV panic 和非预期的 peer 销毁 [#12232](https://github.com/tikv/tikv/issues/12232)
     - 修复 merge 期间 target peer 被未初始化却被销毁的 peer 所替换导致的 panic [#12048](https://github.com/tikv/tikv/issues/12048)
     - 修复 apply snapshot 中止时发生 panic 的问题 [#11618](https://github.com/tikv/tikv/issues/11618)
-    - 修复 TiKV 监控项中实例级别 gRPC 的平均延迟时间不准确的问题 [#11299](https://github.com/tikv/tikv/issues/11299)
-    - 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
-    - 修复 GC worker 繁忙后无法执行范围删除（即执行内部命令 `unsafe_destroy_range`）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
-    - 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
-    - 修复逆序扫表时 TiKV 无法正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
-    - 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
-    - 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
+    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复 TiKV 监控项中实例级别 gRPC 的平均延迟时间不准确的问题 [#11299](https://github.com/tikv/tikv/issues/11299)
+    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
+    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 GC worker 繁忙后无法执行范围删除（即执行内部命令 `unsafe_destroy_range`）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
+    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
+    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复逆序扫表时 TiKV 无法正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
+    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
+    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
 
 + PD
 
     - (dup: release-6.0.0-dmr.md > Bug 修复> PD)- 修复 Region Scatterer 生成的调度缺失部分 Peer 的问题 [#4565](https://github.com/tikv/pd/issues/4565)
     - (dup: release-5.4.0.md > Bug 修复> PD)- 修复热点统计中无法剔除冷热点数据的问题 [#4390](https://github.com/tikv/pd/issues/4390)
-
-+ TiDB Dashboard
-
-    -
 
 + TiFlash
 
@@ -186,15 +146,10 @@ TiDB 版本：5.2.4
 
     + Backup & Restore (BR)
 
-        -
-
-    + Data Migration (DM)
-
-        -
+        - 修复 BR 备份 rawkv 失败的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
 
     + TiCDC
 
-        -
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复不支持同步默认值的问题 [#3793](https://github.com/pingcap/tiflow/issues/3793)
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiCDC)- 修复某些情况下序列对象被错误同步的问题 [#4552](https://github.com/pingcap/tiflow/issues/4552)
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiCDC)- 修复了 TiCDC 进程在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
@@ -206,9 +161,7 @@ TiDB 版本：5.2.4
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复在移除同步任务后潜在的 panic 问题 [#3128](https://github.com/pingcap/tiflow/issues/3128)
         - (dup: release-5.3.1.md > Bug 修复> Tools> TiCDC)- 修复了 HTTP API 在查询的组件不存在时导致 CDC 挂掉的问题 [#3840](https://github.com/pingcap/tiflow/issues/3840)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复因 checkpoint 不准确导致的潜在的数据丢失问题 [#3545](https://github.com/pingcap/tiflow/issues/3545)
-
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复潜在的同步流控死锁问题 [#4055](https://github.com/pingcap/tiflow/issues/4055)
-
         - (dup: release-5.3.1.md > Bug 修复> Tools> TiCDC)- 修复人为删除 etcd 任务的状态时导致 TiCDC panic 的问题 [#2980](https://github.com/pingcap/tiflow/issues/2980)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复 DDL 特殊注释导致的同步停止的问题 [#3755](https://github.com/pingcap/tiflow/issues/3755)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复 `config.Metadata.Timeout` 没有正确配置而导致的同步停止问题 [#3352](https://github.com/pingcap/tiflow/issues/3352)
@@ -222,13 +175,10 @@ TiDB 版本：5.2.4
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - (dup: release-5.0.6.md > Bug 修复> Tools> TiCDC)- 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
         - 修复 1 个 table 在同一节点被反复调入调出可能会导致 changefeed 卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
-       - 修复当 PD 状态不正常时 openapi 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
-       - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
-       - 修复 Unified Sorter 的 workpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
-       - 修复 kv client changed region 监控数据可能为负的问题  [#4300](https://github.com/pingcap/tiflow/issues/4300) 
-    + Dumpling
-
-        -
+        - 修复当 PD 状态不正常时 openapi 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
+        - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
+        - 修复 Unified Sorter 的 workpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
+        - 修复 kv client changed region 监控数据可能为负的问题  [#4300](https://github.com/pingcap/tiflow/issues/4300)
 
     + TiDB Lightning
 
@@ -236,7 +186,3 @@ TiDB 版本：5.2.4
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Lightning)- 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Lightning)- 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - (dup: release-5.1.4.md > Bug 修复> Tools> TiDB Lightning)+ 修复 S3 存储路径不存在时 TiDB Lightning 不报错的问题 [#28031](https://github.com/pingcap/tidb/issues/28031) [#30709](https://github.com/pingcap/tidb/issues/30709)
-
-    + TiDB Binlog
-
-        -
