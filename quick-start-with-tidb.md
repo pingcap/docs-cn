@@ -8,7 +8,7 @@ aliases: ['/docs/dev/quick-start-with-tidb/','/docs/dev/test-deployment-using-do
 
 This guide walks you through the quickest way to get started with TiDB. For non-production environments, you can deploy your TiDB database by either of the following methods:
 
-- [Deploy a local test cluster](#deploy-a-local-test-cluster) (for Mac and Linux)
+- [Deploy a local test cluster](#deploy-a-local-test-cluster) (for macOS and Linux)
 - [Simulate production deployment on a single machine](#simulate-production-deployment-on-a-single-machine) (for Linux only)
 
 > **Note:**
@@ -23,10 +23,10 @@ This guide walks you through the quickest way to get started with TiDB. For non-
 
 ## Deploy a local test cluster
 
-- Scenario: Quickly deploy a local TiDB cluster for testing using a single Mac or Linux server. By deploying such a cluster, you can learn the basic architecture of TiDB and the operation of its components, such as TiDB, TiKV, PD, and the monitoring components.
+- Scenario: Quickly deploy a local TiDB cluster for testing using a single macOS or Linux server. By deploying such a cluster, you can learn the basic architecture of TiDB and the operation of its components, such as TiDB, TiKV, PD, and the monitoring components.
 
 <SimpleTab>
-<div label="Mac">
+<div label="macOS">
 
 As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB instances, 3 TiKV instances, 3 PD instances, and optional TiFlash instances. With TiUP Playground, you can quickly build the test cluster by taking the following steps:
 
@@ -38,16 +38,32 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
+    If the following message is displayed, you have installed TiUP successfully:
+
+    ```log
+    Successfully set mirror to https://tiup-mirrors.pingcap.com
+    Detected shell: zsh
+    Shell profile:  /Users/user/.zshrc
+    /Users/user/.zshrc has been modified to add tiup to PATH
+    open a new terminal or source /Users/user/.zshrc to use it
+    Installed path: /Users/user/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
+
+    Note the Shell profile path in the output above. You need to use the path in the next step.
+
 2. Declare the global environment variable:
 
     > **Note:**
     >
-    > After the installation, TiUP displays the absolute path of the corresponding `profile` file. You need to modify the following `source` command according to the path.
+    > After the installation, TiUP displays the absolute path of the corresponding Shell profile file. You need to modify `${your_shell_profile}` in the following `source` command according to the path. In this case, `${your_shell_profile}` is `/Users/user/.zshrc` from the output of Step 1.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. Start the cluster in the current session:
@@ -110,13 +126,15 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 6. Access the [TiDB Dashboard](/dashboard/dashboard-intro.md) at <http://127.0.0.1:2379/dashboard>. The default username is `root`, with an empty password.
 
-7. (Optional) [Load data to TiFlash](/tiflash/use-tiflash.md) for analysis.
+7. Access the Grafana dashboard of TiDB through <http://127.0.0.1:3000>. Both the default username and password are `admin`.
 
-8. Clean up the cluster after the test deployment:
+8. (Optional) [Load data to TiFlash](/tiflash/use-tiflash.md) for analysis.
 
-    1. Stop the process by pressing `ctrl-c`.
+9. Clean up the cluster after the test deployment:
 
-    2. Run the following command:
+    1. Stop the above TiDB service by pressing <kbd>Control+C</kbd>.
+
+    2. Run the following command after the service is stopped:
 
         {{< copyable "shell-regular" >}}
 
@@ -141,16 +159,32 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
+    If the following message is displayed, you have installed TiUP successfully:
+
+    ```log
+    Successfully set mirror to https://tiup-mirrors.pingcap.com
+    Detected shell: zsh
+    Shell profile:  /Users/user/.zshrc
+    /Users/user/.zshrc has been modified to add tiup to PATH
+    open a new terminal or source /Users/user/.zshrc to use it
+    Installed path: /Users/user/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
+
+    Note the Shell profile path in the output above. You need to use the path in the next step.
+
 2. Declare the global environment variable:
 
     > **Note:**
     >
-    > After the installation, TiUP displays the absolute path of the corresponding `profile` file. You need to modify the following `source` command according to the path.
+    > After the installation, TiUP displays the absolute path of the corresponding Shell profile file. You need to modify `${your_shell_profile}` in the following `source` command according to the path.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. Start the cluster in the current session:
@@ -217,9 +251,9 @@ As a distributed system, a basic TiDB test cluster usually consists of 2 TiDB in
 
 9. Clean up the cluster after the test deployment:
 
-    1. Stop the process by pressing `ctrl-c`.
+    1. Stop the process by pressing <kbd>Control+C</kbd>.
 
-    2. Run the following command:
+    2. Run the following command after the service is stopped:
 
         {{< copyable "shell-regular" >}}
 
@@ -288,12 +322,12 @@ Other requirements for the target machine:
 
     > **Note:**
     >
-    > After the installation, TiUP displays the absolute path of the corresponding `profile` file. You need to modify the following `source` command according to the path.
+    > After the installation, TiUP displays the absolute path of the corresponding Shell profile file. You need to modify  `${your_shell_profile}` in the following `source` command according to the path.
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. Install the cluster component of TiUP:
@@ -312,12 +346,12 @@ Other requirements for the target machine:
     tiup update --self && tiup update cluster
     ```
 
-5. Use the `root` user privilege to increase the connection limit of the `sshd` service. This is because TiUP needs to simulate deployment on multiple machines.
+5. Use the root user privilege to increase the connection limit of the `sshd` service. This is because TiUP needs to simulate deployment on multiple machines.
 
     1. Modify `/etc/ssh/sshd_config`, and set `MaxSessions` to `20`.
     2. Restart the `sshd` service:
 
-        {{< copyable "shell-regular" >}}
+        {{< copyable "shell-root" >}}
 
         ```shell
         service sshd restart
@@ -327,7 +361,7 @@ Other requirements for the target machine:
 
     Edit the configuration file according to the following template, and name it as `topo.yaml`:
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```yaml
     # # Global variables are applied to all deployments and used as the default value of
@@ -404,6 +438,11 @@ Other requirements for the target machine:
 
     - `<cluster-name>`: Set the cluster name
     - `<tidb-version>`: Set the TiDB cluster version. You can see all the supported TiDB versions by running the `tiup list tidb` command
+    - `-p`: Specify the password used to connect to the target machine.
+
+        > **Note:**
+        >
+        > If you use secret keys, you can specify the path of the keys through `-i`. Do not use `-i` and `-p` at the same time.
 
     Enter "y" and the `root` user's password to complete the deployment:
 
