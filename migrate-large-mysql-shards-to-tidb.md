@@ -115,7 +115,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
-### 在下游创建schema
+### 在下游创建 schema
 
 在 `${data-path}` 中使用 `my_db1-schema-create.sql` 文件，编辑后手工在下游创建 `mydb.table5`。
 
