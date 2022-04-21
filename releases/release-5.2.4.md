@@ -44,7 +44,7 @@ TiDB 版本：5.2.4
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 将 `max-message-bytes` 默认值设置为 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
         - 在 grafana 监控面板中支持 multi-k8s  [#4665](https://github.com/pingcap/tiflow/issues/4665)
-        - 添加 channgeed checkpoint 预计多久追上 (ETA) 监控指标 [#3311](https://github.com/pingcap/tiflow/pull/3311)
+        - 添加 channgeed checkpoint 预计多久追上 (ETA) 监控指标 [#5232](https://github.com/pingcap/tiflow/issues/5232)
 
 ## Bug 修复
 
