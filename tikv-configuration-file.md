@@ -1184,11 +1184,10 @@ bloom filter 为每个 key 预留的长度。
 
 + 优先处理 compaction 的类型
 + 可选值：
-    + `"by-compensated-size"`：根据大小顺序，优先对大的文件进行 compaction
+    + `"by-compensated-size"`：根据大小顺序，优先对大的文件进行 compaction。
     + `"oldest-largest-seq-first"`：根据时间顺序，优先对数据的最新更新时间晚的文件进行 compaction。当你只在小范围内更新部分热键 (hot keys) 时，可以使用此配置。
     + `"oldest-smallest-seq-first"`：根据时间顺序，优先对长时间没有被 compaction 到下一级的文件进行 compaction。如果你在 Key 空间内随机更新了 hot key，此时设置该值可以轻微缓解写放大。
     + `"min-overlapping-ratio"`：根据重叠比例，优先对在不同层内文档大小重叠比例高的文件进行 compaction，即 `文档在下一层时的大小`/`该文档在本层时的大小` 的值越小，compaction 的优先级越高。在许多场景下，该配置可以有效缓解写放大。
-    + 的文件进行 compaction。
 + 默认值：
     + `defaultcf` 和 `writecf` 的默认值：`"min-overlapping-ratio"`
     + `lockcf` 的默认值：`"by-compensated-size"`
