@@ -109,13 +109,6 @@ TiDB 版本：5.2.4
     - 修复因待 merge 的 Region 被伪造而导致导致 TiKV panic 并非预期地销毁 Peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
     - 修复在合并 Region 时 target peer 被已经销毁并未被初始化过的 peer 所替换而导致 TiKV Panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
     - 修复 apply snapshot 被中止时 TiKV Panic 的问题 [#11618](https://github.com/tikv/tikv/issues/11618)
-    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复 TiKV 监控项中实例级别 gRPC 的平均延迟时间不准确的问题 [#11299](https://github.com/tikv/tikv/issues/11299)
-    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
-    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 GC worker 繁忙后无法执行范围删除（即执行内部命令 `unsafe_destroy_range`）的问题 [#11903](https://github.com/tikv/tikv/issues/11903)
-    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复删除未初始化的副本可能会造成旧副本被重新创建的问题 [#10533](https://github.com/tikv/tikv/issues/10533)
-    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复逆序扫表时 TiKV 无法正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
-    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
-    - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
 
 + PD
 
