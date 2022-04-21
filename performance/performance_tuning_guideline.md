@@ -7,28 +7,6 @@ title: TiDB 性能分析和优化手册
 ## 目标
 对于分布式数据库 TiDB 用户来说, 数据库性能分析和优化是一件困难的事情。本文的目标是介绍基于数据库时间的系统优化方法论，使得 TiDB 用户可以从全局、自顶向下的角度看待用户响应时间和数据库时间，并进行可靠的性能分析和优化。
 
-## 用户响应时间和数据库时间
-### 用户响应时间
-用户响应时间是指应用系统为用户返回请求结果所花的时间。一个典型的用户请求的处理时序图如下，包含了用户和应用系统的网络延迟、应用的处理时间、应用和数据库的交互时的网络延迟和数据库的服务时间等。用户响应时间受到请求链路上所有子系统的影响，比如网络延迟和带宽，系统并发用户数和请求类型，服务器 CPU 和 IO 资源使用率等。只有知道用户响应时间的的瓶颈，才能对整个系统进行有效的优化。
-`ΔT` 时间内总的用户响应时间等于平均 TPS 乘以平均的用户响应时间乘以 `ΔT`
-```
-ΔT Total user response time = TPS × avg user reponse time × ΔT
-```
-![用户响应时间](/media/performance/performance-overview/user_response_time_cn.png)
-
-### 数据库时间
-`ΔT` 时间内数据库时间为数据库处理所有应用请求的时间总和。数据库时间可以通过多种方式求得：
-
-1. QPS 乘以 平均 query 延迟 乘以 ΔT
-2. 平均活跃会话数 乘以 ΔT
-3. 通过 TiDB 内部的 Promtheus 指标 TiDB_server_handle_query_duration_seconds_sum 求得
-
-以上三种方式对应以下三个公式：
-```
-ΔT DB Time = QPS × avg latency × ΔT
-ΔT DB Time = avg active connections × ΔT 
-ΔT DB Time = rate(TiDB_server_handle_query_duration_seconds_sum) × ΔT 
-```
 ## 基于数据库时间的性能优化方法论
 
 现实世界中，很少应用系统设计和实现时，能够对用户响应时间进行完整的测量，并提供用户响应时间全局视图，以方便工程师对系统进行性能分析和优化。幸运的是，TiDB 内部对 SQL 的处理路径和数据库时间进行了完善的测量和记录，方便用户定位数据库内部的性能瓶颈。即使在用户响应时间的性能数据缺失的情况下，基于 TiDB 数据库时间相关性能指标，工程师可以达到以下两个性能分析目标：
@@ -51,7 +29,7 @@ title: TiDB 性能分析和优化手册
 ```
 DB Time = Select Time + Insert Time + Update Time + Delete Time + Commit Time + ...
 DB Time = Get Token Time + Parse Time + Comiple Time + Execute Time
-Execute Time = TiDB Executor Time + KV Request Time + PD TSO Wait Time 
+Execute Time ~= TiDB Executor Time + KV Request Time + PD TSO Wait Time 
 ```
 
 ## 利用 Performance Overview 面板进行性能分析和优化
@@ -308,7 +286,7 @@ Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Ap
 ![Store](/media/performance/performance-overview/cloud_append_commit_apply.png)
 
 ## 总结
-本文介绍了用户响应时间和数据库时间的概念， 以及基于数据库时间进行系统优化的方法论。借助 TiDB Performance Overview 面板，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解， 定位数据库内部的瓶颈点，并进行针对性的优化。
+本文介绍了基于数据库时间进行系统优化的方法论。借助 TiDB Performance Overview 面板，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解， 定位数据库内部的瓶颈点，并进行针对性的优化。
 
 ## 老版本如何使用 Performance overview 面板
 Performance Overview 面板在 >= v6.0.0 版本内置。发版 <= v5.4.0 的集群，需要手工导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)
