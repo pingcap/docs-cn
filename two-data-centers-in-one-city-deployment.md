@@ -106,7 +106,7 @@ cat rule.json
     "location_labels": [
       "zone",
       "rack",
-      "host",
+      "host"
     ]
   },
   {
