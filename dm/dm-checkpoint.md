@@ -66,4 +66,4 @@ checkpoint 一般存放在下游数据库中。如果配置文件没有定义 me
 
 同步 checkpoint 在 flush 之前，必须保证所有的 job worker 把所有的 jobs 都执行完之后，才将 checkpoint 写入。这个过程会导致后续的 event 必须等前面的 job 都执行完才分配给 job worker 执行，从而导致性能下降。async checkpoint 则会让 worker 来通知 async checkpoint routine 是否已经之前的 job 都 flush 完毕，而期间 worker 会正常活动；当所有 worker flush 完成后，则触发 checkpoint flush。
 
-async checkpoint 会在 syncer 内部维护复数个 casuality map（用来检查冲突），当 checkpoint 的同步比较慢时，内部可能会有多个 casaulity map，而每次检查冲突都要遍历检查这些 map 导致性能下降。大部分情况下，async checkpoint 性能更高。
+async checkpoint 会在 syncer 内部维护复数个 causality map（用来检查冲突），当 checkpoint 的同步比较慢时，内部可能会有多个 causality map，而每次检查冲突都要遍历检查这些 map 导致性能下降。大部分情况下，async checkpoint 性能更高。
