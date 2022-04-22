@@ -11,3 +11,5 @@ gen
 .DS_Store
 
 /node_modules/
+package.json
+yarn.lock
