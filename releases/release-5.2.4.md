@@ -141,12 +141,13 @@ TiDB 版本：5.2.4
     - 修复 SQL 语句中含有极长嵌套表达式时可能出现的解析错误 [#3354](https://github.com/pingcap/tiflash/issues/3354)
     - 修复查询语句包含 `where <string>` 时查询结果出错的问题 [#3447](https://github.com/pingcap/tiflash/issues/3447)
     - 修复 `new_collations_enabled_on_first_bootstrap` 开启后查询结果可能出错的问题 [#3388](https://github.com/pingcap/tiflash/issues/3388), [#3391](https://github.com/pingcap/tiflash/issues/3391)
-    - 修复启用 TSL 时可能导致的崩溃 [#4196](https://github.com/pingcap/tiflash/issues/4196)
+    - 修复启用 TLS 时可能导致的崩溃 [#4196](https://github.com/pingcap/tiflash/issues/4196)
     - 修复启用内存限制后 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题 [#3401](https://github.com/pingcap/tiflash/issues/3401)
     - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 错误 [#3351](https://github.com/pingcap/tiflash/issues/3351)
     - 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#4437](https://github.com/pingcap/tiflash/issues/4437)
     - 修复在执行带有 `JOIN` 的查询遇到错误时可能被挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
+    - 修复不正确的执行计划可能导致 MPP 查询出错的问题 [#3389](https://github.com/pingcap/tiflash/issues/3389)
 
 + Tools
 
