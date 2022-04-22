@@ -81,6 +81,12 @@ TiDB 版本：5.2.4
     - 修复 TiDB 会非预期地打印很多鉴权失败相关日志的问题 [#29709](https://github.com/pingcap/tidb/issues/29709)
     - 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
     - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
+    - 修复慢查询日志无法正常输出而且可能消耗大量内存的问题 [#32656](https://github.com/pingcap/tidb/issues/32656)
+    - 修复 NATRUAL JOIN 可能输出多余列的问题 [#24981](https://github.com/pingcap/tidb/issues/29481)
+    - 修复使用前缀列索引时，ORDER + LIMIT 语句可能导致结果出错的问题 [#29711](https://github.com/pingcap/tidb/issues/29711)
+    - 修复乐观事务重试时，DOUBLE 类型的自增列可能在重试时值发生改变的问题 [#29892](https://github.com/pingcap/tidb/issues/29892)
+    - 修复 STR_TO_DATE 函数无法正确处理微秒部分的前导 0 的问题 [#30078](https://github.com/pingcap/tidb/issues/30078)
+    - 修复在 TiFlash 不支持使用空范围读表的情况，依然选择 TiFlash 导致查询结果错误的问题 [#33083](https://github.com/pingcap/tidb/issues/33083)
 
 + TiKV
 
