@@ -351,6 +351,8 @@
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [Relay Log](/dm/relay-log.md)
+        - 同步机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
