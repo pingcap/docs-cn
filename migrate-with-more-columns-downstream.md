@@ -56,7 +56,7 @@ CREATE TABLE `messages` (
 
 此时，你可以使用 `binlog-schema` 命令来为数据源中需要迁移的表指定表结构，表结构需要对应 DM 将要开始同步的 binlog event 的数据。如果你在进行分表合并的数据迁移，那么需要为每个分表按照如下步骤在 DM 中设置用于解析 binlog event 的表结构。具体操作为：
 
-1. 在 DM 中，新建一个 `.sql` 文件，并将上游表结构对应的 `CREATE TABLE` 语句添加到该文件。例如，将以下表结构保存到 `log.messages.sql` 中。
+1. 在 DM 中，新建一个 `.sql` 文件，并将上游表结构对应的 `CREATE TABLE` 语句添加到该文件。例如，将以下表结构保存到 `log.messages.sql` 中。如果是 6.0 及以上版本，可以直接通过`--from-source/--from-target`更新，无需创建 SQL 文件。可参考：[管理迁移表的表结构](/dm/dm-manage-schema.md)
 
     ```sql
     # 上游表结构
