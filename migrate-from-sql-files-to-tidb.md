@@ -25,12 +25,10 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
 * **方法一**：使用 TiDB Lightning 创建表结构。
 
-    1. 编写包含 DDL 语句的 SQL 文件。
+    编写包含 DDL 语句的 SQL 文件：
 
-        - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
-        - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
-
-    2. 后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
+    - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
+    - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
 
 * **方法二**：手动在下游 TiDB 建库和表。
 
@@ -67,7 +65,7 @@ status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“�
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
-关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
+关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ## 第 4 步：执行导入
 
@@ -80,7 +78,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
-nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 ```
 
 同时，TiDB Lightning 还支持从 `~/.aws/credentials` 读取凭证文件。
