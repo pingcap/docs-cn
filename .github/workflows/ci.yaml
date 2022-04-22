@@ -8,10 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Check out
-      uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
+      uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
       with:
-        node-version: '12'
+        node-version: '14'
+        cache: 'yarn'
     - name: Verify internal links
       run: ./scripts/verify-links.sh
     - name: Verify internal link anchors
