@@ -61,7 +61,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依赖 TiDB server 组件，因此无需对 TiDB server 进行配置。
 
 * TiKV: 默认配置
-* PD : 默认配置
+* PD: 默认配置
 
 ## 使用场景
 
