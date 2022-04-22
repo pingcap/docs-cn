@@ -9,11 +9,13 @@ summary: 了解如何管理待迁移表在 DM 内部的表结构。
 
 ## 原理介绍
 
-在使用 DM 迁移数据表时，DM 对于表结构主要包含以下相关处理。
+DM 执行增量迁移时，首先读取上游的 binlog，然后生成 SQL 语句执行到下游。但是，上游的 binlog 中并不记录表的完整结构信息，为了生成 SQL 语句，DM 内部维护了待迁移的表的 schema 信息，即表结构信息，DM 中的 schema 信息来源包括以下几部分：
 
-对于全量导出与导入，DM 直接导出当前时刻上游的表结构到 SQL 格式的文件中，并将该表结构直接应用到下游。
+1. 执行全量数据迁移（task-mode=all）时，任务将经过 dump/load/sync （全量导出/全量导入/增量同步）三个阶段。dump 阶段将表结构信息随着数据一并导出，并自动在下游创建相关表。sync 阶段时即以该表结构作为起始的表结构信息；
+2. sync 阶段中，处理 DDL 语句（如 alter table）时，DM 执行该语句的同时更新内部维护的表结构信息；
+3. 如果任务是增量迁移（task-mode=incremental），下游已经将待迁移的表创建完成，DM 会从下游数据库获取该表的结构信息（此行为随版本变化而不同）。
 
-对于增量复制，在整个数据链路中则包含以下几类可能相同或不同的表结构。
+增量迁移过程的 Schema 信息维护较为复杂，在整个数据链路中包含以下几类可能相同或不同的表结构。
 
 ![表结构](/media/dm/operate-schema.png)
 
@@ -22,13 +24,13 @@ summary: 了解如何管理待迁移表在 DM 内部的表结构。
 - DM 内部（schema tracker 组件）当前维护的表结构（记为 `schema-I`）。
 - 下游 TiDB 集群中的表结构（记为 `schema-D`）。
 
-在大多数情况下，以上 4 类表结构一致。
+在大多数情况下，以上 4 类表结构一致。当上游执行 DDL 变更表结构后，`schema-U` 即会发生变更；DM 通过将该 DDL 应用于内部的 schema tracker 组件及下游 TiDB，会先后更新 `schema-I`、`schema-D` 以与 `schema-U` 保持一致，因而随后能正常消费 binlog 中在 DDL 之后对应表结构为 `schema-B` 的 binlog event。即当 DDL 被复制成功后，仍能保持 `schema-U`、`schema-B`、`schema-I` 及 `schema-D` 的一致。
 
-当上游执行 DDL 变更表结构后，`schema-U` 即会发生变更；DM 通过将该 DDL 应用于内部的 schema tracker 组件及下游 TiDB，会先后更新 `schema-I`、`schema-D` 以与 `schema-U` 保持一致，因而随后能正常消费 binlog 中在 DDL 之后对应表结构为 `schema-B` 的 binlog event。即当 DDL 被复制成功后，仍能保持 `schema-U`、`schema-B`、`schema-I` 及 `schema-D` 的一致。
+需要注意以下不一致的情况：
 
-但在开启[乐观 shard DDL 支持](/dm/feature-shard-merge-optimistic.md) 的数据迁移过程中，下游合并表的 `schema-D` 可能与部分分表对应的 `schema-B` 及 `schema-I` 并不一致，但 DM 仍保持 `schema-I` 与 `schema-B` 的一致以确保能正常解析 DML 对应的 binlog event。
+- 在开启[乐观 shard DDL 支持](/dm/feature-shard-merge-optimistic.md) 的数据迁移过程中，下游合并表的 `schema-D` 可能与部分分表对应的 `schema-B` 及 `schema-I` 并不一致，但 DM 仍保持 `schema-I` 与 `schema-B` 的一致以确保能正常解析 DML 对应的 binlog event。
 
-此外，在其他一些场景下（如：下游比上游多部分列），`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。
+- 下游比上游多部分列，`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。`task-mode=all`时 DM 会自动处理，而`task-mode=incremental`时，由于任务首次启动，内部尚无 Schema 信息，DM 将自动读取下游表结构即 `schema-D`，更新自身的`schema-I`(此行为随版本变化而不同)。之后 DM 使用`schema-I`解析`schema-B`的 binlog 将会导致`Column count doesn't match value count`错误，详情可参考：[下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
 
 为了支持以上的特殊场景及处理其他可能的由于 schema 不匹配导致的迁移中断等问题，DM 提供了 `binlog-schema` 命令来获取、修改、删除 DM 内部维护的表结构 `schema-I`。
 
