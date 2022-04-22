@@ -145,6 +145,8 @@ TiDB 版本：5.2.4
     - 修复启用内存限制后 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题 [#3401](https://github.com/pingcap/tiflash/issues/3401)
     - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 错误 [#3351](https://github.com/pingcap/tiflash/issues/3351)
+    - 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#4437](https://github.com/pingcap/tiflash/issues/4437)
+    - 修复在执行带有 `JOIN` 的查询遇到错误时可能被挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
 
 + Tools
 
