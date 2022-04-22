@@ -32,7 +32,7 @@ Sysbench version: 1.1.0
 
 ## Test plan
 
-Use Sysbench to import **16 tables, with 10,000,000 pieces of data in each table**. With the HAProxy, requests are sent to the cluster at an incremental concurrent number. A single concurrent test lasts 5 minutes.
+Use Sysbench to import **16 tables, with 10,000,000 rows in each table**. With the HAProxy, requests are sent to the cluster at an incremental concurrent number. A single concurrent test lasts 5 minutes.
 
 ### TiDB version information
 

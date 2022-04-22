@@ -210,7 +210,7 @@ The `create_time` of tables in the `information_schema` is the creation time.
 
 ### What is the meaning of `EXPENSIVE_QUERY` in the TiDB log?
 
-When TiDB is executing a SQL statement, the query will be `EXPENSIVE_QUERY` if each operator is estimated to process over 10000 pieces of data. You can modify the `tidb-server` configuration parameter to adjust the threshold and then restart the `tidb-server`.
+When TiDB is executing a SQL statement, the query will be `EXPENSIVE_QUERY` if each operator is estimated to process over 10,000 rows. You can modify the `tidb-server` configuration parameter to adjust the threshold and then restart the `tidb-server`.
 
 ### How do I estimate the size of a table in TiDB?
 
