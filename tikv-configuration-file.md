@@ -478,7 +478,7 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：MB|GB
 
-### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.3 版本开始引入</span>
+### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.2.4 版本开始引入</span>
 
 + 压缩非必要 Raft 日志的时间间隔
 + 默认值："2s"
@@ -486,15 +486,11 @@ raftstore 相关的配置项。
 
 ### `raft-log-gc-tick-interval`
 
-<<<<<<< HEAD
-+ 删除 raft 日志的轮询任务调度间隔时间，0 表示不启用。
-+ 默认值：10s
-+ 最小值：0
-=======
 + 删除 Raft 日志的轮询任务调度间隔时间，0 表示不启用。
-+ 默认值："3s"
++ 默认值：
+    + v5.2.3 及以前："10s"
+    + 自 v5.2.4 起："3s"
 + 最小值："0s"
->>>>>>> f7558045f (update raft log gc related tikv configurations (#8828))
 
 ### `raft-log-gc-threshold`
 
@@ -512,7 +508,7 @@ raftstore 相关的配置项。
 + 允许残余的 raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
 + 最小值：大于 0
 
-### `raft-log-reserve-max-ticks` <span class="version-mark">从 v5.3 版本开始引入</span>
+### `raft-log-reserve-max-ticks` <span class="version-mark">从 v5.2.4 版本开始引入</span>
 
 + 超过本配置项设置的的 tick 数后，即使剩余 Raft 日志的数量没有达到 `raft-log-gc-threshold` 设置的值，TiKV 也会进行 GC 操作。
 + 默认值：6
