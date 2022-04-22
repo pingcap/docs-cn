@@ -7,7 +7,7 @@
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-yarn add remark-cli@9.0.0 remark-lint@8.0.0 @breeswish-org/remark-lint-pingcap-docs-anchor@1.1.1
+yarn add remark-cli@9.0.0 remark-lint@8.0.0 @breeswish-org/remark-lint-pingcap-docs-anchor@1.1.2
 
 echo "info: checking links anchors under $ROOT directory..."
 
