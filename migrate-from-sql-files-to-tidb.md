@@ -64,7 +64,7 @@ status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“�
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
-关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
+关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ## 第 4 步：执行导入
 
