@@ -382,6 +382,9 @@
     - 参考指南
      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
      - [外部存储](/br/backup-and-restore-storages.md)
+     - [在 AWS 上进行备份恢复](/br/backup-storage-S3.md)
+     - [在 Azure Blob Storage 上进行备份恢复](/br/backup-storage-azblob.md)
+     - [在 Google Cloud 上进行备份恢复](/br/backup-storage-gcs.md)
      - [RawKV 的备份恢复](/br/rawkv-backup-and-restore.md)
      - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
