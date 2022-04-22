@@ -27,7 +27,7 @@ Sync 单元对 DML 的处理步骤如下：
 4. 将 DML 执行到下游。
 5. 定期保存 binlog position 或 GTID 到 checkpoint 中。
 
-![DML 处理逻辑](/media/xxx.jpg)
+![DML 处理逻辑](/media/dm/dm-dml-replication-logic.png)
 
 ## DML 优化逻辑
 
