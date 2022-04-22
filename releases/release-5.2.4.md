@@ -98,7 +98,7 @@ TiDB 版本：5.2.4
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复开启流量控制且显式设置 `level0_slowdown_trigger` 时出现 QPS 下降的问题 [#11424](https://github.com/tikv/tikv/issues/11424)
     - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复 cgroup controller 没有被挂载会造成 Panic 的问题 [#11569](https://github.com/tikv/tikv/issues/11569)
-    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#11526](https://github.com/tikv/tikv/issues/11526)
+    - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复在滞后的 Region peer 上执行 Region Merge 导致的元数据损坏问题 [#11526](https://github.com/tikv/tikv/issues/11526)
     - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复 TiKV 停止后 Resolved TS 延迟会增加的问题 [#11351](https://github.com/tikv/tikv/issues/11351)
     - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复在极端情况下同时进行 Region Merge、ConfChange 和 Snapshot 时，TiKV 会出现 Panic 的问题 [#11475](https://github.com/tikv/tikv/issues/11475)
     - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复 tikv-ctl 无法正确输出 Region 相关信息的问题 [#11393](https://github.com/tikv/tikv/issues/11393)
@@ -146,7 +146,7 @@ TiDB 版本：5.2.4
     - 修复启用内存限制后 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     - 修复当 MPP 查询被终止时，TiFlash 偶发的崩溃问题 [#3401](https://github.com/pingcap/tiflash/issues/3401)
     - 修复非预期的 `Unexpected type of column: Nullable(Nothing)` 错误 [#3351](https://github.com/pingcap/tiflash/issues/3351)
-    - 修复在已完成重新选举但没有通知被隔离的 Peer 的情况下执行 `Prepare Merge` 会导致元数据损坏的问题 [#4437](https://github.com/pingcap/tiflash/issues/4437)
+    - 修复在滞后的 Region peer 上执行 Region Merge 导致的元数据损坏问题 [#4437](https://github.com/pingcap/tiflash/issues/4437)
     - 修复在执行带有 `JOIN` 的查询遇到错误时可能被挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
     - 修复不正确的执行计划可能导致 MPP 查询出错的问题 [#3389](https://github.com/pingcap/tiflash/issues/3389)
 
