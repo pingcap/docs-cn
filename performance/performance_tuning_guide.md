@@ -40,12 +40,18 @@ Performance Overview 包含三种数据：
 3. Query 延迟分解
 
 ### 数据库时间和 SQL 执行时间概览
-DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每秒并发处理应用 SQL 请求的总时间(等于活跃连接数)。通过三个面积堆叠图，用户可以了解数据库负载的类型，可以快速定位在数据库的瓶颈集中在哪个执行阶段，主要是处理什么语句，SQL 执行阶段主要等待 TiKV 或者 PD 什么请求类型。 以下举例说明：
+DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每秒并发处理应用 SQL 请求的总时间(等于活跃连接数)。通过三个面积堆叠图，用户可以了解数据库负载的类型，可以快速定位在数据库时间的瓶颈主要是处理什么语句，集中在哪个执行阶段，SQL 执行阶段主要等待 TiKV 或者 PD 什么请求类型。
+
+#### 颜色优化法
+对于第二个图 Database Time By SQL Phase 和 第三个图 SQL Execute Time Overview, 可以使用 *颜色优化法* 进行快速分析。正常的时间消耗和请求类型，显示颜色是绿色系和蓝色系，如果非绿色系和蓝色系的颜色占据了明显的比例，意味着数据库内存存在异常。
+
+- 第二个图 Database Time By SQL Phase 中 execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。一个常见的场景是因为无法使用执行计划缓存，导致 comiple 阶段的橙色占比明显。
+- 第三个图 SQL Execute Time Overview 中，对于常规的写 kv 请求，Prewrite 和 Commit，颜色为绿色系；对于常规的读 kv 请求，颜色为 蓝色系；除此之外的类型，被赋予了让人不舒服的颜色，比如悲观锁加锁请求为红色，tso 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。比如锁冲突严重，红色的悲观锁时间会占比明显；比如负载中 tso wait 消耗的时间过长，深褐色占比明显。
 
 #### 例子 1 TPC-C 负载
 - 第一个图，Database Time by SQL Type， 主要消耗时间的语句为 commit、update、select 和 insert 语句。
-- 第二个图，Ddatabase Time By SQL Phase，主要消耗时间的为 execute 阶段。
-- 第三个图，execute 阶段，主要消耗时间为 kv 请求 Prewrite 和 Commit。
+- 第二个图，Database Time by SQL Phase，主要消耗时间的为绿色的 execute 阶段。
+- 第三个图，execute 阶段，主要消耗时间的 kv 请求为绿色的 Prewrite 和 Commit。
     > **注意：**
     >
     > kv request 总时间大于 execute 时间长是正常的，因为 TiDB 执行器可能并发向多个 TiKV 发送 kv 请求，导致总的 kv 请求等待时间大于执行时间。TPC-C 负载中，事务提交时，TiDB 会向多个 TiKV 并行发送 Prewrite 和 Commit，所以这个例子中 Prewrite、Commit 和 PessimisticsLock 请求的总时间明显大于 execute 时间。
@@ -56,15 +62,15 @@ DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每�
 
 #### 例子 2 OLTP 读密集负载
 - 第一个图，Database Time by SQL Type， 主要消耗时间的语句为 select、commit、update和 insert 语句。select 占据绝大部分的数据库时间。
-- 第二个图，Ddatabase Time By SQL Phase，主要消耗时间的为 execute 阶段。
-- 第三个图，execute 阶段，主要消耗时间为 pd tso_wait 和 kv Get、Prewrite 和 Commit。
+- 第二个图，Ddatabase Time By SQL Phase，主要消耗时间的为绿色的 execute 阶段。
+- 第三个图，execute 阶段，主要消耗时间为深褐色的 pd tso_wait、蓝色的 kv Get 和绿色的 Prewrite 和 Commit。
 
 ![OLTP](/media/performance/performance-overview/oltp_normal_db_time.png)
 
 #### 例子 3 只读 OLTP 负载
 1. 第一个图，Database Time by SQL Type， 几乎所有语句为 select。
-1. 第二个图，Database Time By SQL Phase，主要消耗时间的为 compile 和 execute 阶段。compile 阶段延迟最高，代表着 TiDB 生成执行计划的过程耗时过长，需要根据后续的性能数据进行分析。
-1. 第三个图，execute 阶段，主要消耗时间为 kv 请求 BatchGet。
+2. 第二个图，Database Time By SQL Phase，主要消耗时间的为橙色的 compile 和绿色的 execute 阶段。compile 阶段延迟最高，代表着 TiDB 生成执行计划的过程耗时过长，需要根据后续的性能数据进一步确定根源。
+3. 第三个图，execute 阶段，主要消耗时间为 kv 请求为蓝色 BatchGet。
 
 ![OLTP](/media/performance/performance-overview/oltp_long_compile_db_time.png)
 
