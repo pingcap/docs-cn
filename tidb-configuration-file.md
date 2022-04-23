@@ -656,7 +656,7 @@ TiDB 服务状态相关配置。
 
 ## proxy-protocol
 
-读取隔离相关的配置项。
+PROXY 协议相关的配置项。
 
 ### `networks` 
 
