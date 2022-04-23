@@ -171,7 +171,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
    -r 200000 -F 256MiB
 ```
 
-* BR 使用 OSS 存储
+* 使用 BR 将数据备份至 OSS 存储：
 
 {{< copyable "shell-regular" >}}
 
