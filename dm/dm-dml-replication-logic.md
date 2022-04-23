@@ -52,7 +52,6 @@ syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
     ...                              # 省略其他配置
     compact: false
-    ...
 ```
 
 ### Causality
@@ -88,7 +87,6 @@ syncers:                             # sync 处理单元的运行配置参数
   global:                            # 配置名称
     ...                              # 省略其他配置
     multiple-rows: false
-    ...
 ```
 
 ## DML 执行逻辑
