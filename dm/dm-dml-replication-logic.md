@@ -45,6 +45,16 @@ UPDATE + DELETE => DELETE
 DELETE + INSERT => UPDATE
 ```
 
+Compactor 特性默认关闭，如需启用可在迁移任务的`sync`配置模块开启，例如：
+
+```
+syncers:                             # sync 处理单元的运行配置参数
+  global:                            # 配置名称
+    ...                              # 省略其他配置
+    compact: false
+    ...
+```
+
 ### Causality
 
 MySQL binlog 顺序同步模型要求按照 binlog 顺序依次同步 binlog event，这样的同步模型无法满足高 QPS 低同步延迟的需求。此外，由于不是所有的 binlog 涉及到的操作都存在冲突，顺序同步也是非必要的。
@@ -69,6 +79,16 @@ Causality 采用一种类似并查集的算法，对每一个 DML 进行分类�
   DELETE tb WHERE a=1
 + DELETE tb WHERE a=2
 = DELETE tb WHERE (a) IN (1),(2);
+```
+
+Merger 特性默认关闭，如需启用可在迁移任务的`sync`配置模块开启，例如：
+
+```
+syncers:                             # sync 处理单元的运行配置参数
+  global:                            # 配置名称
+    ...                              # 省略其他配置
+    multiple-rows: false
+    ...
 ```
 
 ## DML 执行逻辑
