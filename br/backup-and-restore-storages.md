@@ -185,7 +185,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
     --log-file backuptable.log
 ```
 
-* Lightning 使用 OSS 存储的 Yaml 文件
+* 在 YAML 文件中指定 TiDB Lightning 将数据导出至 OSS 存储：
 
 {{< copyable "yaml" >}}
 
