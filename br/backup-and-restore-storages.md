@@ -159,7 +159,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 如果要将数据导出到非 AWS 的 S3 云存储，你需要指定云服务商名字，对应是否使用 virtual hosted style。以将数据导出至阿里云的 OSS 存储为例：
 
-* Dumpling 使用 OSS 存储
+* 使用 Dumpling 将数据导出至 OSS 存储：
 
 {{< copyable "shell-regular" >}}
 
