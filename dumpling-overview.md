@@ -95,6 +95,7 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 > - `--sql` 选项仅仅可用于导出 CSV 的场景。
 > - `--csv-separator`、`--csv-delimiter` 等选项可用于配置 CSV 文件的格式。
 > - 该命令将在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+> - 使用 `--sql` 配置导出时，dumpling 无法获知导出的表库信息，`--output-filename-template='test.sbtest1.{{.Index}}'` 选项可以配置导出的 csv 文件为 `test.sbtest1.000000000`, `test.sbtest1.000000001`... 方便后续 Lightning 导入。
 > - Dumpling 导出不区分`字符串`与`关键字`。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
 
 ### 输出文件格式
