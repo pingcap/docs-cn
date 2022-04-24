@@ -425,7 +425,7 @@ This section gives the alert rules for the TiKV component.
 
 * Alert rule:
 
-    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1`
+    `sum(increase(tikv_gcworker_gc_tasks_vec{task="gc"}[1d])) < 1 and (sum(increase(tikv_gc_compaction_filter_perform[1d])) < 1 and sum(increase(tikv_engine_event_total{db="kv", cf="write", type="compaction"}[1d])) >= 1)` 
 
 * Description:
 
