@@ -132,11 +132,15 @@ mysql-instances:
     route-rules: ["sale-route-rule"]                        # 应用于该数据源的 table route 规则
     filter-rules: ["store-filter-rule", "sale-filter-rule"] # 应用于该数据源的 binlog event filter 规则
     block-allow-list:  "log-bak-ignored"                    # 应用于该数据源的 Block & Allow Lists 规则
+    # mydumper-config-name: "configA"                         # 如果上游是 AWS Aurora ，需要增加此配置
+
   -
     source-id: "mysql-02"
     route-rules: ["sale-route-rule"]
     filter-rules: ["store-filter-rule", "sale-filter-rule"]
     block-allow-list:  "log-bak-ignored"
+    # mydumper-config-name: "configA"                         # 如果上游是 AWS Aurora ，需要增加此配置
+
 
 # 分表合并配置
 routes:
@@ -162,6 +166,13 @@ filters:
 block-allow-list:
   log-bak-ignored:
     do-dbs: ["store_*"]
+
+# 如果上游是 AWS Aurora ，需要增加如下配置 
+# mydumpers:                           # dump 处理单元的运行配置参数
+#   configA:                           # 配置名称
+#     threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
+#     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
+#     extra-args: "--consistency none" # Aurora 禁用了 ”super“ 权限，因此需要将 consistency 设为 none。如果 task-mode=all, DM 将在增量同步阶段自动启用 safe-mode 保持数据一致性。
 
 ```
 

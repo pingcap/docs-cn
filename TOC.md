@@ -40,7 +40,8 @@
   - [数据迁移综述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
   - 数据迁移场景
-    - [从 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
+    - [通过快照迁移 Aurora 到 TiDB](/migrate-aurora-to-tidb.md)
+    - [通过只读副本迁移 Aurora 到 TiDB](/migrate-aurora-to-tidb-by-dm.md)
     - [从小数据量 MySQL 迁移数据到 TiDB](/migrate-small-mysql-to-tidb.md)
     - [从大数据量 MySQL 迁移数据到 TiDB](/migrate-large-mysql-to-tidb.md)
     - [从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)

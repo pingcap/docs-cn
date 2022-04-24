@@ -1,12 +1,20 @@
 ---
-title: 从 Amazon Aurora 迁移数据到 TiDB
+title: 通过快照迁移 Amazon Aurora 到 TiDB
 summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
 aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora']
 ---
 
-# 从 Amazon Aurora 迁移数据到 TiDB
+# 通过快照迁移 Amazon Aurora 到 TiDB
 
-本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，可以节约大量的空间和时间成本。整个迁移包含两个过程：
+本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，具有以下特征：
+
+- 操作较为复杂，需要使用 Dumpling/Lightning/DM 三种迁移工具。
+- 创建新快照的过程对在线业务有影响。
+- 节约全量数据导入过程的时间和空间消耗。
+- 全量导入性能较好
+- 适用于大数据量迁移
+
+整个迁移包含两个过程：
 
 - 使用 Lightning 导入全量数据到 TiDB
 - 使用 DM 持续增量同步到 TiDB（可选）
@@ -21,33 +29,19 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
 
-1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置：
+1. 启用 Aurora 的 binary log (Binlog format = mixed)，此操作将重启 Aurora。（若只需要全量数据迁移，此步骤可跳过）
 
-    ```sql
-    mysql> SHOW MASTER STATUS;
+2. 创建 Aurora 快照，由于 Aurora 禁用了 “super” 权限，快照是唯一获取一致性备份的方式。注意，快照创建过程中可能对性能有一定影响，若希望降低影响可以参考[通过只读实例迁移 Aurora 到 TiDB](/migrate-aurora-to-tidb-by-dm.md)。
+
+3. 记录快照的 binlog 位置，在控制台中搜索关键字 “Alarms and Recent Events” ，将获得类似以下信息。（若只需要全量数据迁移，此步骤可跳过）
+  
+    ```
+    Binlog position from crash recovery is mysql-bin-changelog.0000101 29310981
     ```
 
-    你将得到类似以下的输出，请记录 binlog 名称和位置，供后续步骤使用：
+4. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
 
-    ```
-    +------------------+----------+--------------+------------------+-------------------+
-    | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
-    +------------------+----------+--------------+------------------+-------------------+
-    | mysql-bin.000002 |    52806 |              |                  |                   |
-    +------------------+----------+--------------+------------------+-------------------+
-    1 row in set (0.012 sec)
-    ```
-
-2. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
-
-请注意，上述两步的时间间隔建议不要超过 5 分钟，否则记录的 binlog 位置过旧可能导致增量同步时产生数据冲突。
-
-完成上述两步后，你需要准备好以下信息：
-
-- 创建快照点时，Aurora binlog 的名称及位置。
-- 快照文件的 S3 路径，以及具有访问权限的 SecretKey 和 AccessKey。
-
-### 第 2 步： 导出 schema
+### 第 2 步： 导出 schema 文件
 
 因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
 
@@ -174,9 +168,6 @@ type = '$3'
     # 唯一命名，不可重复。
     source-id: "mysql-01"
 
-    # DM-worker 是否使用全局事务标识符 (GTID) 拉取 binlog。使用前提是上游 MySQL 已开启 GTID 模式。若上游存在主从自动切换，则必须使用 GTID 模式。
-    enable-gtid: false
-
     from:
       host: "${host}"         # 例如：172.16.10.81
       user: "root"
@@ -210,8 +201,8 @@ type = '$3'
 name: "test"
 # 任务模式，可设为
 # full：只进行全量数据迁移
-# incremental： binlog 实时同步
-# all： 全量 + binlog 迁移
+# incremental： binlog 持续同步
+# all： 全量迁移 + binlog 持续同步
 task-mode: "incremental"
 # 下游 TiDB 配置信息。
 target-database:
@@ -233,9 +224,8 @@ mysql-instances:
     block-allow-list: "listA"           # 引入上面黑白名单配置。
 #       syncer-config-name: "global"    # 引用上面的 syncers 增量数据配置。
     meta:                               # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
-      binlog-name: "mysql-bin.000004"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置，当上游存在主从切换时，必须使用 gtid。
-      binlog-pos: 109227
-      # binlog-gtid: "09bec856-ba95-11ea-850a-58f2b4af5188:1-9"
+      binlog-name: "mysql-bin-changelog.0000101"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置。
+      binlog-pos: 29310981
 
    # 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
    ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
