@@ -1,12 +1,12 @@
 ---
-title: 通过小数据量 Amazon Aurora 迁移数据到 TiDB
+title: 从小数据量 Amazon Aurora 迁移数据到 TiDB
 summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora']
 ---
 
-# 通过小数据量 Amazon Aurora 迁移数据到 TiDB
+# 从小数据量 Amazon Aurora 迁移数据到 TiDB
 
-本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，相比[通过大数据量 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md),本文仅使用 DM 工具进行迁移，具有以下特征：
+本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，相比[从大数据量 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md),本文仅使用 DM 工具进行迁移，具有以下特征：
 
 - 操作简单，仅需使用一种工具 DM。
 - 全量迁移建议从快照恢复新的实例作为数据源，对在线业务影响低。
