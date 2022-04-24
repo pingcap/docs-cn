@@ -9,12 +9,12 @@ aliases: ['/docs-cn/dev/grafana-performance-overview-dashboard/','/docs-cn/dev/r
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
 
-Performance Overview Dashboard 包含了以下三部分内容：
-- 数据库时间和 SQL 执行时间概览
-- TiDB 关键指标和集群资源利用率
-- Query 延迟分解和关键的延迟指标
+Performance Overview Dashboard 按总分结构做了组织，包含了以下三部分内容：
+- 总的概览：数据库时间和 SQL 执行时间概览
+- 资源负载：关键指标和资源利用率
+- 自上而下的延迟分解：Query 延迟分解、execute 阶段的涉及 tso 请求和 kv 请求的延迟、TiKV 内部写延迟的分解等。
 
-借助 Performance Overview Dashboard，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。使用方法和实际案例请参考 [TiDB 性能分析和优化手册](/performance/performance_tuning_guide.md) 和 [OLTP 负载优化案例](/performance/real-world-tuning-case.md)
+借助 Performance Overview Dashboard，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。使用方法和实际案例请参考 [TiDB 性能分析和优化手册](/performance/performance-tuning-guide.md) 和 [OLTP 负载优化案例](/performance/real-world-tuning-case.md)
 
 以下为 Performance Overview Dashboard 监控说明：
 
@@ -26,7 +26,7 @@ Performance Overview Dashboard 包含了以下三部分内容：
 
 ## Database Time by SQL Phase
 - database time: 每秒的总数据库时间
-- get token/parse/compile/execute: 4 个 SQL 执行阶段每秒消耗的数据库时间
+- get token/parse/compile/execute: 4 个 SQL 处理阶段每秒消耗的数据库时间
 
 execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。
 
