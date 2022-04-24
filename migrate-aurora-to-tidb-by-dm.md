@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 # 通过小数据量 Amazon Aurora 迁移数据到 TiDB
 
-本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，相比[通过快照迁移 Aurora 到 TiDB](/migrate-aurora-to-tidb.md),本文仅使用 DM 工具进行迁移，具有以下特征：
+本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，相比[通过大数据量 Amazon Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md),本文仅使用 DM 工具进行迁移，具有以下特征：
 
 - 操作简单，仅需使用一种工具 DM。
 - 全量迁移建议从快照恢复新的实例作为数据源，对在线业务影响低。
