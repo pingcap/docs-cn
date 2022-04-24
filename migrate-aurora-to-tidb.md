@@ -245,7 +245,7 @@ syncers:            # sync 处理单元的运行配置参数。
 
 > **注意：**
 >
-> 由于 `SHOW MASTER STATUS`时（T1），与创建快照时（T2）存在时间差，增量同步可能出现数据冲突错误。因此前述任务配置中启用了 safe-mode，但 safe-mode 并不建议长期运行，待数据一致后可关闭 safe-mode.
+> 由于 `SHOW MASTER STATUS`时（T1），与创建快照时（T2）存在时间差，增量同步可能出现数据冲突错误。因此前述任务配置中启用了 safe-mode，但 safe-mode 并不建议长期运行，待 binlog 同步位置超过 T2 后可关闭 safe-mode.
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
