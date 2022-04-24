@@ -10,6 +10,12 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 - 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 6.0 及后续修订版本。
 - 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 6.0 及后续修订版本。
 
+> **警告：**
+>
+> - 不支持将 TiFlash 组件从 5.3 之前的老版本在线升级至 5.3 及之后的版本，只能采用停机升级。如果集群中其他组件（如 tidb，tikv）不能停机升级，参考[不停机升级](#不停机升级)中的注意事项。
+> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
+> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
+
 > **注意：**
 >
 > 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 6.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 6.0 及后续修订版本。
@@ -31,18 +37,13 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本部分介绍实际开始升级前需要进行的更新 TiUP 和 TiUP Cluster 组件版本等准备工作。
 
-> **警告：**
->
-> - 在升级 TiDB 集群的过程中，**请勿执行** DDL 语句，否则可能会出现行为未定义的问题。
-> - 集群中有 DDL 语句正在被执行时（通常为 `ADD INDEX` 和列类型变更等耗时较久的 DDL 语句），**请勿进行**升级操作。在升级前，建议使用 [`ADMIN SHOW DDL`](/sql-statements/sql-statement-admin-show-ddl.md) 命令查看集群中是否有正在进行的 DDL Job。如需升级，请等待 DDL 执行完成或使用 [`ADMIN CANCEL DDL`](/sql-statements/sql-statement-admin-cancel-ddl.md) 命令取消该 DDL Job 后再进行升级。
-
 ### 2.1 升级 TiUP 或更新 TiUP 离线镜像
 
 #### 升级 TiUP 和 TiUP Cluster
 
 > **注意：**
 >
-> 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳到步骤 2.2 使用离线升级方式。
+> 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳过本步骤，然后[更新 TiUP 离线镜像](#更新-tiup-离线镜像)。
 
 1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.9.3`）：
 
@@ -158,8 +159,9 @@ tiup cluster upgrade <cluster-name> v6.0.0
 > **注意：**
 >
 > - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
-> - 如果不希望驱逐 leader，而希望快速升级集群至新版本，可以在上述命令中指定 `--force`，该方式会造成性能抖动，不会造成数据损失。
+> - 使用 `--force` 参数可以在不驱逐 leader 的前提下快速升级集群至新版本，但是该方式会忽略所有升级中的错误，在升级失败后得不到有效提示，请谨慎使用。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
+> - 从 5.3 之前的老版本升级到 5.3 及之后的版本时，不支持在线升级 TiFlash，只能先将 TiFlash 实例关闭，然后离线地升级集群，最后 reload 整个集群，保证除 TiFlash 之外的组件不停机升级。
 
 #### 停机升级
 

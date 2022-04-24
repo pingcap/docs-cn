@@ -101,9 +101,9 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 增强 Prepared Statement 执行计划共享
 
-    SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享。但是在 Prepared Statement close 时，TiDB 会主动清空对应的 Plan Cache。这会对重复执行的 SQL 造成不必要的解析，影响语句的执行效率。TiDB 从 v6.0.0 开始支持通过 `tidb_ignore_clost_stmt_cmd` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭。开启该参数后，TiDB 可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，从而提升执行计划的复用率。
+    SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享。但是在 Prepared Statement close 时，TiDB 会主动清空对应的 Plan Cache。这会对重复执行的 SQL 造成不必要的解析，影响语句的执行效率。TiDB 从 v6.0.0 开始支持通过 `tidb_ignore_prepared_cache_close_stmt` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭。开启该参数后，TiDB 可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，从而提升执行计划的复用率。
 
-    [用户文档](/sql-prepare-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
+    [用户文档](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
 
 - 增强查询的下推功能
 
@@ -336,6 +336,8 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
     - 由于内部机制变更，任务管理相关接口与之前的实验特性版本无法保持兼容，需要参阅新的 [OpenAPI 文档](/dm/dm-open-api.md)进行适配。
 - DM 全量数据冲突处理方式变化
     - 新增 `loader.<name>.on-duplicate` 参数，默认值为 `replace`，表示覆盖冲突数据。若希望保持以前版本的行为，可以改为 `error`。此参数仅影响全量数据导入阶段的行为。
+- DM 需使用对应版本的 dmctl 工具
+    - 由于内部机制变更，升级 DM 集群版本至 v6.0.0 后，也必须升级 dmctl 与之匹配。
 - 在 v5.4（仅 v5.4）中，TiDB 允许将一些 noop 系统变量设置为不正确的值。从 v6.0.0 起，TiDB 不再允许将系统变量设置为不正确的值 [#31538](https://github.com/pingcap/tidb/issues/31538)
 
 ## 离线包变更

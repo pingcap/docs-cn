@@ -28,7 +28,8 @@ TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb
 >
 > - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 >
-> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+> - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+
 
 ## Local-backend
 

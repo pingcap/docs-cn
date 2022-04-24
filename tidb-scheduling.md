@@ -57,7 +57,7 @@ TiKV 集群是 TiDB 数据库的分布式 KV 存储引擎，数据以 Region 为
 
 * 增加一个副本
 * 删除一个副本
-* 将 Leader 角色在一个 Raft Group 的不同副本之间 transfer（迁移）。
+* 将 Leader 角色在一个 Raft Group 的不同副本之间 transfer（迁移）
 
 刚好 Raft 协议通过 `AddReplica`、`RemoveReplica`、`TransferLeader` 这三个命令，可以支撑上述三种基本操作。
 

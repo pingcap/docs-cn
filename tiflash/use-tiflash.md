@@ -25,7 +25,7 @@ TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE table_name SET TIFLASH REPLICA count
+ALTER TABLE table_name SET TIFLASH REPLICA count;
 ```
 
 该命令的参数说明如下：
@@ -39,7 +39,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2;
 ```
 
 删除副本：
@@ -47,7 +47,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 ```
 
 注意事项：
@@ -57,7 +57,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
     {{< copyable "sql" >}}
 
     ```sql
-    CREATE TABLE table_name like t
+    CREATE TABLE table_name like t;
     ```
 
 * 如果集群版本 \< v4.0.6，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
@@ -75,7 +75,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>'
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
 ```
 
 查询结果中：
@@ -90,7 +90,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 {{< copyable "sql" >}}
 
 ```sql
-ALTER DATABASE db_name SET TIFLASH REPLICA count
+ALTER DATABASE db_name SET TIFLASH REPLICA count;
 ```
 
 在该命令中，`count` 表示 TiFlash 的副本数。当设置 `count` 值为 0 时，表示删除现有的 TiFlash 副本。
@@ -102,7 +102,7 @@ ALTER DATABASE db_name SET TIFLASH REPLICA count
 {{< copyable "sql" >}}
 
 ```sql
-ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2;
 ```
 
 执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
@@ -110,7 +110,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
 {{< copyable "sql" >}}
 
 ```sql
-ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
 ```
 
 > **注意：**
@@ -131,7 +131,7 @@ ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>';
 ```
 
 可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
@@ -139,7 +139,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 {{< copyable "sql" >}}
 
 ```sql
-SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
+SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>");
 ```
 
 ### 设置可用区
@@ -166,7 +166,7 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;
     ```
 
     例如：

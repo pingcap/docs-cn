@@ -177,6 +177,8 @@ prod-cluster  tidb  v6.0.0    /root/.tiup/storage/cluster/clusters/prod-cluster 
 tiup cluster start prod-cluster
 ```
 
+TiUP 使用 `Systemd` 启动守护进程。如果进程意外退出，会在 15s 间隔后被重新拉起。
+
 ## 检查集群状态
 
 如果想查看集群中每个组件的运行状态，逐一登录到各个机器上查看显然很低效。因此，TiUP 提供了 `tiup cluster display` 命令，用法如下：
