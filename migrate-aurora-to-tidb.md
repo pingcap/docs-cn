@@ -1,18 +1,17 @@
 ---
-title: 通过快照迁移 Amazon Aurora 到 TiDB
-summary: 介绍如何使用快照从 Amazon Aurora 迁移数据到 TiDB。
+title: 通过大数据量 Amazon Aurora 迁移数据到 TiDB
+summary: 介绍如何迁移 TB 级以上 Amazon Aurora 到 TiDB。
 aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora']
 ---
 
-# 通过快照迁移 Amazon Aurora 到 TiDB
+# 通过小数据量 Amazon Aurora 迁移数据到 TiDB
 
 本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，具有以下特征：
 
 - 操作较为复杂，需要使用 Dumpling/Lightning/DM 三种迁移工具。
 - 创建新快照的过程对在线业务有影响。
 - 节约全量数据导入过程的时间和空间消耗。
-- 全量导入性能较好
-- 适用于大数据量迁移
+- 全量导入性能较好，适用于 TB 级以上数据量迁移。
 
 整个迁移包含两个过程：
 
