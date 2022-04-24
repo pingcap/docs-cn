@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。
+目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
 
 对于日常运维，我们通过观察 **TiKV-Details** 面板上的指标，可以了解 TiKV 当前的状态。根据[性能地图](https://asktug.com/_/tidb-performance-map/#/)可以检查集群的状态是否符合预期。
 

@@ -292,7 +292,7 @@ Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Ap
 ![Store](/media/performance/performance-overview/cloud_append_commit_apply.png)
 
 ## 总结
-本文介绍了基于数据库时间进行系统优化的方法论。借助 TiDB Performance Overview 面板，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解， 定位数据库内部的瓶颈点，并进行针对性的优化。
+本文介绍了基于数据库时间进行系统优化的方法论。借助 TiDB Performance Overview 面板，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。
 
 ## 老版本如何使用 Performance overview 面板
 Performance Overview 面板在 >= v6.0.0 版本内置。发版 <= v5.4.0 的集群，需要手工导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)
