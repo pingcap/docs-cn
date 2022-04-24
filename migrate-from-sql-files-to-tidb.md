@@ -46,7 +46,7 @@ file = "tidb-lightning.log"
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TiB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 backend = "local"
-# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参考 https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends。
+# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参考 https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends 。
 # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。
 sorted-kv-dir = "${sorted-kv-dir}"
 
