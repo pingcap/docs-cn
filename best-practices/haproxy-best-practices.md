@@ -50,7 +50,7 @@ HAProxy 由 Linux 内核的核心贡献者 Willy Tarreau 于 2000 年编写，�
 | Red Hat Enterprise Linux | 7 或者 8   |
 | CentOS                   | 7 或者 8   |
 | Oracle Enterprise Linux  | 7 或者 8   |
-| Ubuntu LTS               | 20.04 或者 18.04 |
+| Ubuntu LTS               | 18.04 或者以上版本 |
 
 > **注意：**
 >
