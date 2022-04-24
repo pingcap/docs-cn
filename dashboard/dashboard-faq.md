@@ -55,43 +55,22 @@ If your deployment tool is TiUP, take the following steps to solve this problem.
 
    Even if the cluster has been started, still execute this command. This command does not affect the normal application in the cluster, but refreshes and reports the metrics addresses, so that the monitoring metrics can be displayed normally in TiDB Dashboard.
 
-### An `invalid connection` error is shown in **Top SQL Statements** and **Recent Slow Queries** on the Overview page
+### An `invalid connection` error is shown on the **Slow Queries** page
 
 The possible reason is that you have enabled the `prepared-plan-cache` feature of TiDB. As an experimental feature, when enabled, `prepared-plan-cache` might not function properly in specific TiDB versions, which could cause this problem in TiDB Dashboard (and other applications). You can disable `prepared-plan-cache` by updating [TiDB Configuration file](/tidb-configuration-file.md#prepared-plan-cache) to solve this problem.
 
-### An `unknown field` error is shown in **Slow Queries** page
-
-If the `unknown field` error appears on the **Slow Queries** page after the cluster upgrade, the error is related to a compatibility issue caused by the difference between TiDB Dashboard server fields (which might be updated) and user preferences fields (which are in the browser cache). This issue has been fixed. If your cluster is earlier than v5.0.3 or v4.0.14, perform the following steps to resolve the issue:
-
-To clear your browser cache, take the following steps:
-
-1. Open TiDB Dashboard page.
-
-2. Open Developer Tools. Different browsers have different ways of opening Developer Tools. After clicking the **Menu Bar**:
-
-    - Firefox: **Menu** > **Web Developer** > **Toggle Tools**, or **Tools** > **Web Developer** > **Toggle Tools**.
-    - Chrome: **More tools** > **Developer tools**.
-    - Safari: **Develop** > **Show Web Inspector**. If you can't see the **Develop** menu, go to **Safari** > **Preferences** > **Advanced**, and check the **Show Develop** menu in menu bar checkbox.
-
-    In the following example, Chrome is used.
-
-    ![Opening DevTools from Chrome's main menu](/media/dashboard/dashboard-faq-devtools.png)
-
-3. Select the **Application** panel, expand the **Local Storage** menu and select the **TiDB Dashboard page domain**. Click the **Clear All** button.
-
-    ![Clear the Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
-
 ### A `required component NgMonitoring is not started` error is shown
 
-NgMonitoring is an advanced monitoring component built in TiDB clusters of v5.4.0 and later versions. It supports such features as **Continuous Profiling** and **Top SQL**. In a TiDB cluster deployed using TiUP, NgMonitoring is deployed automatically. In a TiDB cluster deployed using TiDB Operator, you need to deploy NgMonitoring manually by referring to [Enable Continuous Profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard/#enable-continuous-profiling).
+NgMonitoring is an advanced monitoring component built in TiDB clusters of v5.4.0 and later versions to support TiDB Dashboard features such as **Continuous Profiling** and **Top SQL**. NgMonitoring is automatically deployed when you deploy or upgrade a cluster with a newer version of TiUP. For clusters deployed using TiDB Operator, you can deploy NgMonitoring manually by referring to [Enable Continuous Profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard/#enable-continuous-profiling).
 
-If the **Continuous Profiling** page shows `required component NgMonitoring is not started`, address the problem based on the deployment method of the TiDB cluster.
+If the web page shows `required component NgMonitoring is not started`, you can troubleshoot the deployment issue as follows:
 
-#### Clusters deployed using TiUP
+<details>
+  <summary>Clusters Deployed using TiUP</summary>
 
 Step 1. Check versions
 
-1. Check the TiUP cluster version. NgMonitoring is available only when TiUP is v1.9.0 or later.
+1. Check the TiUP cluster version. NgMonitoring is deployed only when TiUP is v1.9.0 or later.
 
     {{< copyable "shell-regular" >}}
 
@@ -125,12 +104,12 @@ Step 2. Add the ng_port configuration item on the control machine by using TiUP.
     tiup cluster edit-config ${cluster-name}
     ```
 
-2. Under `monitoring_servers`, add the `ng_port:${port}` parameter:
+2. Under `monitoring_servers`, add the `ng_port:12020` parameter:
 
     ```
     monitoring_servers:
     - host: 172.16.6.6
-      ng_port: ${port}
+      ng_port: 12020
     ```
 
 3. Reload Prometheus:
@@ -141,8 +120,33 @@ Step 2. Add the ng_port configuration item on the control machine by using TiUP.
     tiup cluster reload ${cluster-name} --role prometheus
     ```
 
-After performing the preceding steps, enable Continuous Profiling on TiDB Dashboard. If NgMonitoring still fails to be started, contact PingCAP technical support for help.
+Please Contact PingCAP Technical Support for help if the error message is still prompted after performing steps above.
 
-#### Clusters deployed using TiDB Operator
+</details>
 
-Deploy NgMonitoring by referring to [Enable Continuous Profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard/#enable-continuous-profiling).
+<details>
+  <summary>Clusters Deployed using TiDB Operator</summary>
+
+Deploy the NgMonitoring component by following instructions in the [Enable Continuous Profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard/#enable-continuous-profiling) section in TiDB Operator documentation.
+
+</details>
+
+### An `unknown field` error is shown on the **Slow Queries** page
+
+If the `unknown field` error appears on the **Slow Queries** page after the cluster upgrade, the error is related to a compatibility issue caused by the difference between TiDB Dashboard server fields (which might be updated) and user preferences fields (which are in the browser cache). This issue has been fixed. If your cluster is earlier than v5.0.3 or v4.0.14, perform the following steps to clear your browser cache:
+
+1. Open TiDB Dashboard page.
+
+2. Open Developer Tools. Different browsers have different ways of opening Developer Tools. After clicking the **Menu Bar**:
+
+    - Firefox: **Menu** > **Web Developer** > **Toggle Tools**, or **Tools** > **Web Developer** > **Toggle Tools**.
+    - Chrome: **More tools** > **Developer tools**.
+    - Safari: **Develop** > **Show Web Inspector**. If you can't see the **Develop** menu, go to **Safari** > **Preferences** > **Advanced**, and check the **Show Develop** menu in menu bar checkbox.
+
+    In the following example, Chrome is used.
+
+    ![Opening DevTools from Chrome's main menu](/media/dashboard/dashboard-faq-devtools.png)
+
+3. Select the **Application** panel, expand the **Local Storage** menu and select the **TiDB Dashboard page domain**. Click the **Clear All** button.
+
+    ![Clear the Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)

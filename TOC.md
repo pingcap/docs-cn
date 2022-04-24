@@ -704,7 +704,7 @@
       - [Access](/dashboard/dashboard-access.md)
       - [Overview Page](/dashboard/dashboard-overview.md)
       - [Cluster Info Page](/dashboard/dashboard-cluster-info.md)
-      - [Top SQL](/dashboard/top-sql.md)
+      - [Top SQL Page](/dashboard/top-sql.md)
       - [Key Visualizer Page](/dashboard/dashboard-key-visualizer.md)
       - [Metrics Relation Graph](/dashboard/dashboard-metrics-relation.md)
       - SQL Statements Analysis

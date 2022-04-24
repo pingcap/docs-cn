@@ -1,89 +1,107 @@
 ---
-title: TiDB Dashboard Continuous Profiling
-summary: Learn how to enable Continuous Profiling and observe system conditions by using this feature.
+title: TiDB Dashboard Instance Profiling - Continuous Profiling
+summary: Learn how to collect performance data from TiDB, TiKV and PD continuously to reduce MTTR.
 ---
 
 # TiDB Dashboard Instance Profiling - Continuous Profiling
 
-Introduced in TiDB 5.3.0, Continuous Profiling is a way to observe resource overhead at the system call level. With the support of Continuous Profiling, TiDB provides performance insight as clear as directly looking into the database source code, and helps R&D and operation and maintenance personnel to locate the root cause of performance problems using a flame graph.
+> **Note:**
+>
+> This feature is designed for database experts. For non-expert users, it is recommended to use this feature under the guidance of PingCAP technical supports.
 
-With less than 0.5% performance loss, this feature takes continuous snapshots (similar to CT scan) of the database internal operations, turning the database from a "black box" into a "white box" that is more observable. This feature runs automatically after being enabled by one click and keeps storage results generated within the retention period. Storage results beyond the retention period are recycled to release the storage space.
+Continuous Profiling allows collecting performance data **continuously** from each TiDB, TiKV and PD instance. The collected performance data can be visualized as FlameGraph or DAG.
 
-## Restrictions
+With these performance data, experts can analyze resource consumption details like instance's CPU and memory, to help pinpoint sophisticated performance problems at any time, such as high CPU overhead, high memory usage, process stalls, and so on. Even for problems cannot be reproduced, experts can dig deep into the problem by viewing the historical performance data collected at that moment. In this way, MTTR can be reduced effectively.
 
-Before enabling the Continuous Profiling feature, pay attention to the following restrictions:
+## Compare with Manual Profiling
 
-- Under the x86 architecture, this feature supports TiDB, TiKV, and PD. This feature is not fully compatible with the ARM architecture and cannot be enabled under this architecture.
+Continuous Profiling is an enhanced feature of [Manual Profiling](/dashboard/dashboard-profiling.md). They can be both used to collect and analyze different kinds of performance data for each instance. Differences between them are as follows:
 
-- This feature is available for clusters deployed or upgraded using TiUP of v1.9.0 or later or TiDB Operator of v1.3.0 or later. This feature is unavailable for clusters deployed or upgraded by using binary packages.
+- Manual Profiling only collects performance data for a short period of time (for example, 30 seconds) at the moment you initiate the profiling, while Continuous Profiling collects data continuously when it is enabled.
+- Manual Profiling can only be used to analyze current occurring problems, while Continuous Profiling can be used to analyze both the current and historical problems.
+- Manual Profiling allows to collect specific performance data for specific instances, while Continuous Profiling collects all performance data for all instances.
+- Continuous Profiling stores more performance data, therefore it takes up more disk space.
+- Continuous Profiling currently does not collect performance data from TiFlash due to the impact to the stability when profiling is performed frequently.
 
-## Profiling content
+## Supported performance data
 
-With Continuous Profiling, you can collect continuous performance data of TiDB, TiKV, and PD instances, and have the nodes monitored day and night without restarting any of them. The data collected can be displayed in forms such as a flame graph or a directed acyclic graph. The data displayed visually shows what internal operations are performed on the instances during the performance profiling period and the corresponding proportions. With such data, you can quickly learn the CPU resource consumption of these instances.
+All performance data in [Manual Profiling](/dashboard/dashboard-profiling.md#supported-performance-data) is collected except for TiFlash CPU data, which is not collected due to stability reasons.
 
-Currently, Continuous Profiling can display the following performance data:
+- CPU: The CPU overhead of each internal function on TiDB, TiKV and PD instances
 
-- TiDB/PD: CPU profile, Heap, Mutex, Goroutine (debug=2)
-- TiKV: CPU profile
+  > The CPU overhead of TiKV instances is currently not supported in ARM architecture.
 
-## Enable Continuous Profiling
+- Heap: The memory consumption of each internal function on TiDB and PD instances
 
-This section describes how to enable Continuous Profiling on TiDB clusters deployed using TiUP and TiDB Operator respectively.
+- Mutex: The mutex contention states on TiDB and PD instances
 
-### Clusters deployed using TiUP
-
-To enable Continuous Profiling on clusters deployed using TiUP, perform the following steps:
-
-1. On TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling**.
-
-2. In the displayed window, click **Open Settings**.  In the **Settings** area on the right, switch **Enable Feature** on, and modify the default value of **Retention Duration** if necessary.
-
-3. Click **Save** to enable this feature.
-
-![Enable the feature](/media/dashboard/dashboard-conprof-start.png)
-
-### Clusters deployed using TiDB Operator
-
-See [Enable continuous profiling](https://docs.pingcap.com/tidb-in-kubernetes/dev/access-dashboard#enable-continuous-profiling).
+- Goroutine: The running state and call stack of all goroutines on TiDB and PD instances
 
 ## Access the page
 
-You can access the continuous profiling page using either of the following methods:
+You can access the Continuous Profiling page using either of the following methods:
 
 - After logging into TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling** on the left navigation bar.
 
-    ![Access](/media/dashboard/dashboard-conprof-access.png)
+  ![Access page](/media/dashboard/dashboard-conprof-access.png)
 
-- Visit <http://127.0.0.1:2379/dashboard/#/continuous_profiling> via your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
+- Visit <http://127.0.0.1:2379/dashboard/#/continuous_profiling> in your browser. Replace `127.0.0.1:2379` with the actual PD instance address and port.
 
-## View profiling history
+## Enable Continuous Profiling
 
-After starting continuous profiling, you can view the profiling result on the instance profiling page.
+> **Note:**
+>
+> To use Continuous Profiling, your cluster should be deployed or upgraded with a recent version of TiUP (v1.9.0 or above) or TiDB Operator (v1.3.0 or above). If your cluster was upgraded using an earlier version of TiUP or TiDB Operator, see [FAQ](/dashboard/dashboard-faq.md#a-required-component-ngmonitoring-is-not-started-error-is-shown) for instructions.
 
-![Profiling history](/media/dashboard/dashboard-conprof-history.png)
+Continuous Profiling is not enabled by default. After enabling it, you can have performance data continuously collected in the background without keeping the web pages always active. Data collected can be kept for a certain period of time and expired data is automatically cleared.
 
-Performance profiling runs in the background. Refreshing or exiting the current page will not terminate a running performance profiling task.
+To enable this feature:
 
-## Download profiling result
+1. Visit the [Continuous Profiling page](#access-the-page).
+2. Click **Open Settings**. In the **Settings** area on the right, switch **Enable Feature** on, and modify the default value of **Retention Duration** if necessary.
+3. Click **Save**.
+
+![Enable feature](/media/dashboard/dashboard-conprof-start.png)
+
+## View current performance data
+
+Manual Profiling cannot be initiated on clusters that have Continuous Profiling enabled. To view the performance data at the current moment, just click on the most recent profiling result.
+
+## View historical performance data
+
+On the list page, you can see all performance data collected since the enabling of this feature.
+
+![History results](/media/dashboard/dashboard-conprof-history.png)
+
+## Download performance data
 
 On the profiling result page, you can click **Download Profiling Result** in the upper-right corner to download all profiling results.
 
 ![Download profiling result](/media/dashboard/dashboard-conprof-download.png)
 
-You can also click an individual instance in the table to view its profiling result (including flame charts, directed acyclic graphs, and texts). Alternatively, you can hover on ... to download raw data.
+You can also click an individual instance in the table to view its profiling result. Alternatively, you can hover on ... to download raw data.
 
-![View the profiling result of an instance](/media/dashboard/dashboard-conprof-single.png)
+![View profiling result](/media/dashboard/dashboard-conprof-single.png)
 
 ## Disable Continuous Profiling
 
-1. On TiDB Dashboard, click **Advanced Debugging** > **Profiling Instances** > **Continuous Profiling** on the left navigation bar. Click **Settings**.
+1. Visit the [Continuous Profiling page](#access-the-page).
+2. Click the gear icon in the upper right corner to open the settings page. Switch **Enable Feature** off.
+3. Click **Save**.
+4. In the popped-up dialog box, click **Disable**.
 
-2. In the popped-up window, switch off the button under **Enable Feature**.
+![Disable feature](/media/dashboard/dashboard-conprof-stop.png)
 
-3. In the dialog box of **Disable Continuous Profiling Feature**, click **Disable**.
+## Frequently asked questions
 
-4. Click **Save**.
+**1. Continuous Profiling cannot be enabled and the UI displays "required component NgMonitoring is not started"**.
 
-5. In the popped-up window, click **Disable**.
+See [TiDB Dashboard FAQ](/dashboard/dashboard-faq.md#a-required-component-ngmonitoring-is-not-started-error-is-shown).
 
-![Disable the feature](/media/dashboard/dashboard-conprof-stop.png)
+**2. Will performance be affected after enabling Continuous Profiling?**
+
+According to our benchmark, the average performance impact is less than 1% when the feature is enabled.
+
+**3. What is the status of this feature?**
+
+It is now a generally available (GA) feature and can be used in production environments.
