@@ -29,17 +29,26 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
 
-1. 启用 Aurora 的 binary log (Binlog format = row)，此操作将重启 Aurora。（若只需要全量数据迁移，此步骤可跳过）
+1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置，且时间为 T1：
 
-2. 创建 Aurora 快照，由于 Aurora 禁用了 “super” 权限，快照是唯一获取一致性备份的方式。注意，快照创建过程中可能对性能有一定影响，若希望降低影响可以参考[通过只读实例迁移 Aurora 到 TiDB](/migrate-aurora-to-tidb-by-dm.md)。
+    ```sql
+    mysql> SHOW MASTER STATUS;
+    ```
 
-3. 记录快照的 binlog 位置，在控制台中搜索关键字 “Alarms and Recent Events” ，将获得类似以下信息。（若只需要全量数据迁移，此步骤可跳过）
+    你将得到类似以下的输出，请记录 binlog 名称和位置，供后续步骤使用：
+
+    ```
+    +------------------+----------+--------------+------------------+-------------------+
+    | File             | Position | Binlog_Do_DB | Binlog_Ignore_DB | Executed_Gtid_Set |
+    +------------------+----------+--------------+------------------+-------------------+
+    | mysql-bin.000002 |    52806 |              |                  |                   |
+    +------------------+----------+--------------+------------------+-------------------+
+    1 row in set (0.012 sec)
+    ```
+
+2. 创建快照，此操作时间为 T2。
   
-    ```
-    Binlog position from crash recovery is mysql-bin-changelog.0000101 29310981
-    ```
-
-4. 导出 Aurora 快照文件。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+3. 导出 Aurora 快照文件到 S3。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
 
 ### 第 2 步： 导出 schema 文件
 
@@ -199,7 +208,7 @@ type = '$3'
 ```yaml
 # 任务名，多个同时运行的任务不能重名。
 name: "test"
-# 任务模式，可设为
+# 任务模式，本场景下应使用 incremental 模式
 # full：只进行全量数据迁移
 # incremental： binlog 持续同步
 # all： 全量迁移 + binlog 持续同步
@@ -222,18 +231,22 @@ block-allow-list:                     # 如果 DM 版本早于 v2.0.0-beta.2 则
 mysql-instances:
   - source-id: "mysql-01"               # 数据源 ID，即 source1.yaml 中的 source-id
     block-allow-list: "listA"           # 引入上面黑白名单配置。
-#       syncer-config-name: "global"    # 引用上面的 syncers 增量数据配置。
+    syncer-config-name: "configA"    # 引用上面的 syncers 增量数据配置。
     meta:                               # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
-      binlog-name: "mysql-bin-changelog.0000101"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置。
-      binlog-pos: 29310981
+      binlog-name: "mysql-bin.000002"   # “Step 1. 导出 Aurora 快照文件到 Amazon S3” 中记录的日志位置。
+      binlog-pos: 52806
 
-   # 【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
-   ##  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
-   # syncers:            # sync 处理单元的运行配置参数。
-   #  global:           # 配置名称。
-   #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
+#【可选配置】 如果增量数据迁移需要重复迁移已经在全量数据迁移中完成迁移的数据，则需要开启 safe mode 避免增量数据迁移报错。
+#  该场景多见于以下情况：全量迁移的数据不属于数据源的一个一致性快照，随后从一个早于全量迁移数据之前的位置开始同步增量数据。
+syncers:            # sync 处理单元的运行配置参数。
+  configA:           # 配置名称。
+    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
 
 ```
+
+> **注意：**
+>
+> 由于 `SHOW MASTER STATUS`时（T1），与创建快照时（T2）存在时间差，增量同步可能出现数据冲突错误。因此前述任务配置中启用了 safe-mode，但 safe-mode 并不建议长期运行，待数据一致后可关闭 safe-mode.
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
