@@ -1,11 +1,11 @@
 ---
-title: DM safe mode 介绍
+title: DM 安全模式
 summary: 介绍 DM safe mode 作用和原理
 ---
 
-# DM safe mode 介绍
+# DM 安全模式
 
-安全模式（safe mode）是 DM 在进行增量同步时候的一种运行模式，在安全模式中，DM 增量同步组件在同步 binlog event 时，将把所有 INSERT 和 UPDATE 操作强制进行改写后再在下游执行。
+安全模式 (safe mode) 是 DM 在进行增量同步时候的一种运行模式，在安全模式中，DM 增量同步组件在同步 binlog event 时，将把所有 `INSERT` 和 `UPDATE` 操作强制进行改写后再在下游执行。
 
 安全模式的目的是在增量同步过程中，同一条 binlog event 能够在下游被重复同步且保证幂等性，从而确保增量同步能够“安全”进行。 
 
@@ -17,14 +17,14 @@ DM 从 checkpoint 恢复数据同步任务后，可能重复执行某些 binlog 
 
 在安全模式下，通过改写 SQL 语句，DM 可以解决上述问题。
 
-## safe mode 原理
+## 安全模式原理
 
 安全模式通过 SQL 语句改写来保证 binlog event 的幂等性。具体来说，在安全模式下：
 
 * `INSERT` 语句会被改写成 `REPLACE` 语句。
 * `UPDATE` 语句会被分析，得到该语句涉及的行的主键或唯一索引的值，然后改写成 `DELETE` + `REPLACE` 语句 ：先根据主键或唯一索引的定位删除对应的行，然后使用 `REPLACE` 语句插入一条最新值的行记录。
 
-`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作。相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
+`REPLACE` 操作是 MySQL 特有的数据插入语法。使用 `REPLACE` 语法插入数据时，如果新插入的数据和现有数据存在主键或唯一约束冲突，MySQL 会删除所有冲突的记录，然后再执行插入记录操作，相当于“强制插入”的操作。具体请参考 [MySQL 官方文档的 `REPLACE` 语句相关介绍](https://dev.mysql.com/doc/refman/8.0/en/replace.html) 。
 
 比如，假设一张表 `dummydb.dummytbl` 的主键是 `id`，在这张表中重复执行下面的 SQL 语句：
 
@@ -44,15 +44,15 @@ DELETE FROM dummydb.dummytbl WHERE id = 888;
 REPLACE INTO dummydb.dummytbl (id, int_value, str_value) VALUES (999, 888888, 'abc888');    
 ```
 
-上述语句中，`UPDATE` 被改写为 `DELETE` + `REPLACE`，而不是 `DELETE` + `INSERT`。如果这里使用 `INSERT`，那么 `id = 999` 的记录在已经存在的情况下重复插入时会报错主键冲突，而 `REPLACE` 则会替换之前已经插入的记录。
+上述语句中，`UPDATE` 被改写为 `DELETE` + `REPLACE`，而不是 `DELETE` + `INSERT`。如果这里使用 `INSERT`，那么 `id = 999` 的记录在已经存在的情况下重复插入时，数据库会报错主键冲突。因此这里使用了 `REPLACE`，新的记录会替换之前已经插入的记录。
 
 通过这样的语句改写，在进行重复的插入或更新操作时，DM 都会使用执行该操作后的行数据来覆盖之前已经存在的行数据。这样保证了插入和更新操作的可重复执行。
 
-## 如何开启 safe mode
+## 开启安全模式
 
 ### 自动开启
 
-当 DM 从 checkpoint 恢复增量同步任务(例如 worker 重启，网络中断重连等)时，会自动开启一段时间的安全模式。开启安全模式的逻辑，与 checkpoint 中的 `safemode_exit_point` 信息相关。当一个增量同步任务异常暂停时，DM 会先尝试将内存中所有的 DML 全部同步到下游，然后记录当前内存中从上游拉取到的最新的 binlog 位置点，记作 `safemode_exit_point`，把 `safemode_exit_point` 保存在异常暂停之前最后一个 checkpoint 当中。
+当 DM 从 checkpoint 恢复增量同步任务（例如 worker 重启，网络中断重连等）时，会自动开启一段时间的安全模式。开启安全模式的逻辑，与 checkpoint 中的 `safemode_exit_point` 信息相关。当一个增量同步任务异常暂停时，DM 会先尝试将内存中所有的 DML 全部同步到下游，然后记录当前内存中从上游拉取到的最新的 binlog 位置点，记作 `safemode_exit_point`，把 `safemode_exit_point` 保存在异常暂停之前最后一个 checkpoint 当中。
 
 当 DM 从 checkpoint 恢复增量同步任务时，会根据下面的判断逻辑来开启安全模式：
 
