@@ -29,7 +29,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
 
-1. 启用 Aurora 的 binary log (Binlog format = mixed)，此操作将重启 Aurora。（若只需要全量数据迁移，此步骤可跳过）
+1. 启用 Aurora 的 binary log (Binlog format = row)，此操作将重启 Aurora。（若只需要全量数据迁移，此步骤可跳过）
 
 2. 创建 Aurora 快照，由于 Aurora 禁用了 “super” 权限，快照是唯一获取一致性备份的方式。注意，快照创建过程中可能对性能有一定影响，若希望降低影响可以参考[通过只读实例迁移 Aurora 到 TiDB](/migrate-aurora-to-tidb-by-dm.md)。
 
