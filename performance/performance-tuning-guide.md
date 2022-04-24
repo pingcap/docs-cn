@@ -34,16 +34,17 @@ Execute Time ~= TiDB Executor Time + KV Request Time + PD TSO Wait Time
 
 ## 利用 Performance Overview 面板进行性能分析和优化
 Performance Overview Grafana 面板从版本 v6.0.0 发布。本章会介绍利用这个 Grafana 监控面板，TiDB 用户如何高效的进行基于数据库时间的性能分析和优化。
-Performance Overview 包含三种数据：
-1. 数据库时间和 SQL 执行时间分解
-2. TiDB 关键指标和集群资源利用率
-3. Query 延迟分解
+
+Performance Overview Dashboard 按总分结构做了组织，包含了以下三部分内容：
+- 总的概览：数据库时间和 SQL 执行时间概览
+- 资源负载：关键指标和资源利用率
+- 自上而下的延迟分解：Query 延迟分解、execute 阶段的 tso 请求和 kv 请求的延迟、TiKV 内部写延迟的分解等。
 
 ### 数据库时间和 SQL 执行时间概览
 DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每秒并发处理应用 SQL 请求的总时间(等于活跃连接数)。通过三个面积堆叠图，用户可以了解数据库负载的类型，可以快速定位在数据库时间的瓶颈主要是处理什么语句，集中在哪个执行阶段，SQL 执行阶段主要等待 TiKV 或者 PD 什么请求类型。
 
 #### 颜色优化法
-对于第二个图 Database Time By SQL Phase 和 第三个图 SQL Execute Time Overview, 可以使用 *颜色优化法* 进行快速分析。正常的时间消耗和请求类型，显示颜色是绿色系和蓝色系，如果非绿色系和蓝色系的颜色占据了明显的比例，意味着数据库内存存在异常。
+对于第二个图 Database Time By SQL Phase 和 第三个图 SQL Execute Time Overview, 通过给不同的 SQL 处理阶段和不同请求执行时间上色，通过颜色区分 *正常* 或者 *异常* 的时间消耗，用户通过 *颜色优化法*，可一眼定位集群的异常瓶颈点，高效了解集群的负载特征。对于正常的时间消耗和请求类型，显示颜色是绿色系和蓝色系，如果非绿色系和蓝色系的颜色占据了明显的比例，意味着数据库时间的分布不合理。
 
 - 第二个图 Database Time By SQL Phase 中 execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。一个常见的场景是因为无法使用执行计划缓存，导致 comiple 阶段的橙色占比明显。
 - 第三个图 SQL Execute Time Overview 中，对于常规的写 kv 请求，Prewrite 和 Commit，颜色为绿色系；对于常规的读 kv 请求，颜色为 蓝色系；除此之外的类型，被赋予了让人不舒服的颜色，比如悲观锁加锁请求为红色，tso 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。比如锁冲突严重，红色的悲观锁时间会占比明显；比如负载中 tso wait 消耗的时间过长，深褐色占比明显。
