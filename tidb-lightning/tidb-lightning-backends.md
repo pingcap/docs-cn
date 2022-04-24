@@ -30,7 +30,6 @@ TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb
 >
 > - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
 
-
 ## Local-backend
 
 自 TiDB 4.0.3 版本起，TiDB Lightning 引入了 Local-backend 特性。该特性支持导入数据到 v4.0.0 以上的 TiDB 集群。
