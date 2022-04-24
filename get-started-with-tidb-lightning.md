@@ -40,7 +40,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.4.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.4.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。 
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 
