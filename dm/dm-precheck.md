@@ -110,6 +110,25 @@ tiup dmctl check-task ./task.yaml
 
 对于全量加增量数据迁移模式（`task-mode: all`），除了[通用检查项](#通用检查项)，前置检查还会包含[全量数据迁移检查项](#全量数据迁移检查项)，以及[增量数据迁移检查项](#增量数据迁移检查项)。
 
+### 可忽略检查项
+
+一般情况下前置检查项用于提前发现环境中可能存在的风险，不建议忽略。如果你的数据迁移任务面临特殊场景，你可以通过 [`ignore-checking-items` 配置项](/dm/task-configuration-file-full.md#完整配置文件示例)来跳过部分检查项。
+
+|值|含义|
+|-|-|
+|dump_privilege|检查上游 MySQL 实例用户的 dump 相关权限|
+|replication_privilege|检查上游 MySQL 实例用户的 replication 相关权限|
+|version|检查上游数据库版本|
+|server_id|检查上游数据库是否设置 server_id|
+|binlog_enable|检查上游数据库是否已启用 binlog|
+|table_schema|检查上游 MySQL 表结构的兼容性|
+|schema_of_shard_tables|检查上游 MySQL 多实例分库分表的表结构一致性|
+|auto_increment_ID|关闭检查上游 MySQL 多实例分库分表的自增主键冲突|
+
+> **注意：**
+>
+> 6.0 之前的版本支持忽略更多的检查项，但诸如 `binlog_row_image` 等参数，若配置错误可能导致同步时丢失数据，因此在 6.0 版本中移除了部分与数据安全相关的检查项。
+
 ## 配置检查参数
 
 任务前置检查支持多线程并行。即使分表数目达到万级别，检查也可以在分钟级完成。

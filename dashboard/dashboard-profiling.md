@@ -46,7 +46,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-profiling/']
 
 ![开始分析](/media/dashboard/dashboard-profiling-start.png)
 
-在已经启用了[持续性能分析](/dashboard/continuous-profiling.md)的集群上，手动性能分析不再可用。若要在启用了持续性能分析功能的集群上获取当前时刻的集群性能数据，请查看持续性能分析页面上最近一次的分析结果。
+在已经启用了[持续性能分析](/dashboard/continuous-profiling.md)的集群上，手动性能分析不再可用。若要在启用了持续性能分析功能的集群上获取当前时刻的集群性能数据，请查看[持续性能分析页面](/dashboard/continuous-profiling.md#访问页面)上最近一次的分析结果。
 
 ## 查看性能分析状态
 
