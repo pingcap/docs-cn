@@ -435,6 +435,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 ```
 
 由于 `txn 2` 抢先获得锁资源，更新了 stock，`txn 1` 里面 `affected_rows` 返回值为 0，进入了 `rollback` 流程。
+
 我们再检验一下订单创建、用户余额扣减、图书库存扣减情况。Alice 下单 4 本书成功，Bob 下单 7 本书失败，库存剩余 6 本符合预期。
 
 ```sql
@@ -868,6 +869,7 @@ mysql> select * from users;
 与 MySQL 等传统数据库不同的是，在 TiDB 中，如果采用乐观事务模型，想要避免提交失败，需要在自己的应用程序的业务逻辑中添加机制来处理相关的异常。
 
 下面的类似 Python 的伪代码展示了如何实现应用程序级的重试。 它不要求您的驱动程序或 ORM 来实现高级重试处理逻辑，因此可以在任何编程语言或环境中使用。
+
 特别是，您的重试逻辑必须：
 
 - 如果达到 `max_retries` 限制，则抛出错误

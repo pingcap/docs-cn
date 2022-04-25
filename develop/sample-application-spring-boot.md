@@ -59,8 +59,7 @@ tiup playground
 tiup playground v5.4.0 --db 2 --pd 3 --kv 3
 ```
 
-上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行
-`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
 ```bash
 CLUSTER START SUCCESSFULLY, Enjoy it ^-^

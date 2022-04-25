@@ -49,6 +49,7 @@ CREATE DATABASE IF NOT EXISTS `bookshop`;
 ```
 
 此语句会创建一个名为 `bookshop` 的数据库 (如果尚不存在)。
+
 `dbinit.sql` 要以 `root` 用户身份执行文件中的建库语句，请运行以下命令：
 
 ```sh
@@ -84,4 +85,5 @@ mysql
 ```
 
 至此，您已经准备完毕 `bookshop` 数据库，可以将`表`添加到该数据库中。
+
 您可继续阅读[创建表](/develop/create-table.md)文档获得相关指引。

@@ -11,11 +11,13 @@ TiDB 支持完整的分布式事务，提供[乐观事务](https://docs.pingcap.
 ## 通用语句
 
 本节介绍在 TiDB 中如何使用事务。 我们将使用下面的示例来演示一个简单事务的控制流程：
+
 Bob 要给 Alice 转账 20 元钱，当中至少包括两个操作：
 
 - Bob 账户减少 20 元。
 - Alice 账户增加 20 元。
-  事务可以确保以上两个操作要么都执行成功，要么都执行失败，不会出现钱平白消失或出现的情况。
+
+事务可以确保以上两个操作要么都执行成功，要么都执行失败，不会出现钱平白消失或出现的情况。
 
 使用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `users` 表，在表中插入一些示例数据
 
@@ -49,8 +51,7 @@ COMMIT;
 
 ### 开启事务
 
-要显式地开启一个新事务，既可以使用 `BEGIN` 语句，也可以使用 `START TRANSACTION` 语句，两者效果相同。
-语法：
+要显式地开启一个新事务，既可以使用 `BEGIN` 语句，也可以使用 `START TRANSACTION` 语句，两者效果相同。语法：
 
 ```sql
 BEGIN;
@@ -76,8 +77,7 @@ BEGIN PESSIMISTIC;
 
 ### 提交事务
 
-`COMMIT` 语句用于提交 TiDB 在当前事务中进行的所有修改。
-语法：
+`COMMIT` 语句用于提交 TiDB 在当前事务中进行的所有修改。语法：
 
 ```sql
 COMMIT;
@@ -87,8 +87,7 @@ COMMIT;
 
 ### 回滚事务
 
-`ROLLBACK` 语句用于回滚并撤销当前事务的所有修改。
-语法：
+`ROLLBACK` 语句用于回滚并撤销当前事务的所有修改。语法：
 
 ```sql
 ROLLBACK;
@@ -128,6 +127,7 @@ select * from users;
 ## 事务隔离级别
 
 事务隔离级别是数据库事务处理的基础，`ACID` 中的 “I”，即 Isolation，指的就是事务的隔离性。
+
 SQL-92 标准定义了 4 种隔离级别：读未提交 (`READ UNCOMMITTED`)、读已提交 (`READ COMMITTED`)、可重复读 (`REPEATABLE READ`)、串行化 (`SERIALIZABLE`)。详见下表：
 
 | Isolation Level  | Dirty Write  | Dirty Read   | Fuzzy Read   | Phantom      |

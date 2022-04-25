@@ -18,7 +18,9 @@ Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/Hik
 比较常见的是应用需要根据自身情况配置合适的连接池大小，以 HikariCP 为例：
 
 `maximumPoolSize`：连接池最大连接数，配置过大会导致 TiDB 消耗资源维护无用连接，配置过小则会导致应用获取连接变慢，所以需根据应用自身特点配置合适的值，可参考[这篇文章](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing)。
+
 `minimumIdle`：连接池最小空闲连接数，主要用于在应用空闲时存留一些连接以应对突发请求，同样是需要根据业务情况进行配置。
+
 应用在使用连接池时，需要注意连接使用完成后归还连接，推荐应用使用对应的连接池相关监控（如 `metricRegistry`），通过监控能及时定位连接池问题。
 
 ### 探活配置

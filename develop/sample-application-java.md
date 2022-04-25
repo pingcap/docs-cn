@@ -62,8 +62,7 @@ tiup playground
 tiup playground v5.4.0 --db 2 --pd 3 --kv 3
 ```
 
-上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行
-`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
 ```bash
 CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -609,7 +608,8 @@ mysqlDataSource.setPassword("123456");
 
 - 清理并构建 (make build)： `mvn clean package`
 - 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
-  你也可以单独运行这两个 make 命令或原生命令
+
+你也可以单独运行这两个 make 命令或原生命令
 
 ### 步骤 4. 预期输出
 
@@ -982,7 +982,8 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 - 清理并构建 (make build)：`mvn clean package`
 - 运行 (make run)：`java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`
-  你也可以单独运行这两个 make 命令或原生命令
+
+你也可以单独运行这两个 make 命令或原生命令
 
 ### 步骤 4. 预期输出
 

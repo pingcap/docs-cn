@@ -100,8 +100,7 @@ connectionAttributes=none
 useInformationSchema=true
 ```
 
-你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformance.properties` 来获得对应版本
-MySQL JDBC Driver 的 `useConfigs=maxPerformance` 包含配置。
+你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformance.properties` 来获得对应版本MySQL JDBC Driver 的 `useConfigs=maxPerformance` 包含配置。
 
 在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空 ，默认数据库: `test`为例：
 
