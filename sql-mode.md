@@ -15,7 +15,7 @@ Modes 是用逗号 (',') 间隔开的一系列不同的模式。使用 `SELECT @
 
 * ANSI: 符合标准 SQL ，对数据进行校验，如果不符合定义类型或长度，对数据类型调整或截断保存，且返回warning警告。
 * STRICT_TRANS_TABLES: 严格模式，对数据进行严格校验，当数据出现错误时，插入到表中，并且返回错误。
-* TRADITIONAL: 采用此模式使 TiDB 的行为象 "传统" SQL 数据库系统，当在列中插入不正确的值时“给出错误而不是警告”，一旦发现错误立即放弃INSERT/UPDATE。
+* TRADITIONAL: 采用此模式使 TiDB 的行为像 "传统" SQL 数据库系统，当在列中插入不正确的值时“给出错误而不是警告”，一旦发现错误立即放弃INSERT/UPDATE。
 
 ## SQL mode 列表，如下
 

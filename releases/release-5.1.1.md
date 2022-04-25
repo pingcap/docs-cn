@@ -64,8 +64,8 @@ TiDB 版本：5.1.1
 
     + TiCDC
 
-        - 移除 `file sorter` 文件排序器 [#2327](https://github.com/pingcap/ticdc/pull/2327)
-        - 优化连接 PD 时缺少证书情况下的报错提示 [#1973](https://github.com/pingcap/ticdc/issues/1973)
+        - 移除 `file sorter` 文件排序器 [#2327](https://github.com/pingcap/tiflow/pull/2327)
+        - 优化连接 PD 时缺少证书情况下的报错提示 [#1973](https://github.com/pingcap/tiflow/issues/1973)
 
     + TiDB Lightning
 
@@ -138,12 +138,12 @@ TiDB 版本：5.1.1
 
     + TiCDC
 
-        - 修复对 New Collation 的支持 [#2301](https://github.com/pingcap/ticdc/issues/2301)
-        - 修复了运行时因非同步访问共享 map 可能导致 panic 的问题 [#2300](https://github.com/pingcap/ticdc/pull/2300)
-        - 修复了 DDL 语句执行时 owner 崩溃可能导致的 DDL event 遗漏的问题 [#2290](https://github.com/pingcap/ticdc/pull/2290)
-        - 修复了试图过早在 TiDB 中解锁的问题 [#2188](https://github.com/pingcap/ticdc/issues/2188)
-        - 修复了表迁移后节点崩溃可能导致数据丢失的问题 [#2033](https://github.com/pingcap/ticdc/pull/2033)
-        - 修复了 `changefeed update` 对 `--sort-dir` and `--start-ts` 的处理逻辑 [#1921](https://github.com/pingcap/ticdc/pull/1921)
+        - 修复对 New Collation 的支持 [#2301](https://github.com/pingcap/tiflow/issues/2301)
+        - 修复了运行时因非同步访问共享 map 可能导致 panic 的问题 [#2300](https://github.com/pingcap/tiflow/pull/2300)
+        - 修复了 DDL 语句执行时 owner 崩溃可能导致的 DDL event 遗漏的问题 [#2290](https://github.com/pingcap/tiflow/pull/2290)
+        - 修复了试图过早在 TiDB 中解锁的问题 [#2188](https://github.com/pingcap/tiflow/issues/2188)
+        - 修复了表迁移后节点崩溃可能导致数据丢失的问题 [#2033](https://github.com/pingcap/tiflow/pull/2033)
+        - 修复了 `changefeed update` 对 `--sort-dir` and `--start-ts` 的处理逻辑 [#1921](https://github.com/pingcap/tiflow/pull/1921)
 
     + Backup & Restore (BR)
 

@@ -9,14 +9,14 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v5.2.1。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.0.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v5.2.1
+tiup cluster upgrade <cluster-name> v6.0.0
 ```
 
 ### 升级的注意事项
@@ -59,7 +59,7 @@ tiup cluster edit-config <cluster-name>
 
 ## 使用 `cdc cli` 工具来管理集群状态和数据同步
 
-本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下接口描述中，通过 `cdc` binary 直接执行 `cli` 命令，PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
+本部分介绍如何使用 `cdc cli` 工具来管理集群状态和数据同步。`cdc cli` 是指通过 `cdc` binary 执行 `cli` 子命令。在以下描述中，通过 `cdc` binary 直接执行 `cli` 命令，PD 的监听 IP 地址为 `10.0.10.25`，端口为 `2379`。
 
 > **注意：**
 >
@@ -102,7 +102,7 @@ tiup cluster edit-config <cluster-name>
 
 同步任务状态标识了同步任务的运行情况。在 TiCDC 运行过程中，同步任务可能会运行出错、手动暂停、恢复，或达到指定的 `TargetTs`，这些行为都可以导致同步任务状态发生变化。本节描述 TiCDC 同步任务的各状态以及状态之间的流转关系。
 
-![TiCDC state transfer](/media/ticdc-state-transfer.png)
+![TiCDC state transfer](/media/ticdc/ticdc-state-transfer.png)
 
 以上状态流转图中的状态说明如下：
 
@@ -116,10 +116,12 @@ tiup cluster edit-config <cluster-name>
 
 - ① 执行 `changefeed pause` 命令。
 - ② 执行 `changefeed resume` 恢复同步任务。
-- ③ `changefeed` 运行过程中发生可恢复的错误。
+- ③ `changefeed` 运行过程中发生可恢复的错误，自动进行恢复。
 - ④ 执行 `changefeed resume` 恢复同步任务。
 - ⑤ `changefeed` 运行过程中发生不可恢复的错误。
-- ⑥ 同步任务已经进行到预设的 TargetTs，同步自动停止。
+- ⑥ `changefeed` 已经进行到预设的 TargetTs，同步自动停止。
+- ⑦ `changefeed` 停滞时间超过 `gc-ttl` 所指定的时长，不可被恢复。
+- ⑧ `changefeed` 尝试自动恢复过程中发生不可恢复的错误。
 
 #### 创建同步任务
 
@@ -134,7 +136,7 @@ cdc cli changefeed create --pd=http://10.0.10.25:2379 --sink-uri="mysql://root:1
 ```shell
 Create changefeed successfully!
 ID: simple-replication-task
-Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null,"protocol":"default"},"cyclic-replication":{"enable":false,"replica-id":0,"filter-replica-ids":null,"id-buckets":0,"sync-ddl":false},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
+Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":"2020-03-12T22:04:08.103600025+08:00","start-ts":415241823337054209,"target-ts":0,"admin-job-type":0,"sort-engine":"unified","sort-dir":".","config":{"case-sensitive":true,"filter":{"rules":["*.*"],"ignore-txn-start-ts":null,"ddl-allow-list":null},"mounter":{"worker-num":16},"sink":{"dispatchers":null},"scheduler":{"type":"table-number","polling-time":-1}},"state":"normal","history":null,"error":null}
 ```
 
 - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 `^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$`。如果不指定该 ID，TiCDC 会自动生成一个 UUID（version 4 格式）作为 ID。
@@ -156,8 +158,8 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     - `memory`：在内存中进行排序。 **不建议使用，同步大量数据时易引发 OOM。**
     - `file`：完全使用磁盘暂存数据。**已经弃用，不建议在任何情况使用。**
 
-- `--sort-dir`: 指定排序引擎使用的临时文件目录。**不建议在 `cdc cli changefeed create` 中使用该选项**，建议在 [`cdc server` 命令中使用该选项来设置临时文件目录](/ticdc/deploy-ticdc.md#ticdc-cdc-server-命令行参数说明)。该配置项的默认值为 `/tmp/cdc_sort`。在开启 Unified Sorter 的情况下，如果服务器的该目录不可写或可用空间不足，请手动指定 `sort-dir`。如果 `sort-dir` 对应的目录不可写入，changefeed 将会自动停止。
 - `--config`：指定 changefeed 配置文件。
+- `--sort-dir`: 用于指定排序器使用的临时文件目录。**自 TiDB v4.0.13, v5.0.3 和 v5.1.0 起已经无效，请不要使用**。
 
 #### Sink URI 配置 `mysql`/`tidb`
 
@@ -169,7 +171,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
 --sink-uri="mysql://root:123456@127.0.0.1:3306/?worker-count=16&max-txn-row=5000"
 ```
 
-URI 中可配置的的参数如下：
+URI 中可配置的参数如下：
 
 | 参数         | 解析                                             |
 | :------------ | :------------------------------------------------ |
@@ -191,7 +193,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 ```
 
 URI 中可配置的的参数如下：
@@ -200,21 +202,35 @@ URI 中可配置的的参数如下：
 | :------------------ | :------------------------------------------------------------ |
 | `127.0.0.1`          | 下游 Kafka 对外提供服务的 IP                                 |
 | `9092`               | 下游 Kafka 的连接端口                                          |
-| `cdc-test`           | 使用的 Kafka topic 名字                                      |
+| `topic-name`           | 变量，使用的 Kafka topic 名字                                      |
 | `kafka-version`      | 下游 Kafka 版本号（可选，默认值 `2.4.0`，目前支持的最低版本为 `0.11.0.2`，最高版本为 `2.7.0`。该值需要与下游 Kafka 的实际版本保持一致） |
 | `kafka-client-id`    | 指定同步任务的 Kafka 客户端的 ID（可选，默认值为 `TiCDC_sarama_producer_同步任务的 ID`） |
-| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量。如果不填会自动获取 partition 数量。） |
-| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `64MB`） |
-| `replication-factor` | kafka 消息保存副本数（可选，默认值 `1`）                       |
-| `protocol` | 输出到 kafka 消息协议，可选值有 `default`、`canal`、`avro`、`maxwell`（默认值为 `default`） |
-| `max-batch-size` |  从 v4.0.9 引入。如果消息协议支持将多条变更记录输出到一条 kafka 消息，该参数指定一条 kafka 消息中变更记录的最多数量，目前仅对 Kafka 的 `protocol` 为 `default` 时有效（可选，默认值为 `4096`）|
+| `partition-num`      | 下游 Kafka partition 数量（可选，不能大于实际 partition 数量，否则创建同步任务会失败，默认值 `3`）|
+| `max-message-bytes`  | 每次向 Kafka broker 发送消息的最大数据量（可选，默认值 `10MB`）。从 v5.0.6 和 v4.0.6 开始，默认值分别从 64MB 和 256MB 调整至 10MB。|
+| `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
+| `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
+| `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`） |
+| `enable-tidb-extension` | 当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段（可选，默认值 `false`）|
+| `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
+| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
+| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
+| `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
+| `write-timeout`| 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
+
+最佳实践：
+
+* TiCDC 推荐用户自行创建 Kafka Topic，你至少需要设置该 Topic 每次向 Kafka broker 发送消息的最大数据量和下游 Kafka partition 的数量。在创建 changefeed 的时候，这两项设置分别对应 `max-message-bytes` 和 `partition-num` 参数。
+* 如果你在创建 changefeed 时，使用了尚未存在的 Topic，那么 TiCDC 会尝试使用 `partition-num` 和 `replication-factor` 参数自行创建 Topic。建议明确指定这两个参数。
+* 在大多数情况下，建议使用 `canal-json` 协议。
 
 > **注意：**
 >
-> 当 `protocol` 为 `default` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
+> 当 `protocol` 为 `open-protocol` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
 
 #### TiCDC 集成 Kafka Connect (Confluent Platform)
 
@@ -227,7 +243,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/cdc-test?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -242,7 +258,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="pulsar://127.0.0.1:6650/cdc-test?connectionTimeout=2s"
+--sink-uri="pulsar://127.0.0.1:6650/topic-name?connectionTimeout=2s"
 ```
 
 URI 中可配置的的参数如下：
@@ -261,7 +277,7 @@ URI 中可配置的的参数如下：
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
-| `compressionType` | 设置发送消息时使用的压缩算法（可选 `LZ4`，`ZLIB` 和 `ZSTD`，默认值为 `ZSTD`）|
+| `compressionType` | 设置发送消息时使用的压缩算法（可选 `NONE`，`LZ4`，`ZLIB` 和 `ZSTD`，默认值为 `NONE`）|
 | `hashingScheme` | 用于选择发送分区的哈希算法（可选 `JavaStringHash` 和 `Murmur3`，默认值为 `JavaStringHash`）|
 | `properties.*` | 在 TiCDC 中 Pulsar producer 上添加用户定义的属性（可选，示例 `properties.location=Hangzhou`）|
 
@@ -369,14 +385,6 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
       },
       "sink": {
         "dispatchers": null,
-        "protocol": "default"
-      },
-      "cyclic-replication": {
-        "enable": false,
-        "replica-id": 0,
-        "filter-replica-ids": null,
-        "id-buckets": 0,
-        "sync-ddl": false
       },
       "scheduler": {
         "type": "table-number",
@@ -399,8 +407,7 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
       "status": {
         "tables": {
           "47": {
-            "start-ts": 419036036249681921,
-            "mark-table-id": 0
+            "start-ts": 419036036249681921
           }
         },
         "operation": null,
@@ -516,8 +523,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
       "status": {
         "tables": {
           "56": {    # 56 表示同步表 id，对应 TiDB 中表的 tidb_table_id
-            "start-ts": 417474117955485702,
-            "mark-table-id": 0  # mark-table-id 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id
+            "start-ts": 417474117955485702
           }
         },
         "operation": null,
@@ -534,7 +540,6 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 以上命令中：
 
 - `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
-- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id。
 - `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
 
@@ -567,7 +572,7 @@ worker-num = 16
 # 支持 default、ts、rowid、table 四种分发器，分发规则如下：
 # - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
 # - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
-# - rowid：以所选的 HandleKey 列名和列值做 Hash 计算并进行 event 分发
+# - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 # - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 # matcher 的匹配语法和过滤器规则语法相同
 dispatchers = [
@@ -575,134 +580,15 @@ dispatchers = [
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
 ]
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
-# 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
-protocol = "default"
+# 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
+protocol = "canal-json"
 
-[cyclic-replication]
-# 是否开启环形同步
-enable = false
-# 当前 TiCDC 的复制 ID
-replica-id = 1
-# 需要过滤掉的同步 ID
-filter-replica-ids = [2,3]
-# 是否同步 DDL
-sync-ddl = true
 ```
 
 ### 配置文件兼容性的注意事项
 
 * TiCDC v4.0.0 中移除了 `ignore-txn-commit-ts`，添加了 `ignore-txn-start-ts`，使用 start_ts 过滤事务。
 * TiCDC v4.0.2 中移除了 `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables`，添加了 `rules`，使用新版的数据库和数据表过滤规则，详细语法参考[表库过滤](/table-filter.md)。
-
-## 环形同步
-
-> **警告：**
->
-> 目前环形同步属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
-
-环形同步功能支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 `test.user_data`，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 `test.user_data` 的写入同步其它集群上，使三个集群上的 `test.user_data` 达到最终一致。
-
-### 环形同步使用示例
-
-在三个集群 A、B 和 C 上开启环形复制，其中 A 到 B 的同步使用两个 TiCDC。A 作为三个集群的 DDL 入口。
-
-![TiCDC cyclic replication](/media/cdc-cyclic-replication.png)
-
-使用环形同步功能时，需要设置同步任务的创建参数：
-
-+ `--cyclic-replica-id`：用于指定为上游集群的写入指定来源 ID，需要确保每个集群 ID 的唯一性。
-+ `--cyclic-filter-replica-ids`：用于指定需要过滤的写入来源 ID，通常为下游集群的 ID。
-+ `--cyclic-sync-ddl`：用于指定是否同步 DDL 到下游。
-
-环形同步任务创建步骤如下：
-
-1. 在 TiDB 集群 A，B 和 C 上[启动 TiCDC 组件](/ticdc/deploy-ticdc.md)。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    # 在 TiDB 集群 A 上启动 TiCDC 组件。
-    cdc server \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
-        --log-file=ticdc_1.log \
-        --addr=0.0.0.0:8301 \
-        --advertise-addr=127.0.0.1:8301
-
-    # 在 TiDB 集群 B 上启动 TiCDC 组件。
-    cdc server \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
-        --log-file=ticdc_2.log \
-        --addr=0.0.0.0:8301 \
-        --advertise-addr=127.0.0.1:8301
-
-    # 在 TiDB 集群 C 上启动 TiCDC 组件。
-    cdc server \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
-        --log-file=ticdc_3.log \
-        --addr=0.0.0.0:8301 \
-        --advertise-addr=127.0.0.1:8301
-    ```
-
-2. 在 TiDB 集群 A，B 和 C 上创建环形同步需要使用的标记数据表 (`mark table`)。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    # 在 TiDB 集群 A 上创建标记数据表。
-    cdc cli changefeed cyclic create-marktables \
-        --cyclic-upstream-dsn="root@tcp(${TIDB_A_HOST}:${TIDB_A_PORT})/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}"
-
-    # 在 TiDB 集群 B 上创建标记数据表。
-    cdc cli changefeed cyclic create-marktables \
-        --cyclic-upstream-dsn="root@tcp(${TIDB_B_HOST}:${TIDB_B_PORT})/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}"
-
-    # 在 TiDB 集群 C 上创建标记数据表。
-    cdc cli changefeed cyclic create-marktables \
-        --cyclic-upstream-dsn="root@tcp(${TIDB_C_HOST}:${TIDB_C_PORT})/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}"
-    ```
-
-3. 在 TiDB 集群 A，B 和 C 上创建环形同步任务。
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    # 在 TiDB 集群 A 上创建环形同步任务。
-    cdc cli changefeed create \
-        --sink-uri="mysql://root@${TiDB_B_HOST}/" \
-        --pd="http://${PD_A_HOST}:${PD_A_PORT}" \
-        --cyclic-replica-id 1 \
-        --cyclic-filter-replica-ids 2 \
-        --cyclic-sync-ddl true
-    # 在 TiDB 集群 B 上创建环形同步任务。
-    cdc cli changefeed create \
-        --sink-uri="mysql://root@${TiDB_C_HOST}/" \
-        --pd="http://${PD_B_HOST}:${PD_B_PORT}" \
-        --cyclic-replica-id 2 \
-        --cyclic-filter-replica-ids 3 \
-        --cyclic-sync-ddl true
-    # 在 TiDB 集群 C 上创建环形同步任务。
-    cdc cli changefeed create \
-        --sink-uri="mysql://root@${TiDB_A_HOST}/" \
-        --pd="http://${PD_C_HOST}:${PD_C_PORT}" \
-        --cyclic-replica-id 3 \
-        --cyclic-filter-replica-ids 1 \
-        --cyclic-sync-ddl false
-    ```
-
-### 环形同步使用说明
-
-1. 在创建环形同步任务前，必须使用 `cdc cli changefeed cyclic create-marktables` 创建环形同步功能使用到的标记表。
-2. 开启环形同步的数据表名字需要符合正则表达式 `^[a-zA-Z0-9_]+$`。
-3. 在创建环形同步任务前，开启环形复制的数据表必须已创建完毕。
-4. 开启环形复制后，不能创建一个会被环形同步任务同步的表。
-5. 在多集群同时写入时，为了避免业务出错，请避免执行 DDL 语句，比如 `ADD COLUMN`/`DROP COLUMN` 等。
-6. 如果想在线执行 DDL 语句，需要确保满足以下条件：
-    + 业务兼容 DDL 语句执行前后的表结构。
-    + 多个集群的 TiCDC 组件构成一个单向 DDL 同步链，不能成环。例如以上在 TiDB 集群 A，B 和 C 上创建环形同步任务的示例中，只有 C 集群的 TiCDC 组件关闭了 `sync-ddl`。
-    + DDL 语句必须在单向 DDL 同步链的开始集群上执行，例如示例中的 A 集群。
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
@@ -759,6 +645,61 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 > **注意：**
 >
 > + 如果服务器使用机械硬盘或其他有延迟或吞吐有瓶颈的存储设备，请谨慎开启 Unified Sorter。
-> + 请保证硬盘的空闲容量大于等于 500G。如果需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
+> + Unified Sorter 默认使用 `data_dir` 储存临时文件。建议保证硬盘的空闲容量大于等于 500 GiB。对于生产环境，建议保证每个节点上的磁盘可用空间大于（业务允许的最大）`checkpoint-ts` 延迟 * 业务高峰上游写入流量。此外，如果在 `changefeed` 创建后预期需要同步大量历史数据，请确保每个节点的空闲容量大于等于要追赶的同步数据。
 > + Unified Sorter 默认开启，如果您的服务器不符合以上条件，并希望关闭 Unified Sorter，请手动将 changefeed 的 `sort-engine` 设为 `memory`。
-> + 如需在已有的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
+> + 如需在已使用 `memory` 排序的 changefeed 上开启 Unified Sorter，参见[同步任务中断，尝试再次启动后 TiCDC 发生 OOM，如何处理](/ticdc/troubleshoot-ticdc.md#同步任务中断尝试再次启动后-ticdc-发生-oom应该如何处理)回答中提供的方法。
+
+## 灾难场景的最终一致性复制
+
+从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
+
+目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。当上游发生灾难时，如果 TiCDC 正常运行且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
+
+当上游 TiDB 集群出现以下情况时，会导致 TiCDC 延迟上升，进而影响 RPO：
+
+- TPS 短时间内大幅度上升
+- 上游出现大事务或者长事务
+- Reload 或 Upgrade 上游 TiKV 集群或 TiCDC 集群
+- 执行耗时很长的 DDL 语句，例如：add index
+- 使用过于激进的 PD 调度策略，导致频繁 region leader 迁移或 region merge/split
+
+### 使用前提
+
+- 准备好具有高可用的 S3 存储或 NFS 系统，用于存储 TiCDC 的实时增量数据备份文件，在上游发生灾难情况下该文件存储可以访问。
+- TiCDC 对需要具备灾难场景最终一致性的 changefeed 开启该功能，开启方式是在 changefeed 配置文件中增加以下配置：
+
+```toml
+[consistent]
+# 一致性级别，选项有：
+# - none： 默认值，非灾难场景，只有在任务指定 finished-ts 情况下保证最终一致性。
+# - eventual： 使用 redo log，提供上游灾难情况下的最终一致性。
+level = "eventual"
+
+# 单个 redo log 文件大小，单位 MiB，默认值 64，建议该值不超过 128。
+max-log-size = 64
+
+# 刷新或上传 redo log 至 S3 的间隔，单位毫秒，默认 1000，建议范围 500-2000。
+flush-interval = 1000
+
+# 存储 redo log 的形式，包括 nfs（NFS 目录），S3（上传至S3）
+storage = "s3://logbucket/test-changefeed?endpoint=http://$S3_ENDPOINT/"
+```
+
+### 灾难恢复
+
+当上游发生灾难后，需要通过 `cdc redo` 命令在下游手动恢复。恢复流程如下：
+
+1. 确保 TiCDC 进程已经退出，防止在数据恢复过程中上游恢复服务，TiCDC 重新开始同步数据。
+2. 使用 cdc binary 进行数据恢复，具体命令如下：
+
+```shell
+cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
+    --storage="s3://logbucket/test-changefeed?endpoint=http://10.0.10.25:24927/" \
+    --sink-uri="mysql://normal:123456@10.0.10.55:3306/"
+```
+
+以上命令中：
+
+- `tmp-dir` ：指定用于下载 TiCDC 增量数据备份文件的临时目录。
+- `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
+- `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。

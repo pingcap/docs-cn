@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/statement-summary-tables/','/docs-cn/dev/reference/perfo
 
 针对 SQL 性能相关的问题，MySQL 在 `performance_schema` 提供了 [statement summary tables](https://dev.mysql.com/doc/refman/5.6/en/statement-summary-tables.html)，用来监控和统计 SQL。例如其中的一张表 `events_statements_summary_by_digest`，提供了丰富的字段，包括延迟、执行次数、扫描行数、全表扫描次数等，有助于用户定位 SQL 问题。
 
-为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema` 中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
+为此，从 4.0.0-rc.1 版本开始，TiDB 在 `information_schema`（_而不是_ `performance_schema`）中提供与 `events_statements_summary_by_digest` 功能相似的系统表：
 
 - `statements_summary`
 - `statements_summary_history`
@@ -29,7 +29,7 @@ SELECT * FROM employee WHERE id IN (1, 2, 3) AND salary BETWEEN 1000 AND 2000;
 select * from EMPLOYEE where ID in (4, 5) and SALARY between 3000 and 4000;
 ```
 
-规一化后都是：
+归一化后都是：
 
 ```sql
 select * from employee where id in (...) and salary between ? and ?;
@@ -122,13 +122,6 @@ set global tidb_stmt_summary_history_size = 24;
 ```
 
 以上配置生效后，`statements_summary` 每 30 分钟清空一次，所以 `statements_summary_history` 保存最近 12 小时的历史数。`statements_summary_evicted` 保存最近 24 个发生了 evict 的时间段记录；`statements_summary_evicted` 则以 30 分钟为一个记录周期，表容量为 24 个时间段。
-
-以上几个系统变量都有 global 和 session 两种作用域，它们的生效方式与其他系统变量不一样：
-
-- 设置 global 变量后整个集群立即生效
-- 设置 session 变量后当前 TiDB server 立即生效，这对于调试单个 TiDB server 比较有用
-- 优先读 session 变量，没有设置过 session 变量才会读 global 变量
-- 把 session 变量设为空字符串，将会重新读 global 变量
 
 > **注意：**
 >

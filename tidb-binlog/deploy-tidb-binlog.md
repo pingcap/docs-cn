@@ -20,39 +20,9 @@ Pump 和 Drainer 均可部署和运行在 Intel x86-64 架构的 64 位通用硬
 
 ## 使用 Binary 部署 TiDB Binlog
 
-### 下载官方 Binary
+### 下载 TiDB Binlog 安装包
 
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
-```
-
-检查文件完整性，返回 ok 则正确：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-{version}-linux-amd64.sha256
-```
-
-对于 v2.1.0 GA 及以上版本，Pump 和 Drainer 已经包含在 TiDB 的下载包中，其他版本需要单独下载 Pump 和 Drainer:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-binlog-latest-linux-amd64.sha256
-```
-
-检查文件完整性，返回 ok 则正确：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-binlog-latest-linux-amd64.sha256
-```
+TiDB Binlog 安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ### 使用样例
 
@@ -357,7 +327,10 @@ Drainer="192.168.0.13"
         # zookeeper-addrs = "127.0.0.1:2181"
         # kafka-addrs = "127.0.0.1:9092"
         # kafka-version = "0.8.2.0"
+        # 配置单条 broker request 中的最大 message 数（即 binlog 数），不配置或配置小于等于 0 时会使用默认值 1024
         # kafka-max-messages = 1024
+        # 配置单条 broker request 的最大 size（单位为 Byte），默认为 1 GiB，最大可配置为 2 GiB
+        # kafka-max-message-size = 1073741824
 
         # 保存 binlog 数据的 Kafka 集群的 topic 名称，默认值为 <cluster-id>_obinlog
         # 如果运行多个 Drainer 同步数据到同一个 Kafka 集群，每个 Drainer 的 topic-name 需要设置不同的名称

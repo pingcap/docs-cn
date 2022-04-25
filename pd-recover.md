@@ -9,7 +9,7 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 
 ## 安装 PD Recover
 
-要使用 PD Recover，你可以[从源代码编译](#从源代码编译)，也可以直接[下载 TiDB 安装包](#下载-tidb-安装包)。
+要使用 PD Recover，你可以[从源代码编译](#从源代码编译)，也可以直接[下载 TiDB 工具包](#下载-tidb-工具包)。
 
 ### 从源代码编译
 
@@ -20,17 +20,9 @@ PD Recover 是对 PD 进行灾难性恢复的工具，用于恢复无法正常�
 >
 > 一般来说，用户不需要编译源代码，因为发布的二进制文件或 Docker 中已包含 PD Recover 工具。开发者可以参考以上步骤来编译源代码。
 
-### 下载 TiDB 安装包
+### 下载 TiDB 工具包
 
-PD Recover 包含在 TiDB 安装包中。直接下载 TiDB 安装包即可获取最新版本的 PD Recover。
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-recover) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-
-> **注意：**
->
-> `{version}` 是 TiDB 的版本号。例如，`v5.2.1` 的安装包下载链接为 `https://download.pingcap.org/tidb-v5.2.1-linux-amd64.tar.gz`。
+PD Recover 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ## 快速开始
 
@@ -100,7 +92,7 @@ cat {{/path/to}}/tikv.log | grep "connect to PD cluster"
 {{< copyable "shell-regular" >}}
 
 ```bash
-cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r | head -n 1
+cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{print $2}' | awk -F']' '{print $1}' | sort -r -n | head -n 1
 ```
 
 ```bash
@@ -112,9 +104,11 @@ cat {{/path/to}}/pd*.log | grep "idAllocator allocates a new id" |  awk -F'=' '{
 
 ### 部署一套新的 PD 集群
 
-部署新的 PD 集群之前，需要停止当前的 PD 集群，然后删除旧的数据目录（用 `--data-dir` 指定）。
+部署新的 PD 集群之前，需要停止当前的 PD 集群，然后删除旧的数据目录（或者用 `--data-dir` 指定新的数据目录）。
 
 ### 使用 pd-recover
+
+只需在一个 PD 节点上执行 `pd-recover` 即可。
 
 {{< copyable "shell-regular" >}}
 

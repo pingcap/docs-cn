@@ -17,22 +17,7 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 
 ## TiDB Lightning 对下游数据库的账号权限要求是怎样的？
 
-TiDB Lightning 需要以下权限：
-
-* SELECT
-* UPDATE
-* ALTER
-* CREATE
-* DROP
-
-如果选择 [TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 模式，或目标数据库用于存储断点，则 TiDB Lightning 额外需要以下权限：
-
-* INSERT
-* DELETE
-
-Local-backend 和 Importer-backend 无需以上两个权限，因为数据直接被 Ingest 到 TiKV 中，所以绕过了 TiDB 的权限系统。只要 TiKV、TiKV Importer 和 TiDB Lightning 的端口在集群之外不可访问，就可以保证安全。
-
-如果 TiDB Lightning 配置项 `checksum = true`，则 TiDB Lightning 需要有下游 TiDB admin 用户权限。
+详细权限描述参考 [TiDB Lightning 使用前提](/tidb-lightning/tidb-lightning-requirements.md)。
 
 ## TiDB Lightning 在导数据过程中某个表报错了，会影响其他表吗？进程会马上退出吗？
 
@@ -85,10 +70,10 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## TiDB Lightning 支持哪些格式的数据源？
 
-TiDB Lightning 只支持两种格式的数据源：
+目前，TiDB Lightning 支持：
 
-1. [Dumpling](/dumpling-overview.md) 生成的 SQL dump
-2. 储存在本地文件系统的 [CSV](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md) 文件
+- 导入 [Dumpling](/dumpling-overview.md)、CSV 或 [Amazon Aurora Parquet](/migrate-aurora-to-tidb.md) 输出格式的数据源。
+- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
@@ -140,7 +125,7 @@ sql-mode = ""
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --fetch-mode
+tidb-lightning-ctl --config tidb-lightning.toml --fetch-mode
 ```
 
 可执行以下命令强制切换回“普通模式” (normal mode)：
@@ -148,7 +133,7 @@ tidb-lightning-ctl --fetch-mode
 {{< copyable "shell-regular" >}}
 
 ```sh
-tidb-lightning-ctl --switch-mode=normal
+tidb-lightning-ctl --config tidb-lightning.toml --switch-mode=normal
 ```
 
 ## TiDB Lightning 可以使用千兆网卡吗？
@@ -191,6 +176,19 @@ upload-speed-limit = "100MB"
 
 3. 如果需要的话，删除 TiDB 集群上创建的所有表和库。
 
+4. 清理残留的元信息。如果存在以下任意一种情况，需要手动清理元信息库：
+    
+    - 对于 v5.1.x 和 v5.2.x 版本的 TiDB Lightning, tidb-lightning-ctl 命令没有同时清理存储在目标集群的 metadata 库，需要手动清理。
+    - 如果手动删除过断点文件，则需要手动清理下游的元信息库，否则可能影响后续导入的正确性。
+
+    使用下面命令清理元信息：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    DROP DATABASE IF EXISTS `lightning_metadata`;
+    ```
+
 ## TiDB Lightning 报错 `could not find first pair, this shouldn't happen`
 
 报错原因是遍历本地排序的文件时出现异常，可能在 TiDB Lightning 打开的文件数量超过系统的上限时发生报错。在 Linux 系统中，可以使用 `ulimit -n` 命令确认此值是否过小。建议在导入期间将此设置调整为 `1000000`（即 `ulimit -n 1000000`）。
@@ -228,19 +226,21 @@ strict-format = true
 
 ## `checksum failed: checksum mismatched remote vs local`
 
-**原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因：
+**原因**：本地数据源跟目标数据库某个表的校验和不一致。这通常有更深层的原因，可以通过检查日志中包含 `checksum mismatched` 的行进一步定位。
 
-1. 这张表可能本身已有数据，影响最终结果。
-2. 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
-3. 如果数据源是由机器生成而不是从 Dumpling 备份的，需确保数据符合表的限制，例如：
+包含 `checksum mismatched` 的行中有 `total_kvs: x vs y` 的信息，`x` 表示导入集群在完成导入后计算出的键值对（KV pairs）数目，`y` 表示本地数据源产生的键值对数目。
 
-    * 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
-    * 唯一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
-4. 如果 TiDB Lightning 之前失败停机过，但没有正确重启，可能会因为数据不同步而出现校验和不一致。
+- `x` 大，即导入集群键值对更多：
+    - 可能这张表在导入前已有数据，因此影响了数据校验。这也包括 TiDB Lightning 之前失败停机过，但没有正确重启。
+- `y` 大，即本地数据源键值对更多：
+    - 如果目标数据库的校验和全是 0，表示没有发生任何导入，有可能是集群太忙无法接收任何数据。
+    - 可能导出数据中包含重复数据，例如唯一键和主键 (UNIQUE and PRIMARY KEYs) 有重复的值、下游表结构为大小写不敏感而数据为大小写敏感。
+- 其他情况
+    - 如果数据源是由机器生成而不是从 Dumpling 备份的，需确保数据符合表的限制，例如自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
 
 **解决办法**：
 
-1. 使用 `tidb-lightning-ctl` 把出错的表删除，然后重启 TiDB Lightning 重新导入那些表。
+1. 使用 `tidb-lightning-ctl` 把出错的表删除，检查表结构与数据，重启 TiDB Lightning 重新导入此前出错的表。
 
     {{< copyable "shell-regular" >}}
 
@@ -367,7 +367,7 @@ header = false
     ```sh
     kill -USR1 <lightning-pid>
     ```
-   
+
     查看 TiDB Lightning 的日志，其中 `starting HTTP server` / `start HTTP server` / `started HTTP server` 的日志会显示新开启的 `status-port`。
 
 2. 访问 `http://<lightning-ip>:<status-port>/debug/pprof/goroutine?debug=2` 可获取 goroutine 信息。

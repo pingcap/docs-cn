@@ -92,7 +92,7 @@ TiDB 的自增 ID (`AUTO_INCREMENT`) 只保证自增且唯一，并不保证连�
 
 ## 如何在 TiDB 中修改 `sql_mode`？
 
-TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables.md#sql_mode)修改，与 MySQL 一致。目前，TiDB 不支持在配置文件中修改 `sql_mode`，但使用 [`SET GLOBAL`](/sql-statements/sql-statement-set-variable.md) 对系统变量的修改将应用于集群中的所有 TiDB server，并且重启后更改依然有效。
+TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.md#sql_mode) 系统变量。对全局作用域变量的更改将作用于集群中的其它服务器，并且重启后更改依然有效。因此，你无需在每台 TiDB 服务器上都更改 `sql_mode` 的值。
 
 ## 用 Sqoop 批量写入 TiDB 数据，虽然配置了 `--batch` 选项，但还是会遇到 `java.sql.BatchUpdateExecption:statement count 5001 exceeds the transaction limitation` 的错误，该如何解决？
 
@@ -119,11 +119,7 @@ TiDB 支持将 [`sql_mode`](/sql-mode.md) 作为[系统变量](/system-variables
 
 ## TiDB 中删除数据后会立即释放空间吗？
 
-DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作 TiDB 的 GC 机制会删除数据，但不会释放空间，而是当后续数据写入 RocksDB 且进行 compact 时对空间重新利用。
-
-## TiDB 是否支持 `REPLACE INTO` 语法？
-
-支持，例外是当前 `LOAD DATA` 不支持 `REPLACE INTO` 语法。
+DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作，TiDB 的 GC 机制会删除数据，但不会立即释放空间，而是等到后续进行 compaction 时释放空间。
 
 ## 数据删除后查询速度为何会变慢？
 

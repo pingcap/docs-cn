@@ -257,11 +257,11 @@ DBA、数据库应用开发者在设计表结构时或者分析业务数据的�
 
 要关闭 Coprocessor cache 功能，你可以修改 `tikv-client.copr-cache` 的 `capacity-mb` 配置项为 0.0。
 
-### 提升 `delete * from table where id < ? limit ?` 语句执行的性能
+### 提升 `delete from table where id < ? limit ?` 语句执行的性能
 
 [#18028](https://github.com/pingcap/tidb/issues/18028)
 
-`delete * from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
+`delete from table where id < ? limit ?` 语句执行的 p99 性能提升了 4 倍。
 
 ### 优化 load base 切分策略，解决部分小表热点读场景数据无法切分的性能问题
 
@@ -335,7 +335,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/ticdc/issues/1150)
+[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/tiflow/issues/1150)
 
 自 v4.0.9 版本起，TiCDC 引入变更数据本地排序功能 Unified Sorter。在 5.0 版本，默认开启此功能以缓解类似场景下的 OOM 问题：
 
@@ -375,7 +375,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 该功能使用方法可以参照以下文档：
 
 + [将 MySQL/Aurora 数据导出到 Amazon S3](/dumpling-overview.md#导出到-amazon-s3-云盘)，[#8](https://github.com/pingcap/dumpling/issues/8)
-+ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-from-aurora-using-lightning.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
++ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-aurora-to-tidb.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
 
 ### TiDB Cloud 数据导入性能优化
 
@@ -385,29 +385,11 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)（**实验特性**）
 
-[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/ticdc/issues/660)
+[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/tiflow/issues/660)
 
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、Oracle 等系统。
 
 Confluent 平台提供的 kafka connectors 协议支持向不同协议关系型或非关系型数据库传输数据，在社区被广泛使用。TiDB 通过 TiCDC 集成到 Confluent 平台的 Kafka Connect，扩展了 TiDB 数据流转到其他异构数据库或者系统的能力。
-
-### TiCDC 支持 TiDB 集群之间环形同步（**实验特性**）
-
-[用户文档](/ticdc/manage-ticdc.md#环形同步)，[#471](https://github.com/pingcap/ticdc/issues/471)
-
-由于地理位置差异导致的通讯延迟等问题，存在以下场景：用户部署多套 TiDB 集群到不同的地理区域来支撑其当地的业务，然后通过各个 TiDB 之间相互复制，或者汇总复制数据到一个中心 TiDB hub，来完成诸如分析、结算等业务。
-
-TiCDC 支持在多个独立的 TiDB 集群间同步数据。比如有三个 TiDB 集群 A、B 和 C，它们都有一个数据表 test.user_data，并且各自对它有数据写入。环形同步功能可以将 A、B 和 C 对 test.user_data 的写入同步到其它集群上，使三个集群上的 test.user_data 达到最终一致。
-
-该功能适用于以下场景：
-
-+ 多套 TiDB 集群之间相互进行数据备份，灾难发生时业务切换到正常的 TiDB 集群
-+ 跨地域部署多套 TiDB 集群支撑当地业务，TiDB 集群之间的同一业务表之间数据需要相互复制
-
-限制与约束：
-
-+ 无法支持业务在不同集群写入使用自增 ID 的业务表，数据复制会导致业务数据相互覆盖而造成数据丢失
-+ 无法支持业务在不同集群写入相同业务表的相同数据，数据复制会导致业务数据相互覆盖而造成数据丢失
 
 ## 问题诊断
 

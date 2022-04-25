@@ -24,14 +24,14 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Command Per Second：TiDB 按照执行结果成功或失败来统计每秒处理的命令数。
     - QPS：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上每秒执行的 SQL 语句数量。
     - CPS By Instance：按照命令和执行结果成功或失败来统计每个 TiDB 实例上的命令。
-    - Failed Query OPM：每个 TiDB 实例上，对每秒钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码。
+    - Failed Query OPM：每个 TiDB 实例上，对每分钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。包含了错误所属的模块和错误码。
     - Slow query：慢查询的处理时间（整个慢查询耗时、Coprocessor 耗时、Coprocessor 调度等待时间），慢查询分为 internal 和 general SQL 语句。
     - Connection Idle Duration：空闲连接的持续时间。
     - 999/99/95/80 Duration：不同类型的 SQL 语句执行耗时（不同百分位）。
 
 - Query Detail
     - Duration 80/95/99/999 By Instance：每个 TiDB 实例执行 SQL 语句的耗时（不同百分位）。
-    - Failed Query OPM Detail：每个 TiDB 实例执行 SQL 语句发生的错误按照错误类型统计（例如语法错误、主键冲突等）。
+    - Failed Query OPM Detail：每个 TiDB 实例上，对每分钟执行 SQL 语句发生的错误按照错误类型进行统计（例如语法错误、主键冲突等）。
     - Internal SQL OPS：整个 TiDB 集群内部 SQL 语句执行的 QPS。内部 SQL 语句是指 TiDB 内部自动执行的 SQL 语句，一般由用户 SQL 语句来触发或者内部定时任务触发。
 
 - Server
@@ -73,7 +73,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - TTL Lifetime Reach Counter：事务的 TTL 寿命上限。TTL 上限默认值 1 小时，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 1 小时。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
     - Load Safepoint OPS：加载 Safepoint 的次数。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉    
     - Pessimistic Statement Retry OPS：悲观语句重试次数。当语句尝试加锁时，可能遇到写入冲突，此时，语句会重新获取新的 snapshot 并再次加锁
-    - Async Commit Transaction Counter：启用 Async commit 机制的事务数量，分为成功、失败两种
+    - Transaction Types Per Seconds：每秒采用两阶段提交 (2PC)、异步提交 （Async Commit) 和一阶段提交 (1PC) 机制的事务数量，提供成功和失败两种数量
 
 - Executor
     - Parse Duration：SQL 语句解析耗时统计。

@@ -161,6 +161,23 @@ SELECT /*+ USE_INDEX(t1, idx1, idx2) */ * FROM t1;
 >
 > 当该 Hint 中只指定表名，不指定索引名时，表示不考虑使用任何索引，而是选择全表扫。
 
+### FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+`FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引。
+
+`FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` 的使用方法、作用和 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 相同。
+
+以下四个查询语句的效果相同：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ USE_INDEX(t, idx1) */ * FROM t;
+SELECT /*+ FORCE_INDEX(t, idx1) */ * FROM t;
+SELECT * FROM t use index(idx1);
+SELECT * FROM t force index(idx1);
+```
+
 ### IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表忽略给出的索引。
@@ -181,6 +198,16 @@ SELECT /*+ IGNORE_INDEX(t1, idx1, idx2) */ * FROM t t1;
 
 ```sql
 SELECT /*+ AGG_TO_COP() */ sum(t1.a) FROM t t1;
+```
+
+### LIMIT_TO_COP()
+
+`LIMIT_TO_COP()` 提示优化器将指定查询块中的 `Limit` 和 `TopN` 算子下推到 coprocessor。优化器没有下推 `Limit` 或者 `TopN` 算子时建议尝试使用该提示。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ LIMIT_TO_COP() */ * FROM t WHERE a = 1 AND b > 10 ORDER BY c LIMIT 1;
 ```
 
 ### READ_FROM_STORAGE(TIFLASH[t1_name [, tl_name ...]], TIKV[t2_name [, tl_name ...]])
@@ -216,7 +243,6 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 目前该 Hint 生效的条件较为苛刻，包括：
 
 - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
-- 如果查询在显式事务里，且该条查询之前的语句已经涉及写入，优化器不会选择 index merge；
 
 ## 查询范围生效的 Hint
 
@@ -242,7 +268,8 @@ SELECT /*+ NO_INDEX_MERGE() */ * FROM t WHERE t.a > 0 or t.b > 0;
 
 > **注意：**
 >
-> `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - `NO_INDEX_MERGE` 优先级高于 `USE_INDEX_MERGE`，当这两类 Hint 同时存在时，`USE_INDEX_MERGE` 不会生效。
+> - 当存在子查询时，`NO_INDEX_MERGE` 放在最外层才能生效。
 
 ### USE_TOJA(boolean_value)
 
@@ -304,7 +331,7 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 
 `IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
 
-该 Hint 用于在 [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
+该 Hint 用于在 [prepared-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
 
 以下示例强制该 `prepare` 语句不使用 plan cache：
 

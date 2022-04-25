@@ -7,13 +7,23 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-ops-security/']
 
 尽管访问 TiDB Dashboard 需要登录，但它被设计为默认供可信的用户实体访问。当你希望将 TiDB Dashboard 提供给外部网络用户或不可信用户访问时，需要注意采取以下措施以避免安全漏洞。
 
-## 为 TiDB `root` 用户设置强密码
+## 提高 TiDB 用户安全性
+
+### 为 `root` 用户设置强密码
 
 TiDB Dashboard 的账号体系与 TiDB SQL 用户一致。默认部署情况下，TiDB 的 `root` 用户没有密码，因而访问 TiDB Dashboard 也不需要密码验证。这将会给恶意访问者极大的集群权限，包括执行特权 SQL 等。
 
 建议的措施：
 
-- 为 TiDB `root` 用户设置一个强密码。请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情。
+- 为 TiDB 的 `root` 用户设置一个强密码（请参见 [TiDB 用户账户管理](/user-account-management.md)了解详情），或禁用 `root` 账户。
+
+### 为 TiDB Dashboard 创建最小权限用户
+
+TiDB Dashboard 的账号体系与 TiDB SQL 用户一致，并基于 TiDB SQL 用户的权限进行 TiDB Dashboard 授权验证。TiDB Dashboard 所需的权限较少，甚至可以只有只读权限。可以基于最小权限原则配置合适的用户访问 TiDB Dashboard，减少高权限用户的使用场景。
+
+建议的措施：
+
+- 为访问 TiDB Dashboard 创建一个最小权限的 SQL 用户，并用该用户登录 TiDB Dashboard，避免使用高权限用户，提升安全性。请参见 [TiDB Dashboard 用户管理](/dashboard/dashboard-user.md)了解详情。
 
 ## 使用防火墙阻止不可信访问
 

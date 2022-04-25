@@ -40,7 +40,7 @@ TiDB Ansible 版本：3.0.0-rc.2
     - 新增 `tidb_back_off_weight` 变量，控制 TiDB 内部 back off 时间的长短 [#10266](https://github.com/pingcap/tidb/pull/10266)
     - `tidb_disable_txn_auto_retry` 的默认值改为 on，即默认情况下，TiDB 不会重试非自动提交的事务 [#10266](https://github.com/pingcap/tidb/pull/10266)
     - 修复 RBAC 中对 role 的数据库权限的判断不正确的问题 [#10261](https://github.com/pingcap/tidb/pull/10261)
-    - 支持悲观事务模型（实验性）[#10297](https://github.com/pingcap/tidb/pull/10297)
+    - 支持悲观事务模式（实验特性）[#10297](https://github.com/pingcap/tidb/pull/10297)
     - 降低某些情况下处理锁冲突时的等待时间 [#10006](https://github.com/pingcap/tidb/pull/10006)
     - 重构 Region cache，增加在 Region 故障时的轮询逻辑 [#10256](https://github.com/pingcap/tidb/pull/10256)
     - 新增 `tidb_low_resolution_tso` 变量，控制批量获取 `tso` 个数，减少事务获取 `tso` 的次数，以适应某些数据一致性要求较低的场景 [#10428](https://github.com/pingcap/tidb/pull/10428)

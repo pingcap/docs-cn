@@ -19,15 +19,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 下载安装包
 
-如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
-
-| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-
-> **注意：**
->
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.2.1` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.2.1-linux-amd64.tar.gz`。
+PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ### 源码编译
 
@@ -148,7 +140,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 {
   "replication": {
-    "enable-placement-rules": "false",
+    "enable-placement-rules": "true",
     "isolation-level": "",
     "location-labels": "",
     "max-replicas": 3,
@@ -156,13 +148,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   },
   "schedule": {
     "enable-cross-table-merge": "true",
-    "enable-debug-metrics": "false",
-    "enable-location-replacement": "true",
-    "enable-make-up-replica": "true",
-    "enable-one-way-merge": "false",
-    "enable-remove-down-replica": "true",
-    "enable-remove-extra-replica": "true",
-    "enable-replace-offline-replica": "true",
     "high-space-ratio": 0.7,
     "hot-region-cache-hits-threshold": 3,
     "hot-region-schedule-limit": 4,
@@ -171,17 +156,16 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     "low-space-ratio": 0.8,
     "max-merge-region-keys": 200000,
     "max-merge-region-size": 20,
-    "max-pending-peer-count": 16,
-    "max-snapshot-count": 3,
+    "max-pending-peer-count": 64,
+    "max-snapshot-count": 64,
     "max-store-down-time": "30m0s",
     "merge-schedule-limit": 8,
-    "patrol-region-interval": "100ms",
+    "patrol-region-interval": "10ms",
     "region-schedule-limit": 2048,
     "region-score-formula-version": "v2",
     "replica-schedule-limit": 64,
     "scheduler-max-waiting-operator": 5,
     "split-merge-interval": "1h0m0s",
-    "store-limit-mode": "manual",
     "tolerant-size-ratio": 0
   }
 }
@@ -209,7 +193,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
   "isolation-level": "",
   "location-labels": "",
   "strictly-match-label": "false",
-  "enable-placement-rules": "false"
+  "enable-placement-rules": "true"
 }
 ```
 
@@ -222,17 +206,17 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ```
 
 ```
-"5.2.1"
+"5.2.2"
 ```
 
 - `max-snapshot-count` 控制单个 store 最多同时接收或发送的 snapshot 数量，调度受制于这个配置来防止抢占正常业务的资源。当需要加快补副本或 balance 速度时可以调大这个值。
 
-    设置最大 snapshot 为 16：
+    设置最大 snapshot 为 64：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-snapshot-count 16
+    >> config set max-snapshot-count 64
     ```
 
 - `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
@@ -320,12 +304,12 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 - `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
 
-    设置 replicaChecker 的运行频率为 50 毫秒：
+    设置 replicaChecker 的运行频率为 10 毫秒：
 
     {{< copyable "" >}}
 
     ```bash
-    >> config set patrol-region-interval 50ms
+    >> config set patrol-region-interval 10ms
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
@@ -491,7 +475,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 ]
 ```
 
-### `hot [read | write | store]`
+### `hot [read | write | store| history <start_time> <end_time> [<key> <value>]]`
 
 用于显示集群热点信息。示例如下。
 
@@ -517,6 +501,76 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
 ```bash
 >> hot store
+```
+
+显示历史读写热点信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history startTime endTime [ <name> <value> ]
+```
+
+例如查询时间 `1629294000000` 到 `1631980800000` （毫秒）之间的历史热点 Region 信息:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1629294000000 1631980800000
+```
+
+```
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
+```
+
+对于参数的值为数组的请用 `x, y, ...` 的形式进行参数值的设置，所有支持的参数如下所示:
+
+{{< copyable "" >}}
+
+```
+>> hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true
+```
+
+```
+{
+  "history_hot_region": [
+    {
+      "update_time": 1630864801948,
+      "region_id": 103,
+      "peer_id": 1369002,
+      "store_id": 3,
+      "is_leader": true,
+      "is_learner": false,
+      "hot_region_type": "read",
+      "hot_degree": 152,
+      "flow_bytes": 0,
+      "key_rate": 0,
+      "query_rate": 305,
+      "start_key": "7480000000000000FF5300000000000000F8",
+      "end_key": "7480000000000000FF5600000000000000F8"
+    },
+    ...
+  ]
+}
 ```
 
 ### `label [store <name> <value>]`
@@ -814,21 +868,66 @@ Encoding 格式示例：
 }
 ```
 
-### `region startkey [--format=raw|encode|hex] <key> <limit>`
+### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-用于查询从某个 key 开始的所有 Region。
+用于查询某个 key 范围内的所有 Region。支持不带 `endKey` 的范围。`limit` 的默认值是 `16`，设为 `-1` 则表示无数量限制。示例如下：
 
-示例：
+显示从 a 开始的所有 Region 信息，数量上限为 16：
 
 {{< copyable "" >}}
 
 ```bash
->> region startkey --format=raw abc
+>> region keys --format=raw a
 ```
 
 ```
 {
   "count": 16,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，数量上限为 16：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z
+```
+
+```
+{
+  "count": 16,
+  "regions": [......],
+}
+```
+
+显示 [a, z) 范围内的所有 Region 信息，无数量上限：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a z -1
+```
+
+```
+{
+  "count": ...,
+  "regions": [......],
+}
+```
+
+显示从 a 开始的所有 Region 信息，数量上限为 20：
+
+{{< copyable "" >}}
+
+```bash
+>> region keys --format=raw a "" 20 
+```
+
+```
+{
+  "count": 20,
   "regions": [......],
 }
 ```
@@ -980,19 +1079,31 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> scheduler show                                 // 显示所有的 schedulers
->> scheduler add grant-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 调度到 store 1
->> scheduler add evict-leader-scheduler 1         // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
->> scheduler config evict-leader-scheduler        // v4.0.0 起，展示该调度器具体在哪些 store 上
->> scheduler add shuffle-leader-scheduler         // 随机交换不同 store 上的 leader
->> scheduler add shuffle-region-scheduler         // 随机调度不同 store 上的 Region
->> scheduler add evict-slow-store-scheduler       // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
->> scheduler remove grant-leader-scheduler-1      // 把对应的调度器删掉，`-1` 对应 store ID
->> scheduler pause balance-region-scheduler 10    // 暂停运行 balance-region 调度器 10 秒
->> scheduler pause all 10                         // 暂停运行所有的调度器 10 秒
->> scheduler resume balance-region-scheduler      // 继续运行 balance-region 调度器
->> scheduler resume all                           // 继续运行所有的调度器
->> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的配置
+>> scheduler show                                         // 显示所有已经创建的 schedulers
+>> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
+>> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
+>> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
+>> scheduler add shuffle-leader-scheduler                 // 随机交换不同 store 上的 leader
+>> scheduler add shuffle-region-scheduler                 // 随机调度不同 store 上的 Region
+>> scheduler add evict-slow-store-scheduler               // 当有且仅有一个 slow store 时将该 store 上的所有 Region 的 leader 驱逐出去
+>> scheduler remove grant-leader-scheduler-1              // 把对应的调度器删掉，`-1` 对应 store ID
+>> scheduler pause balance-region-scheduler 10            // 暂停运行 balance-region 调度器 10 秒
+>> scheduler pause all 10                                 // 暂停运行所有的调度器 10 秒
+>> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
+>> scheduler resume all                                   // 继续运行所有的调度器
+>> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
+```
+
+### `scheduler config balance-leader-scheduler`
+
+用于查看和控制 `balance-leader-scheduler` 策略。
+
+从 TiDB v6.0.0 起，PD 为 `balance-leader-scheduler` 引入了 `Batch` 参数，用于控制 balance-leader 执行任务的速度。你可以通过 pd-ctl 修改 `balance-leader batch` 配置项设置该功能。
+
+在 v6.0.0 前，PD 不带有该配置（即 `balance-leader batch=1`）。在 v6.0.0 或更高版本中，`balance-leader batch` 的默认值为 `4`。如果你想为该配置项设置大于 `4` 的值，你需要同时调大 [`scheduler-max-waiting-operator`](#config-show--set-option-value--placement-rules)（默认值 `5`）。同时调大两个配置项后，你才能体验预期的加速效果。
+
+```bash
+>> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
 ```
 
 ### `scheduler config balance-hot-region-scheduler`
@@ -1080,7 +1191,7 @@ Encoding 格式示例：
 
     - `read-priorities` 和 `write-leader-priorities` 用于控制调度器在处理 read 和 write-leader 类型的热点时优先均衡的维度，可选的维度有 `query`、`byte` 和 `key`。
     - `write-peer-priorities` 用于控制调度器在处理 write-peer 类型的热点时优先均衡的维度，支持配置 `byte` 和 `key` 维度。
-    
+
     > **注意：**
     >
     > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
@@ -1101,7 +1212,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit | limit-scene] <store_id> [--jq="<query string>"]`
+### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -1129,7 +1240,7 @@ Encoding 格式示例：
 ```
 
 ```
-  ......
+......
 ```
 
 下线 store id 为 1 的 store：
@@ -1141,7 +1252,7 @@ Encoding 格式示例：
 ```
 
 ```
-  ......
+......
 ```
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
@@ -1173,19 +1284,12 @@ Encoding 格式示例：
 >> store limit 1 5 add-peer            // 设置 store 1 添加 peer 的速度上限为每分钟 5 个
 >> store limit 1 5 remove-peer         // 设置 store 1 删除 peer 的速度上限为每分钟 5 个
 >> store limit all 5 remove-peer       // 设置所有 store 删除 peer 的速度上限为每分钟 5 个
->> store limit-scene                   // 显示所有的限速场景（实验性功能）
-{
-  "Idle": 100,
-  "Low": 50,
-  "Normal": 32,
-  "High": 12
-}
->> store limit-scene idle 100          // 设置 load 为 idle 场景下，添加/删除 peer 的速度上限为每分钟 100 个
 ```
 
 > **注意：**
 >
-> 使用 `store limit` 命令时，原有的 `region-add` 和 `region-remove` 已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * `store limit` 命令原有的 `region-add` 和 `region-remove` 子命令已废弃，请使用 `add-peer` 和 `remove-peer` 来替代。
+> * 使用 `pd-ctl` 可以查看 TiKV 节点的状态信息，即 Up，Disconnect，Offline，Down，或 Tombstone。如需查看各个状态之间的关系，请参考 [TiKV Store 状态之间的关系](/tidb-scheduling.md#信息收集)。
 
 ### `log [fatal | error | warn | info | debug]`
 
@@ -1214,6 +1318,61 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
+### `unsafe remove-failed-stores [store-ids | show | history]`
+
+> **警告：**
+>
+> - 此功能为有损恢复，无法保证数据和数据索引完整性。
+> - 此功能为实验特性，其接口、策略和内部实现在最终发布时可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
+> - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
+
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
+
+执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
+
+```bash
+>> unsafe remove-failed-stores 101,102,103
+```
+
+```bash
+Success!
+```
+
+显示正在运行的 Online Unsafe Recovery 的当前状态或历史状态。
+
+```bash
+>> unsafe remove-failed-stores show
+```
+
+```bash
+[
+  "Collecting cluster info from all alive stores, 10/12.",
+  "Stores that have reports to PD: 1, 2, 3, ...",
+  "Stores that have not reported to PD: 11, 12",
+]
+```
+
+```bash
+>> unsafe remove-failed-stores history
+```
+
+```bash
+[
+  "Store reports collection:",
+  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
+  "Store 8: region ...",
+  "...",
+  "Recovery Plan:",
+  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
+  "Store 8, ..."
+  "...",
+  "Execution Progress:",
+  "Store 10 finished,",
+  "Store 7 not yet finished",
+  "...",
+]
+```
+
 ## jq 格式化 json 输出示例
 
 ### 简化 `store` 的输出
@@ -1221,7 +1380,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq=".stores[].store | { id, address, state_name}"
+>> store --jq=".stores[].store | { id, address, state_name}"
 ```
 
 ```
@@ -1235,7 +1394,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq=".stores[] | {id: .store.id, available: .status.available}"
+>> store --jq=".stores[] | {id: .store.id, available: .status.available}"
 ```
 
 ```
@@ -1249,7 +1408,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
 ```
 
 ```
@@ -1263,7 +1422,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+>> store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
 ```
 
 ```
@@ -1277,7 +1436,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
 ```
 
 ```
@@ -1293,7 +1452,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
 ```
 
 ```
@@ -1308,7 +1467,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
 ```
 
 ```
@@ -1322,7 +1481,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
 ```
 
 ```
@@ -1339,7 +1498,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
 ```
 
 ```
@@ -1354,7 +1513,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+>> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
 ```
 
 ```
@@ -1366,7 +1525,7 @@ logic:  120102
 {{< copyable "" >}}
 
 ```bash
-» region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+>> region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
 ```
 
 ```

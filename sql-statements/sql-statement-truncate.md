@@ -88,7 +88,7 @@ Empty set (0.00 sec)
 
 {{< copyable "sql" >}}
 
-```sqlS
+```sql
 INSERT INTO t1 VALUES (1),(2),(3),(4),(5);
 ```
 

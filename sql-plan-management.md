@@ -19,44 +19,48 @@ aliases: ['/docs-cn/dev/sql-plan-management/','/docs-cn/dev/reference/performanc
 CREATE [GLOBAL | SESSION] BINDING FOR BindableStmt USING BindableStmt;
 ```
 
-该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前支持的可创建执行计划绑定的 SQL 类型 (BindableStmt) 包括：`SELECT`，`DELETE`，`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
+该语句可以在 GLOBAL 或者 SESSION 作用域内为 SQL 绑定执行计划。目前，如下 SQL 类型 (BindableStmt) 可创建执行计划绑定：`SELECT`、`DELETE`、`UPDATE` 和带有 `SELECT` 子查询的 `INSERT`/`REPLACE`。
+
+> **注意：**
+>
+> 绑定的优先级高于手工添加的 Hint，即在有绑定的时候执行带有 Hint 的语句时，该语句中控制优化器行为的 Hint 不会生效，但是其他类别的 Hint 仍然能够生效。
 
 其中，有两类特定的语法由于语法冲突不能创建执行计划绑定，例如：
 
 ```sql
--- 类型一：使用 `join` 关键字但不通过 `using` 关键字指定关联列的笛卡尔积
-create global binding for
-    select * from t t1 join t t2
-using
-    select * from t t1 join t t2;
+-- 类型一：使用 `JOIN` 关键字但不通过 `USING` 关键字指定关联列的笛卡尔积
+CREATE GLOBAL BINDING for
+    SELECT * FROM t t1 JOIN t t2
+USING
+    SELECT * FROM t t1 JOIN t t2;
 
--- 类型二：包含了 `using` 关键字的 `delete` 语句
-create global binding for
-    delete from t1 using t1 join t2 on t1.a = t2.a
-using
-    delete from t1 using t1 join t2 on t1.a = t2.a;
+-- 类型二：包含了 `USING` 关键字的 `delete` 语句
+CREATE GLOBAL BINDING for
+    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a
+USING
+    delete FROM t1 USING t1 JOIN t2 ON t1.a = t2.a;
 ```
 
 可以通过等价的 SQL 改写绕过这个语法冲突的问题。例如，上述两个例子可以改写为：
 
 ```sql
--- 类型一的第一种改写：为 `join` 关键字添加 `using` 子句
-create global binding for
-    select * from t t1 join t t2 using (a)
-using
-    select * from t t1 join t t2 using (a);
+-- 类型一的第一种改写：为 `JOIN` 关键字添加 `USING` 子句
+CREATE GLOBAL BINDING for
+    SELECT * FROM t t1 JOIN t t2 USING (a)
+USING
+    SELECT * FROM t t1 JOIN t t2 USING (a);
 
--- 类型一的第二种改写：去掉 `join` 关键字
-create global binding for
-    select * from t t1, t t2
-using
-    select * from t t1, t t2;
+-- 类型一的第二种改写：去掉 `JOIN` 关键字
+CREATE GLOBAL BINDING for
+    SELECT * FROM t t1, t t2
+USING
+    SELECT * FROM t t1, t t2;
 
--- 类型二的改写：去掉 `delete` 语句中的 `using` 关键字
-create global binding for
-    delete t1 from t1 join t2 on t1.a = t2.a
-using
-    delete t1 from t1 join t2 on t1.a = t2.a;
+-- 类型二的改写：去掉 `delete` 语句中的 `USING` 关键字
+CREATE GLOBAL BINDING for
+    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a
+USING
+    delete t1 FROM t1 JOIN t2 ON t1.a = t2.a;
 ```
 
 > **注意：**
@@ -67,27 +71,47 @@ using
 
 ```sql
 -- Hint 能生效的用法
-create global binding for
-    insert into t1 select * from t2 where a > 1 and b = 1
-using
-    insert into t1 select /*+ use_index(@sel_1 t2, a) */ * from t2 where a > 1 and b = 1;
+CREATE GLOBAL BINDING for
+    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+USING
+    INSERT INTO t1 SELECT /*+ use_index(@sel_1 t2, a) */ * FROM t2 WHERE a > 1 AND b = 1;
 
 -- Hint 不能生效的用法
-create global binding for
-    insert into t1 select * from t2 where a > 1 and b = 1
-using
-    insert /*+ use_index(@sel_1 t2, a) */ into t1 select * from t2 where a > 1 and b = 1;
+CREATE GLOBAL BINDING for
+    INSERT INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1
+USING
+    INSERT /*+ use_index(@sel_1 t2, a) */ INTO t1 SELECT * FROM t2 WHERE a > 1 AND b = 1;
 ```
 
-如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 `tidb_use_plan_baselines` 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
+如果在创建执行计划绑定时不指定作用域，隐式作用域 SESSION 会被使用。TiDB 优化器会将被绑定的 SQL 进行“标准化”处理，然后存储到系统表中。在处理 SQL 查询时，只要“标准化”后的 SQL 和系统表中某个被绑定的 SQL 语句一致，并且系统变量 [`tidb_use_plan_baselines`](/system-variables.md#tidb_use_plan_baselines从-v40-版本开始引入) 的值为 `on`（其默认值为 `on`），即可使用相应的优化器 Hint。如果存在多个可匹配的执行计划，优化器会从中选择代价最小的一个进行绑定。
 
 `标准化`：把 SQL 中的常量变成变量参数，对空格和换行符等做标准化处理，并对查询引用到的表显式指定数据库。例如：
 
 ```sql
-select * from t where a >    1
--- 标准化后：
-select * from test . t where a > ?
+SELECT * FROM t WHERE a >    1
+-- 以上语句标准化后如下：
+SELECT * FROM test . t WHERE a > ?
 ```
+
+> **注意：**
+>
+> 在进行标准化的时候，被逗号 `,` 连接起来的多个常量会被标准化为 `...` 而不是 `?`。
+>
+> 例如：
+>
+> ```sql
+> SELECT * FROM t limit 10
+> SELECT * FROM t limit 10, 20
+> SELECT * FROM t WHERE a IN (1)
+> SELECT * FROM t WHERE a IN (1,2,3)
+> -- 以上语句标准化后如下：
+> SELECT * FROM test . t limit ?
+> SELECT * FROM test . t limit ...
+> SELECT * FROM test . t WHERE a IN ( ? )
+> SELECT * FROM test . t WHERE a IN ( ... )
+> ```
+>
+> 因此包含单个常量的 SQL 语句和包含被逗号连接起来多个常量的 SQL 语句，在被绑定时会被 TiDB 视作不同的 SQL 语句，需要分别创建绑定。
 
 值得注意的是，如果一条 SQL 语句在 GLOBAL 和 SESSION 作用域内都有与之绑定的执行计划，因为优化器在遇到 SESSION 绑定时会忽略 GLOBAL 绑定的执行计划，该语句在 SESSION 作用域内绑定的执行计划会屏蔽掉语句在 GLOBAL 作用域内绑定的执行计划。
 
@@ -95,25 +119,25 @@ select * from test . t where a > ?
 
 ```sql
 -- 创建一个 global binding，指定其使用 sort merge join
-create global binding for
-    select * from t1, t2 where t1.id = t2.id
-using
-    select /*+ merge_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+CREATE GLOBAL BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ merge_join(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 global binding 中指定的 sort merge join
-explain select * from t1, t2 where t1.id = t2.id;
+explain SELECT * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 创建另一个 session binding，指定其使用 hash join
-create binding for
-    select * from t1, t2 where t1.id = t2.id
-using
-    select /*+ hash_join(t1, t2) */ * from t1, t2 where t1.id = t2.id;
+CREATE BINDING for
+    SELECT * FROM t1, t2 WHERE t1.id = t2.id
+USING
+    SELECT /*+ hash_join(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 从该 SQL 的执行计划中可以看到其使用了 session binding 中指定的 hash join，而不是 global binding 中指定的 sort merge join
-explain select * from t1, t2 where t1.id = t2.id;
+explain SELECT * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
-第一个 `select` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `sm_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 MergeJoin。而第二个 `select` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `hash_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 HashJoin。
+第一个 `SELECT` 语句在执行时优化器会通过 GLOBAL 作用域内的绑定为其加上 `sm_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 MergeJoin。而第二个 `SELECT` 语句在执行时优化器则会忽视 GLOBAL 作用域内的绑定而使用 SESSION 作用域内的绑定为该语句加上 `hash_join(t1, t2)` hint，`explain` 出的执行计划中最上层的节点为 HashJoin。
 
 每个标准化的 SQL 只能同时有一个通过 `CREATE BINDING` 创建的绑定。对相同的标准化 SQL 创建多个绑定时，会保留最后一个创建的绑定，之前的所有绑定（创建的和演进出来的）都会被删除。但 session 绑定和 global 绑定仍然允许共存，不受这个逻辑影响。
 
@@ -127,7 +151,7 @@ explain select * from t1, t2 where t1.id = t2.id;
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE a > 2;
 ```
 
-可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `select * from test . t where a > ?`，而
+可以创建成功，因为原始 SQL 和绑定 SQL 在参数化以及去掉 Hint 后文本都是 `SELECT * FROM test . t WHERE a > ?`，而
 
 {{< copyable "sql" >}}
 
@@ -135,7 +159,7 @@ CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(i
 CREATE BINDING FOR SELECT * FROM t WHERE a > 1 USING SELECT * FROM t use index(idx) WHERE b > 2;
 ```
 
-则不可以创建成功，因为原始 SQL 在经过处理后是 `select * from test . t where a > ?`，而绑定 SQL 在经过处理后是 `select * from test . t where b > ?`。
+则不可以创建成功，因为原始 SQL 在经过处理后是 `SELECT * FROM test . t WHERE a > ?`，而绑定 SQL 在经过处理后是 `SELECT * FROM test . t WHERE b > ?`。
 
 > **注意：**
 >
@@ -157,17 +181,29 @@ DROP [GLOBAL | SESSION] BINDING FOR BindableStmt;
 
 ```sql
 -- 删除 session 中创建的 binding
-drop session binding for select * from t1, t2 where t1.id = t2.id;
+DROP session binding for SELECT * FROM t1, t2 WHERE t1.id = t2.id;
 
 -- 重新查看该 SQL 的执行计划
-explain select * from t1,t2 where t1.id = t2.id;
+explain SELECT * FROM t1,t2 WHERE t1.id = t2.id;
 ```
 
-在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `select` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
+在这里 SESSION 作用域内被删除掉的绑定会屏蔽 GLOBAL 作用域内相应的绑定，优化器不会为 `SELECT` 语句添加 `sm_join(t1, t2)` hint，`explain` 给出的执行计划中最上层节点并不被 hint 固定为 MergeJoin，而是由优化器经过代价估算后自主进行选择。
 
 > **注意：**
 >
 > 执行 `DROP GLOBAL BINDING` 会删除当前 tidb-server 实例缓存中的绑定，并将系统表中对应行的状态修改为 'deleted'。该语句不会直接删除系统表中的记录，因为其他 tidb-server 实例需要读取系统表中的 'deleted' 状态来删除其缓存中对应的绑定。对于这些系统表中状态为 'deleted' 的记录，后台线程每隔 100 个 `bind-info-lease`（默认值为 `3s`，合计 `300s`）会触发一次对 `update_time` 在 10 个 `bind-info-lease` 以前的绑定（确保所有 tidb-server 实例已经读取过这个 'deleted' 状态并更新完缓存）的回收清除操作。
+
+### 变更绑定状态
+
+{{< copyable "sql" >}}
+
+```sql
+SET BINDING [ENABLED | DISABLED] FOR BindableStmt;
+```
+
+该语句可以在 GLOBAL 作用域内变更指定执行计划的绑定状态，默认作用域为 GLOBAL，该作用域不可更改。
+
+使用时，只能将 `Disabled` 的绑定改为 `Enabled` 状态，或将 `Enabled` 的绑定改为 `Disabled` 状态。如果没有可以改变状态的绑定，则会输出一条内容为 `There are no bindings can be set the status. Please check the SQL text` 的警告。需要注意的是，当绑定被设置成 `Disabled` 状态时，查询语句不会使用该绑定。
 
 ### 查看绑定
 
@@ -184,7 +220,7 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 | original_sql  |  参数化后的原始 SQL |
 | bind_sql | 带 Hint 的绑定 SQL |
 | default_db | 默认数据库名 |
-| status | 状态，包括 using（正在使用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
+| status | 状态，包括 enabled（可用，从 v6.0 开始取代之前版本的 using 状态）、disabled（不可用）、deleted（已删除）、 invalid（无效）、rejected（演进时被拒绝）和 pending verify（等待演进验证） |
 | create_time | 创建时间 |
 | update_time | 更新时间 |
 | charset | 字符集 |
@@ -193,31 +229,89 @@ SHOW [GLOBAL | SESSION] BINDINGS [ShowLikeOrWhere];
 
 ### 排查绑定
 
+绑定的排查通常有两种方式：
+
+- 使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行语句是否采用 binding 的执行计划。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    -- 创建一个 global binding
+
+    CREATE GLOBAL BINDING for
+        SELECT * FROM t
+    USING
+        SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
+
+    SELECT * FROM t;
+    SELECT @@[SESSION.]last_plan_from_binding;
+    ```
+
+    ```sql
+    +--------------------------+
+    | @@last_plan_from_binding |
+    +--------------------------+
+    |                        1 |
+    +--------------------------+
+    1 row in set (0.00 sec)
+    ```
+
+- 使用 `explain format = 'verbose'` 语句查看 SQL 语句的查询计划。如果 SQL 语句使用了 binding，可以接着执行 `show warnings` 了解该 SQL 语句使用了哪一条 binding。
+
+    ```sql
+    -- 创建一个 global binding
+
+    CREATE GLOBAL BINDING for
+        SELECT * FROM t
+    USING
+        SELECT /*+ USE_INDEX(t, idx_a) */ * FROM t;
+
+    -- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划
+
+    explain format = 'verbose' SELECT * FROM t;
+
+    -- 通过执行 `show warnings` 了解该 SQL 语句使用了哪一条 binding
+
+    show warnings;
+    ```
+
+    ```sql
+    +-------+------+--------------------------------------------------------------------------+
+    | Level | Code | Message                                                                  |
+    +-------+------+--------------------------------------------------------------------------+
+    | Note  | 1105 | Using the bindSQL: SELECT /*+ USE_INDEX(`t` `idx_a`)*/ * FROM `test`.`t` |
+    +-------+------+--------------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+
+    ```
+
+### 对绑定进行缓存
+
+每个 TiDB 实例都有一个 LRU (Least Recently Used) Cache 对绑定进行缓存，缓存的容量由系统变量 [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) 进行控制。缓存会影响绑定的使用和查看，因此你只能使用和查看存在于缓存中的绑定。
+
+如需查看绑定的使用情况，可以执行 `SHOW binding_cache status` 语句。该语句无法指定作用域，默认作用域为 GLOBAL。该语句可查看缓存中可用绑定的数量、系统中所有可用绑定的数量、缓存中所有绑定的内存使用量及缓存的内存容量。
+
 {{< copyable "sql" >}}
 
 ```sql
-SELECT @@[SESSION.]last_plan_from_binding;
+
+SHOW binding_cache status;
 ```
 
-该语句使用系统变量 [`last_plan_from_binding`](/system-variables.md#last_plan_from_binding-从-v40-版本开始引入) 显示上一条执行的语句所使用的执行计划是否来自 binding 的执行计划。
-
-另外，当使用 `explain format = 'verbose'` 语句查看一条 SQL 语句的查询计划时，如果该 SQL 语句使用了 binding，`explain` 语句会输出 warning 警告。此时可以通过查看 warning 了解该 SQL 语句使用了哪一条 binding。
-
 ```sql
--- 创建一个 global binding
-
-create global binding for
-    select * from t
-using
-    select * from t;
-
--- 使用 explain format = 'verbose' 语句查看 SQL 的执行计划，通过查看 warning 信息确认查询所使用的 binding
-
-explain format = 'verbose' select * from t;
-show warnings;
++-------------------+-------------------+--------------+--------------+
+| bindings_in_cache | bindings_in_table | memory_usage | memory_quota |
++-------------------+-------------------+--------------+--------------+
+|                 1 |                 1 | 159 Bytes    | 64 MB        |
++-------------------+-------------------+--------------+--------------+
+1 row in set (0.00 sec)
 ```
 
 ## 自动捕获绑定 (Baseline Capturing)
+
+自动绑定会对符合捕获条件的查询进行捕获，为符合条件的查询生成相应的绑定。通常用于[升级时的计划回退防护](#升级时的计划回退防护)。
+
+### 使用方式
 
 通过将 `tidb_capture_plan_baselines` 的值设置为 `on`（其默认值为 `off`）可以打开自动捕获绑定功能。
 
@@ -231,13 +325,88 @@ show warnings;
 
 - EXPLAIN 和 EXPLAIN ANALYZE 语句；
 - TiDB 内部执行的 SQL 语句，比如统计信息自动加载使用的 SELECT 查询；
-- 存在手动创建的执行计划绑定的 SQL 语句；
+- 存在 `Enabled` 或 `Disabled` 状态绑定的语句；
+- 满足捕获绑定黑名单过滤条件的语句。
+
+> **注意：**
+>
+> 当前，绑定通过生成一组 Hints 来固定查询语句生成的执行计划，从而确保执行计划不发生变化。对于大多数 OLTP 查询，TiDB 能够保证计划前后一致，如使用相同的索引、相同的 Join 方式（如 HashJoin、IndexJoin）等。但是，受限于当前 Hints 的完善程度，对于一些较为复杂的查询，如两个表以上的 Join 和复杂的 OLAP、MPP 类查询，TiDB 无法保证计划在绑定前后完全一致。
 
 对于 `PREPARE`/`EXECUTE` 语句组，或通过二进制协议执行的查询，TiDB 会为真正的查询（而不是 `PREPARE`/`EXECUTE` 语句）自动捕获绑定。
 
 > **注意：**
 >
 > 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动捕获绑定时会默认屏蔽内嵌 SQL。
+
+### 过滤捕获绑定
+
+使用本功能，你可以设置黑名单，将满足黑名单规则的查询排除在捕获范围之外。黑名单支持的过滤维度包括表名、频率和用户名。
+
+#### 使用方式
+
+将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，该过滤规则即刻起会在整个集群范围内生效。
+
+{{< copyable "sql" >}}
+
+```sql
+-- 按照表名进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t');
+
+-- 通过通配符来实现按照数据库名和表名进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*');
+
+-- 按照执行频率进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2');
+
+-- 按照用户名进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
+```
+
+| **维度名称** | **说明**                                                     | 注意事项                                                     |
+| :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+| table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
+| frequency    | 按照频率进行过滤，默认捕获执行超过一次的语句。可以设置较大值来捕获执行频繁的语句。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条频率过滤规则，频率最大的值会被用作过滤条件。 |
+| user         | 按照用户名进行过滤，黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
+
+> **注意：**
+>
+> - 修改黑名单需要数据库的 super privilege 权限。
+>
+> - 如果黑名单包含了非法的过滤内容时，TiDB 会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
+
+### 升级时的计划回退防护
+
+当需要升级 TiDB 集群时，你可以利用自动捕获绑定对潜在的计划回退风险进行一定程度的防护，具体流程为：
+
+1. 升级前打开自动捕获一段时间。
+
+    > **注意：**
+    >
+    > 经测试，长期打开自动捕获对集群负载的性能影响很小。尽量长期打开自动捕获，以确保重要的查询（出现过两次及以上）都能被捕获到。
+
+2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变。
+3. 升级完成后，根据情况手动删除绑定。
+
+    - 通过[`SHOW GLOBAL BINDINGS`](#查看绑定)语句检查绑定来源：
+
+        根据输出中的 `Source` 字段对绑定的来源进行区分，确认是通过捕获 (`capture`) 生成还是通过手动创建 (`manual`) 生成。
+
+    - 确定 `capture` 的绑定是否需要保留：
+
+        ```
+        -- 查看绑定生效时的计划
+        SET @@SESSION.TIDB_USE_PLAN_BASELINES = true;
+        EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+
+        -- 查看绑定不生效时的计划
+        SET @@SESSION.TIDB_USE_PLAN_BASELINES = false;
+        EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+        ```
+
+        - 如果屏蔽绑定前后，查询得到的计划一致，则可以安全删除此绑定。
+
+        - 如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作。在这种情况下需要保留此绑定，确保计划不发生变化。
 
 ## 自动演进绑定 (Baseline Evolution)
 
@@ -254,16 +423,16 @@ show warnings;
 {{< copyable "sql" >}}
 
 ```sql
-set global tidb_evolve_plan_baselines = on;
+SET GLOBAL tidb_evolve_plan_baselines = ON;
 ```
 
 `tidb_evolve_plan_baselines` 的默认值为 `off`。
 
 > **警告：**
 >
-> 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
+> - 自动演进功能目前为实验特性，存在未知风险，不建议在生产环境中使用。
 >
-> 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
+> - 此变量开关已强制关闭，直到自动演进成为正式功能 GA (Generally Available)。如果你尝试打开开关，会产生报错。如果你已经在生产环境中使用了此功能，请尽快将它禁用。如发现 binding 状态不如预期，请与 PingCAP 的技术支持联系获取相关支持。
 
 在打开自动演进功能后，如果优化器选出的最优执行计划不在之前绑定的执行计划之中，会将其记录为待验证的执行计划。每隔 `bind-info-lease`（默认值为 `3s`），会选出一个待验证的执行计划，将其和已经绑定的执行计划中代价最小的比较实际运行时间。如果待验证的运行时间更优的话（目前判断标准是运行时间小于等于已绑定执行计划运行时间的 2/3），会将其标记为可使用的绑定。以下示例描述上述过程。
 
@@ -272,7 +441,7 @@ set global tidb_evolve_plan_baselines = on;
 {{< copyable "sql" >}}
 
 ```sql
-create table t(a int, b int, key(a), key(b));
+CREATE TABLE t(a INT, b INT, KEY(a), KEY(b));
 ```
 
 在表 `t` 上进行如下查询：
@@ -280,7 +449,7 @@ create table t(a int, b int, key(a), key(b));
 {{< copyable "sql" >}}
 
 ```sql
-select * from t where a < 100 and b < 100;
+SELECT * FROM t WHERE a < 100 AND b < 100;
 ```
 
 表上满足条件 `a < 100` 的行很少。但由于某些原因，优化器没能选中使用索引 `a` 这个最优执行计划，而是误选了速度慢的全表扫，那么用户首先可以通过如下语句创建一个绑定：
@@ -288,7 +457,7 @@ select * from t where a < 100 and b < 100;
 {{< copyable "sql" >}}
 
 ```sql
-create global binding for select * from t where a < 100 and b < 100 using select * from t use index(a) where a < 100 and b < 100;
+CREATE GLOBAL BINDING for SELECT * FROM t WHERE a < 100 AND b < 100 USING SELECT * FROM t use index(a) WHERE a < 100 AND b < 100;
 ```
 
 当以上查询语句再次执行时，优化器会在刚创建绑定的干预下选择使用索引 `a`，进而降低查询时间。
@@ -330,11 +499,11 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
     ```sql
     -- 在待升级的版本上检查自动演进的开关 `tidb_evolve_plan_baselines` 是否关闭。
-  
-    select @@global.tidb_evolve_plan_baselines;
-  
+
+    SELECT @@global.tidb_evolve_plan_baselines;
+
     -- 如果演进的开关 `tidb_evolve_plan_baselines` 尚未关闭，则需要将其关闭。
-  
+
     set global tidb_evolve_plan_baselines = off;
     ```
 
@@ -346,15 +515,15 @@ create global binding for select * from t where a < 100 and b < 100 using select
 
     ```sql
     -- 在待升级的版本上检查现有可用绑定对应的查询语句。
-  
-    select bind_sql from mysql.bind_info where status = 'using';
-  
+
+    SELECT bind_sql FROM mysql.bind_info WHERE status = 'using';
+
     -- 将上一条查询得到的结果，在新版本的测试环境中进行验证。
-  
+
     bind_sql_0;
     bind_sql_1;
     ...
-  
+
     -- 如果报错信息是语法错误（ERROR 1064 (42000): You have an error in your SQL syntax），则需要删除对应的绑定。
     -- 如果是其他错误，如未找到表，则表示语法兼容，不需要进行额外的处理。
     ```

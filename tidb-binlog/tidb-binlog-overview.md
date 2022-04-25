@@ -16,6 +16,10 @@ TiDB Binlog 支持以下功能场景：
 >
 > TiDB Binlog 与 TiDB v5.0 版本开始引入的一些特性不兼容，无法一起使用，详情参照[注意事项](#注意事项)。建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 
+要快速了解 Binlog 的基本原理和使用方法，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+21.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+21.png"></video>
+
 ## TiDB Binlog 整体架构
 
 ![TiDB Binlog 架构](/media/tidb-binlog-cluster-architecture.png)
@@ -66,7 +70,7 @@ TiDB Binlog 集群主要分为 Pump 和 Drainer 两个组件，以及 binlogctl 
 
 * Drainer 支持将 Binlog 同步到 MySQL、TiDB、Kafka 或者本地文件。如果需要将 Binlog 同步到其他 Drainer 不支持的类型的系统中，可以设置 Drainer 将 Binlog 同步到 Kafka，然后根据 binlog consumer protocol 进行定制处理，参考 [Binlog Consumer Client 用户文档](/tidb-binlog/binlog-consumer-client.md)。
 
-* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
+* 如果 TiDB Binlog 用于增量恢复，可以设置配置项 `db-type="file"`，Drainer 会将 binlog 转化为指定的 [proto buffer 格式](https://github.com/pingcap/tidb-binlog/blob/master/proto/pb_binlog.proto)的数据，再写入到本地文件中。这样就可以使用 [Reparo](/tidb-binlog/tidb-binlog-reparo.md) 恢复增量数据。
 
     关于 `db-type` 的取值，应注意：
 

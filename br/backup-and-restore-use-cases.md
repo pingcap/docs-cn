@@ -35,7 +35,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ### 部署方式
 
-推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md#备份和恢复-br-工具) 获取 BR 工具。
+推荐使用 [TiUP](/tiup/tiup-cluster.md) 部署 TiDB 集群，再下载 [TiDB Toolkit](/download-ecosystem-tools.md) 获取 BR 工具。
 
 ### 集群版本
 
@@ -277,7 +277,7 @@ bin/br restore table --db batchmark --table order_line -s local:///br_data --pd 
 
 ![img](/media/br/restore-region.png)
 
-**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
+**Process SST Duration**：处理 SST 文件的延迟。恢复一张表时，如果 `tableID` 发生了变化，需要对 `tableID` 进行 `rewrite`，否则会进行 `rename`。通常 `rewrite` 延迟要高于 `rename` 的延迟。
 
 ![img](/media/br/restore-process-sst.png)
 

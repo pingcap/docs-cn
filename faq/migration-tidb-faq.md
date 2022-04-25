@@ -13,7 +13,7 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 - [Backup & Restore 常见问题](/br/backup-and-restore-faq.md)
 - [TiDB Binlog 常见问题](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
-- [Data Migration 常见问题](https://docs.pingcap.com/zh/tidb-data-migration/stable/faq)
+- [Data Migration 常见问题](/dm/dm-faq.md)
 - [TiCDC 常见问题和故障处理](/ticdc/troubleshoot-ticdc.md)
 
 ## 全量数据导出导入
@@ -29,7 +29,7 @@ TiDB 支持绝大多数 MySQL 语法，一般不需要修改代码。
 + 在出现重试、EOF 错误的服务器端节点执行以下命令：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     iperf3 -s
     ```
@@ -135,7 +135,7 @@ DB2、Oracle 到 TiDB 数据迁移（增量+全量），通常做法有：
 
 ### 如何快速迁移业务流量？
 
-我们建议通过 [TiDB Data Migration](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/overview) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
+我们建议通过 [TiDB Data Migration](/dm/dm-overview.md) 进行 MySQL -> TiDB 的业务数据的迁移；业务读写可以按照需求分阶段通过修改网络配置进行流量迁移，建议 DB 上层部署一个稳定的网络 LB（HAproxy、LVS、F5、DNS 等），这样直接修改网络配置就能实现无缝流量迁移。
 
 ### TiDB 总读写流量有限制吗？
 
@@ -171,7 +171,7 @@ DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DRO
 
 ### 数据删除最高效最快的方式？
 
-在删除大量数据的时候，建议使用 `Delete * from t where xx limit 5000`（xx 建议在满足业务过滤逻辑下，尽量加上强过滤索引列或者直接使用主键选定范围，如 `id >= 5000*n+m and id <= 5000*(n+1)+m` 这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件，这样避免遇到事务大小的限制。如果一次删除的数据量非常大，这种循环的方式会越来越慢，因为每次删除都是从前向后遍历，前面的删除之后，短时间内会残留不少删除标记（后续会被 GC 掉），影响后面的 Delete 语句。如果有可能，建议把 Where 条件细化。可以参考官网[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)。
+在删除大量数据的时候，建议使用 `Delete from t where xx limit 5000`（xx 建议在满足业务过滤逻辑下，尽量加上强过滤索引列或者直接使用主键选定范围，如 `id >= 5000*n+m and id <= 5000*(n+1)+m` 这样的方案，通过循环来删除，用 `Affected Rows == 0` 作为循环结束条件，这样避免遇到事务大小的限制。如果一次删除的数据量非常大，这种循环的方式会越来越慢，因为每次删除都是从前向后遍历，前面的删除之后，短时间内会残留不少删除标记（后续会被 GC 掉），影响后面的 Delete 语句。如果有可能，建议把 Where 条件细化。可以参考官网[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)。
 
 ### TiDB 如何提高数据加载速度？
 

@@ -7,18 +7,39 @@ aliases: ['/docs-cn/dev/releases/release-notes/','/docs-cn/dev/releases/rn/']
 
 TiDB 历史版本发布声明如下：
 
+## 6.0
+
+- [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
+
+## 5.4
+
+- [5.4.0](/releases/release-5.4.0.md)
+
+## 5.3
+
+- [5.3.1](/releases/release-5.3.1.md)
+- [5.3.0](/releases/release-5.3.0.md)
+
 ## 5.2
 
+- [5.2.3](/releases/release-5.2.3.md)
+- [5.2.2](/releases/release-5.2.2.md)
 - [5.2.1](/releases/release-5.2.1.md)
 - [5.2.0](/releases/release-5.2.0.md)
 
 ## 5.1
 
+- [5.1.4](/releases/release-5.1.4.md)
+- [5.1.3](/releases/release-5.1.3.md)
+- [5.1.2](/releases/release-5.1.2.md)
 - [5.1.1](/releases/release-5.1.1.md)
 - [5.1.0](/releases/release-5.1.0.md)
 
 ## 5.0
 
+- [5.0.6](/releases/release-5.0.6.md)
+- [5.0.5](/releases/release-5.0.5.md)
+- [5.0.4](/releases/release-5.0.4.md)
 - [5.0.3](/releases/release-5.0.3.md)
 - [5.0.2](/releases/release-5.0.2.md)
 - [5.0.1](/releases/release-5.0.1.md)
@@ -27,6 +48,8 @@ TiDB 历史版本发布声明如下：
 
 ## 4.0
 
+- [4.0.16](/releases/release-4.0.16.md)
+- [4.0.15](/releases/release-4.0.15.md)
 - [4.0.14](/releases/release-4.0.14.md)
 - [4.0.13](/releases/release-4.0.13.md)
 - [4.0.12](/releases/release-4.0.12.md)

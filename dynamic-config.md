@@ -47,7 +47,7 @@ show config;
 show config where type='tidb'
 show config where instance in (...)
 show config where name like '%log%'
-show config where type='tikv' and name='log-level'
+show config where type='tikv' and name='log.level'
 ```
 
 ### 在线修改 TiKV 配置
@@ -91,7 +91,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set config `tikv log-level`='warn';
+set config tikv `log-level`='warn';
 ```
 
 ```sql
@@ -123,13 +123,13 @@ show warnings;
 
 | 配置项 | 简介 |
 | --- | --- |
-| raftstore.raft-entry-max-size | 单个日志最大大小 |
+| raftstore.raft-max-inflight-msgs | 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
+| raftstore.raft-max-size-per-msg | 允许生成的单个消息包的大小，软限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
-| raftstore.raft-reject-transfer-leader-duration | 控制迁移 leader 到新加节点的最小时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
 | raftstore.region-compact-check-interval | 检查是否需要人工触发 RocksDB compaction 的时间间隔 |
@@ -149,11 +149,15 @@ show warnings;
 | raftstore.peer-stale-state-check-interval | 触发检验副本是否处于无主状态的时间间隔 |
 | raftstore.consistency-check-interval | 触发一致性检查的时间间隔 |
 | raftstore.raft-store-max-leader-lease | Region 主可信任期的最长时间 |
-| raftstore.allow-remove-leader | 允许删除主开关 |
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
 | raftstore.local-read-batch-size | 一轮处理读请求的最大个数 |
 | raftstore.hibernate-timeout | 启动后进入静默状态前需要等待的最短时间，在该时间段内不会进入静默状态（未 release）|
+| raftstore.apply-pool-size | 处理把数据落盘至磁盘的线程池中线程的数量，即 Apply 线程池大小 |
+| raftstore.store-pool-size | 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小 |
+| raftstore.apply-max-batch-size | Raft 状态机由 BatchSystem 批量执行数据写入请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
+| raftstore.store-max-batch-size |  Raft 状态机由 BatchSystem 批量执行把日志落盘至磁盘的请求，该配置项指定每批可执行请求的最多 Raft 状态机个数。 |
+| readpool.unified.max-thread-count | 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池大小 |
 | coprocessor.split-region-on-table | 开启按 table 分裂 Region 的开关 |
 | coprocessor.batch-split-limit | 批量分裂 Region 的阈值 |
 | coprocessor.region-max-size | Region 容量空间的最大值 |
@@ -163,6 +167,7 @@ show warnings;
 | pessimistic-txn.wait-for-lock-timeout | 悲观事务遇到锁后的最长等待时间 |
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
+| pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
@@ -170,6 +175,7 @@ show warnings;
 | gc.compaction-filter-skip-version-check | 是否跳过 compaction filter 的集群版本检查（未 release）|
 | {db-name}.max-total-wal-size | WAL 总大小限制 |
 | {db-name}.max-background-jobs | RocksDB 后台线程个数 |
+| {db-name}.max-background-flushes | RocksDB flush 线程个数 |
 | {db-name}.max-open-files | RocksDB 可以打开的文件总数 |
 | {db-name}.compaction-readahead-size | Compaction 时候 readahead 的大小 |
 | {db-name}.bytes-per-sync | 异步同步的限速速率 |
@@ -190,12 +196,17 @@ show warnings;
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
+| storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
 | split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
 | split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
 | split.split-balance-score | load-base-split 的控制参数，确保 Region 切分后左右访问尽量均匀，数值越小越均匀，但也可能导致无法切分 |
 | split.split-contained-score | load-base-split 的控制参数，数值越小，Region 切分后跨 Region 的访问越少 |
-
+| cdc.min-ts-interval | 定期推进 Resolved TS 的时间间隔 |
+| cdc.old-value-cache-memory-quota | 缓存在内存中的 TiCDC Old Value 的条目占用内存的上限 |
+| cdc.sink-memory-quota| 缓存在内存中的 TiCDC 数据变更事件占用内存的上限 |
+| cdc.incremental-scan-speed-limit| 增量扫描历史数据的速度上限 |
+| cdc.incremental-scan-concurrency | 增量扫描历史数据任务的最大并发执行个数 |
 上述前缀为 `{db-name}` 或 `{db-name}.{cf-name}` 的是 RocksDB 相关的配置项。`db-name` 的取值可为 `rocksdb` 或 `raftdb`。
 
 - 当 `db-name` 为 `rocksdb` 时，`cf-name` 的可取值有：`defaultcf`、`writecf`、`lockcf`、`raftcf`；
