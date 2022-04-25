@@ -376,11 +376,11 @@
     - [使用 BR 备份集群](/br/br-usage-backup.md)
     - [使用 BR 恢复集群](/br/br-usage-restore.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - [BR 设计原理](/br/backup-and-restore-design.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
       - [批量建表](/br/br-batch-create-table.md)
     - 参考指南
+     - [BR 设计原理](/br/backup-and-restore-design.md)
      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
      - [外部存储](/br/backup-and-restore-storages.md)
      - [在 AWS 上进行备份恢复](/br/backup-storage-S3.md)
