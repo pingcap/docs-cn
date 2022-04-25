@@ -184,7 +184,7 @@ TiDB 版本：5.2.4
         - 修复当 PD 状态不正常时 open API 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
         - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
         - 修复 Unified Sorter 的 workerpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
-        - 修复 kv client cached region 监控数据可能为负的问题  [#4300](https://github.com/pingcap/tiflow/issues/4300)
+        - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复 `cached region` 监控指标为负数的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
 
     + TiDB Lightning
 
