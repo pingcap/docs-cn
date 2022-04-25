@@ -508,12 +508,6 @@ raftstore 相关的配置项。
 + 允许残余的 raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
 + 最小值：大于 0
 
-### `raft-log-reserve-max-ticks` <span class="version-mark">从 v5.2.4 版本开始引入</span>
-
-+ 超过本配置项设置的的 tick 数后，即使剩余 Raft 日志的数量没有达到 `raft-log-gc-threshold` 设置的值，TiKV 也会进行 GC 操作。
-+ 默认值：6
-+ 最小值：大于 0
-
 ### `raft-entry-cache-life-time`
 
 + 内存中日志 cache 允许的最长残留时间。
