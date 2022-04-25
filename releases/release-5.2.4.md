@@ -43,8 +43,8 @@ TiDB 版本：5.2.4
         - (dup: release-5.4.0.md > 提升改进> Tools> TiCDC)- 减少 "EventFeed retry rate limited" 日志的数量 [#4006](https://github.com/pingcap/tiflow/issues/4006)
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 将 `max-message-bytes` 默认值设置为 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
-        - 在 grafana 监控面板中支持 multi-k8s  [#4665](https://github.com/pingcap/tiflow/issues/4665)
-        - 添加 channgeed checkpoint 预计多久追上 (ETA) 监控指标 [#5232](https://github.com/pingcap/tiflow/issues/5232)
+        - 在 Grafana 监控面板中支持 multiple Kubernetes clusters [#4665](https://github.com/pingcap/tiflow/issues/4665)
+        - 添加 changefeed checkpoint 预计多久追上 (ETA) 的监控指标 [#5232](https://github.com/pingcap/tiflow/issues/5232)
 
 ## Bug 修复
 
@@ -154,7 +154,7 @@ TiDB 版本：5.2.4
 
     + Backup & Restore (BR)
 
-        - 修复 BR 备份 rawkv 失败的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
+        - 修复 BR 备份 rawkv 时失败的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
 
     + TiCDC
 
@@ -181,7 +181,7 @@ TiDB 版本：5.2.4
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - (dup: release-5.0.6.md > Bug 修复> Tools> TiCDC)- 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
         - 修复 1 个 table 在同一节点被反复调入调出可能会导致 changefeed 卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
-        - 修复当 PD 状态不正常时 openapi 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
+        - 修复当 PD 状态不正常时 open API 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
         - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
         - 修复 Unified Sorter 的 workpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
         - 修复 kv client changed region 监控数据可能为负的问题  [#4300](https://github.com/pingcap/tiflow/issues/4300)
@@ -192,3 +192,4 @@ TiDB 版本：5.2.4
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Lightning)- 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Lightning)- 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - (dup: release-5.1.4.md > Bug 修复> Tools> TiDB Lightning)+ 修复 S3 存储路径不存在时 TiDB Lightning 不报错的问题 [#28031](https://github.com/pingcap/tidb/issues/28031) [#30709](https://github.com/pingcap/tidb/issues/30709)
+        -  修复在 GCS 上遍历超过 1000 个 key 时会出错的问题 [#30377](https://github.com/pingcap/tidb/issues/30377) 
