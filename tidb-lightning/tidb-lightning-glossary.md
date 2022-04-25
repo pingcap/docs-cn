@@ -15,13 +15,13 @@ summary: 了解 TiDB Lightning 相关的术语及定义。
 
 统计信息分析。指重建 TiDB 表中的统计信息，即运行 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 语句。
 
-因为 TiDB Lightning 不通过 TiDB 导入数据，统计信息不会自动更新，所以 TiDB Lightning 在导入后显式地分析每个表。如果不需要该操作，可以将 `post-restore.analyze` 设置为 `false`。
+因为 TiDB Lightning local backend 直接导入数据到 TiKV，统计信息不会自动更新，所以 TiDB Lightning 在导入后显式地分析每个表。如果不需要该操作，可以将 `post-restore.analyze` 设置为 `false`。
 
 ### `AUTO_INCREMENT_ID`
 
 用于为自增列分配默认值的自增 ID 计数器。每张表都有一个相关联的 `AUTO_INCREMENT_ID` 计数器。在 TiDB 中，该计数器还用于分配行 ID。
 
-因为 TiDB Lightning 不通过 TiDB 导入数据，`AUTO_INCREMENT_ID` 计数器不会自动更新，所以 TiDB Lightning 显式地将 `AUTO_INCREMENT_ID` 改为一个有效值。即使表中没有自增列，这步仍是会执行。
+因为 TiDB Lightning local backend 直接导入数据到 TiKV，`AUTO_INCREMENT_ID` 计数器不会自动更新，所以 TiDB Lightning 显式地将 `AUTO_INCREMENT_ID` 改为一个有效值。即使表中没有自增列，这步仍是会执行。
 
 <!-- B -->
 
