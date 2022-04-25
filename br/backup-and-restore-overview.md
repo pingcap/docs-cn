@@ -16,6 +16,8 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 ![br-arch](/media/br-arch.png)
 
+备份恢复的详细设计可以参考[TiDB 备份与恢复功能 BR 的设计](/br/backup-and-restore-design.md)。
+
 ## BR 功能
 
 下面介绍了 BR 的主要功能特性，及其性能指标。
@@ -38,12 +40,6 @@ BR 备份期间对 TiDB 集群的影响可以保持在 20% 以下，通过合理
 ##### 支持的备份存储类型
 
 BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NFS，或者实现 s3 协议的其他文件存储服务。使用请参考[备份数据到远端存储](/br/br-usage-backup.md#备份数据到远端存储)。
-
-#### 备份文件类型
-
-- `SST` 文件：存储 TiKV 备份下来的数据信息
-- `backupmeta` 文件：存储本次备份的元信息，包括备份文件数、备份文件的 Key 区间、备份文件大小和备份文件 Hash (sha256) 值
-- `backup.lock` 文件：用于防止多次备份到同一目录
 
 ### 从备份数据恢复 TiDB 集群
 
