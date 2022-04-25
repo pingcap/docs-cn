@@ -7,7 +7,7 @@
 # 2. Prepare an EM deployment topology yaml to /opt/config.yaml
 # 3. Put current script in /root/ path of EM machine and run it as root privilege, and leave the rest to the script.
     # Example command:
-    # sh online_install.sh http://172.16.5.148:8080/tiup-repo/ /opt/config.yaml
+    # sh tiem_online_install.sh http://172.16.5.148:8080/tiup-repo/ /opt/config.yaml
 
 if [ $# -ne 2 ]
 then

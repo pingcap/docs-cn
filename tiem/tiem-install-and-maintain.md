@@ -105,12 +105,12 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 3. 执行脚本在线安装 TiEM。
 
-    将 [online_install.sh](/scripts/tiem-online-deploy.sh) 拷贝到中控机，并以具备 `sudo` 权限的账号执行下面的命令：
+    将 [tiem_online_install.sh](/scripts/tiem-online-deploy.sh) 拷贝到中控机，并以具备 `sudo` 权限的账号执行下面的命令：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    sudo sh online_install.sh <在线仓库地址> <TiEM 拓扑文件绝对路径>
+    sudo sh tiem_online_install.sh <在线仓库地址> <TiEM 拓扑文件绝对路径>
     ```
 
     例如，假设 TiEM 在线仓库地址为 <http://172.16.5.148:8080/tiup-repo/>。以通过在线方式部署 TiEM-v1.0.0 为例，在线部署命令行参数为：
@@ -118,7 +118,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     {{< copyable "shell-regular" >}}
 
     ```shell
-    sudo sh online_install.sh http://172.16.5.148:8080/tiup-repo/ /opt/config.yaml
+    sudo sh tiem_online_install.sh http://172.16.5.148:8080/tiup-repo/ /opt/config.yaml
     ```
 
 4. 生成 `tidb` 帐户下的密钥。
