@@ -7,7 +7,7 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 下面介绍各种 TiDB 集群备份功能的使用方式。
 
-如果你还不熟悉 BR，建议您先阅读以下文档，充分了解 BR 使用限制和方法
+如果你还不熟悉 BR，建议您先阅读以下文档，充分了解 BR 使用限制和方法：
 
 - [BR 工具简介](/br/backup-and-restore-overview.md)
 - [BR 命令行介绍](/br/use-br-command-line-tool.md)
@@ -16,7 +16,7 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 TiDB 集群快照数据是只包含某个物理时间点上集群的最新的、满足事务一致性的数据。 使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。该命令的使用帮助可以通过 `br backup full --help` 来获取。
 
-用例：将集群属于 '2022-01-30 07:42:23' 的快照数据备份到 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中。
+用例：将时间为 '2022-01-30 07:42:23' 的集群快照数据备份到 S3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中。
 
 {{< copyable "shell-regular" >}}
 
@@ -31,10 +31,11 @@ br backup full \
 
 以上命令中：
 
-- `--ratelimit` 选项限制了**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。`--log-file` 选项指定把 BR 的 log 写到 `backupfull.log` 文件中；
-- `--backupts` 选项指定了快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果用户没有指定该参数，那么 BR 会选取备份开始的时间点所对应的快照。
+- `--backupts`：快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果你没有指定该参数，那么 BR 会选取备份开始的时间点所对应的快照。
+- `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
+- `--log-file`：BR log 写入的目标文件。 
 
-备份期间有进度条在终端中显示。当进度条前进到 100% 时，说明备份已完成。进度条效果如下：
+备份期间有进度条在终端中显示，显示效果如下。当进度条前进到 100% 时，说明备份已完成。
 
 ```shell
 br backup full \
@@ -59,10 +60,10 @@ TiDB 集群增量数据包含某个时间段的起始和结束两个快照的差
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1`
 ```
 
-注意增量备份有以下限制：
-
-- 增量备份数据需要与前一次快照备份数据保存在不同的路径下；
-- GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
+> **Note: **
+>
+> - 增量备份数据需要与前一次快照备份数据保存在不同的路径下。
+> - GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
 
 {{< copyable "shell-regular" >}}
 

@@ -5,9 +5,7 @@ summary: 介绍使用 BR 在外部存储 GCS 上进行备份与恢复时的方�
 
 # 在 Google Cloud 上进行备份恢复
 
-TiDB 备份恢复功能 (BR) 支持将 Google Cloud Storage 作为保存备份数据的存储服务。
-
-如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。
+TiDB 备份恢复功能 (BR) 支持将 Google Cloud Storage 作为外部存储来进行数据备份与恢复。
 
 ## 使用场景
 
@@ -31,6 +29,6 @@ br backup full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentia
 br restore full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentials-file=${credentials-file-path}' --send-credentials-to-tikv=true 
 ```
 
-## 其他资料
+## 探索更多
 
 - 如需了解 BR 支持的其他外部存储，请参阅[外部存储](/br/backup-and-restore-storages.md)。

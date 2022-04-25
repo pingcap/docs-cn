@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-storages/']
 
 # 外部存储
 
-Backup & Restore (BR)、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 [Google Cloud Storage](/br/backup-storage-gcs.md) 和 [Azure Blob Storage (Azblob)](/br/backup-storage-azblob.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
+BR、TiDB Lightning 和 Dumpling 皆支持在本地文件系统和 Amazon S3 上读写数据；另外 BR 亦支持 [Google Cloud Storage](/br/backup-storage-gcs.md) 和 [Azure Blob Storage (Azblob)](/br/backup-storage-azblob.md) 。通过传入不同 URL scheme 到 BR 的 `--storage` (`-s`) 参数、TiDB Lightning 的 `-d` 参数及 Dumpling 中的 `--output` (`-o`) 参数，可以区分不同的存储方式。
 
 ## Scheme
 
@@ -86,7 +86,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 > **注意：**
 >
-> 不建议在存储 URL 中直接传递访问密钥和 secret 访问密钥，因为这些密钥是明文记录的。如果没有指定问密钥和 secret 访问密钥，迁移工具尝试按照以下顺序从环境中推断这些密钥：
+> 不建议在存储 URL 中直接传递访问密钥和 secret 访问密钥，因为这些密钥是明文记录的。如果没有指定访问密钥和 secret 访问密钥，迁移工具尝试按照以下顺序从环境中推断这些密钥：
 
 1. `$AWS_ACCESS_KEY_ID` 和 `$AWS_SECRET_ACCESS_KEY` 环境变量。
 2. `$AWS_ACCESS_KEY` 和 `$AWS_SECRET_KEY` 环境变量。
