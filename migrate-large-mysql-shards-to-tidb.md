@@ -117,7 +117,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 ### 在下游创建 schema
 
-在下游创建`mydb.table5`。
+在下游创建 `mydb.table5`。
 
 {{< copyable "sql" >}}
 
