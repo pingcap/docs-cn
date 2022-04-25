@@ -79,13 +79,13 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 2. 选择 **Bucket Region** 为 **US West (Oregon)**
 3. 选择 **Data Format** 为 **TiDB Dumpling**
 
-    ![在 TiDB Cloud 中导入 Bookshop 数据](media/tidb_cloud_import_bookshop_data.png)
+    ![在 TiDB Cloud 中导入 Bookshop 数据](media/develop/tidb_cloud_import_bookshop_data.png)
 
 4. 输入你的数据库登录信息
 5. 点击 **Import** 按钮确认导入
 6. 等待 TiDB Cloud 完成数据导入
 
-    ![Bookshop 数据导入中](media/importing_bookshop_data.png)
+    ![Bookshop 数据导入中](media/develop/importing_bookshop_data.png)
 
     如果导入过程中出现如下错误信息，你需要通过 `DROP bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
 
