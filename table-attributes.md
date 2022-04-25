@@ -11,6 +11,8 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 > 
 > - 目前 TiDB 仅支持为表或分区添加 `merge_option` 属性，用于控制 Region 合并。该属性仅能处理部分热点问题。如需了解更多的热点问题处理相关内容，请参阅 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 > - 当使用 TiDB Binlog 或 TiCDC 进行同步或者使用 BR 进行增量备份时，同步和备份会跳过设置表属性的 DDL 语句。如需在下游或者备份集群使用表属性，需要在下游或者备份集群手动执行该 DDL 语句以设置表属性。
+> - TiDB v5.4.0 **不支持** Index Region。有关 Index Region 的具体信息可以参考 [Split Index Region](/sql-statements/sql-statement-split-region.md#split-index-region)。
+> - 在 TiDB v5.4.0 中，添加表属性**仅对**已存在的分区生效。如需在添加表属性后新增分区或删除分区，你需要重新设置表属性。有关重新设置表属性的方法可以参考[表属性的使用方法](#使用方法)。
 
 ## 使用方法
 
