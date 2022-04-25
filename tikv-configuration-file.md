@@ -1162,7 +1162,7 @@ bloom filter 为每个 key 预留的长度。
 
 + pending compaction bytes 的硬限制。
 + 默认值：256GB
-+ 单位：KB|MB|GiB
++ 单位：KB|MB|GB
 
 ### `enable-compaction-guard`
 
