@@ -157,6 +157,7 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 ```
 
 </div>
+</SimpleTab>
 
 ## 对结果进行排序
 
