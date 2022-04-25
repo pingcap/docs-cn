@@ -18,7 +18,7 @@
   - [快速上手 HTAP](/quick-start-with-htap.md)
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
-- Develop
+- 应用开发
   - 快速开始
     - [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
@@ -49,15 +49,25 @@
     - [查询结果分页](/develop/paginate-results.md)
     - [视图](/develop/views.md)
     - [临时表](/develop/temporary-table.md)
+    - [公共表表达式](/develop/common-table-expression.md)
+    - 读取副本数据
+      - [Follower Read](/develop/follower-read.md)
+      - [Stale Read](/develop/stale-read.md)
+    - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
   - 事务
     - [事务概览](/develop/transaction-overview.md)
     - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
     - [事务限制](/develop/transaction-restraints.md)
+    - [事务错误处理](/develop/transaction-troubleshoot.md)
   - 优化 SQL 性能
+    - [概览](/develop/optimize-sql-overview.md)
+    - [SQL 性能调优](/develop/optimize-sql.md)
+    - [性能调优最佳实践](/develop/optimize-sql-best-practices.md)
     - 其他优化
       - [避免隐式类型转换](/develop/implicit-type-conversion.md)
       - [唯一序列号生成方案](/develop/unique-serial-number-generation.md)
-  - 故障排查
+  - 故障诊断
+    - [故障诊断概览](/develop/troubleshoot-overview.md)
     - 其他故障或限制
       - [结果集不稳定](/develop/unstable-result-set.md)
       - [超时](/develop/timeouts-in-tidb.md)
