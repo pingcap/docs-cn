@@ -118,10 +118,10 @@ TiDB 版本：5.2.4
     - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复逆序扫表时 TiKV 无法正确读到内存锁的问题 [#11440](https://github.com/tikv/tikv/issues/11440)
     - (dup: release-5.3.1.md > Bug 修复> TiKV)- 修复协程的执行速度太快时偶尔出现的死锁问题 [#11549](https://github.com/tikv/tikv/issues/11549)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
-    - 修复因待 merge 的 Region 无效而导致 TiKV Panic 且非预期地销毁 Peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
-    - 修复在合并 Region 时 target peer 被还没进行初始化就被销毁的 peer 所替换而导致 TiKV Panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
-    - 修复 apply snapshot 被中止时 TiKV Panic 的问题 [#11618](https://github.com/tikv/tikv/issues/11618)
-    - 修复了在 operator 执行失败时，TiKV 不能正确地计算正在发送的 snapshot 数量的问题 [#11341](https://github.com/tikv/tikv/issues/11341)
+    - 修复待 merge 的 Region 无效会导致 TiKV Panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
+    - 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV Panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
+    - 修复 apply snapshot 被暂停时会引起 TiKV Panic 的问题 [#11618](https://github.com/tikv/tikv/issues/11618)
+    - 修复了在 operator 执行失败时，TiKV 无法正确地计算正在发送的 snapshot 数量的问题 [#11341](https://github.com/tikv/tikv/issues/11341)
 
 + PD
 
