@@ -183,8 +183,8 @@ TiDB 版本：5.2.4
         - 修复 1 个 table 在同一节点被反复调入调出可能会导致 changefeed 卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
         - 修复当 PD 状态不正常时 open API 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
         - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
-        - 修复 Unified Sorter 的 workpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
-        - 修复 kv client changed region 监控数据可能为负的问题  [#4300](https://github.com/pingcap/tiflow/issues/4300)
+        - 修复 Unified Sorter 的 workerpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
+        - 修复 kv client cached region 监控数据可能为负的问题  [#4300](https://github.com/pingcap/tiflow/issues/4300)
 
     + TiDB Lightning
 
@@ -192,4 +192,4 @@ TiDB 版本：5.2.4
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Lightning)- 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Lightning)- 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - (dup: release-5.1.4.md > Bug 修复> Tools> TiDB Lightning)+ 修复 S3 存储路径不存在时 TiDB Lightning 不报错的问题 [#28031](https://github.com/pingcap/tidb/issues/28031) [#30709](https://github.com/pingcap/tidb/issues/30709)
-        -  修复在 GCS 上遍历超过 1000 个 key 时会出错的问题 [#30377](https://github.com/pingcap/tidb/issues/30377) 
+        - 修复在 GCS 上遍历超过 1000 个 key 时会出错的问题 [#30377](https://github.com/pingcap/tidb/issues/30377)
