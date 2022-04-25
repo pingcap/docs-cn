@@ -18,6 +18,55 @@
   - [快速上手 HTAP](/quick-start-with-htap.md)
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
+- Develop
+  - 快速开始
+    - [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+    - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
+    - TiDB 的简单 CRUD 应用程序
+      - [Java](/develop/sample-application-java.md)
+  - 开发者手册
+    - [概览](/develop/developer-guide-overview.md)
+    - 示例程序
+      - [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
+  - 连接到 TiDB
+    - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
+    - [连接到 TiDB](/develop/connect-to-tidb.md)
+    - [连接池与连接参数](/develop/connection-parameters.md)
+  - 数据库模式设计
+    - [概览](/develop/schema-design-overview.md)
+    - [创建数据库](/develop/create-database.md)
+    - [创建表](/develop/create-table.md)
+    - [创建二级索引](/develop/create-secondary-indexes.md)
+  - 数据写入
+    - [插入数据](/develop/insert-data.md)
+    - [更新数据](/develop/update-data.md)
+    - [删除数据](/develop/delete-data.md)
+    - [预处理语句](/develop/prepared-statement.md)
+  - 数据读取
+    - [单表读取](/develop/get-data-from-single-table.md)
+    - [多表连接查询](/develop/join-tables.md)
+    - [子查询](/develop/subquries.md)
+    - [查询结果分页](/develop/paginate-results.md)
+    - [视图](/develop/views.md)
+    - [临时表](/develop/temporary-table.md)
+  - 事务
+    - [事务概览](/develop/transaction-overview.md)
+    - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
+    - [事务限制](/develop/transaction-restraints.md)
+  - 优化 SQL 性能
+    - 其他优化
+      - [避免隐式类型转换](/develop/implicit-type-conversion.md)
+      - [唯一序列号生成方案](/develop/unique-serial-number-generation.md)
+  - 故障排查
+    - 其他故障或限制
+      - [结果集不稳定](/develop/unstable-result-set.md)
+      - [超时](/develop/timeouts-in-tidb.md)
+  - 引用文档
+    - SQL
+      - [Bookshop 示例应用](/develop/bookshop-schema-design.md)
+    - 规范
+      - [命名规范](/develop/object-naming-guidelines.md)
+      - [SQL 开发规范](/develop/sql-development-specification.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -304,20 +353,20 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
-        - [创建数据源](/dm/quick-start-create-source.md)
-        - [数据源操作](/dm/dm-manage-source.md)
-        - [任务配置向导](/dm/dm-task-configuration-guide.md)
-        - [Table routing](/dm/dm-key-features.md#table-routing)
-        - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
-        - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
-        - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
-        - 迁移任务操作
-            - [任务前置检查](/dm/dm-precheck.md)
-            - [创建任务](/dm/dm-create-task.md)
-            - [查询状态](/dm/dm-query-status.md)
-            - [暂停任务](/dm/dm-pause-task.md)
-            - [恢复任务](/dm/dm-resume-task.md)
-            - [停止任务](/dm/dm-stop-task.md)
+      - [创建数据源](/dm/quick-start-create-source.md)
+      - [数据源操作](/dm/dm-manage-source.md)
+      - [任务配置向导](/dm/dm-task-configuration-guide.md)
+      - [Table routing](/dm/dm-key-features.md#table-routing)
+      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
+      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - 迁移任务操作
+        - [任务前置检查](/dm/dm-precheck.md)
+        - [创建任务](/dm/dm-create-task.md)
+        - [查询状态](/dm/dm-query-status.md)
+        - [暂停任务](/dm/dm-pause-task.md)
+        - [恢复任务](/dm/dm-resume-task.md)
+        - [停止任务](/dm/dm-stop-task.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
@@ -346,39 +395,39 @@
       - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
-     - 参考手册
-        - 架构组件
-          - [DM 架构简介](/dm/dm-arch.md)
-          - [DM-worker 说明](/dm/dm-worker-intro.md)
-          - [安全模式](/dm/dm-safe-mode.md)
-          - [Relay Log](/dm/relay-log.md)
-        - 命令行
-          - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
-        - 配置文件
-          - [概述](/dm/dm-config-overview.md)
-          - [数据源配置](/dm/dm-source-configuration-file.md)
-          - [迁移任务配置](/dm/task-configuration-file-full.md)
-          - [DM-master 配置](/dm/dm-master-configuration-file.md)
-          - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
-          - [Table Selector](/dm/table-selector.md)
-        - [OpenAPI](/dm/dm-open-api.md)
-        - [兼容性目录](/dm/dm-compatibility-catalog.md)
-        - 安全
-          - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
-          - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
-        - 监控告警
-          - [监控指标](/dm/monitor-a-dm-cluster.md)
-          - [告警信息](/dm/dm-alert-rules.md)
-        - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
-        - [术语表](/dm/dm-glossary.md)
-      - 使用示例
-        - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
-        - [快速创建迁移任务](/dm/quick-start-create-task.md)
-        - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
-      - 异常解决
-        - [常见问题](/dm/dm-faq.md)
-        - [错误处理及恢复](/dm/dm-error-handling.md)
-      - [版本发布历史](/dm/dm-release-notes.md)
+    - 参考手册
+      - 架构组件
+        - [DM 架构简介](/dm/dm-arch.md)
+        - [DM-worker 说明](/dm/dm-worker-intro.md)
+        - [安全模式](/dm/dm-safe-mode.md)
+        - [Relay Log](/dm/relay-log.md)
+      - 命令行
+        - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+      - 配置文件
+        - [概述](/dm/dm-config-overview.md)
+        - [数据源配置](/dm/dm-source-configuration-file.md)
+        - [迁移任务配置](/dm/task-configuration-file-full.md)
+        - [DM-master 配置](/dm/dm-master-configuration-file.md)
+        - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+        - [Table Selector](/dm/table-selector.md)
+      - [OpenAPI](/dm/dm-open-api.md)
+      - [兼容性目录](/dm/dm-compatibility-catalog.md)
+      - 安全
+        - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
+        - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
+      - 监控告警
+        - [监控指标](/dm/monitor-a-dm-cluster.md)
+        - [告警信息](/dm/dm-alert-rules.md)
+      - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
+      - [术语表](/dm/dm-glossary.md)
+    - 使用示例
+      - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+      - [快速创建迁移任务](/dm/quick-start-create-task.md)
+      - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
+    - 异常解决
+      - [常见问题](/dm/dm-faq.md)
+      - [错误处理及恢复](/dm/dm-error-handling.md)
+    - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
