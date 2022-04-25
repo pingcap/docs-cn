@@ -12,8 +12,8 @@ title: 单表查询
 
 在阅读本章节之前，你需要做以下准备工作：
 
-1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](./build-cluster-in-cloud.md) 或 [TiUP](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)）
-2. 导入 [Bookshop](./bookshop-schema-design.md) 应用程序的表结果和示例数据。
+1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)）
+2. 导入 [Bookshop](/develop/bookshop-schema-design.md) 应用程序的表结果和示例数据。
 
 ```bash
 tiup demo bookshop prepare
@@ -21,7 +21,7 @@ tiup demo bookshop prepare
 
 `tiup demo` 命令默认会将数据导入到本地 TiDB (127.0.0.1:4000) 中，你可以通过 `--host`、`--port`、`--user`、`--password` 参数来指定所需要导入数据的数据库。
 
-3. [连接到 TiDB](./connect-to-tidb.md)
+3. [连接到 TiDB](/develop/connect-to-tidb.md)
 
 ## 简单的查询
 
@@ -134,7 +134,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 
 将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给我们的应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
 
-在处理这类查询时，我们应该使用 [PreparedStatement](./prepared-statement.md) 来替代普通的 Statement。
+在处理这类查询时，我们应该使用 [PreparedStatement](/develop/prepared-statement.md) 来替代普通的 Statement。
 
 ```java
 public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {

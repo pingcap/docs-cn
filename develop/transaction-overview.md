@@ -17,7 +17,7 @@ Bob 要给 Alice 转账 20 元钱，当中至少包括两个操作：
 - Alice 账户增加 20 元。
   事务可以确保以上两个操作要么都执行成功，要么都执行失败，不会出现钱平白消失或出现的情况。
 
-使用 [bookshop](bookshop-schema-design.md) 数据库中的 `users` 表，在表中插入一些示例数据
+使用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `users` 表，在表中插入一些示例数据
 
 ```sql
 INSERT INTO users (id, nickname, balance)
@@ -60,13 +60,13 @@ BEGIN;
 START TRANSACTION;
 ```
 
-TiDB 的默认事务模式是悲观事务，你也可以明确指定开启[乐观事务](optimistic-and-pessimistic-transaction.md)：
+TiDB 的默认事务模式是悲观事务，你也可以明确指定开启[乐观事务](/develop/optimistic-and-pessimistic-transaction.md)：
 
 ```sql
 BEGIN OPTIMISTIC;
 ```
 
-开启[悲观事务](optimistic-and-pessimistic-transaction.md)：
+开启[悲观事务](/develop/optimistic-and-pessimistic-transaction.md)：
 
 ```sql
 BEGIN PESSIMISTIC;

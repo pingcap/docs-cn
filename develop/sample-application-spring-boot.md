@@ -16,7 +16,7 @@ title: 使用 Spring Boot 构建 TiDB 应用程序
 
 ### 使用 TiDB Cloud 免费集群
 
-[创建免费集群](build-cluster-in-cloud.md#步骤1-创建免费集群)
+[创建免费集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)
 
 ### 使用本地集群
 
@@ -205,7 +205,7 @@ yum install maven
 
 ## 步骤 5. 运行应用程序
 
-此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个 在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](transaction-overview.md)。
+此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个 在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/transaction-overview.md)。
 
 如果您想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
@@ -367,7 +367,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 #### 玩家交易
 
-点击 `Trade` 标签，点击 `Send` 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+点击 `Trade` 标签，点击 `Send` 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 ![Postman-Trade](/media/develop/IMG_20220402-003659102.png)
 
@@ -516,7 +516,7 @@ curl --location --request PUT 'http://localhost:8080/player/trade' \
   --data-urlencode 'price=100'
 ```
 
-这里使用 `Form Data` 作为我们信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+这里使用 `Form Data` 作为我们信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 ```json
 true
@@ -1032,7 +1032,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 你可以简单的认为，代理在带有 `@Transactional` 注释的对象内的函数调用时：在函数顶部将使用 `transaction.begin()` 开启事务，函数返回后，调用 `transaction.commit()` 进行事务提交，而出现任何运行时错误时，代理将会调用 `transaction.rollback()` 来回滚。
 
-你可参阅[数据库事务](transaction-overview.md)来获取更多有关事务的信息，或者阅读 Spring 官网中的文章 [理解 Spring 框架的声明式事务实现](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#tx-decl-explained)。
+你可参阅[数据库事务](/develop/transaction-overview.md)来获取更多有关事务的信息，或者阅读 Spring 官网中的文章 [理解 Spring 框架的声明式事务实现](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#tx-decl-explained)。
 
 整个实现类中，`buyGoods` 函数需重点关注，其在不符合逻辑时将抛出异常，引导 Hibernate 进行事务回滚，防止出现错误数据。
 

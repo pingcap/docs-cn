@@ -59,7 +59,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 ### 查询示例
 
-例如，我们需要查询 [Bookshop 应用](bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
+例如，我们需要查询 [Bookshop 应用](/develop/bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
 
 <SimpleTab>
 
@@ -124,7 +124,7 @@ try (Connection connection = ds.getConnection()) {
 
 ### 插入示例
 
-还是使用 [books 表](bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果您对插入数据还不了解，可以在[插入数据](insert-data.md)一节了解更多数据插入的相关信息。
+还是使用 [books 表](/develop/bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果您对插入数据还不了解，可以在[插入数据](/develop/insert-data.md)一节了解更多数据插入的相关信息。
 
 <SimpleTab>
 
@@ -194,13 +194,13 @@ try (Connection connection = ds.getConnection()) {
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
 ```
 
-你也可以查看[插入行](insert-data.md#插入行)一章，来查看是否需要在插入数据场景下更改其他 JDBC 的参数。
+你也可以查看[插入行](/develop/insert-data.md#插入行)一章，来查看是否需要在插入数据场景下更改其他 JDBC 的参数。
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](sample-application-java.md#使用-jdbc)
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](sample-application-java.md#使用-hibernate-推荐)
-- [Build the TiDB Application using Spring Boot](sample-application-spring-boot.md)
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/sample-application-java.md#步骤-2-获取代码)
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#步骤-2-获取代码)
+- [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)
 
 </div>
 

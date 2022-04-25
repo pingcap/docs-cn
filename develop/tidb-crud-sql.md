@@ -6,7 +6,7 @@ title: 使用 TiDB 的增删改查 SQL
 
 ## 在开始之前
 
-请确保您已经连接到 TiDB 集群，若未连接，请参考 [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](build-cluster-in-cloud.md#步骤1-创建免费集群) 来创建一个免费集群。
+请确保您已经连接到 TiDB 集群，若未连接，请参考 [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个免费集群。
 
 ## 基本 SQL 操作
 

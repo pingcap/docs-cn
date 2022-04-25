@@ -218,7 +218,7 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 SELECT * FROM top_50_eldest_authors;
 ```
 
-你可以通过 [表连接](./join-tables.md) 将临时表中的数据引用到你的查询当中：
+你可以通过 [表连接](/develop/join-tables.md) 将临时表中的数据引用到你的查询当中：
 
 ```sql
 EXPLAIN SELECT ANY_VALUE(ta.id) AS author_id, ANY_VALUE(ta.age), ANY_VALUE(ta.name), COUNT(*) AS books
@@ -227,7 +227,7 @@ LEFT JOIN book_authors ba ON ta.id = ba.author_id
 GROUP BY ta.id;
 ```
 
-与 [视图](./views.md) 有所不同，在对临时表进行查询时，不会再执行导入数据时所使用的原始查询，而是直接从临时表中获取数据。在一些情况下，这会帮助你提高查询的效率。
+与 [视图](/develop/views.md) 有所不同，在对临时表进行查询时，不会再执行导入数据时所使用的原始查询，而是直接从临时表中获取数据。在一些情况下，这会帮助你提高查询的效率。
 
 ## 删除临时表
 

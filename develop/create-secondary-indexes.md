@@ -6,16 +6,16 @@ title: 创建二级索引
 
 索引是集群中的逻辑对象，可以帮助 TiDB 集群查询 更有效的查找数据。当您创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[此文档](https://docs.pingcap.com/zh/tidb/stable/tidb-best-practices#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95)中查看关于二级索引的更多信息。
 
-此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](bookshop-schema-design.md) 数据库的示例。
+此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
 
 ## 在开始之前
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](schema-design-overview.md)
-- [创建一个数据库](create-database.md)
-- [创建表](create-table.md)
+- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+- 阅读[数据库模式概览](/develop/schema-design-overview.md)
+- [创建一个数据库](/develop/create-database.md)
+- [创建表](/develop/create-table.md)
 
 ## 创建二级索引
 
@@ -56,7 +56,7 @@ KEY `{index_name}` (`{column_names}`)
   - 区分度比较大的列，通过索引能显著地减少过滤后的行数
   - 有多个查询条件时，可以选择组合索引，注意需要把等值条件的列放在组合索引的前面
     这里举一个例子，假设常用的查询是 `select * from t where c1 = 10 and c2 = 100 and c3 > 10`, 那么可以考虑建立组合索引 `Index cidx (c1, c2, c3)`，这样可以用查询条件构造出一个索引前缀进行 Scan。
-- 请使用有意义的二级索引名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[索引命名规范](object-naming-guidelines.md#5-索引命名规范)。
+- 请使用有意义的二级索引名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[索引命名规范](/develop/object-naming-guidelines.md#5-索引命名规范)。
 
 ## 例子
 
@@ -153,4 +153,4 @@ SHOW INDEXES FROM `bookshop`.`books`;
 2 rows in set (1.63 sec)
 ```
 
-至此，您已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给您的应用程序提供 [写入](insert-data.md) 和 [读取](read-from-single-table.md) 读取的能力了。
+至此，您已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给您的应用程序提供 [写入](/develop/insert-data.md) 和 [读取](/develop/get-data-from-single-table.md) 读取的能力了。

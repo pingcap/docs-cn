@@ -10,9 +10,9 @@ title: 删除数据
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](schema-design-overview.md)，并[创建数据库](create-database.md)、[创建表](create-table.md)、[创建二级索引](create-secondary-indexes.md)
-- 需先[插入数据](insert-data.md)才可删除
+- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+- 阅读[数据库模式概览](/develop/schema-design-overview.md)，并[创建数据库](/develop/create-database.md)、[创建表](/develop/create-table.md)、[创建二级索引](/develop/create-secondary-indexes.md)
+- 需先[插入数据](/develop/insert-data.md)才可删除
 
 ## SQL 语法
 
@@ -40,7 +40,7 @@ DELETE FROM {table} WHERE {filter}
 
 ## 例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](bookshop-schema-design.md#rating-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
+假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
 
 ```sql
 SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
@@ -115,7 +115,7 @@ TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来
 
 ### 批量删除例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](bookshop-schema-design.md#rating-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
+假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
 
 <SimpleTab>
 <div label="Java">

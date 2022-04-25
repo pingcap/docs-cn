@@ -4,7 +4,7 @@ title: 创建表
 
 # 创建表
 
-此页面提供了一个创建表的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](bookshop-schema-design.md) 数据库的示例。
+此页面提供了一个创建表的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
 
 > Note:
 >
@@ -14,21 +14,21 @@ title: 创建表
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](schema-design-overview.md)
-- [创建一个数据库](create-database.md)
+- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+- 阅读[数据库模式概览](/develop/schema-design-overview.md)
+- [创建一个数据库](/develop/create-database.md)
 
 ## 创建表
 
-[表](schema-design-overview.md#表-table)是集群中的一种逻辑对象，用于存储从应用程序的持久层或其他 SQL 中发送的数据。表以行和列的形式组织数据记录。
+[表](/develop/schema-design-overview.md#表-table)是集群中的一种逻辑对象，用于存储从应用程序的持久层或其他 SQL 中发送的数据。表以行和列的形式组织数据记录。
 
 要创建表，请使用 [CREATE TABLE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-table) 语句，并遵循我们在下方列出的最佳实践：
 
 - [命名表](#命名表)
 - [定义列](#定义列)
 - [选择主键](#选择主键)
-- [选择是否聚簇](#选择是否聚簇)
-- [添加额外的约束](#添加额外的约束)
+- [选择是否聚簇](#选择聚簇索引)
+- [添加额外的约束](#添加列约束)
 - [使用 HTAP 能力](#使用-htap-能力)
 - [执行 `CREATE TABLE` 语句](#执行-create-table-语句)
 
@@ -54,7 +54,7 @@ CREATE TABLE {table_name} ( {elements} );
 以下是命名表时需要遵循的一些最佳实践：
 
 - 使用 `完全限定` 的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为您在不指定数据库名称时，TiDB 将使用您 `SQL 会话` 中的[当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。若您未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
-- 请使用有意义的表名，例如，若您需要创建一个用户表，您可以使用名称：`user`, `t_user`, `users` 等，或遵循您公司或组织的命名规范。如果您的公司或组织没有相应的命名规范，可参考[表命名规范](object-naming-guidelines.md#3-表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
+- 请使用有意义的表名，例如，若您需要创建一个用户表，您可以使用名称：`user`, `t_user`, `users` 等，或遵循您公司或组织的命名规范。如果您的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#3-表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
 - 多个单词以下划线分隔，不推荐超过 32 个字符。
 - 不同业务模块的表单独建立 `DATABASE`，并增加相应注释
 
@@ -93,7 +93,7 @@ CREATE TABLE `bookshop`.`users` (
 - 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列
 - 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引
 - 查看[添加列约束](#添加列约束)，决定是否添加约束到列中
-- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[列命名规范](object-naming-guidelines.md#4-字段命名规范)。
+- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
 
 #### 列定义示例
 
@@ -335,7 +335,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > Note:
 >
-> 如果您的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](build-cluster-in-cloud.md#步骤1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
+> 如果您的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
 
 随后正常进行查询即可：
 
@@ -372,11 +372,11 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 执行 `CREATE TABLE` 时需要遵循的一些最佳实践：
 
 - 我们不推荐使用客户端的 Driver 或 ORM 来执行数据库模式的更改。以经验来看，作为最佳实践，我们建议使用 [MySQL 客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)或使用任意你喜欢的 GUI 客户端来进行数据库模式的更改。本文档中，我们将在大多数场景下，使用 `MySQL 客户端` 传入 SQL 文件来执行数据库模式的更改。
-- 遵循 SQL 开发规范中的[建表删表规范](sql-development-specification.md#1-建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
+- 遵循 SQL 开发规范中的[建表删表规范](/develop/sql-development-specification.md#1-建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
 
 #### `CREATE TABLE` 执行的示例
 
-按以上步骤创建所有表后，我们的 `dbinit.sql` 文件应该类似于[此处](bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)所示。若需查看表信息详解，请参阅[此处](bookshop-schema-design.md#数据表详解)。
+按以上步骤创建所有表后，我们的 `dbinit.sql` 文件应该类似于[此处](/develop/bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)所示。若需查看表信息详解，请参阅[此处](/develop/bookshop-schema-design.md#数据表详解)。
 
 我们可使用以下语句来执行 `dbinit.sql` 文件：
 
@@ -408,4 +408,4 @@ SHOW TABLES IN `bookshop`;
 +--------------------+
 ```
 
-请注意，到目前为止，我们所创建的所有表都不包含二级索引。添加二级索引的指南，请参考[创建二级索引](create-secondary-indexes.md)。
+请注意，到目前为止，我们所创建的所有表都不包含二级索引。添加二级索引的指南，请参考[创建二级索引](/develop/create-secondary-indexes.md)。
