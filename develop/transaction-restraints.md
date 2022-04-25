@@ -28,10 +28,6 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 现在想象一下，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面我们用程序来模拟一下这个过程。
 
-<SimpleTab>
-
-<div label="Java">
-
 ```java
 package com.pingcap.txn.write.skew;
 
@@ -151,9 +147,6 @@ public class EffectWriteSkew {
 }
 ```
 
-</div>
-</SimpleTab>
-
 SQL 日志：
 
 ```sql
@@ -185,10 +178,6 @@ mysql> select * from doctors;
 ![Write Skew](/media/develop/write-skew.png)
 
 现在我们来更改示例程序，使用 `select for update` 来克服写偏斜问题：
-
-<SimpleTab>
-
-<div label="Java">
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -308,9 +297,6 @@ public class EffectWriteSkew {
     }
 }
 ```
-
-</div>
-</SimpleTab>
 
 SQL 日志：
 

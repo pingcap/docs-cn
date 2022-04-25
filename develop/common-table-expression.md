@@ -106,6 +106,7 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
 ```
 
 </div>
+</SimpleTab>
 
 我们发现名为 “Ray Macejkovic” 的作者写了 4 本书，让我们继续通过 CTE 查询来了解这 4 本书的销量和评分：
 

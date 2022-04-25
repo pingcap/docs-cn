@@ -26,6 +26,8 @@ title: 乐观事务和悲观事务
 
 <SimpleTab>
 
+<div label="ruby"></div>
+
 <div label="java">
 
 因为我们使用多个线程模拟多用户同时插入的情况，因此我们需要使用一个线程安全的连接对象，这里我们使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 作为我们此处 Demo 使用的线程池。
@@ -257,7 +259,7 @@ public class TxnExample {
 运行示例程序：
 
 <SimpleTab>
-
+<div label="ruby"></div>
 <div label="java">
 
 ```shell
@@ -321,7 +323,7 @@ mysql> select * from users;
 运行示例程序：
 
 <SimpleTab>
-
+<div label="ruby"></div>
 <div label="java">
 
 ```shell
@@ -381,7 +383,7 @@ mysql> select * from users;
 下面代码以乐观事务的方式，用两个线程模拟了两个用户并发买同一本书的过程，和悲观事务的示例一样。书店剩余 10 本，Bob 购买了 6 本，Alice 购买了 4 本。两个人几乎同一时间完成订单，最终，这本书的剩余库存为零。
 
 <SimpleTab>
-
+<div label="ruby"></div>
 <div label="java">
 
 ```java
@@ -560,7 +562,7 @@ public class TxnExample {
 运行示例程序：
 
 <SimpleTab>
-
+<div label="ruby"></div>
 <div label="java">
 
 ```shell
