@@ -279,7 +279,7 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
+# 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作，注意此类配置仅当 backend=local 时生效。
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Compact -> Analyze。
 [post-restore]
