@@ -77,7 +77,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `region` | Amazon S3 服务区域（默认为 `us-east-1`） |
 | `use-accelerate-endpoint` | 是否在 Amazon S3 上使用加速端点（默认为 `false`） |
 | `endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
-| `force-path-style` | 使用 path-style，而不是 virtual-hosted style（默认为 `false`） |
+| `force-path-style` | 使用 path-style，而不是 virtual-hosted style（默认为 `true`） |
 | `storage-class` | 上传对象的存储类别（例如 `STANDARD`、`STANDARD_IA`） |
 | `sse` | 用于加密上传的服务器端加密算法（可以设置为空，`AES256` 或 `aws:kms`） |
 | `sse-kms-key-id` | 如果 `sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
@@ -155,6 +155,43 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `--s3.sse-kms-key-id` | 如果 `--s3.sse` 设置为 `aws:kms`，则使用该参数指定 KMS ID |
 | `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
 | `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
+
+如果要将数据导出到非 AWS 的 S3 云存储，你需要指定云服务商名字，以及是否使用 virtual-hosted style。将数据导出至阿里云的 OSS 存储为例：
+
+* 使用 Dumpling 将数据导出至 OSS 存储：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./dumpling -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+       -o "s3://my-bucket/dumpling/" \
+       --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+       --s3.provider="alibaba" \
+       -r 200000 -F 256MiB
+    ```
+
+* 使用 BR 将数据备份至 OSS 存储：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./br backup full --pd "127.0.0.1:2379" \
+        --storage "s3://my-bucket/full/" \
+        --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+        --s3.provider="alibaba" \
+        --send-credentials-to-tikv=true \
+        --ratelimit 128 \
+        --log-file backuptable.log
+    ```
+
+* 在 YAML 文件中指定 TiDB Lightning 将数据导出至 OSS 存储：
+
+    {{< copyable "" >}}
+
+    ```
+    [mydumper]
+    data-source-dir = "s3://my-bucket/dumpling/?endpoint=http://oss-cn-hangzhou-internal.aliyuncs.com&provider=alibaba"
+    ```
 
 ### GCS 的命令行参数
 
