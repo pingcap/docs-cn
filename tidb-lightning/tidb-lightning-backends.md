@@ -44,58 +44,12 @@ TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb
 [tikv-importer]
 backend = "local"
 
-<<<<<<< HEAD
-# 对于插入重复数据时执行的操作：
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-# on-duplicate = "replace"
-
-[mydumper]
-# 设置文件读取的区块大小(默认为 64 KiB)，确保该值比数据源的最长字符串长。
-# read-block-size = "64KiB"
-
-# （源数据文件）单个导入区块大小的最小值（默认为 100 GiB）。
-# TiDB Lightning 根据该值将一张大表分割为多个数据引擎文件。
-# batch-size = "100GiB"
-
-# 本地源数据目录或外部存储 URL
-data-source-dir = "/data/my_database"
-
-# “严格”格式的导入数据可加快处理速度。
-# strict-format = true 要求：
-# 在 CSV 文件的所有记录中，每条数据记录的值不可包含字符换行符（U+000A 和 U+000D，即 \r 和 \n）
-# 甚至被引号包裹的字符换行符都不可包含，即换行符只可用来分隔行。
-# 导入数据源为严格格式时，TiDB Lightning 会快速定位大文件的分割位置进行并行处理。
-# 但是如果输入数据为非严格格式，可能会将一条完整的数据分割成两部分，导致结果出错。
-# 为保证数据安全而非追求处理速度，默认值为 false。
-# strict-format = false
-
-# 如果 strict-format = true，TiDB Lightning 会将 CSV 大文件分割为多个文件块进行并行处理。max-region-size 是分割后每个文件块的最大大小。
-# max-region-size = "256MiB" # Byte（默认是 256 MiB）
-
-# 只导入与该通配符规则相匹配的表，默认会过滤掉系统表。详情见表库过滤章节。
-# filter = ['*.*', '!mysql.*', '!sys.*', '!INFORMATION_SCHEMA.*', '!PERFORMANCE_SCHEMA.*', '!METRICS_SCHEMA.*', '!INSPECTION_SCHEMA.*']
-
-# 配置 CSV 文件的解析方式（如果源文件中不包含 CSV 文件可不设置此项）。
-[mydumper.csv]
-# 字段分隔符，应为单个 ASCII 字符。
-separator = ','
-
-# 引用定界符，可为单个 ASCII 字符或空字符串。
-delimiter = '"'
-
-# CSV 文件是否包含表头。
-# 如果 header = true，将跳过首行。
-header = true
-=======
 # 当后端模式为 'local' 时，设置是否检测和解决冲突的记录（唯一键冲突）。
 # 目前支持三种解决方法：
 #  - none: 不检测冲突记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
 #  - record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - remove: 记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
->>>>>>> dace1d6bc (Remove `importer` backend and Improve other  backend's description  (#8919))
 
 # 当后端是 “local” 时，本地进行 KV 排序的路径。建议使用 SSD 高性能介质，且与 `data-source-dir` 所在分属不同的存储介质，可有效提升导入性能。
 # sorted-kv-dir 空间至少需要上游最大表的容量，若空间不足将导致导入失败。
