@@ -173,7 +173,7 @@ pd-ctl config placement-rules rule-bundle save --in="rule.json"
 
 ### 启用自适应同步模式
 
-副本的复制模式由 PD 节点控制。如果要使用 DR Auto-sync 自适应同步模式，需要修改 PD 的配置。
+副本的复制模式由 PD 节点控制。如果要使用 DR Auto-sync 自适应同步模式，需要按照以下任一方法修改 PD 的配置。
 
 + 方法一：先配置 PD 的配置文件，然后部署集群。
 
