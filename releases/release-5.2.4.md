@@ -43,7 +43,7 @@ TiDB 版本：5.2.4
         - (dup: release-5.4.0.md > 提升改进> Tools> TiCDC)- 减少 "EventFeed retry rate limited" 日志的数量 [#4006](https://github.com/pingcap/tiflow/issues/4006)
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 将 `max-message-bytes` 默认值设置为 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
         - (dup: release-5.3.1.md > 提升改进> Tools> TiCDC)- 增加更多 Promethous 和 Grafana 监控告警参数，包括 `no owner alert`、`mounter row`、`table sink total row` 和 `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
-        - 在 Grafana 监控面板中支持 multiple Kubernetes clusters [#4665](https://github.com/pingcap/tiflow/issues/4665)
+        - 在 Grafana 监控面板中支持多个 Kubernetes 集群 [#4665](https://github.com/pingcap/tiflow/issues/4665)
         - 添加 changefeed checkpoint 预计多久追上 (ETA) 的监控指标 [#5232](https://github.com/pingcap/tiflow/issues/5232)
 
 ## Bug 修复
@@ -154,7 +154,7 @@ TiDB 版本：5.2.4
 
     + Backup & Restore (BR)
 
-        - 修复 BR 备份 rawkv 时失败的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
+        - 修复 BR 备份 RawKV 时失败的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
 
     + TiCDC
 
@@ -180,7 +180,7 @@ TiDB 版本：5.2.4
         - (dup: release-5.3.1.md > Bug 修复> Tools> TiCDC)- 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - (dup: release-5.0.6.md > Bug 修复> Tools> TiCDC)- 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
-        - 修复 1 个 table 在同一节点被反复调入调出可能会导致 changefeed 卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
+        - 修复 table 在同一节点被反复调入调出可能会导致 changefeed 卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
         - 修复当 PD 状态不正常时 open API 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
         - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
         - 修复 Unified Sorter 的 workerpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
