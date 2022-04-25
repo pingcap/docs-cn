@@ -160,7 +160,7 @@ TiDB 版本：5.2.4
 
     + Backup & Restore (BR)
 
-        - 修复 BR 备份 RawKV 时失败的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
+        - 修复 BR 无法备份 RawKV 的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
 
     + TiCDC
 
@@ -186,9 +186,9 @@ TiDB 版本：5.2.4
         - (dup: release-5.3.1.md > Bug 修复> Tools> TiCDC)- 修复监控 checkpoint lag 出现负值的问题 [#3010](https://github.com/pingcap/tiflow/issues/3010)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复在容器环境中 OOM 的问题 [#1798](https://github.com/pingcap/tiflow/issues/1798)
         - (dup: release-5.0.6.md > Bug 修复> Tools> TiCDC)- 修复执行 DDL 后的内存泄漏的问题 [#3174](https://github.com/pingcap/tiflow/issues/3174)
-        - 修复 table 在同一节点被反复调入调出可能会导致 changefeed 卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
-        - 修复当 PD 状态不正常时 open API 可能会被卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
-        - 修复 owner 切换导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
+        - 修复在同一节点反复调入调出一张表可能会导致同步任务 (changefeed) 被卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
+        - 修复当 PD 状态不正常时 OpenAPI 可能会卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
+        - 修复切换 owner 会导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
         - 修复 Unified Sorter 的 workerpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
         - (dup: release-5.4.0.md > Bug 修复> Tools> TiCDC)- 修复 `cached region` 监控指标为负数的问题 [#4300](https://github.com/pingcap/tiflow/issues/4300)
 
