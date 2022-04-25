@@ -9,10 +9,10 @@ aliases: ['/docs-cn/dev/grafana-performance-overview-dashboard/','/docs-cn/dev/r
 
 目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。
 
-Performance Overview Dashboard 按总分结构做了组织，包含了以下三部分内容：
-- 总的概览：数据库时间和 SQL 执行时间概览
-- 资源负载：关键指标和资源利用率
-- 自上而下的延迟分解：Query 延迟分解、execute 阶段的涉及 tso 请求和 kv 请求的延迟、TiKV 内部写延迟的分解等。
+Performance Overview Dashboard 按总分结构对TiDB、TiKV、PD 的性能指标进行编排组织，包含了以下三部分内容：
+- 总的概览：数据库时间和 SQL 执行时间概览，通过颜色优化法，快速识别数据库负载特征和性能瓶颈
+- 资源负载：关键指标和资源利用率，包含数据库 QPS、应用和数据库的连接信息和请求命令类型、数据库内部 tso 和 kv 请求 OPS、TiDB 和 TiKV 的资源使用概况。
+- 自上而下的延迟分解：Query 延迟和连接空闲时间对比、Query 延迟分解、execute 阶段 tso 请求和 kv 请求的延迟、TiKV 内部写延迟的分解等。
 
 借助 Performance Overview Dashboard，TiDB 用户可以进行高效性能分析，确认用户响应时间的瓶颈是否在数据库中；如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。使用方法和实际案例请参考 [TiDB 性能分析和优化手册](/performance/performance-tuning-guide.md) 和 [OLTP 负载优化案例](/performance/real-world-tuning-case.md)
 
