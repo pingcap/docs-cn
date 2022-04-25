@@ -10,7 +10,7 @@ title: 索引的最佳实践
 
 ## 准备工作
 
-本节内容将会用 [bookshop](bookshop-schema-design.md) 数据库中的 `books` 表作为示例。
+本节内容将会用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `books` 表作为示例。
 
 ```sql
 CREATE TABLE `books` (
@@ -36,7 +36,7 @@ CREATE TABLE `books` (
    - 有多个查询条件时，可以选择组合索引，注意需要把等值条件的列放在组合索引的前面
      这里举一个例子，假设常用的查询是 `select * from t where c1 = 10 and c2 = 100 and c3 > 10`, 那么可以考虑建立组合索引 `Index cidx (c1, c2, c3)`，这样可以用查询条件构造出一个索引前缀进行 Scan。
 
-4. 请使用有意义的二级索引名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[索引命名规范](object-naming-guidelines.md#5-索引命名规范)。
+4. 请使用有意义的二级索引名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[索引命名规范](/develop/object-naming-guidelines.md#5-索引命名规范)。
 
 ## 使用索引的最佳实践
 

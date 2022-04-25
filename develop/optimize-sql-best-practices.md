@@ -117,11 +117,11 @@ DELETE FROM t;
 
 ### 主键选择的最佳实践
 
-见 [主键选择的最佳实践](create-table.md####主键选择的最佳实践)
+见 [主键选择的最佳实践](/develop/create-table.md#主键选择的最佳实践)
 
 ## 索引的最佳实践
 
-见 [索引的最佳实践](index-best-practice.md)
+见 [索引的最佳实践](/develop/index-best-practice.md)
 
 ### ADD INDEX 性能最佳实践
 
