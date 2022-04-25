@@ -9,7 +9,7 @@
   - 性能测试报告
     - [Sysbench 性能对比 - v6.0 对比 v5.4](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
     - [TPC-C 性能对比 - v6.0 对比 v5.4](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
-    - [TiFlash 与 Greenplum, Spark 性能比较](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
+    - [TiFlash 与 Greenplum 和 Spark 性能比较](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
