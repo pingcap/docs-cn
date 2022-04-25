@@ -117,7 +117,7 @@ message Binlog {
 }
 ```
 
-查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/secondary_binlog.proto)。
+查看数据格式的具体定义，参见 [`secondary_binlog.proto`](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/secondary_binlog.proto)。
 
 ### Driver
 

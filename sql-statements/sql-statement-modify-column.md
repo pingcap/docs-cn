@@ -177,12 +177,18 @@ CREATE TABLE `t1` (
     ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
     ERROR 1105 (HY000): Unsupported multi schema change
     ```
-  
+
 * 不支持修改主键列上需要 Reorg-Data 的类型，但是支持修改 Meta-Only 的类型。例如：
-  
+
     ```sql
     CREATE TABLE t (a int primary key);
     ALTER TABLE t MODIFY COLUMN a VARCHAR(10);
+    ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
+    ```
+
+    ```sql
+    CREATE TABLE t (a int primary key);
+    ALTER TABLE t MODIFY COLUMN a INT(10) UNSIGNED;
     ERROR 8200 (HY000): Unsupported modify column: column has primary key flag
     ```
 
@@ -209,7 +215,7 @@ CREATE TABLE `t1` (
     ```
 
 * 不支持部分数据类型（例如，部分时间类型、Bit、Set、Enum、JSON 等）的变更，因为 TiDB cast 函数与 MySQL 的行为有一些兼容性问题。例如：
-  
+
     ```sql
     CREATE TABLE t (a DECIMAL(13, 7));
     ALTER TABLE t MODIFY COLUMN a DATETIME;

@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/r
 
 # TiDB Lightning 简介
 
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，可[在此下载](/download-ecosystem-tools.md#tidb-lightning)。
+TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，可[在此下载](/download-ecosystem-tools.md)。
 
 TiDB Lightning 有以下两个主要的使用场景：
 

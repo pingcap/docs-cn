@@ -145,7 +145,7 @@
         - [统计信息简介](/statistics.md)
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
-      - [执行计划缓存](/sql-prepare-plan-cache.md)
+      - [执行计划缓存](/sql-prepared-plan-cache.md)
     - 控制执行计划
       - [控制执行计划概览](/control-execution-plan.md)
       - [Optimizer Hints](/optimizer-hints.md)
@@ -304,6 +304,7 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
+        - [创建数据源](/dm/quick-start-create-source.md)
         - [数据源操作](/dm/dm-manage-source.md)
         - [任务配置向导](/dm/dm-task-configuration-guide.md)
         - [Table routing](/dm/dm-key-features.md#table-routing)
@@ -346,9 +347,11 @@
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
-        - 架构
+        - 架构组件
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [安全模式](/dm/dm-safe-mode.md)
+          - [Relay Log](/dm/relay-log.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -357,6 +360,7 @@
           - [迁移任务配置](/dm/task-configuration-file-full.md)
           - [DM-master 配置](/dm/dm-master-configuration-file.md)
           - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+          - [Table Selector](/dm/table-selector.md)
         - [OpenAPI](/dm/dm-open-api.md)
         - [兼容性目录](/dm/dm-compatibility-catalog.md)
         - 安全
@@ -369,6 +373,8 @@
         - [术语表](/dm/dm-glossary.md)
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+        - [快速创建迁移任务](/dm/quick-start-create-task.md)
+        - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
       - 异常解决
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
@@ -421,7 +427,6 @@
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiSpark
-    - [TiSpark 快速上手](/get-started-with-tispark.md)
     - [TiSpark 用户指南](/tispark-overview.md)
 - 参考指南
   - 架构
