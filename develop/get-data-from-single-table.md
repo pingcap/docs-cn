@@ -14,7 +14,7 @@ title: 单表查询
 
 在阅读本章节之前，你需要做以下准备工作：
 
-1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)）
+1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](/production-deployment-using-tiup.md)）
 2. 导入 [Bookshop](/develop/bookshop-schema-design.md) 应用程序的表结果和示例数据。
 
 ```bash
@@ -62,7 +62,7 @@ SELECT id, name FROM authors;
 </div>
 <div label="Java">
 
-在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据 [数据类型](https://docs.pingcap.com/zh/tidb/dev/data-type-overview) 和 [取值范围](https://docs.pingcap.com/zh/tidb/dev/data-type-numeric) 从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
+在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据 [数据类型](/data-type-overview.md) 和 [取值范围](/data-type-numeric.md) 从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
 - 使用 `Int` 类型变量存放 `int` 类型的数据
 - 使用 `Long` 类型变量存放 `bigint` 类型的数据
@@ -224,7 +224,7 @@ LIMIT 10;
 10 rows in set (0.11 sec)
 ```
 
-通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过 [TopN 和 Limit 下推](https://docs.pingcap.com/zh/tidb/stable/topn-limit-push-down) 章节了解更多细节。
+通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过 [TopN 和 Limit 下推](/topn-limit-push-down.md) 章节了解更多细节。
 
 ## 聚合查询
 
@@ -259,4 +259,4 @@ GROUP BY birth_year;
 71 rows in set (0.00 sec)
 ```
 
-除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览 [GROUP BY 聚合函数](https://docs.pingcap.com/zh/tidb/stable/aggregate-group-by-functions) 章节进行进一步了解。
+除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览 [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md) 章节进行进一步了解。

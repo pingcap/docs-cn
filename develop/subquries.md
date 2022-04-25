@@ -68,13 +68,13 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 ...
 ```
 
-对于存在性测试和集合比较两种情况下的无关联列子查询，TiDB 会将其进行改写和等价替换以获得更好的执行性能，你可以通过阅读 [子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization) 章节来了解更多的实现细节。
+对于存在性测试和集合比较两种情况下的无关联列子查询，TiDB 会将其进行改写和等价替换以获得更好的执行性能，你可以通过阅读 [子查询相关的优化](/subquery-optimization.md) 章节来了解更多的实现细节。
 
 ## 关联子查询
 
 对于关联子查询而言，由于内层的子查询引用外层查询的列，子查询需要对外层查询得到的每一行都执行一遍，也就是说假设外层查询得到一千万的结果，那么子查询也会被执行一千万次，这会导致查询需要消耗更多的时间和资源。
 
-因此在处理过程中，TiDB 会尝试对 [关联子查询去关联](https://docs.pingcap.com/zh/tidb/stable/correlated-subquery-optimization)，以从执行计划层面上提高查询效率。
+因此在处理过程中，TiDB 会尝试对 [关联子查询去关联](/correlated-subquery-optimization.md)，以从执行计划层面上提高查询效率。
 
 例如，假设我们想要查找出版过书籍的作家，我们的 SQL 语句可以这样写：
 
@@ -114,6 +114,6 @@ WHERE
 
 ## 扩展阅读
 
-- [子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization)
-- [关联子查询去关联](https://docs.pingcap.com/zh/tidb/stable/correlated-subquery-optimization)
+- [子查询相关的优化](/subquery-optimization.md)
+- [关联子查询去关联](/correlated-subquery-optimization.md)
 - [TiDB 中的子查询优化技术](https://pingcap.com/zh/blog/tidb-optimization-for-subquery)

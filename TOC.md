@@ -49,6 +49,11 @@
     - [查询结果分页](/develop/paginate-results.md)
     - [视图](/develop/views.md)
     - [临时表](/develop/temporary-table.md)
+    - [公共表表达式](/develop/common-table-expression.md)
+    - 读取副本数据
+        - [Follower Read](/develop/follower-read.md)
+        - [Stale Read](/develop/stale-read.md)
+    - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
   - 事务
     - [事务概览](/develop/transaction-overview.md)
     - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)

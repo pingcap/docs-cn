@@ -241,8 +241,8 @@ DROP TEMPORARY TABLE top_50_eldest_authors_global;
 
 ## 限制
 
-关于 TiDB 在临时表功能上的一些限制，你可以通过阅读参考文档中的[临时表与其他 TiDB 功能的兼容性限制](https://docs.pingcap.com/zh/tidb/stable/temporary-tables#%E4%B8%8E%E5%85%B6%E4%BB%96-tidb-%E5%8A%9F%E8%83%BD%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7%E9%99%90%E5%88%B6)小节进行了解。
+关于 TiDB 在临时表功能上的一些限制，你可以通过阅读参考文档中的[临时表与其他 TiDB 功能的兼容性限制](/temporary-tables.md#%E4%B8%8E%E5%85%B6%E4%BB%96-tidb-%E5%8A%9F%E8%83%BD%E7%9A%84%E5%85%BC%E5%AE%B9%E6%80%A7%E9%99%90%E5%88%B6)小节进行了解。
 
 ## 扩展阅读
 
-- [临时表](https://docs.pingcap.com/zh/tidb/stable/temporary-tables)
+- [临时表](/temporary-tables.md)
