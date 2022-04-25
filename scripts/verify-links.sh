@@ -9,33 +9,17 @@
 #   - Only files in current directory and /media are allowed
 # - When a file was moved, all other references are required to be updated for now, even if alias are given
 #   - This is recommended because of less redirects and better anchors support.
-#
-# See https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally if you meet permission problems when executing npm install.
 
 ROOT=$(unset CDPATH && cd $(dirname "${BASH_SOURCE[0]}")/.. && pwd)
 cd $ROOT
 
-npm install -g markdown-link-check@3.8.1
+yarn add markdown-link-check@3.8.1
 
 VERBOSE=${VERBOSE:-}
 CONFIG_TMP=$(mktemp)
 ERROR_REPORT=$(mktemp)
 
 trap 'rm -f $CONFIG_TMP $ERROR_REPORT' EXIT
-
-# TODO fix later
-IGNORE_DIRS=(v1.0 v2.0 v2.1-legacy)
-
-function in_array() {
-    local i=$1
-    shift
-    local a=("${@}")
-    local e
-    for e in "${a[@]}"; do
-        [[ "$e" == "$i" ]] && return 0;
-    done
-    return 1
-}
 
 # Check all directories starting with 'v\d.*' and dev.
 echo "info: checking links under $ROOT directory..."
@@ -49,7 +33,7 @@ fi
 while read -r tasks; do
     for task in $tasks; do
         (
-            output=$(markdown-link-check --config "$CONFIG_TMP" "$task" -q)
+            output=$(yarn markdown-link-check --config "$CONFIG_TMP" "$task" -q)
             if [ $? -ne 0 ]; then
                 printf "$output" >> $ERROR_REPORT
             fi
