@@ -2,6 +2,8 @@
 title: 使用 Spring Boot 构建 TiDB 应用程序
 ---
 
+<!-- markdownlint-disable MD029 -->
+
 # 使用 Spring Boot 构建 TiDB 应用程序
 
 本教程向您展示如何使用 TiDB 构建 [Spring Boot](https://spring.io/projects/spring-boot) Web 应用程序。使用 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-java) 下载。
@@ -1102,9 +1104,9 @@ public class PlayerController {
 - [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求
 - `@Autowired` 用于 Spring 的自动装配，可以看到，我们此处声明需要一个 `PlayerService` 对象，此对象为接口，我们并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文
 - [@PostMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html) 声明此函数将响应 HTTP 中的 [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) 类型请求
-  - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中
-  - `@NonNull` 声明参数不可为空，否则将校验并返回错误
+    - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中
+    - `@NonNull` 声明参数不可为空，否则将校验并返回错误
 - [@GetMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/GetMapping.html) 声明此函数将响应 HTTP 中的 [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) 类型请求
-  - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name` （变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同
+    - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name` （变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同
 - [@PutMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PutMapping.html) 声明此函数将响应 HTTP 中的 [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) 类型请求
 - [@RequestParam](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html) 此声明将解析请求中的 URL 参数、表单参数等参数，绑定至注解的变量中

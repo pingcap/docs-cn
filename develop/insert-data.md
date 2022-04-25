@@ -2,6 +2,8 @@
 title: 插入数据
 ---
 
+<!-- markdownlint-disable MD029 -->
+
 # 插入数据
 
 此页面将展示使用 SQL 语言，配合各种编程语言将数据插入到 TiDB 中。

@@ -2,6 +2,9 @@
 title: TiDB 和 Java 的简单 CRUD 应用程序
 ---
 
+<!-- markdownlint-disable MD024 -->
+<!-- markdownlint-disable MD029 -->
+
 # TiDB 和 Java 的简单 CRUD 应用程序
 
 本文档将展示如何使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序。

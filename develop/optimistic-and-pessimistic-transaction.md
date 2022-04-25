@@ -871,7 +871,7 @@ mysql> select * from users;
 特别是，您的重试逻辑必须：
 
 - 如果达到 `max_retries` 限制，则抛出错误
-- 重试 8028（表结构变化）、8002（SELECT FOR UPDATE 写入冲突）、8022（事务提交失败，已回滚）、9007（写冲突） 错误代码，详细信息请参考：https://docs.pingcap.com/tidb/stable/error-codes
+- 重试 8028（表结构变化）、8002（SELECT FOR UPDATE 写入冲突）、8022（事务提交失败，已回滚）、9007（写冲突） 错误代码，详细信息请参考：<https://docs.pingcap.com/tidb/stable/error-codes/>
 - 在 try 块结束时提交 COMMIT
 
 ```python
