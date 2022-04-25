@@ -157,42 +157,42 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 | `--s3.acl` | 上传对象的 canned ACL（例如，`private`、`authenticated-read`） |
 | `--s3.provider` | S3 兼容服务类型（支持 `aws`、`alibaba`、`ceph`、`netease` 或 `other`） |
 
-如果要将数据导出到非 AWS 的 S3 云存储，你需要指定云服务商名字，对应是否使用 virtual hosted style。以将数据导出至阿里云的 OSS 存储为例：
+如果要将数据导出到非 AWS 的 S3 云存储，你需要指定云服务商名字，以及是否使用 virtual-hosted style。将数据导出至阿里云的 OSS 存储为例：
 
 * 使用 Dumpling 将数据导出至 OSS 存储：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-./dumpling -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-   -o "s3://my-bucket/dumpling/" \
-   --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
-   --s3.provider="alibaba" \
-   -r 200000 -F 256MiB
-```
+    ```bash
+    ./dumpling -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+       -o "s3://my-bucket/dumpling/" \
+       --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+       --s3.provider="alibaba" \
+       -r 200000 -F 256MiB
+    ```
 
 * 使用 BR 将数据备份至 OSS 存储：
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```bash
-./br backup full --pd "127.0.0.1:2379" \
-    --storage "s3://my-bucket/full/" \
-    --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
-    --s3.provider="alibaba" \
-    --send-credentials-to-tikv=true \
-    --ratelimit 128 \
-    --log-file backuptable.log
-```
+    ```bash
+    ./br backup full --pd "127.0.0.1:2379" \
+        --storage "s3://my-bucket/full/" \
+        --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+        --s3.provider="alibaba" \
+        --send-credentials-to-tikv=true \
+        --ratelimit 128 \
+        --log-file backuptable.log
+    ```
 
 * 在 YAML 文件中指定 TiDB Lightning 将数据导出至 OSS 存储：
 
-{{< copyable "yaml" >}}
+    {{< copyable "" >}}
 
-```yaml
-[mydumper]
-data-source-dir = "s3://my-bucket/dumpling/?endpoint=http://oss-cn-hangzhou-internal.aliyuncs.com&provider=alibaba"
-```
+    ```
+    [mydumper]
+    data-source-dir = "s3://my-bucket/dumpling/?endpoint=http://oss-cn-hangzhou-internal.aliyuncs.com&provider=alibaba"
+    ```
 
 ### GCS 的命令行参数
 
