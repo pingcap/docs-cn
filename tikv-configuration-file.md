@@ -1063,8 +1063,9 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-style`
 
-+ Compaction 方法，可选值为 level，universal。
-+ 默认值：level
++ Compaction 方法。
++ 可选值（仅可输入数字）：`0` (`Level`)，`1` (`Universal`)，`2` (`Fifo`)
++ 默认值：`0`
 
 ### `disable-auto-compactions`
 
