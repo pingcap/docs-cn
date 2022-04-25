@@ -162,7 +162,8 @@ cat rule.json
   }
 ]
 ```
-如果需要使用 `rule.json` 中的配置，你可以通过如下命令备份后覆盖原有的配置：
+
+如果需要使用 `rule.json` 中的配置，你可以通过如下命令覆盖原有的配置（旧配置备份在 default.json 文件中）：
 
 {{< copyable "shell-regular" >}}
 
