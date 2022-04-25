@@ -35,10 +35,10 @@ Execute Time ~= TiDB Executor Time + KV Request Time + PD TSO Wait Time
 ## 利用 Performance Overview 面板进行性能分析和优化
 Performance Overview Grafana 面板从版本 v6.0.0 发布。本章会介绍利用这个 Grafana 监控面板，TiDB 用户如何高效的进行基于数据库时间的性能分析和优化。
 
-Performance Overview Dashboard 按总分结构做了组织，包含了以下三部分内容：
-- 总的概览：数据库时间和 SQL 执行时间概览
-- 资源负载：关键指标和资源利用率
-- 自上而下的延迟分解：Query 延迟分解、execute 阶段的 tso 请求和 kv 请求的延迟、TiKV 内部写延迟的分解等。
+Performance Overview Dashboard 按总分结构对TiDB、TiKV、PD 的性能指标进行编排组织，包含了以下三部分内容：
+- 总的概览：数据库时间和 SQL 执行时间概览，通过颜色优化法，快速识别数据库负载特征和性能瓶颈
+- 资源负载：关键指标和资源利用率，包含数据库 QPS、应用和数据库的连接信息和请求命令类型、数据库内部 tso 和 kv 请求 OPS、TiDB 和 TiKV 的资源使用概况。
+- 自上而下的延迟分解：Query 延迟和连接空闲时间对比、Query 延迟分解、execute 阶段 tso 请求和 kv 请求的延迟、TiKV 内部写延迟的分解等。
 
 ### 数据库时间和 SQL 执行时间概览
 DB time 指标为 TiDB 每秒处理 SQL 的延迟总和，等于 TiDB 集群每秒并发处理应用 SQL 请求的总时间(等于活跃连接数)。通过三个面积堆叠图，用户可以了解数据库负载的类型，可以快速定位在数据库时间的瓶颈主要是处理什么语句，集中在哪个执行阶段，SQL 执行阶段主要等待 TiKV 或者 PD 什么请求类型。
