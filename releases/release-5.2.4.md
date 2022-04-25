@@ -15,6 +15,11 @@ TiDB 版本：5.2.4
 
     - (dup: release-5.1.4.md > 兼容性更改> TiDB)- 将系统变量 [`tidb_analyze_version`](/system-variables.md#tidb_analyze_version-从-v510-版本开始引入) 的默认值从 `2` 修改为 `1` [#31748](https://github.com/pingcap/tidb/issues/31748)
 
++ TiKV
+
+    - 新增 [`raft-log-compact-sync-interval`](/tikv-configuration-file.md#raft-log-compact-sync-interval-从-v524-版本开始引入) 配置项，用于压缩非必要 Raft 日志的时间间隔，默认值为 "2s"  [#11404](https://github.com/tikv/tikv/issues/11404)
+    - 将 [`raft-log-gc-tick-interval`](/tikv-configuration-file.md#raft-log-gc-tick-interval) 的默认值从 "10s" 修改为 "3s"  [#11404](https://github.com/tikv/tikv/issues/11404)
+
 + Tools
 
     + TiDB Lightning
