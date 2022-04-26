@@ -70,7 +70,7 @@ DM 同步过程中，根据 DDL 的不同，也将采用不同的处理方式。
 
 ## 改写的 DDL 语句
 
-为了减少报错，以下语句将被改写
+以下语句在同步到下游前会进行改写。
 
 ```
 // 在结尾追加 `IF NOT EXIST`
@@ -91,7 +91,7 @@ DM 同步过程中，根据 DDL 的不同，也将采用不同的处理方式。
 "DROP DATABASE/TABLE"
 "TRUNCATE TABLE"
 
-// 乐观模式不支持以下语句
+// 乐观模式不支持以下语句，但仍会执行，需注意避免使用，
 "ALTER TABLE table_name ADD COLUMN column_name datatype NOT NULL"（添加无默认值的 not null 的列）。
 "ALTER TABLE table_name ADD COLUMN column_name datetime DEFAULT NOW()"（增加的列默认值不固定）。
 "ALTER TABLE table_name ADD COLUMN col1 INT DROP COLUMN col2"（在一个 DDL 语句中同时包含 ADD COLUMN 与 DROP COLUMN）。
