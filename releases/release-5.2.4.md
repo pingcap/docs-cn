@@ -17,7 +17,7 @@ TiDB 版本：5.2.4
 
 + TiKV
 
-    - 新增 [`raft-log-compact-sync-interval`](/tikv-configuration-file.md#raft-log-compact-sync-interval-从-v524-版本开始引入) 配置项，用于压缩非必要的 Raft 日志的时间间隔，默认值为 `"2s"` [#11404](https://github.com/tikv/tikv/issues/11404)
+    - 新增 [`raft-log-compact-sync-interval`](https://docs.pingcap.com/tidb/v5.2/tikv-configuration-file#raft-log-compact-sync-interval-new-in-v524) 配置项，用于压缩非必要的 Raft 日志的时间间隔，默认值为 `"2s"` [#11404](https://github.com/tikv/tikv/issues/11404)
     - 将 [`raft-log-gc-tick-interval`](/tikv-configuration-file.md#raft-log-gc-tick-interval) 的默认值从 `"10s"` 修改为 `"3s"` [#11404](https://github.com/tikv/tikv/issues/11404)
     - 当 [`storage.flow-control.enable`](/tikv-configuration-file.md#enable) 的值为 `true` 时，[`storage.flow-control.hard-pending-compaction-bytes-limit`](/tikv-configuration-file.md#hard-pending-compaction-bytes-limit) 的配置会覆盖 [`rocksdb.(defaultcf|writecf|lockcf).hard-pending-compaction-bytes-limit`](/tikv-configuration-file.md#hard-pending-compaction-bytes-limit-1) 的配置 [#11424](https://github.com/tikv/tikv/issues/11424)
 
