@@ -51,14 +51,14 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ### 第 2 步： 导出 schema 文件
 
-因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，并以手动方式在下游自行创建 schema。
+因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，以手动方式在下游自行创建 schema。
 
 运行以下命令，建议使用 `--filter` 参数仅导出所需表的 schema：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --consistency none --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
 ```
 
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
