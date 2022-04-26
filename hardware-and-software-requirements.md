@@ -118,6 +118,17 @@ TiDB 作为开源分布式 NewSQL 数据库，其正常运行需要网络环境�
 | Alertmanager | 9093 | 告警 web 服务端口 |
 | Alertmanager | 9094 | 告警通信端口 |
 
+## 磁盘空间要求
+
+|  组件  |  磁盘空间要求  |
+| :-- | :-- |
+| TiDB |  |
+| PD | 数据和日志盘建议最少预留 30 GB |
+| TiKV | 数据和日志盘建议最少 100 GB <br/> 健康水位为使用量低于 90% |
+| TiFlash | TiFlash binary： 2.1 GB，考虑到日志等需求，建议部署目录最少为 30 GB<br/>数据盘：通常建议不少于 100 GB，最小不少于 20 GB，安全水位为使用率低于 80% |
+| TiUP | TiUP cluster 会占用几百兆空间，在部署过程中会占用少于 1 MB /tmp 空间存放临时配置文件 |
+ Ngmonitoring | Conprof: 3*1G*组件数量 + 20G（3天，每个组件每天估算 1G, 20G 是预留空间）<br/>TopSQL: 30*50M*组件数(30 天，每组件每天 50M，和 Conprof 共享预留空间) |
+
 ## 客户端 Web 浏览器要求
 
 TiDB 提供了基于 [Grafana](https://grafana.com/) 的技术平台，对数据库集群的各项指标进行可视化展现。采用支持 Javascript 的微软 IE、Google Chrome、Mozilla Firefox 的较新版本即可访问监控入口。
