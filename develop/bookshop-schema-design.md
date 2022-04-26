@@ -87,7 +87,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
    ![Bookshop 数据导入中](/media/develop/importing_bookshop_data.png)
 
-   如果导入过程中出现如下错误信息，你需要通过 `DROP bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
+   如果导入过程中出现如下错误信息，你需要通过 `DROP TABLE bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
 
    > table(s) [`bookshop`.`authors`, `bookshop`.`book_authors`, `bookshop`.`books`, `bookshop`.`orders`, `bookshop`.`ratings`, `bookshop`.`users`] are not empty.
 
