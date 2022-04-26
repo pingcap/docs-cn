@@ -63,7 +63,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 <SimpleTab>
 
-<div label="SQL">
+<div label="SQL" href="read-sql">
 
 ```sql
 PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
@@ -96,7 +96,7 @@ EXECUTE `books_query` USING @id;
 
 </div>
 
-<div label="Java">
+<div label="Java" href="read-java">
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -128,7 +128,7 @@ try (Connection connection = ds.getConnection()) {
 
 <SimpleTab>
 
-<div label="SQL">
+<div label="SQL" href="write-sql">
 
 ```sql
 PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `price`, `published_at`) VALUES (?, ?, ?, ?, ?);';
@@ -160,7 +160,7 @@ Query OK, 1 row affected (0.03 sec)
 
 </div>
 
-<div label="Java">
+<div label="Java" href="write-java">
 
 ```java
 try (Connection connection = ds.getConnection()) {

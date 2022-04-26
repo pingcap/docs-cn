@@ -35,7 +35,7 @@ TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所�
 
 若你不清楚 `乐观事务` 是什么，请暂时不要使用它。因为使用 `乐观事务` 的前提是需要应用程序可以正确的处理 `COMMIT` 语句所返回的[所有错误](https://docs.pingcap.com/zh/tidb/stable/error-codes)。如果不确定应用程序如何处理，请直接使用 `悲观事务`。
 
-# 应用程序与 TiDB 交互的方式
+## 应用程序与 TiDB 交互的方式
 
 TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么我们建议您使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
 

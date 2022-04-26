@@ -24,12 +24,6 @@ title: 乐观事务和悲观事务
 
 下面代码以悲观事务的方式，用两个线程模拟了两个用户并发买同一本书的过程，书店剩余 10 本，Bob 购买了 6 本，Alice 购买了 4 本。两个人几乎同一时间完成订单，最终，这本书的剩余库存为零。
 
-<SimpleTab>
-
-<div label="ruby"></div>
-
-<div label="java">
-
 因为我们使用多个线程模拟多用户同时插入的情况，因此我们需要使用一个线程安全的连接对象，这里我们使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 作为我们此处 Demo 使用的线程池。
 
 如果您使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
@@ -253,23 +247,12 @@ public class TxnExample {
 }
 ```
 
-</div>
-</SimpleTab>
-
 运行示例程序：
-
-<SimpleTab>
-<div label="ruby"></div>
-<div label="java">
 
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=6
 ```
-
-</div>
-
-</SimpleTab>
 
 SQL 日志：
 
@@ -322,18 +305,10 @@ mysql> select * from users;
 
 运行示例程序：
 
-<SimpleTab>
-<div label="ruby"></div>
-<div label="java">
-
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=7
 ```
-
-</div>
-
-</SimpleTab>
 
 ```sql
 /* txn 1 */ begin pessimistic
@@ -382,10 +357,6 @@ mysql> select * from users;
 ## 乐观事务
 
 下面代码以乐观事务的方式，用两个线程模拟了两个用户并发买同一本书的过程，和悲观事务的示例一样。书店剩余 10 本，Bob 购买了 6 本，Alice 购买了 4 本。两个人几乎同一时间完成订单，最终，这本书的剩余库存为零。
-
-<SimpleTab>
-<div label="ruby"></div>
-<div label="java">
 
 ```java
 package com.pingcap.txn.optimistic;
@@ -557,23 +528,12 @@ public class TxnExample {
 
 来指向乐观事务的例子
 
-</div>
-</SimpleTab>
-
 运行示例程序：
-
-<SimpleTab>
-<div label="ruby"></div>
-<div label="java">
 
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=6
 ```
-
-</div>
-
-</SimpleTab>
 
 SQL 语句执行过程：
 
@@ -634,26 +594,10 @@ mysql> select * from users;
 
 运行示例程序：
 
-<SimpleTab>
-
-<div label="ruby">
-
-```shell
-BOB_NUM=7 ALICE_NUM=4 ./optimistic_txn
-```
-
-</div>
-
-<div label="java">
-
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=7
 ```
-
-</div>
-
-</SimpleTab>
 
 ```sql
 /* txn 1 */ begin optimistic
