@@ -44,7 +44,7 @@ TiDB version: 5.3.1
         - Change the default value of Kafka Sink `partition-num` to 3 so that TiCDC distributes messages across Kafka partitions more evenly [#3337](https://github.com/pingcap/tiflow/issues/3337)
         - Reduce the count of "EventFeed retry rate limited" logs [#4006](https://github.com/pingcap/tiflow/issues/4006)
         - Set the default value of `max-message-bytes` to 10M [#4041](https://github.com/pingcap/tiflow/issues/4041)
-        - Add more Promethous and Grafana monitoring metrics and alerts, including `no owner alert`, `mounter row`, `table sink total row`, and `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
+        - Add more Prometheus and Grafana monitoring metrics and alerts, including `no owner alert`, `mounter row`, `table sink total row`, and `buffer sink total row` [#4054](https://github.com/pingcap/tiflow/issues/4054) [#1606](https://github.com/pingcap/tiflow/issues/1606)
         - Reduce the time for the KV client to recover when a TiKV store is down [#3191](https://github.com/pingcap/tiflow/issues/3191)
 
     - TiDB Lightning
@@ -120,7 +120,7 @@ TiDB version: 5.3.1
         - Fix a bug that a TiCDC node exits abnormally when a PD leader is killed [#4248](https://github.com/pingcap/tiflow/issues/4248)
         - Fix the issue that execution errors of the update statement in safemode may cause the DM-worker panic [#4317](https://github.com/pingcap/tiflow/issues/4317)
         - Fix the issue that cached region metric of the TiKV client may be negative [#4300](https://github.com/pingcap/tiflow/issues/4300)
-        - Fix the bug that HTTP API panics when the required processor infomation does not exist [#3840](https://github.com/pingcap/tiflow/issues/3840)
+        - Fix the bug that HTTP API panics when the required processor information does not exist [#3840](https://github.com/pingcap/tiflow/issues/3840)
         - Fix a bug that the relay status in the DM-master is wrong after restarting the DM-master and DM-worker in a particular order [#3478](https://github.com/pingcap/tiflow/issues/3478)
         - Fix a bug that the DM-worker fails to boot up after a restart [#3344](https://github.com/pingcap/tiflow/issues/3344)
         - Fix a bug that a DM task fails if running a PARTITION DDL takes too long time [#3854](https://github.com/pingcap/tiflow/issues/3854)
