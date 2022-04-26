@@ -326,9 +326,7 @@ mysql> select * from doctors;
 
 ## 4. 不支持 savepoint 和嵌套事务
 
-Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个
-savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了
-savepoint 机制：
+Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
 ```sql
 mysql> BEGIN;
@@ -353,14 +351,16 @@ TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播�
 基本原则是要限制事务的大小。TiDB 对单个事务的大小有限制，这层限制是在 KV 层面。反映在 SQL 层面的话，简单来说一行数据会映射为一个 KV entry，每多一个索引，也会增加一个 KV entry。所以这个限制反映在 SQL 层面是：
 
 - 最大单行记录容量为 120MB（TiDB v5.0 及更高的版本可通过 tidb-server 配置项 `performance.txn-entry-size-limit` 调整，低于 TiDB v5.0 的版本支持的单行容量为 6MB）
-- 支持的最大单个事务容量为 10GB（TiDB v4.0 及更高版本可通过 tidb-server 配置项 `performance.txn-total-size-limit` 调整，低于 TiDB v4.0
-  的版本支持的最大单个事务容量为 100MB）
+- 支持的最大单个事务容量为 10GB（TiDB v4.0 及更高版本可通过 tidb-server 配置项 `performance.txn-total-size-limit` 调整，低于 TiDB v4.0 的版本支持的最大单个事务容量为 100MB）
 
 另外注意，无论是大小限制还是行数限制，还要考虑事务执行过程中，TiDB 做编码以及事务额外 Key 的开销。在使用的时候，为了使性能达到最优，建议每 100 ～ 500 行写入一个事务。
 
 ## 6. 自动提交的 SELECT FOR UPDATE 语句不会等锁
 
 自动提交下的 select for update 目前不会加锁。效果如下图所示：
+
 ![TiDB中的情况](/media/develop/autocommit_selectforupdate_nowaitlock.png)
+
 这是已知的与 MySQL 不兼容的地方。
+
 可以通过使用显式的 `begin;commit;` 解决该问题。
