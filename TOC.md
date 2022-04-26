@@ -352,6 +352,7 @@
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
+          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件

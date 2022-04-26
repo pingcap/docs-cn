@@ -1,8 +1,8 @@
 ---
-title: Data Migration DDL 同步列表
+title: Data Migration DDL 特殊处理说明
 ---
 
-# Data Migration DDL 同步列表
+# Data Migration DDL 特殊处理说明
 
 DM 同步过程中，根据 DDL 的不同，也将采用不同的处理方式。
 
