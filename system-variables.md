@@ -1549,6 +1549,21 @@ SET tidb_query_log_max_len = 20
     - leader-and-follower: Read from leader or follower node
 - See [follower reads](/follower-read.md) for additional details.
 
+### tidb_restricted_read_only <span class="version-mark">New in v5.2.0</span>
+
+- Scope: GLOBAL
+- Default value: `0`
+- Value options: `0`, `1`
+- This variable controls the read-only status of the entire cluster. If the variable is enabled (which means that the value is `1`), all TiDB servers in the entire cluster are in the read-only mode. In this case, TiDB only executes the statements that do not modify data, such as `SELECT`, `USE`, and `SHOW`. For other statements such as `INSERT` and `UPDATE`, TiDB rejects executing those statements in the read-only mode.
+- Enabling the read-only mode using this variable only ensures that the entire cluster finally enters the read-only status. If you have changed the value of this variable in a TiDB cluster but the change has not yet propagated to other TiDB servers, the un-updated TiDB servers are still **not** in the read-only mode.
+- When this variable is enabled, the SQL statements being executed are not affected. TiDB only performs the read-only check for the SQL statements **to be** executed.
+- When this variable is enabled, TiDB handles the uncommitted transactions in the following ways:
+    - For uncommitted read-only transactions, you can commit the transactions normally.
+    - For uncommitted transactions that are not read-only, SQL statements that perform write operations in these transactions are rejected.
+    - For uncommitted read-only transactions with modified data, the commit of these transactions is rejected.
+- After the read-only mode is enabled, all users (including the users with the `SUPER` privilege) cannot execute the SQL statements that might write data unless the user is explicitly granted the `RESTRICTED_REPLICA_WRITER_ADMIN` privilege.
+- Users with `RESTRICTED_VARIABLES_ADMIN` or `SUPER` privileges can modify this variable. However, if the [security enhanced mode](#tidb_enable_enhanced_security) is enabled, only the users with the `RESTRICTED_VARIABLES_ADMIN` privilege can modify this variable.
+
 ### tidb_retry_limit
 
 - Scope: SESSION | GLOBAL
