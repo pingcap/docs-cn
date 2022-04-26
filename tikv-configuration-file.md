@@ -367,7 +367,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ## storage.flow-control
 
-在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在写入量较大时卡住 Raftstore 或 Apply 线程导致 QPS 下降的问题。本节介绍 TiKV 流量控制机制相关的配置项。
+在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制卡住 Raftstore 或 Apply 线程导致的次生问题。本节介绍 TiKV 流量控制机制相关的配置项。
 
 ### `enable`
 
@@ -376,22 +376,27 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ### `memtables-threshold`
 
-+ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。
++ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).max-write-buffer-number` 的配置。
 + 默认值：5
 
 ### `l0-files-threshold`
 
+<<<<<<< HEAD
 + 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
 + v5.2.2 前，默认值为 9。自 v5.2.2 起，默认值为 20。
+=======
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`的配置。
++ 默认值：20
+>>>>>>> 9c118a74d (tikv: add flow-control config override hint (#9115))
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的配置。
 + 默认值："192GB"
 
 ### `hard-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).hard-pending-compaction-bytes-limit` 的配置。
 + 默认值："1024GB"
 
 ## storage.io-rate-limit
@@ -1066,7 +1071,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `max-write-buffer-number`
 
-+ 最大 memtable 个数。
++ 最大 memtable 个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.memtables-threshold` 会覆盖此配置。
 + 默认值：5
 + 最小值：0
 
@@ -1102,7 +1107,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `level0-slowdown-writes-trigger`
 
-+ 触发 write stall 的 L0 文件最大个数。
++ 触发 write stall 的 L0 文件最大个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.l0-files-threshold` 会覆盖此配置。
 + 默认值：20
 + 最小值：0
 
@@ -1155,13 +1160,13 @@ bloom filter 为每个 key 预留的长度。
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的软限制。
++ pending compaction bytes 的软限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.soft-pending-compaction-bytes-limit` 会覆盖此配置。
 + 默认值：192GB
 + 单位：KB|MB|GB
 
 ### `hard-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的硬限制。
++ pending compaction bytes 的硬限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.hard-pending-compaction-bytes-limit` 会覆盖此配置。
 + 默认值：256GB
 + 单位：KB|MB|GB
 
