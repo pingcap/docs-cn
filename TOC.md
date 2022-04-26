@@ -9,7 +9,7 @@
   - Benchmarks
     - [v6.0 Sysbench Performance Test Report](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
     - [v6.0 TPC-C Performance Test Report](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
-    - [v5.4 MPP mode TPC-H 100GB Performance Test](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
+    - [Performance Comparison between TiFlash and Greenplum/Spark](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
   - [MySQL Compatibility](/mysql-compatibility.md)
   - [TiDB Limitations](/tidb-limitations.md)
   - [TiDB Adopters](/adopters.md)
