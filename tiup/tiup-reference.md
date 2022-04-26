@@ -14,7 +14,7 @@ tiup [flags] <command> [args...]        # Executes a command
 tiup [flags] <component> [args...]      # Runs a component
 ```
 
-You can use the `help` command to get the information of a specific command. The summary of each command shows its parameters and their usage. Mandatory parameters are shown in angle brackets, and optional parameters are shown in square brackets.
+You can use the `--help` command to get the information of a specific command. The summary of each command shows its parameters and their usage. Mandatory parameters are shown in angle brackets, and optional parameters are shown in square brackets.
 
 `<command>` represents the command name. For the list of supported commands, see the [Command list](#command-list) below. `<component>` represents the component name. For the list of supported components, see the [Component list](#component-list) below.
 
