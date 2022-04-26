@@ -77,7 +77,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
-可以。在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
+自 v5.4 版本之后可以自动识别。低于 v5.4 版本需在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
 ## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL Mode) 来导入？
 
@@ -297,7 +297,7 @@ tidb-lightning-ctl --config conf/tidb-lightning.toml --checkpoint-error-destroy=
 **解决办法**：
 
 1. 编辑数据源，保存为纯 UTF-8 或 GB-18030 的文件。
-2. 手动在目标数量库创建所有的表，然后设置 `[mydumper] no-schema = true` 跳过创建表的步骤。
+2. 手动在目标数量库创建所有的表。
 3. 设置 `[mydumper] character-set = "binary"` 跳过这个检查。但是这样可能使数据库出现乱码。
 
 ## [sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 …}'
