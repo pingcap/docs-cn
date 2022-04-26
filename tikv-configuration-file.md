@@ -481,16 +481,16 @@ raftstore 相关的配置项。
 ### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.2.4 版本开始引入</span>
 
 + 压缩非必要 Raft 日志的时间间隔
-+ 默认值："2s"
-+ 最小值："0s"
++ 默认值：`"2s"`
++ 最小值：`"0s"`
 
 ### `raft-log-gc-tick-interval`
 
 + 删除 Raft 日志的轮询任务调度间隔时间，`0` 表示不启用。
 + 默认值：
 
-    + v5.2.3 及以前的 v5.2.x 版本："10s"
-    + v5.2.4 及之后的 v5.2.x 版本："3s"
+    + v5.2.3 及以前的 v5.2.x 版本：`"10s"`
+    + v5.2.4 及之后的 v5.2.x 版本：`"3s"`
 
 + 最小值："0s"
 
