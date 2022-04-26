@@ -490,7 +490,7 @@
     - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
-  - TiEM
+  - TiDB Enterprise Manager
     - [概述](/tiem/tiem-overview.md)
     - [安装和运维](/tiem/tiem-install-and-maintain.md)
     - [快速操作](/tiem/tiem-quick-start.md)
