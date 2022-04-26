@@ -1,10 +1,5 @@
 ---
-<<<<<<< HEAD
-title: TiUP 文档指南
-=======
 title: TiUP 文档地图
-aliases: ['/docs-cn/dev/tiup/tiup-documentation-guide/']
->>>>>>> 592f004e0 (Fix typo and align title with heading in TiUP (#9197))
 ---
 
 # TiUP 文档地图
