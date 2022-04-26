@@ -6,6 +6,121 @@ title: Bookshop 应用
 
 Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便捷地购买到各种类别的书，也可以对你看过的书进行点评。
 
+## 导入数据
+
+### 方式 1: 通过 `tiup demo` 命令行
+
+如果你使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#tiup) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
+
+```shell
+tiup demo bookshop prepare
+```
+
+该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口，使用 `root` 账号进行无密码登录，默认在名为 `bookshop` 的数据库中创建[表结构](#数据表详解)。
+
+#### 配置连接信息
+
+你可以通过如下参数修改默认的连接信息：
+
+| 参数         | 简写 | 默认值      | 解释           |
+| ------------ | ---- | ----------- | -------------- |
+| `--host`     | `-H` | `127.0.0.1` | 数据库地址     |
+| `--port`     | `-P` | `4000`      | 数据库端口     |
+| `--user`     | `-U` | `root`      | 数据库用户     |
+| `--password` | `-p` | 无          | 数据库用户密码 |
+| `--db`       | `-D` | `bookshop`  | 数据库名称     |
+
+例如，你想要连接到 TiDB Cloud 上的数据库，你可以如下命令指定连接信息进行连接：
+
+```
+tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbcloud.com -P 4000 -p
+```
+
+#### 设置数据量
+
+另外，你还可以通过如下参数指定各个数据库表生成的数据量：
+
+| 参数        | 默认值   | 解释                              |
+| ----------- | -------- | --------------------------------- |
+| `--users`   | `10000`  | 指定在 `users` 表生成的数据行数   |
+| `--authors` | `20000`  | 指定在 `authors` 表生成的数据行数 |
+| `--books`   | `20000`  | 指定在 `books` 表生成的数据行数   |
+| `--orders`  | `300000` | 指定在 `orders` 表生成的数据行数  |
+| `--ratings` | `300000` | 指定在 `ratings` 表生成的数据行数 |
+
+例如，以下命令通过 `--books` 参数指定生成 50 万行书籍的基本信息，通过 `--authors` 参数指定生成 10 万的作者信息，通过 `--ratings` 参数指定生成 100 万的评分记录，通过 `--orders` 参数指定生成 100 万的订单记录。
+
+```shell
+tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --drop-tables
+```
+
+通过 `--drop-tables` 参数你可以删除原有的表结构，更多的参数说明你可以通过命令 `tiup demo bookshop --help` 进行了解。
+
+### 方式 2: 通过 TiDB Cloud Import 功能
+
+在 TiDB Cloud 的数据库详情页面，你可以通过点击**Import**按钮，进入到**Data Import Task**页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
+
+1. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中
+
+   **Bucket URL**:
+
+   ```
+   s3://developer.pingcap.com/bookshop/
+   ```
+
+   **Role-ARN**:
+
+   ```
+   arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
+   ```
+
+   在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
+
+2. 选择 **Bucket Region** 为 **US West (Oregon)**
+3. 选择 **Data Format** 为 **TiDB Dumpling**
+
+   ![在 TiDB Cloud 中导入 Bookshop 数据](/media/develop/tidb_cloud_import_bookshop_data.png)
+
+4. 输入你的数据库登录信息
+5. 点击 **Import** 按钮确认导入
+6. 等待 TiDB Cloud 完成数据导入
+
+   ![Bookshop 数据导入中](/media/develop/importing_bookshop_data.png)
+
+   如果导入过程中出现如下错误信息，你需要通过 `DROP TABLE bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
+
+   > table(s) [`bookshop`.`authors`, `bookshop`.`book_authors`, `bookshop`.`books`, `bookshop`.`orders`, `bookshop`.`ratings`, `bookshop`.`users`] are not empty.
+
+### 查看数据导入情况
+
+导入完成后，你可以通过下面的 SQL 语句各个表的数据量信息：
+
+```sql
+SELECT
+    CONCAT(table_schema,'.',table_name) AS 'Table Name',
+    table_rows AS 'Number of Rows',
+    CONCAT(ROUND(data_length/(1024*1024*1024),4),'G') AS 'Data Size',
+    CONCAT(ROUND(index_length/(1024*1024*1024),4),'G') AS 'Index Size',
+    CONCAT(ROUND((data_length+index_length)/(1024*1024*1024),4),'G') AS 'Total'
+FROM
+    information_schema.TABLES
+WHERE table_schema LIKE 'bookshop';
+```
+
+```
++-----------------------+----------------+-----------+------------+---------+
+| Table Name            | Number of Rows | Data Size | Index Size | Total   |
++-----------------------+----------------+-----------+------------+---------+
+| bookshop.orders       |        1000000 | 0.0373G   | 0.0075G    | 0.0447G |
+| bookshop.book_authors |        1000000 | 0.0149G   | 0.0149G    | 0.0298G |
+| bookshop.ratings      |        4000000 | 0.1192G   | 0.1192G    | 0.2384G |
+| bookshop.authors      |         100000 | 0.0043G   | 0.0000G    | 0.0043G |
+| bookshop.users        |         195348 | 0.0048G   | 0.0021G    | 0.0069G |
+| bookshop.books        |        1000000 | 0.0546G   | 0.0000G    | 0.0546G |
++-----------------------+----------------+-----------+------------+---------+
+6 rows in set (0.03 sec)
+```
+
 ## 数据表详解
 
 以下将详细介绍 Bookshop 应用程序的数据库表结构：

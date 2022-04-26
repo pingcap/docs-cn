@@ -24,19 +24,309 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 写偏斜异常是指两个并发的事务读取了不同但相关的记录，接着这两个事务各自更新了自己读到的数据，并最终都提交了事务，如果这些相关的记录之间存在着不能被多个事务并发修改的约束，那么最终结果将是违反约束的。
 
-例如：值班表有两列，姓名以及值班状态，0 代表不值班，1 代表值班
+想象一下这个例子：你正在为医院写一个医生轮班管理程序。医院通常会同时要求几位医生待命，但底线是至少有一位医生在待命。医生可以放弃他们的班次（例如，如果他们自己生病了），只要至少有一个同事在这一班中继续工作。
 
-| **姓名** | **值班状态** |
-| -------- | ------------ |
-| 张三     | 0            |
-| 李四     | 0            |
-| 王五     | 0            |
+现在想象一下，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面我们用程序来模拟一下这个过程。
 
-有这样一个事务，它的逻辑是判断当前无人值班，则分配一个值班人。当该程序顺序执行时，只会分配一个值班人。但当它并行执行时，就可能出现多人同时为值班状态的错误，造成这个错误的原因就是写偏斜。
+```java
+package com.pingcap.txn.write.skew;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+
+public class EffectWriteSkew {
+    public static void main(String[] args) throws SQLException, InterruptedException {
+        HikariDataSource ds = new HikariDataSource();
+        ds.setJdbcUrl("jdbc:mysql://localhost:4000/test?useServerPrepStmts=true&cachePrepStmts=true");
+        ds.setUsername("root");
+
+        // prepare data
+        Connection connection = ds.getConnection();
+        createDoctorTable(connection);
+        createDoctor(connection, 1, "Alice", true, 123);
+        createDoctor(connection, 2, "Bob", true, 123);
+        createDoctor(connection, 3, "Carol", false, 123);
+
+        Semaphore txn1Pass = new Semaphore(0);
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        ExecutorService threadPool = Executors.newFixedThreadPool(2);
+
+        threadPool.execute(() -> {
+            askForLeave(ds, txn1Pass, 1, 1);
+            countDownLatch.countDown();
+        });
+
+        threadPool.execute(() -> {
+            askForLeave(ds, txn1Pass, 2, 2);
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+    }
+
+    public static void createDoctorTable(Connection connection) throws SQLException {
+        connection.createStatement().executeUpdate("CREATE TABLE `doctors` (" +
+                "    `id` int(11) NOT NULL," +
+                "    `name` varchar(255) DEFAULT NULL," +
+                "    `on_call` tinyint(1) DEFAULT NULL," +
+                "    `shift_id` int(11) DEFAULT NULL," +
+                "    PRIMARY KEY (`id`)," +
+                "    KEY `idx_shift_id` (`shift_id`)" +
+                "  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin");
+    }
+
+    public static void createDoctor(Connection connection, Integer id, String name, Boolean onCall, Integer shiftID) throws SQLException {
+        PreparedStatement insert = connection.prepareStatement(
+                "INSERT INTO `doctors` (`id`, `name`, `on_call`, `shift_id`) VALUES (?, ?, ?, ?)");
+        insert.setInt(1, id);
+        insert.setString(2, name);
+        insert.setBoolean(3, onCall);
+        insert.setInt(4, shiftID);
+        insert.executeUpdate();
+    }
+
+    public static void askForLeave(HikariDataSource ds, Semaphore txn1Pass, Integer txnID, Integer doctorID) {
+        try(Connection connection = ds.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String comment = txnID == 2 ? "    " : "" + "/* txn #{txn_id} */ ";
+                connection.createStatement().executeUpdate(comment + "BEGIN");
+
+                // Txn 1 should be waiting for txn 2 done
+                if (txnID == 1) {
+                    txn1Pass.acquire();
+                }
+
+                PreparedStatement currentOnCallQuery = connection.prepareStatement(comment +
+                        "SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = ? AND `shift_id` = ?");
+                currentOnCallQuery.setBoolean(1, true);
+                currentOnCallQuery.setInt(2, 123);
+                ResultSet res = currentOnCallQuery.executeQuery();
+
+                if (!res.next()) {
+                    throw new RuntimeException("error query");
+                } else {
+                    int count = res.getInt("count");
+                    if (count >= 2) {
+                        // If current on-call doctor has 2 or more, this doctor can leave
+                        PreparedStatement insert = connection.prepareStatement( comment +
+                                "UPDATE `doctors` SET `on_call` = ? WHERE `id` = ? AND `shift_id` = ?");
+                        insert.setBoolean(1, false);
+                        insert.setInt(2, doctorID);
+                        insert.setInt(3, 123);
+                        insert.executeUpdate();
+
+                        connection.commit();
+                    } else {
+                        throw new RuntimeException("At least one doctor is on call");
+                    }
+                }
+
+                // Txn 2 done, let txn 1 run again
+                if (txnID == 2) {
+                    txn1Pass.release();
+                }
+            } catch (Exception e) {
+                // If got any error, you should roll back, data is priceless
+                connection.rollback();
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+SQL 日志：
+
+```sql
+/* txn 1 */ begin
+    /* txn 2 */ begin
+    /* txn 2 */ select count(*) as count from doctors where on_call = 1 and shift_id = 123
+    /* txn 2 */ update doctors set on_call = 0 where id = 2 and shift_id = 123
+    /* txn 2 */ commit
+/* txn 1 */ select count(*) as count from doctors where on_call = 1 and shift_id = 123
+/* txn 1 */ update doctors set on_call = 0 where id = 1 and shift_id = 123
+/* txn 1 */ commit
+```
+
+执行结果：
+
+```sql
+mysql> select * from doctors;
++----+-------+---------+----------+
+| id | name  | on_call | shift_id |
++----+-------+---------+----------+
+|  1 | Alice |       0 |      123 |
+|  2 | Bob   |       0 |      123 |
+|  3 | Carol |       0 |      123 |
++----+-------+---------+----------+
+```
+
+在两个事务中，应用首先检查是否有两个或以上的医生正在值班；如果是的话，它就假定一名医生可以安全地休班。由于数据库使用快照隔离，两次检查都返回 2 ，所以两个事务都进入下一个阶段。Alice 更新自己的记录休班了，而 Bob 也做了一样的事情。两个事务都成功提交了，现在没有医生值班了。违反了至少有一名医生在值班的要求。下图(引用自《Designing Data-Intensive Application》)说明了实际发生的情况：
+
+![Write Skew](/media/develop/write-skew.png)
+
+现在我们来更改示例程序，使用 `select for update` 来克服写偏斜问题：
+
+```java
+package com.pingcap.txn.write.skew;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+
+public class EffectWriteSkew {
+    public static void main(String[] args) throws SQLException, InterruptedException {
+        HikariDataSource ds = new HikariDataSource();
+        ds.setJdbcUrl("jdbc:mysql://localhost:4000/test?useServerPrepStmts=true&cachePrepStmts=true");
+        ds.setUsername("root");
+
+        // prepare data
+        Connection connection = ds.getConnection();
+        createDoctorTable(connection);
+        createDoctor(connection, 1, "Alice", true, 123);
+        createDoctor(connection, 2, "Bob", true, 123);
+        createDoctor(connection, 3, "Carol", false, 123);
+
+        Semaphore txn1Pass = new Semaphore(0);
+        CountDownLatch countDownLatch = new CountDownLatch(2);
+        ExecutorService threadPool = Executors.newFixedThreadPool(2);
+
+        threadPool.execute(() -> {
+            askForLeave(ds, txn1Pass, 1, 1);
+            countDownLatch.countDown();
+        });
+
+        threadPool.execute(() -> {
+            askForLeave(ds, txn1Pass, 2, 2);
+            countDownLatch.countDown();
+        });
+
+        countDownLatch.await();
+    }
+
+    public static void createDoctorTable(Connection connection) throws SQLException {
+        connection.createStatement().executeUpdate("CREATE TABLE `doctors` (" +
+                "    `id` int(11) NOT NULL," +
+                "    `name` varchar(255) DEFAULT NULL," +
+                "    `on_call` tinyint(1) DEFAULT NULL," +
+                "    `shift_id` int(11) DEFAULT NULL," +
+                "    PRIMARY KEY (`id`)," +
+                "    KEY `idx_shift_id` (`shift_id`)" +
+                "  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin");
+    }
+
+    public static void createDoctor(Connection connection, Integer id, String name, Boolean onCall, Integer shiftID) throws SQLException {
+        PreparedStatement insert = connection.prepareStatement(
+                "INSERT INTO `doctors` (`id`, `name`, `on_call`, `shift_id`) VALUES (?, ?, ?, ?)");
+        insert.setInt(1, id);
+        insert.setString(2, name);
+        insert.setBoolean(3, onCall);
+        insert.setInt(4, shiftID);
+        insert.executeUpdate();
+    }
+
+    public static void askForLeave(HikariDataSource ds, Semaphore txn1Pass, Integer txnID, Integer doctorID) {
+        try(Connection connection = ds.getConnection()) {
+            try {
+                connection.setAutoCommit(false);
+
+                String comment = txnID == 2 ? "    " : "" + "/* txn #{txn_id} */ ";
+                connection.createStatement().executeUpdate(comment + "BEGIN");
+
+                // Txn 1 should be waiting for txn 2 done
+                if (txnID == 1) {
+                    txn1Pass.acquire();
+                }
+
+                PreparedStatement currentOnCallQuery = connection.prepareStatement(comment +
+                        "SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = ? AND `shift_id` = ? FOR UPDATE");
+                currentOnCallQuery.setBoolean(1, true);
+                currentOnCallQuery.setInt(2, 123);
+                ResultSet res = currentOnCallQuery.executeQuery();
+
+                if (!res.next()) {
+                    throw new RuntimeException("error query");
+                } else {
+                    int count = res.getInt("count");
+                    if (count >= 2) {
+                        // If current on-call doctor has 2 or more, this doctor can leave
+                        PreparedStatement insert = connection.prepareStatement( comment +
+                                "UPDATE `doctors` SET `on_call` = ? WHERE `id` = ? AND `shift_id` = ?");
+                        insert.setBoolean(1, false);
+                        insert.setInt(2, doctorID);
+                        insert.setInt(3, 123);
+                        insert.executeUpdate();
+
+                        connection.commit();
+                    } else {
+                        throw new RuntimeException("At least one doctor is on call");
+                    }
+                }
+
+                // Txn 2 done, let txn 1 run again
+                if (txnID == 2) {
+                    txn1Pass.release();
+                }
+            } catch (Exception e) {
+                // If got any error, you should roll back, data is priceless
+                connection.rollback();
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+SQL 日志：
+
+```sql
+/* txn 1 */ begin
+    /* txn 2 */ begin
+    /* txn 2 */ select count(*) as count from doctors where on_call = 1 and shift_id = 123 for update
+    /* txn 2 */ update doctors set on_call = 0 where id = 2 and shift_id = 123
+    /* txn 2 */ commit
+/* txn 1 */ select count(*) as count from doctors where on_call = 1 for update
+At least one doctor is on call
+/* txn 1 */ rollback
+```
+
+执行结果：
+
+```sql
+mysql> select * from doctors;
++----+-------+---------+----------+
+| id | name  | on_call | shift_id |
++----+-------+---------+----------+
+|  1 | Alice |       1 |      123 |
+|  2 | Bob   |       0 |      123 |
+|  3 | Carol |       0 |      123 |
++----+-------+---------+----------+
+```
 
 ## 4. 不支持 savepoint 和嵌套事务
 
-Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了savepoint 机制：
+Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
 ```sql
 mysql> BEGIN;
@@ -61,13 +351,14 @@ TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播�
 基本原则是要限制事务的大小。TiDB 对单个事务的大小有限制，这层限制是在 KV 层面。反映在 SQL 层面的话，简单来说一行数据会映射为一个 KV entry，每多一个索引，也会增加一个 KV entry。所以这个限制反映在 SQL 层面是：
 
 - 最大单行记录容量为 120MB（TiDB v5.0 及更高的版本可通过 tidb-server 配置项 `performance.txn-entry-size-limit` 调整，低于 TiDB v5.0 的版本支持的单行容量为 6MB）
-- 支持的最大单个事务容量为 10GB（TiDB v4.0 及更高版本可通过 tidb-server 配置项 `performance.txn-total-size-limit` 调整，低于 TiDB v4.0的版本支持的最大单个事务容量为 100MB）
+- 支持的最大单个事务容量为 10GB（TiDB v4.0 及更高版本可通过 tidb-server 配置项 `performance.txn-total-size-limit` 调整，低于 TiDB v4.0 的版本支持的最大单个事务容量为 100MB）
 
 另外注意，无论是大小限制还是行数限制，还要考虑事务执行过程中，TiDB 做编码以及事务额外 Key 的开销。在使用的时候，为了使性能达到最优，建议每 100 ～ 500 行写入一个事务。
 
 ## 6. 自动提交的 SELECT FOR UPDATE 语句不会等锁
 
 自动提交下的 select for update 目前不会加锁。效果如下图所示：
+
 ![TiDB中的情况](/media/develop/autocommit_selectforupdate_nowaitlock.png)
 
 这是已知的与 MySQL 不兼容的地方。
