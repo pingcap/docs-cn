@@ -889,9 +889,9 @@ rocksdb 相关的配置项。
 
 + 预写式日志 (WAL, Write Ahead Log) 的恢复模式。
 + 可选值：
-    + `"tolerate-corrupted-tail-records"`：容忍并丢弃位于日志尾部的不完整的数据 (trailing data)
-    + `"absolute-consistency"`：当发现待恢复的日志中有被损坏的日志时，放弃恢复所有日志
-    + `"point-in-time"`：按顺序恢复日志，直到遇到第一个损坏的日志后再停止恢复剩余的日志
+    + `"tolerate-corrupted-tail-records"`：容忍并丢弃位于日志尾部的不完整的数据 (trailing data)。
+    + `"absolute-consistency"`：当发现待恢复的日志中有被损坏的日志时，放弃恢复所有日志。
+    + `"point-in-time"`：按顺序恢复日志。遇到第一个损坏的日志时，停止恢复剩余的日志。
     + `"skip-any-corrupted-records"`：灾难后恢复。跳过日志中的损坏记录，尽可能多地恢复数据。
 + 默认值：`"point-in-time"`
 
