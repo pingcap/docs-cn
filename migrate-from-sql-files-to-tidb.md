@@ -25,26 +25,12 @@ If you use Dumpling to export data, the table schema file is automatically expor
 
 + **Method 1**: Create the target table schema using TiDB Lightning.
 
-    1. Write SQL files that contain the required DDL statements.
+    Create SQL files that contain the required DDL statements:
 
-        - The format of the file name is `${db_name}-schema-create.sql`, and this file should have the `CREATE DATABASE` statements.
-        - The format of the file name is `${db_name}.${table_name}-schema.sql`, and this file should have the `CREATE TABLE` statements.
-
-    2. During the migration, add the following configuration in `tidb-lightning.toml`:
-
-        ```toml
-        [mydumper]
-        no-schema = false # To create the table schema in the target database using TiDB Lightning, set the value to false
-        ```
+    - Add `CREATE DATABASE` statements in the `${db_name}-schema-create.sql` files.
+    - Add `CREATE TABLE` statements in the `${db_name}.${table_name}-schema.sql` files.
 
 + **Method 2**: Create the target table schema manually.
-
-    Before the migration, add the following configuration in `tidb-lightning.toml`:
-
-    ```toml
-    [mydumper]
-    no-schema = true # If you have already created the target table schema, set the value to true, which means skipping the schema creation.
-    ```
 
 ## Step 3. Create the configuration file
 
@@ -70,9 +56,6 @@ sorted-kv-dir = "${sorted-kv-dir}"
 # Directory of the data source
 data-source-dir = "${data-path}" # Local or S3 path, such as 's3://my-bucket/sql-backup?region=us-west-2'
 
-# If you have manually created the target table schema in #Step 2, set it to true; otherwise, it is false.
-# no-schema = true
-
 [tidb]
 # The information of target cluster
 host = ${host}                # For example, 172.16.32.1
@@ -96,7 +79,7 @@ If you import the data from S3, you need to pass in `SecretKey` and `AccessKey` 
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
-nohup tiup tidb-lightning -config tidb-lightning.toml -no-schema=true > nohup.out 2>&1 &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 ```
 
 TiDB Lightning also supports reading credential files from `~/.aws/credentials`.
