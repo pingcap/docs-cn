@@ -1,5 +1,6 @@
 ---
 title: tiup cluster start
+summary: 命令 `tiup cluster start` 用于启动指定集群的所有或部分服务。
 ---
 
 # tiup cluster start

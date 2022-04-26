@@ -1,5 +1,6 @@
 ---
 title: tiup help
+summary: TiUP 命令行界面为用户提供了丰富的帮助信息，用户可以通过 `help` 命令或者 `--help` 参数查看。`tiup help <command>` 命令等价于 `tiup <command> --help`。
 ---
 
 # tiup help

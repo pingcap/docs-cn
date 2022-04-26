@@ -1,5 +1,6 @@
 ---
 title: tiup mirror set
+summary: 命令 `tiup mirror set` 用于切换当前镜像，支持本地文件系统和远程网络两种镜像。
 ---
 
 # tiup mirror set

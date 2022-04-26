@@ -1,5 +1,6 @@
 ---
 title: tiup cluster patch
+summary: 在集群运行过程中，如果需要动态替换某个服务的二进制文件（即替换过程中保持集群可用），那么可以使用 `tiup cluster patch` 命令，它会完成以下几件事情：
 ---
 
 # tiup cluster patch

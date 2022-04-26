@@ -1,5 +1,6 @@
 ---
 title: tiup cluster upgrade
+summary: 命令 `tiup cluster upgrade` 用于将指定集群升级到特定版本。
 ---
 
 # tiup cluster upgrade

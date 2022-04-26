@@ -1,5 +1,6 @@
 ---
 title: tiup dm upgrade
+summary: 命令 `tiup dm upgrade` 用于将指定集群升级到特定版本。
 ---
 
 # tiup dm upgrade

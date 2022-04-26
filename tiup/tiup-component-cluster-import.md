@@ -1,5 +1,6 @@
 ---
 title: tiup cluster import
+summary: tiup cluster import flags
 ---
 
 # tiup cluster import

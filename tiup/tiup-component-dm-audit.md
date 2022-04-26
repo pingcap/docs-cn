@@ -1,5 +1,6 @@
 ---
 title: tiup dm audit
+summary: 命令 `tiup dm audit` 可以用于查看执行在所有集群上的历史命令，以及每个命令的执行日志。
 ---
 
 # tiup dm audit

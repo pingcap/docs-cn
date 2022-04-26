@@ -1,5 +1,6 @@
 ---
 title: tiup dm import
+summary: tiup dm import flags
 ---
 
 # tiup dm import

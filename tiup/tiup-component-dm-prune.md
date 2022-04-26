@@ -1,5 +1,6 @@
 ---
 title: tiup dm prune
+summary: 在缩容集群后，etcd 中仍然会有少量元信息不会被清理，通常不会有问题，如果确实需要清理，可以手动执行 `tiup cluster prune` 命令清理。
 ---
 
 # tiup dm prune

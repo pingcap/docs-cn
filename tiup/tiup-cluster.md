@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 部署运维 TiDB 线上集群
+summary: 本文重在介绍如何使用 TiUP 的 cluster 组件，如果需要线上部署的完整步骤，可参考使用 TiUP 部署 TiDB 集群。
 aliases: ['/docs-cn/dev/tiup/tiup-cluster/','/docs-cn/dev/reference/tools/tiup/cluster/']
 ---
 

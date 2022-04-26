@@ -1,5 +1,6 @@
 ---
 title: TiUP 简介
+summary: 在各种系统软件和应用软件的安装管理中，包管理器均有着广泛的应用，包管理工具的出现大大简化了软件的安装和升级维护工作。例如，几乎所有使用 RPM 的 Linux 都会使用 Yum 来进行包管理，而 Anaconda 则可以非常方便地管理 python 的环境和相关软件包。
 aliases: ['/docs-cn/dev/tiup/tiup-overview/','/docs-cn/dev/reference/tools/tiup/overview/']
 ---
 

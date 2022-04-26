@@ -1,5 +1,6 @@
 ---
 title: TiUP DM
+summary: 类似于 TiUP Cluster 对 TiDB 集群的管理，TiUP DM 是用于对 DM 集群的日常运维工作，包括部署、启动、关闭、销毁、弹性扩缩容、升级 DM 集群、管理 DM 集群参数。
 ---
 
 # TiUP DM

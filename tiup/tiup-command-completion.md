@@ -1,5 +1,6 @@
 ---
 title: tiup completion
+summary: 为了降低使用成本，TiUP 提供了 `tiup completion` 命令用于生成命令行自动补全的配置文件。目前支持 `bash` 和 `zsh` 两种 shell 的命令补全。
 ---
 
 # tiup completion

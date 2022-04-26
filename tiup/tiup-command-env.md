@@ -1,5 +1,6 @@
 ---
 title: tiup env
+summary: TiUP 为用户提供了灵活的定制化接口，其中一部分是使用环境变量来实现的，命令 `tiup env` 用于查询 TiUP 支持用户自定义的环境变量以及它们此时的值。
 ---
 
 # tiup env

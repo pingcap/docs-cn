@@ -1,5 +1,6 @@
 ---
 title: tiup status
+summary: 使用命令 `tiup status` 可查看组件的运行信息：通过 `tiup flags <component> [args...]` 运行组件之后，可以通过该命令查看组件的运行信息。
 ---
 
 # tiup status

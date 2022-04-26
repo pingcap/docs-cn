@@ -1,5 +1,6 @@
 ---
 title: tiup mirror grant
+summary: 命令 `tiup mirror grant` 用来向当前镜像中引入一个组件管理员。
 ---
 
 # tiup mirror grant

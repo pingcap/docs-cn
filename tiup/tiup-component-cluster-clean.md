@@ -1,5 +1,6 @@
 ---
 title: tiup cluster clean
+summary: 在测试环境中，有时候需要将集群重置回刚部署的状态，即删除所有数据，命令 `tiup cluster clean` 可以很方便的做到这一点：它会停止集群，然后删除集群上的数据。手工重启集群之后，就能得到一个全新的集群了。
 ---
 
 # tiup cluster clean

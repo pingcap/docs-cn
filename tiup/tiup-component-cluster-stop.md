@@ -1,5 +1,6 @@
 ---
 title: tiup cluster stop
+summary: 命令 `tiup cluster stop` 用于停止指定集群的所有服务或部分服务。
 ---
 
 # tiup cluster stop
