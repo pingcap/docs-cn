@@ -125,7 +125,7 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 > **注意：**
 >
-> 删除集群同时将删除集群上自动备份的数据。如果需要某个备份数据，应在删除实例之前将该备份恢复到新实例上，数据恢复操作可参见[TiDB Enterprise Manager 用户手册 - 备份管理-数据恢复](/tiem/tiem-cluster-management.md) 。
+> 删除集群同时将删除集群上自动备份的数据。如果需要某个备份数据，应在删除实例之前将该备份恢复到新实例上，数据恢复操作可参见[TiDB Enterprise Manager 用户手册 - 备份管理-数据恢复](/tiem/tiem-manage-clusters.md) 。
 
 ### 操作步骤
 
