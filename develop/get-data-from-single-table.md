@@ -30,7 +30,7 @@ tiup demo bookshop prepare
 在 Bookshop 应用程序的数据库当中，`authors` 表存放了作家们的基础信息，我们可以通过 `SELECT ... FROM ...` 语句将数据从数据库当中调取出去。
 
 <SimpleTab>
-<div label="SQL">
+<div label="SQL" href="simple-sql">
 
 在 MySQL Client 等客户端输入并执行如下 SQL 语句：
 
@@ -60,7 +60,7 @@ SELECT id, name FROM authors;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" href="simple-java">
 
 在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据 [数据类型](https://docs.pingcap.com/zh/tidb/dev/data-type-overview) 和 [取值范围](https://docs.pingcap.com/zh/tidb/dev/data-type-numeric) 从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
@@ -121,7 +121,7 @@ public class AuthorDAO {
 例如，我们想要查找众多作家当中找出在 1998 年出生的作家：
 
 <SimpleTab>
-<div label="SQL">
+<div label="SQL" href="filter-sql">
 
 我们可以在 `WHERE` 子句来添加筛选的条件：
 
@@ -130,7 +130,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" href="filter-java">
 
 对于 Java 程序而言，我们希望通过同一个 SQL 来处理带有动态参数的数据查询请求。
 

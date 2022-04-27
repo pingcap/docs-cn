@@ -50,7 +50,7 @@ SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `r
 - 若返回条数小于 1 万，可使用此处的示例进行删除：
 
 <SimpleTab>
-<div label="SQL">
+<div label="SQL" href="delete-sql">
 
 ```sql
 DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
@@ -58,7 +58,7 @@ DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at`
 
 </div>
 
-<div label="Java">
+<div label="Java" href="delete-java">
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -117,10 +117,6 @@ TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来
 
 假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
 
-<SimpleTab>
-<div label="SQL"></div>
-<div label="Java">
-
 ```java
 package com.pingcap.bulkDelete;
 
@@ -174,6 +170,3 @@ public class BatchDeleteExample
 ```
 
 每次迭代中，`SELECT` 最多选择 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据的主键值。然后进行批量删除。每次循环末尾的 `TimeUnit.SECONDS.sleep(1);` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
-
-</div>
-</SimpleTab>
