@@ -375,13 +375,6 @@ cdc cli changefeed query --pd=http://10.0.10.25:2379 --changefeed-id=simple-repl
         "dispatchers": null,
         "protocol": "default"
       },
-      "cyclic-replication": {
-        "enable": false,
-        "replica-id": 0,
-        "filter-replica-ids": null,
-        "id-buckets": 0,
-        "sync-ddl": false
-      },
       "scheduler": {
         "type": "table-number",
         "polling-time": -1
@@ -521,7 +514,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
         "tables": {
           "56": {    # 56 表示同步表 id，对应 TiDB 中表的 tidb_table_id
             "start-ts": 417474117955485702,
-            "mark-table-id": 0  # mark-table-id 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id
+            "mark-table-id": 0  # 废弃
           }
         },
         "operation": null,
@@ -538,7 +531,7 @@ cdc cli changefeed resume -c test-cf --pd=http://10.0.10.25:2379
 以上命令中：
 
 - `status.tables` 中每一个作为 key 的数字代表同步表的 id，对应 TiDB 中表的 tidb_table_id。
-- `mark-table-id` 是用于环形复制时标记表的 id，对应于 TiDB 中标记表的 tidb_table_id。
+- `mark-table-id` 废弃。
 - `resolved-ts` 代表当前 processor 中已经排序数据的最大 TSO。
 - `checkpoint-ts` 代表当前 processor 已经成功写入下游的事务的最大 TSO。
 
@@ -581,16 +574,6 @@ dispatchers = [
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
 # 目前支持 default、canal、avro 和 maxwell 四种协议。default 为 TiCDC Open Protocol
 protocol = "default"
-
-[cyclic-replication]
-# 是否开启环形同步
-enable = false
-# 当前 TiCDC 的复制 ID
-replica-id = 1
-# 需要过滤掉的同步 ID
-filter-replica-ids = [2,3]
-# 是否同步 DDL
-sync-ddl = true
 ```
 
 ### 配置文件兼容性的注意事项
