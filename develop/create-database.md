@@ -8,7 +8,7 @@ title: 创建数据库
 
 > Note:
 >
-> 有关该 `CREATE DATABASE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE DATABASE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-database) 文档
+> 有关该 `CREATE DATABASE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE DATABASE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-database) 文档。
 
 ## 在开始之前
 
