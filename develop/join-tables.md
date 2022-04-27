@@ -12,12 +12,12 @@ title: 多表连接查询
 
 内连接的连接结果只返回匹配连接条件的行。
 
-例如，假设我们想要知道编写过最多书的作家是谁，我们需要将作家基础信息表 `authors` 与书籍作者表 `book_authors` 进行组合。
+例如，假设我们想要知道编写过最多书的作家是谁，我们需要将作家基础信息表 `authors` 与书籍作者表 `book_authors` 进行连接。
 
 <SimpleTab>
 <div label="SQL">
 
-在下面的 SQL 语句当中，我们通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作者没有编写过任何书籍，那么他在 `authors` 当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
+在下面的 SQL 语句当中，我们通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
 
 ```sql
 SELECT ANY_VALUE(a.id) AS author_id, ANY_VALUE(a.name) AS author_name, COUNT(ba.book_id) AS books
@@ -83,7 +83,7 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 
 左外连接会返回左表中的所有数据行，以及右表当中能够匹配连接条件的值，如果在右表当中没有找到能够匹配的行，则使用 `NULL` 填充。
 
-在一些情况下，我们希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。例如，在 Bookshop 应用的首页，我们希望展示一个带有平均评分的最新书籍列表，最新的书籍可能是还没有经过任何人评分的。这种情况下使用内连接会导致这些没人评分加书籍信息被过滤掉，而这并不是我们所期望的。
+在一些情况下，我们希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。例如，在 Bookshop 应用的首页，我们希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是我们所期望的。
 
 <SimpleTab>
 <div label="SQL">
@@ -188,11 +188,11 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 ### 笛卡尔连接 CROSS JOIN
 
-当连接条件恒成立时，两表之间的连接称为 [笛卡尔连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)。笛卡尔连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m, 右表的记录数为 n，则结果集中会产生 m \* n 条记录。
+当连接条件恒成立时，两表之间的连接称为[笛卡尔连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)。笛卡尔连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m, 右表的记录数为 n，则结果集中会产生 m \* n 条记录。
 
 ### 左半连接 LEFT SEMI JOIN
 
-TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在 [子查询相关的优化](https://docs.pingcap.com/zh/tidb/dev/subquery-optimization/) 当中将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
+TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在 [子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization/) 当中将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
 
 ## 隐式连接
 
@@ -243,4 +243,4 @@ WHERE b.id = ba.book_id AND ba.author_id = a.id;
 ## 扩展阅读
 
 - [用 EXPLAIN 查看 JOIN 查询的执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-joins)
-- [Join Reorder 算法简介](https://docs.pingcap.com/zh/tidb/dev/join-reorder)
+- [Join Reorder 算法简介](https://docs.pingcap.com/zh/tidb/stable/join-reorder)

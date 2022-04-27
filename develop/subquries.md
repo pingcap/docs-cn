@@ -6,7 +6,13 @@ title: 子查询
 
 ## 概述
 
-子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，我们可以在一个查询当中使用另外一个查询的查询结果。通常情况下，子查询语句分为如下几种类型：
+子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，我们可以在一个查询当中使用另外一个查询的查询结果。
+
+下面我们将以 [Bookshop](/develop/bookshop-schema-design.md) 应用为例对子查询展开介绍：
+
+## 子查询语句
+
+通常情况下，子查询语句分为如下几种类型：
 
 - 标量子查询（Scalar Subquery），如 `SELECT (SELECT s1 FROM t2) FROM t1`;
 - 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`;

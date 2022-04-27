@@ -6,7 +6,7 @@ title: 临时表
 
 临时表可以被认为是一种复用查询结果的技术。
 
-假设我们希望知道 Bookshop 应用当中最年长的作家们的一些情况，我们可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。我们可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为我们的研究对象。
+假设我们希望知道 [Bookshop](/develop/bookshop-schema-design.md) 应用当中最年长的作家们的一些情况，我们可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。我们可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为我们的研究对象。
 
 ```sql
 SELECT a.id, a.name, (IFNULL(a.death_year, YEAR(NOW())) - a.birth_year) AS age

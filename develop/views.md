@@ -110,7 +110,7 @@ DROP VIEW book_with_ratings;
 ## 扩展阅读
 
 - [视图](https://docs.pingcap.com/zh/tidb/stable/views)
-- [CREATE VIEW 语句](https://docs.pingcap.com/zh/tidb/dev/sql-statement-create-view)
-- [DROP VIEW 语句](https://docs.pingcap.com/zh/tidb/dev/sql-statement-drop-view)
+- [CREATE VIEW 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-view)
+- [DROP VIEW 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-drop-view)
 - [用 EXPLAIN 查看带视图的 SQL 执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-views)
 - [TiFlink: 使用 TiKV 和 Flink 实现强一致的物化视图](https://github.com/tiflink/tiflink)

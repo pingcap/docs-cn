@@ -29,7 +29,7 @@ title: Follower Read
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
 
-你可以通过 [Follower Read - 使用方式](https://docs.pingcap.com/zh/tidb/dev/follower-read#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F) 了解该变量的更多细节。
+你可以通过 [Follower Read - 使用方式](https://docs.pingcap.com/zh/tidb/stable/follower-read#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F) 了解该变量的更多细节。
 
 </div>
 <div label="Java">

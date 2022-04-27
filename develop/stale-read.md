@@ -12,7 +12,7 @@ TiDB 为我们提供了语句级别、事务级别、会话级别三种级别的
 
 ## 引入
 
-在 Bookshop 应用程序当中，你可以通过下面的 SQL 语句查询出最新出版的书籍以及它们的价格：
+在 [Bookshop](/develop/bookshop-schema-design.md) 应用程序当中，你可以通过下面的 SQL 语句查询出最新出版的书籍以及它们的价格：
 
 ```sql
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
@@ -95,7 +95,7 @@ SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' O
 
 需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。
 
-过期的数据在 TiDB 当中会由[垃圾回收器](https://docs.pingcap.com/zh/tidb/dev/garbage-collection-overview)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_gc_life_time-span-classversion-mark%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5span)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 GC Safe Point。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
+过期的数据在 TiDB 当中会由[垃圾回收器](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_gc_life_time-span-classversion-mark%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5span)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 GC Safe Point。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
 
 ```
 ERROR 9006 (HY000): GC life time is shorter than transaction duration...

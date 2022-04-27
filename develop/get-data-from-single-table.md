@@ -10,19 +10,12 @@ title: 单表查询
 
 ## 开始之前
 
-下面我们将围绕 Bookshop 这个应用程序来对 TiDB 的数据查询部分展开介绍。
+下面我们将围绕 [Bookshop](](/develop/bookshop-schema-design.md)) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
 
 在阅读本章节之前，你需要做以下准备工作：
 
 1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)）
-2. 导入 [Bookshop](/develop/bookshop-schema-design.md) 应用程序的表结果和示例数据。
-
-```bash
-tiup demo bookshop prepare
-```
-
-`tiup demo` 命令默认会将数据导入到本地 TiDB (127.0.0.1:4000) 中，你可以通过 `--host`、`--port`、`--user`、`--password` 参数来指定所需要导入数据的数据库。
-
+2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/bookshop-schema-design.md#导入数据)
 3. [连接到 TiDB](/develop/connect-to-tidb.md)
 
 ## 简单的查询
@@ -62,7 +55,7 @@ SELECT id, name FROM authors;
 </div>
 <div label="Java">
 
-在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据 [数据类型](https://docs.pingcap.com/zh/tidb/dev/data-type-overview) 和 [取值范围](https://docs.pingcap.com/zh/tidb/dev/data-type-numeric) 从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
+在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据数据的[类型](https://docs.pingcap.com/zh/tidb/stable/data-type-overview)和[取值范围](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric)从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
 - 使用 `Int` 类型变量存放 `int` 类型的数据
 - 使用 `Long` 类型变量存放 `bigint` 类型的数据
@@ -83,10 +76,6 @@ public class Author {
      // Skip the getters and setters.
 }
 ```
-
-- 在获得数据库连接之后，你可以通过 `conn.createStatement()` 语句创建一个 `Statement` 实例对象。
-- 然后调用 `stmt.executeQuery(<query_sql>)` 方法向 TiDB 发起一个数据库查询请求。
-- 数据库返回的查询结果将会存放到 `ResultSet` 当中，通过遍历 `ResultSet` 对象可以将返回结果映射到此前准备的 `Author` 类对象当中。
 
 ```java
 public class AuthorDAO {
@@ -111,12 +100,16 @@ public class AuthorDAO {
 }
 ```
 
+- 在[获得数据库连接](/develop/connect-to-tidb.md#jdbc)之后，你可以通过 `conn.createStatement()` 语句创建一个 `Statement` 实例对象。
+- 然后调用 `stmt.executeQuery("query_sql")` 方法向 TiDB 发起一个数据库查询请求。
+- 数据库返回的查询结果将会存放到 `ResultSet` 当中，通过遍历 `ResultSet` 对象可以将返回结果映射到此前准备的 `Author` 类对象当中。
+
 </div>
 </SimpleTab>
 
 ## 对结果进行筛选
 
-查询得到的结果非常多，但是并没有我们想要的？我们可以通过 `WHERE` 语句对查询的结果进行过滤，从而找到我们想要获取的部分。
+查询得到的结果非常多，但是并不都是我们想要的？我们可以通过 `WHERE` 语句对查询的结果进行过滤，从而找到我们想要查询的部分。
 
 例如，我们想要查找众多作家当中找出在 1998 年出生的作家：
 
@@ -125,7 +118,7 @@ public class AuthorDAO {
 
 我们可以在 `WHERE` 子句来添加筛选的条件：
 
-```java
+```sql
 SELECT * FROM authors WHERE birth_year = 1998;
 ```
 
@@ -163,7 +156,7 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 
 ## 对结果进行排序
 
-使用 `ORDER BY` 语句让查询结果按照我们所期望的方式进行排序。
+使用 `ORDER BY` 语句可以让查询结果按照我们所期望的方式进行排序。
 
 例如，我们可以通过下面的 SQL 语句令 `authors` 表根据 `birth_year` 列进行降序（`DESC`）排序，从而得到最年轻的作家列表。
 
@@ -204,7 +197,7 @@ ORDER BY birth_year DESC
 LIMIT 10;
 ```
 
-结果如下：
+查询结果如下：
 
 ```
 +-----------+------------------------+------------+
@@ -230,12 +223,13 @@ LIMIT 10;
 
 如果你想要关注数据整体的情况，而不是部分数据，你可以通过使用 `GROUP BY` 语句配合聚合函数，构建一个聚合查询来帮助你对数据的整体情况有一个更好的了解。
 
-比如说，你希望知道哪一年出生的作家比较多，你可以将作家基本信息按照 `birth_year` 列进行分组，然后分别统计在当年出生的作家数量：
+比如说，你希望知道哪些年出生的作家比较多，你可以将作家基本信息按照 `birth_year` 列进行分组，然后分别统计在当年出生的作家数量：
 
 ```sql
 SELECT birth_year, COUNT(DISTINCT id) AS author_count
 FROM authors
-GROUP BY birth_year;
+GROUP BY birth_year
+ORDER BY author_count DESC;
 ```
 
 查询结果如下：
