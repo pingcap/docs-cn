@@ -91,6 +91,8 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
    > table(s) [`bookshop`.`authors`, `bookshop`.`book_authors`, `bookshop`.`books`, `bookshop`.`orders`, `bookshop`.`ratings`, `bookshop`.`users`] are not empty.
 
+7. 你可以通过 [TiDB Cloud 文档](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart) 获取更多有关 TiDB Cloud 的信息。
+
 ### 查看数据导入情况
 
 导入完成后，你可以通过下面的 SQL 语句各个表的数据量信息：
