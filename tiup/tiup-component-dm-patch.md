@@ -3,7 +3,7 @@ title: 在线应用 Hotfix 到 DM 集群
 summary: 如何应用 hotfix 补丁包到 DM 集群。
 ---
 
-# tiup dm patch
+# 在线应用 Hotfix 到 DM 集群
 
 在集群运行过程中，如果需要动态替换某个服务的二进制文件（即替换过程中保持集群可用），那么可以使用 `tiup dm patch` 命令，它会完成以下几件事情：
 
