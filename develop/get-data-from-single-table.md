@@ -10,7 +10,7 @@ title: 单表查询
 
 ## 开始之前
 
-下面我们将围绕 [Bookshop](](/develop/bookshop-schema-design.md)) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
+下面我们将围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
 
 在阅读本章节之前，你需要做以下准备工作：
 
