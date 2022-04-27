@@ -32,7 +32,7 @@ mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&pa
 
 有关 JDBC 连接的更多信息，可参考 [JDBC 官方文档](https://dev.mysql.com/doc/connector-j/8.0/en/)
 
-### 连接参数
+**连接参数**
 
 |    参数名    |                                                描述                                                |
 | :----------: | :------------------------------------------------------------------------------------------------: |
@@ -76,7 +76,7 @@ SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml
 
 更多有关 Hibernate 连接参数的信息，请参阅 [Hibernate 官方文档](https://hibernate.org/orm/documentation)
 
-### 连接参数
+**连接参数**
 
 |    参数名    |                                                描述                                                |
 | :----------: | :------------------------------------------------------------------------------------------------: |
