@@ -21,7 +21,7 @@ title: 更新数据
 
 需更新表中的现有行，需要使用带有 WHERE 子句的 [UPDATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-update)，即需要过滤列进行更新。
 
-> **Note:**
+> **注意：**
 >
 > 如果您需要更新大量的行，比如数万甚至更多行，那我们建议不要一次性进行完整的更新，而是每次迭代更新一部分，直到所有行全部更新。您可以编写脚本或程序，使用循环完成此操作。
 > 您可参考[批量更新](#批量更新)获得指引
@@ -171,7 +171,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;
 ```
 
-> **Note:**
+> **注意：**
 >
 > 此批量更新程序将使用 `DDL` 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-add-column) 语句。
 

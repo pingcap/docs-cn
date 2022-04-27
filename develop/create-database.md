@@ -6,7 +6,7 @@ title: 创建数据库
 
 此页面提供了一个创建数据库的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
 
-> **Note:**
+> **注意：**
 >
 > 有关该 `CREATE DATABASE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE DATABASE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-database) 文档
 
