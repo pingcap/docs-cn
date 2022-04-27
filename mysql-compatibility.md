@@ -40,7 +40,11 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 * `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
 * `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
 * `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
+* `REPAIR TABLE` 语法
+* `OPTIMIZE TABLE` 语法
 * `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
+* `HANDLER` 语句
+* `CREATE TABLESPACE` 语句
 
 ## 与 MySQL 有差异的特性详细说明
 
