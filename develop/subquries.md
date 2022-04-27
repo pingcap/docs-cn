@@ -1,5 +1,6 @@
 ---
 title: 子查询
+summary: 介绍 TiDB 子查询功能。
 ---
 
 # 子查询

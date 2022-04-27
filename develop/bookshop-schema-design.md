@@ -1,5 +1,6 @@
 ---
 title: Bookshop 应用
+summary: Bookshop 应用设计、数据导入、连接数据库等操作。
 ---
 
 # Bookshop 应用

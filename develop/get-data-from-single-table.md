@@ -1,5 +1,6 @@
 ---
 title: 单表查询
+summary: 介绍 TiDB 中的单表查询功能。
 ---
 
 <!-- markdownlint-disable MD029 -->

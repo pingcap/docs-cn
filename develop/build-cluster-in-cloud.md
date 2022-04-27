@@ -1,5 +1,6 @@
 ---
 title: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
+summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
 ---
 
 <!-- markdownlint-disable MD029 -->

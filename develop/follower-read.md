@@ -1,5 +1,6 @@
 ---
 title: Follower Read
+summary: 使用 Follower Read 在特定情况下加速查询。
 ---
 
 # Follower Read

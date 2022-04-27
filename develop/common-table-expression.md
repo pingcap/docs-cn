@@ -1,5 +1,6 @@
 ---
 title: 公共表表达式 (CTE)
+summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
 ---
 
 # 公共表表达式 (CTE)

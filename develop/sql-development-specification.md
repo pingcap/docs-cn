@@ -1,5 +1,6 @@
 ---
 title: SQL 开发规范
+summary: TiDB 的 SQL 开发规范。
 ---
 
 # SQL 开发规范

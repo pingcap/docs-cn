@@ -1,5 +1,6 @@
 ---
 title: 连接到 TiDB
+summary: 介绍连接到 TiDB 的方法。
 ---
 
 # 连接到 TiDB

@@ -1,5 +1,6 @@
 ---
 title: 选择驱动或 ORM 框架
+summary: 选择驱动或 ORM 框架连接 TiDB。
 ---
 
 # 选择驱动或 ORM 框架

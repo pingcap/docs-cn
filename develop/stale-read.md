@@ -1,5 +1,6 @@
 ---
 title: Stale Read
+summary: 使用 Stale Read 在特定情况下加速查询。
 ---
 
 # Stale Read

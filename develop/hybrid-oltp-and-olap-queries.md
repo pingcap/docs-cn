@@ -1,5 +1,6 @@
 ---
 title: HTAP 查询
+summary: 介绍 TiDB 中的 HTAP 查询功能。
 ---
 
 # HTAP 查询
