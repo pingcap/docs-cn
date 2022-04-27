@@ -48,9 +48,8 @@ source .bash_profile
 ```
 
 3. 在当前 session 执行以下命令启动集群。
-   - 直接执行
 
-`tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+- 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
 ```shell
 tiup playground
