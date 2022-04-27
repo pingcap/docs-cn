@@ -22,6 +22,7 @@ TiDB 历史版本发布声明如下：
 
 ## 5.2
 
+- [5.2.4](/releases/release-5.2.4.md)
 - [5.2.3](/releases/release-5.2.3.md)
 - [5.2.2](/releases/release-5.2.2.md)
 - [5.2.1](/releases/release-5.2.1.md)
