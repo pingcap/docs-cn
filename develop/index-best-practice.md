@@ -6,11 +6,11 @@ title: 索引的最佳实践
 
 # 索引的最佳实践
 
-本节会介绍在 TiDB 中使用索引的一些最佳实践。
+本章会介绍在 TiDB 中使用索引的一些最佳实践。
 
 ## 准备工作
 
-本节内容将会用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `books` 表作为示例。
+本章内容将会用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `books` 表作为示例。
 
 ```sql
 CREATE TABLE `books` (
