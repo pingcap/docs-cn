@@ -18,8 +18,6 @@ Performance Overview Dashboard 按总分结构对TiDB、TiKV、PD 的性能指�
 
 以下为 Performance Overview Dashboard 监控说明：
 
-以下为 Overview Dashboard 监控说明：
-
 ## Database Time by SQL Type
 - database time: 每秒的总数据库时间
 - sql_type: 每种 SQL 语句每秒消耗的数据库时间
@@ -99,7 +97,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 按 `Get`、`Prewrite`、 `Commit`类型统计在所有 TiDB 实例平均 KV Request 执行时间
 
 ## Avg TiKV GRPC Duration
-按 `get`、`kv_prewrite`、 `kv_commit`类型统计在所有 TiKV 实例对 gRPC 请求平均的执行时间
+按 `get`、`kv_prewrite`、 `kv_commit`类型统计所有 TiKV 实例对 gRPC 请求的平均执行时间
 
 ## PD TSO Wait/RPC Duration
 - wait - avg：所有 TiDB 实例等待从 PD 返回 TSO 的平均时间
