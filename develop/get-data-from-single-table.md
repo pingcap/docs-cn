@@ -14,9 +14,9 @@ title: 单表查询
 
 在阅读本章节之前，你需要做以下准备工作：
 
-1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)）
-2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/bookshop-schema-design.md#导入数据)
-3. [连接到 TiDB](/develop/connect-to-tidb.md)
+1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)）。
+2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/bookshop-schema-design.md#导入数据)。
+3. [连接到 TiDB](/develop/connect-to-tidb.md)。
 
 ## 简单的查询
 
@@ -59,10 +59,10 @@ SELECT id, name FROM authors;
 
 在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据数据的[类型](https://docs.pingcap.com/zh/tidb/stable/data-type-overview)和[取值范围](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric)从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
-- 使用 `Int` 类型变量存放 `int` 类型的数据
-- 使用 `Long` 类型变量存放 `bigint` 类型的数据
-- 使用 `Short` 类型变量存放 `tinyint` 类型的数据
-- 使用 `String` 类型变量存放 `varchar` 类型的数据
+- 使用 `Int` 类型变量存放 `int` 类型的数据。
+- 使用 `Long` 类型变量存放 `bigint` 类型的数据。
+- 使用 `Short` 类型变量存放 `tinyint` 类型的数据。
+- 使用 `String` 类型变量存放 `varchar` 类型的数据。
 - ...
 
 {{< copyable "java" >}}
