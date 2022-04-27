@@ -5,6 +5,8 @@ summary: 介绍 TiDB 中的事务限制。
 
 # 事务限制
 
+本章将简单介绍 TiDB 中的事务限制。
+
 ## 1. 隔离级别
 
 TiDB 支持的隔离级别是 RC（Read Committed）与 SI（Snapshot Isolation），其中 SI 与 RR（Repeatable Read）隔离级别基本等价。

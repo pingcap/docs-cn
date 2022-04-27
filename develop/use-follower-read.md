@@ -5,6 +5,8 @@ summary: 使用 Follower Read 在特定情况下加速查询。
 
 # Follower Read
 
+本章将介绍使用 Follower Read 在特定情况下加速查询的方法。
+
 ## 简介
 
 在 TiDB 当中，数据是以 [Region](https://docs.pingcap.com/zh/tidb/stable/tidb-storage#region) 为单位，分散在集群中所有的节点上进行存储的。一个 Region 可以存在多个副本，副本又分为一个 leader 和多个 follower。当 leader 上的数据发生变化时，TiDB 会将数据同步更新到 follower。

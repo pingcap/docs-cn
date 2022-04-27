@@ -14,6 +14,8 @@ summary: 介绍 TiDB 的预处理语句功能。
 
 ## SQL 语法
 
+本节将介绍创建、使用及删除预处理语句的 SQL 语法。
+
 ### 创建预处理语句
 
 ```sql
@@ -57,6 +59,8 @@ DEALLOCATE PREPARE {prepared_statement_name};
 你可查看 [DEALLOCATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-deallocate) 获得更多信息。
 
 ## 例子
+
+本节以使用预处理语句，完成查询数据和插入数据两个场景的示例。
 
 ### 查询示例
 

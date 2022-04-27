@@ -20,6 +20,8 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 ## 步骤 1. 启动你的 TiDB 集群
 
+本节将介绍 TiDB 集群的启动方法。
+
 ### 使用 TiDB Cloud 免费集群
 
 [创建免费集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)
@@ -558,6 +560,8 @@ public class JDBCExample
 
 ### 步骤 3. 运行代码
 
+本节将逐步介绍代码的运行方法。
+
 #### 步骤 3.1 JDBC 表初始化
 
 使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
@@ -911,6 +915,8 @@ public class HibernateExample
 ```
 
 ### 步骤 3. 运行代码
+
+本节将逐步介绍代码的运行方法。
 
 #### 步骤 3.1 TiDB Cloud 更改参数
 

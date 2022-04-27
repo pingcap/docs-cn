@@ -148,6 +148,8 @@ SELECT * FROM acc;
 
 ## 混合负载
 
+当将 TiDB 应用于在线实时分析处理的混合负载场景时，开发人员只需要提供一个入口，TiDB 将自动根据业务类型选择不同的处理引擎。
+
 ### 开启列存副本
 
 TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/create-table.md#使用-htap-能力)章节，在进行后续步骤前，我们先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：

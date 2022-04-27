@@ -17,6 +17,8 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 ## 步骤 1. 启动你的 TiDB 集群
 
+本节将介绍 TiDB 集群的启动方法。
+
 ### 使用 TiDB Cloud 免费集群
 
 [创建免费集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)
@@ -599,6 +601,8 @@ false
 - `dao` 是项目实现与数据库连接并完成数据持久化的包
 
 ### 配置
+
+本节将简要介绍 `pom.xml` 文件中的 Maven 配置，及 `application.yml` 文件中的用户配置。
 
 #### Maven 配置
 

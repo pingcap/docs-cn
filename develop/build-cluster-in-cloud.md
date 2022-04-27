@@ -122,11 +122,15 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 2. 更改连接参数
 
-### 本地默认集群
+<SimpleTab>
+
+<div label="本地默认集群">
 
 无需更改
 
-### 非本地默认集群、TiDB Cloud 或其他远程集群
+</div>
+
+<div label="非本地默认集群、TiDB Cloud 或其他远程集群">
 
 更改 plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java 内关于 Host / Post / User / Password 的参数：
 
@@ -153,6 +157,10 @@ mysqlDataSource.setDatabaseName("test");
 mysqlDataSource.setUser("root");
 mysqlDataSource.setPassword("123456");
 ```
+
+</div>
+
+<SimpleTab>
 
 3. 运行 `make plain-java-jdbc`
 
