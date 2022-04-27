@@ -156,6 +156,43 @@ If you have specified URL parameters and command-line parameters at the same tim
 | `--s3.acl` | The canned ACL of the upload object. For example, `private` and `authenticated-read`. |
 | `--s3.provider` | The type of the S3-compatible service. The supported types are `aws`, `alibaba`, `ceph`, `netease` and `other`. |
 
+To export data to non-AWS S3 cloud storage, specify the cloud provider and whether to use `virtual-hosted style`. In the following examples, data is exported to the Alibaba Cloud OSS storage:
+
+* Export data to Alibaba Cloud OSS using Dumpling:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./dumpling -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
+       -o "s3://my-bucket/dumpling/" \
+       --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+       --s3.provider="alibaba" \
+       -r 200000 -F 256MiB
+    ```
+
+* Back up data to Alibaba Cloud OSS using BR:
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    ./br backup full --pd "127.0.0.1:2379" \
+        --storage "s3://my-bucket/full/" \
+        --s3.endpoint="http://oss-cn-hangzhou-internal.aliyuncs.com" \
+        --s3.provider="alibaba" \
+        --send-credentials-to-tikv=true \
+        --ratelimit 128 \
+        --log-file backuptable.log
+    ```
+
+* Export data to Alibaba Cloud OSS using TiDB Lightning. You need to specify the following content in the YAML-formatted configuration file:
+
+    {{< copyable "" >}}
+
+    ```
+    [mydumper]
+    data-source-dir = "s3://my-bucket/dumpling/?endpoint=http://oss-cn-hangzhou-internal.aliyuncs.com&provider=alibaba"
+    ```
+
 ### GCS command-line parameters
 
 | Command-line parameter | Description |
