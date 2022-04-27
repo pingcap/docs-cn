@@ -121,7 +121,7 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 
 可以看到执行计划中没有了 `TableFullScan` 的字样，取而代之的是 `IndexRangeScan`，这代表已经 TiDB 在进行这个查询时准备使用索引。
 
-> Note:
+> **Note:**
 >
 > 上方执行计划中的的 `TableFullScan`、`IndexRangeScan` 等在 TiDB 内被称为[算子](https://docs.pingcap.com/zh/tidb/stable/explain-overview#%E7%AE%97%E5%AD%90%E7%AE%80%E4%BB%8B)。这里对执行计划的解读及算子等不做进一步的展开，若您对此感兴趣，可点击[此处](https://docs.pingcap.com/zh/tidb/stable/explain-overview)查看更多关于执行计划与 TiDB 算子的相关知识。
 >
