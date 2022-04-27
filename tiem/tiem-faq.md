@@ -41,7 +41,7 @@ TiEM 使用 TiDB 及其生态工具、API 完成数据库管理产品功能，Ti
 
 ### 何时导入主机资源到 TiEM？
 
-在创建新集群或导入现有集群前，你需要将集群所需的主机资源导入到 TiEM。具体步骤参见 [TiEM v1.0.0 用户手册 - 5.3 资源管理](/tiem/tiem-resource-management.md)。
+在创建新集群或导入现有集群前，你需要将集群所需的主机资源导入到 TiEM。具体步骤参见 [TiEM v1.0.0 用户手册 - 5.3 资源管理](/tiem/tiem-manage-host-resources.md)。
 
 ## TiEM 安装部署 FAQ
 
@@ -83,7 +83,7 @@ TiEM 支持将数据备份至 S3 兼容存储和 NFS 共享存储。
 
 ### 如何设置 TiEM 的备份路径？
 
-TiEM v1.0.0 不支持通过前端界面修改备份路径，修改备份路径方法参考 [TiEM v1.0.0 用户手册 -第 5.4.13 节 备份管理](/tiem/tiem-cluster-management.md)。
+TiEM v1.0.0 不支持通过前端界面修改备份路径，修改备份路径方法参考 [TiEM v1.0.0 用户手册 -第 5.4.13 节 备份管理](/tiem/tiem-manage-clusters.md)。
 
 ## 数据导入与导出 FAQ
 
@@ -105,7 +105,7 @@ TiEM 共享存储是用户事先设定好用于保存导入导出文件的文件
 
 ### 如何修改 TiEM 共享存储路径？
 
-参见[TiEM v1.0.0 用户手册 - 第 5.5 数据导入与导出](/tiem/tiem-data-import-and-export.md)。
+参见[TiEM v1.0.0 用户手册 - 第 5.5 数据导入与导出](/tiem/tiem-import-and-export-data.md)。
 
 ## 集群扩容缩容 FAQ
 
