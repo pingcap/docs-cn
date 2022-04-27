@@ -55,7 +55,7 @@
       - [Stale Read](/develop/stale-read.md)
     - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
   - 事务
-    - [事务概览](/develop/transaction-overview.md)
+    - [事务概览](/develop/transaction-overview-for-dev.md)
     - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
     - [事务限制](/develop/transaction-restraints.md)
     - [事务错误处理](/develop/transaction-troubleshoot.md)
