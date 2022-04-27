@@ -7,13 +7,19 @@ summary: 介绍 TiDB 子查询功能。
 
 ## 概述
 
-子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，我们可以在一个查询当中使用另外一个查询的查询结果。通常情况下，子查询语句分为如下几种类型：
+子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，我们可以在一个查询当中使用另外一个查询的查询结果。
 
-- 标量子查询（Scalar Subquery），如 `SELECT (SELECT s1 FROM t2) FROM t1`;
-- 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`;
-- 存在性测试（Existential Test），如 `WHERE NOT EXISTS(SELECT ... FROM t2)`，`WHERE t1.a IN (SELECT ... FROM t2)`;
-- 集合比较（Quantified Comparison），如 `WHERE t1.a = ANY(SELECT ... FROM t2)`;
-- 作为比较运算符操作数的子查询, 如 `WHERE t1.a > (SELECT ... FROM t2)`;
+下面我们将以 [Bookshop](/develop/bookshop-schema-design.md) 应用为例对子查询展开介绍：
+
+## 子查询语句
+
+通常情况下，子查询语句分为如下几种类型：
+
+- 标量子查询（Scalar Subquery），如 `SELECT (SELECT s1 FROM t2) FROM t1`。
+- 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`。
+- 存在性测试（Existential Test），如 `WHERE NOT EXISTS(SELECT ... FROM t2)`，`WHERE t1.a IN (SELECT ... FROM t2)`。
+- 集合比较（Quantified Comparison），如 `WHERE t1.a = ANY(SELECT ... FROM t2)`。
+- 作为比较运算符操作数的子查询, 如 `WHERE t1.a > (SELECT ... FROM t2)`。
 
 ## 子查询的分类
 
@@ -27,6 +33,8 @@ summary: 介绍 TiDB 子查询功能。
 
 例如，我们想要查找 `authors` 表当中年龄大于总体平均年龄的作家，我们可以通过将子查询作为比较操作符的操作数来实现：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (
     SELECT
@@ -38,11 +46,15 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 
 在 TiDB 执行该查询的时候会先执行一次内层子查询：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT AVG(IFNULL(a2.death_year, YEAR(NOW())) - a2.birth_year) AS average_age FROM authors a2;
 ```
 
 假设查询得到的结果为 34，即总体平均年龄为 34，34 将作为常量替换掉原来的子查询。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM authors a1
@@ -69,15 +81,17 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 ...
 ```
 
-对于存在性测试和集合比较两种情况下的无关联列子查询，TiDB 会将其进行改写和等价替换以获得更好的执行性能，你可以通过阅读 [子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization) 章节来了解更多的实现细节。
+对于存在性测试和集合比较两种情况下的无关联列子查询，TiDB 会将其进行改写和等价替换以获得更好的执行性能，你可以通过阅读[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization)章节来了解更多的实现细节。
 
 ## 关联子查询
 
 对于关联子查询而言，由于内层的子查询引用外层查询的列，子查询需要对外层查询得到的每一行都执行一遍，也就是说假设外层查询得到一千万的结果，那么子查询也会被执行一千万次，这会导致查询需要消耗更多的时间和资源。
 
-因此在处理过程中，TiDB 会尝试对 [关联子查询去关联](https://docs.pingcap.com/zh/tidb/stable/correlated-subquery-optimization)，以从执行计划层面上提高查询效率。
+因此在处理过程中，TiDB 会尝试对[关联子查询去关联](https://docs.pingcap.com/zh/tidb/stable/correlated-subquery-optimization)，以从执行计划层面上提高查询效率。
 
 例如，假设我们想要查找出版过书籍的作家，我们的 SQL 语句可以这样写：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > (
@@ -92,6 +106,8 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 ```
 
 TiDB 在处理该 SQL 语句是会将其改写为等价的 Join 查询：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT *

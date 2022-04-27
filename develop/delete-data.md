@@ -84,7 +84,7 @@ try (Connection connection = ds.getConnection()) {
 
 > Note:
 >
-> 此处需注意，`rating_at` 字段为[日期和时间类型](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](https://docs.pingcap.com/zh/tidb/dev/configure-time-zone)时，展示不同的时间字符串。
+> 此处需注意，`rating_at` 字段为[日期和时间类型](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](https://docs.pingcap.com/zh/tidb/stable/configure-time-zone)时，展示不同的时间字符串。
 >
 > 另外，和 MySQL 一样，`TIMESTAMP` 数据类型受 [2038 年问题](https://zh.wikipedia.org/wiki/2038%E5%B9%B4%E9%97%AE%E9%A2%98)的影响。如果存储的值大于 2038，建议使用 `DATETIME` 类型。
 

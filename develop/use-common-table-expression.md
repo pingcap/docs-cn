@@ -7,7 +7,7 @@ summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
 
 由于业务的客观复杂性，有时候会写出长达 2000 行的单条 SQL 语句，其中包含大量的聚合和多层子查询嵌套，维护此类 SQL 堪称开发人员的噩梦。
 
-在前面的小节当中我们已经介绍了如何使用 [视图](/develop/views.md) 简化查询，也介绍了如何使用 [临时表](/develop/temporary-table.md) 来缓存中间查询结果。
+在前面的小节当中我们已经介绍了如何使用[视图](/develop/use-views.md)简化查询，也介绍了如何使用[临时表](/develop/use-temporary-tables.md)来缓存中间查询结果。
 
 在这一小节当中，我们将介绍 TiDB 当中的公共表表达式（CTE）语法，它是一种更加便捷的复用查询结果的方法。
 
@@ -35,7 +35,9 @@ SELECT ... FROM <query_name>;
 <SimpleTab>
 <div label="SQL">
 
-我们可以将 [临时表](/develop/temporary-table.md) 小节当中的例子改为以下 SQL 语句：
+我们可以将[临时表](/develop/use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 WITH top_50_eldest_authors_cte AS (
@@ -71,6 +73,8 @@ GROUP BY ta.id;
 
 </div>
 <div label="Java">
+
+{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
@@ -110,6 +114,8 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
 </SimpleTab>
 
 我们发现名为 “Ray Macejkovic” 的作者写了 4 本书，让我们继续通过 CTE 查询来了解这 4 本书的销量和评分：
+
+{{< copyable "sql" >}}
 
 ```sql
 WITH books_authored_by_rm AS (
@@ -175,7 +181,9 @@ WITH RECURSIVE <query_name> AS (
 SELECT ... FROM <query_name>;
 ```
 
-比较经典的例子是通过递归的 CTE 生成一组 [斐波那契数](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0)：
+比较经典的例子是通过递归的 CTE 生成一组[斐波那契数](https://zh.wikipedia.org/wiki/%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0)：
+
+{{< copyable "sql" >}}
 
 ```sql
 WITH RECURSIVE fibonacci (n, fib_n, next_fib_n) AS

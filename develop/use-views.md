@@ -22,7 +22,9 @@ CREATE VIEW view_name AS query;
 
 请注意，创建的视图名称不能与已有的视图或表重名。
 
-例如，在 [多表连接查询](/develop/join-tables.md) 章节当中，我们通过 `JOIN` 语句连接 `books` 表和 `ratings` 表查询到了带有平均评分的书籍列表。为了方便后续查询，我们可以将该查询语句定义为一个视图，SQL 语句如下所示：
+例如，在[多表连接查询](/develop/join-tables.md) 章节当中，我们通过 `JOIN` 语句连接 `books` 表和 `ratings` 表查询到了带有平均评分的书籍列表。为了方便后续查询，我们可以将该查询语句定义为一个视图，SQL 语句如下所示：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE VIEW book_with_ratings AS
@@ -36,6 +38,8 @@ GROUP BY b.id;
 
 视图创建完成后，我们便可以使用 `SELECT` 语句像查询一般数据表一样查询视图。
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM book_with_ratings LIMIT 10;
 ```
@@ -47,8 +51,9 @@ TiDB 在执行查询视图语句时，会将视图展开成创建视图时定义
 目前 TiDB 中的视图不支持 `ALTER VIEW view_name AS query;` 语法，你可以通过以下两种方式实现视图的 “更新”：
 
 - 先 `DROP VIEW view_name;` 语句删除旧视图，再通过 `CREATE VIEW view_name AS query;` 语句创建新视图的方式来更新视图。
-
 - 使用 `CREATE OR REPLACE VIEW view_name AS query;` 语句覆盖已存在的同名视图。
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE OR REPLACE VIEW book_with_ratings AS
@@ -61,6 +66,8 @@ GROUP BY b.id;
 ## 获取视图相关信息
 
 ### 使用 `SHOW CREATE TABLE|VIEW view_name` 语句
+
+{{< copyable "sql" >}}
 
 ```sql
 SHOW CREATE VIEW book_with_ratings\G
@@ -76,6 +83,8 @@ collation_connection: utf8mb4_general_ci
 ```
 
 ### 查询 `INFORMATION_SCHEMA.VIEWS` 表
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM information_schema.views WHERE TABLE_NAME = 'book_with_ratings'\G
@@ -100,18 +109,20 @@ COLLATION_CONNECTION: utf8mb4_general_ci
 
 通过 `DROP VIEW view_name;` 语句可以删除已经创建的视图。
 
+{{< copyable "sql" >}}
+
 ```sql
 DROP VIEW book_with_ratings;
 ```
 
 ## 局限性
 
-关于局限性，你可以通过阅读参考文档当中的 [视图](https://docs.pingcap.com/zh/tidb/stable/views#%E5%B1%80%E9%99%90%E6%80%A7) 章节进行了解。
+关于局限性，你可以通过阅读参考文档当中的[视图](https://docs.pingcap.com/zh/tidb/stable/views#%E5%B1%80%E9%99%90%E6%80%A7)章节进行了解。
 
 ## 扩展阅读
 
 - [视图](https://docs.pingcap.com/zh/tidb/stable/views)
-- [CREATE VIEW 语句](https://docs.pingcap.com/zh/tidb/dev/sql-statement-create-view)
-- [DROP VIEW 语句](https://docs.pingcap.com/zh/tidb/dev/sql-statement-drop-view)
+- [CREATE VIEW 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-view)
+- [DROP VIEW 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-drop-view)
 - [用 EXPLAIN 查看带视图的 SQL 执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-views)
 - [TiFlink: 使用 TiKV 和 Flink 实现强一致的物化视图](https://github.com/tiflink/tiflink)

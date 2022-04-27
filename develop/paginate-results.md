@@ -11,6 +11,8 @@ summary: 介绍 TiDB 的分页查询功能。
 
 在 TiDB 当中，我们可以利用 `LIMIT` 语句来实现分页功能，常规的分页语句写法如下所示：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 ```
@@ -22,7 +24,9 @@ SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 <SimpleTab>
 <div label="SQL" href="page-sql">
 
-例如，在 Bookshop 应用当中，我们希望将最新书籍列表以分页的形式返回给用户，通过 `LIMIT 0, 10` 语句，我们便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
+例如，在 [Bookshop](/develop/bookshop-schema-design.md) 应用当中，我们希望将最新书籍列表以分页的形式返回给用户，通过 `LIMIT 0, 10` 语句，我们便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT *
@@ -35,6 +39,8 @@ LIMIT 0, 10;
 <div label="Java" href="page-java">
 
 在应用程序开发当中，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前我们需要对其进行一些转换。
+
+{{< copyable "java" >}}
 
 ```java
 public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLException {
@@ -79,6 +85,8 @@ public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLE
 
 首先将数据按照主键排序，然后调用窗口函数 `row_number()` 为每一行数据生成行号，接着调用聚合函数按照设置好的页面大小对行号进行分组，最终计算出每页的最小值和最大值。
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT
     floor((t.row_num - 1) / 1000) + 1 AS page_num,
@@ -114,6 +122,8 @@ ORDER BY page_num;
 
 例如，假如我们想要删除第 1 页上的所有书籍的基本信息，我们可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
 
+{{< copyable "sql" >}}
+
 ```sql
 DELETE FROM books
 WHERE
@@ -125,6 +135,8 @@ ORDER BY id;
 <div label="Java" href="offset-java">
 
 在 Java 语言当中，我们可以定义一个 `PageMeta` 类来存储分页元信息。
+
+{{< copyable "java" >}}
 
 ```java
 public class PageMeta<K> {
@@ -139,6 +151,8 @@ public class PageMeta<K> {
 ```
 
 我们定义一个 `getPageMetaList()` 方法获取到分页元信息列表，然后定义一个可以根据页面元信息批量删除数据的方法 `deleteBooksByPageMeta()`。
+
+{{< copyable "java" >}}
 
 ```java
 public class BookDAO {
@@ -184,6 +198,8 @@ public class BookDAO {
 
 如果我们想要删除第 1 页的数据，我们可以这样写：
 
+{{< copyable "java" >}}
+
 ```java
 List<PageMeta<Long>> pageMetaList = bookDAO.getPageMetaList();
 if (pageMetaList.size() > 0) {
@@ -192,6 +208,8 @@ if (pageMetaList.size() > 0) {
 ```
 
 如果我们希望通过分页分批地删除所有书籍数据，可以这样写：
+
+{{< copyable "java" >}}
 
 ```java
 List<PageMeta<Long>> pageMetaList = bookDAO.getPageMetaList();
@@ -221,6 +239,8 @@ pageMetaList.forEach((pageMeta) -> {
 
 例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT
     floor((t.row_num - 1) / 1000) + 1 AS page_num,
@@ -244,6 +264,8 @@ ORDER BY page_num;
 例如，我们想要对 `ratings` 表里的数据进行分页批处理。
 
 我们先可以通过下面的 SQL 语句来在制造元信息表。因为组成 key 的 `book_id` 列和 `user_id` 列都是 `bigint` 类型，转换为字符串是并不是等宽的，因此我们需要根据 `bigint` 类型的最大位数 19，使用 `LPAD` 函数在长度不够时用 `0` 补齐。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -280,6 +302,8 @@ ORDER BY page_num;
 ```
 
 假如我们想要删除第 1 页上的所有评分记录，我们可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM ratings

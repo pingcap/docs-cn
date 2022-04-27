@@ -26,16 +26,20 @@ summary: 使用 Follower Read 在特定情况下加速查询。
 
 你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower` 或 `leader-and-follower` 开启 TiDB 的 Follower Read 功能：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
 
-你可以通过 [Follower Read - 使用方式](https://docs.pingcap.com/zh/tidb/dev/follower-read#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F) 了解该变量的更多细节。
+你可以通过 [Follower Read - 使用方式](https://docs.pingcap.com/zh/tidb/stable/follower-read#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F) 了解该变量的更多细节。
 
 </div>
 <div label="Java">
 
 在 Java 语言当中，我们可以定义一个 `FollowerReadHelper` 类用于开启 Follower Read 功能：
+
+{{< copyable "java" >}}
 
 ```java
 public enum FollowReadMode {
@@ -78,6 +82,8 @@ public class FollowerReadHelper {
 ```
 
 在需要使用从 Follower 节点读取数据时，通过 `setSessionReplicaRead(conn, FollowReadMode.LEADER_AND_FOLLOWER)` 方法在当前 Session 开启能够在 Leader 节点和 Follower 节点进行负载均衡的 Follower Read 功能，当连接断开时，会恢复到原来的模式。
+
+{{< copyable "java" >}}
 
 ```java
 public static class AuthorDAO {
