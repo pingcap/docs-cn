@@ -400,7 +400,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ## storage.flow-control
 
-在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在写入量较大时卡住 Raftstore 或 Apply 线程导致 QPS 下降的问题。本节介绍 TiKV 流量控制机制相关的配置项。
+在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制卡住 Raftstore 或 Apply 线程导致的次生问题。本节介绍 TiKV 流量控制机制相关的配置项。
 
 ### `enable`
 
@@ -409,22 +409,22 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ### `memtables-threshold`
 
-+ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。
++ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).max-write-buffer-number` 的配置。
 + 默认值：5
 
 ### `l0-files-threshold`
 
-+ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`的配置。
 + 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的配置。
 + 默认值："192GB"
 
 ### `hard-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).hard-pending-compaction-bytes-limit` 的配置。
 + 默认值："1024GB"
 
 ## storage.io-rate-limit
@@ -537,11 +537,17 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：MB|GB
 
+### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.3 版本开始引入</span>
+
++ 压缩非必要 Raft 日志的时间间隔
++ 默认值："2s"
++ 最小值："0s"
+
 ### `raft-log-gc-tick-interval`
 
 + 删除 Raft 日志的轮询任务调度间隔时间，0 表示不启用。
-+ 默认值：10s
-+ 最小值：0
++ 默认值："3s"
++ 最小值："0s"
 
 ### `raft-log-gc-threshold`
 
@@ -557,6 +563,12 @@ raftstore 相关的配置项。
 ### `raft-log-gc-size-limit`
 
 + 允许残余的 Raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
++ 最小值：大于 0
+
+### `raft-log-reserve-max-ticks` <span class="version-mark">从 v5.3 版本开始引入</span>
+
++ 超过本配置项设置的的 tick 数后，即使剩余 Raft 日志的数量没有达到 `raft-log-gc-threshold` 设置的值，TiKV 也会进行 GC 操作。
++ 默认值：6
 + 最小值：大于 0
 
 ### `raft-entry-cache-life-time`
@@ -1131,7 +1143,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `max-write-buffer-number`
 
-+ 最大 memtable 个数。
++ 最大 memtable 个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.memtables-threshold` 会覆盖此配置。
 + 默认值：5
 + 最小值：0
 
@@ -1167,7 +1179,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `level0-slowdown-writes-trigger`
 
-+ 触发 write stall 的 L0 文件最大个数。
++ 触发 write stall 的 L0 文件最大个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.l0-files-threshold` 会覆盖此配置。
 + 默认值：20
 + 最小值：0
 
@@ -1219,13 +1231,13 @@ bloom filter 为每个 key 预留的长度。
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的软限制。
++ pending compaction bytes 的软限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.soft-pending-compaction-bytes-limit` 会覆盖此配置。
 + 默认值：192GB
 + 单位：KB|MB|GB
 
 ### `hard-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的硬限制。
++ pending compaction bytes 的硬限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.hard-pending-compaction-bytes-limit` 会覆盖此配置。
 + 默认值：256GB
 + 单位：KB|MB|GB
 
