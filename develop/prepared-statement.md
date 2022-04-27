@@ -24,7 +24,7 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 | `{prepared_statement_name}` |             预处理语句名称             |
 | `{prepared_statement_sql}`  | 预处理语句 SQL，以英文半角问号做占位符 |
 
-您可查看 [PREPARE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-prepare) 获得更多信息。
+你可查看 [PREPARE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-prepare) 获得更多信息。
 
 ### 使用预处理语句
 
@@ -41,7 +41,7 @@ EXECUTE {prepared_statement_name} USING @{parameter_name};
 |     `{parameter_value}`     |                              用户参数值                               |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-您可查看 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 获得更多信息。
+你可查看 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 获得更多信息。
 
 ### 删除预处理语句
 
@@ -53,7 +53,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 | :-------------------------: | :-------------------------------------------------------------------: |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-您可查看 [DEALLOCATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-deallocate) 获得更多信息。
+你可查看 [DEALLOCATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-deallocate) 获得更多信息。
 
 ## 例子
 
@@ -124,7 +124,7 @@ try (Connection connection = ds.getConnection()) {
 
 ### 插入示例
 
-还是使用 [books 表](/develop/bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果您对插入数据还不了解，可以在[插入数据](/develop/insert-data.md)一节了解更多数据插入的相关信息。
+还是使用 [books 表](/develop/bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/insert-data.md)一节了解更多数据插入的相关信息。
 
 <SimpleTab>
 

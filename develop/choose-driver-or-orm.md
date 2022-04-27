@@ -53,7 +53,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 > 注意：
 >
 > Hibernate 当前 [不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 当前版本也 [不支持 Savepoint](https://github.com/pingcap/tidb/issues/6840)。
-> 若您使用 Spring Data JPA 等框架，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`
+> 若你使用 Spring Data JPA 等框架，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`
 >
 > 你可以使用[这个例子](https://github.com/Icemap/tidb-savepoint)，快速复现 TiDB 与 MySQL 对 Savepoint 的输出结果：
 >
@@ -72,9 +72,9 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 > id: 1, coins: 1, goods: 1
 > ```
 
-您可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取您的应用程序的所有依赖项，且会帮您下载依赖项的间接依赖，而无需您手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
+你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
 
-如果您使用的是 `Maven`，请将以下内容添加到您的 `<dependencies></dependencies>`：
+如果你使用的是 `Maven`，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 ```xml
 <dependency>
@@ -90,7 +90,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 </dependency>
 ```
 
-如果您使用的是 `Gradle`， 请将以下内容添加到您的 `dependencies`：
+如果你使用的是 `Gradle`， 请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
@@ -100,4 +100,4 @@ implementation 'mysql:mysql-connector-java:8.0.28'
 - 有关原生 Java 使用 Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#步骤-2-获取代码)。
 - 有关 Spring 使用 Spring Data JPA / Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
 
-额外的，您需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm) 中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若您无法升级 Hibernate 版本，那么请您直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence) 等。
+额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm) 中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence) 等。

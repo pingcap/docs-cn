@@ -35,7 +35,7 @@ DELETE FROM {table} WHERE {filter}
 
 - 始终在删除语句中指定 `WHERE` 子句。如果 `UPDATE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB）。
-- 如果您需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-truncate) 语句。
+- 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-truncate) 语句。
 - 查看 [性能注意事项](#性能注意事项)
 
 ## 例子
@@ -91,27 +91,27 @@ try (Connection connection = ds.getConnection()) {
 
 ### TiDB GC 机制
 
-`DELETE` 语句运行之后 TiDB 并非立刻删除数据，而是将这些数据标记为可删除。然后等待 TiDB GC (Garbage Collection) 来清理不再需要的旧数据。因此，您的 `DELETE` 语句**_并不会_**立即减少磁盘用量。
+`DELETE` 语句运行之后 TiDB 并非立刻删除数据，而是将这些数据标记为可删除。然后等待 TiDB GC (Garbage Collection) 来清理不再需要的旧数据。因此，你的 `DELETE` 语句**_并不会_**立即减少磁盘用量。
 
 GC 在默认配置中，为 10 分钟触发一次，每次 GC 都会计算出一个名为 `safe_point` 的时间点，这个时间点前的数据，都不会再被使用到，因此，TiDB 可以安全的对数据进行清除。
 
-GC 的具体实现方案和细节此处不再展开，您可阅读 [GC 机制简介](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview) 来获得更详细的 GC 说明。
+GC 的具体实现方案和细节此处不再展开，你可阅读 [GC 机制简介](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview) 来获得更详细的 GC 说明。
 
 ### 更新统计信息
 
-TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来决定索引的选择，因此，在大批量的数据删除之后，很有可能会导致索引选择不准确的情况发生。您可以使用[手动收集](https://docs.pingcap.com/zh/tidb/stable/statistics#%E6%89%8B%E5%8A%A8%E6%94%B6%E9%9B%86)的办法，更新统计信息。用以给 TiDB 优化器以更准确的统计信息来提供 SQL 性能优化。
+TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来决定索引的选择，因此，在大批量的数据删除之后，很有可能会导致索引选择不准确的情况发生。你可以使用[手动收集](https://docs.pingcap.com/zh/tidb/stable/statistics#%E6%89%8B%E5%8A%A8%E6%94%B6%E9%9B%86)的办法，更新统计信息。用以给 TiDB 优化器以更准确的统计信息来提供 SQL 性能优化。
 
 ## 批量删除
 
 需要删除表中多行的数据，可选择 [`DELETE` 示例](#例子)，并使用 `WHERE` 子句过滤需要删除的数据。
 
-但如果你需要删除大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只删除一部分数据，直到删除全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB）。您可以在程序或脚本中使用循环来完成操作。
+但如果你需要删除大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只删除一部分数据，直到删除全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB）。你可以在程序或脚本中使用循环来完成操作。
 
 本页提供了编写脚本来处理循环删除的示例，该示例演示了应如何进行 `SELECT` 和 `DELETE` 的组合，完成循环删除。
 
 ### 编写批量删除循环
 
-首先，您应在您的应用或脚本的循环中，编写一个 `SELECT` 查询。这个查询的返回值可以作为需要删除的行的主键。需要注意的是，定义这个 `SELECT` 查询时，需要注意使用 `WHERE` 子句过滤需要删除的行。
+首先，你应在你的应用或脚本的循环中，编写一个 `SELECT` 查询。这个查询的返回值可以作为需要删除的行的主键。需要注意的是，定义这个 `SELECT` 查询时，需要注意使用 `WHERE` 子句过滤需要删除的行。
 
 ### 批量删除例子
 

@@ -53,14 +53,14 @@ CREATE TABLE {table_name} ( {elements} );
 
 以下是命名表时需要遵循的一些最佳实践：
 
-- 使用 `完全限定` 的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为您在不指定数据库名称时，TiDB 将使用您 `SQL 会话` 中的[当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。若您未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
-- 请使用有意义的表名，例如，若您需要创建一个用户表，您可以使用名称：`user`, `t_user`, `users` 等，或遵循您公司或组织的命名规范。如果您的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#3-表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
+- 使用 `完全限定` 的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为你在不指定数据库名称时，TiDB 将使用你 `SQL 会话` 中的[当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。若你未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
+- 请使用有意义的表名，例如，若你需要创建一个用户表，你可以使用名称：`user`, `t_user`, `users` 等，或遵循你公司或组织的命名规范。如果你的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#3-表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
 - 多个单词以下划线分隔，不推荐超过 32 个字符。
 - 不同业务模块的表单独建立 `DATABASE`，并增加相应注释
 
 #### 表命名示例
 
-假设您需要创建一个表来存储 `bookshop` 库中的用户信息。
+假设你需要创建一个表来存储 `bookshop` 库中的用户信息。
 
 注意，此时因为一个列都没被添加，所以下方这条 SQL 暂时还不能被运行：
 
@@ -93,7 +93,7 @@ CREATE TABLE `bookshop`.`users` (
 - 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列
 - 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引
 - 查看[添加列约束](#添加列约束)，决定是否添加约束到列中
-- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
+- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
 
 #### 列定义示例
 
@@ -113,7 +113,7 @@ CREATE TABLE `bookshop`.`users` (
 
 最后，我们又加入了一个字段名为 `balance` 用以表示用户的余额，类型为 [decimal](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B)，且其精度为 15，比例为 2。简单的说明一下精度和比例代表的含义，精度代表字段数值的总位数，而比例代表小数点后有多少位。例如: `decimal(5,2)`，即精度为 5，比例为 2 时，其取值范围为 `-999.99` 到 `999.99`。`decimal(6,1)` ，即精度为 6，比例为 1 时，其取值范围为 `-99999.9` 到 `99999.9`。`decimal` 类型为定点数，可精确保存数字，在需要精确数字的场景（如用户财产相关）中，请确保使用[定点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B)类型。
 
-TiDB 支持许多其他的列数据类型，包含 [整数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B)、[浮点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B)、[定点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B)、[时间](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time#datetime-%E7%B1%BB%E5%9E%8B)、[枚举](https://docs.pingcap.com/zh/tidb/stable/data-type-string#enum-%E7%B1%BB%E5%9E%8B) 等，可参考支持的列的[数据类型](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)，并使用与您准备保存在数据库内的数据匹配的`数据类型`。
+TiDB 支持许多其他的列数据类型，包含 [整数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B)、[浮点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B)、[定点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B)、[时间](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time#datetime-%E7%B1%BB%E5%9E%8B)、[枚举](https://docs.pingcap.com/zh/tidb/stable/data-type-string#enum-%E7%B1%BB%E5%9E%8B) 等，可参考支持的列的[数据类型](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)，并使用与你准备保存在数据库内的数据匹配的`数据类型`。
 
 让我们稍微提升一下复杂度，例如我们会选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的 唯一标识、名称、书籍类型（如：杂志 / 动漫 / 教辅 等）、库存、价格、出版时间 字段。
 
@@ -334,7 +334,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > Note:
 >
-> 如果您的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
 
 随后正常进行查询即可：
 

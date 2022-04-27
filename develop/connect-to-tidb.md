@@ -20,7 +20,7 @@ mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 
 ## JDBC
 
-您可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象 (它们都实现了 `DataSource` 接口)，并使用 `setURL` 函数设置连接字符串。
+你可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象 (它们都实现了 `DataSource` 接口)，并使用 `setURL` 函数设置连接字符串。
 
 例如：
 
@@ -43,9 +43,9 @@ mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&pa
 
 ## Hibernate
 
-您可以使用 [Hibernate ORM](https://hibernate.org/orm/) 连接到 TiDB，请将 Hibernate 的配置中的 `hibernate.connection.url` 设置为合法的 TiDB 连接字符串。
+你可以使用 [Hibernate ORM](https://hibernate.org/orm/) 连接到 TiDB，请将 Hibernate 的配置中的 `hibernate.connection.url` 设置为合法的 TiDB 连接字符串。
 
-例如，您的配置被写在 `hibernate.cfg.xml` 文件中，那么你的配置文件应该为：
+例如，你的配置被写在 `hibernate.cfg.xml` 文件中，那么你的配置文件应该为：
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
@@ -70,7 +70,7 @@ SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml
 这里有几个需要注意的点：
 
 1. 因为我们使用的配置文件 `hibernate.cfg.xml` 为 XML 格式，而 `&` 字符，在 XML 中属于特殊字符，因此，需将 `&` 更改为 `&amp;`。即，我们的连接字符串 `hibernate.connection.url` 由 `jdbc:mysql://{host}:{port}/{database}?user={user}&password={password}` 改为了 `jdbc:mysql://{host}:{port}/{database}?user={user}&amp;password={password}`。
-2. 在您使用 Hibernate 时，我们建议您使用 TiDB 方言，即 `hibernate.dialect` 设置为 `org.hibernate.dialect.TiDBDialect`。
+2. 在你使用 Hibernate 时，我们建议你使用 TiDB 方言，即 `hibernate.dialect` 设置为 `org.hibernate.dialect.TiDBDialect`。
 3. Hibernate 在版本 `6.0.0.Beta2` 及以上可支持 TiDB 方言，因此我们推荐使用 `6.0.0.Beta2` 及以上版本的 Hibernate。
 
 更多有关 Hibernate 连接参数的信息，请参阅 [Hibernate 官方文档](https://hibernate.org/orm/documentation)

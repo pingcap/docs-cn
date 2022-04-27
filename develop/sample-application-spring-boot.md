@@ -6,13 +6,13 @@ title: 使用 Spring Boot 构建 TiDB 应用程序
 
 # 使用 Spring Boot 构建 TiDB 应用程序
 
-本教程向您展示如何使用 TiDB 构建 [Spring Boot](https://spring.io/projects/spring-boot) Web 应用程序。使用 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-java) 下载。
+本教程向你展示如何使用 TiDB 构建 [Spring Boot](https://spring.io/projects/spring-boot) Web 应用程序。使用 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-java) 下载。
 
 这是一个较为完整的构建 Restful API 的示例应用程序，展示了一个使用 `TiDB` 作为数据库的通用 `Spring Boot` 后端服务。我们设计了以下过程，用于还原一个现实场景：
 
 这是一个关于游戏的例子，每个玩家有两个属性：金币数 `coins` 和货物数 `goods`。且每个玩家都拥有一个字段 `id`，作为玩家的唯一标识。玩家在金币数和货物数充足的情况下，可以自由的交易。
 
-您可以以此示例为基础，构建自己的应用程序。
+你可以以此示例为基础，构建自己的应用程序。
 
 ## 步骤 1. 启动你的 TiDB 集群
 
@@ -79,7 +79,7 @@ To view the Grafana: http://127.0.0.1:3000
 
 ## 步骤 2. 安装 JDK
 
-请在您的计算机上下载并安装 `Java Development Kit` (JDK)，这是 Java 开发的必备工具。`Spring Boot` 支持 Java 版本 8 以上的 JDK，由于 `Hibernate` 版本的缘故，我们推荐使用 Java 版本 11 以上的 JDK 。
+请在你的计算机上下载并安装 `Java Development Kit` (JDK)，这是 Java 开发的必备工具。`Spring Boot` 支持 Java 版本 8 以上的 JDK，由于 `Hibernate` 版本的缘故，我们推荐使用 Java 版本 11 以上的 JDK 。
 
 我们同时支持 `Oracle JDK` 和 `OpenJDK`，请自行选择，本教程将使用 版本 17 的 `OpenJDK` 。
 
@@ -160,9 +160,9 @@ yum install maven
 >
 > 尽管 SQL 相对标准化，但每个数据库供应商都使用 ANSI SQL 定义语法的子集和超集。这被称为数据库的方言。 Hibernate 通过其 org.hibernate.dialect.Dialect 类和每个数据库供应商的各种子类来处理这些方言的变化。
 >
-> 在大多数情况下，Hibernate 将能够通过在启动期间通过 JDBC 连接的一些返回值来确定要使用的正确方言。有关 Hibernate 确定要使用的正确方言的能力（以及您影响该解析的能力）的信息，请参阅[方言解析](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#portability-dialectresolver)。
+> 在大多数情况下，Hibernate 将能够通过在启动期间通过 JDBC 连接的一些返回值来确定要使用的正确方言。有关 Hibernate 确定要使用的正确方言的能力（以及你影响该解析的能力）的信息，请参阅[方言解析](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#portability-dialectresolver)。
 >
-> 如果由于某种原因无法确定正确的方言，或者您想使用自定义方言，则需要设置 hibernate.dialect 配置项。
+> 如果由于某种原因无法确定正确的方言，或者你想使用自定义方言，则需要设置 hibernate.dialect 配置项。
 >
 > _—— 节选自 Hibernate 官方文档： [Database Dialect](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#database-dialect)_
 
@@ -208,11 +208,11 @@ yum install maven
 
 此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个 在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/transaction-overview.md)。
 
-如果您想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
+如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
 ### 步骤 5.1 TiDB Cloud 更改参数
 
-若您使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `application.yml` (位于 `src/main/resources` 内) 关于 spring.datasource.url / spring.datasource.username / spring.datasource.password 的参数：
+若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `application.yml` (位于 `src/main/resources` 内) 关于 spring.datasource.url / spring.datasource.username / spring.datasource.password 的参数：
 
 ```yaml
 spring:
@@ -252,7 +252,7 @@ spring:
 
 ### 步骤 5.2 运行
 
-打开终端，确保您已经进入 spring-jpa-hibernate 目录，若还未在此目录，请使用命令进入：
+打开终端，确保你已经进入 spring-jpa-hibernate 目录，若还未在此目录，请使用命令进入：
 
 ```bash
 cd <path>/tidb-example-java/spring-jpa-hibernate
@@ -266,7 +266,7 @@ make
 
 #### 手动构建并运行
 
-我们推荐您使用 Make 方式进行构建并运行，当然，若您希望手动进行构建，请依照以下步骤逐步运行，可以得到相同的结果：
+我们推荐你使用 Make 方式进行构建并运行，当然，若你希望手动进行构建，请依照以下步骤逐步运行，可以得到相同的结果：
 
 清除缓存并打包：
 
@@ -324,7 +324,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 输出日志中，提示应用程序在启动过程中做了什么，这里显示应用程序使用 [Tomcat](https://tomcat.apache.org/) 启动了一个 `Servlet`，使用 Hibernate 作为 ORM ，[HikariCP](https://github.com/brettwooldridge/HikariCP) 作为数据库连接池的实现，使用了 `org.hibernate.dialect.TiDBDialect` 作为数据库方言。启动后，Hibernate 删除并重新创建了表 `player_jpa`，及序列 `player_jpa_id_seq`。在启动的最后，监听了 8080 端口，对外提供 HTTP 服务。
 
-如果您想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
+如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
 ## 步骤 6. HTTP 请求
 
@@ -332,7 +332,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 ### 步骤 6.1 使用 Postman 请求(推荐)
 
-您可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-java/main/spring-jpa-hibernate/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
+你可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-java/main/spring-jpa-hibernate/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
 
 ![postman import](/media/develop/IMG_20220402-003303222.png)
 
@@ -601,7 +601,7 @@ false
 
 #### Maven 配置
 
-`pom.xml` 文件为 Maven 配置，在文件内声明了项目的 Maven 依赖，打包方法，打包信息等，你可以通过[创建相同依赖空白程序](#创建相同依赖空白程序可选) 这一节来复刻此配置文件的生成流程，当然，也可直接复制至您的项目来使用。
+`pom.xml` 文件为 Maven 配置，在文件内声明了项目的 Maven 依赖，打包方法，打包信息等，你可以通过[创建相同依赖空白程序](#创建相同依赖空白程序可选) 这一节来复刻此配置文件的生成流程，当然，也可直接复制至你的项目来使用。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -879,7 +879,7 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 @Query(value = "SELECT * FROM player_jpa WHERE id = :id FOR UPDATE", nativeQuery = true)
 ```
 
-直接使用 SQL 的 `FOR UPDATE` 来增加锁。您也可通过 TiDB [SELECT 文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-select) 进行更深层次的原理学习。
+直接使用 SQL 的 `FOR UPDATE` 来增加锁。你也可通过 TiDB [SELECT 文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-select) 进行更深层次的原理学习。
 
 ### 逻辑实现
 
@@ -1097,7 +1097,7 @@ public class PlayerController {
 }
 ```
 
-`PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循您公司或团体的规则。`PlayerController` 有许多注解，我们将进行逐一解释：
+`PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循你公司或团体的规则。`PlayerController` 有许多注解，我们将进行逐一解释：
 
 - [@RestController](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html) 将 `PlayerController` 声明为一个 [Web Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)，且将返回值序列化为 JSON 输出。
 - [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求

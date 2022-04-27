@@ -23,8 +23,8 @@ title: 更新数据
 
 > Note:
 >
-> 如果您需要更新大量的行，比如数万甚至更多行，那我们建议不要一次性进行完整的更新，而是每次迭代更新一部分，直到所有行全部更新。您可以编写脚本或程序，使用循环完成此操作。
-> 您可参考[批量更新](#批量更新)获得指引
+> 如果你需要更新大量的行，比如数万甚至更多行，那我们建议不要一次性进行完整的更新，而是每次迭代更新一部分，直到所有行全部更新。你可以编写脚本或程序，使用循环完成此操作。
+> 你可参考[批量更新](#批量更新)获得指引
 
 ### SQL 语法
 
@@ -151,13 +151,13 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 需要更新表中多行的数据，可选择 [使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
 
-但如果你需要更新大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)），或产生大量冲突（[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)）。您可以在程序或脚本中使用循环来完成操作。
+但如果你需要更新大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)），或产生大量冲突（[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)）。你可以在程序或脚本中使用循环来完成操作。
 
 本页提供了编写脚本来处理循环更新的示例，该示例演示了应如何进行 `SELECT` 和 `UPDATE` 的组合，完成循环更新。
 
 ### 编写批量更新循环
 
-首先，您应在您的应用或脚本的循环中，编写一个 `SELECT` 查询。这个查询的返回值可以作为需要更新的行的主键。需要注意的是，定义这个 `SELECT` 查询时，需要注意使用 `WHERE` 子句过滤需要更新的行。
+首先，你应在你的应用或脚本的循环中，编写一个 `SELECT` 查询。这个查询的返回值可以作为需要更新的行的主键。需要注意的是，定义这个 `SELECT` 查询时，需要注意使用 `WHERE` 子句过滤需要更新的行。
 
 ### 例子
 
@@ -165,7 +165,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 这时我们需要对 `ratings` 表内之前 5 分制的数据进行乘 2 操作，同时需向 `ratings` 表内添加一个新列，以指示行是否已经被更新了。使用此列，我们可以在 `SELECT` 中过滤掉已经更新的行，这将防止脚本崩溃时对行进行多次更新，导致不合理的数据出现。
 
-例如，您可以创建一个名为 `ten_point`，数据类型为 [BOOL](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
+例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
 
 ```sql
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;

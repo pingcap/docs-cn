@@ -17,7 +17,7 @@ title: 插入数据
 
 ## 插入行
 
-假设您需要插入多行数据，那么会有两种插入的办法，假设我们需要插入 3 个玩家数据：
+假设你需要插入多行数据，那么会有两种插入的办法，假设我们需要插入 3 个玩家数据：
 
 - 一个 `多行插入语句`:
 
@@ -75,7 +75,7 @@ try (Connection connection = ds.getConnection()) {
 }
 ```
 
-另外，由于 MySQL JDBC Driver 默认设置问题，您需更改部分参数，以获得更好的批量插入性能:
+另外，由于 MySQL JDBC Driver 默认设置问题，你需更改部分参数，以获得更好的批量插入性能:
 
 |            参数            |                 作用                  |                                                                     推荐场景                                                                      |         推荐配置         |
 | :------------------------: | :-----------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |
@@ -120,7 +120,7 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 ## 批量插入
 
-如果您需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要您自行处理异常等问题。我们推荐使用 PingCAP 提供的一系列工具进行数据迁移：
+如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。我们推荐使用 PingCAP 提供的一系列工具进行数据迁移：
 
 - 数据导出工具：[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
 - 数据导入工具：[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](https://docs.pingcap.com/zh/tidb/stable/migrate-aurora-to-tidb)。同时支持在本地盘或 [Amazon S3 云盘](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages)读取数据。
@@ -149,15 +149,15 @@ INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'n
 ERROR 8216 (HY000): Invalid auto random: Explicit insertion on auto_random column is disabled. Try to set @@allow_auto_random_explicit_insert = true.
 ```
 
-这是旨在提示您，不建议在插入时手动指定 `AUTO_RANDOM` 的列。这时，您有两种解决办法处理此错误：
+这是旨在提示你，不建议在插入时手动指定 `AUTO_RANDOM` 的列。这时，你有两种解决办法处理此错误：
 
-1. (推荐) 插入语句中去除此列，使用 TiDB 帮您初始化的 `AUTO_RANDOM` 值。这样符合 `AUTO_RANDOM` 的语义。
+1. (推荐) 插入语句中去除此列，使用 TiDB 帮你初始化的 `AUTO_RANDOM` 值。这样符合 `AUTO_RANDOM` 的语义。
 
 ```sql
 INSERT INTO `bookshop`.`users` (`balance`, `nickname`) VALUES (0.00, 'nicky');
 ```
 
-2. 如果您确认一定需要指定此列，那么可以使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable)通过更改用户变量的方式，允许在插入时，指定 `AUTO_RANDOM` 的列。
+2. 如果你确认一定需要指定此列，那么可以使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable)通过更改用户变量的方式，允许在插入时，指定 `AUTO_RANDOM` 的列。
 
 ```sql
 SET @@allow_auto_random_explicit_insert = true;
@@ -166,4 +166,4 @@ INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'n
 
 ## 使用 HTAP
 
-在 TiDB 中，使用 HTAP 能力无需您在插入数据时进行额外操作。不会有任何额外的插入逻辑，由 TiDB 自动进行数据的一致性保证。您只需要在创建表后，[开启列存副本同步](/develop/create-table.md#使用-htap-能力)，就可以直接使用列存副本来加速你的查询。
+在 TiDB 中，使用 HTAP 能力无需你在插入数据时进行额外操作。不会有任何额外的插入逻辑，由 TiDB 自动进行数据的一致性保证。你只需要在创建表后，[开启列存副本同步](/develop/create-table.md#使用-htap-能力)，就可以直接使用列存副本来加速你的查询。

@@ -26,7 +26,7 @@ title: 乐观事务和悲观事务
 
 因为我们使用多个线程模拟多用户同时插入的情况，因此我们需要使用一个线程安全的连接对象，这里我们使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 作为我们此处 Demo 使用的线程池。
 
-如果您使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
+如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

@@ -6,13 +6,13 @@ title: 使用 TiDB 的增删改查 SQL
 
 ## 在开始之前
 
-请确保您已经连接到 TiDB 集群，若未连接，请参考 [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个免费集群。
+请确保你已经连接到 TiDB 集群，若未连接，请参考 [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个免费集群。
 
 ## 基本 SQL 操作
 
 > Note:
 >
-> 此处文档引用并简化自 TiDB 文档中的 [SQL 基本操作](https://docs.pingcap.com/zh/tidb/stable/basic-sql-operations)，您可直接前往此文档获取更全面、深入的 SQL 基本操作信息。
+> 此处文档引用并简化自 TiDB 文档中的 [SQL 基本操作](https://docs.pingcap.com/zh/tidb/stable/basic-sql-operations)，你可直接前往此文档获取更全面、深入的 SQL 基本操作信息。
 
 成功部署 TiDB 集群之后，便可以在 TiDB 中执行 SQL 语句了。因为 TiDB 兼容 MySQL，你可以使用 MySQL 客户端连接 TiDB，并且[大多数情况下](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)可以直接执行 MySQL 语句。
 

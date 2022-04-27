@@ -1,10 +1,8 @@
 ---
-title: Transaction
+title: 事务概览
 ---
 
-# Transaction
-
-## 概览
+# 事务概览
 
 TiDB 支持完整的分布式事务，提供[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)与[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、乐观事务和悲观事务、事务的隔离级别，以及乐观事务应用端重试和错误处理。
 

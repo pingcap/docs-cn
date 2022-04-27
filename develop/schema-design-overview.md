@@ -11,13 +11,13 @@ title: 概述
 > 此处将术语会有歧义，为消除歧义，在此作出数据库模式设计文档部分中的术语简要约定：
 >
 > 1. 为避免和通用术语[数据库 (Database)](https://en.wikipedia.org/wiki/Database)混淆，我们将逻辑对象称为`数据库 (Database)`，TiDB 仍使用原名称，并将 TiDB 的部署实例称为`集群 (Cluster)`。
-> 2. 因为 TiDB 使用与 MySQL 兼容的语法，在此语法下，`模式 (Schema)` 仅代表[通用术语定义](https://en.wiktionary.org/wiki/schema)，并无逻辑对象定义，可参考此[官方文档](https://dev.mysql.com/doc/refman/8.0/en/create-database.html)。若您从其他拥有 `Schema` 逻辑对象的数据库（如：[PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html)、[Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/21/tdddg/creating-managing-schema-objects.html)、[Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/create-a-database-schema?view=sql-server-ver15) 等）迁移而来，请注意此区别。
+> 2. 因为 TiDB 使用与 MySQL 兼容的语法，在此语法下，`模式 (Schema)` 仅代表[通用术语定义](https://en.wiktionary.org/wiki/schema)，并无逻辑对象定义，可参考此[官方文档](https://dev.mysql.com/doc/refman/8.0/en/create-database.html)。若你从其他拥有 `Schema` 逻辑对象的数据库（如：[PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html)、[Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/21/tdddg/creating-managing-schema-objects.html)、[Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/create-a-database-schema?view=sql-server-ver15) 等）迁移而来，请注意此区别。
 
 ## 数据库 Database
 
 TiDB 语境中的 Database 或者说数据库，可以认为是表和索引等对象的集合。
 
-TiDB 集群包含一个名为 `test` 的数据库。但我们建议您自行创建数据库，而不是使用 `test` 数据库。
+TiDB 集群包含一个名为 `test` 的数据库。但我们建议你自行创建数据库，而不是使用 `test` 数据库。
 
 ## 表 Table
 
@@ -42,7 +42,7 @@ TiDB 语境中的 Table 或者说表，从属于某个[数据库](#数据库-dat
 
 ### 专用索引
 
-TiDB 支持一些特殊场景专用的索引，用以提高特定用例中的查询性能。有关这些专用索引的指导，请参阅以下页面：
+TiDB 支持一些特殊场景专用的索引，用以提高特定用例中的查询性能。有关这些专用索引的介绍，请参阅以下页面：
 
 |                                                           索引和约束                                                           |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | :----------------------------------------------------------------------------------------------------------------------------: | :------: | :------: | :------: | :------: | :------: | :------: |

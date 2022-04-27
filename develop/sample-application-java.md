@@ -559,7 +559,7 @@ public class JDBCExample
 
 #### 步骤 3.1 JDBC 表初始化
 
-使用 JDBC 时，需手动初始化数据库表，若您本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
+使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
 
 ```bash
 make mysql
@@ -571,11 +571,11 @@ make mysql
 mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 ```
 
-若您不使用本地集群，或未安装 `mysql-client`，请直接登录您的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
+若你不使用本地集群，或未安装 `mysql-client`，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
 
 #### 步骤 3.2 TiDB Cloud 更改参数
 
-若您使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
+若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
 
 ```java
 mysqlDataSource.setServerName("localhost");
@@ -913,7 +913,7 @@ public class HibernateExample
 
 #### 步骤 3.1 TiDB Cloud 更改参数
 
-若您使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url / hibernate.connection.username / hibernate.connection.password 的参数：
+若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url / hibernate.connection.username / hibernate.connection.password 的参数：
 
 ```xml
 <?xml version='1.0' encoding='utf-8'?>

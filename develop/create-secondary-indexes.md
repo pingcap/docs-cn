@@ -4,7 +4,7 @@ title: 创建二级索引
 
 # 创建二级索引
 
-索引是集群中的逻辑对象，可以帮助 TiDB 集群查询 更有效的查找数据。当您创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[此文档](https://docs.pingcap.com/zh/tidb/stable/tidb-best-practices#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95)中查看关于二级索引的更多信息。
+索引是集群中的逻辑对象，可以帮助 TiDB 集群查询 更有效的查找数据。当你创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[此文档](https://docs.pingcap.com/zh/tidb/stable/tidb-best-practices#%E4%BA%8C%E7%BA%A7%E7%B4%A2%E5%BC%95)中查看关于二级索引的更多信息。
 
 此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
 
@@ -35,7 +35,7 @@ CREATE INDEX {index_name} ON {table_name} ({column_names});
 
 ### 新建表的同时创建二级索引
 
-如果您希望在创建表的同时，同时创建二级索引，可在 [CREATE TABLE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-table) 的末尾使用包含 `KEY` 关键字的子句来创建二级索引：
+如果你希望在创建表的同时，同时创建二级索引，可在 [CREATE TABLE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-table) 的末尾使用包含 `KEY` 关键字的子句来创建二级索引：
 
 ```sql
 KEY `{index_name}` (`{column_names}`)
@@ -52,7 +52,7 @@ KEY `{index_name}` (`{column_names}`)
 
 ## 例子
 
-假设您希望 `bookshop` 应用程序有 `查询某个年份出版的所有书籍` 的功能。我们的 `books` 表如下所示:
+假设你希望 `bookshop` 应用程序有 `查询某个年份出版的所有书籍` 的功能。我们的 `books` 表如下所示:
 
 |    字段名    |     类型      |                 含义                  |
 | :----------: | :-----------: | :-----------------------------------: |
@@ -123,9 +123,9 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 
 > Note:
 >
-> 上方执行计划中的的 `TableFullScan`、`IndexRangeScan` 等在 TiDB 内被称为[算子](https://docs.pingcap.com/zh/tidb/stable/explain-overview#%E7%AE%97%E5%AD%90%E7%AE%80%E4%BB%8B)。这里对执行计划的解读及算子等不做进一步的展开，若您对此感兴趣，可点击[此处](https://docs.pingcap.com/zh/tidb/stable/explain-overview)查看更多关于执行计划与 TiDB 算子的相关知识。
+> 上方执行计划中的的 `TableFullScan`、`IndexRangeScan` 等在 TiDB 内被称为[算子](https://docs.pingcap.com/zh/tidb/stable/explain-overview#%E7%AE%97%E5%AD%90%E7%AE%80%E4%BB%8B)。这里对执行计划的解读及算子等不做进一步的展开，若你对此感兴趣，可点击[此处](https://docs.pingcap.com/zh/tidb/stable/explain-overview)查看更多关于执行计划与 TiDB 算子的相关知识。
 >
-> 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 `基于代价的优化方式 (CBO)`，执行计划不仅与规则相关，还和数据分布相关。您可以参阅[此处](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)获得更多 TiDB SQL 性能的描述。
+> 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 `基于代价的优化方式 (CBO)`，执行计划不仅与规则相关，还和数据分布相关。你可以参阅[此处](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)获得更多 TiDB SQL 性能的描述。
 >
 > TiDB 在查询时，还支持显示的使用索引，你可以使用 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 或 [执行计划管理 (SPM)](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
@@ -145,4 +145,4 @@ SHOW INDEXES FROM `bookshop`.`books`;
 2 rows in set (1.63 sec)
 ```
 
-至此，您已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给您的应用程序提供 [写入](/develop/insert-data.md) 和 [读取](/develop/get-data-from-single-table.md) 读取的能力了。
+至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供 [写入](/develop/insert-data.md) 和 [读取](/develop/get-data-from-single-table.md) 读取的能力了。

@@ -6,14 +6,14 @@ title: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
 
 # 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
 
-本页将指导您以最快的方式开始使用 TiDB 。您将使用 TiDB Cloud ，创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+本章节将介绍以最快的方式开始使用 TiDB 。你将使用 TiDB Cloud ，创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
-若您需要在本地计算机上启动 TiDB，请参阅 [本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)
+若你需要在本地计算机上启动 TiDB，请参阅 [本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)
 
 ## 步骤 1. 创建免费集群
 
 1. 如果你还未拥有 TiDB Cloud 账号，请先在此[注册](https://tidbcloud.com/signup)
-2. 使用您的 TiDB Cloud 账号[登录](https://tidbcloud.com/)
+2. 使用你的 TiDB Cloud 账号[登录](https://tidbcloud.com/)
 3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 Developer Tier 方案，或直接点击[这里](https://tidbcloud.com/console/create-cluster?tier=dev)，进入 `Create a Cluster (Dev Tier)` 页面
 4. 请在 `Create a Cluster (Dev Tier)` 页面填写集群名称/密码/云服务商(暂时仅可选择 AWS)/可用区(建议就近选择)后，点击 `Create` 按钮创建集群。
 5. 稍作等待，在 5-15 分钟后，将创建完毕，可在 [Active Clusters](https://tidbcloud.com/console/clusters) 查看创建进度

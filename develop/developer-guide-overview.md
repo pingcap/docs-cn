@@ -1,10 +1,10 @@
 ---
-title: 开发者手册-概览
+title: 开发者手册概览
 ---
 
-# 开发者手册-概览
+# 开发者手册概览
 
-本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议您先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架
+本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架
 
 ## 手册内容
 
@@ -23,7 +23,7 @@ title: 开发者手册-概览
 - 阅读 [TiDB 事务概览](https://docs.pingcap.com/zh/tidb/stable/transaction-overview) 来了解 TiDB 的事务运作方式或查看 [为应用开发程序员准备的事务说明](/develop/transaction-overview.md) 查看应用开发程序员需要了解的事务部分。
 - 此外，你需要了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)
 
-本文以下部分是为应用程序开发者所编写的，如果您对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 中来获取更多 TiDB 的相关信息。
+本文以下部分是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 中来获取更多 TiDB 的相关信息。
 
 ## TiDB 事务机制
 
@@ -37,6 +37,6 @@ TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所�
 
 ## 应用程序与 TiDB 交互的方式
 
-TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么我们建议您使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
+TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么我们建议你使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
 
 因为 TiDB 兼容 MySQL 协议，且兼容 MySQL 语法，因此大多数支持 MySQL 的 ORM 也兼容 TiDB 。
