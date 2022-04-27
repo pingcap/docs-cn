@@ -14,11 +14,11 @@ title: 子查询
 
 通常情况下，子查询语句分为如下几种类型：
 
-- 标量子查询（Scalar Subquery），如 `SELECT (SELECT s1 FROM t2) FROM t1`;
-- 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`;
-- 存在性测试（Existential Test），如 `WHERE NOT EXISTS(SELECT ... FROM t2)`，`WHERE t1.a IN (SELECT ... FROM t2)`;
-- 集合比较（Quantified Comparison），如 `WHERE t1.a = ANY(SELECT ... FROM t2)`;
-- 作为比较运算符操作数的子查询, 如 `WHERE t1.a > (SELECT ... FROM t2)`;
+- 标量子查询（Scalar Subquery），如 `SELECT (SELECT s1 FROM t2) FROM t1`。
+- 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`。
+- 存在性测试（Existential Test），如 `WHERE NOT EXISTS(SELECT ... FROM t2)`，`WHERE t1.a IN (SELECT ... FROM t2)`。
+- 集合比较（Quantified Comparison），如 `WHERE t1.a = ANY(SELECT ... FROM t2)`。
+- 作为比较运算符操作数的子查询, 如 `WHERE t1.a > (SELECT ... FROM t2)`。
 
 ## 子查询的分类
 
@@ -80,7 +80,7 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 ...
 ```
 
-对于存在性测试和集合比较两种情况下的无关联列子查询，TiDB 会将其进行改写和等价替换以获得更好的执行性能，你可以通过阅读[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization) 章节来了解更多的实现细节。
+对于存在性测试和集合比较两种情况下的无关联列子查询，TiDB 会将其进行改写和等价替换以获得更好的执行性能，你可以通过阅读[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization)章节来了解更多的实现细节。
 
 ## 关联子查询
 
