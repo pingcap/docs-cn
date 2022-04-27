@@ -27,6 +27,8 @@ title: 单表查询
 
 在 MySQL Client 等客户端输入并执行如下 SQL 语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT id, name FROM authors;
 ```
@@ -63,6 +65,8 @@ SELECT id, name FROM authors;
 - 使用 `String` 类型变量存放 `varchar` 类型的数据
 - ...
 
+{{< copyable "java" >}}
+
 ```java
 public class Author {
     private Long id;
@@ -76,6 +80,8 @@ public class Author {
      // Skip the getters and setters.
 }
 ```
+
+{{< copyable "java" >}}
 
 ```java
 public class AuthorDAO {
@@ -118,6 +124,8 @@ public class AuthorDAO {
 
 我们可以在 `WHERE` 子句来添加筛选的条件：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM authors WHERE birth_year = 1998;
 ```
@@ -130,6 +138,8 @@ SELECT * FROM authors WHERE birth_year = 1998;
 将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给我们的应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
 
 在处理这类查询时，我们应该使用 [PreparedStatement](/develop/prepared-statement.md) 来替代普通的 Statement。
+
+{{< copyable "java" >}}
 
 ```java
 public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
@@ -159,6 +169,8 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 使用 `ORDER BY` 语句可以让查询结果按照我们所期望的方式进行排序。
 
 例如，我们可以通过下面的 SQL 语句令 `authors` 表的数据根据 `birth_year` 列进行降序（`DESC`）排序，从而得到最年轻的作家列表。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT id, name, birth_year
@@ -190,6 +202,8 @@ ORDER BY birth_year DESC;
 
 如果希望 TiDB 只返回部分结果，我们可以使用 `LIMIT` 语句限制查询结果返回的记录数。
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT id, name, birth_year
 FROM authors
@@ -217,13 +231,15 @@ LIMIT 10;
 10 rows in set (0.11 sec)
 ```
 
-通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过 [TopN 和 Limit 下推](https://docs.pingcap.com/zh/tidb/stable/topn-limit-push-down) 章节了解更多细节。
+通过观察查询结果你会发现，在使用 `LIMIT` 语句之后，查询的时间明显缩短，这是 TiDB 对 LIMIT 子句进行优化后的结果，你可以通过[TopN 和 Limit 下推](https://docs.pingcap.com/zh/tidb/stable/topn-limit-push-down)章节了解更多细节。
 
 ## 聚合查询
 
 如果你想要关注数据整体的情况，而不是部分数据，你可以通过使用 `GROUP BY` 语句配合聚合函数，构建一个聚合查询来帮助你对数据的整体情况有一个更好的了解。
 
 比如说，你希望知道哪些年出生的作家比较多，你可以将作家基本信息按照 `birth_year` 列进行分组，然后分别统计在当年出生的作家数量：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT birth_year, COUNT(DISTINCT id) AS author_count
@@ -253,4 +269,4 @@ ORDER BY author_count DESC;
 71 rows in set (0.00 sec)
 ```
 
-除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览 [GROUP BY 聚合函数](https://docs.pingcap.com/zh/tidb/stable/aggregate-group-by-functions) 章节进行进一步了解。
+除了 `COUNT` 函数外，TiDB 还支持了许多实用的聚合函数，你可以通过浏览[GROUP BY 聚合函数](https://docs.pingcap.com/zh/tidb/stable/aggregate-group-by-functions)章节进行进一步了解。

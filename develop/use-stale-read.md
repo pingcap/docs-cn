@@ -6,13 +6,15 @@ title: Stale Read
 
 Stale Read 是一种读取历史数据版本的机制，通过 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而在数据强一致需求没那么高的场景降低读取数据的延迟。当使用 Stale Read 时，TiDB 默认会随机选择一个副本来读取数据，因此能利用所有保存有副本的节点的处理能力。
 
-在实际的使用当中，请根据具体的[场景](https://docs.pingcap.com/zh/tidb/stable/stale-read#%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0) 判断是否适合在 TiDB 当中开启 Stale Read 功能。如果你的应用程序不能容忍读到非实时的数据，请勿使用 Stale Read，否则读到的数据可能不是最新成功写入的数据。
+在实际的使用当中，请根据具体的[场景](https://docs.pingcap.com/zh/tidb/stable/stale-read#%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0)判断是否适合在 TiDB 当中开启 Stale Read 功能。如果你的应用程序不能容忍读到非实时的数据，请勿使用 Stale Read，否则读到的数据可能不是最新成功写入的数据。
 
 TiDB 为我们提供了语句级别、事务级别、会话级别三种级别的 Stale Read 功能，接下来我们将逐一进行介绍：
 
 ## 引入
 
 在 [Bookshop](/develop/bookshop-schema-design.md) 应用程序当中，你可以通过下面的 SQL 语句查询出最新出版的书籍以及它们的价格：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
@@ -34,6 +36,8 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 我们看到此时（2022-04-20 15:20:00）的列表中，**The Story of Droolius Caesar** 这本小说的价格为 100.0 元。
 
 于此同时，卖家发现这本书很受欢迎，于是他通过下面的 SQL 语句将这本书的价格高到了 150.0 元。
+
+{{< copyable "sql" >}}
 
 ```sql
 UPDATE books SET price = 150 WHERE id = 3181093216;
@@ -69,6 +73,8 @@ Rows matched: 1  Changed: 1  Warnings: 0
 <div label="SQL" href="statement-sql">
 
 你可以在刚刚的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' ORDER BY published_at DESC LIMIT 5;
@@ -109,6 +115,8 @@ ERROR 9006 (HY000): cannot set read timestamp to a future time.
 
 </div>
 <div label="Java" href="statement-java">
+
+{{< copyable "java" >}}
 
 ```java
 public class BookDAO {
@@ -178,6 +186,8 @@ public class BookDAO {
 }
 ```
 
+{{< copyable "java" >}}
+
 ```java
 List<Book> top5LatestBooks = bookDAO.getTop5LatestBooks();
 
@@ -224,11 +234,15 @@ WARN: GC life time is shorter than transaction duration.
 
 例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 START TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
-我们尝试通过 SQL 查询最新书籍的价格，发现**The Story of Droolius Caesar**这本书的价格还是更新之前的价格 100.0 元。
+我们尝试通过 SQL 查询最新书籍的价格，发现 **The Story of Droolius Caesar** 这本书的价格还是更新之前的价格 100.0 元。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
@@ -267,6 +281,8 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 
 我们可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
+{{< copyable "java" >}}
+
 ```java
 public static class StaleReadHelper {
 
@@ -283,6 +299,8 @@ public static class StaleReadHelper {
 ```
 
 然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内我们查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
+
+{{< copyable "java" >}}
 
 ```java
 public class BookDAO {
@@ -323,6 +341,8 @@ public class BookDAO {
     }
 }
 ```
+
+{{< copyable "java" >}}
 
 ```java
 List<Book> top5LatestBooks = bookDAO.getTop5LatestBooks();
@@ -365,6 +385,8 @@ The latest book price (after the transaction commit): 150
 
 例如，我们可以通过下面这个 SQL 将已开启的事务切换到只读模式，通过 `AS OF TIMESTAMP` 语句开启能够读取 5 秒前的历史数据 Stale Read 功能。
 
+{{< copyable "sql" >}}
+
 ```sql
 SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
@@ -373,6 +395,8 @@ SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 <div label="Java" href="next-txn-java">
 
 我们可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
+
+{{< copyable "java" >}}
 
 ```java
 public static class TxnHelper {
@@ -389,6 +413,8 @@ public static class TxnHelper {
 ```
 
 然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内我们查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
+
+{{< copyable "java" >}}
 
 ```java
 public class BookDAO {
@@ -443,11 +469,15 @@ public class BookDAO {
 
 在会话中开启 Stale Read：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET @@tidb_read_staleness="-5";
 ```
 
 关闭会话当中的 Stale Read：
+
+{{< copyable "sql" >}}
 
 ```sql
 set @@tidb_read_staleness="";
@@ -455,6 +485,8 @@ set @@tidb_read_staleness="";
 
 </div>
 <div label="Java" href="session-java">
+
+{{< copyable "java" >}}
 
 ```java
 public static class StaleReadHelper{

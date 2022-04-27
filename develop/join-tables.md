@@ -19,6 +19,8 @@ title: 多表连接查询
 
 在下面的 SQL 语句当中，我们通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT ANY_VALUE(a.id) AS author_id, ANY_VALUE(a.name) AS author_name, COUNT(ba.book_id) AS books
 FROM authors a
@@ -50,6 +52,8 @@ LIMIT 10;
 
 </div>
 <div label="Java" href="inner-join-java">
+
+{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -90,6 +94,8 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 
 在下面的 SQL 语句当中，我们通过 `LEFT JOIN` 关键字声明左表 `books` 将以左外连接的方式与右表 `ratings` 进行连接，从而确保 `books` 表当中的所有记录都能得到返回。
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
 FROM books b
@@ -119,13 +125,15 @@ LIMIT 10;
 10 rows in set (0.30 sec)
 ```
 
-看起来最新出版的书籍已经有了很多评分，为了验证上面所说的，让我们通过 SQL 语句把**The Documentary of lion**这本书的所有评分给删掉：
+看起来最新出版的书籍已经有了很多评分，为了验证上面所说的，让我们通过 SQL 语句把 **The Documentary of lion** 这本书的所有评分给删掉：
+
+{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM ratings WHERE book_id = 3438991610;
 ```
 
-再次查询，你会发现**The Documentary of lion**这本书依然出现在结果集当中，但是通过右表 `ratings` 计算得到的 `average_score` 列被填上了 `NULL`。
+再次查询，你会发现 **The Documentary of lion** 这本书依然出现在结果集当中，但是通过右表 `ratings` 计算得到的 `average_score` 列被填上了 `NULL`。
 
 ```
 +------------+---------------------------------+---------------+
@@ -149,6 +157,8 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 
 </div>
 <div label="Java" href="left-join-java">
+
+{{< copyable "java" >}}
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {
@@ -192,7 +202,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 ### 左半连接 LEFT SEMI JOIN
 
-TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在 [子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization/) 当中将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
+TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization/)当中将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
 
 ## 隐式连接
 
@@ -209,6 +219,8 @@ TiDB 支持下列三种常规的表连接算法，优化器会根据所连接表
 如果发现 TiDB 的优化器没有按照最佳的 Join 算法去执行。你也可以通过 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 强制 TiDB 使用更好的 Join 算法去执行。
 
 例如，假设上文当中的左连接查询的示例 SQL 使用 `Hash Join` 算法执行更快，而优化器并没有选择这种算法，你可以在 `SELECT` 关键字后面加上 Hints `/*+ HASH_JOIN(b, r) */`（注意：如果表名添加了别名，Hints 当中也应该使用表别名）。
+
+{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT /*+ HASH_JOIN(b, r) */ b.id AS book_id, ANY_VALUE(b.title) AS book_title, AVG(r.score) AS average_score
@@ -232,13 +244,15 @@ Join 算法相关的 Hints：
 
 当优化器选择的 Join 顺序并不够好时，你可以使用 `STRAIGHT_JOIN` 语法让 TiDB 强制按照 FROM 子句中所使用的表的顺序做联合查询。
 
+{{< copyable "sql" >}}
+
 ```sql
 EXPLAIN SELECT *
 FROM authors a STRAIGHT_JOIN book_authors ba STRAIGHT_JOIN books b
 WHERE b.id = ba.book_id AND ba.author_id = a.id;
 ```
 
-关于该算法的实现细节和限制你可以通过查看 [Join Reorder 算法简介](https://docs.pingcap.com/zh/tidb/stable/join-reorder) 章节进行了解。
+关于该算法的实现细节和限制你可以通过查看[Join Reorder 算法简介](https://docs.pingcap.com/zh/tidb/stable/join-reorder)章节进行了解。
 
 ## 扩展阅读
 
