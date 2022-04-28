@@ -734,7 +734,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON` 
 - 这个变量用于控制是否开启 index merge 功能。
 
-### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0 版本开始引入</span>
+### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 集群持久化：是
