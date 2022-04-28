@@ -84,7 +84,10 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 >
 > - KV 请求的总时间大于 execute time 为正常现象，因为 TiDB 执行器可能并发向多个 TiKV 发送 KV 请求，导致总的 KV 请求等待时间大于 execute time。TPC-C 负载中，事务提交时，TiDB 会向多个 TiKV 并行发送 Prewrite 和 Commit 请求，所以这个例子中 Prewrite、Commit 和 PessimisticsLock 请求的总时间明显大于 execute time。
 >
-> - execute time 也可能明显大于 KV 请求的总时间 加上 tso_wait 时间，这意味着 SQL 执行阶段主要时间花在 TiDB 执行器内部。两种常见的例子：1，TiDB 执行器从 TiKV 读取大量数据之后，需要在 TiDB 内部进行复杂的关联和聚合，消耗大量时间；2，应用的写语句锁冲突严重，频繁锁重试导致 `Retried execution time` 过长。
+> - execute time 也可能明显大于 KV 请求的总时间加上 tso_wait 的时间，这意味着 SQL 执行阶段主要时间花在 TiDB 执行器内部。两种常见的例子：
+>
+>    - 例 1：TiDB 执行器从 TiKV 读取大量数据之后，需要在 TiDB 内部进行复杂的关联和聚合，消耗大量时间。
+>    - 例 2：应用的写语句锁冲突严重，频繁锁重试导致 `Retried execution time` 过长。
 
 **示例 2：OLTP 读密集负载**
 
