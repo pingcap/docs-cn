@@ -6,7 +6,7 @@ title: 创建表
 
 此页面提供了一个创建表的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
 
-> Note:
+> **注意：**
 >
 > 有关该 `CREATE TABLE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE TABLE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-table) 文档
 
@@ -138,7 +138,7 @@ CREATE TABLE `bookshop`.`books` (
 
 [主键](https://docs.pingcap.com/zh/tidb/stable/constraints#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)是一个或一组列，这个由所有主键列组合起来的值是数据行的唯一标识。
 
-> Note:
+> **注意：**
 >
 > TiDB 中，关于 `Primary Key` 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。`InnoDB` 中，`Primary Key` 的语义为：唯一，不为空，**且为聚簇索引**。
 >
@@ -297,7 +297,7 @@ CREATE TABLE `bookshop`.`users` (
 
 ### 使用 HTAP 能力
 
-> Note:
+> **注意：**
 >
 > 本指南中有关 HTAP 的步骤仅适用于快速上手体验，不适用于生产环境。如需探索 HTAP 更多功能，请参考[深入探索 HTAP](https://docs.pingcap.com/zh/tidb/stable/explore-htap)。
 
@@ -332,7 +332,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 ```
 
-> Note:
+> **注意：**
 >
 > 如果您的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
 

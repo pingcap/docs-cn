@@ -81,7 +81,7 @@ try (Connection connection = ds.getConnection()) {
 </div>
 </SimpleTab>
 
-> Note:
+> **注意：**
 >
 > 此处需注意，`rating_at` 字段为[日期和时间类型](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](https://docs.pingcap.com/zh/tidb/stable/configure-time-zone)时，展示不同的时间字符串。
 >
