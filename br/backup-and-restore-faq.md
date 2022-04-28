@@ -49,7 +49,6 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 在 v5.1.0 之前，BR 备份时会过滤掉系统库 `mysql.*` 的表数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 `mysql.*` 中的数据。但由于恢复 `mysql.*` 中系统表数据的技术实现尚不完善，因此 BR 默认**不恢复**系统库 `mysql` 中的表数据。详情参阅[备份和恢复 `mysql` 系统库下的表数据（实验特性）](/br/br-usage-restore.md#恢复创建在-mysql-数据库下的表实验性功能)。
 
-
 ## BR 遇到 Permission denied 或者 No such file or directory 错误，即使用 root 运行 BR 也无法解决，该如何处理？
 
 需要确认 TiKV 是否有访问备份目录的权限。如果是备份，确认是否有写权限；如果是恢复，确认是否有读权限。

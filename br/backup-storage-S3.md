@@ -24,7 +24,6 @@ TiDB 备份恢复功能 (BR) 支持将 Amazon S3 或支持 S3 协议的其他文
 
 如果你还没有创建备份数据保存目录，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html)在指定的 `Region` 区域中创建一个 S3 桶 `Bucket`；如果有需要，还可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)在 Bucket 中创建一个文件夹 `Folder`。
 
-
 ### 配置访问 S3 的账户
 
 推荐使用以下两种方式配置 S3 的账户。
