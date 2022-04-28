@@ -249,7 +249,7 @@ GROUP BY ta.id;
 
 本地临时表会在**会话**结束后连同数据和表结构都进行自动清理。全局临时表在**事务**结束后会自动清除数据，但是表结构依然保留，需要手动删除。
 
-你通过 `DROP TABLE` 或 `DROP TEMPORARY TABLE` 语句手动删除临时表。例如：
+你可以通过 `DROP TABLE` 或 `DROP TEMPORARY TABLE` 语句手动删除临时表。例如：
 
 {{< copyable "sql" >}}
 

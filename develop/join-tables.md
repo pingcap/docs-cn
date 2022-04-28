@@ -17,7 +17,7 @@ title: 多表连接查询
 <SimpleTab>
 <div label="SQL" href="inner-join-sql">
 
-在下面的 SQL 语句当中，我们通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
+在下面的 SQL 语句当中，我们通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 表当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
 
 {{< copyable "sql" >}}
 
@@ -87,7 +87,9 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 
 左外连接会返回左表中的所有数据行，以及右表当中能够匹配连接条件的值，如果在右表当中没有找到能够匹配的行，则使用 `NULL` 填充。
 
-在一些情况下，我们希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。例如，在 Bookshop 应用的首页，我们希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是我们所期望的。
+在一些情况下，我们希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。
+
+例如，在 Bookshop 应用的首页，我们希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是我们所期望的。
 
 <SimpleTab>
 <div label="SQL" href="left-join-sql">
@@ -133,7 +135,7 @@ LIMIT 10;
 DELETE FROM ratings WHERE book_id = 3438991610;
 ```
 
-再次查询，你会发现 **The Documentary of lion** 这本书依然出现在结果集当中，但是通过右表 `ratings` 计算得到的 `average_score` 列被填上了 `NULL`。
+再次查询，你会发现 **The Documentary of lion** 这本书依然出现在结果集当中，但是通过右表 `ratings` 的 `score` 列计算得到的 `average_score` 列被填上了 `NULL`。
 
 ```
 +------------+---------------------------------+---------------+
@@ -196,17 +198,17 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 全外连接根据左表与右表的所有记录进行连接，如果在另外一张表当中没有找到能够满足连接条件的值则使用 `NULL` 填充。
 
-### 笛卡尔连接 CROSS JOIN
+### 交叉连接 CROSS JOIN
 
-当连接条件恒成立时，两表之间的连接称为[笛卡尔连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)。笛卡尔连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m, 右表的记录数为 n，则结果集中会产生 m \* n 条记录。
+当连接条件恒成立时，两表之间的连接称为[交叉连接](https://zh.wikipedia.org/wiki/%E8%BF%9E%E6%8E%A5#%E4%BA%A4%E5%8F%89%E8%BF%9E%E6%8E%A5)（又被称为“笛卡尔连接”）。交叉连接会把左表的每一条记录和右表的所有记录相连接，如果左表的记录数为 m, 右表的记录数为 n，则结果集中会产生 m \* n 条记录。
 
 ### 左半连接 LEFT SEMI JOIN
 
-TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization/)当中将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
+TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在执行计划层面，[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization/)会将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
 
 ## 隐式连接
 
-在显式声明连接的 `JOIN` 语句作为 SQL 标准出现之前，在 SQL 语句当中可以通过 `FROM t1, t2` 语法来连接两张或多张表，通过 `WHERE t1.id = t2.id` 来指定连接的条件。你可以将其理解为隐式声明的连接，隐式连接会使用内连接的方式进行连接。
+在显式声明连接的 `JOIN` 语句作为 SQL 标准出现之前，在 SQL 语句当中可以通过 `FROM t1, t2` 子句来连接两张或多张表，通过 `WHERE t1.id = t2.id` 子句来指定连接的条件。你可以将其理解为隐式声明的连接，隐式连接会使用内连接的方式进行连接。
 
 ## Join 相关算法
 
@@ -218,7 +220,7 @@ TiDB 支持下列三种常规的表连接算法，优化器会根据所连接表
 
 如果发现 TiDB 的优化器没有按照最佳的 Join 算法去执行。你也可以通过 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 强制 TiDB 使用更好的 Join 算法去执行。
 
-例如，假设上文当中的左连接查询的示例 SQL 使用 `Hash Join` 算法执行更快，而优化器并没有选择这种算法，你可以在 `SELECT` 关键字后面加上 Hints `/*+ HASH_JOIN(b, r) */`（注意：如果表名添加了别名，Hints 当中也应该使用表别名）。
+例如，假设上文当中的左连接查询的示例 SQL 使用 Hash Join 算法执行更快，而优化器并没有选择这种算法，你可以在 `SELECT` 关键字后面加上 Hint `/*+ HASH_JOIN(b, r) */`（注意：如果表名添加了别名，Hint 当中也应该使用表别名）。
 
 {{< copyable "sql" >}}
 

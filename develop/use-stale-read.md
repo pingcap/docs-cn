@@ -72,7 +72,7 @@ Rows matched: 1  Changed: 1  Warnings: 0
 <SimpleTab>
 <div label="SQL" href="statement-sql">
 
-你可以在刚刚的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
+你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
 
 {{< copyable "sql" >}}
 
@@ -101,7 +101,7 @@ SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' O
 
 需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。
 
-过期的数据在 TiDB 当中会由[垃圾回收器](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_gc_life_time-span-classversion-mark%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5span)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 GC Safe Point。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
+过期的数据在 TiDB 当中会由[垃圾回收器](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_gc_life_time-span-classversion-mark%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5span)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
 
 ```
 ERROR 9006 (HY000): GC life time is shorter than transaction duration...
@@ -378,7 +378,7 @@ The latest book price (after the transaction commit): 150
 </div>
 </SimpleTab>
 
-通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以将下一个事务设置为基于指定历史时间的只读事务。该事务将会基于所提供的历史时间来读取历史数据。
+通过 `SET TRANSACTION READ ONLY AS OF TIMESTAMP` 语句，你可以将当前事务或下一个事务设置为基于指定历史时间的只读事务。该事务将会基于所提供的历史时间来读取历史数据。
 
 <SimpleTab>
 <div label="SQL" href="next-txn-sql">
@@ -474,6 +474,8 @@ public class BookDAO {
 ```sql
 SET @@tidb_read_staleness="-5";
 ```
+
+比如，如果该变量的值设置为 -5，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
 关闭会话当中的 Stale Read：
 

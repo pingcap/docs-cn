@@ -34,7 +34,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ```sql
 SELECT
-    window_function OVER ([partition_clause] [order_clause] [frame_clause]) AS alias
+    window_function() OVER ([partition_clause] [order_clause] [frame_clause]) AS alias
 FROM
     table_name
 ```
