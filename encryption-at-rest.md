@@ -151,7 +151,7 @@ To monitor encryption at rest, if you deploy TiKV with Grafana, you can look at 
 * Encryption meta file size: size of the encryption meta data files.
 * Read/Write encryption meta duration: the extra overhead to operate on metadata for encryption.
 
-For debugging, the `tikv-ctl` command can be used to dump encryption metadata such as encryption method and data key id used to encryption the file, as well as list of data keys. Since the operation can expose sensitive data, it is not recommended to use in production. Please refer to [TiKV Control](/tikv-control.md#dump-encryption-metadata] document.
+For debugging, the `tikv-ctl` command can be used to dump encryption metadata such as encryption method and data key id used to encryption the file, as well as list of data keys. Since the operation can expose sensitive data, it is not recommended to use in production. Please refer to [TiKV Control](/tikv-control.md#dump-encryption-metadata) document.
 
 ### Compatibility between TiKV versions
 
