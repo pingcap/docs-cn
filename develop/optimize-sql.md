@@ -242,7 +242,7 @@ EXPLAIN SELECT * FROM books WHERE id = 896;
 
 见 [JOIN 查询的执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-joins)。
 
-### 推荐阅读
+## 推荐阅读
 
 - [使用 EXPLAIN 解读执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-walkthrough)
 - [用 EXPLAIN 查看索引查询的执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-indexes)

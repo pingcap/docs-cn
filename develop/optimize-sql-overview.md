@@ -26,6 +26,6 @@ summary: 介绍 TiDB 的 SQL 性能调优概览。
 - 事务冲突。关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-lock-conflicts)。
 - 热点。关于如何定位和解决热点，请参考[TiDB 热点问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-hot-spot-issues)。
 
-### 推荐阅读
+## 推荐阅读
 
 - [SQL 性能调优](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)

@@ -30,7 +30,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)
 
-#### 部署本地测试集群
+**部署本地测试集群**
 
 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行
 
@@ -924,7 +924,6 @@ mysqlDataSource.setPassword("123456");
 </div>
 
 <div label="使用 Hibernate（推荐）" href="tidb-cloud-hibernate">
-
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url / hibernate.connection.username / hibernate.connection.password 的参数：
 

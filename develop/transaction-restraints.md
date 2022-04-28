@@ -7,13 +7,13 @@ summary: 介绍 TiDB 中的事务限制。
 
 本章将简单介绍 TiDB 中的事务限制。
 
-## 1. 隔离级别
+## 隔离级别
 
 TiDB 支持的隔离级别是 RC（Read Committed）与 SI（Snapshot Isolation），其中 SI 与 RR（Repeatable Read）隔离级别基本等价。
 
 ![隔离级别](/media/develop/transaction_isolation_level.png)
 
-## 2. SI 可以克服幻读
+## SI 可以克服幻读
 
 TiDB 的 SI 隔离级别可以克服幻读异常（Phantom Reads），但 ANSI/ISO SQL 标准 中的 RR 不能。
 
@@ -21,7 +21,7 @@ TiDB 的 SI 隔离级别可以克服幻读异常（Phantom Reads），但 ANSI/I
 
 例如：系统管理员 A 将数据库中所有学生的成绩从具体分数改为 ABCDE 等级，但是系统管理员 B 就在这个时候插入了一条具体分数的记录，当系统管理员 A 改结束后发现还有一条记录没有改过来，就好像发生了幻觉一样，这就叫幻读。
 
-## 3. SI 不能克服写偏斜
+## SI 不能克服写偏斜
 
 TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使用 Select for update 语法来克服写偏斜异常。
 
@@ -327,7 +327,7 @@ mysql> select * from doctors;
 +----+-------+---------+----------+
 ```
 
-## 4. 不支持 savepoint 和嵌套事务
+## 不支持 savepoint 和嵌套事务
 
 Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
@@ -349,7 +349,7 @@ mysql> SELECT * FROM T2;
 
 TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播行为。基于 Java Spring 框架的应用如果使用了 PROPAGATION_NESTED 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
 
-## 5. 大事务限制
+## 大事务限制
 
 基本原则是要限制事务的大小。TiDB 对单个事务的大小有限制，这层限制是在 KV 层面。反映在 SQL 层面的话，简单来说一行数据会映射为一个 KV entry，每多一个索引，也会增加一个 KV entry。所以这个限制反映在 SQL 层面是：
 
@@ -358,7 +358,7 @@ TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播�
 
 另外注意，无论是大小限制还是行数限制，还要考虑事务执行过程中，TiDB 做编码以及事务额外 Key 的开销。在使用的时候，为了使性能达到最优，建议每 100 ～ 500 行写入一个事务。
 
-## 6. 自动提交的 SELECT FOR UPDATE 语句不会等锁
+## 自动提交的 SELECT FOR UPDATE 语句不会等锁
 
 自动提交下的 select for update 目前不会加锁。效果如下图所示：
 

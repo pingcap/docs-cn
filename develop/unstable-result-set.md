@@ -7,7 +7,7 @@ summary: 结果集不稳定错误的处理办法。
 
 本章将叙述结果集不稳定错误的处理办法。
 
-## 1. group by
+## group by
 
 出于便捷的考量，MySQL “扩展” 了 group by 语法，使 select 子句可以引用未在 group by 子句中声明的非聚集字段，也就是 non-full group by 语法。在其他数据库中，这被认为是一种语法错误，因为这会导致结果集不稳定。
 
@@ -65,9 +65,9 @@ mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_scor
 ERROR 1055 (42000): Expression #2 of ORDER BY is not in GROUP BY clause and contains nonaggregated column '' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-**说明**：上例为 sql_mode 设置了 ONLY_FULL_GROUP_BY 的效果
+**运行结果简述**：上例为 sql_mode 设置了 ONLY_FULL_GROUP_BY 的效果
 
-## 2. order by
+## order by
 
 在 SQL 的语义中，只有使用了 order by 语法才会保障结果集的顺序输出。而单机数据库由于数据都存储在一台服务器上，在不进行数据重组时，多次执行的结果往往是稳定的，有些数据库(尤其是 MySQL InnoDB 存储引擎)还会按照主键或索引的顺序进行结果集的输出。TiDB 是分布式数据库，数据被存储在多台服务器上，另外 TiDB 层不缓存数据页，因此不含 order by 的 SQL 语句的结果集展现顺序容易被感知到不稳定。想要按顺序输出的结果集，需明确地把要排序的字段添加到 order by 子句中，这符合 SQL 的语义。
 
@@ -121,7 +121,7 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
 当遇到相同的 order by 值时，排序结果不稳定。为减少随机性，应当尽可能保持 order by 值的唯一性。不能保证唯一的继续加，保证 order by 的字段组合是唯一时，结果才能唯一。
 
-## 3. 由于 group_concat() 中没有使用 order by 导致结果集不稳定
+## 由于 group_concat() 中没有使用 order by 导致结果集不稳定
 
 结果集不稳定是因为 TiDB 是并行地从存储层读取数据，所以 `group_concat()` 在不加 order by 的情况下得到的结果集展现顺序容易被感知到不稳定。
 
@@ -179,6 +179,6 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
    ```
 
-## 4. select \* from t limit n 的结果不稳定
+## select \* from t limit n 的结果不稳定
 
 返回结果与数据在存储节点（TiKV）上的分布有关。如果进行了多次查询，存储节点（TiKV）不同存储单元（Region） 返回结果的速度不同，会造成结果不稳定。

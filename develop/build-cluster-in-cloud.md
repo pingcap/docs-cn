@@ -160,7 +160,7 @@ mysqlDataSource.setPassword("123456");
 
 </div>
 
-<SimpleTab>
+</SimpleTab>
 
 3. 运行 `make plain-java-jdbc`
 
