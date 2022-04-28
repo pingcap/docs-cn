@@ -64,9 +64,9 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ### 方式 2: 通过 TiDB Cloud Import 功能
 
-在 TiDB Cloud 的数据库详情页面，你可以通过点击**Import**按钮，进入到**Data Import Task**页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
+在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
 
-1. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中
+1. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中：
 
    **Bucket URL**:
 
@@ -86,14 +86,14 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
    在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
 
-2. 选择 **Bucket Region** 为 **US West (Oregon)**
-3. 选择 **Data Format** 为 **TiDB Dumpling**
+2. 选择 **Bucket Region** 为 **US West (Oregon)**。
+3. 选择 **Data Format** 为 **TiDB Dumpling**。
 
    ![在 TiDB Cloud 中导入 Bookshop 数据](/media/develop/tidb_cloud_import_bookshop_data.png)
 
-4. 输入你的数据库登录信息
-5. 点击 **Import** 按钮确认导入
-6. 等待 TiDB Cloud 完成数据导入
+4. 输入你的数据库登录信息。
+5. 点击 **Import** 按钮确认导入。
+6. 等待 TiDB Cloud 完成数据导入。
 
    ![Bookshop 数据导入中](/media/develop/importing_bookshop_data.png)
 
@@ -141,68 +141,68 @@ WHERE table_schema LIKE 'bookshop';
 
 该表用于存储书籍的基本信息。
 
-|    字段名    |     类型      |                 含义                  |
-| :----------: | :-----------: | :-----------------------------------: |
-|      id      |  bigint(20)   |            书籍的唯一标识             |
-|    title     | varchar(100)  |               书籍名称                |
-|     type     |     enum      | 书籍类型（如：杂志 / 动漫 / 教辅 等） |
-|    stock     |  bigint(20)   |                 库存                  |
-|    price     | decimal(15,2) |                 价格                  |
-| published_at |   datetime    |               出版时间                |
+| 字段名        | 类型          | 含义                                  |
+|--------------|---------------|---------------------------------------|
+| id           | bigint(20)    | 书籍的唯一标识                        |
+| title        | varchar(100)  | 书籍名称                              |
+| type         | enum          | 书籍类型（如：杂志 / 动漫 / 教辅 等）    |
+| stock        | bigint(20)    | 库存                                  |
+| price        | decimal(15,2) | 价格                                  |
+| published_at | datetime      | 出版时间                              |
 
 ### `authors` 表
 
 该表用于存储作者的基本信息。
 
-|   字段名   |     类型     |                含义                 |
-| :--------: | :----------: | :---------------------------------: |
-|     id     |  bigint(20)  |           作者的唯一标识            |
-|    name    | varchar(100) |                姓名                 |
-|   gender   |  tinyint(1)  | 生理性别 (0: 女, 1: 男，NULL: 未知) |
-| birth_year | smallint(6)  |                生年                 |
-| death_year | smallint(6)  |                卒年                 |
+| 字段名      | 类型         | 含义                                |
+|------------|--------------|-------------------------------------|
+| id         | bigint(20)   | 作者的唯一标识                       |
+| name       | varchar(100) | 姓名                                |
+| gender     | tinyint(1)   | 生理性别 (0: 女, 1: 男，NULL: 未知)   |
+| birth_year | smallint(6)  | 生年                                |
+| death_year | smallint(6)  | 卒年                                |
 
 ### `users` 表
 
 该表用于存储使用 Bookshop 应用程序的用户。
 
-|  字段名  |     类型      |      含义      |
-| :------: | :-----------: | :------------: |
-|    id    |  bigint(20)   | 用户的唯一标识 |
-| balance  | decimal(15,2) |      余额      |
-| nickname | varchar(100)  |      昵称      |
+| 字段名    | 类型          | 含义            |
+|----------|---------------|----------------|
+| id       | bigint(20)    | 用户的唯一标识   |
+| balance  | decimal(15,2) | 余额           |
+| nickname | varchar(100)  | 昵称           |
 
 ### `ratings` 表
 
 该表用于存储用户对书籍的评分记录。
 
-|  字段名  |   类型   |                    含义                     |
-| :------: | :------: | :-----------------------------------------: |
-| book_id  |  bigint  | 书籍的唯一标识（关联至 [books](#books-表)） |
-| user_id  |  bigint  | 用户的唯一标识（关联至 [users](#users-表)） |
-|  score   | tinyint  |               用户评分 (1-5)                |
-| rated_at | datetime |                  评分时间                   |
+| 字段名    | 类型     | 含义                                        |
+|----------|----------|---------------------------------------------|
+| book_id  | bigint   | 书籍的唯一标识（关联至 [books](#books-表)）     |
+| user_id  | bigint   | 用户的唯一标识（关联至 [users](#users-表)）    |
+| score    | tinyint  | 用户评分 (1-5)                              |
+| rated_at | datetime | 评分时间                                    |
 
 ### `book_authors` 表
 
 一个作者可能会编写多本书，一本书可能需要多个作者同时编写，该表用于存储书籍与作者之间的对应关系。
 
-|  字段名   |    类型    |                      含义                       |
-| :-------: | :--------: | :---------------------------------------------: |
-|  book_id  | bigint(20) |   书籍的唯一标识（关联至 [books](#books-表)）   |
+| 字段名     | 类型       | 含义                                        |
+|-----------|------------|--------------------------------------------|
+| book_id   | bigint(20) | 书籍的唯一标识（关联至 [books](#books-表)）     |
 | author_id | bigint(20) | 作者的唯一标识（关联至 [authors](#authors-表)） |
 
 ### `orders` 表
 
 该表用于存储用户购买书籍的订单信息。
 
-|   字段名   |    类型    |                    含义                     |
-| :--------: | :--------: | :-----------------------------------------: |
-|     id     | bigint(20) |               订单的唯一标识                |
-|  book_id   | bigint(20) | 书籍的唯一标识（关联至 [books](#books-表)） |
-|  user_id   | bigint(20) |  用户唯一标识（关联至 [users](#users-表)）  |
-|  quantity  | tinyint(4) |                  购买数量                   |
-| ordered_at |  datetime  |                  购买时间                   |
+| 字段名      | 类型       | 含义                                        |
+|------------|------------|--------------------------------------------|
+| id         | bigint(20) | 订单的唯一标识                               |
+| book_id    | bigint(20) | 书籍的唯一标识（关联至 [books](#books-表)）    |
+| user_id    | bigint(20) | 用户唯一标识（关联至 [users](#users-表)）      |
+| quantity   | tinyint(4) | 购买数量                                    |
+| ordered_at | datetime   | 购买时间                                    |
 
 ## 数据库初始化 `dbinit.sql` 脚本
 
