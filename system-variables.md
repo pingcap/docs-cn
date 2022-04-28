@@ -740,7 +740,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 集群持久化：是
 - 默认值：`ON` 
 - 这个变量用于允许使用 `SET SESSION` 对 `INSTANCE` 作用域的变量进行设置，用法同 `SET GLOBAL`。
-- 为了兼容之前的 TiDB 版本，这个选项默认为 `ON`。
+- 为了兼容之前的 TiDB 版本，该变量值默认为 `ON`。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
