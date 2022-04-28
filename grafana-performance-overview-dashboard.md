@@ -1,6 +1,6 @@
 ---
 title: Performance Overview 面板重要监控指标详解
-aliases: ['/docs-cn/dev/grafana-performance-overview-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/performance-overview-dashboard/']
+summary: 本文介绍 Performance Overview 面板上监控指标的含义。
 ---
 
 # Performance Overview 面板重要监控指标详解
