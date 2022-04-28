@@ -7,8 +7,6 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 本文主要介绍 TiDB Lightning 使用 Local-backend 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。
 
-如果使用 Local-backend 进行数据导入，TiDB Lightning 运行后，**TiDB 集群将无法正常对外提供服务**。如果你不希望 TiDB 集群的对外服务受到影响，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 中的硬件需求与部署方式进行数据导入。
-
 ## 注意事项
 
 在使用 TiDB Lightning 前，需注意以下事项：
@@ -68,7 +66,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
-在[工具下载](/download-ecosystem-tools.md#tidb-lightning)页面下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
+参考[工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
 
 #### 第 3 步：启动 `tidb-lightning`
 

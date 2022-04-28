@@ -400,7 +400,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ## storage.flow-control
 
-在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制在写入量较大时卡住 Raftstore 或 Apply 线程导致 QPS 下降的问题。本节介绍 TiKV 流量控制机制相关的配置项。
+在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制卡住 Raftstore 或 Apply 线程导致的次生问题。本节介绍 TiKV 流量控制机制相关的配置项。
 
 ### `enable`
 
@@ -409,22 +409,22 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 ### `memtables-threshold`
 
-+ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。
++ 当 KvDB 的 memtable 的个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).max-write-buffer-number` 的配置。
 + 默认值：5
 
 ### `l0-files-threshold`
 
-+ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。
++ 当 KvDB 的 L0 文件个数达到该阈值时，流控机制开始工作。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).level0-slowdown-writes-trigger`的配置。
 + 默认值：20
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制开始拒绝部分写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).soft-pending-compaction-bytes-limit` 的配置。
 + 默认值："192GB"
 
 ### `hard-pending-compaction-bytes-limit`
 
-+ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。
++ 当 KvDB 的 pending compaction bytes 达到该阈值时，流控机制拒绝所有写入请求，报错 `ServerIsBusy`。当 `enable` 的值为 `true` 时，会覆盖 `rocksdb.(defaultcf|writecf|lockcf).hard-pending-compaction-bytes-limit` 的配置。
 + 默认值："1024GB"
 
 ## storage.io-rate-limit
@@ -537,11 +537,17 @@ raftstore 相关的配置项。
 + 最小值：0
 + 单位：MB|GB
 
+### `raft-log-compact-sync-interval` <span class="version-mark">从 v5.3 版本开始引入</span>
+
++ 压缩非必要 Raft 日志的时间间隔
++ 默认值："2s"
++ 最小值："0s"
+
 ### `raft-log-gc-tick-interval`
 
 + 删除 Raft 日志的轮询任务调度间隔时间，0 表示不启用。
-+ 默认值：10s
-+ 最小值：0
++ 默认值："3s"
++ 最小值："0s"
 
 ### `raft-log-gc-threshold`
 
@@ -557,6 +563,12 @@ raftstore 相关的配置项。
 ### `raft-log-gc-size-limit`
 
 + 允许残余的 Raft 日志大小，这是一个硬限制，默认为 region 大小的 3/4。
++ 最小值：大于 0
+
+### `raft-log-reserve-max-ticks` <span class="version-mark">从 v5.3 版本开始引入</span>
+
++ 超过本配置项设置的的 tick 数后，即使剩余 Raft 日志的数量没有达到 `raft-log-gc-threshold` 设置的值，TiKV 也会进行 GC 操作。
++ 默认值：6
 + 最小值：大于 0
 
 ### `raft-entry-cache-life-time`
@@ -886,16 +898,13 @@ rocksdb 相关的配置项。
 
 ### `wal-recovery-mode`
 
-+ WAL 恢复模式，取值：0，1，2，3。
-
-+ 0 (TolerateCorruptedTailRecords)：容忍并丢弃日志尾部不完整的记录。
-+ 1 (AbsoluteConsistency)：当日志中存在任何损坏记录时，放弃恢复。
-+ 2 (PointInTimeRecovery)：按顺序恢复日志，直到碰到第一个损坏的记录。
-+ 3 (SkipAnyCorruptedRecords)：灾难后恢复。跳过日志中损坏的记录，尽可能多的恢复数据。
-
-+ 默认值：2
-+ 最小值：0
-+ 最大值：3
++ 预写式日志 (WAL, Write Ahead Log) 的恢复模式。
++ 可选值：
+    + `"tolerate-corrupted-tail-records"`：容忍并丢弃位于日志尾部的不完整的数据 (trailing data)。
+    + `"absolute-consistency"`：当发现待恢复的日志中有被损坏的日志时，放弃恢复所有日志。
+    + `"point-in-time"`：按顺序恢复日志。遇到第一个损坏的日志时，停止恢复剩余的日志。
+    + `"skip-any-corrupted-records"`：灾难后恢复。跳过日志中的损坏记录，尽可能多地恢复数据。
++ 默认值：`"point-in-time"`
 
 ### `wal-dir`
 
@@ -955,10 +964,8 @@ rocksdb 相关的配置项。
 ### `rate-limiter-mode`
 
 + RocksDB 的 compaction rate limiter 模式。
-+ 可选值：1 (ReadOnly)，2 (WriteOnly)，3 (AllIo)
-+ 默认值：2
-+ 最小值：1
-+ 最大值：3
++ 可选值："read-only"，"write-only"，"all-io"
++ 默认值："write-only"
 
 ### `rate-limiter-auto-tuned` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1131,7 +1138,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `max-write-buffer-number`
 
-+ 最大 memtable 个数。
++ 最大 memtable 个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.memtables-threshold` 会覆盖此配置。
 + 默认值：5
 + 最小值：0
 
@@ -1167,7 +1174,7 @@ bloom filter 为每个 key 预留的长度。
 
 ### `level0-slowdown-writes-trigger`
 
-+ 触发 write stall 的 L0 文件最大个数。
++ 触发 write stall 的 L0 文件最大个数。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.l0-files-threshold` 会覆盖此配置。
 + 默认值：20
 + 最小值：0
 
@@ -1186,11 +1193,15 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-pri`
 
-+ Compaction 优先类型
-+ 可选择值：`0` (`ByCompensatedSize`)，`1` (`OldestLargestSeqFirst`)，`2` (`OldestSmallestSeqFirst`)，`3` (`MinOverlappingRatio`)。
-+ `defaultcf` 默认值：`3`
-+ `writecf` 默认值：`3`
-+ `lockcf` 默认值：`1`
++ 优先处理 compaction 的类型
++ 可选值：
+    + `"by-compensated-size"`：根据大小顺序，优先对大文件进行 compaction。
+    + `"oldest-largest-seq-first"`：根据时间顺序，优先对数据更新时间晚的文件进行 compaction。当你只在小范围内更新部分热点键 (hot keys) 时，可以使用此配置。
+    + `"oldest-smallest-seq-first"`：根据时间顺序，优先对长时间没有被 compact 到下一级的文件进行 compaction。如果你在大范围内随机更新了部分热点键，使用该配置可以轻微缓解写放大。
+    + `"min-overlapping-ratio"`：根据重叠比例，优先对在不同层之间文件重叠比例高的文件进行 compaction，即一个文件在 `下一层的大小`/`本层的大小` 的值越小，compaction 的优先级越高。在诸多场景下，该配置可以有效缓解写放大。
++ 默认值：
+    + `defaultcf` 和 `writecf` 的默认值：`"min-overlapping-ratio"`
+    + `lockcf` 的默认值：`"by-compensated-size"`
 
 ### `dynamic-level-bytes`
 
@@ -1209,23 +1220,24 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-style`
 
-+ Compaction 方法，可选值为 level，universal。
-+ 默认值：level
++ compaction 方法。
++ 可选值："level"，"universal"，"fifo"
++ 默认值："level"
 
 ### `disable-auto-compactions`
 
-+ 是否关闭自动 compaction
++ 是否关闭自动 compaction。
 + 默认值：false
 
 ### `soft-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的软限制。
++ pending compaction bytes 的软限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.soft-pending-compaction-bytes-limit` 会覆盖此配置。
 + 默认值：192GB
 + 单位：KB|MB|GB
 
 ### `hard-pending-compaction-bytes-limit`
 
-+ pending compaction bytes 的硬限制。
++ pending compaction bytes 的硬限制。当 `storage.flow-control.enable` 的值为 `true` 时，`storage.flow-control.hard-pending-compaction-bytes-limit` 会覆盖此配置。
 + 默认值：256GB
 + 单位：KB|MB|GB
 
@@ -1266,7 +1278,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `blob-cache-size`
 
-+ Blob 文件的 cache 大小，默认：0GB。
++ Blob 文件的 cache 大小。
 + 默认值：0GB
 + 最小值：0
 + 单位：KB|MB|GB

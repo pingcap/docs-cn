@@ -9,7 +9,7 @@
   - 性能测试报告
     - [Sysbench 性能对比 - v6.0 对比 v5.4](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
     - [TPC-C 性能对比 - v6.0 对比 v5.4](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
-    - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
+    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -350,6 +350,7 @@
         - 架构组件
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
@@ -426,7 +427,6 @@
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiSpark
-    - [TiSpark 快速上手](/get-started-with-tispark.md)
     - [TiSpark 用户指南](/tispark-overview.md)
 - 参考指南
   - 架构
@@ -775,6 +775,7 @@
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)
   - v5.2
+    - [5.2.4](/releases/release-5.2.4.md)
     - [5.2.3](/releases/release-5.2.3.md)
     - [5.2.2](/releases/release-5.2.2.md)
     - [5.2.1](/releases/release-5.2.1.md)

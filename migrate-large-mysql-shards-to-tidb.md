@@ -115,6 +115,23 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 关于断点续传的更多信息，请参考 [TiDB Lightning 断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)。
 
+### 在下游创建 schema
+
+在下游创建 `mydb.table5`。
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE `table5` (
+  `id` bigint(20) NOT NULL,
+  `sid` bigint(20) NOT NULL,
+  `pid` bigint(20) NOT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  INDEX (`id`),
+  UNIQUE KEY `sid` (`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
+```
+
 ### 执行导入操作
 
 启动 tidb-lightning 的步骤如下：
@@ -130,6 +147,9 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
     level = "info"
     file = "tidb-lightning.log"
 
+    [mydumper]
+    data-source-dir = ${data-path}
+
     [tikv-importer]
     # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
     # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
@@ -138,17 +158,17 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
     sorted-kv-dir = "${sorted-kv-dir}"
 
     # 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表,以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
-    [[routes]]
-    schema-pattern = "my_db1"
-    table-pattern = "table[1-2]"
-    target-schema = "my_db"
-    target-table = "table5"
+    [[mydumper.files]]
+    pattern = '(^|/)my_db1\.table[1-2]\..*\.sql$'
+    schema = "my_db"
+    table = "table5"
+    type = "sql"
 
-    [[routes]]
-    schema-pattern = "my_db2"
-    table-pattern = "table[3-4]"
-    target-schema = "my_db"
-    target-table = "table5"
+    [[mydumper.files]]
+    pattern = '(^|/)my_db2\.table[3-4]\..*\.sql$'
+    schema = "my_db"
+    table = "table5"
+    type = "sql"
 
     # 目标集群的信息，示例仅供参考。请把 IP 地址等信息替换成真实的信息。
     [tidb]
@@ -172,7 +192,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
+    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
     ```
 
 3. 导入开始后，可以采用以下任意方式查看进度：
@@ -185,7 +205,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 

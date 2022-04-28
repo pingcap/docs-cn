@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 本指南介绍如何快速上手体验 TiDB 数据库。对于非生产环境，你可以选择以下任意一种方式部署 TiDB 数据库：
 
-- [部署本地测试集群](#部署本地测试集群)（支持 Mac 和 Linux）
+- [部署本地测试集群](#部署本地测试集群)（支持 macOS 和 Linux）
 - [在单机上模拟部署生产环境集群](#在单机上模拟部署生产环境集群)（支持 Linux）
 
 > **注意：**
@@ -26,10 +26,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 ## 部署本地测试集群
 
-- 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
+- 适用场景：利用本地 macOS 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
 
 <SimpleTab>
-<div label="Mac">
+<div label="macOS">
 
 TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群，步骤如下：
 
