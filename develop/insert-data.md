@@ -137,7 +137,7 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 - 数据导出工具：[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
 - 数据导入工具：[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](https://docs.pingcap.com/zh/tidb/stable/migrate-aurora-to-tidb)。同时支持在本地盘或 [Amazon S3 云盘](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages)读取数据。
-- 数据同步工具：[TiDB Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview)。可同步 MySQL / MariaDB / Amazon Aurora 数据库到 TiDB 中。且支持分库分表数据库的迁移。
+- 数据同步工具：[TiDB Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中。且支持分库分表数据库的迁移。
 - 数据备份恢复工具：[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。相对于 `Dumpling`，BR 更适合**_大数据量_**的场景。
 
 ## 避免热点

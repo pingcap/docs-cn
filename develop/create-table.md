@@ -122,7 +122,7 @@ CREATE TABLE `bookshop`.`users` (
 
 TiDB 支持许多其他的列数据类型，包含 [整数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B)、[浮点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%B5%AE%E7%82%B9%E7%B1%BB%E5%9E%8B)、[定点数](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E5%AE%9A%E7%82%B9%E7%B1%BB%E5%9E%8B)、[时间](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time#datetime-%E7%B1%BB%E5%9E%8B)、[枚举](https://docs.pingcap.com/zh/tidb/stable/data-type-string#enum-%E7%B1%BB%E5%9E%8B) 等，可参考支持的列的[数据类型](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)，并使用与你准备保存在数据库内的数据匹配的**数据类型**。
 
-让我们稍微提升一下复杂度，例如我们会选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的 唯一标识、名称、书籍类型（如：杂志 / 动漫 / 教辅 等）、库存、价格、出版时间 字段。
+让我们稍微提升一下复杂度，例如我们会选择定义一张 `books` 表，这张表将是 `bookshop` 数据的核心。它包含书的 唯一标识、名称、书籍类型（如：杂志、动漫、教辅 等）、库存、价格、出版时间 字段。
 
 {{< copyable "sql" >}}
 
@@ -151,7 +151,7 @@ CREATE TABLE `bookshop`.`books` (
 >
 > TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
 >
-> 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED` / `NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[此文档](https://docs.pingcap.com/zh/tidb/stable/clustered-indexes)。
+> 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[此文档](https://docs.pingcap.com/zh/tidb/stable/clustered-indexes)。
 
 主键在 `CREATE TABLE` 语句中定义。[主键约束](https://docs.pingcap.com/zh/tidb/stable/constraints#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)要求所有受约束的列仅包含非 `NULL` 值。
 
@@ -200,7 +200,7 @@ CREATE TABLE `bookshop`.`users` (
 - `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，因此聚簇索引表存储一行至少只要一个键值对，即：
     - 主键列数据（键） - 行数据（值）
 
-如[主键](#选择主键)中所述，聚簇索引在 TiDB 中，使用关键字 `CLUSTERED` / `NONCLUSTERED` 进行控制。
+如[主键](#选择主键)中所述，聚簇索引在 TiDB 中，使用关键字 `CLUSTERED`、`NONCLUSTERED` 进行控制。
 
 > 注意
 >

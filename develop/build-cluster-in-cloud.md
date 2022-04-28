@@ -142,7 +142,7 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
     <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
 
-    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
+    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Post、User、Password 的参数：
 
     {{< copyable "" >}}
 
