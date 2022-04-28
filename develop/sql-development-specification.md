@@ -12,9 +12,9 @@ summary: TiDB 的 SQL 开发规范。
 - 基本原则：表的建立在遵循表命名规范前提下，建议业务应用内部封装建表删表语句增加判断逻辑，防止业务流程异常中断。
 - 详细说明：`create table if not exists table_name` 或者 `drop table if exists table_name` 语句建议增加 if 判断，避免应用侧由于 SQL 命令运行异常造成的异常中断。
 
-## select \* 使用规范
+## SELECT \* 使用规范
 
-- 基本原则：避免使用 select \* 进行查询。
+- 基本原则：避免使用 SELECT \* 进行查询。
 - 详细说明：按需求选择合适的字段列，避免盲目地 SELECT \* 读取全部字段，因为其会消耗网络带宽。考虑将被查询的字段也加入到索引中，以有效利用覆盖索引功能。
 
 ## 字段上使用函数规范
@@ -26,20 +26,20 @@ summary: TiDB 的 SQL 开发规范。
 
     {{< copyable "sql" >}}
 
-```sql
-    select gmt_create
-    from ...
-    where date_format(gmt_create，'%Y%m%d %H:%i:%s') = '20090101 00:00:0'
+    ```sql
+    SELECT gmt_create
+    FROM ...
+    WHERE DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s') = '20090101 00:00:0'
     ```
 
     推荐的写法：
 
     {{< copyable "sql" >}}
 
-```sql
-    select date_format(gmt_create，'%Y%m%d %H:%i:%s')
-    from .. .
-    where gmt_create = str_to_date('20090101 00:00:00'，'%Y%m%d %H:%i:s')
+    ```sql
+    SELECT DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s')
+    FROM .. .
+    WHERE gmt_create = str_to_date('20090101 00:00:00'，'%Y%m%d %H:%i:s')
     ```
 
 ## 其他规范

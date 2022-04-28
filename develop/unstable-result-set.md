@@ -16,7 +16,7 @@ summary: 结果集不稳定错误的处理办法。
 {{< copyable "sql" >}}
 
 ```sql
-mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class, a.stuname order by a.class, a.stuname;
+mysql> SELECT a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class, a.stuname order by a.class, a.stuname;
 +------------+--------------+------------------+
 | class      | stuname      | max(b.courscore) |
 +------------+--------------+------------------+

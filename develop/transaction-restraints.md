@@ -157,14 +157,14 @@ SQL 日志：
 {{< copyable "sql" >}}
 
 ```sql
-/* txn 1 */ begin
-    /* txn 2 */ begin
-    /* txn 2 */ select count(*) as count from doctors where on_call = 1 and shift_id = 123
-    /* txn 2 */ update doctors set on_call = 0 where id = 2 and shift_id = 123
-    /* txn 2 */ commit
-/* txn 1 */ select count(*) as count from doctors where on_call = 1 and shift_id = 123
-/* txn 1 */ update doctors set on_call = 0 where id = 1 and shift_id = 123
-/* txn 1 */ commit
+/* txn 1 */ BEGIN
+    /* txn 2 */ BEGIN
+    /* txn 2 */ SELECT COUNT(*) as `count` FROM `doctors` WHERE `on_call` = 1 AND `shift_id` = 123
+    /* txn 2 */ UPDATE `doctors` SET `on_call` = 0 WHERE `id` = 2 AND `shift_id` = 123
+    /* txn 2 */ COMMIT
+/* txn 1 */ SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = 1 and `shift_id` = 123
+/* txn 1 */ UPDATE `doctors` SET `on_call` = 0 WHERE `id` = 1 AND `shift_id` = 123
+/* txn 1 */ COMMIT
 ```
 
 执行结果：
@@ -172,7 +172,7 @@ SQL 日志：
 {{< copyable "sql" >}}
 
 ```sql
-mysql> select * from doctors;
+mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
 | id | name  | on_call | shift_id |
 +----+-------+---------+----------+
@@ -186,7 +186,7 @@ mysql> select * from doctors;
 
 ![Write Skew](/media/develop/write-skew.png)
 
-现在我们来更改示例程序，使用 `select for update` 来克服写偏斜问题：
+现在我们来更改示例程序，使用 `SELECT FOR UPDATE` 来克服写偏斜问题：
 
 {{< copyable "" >}}
 
@@ -314,14 +314,14 @@ SQL 日志：
 {{< copyable "sql" >}}
 
 ```sql
-/* txn 1 */ begin
-    /* txn 2 */ begin
-    /* txn 2 */ select count(*) as count from doctors where on_call = 1 and shift_id = 123 for update
-    /* txn 2 */ update doctors set on_call = 0 where id = 2 and shift_id = 123
-    /* txn 2 */ commit
-/* txn 1 */ select count(*) as count from doctors where on_call = 1 for update
+/* txn 1 */ BEGIN
+    /* txn 2 */ BEGIN
+    /* txn 2 */ SELECT COUNT(*) AS `count` FROM `doctors` WHERE on_call = 1 AND `shift_id` = 123 FOR UPDATE
+    /* txn 2 */ UPDATE `doctors` SET on_call = 0 WHERE `id` = 2 AND `shift_id` = 123
+    /* txn 2 */ COMMIT
+/* txn 1 */ SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = 1 FOR UPDATE
 At least one doctor is on call
-/* txn 1 */ rollback
+/* txn 1 */ ROLLBACK
 ```
 
 执行结果：
@@ -329,7 +329,7 @@ At least one doctor is on call
 {{< copyable "sql" >}}
 
 ```sql
-mysql> select * from doctors;
+mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
 | id | name  | on_call | shift_id |
 +----+-------+---------+----------+
@@ -374,10 +374,10 @@ TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播�
 
 ## 自动提交的 SELECT FOR UPDATE 语句不会等锁
 
-自动提交下的 select for update 目前不会加锁。效果如下图所示：
+自动提交下的 SELECT FOR UPDATE 目前不会加锁。效果如下图所示：
 
 ![TiDB中的情况](/media/develop/autocommit_selectforupdate_nowaitlock.png)
 
 这是已知的与 MySQL 不兼容的地方。
 
-可以通过使用显式的 `begin;commit;` 解决该问题。
+可以通过使用显式的 `BEGIN;COMMIT;` 解决该问题。

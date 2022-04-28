@@ -113,11 +113,11 @@ ROLLBACK;
 {{< copyable "sql" >}}
 
 ```sql
-truncate table users;
+TRUNCATE TABLE `users`;
 
-insert into users (id, nickname, balance) values (1, 'Alice', 100), (2, 'Bob', 200);
+INSERT INTO `users` (`id`, `nickname`, `balance`) VALUES (1, 'Alice', 100), (2, 'Bob', 200);
 
-select * from users;
+SELECT * FROM `users`;
 +----+--------------+---------+
 | id | nickname     | balance |
 +----+--------------+---------+
@@ -126,11 +126,11 @@ select * from users;
 +----+--------------+---------+
 
 BEGIN;
-  UPDATE users SET balance = balance - 20 WHERE nickname='Bob';
-  UPDATE users SET balance = balance + 20 WHERE nickname='Alice';
+  UPDATE `users` SET `balance` = `balance` - 20 WHERE `nickname`='Bob';
+  UPDATE `users` SET `balance` = `balance` + 20 WHERE `nickname`='Alice';
 ROLLBACK;
 
-select * from users;
+SELECT * FROM `users`;
 +----+--------------+---------+
 | id | nickname     | balance |
 +----+--------------+---------+
