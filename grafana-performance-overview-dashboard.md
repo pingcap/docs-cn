@@ -58,7 +58,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 - tso - cmd：在所有 TiDB 实例每秒 tso cmd 的请求数量
 - tso - request：在所有 TiDB 实例每秒 tso request 的请求数量
 
-通常 tso - cmd 除以 tso - request 平均请求的 batch 大小
+通常 tso - cmd 除以 tso - request 等于平均请求的 batch 大小。
 
 ## Connection Count
 
