@@ -241,7 +241,7 @@ GROUP BY db_name , table_name;
 
 - `store_size_amplification` 表示集群压缩比的平均值。除了使用 `SELECT * FROM METRICS_SCHEMA.store_size_amplification;` 语句进行查询以外，你还可以查看 Grafana 监控 **PD - statistics balance** 面板下各节点的 `Size amplification` 指标来获取该信息，集群压缩比的平均值即为所有节点的 `Size amplification` 平均值。
 - `Approximate_Size` 表示压缩前表的单副本大小，该值为估算值，并非准确值。
-- `Disk_Size` 表示压缩后表的大小，根据 `Approximate_Size` 和 `store_size_amplification` 计算出。
+- `Disk_Size` 表示压缩后表的大小，可根据 `Approximate_Size` 和 `store_size_amplification` 得出估算值。
 
 ## TiKV 管理
 
