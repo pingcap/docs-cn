@@ -8,8 +8,8 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是会话级别有效 (Session Scope) 或全局范围有效 (Global Scope)。其中：
 
 - 对 `SESSION` 作用域变量的更改，设置后**只影响当前会话**。
-- 对 `GLOBAL` 作用域变量的更改，设置后立即生效。如果该变量也有 `SESSION` 作用域，已经连接的所有会话 (包括当前会话) 将继续使用它们当前的 `SESSION` 变量值。
-- 使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的值。
+- 对 `GLOBAL` 作用域变量的更改，设置后立即生效。如果该变量也有 `SESSION` 作用域，已经连接的所有会话 (包括当前会话) 将继续使用会话当前的 `SESSION` 变量值。
+- 要设置变量值，可使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)。
 
 ```sql
 # 以下两个语句等价地改变一个 Session 变量
@@ -734,13 +734,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`ON` 
 - 这个变量用于控制是否开启 index merge 功能。
 
-### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0 版本开始引入</span>
+### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON` 
 - 这个变量用于允许使用 `SET SESSION` 对 `INSTANCE` 作用域的变量进行设置，用法同 `SET GLOBAL`。
-- 为了兼容之前的 TiDB 版本，这个选项默认为 `ON`。
+- 为了兼容之前的 TiDB 版本，该变量值默认为 `ON`。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1839,7 +1839,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION
 - 默认值：`0`
-- 一个 Unix 时间戳，用于表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳的一个非空值。该变量通常用于数据恢复或数据复制。
+- 一个 Unix 时间戳。变量值非空时，表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳。该变量通常用于数据恢复或数据复制。
 
 ### `transaction_isolation`
 
