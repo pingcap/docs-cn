@@ -258,4 +258,4 @@ SELECT * FROM acc;
 - [HTAP 快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-htap)
 - [HTAP 深入探索指南](https://docs.pingcap.com/zh/tidb/stable/explore-htap)
 - [窗口函数](https://docs.pingcap.com/zh/tidb/stable/window-functions)
-- [使用 TiFlash](https://docs.pingcap.com/zh/stable/dev/use-tiflash)
+- [使用 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)
