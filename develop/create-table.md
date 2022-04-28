@@ -57,7 +57,7 @@ CREATE TABLE {table_name} ( {elements} );
 以下是命名表时需要遵循的一些最佳实践：
 
 - 使用**完全限定**的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为你在不指定数据库名称时，TiDB 将使用你 **SQL 会话**中的[当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。若你未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
-- 请使用有意义的表名，例如，若你需要创建一个用户表，你可以使用名称：`user`, `t_user`, `users` 等，或遵循你公司或组织的命名规范。如果你的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#3-表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
+- 请使用有意义的表名，例如，若你需要创建一个用户表，你可以使用名称：`user`, `t_user`, `users` 等，或遵循你公司或组织的命名规范。如果你的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
 - 多个单词以下划线分隔，不推荐超过 32 个字符。
 - 不同业务模块的表单独建立 `DATABASE`，并增加相应注释。
 
@@ -98,7 +98,7 @@ CREATE TABLE `bookshop`.`users` (
 - 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列。
 - 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引。
 - 查看[添加列约束](#添加列约束)，决定是否添加约束到列中。
-- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
+- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#字段命名规范)。
 
 #### 列定义示例
 
@@ -400,7 +400,7 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 执行 `CREATE TABLE` 时需要遵循的一些最佳实践：
 
 - 我们不推荐使用客户端的 Driver 或 ORM 来执行数据库模式的更改。以经验来看，作为最佳实践，我们建议使用 [MySQL 客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)或使用任意你喜欢的 GUI 客户端来进行数据库模式的更改。本文档中，我们将在大多数场景下，使用 **MySQL 客户端** 传入 SQL 文件来执行数据库模式的更改。
-- 遵循 SQL 开发规范中的[建表删表规范](/develop/sql-development-specification.md#1-建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
+- 遵循 SQL 开发规范中的[建表删表规范](/develop/sql-development-specification.md#建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
 
 #### `CREATE TABLE` 执行的示例
 
