@@ -247,7 +247,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 #### Parse、Compile 和 Execute Duration
 
-在 TiDB 中，从输入查询文本到返回结果的[`典型处理流程`](/sql-optimization-concepts.md)。
+在 TiDB 中，从输入查询文本到返回结果的[典型处理流程](/sql-optimization-concepts.md)。
 
 SQL 在 TiDB 内部的处理分为四个阶段，get token、parse、compile 和 execute：
 
