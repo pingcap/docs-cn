@@ -1655,9 +1655,9 @@ SET tidb_query_log_max_len = 20
 ### tidb_restricted_read_only <span class="version-mark">New in v5.2.0</span>
 
 - Scope: GLOBAL
-- Default value: `0`
-- Value options: `0`, `1`
-- This variable controls the read-only status of the entire cluster. If the variable is enabled (which means that the value is `1`), all TiDB servers in the entire cluster are in the read-only mode. In this case, TiDB only executes the statements that do not modify data, such as `SELECT`, `USE`, and `SHOW`. For other statements such as `INSERT` and `UPDATE`, TiDB rejects executing those statements in the read-only mode.
+- Persists to cluster: Yes
+- Default value: `OFF`
+- This variable controls the read-only status of the entire cluster. When the variable is `ON`, all TiDB servers in the entire cluster are in the read-only mode. In this case, TiDB only executes the statements that do not modify data, such as `SELECT`, `USE`, and `SHOW`. For other statements such as `INSERT` and `UPDATE`, TiDB rejects executing those statements in the read-only mode.
 - Enabling the read-only mode using this variable only ensures that the entire cluster finally enters the read-only status. If you have changed the value of this variable in a TiDB cluster but the change has not yet propagated to other TiDB servers, the un-updated TiDB servers are still **not** in the read-only mode.
 - When this variable is enabled, the SQL statements being executed are not affected. TiDB only performs the read-only check for the SQL statements **to be** executed.
 - When this variable is enabled, TiDB handles the uncommitted transactions in the following ways:
