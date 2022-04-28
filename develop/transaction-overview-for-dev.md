@@ -2,7 +2,7 @@
 title: 事务概览
 ---
 
-# Transaction
+# 事务
 
 ## 概览
 
