@@ -136,9 +136,9 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 
 > **注意：**
 >
-> 上方执行计划中的的 **TableFullScan**、**IndexRangeScan** 等在 TiDB 内被称为[算子](https://docs.pingcap.com/zh/tidb/stable/explain-overview#%E7%AE%97%E5%AD%90%E7%AE%80%E4%BB%8B)。这里对执行计划的解读及算子等不做进一步的展开，若你对此感兴趣，可点击[此处](https://docs.pingcap.com/zh/tidb/stable/explain-overview)查看更多关于执行计划与 TiDB 算子的相关知识。
+> 上方执行计划中的的 **TableFullScan**、**IndexRangeScan** 等在 TiDB 内被称为[算子](https://docs.pingcap.com/zh/tidb/stable/explain-overview#%E7%AE%97%E5%AD%90%E7%AE%80%E4%BB%8B)。这里对执行计划的解读及算子等不做进一步的展开，若你对此感兴趣，可前往 [TiDB 执行计划概览](https://docs.pingcap.com/zh/tidb/stable/explain-overview)文档查看更多关于执行计划与 TiDB 算子的相关知识。
 >
-> 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 **基于代价的优化方式 (CBO)**，执行计划不仅与规则相关，还和数据分布相关。你可以参阅[此处](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)获得更多 TiDB SQL 性能的描述。
+> 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 **基于代价的优化方式 (CBO)**，执行计划不仅与规则相关，还和数据分布相关。你可以前往 [SQL 性能调优](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)文档查看更多 TiDB SQL 性能的描述。
 >
 > TiDB 在查询时，还支持显示的使用索引，你可以使用 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 或 [执行计划管理 (SPM)](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 

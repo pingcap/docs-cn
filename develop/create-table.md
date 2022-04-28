@@ -159,7 +159,7 @@ CREATE TABLE `bookshop`.`books` (
 
 表的主键为 [整数类型](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B) 且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](https://docs.pingcap.com/zh/tidb/stable/auto-random) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
 
-更多有关热点问题的处理办法，请参考[此处](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-hot-spot-issues)。
+更多有关热点问题的处理办法，请参考[TiDB 热点问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-hot-spot-issues)。
 
 #### 主键选择的最佳实践
 
@@ -246,7 +246,7 @@ CREATE TABLE `bookshop`.`ratings` (
 
 ### 添加列约束
 
-除[主键约束](#选择主键)外，TiDB 还支持其他的列约束，如：[非空约束 `NOT NULL`](https://docs.pingcap.com/zh/tidb/stable/constraints#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F)、[唯一约束 `UNIQUE KEY`](https://docs.pingcap.com/zh/tidb/stable/constraints#%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F)、默认值 `DEFAULT` 等。完整约束，请查看[此处](https://docs.pingcap.com/zh/tidb/stable/constraints)。
+除[主键约束](#选择主键)外，TiDB 还支持其他的列约束，如：[非空约束 `NOT NULL`](https://docs.pingcap.com/zh/tidb/stable/constraints#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F)、[唯一约束 `UNIQUE KEY`](https://docs.pingcap.com/zh/tidb/stable/constraints#%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F)、默认值 `DEFAULT` 等。完整约束，请查看 [TiDB 约束](https://docs.pingcap.com/zh/tidb/stable/constraints)文档。
 
 #### 填充默认值
 
@@ -345,7 +345,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 | `{table_name}` |                  表名                  |
 |   `{count}`    | 同步副本数，若为 0，则表示删除同步副本 |
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[此处](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash)。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 文档。
 
 #### 使用 HTAP 的示例
 
@@ -404,7 +404,7 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 
 #### `CREATE TABLE` 执行的示例
 
-按以上步骤创建所有表后，我们的 `dbinit.sql` 文件应该类似于[此处](/develop/bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)所示。若需查看表信息详解，请参阅[此处](/develop/bookshop-schema-design.md#数据表详解)。
+按以上步骤创建所有表后，我们的 `dbinit.sql` 文件应该类似于[数据库初始化](/develop/bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)所示。若需查看表信息详解，请参阅[数据表详解](/develop/bookshop-schema-design.md#数据表详解)。
 
 我们可使用以下语句来执行 `dbinit.sql` 文件：
 
