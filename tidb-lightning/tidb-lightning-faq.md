@@ -77,7 +77,7 @@ ADMIN CHECKSUM TABLE `schema`.`table`;
 
 ## 我已经在下游创建好库和表了，TiDB Lightning 可以忽略建库建表操作吗？
 
-自 v5.1 版本之后可以自动识别。低于 v5.1 版本需在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
+自 v5.1 起，TiDB Lightning 可以自动识别下游的库和表。如果你使用低于 v5.1 的 TiDB Lightning，需在配置文档中的 `[mydumper]` 部分将 `no-schema` 设置为 `true` 即可。`no-schema=true` 会默认下游已经创建好所需的数据库和表，如果没有创建，会报错。
 
 ## 有些不合法的数据，能否通过关掉严格 SQL 模式 (Strict SQL Mode) 来导入？
 
