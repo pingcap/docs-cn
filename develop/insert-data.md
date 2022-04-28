@@ -20,13 +20,13 @@ summary: 插入数据、批量导入数据的方法、最佳实践及例子。
 
 假设你需要插入多行数据，那么会有两种插入的办法，假设我们需要插入 3 个玩家数据：
 
-- 一个 `多行插入语句`:
+- 一个`多行插入语句`:
 
 ```sql
 INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2), (3, 300, 5);
 ```
 
-- 多个 `单行插入语句`:
+- 多个`单行插入语句`:
 
 ```sql
 INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1);
@@ -34,7 +34,7 @@ INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (2, 230, 2);
 INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (3, 300, 5);
 ```
 
-一般来说使用一个 `多行插入语句`，会比多个 `单行插入语句` 快。
+一般来说使用一个`多行插入语句`，会比多个`单行插入语句`快。
 
 <SimpleTab>
 <div label="SQL">
@@ -85,7 +85,7 @@ try (Connection connection = ds.getConnection()) {
 |  `prepStmtCacheSqlLimit`   |  预处理语句最大大小（默认 256 字符）  |                                                             预处理语句大于 256 字符时                                                             | 按实际预处理语句大小配置 |
 |    `prepStmtCacheSize`     | 预处理语句最大缓存数量 （默认 25 条） |                                                            预处理语句数量大于 25 条时                                                             | 按实际预处理语句数量配置 |
 | `rewriteBatchedStatements` |          是否重写 Batch 语句          |                                                                  需要批量操作时                                                                   |          `true`          |
-|    `allowMultiQueries`     |             开启批量操作              | 因为 一个[客户端 Bug](https://bugs.mysql.com/bug.php?id=96623) 在 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true` 时，需设置此项 |          `true`          |
+|    `allowMultiQueries`     |             开启批量操作              | 因为一个[客户端 Bug](https://bugs.mysql.com/bug.php?id=96623) 在 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true` 时，需设置此项 |          `true`          |
 
 MySQL JDBC Driver 还提供了一个集成配置项：`useConfigs`。当它配置为 `maxPerformance` 时，相当于配置了一组配置，以 `mysql:mysql-connector-java:8.0.28` 为例，`useConfigs=maxPerformance` 包含：
 
