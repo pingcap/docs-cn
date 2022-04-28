@@ -6,7 +6,7 @@ title: 使用 TiDB Cloud(DevTier) 构建 TiDB 集群
 
 # 使用 TiDB Cloud(DevTier) 构建 TiDB 集群
 
-本页将指导您以最快的方式开始使用 TiDB 。您将使用 [TiDB Cloud](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart) ，创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
+本页将指导您以最快的方式开始使用 TiDB 。您将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) ，创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
 若您需要在本地计算机上启动 TiDB，请参阅 [本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)。
 
