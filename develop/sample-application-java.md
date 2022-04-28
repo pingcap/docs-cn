@@ -82,15 +82,15 @@ To view the Grafana: http://127.0.0.1:3000
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
 > - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#-t---tag-string)。
 
-<SimpleTab>
-
-<div label="使用 JDBC">
-
-### 步骤 2. 获取代码
+## 步骤 2. 获取代码
 
 ```bash
 git clone https://github.com/pingcap-inc/tidb-example-java.git
 ```
+
+<SimpleTab>
+
+<div label="使用 JDBC" href="get-code-jdbc">
 
 进入目录 `plain-java-jdbc`：
 
@@ -558,72 +558,9 @@ public class JDBCExample
 }
 ```
 
-### 步骤 3. 运行代码
-
-本节将逐步介绍代码的运行方法。
-
-#### 步骤 3.1 JDBC 表初始化
-
-使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
-
-```bash
-make mysql
-```
-
-或直接执行：
-
-```bash
-mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
-```
-
-若你不使用本地集群，或未安装 `mysql-client`，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
-
-#### 步骤 3.2 TiDB Cloud 更改参数
-
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
-
-```java
-mysqlDataSource.setServerName("localhost");
-mysqlDataSource.setPortNumber(4000);
-mysqlDataSource.setDatabaseName("test");
-mysqlDataSource.setUser("root");
-mysqlDataSource.setPassword("");
-```
-
-若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
-
-```
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
-```
-
-那么此处应将参数更改为：
-
-```java
-mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
-mysqlDataSource.setPortNumber(4000);
-mysqlDataSource.setDatabaseName("test");
-mysqlDataSource.setUser("root");
-mysqlDataSource.setPassword("123456");
-```
-
-#### 步骤 3.3 运行
-
-运行 `make`，这是两个操作的组合：
-
-- 清理并构建 (make build)： `mvn clean package`
-- 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
-
-你也可以单独运行这两个 make 命令或原生命令
-
-### 步骤 4. 预期输出
-
-[JDBC 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)
-
 </div>
 
-<div label="使用 Hibernate (推荐)">
-
-### 步骤 2. 获取代码
+<div label="使用 Hibernate（推荐）" href="get-code-hibernate">
 
 可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码。并非最佳实践。
 
@@ -914,11 +851,80 @@ public class HibernateExample
 }
 ```
 
-### 步骤 3. 运行代码
+</div>
+
+</SimpleTab>
+
+## 步骤 3. 运行代码
 
 本节将逐步介绍代码的运行方法。
 
-#### 步骤 3.1 TiDB Cloud 更改参数
+### 步骤 3.1 JDBC 表初始化
+
+<SimpleTab>
+
+<div label="使用 JDBC" href="jdbc-table-init-jdbc">
+
+使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
+
+```bash
+make mysql
+```
+
+或直接执行：
+
+```bash
+mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
+```
+
+若你不使用本地集群，或未安装 `mysql-client`，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
+
+</div>
+
+<div label="使用 Hibernate（推荐）" href="jdbc-table-init-hibernate">
+
+无需手动初始化表
+
+</div>
+
+</SimpleTab>
+
+### 步骤 3.2 TiDB Cloud 更改参数
+
+<SimpleTab>
+
+<div label="使用 JDBC" href="tidb-cloud-jdbc">
+
+若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
+
+```java
+mysqlDataSource.setServerName("localhost");
+mysqlDataSource.setPortNumber(4000);
+mysqlDataSource.setDatabaseName("test");
+mysqlDataSource.setUser("root");
+mysqlDataSource.setPassword("");
+```
+
+若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+
+```
+mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+```
+
+那么此处应将参数更改为：
+
+```java
+mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
+mysqlDataSource.setPortNumber(4000);
+mysqlDataSource.setDatabaseName("test");
+mysqlDataSource.setUser("root");
+mysqlDataSource.setPassword("123456");
+```
+
+</div>
+
+<div label="使用 Hibernate（推荐）" href="tidb-cloud-hibernate">
+
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url / hibernate.connection.username / hibernate.connection.password 的参数：
 
@@ -982,7 +988,26 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 </hibernate-configuration>
 ```
 
-#### 步骤 3.2 运行
+</div>
+
+</SimpleTab>
+
+### 步骤 3.3 运行
+
+<SimpleTab>
+
+<div label="使用 JDBC" href="run-jdbc">
+
+运行 `make`，这是两个操作的组合：
+
+- 清理并构建 (make build)： `mvn clean package`
+- 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
+
+你也可以单独运行这两个 make 命令或原生命令
+
+</div>
+
+<div label="使用 Hibernate（推荐）" href="run-hibernate">
 
 运行 `make`，这是两个操作的组合：
 
@@ -991,7 +1016,21 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 你也可以单独运行这两个 make 命令或原生命令
 
-### 步骤 4. 预期输出
+</div>
+
+</SimpleTab>
+
+## 步骤 4. 预期输出
+
+<SimpleTab>
+
+<div label="使用 JDBC" href="output-jdbc">
+
+[JDBC 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)
+
+</div>
+
+<div label="使用 Hibernate（推荐）" href="output-hibernate">
 
 [Hibernate 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-hibernate)
 
