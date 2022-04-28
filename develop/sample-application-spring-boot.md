@@ -29,7 +29,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 **部署本地测试集群**
 
-适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行
+适用场景：利用本地 macOS 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行
 
 1. 下载并安装 TiUP。
 
@@ -92,7 +92,7 @@ To view the Grafana: http://127.0.0.1:3000
 
 这里给出命令行安装 `Maven` 的办法：
 
-- MacOS 安装：
+- macOS 安装：
 
 ```
 brew install maven

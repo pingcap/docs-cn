@@ -15,7 +15,7 @@ summary: 创建表的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
 - 阅读[数据库模式概览](/develop/schema-design-overview.md)
 - [创建一个数据库](/develop/create-database.md)
 
@@ -91,17 +91,10 @@ CREATE TABLE `bookshop`.`users` (
 以下是定义列时需要遵循的一些最佳实践：
 
 - 查看支持的列的[数据类型](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)，并按照数据类型的限制来组织你的数据。为你计划被存在列中的数据选择合适的类型。
-<<<<<<< HEAD
-- 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列
-- 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引
-- 查看[添加列约束](#添加列约束)，决定是否添加约束到列中
-- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
-=======
 - 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列。
 - 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引。
 - 查看[添加列约束](#添加列约束)，决定是否添加约束到列中。
-- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
->>>>>>> develop
+- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
 
 #### 列定义示例
 
@@ -342,7 +335,7 @@ ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 > **注意：**
 >
-> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
+> 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
 
 随后正常进行查询即可：
 

@@ -21,7 +21,7 @@ mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 
 ## JDBC
 
-你可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象 (它们都实现了 `DataSource` 接口)，并使用 `setURL` 函数设置连接字符串。
+你可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象（它们都实现了 `DataSource` 接口），并使用 `setURL` 函数设置连接字符串。
 
 例如：
 

@@ -10,7 +10,7 @@ summary: 针对开发者的 TiDB 连接池与连接参数的说明。
 
 ## 连接池参数
 
-TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
+TiDB (MySQL) 连接建立是比较昂贵的操作（至少对于 OLTP 来讲），除了建立 TCP 连接外还需要进行连接鉴权操作，所以客户端通常会把 TiDB (MySQL) 连接保存到连接池中进行复用。
 
 Java 的连接池实现很多 ([HikariCP](https://github.com/brettwooldridge/HikariCP), [tomcat-jdbc](https://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html), [durid](https://github.com/alibaba/druid), [c3p0](https://www.mchange.com/projects/c3p0/), [dbcp](https://commons.apache.org/proper/commons-dbcp/))，TiDB 不会限定使用的连接池，应用可以根据业务特点自行选择连接池实现。
 
@@ -56,7 +56,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 - `connections`: 得出的连接数大小。
 - `core_count`: CPU 核心数。
-- `effective_spindle_count`: 直译为 `有效主轴数` ，实际上是说你有多少个硬盘(非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive))，因为每个旋转的硬盘可以被称为是一个旋转轴。例如，你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器，那么 `effective_spindle_count` 应为 16。此处经验公式，实际上是衡量你的服务器可以管理多少 I/O 并发请求，因为 `HDD` 通常只能串行请求。
+- `effective_spindle_count`: 直译为 `有效主轴数` ，实际上是说你有多少个硬盘（非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive)），因为每个旋转的硬盘可以被称为是一个旋转轴。例如，你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器，那么 `effective_spindle_count` 应为 16。此处经验公式，实际上是衡量你的服务器可以管理多少 I/O 并发请求，因为 `HDD` 通常只能串行请求。
 
 要特别说明的是，在这个经验公式的的下方，我们也看到了一处说明：
 
@@ -196,7 +196,7 @@ insert into t(a) values(12);
 insert into t(a) values(10),(11),(12);
 ```
 
-需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL，insert 语句如果有其他差异将无法被改写。例如：
+需要注意的是，insert 语句的改写，只能将多个 values 后的值拼接成一整条 SQL, insert 语句如果有其他差异将无法被改写。例如：
 
 ```sql
 insert into t (a) values (10) on duplicate key update a = 10;

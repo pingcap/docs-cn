@@ -32,7 +32,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 **部署本地测试集群**
 
-适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行
+适用场景：利用本地 macOS 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行
 
 1. 下载并安装 TiUP。
 

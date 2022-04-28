@@ -9,7 +9,7 @@ summary: 简单介绍 TiDB 的增删改查 SQL。
 
 ## 在开始之前
 
-请确保你已经连接到 TiDB 集群，若未连接，请参考 [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个免费集群。
+请确保你已经连接到 TiDB 集群，若未连接，请参考 [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)来创建一个免费集群。
 
 ## 基本 SQL 操作
 
@@ -30,7 +30,7 @@ SQL 语言通常按照功能划分成以下的 4 个部分：
 - `DQL (Data Query Language)`：数据查询语言，用来查询经过条件筛选的记录。
 - `DCL (Data Control Language)`：数据控制语言，用来定义访问权限和安全级别。
 
-此文档中，我们主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](https://docs.pingcap.com/zh/tidb/stable/basic-sql-operations)或 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/) 获得更多信息。
+此文档中，我们主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](https://docs.pingcap.com/zh/tidb/stable/basic-sql-operations)或 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)获得更多信息。
 
 ## DML 数据操作语言
 

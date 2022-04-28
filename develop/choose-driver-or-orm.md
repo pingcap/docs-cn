@@ -19,14 +19,12 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 
 全部兼容性差异可查看：[与 MySQL 兼容性对比](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)
 
-其余语言：`JavaScript/TypeScript Python Go Ruby C C#(.Net)`
-
 ## Java
 
 > 支持等级说明
 >
-> - \*Full: 此 Driver 或 ORM 没有已知的 issues
-> - \*Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
+> - Full: 此 Driver 或 ORM 没有已知的 issues
+> - Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
 
 ### Java Drivers
 
@@ -40,8 +38,8 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 >
 > 强烈建议使用 8.0.16 及以上版本，其修复了两个 CVE ：
 >
-> - \*CVE-2019-2692 直接引入
-> - \*CVE-2021-22569 间接引入
+> - CVE-2019-2692 直接引入
+> - CVE-2021-22569 间接引入
 
 有关一个完整的实例应用程序，可参阅使用 [TiDB 和 JDBC 构建一个 Java 应用](/develop/sample-application-java.md#步骤-2-获取代码)。
 
@@ -53,12 +51,8 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 
 > 注意：
 >
-> Hibernate 当前 [不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 当前版本也 [不支持 Savepoint](https://github.com/pingcap/tidb/issues/6840)。
-<<<<<<< HEAD
-> 若你使用 Spring Data JPA 等框架，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`
-=======
-> 若您使用 Spring Data JPA 等框架，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
->>>>>>> develop
+> Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 当前版本也[不支持 Savepoint](https://github.com/pingcap/tidb/issues/6840)。
+> 若你使用 Spring Data JPA 等框架，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
 >
 > 你可以使用[这个例子](https://github.com/Icemap/tidb-savepoint)，快速复现 TiDB 与 MySQL 对 Savepoint 的输出结果：
 >
@@ -95,7 +89,7 @@ TiDB 兼容 MySQL 的协议，但存在部分与 MySQL 不兼容的特性，例�
 </dependency>
 ```
 
-如果你使用的是 `Gradle`， 请将以下内容添加到你的 `dependencies`：
+如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
@@ -103,6 +97,6 @@ implementation 'mysql:mysql-connector-java:8.0.28'
 ```
 
 - 有关原生 Java 使用 Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#步骤-2-获取代码)。
-- 有关 Spring 使用 Spring Data JPA / Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)。
+- 有关 Spring 使用 Spring Data JPA / Hibernate 进行 TiDB 应用程序构建的例子，可参阅[使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)。
 
-额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm) 中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence) 等。
+额外的，你需要在 [Hibernate 配置文件](https://www.tutorialspoint.com/hibernate/hibernate_configuration.htm)中指定 TiDB 方言： `org.hibernate.dialect.TiDBDialect`，此方言在 Hibernate `6.0.0.Beta2` 以上才可支持。若你无法升级 Hibernate 版本，那么请你直接使用 MySQL 5.7 的方言 `org.hibernate.dialect.MySQL57Dialect`。但这可能造成不可预料的使用结果，及部分 TiDB 特有特性的缺失，如：[序列](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence)等。

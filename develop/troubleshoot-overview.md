@@ -9,7 +9,7 @@ summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故�
 
 ## SQL 操作常见问题
 
-如果你想提高 SQL 的性能，可以阅读 [SQL 性能优化](/develop/optimize-sql-overview.md) 来避免一些常见的性能问题。然后如果依然存在性能问题，推荐阅读：
+如果你想提高 SQL 的性能，可以阅读 [SQL 性能优化](/develop/optimize-sql-overview.md)来避免一些常见的性能问题。然后如果依然存在性能问题，推荐阅读：
 
 - [分析慢查询](https://docs.pingcap.com/zh/tidb/stable/analyze-slow-queries)
 - [使用 Top SQL 定位系统资源消耗过多的查询](https://docs.pingcap.com/zh/tidb/stable/top-sql)
@@ -18,7 +18,7 @@ summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故�
 
 ## 事务错误处理
 
-见 [事务错误处理](/develop/transaction-troubleshoot.md)。
+见[事务错误处理](/develop/transaction-troubleshoot.md)。
 
 ## 推荐阅读
 

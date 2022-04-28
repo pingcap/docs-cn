@@ -5,11 +5,7 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 # 开发者手册概览
 
-<<<<<<< HEAD
-本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架
-=======
-本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议您先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架。
->>>>>>> develop
+本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架。
 
 ## 手册内容
 

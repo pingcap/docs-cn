@@ -181,4 +181,4 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
 ## select \* from t limit n 的结果不稳定
 
-返回结果与数据在存储节点（TiKV）上的分布有关。如果进行了多次查询，存储节点（TiKV）不同存储单元（Region） 返回结果的速度不同，会造成结果不稳定。
+返回结果与数据在存储节点 (TiKV) 上的分布有关。如果进行了多次查询，存储节点 (TiKV) 不同存储单元 (Region) 返回结果的速度不同，会造成结果不稳定。

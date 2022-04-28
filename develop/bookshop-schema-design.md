@@ -19,7 +19,7 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 tiup demo bookshop prepare
 ```
 
-该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口，使用 `root` 账号进行无密码登录，默认在名为 `bookshop` 的数据库中创建[表结构](#数据表详解)。
+该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口，使用 `root` 用户名进行无密码登录，默认在名为 `bookshop` 的数据库中创建[表结构](#数据表详解)。
 
 #### 配置连接信息
 
@@ -61,7 +61,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ### 方式 2: 通过 TiDB Cloud Import 功能
 
-在 TiDB Cloud 的数据库详情页面，你可以通过点击**Import**按钮，进入到**Data Import Task**页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
+在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
 
 1. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中
 

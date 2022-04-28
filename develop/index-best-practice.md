@@ -27,7 +27,7 @@ CREATE TABLE `books` (
 
 ## 创建索引的最佳实践
 
-1. 建立你需要使用的数据的所有列的组合索引，这种优化技巧被称为 [覆盖索引优化(covering index optimization)](https://docs.pingcap.com/zh/tidb/stable/explain-indexes#indexreader)。`覆盖索引优化` 将使得 TiDB 可以直接在索引上得到该查询所需的所有数据，可以大幅提升性能。
+1. 建立你需要使用的数据的所有列的组合索引，这种优化技巧被称为 [覆盖索引优化 (covering index optimization)](https://docs.pingcap.com/zh/tidb/stable/explain-indexes#indexreader)。`覆盖索引优化`将使得 TiDB 可以直接在索引上得到该查询所需的所有数据，可以大幅提升性能。
 
 2. 避免创建你不需要的二级索引，有用的二级索引能加速查询，但是要注意新增一个索引是有副作用的。每增加一个索引，在插入一条数据的时候，就要额外新增一个 Key-Value，所以索引越多，写入越慢，并且空间占用越大。另外过多的索引也会影响优化器运行时间，并且不合适的索引会误导优化器。所以索引并不是越多越好。
 
