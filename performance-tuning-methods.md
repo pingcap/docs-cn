@@ -41,7 +41,7 @@ TiDB 对 SQL 的处理路径和数据库时间进行了完善的测量和记录�
 
     `DB Time = Get Token Time + Parse Time + Comiple Time + Execute Time`
 
-- 对于 execute 耗时，按照 TiDB 执行器本身的时间、TSO 等待时间、kv 请求时间和重试的执行时间，判断执行阶段的瓶颈。对应的分解公式为：
+- 对于 execute 耗时，按照 TiDB 执行器本身的时间、TSO 等待时间、KV 请求时间和重试的执行时间，判断执行阶段的瓶颈。对应的分解公式为：
 
     `Execute Time ~= TiDB Executor Time + KV Request Time + PD TSO Wait Time + Retried execution time`
 
