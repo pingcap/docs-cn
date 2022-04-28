@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/system-variables/','/docs-cn/dev/reference/configuration
 TiDB 系统变量的行为与 MySQL 相似，变量的作用范围可以是全局范围有效 (Global Scope) 或会话级别有效 (Session Scope)。其中：
 
 - 对 `SESSION` 作用域变量的更改，设置后**只影响当前会话**。
-- 对 `GLOBAL` 作用域变量的更改，设置后立即生效，但不会影响 `SESSION` 作用域的变量，已经连接的所有会话 (包括当前会话) 将继续使用它们当前的 `SESSION` 变量值。
+- 对 `GLOBAL` 作用域变量的更改，设置后立即生效。如果该变量也有 `SESSION` 作用域，已经连接的所有会话 (包括当前会话) 将继续使用它们当前的 `SESSION` 变量值。
 - 使用 [`SET` 语句](/sql-statements/sql-statement-set-variable.md)可以设置变量的值。
 
 ```sql
@@ -23,8 +23,12 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 > **注意：**
 >
-> - 大部分 `GLOBAL` 作用域变量会将值持久化到 TiDB 集群中的其它实例。对于“集群持久化”为“是”的变量，当该全局变量被修改后，会通知所有 TiDB 服务器刷新其系统变量缓存。在集群中增加一个新的 TiDB 服务器，或者重启现存的 TiDB 服务器，都将自动使用该持久化变量。对于“集群持久化”为“否”的变量，对变量的修改只对当前连接的 TiDB 实例生效。如果需要保留设置过的值，需要在 `tidb.toml` 配置文件中声明。
-> - 此外，由于应用和连接器通常需要读 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
+> 部分 `GLOBAL` 作用域的变量会持久化到 TiDB 集群中。文档中的变量有一个“集群持久化”的说明，可以为“是”或者“否”。
+> 
+> - 对于“集群持久化”为“是”的变量，当该全局变量被修改后，会通知所有 TiDB 服务器刷新其系统变量缓存。在集群中增加一个新的 TiDB 服务器时，或者重启现存的 TiDB 服务器时，都将自动使用该持久化变量。
+> - 对于“集群持久化”为“否”的变量，对变量的修改只对当前连接的 TiDB 实例生效。如果需要保留设置过的值，需要在 `tidb.toml` 配置文件中声明。
+> 
+> 此外，由于应用和连接器通常需要读取 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
 
 > **注意：**
 >
@@ -186,7 +190,7 @@ mysql> SELECT * FROM t1;
 - 作用域：SESSION | GLOBAL
 - 集群持久化：是
 - 默认值：`50`
-- 范围：`[1, 1073741824]`
+- 范围：`[1, 3600]`
 - 单位：秒
 - 悲观事务语句等锁时间。
 
@@ -229,6 +233,18 @@ mysql> SELECT * FROM t1;
 > **注意：**
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
+
+### `plugin_dir`
+
+- 作用域：INSTANCE
+- 默认值：""
+- 指定加载插件的目录。
+
+### `plugin_load`
+
+- 作用域：INSTANCE
+- 默认值：""
+- 指定 TiDB 启动时加载的插件，多个插件之间用逗号（,）分隔。
 
 ### `placement_checks`
 
@@ -401,7 +417,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 集群持久化：是
 - 默认值：`2`
-- 范围：`[1, 2147483647]`
+- 范围：`[0, 2147483647]`
 - 这个变量用来给 TiDB 的 `backoff` 最大时间增加权重，即内部遇到网络或其他组件 (TiKV, PD) 故障时，发送重试请求的最大重试时间。可以通过这个变量来调整最大重试时间，最小值为 1。
 
     例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
@@ -726,7 +742,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：SESSION | GLOBAL
 - 集群持久化：是
 - 默认值：`ON` 
-- 这个变量用于允许对 `INSTANCE` 作用域的变量使用 `SET SESSION` (像使用 `SET GLOBAL` 那样) 进行设置。
+- 这个变量用于允许使用 `SET SESSION` 对 `INSTANCE` 作用域的变量进行设置，用法同 `SET GLOBAL`。
 - 为了兼容之前的 TiDB 版本，这个选项默认为 `ON`。
 
 ### `tidb_enable_list_partition` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -743,7 +759,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_mutation_checker`（从 v6.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`ON`
+- 默认值：`OFF`
 - 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
 
 ### `tidb_enable_noop_functions` <span class="version-mark">从 v4.0 版本开始引入</span>
@@ -1091,6 +1107,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_ignore_prepared_cache_close_stmt`（从 v6.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
+- 集群持久化：是
 - 默认值：`OFF`
 - 这个变量用来设置是否忽略关闭 Prepared Statement 的指令。
 - 如果变量值设为 `ON`，Binary 协议的 `COM_STMT_CLOSE` 信号和文本协议的 [`DEALLOCATE PREPARE`](/sql-statements/sql-statement-deallocate.md) 语句都会被忽略。
@@ -1201,6 +1218,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_mem_quota_binding_cache`（从 v6.0 版本开始引入）
 
 - 作用域：GLOBAL
+- 集群持久化：是
 - 默认值：`67108864` (64 MiB)
 - 范围：`[0, 2147483647]`
 - 单位：字节
@@ -1218,7 +1236,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_memory_usage_alarm_ratio`
 
-- 作用域：`INSTANCE`
+- 作用域：INSTANCE
 - 默认值：`0.8`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
@@ -1428,6 +1446,7 @@ explain select * from t where age=5;
 ### `tidb_placement_mode`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
+- 集群持久化：是
 - 默认值：`STRICT`
 - 可选值：`STRICT`，`IGNORE`
 - 该变量用于控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。变量值为 `IGNORE` 时将忽略所有放置规则选项。
@@ -1477,6 +1496,7 @@ SET tidb_query_log_max_len = 20;
 > - 如果客户端使用游标操作，建议不开启 `tidb_rc_read_check_ts` 这一特性，避免前一批返回数据已经被客户端使用而语句最终会报错的情况。
 
 - 作用域：SESSION | GLOBAL
+- 集群持久化：是
 - 默认值：`OFF`
 - 该变量用于优化时间戳的获取，适用于悲观事务 `READ-COMMITTED` 隔离级别下读写冲突较少的场景，开启此变量可以避免获取全局 timestamp 带来的延迟和开销，并优化事务内读语句延迟。
 - 如果读写冲突较为严重，开启此功能会增加额外开销和延迟，造成性能回退。更详细的说明，请参考[读已提交隔离级别 (Read Committed) 文档](/transaction-isolation-levels.md#读已提交隔离级别-read-committed)。
@@ -1484,7 +1504,8 @@ SET tidb_query_log_max_len = 20;
 ### `tidb_read_staleness` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 默认值：`""`
+- 默认值：`0`
+- 范围 `[-2147483648, 0]`
 - 这个变量用于设置当前会话允许读取的历史数据范围。设置后，TiDB 会从参数允许的范围内选出一个尽可能新的时间戳，并影响后继的所有读操作。比如，如果该变量的值设置为 `-5`，TiDB 会在 5 秒时间范围内，保证 TiKV 拥有对应历史版本数据的情况下，选择尽可能新的一个时间戳。
 
 ### `tidb_record_plan_in_slow_log`
@@ -1678,6 +1699,7 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_top_sql_max_meta_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
+- 集群持久化：是
 - 默认值：`5000`
 - 范围：`[1, 10000]`
 - 这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量。
@@ -1685,6 +1707,7 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_top_sql_max_time_series_count` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：GLOBAL
+- 集群持久化：是
 - 默认值：`100`
 - 范围：`[1, 5000]`
 - 这个变量用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N) 的数据。
@@ -1704,12 +1727,14 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_sysdate_is_now`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
+- 集群持久化：是
 - 默认值：`OFF`
 - 这个变量用于控制 `SYSDATE` 函数能否替换为 `NOW` 函数，其效果与 MYSQL 中的 [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now) 一致。
 
 ### `tidb_table_cache_lease`（从 v6.0.0 版本开始引入）
 
 - 作用域：GLOBAL
+- 集群持久化：是
 - 默认值：`3`
 - 范围：`[1, 10]`
 - 单位：秒
@@ -1746,7 +1771,8 @@ set tidb_slow_log_threshold = 200;
 ### `tidb_txn_assertion_level`（从 v6.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
-- 默认值：`FAST`
+- 集群持久化：是
+- 默认值：`OFF`
 - 可选值：`OFF`，`FAST`，`STRICT`
 - 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/data-inconsistency-errors.md)。
 
