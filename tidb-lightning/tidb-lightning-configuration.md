@@ -151,9 +151,7 @@ batch-import-ratio = 0.75
 
 # 本地源数据目录或外部存储 URL
 data-source-dir = "/data/my_database"
-# 如果 no-schema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
-# 已有表结构，并且不会执行 `CREATE TABLE` 语句。
-no-schema = false
+
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
 #  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
 #  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
@@ -403,7 +401,6 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码，可为明文或 Base64 编码 | `tidb.password` |
-| --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
