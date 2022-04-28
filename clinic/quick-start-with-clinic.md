@@ -53,6 +53,10 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     tiup diag config clinic.token ${token-value}
     ```
 
+6. 开启日志脱敏配置（可选步骤）。
+
+    TiDB 在提供详细的日志信息时可能会打印数据库的敏感信息（例如用户数据）。如果希望本地日志及上传到 Clinic Server 的日志中不带有敏感信息，你可以开启日志脱敏配置。具体操作请参考[日志脱敏](/log-redaction.md#tidb-组件日志脱敏)。
+
 ## 体验步骤
 
 1. 运行 Diag，采集诊断数据。
