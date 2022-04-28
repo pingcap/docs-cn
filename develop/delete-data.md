@@ -36,8 +36,13 @@ DELETE FROM {table} WHERE {filter}
 
 - 始终在删除语句中指定 `WHERE` 子句。如果 `UPDATE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB）。
+<<<<<<< HEAD
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-truncate) 语句。
 - 查看 [性能注意事项](#性能注意事项)
+=======
+- 如果您需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-truncate) 语句。
+- 查看 [性能注意事项](#性能注意事项)。
+>>>>>>> develop
 
 ## 例子
 
@@ -82,7 +87,7 @@ try (Connection connection = ds.getConnection()) {
 </div>
 </SimpleTab>
 
-> Note:
+> **注意：**
 >
 > 此处需注意，`rating_at` 字段为[日期和时间类型](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](https://docs.pingcap.com/zh/tidb/stable/configure-time-zone)时，展示不同的时间字符串。
 >

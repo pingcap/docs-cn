@@ -7,7 +7,7 @@ summary: 创建表的方法、最佳实践及例子。
 
 此页面提供了一个创建表的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
 
-> Note:
+> **注意：**
 >
 > 有关该 `CREATE TABLE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE TABLE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-table) 文档
 
@@ -57,7 +57,7 @@ CREATE TABLE {table_name} ( {elements} );
 - 使用 `完全限定` 的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为你在不指定数据库名称时，TiDB 将使用你 `SQL 会话` 中的[当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。若你未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
 - 请使用有意义的表名，例如，若你需要创建一个用户表，你可以使用名称：`user`, `t_user`, `users` 等，或遵循你公司或组织的命名规范。如果你的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#3-表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
 - 多个单词以下划线分隔，不推荐超过 32 个字符。
-- 不同业务模块的表单独建立 `DATABASE`，并增加相应注释
+- 不同业务模块的表单独建立 `DATABASE`，并增加相应注释。
 
 #### 表命名示例
 
@@ -91,10 +91,17 @@ CREATE TABLE `bookshop`.`users` (
 以下是定义列时需要遵循的一些最佳实践：
 
 - 查看支持的列的[数据类型](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)，并按照数据类型的限制来组织你的数据。为你计划被存在列中的数据选择合适的类型。
+<<<<<<< HEAD
 - 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列
 - 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引
 - 查看[添加列约束](#添加列约束)，决定是否添加约束到列中
 - 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
+=======
+- 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列。
+- 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引。
+- 查看[添加列约束](#添加列约束)，决定是否添加约束到列中。
+- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果您的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#4-字段命名规范)。
+>>>>>>> develop
 
 #### 列定义示例
 
@@ -131,15 +138,15 @@ CREATE TABLE `bookshop`.`books` (
 
 这张表比 `users` 表包含更多的数据类型：
 
-- [int](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#integer-%E7%B1%BB%E5%9E%8B): 我们推荐使用合适大小的类型，防止使用过量的硬盘甚至影响性能(类型范围过大)或数据溢出(类型范围过小)
-- [datetime](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6): 可以使用 `datetime` 类型保存时间值
-- [enum](https://docs.pingcap.com/zh/tidb/stable/data-type-string#enum-%E7%B1%BB%E5%9E%8B): 可以使用 `enum` 类型的枚举来保存有限选择的值
+- [int](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#integer-%E7%B1%BB%E5%9E%8B): 我们推荐使用合适大小的类型，防止使用过量的硬盘甚至影响性能(类型范围过大)或数据溢出(类型范围过小)。
+- [datetime](https://docs.pingcap.com/zh/tidb/stable/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6): 可以使用 `datetime` 类型保存时间值。
+- [enum](https://docs.pingcap.com/zh/tidb/stable/data-type-string#enum-%E7%B1%BB%E5%9E%8B): 可以使用 `enum` 类型的枚举来保存有限选择的值。
 
 ### 选择主键
 
 [主键](https://docs.pingcap.com/zh/tidb/stable/constraints#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)是一个或一组列，这个由所有主键列组合起来的值是数据行的唯一标识。
 
-> Note:
+> **注意：**
 >
 > TiDB 中，关于 `Primary Key` 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。`InnoDB` 中，`Primary Key` 的语义为：唯一，不为空，**且为聚簇索引**。
 >
@@ -184,10 +191,10 @@ CREATE TABLE `bookshop`.`users` (
 
 目前 TiDB 中 **_含有主键_** 的表分为以下两类：
 
-- `NONCLUSTERED`，表示该表的主键为非聚簇索引。在非聚簇索引表中，行数据的键由 TiDB 内部隐式分配的 `_tidb_rowid` 构成，而主键本质上是唯一索引，因此非聚簇索引表存储一行至少需要两个键值对，分别为
+- `NONCLUSTERED`，表示该表的主键为非聚簇索引。在非聚簇索引表中，行数据的键由 TiDB 内部隐式分配的 `_tidb_rowid` 构成，而主键本质上是唯一索引，因此非聚簇索引表存储一行至少需要两个键值对，分别为：
     - `_tidb_rowid`（键）- 行数据（值）
     - 主键列数据（键） - `_tidb_rowid`（值）
-- `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，因此聚簇索引表存储一行至少只要一个键值对，即
+- `CLUSTERED`，表示该表的主键为聚簇索引。在聚簇索引表中，行数据的键由用户给定的主键列数据构成，因此聚簇索引表存储一行至少只要一个键值对，即：
     - 主键列数据（键） - 行数据（值）
 
 如[主键](#选择主键)中所述，聚簇索引在 TiDB 中，使用关键字 `CLUSTERED` / `NONCLUSTERED` 进行控制。
@@ -200,7 +207,7 @@ CREATE TABLE `bookshop`.`users` (
 
 以下是在 TiDB 中选择聚簇索引时需要遵循的一些最佳实践：
 
-- 遵循 [主键选择的最佳实践](#主键选择的最佳实践)
+- 遵循 [主键选择的最佳实践](#主键选择的最佳实践)：
 
   聚簇索引将基于主键建立，请遵循主键选择的最佳实践，以完成聚簇索引最佳实践的基础。
 
@@ -298,7 +305,7 @@ CREATE TABLE `bookshop`.`users` (
 
 ### 使用 HTAP 能力
 
-> Note:
+> **注意：**
 >
 > 本指南中有关 HTAP 的步骤仅适用于快速上手体验，不适用于生产环境。如需探索 HTAP 更多功能，请参考[深入探索 HTAP](https://docs.pingcap.com/zh/tidb/stable/explore-htap)。
 
@@ -333,7 +340,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 ```
 
-> Note:
+> **注意：**
 >
 > 如果你的集群，不包含 TiFlash 节点，此 SQL 语句将会报错：`1105 - the tiflash replica count: 1 should be less than the total tiflash server count: 0` 你可以[使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群) 来创建一个含有 TiFlash 的免费集群。
 

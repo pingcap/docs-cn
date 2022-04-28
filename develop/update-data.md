@@ -22,10 +22,10 @@ summary: 更新数据、批量更新数据的方法、最佳实践及例子。
 
 需更新表中的现有行，需要使用带有 WHERE 子句的 [UPDATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-update)，即需要过滤列进行更新。
 
-> Note:
+> **注意：**
 >
-> 如果你需要更新大量的行，比如数万甚至更多行，那我们建议不要一次性进行完整的更新，而是每次迭代更新一部分，直到所有行全部更新。你可以编写脚本或程序，使用循环完成此操作。
-> 你可参考[批量更新](#批量更新)获得指引
+> 如果您需要更新大量的行，比如数万甚至更多行，那我们建议不要一次性进行完整的更新，而是每次迭代更新一部分，直到所有行全部更新。您可以编写脚本或程序，使用循环完成此操作。
+> 您可参考[批量更新](#批量更新)获得指引。
 
 ### SQL 语法
 
@@ -54,7 +54,7 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 
 ### `UPDATE` 例子
 
-假设某位作者改名为 Helen Haruki，需要更改我们的 [authors](/develop/bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`
+假设某位作者改名为 Helen Haruki，需要更改我们的 [authors](/develop/bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`。
 
 <SimpleTab>
 <div label="SQL" href="update-sql">
@@ -106,7 +106,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 ### `INSERT ON DUPLICATE KEY UPDATE` 最佳实践
 
 - 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
-- 在创建或更新的场景中使用此语句
+- 在创建或更新的场景中使用此语句。
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 例子
 
@@ -172,7 +172,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;
 ```
 
-> Note:
+> **注意：**
 >
 > 此批量更新程序将使用 `DDL` 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-add-column) 语句。
 

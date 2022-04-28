@@ -13,7 +13,7 @@ summary: 简单介绍 TiDB 的增删改查 SQL。
 
 ## 基本 SQL 操作
 
-> Note:
+> **注意：**
 >
 > 此处文档引用并简化自 TiDB 文档中的 [SQL 基本操作](https://docs.pingcap.com/zh/tidb/stable/basic-sql-operations)，你可直接前往此文档获取更全面、深入的 SQL 基本操作信息。
 
@@ -60,7 +60,7 @@ UPDATE person SET birthday='20180808' WHERE id=2;
 DELETE FROM person WHERE id=2;
 ```
 
-> Note:
+> **注意：**
 >
 > `UPDATE` 和 `DELETE` 操作如果不带 `WHERE` 过滤条件是对全表进行操作。
 

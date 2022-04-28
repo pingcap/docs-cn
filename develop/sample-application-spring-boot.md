@@ -159,7 +159,7 @@ yum install maven
 
 ![Spring Initializr Config](/media/develop/IMG_20220401-234316020.png)
 
-> Note:
+> **注意：**
 >
 > 尽管 SQL 相对标准化，但每个数据库供应商都使用 ANSI SQL 定义语法的子集和超集。这被称为数据库的方言。 Hibernate 通过其 org.hibernate.dialect.Dialect 类和每个数据库供应商的各种子类来处理这些方言的变化。
 >

@@ -10,7 +10,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 本文档将展示如何使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序。
 
-> Note:
+> **注意：**
 >
 > 我们推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写
 

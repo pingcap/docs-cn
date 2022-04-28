@@ -5,7 +5,11 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 # 开发者手册概览
 
+<<<<<<< HEAD
 本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架
+=======
+本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议您先行阅读 [TiDB 数据库快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)，并且安装 Driver 或使用 ORM 框架。
+>>>>>>> develop
 
 ## 手册内容
 
@@ -22,7 +26,7 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
 
 - 阅读 [TiDB 事务概览](https://docs.pingcap.com/zh/tidb/stable/transaction-overview) 来了解 TiDB 的事务运作方式或查看 [为应用开发程序员准备的事务说明](/develop/transaction-overview.md) 查看应用开发程序员需要了解的事务部分。
-- 此外，你需要了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)
+- 此外，你需要了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
 
 本文以下部分是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 中来获取更多 TiDB 的相关信息。
 
