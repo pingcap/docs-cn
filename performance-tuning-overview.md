@@ -92,7 +92,7 @@ User Response time = Service time + Queuing delay + Coherency delay
 - 如果瓶颈不在数据库中，需要借助数据库外部搜集的资源利用率，或者对应用程序进行 Profile，以确定数据库外部的瓶颈。常见场景包括应用程序或者代理服务器资源不足，应用程序存在串行点无法充分利用硬件资源等。
 - 如果瓶颈存在数据库中，你可以通过数据库完善的调优工具进行数据库内部性能分析和诊断。常见场景包括存在慢 SQL、应用程序使用数据库的方式不合理、数据库存在读写热点等。
 
-具体的分析诊断方法和工具，请参考[性能优化方法](/performance/performance-tuning-methods.md)。
+具体的分析诊断方法和工具，请参考[性能优化方法](/performance-tuning-methods.md)。
 
 ### 步骤 4：提出优化方案，评估每种方案的收益、风险和成本
 
