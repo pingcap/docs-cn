@@ -7,9 +7,9 @@ summary: 了解 TiDB 版本发布的规则。
 
 > **重要：**
 >
-> 始终升级到当前系列的最新补丁版本。
+> 建议始终升级到当前系列的最新补丁版本。
 
-从 TiDB 6.0.0 开始，TiDB 引入一个新的发布系列 DMR，并与 LTS 版共同作为 TiDB 的两个发布系列：
+从 TiDB 6.0.0 开始，TiDB 引入一个新的版本系列 DMR，并与 LTS 版共同作为 TiDB 的两个版本系列：
 
 - 长期支持版本 (Long-Term Support Releases, LTS)
 - 开发里程碑版本 (Development Milestone Releases, DMR)
