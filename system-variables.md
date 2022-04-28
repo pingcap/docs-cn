@@ -1838,7 +1838,7 @@ set tidb_slow_log_threshold = 200;
 
 - 作用域：SESSION
 - 默认值：`0`
-- 一个 Unix 时间戳，用于表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳的一个非空值。该变量通常用于数据恢复或数据复制。
+- 一个 Unix 时间戳。变量值非空时，表示 `CURRENT_TIMESTAMP()`、`NOW()` 等函数的时间戳。该变量通常用于数据恢复或数据复制。
 
 ### `transaction_isolation`
 
