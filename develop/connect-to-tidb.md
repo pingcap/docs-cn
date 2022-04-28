@@ -29,7 +29,7 @@ MysqlDataSource mysqlDataSource = new MysqlDataSource();
 mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&password={password}");
 ```
 
-有关 JDBC 连接的更多信息，可参考 [JDBC 官方文档](https://dev.mysql.com/doc/connector-j/8.0/en/)
+有关 JDBC 连接的更多信息，可参考 [JDBC 官方文档](https://dev.mysql.com/doc/connector-j/8.0/en/)。
 
 ### 连接参数
 
@@ -73,7 +73,7 @@ SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml
 2. 在您使用 Hibernate 时，我们建议您使用 TiDB 方言，即 `hibernate.dialect` 设置为 `org.hibernate.dialect.TiDBDialect`。
 3. Hibernate 在版本 `6.0.0.Beta2` 及以上可支持 TiDB 方言，因此我们推荐使用 `6.0.0.Beta2` 及以上版本的 Hibernate。
 
-更多有关 Hibernate 连接参数的信息，请参阅 [Hibernate 官方文档](https://hibernate.org/orm/documentation)
+更多有关 Hibernate 连接参数的信息，请参阅 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
 ### 连接参数
 

@@ -24,7 +24,7 @@ title: 更新数据
 > Note:
 >
 > 如果您需要更新大量的行，比如数万甚至更多行，那我们建议不要一次性进行完整的更新，而是每次迭代更新一部分，直到所有行全部更新。您可以编写脚本或程序，使用循环完成此操作。
-> 您可参考[批量更新](#批量更新)获得指引
+> 您可参考[批量更新](#批量更新)获得指引。
 
 ### SQL 语法
 
@@ -53,7 +53,7 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 
 ### `UPDATE` 例子
 
-假设某位作者改名为 Helen Haruki，需要更改我们的 [authors](/develop/bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`
+假设某位作者改名为 Helen Haruki，需要更改我们的 [authors](/develop/bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`。
 
 <SimpleTab>
 <div label="SQL" href="update-sql">
@@ -105,7 +105,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 ### `INSERT ON DUPLICATE KEY UPDATE` 最佳实践
 
 - 在仅有一个唯一键的表上使用 `INSERT ON DUPLICATE KEY UPDATE`。此语句在检测到任何 **_唯一键_** (包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会一行数据。因此，除非能保证仅有一行冲突，否则不建议在有多个唯一键的表中使用 `INSERT ON DUPLICATE KEY UPDATE` 语句。
-- 在创建或更新的场景中使用此语句
+- 在创建或更新的场景中使用此语句。
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 例子
 

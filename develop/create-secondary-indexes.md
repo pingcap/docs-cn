@@ -48,7 +48,7 @@ KEY `{index_name}` (`{column_names}`)
 
 ## 最佳实践
 
-见 [索引的最佳实践](/develop/index-best-practice.md)
+见 [索引的最佳实践](/develop/index-best-practice.md)。
 
 ## 例子
 
@@ -129,7 +129,7 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 >
 > TiDB 在查询时，还支持显示的使用索引，你可以使用 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 或 [执行计划管理 (SPM)](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
-我们可以使用 [SHOW INDEXES](https://docs.pingcap.com/zh/tidb/stable/sql-statement-show-indexes) 语句查询表中的索引。
+我们可以使用 [SHOW INDEXES](https://docs.pingcap.com/zh/tidb/stable/sql-statement-show-indexes) 语句查询表中的索引：
 
 ```sql
 SHOW INDEXES FROM `bookshop`.`books`;
