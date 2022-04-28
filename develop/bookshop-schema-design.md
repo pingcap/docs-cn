@@ -12,6 +12,8 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 
 如果你使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#tiup) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
 
+{{< copyable "shell" >}}
+
 ```shell
 tiup demo bookshop prepare
 ```
@@ -32,6 +34,8 @@ tiup demo bookshop prepare
 
 例如，你想要连接到 TiDB Cloud 上的数据库，你可以如下命令指定连接信息进行连接：
 
+{{< copyable "shell" >}}
+
 ```
 tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbcloud.com -P 4000 -p
 ```
@@ -50,6 +54,8 @@ tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbc
 
 例如，以下命令通过 `--books` 参数指定生成 50 万行书籍的基本信息，通过 `--authors` 参数指定生成 10 万的作者信息，通过 `--ratings` 参数指定生成 100 万的评分记录，通过 `--orders` 参数指定生成 100 万的订单记录。
 
+{{< copyable "shell" >}}
+
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --drop-tables
 ```
@@ -64,15 +70,19 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
    **Bucket URL**:
 
-   ```
-   s3://developer.pingcap.com/bookshop/
-   ```
+    {{< copyable "" >}}
+
+    ```
+    s3://developer.pingcap.com/bookshop/
+    ```
 
    **Role-ARN**:
 
-   ```
-   arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
-   ```
+    {{< copyable "" >}}
+
+    ```
+    arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
+    ```
 
    在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
 
@@ -94,6 +104,8 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 ### 查看数据导入情况
 
 导入完成后，你可以通过下面的 SQL 语句各个表的数据量信息：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -193,6 +205,8 @@ WHERE table_schema LIKE 'bookshop';
 | ordered_at |  datetime  |                  购买时间                   |
 
 ## 数据库初始化 `dbinit.sql` 脚本
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;
