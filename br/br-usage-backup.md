@@ -5,7 +5,18 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 # 备份 TiDB 集群数据
 
-下面介绍各种 TiDB 集群备份功能的使用方式。
+下面介绍各种备份 TiDB 集群功能的使用方式，包括：
+
+- [备份 TiDB 集群数据](#备份-tidb-集群数据)
+- [备份 TiDB 集群快照](#备份-tidb-集群快照)
+- [备份 TiDB 集群增量数据](#备份-tidb-集群增量数据)
+- [备份 TiDB 集群的指定库表的数据](#备份-tidb-集群的指定库表的数据)
+- [备份 TiDB 集群的指定库表的增量数据](#备份-tidb-集群的指定库表的增量数据)
+  - [备份单个数据库的数据](#备份单个数据库的数据)
+  - [备份单张表的数据](#备份单张表的数据)
+  - [使用表库过滤功能备份多张表的数据](#使用表库过滤功能备份多张表的数据)
+- [备份数据加密](#备份数据加密)
+- [备份数据到远端存储](#备份数据到远端存储)
 
 如果你还不熟悉 BR，建议您先阅读以下文档，充分了解 BR 使用限制和方法：
 
@@ -14,7 +25,7 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 ## 备份 TiDB 集群快照
 
-TiDB 集群快照数据是只包含某个物理时间点上集群的最新的、满足事务一致性的数据。 使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。该命令的使用帮助可以通过 `br backup full --help` 来获取。
+TiDB 集群快照数据是只包含某个物理时间点上集群的最新的、满足事务一致性的数据。使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
 
 用例：将时间为 '2022-01-30 07:42:23' 的集群快照数据备份到 S3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中。
 
@@ -33,7 +44,7 @@ br backup full \
 
 - `--backupts`：快照对应的物理时间点。如果该快照的数据被 GC 了，那么 `br backup` 命令会报错退出；如果你没有指定该参数，那么 BR 会选取备份开始的时间点所对应的快照。
 - `--ratelimit`：**每个 TiKV** 执行备份任务的速度上限（单位 MiB/s）。
-- `--log-file`：BR log 写入的目标文件。 
+- `--log-file`：BR log 写入的目标文件。
 
 备份期间有进度条在终端中显示，显示效果如下。当进度条前进到 100% 时，说明备份已完成。
 
@@ -60,7 +71,7 @@ TiDB 集群增量数据包含某个时间段的起始和结束两个快照的差
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1`
 ```
 
-> **Note: **
+> **Note:**
 >
 > - 增量备份数据需要与前一次快照备份数据保存在不同的路径下。
 > - GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
@@ -71,7 +82,7 @@ LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/202
 br backup full\
     --pd ${PDIP}:2379 \
     --ratelimit 128 \
-    --storage "s3://backup-data/2022-01-30/incr" \ 
+    --storage "s3://backup-data/2022-01-30/incr" \
     --lastbackupts ${LAST_BACKUP_TS}
 ```
 
@@ -167,13 +178,13 @@ br backup full\
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
 
-### Amazon S3 储服务端加密备份数据
+### Amazon S3 存储服务端加密备份数据
 
 BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
 
 ## 备份数据到远端存储
 
-BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NFS，或者实现 s3 协议的其他文件存储服务。下面逐一介绍如何备份数据到对应的备份存储中。
+BR 支持将数据备份到 Amazon S3、Google Cloud Storage、Azure Blob Storage、NFS 或者实现 S3 协议的其他文件存储服务。下面逐一介绍如何备份数据到对应的备份存储中。
 
 - [使用 S3 存储备份数据](/br/backup-storage-S3.md)
 - [使用 Google Cloud Storage 存储备份数据](/br/backup-storage-gcs.md)
@@ -181,13 +192,13 @@ BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NF
 
 ## 备份性能和影响
 
-TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，但是可以通过调整备份的线程数 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) ，以及增加集群配置，来降低备份对集群性能的影响。 
+TiDB 备份功能对集群性能（事务延迟和 QPS）有一定的影响，但是可以通过调整备份的线程数 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) ，以及增加集群配置，来降低备份对集群性能的影响。
 
 为了更加具体说明备份对集群的影响，这里列举了多次快照备份测试结论来说明影响的范围：
 
-- （使用 5.3 及之前版本）BR 在单 TiKV 存储节点上备份线程数量是节点 CPU 总数量的 75% 的时候，QPS 会下降到备份之前的 30% 左右；
-- （使用 5.4 及以后版本）当 BR 在单 TiKV 存储节点上备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 80% 时，BR 备份任务对集群（无论读写负载）影响最大在 20% 左右；
-- （使用 5.4 及以后版本）当 BR 在单 TiKV 存储节点上备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 75% 时，BR 备份任务对集群（无论读写负载）影响最大在 10% 左右；
+- （使用 5.3 及之前版本）BR 在单 TiKV 存储节点上备份线程数量是节点 CPU 总数量的 75% 的时候，QPS 会下降到备份之前的 30% 左右。
+- （使用 5.4 及以后版本）当 BR 在单 TiKV 存储节点上备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 80% 时，BR 备份任务对集群（无论读写负载）影响最大在 20% 左右。
+- （使用 5.4 及以后版本）当 BR 在单 TiKV 存储节点上备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 75% 时，BR 备份任务对集群（无论读写负载）影响最大在 10% 左右。
 - （使用 5.4 及以后版本）当 BR 在单 TiKV 存储节点上备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 60% 时，BR 备份任务对集群（无论读写负载）几乎没有影响。
 
 通过限制备份的线程数量可以降低备份对集群性能的形象，但是这会影响到备份的性能，以上的多次备份测试结果显示:（单 TiKV 存储节点上）备份速度和备份线程数量呈正比，在线程数量量较少的时候，速度大概是 20M/线程数。例如，单节点 5 个备份线程可达到 100M/s；
