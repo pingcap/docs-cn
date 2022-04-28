@@ -6,7 +6,9 @@ title: 临时表
 
 临时表可以被认为是一种复用查询结果的技术。
 
-假设我们希望知道 Bookshop 应用当中最年长的作家们的一些情况，我们可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。我们可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为我们的研究对象。
+假设我们希望知道 [Bookshop](/develop/bookshop-schema-design.md) 应用当中最年长的作家们的一些情况，我们可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。我们可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为我们的研究对象。
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT a.id, a.name, (IFNULL(a.death_year, YEAR(NOW())) - a.birth_year) AS age
@@ -56,6 +58,8 @@ TiDB 的临时表分为本地临时表和全局临时表：
 
 通过 `CREATE TEMPORARY TABLE <table_name>` 语句创建临时表，默认临时表的类型为本地临时表，它只能被当前会话所访问。
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE TEMPORARY TABLE top_50_eldest_authors (
     id BIGINT,
@@ -66,6 +70,8 @@ CREATE TEMPORARY TABLE top_50_eldest_authors (
 ```
 
 在创建完临时表后，你可以通过 `INSERT INTO table_name SELECT ...` 语句，将上述查询得到的结果导入到刚刚创建的临时表当中。
+
+{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO top_50_eldest_authors
@@ -82,6 +88,8 @@ Records: 50  Duplicates: 0  Warnings: 0
 
 </div>
 <div label="Java" href="local-java">
+
+{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -130,6 +138,8 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
 你可以通过加上 `GLOBAL` 关键字来声明你所创建的是全局临时表。创建全局临时表时必须在末尾 `ON COMMIT DELETE ROWS` 修饰，这表明该全局数据表的所有数据行将在事务结束后被删除。
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
     id BIGINT,
@@ -145,6 +155,8 @@ CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
 <div label="Java" href="global-java">
 
 在使用全局临时表时，你需要将 Auto Commit 模式先关闭。在 Java 语言当中，你可以通过 `conn.setAutoCommit(false);` 语句来实现，当你使用完成后，可以通过 `conn.commit();` 显式地提交事务。事务在提交或取消后，在事务过程中对全局临时表添加的数据将会被清除。
+
+{{< copyable "java" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -214,11 +226,15 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
 在临时表准备就绪之后，你便可以像对一般数据表一样对临时表进行查询：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM top_50_eldest_authors;
 ```
 
-你可以通过 [表连接](/develop/join-tables.md) 将临时表中的数据引用到你的查询当中：
+你可以通过[表连接](/develop/join-tables.md)将临时表中的数据引用到你的查询当中：
+
+{{< copyable "sql" >}}
 
 ```sql
 EXPLAIN SELECT ANY_VALUE(ta.id) AS author_id, ANY_VALUE(ta.age), ANY_VALUE(ta.name), COUNT(*) AS books
@@ -227,13 +243,15 @@ LEFT JOIN book_authors ba ON ta.id = ba.author_id
 GROUP BY ta.id;
 ```
 
-与 [视图](/develop/views.md) 有所不同，在对临时表进行查询时，不会再执行导入数据时所使用的原始查询，而是直接从临时表中获取数据。在一些情况下，这会帮助你提高查询的效率。
+与[视图](/develop/use-views.md)有所不同，在对临时表进行查询时，不会再执行导入数据时所使用的原始查询，而是直接从临时表中获取数据。在一些情况下，这会帮助你提高查询的效率。
 
 ## 删除临时表
 
 本地临时表会在**会话**结束后连同数据和表结构都进行自动清理。全局临时表在**事务**结束后会自动清除数据，但是表结构依然保留，需要手动删除。
 
 你通过 `DROP TABLE` 或 `DROP TEMPORARY TABLE` 语句手动删除临时表。例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 DROP TEMPORARY TABLE top_50_eldest_authors_global;

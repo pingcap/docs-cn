@@ -4,8 +4,8 @@ title: 连接池与连接参数
 
 # 连接池与连接参数
 
-> - 连接池参数 - 连接数配置、探活配置两节摘自 [开发 Java 应用使用 TiDB 的最佳实践 - 连接池](https://docs.pingcap.com/zh/tidb/v5.2/java-app-best-practices#%E8%BF%9E%E6%8E%A5%E6%B1%A0)
-> - 连接参数摘自 [开发 Java 应用使用 TiDB 的最佳实践 - JDBC](https://docs.pingcap.com/zh/tidb/v5.2/java-app-best-practices#jdbc)
+> - 连接池参数 - 连接数配置、探活配置两节摘自 [开发 Java 应用使用 TiDB 的最佳实践 - 连接池](https://docs.pingcap.com/zh/tidb/v5.2/java-app-best-practices#%E8%BF%9E%E6%8E%A5%E6%B1%A0)。
+> - 连接参数摘自 [开发 Java 应用使用 TiDB 的最佳实践 - JDBC](https://docs.pingcap.com/zh/tidb/v5.2/java-app-best-practices#jdbc)。
 
 ## 连接池参数
 
@@ -53,8 +53,8 @@ connections = ((core_count * 2) + effective_spindle_count)
 
 解释一下参数含义：
 
-- `connections`: 得出的连接数大小
-- `core_count`: CPU 核心数
+- `connections`: 得出的连接数大小。
+- `core_count`: CPU 核心数。
 - `effective_spindle_count`: 直译为 `有效主轴数` ，实际上是说你有多少个硬盘(非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive))，因为每个旋转的硬盘可以被称为是一个旋转轴。例如，你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器，那么 `effective_spindle_count` 应为 16。此处经验公式，实际上是衡量你的服务器可以管理多少 I/O 并发请求，因为 `HDD` 通常只能串行请求。
 
 要特别说明的是，在这个经验公式的的下方，我们也看到了一处说明：
@@ -72,8 +72,8 @@ connections = ((core_count * 2) + effective_spindle_count)
 这个说明指出：
 
 1. `core_count` 就是 _物理核心数_ ，与你是否开启[超线程](https://en.wikipedia.org/wiki/Hyper-threading)无关。
-2. 数据被全量缓存时，`effective_spindle_count` 应被设置为 0，随着命中率的下降，会更加接近实际的 HDD 个数
-3. **这里没有任何基于 `SSD` 的经验公式**
+2. 数据被全量缓存时，`effective_spindle_count` 应被设置为 0，随着命中率的下降，会更加接近实际的 HDD 个数。
+3. **这里没有任何基于 `SSD` 的经验公式。**
 
 这里的说明让我们在使用 SSD 时，需探求其他的经验公式。
 

@@ -45,14 +45,14 @@
   - 数据读取
     - [单表读取](/develop/get-data-from-single-table.md)
     - [多表连接查询](/develop/join-tables.md)
-    - [子查询](/develop/subquries.md)
+    - [子查询](/develop/use-subqueries.md)
     - [查询结果分页](/develop/paginate-results.md)
-    - [视图](/develop/views.md)
-    - [临时表](/develop/temporary-table.md)
-    - [公共表表达式](/develop/common-table-expression.md)
+    - [视图](/develop/use-views.md)
+    - [临时表](/develop/use-temporary-tables.md)
+    - [公共表表达式](/develop/use-common-table-expression.md)
     - 读取副本数据
-      - [Follower Read](/develop/follower-read.md)
-      - [Stale Read](/develop/stale-read.md)
+      - [Follower Read](/develop/use-follower-read.md)
+      - [Stale Read](/develop/use-stale-read.md)
     - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
   - 事务
     - [事务概览](/develop/transaction-overview-for-dev.md)
