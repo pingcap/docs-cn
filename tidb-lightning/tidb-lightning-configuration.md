@@ -280,7 +280,7 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 对于 Local/Importer Backend 模式，数据导入完成后，tidb-lightning 可以自动执行 Checksum 和 Analyze 操作。
+# 对于 Local Backend 模式，数据导入完成后，tidb-lightning 可以自动执行 Checksum 和 Analyze 操作。
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Analyze。
 # 注意：对于 TiDB Backend, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
@@ -294,7 +294,7 @@ max-allowed-packet = 67_108_864
 #
 # 注意：
 # 1. Checksum 对比失败通常表示导入异常(数据丢失或数据不一致)，因此建议总是开启 Checksum。
-# 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 "required" 和 `off` 相同。
+# 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
 checksum = "required"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
