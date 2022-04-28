@@ -33,46 +33,45 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 1. 下载并安装 TiUP。
 
-```shell
-curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-```
+    ```shell
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
 
 2. 声明全局环境变量。
 
-> 注意
->
-> TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
+    > 注意
+    >
+    > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
-```shell
-source .bash_profile
-```
+    ```shell
+    source .bash_profile
+    ```
 
 3. 在当前 session 执行以下命令启动集群。
-   - 直接执行
 
-`tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+    - 直接执行`tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
-```shell
-tiup playground
-```
+        ```shell
+        tiup playground
+        ```
 
-- 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
-```shell
-tiup playground v5.4.0 --db 2 --pd 3 --kv 3
-```
+        ```shell
+        tiup playground v5.4.0 --db 2 --pd 3 --kv 3
+        ```
 
-上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+    上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
-```bash
-CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
-To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
-To view the dashboard: http://127.0.0.1:2379/dashboard
-PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
-To view the Prometheus: http://127.0.0.1:9090
-To view the Grafana: http://127.0.0.1:3000
-```
+    ```bash
+    CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+    To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
+    To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
+    To view the dashboard: http://127.0.0.1:2379/dashboard
+    PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
+    To view the Prometheus: http://127.0.0.1:9090
+    To view the Grafana: http://127.0.0.1:3000
+    ```
 
 > 注意
 >
@@ -94,29 +93,29 @@ To view the Grafana: http://127.0.0.1:3000
 
 - macOS 安装：
 
-```
-brew install maven
-```
+    ```
+    brew install maven
+    ```
 
 - 基于 Debian 的 Linux 发行版上安装(如 Ubuntu 等)：
 
-```
-apt-get install maven
-```
+    ```
+    apt-get install maven
+    ```
 
 - 基于 Red Hat 的 Linux 发行版上安装(如 Fedora、CentOS 等):
 
 1. dnf 包管理器
 
-```
-dnf install maven
-```
+    ```
+    dnf install maven
+    ```
 
 2. yum 包管理器
 
-```
-yum install maven
-```
+    ```
+    yum install maven
+    ```
 
 其他安装方法，请参考 [Maven 官方文档](https://maven.apache.org/install.html)
 
@@ -173,39 +172,39 @@ yum install maven
 
 1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 `Spring Data JPA` 内引入的 `jakarta` 包进行排除，即将：
 
-```xml
-<dependency>
-   <groupId>org.springframework.boot</groupId>
-   <artifactId>spring-boot-starter-data-jpa</artifactId>
-</dependency>
-```
+    ```xml
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    ```
 
-更改为：
+    更改为：
 
-```xml
-<dependency>
-   <groupId>org.springframework.boot</groupId>
-   <artifactId>spring-boot-starter-data-jpa</artifactId>
-   <exclusions>
-      <exclusion>
-         <groupId>org.hibernate</groupId>
-         <artifactId>hibernate-core-jakarta</artifactId>
-      </exclusion>
-   </exclusions>
-</dependency>
-```
+    ```xml
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-jpa</artifactId>
+    <exclusions>
+        <exclusion>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core-jakarta</artifactId>
+        </exclusion>
+    </exclusions>
+    </dependency>
+    ```
 
 2. 随后如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53)中所示，引入 `6.0.0.Beta2` 版本以上的 `Hibernate` 依赖，此处以 `6.0.0.CR2` 版本为例：
 
-```xml
-<dependency>
-   <groupId>org.hibernate.orm</groupId>
-   <artifactId>hibernate-core</artifactId>
-   <version>6.0.0.CR2</version>
-</dependency>
-```
+    ```xml
+    <dependency>
+    <groupId>org.hibernate.orm</groupId>
+    <artifactId>hibernate-core</artifactId>
+    <version>6.0.0.CR2</version>
+    </dependency>
+    ```
 
-更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 `Spring Boot` 应用程序。
+    更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 `Spring Boot` 应用程序。
 
 ## 步骤 5. 运行应用程序
 

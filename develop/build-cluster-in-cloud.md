@@ -31,80 +31,80 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
 1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。
 
-<SimpleTab>
+    <SimpleTab>
 
-<div label="macOS">
+    <div label="macOS">
 
-如果你没有 homebrew，请移步[官网](https://brew.sh/index_zh-cn)进行安装。
+    如果你没有 homebrew，请移步[官网](https://brew.sh/index_zh-cn)进行安装。
 
-```bash
-brew install mysql-client
-```
+    ```bash
+    brew install mysql-client
+    ```
 
-在安装完成的命令行输出中，得到以下信息：
+    在安装完成的命令行输出中，得到以下信息：
 
-```bash
-mysql-client is keg-only, which means it was not symlinked into /opt/homebrew,
-because it conflicts with mysql (which contains client libraries).
+    ```bash
+    mysql-client is keg-only, which means it was not symlinked into /opt/homebrew,
+    because it conflicts with mysql (which contains client libraries).
 
-If you need to have mysql-client first in your PATH, run:
-  echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
+    If you need to have mysql-client first in your PATH, run:
+    echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
 
-For compilers to find mysql-client you may need to set:
-  export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
-```
+    For compilers to find mysql-client you may need to set:
+    export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
+    export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
+    ```
 
-请运行其中的此行（命令行输出若与此处文档不一致，请以命令行输出为准）：
+    请运行其中的此行（命令行输出若与此处文档不一致，请以命令行输出为准）：
 
-```bash
-echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
-```
+    ```bash
+    echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
+    ```
 
-完成后，生效该配置文件（例如 `~/.zshrc`），并验证 MySQL 客户端是否安装成功：
+    完成后，生效该配置文件（例如 `~/.zshrc`），并验证 MySQL 客户端是否安装成功：
 
-```bash
-source ~/.zshrc
-mysql --version
-```
+    ```bash
+    source ~/.zshrc
+    mysql --version
+    ```
 
-预期会得到形如以下的输出：
+    预期会得到形如以下的输出：
 
-```bash
-mysql  Ver 8.0.28 for macos12.0 on arm64 (Homebrew)
-```
+    ```bash
+    mysql  Ver 8.0.28 for macos12.0 on arm64 (Homebrew)
+    ```
 
-</div>
+    </div>
 
-<div label="Linux">
+    <div label="Linux">
 
-以 CentOS7 为例：
+    以 CentOS 7 为例：
 
-```bash
-yum install mysql
-```
+    ```bash
+    yum install mysql
+    ```
 
-完成后，请验证 MySQL 客户端是否安装成功：
+    完成后，请验证 MySQL 客户端是否安装成功：
 
-```bash
-mysql --version
-```
+    ```bash
+    mysql --version
+    ```
 
-预期会得到形如以下的输出：
+    预期会得到形如以下的输出：
 
-```bash
-mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
-```
+    ```bash
+    mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
+    ```
 
-</div>
+    </div>
 
-</SimpleTab>
+    </SimpleTab>
 
 2. 运行步骤 1 中得到的连接字符串。
 
-```bash
-mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
-```
+    ```bash
+    mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
+    ```
 
 3. 填写密码，完成登录。
 
@@ -112,52 +112,52 @@ mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
 
 1. 克隆 tidb-example-java 项目。
 
-```bash
-git clone https://github.com/pingcap-inc/tidb-example-java.git
-```
+    ```bash
+    git clone https://github.com/pingcap-inc/tidb-example-java.git
+    ```
 
 2. 更改连接参数。
 
-<SimpleTab>
+    <SimpleTab>
 
-<div label="本地默认集群">
+    <div label="本地默认集群">
 
-无需更改。
+    无需更改。
 
-</div>
+    </div>
 
-<div label="非本地默认集群、TiDB Cloud 或其他远程集群">
+    <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
 
-更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
+    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
 
-```java
-mysqlDataSource.setServerName("localhost");
-mysqlDataSource.setPortNumber(4000);
-mysqlDataSource.setDatabaseName("test");
-mysqlDataSource.setUser("root");
-mysqlDataSource.setPassword("");
-```
+    ```java
+    mysqlDataSource.setServerName("localhost");
+    mysqlDataSource.setPortNumber(4000);
+    mysqlDataSource.setDatabaseName("test");
+    mysqlDataSource.setUser("root");
+    mysqlDataSource.setPassword("");
+    ```
 
-若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+    若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
 
-```java
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
-```
+    ```java
+    mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+    ```
 
-那么此处应将参数更改为：
+    那么此处应将参数更改为：
 
-```java
-mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
-mysqlDataSource.setPortNumber(4000);
-mysqlDataSource.setDatabaseName("test");
-mysqlDataSource.setUser("root");
-mysqlDataSource.setPassword("123456");
-```
+    ```java
+    mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
+    mysqlDataSource.setPortNumber(4000);
+    mysqlDataSource.setDatabaseName("test");
+    mysqlDataSource.setUser("root");
+    mysqlDataSource.setPassword("123456");
+    ```
 
-</div>
+    </div>
 
-</SimpleTab>
+    </SimpleTab>
 
 3. 运行 `make plain-java-jdbc`
 
-输出应如[预期](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)所示
+    输出应如[预期](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)所示

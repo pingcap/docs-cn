@@ -173,7 +173,7 @@ WHERE table_schema LIKE 'bookshop';
 | :------: | :------: | :-----------------------------------------: |
 | book_id  |  bigint  | 书籍的唯一标识（关联至 [books](#books-表)） |
 | user_id  |  bigint  | 用户的唯一标识（关联至 [users](#users-表)） |
-|  score   | tinyint  |               用户评分 (1-5)                |
+|  score   | tinyint  |               用户评分 (1~5)                |
 | rated_at | datetime |                  评分时间                   |
 
 ### `book_authors` 表
