@@ -105,9 +105,8 @@
   - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
   - 优化手册
-    - [优化概述](/performance/performance-tunine-overview.md)
-    - [优化方法](/performance/performance-tuning-guide.md)
-    - [优化案例](/performance/real-world-tuning-cacse.md)
+    - [优化概述](/performance-tuning-overview.md)
+    - [优化方法](/performance-tuning-methods.md)
   - 配置优化
     - 系统调优
       - [操作系统性能参数调优](/tune-operating-system.md)
