@@ -19,15 +19,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 下载安装包
 
-如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可，因为 `pd-ctl` 包含在 TiDB 安装包中。
-
-| 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
-| :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-
-> **注意：**
->
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.0` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.0-linux-amd64.tar.gz`。
+PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ### 源码编译
 
@@ -1100,6 +1092,17 @@ Encoding 格式示例：
 >> scheduler resume balance-region-scheduler              // 继续运行 balance-region 调度器
 >> scheduler resume all                                   // 继续运行所有的调度器
 >> scheduler config balance-hot-region-scheduler          // 显示 balance-hot-region 调度器的配置
+```
+
+### `scheduler config balance-leader-scheduler`
+
+用于查看和控制 `balance-leader-scheduler` 策略。
+
+从 TiDB v6.0.0 起，PD 为 `balance-leader-scheduler` 引入了 `Batch` 参数，用于控制 balance-leader 执行任务的速度。你可以通过 pd-ctl 修改 `balance-leader batch` 配置项设置该功能。
+
+在 v6.0.0 前，PD 不带有该配置（即 `balance-leader batch=1`）。在 v6.0.0 或更高版本中，`balance-leader batch` 的默认值为 `4`。如果你想为该配置项设置大于 `4` 的值，你需要同时调大 [`scheduler-max-waiting-operator`](#config-show--set-option-value--placement-rules)（默认值 `5`）。同时调大两个配置项后，你才能体验预期的加速效果。
+
+```bash
 >> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
 ```
 

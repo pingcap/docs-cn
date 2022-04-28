@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 [BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。
 
-相比 [`dumpling`](/backup-and-restore-using-dumpling-lightning.md)，BR 更适合**大数据量**的场景。
+相比 [Dumpling](/dumpling-overview.md)，BR 更适合**大数据量**的场景。
 
 BR 除了可以用来进行常规备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
 
@@ -97,6 +97,17 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 | 用 BR v4.0 备份 TiDB v4.0 | ✅ | ✅  | ✅（如果 TiKV >= v4.0.0-rc.1，BR 包含 [#233](https://github.com/pingcap/br/pull/233) Bug 修复，且 TiKV 不包含 [#7241](https://github.com/tikv/tikv/pull/7241) Bug 修复，那么 BR 会导致 TiKV 节点重启) |
 | 用 BR nightly 或 v5.0 备份 TiDB v4.0 | ❌（当 TiDB 版本小于 v4.0.9 时会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) | ❌（当 TiDB 版本小于 v4.0.9 会出现 [#609](https://github.com/pingcap/br/issues/609) 问题) |
 
+#### 对 `new_collations_enabled_on_first_bootstrap` 的检查
+
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。
+
+从 v6.0.0 开始，BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项，同时在恢复时会检查此配置项是否与下游集群相同。若上下游的该配置不相同，BR 会拒绝恢复，并报告此配置项不匹配的错误。
+
+如果你需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要自行检查上下游集群中的该配置项是否相同：
+
+- 若该配置项相同，则可在恢复命令中添加 `--check-requirements=false` 以跳过此项配置检查。
+- 若该配置项不相同，且进行强行恢复，BR 会报告[数据校验错误](/br/backup-and-restore-tool.md#使用限制)。
+
 ### 备份和恢复 `mysql` 系统库下的表数据（实验特性）
 
 > **警告：**
@@ -144,7 +155,7 @@ TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md#
 
 #### 通过命令行工具
 
-TiDB 支持使用 BR 命令行工具进行备份恢复（需[手动下载](/download-ecosystem-tools.md#备份和恢复-br-工具)）。关于 BR 命令行工具的具体使用方法，请参阅[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
+TiDB 支持使用 BR 命令行工具进行备份恢复（需[手动下载](/download-ecosystem-tools.md)）。关于 BR 命令行工具的具体使用方法，请参阅[使用备份与恢复工具 BR](/br/use-br-command-line-tool.md)。
 
 #### 在 Kubernetes 环境下
 

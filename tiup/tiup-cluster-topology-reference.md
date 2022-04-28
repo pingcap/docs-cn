@@ -496,7 +496,7 @@ tispark_workers:
 `monitoring_servers` 约定了将 Prometheus 服务部署到哪台机器上，同时可以指定这台机器上的服务配置，`monitoring_servers` 是一个数组，每个数组元素包含以下字段：
 
 - `host`：指定部署到哪台机器，字段值填 IP 地址，必填项
-- `ng_port`：指定连接 NGMonitoring 的 SSH 端口，在 TiUP v1.7.0 引入，支持 TiDB v5.3.0 及以上版本的[持续性能分析](/dashboard/dashboard-profiling.md)和 Top SQL 功能。
+- `ng_port`：指定 NgMonitoring 组件监听的端口，在 TiUP v1.7.0 引入，用于支持 TiDB Dashboard 中[持续性能分析](/dashboard/continuous-profiling.md)和 [Top SQL](/dashboard/top-sql.md) 功能。默认值：12020
 - `ssh_port`：指定连接目标机器进行操作的时候使用的 SSH 端口，若不指定，则使用 global 区块中的 `ssh_port`
 - `port`：指定 Prometheus 提供服务的端口，默认值：9090
 - `deploy_dir`：指定部署目录，若不指定，或指定为相对目录，则按照 `global` 中配置的 `deploy_dir` 生成

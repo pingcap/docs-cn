@@ -22,7 +22,7 @@ TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
 * 创建包含 DDL 语句 `CREATE TABLE` 的文件 `db_name.table_name-schema.sql` 以及包含 `CREATE DATABASE` DDL 语句的文件 `db_name-schema-create.sql`。
-* 首先在 TiDB 中直接创建空表，然后在 `tidb-lightning.toml` 中设置 `[mydumper] no-schema = true`。
+* 在 TiDB 中手动创建。
 
 ## 配置
 

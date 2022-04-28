@@ -18,10 +18,10 @@ TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，�
 ### tidb-lightning 全局配置
 
 [lightning]
-# 用于拉取 web 界面和 Prometheus 监控项的 HTTP 端口。设置为 0 时为禁用状态。
+# 用于进度展示 web 界面、拉取 Prometheus 监控项、暴露调试数据和提交导入任务（服务器模式下）的 HTTP 端口。设置为 0 时为禁用状态。
 status-addr = ':8289'
 
-# 切换为服务器模式并使用 web 界面
+# 服务器模式，默认值为 false，命令启动后会开始导入任务。如果改为 true，命令启动后会等待用户在 web 界面上提交任务。
 # 详情参见“TiDB Lightning web 界面”文档
 server-mode = false
 
@@ -151,9 +151,7 @@ batch-import-ratio = 0.75
 
 # 本地源数据目录或外部存储 URL
 data-source-dir = "/data/my_database"
-# 如果 no-schema = true，那么 TiDB Lightning 假设目标 TiDB 集群上
-# 已有表结构，并且不会执行 `CREATE TABLE` 语句。
-no-schema = false
+
 # 指定包含 `CREATE TABLE` 语句的表结构文件的字符集。只支持下列选项：
 #  - utf8mb4：表结构文件必须使用 UTF-8 编码，否则会报错。
 #  - gb18030：表结构文件必须使用 GB-18030 编码，否则会报错。
@@ -220,19 +218,6 @@ trim-last-separator = false
 # schema = '$1'
 # table = '$2'
 # type = '$3'
-# 
-# 设置分库分表合并规则，将 my_db1 中的 table1、table2 两个表，以及 my_db2 中的 table3、table4 两个表，共计 2 个数据库中的 4 个表都导入到目的数据库 my_db 中的 table5 表中。
-# [[routes]]
-# schema-pattern = "my_db1"
-# table-pattern = "table[1-2]"
-# target-schema = "my_db"
-# target-table = "table5"
-# 
-# [[routes]]
-# schema-pattern = "my_db2"
-# table-pattern = "table[3-4]"
-# target-schema = "my_db"
-# target-table = "table5"
 
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
@@ -280,7 +265,7 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
+# 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作，注意此类配置仅当 backend=local 时生效。
 # 在生产环境中，建议这将些参数都设为 true。
 # 执行的顺序为：Checksum -> Compact -> Analyze。
 [post-restore]
@@ -416,7 +401,6 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
 | --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
 | --tidb-password *password* | 连接到 TiDB 的密码，可为明文或 Base64 编码 | `tidb.password` |
-| --no-schema | 忽略表结构文件，直接从 TiDB 中获取表结构信息 | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
 | --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
 | --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |

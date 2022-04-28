@@ -112,7 +112,7 @@ br backup db \
     --db test \
     --storage "local:///tmp/backup" \
     --ratelimit 128 \
-    --log-file backuptable.log
+    --log-file backupdb.log
 ```
 
 `db` 子命令的选项为 `--db`，用来指定数据库名。其他选项的含义与[备份全部集群数据](#备份全部集群数据)相同。
@@ -188,7 +188,7 @@ br backup full \
     --s3.region "${region}" \
     --send-credentials-to-tikv=true \
     --ratelimit 128 \
-    --log-file backuptable.log
+    --log-file backupfull.log
 ```
 
 ### 增量备份
@@ -336,7 +336,7 @@ br restore db \
     --db "test" \
     --ratelimit 128 \
     --storage "local:///tmp/backup" \
-    --log-file restorefull.log
+    --log-file restoredb.log
 ```
 
 以上命令中 `--db` 选项指定了需要恢复的数据库名字。其余选项的含义与[恢复全部备份数据](#恢复全部备份数据)相同。
@@ -360,7 +360,7 @@ br restore table \
     --table "usertable" \
     --ratelimit 128 \
     --storage "local:///tmp/backup" \
-    --log-file restorefull.log
+    --log-file restoretable.log
 ```
 
 ### 使用表库功能过滤恢复数据

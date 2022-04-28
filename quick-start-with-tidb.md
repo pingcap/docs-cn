@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 本指南介绍如何快速上手体验 TiDB 数据库。对于非生产环境，你可以选择以下任意一种方式部署 TiDB 数据库：
 
-- [部署本地测试集群](#部署本地测试集群)（支持 Mac 和 Linux）
+- [部署本地测试集群](#部署本地测试集群)（支持 macOS 和 Linux）
 - [在单机上模拟部署生产环境集群](#在单机上模拟部署生产环境集群)（支持 Linux）
 
 > **注意：**
@@ -26,10 +26,10 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 
 ## 部署本地测试集群
 
-- 适用场景：利用本地 Mac 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
+- 适用场景：利用本地 macOS 或者单机 Linux 环境快速部署 TiDB 测试集群，体验 TiDB 集群的基本架构，以及 TiDB、TiKV、PD、监控等基础组件的运行。
 
 <SimpleTab>
-<div label="Mac">
+<div label="macOS">
 
 TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群，步骤如下：
 
@@ -41,16 +41,30 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
+    安装完成后会提示如下信息：
+
+    ```log
+    Successfully set mirror to https://tiup-mirrors.pingcap.com
+    Detected shell: zsh
+    Shell profile:  /Users/user/.zshrc
+    /Users/user/.zshrc has been modified to add tiup to PATH
+    open a new terminal or source /Users/user/.zshrc to use it
+    Installed path: /Users/user/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
+
 2. 声明全局环境变量。
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+    > TiUP 安装完成后会提示 Shell profile 文件的绝对路径。在执行以下 `source` 命令前，需要将 `${your_shell_profile}` 修改为 Shell profile 文件的实际位置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. 在当前 session 执行以下命令启动集群。
@@ -68,10 +82,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.4.0 --db 2 --pd 3 --kv 3
+        tiup playground v6.0.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v6.0.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -111,13 +125,15 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
 
-7. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 `admin`。
 
-8. 测试完成之后，可以通过执行以下步骤来清理集群：
+8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
-    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
+9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    2. 执行以下命令：
+    1. 按下 <kbd>Control+C</kbd> 键停掉上述启用的 TiDB 服务。
+
+    2. 等待服务退出操作完成后，执行以下命令：
 
         {{< copyable "shell-regular" >}}
 
@@ -132,7 +148,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 </div>
 <div label="Linux">
 
-TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群。
+TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 TiDB 实例、3 个 TiKV 实例、3 个 PD 实例和可选的 TiFlash 实例构成。通过 TiUP Playground，可以快速搭建出上述的一套基础测试集群，步骤如下：
 
 1. 下载并安装 TiUP。
 
@@ -142,16 +158,30 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
+    安装完成后会提示如下信息：
+
+    ```log
+    Successfully set mirror to https://tiup-mirrors.pingcap.com
+    Detected shell: bash
+    Shell profile:  /home/user/.bashrc
+    /home/user/.bashrc has been modified to add tiup to PATH
+    open a new terminal or source /home/user/.bashrc to use it
+    Installed path: /home/user/.tiup/bin/tiup
+    ===============================================
+    Have a try:     tiup playground
+    ===============================================
+    ```
+
 2. 声明全局环境变量。
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+    > TiUP 安装完成后会提示 Shell profile 文件的绝对路径。在执行以下 `source` 命令前，需要将 `${your_shell_profile}` 修改为 Shell profile 文件的实际位置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
 
 3. 在当前 session 执行以下命令启动集群。
@@ -169,10 +199,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v5.4.0 --db 2 --pd 3 --kv 3
+        tiup playground v6.0.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v6.0.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -208,17 +238,17 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
 5. 通过 <http://127.0.0.1:9090> 访问 TiDB 的 Prometheus 管理界面。
 
-6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 root，密码为空。
+6. 通过 <http://127.0.0.1:2379/dashboard> 访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 页面，默认用户名为 `root`，密码为空。
 
-7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 admin。
+7. 通过 <http://127.0.0.1:3000> 访问 TiDB 的 Grafana 界面，默认用户名和密码都为 `admin`。
 
 8. （可选）[将数据加载到 TiFlash](/tiflash/use-tiflash.md) 进行分析。
 
 9. 测试完成之后，可以通过执行以下步骤来清理集群：
 
-    1. 通过按下 <kbd>ctrl</kbd> + <kbd>c</kbd> 键停掉进程。
+    1. 按下 <kbd>Control+C</kbd> 键停掉上述启用的 TiDB 服务。
 
-    2. 执行以下命令：
+    2. 等待服务退出操作完成后，执行以下命令：
 
     {{< copyable "shell-regular" >}}
 
@@ -244,7 +274,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 准备一台部署主机，确保其软件满足需求：
 
 - 推荐安装 CentOS 7.3 及以上版本
-- Linux 操作系统开放外网访问，用于下载 TiDB 及相关软件安装包
+- 运行环境可以支持互联网访问，用于下载 TiDB 及相关软件安装包
 
 最小规模的 TiDB 集群拓扑：
 
@@ -286,14 +316,14 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     > **注意：**
     >
-    > TiUP 安装完成后会提示对应 `profile` 文件的绝对路径。在执行以下 `source` 命令前，需要根据 `profile` 文件的实际位置修改命令。
+    > TiUP 安装完成后会提示对应 Shell profile 文件的绝对路径。在执行以下 `source` 命令前，需要将 `${your_shell_profile}` 修改为 Shell profile 文件的实际位置。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    source .bash_profile
+    source ${your_shell_profile}
     ```
-    
+
 3. 安装 TiUP 的 cluster 组件：
 
     {{< copyable "shell-regular" >}}
@@ -310,12 +340,12 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
     tiup update --self && tiup update cluster
     ```
 
-5. 由于模拟多机部署，需要通过 `root` 用户调大 sshd 服务的连接数限制：
+5. 由于模拟多机部署，需要通过 root 用户调大 sshd 服务的连接数限制：
 
     1. 修改 `/etc/ssh/sshd_config` 将 `MaxSessions` 调至 20。
     2. 重启 sshd 服务：
 
-        {{< copyable "shell-regular" >}}
+        {{< copyable "shell-root" >}}
 
         ```shell
         service sshd restart
@@ -331,7 +361,7 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     配置模板如下：
 
-    {{< copyable "shell-regular" >}}
+    {{< copyable "" >}}
 
     ```yaml
     # # Global variables are applied to all deployments and used as the default value of
@@ -404,6 +434,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 参数 `<cluster-name>` 表示设置集群名称
     - 参数 `<tidb-version>` 表示设置集群版本，可以通过 `tiup list tidb` 命令来查看当前支持部署的 TiDB 版本
+    - 参数 `-p` 表示在连接目标机器时使用密码登录
+
+        > **注意：**
+        >
+        > 如果主机通过密钥进行 SSH 认证，请使用 `-i` 参数指定密钥文件路径，`-i` 与 `-p` 不可同时使用。
 
     按照引导，输入”y”及 root 密码，来完成部署：
 
@@ -438,11 +473,11 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
 
     - 访问 TiDB 的 Grafana 监控：
 
-        通过 <http://{grafana-ip}:3000> 访问集群 Grafana 监控页面，默认用户名和密码均为 admin。
+        通过 <http://{grafana-ip}:3000> 访问集群 Grafana 监控页面，默认用户名和密码均为 `admin`。
 
     - 访问 TiDB 的 Dashboard：
 
-        通过 <http://{pd-ip}:2379/dashboard> 访问集群 [TiDB Dashboard](/dashboard/dashboard-intro.md) 监控页面，默认用户名为 root，密码为空。
+        通过 <http://{pd-ip}:2379/dashboard> 访问集群 [TiDB Dashboard](/dashboard/dashboard-intro.md) 监控页面，默认用户名为 `root`，密码为空。
 
     - 执行以下命令确认当前已经部署的集群列表：
 

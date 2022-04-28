@@ -27,10 +27,10 @@ CSV 文件自身未包含表结构信息。要将 CSV 数据导入 TiDB，就必
 
 * **方法一**：使用 TiDB Lightning 创建表结构。
 
-    1. 编写包含 DDL 语句的 SQL 文件。
+    编写包含 DDL 语句的 SQL 文件如下：
 
-        - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
-        - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
+    - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
+    - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
 
 * **方法二**：手动在下游 TiDB 建库和表。
 
@@ -50,7 +50,7 @@ file = "tidb-lightning.log"
 # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
 backend = "local"
-# 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小，建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
 sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
 [mydumper]

@@ -91,7 +91,7 @@ Query OK, 0 rows affected (0.01 sec)
 {{< copyable "sql" >}}
 
 ```sql
-set config `tikv log-level`='warn';
+set config tikv `log-level`='warn';
 ```
 
 ```sql
