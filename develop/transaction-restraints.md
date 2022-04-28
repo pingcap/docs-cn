@@ -31,6 +31,8 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 现在想象一下，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面我们用程序来模拟一下这个过程。
 
+{{< copyable "" >}}
+
 ```java
 package com.pingcap.txn.write.skew;
 
@@ -152,6 +154,8 @@ public class EffectWriteSkew {
 
 SQL 日志：
 
+{{< copyable "sql" >}}
+
 ```sql
 /* txn 1 */ begin
     /* txn 2 */ begin
@@ -164,6 +168,8 @@ SQL 日志：
 ```
 
 执行结果：
+
+{{< copyable "sql" >}}
 
 ```sql
 mysql> select * from doctors;
@@ -181,6 +187,8 @@ mysql> select * from doctors;
 ![Write Skew](/media/develop/write-skew.png)
 
 现在我们来更改示例程序，使用 `select for update` 来克服写偏斜问题：
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -303,6 +311,8 @@ public class EffectWriteSkew {
 
 SQL 日志：
 
+{{< copyable "sql" >}}
+
 ```sql
 /* txn 1 */ begin
     /* txn 2 */ begin
@@ -315,6 +325,8 @@ At least one doctor is on call
 ```
 
 执行结果：
+
+{{< copyable "sql" >}}
 
 ```sql
 mysql> select * from doctors;
@@ -330,6 +342,8 @@ mysql> select * from doctors;
 ## 不支持 savepoint 和嵌套事务
 
 Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
+
+{{< copyable "sql" >}}
 
 ```sql
 mysql> BEGIN;

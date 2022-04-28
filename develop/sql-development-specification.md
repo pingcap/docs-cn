@@ -24,7 +24,9 @@ summary: TiDB 的 SQL 开发规范。
 
     不推荐的写法：
 
-    ```sql
+    {{< copyable "sql" >}}
+
+```sql
     select gmt_create
     from ...
     where date_format(gmt_create，'%Y%m%d %H:%i:%s') = '20090101 00:00:0'
@@ -32,7 +34,9 @@ summary: TiDB 的 SQL 开发规范。
 
     推荐的写法：
 
-    ```sql
+    {{< copyable "sql" >}}
+
+```sql
     select date_format(gmt_create，'%Y%m%d %H:%i:%s')
     from .. .
     where gmt_create = str_to_date('20090101 00:00:00'，'%Y%m%d %H:%i:s')

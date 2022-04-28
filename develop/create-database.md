@@ -20,7 +20,7 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 ## 创建数据库
 
-[数据库](/develop/schema-design-overview.md#数据库-database)对象是 TiDB `表`、`视图`、`序列`等对象的集合。
+[数据库](/develop/schema-design-overview.md#数据库-database)对象是 TiDB **表**、**视图**、**序列**等对象的集合。
 
 若需创建数据库，请使用 `CREATE DATABASE` 语句，并遵循[数据库最佳实践](#数据库最佳实践)。
 
@@ -30,7 +30,7 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 - 尽量不要使用已存在的 `test` 数据库。而是应该使用 `CREATE DATABASE` 语句来创建数据库，并且在 SQL 会话中使用 `USE {databasename};` 语句来[更改当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。
 - 使用 root 用户创建数据库、角色、用户等。并只赋予必要的权限。
-- 作为通用的最佳实践，我们不推荐使用 Driver / ORM 进行数据库模式的定义与更改。相反，请使用 `MySQL 命令行客户端`或其他你喜欢的 `MySQL GUI 客户端`来进行操作。
+- 作为通用的最佳实践，我们不推荐使用 Driver / ORM 进行数据库模式的定义与更改。相反，请使用 **MySQL 命令行客户端**或其他你喜欢的 **MySQL GUI 客户端**来进行操作。
 - 遵循[数据库命名规范](/develop/object-naming-guidelines.md#2-数据库命名规范)
 
 ### 示例
@@ -39,11 +39,15 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 例如：
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 touch dbinit.sql
 ```
 
 随后，在文本编辑器中打开 `dbinit.sql`，然后在文件顶部添加 `CREATE DATABASE` 语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;
@@ -53,7 +57,9 @@ CREATE DATABASE IF NOT EXISTS `bookshop`;
 
 `dbinit.sql` 要以 `root` 用户身份执行文件中的建库语句，请运行以下命令：
 
-```sh
+{{< copyable "shell-regular" >}}
+
+```shell
 mysql
     -u root \
     -h {host} \
@@ -64,7 +70,9 @@ mysql
 
 要查看集群中的数据库，可在命令行执行一条 `SHOW DATABASES` 语句：
 
-```sh
+{{< copyable "shell-regular" >}}
+
+```shell
 mysql
     -u root \
     -h {host} \
@@ -85,6 +93,6 @@ mysql
 +--------------------+
 ```
 
-至此，你已经准备完毕 `bookshop` 数据库，可以将`表`添加到该数据库中。
+至此，你已经准备完毕 `bookshop` 数据库，可以将**表**添加到该数据库中。
 
 你可继续阅读[创建表](/develop/create-table.md)文档获得相关指引。

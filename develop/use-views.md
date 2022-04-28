@@ -18,6 +18,8 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 
 在 TiDB 当中，可以通过 `CREATE VIEW` 语句来将某个较为查询定义为视图，其语法如下：
 
+{{< copyable "sql" >}}
+
 ```sql
 CREATE VIEW view_name AS query;
 ```

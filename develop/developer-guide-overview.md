@@ -28,13 +28,13 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 ## TiDB 事务机制
 
-TiDB 支持分布式事务，而且提供[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)与[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)两种事务模式。TiDB 当前版本中默认采用 `悲观事务` 模式，这让你在 TiDB 事务时可以像使用传统的单体数据库 (如: MySQL) 事务一样。
+TiDB 支持分布式事务，而且提供[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)与[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)两种事务模式。TiDB 当前版本中默认采用 **悲观事务** 模式，这让你在 TiDB 事务时可以像使用传统的单体数据库 (如: MySQL) 事务一样。
 
-你可以使用 [BEGIN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-begin) 开启一个事务，或者使用 `BEGIN PESSIMISTIC` 显式的指定开启一个 `悲观事务`，使用 `BEGIN OPTIMISTIC` 显式的指定开启一个 `乐观事务`。随后，使用 [COMMIT](https://docs.pingcap.com/zh/tidb/stable/sql-statement-commit) 提交事务，或使用 [ROLLBACK](https://docs.pingcap.com/zh/tidb/stable/sql-statement-rollback) 回滚事务。
+你可以使用 [BEGIN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-begin) 开启一个事务，或者使用 `BEGIN PESSIMISTIC` 显式的指定开启一个**悲观事务**，使用 `BEGIN OPTIMISTIC` 显式的指定开启一个**乐观事务**。随后，使用 [COMMIT](https://docs.pingcap.com/zh/tidb/stable/sql-statement-commit) 提交事务，或使用 [ROLLBACK](https://docs.pingcap.com/zh/tidb/stable/sql-statement-rollback) 回滚事务。
 
 TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所有语句的原子性，即在这期间的所有语句全部成功，或者全部失败。用以保证你在应用开发时所需的数据一致性。
 
-若你不清楚 `乐观事务` 是什么，请暂时不要使用它。因为使用 `乐观事务` 的前提是需要应用程序可以正确的处理 `COMMIT` 语句所返回的[所有错误](https://docs.pingcap.com/zh/tidb/stable/error-codes)。如果不确定应用程序如何处理，请直接使用 `悲观事务`。
+若你不清楚**乐观事务**是什么，请暂时不要使用它。因为使用**乐观事务**的前提是需要应用程序可以正确的处理 `COMMIT` 语句所返回的[所有错误](https://docs.pingcap.com/zh/tidb/stable/error-codes)。如果不确定应用程序如何处理，请直接使用**悲观事务**。
 
 ## 应用程序与 TiDB 交互的方式
 

@@ -5,7 +5,7 @@ summary: 介绍连接到 TiDB 的方法。
 
 # 连接到 TiDB
 
-`TiDB` 高度兼容 `MySQL 5.7` 协议，全量的客户端链接参数列表，请参阅 [MySQL Client Options](https://dev.mysql.com/doc/refman/5.7/en/mysql-command-options.html)。
+**TiDB** 高度兼容 `MySQL 5.7` 协议，全量的客户端链接参数列表，请参阅 [MySQL Client Options](https://dev.mysql.com/doc/refman/5.7/en/mysql-command-options.html)。
 
 TiDB 支持 [MySQL 客户端/服务器协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)。这使得大多数客户端驱动程序和 ORM 框架可以像连接到 MySQL 一样地连接到 TiDB。
 
@@ -13,7 +13,9 @@ TiDB 支持 [MySQL 客户端/服务器协议](https://dev.mysql.com/doc/internal
 
 你可以使用 MySQL Client 作为 TiDB 的命令行工具。在 [MySQL Shell 官方文档](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html) 你可以找到不同操作系统的安装方式。在安装完后你可以使用如下命令行连接到 TiDB：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 ```
 
@@ -24,6 +26,8 @@ mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 你可以使用 [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/) 驱动连接到 TiDB，这需要创建一个 `MysqlDataSource` 或 `MysqlConnectionPoolDataSource` 对象（它们都实现了 `DataSource` 接口），并使用 `setURL` 函数设置连接字符串。
 
 例如：
+
+{{< copyable "" >}}
 
 ```java
 MysqlDataSource mysqlDataSource = new MysqlDataSource();
@@ -48,6 +52,8 @@ mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&pa
 
 例如，你的配置被写在 `hibernate.cfg.xml` 文件中，那么你的配置文件应该为：
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -63,6 +69,8 @@ mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&pa
 ```
 
 随后，使用代码读取配置文件，从而获得 `SessionFactory` 对象：
+
+{{< copyable "" >}}
 
 ```java
 SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();

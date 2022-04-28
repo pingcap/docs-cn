@@ -33,6 +33,8 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 与聚合函数类似，窗口函数在使用时也需要搭配一套固定的语法：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT
     window_function OVER ([partition_clause] [order_clause] [frame_clause]) AS alias

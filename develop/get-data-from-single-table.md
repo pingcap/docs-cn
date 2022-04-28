@@ -66,7 +66,7 @@ SELECT id, name FROM authors;
 - 使用 `String` 类型变量存放 `varchar` 类型的数据。
 - ...
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class Author {
@@ -82,7 +82,7 @@ public class Author {
 }
 ```
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class AuthorDAO {
@@ -140,7 +140,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 
 在处理这类查询时，我们应该使用 [PreparedStatement](/develop/prepared-statement.md) 来替代普通的 Statement。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {

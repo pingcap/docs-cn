@@ -19,6 +19,8 @@ summary: 删除数据、批量删除数据的方法、最佳实践及例子。
 
 在 SQL 中，`DELETE` 语句一般为以下形式：
 
+{{< copyable "sql" >}}
+
 ```sql
 DELETE FROM {table} WHERE {filter}
 ```
@@ -43,6 +45,8 @@ DELETE FROM {table} WHERE {filter}
 
 假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
 ```
@@ -53,6 +57,8 @@ SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `r
 <SimpleTab>
 <div label="SQL" href="delete-sql">
 
+{{< copyable "sql" >}}
+
 ```sql
 DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
 ```
@@ -60,6 +66,8 @@ DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at`
 </div>
 
 <div label="Java" href="delete-java">
+
+{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -94,7 +102,7 @@ try (Connection connection = ds.getConnection()) {
 
 `DELETE` 语句运行之后 TiDB 并非立刻删除数据，而是将这些数据标记为可删除。然后等待 TiDB GC (Garbage Collection) 来清理不再需要的旧数据。因此，你的 `DELETE` 语句**_并不会_**立即减少磁盘用量。
 
-GC 在默认配置中，为 10 分钟触发一次，每次 GC 都会计算出一个名为 `safe_point` 的时间点，这个时间点前的数据，都不会再被使用到，因此，TiDB 可以安全的对数据进行清除。
+GC 在默认配置中，为 10 分钟触发一次，每次 GC 都会计算出一个名为 **safe_point** 的时间点，这个时间点前的数据，都不会再被使用到，因此，TiDB 可以安全的对数据进行清除。
 
 GC 的具体实现方案和细节此处不再展开，你可阅读 [GC 机制简介](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview) 来获得更详细的 GC 说明。
 
@@ -117,6 +125,8 @@ TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来
 ### 批量删除例子
 
 假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkDelete;

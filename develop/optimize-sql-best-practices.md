@@ -15,6 +15,8 @@ summary: 介绍使用 TiDB 的性能调优最佳实践。
 
 当需要修改多行数据时，推荐使用单个 SQL 多行数据的语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO t VALUES (1, 'a'), (2, 'b'), (3, 'c');
 
@@ -22,6 +24,8 @@ DELETE FROM t WHERE id IN (1, 2, 3);
 ```
 
 不推荐使用多个 SQL 单行数据的语句：
+
+{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO t VALUES (1, 'a');
@@ -39,6 +43,8 @@ DELETE FROM t WHERE id = 3;
 
 <SimpleTab>
 <div label="Golang">
+
+{{< copyable "" >}}
 
 ```go
 func BatchInsert(db *sql.DB) error {
@@ -60,6 +66,8 @@ func BatchInsert(db *sql.DB) error {
 </div>
 
 <div label="Java">
+
+{{< copyable "" >}}
 
 ```java
 public void batchInsert(Connection connection) throws SQLException {
@@ -84,11 +92,15 @@ public void batchInsert(Connection connection) throws SQLException {
 
 如非必要，不要总是用 `SELECT *` 返回所以列的数据，下面查询是低效的：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
 ```
 
 应该仅查询需要的列信息，例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
@@ -106,11 +118,15 @@ SELECT title, price FROM books WHERE title = 'Marian Yost';
 
 当需要删除一个表的所有数据时，推荐使用 `TRUNCATE` 语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 TRUNCATE TABLE t;
 ```
 
 不推荐使用 `DELETE` 全表数据：
+
+{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM t;
@@ -137,12 +153,16 @@ TiDB 支持在线 `ADD INDEX` 操作，不会阻塞表中的数据读写。`ADD 
 
 为了减少对在线业务的影响，`ADD INDEX` 的默认速度会比较保守。当 `ADD INDEX` 的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速 `ADD INDEX`：
 
+{{< copyable "sql" >}}
+
 ```sql
 SET @@global.tidb_ddl_reorg_worker_cnt = 16;
 SET @@global.tidb_ddl_reorg_batch_size = 4096;
 ```
 
 当 `ADD INDEX` 的目标列被频繁更新（包含 `UPDATE`、`INSERT` 和 `DELETE`）时，调大上述配置会造成较为频繁的写冲突，使得在线负载较大；同时 `ADD INDEX` 也可能由于不断地重试，需要很长的时间才能完成。此时建议调小上述配置来避免和在线业务的写冲突：
+
+{{< copyable "sql" >}}
 
 ```sql
 SET @@global.tidb_ddl_reorg_worker_cnt = 4;

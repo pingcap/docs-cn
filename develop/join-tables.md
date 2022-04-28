@@ -56,7 +56,7 @@ LIMIT 10;
 </div>
 <div label="Java" href="inner-join-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -161,7 +161,7 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 </div>
 <div label="Java" href="left-join-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {

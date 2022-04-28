@@ -25,10 +25,10 @@ SQL 是一门声明性语言，它是数据库用户与数据库交互的方式�
 
 SQL 语言通常按照功能划分成以下的 4 个部分：
 
-- `DDL (Data Definition Language)`：数据定义语言，用来定义数据库对象，包括库、表、视图和索引等。
-- `DML (Data Manipulation Language)`：数据操作语言，用来操作和业务相关的记录。
-- `DQL (Data Query Language)`：数据查询语言，用来查询经过条件筛选的记录。
-- `DCL (Data Control Language)`：数据控制语言，用来定义访问权限和安全级别。
+- **DDL (Data Definition Language)**：数据定义语言，用来定义数据库对象，包括库、表、视图和索引等。
+- **DML (Data Manipulation Language)**：数据操作语言，用来操作和业务相关的记录。
+- **DQL (Data Query Language)**：数据查询语言，用来查询经过条件筛选的记录。
+- **DCL (Data Control Language)**：数据控制语言，用来定义访问权限和安全级别。
 
 此文档中，我们主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](https://docs.pingcap.com/zh/tidb/stable/basic-sql-operations)或 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)获得更多信息。
 
@@ -38,11 +38,15 @@ SQL 语言通常按照功能划分成以下的 4 个部分：
 
 使用 `INSERT` 语句向表内插入表记录。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO person VALUES(1,'tom','20170912');
 ```
 
 使用 `INSERT` 语句向表内插入包含部分字段数据的表记录。例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO person(id,name) VALUES('2','bob');
@@ -50,11 +54,15 @@ INSERT INTO person(id,name) VALUES('2','bob');
 
 使用 `UPDATE` 语句向表内修改表记录的部分字段数据。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 UPDATE person SET birthday='20180808' WHERE id=2;
 ```
 
 使用 `DELETE` 语句向表内删除部分表记录。例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 DELETE FROM person WHERE id=2;
@@ -70,11 +78,15 @@ DELETE FROM person WHERE id=2;
 
 使用 `SELECT` 语句检索单表内数据。例如：
 
+{{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM person;
 ```
 
 在 `SELECT` 后面加上要查询的列名。例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT name FROM person;
@@ -90,6 +102,8 @@ SELECT name FROM person;
 ```
 
 使用 `WHERE` 子句，对所有记录进行是否符合条件的筛选后再返回。例如：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM person WHERE id < 5;

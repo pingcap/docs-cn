@@ -31,6 +31,8 @@ summary: 更新数据、批量更新数据的方法、最佳实践及例子。
 
 在 SQL 中，`UPDATE` 语句一般为以下形式：
 
+{{< copyable "sql" >}}
+
 ```sql
 UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {filter_value}
 ```
@@ -59,6 +61,8 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 <SimpleTab>
 <div label="SQL" href="update-sql">
 
+{{< copyable "sql" >}}
+
 ```sql
 UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 ```
@@ -66,6 +70,8 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 </div>
 
 <div label="Java" href="update-java">
+
+{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -89,6 +95,8 @@ try (Connection connection = ds.getConnection()) {
 ### SQL 语法
 
 在 SQL 中，`INSERT ... ON DUPLICATE KEY UPDATE ...` 语句一般为以下形式：
+
+{{< copyable "sql" >}}
 
 ```sql
 INSERT INTO {table} ({columns}) VALUES ({values})
@@ -117,6 +125,8 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 <SimpleTab>
 <div label="SQL" href="upsert-sql">
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO `ratings`
     (`book_id`, `user_id`, `score`, `rated_at`)
@@ -128,6 +138,8 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 </div>
 
 <div label="Java" href="upsert-java">
+
+{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -168,13 +180,15 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
 
+{{< copyable "sql" >}}
+
 ```sql
 ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FALSE;
 ```
 
 > **注意：**
 >
-> 此批量更新程序将使用 `DDL` 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-add-column) 语句。
+> 此批量更新程序将使用 **DDL** 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-add-column) 语句。
 
 <SimpleTab>
 <div label="Golang">
@@ -264,6 +278,8 @@ func placeHolder(n int) string {
 在 Java (JDBC) 中，批量更新程序可能会类似于以下内容：
 
 - Java 代码部分：
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.bulkUpdate;
@@ -397,6 +413,8 @@ public class BatchUpdateExample {
 
 - `hibernate.cfg.xml` 配置部分：
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC

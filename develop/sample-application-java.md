@@ -36,45 +36,53 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 1. 下载并安装 TiUP。
 
-```shell
-curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-```
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
 
 2. 声明全局环境变量。
 
-> 注意
->
-> TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
+    > 注意
+    >
+    > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
-```shell
-source .bash_profile
-```
+    {{< copyable "shell-regular" >}}
+    
+    ```shell
+    source .bash_profile
+    ```
 
 3. 在当前 session 执行以下命令启动集群。
 
-- 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+    - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
-```shell
-tiup playground
-```
+        {{< copyable "shell-regular" >}}
 
-- 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+        ```shell
+        tiup playground
+        ```
 
-```shell
-tiup playground v5.4.0 --db 2 --pd 3 --kv 3
-```
+    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
-上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        {{< copyable "shell-regular" >}}
 
-```bash
-CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
-To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
-To view the dashboard: http://127.0.0.1:2379/dashboard
-PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
-To view the Prometheus: http://127.0.0.1:9090
-To view the Grafana: http://127.0.0.1:3000
-```
+        ```shell
+        tiup playground v5.4.0 --db 2 --pd 3 --kv 3
+        ```
+
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+
+        ```
+        CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+        To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
+        To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
+        To view the dashboard: http://127.0.0.1:2379/dashboard
+        PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
+        To view the Prometheus: http://127.0.0.1:9090
+        To view the Grafana: http://127.0.0.1:3000
+        ```
 
 > 注意
 >
@@ -84,7 +92,9 @@ To view the Grafana: http://127.0.0.1:3000
 
 ## 步骤 2. 获取代码
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 git clone https://github.com/pingcap-inc/tidb-example-java.git
 ```
 
@@ -94,7 +104,9 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 进入目录 `plain-java-jdbc`：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 cd plain-java-jdbc
 ```
 
@@ -117,6 +129,8 @@ cd plain-java-jdbc
 
 其中，`dbinit.sql` 为数据表初始化语句：
 
+{{< copyable "sql" >}}
+
 ```sql
 USE test;
 DROP TABLE IF EXISTS player;
@@ -134,6 +148,8 @@ CREATE TABLE player (
 `PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。我们在其中定义了一系列数据的操作方法，用来对提供数据的写入能力。
 
 `PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap;
@@ -568,7 +584,9 @@ public class JDBCExample
 
 进入目录 `plain-java-hibernate` ：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 cd plain-java-hibernate
 ```
 
@@ -591,6 +609,8 @@ cd plain-java-hibernate
 
 其中，`hibernate.cfg.xml` 为 Hibernate 配置文件，定义了：
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -622,6 +642,8 @@ cd plain-java-hibernate
 `PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。我们在其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC， Hibernate 帮我们封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
 
 `PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap;
@@ -867,17 +889,21 @@ public class HibernateExample
 
 使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 make mysql
 ```
 
 或直接执行：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 ```
 
-若你不使用本地集群，或未安装 `mysql-client`，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
+若你不使用本地集群，或未安装 **mysql-client**，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
 
 </div>
 
@@ -897,6 +923,8 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host / Post / User / Password 的参数：
 
+{{< copyable "" >}}
+
 ```java
 mysqlDataSource.setServerName("localhost");
 mysqlDataSource.setPortNumber(4000);
@@ -913,6 +941,8 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 那么此处应将参数更改为：
 
+{{< copyable "" >}}
+
 ```java
 mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
 mysqlDataSource.setPortNumber(4000);
@@ -927,6 +957,8 @@ mysqlDataSource.setPassword("123456");
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url / hibernate.connection.username / hibernate.connection.password 的参数：
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -961,6 +993,8 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 那么此处应将配置文件更改为：
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC

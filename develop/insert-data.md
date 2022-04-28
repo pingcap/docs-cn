@@ -20,24 +20,30 @@ summary: 插入数据、批量导入数据的方法、最佳实践及例子。
 
 假设你需要插入多行数据，那么会有两种插入的办法，假设我们需要插入 3 个玩家数据：
 
-- 一个`多行插入语句`:
+- 一个**多行插入语句**:
 
-```sql
-INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2), (3, 300, 5);
-```
+    {{< copyable "sql" >}}
 
-- 多个`单行插入语句`:
+    ```sql
+    INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2), (3, 300, 5);
+    ```
 
-```sql
-INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1);
-INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (2, 230, 2);
-INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (3, 300, 5);
-```
+- 多个**单行插入语句**:
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1);
+    INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (2, 230, 2);
+    INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (3, 300, 5);
+    ```
 
 一般来说使用一个`多行插入语句`，会比多个`单行插入语句`快。
 
 <SimpleTab>
 <div label="SQL">
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE TABLE `player` (`id` INT, `coins` INT, `goods` INT);
@@ -49,6 +55,8 @@ INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2);
 </div>
 
 <div label="Java">
+
+{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -89,6 +97,8 @@ try (Connection connection = ds.getConnection()) {
 
 MySQL JDBC Driver 还提供了一个集成配置项：`useConfigs`。当它配置为 `maxPerformance` 时，相当于配置了一组配置，以 `mysql:mysql-connector-java:8.0.28` 为例，`useConfigs=maxPerformance` 包含：
 
+{{< copyable "" >}}
+
 ```properties
 cachePrepStmts=true
 cacheCallableStmts=true
@@ -103,7 +113,9 @@ useInformationSchema=true
 
 你可以自行查看 `mysql-connector-java-{version}.jar!/com/mysql/cj/configurations/maxPerformance.properties` 来获得对应版本MySQL JDBC Driver 的 `useConfigs=maxPerformance` 包含配置。
 
-在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户: `root`，密码: 空 ，默认数据库: `test`为例：
+在此处给出一个较为的通用场景的 JDBC 连接字符串配置，以 Host: `127.0.0.1`，Port: `4000`，用户名: `root`，密码: 空 ，默认数据库: `test`为例：
+
+{{< copyable "" >}}
 
 ```
 jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPrepStmts=true&prepStmtCacheSqlLimit=2048&prepStmtCacheSize=256&rewriteBatchedStatements=true&allowMultiQueries=true
@@ -140,6 +152,8 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 此时，我们不可使用类似以下 SQL 进行插入：
 
+{{< copyable "sql" >}}
+
 ```sql
 INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'nicky');
 ```
@@ -152,18 +166,22 @@ ERROR 8216 (HY000): Invalid auto random: Explicit insertion on auto_random colum
 
 这是旨在提示你，不建议在插入时手动指定 `AUTO_RANDOM` 的列。这时，你有两种解决办法处理此错误：
 
-1. (推荐) 插入语句中去除此列，使用 TiDB 帮你初始化的 `AUTO_RANDOM` 值。这样符合 `AUTO_RANDOM` 的语义。
+- (推荐) 插入语句中去除此列，使用 TiDB 帮你初始化的 `AUTO_RANDOM` 值。这样符合 `AUTO_RANDOM` 的语义。
 
-```sql
-INSERT INTO `bookshop`.`users` (`balance`, `nickname`) VALUES (0.00, 'nicky');
-```
+    {{< copyable "sql" >}}
 
-2. 如果你确认一定需要指定此列，那么可以使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable)通过更改用户变量的方式，允许在插入时，指定 `AUTO_RANDOM` 的列。
+    ```sql
+    INSERT INTO `bookshop`.`users` (`balance`, `nickname`) VALUES (0.00, 'nicky');
+    ```
 
-```sql
-SET @@allow_auto_random_explicit_insert = true;
-INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'nicky');
-```
+- 如果你确认一定需要指定此列，那么可以使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable)通过更改用户变量的方式，允许在插入时，指定 `AUTO_RANDOM` 的列。
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SET @@allow_auto_random_explicit_insert = true;
+    INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'nicky');
+    ```
 
 ## 使用 HTAP
 

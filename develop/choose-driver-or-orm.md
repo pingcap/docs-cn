@@ -17,7 +17,7 @@ TiDB 与 MySQL 有差异：
 
 - 自增 ID：可保证全局唯一，或单 TiDB 节点的自增，但无法保证全局自增。
 
-全部兼容性差异可查看：[与 MySQL 兼容性对比](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)
+全部兼容性差异可查看[与 MySQL 兼容性对比](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility)
 
 ## Java
 
@@ -30,7 +30,7 @@ TiDB 与 MySQL 有差异：
 
 **JDBC**
 
-支持等级：`Full`
+支持等级：**Full**
 
 按照[官方文档](https://dev.mysql.com/doc/connector-j/8.0/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。
 
@@ -47,12 +47,12 @@ TiDB 与 MySQL 有差异：
 
 **Hibernate**
 
-支持等级：`Full`
+支持等级：**Full**
 
 > 注意：
 >
 > Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 当前版本也[不支持 Savepoint](https://github.com/pingcap/tidb/issues/6840)。
-> 若你使用 Spring Data JPA 等框架，在 `@Transactional` 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
+> 若你使用 Spring Data JPA 等框架，在 **@Transactional** 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
 >
 > 你可以使用[这个例子](https://github.com/Icemap/tidb-savepoint)，快速复现 TiDB 与 MySQL 对 Savepoint 的输出结果：
 >
@@ -73,8 +73,10 @@ TiDB 与 MySQL 有差异：
 
 你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
 
-如果你使用的是 `Maven`，请将以下内容添加到你的 `<dependencies></dependencies>`：
+如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
+{{< copyable "" >}}
+    
 ```xml
 <dependency>
     <groupId>org.hibernate.orm</groupId>
@@ -90,6 +92,8 @@ TiDB 与 MySQL 有差异：
 ```
 
 如果你使用的是 `Gradle`，请将以下内容添加到你的 `dependencies`：
+
+{{< copyable "" >}}
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'

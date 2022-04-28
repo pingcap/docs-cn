@@ -9,7 +9,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 本教程向你展示如何使用 TiDB 构建 [Spring Boot](https://spring.io/projects/spring-boot) Web 应用程序。使用 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-java) 下载。
 
-这是一个较为完整的构建 Restful API 的示例应用程序，展示了一个使用 `TiDB` 作为数据库的通用 `Spring Boot` 后端服务。我们设计了以下过程，用于还原一个现实场景：
+这是一个较为完整的构建 Restful API 的示例应用程序，展示了一个使用 **TiDB** 作为数据库的通用 **Spring Boot** 后端服务。我们设计了以下过程，用于还原一个现实场景：
 
 这是一个关于游戏的例子，每个玩家有两个属性：金币数 `coins` 和货物数 `goods`。且每个玩家都拥有一个字段 `id`，作为玩家的唯一标识。玩家在金币数和货物数充足的情况下，可以自由的交易。
 
@@ -33,6 +33,8 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 1. 下载并安装 TiUP。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
@@ -43,6 +45,8 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     >
     > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     source .bash_profile
     ```
@@ -51,11 +55,15 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
     - 直接执行`tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
+        {{< copyable "shell-regular" >}}
+
         ```shell
         tiup playground
         ```
 
     - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+
+        {{< copyable "shell-regular" >}}
 
         ```shell
         tiup playground v5.4.0 --db 2 --pd 3 --kv 3
@@ -63,7 +71,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
     上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
-    ```bash
+    ```
     CLUSTER START SUCCESSFULLY, Enjoy it ^-^
     To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
     To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
@@ -81,15 +89,15 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 ## 步骤 2. 安装 JDK
 
-请在你的计算机上下载并安装 `Java Development Kit` (JDK)，这是 Java 开发的必备工具。`Spring Boot` 支持 Java 版本 8 以上的 JDK，由于 `Hibernate` 版本的缘故，我们推荐使用 Java 版本 11 以上的 JDK 。
+请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，我们推荐使用 Java 版本 11 以上的 JDK 。
 
-我们同时支持 `Oracle JDK` 和 `OpenJDK`，请自行选择，本教程将使用 版本 17 的 `OpenJDK` 。
+我们同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用 版本 17 的 **OpenJDK** 。
 
 ## 步骤 3. 安装 Maven
 
-此示例应用程序使用 `Maven` 来管理应用程序的依赖项。Spring 支持的 `Maven` 版本为 3.2 以上，作为依赖管理软件，推荐使用当前最新稳定版本的 `Maven`。
+此示例应用程序使用 **Maven** 来管理应用程序的依赖项。Spring 支持的 **Maven** 版本为 3.2 以上，作为依赖管理软件，推荐使用当前最新稳定版本的 **Maven**。
 
-这里给出命令行安装 `Maven` 的办法：
+这里给出命令行安装 **Maven** 的办法：
 
 - macOS 安装：
 
@@ -105,13 +113,13 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 - 基于 Red Hat 的 Linux 发行版上安装(如 Fedora、CentOS 等):
 
-1. dnf 包管理器
+- dnf 包管理器
 
     ```
     dnf install maven
     ```
 
-2. yum 包管理器
+- yum 包管理器
 
     ```
     yum install maven
@@ -170,8 +178,10 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 随后，此项目即可正常使用，但仅可使用 TiDB 与 MySQL 相同的能力部分，即使用 MySQL 方言。这是由于 Hibernate 支持 TiDB 方言的版本为 6.0.0.Beta2 以上，而 Spring Data JPA 对 Hibernate 的默认依赖版本为 5.6.4.Final。所以，我们推荐对 pom.xml 作出以下修改：
 
-1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 `Spring Data JPA` 内引入的 `jakarta` 包进行排除，即将：
+1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 **Spring Data JPA** 内引入的 `jakarta` 包进行排除，即将：
 
+    {{< copyable "" >}}
+    
     ```xml
     <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -181,6 +191,8 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
     更改为：
 
+    {{< copyable "" >}}
+    
     ```xml
     <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -194,8 +206,10 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     </dependency>
     ```
 
-2. 随后如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53)中所示，引入 `6.0.0.Beta2` 版本以上的 `Hibernate` 依赖，此处以 `6.0.0.CR2` 版本为例：
+2. 随后如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53)中所示，引入 `6.0.0.Beta2` 版本以上的 **Hibernate** 依赖，此处以 `6.0.0.CR2` 版本为例：
 
+    {{< copyable "" >}}
+    
     ```xml
     <dependency>
     <groupId>org.hibernate.orm</groupId>
@@ -204,7 +218,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     </dependency>
     ```
 
-    更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 `Spring Boot` 应用程序。
+    更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 **Spring Boot** 应用程序。
 
 ## 步骤 5. 运行应用程序
 
@@ -256,13 +270,17 @@ spring:
 
 打开终端，确保你已经进入 spring-jpa-hibernate 目录，若还未在此目录，请使用命令进入：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 cd <path>/tidb-example-java/spring-jpa-hibernate
 ```
 
 #### 使用 Make 构建并运行(推荐)
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 make
 ```
 
@@ -272,13 +290,17 @@ make
 
 清除缓存并打包：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 mvn clean package
 ```
 
 运行应用程序的 JAR 文件：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 java -jar target/spring-jpa-hibernate-0.0.1.jar
 ```
 
@@ -324,7 +346,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 2022-03-28 18:46:03.311  INFO 14923 --- [           main] com.pingcap.App                          : Started App in 2.072 seconds (JVM running for 2.272)
 ```
 
-输出日志中，提示应用程序在启动过程中做了什么，这里显示应用程序使用 [Tomcat](https://tomcat.apache.org/) 启动了一个 `Servlet`，使用 Hibernate 作为 ORM ，[HikariCP](https://github.com/brettwooldridge/HikariCP) 作为数据库连接池的实现，使用了 `org.hibernate.dialect.TiDBDialect` 作为数据库方言。启动后，Hibernate 删除并重新创建了表 `player_jpa`，及序列 `player_jpa_id_seq`。在启动的最后，监听了 8080 端口，对外提供 HTTP 服务。
+输出日志中，提示应用程序在启动过程中做了什么，这里显示应用程序使用 [Tomcat](https://tomcat.apache.org/) 启动了一个 **Servlet**，使用 Hibernate 作为 ORM ，[HikariCP](https://github.com/brettwooldridge/HikariCP) 作为数据库连接池的实现，使用了 `org.hibernate.dialect.TiDBDialect` 作为数据库方言。启动后，Hibernate 删除并重新创建了表 `player_jpa`，及序列 `player_jpa_id_seq`。在启动的最后，监听了 8080 端口，对外提供 HTTP 服务。
 
 如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
@@ -340,37 +362,37 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 #### 增加玩家
 
-点击 `Create` 标签，点击 `Send` 按钮，发送 Post 形式的 `http://localhost:8080/player/` 请求。返回值为增加的玩家个数，预期为 1。
+点击 **Create** 标签，点击 **Send** 按钮，发送 Post 形式的 `http://localhost:8080/player/` 请求。返回值为增加的玩家个数，预期为 1。
 
 ![Postman-Create](/media/develop/IMG_20220402-003350731.png)
 
 #### 使用 ID 获取玩家信息
 
-点击 `GetByID` 标签，点击 `Send` 按钮，发送 Get 形式的 `http://localhost:8080/player/1` 请求。返回值为 ID 为 1 的玩家信息。
+点击 **GetByID** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/1` 请求。返回值为 ID 为 1 的玩家信息。
 
 ![Postman-GetByID](/media/develop/IMG_20220402-003416079.png)
 
 #### 使用 Limit 批量获取玩家信息
 
-点击 `GetByLimit` 标签，点击 `Send` 按钮，发送 Get 形式的 `http://localhost:8080/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
+点击 **GetByLimit** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/limit/3` 请求。返回值为最多 3 个玩家的信息列表。
 
 ![Postman-GetByLimit](/media/develop/IMG_20220402-003505846.png)
 
 #### 分页获取玩家信息
 
-点击 `GetByPage` 标签，点击 `Send` 按钮，发送 Get 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
+点击 **GetByPage** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/page?index=0&size=2` 请求。返回值为 index 为 0 的页，每页有 2 个玩家信息列表。此外，还包含了分页信息，如偏移量、总页数、是否排序等。
 
 ![Postman-GetByPage](/media/develop/IMG_20220402-003528474.png)
 
 #### 获取玩家个数
 
-点击 `Count` 标签，点击 `Send` 按钮，发送 Get 形式的 `http://localhost:8080/player/count` 请求。返回值为玩家个数。
+点击 **Count** 标签，点击 **Send** 按钮，发送 Get 形式的 `http://localhost:8080/player/count` 请求。返回值为玩家个数。
 
 ![Postman-Count](/media/develop/IMG_20220402-003549966.png)
 
 #### 玩家交易
 
-点击 `Trade` 标签，点击 `Send` 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+点击 **Trade** 标签，点击 **Send** 按钮，发送 Put 形式的 `http://localhost:8080/player/trade` 请求，请求参数为售卖玩家 ID `sellID`、购买玩家 ID `buyID`、购买货物数量 `amount`、购买消耗金币数 `price`。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 ![Postman-Trade](/media/develop/IMG_20220402-003659102.png)
 
@@ -380,9 +402,11 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 #### 增加玩家
 
-我们使用 `Post` 方法请求 `/player` 端点请求来增加玩家，即：
+我们使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 curl --location --request POST 'http://localhost:8080/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
 ```
 
@@ -394,9 +418,11 @@ curl --location --request POST 'http://localhost:8080/player/' --header 'Content
 
 #### 使用 ID 获取玩家信息
 
-我们使用 `Get` 方法请求 `/player` 端点请求来获取玩家信息，额外的我们需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
+我们使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的我们需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 curl --location --request GET 'http://localhost:8080/player/1'
 ```
 
@@ -412,9 +438,11 @@ curl --location --request GET 'http://localhost:8080/player/1'
 
 #### 使用 Limit 批量获取玩家信息
 
-我们使用 `Get` 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的我们需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
+我们使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的我们需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 curl --location --request GET 'http://localhost:8080/player/limit/3'
 ```
 
@@ -442,9 +470,11 @@ curl --location --request GET 'http://localhost:8080/player/limit/3'
 
 #### 分页获取玩家信息
 
-我们使用 `Get` 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的我们需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
+我们使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的我们需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
 ```
 
@@ -494,9 +524,11 @@ curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
 
 #### 获取玩家个数
 
-我们使用 `Get` 方法请求 `/player/count` 端点请求来获取玩家个数：
+我们使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 curl --location --request GET 'http://localhost:8080/player/count'
 ```
 
@@ -508,9 +540,11 @@ curl --location --request GET 'http://localhost:8080/player/count'
 
 #### 玩家交易
 
-我们使用 `Put` 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
+我们使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
 
-```bash
+{{< copyable "shell-regular" >}}
+
+```shell
 curl --location --request PUT 'http://localhost:8080/player/trade' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --data-urlencode 'sellID=1' \
@@ -519,7 +553,7 @@ curl --location --request PUT 'http://localhost:8080/player/trade' \
   --data-urlencode 'price=100'
 ```
 
-这里使用 `Form Data` 作为我们信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+这里使用 **Form Data** 作为我们信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 ```json
 true
@@ -538,7 +572,7 @@ true
 
 你可以使用 `make request` 或 `./request.sh` 命令运行此脚本，结果应如下所示：
 
-```bash
+```
 cheese@CheesedeMacBook-Pro spring-jpa-hibernate % make request
 ./request.sh
 loop to create 10 players:
@@ -607,6 +641,8 @@ false
 
 `pom.xml` 文件为 Maven 配置，在文件内声明了项目的 Maven 依赖，打包方法，打包信息等，你可以通过[创建相同依赖空白程序](#创建相同依赖空白程序可选) 这一节来复刻此配置文件的生成流程，当然，也可直接复制至你的项目来使用。
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -731,6 +767,8 @@ spring:
 
 入口文件 `App.java`
 
+{{< copyable "" >}}
+
 ```java
 package com.pingcap;
 
@@ -757,6 +795,8 @@ public class App {
 #### 实体对象
 
 `PlayerBean.java` 文件为实体对象，这个对象对应了数据库的一张表
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.dao;
@@ -829,6 +869,8 @@ public class PlayerBean {
 
 为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会为我们实现一些预制的方法，比如 [INSERT](https://docs.pingcap.com/zh/tidb/stable/sql-statement-insert) ，或使用主键的 [SELECT](https://docs.pingcap.com/zh/tidb/stable/sql-statement-select) 等。
 
+{{< copyable "" >}}
+
 ```java
 package com.pingcap.dao;
 
@@ -879,6 +921,8 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 
 在 `getPlayerAndLock` 中，我们使用了一个注解 [@Lock](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/Lock.html)，此注解声明此处使用悲观锁进行锁定，如需了解更多其他锁定方式，可查看[此处](https://openjpa.apache.org/builds/2.2.2/apache-openjpa/docs/jpa_overview_em_locking.html)。此处的 `@Lock` 仅可与 HQL 搭配使用，否则将会产生错误。当然，如果你希望直接使用 SQL 进行锁定，可直接使用注释部分的注解：
 
+{{< copyable "" >}}
+
 ```java
 @Query(value = "SELECT * FROM player_jpa WHERE id = :id FOR UPDATE", nativeQuery = true)
 ```
@@ -892,6 +936,8 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 #### 接口
 
 `PlayerService.java` 文件内定义了逻辑接口，实现接口，而不是直接编写一个类的原因，是尽量使例子贴近实际使用，体现设计的开闭原则。你也可以省略掉此接口，在依赖类中直接注入实现类，但我们并不推荐这样做。
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.service;
@@ -956,6 +1002,8 @@ public interface PlayerService {
 #### 实现 (重要)
 
 `PlayerService.java` 文件内实现了 `PlayerService` 接口，我们的所有数据操作逻辑都编写在这里。
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.service.impl;
@@ -1044,6 +1092,8 @@ public class PlayerServiceImpl implements PlayerService {
 ### 外部接口
 
 `controller` 包对外暴露 HTTP 接口，可以通过 [REST API](https://www.redhat.com/en/topics/api/what-is-a-rest-api#) 来访问服务。
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.controller;
