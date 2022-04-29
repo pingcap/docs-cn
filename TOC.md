@@ -20,7 +20,7 @@
   - [深入探索 HTAP](/explore-htap.md)
 - 应用开发
   - 快速开始
-    - [使用 TiDB Cloud(DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+    - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
     - TiDB 的简单 CRUD 应用程序
       - [Java](/develop/sample-application-java.md)
@@ -55,7 +55,7 @@
       - [Stale Read](/develop/use-stale-read.md)
     - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
   - 事务
-    - [事务概览](/develop/transaction-overview.md)
+    - [概览](/develop/transaction-overview.md)
     - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
     - [事务限制](/develop/transaction-restraints.md)
     - [事务错误处理](/develop/transaction-troubleshoot.md)
@@ -67,7 +67,7 @@
       - [避免隐式类型转换](/develop/implicit-type-conversion.md)
       - [唯一序列号生成方案](/develop/unique-serial-number-generation.md)
   - 故障诊断
-    - [故障诊断概览](/develop/troubleshoot-overview.md)
+    - [概览](/develop/troubleshoot-overview.md)
     - 其他故障或限制
       - [结果集不稳定](/develop/unstable-result-set.md)
       - [超时](/develop/timeouts-in-tidb.md)

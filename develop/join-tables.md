@@ -1,5 +1,6 @@
 ---
 title: 多表连接查询
+summary: 介绍 TiDB 中的多表连接查询功能。
 ---
 
 # 多表连接查询
@@ -7,6 +8,8 @@ title: 多表连接查询
 很多时候，我们需要在一个查询当中使用到多张表的数据，这个时候我们可以通过 `JOIN` 语句将两张或多张表的数据组合在一起。
 
 ## Join 类型
+
+此节将详细叙述 Join 的链接类型。
 
 ### 内连接 INNER JOIN
 
@@ -53,7 +56,7 @@ LIMIT 10;
 </div>
 <div label="Java" href="inner-join-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -158,7 +161,7 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 </div>
 <div label="Java" href="left-join-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {

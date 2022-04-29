@@ -1,5 +1,6 @@
 ---
 title: Bookshop 应用
+summary: Bookshop 应用设计、数据导入、连接数据库等操作。
 ---
 
 # Bookshop 应用
@@ -8,15 +9,19 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 
 ## 导入数据
 
+以下将分别描述[通过 TiUP](#方式-1-通过-tiup-demo-命令行) 和[通过 TiDB Cloud Import](#方式-2-通过-tidb-cloud-import-功能) 两种方式导入示例数据。
+
 ### 方式 1: 通过 `tiup demo` 命令行
 
 如果你使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#tiup) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
+
+{{< copyable "shell-regular" >}}
 
 ```shell
 tiup demo bookshop prepare
 ```
 
-该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口，使用 `root` 账号进行无密码登录，默认在名为 `bookshop` 的数据库中创建[表结构](#数据表详解)。
+该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口，使用 `root` 用户名进行无密码登录，默认在名为 `bookshop` 的数据库中创建[表结构](#数据表详解)。
 
 #### 配置连接信息
 
@@ -32,7 +37,9 @@ tiup demo bookshop prepare
 
 例如，你想要连接到 TiDB Cloud 上的数据库，你可以如下命令指定连接信息进行连接：
 
-```
+{{< copyable "shell-regular" >}}
+
+```shell
 tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbcloud.com -P 4000 -p
 ```
 
@@ -50,6 +57,8 @@ tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbc
 
 例如，以下命令通过 `--books` 参数指定生成 50 万行书籍的基本信息，通过 `--authors` 参数指定生成 10 万的作者信息，通过 `--ratings` 参数指定生成 100 万的评分记录，通过 `--orders` 参数指定生成 100 万的订单记录。
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --drop-tables
 ```
@@ -58,23 +67,27 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ### 方式 2: 通过 TiDB Cloud Import 功能
 
-在 TiDB Cloud 的数据库详情页面，你可以通过点击**Import**按钮，进入到**Data Import Task**页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
+在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
 
 1. 将以下 **Bucket URL** 和 **Role-ARN** 复制到页面上对应的输入框当中
 
-   **Bucket URL**:
+    **Bucket URL**:
 
-   ```
-   s3://developer.pingcap.com/bookshop/
-   ```
+    {{< copyable "" >}}
 
-   **Role-ARN**:
+    ```
+    s3://developer.pingcap.com/bookshop/
+    ```
 
-   ```
-   arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
-   ```
+    **Role-ARN**:
 
-   在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
+    {{< copyable "" >}}
+
+    ```
+    arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
+    ```
+
+    在这个示例数据当中，预先生成了 20 万的用户信息、50 万条书籍信息、10 万条作者信息、100 万条评分记录以及 100 万条订单信息。
 
 2. 选择 **Bucket Region** 为 **US West (Oregon)**
 3. 选择 **Data Format** 为 **TiDB Dumpling**
@@ -96,6 +109,8 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 ### 查看数据导入情况
 
 导入完成后，你可以通过下面的 SQL 语句各个表的数据量信息：
+
+{{< copyable "sql" >}}
 
 ```sql
 SELECT
@@ -135,7 +150,7 @@ WHERE table_schema LIKE 'bookshop';
 | :----------: | :-----------: | :-----------------------------------: |
 |      id      |  bigint(20)   |            书籍的唯一标识             |
 |    title     | varchar(100)  |               书籍名称                |
-|     type     |     enum      | 书籍类型（如：杂志 / 动漫 / 教辅 等） |
+|     type     |     enum      | 书籍类型（如：杂志、动漫、教辅 等） |
 |    stock     |  bigint(20)   |                 库存                  |
 |    price     | decimal(15,2) |                 价格                  |
 | published_at |   datetime    |               出版时间                |
@@ -170,7 +185,7 @@ WHERE table_schema LIKE 'bookshop';
 | :------: | :------: | :-----------------------------------------: |
 | book_id  |  bigint  | 书籍的唯一标识（关联至 [books](#books-表)） |
 | user_id  |  bigint  | 用户的唯一标识（关联至 [users](#users-表)） |
-|  score   | tinyint  |               用户评分 (1-5)                |
+|  score   | tinyint  |               用户评分 (1~5)                |
 | rated_at | datetime |                  评分时间                   |
 
 ### `book_authors` 表
@@ -195,6 +210,8 @@ WHERE table_schema LIKE 'bookshop';
 | ordered_at |  datetime  |                  购买时间                   |
 
 ## 数据库初始化 `dbinit.sql` 脚本
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;
