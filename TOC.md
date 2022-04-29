@@ -120,17 +120,9 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - 使用 BR 工具（推荐）
-      - [BR 工具简介](/br/backup-and-restore-tool.md)
-      - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
-      - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - 外部存储
-        - [外部存储概述](/br/backup-and-restore-storages.md)
-        - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
-      - BR 特性
-        - [自动调节](/br/br-auto-tune.md)
-        - [批量建表](/br/br-batch-create-table.md)
-      - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
+    - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -440,14 +432,23 @@
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
-    - [BR 工具简介](/br/backup-and-restore-tool.md)
-    - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+    - [BR 简介](/br/backup-and-restore-overview.md)
+    - [部署和使用 BR](/br/br-deployment.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - [外部存储](/br/backup-and-restore-storages.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
       - [批量建表](/br/br-batch-create-table.md)
-    - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - 参考指南
+     - [BR 设计原理](/br/backup-and-restore-design.md)
+     - [BR 命令行介绍](/br/use-br-command-line-tool.md)
+     - [外部存储](/br/backup-and-restore-storages.md)
+     - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
+     - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
+     - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
+     - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
