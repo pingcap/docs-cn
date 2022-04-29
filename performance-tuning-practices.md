@@ -5,15 +5,15 @@ summary: 本文档介绍了如何对 OLTP 负载进行性能分析和优化。
 
 # OLTP 负载性能优化实践
 
-本文对同一个 OLTP 负载在七种不同运行场景下的性能表现进行了分析和对比，演示了一个具体的 OLTP 负载的优化过程，帮助你更快地对 TiDB 的性能进行分析和优化。
+TiDB 提供了完善的性能诊断和分析功能，例如 TiDB Dashboard 的 [Top SQL](/dashboard/top-sql.md) 和 [Continuous Profiling](/dashboard/continuous-profiling.md) 功能，以及 TiDB [Performance Overview 面板](/grafana-performance-overview-dashboard.md)。
 
-在这些场景中，通过使用不同的 JDBC 配置运行同一个应用程序，你可以观察应用和数据库之间不同的交互方式将如何影响系统整体的性能，从而更好地掌握[开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)。
-
-同时，本文也展示了如何综合利用 TiDB Dashboard 的 [Top SQL](/dashboard/top-sql.md) 和 [Continuous Profiling](/dashboard/continuous-profiling.md) 功能，以及 TiDB [Performance Overview 面板](/grafana-performance-overview-dashboard.md) 快速诊断并分析数据库的性能。
+本文介绍如何综合利用这些功能，对同一个 OLTP 负载在七种不同运行场景下的性能表现进行分析和对比，演示一个具体的 OLTP 负载的优化过程，帮助你更快地对 TiDB 的性能进行分析和优化。
 
 > **注意：**
 >
 > [Top SQL](/dashboard/top-sql.md) 和 [Continuous Profiling](/dashboard/continuous-profiling.md) 功能默认关闭，需要提前开启。
+
+在这些场景中，通过使用不同的 JDBC 配置运行同一个应用程序，你可以观察应用和数据库之间不同的交互方式将如何影响系统整体的性能，从而更好地掌握[开发 Java 应用使用 TiDB 的最佳实践](/best-practices/java-app-best-practices.md)。
 
 ## 负载环境
 
