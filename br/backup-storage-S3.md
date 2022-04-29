@@ -1,9 +1,9 @@
 ---
-title: 使用 BR 在 S3 备份和恢复数据
+title: 使用 BR 在 Amazon S3 备份和恢复数据
 summary: 介绍使用 BR 在外部存储 S3 上进行备份与恢复时的方法。
 ---
 
-# 使用 BR 在 S3 备份和恢复数据
+# 使用 BR 在 Amazon S3 备份和恢复数据
 
 TiDB 备份恢复功能 (BR，Backup & Restore) 支持将 Amazon S3 或支持 S3 协议的其他文件存储作为外部存储。
 

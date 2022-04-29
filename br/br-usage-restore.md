@@ -121,7 +121,7 @@ br restore full \
 
 BR 支持将数据备份到 Amazon S3、Google Cloud Storage、Azure Blob Storage、NFS 或者实现 S3 协议的其他文件存储服务。关于如何从对应的备份存储中恢复备份数据，请参考如下文档：
 
-- [使用 S3 恢复备份数据](/br/backup-storage-S3.md)
+- [使用 Amazon S3 恢复备份数据](/br/backup-storage-S3.md)
 - [使用 Google Cloud Storage 恢复备份数据](/br/backup-storage-gcs.md)
 - [使用 Azure Blob Storage 恢复备份数据](/br/backup-storage-azblob.md)
 

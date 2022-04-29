@@ -121,7 +121,7 @@ br backup full \
 
 BR 支持将数据备份到 Amazon S3、Google Cloud Storage、Azure Blob Storage、NFS 或者实现 S3 协议的其他文件存储服务。下面逐一介绍如何备份数据到对应的备份存储中。
 
-- [使用 S3 存储备份数据](/br/backup-storage-S3.md)
+- [使用 Amazon S3 存储备份数据](/br/backup-storage-S3.md)
 - [使用 Google Cloud Storage 存储备份数据](/br/backup-storage-gcs.md)
 - [使用 Azure Blob Storage 存储备份数据](/br/backup-storage-azblob.md)
 

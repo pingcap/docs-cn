@@ -384,7 +384,7 @@
      - [BR 设计原理](/br/backup-and-restore-design.md)
      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
      - [外部存储](/br/backup-and-restore-storages.md)
-     - [使用 BR 在 S3 备份和恢复数据](/br/backup-storage-S3.md)
+     - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
      - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
      - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
      - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
