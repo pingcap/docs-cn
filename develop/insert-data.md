@@ -50,7 +50,7 @@ CREATE TABLE `player` (`id` INT, `coins` INT, `goods` INT);
 INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2);
 ```
 
-有关如何使用此 SQL，可查阅[连接到 TiDB 集群](/develop/build-cluster-in-cloud.md#步骤-2-连接到集群)文档部分，按文档步骤使用客户端连接到 TiDB 集群后，输入 SQL 语句即可。
+有关如何使用此 SQL，可查阅[连接到 TiDB 集群](/develop/build-cluster-in-cloud.md#第-2-步连接到集群)文档部分，按文档步骤使用客户端连接到 TiDB 集群后，输入 SQL 语句即可。
 
 </div>
 
