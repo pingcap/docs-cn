@@ -258,8 +258,7 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 SQL 在 TiDB 内部的处理分为四个阶段，get token、parse、compile 和 execute：
 
-- get token 阶段：通常只有几微秒的时间，可以忽略。 除非 TiDB 单个实例的连接数达到的 [token-limit
-]()https://docs.pingcap.com/tidb/dev/tidb-configuration-file 的限制，创建连接的时候被限流。
+- get token 阶段：通常只有几微秒的时间，可以忽略。除非 TiDB 单个实例的连接数达到的 [token-limit](/tidb-configuration-file.md) 的限制，创建连接的时候被限流。
 - parse 阶段：query 语句解析为抽象语法树 abstract syntax tree (AST)。
 - compile 阶段：根据 parse 阶段输出的 AST 和统计信息，编译出执行计划。整个过程主要步骤为逻辑优化与物理优化，前者通过一些规则对查询计划进行优化，例如基于关系代数的列裁剪等，后者通过统计信息和基于成本的优化器，对执行计划的成本进行估算，并选择整体成本最小的物理执行计划。
 - execute 阶段：时间消耗视情况，先等待全局唯一的时间戳 TSO，之后执行器根据执行计划中算子涉及的 Key 范围，构建出 TiKV 的 API 请求，分发到 TiKV。execute 时间包含 TSO 等待时间、KV 请求的时间和 TiDB 执行器本身处理数据的时间。
