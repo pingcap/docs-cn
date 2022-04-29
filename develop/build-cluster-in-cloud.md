@@ -9,13 +9,13 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
 本章节将介绍以最快的方式开始使用 TiDB。你将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) 创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
-若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)
+若你需要在本地计算机上启动 TiDB，请参阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)。
 
-## 步骤 1. 创建免费集群
+## 第 1 步：创建免费集群
 
-1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/signup)
-2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)
-3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 Developer Tier 方案，或直接点击[创建 Dev Tier 集群](https://tidbcloud.com/console/create-cluster?tier=dev)，进入 **Create a Cluster (Dev Tier)** 页面
+1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/signup)。
+2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
+3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 Developer Tier 方案，或直接点击[创建 Dev Tier 集群](https://tidbcloud.com/console/create-cluster?tier=dev)，进入 **Create a Cluster (Dev Tier)** 页面。
 4. 请在 **Create a Cluster (Dev Tier)** 页面填写集群名称/密码/云服务商（暂时仅可选择 AWS）/ 可用区（建议就近选择）后，点击 **Create** 按钮创建集群。
 5. 稍作等待，在 5~15 分钟后，将创建完毕，可在 [Active Clusters](https://tidbcloud.com/console/clusters) 查看创建进度。
 6. 创建完毕后，在 **Active Clusters** 页面，点击集群名称，进入该集群控制面板。
@@ -27,7 +27,7 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
 ![SQL string](/media/develop/IMG_20220331-232800929.png)
 
-## 步骤 2. 连接到集群
+## 第 2 步：连接到集群
 
 1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。
 
@@ -110,7 +110,7 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
     </SimpleTab>
 
-2. 运行步骤 1 中得到的连接字符串。
+2. 运行第 1 步中得到的连接字符串。
 
     {{< copyable "shell-regular" >}}
 
@@ -120,7 +120,7 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
 3. 填写密码，完成登录。
 
-## 步骤 3. 运行示例应用程序
+## 第 3 步：运行示例应用程序
 
 1. 克隆 tidb-example-java 项目。
 
@@ -178,6 +178,6 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
     </SimpleTab>
 
-3. 运行 `make plain-java-jdbc`
+3. 运行 `make plain-java-jdbc`。
 
     输出应如[预期](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)所示

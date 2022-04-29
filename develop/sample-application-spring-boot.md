@@ -15,7 +15,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 你可以以此示例为基础，构建自己的应用程序。
 
-## 步骤 1. 启动你的 TiDB 集群
+## 第 1 步：启动你的 TiDB 集群
 
 本节将介绍 TiDB 集群的启动方法。
 
@@ -87,13 +87,13 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
 > - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#-t---tag-string)。
 
-## 步骤 2. 安装 JDK
+## 第 2 步：安装 JDK
 
 请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，我们推荐使用 Java 版本 11 以上的 JDK 。
 
 我们同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用 版本 17 的 **OpenJDK** 。
 
-## 步骤 3. 安装 Maven
+## 第 3 步：安装 Maven
 
 此示例应用程序使用 **Maven** 来管理应用程序的依赖项。Spring 支持的 **Maven** 版本为 3.2 以上，作为依赖管理软件，推荐使用当前最新稳定版本的 **Maven**。
 
@@ -127,7 +127,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 其他安装方法，请参考 [Maven 官方文档](https://maven.apache.org/install.html)。
 
-## 步骤 4. 获取应用程序代码
+## 第 4 步：获取应用程序代码
 
 请下载或克隆[示例代码库](https://github.com/pingcap-inc/tidb-example-java)，并进入到目录`spring-jpa-hibernate`中。
 
@@ -220,13 +220,13 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
     更改完毕后即可获取一个空白的，拥有与示例程序相同依赖的 **Spring Boot** 应用程序。
 
-## 步骤 5. 运行应用程序
+## 第 5 步：运行应用程序
 
 此处对应用程序代码进行编译和运行，将产生一个 Web 应用程序。Hibernate 将创建一个 在数据库 `test` 内的表 `player_jpa`，如果你想应用程序的 Restful API 进行请求，这些请求将会在 TiDB 集群上运行[数据库事务](/develop/transaction-overview.md)。
 
 如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
-### 步骤 5.1 TiDB Cloud 更改参数
+### 第 5 步第 1 部分：TiDB Cloud 更改参数
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `application.yml` (位于 `src/main/resources` 内) 关于 spring.datasource.url、spring.datasource.username、spring.datasource.password 的参数：
 
@@ -266,7 +266,7 @@ spring:
       ddl-auto: create-drop
 ```
 
-### 步骤 5.2 运行
+### 第 5 步第 2 部分：运行
 
 打开终端，确保你已经进入 spring-jpa-hibernate 目录，若还未在此目录，请使用命令进入：
 
@@ -304,7 +304,7 @@ mvn clean package
 java -jar target/spring-jpa-hibernate-0.0.1.jar
 ```
 
-### 步骤 5.3 输出
+### 第 5 步第 3 部分：输出
 
 输出的最后部分应如下所示：
 
@@ -350,11 +350,11 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 如果你想了解有关此应用程序的代码的详细信息，可参阅本教程下方的[实现细节](#实现细节)。
 
-## 步骤 6. HTTP 请求
+## 第 6 步：HTTP 请求
 
 服务完成运行后，即可使用 HTTP 接口请求后端程序。`http://localhost:8080` 是我们的服务提供根地址。我们使用一系列的 HTTP 请求来演示如何使用该服务。
 
-### 步骤 6.1 使用 Postman 请求(推荐)
+### 第 6 步第 1 部分：使用 Postman 请求(推荐)
 
 你可下载[此配置文件](https://raw.githubusercontent.com/pingcap-inc/tidb-example-java/main/spring-jpa-hibernate/Player.postman_collection.json)到本地，并导入 [Postman](https://www.postman.com/)，导入后如图所示：
 
@@ -396,7 +396,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 ![Postman-Trade](/media/develop/IMG_20220402-003659102.png)
 
-### 步骤 6.2 使用 curl 请求
+### 第 6 步第 2 部分：使用 curl 请求
 
 当然，你也可以直接使用 curl 进行请求。
 
@@ -559,7 +559,7 @@ curl --location --request PUT 'http://localhost:8080/player/trade' \
 true
 ```
 
-### 步骤 6.3 使用 Shell 脚本请求
+### 第 6 步第 3 部分：使用 Shell 脚本请求
 
 这里已经将请求过程编写为 [Shell](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/request.sh) 脚本，以方便大家的测试，脚本将会做以下操作：
 

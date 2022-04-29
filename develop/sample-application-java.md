@@ -18,7 +18,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 >
 > 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)。
 
-## 步骤 1. 启动你的 TiDB 集群
+## 第 1 步：启动你的 TiDB 集群
 
 本节将介绍 TiDB 集群的启动方法。
 
@@ -90,7 +90,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
 > - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#-t---tag-string)。
 
-## 步骤 2. 获取代码
+## 第 2 步：获取代码
 
 {{< copyable "shell-regular" >}}
 
@@ -877,11 +877,11 @@ public class HibernateExample
 
 </SimpleTab>
 
-## 步骤 3. 运行代码
+## 第 3 步：运行代码
 
 本节将逐步介绍代码的运行方法。
 
-### 步骤 3.1 JDBC 表初始化
+### 第 3 步第 1 部分：JDBC 表初始化
 
 <SimpleTab>
 
@@ -915,7 +915,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 </SimpleTab>
 
-### 步骤 3.2 TiDB Cloud 更改参数
+### 第 3 步第 2 部分：TiDB Cloud 更改参数
 
 <SimpleTab>
 
@@ -1025,7 +1025,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 </SimpleTab>
 
-### 步骤 3.3 运行
+### 第 3 步第 3 部分：运行
 
 <SimpleTab>
 
@@ -1053,7 +1053,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 </SimpleTab>
 
-## 步骤 4. 预期输出
+## 第 4 步：预期输出
 
 <SimpleTab>
 
