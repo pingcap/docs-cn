@@ -1,5 +1,6 @@
 ---
 title: 临时表
+summary: 介绍 TiDB 临时表创建、删除、限制。
 ---
 
 # 临时表
@@ -89,7 +90,7 @@ Records: 50  Duplicates: 0  Warnings: 0
 </div>
 <div label="Java" href="local-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {
@@ -156,7 +157,7 @@ CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
 
 在使用全局临时表时，你需要将 Auto Commit 模式先关闭。在 Java 语言当中，你可以通过 `conn.setAutoCommit(false);` 语句来实现，当你使用完成后，可以通过 `conn.commit();` 显式地提交事务。事务在提交或取消后，在事务过程中对全局临时表添加的数据将会被清除。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfo() throws SQLException {

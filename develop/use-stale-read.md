@@ -1,5 +1,6 @@
 ---
 title: Stale Read
+summary: 使用 Stale Read 在特定情况下加速查询。
 ---
 
 # Stale Read
@@ -116,7 +117,7 @@ ERROR 9006 (HY000): cannot set read timestamp to a future time.
 </div>
 <div label="Java" href="statement-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -186,7 +187,7 @@ public class BookDAO {
 }
 ```
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 List<Book> top5LatestBooks = bookDAO.getTop5LatestBooks();
@@ -281,7 +282,7 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 
 我们可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public static class StaleReadHelper {
@@ -300,7 +301,7 @@ public static class StaleReadHelper {
 
 然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内我们查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -342,7 +343,7 @@ public class BookDAO {
 }
 ```
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 List<Book> top5LatestBooks = bookDAO.getTop5LatestBooks();
@@ -396,7 +397,7 @@ SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 
 我们可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public static class TxnHelper {
@@ -414,7 +415,7 @@ public static class TxnHelper {
 
 然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内我们查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -488,7 +489,7 @@ set @@tidb_read_staleness="";
 </div>
 <div label="Java" href="session-java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public static class StaleReadHelper{

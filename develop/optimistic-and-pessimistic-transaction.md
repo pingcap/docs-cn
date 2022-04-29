@@ -1,5 +1,6 @@
 ---
 title: 乐观事务和悲观事务
+summary: 介绍 TiDB 中的乐观事务和悲观事务，乐观事务的重试等。
 ---
 
 # 乐观事务和悲观事务
@@ -26,8 +27,10 @@ title: 乐观事务和悲观事务
 
 因为我们使用多个线程模拟多用户同时插入的情况，因此我们需要使用一个线程安全的连接对象，这里我们使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 作为我们此处 Demo 使用的线程池。
 
-如果您使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
+如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
 
+{{< copyable "" >}}
+    
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -103,6 +106,8 @@ title: 乐观事务和悲观事务
 ```
 
 随后编写代码：
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn;
@@ -249,6 +254,8 @@ public class TxnExample {
 
 运行示例程序：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=6
@@ -256,25 +263,27 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 SQL 日志：
 
+{{< copyable "sql" >}}
+
 ```sql
-/* txn 1 */ begin pessimistic
-    /* txn 2 */ begin pessimistic
-    /* txn 2 */ select * from books where id = 1 for update
-    /* txn 2 */ update books set stock = stock - 4 where id = 1 and stock - 4 >= 0
-    /* txn 2 */ insert into orders (id, book_id, user_id, quality) values (1001, 1, 1, 4)
-    /* txn 2 */ update users set balance = balance - 400.0 where id = 2
-    /* txn 2 */ commit
-/* txn 1 */ select * from books where id = 1 for update
-/* txn 1 */ update books set stock = stock - 6 where id = 1 and stock - 6 >= 0
-/* txn 1 */ insert into orders (id, book_id, user_id, quality) values (1000, 1, 1, 6)
-/* txn 1 */ update users set balance = balance - 600.0 where id = 1
-/* txn 1 */ commit
+/* txn 1 */ BEGIN PESSIMISTIC
+    /* txn 2 */ BEGIN PESSIMISTIC
+    /* txn 2 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+    /* txn 2 */ UPDATE `books` SET `stock` = `stock` - 4 WHERE `id` = 1 AND `stock` - 4 >= 0
+    /* txn 2 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1001, 1, 1, 4)
+    /* txn 2 */ UPDATE `users` SET `balance` = `balance` - 400.0 WHERE `id` = 2
+    /* txn 2 */ COMMIT
+/* txn 1 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+/* txn 1 */ UPDATE `books` SET `stock` = `stock` - 6 WHERE `id` = 1 AND `stock` - 6 >= 0
+/* txn 1 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1000, 1, 1, 6)
+/* txn 1 */ UPDATE `users` SET `balance` = `balance` - 600.0 WHERE `id` = 1
+/* txn 1 */ COMMIT
 ```
 
 最后，我们检验一下订单创建、用户余额扣减、图书库存扣减情况，都符合预期。
 
 ```sql
-mysql> select * from books;
+mysql> SELECT * FROM `books`;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 | id | title                                | type                 | published_at        | stock | price  |
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
@@ -282,7 +291,7 @@ mysql> select * from books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 1 row in set (0.00 sec)
 
-mysql> select * from orders;
+mysql> SELECT * FROM orders;
 +------+---------+---------+---------+---------------------+
 | id   | book_id | user_id | quality | ordered_at          |
 +------+---------+---------+---------+---------------------+
@@ -291,7 +300,7 @@ mysql> select * from orders;
 +------+---------+---------+---------+---------------------+
 2 rows in set (0.01 sec)
 
-mysql> select * from users;
+mysql> SELECT * FROM users;
 +----+---------+----------+
 | id | balance | nickname |
 +----+---------+----------+
@@ -305,22 +314,26 @@ mysql> select * from users;
 
 运行示例程序：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=7
 ```
 
+{{< copyable "sql" >}}
+
 ```sql
-/* txn 1 */ begin pessimistic
-    /* txn 2 */ begin pessimistic
-    /* txn 2 */ select * from books where id = 1 for update
-    /* txn 2 */ update books set stock = stock - 4 where id = 1 and stock - 4 >= 0
-    /* txn 2 */ insert into orders (id, book_id, user_id, quality) values (1001, 1, 1, 4)
-    /* txn 2 */ update users set balance = balance - 400.0 where id = 2
-    /* txn 2 */ commit
-/* txn 1 */ select * from books where id = 1 for update
-/* txn 1 */ update books set stock = stock - 7 where id = 1 and stock - 7 >= 0
-/* txn 1 */ rollback
+/* txn 1 */ BEGIN PESSIMISTIC
+    /* txn 2 */ BEGIN PESSIMISTIC
+    /* txn 2 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+    /* txn 2 */ UPDATE `books` SET `stock` = `stock` - 4 WHERE `id` = 1 AND `stock` - 4 >= 0
+    /* txn 2 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) values (1001, 1, 1, 4)
+    /* txn 2 */ UPDATE `users` SET `balance` = `balance` - 400.0 WHERE `id` = 2
+    /* txn 2 */ COMMIT
+/* txn 1 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+/* txn 1 */ UPDATE `books` SET `stock` = `stock` - 7 WHERE `id` = 1 AND `stock` - 7 >= 0
+/* txn 1 */ ROLLBACK
 ```
 
 由于 `txn 2` 抢先获得锁资源，更新了 stock，`txn 1` 里面 `affected_rows` 返回值为 0，进入了 `rollback` 流程。
@@ -328,7 +341,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 我们再检验一下订单创建、用户余额扣减、图书库存扣减情况。Alice 下单 4 本书成功，Bob 下单 7 本书失败，库存剩余 6 本符合预期。
 
 ```sql
-mysql> select * from books;
+mysql> SELECT * FROM books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 | id | title                                | type                 | published_at        | stock | price  |
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
@@ -336,7 +349,7 @@ mysql> select * from books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 1 row in set (0.00 sec)
 
-mysql> select * from orders;
+mysql> SELECT * FROM orders;
 +------+---------+---------+---------+---------------------+
 | id   | book_id | user_id | quality | ordered_at          |
 +------+---------+---------+---------+---------------------+
@@ -344,7 +357,7 @@ mysql> select * from orders;
 +------+---------+---------+---------+---------------------+
 1 row in set (0.00 sec)
 
-mysql> select * from users;
+mysql> SELECT * FROM users;
 +----+----------+----------+
 | id | balance  | nickname |
 +----+----------+----------+
@@ -357,6 +370,8 @@ mysql> select * from users;
 ## 乐观事务
 
 下面代码以乐观事务的方式，用两个线程模拟了两个用户并发买同一本书的过程，和悲观事务的示例一样。书店剩余 10 本，Bob 购买了 6 本，Alice 购买了 4 本。两个人几乎同一时间完成订单，最终，这本书的剩余库存为零。
+
+{{< copyable "" >}}
 
 ```java
 package com.pingcap.txn.optimistic;
@@ -451,7 +466,7 @@ public class TxnExample {
                 BigDecimal price = null;
 
                 // read price of book
-                PreparedStatement selectBook = connection.prepareStatement(txnComment + "select * from books where id = ? for update");
+                PreparedStatement selectBook = connection.prepareStatement(txnComment + "SELECT * FROM books where id = ? for update");
                 selectBook.setLong(1, bookID);
                 ResultSet res = selectBook.executeQuery();
                 if (!res.next()) {
@@ -516,12 +531,16 @@ public class TxnExample {
 
 此处，需将 `pom.xml` 中启动类
 
+{{< copyable "" >}}
+    
 ```xml
 <mainClass>com.pingcap.txn.TxnExample</mainClass>
 ```
 
 更改为：
 
+{{< copyable "" >}}
+    
 ```xml
 <mainClass>com.pingcap.txn.optimistic.TxnExample</mainClass>
 ```
@@ -530,6 +549,8 @@ public class TxnExample {
 
 运行示例程序：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=6
@@ -537,25 +558,27 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 SQL 语句执行过程：
 
+{{< copyable "sql" >}}
+
 ```sql
-    /* txn 2 */ begin optimistic
-/* txn 1 */ begin optimistic
-    /* txn 2 */ select * from books where id = 1 for update
-    /* txn 2 */ update books set stock = stock - 4 where id = 1 and stock - 4 >= 0
-    /* txn 2 */ insert into orders (id, book_id, user_id, quality) values (1001, 1, 1, 4)
-    /* txn 2 */ update users set balance = balance - 400.0 where id = 2
-    /* txn 2 */ commit
-/* txn 1 */ select * from books where id = 1 for update
-/* txn 1 */ update books set stock = stock - 6 where id = 1 and stock - 6 >= 0
-/* txn 1 */ insert into orders (id, book_id, user_id, quality) values (1000, 1, 1, 6)
-/* txn 1 */ update users set balance = balance - 600.0 where id = 1
+    /* txn 2 */ BEGIN OPTIMISTIC
+/* txn 1 */ BEGIN OPTIMISTIC
+    /* txn 2 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+    /* txn 2 */ UPDATE `books` SET `stock` = `stock` - 4 WHERE `id` = 1 AND `stock` - 4 >= 0
+    /* txn 2 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1001, 1, 1, 4)
+    /* txn 2 */ UPDATE `users` SET `balance` = `balance` - 400.0 WHERE `id` = 2
+    /* txn 2 */ COMMIT
+/* txn 1 */ SELECT * FROM `books` WHERE `id` = 1 for UPDATE
+/* txn 1 */ UPDATE `books` SET `stock` = `stock` - 6 WHERE `id` = 1 AND `stock` - 6 >= 0
+/* txn 1 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1000, 1, 1, 6)
+/* txn 1 */ UPDATE `users` SET `balance` = `balance` - 600.0 WHERE `id` = 1
 retry 1 times for 9007 Write conflict, txnStartTS=432618733006225412, conflictStartTS=432618733006225411, conflictCommitTS=432618733006225414, key={tableID=126, handle=1} primary={tableID=114, indexID=1, indexValues={1, 1000, }} [try again later]
-/* txn 1 */ begin optimistic
-/* txn 1 */ select * from books where id = 1 for update
-/* txn 1 */ update books set stock = stock - 6 where id = 1 and stock - 6 >= 0
-/* txn 1 */ insert into orders (id, book_id, user_id, quality) values (1000, 1, 1, 6)
-/* txn 1 */ update users set balance = balance - 600.0 where id = 1
-/* txn 1 */ commit
+/* txn 1 */ BEGIN OPTIMISTIC
+/* txn 1 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+/* txn 1 */ UPDATE `books` SET `stock` = `stock` - 6 WHERE `id` = 1 AND `stock` - 6 >= 0
+/* txn 1 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1000, 1, 1, 6)
+/* txn 1 */ UPDATE `users` SET `balance` = `balance` - 600.0 WHERE `id` = 1
+/* txn 1 */ COMMIT
 ```
 
 在乐观事务模式下，由于中间状态不一定正确，不能像悲观事务模式一样，通过 `affected_rows` 来判断某个语句是否执行成功。我们需要把事务看做一个整体，通过最终的 COMMIT 语句是否返回异常来判断当前事务是否发生写冲突。
@@ -563,7 +586,7 @@ retry 1 times for 9007 Write conflict, txnStartTS=432618733006225412, conflictSt
 从上面 SQL 日志可以看出，由于两个事务并发执行，并且对同一条记录做了修改，`txn 1` COMMIT 之后抛出了 `9007 Write conflict` 异常。对于乐观事务写冲突，在应用端可以进行安全的重试，重试一次之后提交成功，最终执行结果符合预期：
 
 ```sql
-mysql> select * from books;
+mysql> SELECT * FROM books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 | id | title                                | type                 | published_at        | stock | price  |
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
@@ -571,7 +594,7 @@ mysql> select * from books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 1 row in set (0.01 sec)
 
-mysql> select * from orders;
+mysql> SELECT * FROM orders;
 +------+---------+---------+---------+---------------------+
 | id   | book_id | user_id | quality | ordered_at          |
 +------+---------+---------+---------+---------------------+
@@ -580,7 +603,7 @@ mysql> select * from orders;
 +------+---------+---------+---------+---------------------+
 2 rows in set (0.01 sec)
 
-mysql> select * from users;
+mysql> SELECT * FROM users;
 +----+---------+----------+
 | id | balance | nickname |
 +----+---------+----------+
@@ -594,34 +617,38 @@ mysql> select * from users;
 
 运行示例程序：
 
+{{< copyable "shell-regular" >}}
+
 ```shell
 mvn clean package
 java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_NUM=7
 ```
 
+{{< copyable "sql" >}}
+
 ```sql
-/* txn 1 */ begin optimistic
-    /* txn 2 */ begin optimistic
-    /* txn 2 */ select * from books where id = 1 for update
-    /* txn 2 */ update books set stock = stock - 4 where id = 1 and stock - 4 >= 0
-    /* txn 2 */ insert into orders (id, book_id, user_id, quality) values (1001, 1, 1, 4)
-    /* txn 2 */ update users set balance = balance - 400.0 where id = 2
-    /* txn 2 */ commit
-/* txn 1 */ select * from books where id = 1 for update
-/* txn 1 */ update books set stock = stock - 7 where id = 1 and stock - 7 >= 0
-/* txn 1 */ insert into orders (id, book_id, user_id, quality) values (1000, 1, 1, 7)
-/* txn 1 */ update users set balance = balance - 700.0 where id = 1
+/* txn 1 */ BEGIN OPTIMISTIC
+    /* txn 2 */ BEGIN OPTIMISTIC
+    /* txn 2 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+    /* txn 2 */ UPDATE `books` SET `stock` = `stock` - 4 WHERE `id` = 1 AND `stock` - 4 >= 0
+    /* txn 2 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1001, 1, 1, 4)
+    /* txn 2 */ UPDATE `users` SET `balance` = `balance` - 400.0 WHERE `id` = 2
+    /* txn 2 */ COMMIT
+/* txn 1 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
+/* txn 1 */ UPDATE `books` SET `stock` = `stock` - 7 WHERE `id` = 1 AND `stock` - 7 >= 0
+/* txn 1 */ INSERT INTO `orders` (`id`, `book_id`, `user_id`, `quality`) VALUES (1000, 1, 1, 7)
+/* txn 1 */ UPDATE `users` SET `balance` = `balance` - 700.0 WHERE `id` = 1
 retry 1 times for 9007 Write conflict, txnStartTS=432619094333980675, conflictStartTS=432619094333980676, conflictCommitTS=432619094333980678, key={tableID=126, handle=1} primary={tableID=114, indexID=1, indexValues={1, 1000, }} [try again later]
-/* txn 1 */ begin optimistic
-/* txn 1 */ select * from books where id = 1 for update
+/* txn 1 */ BEGIN OPTIMISTIC
+/* txn 1 */ SELECT * FROM `books` WHERE `id` = 1 FOR UPDATE
 Fail -> out of stock
-/* txn 1 */ rollback
+/* txn 1 */ ROLLBACK
 ```
 
 从上面的 SQL 日志可以看出，第一次执行由于写冲突，`txn 1` 在应用端进行了重试，从获取到的最新快照对比发现，剩余库存不够，应用端抛出 `out of stock` 异常结束。
 
 ```sql
-mysql> select * from books;
+mysql> SELECT * FROM books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 | id | title                                | type                 | published_at        | stock | price  |
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
@@ -629,7 +656,7 @@ mysql> select * from books;
 +----+--------------------------------------+----------------------+---------------------+-------+--------+
 1 row in set (0.00 sec)
 
-mysql> select * from orders;
+mysql> SELECT * FROM orders;
 +------+---------+---------+---------+---------------------+
 | id   | book_id | user_id | quality | ordered_at          |
 +------+---------+---------+---------+---------------------+
@@ -637,7 +664,7 @@ mysql> select * from orders;
 +------+---------+---------+---------+---------------------+
 1 row in set (0.00 sec)
 
-mysql> select * from users;
+mysql> SELECT * FROM users;
 +----+----------+----------+
 | id | balance  | nickname |
 +----+----------+----------+

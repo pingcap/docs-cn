@@ -1,5 +1,6 @@
 ---
 title: 分页查询
+summary: 介绍 TiDB 的分页查询功能。
 ---
 
 # 分页查询
@@ -39,7 +40,7 @@ LIMIT 0, 10;
 
 在应用程序开发当中，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前我们需要对其进行一些转换。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLException {
@@ -135,7 +136,7 @@ ORDER BY id;
 
 在 Java 语言当中，我们可以定义一个 `PageMeta` 类来存储分页元信息。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class PageMeta<K> {
@@ -151,7 +152,7 @@ public class PageMeta<K> {
 
 我们定义一个 `getPageMetaList()` 方法获取到分页元信息列表，然后定义一个可以根据页面元信息批量删除数据的方法 `deleteBooksByPageMeta()`。
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public class BookDAO {
@@ -197,7 +198,7 @@ public class BookDAO {
 
 如果我们想要删除第 1 页的数据，我们可以这样写：
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 List<PageMeta<Long>> pageMetaList = bookDAO.getPageMetaList();
@@ -208,7 +209,7 @@ if (pageMetaList.size() > 0) {
 
 如果我们希望通过分页分批地删除所有书籍数据，可以这样写：
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 List<PageMeta<Long>> pageMetaList = bookDAO.getPageMetaList();

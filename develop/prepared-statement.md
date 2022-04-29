@@ -1,5 +1,6 @@
 ---
 title: 预处理语句
+summary: 介绍 TiDB 的预处理语句功能。
 ---
 
 # 预处理语句
@@ -13,7 +14,11 @@ title: 预处理语句
 
 ## SQL 语法
 
+本节将介绍创建、使用及删除预处理语句的 SQL 语法。
+
 ### 创建预处理语句
+
+{{< copyable "sql" >}}
 
 ```sql
 PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
@@ -24,11 +29,13 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 | `{prepared_statement_name}` |             预处理语句名称             |
 | `{prepared_statement_sql}`  | 预处理语句 SQL，以英文半角问号做占位符 |
 
-您可查看 [PREPARE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-prepare) 获得更多信息。
+你可查看 [PREPARE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-prepare) 获得更多信息。
 
 ### 使用预处理语句
 
 预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable) 设置变量后，供 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 调用预处理语句
+
+{{< copyable "sql" >}}
 
 ```sql
 SET @{parameter_name} = {parameter_value};
@@ -41,9 +48,11 @@ EXECUTE {prepared_statement_name} USING @{parameter_name};
 |     `{parameter_value}`     |                              用户参数值                               |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-您可查看 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 获得更多信息。
+你可查看 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 获得更多信息。
 
 ### 删除预处理语句
+
+{{< copyable "sql" >}}
 
 ```sql
 DEALLOCATE PREPARE {prepared_statement_name};
@@ -53,9 +62,11 @@ DEALLOCATE PREPARE {prepared_statement_name};
 | :-------------------------: | :-------------------------------------------------------------------: |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-您可查看 [DEALLOCATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-deallocate) 获得更多信息。
+你可查看 [DEALLOCATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-deallocate) 获得更多信息。
 
 ## 例子
+
+本节以使用预处理语句，完成查询数据和插入数据两个场景的示例。
 
 ### 查询示例
 
@@ -65,6 +76,8 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 <div label="SQL" href="read-sql">
 
+{{< copyable "sql" >}}
+
 ```sql
 PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
 ```
@@ -73,6 +86,8 @@ PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
 Query OK, 0 rows affected (0.01 sec)
 ```
 
+{{< copyable "sql" >}}
+
 ```sql
 SET @id = 1;
 ```
@@ -80,6 +95,8 @@ SET @id = 1;
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
+
+{{< copyable "sql" >}}
 
 ```sql
 EXECUTE `books_query` USING @id;
@@ -97,6 +114,8 @@ EXECUTE `books_query` USING @id;
 </div>
 
 <div label="Java" href="read-java">
+
+{{< copyable "" >}}
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -124,11 +143,13 @@ try (Connection connection = ds.getConnection()) {
 
 ### 插入示例
 
-还是使用 [books 表](/develop/bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果您对插入数据还不了解，可以在[插入数据](/develop/insert-data.md)一节了解更多数据插入的相关信息。
+还是使用 [books 表](/develop/bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/insert-data.md)一节了解更多数据插入的相关信息。
 
 <SimpleTab>
 
 <div label="SQL" href="write-sql">
+
+{{< copyable "sql" >}}
 
 ```sql
 PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `price`, `published_at`) VALUES (?, ?, ?, ?, ?);';
@@ -137,6 +158,8 @@ PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `pri
 ```
 Query OK, 0 rows affected (0.03 sec)
 ```
+
+{{< copyable "sql" >}}
 
 ```sql
 SET @title = 'TiDB Developer Guide';
@@ -150,6 +173,8 @@ SET @published_at = NOW();
 Query OK, 0 rows affected (0.04 sec)
 ```
 
+{{< copyable "sql" >}}
+
 ```sql
 EXECUTE `books_insert` USING @title, @type, @stock, @price, @published_at;
 ```
@@ -161,6 +186,8 @@ Query OK, 1 row affected (0.03 sec)
 </div>
 
 <div label="Java" href="write-java">
+
+{{< copyable "" >}}
 
 ```java
 try (Connection connection = ds.getConnection()) {

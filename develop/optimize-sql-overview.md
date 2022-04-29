@@ -1,10 +1,11 @@
 ---
 title: 概览
+summary: 介绍 TiDB 的 SQL 性能调优概览。
 ---
 
 # 概览
 
-本节内容描述了如何在 TiDB 中优化 SQL 语句的性能。为了获得更好的性能，你可以从以下方面入手：
+本章内容描述了如何在 TiDB 中优化 SQL 语句的性能。为了获得更好的性能，你可以从以下方面入手：
 
 - SQL 性能调优
 - Schema 设计：根据你的业务负载类型，为了避免事务冲突或者是热点，你可能需要对表的 Schema 做出一些调整。
@@ -25,6 +26,6 @@ title: 概览
 - 事务冲突。关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-lock-conflicts)。
 - 热点。关于如何定位和解决热点，请参考[TiDB 热点问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-hot-spot-issues)。
 
-### 推荐阅读
+## 推荐阅读
 
 - [SQL 性能调优](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)

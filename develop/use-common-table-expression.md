@@ -1,5 +1,6 @@
 ---
 title: 公共表表达式 (CTE)
+summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
 ---
 
 # 公共表表达式 (CTE)
@@ -21,6 +22,8 @@ TiDB 从 5.1 版本开始支持 ANSI SQL 99 标准的 CTE 及其递归的写法�
 ### 非递归的 CTE
 
 非递归的 CTE 使用如下语法进行定义：
+
+{{< copyable "sql" >}}
 
 ```sql
 WITH <query_name> AS (
@@ -73,7 +76,7 @@ GROUP BY ta.id;
 </div>
 <div label="Java">
 
-{{< copyable "java" >}}
+{{< copyable "" >}}
 
 ```java
 public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
@@ -172,6 +175,8 @@ FROM
 ### 递归的 CTE
 
 递归的公共表表达式可以使用如下语法进行定义:
+
+{{< copyable "sql" >}}
 
 ```sql
 WITH RECURSIVE <query_name> AS (

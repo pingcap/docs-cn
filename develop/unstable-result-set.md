@@ -1,17 +1,22 @@
 ---
 title: 结果集不稳定
+summary: 结果集不稳定错误的处理办法。
 ---
 
 # 结果集不稳定
 
-## 1. group by
+本章将叙述结果集不稳定错误的处理办法。
+
+## group by
 
 出于便捷的考量，MySQL “扩展” 了 group by 语法，使 select 子句可以引用未在 group by 子句中声明的非聚集字段，也就是 non-full group by 语法。在其他数据库中，这被认为是一种语法错误，因为这会导致结果集不稳定。
 
 在下例的 3 条 SQL 语句中，第一条 SQL 使用了 full group by 语法 ，所有在 select 子句中引用的字段，都在 group by 子句中有所声明，所以它的结果集是稳定的，可以看到 class 与 stuname 的全部组合共有三种；第二条与第三条是同一个 SQL，但它在两次执行时得到了不同的结果，这条 SQL 的 group by 子句中仅声明了一个 class 字段，因此结果集只会针对 class 进行聚集，class 的唯一值有两个，也就是说结果集中只会包含两行数据，而 class 与 stuname 的全部组合共有三种，班级 2018_CS_03 有两位同学，每次执行时返回哪位同学是没有语义上的限制的，都是符合语义的结果。
 
+{{< copyable "sql" >}}
+
 ```sql
-mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class, a.stuname order by a.class, a.stuname;
+mysql> SELECT a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class, a.stuname order by a.class, a.stuname;
 +------------+--------------+------------------+
 | class      | stuname      | max(b.courscore) |
 +------------+--------------+------------------+
@@ -45,6 +50,8 @@ mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_scor
 
 MySQL 提供了一个 SQL_MODE 开关 ONLY_FULL_GROUP_BY 来控制是否进行 full group by 语法的检查，TiDB 也兼容了这个 SQL_MODE 开关：
 
+{{< copyable "sql" >}}
+
 ```sql
 mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_score b on a.stuno=b.stuno group by a.class order by a.class, a.stuname;
 +------------+--------------+------------------+
@@ -62,13 +69,15 @@ mysql> select a.class, a.stuname, max(b.courscore) from stu_info a join stu_scor
 ERROR 1055 (42000): Expression #2 of ORDER BY is not in GROUP BY clause and contains nonaggregated column '' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
 ```
 
-**说明**：上例为 sql_mode 设置了 ONLY_FULL_GROUP_BY 的效果
+**运行结果简述**：上例为 sql_mode 设置了 ONLY_FULL_GROUP_BY 的效果
 
-## 2. order by
+## order by
 
 在 SQL 的语义中，只有使用了 order by 语法才会保障结果集的顺序输出。而单机数据库由于数据都存储在一台服务器上，在不进行数据重组时，多次执行的结果往往是稳定的，有些数据库(尤其是 MySQL InnoDB 存储引擎)还会按照主键或索引的顺序进行结果集的输出。TiDB 是分布式数据库，数据被存储在多台服务器上，另外 TiDB 层不缓存数据页，因此不含 order by 的 SQL 语句的结果集展现顺序容易被感知到不稳定。想要按顺序输出的结果集，需明确地把要排序的字段添加到 order by 子句中，这符合 SQL 的语义。
 
 在下面的案例中，用户只在 order by 子句中添加了一个字段，TiDB 只会按照这一个字段进行排序。
+
+{{< copyable "sql" >}}
 
 ```sql
 mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu_score b on a.stuno=b.stuno order by a.class;
@@ -118,7 +127,7 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
 当遇到相同的 order by 值时，排序结果不稳定。为减少随机性，应当尽可能保持 order by 值的唯一性。不能保证唯一的继续加，保证 order by 的字段组合是唯一时，结果才能唯一。
 
-## 3. 由于 group_concat() 中没有使用 order by 导致结果集不稳定
+## 由于 group_concat() 中没有使用 order by 导致结果集不稳定
 
 结果集不稳定是因为 TiDB 是并行地从存储层读取数据，所以 `group_concat()` 在不加 order by 的情况下得到的结果集展现顺序容易被感知到不稳定。
 
@@ -128,6 +137,8 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
 
    第一次查询：
 
+   {{< copyable "sql" >}}
+
    ```sql
    mysql>  select GROUP_CONCAT( customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
    +-------------------------------------------------------------------------+
@@ -135,10 +146,11 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
    +-------------------------------------------------------------------------+
    | 20000200992,20000200993,20000200994,20000200995,20000200996,20000200... |
    +-------------------------------------------------------------------------+
-
    ```
 
    第二次查询：
+
+   {{< copyable "sql" >}}
 
    ```sql
    mysql>  select GROUP_CONCAT( customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
@@ -147,13 +159,14 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
    +-------------------------------------------------------------------------+
    | 20000203040,20000203041,20000203042,20000203043,20000203044,20000203... |
    +-------------------------------------------------------------------------+
-
    ```
 
 2. 加 order by
 
    第一次查询：
 
+   {{< copyable "sql" >}}
+
    ```sql
    mysql>  select GROUP_CONCAT( customer_id order by customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
    +-------------------------------------------------------------------------+
@@ -161,11 +174,12 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
    +-------------------------------------------------------------------------+
    | 20000200000,20000200001,20000200002,20000200003,20000200004,20000200... |
    +-------------------------------------------------------------------------+
-
    ```
 
    第二次查询：
 
+   {{< copyable "sql" >}}
+
    ```sql
    mysql>  select GROUP_CONCAT( customer_id order by customer_id SEPARATOR ',' ) FROM customer where customer_id like '200002%';
    +-------------------------------------------------------------------------+
@@ -173,9 +187,8 @@ mysql> select a.class, a.stuname, b.course, b.courscore from stu_info a join stu
    +-------------------------------------------------------------------------+
    | 20000200000,20000200001,20000200002,20000200003,20000200004,20000200... |
    +-------------------------------------------------------------------------+
-
    ```
 
-## 4. select \* from t limit n 的结果不稳定
+## select \* from t limit n 的结果不稳定
 
-返回结果与数据在存储节点（TiKV）上的分布有关。如果进行了多次查询，存储节点（TiKV）不同存储单元（Region） 返回结果的速度不同，会造成结果不稳定。
+返回结果与数据在存储节点 (TiKV) 上的分布有关。如果进行了多次查询，存储节点 (TiKV) 不同存储单元 (Region) 返回结果的速度不同，会造成结果不稳定。

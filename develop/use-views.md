@@ -1,8 +1,11 @@
 ---
 title: 视图
+summary: 介绍 TiDB 中的视图功能。
 ---
 
 # 视图
+
+本章将介绍 TiDB 中的视图功能。
 
 ## 概述
 
@@ -14,6 +17,8 @@ TiDB 支持视图，视图是一张虚拟表，该虚拟表的结构由创建视
 ## 创建视图
 
 在 TiDB 当中，可以通过 `CREATE VIEW` 语句来将某个较为复杂的查询定义为视图，其语法如下：
+
+{{< copyable "sql" >}}
 
 ```sql
 CREATE VIEW view_name AS query;
