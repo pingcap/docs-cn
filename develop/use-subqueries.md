@@ -15,7 +15,7 @@ summary: 介绍 TiDB 子查询功能。
 
 ## 子查询语句
 
-通常情况下，子查询语句分为如下几种类型：
+通常情况下，子查询语句分为如下几种形式：
 
 - 标量子查询（Scalar Subquery），如 `SELECT (SELECT s1 FROM t2) FROM t1`。
 - 派生表（Derived Tables），如 `SELECT t1.s1 FROM (SELECT s1 FROM t2) t1`。
@@ -46,7 +46,7 @@ SELECT * FROM authors a1 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_ye
 )
 ```
 
-在 TiDB 执行该查询的时候会先执行一次内层子查询：
+在 TiDB 执行上述查询的时候会先执行一次内层子查询：
 
 {{< copyable "sql" >}}
 
@@ -91,7 +91,7 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 
 因此在处理过程中，TiDB 会尝试对[关联子查询去关联](https://docs.pingcap.com/zh/tidb/stable/correlated-subquery-optimization)，以从执行计划层面上提高查询效率。
 
-例如，假设我们想要查找出版过书籍的作家，我们的 SQL 语句可以这样写：
+例如，假设我们想要查找那些大于其它相同性别作家的平均年龄的的作家，SQL 语句可以这样写：
 
 {{< copyable "sql" >}}
 

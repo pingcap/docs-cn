@@ -37,7 +37,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ```sql
 SELECT
-    window_function OVER ([partition_clause] [order_clause] [frame_clause]) AS alias
+    window_function() OVER ([partition_clause] [order_clause] [frame_clause]) AS alias
 FROM
     table_name
 ```
@@ -189,7 +189,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 1 row in set (0.07 sec)
 ```
 
-副本添加完成之后，你可以通过使用 `EXPLAIN` 语句查看上面窗口函数[示例 SQL](#partition-by-子句)的执行计划。你会发现执行计划当中已经出现了 `cop[tiflash]` 字样，说明 TiFlash 引擎已经开始发挥作用了。
+副本添加完成之后，你可以通过使用 `EXPLAIN` 语句查看上面窗口函数[示例 SQL](#partition-by-子句) 的执行计划。你会发现执行计划当中已经出现了 `cop[tiflash]` 字样，说明 TiFlash 引擎已经开始发挥作用了。
 
 查询结果：
 
@@ -256,11 +256,11 @@ SELECT * FROM acc;
 
 如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]` ，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
 
-你可以通过阅读[使用 TiDB 读取 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash)小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
+你可以通过阅读[使用 TiDB 读取 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
 
 ## 扩展阅读
 
 - [HTAP 快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-htap)
 - [HTAP 深入探索指南](https://docs.pingcap.com/zh/tidb/stable/explore-htap)
 - [窗口函数](https://docs.pingcap.com/zh/tidb/stable/window-functions)
-- [使用 TiFlash](https://docs.pingcap.com/zh/stable/dev/use-tiflash)
+- [使用 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)
