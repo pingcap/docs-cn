@@ -92,6 +92,8 @@ SELECT * FROM person;
 SELECT name FROM person;
 ```
 
+运行结果为：
+
 ```
 +------+
 | name |

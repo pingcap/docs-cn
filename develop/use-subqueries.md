@@ -63,6 +63,8 @@ SELECT * FROM authors a1
 WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 ```
 
+运行结果为：
+
 ```
 +--------+-------------------+--------+------------+------------+
 | id     | name              | gender | birth_year | death_year |

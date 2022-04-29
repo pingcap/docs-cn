@@ -82,6 +82,8 @@ ORDER BY age DESC
 LIMIT 50;
 ```
 
+运行结果为：
+
 ```
 Query OK, 50 rows affected (0.03 sec)
 Records: 50  Duplicates: 0  Warnings: 0

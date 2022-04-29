@@ -77,6 +77,8 @@ GROUP BY b.id;
 SHOW CREATE VIEW book_with_ratings\G
 ```
 
+运行结果为：
+
 ```
 *************************** 1. row ***************************
                 View: book_with_ratings
@@ -93,6 +95,8 @@ collation_connection: utf8mb4_general_ci
 ```sql
 SELECT * FROM information_schema.views WHERE TABLE_NAME = 'book_with_ratings'\G
 ```
+
+运行结果为：
 
 ```
 *************************** 1. row ***************************

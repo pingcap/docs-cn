@@ -82,6 +82,8 @@ DEALLOCATE PREPARE {prepared_statement_name};
 PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
 ```
 
+运行结果为：
+
 ```
 Query OK, 0 rows affected (0.01 sec)
 ```
@@ -92,6 +94,8 @@ Query OK, 0 rows affected (0.01 sec)
 SET @id = 1;
 ```
 
+运行结果为：
+
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
@@ -101,6 +105,8 @@ Query OK, 0 rows affected (0.04 sec)
 ```sql
 EXECUTE `books_query` USING @id;
 ```
+
+运行结果为：
 
 ```
 +---------+---------------------------------+--------+---------------------+-------+--------+
@@ -155,6 +161,8 @@ try (Connection connection = ds.getConnection()) {
 PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `price`, `published_at`) VALUES (?, ?, ?, ?, ?);';
 ```
 
+运行结果为：
+
 ```
 Query OK, 0 rows affected (0.03 sec)
 ```
@@ -169,6 +177,8 @@ SET @price = 0.0;
 SET @published_at = NOW();
 ```
 
+运行结果为：
+
 ```
 Query OK, 0 rows affected (0.04 sec)
 ```
@@ -178,6 +188,8 @@ Query OK, 0 rows affected (0.04 sec)
 ```sql
 EXECUTE `books_insert` USING @title, @type, @stock, @price, @published_at;
 ```
+
+运行结果为：
 
 ```
 Query OK, 1 row affected (0.03 sec)

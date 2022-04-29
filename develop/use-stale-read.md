@@ -21,6 +21,8 @@ TiDB 为我们提供了语句级别、事务级别、会话级别三种级别的
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 ```
 
+运行结果为：
+
 ```
 +------------+------------------------------+-----------------------+--------+
 | id         | title                        | type                  | price  |
@@ -43,6 +45,8 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 ```sql
 UPDATE books SET price = 150 WHERE id = 3181093216;
 ```
+
+运行结果为：
 
 ```
 Query OK, 1 row affected (0.00 sec)
@@ -80,6 +84,8 @@ Rows matched: 1  Changed: 1  Warnings: 0
 ```sql
 SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' ORDER BY published_at DESC LIMIT 5;
 ```
+
+运行结果为：
 
 ```
 +------------+------------------------------+-----------------------+--------+
@@ -248,6 +254,8 @@ START TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```sql
 SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 ```
+
+运行结果为：
 
 ```
 +------------+------------------------------+-----------------------+--------+

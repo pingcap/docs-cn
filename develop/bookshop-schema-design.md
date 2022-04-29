@@ -124,6 +124,8 @@ FROM
 WHERE table_schema LIKE 'bookshop';
 ```
 
+运行结果为：
+
 ```
 +-----------------------+----------------+-----------+------------+---------+
 | Table Name            | Number of Rows | Data Size | Index Size | Total   |

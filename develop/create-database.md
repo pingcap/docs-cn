@@ -81,6 +81,8 @@ mysql
     -e "SHOW DATABASES;"
 ```
 
+运行结果为：
+
 ```
 +--------------------+
 | Database           |
