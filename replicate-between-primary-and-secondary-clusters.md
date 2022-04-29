@@ -11,7 +11,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 2. 将增量数据实时从主集群同步到从集群。
 3. 在主集群发生灾难利用 Redo log 恢复一致性数据。
 
-如果你需要配置一个运行中的 TiDB 集群和其从集群，以进行实时增量数据同步，可使用 [Backup & Restore (BR)](/br/backup-and-restore-tool.md) 和 [TiCDC](/ticdc/ticdc-overview.md)。
+如果你需要配置一个运行中的 TiDB 集群和其从集群，以进行实时增量数据同步，可使用 [Backup & Restore (BR)](/br/backup-and-restore-overview.md) 和 [TiCDC](/ticdc/ticdc-overview.md)。
 
 ## 第 1 步：搭建环境
 
@@ -111,11 +111,11 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/backup-and-restore-tool.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/backup-and-restore-overview.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >
-> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-tool.md#兼容性)。本文假设上下游集群版本相同。
+> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#兼容性)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
