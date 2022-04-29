@@ -24,7 +24,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 ### 使用 TiDB Cloud 免费集群
 
-[创建免费集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)。
+[创建免费集群](/develop/build-cluster-in-cloud.md#第-1-步创建免费集群)。
 
 ### 使用本地集群
 

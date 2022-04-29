@@ -237,8 +237,8 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/sample-application-java.md#步骤-2-获取代码)。
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#步骤-2-获取代码)。
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/sample-application-java.md#第-2-步获取代码)。
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#第-2-步获取代码)。
 - [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)。
 
 </div>
