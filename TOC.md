@@ -19,15 +19,14 @@
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
 - 应用开发
+  - [概览](/develop/developer-guide-overview.md)
   - 快速开始
     - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
     - TiDB 的简单 CRUD 应用程序
       - [Java](/develop/sample-application-java.md)
-  - 开发者手册
-    - [概览](/develop/developer-guide-overview.md)
-    - 示例程序
-      - [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
+  - 示例程序
+    - [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
   - 连接到 TiDB
     - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
     - [连接到 TiDB](/develop/connect-to-tidb.md)
