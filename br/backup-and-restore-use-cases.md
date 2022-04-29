@@ -69,7 +69,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 
 #### 备份前的准备工作
 
-运行 [`br backup`](/br/use-br-command-line-tool.md#br-命令行描述)命令进行备份前，请确保以下条件：
+运行 [`br backup`](/br/use-br-command-line-tool.md#br-命令行描述) 命令进行备份前，请确保以下条件：
 
 1. TiDB 集群中没有正在运行中的 DDL。
 2. 用于创建备份的存储设备有足够的空间。
