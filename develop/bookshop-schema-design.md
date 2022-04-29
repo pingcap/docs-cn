@@ -81,7 +81,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
     **Role-ARN**:
 
-    {< copyable "" >}}
+    {{< copyable "" >}}
 
     ```
     arn:aws:iam::494090988690:role/s3-tidb-cloud-developer-access
