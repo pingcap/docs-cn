@@ -92,7 +92,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     ./minio server ./data --address :6060 &
     ```
 
-    上述的命令行启动了一个单节点的 minio server 模拟 S3 服务，其相关参数为：
+    上述命令行启动了一个单节点的 minio server 模拟 S3 服务，其相关参数为：
 
      - Endpoint: <http://${HOST_IP}:6060/>
      - Access-key: minio
