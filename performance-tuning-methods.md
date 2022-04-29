@@ -109,6 +109,14 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 >
 > 示例 3 select 语句需要从多个 TiKV 并行读取几千行数据，BatchGet 请求的总时间远大于执行时间。
 
+**示例 4： 锁争用负载**
+
+![OLTP](/media/performance/oltp_lock_contention_db_time.png)
+
+- Database Time by SQL Type：主要为 Update 语句。
+- Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
+- SQL Execute Time Overview：执行阶段主要消耗时间的 KV 请求为红色的悲观锁 PessimisticLock，并且 execute time 明显大于 KV 请求的总时间，这是因为应用的写语句锁冲突严重，频繁锁重试导致 `Retried execution time` 过长，目前 `Retried execution time` 消耗的时间，TiDB 还未进行测量。
+
 ### TiDB 关键指标和集群资源利用率
 
 #### Query Per Second、Command Per Second 和 Prepared-Plan-Cache
@@ -250,7 +258,8 @@ Duration 面板包含了所有语句的 99 延迟和每种 SQL 类型的平均�
 
 SQL 在 TiDB 内部的处理分为四个阶段，get token、parse、compile 和 execute：
 
-- get token 阶段：通常只有几微秒的时间，可以忽略。
+- get token 阶段：通常只有几微秒的时间，可以忽略。 除非 TiDB 单个实例的连接数达到的 [token-limit
+]()https://docs.pingcap.com/tidb/dev/tidb-configuration-file 的限制，创建连接的时候被限流。
 - parse 阶段：query 语句解析为抽象语法树 abstract syntax tree (AST)。
 - compile 阶段：根据 parse 阶段输出的 AST 和统计信息，编译出执行计划。整个过程主要步骤为逻辑优化与物理优化，前者通过一些规则对查询计划进行优化，例如基于关系代数的列裁剪等，后者通过统计信息和基于成本的优化器，对执行计划的成本进行估算，并选择整体成本最小的物理执行计划。
 - execute 阶段：时间消耗视情况，先等待全局唯一的时间戳 TSO，之后执行器根据执行计划中算子涉及的 Key 范围，构建出 TiKV 的 API 请求，分发到 TiKV。execute 时间包含 TSO 等待时间、KV 请求的时间和 TiDB 执行器本身处理数据的时间。
