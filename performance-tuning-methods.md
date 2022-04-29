@@ -115,7 +115,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 - Database Time by SQL Type：主要为 Update 语句。
 - Database Time by SQL Phase：主要消耗时间的阶段为绿色的 execute 阶段。
-- SQL Execute Time Overview：执行阶段主要消耗时间的 KV 请求为红色的悲观锁 PessimisticLock，并且 execute time 明显大于 KV 请求的总时间，这是因为应用的写语句锁冲突严重，频繁锁重试导致 `Retried execution time` 过长，目前 `Retried execution time` 消耗的时间，TiDB 还未进行测量。
+- SQL Execute Time Overview：执行阶段主要消耗时间的 KV 请求为红色的悲观锁 PessimisticLock，execute time 明显大于 KV 请求的总时间，这是因为应用的写语句锁冲突严重，频繁锁重试导致 `Retried execution time` 过长。目前 `Retried execution time` 消耗的时间，TiDB 尚未进行测量。
 
 ### TiDB 关键指标和集群资源利用率
 
