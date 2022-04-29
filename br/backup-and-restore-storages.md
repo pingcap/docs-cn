@@ -124,12 +124,11 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 1. 如果已指定 `account-name` **和** `account-key`，则使用该参数指定的密钥。
 2. 如果没有指定 `account-key`，则尝试从工具节点上的环境变量读取相关凭证。迁移工具会优先读取 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`。与此同时，工具会允许 TiKV 从各自节点上读取上述三个环境变量，采用 `Azure AD` (Azure Active Directory) 访问。
 3. 如果上述的三个环境变量不存在于工具节点中，则尝试读取 `$AZURE_STORAGE_KEY`，采用密钥访问。
-    - 如需确认 BR 运行环境和 TiKV 运行环境中是否存在这三个环境变量，请参考[配置环境变量作为参数](/br/backup-storage-azblob.md#配置环境变量作为参数)。
 
 > **注意：**
 >
 > - 将 Azure Blob Storage 作为外部存储时，必须设置 `send-credentials-to-tikv = true`（即默认情况），否则会导致备份失败。
-> - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`、租户 ID `tenant_id` 和客户端密码 `client_secret`。如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量作为参数](/br/backup-storage-azblob.md#配置环境变量作为参数)。
+> - `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET` 分别代表 Azure 应用程序的应用程序 ID `client_id`、租户 ID `tenant_id` 和客户端密码 `client_secret`。如需了解如何确认运行环境中存在环境变量 `$AZURE_CLIENT_ID`、`$AZURE_TENANT_ID` 和 `$AZURE_CLIENT_SECRET`，或需要将环境变量配置为参数，请参考[配置环境变量](/br/backup-storage-azblob.md#配置环境变量)。
 
 ## 命令行参数
 

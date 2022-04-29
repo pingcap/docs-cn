@@ -7,7 +7,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 
 本文介绍如何 BR 命令行进行 TiDB 集群数据的备份和恢复。
 
-在阅读本文前，请确保你已通读[备份与恢复工具 BR 简介](/br/backup-and-restore-overview.md)，尤其是[使用限制](/br/backup-and-restore-overview.md#使用限制)和[最佳实践](/br/backup-and-restore-overview.md#最佳实践)这两节。
+在阅读本文前，请确保你已通读[备份与恢复工具 BR 简介](/br/backup-and-restore-overview.md)，尤其是[使用限制](/br/backup-and-restore-overview.md#使用限制)和[使用建议](/br/backup-and-restore-overview.md#使用建议)这两节。
 
 ## BR 命令行描述
 

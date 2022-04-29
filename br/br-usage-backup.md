@@ -7,16 +7,14 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 下面介绍各种备份 TiDB 集群功能的使用方式，包括：
 
-- [备份 TiDB 集群数据](#备份-tidb-集群数据)
 - [备份 TiDB 集群快照](#备份-tidb-集群快照)
-- [备份 TiDB 集群增量数据](#备份-tidb-集群增量数据)
 - [备份 TiDB 集群的指定库表的数据](#备份-tidb-集群的指定库表的数据)
-- [备份 TiDB 集群的指定库表的增量数据](#备份-tidb-集群的指定库表的增量数据)
     - [备份单个数据库的数据](#备份单个数据库的数据)
     - [备份单张表的数据](#备份单张表的数据)
     - [使用表库过滤功能备份多张表的数据](#使用表库过滤功能备份多张表的数据)
-- [备份数据加密](#备份数据加密)
 - [备份数据到远端存储](#备份数据到远端存储)
+- [备份 TiDB 集群增量数据](#备份-tidb-集群增量数据)
+- [备份数据加密](#备份数据加密)
 
 如果你还不熟悉 BR，建议您先阅读以下文档，充分了解 BR 使用限制和方法：
 
@@ -58,35 +56,6 @@ Full Backup <---------/................................................> 17.12%.
 ```
 
 在完成备份后，BR 为了确保数据安全性，会将备份数据的 checksum 同集群 [admin checksum table](/sql-statements/sql-statement-admin-checksum-table.md) 的结果比较，来保证正确性。
-
-## 备份 TiDB 集群增量数据
-
-TiDB 集群增量数据包含某个时间段的起始和结束两个快照的差异变化的数据。 增量数据相对比快照数据而言数据量更小，适合配合快照备份一起使用，来减少备份的数据量。
-
-如果想要备份增量数据，只需要使用 `br backup` 进行备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
-
-{{< copyable "shell-regular" >}}
-
-```shell
-LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1`
-```
-
-> **Note:**
->
-> - 增量备份数据需要与前一次快照备份数据保存在不同的路径下。
-> - GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-br backup full\
-    --pd ${PDIP}:2379 \
-    --ratelimit 128 \
-    --storage "s3://backup-data/2022-01-30/incr" \
-    --lastbackupts ${LAST_BACKUP_TS}
-```
-
-以上命令会备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
 
 ## 备份 TiDB 集群的指定库表的数据
 
@@ -148,23 +117,62 @@ br backup full \
     --log-file backupfull.log
 ```
 
+## 备份数据到远端存储
+
+BR 支持将数据备份到 Amazon S3、Google Cloud Storage、Azure Blob Storage、NFS 或者实现 S3 协议的其他文件存储服务。下面逐一介绍如何备份数据到对应的备份存储中。
+
+- [使用 S3 存储备份数据](/br/backup-storage-S3.md)
+- [使用 Google Cloud Storage 存储备份数据](/br/backup-storage-gcs.md)
+- [使用 Azure Blob Storage 存储备份数据](/br/backup-storage-azblob.md)
+
+## 备份 TiDB 集群增量数据
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
+TiDB 集群增量数据包含某个时间段的起始和结束两个快照的差异变化的数据。 增量数据相对比快照数据而言数据量更小，适合配合快照备份一起使用，来减少备份的数据量。
+
+如果想要备份增量数据，只需要使用 `br backup` 进行备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。你可以使用 `validate` 指令获取上一次备份的时间戳，示例如下：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+LAST_BACKUP_TS=`br validate decode --field="end-version" -s s3://backup-data/2022-01-30/ | tail -n1`
+```
+
+> **Note:**
+>
+> - 增量备份数据需要与前一次快照备份数据保存在不同的路径下。
+> - GC safepoint 必须在 `lastbackupts` 之前。TiDB 默认的 GC Lifetime 为 10 min，即默认 TiDB 只支持备份 10 min 内的增量数据。如果你希望备份更长时间的增量数据，则需要[调整 TiDB 集群的 GC Lifetime 设置](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。
+
+{{< copyable "shell-regular" >}}
+
+```shell
+br backup full\
+    --pd ${PDIP}:2379 \
+    --ratelimit 128 \
+    --storage "s3://backup-data/2022-01-30/incr" \
+    --lastbackupts ${LAST_BACKUP_TS}
+```
+
+以上命令会备份 `(LAST_BACKUP_TS, current PD timestamp]` 之间的增量数据，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
+
 ## 备份数据加密
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 BR 支持在备份端，或备份到 Amazon S3 的时候在存储服务端，进行备份数据加密，用户可以根据自己情况选择其中一种使用。
 
-### 备份端加密备份数据（实验性功能）
+### 备份端加密备份数据
 
 自 TiDB v5.3.0 起，你可配置下列参数在备份过程中到达加密数据的效果：
 
 * `--crypter.method`：加密算法，支持 `aes128-ctr/aes192-ctr/aes256-ctr` 三种算法，缺省值为 `plaintext`，表示不加密
 * `--crypter.key`：加密密钥，十六进制字符串格式，`aes128-ctr` 对应 128 位（16 字节）密钥长度，`aes192-ctr` 为 24 字节，`aes256-ctr` 为 32 字节
 * `--crypter.key-file`：密钥文件，可直接将存放密钥的文件路径作为参数传入，此时 crypter.key 不需要传入
-
-> **警告：**
->
-> - 当前该功能为实验特性，不建议在生产环境中使用。
-> - 密钥丢失，备份的数据将无法恢复到集群中。
-> - 加密功能需在 br 工具和 TiDB 集群都不低于 v5.3.0 的版本上使用，且加密备份得到的数据无法在低于 v5.3.0 版本的集群上恢复。
 
 备份加密的示例如下：
 
@@ -178,17 +186,14 @@ br backup full\
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
 
+> **注意：**
+>
+> - 密钥丢失，备份的数据将无法恢复到集群中。
+> - 加密功能需在 br 工具和 TiDB 集群都不低于 v5.3.0 的版本上使用，且加密备份得到的数据无法在低于 v5.3.0 版本的集群上恢复。
+
 ### Amazon S3 存储服务端加密备份数据
 
 BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
-
-## 备份数据到远端存储
-
-BR 支持将数据备份到 Amazon S3、Google Cloud Storage、Azure Blob Storage、NFS 或者实现 S3 协议的其他文件存储服务。下面逐一介绍如何备份数据到对应的备份存储中。
-
-- [使用 S3 存储备份数据](/br/backup-storage-S3.md)
-- [使用 Google Cloud Storage 存储备份数据](/br/backup-storage-gcs.md)
-- [使用 Azure Blob Storage 存储备份数据](/br/backup-storage-azblob.md)
 
 ## 备份性能和影响
 

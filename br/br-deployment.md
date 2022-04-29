@@ -31,7 +31,7 @@ TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md)
 
 ### 通过命令行工具
 
-TiDB 支持使用 BR 命令行工具进行备份恢复（需[手动下载](/download-ecosystem-tools.md#备份和恢复-br-工具)）。 使用文档请参阅 [使用 br 命令行工具进行备份恢复](/br/use-br-command-line-tool.md)。
+TiDB 支持使用 BR 命令行工具进行备份恢复。使用文档请参阅 [使用 br 命令行工具进行备份恢复](/br/use-br-command-line-tool.md)。
 
 ### 在 Kubernetes 环境下
 

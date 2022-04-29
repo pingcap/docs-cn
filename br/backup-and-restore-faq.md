@@ -207,3 +207,18 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 + BR 在恢复数据时，会修改 PD 的一些全局配置。如果同时使用多个 BR 进程进行恢复，这些配置可能会被错误地覆写，导致集群状态异常。
 + 因为 BR 在恢复数据的时候会占用大量集群资源，事实上并行恢复能获得的速度提升也非常有限。
 + 多个 BR 并行恢复的场景没有经过测试，无法保证成功。
+
+## 备份日志中出现 `key locked Error`，该如何处理？
+
+日志中的错误消息：`log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
+
+如果在备份过程中遇到 key 被锁住，目前 BR 会尝试清锁。少量报错不会影响备份的正确性。
+
+### 备份失败该如何处理？
+
+日志中的错误消息：`log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
+
+若备份失败并出现以上错误消息，采取以下其中一种操作后再重新备份：
+
+* 更换备份数据目录。例如将 `/dir/backup-2020-01-01/` 改为 `/dir/backup_local/`。
+* 删除所有 TiKV 和 BR 节点的备份目录。
