@@ -49,7 +49,8 @@
     - [Migrate and Merge MySQL Shards of Large Datasets](/migrate-large-mysql-shards-to-tidb.md)
     - [Migrate from CSV Files](/migrate-from-csv-files-to-tidb.md)
     - [Migrate from SQL Files](/migrate-from-sql-files-to-tidb.md)
-    - [Replicate Incremental Data between TiDB Clusters](/incremental-replication-between-clusters.md)
+    - [Migrate from One TiDB Cluster to Another TiDB Cluster](/migrate-from-tidb-to-tidb.md)
+    - [Replicate Data from TiDB to Kafka](/replicate-data-to-kafka.md)
   - Advanced Migration
     - [Continuous Replication with gh-ost or pt-osc](/migrate-with-pt-ghost.md)
     - [Migrate to a Downstream Table with More Columns](/migrate-with-more-columns-downstream.md)
@@ -80,6 +81,7 @@
   - [Maintain TiDB Using TiUP](/maintain-tidb-using-tiup.md)
   - [Modify Configuration Online](/dynamic-config.md)
   - [Online Unsafe Recovery](/online-unsafe-recovery.md)
+  - [Replicate Data Between Primary and Secondary Clusters](/replicate-betwwen-primary-and-secondary-clusters.md)
 - Monitor and Alert
   - [Monitoring Framework Overview](/tidb-monitoring-framework.md)
   - [Monitoring API](/tidb-monitoring-api.md)
