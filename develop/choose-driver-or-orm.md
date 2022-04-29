@@ -76,7 +76,7 @@ TiDB 与 MySQL 有差异：
 如果你使用的是 **Maven**，请将以下内容添加到你的 `<dependencies></dependencies>`：
 
 {{< copyable "" >}}
-    
+
 ```xml
 <dependency>
     <groupId>org.hibernate.orm</groupId>

@@ -15,9 +15,9 @@ summary: 创建表的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](/develop/schema-design-overview.md)
-- [创建一个数据库](/develop/create-database.md)
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)。
+- 阅读[数据库模式概览](/develop/schema-design-overview.md)。
+- [创建一个数据库](/develop/create-database.md)。
 
 ## 创建表
 
@@ -202,7 +202,7 @@ CREATE TABLE `bookshop`.`users` (
 
 如[主键](#选择主键)中所述，聚簇索引在 TiDB 中，使用关键字 `CLUSTERED`、`NONCLUSTERED` 进行控制。
 
-> 注意
+> **注意：**
 >
 > TiDB 仅支持根据表的主键来进行聚簇操作。聚簇索引启用时，“主键”和“聚簇索引”两个术语在一些情况下可互换使用。主键指的是约束（一种逻辑属性），而聚簇索引描述的是数据存储的物理实现。
 

@@ -235,8 +235,8 @@ INSERT INTO `t` (`a`) VALUES (10), (11), (12) ON DUPLICATE KEY UPDATE `a` = valu
 {{< copyable "sql" >}}
 
 ```sql
-UPDATE `t` SET `a` = 10 WHERE `id` = 1; 
-UPDATE `t` SET `a` = 11 WHERE `id` = 2; 
+UPDATE `t` SET `a` = 10 WHERE `id` = 1;
+UPDATE `t` SET `a` = 11 WHERE `id` = 2;
 UPDATE `t` SET `a` = 12 WHERE `id` = 3;
 ```
 
