@@ -25,7 +25,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 ### 使用本地集群
 
-此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)
+此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)。
 
 **部署本地测试集群**
 
@@ -41,7 +41,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 2. 声明全局环境变量。
 
-    > 注意
+    > **注意：**
     >
     > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
@@ -81,7 +81,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     To view the Grafana: http://127.0.0.1:3000
     ```
 
-> 注意
+> **注意：**
 >
 > - 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
@@ -111,7 +111,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     apt-get install maven
     ```
 
-- 基于 Red Hat 的 Linux 发行版上安装(如 Fedora、CentOS 等):
+- 基于 Red Hat 的 Linux 发行版上安装(如 Fedora、CentOS 等)：
 
 - dnf 包管理器
 
@@ -125,7 +125,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     yum install maven
     ```
 
-其他安装方法，请参考 [Maven 官方文档](https://maven.apache.org/install.html)
+其他安装方法，请参考 [Maven 官方文档](https://maven.apache.org/install.html)。
 
 ## 步骤 4. 获取应用程序代码
 
@@ -181,7 +181,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 **Spring Data JPA** 内引入的 `jakarta` 包进行排除，即将：
 
     {{< copyable "" >}}
-    
+
     ```xml
     <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -192,7 +192,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
     更改为：
 
     {{< copyable "" >}}
-    
+
     ```xml
     <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -209,7 +209,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 2. 随后如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L53)中所示，引入 `6.0.0.Beta2` 版本以上的 **Hibernate** 依赖，此处以 `6.0.0.CR2` 版本为例：
 
     {{< copyable "" >}}
-    
+
     ```xml
     <dependency>
     <groupId>org.hibernate.orm</groupId>
@@ -642,7 +642,7 @@ false
 `pom.xml` 文件为 Maven 配置，在文件内声明了项目的 Maven 依赖，打包方法，打包信息等，你可以通过[创建相同依赖空白程序](#创建相同依赖空白程序可选) 这一节来复刻此配置文件的生成流程，当然，也可直接复制至你的项目来使用。
 
 {{< copyable "" >}}
-    
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -737,7 +737,7 @@ false
 
 #### 用户配置
 
-`application.yml` 此配置文件声明了用户配置，如数据库地址、密码、使用的数据库方言等
+`application.yml` 此配置文件声明了用户配置，如数据库地址、密码、使用的数据库方言等。
 
 ```yaml
 spring:
@@ -755,17 +755,17 @@ spring:
 
 此配置格式为 [YAML](https://yaml.org/) 格式。其中：
 
-- `spring. datasource.url` : 数据库连接的 URL
-- `spring.datasource.url` : 数据库用户名
-- `spring.datasource.password` : 数据库密码，此项为空，需注释或删除
-- `spring.datasource.driver-class-name` : 数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`
-- `jpa.show-sql` : 为 true 时将打印 JPA 运行的 SQL
-- `jpa.database-platform` : 选用的数据库方言，此处我们连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本
+- `spring. datasource.url` : 数据库连接的 URL。
+- `spring.datasource.url` : 数据库用户名。
+- `spring.datasource.password` : 数据库密码，此项为空，需注释或删除。
+- `spring.datasource.driver-class-name` : 数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`。
+- `jpa.show-sql` : 为 true 时将打印 JPA 运行的 SQL。
+- `jpa.database-platform` : 选用的数据库方言，此处我们连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本。
 - `jpa.hibernate.ddl-auto` : 此处选择的 create-drop 将会在程序开始时创建表，退出时删除表。请勿在正式环境使用，但我们此处为示例程序，希望尽量不影响数据库数据，因此选择了此选项。
 
 ### 入口文件
 
-入口文件 `App.java`
+入口文件 `App.java`：
 
 {{< copyable "" >}}
 
@@ -790,11 +790,11 @@ public class App {
 
 ### 数据库持久层
 
-数据库持久层，即 `dao` 包内，实现了数据对象的持久化
+数据库持久层，即 `dao` 包内，实现了数据对象的持久化。
 
 #### 实体对象
 
-`PlayerBean.java` 文件为实体对象，这个对象对应了数据库的一张表
+`PlayerBean.java` 文件为实体对象，这个对象对应了数据库的一张表。
 
 {{< copyable "" >}}
 
@@ -858,12 +858,12 @@ public class PlayerBean {
 
 这里可以看到，我们的实体类中有很多注解，这些注解给了 Hibernate 额外的信息，用以绑定实体类和表：
 
-- `@Entity` 声明 `PlayerBean` 是一个实体类
-- `@Table` 使用注解属性 `name` 将此实体类和表 `player_jpa` 关联
-- `@Id` 声明此属性关联表的主键列
+- `@Entity` 声明 `PlayerBean` 是一个实体类。
+- `@Table` 使用注解属性 `name` 将此实体类和表 `player_jpa` 关联。
+- `@Id` 声明此属性关联表的主键列。
 - `@GeneratedValue` 表示自动生成该列的值，而不应手动设置，使用属性 `generator` 指定生成器的名称为 `player_id`。
 - `@SequenceGenerator` 声明一个使用[序列](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence)的生成器，使用注解属性 `name` 声明生成器的名称为 `player_id` （与 `@GeneratedValue` 中指定的名称需保持一致）。随后使用注解属性 `sequenceName` 指定数据库中序列的名称。最后，使用注解属性 `allocationSize` 声明序列的步长为 1。
-- `@Column` 将每个私有属性声明为表 `player_jpa` 的一列，使用注解属性 `name` 确定属性对应的列名
+- `@Column` 将每个私有属性声明为表 `player_jpa` 的一列，使用注解属性 `name` 确定属性对应的列名。
 
 #### 存储库
 
@@ -1079,7 +1079,7 @@ public class PlayerServiceImpl implements PlayerService {
 }
 ```
 
-这里我们使用了 `@Service` 这个注解，声明此对象的生命周期交由 Spring 管理
+这里我们使用了 `@Service` 这个注解，声明此对象的生命周期交由 Spring 管理。
 
 注意，除了有 `@Service` 注解之外，PlayerServiceImpl 实现类还有一个 [@Transactional](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction-declarative-annotations) 注解。当在应用程序中启用事务管理时 (可使用 [@EnableTransactionManagement](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html) 打开，但 Spring Boot 默认开启，无需再次手动配置)，Spring 会自动将所有带有 `@Transactional` 注释的对象包装在一个代理中，使用该代理对对象的调用进行处理。
 
@@ -1154,12 +1154,12 @@ public class PlayerController {
 `PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循你公司或团体的规则。`PlayerController` 有许多注解，我们将进行逐一解释：
 
 - [@RestController](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html) 将 `PlayerController` 声明为一个 [Web Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)，且将返回值序列化为 JSON 输出。
-- [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求
-- `@Autowired` 用于 Spring 的自动装配，可以看到，我们此处声明需要一个 `PlayerService` 对象，此对象为接口，我们并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文
-- [@PostMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html) 声明此函数将响应 HTTP 中的 [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) 类型请求
-    - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中
-    - `@NonNull` 声明参数不可为空，否则将校验并返回错误
-- [@GetMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/GetMapping.html) 声明此函数将响应 HTTP 中的 [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) 类型请求
-    - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name` （变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同
-- [@PutMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PutMapping.html) 声明此函数将响应 HTTP 中的 [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) 类型请求
-- [@RequestParam](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html) 此声明将解析请求中的 URL 参数、表单参数等参数，绑定至注解的变量中
+- [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求。
+- `@Autowired` 用于 Spring 的自动装配，可以看到，我们此处声明需要一个 `PlayerService` 对象，此对象为接口，我们并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文。
+- [@PostMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html) 声明此函数将响应 HTTP 中的 [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) 类型请求。
+    - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中。
+    - `@NonNull` 声明参数不可为空，否则将校验并返回错误。
+- [@GetMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/GetMapping.html) 声明此函数将响应 HTTP 中的 [GET](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/GET) 类型请求。
+    - [@PathVariable](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PathVariable.html) 可以看到注解中有形如 `{id}` 、`{limit_size}` 这样的占位符，这种占位符将被绑定到 `@PathVariable` 注释的变量中，绑定的依据是注解中的注解属性 `name` （变量名可省略，即 `@PathVariable(name="limit_size")` 可写成 `@PathVariable("limit_size")` ），不特殊指定时，与变量名名称相同。
+- [@PutMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PutMapping.html) 声明此函数将响应 HTTP 中的 [PUT](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT) 类型请求。
+- [@RequestParam](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestParam.html) 此声明将解析请求中的 URL 参数、表单参数等参数，绑定至注解的变量中。

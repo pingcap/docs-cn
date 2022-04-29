@@ -33,7 +33,7 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 
 ### 使用预处理语句
 
-预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable) 设置变量后，供 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 调用预处理语句
+预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable) 设置变量后，供 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 调用预处理语句。
 
 {{< copyable "sql" >}}
 
@@ -237,9 +237,9 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 有关 Java 的完整示例，可参阅：
 
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/sample-application-java.md#步骤-2-获取代码)
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#步骤-2-获取代码)
-- [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 JDBC](/develop/sample-application-java.md#步骤-2-获取代码)。
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/sample-application-java.md#步骤-2-获取代码)。
+- [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)。
 
 </div>
 

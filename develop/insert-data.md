@@ -13,14 +13,14 @@ summary: 插入数据、批量导入数据的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](/develop/schema-design-overview.md)，并[创建数据库](/develop/create-database.md)、[创建表](/develop/create-table.md)、[创建二级索引](/develop/create-secondary-indexes.md)
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)。
+- 阅读[数据库模式概览](/develop/schema-design-overview.md)，并[创建数据库](/develop/create-database.md)、[创建表](/develop/create-table.md)、[创建二级索引](/develop/create-secondary-indexes.md)。
 
 ## 插入行
 
 假设你需要插入多行数据，那么会有两种插入的办法，假设我们需要插入 3 个玩家数据：
 
-- 一个**多行插入语句**:
+- 一个**多行插入语句**：
 
     {{< copyable "sql" >}}
 
@@ -28,7 +28,7 @@ summary: 插入数据、批量导入数据的方法、最佳实践及例子。
     INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2), (3, 300, 5);
     ```
 
-- 多个**单行插入语句**:
+- 多个**单行插入语句**：
 
     {{< copyable "sql" >}}
 
@@ -84,7 +84,7 @@ try (Connection connection = ds.getConnection()) {
 }
 ```
 
-另外，由于 MySQL JDBC Driver 默认设置问题，你需更改部分参数，以获得更好的批量插入性能:
+另外，由于 MySQL JDBC Driver 默认设置问题，你需更改部分参数，以获得更好的批量插入性能：
 
 |            参数            |                 作用                  |                                                                     推荐场景                                                                      |         推荐配置         |
 | :------------------------: | :-----------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: | :----------------------: |

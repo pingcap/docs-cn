@@ -11,9 +11,9 @@ summary: 删除数据、批量删除数据的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](/develop/schema-design-overview.md)，并[创建数据库](/develop/create-database.md)、[创建表](/develop/create-table.md)、[创建二级索引](/develop/create-secondary-indexes.md)
-- 需先[插入数据](/develop/insert-data.md)才可删除
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)。
+- 阅读[数据库模式概览](/develop/schema-design-overview.md)，并[创建数据库](/develop/create-database.md)、[创建表](/develop/create-table.md)、[创建二级索引](/develop/create-secondary-indexes.md)。
+- 需先[插入数据](/develop/insert-data.md)才可删除。
 
 ## SQL 语法
 

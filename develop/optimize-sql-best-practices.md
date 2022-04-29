@@ -138,11 +138,11 @@ DELETE FROM t;
 
 ### 主键选择的最佳实践
 
-见 [主键选择的最佳实践](/develop/create-table.md#主键选择的最佳实践)
+见 [主键选择的最佳实践](/develop/create-table.md#主键选择的最佳实践)。
 
 ## 索引的最佳实践
 
-见 [索引的最佳实践](/develop/index-best-practice.md)
+见 [索引的最佳实践](/develop/index-best-practice.md)。
 
 ### ADD INDEX 性能最佳实践
 
@@ -179,8 +179,8 @@ SET @@global.tidb_ddl_reorg_batch_size = 128;
 
 ## Java 数据库应用开发最佳实践
 
-[TiDB 最佳实践系列（五）Java 数据库应用开发指南](https://pingcap.com/zh/blog/best-practice-java)
+[TiDB 最佳实践系列（五）Java 数据库应用开发指南](https://pingcap.com/zh/blog/best-practice-java)。
 
 ### 推荐阅读
 
-- [TiDB 最佳实践系列（一）高并发写入常见热点问题及规避方法](https://pingcap.com/zh/blog/tidb-in-high-concurrency-scenarios)
+- [TiDB 最佳实践系列（一）高并发写入常见热点问题及规避方法](https://pingcap.com/zh/blog/tidb-in-high-concurrency-scenarios)。

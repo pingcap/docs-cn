@@ -53,7 +53,7 @@ mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&pa
 例如，你的配置被写在 `hibernate.cfg.xml` 文件中，那么你的配置文件应该为：
 
 {{< copyable "" >}}
-    
+
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC

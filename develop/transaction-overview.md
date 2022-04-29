@@ -18,7 +18,7 @@ Bob 要给 Alice 转账 20 元钱，当中至少包括两个操作：
 
 事务可以确保以上两个操作要么都执行成功，要么都执行失败，不会出现钱平白消失或出现的情况。
 
-使用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `users` 表，在表中插入一些示例数据
+使用 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `users` 表，在表中插入一些示例数据：
 
 {{< copyable "sql" >}}
 
@@ -29,7 +29,7 @@ INSERT INTO users (id, nickname, balance)
   VALUES (1, 'Alice', 100);
 ```
 
-现在，我们运行以下事务并解释每个语句的含义
+现在，我们运行以下事务并解释每个语句的含义：
 
 {{< copyable "sql" >}}
 
@@ -40,7 +40,7 @@ BEGIN;
 COMMIT;
 ```
 
-上述事务成功后，表应如下所示
+上述事务成功后，表应如下所示：
 
 ```
 +----+--------------+---------+

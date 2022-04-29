@@ -88,12 +88,12 @@ UPDATE books SET stock=stock-1 WHERE id IN (1, 2);
 特别是，您的重试逻辑必须：
 
 - 如果失败重试的次数达到 `max_retries` 限制，则抛出错误
-- 使用 `try ... catch ...` 语句捕获 SQL 执行异常，当遇到下面这些错误时进行失败重试，遇到其它错误则进行回滚。详细信息请参考：[错误码与故障诊断](https://docs.pingcap.com/tidb/stable/error-codes)
-    - `Error 8002: can not retry select for update statement`：SELECT FOR UPDATE 写入冲突报错
-    - `Error 8022: Error: KV error safe to retry`：事务提交失败报错
+- 使用 `try ... catch ...` 语句捕获 SQL 执行异常，当遇到下面这些错误时进行失败重试，遇到其它错误则进行回滚。详细信息请参考：[错误码与故障诊断](https://docs.pingcap.com/tidb/stable/error-codes)。
+    - `Error 8002: can not retry select for update statement`：SELECT FOR UPDATE 写入冲突报错。
+    - `Error 8022: Error: KV error safe to retry`：事务提交失败报错。
     - `Error 8028: Information schema is changed during the execution of the statement`：表的 Schema 结构因为完成了 DDL 变更，导致事务提交时报错。
     - `Error 9007: Write conflict`：写冲突报错，一般是采用乐观事务模式时，多个事务都对同一行数据进行修改时遇到的写冲突报错。
-- 在 try 块结束时使用 COMMIT 提交事务
+- 在 try 块结束时使用 COMMIT 提交事务：
 
 ```python
 while True:

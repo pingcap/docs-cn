@@ -12,11 +12,11 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 > **注意：**
 >
-> 我们推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写
+> 我们推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写。
 
 > Tip:
 >
-> 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)
+> 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/sample-application-spring-boot.md)。
 
 ## 步骤 1. 启动你的 TiDB 集群
 
@@ -24,11 +24,11 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 ### 使用 TiDB Cloud 免费集群
 
-[创建免费集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)
+[创建免费集群](/develop/build-cluster-in-cloud.md#步骤-1-创建免费集群)。
 
 ### 使用本地集群
 
-此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)
+此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)。
 
 **部署本地测试集群**
 
@@ -44,12 +44,12 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 2. 声明全局环境变量。
 
-    > 注意
+    > **注意：**
     >
     > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     source .bash_profile
     ```
@@ -84,7 +84,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
         To view the Grafana: http://127.0.0.1:3000
         ```
 
-> 注意
+> **注意：**
 >
 > - 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
@@ -610,7 +610,7 @@ cd plain-java-hibernate
 其中，`hibernate.cfg.xml` 为 Hibernate 配置文件，定义了：
 
 {{< copyable "" >}}
-    
+
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -641,7 +641,7 @@ cd plain-java-hibernate
 
 `PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。我们在其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC， Hibernate 帮我们封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
 
-`PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系
+`PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系。
 
 {{< copyable "" >}}
 
@@ -909,7 +909,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Hibernate（推荐）" href="jdbc-table-init-hibernate">
 
-无需手动初始化表
+无需手动初始化表。
 
 </div>
 
@@ -958,7 +958,7 @@ mysqlDataSource.setPassword("123456");
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url、hibernate.connection.username、hibernate.connection.password 的参数：
 
 {{< copyable "" >}}
-    
+
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -994,7 +994,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 那么此处应将配置文件更改为：
 
 {{< copyable "" >}}
-    
+
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
@@ -1036,7 +1036,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 - 清理并构建 (make build)： `mvn clean package`
 - 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
 
-你也可以单独运行这两个 make 命令或原生命令
+你也可以单独运行这两个 make 命令或原生命令。
 
 </div>
 
@@ -1047,7 +1047,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 - 清理并构建 (make build)：`mvn clean package`
 - 运行 (make run)：`java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`
 
-你也可以单独运行这两个 make 命令或原生命令
+你也可以单独运行这两个 make 命令或原生命令。
 
 </div>
 

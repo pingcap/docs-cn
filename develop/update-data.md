@@ -414,7 +414,7 @@ public class BatchUpdateExample {
 - `hibernate.cfg.xml` 配置部分：
 
 {{< copyable "" >}}
-    
+
 ```xml
 <?xml version='1.0' encoding='utf-8'?>
 <!DOCTYPE hibernate-configuration PUBLIC
