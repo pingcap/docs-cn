@@ -168,8 +168,8 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 2. 点击集群 ID 进入**集群详情**页面，再点击**性能分析**标签页，你可看到**SQL 语句分析**、**慢查询日志**、**流量可视化**、**诊断**四个子标签页。
 3. 点击语句分析页签，进入 **SQL 语句分析**标签页。了解 [SQL 语句分析](/dashboard/dashboard-statement-details.md)详情。
 4. 点击慢查询分析页签，进入**慢查询分析**标签页。了解[慢查询分析](/analyze-slow-queries.md)详情。
-5. 点击流量可视化页签，进入**流量可视化**标签页。了解[流量可视化](/dashboard-key-visualizer.md)详情
-6. 点击集群诊断页签，进入集群**诊断**标签页。了解[集群诊断](/dashboard-diagnostics-access.md) 详情。
+5. 点击流量可视化页签，进入**流量可视化**标签页。了解[流量可视化](/dashboard/dashboard-key-visualizer.md)详情
+6. 点击集群诊断页签，进入集群**诊断**标签页。了解[集群诊断](/dashboard/dashboard-diagnostics-access.md) 详情。
 
 ## 日志管理
 
