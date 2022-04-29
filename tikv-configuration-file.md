@@ -898,16 +898,13 @@ rocksdb 相关的配置项。
 
 ### `wal-recovery-mode`
 
-+ WAL 恢复模式，取值：0，1，2，3。
-
-+ 0 (TolerateCorruptedTailRecords)：容忍并丢弃日志尾部不完整的记录。
-+ 1 (AbsoluteConsistency)：当日志中存在任何损坏记录时，放弃恢复。
-+ 2 (PointInTimeRecovery)：按顺序恢复日志，直到碰到第一个损坏的记录。
-+ 3 (SkipAnyCorruptedRecords)：灾难后恢复。跳过日志中损坏的记录，尽可能多的恢复数据。
-
-+ 默认值：2
-+ 最小值：0
-+ 最大值：3
++ 预写式日志 (WAL, Write Ahead Log) 的恢复模式。
++ 可选值：
+    + `"tolerate-corrupted-tail-records"`：容忍并丢弃位于日志尾部的不完整的数据 (trailing data)。
+    + `"absolute-consistency"`：当发现待恢复的日志中有被损坏的日志时，放弃恢复所有日志。
+    + `"point-in-time"`：按顺序恢复日志。遇到第一个损坏的日志时，停止恢复剩余的日志。
+    + `"skip-any-corrupted-records"`：灾难后恢复。跳过日志中的损坏记录，尽可能多地恢复数据。
++ 默认值：`"point-in-time"`
 
 ### `wal-dir`
 
@@ -967,10 +964,8 @@ rocksdb 相关的配置项。
 ### `rate-limiter-mode`
 
 + RocksDB 的 compaction rate limiter 模式。
-+ 可选值：1 (ReadOnly)，2 (WriteOnly)，3 (AllIo)
-+ 默认值：2
-+ 最小值：1
-+ 最大值：3
++ 可选值："read-only"，"write-only"，"all-io"
++ 默认值："write-only"
 
 ### `rate-limiter-auto-tuned` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1198,11 +1193,15 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-pri`
 
-+ Compaction 优先类型
-+ 可选择值：`0` (`ByCompensatedSize`)，`1` (`OldestLargestSeqFirst`)，`2` (`OldestSmallestSeqFirst`)，`3` (`MinOverlappingRatio`)。
-+ `defaultcf` 默认值：`3`
-+ `writecf` 默认值：`3`
-+ `lockcf` 默认值：`1`
++ 优先处理 compaction 的类型
++ 可选值：
+    + `"by-compensated-size"`：根据大小顺序，优先对大文件进行 compaction。
+    + `"oldest-largest-seq-first"`：根据时间顺序，优先对数据更新时间晚的文件进行 compaction。当你只在小范围内更新部分热点键 (hot keys) 时，可以使用此配置。
+    + `"oldest-smallest-seq-first"`：根据时间顺序，优先对长时间没有被 compact 到下一级的文件进行 compaction。如果你在大范围内随机更新了部分热点键，使用该配置可以轻微缓解写放大。
+    + `"min-overlapping-ratio"`：根据重叠比例，优先对在不同层之间文件重叠比例高的文件进行 compaction，即一个文件在 `下一层的大小`/`本层的大小` 的值越小，compaction 的优先级越高。在诸多场景下，该配置可以有效缓解写放大。
++ 默认值：
+    + `defaultcf` 和 `writecf` 的默认值：`"min-overlapping-ratio"`
+    + `lockcf` 的默认值：`"by-compensated-size"`
 
 ### `dynamic-level-bytes`
 
@@ -1221,12 +1220,13 @@ bloom filter 为每个 key 预留的长度。
 
 ### `compaction-style`
 
-+ Compaction 方法，可选值为 level，universal。
-+ 默认值：level
++ compaction 方法。
++ 可选值："level"，"universal"，"fifo"
++ 默认值："level"
 
 ### `disable-auto-compactions`
 
-+ 是否关闭自动 compaction
++ 是否关闭自动 compaction。
 + 默认值：false
 
 ### `soft-pending-compaction-bytes-limit`
@@ -1278,7 +1278,7 @@ rocksdb defaultcf titan 相关的配置项。
 
 ### `blob-cache-size`
 
-+ Blob 文件的 cache 大小，默认：0GB。
++ Blob 文件的 cache 大小。
 + 默认值：0GB
 + 最小值：0
 + 单位：KB|MB|GB
