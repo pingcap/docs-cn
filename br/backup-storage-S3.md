@@ -1,11 +1,11 @@
 ---
-title: 使用 S3 存储备份数据
+title: 使用 BR 在 S3 备份和恢复数据
 summary: 介绍使用 BR 在外部存储 S3 上进行备份与恢复时的方法。
 ---
 
-# 在 AWS 上进行备份恢复
+# 使用 BR 在 S3 备份和恢复数据
 
-TiDB 备份恢复功能 (BR) 支持将 Amazon S3 或支持 S3 协议的其他文件存储作为外部存储。
+TiDB 备份恢复功能 (BR，Backup & Restore) 支持将 Amazon S3 或支持 S3 协议的其他文件存储作为外部存储。
 
 ## 使用场景
 
@@ -65,7 +65,7 @@ br backup full \
 - `--s3.region`：表示 S3 存储所在的区域。
 - `--send-credentials-to-tikv`：表示将 S3 的访问权限传递给 TiKV 节点。
 
-## 从 S3 恢复集群
+## 从 S3 恢复集群数据
 
 {{< copyable "shell-regular" >}}
 

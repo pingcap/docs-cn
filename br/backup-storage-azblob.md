@@ -1,12 +1,12 @@
 ---
-title: 使用 Azure Blob Storage 存储备份数据
+title: 使用 BR 在 Azure Blob Storage 备份和恢复数据
 summary: 介绍使用 BR 在外部存储 Azure Blob Storage 上进行备份与恢复时的方法。
 aliases: ['br/backup-and-restore-azblob.md']
 ---
 
 # 在 Azure Blob Storage 备份恢复
 
-TiDB 备份恢复功能 (BR) 支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。
+TiDB 备份恢复功能 (BR，Backup & Restore) 支持将 Azure Blob Storage 作为外部存储来进行数据备份与恢复。
 
 ## 使用场景
 

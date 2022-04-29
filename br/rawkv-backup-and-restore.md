@@ -1,11 +1,11 @@
 ---
-title: 使用 BR 备份和恢复 RawKV 数据
+title: RawKV 备份和恢复
 summary: 了解如何使用 BR 备份和恢复 RawKV 数据。
 ---
 
 # RawKV 备份和恢复
 
-BR 支持对单独使用 RawKV（TiKV 和 PD）的产品进行备份和恢复，本文介绍 RawKV 备份恢复的相关知识。
+Backup & Restore (BR) 支持对单独使用 RawKV（TiKV 和 PD）的产品进行备份和恢复，本文介绍 RawKV 备份恢复的相关知识。
 
 > **警告：**
 >

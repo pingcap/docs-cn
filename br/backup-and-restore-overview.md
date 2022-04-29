@@ -1,10 +1,10 @@
 ---
-title: 备份与恢复工具 BR 简介
+title:  BR 简介
 summary: 了解 BR 工具是什么、有什么用。
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/', '/docs-cn/br/backup-and-restore-tool/']
+aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/docs-cn/br/backup-and-restore-tool/','/zh/tidb/dev/backup-and-restore-tool']
 ---
 
-# 备份与恢复工具 BR 简介
+# BR 简介
 
 [BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
 

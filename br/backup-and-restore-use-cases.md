@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 # BR 备份与恢复场景示例
 
-[BR](/br/backup-and-restore-overview.md) 是一款分布式的快速备份和恢复工具。
+[Backup & Restore (BR)](/br/backup-and-restore-overview.md) 是一款分布式的快速备份和恢复工具。
 
 本文介绍 BR 常用的几种备份和恢复场景：
 

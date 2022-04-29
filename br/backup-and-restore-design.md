@@ -1,5 +1,5 @@
 ---
-title: 备份与恢复工具 BR 的设计
+title: BR 设计原理
 summary: 了解 BR 的设计细节。
 ---
 

@@ -1,9 +1,9 @@
 ---
-title: 从备份数据恢复 TiDB 集群
-summary: 了解如何使用 BR 命令行从备份恢复恢复。
+title: 使用 BR 恢复集群
+summary: 了解如何使用 BR 命令行恢复备份数据。
 ---
 
-# 从 TiDB 备份数据恢复
+# 使用 BR 恢复集群
 
 下面介绍各种恢复 TiDB 备份数据功能的使用方式，包括：
 
@@ -17,7 +17,7 @@ summary: 了解如何使用 BR 命令行从备份恢复恢复。
 - [恢复加密的备份数据](#恢复加密的备份数据)
 - [恢复创建在 `mysql` 数据库下的表](#恢复创建在-mysql-数据库下的表)
 
-如果你还不熟悉 BR，建议您先阅读以下文档，充分了解 BR 使用限制和方法
+如果你还不熟悉 Backup & Restore (BR)，建议先阅读以下文档，充分了解 BR 使用限制和方法
 
 - [BR 工具简介](/br/backup-and-restore-overview.md)
 - [BR 命令行介绍](/br/use-br-command-line-tool.md)
@@ -121,9 +121,9 @@ br restore full \
 
 BR 支持将数据备份到 Amazon S3、Google Cloud Storage、Azure Blob Storage、NFS 或者实现 S3 协议的其他文件存储服务。关于如何从对应的备份存储中恢复备份数据，请参考如下文档：
 
-- [使用 S3 存储备份数据](/br/backup-storage-S3.md)
-- [使用 Google Cloud Storage 存储备份数据](/br/backup-storage-gcs.md)
-- [使用 Azure Blob Storage 存储备份数据](/br/backup-storage-azblob.md)
+- [使用 S3 恢复备份数据](/br/backup-storage-S3.md)
+- [使用 Google Cloud Storage 恢复备份数据](/br/backup-storage-gcs.md)
+- [使用 Azure Blob Storage 恢复备份数据](/br/backup-storage-azblob.md)
 
 ## 恢复增量备份数据
 

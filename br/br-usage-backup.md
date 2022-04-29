@@ -1,9 +1,9 @@
 ---
-title: 备份 TiDB 集群的数据
+title: 使用 BR 备份集群
 summary: 了解如何使用 BR 命令行进行数据备份。
 ---
 
-# 备份 TiDB 集群数据
+# 使用 BR 备份集群
 
 下面介绍各种备份 TiDB 集群功能的使用方式，包括：
 
@@ -16,7 +16,7 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 - [备份 TiDB 集群增量数据](#备份-tidb-集群增量数据)
 - [备份数据加密](#备份数据加密)
 
-如果你还不熟悉 BR，建议您先阅读以下文档，充分了解 BR 使用限制和方法：
+如果你还不熟悉 Backup & Restore (BR)，建议先阅读以下文档，充分了解 BR 使用限制和方法：
 
 - [BR 工具简介](/br/backup-and-restore-overview.md)
 - [BR 命令行介绍](/br/use-br-command-line-tool.md)

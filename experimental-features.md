@@ -55,7 +55,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 备份与恢复
 
-+ [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)。（v3.1 实验特性）
++ [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)。（v3.1 实验特性）
 
 ## 数据迁移
 

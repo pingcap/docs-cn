@@ -1,11 +1,11 @@
 ---
-title:  使用 Google Cloud Storage 存储备份数据
+title:  使用 BR 在 Google Cloud Storage 备份和恢复数据
 summary: 介绍使用 BR 在外部存储 GCS 上进行备份与恢复时的方法。
 ---
 
-# 在 Google Cloud 上进行备份恢复
+# 使用 BR 在 Google Cloud Storage 备份和恢复数据
 
-TiDB 备份恢复功能 (BR) 支持将 Google Cloud Storage 作为外部存储来进行数据备份与恢复。
+TiDB 备份恢复功能 (BR，Backup & Restore) 支持将 Google Cloud Storage 作为外部存储来进行数据备份与恢复。
 
 ## 使用场景
 
@@ -23,7 +23,7 @@ br backup full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentia
 
 如果你需要获取 credentials 文件可以参考 [CREATE AND DOWNLOAD THE GCS CREDENTIALS FILE](https://access.redhat.com/documentation/en-us/red_hat_openstack_platform/13/html/google_cloud_backup_guide/creds).
 
-## 从 GCS 恢复集群
+## 从 GCS 恢复集群数据
 
 ```shell
 br restore full --pd "${PDIP}:2379" --Storage 'gcs://bucket-name/prefix?credentials-file=${credentials-file-path}' --send-credentials-to-tikv=true
