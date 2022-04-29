@@ -73,7 +73,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
     **Bucket URL**:
 
-    {< copyable "" >}}
+    {{< copyable "" >}}
 
     ```
     s3://developer.pingcap.com/bookshop/
