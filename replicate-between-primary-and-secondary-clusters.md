@@ -115,7 +115,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 > **注意：**
 >
-> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
+> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
