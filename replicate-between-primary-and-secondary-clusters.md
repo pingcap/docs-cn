@@ -111,11 +111,11 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/backup-and-restore-overview.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-deployment.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >
-> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#兼容性)。本文假设上下游集群版本相同。
+> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
