@@ -98,13 +98,13 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
-    - (dup: release-6.0.0-dmr.md > 提升改进> TiKV)- 使 Grafana 支持 multi-k8s 的监控 [#12104](https://github.com/tikv/tikv/issues/12104)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 Replica Read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
     - (dup: release-5.2.4.md > 提升改进> TiKV)- 通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
+    - (dup: release-6.0.0-dmr.md > 提升改进> TiKV)- 使 Grafana 支持 multi-k8s 的监控 [#12104](https://github.com/tikv/tikv/issues/12104)
 
 + PD
 
