@@ -233,7 +233,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     [consistent]
     # 一致性级别，配置成 eventual 表示开启一致性复制
     level = "eventual"
-    # 使用 s3 来存储 redo log, 其他可选为 local, nfs
+    # 使用 S3 来存储 redo log, 其他可选为 local, nfs
     storage = "s3://redo?access-key=minio&secret-access-key=miniostorage&endpoint=http://172.16.6.125:6060&force-path-style=true"
     ```
 
@@ -242,7 +242,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cdc  cli changefeed --sink-url "mysql://root:@172.16.6.124:4000" --config ./changefeed.toml
+    tiup cdc cli changefeed --sink-url "mysql://root:@172.16.6.124:4000" --config ./changefeed.toml
     ```
 
     以上命令中：
