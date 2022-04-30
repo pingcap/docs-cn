@@ -1,7 +1,7 @@
 ---
 title: BR 简介
 summary: 了解 BR 工具是什么、有什么用。
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/docs-cn/br/backup-and-restore-tool/','/zh/tidb/dev/backup-and-restore-tool']
+aliases: ['/zh/tidb/v6.0/backup-and-restore-tool']
 ---
 
 # BR 简介
