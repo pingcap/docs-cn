@@ -52,7 +52,12 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 
 ### 使用 SQL 表达式过滤某些行变更
 
+<<<<<<< HEAD
 在增量同步阶段，DM 支持配置 SQL 表达式过滤掉特定的行变更，以实现对同步数据的更精细控制。详细信息可参考[使用 SQL 表达式过滤某些行变更](https://docs.pingcap.com/zh/tidb-data-migration/stable/feature-expression-filter)。
+=======
+- [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
+- [AskTUG](https://asktug.com/tags/dm)
+>>>>>>> f331e73fa (Update the slack channel to internals (#9201))
 
 ## 使用限制
 
@@ -67,6 +72,7 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
     >
     > 如果上游 MySQL/MariaDB servers 间构成主从复制结构，则需要 MySQL 版本高于 5.7.1 或者 MariaDB 版本等于或高于 10.1.3。
 
+<<<<<<< HEAD
     > **警告：**
     >
     > 使用 DM 从 MySQL v8.0 迁移数据到 TiDB 目前为实验特性（从 DM v2.0 引入），不建议在生产环境下使用。
@@ -85,3 +91,9 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 + 数据源 MySQL 实例切换
 
     - 当 DM-worker 通过虚拟 IP（VIP）连接到 MySQL 且要切换 VIP 指向的 MySQL 实例时，DM 内部不同的 connection 可能会同时连接到切换前后不同的 MySQL 实例，造成 DM 拉取的 binlog 与从上游获取到的其他状态不一致，从而导致难以预期的异常行为甚至数据损坏。如需切换 VIP 指向的 MySQL 实例，请参考[虚拟 IP 环境下的上游主从切换](https://docs.pingcap.com/zh/tidb-data-migration/stable/usage-scenario-master-slave-switch#虚拟-ip-环境下切换-dm-worker-与-mysql-实例的连接)对 DM 手动执行变更。
+=======
+> **注意：**
+>
+> - DM 的 GitHub 代码仓库已于 2021 年 10 月迁移至 [pingcap/tiflow](https://github.com/pingcap/tiflow/tree/master/dm)。如有任何关于 DM 的问题，请在 `pingcap/tiflow` 仓库提交，以获得后续支持。
+> - 在较早版本中（v1.0 和 v2.0），DM 采用独立于 TiDB 的版本号。从 DM v5.3 起，DM 采用与 TiDB 相同的版本号。DM v2.0 的下一个版本为 DM v5.3。DM v2.0 到 v5.3 无兼容性变更，升级过程与正常升级无差异。
+>>>>>>> f331e73fa (Update the slack channel to internals (#9201))
