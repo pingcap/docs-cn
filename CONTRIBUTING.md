@@ -167,4 +167,4 @@ If your change fits one of the following situations, **CHOOSE THE AFFECTED RELEA
 
 ## Contact
 
-Join the Slack channel: [#sig-docs](https://slack.tidb.io/invite?team=tidb-community&channel=sig-docs&ref=pingcap-docs)
+Join the [TiDB Internals forum](https://internals.tidb.io/) for discussion.
