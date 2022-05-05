@@ -12,7 +12,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 ![relay log](/media/dm/dm-relay-log.png)
 
-Relay log 的使用场景:
+适用场景:
 
 - MySQL 的存储空间是有限制的，一般都会设置 binlog 的最长保存时间，当上游把 binlog 清除掉之后，如果 DM 还需要对应位置的 binlog 就会拉取失败，导致同步任务出错。
 - 若未开启 relay log，DM 每增加一个同步任务都会在上游建立一条链接用于拉取 binlog，这样会对上游造成比较大的负载。开启 relay log 后，同一个上游的多个同步任务可以复用已经拉到本地的 relay log，这样就减少了对上游的压力。
@@ -22,7 +22,9 @@ Relay log 的使用场景:
 
 - 由于写 relay log 有一个落盘的过程，这里产生了外部 IO 和一些 CPU 消耗，可能导致整个同步链路变长从而增加数据同步的时延，如果是对时延要求十分敏感的同步任务暂时还不推荐使用 relay log。注意：在最新版本的 DM（>v2.0.7） 中，对这里进行了优化，增加的时延和 CPU 消耗已经相对较小了。
 
-## 开启/关闭 relay log
+## 使用 relay log
+
+### 开启/关闭 relay log
 
 <SimpleTab>
 
@@ -98,7 +100,7 @@ Relay log 的使用场景:
 </div>
 </SimpleTab>
 
-## 查询 relay log
+### 查询 relay log
 
 `query-status -s` 命令可以查询 relay log 的状态。
 
@@ -159,7 +161,7 @@ Relay log 的使用场景:
 }
 ```
 
-## 暂停、恢复 relay log
+### 暂停、恢复 relay log
 
 `pause-relay` 与 `resume-relay` 命令可以分别暂停及恢复 relay log 的拉取。这两个命令执行时都需要指定上游数据源的 `source-id`，例如：
 
@@ -213,7 +215,7 @@ Relay log 的使用场景:
 }
 ```
 
-## 清理 relay log
+### 清理 relay log
 
 DM 提供两种清理 relay log 的方式，手动清理和自动清理。需要注意，这两种清理方法都不会清理活跃的 relay log 。
 
@@ -223,7 +225,7 @@ DM 提供两种清理 relay log 的方式，手动清理和自动清理。需要
 > 
 > - 过期的 relay log：该 relay log  文件最后被改动的时间与当前时间差值大于配置文件中的 `expires` 字段。
 
-### 自动数据清理
+#### 自动数据清理
 
 启用自动数据清理需在 source 配置文件中进行以下配置：
 
@@ -247,7 +249,7 @@ purge:
     - 剩余磁盘空间，单位为 GB。若剩余磁盘空间小于该配置，则指定的 DM-worker 机器会在后台尝试自动清理可被安全清理的 relay-log。若这一数字被设为 "0"，则表示不按剩余磁盘空间来清理数据。
     - 默认为 "15"，表示可用磁盘空间小于 15GB 时，DM-master 会尝试安全地清理 relay log。
 
-### 手动数据清理
+#### 手动数据清理
 
 手动数据清理是指使用 dmctl 提供的 `purge-relay` 命令，通过指定 `subdir` 和 binlog 文件名，来清理掉**指定 binlog 之前**的所有 relay log。若在命令中不填 `-subdir` 选项，则默认清理**最新 relay log 子目录之前**的所有 relay log。
 
@@ -305,7 +307,9 @@ deb76a2b-09cc-11e9-9129-5242cf3bb246.000003
     » purge-relay -s mysql-replica-01 --filename mysql-bin.000001
     ```
 
-## 目录结构
+## Relay log 内部机制
+
+### 目录结构
 
 Relay log 本地存储的目录结构示例如下：
 
@@ -357,7 +361,7 @@ Relay log 本地存储的目录结构示例如下：
     binlog-gtid = "3ccc475b-2343-11e7-be21-6c0b84d59f30:1-14,406a3f61-690d-11e7-87c5-6c92bf46f384:1-94321383,53bfca22-690d-11e7-8a62-18ded7a37b78:1-495,686e1ab6-c47e-11e7-a42c-6c92bf46f384:1-34981190,03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170,10b039fc-c843-11e7-8f6a-1866daf8d810:1-308290454"
     ```
 
-## DM 从什么位置开始接收 binlog
+### DM 从什么位置开始接收 binlog
 
 - 从保存的 checkpoint 中（默认位于下游 dm_meta 库），获取各同步任务需要该数据源的最早位置。如果该位置晚于下述任何一个位置，则从此位置开始迁移。
 
@@ -379,6 +383,6 @@ Relay log 本地存储的目录结构示例如下：
         >
         > 若上游的 relay log 被清理掉，则会发生错误。在这种情况下，需设置 `relay-binlog-gtid` 来指定迁移的起始位置。
 
-## 更多
+## 探索更多
 
 - [DM 源码阅读系列文章（六）relay log 的实现丨TiDB 工具](https://pingcap.com/zh/blog/dm-source-code-reading-6)
