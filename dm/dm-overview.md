@@ -67,7 +67,6 @@ tiup install dm dmctl
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
 - [AskTUG](https://asktug.com/tags/dm)
-- [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=sig-migrate&ref=github_sig)
 
 ## License
 

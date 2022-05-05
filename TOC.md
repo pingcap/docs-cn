@@ -18,6 +18,64 @@
   - [快速上手 HTAP](/quick-start-with-htap.md)
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
+- 应用开发
+  - [概览](/develop/developer-guide-overview.md)
+  - 快速开始
+    - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+    - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
+    - TiDB 的简单 CRUD 应用程序
+      - [Java](/develop/sample-application-java.md)
+  - 示例程序
+    - [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
+  - 连接到 TiDB
+    - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
+    - [连接到 TiDB](/develop/connect-to-tidb.md)
+    - [连接池与连接参数](/develop/connection-parameters.md)
+  - 数据库模式设计
+    - [概览](/develop/schema-design-overview.md)
+    - [创建数据库](/develop/create-database.md)
+    - [创建表](/develop/create-table.md)
+    - [创建二级索引](/develop/create-secondary-indexes.md)
+  - 数据写入
+    - [插入数据](/develop/insert-data.md)
+    - [更新数据](/develop/update-data.md)
+    - [删除数据](/develop/delete-data.md)
+    - [预处理语句](/develop/prepared-statement.md)
+  - 数据读取
+    - [单表读取](/develop/get-data-from-single-table.md)
+    - [多表连接查询](/develop/join-tables.md)
+    - [子查询](/develop/use-subqueries.md)
+    - [查询结果分页](/develop/paginate-results.md)
+    - [视图](/develop/use-views.md)
+    - [临时表](/develop/use-temporary-tables.md)
+    - [公共表表达式](/develop/use-common-table-expression.md)
+    - 读取副本数据
+      - [Follower Read](/develop/use-follower-read.md)
+      - [Stale Read](/develop/use-stale-read.md)
+    - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
+  - 事务
+    - [概览](/develop/transaction-overview.md)
+    - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
+    - [事务限制](/develop/transaction-restraints.md)
+    - [事务错误处理](/develop/transaction-troubleshoot.md)
+  - 优化 SQL 性能
+    - [概览](/develop/optimize-sql-overview.md)
+    - [SQL 性能调优](/develop/optimize-sql.md)
+    - [性能调优最佳实践](/develop/optimize-sql-best-practices.md)
+    - 其他优化
+      - [避免隐式类型转换](/develop/implicit-type-conversion.md)
+      - [唯一序列号生成方案](/develop/unique-serial-number-generation.md)
+  - 故障诊断
+    - [概览](/develop/troubleshoot-overview.md)
+    - 其他故障或限制
+      - [结果集不稳定](/develop/unstable-result-set.md)
+      - [超时](/develop/timeouts-in-tidb.md)
+  - 引用文档
+    - SQL
+      - [Bookshop 示例应用](/develop/bookshop-schema-design.md)
+    - 规范
+      - [命名规范](/develop/object-naming-guidelines.md)
+      - [SQL 开发规范](/develop/sql-development-specification.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -62,17 +120,9 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - 使用 BR 工具（推荐）
-      - [BR 工具简介](/br/backup-and-restore-tool.md)
-      - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
-      - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - 外部存储
-        - [外部存储概述](/br/backup-and-restore-storages.md)
-        - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
-      - BR 特性
-        - [自动调节](/br/br-auto-tune.md)
-        - [批量建表](/br/br-batch-create-table.md)
-      - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
+    - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -382,14 +432,23 @@
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
-    - [BR 工具简介](/br/backup-and-restore-tool.md)
-    - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+    - [BR 简介](/br/backup-and-restore-overview.md)
+    - [部署和使用 BR](/br/br-deployment.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - [外部存储](/br/backup-and-restore-storages.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
       - [批量建表](/br/br-batch-create-table.md)
-    - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - 参考指南
+     - [BR 设计原理](/br/backup-and-restore-design.md)
+     - [BR 命令行介绍](/br/use-br-command-line-tool.md)
+     - [外部存储](/br/backup-and-restore-storages.md)
+     - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
+     - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
+     - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
+     - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+     - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
