@@ -38,7 +38,11 @@ However, some features of MySQL are not supported. This could be because there i
 + `CREATE TABLE tblName AS SELECT stmt` syntax [#4754](https://github.com/pingcap/tidb/issues/4754)
 + `CHECK TABLE` syntax [#4673](https://github.com/pingcap/tidb/issues/4673)
 + `CHECKSUM TABLE` syntax [#1895](https://github.com/pingcap/tidb/issues/1895)
++ `REPAIR TABLE` syntax
++ `OPTIMIZE TABLE` syntax
 + `GET_LOCK` and `RELEASE_LOCK` functions [#14994](https://github.com/pingcap/tidb/issues/14994)
++ `HANDLER` statement
++ `CREATE TABLESPACE` statement
 
 ## Features that are different from MySQL
 
