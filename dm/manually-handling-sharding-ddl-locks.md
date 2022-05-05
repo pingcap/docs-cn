@@ -5,10 +5,12 @@ aliases: ['/docs-cn/tidb-data-migration/dev/manually-handling-sharding-ddl-locks
 
 # 手动处理 Sharding DDL Lock
 
-DM (Data Migration) 目前存在[悲观模式](/dm/feature-shard-merge-pessimistic.md)与[乐观模式](/dm/feature-shard-merge-optimistic.md)两种分库分表合并迁移模式，这两种模式中均存在 `shard-ddl-lock` 的概念，但是其实际作用略有不同。
+在分库分表合并迁移发生异常时，你需要使用 `shard-ddl-lock` 命令手动处理 sharding DDL lock。
 
-1. 在悲观模式中，DM 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。绝大多数情况下，该锁定机制可自动完成；但在部分异常情况发生时，需要使用 `shard-ddl-lock` 手动处理异常的 DDL lock。
-2. 在乐观模式中，DM 使用表结构与 DDL 信息来确保分库分表的 DDL 操作可以正确执行。sharding DDL Lock 在乐观模式中用于表示是否所有分表可以生成兼容表结构。绝大多数情况不需人为干预，仅当分库分表表结构存在不可解冲突时，才可以使用 `shard-ddl-lock` 手动处理异常表结构。
+在 DM 中有[悲观模式](/dm/feature-shard-merge-pessimistic.md)与[乐观模式](/dm/feature-shard-merge-optimistic.md)两种分库分表合并迁移模式。两种模式中的`shard-ddl-lock` 的概念存在差异：
+
+- 在悲观模式中，DM 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。绝大多数情况下，该锁定机制可自动完成；但在部分异常情况发生时，需要使用 `shard-ddl-lock` 手动处理异常的 DDL lock。
+- 在乐观模式中，DM 使用表结构与 DDL 信息来确保分库分表的 DDL 操作可以正确执行。sharding DDL Lock 在乐观模式中用于表示是否所有分表可以生成兼容表结构。绝大多数情况不需人为干预，仅当分库分表表结构存在不可解冲突时，才需要使用 `shard-ddl-lock` 手动处理异常表结构。
 
 > **注意：**
 >
@@ -470,7 +472,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### Lock 异常原因
 
-在 DM-master 尝试自动协调乐观 DDL，需要等待所有 MySQL source 的表结构达到一致状态，锁信息才会被清除（详见[乐观分表合并协调原理](/dm/feature-shard-merge-optimistic.md#原理)）。如果 sharding DDL 在迁移过程中出现分表的 DDL 生成了不一致表结构，例如部分分表添加 default 0 的列而部分添加 default 1 的列，将造成 master 无法生成兼容表结构从而使得 lock 无法自动 unlock。
+在 DM-master 尝试自动协调乐观 DDL，需要等待所有 MySQL source 的表结构达到一致状态，锁信息才会被清除（详见[乐观分表合并协调原理](/dm/feature-shard-merge-optimistic.md#原理)）。如果 sharding DDL 在迁移过程中出现分表的 DDL 生成了不一致表结构，例如部分分表添加 default 0 的列而部分添加 default 1 的列，将造成 DM-master 无法生成兼容表结构，从而使得锁无法自动 unlock。
 
 #### 手动处理示例
 
@@ -628,22 +630,24 @@ MySQL 及 DM 操作与处理流程如下：
 
 7. 使用 `shard-ddl-lock unlock` 来请求 DM-master 主动 unlock 该 DDL lock。
 
-    - 在乐观模式执行 `shard-ddl-lock unlock` 时需要指定 `-s,-d,-t` 为上文中的 `blockDDLOwner` 中的信息，每个参数均需要且仅指定一个值。
-    - 当存在任意 MySQL source 报错时，`result` 将为 `false`，此时请仔细检查各 MySQL source 的错误是否是预期可接受的。
+    执行 `shard-ddl-lock unlock` 命令。根据第 5 步中 `query-status` 命令输出中的 `blockDDLOwner` 信息，指定 `-s`、`-d`、`-t` 这三个参数，每个参数有且仅有一个值。
 
-      {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-        ```bash
-        shard-ddl-lock unlock 'test-`shardddl`.`tb`' -s mysql-replica-02 -d shardddl1 -t tb1 --action skip
-        ```
+    ```bash
+    shard-ddl-lock unlock 'test-`shardddl`.`tb`' -s mysql-replica-02 -d shardddl1 -t tb1 --action skip
+    ```
 
-        ```
-        {
-            "result": true,
-            "msg": ""
-        ```
+    ```
+    {
+        "result": true,
+        "msg": ""
+    }
+    ```
 
-8. 重复该操作跳过第二个分表的 DDL。
+    当存在任意 MySQL source 报错时，`result` 将为 `false`，此时请仔细检查各 MySQL source 的错误是否是预期可接受的。
+
+8. 重复第 7 步，跳过第二个分表的 DDL。
 9. 使用 `shard-ddl-lock` 确认 DDL lock 是否被成功 unlock。
 
     ```bash
