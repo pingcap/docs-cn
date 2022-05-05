@@ -163,12 +163,36 @@ cat rule.json
 ]
 ```
 
-如果需要使用 `rule.json` 中的配置，你可以通过如下命令覆盖原有的配置：
+如果需要使用 `rule.json` 中的配置，你可以通过如下命令覆盖原有的配置，该配置备份在 `default.json` 文件中：
 
 {{< copyable "shell-regular" >}}
 
 ```bash
+pd-ctl config placement-rules rule-bundle load --out="default.json"
 pd-ctl config placement-rules rule-bundle save --in="rule.json"
+```
+
+如果需要回退配置，你可以还原备份的 `default.json` 文件或者手动编写如下的 json 文件并将其覆盖到现有的配置文件中：
+
+```
+cat default.json
+[
+  {
+    "group_id": "pd",
+    "group_index": 0,
+    "group_override": false,
+    "rules": [
+      {
+        "group_id": "pd",
+        "id": "default",
+        "start_key": "",
+        "end_key": "",
+        "role": "voter",
+        "count": 3
+      }
+    ]
+  }
+]
 ```
 
 ### 启用自适应同步模式
