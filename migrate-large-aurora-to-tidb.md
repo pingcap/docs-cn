@@ -1,14 +1,14 @@
 ---
 title: 通过大数据量 Amazon Aurora 迁移数据到 TiDB
 summary: 介绍如何迁移 TB 级以上 Amazon Aurora 到 TiDB。
-aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora']
+aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migrate-from-aurora-mysql-database/','/docs-cn/dev/how-to/migrate/from-mysql-aurora/','/docs-cn/dev/how-to/migrate/from-aurora/','/zh/tidb/dev/migrate-from-aurora-mysql-database/','/zh/tidb/dev/migrate-from-mysql-aurora','/zh/tidb/dev/migrate-aurora-to-tidb.md']
 ---
 
 # 通过大数据量 Amazon Aurora 迁移数据到 TiDB
 
-本文档介绍如何从 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，具有以下特征：
+本文档介绍如何从大数据量 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，具有以下特征：
 
-- 操作较为复杂，需要使用 Dumpling/Lightning/DM 三种迁移工具。
+- 操作较为复杂，需要使用 Dumpling、TiDB Lightning、DM 三种迁移工具。
 - 创建新快照的过程对在线业务有影响。
 - 节约全量数据导入过程的时间和空间消耗。
 - 全量导入性能较好，适用于 TB 级以上数据量迁移。
@@ -46,14 +46,14 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
     ```
 
 2. 创建快照，此操作时间为 T2。
-  
-3. 导出 Aurora 快照文件到 S3。具体方式请参考 Aurora 的官方文档：[Exporting DB snapshot data to Amazon S3](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html).
+
+3. 导出 Aurora 快照文件到 S3。导出快照的方法可参考 [Aurora 官方文档](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html)。
 
 ### 第 2 步： 导出 schema 文件
 
-因为 Aurora 生成的快照文件并不包含建表语句文件，所以你需要使用 Dumpling 自行导出 schema 并使用 Lightning 在下游创建 schema。你也可以跳过此步骤，以手动方式在下游自行创建 schema。
+由于 Aurora 生成的快照文件并不包含建表语句文件，你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。你也可以跳过此步骤，以手动方式在下游自行创建 schema。
 
-运行以下命令，建议使用 `--filter` 参数仅导出所需表的 schema：
+运行以下命令，使用 Dumpling 导出 schema 文件。建议使用 `--filter` 参数仅导出所需表的 schema：
 
 {{< copyable "shell-regular" >}}
 
@@ -61,7 +61,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 tiup dumpling --host ${host} --port 3306 --user root --password ${password} --consistency none --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
 ```
 
-命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
+命令中所用参数描述如下。如需更多信息可参考[使用 Dumpling 导出数据](/dumpling-overview.md)。
 
 |参数               |说明|
 |-                  |-|
@@ -80,7 +80,7 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --co
 
 ### 第 3 步： 编写 Lightning 配置文件
 
-根据以下内容创建`tidb-lightning.toml` 配置文件：
+根据以下内容创建 `tidb-lightning.toml` 配置文件：
 
 {{< copyable "shell-regular" >}}
 
@@ -168,7 +168,7 @@ type = '$3'
 
 ### 第 1 步： 创建数据源
 
-1. 新建`source1.yaml`文件, 写入以下内容：
+1. 新建 `source1.yaml` 文件，写入以下内容：
 
     {{< copyable "" >}}
 
@@ -245,7 +245,7 @@ syncers:            # sync 处理单元的运行配置参数。
 
 > **注意：**
 >
-> 由于 `SHOW MASTER STATUS`时（T1），与创建快照时（T2）存在时间差，增量同步可能出现数据冲突错误。因此前述任务配置中启用了 safe-mode，但 safe-mode 并不建议长期运行，待 binlog 同步位置超过 T2 后可关闭 safe-mode.
+> 由于 `SHOW MASTER STATUS` 的时间 (T1) 与创建快照的时 (T2) 存在时间差，增量同步可能出现数据冲突错误。因此前述任务配置中启用了 safe-mode，但不建议长期运行 safe-mode，待 binlog 同步位置超过 T2 后可关闭 safe-mode。
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
