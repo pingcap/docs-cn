@@ -153,7 +153,7 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 >
 > 从 TiDB v6.0.0 起，你可以通过全局变量 (`set global tidb_ignore_prepared_cache_close_stmt=on;`) 控制 StmtClose 命令不清理已被缓存的执行计划，使得下一次的 SQL 的执行不需要重新生成执行计划。
 
-![OLTP-Prepared](/media/performance/oltp_long_compile_qps.png)
+![OLTP-Prepared](/media/performance/oltp_prepared_statement_no_plan_cache.png)
 
 #### KV/TSO Request OPS 和连接信息
 
