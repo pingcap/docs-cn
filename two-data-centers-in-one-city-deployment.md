@@ -163,8 +163,6 @@ cat rule.json
 ]
 ```
 
-<<<<<<< HEAD
-=======
 如果需要使用 `rule.json` 中的配置，你可以通过如下命令覆盖原有的配置，该配置备份在 `default.json` 文件中：
 
 {{< copyable "shell-regular" >}}
@@ -197,7 +195,6 @@ cat default.json
 ]
 ```
 
->>>>>>> 52d7c5c51 (add rollback step (#9174))
 ### 启用自适应同步模式
 
 副本的复制模式由 PD 节点控制。如果要使用 DR Auto-sync 自适应同步模式，需要按照以下任一方法修改 PD 的配置。
