@@ -1,6 +1,7 @@
 ---
 title: 从 TiDB 同步数据至 Apache Kafka
 summary: 了解如何从 TiDB 集群同步数据至 Apache Kafka 集群。
+aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 ---
 
 # 从 TiDB 同步数据至 Kafka
