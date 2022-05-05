@@ -105,8 +105,8 @@
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
-    - [从 TiDB 集群迁移至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
-    - [从 TiDB 集群同步数据至 Kafka](/replicate-data-to-kafka.md)
+    - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
+    - [从 TiDB 同步数据至 Apache Kafka](/replicate-data-to-kafka.md)
   - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
