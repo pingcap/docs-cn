@@ -1,6 +1,8 @@
 ---
 title: DM Checkpoint 作用机制
 ---
+# 什么是 Checkpoint
+为了避免遇到不可预期错误而中止的 DM 集群在重启后必须从头开始同步的情况，DM 内部记录了一系列的信息来表示当前同步工作的进度。这些信息随着工作的进展而更新并写入到持久储存（persistent storage）里，在重启时被读入并让 DM 集群自动更新到其所记录的进度。这些信息被称为 Checkpoint。
 
 # Checkpoint 作用机制
 
