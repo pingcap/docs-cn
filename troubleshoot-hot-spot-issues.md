@@ -53,6 +53,8 @@ The common auto-increment primary key is sequentially increasing. When the prima
 
 Meanwhile, the RowID in TiDB is also sequentially auto-incremental by default. When the primary key is not an integer type, you might also encounter the problem of write hotspots.
 
+In addition, when hotspots occur during the process of data writes (on a newly created table or partition) or data reads (periodic read hotspots in read-only scenarios), you can control the Region merge behavior using table attributes. For details, see [Control the Region merge behavior using table attributes](/table-attributes.md#control-the-region-merge-behavior-using-table-attributes).
+
 ### Index hotspots
 
 Index hotspots are similar to table hotspots. Common index hotspots appear in fields that are monotonously increasing in time order, or `INSERT` scenarios with a large number of repeated values.
