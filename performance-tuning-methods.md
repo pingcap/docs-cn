@@ -69,7 +69,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 通过观察 **Database Time By SQL Phase** 和 **SQL Execute Time Overview** 图中的颜色，你可以直观地区分正常或者异常的时间消耗，快速定位集群的异常瓶颈点，高效了解集群的负载特征。对于正常的时间消耗和请求类型，图中显示颜色为绿色系或蓝色系。如果非绿色或蓝色系的颜色在这两张图中占据了明显的比例，意味着数据库时间的分布不合理。
 
 - Database Time By SQL Phase：execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。一个常见的场景是因为无法使用执行计划缓存，导致 compile 阶段的橙色占比明显。
-- SQL Execute Time Overview：绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求，其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
+- SQL Execute Time Overview：绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求（例如 Cop 和 Get），其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
 
 **示例 1：TPC-C 负载**
 
@@ -181,7 +181,7 @@ StmtPreare 次数 = StmtExecute 次数 = StmtClose 次数 ~= StmtFetch 次数，
 
 #### TiDB CPU，以及 TiKV CPU 和 IO 使用情况
 
-在 TiDB CPU 和 TiKV CPU/IO MBps 这两个面板中，你可以观察到 TiDB 和 TiKV 的逻辑 CPU 使用率和 IO 吞吐，包含平均、最大和 delta（最大 CPU 利用率减去最小 CPU 使用率），从而用来判定 TiDB 和 TiKV 总体的 CPU 利用率。
+在 TiDB CPU 和 TiKV CPU/IO MBps 这两个面板中，你可以观察到 TiDB 和 TiKV 的逻辑 CPU 使用率和 IO 吞吐，包含平均、最大和 delta（最大 CPU 使用率减去最小 CPU 使用率），从而用来判定 TiDB 和 TiKV 总体的 CPU 使用率。
 
 - 通过 `delta` 值，你可以判断 TiDB 是否存在 CPU 使用负载不均衡（通常伴随着应用连接不均衡），TiKV 是否存在热点。
 - 通过 TiDB 和 TiKV 的资源使用概览，你可以快速判断集群是否存在资源瓶颈，最需要扩容的组件是 TiDB 还是 TiKV。
@@ -292,7 +292,7 @@ avg Query Duration = avg Get Token + avg Parse Duration + avg Compile Duration +
 - 如果 TSO 请求已经完成，Wait 方法会立刻返回一个可用的 TSO 或 error
 - 如果 TSO 请求还未完成，Wait 方法会 block 住等待一个可用的 TSO 或 error（说明 gRPC 请求已发送但尚未收到返回结果，网络延迟较高）
 
-TSO 等待的时间 记录为 TSO WAIT，TSO 请求的网络时间记录为 TSO RPC。TiDB TSO 等待完成之后，执行过程中通常需要和 TiKV 进行读写交互：
+TSO 等待的时间记录为 TSO WAIT，TSO 请求的网络时间记录为 TSO RPC。TiDB TSO 等待完成之后，执行过程中通常需要和 TiKV 进行读写交互：
 
 - 读的 KV 请求常见类型：Get、BatchGet 和 Cop
 - 写的 KV 请求常见类型：PessimisticLock，二阶段提交的 Prewrite 和 Commit
@@ -308,7 +308,7 @@ TSO 等待的时间 记录为 TSO WAIT，TSO 请求的网络时间记录为 TSO 
 其中，Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的关系如下
 
 ```
-Avg TiDB KV Request Duration = Avg TiKV GRPC Duration + TiDB 和 TiKV 的网络延迟 + TiKV GRPC 处理时间和 + TiDB GRPC 和处理时间和调度延迟。
+Avg TiDB KV Request Duration = Avg TiKV GRPC Duration + TiDB 与 TiKV 之间的网络延迟 + TiKV GRPC 处理时间 + TiDB GRPC 处理时间和调度延迟。
 ```
 
 Avg TiDB KV Request Duration 和 Avg TiKV GRPC Duration 的差值跟网络流量和延迟，TiDB 和 TiKV 的资源使用情况密切相关。
@@ -348,7 +348,7 @@ TiKV 对于写请求的处理流程如下图
 
 ![TiKV Write](/media/performance/store_apply.png)
 
-Storage Async Write Duration 指标记录写请求进入 raftstore 之后的延迟，采集的粒度是具体是针对每个请求的级别。
+Storage Async Write Duration 指标记录写请求进入 raftstore 之后的延迟，采集的粒度具体到每个请求的级别。
 
 Storage Async Write Duration 分为 Store Duration 和 Apply Duration。你可以通过以下公式定位写请求的瓶颈主要是 在 Store 还是 Apply 步骤。
 
@@ -364,8 +364,8 @@ avg Storage Async Write Duration  = avg Store Duration + avg Apply Duration
 
 v5.4.0 版本，一个写密集的 OLTP 负载 QPS 比 v5.3.0 提升了 14%。应用以上公式
 
-- v5.3.0：24.4ms ~= 17.7ms + 6.59ms
-- v5.4.0：21.4ms ~= 14.0ms + 7.33ms
+- v5.3.0：24.4 ms ~= 17.7 ms + 6.59 ms
+- v5.4.0：21.4 ms ~= 14.0 ms + 7.33 ms
 
 因为 v5.4.0 版本中，TiKV 对 gRPC 模块进行了优化，优化了 Raft 日志复制速度， 相比 v5.3.0 降低了 Store Duration。
 
@@ -379,25 +379,23 @@ v5.4.0：
 
 **示例 2：Store Duration 瓶颈明显**
 
-应用以上公式：10.1ms ~= 9.81ms + 0.304，说明写请求的延迟瓶颈在 Store Duration。
+应用以上公式：10.1 ms ~= 9.81 ms + 0.304 ms，说明写请求的延迟瓶颈在 Store Duration。
 
 ![Store](/media/performance/cloud_store_apply.png)
 
 #### Commit Log Duration、Append Log Duration 和 Apply Log Duration
 
-Commit Log Duration、Append Log Duration 和 Apply Log Duration 这三个延迟是 raftstore 内部关键操作的延迟记录。这些记录采集的粒度是 batch 操作，每个操作会把多个写请求合并在一起，因此不能直接对应上文的 Store Duration 和 Apply Duration。
+Commit Log Duration、Append Log Duration 和 Apply Log Duration 这三个延迟是 raftstore 内部关键操作的延迟记录。这些记录采集的粒度是 batch 操作界别的，每个操作会把多个写请求合并在一起，因此不能直接对应上文的 Store Duration 和 Apply Duration。
 
-Commit Log Duration 和 Append Log Duration 均为 store 线程的操作。
+- Commit Log Duration 和 Append Log Duration 均为 store 线程的操作。Commit Log Duration 包含复制 Raft 日志到其他 TiKV 节点，保证 raft-log 的持久化。一般包含两次 Append Log Duration，一次 leader，一次 follower 的。
+- Apply Log Duration  记录了 apply 线程 apply Raft 日志的延迟。
 
-- Commit Log Duration 包含复制 Raft 日志到其他 TiKV 节点，保证 raft-log 的持久化。一般包含两次 Append Log Duration，一次 leader，一次 follower 的。
-- Apply Log Duration  记录了 apply 线程 Apply Raft 日志的延迟。
-
-Commit Log Duration 延迟通常会明显高于 Append Log Duration，因为包含了通过网络复制 Raft 日志到其他 TiKV 的时间。
+Commit Log Duration 延迟通常会明显高于 Apply Log Duration，因为包含了通过网络复制 Raft 日志到其他 TiKV 的时间。
 
 Commit Log Duration 慢的常见场景：
 
 - TiKV CPU 资源存在瓶颈，调度延迟高
-- `raftstore.store-pool-sizS` 设置过小或者过大（过大也可能导致性能下降）
+- `raftstore.store-pool-size` 设置过小或者过大（过大也可能导致性能下降）
 - IO 延迟高，导致 Append Log Duration 延迟高
 - TiKV 之间的网络延迟比较高
 - TiKV 的 gRPC 线程数设置过小或者多个 gRPC CPU 资源使用不均衡
@@ -428,7 +426,7 @@ v5.4.0：
 
 ![v5.4.0](/media/performance/v5.4.0_commit_append_apply.png)
 
-**示例 2：Store Duration 瓶颈明显的例子**
+**示例 2：Commit Log Duration 瓶颈明显的例子**
 
 ![Store](/media/performance/cloud_append_commit_apply.png)
 
@@ -439,10 +437,10 @@ v5.4.0：
 Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Append Log Duration 比 Apply Log Duration 明显的高，说明 Store 线程在 CPU 和 IO 都可能都存在瓶颈。可能降低 Commit Log Duration 和 Append Log Duration 的方式如下：
 
 - 如果 TiKV CPU 资源充足，考虑增加 Store 线程，即 `raftstore.store-pool-size` 。
-- 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和 写入请求的尾延迟，请启用方式：`raft-engine.enable: true`
+- 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置：`raft-engine.enable: true`
 - 如果 TiKV CPU 资源充足，且 TiDB 为 v5.3.0 及之后的版本，考虑启用 [`StoreWriter`](/tune-tikv-thread-performance.md#tikv-线程池调优)。启用方式：`raftstore.store-io-pool-size: 1`。
 
-## 低于 v6.0.0 的TiDB 版本如何使用 Performance overview 面板
+## 低于 v6.0.0 的 TiDB 版本如何使用 Performance overview 面板
 
 从 v6.0.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。如果你的 TiDB 版本低于 v6.0.0，需要手工导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)
 
