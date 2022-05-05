@@ -114,7 +114,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 - avg QPS = 24.2k (56.3k->24.2k))
 - 无法命中 plan cache
 
-从场景 1 到场景 2，TiDB CPU 平均利用率下降为 874%，TiKV CPU 平均利用率上升为 250% 左右。
+从场景 1 到场景 2，TiDB CPU 平均利用率从 925% 下降到 874%，TiKV CPU 平均利用率从 201% 上升到 250% 左右。
 
 ![performance-overview-2-for-maxPerformance](/media/performance/9.1.1.png)
 
@@ -162,7 +162,7 @@ useServerPrepStmts=true&useConfigs=maxPerformance"
 
 ![performance-overview-1-for-PrepStmts](/media/performance/new/j-3.png)
 
-QPS 从 24.4k 下降为 19.7k，从 CPS By Type 面板可以看到应用程序使用了三种 Prepared 命令。Database Time Overview 出现了 general 的语句类型（包含了 StmtPrepare 和 StmtClose 等命令的执行耗时），占比排名第二。这说明，即使使用了 Prepared Statement 接口，执行计划缓存也没有命中，原因在于 TiDB 内部处理 StmtClose 命令时，会清理修改语句的执行计划缓存。
+QPS 从 24.4k 下降到 19.7k，从 CPS By Type 面板可以看到应用程序使用了三种 Prepared 命令。Database Time Overview 出现了 general 的语句类型（包含了 StmtPrepare 和 StmtClose 等命令的执行耗时），占比排名第二。这说明，即使使用了 Prepared Statement 接口，执行计划缓存也没有命中，原因在于 TiDB 内部处理 StmtClose 命令时，会清理修改语句的执行计划缓存。
 
 - Database Time by SQL Type 中 select 语句耗时最多，general 语句类型占比命令第二
 - Database Time by SQL Phase 中 execute 和 compile 占比最多
@@ -171,7 +171,7 @@ QPS 从 24.4k 下降为 19.7k，从 CPS By Type 面板可以看到应用程序�
 - avg QPS = 19.7k (24.4k->19.7k)
 - 无法命中 plan cache
 
-平均 TIDB CPU 利用率上升到 936%
+平均 TIDB CPU 利用率从 874% 上升到 936%
 
 ![](/media/performance/3-2.png)
 
@@ -224,7 +224,7 @@ PreparseStmt cpu = 25% cpu time = 12.75s
 - general time 相比场景三变长，因为 qps 上升了
 - avg QPS = 22.1k (19.7k->22.1k)
 
-TiDB CPU 平均利用率从 936% 下降为 827%
+TiDB CPU 平均利用率从 936% 下降到 827%
 
 ![performance-overview-2-for-3-commands](/media/performance/4.4.png)
 
@@ -282,7 +282,7 @@ useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=1000&prepStmtCache
 - CPS By Type 只有一种 command，即 StmtExecute
 - avg QPS = 30.9k (22.1k->30.9k)
 
-TiDB CPU 平均利用率从 827% 下降为 577%，随着 QPS 的上升，TiKV CPU 平均利用率上升为 313%。
+TiDB CPU 平均利用率从 827% 下降到 577%，随着 QPS 的上升，TiKV CPU 平均利用率上升为 313%。
 
 ![performance-overview-for-2-command](/media/performance/new/j-5-cpu.png)
 
@@ -324,7 +324,7 @@ TiDB 的 CPU 火焰图没有明显变化。
 
 #### Performance Overview 面板
 
-使用 RC read 之后，QPS 从 30.9k 上升为 34.9k，每秒消耗的 tso wait 时间从 5.46 s 下降为 456 ms。
+使用 RC read 之后，QPS 从 30.9k 上升为 34.9k，每秒消耗的 tso wait 时间从 5.46 s 下降到 456 ms。
 
 ![performance-overview-1-for-rc-read](/media/performance/new/j-6.png)
 
@@ -335,7 +335,7 @@ TiDB 的 CPU 火焰图没有明显变化。
 - CPS By Type 只有一种 command
 - avg QPS = 34.9k (30.9k->34.9k)
 
-每秒 tso cmd 从 28.3k 下降为 2.7k
+每秒 tso cmd 从 28.3k 下降到 2.7k
 
 ![performance-overview-2-for-rc-read](/media/performance/new/j-6-cmd.png)
 
@@ -375,7 +375,7 @@ TiDB CPU 火焰图没有明显变化。
 
 #### Performance Overview 面板
 
-QPS 从 34.9k 上升到 40.9k，execute 时间中占比最高的 KV 请求类型变成了 Prewrite 和 Commit。Get 每秒的时间从 5.33 秒下降为 1.75 秒，Cop 每秒的时间从 3.87 下降为 1.09 秒。
+QPS 从 34.9k 上升到 40.9k，execute 时间中占比最高的 KV 请求类型变成了 Prewrite 和 Commit。Get 每秒的时间从 5.33 秒下降到 1.75 秒，Cop 每秒的时间从 3.87 下降到 1.09 秒。
 
 ![performance-overview-1-for-table-cache](/media/performance/new/j-7.png)
 
@@ -386,11 +386,11 @@ QPS 从 34.9k 上升到 40.9k，execute 时间中占比最高的 KV 请求类型
 - CPS By Type 只有 1 种 command
 - avg QPS = 40.9k (34.9k->40.9k)
 
-TiDB CPU 平均利用率从 603% 下降 为 478%，TiKV CPU 平均利用率从 346% 下降为 256%。
+TiDB CPU 平均利用率从 603% 下降 为 478%，TiKV CPU 平均利用率从 346% 下降到 256%。
 
 ![performance-overview-2-for-table-cache](/media/performance/new/j-7-cpu.png)
 
-Query 平均延迟从 533 us 下降为 313 us。execute 平均延迟从 466 us 下降为 250 us。
+Query 平均延迟从 533 us 下降到 313 us。execute 平均延迟从 466 us 下降到 250 us。
 
 ![performance-overview-3-for-table-cache](/media/performance/new/j-7-duration.png)
 
