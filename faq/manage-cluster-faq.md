@@ -208,8 +208,14 @@ TiDB 在执行 SQL 时，预估出来每个 operator 处理了超过 10000 条�
 SELECT
     db_name,
     table_name,
-    SUM(total_size / cnt)                   Approximate_Size,
-    SUM(total_size / cnt / @amplification)  Disk_Size
+    ROUND(SUM(total_size / cnt), 2) Approximate_Size,
+    ROUND(SUM(total_size / cnt / (SELECT
+                    ROUND(AVG(value), 2)
+                FROM
+                    METRICS_SCHEMA.store_size_amplification
+                WHERE
+                    value > 0)),
+            2) Disk_Size
 FROM
     (SELECT
         db_name,
@@ -221,7 +227,7 @@ FROM
         information_schema.TIKV_REGION_STATUS
     WHERE
         db_name = @dbname
-        AND table_name in (@table_name)
+            AND table_name IN (@table_name)
     GROUP BY db_name , table_name , region_id) tabinfo
 GROUP BY db_name , table_name;
 ```
@@ -230,9 +236,12 @@ GROUP BY db_name , table_name;
 
 - `@dbname`：数据库名称。
 - `@table_name`：目标表的名称。
-- `@size_amplification`：集群压缩比的平均值。要获取该信息，查看 Grafana 监控 **PD - statistics balance** 面板下各节点的 `Size amplification` 指标，集群压缩比的平均值即为所有节点的 `Size amplification` 平均值。
 
-此外，以上语句中 `Approximate_Size` 表示压缩前表的大小，`Disk_Size` 表示压缩后表的大小。
+此外，以上语句中：
+
+- `store_size_amplification` 表示集群压缩比的平均值。除了使用 `SELECT * FROM METRICS_SCHEMA.store_size_amplification;` 语句进行查询以外，你还可以查看 Grafana 监控 **PD - statistics balance** 面板下各节点的 `Size amplification` 指标来获取该信息，集群压缩比的平均值即为所有节点的 `Size amplification` 平均值。
+- `Approximate_Size` 表示压缩前表的单副本大小，该值为估算值，并非准确值。
+- `Disk_Size` 表示压缩后表的大小，可根据 `Approximate_Size` 和 `store_size_amplification` 得出估算值。
 
 ## TiKV 管理
 
@@ -362,6 +371,6 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 ### TiDB 主要备份方式？
 
-目前，数据量大时推荐使用 [BR](/br/backup-and-restore-tool.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
+目前，数据量大时推荐使用 [BR](/br/backup-and-restore-overview.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
 
 尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。

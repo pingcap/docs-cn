@@ -16,7 +16,7 @@ TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，
 
 在命令行中使用多个 `-f` 或 `--filter` 参数，即可在 TiDB 生态工具中应用表库过滤规则。每个过滤规则均采用 `db.table` 形式，支持通配符（详情见[下一节](#使用通配符)）。以下为各个工具中的使用示例：
 
-* [BR](/br/backup-and-restore-tool.md)：
+* [BR](/br/backup-and-restore-overview.md)：
 
     {{< copyable "shell-regular" >}}
 
