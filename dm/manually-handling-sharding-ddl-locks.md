@@ -138,8 +138,8 @@ shard-ddl-lock test
 
 用于主动请求 DM-master 解除指定的 DDL lock。
 
-1. 悲观模式 `unlock` 包括操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
-2. 乐观模式 `unlock` 包括操作：请求指定的处于冲突状态的上游表 执行/跳过 冲突 DDL 操作，对其他非指定的表不会进行任何操作，若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
+1. [悲观模式](/dm/feature-shard-merge-pessimistic.md) `unlock` 包括操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
+2. [乐观模式](/dm/feature-shard-merge-optimistic.md) `unlock` 包括操作：请求指定的处于冲突状态的上游表 执行/跳过 冲突 DDL 操作，对其他非指定的表不会进行任何操作，若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
 
 > **注意：**
 >
