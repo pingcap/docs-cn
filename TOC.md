@@ -758,6 +758,7 @@
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
+  - [TiDB 版本规则](/releases/versioning.md)
   - v5.4
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
