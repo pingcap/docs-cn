@@ -41,7 +41,7 @@ execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色
 
 ## QPS
 
-QPS：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上每秒执行的 SQL 语句数量
+QPS：按 `SELECT`、`INSERT`、`UPDATE` 等类型统计所有 TiDB 实例上每秒执行的 SQL 语句数量
 
 ## CPS By Type
 
@@ -54,7 +54,7 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 ## KV/TSO Request OPS
 
 - kv request total: 所有 TiDB 实例每秒总的 KV 请求数量
-- kv request by type: 按 `Get`、`Prewrite`、 `Commit` 类型统计在所有 TiDB 实例每秒的请求数据
+- kv request by type: 按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例每秒的请求数据
 - tso - cmd：在所有 TiDB 实例每秒 tso cmd 的请求数量
 - tso - request：在所有 TiDB 实例每秒 tso request 的请求数量
 
@@ -69,17 +69,17 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
 ## TiDB CPU
 
 - avg：所有 TiDB 实例平均 CPU 利用率
-- delta：所有 TiDB 实例最大 CPU 利用率减去所有 TiDB 实例最小 CPU 利用率
-- max：所有 TiDB 实例最大 CPU 利用率
+- delta：所有 TiDB 实例中最大 CPU 利用率减去所有 TiDB 实例中最小 CPU 利用率
+- max：所有 TiDB 实例中最大 CPU 利用率
 
 ## TiKV CPU/IO MBps
 
 - CPU-Avg：所有 TiKV 实例平均 CPU 利用率
-- CPU-Delta：所有 TiKV 实例最大 CPU 利用率减去所有 TiKV 实例最小 CPU 利用率
-- CPU-MAX：所有 TiKV 实例最大 CPU 利用率
+- CPU-Delta：所有 TiKV 实例中最大 CPU 利用率减去所有 TiKV 实例中最小 CPU 利用率
+- CPU-MAX：所有 TiKV 实例中最大 CPU 利用率
 - IO-Avg：所有 TiKV 实例平均 MBps
-- IO-Delta：所有 TiKV 实例最大 MBps 减去所有 TiKV 实例最小 MBps
-- IO-MAX：所有 TiKV 实例最大 MBps
+- IO-Delta：所有 TiKV 实例中最大 MBps 减去所有 TiKV 实例中最小 MBps
+- IO-MAX：所有 TiKV 实例中最大 MBps
 
 ## Duration
 
@@ -88,8 +88,8 @@ Queries Using Plan Cache OPS：所有 TiDB 实例每秒使用 Plan Cache 的查�
     - 从客户端网络请求发送到 TiDB，到 TiDB 执行结束后返回给客户端的时间。一般情况下，客户端请求都是以 SQL 语句的形式发送，但也可以包含 `COM_PING`、`COM_SLEEP`、`COM_STMT_FETCH`、`COM_SEND_LONG_DATA` 之类的命令执行时间。
     - 由于 TiDB 支持 Multi-Query，因此，客户端可以一次性发送多条 SQL 语句，如 `select 1; select 1; select 1;`。此时的执行时间是所有 SQL 语句执行完成的总时间。
 
-- avg：所有请求命令的平均时间
-- 99： 所有请求命令的 p99 时间
+- avg：所有请求命令的平均执行时间
+- 99： 所有请求命令的 P99 执行时间
 - avg by type：按 `SELECT`、`INSERT`、`UPDATE` 类型统计所有 TiDB 实例上所有请求命令的平均执行时间
 
 ## Connection Idle Duration
@@ -111,11 +111,11 @@ Connection Idle Duration 指空闲连接的持续时间。
 
 ## Avg TiDB KV Request Duration
 
-按 `Get`、`Prewrite`、 `Commit` 类型统计在所有 TiDB 实例平均 KV Request 执行时间。
+按 `Get`、`Prewrite`、 `Commit` 等类型统计在所有 TiDB 实例 KV 请求的平均执行时间。
 
 ## Avg TiKV GRPC Duration
 
-按 `get`、`kv_prewrite`、 `kv_commit` 类型统计所有 TiKV 实例对 gRPC 请求的平均执行时间。
+按 `get`、`kv_prewrite`、 `kv_commit` 等类型统计所有 TiKV 实例对 gRPC 请求的平均执行时间。
 
 ## PD TSO Wait/RPC Duration
 
