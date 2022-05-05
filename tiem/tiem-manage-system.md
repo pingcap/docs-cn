@@ -1,11 +1,11 @@
 ---
 title: TiDB Enterprise Manager 系统管理
-summary: 了解如何通过 TiEM 管理 TiDB 系统。
+summary: 了解如何通过 TiEM 管理系统。
 ---
 
 # TiDB Enterprise Manager 系统管理
 
-本文档介绍如何通过 TiDB Enterprise Manager (TiEM) 管理 TiDB 系统。
+本文档介绍如何通过 TiDB Enterprise Manager (TiEM) 管理系统。
 
 ## 查看系统监控
 
