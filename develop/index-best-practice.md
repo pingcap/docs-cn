@@ -93,8 +93,6 @@ CREATE TABLE `books` (
     SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
     ```
 
-    // TODO: 等表达式索引 GA 后，添加表达式索引的示例。
-
 - 尽量使用覆盖索引，即索引列包含查询列，避免总是 `SELECT *` 查询所有列的语句。
 
     例如下面查询只需扫描索引 `title_published_at_idx` 数据即可获取查询列的数据：

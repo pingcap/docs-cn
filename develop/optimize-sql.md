@@ -19,8 +19,6 @@ tiup demo bookshop prepare --host 127.0.0.1 --port 4000 --books 1000000
 
 这条命令将会创建 [bookshop](/develop/bookshop-schema-design.md) 数据库和表，并导入数据。`--host` 和 `--port` 参数用于指定 TiDB 的地址信息。
 
-// TODO: 添加 tidb-cloud 导入数据的方法。
-
 ## 问题：全表扫描
 
 慢查询最常见的原因就是 `SELECT` 语句执行是全表扫描，或者是用了不合适的索引。
