@@ -95,6 +95,8 @@ CREATE TABLE `books` (
 
     也可以使用表达式索引，例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引：
 
+    {{< copyable "sql" >}}
+
     ```sql
     CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
     ```
