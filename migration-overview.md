@@ -24,8 +24,8 @@ summary: 总体描述各种数据迁移场景和对应的数据迁移方案。
 
 从 Aurora 迁移数据到部署在 AWS 的 TiDB 集群，数据迁移可以分为全量迁移和增量迁移两个步骤进行。请根据你的业务需求选择相应的步骤。
 
-- [从大数据量 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
-- [从小数据量 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb-by-dm.md)
+- [从大数据量 Aurora 迁移数据到 TiDB](/migrate-large-aurora-to-tidb.md)
+- [从小数据量 Aurora 迁移数据到 TiDB](/migrate-small-aurora-to-tidb.md)
 
 ## 迁移 MySQL 到 TiDB
 
