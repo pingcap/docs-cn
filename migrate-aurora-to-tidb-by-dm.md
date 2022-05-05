@@ -101,11 +101,19 @@ mydumpers:                           # dump 处理单元的运行配置参数
   configA:                           # 配置名称
     threads: 4                       # dump 处理单元从上游数据库实例导出数据和 check-task 访问上游的线程数量，默认值为 4
     chunk-filesize: 64               # dump 处理单元生成的数据文件大小，默认值为 64，单位为 MB
-    extra-args: "--consistency none" # Aurora 禁用了 ”super“ 权限，因此需要将 consistency 设为 none，否则会报错。
+    extra-args: "--consistency none" # Aurora 禁用了 ”super“ 权限，因此需要将 consistency 设为 none 或 lock，否则会报错。
 
 ```
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
+
+> **注意：**
+>
+> Dump 开始时将执行以下两条 SQL，以避免导出过程中 DDL 的影响，且 DDL 可能被阻塞。：
+> 
+> `SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ`
+> 
+> `START TRANSACTION /*!40108 WITH CONSISTENT SNAPSHOT */`
 
 ### 第 3 步： 启动任务
 
