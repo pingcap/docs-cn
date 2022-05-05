@@ -33,7 +33,7 @@ br backup raw --pd $PD_ADDR \
 
 - "raw"：不进行任何操作，将输入的字符串直接编码为二进制格式的键。
 - "hex"：将输入的字符串视作十六进制数字。这是默认的编码方式。
-- "escaped"：对输入的字符串进行转义（backslash-escaped）之后，再编码为二进制格式，格式类似于 'abc\xFF\x00\r\n'。
+- "escaped"：对输入的字符串进行转义（backslash-escaped）之后，再编码为二进制格式，格式类似于 `abc\xFF\x00\r\n`。
 
 > **注意：**
 >
