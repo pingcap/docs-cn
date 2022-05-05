@@ -14,8 +14,8 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 Relay log 的使用场景:
 
-- Mysql 的存储空间是有限制的，一般都会设置 binlog 的最长保存时间，当上游把 binlog 清除掉之后，如果 DM 还需要对应位置的 binlog 就会拉取失败，导致同步任务出错；
-- 若未开启 relay log ，DM 每增加一个同步任务都会在上游建立一条链接用于拉取 binlog，这样会对上游造成比较大的负载，开启 relay log 后同一个上游的多个同步任务可以复用已经拉倒本地的 relay log，这样就减少了对上游的压力；
+- MySQL 的存储空间是有限制的，一般都会设置 binlog 的最长保存时间，当上游把 binlog 清除掉之后，如果 DM 还需要对应位置的 binlog 就会拉取失败，导致同步任务出错。
+- 若未开启 relay log，DM 每增加一个同步任务都会在上游建立一条链接用于拉取 binlog，这样会对上游造成比较大的负载。开启 relay log 后，同一个上游的多个同步任务可以复用已经拉到本地的 relay log，这样就减少了对上游的压力。
 - all 类型的迁移任务中，DM 需要先进行全量数据迁移，再根据 binlog 增量同步。若全量阶段持续时间较长，上游 binlog 可能会被清除，导致增量同步无法进行。若先开启了 relay log，则 DM 会自动在本地保留足够的日志，保证增量任务正常进行。
 
 一般情况下建议开启 relay log ，但仍需知晓其可能导致的负面作用：
@@ -215,15 +215,13 @@ Relay log 的使用场景:
 
 ## 清理 relay log
 
-relay log  的清理 DM 提供了两种方式，手动清理和自动清理，需要注意的是这两种清理方法都不会清理活跃的 relay log 。
+DM 提供两种清理 relay log 的方式，手动清理和自动清理。需要注意，这两种清理方法都不会清理活跃的 relay log 。
 
 > **注意：**
 > 
-> 活跃的 relay log  定义：该 relay log  正在被同步任务使用。
+> - 活跃的 relay log：该 relay log  正在被同步任务使用。活跃的 relay log 当前只在 Syncer Unit 被更新和写入，假设一个为 All 模式的同步任务在全量导出/导入阶段花费了超过数据源 purge 里配置的过期时间，该 relay log  依旧会被清除。
 > 
-> 过期的 relay log  定义：该 relay log  文件最后被改动的时间与当前时间差值大于配置文件中的 `expires` 字段。
-> 
-> 活跃的 relay log 当前只在 Syncer Unit 被更新和写入，假设一个为 All 模式的同步任务在全量导出/导入阶段花费了超过数据源 purge 里配置的过期时间，该 relay log  依旧会被清除。
+> - 过期的 relay log：该 relay log  文件最后被改动的时间与当前时间差值大于配置文件中的 `expires` 字段。
 
 ### 自动数据清理
 
