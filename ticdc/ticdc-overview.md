@@ -6,7 +6,7 @@ title: TiCDC 简介
 
 [TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款通过拉取 TiKV 变更日志实现的 TiDB 增量数据同步工具，具有将数据还原到与上游任意 TSO 一致状态的能力，同时提供[开放数据协议](/ticdc/ticdc-open-protocol.md) (TiCDC Open Protocol)，支持其他系统订阅数据变更。
 
-要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+要快速了解 TiCDC 的基本原理和使用方法，建议先观看下面的培训视频（时长 33 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+22.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+22.png"></video>
 
