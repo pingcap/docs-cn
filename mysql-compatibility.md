@@ -43,12 +43,9 @@ summary: 本文对 TiDB 和 MySQL 二者之间从语法和功能特性上做出�
 * `REPAIR TABLE` 语法
 * `OPTIMIZE TABLE` 语法
 * `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
-<<<<<<< HEAD
 * [`LOAD DATA`](/sql-statements/sql-statement-load-data.md) 和 `REPLACE` 关键字 [#24515](https://github.com/pingcap/tidb/issues/24515)
-=======
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
->>>>>>> 225b26b5a (Document four unsupported mysql syntax and statements (#9205))
 
 ## 与 MySQL 有差异的特性详细说明
 
