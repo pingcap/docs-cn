@@ -233,7 +233,7 @@ pageMetaList.forEach((pageMeta) -> {
 
 对于非聚簇索引表（又被称为“非索引组织表”）而言，可以使用隐藏字段 `_tidb_rowid` 作为分页的 key，分页的方法与单列主键表中所介绍的方法相同。
 
-> **小贴士：**
+> **建议：**
 >
 > 你可以通过 `SHOW CREATE TABLE books;` 语句查看表主键是否使用了[聚簇索引](https://docs.pingcap.com/zh/tidb/stable/clustered-indexes)。
 
