@@ -92,7 +92,7 @@ password = ""
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/reparo -config reparo.toml
+./reparo -config reparo.toml
 ```
 
 > **注意：**
