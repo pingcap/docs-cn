@@ -170,7 +170,7 @@ collation = ""
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/sync_diff_inspector --config=./config.toml
+./sync_diff_inspector --config=./config.toml
 ```
 
 该命令最终会在 `config.toml` 中的 `output-dir` 输出目录输出本次比对的检查报告 `summary.txt` 和日志 `sync_diff.log`。在输出目录下还会生成由 `config.toml` 文件内容哈希值命名的文件夹，该文件夹下包括断点续传 checkpoint 结点信息以及数据存在不一致时生成的 SQL 修复数据。
