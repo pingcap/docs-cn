@@ -1,6 +1,6 @@
 ---
 title: TiSpark 用户指南
-aliases: ['/zh/tidb/v5.4/get-started-with-tispark/']
+aliases: ['/zh/tidb/v5.4/get-started-with-tispark/','/zh/tidb/stable/get-started-with-tispark/']
 ---
 
 # TiSpark 用户指南
