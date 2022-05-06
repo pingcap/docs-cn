@@ -138,12 +138,14 @@ shard-ddl-lock test
 
 用于主动请求 DM-master 解除指定的 DDL lock。
 
-1. [悲观模式](/dm/feature-shard-merge-pessimistic.md) `unlock` 包括操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
-2. [乐观模式](/dm/feature-shard-merge-optimistic.md) `unlock` 包括操作：请求指定的处于冲突状态的上游表 执行/跳过 冲突 DDL 操作，对其他非指定的表不会进行任何操作，若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
-
 > **注意：**
 >
-> `shard-ddl-lock unlock` 在 DM v6.0 以前版本仅对悲观协调模式 (`pessimistic`) 下产生的 lock 有效。
+> 在 DM v6.0 以前版本，`shard-ddl-lock unlock` 仅对悲观协调模式 (`pessimistic`) 下产生的 lock 有效。
+
+<SimpleTab>
+<div label="悲观模式">
+
+[悲观模式](/dm/feature-shard-merge-pessimistic.md) `unlock` 包括操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
 
 {{< copyable "shell-regular" >}}
 
@@ -184,7 +186,37 @@ Global Flags:
     - 非 flag 参数，string，必选
     - 指定需要执行 unlock 操作的 DDL lock ID（即 `shard-ddl-lock` 返回结果中的 `ID`）
 
-乐观模式相关参数
+</div>
+
+<div label="乐观模式">
+
+[乐观模式](/dm/feature-shard-merge-optimistic.md) `unlock` 包括操作：请求指定的处于冲突状态的上游表 执行/跳过 冲突 DDL 操作，对其他非指定的表不会进行任何操作，若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+shard-ddl-lock unlock -h
+```
+
+```
+Unlock un-resolved DDL locks forcely
+
+Usage:
+  dmctl shard-ddl-lock unlock <lock-id> [flags]
+
+Flags:
+  -a, --action string     accept skip/exec values which means whether to skip or execute ddls (default "skip")
+  -d, --database string   database name of the table
+  -f, --force-remove      force to remove DDL lock
+  -h, --help              help for unlock
+  -o, --owner string      source to replace the default owner
+  -t, --table string      table name
+
+Global Flags:
+  -s, --source strings   MySQL Source ID.
+```
+
+乐观模式相关参数：
 
 + `-a, --action`：
     - flag 参数，string，可选
@@ -206,6 +238,9 @@ Global Flags:
 + `lock-id`：
     - 非 flag 参数，string，必选
     - 指定需要执行 unlock 操作的 DDL lock ID（即 `shard-ddl-lock` 返回结果中的 `ID`）
+
+</div>
+</SimpleTab>
 
 以下是一个使用 `shard-ddl-lock unlock` 命令的示例：
 
@@ -476,7 +511,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### 手动处理示例
 
-假设上游有 MySQL-1（`mysql-replica-01`）和 MySQL-2（`mysql-replica-02`）两个实例，其中 MySQL-1 中有 `shardddl1`.`tb1` 一个表，MySQL-2 中有 `shardddl1`.`tb1` 和 `shardddl1`.`tb2` 两个表。现在需要将这 3 个表合并后迁移到下游 TiDB 的 `shardddl`.`tb` 表中。
+假设上游有 MySQL-1 (`mysql-replica-01`) 和 MySQL-2 (`mysql-replica-02`) 两个实例，其中 MySQL-1 中有 `shardddl1`.`tb1` 一个表，MySQL-2 中有 `shardddl1`.`tb1` 和 `shardddl1`.`tb2` 两个表。现在需要将这三个表合并后迁移到下游 TiDB 的 `shardddl`.`tb` 表中。
 
 初始表结构如下：
 
@@ -524,7 +559,7 @@ MySQL 及 DM 操作与处理流程如下：
     ALTER TABLE shardddl1.tb1 MODIFY b INT DEFAULT 0;
     ```
 
-2. DM-worker 接受到 `mysql-replica-01` 分表的 DDL 之后，将对应的 DDL 信息发送给 DM-master，DM-master 创建相应的 DDL lock。
+2. DM-worker 接收到 `mysql-replica-01` 分表的 DDL 之后，将对应的 DDL 信息发送给 DM-master，DM-master 创建相应的 DDL lock。
 3. 使用 `shard-ddl-lock` 查看当前的 DDL lock 信息。
 
    {{< copyable "shell-regular" >}}
@@ -566,6 +601,9 @@ MySQL 及 DM 操作与处理流程如下：
     shard-ddl-lock test
     ```
 
+    <details>
+    <summary>期望输出</summary>
+
     ```
     {
         "result": true,
@@ -591,9 +629,14 @@ MySQL 及 DM 操作与处理流程如下：
     }
     ```
 
+    </details>
+
     ```bash
     query-status test
     ```
+
+    <details>
+    <summary>期望输出</summary>
 
     ```
     ...
@@ -625,6 +668,8 @@ MySQL 及 DM 操作与处理流程如下：
         }
     ...
     ```
+
+    </details>
 
 6. DM-master 上 ID 为 ```test-`shardddl`.`tb` ``` 的 lock 无法为 `mysql-replica-02` 上的 `shardddl1`.`tb1` 的 DDL 生成兼容表结构，`shard-ddl-lock` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
 
@@ -697,4 +742,4 @@ MySQL 及 DM 操作与处理流程如下：
 
 > **注意：**
 >
-> 在某些场景下 `shard-ddl-lock unlock` 时，如果下游不进行手动处理，可能会引起上下游数据不一致。
+> 在某些场景下运行 `shard-ddl-lock unlock` 时，如果下游不进行手动处理，可能会引起上下游数据不一致。
