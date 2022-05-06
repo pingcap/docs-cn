@@ -33,12 +33,14 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 - 执行 DDL 时要注意观察 DM 迁移状态。当迁移报错时，需要判断这个批次的 DDL 是否会造成数据不一致。
 
 “乐观协调”模式时，上游在执行**不兼容**的 DDL 时，需要**保证该 DDL 在各分表中按相同的顺序**执行。**不兼容**的 DDL 是指改变列名，列属性，或列默认值的 DDL。如：
+
 - `ALTER TABLE table_name MODIFY COLUMN column_name VARCHAR(20)`（修改列的类型）。
 - `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`（重命名列）。
 - `ALTER TABLE table_name ADD COLUMN column_1 NOT NULL;`（增加没有默认值且非空的列）。
 - `ALTER TABLE table_name RENAME INDEX index_1 TO index_2;`（重命名索引）。
 
 各分表在执行以上 DDL 时，若顺序不同，将导致同步中断，如：
+
 - 分表 1 先重名列，再修改列类型
     1. `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`（重命名列）。
     2. `ALTER TABLE table_name MODIFY COLUMN column_3 VARCHAR(20);`（修改列类型）。
