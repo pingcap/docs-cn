@@ -73,7 +73,7 @@ The following are the basics of TiDB Lightning:
 
 > **Note:**
 >
-> The Loader tool is no longer maintained. For scenarios related to Loader, it is recommended that you use the `tidb` mode of TiDB Lighting instead. For details, see [TiDB Lightning TiDB backends](/tidb-lightning/tidb-lightning-backends.md#migrating-from-loader-to-tidb-lightning-tidb-backend).
+> The Loader tool is no longer maintained. For scenarios related to Loader, it is recommended that you use TiDB-backend instead.
 
 ### Backup and restore
 
