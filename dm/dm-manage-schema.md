@@ -15,11 +15,11 @@ DM 执行增量迁移时，首先读取上游的 binlog，然后生成 SQL 语�
 
 DM 中的 schema 信息来源包括以下几部分：
 
-1. 执行全量数据迁移（task-mode=all）时，任务将经过 dump/load/sync （全量导出/全量导入/增量同步）三个阶段。dump 阶段将表结构信息随着数据一并导出，并自动在下游创建相关表。sync 阶段时即以该表结构作为起始的表结构信息；
-2. sync 阶段中，处理 DDL 语句（如 alter table）时，DM 执行该语句的同时更新内部维护的表结构信息；
-3. 如果任务是增量迁移（task-mode=incremental），下游已经将待迁移的表创建完成，DM 会从下游数据库获取该表的结构信息（此行为随版本变化而不同）。
+1. 执行全量数据迁移 (`task-mode=all`) 时，任务将经过 dump/load/sync（全量导出/全量导入/增量同步）三个阶段。dump 阶段将表结构信息随着数据一并导出，并自动在下游创建相关表。sync 阶段时以该表结构作为起始的表结构信息。
+2. sync 阶段中，处理 DDL 语句（如 `ALTER TABLE`）时，DM 执行该语句的同时更新内部维护的表结构信息。
+3. 如果任务是增量迁移 (`task-mode=incremental`)，下游已经将待迁移的表创建完成，DM 会从下游数据库获取该表的结构信息（此行为随版本变化而不同）。
 
-增量迁移过程的 Schema 信息维护较为复杂，在整个数据链路中包含以下几类可能相同或不同的表结构。
+增量迁移过程的 schema 信息维护较为复杂，在整个数据链路中包含以下几类可能相同或不同的表结构。
 
 ![表结构](/media/dm/operate-schema.png)
 
@@ -32,9 +32,9 @@ DM 中的 schema 信息来源包括以下几部分：
 
 需要注意以下不一致的情况：
 
-- 在开启[乐观 shard DDL 支持](/dm/feature-shard-merge-optimistic.md) 的数据迁移过程中，下游合并表的 `schema-D` 可能与部分分表对应的 `schema-B` 及 `schema-I` 并不一致，但 DM 仍保持 `schema-I` 与 `schema-B` 的一致以确保能正常解析 DML 对应的 binlog event。
+- 在开启[乐观 shard DDL 支持](/dm/feature-shard-merge-optimistic.md)的数据迁移过程中，下游合并表的 `schema-D` 可能与部分分表对应的 `schema-B` 及 `schema-I` 并不一致，但 DM 仍保持 `schema-I` 与 `schema-B` 的一致，以确保能正常解析 DML 对应的 binlog event。
 
-- 下游比上游多部分列，`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。`task-mode=all`时 DM 会自动处理，而`task-mode=incremental`时，由于任务首次启动，内部尚无 Schema 信息，DM 将自动读取下游表结构即 `schema-D`，更新自身的`schema-I`(此行为随版本变化而不同)。之后 DM 使用`schema-I`解析`schema-B`的 binlog 将会导致`Column count doesn't match value count`错误，详情可参考：[下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
+- 当下游比上游多部分列时，`schema-D` 也可能会与 `schema-B` 及 `schema-I` 并不一致。全量数据迁移 (`task-mode=all`) 时 DM 会自动处理不一致的情况；而增量迁移 (`task-mode=incremental`) 时，由于任务首次启动，内部尚无 Schema 信息，DM 将自动读取下游表结构，即 `schema-D`，更新自身的 `schema-I`(此行为随版本变化而不同)。在此之后，如果 DM 使用 `schema-I` 解析 `schema-B` 的 binlog，将会导致 `Column count doesn't match value count` 错误，详情可参考：[下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
 
 `binlog-schema` 命令可以获取、修改、删除 DM 内部维护的表结构 `schema-I`。
 
