@@ -1,11 +1,12 @@
 ---
-title: 从 TiDB 同步增量数据至 Apache Kafka
-summary: 了解如何从 TiDB 集群同步增量数据至 Apache Kafka 集群。
+title: 从 TiDB 同步数据至 Apache Kafka
+summary: 了解如何从 TiDB 集群同步数据至 Apache Kafka 集群。
+aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 ---
 
-# 从 TiDB 同步增量数据至 Kafka
+# 从 TiDB 同步数据至 Apache Kafka
 
-本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的增量数据同步到 Apache Kafka。主要包含以下内容：
+本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的数据同步到 Apache Kafka。主要包含以下内容：
 
 - 快速搭建 TiCDC 集群和 Kafka 集群
 - 创建以 Kafka 为 sink 的 changefeed
