@@ -111,6 +111,25 @@ For the incremental data migration mode (`task-mode: incremental`), in addition 
 
 For the full and incremental data migration mode (`task-mode: all`), in addition to the [common check items](#common-check-items), the precheck also includes the [full data migration check items](#check-items-for-full-data-migration) and the [incremental data migration check items](#check-items-for-incremental-data-migration).
 
+### Ignorable check items
+
+Prechecks can find potential risks in your environments. It is not recommended to ignore check items. If your data migration task has special needs, you can use the [`ignore-checking-items` configuration item](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) to skip some check items.
+
+| Check item  | Description   |
+| :---------- | :------------ |
+| `dump_privilege`         | Checks the dump privilege of the user in the upstream MySQL instance. |
+| `replication_privilege` | Checks the replication privilege of the user in the upstream MySQL instance. |
+| `version`               | Checks the version of the upstream database. |
+| `server_id`             | Checks whether server_id is configured in the upstream database. |
+| `binlog_enable`         | Checks whether binlog is enabled in the upstream database. |
+| `table_schema`          | Checks the compatibility of the table schemas in the upstream MySQL tables. |
+| `schema_of_shard_tables`| Checks the consistency of the table schemas in the upstream MySQL multi-instance shards. |
+| `auto_increment_ID`     | Checks whether the auto-increment primary key conflicts in the upstream MySQL multi-instance shards. |
+
+> **Note:**
+>
+> More ignorable check items are supported in versions earlier than v6.0. Since v6.0, DM does not allow ignoring some check items related to data safety. For example, if you configure the `binlog_row_image` parameter incorrectly, data might be lost during the replication.
+
 ## Configure precheck arguments
 
 The migration task precheck supports processing in parallel. Even if the number of rows in sharded tables reaches a million level, the precheck can be completed in minutes.
