@@ -74,7 +74,7 @@ TiDB Lightning supports:
 
 ## Could TiDB Lightning skip creating schema and tables?
 
-Yes. If you have already created the tables in the target database, you could set `no-schema = true` in the `[mydumper]` section in `tidb-lightning.toml`. This makes TiDB Lightning skip the `CREATE TABLE` invocations and fetch the metadata directly from the target database. TiDB Lightning will exit with error if a table is actually missing.
+Starting from v5.1, TiDB Lightning can automatically recognize the schema and tables in the downstream. If you use TiDB Lightning earlier than v5.1, you need to set `no-schema = true` in the `[mydumper]` section in `tidb-lightning.toml`. This makes TiDB Lightning skip the `CREATE TABLE` invocations and fetch the metadata directly from the target database. TiDB Lightning will exit with error if a table is actually missing.
 
 ## Can the Strict SQL Mode be disabled to allow importing invalid data?
 
@@ -292,7 +292,7 @@ See the [Checkpoints control](/tidb-lightning/tidb-lightning-checkpoints.md#chec
 
 1. Fix the schema so that the file is entirely in either UTF-8 or GB-18030.
 
-2. Manually `CREATE` the affected tables in the target database, and then set `[mydumper] no-schema = true` to skip automatic table creation.
+2. Manually `CREATE` the affected tables in the target database.
 
 3. Set `[mydumper] character-set = "binary"` to skip the check. Note that this might introduce mojibake into the target database.
 

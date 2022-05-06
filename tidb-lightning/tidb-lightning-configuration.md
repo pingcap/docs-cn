@@ -168,10 +168,7 @@ batch-import-ratio = 0.75
 
 # Local source data directory or the URL of the external storage.
 data-source-dir = "/data/my_database"
-# If no-schema is set to true, tidb-lightning assumes that the table skeletons
-# already exist on the target TiDB cluster, and will not execute the `CREATE
-# TABLE` statements.
-no-schema = false
+
 # The character set of the schema files, containing CREATE TABLE statements;
 # only supports one of:
 #  - utf8mb4: the schema files must be encoded as UTF-8; otherwise, an error is reported.
@@ -429,7 +426,6 @@ min-available-ratio = 0.05
 | --tidb-status *port* | TiDB status port (default = 10080) | `tidb.status-port` |
 | --tidb-user *user* | User name to connect to TiDB | `tidb.user` |
 | --tidb-password *password* | Password to connect to TiDB. The password can either be plaintext or Base64 encoded. | `tidb.password` |
-| --no-schema | Ignore schema files, get schema directly from TiDB | `mydumper.no-schema` |
 | --enable-checkpoint *bool* | Whether to enable checkpoints (default = true) | `checkpoint.enable` |
 | --analyze *level* | Analyze tables after importing. Available values are "required", "optional" (default value), and "off" | `post-restore.analyze` |
 | --checksum *level* | Compare checksum after importing. Available values are "required" (default value), "optional", and "off" | `post-restore.checksum` |
