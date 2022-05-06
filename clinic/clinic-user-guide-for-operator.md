@@ -5,14 +5,14 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 
 # 在 Operator 部署环境使用 Clinic 诊断服务
 
-对于使用 TiDB Operator 部署的集群，Clinic 诊断服务可以通过 Clinic Diag 诊断客户端与 Clinic Server 云服务对该集群进行数据采集和集群快速诊断。
+对于使用 TiDB Operator 部署的 TiDB 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 Clinic Server 云诊断平台（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
 > **注意：**
 > 
-> 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](/ clinic-user-guide-for-tiup.md)。
-> Clinic 诊断服务暂时**不支持**对 TiDB Ansible 部署的集群进行数据采集。
+> 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](/clinic/clinic-user-guide-for-tiup.md)。
+> PingCAP Clinic 暂时**不支持**对 TiDB Ansible 部署的集群进行数据采集。
 
-对于使用 TiDB Operator 部署的集群，Clinic Diag 需要部署为一个独立的 Pod。本文介绍如何使用 kubectl 命令创建并部署 Diag pod 后，通过 API 调用继续数据采集和快速检查。
+对于使用 TiDB Operator 部署的集群，Clinic Diag 需要部署为一个独立的 Pod。本文介绍如何使用 `kubectl` 命令创建并部署 Diag pod 后，通过 API 调用继续数据采集和快速检查。
 
 ## 使用场景
 
@@ -534,7 +534,8 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload
 
 ### 可选操作：本地查看数据
 
-采集完成的数据会保存在 Pod 的 ` /diag/collector/diag-${id}` 目录中，可以通过以下方法进入 Pod 查看此数据：
+采集完成的数据会保存在 Pod 的 `/diag/collector/diag-${id}` 目录中，可以通过以下方法进入 Pod 查看此数据：
+
 #### 1. 获取 `diag-collector-pod-name`
 
 ```bash
@@ -543,6 +544,7 @@ tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running   
 ```
 
 其中，Diag Pod 的名称为 `diag-collector-69bf78478c-nvt47`，其所在的 `namespace` 为 `tidb-admin`。
+
 #### 2. 进入 Pod 并查看数据
 
 ```bash
@@ -551,9 +553,11 @@ cd  /diag/collector/diag-${id}
 ```
 
 其中，`${namespace}` 需要替换为 TiDB Operator 所在的 `namespace` 名称（通常为 `tidb-admin`）。
+
 ## 使用 Clinic Diag 工具快速诊断集群
 
 Clinic 诊断服务支持对集群的健康状态进行快速地诊断，主要支持检查配置项内容，快速发现不合理的配置项。
+
 ### 使用步骤
 
 本节详细介绍通过 Clinic 诊断服务快速诊断使用 TiDB Operator 部署的集群的具体方法。

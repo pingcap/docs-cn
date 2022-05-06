@@ -33,7 +33,7 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 慢日志| `tidb_slow_query.log` | `--include=log` |
 | 配置文件 | `tidb.toml` | `--include=config` |
 | 实时配置| `config.json` | `--include=config` |
-| 性能数据 | `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf` （默认不采集） |
+| 性能数据 | `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf`（默认不采集） |
 
 ### TiKV 诊断数据
 
