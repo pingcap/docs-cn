@@ -12,25 +12,25 @@ title: Data Migration 高可用机制
 
 ![dm-ha-1](/media/dm/dm-ha-1.png)
 
-- **Grpc 和 Http 接口。** DM Master 对外提供 Grpc 以及 Http 接口给其他组件，如 dmctl，WebUI，DM worker调用，DM Master 的 Follower 节点，收到 Grpc 和 Http 请求也会 redirect 给 DM Master 的 Leader 节点进行处理。
+- **gRPC 和 HTTP 接口。** DM Master 对外提供 gRPC 以及 HTTP 接口给其他组件，如 dmctl，WebUI，DM worker调用，DM Master 的 Follower 节点，收到 gRPC 和 HTTP 请求也会 redirect 给 DM Master 的 Leader 节点进行处理。
 
-- **ETCD。** DM Master 内部嵌入 ETCD 来组成集群，DM Master 的 Grpc 和 Http 接口 attach 到 ETCD 中，同时，ETCD 也作为 DM Master, DM Worker, Source, Task 等配置或者状态的存储介质。
+- **etcd。** DM Master 内部嵌入 etcd 来组成集群，DM Master 的 gRPC 和 HTTP 接口 attach 到 etcd 中，同时，etcd 也作为 DM Master, DM Worker, Source, Task 等配置或者状态的存储介质。
 
-- **Election。** Election 周期调用 ETCD 的 campaign 接口进行选举，若为 Leader 节点，则启动 DM Master的其他组件，如 Scheduler, Pessimist, Optimist等，各组件的启动会读取 ETCD 中保存的信息，实现相关任务的接续执行，若为 Follower，则不启动其他组件，若为 Leader 切换回 Follower，则会关闭其他组件。
+- **Election。** Election 周期调用 etcd 的 campaign 接口进行选举，若为 Leader 节点，则启动 DM Master的其他组件，如 Scheduler, Pessimist, Optimist等，各组件的启动会读取 etcd 中保存的信息，实现相关任务的接续执行，若为 Follower，则不启动其他组件，若为 Leader 切换回 Follower，则会关闭其他组件。
 
 - **Scheduler。** 负责注册及监听 DM Worker 状态，安排分配 Source 以及 Task，可参考 DM Worker 任务分配的相关文档进一步了解
 
 - **Pessimist 和 Optimist。** DM Master 实现对 DDL 进行悲观协调以及乐观协调的模块
 
-- **Dmctl/WebUI 调用流程。** Dmctl 和 WebUI 分别调用DM Master grpc 和 http 接口，若非 Leader 节点，则进行 redirect 给 Leader 节点，若 Dmctl 和 WebUI 请求需要调用 DM Worker 进行信息收集或者操作，则通过 DM Master 的 Scheduler 模块通过 Grpc 接口调用 DM Worker。
+- **dmctl/WebUI 调用流程。** dmctl 和 WebUI 分别调用DM Master gRPC 和 HTTP 接口，若非 Leader 节点，则进行 redirect 给 Leader 节点，若 dmctl 和 WebUI 请求需要调用 DM Worker 进行信息收集或者操作，则通过 DM Master 的 Scheduler 模块通过 gRPC 接口调用 DM Worker。
 
-- **DM Master 与 DM Worker 调用流程。** DM Worker 启动时会 grpc 调用 DM Master 来注册 worker 信息，DM Master 主要调用 Scheduler 模块实现相关的逻辑，其中，Scheduler 会将 worker 信息写入到 ETCD，并对其进行监听，DM Worker注册之后，DM Worker 会通过 ETCD 实现 Keep-Alive，若 DM Worker 发生故障，DM Master 的 Scheduler 模块的监听会发现该 DM Worker 出现故障，从而将该 DM Worker 上的相关任务进行转移。
+- **DM Master 与 DM Worker 调用流程。** DM Worker 启动时会 gRPC 调用 DM Master 来注册 worker 信息，DM Master 主要调用 Scheduler 模块实现相关的逻辑，其中，Scheduler 会将 worker 信息写入到 etcd，并对其进行监听，DM Worker注册之后，DM Worker 会通过 etcd 实现 Keep-Alive，若 DM Worker 发生故障，DM Master 的 Scheduler 模块的监听会发现该 DM Worker 出现故障，从而将该 DM Worker 上的相关任务进行转移。
 
 ## DM Master 高可用机制
 
 ### DM Master 服务恢复
 
-从上文 DM Master 的架构可以看出，DM Master 的高可用实际上主要依赖内嵌的 ETCD 实现，若某一 DM Master 节点发生故障，DM Master 的 Election 模块会使用 ETCD 选举出新的 Leader 节点，新的 Leader 节点会启动 DM Master 相关组件，且组件启动会读取保存于 ETCD 中的信息，做到接续执行。
+从上文 DM Master 的架构可以看出，DM Master 的高可用实际上主要依赖内嵌的 etcd 实现，若某一 DM Master 节点发生故障，DM Master 的 Election 模块会使用 etcd 选举出新的 Leader 节点，新的 Leader 节点会启动 DM Master 相关组件，且组件启动会读取保存于 etcd 中的信息，做到接续执行。
 
 ### 其他组件恢复访问
 
@@ -38,7 +38,7 @@ DM Master 之外的组件，如 dmctl, DM Worker, 调用 DM Master 接口，可�
 
 ### DM Master 恢复主要受到哪些影响，恢复速度主要取决于哪些因素 
 
-由上文可知，DM Master 集群的 Leader 出现节点故障之后，会由 Election 模块重新选举一个 Leader, 此过程主要受到 ETCD 性能影响，新的 Leader 需要重新启动 Scheduler，Pessimist 和 Optimist 等模块，此过程主要需要读取保存于 ETCD 中的各模块信息，实现接续执行，但此过程只是内存中实例构建，耗时不大，因此，耗时主要取决于 ETCD 集群的恢复时间。
+由上文可知，DM Master 集群的 Leader 出现节点故障之后，会由 Election 模块重新选举一个 Leader, 此过程主要受到 etcd 性能影响，新的 Leader 需要重新启动 Scheduler，Pessimist 和 Optimist 等模块，此过程主要需要读取保存于 etcd 中的各模块信息，实现接续执行，但此过程只是内存中实例构建，耗时不大，因此，耗时主要取决于 etcd 集群的恢复时间。
 
 ## DM Worker 高可用机制
 
@@ -102,7 +102,7 @@ DM Worker 重新上线也与上述流程基本一致，如果寻找到符合条�
 
 ## DM 集群跨区域高可用
 
-由上文可知，DM Master 的高可用依赖于 ETCD 实现，而 ETCD 高可用需要过半数节点存活。若仅考虑最大服务可用性，建议部署时选择奇数（≥3）个 Region/AZ 部署。DM Master 每个 Region/AZ 至少部署 1 个以避免单个 Region/AZ 故障导致 DM 集群无法服务。
+由上文可知，DM Master 的高可用依赖于 etcd 实现，而 etcd 高可用需要过半数节点存活。若仅考虑最大服务可用性，建议部署时选择奇数（≥3）个 Region/AZ 部署。DM Master 每个 Region/AZ 至少部署 1 个以避免单个 Region/AZ 故障导致 DM 集群无法服务。
 
 由于单个 worker 仅能服务一个 source，因此每个 Region/AZ 还需要部署足够数量的空闲 worker，当某个 Region/AZ 故障时足以容纳该  Region/AZ 的所有 source。
 
