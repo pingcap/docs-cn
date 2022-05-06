@@ -5,7 +5,7 @@ summary: 本文介绍了基于数据库时间的系统优化方法，以及如�
 
 # TiDB 性能分析和优化
 
-本文介绍了基于数据库时间的系统优化方法，以及如何利用 TiDB [Performance Overview 面板](grafana-performance-overview-dashboard.md)进行性能分析和优化。
+本文介绍了基于数据库时间的系统优化方法，以及如何利用 TiDB [Performance Overview 面板](/grafana-performance-overview-dashboard.md)进行性能分析和优化。
 
 通过本文中介绍的方法，你可以从全局、自顶向下的角度分析用户响应时间和数据库时间，确认用户响应时间的瓶颈是否在数据库中。如果瓶颈在数据库中，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。
 
