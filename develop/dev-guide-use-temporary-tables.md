@@ -123,8 +123,8 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 
         while (rs.next()) {
             Author author = new Author();
-            author.id = rs.getLong("id");
-            author.name = rs.getString("name");
+            author.setId(rs.getLong("id"));
+            author.setName(rs.getString("name"));
             authors.add(author);
         }
     }
@@ -193,8 +193,8 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
         conn.commit();
         while (rs.next()) {
             Author author = new Author();
-            author.id = rs.getLong("id");
-            author.name = rs.getString("name");
+            author.setId(rs.getLong("id"));
+            author.setName(rs.getString("name"));
             authors.add(author);
         }
     }
