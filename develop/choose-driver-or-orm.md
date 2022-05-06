@@ -21,7 +21,9 @@ TiDB 与 MySQL 有差异：
 
 ## Java
 
-> 支持等级说明
+> **说明：**
+>
+> 支持等级
 >
 > - Full: 此 Driver 或 ORM 没有已知的 issues
 > - Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
@@ -49,7 +51,7 @@ TiDB 与 MySQL 有差异：
 
 支持等级：**Full**
 
-> 注意：
+> **注意：**
 >
 > Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 当前版本也[不支持 Savepoint](https://github.com/pingcap/tidb/issues/6840)。
 > 若你使用 Spring Data JPA 等框架，在 **@Transactional** 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
