@@ -66,7 +66,7 @@ You can configure DM-master by using [command-line parameters](#dm-master-comman
 The following is the description of DM-master command-line parameters:
 
 ```bash
-./bin/dm-master --help
+./dm-master --help
 ```
 
 ```
@@ -131,7 +131,7 @@ The following is the configuration file of DM-master. It is recommended that you
       {{< copyable "shell-regular" >}}
 
       ```bash
-      ./bin/dm-master -config conf/dm-master1.toml
+      ./dm-master -config conf/dm-master1.toml
       ```
 
       > **Note:**
@@ -151,7 +151,7 @@ The following is the description of the DM-worker command-line parameters:
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/dm-worker --help
+./dm-worker --help
 ```
 
 ```
@@ -207,7 +207,7 @@ The following is the DM-worker configuration file. It is recommended that you co
       {{< copyable "shell-regular" >}}
 
       ```bash
-      ./bin/dm-worker -config conf/dm-worker1.toml
+      ./dm-worker -config conf/dm-worker1.toml
       ```
 
 3. For DM-worker2, change `name` in the configuration file to `worker2`. Then repeat Step 2.

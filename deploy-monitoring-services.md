@@ -182,8 +182,10 @@ url = https://grafana.net
 
 Start the Grafana service:
 
+{{< copyable "shell-regular" >}}
+
 ```bash
-$ ./bin/grafana-server \
+./bin/grafana-server \
     --config="./conf/grafana.ini" &
 ```
 

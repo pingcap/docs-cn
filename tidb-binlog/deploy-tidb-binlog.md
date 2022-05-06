@@ -78,7 +78,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
 
 1. Deploy Pump using the binary.
 
-    - To view the command line parameters of Pump, execute `./bin/pump -help`:
+    - To view the command line parameters of Pump, execute `./pump -help`:
 
         ```bash
         Usage of Pump:
@@ -173,14 +173,14 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         {{< copyable "shell-regular" >}}
 
         ```bash
-        ./bin/pump -config pump.toml
+        ./pump -config pump.toml
         ```
 
         If the command line parameters is the same with the configuration file parameters, the values of command line parameters are used.
 
 2. Deploy Drainer using binary.
 
-    - To view the command line parameters of Drainer, execute `./bin/drainer -help`:
+    - To view the command line parameters of Drainer, execute `./drainer -help`:
 
         ```bash
         Usage of Drainer:
@@ -391,7 +391,7 @@ The following part shows how to use Pump and Drainer based on the nodes above.
         {{< copyable "shell-regular" >}}
 
         ```bash
-        ./bin/drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
+        ./drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
         ```
 
         If the command line parameter and the configuration file parameter are the same, the parameter value in the command line is used.

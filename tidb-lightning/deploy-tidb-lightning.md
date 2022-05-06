@@ -41,7 +41,7 @@ With the default replica count of 3, this means the total free space should be a
 Use the [`dumpling` tool](/dumpling-overview.md) to export data from MySQL by using the following command:
 
 ```sh
-./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+./dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 In this command,

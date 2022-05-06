@@ -131,7 +131,7 @@ Start all the services using:
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &
 ./bin/tikv-server --config=tikv.toml &>tikv.out &
-./bin/pump --config=pump.toml &>pump.out &
+./pump --config=pump.toml &>pump.out &
 sleep 3
 ./bin/tidb-server --config=tidb.toml &>tidb.out &
 ```
@@ -143,7 +143,7 @@ Expected output:
 [1] 20935
 [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tikv-server --config=tikv.toml &>tikv.out &
 [2] 20944
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/pump --config=pump.toml &>pump.out &
+[kolbe@localhost tidb-latest-linux-amd64]$ ./pump --config=pump.toml &>pump.out &
 [3] 21050
 [kolbe@localhost tidb-latest-linux-amd64]$ sleep 3
 [kolbe@localhost tidb-latest-linux-amd64]$ ./bin/tidb-server --config=tidb.toml &>tidb.out &
@@ -156,7 +156,7 @@ If you execute `jobs`, you should see a list of running daemons:
 [kolbe@localhost tidb-latest-linux-amd64]$ jobs
 [1]   Running                 ./bin/pd-server --config=pd.toml &>pd.out &
 [2]   Running                 ./bin/tikv-server --config=tikv.toml &>tikv.out &
-[3]-  Running                 ./bin/pump --config=pump.toml &>pump.out &
+[3]-  Running                 ./pump --config=pump.toml &>pump.out &
 [4]+  Running                 ./bin/tidb-server --config=tidb.toml &>tidb.out &
 ```
 
@@ -191,7 +191,7 @@ Start `drainer` using:
 
 ```bash
 sudo systemctl start mariadb
-./bin/drainer --config=drainer.toml &>drainer.out &
+./drainer --config=drainer.toml &>drainer.out &
 ```
 
 If you are using an operating system that makes it easier to install MySQL server, that's also OK. Just make sure it's listening on port 3306 and that you can either connect to it as user "root" with an empty password, or adjust drainer.toml as necessary.
@@ -331,17 +331,17 @@ Information about Pumps and Drainers that have joined the cluster is stored in P
 Use `binlogctl` to get a view of the current status of Pumps and Drainers in the cluster:
 
 ```bash
-./bin/binlogctl -cmd drainers
-./bin/binlogctl -cmd pumps
+./binlogctl -cmd drainers
+./binlogctl -cmd pumps
 ```
 
 Expected output:
 
 ```
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
+[kolbe@localhost tidb-latest-linux-amd64]$ ./binlogctl -cmd drainers
 [2019/04/11 17:44:10.861 -04:00] [INFO] [nodes.go:47] ["query node"] [type=drainer] [node="{NodeID: localhost.localdomain:8249, Addr: 192.168.236.128:8249, State: online, MaxCommitTS: 407638907719778305, UpdateTime: 2019-04-11 17:44:10 -0400 EDT}"]
 
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd pumps
+[kolbe@localhost tidb-latest-linux-amd64]$ ./binlogctl -cmd pumps
 [2019/04/11 17:44:13.904 -04:00] [INFO] [nodes.go:47] ["query node"] [type=pump] [node="{NodeID: localhost.localdomain:8250, Addr: 192.168.236.128:8250, State: online, MaxCommitTS: 407638914024079361, UpdateTime: 2019-04-11 17:44:13 -0400 EDT}"]
 ```
 
@@ -349,14 +349,14 @@ If you kill a Drainer, the cluster puts it in the "paused" state, which means th
 
 ```bash
 pkill drainer
-./bin/binlogctl -cmd drainers
+./binlogctl -cmd drainers
 ```
 
 Expected output:
 
 ```
 [kolbe@localhost tidb-latest-linux-amd64]$ pkill drainer
-[kolbe@localhost tidb-latest-linux-amd64]$ ./bin/binlogctl -cmd drainers
+[kolbe@localhost tidb-latest-linux-amd64]$ ./binlogctl -cmd drainers
 [2019/04/11 17:44:22.640 -04:00] [INFO] [nodes.go:47] ["query node"] [type=drainer] [node="{NodeID: localhost.localdomain:8249, Addr: 192.168.236.128:8249, State: paused, MaxCommitTS: 407638915597467649, UpdateTime: 2019-04-11 17:44:18 -0400 EDT}"]
 ```
 
@@ -369,15 +369,15 @@ There are 3 solutions to this issue:
 - Stop Drainer using `binlogctl` instead of killing the process:
 
     ```
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
+    ./binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers
+    ./binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=offline-drainer --node-id=localhost.localdomain:8249
     ```
 
 - Start Drainer _before_ starting Pump.
 - Use `binlogctl` after starting PD (but before starting Drainer and Pump) to update the state of the paused Drainer:
 
     ```
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=offline
+    ./binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=offline
     ```
 
 ## Cleanup
@@ -393,8 +393,8 @@ Expected output:
 ```
 kolbe@localhost tidb-latest-linux-amd64]$ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1; done
 [4]-  Done                    ./bin/tidb-server --config=tidb.toml &>tidb.out
-[5]+  Done                    ./bin/drainer --config=drainer.toml &>drainer.out
-[3]+  Done                    ./bin/pump --config=pump.toml &>pump.out
+[5]+  Done                    ./drainer --config=drainer.toml &>drainer.out
+[3]+  Done                    ./pump --config=pump.toml &>pump.out
 [2]+  Done                    ./bin/tikv-server --config=tikv.toml &>tikv.out
 [1]+  Done                    ./bin/pd-server --config=pd.toml &>pd.out
 ```
@@ -404,9 +404,9 @@ If you wish to restart the cluster after all services exit, use the same command
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &
 ./bin/tikv-server --config=tikv.toml &>tikv.out &
-./bin/drainer --config=drainer.toml &>drainer.out &
+./drainer --config=drainer.toml &>drainer.out &
 sleep 3
-./bin/pump --config=pump.toml &>pump.out &
+./pump --config=pump.toml &>pump.out &
 sleep 3
 ./bin/tidb-server --config=tidb.toml &>tidb.out &
 ```
