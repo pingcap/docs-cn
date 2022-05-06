@@ -32,18 +32,24 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
     - 例如：在分表执行过 `ADD COLUMN A INT; DROP COLUMN A; ADD COLUMN A FLOAT;`，在其他分表直接执行 `ADD COLUMN A FLOAT` 即可，不需要三条 DDL 都执行一遍。
 - 执行 DDL 时要注意观察 DM 迁移状态。当迁移报错时，需要判断这个批次的 DDL 是否会造成数据不一致。
 
-“乐观协调”模式暂不支持以下语句：
-
-- `ALTER TABLE table_name ADD COLUMN column_name datatype NOT NULL`（添加无默认值的 not null 的列）。
-- `ALTER TABLE table_name ADD COLUMN column_name datetime DEFAULT NOW()`（增加的列默认值不固定）。
-- `ALTER TABLE table_name ADD COLUMN col1 INT, DROP COLUMN col2`（在一个 DDL 语句中同时包含 `ADD COLUMN` 与 `DROP COLUMN`）。
+“乐观协调”模式时，上游在执行**不兼容**的 DDL 时，需要**保证该 DDL 在各分表中按相同的顺序**执行。**不兼容**的 DDL 是指改变列名，列属性，或列默认值的 DDL。如：
+- `ALTER TABLE table_name MODIFY COLUMN column_name VARCHAR(20)`（修改列的类型）。
 - `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`（重命名列）。
+- `ALTER TABLE table_name ADD COLUMN column_1 NOT NULL;`（增加没有默认值且非空的列）。
 - `ALTER TABLE table_name RENAME INDEX index_1 TO index_2;`（重命名索引）。
+
+各分表在执行以上 DDL 时，若顺序不同，将导致同步中断，如：
+- 分表 1 先重名列，再修改列类型
+    1. `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`（重命名列）。
+    2. `ALTER TABLE table_name MODIFY COLUMN column_3 VARCHAR(20);`（修改列类型）。
+- 分表 2 先修改列类型，再重命名列
+    1. `ALTER TABLE table_name MODIFY COLUMN column_3 VARCHAR(20)`（修改列的类型）。
+    2. `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`（重命名列）。
+
+请保证**不兼容**的 DDL 在各分表中**按相同的顺序**执行。
 
 此外，不论是使用“乐观协调”或“悲观协调”，DM 仍是有以下限制：
 
-- 增量复制任务需要确保开始迁移的 binlog position 对应的各分表的表结构必须一致。
-- 进入 sharding group 的新表必须与其他成员的表结构一致（正在执行一个 DDL 批次时禁止 `CREATE/RENAME TABLE`）。
 - 不支持 `DROP TABLE`/`DROP DATABASE`。
 - 不支持 `TRUNCATE TABLE`。
 - 单条 DDL 语句要求仅包含对一张表的操作。
