@@ -36,7 +36,7 @@ DELETE FROM {table} WHERE {filter}
 
 以下是删除行时需要遵循的一些最佳实践：
 
-- 始终在删除语句中指定 `WHERE` 子句。如果 `UPDATE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
+- 始终在删除语句中指定 `WHERE` 子句。如果 `DELETE` 没有 `WHERE` 子句，TiDB 将删除这个表内的**_所有行_**。
 - 需要删除大量行(数万或更多)的时候，使用[批量删除](#批量删除)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB）。
 - 如果你需要删除表内的所有数据，请勿使用 `DELETE` 语句，而应该使用 [TRUNCATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-truncate) 语句。
 - 查看 [性能注意事项](#性能注意事项)。
@@ -124,7 +124,7 @@ TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来
 
 ### 批量删除例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
+假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
 
 {{< copyable "" >}}
 

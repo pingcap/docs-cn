@@ -277,7 +277,7 @@ func placeHolder(n int) string {
 
 在 Java (JDBC) 中，批量更新程序可能会类似于以下内容：
 
-- Java 代码部分：
+**Java 代码部分：**
 
 {{< copyable "" >}}
 
@@ -411,7 +411,7 @@ public class BatchUpdateExample {
 }
 ```
 
-- `hibernate.cfg.xml` 配置部分：
+**`hibernate.cfg.xml` 配置部分：**
 
 {{< copyable "" >}}
 
