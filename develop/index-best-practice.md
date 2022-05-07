@@ -105,7 +105,7 @@ CREATE TABLE `books` (
 
     > **注意：**
     >
-    > TiDB 中，表达式索引目前是实验特性，需要在 TiDB 配置文件中开启表达式索引特性，详情可以参考 [表达式索引官方文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-index#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%B4%A2%E5%BC%95)。
+    > 表达式索引目前是 TiDB 的实验特性，需要在 TiDB 配置文件中开启表达式索引特性，详情可以参考 [表达式索引文档](/sql-statement-create-index.md#表达式索引)。
 
 - 尽量使用覆盖索引，即索引列包含查询列，避免总是 `SELECT *` 查询所有列的语句。
 
