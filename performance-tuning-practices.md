@@ -23,7 +23,7 @@ TiDB 提供了完善的性能诊断和分析功能，例如 TiDB Dashboard 的 [
 - 涉及业务的 SQL 语句：共 365 条，其中 89.5% 都是 select 语句，属于典型的 read heavy OLTP 场景。
 - 涉及交易的表：共 80 张，存在修改操作类的表为 12 张，其余 68 张表只读。
 - 应用程序使用的隔离级别： `read committed`。
-- TiDB 集群配置： 3 个 TiDB 节点和 3 个 TiKV 节点，各节点的 CPU 为 16 核。
+- TiDB 集群配置： 3 个 TiDB 节点和 3 个 TiKV 节点，各节点分配 16 CPU。
 - 客户端服务器配置： 36 CPU。
 
 ## 场景 1：使用 Query 接口
@@ -48,7 +48,7 @@ useServerPrepStmts=false
 
 ![flame-graph-for-query-interface](/media/performance/7.1.png)
 
-- ExecuteStmt cpu = 38% cpu time = 24.06s
+- ExecuteStmt cpu = 38% cpu time = 23.84s
 - Compile cpu = 27%  cpu time = 17.17s
 - Optimize cpu = 26% cpu time = 16.41s
 
@@ -64,7 +64,7 @@ useServerPrepStmts=false
 - CPS By Type 只有 query 1 种 command
 - Queries Using Plan Cache OPS 没有数据，说明无法命中执行计划缓存
 - execute 和 compile 的延迟在 query duration 中占比最高
-- avg QPS = 56.3k
+- avg QPS = 56.8k
 
 观察集群的资源消耗，TiDB CPU 的平均利用率为 925%， TiKV CPU 的平均利用率为 201%， TiKV IO 平均吞吐为 18.7 MB/s。TiDB 的资源消耗明显更高。
 
@@ -167,7 +167,7 @@ QPS 从 24.4k 下降到 19.7k，从 CPS By Type 面板可以看到应用程序�
 - Database Time by SQL Type 中 select 语句耗时最多，general 语句类型占比命令第二
 - Database Time by SQL Phase 中 execute 和 compile 占比最多
 - SQL Execute Time Overview 中占比最多的分别是 Get、Cop、Prewrite 和 tso_wait
-- CPS By Type 变成 3 种 command：StmtPrepare、StmtExecute、SmtmClose
+- CPS By Type 变成 3 种 command：StmtPrepare、StmtExecute、StmtClose
 - avg QPS = 19.7k (24.4k->19.7k)
 - 无法命中 plan cache
 
@@ -180,24 +180,24 @@ QPS 从 24.4k 下降到 19.7k，从 CPS By Type 面板可以看到应用程序�
 ![](/media/performance/3.4.png)
 
 - avg query duration = 528μs (1.12ms->528μs)
-- avg parse duration = 14.8μs (84.7μs->14.8μs)
+- avg parse duration = 14.9μs (84.7μs->14.9μs)
 - avg compile duration = 374μs (370μs->374μs)
 - avg execution duration = 649μs (626μs->649μs)
 
 ### 分析结论
 
-和场景 2 不同的是，场景 3 启用了 prepare 预编译接口但是仍然无法命中缓存。此外，场景 2 的 CPS By Type 只有 query 这一种 command 类型，场景 3 多了 3 种 command 类型（stmtprepare、stmtexecute、smtmclose）。与场景 2 相比，相当于多了两次网络往返的延迟。
+和场景 2 不同的是，场景 3 启用了 prepare 预编译接口但是仍然无法命中缓存。此外，场景 2 的 CPS By Type 只有 query 这一种 command 类型，场景 3 多了 3 种 command 类型（StmtPrepare、StmtExecute、StmtClose）。与场景 2 相比，相当于多了两次网络往返的延迟。
 
-- QPS 的降低原因分析：从 CPS By Type 面板可以看到，场景 2 只有 query 这一种 command 类型，但场景 3 新增了 3 种 command 类型，即 stmtprepare、stmtexecute 和 smtmclose。其中，stmtexecute 和 query 为常规类型 command，会被 QPS 统计，而 stmtprepare 和 stmtclose 为非常规类型 command，不会被 QPS 统计，所以 QPS 降低了。非常规类型 command 的 stmtprepare 和 stmtclose 被统计在 general sql 类型中，因此可以看到 database overview 中多了 general 的时间，且占比在 database time 的四分之一以上。
-- 平均 query duration 明显降低原因分析：场景 3 新增了 stmtprepare 和 smtmclose 着两种 command 类型，TiDB 内部处理时，query duration 也会单独计算， 这两类命令处理速度很快，所以平均 query duration 明显被拉低。
+- QPS 的降低原因分析：从 CPS By Type 面板可以看到，场景 2 只有 query 这一种 command 类型，但场景 3 新增了 3 种 command 类型，即 StmtPrepare、StmtExecute 和 StmtClose。其中，StmtExecute 和 query 为常规类型 command，会被 QPS 统计，而 StmtPrepare 和 StmtClose 为非常规类型 command，不会被 QPS 统计，所以 QPS 降低了。非常规类型 command 的 StmtPrepare 和 StmtClose 被统计在 general sql 类型中，因此可以看到 database overview 中多了 general 的时间，且占比在 database time 的四分之一以上。
+- 平均 query duration 明显降低原因分析：场景 3 新增了 StmtPrepare 和 StmtClose 这两种 command 类型，TiDB 内部处理时，query duration 也会单独计算， 这两类命令处理速度很快，所以平均 query duration 明显被拉低。
 
-虽然场景 3 使用了 Prepare 预编译接口但是因为出现了 stmtclose 导致缓存失效，很多应用框架也会在 execute 后调用 close 方法来防止内存。从 v6.0.0 版本开始，你可以设置全局变量 `tidb_ignore_prepared_cache_close_stmt=on;`。这样，即使应用调用了 StmtClose 方法，TiDB 也不会清除缓存的执行计划，使得下一次的 SQL 执行能重用现有的执行计划，避免重复编译执行计划。
+虽然场景 3 使用了 Prepare 预编译接口但是因为出现了 StmtClose 导致缓存失效，很多应用框架也会在 execute 后调用 close 方法来防止内存泄漏。从 v6.0.0 版本开始，你可以设置全局变量 `tidb_ignore_prepared_cache_close_stmt=on;`。这样，即使应用调用了 StmtClose 方法，TiDB 也不会清除缓存的执行计划，使得下一次的 SQL 执行能重用现有的执行计划，避免重复编译执行计划。
 
 ## 场景 4：3 commands 和命中执行计划缓存
 
 ### 应用配置
 
-应用配置保持不变。设置以下参数，解决即使应用触发 stmtclose 导致无法命中缓存的问题。
+应用配置保持不变。设置以下参数，解决即使应用触发 StmtClose 导致无法命中缓存的问题。
 
 - 设置 TiDB 全局变量 `set global tidb_ignore_prepared_cache_close_stmt=on;`（TiDB v6.0.0 起正式使用，默认关闭)
 - 设置 TiDB 配置项 `prepared-plan-cache: {enabled: true}` 开启 plan cache 功能
@@ -300,11 +300,11 @@ TiDB CPU 平均利用率从 827% 下降到 577%，随着 QPS 的上升，TiKV CP
 ### 分析结论
 
 - 和场景 4 相比，场景 5 的 CPS By Type 只有 StmtExecute 这一种 command，减少了两次的网络往返，系统总体 QPS 上升。
-- QPS 上升的情况下，从 parse duration、compile duration、execution duration 来看延迟是降低的，query duration 反而上升了。这是因为，stmtprepare 和 stmtclose 处理的速度非常快，消除这两种 command 类型之后，query duration 就会上升。
+- QPS 上升的情况下，从 parse duration、compile duration、execution duration 来看延迟是降低的，query duration 反而上升了。这是因为，StmtPrepare 和 StmtClose 处理的速度非常快，消除这两种 command 类型之后，平均的 query duration 就会上升。
 - Database Time by SQL Phase 中 execute 占比非常高接近于 database time，同时 SQL Execute Time Overview 中占比最多的是 tso wait，超过四分之一的 execute 时间是在等待 tso。
 - 每秒的 tso wait 总时间为 5.46s。平均 tso wait 时间为 196 us，每秒的 tso cmd 次数为 28k，非常接近于 QPS 的 30.9k。因为在 TiDB 对于隔离级别 `read committed` 的实现中，事务中的每个 SQL 语句都需要都到 PD 请求 tso。
 
-TiDB v6.0 提供了 `rc read`，针对 `read committed` 隔离级别进行了减少 tso cmd 的优化。该功能由全局变量 `set global tidb_rc_read_check_ts=on;`控制。启用此变量后，TiDB 默认行为和 `repeatable-read` 隔离级别一致，只需要从 PD 获取start-ts 和 commit-ts。事务中的语句先使用 start-ts 从 TiKV 读取数据。如果读到的数据小于 start-ts，则直接返回数据；如果读到大于 start-ts 的数据，则需要丢弃数据，并向 PD 请求 tso 再进行重试。后续语句的 for update ts 使用最新的 pd tso。
+TiDB v6.0 提供了 `rc read`，针对 `read committed` 隔离级别进行了减少 tso cmd 的优化。该功能由全局变量 `set global tidb_rc_read_check_ts=on;`控制。启用此变量后，TiDB 默认行为和 `repeatable-read` 隔离级别一致，只需要从 PD 获取 start-ts 和 commit-ts。事务中的语句先使用 start-ts 从 TiKV 读取数据。如果读到的数据小于 start-ts，则直接返回数据；如果读到大于 start-ts 的数据，则需要丢弃数据，并向 PD 请求 tso 再进行重试。后续语句的 for update ts 使用最新的 PD tso。
 
 ## 场景 6：rc read
 
@@ -395,9 +395,9 @@ Query 平均延迟从 533 us 下降到 313 us。execute 平均延迟从 466 us �
 ![performance-overview-3-for-table-cache](/media/performance/new/j-7-duration.png)
 
 - avg query duration = 313μs (533μs->313μs)
-- avg parse duration = 12.0μs (13.4μs->12.0μs)
+- avg parse duration = 11.9μs (13.4μs->11.9μs)
 - avg compile duration = 47.7μs (50.3μs->47.7μs)
-- avg execution duration = 250μs (466μs->250μs)
+- avg execution duration = 251μs (466μs->251μs)
 
 ### 分析总结
 
@@ -416,12 +416,12 @@ Query 平均延迟从 533 us 下降到 313 us。execute 平均延迟从 466 us �
 
 其中，场景 2 是应用程序使用 query 接口的常见场景，场景 5 是应用程序使用 Prepared Statement 接口的理想场景。
 
-- 对比场景 2 和场景 5，通过使用最佳的应用开发实践以及客户端缓存 Prepared Statement 对象，每条 SQL 只需要一次命令和数据库交互，就能命中执行计划缓存，从而使 Query 延迟下降了 38%，QPS 上升 28%，同时，TiDB CPU 平均利用率 从 936% 下降 577%。
-- 对比场景 2 和场景 7，在场景 5 的基础上使用了 rc read、小表缓存等 TiDB 最新的优化功能，延迟降低了 51% ，QPS 提升了 108%，同时，TiDB CPU 平均利用率 从 936% 下降 478%。
+- 对比场景 2 和场景 5，我们可以发现通过使用最佳的应用开发实践以及客户端缓存 Prepared Statement 对象，每条 SQL 只需要一次命令和数据库交互，就能命中执行计划缓存，从而使 Query 延迟下降了 38%，QPS 上升 28%，同时，TiDB CPU 平均利用率 从 936% 下降 577%。
+- 对比场景 2 和场景 7，我们能看到在场景 5 的基础上使用了 RC Read、小表缓存等 TiDB 最新的优化功能，延迟降低了 51% ，QPS 提升了 108%，同时，TiDB CPU 平均利用率 从 936% 下降 478%。
 
 通过对比各场景的性能表现，可以得出以下结论：
 
-- TiDB 的执行计划缓存对于 OLTP 发挥着至关重要的作用。从 v6.0.0 引入的 RC Read 和小表缓存功能，在这个负载的深度优化中，也发挥了重要的作用。
+- TiDB 的执行计划缓存对于 OLTP 发挥着至关重要的作用。而从 v6.0.0 开始引入的 RC Read 和小表缓存功能，在这个负载的深度优化中，也发挥了重要的作用。
 - TiDB 兼容 MySQL 协议的不同命令，最佳的性能表现来自于应用程序使用 Prepared Statement 接口，并设置以下 JDBC 连接参数：
 
     ```
