@@ -21,10 +21,10 @@ TiDB 与 MySQL 有差异：
 
 ## Java
 
-> 支持等级说明
->
-> - Full: 此 Driver 或 ORM 没有已知的 issues
-> - Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
+支持等级说明
+
+- Full: 此 Driver 或 ORM 没有已知的 issues
+- Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
 
 ### Java Drivers
 
