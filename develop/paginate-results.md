@@ -235,7 +235,7 @@ pageMetaList.forEach((pageMeta) -> {
 
 > **建议：**
 >
-> 你可以通过 `SHOW CREATE TABLE books;` 语句查看表主键是否使用了[聚簇索引](https://docs.pingcap.com/zh/tidb/stable/clustered-indexes)。
+> 你可以通过 `SHOW CREATE TABLE books;` 语句查看表主键是否使用了[聚簇索引](/clustered-indexes)。
 
 例如：
 

@@ -25,7 +25,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 ### 使用本地集群
 
-此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb)。
+此处将简要叙述启动一个测试集群的过程，若需查看正式环境集群部署，或查看更详细的部署内容，请查阅[本地启动 TiDB](/quick-start-with-tidb)。
 
 **部署本地测试集群**
 
@@ -85,7 +85,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 >
 > - 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
-> - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](https://docs.pingcap.com/zh/tidb/stable/tiup-reference#-t---tag-string)。
+> - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference#-t---tag-string)。
 
 ## 第 2 步：安装 JDK
 
@@ -870,12 +870,12 @@ public class PlayerBean {
 - `@Table` 使用注解属性 `name` 将此实体类和表 `player_jpa` 关联。
 - `@Id` 声明此属性关联表的主键列。
 - `@GeneratedValue` 表示自动生成该列的值，而不应手动设置，使用属性 `generator` 指定生成器的名称为 `player_id`。
-- `@SequenceGenerator` 声明一个使用[序列](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence)的生成器，使用注解属性 `name` 声明生成器的名称为 `player_id` （与 `@GeneratedValue` 中指定的名称需保持一致）。随后使用注解属性 `sequenceName` 指定数据库中序列的名称。最后，使用注解属性 `allocationSize` 声明序列的步长为 1。
+- `@SequenceGenerator` 声明一个使用[序列](/sql-statements/sql-statement-create-sequence.md)的生成器，使用注解属性 `name` 声明生成器的名称为 `player_id` （与 `@GeneratedValue` 中指定的名称需保持一致）。随后使用注解属性 `sequenceName` 指定数据库中序列的名称。最后，使用注解属性 `allocationSize` 声明序列的步长为 1。
 - `@Column` 将每个私有属性声明为表 `player_jpa` 的一列，使用注解属性 `name` 确定属性对应的列名。
 
 #### 存储库
 
-为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会为我们实现一些预制的方法，比如 [INSERT](https://docs.pingcap.com/zh/tidb/stable/sql-statement-insert) ，或使用主键的 [SELECT](https://docs.pingcap.com/zh/tidb/stable/sql-statement-select) 等。
+为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会为我们实现一些预制的方法，比如 [INSERT](/sql-statements/sql-statement-insert.md) ，或使用主键的 [SELECT](/sql-statements/sql-statement-select.md) 等。
 
 {{< copyable "" >}}
 
@@ -935,7 +935,7 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 @Query(value = "SELECT * FROM player_jpa WHERE id = :id FOR UPDATE", nativeQuery = true)
 ```
 
-直接使用 SQL 的 `FOR UPDATE` 来增加锁。你也可通过 TiDB [SELECT 文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-select) 进行更深层次的原理学习。
+直接使用 SQL 的 `FOR UPDATE` 来增加锁。你也可通过 TiDB [SELECT 文档](/sql-statements/sql-statement-select.md) 进行更深层次的原理学习。
 
 ### 逻辑实现
 

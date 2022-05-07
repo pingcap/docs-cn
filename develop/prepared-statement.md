@@ -5,7 +5,7 @@ summary: 介绍 TiDB 的预处理语句功能。
 
 # 预处理语句
 
-[预处理语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-prepare)是一种将多个仅有参数不同的 SQL 语句进行模板化的语句，它让 SQL 语句与参数进行了分离。我们可以用它提升 SQL 语句的：
+[预处理语句](/sql-statements/sql-statement-prepare.md)是一种将多个仅有参数不同的 SQL 语句进行模板化的语句，它让 SQL 语句与参数进行了分离。我们可以用它提升 SQL 语句的：
 
 - 安全性：因为参数和语句已经分离，所以避免了 [SQL 注入攻击](https://en.wikipedia.org/wiki/SQL_injection)的风险。
 - 性能：因为语句在 TiDB 端被预先解析，后续执行只需要传递参数，节省了完整 SQL 解析、拼接 SQL 语句字符串以及网络传输的代价。
@@ -29,11 +29,11 @@ PREPARE {prepared_statement_name} FROM '{prepared_statement_sql}';
 | `{prepared_statement_name}` |             预处理语句名称             |
 | `{prepared_statement_sql}`  | 预处理语句 SQL，以英文半角问号做占位符 |
 
-你可查看 [PREPARE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-prepare) 获得更多信息。
+你可查看 [PREPARE 语句](/sql-statements/sql-statement-prepare.md) 获得更多信息。
 
 ### 使用预处理语句
 
-预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable) 设置变量后，供 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 调用预处理语句。
+预处理语句仅可使用用户变量作为参数，因此，需先使用 [SET 语句](/sql-statements/sql-statement-set-variable.md) 设置变量后，供 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 调用预处理语句。
 
 {{< copyable "sql" >}}
 
@@ -48,7 +48,7 @@ EXECUTE {prepared_statement_name} USING @{parameter_name};
 |     `{parameter_value}`     |                              用户参数值                               |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-你可查看 [EXECUTE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-execute) 获得更多信息。
+你可查看 [EXECUTE 语句](/sql-statements/sql-statement-execute.md) 获得更多信息。
 
 ### 删除预处理语句
 
@@ -62,7 +62,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 | :-------------------------: | :-------------------------------------------------------------------: |
 | `{prepared_statement_name}` | 预处理语句名称，需和[创建预处理语句](#创建预处理语句)中定义的名称一致 |
 
-你可查看 [DEALLOCATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-deallocate) 获得更多信息。
+你可查看 [DEALLOCATE 语句](/sql-statements/sql-statement-deallocate.md) 获得更多信息。
 
 ## 例子
 

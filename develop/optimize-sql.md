@@ -71,7 +71,7 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 
 从执行计划中的 **TableFullScan_5** 可以看出，TiDB 将会对表 `books` 进行全表扫描，然后对每一行都判断 `title` 是否满足条件。**TableFullScan_5** 的 `estRows` 值为 `1000000.00`，说明优化器估计这个全表扫描会扫描 `1000000.00` 行数据。
 
-更多关于 `EXPLAIN` 的使用介绍，可以阅读 [使用 EXPLAIN 解读执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-walkthrough)。
+更多关于 `EXPLAIN` 的使用介绍，可以阅读 [使用 EXPLAIN 解读执行计划](/explain-walkthrough)。
 
 ### 解决方案：使用索引过滤数据
 
@@ -131,7 +131,7 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 
 **IndexLookUp_10** 执行计划的执行流程是先用 **IndexRangeScan_8** 算子通过 `title_idx` 索引获取符合条件的索引数据，然后 **TableRowIDScan_9** 再更据索引数据里面的 Row ID 回表查询相应的行数据。
 
-更多关于 TiDB 执行计划的内容，可以阅读[TiDB 执行计划概览](https://docs.pingcap.com/zh/tidb/stable/explain-overview)。
+更多关于 TiDB 执行计划的内容，可以阅读[TiDB 执行计划概览](/explain-overview)。
 
 ### 解决方案：使用索引查询数据
 
@@ -290,9 +290,9 @@ EXPLAIN SELECT * FROM books WHERE id = 896;
 
 ## 选择合适的 Join 执行计划
 
-见 [JOIN 查询的执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-joins)。
+见 [JOIN 查询的执行计划](/explain-joins)。
 
 ## 推荐阅读
 
-- [使用 EXPLAIN 解读执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-walkthrough)。
-- [用 EXPLAIN 查看索引查询的执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-indexes)。
+- [使用 EXPLAIN 解读执行计划](/explain-walkthrough)。
+- [用 EXPLAIN 查看索引查询的执行计划](/explain-indexes)。

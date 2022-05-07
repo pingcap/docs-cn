@@ -7,8 +7,8 @@ summary: 更新数据、批量更新数据的方法、最佳实践及例子。
 
 此页面将展示以下 SQL 语句，配合各种编程语言 TiDB 中的数据进行更新：
 
-- [UPDATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-update): 用于修改指定表中的数据。
-- [INSERT ON DUPLICATE KEY UPDATE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-insert): 用于插入数据，在有主键或唯一键冲突时，更新此数据。注意，**_不建议_**在有多个唯一键(包含主键)的情况下使用此语句。这是因为此语句在检测到任何唯一键(包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会更新一行数据。
+- [UPDATE](/sql-statements/sql-statement-update.md): 用于修改指定表中的数据。
+- [INSERT ON DUPLICATE KEY UPDATE](/sql-statements/sql-statement-insert.md): 用于插入数据，在有主键或唯一键冲突时，更新此数据。注意，**_不建议_**在有多个唯一键(包含主键)的情况下使用此语句。这是因为此语句在检测到任何唯一键(包括主键) 冲突时，将更新数据。在不止匹配到一行冲突时，将只会更新一行数据。
 
 ## 在开始之前
 
@@ -20,7 +20,7 @@ summary: 更新数据、批量更新数据的方法、最佳实践及例子。
 
 ## 使用 `UPDATE`
 
-需更新表中的现有行，需要使用带有 WHERE 子句的 [UPDATE 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-update)，即需要过滤列进行更新。
+需更新表中的现有行，需要使用带有 WHERE 子句的 [UPDATE 语句](/sql-statements/sql-statement-update.md)，即需要过滤列进行更新。
 
 > **注意：**
 >
@@ -45,14 +45,14 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 | `{filter_column}` | 匹配条件过滤器的列名 |
 | `{filter_value}`  | 匹配条件过滤器的列值 |
 
-此处仅展示 `UPDATE` 的简单用法，详细文档可参考 TiDB 的 [UPDATE 语法页](https://docs.pingcap.com/zh/tidb/stable/sql-statement-update)。
+此处仅展示 `UPDATE` 的简单用法，详细文档可参考 TiDB 的 [UPDATE 语法页](/sql-statements/sql-statement-update.md)。
 
 ### `UPDATE` 最佳实践
 
 以下是更新行时需要遵循的一些最佳实践：
 
 - 始终在更新语句中指定 `WHERE` 子句。如果 `UPDATE` 没有 `WHERE` 子句，TiDB 将更新这个表内的**_所有行_**。
-- 需要更新大量行(数万或更多)的时候，使用[批量更新](#批量更新)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)），或产生大量冲突（[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)）。
+- 需要更新大量行(数万或更多)的时候，使用[批量更新](#批量更新)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction)），或产生大量冲突（[乐观事务](/optimistic-transaction)）。
 
 ### `UPDATE` 例子
 
@@ -164,7 +164,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 需要更新表中多行的数据，可选择 [使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
 
-但如果你需要更新大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](https://docs.pingcap.com/zh/tidb/stable/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)），或产生大量冲突（[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)）。你可以在程序或脚本中使用循环来完成操作。
+但如果你需要更新大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction)），或产生大量冲突（[乐观事务](/optimistic-transaction)）。你可以在程序或脚本中使用循环来完成操作。
 
 本页提供了编写脚本来处理循环更新的示例，该示例演示了应如何进行 `SELECT` 和 `UPDATE` 的组合，完成循环更新。
 
@@ -178,7 +178,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 这时我们需要对 `ratings` 表内之前 5 分制的数据进行乘 2 操作，同时需向 `ratings` 表内添加一个新列，以指示行是否已经被更新了。使用此列，我们可以在 `SELECT` 中过滤掉已经更新的行，这将防止脚本崩溃时对行进行多次更新，导致不合理的数据出现。
 
-例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](https://docs.pingcap.com/zh/tidb/stable/data-type-numeric#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
+例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
 
 {{< copyable "sql" >}}
 
@@ -188,7 +188,7 @@ ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FA
 
 > **注意：**
 >
-> 此批量更新程序将使用 **DDL** 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](https://docs.pingcap.com/zh/tidb/stable/sql-statement-add-column) 语句。
+> 此批量更新程序将使用 **DDL** 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](/sql-statements/sql-statement-add-column.md) 语句。
 
 <SimpleTab>
 <div label="Golang">
