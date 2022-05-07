@@ -43,12 +43,12 @@ DELETE FROM {table} WHERE {filter}
 
 ## 例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
+假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [ratings](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 - 若返回条数大于 1 万，请查看并使用使用[批量删除](#批量删除)。
@@ -60,7 +60,7 @@ SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `r
 {{< copyable "sql" >}}
 
 ```sql
-DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 </div>
@@ -73,7 +73,7 @@ DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at`
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
 
 try (Connection connection = ds.getConnection()) {
-    PreparedStatement pstmt = connection.prepareStatement("DELETE FROM `rating` WHERE `rating_at` >= ? AND  `rating_at` <= ?");
+    PreparedStatement pstmt = connection.prepareStatement("DELETE FROM `ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?");
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.MILLISECOND, 0);
 
@@ -92,7 +92,7 @@ try (Connection connection = ds.getConnection()) {
 
 > **注意：**
 >
-> 此处需注意，`rating_at` 字段为[日期和时间类型](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](https://docs.pingcap.com/zh/tidb/stable/configure-time-zone)时，展示不同的时间字符串。
+> 此处需注意，`rated_at` 字段为[日期和时间类型](https://docs.pingcap.com/zh/tidb/stable/data-type-date-and-time) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](https://docs.pingcap.com/zh/tidb/stable/configure-time-zone)时，展示不同的时间字符串。
 >
 > 另外，和 MySQL 一样，`TIMESTAMP` 数据类型受 [2038 年问题](https://zh.wikipedia.org/wiki/2038%E5%B9%B4%E9%97%AE%E9%A2%98)的影响。如果存储的值大于 2038，建议使用 `DATETIME` 类型。
 
@@ -124,7 +124,7 @@ TiDB 使用[统计信息](https://docs.pingcap.com/zh/tidb/stable/statistics)来
 
 ### 批量删除例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
+假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [ratings](/develop/bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，我们应该是用循环删除的方式进行删除：
 
 {{< copyable "" >}}
 
