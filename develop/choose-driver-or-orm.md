@@ -21,9 +21,7 @@ TiDB 与 MySQL 有差异：
 
 ## Java
 
-> **建议：**
->
-> 支持等级
+> 支持等级说明
 >
 > - Full: 此 Driver 或 ORM 没有已知的 issues
 > - Verified: 你可能会因为 TiDB 兼容性问题，导致出现错误
@@ -34,7 +32,7 @@ TiDB 与 MySQL 有差异：
 
 支持等级：**Full**
 
-按照[官方文档](https://dev.mysql.com/doc/connector-j/8.0/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。
+按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/8.0/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。
 
 > 注意：
 >
