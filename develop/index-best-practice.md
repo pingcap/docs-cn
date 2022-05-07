@@ -101,7 +101,7 @@ CREATE TABLE `books` (
     CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
     ```
 
-    现在 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
 
     > 注意：
     >
