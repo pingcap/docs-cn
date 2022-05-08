@@ -101,11 +101,15 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 - macOS 安装：
 
+    {{< copyable "shell-regular" >}}
+
     ```
     brew install maven
     ```
 
 - 基于 Debian 的 Linux 发行版上安装(如 Ubuntu 等)：
+
+    {{< copyable "shell-regular" >}}
 
     ```
     apt-get install maven
@@ -115,11 +119,15 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 - dnf 包管理器
 
+    {{< copyable "shell-regular" >}}
+
     ```
     dnf install maven
     ```
 
 - yum 包管理器
+
+    {{< copyable "shell-regular" >}}
 
     ```
     yum install maven
@@ -755,7 +763,7 @@ spring:
 
 此配置格式为 [YAML](https://yaml.org/) 格式。其中：
 
-- `spring. datasource.url` : 数据库连接的 URL。
+- `spring.datasource.url` : 数据库连接的 URL。
 - `spring.datasource.url` : 数据库用户名。
 - `spring.datasource.password` : 数据库密码，此项为空，需注释或删除。
 - `spring.datasource.driver-class-name` : 数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`。

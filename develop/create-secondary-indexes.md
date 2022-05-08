@@ -142,7 +142,7 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 >
 > 执行计划并非每次返回使用的算子都相同，这是由于 TiDB 使用的优化方式为 **基于代价的优化方式 (CBO)**，执行计划不仅与规则相关，还和数据分布相关。你可以前往 [SQL 性能调优](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)文档查看更多 TiDB SQL 性能的描述。
 >
-> TiDB 在查询时，还支持显示的使用索引，你可以使用 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 或 [执行计划管理 (SPM)](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
+> TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 或 [执行计划管理 (SPM)](https://docs.pingcap.com/zh/tidb/stable/sql-plan-management) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
 我们可以使用 [SHOW INDEXES](https://docs.pingcap.com/zh/tidb/stable/sql-statement-show-indexes) 语句查询表中的索引：
 
