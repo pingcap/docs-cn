@@ -17,7 +17,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 
 ## 使用场景
 
-通过 PingCAP Clinic 的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
+通过 PingCAP Clinic 的 Diag 客户端，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
 
 - [使用 Clinic Diag 采集诊断数据](#使用-clinic-diag-采集诊断数据)
 - [使用 Clinic Diag 快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
@@ -28,7 +28,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 
 ### 第 1 步：准备环境
 
-Clinic Diag 部署前，请确认以下软件需求：
+Diag 部署前，请确认以下软件需求：
 
 * Kubernetes v1.12 或者更高版本
 * [TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-operator-overview)
@@ -49,21 +49,52 @@ pingcap/diag  v0.7.1         v0.7.1       clinic diag Helm chart for Kubernetes
 #### 检查部署用户的权限
 
 部署 Diag 所使用的用户需要具备创建以下类型 *Role* 和 *Cluster Role* 的权限：
-
+*Role* 权限：
 ```
 PolicyRule:
-  Resources                 Non-Resource URLs  Resource Names  Verbs
-  ---------                 -----------------  --------------  -----
-  pods                      []                 []              [get list]
-  secrets                   []                 []              [get list]
-  services                  []                 []              [get list]
-  tidbclusters.pingcap.com  []                 []              [get list]
-  tidbmonitors.pingcap.com  []                 []              [get list]
+  Resources                               Non-Resource URLs  Resource Names  Verbs
+  ---------                               -----------------  --------------  -----
+  serviceaccounts                         []                 []              [get create delete]
+  deployments.apps                        []                 []              [get create delete]
+  rolebindings.rbac.authorization.k8s.io  []                 []              [get create delete]
+  roles.rbac.authorization.k8s.io         []                 []              [get create delete]
+  secrets                                 []                 []              [get list create delete]
+  services                                []                 []              [get list create delete]
+  pods                                    []                 []              [get list]
+  tidbclusters.pingcap.com                []                 []              [get list]
+  tidbmonitors.pingcap.com                []                 []              [get list]
+```
+
+*Cluster Role* 权限：
+```
+PolicyRule:
+  Resources                                      Non-Resource URLs  Resource Names  Verbs
+  ---------                                      -----------------  --------------  -----
+  clusterrolebindings.rbac.authorization.k8s.io  []                 []              [get create delete]
+  clusterroles.rbac.authorization.k8s.io         []                 []              [get create delete]
+  pods                                           []                 []              [get list]
+  secrets                                        []                 []              [get list]
+  services                                       []                 []              [get list]
+  tidbclusters.pingcap.com                       []                 []              [get list]
+  tidbmonitors.pingcap.com                       []                 []              [get list]
 ```
 
 > **注意：**
 >
 > - 如果集群情况可以满足最小权限部署的条件，可以使用更小的权限。详情见[最小权限部署](#第-3-步部署-clinic-diag-pod)。
+
+可以通过以下步骤检查部署用户的权限：
+（1）查看部署用户绑定的 Role 角色 和 clusterRole 角色：
+```shell
+kubectl describe rolebinding -n ${namespace} | grep ${user_name} -A 7
+kubectl describe clusterrolebinding -n ${namespace} | grep ${user_name} -A 7
+```
+
+（2）查看对应角色具有的权限
+```shell
+kubectl describe role ${role_name} -n ${namespace}
+kubectl describe clusterrole ${clusterrole_name} -n ${namespace}
+```
 
 ### 第 2 步：登录 Clinic Server 获取 Access Token
 
@@ -75,7 +106,7 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 
 #### 创建组织
 
-用户第一次登录成功后，需要创建组织。根据页面提示输入组织名称，即可创建。创建成功后进入组织页面，可以获取 Token 后通过 Diag 客户端的命令行或接口上传。
+用户第一次登录成功后，需要创建组织。根据页面提示输入组织名称，即可创建。创建成功后进入组织页面，可以获取 Token 后通过 Diag 的命令行或接口上传。
 
 #### 获取客户端上传 Token
 
@@ -87,9 +118,9 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 >
 > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
 
-### 第 3 步：部署 Clinic Diag Pod
+### 第 3 步：部署 Diag Pod
 
-根据集群的网络连接情况，你可以选择以下方式部署 Clinic Diag Pod：
+根据集群的网络连接情况，你可以选择以下方式部署 Diag Pod：
 
 - 在线快速部署：如果集群所在的网络能访问互联网，并且使用默认配置参数，推荐使用快速部署方式。
 - 在线普通部署：如果集群所在的网络能访问互联网，需要自定义 Diag Pod 的配置参数，推荐使用在线普通部署方式。
@@ -99,7 +130,7 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 <SimpleTab>
 <div label="在线快速部署">
 
-1. 通过如下 helm 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
+1. 通过如下 helm 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像
 
     ```shell
     # namespace： 和 TiDB Operator 处于同一 namespace 中
@@ -111,7 +142,6 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
     > **注意：**
     >
     > 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
-    >
     >
     > {{< copyable "shell-regular" >}}
     >
@@ -309,14 +339,17 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
   最小权限部署会在部署的 namespace 中创建具备以下权限的 Role，需要部署 Diag 所使用的用户在 namespace 中有创建该类型 *Role* 的权限。
 
   ```
-  PolicyRule:
-    Resources                 Non-Resource URLs  Resource Names  Verbs
-    ---------                 -----------------  --------------  -----
-    pods                      []                 []              [get list]
-    secrets                   []                 []              [get list]
-    services                  []                 []              [get list]
-    tidbclusters.pingcap.com  []                 []              [get list]
-    tidbmonitors.pingcap.com  []                 []              [get list]
+  Resources                               Non-Resource URLs  Resource Names  Verbs
+  ---------                               -----------------  --------------  -----
+  serviceaccounts                         []                 []              [get create delete]
+  deployments.apps                        []                 []              [get create delete]
+  rolebindings.rbac.authorization.k8s.io  []                 []              [get create delete]
+  roles.rbac.authorization.k8s.io         []                 []              [get create delete]
+  secrets                                 []                 []              [get list create delete]
+  services                                []                 []              [get list create delete]
+  pods                                    []                 []              [get list]
+  tidbclusters.pingcap.com                []                 []              [get list]
+  tidbmonitors.pingcap.com                []                 []              [get list]
   ```
 
 2. 通过如下 helm 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
