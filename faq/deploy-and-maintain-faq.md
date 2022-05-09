@@ -11,7 +11,7 @@ summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法�
 
 操作系统版本要求如下表：
 
-| Linux 操作系统平台 | 版本 |
+| Linux 操作系统 | 版本 |
 | :--- | :--- |
 | Red Hat Enterprise Linux | 7.3 及以上 |
 | CentOS | 7.3 及以上 |
