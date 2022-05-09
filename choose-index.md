@@ -136,6 +136,6 @@ According to these factors and the cost model, the optimizer selects an index wi
 
 The index selection can be controlled by a single query through [Optimizer Hints](/optimizer-hints.md).
 
-- `USE_INDEX` / `IGNORE_INDEX` can force the optimizer to use / not use certain indexes.
+- `USE_INDEX` / `IGNORE_INDEX` can force the optimizer to use / not use certain indexes. `FORCE_INDEX` and `USE_INDEX` have the same effect.
 
 - `READ_FROM_STORAGE` can force the optimizer to choose the TiKV / TiFlash storage engine for certain tables to execute queries.

@@ -167,6 +167,23 @@ SELECT /*+ USE_INDEX(t1, idx1, idx2) */ * FROM t1;
 >
 > If you specify only the table name but not index name in this hint, the execution does not consider any index but scan the entire table.
 
+### FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+The `FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` hint tells the optimizer to use only the given index(es).
+
+The usage and effect of `FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` are the same as the usage and effect of `USE_INDEX(t1_name, idx1_name [, idx2_name ...])`.
+
+The following 4 queries have the same effect:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ USE_INDEX(t, idx1) */ * FROM t;
+SELECT /*+ FORCE_INDEX(t, idx1) */ * FROM t;
+SELECT * FROM t use index(idx1);
+SELECT * FROM t force index(idx1);
+```
+
 ### IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 The `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` hint tells the optimizer to ignore the given index(es) for a specified `t1_name` table. For example, applying the following hint has the same effect as executing the `select * from t t1 ignore index(idx1, idx2);` statement.
