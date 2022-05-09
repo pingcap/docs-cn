@@ -124,7 +124,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
         - 逻辑函数： `IS`，`IS NOT`
         - 字符串函数：`REGEXP()`，`NOT REGEXP()`
         - 数学函数：`GREATEST(int/real)`，`LEAST(int/real)`
-        - 日期函数：`DAYOFNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
+        - 日期函数：`DAYNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
         - 算子：Anti Left Outer Semi Join, Left Outer Semi Join
 
         [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)
