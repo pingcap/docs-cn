@@ -12,18 +12,18 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 > 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](/clinic/clinic-user-guide-for-tiup.md)。
 > PingCAP Clinic 暂时**不支持**对 TiDB Ansible 部署的集群进行数据采集。
 
-对于使用 TiDB Operator 部署的集群，Clinic Diag 需要部署为一个独立的 Pod。本文介绍如何使用 `kubectl` 命令创建并部署 Diag pod 后，通过 API 调用继续数据采集和快速检查。
+对于使用 TiDB Operator 部署的集群，Diag 需要部署为一个独立的 Pod。本文介绍如何使用 `kubectl` 命令创建并部署 Diag Pod 后，通过 API 调用继续数据采集和快速检查。
 
 ## 使用场景
 
-通过 Clinic 诊断服务的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
+通过 PingCAP Clinic 的 Diag 工具，你可以方便快速地获取诊断数据，为集群进行基础的诊断：
 
 - [使用 Clinic Diag 采集诊断数据](#使用-clinic-diag-采集诊断数据)
 - [使用 Clinic Diag 快速诊断集群](#使用-clinic-diag-工具快速诊断集群)
 
 ## Clinic Diag 安装
 
-本节详细介绍了安装 Clinic Diag 诊断客户端的步骤。
+本节详细介绍了安装 Clinic Diag 的步骤。
 
 ### 第 1 步：准备环境
 
@@ -517,7 +517,7 @@ curl -s http://${host}:${port}/api/v1/data/${id}
 
 ### 第 3 步：上传数据集
 
-把诊断数据提供给 PingCAP 技术支持人员时，需要将数据上传到 Clinic Server，然后将其数据链接发送给技术支持人员。Clinic Server 为 Clinic 诊断服务的云服务，可提供更安全的诊断数据存储和共享。
+把诊断数据提供给 PingCAP 技术支持人员时，需要将数据上传到 Clinic Server，然后将其数据链接发送给技术支持人员。Clinic Server 为 PingCAP Clinic 的云服务，可提供更安全的诊断数据存储和共享。
 
 #### 1. 发起上传任务
 
@@ -574,11 +574,11 @@ cd  /diag/collector/diag-${id}
 
 ## 使用 Clinic Diag 工具快速诊断集群
 
-Clinic 诊断服务支持对集群的健康状态进行快速地诊断，主要支持检查配置项内容，快速发现不合理的配置项。
+PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支持检查配置项内容，快速发现不合理的配置项。
 
 ### 使用步骤
 
-本节详细介绍通过 Clinic 诊断服务快速诊断使用 TiDB Operator 部署的集群的具体方法。
+本节详细介绍通过 PingCAP Clinic 快速诊断使用 TiDB Operator 部署的集群的具体方法。
 
 第 1 步：采集数据
 
