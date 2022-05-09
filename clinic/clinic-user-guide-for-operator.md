@@ -10,6 +10,7 @@ summary: 详细介绍在使用 TiDB Operator 部署的集群上如何通过 Ping
 > **注意：**
 >
 > 本文档**仅**适用于使用 TiDB Operator 部署的集群。如需查看适用于使用 TiUP 部署的集群，请参阅 [TiUP 环境的 Clinic 操作手册](/clinic/clinic-user-guide-for-tiup.md)。
+>
 > PingCAP Clinic 暂时**不支持**对 TiDB Ansible 部署的集群进行数据采集。
 
 对于使用 TiDB Operator 部署的集群，Diag 需要部署为一个独立的 Pod。本文介绍如何使用 `kubectl` 命令创建并部署 Diag Pod 后，通过 API 调用继续数据采集和快速检查。
@@ -37,7 +38,7 @@ Clinic Diag 部署前，请确认以下软件需求：
 
 #### 安装 Helm
 
-参考 [使用 Helm](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-toolkit#%E4%BD%BF%E7%94%A8-helm) 安装 Helm 并配置 PingCAP 官方 chart 仓库。
+参考 [使用 Helm](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-toolkit#%E4%BD%BF%E7%94%A8-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
 
 ```shell
 helm search repo diag
@@ -47,7 +48,7 @@ pingcap/diag  v0.7.1         v0.7.1       clinic diag Helm chart for Kubernetes
 
 #### 检查部署用户的权限
 
-Diag 部署过程中，需要创建具备以下权限的 *Role* 和 *Cluster Role* ，需要部署 Diag 所使用的用户有创建该类型 *Role* 和 *Cluster Role* 的权限。
+部署 Diag 所使用的用户需要具备创建以下类型 *Role* 和 *Cluster Role* 的权限：
 
 ```
 PolicyRule:
@@ -64,9 +65,9 @@ PolicyRule:
 >
 > - 如果集群情况可以满足最小权限部署的条件，可以使用更小的权限。详情见[最小权限部署](#第-3-步部署-clinic-diag-pod)。
 
-### 第 2 步：登录 Clinic Server 获取 Clinic Token
+### 第 2 步：登录 Clinic Server 获取 Access Token
 
-Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据上传到用户创建的组织下。需要注册登录 Clinic Server 后才能获取 Token。
+Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户创建的组织下。需要注册登录 Clinic Server 后才能获取 Token。
 
 #### 注册并登录 Clinic Server
 
@@ -80,7 +81,7 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
 点击页面上的上传图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中复制并保存 Token 信息。
 
-![获取 token 截图](/media/getting-started/get-token.png)
+![获取 token 截图](/media/clinic-get-token.png)
 
 > **注意：**
 >
@@ -95,10 +96,10 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 - 离线部署：如果集群所在的网络不能访问互联网，可采用离线部署方式。
 - 最小权限部署：如果目标集群所有节点都在同一个 namespace 可以将 Diag 部署到目标集群所在的 namespace，实现最小权限部署。
 
-<Tabs>
-<TabItem value="在线快速部署" label="在线快速部署" default>
+<SimpleTab>
+<div label="在线快速部署">
 
-1. 通过如下 helm 命令部署 Clinic Diag，将从 Docker Hub 下载最新 Diag 镜像
+1. 通过如下 helm 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
 
     ```shell
     # namespace： 和 TiDB Operator 处于同一 namespace 中
@@ -111,13 +112,16 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
     >
     > 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
     >
+    >
+    > {{< copyable "shell-regular" >}}
+    >
     > ```shell
     > helm install --namespace tidb-admin diag-collector pingcap/diag --version v0.7.1 \
     >     --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
     >     --set diag.clinicToken= ${clinic_token}
     > ```
 
-2. 部署后返回如下：
+2. 部署成功后会输出以下结果：
 
     ```
     NAME: diag-collector
@@ -133,7 +137,7 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
     ```
 
-</TabItem>
+</SimpleTab>
 <TabItem value="在线普通部署" label="在线普通部署">
 
 1. 获取你要部署的 `Clinic diag` chart 中的 `values-diag-collector.yaml` 文件：
@@ -171,13 +175,11 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
 4. [可选操作] 设置持久化数据卷
 
-    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 diag.volume 字段可以选择需要的 volume
-
-    例子:
+    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的 volume，下面为使用 PVC、Host 类型的示例：
 
     ```
-    # 使用了 PVC 类型
+    # 使用 PVC 类型
     volume:
       persistentVolumeClaim:
         claimName: local-storage-diag
@@ -214,6 +216,8 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
     通过以下命令，下载 `Clinic diag` chart 文件：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     wget http://charts.pingcap.org/diag-v0.7.1.tgz
     ```
@@ -226,16 +230,12 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
 2. 下载 Clinic Diag 运行所需的 Docker 镜像
 
-    需要在有外网的机器上将 Clinic Diag 用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
+    需要在能访问互联网的机器上将 Clinic Diag 用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
-    TiDB Operator 用到的 Docker 镜像有：
+    TiDB Operator 用到的 Docker 镜像为 `pingcap/diag:v0.7.1`，通过下面的命令将镜像下载下来：
 
-    ```shell
-    pingcap/diag:v0.7.1
-    ```
-
-    接下来通过下面的命令将镜像下载下来：
-
+    {{< copyable "shell-regular" >}}
+    
     ```shell
     docker pull pingcap/diag:v0.7.1
 
@@ -306,7 +306,7 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
 1. 确认部署用户的权限
 
-  最小权限部署会在部署的 namespace 中创建具备以下权限的 Role ，需要部署 Diag 所使用的用户在 namespace 中有创建该类型 *Role* 的权限。
+  最小权限部署会在部署的 namespace 中创建具备以下权限的 Role，需要部署 Diag 所使用的用户在 namespace 中有创建该类型 *Role* 的权限。
 
   ```
   PolicyRule:
@@ -319,7 +319,7 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
     tidbmonitors.pingcap.com  []                 []              [get list]
   ```
 
-2. 通过如下 helm 命令部署 Clinic Diag，将从 Docker Hub 下载最新 Diag 镜像
+2. 通过如下 helm 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
 
   ```shell
   helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -329,7 +329,7 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
 > **注意：**
 >
-> - 如果集群未开启 TLS ，可以设置 'diag.tlsEnabled=false' ，此时创建的 Role 将不会带有 'secrets' 的 'get' 和 'list' 权限。
+> - 如果集群未开启 TLS ，可以设置'diag.tlsEnabled=false'，此时创建的 Role 将不会带有'secrets'的'get'和'list'权限。
 >
 >  ```shell
 >  helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -339,6 +339,8 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 >  ```
 >
 > - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
+>
+>  {{< copyable "shell-regular" >}}
 >
 >  ```shell
 >  helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
@@ -369,6 +371,8 @@ Clinic Token 用于 Diag 客户端上传数据时的用户认证，保证数据�
 
 使用以下命令查询 Diag 状态：
 
+  {{< copyable "shell-regular" >}}
+  
   ```shell
   kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
   ```
@@ -407,6 +411,8 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
 - 如需查看节点 IP，可使用以下命令：
 
+    {{< copyable "bash" >}}
+
     ```bash
     kubectl get node | grep node
     ```
@@ -432,8 +438,8 @@ curl -s http://${host}:${port}/api/v1/collectors -X POST -d '{"clusterName": "${
 
 API 调用参数说明：
 
-- `clusterName`：TiDB 集群名称
-- `namespace`：TiDB 集群所在的 `namespace 名称`（不是 TiDB Operator 所在的 `namespace`）
+- `clusterName`：TiDB 集群名称。
+- `namespace`：TiDB 集群所在的 `namespace 名称`（不是 TiDB Operator 所在的 `namespace`）。
 - `collector`：可选参数，可配置需要采集的数据类型，支持 [monitor, config, perf]。若不配置该参数，默认采集 monitor 和 config 数据。
 - `from` 和 `to`：分别为采集的起止时间。`+0800` 代表时区，支持的时间格式如下：
 
@@ -462,7 +468,6 @@ API 调用参数说明：
       "id": "fMcXDZ4hNzs",
       "status": "accepted",
       "to": "2021-12-08 18:00 +0800"
-
   ```
 
 API 返回信息说明：
@@ -596,12 +601,11 @@ curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["co
 
 请求结果中会列出已发现的配置风险内容和建议配置的知识库链接，具体示例如下：
 
-```bash
 stdout:
 # Check Result Report
 basic 2022-02-07T12:00:00+08:00
 
-## 1. Cluster Information
+## 1. 诊断集群名称等基础信息
 - Cluster ID: 7039963340562527412
 - Cluster Name: basic
 - Cluster Version: v5.4.0
@@ -649,8 +653,8 @@ There were **3** abnormal results.
 Result report and record are saved at /diag-fPrz0RnDxRn/report-220208030210
 ```
 
-在上述示例中，
-    - 第一部分为诊断集群名称等基础信息。
-    - 第二部分为断数据来源信息。
-    - 第三部分展示诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。
-    - 最后一行为诊断结果文档的保存路径。
+上述示例中：
+- 第一部分为诊断集群名称等基础信息。
+- 第二部分为断数据来源信息。
+- 第三部分展示诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。
+- 最后一行为诊断结果文档的保存路径。
