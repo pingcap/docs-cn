@@ -100,8 +100,8 @@ TiDB 版本：5.4.1
     - 修复资源管理不正确断言导致的 panic. [#12234](https://github.com/tikv/tikv/issues/12234)
     - 修复部分情况 tikv slow score 计算不准确的问题. [#12254](https://github.com/tikv/tikv/issues/12254)
     - 修复 resolved_ts 模块内存管理不合理导致的 oom 问题，增加更多监控指标. [#12159](https://github.com/tikv/tikv/issues/12159)
-    - 修复网络出现问题情况下，已成功提交的乐观事务误可能报 WriteConflict 错误到 client 的问题
-    - 修复 replica read 启用时，在网络出现问题情况下 tikv 可能 panic 的问题
+    - 修复网络出现问题情况下，已成功提交的乐观事务误可能报 WriteConflict 错误到 client 的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
+    - 修复 replica read 启用时，在网络出现问题情况下 tikv 可能 panic 的问题 [#12046](https://github.com/tikv/tikv/issues/12046)
 
 + PD
 
