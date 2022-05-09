@@ -1,11 +1,11 @@
 ---
-title: Replicate data from TiDB to Kafka
-summary: Learn how to replicate data from TiDB to Kafka
+title: Replicate data from TiDB to Apache Kafka
+summary: Learn how to replicate data from TiDB to Apache Kafka
 ---
 
-# Replicate Data from TiDB to Kafka
+# Replicate Data from TiDB to Apache Kafka
 
-This document describes how to replicate data from TiDB to Kafka by using [TiCDC](/ticdc/ticdc-overview.md), which includes the following steps:
+This document describes how to replicate data from TiDB to Apache Kafka by using [TiCDC](/ticdc/ticdc-overview.md), which includes the following steps:
 
 - Deploy a TiCDC cluster and a Kafka cluster.
 - Create a changefeed with Kafka as the sink.

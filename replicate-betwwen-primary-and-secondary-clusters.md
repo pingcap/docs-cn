@@ -12,9 +12,9 @@ This document describes how to configure a TiDB primary (upstream) cluster and a
 2. Replicate incremental data from the primary cluster to the secondary cluster.
 3. Recover data consistently by using Redo log when the primary cluster is down.
 
-To replicate incremental data from a running TiDB cluster to its secondary cluster, you can use Backup & Restore [BR](/br/backup-and-restore-tool.md) and [TiCDC](/ticdc/ticdc-overview.md).
+To replicate incremental data from a running TiDB cluster to its secondary cluster, you can use [Backup & Restore (BR)](/br/backup-and-restore-tool.md) and [TiCDC](/ticdc/ticdc-overview.md).
 
-## Step 1. Set the environment
+## Step 1. Set up the environment
 
 1. Deploy TiDB clusters.
 
@@ -29,9 +29,9 @@ To replicate incremental data from a running TiDB cluster to its secondary clust
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # Create the upstream cluster on Node A
+    # Create an upstream cluster on Node A
     tiup --tag upstream playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
-    # Create the downstream cluster on Node B
+    # Create a downstream cluster on Node B
     tiup --tag downstream playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 0
     # View cluster status
     tiup status
@@ -47,7 +47,7 @@ To replicate incremental data from a running TiDB cluster to its secondary clust
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
-    In this document, we use [sysbench](https://github.com/akopytov/sysbench#linux) to run the `oltp_write_only` script. This script generates 10 tables in the upstream database, each with 10,000 rows. The tidb-config is as follows:
+    In this document, we use sysbench to run the `oltp_write_only` script. This script generates 10 tables in the upstream database, each with 10,000 rows. The tidb-config is as follows:
 
     {{< copyable "shell-regular" >}}
 
@@ -137,7 +137,7 @@ After setting up the environment, you can use the backup and restore functions o
 
     > **Note:**
     >
-    > In production clusters, performing a backup with GC disabled might affect clsuter performance. It is recommended that you back up data in off-peak hours, and set RATE_LIMIT to a proper value to avoid performance degradation.
+    > In production clusters, performing a backup with GC disabled might affect cluster performance. It is recommended that you back up data in off-peak hours, and set RATE_LIMIT to a proper value to avoid performance degradation.
 
 2. Back up data.
 
@@ -242,14 +242,14 @@ After setting up the environment, you can use the backup and restore functions o
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cdc cli changefeed --sink-url "mysql://root:@172.16.6.124:4000" --config ./changefeed.toml
+    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
     ```
 
     In this command, the parameters are as follows:
 
     - --pd: PD address of the upstream cluster
     - --sink-uri: URI of the downstream cluster
-    - --start-ts: start timestamp of the changefeed, must be the backup time (or BackupTS mentioned in the previous step)
+    - --start-ts: start timestamp of the changefeed, must be the backup time (or BackupTS mentioned in [Step 2. Migrate full data](#step-2-migrate-full-data))
 
     For more information about the changefeed configurations, see [Task configuration file](/ticdc/manage-ticdc.md#task-configuration-file).
 
@@ -318,5 +318,5 @@ After the previous step, the downstream (secondary) cluster has data that is con
 
     ```shell
     # Create a changefeed
-    tiup cdc cli changefeed --sink-url "mysql://root:@172.16.6.124:4000" --config ./changefeed.toml
+    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary"
     ```
