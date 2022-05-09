@@ -9,17 +9,15 @@ summary: 介绍 TiDB 的 SQL 性能调优方案和分析办法。
 
 ## 准备工作
 
-在开始之前，让我们通过 tiup 命令来准备 [bookshop](/develop/bookshop-schema-design.md) 示例数据：
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/bookshop-schema-design.md#方式-1-通过-tiup-demo-命令行)示例数据：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup demo bookshop prepare --host 127.0.0.1 --port 4000 --books 1000000
+tiup demo bookshop prepare --books 1000000 --host 127.0.0.1 --port 4000
 ```
 
-这条命令将会创建 [bookshop](/develop/bookshop-schema-design.md) 数据库和表，并导入数据。`--host` 和 `--port` 参数用于指定 TiDB 的地址信息。
-
-// TODO: 添加 tidb-cloud 导入数据的方法。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/bookshop-schema-design.md#方式-2-通过-tidb-cloud-import-功能)预先准备好的示例数据。
 
 ## 问题：全表扫描
 
@@ -32,8 +30,6 @@ tiup demo bookshop prepare --host 127.0.0.1 --port 4000 --books 1000000
 ```sql
 SELECT * FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +------------+-------------+-----------------------+---------------------+-------+--------+
@@ -56,8 +52,6 @@ Time: 0.582s
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +---------------------+------------+-----------+---------------+-----------------------------------------+
@@ -91,8 +85,6 @@ CREATE INDEX title_idx ON books (title);
 SELECT * FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 +------------+-------------+-----------------------+---------------------+-------+--------+
 | id         | title       | type                  | published_at        | stock | price  |
@@ -114,8 +106,6 @@ Time: 0.007s
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
@@ -145,8 +135,6 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 +-------------+--------+
 | title       | price  |
@@ -168,8 +156,6 @@ Time: 0.007s
 ```sql
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
@@ -203,8 +189,6 @@ CREATE INDEX title_price_idx ON books (title, price);
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 --------------------+---------+-----------+--------------------------------------------------+-------------------------------------------------------+
 | id                 | estRows | task      | access object                                    | operator info                                         |
@@ -221,8 +205,6 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +-------------+--------+
@@ -255,8 +237,6 @@ ALTER TABLE books DROP INDEX title_price_idx;
 ```sql
 SELECT * FROM books WHERE id = 896;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +-----+----------------+----------------------+---------------------+-------+--------+
