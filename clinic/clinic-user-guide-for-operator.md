@@ -434,6 +434,7 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
     ```
 
     在上述示例中：
+
     - 从 Kubernetes 集群外访问该 Service 的端口为 `31917`。
     - 该 Service 类型为 NodePort。你可以通过 Kubernetes 集群中任一宿主机的 IP 地址 `${host}` 和端口号 `${port}` 访问该服务。
 
