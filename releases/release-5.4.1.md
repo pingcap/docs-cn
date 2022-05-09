@@ -68,11 +68,9 @@ TiDB 版本：5.4.1
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321](https://github.com/pingcap/tidb/issues/31321)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
-    - Fix a bug of duplicate primary key when insert record into table after incremental restoration. [#33596](https://github.com/pingcap/tidb/issues/33596)
     - Fix the issue that privilege-related operations may fail for upgraded clusters. [#33588](https://github.com/pingcap/tidb/issues/33588)
     - fix bug #33509 [#33509](https://github.com/pingcap/tidb/issues/33509)
     - fix a bug that compress function may report error [#33397](https://github.com/pingcap/tidb/issues/33397)
-    - Fix the issue that NewCollationEnable config not checked during restoration. [#33422](https://github.com/pingcap/tidb/issues/33422)
     - Fix the problem of high use of reArrangeFallback cpu. [#30353](https://github.com/pingcap/tidb/issues/30353)
     - Fix the issue that the table attributes don't support index and won't be updated when the partition changes [#33929](https://github.com/pingcap/tidb/issues/33929)
     - 修复了表的 `TopN` 统计信息在初始化时，未正确地排序的问题 [#34216](https://github.com/pingcap/tidb/issues/34216)
@@ -142,6 +140,7 @@ TiDB 版本：5.4.1
         - 修复某些情况下，恢复后 region 分布不均的问题.[#31034](https://github.com/pingcap/tidb/issues/31034)
         - 增加足够的重试，确保 region 一致性检查可以通过.[#33419](https://github.com/pingcap/tidb/issues/33419)
         - 修复在某些情况下，恢复过程中开启 merge 小文件功能导致的 panic 的问题.[#33801](https://github.com/pingcap/tidb/issues/33801)
+        - 修复了在异常退出的时候，scheduler 没有重置的问题 [#33546](https://github.com/pingcap/tidb/issues/33546)
 
     + TiCDC
 
