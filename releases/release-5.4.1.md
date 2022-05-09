@@ -122,7 +122,7 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复一些异常没有被正确地处理的问题 [#4101](https://github.com/pingcap/tiflash/issues/4101)
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复将 `INT` 类型转换为 `DECIMAL` 类型可能造成溢出的问题 [#3920](https://github.com/pingcap/tiflash/issues/3920)
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复 `IN` 函数的结果在多值表达式中不正确的问题 [#4016](https://github.com/pingcap/tiflash/issues/4016)
-    - Fix the issue that the date format identifies `'\n'` as an invalid separator [#4036](https://github.com/pingcap/tiflash/issues/4036)
+    - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复日期格式将 `'\n'` 处理为非法分隔符的问题 [#4036](https://github.com/pingcap/tiflash/issues/4036)
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复在读取工作量大时添加列后可能出现的查询错误 [#3967](https://github.com/pingcap/tiflash/issues/3967)
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复启用内存限制后 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     - 修复 DTFile 中可能的数据损坏问题 [#4778](https://github.com/pingcap/tiflash/issues/4778)
