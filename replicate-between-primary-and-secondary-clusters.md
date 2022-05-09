@@ -242,14 +242,14 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cdc cli changefeed --sink-url "mysql://root:@172.16.6.124:4000" --config ./changefeed.toml
+    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary" --start-ts="431434047157698561"
     ```
 
     以上命令中：
 
    * --pd: 实际的上游集群的地址
    * --sink-uri：同步任务下游的地址
-   * --start-ts: TiCDC 同步的起点，需要设置为实际的备份时间点（也就是第二章「备份」小节提到的 BackupTS）
+   * --start-ts: TiCDC 同步的起点，需要设置为实际的备份时间点（也就是[第 2 步：迁移全量数据](#第-2-步迁移全量数据)提到的 BackupTS）
 
     更多关于 changefeed 的配置，请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
 
@@ -318,5 +318,5 @@ tiup cdc redo apply --storage "s3://redo?access-key=minio&secret-access-key=mini
 
     ```shell
     # 创建 changefeed
-    tiup cdc cli changefeed --sink-url "mysql://root:@172.16.6.124:4000" --config ./changefeed.toml
+    tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="primary-to-secondary"
     ```
