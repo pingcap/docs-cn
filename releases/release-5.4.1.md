@@ -185,10 +185,6 @@ TiDB 版本：5.4.1
     - Support multi k8s in grafana dashboards [#32593](https://github.com/pingcap/tidb/issues/32593)
     - Fix the bug that locking with NOWAIT does not return immediately when encountering a lock. [#32754](https://github.com/pingcap/tidb/issues/32754)
 
-+ TiKV/TiKV
-
-    - Fix that successfully committed optimistic transactions may report false WriteConflict on network errors. [#34066](https://github.com/pingcap/tidb/issues/34066)
-    - Fix panicking when replica read is enabled and there is a long time network condition [#12046](https://github.com/tikv/tikv/issues/12046)
 
 + PingCAP/TiFlash
 
