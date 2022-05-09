@@ -20,8 +20,8 @@ TiDB 提供了完善的性能诊断和分析功能，例如 TiDB Dashboard 的 [
 本文使用一个银行交易系统 OLTP 仿真模拟负载进行演示。以下为该负载的仿真环境配置：
 
 - 负载应用程序的开发语言： JAVA
-- 涉及业务的 SQL 语句：共 365 条，其中 89.5% 都是 select 语句，属于典型的 read heavy OLTP 场景。
-- 涉及交易的表：共 80 张，存在修改操作类的表为 12 张，其余 68 张表只读。
+- 涉及业务的 SQL 语句：共 200 条，其中 90% 都是 select 语句，属于典型的 read heavy OLTP 场景。
+- 涉及交易的表：共 60 张，存在修改操作类的表为 12 张，其余 48 张表只读。
 - 应用程序使用的隔离级别： `read committed`。
 - TiDB 集群配置： 3 个 TiDB 节点和 3 个 TiKV 节点，各节点分配 16 CPU。
 - 客户端服务器配置： 36 CPU。
@@ -42,7 +42,7 @@ useServerPrepStmts=false
 
 从以下 Dashboard 的 Top SQL 页面可以观察到，非业务 SQL 类型 `SELECT @@session.tx_isolation` 消耗的资源最多。虽然 TiDB 处理这类 SQL 语句的速度快，但由于执行次数最多导致总体 CPU 耗时最多。
 
-![dashboard-for-query-interface](/media/performance/7.jpeg)
+![dashboard-for-query-interface](/media/performance/chinese/case1.png)
 
 观察以下 TiDB 的火焰图，可以发现，在 SQL 的执行过程中，Compile 和 Optimize 等函数的 CPU 消耗占比明显。因为应用使用了 Query 接口，TiDB 无法使用执行计划缓存，导致每个 SQL 都需要编译生成执行计划。
 
@@ -90,7 +90,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 
 在 Dashboard 的 Top SQL 页面，可以看到原本占比最多的 `SELECT @@session.tx_isolation` 已消失。
 
-![dashboard-for-maxPerformance](/media/performance/10.png)
+![dashboard-for-maxPerformance](/media/performance/chinese/case2.png)
 
 观察以下 TiDB 的火焰图，可以发现 SQL 语句执行中 Compile 和 Optimize 等函数 CPU 消耗占比高：
 
