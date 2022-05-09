@@ -21,7 +21,7 @@ monitored:
 # # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
-# #      
+# #
 # # You can overwrite this configuration via the instance-level `config` field.
 
 server_configs:
@@ -46,7 +46,11 @@ server_configs:
     profiles.default.max_memory_usage: 0
     # Maximum memory usage for processing all concurrently running queries on the server. Zero means unlimited.
     profiles.default.max_memory_usage_for_all_queries: 0
-
+  tiflash-learner:
+    # The allowable number of threads in the pool that flushes Raft data to storage.
+    raftstore.apply-pool-size: 4
+    # The allowable number of threads that process Raft, which is the size of the Raftstore thread pool.
+    raftstore.store-pool-size: 4
 pd_servers:
   - host: 10.0.1.4
     # ssh_port: 22
