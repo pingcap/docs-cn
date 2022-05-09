@@ -38,12 +38,12 @@ Diag 部署前，请确认以下软件需求：
 
 #### 安装 Helm
 
-参考 [使用 Helm](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-toolkit#%E4%BD%BF%E7%94%A8-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
+参考[使用 Helm](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/tidb-toolkit#%E4%BD%BF%E7%94%A8-helm) 安装 Helm 并配置 PingCAP 维护的 chart 仓库 `https://charts.pingcap.org/`。
 
 ```shell
 helm search repo diag
 NAME          CHART VERSION  APP VERSION  DESCRIPTION
-pingcap/diag  v0.7.1         v0.7.1       clinic diag Helm chart for Kubernetes
+pingcap/diag  v0.7.1         v0.7.1       Clinic Diag Helm chart for Kubernetes
 ```
 
 #### 检查部署用户的权限
@@ -98,7 +98,7 @@ kubectl describe clusterrole ${clusterrole_name} -n ${namespace}
 
 ### 第 2 步：登录 Clinic Server 获取 Access Token
 
-Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户创建的组织下。需要注册登录 Clinic Server 后才能获取 Token。
+Access Token（以下简称为 Token）用于 Diag 上传数据时的用户认证，保证数据上传到用户创建的组织下。需要注册登录 Clinic Server 后才能获取 Token。
 
 #### 注册并登录 Clinic Server
 
@@ -130,7 +130,7 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 <SimpleTab>
 <div label="在线快速部署">
 
-1. 通过如下 helm 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像
+1. 通过如下 `helm` 命令部署 Diag，从 Docker Hub 下载最新 Diag 镜像
 
     ```shell
     # namespace： 和 TiDB Operator 处于同一 namespace 中
@@ -164,13 +164,12 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 
       kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
       kubectl get svc --namespace tidb-admin -l app.kubernetes.io/name=diag-collector
-
     ```
 
-</SimpleTab>
-<TabItem value="在线普通部署" label="在线普通部署">
+</div>
+<div label="在线普通部署">
 
-1. 获取你要部署的 `Clinic diag` chart 中的 `values-diag-collector.yaml` 文件：
+1. 获取你要部署的 Clinic Diag chart 中的 `values-diag-collector.yaml` 文件。
 
     ```shell
     mkdir -p ${HOME}/diag-collector && \
@@ -181,18 +180,18 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
     >
     > `${chart_version}` 在后续文档中代表 chart 版本，例如 `v0.7.1`，可以通过 `helm search repo -l diag` 查看当前支持的版本。
 
-2. 配置 `values-diag-collector.yaml` 文件
+2. 配置 `values-diag-collector.yaml` 文件。
 
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Clinic Token。
+    将修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Access Token。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
     > **注意：**
     >
-    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Clinic Token](#第-2-步-：-登录-clinic-server-获取-clinic-token)的内容获取 Token。
-    > - 部署 `diag-collector`，会用到 `pingcap/diag` 镜像，如果无法从 docker hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
+    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步登录-clinic-server-获取-access-token)的内容获取 Token。
+    > - 部署 `diag-collector`，会用到 `pingcap/diag` 镜像，如果无法从 Docker Hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
 
-3. 部署 Clinic Diag
+3. 部署 Clinic Diag。
 
     ```shell
     helm install diag-collector pingcap/diag --namespace=tidb-admin --version=${chart_version} -f ${HOME}/diag-collector/values-diag-collector.yaml && \
@@ -201,12 +200,11 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 
     > **注意：**
     >
-    > - namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic diag。
+    > - namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
 
-4. [可选操作] 设置持久化数据卷
+4. 【可选操作】设置持久化数据卷。
 
-    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的 volume，下面为使用 PVC、Host 类型的示例：
+    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的 volume，下面为使用 PVC、Host 类型的示例：
 
     ```
     # 使用 PVC 类型
@@ -227,7 +225,7 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
     > - 不支持多盘挂载
     > - 支持任意类型的 StorageClass
 
-5. [可选操作]升级 Clinic Diag
+5. 【可选操作】升级 Clinic Diag。
 
     如果需要升级 Clinic Diag，请先修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，然后执行下面的命令进行升级：
 
@@ -235,16 +233,16 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
     helm upgrade diag-collector pingcap/diag --namespace=tidb-admin -f ${HOME}/diag-collector/values-diag-collector.yaml
     ```
 
-</TabItem>
-<TabItem value="离线部署" label="离线部署">
+</div>
+<div label="离线部署">
 
 如果服务器无法访问互联网，需要按照下面的步骤来离线安装 Clinic Diag：
 
-1. 下载 `Clinic diag` chart
+1. 下载 Clinic Diag chart。
 
-    如果服务器无法访问互联网，就无法通过配置 Helm repo 来安装 Clinic diag 组件以及其他应用。这时，需要在能访问互联网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
+    如果服务器无法访问互联网，就无法通过配置 Helm repo 来安装 Clinic Diag 组件以及其他应用。这时，需要在能访问互联网的机器上下载集群安装需用到的 chart 文件，再拷贝到服务器上。
 
-    通过以下命令，下载 `Clinic diag` chart 文件：
+    通过以下命令，下载 Clinic Diag chart 文件：
 
     {{< copyable "shell-regular" >}}
 
@@ -254,61 +252,63 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 
     将 `diag-v0.7.1.tgz` 文件拷贝到服务器上并解压到当前目录：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     tar zxvf diag-v0.7.1.tgz
     ```
 
-2. 下载 Clinic Diag 运行所需的 Docker 镜像
+2. 下载 Clinic Diag 运行所需的 Docker 镜像。
 
     需要在能访问互联网的机器上将 Clinic Diag 用到的 Docker 镜像下载下来并上传到服务器上，然后使用 `docker load` 将 Docker 镜像安装到服务器上。
 
     TiDB Operator 用到的 Docker 镜像为 `pingcap/diag:v0.7.1`，通过下面的命令将镜像下载下来：
 
     {{< copyable "shell-regular" >}}
-    
+
     ```shell
     docker pull pingcap/diag:v0.7.1
-
     docker save -o diag-v0.7.1.tar pingcap/diag:v0.7.1
     ```
 
     接下来将这些 Docker 镜像上传到服务器上，并执行 `docker load` 将这些 Docker 镜像安装到服务器上：
 
+    {{< copyable "shell-regular" >}}
+
     ```shell
     docker load -i diag-v0.7.1.tar
     ```
 
-3. 配置 Clinic Diag
+3. `values-diag-collector.yaml` 文件。
 
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Clinic Token。
+    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件设置你的 Access Token。
 
     其他项目例如：`limits`、`requests` 和 `volume`，请根据需要进行修改。
 
     > **注意：**
     >
-    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Clinic Token](#第-2-步-：-登录-clinic-server-获取-clinic-token)的内容获取 Token。
-    > - 部署 `diag-collector`，会用到 `pingcap/diag` 镜像，如果无法从 docker hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
+    > - 请参照前文中[第 2 步：登录 Clinic Server 获取 Access Token](#第-2-步-：-登录-clinic-server-获取-clinic-token)的内容获取 Token。
+    > - 部署 `diag-collector` 会用到 `pingcap/diag` 镜像，如果无法从 Docker Hub 下载该镜像，可以修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件中的 `image.diagImage` 为 `registry.cn-beijing.aliyuncs.com/tidb/diag`。
 
-4. 安装 Clinic Diag
+4. 安装 Clinic Diag。
 
     使用下面的命令安装 Clinic Diag：
+
+    {{< copyable "shell-regular" >}}
 
     ```shell
     helm install diag-collector ./diag --namespace=tidb-admin
     ```
 
     > **注意：**
-    > namespace 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
+    > `namespace` 应设置为和 TiDB Operator 相同，若没有部署 TiDB Operator，请先部署 TiDB Operator 后再部署 Clinic Diag。
 
-5. [可选操作] 设置持久化数据卷
+5. 【可选操作】设置持久化数据卷。
 
-    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力
-    修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 diag.volume 字段可以选择需要的 volume
-
-    例子:
+    本操作可以为 Diag 挂载数据卷，以提供持久化数据的能力。修改 `${HOME}/diag-collector/values-diag-collector.yaml` 文件，配置 `diag.volume` 字段可以选择需要的 volume，下面为使用 PVC、Host 类型的示例：
 
     ```
-    # 使用了 PVC 类型
+    # 使用 PVC 类型
     volume:
       persistentVolumeClaim:
         claimName: local-storage-diag
@@ -323,12 +323,11 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 
     > **注意：**
     >
-    > 不支持多盘挂载
-    > 支持任意类型的 StorageClass
+    > - 不支持多盘挂载
+    > - 支持任意类型的 StorageClass
 
-</TabItem>
-
-<TabItem value="最小权限部署" label="最小权限部署" default>
+</div>
+<div label="最小权限部署">
 
 > **注意：**
 >
@@ -336,53 +335,57 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
 
 1. 确认部署用户的权限
 
-  最小权限部署会在部署的 namespace 中创建具备以下权限的 Role，需要部署 Diag 所使用的用户在 namespace 中有创建该类型 *Role* 的权限。
+    最小权限部署会在部署的 namespace 中创建具备以下权限的 Role，需要部署 Diag 所使用的用户在 namespace 中有创建该类型 *Role* 的权限。
 
-  ```
-  Resources                               Non-Resource URLs  Resource Names  Verbs
-  ---------                               -----------------  --------------  -----
-  serviceaccounts                         []                 []              [get create delete]
-  deployments.apps                        []                 []              [get create delete]
-  rolebindings.rbac.authorization.k8s.io  []                 []              [get create delete]
-  roles.rbac.authorization.k8s.io         []                 []              [get create delete]
-  secrets                                 []                 []              [get list create delete]
-  services                                []                 []              [get list create delete]
-  pods                                    []                 []              [get list]
-  tidbclusters.pingcap.com                []                 []              [get list]
-  tidbmonitors.pingcap.com                []                 []              [get list]
-  ```
+    ```
+    Resources                               Non-Resource URLs  Resource Names  Verbs
+    ---------                               -----------------  --------------  -----
+    serviceaccounts                         []                 []              [get create delete]
+    deployments.apps                        []                 []              [get create delete]
+    rolebindings.rbac.authorization.k8s.io  []                 []              [get create delete]
+    roles.rbac.authorization.k8s.io         []                 []              [get create delete]
+    secrets                                 []                 []              [get list create delete]
+    services                                []                 []              [get list create delete]
+    pods                                    []                 []              [get list]
+    tidbclusters.pingcap.com                []                 []              [get list]
+    tidbmonitors.pingcap.com                []                 []              [get list]
+    ```
 
-2. 通过如下 helm 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
+2. 通过如下 `helm` 命令部署 Clinic Diag，从 Docker Hub 下载最新 Diag 镜像
 
-  ```shell
-  helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
         --set diag.clinicToken=${clinic_token} \
         --set diag.clusterRoleEnabled=false
-  ```
+    ```
 
-> **注意：**
->
-> - 如果集群未开启 TLS ，可以设置'diag.tlsEnabled=false'，此时创建的 Role 将不会带有'secrets'的'get'和'list'权限。
->
->  ```shell
->  helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
->        --set diag.clinicToken=${clinic_token} \
->        --set diag.tlsEnabled=false \
->        --set diag.clusterRoleEnabled=false
->  ```
->
-> - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
->
->  {{< copyable "shell-regular" >}}
->
->  ```shell
->  helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
->      --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
->      --set diag.clinicToken= ${clinic_token} \
->      --set diag.clusterRoleEnabled=false
->  ```
+    > **注意：**
+    >
+    > - 如果集群未开启 TLS，可以设置 `diag.tlsEnabled=false`，此时创建的 Role 将不会带有 `secrets` 的 `get` 和 `list` 权限。
+    >
+    > {{< copyable "shell-regular" >}}
+    >
+    >  ```shell
+    > helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+    >        --set diag.clinicToken=${clinic_token} \
+    >        --set diag.tlsEnabled=false \
+    >        --set diag.clusterRoleEnabled=false
+    > ```
+    >
+    > - 如果访问 Docker Hub 网速较慢，可以使用阿里云上的镜像：
+    >
+    > {{< copyable "shell-regular" >}}
+    >
+    > ```shell
+    > helm install --namespace tidb-cluster diag-collector pingcap/diag --version v0.7.1 \
+    >      --set image.diagImage=registry.cn-beijing.aliyuncs.com/tidb/diag \
+    >      --set diag.clinicToken= ${clinic_token} \
+    >      --set diag.clusterRoleEnabled=false
+    > ```
 
-3. 部署后返回如下：
+3. 部署成功后会输出以下结果：
 
     ```
     NAME: diag-collector
@@ -396,26 +399,25 @@ Token 用于 Diag 上传数据时的用户认证，保证数据上传到用户�
       kubectl get svc --namespace tidb-cluster -l app.kubernetes.io/name=diag-collector
     ```
 
-</TabItem>
-
-</Tabs>
+</div>
+</SimpleTab>
 
 ### 第 4 步：检查 Clinic Diag Pod 的运行状态
 
 使用以下命令查询 Diag 状态：
 
-  {{< copyable "shell-regular" >}}
-  
-  ```shell
-  kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
-  ```
+{{< copyable "shell-regular" >}}
+
+```shell
+kubectl get pods --namespace tidb-admin -l app.kubernetes.io/instance=diag-collector
+```
 
 Pod 正常运行的输出如下：
 
-  ```
-  NAME                             READY   STATUS    RESTARTS   AGE
-  diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
-  ```
+```
+NAME                             READY   STATUS    RESTARTS   AGE
+diag-collector-5c9d8968c-clnfr   1/1     Running   0          89s
+```
 
 ## 使用 Clinic Diag 采集诊断数据
 
@@ -452,11 +454,20 @@ Clinic Diag 工具的各项操作均会通过 API 完成。
 
 - 如需查看 `diag-collector service` 的端口号，可使用以下命令：
 
+    {{< copyable "bash" >}}
+
     ```bash
     kubectl get service -n tidb-admin
+    ```
+
+    输出示例为：
+
+    ```
     NAME                 TYPE           CLUSTER-IP           EXTERNAL-IP   PORT(S)              AGE
     diag-collector   NodePort   10.111.143.227   <none>            4917:31917/TCP   18m
     ```
+
+    在上述示例中：
 
     - 从 Kubernetes 集群外访问该 Service 的端口为 `31917`。
     - 该 Service 类型为 NodePort。你可以通过 Kubernetes 集群中任一宿主机的 IP 地址 `${host}` 和端口号 `${port}` 访问该服务。
@@ -476,38 +487,38 @@ API 调用参数说明：
 - `collector`：可选参数，可配置需要采集的数据类型，支持 [monitor, config, perf]。若不配置该参数，默认采集 monitor 和 config 数据。
 - `from` 和 `to`：分别为采集的起止时间。`+0800` 代表时区，支持的时间格式如下：
 
-  ```bash
-  "2006-01-02T15:04:05Z07:00"
-  "2006-01-02T15:04:05.999999999Z07:00"
-  "2006-01-02 15:04:05 -0700",
-  "2006-01-02 15:04 -0700",
-  "2006-01-02 15 -0700",
-  "2006-01-02 -0700",
-  "2006-01-02 15:04:05",
-  "2006-01-02 15:04",
-  "2006-01-02 15",
-  "2006-01-02",
-  ```
+    ```
+    "2006-01-02T15:04:05Z07:00"
+    "2006-01-02T15:04:05.999999999Z07:00"
+    "2006-01-02 15:04:05 -0700",
+    "2006-01-02 15:04 -0700",
+    "2006-01-02 15 -0700",
+    "2006-01-02 -0700",
+    "2006-01-02 15:04:05",
+    "2006-01-02 15:04",
+    "2006-01-02 15",
+    "2006-01-02",
+    ```
 
-  命令输出结果示例如下：
+命令输出结果示例如下：
 
-  ```bash
-      "clusterName": "${cluster-namespace}/${cluster-name}",
-      "collectors"            "config",
-          "monitor"
-      ],
-      "date": "2021-12-10T10:10:54Z",
-      "from": "2021-12-08 12:00 +0800",
-      "id": "fMcXDZ4hNzs",
-      "status": "accepted",
-      "to": "2021-12-08 18:00 +0800"
-  ```
+```
+"clusterName": "${cluster-namespace}/${cluster-name}",
+"collectors"            "config",
+    "monitor"
+],
+"date": "2021-12-10T10:10:54Z",
+"from": "2021-12-08 12:00 +0800",
+"id": "fMcXDZ4hNzs",
+"status": "accepted",
+"to": "2021-12-08 18:00 +0800"
+```
 
 API 返回信息说明：
 
 - `date`：采集任务发起的时间。
 - `id`：此任务的 ID 编号。在之后的操作中，此 ID 为定位到此次任务的唯一信息。
-- `status` 为此任务的当前状态，`accepted` 代表采集任务进入队列。
+- `status`：此任务的当前状态，`accepted` 代表采集任务进入队列。
 
 > **注意：**
 >
@@ -594,14 +605,25 @@ curl -s http://${host}:${port}/api/v1/data/${id}/upload
 
 #### 1. 获取 `diag-collector-pod-name`
 
+执行如下命令，获取 `diag-collector-pod-name`：
+
+{{< copyable "bash" >}}
+
 ```bash
 kubectl get pod --all-namespaces  | grep diag
+```
+
+输出结果示例：
+
+```
 tidb-admin      diag-collector-69bf78478c-nvt47               1/1     Running            0          19h
 ```
 
 其中，Diag Pod 的名称为 `diag-collector-69bf78478c-nvt47`，其所在的 `namespace` 为 `tidb-admin`。
 
 #### 2. 进入 Pod 并查看数据
+
+{{< copyable "bash" >}}
 
 ```bash
 kubectl exec -n ${namespace} ${diag-collector-pod-name}  -it -- sh
@@ -618,76 +640,79 @@ PingCAP Clinic 支持对集群的健康状态进行快速地诊断，主要支�
 
 本节详细介绍通过 PingCAP Clinic 快速诊断使用 TiDB Operator 部署的集群的具体方法。
 
-第 1 步：采集数据
+1. 采集数据
 
-有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#第2步采集数据)。
+    有关采集数据具体方法，可参考[使用 Clinic Diag 工具采集诊断数据](#第2步采集数据)。
 
-第 2 步：快速诊断
+2. 快速诊断
 
-通过 API 请求，在本地对集群进行快速诊断：
+    通过 API 请求，在本地对集群进行快速诊断：
 
-```bash
-curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["config"]}'
-```
+    {{< copyable "bash" >}}
 
-其中，`id` 为采集数据任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。
+    ```bash
+    curl -s http://${host}:${port}/api/v1/data/${id}/check -XPOST -d '{"types": ["config"]}'
+    ```
 
-请求结果中会列出已发现的配置风险内容和建议配置的知识库链接，具体示例如下：
+    其中，`id` 为采集数据任务的 ID 编号，在上述例子中为 `fMcXDZ4hNzs`。
 
-stdout:
-# Check Result Report
-basic 2022-02-07T12:00:00+08:00
+    请求结果中会列出已发现的配置风险内容和建议配置的知识库链接，具体示例如下：
 
-## 1. 诊断集群名称等基础信息
-- Cluster ID: 7039963340562527412
-- Cluster Name: basic
-- Cluster Version: v5.4.0
+    ```
+    # 诊断结果报告
+    basic 2022-02-07T12:00:00+08:00
 
-## 2. Sample Information
-- Sample ID: fPrz0RnDxRn
-- Sampling Date: 2022-02-07T12:00:00+08:00
-- Sample Content:: [monitor config]
+    ## 1. 诊断集群名称等基础信息
+    - Cluster ID: 7039963340562527412
+    - Cluster Name: basic
+    - Cluster Version: v5.4.0
 
-## 3. Main results and abnormalities
-In this inspection, 21 rules were executed.
-The results of **3** rules were abnormal and needed to be further discussed with support team.
-The following is the details of the abnormalities.
+    ## 2. 诊断数据来源信息
+    - Sample ID: fPrz0RnDxRn
+    - Sampling Date: 2022-02-07T12:00:00+08:00
+    - Sample Content:: [monitor config]
 
-### Configuration Summary
-The configuration rules are all derived from PingCAP’s OnCall Service.
-If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
-There were **3** abnormal results.
+    ## 3. 诊断结果信息
+    In this inspection, 21 rules were executed.
+    The results of **3** rules were abnormal and needed to be further discussed with support team.
+    The following is the details of the abnormalities.
 
-#### Rule Name: tidb-max-days
-- RuleID: 100
-- Variation: TidbConfig.log.file.max-days
-- For more information, please visit: https://s.tidb.io/msmo6awg
-- Check Result:
-  TidbConfig_172.20.21.213:4000   TidbConfig.log.file.max-days:0   warning
+    ### 配置规则
+    The configuration rules are all derived from PingCAP’s OnCall Service.
+    If the results of the configuration rules are found to be abnormal, they may cause the cluster to fail.
+    There were **3** abnormal results.
 
-#### Rule Name: pdconfig-max-days
-- RuleID: 209
-- Variation: PdConfig.log.file.max-days
-- For more information, please visit: https://s.tidb.io/jkdqxudq
-- Check Result:
-  PdConfig_172.20.22.100:2379   PdConfig.log.file.max-days:0   warning
-  PdConfig_172.20.14.102:2379   PdConfig.log.file.max-days:0   warning
-  PdConfig_172.20.15.222:2379   PdConfig.log.file.max-days:0   warning
+    #### Rule Name: tidb-max-days
+    - RuleID: 100
+    - Variation: TidbConfig.log.file.max-days
+    - For more information, please visit: https://s.tidb.io/msmo6awg
+    - Check Result:
+    TidbConfig_172.20.21.213:4000   TidbConfig.log.file.max-days:0   warning
 
-#### Rule Name: pdconfig-max-backups
-- RuleID: 210
-- Variation: PdConfig.log.file.max-backups
-- For more information, please visit: https://s.tidb.io/brd9zy53
-- Check Result:
-  PdConfig_172.20.22.100:2379   PdConfig.log.file.max-backups:0   warning
-  PdConfig_172.20.14.102:2379   PdConfig.log.file.max-backups:0   warning
-  PdConfig_172.20.15.222:2379   PdConfig.log.file.max-backups:0   warning
+    #### Rule Name: pdconfig-max-days
+    - RuleID: 209
+    - Variation: PdConfig.log.file.max-days
+    - For more information, please visit: https://s.tidb.io/jkdqxudq
+    - Check Result:
+    PdConfig_172.20.22.100:2379   PdConfig.log.file.max-days:0   warning
+    PdConfig_172.20.14.102:2379   PdConfig.log.file.max-days:0   warning
+    PdConfig_172.20.15.222:2379   PdConfig.log.file.max-days:0   warning
 
-Result report and record are saved at /diag-fPrz0RnDxRn/report-220208030210
-```
+    #### Rule Name: pdconfig-max-backups
+    - RuleID: 210
+    - Variation: PdConfig.log.file.max-backups
+    - For more information, please visit: https://s.tidb.io/brd9zy53
+    - Check Result:
+    PdConfig_172.20.22.100:2379   PdConfig.log.file.max-backups:0   warning
+    PdConfig_172.20.14.102:2379   PdConfig.log.file.max-backups:0   warning
+    PdConfig_172.20.15.222:2379   PdConfig.log.file.max-backups:0   warning
 
-上述示例中：
-- 第一部分为诊断集群名称等基础信息。
-- 第二部分为断数据来源信息。
-- 第三部分展示诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。
-- 最后一行为诊断结果文档的保存路径。
+    Result report and record are saved at /diag-fPrz0RnDxRn/report-220208030210
+    ```
+
+    上述示例中：
+
+    - 第一部分为诊断集群名称等基础信息。
+    - 第二部分为断数据来源信息。
+    - 第三部分展示诊断结果信息，包括发现的可能的配置问题。对于每条发现的配置问题，都提供知识库链接，以便查看详细的配置建议。
+    - 最后一行为诊断结果文档的保存路径。

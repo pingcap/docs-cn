@@ -5,7 +5,7 @@ summary: 详细说明 PingCAP Clinic 诊断服务在使用 Operator 部署的 Ti
 
 # Clinic 数据采集说明 - Operator 环境
 
-本文提供了 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）在使用 TiDB Operator 部署的 TiDB 集群中能够采集的诊断数据类型，并列出了各个采集项对应的采集参数。当[执行 Clinic Diag 诊断客户端（以下简称为 Diag）数据采集命令](clinic/clinic-user-guide-for-operator.md)时，你可以依据需要采集的数据类型，在命令中添加所需的采集参数。
+本文提供了 PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）在使用 TiDB Operator 部署的 TiDB 集群中能够采集的诊断数据类型，并列出了各个采集项对应的采集参数。当[执行 Clinic Diag 诊断客户端（以下简称为 Diag）数据采集命令](/clinic/clinic-user-guide-for-operator.md)时，你可以依据需要采集的数据类型，在命令中添加所需的采集参数。
 
 PingCAP Clinic 对使用 TiDB Operator 部署的 TiDB 集群采集的数据**仅**用于集群问题诊断与分析。
 
