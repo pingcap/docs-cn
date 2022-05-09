@@ -18,7 +18,7 @@ TiDB 版本：5.4.1
 
 + TiKV
 
-    - note 1
+    - Grafana 上支持查看 multi-k8s 相关信息. [#12104](https://github.com/tikv/tikv/issues/12104)
     - note 2
 
 ## 提升改进
@@ -33,7 +33,7 @@ TiDB 版本：5.4.1
 
 + PD
 
-    - note 1
+    -  Grafana 上支持查看 multi-k8s 纬度信息 [#4673](https://github.com/tikv/pd/issues/4673)
 
 + TiDB Dashboard
 
@@ -41,7 +41,7 @@ TiDB 版本：5.4.1
 
 + TiFlash
 
-    - note 1
+    - Grafana 面板支持 multi-k8s 展示 [#4129](https://github.com/pingcap/tiflash/issues/4129)
 
 + Tools
 
@@ -104,11 +104,12 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > 提升改进> TiKV)- 通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
-    - (dup: release-6.0.0-dmr.md > 提升改进> TiKV)- 使 Grafana 支持 multi-k8s 的监控 [#12104](https://github.com/tikv/tikv/issues/12104)
 
 + PD
 
     - (dup: release-6.0.0-dmr.md > Bug 修复> PD)- 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
+    - 修复存在大 store 时，小 store 空间满时无法被检测到，从而无法生成调度的问题 [#4805](https://github.com/tikv/pd/issues/4805) 
+    - 修复监控信息未重置上报导致的监控中残留已删除的 label 的问题 [#4825](https://github.com/tikv/pd/issues/4825)
 
 + TiFlash
 
