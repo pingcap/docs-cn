@@ -31,8 +31,6 @@ tiup demo bookshop prepare --books 1000000 --host 127.0.0.1 --port 4000
 SELECT * FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 +------------+-------------+-----------------------+---------------------+-------+--------+
 | id         | title       | type                  | published_at        | stock | price  |
@@ -54,8 +52,6 @@ Time: 0.582s
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +---------------------+------------+-----------+---------------+-----------------------------------------+
@@ -89,8 +85,6 @@ CREATE INDEX title_idx ON books (title);
 SELECT * FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 +------------+-------------+-----------------------+---------------------+-------+--------+
 | id         | title       | type                  | published_at        | stock | price  |
@@ -112,8 +106,6 @@ Time: 0.007s
 ```sql
 EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
@@ -143,8 +135,6 @@ EXPLAIN SELECT * FROM books WHERE title = 'Marian Yost';
 SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 +-------------+--------+
 | title       | price  |
@@ -166,8 +156,6 @@ Time: 0.007s
 ```sql
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
@@ -201,8 +189,6 @@ CREATE INDEX title_price_idx ON books (title, price);
 EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 --------------------+---------+-----------+--------------------------------------------------+-------------------------------------------------------+
 | id                 | estRows | task      | access object                                    | operator info                                         |
@@ -219,8 +205,6 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```sql
 SELECT title, price FROM books WHERE title = 'Marian Yost';
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +-------------+--------+
@@ -253,8 +237,6 @@ ALTER TABLE books DROP INDEX title_price_idx;
 ```sql
 SELECT * FROM books WHERE id = 896;
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 +-----+----------------+----------------------+---------------------+-------+--------+
