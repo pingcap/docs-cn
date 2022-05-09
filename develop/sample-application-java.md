@@ -944,7 +944,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 {{< copyable "" >}}
 
 ```java
-mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
+mysqlDataSource.setServerName("xxx.tidbcloud.com");
 mysqlDataSource.setPortNumber(4000);
 mysqlDataSource.setDatabaseName("test");
 mysqlDataSource.setUser("root");
