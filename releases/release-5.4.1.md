@@ -38,32 +38,16 @@ TiDB 版本：5.4.1
 
     - Grafana 上支持查看 multi-k8s 纬度信息 [#4673](https://github.com/tikv/pd/issues/4673)
 
-+ TiDB Dashboard
-
-    - note 1
-
 + TiFlash
 
     - Grafana 面板支持 multi-k8s 展示 [#4129](https://github.com/pingcap/tiflash/issues/4129)
 
 + Tools
 
-    + Backup & Restore (BR)
-
-        - note 1
-
     + TiCDC
 
         - (dup: release-5.2.4.md > 提升改进> Tools> TiCDC)- 在 Grafana 监控面板中支持多个 Kubernetes 集群 [#4665](https://github.com/pingcap/tiflow/issues/4665)
         - (dup: release-5.2.4.md > 提升改进> Tools> TiCDC)- 暴露 Kafka producer 配置参数，使之在 TiCDC 中可配置 [#4385](https://github.com/pingcap/tiflow/issues/4385)
-
-    + Dumpling
-
-        - note 1
-
-    + TiDB Lightning
-
-        - note 1
 
     + TiDB Data Migration (DM)
 
@@ -122,7 +106,7 @@ TiDB 版本：5.4.1
 + PD
 
     - (dup: release-6.0.0-dmr.md > Bug 修复> PD)- 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
-    - 修复存在大 store 时，小 store 空间满时无法被检测到，从而无法生成调度的问题 [#4805](https://github.com/tikv/pd/issues/4805) 
+    - 修复存在大 store 时，小 store 空间满时无法被检测到，从而无法生成调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
     - 修复监控信息未重置上报导致的监控中残留已删除的 label 的问题 [#4825](https://github.com/tikv/pd/issues/4825)
 
 + TiFlash
@@ -185,10 +169,6 @@ TiDB 版本：5.4.1
         - (dup: release-5.2.4.md > Bug 修复> Tools> TiDB Lightning)- 修复在某些导入操作没有包含源文件时，TiDB Lightning 不会删除 metadata schema 的问题 [#28144](https://github.com/pingcap/tidb/issues/28144)
         - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题.[#34213](https://github.com/pingcap/tidb/issues/34213)
 
-    + Dumpling
-
-        - note 1
-
     + TiDB Data Migration (DM)
 
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复了日志中出现数百条 "checkpoint has no change, skip sync flush checkpoint" 以及迁移性能下降的问题 [#4619](https://github.com/pingcap/tiflow/issues/4619)
@@ -198,68 +178,3 @@ TiDB 版本：5.4.1
         - 修复了在上游没有开启 binlog，query-status 返回空的问题 [#5121](https://github.com/pingcap/tiflow/issues/5121)
         - 修复了当下游主键表同步落后时导致的 tracker panic 的问题 [#5159](https://github.com/pingcap/tiflow/issues/5159)
         - 修复了 GTID 同步开始后以及任务自动恢复时，可能出现一段时间 CPU 占用高并打印大量日志的问题 [#5063](https://github.com/pingcap/tiflow/issues/5063)
-
-## __unsorted
-
-+ PingCAP/TiDB
-
-    - release-note [#33887](https://github.com/pingcap/tidb/issues/33887)
-    - release-note [#27937](https://github.com/pingcap/tidb/issues/27937)
-    - release-note [#34216](https://github.com/pingcap/tidb/issues/34216)
-    - release-note [#34256](https://github.com/pingcap/tidb/issues/34256)
-    - release-note [#33665](https://github.com/pingcap/tidb/issues/33665)
-    - release-note [#34237](https://github.com/pingcap/tidb/issues/34237)
-    - lightning: split and scatter regions in batches [#33618](https://github.com/pingcap/tidb/issues/33618)
-    - release-note [#32459](https://github.com/pingcap/tidb/issues/32459)
-    - release-note [#34099](https://github.com/pingcap/tidb/issues/34099)
-    - release-note [#34213](https://github.com/pingcap/tidb/issues/34213)
-    - release-note [#34180](https://github.com/pingcap/tidb/issues/34180)
-    - release-note [#34139](https://github.com/pingcap/tidb/pull/34139)
-    - release-note [#33801](https://github.com/pingcap/tidb/issues/33801)
-    - release-note [#33893](https://github.com/pingcap/tidb/issues/33893)
-    - Support multi k8s in grafana dashboards [#32593](https://github.com/pingcap/tidb/issues/32593)
-    - Fix the bug that locking with NOWAIT does not return immediately when encountering a lock. [#32754](https://github.com/pingcap/tidb/issues/32754)
-
-
-+ PingCAP/TiFlash
-
-    - fix potential data corruption for large indices [#4778](https://github.com/pingcap/tiflash/issues/4778)
-    - Fix potential query error when select on a table with many delete operations [#4747](https://github.com/pingcap/tiflash/issues/4747)
-    - Fix bug that TiFlash query will meet keepalive timeout error randomly. [#4192](https://github.com/pingcap/tiflash/issues/4192)
-    - Avoid leaving data on tiflash node which doesn't corresponding to any region range [#4414](https://github.com/pingcap/tiflash/issues/4414)
-    - Fix the problem that empty segments cannot be merged after gc [#4511](https://github.com/pingcap/tiflash/issues/4511)
-    - metrics: support multi-k8s in grafana dashboards [#4129](https://github.com/pingcap/tiflash/issues/4129)
-
-+ PD
-
-    - None. [#4805](https://github.com/tikv/pd/issues/4805)
-    - Fix the issue that the label distribution has residual labels [#4825](https://github.com/tikv/pd/issues/4825)
-    - metrics: support multi-k8s in grafana dashboards [#4673](https://github.com/tikv/pd/issues/4673)
-    - None. [#4808](https://github.com/tikv/pd/issues/4808)
-
-+ Tools
-
-    + PingCAP/TiCDC
-
-        - `None`. [#4784](https://github.com/pingcap/tiflow/issues/4784)
-        - save table checkpoint after a DDL is filtered [#5272](https://github.com/pingcap/tiflow/issues/5272)
-        - Fix a bug that no data is return by `query-status` when upstream doesn't turn on binlog [#5121](https://github.com/pingcap/tiflow/issues/5121)
-        - `None`. [#5197](https://github.com/pingcap/tiflow/issues/5197)
-        - Fix a bug that checkpoint flushing will be called too frequently [#5063](https://github.com/pingcap/tiflow/issues/5063)
-        - fix tracker panic when pk of downstream table orders behind [#5159](https://github.com/pingcap/tiflow/issues/5159)
-        - `None`. [#5136](https://github.com/pingcap/tiflow/issues/5136)
-        - send one heartbeat for successive skipped GTID when enable relay log [#5063](https://github.com/pingcap/tiflow/issues/5063)
-        - fix DML construct error issue caused by `rename tables` DDL. [#5059](https://github.com/pingcap/tiflow/issues/5059)
-        - Fix a rare likelihood that replication be stuck if the owner is changed when the new scheduler is enabled (disabled by default). [#4963](https://github.com/pingcap/tiflow/issues/4963)
-        - `None`. [#4858](https://github.com/pingcap/tiflow/issues/4858)
-        - Fix ErrProcessorDuplicateOperations when new scheduler is enabled (disabled by default) [#4769](https://github.com/pingcap/tiflow/issues/4769)
-        - fix the issue that ticdc failed to start when connects to  multiple pd endpoints with tls-enabled and the 1st endpoint is not available [#4777](https://github.com/pingcap/tiflow/issues/4777)
-        - Fix checkpoint metrics when tables are being scheduled. [#4714](https://github.com/pingcap/tiflow/issues/4714)
-        - `None`. [#4554](https://github.com/pingcap/tiflow/issues/4554)
-        - Please add a release note. `None`. [#4565](https://github.com/pingcap/tiflow/issues/4565)
-        - `None`. [#4607](https://github.com/pingcap/tiflow/issues/4607)
-        - `None`. [#4588](https://github.com/pingcap/tiflow/issues/4588)
-        - `None`. [#4561](https://github.com/pingcap/tiflow/issues/4561)
-        - Please add a release note. If you don't think this PR needs a release note then fill it with `None`. [#4287](https://github.com/pingcap/tiflow/issues/4287)
-        - `None`. [#4128](https://github.com/pingcap/tiflow/issues/4128)
-        - None. [#4353](https://github.com/pingcap/tiflow/issues/4353)
