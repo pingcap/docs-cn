@@ -10,7 +10,7 @@ As an open source distributed NewSQL database with high performance, TiDB can be
 
 ## Linux OS version requirements
 
-| Linux OS Platform        | Version      |
+| Linux OS        | Version      |
 | :-----------------------:| :----------: |
 | Red Hat Enterprise Linux | 7.3 or later 7.x releases |
 | CentOS                   | 7.3 or later 7.x releases |

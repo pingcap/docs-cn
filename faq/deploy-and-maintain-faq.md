@@ -11,7 +11,7 @@ This document summarizes the FAQs related to TiDB deployment.
 
 ### What are the required operating system versions?
 
-| Linux OS Platform        | Version      |
+| Linux OS        | Version      |
 | :-----------------------:| :----------: |
 | Red Hat Enterprise Linux | 7.3 or later |
 | CentOS                   | 7.3 or later |

@@ -8,7 +8,7 @@ aliases: ['/docs/tidb-data-migration/dev/hardware-and-software-requirements/']
 
 TiDB Data Migration (DM) supports mainstream Linux operating systems. See the following table for specific version requirements:
 
-| Linux OS Platform       | Version         |
+| Linux OS       | Version         |
 | :----------------------- | :----------:   |
 | Red Hat Enterprise Linux | 7.3 or later   |
 | CentOS                   | 7.3 or later   |
