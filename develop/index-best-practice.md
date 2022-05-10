@@ -93,7 +93,19 @@ CREATE TABLE `books` (
     SELECT * FROM books WHERE published_at >= '2022-01-01' AND published_at < '2023-01-01';
     ```
 
-    // TODO: 等表达式索引 GA 后，添加表达式索引的示例。
+    也可以使用表达式索引，例如对查询条件中的 `YEAR(published_at)` 创建一个表达式索引：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    CREATE INDEX published_year_idx ON books ((YEAR(published_at)));
+    ```
+
+    然后通过 `SELECT * FROM books WHERE YEAR(published_at)=2022;` 查询就能使用 `published_year_idx` 索引来加速查询了。
+
+    > **注意：**
+    >
+    > 表达式索引目前是 TiDB 的实验特性，需要在 TiDB 配置文件中开启表达式索引特性，详情可以参考 [表达式索引文档](/sql-statements/sql-statement-create-index.md#表达式索引)。
 
 - 尽量使用覆盖索引，即索引列包含查询列，避免总是 `SELECT *` 查询所有列的语句。
 

@@ -936,7 +936,7 @@ mysqlDataSource.setPassword("");
 若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
 
 ```
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 ```
 
 那么此处应将参数更改为：
@@ -944,7 +944,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 {{< copyable "" >}}
 
 ```java
-mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
+mysqlDataSource.setServerName("xxx.tidbcloud.com");
 mysqlDataSource.setPortNumber(4000);
 mysqlDataSource.setDatabaseName("test");
 mysqlDataSource.setUser("root");

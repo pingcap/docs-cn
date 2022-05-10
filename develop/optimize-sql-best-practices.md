@@ -173,10 +173,6 @@ SET @@global.tidb_ddl_reorg_batch_size = 128;
 
 关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](/troubleshoot-lock-conflicts)。
 
-## 授权最佳实践
-
-// TODO
-
 ## Java 数据库应用开发最佳实践
 
 [TiDB 最佳实践系列（五）Java 数据库应用开发指南](https://pingcap.com/zh/blog/best-practice-java)。
