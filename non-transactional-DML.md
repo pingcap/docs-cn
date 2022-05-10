@@ -97,6 +97,8 @@ TiDB 目前支持的非事务 DML 只有 DELETE 语句。其语法见 [BATCH](/s
 - 不可以设置了 [tidb_snapshot](/read-historical-data.md#操作流程) 时使用。
 - 不可以用在 prepare 语句。
 - 划分列不支持 ENUM，SET，JSON，DURATION，TIME 等类型。
+- 不可以用在[临时表](/temporary-tables.md)上。
+- 不支持[公共表表达式](/develop/use-common-table-expression.md）。
 
 ## 与旧版本 batch-dml 的对比
 
