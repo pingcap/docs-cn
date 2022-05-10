@@ -5,7 +5,7 @@ summary: 简单介绍 TiDB 中的事务。
 
 # 事务概览
 
-TiDB 支持完整的分布式事务，提供[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)与[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、乐观事务和悲观事务、事务的隔离级别，以及乐观事务应用端重试和错误处理。
+TiDB 支持完整的分布式事务，提供[乐观事务](/optimistic-transaction.md)与[悲观事务](/pessimistic-transaction.md)（TiDB 3.0 中引入）两种事务模型。本文主要介绍涉及到事务的语句、乐观事务和悲观事务、事务的隔离级别，以及乐观事务应用端重试和错误处理。
 
 ## 通用语句
 
@@ -171,4 +171,4 @@ mysql> SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 ERROR 8048 (HY000): The isolation level 'SERIALIZABLE' is not supported. Set tidb_skip_isolation_level_check=1 to skip this error
 ```
 
-TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](https://docs.pingcap.com/zh/tidb/stable/transaction-isolation-levels#与-ansi-可重复读隔离级别的区别) 和 [MySQL 可重复读隔离级别](https://docs.pingcap.com/zh/tidb/stable/transaction-isolation-levels#与-mysql-可重复读隔离级别的区别)。更多细节请阅读 [TiDB 事务隔离级别](https://docs.pingcap.com/zh/tidb/stable/transaction-isolation-levels)。
+TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](/transaction-isolation-levels.md#与-ansi-可重复读隔离级别的区别) 和 [MySQL 可重复读隔离级别](/transaction-isolation-levels.md#与-mysql-可重复读隔离级别的区别)。更多细节请阅读 [TiDB 事务隔离级别](/transaction-isolation-levels.md)。

@@ -221,4 +221,4 @@ SELECT * FROM fibonacci;
 
 ## 扩展阅读
 
-- [WITH](https://docs.pingcap.com/zh/tidb/stable/sql-statement-with)
+- [WITH](/sql-statements/sql-statement-with.md)

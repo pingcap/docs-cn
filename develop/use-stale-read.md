@@ -7,7 +7,7 @@ summary: 使用 Stale Read 在特定情况下加速查询。
 
 Stale Read 是一种读取历史数据版本的机制，通过 Stale Read 功能，你能从指定时间点或时间范围内读取对应的历史数据，从而在数据强一致需求没那么高的场景降低读取数据的延迟。当使用 Stale Read 时，TiDB 默认会随机选择一个副本来读取数据，因此能利用所有保存有副本的节点的处理能力。
 
-在实际的使用当中，请根据具体的[场景](https://docs.pingcap.com/zh/tidb/stable/stale-read#%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0)判断是否适合在 TiDB 当中开启 Stale Read 功能。如果你的应用程序不能容忍读到非实时的数据，请勿使用 Stale Read，否则读到的数据可能不是最新成功写入的数据。
+在实际的使用当中，请根据具体的[场景](/stale-read.md#场景描述)判断是否适合在 TiDB 当中开启 Stale Read 功能。如果你的应用程序不能容忍读到非实时的数据，请勿使用 Stale Read，否则读到的数据可能不是最新成功写入的数据。
 
 TiDB 为我们提供了语句级别、事务级别、会话级别三种级别的 Stale Read 功能，接下来我们将逐一进行介绍：
 
@@ -108,7 +108,7 @@ SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' O
 
 需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。
 
-过期的数据在 TiDB 当中会由[垃圾回收器](https://docs.pingcap.com/zh/tidb/stable/garbage-collection-overview)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_gc_life_time-span-classversion-mark%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5span)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
+过期的数据在 TiDB 当中会由[垃圾回收器](/garbage-collection-overview.md)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
 
 ```
 ERROR 9006 (HY000): GC life time is shorter than transaction duration...
@@ -525,6 +525,6 @@ public static class StaleReadHelper{
 
 ## 扩展阅读
 
-- [Stale Read 功能的使用场景](https://docs.pingcap.com/zh/tidb/stable/stale-read)
-- [使用 AS OF TIMESTAMP 语法读取历史数据](https://docs.pingcap.com/zh/tidb/stable/as-of-timestamp#%E8%AF%AD%E6%B3%95%E6%96%B9%E5%BC%8F)
-- [通过系统变量 tidb_read_staleness 读取历史数据](https://docs.pingcap.com/zh/tidb/stable/tidb-read-staleness)
+- [Stale Read 功能的使用场景](/stale-read.md)
+- [使用 AS OF TIMESTAMP 语法读取历史数据](/as-of-timestamp.md#语法方式)
+- [通过系统变量 tidb_read_staleness 读取历史数据](/tidb-read-staleness.md)

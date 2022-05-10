@@ -5,7 +5,7 @@ summary: 介绍 TiDB 中的乐观事务和悲观事务，乐观事务的重试�
 
 # 乐观事务和悲观事务
 
-简单的讲，[乐观事务](https://docs.pingcap.com/zh/tidb/stable/optimistic-transaction)模型就是直接提交，遇到冲突就回滚，[悲观事务](https://docs.pingcap.com/zh/tidb/stable/pessimistic-transaction)模型就是在真正提交事务前，先尝试对需要修改的资源上锁，只有在确保事务一定能够执行成功后，才开始提交。
+简单的讲，[乐观事务](/optimistic-transaction.md)模型就是直接提交，遇到冲突就回滚，[悲观事务](/pessimistic-transaction.md)模型就是在真正提交事务前，先尝试对需要修改的资源上锁，只有在确保事务一定能够执行成功后，才开始提交。
 
 对于乐观事务模型来说，比较适合冲突率不高的场景，因为直接提交大概率会成功，冲突是小概率事件，但是一旦遇到事务冲突，回滚的代价会比较大。
 

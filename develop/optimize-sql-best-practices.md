@@ -148,8 +148,8 @@ DELETE FROM t;
 
 TiDB 支持在线 `ADD INDEX` 操作，不会阻塞表中的数据读写。`ADD INDEX` 的速度可以通过修改下面的系统变量来调整：
 
-- [tidb_ddl_reorg_worker_cnt](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_ddl_reorg_worker_cnt)
-- [tidb_ddl_reorg_batch_size](https://docs.pingcap.com/zh/tidb/stable/system-variables#tidb_ddl_reorg_batch_size)
+- [tidb_ddl_reorg_worker_cnt](/system-variables.md#tidb_ddl_reorg_worker_cnt)
+- [tidb_ddl_reorg_batch_size](/system-variables.md#tidb_ddl_reorg_batch_size)
 
 为了减少对在线业务的影响，`ADD INDEX` 的默认速度会比较保守。当 `ADD INDEX` 的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速 `ADD INDEX`：
 
@@ -171,7 +171,7 @@ SET @@global.tidb_ddl_reorg_batch_size = 128;
 
 ## 事务冲突
 
-关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-lock-conflicts)。
+关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](/troubleshoot-lock-conflicts.md)。
 
 ## Java 数据库应用开发最佳实践
 

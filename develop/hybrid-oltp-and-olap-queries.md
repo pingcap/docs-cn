@@ -144,7 +144,7 @@ SELECT * FROM acc;
 
 ### 非聚合窗口函数
 
-除此之外，TiDB 还为我们提供了一些非聚合的[窗口函数](https://docs.pingcap.com/zh/tidb/stable/window-functions)，我们可以借助这些函数实现更加丰富分析查询。
+除此之外，TiDB 还为我们提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)，我们可以借助这些函数实现更加丰富分析查询。
 
 例如，在前面的[分页查询](/develop/paginate-results.md)章节当中，我们已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
 
@@ -221,7 +221,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 
 ### 指定查询引擎
 
-尽管 TiDB 会使用基于成本的优化器（CBO）自动地根据代价估算选择是否使用 TiFlash 副本。但是在实际使用当中，如果你非常确定查询的类型，推荐你使用 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 明确的指定查询所使用的执行引擎，避免因为优化器的优化结果不同，导致应用程序性能出现波动。
+尽管 TiDB 会使用基于成本的优化器（CBO）自动地根据代价估算选择是否使用 TiFlash 副本。但是在实际使用当中，如果你非常确定查询的类型，推荐你使用 [Optimizer Hints](/optimizer-hints.md) 明确的指定查询所使用的执行引擎，避免因为优化器的优化结果不同，导致应用程序性能出现波动。
 
 你可以像下面的 SQL 一样在 SELECT 语句中通过 Hint `/*+ read_from_storage(engine_name[table_name]) */` 指定查询时需要使用的查询引擎。
 
@@ -256,11 +256,11 @@ SELECT * FROM acc;
 
 如果你通过 `EXPLAIN` 语句查看上面 SQL 的执行计划，你会发现 task 列中会同时出现 `cop[tiflash]` 和 `cop[tikv]` ，这意味着 TiDB 在处理这个查询的时候会同时调度行存查询引擎和列存查询引擎来完成查询任务。需要指出的是，因为 tiflash 和 tikv 存储引擎通常属于不同的计算节点，所以两种查询类型互相之间不受影响。
 
-你可以通过阅读[使用 TiDB 读取 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
+你可以通过阅读[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 小节进一步了解 TiDB 如何选择使用 TiFlash 作为查询引擎。
 
 ## 扩展阅读
 
-- [HTAP 快速上手指南](https://docs.pingcap.com/zh/tidb/stable/quick-start-with-htap)
-- [HTAP 深入探索指南](https://docs.pingcap.com/zh/tidb/stable/explore-htap)
-- [窗口函数](https://docs.pingcap.com/zh/tidb/stable/window-functions)
-- [使用 TiFlash](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)
+- [HTAP 快速上手指南](/quick-start-with-htap.md)
+- [HTAP 深入探索指南](/explore-htap.md)
+- [窗口函数](/functions-and-operators/window-functions.md)
+- [使用 TiFlash](/tiflash/use-tiflash.md)

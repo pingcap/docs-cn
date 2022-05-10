@@ -207,7 +207,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 ### 左半连接 LEFT SEMI JOIN
 
-TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在执行计划层面，[子查询相关的优化](https://docs.pingcap.com/zh/tidb/stable/subquery-optimization/)会将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
+TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在执行计划层面，[子查询相关的优化](/subquery-optimization.md)会将 `semi join` 作为改写后的等价 JOIN 查询默认的连接方式。
 
 ## 隐式连接
 
@@ -217,11 +217,11 @@ TiDB 在 SQL 语法层面上不支持 `LEFT SEMI JOIN table_name`，但是在执
 
 TiDB 支持下列三种常规的表连接算法，优化器会根据所连接表的数据量等因素来选择合适的 Join 算法去执行。你可以通过 `EXPLAIN` 语句来查看查询使用了何种算法进行 Join。
 
-- [Index Join](https://docs.pingcap.com/zh/tidb/stable/explain-joins#index-join)
-- [Hash Join](https://docs.pingcap.com/zh/tidb/stable/explain-joins#hash-join)
-- [Merge Join](https://docs.pingcap.com/zh/tidb/stable/explain-joins#merge-join)
+- [Index Join](/explain-joins.md#index-join)
+- [Hash Join](/explain-joins.md#hash-join)
+- [Merge Join](/explain-joins.md#merge-join)
 
-如果发现 TiDB 的优化器没有按照最佳的 Join 算法去执行。你也可以通过 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints) 强制 TiDB 使用更好的 Join 算法去执行。
+如果发现 TiDB 的优化器没有按照最佳的 Join 算法去执行。你也可以通过 [Optimizer Hints](/optimizer-hints.md) 强制 TiDB 使用更好的 Join 算法去执行。
 
 例如，假设上文当中的左连接查询的示例 SQL 使用 Hash Join 算法执行更快，而优化器并没有选择这种算法，你可以在 `SELECT` 关键字后面加上 Hint `/*+ HASH_JOIN(b, r) */`（注意：如果表名添加了别名，Hint 当中也应该使用表别名）。
 
@@ -238,10 +238,10 @@ LIMIT 10;
 
 Join 算法相关的 Hints：
 
-- [MERGE_JOIN(t1_name [, tl_name ...])](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#merge_joint1_name--tl_name-)
-- [INL_JOIN(t1_name [, tl_name ...])](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#inl_joint1_name--tl_name-)
-- [INL_HASH_JOIN(t1_name [, tl_name ...])](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#inl_hash_join)
-- [HASH_JOIN(t1_name [, tl_name ...])](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#hash_joint1_name--tl_name-)
+- [MERGE_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#merge_joint1_name--tl_name-)
+- [INL_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#inl_joint1_name--tl_name-)
+- [INL_HASH_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#inl_hash_join)
+- [HASH_JOIN(t1_name [, tl_name ...])](/optimizer-hints.md#hash_joint1_name--tl_name-)
 
 ## Join 顺序
 
@@ -257,9 +257,9 @@ FROM authors a STRAIGHT_JOIN book_authors ba STRAIGHT_JOIN books b
 WHERE b.id = ba.book_id AND ba.author_id = a.id;
 ```
 
-关于该算法的实现细节和限制你可以通过查看[Join Reorder 算法简介](https://docs.pingcap.com/zh/tidb/stable/join-reorder)章节进行了解。
+关于该算法的实现细节和限制你可以通过查看[Join Reorder 算法简介](/join-reorder.md)章节进行了解。
 
 ## 扩展阅读
 
-- [用 EXPLAIN 查看 JOIN 查询的执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-joins)
-- [Join Reorder 算法简介](https://docs.pingcap.com/zh/tidb/stable/join-reorder)
+- [用 EXPLAIN 查看 JOIN 查询的执行计划](/explain-joins.md)
+- [Join Reorder 算法简介](/join-reorder.md)

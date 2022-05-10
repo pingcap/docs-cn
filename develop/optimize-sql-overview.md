@@ -23,9 +23,9 @@ summary: 介绍 TiDB 的 SQL 性能调优概览。
 
 如果根据[SQL 性能调优](#sql-性能调优)调优后任然无法获得较好的性能，你可能需要检查你的 Schema 设计和数据读取模型，来确保避免以下问题：
 
-- 事务冲突。关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-lock-conflicts)。
-- 热点。关于如何定位和解决热点，请参考[TiDB 热点问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-hot-spot-issues)。
+- 事务冲突。关于如何定位和解决事务冲突，请参考[TiDB 锁冲突问题处理](/troubleshoot-lock-conflicts.md)。
+- 热点。关于如何定位和解决热点，请参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
 ## 推荐阅读
 
-- [SQL 性能调优](https://docs.pingcap.com/zh/tidb/stable/sql-tuning-overview)。
+- [SQL 性能调优](/sql-tuning-overview.md)。
