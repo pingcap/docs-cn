@@ -40,7 +40,7 @@ TiDB 版本：5.4.1
 
 + TiFlash
 
-    - Grafana 面板支持 multi-k8s 展示 [#4129](https://github.com/pingcap/tiflash/issues/4129)
+    - 在 Grafana 的仪表盘中支持显示多个 Kubernetes 集群 [#4129](https://github.com/pingcap/tiflash/issues/4129)
 
 + Tools
 
@@ -126,21 +126,21 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复在读取工作量大时添加列后可能出现的查询错误 [#3967](https://github.com/pingcap/tiflash/issues/3967)
     - (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复启用内存限制后 TiFlash 崩溃的问题 [#3902](https://github.com/pingcap/tiflash/issues/3902)
     - 修复 DTFile 中可能的数据损坏问题 [#4778](https://github.com/pingcap/tiflash/issues/4778)
-    - 修复对有很多 delete 操作的表进行时报错的潜在问题 [#4747](https://github.com/pingcap/tiflash/issues/4747)
+    - 修复在有很多 delete 操作的表上进行查询时报错的潜在问题 [#4747](https://github.com/pingcap/tiflash/issues/4747)
     - 修复 TiFlash 随机报错 keepalive timeout 的问题 [#4192](https://github.com/pingcap/tiflash/issues/4192)
-    - 修复 TiFlash 节点错误地遗留非法数据的问题 [#4414](https://github.com/pingcap/tiflash/issues/4414)
+    - 修复 TiFlash 节点遗留与 Region range 不匹配的数据的问题 [#4414](https://github.com/pingcap/tiflash/issues/4414)
     - 修复空 segments 在 GC 后无法合并的问题 [#4511](https://github.com/pingcap/tiflash/issues/4511)
 
 + Tools
 
     + Backup & Restore (BR)
         - (dup: release-5.2.4.md > Bug 修复> Tools> Backup & Restore (BR))- 修复 BR 无法备份 RawKV 的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
-        - 修复增量恢复期间某些情况下遇到的重复主键的问题. [#33596](https://github.com/pingcap/tidb/issues/33596)
-        - 增量恢复期间，过滤某些不兼容的 DDL.[#33322](https://github.com/pingcap/tidb/issues/33322)
-        - 修复某些情况下，恢复后 region 分布不均的问题.[#31034](https://github.com/pingcap/tidb/issues/31034)
-        - 增加足够的重试，确保 region 一致性检查可以通过.[#33419](https://github.com/pingcap/tidb/issues/33419)
-        - 修复在某些情况下，恢复过程中开启 merge 小文件功能导致的 panic 的问题.[#33801](https://github.com/pingcap/tidb/issues/33801)
-        - 修复了在异常退出的时候，scheduler 没有重置的问题 [#33546](https://github.com/pingcap/tidb/issues/33546)
+        - 修复增量恢复后在表中插入记录时遇到的重复主键问题 [#33596](https://github.com/pingcap/tidb/issues/33596)
+        - 修复增量恢复期间，由于 DDL 查询任务为空导致的报错 [#33322](https://github.com/pingcap/tidb/issues/33322)
+        - 修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tidb/issues/31034)
+        - 修复恢复过程中 Region 不一致时 BR 重试不足的问题 [#33419](https://github.com/pingcap/tidb/issues/33419)
+        - 修复在某些情况下，恢复过程中开启 merge 小文件功能导致 BR panic 的问题 [#33801](https://github.com/pingcap/tidb/issues/33801)
+        - 修复了 BR 或 TiDB Lightning 在异常退出的时候，scheduler 没有重置的问题 [#33546](https://github.com/pingcap/tidb/issues/33546)
 
     + TiCDC
 
