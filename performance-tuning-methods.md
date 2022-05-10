@@ -26,7 +26,7 @@ TiDB 对 SQL 的处理路径和数据库时间进行了完善的测量和记录�
 
 ### 如果瓶颈在 TiDB 内部，如何定位
 
-一个典型的 SQL 的处理流程如下所示，TiDB 的性能指标覆盖了绝大部分的处理路径。
+一个典型的 SQL 的处理流程如下所示，TiDB 的性能指标覆盖了绝大部分的处理路径，对数据库时间进行不同维度的分解和上色，用户可以快速的了解负载特性和数据库内部的瓶颈。
 
 ![数据库时间分解图](/media/performance/dashboard-diagnostics-time-relation.png)
 
@@ -66,8 +66,9 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 #### 颜色优化法
 
-通过观察 **Database Time By SQL Phase** 和 **SQL Execute Time Overview** 图中的颜色，你可以直观地区分正常或者异常的时间消耗，快速定位集群的异常瓶颈点，高效了解集群的负载特征。对于正常的时间消耗和请求类型，图中显示颜色为绿色系或蓝色系。如果非绿色或蓝色系的颜色在这两张图中占据了明显的比例，意味着数据库时间的分布不合理。
+通过观察数据库时间分解图和执行时间概览图，你可以直观地区分正常或者异常的时间消耗，快速定位集群的异常瓶颈点，高效了解集群的负载特征。对于正常的时间消耗和请求类型，图中显示颜色为绿色系或蓝色系。如果非绿色或蓝色系的颜色在这两张图中占据了明显的比例，意味着数据库时间的分布不合理。
 
+- Database Time By SQL Type：Select 语句为蓝色，Update、Insert、Commit 等 DML 语句为绿色系。General 类型显示为红色，包含StmtPrepare、StmtReset、StmtFetch、StmtClose 等命令。
 - Database Time By SQL Phase：execute 执行阶段为绿色，其他三个阶段偏红色系，如果非绿色的颜色占比明显，意味着在执行阶段之外数据库消耗了过多时间，需要进一步分析根源。一个常见的场景是因为无法使用执行计划缓存，导致 compile 阶段的橙色占比明显。
 - SQL Execute Time Overview：绿色系标识代表常规的写 KV 请求（例如 Prewrite 和 Commit），蓝色系标识代表常规的读 KV 请求（例如 Cop 和 Get），其他色系标识需要注意的问题。例如，悲观锁加锁请求为红色，TSO 等待为深褐色。如果非蓝色系或者非绿色系占比明显，意味着执行阶段存在异常的瓶颈。例如，当发生严重锁冲突时，红色的悲观锁时间会占比明显；当负载中 TSO 等待的消耗时间过长时，深褐色会占比明显。
 
@@ -120,11 +121,15 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 #### Query Per Second、Command Per Second 和 Prepared-Plan-Cache
 
-通过观察 Performance Overview 里的以下三个面板，可以了解应用的负载类型，与 TiDB 的交互方式，以及是否能有效地利用 TiDB 的执行计划缓存。
+通过观察 Performance Overview 里的以下三个面板，可以了解应用的负载类型，与 TiDB 的交互方式，以及是否能有效地利用 TiDB 的[执行计划缓存](sql-prepared-plan-cache.md)。
 
 - QPS：表示 Query Per Second，包含应用的 SQL 语句类型执行次数分布。
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
-- Queries Using Plan Cache OPS：TiDB 集群每秒命中执行计划缓存的次数。
+- Queries Using Plan Cache OPS：TiDB 集群每秒命中执行计划缓存的次数。执行计划缓存只支持 prepared statement 命令。TiDB 开启执行计划缓存的情况下，存在三种使用情况：
+  
+  - 完全无法命中执行计划缓存：每秒命中次数为 0，因为应用使用 query 命令，或者每次 StmtExecute 执行之后调用 StmtClose 命令，导致缓存的执行计划被清理。
+  - 完全命中执行计划缓存：每秒命中次数等于命令 StmtExecute 每秒执行次数。
+  - 部分命中执行计划缓存：每秒命中次数小于命令 StmtExecute 每秒执行次数，执行计划缓存目前存在一些限制，比如不支持子查询，该类型的 SQL 执行计划无法被缓存。
 
 **示例 1：TPC-C 负载**
 
