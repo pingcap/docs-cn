@@ -37,7 +37,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - [`ssl-cert`](/tidb-configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key)：指定证书文件对应的私钥
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
-- [`tls-version`](/tidb-configuration-file.md#tls-version)：可选，指定最小 TLS 版本，例如 `TLSv1.2`
+- [`tls-version`](/tidb-configuration-file.md#tls-version)：可选，指定最低 TLS 版本，例如 `TLSv1.2`
 
 `auto tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
 
