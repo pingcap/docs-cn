@@ -550,8 +550,11 @@
   - [升级 FAQ](/faq/upgrade-faq.md)
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
+<<<<<<< HEAD
   - [迁移 FAQ](/faq/migration-tidb-faq.md)
 - [术语表](/glossary.md)
+=======
+>>>>>>> 3254fa749 (Move Glossary after Release Notes (#9368))
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
@@ -688,3 +691,4 @@
     - [RC3](/releases/release-rc.3.md)
     - [RC2](/releases/release-rc.2.md)
     - [RC1](/releases/release-rc.1.md)
+- [术语表](/glossary.md)
