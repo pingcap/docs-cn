@@ -125,12 +125,12 @@ DROP VIEW book_with_ratings;
 
 ## 局限性
 
-关于局限性，你可以通过阅读参考文档当中的[视图](https://docs.pingcap.com/zh/tidb/stable/views#%E5%B1%80%E9%99%90%E6%80%A7)章节进行了解。
+关于局限性，你可以通过阅读参考文档当中的[视图](/views.md#局限性)章节进行了解。
 
 ## 扩展阅读
 
-- [视图](https://docs.pingcap.com/zh/tidb/stable/views)
-- [CREATE VIEW 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-view)
-- [DROP VIEW 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-drop-view)
-- [用 EXPLAIN 查看带视图的 SQL 执行计划](https://docs.pingcap.com/zh/tidb/stable/explain-views)
+- [视图](/views.md)
+- [CREATE VIEW 语句](/sql-statements/sql-statement-create-view.md)
+- [DROP VIEW 语句](/sql-statements/sql-statement-drop-view.md)
+- [用 EXPLAIN 查看带视图的 SQL 执行计划](/explain-views.md)
 - [TiFlink: 使用 TiKV 和 Flink 实现强一致的物化视图](https://github.com/tiflink/tiflink)

@@ -19,7 +19,7 @@ TiDB 支持 [MySQL 客户端/服务器协议](https://dev.mysql.com/doc/internal
 mysql --host <tidb_server_host> --port 4000 -u root -p --comments
 ```
 
-注意：MySQL 命令行客户端在 5.7.7 版本之前默认清除了 [Optimizer Hints](https://docs.pingcap.com/zh/tidb/stable/optimizer-hints#optimizer-hints)。如果需要在这些早期版本的客户端中使用 Hint 语法，需要在启动客户端时加上 `--comments` 选项。
+注意：MySQL 命令行客户端在 5.7.7 版本之前默认清除了 [Optimizer Hints](/optimizer-hints.md#optimizer-hints)。如果需要在这些早期版本的客户端中使用 Hint 语法，需要在启动客户端时加上 `--comments` 选项。
 
 ## JDBC
 
@@ -40,7 +40,7 @@ mysqlDataSource.setURL("jdbc:mysql://{host}:{port}/{database}?user={username}&pa
 
 |    参数名    |                                                描述                                                |
 | :----------: | :------------------------------------------------------------------------------------------------: |
-| `{username}` | 需要连接到 TiDB 集群的 [SQL 用户](https://docs.pingcap.com/zh/tidb/stable/user-account-management) |
+| `{username}` | 需要连接到 TiDB 集群的 [SQL 用户](/user-account-management.md) |
 | `{password}` |                               需要连接到 TiDB 集群的 SQL 用户的密码                                |
 |   `{host}`   |               TiDB 节点运行的 [Host](<https://en.wikipedia.org/wiki/Host_(network)>)               |
 |   `{port}`   |                                      TiDB 节点正在监听的端口                                       |
@@ -88,7 +88,7 @@ SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml
 
 |    参数名    |                                                描述                                                |
 | :----------: | :------------------------------------------------------------------------------------------------: |
-| `{username}` | 需要连接到 TiDB 集群的 [SQL 用户](https://docs.pingcap.com/zh/tidb/stable/user-account-management) |
+| `{username}` | 需要连接到 TiDB 集群的 [SQL 用户](/user-account-management.md) |
 | `{password}` |                               需要连接到 TiDB 集群的 SQL 用户的密码                                |
 |   `{host}`   |               TiDB 节点运行的 [Host](<https://en.wikipedia.org/wiki/Host_(network)>)               |
 |   `{port}`   |                                      TiDB 节点正在监听的端口                                       |

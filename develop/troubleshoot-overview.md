@@ -11,10 +11,10 @@ summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故�
 
 如果你想提高 SQL 的性能，可以阅读 [SQL 性能优化](/develop/optimize-sql-overview.md)来避免一些常见的性能问题。然后如果依然存在性能问题，推荐阅读：
 
-- [分析慢查询](https://docs.pingcap.com/zh/tidb/stable/analyze-slow-queries)
-- [使用 Top SQL 定位系统资源消耗过多的查询](https://docs.pingcap.com/zh/tidb/stable/top-sql)
+- [分析慢查询](/analyze-slow-queries.md)
+- [使用 Top SQL 定位系统资源消耗过多的查询](/dashboard/top-sql.md)
 
-如果你遇到了一些关于 SQL 操作的问题，可以阅读 [SQL 操作常见问题](https://docs.pingcap.com/zh/tidb/stable/sql-faq)。
+如果你遇到了一些关于 SQL 操作的问题，可以阅读 [SQL 操作常见问题](/faq/sql-faq.md)。
 
 ## 事务错误处理
 
@@ -22,6 +22,6 @@ summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故�
 
 ## 推荐阅读
 
-- [不支持的功能特性](https://docs.pingcap.com/zh/tidb/stable/mysql-compatibility#%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7)
-- [集群管理 FAQ](https://docs.pingcap.com/zh/tidb/stable/manage-cluster-faq)
-- [TiDB 产品 FAQ](https://docs.pingcap.com/zh/tidb/stable/tidb-faq)
+- [不支持的功能特性](/mysql-compatibility.md#不支持的功能特性)
+- [集群管理 FAQ](/faq/manage-cluster-faq.md)
+- [TiDB 产品 FAQ](/faq/tidb-faq.md)

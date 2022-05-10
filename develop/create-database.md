@@ -9,7 +9,7 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 > **注意：**
 >
-> 有关该 `CREATE DATABASE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE DATABASE](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-database) 文档。
+> 有关该 `CREATE DATABASE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE DATABASE](/sql-statements/sql-statement-create-database.md) 文档。
 
 ## 在开始之前
 
@@ -28,7 +28,7 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 这里是一些当你创建和使用数据库时可遵循的最佳实践：
 
-- 尽量不要使用已存在的 `test` 数据库。而是应该使用 `CREATE DATABASE` 语句来创建数据库，并且在 SQL 会话中使用 `USE {databasename};` 语句来[更改当前数据库](https://docs.pingcap.com/zh/tidb/stable/sql-statement-use)。
+- 尽量不要使用已存在的 `test` 数据库。而是应该使用 `CREATE DATABASE` 语句来创建数据库，并且在 SQL 会话中使用 `USE {databasename};` 语句来[更改当前数据库](/sql-statements/sql-statement-use.md)。
 - 使用 root 用户创建数据库、角色、用户等。并只赋予必要的权限。
 - 作为通用的最佳实践，我们不推荐使用 Driver、ORM 进行数据库模式的定义与更改。相反，请使用 **MySQL 命令行客户端**或其他你喜欢的 **MySQL GUI 客户端**来进行操作。
 - 遵循[数据库命名规范](/develop/object-naming-guidelines.md#数据库命名规范)。

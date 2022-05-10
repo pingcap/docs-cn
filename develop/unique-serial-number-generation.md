@@ -13,7 +13,7 @@ summary: 唯一序列号生成方案，为自行生成唯一 ID 的开发者提�
 
 ## 序列（Sequence）
 
-序列是一种数据库对象，应用程序通过调用某个序列可以产生递增的序列值，应用程序可以灵活的使用这个序列值为一张表或多张表赋值，也可以使用序列值进行更复杂的加工，来实现文本和数字的组合，来赋予代理键以一定的跟踪和分类的意义。从 TiDB v4.0 版本开始提供序列功能，详情请参考[官方文档](https://docs.pingcap.com/zh/tidb/stable/sql-statement-create-sequence#create-sequence)。
+序列是一种数据库对象，应用程序通过调用某个序列可以产生递增的序列值，应用程序可以灵活的使用这个序列值为一张表或多张表赋值，也可以使用序列值进行更复杂的加工，来实现文本和数字的组合，来赋予代理键以一定的跟踪和分类的意义。从 TiDB v4.0 版本开始提供序列功能，详情请参考 [CREATE SEQUENCE](/sql-statements/sql-statement-create-sequence.md#create-sequence)。
 
 ## 类 Snowflake 方案
 

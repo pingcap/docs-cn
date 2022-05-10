@@ -135,16 +135,16 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。我们推荐使用 PingCAP 提供的一系列工具进行数据迁移：
 
-- 数据导出工具：[Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
-- 数据导入工具：[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](https://docs.pingcap.com/zh/tidb/stable/migrate-aurora-to-tidb)。同时支持在本地盘或 [Amazon S3 云盘](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-storages)读取数据。
-- 数据同步工具：[TiDB Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中。且支持分库分表数据库的迁移。
-- 数据备份恢复工具：[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-tool)。相对于 `Dumpling`，BR 更适合**_大数据量_**的场景。
+- 数据导出工具：[Dumpling](/dumpling-overview.md)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
+- 数据导入工具：[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。同时支持在本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
+- 数据同步工具：[TiDB Data Migration](/dm/dm-overview.md)。可同步 MySQL、MariaDB、Amazon Aurora 数据库到 TiDB 中。且支持分库分表数据库的迁移。
+- 数据备份恢复工具：[Backup & Restore (BR)](/br/backup-and-restore-overview.md)。相对于 `Dumpling`，BR 更适合**_大数据量_**的场景。
 
 ## 避免热点
 
 在设计表时需要考虑是否存在大量插入行为，若有，需在表设计期间对热点进行规避。请查看 [创建表 - 选择主键](/develop/create-table.md#选择主键) 部分，并遵从 [主键选择的最佳实践](/develop/create-table.md#主键选择的最佳实践)。
 
-更多有关热点问题的处理办法，请参考 [TiDB 热点问题处理](https://docs.pingcap.com/zh/tidb/stable/troubleshoot-hot-spot-issues)文档。
+更多有关热点问题的处理办法，请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)文档。
 
 ## 主键为 `AUTO_RANDOM` 表插入数据
 
@@ -174,7 +174,7 @@ ERROR 8216 (HY000): Invalid auto random: Explicit insertion on auto_random colum
     INSERT INTO `bookshop`.`users` (`balance`, `nickname`) VALUES (0.00, 'nicky');
     ```
 
-- 如果你确认一定需要指定此列，那么可以使用 [SET 语句](https://docs.pingcap.com/zh/tidb/stable/sql-statement-set-variable)通过更改用户变量的方式，允许在插入时，指定 `AUTO_RANDOM` 的列。
+- 如果你确认一定需要指定此列，那么可以使用 [SET 语句](/sql-statements/sql-statement-set-variable.md)通过更改用户变量的方式，允许在插入时，指定 `AUTO_RANDOM` 的列。
 
     {{< copyable "sql" >}}
 
