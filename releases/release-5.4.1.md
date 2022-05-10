@@ -86,6 +86,7 @@ TiDB 版本：5.4.1
     - 修复了在 `NOWAIT` 语句中，事务执行遇到了锁后，并不会立刻返回的问题 [#32754](https://github.com/pingcap/tidb/issues/32754)
     - 修复创建字符集为 `GBK` 且 collation 为 `gbk_bin` 的表失败的问题 [#31308](https://github.com/pingcap/tidb/issues/31308)
     - 修复启用配置 `enable-new-charset` 后，当字符集为 GBK 且指定 collation 时，建表报错 "Unknown character set" 的问题 [#31297](https://github.com/pingcap/tidb/issues/31297)
+
 + TiKV
 
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
@@ -100,9 +101,9 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
     - 修复资源管理不正确断言导致 panic 的问题 [#12234](https://github.com/tikv/tikv/issues/12234)
     - 修复部分情况下 slow score 计算不准确的问题 [#12254](https://github.com/tikv/tikv/issues/12254)
-    - 修复 resolved_ts 模块内存管理不合理导致的 OOM 问题，增加更多监控指标 [#12159](https://github.com/tikv/tikv/issues/12159)
-    - 修复网络出现问题情况下，已成功提交的乐观事务可能报 `Write Conflict` 错误的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
-    - 修复 replica read 启用时，在网络出现问题情况下可能出现 TiKV panic 的问题 [#12046](https://github.com/tikv/tikv/issues/12046)
+    - 修复 `resolved_ts` 模块内存管理不合理导致的 OOM 问题，增加更多监控指标 [#12159](https://github.com/tikv/tikv/issues/12159)
+    - 修复网络出现问题的情况下，已成功提交的乐观事务可能报 `Write Conflict` 错误的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
+    - 修复启用 replica read 时，在网络出现问题的情况下 TiKV 可能 panic 的问题 [#12046](https://github.com/tikv/tikv/issues/12046)
 
 + PD
 
