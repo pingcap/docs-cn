@@ -160,11 +160,11 @@ TiDB 版本：5.4.1
         - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> TiCDC)- 修复 `Canal-JSON` 错误处理 `string` 格式可能导致的 TiCDC panic 问题 [#4635](https://github.com/pingcap/tiflow/issues/4635)
         - (dup: release-5.2.4.md > Bug 修复> Tools> TiCDC)- 修复了 TiCDC 进程在 PD leader 被杀死时的异常退出问题 [#4248](https://github.com/pingcap/tiflow/issues/4248)
         - (dup: release-5.2.4.md > Bug 修复> Tools> TiCDC)- 修复 MySQL sink 在禁用 `batch-replace-enable` 参数时生成重复 `replace` SQL 语句的错误 [#4501](https://github.com/pingcap/tiflow/issues/4501)
-        - 修复`rename tables` DDL 导致的生成 DML 错误的问题. [#5059](https://github.com/pingcap/tiflow/issues/5059)
-        - 修复了在某些极端情况下，开启 new scheduler 时更新 owner 导致同步卡住的问题 (disabled by default). [#4963](https://github.com/pingcap/tiflow/issues/4963)
-        - 修复了在开启 new scheduler 时 ErrProcessorDuplicateOperations 报错问题 (disabled by default) [#4769](https://github.com/pingcap/tiflow/issues/4769)
-        -修复了在开启 TLS 后，第一个 PD 无法连接导致的 CDC 无法启动的问题。[#4777](https://github.com/pingcap/tiflow/issues/4777)
-        - 修复了在表被调度时 checkpoint 监控不对的问题. [#4714](https://github.com/pingcap/tiflow/issues/4714)
+        - 修复了 `rename tables` DDL 导致的生成 DML 错误的问题 [#5059](https://github.com/pingcap/tiflow/issues/5059)
+        - 修复了在某些极端情况下，开启 new scheduler（默认关闭）时更新 owner 导致同步卡住的问题 [#4963](https://github.com/pingcap/tiflow/issues/4963)
+        - 修复了在开启 new scheduler（默认关闭）时出现报错 (ErrProcessorDuplicateOperations) 的问题 [#4769](https://github.com/pingcap/tiflow/issues/4769)
+        - 修复了在开启 TLS 后，`--pd` 中设置的第一个 PD 不可用导致 TiCDC 无法启动的问题 [#4777](https://github.com/pingcap/tiflow/issues/4777)
+        - 修复了在表被调度时 checkpoint 监控缺失的问题 [#4714](https://github.com/pingcap/tiflow/issues/4714)
 
     + TiDB Lightning
 
