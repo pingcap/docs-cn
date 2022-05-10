@@ -18,12 +18,12 @@ HAProxy is written in the year 2000 by Willy Tarreau, the core contributor to th
 
 ## Basic features
 
-- [High Availability](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.4): HAProxy provides high availability with support for a graceful shutdown and a seamless switchover;
-- [Load Balancing](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html#4.2-balance): Two major proxy modes are supported: TCP, also known as layer 4, and HTTP, also known as layer 7. No less than 9 load balancing algorithms are supported, such as roundrobin, leastconn and random;
-- [Health Check](http://cbonte.github.io/haproxy-dconv/1.9/configuration.html#5.2-check): HAProxy periodically checks the status of HTTP or TCP mode of the server;
-- [Sticky Session](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.6): HAProxy can stick a client to a specific server for the duration when the application does not support sticky sessions;
-- [SSL](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.2): HTTPS communication and resolution are supported;
-- [Monitoring and Statistics](http://cbonte.github.io/haproxy-dconv/1.9/intro.html#3.3.3): Through the web page, you can monitor the service state and traffic flow in real time.
+- [High Availability](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.4): HAProxy provides high availability with support for a graceful shutdown and a seamless switchover;
+- [Load Balancing](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html#4.2-balance): Two major proxy modes are supported: TCP, also known as layer 4, and HTTP, also known as layer 7. No less than 9 load balancing algorithms are supported, such as roundrobin, leastconn and random;
+- [Health Check](http://cbonte.github.io/haproxy-dconv/2.5/configuration.html#5.2-check): HAProxy periodically checks the status of HTTP or TCP mode of the server;
+- [Sticky Session](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.6): HAProxy can stick a client to a specific server for the duration when the application does not support sticky sessions;
+- [SSL](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.2): HTTPS communication and resolution are supported;
+- [Monitoring and Statistics](http://cbonte.github.io/haproxy-dconv/2.5/intro.html#3.3.3): Through the web page, you can monitor the service state and traffic flow in real time.
 
 ## Before you begin
 
@@ -46,15 +46,16 @@ You can use the following operating systems and make sure the required dependenc
 
 #### Operating systems
 
-| Operating system version | Architecture                                  |
-|:-------------------------|:----------------------------------------------|
-| Linux 2.4                | x86, x86_64, Alpha, SPARC, MIPS, and PA-RISC  |
-| Linux 2.6 or 3.x         | x86, x86_64, ARM, SPARC, and PPC64            |
-| Solaris 8 or 9           | UltraSPARC II and III                         |
-| Solaris 10               | Opteron and UltraSPARC                        |
-| FreeBSD 4.10 ~ 10        | x86                                           |
-| OpenBSD 3.1 or later versions | i386, AMD64, macppc, Alpha, and SPARC64 |
-| AIX 5.1 ~ 5.3            | Power™                                        |
+| Linux distribution       | Version         |
+| :----------------------- | :----------- |
+| Red Hat Enterprise Linux | 7 or 8   |
+| CentOS                   | 7 or 8   |
+| Oracle Enterprise Linux  | 7 or 8   |
+| Ubuntu LTS               | 18.04 or later versions |
+
+> **Note:**
+>
+> - For more information about other supported operating systems, see [HAProxy documentation](https://github.com/haproxy/haproxy/blob/master/INSTALL).
 
 #### Dependencies
 
@@ -158,7 +159,7 @@ haproxy --help
 | `-x <unix_socket>` | Connects to the specified socket and retrieves all the listening sockets from the old process. Then, these sockets are used instead of binding new ones. |
 | `-S <bind>[,<bind_options>...]` | In master-worker mode, creates a master CLI. This CLI enables access to the CLI of every worker. Useful for debugging, it's a convenient way of accessing a leaving process. |
 
-For more details on HAProxy command line options, refer to [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/1.9/management.html) and [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html).
+For more details on HAProxy command line options, refer to [Management Guide of HAProxy](http://cbonte.github.io/haproxy-dconv/2.5/management.html) and [General Commands Manual of HAProxy](https://manpages.debian.org/buster-backports/haproxy/haproxy.1.en.html).
 
 ### Configure HAProxy
 
