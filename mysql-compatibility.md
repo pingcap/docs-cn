@@ -109,7 +109,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
     + `SUBPARTITION`
     + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
 
-    更多详情，请参考[分区表文档](/partition-tables.md)。
+    更多详情，请参考[分区表文档](/partitioned-table.md)。
 
 ### `ANALYZE TABLE`
 
