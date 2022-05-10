@@ -81,9 +81,9 @@ In the command above:
 
 ### Export to CSV files
 
-If Dumpling exports data to CSV files (use `--filetype csv` to export to CSV files), you can also use `--sql <SQL>` to export the records selected by the specified SQL statement.
+You can export data to CSV files by adding the `--filetype csv` argument.
 
-For example, you can export all records that match `id < 100` in `test.sbtest1` using the following command:
+When you export data to CSV files, you can use `--sql <SQL>` to filter the records with the SQL statements. For example, you can export all records that match `id < 100` in `test.sbtest1` using the following command:
 
 {{< copyable "shell-regular" >}}
 
@@ -94,16 +94,20 @@ For example, you can export all records that match `id < 100` in `test.sbtest1` 
   -h 127.0.0.1 \
   -o /tmp/test \
   --filetype csv \
-  --sql 'select * from `test`.`sbtest1` where id < 100'
+  --sql 'select * from `test`.`sbtest1` where id < 100' \
+  -F 100MiB \
+  --output-filename-template 'test.sbtest1.{{.Index}}'
 ```
+
+In the command above:
+
+- The `--sql` option can be used only for exporting to CSV files. The command above executes the `SELECT * FROM <table-name> WHERE id <100` statement on all tables to be exported. If a table does not have the specified field, the export fails.
+- When you use the `--sql` option, Dumpling cannot obtain the exported table and schema information. You can specify the file name format of the CSV files using the `--output-filename-template` option, which facilitates the subsequent use of [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import the data file. For example, `--output-filename-template='test.sbtest1.{{.Index}}'` specifies that the exported CSV files are named as `test.sbtest1.000000000` or `test.sbtest1.000000001`.
+- You can use options like `--csv-separator` and `--csv-delimiter` to configure the CSV file format. For details, refer to the [Dumpling option list](#option-list-of-dumpling).
 
 > **Note:**
 >
-> - Currently, the `--sql` option can be used only for exporting to CSV files.
->
-> - Here you need to execute the `select * from <table-name> where id <100` statement on all tables to be exported. If some tables do not have specified fields, the export fails.
->
-> - Strings and keywords are not distinguished in CSV files. If the imported data is the Boolean type, you need to convert `true` and `false` to `1` and `0`.
+> *Strings* and *keywords* are not distinguished by Dumpling. If the imported data is the Boolean type, the value of `true` is converted to `1` and the value of `false` is converted to `0`.
 
 ### Format of exported files
 
