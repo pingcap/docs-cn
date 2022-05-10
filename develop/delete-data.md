@@ -30,7 +30,7 @@ DELETE FROM {table} WHERE {filter}
 | `{table}`  |      表名      |
 | `{filter}` | 过滤器匹配条件 |
 
-此处仅展示 `DELETE` 的简单用法，详细文档可参考 TiDB 的 [DELETE 语法页](/sql-statements/sql-statement-delete.md)。
+此处仅展示 `DELETE` 的简单用法，详细文档可参考 TiDB 的 [DELETE 语法](/sql-statements/sql-statement-delete.md)。
 
 ## 最佳实践
 
