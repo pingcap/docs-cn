@@ -151,15 +151,15 @@ CREATE TABLE `bookshop`.`books` (
 >
 > TiDB 中，关于 **Primary Key** 的默认定义与 MySQL 常用存储引擎 [InnoDB](https://mariadb.com/kb/en/innodb/) 不一致。**InnoDB** 中，**Primary Key** 的语义为：唯一，不为空，**且为聚簇索引**。
 >
-> 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[此文档](/clustered-indexes)。
+> 而在 TiDB 中，**Primary Key** 的定义为：唯一，不为空。但主键不保证为**聚簇索引**。而是由另一组关键字 `CLUSTERED`、`NONCLUSTERED` 额外控制 **Primary Key** 是否为聚簇索引，若不指定，则由系统变量 `@@global.tidb_enable_clustered_index` 影响，具体说明请看[此文档](/clustered-indexes.md)。
 
-主键在 `CREATE TABLE` 语句中定义。[主键约束](/constraints#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)要求所有受约束的列仅包含非 `NULL` 值。
+主键在 `CREATE TABLE` 语句中定义。[主键约束](/constraints.md#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)要求所有受约束的列仅包含非 `NULL` 值。
 
-一个表可以没有主键，主键也可以是非整数类型。但此时 TiDB 就会创建一个 `_tidb_rowid` 作为隐式主键。隐式主键 `_tidb_rowid` 因为其单调递增的特性，可能在大批量写入场景下会导致写入热点，如果你写入量密集，可考虑通过 [SHARD_ROW_ID_BITS](/shard-row-id-bits) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 两参数控制打散。但这可能导致读放大，请自行取舍。
+一个表可以没有主键，主键也可以是非整数类型。但此时 TiDB 就会创建一个 `_tidb_rowid` 作为隐式主键。隐式主键 `_tidb_rowid` 因为其单调递增的特性，可能在大批量写入场景下会导致写入热点，如果你写入量密集，可考虑通过 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 两参数控制打散。但这可能导致读放大，请自行取舍。
 
-表的主键为 [整数类型](/data-type-numeric#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B) 且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](/auto-random) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
+表的主键为 [整数类型](/data-type-numeric.md#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B) 且使用了 `AUTO_INCREMENT` 时，无法使用 `SHARD_ROW_ID_BITS` 消除热点。需解决此热点问题，且无需使用主键的连续和递增时，可使用 [AUTO_RANDOM](/auto-random.md) 替换 `AUTO_INCREMENT` 属性来消除行 ID 的连续性。
 
-更多有关热点问题的处理办法，请参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues)。
+更多有关热点问题的处理办法，请参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
 #### 主键选择的最佳实践
 
@@ -171,7 +171,7 @@ CREATE TABLE `bookshop`.`books` (
 - 不推荐使用复杂的数据类型。
 - 需要 JOIN 的字段，数据类型保障绝对一致，避免隐式转换。
 - 避免在单个单调数据列上定义主键。如果你使用单个单调数据列（例如：`AUTO_INCREMENT` 的列）来定义主键，有可能会对写性能产生负面影响。可能的话，使用 `AUTO_RANDOM` 替换 `AUTO_INCREMENT`（这会失去主键的连续和递增特性）。
-- 如果你 **_必须_** 在单个单调数据列上创建索引，且有大量写入的话。请不要将这个单调数据列定义为主键，而是使用 `AUTO_RANDOM` 创建该表的主键，或使用 [SHARD_ROW_ID_BITS](/shard-row-id-bits) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 打散 `_tidb_rowid`。
+- 如果你 **_必须_** 在单个单调数据列上创建索引，且有大量写入的话。请不要将这个单调数据列定义为主键，而是使用 `AUTO_RANDOM` 创建该表的主键，或使用 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions.md) 打散 `_tidb_rowid`。
 
 #### 主键选择的示例
 
@@ -190,7 +190,7 @@ CREATE TABLE `bookshop`.`users` (
 
 ### 选择聚簇索引
 
-[聚簇索引](/clustered-indexes) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
+[聚簇索引](/clustered-indexes.md) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
 
 目前 TiDB 中 **_含有主键_** 的表分为以下两类：
 
@@ -226,11 +226,11 @@ CREATE TABLE `bookshop`.`users` (
     - 批量插入大量取值相邻的主键时，可能会产生较大的写热点问题，请遵循[主键选择的最佳实践](#主键选择的最佳实践)。
     - 当使用大于 64 位的数据类型作为主键时，可能导致表数据需要占用更多的存储空间。该现象在存在多个二级索引时尤为明显。
 
-- 显式指定是否使用聚簇索引，而非使用系统变量 `@@global.tidb_enable_clustered_index` 及配置项 `alter-primary-key` 控制是否使用[聚簇索引的默认行为](/clustered-indexes#%E5%88%9B%E5%BB%BA%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E8%A1%A8)。
+- 显式指定是否使用聚簇索引，而非使用系统变量 `@@global.tidb_enable_clustered_index` 及配置项 `alter-primary-key` 控制是否使用[聚簇索引的默认行为](/clustered-indexes.md#%E5%88%9B%E5%BB%BA%E8%81%9A%E7%B0%87%E7%B4%A2%E5%BC%95%E8%A1%A8)。
 
 #### 聚簇索引选择的示例
 
-需遵循[聚簇索引选择的最佳实践](#聚簇索引选择的最佳实践)，假设我们将需要建立一张 `books` 和 `users` 之间关联的表，代表用户对某书籍的评分。我们使用表名 `ratings` 来创建该表，并使用 `book_id` 和 `user_id` 构建[复合主键](/constraints#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)，并在该主键上建立聚簇索引：
+需遵循[聚簇索引选择的最佳实践](#聚簇索引选择的最佳实践)，假设我们将需要建立一张 `books` 和 `users` 之间关联的表，代表用户对某书籍的评分。我们使用表名 `ratings` 来创建该表，并使用 `book_id` 和 `user_id` 构建[复合主键](/constraints.md#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)，并在该主键上建立聚簇索引：
 
 {{< copyable "sql" >}}
 
@@ -246,13 +246,13 @@ CREATE TABLE `bookshop`.`ratings` (
 
 ### 添加列约束
 
-除[主键约束](#选择主键)外，TiDB 还支持其他的列约束，如：[非空约束 `NOT NULL`](/constraints#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F)、[唯一约束 `UNIQUE KEY`](/constraints#%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F)、默认值 `DEFAULT` 等。完整约束，请查看 [TiDB 约束](/constraints)文档。
+除[主键约束](#选择主键)外，TiDB 还支持其他的列约束，如：[非空约束 `NOT NULL`](/constraints.md#%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F)、[唯一约束 `UNIQUE KEY`](/constraints.md#%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F)、默认值 `DEFAULT` 等。完整约束，请查看 [TiDB 约束](/constraints.md)文档。
 
 #### 填充默认值
 
 如需在列上设置默认值，请使用 `DEFAULT` 约束。默认值将可以使你无需指定每一列的值，就可以插入数据。
 
-你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，只是被转移到了 TiDB 集群中）。常见的，我们想实现数据插入时，可默认填充默认的时间。还是使用 `rating` 作为示例，可使用以下语句：
+你可以将 `DEFAULT` 与[支持的 SQL 函数](/basic-features.md#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%87%BD%E6%95%B0%E5%92%8C%E6%93%8D%E4%BD%9C%E7%AC%A6)结合使用，将默认值的计算移出应用层，从而节省应用层的资源（当然，计算所消耗的资源并不会凭空消失，只是被转移到了 TiDB 集群中）。常见的，我们想实现数据插入时，可默认填充默认的时间。还是使用 `rating` 作为示例，可使用以下语句：
 
 {{< copyable "sql" >}}
 
@@ -320,7 +320,7 @@ CREATE TABLE `bookshop`.`users` (
 
 > **注意：**
 >
-> 本指南中有关 HTAP 的步骤仅适用于快速上手体验，不适用于生产环境。如需探索 HTAP 更多功能，请参考[深入探索 HTAP](/explore-htap)。
+> 本指南中有关 HTAP 的步骤仅适用于快速上手体验，不适用于生产环境。如需探索 HTAP 更多功能，请参考[深入探索 HTAP](/explore-htap.md)。
 
 假设我们的 `bookshop` 应用程序，有对用户评价的 `ratings` 表进行 OLAP 分析查询的需求，例如需查询: **书籍的评分，是否和评价的时间具有显著的相关性** 的需求，用以分析用户的书籍评分是否客观。那么会要求我们查询整个 `ratings` 表中的 `score` 和 `rated_at` 字段。这对普通仅支持的 OLTP 的数据库来说，是一个非常消耗资源的操作。或者使用一些 ETL 或其他数据同步工具，将 OLTP 数据库中的数据，导出到专用的 OLAP 数据库，再进行分析。
 
@@ -328,9 +328,9 @@ CREATE TABLE `bookshop`.`users` (
 
 #### 同步列存数据
 
-当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap) 和 [深入探索 HTAP](/explore-htap)。
+当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和 [深入探索 HTAP](/explore-htap.md)。
 
-我们此处选用 [TiFlash](/tiflash-overview) 为 `bookshop` 数据库的数据分析引擎。
+我们此处选用 [TiFlash](/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，开启同步副本仅需一行 SQL，如下所示：
 
@@ -345,7 +345,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 | `{table_name}` |                  表名                  |
 |   `{count}`    | 同步副本数，若为 0，则表示删除同步副本 |
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/use-tiflash#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 文档。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/use-tiflash.md#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 文档。
 
 #### 使用 HTAP 的示例
 

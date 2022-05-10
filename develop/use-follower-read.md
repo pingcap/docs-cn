@@ -15,9 +15,9 @@ summary: 使用 Follower Read 在特定情况下加速查询。
 
 ## 何时使用
 
-你可以在 [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer)当中通过可视化的方法分析你的应用程序是否存在热点 Region。你可以通过将「指标选择框」选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
+你可以在 [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)当中通过可视化的方法分析你的应用程序是否存在热点 Region。你可以通过将「指标选择框」选择到 `Read (bytes)` 或 `Read (keys)` 查看是否存在读取热点 Region。
 
-如果发现确实存在热点问题，你可以通过阅读 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues)章节进行逐一排查，以便从应用程序层面上避免热点的产生。
+如果发现确实存在热点问题，你可以通过阅读 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)章节进行逐一排查，以便从应用程序层面上避免热点的产生。
 
 如果读取热点的确无法避免或者改动的成本很大，你可以尝试通过 Follower Read 功能将读取请求更好的负载均衡到 follower region。
 
@@ -34,7 +34,7 @@ summary: 使用 Follower Read 在特定情况下加速查询。
 SET [GLOBAL] tidb_replica_read = 'follower';
 ```
 
-你可以通过 [Follower Read - 使用方式](/follower-read#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F) 了解该变量的更多细节。
+你可以通过 [Follower Read - 使用方式](/follower-read.md#%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F) 了解该变量的更多细节。
 
 </div>
 <div label="Java">
@@ -130,6 +130,6 @@ public static class AuthorDAO {
 
 ## 扩展阅读
 
-- [Follower Read](/follower-read)
-- [TiDB 热点问题处理](/troubleshoot-hot-spot-issues)
-- [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer)
+- [Follower Read](/follower-read.md)
+- [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)
+- [TiDB Dashboard 流量可视化页面](/dashboard/dashboard-key-visualizer.md)

@@ -52,7 +52,7 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 以下是更新行时需要遵循的一些最佳实践：
 
 - 始终在更新语句中指定 `WHERE` 子句。如果 `UPDATE` 没有 `WHERE` 子句，TiDB 将更新这个表内的**_所有行_**。
-- 需要更新大量行(数万或更多)的时候，使用[批量更新](#批量更新)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction)），或产生大量冲突（[乐观事务](/optimistic-transaction)）。
+- 需要更新大量行(数万或更多)的时候，使用[批量更新](#批量更新)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction.md)），或产生大量冲突（[乐观事务](/optimistic-transaction.md)）。
 
 ### `UPDATE` 例子
 
@@ -164,7 +164,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 需要更新表中多行的数据，可选择 [使用 `UPDATE`](#使用-update)，并使用 `WHERE` 子句过滤需要更新的数据。
 
-但如果你需要更新大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction)），或产生大量冲突（[乐观事务](/optimistic-transaction)）。你可以在程序或脚本中使用循环来完成操作。
+但如果你需要更新大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只更新一部分数据，直到更新全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction.md)），或产生大量冲突（[乐观事务](/optimistic-transaction.md)）。你可以在程序或脚本中使用循环来完成操作。
 
 本页提供了编写脚本来处理循环更新的示例，该示例演示了应如何进行 `SELECT` 和 `UPDATE` 的组合，完成循环更新。
 
@@ -178,7 +178,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 这时我们需要对 `ratings` 表内之前 5 分制的数据进行乘 2 操作，同时需向 `ratings` 表内添加一个新列，以指示行是否已经被更新了。使用此列，我们可以在 `SELECT` 中过滤掉已经更新的行，这将防止脚本崩溃时对行进行多次更新，导致不合理的数据出现。
 
-例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
+例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric.md#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
 
 {{< copyable "sql" >}}
 

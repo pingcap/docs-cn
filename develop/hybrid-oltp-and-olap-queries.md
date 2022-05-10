@@ -144,7 +144,7 @@ SELECT * FROM acc;
 
 ### 非聚合窗口函数
 
-除此之外，TiDB 还为我们提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions)，我们可以借助这些函数实现更加丰富分析查询。
+除此之外，TiDB 还为我们提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)，我们可以借助这些函数实现更加丰富分析查询。
 
 例如，在前面的[分页查询](/develop/paginate-results.md)章节当中，我们已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
 
@@ -221,7 +221,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 
 ### 指定查询引擎
 
-尽管 TiDB 会使用基于成本的优化器（CBO）自动地根据代价估算选择是否使用 TiFlash 副本。但是在实际使用当中，如果你非常确定查询的类型，推荐你使用 [Optimizer Hints](/optimizer-hints) 明确的指定查询所使用的执行引擎，避免因为优化器的优化结果不同，导致应用程序性能出现波动。
+尽管 TiDB 会使用基于成本的优化器（CBO）自动地根据代价估算选择是否使用 TiFlash 副本。但是在实际使用当中，如果你非常确定查询的类型，推荐你使用 [Optimizer Hints](/optimizer-hints.md) 明确的指定查询所使用的执行引擎，避免因为优化器的优化结果不同，导致应用程序性能出现波动。
 
 你可以像下面的 SQL 一样在 SELECT 语句中通过 Hint `/*+ read_from_storage(engine_name[table_name]) */` 指定查询时需要使用的查询引擎。
 
@@ -260,7 +260,7 @@ SELECT * FROM acc;
 
 ## 扩展阅读
 
-- [HTAP 快速上手指南](/quick-start-with-htap)
-- [HTAP 深入探索指南](/explore-htap)
-- [窗口函数](/functions-and-operators/window-functions)
-- [使用 TiFlash](/tiflash/use-tiflash)
+- [HTAP 快速上手指南](/quick-start-with-htap.md)
+- [HTAP 深入探索指南](/explore-htap.md)
+- [窗口函数](/functions-and-operators/window-functions.md)
+- [使用 TiFlash](/tiflash/use-tiflash.md)
