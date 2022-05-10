@@ -57,6 +57,11 @@ TiDB 版本：5.4.1
 
 + TiDB
 
+    - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 `ENUM` 或 `SET` 类型的列因为编码错误导致写入数据错误的问题 [#32302](https://github.com/pingcap/tidb/issues/32302)
+    - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复特定情况下 Merge Join 执行结果错误的问题 [#33042](https://github.com/pingcap/tidb/issues/33042)
+    - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复关联子查询返回结果中有常量时导致执行结果出错的问题  [#32089](https://github.com/pingcap/tidb/issues/32089)
+    - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复在 TiFlash 不支持使用空范围读表的情况，依然选择 TiFlash 导致查询结果错误的问题 [#33083](https://github.com/pingcap/tidb/issues/33083)
+    - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复开启 New Collation 时，作用在 `ENUM` 或`SET` 列上的 `MAX` 或 `MIN` 函数结果出错的问题 [#31638](https://github.com/pingcap/tidb/issues/31638)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复查询报错时可能阻塞 CTE 的问题 [#31302](https://github.com/pingcap/tidb/issues/31302)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 Nulleq 函数作用在 Enum 类型上可能出现结果错误的问题 [#32428](https://github.com/pingcap/tidb/issues/32428)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复使用 ChunkRPC 导出数据时可能造成 TiDB OOM 的问题 [#31981](https://github.com/pingcap/tidb/issues/31981) [#30880](https://github.com/pingcap/tidb/issues/30880)
@@ -79,7 +84,8 @@ TiDB 版本：5.4.1
     - 修复了在 sql_mode 为 `NO_ZERO_DATE` 的限制下，用户依然可以插入数据 `'0000-00-00 00:00:00'` 到 `datetime` 列的问题 [#34099](https://github.com/pingcap/tidb/issues/34099)
     - 修复了查询 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 表导致 TiDB 服务器 OOM 的问题，在 Grafana dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
     - 修复了在 `NOWAIT` 语句中，事务执行遇到了锁后，并不会立刻返回的问题 [#32754](https://github.com/pingcap/tidb/issues/32754)
-
+    - 修复创建字符集为 `GBK` 且 collation 为 `gbk_bin` 的表失败的问题 [#31308](https://github.com/pingcap/tidb/issues/31308)
+    - 修复启用配置 `enable-new-charset` 后，当字符集为 GBK 且指定 collation 时，建表报错 "Unknown character set" 的问题 [#31297](https://github.com/pingcap/tidb/issues/31297)
 + TiKV
 
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
@@ -134,6 +140,8 @@ TiDB 版本：5.4.1
 + Tools
 
     + Backup & Restore (BR)
+    
+        - (dup: release-6.0.0-dmr.md > Bug 修复> Tools> Backup & Restore (BR))- 修复了在备份重试过程中加密信息丢失导致的恢复操作失败的问题 [#32423](https://github.com/pingcap/tidb/issues/32423)
         - (dup: release-5.2.4.md > Bug 修复> Tools> Backup & Restore (BR))- 修复 BR 无法备份 RawKV 的问题 [#32607](https://github.com/pingcap/tidb/issues/32607)
         - 修复增量恢复后在表中插入记录时遇到的重复主键问题 [#33596](https://github.com/pingcap/tidb/issues/33596)
         - 修复增量恢复期间，由于 DDL 查询任务为空导致的报错 [#33322](https://github.com/pingcap/tidb/issues/33322)
