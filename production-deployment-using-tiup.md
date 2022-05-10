@@ -288,7 +288,7 @@ alertmanager_servers:
 >
 > - 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
 
-更多参数说明和配置示例，请参考如下表格。
+更详细的配置示例和参数解释，请参考如下表格。
 
 | 组件 | 配置示例 | 参数解释 |
 | :--- | :--- | :--- |
