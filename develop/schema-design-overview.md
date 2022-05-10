@@ -95,7 +95,7 @@ TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-
 |      列数      |                                                                                                       默认为 1017，最大可调至 4096                                                                                                        |
 |     索引数     |                                                                                                         默认为 64，最大可调至 512                                                                                                         |
 |     分区数     |                                                                                                                   8192                                                                                                                    |
-|    单行大小    | 默认为 6MB，可通过 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-span-classversion-mark%E4%BB%8E-v50-%E7%89%88%E6%9C%AC%E5%BC%80%E5%A7%8B%E5%BC%95%E5%85%A5span) 配置项调整 |
+|    单行大小    | 默认为 6MB，可通过 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-span-class"version-mark"从-v50-版本开始引入span) 配置项调整 |
 | 单行内单列大小 |                                                                                                                    6MB                                                                                                                    |
 
 ### 字符串类型限制

@@ -171,7 +171,7 @@ CREATE TABLE `bookshop`.`books` (
 - 不推荐使用复杂的数据类型。
 - 需要 JOIN 的字段，数据类型保障绝对一致，避免隐式转换。
 - 避免在单个单调数据列上定义主键。如果你使用单个单调数据列（例如：`AUTO_INCREMENT` 的列）来定义主键，有可能会对写性能产生负面影响。可能的话，使用 `AUTO_RANDOM` 替换 `AUTO_INCREMENT`（这会失去主键的连续和递增特性）。
-- 如果你 **_必须_** 在单个单调数据列上创建索引，且有大量写入的话。请不要将这个单调数据列定义为主键，而是使用 `AUTO_RANDOM` 创建该表的主键，或使用 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions.md) 打散 `_tidb_rowid`。
+- 如果你 **_必须_** 在单个单调数据列上创建索引，且有大量写入的话。请不要将这个单调数据列定义为主键，而是使用 `AUTO_RANDOM` 创建该表的主键，或使用 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 打散 `_tidb_rowid`。
 
 #### 主键选择的示例
 

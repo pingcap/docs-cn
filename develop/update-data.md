@@ -178,7 +178,7 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 这时我们需要对 `ratings` 表内之前 5 分制的数据进行乘 2 操作，同时需向 `ratings` 表内添加一个新列，以指示行是否已经被更新了。使用此列，我们可以在 `SELECT` 中过滤掉已经更新的行，这将防止脚本崩溃时对行进行多次更新，导致不合理的数据出现。
 
-例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric.md#boolean-%E7%B1%BB%E5%9E%8B) 的列作为是否为 10 分制的标识：
+例如，你可以创建一个名为 `ten_point`，数据类型为 [BOOL](/data-type-numeric.md#boolean-类型) 的列作为是否为 10 分制的标识：
 
 {{< copyable "sql" >}}
 
