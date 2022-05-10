@@ -52,7 +52,7 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 以下是更新行时需要遵循的一些最佳实践：
 
 - 始终在更新语句中指定 `WHERE` 子句。如果 `UPDATE` 没有 `WHERE` 子句，TiDB 将更新这个表内的**_所有行_**。
-- 需要更新大量行(数万或更多)的时候，使用[批量更新](#批量更新)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction.md)），或产生大量冲突（[乐观事务](/optimistic-transaction.md)）。
+- 需要更新大量行(数万或更多)的时候，使用[批量更新](#批量更新)，这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB），且一次性过多的数据更新，将导致持有锁时间过长（[悲观事务](/pessimistic-transaction.md)），或产生大量冲突（[乐观事务](/optimistic-transaction.md)）。
 
 ### `UPDATE` 例子
 

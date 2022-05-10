@@ -15,7 +15,7 @@ summary: 介绍 TiDB 中的单表查询功能。
 
 在阅读本章节之前，你需要做以下准备工作：
 
-1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](/production-deployment-using-tiup)）。
+1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/build-cluster-in-cloud.md) 或 [TiUP](/production-deployment-using-tiup.md)）。
 2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/bookshop-schema-design.md#导入数据)。
 3. [连接到 TiDB](/develop/connect-to-tidb.md)。
 

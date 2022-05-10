@@ -47,7 +47,7 @@ TiDB 支持一些特殊场景专用的索引，用以提高特定用例中的查
 
 |                                                           索引和约束                                                           |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    |   4.0    |
 | :----------------------------------------------------------------------------------------------------------------------------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [表达式索引](/sql-statements/sql-statement-create-index#表达式索引) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [表达式索引](/sql-statements/sql-statement-create-index.md#表达式索引) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 |                         [列式存储 (TiFlash)](/tiflash/tiflash-overview.md)                         |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 |                            [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                            |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 |                              [Titan 插件](/storage-engine/titan-overview.md)                              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
@@ -67,7 +67,7 @@ TiDB 支持一些和**表**同级的对象：
 
 ## 访问控制
 
-TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-based-access-control.md)或直接指向[用户](/user-account-management)，从而授予**用户**查看、修改或删除 数据对象和数据模式的[权限](/privilege-management.md)。
+TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-based-access-control.md)或直接指向[用户](/user-account-management.md)，从而授予**用户**查看、修改或删除 数据对象和数据模式的[权限](/privilege-management.md)。
 
 ## 执行数据库模式更改
 

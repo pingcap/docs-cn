@@ -330,7 +330,7 @@ CREATE TABLE `bookshop`.`users` (
 
 当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和 [深入探索 HTAP](/explore-htap.md)。
 
-我们此处选用 [TiFlash](/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
+我们此处选用 [TiFlash](/tiflash/tiflash-overview.md) 为 `bookshop` 数据库的数据分析引擎。
 
 TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要同步的表，开启同步副本仅需一行 SQL，如下所示：
 
@@ -345,7 +345,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 | `{table_name}` |                  表名                  |
 |   `{count}`    | 同步副本数，若为 0，则表示删除同步副本 |
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/use-tiflash.md#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 文档。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#%E4%BD%BF%E7%94%A8-tidb-%E8%AF%BB%E5%8F%96-tiflash) 文档。
 
 #### 使用 HTAP 的示例
 
