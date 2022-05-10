@@ -111,4 +111,4 @@ TiDB 支持基于用户或角色的访问控制。你可以通过[角色](/role-
 
 ### 行数
 
-TiDB 可通过增加集群的节点数来支持任意数量的行，原理可阅读[此文档](/best-practices/tidb-best-practices.md)
+TiDB 可通过增加集群的节点数来支持任意数量的行，原理可阅读 [TiDB 最佳实践](/best-practices/tidb-best-practices.md)
