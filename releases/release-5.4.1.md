@@ -32,11 +32,11 @@ TiDB 版本：5.4.1
 
 + TiKV
 
-    - Grafana 上支持查看 multi-k8s 相关信息. [#12104](https://github.com/tikv/tikv/issues/12104)
+    - 使 Grafana 支持 multi-k8s 的监控[#12104](https://github.com/tikv/tikv/issues/12104)
 
 + PD
 
-    - Grafana 上支持查看 multi-k8s 纬度信息 [#4673](https://github.com/tikv/pd/issues/4673)
+    - 使 Grafana 支持 multi-k8s 的监控 [#4673](https://github.com/tikv/pd/issues/4673)
 
 + TiFlash
 
@@ -85,23 +85,23 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
-    - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
-    - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 Replica Read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
+    - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic 的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
+    - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 replica read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
     - (dup: release-5.2.4.md > 提升改进> TiKV)- 通过减少需要进行清理锁 (Resolve Locks) 步骤的 Region 数量来减少 TiCDC 恢复时间 [#11993](https://github.com/tikv/tikv/issues/11993)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 Peer 状态为 Applying 时快照文件被删除会造成 panic 的问题 [#11746](https://github.com/tikv/tikv/issues/11746)
     - (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复删除 Peer 可能造成高延迟的问题 [#10210](https://github.com/tikv/tikv/issues/10210)
-    - 修复资源管理不正确断言导致的 panic. [#12234](https://github.com/tikv/tikv/issues/12234)
-    - 修复部分情况 tikv slow score 计算不准确的问题. [#12254](https://github.com/tikv/tikv/issues/12254)
-    - 修复 resolved_ts 模块内存管理不合理导致的 oom 问题，增加更多监控指标. [#12159](https://github.com/tikv/tikv/issues/12159)
-    - 修复网络出现问题情况下，已成功提交的乐观事务误可能报 WriteConflict 错误到 client 的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
-    - 修复 replica read 启用时，在网络出现问题情况下 tikv 可能 panic 的问题 [#12046](https://github.com/tikv/tikv/issues/12046)
+    - 修复资源管理不正确断言导致 panic 的问题[#12234](https://github.com/tikv/tikv/issues/12234)
+    - 修复部分情况下 slow score 计算不准确的问题 [#12254](https://github.com/tikv/tikv/issues/12254)
+    - 修复 resolved_ts 模块内存管理不合理导致的 OOM 问题，增加更多监控指标 [#12159](https://github.com/tikv/tikv/issues/12159)
+    - 修复网络出现问题情况下，已成功提交的乐观事务可能报 WriteConflict 错误的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
+    - 修复 replica read 启用时，在网络出现问题情况下可能出现 TiKV panic 的问题 [#12046](https://github.com/tikv/tikv/issues/12046)
 
 + PD
 
     - (dup: release-6.0.0-dmr.md > Bug 修复> PD)- 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
-    - 修复存在大 store 时，小 store 空间满时无法被检测到，从而无法生成调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
+    - 修复存在大 store（例如 2T）时，无法检测到空间满的小 store，从而无法生成调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
     - 修复监控信息未重置上报导致的监控中残留已删除的 label 的问题 [#4825](https://github.com/tikv/pd/issues/4825)
 
 + TiFlash
