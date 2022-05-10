@@ -27,8 +27,8 @@ TiDB 版本：5.4.1
 
     - (dup: release-6.0.0-dmr.md > 提升改进> TiDB)- 支持读取 `_tidb_rowid` 列的查询能够使用 PointGet 计划 [#31543](https://github.com/pingcap/tidb/issues/31543)
     - 为 `Apply` 算子添加了一些调试信息 [#33887](https://github.com/pingcap/tidb/issues/33887)
-    - 对于 analyze version 2，优化了 `TopN` 裁剪的逻辑 [#34256](https://github.com/pingcap/tidb/issues/34256)
-    - metrics 中添加了一个 `k8s_cluster` 标签，以便在 grafana 的仪表盘支持多个 k8s 集群 [#32593](https://github.com/pingcap/tidb/issues/32593)
+    - 对于统计信息使用的 Analyze Version 2，优化了 `TopN` 裁剪的逻辑 [#34256](https://github.com/pingcap/tidb/issues/34256)
+    - 在 Grafana 的仪表盘中支持显示多个 Kubernetes 集群 [#32593](https://github.com/pingcap/tidb/issues/32593)
 
 + TiKV
 
@@ -68,17 +68,17 @@ TiDB 版本：5.4.1
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复查询时用到 index lookup join 导致 `invalid transaction` 报错的问题 [#30468](https://github.com/pingcap/tidb/issues/30468)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321](https://github.com/pingcap/tidb/issues/31321)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
-    - 修复了集群从 4.0 旧版本升级后，为用户授予 `all` 权限报错的问题 [#33588](https://github.com/pingcap/tidb/issues/33588)
+    - 修复了集群从 4.0 版本升级后，为用户授予 `all` 权限时报错的问题 [#33588](https://github.com/pingcap/tidb/issues/33588)
     - 修复了在 MySQL binary 协议下，当 schema 变更后，执行 prepared statement 会导致会话崩溃的问题 [#33509](https://github.com/pingcap/tidb/issues/33509)
-    - 修复了一处 `compress()` 表达式在 `tidb_enable_vectorized_expression` 开启时，执行会报错的问题 [#33397](should ensure all columns have the same length, expect 103, but got 104 · Issue #33397 · pingcap/tid)
-    - 修复了 `reArrangeFallback()` 函数使用 CPU 资源过多的问题. [#30353](memory.reArrangeFallback uses 50% of the time for SELECT with 8k partitions · Issue #30353 · pingcap)
-    - 修复对于新加入的分区，表的 attributes 无法被检索，以及分区更新后，表的 range 信息不会被更新等问题 [#33929](https://github.com/pingcap/tidb/issues/33929)
-    - 修复了表的 `TopN` 统计信息在初始化时，未正确地排序的问题 [#34216](https://github.com/pingcap/tidb/issues/34216)
+    - 修复了一处 `compress()` 表达式在 `tidb_enable_vectorized_expression` 开启时，执行会报错的问题 [#33397](https://github.com/pingcap/tidb/issues/33397)
+    - 修复了 `reArrangeFallback()` 函数使用 CPU 资源过多的问题 [#30353](https://github.com/pingcap/tidb/issues/30353)
+    - 修复对于新加入的分区，表属性 (table attributes) 无法被检索到，以及分区更新后，表的 range 信息不会被更新的问题 [#33929](https://github.com/pingcap/tidb/issues/33929)
+    - 修复了表的 `TopN` 统计信息在初始化时未正确排序的问题 [#34216](https://github.com/pingcap/tidb/issues/34216)
     - 修复了读取 `INFORMATION_SCHEMA.ATTRIBUTES` 表报错的问题，对于无法识别的 attributes 会做跳过处理 [#33665](https://github.com/pingcap/tidb/issues/33665)
-    - 修复了当查询要求结果有序的情况下，即使设置了 `@@tidb_enable_parallel_apply`，`apply` 算子依然不使用并行模式执行的问题 [#34237](https://github.com/pingcap/tidb/issues/34237)
-    - 修复了在 sql_mode 为 `NO_ZERO_DATE` 的限制下，用户依然可以插入数据 '0000-00-00 00:00:00'  到 datetime 列的问题 [#34099](https://github.com/pingcap/tidb/issues/34099)
-    - 修复了查询 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 表导致 TiDB 服务器 OOM 的问题, 在 Dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
-    - 修复了在 `NOWAIT` 语句中，事务执行时遇到了锁后，并不会立刻返回的问题 [#32754](https://github.com/pingcap/tidb/issues/32754)
+    - 修复了当查询要求结果有序的情况下，即使设置了 `@@tidb_enable_parallel_apply`，`Apply` 算子依然不使用并行模式执行的问题 [#34237](https://github.com/pingcap/tidb/issues/34237)
+    - 修复了在 sql_mode 为 `NO_ZERO_DATE` 的限制下，用户依然可以插入数据 `'0000-00-00 00:00:00'` 到 `datetime` 列的问题 [#34099](https://github.com/pingcap/tidb/issues/34099)
+    - 修复了查询 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 表导致 TiDB 服务器 OOM 的问题，在 Grafana dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
+    - 修复了在 `NOWAIT` 语句中，事务执行遇到了锁后，并不会立刻返回的问题 [#32754](https://github.com/pingcap/tidb/issues/32754)
 
 + TiKV
 
