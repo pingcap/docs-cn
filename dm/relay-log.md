@@ -137,7 +137,7 @@ Relay log 迁移的起始位置由如下规则决定：
 
 > **警告：**
 >
-> 该启动方式在 v6.1 版本中标记为弃用，在未来版本可能会被移除。在这些命令的输出中您会看到 `start-relay/stop-relay with worker name will be deprecated soon. You can try stopping relay first and use start-relay without worker name instead` 的提示。
+> 该启动方式在 v6.1 版本中标记为弃用，在未来版本可能会被移除。相关命令的输出中您会看到 `start-relay/stop-relay with worker name will be deprecated soon. You can try stopping relay first and use start-relay without worker name instead` 的提示。
 
 `start-relay` 命令可以配置一个或多个 DM-worker 为指定数据源迁移 relay log，但只能指定空闲或者已绑定了该上游数据源的 DM-worker。使用示例如下：
 
