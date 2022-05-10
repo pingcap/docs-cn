@@ -324,7 +324,7 @@ TiDB 的 CPU 火焰图没有明显变化。
 
 #### Performance Overview 面板
 
-使用 RC read 之后，QPS 从 30.9k 上升为 34.9k，每秒消耗的 tso wait 时间从 5.46 s 下降到 456 ms。
+使用 RC read 之后，QPS 从 30.9k 上升到 34.9k，每秒消耗的 tso wait 时间从 5.46 s 下降到 456 ms。
 
 ![performance-overview-1-for-rc-read](/media/performance/new/j-6.png)
 
@@ -386,7 +386,7 @@ QPS 从 34.9k 上升到 40.9k，execute 时间中占比最高的 KV 请求类型
 - CPS By Type 只有 1 种 command
 - avg QPS = 40.9k (34.9k->40.9k)
 
-TiDB CPU 平均利用率从 603% 下降 为 478%，TiKV CPU 平均利用率从 346% 下降到 256%。
+TiDB CPU 平均利用率从 603% 下降 到 478%，TiKV CPU 平均利用率从 346% 下降到 256%。
 
 ![performance-overview-2-for-table-cache](/media/performance/new/j-7-cpu.png)
 
@@ -416,8 +416,8 @@ Query 平均延迟从 533 us 下降到 313 us。execute 平均延迟从 466 us �
 
 其中，场景 2 是应用程序使用 query 接口的常见场景，场景 5 是应用程序使用 Prepared Statement 接口的理想场景。
 
-- 对比场景 2 和场景 5，我们可以发现通过使用最佳的应用开发实践以及客户端缓存 Prepared Statement 对象，每条 SQL 只需要一次命令和数据库交互，就能命中执行计划缓存，从而使 Query 延迟下降了 38%，QPS 上升 28%，同时，TiDB CPU 平均利用率 从 936% 下降 577%。
-- 对比场景 2 和场景 7，我们能看到在场景 5 的基础上使用了 RC Read、小表缓存等 TiDB 最新的优化功能，延迟降低了 51% ，QPS 提升了 108%，同时，TiDB CPU 平均利用率 从 936% 下降 478%。
+- 对比场景 2 和场景 5，我们可以发现通过使用最佳的应用开发实践以及客户端缓存 Prepared Statement 对象，每条 SQL 只需要一次命令和数据库交互，就能命中执行计划缓存，从而使 Query 延迟下降了 38%，QPS 上升 28%，同时，TiDB CPU 平均利用率 从 936% 下降到 577%。
+- 对比场景 2 和场景 7，我们能看到在场景 5 的基础上使用了 RC Read、小表缓存等 TiDB 最新的优化功能，延迟降低了 51% ，QPS 提升了 108%，同时，TiDB CPU 平均利用率 从 936% 下降到 478%。
 
 通过对比各场景的性能表现，可以得出以下结论：
 
