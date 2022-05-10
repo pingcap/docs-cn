@@ -108,7 +108,7 @@ SELECT id, title, type, price FROM books AS OF TIMESTAMP '2022-04-20 15:20:00' O
 
 需要注意的是，设定的时间戳或时间戳的范围不能过早或晚于当前时间。
 
-过期的数据在 TiDB 当中会由[垃圾回收器](/garbage-collection-overview.md)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](/system-variables.md#tidbgclifetime-span-class"version-mark"从-v50-版本开始引入span)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
+过期的数据在 TiDB 当中会由[垃圾回收器](/garbage-collection-overview.md)进行回收，数据在被清除之前会被保留一小段时间，这段时间被称为 [GC Life Time (默认 10 分钟)](/system-variables.md#tidbgclifetime-从-v50-版本开始引入)。每次进行 GC 时，将以当前时间减去该时间周期的值作为 **GC Safe Point**。如果尝试读取 GC Safe Point 之前数据，TiDB 会报如下错误：
 
 ```
 ERROR 9006 (HY000): GC life time is shorter than transaction duration...
