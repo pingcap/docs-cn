@@ -221,9 +221,9 @@ The following are descriptions of parameters and parameter values that can be co
 | `ca` | The path of the CA certificate file needed to connect to the downstream Kafka instance (optional)  |
 | `cert` | The path of the certificate file needed to connect to the downstream Kafka instance (optional) |
 | `key` | The path of the certificate key file needed to connect to the downstream Kafka instance (optional) |
-| `sasl-user` | The identity (authcid) of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional) |
-| `sasl-password` | The password of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional) |
-| `sasl-mechanism` | The name of SASL/PLAIN or SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional)  |
+| `sasl-user` | The identity (authcid) of SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional) |
+| `sasl-password` | The password of SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional) |
+| `sasl-mechanism` | The name of SASL/SCRAM authentication needed to connect to the downstream Kafka instance (optional)  |
 | `dial-timeout` | The timeout in establishing a connection with the downstream Kafka. The default value is `10s` |
 | `read-timeout` | The timeout in getting a response returned by the downstream Kafka. The default value is `10s` |
 | `write-timeout`| The timeout in sending a request to the downstream Kafka. The default value is `10s` |
