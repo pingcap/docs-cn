@@ -28,7 +28,7 @@ TiDB 对 SQL 的处理路径和数据库时间进行了完善的测量和记录�
 
 一个典型的 SQL 的处理流程如下所示，TiDB 的性能指标覆盖了绝大部分的处理路径。
 
-![数据库时间分解图](/media/Performance/dashboard-diagnostics-time-relation.png)
+![数据库时间分解图](/media/performance/dashboard-diagnostics-time-relation.png)
 
 数据库时间是所有 SQL 处理时间的总和。通过以下三个维度对数据库时间进行分解，可以帮助你快速定位 TiDB 内部瓶颈：
 
