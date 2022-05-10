@@ -138,7 +138,7 @@ The crypto policy for your operating system and the client library you are using
 
 The `tls-version` configuration option can be used to limit the TLS versions that can be used.
 
-The actual TLS versions that can be used depend on the OS crypto policy, MySQL client version and the SSL/TLS libary that is used by the client.
+The actual TLS versions that can be used depend on the OS crypto policy, MySQL client version and the SSL/TLS library that is used by the client.
 
 ### Supported key exchange protocols and encryption algorithms
 
