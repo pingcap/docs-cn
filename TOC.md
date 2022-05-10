@@ -766,7 +766,6 @@
   - [集群管理 FAQ](/faq/manage-cluster-faq.md)
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
-- [术语表](/glossary.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
@@ -911,3 +910,4 @@
     - [RC3](/releases/release-rc.3.md)
     - [RC2](/releases/release-rc.2.md)
     - [RC1](/releases/release-rc.1.md)
+- [术语表](/glossary.md)
