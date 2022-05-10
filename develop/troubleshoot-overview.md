@@ -22,6 +22,6 @@ summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故�
 
 ## 推荐阅读
 
-- [不支持的功能特性](/mysql-compatibility.md#%E4%B8%8D%E6%94%AF%E6%8C%81%E7%9A%84%E5%8A%9F%E8%83%BD%E7%89%B9%E6%80%A7)
+- [不支持的功能特性](/mysql-compatibility.md#不支持的功能特性)
 - [集群管理 FAQ](/faq/manage-cluster-faq.md)
 - [TiDB 产品 FAQ](/faq/tidb-faq.md)

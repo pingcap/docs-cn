@@ -52,8 +52,8 @@ TiDB 支持一些特殊场景专用的索引，用以提高特定用例中的查
 |                            [RocksDB 引擎](/storage-engine/rocksdb-overview.md)                            |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 |                              [Titan 插件](/storage-engine/titan-overview.md)                              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 |                         [不可见索引](/sql-statements/sql-statement-add-index.md)                          |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
-|              [复合主键](/constraints.md#%E4%B8%BB%E9%94%AE%E7%BA%A6%E6%9D%9F)              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
-|              [唯一约束](/constraints.md#%E5%94%AF%E4%B8%80%E7%BA%A6%E6%9D%9F)              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+|              [复合主键](/constraints.md#主键约束)              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
+|              [唯一约束](/constraints.md#唯一约束)              |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 |                          [整型主键上的聚簇索引](/constraints.md)                           |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |
 |                      [复合或非整型主键上的聚簇索引](/constraints.md)                       |    Y     |    Y     |    Y     |    Y     |    Y     |    N     |
 

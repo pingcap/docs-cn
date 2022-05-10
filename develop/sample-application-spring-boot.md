@@ -581,7 +581,7 @@ true
 你可以使用 `make request` 或 `./request.sh` 命令运行此脚本，结果应如下所示：
 
 ```
-cheese@CheesedeMacBook-Pro spring-jpa-hibernate % make request
+> make request
 ./request.sh
 loop to create 10 players:
 1111111111
