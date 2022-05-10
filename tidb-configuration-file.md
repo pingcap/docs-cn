@@ -325,6 +325,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 控制 TiDB 启动时是否自动生成 TLS 证书。
 + 默认值：`false`
 
+### `tls-version`
+
++ 设置用于连接 MySQL 协议的最低 TLS 版本。
++ 默认值：""，支持 TLSv1.1 及以上版本。
++ 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
+
 ## performance
 
 性能相关配置。
