@@ -12,7 +12,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 > **警告：**
 >
-> 上有数据库配置文件中的 `relay-dir` 在 v6.1 版本已经标记为弃用，将会在未来版本移除。在相关命令中您会看到 `` `relay-dir` in source config will be deprecated soon, please use `relay-dir` in worker config instead`` 的提示。
+> 上游数据库配置文件中的 `relay-dir` 在 v6.1 版本中标记为弃用，在未来版本可能会被移除。相关命令的输出中您会看到 `` `relay-dir` in source config will be deprecated soon, please use `relay-dir` in worker config instead`` 的提示。
 
 DM-worker 在运行过程中，会将上游 binlog 实时迁移到本地文件。DM-worker 的 sync 处理单元会实时读取本地 relay log 的 binlog 事件，将这些事件转换为 SQL 语句，再将 SQL 语句迁移到下游数据库。
 
