@@ -127,9 +127,9 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
 - Queries Using Plan Cache OPS：TiDB 集群每秒命中执行计划缓存的次数。执行计划缓存只支持 prepared statement 命令。TiDB 开启执行计划缓存的情况下，存在三种使用情况：
   
-  - 完全无法命中执行计划缓存：每秒命中次数为 0，因为应用使用 query 命令，或者每次 StmtExecute 执行之后调用 StmtClose 命令，导致缓存的执行计划被清理。
-  - 完全命中执行计划缓存：每秒命中次数等于命令 StmtExecute 每秒执行次数。
-  - 部分命中执行计划缓存：每秒命中次数小于命令 StmtExecute 每秒执行次数，执行计划缓存目前存在一些限制，比如不支持子查询，该类型的 SQL 执行计划无法被缓存。
+    - 完全无法命中执行计划缓存：每秒命中次数为 0，因为应用使用 query 命令，或者每次 StmtExecute 执行之后调用 StmtClose 命令，导致缓存的执行计划被清理。
+    - 完全命中执行计划缓存：每秒命中次数等于命令 StmtExecute 每秒执行次数。
+    - 部分命中执行计划缓存：每秒命中次数小于命令 StmtExecute 每秒执行次数，执行计划缓存目前存在一些限制，比如不支持子查询，该类型的 SQL 执行计划无法被缓存。
 
 **示例 1：TPC-C 负载**
 
