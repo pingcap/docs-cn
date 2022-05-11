@@ -158,7 +158,7 @@ ports:
 
 ### 应用更改
 
-完成对`.gitpod.yml`文件配置后，请保证最新的代码已在您对应的 GitHub 代码仓库中可用。
+完成对 `.gitpod.yml` 文件配置后，请保证最新的代码已在您对应的 GitHub 代码仓库中可用。
 
 访问 `https://gitpod.io/#<YOUR_REPO_URL>` 以建立新的 Gitpod 工作区，新工作区会应用最新的代码。
 
