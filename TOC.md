@@ -156,16 +156,20 @@
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
   - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
-  - 系统调优
-    - [操作系统性能参数调优](/tune-operating-system.md)
-  - 软件调优
-    - 配置
-      - [TiDB 内存调优](/configure-memory-usage.md)
-      - [TiKV 线程调优](/tune-tikv-thread-performance.md)
-      - [TiKV 内存调优](/tune-tikv-memory-performance.md)
-      - [TiKV Follower Read](/follower-read.md)
-      - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
-    - [下推计算结果缓存](/coprocessor-cache.md)
+  - 优化手册
+    - [优化概述](/performance-tuning-overview.md)
+    - [优化方法](/performance-tuning-methods.md)
+  - 配置优化
+    - 系统调优
+      - [操作系统性能参数调优](/tune-operating-system.md)
+    - 软件调优
+      - 配置
+        - [TiDB 内存调优](/configure-memory-usage.md)
+        - [TiKV 线程调优](/tune-tikv-thread-performance.md)
+        - [TiKV 内存调优](/tune-tikv-memory-performance.md)
+        - [TiKV Follower Read](/follower-read.md)
+        - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+      - [下推计算结果缓存](/coprocessor-cache.md)
   - SQL 性能调优
     - [SQL 性能调优概览](/sql-tuning-overview.md)
     - 理解 TiDB 执行计划
@@ -497,6 +501,7 @@
     - [调度](/tidb-scheduling.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
+    - [Performance Overview 面板](/grafana-performance-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
     - [PD 面板](/grafana-pd-dashboard.md)
     - [TiKV 面板](/grafana-tikv-dashboard.md)
