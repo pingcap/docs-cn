@@ -8,7 +8,7 @@ title: Gitpod
 
 使用 [Gitpod](https://www.gitpod.io/) ，只需单击一个按钮/链接即可在浏览器中获得完整的开发环境，并且可以立即编写代码。
 
-> [Gitpod](https://github.com/gitpod-io/gitpod) 是一个开源 Kubernetes 应用程序，适用于可直接编写代码的开发人员环境，可为云中的每个任务提供全新的自动化开发环境， 非常迅速。 它使您能够将您的开发环境描述为代码，并直接从您的浏览器或桌面 IDE 启动即时、远程和基于云的开发人员环境。
+> [Gitpod](https://github.com/gitpod-io/gitpod) 是一个开源 Kubernetes 应用程序，适用于可直接编写代码的开发人员环境，可为云中的每个任务提供全新的自动化开发环境，非常迅速。它使您能够将您的开发环境描述为代码，并直接从您的浏览器或桌面 IDE 启动即时、远程和基于云的开发人员环境。
 
 ## 快速开始 {#quick-start}
 
