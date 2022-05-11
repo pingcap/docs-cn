@@ -27,9 +27,6 @@ For details, see [tips for choosing the affected versions](https://github.com/pi
 - [ ] v5.1 (TiDB 5.1 versions)
 - [ ] v5.0 (TiDB 5.0 versions)
 - [ ] v4.0 (TiDB 4.0 versions)
-- [ ] v3.1 (TiDB 3.1 versions)
-- [ ] v3.0 (TiDB 3.0 versions)
-- [ ] v2.1 (TiDB 2.1 versions)
 
 ### What is the related PR or file link(s)?
 
