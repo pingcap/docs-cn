@@ -16,7 +16,7 @@ TiDB 对 SQL 的处理路径和数据库时间进行了完善的测量和记录�
 1. 通过对比 SQL 处理平均延迟和事务中 TiDB 连接的空闲时间，确定整个系统的瓶颈是否在 TiDB 中。
 2. 如果瓶颈在 TiDB 内部，根据数据库时间概览、颜色优化法、关键指标和资源利用率、自上而下的延迟分解，定位到性能瓶颈具体在整个分布式系统的哪个模块。
 
-### 整个系统的瓶颈是否在 TiDB 中
+### 确定整个系统的瓶颈是否在 TiDB 中
 
 - 如果事务中 TiDB 连接的平均空闲时间比 SQL 平均处理延迟高，说明应用的事务处理中，主要的延迟不在数据库中，数据库时间占用户响应时间比例小，可以确认瓶颈不在数据库中。
 
@@ -121,7 +121,7 @@ Performance Overview 面板提供了以下三个面积堆叠图，帮助你了�
 
 #### Query Per Second、Command Per Second 和 Prepared-Plan-Cache
 
-通过观察 Performance Overview 里的以下三个面板，可以了解应用的负载类型，与 TiDB 的交互方式，以及是否能有效地利用 TiDB 的[执行计划缓存](sql-prepared-plan-cache.md)。
+通过观察 Performance Overview 里的以下三个面板，可以了解应用的负载类型，与 TiDB 的交互方式，以及是否能有效地利用 TiDB 的[执行计划缓存](/sql-prepared-plan-cache.md)。
 
 - QPS：表示 Query Per Second，包含应用的 SQL 语句类型执行次数分布。
 - CPS By Type：CPS 表示 Command Per Second，Command 代表 MySQL 协议的命令类型。同样一个查询语句可以通过 query 或者 prepared statement 的命令类型发送到 TiDB。
