@@ -9,18 +9,6 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
 
-整本开发者手册将包含以下内容：
-
-- [快速开始](/develop/build-cluster-in-cloud)
-- [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
-- [连接到 TiDB](/develop/connect-to-tidb.md)
-- [数据库模式设计](/develop/schema-design-overview.md)
-- [数据写入](/develop/insert-data.md)
-- [数据读取](/develop/get-data-from-single-table.md)
-- [事务](/develop/transaction-overview.md)
-- [优化 SQL 性能](/develop/optimize-sql-overview.md)
-- [示例程序](/develop/sample-application-spring-boot.md)
-
 ## TiDB 基础
 
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
@@ -43,3 +31,15 @@ TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所�
 TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](/mysql-compatibility.md)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么我们建议你使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
 
 因为 TiDB 兼容 MySQL 协议，且兼容 MySQL 语法，因此大多数支持 MySQL 的 ORM 也兼容 TiDB 。
+
+## 扩展阅读
+
+- [快速开始](/develop/build-cluster-in-cloud)
+- [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
+- [连接到 TiDB](/develop/connect-to-tidb.md)
+- [数据库模式设计](/develop/schema-design-overview.md)
+- [数据写入](/develop/insert-data.md)
+- [数据读取](/develop/get-data-from-single-table.md)
+- [事务](/develop/transaction-overview.md)
+- [优化 SQL 性能](/develop/optimize-sql-overview.md)
+- [示例程序](/develop/sample-application-spring-boot.md)
