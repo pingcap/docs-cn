@@ -694,7 +694,7 @@
     - [SQL 模式](/sql-mode.md)
     - [表属性](/table-attributes.md)
     - 事务
-      - [事务概览](/dev-guide-transaction-overview.md)
+      - [事务概览](/transaction-overview.md)
       - [隔离级别](/transaction-isolation-levels.md)
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
