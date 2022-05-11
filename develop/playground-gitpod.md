@@ -42,7 +42,7 @@ title: Gitpod
 
 ![playground gitpod workspace ready](/media/develop/playground-gitpod-workspace-ready.png)
 
-您可以按照 [该指南](/develop/sample-application-spring-boot.md#第-6-步http-请求) 测试 API。 请记住将 URL `http://localhost:8080` 替换为您在 `REMOTE EXPLORER` 中找到的那个。
+您可以按照[该指南](/develop/sample-application-spring-boot.md#第-6-步http-请求)测试 API。请记住将 URL `http://localhost:8080` 替换为您在 `REMOTE EXPLORER` 中找到的那个。
 
 ## 使用自定义的 Gitpod 配置和 Docker 镜像
 
