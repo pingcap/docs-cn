@@ -243,7 +243,7 @@ Compile 平均时间显著下降，从 374 us 下降到 53.3 us，因为 QPS 的
 
 因为 StmtPrepare 和 StmtClose 两种命令消耗的数据库时间明显，并且增加了应用程序每执行一条 SQL 语句需要跟 TiDB 交互的次数。下一个场景将通过 JDBC 配置优化掉这两种命令。
 
-## 场景 5：客户端缓存 prepared 对象，一条 query 一次 command
+## 场景 5：客户端缓存 prepared 对象
 
 ### 应用配置
 
