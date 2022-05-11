@@ -68,7 +68,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 高级 SQL 功能                                                       |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 | ------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
-| [执行计划缓存](/sql-prepare-plan-cache.md)                          |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [执行计划缓存](/sql-prepared-plan-cache.md)                          |    Y    |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [执行计划管理 (SPM)](/sql-plan-management.md)                       |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [下推计算结果缓存 (Coprocessor Cache)](/coprocessor-cache.md)       |    Y    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 |
 | [Stale Read](/stale-read.md)                                        |    Y    |    Y     |    Y     |    Y     |    Y     |    N     | N        |
@@ -157,8 +157,10 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 | 管理，可视化诊断和工具                                                    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 | ------------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [TiDB Dashboard](/dashboard/dashboard-intro.md)                           |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
+| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
+| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                      |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
+| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Information schema](/information-schema/information-schema.md)           |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Metrics schema](/metrics-schema.md)                                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Statements summary tables](/statement-summary-tables.md)                 |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
@@ -171,8 +173,6 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)    |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [`SET CONFIG`](/dynamic-config.md)                                        | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [持续性能分析](/dashboard/continuous-profiling.md)                        |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
-| [Top SQL](/dashboard/top-sql.md)                                          |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
 | [DM WebUI](/dm/dm-webui-guide.md)                                        | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。

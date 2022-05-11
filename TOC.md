@@ -9,7 +9,7 @@
   - 性能测试报告
     - [Sysbench 性能对比 - v6.0 对比 v5.4](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
     - [TPC-C 性能对比 - v6.0 对比 v5.4](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
-    - [TPC-H 100 性能对比 - v5.4 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.4-performance-benchmarking-with-tpch.md)
+    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -18,6 +18,64 @@
   - [快速上手 HTAP](/quick-start-with-htap.md)
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
+- 应用开发
+  - [概览](/develop/developer-guide-overview.md)
+  - 快速开始
+    - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
+    - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
+    - TiDB 的简单 CRUD 应用程序
+      - [Java](/develop/sample-application-java.md)
+  - 示例程序
+    - [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
+  - 连接到 TiDB
+    - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
+    - [连接到 TiDB](/develop/connect-to-tidb.md)
+    - [连接池与连接参数](/develop/connection-parameters.md)
+  - 数据库模式设计
+    - [概览](/develop/schema-design-overview.md)
+    - [创建数据库](/develop/create-database.md)
+    - [创建表](/develop/create-table.md)
+    - [创建二级索引](/develop/create-secondary-indexes.md)
+  - 数据写入
+    - [插入数据](/develop/insert-data.md)
+    - [更新数据](/develop/update-data.md)
+    - [删除数据](/develop/delete-data.md)
+    - [预处理语句](/develop/prepared-statement.md)
+  - 数据读取
+    - [单表读取](/develop/get-data-from-single-table.md)
+    - [多表连接查询](/develop/join-tables.md)
+    - [子查询](/develop/use-subqueries.md)
+    - [查询结果分页](/develop/paginate-results.md)
+    - [视图](/develop/use-views.md)
+    - [临时表](/develop/use-temporary-tables.md)
+    - [公共表表达式](/develop/use-common-table-expression.md)
+    - 读取副本数据
+      - [Follower Read](/develop/use-follower-read.md)
+      - [Stale Read](/develop/use-stale-read.md)
+    - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
+  - 事务
+    - [概览](/develop/transaction-overview.md)
+    - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
+    - [事务限制](/develop/transaction-restraints.md)
+    - [事务错误处理](/develop/transaction-troubleshoot.md)
+  - 优化 SQL 性能
+    - [概览](/develop/optimize-sql-overview.md)
+    - [SQL 性能调优](/develop/optimize-sql.md)
+    - [性能调优最佳实践](/develop/optimize-sql-best-practices.md)
+    - 其他优化
+      - [避免隐式类型转换](/develop/implicit-type-conversion.md)
+      - [唯一序列号生成方案](/develop/unique-serial-number-generation.md)
+  - 故障诊断
+    - [概览](/develop/troubleshoot-overview.md)
+    - 其他故障或限制
+      - [结果集不稳定](/develop/unstable-result-set.md)
+      - [超时](/develop/timeouts-in-tidb.md)
+  - 引用文档
+    - SQL
+      - [Bookshop 示例应用](/develop/bookshop-schema-design.md)
+    - 规范
+      - [命名规范](/develop/object-naming-guidelines.md)
+      - [SQL 开发规范](/develop/sql-development-specification.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -47,7 +105,8 @@
     - [从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
-    - [将 TiDB 集群的增量数据同步到另一集群](/incremental-replication-between-clusters.md)
+    - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
+    - [从 TiDB 同步数据至 Apache Kafka](/replicate-data-to-kafka.md)
   - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
@@ -61,23 +120,16 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - 使用 BR 工具（推荐）
-      - [BR 工具简介](/br/backup-and-restore-tool.md)
-      - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
-      - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
-      - 外部存储
-        - [外部存储概述](/br/backup-and-restore-storages.md)
-        - [在 Azure Blob Storage 备份恢复](/br/backup-and-restore-azblob.md)
-      - BR 特性
-        - [自动调节](/br/br-auto-tune.md)
-        - [批量建表](/br/br-batch-create-table.md)
-      - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
+    - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
   - [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   - [在线修改集群配置](/dynamic-config.md)
   - [在线有损恢复](/online-unsafe-recovery.md)
+  - [搭建双集群主从复制](/replicate-between-primary-and-secondary-clusters.md)
 - 监控与告警
   - [监控框架概述](/tidb-monitoring-framework.md)
   - [监控 API](/tidb-monitoring-api.md)
@@ -104,16 +156,20 @@
   - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
   - [数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md)
 - 性能调优
-  - 系统调优
-    - [操作系统性能参数调优](/tune-operating-system.md)
-  - 软件调优
-    - 配置
-      - [TiDB 内存调优](/configure-memory-usage.md)
-      - [TiKV 线程调优](/tune-tikv-thread-performance.md)
-      - [TiKV 内存调优](/tune-tikv-memory-performance.md)
-      - [TiKV Follower Read](/follower-read.md)
-      - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
-    - [下推计算结果缓存](/coprocessor-cache.md)
+  - 优化手册
+    - [优化概述](/performance-tuning-overview.md)
+    - [优化方法](/performance-tuning-methods.md)
+  - 配置优化
+    - 系统调优
+      - [操作系统性能参数调优](/tune-operating-system.md)
+    - 软件调优
+      - 配置
+        - [TiDB 内存调优](/configure-memory-usage.md)
+        - [TiKV 线程调优](/tune-tikv-thread-performance.md)
+        - [TiKV 内存调优](/tune-tikv-memory-performance.md)
+        - [TiKV Follower Read](/follower-read.md)
+        - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+      - [下推计算结果缓存](/coprocessor-cache.md)
   - SQL 性能调优
     - [SQL 性能调优概览](/sql-tuning-overview.md)
     - 理解 TiDB 执行计划
@@ -145,7 +201,7 @@
         - [统计信息简介](/statistics.md)
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
-      - [执行计划缓存](/sql-prepare-plan-cache.md)
+      - [执行计划缓存](/sql-prepared-plan-cache.md)
     - 控制执行计划
       - [控制执行计划概览](/control-execution-plan.md)
       - [Optimizer Hints](/optimizer-hints.md)
@@ -304,6 +360,7 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
+        - [创建数据源](/dm/quick-start-create-source.md)
         - [数据源操作](/dm/dm-manage-source.md)
         - [任务配置向导](/dm/dm-task-configuration-guide.md)
         - [Table routing](/dm/dm-key-features.md#table-routing)
@@ -346,9 +403,11 @@
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
-        - 架构
+        - 架构组件
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [安全模式](/dm/dm-safe-mode.md)
+          - [Relay Log](/dm/relay-log.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -357,6 +416,7 @@
           - [迁移任务配置](/dm/task-configuration-file-full.md)
           - [DM-master 配置](/dm/dm-master-configuration-file.md)
           - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+          - [Table Selector](/dm/table-selector.md)
         - [OpenAPI](/dm/dm-open-api.md)
         - [兼容性目录](/dm/dm-compatibility-catalog.md)
         - 安全
@@ -369,19 +429,30 @@
         - [术语表](/dm/dm-glossary.md)
       - 使用示例
         - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+        - [快速创建迁移任务](/dm/quick-start-create-task.md)
+        - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
       - 异常解决
         - [常见问题](/dm/dm-faq.md)
         - [错误处理及恢复](/dm/dm-error-handling.md)
       - [版本发布历史](/dm/dm-release-notes.md)
   - Backup & Restore (BR)
-    - [BR 工具简介](/br/backup-and-restore-tool.md)
-    - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
+    - [BR 简介](/br/backup-and-restore-overview.md)
+    - [部署和使用 BR](/br/br-deployment.md)
+    - [使用 BR 备份集群](/br/br-usage-backup.md)
+    - [使用 BR 恢复集群](/br/br-usage-restore.md)
     - [BR 备份与恢复场景示例](/br/backup-and-restore-use-cases.md)
-    - [外部存储](/br/backup-and-restore-storages.md)
     - BR 特性
       - [自动调节](/br/br-auto-tune.md)
       - [批量建表](/br/br-batch-create-table.md)
-    - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - 参考指南
+      - [BR 设计原理](/br/backup-and-restore-design.md)
+      - [BR 命令行介绍](/br/use-br-command-line-tool.md)
+      - [外部存储](/br/backup-and-restore-storages.md)
+      - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
+      - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
+      - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
+      - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+      - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -421,7 +492,6 @@
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
     - [基于 DM 同步场景下的数据校验](/sync-diff-inspector/dm-diff.md)
   - TiSpark
-    - [TiSpark 快速上手](/get-started-with-tispark.md)
     - [TiSpark 用户指南](/tispark-overview.md)
 - 参考指南
   - 架构
@@ -431,6 +501,7 @@
     - [调度](/tidb-scheduling.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
+    - [Performance Overview 面板](/grafana-performance-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
     - [PD 面板](/grafana-pd-dashboard.md)
     - [TiKV 面板](/grafana-tikv-dashboard.md)
@@ -700,7 +771,7 @@
       - [访问](/dashboard/dashboard-access.md)
       - [概况页面](/dashboard/dashboard-overview.md)
       - [集群信息页面](/dashboard/dashboard-cluster-info.md)
-      - [Top SQL](/dashboard/top-sql.md)
+      - [Top SQL 页面](/dashboard/top-sql.md)
       - [流量可视化页面](/dashboard/dashboard-key-visualizer.md)
       - [监控关系图](/dashboard/dashboard-metrics-relation.md)
       - SQL 语句分析
@@ -758,10 +829,10 @@
   - [集群管理 FAQ](/faq/manage-cluster-faq.md)
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
-- [术语表](/glossary.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
+  - [TiDB 版本规则](/releases/versioning.md)
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
@@ -770,6 +841,7 @@
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)
   - v5.2
+    - [5.2.4](/releases/release-5.2.4.md)
     - [5.2.3](/releases/release-5.2.3.md)
     - [5.2.2](/releases/release-5.2.2.md)
     - [5.2.1](/releases/release-5.2.1.md)
@@ -901,3 +973,4 @@
     - [RC3](/releases/release-rc.3.md)
     - [RC2](/releases/release-rc.2.md)
     - [RC1](/releases/release-rc.1.md)
+- [术语表](/glossary.md)

@@ -25,7 +25,7 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+./dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
@@ -41,13 +41,11 @@ TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，�
 
 ### 第 1 步：部署 TiDB 集群
 
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.0.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
+在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群。本教程以 TiDB v5.4.0 版本为例，具体部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
 
 ### 第 2 步：下载 TiDB Lightning 安装包
 
-通过以下链接获取 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）：
-
-- **v5.3.0**: [tidb-toolkit-v5.3.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.3.0-linux-amd64.tar.gz)
+TiDB Lightning 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 
 ### 第 3 步：启动 `tidb-lightning`
 

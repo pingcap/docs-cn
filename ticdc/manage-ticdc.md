@@ -215,9 +215,9 @@ URI 中可配置的的参数如下：
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
-| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
-| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的用户名（authcid）（可选） |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的密码（可选） |
+| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的名称（可选） |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
 | `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
 | `write-timeout`| 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
@@ -243,7 +243,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -651,9 +651,17 @@ cdc cli --pd="http://10.0.10.25:2379" changefeed query --changefeed-id=simple-re
 
 ## 灾难场景的最终一致性复制
 
-从 v5.3.0 版本开始，TiCDC 开始提供灾难场景下的最终一致性复制能力。具体解决的场景是，当生产集群（即 TiCDC 同步的上游集群）发生灾难、且短时间内无法恢复对外提供服务，TiCDC 需要具备保证从集群数据一致性的能力，并允许业务快速的将流量切换至从集群，避免数据库长时间不可用而对业务造成影响。
+从 v5.3.0 版本开始，TiCDC 支持将上游 TiDB 的增量数据备份到下游集群的 S3 存储或 NFS 文件系统。当上游集群出现了灾难，完全无法使用时，TiCDC 可以将下游集群恢复到最近的一致状态，即提供灾备场景的最终一致性复制能力，确保应用可以快速切换到下游集群，避免数据库长时间不可用，提高业务连续性。
 
-该功能支持 TiCDC 将 TiDB 集群的增量数据复制到备用关系型数据库 TiDB/Aurora/MySQL/MariaDB，在 TiCDC 正常同步没有延迟的情况下，上游发生灾难后，可以在 5 分钟内将下游集群恢复到上游的某个 snapshot 状态，并且允许丢失的数据小于 30 分钟。即 RTO <= 5min，RPO <= 30min。
+目前，TiCDC 支持将 TiDB 集群的增量数据复制到 TiDB 或兼容 MySQL 的数据库系统（包括 Aurora、MySQL 和 MariaDB）。当上游发生灾难时，如果 TiCDC 正常运行且上游 TiDB 集群没有出现数据复制延迟大幅度增加的情况，下游集群可以在 5 分钟之内恢复集群，并且最多丢失出现问题前 10 秒钟的数据，即 RTO <= 5 mins, P95 RPO <= 10s。
+
+当上游 TiDB 集群出现以下情况时，会导致 TiCDC 延迟上升，进而影响 RPO：
+
+- TPS 短时间内大幅度上升
+- 上游出现大事务或者长事务
+- Reload 或 Upgrade 上游 TiKV 集群或 TiCDC 集群
+- 执行耗时很长的 DDL 语句，例如：add index
+- 使用过于激进的 PD 调度策略，导致频繁 region leader 迁移或 region merge/split
 
 ### 使用前提
 

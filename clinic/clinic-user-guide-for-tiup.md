@@ -73,6 +73,10 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     tiup diag config clinic.token ${token-value}
     ```
 
+3. 开启日志脱敏配置（可选步骤）。
+
+    TiDB 在提供详细的日志信息时可能会打印数据库的敏感信息（例如用户数据）。如果希望本地日志及上传到 Clinic Server 的日志中不带有敏感信息，你可以开启日志脱敏配置。具体操作请参考[日志脱敏](/log-redaction.md#tidb-组件日志脱敏)。
+
 ## 远程定位集群问题
 
 你可以使用 Diag 快速抓取 TiDB 集群和 DM 集群的诊断数据，其中包括监控数据、配置信息等。

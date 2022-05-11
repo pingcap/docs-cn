@@ -103,7 +103,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     SQL 执行计划复用可以有效减少 SQL 解析时间，降低 CPU 资源消耗，提升 SQL 执行效率。有效复用 SQL 执行计划是 SQL 调优的重要手段之一。TiDB 已经支持 Prepared Statement 下的计划共享。但是在 Prepared Statement close 时，TiDB 会主动清空对应的 Plan Cache。这会对重复执行的 SQL 造成不必要的解析，影响语句的执行效率。TiDB 从 v6.0.0 开始支持通过 `tidb_ignore_prepared_cache_close_stmt` 参数控制是否忽视 `COM_STMT_CLOSE` 指令，该参数默认关闭。开启该参数后，TiDB 可以忽视 Prepared Statement 的 close 指令，并在缓存中保留对应的执行计划，从而提升执行计划的复用率。
 
-    [用户文档](/sql-prepare-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
+    [用户文档](/sql-prepared-plan-cache.md#忽略-com_stmt_close-指令和-deallocate-prepare-语句)，[#31056](https://github.com/pingcap/tidb/issues/31056)
 
 - 增强查询的下推功能
 
@@ -124,7 +124,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
         - 逻辑函数： `IS`，`IS NOT`
         - 字符串函数：`REGEXP()`，`NOT REGEXP()`
         - 数学函数：`GREATEST(int/real)`，`LEAST(int/real)`
-        - 日期函数：`DAYOFNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
+        - 日期函数：`DAYNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
         - 算子：Anti Left Outer Semi Join, Left Outer Semi Join
 
         [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)
@@ -559,7 +559,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
     - 修复 TsSet 转换可能发生未定义行为 (UB) 的问题 [#12070](https://github.com/tikv/tikv/issues/12070)
     - 修复 Replica Read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
-    - 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
+    - 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic 的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
     - 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12329](https://github.com/tikv/tikv/issues/12329)
     - 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     - 修复 TiKV 在退出时可能误报 panic 的问题 [#12231](https://github.com/tikv/tikv/issues/12231)

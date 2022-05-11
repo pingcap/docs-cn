@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 
 操作系统版本要求如下表：
 
-| Linux 操作系统平台 | 版本 |
+| Linux 操作系统 | 版本 |
 | :--- | :--- |
 | Red Hat Enterprise Linux | 7.3 及以上 |
 | CentOS | 7.3 及以上 |
