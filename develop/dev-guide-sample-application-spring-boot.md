@@ -20,7 +20,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 > 在[云原生开发环境](/develop/playground-gitpod.md)中尝试 Spring Boot 构建 TiDB 应用程序。
 > 预配置完成的环境，自动启动 TiDB 集群，获取和运行代码，只需要一个链接。
 >
-> [现在就试试](https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/shczhen/tidb-example-java)
+> [现在就试试](https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java)
 
 ## 第 1 步：启动你的 TiDB 集群
 

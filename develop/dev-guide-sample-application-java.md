@@ -893,7 +893,7 @@ public class HibernateExample
 
 <div label="使用 JDBC" href="jdbc-table-init-jdbc">
 
-> 在 Gitpod Playground 中尝试 JDBC: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/shczhen/tidb-example-java)
+> 在 Gitpod Playground 中尝试 JDBC: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
 使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
 
@@ -917,7 +917,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 Hibernate（推荐）" href="jdbc-table-init-hibernate">
 
-> 在 Gitpod Playground 中尝试 Hibernate: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/shczhen/tidb-example-java)
+> 在 Gitpod Playground 中尝试 Hibernate: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
 无需手动初始化表。
 

@@ -22,7 +22,7 @@ title: Gitpod
 
 - 例如，`https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-java`。
 
-- 支持环境变量，例如，`https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/shczhen/tidb-example-java`。
+- 支持环境变量，例如，`https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`。
 
 3. 使用列出的提供商之一登录并启动工作区，例如，`Github`。
 
@@ -30,7 +30,7 @@ title: Gitpod
 
 在步骤[快速开始](#quick-start)之后，Gitpod 会需要一段时间来设置您的工作区。
 
-这里我们使用 [Spring Boot Web](/develop/sample-application-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/shczhen/tidb-example-java`创建了一个新工作区。
+这里我们使用 [Spring Boot Web](/develop/sample-application-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`创建了一个新工作区。
 
 完成后，您将看到如下所示的页面。
 
