@@ -142,7 +142,7 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 ## 避免热点
 
-在设计表时需要考虑是否存在大量插入行为，若有，需在表设计期间对热点进行规避。请查看 [创建表 - 选择主键](/develop/create-table.md#选择主键) 部分，并遵从 [主键选择的最佳实践](/develop/create-table.md#主键选择的最佳实践)。
+在设计表时需要考虑是否存在大量插入行为，若有，需在表设计期间对热点进行规避。请查看[创建表 - 选择主键](/develop/create-table.md#选择主键)部分，并遵从[选择主键时应遵守的规则](/develop/create-table.md#选择主键时应遵守的规则)。
 
 更多有关热点问题的处理办法，请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)文档。
 
