@@ -621,7 +621,7 @@ Configuration items related to Raftstore.
 + Default value: `"4h"`
 + Minimum value: `0`
 
-## `snap-generator-pool-size` <span class="version-mark">New in v5.4.0</span>
+### `snap-generator-pool-size` <span class="version-mark">New in v5.4.0</span>
 
 + Configures the size of the `snap-generator` thread pool.
 + To make Regions generate snapshot faster in TiKV in recovery scenarios, you need to increase the count of the `snap-generator` threads of the corresponding worker. You can use this configuration item to increase the size of the `snap-generator` thread pool.
