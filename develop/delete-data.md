@@ -51,8 +51,8 @@ DELETE FROM {table} WHERE {filter}
 SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
 ```
 
-- 若返回条数大于 1 万，请查看并使用使用[批量删除](#批量删除)。
-- 若返回条数小于 1 万，可使用此处的示例进行删除：
+- 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
+- 若返回数量小于 1 万条，可参考此处的示例进行删除：
 
 <SimpleTab>
 <div label="SQL" href="delete-sql">
@@ -92,7 +92,7 @@ try (Connection connection = ds.getConnection()) {
 
 > **注意：**
 >
-> 此处需注意，`rating_at` 字段为[日期和时间类型](/data-type-date-and-time.md) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](/configure-time-zone.md)时，展示不同的时间字符串。
+> `rating_at` 字段为[日期和时间类型](/data-type-date-and-time.md) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](/configure-time-zone.md)时，展示不同的时间字符串。
 >
 > 另外，和 MySQL 一样，`TIMESTAMP` 数据类型受 [2038 年问题](https://zh.wikipedia.org/wiki/2038%E5%B9%B4%E9%97%AE%E9%A2%98)的影响。如果存储的值大于 2038，建议使用 `DATETIME` 类型。
 
@@ -104,7 +104,7 @@ try (Connection connection = ds.getConnection()) {
 
 GC 在默认配置中，为 10 分钟触发一次，每次 GC 都会计算出一个名为 **safe_point** 的时间点，这个时间点前的数据，都不会再被使用到，因此，TiDB 可以安全的对数据进行清除。
 
-GC 的具体实现方案和细节此处不再展开，你可阅读 [GC 机制简介](/garbage-collection-overview.md) 来获得更详细的 GC 说明。
+GC 的具体实现方案和细节此处不再展开，请参考 [GC 机制简介](/garbage-collection-overview.md) 了解更详细的 GC 说明。
 
 ### 更新统计信息
 
@@ -114,7 +114,7 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 需要删除表中多行的数据，可选择 [`DELETE` 示例](#例子)，并使用 `WHERE` 子句过滤需要删除的数据。
 
-但如果你需要删除大量行(数万或更多)的时候，我们建议使用一个迭代，每次都只删除一部分数据，直到删除全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。你可以在程序或脚本中使用循环来完成操作。
+但如果你需要删除大量行（数万或更多）的时候，我们建议使用一个迭代，每次都只删除一部分数据，直到删除全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。你可以在程序或脚本中使用循环来完成操作。
 
 本页提供了编写脚本来处理循环删除的示例，该示例演示了应如何进行 `SELECT` 和 `DELETE` 的组合，完成循环删除。
 
