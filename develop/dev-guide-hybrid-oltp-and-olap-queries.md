@@ -9,11 +9,11 @@ HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义�
 
 在 TiDB 当中，我们同时拥有面向在线事务处理的行存储引擎 TiKV 与面向实时分析场景的列存储引擎 TiFlash 两套存储引擎。数据在行存 (Row-Store) 与列存 (Columnar-Store) 同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
 
-在[创建数据库](/develop/create-table.md#使用-htap-能力)章节当中，我们已经介绍了如何开启 TiDB 的 HTAP 能力。下面我们将进一步介绍如何使用 HTAP 能力更快地分析数据。
+在[创建数据库](/develop/dev-guide-create-table.md#使用-htap-能力)章节当中，我们已经介绍了如何开启 TiDB 的 HTAP 能力。下面我们将进一步介绍如何使用 HTAP 能力更快地分析数据。
 
 ## 数据准备
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/bookshop-schema-design.md#方式-1-通过-tiup-demo-命令行)更加大量的示例数据，例如：
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方式-1-通过-tiup-demo-命令行)更加大量的示例数据，例如：
 
 {{< copyable "shell-regular" >}}
 
@@ -21,13 +21,13 @@ HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义�
 tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --ratings=1000000 --orders=1000000 --host 127.0.0.1 --port 4000 --drop-tables
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/bookshop-schema-design.md#方式-2-通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方式-2-通过-tidb-cloud-import-功能)预先准备好的示例数据。
 
 ## 窗口函数
 
 我们在使用数据库时，除了希望它能够存储我们想要记录的数据，能够实现诸如下单买书、给书籍评分等业务功能外，我们可能还需要对我们已有的数据进行分析，以便根据数据作出进一步的运营和决策。
 
-在[单表读取](/develop/get-data-from-single-table.md)章节当中，我们已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，我们可能希望多个聚合查询的结果汇总在一个查询当中。例如：我们想要对某一本书的订单量的历史趋势有所了解，我们可能需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
+在[单表读取](/develop/dev-guide-get-data-from-single-table.md)章节当中，我们已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，我们可能希望多个聚合查询的结果汇总在一个查询当中。例如：我们想要对某一本书的订单量的历史趋势有所了解，我们可能需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
 
 为了方便用户进行此类分析，TiDB 从 3.0 版本开始便支持了窗口函数功能，窗口函数为每一行数据提供了跨行数据访问的能力，不同于常规的聚合查询，窗口函数在对数据行进行聚合时不会导致结果集被合并成单行数据。
 
@@ -146,7 +146,7 @@ SELECT * FROM acc;
 
 除此之外，TiDB 还为我们提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)，我们可以借助这些函数实现更加丰富分析查询。
 
-例如，在前面的[分页查询](/develop/paginate-results.md)章节当中，我们已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
+例如，在前面的[分页查询](/develop/dev-guide-paginate-results.md)章节当中，我们已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
 
 ## 混合负载
 
@@ -154,7 +154,7 @@ SELECT * FROM acc;
 
 ### 开启列存副本
 
-TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/create-table.md#使用-htap-能力)章节，在进行后续步骤前，我们先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：
+TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/dev-guide-create-table.md#使用-htap-能力)章节，在进行后续步骤前，我们先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：
 
 {{< copyable "sql" >}}
 
@@ -228,7 +228,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'bookshop'
 > **注意：**
 >
 > 1. 如果你的表使用了别名，你应该将 Hints 当中的 table_name 替代为 alias_name, 否则 Hints 会失效。
-> 2. 另外，对[公共表表达式](/develop/use-common-table-expression.md)设置 read_from_storage Hint 是不起作用的。
+> 2. 另外，对[公共表表达式](/develop/dev-guide-use-common-table-expression.md)设置 read_from_storage Hint 是不起作用的。
 
 {{< copyable "sql" >}}
 

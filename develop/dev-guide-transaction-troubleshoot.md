@@ -17,7 +17,7 @@ summary: 介绍 TiDB 中的事务错误处理办法。
 ERROR 1213: Deadlock found when trying to get lock; try restarting transaction
 ```
 
-当两个及以上的事务，双方都在等待对方释放已经持有的锁或因为加锁顺序不一致，造成循环等待锁资源，就会出现“死锁”。这里以 [bookshop](/develop/bookshop-schema-design.md) 数据库中的 `books` 表为示例演示死锁：
+当两个及以上的事务，双方都在等待对方释放已经持有的锁或因为加锁顺序不一致，造成循环等待锁资源，就会出现“死锁”。这里以 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中的 `books` 表为示例演示死锁：
 
 先给 `books` 表中写入 2 条数据：
 

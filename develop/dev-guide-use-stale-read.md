@@ -13,7 +13,7 @@ TiDB 为我们提供了语句级别、事务级别、会话级别三种级别的
 
 ## 引入
 
-在 [Bookshop](/develop/bookshop-schema-design.md) 应用程序当中，你可以通过下面的 SQL 语句查询出最新出版的书籍以及它们的价格：
+在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用程序当中，你可以通过下面的 SQL 语句查询出最新出版的书籍以及它们的价格：
 
 {{< copyable "sql" >}}
 
