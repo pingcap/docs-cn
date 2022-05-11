@@ -92,17 +92,11 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-<<<<<<< HEAD
 # 选择后端：“importer” 或 “local” 或 “tidb”
-# backend = "importer"
-=======
-# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。
+# "local"：通过在本地排序生成 SST 文件的方式导入数据，适用于快速导入大量数据，但导入期间下游 TiDB 无法对外提供服务，并且导入的目标表必须为空。
+# "importer": 和 “local“ 原理类似，但需要额外部署 “tikv-importer“ 组件。如无特殊情况，推荐使用 “local” 后端。
+# "tidb"：通过执行 SQL 语句的方式导入数据，速度较慢，但导入期间下游 TiDB 可正常提供服务，导入的目标表可以不为空。
 # backend = "local"
-# 是否允许向已存在数据的表导入数据。默认值为 false。
-# 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
-# incremental-import = false
->>>>>>> 5efdf81d4 (lightning: clarify lightning post-restore description and remove useless configs  (#9077))
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 当后端是 “tidb” 时，插入重复数据时执行的操作。
@@ -229,16 +223,10 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-<<<<<<< HEAD
-# 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
-# 在生产环境中，建议这将些参数都设为 true。
-# 执行的顺序为：Checksum -> Compact -> Analyze。
-=======
-# 对于 Local Backend 模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+# 对于 Local Backend 和 Importer Backend 模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
 # 在生产环境中，建议总是开启 Checksum 和 Analyze。
 # 执行的顺序为：Checksum -> Analyze。
 # 注意：对于 TiDB Backend, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
->>>>>>> 5efdf81d4 (lightning: clarify lightning post-restore description and remove useless configs  (#9077))
 [post-restore]
 # 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 # 可选的配置项：
