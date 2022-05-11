@@ -42,7 +42,7 @@ useServerPrepStmts=false
 
 从以下 Dashboard 的 Top SQL 页面可以观察到，非业务 SQL 类型 `SELECT @@session.tx_isolation` 消耗的资源最多。虽然 TiDB 处理这类 SQL 语句的速度快，但由于执行次数最多导致总体 CPU 耗时最多。
 
-![dashboard-for-query-interface](/media/performance/chinese/case1.png)
+![dashboard-for-query-interface](/media/performance/case1.png)
 
 观察以下 TiDB 的火焰图，可以发现，在 SQL 的执行过程中，Compile 和 Optimize 等函数的 CPU 消耗占比明显。因为应用使用了 Query 接口，TiDB 无法使用执行计划缓存，导致每个 SQL 都需要编译生成执行计划。
 
@@ -56,7 +56,7 @@ useServerPrepStmts=false
 
 观察以下 Performance Overview 面板中数据库时间概览和 QPS 的数据：
 
-![performance-overview-1-for-query-interface](/media/performance/new/j-1.png)
+![performance-overview-1-for-query-interface](/media/performance/j-1.png)
 
 - Database Time by SQL Type 中 Select 语句耗时最多
 - Database Time by SQL Phase 中 execute 和 compile 占比最多
@@ -90,7 +90,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 
 在 Dashboard 的 Top SQL 页面，可以看到原本占比最多的 `SELECT @@session.tx_isolation` 已消失。
 
-![dashboard-for-maxPerformance](/media/performance/chinese/case2.png)
+![dashboard-for-maxPerformance](/media/performance/case2.png)
 
 观察以下 TiDB 的火焰图，可以发现 SQL 语句执行中 Compile 和 Optimize 等函数 CPU 消耗占比高：
 
@@ -104,7 +104,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 
 数据库时间概览和 QPS 的数据如下：
 
-![performance-overview-1-for-maxPerformance](/media/performance/new/j-2.png)
+![performance-overview-1-for-maxPerformance](/media/performance/j-2.png)
 
 - Database Time by SQL Type 中 select 语句耗时最多
 - Database Time by SQL Phase 中 execute 和 compile 占比最多
@@ -133,7 +133,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 
 当应用使用 query 接口时，TiDB 无法使用执行计划缓存，编译执行计划消耗高。此时，建议使用 Prepared Statement 预编译接口，利用 TiDB 的执行计划缓存来降低 compile 带来 TiDB CPU 消耗，降低延迟。
 
-## 场景 3：使用 Prepared Statement 接口
+## 场景 3：使用 Prepared Statement 接口，开启执行计划缓存
 
 ### 应用配置
 
@@ -160,7 +160,7 @@ useServerPrepStmts=true&useConfigs=maxPerformance"
 
 使用 Prepared Statement 接口之后，数据库时间概览和 QPS 的数据如下：
 
-![performance-overview-1-for-PrepStmts](/media/performance/new/j-3.png)
+![performance-overview-1-for-PrepStmts](/media/performance/j-3.png)
 
 QPS 从 24.4k 下降到 19.7k，从 CPS By Type 面板可以看到应用程序使用了三种 Prepared 命令。Database Time Overview 出现了 general 的语句类型（包含了 StmtPrepare 和 StmtClose 等命令的执行耗时），占比排名第二。这说明，即使使用了 Prepared Statement 接口，执行计划缓存也没有命中，原因在于 TiDB 内部处理 StmtClose 命令时，会清理修改语句的执行计划缓存。
 
@@ -193,7 +193,7 @@ TiDB CPU 平均利用率从 874% 上升到 936%
 
 虽然场景 3 使用了 Prepare 预编译接口但是因为出现了 StmtClose 导致缓存失效，很多应用框架也会在 execute 后调用 close 方法来防止内存泄漏。从 v6.0.0 版本开始，你可以设置全局变量 `tidb_ignore_prepared_cache_close_stmt=on;`。设置后，即使应用调用了 StmtClose 方法，TiDB 也不会清除缓存的执行计划，使得下一次的 SQL 执行能重用现有的执行计划，避免重复编译执行计划。
 
-## 场景 4：3 commands 和命中执行计划缓存
+## 场景 4：使用 Prepared Statement 接口，开启执行计划缓存
 
 ### 应用配置
 
@@ -214,7 +214,7 @@ PreparseStmt cpu = 25% cpu time = 12.75s
 
 在 Performance Overview 面板种，最显著的变化来自于 Compile 阶段的占比，从场景 3 每秒消耗 8.95 秒降低为 1.18 秒。执行计划缓存的命中次数大致等于 StmtExecute 次数。在 QPS 上升的前提下，每秒 Select 语句消耗的数据库时间降低了，general 类型的语句消耗时间变长。
 
-![performance-overview-1-for-3-commands](/media/performance/new/j-4.png)
+![performance-overview-1-for-3-commands](/media/performance/j-4.png)
 
 - Database Time by SQL Type 中 select 语句耗时最多
 - Database Time by SQL Phase 中 execute 占比最多
@@ -243,7 +243,7 @@ Compile 平均时间显著下降，从 374 us 下降到 53.3 us，因为 QPS 的
 
 因为 StmtPrepare 和 StmtClose 两种命令消耗的数据库时间明显，并且增加了应用程序每执行一条 SQL 语句需要跟 TiDB 交互的次数。下一个场景将通过 JDBC 配置优化掉这两种命令。
 
-## 场景 5：1 command 和命中执行计划缓存
+## 场景 5：客户端缓存 prepared 对象，一条 query 一次 command
 
 ### 应用配置
 
@@ -273,7 +273,7 @@ useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=1000&prepStmtCache
 
 在 Performance Overview 面板中，最显著的变化是，CPS By Type 面板中三种 Stmt command 类型变成了一种，Database Time by SQL Type 面板中的 general 语句类型消失了， QSP 面板中 QPS 上升到了 30.9k。
 
-![performance-overview-for-1-command](/media/performance/new/j-5.png)
+![performance-overview-for-1-command](/media/performance/j-5.png)
 
 - Database Time by SQL Type 中 select 语句耗时最多，general 语句类型消失了
 - Database Time by SQL Phase 中主要为 execute
@@ -284,11 +284,11 @@ useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=1000&prepStmtCache
 
 TiDB CPU 平均利用率从 827% 下降到 577%，随着 QPS 的上升，TiKV CPU 平均利用率上升为 313%。
 
-![performance-overview-for-2-command](/media/performance/new/j-5-cpu.png)
+![performance-overview-for-2-command](/media/performance/j-5-cpu.png)
 
 关键的延迟指标如下：
 
-![performance-overview-for-3-command](/media/performance/new/j-5-duration.png)
+![performance-overview-for-3-command](/media/performance/j-5-duration.png)
 
 - avg query duration = 690μs (426->690μs)
 - avg parse duration = 13.5μs (12.3μs->13.5μs )
@@ -306,7 +306,7 @@ TiDB CPU 平均利用率从 827% 下降到 577%，随着 QPS 的上升，TiKV CP
 
 TiDB v6.0 提供了 `rc read`，针对 `read committed` 隔离级别进行了减少 tso cmd 的优化。该功能由全局变量 `set global tidb_rc_read_check_ts=on;`控制。启用此变量后，TiDB 默认行为和 `repeatable-read` 隔离级别一致，只需要从 PD 获取 start-ts 和 commit-ts。事务中的语句先使用 start-ts 从 TiKV 读取数据。如果读到的数据小于 start-ts，则直接返回数据；如果读到大于 start-ts 的数据，则需要丢弃数据，并向 PD 请求 tso 再进行重试。后续语句的 for update ts 使用最新的 PD tso。
 
-## 场景 6：rc read
+## 场景 6：使用 tidb_rc_read_check_ts 特性降低 tso 请求
 
 ### 应用配置
 
@@ -326,7 +326,7 @@ TiDB 的 CPU 火焰图没有明显变化。
 
 使用 RC read 之后，QPS 从 30.9k 上升到 34.9k，每秒消耗的 tso wait 时间从 5.46 s 下降到 456 ms。
 
-![performance-overview-1-for-rc-read](/media/performance/new/j-6.png)
+![performance-overview-1-for-rc-read](/media/performance/j-6.png)
 
 - Database Time by SQL Type 中 select 语句耗时最多
 - Database Time by SQL Phase 中 execute 占比最高
@@ -337,15 +337,15 @@ TiDB 的 CPU 火焰图没有明显变化。
 
 每秒 tso cmd 从 28.3k 下降到 2.7k。
 
-![performance-overview-2-for-rc-read](/media/performance/new/j-6-cmd.png)
+![performance-overview-2-for-rc-read](/media/performance/j-6-cmd.png)
 
 平均 TiDB CPU 上升为 603% (577%->603%)。
 
-![performance-overview-3-for-rc-read](/media/performance/new/j-6-cpu.png)
+![performance-overview-3-for-rc-read](/media/performance/j-6-cpu.png)
 
 关键延迟指标如下：
 
-![performance-overview-4-for-rc-read](/media/performance/new/j-6-duration.png)
+![performance-overview-4-for-rc-read](/media/performance/j-6-duration.png)
 
 - avg query duration = 533μs (690μs->533μs)
 - avg parse duration = 13.4μs (13.5μs->13.4μs )
@@ -359,7 +359,7 @@ TiDB 的 CPU 火焰图没有明显变化。
 
 当前数据库时间和延迟瓶颈都在 execute 阶段，而 execute 阶段占比最高的为 Get 和 Cop 读请求。这个负载中，大部分表是只读或者很少修改，可以使用 v6.0.0 的小表缓存功能，使用 TiDB 缓存这些小表的数据，降低 KV 读请求的等待时间和资源消耗。
 
-## 场景 7：小表缓存
+## 场景 7：使用小表缓存
 
 ### 应用配置
 
@@ -377,7 +377,7 @@ TiDB CPU 火焰图没有明显变化。
 
 QPS 从 34.9k 上升到 40.9k，execute 时间中占比最高的 KV 请求类型变成了 Prewrite 和 Commit。Get 每秒的时间从 5.33 秒下降到 1.75 秒，Cop 每秒的时间从 3.87 下降到 1.09 秒。
 
-![performance-overview-1-for-table-cache](/media/performance/new/j-7.png)
+![performance-overview-1-for-table-cache](/media/performance/j-7.png)
 
 - Database Time by SQL Type 中 select 语句耗时最多
 - Database Time by SQL Phase 中 execute 和 compile 占比最多
@@ -388,11 +388,11 @@ QPS 从 34.9k 上升到 40.9k，execute 时间中占比最高的 KV 请求类型
 
 TiDB CPU 平均利用率从 603% 下降 到 478%，TiKV CPU 平均利用率从 346% 下降到 256%。
 
-![performance-overview-2-for-table-cache](/media/performance/new/j-7-cpu.png)
+![performance-overview-2-for-table-cache](/media/performance/j-7-cpu.png)
 
 Query 平均延迟从 533 us 下降到 313 us。execute 平均延迟从 466 us 下降到 250 us。
 
-![performance-overview-3-for-table-cache](/media/performance/new/j-7-duration.png)
+![performance-overview-3-for-table-cache](/media/performance/j-7-duration.png)
 
 - avg query duration = 313μs (533μs->313μs)
 - avg parse duration = 11.9μs (13.4μs->11.9μs)
