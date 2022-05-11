@@ -5,14 +5,15 @@ summary: TiDB 数据库模式设计的概述。
 
 # 概述
 
-本页概述了 TiDB 中的数据库模式，我们将从本页开始，设计一个数据库，并使用此数据库做后续数据的写入、读取示例。
+本页概述了 TiDB 中的数据库模式。我们将从本页开始围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的设计数据库部分展开介绍。并使用此数据库做后续数据的写入、读取示例。
 
-> **注意：**
->
-> 此处术语会有歧义，为消除歧义，在此作出数据库模式设计文档部分中的术语简要约定：
->
-> - 为避免和通用术语[数据库 (Database)](https://en.wikipedia.org/wiki/Database) 混淆，我们将逻辑对象称为**数据库 (Database)**，TiDB 仍使用原名称，并将 TiDB 的部署实例称为**集群 (Cluster)**。
-> - 因为 TiDB 使用与 MySQL 兼容的语法，在此语法下，**模式 (Schema)** 仅代表[通用术语定义](https://en.wiktionary.org/wiki/schema)，并无逻辑对象定义，可参考此[官方文档](https://dev.mysql.com/doc/refman/8.0/en/create-database.html)。若你从其他拥有 **Schema** 逻辑对象的数据库（如：[PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html)、[Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/21/tdddg/creating-managing-schema-objects.html)、[Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/create-a-database-schema?view=sql-server-ver15) 等）迁移而来，请注意此区别。
+## 术语歧义
+
+此处术语会有歧义，为消除歧义，在此作出数据库模式设计文档部分中的术语简要约定：
+
+为避免和通用术语[数据库 (Database)](https://en.wikipedia.org/wiki/Database) 混淆，我们将逻辑对象称为**数据库 (Database)**，TiDB 仍使用原名称，并将 TiDB 的部署实例称为**集群 (Cluster)**。
+
+因为 TiDB 使用与 MySQL 兼容的语法，在此语法下，**模式 (Schema)** 仅代表[通用术语定义](https://en.wiktionary.org/wiki/schema)，并无逻辑对象定义，可参考此[官方文档](https://dev.mysql.com/doc/refman/8.0/en/create-database.html)。若你从其他拥有 **Schema** 逻辑对象的数据库（如：[PostgreSQL](https://www.postgresql.org/docs/current/ddl-schemas.html)、[Oracle](https://docs.oracle.com/en/database/oracle/oracle-database/21/tdddg/creating-managing-schema-objects.html)、[Microsoft SQL Server](https://docs.microsoft.com/en-us/sql/relational-databases/security/authentication-access/create-a-database-schema?view=sql-server-ver15) 等）迁移而来，请注意此区别。
 
 ## 数据库 Database
 
