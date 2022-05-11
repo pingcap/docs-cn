@@ -93,7 +93,10 @@ driver = "file"
 
 [tikv-importer]
 # 选择后端：“importer” 或 “local” 或 “tidb”
-# backend = "importer"
+# "local"：通过在本地排序生成 SST 文件的方式导入数据，适用于快速导入大量数据，但导入期间下游 TiDB 无法对外提供服务，并且导入的目标表必须为空。
+# "importer": 和 “local“ 原理类似，但需要额外部署 “tikv-importer“ 组件。如无特殊情况，推荐使用 “local” 后端。
+# "tidb"：通过执行 SQL 语句的方式导入数据，速度较慢，但导入期间下游 TiDB 可正常提供服务，导入的目标表可以不为空。
+# backend = "local"
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
 # 当后端是 “tidb” 时，插入重复数据时执行的操作。
@@ -220,9 +223,10 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 数据导入完成后，tidb-lightning 可以自动执行 Checksum、Compact 和 Analyze 操作。
-# 在生产环境中，建议这将些参数都设为 true。
-# 执行的顺序为：Checksum -> Compact -> Analyze。
+# 对于 Local Backend 和 Importer Backend 模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+# 在生产环境中，建议总是开启 Checksum 和 Analyze。
+# 执行的顺序为：Checksum -> Analyze。
+# 注意：对于 TiDB Backend, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
 [post-restore]
 # 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 # 可选的配置项：
@@ -230,19 +234,14 @@ max-allowed-packet = 67_108_864
 # - "optional"。在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。
 # - "off"。导入结束后不执行 CHECKSUM 检查。
 # 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
-# 注意：考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和  `false` 两个布尔值，其效果与 "required" 和 `off` 相同。
+#
+# 注意：
+# 1. Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
+# 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
 checksum = "required"
 # 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
 # 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
 analyze = "optional"
-
-# 如果设置为 true，会在导入每张表后执行一次 level-1 Compact。
-# 默认值为 false。
-level-1-compact = false
-
-# 如果设置为 true，会在导入过程结束时对整个 TiKV 集群执行一次 full Compact。
-# 默认值为 false。
-compact = false
 
 
 # 设置周期性后台操作。
