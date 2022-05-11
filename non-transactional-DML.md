@@ -1,6 +1,6 @@
 ---
 title: 非事务 DML 
-summary: 以事务的 atomicity 和 isolation 为代价，将 DML 拆成多个批次执行，用以提升批量数据处理场景的性能和易用性。
+summary: 以事务的原子性和隔离性为代价，将 DML 拆成多个批次执行，用以提升批量数据处理场景的性能和易用性。
 ---
 
 # 非事务 DML
@@ -42,19 +42,23 @@ summary: 以事务的 atomicity 和 isolation 为代价，将 DML 拆成多个�
 
 TiDB 目前支持的非事务 DML 只有 DELETE 语句。其语法见 [BATCH](/sql-statements/sql-statement-batch.md)。
 
-1. （optional）dry run query，手动执行该 query，确认 DML 影响的数据范围是否大体正确。
-2. （optional）dry run，检查拆分后的语句和执行计划。关注索引选择效率。
+最佳实践：
+
+1. （可选）DRY RUN QUERY，手动执行该查询，确认 DML 影响的数据范围是否大体正确。
+2. （可选）DRY RUN，检查拆分后的语句和执行计划。关注索引选择效率。
 3. 执行非事务 DML
 4. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
 非事务 DML 执行过程中，可以通过 `show processlist` 查看执行进度。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 中的进度。
+
+通过 `KILL TIDB` kill 一个非事务语句时，会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
 
 ## 参数说明
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
 | :-- | :-- | :-- | :-- | :-- |
 | 划分列 | 用于划分 batch 的列 | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
-| batch size | 用于控制每个 batch 的大小 |  | 是 | 50000。过小和过大都会导致性能下降 |
+| batch size | 用于控制每个 batch 的大小 | N/A | 是 | 1K - 1M。过小和过大都会导致性能下降 |
 
 ### 划分列的选择
 
@@ -67,7 +71,8 @@ TiDB 目前支持的非事务 DML 只有 DELETE 语句。其语法见 [BATCH](/s
 
 ### batch size 的选择
 
-batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 batch size 依据 workload 而定，根据经验值从 50000 开始尝试。
+batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 batch size 依据 workload 而定，根据经验值推荐从 50000 开始尝试。
+过小和过大的 batch size 执行效率都会下降。
 
 每个 batch 的信息需要存在内存里，因此 batch 数量过多会显著增加消耗的内存。这也是 batch size 不能过小的原因之一。
 
@@ -92,7 +97,7 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 
 对于非事务 DML："BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$"
 
-1. 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 ... B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [DRY RUN QUERY](/sql-statements/sql-statement-batch.md#示例) 查看。
+1. 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 \dots B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [DRY RUN QUERY](/sql-statements/sql-statement-batch.md#示例) 查看。
 2. 那么 $B_i$ 所涉及的数据就是满足 $P_i$:`C BETWEEN <S_i> AND <E_i>` 的一个子集。可以通过 $P_i$ 来缩小每个 batch 需要处理的数据范围。
 3. 对 $B_i$，将上面这个条件嵌入原始语句的 WHERE 条件，使其变为`WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [DRY RUN](/sql-statements/sql-statement-batch.md#示例) 查看。
 4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 的结果返回。
@@ -131,7 +136,7 @@ batch-dml 极易因为使用不当导致数据索引不一致问题。
 
 非事务 DML 和这个 DML 的原始形式并不等价，这可能是由以下原因导致的
 
-- 有并发的写入
+- 有并发的其它写入
 - 非事务 DML 修改了它自己会读取的值。Read your own write！
 - 在每个 batch 上实际执行的 SQL 由于改变了 where 条件，可能会导致执行计划不一样、表达式计算顺序不一样等，由此导致了执行结果不一样。
 - DML 中含有非确定性的操作。
