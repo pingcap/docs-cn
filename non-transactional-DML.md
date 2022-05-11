@@ -72,7 +72,8 @@ TiDB 目前支持的非事务 DML 只有 DELETE 语句。其语法见 [BATCH](/s
 
 batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 batch size 依据 workload 而定，根据经验值推荐从 50000 开始尝试。过小和过大的 batch size 执行效率都会下降。
 
-每个 batch 的信息需要存在内存里，因此 batch 数量过多会显著增加消耗的内存。这也是 batch size 不能过小的原因之一。
+每个 batch 的信息需要存在内存里，因此 batch 数量过多会显著增加消耗的内存。这也是 batch size 不能过小的原因之一。非事务语句用于存储 batch 信息消耗的内存上限与 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 相同，超出这个限制时触发的操作由 [`oom-action`](/tidb-configuration-file.md#oom-action) 配置项控制。
+
 
 ## 使用限制
 
