@@ -103,7 +103,17 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`UPDATE` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+在计算表达式中的列时，TiDB 总使用原始的值。例如：
+
+```sql
+CREATE TABLE t (a int, b int);
+INSERT INTO t VALUES (1,2);
+UPDATE t SET a = a+1,b=a;
+```
+
+在 MySQL 中，`b` 列的值会被更新成 2，因为它是设置成了 `a`，而 `a`（最初是 1）在同一条语句中被更新成了 2。
+
+TiDB 遵守标准的 SQL 行为，这里会将会 `b` 更新成 1。
 
 ## 另请参阅
 
