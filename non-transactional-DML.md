@@ -38,26 +38,6 @@ summary: 以事务的 atomicity 和 isolation 为代价，将 DML 拆成多个�
 >
 > 如果同时开启了 redact log 和 tidb_nontransactional_ignore_error，用户可能无法完整得知每个 batch 的错误信息，无法只对失败的 batch 进行重试。因此这个非事务 DML 必须是幂等的。
 
-## 原理
-
-非事务 DML 的实现原理，是将原本需要在用户侧手动执行的拆分工作内置为 TiDB 的一个功能，降低用户负担。要理解非事务 DML 的行为，可以将其想象成一个用户脚本做了如下事情：
-
-对于非事务 DML："BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$"
-
-1. 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 ... B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [DRY RUN QUERY](/sql-statements/sql-statement-batch.md#示例) 查看。
-2. 那么 $B_i$ 所涉及的数据就是满足 $P_i$:`C BETWEEN <S_i> AND <E_i>` 的一个子集。可以通过 $P_i$ 来缩小每个 batch 需要处理的数据范围。
-3. 对 $B_i$，将上面这个条件嵌入原始语句的 WHERE 条件，使其变为`WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [DRY RUN](/sql-statements/sql-statement-batch.md#示例) 查看。
-4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 的结果返回。
-
-## 部分失败
-
-非事务 DML 不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 `tidb_nontransactional_ignore_error` 控制了非事务 DML 处理错误的行为。
-
-当 `tidb_nontransactional_ignore_error=0`，在碰到第一个报错的 batch 时，非事务 DML 即中止，取消其后的所有 batch，返回错误。
-
-当 `tidb_nontransactional_ignore_error=1`，当某个 batch 执行报错时，其后的 batch 会继续执行，直到所有 batch 执行完毕，返回结果时把这些错误合并后返回。
-但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
-
 ## 使用方法
 
 TiDB 目前支持的非事务 DML 只有 DELETE 语句。其语法见 [BATCH](/sql-statements/sql-statement-batch.md)。
@@ -106,6 +86,26 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 - 不可以用在[临时表](/temporary-tables.md)上。
 - 不支持[公共表表达式](/develop/use-common-table-expression.md）。
 
+## 原理
+
+非事务 DML 的实现原理，是将原本需要在用户侧手动执行的拆分工作内置为 TiDB 的一个功能，降低用户负担。要理解非事务 DML 的行为，可以将其想象成一个用户脚本做了如下事情：
+
+对于非事务 DML："BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$"
+
+1. 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 ... B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [DRY RUN QUERY](/sql-statements/sql-statement-batch.md#示例) 查看。
+2. 那么 $B_i$ 所涉及的数据就是满足 $P_i$:`C BETWEEN <S_i> AND <E_i>` 的一个子集。可以通过 $P_i$ 来缩小每个 batch 需要处理的数据范围。
+3. 对 $B_i$，将上面这个条件嵌入原始语句的 WHERE 条件，使其变为`WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [DRY RUN](/sql-statements/sql-statement-batch.md#示例) 查看。
+4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 的结果返回。
+
+## 部分失败
+
+非事务 DML 不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 `tidb_nontransactional_ignore_error` 控制了非事务 DML 处理错误的行为。
+
+当 `tidb_nontransactional_ignore_error=0`，在碰到第一个报错的 batch 时，非事务 DML 即中止，取消其后的所有 batch，返回错误。
+
+当 `tidb_nontransactional_ignore_error=1`，当某个 batch 执行报错时，其后的 batch 会继续执行，直到所有 batch 执行完毕，返回结果时把这些错误合并后返回。
+但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
+
 ## 与旧版本 batch-dml 的对比
 
 非事务 DML 尚不能替代所有的 batch-dml 使用场景。
@@ -121,10 +121,6 @@ batch-dml 极易因为使用不当导致数据索引不一致问题。
 
 非事务 DML 不会导致数据索引不一致问题。但使用不当时，非事务 DML 与原始语句不等价，应用可能观察到和预期不符的现象。详见[常见问题](#常见问题)。
 
-## 兼容信息
-
-这里列出该特性的兼容性信息，通常包括与之前 TiDB 版本的兼容性信息，与 MySQL 的兼容性信息，或在不同架构或平台下的兼容性信息。
-
 ## 常见问题
 
 ### 报错：Failed to restore the delete statement, probably because of unsupported type of the shard column
@@ -139,6 +135,10 @@ batch-dml 极易因为使用不当导致数据索引不一致问题。
 - 非事务 DML 修改了它自己会读取的值。Read your own write！
 - 在每个 batch 上实际执行的 SQL 由于改变了 where 条件，可能会导致执行计划不一样、表达式计算顺序不一样等，由此导致了执行结果不一样。
 - DML 中含有非确定性的操作。
+
+## 兼容信息
+
+非事务语句是 TiDB 独有的功能，与 MySQL 不兼容。
 
 ## 探索更多
 
