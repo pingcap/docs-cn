@@ -39,10 +39,10 @@ Query OK, 0 rows affected
 ```
 
 {{< copyable "sql" >}}
+
 ```sql
 INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
 ```
-
 
 ```sql
 Query OK, 5 rows affected
@@ -51,6 +51,7 @@ Query OK, 5 rows affected
 DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。
 
 {{< copyable "sql" >}}
+
 ```sql
 BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM T WHERE v < 6;
 ```
@@ -65,6 +66,7 @@ BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM T WHERE v < 6;
 ```
 
 {{< copyable "sql" >}}
+
 ```sql
 BATCH ON id LIMIT 2 DRY RUN DELETE FROM T where v < 6;
 ```
@@ -82,6 +84,7 @@ DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML。因为 
 ```
 
 {{< copyable "sql" >}}
+
 ```sql
 BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
 ```
@@ -96,6 +99,7 @@ BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
 ```
 
 {{< copyable "sql" >}}
+
 ```sql
 SELECT * FROM t;
 ```
@@ -108,7 +112,6 @@ SELECT * FROM t;
 +----+---+
 1 row in set
 ```
-
 
 ## MySQL 兼容性
 
