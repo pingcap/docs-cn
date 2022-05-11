@@ -146,7 +146,7 @@ EXPLAIN SELECT * FROM t1 ORDER BY intkey DESC LIMIT 10;
 4 rows in set (0.00 sec)
 ```
 
-以上示例中，TiDB 从 `intkey` 索引读取最后 20 行，然后从表数据中检索这些行的 `RowID` 值。
+以上示例中，TiDB 从 `intkey` 索引读取最后 10 行，然后从表数据中检索这些行的 `RowID` 值。
 
 ## IndexReader
 
@@ -357,4 +357,4 @@ EXPLAIN SELECT AVG(intkey), ANY_VALUE(pad1) FROM t1;
 + [聚合查询的执行计划](/explain-aggregation.md)
 + [视图查询的执行计划](/explain-views.md)
 + [分区查询的执行计划](/explain-partitions.md)
-+ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
++ [索引合并查询的执行计划](/explain-index-merge.md)

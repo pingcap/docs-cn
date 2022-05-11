@@ -174,7 +174,7 @@ ALTER TABLE t1 ADD INDEX idx1((lower(col1)));
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t1(col1 char(10), col2 char(10), key index((lower(col1))));
+CREATE TABLE t1(col1 char(10), col2 char(10), index((lower(col1))));
 ```
 
 > **注意：**

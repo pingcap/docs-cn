@@ -44,7 +44,7 @@ summary: 了解如何使用 TiCDC 将 TiDB 数据流式传输到 Confluent Platf
         "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
         "tasks.max": "1",
         "topics": "testdb_test",
-        "connection.url": "sqlite:test.db",
+        "connection.url": "jdbc:sqlite:/tmp/test.db",
         "connection.ds.pool.size": 5,
         "table.name.format": "test",
         "auto.create": true,

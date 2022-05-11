@@ -63,6 +63,12 @@ delta_index_cache_size = 0
     ## 该参数从 v5.2.0 开始废弃，请使用 `[storage.io_rate_limit]` 相关配置
     # bg_task_io_rate_limit = 0
 
+    ## DTFile 储存文件格式
+    ## * format_version = 1 老旧文件格式，已废弃
+    ## * format_version = 2 v6.0.0 以前版本的默认文件格式
+    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
+    # format_version = 3
+
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
     dir = [ "/tidb-data/tiflash-9000" ]
@@ -120,33 +126,37 @@ delta_index_cache_size = 0
     log = pd buddy log 路径
 
 [flash.proxy]
-    addr = proxy 监听地址
-    advertise-addr = 外部访问 addr 的地址，不填则默认是 addr
+    addr = proxy 监听地址，不填则默认是 127.0.0.1:20170
+    advertise-addr = 外部访问 addr 的地址，不填则默认是 "addr"
     data-dir = proxy 数据存储路径
     config = proxy 配置文件路径
     log-file = proxy log 路径
-    log-level = proxy log 级别，默认为 "info"
-    status-addr = 拉取 proxy metrics｜status 信息的监听地址
-    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 status-addr
+    log-level = proxy log 级别，默认是 "info"
+    status-addr = 拉取 proxy metrics｜status 信息的监听地址，不填则默认是 127.0.0.1:20292
+    advertise-status-addr = 外部访问 status-addr 的地址，不填则默认是 "status-addr"
 
 [logger]
-    level = log 级别（支持 trace、debug、information、warning、error）
+    ## log 级别（支持 trace、debug、information、warning、error），默认是 "debug"
+    level = debug
     log = TiFlash log 路径
     errorlog = TiFlash error log 路径
-    size = 单个日志文件的大小
-    count = 最多保留日志文件个数
+    ## 单个日志文件的大小，默认是 "100M"
+    size = "100M"
+    ## 最多保留日志文件个数，默认是 10
+    count = 10
 
 [raft]
     pd_addr = pd 服务地址 # 多个地址以逗号隔开
 
 [status]
-    metrics_port = Prometheus 拉取 metrics 信息的端口
+    ## Prometheus 拉取 metrics 信息的端口，默认是 8234
+    metrics_port = 8234
 
 [profiles]
 
 [profiles.default]
-    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，提高写入速度，但是会造成一定程度的硬盘空间回收不及时。默认为 true
-    dt_enable_logical_split = true
+    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。不建议修改默认选项。
+    # dt_enable_logical_split = false
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage = 0
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
@@ -155,9 +165,17 @@ delta_index_cache_size = 0
     cop_pool_size = 0
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
+    ## 从 v5.4.0 引入，表示是否启用弹性线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 true。
+    # enable_elastic_threadpool = true
+    # TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
+    dt_compression_method = "LZ4"
+    # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
+    dt_compression_level = 1
+
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
+    ## 从 v5.0 引入，控制是否开启日志脱敏
     ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
     ## 注意，tiflash-learner 对应的安全配置选项为 `security.redact-info-log`，需要在 tiflash-learner.toml 中另外开启
     # redact_info_log = false
@@ -175,14 +193,25 @@ delta_index_cache_size = 0
 ```toml
 [server]
     engine-addr = 外部访问 TiFlash coprocessor 服务的地址
+
 [raftstore]
+    ## 处理 Raft 数据落盘的线程池中线程的数量
+    apply-pool-size = 4
+    ## 处理 Raft 的线程池中线程的数量，即 Raftstore 线程池的大小。
+    store-pool-size = 4
     ## 控制处理 snapshot 的线程数，默认为 2。设为 0 则关闭多线程优化
     snap-handle-pool-size = 2
-    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 4ms，设为 0ms 则关闭该优化。
+    ## 控制 raft store 持久化 WAL 的最小间隔。通过适当增大延迟以减少 IOPS 占用，默认为 "4ms"，设为 "0ms" 则关闭该优化。
     store-batch-retry-recv-timeout = "4ms"
+
+[security]
+    ## 从 v5.0 引入，控制是否开启日志脱敏
+    ## 若开启该选项，日志中的用户数据会以 `?` 代替显示
+    ## 默认值为 false
+    redact-info-log = false
 ```
 
-除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`tiflash.toml [flash.proxy]` 中的配置项会覆盖 `tiflash-learner.toml` 中的重合参数；`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
+除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 多盘部署
 

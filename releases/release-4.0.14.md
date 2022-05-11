@@ -70,11 +70,11 @@ TiDB 版本：4.0.14
 
     + TiCDC
 
-        - 优化连接 PD 时缺少证书情况下的报错提示 [#1973](https://github.com/pingcap/ticdc/issues/1973)
-        - 优化 sorter I/O 报错信息 [#1976](https://github.com/pingcap/ticdc/pull/1976)
-        - 在 KV client 中新增 Region 增量扫描的并发度上限，减小 TiKV 的压力 [#1926](https://github.com/pingcap/ticdc/pull/1926)
-        - 新增表内存使用量的监控项 [#1884](https://github.com/pingcap/ticdc/pull/1884)
-        - 新增 TiCDC 服务端配置项 `capture-session-ttl` [#2169](https://github.com/pingcap/ticdc/pull/2169)
+        - 优化连接 PD 时缺少证书情况下的报错提示 [#1973](https://github.com/pingcap/tiflow/issues/1973)
+        - 优化 sorter I/O 报错信息 [#1976](https://github.com/pingcap/tiflow/pull/1976)
+        - 在 KV client 中新增 Region 增量扫描的并发度上限，减小 TiKV 的压力 [#1926](https://github.com/pingcap/tiflow/pull/1926)
+        - 新增表内存使用量的监控项 [#1884](https://github.com/pingcap/tiflow/pull/1884)
+        - 新增 TiCDC 服务端配置项 `capture-session-ttl` [#2169](https://github.com/pingcap/tiflow/pull/2169)
 
 ## Bug 修复
 
@@ -157,10 +157,10 @@ TiDB 版本：4.0.14
 
     + TiCDC
 
-        - 修复分区表新增分区后的处理 [#2205](https://github.com/pingcap/ticdc/pull/2205)
-        - 修复 TiCDC 无法读取 `/proc/meminfo` 导致崩溃的问题 [#2023](https://github.com/pingcap/ticdc/pull/2023)
-        - 减少 TiCDC 运行时的内存使用 [#2011](https://github.com/pingcap/ticdc/pull/2011) [#1957](https://github.com/pingcap/ticdc/pull/1957)
-        - 修复 MySQL sink 遇到错误或暂停时，MySQL 连接会泄漏的问题 [#1945](https://github.com/pingcap/ticdc/pull/1945)
-        - 修复当 start TS 小于 current TS 减去 GC TTL 时无法创建 TiCDC changefeed 的问题 [#1839](https://github.com/pingcap/ticdc/issues/1839)
-        - 减少 sort heap 的内存 `malloc`，以降低 CPU 开销 [#1853](https://github.com/pingcap/ticdc/issues/1853)
-        - 修复调度数据表时可能发生的同步终止问题 [#1827](https://github.com/pingcap/ticdc/pull/1827)
+        - 修复分区表新增分区后的处理 [#2205](https://github.com/pingcap/tiflow/pull/2205)
+        - 修复 TiCDC 无法读取 `/proc/meminfo` 导致崩溃的问题 [#2023](https://github.com/pingcap/tiflow/pull/2023)
+        - 减少 TiCDC 运行时的内存使用 [#2011](https://github.com/pingcap/tiflow/pull/2011) [#1957](https://github.com/pingcap/tiflow/pull/1957)
+        - 修复 MySQL sink 遇到错误或暂停时，MySQL 连接会泄漏的问题 [#1945](https://github.com/pingcap/tiflow/pull/1945)
+        - 修复当 start TS 小于 current TS 减去 GC TTL 时无法创建 TiCDC changefeed 的问题 [#1839](https://github.com/pingcap/tiflow/issues/1839)
+        - 减少 sort heap 的内存 `malloc`，以降低 CPU 开销 [#1853](https://github.com/pingcap/tiflow/issues/1853)
+        - 修复调度数据表时可能发生的同步终止问题 [#1827](https://github.com/pingcap/tiflow/pull/1827)

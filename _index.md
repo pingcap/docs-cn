@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/']
 
 - [TiDB 简介](/overview.md)
 - [基本功能](/basic-features.md)
-- [TiDB 5.3 Release Notes](/releases/release-5.3.0.md)
+- [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
 - [TiDB 版本发布时间线](/releases/release-timeline.md)
 - [与 MySQL 的兼容性](/mysql-compatibility.md)
 - [使用限制](/tidb-limitations.md)
@@ -48,11 +48,9 @@ aliases: ['/docs-cn/dev/']
 <ColumnTitle>数据迁移</ColumnTitle>
 
 - [概述](/migration-overview.md)
-- [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
-- [从 Aurora 全量迁移](/migrate-from-aurora-using-lightning.md)
-- [从 Aurora/MySQL 持续迁移](/migrate-from-aurora-mysql-database.md)
-- [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-- [从 SQL 文件迁移](/migrate-from-mysql-dumpling-files.md)
+- [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
+- [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+- [从 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
 
 </NavColumn>
 
@@ -61,7 +59,7 @@ aliases: ['/docs-cn/dev/']
 
 - [升级 TiDB 版本](/upgrade-tidb-using-tiup.md)
 - [扩容与缩容](/scale-tidb-using-tiup.md)
-- [备份与恢复](/br/backup-and-restore-tool.md)
+- [备份与恢复](/br/backup-and-restore-overview.md)
 - [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
 - [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
 - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)

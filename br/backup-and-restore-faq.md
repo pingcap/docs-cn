@@ -10,29 +10,50 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中提问。
 
+## 在 TiDB v5.4.0 及后续版本中，当在有负载的集群进行备份时，备份速度为什么会变得很慢？
+
+从 TiDB v5.4.0 起，TiKV 的备份新增了自动调节功能。对于 v5.4.0 及以上版本，该功能会默认开启。当集群负载较高时，该功能会自动限制备份任务使用的资源，从而减少备份对在线集群的性能造成的影响。如需了解关于自动调节功能的更多信息，请参见[自动调节](/br/br-auto-tune.md)。
+
+TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调节功能。因此，在开启或关闭该功能时，你不需要重启集群。以下为该功能的具体使用方法：
+
+- 关闭功能：把 TiKV 配置项 [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-从-v54-版本开始引入) 设置为 `false`。
+- 开启功能：把 `backup.enable-auto-tune` 设置为 `true`。对于 v5.3.x 版本的集群，当 TiDB 升级到 v5.4.0 及以上版本后，自动调节功能会默认关闭。这时，你可以通过该方式手动开启此功能。
+
+如需了解通过 `tikv-ctl` 在线修改自动调节功能的命令行，请参阅[自动调节功能的使用方法](/br/br-auto-tune.md#使用方法)。
+
+另外，自动调节功能减少了进行备份任务时默认使用的工作线程数量（详见 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)）。因此，你通过 Grafana 监控面板看到的备份速度、CPU 使用率、I/O 资源利用率都会小于 v5.4 之前的版本。在 v5.4.0 之前的版本中，`backup.num-threads` 的默认值为 CPU * 0.75，即处理备份任务的工作线程数量占了 75% 的逻辑 CPU，最大值为 `32`；在 v5.4.0 及之后的版本中，该配置项的默认值为 CPU * 0.5，最大值为 `8`。
+
+在离线备份场景中，你也可以使用 `tikv-ctl` 把 `backup.num-threads` 修改为更大的数字，从而提升备份任务的速度。
+
 ## 恢复的时候，报错 `could not read local://...:download sst failed`，该如何处理？
 
-在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)，默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
+在恢复的时候，每个节点都必须能够访问到**所有**的备份文件 (SST files)。默认情况下，假如使用 local storage，备份文件会分散在各个节点中，此时是无法直接恢复的，必须将每个 TiKV 节点的备份文件拷贝到其它所有 TiKV 节点才能恢复。
 
 建议在备份的时候挂载一块 NFS 网盘作为备份盘，详见[将单表数据备份到网络盘](/br/backup-and-restore-use-cases.md#将单表数据备份到网络盘推荐生产环境使用)。
 
 ## BR 备份时，对集群影响多大？
 
-使用 `sysbench` 的 `oltp_read_only` 场景全速备份到非服务盘，对集群的影响依照表结构的不同，对集群 QPS 的影响在 15%~25% 之间。
+对于 TiDB v5.4.0 及以后的版本，BR 不仅调低了备份任务的默认 CPU 使用率，还引入了 [BR 自动调节](/br/br-auto-tune.md)功能。开启该功能后，当在集群高负载的场景下进行备份时，BR 能够自动限制备份任务使用的资源，从而限制 BR 备份的速度。因此，在 v5.4.0 高负载集群中使用默认配置进行备份时，备份任务对其集群性能的影响会显著小于 v5.4.0 之前的版本。
 
-如果需要控制备份带来的影响，可以使用 `--ratelimit` 参数限速。
+以下为单节点进行的内部测试。通过测试结果，可以确定，在**全速备份**场景下，使用 v5.4.0 版本及其前期版本的默认配置时，BR 备份对集群性能的影响有较大区别。具体测试结果如下：
+
+- 使用 v5.3.0 的默认配置时，纯写负载的 QPS 降低了 75%；
+- 使用 v5.4.0 的默认配置时，相同负载的 QPS 降低了 25%。不过，使用该配置时，BR 备份任务的耗时也相应增加，约为 v5.3.0 配置下的 1.7 倍。
+
+你可以通过如下方案手动控制 BR 备份对集群性能带来的影响。但是，这两种方案在减少 BR 备份对集群的影响的同时，也会降低备份任务的速度。
+
+- 使用 `--ratelimit` 参数对备份任务进行限速。请注意，这个参数限制的是**把备份文件存储到外部存储**的速度。计算备份文件的大小时，请以备份日志中的 `backup data size(after compressed)` 为准。
+- 调节 TiKV 配置项 [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1)，限制备份任务使用的工作线程数量。过往的测试数据表明，当 BR 备份的线程数量不大于 `8`、集群总 CPU 利用率不超过 60% 时，BR 备份任务对集群（无论读写负载）几乎没有影响。
 
 ## BR 会备份系统表吗？在数据恢复的时候，这些系统表会冲突吗？
 
-在 v5.1.0 之前，BR 备份时会过滤掉系统库 `mysql.*` 的表数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 `mysql.*` 中的数据。但由于恢复 `mysql.*` 中系统表数据的技术实现尚不完善，因此 BR 默认**不恢复**系统库 `mysql` 中的表数据。详情参阅[备份和恢复 `mysql` 系统库下的表数据（实验特性）](/br/backup-and-restore-tool.md#备份和恢复-mysql-系统库下的表数据实验特性)。
-
-因为这些系统库根本不可能存在于备份中，恢复的时候自然不可能发生冲突。
+在 v5.1.0 之前，BR 备份时会过滤掉系统库 `mysql.*` 的表数据。自 v5.1.0 起，BR 默认**备份**集群内的全部数据，包括系统库 `mysql.*` 中的数据。但由于恢复 `mysql.*` 中系统表数据的技术实现尚不完善，因此 BR 默认**不恢复**系统库 `mysql` 中的表数据。详情参阅[备份和恢复 `mysql` 系统库下的表数据（实验特性）](/br/br-usage-restore.md#恢复创建在-mysql-数据库下的表)。
 
 ## BR 遇到 Permission denied 或者 No such file or directory 错误，即使用 root 运行 BR 也无法解决，该如何处理？
 
 需要确认 TiKV 是否有访问备份目录的权限。如果是备份，确认是否有写权限；如果是恢复，确认是否有读权限。
 
-在进行备份操作时，如果使用本地磁盘或 NFS 作为存储介质，请确保执行 BR 的用户和启动 TiKV 的用户相同（如果 BR 和 TiKV 位于不同的机器，则需要用户的 UID 相同），否则很备份可能会出现该问题。
+在进行备份操作时，如果使用本地磁盘或 NFS 作为存储介质，请确保执行 BR 的用户和启动 TiKV 的用户相同（如果 BR 和 TiKV 位于不同的机器，则需要用户的 UID 相同），否则备份可能会出现该问题。。
 
 使用 root 运行 BR 仍旧有可能会因为磁盘权限而失败，因为备份文件 (SST) 的保存是由 TiKV 执行的。
 
@@ -111,11 +132,13 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
     drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
     ```
 
-    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但用户账号 `tidb_ouo` 没有 `backup` 目录的写入权限， 所以备份失败。
+    由以上命令输出结果可知，`tikv-server` 实例由用户 `tidb_ouo` 启动，但该账号没有 `backup` 目录的写入权限， 所以备份失败。
 
 ## BR 遇到错误信息 `Io(Os...)`，该如何处理？
 
-这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})` 这类错误信息，首先检查备份目录的挂载方式和文件系统，试试看备份到其它文件夹或者其它硬盘。
+这类问题几乎都是 TiKV 在写盘的时候遇到的系统调用错误。例如遇到 `Io(Os { code: 13, kind: PermissionDenied...})` 或者 `Io(Os { code: 2, kind: NotFound...})`。
+
+首先检查备份目录的挂载方式和文件系统，尝试备份到其它文件夹或者硬盘。
 
 目前已知备份到 samba 搭建的网盘时可能会遇到 `Code: 22(invalid argument)` 错误。
 
@@ -141,11 +164,17 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-faq/']
 
 + 在 4.0.3 版本之前，BR 恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
 
-TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/ticdc/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
+TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
 
 ## BR 会备份表的 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS` 信息吗？恢复出来的表会有多个 Region 吗？
 
 会的，BR 会备份表的 [`SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`](/sql-statements/sql-statement-split-region.md#pre_split_regions) 信息，并恢复成多个 Region。
+
+## 使用 BR 恢复备份数据时，BR 会报错 `entry too large, the max entry size is 6291456, the size of data is 7690800`
+
+你可以尝试降低并发批量建表的大小，将 `--ddl-batch-size` 设置为 `128` 或者更小的值。
+
+在 [`--ddl-batch-size`](/br/br-batch-create-table.md#使用方法) 的值大于 `1` 的情况下，使用 BR 恢复数据时，TiDB 会把执行创建表任务的 DDL job 队列写到 TiKV 上。由于 TiDB 能够一次性发送的 job message 的最大值默认为 `6 MB`（**不建议**修改此值，具体内容，参考 [txn-entry-size-limit](/tidb-configuration-file.md#txn-entry-size-limit-从-v50-版本开始引入) 和 [raft-entry-max-size](/tikv-configuration-file.md#raft-entry-max-size)），TiDB 单次发送的所有表的 schema 大小总和也不应该超过 6 MB。因此，如果你设置的 `--ddl-batch-size` 的值过大，TiDB 单次发送的批量表的 schema 大小就会超出规定值，从而导致 BR 报 `entry too large, the max entry size is 6291456, the size of data is 7690800` 错误。
 
 ## 使用 BR 恢复备份数据后，SQL 查询报错 `region is unavailable`
 
@@ -178,3 +207,18 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 + BR 在恢复数据时，会修改 PD 的一些全局配置。如果同时使用多个 BR 进程进行恢复，这些配置可能会被错误地覆写，导致集群状态异常。
 + 因为 BR 在恢复数据的时候会占用大量集群资源，事实上并行恢复能获得的速度提升也非常有限。
 + 多个 BR 并行恢复的场景没有经过测试，无法保证成功。
+
+## 备份日志中出现 `key locked Error`，该如何处理？
+
+日志中的错误消息：`log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
+
+如果在备份过程中遇到 key 被锁住，目前 BR 会尝试清锁。少量报错不会影响备份的正确性。
+
+### 备份失败该如何处理？
+
+日志中的错误消息：`log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
+
+若备份失败并出现以上错误消息，采取以下其中一种操作后再重新备份：
+
+* 更换备份数据目录。例如将 `/dir/backup-2020-01-01/` 改为 `/dir/backup_local/`。
+* 删除所有 TiKV 和 BR 节点的备份目录。

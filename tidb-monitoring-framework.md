@@ -50,3 +50,7 @@ Grafana 是一个开源的 metric 分析及可视化系统。TiDB 使用 Grafana
 每个分组包含多个监控项页签，页签中包含多个详细的监控项信息。以 Overview 监控组为例，其中包含 5 个页签，每个页签内有相应的监控指标看板，如下图所示：
 
 ![Grafana Overview](/media/grafana_monitor_overview.png)
+
+要快速了解 TiDB 监控与报警系统的体系、该系统背后的数据流转方式、系统管理方法、系统使用方法和常用监控指标，建议观看下面的培训视频（时长 29 分钟）。注意本视频只作为学习参考，具体的[监控指标与相关报警规则](/alert-rules.md#tidb-报警规则)，请以文档内容为准。
+
+<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+13.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+13.png"></video>

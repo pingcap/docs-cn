@@ -5,7 +5,7 @@ summary: 了解如何使用 TiDB DM 拉取指定配置进行数据校验。
 
 # 基于 DM 同步场景下的数据校验
 
-当你在使用 [TiDB DM](https://docs.pingcap.com/zh/tidb-data-migration/stable/overview) 等同步工具时，需要校验 DM 同步后数据的一致性。你可以从 `DM-master` 拉取指定 `task-name` 的配置，进行数据校验。
+当你在使用 [TiDB DM](/dm/dm-overview.md) 等同步工具时，需要校验 DM 同步后数据的一致性。你可以从 `DM-master` 拉取指定 `task-name` 的配置，进行数据校验。
 
 下面是一个简单的配置文件说明，要了解完整配置，请参考 [sync-diff-inspector 用户文档](/sync-diff-inspector/sync-diff-inspector-overview.md)。
 

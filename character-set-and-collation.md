@@ -56,16 +56,17 @@ SHOW CHARACTER SET;
 ```
 
 ```sql
-+---------|---------------|-------------------|--------+
-| Charset | Description   | Default collation | Maxlen |
-+---------|---------------|-------------------|--------+
-| utf8    | UTF-8 Unicode | utf8_bin          |      3 |
-| utf8mb4 | UTF-8 Unicode | utf8mb4_bin       |      4 |
-| ascii   | US ASCII      | ascii_bin         |      1 |
-| latin1  | Latin1        | latin1_bin        |      1 |
-| binary  | binary        | binary            |      1 |
-+---------|---------------|-------------------|--------+
-5 rows in set (0.00 sec)
++---------+-------------------------------------+-------------------+--------+
+| Charset | Description                         | Default collation | Maxlen |
++---------+-------------------------------------+-------------------+--------+
+| ascii   | US ASCII                            | ascii_bin         |      1 |
+| binary  | binary                              | binary            |      1 |
+| gbk     | Chinese Internal Code Specification | gbk_bin           |      2 |
+| latin1  | Latin1                              | latin1_bin        |      1 |
+| utf8    | UTF-8 Unicode                       | utf8_bin          |      3 |
+| utf8mb4 | UTF-8 Unicode                       | utf8mb4_bin       |      4 |
++---------+-------------------------------------+-------------------+--------+
+6 rows in set (0.00 sec)
 ```
 
 TiDB 支持以下排序规则：
@@ -80,8 +81,9 @@ mysql> show collation;
 | binary      | binary  |   63 | Yes     | Yes      |       1 |
 | ascii_bin   | ascii   |   65 | Yes     | Yes      |       1 |
 | utf8_bin    | utf8    |   83 | Yes     | Yes      |       1 |
+| gbk_bin     | gbk     |   87 | Yes     | Yes      |       1 |
 +-------------+---------+------+---------+----------+---------+
-5 rows in set (0.01 sec)
+6 rows in set (0.00 sec)
 ```
 
 > **警告：**
@@ -111,13 +113,15 @@ SHOW COLLATION WHERE Charset = 'utf8mb4';
 3 rows in set (0.00 sec)
 ```
 
+TiDB 对 GBK 字符集的支持详情见 [GBK](/character-set-gbk.md)。
+
 ## TiDB 中的 `utf8` 和 `utf8mb4`
 
-MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号等字符。因此，建议改用字符集`utf8mb4`。
+MySQL 限制字符集 `utf8` 为最多 3 个字节。这足以存储在基本多语言平面 (BMP) 中的字符，但不足以存储表情符号 (emoji) 等字符。因此，建议改用字符集`utf8mb4`。
 
 默认情况下，TiDB 同样限制字符集 `utf8` 为最多 3 个字节，以确保 TiDB 中创建的数据可以在 MySQL 中顺利恢复。你可以禁用此功能，方法是在 TiDB 配置文件中将 `check-mb4-value-in-utf8` 的值更改为 `FALSE`。
 
-以下示例演示了在表中插入 4 字节的表情符号字符时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`utf8mb4` 字符集下可以执行 `INSERT` 语句：
+以下示例演示了在表中插入 4 字节的表情符号字符（emoji 字符）时的默认行为。`utf8` 字符集下 `INSERT` 语句不能执行，`utf8mb4` 字符集下可以执行 `INSERT` 语句：
 
 ```sql
 mysql> CREATE TABLE utf8_test (
@@ -401,7 +405,7 @@ Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于�
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。如需启用新排序规则框架，可将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`，详情参见 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)。要在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用了新排序规则框架：
 
 {{< copyable "sql" >}}
 
@@ -418,9 +422,9 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 1 row in set (0.00 sec)
 ```
 
-在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 和 `utf8mb4_unicode_ci` 这几种排序规则，与 MySQL 兼容。
+在新的排序规则框架下，TiDB 能够支持 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci`、`utf8mb4_unicode_ci`、`gbk_chinese_ci` 和 `gbk_bin` 这几种排序规则，与 MySQL 兼容。
 
-使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 和 `utf8mb4_unicode_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
+使用 `utf8_general_ci`、`utf8mb4_general_ci`、`utf8_unicode_ci` 、 `utf8mb4_unicode_ci` 和 `gbk_chinese_ci` 中任一种时，字符串之间的比较是大小写不敏感 (case-insensitive) 和口音不敏感 (accent-insensitive) 的。同时，TiDB 还修正了排序规则的 `PADDING` 行为：
 
 {{< copyable "sql" >}}
 

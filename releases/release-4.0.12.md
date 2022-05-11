@@ -51,8 +51,8 @@ TiDB 版本：4.0.12
 
     + TiCDC
 
-        - 若任务的暂停同步时间超过 1 天，再次启动该任务时需要二次确认 [#1497](https://github.com/pingcap/ticdc/pull/1497)
-        - 为 Old Value 功能添加监控面板 [#1571](https://github.com/pingcap/ticdc/pull/1571)
+        - 若任务的暂停同步时间超过 1 天，再次启动该任务时需要二次确认 [#1497](https://github.com/pingcap/tiflow/pull/1497)
+        - 为 Old Value 功能添加监控面板 [#1571](https://github.com/pingcap/tiflow/pull/1571)
 
     + Backup & Restore (BR)
 
@@ -118,11 +118,11 @@ TiDB 版本：4.0.12
 
     + TiCDC
 
-        - 修复 `resolved ts` 时间乱序的问题 [#1464](https://github.com/pingcap/ticdc/pull/1464)
-        - 修复由于网络不稳定而导致的表调度出错引发的数据丢失问题 [#1508](https://github.com/pingcap/ticdc/pull/1508)
-        - 修复终止 processor 时不能及时释放资源的问题 [#1547](https://github.com/pingcap/ticdc/pull/1547)
-        - 修复因事务计数器未正确更新而导致下游数据库链接可能泄露的问题 [#1524](https://github.com/pingcap/ticdc/pull/1524)
-        - 修复因 PD 抖动时多个 owner 共存可能导致数据表丢失的问题 [#1540](https://github.com/pingcap/ticdc/pull/1540)
+        - 修复 `resolved ts` 时间乱序的问题 [#1464](https://github.com/pingcap/tiflow/pull/1464)
+        - 修复由于网络不稳定而导致的表调度出错引发的数据丢失问题 [#1508](https://github.com/pingcap/tiflow/pull/1508)
+        - 修复终止 processor 时不能及时释放资源的问题 [#1547](https://github.com/pingcap/tiflow/pull/1547)
+        - 修复因事务计数器未正确更新而导致下游数据库链接可能泄露的问题 [#1524](https://github.com/pingcap/tiflow/pull/1524)
+        - 修复因 PD 抖动时多个 owner 共存可能导致数据表丢失的问题 [#1540](https://github.com/pingcap/tiflow/pull/1540)
 
     + Backup & Restore (BR)
 

@@ -12,14 +12,14 @@ TiDB 集群是由多个组件构成的分布式系统，一个典型的 TiDB 集
 playground 组件的基本用法：
 
 ```bash
-tiup playground [version] [flags]
+tiup playground ${version} [flags]
 ```
 
 如果直接执行 `tiup playground` 命令，则 TiUP playground 会使用本地安装的 TiDB/TiKV/PD 组件或者安装这些组件的稳定版本，来启动一个由 1 个 TiKV、1 个 TiDB、1 个 PD 和 1 个 TiFlash 实例构成的集群。该命令实际做了以下事情：
 
-- 因为该命令没有指定 playground 的版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的 playground 最新版为 v1.7.0，则该命令相当于 tiup playground:v1.7.0
+- 因为该命令没有指定 playground 的版本，TiUP 会先查找已安装的 playground 的最新版本，假设已安装的 playground 最新版为 v1.9.3，则该命令相当于 tiup playground:v1.9.3
 - 如果 playground 从未安装过任何版本的 TiDB/TiKV/PD 组件，TiUP 会先安装这些组件的最新稳定版，然后再启动运行这些组件的实例
-- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v5.3.0，则该命令相当于 tiup playground:1.7.0 v5.3.0
+- 因为该命令没有指定 TiDB/PD/TiKV 各组件的版本，默认情况下，它会使用各组件的最新发布版本，假设当前为 v6.0.0，则该命令相当于 tiup playground:1.9.3 v6.0.0
 - 因为该命令也没有指定各组件的个数，默认情况下，它会启动由 1 个 TiDB、1 个 TiKV、1 个 PD 和 1 个 TiFlash 实例构成的最小化集群
 - 在依次启动完各个 TiDB 组件后，playground 会提醒集群启动成功，并告诉你一些有用的信息，譬如如何通过 MySQL 客户端连接集群、如何访问 [TiDB Dashboard](/dashboard/dashboard-intro.md) 等
 
@@ -64,7 +64,25 @@ Flags:
 
 ## 使用示例
 
-### 使用每日构建版启动一个 TiDB 集群
+### 查看可用的 TiDB 版本
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup list tidb
+```
+
+### 启动一个指定版本的 TiDB 集群
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup playground ${version}
+```
+
+将 `${version}` 替换为所需的版本号。
+
+### 启动一个每日构建版的 TiDB 集群
 
 {{< copyable "shell-regular" >}}
 
@@ -73,16 +91,6 @@ tiup playground nightly
 ```
 
 nightly 就是这个集群的版本号，这里指定为每日构建版本。
-
-### 启动一个带监控的集群
-
-{{< copyable "shell-regular" >}}
-
-```shell
-tiup playground nightly 
-```
-
-该命令会在 9090 端口启动 Prometheus 用于展示集群内部的时序数据。
 
 ### 覆盖 PD 的默认配置
 
@@ -111,7 +119,7 @@ tiup playground --db.binpath /xx/tidb-server
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup playground v5.3.0 --db 3 --pd 3 --kv 3
+tiup playground --db 3 --pd 3 --kv 3
 ```
 
 ## 快速连接到由 playground 启动的 TiDB 集群

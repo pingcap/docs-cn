@@ -79,7 +79,7 @@ ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目�
 {{< copyable "sql" >}}
 
 ```sql
-SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
+SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 ```
 
 ```sql
@@ -173,4 +173,4 @@ EXPLAIN ANALYZE SELECT COUNT(*) FROM t1 GROUP BY id;
 + [聚合查询的执行计划](/explain-aggregation.md)
 + [视图查询的执行计划](/explain-views.md)
 + [分区查询的执行计划](/explain-partitions.md)
-+ [开启 IndexMerge 查询的执行计划](/explain-index-merge.md)
++ [索引合并查询的执行计划](/explain-index-merge.md)

@@ -335,7 +335,7 @@ GC Compaction Filter 特性将这两个任务合并在同一个任务中完成�
 
 ### TiCDC 稳定性提升，缓解同步过多增量变更数据的 OOM 问题
 
-[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/ticdc/issues/1150)
+[用户文档](/ticdc/manage-ticdc.md#unified-sorter-功能)，[#1150](https://github.com/pingcap/tiflow/issues/1150)
 
 自 v4.0.9 版本起，TiCDC 引入变更数据本地排序功能 Unified Sorter。在 5.0 版本，默认开启此功能以缓解类似场景下的 OOM 问题：
 
@@ -375,7 +375,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 该功能使用方法可以参照以下文档：
 
 + [将 MySQL/Aurora 数据导出到 Amazon S3](/dumpling-overview.md#导出到-amazon-s3-云盘)，[#8](https://github.com/pingcap/dumpling/issues/8)
-+ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-from-aurora-using-lightning.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
++ [从 Amazon S3 将 Aurora Snapshot 数据初始化到 TiDB](/migrate-aurora-to-tidb.md)，[#266](https://github.com/pingcap/tidb-lightning/issues/266)
 
 ### TiDB Cloud 数据导入性能优化
 
@@ -385,7 +385,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### TiCDC 集成第三方生态 Kafka Connect (Confluent Platform)（**实验特性**）
 
-[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/ticdc/issues/660)
+[用户文档](/ticdc/integrate-confluent-using-ticdc.md)，[#660](https://github.com/pingcap/tiflow/issues/660)
 
 为满足将 TiDB 的数据流转到其他系统以支持相关的业务需求，该功能可以把 TiDB 数据流转到 Kafka、Hadoop、Oracle 等系统。
 

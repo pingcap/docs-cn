@@ -10,7 +10,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
 
 目前 `SHOW STATS_META` 会输出 6 列，具体如下：
 
-| 语法元素 | 说明            |
+| 列名 | 说明            |
 | -------- | ------------- |
 | db_name  |  数据库名    |
 | table_name | 表名 |
