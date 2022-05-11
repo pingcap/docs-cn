@@ -19,9 +19,9 @@ summary: 创建表的方法、应遵守的规则及例子。
 - 阅读[数据库模式概览](/develop/schema-design-overview.md)。
 - [创建一个数据库](/develop/create-database.md)。
 
-## 表是什么
+## 什么是表
 
-[表](/develop/schema-design-overview.md#表-table)是集群中的一种逻辑对象，它从属于[数据库](/develop/create-database.md)。其用于保存从 SQL 中发送而来的数据。表以行和列的形式组织数据记录。一个表有至少一个列，每行数据都拥有所有列的数据。
+[表](/develop/schema-design-overview.md#表-table)是集群中的一种逻辑对象，它从属于[数据库](/develop/schema-design-overview.md#数据库-database)。其用于保存从 SQL 中发送而来的数据。表以行和列的形式组织数据记录。一个表有至少一个列，每行数据都拥有所有列的数据。
 
 ## 命名表
 

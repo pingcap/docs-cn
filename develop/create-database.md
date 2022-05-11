@@ -18,9 +18,11 @@ summary: 创建数据库的方法、应遵守的规则及例子。
 - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)。
 - 阅读[数据库模式概览](/develop/schema-design-overview.md)。
 
-## 创建数据库过程
+## 什么是数据库
 
 在 TiDB 中[数据库](/develop/schema-design-overview.md#数据库-database)对象可以包含**表**、**视图**、**序列**等对象。
+
+## 创建数据库过程
 
 可使用 `CREATE DATABASE` 语句来创建数据库。此处将创建一个在文件末尾带有 `.sql` 文件拓展名的空文件。我们将使用该文件初始化数据库，该数据库将存储 `bookshop` 整个示例应用程序的所有数据。
 
