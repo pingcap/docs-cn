@@ -7,16 +7,16 @@ summary: 创建二级索引的方法、最佳实践及例子。
 
 索引是集群中的逻辑对象，可以帮助 TiDB 集群更有效地查找数据。当你创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[二级索引](/best-practices/tidb-best-practices.md#二级索引)中查看更多信息。
 
-此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
+此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库的示例。
 
 ## 在开始之前
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)。
-- 阅读[数据库模式概览](/develop/schema-design-overview.md)。
-- [创建一个数据库](/develop/create-database.md)。
-- [创建表](/develop/create-table.md)。
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
+- [创建一个数据库](/develop/dev-guide-create-database.md)。
+- [创建表](/develop/dev-guide-create-table.md)。
 
 ## 创建二级索引
 
@@ -53,7 +53,7 @@ KEY `{index_name}` (`{column_names}`)
 
 ## 最佳实践
 
-见 [索引的最佳实践](/develop/index-best-practice.md)。
+见 [索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
 ## 例子
 
@@ -164,4 +164,4 @@ SHOW INDEXES FROM `bookshop`.`books`;
 2 rows in set (1.63 sec)
 ```
 
-至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供 [写入](/develop/insert-data.md) 和 [读取](/develop/get-data-from-single-table.md) 读取的能力了。
+至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供 [写入](/develop/dev-guide-insert-data.md) 和 [读取](/develop/dev-guide-get-data-from-single-table.md) 读取的能力了。

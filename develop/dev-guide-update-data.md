@@ -14,9 +14,9 @@ summary: 更新数据、批量更新数据的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
-- 阅读[数据库模式概览](/develop/schema-design-overview.md)，并[创建数据库](/develop/create-database.md)、[创建表](/develop/create-table.md)、[创建二级索引](/develop/create-secondary-indexes.md)
-- 若需使用 `UPDATE` 语句更新数据，需先[插入数据](/develop/insert-data.md)
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+- 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)
+- 若需使用 `UPDATE` 语句更新数据，需先[插入数据](/develop/dev-guide-insert-data.md)
 
 ## 使用 `UPDATE`
 
@@ -56,7 +56,7 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 
 ### `UPDATE` 例子
 
-假设某位作者改名为 Helen Haruki，需要更改我们的 [authors](/develop/bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`。
+假设某位作者改名为 Helen Haruki，需要更改我们的 [authors](/develop/dev-guide-bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`。
 
 <SimpleTab>
 <div label="SQL" href="update-sql">
@@ -118,7 +118,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 
 ### `INSERT ON DUPLICATE KEY UPDATE` 例子
 
-例如，我们需要更新 [ratings](/develop/bookshop-schema-design.md#ratings-表) 表来写入用户对书籍的评价，如果用户还未评价此书籍，将新建一条评价，如果用户已经评价过，那么将会更新他之前的评价。
+例如，我们需要更新 [ratings](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 表来写入用户对书籍的评价，如果用户还未评价此书籍，将新建一条评价，如果用户已经评价过，那么将会更新他之前的评价。
 
 此处主键为 `book_id` 和 `user_id` 的联合主键。`user_id` 为 1 的用户，给 `book_id` 为 1000 的书籍，打出的 5 分的评价。
 
