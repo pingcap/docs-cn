@@ -51,8 +51,8 @@ DELETE FROM {table} WHERE {filter}
 SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
 ```
 
-- 若返回数据大于 1 万条，请参考[批量删除](#批量删除)。
-- 若返回数据小于 1 万条，可参考此处的示例进行删除：
+- 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
+- 若返回数量小于 1 万条，可参考此处的示例进行删除：
 
 <SimpleTab>
 <div label="SQL" href="delete-sql">
