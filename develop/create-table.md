@@ -1,15 +1,15 @@
 ---
 title: 创建表
-summary: 创建表的方法、最佳实践及例子。
+summary: 创建表的方法、应遵守的规则及例子。
 ---
 
 # 创建表
 
-此页面提供了一个创建表的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
+在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来创建表，及创建表时应遵守的规则。我们将在这个章节中围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建表部分展开介绍。
 
 > **注意：**
 >
-> 有关该 `CREATE TABLE` 语句的详细参考文档，包含其他示例，可参阅 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 文档
+> 此处我们仅对 `CREATE TABLE` 语句进行简单描述，详细参考文档（包含其他示例），可参阅 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 文档。
 
 ## 在开始之前
 
@@ -19,25 +19,13 @@ summary: 创建表的方法、最佳实践及例子。
 - 阅读[数据库模式概览](/develop/schema-design-overview.md)。
 - [创建一个数据库](/develop/create-database.md)。
 
-## 创建表
+## 表是什么
 
-[表](/develop/schema-design-overview.md#表-table)是集群中的一种逻辑对象，用于存储从应用程序的持久层或其他 SQL 中发送的数据。表以行和列的形式组织数据记录。
+[表](/develop/schema-design-overview.md#表-table)是集群中的一种逻辑对象，它从属于[数据库](/develop/create-database.md)。其用于保存从 SQL 中发送而来的数据。表以行和列的形式组织数据记录。一个表有至少一个列，每行数据都拥有所有列的数据。
 
-要创建表，请使用 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 语句，并遵循我们在下方列出的最佳实践：
+## 命名表
 
-- [命名表](#命名表)
-- [定义列](#定义列)
-- [选择主键](#选择主键)
-- [选择是否聚簇](#选择聚簇索引)
-- [添加额外的约束](#添加列约束)
-- [使用 HTAP 能力](#使用-htap-能力)
-- [执行 `CREATE TABLE` 语句](#执行-create-table-语句)
-
-对每个最佳实践查看完毕后，你可以看看本章提供的示例。
-
-### 命名表
-
-给你的表起个名字，这是创建表的第一步。我们推荐你遵循公司或组织的表命名规范。
+创建表的第一步，就是给你的表起个名字。请不要使用无意义的表名，将给未来的你或者你的同事带来极大的困扰。我们推荐你遵循公司或组织的表命名规范。
 
 `CREATE TABLE` 语句通常采用以下形式：
 
@@ -52,17 +40,6 @@ CREATE TABLE {table_name} ( {elements} );
 | `{table_name}` |                      表名                      |
 |  `{elements}`  | 以逗号分隔的表元素列表，比如列定义，主键定义等 |
 
-#### 表命名的最佳实践
-
-以下是命名表时需要遵循的一些最佳实践：
-
-- 使用**完全限定**的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为你在不指定数据库名称时，TiDB 将使用你 **SQL 会话**中的[当前数据库](/sql-statements/sql-statement-use.md)。若你未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
-- 请使用有意义的表名，例如，若你需要创建一个用户表，你可以使用名称：`user`, `t_user`, `users` 等，或遵循你公司或组织的命名规范。如果你的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
-- 多个单词以下划线分隔，不推荐超过 32 个字符。
-- 不同业务模块的表单独建立 `DATABASE`，并增加相应注释。
-
-#### 表命名示例
-
 假设你需要创建一个表来存储 `bookshop` 库中的用户信息。
 
 注意，此时因为一个列都没被添加，所以下方这条 SQL 暂时还不能被运行：
@@ -74,9 +51,9 @@ CREATE TABLE `bookshop`.`users` (
 );
 ```
 
-### 定义列
+## 定义列
 
-**列**通过将每行中的值分成一个个单一数据类型的小单元来为表提供结构。
+**列**从属于表，每个表都至少需要有一个**列**。**列**通过将每行中的值分成一个个单一数据类型的小单元来为表提供结构。
 
 列定义通常使用以下形式：
 
@@ -89,18 +66,6 @@ CREATE TABLE `bookshop`.`users` (
 |     `{column_name}`      |                                                                               列名                                                                                |
 |      `{data_type}`       | 列的[数据类型](/basic-features.md#数据类型函数和操作符) |
 | `{column_qualification}` |                        列的限定条件，如**列级约束**或[生成列（实验功能）](/generated-columns.md)子句                         |
-
-#### 列定义的最佳实践
-
-以下是定义列时需要遵循的一些最佳实践：
-
-- 查看支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并按照数据类型的限制来组织你的数据。为你计划被存在列中的数据选择合适的类型。
-- 查看选择主键的[最佳实践](#主键选择的最佳实践)与[示例](#主键选择的示例)，决定是否使用主键列。
-- 查看选择聚簇索引的[最佳实践](#聚簇索引选择的最佳实践)与[示例](#聚簇索引选择的示例)，决定是否指定聚簇索引。
-- 查看[添加列约束](#添加列约束)，决定是否添加约束到列中。
-- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#字段命名规范)。
-
-#### 列定义示例
 
 我们可以为 `users` 表添加一些列，如他们的唯一标识 `id`，余额 `balance` 及昵称 `nickname`。
 
@@ -143,7 +108,7 @@ CREATE TABLE `bookshop`.`books` (
 - [datetime](/basic-features.md#数据类型函数和操作符): 可以使用 **datetime** 类型保存时间值。
 - [enum](/data-type-string.md#enum-类型): 可以使用 **enum** 类型的枚举来保存有限选择的值。
 
-### 选择主键
+## 选择主键
 
 [主键](/constraints.md#主键约束)是一个或一组列，这个由所有主键列组合起来的值是数据行的唯一标识。
 
@@ -161,21 +126,7 @@ CREATE TABLE `bookshop`.`books` (
 
 更多有关热点问题的处理办法，请参考[TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 
-#### 主键选择的最佳实践
-
-以下是在 TiDB 中选择主键列时需要遵循的一些最佳实践：
-
-- 在表内定义一个主键或唯一索引。
-- 尽量选择有意义的列作为主键。
-- 出于为性能考虑，尽量避免存储超宽表，表字段数不建议超过 60 个，建议单行的总数据大小不要超过 64K，数据长度过大字段最好拆到另外的表。
-- 不推荐使用复杂的数据类型。
-- 需要 JOIN 的字段，数据类型保障绝对一致，避免隐式转换。
-- 避免在单个单调数据列上定义主键。如果你使用单个单调数据列（例如：`AUTO_INCREMENT` 的列）来定义主键，有可能会对写性能产生负面影响。可能的话，使用 `AUTO_RANDOM` 替换 `AUTO_INCREMENT`（这会失去主键的连续和递增特性）。
-- 如果你 **_必须_** 在单个单调数据列上创建索引，且有大量写入的话。请不要将这个单调数据列定义为主键，而是使用 `AUTO_RANDOM` 创建该表的主键，或使用 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 打散 `_tidb_rowid`。
-
-#### 主键选择的示例
-
-需遵循[主键选择的最佳实践](#主键选择的最佳实践)，我们展示在 `users` 表中定义 `AUTO_RANDOM` 主键的场景：
+需遵循[选择主键时应遵守的规则](#选择主键时应遵守的规则)，我们举一个 `users` 表中定义 `AUTO_RANDOM` 主键的例子：
 
 {{< copyable "sql" >}}
 
@@ -188,7 +139,7 @@ CREATE TABLE `bookshop`.`users` (
 );
 ```
 
-### 选择聚簇索引
+## 选择聚簇索引
 
 [聚簇索引](/clustered-indexes.md) (clustered index) 是 TiDB 从 v5.0 开始支持的特性，用于控制含有主键的表数据的存储方式。通过使用聚簇索引，TiDB 可以更好地组织数据表，从而提高某些查询的性能。有些数据库管理系统也将聚簇索引称为“索引组织表” (index-organized tables)。
 
@@ -206,31 +157,7 @@ CREATE TABLE `bookshop`.`users` (
 >
 > TiDB 仅支持根据表的主键来进行聚簇操作。聚簇索引启用时，“主键”和“聚簇索引”两个术语在一些情况下可互换使用。主键指的是约束（一种逻辑属性），而聚簇索引描述的是数据存储的物理实现。
 
-#### 聚簇索引选择的最佳实践
-
-以下是在 TiDB 中选择聚簇索引时需要遵循的一些最佳实践：
-
-- 遵循 [主键选择的最佳实践](#主键选择的最佳实践)：
-
-    聚簇索引将基于主键建立，请遵循主键选择的最佳实践，以完成聚簇索引最佳实践的基础。
-
-- 在以下场景中，尽量使用聚簇索引，将带来性能和吞吐量的优势：
-
-    - 插入数据时会减少一次从网络写入索引数据。
-    - 等值条件查询仅涉及主键时会减少一次从网络读取数据。
-    - 范围条件查询仅涉及主键时会减少多次从网络读取数据。
-    - 等值或范围条件查询仅涉及主键的前缀时会减少多次从网络读取数据。
-
-- 在以下场景中，尽量避免使用聚簇索引，将带来性能劣势：
-
-    - 批量插入大量取值相邻的主键时，可能会产生较大的写热点问题，请遵循[主键选择的最佳实践](#主键选择的最佳实践)。
-    - 当使用大于 64 位的数据类型作为主键时，可能导致表数据需要占用更多的存储空间。该现象在存在多个二级索引时尤为明显。
-
-- 显式指定是否使用聚簇索引，而非使用系统变量 `@@global.tidb_enable_clustered_index` 及配置项 `alter-primary-key` 控制是否使用[聚簇索引的默认行为](/clustered-indexes.md#创建聚簇索引表)。
-
-#### 聚簇索引选择的示例
-
-需遵循[聚簇索引选择的最佳实践](#聚簇索引选择的最佳实践)，假设我们将需要建立一张 `books` 和 `users` 之间关联的表，代表用户对某书籍的评分。我们使用表名 `ratings` 来创建该表，并使用 `book_id` 和 `user_id` 构建[复合主键](/constraints.md#主键约束)，并在该主键上建立聚簇索引：
+需遵循[选择聚簇索引时应遵守的规则](#选择聚簇索引时应遵守的规则)，假设我们将需要建立一张 `books` 和 `users` 之间关联的表，代表用户对某书籍的评分。我们使用表名 `ratings` 来创建该表，并使用 `book_id` 和 `user_id` 构建[复合主键](/constraints.md#主键约束)，并在该主键上建立聚簇索引：
 
 {{< copyable "sql" >}}
 
@@ -244,11 +171,11 @@ CREATE TABLE `bookshop`.`ratings` (
 );
 ```
 
-### 添加列约束
+## 添加列约束
 
 除[主键约束](#选择主键)外，TiDB 还支持其他的列约束，如：[非空约束 `NOT NULL`](/constraints.md#非空约束)、[唯一约束 `UNIQUE KEY`](/constraints.md#唯一约束)、默认值 `DEFAULT` 等。完整约束，请查看 [TiDB 约束](/constraints.md)文档。
 
-#### 填充默认值
+### 填充默认值
 
 如需在列上设置默认值，请使用 `DEFAULT` 约束。默认值将可以使你无需指定每一列的值，就可以插入数据。
 
@@ -280,7 +207,7 @@ CREATE TABLE `bookshop`.`ratings` (
 );
 ```
 
-#### 防止重复
+### 防止重复
 
 如果你需要防止列中出现重复值，那你可以使用 `UNIQUE` 约束。
 
@@ -299,7 +226,7 @@ CREATE TABLE `bookshop`.`users` (
 
 如果你在 `user` 表中尝试插入相同的 `nickname`，将返回错误。
 
-#### 防止空值
+### 防止空值
 
 如果你需要防止列中出现空值，那就可以使用 `NOT NULL` 约束。
 
@@ -316,7 +243,7 @@ CREATE TABLE `bookshop`.`users` (
 );
 ```
 
-### 使用 HTAP 能力
+## 使用 HTAP 能力
 
 > **注意：**
 >
@@ -326,7 +253,7 @@ CREATE TABLE `bookshop`.`users` (
 
 这种场景下，TiDB 就是一个比较理想的一站式数据库解决方案，TiDB 是一个 **HTAP (Hybrid Transactional and Analytical Processing)** 数据库，同时支持 OLTP 和 OLAP 场景。
 
-#### 同步列存数据
+### 同步列存数据
 
 当前，TiDB 支持两种数据分析引擎：**TiFlash** 和 **TiSpark**。大数据场景 (100 T) 下，推荐使用 TiFlash MPP 作为 HTAP 的主要方案，TiSpark 作为补充方案。希望了解更多关于 TiDB 的 HTAP 能力，可参考以下文章：[快速上手 HTAP](/quick-start-with-htap.md) 和 [深入探索 HTAP](/explore-htap.md)。
 
@@ -347,7 +274,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 
 随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 文档。
 
-#### 使用 HTAP 的示例
+### 使用 HTAP 的示例
 
 `ratings` 表开启 1 个 TiFlash 副本：
 
@@ -393,18 +320,7 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 
 在出现 `cop[tiflash]` 字样时，表示该任务发送至 TiFlash 进行处理。
 
-### 执行 `CREATE TABLE` 语句
-
-我们定义完毕 `CREATE TABLE` 后，可以进行执行。
-
-#### `CREATE TABLE` 执行的最佳实践
-
-执行 `CREATE TABLE` 时需要遵循的一些最佳实践：
-
-- 我们不推荐使用客户端的 Driver 或 ORM 来执行数据库模式的更改。以经验来看，作为最佳实践，我们建议使用 [MySQL 客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)或使用任意你喜欢的 GUI 客户端来进行数据库模式的更改。本文档中，我们将在大多数场景下，使用 **MySQL 客户端** 传入 SQL 文件来执行数据库模式的更改。
-- 遵循 SQL 开发规范中的[建表删表规范](/develop/sql-development-specification.md#建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
-
-#### `CREATE TABLE` 执行的示例
+## 执行 `CREATE TABLE` 语句
 
 按以上步骤创建所有表后，我们的 `dbinit.sql` 文件应该类似于[数据库初始化](/develop/bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)所示。若需查看表信息详解，请参阅[数据表详解](/develop/bookshop-schema-design.md#数据表详解)。
 
@@ -443,5 +359,61 @@ SHOW TABLES IN `bookshop`;
 | users              |
 +--------------------+
 ```
+
+## 创建表时应遵守的规则
+
+本小节给出了一些在创建表时应遵守的规则。
+
+### 命名表时应遵守的规则
+
+- 使用**完全限定**的表名称（例如：`CREATE TABLE {database_name}.{table_name}`）。这是因为你在不指定数据库名称时，TiDB 将使用你 **SQL 会话**中的[当前数据库](/sql-statements/sql-statement-use.md)。若你未在 SQL 会话中使用 `USE {databasename};` 来指定数据库，TiDB 将会返回错误。
+- 请使用有意义的表名，例如，若你需要创建一个用户表，你可以使用名称：`user`, `t_user`, `users` 等，或遵循你公司或组织的命名规范。如果你的公司或组织没有相应的命名规范，可参考[表命名规范](/develop/object-naming-guidelines.md#表命名规范)。请勿使用这样的表名，如：`t1`, `table1` 等。
+- 多个单词以下划线分隔，不推荐超过 32 个字符。
+- 不同业务模块的表单独建立 `DATABASE`，并增加相应注释。
+
+### 定义列时应遵守的规则
+
+- 查看支持的列的[数据类型](/basic-features.md#数据类型函数和操作符)，并按照数据类型的限制来组织你的数据。为你计划被存在列中的数据选择合适的类型。
+- 查看[选择主键时应遵守的规则](#选择主键时应遵守的规则)，决定是否使用主键列。
+- 查看[选择聚簇索引时应遵守的规则](#选择聚簇索引时应遵守的规则)，决定是否指定聚簇索引。
+- 查看[添加列约束](#添加列约束)，决定是否添加约束到列中。
+- 请使用有意义的列名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[列命名规范](/develop/object-naming-guidelines.md#字段命名规范)。
+
+### 选择主键时应遵守的规则
+
+- 在表内定义一个主键或唯一索引。
+- 尽量选择有意义的列作为主键。
+- 出于为性能考虑，尽量避免存储超宽表，表字段数不建议超过 60 个，建议单行的总数据大小不要超过 64K，数据长度过大字段最好拆到另外的表。
+- 不推荐使用复杂的数据类型。
+- 需要 JOIN 的字段，数据类型保障绝对一致，避免隐式转换。
+- 避免在单个单调数据列上定义主键。如果你使用单个单调数据列（例如：`AUTO_INCREMENT` 的列）来定义主键，有可能会对写性能产生负面影响。可能的话，使用 `AUTO_RANDOM` 替换 `AUTO_INCREMENT`（这会失去主键的连续和递增特性）。
+- 如果你 **_必须_** 在单个单调数据列上创建索引，且有大量写入的话。请不要将这个单调数据列定义为主键，而是使用 `AUTO_RANDOM` 创建该表的主键，或使用 [SHARD_ROW_ID_BITS](/shard-row-id-bits.md) 和 [PRE_SPLIT_REGIONS](/sql-statements/sql-statement-split-region.md#pre_split_regions) 打散 `_tidb_rowid`。
+
+### 选择聚簇索引时应遵守的规则
+
+- 遵循[选择主键时应遵守的规则](#选择主键时应遵守的规则)：
+
+    聚簇索引将基于主键建立，请遵循选择主键时应遵守的规则，此为选择聚簇索引时应遵守规则的基础。
+
+- 在以下场景中，尽量使用聚簇索引，将带来性能和吞吐量的优势：
+
+    - 插入数据时会减少一次从网络写入索引数据。
+    - 等值条件查询仅涉及主键时会减少一次从网络读取数据。
+    - 范围条件查询仅涉及主键时会减少多次从网络读取数据。
+    - 等值或范围条件查询仅涉及主键的前缀时会减少多次从网络读取数据。
+
+- 在以下场景中，尽量避免使用聚簇索引，将带来性能劣势：
+
+    - 批量插入大量取值相邻的主键时，可能会产生较大的写热点问题，请遵循[选择主键时应遵守的规则](#选择主键时应遵守的规则)。
+    - 当使用大于 64 位的数据类型作为主键时，可能导致表数据需要占用更多的存储空间。该现象在存在多个二级索引时尤为明显。
+
+- 显式指定是否使用聚簇索引，而非使用系统变量 `@@global.tidb_enable_clustered_index` 及配置项 `alter-primary-key` 控制是否使用[聚簇索引的默认行为](/clustered-indexes.md#创建聚簇索引表)。
+
+### `CREATE TABLE` 执行时应遵守的规则
+
+- 我们不推荐使用客户端的 Driver 或 ORM 来执行数据库模式的更改。基于过往经验，我们建议使用 [MySQL 客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)或使用任意你喜欢的 GUI 客户端来进行数据库模式的更改。本文档中，我们将在大多数场景下，使用 **MySQL 客户端** 传入 SQL 文件来执行数据库模式的更改。
+- 遵循 SQL 开发规范中的[建表删表规范](/develop/sql-development-specification.md#建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
+
+## 更进一步
 
 请注意，到目前为止，我们所创建的所有表都不包含二级索引。添加二级索引的指南，请参考[创建二级索引](/develop/create-secondary-indexes.md)。

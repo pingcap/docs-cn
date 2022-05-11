@@ -1,19 +1,17 @@
 ---
 title: 创建数据库
-summary: 创建数据库的方法、最佳实践及例子。
+summary: 创建数据库的方法、应遵守的规则及例子。
 ---
 
 # 创建数据库
 
-在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来创建数据库，及创建数据库的最佳实践指南。
+在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来创建数据库，及创建数据库时应遵守的规则。我们将在这个章节中围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建数据库部分展开介绍。
 
 > **注意：**
 >
 > 此处我们仅对 `CREATE DATABASE` 语句进行简单描述，详细参考文档（包含其他示例），可参阅 [CREATE DATABASE](/sql-statements/sql-statement-create-database.md) 文档。
 
 ## 在开始之前
-
-下面我们将围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建数据库部分展开介绍。
 
 在阅读本页面之前，你需要准备以下事项：
 
@@ -82,9 +80,7 @@ mysql
 +--------------------+
 ```
 
-### 数据库创建时应遵守的规则
-
-这里是一些当你创建和使用数据库时可遵循的规则：
+## 数据库创建时应遵守的规则
 
 - 遵循[数据库命名规范](/develop/object-naming-guidelines.md#数据库命名规范)，给你的数据库起一个有意义的名字。
 - `test` 数据库是 TiDB 提供的一个默认数据库。如果没有必要，尽量不要在生产环境使用它。你可以自行使用 `CREATE DATABASE` 语句来创建数据库，并且在 SQL 会话中使用 `USE {databasename};` 语句来[更改当前数据库](/sql-statements/sql-statement-use.md)。

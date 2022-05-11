@@ -1,13 +1,11 @@
 ---
 title: 创建二级索引
-summary: 创建二级索引的方法、最佳实践及例子。
+summary: 创建二级索引的方法、应遵守的规则及例子。
 ---
 
 # 创建二级索引
 
-索引是集群中的逻辑对象，可以帮助 TiDB 集群更有效地查找数据。当你创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[二级索引](/best-practices/tidb-best-practices.md#二级索引)中查看更多信息。
-
-此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/bookshop-schema-design.md) 数据库的示例。
+在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来创建二级索引，及创建二级索引时应遵守的规则。我们将在这个章节中围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
 
 ## 在开始之前
 
@@ -18,9 +16,11 @@ summary: 创建二级索引的方法、最佳实践及例子。
 - [创建一个数据库](/develop/create-database.md)。
 - [创建表](/develop/create-table.md)。
 
-## 创建二级索引
+## 二级索引是什么
 
-### 在已有表中添加二级索引
+二级索引是集群中的逻辑对象，可以帮助 TiDB 集群更有效地查找数据。当你创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。TiDB 的创建二级索引的操作为在线操作，不会阻塞表中的数据读写。可在[二级索引](/best-practices/tidb-best-practices.md#二级索引)中查看更多信息。二级索引可[跟随表进行创建](#新建表的同时创建二级索引)，也可[在已有的表上进行添加](#在已有表中添加二级索引)。
+
+## 在已有表中添加二级索引
 
 如果需要对已有表中添加二级索引，可使用 [CREATE INDEX](/sql-statements/sql-statement-create-index.md) 语句。在 TiDB 中，`CREATE INDEX` 为在线操作，不会阻塞表中的数据读写。二级索引创建一般如以下形式：
 
@@ -36,7 +36,7 @@ CREATE INDEX {index_name} ON {table_name} ({column_names});
 |  `{table_name}`  |                 表名                 |
 | `{column_names}` | 将需要索引的列名列表，以半角逗号分隔 |
 
-### 新建表的同时创建二级索引
+## 新建表的同时创建二级索引
 
 如果你希望在创建表的同时，同时创建二级索引，可在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 的末尾使用包含 `KEY` 关键字的子句来创建二级索引：
 
@@ -51,7 +51,7 @@ KEY `{index_name}` (`{column_names}`)
 |  `{index_name}`  |              二级索引名              |
 | `{column_names}` | 将需要索引的列名列表，以半角逗号分隔 |
 
-## 最佳实践
+## 创建二级索引时应遵守的规则
 
 见 [索引的最佳实践](/develop/index-best-practice.md)。
 
