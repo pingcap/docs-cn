@@ -34,7 +34,7 @@ title: Gitpod
 
 ![playground gitpod workspace init](/media/develop/playground-gitpod-workspace-init.png)
 
-在这个场景中，我们使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。 您可以在终端的左侧找到进度。
+在这个场景中，我们使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。您可以在终端的左侧找到进度。
 
 一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 您可以在终端的右侧找到进度。
 
