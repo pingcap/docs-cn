@@ -94,7 +94,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 
 观察以下 TiDB 的火焰图，可以发现 SQL 语句执行中 Compile 和 Optimize 等函数 CPU 消耗占比高：
 
-![flame-graph-for-maxPerformance](/media/20220507-145257.jpg)
+![flame-graph-for-maxPerformance](/media/performance/20220507-145257.jpg)
 
 - ExecuteStmt cpu = 43% cpu time =35.84s
 - Compile cpu = 31% cpu time =25.61s
