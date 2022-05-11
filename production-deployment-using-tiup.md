@@ -227,7 +227,7 @@ tiup cluster template > topology.yaml
     ```shell
     tiup cluster template --full > topology.yaml
     ```
-    
+
 - 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
 
     {{< copyable "shell-regular" >}}
@@ -289,14 +289,11 @@ alertmanager_servers:
 >
 > - 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
 
-更详细的配置示例和参数解释，请参考如下表格。
-
-| 组件 | 配置示例 | 参数解释 |
-| :--- | :--- | :--- |
-| TiDB | [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example) | [TiDB 配置文件描述](/tidb-configuration-file.md) |
-| PD | [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) | [PD 配置文件描述](/pd-configuration-file.md) |
-| TiKV | [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml) | [TiKV 配置文件描述](/tikv-configuration-file.md)|
-| TiFlash | [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml) | [TiFlash 配置参数](/tiflash/tiflash-configuration.md) |
+更多参数说明，请参考：
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)
+- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
+- [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
+- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)
 
 ## 第 4 步：执行部署命令
 
