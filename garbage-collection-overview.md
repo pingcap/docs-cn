@@ -3,7 +3,7 @@ title: GC 机制简介
 aliases: ['/docs-cn/dev/garbage-collection-overview/','/docs-cn/dev/reference/garbage-collection/overview/']
 ---
 
-# GC 机制简介
+# GC（Garbage Collection） 机制简介
 
 TiDB 的事务的实现采用了 MVCC（多版本并发控制）机制，当新写入的数据覆盖旧的数据时，旧的数据不会被替换掉，而是与新写入的数据同时保留，并以时间戳来区分版本。GC 的任务便是清理不再需要的旧数据。
 
