@@ -133,7 +133,7 @@ useServerPrepStmts=false&useConfigs=maxPerformance
 
 当应用使用 query 接口时，TiDB 无法使用执行计划缓存，编译执行计划消耗高。此时，建议使用 Prepared Statement 预编译接口，利用 TiDB 的执行计划缓存来降低 compile 带来 TiDB CPU 消耗，降低延迟。
 
-## 场景 3：使用 Prepared Statement 接口，开启执行计划缓存
+## 场景 3：使用 Prepared Statement 接口，未开启执行计划缓存
 
 ### 应用配置
 
