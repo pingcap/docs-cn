@@ -34,7 +34,7 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 
 ## 扩展阅读
 
-- [快速开始](/develop/build-cluster-in-cloud)
+- [快速开始](/develop/build-cluster-in-cloud.md)
 - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
 - [连接到 TiDB](/develop/connect-to-tidb.md)
 - [数据库模式设计](/develop/schema-design-overview.md)
