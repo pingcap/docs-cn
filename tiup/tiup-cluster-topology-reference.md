@@ -440,7 +440,7 @@ pump_servers:
 
 - `log_dir`: Specifies the log directory. If it is not specified or specified as a relative directory, the log is generated according to the `log_dir` directory configured in `global`.
 
-- `commit_ts`: When Drainer starts, it reads the checkpoint. If Drainer cannot read the checkpoint, it uses this field as the replication time point for the initial startup. This field defaults to `-1` (Drainer always gets the latest timestamp from the PD as the commit_ts).
+- `commit_ts` (deprecated): When Drainer starts, it reads the checkpoint. If Drainer gets no checkpoint, it uses this field as the replication time point for the initial startup. This field defaults to `-1` (Drainer always gets the latest timestamp from the PD as the commit_ts).
 
 - `numa_node`: Allocates the NUMA policy to the instance. Before specifying this field, you need to make sure that the target machine has [numactl](https://linux.die.net/man/8/numactl) installed. If this field is specified, cpubind and membind policies are allocated using [numactl](https://linux.die.net/man/8/numactl). This field is the string type. The field value is the ID of the NUMA node, such as "0,1".
 
@@ -459,9 +459,10 @@ For the above fields, you cannot modify these configured fields after the deploy
 - `deploy_dir`
 - `data_dir`
 - `log_dir`
-- `commit_ts`
 - `arch`
 - `os`
+
+The `commit_ts` field is deprecated since TiUP v1.9.2 and is not recorded in the starting script of Drainer. If you still need to use this field, refer to the following example to configure the `initial-commit-ts` field in `config`.
 
 A `drainer_servers` configuration example is as follows:
 
@@ -469,6 +470,7 @@ A `drainer_servers` configuration example is as follows:
 drainer_servers:
   - host: 10.0.1.21
     config:
+      initial-commit-ts: -1
       syncer.db-type: "mysql"
       syncer.to.host: "127.0.0.1"
       syncer.to.user: "root"
