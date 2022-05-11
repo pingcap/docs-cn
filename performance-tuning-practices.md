@@ -171,13 +171,13 @@ QPS 从 24.4k 下降到 19.7k，从 CPS By Type 面板可以看到应用程序�
 - avg QPS = 19.7k (24.4k->19.7k)
 - 无法命中 plan cache
 
-平均 TIDB CPU 利用率从 874% 上升到 936%
+TiDB CPU 平均利用率从 874% 上升到 936%
 
-![](/media/performance/3-2.png)
+![performance-overview-1-for-PrepStmts](/media/performance/3-2.png)
 
 主要延迟数据如下：
 
-![](/media/performance/3.4.png)
+![performance-overview-2-for-PrepStmts](/media/performance/3.4.png)
 
 - avg query duration = 528μs (1.12ms->528μs)
 - avg parse duration = 14.9μs (84.7μs->14.9μs)
@@ -253,7 +253,7 @@ Compile 平均时间显著下降，从 374 us 下降到 53.3 us，因为 QPS 的
 - `prepStmtCacheSize`：需要配置为大于 0 的值
 - `prepStmtCacheSqlLimit`：需要设置为大于 SQL 文本的长度
 
-完整的JDBC 参数配置如下：
+完整的 JDBC 参数配置如下：
 
 ```
 useServerPrepStmts=true&cachePrepStmts=true&prepStmtCacheSize=1000&prepStmtCacheSqlLimit=20480&useConfigs=maxPerformance
