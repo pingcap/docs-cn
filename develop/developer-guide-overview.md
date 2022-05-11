@@ -5,17 +5,21 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 # 开发者手册概览
 
-本手册将展示如何使用 TiDB 快速构建一个应用。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)，并且安装 Driver 或使用 ORM 框架。
+本文是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。
 
-## 手册内容
+本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
 
-- [概览](#tidb-基础)
+整本开发者手册将包含以下内容：
+
+- [快速开始](/develop/build-cluster-in-cloud)
 - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
-- [连接到集群](/develop/connect-to-tidb.md)
+- [连接到 TiDB](/develop/connect-to-tidb.md)
 - [数据库模式设计](/develop/schema-design-overview.md)
 - [数据写入](/develop/insert-data.md)
 - [数据读取](/develop/get-data-from-single-table.md)
 - [事务](/develop/transaction-overview.md)
+- [优化 SQL 性能](/develop/optimize-sql-overview.md)
+- [示例程序](/develop/sample-application-spring-boot.md)
 
 ## TiDB 基础
 
@@ -23,8 +27,6 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 - 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/transaction-overview.md)查看应用开发程序员需要了解的事务部分。
 - 此外，你需要了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
-
-本文以下部分是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。
 
 ## TiDB 事务机制
 
