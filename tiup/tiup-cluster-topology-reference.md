@@ -353,7 +353,7 @@ pump_servers:
 - `arch`
 - `os`
 
-其中 `commit_ts` 字段自 tiup cluster v1.9.2 开始已经废弃，不再被记录到 drainer 的启动脚本中，需要将其配置为非默认值的用户，请参照下例在 `config` 中配置 `initial-commit-ts` 字段。
+其中 `commit_ts` 字段自 tiup cluster v1.9.2 开始已经废弃，不再被记录到 drainer 的启动脚本中.仍需要配置该参数的用户，请参照下面的示例在 `config` 中配置 `initial-commit-ts` 字段。
 
 `drainer_servers` 配置示例：
 
