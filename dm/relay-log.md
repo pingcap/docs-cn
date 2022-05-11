@@ -12,15 +12,19 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 ![relay log](/media/dm/dm-relay-log.png)
 
-适用场景:
+## 适用场景
 
-- MySQL 的存储空间是有限制的，一般都会设置 binlog 的最长保存时间，当上游把 binlog 清除掉之后，如果 DM 还需要对应位置的 binlog 就会拉取失败，导致同步任务出错。
-- 若未开启 relay log，DM 每增加一个同步任务都会在上游建立一条链接用于拉取 binlog，这样会对上游造成比较大的负载。开启 relay log 后，同一个上游的多个同步任务可以复用已经拉到本地的 relay log，这样就减少了对上游的压力。
-- all 类型的迁移任务中，DM 需要先进行全量数据迁移，再根据 binlog 增量同步。若全量阶段持续时间较长，上游 binlog 可能会被清除，导致增量同步无法进行。若先开启了 relay log，则 DM 会自动在本地保留足够的日志，保证增量任务正常进行。
+- MySQL 的存储空间是有限制的，通常会设置 binlog 的最长保存时间，当上游把 binlog 清除掉之后，如果 DM 还需要对应位置的 binlog 就会拉取失败，导致同步任务出错。
+- 每增加一个同步任务，DM 都会在上游建立一条连接用于拉取 binlog，连接数过多会对上游造成比较大的负载。开启 relay log 后，同一个上游的多个同步任务可以复用已经拉到本地的 relay log，减少了对上游的压力。
+- 在全量加增量数据迁移任务 (`task-mode=all`) 中，DM 需要先进行全量数据迁移，再根据 binlog 进行增量同步。若全量阶段持续时间较长，上游 binlog 可能会被清除，导致增量同步无法进行。若提前开启了 relay log，DM 会自动在本地保留足够的日志，保证增量任务正常进行。
 
-一般情况下建议开启 relay log ，但仍需知晓其可能导致的负面作用：
+一般情况下建议开启 relay log，但需知晓 relay log 可能导致的负面作用：
 
-- 由于写 relay log 有一个落盘的过程，这里产生了外部 IO 和一些 CPU 消耗，可能导致整个同步链路变长从而增加数据同步的时延，如果是对时延要求十分敏感的同步任务暂时还不推荐使用 relay log。注意：在最新版本的 DM（>v2.0.7） 中，对这里进行了优化，增加的时延和 CPU 消耗已经相对较小了。
+由于 relay log 需要写入到磁盘中，这一过程会产生外部 IO 和一些 CPU 消耗，可能导致整个同步链路变长，从而增加数据同步的时延。对**时延要求十分敏感**的同步任务，暂时不推荐使用 relay log。
+
+> **注意：**
+>
+> DM v2.0.7 及之后的版本中，对 relay log 写入进行了优化，增加的时延和 CPU 消耗已相对较小。
 
 ## 使用 relay log
 
@@ -33,9 +37,9 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 在 v5.4.0 及之后的版本中，你可以通过将 `enable-relay` 设为 `true` 开启 relay log。自 v5.4.0 起，DM-worker 在绑定上游数据源时，会检查上游数据源配置中的 `enable-relay` 项。如果 `enable-relay` 为 `true`，则为该数据源启用 relay log 功能。
 
 具体配置方式参见[上游数据源配置文件介绍](/dm/dm-source-configuration-file.md)
-    
+
 除此以外，你也可以通过 `start-relay` 或 `stop-relay` 命令动态调整数据源的 `enable-relay` 并即时开启或关闭 relay log。
-    
+
 {{< copyable "shell-regular" >}}
 
 ```bash
@@ -49,14 +53,14 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 }
 ```
 
-</div> 
-    
+</div>
+
 <div label="v2.0.2（包含）到 v5.3.0（包含）">
 
 > **注意：**
-> 
+>
 > 在 v2.0.2 及之后的 v2.0 版本，以及在 v5.3.0 版本中，上游数据源配置中的 `enable-relay` 项失效，你只能通过`start-relay` 和 `stop-relay`命令开启和关闭 relay log。[加载数据源配置](/dm/dm-manage-source.md#数据源操作)时，如果 DM 发现配置中的 `enable-relay` 项为 `true`，会给出如下信息提示：
-> 
+>
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
@@ -102,13 +106,16 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 ### 查询 relay log
 
-`query-status -s` 命令可以查询 relay log 的状态。
+使用 `query-status -s` 命令，可以查询 relay log 的状态：
 
 {{< copyable "" >}}
 
 ```bash
 » query-status -s mysql-replica-01
 ```
+
+<details>
+<summary>期望输出</summary>
 
 ```
 {
@@ -161,15 +168,20 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 }
 ```
 
-### 暂停、恢复 relay log
+</details>
 
-`pause-relay` 与 `resume-relay` 命令可以分别暂停及恢复 relay log 的拉取。这两个命令执行时都需要指定上游数据源的 `source-id`，例如：
+### 暂停/恢复 relay log
+
+`pause-relay` 与 `resume-relay` 命令可以分别暂停及恢复拉取 relay log。这两个命令执行时都需要指定上游数据源的 `source-id`，例如：
 
 {{< copyable "" >}}
 
 ```bash
 » pause-relay -s mysql-replica-01 -s mysql-replica-02
 ```
+
+<details>
+<summary>期望输出</summary>
 
 ```
 {
@@ -192,12 +204,17 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
     ]
 }
 ```
-    
+
+</details>
+
 {{< copyable "" >}}
 
 ```bash
 » resume-relay -s mysql-replica-01
-```    
+```
+
+<details>
+<summary>期望输出</summary>
 
 ```
 {
@@ -215,15 +232,17 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 }
 ```
 
+</details>
+
 ### 清理 relay log
 
-DM 提供两种清理 relay log 的方式，手动清理和自动清理。需要注意，这两种清理方法都不会清理活跃的 relay log 。
+DM 提供两种清理 relay log 的方式，手动清理和自动清理。两种清理方法都不会清理活跃的 relay log。
 
 > **注意：**
-> 
-> - 活跃的 relay log：该 relay log  正在被同步任务使用。活跃的 relay log 当前只在 Syncer Unit 被更新和写入，假设一个为 All 模式的同步任务在全量导出/导入阶段花费了超过数据源 purge 里配置的过期时间，该 relay log  依旧会被清除。
-> 
-> - 过期的 relay log：该 relay log  文件最后被改动的时间与当前时间差值大于配置文件中的 `expires` 字段。
+>
+> - 活跃的 relay log：该 relay log 正在被同步任务使用。活跃的 relay log 当前只在 Syncer Unit 被更新和写入，如果一个为 All 模式的同步任务在全量导出/导入阶段花费了超过数据源 purge 里配置的过期时间，该 relay log 依旧会被清除。
+>
+> - 过期的 relay log：该 relay log  文件最后被改动的时间与当前时间的差值大于配置文件中的 `expires` 字段。
 
 #### 自动数据清理
 
@@ -361,7 +380,7 @@ Relay log 本地存储的目录结构示例如下：
     binlog-gtid = "3ccc475b-2343-11e7-be21-6c0b84d59f30:1-14,406a3f61-690d-11e7-87c5-6c92bf46f384:1-94321383,53bfca22-690d-11e7-8a62-18ded7a37b78:1-495,686e1ab6-c47e-11e7-a42c-6c92bf46f384:1-34981190,03fc0263-28c7-11e7-a653-6c0b84d59f30:1-7041423,05474d3c-28c7-11e7-8352-203db246dd3d:1-170,10b039fc-c843-11e7-8f6a-1866daf8d810:1-308290454"
     ```
 
-### DM 从什么位置开始接收 binlog
+### DM 接收 binlog 的位置
 
 - 从保存的 checkpoint 中（默认位于下游 dm_meta 库），获取各同步任务需要该数据源的最早位置。如果该位置晚于下述任何一个位置，则从此位置开始迁移。
 
