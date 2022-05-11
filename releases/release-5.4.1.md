@@ -109,7 +109,7 @@ TiDB 版本：5.4.1
 
     - (dup: release-6.0.0-dmr.md > Bug 修复> PD)- 修复不能动态设置 `dr-autosync` 的 `Duration` 字段的问题 [#4651](https://github.com/tikv/pd/issues/4651)
     - 修复存在较大空间 Store 时（例如 2T），无法检测满的小空间 Store，从而无法进行平衡调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
-    - 修复监控信息未重置上报导致的监控中残留已删除的 label 的问题 [#4825](https://github.com/tikv/pd/issues/4825)
+    - 修复监控信息中已删除 label 的残留问题 [#4825](https://github.com/tikv/pd/issues/4825)
 
 + TiFlash
 
