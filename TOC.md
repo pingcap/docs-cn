@@ -114,7 +114,6 @@
         - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
   - SQL 性能调优
-  - SQL 性能调优
     - [SQL 性能调优概览](/sql-tuning-overview.md)
     - 理解 TiDB 执行计划
       - [TiDB 执行计划概览](/explain-overview.md)
