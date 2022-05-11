@@ -306,7 +306,7 @@ TiDB CPU 平均利用率从 827% 下降到 577%，随着 QPS 的上升，TiKV CP
 
 TiDB v6.0 提供了 `rc read`，针对 `read committed` 隔离级别进行了减少 tso cmd 的优化。该功能由全局变量 `set global tidb_rc_read_check_ts=on;`控制。启用此变量后，TiDB 默认行为和 `repeatable-read` 隔离级别一致，只需要从 PD 获取 start-ts 和 commit-ts。事务中的语句先使用 start-ts 从 TiKV 读取数据。如果读到的数据小于 start-ts，则直接返回数据；如果读到大于 start-ts 的数据，则需要丢弃数据，并向 PD 请求 tso 再进行重试。后续语句的 for update ts 使用最新的 PD tso。
 
-## 场景 6：使用 tidb_rc_read_check_ts 特性降低 tso 请求
+## 场景 6：开启 tidb_rc_read_check_ts 变量降低 TSO 请求
 
 ### 应用配置
 
