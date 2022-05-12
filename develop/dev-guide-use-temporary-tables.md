@@ -7,7 +7,7 @@ summary: 介绍 TiDB 临时表创建、删除、限制。
 
 临时表可以被认为是一种复用查询结果的技术。
 
-假设我们希望知道 [Bookshop](/develop/dev-bookshop-schema-design.md) 应用当中最年长的作家们的一些情况，我们可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。我们可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为我们的研究对象。
+假设我们希望知道 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中最年长的作家们的一些情况，我们可能需要编写多个查询，而这些查询都需要使用到这个最年长作家列表。我们可以通过下面的 SQL 语句从 `authors` 表当中找出最年长的前 50 位作家作为我们的研究对象。
 
 {{< copyable "sql" >}}
 
@@ -235,7 +235,7 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 SELECT * FROM top_50_eldest_authors;
 ```
 
-你可以通过[表连接](/develop/dev-join-tables.md)将临时表中的数据引用到你的查询当中：
+你可以通过[表连接](/develop/dev-guide-join-tables.md)将临时表中的数据引用到你的查询当中：
 
 {{< copyable "sql" >}}
 
@@ -246,7 +246,7 @@ LEFT JOIN book_authors ba ON ta.id = ba.author_id
 GROUP BY ta.id;
 ```
 
-与[视图](/develop/dev-use-views.md)有所不同，在对临时表进行查询时，不会再执行导入数据时所使用的原始查询，而是直接从临时表中获取数据。在一些情况下，这会帮助你提高查询的效率。
+与[视图](/develop/dev-guide-use-views.md)有所不同，在对临时表进行查询时，不会再执行导入数据时所使用的原始查询，而是直接从临时表中获取数据。在一些情况下，这会帮助你提高查询的效率。
 
 ## 删除临时表
 

@@ -11,7 +11,7 @@ summary: 介绍 TiDB 子查询功能。
 
 子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，我们可以在一个查询当中使用另外一个查询的查询结果。
 
-下面我们将以 [Bookshop](/develop/dev-bookshop-schema-design.md) 应用为例对子查询展开介绍：
+下面我们将以 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用为例对子查询展开介绍：
 
 ## 子查询语句
 

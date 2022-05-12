@@ -5,7 +5,7 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 # 创建数据库
 
-此页面提供了一个创建数据库的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/dev-bookshop-schema-design.md) 数据库的示例。
+此页面提供了一个创建数据库的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库的示例。
 
 > **注意：**
 >
@@ -15,12 +15,12 @@ summary: 创建数据库的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-build-cluster-in-cloud.md)。
-- 阅读[数据库模式概览](/develop/dev-schema-design-overview.md)。
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+- 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)。
 
 ## 创建数据库
 
-[数据库](/develop/dev-schema-design-overview.md#数据库-database)对象是 TiDB **表**、**视图**、**序列**等对象的集合。
+[数据库](/develop/dev-guide-schema-design-overview.md#数据库-database)对象是 TiDB **表**、**视图**、**序列**等对象的集合。
 
 若需创建数据库，请使用 `CREATE DATABASE` 语句，并遵循[数据库最佳实践](#数据库最佳实践)。
 
@@ -31,7 +31,7 @@ summary: 创建数据库的方法、最佳实践及例子。
 - 尽量不要使用已存在的 `test` 数据库。而是应该使用 `CREATE DATABASE` 语句来创建数据库，并且在 SQL 会话中使用 `USE {databasename};` 语句来[更改当前数据库](/sql-statements/sql-statement-use.md)。
 - 使用 root 用户创建数据库、角色、用户等。并只赋予必要的权限。
 - 作为通用的最佳实践，我们不推荐使用 Driver、ORM 进行数据库模式的定义与更改。相反，请使用 **MySQL 命令行客户端**或其他你喜欢的 **MySQL GUI 客户端**来进行操作。
-- 遵循[数据库命名规范](/develop/dev-object-naming-guidelines.md#数据库命名规范)。
+- 遵循[数据库命名规范](/develop/dev-guide-object-naming-guidelines.md#数据库命名规范)。
 
 ### 示例
 
@@ -97,4 +97,4 @@ mysql
 
 至此，你已经准备完毕 `bookshop` 数据库，可以将**表**添加到该数据库中。
 
-你可继续阅读[创建表](/develop/dev-create-table.md)文档获得相关指引。
+你可继续阅读[创建表](/develop/dev-guide-create-table.md)文档获得相关指引。

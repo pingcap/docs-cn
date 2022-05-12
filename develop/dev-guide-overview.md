@@ -10,18 +10,18 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 ## 手册内容
 
 - [概览](#tidb-基础)
-- [选择驱动或 ORM 框架](/develop/dev-choose-driver-or-orm.md)
-- [连接到集群](/develop/dev-connect-to-tidb.md)
-- [数据库模式设计](/develop/dev-schema-design-overview.md)
-- [数据写入](/develop/dev-insert-data.md)
-- [数据读取](/develop/dev-get-data-from-single-table.md)
-- [事务](/develop/dev-transaction-overview.md)
+- [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
+- [连接到集群](/develop/dev-guide-connect-to-tidb.md)
+- [数据库模式设计](/develop/dev-guide-schema-design-overview.md)
+- [数据写入](/develop/dev-guide-insert-data.md)
+- [数据读取](/develop/dev-guide-get-data-from-single-table.md)
+- [事务](/develop/dev-guide-transaction-overview.md)
 
 ## TiDB 基础
 
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
 
-- 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/dev-transaction-overview.md)查看应用开发程序员需要了解的事务部分。
+- 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/dev-guide-transaction-overview.md)查看应用开发程序员需要了解的事务部分。
 - 此外，你需要了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
 
 本文以下部分是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。

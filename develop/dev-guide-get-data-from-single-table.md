@@ -11,13 +11,13 @@ summary: 介绍 TiDB 中的单表查询功能。
 
 ## 开始之前
 
-下面我们将围绕 [Bookshop](/develop/dev-bookshop-schema-design.md) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
+下面我们将围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
 
 在阅读本章节之前，你需要做以下准备工作：
 
-1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/dev-build-cluster-in-cloud.md) 或 [TiUP](/production-deployment-using-tiup.md)）。
-2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/dev-bookshop-schema-design.md#导入数据)。
-3. [连接到 TiDB](/develop/dev-connect-to-tidb.md)。
+1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/dev-guide-build-cluster-in-cloud.md) 或 [TiUP](/production-deployment-using-tiup.md)）。
+2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/dev-guide-bookshop-schema-design.md#导入数据)。
+3. [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)。
 
 ## 简单的查询
 
@@ -107,7 +107,7 @@ public class AuthorDAO {
 }
 ```
 
-- 在[获得数据库连接](/develop/dev-connect-to-tidb.md#jdbc)之后，你可以通过 `conn.createStatement()` 语句创建一个 `Statement` 实例对象。
+- 在[获得数据库连接](/develop/dev-guide-connect-to-tidb.md#jdbc)之后，你可以通过 `conn.createStatement()` 语句创建一个 `Statement` 实例对象。
 - 然后调用 `stmt.executeQuery("query_sql")` 方法向 TiDB 发起一个数据库查询请求。
 - 数据库返回的查询结果将会存放到 `ResultSet` 当中，通过遍历 `ResultSet` 对象可以将返回结果映射到此前准备的 `Author` 类对象当中。
 
@@ -138,7 +138,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 
 将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给我们的应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
 
-在处理这类查询时，我们应该使用 [PreparedStatement](/develop/dev-prepared-statement.md) 来替代普通的 Statement。
+在处理这类查询时，我们应该使用 [PreparedStatement](/develop/dev-guide-prepared-statement.md) 来替代普通的 Statement。
 
 {{< copyable "" >}}
 

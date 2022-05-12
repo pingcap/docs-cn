@@ -108,11 +108,11 @@ SELECT title, price FROM books WHERE title = 'Marian Yost';
 
 ### 使用批量删除
 
-当需要删除大量的数据，推荐使用批量删除，见[批量删除](/develop/dev-delete-data.md#批量删除)
+当需要删除大量的数据，推荐使用批量删除，见[批量删除](/develop/dev-guide-delete-data.md#批量删除)
 
 ### 使用批量更新
 
-当需要更新大量的数据时，推荐使用批量更新，见[批量更新](/develop/dev-update-data.md#批量更新)
+当需要更新大量的数据时，推荐使用批量更新，见[批量更新](/develop/dev-guide-update-data.md#批量更新)
 
 ### 使用 TRUNCATE 语句代替 DELETE 全表数据
 
@@ -138,11 +138,11 @@ DELETE FROM t;
 
 ### 主键选择的最佳实践
 
-见 [主键选择的最佳实践](/develop/dev-create-table.md#主键选择的最佳实践)。
+见 [主键选择的最佳实践](/develop/dev-guide-create-table.md#主键选择的最佳实践)。
 
 ## 索引的最佳实践
 
-见 [索引的最佳实践](/develop/dev-index-best-practice.md)。
+见 [索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
 ### ADD INDEX 性能最佳实践
 

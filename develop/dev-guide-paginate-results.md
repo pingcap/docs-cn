@@ -24,7 +24,7 @@ SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 <SimpleTab>
 <div label="SQL" href="page-sql">
 
-例如，在 [Bookshop](/develop/dev-bookshop-schema-design.md) 应用当中，我们希望将最新书籍列表以分页的形式返回给用户。通过 `LIMIT 0, 10` 语句，我们便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
+例如，在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中，我们希望将最新书籍列表以分页的形式返回给用户。通过 `LIMIT 0, 10` 语句，我们便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
 
 {{< copyable "sql" >}}
 
