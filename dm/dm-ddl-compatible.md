@@ -80,11 +80,12 @@ DM 同步过程中，根据 DDL 的不同，也将采用不同的处理方式。
 // 在结尾追加 `IF EXIST`
 "^DROP DATABASE"
 "^DROP TABLE"
+"^DROP INDEX"
 ```
 
 ## 合库合表迁移任务
 
-当`shard-mode: pessimistic` 和 `shard-mode: optimistic` 时：
+当使用悲观协调模式和乐观协调模式进行分库分表合并迁移时：
 
 ```
 // 自动忽略
