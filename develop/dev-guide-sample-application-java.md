@@ -36,53 +36,53 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 1. 下载并安装 TiUP。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
-   ```
+    ```shell
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+    ```
 
 2. 声明全局环境变量。
 
-   > **注意：**
-   >
-   > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
+    > **注意：**
+    >
+    > TiUP 安装完成后会提示对应 profile 文件的绝对路径。在执行以下 source 命令前，需要根据 profile 文件的实际位置修改命令。
 
-   {{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-   ```shell
-   source .bash_profile
-   ```
+    ```shell
+    source .bash_profile
+    ```
 
 3. 在当前 session 执行以下命令启动集群。
 
-   - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
+    - 直接执行 `tiup playground` 命令会运行最新版本的 TiDB 集群，其中 TiDB、TiKV、PD 和 TiFlash 实例各 1 个：
 
-     {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-     ```shell
-     tiup playground
-     ```
+        ```shell
+        tiup playground
+        ```
 
-   - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
+    - 也可以指定 TiDB 版本以及各组件实例个数，命令类似于：
 
-     {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-     ```shell
-     tiup playground v5.4.0 --db 2 --pd 3 --kv 3
-     ```
+        ```shell
+        tiup playground v5.4.0 --db 2 --pd 3 --kv 3
+        ```
 
-     上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v5.4.0）。最新版本可以通过执行`tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
-     ```
-     CLUSTER START SUCCESSFULLY, Enjoy it ^-^
-     To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
-     To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
-     To view the dashboard: http://127.0.0.1:2379/dashboard
-     PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
-     To view the Prometheus: http://127.0.0.1:9090
-     To view the Grafana: http://127.0.0.1:3000
-     ```
+        ```
+        CLUSTER START SUCCESSFULLY, Enjoy it ^-^
+        To connect TiDB: mysql --comments --host 127.0.0.1 --port 4001 -u root -p (no password)
+        To connect TiDB: mysql --comments --host 127.0.0.1 --port 4000 -u root -p (no password)
+        To view the dashboard: http://127.0.0.1:2379/dashboard
+        PD client endpoints: [127.0.0.1:2379 127.0.0.1:2382 127.0.0.1:2384]
+        To view the Prometheus: http://127.0.0.1:9090
+        To view the Grafana: http://127.0.0.1:3000
+        ```
 
 > **注意：**
 >
