@@ -11,9 +11,9 @@ summary: 删除数据、批量删除数据的方法、最佳实践及例子。
 
 在阅读本页面之前，你需要准备以下事项：
 
-- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
-- 阅读[数据库模式概览](/develop/dev-guide-schema-design-overview.md)，并[创建数据库](/develop/dev-guide-create-database.md)、[创建表](/develop/dev-guide-create-table.md)、[创建二级索引](/develop/dev-guide-create-secondary-indexes.md)。
-- 需先[插入数据](/develop/dev-guide-insert-data.md)才可删除。
+- [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-build-cluster-in-cloud.md)。
+- 阅读[数据库模式概览](/develop/dev-schema-design-overview.md)，并[创建数据库](/develop/dev-create-database.md)、[创建表](/develop/dev-create-table.md)、[创建二级索引](/develop/dev-create-secondary-indexes.md)。
+- 需先[插入数据](/develop/dev-insert-data.md)才可删除。
 
 ## SQL 语法
 
@@ -43,7 +43,7 @@ DELETE FROM {table} WHERE {filter}
 
 ## 例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
+假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
 
 {{< copyable "sql" >}}
 
@@ -124,7 +124,7 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 ### 批量删除例子
 
-假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
+假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
 
 {{< copyable "" >}}
 

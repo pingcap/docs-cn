@@ -16,7 +16,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 > Tip:
 >
-> 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)。
+> 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/dev-sample-application-spring-boot.md)。
 
 ## 第 1 步：启动你的 TiDB 集群
 
@@ -24,7 +24,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 ### 使用 TiDB Cloud 免费集群
 
-[创建免费集群](/develop/dev-guide-build-cluster-in-cloud.md#第-1-步创建免费集群)。
+[创建免费集群](/develop/dev-build-cluster-in-cloud.md#第-1-步创建免费集群)。
 
 ### 使用本地集群
 
