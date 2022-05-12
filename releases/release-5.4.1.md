@@ -66,7 +66,7 @@ TiDB 版本：5.4.1
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
     - 修复了集群从 4.0 版本升级后，为用户授予 `all` 权限时报错的问题 [#33588](https://github.com/pingcap/tidb/issues/33588)
     - 修复了在 MySQL binary 协议下，当 schema 变更后，执行 prepared statement 会导致会话崩溃的问题 [#33509](https://github.com/pingcap/tidb/issues/33509)
-    - 修复了一处 `compress()` 表达式在 `tidb_enable_vectorized_expression` 开启时，执行会报错的问题 [#33397](https://github.com/pingcap/tidb/issues/33397)
+    - 修复了 `compress()` 表达式在 `tidb_enable_vectorized_expression` 开启时，执行会报错的问题 [#33397](https://github.com/pingcap/tidb/issues/33397)
     - 修复了 `reArrangeFallback()` 函数使用 CPU 资源过多的问题 [#30353](https://github.com/pingcap/tidb/issues/30353)
     - 修复对于新加入的分区，表属性 (table attributes) 无法被检索到，以及分区更新后，表的 range 信息不会被更新的问题 [#33929](https://github.com/pingcap/tidb/issues/33929)
     - 修复了表的 `TopN` 统计信息在初始化时未正确排序的问题 [#34216](https://github.com/pingcap/tidb/issues/34216)
