@@ -1,6 +1,7 @@
 ---
 title: 开发者手册概览
 summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉络。
+aliases: ["/docs-cn/dev/developer-guide-overview"]
 ---
 
 # 开发者手册概览
