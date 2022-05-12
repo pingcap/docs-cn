@@ -704,6 +704,12 @@ raftstore 相关的配置项。
 + 默认值：128
 + 最小值：10
 
+### `max-snapshot-file-raw-size`
+
++ 当 snapshot 文件大于指定大小时，切割成多个文件。
++ 默认值：128MiB
++ 最小值：128MiB
+
 ### `snap-apply-batch-size`
 
 + 当导入 snapshot 文件需要写数据时，内存写缓存的大小
@@ -849,6 +855,20 @@ coprocessor 相关的配置项。
 
 + 分裂后新 Region 的 key 的个数，此值属于估算值。
 + 默认值：960000
+
+### `enable-region-bucket`
+
++ 是否开启 region bucket 将 region 划分为更小的的区间。
++ 默认值：false
+> **警告：**
+>
+> - region buckets 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
+> - 这个参数只有在将 region size 调到 128MiB 及以上时才有意义。将 region size 调大可能会有潜在的性能回退、搬迁缓慢的风险。
+
+### `region-bucket-size`
+
++ 设置 bucket 的预期大小。
++ 默认值：128MiB
 
 ## rocksdb
 
