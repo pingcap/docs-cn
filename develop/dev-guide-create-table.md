@@ -35,10 +35,10 @@ summary: 创建表的方法、应遵守的规则及例子。
 CREATE TABLE {table_name} ( {elements} );
 ```
 
-|      参数      |                      描述                      |
-| :------------: | :--------------------------------------------: |
-| `{table_name}` |                      表名                      |
-|  `{elements}`  | 以逗号分隔的表元素列表，比如列定义，主键定义等 |
+**参数描述**
+
+- `{table_name}`: 表名。
+- `{elements}`: 以逗号分隔的表元素列表，比如列定义，主键定义等。
 
 假设你需要创建一个表来存储 `bookshop` 库中的用户信息。
 
@@ -61,11 +61,11 @@ CREATE TABLE `bookshop`.`users` (
 {column_name} {data_type} {column_qualification}
 ```
 
-|           参数           |                                                                               描述                                                                                |
-| :----------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------: |
-|     `{column_name}`      |                                                                               列名                                                                                |
-|      `{data_type}`       | 列的[数据类型](/basic-features.md#数据类型函数和操作符) |
-| `{column_qualification}` |                        列的限定条件，如**列级约束**或[生成列（实验功能）](/generated-columns.md)子句                         |
+**参数描述**
+
+- `{column_name}`: 列名。
+- `{data_type}`: 列的[数据类型](/basic-features.md#数据类型函数和操作符)。
+- `{column_qualification}`: 列的限定条件，如**列级约束**或[生成列（实验功能）](/generated-columns.md)子句。
 
 我们可以为 `users` 表添加一些列，如他们的唯一标识 `id`，余额 `balance` 及昵称 `nickname`。
 
@@ -267,10 +267,10 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 ```
 
-|      参数      |                  描述                  |
-| :------------: | :------------------------------------: |
-| `{table_name}` |                  表名                  |
-|   `{count}`    | 同步副本数，若为 0，则表示删除同步副本 |
+**参数描述**
+
+- `{table_name}`: 表名。
+- `{count}`: 同步副本数，若为 0，则表示删除同步副本。
 
 随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 文档。
 
@@ -322,9 +322,9 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 
 ## 执行 `CREATE TABLE` 语句
 
-按以上步骤创建所有表后，我们的 `dbinit.sql` 文件应该类似于[数据库初始化](/develop/dev-guide-bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)所示。若需查看表信息详解，请参阅[数据表详解](/develop/dev-guide-bookshop-schema-design.md#数据表详解)。
+按以上步骤创建所有表后，我们的[数据库初始化](/develop/dev-guide-bookshop-schema-design.md#数据库初始化-dbinitsql-脚本)脚本应该如此所示。若需查看表信息详解，请参阅[数据表详解](/develop/dev-guide-bookshop-schema-design.md#数据表详解)。
 
-我们可使用以下语句来执行 `dbinit.sql` 文件：
+如果我们将数据库初始化脚本命名为 `init.sql` 并保存，我们可使用以下语句来执行数据库初始化：
 
 {{< copyable "shell-regular" >}}
 
@@ -334,7 +334,7 @@ mysql
     -h {host} \
     -P {port} \
     -p {password} \
-    < dbinit.sql
+    < init.sql
 ```
 
 需查看 `bookshop` 数据库下的所有表，可使用 [SHOW TABLES](/sql-statements/sql-statement-show-tables.md#show-full-tables) 语句：

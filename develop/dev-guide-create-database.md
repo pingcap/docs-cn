@@ -24,15 +24,7 @@ summary: 创建数据库的方法、应遵守的规则及例子。
 
 ## 创建数据库过程
 
-可使用 `CREATE DATABASE` 语句来创建数据库。此处将创建一个在文件末尾带有 `.sql` 文件拓展名的空文件。我们将使用该文件初始化数据库，该数据库将存储 `bookshop` 整个示例应用程序的所有数据。
-
-{{< copyable "shell-regular" >}}
-
-```shell
-touch dbinit.sql
-```
-
-随后，在文本编辑器中打开 `dbinit.sql`，然后在文件顶部添加 `CREATE DATABASE` 语句：
+可使用 `CREATE DATABASE` 语句来创建数据库。
 
 {{< copyable "sql" >}}
 
@@ -40,9 +32,7 @@ touch dbinit.sql
 CREATE DATABASE IF NOT EXISTS `bookshop`;
 ```
 
-此语句会创建一个名为 `bookshop` 的数据库（如果尚不存在）。
-
-`dbinit.sql` 要以 `root` 用户身份执行文件中的建库语句，请运行以下命令：
+此语句会创建一个名为 `bookshop` 的数据库（如果尚不存在）。请以 `root` 用户身份执行文件中的建库语句，运行以下命令：
 
 {{< copyable "shell-regular" >}}
 
@@ -52,7 +42,7 @@ mysql
     -h {host} \
     -P {port} \
     -p {password} \
-    < dbinit.sql
+    -e "CREATE DATABASE IF NOT EXISTS bookshop;"
 ```
 
 要查看集群中的数据库，可在命令行执行一条 `SHOW DATABASES` 语句：
