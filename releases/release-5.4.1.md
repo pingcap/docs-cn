@@ -3,7 +3,7 @@ title: TiDB 5.4.1 Release Notes
 ---
 # TiDB 5.4.1 Release Notes
 
-发版日期：2022 年 5 月 xx 日
+发版日期：2022 年 5 月 13 日
 
 TiDB 版本：5.4.1
 
@@ -11,13 +11,7 @@ TiDB 版本：5.4.1
 
 + TiDB
 
-    - note 1
-    - note 2
-
-+ TiKV
-
-    - note 1
-    - note 2
+    - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
 
 ## 提升改进
 
@@ -63,7 +57,6 @@ TiDB 版本：5.4.1
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复查询报错时可能阻塞 CTE 的问题 [#31302](https://github.com/pingcap/tidb/issues/31302)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 Nulleq 函数作用在 Enum 类型上可能出现结果错误的问题 [#32428](https://github.com/pingcap/tidb/issues/32428)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复使用 ChunkRPC 导出数据时可能造成 TiDB OOM 的问题 [#31981](https://github.com/pingcap/tidb/issues/31981) [#30880](https://github.com/pingcap/tidb/issues/30880)
-    - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复当恢复完成后，Region 有可能分布不均的问题 [#31034](https://github.com/pingcap/tidb/issues/31034)
     - (dup: release-5.3.1.md > Bug 修复> TiDB)- 修复开启 `tidb_restricted_read_only` 后 `tidb_super_read_only` 没有自动开启的问题 [#31745](https://github.com/pingcap/tidb/issues/31745)
     - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复带有 collation 的 `greatest` 或 `least` 函数结果出错的问题 [#31789](https://github.com/pingcap/tidb/issues/31789)
