@@ -30,7 +30,7 @@ title: Gitpod
 
 在步骤[快速开始](#quick-start)之后，Gitpod 会需要一段时间来设置您的工作区。
 
-这里我们使用 [Spring Boot Web](/develop/sample-application-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`创建了一个新工作区。
+这里我们使用 [Spring Boot Web](/develop/dev-guide-sample-application-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`创建了一个新工作区。
 
 完成后，您将看到如下所示的页面。
 
@@ -44,7 +44,7 @@ title: Gitpod
 
 ![playground gitpod workspace ready](/media/develop/playground-gitpod-workspace-ready.png)
 
-您可以按照[该指南](/develop/sample-application-spring-boot.md#第-6-步http-请求)测试 API。请记住将 URL `http://localhost:8080` 替换为您在 `REMOTE EXPLORER` 中找到的那个。
+您可以按照[该指南](/develop/dev-guide-sample-application-spring-boot.md#第-6-步http-请求)测试 API。请记住将 URL `http://localhost:8080` 替换为您在 `REMOTE EXPLORER` 中找到的那个。
 
 ## 使用自定义的 Gitpod 配置和 Docker 镜像
 
