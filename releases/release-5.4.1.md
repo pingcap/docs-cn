@@ -26,7 +26,7 @@ TiDB 版本：5.4.1
 + TiDB
 
     - (dup: release-6.0.0-dmr.md > 提升改进> TiDB)- 支持读取 `_tidb_rowid` 列的查询能够使用 PointGet 计划 [#31543](https://github.com/pingcap/tidb/issues/31543)
-    - 为 `Apply` 算子添加了一些调试信息 [#33887](https://github.com/pingcap/tidb/issues/33887)
+    - 为 `Apply` 算子添加更多日志和监控指标，方便用户了解该算子的并行状态 [#33887](https://github.com/pingcap/tidb/issues/33887)
     - 对于统计信息使用的 Analyze Version 2，优化了 `TopN` 裁剪的逻辑 [#34256](https://github.com/pingcap/tidb/issues/34256)
     - 在 Grafana 的仪表盘中支持显示多个 Kubernetes 集群 [#32593](https://github.com/pingcap/tidb/issues/32593)
 
