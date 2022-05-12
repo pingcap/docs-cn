@@ -41,7 +41,7 @@ DM 支持在线上执行分库分表的 DDL 语句（通称 Sharding DDL），�
 
 各分表在执行以上 DDL 时，若顺序不同，将导致同步中断，如：
 
-- 分表 1 先重名列，再修改列类型
+- 分表 1 先重命名列，再修改列类型
     1. `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`（重命名列）。
     2. `ALTER TABLE table_name MODIFY COLUMN column_3 VARCHAR(20);`（修改列类型）。
 - 分表 2 先修改列类型，再重命名列
