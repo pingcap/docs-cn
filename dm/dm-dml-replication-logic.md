@@ -129,7 +129,7 @@ DML 执行和 checkpoint 更新的操作不是原子的。
 
 在 DM 中，checkpoint 默认每 30 秒更新一次。同时，由于存在多个 DML worker 进程，checkpoint 进程会计算所有 DML worker 中同步进度最早的 binlog 位点，将该位点作为当前同步的 checkpoint。所有早于此位点的 binlog，都已保证被成功地执行到下游。
 
-关于 Checkpoint 的详细信息，参考 [Checkpoint](/dm/dm-checkpoint.md)。
+<!-- 关于 Checkpoint 的详细信息，参考 Checkpoint /dm/dm-checkpoint.md。-->
 
 ## 注意事项
 
