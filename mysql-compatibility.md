@@ -127,6 +127,10 @@ These differences are documented further in [`ANALYZE TABLE`](/sql-statements/sq
 
 For details, see the [`SELECT`](/sql-statements/sql-statement-select.md) statement reference.
 
+### `UPDATE` statement
+
+See the [`UPDATE`](/sql-statements/sql-statement-update.md) statement reference.
+
 ### Views
 
 Views in TiDB are not updatable. They do not support write operations such as `UPDATE`, `INSERT`, and `DELETE`.
