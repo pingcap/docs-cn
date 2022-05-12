@@ -36,7 +36,7 @@ title: Data Migration 高可用机制
 
 DM Master 之外的组件，如 dmctl, DM Worker, 调用 DM Master 接口，可采用传入多 endpoint 的方式，避免只配置单个 endpoint 同时该节点出现故障而无法访问的问题。其他组件，如 WebUI，遇到访问节点挂掉时，等 DM Master 集群恢复后，可以切换节点继续访问。若非访问节点发生故障，DM Master 集群恢复后可以继续访问。
 
-### DM Master 恢复主要受到哪些影响，恢复速度主要取决于哪些因素 
+### DM Master 恢复主要受到哪些影响，恢复速度主要取决于哪些因素
 
 由上文可知，DM Master 集群的 Leader 出现节点故障之后，会由 Election 模块重新选举一个 Leader, 此过程主要受到 etcd 性能影响，新的 Leader 需要重新启动 Scheduler，Pessimist 和 Optimist 等模块，此过程主要需要读取保存于 etcd 中的各模块信息，实现接续执行，但此过程只是内存中实例构建，耗时不大，因此，耗时主要取决于 etcd 集群的恢复时间。
 
@@ -55,7 +55,7 @@ DM Master 之外的组件，如 dmctl, DM Worker, 调用 DM Master 接口，可�
 
 DM Worker 负责的任务以上游源数据库（简称 source）为调度单位，即一个 DM Worker 仅能服务一个 source。多个 task 可能需要同步同一个 source，此时该 source 所处 worker 将为每个 task 派生 subtask。
 
-当 DM Worker 向 DM Master 发送心跳中断超过 [TTL](/dm/dm-ha.md#DM Worker 与 DM Master 保持心跳的超时时间及配置) 后，DM Master 会将该 DM Worker 负责的 source 与对应 subtask 调度给没有绑定的 source 的 DM Worker，调度的优先级从高到低为：
+当 DM Worker 向 DM Master 发送心跳中断超过 [TTL](/dm/dm-high-availability.md#DM Worker 与 DM Master 保持心跳的超时时间及配置) 后，DM Master 会将该 DM Worker 负责的 source 与对应 subtask 调度给没有绑定的 source 的 DM Worker，调度的优先级从高到低为：
 
 1. 该 source 之前在该 DM Worker 上存在未完成的全量导入任务。
 2. 该 source 上次由该 DM Worker 处理且 DM Worker 开启了该 source 的 relay log。

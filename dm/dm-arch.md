@@ -44,4 +44,4 @@ dmctl 是用来控制 DM 集群的命令行工具。
 
 ## 探索更多
 
-- [Data Migration 高可用机制](/dm/dm-ha.md)
+- [Data Migration 高可用机制](/dm/dm-high-availability.md)
