@@ -383,6 +383,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 默认值：12h
 + 最小值：0s
 
+### `background-error-recovery-window`
+
++ RocksDB 检测到可恢复的后台错误后的最长恢复时间。当检测到故障 SST 所属的 Peer 后，会通过心跳上报到 PD。PD 随后会下发调度操作移除该 Peer。最后故障 SST 文件将会被直接删除，随后调度恢复正常。
++ 当恢复操作完成之前，损坏的 SST 文件将一直存在。此时 RocksDB 可以继续写入新的内容，但读到损坏的数据范围时会返回错误。
++ 当恢复操作未能在该时间窗口内完成，TiKV 会主动 panic。
++ 默认值：1h
+
 ## storage.block-cache
 
 RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
