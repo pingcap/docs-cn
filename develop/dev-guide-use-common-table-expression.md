@@ -7,7 +7,7 @@ summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
 
 由于业务的客观复杂性，有时候会写出长达 2000 行的单条 SQL 语句，其中包含大量的聚合和多层子查询嵌套，维护此类 SQL 堪称开发人员的噩梦。
 
-在前面的小节当中我们已经介绍了如何使用[视图](/develop/use-views.md)简化查询，也介绍了如何使用[临时表](/develop/use-temporary-tables.md)来缓存中间查询结果。
+在前面的小节当中我们已经介绍了如何使用[视图](/develop/dev-guide-use-views.md)简化查询，也介绍了如何使用[临时表](/develop/dev-guide-use-temporary-tables.md)来缓存中间查询结果。
 
 在这一小节当中，我们将介绍 TiDB 当中的公共表表达式（CTE）语法，它是一种更加便捷的复用查询结果的方法。
 
@@ -37,7 +37,7 @@ SELECT ... FROM <query_name>;
 <SimpleTab>
 <div label="SQL">
 
-我们可以将[临时表](/develop/use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
+我们可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
 
 {{< copyable "sql" >}}
 
