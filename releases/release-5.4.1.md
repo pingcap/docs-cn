@@ -10,9 +10,7 @@ TiDB 版本：5.4.1
 
 ## 兼容性更改
 
-+ TiDB
-
-    - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
+TiDB v5.4.1 未引入产品设计上的兼容性变化，但请注意该版本中的 Bug 修复也可能带来兼容性变更，请参考 [Bug 修复](#bug-修复)部分。
 
 ## 提升改进
 
@@ -50,6 +48,7 @@ TiDB 版本：5.4.1
 
 + TiDB
 
+    - (dup: release-6.0.0-dmr.md > Bug 修复> TiDB)- 修复 date_format 对 `'\n'` 的处理与 MySQL 不兼容的问题 [#32232](https://github.com/pingcap/tidb/issues/32232)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复 `ENUM` 或 `SET` 类型的列因为编码错误导致写入数据错误的问题 [#32302](https://github.com/pingcap/tidb/issues/32302)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复特定情况下 Merge Join 执行结果错误的问题 [#33042](https://github.com/pingcap/tidb/issues/33042)
     - (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复关联子查询返回结果中有常量时导致执行结果出错的问题  [#32089](https://github.com/pingcap/tidb/issues/32089)
