@@ -12,7 +12,7 @@ In TiFlash, the columnar replicas are asynchronously replicated according to the
 
 ## Architecture
 
-![TiFlash Architecture](/media/tiflash/tiflash-architecture.png)
+![TiFlash Architecture](/media/tidb-storage-architecture.png)
 
 The above figure is the architecture of TiDB in its HTAP form, including TiFlash nodes.
 
