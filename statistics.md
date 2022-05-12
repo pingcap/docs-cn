@@ -614,7 +614,6 @@ DROP STATS TableName;
     http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
     ```
 
-
 ### 导入统计信息
 
 > **注意：**
