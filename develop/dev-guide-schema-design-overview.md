@@ -5,7 +5,7 @@ summary: TiDB 数据库模式设计的概述。
 
 # 概述
 
-本页概述了 TiDB 中的数据库模式。我们将从本页开始围绕 [Bookshop](/develop/bookshop-schema-design.md) 这个应用程序来对 TiDB 的设计数据库部分展开介绍。并使用此数据库做后续数据的写入、读取示例。
+本页概述了 TiDB 中的数据库模式。我们将从本页开始围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的设计数据库部分展开介绍。并使用此数据库做后续数据的写入、读取示例。
 
 ## 术语歧义
 
