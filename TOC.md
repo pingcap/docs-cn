@@ -77,7 +77,7 @@
       - [命名规范](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
   - 云原生开发环境
-    - [Gitpod](/develop/playground-gitpod.md)
+    - [Gitpod](/develop/dev-guide-playground-gitpod.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
