@@ -6,45 +6,43 @@ title: Gitpod
 
 # Gitpod
 
-> **提示：**
->
-> 使用 [Gitpod](https://www.gitpod.io/)，只需单击一个按钮/链接即可在浏览器中获得完整的开发环境，并且可以立即编写代码。
+使用 [Gitpod](https://www.gitpod.io/)，只需单击一个按钮或链接即可在浏览器中获得完整的开发环境，并且可以立即编写代码。
 
-> [Gitpod](https://github.com/gitpod-io/gitpod) 是一个开源 Kubernetes 应用程序，适用于可直接编写代码的开发人员环境，可为云中的每个任务提供全新的自动化开发环境，非常迅速。它使您能够将您的开发环境描述为代码，并直接从您的浏览器或桌面 IDE 启动即时、远程和基于云的开发人员环境。
+[Gitpod](https://github.com/gitpod-io/gitpod) 是一个开源 Kubernetes 应用程序，适用于可直接编写代码的开发人员环境，可为云中的每个任务提供全新的自动化开发环境，非常迅速。它使你能够将你的开发环境描述为代码，并直接从你的浏览器或桌面 IDE 启动即时、远程和基于云的开发人员环境。
 
-## 快速开始 {#quick-start}
+## 快速开始
 
 这是一个 TiDB 应用开发实例代码仓库 [pingcap-inc/tidb-example-java](https://github.com/pingcap-inc/tidb-example-java)。
 
 1. Fork 这个[代码仓库](https://github.com/pingcap-inc/tidb-example-java)。
 
-2. 通过浏览器的地址栏，在整个 URL 前加上 `https://gitpod.io/#` 来启动您的 gitpod 工作区。
+2. 通过浏览器的地址栏，在整个 URL 前加上 `https://gitpod.io/#` 来启动你的 gitpod 工作区。
 
-- 例如，`https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-java`。
+    - 例如，`https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-java`。
 
-- 支持环境变量，例如，`https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`。
+    - 支持环境变量，例如，`https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`。
 
 3. 使用列出的提供商之一登录并启动工作区，例如，`Github`。
 
 ## 使用默认的 Gitpod 配置和环境
 
-在步骤[快速开始](#quick-start)之后，Gitpod 会需要一段时间来设置您的工作区。
+在步骤 [快速开始](#quick-start) 之后，Gitpod 会需要一段时间来设置你的工作区。
 
 这里我们使用 [Spring Boot Web](/develop/dev-guide-sample-application-spring-boot.md) 应用程序为例，通过 URL `https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`创建了一个新工作区。
 
-完成后，您将看到如下所示的页面。
+完成后，你将看到如下所示的页面。
 
 ![playground gitpod workspace init](/media/develop/playground-gitpod-workspace-init.png)
 
-在这个场景中，我们使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。您可以在终端的左侧找到进度。
+在这个场景中，我们使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。你可以在终端的左侧找到进度。
 
-一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 您可以在终端的右侧找到进度。
+一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 你可以在终端的右侧找到进度。
 
-完成所有任务后，您可以看到如下所示的页面。您可以在左侧导航栏的 `REMOTE EXPLORER` 中找到您的端口 `8080` URL（Gitpod 支持基于 URL 的端口转发）。
+完成所有任务后，你可以看到如下所示的页面。你可以在左侧导航栏的 `REMOTE EXPLORER` 中找到你的端口 `8080` URL（Gitpod 支持基于 URL 的端口转发）。
 
 ![playground gitpod workspace ready](/media/develop/playground-gitpod-workspace-ready.png)
 
-您可以按照[该指南](/develop/dev-guide-sample-application-spring-boot.md#第-6-步http-请求)测试 API。请记住将 URL `http://localhost:8080` 替换为您在 `REMOTE EXPLORER` 中找到的那个。
+你可以按照[该指南](/develop/dev-guide-sample-application-spring-boot.md#第-6-步http-请求)测试 API。请记住将 URL `http://localhost:8080` 替换为你在 `REMOTE EXPLORER` 中找到的那个。
 
 ## 使用自定义的 Gitpod 配置和 Docker 镜像
 
@@ -100,7 +98,7 @@ ports:
 
 > 默认情况下，Gitpod 使用名为 Workspace-Full 的标准 Docker 映像作为工作空间的基础。 基于此默认映像启动的工作区预装了 Docker、Go、Java、Node.js、C/C++、Python、Ruby、Rust、PHP 以及 Homebrew、Tailscale、Nginx 等工具。
 
-您可以提供公共 Docker 映像或 Dockerfile。 并为您的项目安装所需的任何依赖项。
+你可以提供公共 Docker 映像或 Dockerfile。 并为你的项目安装所需的任何依赖项。
 
 这是一个 Dockerfile 示例：[示例 .gitpod.Dockerfile](https://github.com/pingcap-inc/tidb-example-java/blob/main/.gitpod.Dockerfile)
 
@@ -119,7 +117,7 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/instal
 # and commit this file to your remote git repository to share the goodness with others.
 
 image:
-  # 在这里导入您的 Dockerfile
+  # 在这里导入你的 Dockerfile
   file: .gitpod.Dockerfile
 
 tasks:
@@ -160,7 +158,7 @@ ports:
 
 ### 应用更改
 
-完成对 `.gitpod.yml` 文件配置后，请保证最新的代码已在您对应的 GitHub 代码仓库中可用。
+完成对 `.gitpod.yml` 文件配置后，请保证最新的代码已在你对应的 GitHub 代码仓库中可用。
 
 访问 `https://gitpod.io/#<YOUR_REPO_URL>` 以建立新的 Gitpod 工作区，新工作区会应用最新的代码。
 
