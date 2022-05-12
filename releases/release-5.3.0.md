@@ -353,7 +353,7 @@ Starting from TiCDC v5.3.0, the cyclic replication feature between TiDB clusters
     - Fix the issue that the retried transactions' statements are not included in `TIDB_TRX` [#28670](https://github.com/pingcap/tidb/pull/28670)
     - Fix the wrong default value of the `plugin_dir` configuration [#28084](https://github.com/pingcap/tidb/issues/28084)
     - Fix the issue that the `CONVERT_TZ` function returns `NULL` when it is given a named timezone and a UTC offset [#8311](https://github.com/pingcap/tidb/issues/8311)
-    - Fix the issue that `CREATE SCHEMA` does not use the character set specified by `character_set_server` and `collation_server` for new schemas if none are provided as part of the statement [27216](https://github.com/pingcap/tidb/pull/27216)
+    - Fix the issue that `CREATE SCHEMA` does not use the character set specified by `character_set_server` and `collation_server` for new schemas if none are provided as part of the statement [#27214](https://github.com/pingcap/tidb/issues/27214)
 
 + TiKV
 
