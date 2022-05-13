@@ -1,6 +1,7 @@
 ---
 title: 性能调优最佳实践
 summary: 介绍使用 TiDB 的性能调优最佳实践。
+aliases: ['/zh/tidb/dev/optimize-sql-best-practices']
 ---
 
 # 性能调优最佳实践

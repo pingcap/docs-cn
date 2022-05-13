@@ -1,6 +1,7 @@
 ---
 title: 故障诊断概览
 summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故障诊断页面。
+aliases: ['/zh/tidb/dev/troubleshoot-overview']
 ---
 
 # 故障诊断概览

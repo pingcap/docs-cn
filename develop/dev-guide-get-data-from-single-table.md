@@ -1,6 +1,7 @@
 ---
 title: 单表查询
 summary: 介绍 TiDB 中的单表查询功能。
+aliases: ['/zh/tidb/dev/developer-guide-overview']
 ---
 
 <!-- markdownlint-disable MD029 -->
