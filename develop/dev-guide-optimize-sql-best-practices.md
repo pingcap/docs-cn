@@ -139,11 +139,11 @@ DELETE FROM t;
 
 ### 主键选择的最佳实践
 
-见 [主键选择的最佳实践](/develop/dev-guide-create-table.md#主键选择的最佳实践)。
+见[选择主键时应遵守的规则](/develop/dev-guide-create-table.md#选择主键时应遵守的规则)。
 
 ## 索引的最佳实践
 
-见 [索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
+见[索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
 ### ADD INDEX 性能最佳实践
 
