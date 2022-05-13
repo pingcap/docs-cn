@@ -96,7 +96,7 @@ ports:
 
 默认情况下，Gitpod 使用名为 Workspace-Full 的标准 Docker 映像作为工作空间的基础。 基于此默认映像启动的工作区预装了 Docker、Go、Java、Node.js、C/C++、Python、Ruby、Rust、PHP 以及 Homebrew、Tailscale、Nginx 等工具。
 
-你可以提供公共 Docker 映像或 Dockerfile。 并为你的项目安装所需的任何依赖项。
+你可以提供公共 Docker 镜像或 Dockerfile。 并为你的项目安装所需的任何依赖项。
 
 这是一个 Dockerfile 示例：[示例 .gitpod.Dockerfile](https://github.com/pingcap-inc/tidb-example-java/blob/main/.gitpod.Dockerfile)
 
