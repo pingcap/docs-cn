@@ -120,6 +120,10 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 详情参见 [`SELECT`](/sql-statements/sql-statement-select.md)。
 
+### `UPDATE` 语句
+
+详情参见 [`UPDATE`](/sql-statements/sql-statement-update.md)。
+
 ### 视图
 
 TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
