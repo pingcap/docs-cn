@@ -600,18 +600,36 @@ Usage:
 }
 ```
 
-### `region startkey [--format=raw|encode|hex] <key> <limit>`
+### `region keys [--format=raw|encode|hex] <start_key> <end_key> <limit>`
 
-Use this command to query all Regions starting from a key.
+Use this command to query all Regions in a given range `[startkey, endkey)`. Ranges without `endKey`s are supported.
+
+The `limit` parameter limits the number of keys. The default value of `limit` is `16`, and the value of `-1` means unlimited keys. 
 
 Usage:
 
-{{< copyable "" >}}
-
 ```bash
->> region startkey --format=raw abc
+>> region keys --format=raw a         // Display all Regions that start from the key a with a default limit count of 16
 {
   "count": 16,
+  "regions": [......],
+}
+
+>> region keys --format=raw a z      // Display all Regions in the range [a, z) with a default limit count of 16
+{
+  "count": 16,
+  "regions": [......],
+}
+
+>> region keys --format=raw a z -1   // Display all Regions in the range [a, z) without a limit count
+{
+  "count": ...,
+  "regions": [......],
+}
+
+>> region keys --format=raw a "" 20   // Display all Regions that start from the key a with a limit count of 20
+{
+  "count": 20,
   "regions": [......],
 }
 ```
