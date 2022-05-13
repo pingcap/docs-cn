@@ -14,7 +14,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 1. Fork 出 TiDB 应用开发的示例代码仓库 [pingcap-inc/tidb-example-java](https://github.com/pingcap-inc/tidb-example-java)。
 
-2. 通过浏览器的地址栏，在整个 URL 前加上 `https://gitpod.io/#` 来启动你的 gitpod 工作区。
+2. 通过浏览器的地址栏，在示例代码仓库的 URL 前加上 `https://gitpod.io/#` 来启动你的 gitpod 工作区。
 
     - 例如，`https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-java`。
 
