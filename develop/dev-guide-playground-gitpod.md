@@ -18,7 +18,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
     - 例如，`https://gitpod.io/#https://github.com/pingcap-inc/tidb-example-java`。
 
-    - 支持环境变量，例如，`https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`。
+    - 支持在 URL 中配置环境变量。例如，`https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java`。
 
 3. 使用列出的提供商之一登录并启动工作区，例如，`Github`。
 
