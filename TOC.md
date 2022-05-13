@@ -439,7 +439,6 @@
     - [调度](/tidb-scheduling.md)
   - 监控指标
     - [Overview 面板](/grafana-overview-dashboard.md)
-    - [Performance Overview 面板](/grafana-performance-overview-dashboard.md)
     - [TiDB 面板](/grafana-tidb-dashboard.md)
     - [PD 面板](/grafana-pd-dashboard.md)
     - [TiKV 面板](/grafana-tikv-dashboard.md)
