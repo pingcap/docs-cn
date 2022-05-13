@@ -75,7 +75,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [Follower reads](/follower-read.md)                          | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Read historical data (tidb_snapshot)](/read-historical-data.md) | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Optimizer hints](/optimizer-hints.md)                       | Y | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [MPP Exection Engine](/explain-mpp.md)                       | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
+| [MPP Execution Engine](/explain-mpp.md)                       | Y | Y            |      Y       |      Y       |      Y       |      Y       |      N       |
 | [Index Merge](/explain-index-merge.md)                  | Y | Y            | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Placement Rules in SQL](/placement-rules-in-sql.md)         | Y | Experimental | Experimental |      N       |      N       |      N       |      N       |
 
