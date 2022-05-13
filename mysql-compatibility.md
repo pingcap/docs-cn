@@ -122,7 +122,7 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 ### `UPDATE` 语句
 
-详情参见 [`UPDATE`](/sql-statements/sql-statement-update.md) statement reference.
+详情参见 [`UPDATE`](/sql-statements/sql-statement-update.md)。
 
 ### 视图
 
