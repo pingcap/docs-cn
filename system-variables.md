@@ -416,6 +416,13 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
+### `tidb_batch_insert`
+
+- 作用域：SESSION
+- 默认值：`OFF`
+- 该变量允许 `tidb_dml_batch_size` 变量作用于 `INSERT` 语句。
+- 只有该变量值为 `OFF` 才符合 ACID 原则。将该变量修改为任何其他值，会破坏 TiDB 的原子性和隔离性保证，因为每个 `INSERT` 语句都会被分割成较小的事务。
+
 ### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -587,6 +594,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
+- 要使 `tidb_dml_batch_size` 作用于 `INSERT` 语句，你还需要将系统变量 [`tidb_batch_insert`](#tidb_batch_insert) 设置为 `ON`。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
