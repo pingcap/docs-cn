@@ -584,7 +584,7 @@ worker-num = 16
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], dispatcher = "ts", topic = "Topic 表达式 1"},
     {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid", topic = "Topic 表达式 2"},
-    {matcher = ['test1.*', 'test5.*'], dispatcher = "table", topic = "Topic 表达式 3"}
+    {matcher = ['test1.*', 'test5.*'], dispatcher = "table", topic = "Topic 表达式 3"},
     {matcher = ['test6.*'], dispatcher = "ts"}
 ]
 
