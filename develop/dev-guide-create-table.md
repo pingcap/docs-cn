@@ -5,7 +5,7 @@ summary: 创建表的方法、规范及例子。
 
 # 创建表
 
-在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来创建表，及创建表时应遵守的规则。我们将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建表部分展开介绍。
+本文档介绍如何使用 SQL 语句来创建表以及创建表的最佳实践。本文档提供了一个基于 TiDB 的 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库的示例加以说明。
 
 > **注意：**
 >
