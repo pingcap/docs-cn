@@ -253,6 +253,10 @@ URI 中可配置的的参数如下：
 
 #### Sink URI 配置 `pulsar`
 
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
+
 配置样例如下所示：
 
 {{< copyable "shell-regular" >}}
@@ -274,6 +278,7 @@ URI 中可配置的的参数如下：
 | `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`）|
 | `auth.token` | 使用 token 模式认证下游（可选，示例 `auth=token&auth.token=secret-token` 或者 `auth=token&auth.file=path/to/secret-token-file`）|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
+| `protocol` | 输出到 Pulsar 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
