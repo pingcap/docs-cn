@@ -73,6 +73,10 @@ Before using PingCAP Clinic, you need to install Diag (a component to collect da
     tiup diag config clinic.token ${token-value}
     ```
 
+3. (Optional) Enable log redaction.
+
+    When TiDB provides detailed log information, it might print sensitive information (for example, user data) in the log. If you want to avoid leaking sensitive information in the local log and Clinic Server, you can enable log redaction in the TiDB side. For more information, see [log redaction](/log-redaction.md#log-redaction-in-tidb-side).
+
 ## Troubleshoot cluster problems remotely
 
 You can use Diag to quickly collect diagnostic data from TiDB clusters and DM clusters, including monitoring data and configuration information.
