@@ -24,7 +24,7 @@ aliases: ['/docs-cn/dev/faq/upgrade-faq/','/docs-cn/dev/faq/upgrade/']
 
 ### Binary 如何升级？
 
-不推荐使用 Binary 来升级集群。建议[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup) 进行升级，确保分布式系统版本一致性和兼容性。
+不推荐使用 Binary 来升级集群。建议[使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md) 进行升级，确保分布式系统版本一致性和兼容性。
 
 ## 升级后常见问题
 
