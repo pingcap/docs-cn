@@ -40,7 +40,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 ![playground gitpod workspace ready](/media/develop/playground-gitpod-workspace-ready.png)
 
-你可以按照[该指南](/develop/dev-guide-sample-application-spring-boot.md#第-6-步http-请求)测试 API。请记住将 URL `http://localhost:8080` 替换为你在 `REMOTE EXPLORER` 中找到的那个。
+你可以按照[该指南](/develop/dev-guide-sample-application-spring-boot.md#第-6-步http-请求)测试 API。注意请将 URL `http://localhost:8080` 替换为你在 `REMOTE EXPLORER` 中找到的那个。
 
 ## 使用自定义的 Gitpod 配置和 Docker 镜像
 
