@@ -574,21 +574,58 @@ worker-num = 16
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
-# 支持 default、ts、rowid、table 四种分发器，分发规则如下：
-# - default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
-# - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
-# - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
-# - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
-# matcher 的匹配语法和过滤器规则语法相同
+# 支持 partition 及 topic 两种 event 分发器。二者的详细说明见以下两小节。
+
+# matcher 的匹配语法和过滤器规则语法相同，matcher 规则匹配的几种情况如下所示：
+# - 对于匹配了 matcher 规则的表，按照对应的 topic 表达式指定的策略进行分发。例如表 test3.aa，按照 topic 表达式 2 分发；表 test5.aa，按照 topic 表达式 3 分发。
+# - 对于匹配了多个 matcher 规则的表，以靠前的 matcher 对应的 topic 表达式为准。例如表 test1.aa，按照 topic 表达式 1 分发。
+# - 对于没有匹配任何 matcher 的表，将对应的数据变更事件发送到 --sink-uri 中指定的默认 topic 中。例如表 test10.aa 发送到默认 topic。
+# - 对于匹配了 matcher 规则但是没有指定 topic 分发器的表，将对应的数据变更发送到 --sink-uri 中指定的默认 topic 中。例如表 test6.aa 发送到默认 topic。
 dispatchers = [
-    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
-    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts", topic = "Topic 表达式 1"},
+    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid", topic = "Topic 表达式 2"},
+    {matcher = ['test1.*', 'test5.*'], dispatcher = "table", topic = "Topic 表达式 3"}
+    {matcher = ['test6.*'], dispatcher = "ts"}
 ]
+
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
 # 目前支持 canal-json、open-protocol、canal、avro 和 maxwell 五种协议。
 protocol = "canal-json"
-
 ```
+
+### Partition 分发器
+partition 分发器用 dispatcher = "xxx" 来指定，支持 default、ts、rowid、table 四种 partition 分发器，分发规则如下：
+- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
+- ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
+- index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
+- table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
+
+### Topic 分发器
+Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。
+
+Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，其中 `prefix`、`middle`、`{table}` 以及 `suffix` 均为可选项，`{schema}` 为必选项。`prefix`、`middle` 以及 `suffix` 均遵循正则表达式 `[A-Za-z0-9\._\-]*`，也即只允许出现大小写字母、数字、点号、下划线和中划线。
+
+占位符 `{schema}` 用来匹配库名, 占位符 `{table}` 用来匹配表名，二者均为小写，即不允许出现 `{ScHeMa}` 以及 `{TaBLe}` 这样的占位符。
+
+一些示例如下：
+- `matcher = ['test1.table1', 'test2.table2'], topic = "hello_{schema}_{table}"`
+  - 对于表 `test1.table1` 对应的数据变更事件，发送到名为 `hello_test1_table1` 的 topic 中
+  - 对于表 `test2.table2` 对应的数据变更时间，发送到名为 `hello_test2_table2` 的 topic 中
+- `matcher = ['test3.*', 'test4.*'], topic = "{schema}_hello"`
+  - 对于 `test3` 下的所有表对应的数据变更事件，发送到名为 `test3_hello` 的 topic 中
+  - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `test4_hello` 的 topic 中
+
+### DDL 事件的分发
+#### 库级别 DDL
+诸如 `create database`、`drop database` 这类和某一张具体的表无关的 DDL，称之为库级别 DDL。对于库级别 DDL 对应的事件，被发送到 `--sink-uri` 中指定的默认 topic 中。
+#### 表级别 DDL
+诸如 `alter table`、`create table` 这类和某一张具体的表相关的 DDL，称之为表级别 DDL。对于表级别 DDL 对应的事件，按照 dispatchers 的配置，被发送到相应的 topic 中。
+
+例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 dispatchers 配置，相应的分发规则如下：
+- 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。
+  - 对于 DDL 事件 `drop table test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
+- 若 DDL 事件中涉及多张表（`rename table` / `drop table` / `drop view` 都可能涉及多张表），则将单个 DDL 事件拆分为多个发送到相应的 topic 中。
+  - 对于 DDL 事件 `rename table test.table1 to test.table10, test.table2 to test.table20`，则将 `rename table test.table1 to test.table10` 的 DDL 事件发送到名为 `test_table1` 的 topic 中，将 `rename table test.table2 to test.table20` 的 DDL 事件发送到名为 `test.table2` 的 topic 中。
 
 ### 配置文件兼容性的注意事项
 
@@ -708,3 +745,4 @@ cdc redo apply --tmp-dir="/tmp/cdc/redo/apply" \
 - `tmp-dir` ：指定用于下载 TiCDC 增量数据备份文件的临时目录。
 - `storage` ：指定存储 TiCDC 增量数据备份文件的地址，为 S3 或者 NFS 目录。
 - `sink-uri` ：恢复数据到的下游地址。scheme 仅支持 `mysql`。
+
