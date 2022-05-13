@@ -19,63 +19,63 @@
   - [SQL 基本操作](/basic-sql-operations.md)
   - [深入探索 HTAP](/explore-htap.md)
 - 应用开发
-  - [概览](/develop/developer-guide-overview.md)
+  - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/build-cluster-in-cloud.md)
-    - [使用 TiDB 的增删改查 SQL](/develop/tidb-crud-sql.md)
+    - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
     - TiDB 的简单 CRUD 应用程序
-      - [Java](/develop/sample-application-java.md)
+      - [Java](/develop/dev-guide-sample-application-java.md)
   - 示例程序
-    - [使用 Spring Boot 构建 TiDB 应用程序](/develop/sample-application-spring-boot.md)
+    - [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)
   - 连接到 TiDB
-    - [选择驱动或 ORM 框架](/develop/choose-driver-or-orm.md)
-    - [连接到 TiDB](/develop/connect-to-tidb.md)
-    - [连接池与连接参数](/develop/connection-parameters.md)
+    - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
+    - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
+    - [连接池与连接参数](/develop/dev-guide-connection-parameters.md)
   - 数据库模式设计
-    - [概览](/develop/schema-design-overview.md)
-    - [创建数据库](/develop/create-database.md)
-    - [创建表](/develop/create-table.md)
-    - [创建二级索引](/develop/create-secondary-indexes.md)
+    - [概览](/develop/dev-guide-schema-design-overview.md)
+    - [创建数据库](/develop/dev-guide-create-database.md)
+    - [创建表](/develop/dev-guide-create-table.md)
+    - [创建二级索引](/develop/dev-guide-create-secondary-indexes.md)
   - 数据写入
-    - [插入数据](/develop/insert-data.md)
-    - [更新数据](/develop/update-data.md)
-    - [删除数据](/develop/delete-data.md)
-    - [预处理语句](/develop/prepared-statement.md)
+    - [插入数据](/develop/dev-guide-insert-data.md)
+    - [更新数据](/develop/dev-guide-update-data.md)
+    - [删除数据](/develop/dev-guide-delete-data.md)
+    - [预处理语句](/develop/dev-guide-prepared-statement.md)
   - 数据读取
-    - [单表读取](/develop/get-data-from-single-table.md)
-    - [多表连接查询](/develop/join-tables.md)
-    - [子查询](/develop/use-subqueries.md)
-    - [查询结果分页](/develop/paginate-results.md)
-    - [视图](/develop/use-views.md)
-    - [临时表](/develop/use-temporary-tables.md)
-    - [公共表表达式](/develop/use-common-table-expression.md)
+    - [单表读取](/develop/dev-guide-get-data-from-single-table.md)
+    - [多表连接查询](/develop/dev-guide-join-tables.md)
+    - [子查询](/develop/dev-guide-use-subqueries.md)
+    - [查询结果分页](/develop/dev-guide-paginate-results.md)
+    - [视图](/develop/dev-guide-use-views.md)
+    - [临时表](/develop/dev-guide-use-temporary-tables.md)
+    - [公共表表达式](/develop/dev-guide-use-common-table-expression.md)
     - 读取副本数据
-      - [Follower Read](/develop/use-follower-read.md)
-      - [Stale Read](/develop/use-stale-read.md)
-    - [HTAP 查询](/develop/hybrid-oltp-and-olap-queries.md)
+      - [Follower Read](/develop/dev-guide-use-follower-read.md)
+      - [Stale Read](/develop/dev-guide-use-stale-read.md)
+    - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
   - 事务
-    - [概览](/develop/transaction-overview.md)
-    - [乐观事务和悲观事务](/develop/optimistic-and-pessimistic-transaction.md)
-    - [事务限制](/develop/transaction-restraints.md)
-    - [事务错误处理](/develop/transaction-troubleshoot.md)
+    - [概览](/develop/dev-guide-transaction-overview.md)
+    - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
+    - [事务限制](/develop/dev-guide-transaction-restraints.md)
+    - [事务错误处理](/develop/dev-guide-transaction-troubleshoot.md)
   - 优化 SQL 性能
-    - [概览](/develop/optimize-sql-overview.md)
-    - [SQL 性能调优](/develop/optimize-sql.md)
-    - [性能调优最佳实践](/develop/optimize-sql-best-practices.md)
+    - [概览](/develop/dev-guide-optimize-sql-overview.md)
+    - [SQL 性能调优](/develop/dev-guide-optimize-sql.md)
+    - [性能调优最佳实践](/develop/dev-guide-optimize-sql-best-practices.md)
     - 其他优化
-      - [避免隐式类型转换](/develop/implicit-type-conversion.md)
-      - [唯一序列号生成方案](/develop/unique-serial-number-generation.md)
+      - [避免隐式类型转换](/develop/dev-guide-implicit-type-conversion.md)
+      - [唯一序列号生成方案](/develop/dev-guide-unique-serial-number-generation.md)
   - 故障诊断
-    - [概览](/develop/troubleshoot-overview.md)
+    - [概览](/develop/dev-guide-troubleshoot-overview.md)
     - 其他故障或限制
-      - [结果集不稳定](/develop/unstable-result-set.md)
-      - [超时](/develop/timeouts-in-tidb.md)
+      - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
+      - [超时](/develop/dev-guide-timeouts-in-tidb.md)
   - 引用文档
     - SQL
-      - [Bookshop 示例应用](/develop/bookshop-schema-design.md)
+      - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
     - 规范
-      - [命名规范](/develop/object-naming-guidelines.md)
-      - [SQL 开发规范](/develop/sql-development-specification.md)
+      - [命名规范](/develop/dev-guide-object-naming-guidelines.md)
+      - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -159,6 +159,7 @@
   - 优化手册
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
+    - [优化实践](/performance-tuning-practices.md)
   - 配置优化
     - 系统调优
       - [操作系统性能参数调优](/tune-operating-system.md)
