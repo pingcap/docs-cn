@@ -164,6 +164,6 @@ ports:
 
 ## 总结
 
-Gitpod 提供了完整的、自动化的、预配置的云原生开发环境，无需本地配置。在浏览器中开发、运行、测试代码。
+Gitpod 提供了完整的、自动化的、预配置的云原生开发环境。无需本地配置，你可以直接在浏览器中开发、运行、测试代码。
 
 ![playground gitpod summary](/media/develop/playground-gitpod-summary.png)
