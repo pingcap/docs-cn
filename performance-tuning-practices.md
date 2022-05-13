@@ -202,8 +202,6 @@ TiDB CPU 平均利用率从 874% 上升到 936%
 - 设置 TiDB 全局变量 `set global tidb_ignore_prepared_cache_close_stmt=on;`（TiDB v6.0.0 起正式使用，默认关闭)
 - 设置 TiDB 配置项 `prepared-plan-cache: {enabled: true}` 开启 plan cache 功能
 
-### 性能分析
-
 #### TiDB Dashboard
 
 观察 TiDB 的 CPU 火焰图，可以看到 CompileExecutePreparedStmt 和 Optimize 没有明显的 CPU 消耗。Prepare 命令的 CPU 占比 25%，包含了 PlanBuilder 和 parseSQL 等 Prepare 解析相关的函数。
@@ -401,7 +399,7 @@ Query 平均延迟从 533 us 下降到 313 us。execute 平均延迟从 466 us �
 - avg compile duration = 47.7μs (50.3μs->47.7μs)
 - avg execution duration = 251μs (466μs->251μs)
 
-### 分析结论
+### 分析总结
 
 将所有只读表进行缓存后，可以看到，execute duration 下降非常明显，原因是所有只读表都缓存在 TiDB 中，不再需要到 TiKV 中查询数据，所以 query duration 下降，QPS 上升。
 
