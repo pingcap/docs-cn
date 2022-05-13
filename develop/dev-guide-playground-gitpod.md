@@ -32,7 +32,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 ![playground gitpod workspace init](/media/develop/playground-gitpod-workspace-init.png)
 
-在这个场景中，将会使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。你可以在终端的左侧找到进度。
+页面中的这个场景使用了 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。你可以在终端的左侧查看进度。
 
 一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 你可以在终端的右侧查看进度。
 
