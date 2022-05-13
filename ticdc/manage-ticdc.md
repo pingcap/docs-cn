@@ -259,6 +259,10 @@ For detailed integration guide, see [Quick Start Guide on Integrating TiDB with 
 
 #### Configure sink URI with `pulsar`
 
+> **Warning:**
+>
+> This is still an experimental feature. Do **NOT** use it in a production environment.
+
 Sample configuration:
 
 {{< copyable "shell-regular" >}}
@@ -280,6 +284,7 @@ The following are descriptions of parameters that can be configured for the sink
 | `auth.tls` | Uses the TLS mode to verify the downstream Pulsar (optional). For example, `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`. |
 | `auth.token` | Uses the token mode to verify the downstream Pulsar (optional). For example, `auth=token&auth.token=secret-token` or `auth=token&auth.file=path/to/secret-token-file`. |
 | `name` | The name of Pulsar producer in TiCDC (optional) |
+| `protocol` | The protocol with which messages are output to Pulsar. The value options are `canal-json`, `open-protocol`, `canal`, `avro`, and `maxwell`. |
 | `maxPendingMessages` | Sets the maximum size of the pending message queue, which is optional and defaults to 1000. For example, pending for the confirmation message from Pulsar. |
 | `disableBatching` |  Disables automatically sending messages in batches (optional) |
 | `batchingMaxPublishDelay` | Sets the duration within which the messages sent are batched (default: 10ms) |
