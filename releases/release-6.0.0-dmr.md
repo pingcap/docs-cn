@@ -463,7 +463,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
     - Fix wrong collation of the `json` type when this type is processed using builtin-func [#31320](https://github.com/pingcap/tidb/issues/31320)
     - Fix a bug that PD rules are not deleted when the count of TiFlash replicas is set to 0 [#32190](https://github.com/pingcap/tidb/issues/32190)
     - Fix the issue that `alter column set default` wrongly updates the table schema [#31074](https://github.com/pingcap/tidb/issues/31074)
-    - Fix the issue that `date_format` in TiDB handles in a MySQL-incompatible way [#32232](https://github.com/pingcap/tidb/issues/32232)
+    - Fix the issue that `date_format` in TiDB handles `'\n'` in a MySQL-incompatible way [#32232](https://github.com/pingcap/tidb/issues/32232)
     - Fix a bug that errors may occur when updating partitioned tables using join [#31629](https://github.com/pingcap/tidb/issues/31629)
     - Fix wrong range calculation results for Nulleq function on Enum values [#32428](https://github.com/pingcap/tidb/issues/32428)
     - Fix possible panic in `upper()` and `lower()` functions [#32488](https://github.com/pingcap/tidb/issues/32488)
