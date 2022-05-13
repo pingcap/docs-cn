@@ -629,7 +629,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 诸如 `alter table`、`create table` 这类和某一张具体的表相关的 DDL，称之为表级别 DDL。对于表级别 DDL 对应的事件，按照 dispatchers 的配置，被发送到相应的 topic 中。
 
-例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 dispatchers 配置，相应的分发规则如下：
+例如，对于 `matcher = ['test.*'], topic = {schema}_{table}` 这样的 dispatchers 配置，DDL 事件分发情况如下：
 
 - 若 DDL 事件中涉及单张表，则将 DDL 事件原样发送到相应的 topic 中。
     - 对于 DDL 事件 `drop table test.table1`，该事件会被发送到名为 `test_table1` 的 topic 中。
