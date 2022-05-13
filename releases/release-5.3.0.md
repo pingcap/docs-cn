@@ -350,6 +350,8 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [#27024](https://github.com/pingcap/tidb/issues/27024)
     - 修复 `TIDB_TRX` 中不包含重试事务的问题 [#28670](https://github.com/pingcap/tidb/pull/28670)
     - 修复配置项 `plugin_dir` 的默认值错误问题 [#28084](https://github.com/pingcap/tidb/issues/28084)
+    - 修复 `CONVERT_TZ` 函数在指定时区和 UTC 偏移量时返回 `NULL` 的问题 [#8311](https://github.com/pingcap/tidb/issues/8311)
+    - 修复如果 `character_set_server` 和 `collation_server` 指定的字符集未在 `CREATE SCHEMA` 语句中指定时，那么创建的新表结构不使用 `character_set_server` 和 `collation_server` 指定的字符集的问题 [#27214](https://github.com/pingcap/tidb/issues/27214)
 
 + TiKV
 
