@@ -16,6 +16,13 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 你可以以此示例为基础，构建自己的应用程序。
 
+> **建议：**
+>
+> 在[云原生开发环境](/develop/dev-guide-playground-gitpod.md)中尝试 Spring Boot 构建 TiDB 应用程序。
+> 预配置完成的环境，自动启动 TiDB 集群，获取和运行代码，只需要一个链接。
+>
+> [现在就试试](https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java)
+
 ## 第 1 步：启动你的 TiDB 集群
 
 本节将介绍 TiDB 集群的启动方法。

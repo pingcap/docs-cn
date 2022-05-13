@@ -15,7 +15,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 >
 > 推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写。
 
-> Tip:
+> **建议：**
 >
 > 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)。
 
@@ -90,6 +90,12 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 > - 支持 v5.2.0 及以上版本的 TiDB 在 Apple M1 芯片的机器上运行 `tiup playground`。
 > - 以这种方式执行的 playground，在结束部署测试后 TiUP 会清理掉原集群数据，重新执行该命令后会得到一个全新的集群。
 > - 若希望持久化数据，可以执行 TiUP 的 `--tag` 参数：`tiup --tag <your-tag> playground ...`，详情参考 [TiUP 参考手册](/tiup/tiup-reference.md#-t---tag-string)。
+
+### 使用云原生开发环境
+
+基于 Git 的预配置的开发环境: [现在就试试](/develop/dev-guide-playground-gitpod.md)
+
+该环境会自动克隆代码，并通过 TiUP 部署测试集群。
 
 ## 第 2 步：获取代码
 
@@ -888,6 +894,8 @@ public class HibernateExample
 
 <div label="使用 JDBC" href="jdbc-table-init-jdbc">
 
+> 在 Gitpod Playground 中尝试 JDBC: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
+
 使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
 
 {{< copyable "shell-regular" >}}
@@ -909,6 +917,8 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 </div>
 
 <div label="使用 Hibernate（推荐）" href="jdbc-table-init-hibernate">
+
+> 在 Gitpod Playground 中尝试 Hibernate: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
 无需手动初始化表。
 
