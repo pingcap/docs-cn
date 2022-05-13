@@ -1,6 +1,7 @@
 ---
 title: 视图
 summary: 介绍 TiDB 中的视图功能。
+aliases: ['/zh/tidb/dev/use-views']
 ---
 
 # 视图

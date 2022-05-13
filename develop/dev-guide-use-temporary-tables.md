@@ -1,6 +1,7 @@
 ---
 title: 临时表
 summary: 介绍 TiDB 临时表创建、删除、限制。
+aliases: ['/zh/tidb/dev/use-temporary-tables']
 ---
 
 # 临时表

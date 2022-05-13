@@ -1,6 +1,7 @@
 ---
 title: 连接池与连接参数
 summary: 针对开发者的 TiDB 连接池与连接参数的说明。
+aliases: ['/zh/tidb/dev/connection-parameters']
 ---
 
 # 连接池与连接参数

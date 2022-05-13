@@ -1,6 +1,7 @@
 ---
 title: 事务限制
 summary: 介绍 TiDB 中的事务限制。
+aliases: ['/zh/tidb/dev/transaction-restraints']
 ---
 
 # 事务限制

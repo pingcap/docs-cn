@@ -617,31 +617,35 @@ DROP STATS TableName;
 
 统计信息的导出接口如下。
 
-通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 json 格式的统计信息：
++ 通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 的 JSON 格式的统计信息：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
-```
+    ```
+    http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}
+    ```
 
-通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 json 格式统计信息。指定的时间应在 GC SafePoint 之后。
+    示例如下：
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
-```
+    ```
+    curl -s http://127.0.0.1:10080/stats/dump/test/t1 -o /tmp/t1.json
+    ```
 
-通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 json 格式统计信息。指定的时间应在 GC SafePoint 之后。
++ 通过以下接口可以获取数据库 `${db_name}` 中的表 `${table_name}` 在指定时间上的 JSON 格式统计信息。指定的时间应在 GC SafePoint 之后。
 
-{{< copyable "" >}}
+    {{< copyable "" >}}
 
-```
-http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyy-MM-dd HH:mm:ss}
-```
+    ```
+    http://${tidb-server-ip}:${tidb-server-status-port}/stats/dump/${db_name}/${table_name}/${yyyyMMddHHmmss}
+    ```
 
 ### 导入统计信息
+
+> **注意：**
+>
+> 启动 MySQL 客户端时，请使用 `--local-infile=1` 参数。
 
 导入的统计信息一般是通过统计信息导出接口得到的 json 文件。
 
@@ -657,4 +661,5 @@ LOAD STATS 'file_name';
 
 ## 另请参阅
 
+* [LOAD STATS](/sql-statements/sql-statement-load-stats.md)
 * [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
