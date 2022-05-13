@@ -5,7 +5,7 @@ summary: 创建二级索引的方法、应遵守的规则及例子。
 
 # 创建二级索引
 
-在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来创建二级索引，及创建二级索引时应遵守的规则。我们将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
+在这个章节当中，将开始介绍如何使用 SQL 以及多种编程语言来创建二级索引，及创建二级索引时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
 
 ## 在开始之前
 
@@ -57,7 +57,7 @@ KEY `{index_name}` (`{column_names}`)
 
 ## 例子
 
-假设你希望 `bookshop` 应用程序有 **查询某个年份出版的所有书籍** 的功能。我们的 `books` 表如下所示:
+假设你希望 `bookshop` 应用程序有 **查询某个年份出版的所有书籍** 的功能。`books` 表如下所示:
 
 |    字段名    |     类型      |                 含义                  |
 | :----------: | :-----------: | :-----------------------------------: |
@@ -82,7 +82,7 @@ CREATE TABLE `bookshop`.`books` (
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-那么，我们就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写， 以 2022 年为例，如下所示：
+因此，就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写， 以 2022 年为例，如下所示：
 
 {{< copyable "sql" >}}
 
@@ -90,7 +90,7 @@ CREATE TABLE `bookshop`.`books` (
 SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
 ```
 
-我们可以使用 [EXPLAIN](/sql-statements/sql-statement-explain.md) 进行 SQL 语句的执行计划检查：
+可以使用 [EXPLAIN](/sql-statements/sql-statement-explain.md) 进行 SQL 语句的执行计划检查：
 
 {{< copyable "sql" >}}
 
@@ -113,7 +113,7 @@ EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:
 
 可以看到返回的计划中，出现了类似 **TableFullScan** 的字样，这代表 TiDB 准备在这个查询中对 `books` 表进行全表扫描，这在数据量较大的情况下，几乎是致命的。
 
-我们在 `books` 表增加一个 `published_at` 列的索引：
+在 `books` 表增加一个 `published_at` 列的索引：
 
 {{< copyable "sql" >}}
 
@@ -144,7 +144,7 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 >
 > TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或 [执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
-我们可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
+可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
 
 {{< copyable "sql" >}}
 

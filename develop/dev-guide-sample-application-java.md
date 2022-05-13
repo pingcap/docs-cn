@@ -12,7 +12,7 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 
 > **注意：**
 >
-> 我们推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写。
+> 推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写。
 
 > Tip:
 >
@@ -143,9 +143,9 @@ CREATE TABLE player (
 );
 ```
 
-`JDBCExample.java` 是 `plain-java-jdbc` 这个示例程序的主体。因为 TiDB 与 MySQL 协议兼容，因此，我们需要初始化一个 MySQL 协议的数据源 `MysqlDataSource`，以此连接到 TiDB。并在其后，初始化 `PlayerDAO`，用来管理数据对象，进行增删改查等操作。
+`JDBCExample.java` 是 `plain-java-jdbc` 这个示例程序的主体。因为 TiDB 与 MySQL 协议兼容，因此，需要初始化一个 MySQL 协议的数据源 `MysqlDataSource`，以此连接到 TiDB。并在其后，初始化 `PlayerDAO`，用来管理数据对象，进行增删改查等操作。
 
-`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。我们在其中定义了一系列数据的操作方法，用来对提供数据的写入能力。
+`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。在其中定义了一系列数据的操作方法，用来对提供数据的写入能力。
 
 `PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。
 
@@ -580,7 +580,7 @@ public class JDBCExample
 
 可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码。并非最佳实践。
 
-当前开源比较流行的 Java ORM 为 Hibernate，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，我们此处将以 6.0.0.Beta2 + 版本进行说明。
+当前开源比较流行的 Java ORM 为 Hibernate，且 Hibernate 在版本 `6.0.0.Beta2` 及以后支持了 TiDB 方言。完美适配了 TiDB 的特性。因此，此处将以 6.0.0.Beta2 + 版本进行说明。
 
 进入目录 `plain-java-hibernate` ：
 
@@ -637,9 +637,9 @@ cd plain-java-hibernate
 </hibernate-configuration>
 ```
 
-`HibernateExample.java` 是 `plain-java-hibernate` 这个示例程序的主体。我们使用 Hibernate 时，相较于 JDBC，这里仅需写入配置文件地址，Hibernate 帮我们屏蔽了创建数据库连接时，不同数据库差异的细节。
+`HibernateExample.java` 是 `plain-java-hibernate` 这个示例程序的主体。使用 Hibernate 时，相较于 JDBC，这里仅需写入配置文件地址，Hibernate 屏蔽了创建数据库连接时，不同数据库差异的细节。
 
-`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。我们在其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC， Hibernate 帮我们封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
+`PlayerDAO` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。其中定义了一系列数据的操作方法，用来提供数据的写入能力。相较于 JDBC， Hibernate 封装了大量的操作，如对象映射、基本对象的 CRUD 等，极大的简化了代码量。
 
 `PlayerBean` 是数据实体类，为数据库表在程序内的映射。`PlayerBean` 的每个属性都对应着 `player` 表的一个字段。相较于 JDBC，Hibernate 的 `PlayerBean` 实体类为了给 Hibernate 提供更多的信息，加入了注解，用来指示映射关系。
 

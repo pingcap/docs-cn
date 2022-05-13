@@ -8,7 +8,7 @@ aliases: ['/zh/tidb/dev/developer-guide-overview']
 
 本文是为应用程序开发者所编写的，如果你对 TiDB 的内部原理感兴趣，或希望参与到 TiDB 的开发中来，那么可前往阅读 [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) 来获取更多 TiDB 的相关信息。
 
-本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，我们建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
+本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
 
 ## TiDB 基础
 
@@ -29,7 +29,7 @@ TiDB 会为你保证 `BEGIN` 开始到 `COMMIT` 或 `ROLLBACK` 结束间的所�
 
 ## 应用程序与 TiDB 交互的方式
 
-TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](/mysql-compatibility.md)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么我们建议你使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
+TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性](/mysql-compatibility.md)，因此大部分的 MySQL 的连接库都与 TiDB 兼容。如果你的应用程序框架或语言无 PingCAP 的官方适配，那么建议你使用 MySQL 的客户端库。同时，也有越来越多的三方数据库主动支持 TiDB 的差异特性。
 
 因为 TiDB 兼容 MySQL 协议，且兼容 MySQL 语法，因此大多数支持 MySQL 的 ORM 也兼容 TiDB 。
 
