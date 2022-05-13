@@ -34,7 +34,7 @@ Gitpod 是一个开源 Kubernetes 应用程序（GitHub 仓库地址 <https://gi
 
 在这个场景中，将会使用 [TiUP](https://docs.pingcap.com/zh/tidb/stable/tiup-overview) 来搭建一个 TiDB Playground。你可以在终端的左侧找到进度。
 
-一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 你可以在终端的右侧找到进度。
+一旦 TiDB Playground 准备就绪，另一个 `Spring JPA Hibernate` 任务将运行。 你可以在终端的右侧查看进度。
 
 完成所有任务后，你可以看到如下所示的页面。你可以在左侧导航栏的 `REMOTE EXPLORER` 中找到你的端口 `8080` URL（Gitpod 支持基于 URL 的端口转发）。
 
