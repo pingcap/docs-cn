@@ -1,7 +1,6 @@
 ---
 title: 事务概览
 summary: 简单介绍 TiDB 中的事务。
-aliases: ['/zh/tidb/dev/transaction-overview']
 ---
 
 # 事务概览
