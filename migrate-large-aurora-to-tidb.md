@@ -24,6 +24,26 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
+## Aurora 开启 binlog
+
+若要持续、增量从 Aurora 迁移数据，则必须开启 binlog。
+
+1. 通过以下网址打开 Amazon RDS 控制台：[https://console.aws.amazon.com/rds/](https://console.aws.amazon.com/rds/)。
+
+2. 在导航窗格中，选择参数组。
+
+3. 选择您要修改的数据库集群所使用的参数组。
+
+4. 您无法修改默认参数组。如果数据库集群使用默认参数组，则创建新的参数组并将其与数据库集群关联。
+
+5. 从 Parameter group actions (参数组操作) 中，选择 Edit (编辑)。
+
+6. 将`binlog_format`参数设置为`ROW`，`binlog_row_image`参数设置为`full`。
+
+7. 选择保存更改以保存对数据库集群参数组的更新(Aurora 可能需要重启)。
+
+更多信息可参考[配置 Aurora MySQL 二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
+
 ## 导入全量数据到 TiDB
 
 ### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
