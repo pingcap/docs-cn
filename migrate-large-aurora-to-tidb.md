@@ -198,7 +198,7 @@ type = '$3'
 
     from:
       host: "${host}"         # 例如：172.16.10.81
-      user: "root"
+      user: "admin"
       password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
       port: 3306
     ```

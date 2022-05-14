@@ -60,7 +60,7 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 
     from:
       host: "${host}"         # Aurora-A writer 实例的访问地址
-      user: "${username}"
+      user: "admin"
       password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
       port: 3306
     ```
@@ -261,7 +261,7 @@ mysql-instances:
 
     from:
       host: "${host}"         # Aurora writer 实例的访问地址
-      user: "${username}"
+      user: "admin"
       password: "${password}" # 支持但不推荐使用明文密码，建议使用 dmctl encrypt 对明文密码进行加密后使用
       port: 3306
     ```
