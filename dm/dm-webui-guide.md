@@ -16,7 +16,6 @@ DM WebUI 是一个 TiDB Data Migration (DM) 迁移任务管理界面，方便用
 
 DM WebUI 主要包含以下界面：
 
-- **Dashboard**：包含了 DM 中同步任务的主要监控信息和运行状态信息，帮助用户快速了解任务的整体运行状况，以及与延迟、性能相关的重要信息。
 - **数据迁移**
     - **任务列表**：提供创建迁移任务的界面入口，并展示各迁移任务的详细信息。帮助用户监控、创建、删除、配置迁移任务。
     - **上游配置**：用户在此页面配置同步任务的上游数据源信息。管理数据迁移环境中的上游配置，包含了，新增、删除上游配置、监控上游配置对应的同步任务状态、修改上游配置等相关的管理功能。
@@ -33,56 +32,6 @@ DM WebUI 主要包含以下界面：
 你可以从 DM 集群的任意 master 节点访问 DM WebUI，访问端口与 DM OpenAPI 保持一致，默认为 `8261`。访问地址示例：`http://{master_ip}:{master_port}/dashboard/`。
 
 ## 使用前提
-
-为确保 DM WebUI 能正常显示，在使用 DM WebUI 前，确保以下操作或配置已完成：
-
-+ 开启 DM OpenAPI 配置：
-
-    - 如果你的 DM 集群是通过二进制方式部署的，在该 master 节点的配置中开启 `openapi` 配置项：
-
-        ```
-        openapi = true
-        ```
-
-    - 如果你的 DM 集群是通过 TiUP 部署的，在拓扑文件中添加如下配置：
-
-        ```yaml
-        server_configs:
-          master:
-            openapi: true
-        ```
-
-+ 首次部署 Grafana 时，已正确安装监控相关组件：`monitoring_servers` 和 `grafana_servers`。`grafana_servers` 须按如下进行配置：
-
-    ```
-    grafana_servers:
-      - host: 10.0.1.14
-        # port: 3000
-        # deploy_dir: /tidb-deploy/grafana-3000
-        config:       # 请确保执行 tiup dm -v 的 TiUP 版本在 v1.9.0 及以上
-          auth.anonymous.enabled: true
-          security.allow_embedding: true
-    ```
-
-    若 `grafana_servers` 使用了非默认的 IP 和端口，则需要在 WebUI 的 **Dashboard** 界面填写正确的 IP 和端口。
-
-+ 如果你的 DM 集群是从旧版本升级的，则需要手动修改 Grafana 的配置：
-
-    1. 编辑 `/{deploy-dir}/grafana-{port}/conf/grafana.ini` 文件，按如下所示修改两个配置项：
-
-        ```ini
-        [auth.anonymous]
-        enabled = true
-
-        [security]
-        allow_embedding = true
-        ```
-
-    2. 执行 `tiup dm reload` 使新的配置生效。
-
-## Dashboard
-
-要查看迁移任务的监控，你可访问 **Dashboard** 页面。**Dashboard** 是内嵌了 DM 的 Grafana Dashboard，包含 `Standard` 和 `Professional` 两个视图，分别从标准角度展现监控信息，和从更专业的角度展现更详细的监控信息。
 
 ## 数据迁移
 
