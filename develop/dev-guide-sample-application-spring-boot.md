@@ -125,21 +125,21 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 - 基于 Red Hat 的 Linux 发行版上安装(如 Fedora、CentOS 等)：
 
-- dnf 包管理器
+    - dnf 包管理器
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```
-    dnf install maven
-    ```
+        ```
+        dnf install maven
+        ```
 
-- yum 包管理器
+    - yum 包管理器
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```
-    yum install maven
-    ```
+        ```
+        yum install maven
+        ```
 
 其他安装方法，请参考 [Maven 官方文档](https://maven.apache.org/install.html)。
 
