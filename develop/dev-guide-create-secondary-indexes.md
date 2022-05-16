@@ -1,13 +1,12 @@
 ---
 title: 创建二级索引
-summary: 创建二级索引的方法、最佳实践及例子。
+summary: 创建二级索引的方法、规范及例子。
+aliases: ['/zh/tidb/dev/create-secondary-indexes']
 ---
 
 # 创建二级索引
 
-索引是集群中的逻辑对象，可以帮助 TiDB 集群更有效地查找数据。当你创建二级索引时，TiDB 会创建一个表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[二级索引](/best-practices/tidb-best-practices.md#二级索引)中查看更多信息。
-
-此页面提供了一个创建二级索引的最佳实践指南，并提供了一个基于 TiDB 的 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库的示例。
+在这个章节当中，将开始介绍如何使用 SQL 以及多种编程语言来创建二级索引，及创建二级索引时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
 
 ## 在开始之前
 
@@ -18,9 +17,11 @@ summary: 创建二级索引的方法、最佳实践及例子。
 - [创建一个数据库](/develop/dev-guide-create-database.md)。
 - [创建表](/develop/dev-guide-create-table.md)。
 
-## 创建二级索引
+## 什么是二级索引
 
-### 在已有表中添加二级索引
+二级索引是集群中的逻辑对象，你可以简单地认为它就是一种对数据的排序，TiDB 使用这种有序性来加速查询。TiDB 的创建二级索引的操作为在线操作，不会阻塞表中的数据读写。TiDB 会创建表中各行的引用，并按选择的列进行排序。而并非对表本身的数据进行排序。可在[二级索引](/best-practices/tidb-best-practices.md#二级索引)中查看更多信息。二级索引可[跟随表进行创建](#新建表的同时创建二级索引)，也可[在已有的表上进行添加](#在已有表中添加二级索引)。
+
+## 在已有表中添加二级索引
 
 如果需要对已有表中添加二级索引，可使用 [CREATE INDEX](/sql-statements/sql-statement-create-index.md) 语句。在 TiDB 中，`CREATE INDEX` 为在线操作，不会阻塞表中的数据读写。二级索引创建一般如以下形式：
 
@@ -30,13 +31,13 @@ summary: 创建二级索引的方法、最佳实践及例子。
 CREATE INDEX {index_name} ON {table_name} ({column_names});
 ```
 
-|       参数       |                 描述                 |
-| :--------------: | :----------------------------------: |
-|  `{index_name}`  |              二级索引名              |
-|  `{table_name}`  |                 表名                 |
-| `{column_names}` | 将需要索引的列名列表，以半角逗号分隔 |
+**参数描述**
 
-### 新建表的同时创建二级索引
+- `{index_name}`: 二级索引名。
+- `{table_name}`: 表名。
+- `{column_names}`: 将需要索引的列名列表，以半角逗号分隔。
+
+## 新建表的同时创建二级索引
 
 如果你希望在创建表的同时，同时创建二级索引，可在 [CREATE TABLE](/sql-statements/sql-statement-create-table.md) 的末尾使用包含 `KEY` 关键字的子句来创建二级索引：
 
@@ -46,18 +47,18 @@ CREATE INDEX {index_name} ON {table_name} ({column_names});
 KEY `{index_name}` (`{column_names}`)
 ```
 
-|       参数       |                 描述                 |
-| :--------------: | :----------------------------------: |
-|  `{index_name}`  |              二级索引名              |
-| `{column_names}` | 将需要索引的列名列表，以半角逗号分隔 |
+**参数描述**
 
-## 最佳实践
+- `{index_name}`: 二级索引名。
+- `{column_names}`: 将需要索引的列名列表，以半角逗号分隔。
+
+## 创建二级索引时应遵守的规则
 
 见 [索引的最佳实践](/develop/dev-guide-index-best-practice.md)。
 
 ## 例子
 
-假设你希望 `bookshop` 应用程序有 **查询某个年份出版的所有书籍** 的功能。我们的 `books` 表如下所示:
+假设你希望 `bookshop` 应用程序有 **查询某个年份出版的所有书籍** 的功能。`books` 表如下所示:
 
 |    字段名    |     类型      |                 含义                  |
 | :----------: | :-----------: | :-----------------------------------: |
@@ -82,7 +83,7 @@ CREATE TABLE `bookshop`.`books` (
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-那么，我们就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写， 以 2022 年为例，如下所示：
+因此，就需要对 **查询某个年份出版的所有书籍** 的 SQL 进行编写， 以 2022 年为例，如下所示：
 
 {{< copyable "sql" >}}
 
@@ -90,7 +91,7 @@ CREATE TABLE `bookshop`.`books` (
 SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:00:00' AND `published_at` < '2023-01-01 00:00:00';
 ```
 
-我们可以使用 [EXPLAIN](/sql-statements/sql-statement-explain.md) 进行 SQL 语句的执行计划检查：
+可以使用 [EXPLAIN](/sql-statements/sql-statement-explain.md) 进行 SQL 语句的执行计划检查：
 
 {{< copyable "sql" >}}
 
@@ -113,7 +114,7 @@ EXPLAIN SELECT * FROM `bookshop`.`books` WHERE `published_at` >= '2022-01-01 00:
 
 可以看到返回的计划中，出现了类似 **TableFullScan** 的字样，这代表 TiDB 准备在这个查询中对 `books` 表进行全表扫描，这在数据量较大的情况下，几乎是致命的。
 
-我们在 `books` 表增加一个 `published_at` 列的索引：
+在 `books` 表增加一个 `published_at` 列的索引：
 
 {{< copyable "sql" >}}
 
@@ -144,7 +145,7 @@ CREATE INDEX `idx_book_published_at` ON `bookshop`.`books` (`bookshop`.`books`.`
 >
 > TiDB 在查询时，还支持显式地使用索引，你可以使用 [Optimizer Hints](/optimizer-hints.md) 或 [执行计划管理 (SPM)](/sql-plan-management.md) 来人为的控制索引的使用。但如果你不了解它内部发生了什么，请你**_暂时先不要使用它_**。
 
-我们可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
+可以使用 [SHOW INDEXES](/sql-statements/sql-statement-show-indexes.md) 语句查询表中的索引：
 
 {{< copyable "sql" >}}
 
@@ -163,5 +164,7 @@ SHOW INDEXES FROM `bookshop`.`books`;
 +-------+------------+-----------------------+--------------+--------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------+
 2 rows in set (1.63 sec)
 ```
+
+## 更进一步
 
 至此，你已经完成数据库、表及二级索引的创建，接下来，数据库模式已经准备好给你的应用程序提供 [写入](/develop/dev-guide-insert-data.md) 和 [读取](/develop/dev-guide-get-data-from-single-table.md) 读取的能力了。

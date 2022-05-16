@@ -1,15 +1,16 @@
 ---
 title: 公共表表达式 (CTE)
 summary: 介绍 TiDB 公共表表达式能力，用以简化 SQL。
+aliases: ['/zh/tidb/dev/use-common-table-expression']
 ---
 
 # 公共表表达式 (CTE)
 
 由于业务的客观复杂性，有时候会写出长达 2000 行的单条 SQL 语句，其中包含大量的聚合和多层子查询嵌套，维护此类 SQL 堪称开发人员的噩梦。
 
-在前面的小节当中我们已经介绍了如何使用[视图](/develop/dev-guide-use-views.md)简化查询，也介绍了如何使用[临时表](/develop/dev-guide-use-temporary-tables.md)来缓存中间查询结果。
+在前面的小节当中已经介绍了如何使用[视图](/develop/dev-guide-use-views.md)简化查询，也介绍了如何使用[临时表](/develop/dev-guide-use-temporary-tables.md)来缓存中间查询结果。
 
-在这一小节当中，我们将介绍 TiDB 当中的公共表表达式（CTE）语法，它是一种更加便捷的复用查询结果的方法。
+在这一小节当中，将介绍 TiDB 当中的公共表表达式（CTE）语法，它是一种更加便捷的复用查询结果的方法。
 
 TiDB 从 5.1 版本开始支持 ANSI SQL 99 标准的 CTE 及其递归的写法，极大提升开发人员和 DBA 编写复杂业务逻辑 SQL 的效率，增强代码的可维护性。
 
@@ -32,12 +33,12 @@ WITH <query_name> AS (
 SELECT ... FROM <query_name>;
 ```
 
-例如，假设我们还是想知道最年长的 50 位作家分别编写过多少书籍。
+例如，假设还想知道最年长的 50 位作家分别编写过多少书籍。
 
 <SimpleTab>
 <div label="SQL">
 
-我们可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
+可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
 
 {{< copyable "sql" >}}
 
@@ -115,7 +116,7 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
 </div>
 </SimpleTab>
 
-我们发现名为 “Ray Macejkovic” 的作者写了 4 本书，让我们继续通过 CTE 查询来了解这 4 本书的销量和评分：
+这时，可以发现名为 “Ray Macejkovic” 的作者写了 4 本书，继续通过 CTE 查询来了解这 4 本书的销量和评分：
 
 {{< copyable "sql" >}}
 
@@ -166,9 +167,9 @@ FROM
 4 rows in set (0.06 sec)
 ```
 
-在这个 SQL 语句，我们定义了三个 CTE 块，CTE 块之间使用 `,` 进行分隔。
+在这个 SQL 语句，定义了三个 CTE 块，CTE 块之间使用 `,` 进行分隔。
 
-我们先在 CTE 块 `books_authored_by_rm` 当中将该作者（作者 ID 为 `2299112019`）所编写的书查出来，然后在 `books_with_average_ratings` 和 `books_with_orders` 中分别查出这些书的平均评分和订单数，最后通过 `JOIN` 语句进行汇总。
+先在 CTE 块 `books_authored_by_rm` 当中将该作者（作者 ID 为 `2299112019`）所编写的书查出来，然后在 `books_with_average_ratings` 和 `books_with_orders` 中分别查出这些书的平均评分和订单数，最后通过 `JOIN` 语句进行汇总。
 
 值得注意的是，`books_authored_by_rm` 中的查询只会执行一次，TiDB 会开辟一块临时空间对查询的结果进行缓存，当 `books_with_average_ratings` 和 `books_with_orders` 引用时会直接从该临时空间当中获取数据。
 

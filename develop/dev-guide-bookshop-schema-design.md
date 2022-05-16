@@ -1,6 +1,7 @@
 ---
 title: Bookshop 应用
 summary: Bookshop 应用设计、数据导入、连接数据库等操作。
+aliases: ['/zh/tidb/dev/bookshop-schema-design']
 ---
 
 # Bookshop 应用

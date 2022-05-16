@@ -1,6 +1,7 @@
 ---
 title: Stale Read
 summary: 使用 Stale Read 在特定情况下加速查询。
+aliases: ['/zh/tidb/dev/use-stale-read']
 ---
 
 # Stale Read
@@ -9,7 +10,7 @@ Stale Read 是一种读取历史数据版本的机制，通过 Stale Read 功能
 
 在实际的使用当中，请根据具体的[场景](/stale-read.md#场景描述)判断是否适合在 TiDB 当中开启 Stale Read 功能。如果你的应用程序不能容忍读到非实时的数据，请勿使用 Stale Read，否则读到的数据可能不是最新成功写入的数据。
 
-TiDB 为我们提供了语句级别、事务级别、会话级别三种级别的 Stale Read 功能，接下来我们将逐一进行介绍：
+TiDB 提供了语句级别、事务级别、会话级别三种级别的 Stale Read 功能，接下来将逐一进行介绍：
 
 ## 引入
 
@@ -36,7 +37,7 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 5 rows in set (0.02 sec)
 ```
 
-我们看到此时（2022-04-20 15:20:00）的列表中，**The Story of Droolius Caesar** 这本小说的价格为 100.0 元。
+看到此时（2022-04-20 15:20:00）的列表中，**The Story of Droolius Caesar** 这本小说的价格为 100.0 元。
 
 于此同时，卖家发现这本书很受欢迎，于是他通过下面的 SQL 语句将这本书的价格高到了 150.0 元。
 
@@ -53,7 +54,7 @@ Query OK, 1 row affected (0.00 sec)
 Rows matched: 1  Changed: 1  Warnings: 0
 ```
 
-当我们再次查询最新书籍列表时，发现这本书确实涨价了。
+当再次查询最新书籍列表时，发现这本书确实涨价了。
 
 ```
 +------------+------------------------------+-----------------------+--------+
@@ -68,9 +69,9 @@ Rows matched: 1  Changed: 1  Warnings: 0
 5 rows in set (0.01 sec)
 ```
 
-如果我们不要求必须使用最新的数据，可以让 TiDB 通过 Stale Read 功能直接返回可能已经过期的历史数据，避免使用强一致性读时数据同步带来的延迟。
+如果不要求必须使用最新的数据，可以让 TiDB 通过 Stale Read 功能直接返回可能已经过期的历史数据，避免使用强一致性读时数据同步带来的延迟。
 
-假设在 Bookshop 应用程序当中，在用户浏览书籍列表页时，我们不对书籍价格的实时性进行要求，只有用户在点击查看书籍详情页或下单时才去获取实时的价格信息，我们可以借助 Stale Read 能力来进一步提升应用的吞吐量。
+假设在 Bookshop 应用程序当中，在用户浏览书籍列表页时，不对书籍价格的实时性进行要求，只有用户在点击查看书籍详情页或下单时才去获取实时的价格信息，可以借助 Stale Read 能力来进一步提升应用的吞吐量。
 
 ## 语句级别
 
@@ -247,7 +248,7 @@ WARN: GC life time is shorter than transaction duration.
 START TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
-我们尝试通过 SQL 查询最新书籍的价格，发现 **The Story of Droolius Caesar** 这本书的价格还是更新之前的价格 100.0 元。
+尝试通过 SQL 查询最新书籍的价格，发现 **The Story of Droolius Caesar** 这本书的价格还是更新之前的价格 100.0 元。
 
 {{< copyable "sql" >}}
 
@@ -270,7 +271,7 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 5 rows in set (0.01 sec)
 ```
 
-随后我们通过 `COMMIT;` 语句提交事务，当事务结束后，我们又可以重新读取到最新数据：
+随后通过 `COMMIT;` 语句提交事务，当事务结束后，又可以重新读取到最新数据：
 
 ```
 +------------+------------------------------+-----------------------+--------+
@@ -288,7 +289,7 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 </div>
 <div label="Java" href="txn-java">
 
-我们可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
+可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
 {{< copyable "" >}}
 
@@ -307,7 +308,7 @@ public static class StaleReadHelper {
 }
 ```
 
-然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内我们查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
+然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
 
 {{< copyable "" >}}
 
@@ -392,7 +393,7 @@ The latest book price (after the transaction commit): 150
 <SimpleTab>
 <div label="SQL" href="next-txn-sql">
 
-例如，我们可以通过下面这个 SQL 将已开启的事务切换到只读模式，通过 `AS OF TIMESTAMP` 语句开启能够读取 5 秒前的历史数据 Stale Read 功能。
+例如，可以通过下面这个 SQL 将已开启的事务切换到只读模式，通过 `AS OF TIMESTAMP` 语句开启能够读取 5 秒前的历史数据 Stale Read 功能。
 
 {{< copyable "sql" >}}
 
@@ -403,7 +404,7 @@ SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 </div>
 <div label="Java" href="next-txn-java">
 
-我们可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
+可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
 {{< copyable "" >}}
 
@@ -421,7 +422,7 @@ public static class TxnHelper {
 }
 ```
 
-然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内我们查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
+然后在 `BookDAO` 类当中定义一个通过事务开启 Stale Read 功能的方法，在方法内查询最新的书籍列表，但是不再在查询语句中添加 `AS OF TIMESTAMP`。
 
 {{< copyable "" >}}
 

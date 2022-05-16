@@ -1,6 +1,7 @@
 ---
 title: 插入数据
 summary: 插入数据、批量导入数据的方法、最佳实践及例子。
+aliases: ['/zh/tidb/dev/insert-data']
 ---
 
 <!-- markdownlint-disable MD029 -->
@@ -18,7 +19,7 @@ summary: 插入数据、批量导入数据的方法、最佳实践及例子。
 
 ## 插入行
 
-假设你需要插入多行数据，那么会有两种插入的办法，假设我们需要插入 3 个玩家数据：
+假设你需要插入多行数据，那么会有两种插入的办法，假设需要插入 3 个玩家数据：
 
 - 一个**多行插入语句**：
 
@@ -133,7 +134,7 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 ## 批量插入
 
-如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。我们推荐使用 PingCAP 提供的一系列工具进行数据迁移：
+如果你需要快速地将大量数据导入 TiDB 集群，最好的方式并不是使用 `INSERT` 语句，这并不是最高效的方法，而且需要你自行处理异常等问题。推荐使用 PingCAP 提供的一系列工具进行数据迁移：
 
 - 数据导出工具：[Dumpling](/dumpling-overview.md)。可以导出 MySQL 或 TiDB 的数据到本地或 Amazon S3 中。
 - 数据导入工具：[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。可以导入 `Dumpling` 导出的数据、CSV 文件，或者 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。同时支持在本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
@@ -142,15 +143,15 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 ## 避免热点
 
-在设计表时需要考虑是否存在大量插入行为，若有，需在表设计期间对热点进行规避。请查看 [创建表 - 选择主键](/develop/dev-guide-create-table.md#选择主键) 部分，并遵从 [主键选择的最佳实践](/develop/dev-guide-create-table.md#主键选择的最佳实践)。
+在设计表时需要考虑是否存在大量插入行为，若有，需在表设计期间对热点进行规避。请查看[创建表 - 选择主键](/develop/dev-guide-create-table.md#选择主键)部分，并遵从[选择主键时应遵守的规则](/develop/dev-guide-create-table.md#选择主键时应遵守的规则)。
 
 更多有关热点问题的处理办法，请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)文档。
 
 ## 主键为 `AUTO_RANDOM` 表插入数据
 
-在我们插入的表主键为 `AUTO_RANDOM` 时，这时默认情况下，不能指定主键。例如 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中，我们可以看到 [users 表](/develop/dev-guide-bookshop-schema-design.md#users-表) 的 `id` 字段含有 `AUTO_RANDOM` 属性。
+在插入的表主键为 `AUTO_RANDOM` 时，这时默认情况下，不能指定主键。例如 [bookshop](/develop/dev-guide-bookshop-schema-design.md) 数据库中，可以看到 [users 表](/develop/dev-guide-bookshop-schema-design.md#users-表) 的 `id` 字段含有 `AUTO_RANDOM` 属性。
 
-此时，我们不可使用类似以下 SQL 进行插入：
+此时，不可使用类似以下 SQL 进行插入：
 
 {{< copyable "sql" >}}
 

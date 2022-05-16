@@ -1,17 +1,18 @@
 ---
 title: 单表查询
 summary: 介绍 TiDB 中的单表查询功能。
+aliases: ['/zh/tidb/dev/get-data-from-single-table']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
 # 单表查询
 
-在这个章节当中，我们将开始介绍如何使用 SQL 以及多种编程语言来对数据库中的数据进行查询。
+在这个章节当中，将开始介绍如何使用 SQL 以及多种编程语言来对数据库中的数据进行查询。
 
 ## 开始之前
 
-下面我们将围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
+下面将围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的数据查询部分展开介绍。
 
 在阅读本章节之前，你需要做以下准备工作：
 
@@ -21,7 +22,7 @@ summary: 介绍 TiDB 中的单表查询功能。
 
 ## 简单的查询
 
-在 Bookshop 应用程序的数据库当中，`authors` 表存放了作家们的基础信息，我们可以通过 `SELECT ... FROM ...` 语句将数据从数据库当中调取出去。
+在 Bookshop 应用程序的数据库当中，`authors` 表存放了作家们的基础信息，可以通过 `SELECT ... FROM ...` 语句将数据从数据库当中调取出去。
 
 <SimpleTab>
 <div label="SQL" href="simple-sql">
@@ -58,7 +59,7 @@ SELECT id, name FROM authors;
 </div>
 <div label="Java" href="simple-java">
 
-在 Java 语言当中，我们通过声明一个 `Author` 类来定义如何存放作者的基础信息，我们可以根据数据的[类型](/data-type-overview.md)和[取值范围](/data-type-numeric.md)从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
+在 Java 语言当中，可以通过声明一个 `Author` 类来定义如何存放作者的基础信息，根据数据的[类型](/data-type-overview.md)和[取值范围](/data-type-numeric.md)从 Java 语言当中选择合适的数据类型来存放对应的数据，例如：
 
 - 使用 `Int` 类型变量存放 `int` 类型的数据。
 - 使用 `Long` 类型变量存放 `bigint` 类型的数据。
@@ -116,14 +117,14 @@ public class AuthorDAO {
 
 ## 对结果进行筛选
 
-查询得到的结果非常多，但是并不都是我们想要的？我们可以通过 `WHERE` 语句对查询的结果进行过滤，从而找到我们想要查询的部分。
+查询得到的结果非常多，但是并不都是你想要的？可以通过 `WHERE` 语句对查询的结果进行过滤，从而找到想要查询的部分。
 
-例如，我们想要查找众多作家当中找出在 1998 年出生的作家：
+例如，想要查找众多作家当中找出在 1998 年出生的作家：
 
 <SimpleTab>
 <div label="SQL" href="filter-sql">
 
-我们可以在 `WHERE` 子句来添加筛选的条件：
+可以在 `WHERE` 子句来添加筛选的条件：
 
 {{< copyable "sql" >}}
 
@@ -134,11 +135,11 @@ SELECT * FROM authors WHERE birth_year = 1998;
 </div>
 <div label="Java" href="filter-java">
 
-对于 Java 程序而言，我们希望通过同一个 SQL 来处理带有动态参数的数据查询请求。
+对于 Java 程序而言，可以通过同一个 SQL 来处理带有动态参数的数据查询请求。
 
-将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给我们的应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
+将参数拼接到 SQL 语句当中也许是一种方法，但是这可能不是一个好的主意，因为这会给应用程序带来潜在的 [SQL 注入](https://zh.wikipedia.org/wiki/SQL%E6%B3%A8%E5%85%A5) 风险。
 
-在处理这类查询时，我们应该使用 [PreparedStatement](/develop/dev-guide-prepared-statement.md) 来替代普通的 Statement。
+在处理这类查询时，应该使用 [PreparedStatement](/develop/dev-guide-prepared-statement.md) 来替代普通的 Statement。
 
 {{< copyable "" >}}
 
@@ -167,9 +168,9 @@ public List<Author> getAuthorsByBirthYear(Short birthYear) throws SQLException {
 
 ## 对结果进行排序
 
-使用 `ORDER BY` 语句可以让查询结果按照我们所期望的方式进行排序。
+使用 `ORDER BY` 语句可以让查询结果按照期望的方式进行排序。
 
-例如，我们可以通过下面的 SQL 语句令 `authors` 表的数据根据 `birth_year` 列进行降序（`DESC`）排序，从而得到最年轻的作家列表。
+例如，可以通过下面的 SQL 语句令 `authors` 表的数据根据 `birth_year` 列进行降序（`DESC`）排序，从而得到最年轻的作家列表。
 
 {{< copyable "sql" >}}
 
@@ -201,7 +202,7 @@ ORDER BY birth_year DESC;
 
 ## 限制查询结果数量
 
-如果希望 TiDB 只返回部分结果，我们可以使用 `LIMIT` 语句限制查询结果返回的记录数。
+如果希望 TiDB 只返回部分结果，可以使用 `LIMIT` 语句限制查询结果返回的记录数。
 
 {{< copyable "sql" >}}
 

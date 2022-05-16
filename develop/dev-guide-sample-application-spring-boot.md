@@ -1,6 +1,7 @@
 ---
 title: 使用 Spring Boot 构建 TiDB 应用程序
 summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
+aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 ---
 
 <!-- markdownlint-disable MD029 -->
@@ -9,11 +10,18 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 本教程向你展示如何使用 TiDB 构建 [Spring Boot](https://spring.io/projects/spring-boot) Web 应用程序。使用 [Spring Data JPA](https://spring.io/projects/spring-data-jpa) 模块作为数据访问能力的框架。此示例应用程序的代码仓库可在 [Github](https://github.com/pingcap-inc/tidb-example-java) 下载。
 
-这是一个较为完整的构建 Restful API 的示例应用程序，展示了一个使用 **TiDB** 作为数据库的通用 **Spring Boot** 后端服务。我们设计了以下过程，用于还原一个现实场景：
+这是一个较为完整的构建 Restful API 的示例应用程序，展示了一个使用 **TiDB** 作为数据库的通用 **Spring Boot** 后端服务。设计了以下过程，用于还原一个现实场景：
 
 这是一个关于游戏的例子，每个玩家有两个属性：金币数 `coins` 和货物数 `goods`。且每个玩家都拥有一个字段 `id`，作为玩家的唯一标识。玩家在金币数和货物数充足的情况下，可以自由的交易。
 
 你可以以此示例为基础，构建自己的应用程序。
+
+> **建议：**
+>
+> 在[云原生开发环境](/develop/dev-guide-playground-gitpod.md)中尝试 Spring Boot 构建 TiDB 应用程序。
+> 预配置完成的环境，自动启动 TiDB 集群，获取和运行代码，只需要一个链接。
+>
+> [现在就试试](https://gitpod.io/#targetFile=spring-jpa-hibernate_Makefile,targetMode=spring-jpa-hibernate/https://github.com/pingcap-inc/tidb-example-java)
 
 ## 第 1 步：启动你的 TiDB 集群
 
@@ -89,9 +97,9 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 
 ## 第 2 步：安装 JDK
 
-请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，我们推荐使用 Java 版本 11 以上的 JDK 。
+请在你的计算机上下载并安装 **Java Development Kit** (JDK)，这是 Java 开发的必备工具。**Spring Boot** 支持 Java 版本 8 以上的 JDK，由于 **Hibernate** 版本的缘故，推荐使用 Java 版本 11 以上的 JDK 。
 
-我们同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用 版本 17 的 **OpenJDK** 。
+示例应用程序同时支持 **Oracle JDK** 和 **OpenJDK**，请自行选择，本教程将使用 版本 17 的 **OpenJDK** 。
 
 ## 第 3 步：安装 Maven
 
@@ -184,7 +192,7 @@ summary: 给出一个 Spring Boot 构建 TiDB 应用程序示例。
 >
 > _—— 节选自 Hibernate 官方文档： [Database Dialect](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#database-dialect)_
 
-随后，此项目即可正常使用，但仅可使用 TiDB 与 MySQL 相同的能力部分，即使用 MySQL 方言。这是由于 Hibernate 支持 TiDB 方言的版本为 6.0.0.Beta2 以上，而 Spring Data JPA 对 Hibernate 的默认依赖版本为 5.6.4.Final。所以，我们推荐对 pom.xml 作出以下修改：
+随后，此项目即可正常使用，但仅可使用 TiDB 与 MySQL 相同的能力部分，即使用 MySQL 方言。这是由于 Hibernate 支持 TiDB 方言的版本为 6.0.0.Beta2 以上，而 Spring Data JPA 对 Hibernate 的默认依赖版本为 5.6.4.Final。所以，推荐对 pom.xml 作出以下修改：
 
 1. 如此[依赖文件](https://github.com/pingcap-inc/tidb-example-java/blob/main/spring-jpa-hibernate/pom.xml#L26)中所示，将 **Spring Data JPA** 内引入的 `jakarta` 包进行排除，即将：
 
@@ -294,7 +302,7 @@ make
 
 #### 手动构建并运行
 
-我们推荐你使用 Make 方式进行构建并运行，当然，若你希望手动进行构建，请依照以下步骤逐步运行，可以得到相同的结果：
+推荐你使用 Make 方式进行构建并运行，当然，若你希望手动进行构建，请依照以下步骤逐步运行，可以得到相同的结果：
 
 清除缓存并打包：
 
@@ -360,7 +368,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 ## 第 6 步：HTTP 请求
 
-服务完成运行后，即可使用 HTTP 接口请求后端程序。`http://localhost:8080` 是我们的服务提供根地址。我们使用一系列的 HTTP 请求来演示如何使用该服务。
+服务完成运行后，即可使用 HTTP 接口请求后端程序。`http://localhost:8080` 是服务提供根地址。此处使用一系列的 HTTP 请求来演示如何使用该服务。
 
 ### 第 6 步第 1 部分：使用 Postman 请求(推荐)
 
@@ -410,7 +418,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 
 #### 增加玩家
 
-我们使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
+使用 **Post** 方法请求 `/player` 端点请求来增加玩家，即：
 
 {{< copyable "shell-regular" >}}
 
@@ -418,7 +426,7 @@ Hibernate: create table player_jpa (id bigint not null, coins integer, goods int
 curl --location --request POST 'http://localhost:8080/player/' --header 'Content-Type: application/json' --data-raw '[{"coins":100,"goods":20}]'
 ```
 
-这里使用 JSON 作为我们信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家个数。
+这里使用 JSON 作为信息的载荷。表示需要创建一个金币数 `coins` 为 100，货物数 `goods` 为 20 的玩家。返回值为创建的玩家个数。
 
 ```json
 1
@@ -426,7 +434,7 @@ curl --location --request POST 'http://localhost:8080/player/' --header 'Content
 
 #### 使用 ID 获取玩家信息
 
-我们使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的我们需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
+使用 **Get** 方法请求 `/player` 端点请求来获取玩家信息，额外的需要在路径上给出玩家的 `id` 参数，即 `/player/{id}` ，例如在请求 `id` 为 1 的玩家时：
 
 {{< copyable "shell-regular" >}}
 
@@ -446,7 +454,7 @@ curl --location --request GET 'http://localhost:8080/player/1'
 
 #### 使用 Limit 批量获取玩家信息
 
-我们使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的我们需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
+使用 **Get** 方法请求 `/player/limit` 端点请求来获取玩家信息，额外的需要在路径上给出限制查询的玩家信息的总数，即 `/player/limit/{limit}` ，例如在请求最多 3 个玩家的信息时：
 
 {{< copyable "shell-regular" >}}
 
@@ -478,7 +486,7 @@ curl --location --request GET 'http://localhost:8080/player/limit/3'
 
 #### 分页获取玩家信息
 
-我们使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的我们需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
+使用 **Get** 方法请求 `/player/page` 端点请求来分页获取玩家信息，额外的需要使用 URL 参数 ，例如在请求页面序号 `index` 为 0，每页最大请求量 `size` 为 2 时：
 
 {{< copyable "shell-regular" >}}
 
@@ -532,7 +540,7 @@ curl --location --request GET 'http://localhost:8080/player/page?index=0&size=2'
 
 #### 获取玩家个数
 
-我们使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
+使用 **Get** 方法请求 `/player/count` 端点请求来获取玩家个数：
 
 {{< copyable "shell-regular" >}}
 
@@ -548,7 +556,7 @@ curl --location --request GET 'http://localhost:8080/player/count'
 
 #### 玩家交易
 
-我们使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
+使用 **Put** 方法请求 `/player/trade` 端点请求来发起玩家间的交易，即：
 
 {{< copyable "shell-regular" >}}
 
@@ -561,7 +569,7 @@ curl --location --request PUT 'http://localhost:8080/player/trade' \
   --data-urlencode 'price=100'
 ```
 
-这里使用 **Form Data** 作为我们信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
+这里使用 **Form Data** 作为信息的载荷。表示售卖玩家 ID `sellID` 为 1、购买玩家 ID `buyID` 为 2、购买货物数量 `amount` 为 10、购买消耗金币数 `price` 为 100。返回值为交易是否成功。当出现售卖玩家货物不足、购买玩家金币不足或数据库错误时，交易将不成功，且由于[数据库事务](/develop/dev-guide-transaction-overview.md)保证，不会有玩家的金币或货物丢失的情况。
 
 ```json
 true
@@ -768,8 +776,8 @@ spring:
 - `spring.datasource.password` : 数据库密码，此项为空，需注释或删除。
 - `spring.datasource.driver-class-name` : 数据库驱动，因为 TiDB 与 MySQL 兼容，则此处使用与 mysql-connector-java 适配的驱动类 `com.mysql.cj.jdbc.Driver`。
 - `jpa.show-sql` : 为 true 时将打印 JPA 运行的 SQL。
-- `jpa.database-platform` : 选用的数据库方言，此处我们连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本。
-- `jpa.hibernate.ddl-auto` : 此处选择的 create-drop 将会在程序开始时创建表，退出时删除表。请勿在正式环境使用，但我们此处为示例程序，希望尽量不影响数据库数据，因此选择了此选项。
+- `jpa.database-platform` : 选用的数据库方言，此处连接了 TiDB，自然选择 TiDB 方言，注意，此方言在 6.0.0.Beta2 版本后的 Hibernate 中才可选择，请注意依赖版本。
+- `jpa.hibernate.ddl-auto` : 此处选择的 create-drop 将会在程序开始时创建表，退出时删除表。请勿在正式环境使用，但此处为示例程序，希望尽量不影响数据库数据，因此选择了此选项。
 
 ### 入口文件
 
@@ -794,7 +802,7 @@ public class App {
 }
 ```
 
-我们的入口类比较简单，首先，有一个 Spring Boot 应用程序的标准配置注解 [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html)。有关详细信息，请参阅 Spring Boot 官方文档中的 [Using the @SpringBootApplication Annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) 。随后，使用 `ApplicationPidFileWriter` 在程序启动过程中，写下一个名为 `spring-jpa-hibernate.pid` 的 PID (process identification number) 文件，可从外部使用此 PID 文件关闭此应用程序。
+入口类比较简单，首先，有一个 Spring Boot 应用程序的标准配置注解 [@SpringBootApplication](https://docs.spring.io/spring-boot/docs/current/api/org/springframework/boot/autoconfigure/SpringBootApplication.html)。有关详细信息，请参阅 Spring Boot 官方文档中的 [Using the @SpringBootApplication Annotation](https://docs.spring.io/spring-boot/docs/current/reference/html/using-spring-boot.html#using-boot-using-springbootapplication-annotation) 。随后，使用 `ApplicationPidFileWriter` 在程序启动过程中，写下一个名为 `spring-jpa-hibernate.pid` 的 PID (process identification number) 文件，可从外部使用此 PID 文件关闭此应用程序。
 
 ### 数据库持久层
 
@@ -864,7 +872,7 @@ public class PlayerBean {
 }
 ```
 
-这里可以看到，我们的实体类中有很多注解，这些注解给了 Hibernate 额外的信息，用以绑定实体类和表：
+这里可以看到，实体类中有很多注解，这些注解给了 Hibernate 额外的信息，用以绑定实体类和表：
 
 - `@Entity` 声明 `PlayerBean` 是一个实体类。
 - `@Table` 使用注解属性 `name` 将此实体类和表 `player_jpa` 关联。
@@ -875,7 +883,7 @@ public class PlayerBean {
 
 #### 存储库
 
-为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会为我们实现一些预制的方法，比如 [INSERT](/sql-statements/sql-statement-insert.md) ，或使用主键的 [SELECT](/sql-statements/sql-statement-select.md) 等。
+为了抽象数据库层，Spring 应用程序使用 [Repository](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories) 接口，或者 Repository 的子接口。 这个接口映射到一个数据库对象，常见的，比如会映射到一个表上。JPA 会实现一些预制的方法，比如 [INSERT](/sql-statements/sql-statement-insert.md) ，或使用主键的 [SELECT](/sql-statements/sql-statement-select.md) 等。
 
 {{< copyable "" >}}
 
@@ -923,11 +931,11 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 }
 ```
 
-`PlayerRepository` 拓展了 Spring 用于 JPA 数据访问所使用的接口 `JpaRepository`。我们使用 `@Query` 注解，告诉 Hibernate 此接口如何实现查询。我们在此处使用了两种查询语句的语法，其中，在接口 `getPlayersByPage` 中的查询语句使用的是一种被 Hibernate 称为 [HQL](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#hql) (Hibernate Query Language) 的语法。而接口 `getPlayersByLimit` 中使用的是普通的 SQL，在使用 SQL 语法时，需要将 `@Query` 的注解参数 `nativeQuery` 设置为 true。
+`PlayerRepository` 拓展了 Spring 用于 JPA 数据访问所使用的接口 `JpaRepository`。使用 `@Query` 注解，告诉 Hibernate 此接口如何实现查询。在此处使用了两种查询语句的语法，其中，在接口 `getPlayersByPage` 中的查询语句使用的是一种被 Hibernate 称为 [HQL](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#hql) (Hibernate Query Language) 的语法。而接口 `getPlayersByLimit` 中使用的是普通的 SQL，在使用 SQL 语法时，需要将 `@Query` 的注解参数 `nativeQuery` 设置为 true。
 
 在 `getPlayersByLimit` 注解的 SQL 中，`:limit` 在 Hibernate 中被称为[命名参数](https://docs.jboss.org/hibernate/orm/6.0/userguide/html_single/Hibernate_User_Guide.html#jpql-query-parameters)，Hibernate 将按名称自动寻找并拼接注解所在接口内的参数。你也可以使用 `@Param` 来指定与参数不同的名称用于注入。
 
-在 `getPlayerAndLock` 中，我们使用了一个注解 [@Lock](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/Lock.html)，此注解声明此处使用悲观锁进行锁定，如需了解更多其他锁定方式，可查看[实体锁定](https://openjpa.apache.org/builds/2.2.2/apache-openjpa/docs/jpa_overview_em_locking.html)文档。此处的 `@Lock` 仅可与 HQL 搭配使用，否则将会产生错误。当然，如果你希望直接使用 SQL 进行锁定，可直接使用注释部分的注解：
+在 `getPlayerAndLock` 中，使用了一个注解 [@Lock](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/Lock.html)，此注解声明此处使用悲观锁进行锁定，如需了解更多其他锁定方式，可查看[实体锁定](https://openjpa.apache.org/builds/2.2.2/apache-openjpa/docs/jpa_overview_em_locking.html)文档。此处的 `@Lock` 仅可与 HQL 搭配使用，否则将会产生错误。当然，如果你希望直接使用 SQL 进行锁定，可直接使用注释部分的注解：
 
 {{< copyable "" >}}
 
@@ -943,7 +951,7 @@ public interface PlayerRepository extends JpaRepository<PlayerBean, Long> {
 
 #### 接口
 
-`PlayerService.java` 文件内定义了逻辑接口，实现接口，而不是直接编写一个类的原因，是尽量使例子贴近实际使用，体现设计的开闭原则。你也可以省略掉此接口，在依赖类中直接注入实现类，但我们并不推荐这样做。
+`PlayerService.java` 文件内定义了逻辑接口，实现接口，而不是直接编写一个类的原因，是尽量使例子贴近实际使用，体现设计的开闭原则。你也可以省略掉此接口，在依赖类中直接注入实现类，但并不推荐这样做。
 
 {{< copyable "" >}}
 
@@ -1009,7 +1017,7 @@ public interface PlayerService {
 
 #### 实现 (重要)
 
-`PlayerService.java` 文件内实现了 `PlayerService` 接口，我们的所有数据操作逻辑都编写在这里。
+`PlayerService.java` 文件内实现了 `PlayerService` 接口，所有数据操作逻辑都编写在这里。
 
 {{< copyable "" >}}
 
@@ -1087,7 +1095,7 @@ public class PlayerServiceImpl implements PlayerService {
 }
 ```
 
-这里我们使用了 `@Service` 这个注解，声明此对象的生命周期交由 Spring 管理。
+这里使用了 `@Service` 这个注解，声明此对象的生命周期交由 Spring 管理。
 
 注意，除了有 `@Service` 注解之外，PlayerServiceImpl 实现类还有一个 [@Transactional](https://docs.spring.io/spring-framework/docs/current/reference/html/data-access.html#transaction-declarative-annotations) 注解。当在应用程序中启用事务管理时 (可使用 [@EnableTransactionManagement](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/transaction/annotation/EnableTransactionManagement.html) 打开，但 Spring Boot 默认开启，无需再次手动配置)，Spring 会自动将所有带有 `@Transactional` 注释的对象包装在一个代理中，使用该代理对对象的调用进行处理。
 
@@ -1159,11 +1167,11 @@ public class PlayerController {
 }
 ```
 
-`PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循你公司或团体的规则。`PlayerController` 有许多注解，我们将进行逐一解释：
+`PlayerController` 中使用了尽可能多的注解方式来作为示例展示功能，在实际项目中，请尽量保持风格的统一，同时遵循你公司或团体的规则。`PlayerController` 有许多注解，下方将进行逐一解释：
 
 - [@RestController](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RestController.html) 将 `PlayerController` 声明为一个 [Web Controller](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)，且将返回值序列化为 JSON 输出。
 - [@RequestMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/RequestMapping.html) 映射 URL 端点为 `/player` ，即此 `Web Controller` 仅监听 `/player` URL 下的请求。
-- `@Autowired` 用于 Spring 的自动装配，可以看到，我们此处声明需要一个 `PlayerService` 对象，此对象为接口，我们并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文。
+- `@Autowired` 用于 Spring 的自动装配，可以看到，此处声明需要一个 `PlayerService` 对象，此对象为接口，并未指定使用哪一个实现类，这是由 Spring 自动装配的，有关此装配规则，可查看 Spirng 官网中的 [The IoC container](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/beans.html) 一文。
 - [@PostMapping](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/bind/annotation/PostMapping.html) 声明此函数将响应 HTTP 中的 [POST](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST) 类型请求。
     - `@RequestBody` 声明此处将 HTTP 的整个载荷解析到参数 `playerList` 中。
     - `@NonNull` 声明参数不可为空，否则将校验并返回错误。

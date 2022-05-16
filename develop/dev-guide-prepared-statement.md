@@ -1,11 +1,12 @@
 ---
 title: 预处理语句
 summary: 介绍 TiDB 的预处理语句功能。
+aliases: ['/zh/tidb/dev/prepared-statement']
 ---
 
 # 预处理语句
 
-[预处理语句](/sql-statements/sql-statement-prepare.md)是一种将多个仅有参数不同的 SQL 语句进行模板化的语句，它让 SQL 语句与参数进行了分离。我们可以用它提升 SQL 语句的：
+[预处理语句](/sql-statements/sql-statement-prepare.md)是一种将多个仅有参数不同的 SQL 语句进行模板化的语句，它让 SQL 语句与参数进行了分离。可以用它提升 SQL 语句的：
 
 - 安全性：因为参数和语句已经分离，所以避免了 [SQL 注入攻击](https://en.wikipedia.org/wiki/SQL_injection)的风险。
 - 性能：因为语句在 TiDB 端被预先解析，后续执行只需要传递参数，节省了完整 SQL 解析、拼接 SQL 语句字符串以及网络传输的代价。
@@ -70,7 +71,7 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 ### 查询示例
 
-例如，我们需要查询 [Bookshop 应用](/develop/dev-guide-bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
+例如，需要查询 [Bookshop 应用](/develop/dev-guide-bookshop-schema-design.md#books-表) 中，`id` 为 1 的书籍信息。
 
 <SimpleTab>
 
@@ -149,7 +150,7 @@ try (Connection connection = ds.getConnection()) {
 
 ### 插入示例
 
-还是使用 [books 表](/develop/dev-guide-bookshop-schema-design.md#books-表) 为例，我们需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，我们的 `books` 表的主键包含 `AUTO_RANDOM` 属性，我们无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/dev-guide-insert-data.md)一节了解更多数据插入的相关信息。
+还是使用 [books 表](/develop/dev-guide-bookshop-schema-design.md#books-表) 为例，需要插入一个 `title` 为 `TiDB Developer Guide`, `type` 为 `Science & Technology`, `stock` 为 `100`, `price` 为 `0.0`, `published_at` 为 `插入的当前时间` 的书籍信息。需要注意的是，`books` 表的主键包含 `AUTO_RANDOM` 属性，无需指定它。如果你对插入数据还不了解，可以在[插入数据](/develop/dev-guide-insert-data.md)一节了解更多数据插入的相关信息。
 
 <SimpleTab>
 

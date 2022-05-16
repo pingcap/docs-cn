@@ -76,6 +76,8 @@
     - 规范
       - [命名规范](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
+  - 云原生开发环境
+    - [Gitpod](/develop/dev-guide-playground-gitpod.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -837,6 +839,7 @@
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
+    - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
     - [5.3.1](/releases/release-5.3.1.md)

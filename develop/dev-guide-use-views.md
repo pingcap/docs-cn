@@ -1,6 +1,7 @@
 ---
 title: 视图
 summary: 介绍 TiDB 中的视图功能。
+aliases: ['/zh/tidb/dev/use-views']
 ---
 
 # 视图
@@ -26,7 +27,7 @@ CREATE VIEW view_name AS query;
 
 请注意，创建的视图名称不能与已有的视图或表重名。
 
-例如，在[多表连接查询](/develop/dev-guide-join-tables.md) 章节当中，我们通过 `JOIN` 语句连接 `books` 表和 `ratings` 表查询到了带有平均评分的书籍列表。为了方便后续查询，我们可以将该查询语句定义为一个视图，SQL 语句如下所示：
+例如，在[多表连接查询](/develop/dev-guide-join-tables.md) 章节当中，通过 `JOIN` 语句连接 `books` 表和 `ratings` 表查询到了带有平均评分的书籍列表。为了方便后续查询，可以将该查询语句定义为一个视图，SQL 语句如下所示：
 
 {{< copyable "sql" >}}
 
@@ -40,7 +41,7 @@ GROUP BY b.id;
 
 ## 查询视图
 
-视图创建完成后，我们便可以使用 `SELECT` 语句像查询一般数据表一样查询视图。
+视图创建完成后，便可以使用 `SELECT` 语句像查询一般数据表一样查询视图。
 
 {{< copyable "sql" >}}
 

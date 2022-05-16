@@ -1,6 +1,7 @@
 ---
 title: 连接到 TiDB
 summary: 介绍连接到 TiDB 的方法。
+aliases: ['/zh/tidb/dev/connect-to-tidb']
 ---
 
 # 连接到 TiDB
@@ -78,9 +79,9 @@ SessionFactory sessionFactory = new Configuration().configure("hibernate.cfg.xml
 
 这里有几个需要注意的点：
 
-1. 因为我们使用的配置文件 `hibernate.cfg.xml` 为 XML 格式，而 `&` 字符，在 XML 中属于特殊字符，因此，需将 `&` 更改为 `&amp;`。即，我们的连接字符串 `hibernate.connection.url` 由 `jdbc:mysql://{host}:{port}/{database}?user={user}&password={password}` 改为了 `jdbc:mysql://{host}:{port}/{database}?user={user}&amp;password={password}`。
-2. 在你使用 Hibernate 时，我们建议你使用 TiDB 方言，即 `hibernate.dialect` 设置为 `org.hibernate.dialect.TiDBDialect`。
-3. Hibernate 在版本 `6.0.0.Beta2` 及以上可支持 TiDB 方言，因此我们推荐使用 `6.0.0.Beta2` 及以上版本的 Hibernate。
+1. 因为使用的配置文件 `hibernate.cfg.xml` 为 XML 格式，而 `&` 字符，在 XML 中属于特殊字符，因此，需将 `&` 更改为 `&amp;`。即，连接字符串 `hibernate.connection.url` 由 `jdbc:mysql://{host}:{port}/{database}?user={user}&password={password}` 改为了 `jdbc:mysql://{host}:{port}/{database}?user={user}&amp;password={password}`。
+2. 在你使用 Hibernate 时，建议使用 TiDB 方言，即 `hibernate.dialect` 设置为 `org.hibernate.dialect.TiDBDialect`。
+3. Hibernate 在版本 `6.0.0.Beta2` 及以上可支持 TiDB 方言，因此推荐使用 `6.0.0.Beta2` 及以上版本的 Hibernate。
 
 更多有关 Hibernate 连接参数的信息，请参阅 [Hibernate 官方文档](https://hibernate.org/orm/documentation)。
 
