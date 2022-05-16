@@ -156,7 +156,7 @@ tikv_servers:
 
 > **注意：**
 >
-> 当前配置文件中如果未配置 `replication.location-labels` 项，使用该拓扑配置文件部署集群时可能会报错。建议在部署集群前，确认已配置 `replication.location-labels`。
+> 如果你未在配置文件中配置 `replication.location-labels` 项，使用该拓扑配置文件部署集群时可能会报错。建议在部署集群前，确认 `replication.location-labels` 已配置。
 
 ## 基于拓扑 label 的 PD 调度策略
 
