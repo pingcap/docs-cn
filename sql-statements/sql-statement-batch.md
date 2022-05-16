@@ -48,7 +48,7 @@ INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
 Query OK, 5 rows affected
 ```
 
-DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。
+DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM T WHERE v < 6` 这条非事务 DML 语句内将会执行的用于划分 batch 的查询语句。
 
 {{< copyable "sql" >}}
 
@@ -65,13 +65,13 @@ BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM T WHERE v < 6;
 1 row in set
 ```
 
+DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML 语句，但不执行这些语句。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和 batch。下面这条语句展示了 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 这条非事务 DML 语句被拆成两个 batch 后实际将会执行的 DML 语句。
+
 {{< copyable "sql" >}}
 
 ```sql
 BATCH ON id LIMIT 2 DRY RUN DELETE FROM T where v < 6;
 ```
-
-DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML。因为 batch 数量可能很多，不显示全部 batch 的。
 
 ```sql
 +-------------------------------------------------------------------+
@@ -82,6 +82,8 @@ DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML。因为 
 +-------------------------------------------------------------------+
 2 rows in set
 ```
+
+执行非事务 DML 语句，以 2 为 batch size，以 id 为划分列，删除表 T 中 v < 6 的行。最终产生了两个 batch，都执行成功。
 
 {{< copyable "sql" >}}
 
