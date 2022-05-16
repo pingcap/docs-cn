@@ -330,7 +330,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
-1. 执行以下任一 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
+1. 执行以下 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
 
     {{< copyable "sql" >}}
 
