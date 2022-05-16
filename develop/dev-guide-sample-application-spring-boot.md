@@ -103,7 +103,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 ## 第 3 步：安装 Maven
 
-此示例应用程序使用 **Maven** 来管理应用程序的依赖项。Spring 支持的 **Maven** 版本为 3.2 以上，作为依赖管理软件，推荐使用当前最新稳定版本的 **Maven**。
+此示例应用程序使用 **Maven** 来管理应用程序的依赖项。Spring 支持的 **Maven** 版本为 3.3 以上，作为依赖管理软件，推荐使用当前最新稳定版本的 **Maven**。
 
 这里给出命令行安装 **Maven** 的办法：
 
