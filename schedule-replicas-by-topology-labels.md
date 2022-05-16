@@ -49,7 +49,7 @@ PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置�
 > **注意：**
 >
 > - 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
-> - 如果你使用 Placement Rules in SQL，只需要配置 TiKV 的 `labels` 即可。Placement Rules in SQL 目前不兼容/忽略 PD `location-labels` 设置。不建议 `location-labels` 与 Placement Rules in SQL 混用，否则可能产生非预期的结果。
+> - 如果你使用 Placement Rules in SQL，只需要配置 TiKV 的 `labels` 即可。Placement Rules in SQL 目前不兼容 PD `location-labels` 设置，会忽略该设置。不建议 `location-labels` 与 Placement Rules in SQL 混用，否则可能产生非预期的结果。
 
 你可以根据集群状态来选择不同的配置方式：
 
