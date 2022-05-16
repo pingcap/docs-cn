@@ -275,7 +275,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8143
 
-    非事务 DML 的一个 batch 报错，语句中止，请参考[非事务 DML](/non-transactional-DML.md)
+    非事务 DML 语句的一个 batch 报错，语句中止，请参考[非事务 DML](/non-transactional-DML.md)
 
 * Error Number: 8200
 
