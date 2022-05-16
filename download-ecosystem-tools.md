@@ -24,7 +24,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.1` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.1-linux-amd64.tar.gz`。 
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如，`v5.4.1` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.1-linux-amd64.tar.gz`。
 
 ## TiDB Lightning
 
