@@ -17,6 +17,7 @@ aliases: ['/zh/tidb/dev/join-tables']
 内连接的连接结果只返回匹配连接条件的行。
 
 例如，想要知道编写过最多书的作家是谁，需要将作家基础信息表 `authors` 与书籍作者表 `book_authors` 进行连接。
+
 ![Inner Join](/media/develop/inner-join.png)
 
 <SimpleTab>
