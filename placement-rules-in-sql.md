@@ -116,7 +116,7 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 >     3 rows in set (0.00 sec)
 >     ```
 >
-> - 通过 `CREATE A PLACEMENT POLICY` 创建放置规则时，TiDB 不会检查标签是否存在，而是在绑定表的时候检查。
+> - 使用 `CREATE PLACEMENT POLICY` 创建放置规则时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
