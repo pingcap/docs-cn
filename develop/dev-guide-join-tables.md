@@ -206,7 +206,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 ### 全外连接 FULL OUTER JOIN
 
-全外连接将左表与右表的所有记录进行连接，只要左表或右表其中一个存在匹配，则返回该条记录，如果在另外一张表当中没有找到能够满足连接条件的值则使用 `NULL` 填充。
+全外连接将左表与右表的所有记录进行连接，只要左表或右表其中一个存在匹配，则返回该条记录。如果在另外一张表当中没有找到能够满足连接条件的值，则使用 `NULL` 填充。
 
 ![Full Outer Join](/media/develop/full-outer-join.png)
 
