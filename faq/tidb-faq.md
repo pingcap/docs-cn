@@ -48,7 +48,7 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.9 TiDB 是否支持其他存储引擎？
 
-是的，除了 TiKV 之外，TiDB 还支持一些单机存储引擎，比如 MockTiKV 和 UniStore。注意，未来 TiDB 版本可能不再支持 MockTiKV。
+是的，除了 TiKV 之外，TiDB 还支持一些单机存储引擎，比如 UniStore 和 MockTiKV。注意，未来 TiDB 版本可能不再支持 MockTiKV。
 
 要查看 TiDB 支持的存储引擎，可使用以下命令：
 
