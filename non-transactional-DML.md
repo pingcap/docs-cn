@@ -190,7 +190,7 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 3. 对 $B_i$，将上面这个条件嵌入原始语句的 WHERE 条件，使其变为`WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [DRY RUN](/sql-statements/sql-statement-batch.md#示例) 查看。
 4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 语句的结果返回。
 
-## 部分失败
+## 控制 batch 执行失败
 
 非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 `tidb_nontransactional_ignore_error` 控制了非事务 DML 语句处理错误的行为。
 
