@@ -24,10 +24,10 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 > **注意：**
 >
 > 部分 `GLOBAL` 作用域的变量会持久化到 TiDB 集群中。文档中的变量有一个“是否持久化到集群”的说明，可以为“是”或者“否”。
-> 
+>
 > - 对于持久化到集群的变量，当该全局变量被修改后，会通知所有 TiDB 服务器刷新其系统变量缓存。在集群中增加一个新的 TiDB 服务器时，或者重启现存的 TiDB 服务器时，都将自动使用该持久化变量。
 > - 对于不持久化到集群的变量，对变量的修改只对当前连接的 TiDB 实例生效。如果需要保留设置过的值，需要在 `tidb.toml` 配置文件中声明。
-> 
+>
 > 此外，由于应用和连接器通常需要读取 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
 
 > **注意：**
@@ -1032,6 +1032,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 >     - 大量的历史数据可能会在一定程度上影响系统性能，尤其是范围的查询（如 `select count(*) from t`）。
 > - 如果一个事务的运行时长超过了 `tidb_gc_life_time` 配置的值，在 GC 时，为了使这个事务可以继续正常运行，系统会保留从这个事务开始时间 `start_ts` 以来的数据。例如，如果 `tidb_gc_life_time` 的值配置为 10 分钟，且在一次 GC 时，集群正在运行的事务中最早开始的那个事务已经运行了 15 分钟，那么本次 GC 将保留最近 15 分钟的数据。
 
+### `tidb_gc_max_wait_time` <span class="version-mark">从 v6.1 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`86400`
+- 范围：`[600, 31536000]`
+- 这个变量用于指定活跃事务阻碍 GC Safe Point 推进的最大时间。变量值为整型值，单位是秒。每次进行 GC 时，如果活跃事务运行时间未超过该值， GC Safe Point 一直会被阻塞，直到活跃事务运行时间超过该值 Safe Point 才会正常往前推进。
+
 ### `tidb_gc_run_interval` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1273,14 +1281,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量用于控制是否在同一个 `COM_QUERY` 调用中执行多个查询。
 - 为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。该变量可用作早期 TiDB 版本的升级路径选项。该变量值与是否允许多语句行为的对照表如下：
 
-| 客户端设置         | `tidb_multi_statement_mode` 值 | 是否允许多语句 |
-|------------------------|-----------------------------------|--------------------------------|
-| Multiple Statements = ON  | OFF                               | 允许                            |
-| Multiple Statements = ON  | ON                                | 允许                            |
-| Multiple Statements = ON  | WARN                              | 允许                            |
-| Multiple Statements = OFF | OFF                               | 不允许                             |
-| Multiple Statements = OFF | ON                                | 允许                            |
-| Multiple Statements = OFF | WARN                              | 允许 + 警告提示        |
+| 客户端设置                     | `tidb_multi_statement_mode` 值 | 是否允许多语句   |
+| ------------------------- | ----------------------------- | --------- |
+| Multiple Statements = ON  | OFF                           | 允许        |
+| Multiple Statements = ON  | ON                            | 允许        |
+| Multiple Statements = ON  | WARN                          | 允许        |
+| Multiple Statements = OFF | OFF                           | 不允许       |
+| Multiple Statements = OFF | ON                            | 允许        |
+| Multiple Statements = OFF | WARN                          | 允许 + 警告提示 |
 
 > **注意：**
 >
