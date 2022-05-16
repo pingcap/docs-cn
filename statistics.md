@@ -330,7 +330,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
-1. 执行以下 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
+1. 执行以下任一 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
 
     {{< copyable "sql" >}}
 
@@ -338,7 +338,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
     SELECT ci.instance as instance, cp.id as id FROM information_schema.cluster_info ci, information_schema.cluster_processlist cp WHERE ci.status_address = cp.instance and ci.type = 'tidb' and cp.info like 'analyze table %' and cp.user = '' and cp.host = '';
     ```
 
-    如果输出结果为空，说明后台没有正在执行的 `ANALYZE` 任务。
+    如果输出结果为空，说明后台没有正在执行的 `ANALYZE` 任务。从 TiDB v6.1 起，执行 `SHOW ANALYZE STATUS` 查看 `instance` 列和 `process_id` 列也可以得到 TiDB 实例地址和任务 `ID`。
 
 2. 使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后执行以下 `KILL` 语句：
 
@@ -415,17 +415,25 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
 
-目前 `SHOW ANALYZE STATUS` 会输出 7 列，具体如下：
+目前 `SHOW ANALYZE STATUS` 会输出 11 列，具体如下：
 
 | 列名 | 说明            |
 | -------- | ------------- |
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息。如果分析索引则会包含索引名 |
-| row_count | 已经分析的行数 |
+| job_info | 任务具体信息。如果分析索引则会包含索引名。`tidb_analyze_version =2` 情况下的任务则会包含采样率等配置项。 |
+| processed_rows | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
+| end_time | 任务结束执行的时间 |
 | state | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
+| fail_reason | 任务失败的原因。如果执行成功则为 `NULL`。 |
+| instance | 执行任务的 TiDB 实例 |
+| process_id | 执行任务的 process ID |
+
+从 TiDB v6.1 起，`SHOW ANALYZE STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到之前的任务记录。
+
+`SHOW ANALYZE STATUS` 仅显示最近的若干条任务记录。从 TiDB v6.1 起，可以通过系统表 `mysql.analyze_jobs` 查看更早的（7 天内的） 历史记录。
 
 ## 统计信息的查看
 
