@@ -213,9 +213,9 @@ URI 中可配置的的参数如下：
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
-| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
-| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的用户名（authcid）（可选） |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的密码（可选） |
+| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的名称（可选） |
 
 > **注意：**
 >
