@@ -52,6 +52,95 @@ TiDB 目前支持的非事务 DML 语句只有 DELETE 语句。其语法见 [BAT
 
 通过 `KILL TIDB` kill 一个非事务语句时，会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
 
+### 示例
+
+{{< copyable "sql" >}}
+
+```sql
+CREATE TABLE t(id int, v int, key(id));
+```
+
+```sql
+Query OK, 0 rows affected
+```
+
+{{< copyable "sql" >}}
+
+```sql
+INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
+```
+
+```sql
+Query OK, 5 rows affected
+```
+
+DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM T WHERE v < 6` 这条非事务 DML 语句内将会执行的用于划分 batch 的查询语句。
+
+{{< copyable "sql" >}}
+
+```sql
+BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM T WHERE v < 6;
+```
+
+```sql
++--------------------------------------------------------------------------------+
+| query statement                                                                |
++--------------------------------------------------------------------------------+
+| SELECT `id` FROM `test`.`T` WHERE (`v` < 6) ORDER BY IF(ISNULL(`id`),0,1),`id` |
++--------------------------------------------------------------------------------+
+1 row in set
+```
+
+DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML 语句，但不执行这些语句。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和 batch。下面这条语句展示了 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 这条非事务 DML 语句被拆成两个 batch 后实际将会执行的 DML 语句。
+
+{{< copyable "sql" >}}
+
+```sql
+BATCH ON id LIMIT 2 DRY RUN DELETE FROM T where v < 6;
+```
+
+```sql
++-------------------------------------------------------------------+
+| split statement examples                                          |
++-------------------------------------------------------------------+
+| DELETE FROM `test`.`T` WHERE (`id` BETWEEN 1 AND 2 AND (`v` < 6)) |
+| DELETE FROM `test`.`T` WHERE (`id` BETWEEN 3 AND 4 AND (`v` < 6)) |
++-------------------------------------------------------------------+
+2 rows in set
+```
+
+执行非事务 DML 语句，以 2 为 batch size，以 id 为划分列，删除表 T 中 v < 6 的行。最终产生了两个 batch，都执行成功。
+
+{{< copyable "sql" >}}
+
+```sql
+BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
+```
+
+```sql
++----------------+---------------+
+| number of jobs | job status    |
++----------------+---------------+
+| 2              | all succeeded |
++----------------+---------------+
+1 row in set
+```
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t;
+```
+
+```sql
++----+---+
+| id | v |
++----+---+
+| 5  | 6 |
++----+---+
+1 row in set
+```
+
 ## 参数说明
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
