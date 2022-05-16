@@ -52,7 +52,30 @@ Any language supported by MySQL client or driver.
 
 #### Can I use other Key-Value storage engines with TiDB?
 
-Yes. TiKV and TiDB support many popular standalone storage engines, such as GolevelDB and BoltDB. If the storage engine is a KV engine that supports transactions and it provides a client that meets the interface requirement of TiDB, then it can connect to TiDB.
+Yes. In addition to TiKV, TiDB supports standalone storage engines such as UniStore and MockTiKV. Note that in later TiDB releases, MockTiKV might NO LONGER be supported.
+
+To check all TiDB-supported storage engines, use the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./bin/tidb-server -h
+```
+
+The output is as follows:
+
+```shell
+Usage of ./bin/tidb-server:
+  -L string
+        log level: info, debug, warn, error, fatal (default "info")
+  -P string
+        tidb server port (default "4000")
+  -V    print version information and exit (default false)
+.........
+  -store string
+        registered store name, [tikv, mocktikv, unistore] (default "unistore")
+  ......
+```
 
 #### In addition to the TiDB documentation, are there any other ways to acquire TiDB knowledge?
 
