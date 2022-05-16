@@ -45,7 +45,9 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### 如何规范停止 TiDB？
 
-可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+- 使用了 load balancer （推荐）：先停止 load balancer，然后再执行 kill 命令。此时 TiDB 会根据 [graceful-wait-before-shutdown](/tidb-configuration-file#graceful-wait-before-shutdown-从-v50-版本开始引入) 设置值等所有会话断开，然后停止运行。
+
+- 未使用 load balancer：执行 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
 
 ### TiDB 里面可以执行 kill 命令吗？
 
