@@ -247,7 +247,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     tiup diag upload ${filepath}
     ```
 
-    完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的数据访问链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+    完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
 
 ## 本地快速检查集群状态
 
