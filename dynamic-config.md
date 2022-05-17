@@ -319,7 +319,7 @@ select @@tidb_slow_log_threshold;
 
 ### 在线修改 TiFlash 配置
 
-在线修改 TiDB 配置的方式也是用户通过[系统变量](/system-variables.md)来完成修改。
+在线修改 TiFlash 配置的方式也是用户通过[系统变量](/system-variables.md)来完成修改。
 
 下面例子展示了如何通过变量 `tidb_max_tiflash_threads` 在线修改配置项 `max_threads`。
 
