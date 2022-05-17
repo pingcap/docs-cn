@@ -9,7 +9,7 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 
 ## 使用 Avro
 
-当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro，TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的数据变更事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
+当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro，TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的 DML 事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
 
 使用 Avro 时的配置样例如下所示：
 
@@ -19,13 +19,13 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro" --schema-registry=http://127.0.0.1:8081
 ```
 
-`protocol` 除了可以是 `avro`，还可以是 `flat-avro`。`flat-avro` 是 `avro` 的别名。
+`--schema-registry` 的值支持 https 协议和 username:password 认证，比如`--schema-registry=https://username:password@schema-registry-uri.com`，username 和 password 必须经过 URL 编码。
 
 ## TiDB 扩展字段
 
-默认情况下，Avro 只会在数据变更事件中囊括发生数据变更的行中的所有数据信息，不包括数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 后，TiCDC 生成 Avro 消息时会新增三个字段：
+默认情况下，Avro 只会在 DML 事件中囊括发生数据变更的行中的所有数据信息，不包括数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 后，TiCDC 生成 Avro 消息时会新增三个字段：
 
-* `_tidb_op` 字段，表示数据变更的类型，"c" 表示插入，"u" 表示更新。
+* `_tidb_op` 字段，表示 DML 的类型，"c" 表示插入，"u" 表示更新。
 * `_tidb_commit_ts` 字段，事务唯一标识信息。
 * `_tidb_commit_physical_time` 字段，事务标识信息中的现实时间时间戳。
 
@@ -41,13 +41,13 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 
 ## 数据格式定义
 
-TiCDC 会将一个数据变更事件转换为一个 kafka 事件，其中事件的 key 和 value 都按照 Avro 协议进行编码。
+TiCDC 会将一个 DML 事件转换为一个 kafka 事件，其中事件的 key 和 value 都按照 Avro 协议进行编码。
 
 ### Key 数据格式
 
 ```
 {
-    "name":"{{RecordName}}",
+    "name":"{{TableName}}",
     "namespace":"{{Namespace}}",
     "type":"record",
     "fields":[
@@ -57,8 +57,8 @@ TiCDC 会将一个数据变更事件转换为一个 kafka 事件，其中事件�
 }
 ```
 
-* `{{RecordName}}` 是事件来源表的名称。
-* `{{Namespace}}` 是 changefeed namespace。
+* `{{TableName}}` 是事件来源表的名称。
+* `{{Namespace}}` 是 changefeed namespace 和数据源 schema name 的组合。
 * `{{ColumnValueBlock}}` 是每列数据的格式定义。
 
 Key 中的 `fields` 只包含主键或唯一索引列。
@@ -67,7 +67,7 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 
 ```
 {
-    "name":"{{RecordName}}",
+    "name":"{{TableName}}",
     "namespace":"{{Namespace}}",
     "type":"record",
     "fields":[
@@ -83,7 +83,7 @@ Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` �
 
 ```
 {
-    "name":"{{RecordName}}",
+    "name":"{{TableName}}",
     "namespace":"{{Namespace}}",
     "type":"record",
     "fields":[
@@ -224,7 +224,6 @@ ENUM/SET(a,b,c)
 DECIMAL(10, 4)
 ```
 {
-    "default":null,
     "name":"{{ColumnName}}",
     "type":{
         "connect.parameters":{
@@ -240,7 +239,7 @@ DECIMAL(10, 4)
 
 ## DDL 事件与 Schema 变更
 
-Avro 并不会向下游生成格式变更事件。Avro 会在每次事件变更时检测是否发生格式变更，如果发生了格式变更，Avro 会生成新的格式，并尝试向 Schema Registry 注册。在注册时，Schema Registry 会做兼容性检测，如果此次格式变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决格式的兼容性问题。同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。详情请查看 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
+Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。在注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决 schema 的兼容性问题。同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果我们的源表增加了一列非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。Schema 变更更多的信息请查看 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
 
 ## Topic 分发
 
