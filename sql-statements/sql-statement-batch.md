@@ -1,7 +1,6 @@
 ---
 title: BATCH 
 summary: TiDB 数据库中 BATCH 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-batch/']
 ---
 
 # BATCH 
