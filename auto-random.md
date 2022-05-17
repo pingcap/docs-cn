@@ -63,7 +63,7 @@ CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
 CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
 ```
 
-以上建表语句中，shard bits 的数量为 `3`。shard bits 的数量的取值范围是 `[1, 15]`。
+以上建表语句中，shard bits 的数量为 `3`。shard bits 的数量的取值范围是 `[1, 16)`。
 
 创建完表后，使用 `SHOW WARNINGS` 可以查看当前表可支持的最大隐式分配的次数：
 
