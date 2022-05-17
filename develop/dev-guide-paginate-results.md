@@ -1,15 +1,16 @@
 ---
 title: 分页查询
 summary: 介绍 TiDB 的分页查询功能。
+aliases: ['/zh/tidb/dev/paginate-results']
 ---
 
 # 分页查询
 
-当查询结果数据量较大时，我们往往希望以“分页”的方式返回所需要的部分。
+当查询结果数据量较大时，往往希望以“分页”的方式返回所需要的部分。
 
 ## 对查询结果进行分页
 
-在 TiDB 当中，我们可以利用 `LIMIT` 语句来实现分页功能，常规的分页语句写法如下所示：
+在 TiDB 当中，可以利用 `LIMIT` 语句来实现分页功能，常规的分页语句写法如下所示：
 
 {{< copyable "sql" >}}
 
@@ -24,7 +25,7 @@ SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 <SimpleTab>
 <div label="SQL" href="page-sql">
 
-例如，在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中，我们希望将最新书籍列表以分页的形式返回给用户。通过 `LIMIT 0, 10` 语句，我们便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
+例如，在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中，希望将最新书籍列表以分页的形式返回给用户。通过 `LIMIT 0, 10` 语句，便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
 
 {{< copyable "sql" >}}
 
@@ -38,7 +39,7 @@ LIMIT 0, 10;
 </div>
 <div label="Java" href="page-java">
 
-在应用程序开发当中，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前我们需要对其进行一些转换。
+在应用程序开发当中，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前需要对其进行一些转换。
 
 {{< copyable "" >}}
 
@@ -78,7 +79,7 @@ public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLE
 
 常规的分页更新 SQL 一般使用主键或者唯一索引进行排序，再配合 LIMIT 语法中的 `offset`，按固定行数拆分页面。然后把页面包装进独立的事务中，从而实现灵活的分页更新。但是，劣势也很明显：由于需要对主键或者唯一索引进行排序，越靠后的页面参与排序的行数就会越多，尤其当批量处理涉及的数据体量较大时，可能会占用过多计算资源。
 
-下面我们将介绍一种更为高效的分页批处理方案：
+下面将介绍一种更为高效的分页批处理方案：
 
 <SimpleTab>
 <div label="SQL" href="offset-sql">
@@ -120,7 +121,7 @@ ORDER BY page_num;
 
 接下来，只需要使用 `WHERE id BETWEEN start_key AND end_key` 语句查询每个分片的数据即可。修改数据时，也可以借助上面计算好的分片信息，实现高效的数据更新。
 
-例如，假如我们想要删除第 1 页上的所有书籍的基本信息，我们可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
+例如，假如想要删除第 1 页上的所有书籍的基本信息，可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
 
 {{< copyable "sql" >}}
 
@@ -134,7 +135,7 @@ ORDER BY id;
 </div>
 <div label="Java" href="offset-java">
 
-在 Java 语言当中，我们可以定义一个 `PageMeta` 类来存储分页元信息。
+在 Java 语言当中，可以定义一个 `PageMeta` 类来存储分页元信息。
 
 {{< copyable "" >}}
 
@@ -150,7 +151,7 @@ public class PageMeta<K> {
 }
 ```
 
-我们定义一个 `getPageMetaList()` 方法获取到分页元信息列表，然后定义一个可以根据页面元信息批量删除数据的方法 `deleteBooksByPageMeta()`。
+定义一个 `getPageMetaList()` 方法获取到分页元信息列表，然后定义一个可以根据页面元信息批量删除数据的方法 `deleteBooksByPageMeta()`。
 
 {{< copyable "" >}}
 
@@ -196,7 +197,7 @@ public class BookDAO {
 }
 ```
 
-如果我们想要删除第 1 页的数据，我们可以这样写：
+如果想要删除第 1 页的数据，可以这样写：
 
 {{< copyable "" >}}
 
@@ -207,7 +208,7 @@ if (pageMetaList.size() > 0) {
 }
 ```
 
-如果我们希望通过分页分批地删除所有书籍数据，可以这样写：
+如果希望通过分页分批地删除所有书籍数据，可以这样写：
 
 {{< copyable "" >}}
 
@@ -277,13 +278,13 @@ ORDER BY page_num;
 
 ### 聚簇索引表
 
-对于聚簇索引表（又被称为“索引组织表”），我们可以利用 `concat` 函数将多个列的值连接起来作为一个 key，然后使用窗口函数获取分页信息。
+对于聚簇索引表（又被称为“索引组织表”），可以利用 `concat` 函数将多个列的值连接起来作为一个 key，然后使用窗口函数获取分页信息。
 
 需要注意的是，这时候 key 是一个字符串，你必须确保这个字符串长度总是相等的，才能够通过 `min` 和 `max` 聚合函数得到分页内正确的 `start_key` 和 `end_key`。如果进行字符串连接的字段长度不固定，你可以通过 `LPAD` 函数进行补全。
 
-例如，我们想要对 `ratings` 表里的数据进行分页批处理。
+例如，想要对 `ratings` 表里的数据进行分页批处理。
 
-我们先可以通过下面的 SQL 语句来在制造元信息表。因为组成 key 的 `book_id` 列和 `user_id` 列都是 `bigint` 类型，转换为字符串是并不是等宽的，因此我们需要根据 `bigint` 类型的最大位数 19，使用 `LPAD` 函数在长度不够时用 `0` 补齐。
+先可以通过下面的 SQL 语句来在制造元信息表。因为组成 key 的 `book_id` 列和 `user_id` 列都是 `bigint` 类型，转换为字符串是并不是等宽的，因此需要根据 `bigint` 类型的最大位数 19，使用 `LPAD` 函数在长度不够时用 `0` 补齐。
 
 {{< copyable "sql" >}}
 
@@ -321,7 +322,7 @@ ORDER BY page_num;
 30 rows in set (0.28 sec)
 ```
 
-假如我们想要删除第 1 页上的所有评分记录，我们可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
+假如想要删除第 1 页上的所有评分记录，可以将上表第 1 页所对应的 `start_key` 和 `end_key` 填入 SQL 语句当中。
 
 {{< copyable "sql" >}}
 

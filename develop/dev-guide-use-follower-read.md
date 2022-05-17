@@ -1,6 +1,7 @@
 ---
 title: Follower Read
 summary: 使用 Follower Read 在特定情况下加速查询。
+aliases: ['/zh/tidb/dev/use-follower-read']
 ---
 
 # Follower Read
@@ -39,7 +40,7 @@ SET [GLOBAL] tidb_replica_read = 'follower';
 </div>
 <div label="Java">
 
-在 Java 语言当中，我们可以定义一个 `FollowerReadHelper` 类用于开启 Follower Read 功能：
+在 Java 语言当中，可以定义一个 `FollowerReadHelper` 类用于开启 Follower Read 功能：
 
 {{< copyable "" >}}
 

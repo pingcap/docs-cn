@@ -1,15 +1,16 @@
 ---
 title: HTAP 查询
 summary: 介绍 TiDB 中的 HTAP 查询功能。
+aliases: ['/zh/tidb/dev/hybrid-oltp-and-olap-queries']
 ---
 
 # HTAP 查询
 
 HTAP 是 Hybrid Transactional / Analytical Processing 的缩写。传统意义上，数据库往往专为交易或者分析场景设计，因而数据平台往往需要被切分为 Transactional Processing 和 Analytical Processing 两个部分，而数据需要从交易库复制到分析型数据库以便快速响应分析查询。而 TiDB 数据库则可以同时承担交易和分析两种职能，这大大简化了数据平台的建设，也能让用户使用更新鲜的数据进行分析。
 
-在 TiDB 当中，我们同时拥有面向在线事务处理的行存储引擎 TiKV 与面向实时分析场景的列存储引擎 TiFlash 两套存储引擎。数据在行存 (Row-Store) 与列存 (Columnar-Store) 同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
+在 TiDB 当中，同时拥有面向在线事务处理的行存储引擎 TiKV 与面向实时分析场景的列存储引擎 TiFlash 两套存储引擎。数据在行存 (Row-Store) 与列存 (Columnar-Store) 同时存在，自动同步，保持强一致性。行存为在线事务处理 OLTP 提供优化，列存则为在线分析处理 OLAP 提供性能优化。
 
-在[创建数据库](/develop/dev-guide-create-table.md#使用-htap-能力)章节当中，我们已经介绍了如何开启 TiDB 的 HTAP 能力。下面我们将进一步介绍如何使用 HTAP 能力更快地分析数据。
+在[创建数据库](/develop/dev-guide-create-table.md#使用-htap-能力)章节当中，已经介绍了如何开启 TiDB 的 HTAP 能力。下面将进一步介绍如何使用 HTAP 能力更快地分析数据。
 
 ## 数据准备
 
@@ -25,9 +26,9 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ## 窗口函数
 
-我们在使用数据库时，除了希望它能够存储我们想要记录的数据，能够实现诸如下单买书、给书籍评分等业务功能外，我们可能还需要对我们已有的数据进行分析，以便根据数据作出进一步的运营和决策。
+在使用数据库时，除了希望它能够存储想要记录的数据，能够实现诸如下单买书、给书籍评分等业务功能外，可能还需要对已有的数据进行分析，以便根据数据作出进一步的运营和决策。
 
-在[单表读取](/develop/dev-guide-get-data-from-single-table.md)章节当中，我们已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，我们可能希望多个聚合查询的结果汇总在一个查询当中。例如：我们想要对某一本书的订单量的历史趋势有所了解，我们可能需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
+在[单表读取](/develop/dev-guide-get-data-from-single-table.md)章节当中，已经介绍了如何使用聚合查询来分析数据的整体情况，在更为复杂的使用场景下，可能希望多个聚合查询的结果汇总在一个查询当中。例如：想要对某一本书的订单量的历史趋势有所了解，需要在每个月都对所有订单数据进行一次聚合求 `sum`，然后将 `sum` 结果汇总在一起才能够得到历史的趋势变化数据。
 
 为了方便用户进行此类分析，TiDB 从 3.0 版本开始便支持了窗口函数功能，窗口函数为每一行数据提供了跨行数据访问的能力，不同于常规的聚合查询，窗口函数在对数据行进行聚合时不会导致结果集被合并成单行数据。
 
@@ -44,7 +45,7 @@ FROM
 
 ### `ORDER BY` 子句
 
-例如：我们可以利用聚合窗口函数 `sum()` 函数的累加效果来实现对某一本书的订单量的历史趋势的分析:
+例如：可以利用聚合窗口函数 `sum()` 函数的累加效果来实现对某一本书的订单量的历史趋势的分析:
 
 {{< copyable "sql" >}}
 
@@ -62,7 +63,7 @@ FROM orders_group_by_month
 ORDER BY month ASC;
 ```
 
-`sum()` 函数会按照我们在 `OVER` 子句当中通过 `ORDER BY` 子句指定的排序方式按顺序对数据进行累加，累加的结果如下：
+`sum()` 函数会在 `OVER` 子句当中通过 `ORDER BY` 子句指定的排序方式按顺序对数据进行累加，累加的结果如下：
 
 ```
 +---------+-------+
@@ -85,13 +86,13 @@ ORDER BY month ASC;
 13 rows in set (0.01 sec)
 ```
 
-我们将得到的数据通过一个横轴为时间，纵轴为累计订单量的折线图进行可视化，便可以轻松地通过折线图的斜率变化宏观地了解到这本书的历史订单的增长趋势。
+将得到的数据通过一个横轴为时间，纵轴为累计订单量的折线图进行可视化，便可以轻松地通过折线图的斜率变化宏观地了解到这本书的历史订单的增长趋势。
 
 ### `PARTITION BY` 子句
 
-让我们把需求变得更复杂一点，假设想要分析不同类型书的历史订单增长趋势，并且希望将这些数据通过同一个多系列折线图进行呈现。
+把需求变得更复杂一点，假设想要分析不同类型书的历史订单增长趋势，并且希望将这些数据通过同一个多系列折线图进行呈现。
 
-我们可以利用 `PARTITION BY` 子句根据书的类型进行分组，对不同类型的书籍分别统计它们的订单历史订单累计量。
+可以利用 `PARTITION BY` 子句根据书的类型进行分组，对不同类型的书籍分别统计它们的订单历史订单累计量。
 
 {{< copyable "sql" >}}
 
@@ -144,9 +145,9 @@ SELECT * FROM acc;
 
 ### 非聚合窗口函数
 
-除此之外，TiDB 还为我们提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)，我们可以借助这些函数实现更加丰富分析查询。
+除此之外，TiDB 还提供了一些非聚合的[窗口函数](/functions-and-operators/window-functions.md)，可以借助这些函数实现更加丰富分析查询。
 
-例如，在前面的[分页查询](/develop/dev-guide-paginate-results.md)章节当中，我们已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
+例如，在前面的[分页查询](/develop/dev-guide-paginate-results.md)章节当中，已经介绍了如何巧妙地利用 `row_number()` 函数实现高效的分页批处理能力。
 
 ## 混合负载
 
@@ -154,7 +155,7 @@ SELECT * FROM acc;
 
 ### 开启列存副本
 
-TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/dev-guide-create-table.md#使用-htap-能力)章节，在进行后续步骤前，我们先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：
+TiDB 默认使用的存储引擎 TiKV 是行存的，你可以通过阅读[开启 HTAP 能力](/develop/dev-guide-create-table.md#使用-htap-能力)章节，在进行后续步骤前，先通过如下 SQL 对 `books` 与 `orders` 表添加 TiFlash 列存副本：
 
 {{< copyable "sql" >}}
 
@@ -163,7 +164,7 @@ ALTER TABLE books SET TIFLASH REPLICA 1;
 ALTER TABLE orders SET TIFLASH REPLICA 1;
 ```
 
-通过执行下面的 SQL 语句我们可以查看到 TiDB 创建列存副本的进度：
+通过执行下面的 SQL 语句可以查看到 TiDB 创建列存副本的进度：
 
 {{< copyable "sql" >}}
 

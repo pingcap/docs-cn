@@ -1,6 +1,7 @@
 ---
 title: 删除数据
 summary: 删除数据、批量删除数据的方法、最佳实践及例子。
+aliases: ['/zh/tidb/dev/delete-data']
 ---
 
 # 删除数据
@@ -43,7 +44,7 @@ DELETE FROM {table} WHERE {filter}
 
 ## 例子
 
-假设我们发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
+假设在开发中发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。此时，可使用 `SELECT` 语句查看需删除的数据条数：
 
 {{< copyable "sql" >}}
 
@@ -114,7 +115,7 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 需要删除表中多行的数据，可选择 [`DELETE` 示例](#例子)，并使用 `WHERE` 子句过滤需要删除的数据。
 
-但如果你需要删除大量行（数万或更多）的时候，我们建议使用一个迭代，每次都只删除一部分数据，直到删除全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。你可以在程序或脚本中使用循环来完成操作。
+但如果你需要删除大量行（数万或更多）的时候，建议使用一个迭代，每次都只删除一部分数据，直到删除全部完成。这是因为 TiDB 单个事务大小限制为 [txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit)（默认为 100MB）。你可以在程序或脚本中使用循环来完成操作。
 
 本页提供了编写脚本来处理循环删除的示例，该示例演示了应如何进行 `SELECT` 和 `DELETE` 的组合，完成循环删除。
 

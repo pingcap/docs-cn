@@ -1,6 +1,7 @@
 ---
 title: 连接池与连接参数
 summary: 针对开发者的 TiDB 连接池与连接参数的说明。
+aliases: ['/zh/tidb/dev/connection-parameters']
 ---
 
 # 连接池与连接参数
@@ -44,7 +45,7 @@ The last packet sent successfully to the server was 3600000 milliseconds ago. Th
 
 ### 经验公式
 
-我们在 HikariCP 的 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) 一文中可以了解到，我们在完全不知道如何设置数据库连接池大小的时候，可以考虑以以下[经验公式](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing#connections--core_count--2--effective_spindle_count)为起点，在此基础上，围绕该结果进行尝试，以得到最高性能的连接池大小。
+在 HikariCP 的 [About Pool Sizing](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing) 一文中可以了解到，在完全不知道如何设置数据库连接池大小的时候，可以考虑以以下[经验公式](https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing#connections--core_count--2--effective_spindle_count)为起点，在此基础上，围绕该结果进行尝试，以得到最高性能的连接池大小。
 
 该经验公式描述如下：
 
@@ -58,7 +59,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 - **core_count**: CPU 核心数。
 - **effective_spindle_count**: 直译为**有效主轴数**，实际上是说你有多少个硬盘（非 [SSD](https://en.wikipedia.org/wiki/Solid-state_drive)），因为每个旋转的硬盘可以被称为是一个旋转轴。例如，你使用的是一个有 16 个磁盘组成的 [RAID](https://en.wikipedia.org/wiki/RAID) 阵列的服务器，那么 **effective_spindle_count** 应为 16。此处经验公式，实际上是衡量你的服务器可以管理多少 I/O 并发请求，因为 **HDD** 通常只能串行请求。
 
-要特别说明的是，在这个经验公式的的下方，我们也看到了一处说明：
+要特别说明的是，在这个经验公式的的下方，也看到了一处说明：
 
 > ```
 > A formula which has held up pretty well across a lot of benchmarks for years is
@@ -76,7 +77,7 @@ connections = ((core_count * 2) + effective_spindle_count)
 2. 数据被全量缓存时，**effective_spindle_count** 应被设置为 0，随着命中率的下降，会更加接近实际的 HDD 个数。
 3. **这里没有任何基于 _SSD_ 的经验公式。**
 
-这里的说明让我们在使用 SSD 时，需探求其他的经验公式。
+这里的说明让你在使用 SSD 时，需探求其他的经验公式。
 
 可以参考 CockroachDB 对[数据库连接池](https://www.cockroachlabs.com/docs/stable/connection-pooling.html?#sizing-connection-pools)中的描述，推荐的连接数大小公式为：
 
@@ -84,11 +85,11 @@ connections = ((core_count * 2) + effective_spindle_count)
 connections = (number of cores * 4)
 ```
 
-因此，我们在使用 SSD 的情况下可以将连接数设置为 `CPU 核心数 * 4`。以此来达到初始的连接池最大连接数大小，并以此数据周围进行进一步的调整。
+因此，你在使用 SSD 的情况下可以将连接数设置为 `CPU 核心数 * 4`。以此来达到初始的连接池最大连接数大小，并以此数据周围进行进一步的调整。
 
 ### 调整方向
 
-可以看到，我们在上方的[经验公式](#经验公式)中得到的，是一个推荐的初始值，若需得到某台具体机器上的最佳值，需在推荐值周围，通过尝试，得到最佳值。
+可以看到，在上方的[经验公式](#经验公式)中得到的，是一个推荐的初始值，若需得到某台具体机器上的最佳值，需在推荐值周围，通过尝试，得到最佳值。
 
 此最佳值的获取，会有一些基本规律，此处罗列如下：
 

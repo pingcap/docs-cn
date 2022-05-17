@@ -1,6 +1,7 @@
 ---
 title: 事务限制
 summary: 介绍 TiDB 中的事务限制。
+aliases: ['/zh/tidb/dev/transaction-restraints']
 ---
 
 # 事务限制
@@ -29,7 +30,7 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 举个例子，假设你正在为医院写一个医生轮班管理程序。医院通常会同时要求几位医生待命，但底线是至少有一位医生在待命。医生可以放弃他们的班次（例如，如果他们自己生病了），只要至少有一个同事在这一班中继续工作。
 
-现在出现这样一种情况，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面我们用程序来模拟一下这个过程。
+现在出现这样一种情况，Alice 和 Bob 是两位值班医生。两人都感到不适，所以他们都决定请假。不幸的是，他们恰好在同一时间点击按钮下班。下面用程序来模拟一下这个过程。
 
 {{< copyable "" >}}
 
@@ -186,7 +187,7 @@ mysql> SELECT * FROM doctors;
 
 ![Write Skew](/media/develop/write-skew.png)
 
-现在我们来更改示例程序，使用 `SELECT FOR UPDATE` 来克服写偏斜问题：
+现在更改示例程序，使用 `SELECT FOR UPDATE` 来克服写偏斜问题：
 
 {{< copyable "" >}}
 

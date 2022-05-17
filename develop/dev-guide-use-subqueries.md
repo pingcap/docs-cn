@@ -1,6 +1,7 @@
 ---
 title: 子查询
 summary: 介绍 TiDB 子查询功能。
+aliases: ['/zh/tidb/dev/use-subqueries']
 ---
 
 # 子查询
@@ -9,9 +10,9 @@ summary: 介绍 TiDB 子查询功能。
 
 ## 概述
 
-子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，我们可以在一个查询当中使用另外一个查询的查询结果。
+子查询是嵌套在另一个查询中的 SQL 表达式，借助子查询，可以在一个查询当中使用另外一个查询的查询结果。
 
-下面我们将以 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用为例对子查询展开介绍：
+下面将以 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用为例对子查询展开介绍：
 
 ## 子查询语句
 
@@ -25,15 +26,15 @@ summary: 介绍 TiDB 子查询功能。
 
 ## 子查询的分类
 
-一般来说，我们可以将子查询分为关联子查询（[Correlated Subquery](https://en.wikipedia.org/wiki/Correlated_subquery)）和无关联子查询 (Self-contained Subquery) 两大类，TiDB 对于这两类子查询的处理方式是不一样的。
+一般来说，可以将子查询分为关联子查询（[Correlated Subquery](https://en.wikipedia.org/wiki/Correlated_subquery)）和无关联子查询 (Self-contained Subquery) 两大类，TiDB 对于这两类子查询的处理方式是不一样的。
 
-判断是否为关联子查询的依据在于我们在子查询当中是否引用了外层查询的列。
+判断是否为关联子查询的依据在于子查询当中是否引用了外层查询的列。
 
 ### 无关联子查询
 
 对于将子查询作为比较运算符 (`>` / `>=`/ `<` / `<=` / `=` / `!=`) 操作数的这类无关联子查询而言，内层子查询只需要进行一次查询，TiDB 在生成执行计划阶段会将内层子查询改写为常量。
 
-例如，我们想要查找 `authors` 表当中年龄大于总体平均年龄的作家，我们可以通过将子查询作为比较操作符的操作数来实现：
+例如，想要查找 `authors` 表当中年龄大于总体平均年龄的作家，可以通过将子查询作为比较操作符的操作数来实现：
 
 {{< copyable "sql" >}}
 
@@ -93,7 +94,7 @@ WHERE (IFNULL(a1.death_year, YEAR(NOW())) - a1.birth_year) > 34;
 
 因此在处理过程中，TiDB 会尝试对[关联子查询去关联](/correlated-subquery-optimization.md)，以从执行计划层面上提高查询效率。
 
-例如，假设我们想要查找那些大于其它相同性别作家的平均年龄的的作家，SQL 语句可以这样写：
+例如，假设想要查找那些大于其它相同性别作家的平均年龄的的作家，SQL 语句可以这样写：
 
 {{< copyable "sql" >}}
 

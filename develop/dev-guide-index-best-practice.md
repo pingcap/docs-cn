@@ -1,6 +1,7 @@
 ---
 title: 索引的最佳实践
 summary: 介绍 TiDB 中索引的最佳实践。
+aliases: ['/zh/tidb/dev/index-best-practice']
 ---
 
 <!-- markdownlint-disable MD029 -->
@@ -36,7 +37,7 @@ CREATE TABLE `books` (
     - 区分度比较大的列，通过索引能显著地减少过滤后的行数。例如推荐在人的身份证号码这一列上创建索引，但不推荐在人的性别这一列上创建索引。
     - 有多个查询条件时，可以选择组合索引，注意需要把等值条件的列放在组合索引的前面。这里举一个例子，假设常用的查询是 `SELECT * FROM t where c1 = 10 and c2 = 100 and c3 > 10`, 那么可以考虑建立组合索引 `Index cidx (c1, c2, c3)`，这样可以用查询条件构造出一个索引前缀进行 Scan。
 
-- 请使用有意义的二级索引名，我们推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[索引命名规范](/develop/dev-guide-object-naming-guidelines.md#索引命名规范)。
+- 请使用有意义的二级索引名，推荐你遵循公司或组织的表命名规范。如果你的公司或组织没有相应的命名规范，可参考[索引命名规范](/develop/dev-guide-object-naming-guidelines.md#索引命名规范)。
 
 ## 使用索引的最佳实践
 

@@ -1,6 +1,7 @@
 ---
 title: SQL 性能调优
 summary: 介绍 TiDB 的 SQL 性能调优方案和分析办法。
+aliases: ['/zh/tidb/dev/optimize-sql']
 ---
 
 # SQL 性能调优
@@ -45,7 +46,7 @@ SELECT * FROM books WHERE title = 'Marian Yost';
 Time: 0.582s
 ```
 
-我们可以使用 `EXPLAIN` 来查看这个查询的执行计划，看看为什么查询这么慢：
+可以使用 `EXPLAIN` 来查看这个查询的执行计划，看看为什么查询这么慢：
 
 {{< copyable "sql" >}}
 
@@ -99,7 +100,7 @@ SELECT * FROM books WHERE title = 'Marian Yost';
 Time: 0.007s
 ```
 
-我们可以使用 `EXPLAIN` 来查看这个查询的执行计划，看看为什么查询变快了：
+可以使用 `EXPLAIN` 来查看这个查询的执行计划，看看为什么查询变快了：
 
 {{< copyable "sql" >}}
 
@@ -167,7 +168,7 @@ EXPLAIN SELECT title, price FROM books WHERE title = 'Marian Yost';
 +---------------------------+---------+-----------+-------------------------------------+-------------------------------------------------------+
 ```
 
-让我们删除 `title_idx` 索引，并新建一个 `title_price_idx` 索引：
+删除 `title_idx` 索引，并新建一个 `title_price_idx` 索引：
 
 {{< copyable "sql" >}}
 
@@ -181,7 +182,7 @@ ALTER TABLE books DROP INDEX title_idx;
 CREATE INDEX title_price_idx ON books (title, price);
 ```
 
-现在，`price` 数据已经存储在索引 `title_price_idx` 中了，所以下面查询仅需扫描索引数据，无需回表查询了。这种索引我们通常叫做覆盖索引：
+现在，`price` 数据已经存储在索引 `title_price_idx` 中了，所以下面查询仅需扫描索引数据，无需回表查询了。这种索引通常被叫做覆盖索引：
 
 {{< copyable "sql" >}}
 
@@ -220,7 +221,7 @@ SELECT title, price FROM books WHERE title = 'Marian Yost';
 Time: 0.004s
 ```
 
-由于后面的示例还会用到这个库，让我们删除 `title_price_idx` 索引。
+由于后面的示例还会用到这个库，删除 `title_price_idx` 索引。
 
 {{< copyable "sql" >}}
 

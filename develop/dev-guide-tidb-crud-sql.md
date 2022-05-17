@@ -1,6 +1,7 @@
 ---
 title: 使用 TiDB 的增删改查 SQL
 summary: 简单介绍 TiDB 的增删改查 SQL。
+aliases: ['/zh/tidb/dev/tidb-crud-sql']
 ---
 
 # 使用 TiDB 的增删改查 SQL
@@ -30,7 +31,7 @@ SQL 语言通常按照功能划分成以下的 4 个部分：
 - **DQL (Data Query Language)**：数据查询语言，用来查询经过条件筛选的记录。
 - **DCL (Data Control Language)**：数据控制语言，用来定义访问权限和安全级别。
 
-此文档中，我们主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](/basic-sql-operations.md)或 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)获得更多信息。
+此文档中，主要介绍 DML 和 DQL，即数据操作语言和数据查询语言。其余部分可查看 [SQL 基本操作](/basic-sql-operations.md)或 [TiDB SQL 语法详解](https://pingcap.github.io/sqlgram/)获得更多信息。
 
 ## DML 数据操作语言
 
