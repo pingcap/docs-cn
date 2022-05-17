@@ -24,10 +24,10 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 > **注意：**
 >
 > 部分 `GLOBAL` 作用域的变量会持久化到 TiDB 集群中。文档中的变量有一个“是否持久化到集群”的说明，可以为“是”或者“否”。
->
+> 
 > - 对于持久化到集群的变量，当该全局变量被修改后，会通知所有 TiDB 服务器刷新其系统变量缓存。在集群中增加一个新的 TiDB 服务器时，或者重启现存的 TiDB 服务器时，都将自动使用该持久化变量。
 > - 对于不持久化到集群的变量，对变量的修改只对当前连接的 TiDB 实例生效。如果需要保留设置过的值，需要在 `tidb.toml` 配置文件中声明。
->
+> 
 > 此外，由于应用和连接器通常需要读取 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
 
 > **注意：**
@@ -1281,14 +1281,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量用于控制是否在同一个 `COM_QUERY` 调用中执行多个查询。
 - 为了减少 SQL 注入攻击的影响，TiDB 目前默认不允许在同一 `COM_QUERY` 调用中执行多个查询。该变量可用作早期 TiDB 版本的升级路径选项。该变量值与是否允许多语句行为的对照表如下：
 
-| 客户端设置                     | `tidb_multi_statement_mode` 值 | 是否允许多语句   |
-| ------------------------- | ----------------------------- | --------- |
-| Multiple Statements = ON  | OFF                           | 允许        |
-| Multiple Statements = ON  | ON                            | 允许        |
-| Multiple Statements = ON  | WARN                          | 允许        |
-| Multiple Statements = OFF | OFF                           | 不允许       |
-| Multiple Statements = OFF | ON                            | 允许        |
-| Multiple Statements = OFF | WARN                          | 允许 + 警告提示 |
+| 客户端设置         | `tidb_multi_statement_mode` 值 | 是否允许多语句 |
+|------------------------|-----------------------------------|--------------------------------|
+| Multiple Statements = ON  | OFF                               | 允许                            |
+| Multiple Statements = ON  | ON                                | 允许                            |
+| Multiple Statements = ON  | WARN                              | 允许                            |
+| Multiple Statements = OFF | OFF                               | 不允许                             |
+| Multiple Statements = OFF | ON                                | 允许                            |
+| Multiple Statements = OFF | WARN                              | 允许 + 警告提示        |
 
 > **注意：**
 >
