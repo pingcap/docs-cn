@@ -323,7 +323,7 @@ select @@tidb_slow_log_threshold;
 
 下面例子展示了如何通过变量 `tidb_max_tiflash_threads` 在线修改配置项 `max_threads`。
 
-`max_threads` 默认值是 -1，表示此配置不生效，有 TiFlash 自己的配置文件决定 max_threads，可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
+`max_threads` 默认值是 -1，表示此系统变量不生效，由 TiFlash 的配置文件决定 max_threads，可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
 
 {{< copyable "sql" >}}
 
