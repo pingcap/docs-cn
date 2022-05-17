@@ -42,6 +42,26 @@ The `BEGIN PESSIMISTIC;` and `BEGIN OPTIMISTIC;` statements take precedence over
 
 Pessimistic transactions in TiDB behave similarly to those in MySQL. See the minor differences in [Difference with MySQL InnoDB](#difference-with-mysql-innodb).
 
+- For pessimistic transactions, TiDB introduces snapshot read and current read.
+
+    - Snapshot read: it is an unlocked read that reads a version committed before the transaction starts. The read in the `SELECT` statement is a snapshot read.
+    - Current read: it is a locked read that reads the latest committed version. The read in the `UPDATE`, `DELETE`, `INSERT`, or `SELECT FOR UPDATE` statement is a current read.
+
+    The following examples provide a detailed description of snapshot read and current read.
+
+    | Session 1 | Session 2 | Session 3 |
+    | :----| :---- | :---- |
+    | CREATE TABLE t (a INT); |  |  |
+    | INSERT INTO T VALUES(1); |  |  |
+    | BEGIN PESSIMISTIC; |  |
+    | UPDATE t SET a = a + 1; |  |  |
+    |  | BEGIN PESSIMISTIC; |  |
+    |  | SELECT * FROM t;  -- Use the snapshot read to read the version committed before the current transaction starts. The result returns a=1. |  |
+    |  |  | BEGIN PESSIMISTIC;
+    |  |  | SELECT * FROM t FOR UPDATE; -- Use the current read. Wait for the lock.  |
+    | COMMIT; -- Release the lock. The SELECT FOR UPDATE operation of session 3 obtains the lock and TiDB uses the current read to read the latest committed version. The result returns a=2. |  |  |
+    |  | SELECT * FROM t; -- Use the snapshot read to read the version committed before the current transaction starts. The result returns a=1. |  |
+
 - When you execute `UPDATE`, `DELETE` or `INSERT` statements, the **latest** committed data is read, data is modified, and a pessimistic lock is applied on the modified rows.
 
 - For `SELECT FOR UPDATE` statements, a pessimistic lock is applied on the latest version of the committed data, instead of on the modified rows.
