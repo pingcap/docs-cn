@@ -33,7 +33,7 @@ aliases: ['/zh/tidb/dev/create-database']
 CREATE DATABASE IF NOT EXISTS `bookshop`;
 ```
 
-此语句会创建一个名为 `bookshop` 的数据库（如果尚不存在）。请以 `root` 用户身份执行文件中的建库语句，运行以下命令：
+此语句会创建一个名为 `bookshop` 的数据库（如果尚不存在）。请以 `root` 用户身份执行建库语句，运行以下命令：
 
 {{< copyable "shell-regular" >}}
 
