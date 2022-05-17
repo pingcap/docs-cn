@@ -349,3 +349,9 @@ select @@tidb_max_tiflash_threads;
 +----------------------------+
 1 row in set (0.00 sec)
 ```
+
+支持在线修改的配置项和相应的 TiDB 系统变量如下：
+
+| 配置项 | 对应变量 | 简介 |
+| --- | --- | --- |
+| max_threads | tidb_max_tiflash_threads | TiFlash 中 request 执行的最大线程数 |
