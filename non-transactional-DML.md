@@ -7,6 +7,8 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 本文档介绍非事务 DML 语句的使用场景、使用方法、使用限制和使用该功能的常见问题。
 
+TiDB 目前支持的非事务 DML 语句只有 DELETE 语句。其语法见 [BATCH](/sql-statements/sql-statement-batch.md)。
+
 非事务 DML 语句是将一个普通 DML 语句拆成多个 SQL 执行，以牺牲事务的原子性和隔离性为代价，增强批量数据处理场景下的性能和易用性。
 
 > **注意：**
@@ -40,16 +42,6 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 ## 使用方法
 
-TiDB 目前支持的非事务 DML 语句只有 DELETE 语句。其语法见 [BATCH](/sql-statements/sql-statement-batch.md)。
-
-最佳实践：
-
-1. 选择合适的[划分列](#参数说明)。建议使用整数或字符串类型。
-2. （可选）DRY RUN QUERY，手动执行该查询，确认 DML 语句影响的数据范围是否大体正确。
-3. （可选）DRY RUN，检查拆分后的语句和执行计划。关注索引选择效率。
-4. 执行非事务 DML
-5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
-
 非事务 DML 语句执行过程中，可以通过 `show processlist` 查看执行进度，其中的 `Time` 显示的是当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。
 
 通过 `KILL TIDB` kill 一个非事务语句时，会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
@@ -68,7 +60,7 @@ CREATE TABLE t(id int, v int, key(id));
 Query OK, 0 rows affected
 ```
 
-向表 `t` 中插入整数，主要为小于 6 的整数。
+向表 `t` 中插入一些数据。
 
 {{< copyable "sql" >}}
 
@@ -78,6 +70,23 @@ INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
 
 ```sql
 Query OK, 5 rows affected
+```
+
+执行非事务 DML 语句，以 2 为 batch size，以 id 为划分列，删除表 T 中 v < 6 的行。最终产生了两个 batch，都执行成功。该语句产生的效果相当于先后执行了 `DELETE FROM test.T WHERE (id BETWEEN 1 AND 2 AND (v < 6))` 和 `DELETE FROM test.T WHERE (id BETWEEN 3 AND 4 AND (v < 6))` 两条语句。
+
+{{< copyable "sql" >}}
+
+```sql
+BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
+```
+
+```sql
++----------------+---------------+
+| number of jobs | job status    |
++----------------+---------------+
+| 2              | all succeeded |
++----------------+---------------+
+1 row in set
 ```
 
 DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM T WHERE v < 6` 这条非事务 DML 语句内将会执行的用于划分 batch 的查询语句。
@@ -97,7 +106,7 @@ BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM T WHERE v < 6;
 1 row in set
 ```
 
-DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML 语句，但不执行这些语句。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和 batch。下面这条语句展示了 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 这条非事务 DML 语句被拆成两个 batch 后实际将会执行的 DML 语句。
+DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML 语句，但不执行这些语句。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和 batch。下面这条语句展示了 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 这条非事务 DML 语句被拆成两个 batch 后实际将会执行的 DML 语句。在上面的例子中，实际执行的两条语句如下。
 
 {{< copyable "sql" >}}
 
@@ -115,22 +124,7 @@ BATCH ON id LIMIT 2 DRY RUN DELETE FROM T where v < 6;
 2 rows in set
 ```
 
-执行非事务 DML 语句，以 2 为 batch size，以 id 为划分列，删除表 T 中 v < 6 的行。最终产生了两个 batch，都执行成功。
-
-{{< copyable "sql" >}}
-
-```sql
-BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
-```
-
-```sql
-+----------------+---------------+
-| number of jobs | job status    |
-+----------------+---------------+
-| 2              | all succeeded |
-+----------------+---------------+
-1 row in set
-```
+查看非事务 DML 语句的删除结果。
 
 {{< copyable "sql" >}}
 
@@ -160,7 +154,15 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
 | :-- | :-- | :-- | :-- | :-- |
 | 划分列 | 用于划分 batch 的列 | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
-| batch size | 用于控制每个 batch 的大小 | N/A | 是 | 1K - 1M。过小和过大都会导致性能下降 |
+| batch size | 用于控制每个 batch 的大小 | N/A | 是 | 1,000 - 1,000,000。过小和过大都会导致性能下降 |
+
+## 最佳实践
+
+1. 选择合适的[划分列](#参数说明)。建议使用整数或字符串类型。
+2. （可选）DRY RUN QUERY，手动执行该查询，确认 DML 语句影响的数据范围是否大体正确。
+3. （可选）DRY RUN，检查拆分后的语句和执行计划。关注索引选择效率。
+4. 执行非事务 DML
+5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
 ### 划分列的选择
 
@@ -176,7 +178,6 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
 batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 batch size 依据 workload 而定，根据经验值推荐从 50000 开始尝试。过小和过大的 batch size 执行效率都会下降。
 
 每个 batch 的信息需要存在内存里，因此 batch 数量过多会显著增加消耗的内存。这也是 batch size 不能过小的原因之一。非事务语句用于存储 batch 信息消耗的内存上限与 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 相同，超出这个限制时触发的操作由 [`oom-action`](/tidb-configuration-file.md#oom-action) 配置项控制。
-
 
 ## 使用限制
 
@@ -206,11 +207,9 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 
 ## 控制 batch 执行失败
 
-非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 `tidb_nontransactional_ignore_error` 控制了非事务 DML 语句处理错误的行为。
+非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 [`tidb_nontransactional_ignore_error`](/system-variables.md#system-variables.md#tidb_nontransactional_ignore_error-从-v61-版本开始引入) 控制了非事务 DML 语句处理错误的行为。
 
-当 `tidb_nontransactional_ignore_error=0`，在碰到第一个报错的 batch 时，非事务 DML 语句即中止，取消其后的所有 batch，返回错误。
-
-当 `tidb_nontransactional_ignore_error=1`，当某个 batch 执行报错时，其后的 batch 会继续执行，直到所有 batch 执行完毕，返回结果时把这些错误合并后返回。但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
+但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
 
 ## 与旧版本 batch-dml 的对比
 
