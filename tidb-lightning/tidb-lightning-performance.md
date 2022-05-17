@@ -10,7 +10,6 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-performance/','/docs-cn/de
 ## Lightning 的导入模式选择
 Lightning支持以下后端
 - Local-backend
-- Importer-backend
 - TiDB-backend
 
 链路越短，速度越快。所以，在数据量较大的情况下，建议选择 `Local-backend` 模式。
@@ -27,13 +26,12 @@ Lightning支持以下后端
 ![Lightning的并行](/media/lightning/lightning-concurrency.png)
 
 1. 首先，我们很容易发现，不同表是可以并行导入的。参数 `index-concurrency` 就是用于控制可以几张表同时导入。
-2. 如果表非常大，我们会按照100GB的大小，将表分割成多个批次来处理。总的线程池大小由 `table-concurrency` 控制。这是扫描文件的并发数。
-3. 我们知道，Local-backend 和 Importer-backend 导入模式是会将数据在本地编码排序的。`region-concurrency`参数就是控制数据处理的并行度。默认配置为CPU核数。在 Tidb-backend 中，这个参数就是等同于写入并发数。
+2. 如果表非常大，我们会按照100GB的大小，将表分割成多个批次来处理。总的并发数由 `table-concurrency` 控制。这是扫描文件的并发数。
+3. 我们知道，Local-backend 导入模式是会将数据在本地进行编码排序。`region-concurrency`参数就是控制数据处理的并行度。默认配置为CPU核数。在 Tidb-backend 中，这个参数就是等同于写入并发数。
 
 ## 导入数据源格式的区别
-lightning 支持多种数据格式导入，最常见的是 SQL 和 CSV。  
-二者的主要区别在于,如果 CSV 文件符合严格格式，则 lightning 会将单个 CSV 大文件，分割为多个文件块进行并行处理。[相关设置](https://docs.pingcap.com/zh/tidb/v5.3/migrate-from-csv-using-tidb-lightning#%E8%AE%BE%E7%BD%AE-strict-format-%E5%90%AF%E7%94%A8%E4%B8%A5%E6%A0%BC%E6%A0%BC%E5%BC%8F)  
-但 SQL 文件无法进行快速分割，使得并行度无法大于文件数。因此，在导出数据时，尽量避免单个 SQL 文件过大，建议文件大小在256M左右。
+lightning 支持多种数据格式导入，最常见的是 SQL 和 CSV。lightning 会尽量并行处理数据，通常情况是一个协程处理一个文件。但如果 CSV 文件符合严格格式，则 lightning 可以将单个 CSV 大文件，分割为多个文件块进行并行处理。[相关设置](https://docs.pingcap.com/zh/tidb/v5.3/migrate-from-csv-using-tidb-lightning#%E8%AE%BE%E7%BD%AE-strict-format-%E5%90%AF%E7%94%A8%E4%B8%A5%E6%A0%BC%E6%A0%BC%E5%BC%8F)  
+而 SQL 文件无法进行快速分割，就无法通过分割文件提高并行度。因此，在导出数据时，尽量避免单个 SQL 文件过大，建议文件大小在256M左右。
 
 ## 总结
 1. 如果是从0开始导入，不需要边导入边提供服务，请优先选择 `Local-backend` 模式。
