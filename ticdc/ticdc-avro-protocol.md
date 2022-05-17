@@ -61,7 +61,7 @@ TiCDC 会将一个数据变更事件转换为一个 kafka 事件，其中事件�
 * `{{Namespace}}` 是 changefeed namespace。
 * `{{ColumnValueBlock}}` 是每列数据的格式定义。
 
-Key 中的由主键列组成。
+Key 中的 `fields` 只包含主键或唯一索引列。
 
 ### Value 数据格式
 
@@ -238,7 +238,7 @@ DECIMAL(10, 4)
 }
 ```
 
-## 格式变更
+## DDL 事件与 Schema 变更
 
 Avro 并不会向下游生成格式变更事件。Avro 会在每次事件变更时检测是否发生格式变更，如果发生了格式变更，Avro 会生成新的格式，并尝试向 Schema Registry 注册。在注册时，Schema Registry 会做兼容性检测，如果此次格式变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决格式的兼容性问题。同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。详情请查看 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
 
