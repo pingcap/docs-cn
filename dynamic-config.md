@@ -316,3 +316,36 @@ select @@tidb_slow_log_threshold;
 | log.enable-slow-log | tidb_enable_slow_log | 慢日志的开关 |
 | log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+
+### 在线修改 TiFlash 配置
+
+在线修改 TiDB 配置的方式也是用户通过[系统变量](/system-variables.md)来完成修改。
+
+下面例子展示了如何通过变量 `tidb_max_tiflash_threads` 在线修改配置项 `max_threads`。
+
+`max_threads` 默认值是 -1，表示此配置不生效，有 TiFlash 自己的配置文件决定 max_threads，可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
+
+{{< copyable "sql" >}}
+
+```sql
+set tidb_max_tiflash_threads = 10;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select @@tidb_max_tiflash_threads;
+```
+
+```sql
++----------------------------+
+| @@tidb_max_tiflash_threads |
++----------------------------+
+| 10                         |
++----------------------------+
+1 row in set (0.00 sec)
+```

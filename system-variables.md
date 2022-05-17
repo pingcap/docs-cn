@@ -1628,6 +1628,22 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 set tidb_slow_log_threshold = 200;
 ```
 
+### `tidb_max_tiflash_threads`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`-1`
+- 范围：`[-1, 256]`
+- TiFlash 中 request 执行的最大线程数。默认值为 -1，表示该配置不生效，由 TiFlash 中的配置文件决定此配置。
+
+示例：
+
+{{< copyable "sql" >}}
+
+```sql
+set tidb_max_tiflash_threads = 10;
+```
+
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
