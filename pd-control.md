@@ -322,6 +322,17 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set max-store-down-time 30m
     ```
 
+- `max-store-preparing-time` 为 store 上线阶段的最大等待时间，PD 可以查询处在上线阶段 store 的上线进度，当超过指定的时间后会被认为 store 已完成上线阶段，将无法再次查询这个节点的进度。
+
+    设置 store 上线阶段最多等待 4 小时：
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set max-store-preparing-time 4h
+    ```
+
+
 - 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
     最多同时进行 4 个 leader 调度：
