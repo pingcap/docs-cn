@@ -169,7 +169,7 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 
 非事务 DML 语句的硬性限制，不满足这些条件将会报错。
 
-- 只可对单表进行操作。
+- 只可对单表进行操作，暂不支持多表 join。
 - DML 语句不可以包含 ORDER BY 或 LIMIT 字句。
 - 用于拆分的列必须被索引。该索引可以是单列的索引，或是一个联合索引的第一列。
 - 必须在 [`autocommit`](/system-variables.md#autocommit) 模式中使用。
