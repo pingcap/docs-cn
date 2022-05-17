@@ -142,6 +142,14 @@ SELECT * FROM t;
 1 row in set
 ```
 
+DELETE 语句原本支持的 optimizer hint 也同样支持，位置与普通 DELETE 语句中的位置一样，如：
+
+{{< copyable "sql" >}}
+
+```sql
+BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
+```
+
 ## 参数说明
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
