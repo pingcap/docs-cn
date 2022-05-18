@@ -4,7 +4,7 @@ summary: TiDB 数据库模式设计的概述。
 aliases: ['/zh/tidb/dev/schema-design-overview']
 ---
 
-# 概述
+# 数据库模式设计概述
 
 本文档介绍了 TiDB 数据库模式设计的基础知识，包含 TiDB 中的对象、访问控制、数据库模式变更和对象限制。
 
