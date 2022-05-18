@@ -186,7 +186,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 - 索引选择率高的索引中的列。不同索引选择率可能导致数十倍的性能差异。
 - 有聚簇索引时，用主键作为划分列效率更高（包括 int 主键和 `_tidb_rowid`）
 
-用户可以不指定划分列，TiDB 默认会使用 handle 的第一列。但是如果聚簇索引主键的第一列是不支持的数据类型，TiDB 会报错。需要用户自己选择合适的划分列。
+用户可以不指定划分列，TiDB 默认会使用 handle 的第一列作为划分列。但如果聚簇索引主键的第一列是不支持的数据类型（即 ENUM，BIT，SET，JSON），TiDB 会报错。需要用户自己选择合适的划分列。
 
 ### batch size 的选择
 
@@ -205,7 +205,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 - 不可以在开启旧的 batch-dml feature 时使用
 - 不可以在设置了 [tidb_snapshot](/read-historical-data.md#操作流程) 时使用。
 - 不可以用在 prepare 语句。
-- 划分列不支持 ENUM，SET，JSON，DURATION，TIME 等类型。
+- 划分列不支持 ENUM，BIT，SET，JSON 类型。
 - 不可以用在[临时表](/temporary-tables.md)上。
 - 不支持[公共表表达式](/develop/use-common-table-expression.md）。
 
@@ -250,7 +250,7 @@ batch-dml 极易因为使用不当导致数据索引不一致问题。
 
 ### 报错：Failed to restore the delete statement, probably because of unsupported type of the shard column
 
-划分列的类型暂时不支持 ENUM，SET，JSON，DURATION，TIME 等类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型。
+划分列的类型暂时不支持 ENUM，BIT，SET，JSON 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型。如果划分列不是这些类型，请联系 PingCAP 技术支持。
 
 ### 和普通的 Delete 不等价的“异常”行为
 
