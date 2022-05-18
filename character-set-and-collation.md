@@ -88,7 +88,7 @@ mysql> show collation;
 
 > **警告：**
 >
-> TiDB 会错误地将 `latin1` 视为 `utf8` 的子集。当用户存储不同于 `latin1` 和 `utf8` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
+> TiDB 将 `latin1` 视为 `utf8mb4` 的别名，当用户存储不同于 `latin1` 和 `utf8mb4` 编码的字符时，可能会导致意外情况出现。因此强烈建议使用 `utf8mb4` 字符集。详情参阅 [TiDB #34008](https://github.com/pingcap/tidb/pull/34008)。
 
 > **注意：**
 >
