@@ -676,7 +676,15 @@ sudo systemctl enable ntpd.service
 > - NUMA 绑核是用来隔离 CPU 资源的一种方法，适合高配置物理机环境部署多实例使用。
 > - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。
 
-1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
+1. 参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署：
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup cluster deploy tidb-test v6.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    ```
+
+2. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
 
     {{< copyable "shell-regular" >}}
 
@@ -684,7 +692,7 @@ sudo systemctl enable ntpd.service
     sudo yum -y install numactl
     ```
 
-2. 通过 TiUP 的 cluster 执行完 exec 命令来完成批量安装
+3. 通过 TiUP 的 cluster 执行完 `exec` 命令来完成批量安装
 
     {{< copyable "shell-regular" >}}
 
@@ -704,7 +712,7 @@ sudo systemctl enable ntpd.service
         --sudo             use root permissions (default false)
     ```
 
-    将 tidb-test 集群所有目标主机通过 sudo 权限执行安装命令
+    将 `tidb-test` 集群所有目标主机通过 sudo 权限执行安装命令
 
     {{< copyable "shell-regular" >}}
 
