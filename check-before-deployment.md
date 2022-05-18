@@ -712,7 +712,7 @@ sudo systemctl enable ntpd.service
         --sudo             use root permissions (default false)
     ```
 
-    将 `tidb-test` 集群所有目标主机通过 sudo 权限执行安装命令
+    将 `tidb-test` 集群所有目标主机通过 `sudo` 权限执行安装命令
 
     {{< copyable "shell-regular" >}}
 
