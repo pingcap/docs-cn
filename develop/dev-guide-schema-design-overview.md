@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/schema-design-overview']
 
 将从本页开始围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的设计数据库部分展开介绍。并使用此数据库做后续数据的写入、读取示例。
 
-## 数据库模式设计中的对象
+##  TiDB 中的对象
 
 此处术语会有歧义，为消除歧义，在此作出数据库模式设计文档部分中的术语简要约定：
 
