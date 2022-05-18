@@ -372,9 +372,9 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 
 > **注意：**
 >
+> - 目前 consistency-check 与 TiDB GC 操作不兼容，存在误报的可能，因此不建议使用该命令。
 > - **该命令只支持远程模式**。
 > - 即使该命令返回了成功信息，也需要检查是否有 TiKV panic 了。因为该命令只是向 Leader 请求进行一致性检查，但整个检查流程是否成功并不能在客户端知道。
-> - 目前与 TiDB GC 操作不兼容，存在一定的误报可能。
 
 ### Dump snapshot 元文件
 
