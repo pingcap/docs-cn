@@ -213,7 +213,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 非事务 DML 语句的实现原理，是将原本需要在用户侧手动执行的 SQL 语句拆分工作内置为 TiDB 的一个功能，简化用户操作。要理解非事务 DML 语句的行为，可以将其想象成一个用户脚本进行了如下操作：
 
-对于非事务 DML："BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$"
+对于非事务 DML `BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$`，其中 `$C$` 为用于拆分的列，`$N$` 为 batch size，`$P$` 为筛选条件。
 
 1. 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 \dots B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [DRY RUN QUERY](/sql-statements/sql-statement-batch.md#示例) 查看。
 2. 那么 $B_i$ 所涉及的数据就是满足 $P_i$:`C BETWEEN <S_i> AND <E_i>` 的一个子集。可以通过 $P_i$ 来缩小每个 batch 需要处理的数据范围。
