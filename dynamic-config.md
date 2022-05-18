@@ -354,4 +354,4 @@ select @@tidb_max_tiflash_threads;
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
-| max_threads | tidb_max_tiflash_threads | TiFlash 中 request 执行的最大线程数 |
+| max_threads | tidb_max_tiflash_threads | TiFlash 中 request 执行的最大并发度 |
