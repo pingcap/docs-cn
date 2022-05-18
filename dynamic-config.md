@@ -147,7 +147,7 @@ show warnings;
 | raftstore.max-leader-missing-duration | 允许副本处于无主状态的最长时间，超过将会向 PD 校验自己是否已经被删除 |
 | raftstore.abnormal-leader-missing-duration | 允许副本处于无主状态的时间，超过将视为异常，标记在 metrics 和日志中 |
 | raftstore.peer-stale-state-check-interval | 触发检验副本是否处于无主状态的时间间隔 |
-| raftstore.consistency-check-interval | 触发一致性检查的时间间隔 |
+| raftstore.consistency-check-interval | 触发一致性检查的时间间隔（不建议使用该配置项，因为与 TiDB GC 操作不兼容）|
 | raftstore.raft-store-max-leader-lease | Region 主可信任期的最长时间 |
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
