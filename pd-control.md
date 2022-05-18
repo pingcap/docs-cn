@@ -33,7 +33,7 @@ PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式�
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl store -u http://127.0.0.1:2379
+tiup ctl pd store -u http://127.0.0.1:2379
 ```
 
 交互模式：
@@ -41,7 +41,7 @@ PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式�
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl -i -u http://127.0.0.1:2379
+tiup ctl pd -i -u http://127.0.0.1:2379
 ```
 
 使用环境变量：
@@ -50,7 +50,7 @@ PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式�
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
-./pd-ctl
+tiup ctl pd
 ```
 
 使用 TLS 加密：
@@ -58,7 +58,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## 命令行参数 (flags)
