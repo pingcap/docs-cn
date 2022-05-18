@@ -707,8 +707,8 @@ raftstore 相关的配置项。
 ### `max-snapshot-file-raw-size`
 
 + 当 snapshot 文件大于指定大小时，切割成多个文件。
-+ 默认值：128MiB
-+ 最小值：128MiB
++ 默认值：100MiB
++ 最小值：100MiB
 
 ### `snap-apply-batch-size`
 
@@ -836,8 +836,7 @@ coprocessor 相关的配置项。
 
 ### `region-max-size`
 
-+ Region 容量空间最大值，超过时系统分裂成多个 Region。
-+ 默认值：144MB
++ Region 容量空间最大值，超过时系统分裂成多个 Region。默认值为 region-split-size / 2 * 3。
 + 单位：KB|MB|GB
 
 ### `region-split-size`
@@ -848,8 +847,7 @@ coprocessor 相关的配置项。
 
 ### `region-max-keys`
 
-+ Region 最多允许的 key 的个数，超过时系统分裂成多个 Region。
-+ 默认值：1440000
++ Region 最多允许的 key 的个数，超过时系统分裂成多个 Region。默认值为 region-split-keys / 2 * 3。
 
 ### `region-split-keys`
 
@@ -863,12 +861,12 @@ coprocessor 相关的配置项。
 > **警告：**
 >
 > - region buckets 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
-> - 这个参数只有在将 region size 调到 128MiB 及以上时才有意义。将 region size 调大可能会有潜在的性能回退、搬迁缓慢的风险。
+> - 这个参数只有在将 region split size 调到 128MiB 及以上时才有意义。将 region size 调大可能会有潜在的性能回退、搬迁缓慢的风险。
 
 ### `region-bucket-size`
 
 + 设置 bucket 的预期大小。
-+ 默认值：128MiB
++ 默认值：96MiB
 
 ## rocksdb
 
