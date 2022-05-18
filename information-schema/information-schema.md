@@ -56,7 +56,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)   | 汇总由客户端产生的错误和警告。                                 |
 | [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)            | 提供有关整个 TiDB 集群的配置设置的详细信息。                   |
 | `CLUSTER_DEADLOCKS`                                                                     | 提供 `DEADLOCKS` 表的集群级别的视图。                          |
-| [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-info.md)            | 提供在每个 TiDB 组件上发现的底层物理硬件的详细信息。           |
+| [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-hardware.md)        | 提供在每个 TiDB 组件上发现的底层物理硬件的详细信息。           |
 | [`CLUSTER_INFO`](/information-schema/information-schema-cluster-info.md)                | 提供当前集群拓扑的详细信息。                                   |
 | [`CLUSTER_LOAD`](/information-schema/information-schema-cluster-load.md)                | 提供集群中 TiDB 服务器的当前负载信息。                         |
 | [`CLUSTER_LOG`](/information-schema/information-schema-cluster-log.md)                  | 提供整个 TiDB 集群的日志。                                     |
@@ -75,7 +75,7 @@ Information Schema 提供了一种查看系统元数据的 ANSI 标准方法。�
 | [`METRICS_SUMMARY`](/information-schema/information-schema-metrics-summary.md)          | 从 Prometheus 获取的指标的摘要。                               |
 | `METRICS_SUMMARY_BY_LABEL`                                                              | 参见 `METRICS_SUMMARY` 表。                                    |
 | [`METRICS_TABLES`](/information-schema/information-schema-metrics-tables.md)            | 为 `METRICS_SCHEMA` 中的表提供 PromQL 定义。                   |
-| [`PLACEMENT_RULES`](/information-schema/information-schema-placement-rules.md) | 对于所有被显式分配了放置规则的对象，该扩展表提供与这些对象相关的所有信息。 |
+| [`PLACEMENT_POLICIES`](/information-schema/information-schema-placement-policies.md)    | 提供所有放置策略的定义信息。                                           |
 | [`SEQUENCES`](/information-schema/information-schema-sequences.md)                      | 描述了基于 MariaDB 实现的 TiDB 序列。                          |
 | [`SLOW_QUERY`](/information-schema/information-schema-slow-query.md)                    | 提供当前 TiDB 服务器上慢查询的信息。                           |
 | [`STATEMENTS_SUMMARY`](/statement-summary-tables.md)                                    | 类似于 MySQL 中的 performance_schema 语句摘要。                |

@@ -18,7 +18,7 @@ RECOVER TABLE table_name
 {{< copyable "sql" >}}
 
 ```sql
-RECOVER TABLE BY JOB ddl_job_id
+RECOVER TABLE BY JOB JOB_ID
 ```
 
 ### 语法图

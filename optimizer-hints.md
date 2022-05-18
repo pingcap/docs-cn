@@ -161,6 +161,23 @@ SELECT /*+ USE_INDEX(t1, idx1, idx2) */ * FROM t1;
 >
 > 当该 Hint 中只指定表名，不指定索引名时，表示不考虑使用任何索引，而是选择全表扫。
 
+### FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])
+
+`FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表仅使用给出的索引。
+
+`FORCE_INDEX(t1_name, idx1_name [, idx2_name ...])` 的使用方法、作用和 `USE_INDEX(t1_name, idx1_name [, idx2_name ...])` 相同。
+
+以下四个查询语句的效果相同：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ USE_INDEX(t, idx1) */ * FROM t;
+SELECT /*+ FORCE_INDEX(t, idx1) */ * FROM t;
+SELECT * FROM t use index(idx1);
+SELECT * FROM t force index(idx1);
+```
+
 ### IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])
 
 `IGNORE_INDEX(t1_name, idx1_name [, idx2_name ...])` 提示优化器对指定表忽略给出的索引。
@@ -314,7 +331,7 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 
 `IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
 
-该 Hint 用于在 [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
+该 Hint 用于在 [prepared-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
 
 以下示例强制该 `prepare` 语句不使用 plan cache：
 

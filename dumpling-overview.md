@@ -1,5 +1,5 @@
 ---
-title: Dumpling 使用文档
+title: 使用 Dumpling 导出数据
 summary: 使用 Dumpling 从 TiDB 导出数据。
 aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydumper/','/zh/tidb/dev/mydumper-overview/']
 ---
@@ -19,7 +19,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 你可以通过下列任意方式获取 Dumpling：
 
 - TiUP 执行 `tiup install dumpling` 命令。获取后，使用 `tiup dumpling ...` 命令运行 Dumpling。
-- 下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools.md#dumpling)。
+- 下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools.md)。
 
 更多详情，可以使用 --help 选项查看，或参考 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 TiDB 还提供了其他工具，你可以根据需要选择使用：
 
-- 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-tool.md)。
+- 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-overview.md)。
 - 如果需要实时的增量备份，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
 - 所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导回到 TiDB。
 
@@ -65,15 +65,7 @@ Dumpling 默认导出数据格式为 SQL 文件。也可以通过设置 `--filet
 {{< copyable "shell-regular" >}}
 
 ```shell
-dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  --filetype sql \
-  -t 8 \
-  -o /tmp/test \
-  -r 200000 \
-  -F 256MiB
+dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000 -F256MiB
 ```
 
 以上命令中：
@@ -90,25 +82,25 @@ dumpling \
 
 ### 导出为 CSV 文件
 
-假如导出数据的格式是 CSV（使用 `--filetype csv` 即可导出 CSV 文件），还可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录，例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
+你可以通过使用 `--filetype csv` 导出数据到 CSV 文件。
+
+当你导出 CSV 文件时，你可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录。例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -o /tmp/test \
-  --filetype csv \
-  --sql 'select * from `test`.`sbtest1` where id < 100'
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'select * from `test`.`sbtest1` where id < 100' -F 100MiB --output-filename-template 'test.sbtest1.{{.Index}}'
 ```
+
+以上命令中：
+
+- `--sql` 选项仅仅可用于导出 CSV 文件的场景。上述命令将在要导出的所有表上执行 `SELECT * FROM <table-name> WHERE id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+- 使用 `--sql` 配置导出时，Dumpling 无法获知导出的表库信息，此时可以使用 `--output-filename-template` 选项来指定 CSV 文件的文件名格式，以方便后续使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据文件。例如 `--output-filename-template='test.sbtest1.{{.Index}}'` 指定导出的 CSV 文件为 `test.sbtest1.000000000`、`test.sbtest1.000000001` 等。
+- 你可以使用 `--csv-separator`、`--csv-delimiter` 等选项，配置 CSV 文件的格式。具体信息可查阅 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
 > **注意：**
 >
-> - `--sql` 选项仅仅可用于导出 CSV 的场景。
-> - 该命令将在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
-> - Dumpling 导出不区分`字符串`与`关键字`。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
+> Dumpling 导出不区分*字符串*与*关键字*。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
 
 ### 输出文件格式
 
@@ -193,13 +185,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -r 200000 \
-  -o "s3://${Bucket}/${Folder}" \
-  --s3.region "${region}"
+./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}" --s3.region "${region}"
 ```
 
 ### 筛选导出的数据
@@ -211,12 +197,7 @@ Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dum
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -o /tmp/test \
-  --where "id < 100"
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --where "id < 100"
 ```
 
 上述命令将会导出各个表的 id < 100 的数据。注意 `--where` 参数无法与 `--sql` 一起使用。
@@ -228,14 +209,7 @@ Dumpling 可以通过 `--filter` 指定 table-filter 来筛选特定的库表。
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling \
-  -u root \
-  -P 4000 \
-  -h 127.0.0.1 \
-  -o /tmp/test \
-  -r 200000 \
-  --filter "employees.*" \
-  --filter "*.WorkOrder"
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test -r 200000 --filter "employees.*" --filter "*.WorkOrder"
 ```
 
 上述命令将会导出 `employees` 数据库的所有表，以及所有数据库中的 `WorkOrder` 表。
@@ -260,6 +234,7 @@ Dumpling 也可以通过 `-B` 或 `-T` 选项导出特定的数据库/数据表�
 
 - `-t` 用于指定导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大。
 - `-r` 选项用于指定单个文件的最大记录数，或者说，数据库中的行数。开启后 Dumpling 会开启表内并发，提高导出大表的速度。当上游为 TiDB 且版本为 v3.0 或更新版本时，该参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值将不再生效。
+- `--compress gzip` 选项可以用于压缩导出的数据。压缩可以显著降低导出数据的大小，同时如果存储的写入 I/O 带宽不足，可以使用该选项来加速导出。但该选项也有副作用，由于该选项会对每个文件单独压缩，因此会增加 CPU 消耗。
 
 利用以上选项可以提高 Dumpling 的导出速度。
 

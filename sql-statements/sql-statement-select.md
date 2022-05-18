@@ -152,7 +152,9 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-`SELECT` 语句与 MySQL 完全兼容。如发现任何兼容性差异，请在 GitHub 上提交 [issue](https://github.com/pingcap/tidb/issues/new/choose)。
+- 不支持 `SELECT ... INTO @variable` 语法。
+- 不支持 `SELECT ... GROUP BY ... WITH ROLLUP` 语法。
+- 不支持 MySQL 5.7 中支持的 `SELECT .. GROUP BY expr` 语法，而是匹配 MySQL 8.0 的行为，不按照默认的顺序进行排序。
 
 ## 另请参阅
 

@@ -451,3 +451,52 @@ Canal 官方实现输出内容如下：
     "old": null,
 }
 ```
+
+## TiCDC Canal-JSON 改动说明
+
+### `Delete` 类型事件中 `Old` 字段的变化说明
+
+TiCDC 实现的 Canal-JSON 格式，v5.4.0 及以后版本的实现，和之前的有些许不同，具体如下：
+
+* `Delete` 类型事件，`Old` 字段的内容发生了变化。
+
+如下是一个 `DELETE` 事件的数据内容，在 v5.4.0 前的实现中，"old" 的内容和 "data" 相同，在 v5.4.0 及之后的实现中，"old" 将被设为 null。你可以通过 "data" 字段获取到被删除的数据。
+
+```
+{
+    "id": 0,
+    "database": "test",
+    ...
+    "type": "DELETE",
+    ...
+    "sqlType": {
+        ...
+    },
+    "mysqlType": {
+        ...
+    },
+    "data": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "0",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "0",
+            "id": "2"
+        }
+    ],
+    "old": null,
+
+    // 以下示例是 v5.4.0 之前的实现，`old` 内容等同于 `data` 内容
+    "old": [
+        {
+            "c_bigint": "9223372036854775807",
+            "c_int": "0",
+            "c_mediumint": "8388607",
+            "c_smallint": "32767",
+            "c_tinyint": "0",
+            "id": "2"
+        }
+    ]
+}
+```

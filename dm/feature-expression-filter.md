@@ -1,6 +1,5 @@
 ---
 title: 通过 SQL 表达式过滤 DML
-aliases: ['/zh/tidb/dev/feature-expression-filter/']
 ---
 
 # 通过 SQL 表达式过滤 DML
