@@ -175,7 +175,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [`SET CONFIG`](/dynamic-config.md)                                        | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [DM WebUI](/dm/dm-webui-guide.md)                                        | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
 
-[^1]: TiDB 将 latin1 视为 utf8mb4 的别名。见 [TiDB #34008](https://github.com/pingcap/tidb/issues/34008)。
+[^1]: 由于历史原因，TiDB 将 latin1 视为 utf8mb4 的别名。见 [TiDB #34008](https://github.com/pingcap/tidb/issues/34008)。
 
 [^2]: TiDB 支持的完整 SQL 列表，见[语句参考](/sql-statements/sql-statement-select.md)。
 
