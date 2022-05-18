@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/schema-design-overview']
 
 # 概述
 
-本文档提供了 TiDB 数据库的基础设计，包含数据库设计、访问控制、数据库模式变更和对象限制。
+本文档介绍了 TiDB 数据库模式设计的基础知识，包含 TiDB 中的对象、访问控制、数据库模式变更和对象限制。
 
 将从本页开始围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的设计数据库部分展开介绍。并使用此数据库做后续数据的写入、读取示例。
 
