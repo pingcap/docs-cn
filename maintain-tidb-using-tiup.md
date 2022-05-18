@@ -104,9 +104,9 @@ When the cluster is in operation, if you need to modify the parameters of a comp
         ```
         tidb_servers:
         - host: 10.0.1.11
-            port: 4000
-            config:
-                log.slow-threshold: 300
+          port: 4000
+          config:
+              log.slow-threshold: 300
         ```
 
     For the parameter format, see the [TiUP parameter template](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml).
