@@ -34,12 +34,12 @@ CPU: ≥32C
 ## Lightning 如何并行
 ![Lightning的并行](/media/lightning/lightning-concurrency.png)
 
-1. 首先，我们能想到，不同表肯定能并行导入。参数 `index-concurrency` 就是用于控制可以几张表同时导入。导入时，每张表被切分成一个用于存储索引的"索引引擎"和若干存储行数据的"数据引擎"。`index-concurrency`就对应索引引擎的并发度。
-2. 如果表非常大，我们会按照100GB的大小，将表分割成多个批次来处理。总的并发数由 `table-concurrency` 控制,这是扫描文件的并发数。以上两个参数对导入速度影响不大，使用默认值即可。
+1. 首先，我们能想到，不同表肯定能并行导入。参数 `index-concurrency` 就是用于控制可以几张表同时导入。导入时，每张表被切分成一个用于存储索引的"索引引擎"和若干存储行数据的"数据引擎",`index-concurrency`用于调整"索引引擎"的并发度，所以等同于表的并发度。
+2. 如果表非常大，我们会按照100GB的大小，将表分割成多个批次来处理。文件扫描的并发度由 `table-concurrency` 控制。上述两个参数对导入速度影响不大，使用默认值即可。
 3. 我们知道，Local-backend 导入模式是会将数据在本地进行编码排序。`region-concurrency`参数就是控制数据处理的并行度,在 Tidb-backend 中，这个参数就是等同于写入并发数。默认值为CPU核数不用管，如果和其它组件混跑，建议设置成 CPU 核数的 75%。
 
 ## 导入数据源格式的区别
-lightning 支持多种数据格式导入，最常见的是 SQL 和 CSV。  lightning 会尽量并行处理数据，通常情况是一个协程处理一个文件。  
+lightning 支持多种数据格式导入，最常见的是 SQL 和 CSV。lightning 会尽量并行处理数据，由于文件必须顺序读取，所以处理并行度 `region-concurrency` 无法大于文件数，这导致大文件导入时会存在性能退化。  
 但如果 CSV 文件符合严格格式，则 lightning 可以将单个 CSV 大文件，分割为多个文件块进行并行处理。[相关设置](https://docs.pingcap.com/zh/tidb/v5.3/migrate-from-csv-using-tidb-lightning#%E8%AE%BE%E7%BD%AE-strict-format-%E5%90%AF%E7%94%A8%E4%B8%A5%E6%A0%BC%E6%A0%BC%E5%BC%8F)  
 而 SQL 文件无法进行快速分割，就无法通过分割文件提高并行度。因此，在导出数据时，尽量避免单个 SQL 文件过大，建议文件大小在256M左右。
 
