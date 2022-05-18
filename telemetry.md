@@ -59,6 +59,22 @@ ADMIN SHOW TELEMETRY;
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
 ```
 
+### TiSpark
+
+当 TiSpark 遥测功能开启时，Spark 在使用 TiSpark 时会发送会将使用情况信息分享给 PingCAP，包括（但不限于）：
+
+- Spark 随机生成的 application id
+- TiSpark 的部分配置信息，如读取引擎、是否开启流式读取等
+- 用户集群部署情况，包括 TiSpark 所在节点的机器硬件信息、操作系统信息和组件版本号等
+
+当 TiSpark 被使用时，可以通过查看 Spark 日志来了解 TiSpark 收集的使用情况信息内容，需要把 Spark 日志级别调至 INFO 或更低，例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat {spark.log} | grep Telemetry report | tail -n 1
+```
+
 ## 禁用遥测功能
 
 ### 部署 TiDB 时禁用 TiDB 遥测
@@ -232,6 +248,10 @@ server_configs:
 ```shell
 tiup telemetry disable
 ```
+
+### 禁用 TiSpark 遥测
+
+可以通过修改 Spark 配置文件中 `spark.tispark.telemetry.enable = false` 禁用 TiSpark 的遥测功能，无需重启集群即可生效。
 
 ## 查看遥测启用状态
 
