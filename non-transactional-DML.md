@@ -68,12 +68,12 @@ INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
 Query OK, 5 rows affected
 ```
 
-执行非事务 DML 语句，以 2 为 batch size，以 id 为划分列，删除表 T 中 v < 6 的行。最终产生了两个 batch，都执行成功。该语句产生的效果相当于先后执行了 `DELETE FROM test.T WHERE (id BETWEEN 1 AND 2 AND (v < 6))` 和 `DELETE FROM test.T WHERE (id BETWEEN 3 AND 4 AND (v < 6))` 两条语句。
+以下操作使用非事务 DML 语句，删除表 t 的 v 列上小于整数 6 的行。该语句将以 2 为 batch size，以 id 列为划分列，拆分为两个 SQL 语句执行，删除表 t 中 v < 6 的行。
 
 {{< copyable "sql" >}}
 
 ```sql
-BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
+BATCH ON id LIMIT 2 DELETE FROM t where v < 6;
 ```
 
 ```sql
@@ -85,37 +85,37 @@ BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
 1 row in set
 ```
 
-DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM T WHERE v < 6` 这条非事务 DML 语句内将会执行的用于划分 batch 的查询语句。
+DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 这条非事务 DML 语句内将会执行的用于划分 batch 的查询语句。
 
 {{< copyable "sql" >}}
 
 ```sql
-BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM T WHERE v < 6;
+BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM t WHERE v < 6;
 ```
 
 ```sql
 +--------------------------------------------------------------------------------+
 | query statement                                                                |
 +--------------------------------------------------------------------------------+
-| SELECT `id` FROM `test`.`T` WHERE (`v` < 6) ORDER BY IF(ISNULL(`id`),0,1),`id` |
+| SELECT `id` FROM `test`.`t` WHERE (`v` < 6) ORDER BY IF(ISNULL(`id`),0,1),`id` |
 +--------------------------------------------------------------------------------+
 1 row in set
 ```
 
-DRY RUN 可以查询第一个和最后一个 batch 对应的实际 DML 语句，但不执行这些语句。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和 batch。下面这条语句展示了 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 这条非事务 DML 语句被拆成两个 batch 后实际将会执行的 DML 语句。在上面的例子中，实际执行的两条语句如下。
+要查询非事务 DML 语句中第一个和最后一个 batch 对应的实际 DML 语句，你可在语句中添加 `DRY RUN`。添加后，TiDB 只划分 batch，不执行这些 SQL。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和最后一个 batch。
 
 {{< copyable "sql" >}}
 
 ```sql
-BATCH ON id LIMIT 2 DRY RUN DELETE FROM T where v < 6;
+BATCH ON id LIMIT 2 DRY RUN DELETE FROM t where v < 6;
 ```
 
 ```sql
 +-------------------------------------------------------------------+
 | split statement examples                                          |
 +-------------------------------------------------------------------+
-| DELETE FROM `test`.`T` WHERE (`id` BETWEEN 1 AND 2 AND (`v` < 6)) |
-| DELETE FROM `test`.`T` WHERE (`id` BETWEEN 3 AND 4 AND (`v` < 6)) |
+| DELETE FROM `test`.`t` WHERE (`id` BETWEEN 1 AND 2 AND (`v` < 6)) |
+| DELETE FROM `test`.`t` WHERE (`id` BETWEEN 3 AND 4 AND (`v` < 6)) |
 +-------------------------------------------------------------------+
 2 rows in set
 ```
@@ -137,12 +137,12 @@ SELECT * FROM t;
 1 row in set
 ```
 
-DELETE 语句原本支持的 optimizer hint 也同样支持，位置与普通 DELETE 语句中的位置一样，如：
+对于 DELETE 语句原本支持的 optimizer hint，非事务 DELETE 语句也同样支持，hint 位置与普通 DELETE 语句中的位置相同：
 
 {{< copyable "sql" >}}
 
 ```sql
-BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
+BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 ```
 
 非事务 DML 语句执行过程中，可以通过 `show processlist` 查看执行进度，其中的 `Time` 显示的是当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。例如，
@@ -180,7 +180,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
 非事务语句需要用一个列作为数据分批的标准。为效率考虑，这一列必须能够利用索引。不同的索引和划分列所导致的执行效率可能有数十倍的差别。可以参考以下两条建议。
 
 - 索引选择率高的索引中的列。不同索引选择率可能导致数十倍的性能差异。
-- 有聚簇索引时，用主键作为划分列效率更高（包括 int handle 和 _tidb_rowid）
+- 有聚簇索引时，用主键作为划分列效率更高（包括 int 主键和 `_tidb_rowid`）
 
 用户可以不指定划分列，TiDB 默认会使用 handle 的第一列。但是如果聚簇索引主键的第一列是不支持的数据类型，TiDB 会报错。需要用户自己选择合适的划分列。
 
@@ -223,6 +223,8 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
 
 ## 与旧版本 batch-dml 的对比
+
+batch-dml 是一种在执行期间将一个事务拆成多个事务提交的机制。
 
 > **注意：**
 >
