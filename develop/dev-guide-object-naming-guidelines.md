@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
 
 # 对象命名规范
 
-用于规范数据库对象的名命，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
+用于规范数据库对象的命名，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
 
 ## 原则
 
@@ -24,8 +24,8 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
 - 同一业务或者模块的表尽可能使用相同的前缀，表名称尽可能表达含义。
 - 多个单词以下划线分隔，不推荐超过 32 个字符。
 - 建议对表的用途进行注释说明，以便于统一认识。如：
-    - 临时表（tmp_t_crm_relation_0425）
-    - 备份表（bak_t_crm_relation_20170425）
+    - 临时表（`tmp_t_crm_relation_0425`）
+    - 备份表（`bak_t_crm_relation_20170425`）
     - 业务运营临时统计表（`tmp_st_{business code}_{creator abbreviation}_{date}`）
     - 账期归档表（`t_crm_ec_record_YYYY{MM}{dd}`）
 - 不同业务模块的表单独建立 DATABASE，并增加相应注释。
@@ -38,7 +38,7 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
 - 字段也尽量添加注释，枚举型需指明主要值的含义，如”0 - 离线，1 - 在线”。
 - 布尔值列命名为 `is_{description}`。如 member 表上表示为 enabled 的会员的列命名为 is_enabled。
 - 字段名不建议超过 30 个字符，字段个数不建议大于 60。
-- 尽量避免使用保留字，如 order、from、desc 等，请参考附录部分的官方保留字。
+- 尽量避免使用保留字，如 order、from、desc 等，请参考附录部分的[官方保留字](/keywords.md)。
 
 ## 索引命名规范
 
