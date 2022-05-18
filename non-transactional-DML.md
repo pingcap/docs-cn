@@ -85,7 +85,9 @@ BATCH ON id LIMIT 2 DELETE FROM T where v < 6;
 1 row in set
 ```
 
-DRY RUN QUERY 可以查询用于划分 batch 的语句。不实际执行这个查询和后续的 DML。下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM T WHERE v < 6` 这条非事务 DML 语句内将会执行的用于划分 batch 的查询语句。
+要查询非事务 DML 语句中用于划分 batch 的语句，你可在非事务 DML 语句中添加 `DRY RUN QUERY`。添加后，TiDB 不实际执行这个查询和后续的 DML 操作。
+
+下面这条语句查询 `BATCH ON id LIMIT 2 DELETE FROM T WHERE v < 6` 这条非事务 DML 语句内用于划分 batch 的查询语句。
 
 {{< copyable "sql" >}}
 
@@ -164,20 +166,22 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
 | :-- | :-- | :-- | :-- | :-- |
-| 划分列 | 用于划分 batch 的列 | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
-| batch size | 用于控制每个 batch 的大小 | N/A | 是 | 1,000 - 1,000,000。过小和过大都会导致性能下降 |
+| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
+| batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM T where v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000 - 1000000，过小和过大都会导致性能下降 |
 
 ## 最佳实践
 
+建议按照以下步骤执行非事务 DML 语句：
+
 1. 选择合适的[划分列](#参数说明)。建议使用整数或字符串类型。
-2. （可选）DRY RUN QUERY，手动执行该查询，确认 DML 语句影响的数据范围是否大体正确。
-3. （可选）DRY RUN，检查拆分后的语句和执行计划。关注索引选择效率。
-4. 执行非事务 DML
+2. （可选）在非事务 DML 语句中添加 `DRY RUN QUERY`，手动执行查询，确认 DML 语句影响的数据范围是否大体正确。
+3. （可选）在非事务 DML 语句中添加 `DRY RUN`，手动执行查询，检查拆分后的语句和执行计划。需要关注索引选择效率。
+4. 执行非事务 DML 语句。
 5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
 ### 划分列的选择
 
-非事务语句需要用一个列作为数据分批的标准。为效率考虑，这一列必须能够利用索引。不同的索引和划分列所导致的执行效率可能有数十倍的差别。可以参考以下两条建议。
+非事务语句需要用一个列作为数据分批的标准。为效率考虑，这一列必须能够利用索引。不同的索引和划分列所导致的执行效率可能有数十倍的差别。选择划分列时，可以考虑以下建议：
 
 - 索引选择率高的索引中的列。不同索引选择率可能导致数十倍的性能差异。
 - 有聚簇索引时，用主键作为划分列效率更高（包括 int handle 和 _tidb_rowid）
@@ -186,9 +190,9 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(T)*/ FROM T where v < 6;
 
 ### batch size 的选择
 
-batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 batch size 依据 workload 而定，根据经验值推荐从 50000 开始尝试。过小和过大的 batch size 执行效率都会下降。
+非事务 DML 语句中，batch size 越大，拆分出来的 SQL 语句越少，每个 SQL 语句执行起来越慢。最优的 batch size 依据 workload 而定。根据经验值，推荐从 50000 开始尝试。过小和过大的 batch size 都会导致执行效率下降。
 
-每个 batch 的信息需要存在内存里，因此 batch 数量过多会显著增加消耗的内存。这也是 batch size 不能过小的原因之一。非事务语句用于存储 batch 信息消耗的内存上限与 [`tidb_mem_quota_query`](/system-variables.md#tidbmemquotaquery) 相同，超出这个限制时触发的操作由 [`oom-action`](/tidb-configuration-file.md#oom-action) 配置项控制。
+每个 batch 的信息存储在内存里，因此 batch 数量过多会显著增加内存消耗。这也是 batch size 不能过小的原因之一。非事务语句用于存储 batch 信息消耗的内存上限与 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 相同，超出这个限制时触发的操作由 [`oom-action`](/tidb-configuration-file.md#oom-action) 配置项控制。
 
 ## 使用限制
 
@@ -207,7 +211,7 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 
 ## 实现原理
 
-非事务 DML 语句的实现原理，是将原本需要在用户侧手动执行的拆分工作内置为 TiDB 的一个功能，降低用户负担。要理解非事务 DML 语句的行为，可以将其想象成一个用户脚本做了如下事情：
+非事务 DML 语句的实现原理，是将原本需要在用户侧手动执行的 SQL 语句拆分工作内置为 TiDB 的一个功能，简化用户操作。要理解非事务 DML 语句的行为，可以将其想象成一个用户脚本进行了如下操作：
 
 对于非事务 DML："BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$"
 
@@ -222,7 +226,7 @@ batch size 越大，拆分出来的 SQL 越少，每个 SQL 越慢。最优的 b
 
 但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
 
-## 与旧版本 batch-dml 的对比
+## 与 batch-dml 的异同
 
 > **注意：**
 >
