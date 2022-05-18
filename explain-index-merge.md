@@ -12,7 +12,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 set session tidb_enable_index_merge = on;
 ```
 
-## 效果展示
+## 示例
 
 ```sql
 EXPLAIN SELECT * FROM t WHERE a = 1 OR b = 1;
