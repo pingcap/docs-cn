@@ -11,9 +11,10 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 在 v5.4.0 及以上版本的新建集群中，索引合并默认开启。在其他情况下如果未开启，可将 `tidb_enable_index_merge` 的值设为 `ON` 来开启索引合并功能。
 
+{{< copyable "sql" >}}
+
 ```sql
-set session tidb_enable_index_merge = on;
-```
+SET session tidb_enable_index_merge = ON;
 
 ## 示例
 
