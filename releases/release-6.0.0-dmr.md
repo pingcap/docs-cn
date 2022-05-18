@@ -111,6 +111,12 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     [用户文档](/functions-and-operators/expressions-pushed-down.md#加入黑名单)，[#30738](https://github.com/pingcap/tidb/issues/30738)
 
+- 热点索引批量更新优化
+
+    热点自增唯一索引在批量写入下容易形成性能瓶颈，影响整体写入吞吐。TiDB v6.0.0 支持通过 `tidb_shard` 函数将热点自增唯一索引打散到不同节点，以提升写入性能。该方案不需要修改原有查询条件，对业务非常友好，适用于高吞吐写入、点查询、批量点查询场景。请注意如果业务中使用范围查询打散后的数据，可能造成性能回退，请验证后使用。
+
+    [用户文档](/functions-and-operators/tidb-functions.md#tidbshard)，[#31040](https://github.com/pingcap/tidb/issues/31040)
+
 - TiFlash MPP 引擎支持分区表的动态裁剪模式（实验特性）
 
     在该模式下，TiDB 也可以使用 TiFlash MPP 引擎读取和计算分区表的数据，从而大大提升分区表的查询性能。
