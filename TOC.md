@@ -767,6 +767,7 @@
 - Release Notes
   - [All Releases](/releases/release-notes.md)
   - [Release Timeline](/releases/release-timeline.md)
+  - [TiDB Versioning](/releases/versioning.md)
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
