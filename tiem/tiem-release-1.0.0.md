@@ -144,18 +144,3 @@ TiDB Enterprise Manager 不仅提供对 TiDB 集群的全生命周期的可视�
 - 帮助管理员完成数据库管理自动化
 - 实现 TiDB 管理信息与第三方平台集成
 
-## TiEM v1.0.0 安装包中包含的第三方库及版本
-
-| 第三方库 | 版本 | License |
-| :--- | :--- | :--- |
-| AlertManager | 0.23.0 | Apache 2.0 |
-| Elastic Search | 7.14.0 | Apache 2.0 |
-| Filebeat | 7.14.0 | Apache 2.0 |
-| Grafana | 8.4.4 | AGPL-3.0 |
-| Jaeger | 1.26.0 | Apache 2.0 |
-| Kibana | 7.14.0 | Apache 2.0 |
-| Nginx | 1.20.1 | 2-clause BSD license |
-| Node Exporter | 1.2.2 | Apache 2.0 |
-| Prometheus | 2.29.2 | Apache 2.0 |
-| etcd | 3.0.0 | Apache 2.0 |
-| sqlite | 3.7.17 | N/A |
