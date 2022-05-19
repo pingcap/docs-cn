@@ -801,6 +801,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：0
 - 这个变量用于控制是否开启 Apply 算子并发，并发数由 `tidb_executor_concurrency` 变量控制。Apply 算子用来处理关联子查询且默认无并发，所以执行速度较慢。打开 Apply 并发开关可增加并发度，提高执行速度。目前默认关闭。
 
+### `tidb_enable_prepared_plan_cache` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用来控制是否打开 Prepared Plan Cache。
+- 打开开关后会启动 [Prepared Plan Cache](sql-prepared-plan-cache.md) 功能，对 `Prepare` / `Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
+- 在 `v6.1.0` 之前这个开关通过配置文件进行配置，在升级上来时会自动继承配置文件的设置。
+
 ### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1465,6 +1474,23 @@ explain select * from t where age=5;
 - 默认值：`0`
 - 范围：`[0, 1]`
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
+
+
+### `tidb_prepared_plan_cache_memory_guard_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0.1`
+- 范围：`[0, 1]`
+- 这个变量用来控制开启 [Prepared Plan Cache](sql-prepared-plan-cache.md) 功能后，触发内存保护机制的阈值，具体可见 [Prepared Plan Cache 的内存管理](sql-prepared-plan-cache.md#%E6%89%8B%E5%8A%A8%E6%B8%85%E7%A9%BA%E8%AE%A1%E5%88%92%E7%BC%93%E5%AD%98)
+
+### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`100`
+- 范围：`[0, 2147483647]`
+- 这个变量用来控制开启 [Prepared Plan Cache](sql-prepared-plan-cache.md) 功能后，单个 `SESSION` 的 Cache 最多能够缓存的计划数量。
 
 ### `tidb_projection_concurrency`
 
