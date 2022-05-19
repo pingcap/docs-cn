@@ -43,6 +43,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 输出 `Success` 表示向 PD 注册任务成功。但表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度见 show 命令。
 输出 `Failed` 表示注册任务失败，可能的错误有：
+
 - `unsafe recovery is running`: 已经有正在进行的恢复任务
 - `invalid input store x doesn't exist`: 指定的 store id 不存在
 - `invalid input store x is up and connected`: 指定的 store id 仍然是健康的状态，不应该进行恢复
@@ -54,6 +55,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules)命令，查看移除进度。
 
 恢复过程分为多个阶段，按照 json 格式输出，每一阶段包括信息，时间，以及具体的恢复计划。例如：
+
 ```json
 [
     {
@@ -99,15 +101,21 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 PD 下发恢复计划后，会等待 TiKV 上报执行的 report。如上例输出中最后一阶段的 `Collecting reports from alive store`, 显示 PD 下发恢复计划和接受 TiKV report 的具体状态。
 
-整个恢复过程包括多个阶段，并且可能有某一阶段的多次重试。一般情况下，预计时间为 3-10 个 store heartbeat 周期（一个 store heartbeat 默认为 10s)。当恢复完成后，命令执行结果最后一阶段显示 "Unsafe recovery finished"。如： 
+整个恢复过程包括多个阶段，并且可能有某一阶段的多次重试。一般情况下，预计时间为 3-10 个 store heartbeat 周期（一个 store heartbeat 默认为 10s)。当恢复完成后，命令执行结果最后一阶段显示 "Unsafe recovery finished", 并显示受影响的 region 所属的 table id（若无或者 rawkv 则不显示）和受影响的 sql 元数据 region。如： 
+
 ```json
 {
     "info": "Unsafe recovery finished",
-    "time": "......"
+    "time": "......",
+    "details": [
+        "Affected table ids: 64, 27",
+        "Affected meta regions: 1001",
+    ]
 }
 ```
 
 若执行过程中碰到错误，最后一阶段会显示 "Unsafe recovery failed" 以及具体错误。如：
+
 ```json
 {
     "info": "Unsafe recovery failed: <error>",
