@@ -89,6 +89,47 @@ try (Connection connection = ds.getConnection()) {
 ```
 
 </div>
+
+<div label="Golang" href="delete-golang">
+
+{{< copyable "" >}}
+
+```go
+func main() {
+    err := deleteBatch(db, "2022-04-15 00:00:00", "2022-04-15 00:15:00")
+    if err != nil {
+        panic(err)
+    }
+}
+
+func deleteBatch(db *sql.DB, sStartTime, sEndTime string) error {
+    layout := "2006-01-02 15:04:05"
+    startTime, err := time.Parse(layout, sStartTime)
+    if err != nil {
+        return err
+    }
+
+    endTime, err := time.Parse(layout, sEndTime)
+    if err != nil {
+        return err
+    }
+
+    bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?")
+    result, err := db.Exec(bulkUpdateSql, startTime, endTime)
+    if err != nil {
+        return err
+    }
+    affectedRows, err := result.RowsAffected()
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+```
+
+</div>
+
 </SimpleTab>
 
 > **注意：**
@@ -126,6 +167,11 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 ### 批量删除例子
 
 假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
+
+<SimpleTab>
+<div label="Java">
+
+在 Java 中，批量更新程序可能会类似于以下内容：
 
 {{< copyable "" >}}
 
@@ -181,4 +227,74 @@ public class BatchDeleteExample
 }
 ```
 
-每次迭代中，`SELECT` 最多选择 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据的主键值。然后进行批量删除。每次循环末尾的 `TimeUnit.SECONDS.sleep(1);` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
+每次迭代中，`DELETE` 最多删除 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。每次循环末尾的 `TimeUnit.SECONDS.sleep(1);` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
+
+</div>
+
+<div label="Golang">
+
+在 Golang 中，批量更新程序可能会类似于以下内容：
+
+{{< copyable "" >}}
+
+```go
+
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    _ "github.com/go-sql-driver/mysql"
+    "time"
+)
+
+func main() {
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/bookshop")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    for {
+        err = deleteBatch(db, "2022-04-15 00:00:00", "2022-04-15 00:15:00")
+        if err != nil {
+            fmt.Println(err)
+        }
+        time.Sleep(time.Second)
+    }
+}
+
+// deleteBatch delete at most 1000 lines per batch
+func deleteBatch(db *sql.DB, sStartTime, sEndTime string) error {
+    layout := "2006-01-02 15:04:05"
+    startTime, err := time.Parse(layout, sStartTime)
+    if err != nil {
+        return err
+    }
+
+    endTime, err := time.Parse(layout, sEndTime)
+    if err != nil {
+        return err
+    }
+
+    bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ? LIMIT 1000")
+    result, err := db.Exec(bulkUpdateSql, startTime, endTime)
+    if err != nil {
+        return err
+    }
+    affectedRows, err := result.RowsAffected()
+    if err != nil {
+        return err
+    }
+
+    fmt.Printf("delete %d data\n", affectedRows)
+    return nil
+}
+
+```
+
+每次迭代中，`DELETE` 最多删除 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。每次循环末尾的 `time.Sleep(time.Second)` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
+
+</div>
+
+</SimpleTab>
