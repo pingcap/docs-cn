@@ -15,6 +15,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 ```sql
 SET session tidb_enable_index_merge = ON;
+```
 
 ## 示例
 
