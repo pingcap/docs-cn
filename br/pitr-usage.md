@@ -18,12 +18,12 @@ summary: 了解 PiTR 使用。
 
 ## 部署 TiDB 集群和 BR
 
-使用 PiTR 功能，需要部署 v6.1.0 及以上版本的 TiDB 集群，并且更新 BR 到与部署 TiDB 集群相同的版本， 该教程假设使用 v6.1.0 版本。由于该功能在 v6.1.0 版本是实验特性，在部署或升级 TiDB 集群的时候，需要配置参数 tikv:  backup-stream.enable: true 开启该功能。
+使用 PiTR 功能，需要部署 v6.1.0 及以上版本的 TiDB 集群，并且更新 BR 到与部署 TiDB 集群相同的版本， 该教程假设使用 v6.1.0 版本。
 
 TiDB 集群拓扑和配置：
 
-| **组件** | **CPU** | **内存** | **硬盘类型** | **AWS 机型**｜ **实例数量** | **实例数量** ｜
-| --- | --- | --- | --- | --- | --- | --- ｜
+| **组件** | **CPU** | **内存** | **硬盘类型** | **AWS 机型**｜ **实例数量** | **实例数量** |
+| --- | --- | --- | --- | --- | --- | --- |
 | TiDB | 16 核+ | 32 GB+ | SAS | c5.2xlarge | 2 | 172.16.102.94:4000 |
 | PD | 4核+ | 8 GB+ | SSD | c5.2xlarge | 3 | 172.16.102.95:2379 |
 | TiKV | 16 核+ | 32 GB+ | SSD | m5.2xlarge | 3 | |
@@ -37,8 +37,8 @@ TiDB 集群拓扑和配置：
 
 使用 TiUP 部署或升级 TiDB 集群
 
-- 没有部署 TiDB 集群，请参考 [部署 TiDB 集群](#TODO)
-- 已经部署老版本 TiDB 集群，请先升级 TiDB 集群 [升级 TiDB 集群](#TODO)
+- 没有部署 TiDB 集群，请参考 [部署 TiDB 集群](/production-deployment-using-tiup.md)
+- 已经部署老版本 TiDB 集群，请先升级 TiDB 集群 [升级 TiDB 集群](/upgrade-tidb-using-tiup.md)
 - 在 v6.1.0 版本 TiDB 集群开启 PiTR 实验特性，请在 TiUP 集群拓扑文件中配置
   ```shell
   server_configs:
@@ -60,8 +60,8 @@ TiDB 集群拓扑和配置：
 
 首先在 S3 创建用于保存备份数据的目录 `s3://tidb-pitr-bucket/backup-data`
 
-1. 创建 bucket。你也可以选择已有的 S3 bucket 来保存备份数据。如果没有可用的 bucket，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html) 创建一个 S3  Bucket。本教程使用的 bucket 名为 tidb-pitr-bucket。 
-2. 创建备份数据总目录，在 tidb-pitr-bucket 下创建目录 backup-data, 参考 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)
+1. 创建 bucket。你也可以选择已有的 S3 bucket 来保存备份数据。如果没有可用的 bucket，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html) 创建一个 S3  Bucket。本教程使用的 bucket 名为 `tidb-pitr-bucket`。 
+2. 创建备份数据总目录，在 bucket `tidb-pitr-bucket` 下创建目录 `backup-data`, 参考 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)
 
 
 配置 BR  和 TiKV  访问 S3 中的备份目录的权限。本教程推荐使用最安全的 IAM 访问方式，配置过程可以参考[控制存储桶访问](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/walkthrough1.html)。权限要求如下：
@@ -76,7 +76,7 @@ TiDB 集群拓扑和配置：
 
 ## 确定备份策略
 
-为了满足业务最小数据丢失、快速恢复、一个月内任意时间点审计需求，我们还需要确定一下备份策略如下
+为了满足业务最小数据丢失、快速恢复、一个月内任意时间点审计需求，用户 A 制定了如下的备份策略
 
 - 运行日志备份，持续不断备份数据库数据变更；
 - 每隔两天在零点左右进行一次快照备份；
@@ -129,29 +129,30 @@ tiup br backup full --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/b
 
 ## 清理过期备份数据
 
-通过自动化运维工具（如 crontab)   设置定期清理过期备份数据的任务，例如，每 6 个小时删除备份存储中超过 30 天的备份数据。
+通过自动化运维工具（如 crontab)  每两天定期清理过期备份数据的任务。
 
-下面是在 2022/05/14 06:00:00 执行的过期备份数据清理任务：
+下面是在 2022/05/14 执行的过期备份数据清理任务：
 
-- 删除早于 2022/04/14 06:00:00 的快照备份  
+- 删除早于 2022/04/14 00:00:00 的快照备份  
   ```shell
   `rm s3://tidb-pitr-bucket/backup-data/snapshot-20220414000000`
   ```
-- 删除早于 2022/04/14 06:00:00  的日志备份数据
+
+- 删除早于 2022/04/14 00:00:00  的日志备份数据
   ```
   tiup br log truncate --until='2022/04/14 06:00:00'
   ```
 
 ## 执行 PiTR
 
-用户 A 接到需求，准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。用户 A 通过查看备份存储中的备份数据后，制定了 PiTR 方案。通过恢复 2022/04/12 的快照备份和 该快照到 2022/04/13 18:00:00 之间的日志备份数据就可以实现需要，用户 A 执行命令如下：
+用户 A 接到需求，准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。用户 A 通过查看备份存储中的备份数据后，制定了 PiTR 方案。通过恢复 2022/04/12 的快照备份和该快照到 2022/04/13 18:00:00 之间的日志备份数据就可以实现需要，用户 A 执行命令如下：
 
 ```shell
 tiup br restore point -pd=172.16.102.95:2379
 –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 –-full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
 
-Full Restore <----------------------------------------------------------------------------------------------------------------> 100.00%
-Restore DDL files <-----------------------------------------------------------------------------------------------------------> 100.00%
-Restore DML Files <-----------------------------------------------------------------------------------------------------------> 100.00%
+Full Restore <---------------------------------------------------------------------> 100.00%
+Restore DDL files <----------------------------------------------------------------> 100.00%
+Restore DML Files <----------------------------------------------------------------> 100.00%
 ```
