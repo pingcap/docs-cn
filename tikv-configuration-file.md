@@ -242,20 +242,20 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `high-concurrency`
 
 + 处理高优先级读请求的线程池线程数量。
-+ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
-+ 最小值：1
++ 当 `8` ≤ `cpu num` ≤ `16` 时，默认值为 `cpu_num * 0.5`；当 `cpu num` 小于 `8` 时，默认值为 `4`；当 `cpu num` 大于 `16` 时，默认值为 `8`。
++ 最小值：`1`
 
 ### `normal-concurrency`
 
 + 处理普通优先级读请求的线程池线程数量。
-+ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
-+ 最小值：1
++ 当 `8` ≤ `cpu num` ≤ `16` 时，默认值为 `cpu_num * 0.5`；当 `cpu num` 小于 `8` 时，默认值为 `4`；当 `cpu num` 大于 `16` 时，默认值为 `8`。
++ 最小值：`1`
 
 ### `low-concurrency`
 
 + 处理低优先级读请求的线程池线程数量。
-+ 当 8 ≤ cpu num ≤ 16 时，默认值为 cpu_num * 0.5；当 cpu num 大于 8 时，默认值为 4；当 cpu num 大于 16 时，默认值为 8。
-+ 最小值：1
++ 当 `8` ≤ `cpu num` ≤ `16` 时，默认值为 `cpu_num * 0.5`；当 `cpu num` 小于 `8` 时，默认值为 `4`；当 `cpu num` 大于 `16` 时，默认值为 `8`。
++ 最小值：`1`
 
 ### `max-tasks-per-worker-high`
 
@@ -646,8 +646,8 @@ raftstore 相关的配置项。
 
 + 用于配置 `snap-generator` 线程池的大小。
 + 为了让 TiKV 在恢复场景下加快 Region 生成 Snapshot 的速度，需要调大对应 Worker 的 `snap-generator` 线程数量。可通过本配置项调大对应线程的数量。
-+ 默认值：2
-+ 最小值：0
++ 默认值：`2`
++ 最小值：`1`
 
 ### `lock-cf-compact-interval`
 
@@ -1492,12 +1492,6 @@ Raft Engine 相关的配置项。
 + 默认值：8
 + 最小值：1
 
-### `num-import-jobs`
-
-+ 并发导入工作任务数。
-+ 默认值：8
-+ 最小值：1
-
 ## gc
 
 ### `enable-compaction-filter` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -1512,7 +1506,7 @@ Raft Engine 相关的配置项。
 ### `num-threads`
 
 + 处理备份的工作线程数量。
-+ 默认值：CPU * 0.5，但最大为 8 
++ 默认值：CPU * 0.5，但最大为 8
 + 可调整范围：[1, CPU]
 + 最小值：1
 
