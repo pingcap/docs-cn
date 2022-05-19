@@ -678,17 +678,17 @@ sudo systemctl enable ntpd.service
 
 安装 NUMA 工具有两种方法：
 
-方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）：
+方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）。
 
-    {{< copyable "shell-regular" >}}
+{{< copyable "shell-regular" >}}
 
-    ```bash
-    sudo yum -y install numactl
-    ```
+```bash
+sudo yum -y install numactl
+```
 
-方法 2：通过 `tiup cluster exec` 在已有集群上进行批量安装：
+方法 2：通过 `tiup cluster exec` 在已有集群上进行批量安装。
 
-    如果尚未部署 TiDB 集群，你可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署：
+- 如果尚未部署 TiDB 集群，你可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署：
 
     {{< copyable "shell-regular" >}}
 
@@ -696,7 +696,7 @@ sudo systemctl enable ntpd.service
     tiup cluster deploy tidb-test v6.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
-    `tiup cluster exec` 命令的说明：
+- `tiup cluster exec` 命令的说明：
 
     {{< copyable "shell-regular" >}}
 
@@ -716,7 +716,7 @@ sudo systemctl enable ntpd.service
         --sudo             use root permissions (default false)
     ```
 
-    将 `tidb-test` 集群所有目标主机通过 `sudo` 权限执行安装命令：
+- 将 `tidb-test` 集群所有目标主机通过 `sudo` 权限执行安装命令：
 
     {{< copyable "shell-regular" >}}
 
