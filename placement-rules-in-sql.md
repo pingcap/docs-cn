@@ -18,6 +18,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
 - 把热点数据的 leader 放到高性能的 TiKV 实例上
 - 将冷数据分离到不同的存储中以提高可用性
+- 支持物理隔离不同用户之间的计算资源，满足实例内部不同用户的隔离需求，以及不同混合负载 CPU、I/O、内存等资源隔离的需求
 
 ## 指定放置规则
 
@@ -252,7 +253,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性) |
+| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-overview.md#功能的兼容性) |
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
