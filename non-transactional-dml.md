@@ -229,7 +229,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 ## 控制 batch 执行失败
 
-非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 [`tidb_nontransactional_ignore_error`](/system-variables.md#system-variables.md#tidb_nontransactional_ignore_error-从-v610-版本开始引入) 控制非事务 DML 语句处理错误的行为。
+非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 [`tidb_nontransactional_ignore_error`](/system-variables.md#tidb_nontransactional_ignore_error-从-v610-版本开始引入) 控制非事务 DML 语句处理错误的行为。
 
 一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
 
@@ -239,9 +239,9 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 对于非事务 DML `BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$`，其中 `$C$` 为用于拆分的列，`$N$` 为 batch size，`$P$` 为筛选条件。
 
-1. TiDB 根据原始语句的筛选条件 `$P$`，和指定的用于拆分的列 `$C$`，查询出所有满足 `$P$` 的 `$C$`。对这些 `$C$` 排序后按 `$N$` 分成多个分组 `$B_1 \dots B_k$`。对所有 `$B_i$`，保留它的第一个和最后一个 `$C$`，记为 `$S_i$` 和 `$E_i$`。这一步所执行的查询语句，可以通过 [`DRY RUN QUERY`](/sql-statements/sql-statement-batch.md#示例) 查看。
+1. TiDB 根据原始语句的筛选条件 `$P$`，和指定的用于拆分的列 `$C$`，查询出所有满足 `$P$` 的 `$C$`。对这些 `$C$` 排序后按 `$N$` 分成多个分组 `$B_1 \dots B_k$`。对所有 `$B_i$`，保留它的第一个和最后一个 `$C$`，记为 `$S_i$` 和 `$E_i$`。这一步所执行的查询语句，可以通过 [`DRY RUN QUERY`](/non-transactional-dml.md#查询非事务-dml-语句中划分-batch-的语句) 查看。
 2. `$B_i$` 所涉及的数据就是满足 ```$P_i$:`C BETWEEN <S_i> AND <E_i>` ``` 的一个子集。可以通过 `$P_i$` 来缩小每个 batch 需要处理的数据范围。
-3. 对 `$B_i$`，将上面这个条件嵌入原始语句的 `WHERE` 条件，使其变为 `WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [`DRY RUN`](/sql-statements/sql-statement-batch.md#示例) 查看。
+3. 对 `$B_i$`，将上面这个条件嵌入原始语句的 `WHERE` 条件，使其变为 `WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [`DRY RUN`](/non-transactional-dml.md#查询非事务-dml-语句中首末-batch-对应的语句) 查看。
 4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 语句的结果返回。
 
 ## 与 batch-dml 的异同
