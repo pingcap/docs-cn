@@ -7,7 +7,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  backup-stream.enable: true 开启该功能
+> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  backup-stream.enable: true 开启该功能。
 
 使用 PiTR(Point-in-time recovery) 功能，用户可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.1.0 版本开始支持 PiTR 功能，该功能可以
 
@@ -19,7 +19,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 [BR](br 介绍) 是 PiTR 功能使用入口，通过 BR 工具用户可以完成 PiTR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点、备份数据管理。  下图为 PiTR 完整的功能使用示意图
 
-![br-arch](/media/pitr-usage.png)
+![br-arch](/media/br/pitr-usage.png)
 
 ### 数据备份
 
@@ -61,7 +61,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。 [BR 快照备份](/br/backup-and-restore-design.md) 介绍了 BR 快照备份恢复功能。下面介绍日志备份和恢复的实现，其架构实现如下
 
-![br-log-arch](/media/br-log-arch.png)
+![br-log-arch](/media/br/br-log-arch.png)
 
 进行日志备份的时候
 
