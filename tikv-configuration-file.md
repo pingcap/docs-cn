@@ -1666,5 +1666,5 @@ Raft Engine 相关的配置项。
 
 + 时间戳缓存的最小数量。
 + TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。如果本地缓存使用率偏低，TiKV 会逐步降低缓存数量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当提高这个参数。
-+ Grafana `TiKV-Raw` 面板下 `Causal timestamp` 中的 `batch size` 是根据业务负载动态调整后的本地缓存数量。可以参考这个值调整这个参数的大小。
++ Grafana `TiKV-Raw` 面板下 `Causal timestamp` 中的 `TSO batch size` 是根据业务负载动态调整后的本地缓存数量。可以参考这个值调整这个参数的大小。
 + 默认值：100
