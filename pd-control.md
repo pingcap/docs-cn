@@ -332,7 +332,6 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set max-store-preparing-time 4h
     ```
 
-
 - 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
 
     最多同时进行 4 个 leader 调度：
