@@ -37,10 +37,12 @@ summary: 了解 PiTR 功能设计和使用。
 管理备份数据时，用户至少需要考虑如何设计备份数据存放目录结构，和定期删除过期的（不再被需要的）备份数据
 
 - 推荐的备份数据目录组织方法
+
   - 快照备份和日志备份保存在相同的目录下，方便统一管理，例如 `backup-${cluster-id}`
   - 每个快照备份保存到命名带有备份日期的目录下，例如 `backup-${cluster-id}/snapshot-20220512000130`
   - 日志备份数据保存在一个固定目录下, 例如 `backup-${cluster-id}/log-backup`
 - 清理过期的（不再被需要）的备份数据
+
   - 删除快照备份时，可以直接删除快照备份数据的目录
   - 使用 BR 命令 `br log truncate` 删除备份存储指定之前点的日志备份数据
 
@@ -80,14 +82,11 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。 [BR �
 4. PD 调度 region 成功后，BR 将恢复数据请求发送到各个 TiKV restore executor 模块
 5. TiKV restore executor从备份存储下载日志备份数据，并将其写入对应的 region
 
-## 使用 PiTR
+## 部署和使用 PiTR
 
 运行 PiTR 的相关功能，BR 需要运行在（8 核+/16 GB+）的节点上, 备份和恢复 TiDB 集群配置需要能够满足 [TiDB 集群配置推荐](/hardware-and-software-requirements.md)。 
-
 
 使用 BR 进行 PiTR 操作，请参考下面教程
 
 -  [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
 -  [PiTR 使用教程](/br/pitr-usage.md)
-
-
