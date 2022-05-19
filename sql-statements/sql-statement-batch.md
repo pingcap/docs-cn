@@ -5,7 +5,7 @@ summary: TiDB 数据库中 BATCH 的使用概况。
 
 # BATCH 
 
-BATCH 语句将一个 DML 语句拆成多个在内部执行，因此**不保证事务的 atomicity 和 isolation 特性**，是一个“非事务”语句。
+BATCH 语句将一个 DML 语句拆成多个语句在内部执行，因此**不保证事务的原子性和隔离性，是一个“非事务”语句。
 
 目前 BATCH 语句仅支持 DELETE。
 
