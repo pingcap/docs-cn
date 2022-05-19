@@ -23,8 +23,4 @@ Try
 
 </LearningPath>
 
-<<<<<<< Updated upstream
 </LearningPathContainer>
-=======
-</LearningPathContainer>
->>>>>>> Stashed changes
