@@ -398,6 +398,23 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 + 默认值：系统总内存大小的 45%
 + 单位：KB|MB|GB
 
+### `api-version`（从 v6.1.0 版本开始引入）
+
++ TiKV 作为 Raw Key Value 存储时使用的存储格式与接口版本。
++ 可选值：
+    + `1`：使用 API V1。客户端传入的数据不进行编码、原样存储。v6.1.0 之前的版本，都认为是 API V1。
+    + `2`：使用 API V2：
+        + 数据采用 MVCC（Multi Version Concurrency Control）方式存储，其中时间戳由 tikv-server 从 PD 获取（即 TSO）。
+        + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 `enable-ttl` 以避免这个参数出现歧义。
+        + 启用 API V2 后需要在集群中额外部署 tidb-server 以回收过期数据。注意该 tidb-server 不可提供读写服务。
+        + 需要客户端的支持。请参考对应客户端的 API V2 使用说明。
++ 默认值：1
+
+> **警告：**
+>
+> - **只能**在部署新的 TiKV 集群时将 `api-version` 的值设置为 `2`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于 API V1 和 API V2 存储的数据格式不相同，如果在已有的 TiKV 集群中修改该配置项，会造成不同格式的数据存储在同一个集群，导致数据损坏。这种情况下，启动 TiKV 集群时会报 "unable to switch storage.api_version" 错误。
+> - 启用 API V2 后，TiKV **不能**回退到 < v6.1.0 的版本，否则可能导致数据损坏。
+
 ## storage.flow-control
 
 在 scheduler 层进行流量控制代替 RocksDB 的 write stall 机制，可以避免 write stall 机制卡住 Raftstore 或 Apply 线程导致的次生问题。本节介绍 TiKV 流量控制机制相关的配置项。
@@ -1632,3 +1649,22 @@ Raft Engine 相关的配置项。
 
 + 单次前台读写请求被强制等待的最大时间。
 + 默认值：500ms
+
+## causal-ts（从 v6.1.0 版本开始引入）
+
+用于 TiKV API V2（`storage.api-version = 2`）中时间戳获取相关的配置项。
+
+为了降低写请求延迟，TiKV 会定期获取一批时间戳缓存在本地，避免频繁访问 PD。当本地缓存的时间戳用完，会立即发起一次时间戳请求。这种情况下，部分写请求的延迟会增大。合理配置 `renew-interval` 与 `renew-batch-min-size`，可以减少这种情况的发生。
+
+### `renew-interval`
+
++ 刷新本地缓存时间戳的周期。
++ TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。这个参数配置过长会导致不能及时反映最新的负载变化。而配置过短则会增加 PD 的负载。除非频繁出现时间戳耗尽、写延迟增加，否则不需要调整这个参数。
++ 默认值：100ms
+
+### `renew-batch-min-size`
+
++ 时间戳缓存的最小数量。
++ TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。如果本地缓存使用率偏低，TiKV 会逐步降低缓存数量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当提高这个参数。
++ 注意：每个写批次只使用一个时间戳，所以时间戳的实际使用量会远小于写入 QPS。不应该根据写入 QPS 来预估这个参数的大小。
++ 默认值：100
