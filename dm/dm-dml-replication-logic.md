@@ -1,6 +1,6 @@
 ---
 title: Data Migration 中的 DML 同步机制
-summary: 本文介绍了 DM 核心处理单元 Sync 如何同步 DML 语句。
+summary: 了解 DM 核心处理单元 Sync 如何同步 DML 语句。
 ---
 
 # Data Migration 中的 DML 同步机制
@@ -45,7 +45,7 @@ UPDATE + DELETE => DELETE
 DELETE + INSERT => UPDATE
 ```
 
-Compactor 特性默认关闭，如需启用可在迁移任务的`sync`配置模块开启，例如：
+Compactor 特性默认关闭，如需启用可在迁移任务的 `sync` 配置模块开启，例如：
 
 ```
 syncers:                             # sync 处理单元的运行配置参数
@@ -80,7 +80,7 @@ Causality 采用一种类似并查集的算法，对每一个 DML 进行分类�
 = DELETE tb WHERE (a) IN (1),(2);
 ```
 
-Merger 特性默认关闭，如需启用可在迁移任务的`sync`配置模块开启，例如：
+Merger 特性默认关闭，如需启用可在迁移任务的 `sync` 配置模块开启，例如：
 
 ```
 syncers:                             # sync 处理单元的运行配置参数
@@ -119,7 +119,7 @@ Causality 可以通过冲突检测算法将 binlog 分成多个 group 并发地�
 
 ### Batch
 
-DM 将多条 DML 攒到一个事务中执行到下游。当 DML Worker 收到 DML 时，将 DML 加入到缓存中。当缓存中 DML 数量达到预定阈值时，或者 DML worker 较长时间没有收到 DML 时，DML worker 将缓存中的 DML 执行到下游。
+DM 将多条 DML 积累到一个事务中执行到下游。当 DML Worker 收到 DML 时，将 DML 加入到缓存中。当缓存中 DML 数量达到预定阈值时，或者 DML worker 较长时间没有收到 DML 时，DML worker 将缓存中的 DML 执行到下游。
 
 你可以通过 [`syncer.batch` 配置项](/dm/dm-tune-configuration.md#batch)，修改每个事务包含的 DML 的数量。
 
@@ -137,7 +137,7 @@ DML 执行和 checkpoint 更新的操作不是原子的。
 
 DM 是按照“行级别”进行数据同步的，并不保证事务原样同步。在 DM 中，上游的一个事务会被拆成多行，分发到不同的 DML Worker 中并发执行。因此，当 DM 同步任务报错暂停，或者用户手动暂停任务时，下游可能停留在一个中间状态；即上游一个事务中的 DML 语句，可能一部分同步到下游，一部分没有，导致下游处于不一致的状态。
 
-为了尽可能使任务暂停时下游处于一致状态，DM v5.3.0 起，在任务暂停时会等待正在处理的上游事务全部同步到下游后，才真正暂停任务。这个等待时间为 10 秒，如果上游一个事务在 10 秒内还未全部同步到下游，那么下游仍然可能处于不一致的状态。
+为了尽可能使任务暂停时下游处于一致状态，DM v5.3.0 起，任务暂停时，会等待 10 秒，使正在处理的上游事务全部同步到下游再真正暂停任务。如果上游一个事务在 10 秒内还未全部同步到下游，那么下游仍然可能处于不一致的状态。
 
 ### 安全模式
 
@@ -147,9 +147,9 @@ DML 执行和 checkpoint 写操作不是同步的，并且写 checkpoint 操作�
 
 开启安全模式期间，为了保证数据可重入，DM 会进行如下转换：
 
-* 将上游 `INSERT` 语句，转换成 `REPLACE` 语句
-* 将上游 `UPDATE` 语句，转换成 `DELETE` + `REPLACE` 语句。
+* 将上游 `INSERT` 语句转换成 `REPLACE` 语句
+* 将上游 `UPDATE` 语句转换成 `DELETE` + `REPLACE` 语句。
 
 ### 精确一次处理 (Exactly-Once Processing)
 
-目前 DM 仅保证最终一致性，尚未支持”精确一次处理“及”保持事务原有顺序同步“。
+目前 DM 仅保证最终一致性，尚未支持“精确一次处理”及“保持事务原有顺序同步”。
