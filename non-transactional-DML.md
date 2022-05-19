@@ -7,9 +7,9 @@ summary: 以事务的原子性和隔离性为代价，将 DML 语句拆成多个
 
 本文档介绍非事务 DML 语句的使用场景、使用方法、使用限制和使用该功能的常见问题。
 
-TiDB 目前支持的非事务 DML 语句只有 DELETE 语句。其语法见 [BATCH](/sql-statements/sql-statement-batch.md)。
+非事务 DML 语句是将一个普通 DML 语句拆成多个 SQL 语句（即多个 batch）执行，以牺牲事务的原子性和隔离性为代价，增强批量数据处理场景下的性能和易用性。
 
-非事务 DML 语句是将一个普通 DML 语句拆成多个 SQL 执行，以牺牲事务的原子性和隔离性为代价，增强批量数据处理场景下的性能和易用性。
+非事务 DML 语句包括 `INSERT`、`UPDATE` 和 `DELETE`，TiDB 目前只支持非事务 `DELETE` 语句，详细的语法介绍见 [`BATCH`](/sql-statements/sql-statement-batch.md)。
 
 > **注意：**
 >
@@ -19,7 +19,7 @@ TiDB 目前支持的非事务 DML 语句只有 DELETE 语句。其语法见 [BAT
 
 在大批量的数据处理场景，用户经常需要对一大批数据执行相同的操作。如果直接使用一个 SQL 语句执行操作，很可能导致事务大小超过限制，而大事务会明显影响执行性能。
 
-批量数据处理操作往往和在线业务操作不具有时间或数据上的交集。没有并发操作时，隔离性是不必要的。如果将批量数据操作设计成幂等的，或者易于重试的，那么原子性也是不必要的。业务满足了这两个条件，那么可以考虑使用非事务 DML。
+批量数据处理操作往往和在线业务操作不具有时间或数据上的交集。没有并发操作时，隔离性是不必要的。如果将批量数据操作设计成幂等的，或者易于重试的，那么原子性也是不必要的。如果你的业务满足这两个条件，那么可以考虑使用非事务 DML 语句。
 
 非事务 DML 语句用于在特定场景下绕过大事务的事务大小限制，用一条语句完成原本需要拆分成多个事务完成的任务，且执行效率更高，占用资源更少。
 
@@ -40,7 +40,9 @@ TiDB 目前支持的非事务 DML 语句只有 DELETE 语句。其语法见 [BAT
 >
 > 如果同时开启了 `tidb_redact_log` 和 `tidb_nontransactional_ignore_error`，你可能无法完整得知每个 batch 的错误信息，无法只对失败的 batch 进行重试。因此，如果同时开启了这两个系统变量，该非事务 DML 语句必须是幂等的。
 
-## 使用方法
+## 使用示例
+
+### 使用非事务 DML 语句
 
 以下部分通过示例说明非事务 DML 语句的使用方法：
 
@@ -68,7 +70,7 @@ INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
 Query OK, 5 rows affected
 ```
 
-以下操作使用非事务 DML 语句，删除表 t 的 v 列上小于整数 6 的行。该语句将以 2 为 batch size，以 id 列为划分列，拆分为两个 SQL 语句执行，删除表 t 中 v < 6 的行。
+以下操作使用非事务 DML 语句，删除表 `t` 的 `v` 列上小于整数 6 的行。该语句将以 2 为 batch size，以 `id` 列为划分列，拆分为两个 SQL 语句执行，删除表 `t` 中 `v <` 6 的行。
 
 {{< copyable "sql" >}}
 
@@ -84,6 +86,48 @@ BATCH ON id LIMIT 2 DELETE FROM t where v < 6;
 +----------------+---------------+
 1 row in set
 ```
+
+查看非事务 DML 语句的删除结果。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM t;
+```
+
+```sql
++----+---+
+| id | v |
++----+---+
+| 5  | 6 |
++----+---+
+1 row in set
+```
+
+### 查看非事务 DML 语句的执行进度
+
+非事务 DML 语句执行过程中，可以通过 `show processlist` 查看执行进度，返回结果中的 `Time` 表示当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+show processlist;
+```
+
+```sql
++------+------+--------------------+--------+---------+------+------------+----------------------------------------------------------------------------------------------------+
+| Id   | User | Host               | db     | Command | Time | State      | Info                                                                                               |
++------+------+--------------------+--------+---------+------+------------+----------------------------------------------------------------------------------------------------+
+| 1203 | root | 100.64.10.62:52711 | test   | Query   | 0    | autocommit | /* job 506/500000 */ DELETE FROM `test`.`t1` WHERE `test`.`t1`.`_tidb_rowid` BETWEEN 2271 AND 2273 |
+| 1209 | root | 100.64.10.62:52735 | <null> | Query   | 0    | autocommit | show full processlist                                                                              |
++------+------+--------------------+--------+---------+------+------------+----------------------------------------------------------------------------------------------------+
+```
+
+### 终止一个非事务 DML 语句
+
+通过 `KILL TIDB` 终止一个非事务语句时，TiDB 会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
+
+### 查询非事务 DML 语句中划分 batch 的语句
 
 要查询非事务 DML 语句中用于划分 batch 的语句，你可在非事务 DML 语句中添加 `DRY RUN QUERY`。添加后，TiDB 不实际执行这个查询和后续的 DML 操作。
 
@@ -104,7 +148,9 @@ BATCH ON id LIMIT 2 DRY RUN QUERY DELETE FROM t WHERE v < 6;
 1 row in set
 ```
 
-要查询非事务 DML 语句中第一个和最后一个 batch 对应的实际 DML 语句，你可在语句中添加 `DRY RUN`。添加后，TiDB 只划分 batch，不执行这些 SQL。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和最后一个 batch。
+### 查询非事务 DML 语句中首末 batch 对应的语句
+
+要查询非事务 DML 语句中第一个和最后一个 batch 对应的实际 DML 语句，你可在语句中添加 `DRY RUN`。添加后，TiDB 只划分 batch，不执行这些 SQL 语句。因为 batch 数量可能很多，不显示全部 batch，只显示第一个和最后一个 batch。
 
 {{< copyable "sql" >}}
 
@@ -122,22 +168,7 @@ BATCH ON id LIMIT 2 DRY RUN DELETE FROM t where v < 6;
 2 rows in set
 ```
 
-查看非事务 DML 语句的删除结果。
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM t;
-```
-
-```sql
-+----+---+
-| id | v |
-+----+---+
-| 5  | 6 |
-+----+---+
-1 row in set
-```
+### 在非事务 DML 语句中使用 optimizer hint
 
 对于 DELETE 语句原本支持的 optimizer hint，非事务 DELETE 语句也同样支持，hint 位置与普通 DELETE 语句中的位置相同：
 
@@ -146,28 +177,6 @@ SELECT * FROM t;
 ```sql
 BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 ```
-
-非事务 DML 语句执行过程中，可以通过 `show processlist` 查看执行进度，其中的 `Time` 显示的是当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。例如，
-
-{{< copyable "sql" >}}
-
-```sql
-+------+------+--------------------+--------+---------+------+------------+----------------------------------------------------------------------------------------------------+
-| Id   | User | Host               | db     | Command | Time | State      | Info                                                                                               |
-+------+------+--------------------+--------+---------+------+------------+----------------------------------------------------------------------------------------------------+
-| 1203 | root | 100.64.10.62:52711 | test   | Query   | 0    | autocommit | /* job 506/500000 */ DELETE FROM `test`.`t1` WHERE `test`.`t1`.`_tidb_rowid` BETWEEN 2271 AND 2273 |
-| 1209 | root | 100.64.10.62:52735 | <null> | Query   | 0    | autocommit | show full processlist                                                                              |
-+------+------+--------------------+--------+---------+------+------------+----------------------------------------------------------------------------------------------------+
-```
-
-通过 `KILL TIDB` kill 一个非事务语句时，会取消当前正在执行的 batch 之后的所有 batch。执行结果信息需要从日志里获得。
-
-## 参数说明
-
-| 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
-| :-- | :-- | :-- | :-- | :-- |
-| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t where v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
-| batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t where v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000 - 1000000，过小和过大都会导致性能下降 |
 
 ## 最佳实践
 
@@ -179,18 +188,25 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 4. 执行非事务 DML 语句。
 5. 如果报错，从报错信息或日志中获取具体失败的数据范围，进行重试或手动处理。
 
+## 参数说明
+
+| 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
+| :-- | :-- | :-- | :-- | :-- |
+| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t where v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
+| Batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t where v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000 - 1000000，过小和过大都会导致性能下降 |
+
 ### 划分列的选择
 
 非事务 DML 语句需要用一个列作为数据分批的标准，该列即为划分列。为获得更高的执行效率，划分列必须能够利用索引。不同的索引和划分列所导致的执行效率可能有数十倍的差别。选择划分列时，可以考虑以下建议：
 
-- 在对数据分布有一定了解时，根据 WHERE 条件，选择划分 batch 后，划分列的范围较小的列。
-  - 较好情况：WHERE 条件可以利用划分列的索引，降低每个 batch 需要扫描的数据量。例如有一个交易表，记录了每一笔交易的开始和结束时间，你希望删除结束时间在一个月之前的所有交易记录。如果在交易的开始时间有索引，且已知交易的开始和技术时间通常相差不大，那么可以选择开始时间作为划分列。
-  - 较差情况：划分列的数据分布与 where 条件完全无关，无法利用划分列的索引来减少数据扫描的范围。
-- 有聚簇索引时，用主键作为划分列效率更高（包括 int 主键和 `_tidb_rowid`）
+- 当你对业务数据分布有一定了解时，根据 `WHERE` 条件，选择划分 batch 后，划分范围较小的列。
+    - 在理想情况下，`WHERE` 条件可以利用划分列的索引，降低每个 batch 需要扫描的数据量。例如有一个交易表，记录了每一笔交易的开始和结束时间，你希望删除结束时间在一个月之前的所有交易记录。如果在交易的开始时间有索引，且已知交易的开始和结束时间通常相差不大，那么可以选择开始时间作为划分列。
+    - 在不太理想的情况下：划分列的数据分布与 `WHERE` 条件完全无关，无法利用划分列的索引来减少数据扫描的范围。
+- 有聚簇索引时，建议用主键作为划分列，这样语句执行效率更高（包括 `INT` 主键和 `_tidb_rowid`）。
 
-用户可以不指定划分列，TiDB 默认会使用 handle 的第一列作为划分列。但如果聚簇索引主键的第一列是不支持的数据类型（即 ENUM，BIT，SET，JSON），TiDB 会报错。需要用户自己选择合适的划分列。
+你可以不指定划分列，TiDB 默认会使用 handle 的第一列作为划分列。但如果聚簇索引主键的第一列是非事务 DML 语句不支持的数据类型（即 `ENUM`，`BIT`，`SET`，`JSON`），TiDB 会报错。你可根据业务需要选择合适的划分列。
 
-### batch size 的选择
+### Batch size 的选择
 
 非事务 DML 语句中，batch size 越大，拆分出来的 SQL 语句越少，每个 SQL 语句执行起来越慢。最优的 batch size 依据 workload 而定。根据经验值，推荐从 50000 开始尝试。过小和过大的 batch size 都会导致执行效率下降。
 
@@ -198,18 +214,24 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 ## 使用限制
 
-非事务 DML 语句的硬性限制，不满足这些条件将会报错。
+非事务 DML 语句的硬性限制，不满足这些条件时 TiDB 会报错。
 
-- 只可对单表进行操作，暂不支持多表 join。
-- DML 语句不可以包含 ORDER BY 或 LIMIT 字句。
+- 只可对单表进行操作，暂不支持多表连接。
+- DML 语句不能包含 `ORDER BY` 或 `LIMIT` 字句。
 - 用于拆分的列必须被索引。该索引可以是单列的索引，或是一个联合索引的第一列。
 - 必须在 [`autocommit`](/system-variables.md#autocommit) 模式中使用。
-- 不可以在开启旧的 batch-dml feature 时使用
-- 不可以在设置了 [tidb_snapshot](/read-historical-data.md#操作流程) 时使用。
-- 不可以用在 prepare 语句。
-- 划分列不支持 ENUM，BIT，SET，JSON 类型。
-- 不可以用在[临时表](/temporary-tables.md)上。
+- 不能在开启了 batch-dml 时使用。
+- 不能在设置了 [`tidb_snapshot`](/read-historical-data.md#操作流程) 时使用。
+- 不能与 `prepare` 语句一起使用。
+- 划分列不支持 `ENUM`，`BIT`，`SET`，`JSON` 类型。
+- 不支持用在[临时表](/temporary-tables.md)上。
 - 不支持[公共表表达式](/develop/use-common-table-expression.md）。
+
+## 控制 batch 执行失败
+
+非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 [`tidb_nontransactional_ignore_error`](/system-variables.md#system-variables.md#tidb_nontransactional_ignore_error-从-v610-版本开始引入) 控制非事务 DML 语句处理错误的行为。
+
+一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
 
 ## 实现原理
 
@@ -217,50 +239,38 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 对于非事务 DML `BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$`，其中 `$C$` 为用于拆分的列，`$N$` 为 batch size，`$P$` 为筛选条件。
 
-1. 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 \dots B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [DRY RUN QUERY](/sql-statements/sql-statement-batch.md#示例) 查看。
-2. 那么 $B_i$ 所涉及的数据就是满足 $P_i$:`C BETWEEN <S_i> AND <E_i>` 的一个子集。可以通过 $P_i$ 来缩小每个 batch 需要处理的数据范围。
-3. 对 $B_i$，将上面这个条件嵌入原始语句的 WHERE 条件，使其变为`WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [DRY RUN](/sql-statements/sql-statement-batch.md#示例) 查看。
+1. TiDB 根据原始语句的筛选条件 `$P$`，和指定的用于拆分的列 `$C$`，查询出所有满足 `$P$` 的 `$C$`。对这些 `$C$` 排序后按 `$N$` 分成多个分组 `$B_1 \dots B_k$`。对所有 `$B_i$`，保留它的第一个和最后一个 `$C$`，记为 `$S_i$` 和 `$E_i$`。这一步所执行的查询语句，可以通过 [`DRY RUN QUERY`](/sql-statements/sql-statement-batch.md#示例) 查看。
+2. `$B_i$` 所涉及的数据就是满足 ```$P_i$:`C BETWEEN <S_i> AND <E_i>` ``` 的一个子集。可以通过 `$P_i$` 来缩小每个 batch 需要处理的数据范围。
+3. 对 `$B_i$`，将上面这个条件嵌入原始语句的 `WHERE` 条件，使其变为 `WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [`DRY RUN`](/sql-statements/sql-statement-batch.md#示例) 查看。
 4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 语句的结果返回。
-
-## 控制 batch 执行失败
-
-非事务 DML 语句不满足原子性，可能存在一些 batch 成功，一些 batch 失败的情况。系统变量 [`tidb_nontransactional_ignore_error`](/system-variables.md#system-variables.md#tidb_nontransactional_ignore_error-从-v61-版本开始引入) 控制了非事务 DML 语句处理错误的行为。
-
-但一个例外是，如果第一个 batch 就执行失败，有很大概率是语句本身有错，此时整个非事务语句会直接返回一个错误。
 
 ## 与 batch-dml 的异同
 
-batch-dml 是一种在执行期间将一个事务拆成多个事务提交的机制。
+batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务提交的机制。
 
 > **注意：**
 >
-> 旧版本 batch-dml 功能使用不当时存在数据索引不一致风险，将逐渐被废弃。不建议用户使用。
+> batch-dml 功能使用不当时，存在数据索引不一致风险。该功能将在 TiDB 后续版本中被废弃，因此不建议使用。
 
 非事务 DML 语句尚不能替代所有的 batch-dml 使用场景。它们的主要区别有:
 
-### 性能
+- 性能：在[划分效率](#划分列的选择)较高的情况下，非事务 DML 语句和 batch-dml 性能接近。在划分效率的情况下，非事务 DML 语句可能会明显慢于 batch-dml。
 
-在[划分效率](#划分列的选择)较高的情况下，非事务 DML 语句和 batch-dml 性能接近。在划分效率的情况下，非事务 DML 语句可能会明显慢于 batch-dml。
-
-### 稳定性
-
-batch-dml 极易因为使用不当导致数据索引不一致问题。
-
-非事务 DML 语句不会导致数据索引不一致问题。但使用不当时，非事务 DML 语句与原始语句不等价，应用可能观察到和预期不符的现象。详见[常见问题](#常见问题)。
+- 稳定性：batch-dml 极易因为使用不当导致数据索引不一致问题。而非事务 DML 语句不会导致数据索引不一致问题。但使用不当时，非事务 DML 语句与原始语句不等价，应用可能观察到和预期不符的现象。详见[常见问题](#常见问题)。
 
 ## 常见问题
 
-### 报错：Failed to restore the delete statement, probably because of unsupported type of the shard column
+### 执行时出现报错 `Failed to restore the delete statement, probably because of unsupported type of the shard column`
 
-划分列的类型暂时不支持 ENUM，BIT，SET，JSON 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型。如果划分列不是这些类型，请联系 PingCAP 技术支持。
+划分列的类型暂时不支持 `ENUM`、`BIT`、`SET`、`JSON` 类型，请尝试重新指定一个划分列。推荐使用整数或字符串类型的列。如果划分列不是这些类型，请联系 PingCAP 技术支持。
 
-### 和普通的 Delete 不等价的“异常”行为
+### 非事务 `DELETE` 出现和普通的 `DELETE` 不等价的“异常”行为
 
-非事务 DML 语句和这个 DML 语句的原始形式并不等价，这可能是由以下原因导致的
+非事务 DML 语句和这个 DML 语句的原始形式并不等价，这可能是由以下原因导致的：
 
 - 有并发的其它写入。
-- 非事务 DML 语句修改了它自己会读取的值。Read your own write！
-- 在每个 batch 上实际执行的 SQL 由于改变了 where 条件，可能会导致执行计划不一样、表达式计算顺序不一样等，由此导致了执行结果不一样。
+- 非事务 DML 语句修改了语句自身会读取的值。
+- 在每个 batch 上实际执行的 SQL 语句由于改变了 `WHERE` 条件，可能会导致执行计划以及表达式计算顺序不同，由此导致了执行结果不一样。
 - DML 语句中含有非确定性的操作。
 
 ## 兼容信息
@@ -270,4 +280,4 @@ batch-dml 极易因为使用不当导致数据索引不一致问题。
 ## 探索更多
 
 * [BATCH](/sql-statements/sql-statement-batch.md) 语法
-* [`tidb_nontransactional_ignore_error`](/system-variables.md#tidb_nontransactional_ignore_error-从-v61-版本开始引入)
+* [`tidb_nontransactional_ignore_error`](/system-variables.md#tidb_nontransactional_ignore_error-从-v610-版本开始引入)
