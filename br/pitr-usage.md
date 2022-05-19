@@ -40,11 +40,13 @@ TiDB 集群拓扑和配置：
 - 没有部署 TiDB 集群，请参考 [部署 TiDB 集群](/production-deployment-using-tiup.md)
 - 已经部署老版本 TiDB 集群，请先升级 TiDB 集群 [升级 TiDB 集群](/upgrade-tidb-using-tiup.md)
 - 在 v6.1.0 版本 TiDB 集群开启 PiTR 实验特性，请在 TiUP 集群拓扑文件中配置
+
   ```shell
   server_configs:
   tikv:
     log-backup.enable: true
   ```
+
 使用 TiUP 安装或升级 BR  
 
 - 没有安装 BR， 使用命令 `tiup install br:v6.1.0` 
@@ -62,7 +64,6 @@ TiDB 集群拓扑和配置：
 
 1. 创建 bucket。你也可以选择已有的 S3 bucket 来保存备份数据。如果没有可用的 bucket，可以参照 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-bucket.html) 创建一个 S3  Bucket。本教程使用的 bucket 名为 `tidb-pitr-bucket`。 
 2. 创建备份数据总目录，在 bucket `tidb-pitr-bucket` 下创建目录 `backup-data`, 参考 [AWS 官方文档](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/user-guide/create-folder.html)
-
 
 配置 BR  和 TiKV  访问 S3 中的备份目录的权限。本教程推荐使用最安全的 IAM 访问方式，配置过程可以参考[控制存储桶访问](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/walkthrough1.html)。权限要求如下：
 
@@ -134,12 +135,14 @@ tiup br backup full --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/b
 下面是在 2022/05/14 执行的过期备份数据清理任务：
 
 - 删除早于 2022/04/14 00:00:00 的快照备份  
+
   ```shell
-  `rm s3://tidb-pitr-bucket/backup-data/snapshot-20220414000000`
+  rm s3://tidb-pitr-bucket/backup-data/snapshot-20220414000000
   ```
 
 - 删除早于 2022/04/14 00:00:00  的日志备份数据
-  ```
+
+  ```shell
   tiup br log truncate --until='2022/04/14 06:00:00'
   ```
 

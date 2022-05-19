@@ -16,7 +16,6 @@ summary: 了解 br log 命令行使用
 - 没有安装 BR，使用命令 `tiup install br:v6.1.0`   安装 v6.1.0 版本 BR
 - 已经安装 BR，使用命令 `tiup update br:v6.1.0`  升级 BR 到 v6.1.0 版本
 
-
 ## 使用日志备份
 
 日志备份支持以下的子命令
@@ -41,7 +40,7 @@ Available Commands:
 
 下面逐一介绍各个子命令的使用
 
-- `br log start` 	启动一个日志备份任务
+- `br log start` 启动一个日志备份任务
 - `br log status` 查询日志备份任务状态
 - `br log pause` 暂停日志备份任务
 - `br log resume` 重启处于暂停的备份任务
@@ -178,7 +177,6 @@ Global Flags:
 - 此外，保留过多的 MVCC 数据会影响 TiDB 集群的存储容量和性能，任务暂停后请及时恢复任务。
 
 使用示例
-
 
 ```shell
 ./br log pause --task-name=pitr --pd=172.16.102.95:2379 
