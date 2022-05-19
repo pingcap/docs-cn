@@ -14,7 +14,7 @@ TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb
 
 | 后端 | Local-backend | TiDB-backend |
 |:---|:---|:---|
-| 速度 | 快 (≈ 500 GB/小时) | 慢 (≈ 50 GB/小时) |
+| 速度 | 快 (100 ~ 500 GiB/小时) | 慢 (10 ~ 50 GiB/小时) |
 | 资源使用率 | 高 | 低 |
 | 占用网络带宽 | 高 | 低 |
 | 导入时是否满足 ACID | 否 | 是 |
@@ -28,7 +28,9 @@ TiDB Lightning 目前支持两种导入模式，即[后端](/tidb-lightning/tidb
 >
 > - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 >
-> - 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+> - 不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+>
+> - 上述导入速度是在实验室环境下测得，用于两种模式的性能对比，其具体数值受 Lightning 所在设备的硬件性能、目标 TiDB 集群规模、索引数量等多重因素影响。
 
 ## Local-backend
 
