@@ -57,7 +57,6 @@
 
 [升级](/upgrade-tidb-using-tiup.md)
 [扩缩容](/scale-tidb-using-tiup.md)
-[备份与恢复](dev/backup-and-restore-use-cases.md)
 
 </LearningPath>
 
