@@ -473,4 +473,4 @@ When the sink is TiDB or MySQL, the users of the downstream database need the fo
 - `Alter`
 - `Create View`
 
-If you need to replicate `recover table` to the downstream TiDB, the `Super` permission is required.
+If you need to replicate `recover table` to the downstream TiDB, you should have the `Super` permission.
