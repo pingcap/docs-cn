@@ -10,8 +10,6 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 在启用 relay log 功能后，DM-worker 会自动将上游 binlog 迁移到本地配置目录（若使用 TiUP 部署 DM，则迁移目录默认为 `<deploy_dir> / <relay_log>`）。本地配置目录 `<relay_log>` 的默认值是 `relay-dir`，可在[上游数据库配置文件](/dm/dm-source-configuration-file.md)中进行修改。自 v5.4.0 版本起，你可以在 [DM-worker 配置文件](/dm/dm-worker-configuration-file.md)中通过 `relay-dir` 配置本地配置目录，其优先级高于上游数据库的配置文件。
 
-![relay log](/media/dm/dm-relay-log.png)
-
 ## 适用场景
 
 - MySQL 的存储空间是有限制的，通常会设置 binlog 的最长保存时间，当上游把 binlog 清除掉之后，如果 DM 还需要对应位置的 binlog 就会拉取失败，导致同步任务出错。
@@ -394,9 +392,9 @@ Relay log 本地存储的目录结构示例如下：
 
 - 若不存在有效的本地 relay log，而且 DM 配置文件中未指定 `relay-binlog-name` 或 `relay-binlog-gtid`：
 
-    - 在非 GTID 模式下，DM-worker 从初始的上游 binlog 开始迁移，并将所有上游 binlog 文件连续迁移至最新。
+    - 在非 GTID 模式下，DM-worker 从自身所有 subtask 正在同步的最早 binlog 开始迁移，直至最新。
 
-    - 在 GTID 模式下，DM-worker 从初始上游 GTID 开始迁移。
+    - 在 GTID 模式下，DM-worker 从自身所有 subtask 正在同步的最早 GTID 开始迁移，直至最新。
 
         > **注意：**
         >
