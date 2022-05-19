@@ -41,8 +41,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show)命令，指定已确定无法恢复的 TiKV 节点，以触发自动恢复。
 
-输出 `Success` 表示向 PD 注册任务成功。但表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度见 show 命令。
-输出 `Failed` 表示注册任务失败，可能的错误有：
+输出 `Success` 表示向 PD 注册任务成功。但表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度见 show 命令。输出 `Failed` 表示注册任务失败，可能的错误有：
 
 - `unsafe recovery is running`: 已经有正在进行的恢复任务
 - `invalid input store x doesn't exist`: 指定的 store id 不存在
