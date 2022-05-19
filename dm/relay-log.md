@@ -10,6 +10,10 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 
 在启用 relay log 功能后，DM-worker 会自动将上游 binlog 迁移到本地配置目录（若使用 TiUP 部署 DM，则迁移目录默认为 `<deploy_dir> / <relay_log>`）。本地配置目录 `<relay_log>` 的默认值是 `relay-dir`，可在[上游数据库配置文件](/dm/dm-source-configuration-file.md)中进行修改。自 v5.4.0 版本起，你可以在 [DM-worker 配置文件](/dm/dm-worker-configuration-file.md)中通过 `relay-dir` 配置本地配置目录，其优先级高于上游数据库的配置文件。
 
+> **警告：**
+>
+> 上游数据库配置文件中的 `relay-dir` 在 v6.1 版本中标记为弃用，在未来版本可能会被移除。相关命令的输出中您会看到如下提示： `` `relay-dir` in source config will be deprecated soon, please use `relay-dir` in worker config instead``。
+
 DM-worker 在运行过程中，会将上游 binlog 实时迁移到本地文件。DM-worker 的 sync 处理单元会实时读取本地 relay log 的 binlog 事件，将这些事件转换为 SQL 语句，再将 SQL 语句迁移到下游数据库。
 
 > **注意：**
@@ -130,6 +134,10 @@ Relay log 迁移的起始位置由如下规则决定：
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
+
+> **警告：**
+>
+> 该启动方式在 v6.1 版本中标记为弃用，在未来版本可能会被移除。相关命令的输出中您会看到如下提示：`start-relay/stop-relay with worker name will be deprecated soon. You can try stopping relay first and use start-relay without worker name instead`。
 
 `start-relay` 命令可以配置一个或多个 DM-worker 为指定数据源迁移 relay log，但只能指定空闲或者已绑定了该上游数据源的 DM-worker。使用示例如下：
 
