@@ -17,7 +17,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
 > **注意：**
 >
-> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
+> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。 
 > - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 7.x Linux 操作系统来部署 TiDB。
 > - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM 及 XEN 主流虚拟化环境上。
 > - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
