@@ -1,0 +1,360 @@
+---
+title: 日志备份和恢复功能使用介绍
+summary: 了解 br log 命令行使用
+---
+
+# 日志备份功能使用
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  backup-stream.enable: true 开启该功能。
+
+## 部署安装 
+
+推荐使用 TiUP 安装或升级 BR 。 例如安装 v6.1.0 版本 BR 工具
+
+- 没有安装 BR，使用命令 `tiup install br:v6.1.0`   安装 v6.1.0 版本 BR
+- 已经安装 BR，使用命令 `tiup update br:v6.1.0`  升级 BR 到 v6.1.0 版本
+
+
+## 使用日志备份
+
+日志备份支持以下的子命令
+
+```shell
+./br log --help
+
+backup stream log from TiDB/TiKV cluster
+
+Usage:
+  br log [command]
+
+Available Commands:
+  metadata   get the metadata of log backup storage 
+  pause      pause a log backup task
+  resume     resume a log backup task
+  start      start a log backup task
+  status     get status for the log backup task
+  stop       stop a log backup task
+  truncate   truncate the log data until sometime.
+```
+
+下面逐一介绍各个子命令的使用
+
+- `br log start` 	启动一个日志备份任务
+- `br log status` 查询日志备份任务状态
+- `br log pause` 暂停日志备份任务
+- `br log resume` 重启处于暂停的备份任务
+- `br log stop` 停止备份任务, 并删除任务元信息
+- `br log truncate` 从备份存储中清理日志备份数据
+- `br log metadata` 查询备份存储中备份数据的元信息
+
+### 启动日志备份任务
+
+通过 `br log start` 在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 kv 变更日志保存到备份存储中。 运行 `br log start –help` 获取该子命令使用介绍
+
+```shell
+./br log start --help
+start a log backup task
+
+Usage:
+  br log start [flags]
+
+Flags:
+  -h, --help               help for start
+  --start-ts string        usually equals last full backupTS, used for backup log. Default value is current ts. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'.
+  --task-name string       The task name for the backup log task.
+
+Global Flags:
+ --ca string                  CA certificate path for TLS connection
+ --cert string                Certificate path for TLS connection
+ --key string                 Private key path for TLS connection
+ -u, --pd strings             PD address (default [127.0.0.1:2379])
+ -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
+
+```
+
+以上命令行示例只展示了常用的参数，这些常用的参数作用如下
+
+- `task-name`： 指定日志备份任务名。使用该名称对备份任务进行 status/pause/resume/stop 等操作
+- `--start-ts`： 指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts
+- `--pd`:  指定备份集群的 PD 访问地址。 BR 需要访问 PD 发起日志备份任务
+- `ca`,`cert`,`key`： 指定使用 mTLS 加密方式与 TiKV/PD 进行通讯
+- `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+
+使用示例
+
+```shell
+./br log start --task-name=pitr --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+```
+
+### 查询日志备份任务
+
+通过 `br log status` 可以查询日志备份任务状态。运行 `br log status –help` 获取该子命令使用介绍
+
+```shell
+./br log status --help
+get status for the log backup task
+
+Usage:
+  br log status [flags]
+
+Flags:
+  -h, --help           help for status
+  --json               Print JSON as the output.
+  --task-name string   The task name for backup stream log. If default, get status of all of tasks (default "*")
+
+Global Flags:
+ --ca string                  CA certificate path for TLS connection
+ --cert string                Certificate path for TLS connection
+ --key string                 Private key path for TLS connection
+ -u, --pd strings             PD address (default [127.0.0.1:2379])
+
+```
+
+以上示例只展示了常用的参数，这些常用的参数作用如下
+
+- `task-name`： 指定日志备份任务名。 默认值为 '*',  显示全部的任务
+
+使用示例
+
+```shell
+./br log status --task-name=pitr --pd=172.16.102.95:2379 
+```
+
+命令行运行后的输出如下
+
+```shell
+● Total 1 Tasks.
+> #1 <
+    name: pitr
+    status: ● NORMAL
+    start: 2022-05-14 11:09:40.7 +0800 CST
+    end: 2035-01-01 00:00:00 +0800 CST
+    storage: s3://tidb-pitr-bucket/backup-data/log-backup
+    speed(est.): 0.00 ops/s
+checkpoint[global]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
+checkpoint[store=1]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
+error[store=1]: KV:logbackup:NoSuchTask
+checkpoint[store=4]: 2022-04-24 11:31:47.25 +0800 CST; gap=4m53s
+checkpoint[store=5]: 2022-04-24 11:31:47.351 +0800 CST; gap=4m53s
+```
+
+该子命令运行后输出以下信息
+
+- `status`：任务状态，NORMAL(任务正常)/ERROR(任务异常) /PAUSE(任务被暂停)
+- `start`:  日志备份任务开始的时间，为备份任务启动时候指定的 start-ts
+- `storage`：备份存储
+- `speed`：日志备份任务的总 QPS（每秒备份的日志个数）
+- `checkpoint [global]`：表示集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
+- `checkpoint [store]`：表示对应存储节点早于 checkpoint 的数据都已经保存到备份存储
+- `error [store]`：表示该存储节点上的日志备份组件运行遇到的异常
+
+### 暂停和重启日志备份任务
+
+通过 `br log pause`  暂停正在运行中的日志备份任务。运行 `br log pause –help` 获取该子命令使用介绍
+
+```shell
+./br log pause --help
+pause a log backup task
+
+Usage:
+  br log pause [flags]
+
+Flags:
+  -h, --help           help for status
+  --task-name string   The task name for backup stream log. 
+
+Global Flags:
+ --ca string                  CA certificate path for TLS connection
+ --cert string                Certificate path for TLS connection
+ --key string                 Private key path for TLS connection
+ -u, --pd strings             PD address (default [127.0.0.1:2379])
+```
+
+`br log pause` 命令使用需要注意：
+
+- 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被删除，暂停任务程序会自动调整 TiDB 集群的 `tidb_gc_life_time` 参数，允许最多保留最近 24h 内的 MVCC 数据。如果超过 24h，暂停的日志备份任务没有，那么对应的数据就会丢失，将不会被备份下来；
+- 此外，保留过多的 MVCC 数据会影响 TiDB 集群的存储容量和性能，任务暂停后请及时恢复任务。
+
+使用示例
+
+
+```shell
+./br log pause --task-name=pitr --pd=172.16.102.95:2379 
+```
+
+通过 `br log resume`  恢复被暂停的日志备份任务。运行 `br log resume –help` 获取该子命令使用介绍
+
+```shell
+./br log resume --help
+resume a log backup task
+
+Usage:
+  br log resume [flags]
+
+Flags:
+  -h, --help           help for status
+  --task-name string   The task name for backup stream log. 
+
+Global Flags:
+ --ca string                  CA certificate path for TLS connection
+ --cert string                Certificate path for TLS connection
+ --key string                 Private key path for TLS connection
+ -u, --pd strings             PD address (default [127.0.0.1:2379])
+```
+
+该命令需要注意，如果日志备份任务暂停超过了 24h 后，执行 `br log resume` 会报错，提示备份数据丢失，处理方法请参考 (#TODO FAQ)
+
+使用示例
+
+```shell
+./br log resume --task-name=pitr --pd=172.16.102.95:2379 
+```
+
+### （永久）停止日志备份任务
+
+通过 `br log stop`  永久的停止日志备份任务，该命令会清理备份集群中的任务元信息和关闭运行进程。运行 `br log stop –help` 获取该子命令使用介绍
+
+```shell
+./br log stop --help
+stop a log backup task
+
+Usage:
+  br log stop [flags]
+
+Flags:
+  -h, --help           help for status
+  --json               Print JSON as the output.
+  --task-name string   The task name for backup stream log. 
+
+Global Flags:
+ --ca string                  CA certificate path for TLS connection
+ --cert string                Certificate path for TLS connection
+ --key string                 Private key path for TLS connection
+ -u, --pd strings             PD address (default [127.0.0.1:2379])
+```
+
+> **警告：**
+>
+> 使用该命令需要谨慎，目前它只适用于不再继续使用 PiTR 的情况下使用。暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令暂停和重启日志备份任务.
+> 如果你选择使用 `br log stop` 停止备份任务，然后使用 `br log start` 重启备份任务时需要指定一个与之前不同的日志备份保存目录，不同的日志备份保存目录会影响到不能使用 `br restore point` 进行一键恢复。
+
+使用示例
+
+```shell
+./br log stop --task-name=pitr --pd=172.16.102.95:2379 
+```
+
+### 清理日志备份数据
+
+BR 提供了命令 `br log truncate` 支持从备份存储中删除过期（不再需要）的备份日志数据。运行 `br log truncate –help` 获取该子命令使用介绍
+
+```shell
+./br log truncate --help
+truncate the incremental log until sometime.
+
+Usage:
+  br log truncate [flags]
+
+Flags:
+  -h, --help       help for truncate
+  --until string   Remove all backup data until this TS.(support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'.)
+  -y, --yes        Skip all prompts and always execute the command.
+
+
+Global Flags:
+  -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
+```
+
+该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下
+
+- `--util`: 早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值
+- `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+
+使用示例
+
+```shell
+./br log truncate --until='2022/04/14 06:00:00' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+```
+
+### 查看备份数据 metadata
+
+BR 提供了命令 `br log metadata` 查看备份存储中保存的 log 备份的元信息，通过该命令你可以查询到 log 备份相关信息，例如最早和最近的可恢复时间点。运行 `br log metabase –help` 获取该子命令使用介绍
+
+```shell
+./br log metadata --help
+get the metadata of log backup storage 
+
+Usage:
+  br log truncate [flags]
+
+Flags:
+  -h, --help       help for truncate
+
+Global Flags:
+  -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
+```
+
+该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下：
+
+- `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+
+使用示例
+
+```shell
+./br log metadata –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+```
+
+该子命令运行后输出以下信息
+
+```shell
+[2022/05/17 11:27:35.044 +08:00] [INFO] [collector.go:69] ["log backup metadata"] [log-min-ts=433259922007785473] [log-min-date="2022-05-17 10:43:59.788 +0800 CST"] [log-max-ts=433260032007785473] [log-max-date="2022-05-17 10:50:59.404 +0800 CST"]
+```
+
+## 使用日志恢复
+
+通过 `br restore point` 可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point –help` 获取该命令使用介绍
+
+```shell
+./br restore point --help
+restore data from log until specify commit timestamp
+
+Usage:
+  br restore point [flags]
+
+Flags:
+  --full-backup-storage string specify the backup full storage. fill it if want restore full backup before restore log.
+  -h, --help                   help for point
+  --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'
+  --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'
+
+
+Global Flags:
+ --ca string                  CA certificate path for TLS connection
+ --cert string                Certificate path for TLS connection
+ --key string                 Private key path for TLS connection
+ -u, --pd strings             PD address (default [127.0.0.1:2379])
+ -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
+```
+
+以上示例只展示了常用的参数，这些常用的参数作用如下
+
+- `--full-backup-storage`：  PiTR 恢复需要指定，请选择恢复时间点之前最近的快照备份。指定快照（全量）备份存储地址。如果只恢复日志备份数据，则不需要指定该参数；使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+- `--restored-ts`： 指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点 (备份数据的 checkpoint)。
+- `--start-ts`: 只恢复日志备份数据（不需要恢复快照备份）需要指定，指定日志备份恢复的起始时间点；
+- `--pd`: 指定恢复集群的 PD 访问地址
+- `ca`,`cert`,`key`： 指定使用 mTLS 加密方式与 TiKV/PD 进行通讯
+- `--storage`: 指定日志备份的存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+
+使用示例
+
+```shell
+./br restore point -pd=172.16.102.95:2379
+–-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+–-full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
+
+Full Restore <---------------------------------------------------------------------> 100.00%
+Restore DDL files <----------------------------------------------------------------> 100.00%
+Restore DML Files <----------------------------------------------------------------> 100.00%
+```
