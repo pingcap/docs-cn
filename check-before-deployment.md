@@ -677,7 +677,7 @@ sudo systemctl enable ntpd.service
 
 安装 NUMA 工具有两种方法：
 
-1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）：
+方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）：
 
     {{< copyable "shell-regular" >}}
 
@@ -685,7 +685,7 @@ sudo systemctl enable ntpd.service
     sudo yum -y install numactl
     ```
 
-2. 通过 `tiup cluster exec` 在已有集群上进行批量安装：
+方法 2：通过 `tiup cluster exec` 在已有集群上进行批量安装：
 
     如果尚未部署 TiDB 集群，你可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署：
 
