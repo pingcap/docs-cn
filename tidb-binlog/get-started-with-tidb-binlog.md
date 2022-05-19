@@ -156,7 +156,7 @@ cd tidb-latest-linux-amd64
     {{< copyable "shell-regular" >}}
 
     ```bash
-    ./bin/pump --config=pump.toml &>pump.out &
+    ./pump --config=pump.toml &>pump.out &
     ```
 
     ```
@@ -185,7 +185,7 @@ cd tidb-latest-linux-amd64
     ```
     [1]   Running                 ./bin/pd-server --config=pd.toml &>pd.out &
     [2]   Running                 ./bin/tikv-server --config=tikv.toml &>tikv.out &
-    [3]-  Running                 ./bin/pump --config=pump.toml &>pump.out &
+    [3]-  Running                 ./pump --config=pump.toml &>pump.out &
     [4]+  Running                 ./bin/tidb-server --config=tidb.toml &>tidb.out &
     ```
 
@@ -223,7 +223,7 @@ Check Table Before Drop: false
 
     ```bash
     sudo systemctl start mariadb &&
-    ./bin/drainer --config=drainer.toml &>drainer.out &
+    ./drainer --config=drainer.toml &>drainer.out &
     ```
 
     如果你的操作系统更易于安装 MySQL，只需保证监听 3306 端口。另外，可使用密码为空的 "root" 用户连接到 MySQL，或调整 `drainer.toml` 连接到 MySQL。
@@ -424,7 +424,7 @@ Check Table Before Drop: false
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/binlogctl -cmd drainers
+./binlogctl -cmd drainers
 ```
 
 ```
@@ -434,7 +434,7 @@ Check Table Before Drop: false
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/binlogctl -cmd pumps
+./binlogctl -cmd pumps
 ```
 
 ```
@@ -447,7 +447,7 @@ Check Table Before Drop: false
 
 ```bash
 pkill drainer &&
-./bin/binlogctl -cmd drainers
+./binlogctl -cmd drainers
 ```
 
 预期输出：
@@ -465,8 +465,8 @@ pkill drainer &&
 - 使用 binlogctl 停止 Drainer，而不是结束进程：
 
     ```bash
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers &&
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=pause-drainer --node-id=localhost.localdomain:8249
+    ./binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=drainers &&
+    ./binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=pause-drainer --node-id=localhost.localdomain:8249
     ```
 
 - 在启动 Pump **之前**先启动 Drainer。
@@ -474,7 +474,7 @@ pkill drainer &&
 - 在启动 PD 之后但在启动 Drainer 和 Pump 之前，使用 binlogctl 更新已暂定 Drainer 的状态。
 
     ```bash
-    ./bin/binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=paused
+    ./binlogctl --pd-urls=http://127.0.0.1:2379 --cmd=update-drainer --node-id=localhost.localdomain:8249 --state=paused
     ```
 
 ## 清理
@@ -491,8 +491,8 @@ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1;
 
 ```
 [4]-  Done                    ./bin/tidb-server --config=tidb.toml &>tidb.out
-[5]+  Done                    ./bin/drainer --config=drainer.toml &>drainer.out
-[3]+  Done                    ./bin/pump --config=pump.toml &>pump.out
+[5]+  Done                    ./drainer --config=drainer.toml &>drainer.out
+[3]+  Done                    ./pump --config=pump.toml &>pump.out
 [2]+  Done                    ./bin/tikv-server --config=tikv.toml &>tikv.out
 [1]+  Done                    ./bin/pd-server --config=pd.toml &>pd.out
 ```
@@ -504,9 +504,9 @@ for p in tidb-server drainer pump tikv-server pd-server; do pkill "$p"; sleep 1;
 ```bash
 ./bin/pd-server --config=pd.toml &>pd.out &
 ./bin/tikv-server --config=tikv.toml &>tikv.out &
-./bin/drainer --config=drainer.toml &>drainer.out &
+./drainer --config=drainer.toml &>drainer.out &
 sleep 3
-./bin/pump --config=pump.toml &>pump.out &
+./pump --config=pump.toml &>pump.out &
 sleep 3
 ./bin/tidb-server --config=tidb.toml &>tidb.out &
 ```

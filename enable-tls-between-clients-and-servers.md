@@ -7,7 +7,7 @@ aliases: ['/docs-cn/dev/enable-tls-between-clients-and-servers/','/docs-cn/dev/h
 
 TiDB 服务端与客户端之间默认采用非加密连接，因而具备监视信道流量能力的第三方可以知悉 TiDB 服务端与客户端之间发送和接受的数据，包括但不限于查询语句内容、查询结果等。若信道是不可信的，例如客户端是通过公网连接到 TiDB 服务端的，则非加密连接容易造成信息泄露，建议使用加密连接确保安全性。
 
-TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL Client 如 MySQL Shell 和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLS 1.0、TLS 1.1、TLS 1.2、TLS 1.3。
+TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接，协议与 MySQL 加密连接一致，现有 MySQL Client 如 MySQL Shell 和 MySQL 驱动等能直接支持。TLS 的前身是 SSL，因而 TLS 有时也被称为 SSL，但由于 SSL 协议有已知安全漏洞，TiDB 实际上并未支持。TiDB 支持的 TLS/SSL 协议版本为 TLSv1.0、TLSv1.1、TLSv1.2 和 TLSv1.3。
 
 使用加密连接后，连接将具有以下安全性质：
 
@@ -38,6 +38,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 - [`ssl-cert`](/tidb-configuration-file.md#ssl-cert)：指定 SSL 证书文件路径
 - [`ssl-key`](/tidb-configuration-file.md#ssl-key)：指定证书文件对应的私钥
 - [`ssl-ca`](/tidb-configuration-file.md#ssl-ca)：可选，指定受信任的 CA 证书文件路径
+- [`tls-version`](/tidb-configuration-file.md#tls-version)：可选，指定最低 TLS 版本，例如 `TLSv1.2`
 
 `auto tls` 支持安全连接，但不提供客户端证书验证。有关证书验证和控制证书生成方式的说明，请参考下面配置 `ssl-cert`，`ssl-key` 和 `ssl-ca` 变量的建议：
 
@@ -126,10 +127,14 @@ TiDB 支持的 TLS 版本及密钥交换协议和加密算法由 Golang 官方�
 
 ### 支持的 TLS 版本
 
-- TLS 1.0
-- TLS 1.1
-- TLS 1.2
-- TLS 1.3
+- TLSv1.0 （默认禁用）
+- TLSv1.1
+- TLSv1.2
+- TLSv1.3
+
+可以使用配置项 `tls-version` 来限制 TLS 版本。
+
+实际可用的 TLS 版本取决于操作系统的加密策略、MySQL 客户端版本和客户端的 SSL/TLS 库。
 
 ### 支持的密钥交换协议及加密算法
 

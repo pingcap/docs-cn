@@ -215,9 +215,9 @@ URI 中可配置的的参数如下：
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
-| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的用户名（authcid）（可选） |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的密码（可选） |
-| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 验证的名称（可选） |
+| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的用户名（authcid）（可选） |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的密码（可选） |
+| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的名称（可选） |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
 | `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
 | `write-timeout`| 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
@@ -243,7 +243,7 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=canal-json&kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&protocol=avro&partition-num=6&max-message-bytes=67108864&replication-factor=1"
 --opts registry="http://127.0.0.1:8081"
 ```
 
@@ -252,6 +252,10 @@ URI 中可配置的的参数如下：
 集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
 
 #### Sink URI 配置 `pulsar`
+
+> **警告：**
+>
+> 当前该功能为实验特性，不建议在生产环境中使用。
 
 配置样例如下所示：
 
@@ -274,6 +278,7 @@ URI 中可配置的的参数如下：
 | `auth.tls` | 使用 TLS 模式认证下游 Pulsar（可选，示例 `auth=tls&auth.tlsCertFile=/path/to/cert&auth.tlsKeyFile=/path/to/key`）|
 | `auth.token` | 使用 token 模式认证下游（可选，示例 `auth=token&auth.token=secret-token` 或者 `auth=token&auth.file=path/to/secret-token-file`）|
 | `name` | TiCDC 中 Pulsar producer 名字（可选） |
+| `protocol` | 输出到 Pulsar 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
 | `maxPendingMessages` | Pending 消息队列的最大大小，例如，等待接收来自 Pulsar 的确认的消息（可选，默认值为 1000） |
 | `disableBatching` | 禁止自动批量发送消息（可选） |
 | `batchingMaxPublishDelay` | 设置发送消息的批处理时间（默认值为 10ms） |
@@ -592,11 +597,7 @@ protocol = "canal-json"
 
 ## 输出行变更的历史值 <span class="version-mark">从 v4.0.5 版本开始引入</span>
 
-> **警告：**
->
-> 目前输出行变更历史值属于实验特性，尚未经过完备的测试，不建议在生产环境中使用该功能。
-
-在默认配置下同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不支持 TiDB 4.0 [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)，也不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
+默认配置下，同步任务输出的 TiCDC Open Protocol 行变更数据只包含变更后的值，不包含变更前行的值，因此该输出数据不满足 TiCDC Open Protocol 的消费端使用行变更历史值的需求。
 
 从 v4.0.5 开始，TiCDC 支持输出行变更数据的历史值。若要开启该特性，需要在 changefeed 的配置文件的根级别指定以下配置：
 
@@ -606,7 +607,11 @@ protocol = "canal-json"
 enable-old-value = true
 ```
 
-开启该特性后，TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)，使用 MySQL sink 时也会自动支持的 TiDB 4.0 新 Collation 特性。
+从 v5.0 开始默认启用该特性，开启该特性后 TiCDC Open Protocol 的输出格式参考 [TiCDC 开放数据协议 - Row Changed Event](/ticdc/ticdc-open-protocol.md#row-changed-event)。
+
+## 同步启用了 TiDB 新的 Collation 框架的表
+
+从 v4.0.15、v5.0.4、v5.1.1 和 v5.2.0 开始，TiCDC 支持同步启用了 TiDB [新的 Collation 框架](/character-set-and-collation.md#新框架下的排序规则支持)的表。
 
 ## 同步没有有效索引的表
 
