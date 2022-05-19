@@ -21,7 +21,7 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
     </tr>
     <tr>
         <td>skip all flush sqls</td>
-        <td>`FLUSH`</td>
+        <td>`^FLUSH`</td>
     </tr>
     <tr>
         <td rowspan="3">table maintenance</td>
@@ -42,7 +42,7 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
         <td>`^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER`</td>
     </tr>
     <tr>
-        <td>`DROP\\s+TRIGGER`</td>
+        <td>`^DROP\\s+TRIGGER`</td>
     </tr>
     <tr>
         <td rowspan="3">procedure</td>
