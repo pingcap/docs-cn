@@ -4,104 +4,139 @@ title: Data Migration DDL 特殊处理说明
 
 # Data Migration DDL 特殊处理说明
 
-DM 同步过程中，根据 DDL 的不同，也将采用不同的处理方式。
+DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不同的处理方式。
 
 ## 忽略的 DDL 语句
 
-以下语句 DM 并未支持，因此解析到之后直接跳过。
+以下语句 DM 并未支持，因此解析之后直接跳过。
 
-```
-// transaction
-"^SAVEPOINT"
-
-// skip all flush sqls
-"^FLUSH"
-
-// table maintenance
-"^OPTIMIZE\\s+TABLE"
-"^ANALYZE\\s+TABLE"
-"^REPAIR\\s+TABLE"
-
-// temporary table
-"^DROP\\s+(\\/\\*\\!40005\\s+)?TEMPORARY\\s+(\\*\\/\\s+)?TABLE"
-
-// trigger
-"^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER"
-"^DROP\\s+TRIGGER"
-
-// procedure
-"^DROP\\s+PROCEDURE"
-"^CREATE\\s+(DEFINER\\s?=.+?)?PROCEDURE"
-"^ALTER\\s+PROCEDURE"
-
-// view
-"^CREATE\\s*(OR REPLACE)?\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?\\s+(SQL SECURITY DEFINER)?VIEW"
-"^DROP\\s+VIEW"
-"^ALTER\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?(SQL SECURITY DEFINER)?VIEW"
-
-// function
-// user-defined function
-"^CREATE\\s+(AGGREGATE)?\\s*?FUNCTION"
-// stored function
-"^CREATE\\s+(DEFINER\\s?=.+?)?FUNCTION"
-"^ALTER\\s+FUNCTION"
-"^DROP\\s+FUNCTION"
-
-// tableSpace
-"^CREATE\\s+TABLESPACE"
-"^ALTER\\s+TABLESPACE"
-"^DROP\\s+TABLESPACE"
-
-// event
-"^CREATE\\s+(DEFINER\\s?=.+?)?EVENT"
-"^ALTER\\s+(DEFINER\\s?=.+?)?EVENT"
-"^DROP\\s+EVENT"
-
-// account management
-"^GRANT"
-"^REVOKE"
-"^CREATE\\s+USER"
-"^ALTER\\s+USER"
-"^RENAME\\s+USER"
-"^DROP\\s+USER"
-"^SET\\s+PASSWORD"
-
-```
+<table border="1">
+    <tr>
+        <th>Description</th>
+        <th>SQL</th>
+    </tr>
+    <tr>
+        <td>transaction</td>
+        <td>`^SAVEPOINT`</td>
+    </tr>
+    <tr>
+        <td>skip all flush sqls</td>
+        <td>`FLUSH`</td>
+    </tr>
+    <tr>
+        <td rowspan="3">table maintenance</td>
+        <td>`^OPTIMIZE\\s+TABLE`</td>
+    </tr>
+    <tr>
+        <td>`^ANALYZE\\s+TABLE`</td>
+    </tr>
+    <tr>
+        <td>`^REPAIR\\s+TABLE`</td>
+    </tr>
+    <tr>
+        <td>temporary table</td>
+        <td>`^DROP\\s+(\\/\\*\\!40005\\s+)?TEMPORARY\\s+(\\*\\/\\s+)?TABLE`</td>
+    </tr>
+    <tr>
+        <td rowspan="2">trigger</td>
+        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?TRIGGER`</td>
+    </tr>
+    <tr>
+        <td>`DROP\\s+TRIGGER`</td>
+    </tr>
+    <tr>
+        <td rowspan="3">procedure</td>
+        <td>`^DROP\\s+PROCEDURE`</td>
+    </tr>
+    <tr>
+        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?PROCEDURE`</td>
+    </tr>
+    <tr>
+        <td>`^ALTER\\s+PROCEDURE`</td>
+    </tr>
+    <tr>
+        <td rowspan="3">view</td>
+        <td>`^CREATE\\s*(OR REPLACE)?\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?\\s+(SQL SECURITY DEFINER)?VIEW`</td>
+    </tr>
+    <tr>
+        <td>`^DROP\\s+VIEW`</td>
+    </tr>
+    <tr>
+        <td>`^ALTER\\s+(ALGORITHM\\s?=.+?)?(DEFINER\\s?=.+?)?(SQL SECURITY DEFINER)?VIEW`</td>
+    </tr>
+    <tr>
+        <td rowspan="4">function</td>
+        <td>`^CREATE\\s+(AGGREGATE)?\\s*?FUNCTION`</td>
+    </tr>
+    <tr>
+        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?FUNCTION`</td>
+    </tr>
+    <tr>
+        <td>`^ALTER\\s+FUNCTION`</td>
+    </tr>
+    <tr>
+        <td>`^DROP\\s+FUNCTION`</td>
+    </tr>
+    <tr>
+        <td rowspan="3">tableSpace</td>
+        <td>`^CREATE\\s+TABLESPACE`</td>
+    </tr>
+    <tr>
+        <td>`^ALTER\\s+TABLESPACE`</td>
+    </tr>
+    <tr>
+        <td>`^DROP\\s+TABLESPACE`</td>
+    </tr>
+    <tr>
+        <td rowspan="3">event</td>
+        <td>`^CREATE\\s+(DEFINER\\s?=.+?)?EVENT`</td>
+    </tr>
+    <tr>
+        <td>`^ALTER\\s+(DEFINER\\s?=.+?)?EVENT`</td>
+    </tr>
+    <tr>
+        <td>`^DROP\\s+EVENT`</td>
+    </tr>
+    <tr>
+        <td rowspan="7">account management</td>
+        <td>`^GRANT`</td>
+    </tr>
+    <tr>
+        <td>`^REVOKE`</td>
+    </tr>
+    <tr>
+        <td>`^CREATE\\s+USER`</td>
+    </tr>
+    <tr>
+        <td>`^ALTER\\s+USER`</td>
+    </tr>
+    <tr>
+        <td>`^RENAME\\s+USER`</td>
+    </tr>
+    <tr>
+        <td>`^DROP\\s+USER`</td>
+    </tr>
+    <tr>
+        <td>`^DROP\\s+USER`</td>
+    </tr>
+</table>
 
 ## 改写的 DDL 语句
 
 以下语句在同步到下游前会进行改写。
 
-```
-// 在结尾追加 `IF NOT EXIST`
-"^CREATE DATABASE"
-"^CREATE TABLE"
-
-// 在结尾追加 `IF EXIST`
-"^DROP DATABASE"
-"^DROP TABLE"
-"^DROP INDEX"
-```
+|原始语句|实际执行语句|
+|-|-|
+|`^CREATE DATABASE...`|`^CREATE DATABASE...IF NOT EXIST`|
+|`^CREATE TABLE...`|`^CREATE TABLE..IF NOT EXIST`|
+|`^DROP DATABASE...`|`^DROP TABLE...IF EXIST`|
+|`^DROP TABLE...`|`^DROP TABLE...IF EXIST`|
+|`^DROP INDEX...`|`^DROP INDEX...IF EXIST`
 
 ## 合库合表迁移任务
 
-当使用悲观协调模式和乐观协调模式进行分库分表合并迁移时：
+当使用悲观协调模式和乐观协调模式进行分库分表合并迁移时， DDL 同步的行为存在变更，具体请参考[悲观模式](/dm/feature-shard-merge-pessimistic.md)和[乐观模式](/dm/feature-shard-merge-optimistic.md)
 
-```
-// 自动忽略
-"DROP DATABASE/TABLE"
-"TRUNCATE TABLE"
-
-// 乐观模式不支持以下语句，但仍会执行，需注意避免使用，
-"ALTER TABLE table_name ADD COLUMN column_name datatype NOT NULL"（添加无默认值的 not null 的列）。
-"ALTER TABLE table_name ADD COLUMN column_name datetime DEFAULT NOW()"（增加的列默认值不固定）。
-"ALTER TABLE table_name ADD COLUMN col1 INT DROP COLUMN col2"（在一个 DDL 语句中同时包含 ADD COLUMN 与 DROP COLUMN）。
-"ALTER TABLE table_name RENAME COLUMN column_1 TO column_2"（重命名列）。
-"ALTER TABLE table_name RENAME INDEX index_1 TO index_2"（重命名索引）。
-```
-
-更细节内容，请查看 [分库分表合并迁移](/dm/feature-shard-merge.md)
-
-## 其他
+## Online DDL
 
 Online DDL 特性也会对 DDL 事件进行特殊处理，详情可参考: [迁移使用 GH-ost/PT-osc 的源数据库](/dm/feature-online-ddl.md)
