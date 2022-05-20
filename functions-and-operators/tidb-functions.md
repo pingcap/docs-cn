@@ -332,7 +332,7 @@ select tidb_decode_sql_digests(@digests, 10);
 
 ## TIDB_SHARD
 
-`TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以`TIDB_SHARD` 函数为前缀的表达式索引。
+`TIDB_SHARD` 函数用于创建一个 SHARD INDEX 来打散热点索引。SHARD INDEX 是一种以 `TIDB_SHARD` 函数为前缀的表达式索引。
 
 ### SHARD INDEX
 
@@ -342,21 +342,21 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 适用场景：
 
-    - 二级唯一索引上 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整形值
-    - 业务中 SQL 语句根据该二级索引的全部字段做等值查询，查询可以是单独的 SELECT，也可以是 UPDATE/DELETE 等产生的内部查询，等值查询包括 "a = 1" 或 "a IN (1, 2, ......)" 两种方式
+    - 二级唯一索引上 key 值存在单调递增或递减导致的写入热点，且该索引包含的列是整型。
+    - 业务中 SQL 语句根据该二级索引的全部字段做等值查询，查询可以是单独的 `SELECT`，也可以是 `UPDATE`，`DELETE` 等产生的内部查询，等值查询包括 `a = 1` 或 `a IN (1, 2, ......)` 两种方式。
 
 - 使用限制：
 
-        - 非等值或 IN 查询无法使用索引
-        - 查询条件中 AND 和 OR 混合且最外层是 AND 算子时无法使用 Shard Index索引
-        - GROUP BY 无法使用 Shard Index
-        - ORDER BY 无法使用 Shard Index
-        - ON 子句无法使用 Shard Index
-        - WHERE 子查询无法使用 Shard Index
-        - Shard Index 只能打散整形字段的唯一索引
-        - Shard Index 联合索引可能失效
-        - Shard Index 无法走 FastPlan流程
-        - Shard Index 无法使用 Prepare Plan Cache
+    - 非等值或 `IN` 查询无法使用索引。
+    - 查询条件中 `AND` 和 `OR` 混合且最外层是 `AND` 算子时无法使用 SHARED INDEX。
+    - `GROUP BY` 无法使用 SHARED INDEX。
+    - `ORDER BY` 无法使用 SHARED INDEX。
+    - `ON` 子句无法使用 SHARED INDEX。
+    - `WHERE` 子查询无法使用 SHARED INDEX。
+    - SHARED INDEX 只能打散整型字段的唯一索引。
+    - SHARED INDEX 联合索引可能失效。
+    - SHARED INDEX 无法走 FastPlan 流程。
+    - SHARED INDEX 无法使用执行计划缓存。
 
 ### 语法图
 
@@ -367,7 +367,7 @@ TIDBShardExpr ::=
 
 ### 示例
 
-- 使用 `TIDB_SHARD` 函数计算 【XXX】 的 SHARD 值
+- 使用 `TIDB_SHARD` 函数计算 SHARD 值
 
     以下示例提供如何使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
 
@@ -376,6 +376,8 @@ TIDBShardExpr ::=
     ```sql
     select TIDB_SHARD(12373743746);
     ```
+
+计算得出 SHARD 值为：
 
     ```sql
     +-------------------------+
@@ -391,7 +393,7 @@ TIDBShardExpr ::=
     {{< copyable "sql" >}}
 
     ```sql
-    create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a)); 
+    create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a));
     ```
 
 ### MySQL 兼容性
