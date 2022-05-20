@@ -164,15 +164,15 @@ public class EffectWriteSkew {
 {{< copyable "" >}}
 
 ```go
-
 package main
 
 import (
     "context"
     "database/sql"
     "fmt"
-    _ "github.com/go-sql-driver/mysql"
     "sync"
+
+    _ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -260,7 +260,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
     err = txnFunc()
     if err == nil {
         txn.Commit()
-        fmt.Println("[runTxn] looks good, commit")
+        fmt.Println("[runTxn] commit success")
     } else {
         txn.Rollback()
         fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)
@@ -486,15 +486,15 @@ public class EffectWriteSkew {
 {{< copyable "" >}}
 
 ```go
-
 package main
 
 import (
     "context"
     "database/sql"
     "fmt"
-    _ "github.com/go-sql-driver/mysql"
     "sync"
+
+    _ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -582,7 +582,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
     err = txnFunc()
     if err == nil {
         txn.Commit()
-        fmt.Println("[runTxn] looks good, commit")
+        fmt.Println("[runTxn] commit success")
     } else {
         txn.Rollback()
         fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)

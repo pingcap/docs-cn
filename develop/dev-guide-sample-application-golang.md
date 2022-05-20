@@ -93,6 +93,7 @@ package main
 import (
     "database/sql"
     "fmt"
+
     _ "github.com/go-sql-driver/mysql"
 )
 
@@ -122,7 +123,7 @@ func main() {
 
     // Create players with bulk inserts, insert 1919 players totally, and per batch for 114 players.
 
-    err = bulkInsertRandomPlayers(db, randomPlayers(1919), 114)
+    err = bulkInsertPlayers(db, randomPlayers(1919), 114)
     if err != nil {
         panic(err)
     }
@@ -178,15 +179,15 @@ func main() {
 {{< copyable "" >}}
 
 ```go
-
 package main
 
 import (
     "database/sql"
     "fmt"
-    "github.com/google/uuid"
     "math/rand"
     "strings"
+
+    "github.com/google/uuid"
 )
 
 type Player struct {
@@ -212,10 +213,11 @@ func getPlayer(db *sql.DB, id string) (Player, error) {
     defer rows.Close()
 
     if rows.Next() {
-        player := Player{}
-        scanErr := rows.Scan(&player.ID, &player.Coins, &player.Goods)
-        if scanErr == nil {
+        err = rows.Scan(&player.ID, &player.Coins, &player.Goods)
+        if err == nil {
             return player, nil
+        } else {
+            return player, err
         }
     }
 
@@ -234,17 +236,19 @@ func getPlayerByLimit(db *sql.DB, limit int) ([]Player, error) {
 
     for rows.Next() {
         player := Player{}
-        scanErr := rows.Scan(&player.ID, &player.Coins, &player.Goods)
-        if scanErr == nil {
+        err = rows.Scan(&player.ID, &player.Coins, &player.Goods)
+        if err == nil {
             players = append(players, player)
+        } else {
+            return players, err
         }
     }
 
     return players, nil
 }
 
-// bulk-insert random players
-func bulkInsertRandomPlayers(db *sql.DB, players []Player, batchSize int) error {
+// bulk-insert players
+func bulkInsertPlayers(db *sql.DB, players []Player, batchSize int) error {
     tx, err := db.Begin()
     if err != nil {
         return err
@@ -259,6 +263,7 @@ func bulkInsertRandomPlayers(db *sql.DB, players []Player, batchSize int) error 
 
     for len(players) > batchSize {
         if _, err := stmt.Exec(playerToArgs(players[:batchSize])...); err != nil {
+            tx.Rollback()
             return err
         }
 
@@ -267,11 +272,13 @@ func bulkInsertRandomPlayers(db *sql.DB, players []Player, batchSize int) error 
 
     if len(players) != 0 {
         if _, err := tx.Exec(buildBulkInsertSQL(len(players)), playerToArgs(players)...); err != nil {
+            tx.Rollback()
             return err
         }
     }
 
     if err := tx.Commit(); err != nil {
+        tx.Rollback()
         return err
     }
 
@@ -310,6 +317,7 @@ func buyGoods(db *sql.DB, sellID, buyID string, amount, price int) error {
         if err != nil {
             return err
         }
+        defer stmt.Close()
 
         sellRows, err := stmt.Query(sellID)
         if err != nil {
@@ -349,6 +357,7 @@ func buyGoods(db *sql.DB, sellID, buyID string, amount, price int) error {
         if err != nil {
             return err
         }
+        defer updateStmt.Close()
 
         if _, err := updateStmt.Exec(-amount, price, sellID); err != nil {
             return err
@@ -452,12 +461,14 @@ package main
 
 import (
     "fmt"
+    "math/rand"
+
     "github.com/google/uuid"
+
     "gorm.io/driver/mysql"
     "gorm.io/gorm"
     "gorm.io/gorm/clause"
     "gorm.io/gorm/logger"
-    "math/rand"
 )
 
 type Player struct {

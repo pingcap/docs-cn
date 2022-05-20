@@ -133,7 +133,20 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 <div label="Golang">
 
 ```go
-func bulkInsertRandomPlayers(db *sql.DB, players []Player, batchSize int) error {
+package main
+
+import (
+    "database/sql"
+    "strings"
+)
+
+type Player struct {
+    ID    string
+    Coins int
+    Goods int
+}
+
+func bulkInsertPlayers(db *sql.DB, players []Player, batchSize int) error {
     tx, err := db.Begin()
     if err != nil {
         return err
@@ -148,6 +161,7 @@ func bulkInsertRandomPlayers(db *sql.DB, players []Player, batchSize int) error 
 
     for len(players) > batchSize {
         if _, err := stmt.Exec(playerToArgs(players[:batchSize])...); err != nil {
+            tx.Rollback()
             return err
         }
 
@@ -156,19 +170,17 @@ func bulkInsertRandomPlayers(db *sql.DB, players []Player, batchSize int) error 
 
     if len(players) != 0 {
         if _, err := tx.Exec(buildBulkInsertSQL(len(players)), playerToArgs(players)...); err != nil {
+            tx.Rollback()
             return err
         }
     }
 
     if err := tx.Commit(); err != nil {
+        tx.Rollback()
         return err
     }
 
     return nil
-}
-
-func buildBulkInsertSQL(amount int) string {
-    return CreatePlayerSQL + strings.Repeat(",(?,?,?)", amount-1)
 }
 
 func playerToArgs(players []Player) []interface{} {
@@ -177,6 +189,10 @@ func playerToArgs(players []Player) []interface{} {
         args = append(args, player.ID, player.Coins, player.Goods)
     }
     return args
+}
+
+func buildBulkInsertSQL(amount int) string {
+    return "INSERT INTO player (id, coins, goods) VALUES (?, ?, ?)" + strings.Repeat(",(?,?,?)", amount-1)
 }
 ```
 

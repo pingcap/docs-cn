@@ -286,15 +286,17 @@ public class TxnExample {
 {{< copyable "" >}}
 
 ```go
+
 package main
 
 import (
     "context"
     "database/sql"
     "fmt"
+    "time"
+
     "github.com/go-sql-driver/mysql"
     "github.com/shopspring/decimal"
-    "time"
 )
 
 type TxnFunc func(connection *sql.Conn) error
@@ -341,6 +343,7 @@ func runTxn(db *sql.DB, optimistic bool, optimisticRetryTimes int, txnFunc TxnFu
             if _, retryableError := retryErrorCodeSet[mysqlErr.Number]; retryableError {
                 fmt.Printf("[runTxn] got a retryable error, rest time: %d\n", optimisticRetryTimes-1)
                 runTxn(db, optimistic, optimisticRetryTimes-1, txnFunc)
+                return
             }
         }
 
@@ -351,11 +354,12 @@ func runTxn(db *sql.DB, optimistic bool, optimisticRetryTimes int, txnFunc TxnFu
             if _, retryableError := retryErrorCodeSet[mysqlErr.Number]; retryableError {
                 fmt.Printf("[runTxn] got a retryable error, rest time: %d\n", optimisticRetryTimes-1)
                 runTxn(db, optimistic, optimisticRetryTimes-1, txnFunc)
+                return
             }
         }
 
         if err == nil {
-            fmt.Println("[runTxn] looks good, commit")
+            fmt.Println("[runTxn] commit success")
         }
     }
 }
@@ -526,23 +530,16 @@ func buyOptimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int)
 
 func createBook(connection *sql.Conn, id int, title, bookType string,
     publishedAt time.Time, price decimal.Decimal, stock int) error {
-    stmt, err := connection.PrepareContext(context.Background(), "INSERT INTO `books` (`id`, `title`, `type`, `published_at`, `price`, `stock`) values (?, ?, ?, ?, ?, ?)")
-    if err != nil {
-        return err
-    }
-
-    _, err = stmt.Exec(id, title, bookType, publishedAt, price, stock)
+    _, err := connection.ExecContext(context.Background(),
+        "INSERT INTO `books` (`id`, `title`, `type`, `published_at`, `price`, `stock`) values (?, ?, ?, ?, ?, ?)",
+        id, title, bookType, publishedAt, price, stock)
     return err
 }
 
 func createUser(connection *sql.Conn, id int, nickname string, balance decimal.Decimal) error {
-    stmt, err := connection.PrepareContext(context.Background(),
-        "INSERT INTO `users` (`id`, `nickname`, `balance`) VALUES (?, ?, ?)")
-    if err != nil {
-        return err
-    }
-
-    _, err = stmt.Exec(id, nickname, balance)
+    _, err := connection.ExecContext(context.Background(),
+        "INSERT INTO `users` (`id`, `nickname`, `balance`) VALUES (?, ?, ?)",
+        id, nickname, balance)
     return err
 }
 ```
