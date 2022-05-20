@@ -322,7 +322,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
     >> config set max-store-down-time 30m
     ```
 
-- `max-store-preparing-time` 为 store 上线阶段的最大等待时间，PD 可以查询处在上线阶段 store 的上线进度，当超过指定的时间后会被认为 store 已完成上线阶段，将无法再次查询这个节点的进度。
+- `max-store-preparing-time` 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度。
 
     设置 store 上线阶段最多等待 4 小时：
 
