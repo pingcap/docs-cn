@@ -70,7 +70,7 @@ INSERT INTO t VALUES (1,2),(2,3),(3,4),(4,5),(5,6);
 Query OK, 5 rows affected
 ```
 
-以下操作使用非事务 DML 语句，删除表 `t` 的 `v` 列上小于整数 6 的行。该语句将以 2 为 batch size，以 `id` 列为划分列，拆分为两个 SQL 语句执行，删除表 `t` 中 `v <` 6 的行。
+以下操作使用非事务 DML 语句，删除表 `t` 的 `v` 列上小于整数 6 的行。该语句将以 2 为 batch size，以 `id` 列为划分列，拆分为两个 SQL 语句执行。
 
 {{< copyable "sql" >}}
 
@@ -106,7 +106,7 @@ SELECT * FROM t;
 
 ### 查看非事务 DML 语句的执行进度
 
-非事务 DML 语句执行过程中，可以通过 `show processlist` 查看执行进度，返回结果中的 `Time` 表示当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。例如：
+非事务 DML 语句执行过程中，可以通过 `SHOW PROCESSLIST` 查看执行进度，返回结果中的 `Time` 表示当前 batch 执行的耗时。日志、慢日志等也会记录每个拆分后的语句在整个非事务 DML 语句中的进度。例如：
 
 {{< copyable "sql" >}}
 
@@ -168,9 +168,9 @@ BATCH ON id LIMIT 2 DRY RUN DELETE FROM t where v < 6;
 2 rows in set
 ```
 
-### 在非事务 DML 语句中使用 optimizer hint
+### 在非事务 DML 语句中使用 Optimizer Hint
 
-对于 DELETE 语句原本支持的 optimizer hint，非事务 DELETE 语句也同样支持，hint 位置与普通 DELETE 语句中的位置相同：
+对于 `DELETE` 语句原本支持的 Optimizer Hint，非事务 `DELETE` 语句也同样支持，hint 位置与普通 `DELETE` 语句中的位置相同：
 
 {{< copyable "sql" >}}
 
@@ -192,8 +192,8 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 | 参数 | 说明 | 默认值 | 是否必填 | 建议值 |
 | :-- | :-- | :-- | :-- | :-- |
-| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t where v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 where 条件的列 |
-| Batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t where v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000 - 1000000，过小和过大都会导致性能下降 |
+| 划分列 | 用于划分 batch 的列，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `id` 列  | TiDB 尝试自动选择 | 否 | 选择可以最高效地满足 `WHERE` 条件的列 |
+| Batch size | 用于控制每个 batch 的大小，batch 即 DML 操作拆分成的 SQL 语句个数，例如以上非事务 DML 语句 `BATCH ON id LIMIT 2 DELETE FROM t WHERE v < 6` 中的 `LIMIT 2`。batch 数量越多，batch size 越小 | N/A | 是 | 1000 - 1000000，过小和过大都会导致性能下降 |
 
 ### 划分列的选择
 
