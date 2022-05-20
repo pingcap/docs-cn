@@ -10,7 +10,7 @@ title: TiDB Lightning SST Mode 必要条件及限制
 
 **内存和 CPU**：
 
-建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能，关于更多性能与硬件之间的关系，请参考[性能调优](/tidb-lightning/tidb-lightning-sst-tuning.md)。
+建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。
 
 > **说明：**
 >

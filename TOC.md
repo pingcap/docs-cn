@@ -346,12 +346,9 @@
       - [表库过滤](/table-filter.md)
     - [最佳实践](/tidb-lightning/tidb-lightning-best-practice.md)
     - SST Import Mode
-      - [概述](/tidb-lightning/tidb-lightning-sst-mode.md)
+      - [说明及使用](/tidb-lightning/tidb-lightning-sst-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)
-      - [配置](/tidb-lightning/tidb-lightning-sst-configuration.md)
-      - [冲突检测](/tidb-lightning/tidb-lightning-sst-duplication-detect.md)
       - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-      - [性能调优](/tidb-lightning/tidb-lightning-sst-tuning.md)
     - SQL Import Mode
       - [概述](/tidb-lightning/tidb-lightning-sql-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-requirements.md)

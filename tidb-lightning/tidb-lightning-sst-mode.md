@@ -4,7 +4,14 @@ title: TiDB Lightning SST Mode
 
 # TiDB Lightning SST Mode
 
-TiDB Lightning SST Mode 整体工作原理：
+TiDB Lightning SST Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。SST Mode 适合 100 TB 以内数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)。
+
+- [原理说明](/tidb-lightning/tidb-lightning-sst-mode.md#原理说明)
+- [配置及使用](/tidb-lightning/tidb-lightning-sst-mode.md#配置及使用)
+- [冲突检测](/tidb-lightning/tidb-lightning-sst-mode.md#冲突数据检测)
+- [性能调优](/tidb-lightning/tidb-lightning-sst-mode.md#性能调优)
+
+## 原理说明
 
 1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
 
@@ -24,11 +31,11 @@ TiDB Lightning SST Mode 整体工作原理：
 
 7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
 
-## 使用 SST Mode 
+## 配置及使用
 
 可以通过以下配置文件使用 SST Mode 执行数据导入：
 
-```
+```toml
 [lightning]
 # 日志
 level = "info"
@@ -88,6 +95,16 @@ analyze = "optional"
 
 Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
+## 冲突数据检测
+
+冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。冲突数据检测支持三种策略：
+
+- record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
+- none: 不检测冲突记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+- remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
+
+在 v5.3 版本之前，Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，无论`record`还是`remove`策略，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
+
 ## 性能调优
 
 **提高 Lightning SST Mode 导入性能最直接有效的方法：升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
@@ -124,11 +141,3 @@ io-concurrency = 5
 `io-concurrency` 用于控制文件读取并发度，默认值为 5。可以认为在某个时刻只有 5 个句柄在执行读操作。由于文件读取速度一般不会是瓶颈，所以使用默认值即可。
 
 读取文件数据后，lightning 还需要做后续处理，例如将数据在本地进行编码和排序。此类操作的并发度由`region-concurrency`配置控制。`region-concurrency` 的默认值为 CPU 核数，通常无需调整，建议不要将 Lightning 与其它组件部署在同一主机，如果客观条件限制必须混合部署，则需要根据实际负载调低`region-concurrency`。
-
-## 冲突数据检测
-
-- record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
-- none: 不检测冲突记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
-- remove: 记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
-
-### checksum
