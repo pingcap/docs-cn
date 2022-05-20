@@ -95,36 +95,33 @@ try (Connection connection = ds.getConnection()) {
 {{< copyable "" >}}
 
 ```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "time"
+)
+
 func main() {
-    err := deleteBatch(db, "2022-04-15 00:00:00", "2022-04-15 00:15:00")
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/bookshop")
     if err != nil {
         panic(err)
     }
-}
+    defer db.Close()
 
-func deleteBatch(db *sql.DB, sStartTime, sEndTime string) error {
-    layout := "2006-01-02 15:04:05"
-    startTime, err := time.Parse(layout, sStartTime)
-    if err != nil {
-        return err
-    }
-
-    endTime, err := time.Parse(layout, sEndTime)
-    if err != nil {
-        return err
-    }
+    startTime := time.Date(2022, 04, 15, 0, 0, 0, 0, time.UTC)
+    endTime := time.Date(2022, 04, 15, 0, 15, 0, 0, time.UTC)
 
     bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?")
     result, err := db.Exec(bulkUpdateSql, startTime, endTime)
     if err != nil {
-        return err
+        panic(err)
     }
-    affectedRows, err := result.RowsAffected()
+    _, err = result.RowsAffected()
     if err != nil {
-        return err
+        panic(err)
     }
-
-    return nil
 }
 ```
 
@@ -180,8 +177,11 @@ package com.pingcap.bulkDelete;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class BatchDeleteExample
@@ -199,13 +199,13 @@ public class BatchDeleteExample
         mysqlDataSource.setUser("root");
         mysqlDataSource.setPassword("");
 
-        while (true) {
-            batchDelete(mysqlDataSource);
-            TimeUnit.SECONDS.sleep(1);
+        Integer updateCount = -1;
+        while (updateCount != 0) {
+            updateCount = batchDelete(mysqlDataSource);
         }
     }
 
-    public static void batchDelete (MysqlDataSource ds) {
+    public static Integer batchDelete (MysqlDataSource ds) {
         try (Connection connection = ds.getConnection()) {
             String sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ? LIMIT 1000";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -220,14 +220,18 @@ public class BatchDeleteExample
 
             int count = preparedStatement.executeUpdate();
             System.out.println("delete " + count + " data");
+
+            return count;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return -1;
     }
 }
 ```
 
-每次迭代中，`DELETE` 最多删除 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。每次循环末尾的 `TimeUnit.SECONDS.sleep(1);` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
+每次迭代中，`DELETE` 最多删除 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
 
 </div>
 
@@ -238,15 +242,14 @@ public class BatchDeleteExample
 {{< copyable "" >}}
 
 ```go
-
 package main
 
 import (
     "database/sql"
     "fmt"
     "time"
-    
-       _ "github.com/go-sql-driver/mysql" 
+
+    _ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
@@ -256,45 +259,36 @@ func main() {
     }
     defer db.Close()
 
-    for {
-        err = deleteBatch(db, "2022-04-15 00:00:00", "2022-04-15 00:15:00")
+    affectedRows := int64(-1)
+    startTime := time.Date(2022, 04, 15, 0, 0, 0, 0, time.UTC)
+    endTime := time.Date(2022, 04, 15, 0, 15, 0, 0, time.UTC)
+
+    for affectedRows != 0 {
+        affectedRows, err = deleteBatch(db, startTime, endTime)
         if err != nil {
             fmt.Println(err)
         }
-        time.Sleep(time.Second)
     }
 }
 
 // deleteBatch delete at most 1000 lines per batch
-func deleteBatch(db *sql.DB, sStartTime, sEndTime string) error {
-    layout := "2006-01-02 15:04:05"
-    startTime, err := time.Parse(layout, sStartTime)
-    if err != nil {
-        return err
-    }
-
-    endTime, err := time.Parse(layout, sEndTime)
-    if err != nil {
-        return err
-    }
-
+func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
     bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ? LIMIT 1000")
     result, err := db.Exec(bulkUpdateSql, startTime, endTime)
     if err != nil {
-        return err
+        return -1, err
     }
     affectedRows, err := result.RowsAffected()
     if err != nil {
-        return err
+        return -1, err
     }
 
     fmt.Printf("delete %d data\n", affectedRows)
-    return nil
+    return affectedRows, nil
 }
-
 ```
 
-每次迭代中，`DELETE` 最多删除 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。每次循环末尾的 `time.Sleep(time.Second)` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
+每次迭代中，`DELETE` 最多删除 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
 
 </div>
 

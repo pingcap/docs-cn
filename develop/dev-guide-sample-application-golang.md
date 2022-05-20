@@ -1,6 +1,6 @@
 ---
 title: TiDB 和 Golang 的简单 CRUD 应用程序
-summary: 给出一个 TiDB 和 Java 的简单 Golang 应用程序示例。
+summary: 给出一个 TiDB 和 Golang 的简单 CRUD 应用程序示例。
 aliases: ['/zh/tidb/dev/sample-application-golang']
 ---
 
