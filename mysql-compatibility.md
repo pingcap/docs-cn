@@ -40,7 +40,6 @@ However, some features of MySQL are not supported. This could be because there i
 + `CHECKSUM TABLE` syntax [#1895](https://github.com/pingcap/tidb/issues/1895)
 + `REPAIR TABLE` syntax
 + `OPTIMIZE TABLE` syntax
-+ `GET_LOCK` and `RELEASE_LOCK` functions [#14994](https://github.com/pingcap/tidb/issues/14994)
 + `HANDLER` statement
 + `CREATE TABLESPACE` statement
 

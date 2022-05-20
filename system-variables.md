@@ -861,7 +861,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Possible values: `OFF`, `ON`, `WARN`
 - By default, TiDB returns an error when you attempt to use the syntax for functionality that is not yet implemented. When the variable value is set to `ON`, TiDB silently ignores such cases of unavailable functionality, which is helpful if you cannot make changes to the SQL code.
 - Enabling `noop` functions controls the following behaviors:
-    * `get_lock` and `release_lock` functions
     * `LOCK IN SHARE MODE` syntax
     * `SQL_CALC_FOUND_ROWS` syntax
     * `START TRANSACTION READ ONLY` and `SET TRANSACTION READ ONLY` syntax
