@@ -176,13 +176,23 @@ import (
 )
 
 func main() {
-    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/test")
+    openDB("mysql", "root:@tcp(127.0.0.1:4000)/test", func(db *sql.DB) {
+        writeSkew(db)
+    })
+}
+
+func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
+    db, err := sql.Open(driverName, dataSourceName)
     if err != nil {
         panic(err)
     }
     defer db.Close()
 
-    err = prepareData(db)
+    runnable(db)
+}
+
+func writeSkew(db *sql.DB) {
+    err := prepareData(db)
     if err != nil {
         panic(err)
     }
@@ -498,13 +508,23 @@ import (
 )
 
 func main() {
-    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/test")
+    openDB("mysql", "root:@tcp(127.0.0.1:4000)/test", func(db *sql.DB) {
+        writeSkew(db)
+    })
+}
+
+func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
+    db, err := sql.Open(driverName, dataSourceName)
     if err != nil {
         panic(err)
     }
     defer db.Close()
 
-    err = prepareData(db)
+    runnable(db)
+}
+
+func writeSkew(db *sql.DB) {
+    err := prepareData(db)
     if err != nil {
         panic(err)
     }
