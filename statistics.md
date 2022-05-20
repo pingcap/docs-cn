@@ -330,29 +330,29 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
-1. 执行以下 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
+1. 执行以下 SQL 语句：
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT ci.instance as instance, cp.id as id FROM information_schema.cluster_info ci, information_schema.cluster_processlist cp WHERE ci.status_address = cp.instance and ci.type = 'tidb' and cp.info like 'analyze table %' and cp.user = '' and cp.host = '';
+    SHOW ANALYZE STATUS
     ```
 
-    如果输出结果为空，说明后台没有正在执行的 `ANALYZE` 任务。从 TiDB v6.1 起，执行 `SHOW ANALYZE STATUS` 查看 `instance` 列和 `process_id` 列也可以得到 TiDB 实例地址和任务 `ID`。
+    查看 `instance` 列和 `process_id` 列获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
 
-2. 使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后执行以下 `KILL` 语句：
+2. 执行 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务：
 
     {{< copyable "sql" >}}
 
     ```sql
-    KILL TIDB ${id};
+    KILL TIDB ID;
     ```
 
-    `${id}` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
+    `ID` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
 
     > **注意：**
     >
-    > 只有当使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
+    > 在 TiDB v6.1 之前，只有当客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。从 TiDB v6.1 起，在 enable-global-kill 设置为 true 时（默认为 true），客户端无需直连执行后台 `ANALYZE` 任务的 TiDB 实例，`KILL` 命令也能正确地转发给 TiDB 实例执行。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
@@ -431,9 +431,9 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 | instance | 执行任务的 TiDB 实例 |
 | process_id | 执行任务的 process ID |
 
-从 TiDB v6.1 起，`SHOW ANALYZE STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到之前的任务记录。
+在 TiDB v6.1 之前，`SHOW ANALYZE STATUS` 显示实例级别的任务，且 TiDB 重启后任务记录会被清空。从 TiDB v6.1 起，`SHOW ANALYZE STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。
 
-`SHOW ANALYZE STATUS` 仅显示最近的若干条任务记录。从 TiDB v6.1 起，可以通过系统表 `mysql.analyze_jobs` 查看更早的（7 天内的） 历史记录。
+`SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，可以通过系统表 `mysql.analyze_jobs` 查看更早的（7 天内的） 历史记录。
 
 ## 统计信息的查看
 

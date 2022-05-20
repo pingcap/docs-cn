@@ -7,7 +7,7 @@ summary: 了解 information_schema 表 `ANALYZE_STATUS`。
 
 `ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
 
-从 TiDB v6.1 起，`ANALYZE_STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到之前的任务记录。
+在 TiDB v6.1 之前，`ANALYZE_STATUS` 显示实例级别的任务，且 TiDB 重启后任务记录会被清空。从 TiDB v6.1 起，`ANALYZE_STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。
 
 从 TiDB v6.1 起，可以通过系统表 `mysql.analyze_jobs` 查看更早的（7 天内的） 历史记录。
 
