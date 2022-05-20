@@ -134,22 +134,20 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## Prepared Plan Cache 的内存管理
 
-使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每一个缓存计划会消耗 `100kb` 的内存，目前 Plan Cache 是 `SESSION` 级别的，因此总的内存消耗大致等于 `SESSION 个数 * 平均缓存的计划个数 * 100kb`。
+使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每个缓存计划会消耗 `100kb` 内存，且目前 Plan Cache 是 `SESSION` 级别的，因此总内存消耗大致为 `SESSION 个数 * SESSION 平均缓存计划个数 * 100kb`。
 
-比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存了 100 个计划，则总的内存开销为 `50 * 100 * 100kb` 约等于 `500mb`。
+比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存 100 个计划，则总内存开销为 `50 * 100 * 100kb` 约等于 `500mb`。
 
-目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多可以缓存的计划数量。
-
-目前针对不同的环境，推荐的设置如下：
+目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量,针对不同的环境，推荐的设置如下：
 
 - MEM <= 64 GB; tidb_prepared_plan_cache_size = 50
 - MEM > 64 GB; tidb_prepared_plan_cache_size = 100
 
-当 TiDB Server 的内存余量小于一定阈值时，会触发 Plan Cache 的内存保护机制，会对一些缓存的计划进行逐出。
+当 TiDB Server 的内存余量小于一定阈值时，会触发 Plan Cache 的内存保护机制，此时会对一些缓存的计划进行逐出。
 
-目前改阈值由变量 `tidb_prepared_plan_cache_memory_guard_ratio` 控制，默认为 0.1，即 10%.
+目前该阈值由变量 `tidb_prepared_plan_cache_memory_guard_ratio` 控制，默认为 0.1，即 10%，也就是当剩余内存不足 10%（使用内存超过 90%）时，会触发此机制。
 
-由于内存限制，Plan Cache 可能出现 Cache Miss 的情况，此时可以通过 `Plan Cache Miss OPS` 监控进行查看。
+由于内存限制，Plan Cache 可能出现 Cache Miss 的情况，可以通过 `Plan Cache Miss OPS` 监控进行查看。
 
 ## 手动清空计划缓存
 
