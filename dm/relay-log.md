@@ -41,7 +41,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 {{< copyable "shell-regular" >}}
 
 ```bash
-» start-relay -s mysql-replica-01
+start-relay -s mysql-replica-01
 ```
 
 ```
@@ -68,7 +68,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 {{< copyable "" >}}
 
 ```bash
-» start-relay -s mysql-replica-01 worker1 worker2
+start-relay -s mysql-replica-01 worker1 worker2
 ```
 
 ```
@@ -81,7 +81,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 {{< copyable "" >}}
 
 ```bash
-» stop-relay -s mysql-replica-01 worker1 worker2
+stop-relay -s mysql-replica-01 worker1 worker2
 ```
 
 ```
@@ -109,7 +109,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 {{< copyable "" >}}
 
 ```bash
-» query-status -s mysql-replica-01
+query-status -s mysql-replica-01
 ```
 
 <details>
@@ -175,7 +175,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 {{< copyable "" >}}
 
 ```bash
-» pause-relay -s mysql-replica-01 -s mysql-replica-02
+pause-relay -s mysql-replica-01 -s mysql-replica-02
 ```
 
 <details>
@@ -208,7 +208,7 @@ DM (Data Migration) 工具的 relay log 由若干组有编号的文件和一个�
 {{< copyable "" >}}
 
 ```bash
-» resume-relay -s mysql-replica-01
+resume-relay -s mysql-replica-01
 ```
 
 <details>
@@ -313,7 +313,7 @@ deb76a2b-09cc-11e9-9129-5242cf3bb246.000003
     {{< copyable "" >}}
 
     ```bash
-    » purge-relay -s mysql-replica-01 --filename mysql-bin.000001 --sub-dir e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
+    purge-relay -s mysql-replica-01 --filename mysql-bin.000001 --sub-dir e4e0e8ab-09cc-11e9-9220-82cc35207219.000002
     ```
 
 + 以下命令默认 `--sub-dir` 为最新的 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003` 子目录。该目录之前的 relay log 子目录为 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000001` 和 `e4e0e8ab-09cc-11e9-9220-82cc35207219.000002`，所以该命令实际清空了这两个子目录，保留了 `deb76a2b-09cc-11e9-9129-5242cf3bb246.000003`。
@@ -321,7 +321,7 @@ deb76a2b-09cc-11e9-9129-5242cf3bb246.000003
     {{< copyable "" >}}
 
     ```bash
-    » purge-relay -s mysql-replica-01 --filename mysql-bin.000001
+    purge-relay -s mysql-replica-01 --filename mysql-bin.000001
     ```
 
 ## Relay log 内部机制
