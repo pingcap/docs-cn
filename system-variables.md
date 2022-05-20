@@ -1482,7 +1482,7 @@ explain select * from t where age=5;
 - 是否持久化到集群：是
 - 默认值：`0.1`
 - 范围：`[0, 1]`
-- 这个变量用来控制开启 [Prepared Plan Cache](sql-prepared-plan-cache.md) 功能后，触发内存保护机制的阈值，具体可见 [Prepared Plan Cache 的内存管理](sql-prepared-plan-cache.md#%E6%89%8B%E5%8A%A8%E6%B8%85%E7%A9%BA%E8%AE%A1%E5%88%92%E7%BC%93%E5%AD%98)
+- 这个变量用来控制 Prepared Plan Cache 触发内存保护机制的阈值，具体可见 [Prepared Plan Cache 的内存管理](sql-prepared-plan-cache.md#%E6%89%8B%E5%8A%A8%E6%B8%85%E7%A9%BA%E8%AE%A1%E5%88%92%E7%BC%93%E5%AD%98)。
 - 在 `v6.1.0` 之前这个开关通过配置文件进行配置，在升级上来时会自动继承配置文件的设置。
 
 ### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
@@ -1491,7 +1491,7 @@ explain select * from t where age=5;
 - 是否持久化到集群：是
 - 默认值：`100`
 - 范围：`[0, 2147483647]`
-- 这个变量用来控制开启 [Prepared Plan Cache](sql-prepared-plan-cache.md) 功能后，单个 `SESSION` 的 Cache 最多能够缓存的计划数量。
+- 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量，具体可见 [Prepared Plan Cache 的内存管理](sql-prepared-plan-cache.md#%E6%89%8B%E5%8A%A8%E6%B8%85%E7%A9%BA%E8%AE%A1%E5%88%92%E7%BC%93%E5%AD%98)。
 - 在 `v6.1.0` 之前这个开关通过配置文件进行配置，在升级上来时会自动继承配置文件的设置。
 
 ### `tidb_projection_concurrency`
