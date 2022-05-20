@@ -150,7 +150,7 @@ The following TiKV configuration items can be modified online:
 | `raftstore.max-leader-missing-duration` | The longest duration allowed for a peer to be without a leader. If this value is exceeded, the peer verifies with PD whether it has been deleted. |
 | `raftstore.abnormal-leader-missing-duration` | The normal duration allowed for a peer to be without a leader. If this value is exceeded, the peer is seen as abnormal and marked in metrics and logs. |
 | `raftstore.peer-stale-state-check-interval` | The time interval to check whether a peer is without a leader |
-| `raftstore.consistency-check-interval` | The time interval to check consistency |
+| `raftstore.consistency-check-interval` | The time interval to check consistency (**NOT** recommended because it is not compatible with the garbage collection in TiDB) |
 | `raftstore.raft-store-max-leader-lease` | The longest trusted period of a Raft leader |
 | `raftstore.merge-check-tick-interval` | The time interval for merge check |
 | `raftstore.cleanup-import-sst-interval` | The time interval to check expired SST files |

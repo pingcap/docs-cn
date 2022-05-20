@@ -693,6 +693,10 @@ Configuration items related to Raftstore.
 
 ### `consistency-check-interval`
 
+> **Warning:**
+>
+> It is **NOT** recommended to enable the consistency check in production environments, because it affects cluster performance and is incompatible with the garbage collection in TiDB.
+
 + The time interval at which the consistency check is triggered. `0` means that this feature is disabled.
 + Default value: `"0s"`
 + Minimum value: `0`

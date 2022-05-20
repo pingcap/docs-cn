@@ -300,6 +300,7 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 
 > **Note:**
 >
+> - It is **NOT** recommended to use the `consistency-check` command, because it is incompatible with the garbage collection in TiDB and might mistakenly report an error.
 > - This command only supports the remote mode.
 > - Even if this command returns `success!`, you need to check whether TiKV panics. This is because this command is only a proposal that requests a consistency check for the leader, and you cannot know from the client whether the whole check process is successful or not.
 
