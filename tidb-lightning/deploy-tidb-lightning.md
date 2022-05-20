@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 ## 部署 TiDB Lightning
 
-本节介绍 TiDB Lightning 的部署方式：[手动部署](#手动部署-tidb-lightning)。
+本节介绍 TiDB Lightning 的部署方式：[手动部署](#手动部署-tidb-lightning)。可[在此下载](/download-ecosystem-tools.md)。
 
 ### 手动部署 TiDB Lightning
 

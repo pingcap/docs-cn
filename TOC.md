@@ -335,24 +335,44 @@
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
-    - 前置需求
-      - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md)
-      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
-    - 主要功能
-      - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      - [表库过滤](/table-filter.md)
-      - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
-      - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-      - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
-      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    - [快速上手教程](/get-started-with-tidb-lightning.md)
     - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
-    - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
+    - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
+    - 数据源
+      - [文件匹配规则](/tidb-lightning/tidb-lightning-datasource.md)
+      - [CSV](/tidb-lightning/tidb-lightning-datasource.md#csv)
+      - [SQL](/tidb-lightning/tidb-lightning-datasource.md#sql)
+      - [Parquet](/tidb-lightning/tidb-lightning-datasource.md#parquet)
+      - [自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)
+      - [表库过滤](/table-filter.md)
+    - [最佳实践](/tidb-lightning/tidb-lightning-best-practice.md)
+    - SST Import Mode
+      - [概述](/tidb-lightning/tidb-lightning-sst-mode.md)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)
+      - [配置](/tidb-lightning/tidb-lightning-sst-configuration.md)
+      - [冲突检测](/tidb-lightning/tidb-lightning-sst-duplication-detect.md)
+      - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
+      - [性能调优](/tidb-lightning/tidb-lightning-sst-tuning.md)
+    - SQL Import Mode
+      - [概述](/tidb-lightning/tidb-lightning-sql-mode.md)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-requirements.md)
+      - [配置](/tidb-lightning/tidb-lightning-sql-configuration.md)
+      - [性能调优](/tidb-lightning/tidb-lightning-sql-tuning.md)
+    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
+    - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+    - [完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+    - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+    - 示例
+      - [快速上手教程](/get-started-with-tidb-lightning.md)
+    - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+    - 主要功能
+      
+      - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+      - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
+
+ 
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [快速开始](/dm/quick-start-with-dm.md)

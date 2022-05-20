@@ -1,0 +1,134 @@
+---
+title: TiDB Lightning SST Mode
+---
+
+# TiDB Lightning SST Mode
+
+TiDB Lightning SST Mode 整体工作原理：
+
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
+
+2. `tidb-lightning` 在目标数据库建立架构和表，并获取其元数据。
+
+3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以并行导入。
+
+4. `tidb-lightning` 会为每一个区块准备一个“引擎文件 (engine file)”来处理键值对。`tidb-lightning` 会并发读取 SQL dump，将数据源转换成与 TiDB 相同编码的键值对，然后将这些键值对排序写入本地临时存储文件中。
+
+5. 当一个引擎文件数据写入完毕时，`tidb-lightning` 便开始对目标 TiKV 集群数据进行分裂和调度，然后导入数据到 TiKV 集群。
+
+    引擎文件包含两种：**数据引擎**与**索引引擎**，各自又对应两种键值对：行数据和次级索引。通常行数据在数据源里是完全有序的，而次级索引是无序的。因此，数据引擎文件在对应区块写入完成后会被立即上传，而所有的索引引擎文件只有在整张表所有区块编码完成后才会执行导入。
+
+6. 整张表相关联的所有引擎文件完成导入后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损，然后让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。同时，`tidb-lightning` 调整 `AUTO_INCREMENT` 值防止之后新增数据时发生冲突。
+
+    表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/mysql-compatibility.md#自增-id)。
+
+7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
+
+## 使用 SST Mode 
+
+可以通过以下配置文件使用 SST Mode 执行数据导入：
+
+```
+[lightning]
+# 日志
+level = "info"
+file = "tidb-lightning.log"
+max-size = 128 # MB
+max-days = 28
+max-backups = 14
+
+# 启动之前检查集群是否满足最低需求。
+check-requirements = true
+
+[mydumper]
+# 本地源数据目录或外部存储 URL
+data-source-dir = "/data/my_database"
+
+[tikv-importer]
+# 导入模式配置，设为 local 即使用 SST Mode
+backend = "local"
+
+# 冲突数据处理方式
+duplicate-resolution = 'remove'
+
+# 本地进行 KV 排序的路径。
+sorted-kv-dir = "./some-dir"
+
+[tidb]
+# 目标集群的信息。tidb-server 的地址，填一个即可。
+host = "172.16.31.1"
+port = 4000
+user = "root"
+# 设置连接 TiDB 的密码，可为明文或 Base64 编码。
+password = ""
+# 必须配置。表结构信息从 TiDB 的“status-port”获取。
+status-port = 10080
+# 必须配置。pd-server 的地址，填一个即可。
+pd-addr = "172.16.31.4:2379"
+# tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
+# 设置 TiDB 库的日志等级。
+log-level = "error"
+
+[post-restore]
+# 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
+# 可选的配置项：
+# - "required"（默认）。在导入完成后执行 CHECKSUM 检查，如果 CHECKSUM 检查失败，则会报错退出。
+# - "optional"。在导入完成后执行 CHECKSUM 检查，如果报错，会输出一条 WARN 日志并忽略错误。
+# - "off"。导入结束后不执行 CHECKSUM 检查。
+# 默认值为 "required"。从 v4.0.8 开始，checksum 的默认值由此前的 "true" 改为 "required"。
+#
+# 注意：
+# 1. Checksum 对比失败通常表示导入异常（数据丢失或数据不一致），因此建议总是开启 Checksum。
+# 2. 考虑到与旧版本的兼容性，依然可以在本配置项设置 `true` 和 `false` 两个布尔值，其效果与 `required` 和 `off` 相同。
+checksum = "required"
+# 配置是否在 CHECKSUM 结束后对所有表逐个执行 `ANALYZE TABLE <table>` 操作。
+# 此配置的可选配置项与 `checksum` 相同，但默认值为 "optional"。
+analyze = "optional"
+```
+
+Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)。
+
+## 性能调优
+
+**提高 Lightning SST Mode 导入性能最直接有效的方法：升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
+
+Lightning 提供了部分并发相关配置以影响 SST Mode 的导入性能。但从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
+
+```
+[lightning]
+# 引擎文件的最大并行数。
+# 每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”。
+# 这两项设置控制两种引擎文件的最大并发数。
+index-concurrency = 2
+table-concurrency = 6
+
+# 数据的并发数。默认与逻辑 CPU 的数量相同。
+# region-concurrency =
+
+# I/O 最大并发数。I/O 并发量太高时，会因硬盘内部缓存频繁被刷新
+# 而增加 I/O 等待时间，导致缓存未命中和读取速度降低。
+# 对于不同的存储介质，此参数可能需要调整以达到最佳效率。
+io-concurrency = 5
+```
+
+导入时，每张表被切分成一个用于存储索引的"索引引擎"和若干存储行数据的"数据引擎",`index-concurrency`用于调整"索引引擎"的并发度。
+
+在调整 `index-concurrency` 时，需要注意 `index-concurrency * 每个表对应的源文件数量 > region-concurrency` 以确保 cpu 被充分利用，一般比例大概在 1.5 ~ 2 左右为优。`index-concurrency` 不应该设置的过大，但不低于 2 (默认)，过大会导致太多导入的流水线变差，大量 index-engine 的 import 阶段堆积。
+
+`table-concurrency` 同理，需要确保`table-concurrency * 每个表对应的源文件数量 > region-concurrency` 以确保 cpu 被充分利用。 推荐值为`region-concurrency * 4 / 每个表对应的源文件数量` 左右，最少设置为 4.
+
+如果表非常大，Lightning 会按照 100GiB 的大小将表分割成多个批次处理，并发度由 `table-concurrency` 控制。
+
+上述两个参数对导入速度影响不大，使用默认值即可。
+
+`io-concurrency` 用于控制文件读取并发度，默认值为 5。可以认为在某个时刻只有 5 个句柄在执行读操作。由于文件读取速度一般不会是瓶颈，所以使用默认值即可。
+
+读取文件数据后，lightning 还需要做后续处理，例如将数据在本地进行编码和排序。此类操作的并发度由`region-concurrency`配置控制。`region-concurrency` 的默认值为 CPU 核数，通常无需调整，建议不要将 Lightning 与其它组件部署在同一主机，如果客观条件限制必须混合部署，则需要根据实际负载调低`region-concurrency`。
+
+## 冲突数据检测
+
+- record: 仅将冲突记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
+- none: 不检测冲突记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
+- remove: 记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
+
+### checksum
