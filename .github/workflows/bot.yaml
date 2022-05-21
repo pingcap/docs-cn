@@ -16,10 +16,10 @@ jobs:
           wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/pr_reminder.py;
           pip3 install lxml;
           python3 pr_reminder.py "$WEBHOOK"
-      # - name: Run PR reminder by assignee
-      #   env:
-      #     WEBHOOK: ${{secrets.BOT_WEBHOOK_URL}}
-      #   run: |
-      #     wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/pr_reminder_basedon_assignee.py;
-      #     pip3 install lxml;
-      #     python3 pr_reminder_basedon_assignee.py "$WEBHOOK"
+      - name: Run PR reminder by assignee
+        env:
+          WEBHOOK: ${{secrets.BOT_WEBHOOK_URL}}
+        run: |
+          wget https://raw.githubusercontent.com/pingcap/docs/master/scripts/pr_reminder_basedon_assignee.py;
+          pip3 install lxml;
+          python3 pr_reminder_basedon_assignee.py "$WEBHOOK"
