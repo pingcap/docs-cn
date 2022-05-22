@@ -188,7 +188,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # 必须指定 -c 参数，意义为插入数据条数
+    # 必须指定 -c 参数，即插入数据的条数
     tiup bench ycsb prepare -c 10000
     ```
 
