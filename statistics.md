@@ -352,7 +352,7 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
     > **注意：**
     >
-    > 在 TiDB v6.1 之前，只有当客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。从 TiDB v6.1 起，在 enable-global-kill 设置为 true 时（默认为 true），客户端无需直连执行后台 `ANALYZE` 任务的 TiDB 实例，`KILL` 命令也能正确地转发给 TiDB 实例执行。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
+    > 在 TiDB v6.1 之前，只有当客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。从 TiDB v6.1 起，在 enable-global-kill 设置为 true 时（默认为 true），客户端无需直连执行后台 `ANALYZE` 任务的 TiDB 实例，`KILL` 命令也能正确地转发给该实例执行。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
