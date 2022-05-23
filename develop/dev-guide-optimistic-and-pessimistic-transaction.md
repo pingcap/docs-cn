@@ -366,10 +366,7 @@ func runTxn(db *sql.DB, optimistic bool, optimisticRetryTimes int, txnFunc TxnFu
 
 func prepareData(db *sql.DB, optimistic bool) {
     runTxn(db, optimistic, retryTimes, func(conn *sql.Conn) error {
-        publishedAt, err := time.Parse("2006-01-02 15:04:05", "2018-09-01 00:00:00")
-        if err != nil {
-            return err
-        }
+    publishedAt := time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)
 
         if err = createBook(conn, 1, "Designing Data-Intensive Application",
             "Science & Technology", publishedAt, decimal.NewFromInt(100), 10); err != nil {
