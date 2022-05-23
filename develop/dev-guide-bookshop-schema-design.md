@@ -74,7 +74,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 </div>
 <div label="通过 TiDB Cloud Import 功能">
 
-### 方式 2: 通过 TiDB Cloud Import 功能
+### 通过 TiDB Cloud Import 功能
 
 在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
 
