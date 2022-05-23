@@ -681,6 +681,7 @@
       - [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md)
       - [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
+      - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
       - [JSON 函数](/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
