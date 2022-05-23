@@ -73,4 +73,4 @@ ALTER TABLE employee COMPACT TIFLASH REPLICA;
 ## 另请参阅
 
 - [ALTER TABLE](/sql-statements/sql-statement-alter-table.md)
-- [`KILL`](/sql-statements/sql-statement-kill.md)
+- [KILL TIDB](/sql-statements/sql-statement-kill.md)

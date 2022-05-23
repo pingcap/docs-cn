@@ -14,7 +14,7 @@ aliases:
 
 - [`ADD`](/sql-statements/sql-statement-add-index.md)，[`DROP`](/sql-statements/sql-statement-drop-index.md)，或 [`RENAME`](/sql-statements/sql-statement-rename-index.md) 索引
 - [`ADD`](/sql-statements/sql-statement-add-column.md)，[`DROP`](/sql-statements/sql-statement-drop-column.md)，[`MODIFY`](/sql-statements/sql-statement-modify-column.md) 或 [`CHANGE`](/sql-statements/sql-statement-change-column.md) 列
-- [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)：整理表数据
+- [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) 表数据
 
 ## 语法图
 
