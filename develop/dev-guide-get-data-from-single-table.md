@@ -17,7 +17,7 @@ aliases: ['/zh/tidb/dev/get-data-from-single-table']
 在阅读本章节之前，你需要做以下准备工作：
 
 1. 构建 TiDB 集群（推荐使用 [TiDB Cloud](/develop/dev-guide-build-cluster-in-cloud.md) 或 [TiUP](/production-deployment-using-tiup.md)）。
-2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/dev-guide-bookshop-schema-design.md#导入数据)。
+2. [导入 Bookshop 应用程序的表结构和示例数据](/develop/dev-guide-bookshop-schema-design.md#导入表结构和数据)。
 3. [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)。
 
 ## 简单的查询
