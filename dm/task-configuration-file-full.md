@@ -22,7 +22,6 @@ aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/doc
 ## ********* 基本信息配置 *********
 name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 实时同步"
-is-sharding: true               # 该配置项从 DM v2.0.0 起弃用，其功能被 `shard-mode` 取代，建议使用 `shard-mode` 代替 `is-sharding`
 shard-mode: "pessimistic"       # 任务协调模式，可选的模式有 ""、"pessimistic、"optimistic"。默认值为 "" 即无需协调。如果是分库分表合并任务，请设置为悲观协调模式 "pessimistic"。
                                 # 在 v2.0.6 版本后乐观模式逐渐成熟，深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库

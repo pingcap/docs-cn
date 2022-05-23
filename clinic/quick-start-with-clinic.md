@@ -87,14 +87,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
         tiup diag upload ${filepath}
         ```
 
-        输出结果示例如下：
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        Completed!
-        Download URL: "https://clinic.pingcap.com/clinic/#/orgs/75/clusters/7055188676317281573 "
-        ```
+        完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。
 
         > **注意：**
         >

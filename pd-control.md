@@ -33,7 +33,7 @@ PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式�
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl store -u http://127.0.0.1:2379
+tiup ctl pd store -u http://127.0.0.1:2379
 ```
 
 交互模式：
@@ -41,7 +41,7 @@ PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式�
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl -i -u http://127.0.0.1:2379
+tiup ctl pd -i -u http://127.0.0.1:2379
 ```
 
 使用环境变量：
@@ -50,7 +50,7 @@ PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式�
 
 ```bash
 export PD_ADDR=http://127.0.0.1:2379 &&
-./pd-ctl
+tiup ctl pd
 ```
 
 使用 TLS 加密：
@@ -58,7 +58,7 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 {{< copyable "shell-regular" >}}
 
 ```bash
-./pd-ctl -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
+tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert" --key="path/to/key"
 ```
 
 ## 命令行参数 (flags)
@@ -320,6 +320,16 @@ export PD_ADDR=http://127.0.0.1:2379 &&
 
     ```bash
     >> config set max-store-down-time 30m
+    ```
+
+- `max-store-preparing-time` 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度。
+
+    设置 store 上线阶段最多等待 4 小时：
+
+    {{< copyable "" >}}
+
+    ```bash
+    >> config set max-store-preparing-time 4h
     ```
 
 - 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。

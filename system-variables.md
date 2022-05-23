@@ -785,6 +785,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md) 开始支持 Outer Join。该变量用于控制这个支持行为，默认开启。
+- 对于从旧版本升级上来的集群，该变量的默认值也会是 `TRUE`。
+
 ### `tidb_enable_paging` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1031,6 +1039,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 >     - 占用更多的存储空间。
 >     - 大量的历史数据可能会在一定程度上影响系统性能，尤其是范围的查询（如 `select count(*) from t`）。
 > - 如果一个事务的运行时长超过了 `tidb_gc_life_time` 配置的值，在 GC 时，为了使这个事务可以继续正常运行，系统会保留从这个事务开始时间 `start_ts` 以来的数据。例如，如果 `tidb_gc_life_time` 的值配置为 10 分钟，且在一次 GC 时，集群正在运行的事务中最早开始的那个事务已经运行了 15 分钟，那么本次 GC 将保留最近 15 分钟的数据。
+
+### `tidb_gc_max_wait_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`86400`
+- 范围：`[600, 31536000]`
+- 这个变量用于指定活跃事务阻碍 GC safe point 推进的最大时间。变量值为整型，单位是秒。每次进行 GC 时，默认 GC safe point 不会超过正在执行中的事务的开始时间。如果活跃事务运行时间未超过该值，GC safe point 会一直被阻塞不更新，直到活跃事务运行时间超过该值 safe point 才会正常推进。
 
 ### `tidb_gc_run_interval` <span class="version-mark">从 v5.0 版本开始引入</span>
 
