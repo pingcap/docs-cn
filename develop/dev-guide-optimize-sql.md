@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/optimize-sql']
 
 ## 准备工作
 
-在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#方式-1-通过-tiup-demo-命令行)示例数据：
+在开始之前，你可以[通过 `tiup demo` 命令导入](/develop/dev-guide-bookshop-schema-design.md#通过-tiup-demo-命令行)示例数据：
 
 {{< copyable "shell-regular" >}}
 
@@ -18,7 +18,7 @@ aliases: ['/zh/tidb/dev/optimize-sql']
 tiup demo bookshop prepare --books 1000000 --host 127.0.0.1 --port 4000
 ```
 
-或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#方式-2-通过-tidb-cloud-import-功能)预先准备好的示例数据。
+或[使用 TiDB Cloud 的 Import 功能导入](/develop/dev-guide-bookshop-schema-design.md#通过-tidb-cloud-import-功能)预先准备好的示例数据。
 
 ## 问题：全表扫描
 

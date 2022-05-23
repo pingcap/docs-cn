@@ -12,7 +12,7 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 
 ## 导入表结构和数据
 
-你可以[通过 TiUP](#方式-1-通过-tiup-demo-命令行) 或[通过 TiDB Cloud Import](#方式-2-通过-tidb-cloud-import-功能) 两种方式导入 Bookshop 应用的表结构和数据。
+你可以[通过 TiUP](#通过-tiup-demo-命令行) 或[通过 TiDB Cloud Import](#通过-tidb-cloud-import-功能) 两种方式导入 Bookshop 应用的表结构和数据。
 
 <SimpleTab>
 <div label="通过 `tiup demo` 命令行">
