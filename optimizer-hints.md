@@ -251,23 +251,41 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ LEADING(t1, t2) */ * FROM t1，t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
 ```
 
 `LEADING()` 中表出现的顺序决定了优化器将会先对表 `t1` 和 `t2` 进行连接，在将其结果和表 `t3` 进行连接。该 Hint 比 [`STRAIGHT_JOIN`](#STRAIGHT_JOIN) 更为通用。
 
 `LEADING` 在以下情况下将会失效：
 
-* 指定了多个 leading hint；
+1. 指定了多个 leading hint；
+
 2. leading 中指定的表名不存在；
 3. 1 个或多个 leading 中指定的表名重复；
 4. 优化器无法按照 leading 指定的顺序进行连接；
 5. 已经存在 straight_join() 的 hint；
+6. 查询语句中包含 outer join;
+7. 和选择 join 算法的 hint 同时使用时;
 
-> **注意：**
->
-> * 无法表示 bushy tree 的连接方式。
-> * 无法固定 Join 算子的 Build/ Probe 端。
+当出现了上述有冲突的情况，会输出 warning 警告。
+
+```sql
+-- 指定了多个 leading hint
+
+SELECT /*+ LEADING(t1, t2) LEADING(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+
+-- 通过执行 `show warnings` 了解具体产生冲突的原因
+
+show warnings;
+```
+```sql
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                           |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Warning | 1815 | We can only use one leading hint at most, when multiple leading hints are used, all leading hints will be invalid |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+
+```
 
 ## 查询范围生效的 Hint
 
