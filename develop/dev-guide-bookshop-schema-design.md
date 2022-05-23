@@ -14,7 +14,10 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 
 你可以[通过 TiUP](#方式-1-通过-tiup-demo-命令行) 或[通过 TiDB Cloud Import](#方式-2-通过-tidb-cloud-import-功能) 两种方式导入 Bookshop 应用的表结构和数据。
 
-### 方式 1: 通过 `tiup demo` 命令行
+<SimpleTab>
+<div label="通过 `tiup demo` 命令行">
+
+### 通过 `tiup demo` 命令行
 
 如果你使用 [TiUP](/tiup/tiup-reference.md#tiup-命令概览) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
 
@@ -67,6 +70,9 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 ```
 
 通过 `--drop-tables` 参数你可以删除原有的表结构，更多的参数说明你可以通过命令 `tiup demo bookshop --help` 进行了解。
+
+</div>
+<div label="通过 TiDB Cloud Import 功能">
 
 ### 方式 2: 通过 TiDB Cloud Import 功能
 
@@ -142,6 +148,9 @@ WHERE table_schema LIKE 'bookshop';
 +-----------------------+----------------+-----------+------------+---------+
 6 rows in set (0.03 sec)
 ```
+
+</div>
+</SimpleTab>
 
 ## 数据表详解
 
