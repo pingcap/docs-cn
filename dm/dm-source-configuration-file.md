@@ -22,7 +22,7 @@ enable-gtid: false
 enable-relay: false       # Since DM v2.0.2, this configuration item is deprecated. To enable the relay log feature, use the `start-relay` command instead.
 relay-binlog-name: ""     # The file name from which DM-worker starts to pull the binlog.
 relay-binlog-gtid: ""     # The GTID from which DM-worker starts to pull the binlog.
-relay-dir: "relay-dir"  # The directory used to store relay log. The default value is "relay-dir".
+# relay-dir: "relay-dir"  # The directory used to store relay log. The default value is "relay-dir". This configuration item is marked as deprecated since v6.1 and replaced by a parameter of the same name in the dm-worker configuration.
 
 
 from:

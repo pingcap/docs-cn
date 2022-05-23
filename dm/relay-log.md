@@ -10,6 +10,10 @@ The Data Migration (DM) relay log consists of several sets of numbered files con
 
 After relay log is enabled, DM-worker automatically migrates the upstream binlog to the local configuration directory (the default migration directory is `<deploy_dir>/<relay_log>` if DM is deployed using TiUP). The default value of `<relay_log>` is `relay-dir` and can be modified in [Upstream Database Configuration File](/dm/dm-source-configuration-file.md). Since v5.4.0, you can configure the local configuration directory through `relay-dir` in the [DM-worker configuration file](/dm/dm-worker-configuration-file.md), which takes precedence over the configuration file of the upstream database.
 
+> **Warning:**
+>
+> `relay-dir` in the upstream database configuration file is marked as deprecated in v6.1 and might be removed in a future release. You can see the following prompt in the output of the relevant command: `` `relay-dir` in source config will be deprecated soon, please use `relay-dir` in worker config instead``.
+
 When DM-worker is running, it migrates the upstream binlog to the local file in real time. The sync processing unit of DM-worker, reads the binlog events of the local relay log in real time, transforms these events to SQL statements, and then migrates these statements to the downstream database.
 
 This document introduces the directory structure and initial migration rules DM relay logs, and how to pause, resume, and purge relay logs.
@@ -121,6 +125,10 @@ In addition, you can also dynamically adjust the `enable-relay` configuration of
 > ```
 > Please use `start-relay` to specify which workers should pull relay log of relay-enabled sources.
 > ```
+
+> **Warning:**
+>
+> This startup method is marked as deprecated in v6.1 and might be removed in a future release. You can see the following prompt in the output of the relevant command: `start-relay/stop-relay with worker name will be deprecated soon. You can try stopping relay first and use start-relay without worker name instead`.
 
 In the command `start-relay`, you can configure one or more DM-workers to migrate relay logs for the specified data source, but the DM-workers specified in the parameter must be free or have been bound to the upstream data source. Examples are as follows:
 
