@@ -66,8 +66,9 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
-    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
-    # format_version = 3
+    ## * format_version = 3 v6.0.0 版本的默认文件格式，具有更完善的检验功能
+    ## * format_version = 4 v6.1.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
+    # format_version = 4
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
