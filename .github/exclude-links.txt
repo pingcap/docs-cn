@@ -21,3 +21,4 @@ http://maven.apache.org/POM/4.0.0
 http://oss-cn-hangzhou-internal.aliyuncs.com/
 https://s.tidb.io/msmo6awg
 https://kb.pingcap.com/shared/v1/wu2JbFeNa5GMVkQog4sWk3kATU-CSeFsr-MXRHp_iaNJyXNTad35IQ7Qljko_2-KOgaFNe5QiMwqNnptRV0o5GTSDQUR-K5Vaxh6DLiwnUI
+http://172.16.x.xxx:2379/pd/api/v1/config/rule
