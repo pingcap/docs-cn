@@ -17,6 +17,8 @@ Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便�
 <SimpleTab>
 <div label="通过 `tiup demo` 命令行">
 
+### 通过 `tiup demo` 命令行
+
 如果你使用 [TiUP](/tiup/tiup-reference.md#tiup-命令概览) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
 
 {{< copyable "shell-regular" >}}
@@ -27,7 +29,7 @@ tiup demo bookshop prepare
 
 该命令默认会连接到 `127.0.0.1` 地址上的 `4000` 端口，使用 `root` 用户名进行无密码登录，默认在名为 `bookshop` 的数据库中创建[表结构](#数据表详解)。
 
-**配置连接信息**
+#### 配置连接信息
 
 你可以通过如下参数修改默认的连接信息：
 
@@ -47,7 +49,7 @@ tiup demo bookshop prepare
 tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbcloud.com -P 4000 -p
 ```
 
-**设置数据量**
+#### 设置数据量
 
 另外，你还可以通过如下参数指定各个数据库表生成的数据量：
 
@@ -71,6 +73,8 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 </div>
 <div label="通过 TiDB Cloud Import 功能">
+
+### 通过 TiDB Cloud Import 功能
 
 在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
 
@@ -111,7 +115,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 7. 你可以通过 [TiDB Cloud 文档](https://docs.pingcap.com/tidbcloud)获取更多有关 TiDB Cloud 的信息。
 
-**查看数据导入情况**
+### 查看数据导入情况
 
 导入完成后，你可以通过下面的 SQL 语句查看各个表的数据量信息：
 
