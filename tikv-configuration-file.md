@@ -398,11 +398,11 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 + 默认值：系统总内存大小的 45%
 + 单位：KB|MB|GB
 
-### `api-version`（从 v6.1.0 版本开始引入）
+### `api-version` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ TiKV 作为 Raw Key Value 存储时使用的存储格式与接口版本。
++ TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。
 + 可选值：
-    + `1`：使用 API V1。客户端传入的数据不进行编码、原样存储。v6.1.0 之前的版本，都认为是 API V1。
+    + `1`：使用 API V1。不对客户端传入的数据进行编码，而是原样存储。在 v6.1.0 之前的版本，TiKV 都使用 API V1。
     + `2`：使用 API V2：
         + 数据采用 MVCC（Multi Version Concurrency Control）方式存储，其中时间戳由 tikv-server 从 PD 获取（即 TSO）。
         + 需要同时设置 `storage.enable-ttl = true`。由于 API V2 支持 TTL 特性，因此强制要求打开 `enable-ttl` 以避免这个参数出现歧义。
@@ -413,7 +413,7 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 > **警告：**
 >
 > - **只能**在部署新的 TiKV 集群时将 `api-version` 的值设置为 `2`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于 API V1 和 API V2 存储的数据格式不相同，如果在已有的 TiKV 集群中修改该配置项，会造成不同格式的数据存储在同一个集群，导致数据损坏。这种情况下，启动 TiKV 集群时会报 "unable to switch storage.api_version" 错误。
-> - 启用 API V2 后，TiKV **不能**回退到 < v6.1.0 的版本，否则可能导致数据损坏。
+> - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
 ## storage.flow-control
 
@@ -1650,7 +1650,7 @@ Raft Engine 相关的配置项。
 + 单次前台读写请求被强制等待的最大时间。
 + 默认值：500ms
 
-## causal-ts（从 v6.1.0 版本开始引入）
+## causal-ts <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 用于 TiKV API V2（`storage.api-version = 2`）中时间戳获取相关的配置项。
 
@@ -1659,12 +1659,12 @@ Raft Engine 相关的配置项。
 ### `renew-interval`
 
 + 刷新本地缓存时间戳的周期。
-+ TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。这个参数配置过长会导致不能及时反映最新的负载变化。而配置过短则会增加 PD 的负载。除非频繁出现时间戳耗尽、写延迟增加，否则不需要调整这个参数。
++ TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。这个参数配置过大会导致不能及时反映最新的 TiKV 负载变化。而配置过小则会增加 PD 的负载。除非频繁出现时间戳耗尽、写延迟增加，否则不需要调整这个参数。
 + 默认值：100ms
 
 ### `renew-batch-min-size`
 
 + 时间戳缓存的最小数量。
-+ TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。如果本地缓存使用率偏低，TiKV 会逐步降低缓存数量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当提高这个参数。
-+ Grafana `TiKV-Raw` 面板下 `Causal timestamp` 中的 `TSO batch size` 是根据业务负载动态调整后的本地缓存数量。可以参考这个值调整这个参数的大小。
++ TiKV 会根据前一周期本地缓存时间戳的使用情况，来决定下一次缓存的数量。如果本地缓存使用率偏低，TiKV 会逐步降低缓存数量，直至等于 `renew-batch-min-size`。如果业务中经常出现突发的大流量写入，可以适当调大这个参数。
++ Grafana **TiKV-Raw** 面板下 **Causal timestamp** 中的 **TSO batch size** 是根据业务负载动态调整后的本地缓存数量。可以参考该监控指标值调整这个参数的大小。
 + 默认值：100
