@@ -161,16 +161,19 @@ public class EffectWriteSkew {
 
 <div label="Golang" href="write-skew-golang">
 
+首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
+
 {{< copyable "" >}}
 
 ```go
 package main
 
 import (
-    "context"
     "database/sql"
     "fmt"
     "sync"
+
+    "github.com/pingcap-inc/tidb-example-golang/util"
 
     _ "github.com/go-sql-driver/mysql"
 )
@@ -226,7 +229,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
         txnComment = "\t" + txnComment
     }
 
-    txn, err := db.BeginTx(context.Background(), nil)
+    txn, err := util.TiDBSqlBegin(db, true)
     if err != nil {
         return err
     }
@@ -499,10 +502,11 @@ public class EffectWriteSkew {
 package main
 
 import (
-    "context"
     "database/sql"
     "fmt"
     "sync"
+
+    "github.com/pingcap-inc/tidb-example-golang/util"
 
     _ "github.com/go-sql-driver/mysql"
 )
@@ -558,7 +562,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
         txnComment = "\t" + txnComment
     }
 
-    txn, err := db.BeginTx(context.Background(), nil)
+    txn, err := util.TiDBSqlBegin(db, true)
     if err != nil {
         return err
     }
@@ -570,7 +574,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
     }
 
     txnFunc := func() error {
-        queryCurrentOnCall := "SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = ? AND `shift_id` = ? FOR UPDATE"
+        queryCurrentOnCall := "SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = ? AND `shift_id` = ?"
         rows, err := txn.Query(queryCurrentOnCall, true, 123)
         if err != nil {
             return err

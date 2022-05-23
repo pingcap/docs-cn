@@ -186,6 +186,60 @@ func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
 }
 ```
 
+随后，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
+
+{{< copyable "" >}}
+
+```go
+package util
+
+import (
+    "context"
+    "database/sql"
+)
+
+type TiDBSqlTx struct {
+    *sql.Tx
+    conn        *sql.Conn
+    pessimistic bool
+}
+
+func TiDBSqlBegin(db *sql.DB, pessimistic bool) (*TiDBSqlTx, error) {
+    ctx := context.Background()
+    conn, err := db.Conn(ctx)
+    if err != nil {
+        return nil, err
+    }
+    if pessimistic {
+        _, err = conn.ExecContext(ctx, "set @@tidb_txn_mode=?", "pessimistic")
+    } else {
+        _, err = conn.ExecContext(ctx, "set @@tidb_txn_mode=?", "optimistic")
+    }
+    if err != nil {
+        return nil, err
+    }
+    tx, err := conn.BeginTx(ctx, nil)
+    if err != nil {
+        return nil, err
+    }
+    return &TiDBSqlTx{
+        conn:        conn,
+        Tx:          tx,
+        pessimistic: pessimistic,
+    }, nil
+}
+
+func (tx *TiDBSqlTx) Commit() error {
+    defer tx.conn.Close()
+    return tx.Tx.Commit()
+}
+
+func (tx *TiDBSqlTx) Rollback() error {
+    defer tx.conn.Close()
+    return tx.Tx.Rollback()
+}
+```
+
 在 `dao.go` 中定义了一系列数据的操作方法，用来对提供数据的写入能力。这也是本例子中和核心部分。
 
 {{< copyable "" >}}
@@ -200,6 +254,7 @@ import (
     "strings"
 
     "github.com/google/uuid"
+    "github.com/pingcap-inc/tidb-example-golang/util"
 )
 
 type Player struct {
@@ -261,7 +316,7 @@ func getPlayerByLimit(db *sql.DB, limit int) ([]Player, error) {
 
 // bulk-insert players
 func bulkInsertPlayers(db *sql.DB, players []Player, batchSize int) error {
-    tx, err := db.Begin()
+    tx, err := util.TiDBSqlBegin(db, true)
     if err != nil {
         return err
     }
@@ -319,7 +374,7 @@ func getCount(db *sql.DB) (int, error) {
 func buyGoods(db *sql.DB, sellID, buyID string, amount, price int) error {
     var sellPlayer, buyPlayer Player
 
-    tx, err := db.Begin()
+    tx, err := util.TiDBSqlBegin(db, true)
     if err != nil {
         return err
     }
@@ -444,6 +499,37 @@ const (
 
 当前开源比较流行的 Golang ORM 为 gorm（推荐），此处将以 v1.23.5 版本进行说明。
 
+封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
+
+{{< copyable "" >}}
+
+```go
+package util
+
+import (
+    "gorm.io/gorm"
+)
+
+// TiDBGormBegin start a TiDB and Gorm transaction as a block, return error will rollback, otherwise to commit.
+func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (err error) {
+    session := db.Session(&gorm.Session{})
+    if session.Error != nil {
+        return session.Error
+    }
+
+    if pessimistic {
+        session = session.Exec("set @@tidb_txn_mode=pessimistic")
+    } else {
+        session = session.Exec("set @@tidb_txn_mode=optimistic")
+    }
+
+    if session.Error != nil {
+        return session.Error
+    }
+    return session.Transaction(fc)
+}
+```
+
 进入目录 `gorm` ：
 
 {{< copyable "shell-regular" >}}
@@ -469,6 +555,7 @@ cd gorm
 {{< copyable "" >}}
 
 ```go
+
 package main
 
 import (
@@ -476,6 +563,7 @@ import (
     "math/rand"
 
     "github.com/google/uuid"
+    "github.com/pingcap-inc/tidb-example-golang/util"
 
     "gorm.io/driver/mysql"
     "gorm.io/gorm"
@@ -585,7 +673,7 @@ func createDB() *gorm.DB {
 }
 
 func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
-return db.Transaction(func(tx*gorm.DB) error {
+    return util.TiDBGormBegin(db, true, func(tx *gorm.DB) error {
         var sellPlayer, buyPlayer Player
         if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).
             Find(&sellPlayer, "id = ?", sellID).Error; err != nil {

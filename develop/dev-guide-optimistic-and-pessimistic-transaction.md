@@ -38,6 +38,60 @@ aliases: ['/zh/tidb/dev/optimistic-and-pessimistic-transaction']
 
 Golang 的 `sql.DB` 本身就是并发安全的，无需引入外部包。
 
+封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
+
+{{< copyable "" >}}
+
+```go
+package util
+
+import (
+    "context"
+    "database/sql"
+)
+
+type TiDBSqlTx struct {
+    *sql.Tx
+    conn        *sql.Conn
+    pessimistic bool
+}
+
+func TiDBSqlBegin(db *sql.DB, pessimistic bool) (*TiDBSqlTx, error) {
+    ctx := context.Background()
+    conn, err := db.Conn(ctx)
+    if err != nil {
+        return nil, err
+    }
+    if pessimistic {
+        _, err = conn.ExecContext(ctx, "set @@tidb_txn_mode=?", "pessimistic")
+    } else {
+        _, err = conn.ExecContext(ctx, "set @@tidb_txn_mode=?", "optimistic")
+    }
+    if err != nil {
+        return nil, err
+    }
+    tx, err := conn.BeginTx(ctx, nil)
+    if err != nil {
+        return nil, err
+    }
+    return &TiDBSqlTx{
+        conn:        conn,
+        Tx:          tx,
+        pessimistic: pessimistic,
+    }, nil
+}
+
+func (tx *TiDBSqlTx) Commit() error {
+    defer tx.conn.Close()
+    return tx.Tx.Commit()
+}
+
+func (tx *TiDBSqlTx) Rollback() error {
+    defer tx.conn.Close()
+    return tx.Tx.Rollback()
+}
+```
+
 </div>
 
 </SimpleTab>
@@ -286,7 +340,6 @@ public class TxnExample {
 {{< copyable "" >}}
 
 ```go
-
 package main
 
 import (
@@ -296,10 +349,11 @@ import (
     "time"
 
     "github.com/go-sql-driver/mysql"
+    "github.com/pingcap-inc/tidb-example-golang/util"
     "github.com/shopspring/decimal"
 )
 
-type TxnFunc func(connection *sql.Conn) error
+type TxnFunc func(txn *util.TiDBSqlTx) error
 
 const (
     ErrWriteConflict      = 9007 // Transactions in TiKV encounter write conflicts.
@@ -318,27 +372,14 @@ var retryErrorCodeSet = map[uint16]interface{}{
 }
 
 func runTxn(db *sql.DB, optimistic bool, optimisticRetryTimes int, txnFunc TxnFunc) {
-    conn, err := db.Conn(context.Background())
-    if err != nil {
-        panic(err)
-    }
-    defer conn.Close()
-
-    startTxnSQL := "BEGIN PESSIMISTIC"
-    if optimistic {
-        startTxnSQL = "BEGIN OPTIMISTIC"
-    }
-
-    _, err = conn.ExecContext(context.Background(), startTxnSQL)
+    txn, err := util.TiDBSqlBegin(db, !optimistic)
     if err != nil {
         panic(err)
     }
 
-    fmt.Printf("begin a txn with '%s'\n", startTxnSQL)
-
-    err = txnFunc(conn)
+    err = txnFunc(txn)
     if err != nil {
-        conn.ExecContext(context.Background(), "ROLLBACK")
+        txn.Rollback()
         if mysqlErr, ok := err.(*mysql.MySQLError); ok && optimistic && optimisticRetryTimes != 0 {
             if _, retryableError := retryErrorCodeSet[mysqlErr.Number]; retryableError {
                 fmt.Printf("[runTxn] got a retryable error, rest time: %d\n", optimisticRetryTimes-1)
@@ -349,7 +390,7 @@ func runTxn(db *sql.DB, optimistic bool, optimisticRetryTimes int, txnFunc TxnFu
 
         fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)
     } else {
-        _, err = conn.ExecContext(context.Background(), "COMMIT")
+        err = txn.Commit()
         if mysqlErr, ok := err.(*mysql.MySQLError); ok && optimistic && optimisticRetryTimes != 0 {
             if _, retryableError := retryErrorCodeSet[mysqlErr.Number]; retryableError {
                 fmt.Printf("[runTxn] got a retryable error, rest time: %d\n", optimisticRetryTimes-1)
@@ -365,19 +406,22 @@ func runTxn(db *sql.DB, optimistic bool, optimisticRetryTimes int, txnFunc TxnFu
 }
 
 func prepareData(db *sql.DB, optimistic bool) {
-    runTxn(db, optimistic, retryTimes, func(conn *sql.Conn) error {
-    publishedAt := time.Date(2006, 1, 2, 15, 4, 5, 0, time.UTC)
+    runTxn(db, optimistic, retryTimes, func(txn *util.TiDBSqlTx) error {
+        publishedAt, err := time.Parse("2006-01-02 15:04:05", "2018-09-01 00:00:00")
+        if err != nil {
+            return err
+        }
 
-        if err = createBook(conn, 1, "Designing Data-Intensive Application",
+        if err = createBook(txn, 1, "Designing Data-Intensive Application",
             "Science & Technology", publishedAt, decimal.NewFromInt(100), 10); err != nil {
             return err
         }
 
-        if err = createUser(conn, 1, "Bob", decimal.NewFromInt(10000)); err != nil {
+        if err = createUser(txn, 1, "Bob", decimal.NewFromInt(10000)); err != nil {
             return err
         }
 
-        if err = createUser(conn, 2, "Alice", decimal.NewFromInt(10000)); err != nil {
+        if err = createUser(txn, 2, "Alice", decimal.NewFromInt(10000)); err != nil {
             return err
         }
 
@@ -393,12 +437,12 @@ func buyPessimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int
 
     fmt.Printf("\nuser %d try to buy %d books(id: %d)\n", userID, amount, bookID)
 
-    runTxn(db, false, retryTimes, func(conn *sql.Conn) error {
+    runTxn(db, false, retryTimes, func(txn *util.TiDBSqlTx) error {
         time.Sleep(time.Second)
 
         // read the price of book
         selectBookForUpdate := "select `price` from books where id = ? for update"
-        bookRows, err := conn.QueryContext(context.Background(), selectBookForUpdate, bookID)
+        bookRows, err := txn.Query(selectBookForUpdate, bookID)
         if err != nil {
             return err
         }
@@ -418,7 +462,7 @@ func buyPessimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int
 
         // update book
         updateStock := "update `books` set stock = stock - ? where id = ? and stock - ? >= 0"
-        result, err := conn.ExecContext(context.Background(), updateStock, amount, bookID, amount)
+        result, err := txn.Exec(updateStock, amount, bookID, amount)
         if err != nil {
             return err
         }
@@ -435,7 +479,7 @@ func buyPessimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int
 
         // insert order
         insertOrder := "insert into `orders` (`id`, `book_id`, `user_id`, `quality`) values (?, ?, ?, ?)"
-        if _, err := conn.ExecContext(context.Background(), insertOrder,
+        if _, err := txn.Exec(insertOrder,
             orderID, bookID, userID, amount); err != nil {
             return err
         }
@@ -443,7 +487,7 @@ func buyPessimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int
 
         // update user
         updateUser := "update `users` set `balance` = `balance` - ? where id = ?"
-        if _, err := conn.ExecContext(context.Background(), updateUser,
+        if _, err := txn.Exec(updateUser,
             price.Mul(decimal.NewFromInt(int64(amount))), userID); err != nil {
             return err
         }
@@ -461,12 +505,12 @@ func buyOptimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int)
 
     fmt.Printf("\nuser %d try to buy %d books(id: %d)\n", userID, amount, bookID)
 
-    runTxn(db, true, retryTimes, func(conn *sql.Conn) error {
+    runTxn(db, true, retryTimes, func(txn *util.TiDBSqlTx) error {
         time.Sleep(time.Second)
 
         // read the price and stock of book
         selectBookForUpdate := "select `price`, `stock` from books where id = ? for update"
-        bookRows, err := conn.QueryContext(context.Background(), selectBookForUpdate, bookID)
+        bookRows, err := txn.Query(selectBookForUpdate, bookID)
         if err != nil {
             return err
         }
@@ -490,7 +534,7 @@ func buyOptimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int)
 
         // update book
         updateStock := "update `books` set stock = stock - ? where id = ? and stock - ? >= 0"
-        result, err := conn.ExecContext(context.Background(), updateStock, amount, bookID, amount)
+        result, err := txn.Exec(updateStock, amount, bookID, amount)
         if err != nil {
             return err
         }
@@ -507,7 +551,7 @@ func buyOptimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int)
 
         // insert order
         insertOrder := "insert into `orders` (`id`, `book_id`, `user_id`, `quality`) values (?, ?, ?, ?)"
-        if _, err := conn.ExecContext(context.Background(), insertOrder,
+        if _, err := txn.Exec(insertOrder,
             orderID, bookID, userID, amount); err != nil {
             return err
         }
@@ -515,7 +559,7 @@ func buyOptimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int)
 
         // update user
         updateUser := "update `users` set `balance` = `balance` - ? where id = ?"
-        if _, err := conn.ExecContext(context.Background(), updateUser,
+        if _, err := txn.Exec(updateUser,
             price.Mul(decimal.NewFromInt(int64(amount))), userID); err != nil {
             return err
         }
@@ -525,16 +569,16 @@ func buyOptimistic(db *sql.DB, goroutineID, orderID, bookID, userID, amount int)
     })
 }
 
-func createBook(connection *sql.Conn, id int, title, bookType string,
+func createBook(txn *util.TiDBSqlTx, id int, title, bookType string,
     publishedAt time.Time, price decimal.Decimal, stock int) error {
-    _, err := connection.ExecContext(context.Background(),
+    _, err := txn.ExecContext(context.Background(),
         "INSERT INTO `books` (`id`, `title`, `type`, `published_at`, `price`, `stock`) values (?, ?, ?, ?, ?, ?)",
         id, title, bookType, publishedAt, price, stock)
     return err
 }
 
-func createUser(connection *sql.Conn, id int, nickname string, balance decimal.Decimal) error {
-    _, err := connection.ExecContext(context.Background(),
+func createUser(txn *util.TiDBSqlTx, id int, nickname string, balance decimal.Decimal) error {
+    _, err := txn.ExecContext(context.Background(),
         "INSERT INTO `users` (`id`, `nickname`, `balance`) VALUES (?, ?, ?)",
         id, nickname, balance)
     return err
@@ -551,22 +595,20 @@ package main
 import (
     "database/sql"
     "flag"
+    "fmt"
     "sync"
 )
 
 func main() {
     optimistic, alice, bob := parseParams()
 
-    // 1. Configure the example database connection.
-    dsn := "root:@tcp(127.0.0.1:4000)/bookshop?charset=utf8mb4"
-    db, err := sql.Open("mysql", dsn)
-    if err != nil {
-        panic(err)
-    }
-    defer db.Close()
+    openDB("mysql", "root:@tcp(127.0.0.1:4000)/bookshop?charset=utf8mb4", func(db *sql.DB) {
+        prepareData(db, optimistic)
+        buy(db, optimistic, alice, bob)
+    })
+}
 
-    prepareData(db, optimistic)
-
+func buy(db *sql.DB, optimistic bool, alice, bob int) {
     buyFunc := buyOptimistic
     if !optimistic {
         buyFunc = buyPessimistic
@@ -588,12 +630,24 @@ func main() {
     wg.Wait()
 }
 
+func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
+    db, err := sql.Open(driverName, dataSourceName)
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    runnable(db)
+}
+
 func parseParams() (optimistic bool, alice, bob int) {
     flag.BoolVar(&optimistic, "o", false, "transaction is optimistic")
     flag.IntVar(&alice, "a", 4, "Alice bought num")
     flag.IntVar(&bob, "b", 6, "Bob bought num")
 
     flag.Parse()
+
+    fmt.Println(optimistic, alice, bob)
 
     return optimistic, alice, bob
 }
@@ -985,7 +1039,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 ```shell
 go build -o bin/txn
-./bin/txn -o true -a 4 -b 6
+./bin/txn -a 4 -b 6 -o true
 ```
 
 </div>
@@ -1074,7 +1128,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 ```shell
 go build -o bin/txn
-./bin/txn -o true -a 4 -b 7
+./bin/txn -a 4 -b 7 -o true
 ```
 
 </div>
