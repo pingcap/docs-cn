@@ -577,10 +577,10 @@ worker-num = 16
 # 支持 partition 及 topic 两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
 dispatchers = [
-    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", dispatcher = "ts" },
-    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", dispatcher = "rowid" },
-    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", dispatcher = "table"},
-    {matcher = ['test6.*'], dispatcher = "ts"}
+    {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
+    {matcher = ['test3.*', 'test4.*'], topic = "Topic 表达式 2", partition = "index-value" },
+    {matcher = ['test1.*', 'test5.*'], topic = "Topic 表达式 3", partition = "table"},
+    {matcher = ['test6.*'], partition = "ts"}
 ]
 
 # 对于 MQ 类的 Sink，可以指定消息的协议格式
@@ -648,9 +648,9 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 ### Partition 分发器
 
-partition 分发器用 partition = "xxx" 来指定，支持 default、ts、rowid、table 四种 partition 分发器，分发规则如下：
+partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index-value、table 四种 partition 分发器，分发规则如下：
 
-- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 rowid 模式分发；如果开启了 old value 特性，按照 table 分发
+- default：有多个唯一索引（包括主键）时按照 table 模式分发；只有一个唯一索引（或主键）按照 index-value 模式分发；如果开启了 old value 特性，按照 table 分发
 - ts：以行变更的 commitTs 做 Hash 计算并进行 event 分发
 - index-value：以表的主键或者唯一索引的值做 Hash 计算并进行 event 分发
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
