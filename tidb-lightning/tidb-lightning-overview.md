@@ -1,6 +1,6 @@
 ---
 title: TiDB Lightning 简介
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/reference/tools/tidb-lightning/overview/','/docs-cn/tools/lightning/overview-architecture/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/reference/tools/tidb-lightning/overview/','/docs-cn/tools/lightning/overview-architecture/','/docs-cn/dev/tidb-lightning/tidb-lightning-backends/']
 ---
 
 # TiDB Lightning 简介
@@ -42,3 +42,7 @@ TiDB Lightning 目前支持两种导入方式，通过`backend`配置区分。�
 | 目标表 | 必须为空 |  可以不为空 |
 | 支持 TiDB 集群版本 | >= v4.0.0| 全部 |
 | 导入期间是否允许 TiDB 对外提供服务 | 否 | 是 |
+
+> **注意：**
+>
+> 以上性能数据用于对比两种模式的导入性能差异，实际导入速度受硬件配置、表结构、索引数量等多方面因素影响。

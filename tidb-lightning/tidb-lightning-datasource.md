@@ -1,6 +1,7 @@
 ---
 title: TiDB Lightning 数据源
 summary: 了解 TiDB Lightning 支持的各类型数据源。
+aliases: ['/docs-cn/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/']
 ---
 
 # TiDB Lightning 数据源
@@ -272,11 +273,11 @@ table = '$2'
 type = '$3'
 ```
 
-关于 `mydumper.files` 的详细使用方式将在下个章节详述。
+关于 `mydumper.files`,请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)。
 
 ## 自定义文件匹配
 
-Lightning 仅识别符合命名要求的数据文件，但在某些情况下，已提供的数据文件并不符合要求，因此可能出现 Lightning 在极短的时间结束，处理文件数量为 0 的情况。
+Lightning 仅识别符合命名要求的数据文件，但在某些情况下已提供的数据文件并不符合要求，因此可能出现 Lightning 在极短的时间结束，处理文件数量为 0 的情况。
 
 为了解决此类问题，Lightning 提供了`[[mydumper.files]]`配置用于通过自定义表达式匹配数据文件。
 

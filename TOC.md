@@ -344,16 +344,19 @@
       - [Parquet](/tidb-lightning/tidb-lightning-datasource.md#parquet)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)
       - [表库过滤](/table-filter.md)
-    - [最佳实践](/tidb-lightning/tidb-lightning-best-practice.md)
-    - SST Import Mode
-      - [说明及使用](/tidb-lightning/tidb-lightning-sst-mode.md)
+    - SST 导入模式
+      - [概述](/tidb-lightning/tidb-lightning-sst-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)
+      - [配置及使用](/tidb-lightning/tidb-lightning-sst-mode.md#配置及使用)
+      - [冲突检测](/tidb-lightning/tidb-lightning-sst-mode.md#冲突数据检测)
+      - [性能调优](/tidb-lightning/tidb-lightning-sst-mode.md#性能调优)
       - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-    - SQL Import Mode
+    - SQL 导入模式
       - [概述](/tidb-lightning/tidb-lightning-sql-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-requirements.md)
-      - [配置](/tidb-lightning/tidb-lightning-sql-configuration.md)
-      - [性能调优](/tidb-lightning/tidb-lightning-sql-tuning.md)
+      - [配置及使用](/tidb-lightning/tidb-lightning-sql-mode.md#配置及使用)
+      - [冲突检测](/tidb-lightning/tidb-lightning-sql-mode.md#冲突数据检测)
+      - [性能调优](/tidb-lightning/tidb-lightning-sql-mode.md#性能调优)
     - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
     - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
     - [完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)
@@ -364,12 +367,6 @@
     - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-    - 主要功能
-      
-      - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
-
- 
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [快速开始](/dm/quick-start-with-dm.md)

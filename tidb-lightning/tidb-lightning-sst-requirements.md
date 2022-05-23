@@ -6,7 +6,7 @@ title: TiDB Lightning SST Mode 必要条件及限制
 
 ## 运行环境需求
 
-**操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，你可以在本地虚拟化一台主机，或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程中，默认会占满 CPU，建议单独部署在一台主机上。如果条件不允许，你可以将 TiDB Lightning 和其他组件（比如`tikv-server`）部署在同一台机器上，然后设置`region-concurrency` 配置项的值为逻辑 CPU 数的 75%，以限制 TiDB Lightning 对 CPU 资源的使用。
+**操作系统**：建议使用新的、纯净版 CentOS 7 实例，你可以在本地虚拟化一台主机，或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程中，默认会占满 CPU，建议单独部署在一台主机上。如果条件不允许，你可以将 TiDB Lightning 和其他组件（比如`tikv-server`）部署在同一台机器上，然后设置`region-concurrency` 配置项的值为逻辑 CPU 数的 75%，以限制 TiDB Lightning 对 CPU 资源的使用。
 
 **内存和 CPU**：
 
@@ -28,11 +28,11 @@ title: TiDB Lightning SST Mode 必要条件及限制
 
 ## 使用限制
 
-- 请勿使用 local-backend 模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。
+- 请勿使用 SST 模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
-- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 SST Mode 和 SQL Mode 导入同一 TiDB 集群。
 
 ## 与其他组件一同使用的注意事项
 
