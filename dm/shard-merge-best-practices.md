@@ -118,6 +118,10 @@ Then you can perform the following steps to fix the `ERROR 1062 (23000): Duplica
 
 3. Run `query-status` to verify whether the data migration task is successfully processed and whether the data from upstream has already been merged and migrated to the downstream database.
 
+## Special processing when the upstream RDS contains sharded tables
+
+If the upstream data source is an RDS and it contains sharded tables, the table names in MySQL binlog might be invisible when connecting to a SQL client. For example, if the upstream is a UCloud distributed database, the table name in the binlog might have an extra prefix `_0001`. Therefore, you need to configure [table routing](/dm/dm-key-features.md#table-routing) based on the table names in binlog, instead of those in the SQL client.
+
 ## Create/drop tables in the upstream
 
 In [Merge and Migrate Data from Sharded Tables](/dm/feature-shard-merge-pessimistic.md#principles), it is clear that the coordination of sharding DDL lock depends on whether the downstream database receives the DDL statements of all upstream sharded tables. In addition, DM currently **does not support** dynamically creating or dropping sharded tables in the upstream. Therefore, to create or drop sharded tables in the upstream, it is recommended to perform the following steps.
