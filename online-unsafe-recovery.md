@@ -47,7 +47,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 - `invalid input store x doesn't exist`: 指定的 store id 不存在
 - `invalid input store x is up and connected`: 指定的 store id 仍然是健康的状态，不应该进行恢复
 
-可通过 `--timeout <seconds>`  指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
+可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
 
 ### 第 2 步：查看进度等待结束
 
