@@ -23,6 +23,8 @@ Lightning 运行时将查找`data-source-dir`中所有符合命令规则的文�
     - 包含整张表的数据文件需命名为 `${db_name}.${table_name}.${csv|sql|parquet}`，该文件会被导入 `${db_name}.${table_name}` 表
     - 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.001.csv`。数字部分不需要连续但必须递增，并用零填充为相同的位数。
 
+Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过`region-concurrency`配置控制）。因此大文件的导入时性能比较差。通常建议单个文件尺寸在 256MiB ~ 1GiB 之间以获得最好的性能。
+
 ## CSV
 
 ### 表结构
