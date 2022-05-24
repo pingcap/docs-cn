@@ -143,4 +143,3 @@ TiDB Enterprise Manager 不仅提供对 TiDB 集群的全生命周期的可视�
 
 - 帮助管理员完成数据库管理自动化
 - 实现 TiDB 管理信息与第三方平台集成
-

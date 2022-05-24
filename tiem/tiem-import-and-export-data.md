@@ -30,8 +30,7 @@ TiEM 默认的导入导出路径是在 TiEM 中控机上，细节如下：
 | TiEM 共享存储中导出文件的存储位置（建议配置为 NFS 共享存储） | `ExportShareStoragePath` | `/home/tiem/export`（备注：中控机 `tiem` 账号拥有该路径的读写权限） |
 
 当前 TiEM 不支持通过前端界面修改导入路径。如需修导入路径，需要通过 OpenAPI 对配置进行修改，以修改 `ImportShareStoragePath` 为例：
-> **注意：**
-> 需要将 172.16.6.206:4180 替换为客户实际环境的 TiEM 中控机 IP 地址和 WebServer 服务端口
+
 1. 登录获取 user token。
 
     {{< copyable "shell-regular" >}}
@@ -39,6 +38,10 @@ TiEM 默认的导入导出路径是在 TiEM 中控机上，细节如下：
     ```shell
     curl -X 'POST' \ 'http://172.16.6.206:4180/api/v1/user/login' \ -H 'accept: application/json' \ -H 'Content-Type: application/json' \ -d '{ "userName": "admin", "userPassword": "admin" }'
     ```
+
+    > **注意：**
+    >
+    > 你需要将以上命令中·`172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
 
 2. 查看配置参数值。
 
@@ -84,8 +87,6 @@ DBA 管理员可从 TiDB 集群将数据以 SQL 文件或 CSV 文件格式，导
 > * 从 TiEM 共享存储下载的导出数据文件大小不能超过 2GB。
 
 当前 TiEM 前端不支持修改导入导出路径，如需修改导入导出路径，需要通过 OpenAPI 对配置进行修改，以修改 `ExportShareStoragePath` 为例：
-> **注意：**
-> 需要将 172.16.6.206:4180 替换为客户实际环境的 TiEM 中控机 IP 地址和 WebServer 服务端口
 
 1. 登录获取 user token。
 
@@ -94,6 +95,10 @@ DBA 管理员可从 TiDB 集群将数据以 SQL 文件或 CSV 文件格式，导
     ```shell
     curl -X 'POST' \ 'http://172.16.6.206:4180/api/v1/user/login' \ -H 'accept: application/json' \ -H 'Content-Type: application/json' \ -d '{ "userName": "admin", "userPassword": "admin" }'
     ```
+
+    > **注意：**
+    >
+    > 你需要将以上命令中·`172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
 
 2. 查看配置参数值。
 

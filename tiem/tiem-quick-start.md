@@ -26,8 +26,6 @@ summary: 了解如何快速使用 TiDB Enterprise Manager 进行集群操作。
 > - 导入主机时，TiDB 会对主机进行检查，参见 [TiDB 环境与系统配置检查](/check-before-deployment.md)。
 
 TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环境中 SSH 端口不为默认的 `22`，可通过 OpenAPI 修改 `config_default_ssh_port` 参数来配置主机的默认登陆端口，该参数默认值为 `22`。以下示例通过 OpenAPI 修改 `config_default_ssh_port` 参数的值，从而修改主机的默认登陆端口：
-> **注意：**
-> 需要将 172.16.6.206:4180 替换为客户实际环境的 TiEM 中控机 IP 地址和 WebServer 服务端口
 
 1. 登录 TiEM 获取用户 Token。
 
@@ -36,6 +34,10 @@ TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环�
     ```shell
     curl -X 'POST' \ 'http://172.16.6.206:4180/api/v1/user/login' \ -H 'accept: application/json' \ -H 'Content-Type: application/json' \ -d '{ "userName": "admin", "userPassword": "admin" }'
     ```
+
+    > **注意：**
+    >
+    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
 
 2. 查看 `config_default_ssh_port` 的参数值。
 

@@ -263,9 +263,6 @@ TiEM 默认的集群备份路径相关配置参数如下：
 | TiDB 集群备份在 S3 共享存储时,S3 的 Endpoint（域名）         | BackupS3Endpoint        | ''                                                           |
 
 当前不支持通过 TiEM 界面修改备份路径。如需修改备份路径，需要通过 OpenAPI 修改配置参数，以修改配置参数 `BackupS3AccessKey` 为例：
-> **注意：**
-> 需要将 172.16.6.206:4180 替换为客户实际环境的 TiEM 中控机 IP 地址和 WebServer 服务端口
-
 
 1. 登录 TiEM 获取 user token。
 
@@ -274,6 +271,10 @@ TiEM 默认的集群备份路径相关配置参数如下：
     ```shell
     curl -X 'POST' \ 'http://172.16.6.206:4180/api/v1/user/login' \ -H 'accept: application/json' \ -H 'Content-Type: application/json' \ -d '{ "userName": "admin", "userPassword": "admin" }'
     ```
+
+    > **注意：**
+    >
+    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
 
 2. 查看配置参数值。
 
