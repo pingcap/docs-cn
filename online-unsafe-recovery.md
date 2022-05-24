@@ -98,7 +98,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 ]
 ```
 
-PD 下发恢复计划后，会等待 TiKV 上报执行的 report。如上例输出中最后一阶段的 `Collecting reports from alive store`, 显示 PD 下发恢复计划和接受 TiKV report 的具体状态。
+PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输出中最后一阶段的 `Collecting reports from alive stores` 显示 PD 下发恢复计划和接受 TiKV 报告的具体状态。
 
 整个恢复过程包括多个阶段，并且可能有某一阶段的多次重试。一般情况下，预计时间为 3-10 个 store heartbeat 周期（一个 store heartbeat 默认为 10s)。当恢复完成后，命令执行结果最后一阶段显示 "Unsafe recovery finished", 并显示受影响的 region 所属的 table id（若无或者 rawkv 则不显示）和受影响的 sql 元数据 region。如： 
 
