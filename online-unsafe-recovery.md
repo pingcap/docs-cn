@@ -113,7 +113,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的 report。如上例输�
 }
 ```
 
-若执行过程中碰到错误，最后一阶段会显示 "Unsafe recovery failed" 以及具体错误。如：
+若执行过程中发生错误，最后一阶段会显示 `"Unsafe recovery failed"` 以及具体错误。如：
 
 ```json
 {
