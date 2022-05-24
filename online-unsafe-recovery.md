@@ -51,7 +51,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 ### 第 2 步：查看进度等待结束
 
-节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules)命令，查看移除进度。
+节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，查看移除进度。
 
 恢复过程分为多个阶段，按照 json 格式输出，每一阶段包括信息，时间，以及具体的恢复计划。例如：
 
