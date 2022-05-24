@@ -43,9 +43,9 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。命令输出 `Failed` 表示注册任务失败，可能的错误有：
 
-- `unsafe recovery is running`: 已经有正在进行的恢复任务
-- `invalid input store x doesn't exist`: 指定的 store id 不存在
-- `invalid input store x is up and connected`: 指定的 store id 仍然是健康的状态，不应该进行恢复
+- `unsafe recovery is running`：已经有正在进行的恢复任务
+- `invalid input store x doesn't exist`：指定的 store ID 不存在
+- `invalid input store x is up and connected`：指定的 store ID 仍然是健康的状态，不应该进行恢复
 
 可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
 
