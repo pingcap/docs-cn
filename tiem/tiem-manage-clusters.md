@@ -272,6 +272,10 @@ TiEM 默认的集群备份路径相关配置参数如下：
     curl -X 'POST' \ 'http://172.16.6.206:4180/api/v1/user/login' \ -H 'accept: application/json' \ -H 'Content-Type: application/json' \ -d '{ "userName": "admin", "userPassword": "admin" }'
     ```
 
+    > **注意：**
+    >
+    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
+
 2. 查看配置参数值。
 
     {{< copyable "shell-regular" >}}
