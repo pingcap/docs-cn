@@ -1351,7 +1351,7 @@ Success!
 ]
 ```
 
-## jq 格式化 json 输出示例
+## jq 格式化 JSON 输出示例
 
 ### 简化 `store` 的输出
 
