@@ -8,11 +8,16 @@ aliases: ['/zh/tidb/dev/bookshop-schema-design']
 
 Bookshop 是一个虚拟的在线书店应用，你可以在 Bookshop 当中便捷地购买到各种类别的书，也可以对你看过的书进行点评。
 
-## 导入数据
+为了方便你阅读应用开发指南中的内容，我们将以 Bookshop 应用的[数据表结构](#数据表详解)和数据为基础来编写示例 SQL。本章节将为你介绍如何导入该应用的表结构和数据，以及其数据表结构的定义。
 
-以下将分别描述[通过 TiUP](#方式-1-通过-tiup-demo-命令行) 和[通过 TiDB Cloud Import](#方式-2-通过-tidb-cloud-import-功能) 两种方式导入示例数据。
+## 导入表结构和数据
 
-### 方式 1: 通过 `tiup demo` 命令行
+你可以[通过 TiUP](#通过-tiup-demo-命令行) 或[通过 TiDB Cloud Import](#通过-tidb-cloud-import-功能) 两种方式导入 Bookshop 应用的表结构和数据。
+
+<SimpleTab>
+<div label="通过 `tiup demo` 命令行">
+
+### 通过 `tiup demo` 命令行
 
 如果你使用 [TiUP](/tiup/tiup-reference.md#tiup-命令概览) 部署 TiDB 集群或者你可以直接连接到你的 TiDB 服务器，你可以通过如下命令快速生成并导入 Bookshop 应用的示例数据：
 
@@ -56,7 +61,7 @@ tiup demo bookshop prepare -U root -H tidb.xxx.yyy.ap-northeast-1.prod.aws.tidbc
 | `--orders`  | `300000` | 指定在 `orders` 表生成的数据行数  |
 | `--ratings` | `300000` | 指定在 `ratings` 表生成的数据行数 |
 
-例如，以下命令通过 `--books` 参数指定生成 50 万行书籍的基本信息，通过 `--authors` 参数指定生成 10 万的作者信息，通过 `--ratings` 参数指定生成 100 万的评分记录，通过 `--orders` 参数指定生成 100 万的订单记录。
+例如，以下命令通过 `--users` 参数指定生成 20 万行用户信息，通过 `--books` 参数指定生成 50 万行书籍的基本信息，通过 `--authors` 参数指定生成 10 万的作者信息，通过 `--ratings` 参数指定生成 100 万的评分记录，通过 `--orders` 参数指定生成 100 万的订单记录。
 
 {{< copyable "shell-regular" >}}
 
@@ -66,7 +71,10 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 通过 `--drop-tables` 参数你可以删除原有的表结构，更多的参数说明你可以通过命令 `tiup demo bookshop --help` 进行了解。
 
-### 方式 2: 通过 TiDB Cloud Import 功能
+</div>
+<div label="通过 TiDB Cloud Import 功能">
+
+### 通过 TiDB Cloud Import 功能
 
 在 TiDB Cloud 的数据库详情页面，你可以通过点击 **Import** 按钮，进入到 **Data Import Task** 页面，在该页面当中，按照以下步骤将 Bookshop 示例数据从 AWS S3 中导入到你的 TiDB Cloud：
 
@@ -101,7 +109,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
    ![Bookshop 数据导入中](/media/develop/importing_bookshop_data.png)
 
-   如果导入过程中出现如下错误信息，你需要通过 `DROP TABLE bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
+   如果导入过程中出现如下错误信息，你需要通过 `DROP DATABASE bookshop;` 命令将原来创建的示例数据库进行清除后再重新导入。
 
    > table(s) [`bookshop`.`authors`, `bookshop`.`book_authors`, `bookshop`.`books`, `bookshop`.`orders`, `bookshop`.`ratings`, `bookshop`.`users`] are not empty.
 
@@ -109,7 +117,7 @@ tiup demo bookshop prepare --users=200000 --books=500000 --authors=100000 --rati
 
 ### 查看数据导入情况
 
-导入完成后，你可以通过下面的 SQL 语句各个表的数据量信息：
+导入完成后，你可以通过下面的 SQL 语句查看各个表的数据量信息：
 
 {{< copyable "sql" >}}
 
@@ -140,6 +148,9 @@ WHERE table_schema LIKE 'bookshop';
 +-----------------------+----------------+-----------+------------+---------+
 6 rows in set (0.03 sec)
 ```
+
+</div>
+</SimpleTab>
 
 ## 数据表详解
 
@@ -213,6 +224,8 @@ WHERE table_schema LIKE 'bookshop';
 | ordered_at | datetime   | 购买时间                                    |
 
 ## 数据库初始化 `dbinit.sql` 脚本
+
+如果你希望手动创建 Bookshop 应用的数据库表结构，你可以运行以下 SQL 语句：
 
 {{< copyable "sql" >}}
 
