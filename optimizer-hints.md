@@ -259,7 +259,6 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 `LEADING` 在以下情况下将会失效：
 
 1. 指定了多个 leading hint；
-
 2. leading 中指定的表名不存在；
 3. 1 个或多个 leading 中指定的表名重复；
 4. 优化器无法按照 leading 指定的顺序进行连接；
