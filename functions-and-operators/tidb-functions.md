@@ -377,7 +377,7 @@ TIDBShardExpr ::=
     select TIDB_SHARD(12373743746);
     ```
 
-计算得出 SHARD 值为：
+- 计算得出 SHARD 值为：
 
     ```sql
     +-------------------------+
