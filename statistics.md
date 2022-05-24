@@ -615,7 +615,7 @@ SHOW STATS_TOPN [ShowLikeOrWhere];
 DROP STATS TableName;
 ```
 
-该语句会删除 TableName 中所有的统计信息，包括分区动态裁剪模式下生成的 GlobalStats。
+该语句会删除 TableName 中所有的统计信息，如果是分区表，包括所有分区的统计信息和分区动态裁剪模式下生成的 GlobalStats。
 
 {{< copyable "sql" >}}
 
