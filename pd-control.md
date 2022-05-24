@@ -1318,7 +1318,7 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
-### `unsafe remove-failed-stores [store-ids | show ]`
+### `unsafe remove-failed-stores [store-ids | show]`
 
 > **警告：**
 >
