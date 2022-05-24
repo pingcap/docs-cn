@@ -237,11 +237,11 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 非事务 DML 语句的实现原理，是将原本需要在用户侧手动执行的 SQL 语句拆分工作内置为 TiDB 的一个功能，简化用户操作。要理解非事务 DML 语句的行为，可以将其想象成一个用户脚本进行了如下操作：
 
-对于非事务 DML `BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$`，其中 `$C$` 为用于拆分的列，`$N$` 为 batch size，`$P$` 为筛选条件。
+对于非事务 DML `BATCH ON $C$ LIMIT $N$ DELETE FROM ... WHERE $P$`，其中 $C$ 为用于拆分的列，$N$ 为 batch size，$P$ 为筛选条件。
 
-1. TiDB 根据原始语句的筛选条件 `$P$`，和指定的用于拆分的列 `$C$`，查询出所有满足 `$P$` 的 `$C$`。对这些 `$C$` 排序后按 `$N$` 分成多个分组 `$B_1 \dots B_k$`。对所有 `$B_i$`，保留它的第一个和最后一个 `$C$`，记为 `$S_i$` 和 `$E_i$`。这一步所执行的查询语句，可以通过 [`DRY RUN QUERY`](/non-transactional-dml.md#查询非事务-dml-语句中划分-batch-的语句) 查看。
-2. `$B_i$` 所涉及的数据就是满足 ```$P_i$:`C BETWEEN <S_i> AND <E_i>` ``` 的一个子集。可以通过 `$P_i$` 来缩小每个 batch 需要处理的数据范围。
-3. 对 `$B_i$`，将上面这个条件嵌入原始语句的 `WHERE` 条件，使其变为 `WHERE ($P_i$) AND ($P$)`。这一步的执行结果，可以通过 [`DRY RUN`](/non-transactional-dml.md#查询非事务-dml-语句中首末-batch-对应的语句) 查看。
+1. TiDB 根据原始语句的筛选条件 $P$，和指定的用于拆分的列 $C$，查询出所有满足 $P$ 的 $C$。对这些 $C$ 排序后按 $N$ 分成多个分组 $B_1 \dots B_k$。对所有 $B_i$，保留它的第一个和最后一个 $C$，记为 $S_i$ 和 $E_i$。这一步所执行的查询语句，可以通过 [`DRY RUN QUERY`](/non-transactional-dml.md#查询非事务-dml-语句中划分-batch-的语句) 查看。
+2. $B_i$ 所涉及的数据就是满足 $P_i$: $C$ BETWEEN $S_i$ AND $E_i$ 的一个子集。可以通过 $P_i$ 来缩小每个 batch 需要处理的数据范围。
+3. 对 $B_i$，将上面这个条件嵌入原始语句的 WHERE 条件，使其变为 WHERE ($P_i$) AND ($P$)。这一步的执行结果，可以通过 [`DRY RUN`](/non-transactional-dml.md#查询非事务-dml-语句中首末-batch-对应的语句) 查看。
 4. 对所有 batch，依次执行新的语句。收集每个分组的错误并合并，在所有分组结束后作为整个非事务 DML 语句的结果返回。
 
 ## 与 batch-dml 的异同
