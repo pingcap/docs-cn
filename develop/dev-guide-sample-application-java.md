@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 > **注意：**
 >
-> 推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写。
+> 推荐使用 Java 8 及以上版本进行 TiDB 的应用程序的编写。
 
 > **建议：**
 >
