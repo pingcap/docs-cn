@@ -247,7 +247,13 @@ DECIMAL(10, 4)
 
 ## DDL 事件与 Schema 变更
 
-Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。在注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决 schema 的兼容性问题。同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果我们的源表增加了一列非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。Schema 变更更多的信息请查看 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
+Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决 schema 的兼容性问题。
+
+同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。
+
+比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果我们的源表增加了一列非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
+
+如需了解更多 schema 相关信息，请参阅 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
 
 ## Topic 分发
 
