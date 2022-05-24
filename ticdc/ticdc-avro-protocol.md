@@ -9,7 +9,7 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 
 ## 使用 Avro
 
-当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro。TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的 DML 事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
+当使用 Message Queue (MQ) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro。TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的 DML 事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
 
 使用 Avro 时的配置样例如下所示：
 
@@ -25,7 +25,7 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 
 默认情况下，Avro 只会在 DML 事件中囊括发生数据变更的行中的所有数据信息，不包括数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时会新增三个字段：
 
-- `_tidb_op` ：DML 的类型，"c" 表示插入，"u" 表示更新。
+- `_tidb_op`：DML 的类型，"c" 表示插入，"u" 表示更新。
 - `_tidb_commit_ts`：事务唯一标识信息。
 - `_tidb_commit_physical_time`：事务标识信息中的现实时间时间戳。
 
@@ -180,12 +180,12 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 
 - `avro-decimal-handling-mode` 决定了如何处理 DECIMAL 字段，它有两个选项：
 
-    - string ：Avro 将 DECIMAL 字段以 string 的方式处理。
+    - string：Avro 将 DECIMAL 字段以 string 的方式处理。
     - precise：Avro 将 DECIMAL 字段以字节的方式存储。
 
 - `avro-bigint-unsigned-handling-mode` 决定了如何处理 BIGINT UNSIGNED 字段，它有两个选项：
 
-    - string ：Avro 将 BIGINT UNSIGNED 字段以 string 的方式处理。
+    - string：Avro 将 BIGINT UNSIGNED 字段以 string 的方式处理。
     - long：Avro 将 BIGINT UNSIGNED 字段以 64 位有符号整数处理，值可能会溢出。
 
 配置样例如下所示：
