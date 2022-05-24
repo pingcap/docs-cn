@@ -48,7 +48,7 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 
 ### 第 1 步： 创建数据源
 
-1. 为了避免对当前业务产生影响，使用快照恢复一个新的 Aurora 实例作为全量迁移数据源。为方便表述，生产集群简称“Aurora-A”，从快照恢复的新的实例简称为“Aurora-B”。
+1. 为了避免对当前业务产生影响，使用[快照](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/USER_CreateSnapshotCluster.html)或者[克隆](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html)复制一个新的 Aurora 实例作为全量迁移数据源。为方便表述，生产集群简称“Aurora-A”，从快照恢复的新的实例简称为“Aurora-B”。
 
 2. 新建 `source1.yaml` 文件, 写入以下内容：
 
