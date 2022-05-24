@@ -49,6 +49,11 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
 
+> **注意：**
+>
+> - 由于此命令需要收集来自所有 Peer 的信息，可能会造成 PD 短时间内有明显的内存使用量上涨(100k 个 Peer 预计使用约 500MB 内存)。
+> - 若执行过程中 PD 发生重启，需重新触发命令。
+
 ### 第 2 步：查看进度等待结束
 
 节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，查看移除进度。
