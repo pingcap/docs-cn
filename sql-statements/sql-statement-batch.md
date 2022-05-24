@@ -17,7 +17,10 @@ BATCH 语句在某一列将 DML 语句涉及的范围划分为多个区间，在
 
 ```ebnf+diagram
 NonTransactionalDeleteStmt ::=
-    "BATCH" ["ON" ColumnName] "LIMIT" NUM ["DRY" "RUN" ["QUERY"]] DeleteFromStmt
+    'BATCH' ( 'ON' ColumnName )? 'LIMIT' NUM DryRunOptions? DeleteFromStmt
+
+DryRunOptions ::=
+    'DRY' 'RUN' 'QUERY'?
 ```
 
 ## MySQL 兼容性
