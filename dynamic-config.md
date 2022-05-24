@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/dynamic-config/']
 
 # 在线修改集群配置
 
-> **警告：**
->
-> 该功能目前是实验性阶段，不建议在生产环境中使用。
-
 在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件 (TiKV, PD) 的有所不同。
 
 ## 常用操作
@@ -277,7 +273,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ### 在线修改 TiDB 配置
 
-在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过[系统变量](/system-variables.md)来完成修改。
+在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，你可以通过修改[系统变量](/system-variables.md)来实现。
 
 下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。
 
@@ -319,7 +315,7 @@ select @@tidb_slow_log_threshold;
 
 ### 在线修改 TiFlash 配置
 
-在线修改 TiFlash 配置的方式也是用户通过[系统变量](/system-variables.md)来完成修改。
+在线修改 TiFlash 配置，你也可以通过修改[系统变量](/system-variables.md)来实现。
 
 下面例子展示了如何通过变量 `tidb_max_tiflash_threads` 在线修改配置项 `max_threads`。
 
