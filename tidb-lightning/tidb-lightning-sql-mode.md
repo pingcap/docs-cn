@@ -2,7 +2,6 @@
 title: TiDB Lightning SQL Mode 
 ---
 
-
 # TiDB Lightning SQL Mode 
 
 虽然 SST Mode 具有高性能的优点，但由于其目前无法保证 ACID，且影响 TiDB 集群对外提供服务，因此一般建议仅用于 TiDB 集群初始化数据导入的场景。对于已有数据、对外提供服务的 TiDB 集群，推荐使用 SQL Mode 导入数据。SQL Mode 的行为与正常执行 SQL 并无差异，可保证 ACID。
