@@ -5,11 +5,11 @@ summary: 了解 TiCDC Avro Protocol 的概念和使用方法。
 
 # TiCDC Avro Protocol
 
-Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交换格式协议，被 [Confluent Platform](https://docs.confluent.io/platform/current/platform.html) 选择作为默认的数据交换格式。通过本文，你可以了解 TiCDC 对 Avro 数据格式的实现，包括 TiDB 扩展字段、Avro 数据格式定义，以及和 [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) 的交互。
+Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交换格式协议，[Confluent Platform](https://docs.confluent.io/platform/current/platform.html) 选择它作为默认的数据交换格式。通过本文，你可以了解 TiCDC 对 Avro 数据格式的实现，包括 TiDB 扩展字段、Avro 数据格式定义，以及和 [Confluent Schema Registry](https://docs.confluent.io/platform/current/schema-registry/index.html) 的交互。
 
 ## 使用 Avro
 
-当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro，TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的 DML 事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
+当使用 MQ (Message Queue) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro。TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的 DML 事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
 
 使用 Avro 时的配置样例如下所示：
 
@@ -23,11 +23,11 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 
 ## TiDB 扩展字段
 
-默认情况下，Avro 只会在 DML 事件中囊括发生数据变更的行中的所有数据信息，不包括数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。在 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` 后，TiCDC 生成 Avro 消息时会新增三个字段：
+默认情况下，Avro 只会在 DML 事件中囊括发生数据变更的行中的所有数据信息，不包括数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时会新增三个字段：
 
-* `_tidb_op` 字段，表示 DML 的类型，"c" 表示插入，"u" 表示更新。
-* `_tidb_commit_ts` 字段，事务唯一标识信息。
-* `_tidb_commit_physical_time` 字段，事务标识信息中的现实时间时间戳。
+- `_tidb_op` ：DML 的类型，"c" 表示插入，"u" 表示更新。
+- `_tidb_commit_ts`：事务唯一标识信息。
+- `_tidb_commit_physical_time`：事务标识信息中的现实时间时间戳。
 
 配置样例如下所示：
 
@@ -36,8 +36,6 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 ```shell
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081
 ```
-
-`enable-tidb-extension` 默认为 `false`。
 
 ## 数据格式定义
 
@@ -57,9 +55,9 @@ TiCDC 会将一个 DML 事件转换为一个 kafka 事件，其中事件的 key 
 }
 ```
 
-* `{{TableName}}` 是事件来源表的名称。
-* `{{Namespace}}` 是 changefeed namespace 和数据源 schema name 的组合。
-* `{{ColumnValueBlock}}` 是每列数据的格式定义。
+- `{{TableName}}` 是事件来源表的名称。
+- `{{Namespace}}` 是 changefeed namespace 和数据源 schema name 的组合。
+- `{{ColumnValueBlock}}` 是每列数据的格式定义。
 
 Key 中的 `fields` 只包含主键或唯一索引列。
 
@@ -141,9 +139,9 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 }
 ```
 
-* `{{ColumnName}}` 表示列名。
-* `{{TIDB_TYPE}}` 表示对应到 TiDB 中的类型，与原始的 SQL Type 不是一一对应关系。
-* `{{AVRO_TYPE}}` 表示 [avro spec](https://avro.apache.org/docs/current/spec.html) 中的类型。
+- `{{ColumnName}}` 表示列名。
+- `{{TIDB_TYPE}}` 表示对应到 TiDB 中的类型，与原始的 SQL Type 不是一一对应关系。
+- `{{AVRO_TYPE}}` 表示 [avro spec](https://avro.apache.org/docs/current/spec.html) 中的类型。
 
 | SQL TYPE   | TIDB_TYPE | AVRO_TYPE | 说明                                                                                                               |
 |------------|-----------|-----------|---------------------------------------------------------------------------------------------------------------------------|
@@ -180,8 +178,15 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 
 对于 Avro 协议，还有另外两个 `sink-uri` 参数: `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，影响着 Column 数据格式:
 
-* `avro-decimal-handling-mode` 决定了如何处理 DECIMAL 字段，它有两个选项，string 和 precise。如果是 precise，Avro 会将它以字节的方式存储；如果是 string，则会以 string 的方式处理。
-* `avro-bigint-unsigned-handling-mode` 决定了如何处理 BIGINT UNSIGNED 字段，它有两个选项，string 和 long。如果是 long，Avro 会将它以 64 位有符号整数处理，这意味着值可能会溢出；如果是 string，则会以 string 的方式处理。
+- `avro-decimal-handling-mode` 决定了如何处理 DECIMAL 字段，它有两个选项：
+
+    - string ：Avro 将 DECIMAL 字段以 string 的方式处理。
+    - precise：Avro 将 DECIMAL 字段以字节的方式存储。
+
+- `avro-bigint-unsigned-handling-mode` 决定了如何处理 BIGINT UNSIGNED 字段，它有两个选项：
+
+    - string ：Avro 将 BIGINT UNSIGNED 字段以 string 的方式处理。
+    - long：Avro 将 BIGINT UNSIGNED 字段以 64 位有符号整数处理，值可能会溢出。
 
 配置样例如下所示：
 
@@ -194,6 +199,7 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 大多数的 SQL Type 都会映射成基础的 Column 数据格式，但有一些类型会在基础数据格式上拓展，提供更多的信息。
 
 BIT(64)
+
 ```
 {
     "name":"{{ColumnName}}",
@@ -208,6 +214,7 @@ BIT(64)
 ```
 
 ENUM/SET(a,b,c)
+
 ```
 {
     "name":"{{ColumnName}}",
@@ -222,6 +229,7 @@ ENUM/SET(a,b,c)
 ```
 
 DECIMAL(10, 4)
+
 ```
 {
     "name":"{{ColumnName}}",
