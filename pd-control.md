@@ -1325,7 +1325,7 @@ logic:  120102
 > - 此功能为有损恢复，无法保证数据和数据索引完整性。
 > - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
 
-用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。详见 [Online Unsafe Recovery 使用文档](./online-unsafe-recovery.md)
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。详见 [Online Unsafe Recovery](/online-unsafe-recovery.md)。
 
 执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
 
