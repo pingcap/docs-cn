@@ -246,7 +246,7 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 
 ### LEADING(t1_name [, tl_name ...])
 
-`LEADING(t1_name [, tl_name ...])` 提示优化器在生成多表连接的执行计划时会按照 Hint 中表名出现的顺序来确定多表连接的顺序。例如：
+`LEADING(t1_name [, tl_name ...])` 提示优化器在生成多表连接的执行计划时，按照 hint 中表名出现的顺序来确定多表连接的顺序。例如：
 
 {{< copyable "sql" >}}
 
