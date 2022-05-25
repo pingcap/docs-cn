@@ -8,11 +8,11 @@ TiDB Lightning SST Mode 不经过 SQL 接口，而是直接将数据以键值对
 
 ## 原理说明
 
-1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
+1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
 
 2. `tidb-lightning` 在目标数据库建立架构和表，并获取其元数据。
 
-3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以并行导入。
+3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以多个并发导入。
 
 4. `tidb-lightning` 会为每一个区块准备一个“引擎文件 (engine file)”来处理键值对。`tidb-lightning` 会并发读取 SQL dump，将数据源转换成与 TiDB 相同编码的键值对，然后将这些键值对排序写入本地临时存储文件中。
 
