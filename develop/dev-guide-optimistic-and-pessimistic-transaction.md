@@ -36,7 +36,7 @@ aliases: ['/zh/tidb/dev/optimistic-and-pessimistic-transaction']
 
 <div label="Golang" href="pessimstic-concurrent-save-golang">
 
-Golang 的 `sql.DB` 本身就是并发安全的，无需引入外部包。
+Golang 的 `sql.DB` 是并发安全的，无需引入外部包。
 
 封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
 
