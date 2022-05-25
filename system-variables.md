@@ -806,8 +806,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
-- 这个变量用来控制是否打开 Prepared Plan Cache。
-- 打开开关后会启动 [Prepared Plan Cache](sql-prepared-plan-cache.md) 功能，对 `Prepare` / `Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
+- 这个变量用来控制是否开启 [Prepared Plan Cache](/sql-prepared-plan-cache.md)。开启后，对 `Prepare`、`Execute` 请求的执行计划会进行缓存，以便在后续执行时跳过查询计划优化这个步骤，获得性能上的提升。
 - 在 `v6.1.0` 之前这个开关通过配置文件进行配置，在升级上来时会自动继承配置文件的设置。
 
 ### `tidb_enable_pseudo_for_outdated_stats` <span class="version-mark">从 v5.3.0 版本开始引入</span>
