@@ -836,7 +836,7 @@ coprocessor 相关的配置项。
 
 ### `region-max-size`
 
-+ Region 容量空间最大值，超过时系统分裂成多个 Region。默认值为 region-split-size / 2 * 3。
++ Region 容量空间最大值，超过时系统分裂成多个 Region。默认值为 `region-split-size / 2 * 3`。
 + 单位：KiB|MiB|GiB
 
 ### `region-split-size`
