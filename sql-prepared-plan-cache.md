@@ -147,7 +147,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 目前该阈值由变量 `tidb_prepared_plan_cache_memory_guard_ratio` 控制，默认为 0.1，即 10%，也就是当剩余内存不足 10%（使用内存超过 90%）时，会触发此机制。
 
-由于内存限制，Plan Cache 可能出现 Cache Miss 的情况，可以通过 `Plan Cache Miss OPS` 监控进行查看。
+由于内存限制，Plan Cache 可能出现 Cache Miss 的情况，可以通过 Grafana 中的 [`Plan Cache Miss OPS` 监控](/grafana-tidb-dashboard.md)查看。
 
 ## 手动清空计划缓存
 
