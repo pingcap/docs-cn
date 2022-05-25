@@ -138,16 +138,9 @@ tidb-lightning-ctl --config tidb-lightning.toml --switch-mode=normal
 
 ## TiDB Lightning 可以使用千兆网卡吗？
 
-使用 TiDB Lightning 建议配置万兆网卡。**不推荐**使用千兆网卡，尤其是在部署 `tikv-importer` 的机器上。
+使用 TiDB Lightning 的 SST Mode 建议配置万兆网卡。
 
-千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。为了避免这种情况，你可以在 [`tikv-importer` 的配置文件](/tidb-lightning/tidb-lightning-configuration.md#tikv-importer-配置参数)中**限制上传速度**。
-
-```toml
-[import]
-# Importer 上传至 TiKV 的最大速度（字节/秒）。
-# 建议将该速度设为 100 MB/s 或更小。
-upload-speed-limit = "100MB"
-```
+千兆网卡的总带宽只有 120 MB/s，而且需要与整个 TiKV 集群共享。在使用 TiDB Lightning SST Mode 导入时，极易用尽所有带宽，继而因 PD 无法联络集群使集群断连。
 
 ## 为什么 TiDB Lightning 需要在 TiKV 集群预留这么多空间？
 
