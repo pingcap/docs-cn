@@ -1489,7 +1489,7 @@ explain select * from t where age=5;
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`100`
-- 范围：`[0, 2147483647]`
+- 范围：`[0, 100000]`
 - 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量，具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.capacity`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
