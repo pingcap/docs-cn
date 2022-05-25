@@ -122,7 +122,6 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 
 ### 方法六：调整 Region 大小
 
-
 默认分片的大小约为 96MiB，将其调大也可以减少 Region 个数。
 
 > **警告：**
