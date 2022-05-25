@@ -1491,7 +1491,7 @@ explain select * from t where age=5;
 - 默认值：`100`
 - 范围：`[0, 2147483647]`
 - 这个变量用来控制单个 `SESSION` 的 Prepared Plan Cache 最多能够缓存的计划数量，具体可见 [Prepared Plan Cache 的内存管理](sql-prepared-plan-cache.md#%E6%89%8B%E5%8A%A8%E6%B8%85%E7%A9%BA%E8%AE%A1%E5%88%92%E7%BC%93%E5%AD%98)。
-- 在 `v6.1.0` 之前这个开关通过配置文件进行配置，在升级上来时会自动继承配置文件的设置。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.capacity`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
 ### `tidb_projection_concurrency`
 
