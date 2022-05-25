@@ -254,7 +254,7 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
 ```
 
-在以上多表连接查询语句中，`LEADING()` 中表出现的顺序决定了优化器将会先对表 `t1` 和 `t2` 进行连接，再将结果和表 `t3` 进行连接。该 hint 比 [`STRAIGHT_JOIN`](#STRAIGHT_JOIN) 更为通用。
+在以上多表连接查询语句中，`LEADING()` 中表出现的顺序决定了优化器将会先对表 `t1` 和 `t2` 进行连接，再将结果和表 `t3` 进行连接。该 hint 比 [`STRAIGHT_JOIN`](#straight_join) 更为通用。
 
 `LEADING` hint 在以下情况下会失效：
 
@@ -277,6 +277,7 @@ SELECT /*+ LEADING(t1, t2) LEADING(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id 
 
 SHOW WARNINGS;
 ```
+
 ```sql
 +---------+------+-------------------------------------------------------------------------------------------------------------------+
 | Level   | Code | Message                                                                                                           |
