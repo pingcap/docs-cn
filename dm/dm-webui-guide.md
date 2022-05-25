@@ -16,7 +16,6 @@ This document introduces how to access DM WebUI, the prerequisites, the use case
 
 DM WebUI has the following pages:
 
-- **Dashboard**: Displays the main monitoring information and status information of migration tasks in DM to help you quickly learn the overall running status of migration tasks and the key metrics on latency and performance.
 - **Migration**
     - **Task**: Provides an entry to task creation, and displays the detailed information of each migration task. This page helps you monitor, create, delete, and configure migration tasks.
     - **Source**: Configures the information of upstream data source for a migration task. On this page, you can manage the upstream configuration in a data migration environment, including creating and deleting upstream configuration, monitoring the task status corresponding to the upstream configuration, and modifying upstream configuration.
@@ -32,63 +31,11 @@ The interface is as follows:
 
 You can access DM WebUI from any master node of the DM cluster. The access port is `8261` by default and is the same as that of DM OpenAPI. Here is an example of an access address: `http://{master_ip}:{master_port}/dashboard/`.
 
-## Prerequisites
-
-To ensure that DM WebUI can display information properly, before using DM WebUI, make sure that the following operations or configuration have been completed:
-
-+ Enable the DM OpenAPI configuration:
-
-    - If your DM cluster has been deployed using binary, enable the `openapi` configuration item in the configuration of the master node:
-
-        ```
-        openapi = true
-        ```
-
-    - If your DM cluster has been deployed using TiUP, add the following configuration to the topology file:
-
-        ```yaml
-        server_configs:
-          master:
-            openapi: true
-        ```
-
-+ When deploying Grafana for the first time, make sure that the `monitoring_servers` and `grafana_servers` components have been correctly installed. You can expected to configure `grafana_servers` as follows:
-
-    ```
-    grafana_servers:
-      - host: 10.0.1.14
-        # port: 3000
-        # deploy_dir: /tidb-deploy/grafana-3000
-        config:       # Make sure that the TiUP version for tiup dm -v is later than v1.9.0.
-          auth.anonymous.enabled: true
-          security.allow_embedding: true
-    ```
-
-    If the IP and port of `grafana_servers` are not the default ones, you need to fill in the correct IP and port on the **Dashboard** page.
-
-+ If your DM cluster is upgraded from an earlier version, you need to manually modify the Grafana configuration:
-
-    1. Edit the `/{deploy-dir}/grafana-{port}/conf/grafana.ini` file as follows to modify two configuration items:
-
-        ```ini
-        [auth.anonymous]
-        enabled = true
-
-        [security]
-        allow_embedding = true
-        ```
-
-    2. Run `tiup dm reload` to make the new configuration effective.
-
-## Dashboard
-
-To see the monitoring of migration tasks, visit the **Dashboard** page. **Dashboard** is an embedded Grafana Dashboard that contains `Standard` and `Professional` views, each of which displays monitoring information from a standard perspective, or from a relatively professional perspective.
-
 ## Migration
 
 **Migration** includes **Source**, **Task**, and **Replication Detail** pages.
 
-## Source
+### Source
 
 Before creating a migration task, you need to create the data source information of the upstream for the replication task. You can create the upstream configuration in the **Source** page. When creating sources, pay attention to the following items:
 
@@ -113,7 +60,7 @@ To create a migration task on this page, click the **Add** button on the top rig
 - By following the WebUI instruction. Fill in the required information step by step on the WebUI. This method is suitable for beginners and for daily use.
 - By using a configuration file. Paste or write a JSON-formatted configuration file to create a migration task. This method supports adjusting more parameters and is suitable for advanced users.
 
-## Replication detail
+### Replication detail
 
 You can view the status of the migration rules configured for a migration task on the **Replication Detail** page. This page supports querying by task, source, and database name.
 
@@ -123,4 +70,4 @@ The query result contains the corresponding information of the upstream table an
 
 ### Members
 
-The **Members** page displays all the master and worker nodes in the DM cluster, and the binding relationship between worker nodes and the source. 
+The **Members** page displays all the master and worker nodes in the DM cluster, and the binding relationship between worker nodes and the source.
