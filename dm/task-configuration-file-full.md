@@ -1,5 +1,9 @@
 ---
 title: DM 任务完整配置文件介绍
+<<<<<<< HEAD
+=======
+aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
+>>>>>>> eababcf98 (fix aliases (#9575))
 ---
 
 # DM 任务完整配置文件介绍
