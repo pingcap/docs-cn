@@ -30,7 +30,7 @@ aliases: ['/zh/tidb/dev/optimistic-and-pessimistic-transaction']
 
 <div label="Java" href="pessimstic-concurrent-save-java">
 
-因为使用多个线程模拟多用户同时插入的情况，因此需要使用一个线程安全的连接对象，这里使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 作为此处 Demo 使用的连接池。
+当使用多个线程模拟多用户同时插入的情况时，需要使用一个线程安全的连接对象，这里使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 。
 
 </div>
 
