@@ -107,7 +107,7 @@ func main() {
         // 2. Run some simple examples.
         simpleExample(db)
 
-        // 3. Getting further.
+        // 3. Explore more.
         tradeExample(db)
     })
 }
@@ -594,7 +594,7 @@ func main() {
     // 2. Run some simple examples.
     simpleExample(db)
 
-    // 3. Getting further.
+    // 3. Explore more.
     tradeExample(db)
 }
 

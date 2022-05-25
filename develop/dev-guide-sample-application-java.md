@@ -556,7 +556,7 @@ public class JDBCExample
         // Print 3 players.
         dao.printPlayers(3);
 
-        // 4. Getting further.
+        // 4. Explore more.
 
         // Player 1: id is "1", has only 100 coins.
         // Player 2: id is "2", has 114514 coins, and 20 goods.
@@ -849,7 +849,7 @@ public class HibernateExample
             // Print 3 players.
             playerDAO.runTransaction(session, playerDAO.printPlayers(3));
 
-            // 4. Getting further.
+            // 4. Explore more.
 
             // Player 1: id is "1", has only 100 coins.
             // Player 2: id is "2", has 114514 coins, and 20 goods.
