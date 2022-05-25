@@ -260,7 +260,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 
 + 指定了多个 `LEADING` hint
 + `LEADING` hint 中指定的表名不存在
-+ 1 个或多个 `LEADING` hint 中指定的表名重复
++ `LEADING` hint 中指定了重复的表名
 + 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
 + 已经存在 `straight_join()` hint
 + 查询语句中包含 outer join
