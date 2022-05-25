@@ -256,7 +256,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 
 `LEADING()` 中表出现的顺序决定了优化器将会先对表 `t1` 和 `t2` 进行连接，在将其结果和表 `t3` 进行连接。该 Hint 比 [`STRAIGHT_JOIN`](#STRAIGHT_JOIN) 更为通用。
 
-`LEADING` 在以下情况下将会失效：
+`LEADING` hint 在以下情况下会失效：
 
 + 指定了多个 `LEADING` hint
 + `LEADING` hint 中指定的表名不存在
