@@ -194,7 +194,7 @@ ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FA
 <SimpleTab>
 <div label="Golang">
 
-在 Golang 中，批量更新程序可能会类似于以下内容：
+在 Golang 中，批量更新程序类似于以下内容：
 
 ```go
 package main
@@ -276,7 +276,7 @@ func placeHolder(n int) string {
 
 <div label="Java (JDBC)">
 
-在 Java (JDBC) 中，批量更新程序可能会类似于以下内容：
+在 Java (JDBC) 中，批量更新程序类似于以下内容：
 
 **Java 代码部分：**
 

@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/create-secondary-indexes']
 
 # 创建二级索引
 
-在这个章节当中，将开始介绍如何使用 SQL 以及多种编程语言来创建二级索引，及创建二级索引时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
+在这个章节当中，将开始介绍如何使用 SQL 来创建二级索引，及创建二级索引时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建二级索引部分展开介绍。
 
 ## 在开始之前
 
