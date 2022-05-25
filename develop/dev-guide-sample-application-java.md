@@ -1042,7 +1042,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 <div label="使用 JDBC" href="run-jdbc">
 
-运行 `make`，这是两个操作的组合：
+运行 `make`，这是以下两个操作的组合：
 
 - 清理并构建 (make build)： `mvn clean package`
 - 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
@@ -1053,7 +1053,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 <div label="使用 Hibernate（推荐）" href="run-hibernate">
 
-运行 `make`，这是两个操作的组合：
+运行 `make`，这是以下两个操作的组合：
 
 - 清理并构建 (make build)：`mvn clean package`
 - 运行 (make run)：`java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`

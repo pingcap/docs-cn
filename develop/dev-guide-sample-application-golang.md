@@ -818,7 +818,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 <div label="使用 go-sql-driver/mysql" href="run-sql-driver">
 
-运行 `make all`，这是三个操作的组合：
+运行 `make all`，这是以下三个操作的组合：
 
 - 创建表 (make mysql)：`mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql`
 - 构建二进制 (make build)： `go build -o bin/sql-driver-example`
@@ -830,7 +830,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 <div label="使用 gorm（推荐）" href="run-gorm">
 
-运行 `make all`，这是两个操作的组合：
+运行 `make all`，这是以下两个操作的组合：
 
 - 构建二进制 (make build)：`go build -o bin/gorm-example`
 - 运行 (make run)：`./bin/gorm-example`
