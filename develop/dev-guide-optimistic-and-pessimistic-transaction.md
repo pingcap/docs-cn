@@ -1010,7 +1010,7 @@ public class TxnExample {
 
 <div label="Golang" href="optimistic-code-golang">
 
-Golang 在[编写悲观事务示例](#1-编写悲观事务示例)章节中的例子已经支持了乐观事务，无需更改，直接使用。
+Golang 在[编写悲观事务示例](#1-编写悲观事务示例)章节中的例子已经支持了乐观事务，无需更改，可直接使用。
 
 </div>
 
