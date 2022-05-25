@@ -361,7 +361,7 @@
     - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
     - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
     - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
-    - [命令行参数](/tidb-lightning/tidb-lightning-configuration.md#命令行参数)
+    - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - 示例

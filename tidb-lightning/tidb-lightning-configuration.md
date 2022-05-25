@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-configuration/','/docs-cn/
 
 # TiDB Lightning 配置参数
 
-你可以使用配置文件或命令行配置 TiDB Lightning。本文主要介绍 TiDB Lightning 的全局配置、任务配置和 TiKV Importer 的配置，以及如何使用命令行进行参数配置。
+你可以使用配置文件或命令行配置 TiDB Lightning。本文主要介绍 TiDB Lightning 的全局配置、任务配置，以及如何使用命令行进行参数配置。
 
 ## 配置文件
 
