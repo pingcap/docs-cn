@@ -10,7 +10,7 @@ title: TiDB Lightning SQL Mode 必要条件及限制
 
 **内存和 CPU**：
 
-建议使用 4 核以上的 CPU 和 8 GiB 以上内存以获得更好的性能。根据长期的实践经验，Lightning 的 SQL Mode 没有显著（5GiB 以上）的内存占用，但调整`region-concurrency`默认值将导致内存量变化。
+建议使用 4 核以上的 CPU 和 8 GiB 以上内存以获得更好的性能。根据长期的实践经验，Lightning 的 SQL Mode 没有显著（5GiB 以上）的内存占用，但上调`region-concurrency`默认值将导致内存量增加。
 
 **网络**：建议使用 1Gbps 或 10Gbps 以太网卡。
 

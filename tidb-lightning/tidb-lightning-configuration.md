@@ -296,85 +296,6 @@ switch-mode = "5m"
 log-progress = "5m"
 ```
 
-### TiKV Importer 配置参数
-
-```toml
-# TiKV Importer 配置文件模版
-
-# 日志文件
-log-file = "tikv-importer.log"
-# 日志等级：trace, debug, info, warn, error 和 off
-log-level = "info"
-
-# 状态服务器的监听地址。
-# Prometheus 可以从这个地址抓取监控指标。
-status-server-address = "0.0.0.0:8286"
-
-[server]
-# tikv-importer 的监听地址，tidb-lightning 需要连到这个地址进行数据写入。
-addr = "0.0.0.0:8287"
-# gRPC 服务器的线程池大小。
-grpc-concurrency = 16
-
-[metric]
-# 当使用 Prometheus Pushgateway 时会涉及相关设置。通常可以通过 Prometheus 从 状态服务器地址中抓取指标。
-# 给 Prometheus 客户端推送的 job 名称。
-job = "tikv-importer"
-# 给 Prometheus 客户端推送的间隔。
-interval = "15s"
-# Prometheus Pushgateway 的地址。
-address = ""
-
-[rocksdb]
-# background job 的最大并发数。
-max-background-jobs = 32
-
-[rocksdb.defaultcf]
-# 数据在刷新到硬盘前能存于内存的容量上限。
-write-buffer-size = "1GB"
-# 内存中写缓冲器的最大数量。
-max-write-buffer-number = 8
-
-# 各个压缩层级使用的算法。
-# 第 0 层的算法用于压缩 KV 数据。
-# 第 6 层的算法用于压缩 SST 文件。
-# 第 1 至 5 层的算法目前尚未使用。
-compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-
-[rocksdb.writecf]
-# 同上
-compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-
-[security]
-# TLS 证书的路径。空字符串表示禁用安全连接。
-# ca-path = ""
-# cert-path = ""
-# key-path = ""
-
-[import]
-# 存储引擎文件的文件夹路径
-import-dir = "/mnt/ssd/data.import/"
-# 处理 RPC 请求的线程数
-num-threads = 16
-# 导入 job 的并发数。
-num-import-jobs = 24
-# 预处理 Region 最长时间。
-# max-prepare-duration = "5m"
-# 把要导入的数据切分为这个大小的 Region。
-#region-split-size = "512MB"
-# 设置 stream-channel-window 的大小。
-# channel 满了之后 stream 会处于阻塞状态。
-# stream-channel-window = 128
-# 同时打开引擎文档的最大数量。
-max-open-engines = 8
-# Importer 上传至 TiKV 的最大速度（字节/秒）。
-# upload-speed-limit = "512MB"
-# 目标存储可用空间比率（store_available_space/store_capacity）的最小值。
-# 如果目标存储空间的可用比率低于该值，Importer 将会暂停上传 SST
-# 来为 PD 提供足够时间进行 Regions 负载均衡。
-min-available-ratio = 0.05
-```
-
 ## 命令行参数
 
 ### `tidb-lightning`
@@ -428,17 +349,3 @@ min-available-ratio = 0.05
 *tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
 
 此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。
-
-### `tikv-importer`
-
-使用 `tikv-importer` 可以对下列参数进行配置：
-
-| 参数 | 描述 | 对应配置项 |
-|:----|:----|:-------|
-| -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
-| -V, --version | 输出程序的版本 | |
-| -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
-| --status-server *ip:port* | 状态服务器的监听地址 | `status-server-address` |
-| --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
-| --log-level *level* | 日志的等级： trace、debug、info、warn、error 或 off | `log-level` |
-| --log-file *file* | 日志文件路径 | `log-file` |
