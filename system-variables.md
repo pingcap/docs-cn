@@ -1482,7 +1482,7 @@ explain select * from t where age=5;
 - 默认值：`0.1`
 - 范围：`[0, 1]`
 - 这个变量用来控制 Prepared Plan Cache 触发内存保护机制的阈值，具体可见 [Prepared Plan Cache 的内存管理](/sql-prepared-plan-cache.md#prepared-plan-cache-的内存管理)。
-- 在 `v6.1.0` 之前这个开关通过配置文件进行配置，在升级上来时会自动继承配置文件的设置。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`prepared-plan-cache.memory-guard-ratio`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
 ### `tidb_prepared_plan_cache_size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
