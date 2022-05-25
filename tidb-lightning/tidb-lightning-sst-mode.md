@@ -4,7 +4,7 @@ title: TiDB Lightning SST Mode
 
 # TiDB Lightning SST Mode
 
-TiDB Lightning SST Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。SST Mode 适合 100 TB 以内数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)。
+TiDB Lightning SST Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。SST Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)。
 
 ## 原理说明
 
@@ -144,9 +144,12 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 ## 性能调优
 
-**提高 Lightning SST Mode 导入性能最直接有效的方法：升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
+**提高 Lightning SST Mode 导入性能最直接有效的方法：**
 
-Lightning 提供了部分并发相关配置以影响 SST Mode 的导入性能。但从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
+- **升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
+- **使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性实现水平扩展。**
+
+当然，Lightning 也提供了部分并发相关配置以影响 SST Mode 的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
 
 ```
 [lightning]
