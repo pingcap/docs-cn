@@ -176,7 +176,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
 
-### `enable-global-kill` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 用于开启 global kill 功能。
 + 默认值：true
