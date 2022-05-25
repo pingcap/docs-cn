@@ -136,6 +136,15 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 
 分片调大以后，为了增加查询并发，应当设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket) 为 `true`。这个配置会将每个 Region 划分为更小的区间 (bucket)，并且以这个更小的区间作为并发查询单位。区间的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size) 来控制，默认值为 `96MiB`。
 
+如果分片大小达到 512MiB 及以上，可以添加 split-bucket-scheduler 调度器，以加速热点调度。
+
+{{< copyable "" >}}
+
+```
+>> pd-ctl scheduler add split-bucket-scheduler
+```
+
+
 ## 其他问题和解决方案
 
 ### 切换 PD Leader 的速度慢
