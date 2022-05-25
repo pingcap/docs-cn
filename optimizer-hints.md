@@ -258,13 +258,13 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 
 `LEADING` 在以下情况下将会失效：
 
-1. 指定了多个 leading hint；
-2. leading 中指定的表名不存在；
-3. 1 个或多个 leading 中指定的表名重复；
-4. 优化器无法按照 leading 指定的顺序进行连接；
-5. 已经存在 straight_join() 的 hint；
-6. 查询语句中包含 outer join;
-7. 和选择 join 算法的 hint 同时使用时;
++ 指定了多个 `LEADING` hint
++ `LEADING` hint 中指定的表名不存在
++ 1 个或多个 `LEADING` hint 中指定的表名重复
++ 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
++ 已经存在 `straight_join()` hint
++ 查询语句中包含 outer join
++ 和选择 join 算法的 hint 同时使用时
 
 当出现了上述有冲突的情况，会输出 warning 警告。
 
