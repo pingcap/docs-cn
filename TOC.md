@@ -359,12 +359,12 @@
       - [性能调优](/tidb-lightning/tidb-lightning-sql-mode.md#性能调优)
     - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
     - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+    - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
     - [完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
     - 示例
       - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
