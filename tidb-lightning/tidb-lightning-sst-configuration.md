@@ -1,42 +1,12 @@
 ---
-title: TiDB Lightning 配置参数
-summary: 使用配置文件或命令行配置 TiDB Lightning。
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-configuration/','/docs-cn/dev/reference/tools/tidb-lightning/config/']
+title: TiDB Lightning SST Mode 配置
 ---
 
-# TiDB Lightning 配置参数
+# TiDB Lightning SST Mode 配置
 
-你可以使用配置文件或命令行配置 TiDB Lightning。本文主要介绍 TiDB Lightning 的全局配置、任务配置和 TiKV Importer 的配置，以及如何使用命令行进行参数配置。
-
-## 配置文件
-
-TiDB Lightning 的配置文件分为“全局”和“任务”两种类别，二者在结构上兼容。只有当[服务器模式](/tidb-lightning/tidb-lightning-web-interface.md)开启时，全局配置和任务配置才会有区别；默认情况下，服务器模式为禁用状态，此时 TiDB Lightning 只会执行一个任务，且全局和任务配置使用同一配置文件。
-
-### TiDB Lightning 全局配置
+## SST Mode 完整配置
 
 ```toml
-### tidb-lightning 全局配置
-
-[lightning]
-# 用于进度展示 web 界面、拉取 Prometheus 监控项、暴露调试数据和提交导入任务（服务器模式下）的 HTTP 端口。设置为 0 时为禁用状态。
-status-addr = ':8289'
-
-# 服务器模式，默认值为 false，命令启动后会开始导入任务。如果改为 true，命令启动后会等待用户在 web 界面上提交任务。
-# 详情参见“TiDB Lightning web 界面”文档
-server-mode = false
-
-# 日志
-level = "info"
-file = "tidb-lightning.log"
-max-size = 128 # MB
-max-days = 28
-max-backups = 14
-```
-
-### TiDB Lightning 任务配置
-
-```toml
-### tidb-lightning 任务配置
 
 [lightning]
 # 启动之前检查集群是否满足最低需求。
@@ -110,31 +80,30 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# "local"：SST Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：SQL Mode。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
+# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。
 # backend = "local"
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# SQL Mode 插入重复数据时执行的操作。
+# 当后端是 “tidb” 时，插入重复数据时执行的操作。
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
-
-# SST Mode 设置是否检测和解决重复的记录（唯一键冲突）。
+# 当后端模式为 'local' 时，设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
 #  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
 #  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
-# SST Mode 一次请求中发送的 KV 数量。
+# 当后端是 “local” 时，一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
-# SST Mode 本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+# 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
 # sorted-kv-dir = ""
-# SST Mode TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+# 当后端是 “local” 时，TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 # range-concurrency = 16
 
 [mydumper]
@@ -266,10 +235,10 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 对于 SST Mode，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+# 对于 Local Backend 模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
 # 在生产环境中，建议总是开启 Checksum 和 Analyze。
 # 执行的顺序为：Checksum -> Analyze。
-# 注意：对于 SQL Mode, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
+# 注意：对于 TiDB Backend, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
 [post-restore]
 # 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 # 可选的配置项：
@@ -294,151 +263,5 @@ analyze = "optional"
 switch-mode = "5m"
 # 在日志中打印导入进度的持续时间。
 log-progress = "5m"
+
 ```
-
-### TiKV Importer 配置参数
-
-```toml
-# TiKV Importer 配置文件模版
-
-# 日志文件
-log-file = "tikv-importer.log"
-# 日志等级：trace, debug, info, warn, error 和 off
-log-level = "info"
-
-# 状态服务器的监听地址。
-# Prometheus 可以从这个地址抓取监控指标。
-status-server-address = "0.0.0.0:8286"
-
-[server]
-# tikv-importer 的监听地址，tidb-lightning 需要连到这个地址进行数据写入。
-addr = "0.0.0.0:8287"
-# gRPC 服务器的线程池大小。
-grpc-concurrency = 16
-
-[metric]
-# 当使用 Prometheus Pushgateway 时会涉及相关设置。通常可以通过 Prometheus 从 状态服务器地址中抓取指标。
-# 给 Prometheus 客户端推送的 job 名称。
-job = "tikv-importer"
-# 给 Prometheus 客户端推送的间隔。
-interval = "15s"
-# Prometheus Pushgateway 的地址。
-address = ""
-
-[rocksdb]
-# background job 的最大并发数。
-max-background-jobs = 32
-
-[rocksdb.defaultcf]
-# 数据在刷新到硬盘前能存于内存的容量上限。
-write-buffer-size = "1GB"
-# 内存中写缓冲器的最大数量。
-max-write-buffer-number = 8
-
-# 各个压缩层级使用的算法。
-# 第 0 层的算法用于压缩 KV 数据。
-# 第 6 层的算法用于压缩 SST 文件。
-# 第 1 至 5 层的算法目前尚未使用。
-compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-
-[rocksdb.writecf]
-# 同上
-compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-
-[security]
-# TLS 证书的路径。空字符串表示禁用安全连接。
-# ca-path = ""
-# cert-path = ""
-# key-path = ""
-
-[import]
-# 存储引擎文件的文件夹路径
-import-dir = "/mnt/ssd/data.import/"
-# 处理 RPC 请求的线程数
-num-threads = 16
-# 导入 job 的并发数。
-num-import-jobs = 24
-# 预处理 Region 最长时间。
-# max-prepare-duration = "5m"
-# 把要导入的数据切分为这个大小的 Region。
-#region-split-size = "512MB"
-# 设置 stream-channel-window 的大小。
-# channel 满了之后 stream 会处于阻塞状态。
-# stream-channel-window = 128
-# 同时打开引擎文档的最大数量。
-max-open-engines = 8
-# Importer 上传至 TiKV 的最大速度（字节/秒）。
-# upload-speed-limit = "512MB"
-# 目标存储可用空间比率（store_available_space/store_capacity）的最小值。
-# 如果目标存储空间的可用比率低于该值，Importer 将会暂停上传 SST
-# 来为 PD 提供足够时间进行 Regions 负载均衡。
-min-available-ratio = 0.05
-```
-
-## 命令行参数
-
-### `tidb-lightning`
-
-使用 `tidb-lightning` 可以对下列参数进行配置：
-
-| 参数 | 描述 | 对应配置项 |
-|:----|:----|:----|
-| --config *file* | 从 *file* 读取全局设置。如果没有指定则使用默认设置。 | |
-| -V | 输出程序的版本 | |
-| -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/backup-and-restore-storages.md) | `mydumper.data-source-dir` |
-| -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
-| -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择导入的模式：`local`为 SST 模式，`tidb`为 SQL 模式 | `local` |
-| --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`, 设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
-| --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
-| --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
-| --pd-urls *host:port* | PD endpoint 的地址 | `tidb.pd-addr` |
-| --tidb-host *host* | TiDB Server 的 host | `tidb.host` |
-| --tidb-port *port* | TiDB Server 的端口（默认为 4000） | `tidb.port` |
-| --tidb-status *port* | TiDB Server 的状态端口的（默认为 10080） | `tidb.status-port` |
-| --tidb-user *user* | 连接到 TiDB 的用户名 | `tidb.user` |
-| --tidb-password *password* | 连接到 TiDB 的密码，可为明文或 Base64 编码 | `tidb.password` |
-| --enable-checkpoint *bool* | 是否启用断点 (默认值为 true) | `checkpoint.enable` |
-| --analyze *level* | 导入后分析表信息，可选值为 required、optional（默认值）、off | `post-restore.analyze` |
-| --checksum *level* | 导入后比较校验和，可选值为 required（默认值）、optional、off | `post-restore.checksum` |
-| --check-requirements *bool* | 开始之前检查集群版本兼容性（默认值为 true）| `lightning.check-requirements` |
-| --ca *file* | TLS 连接的 CA 证书路径 | `security.ca-path` |
-| --cert *file* | TLS 连接的证书路径 | `security.cert-path` |
-| --key *file* | TLS 连接的私钥路径 | `security.key-path` |
-| --server-mode | 在服务器模式下启动 TiDB Lightning | `lightning.server-mode` |
-
-如果同时对命令行参数和配置文件中的对应参数进行更改，命令行参数将优先生效。例如，在 `cfg.toml` 文件中，不管对日志等级做出什么修改，运行 `./tidb-lightning -L debug --config cfg.toml` 命令总是将日志级别设置为 “debug”。
-
-### `tidb-lightning-ctl`
-
-使用 `tidb-lightning-ctl` 可以对下列参数进行配置：
-
-| 参数 | 描述 |
-|:----|:----------|
-| --compact | 执行 full compact |
-| --switch-mode *mode* | 将每个 TiKV Store 切换到指定模式（normal 或 import） |
-| --fetch-mode | 打印每个 TiKV Store 的当前模式 |
-| --import-engine *uuid* | 将 TiKV Importer 上关闭的引擎文件导入到 TiKV 集群 |
-| --cleanup-engine *uuid* | 删除 TiKV Importer 上的引擎文件 |
-| --checkpoint-dump *folder* | 将当前的断点以 CSV 格式存储到文件夹中 |
-| --checkpoint-error-destroy *tablename* | 删除断点，如果报错则删除该表 |
-| --checkpoint-error-ignore *tablename* | 忽略指定表中断点的报错 |
-| --checkpoint-remove *tablename* | 无条件删除表的断点 |
-
-*tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
-
-此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。
-
-### `tikv-importer`
-
-使用 `tikv-importer` 可以对下列参数进行配置：
-
-| 参数 | 描述 | 对应配置项 |
-|:----|:----|:-------|
-| -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
-| -V, --version | 输出程序的版本 | |
-| -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
-| --status-server *ip:port* | 状态服务器的监听地址 | `status-server-address` |
-| --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
-| --log-level *level* | 日志的等级： trace、debug、info、warn、error 或 off | `log-level` |
-| --log-file *file* | 日志文件路径 | `log-file` |

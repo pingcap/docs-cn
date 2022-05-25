@@ -5,7 +5,7 @@ summary: 本文档介绍了 TiDB Lightning 并行导入的概念、使用场景�
 
 # TiDB Lightning 并行导入
 
-TiDB Lightning 的 [Local 后端模式](/tidb-lightning/tidb-lightning-backends.md#local-backend)从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
+TiDB Lightning 的 [SST Mode](/tidb-lightning/tidb-lightning-sst-mode.md)从 v5.3.0 版本开始支持单表或多表数据的并行导入。通过支持同步启动多个实例，并行导入不同的单表或多表的不同数据，使 TiDB Lightning 具备水平扩展的能力，可大大降低导入大量数据所需的时间。
 
 在技术实现上，TiDB Lightning 通过在目标 TiDB 中记录各个实例以及每个导入表导入数据的元信息，协调不同实例的 Row ID 分配范围、全局 Checksum 的记录和 TiKV 及 PD 的配置变更与恢复。
 
@@ -18,9 +18,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 > 
-> - 并行导入一般用于 local-backend 模式。
->
-> - 使用多个 TiDB Lightning 向同一目标导入时，禁止混用不同的 backend，例如，不可同时使用 Local-backend 和 TiDB-backend 导入同一 TiDB 集群。
+> - 并行导入一般用于 SST 导入模式。
 
 下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
 
@@ -104,19 +102,12 @@ data-source-dir = "/path/to/source-dir"
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
 incremental-import = true
-# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。
+# "local"：SST 导入模式，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：SQL 导入模式。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
 backend = "local"
 
 # 设置本地排序数据的路径
 sorted-kv-dir = "/path/to/sorted-dir"
-
-# 设置分库分表合并规则
-[[routes]]
-schema-pattern = "my_db"
-table-pattern = "my_table_*"
-target-schema = "my_db"
-target-table = "my_table"
 ```
 
 如果数据源存放在 Amazon S3 或 GCS 等外部存储中，请参考[外部存储](/br/backup-and-restore-storages.md)。
