@@ -1,6 +1,10 @@
 ---
 title: Data Migration 简介
 summary: 了解 TiDB Data Migration
+<<<<<<< HEAD
+=======
+aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios']
+>>>>>>> eababcf98 (fix aliases (#9575))
 ---
 
 # Data Migration 简介
