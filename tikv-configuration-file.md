@@ -1369,7 +1369,7 @@ Raft Engine 相关的配置项。
 ### `enable`
 
 + 决定是否使用 Raft Engine 来存储 Raft 日志。开启该配置项后，`raftdb` 的配置不再生效
-+ 默认值：`"true"`
++ 默认值：`true`
 
 ### `dir`
 
