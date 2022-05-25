@@ -132,7 +132,7 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 > 2. 查询性能回退，尤其是大范围数据查询的性能会有回退。
 > 3. 调度变慢。
 
-分片的大小可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 进行设置。推荐的分片大小为 96 MiB、128 MiB、256 MiB、512 MiB、1 GiB。`region-split-size` 越大，性能会越容易发生抖动。不推荐将分片大小设置超过 1 GiB，强烈建议不超过 10 GiB。如果你使用了 TiFlash，则分片大小不能超过 256 MiB。分片调大以后，使用 Dumpling 工具时，需要降低并发，否则 TiDB 会有 OOM 的风险。
+分片的大小可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 进行设置。推荐的分片大小为 96 MiB、128 MiB、256 MiB。`region-split-size` 越大，性能会越容易发生抖动。不推荐将分片大小设置超过 1 GiB，强烈建议不超过 10 GiB。如果你使用了 TiFlash，则分片大小不能超过 256 MiB。分片调大以后，使用 Dumpling 工具时，需要降低并发，否则 TiDB 会有 OOM 的风险。
 
 分片调大以后，为了增加查询并发，应当设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket) 为 `true`。这个配置会将每个 Region 划分为更小的区间 (bucket)，并且以这个更小的区间作为并发查询单位。区间的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size) 来控制，默认值为 `96MiB`。
 
