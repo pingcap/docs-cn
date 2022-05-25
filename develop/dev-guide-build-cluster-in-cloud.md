@@ -155,7 +155,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setPassword("");
     ```
 
-    若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+    若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
     {{< copyable "shell-regular" >}}
 

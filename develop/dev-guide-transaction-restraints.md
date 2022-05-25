@@ -111,7 +111,7 @@ public class EffectWriteSkew {
                 String comment = txnID == 2 ? "    " : "" + "/* txn #{txn_id} */ ";
                 connection.createStatement().executeUpdate(comment + "BEGIN");
 
-                // Txn 1 should be waiting for txn 2 done
+                // Txn 1 should be waiting until txn 2 is done.
                 if (txnID == 1) {
                     txn1Pass.acquire();
                 }
@@ -141,7 +141,7 @@ public class EffectWriteSkew {
                     }
                 }
 
-                // Txn 2 done, let txn 1 run again
+                // Txn 2 is done. Let txn 1 run again.
                 if (txnID == 2) {
                     txn1Pass.release();
                 }
@@ -235,7 +235,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
     }
     fmt.Println(txnComment + "start txn")
 
-    // Txn 1 should be waiting for txn 2 done
+    // Txn 1 should be waiting until txn 2 is done.
     if goroutineID == 1 {
         <-waitingChan
     }
@@ -279,7 +279,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
         fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)
     }
 
-    // Txn 2 done, let txn 1 run again
+    // Txn 2 is done. Let txn 1 run again.
     if goroutineID == 2 {
         waitingChan <- true
     }
@@ -446,7 +446,7 @@ public class EffectWriteSkew {
                 String comment = txnID == 2 ? "    " : "" + "/* txn #{txn_id} */ ";
                 connection.createStatement().executeUpdate(comment + "BEGIN");
 
-                // Txn 1 should be waiting for txn 2 done
+                // Txn 1 should be waiting until txn 2 is done.
                 if (txnID == 1) {
                     txn1Pass.acquire();
                 }
@@ -476,7 +476,7 @@ public class EffectWriteSkew {
                     }
                 }
 
-                // Txn 2 done, let txn 1 run again
+                // Txn 2 is done. Let txn 1 run again.
                 if (txnID == 2) {
                     txn1Pass.release();
                 }
@@ -568,7 +568,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
     }
     fmt.Println(txnComment + "start txn")
 
-    // Txn 1 should be waiting for txn 2 done
+    // Txn 1 should be waiting until txn 2 is done.
     if goroutineID == 1 {
         <-waitingChan
     }
@@ -612,7 +612,7 @@ func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) e
         fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)
     }
 
-    // Txn 2 done, let txn 1 run again
+    // Txn 2 is done. Let txn 1 run again.
     if goroutineID == 2 {
         waitingChan <- true
     }

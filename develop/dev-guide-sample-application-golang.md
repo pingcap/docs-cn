@@ -101,7 +101,7 @@ func main() {
     // 1. Configure the example database connection.
     dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
     openDB("mysql", dsn, func(db *sql.DB) {
-        // 2. Run some simple example.
+        // 2. Run some simple examples.
         simpleExample(db)
 
         // 3. Getting further.
@@ -110,7 +110,7 @@ func main() {
 }
 
 func simpleExample(db *sql.DB) {
-    // Create a player, has a coin and a goods.
+    // Create a player, who has a coin and a goods.
     err := createPlayer(db, Player{ID: "test", Coins: 1, Goods: 1})
     if err != nil {
         panic(err)
@@ -123,7 +123,7 @@ func simpleExample(db *sql.DB) {
     }
     fmt.Printf("getPlayer: %+v\n", testPlayer)
 
-    // Create players with bulk inserts, insert 1919 players totally, and per batch for 114 players.
+    // Create players with bulk inserts. Insert 1919 players totally, with 114 players per batch.
 
     err = bulkInsertPlayers(db, randomPlayers(1919), 114)
     if err != nil {
@@ -162,13 +162,13 @@ func tradeExample(db *sql.DB) {
     }
 
     // Player 1 wants to buy 10 goods from player 2.
-    // It will cost 500 coins, but player 1 can't afford it.
+    // It will cost 500 coins, but player 1 cannot afford it.
     fmt.Println("\nbuyGoods:\n    => this trade will fail")
     if err := buyGoods(db, player2.ID, player1.ID, 10, 500); err == nil {
         panic("there shouldn't be success")
     }
 
-    // So player 1 have to reduce his incoming quantity to two.
+    // So player 1 has to reduce the incoming quantity to two.
     fmt.Println("\nbuyGoods:\n    => this trade will success")
     if err := buyGoods(db, player2.ID, player1.ID, 2, 100); err != nil {
         panic(err)
@@ -510,7 +510,7 @@ import (
     "gorm.io/gorm"
 )
 
-// TiDBGormBegin start a TiDB and Gorm transaction as a block, return error will rollback, otherwise to commit.
+// TiDBGormBegin start a TiDB and Gorm transaction as a block. If no error is returned, the transaction will be committed. Otherwise, the transaction will be rolled back.
 func TiDBGormBegin(db *gorm.DB, pessimistic bool, fc func(tx *gorm.DB) error) (err error) {
     session := db.Session(&gorm.Session{})
     if session.Error != nil {
@@ -588,7 +588,7 @@ func main() {
     // AutoMigrate for player table
     db.AutoMigrate(&Player{})
 
-    // 2. Run some simple example.
+    // 2. Run some simple examples.
     simpleExample(db)
 
     // 3. Getting further.
@@ -606,13 +606,13 @@ func tradeExample(db *gorm.DB) {
     db.Clauses(clause.OnConflict{UpdateAll: true}).Create(player2)
 
     // Player 1 wants to buy 10 goods from player 2.
-    // It will cost 500 coins, but player 1 can't afford it.
+    // It will cost 500 coins, but player 1 cannot afford it.
     fmt.Println("\nbuyGoods:\n    => this trade will fail")
     if err := buyGoods(db, player2.ID, player1.ID, 10, 500); err == nil {
         panic("there shouldn't be success")
     }
 
-    // So player 1 have to reduce his incoming quantity to two.
+    // So player 1 has to reduce the incoming quantity to two.
     fmt.Println("\nbuyGoods:\n    => this trade will success")
     if err := buyGoods(db, player2.ID, player1.ID, 2, 100); err != nil {
         panic(err)
@@ -620,7 +620,7 @@ func tradeExample(db *gorm.DB) {
 }
 
 func simpleExample(db *gorm.DB) {
-    // Create a player, has a coin and a goods.
+    // Create a player, who has a coin and a goods..
     if err := db.Clauses(clause.OnConflict{UpdateAll: true}).
         Create(&Player{ID: "test", Coins: 1, Goods: 1}).Error; err != nil {
         panic(err)
@@ -631,7 +631,7 @@ func simpleExample(db *gorm.DB) {
     db.Find(&testPlayer, "id = ?", "test")
     fmt.Printf("getPlayer: %+v\n", testPlayer)
 
-    // Create players with bulk inserts, insert 1919 players totally, and per batch for 114 players.
+    // Create players with bulk inserts. Insert 1919 players totally, with 114 players per batch.
     bulkInsertPlayers := make([]Player, 1919, 1919)
     total, batch := 1919, 114
     for i := 0; i < total; i++ {
@@ -768,7 +768,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
 ```
 mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
@@ -794,7 +794,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 dsn := "root:@tcp(127.0.0.1:4000)/test?charset=utf8mb4"
 ```
 
-若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
 ```
 mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
