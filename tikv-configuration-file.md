@@ -847,7 +847,7 @@ coprocessor 相关的配置项。
 
 ### `region-max-keys`
 
-+ Region 最多允许的 key 的个数，超过时系统分裂成多个 Region。默认值为 region-split-keys / 2 * 3。
++ Region 最多允许的 key 的个数，超过时系统分裂成多个 Region。默认值为 `region-split-keys / 2 * 3`。
 
 ### `region-split-keys`
 
