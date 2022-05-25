@@ -360,7 +360,7 @@ select tidb_decode_sql_digests(@digests, 10);
 
 ### 语法图
 
-```
+```ebnf+diagram
 TIDBShardExpr ::=
     "TIDB_SHARD" "(" expr ")"
 ```
@@ -369,7 +369,7 @@ TIDBShardExpr ::=
 
 - 使用 `TIDB_SHARD` 函数计算 SHARD 值
 
-    以下示例提供如何使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
+    以下示例说明如何使用 `TIDB_SHARD` 函数计算 `12373743746` 的 SHARD 值。
 
     {{< copyable "sql" >}}
 
