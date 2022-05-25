@@ -269,7 +269,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 当出现了上述有冲突的情况，会输出 warning 警告。
 
 ```sql
--- 指定了多个 leading hint
+-- 指定了多个 LEADING hint
 
 SELECT /*+ LEADING(t1, t2) LEADING(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
 
