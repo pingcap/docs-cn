@@ -23,7 +23,7 @@
   - 快速开始
     - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
-    - TiDB 的简单 CRUD 应用程序
+    - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
       - [Golang](/develop/dev-guide-sample-application-golang.md)
   - 示例程序
