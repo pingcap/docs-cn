@@ -266,7 +266,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 + 查询语句中包含 outer join
 + 和选择 join 算法的 hint 同时使用时
 
-当出现了上述有冲突的情况，会输出 warning 警告。
+当出现了上述失效的情况，会输出 warning 警告。
 
 ```sql
 -- 指定了多个 LEADING hint
