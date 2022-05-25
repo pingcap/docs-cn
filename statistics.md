@@ -427,7 +427,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 | start_time | 任务开始执行的时间 |
 | state | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
 
-当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze从-v60-版本开始引入) 且 TiDB 后台的统计信息自动更新任务超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
+当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze从-v610-版本开始引入) 且 TiDB 后台的统计信息自动更新任务超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
 
 ```sql
 mysql> SHOW ANALYZE STATUS [ShowLikeOrWhere];
