@@ -489,7 +489,7 @@ success
 
 ### 强制 Region 从多副本失败状态恢复服务（弃用）
 
-> **注意：**
+> **警告：**
 > 
 > 不推荐使用该功能，恢复需求可通过 `pd-ctl` 的 Online Unsafe Recovery 功能实现。它提供了一键式自动恢复的能力，无需停止服务等额外操作，具体使用方式请参考 [Online Unsafe Recovery 使用文档](/online-unsafe-recovery.md)。
 
