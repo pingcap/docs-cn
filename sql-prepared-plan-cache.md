@@ -138,7 +138,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存 100 个计划，则总内存开销为 `50 * 100 * 100KiB` 约等于 `500mb`。
 
-目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量,针对不同的环境，推荐的设置如下：
+目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下：
 
 - MEM <= 64 GB; tidb_prepared_plan_cache_size = 50
 - MEM > 64 GB; tidb_prepared_plan_cache_size = 100
