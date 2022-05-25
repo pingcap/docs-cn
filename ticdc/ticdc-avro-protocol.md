@@ -251,7 +251,7 @@ Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件时检测
 
 同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。
 
-比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果我们的源表增加了一列非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
+比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
 
 如需了解更多 schema 相关信息，请参阅 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
 
