@@ -499,7 +499,6 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 示例如下：
 
-Example:
 ```sql
 mysql> DROP TABLE if exists test.employees;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
