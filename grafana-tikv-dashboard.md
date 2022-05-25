@@ -42,8 +42,9 @@ This document provides a detailed description of these key metrics on the **TiKV
 - gRPC message error: The number of gRPC message errors per type on each TiKV instance
 - Leader drop: The count of dropped leaders per TiKV instance
 - Leader missing: The count of missing leaders per TiKV instance
+- Log Replication Reject: The number of logappend messages rejected due to insufficient memory on each TiKV instance
 
-![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors.png)
+![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors-v610.png)
 
 ## Server
 
