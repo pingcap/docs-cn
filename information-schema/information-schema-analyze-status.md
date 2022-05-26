@@ -7,9 +7,9 @@ summary: 了解 information_schema 表 `ANALYZE_STATUS`。
 
 `ANALYZE_STATUS` 表提供正在执行的收集统计信息的任务以及有限条历史任务记录。
 
-在 TiDB v6.1 之前，`ANALYZE_STATUS` 显示实例级别的任务，且 TiDB 重启后任务记录会被清空。从 TiDB v6.1 起，`ANALYZE_STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。
+从 TiDB v6.1.0 起，`ANALYZE_STATUS` 表显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。在 TiDB v6.1.0 之前，`ANALYZE_STATUS` 仅显示实例级别的任务，且 TiDB 重启后任务记录会被清空。
 
-从 TiDB v6.1 起，可以通过系统表 `mysql.analyze_jobs` 查看更早的（7 天内的） 历史记录。
+从 TiDB v6.1.0 起，可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史任务记录。
 
 {{< copyable "sql" >}}
 
@@ -64,7 +64,7 @@ select * from information_schema.analyze_status;
 * `TABLE_SCHEMA`：表所属的数据库的名称。
 * `TABLE_NAME`：表的名称。
 * `PARTITION_NAME`：分区表的名称。
-* `JOB_INFO`：`ANALYZE` 任务的信息。如果分析索引则会包含索引名。`tidb_analyze_version =2` 情况下的任务则会包含采样率等配置项。
+* `JOB_INFO`：`ANALYZE` 任务的信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。
 * `PROCESSED_ROWS`：已经处理的行数。
 * `START_TIME`：`ANALYZE` 任务的开始时间。
 * `END_TIME`：`ANALYZE` 任务的结束时间。

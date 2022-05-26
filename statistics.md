@@ -415,7 +415,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息。如果分析索引则会包含索引名。`tidb_analyze_version =2` 情况下的任务则会包含采样率等配置项。 |
+| job_info | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。 |
 | processed_rows | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
 | end_time | 任务结束执行的时间 |
@@ -424,9 +424,9 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 | instance | 执行任务的 TiDB 实例 |
 | process_id | 执行任务的 process ID |
 
-在 TiDB v6.1 之前，`SHOW ANALYZE STATUS` 显示实例级别的任务，且 TiDB 重启后任务记录会被清空。从 TiDB v6.1 起，`SHOW ANALYZE STATUS` 显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。
+从 TiDB v6.1.0 起，执行 `SHOW ANALYZE STATUS` 语句将显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。在 TiDB v6.1.0 之前，执行 `SHOW ANALYZE STATUS` 语句仅显示实例级别的任务，且 TiDB 重启后任务记录会被清空。
 
-`SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，可以通过系统表 `mysql.analyze_jobs` 查看更早的（7 天内的） 历史记录。
+`SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
 
 ## 统计信息的查看
 
