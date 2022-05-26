@@ -140,8 +140,8 @@ MySQL [test]> select @@last_plan_from_cache;
 
 目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下：
 
-- TiDB Server 实例内存阈值 <= 64 GB 时，`tidb_prepared_plan_cache_size = 50`
-- TiDB Server 实例内存阈值 > 64 GB 时，`tidb_prepared_plan_cache_size = 100`
+- TiDB Server 实例内存阈值 <= 64 GiB 时，`tidb_prepared_plan_cache_size = 50`
+- TiDB Server 实例内存阈值 > 64 GiB 时，`tidb_prepared_plan_cache_size = 100`
 
 当 TiDB Server 的内存余量小于一定阈值时，会触发 Plan Cache 的内存保护机制，此时会对一些缓存的计划进行逐出。
 
