@@ -1,6 +1,7 @@
 ---
 title: Data Migration 简介
 summary: 了解 TiDB Data Migration
+aliases: ['/zh/tidb/stable/quick-create-migration-task','/zh/tidb/stable/scenarios']
 ---
 
 # Data Migration 简介
