@@ -842,8 +842,8 @@ coprocessor 相关的配置项。
 ### `region-split-size`
 
 + 分裂后新 Region 的大小，此值属于估算值。
-+ 默认值：96MB
-+ 单位：KB|MB|GB
++ 默认值：96MiB
++ 单位：KiB|MiB|GiB
 
 ### `region-max-keys`
 
