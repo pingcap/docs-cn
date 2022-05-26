@@ -1,5 +1,6 @@
 ---
 title: DM 任务完整配置文件介绍
+aliases: ['/zh/tidb/v6.0/task-configuration-file']
 ---
 
 # DM 任务完整配置文件介绍
