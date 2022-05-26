@@ -56,7 +56,7 @@ TiCDC 会将一个 DML 事件转换为一个 kafka 事件，其中事件的 key 
 ```
 
 - `{{TableName}}` 是事件来源表的名称。
-- `{{Namespace}}` 是 changefeed namespace 和数据源 schema name 的组合。
+- `{{Namespace}}` 是 Avro 的命名空间。
 - `{{ColumnValueBlock}}` 是每列数据的格式定义。
 
 Key 中的 `fields` 只包含主键或唯一索引列。
