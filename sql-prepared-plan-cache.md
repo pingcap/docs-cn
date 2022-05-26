@@ -134,7 +134,7 @@ MySQL [test]> select @@last_plan_from_cache;
 
 ## Prepared Plan Cache 的内存管理
 
-使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每个缓存计划会消耗 100KiB 内存，且目前 Plan Cache 是 `SESSION` 级别的，因此总内存消耗大致为 `SESSION 个数 * SESSION 平均缓存计划个数 * 100KiB`。
+使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每个缓存计划会消耗 100 KiB 内存，且目前 Plan Cache 是 `SESSION` 级别的，因此总内存消耗大致为 `SESSION 个数 * SESSION 平均缓存计划个数 * 100KiB`。
 
 比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存 100 个计划，则总内存开销为 `50 * 100 * 100KiB` 约等于 `500mb`。
 
