@@ -1,9 +1,9 @@
 ---
 title: Developer Overview
-summary: Describe the outline of the developer's guide is listed.
+summary: Introduce the overview of the developer guide.
 ---
 
-# Developer Overview
+# Developer Guide Overview
 
 This guide is written for application developers, but if you are interested in the inner workings of TiDB or want to get involved in TiDB development, read the [TiDB Kernel Development Guide](https://pingcap.github.io/tidb-dev-guide/) for more information about TiDB.
 

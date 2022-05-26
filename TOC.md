@@ -19,7 +19,7 @@
   - [Learn TiDB SQL](/basic-sql-operations.md)
   - [Learn HTAP](/explore-htap.md)
   - [Import Example Database](/import-example-data.md)
-- Develop Application
+- Develop
   - [Overview](/develop/dev-guide-overview.md)
   - Quick Start
     - [Build a TiDB Cluster in TiDB Cloud (DevTier)](/develop/dev-guide-build-cluster-in-cloud.md)
@@ -67,10 +67,9 @@
       - [Avoid Implicit Type Conversions](/develop/dev-guide-implicit-type-conversion.md)
       - [Unique Serial Number Generation](/develop/dev-guide-unique-serial-number-generation.md)
   - Troubleshoot
-    - [Overview](/develop/dev-guide-troubleshoot-overview.md)
-    - Others
-      - [Unstable Result Set](/develop/dev-guide-unstable-result-set.md)
-      - [Timeouts](/develop/dev-guide-timeouts-in-tidb.md)
+    - [SQL or Transaction Issues](/develop/dev-guide-troubleshoot-overview.md)
+    - [Unstable Result Set](/develop/dev-guide-unstable-result-set.md)
+    - [Timeouts](/develop/dev-guide-timeouts-in-tidb.md)
   - Reference
     - SQL
       - [Bookshop Example Application](/develop/dev-guide-bookshop-schema-design.md)
