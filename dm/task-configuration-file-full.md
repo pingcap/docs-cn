@@ -1,6 +1,6 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/zh/tidb/stable/quick-create-migration-task','/zh/tidb/stable/scenarios']
+aliases: ['/zh/tidb/stable/task-configuration-file']
 ---
 
 # DM 任务完整配置文件介绍
