@@ -265,7 +265,7 @@ batch-dml 是一种在 DML 语句执行期间将一个事务拆成多个事务�
 
 在非事务 DML 语句的执行过程中，最后一个 batch 处理的数据量可能会小于 batch size。
 
-在**划分列有重复值**时，每个 batch 会将最后一个元素的所有重复值全部加入当前这个 batch 中，因此这个 batch 处理的行数可能会多于 batch size。
+在**划分列有重复值**时，每个 batch 会将当前 batch 中划分列的最后一个元素的所有重复值全部加入当前 batch 中，因此这个 batch 的行数可能会多于 batch size。
 
 另外，在有其它并发的数据写入时，也可能导致每个 batch 实际处理的行数和 batch size 不一致。
 
