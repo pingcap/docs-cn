@@ -1261,7 +1261,7 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> 若下线过程中切换了 PD leader，需要手动修改 store limit 
+> 若下线过程中切换了 PD leader，需要手动修改 store limit。
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
 
