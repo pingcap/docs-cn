@@ -396,6 +396,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
+### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 单位：字节
+- 这个变量用来控制 TiDB 更新统计信息时的最大总内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。当总的内存占用超过这个阈值时，用户执行的 `ANALYZE` 会被终止退出，并通过错误信息提示用户尝试更小的采样率或稍后重试。如果 TiDB 后台自动执行的统计信息更新任务因内存超限而退出，且使用的采样率高于默认值，则会使用默认采样率重试一次。当该变量值为负数或零时，TiDB 不对更新统计信息的前后台任务进行内存限制。
+
+> **注意：**
+>
+> 只有在 TiDB 的启动配置文件中开启了 `run-auto-analyze` 选项，该 TiDB 集群才会触发 `auto_analyze`。
+
 ### `tidb_backoff_lock_fast`
 
 - 作用域：SESSION | GLOBAL
@@ -1046,7 +1058,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`86400`
 - 范围：`[600, 31536000]`
-- 这个变量用于指定活跃事务阻碍 GC safe point 推进的最大时间。变量值为整型，单位是秒。每次进行 GC 时，默认 GC safe point 不会超过正在执行中的事务的开始时间。如果活跃事务运行时间未超过该值，GC safe point 会一直被阻塞不更新，直到活跃事务运行时间超过该值 safe point 才会正常推进。
+- 单位：秒
+- 这个变量用于指定活跃事务阻碍 GC safe point 推进的最大时间。每次进行 GC 时，默认 GC safe point 不会超过正在执行中的事务的开始时间。如果活跃事务运行时间未超过该值，GC safe point 会一直被阻塞不更新，直到活跃事务运行时间超过该值 safe point 才会正常推进。
 
 ### `tidb_gc_run_interval` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1937,3 +1950,10 @@ set tidb_slow_log_threshold = 200;
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。

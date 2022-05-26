@@ -465,6 +465,11 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
+### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 用于控制 TiDB 是否开启统计信息缓存的内存上限。
++ 默认值：false
+
 ## prepared-plan-cache
 
 prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。

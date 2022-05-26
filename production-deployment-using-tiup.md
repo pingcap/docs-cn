@@ -203,6 +203,18 @@ source /home/tidb/.bash_profile
 
 `local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
 
+若需将 server 和 toolkit 两个离线镜像合并，执行以下命令合并离线组件到 server 目录下。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
+cd tidb-community-server-${version}-linux-amd64/
+cp -rp keys ~/.tiup/
+tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
+```
+    
 若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 </div>
