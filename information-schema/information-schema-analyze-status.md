@@ -64,7 +64,7 @@ select * from information_schema.analyze_status;
 * `TABLE_SCHEMA`：表所属的数据库的名称。
 * `TABLE_NAME`：表的名称。
 * `PARTITION_NAME`：分区表的名称。
-* `JOB_INFO`：`ANALYZE` 任务的信息。如果分析索引则会包含索引名。`tidb_analyze_version =2` 情况下的任务则会包含采样率等配置项。
+* `JOB_INFO`：`ANALYZE` 任务的信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。
 * `PROCESSED_ROWS`：已经处理的行数。
 * `START_TIME`：`ANALYZE` 任务的开始时间。
 * `END_TIME`：`ANALYZE` 任务的结束时间。
