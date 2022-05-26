@@ -29,18 +29,18 @@ show analyze status;
 ```
 
 ```sql
-+--------------+------------+----------------+-------------------+----------------+---------------------+----------+
-| Table_schema | Table_name | Partition_name | Job_info          | Processed_rows | Start_time          | State    |
-+--------------+------------+----------------+-------------------+----------------+---------------------+----------+
-| test         | t          | p1             | analyze columns   |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p0             | analyze columns   |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p0             | analyze index idx |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p1             | analyze index idx |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p2             | analyze index idx |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p3             | analyze index idx |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p3             | analyze columns   |              0 | 2020-05-25 17:23:55 | finished |
-| test         | t          | p2             | analyze columns   |              0 | 2020-05-25 17:23:55 | finished |
-+--------------+------------+----------------+-------------------+----------------+---------------------+----------+
++--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+
+| TABLE_SCHEMA | TABLE_NAME | PARTITION_NAME | JOB_INFO          | PROCESSED_ROWS | START_TIME          | END_TIME            | STATE    |
++--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+
+| test         | t          | p1             | analyze columns   |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p0             | analyze columns   |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p0             | analyze index idx |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p1             | analyze index idx |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p2             | analyze index idx |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p3             | analyze index idx |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p3             | analyze columns   |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
+| test         | t          | p2             | analyze columns   |              0 | 2020-05-25 17:23:55 | 2020-05-25 17:23:55 | finished |
++--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+
 8 rows in set (0.00 sec)
 ```
 
