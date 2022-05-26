@@ -1251,7 +1251,7 @@ Encoding 格式示例：
 >> store delete 1
 ```
 
-撤销使用 store delete 下线的 store，如撤销下线 store id 为 1 的 store：
+撤销使用 store delete 下线的处于 Offline 状态的 store，Tombstone 状态的 store 无法被撤销，如撤销下线 store id 为 1 的 store：
 
 {{< copyable "" >}}
 
