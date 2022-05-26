@@ -465,6 +465,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
+### `ballast-object-size`
+
++ 设置 Ballast 对象的初始大小，单位为字节。
++ 默认值：`0`
++ 合法值范围为 `[0, max-ballast-object-size]`。如果配置值不在合法值范围，将会使用 `max-ballast-object-size` 的值。
++ `max-ballast-object-size` 的值为接下来两个值中的最小值：`2147483648` 字节，或者当前系统中物理内存总大小的四分之一。
++ Ballast 是一个降低 Golang Runtime GC CPU 消耗的性能优化方法，但是会带来额外 `ballast-object-size` 字节的内存使用。如果发现 Golang Runtime GC CPU 消耗占比较高，可以尝试启用它。推荐将 `ballast-object-size` 配置为 `2147483648`。
+
 ## prepared-plan-cache
 
 prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
