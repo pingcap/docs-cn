@@ -422,7 +422,7 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息。如果分析索引则会包含索引名。`tidb_analyze_version =2` 情况下的任务则会包含采样率等配置项。 |
+| job_info | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。 |
 | processed_rows | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
 | end_time | 任务结束执行的时间 |
