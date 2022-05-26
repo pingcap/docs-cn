@@ -430,6 +430,7 @@ TiDB 支持持久化的配置项包括：
 - 分区的统计信息会继承使用表级别的持久化配置
 - GlobalStats 会使用表级别的持久化配置
 - ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置会被忽略，且不会被持久化
+
 ### 查看 ANALYZE 状态
 
 在执行 `ANALYZE` 时，可以通过 SQL 语句来查看当前 `ANALYZE` 的状态。
