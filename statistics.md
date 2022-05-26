@@ -342,8 +342,8 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 2. 终止正在后台运行的 `ANALYZE` 任务。
 
-   - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`）, 你可以直接执行 `KILL TIDB ID;` 语句。`ID` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
-   - 如果 `enable-global-kill` 的值为 `false`, 你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ID;` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
+   - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`），你可以直接执行 `KILL TIDB ID;` 语句。`ID` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
+   - 如果 `enable-global-kill` 的值为 `false`，你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ID;` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
   
 关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
