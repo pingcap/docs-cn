@@ -9,7 +9,7 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 
 ## 使用 Avro
 
-当使用 Message Queue (MQ) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro。TiCDC 将以 Event 为基本单位封装构造 Avro Message，向下游发送 TiDB 的 DML 事件。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
+当使用 Message Queue (MQ) 作为下游 Sink 时，你可以在 `sink-uri` 中指定使用 Avro。TiCDC 获取 TiDB 的 DML 事件，并将这些事件封装到 Avro Message，然后发送到下游。当 Avro 检测到 schema 变化时，会向 Schema Registry 注册最新的 schema。
 
 使用 Avro 时的配置样例如下所示：
 
@@ -146,11 +146,11 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | SQL TYPE   | TIDB_TYPE | AVRO_TYPE | 说明                                                                                                               |
 |------------|-----------|-----------|---------------------------------------------------------------------------------------------------------------------------|
 | BOOL       | INT       | int       |                                                                                                                           |
-| TINYINT    | INT       | int       | When it's unsigned, TIDB_TYPE is INT UNSIGNED.                                                                            |
-| SMALLINT   | INT       | int       | When it's unsigned, TIDB_TYPE is INT UNSIGNED.                                                                            |
-| MEDIUMINT  | INT       | int       | When it's unsigned, TIDB_TYPE is INT UNSIGNED.                                                                            |
-| INT        | INT       | int       | When it's unsigned, TIDB_TYPE is INT UNSIGNED and AVRO_TYPE is long.                                                      |
-| BIGINT     | BIGINT    | long      | When it's unsigned, TIDB_TYPE is BIGINT UNSIGNED. If `avro-bigint-unsigned-handling-mode` is string, AVRO_TYPE is string. |
+| TINYINT    | INT       | int       | 当 TINYINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED。                                                                            |
+| SMALLINT   | INT       | int       | 当 SMALLINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED.                                                                            |
+| MEDIUMINT  | INT       | int       | 当 MEDIUMINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED。                                                                            |
+| INT        | INT       | int       | 当 INT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED，AVRO_TYPE 为 long。                                                      |
+| BIGINT     | BIGINT    | long      | 当 BIGINT 为无符号值时，TIDB_TYPE 为 BIGINT UNSIGNED。如果 `avro-bigint-unsigned-handling-mode` 为字符串，则 AVRO_TYPE 也为字符串。 |
 | TINYBLOB   | BLOB      | bytes     |                                                                                                                           |
 | BLOB       | BLOB      | bytes     |                                                                                                                           |
 | MEDIUMBLOB | BLOB      | bytes     |                                                                                                                           |
@@ -174,14 +174,14 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | JSON       | JSON      | string    |                                                                                                                           |
 | ENUM       | ENUM      | string    |                                                                                                                           |
 | SET        | SET       | string    |                                                                                                                           |
-| DECIMAL    | DECIMAL   | bytes     | When `avro-decimal-handling-mode` is string, AVRO_TYPE is string.                                                         |
+| DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为字符串时，AVRO_TYPE 也为字符串。                                                         |
 
 对于 Avro 协议，还有另外两个 `sink-uri` 参数: `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，影响着 Column 数据格式:
 
 - `avro-decimal-handling-mode` 决定了如何处理 DECIMAL 字段，它有两个选项：
 
     - string：Avro 将 DECIMAL 字段以 string 的方式处理。
-    - precise：Avro 将 DECIMAL 字段以字节的方式存储。
+    - precise：Avro 将 DECIMAL 字段以字节的方式处理。
 
 - `avro-bigint-unsigned-handling-mode` 决定了如何处理 BIGINT UNSIGNED 字段，它有两个选项：
 
@@ -249,7 +249,7 @@ DECIMAL(10, 4)
 
 Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决 schema 的兼容性问题。
 
-同时，即使通过兼容性检测并成功注册新版本，Avro 生产者和消费者可能仍然需要进行升级才能正确工作。
+同时，即使通过兼容性检测并成功注册新版本，数据的生产者和消费者可能仍然需要升级才能正确工作。
 
 比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
 
