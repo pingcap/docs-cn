@@ -11,11 +11,11 @@ summary: TiDB 数据库中 ALTER TABLE ... COMPACT 语句的使用概况。
 
 发生写入后，TiDB 后台会自动进行数据整理（Compaction）。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。使用 `ALTER TABLE ... COMPACT` 语句可以立即对指定的表进行数据整理，而无需等待后台触发。
 
-该语句执行时不会阻塞现有 SQL 语句的执行或使用 TiDB 功能，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。但执行过程中会占用一定量的 IO 及 CPU 资源，可能对业务延迟造成影响。
+该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。但执行过程中会占用一定量的 IO 及 CPU 资源，可能对业务延迟造成影响。
 
 该语句会等待表中所有副本都数据整理完毕后才结束运行并返回。在执行过程中，你可以通过 [`KILL`](/sql-statements/sql-statement-kill.md) 语句安全地中断本张表的数据整理过程。中断不会破坏数据一致性或丢失数据，也不会影响后续重新发起或自动触发后台数据整理。
 
-目前仅支持对 TiFlash 进行数据整理，不支持对 TiKV 进行数据整理。
+目前该语句仅支持对 TiFlash 进行数据整理，不支持对 TiKV 进行数据整理。
 
 ## 语法图
 
@@ -58,7 +58,7 @@ ALTER TABLE employee COMPACT TIFLASH REPLICA;
 
 `ALTER TABLE ... COMPACT` 语句会同时对表中所有副本发起数据整理操作。
 
-为了避免数据整理操作对在线业务造成显著影响，每个 TiFlash 实例默认只会同时处理一张表的数据整理操作（后台自动触发的数据整理不受影响）。这意味着，若你同时对多张表执行 `ALTER TABLE ... COMPACT` 语句，则它们在同一个 TiFlash 实例上会排队依次执行，而非同时得到执行。
+为了避免数据整理操作对在线业务造成显著影响，在同一时间，每个 TiFlash 实例默认只会处理一张表的数据整理操作（后台自动触发的数据整理除外）。这意味着，若你同时对多张表执行 `ALTER TABLE ... COMPACT` 语句，则它们在同一个 TiFlash 实例上会排队依次执行，而非同时执行。
 
 你可以修改 TiFlash 配置文件参数 [`manual_compact_pool_size`](/tiflash/tiflash-configuration.md)，以更大资源占用为代价、获得更大的表级别并发度。例如，参数指定为 2 时，可以同时对 2 张表进行数据整理。
 
@@ -73,4 +73,4 @@ ALTER TABLE employee COMPACT TIFLASH REPLICA;
 ## 另请参阅
 
 - [ALTER TABLE](/sql-statements/sql-statement-alter-table.md)
-- [KILL TIDB](/sql-statements/sql-statement-kill.md)
+- [KILL](/sql-statements/sql-statement-kill.md)
