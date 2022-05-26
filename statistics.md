@@ -340,19 +340,12 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
     查看 `instance` 列和 `process_id` 列获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
 
-2. 执行 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务：
+2. 终止正在后台运行的 `ANALYZE` 任务。
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    KILL TIDB ID;
-    ```
-
-    `ID` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
-
-    > **注意：**
-    >
-    > 在 TiDB v6.1 之前，只有当客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。从 TiDB v6.1 起，在 enable-global-kill 设置为 true 时（默认为 true），客户端无需直连执行后台 `ANALYZE` 任务的 TiDB 实例，`KILL` 命令也能正确地转发给该实例执行。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
+   - 如果 `enable-global-kill` 的值为 `true` (默认为 `true`）, 你可以直接执行 `KILL TIDB ID;` 语句。`ID` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
+   - 如果 `enable-global-kill` 的值为 `false`, 你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ID;` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
+  
+关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
