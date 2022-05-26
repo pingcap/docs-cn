@@ -150,7 +150,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | SMALLINT   | INT       | int       | 当 SMALLINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED.                                                                            |
 | MEDIUMINT  | INT       | int       | 当 MEDIUMINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED。                                                                            |
 | INT        | INT       | int       | 当 INT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED，AVRO_TYPE 为 long。                                                      |
-| BIGINT     | BIGINT    | long      | 当 BIGINT 为无符号值时，TIDB_TYPE 为 BIGINT UNSIGNED。如果 `avro-bigint-unsigned-handling-mode` 为字符串，则 AVRO_TYPE 也为字符串。 |
+| BIGINT     | BIGINT    | long      | 当 BIGINT 为无符号值时，TIDB_TYPE 为 BIGINT UNSIGNED。当 `avro-bigint-unsigned-handling-mode` 为字符串时，AVRO_TYPE 也为字符串。 |
 | TINYBLOB   | BLOB      | bytes     |                                                                                                                           |
 | BLOB       | BLOB      | bytes     |                                                                                                                           |
 | MEDIUMBLOB | BLOB      | bytes     |                                                                                                                           |
