@@ -174,7 +174,8 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | JSON       | JSON      | string    |                                                                                                                           |
 | ENUM       | ENUM      | string    |                                                                                                                           |
 | SET        | SET       | string    |                                                                                                                           |
-| DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为string 时，AVRO_TYPE 也为 string。                                                         |
+| DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为 
+ string 时，AVRO_TYPE 也为 string。                                                         |
 
 对于 Avro 协议，还有另外两个 `sink-uri` 参数: `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，影响着 Column 数据格式:
 
