@@ -704,9 +704,9 @@ raftstore 相关的配置项。
 + 默认值：128
 + 最小值：10
 
-### `max-snapshot-file-raw-size`
+### `max-snapshot-file-raw-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ 当 snapshot 文件大于指定大小时，切割为多个文件。
++ 当 snapshot 文件大于该配置项指定的大小时，snapshot 文件会被切割为多个文件。
 + 默认值：100MiB
 + 最小值：100MiB
 
