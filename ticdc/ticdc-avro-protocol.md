@@ -150,7 +150,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | SMALLINT   | INT       | int       | 当 SMALLINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED.                                                                            |
 | MEDIUMINT  | INT       | int       | 当 MEDIUMINT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED。                                                                            |
 | INT        | INT       | int       | 当 INT 为无符号值时，TIDB_TYPE 为 INT UNSIGNED，AVRO_TYPE 为 long。                                                      |
-| BIGINT     | BIGINT    | long      | 当 BIGINT 为无符号值时，TIDB_TYPE 为 BIGINT UNSIGNED。当 `avro-bigint-unsigned-handling-mode` 为字符串时，AVRO_TYPE 也为字符串。 |
+| BIGINT     | BIGINT    | long      | 当 BIGINT 为无符号值时，TIDB_TYPE 为 BIGINT UNSIGNED。当 `avro-bigint-unsigned-handling-mode` 为 string 时，AVRO_TYPE 也为 string。 |
 | TINYBLOB   | BLOB      | bytes     |                                                                                                                           |
 | BLOB       | BLOB      | bytes     |                                                                                                                           |
 | MEDIUMBLOB | BLOB      | bytes     |                                                                                                                           |
@@ -174,7 +174,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | JSON       | JSON      | string    |                                                                                                                           |
 | ENUM       | ENUM      | string    |                                                                                                                           |
 | SET        | SET       | string    |                                                                                                                           |
-| DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为字符串时，AVRO_TYPE 也为字符串。                                                         |
+| DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为string 时，AVRO_TYPE 也为 string。                                                         |
 
 对于 Avro 协议，还有另外两个 `sink-uri` 参数: `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，影响着 Column 数据格式:
 
