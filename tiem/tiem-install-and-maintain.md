@@ -427,3 +427,15 @@ Kibana 是一个针对 Elasticsearch 的开源分析及可视化平台，用来�
 目前 TiEM 默认安装 Kibana， 集成 Kibana 主要是做日志的展示，在控制台页面系统管理下的系统日志进行查看。
 
 如果不想安装 kibana 组件，则直接在 `config.yaml` 文件中将 `kibana_servers` 组件相关的配置注释掉即可。
+
+## 安全加固
+
+完成 TiEM 安装后，建议用户通过系统防火墙为 Elasticsearch 和 Kibana 添加网络访问控制，仅允许 TiEM 中控机与上述组件通信，参考命令如下所示：
+
+```shell
+# 允许来自 TiEM 中控机的连接
+iptables -A INPUT -p tcp -s <tiem addr> --dport <elasticsearch port> -j ACCEPT
+
+# 拒绝其它 IP 的访问
+iptables -A INPUT -p tcp --dport <elasticsearch port> -j DROP
+```
