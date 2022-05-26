@@ -1938,7 +1938,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
 
-### `tidb_stats_cache_mem_quota`
+### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
