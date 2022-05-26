@@ -1222,7 +1222,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
+### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -1261,9 +1261,17 @@ Encoding 格式示例：
 >> store delete 1
 ```
 
+撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
+
+{{< copyable "" >}}
+
+```bash
+>> store cancel-delete 1
 ```
-......
-```
+
+> **注意：**
+>
+> 若下线过程中切换了 PD leader，需要手动修改 store limit。
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
 
