@@ -152,6 +152,8 @@ source /home/tidb/.bash_profile
 
 若需将 server 和 toolkit 两个离线镜像合并，执行以下命令合并离线组件到 server 目录下。
 
+{{< copyable "shell-regular" >}}
+
 ```bash
 tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
 ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
