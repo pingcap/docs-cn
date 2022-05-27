@@ -1317,7 +1317,7 @@ set @@session.tidb_partition_prune_mode = 'dynamic'
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set global tidb_partition_prune_mode = 'dynamic';
+mysql> set session tidb_partition_prune_mode = 'dynamic';
 
 mysql> show stats_meta where table_name like "t";
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -1366,7 +1366,14 @@ mysql> show stats_meta where table_name like "t";
 ```
 也可以使用脚本来统一更新所有的分区表统计信息，详见 [为动态裁剪模式更新所有分区表统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表统计信息)
 
-表级别统计信息准备好后，即可正常使用动态裁剪模式。
+表级别统计信息准备好后，即可开启全局的动态裁剪模式。
+
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_partition_prune_mode = dynamic
+```
 
 
 在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。下面例子进行了一个简单的读取操作，可以发现 TiDB 用 Union 合并了对应两个分区的结果：
@@ -1552,7 +1559,7 @@ $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE T
 {{< copyable "sql" >}}
 
 ```sql
-mysql> SET tidb_partition_prune_mode = dynamic;
+mysql> SET session tidb_partition_prune_mode = dynamic;
 mysql> source gatherGlobalStats.sql 
 ```
 
