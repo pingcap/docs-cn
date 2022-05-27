@@ -692,7 +692,7 @@ sudo yum -y install numactl
     {{< copyable "shell-regular" >}}
 
     ```bash
-    tiup cluster deploy tidb-test v6.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v5.4.1 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 - `tiup cluster exec` 命令的说明：
