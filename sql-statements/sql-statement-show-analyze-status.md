@@ -23,7 +23,7 @@ ShowLikeOrWhereOpt ::= 'LIKE' SimpleExpr | 'WHERE' Expression
 ## 示例
 
 ```sql
-mysql> create table t(x int, index idx(x)) partition by hash(x) partitions 4;
+mysql> create table t(x int, index idx(x)) partition by hash(x) partitions 2;
 Query OK, 0 rows affected (0.69 sec)
 
 mysql> set @@tidb_analyze_version = 1;
@@ -36,41 +36,31 @@ mysql> show analyze status;
 +--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
 | Table_schema | Table_name | Partition_name | Job_info          | Processed_rows | Start_time          | End_time            | State    | Fail_reason | Instance       | Process_ID |
 +--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
-| test         | t          | p3             | analyze index idx |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p2             | analyze index idx |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze index idx |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze index idx |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p3             | analyze columns   |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p2             | analyze columns   |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze columns   |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze columns   |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p1             | analyze index idx |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p0             | analyze index idx |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p1             | analyze columns   |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p0             | analyze columns   |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
 +--------------+------------+----------------+-------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
-8 rows in set (0.00 sec)
+4 rows in set (0.01 sec)
 
 mysql> set @@tidb_analyze_version = 2;
 Query OK, 0 rows affected (0.00 sec)
 
 mysql> analyze table t;
-Query OK, 0 rows affected, 4 warnings (0.15 sec)
+Query OK, 0 rows affected, 2 warnings (0.03 sec)
 
 mysql> show analyze status;
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
 | Table_schema | Table_name | Partition_name | Job_info                                                           | Processed_rows | Start_time          | End_time            | State    | Fail_reason | Instance       | Process_ID |
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
-| test         | t          | p3             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-16 19:43:10 | 2022-05-16 19:43:10 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p2             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-16 19:43:10 | 2022-05-16 19:43:10 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-16 19:43:10 | 2022-05-16 19:43:10 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-16 19:43:10 | 2022-05-16 19:43:10 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p3             | analyze index idx                                                  |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p2             | analyze index idx                                                  |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze index idx                                                  |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze index idx                                                  |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p3             | analyze columns                                                    |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p2             | analyze columns                                                    |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p1             | analyze columns                                                    |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
-| test         | t          | p0             | analyze columns                                                    |              0 | 2022-05-16 19:42:34 | 2022-05-16 19:42:34 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p1             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p0             | analyze table all columns with 256 buckets, 500 topn, 1 samplerate |              0 | 2022-05-27 11:30:12 | 2022-05-27 11:30:12 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p1             | analyze index idx                                                  |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p0             | analyze index idx                                                  |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p1             | analyze columns                                                    |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
+| test         | t          | p0             | analyze columns                                                    |              0 | 2022-05-27 11:29:46 | 2022-05-27 11:29:46 | finished | NULL        | 127.0.0.1:4000 |       NULL |
 +--------------+------------+----------------+--------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------+----------------+------------+
-12 rows in set (0.00 sec)
+6 rows in set (0.00 sec)
 ```
 
 ## MySQL 兼容性
