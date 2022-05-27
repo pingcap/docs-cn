@@ -858,7 +858,7 @@ coprocessor 相关的配置项。
 
 ### `enable-region-bucket`
 
-+ 是否开启 region bucket，将 Region 划分为更小的区间。
++ 是否开启 region bucket，将 Region 划分为更小的区间。Bucket 的详细详细设计可见 [RFC: Dynamic size region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md).
 + 默认值：false
 
 > **警告：**
