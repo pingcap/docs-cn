@@ -41,11 +41,14 @@ v6.1 默认升级到 PageStorage V3 版本，即默认 format_version 为 4。�
 
 ### v6.0 → v6.1
 Partition Table Dynamic Pruning
+
 如用户关闭了分区表动态分区裁剪，可略过此段。
 TiDB 6.0之后的全新安装会默认开启“动态分区裁剪”（Dynamic Pruning），旧版本升级过程遵循用户已由有设定，不会自动开启（相对的也不会关闭）此功能。6.0 版本用户在升级过程中不需要做任何特别操作，但本文提示用户，升级过程中将会发生自动的分区表全局统计信息的更新动作。
+
 ##### TiFlash PageStorage
-v4.x 和 v6.0 任何版本升级都相同。
-（@Zhou Jiaqi ）
+
+同 v5.x 升级至 v6.1。
+
 ##### TiFlash Proxy
 参见 v5.x -> v6.1 [升级说明](#proxy)
 
