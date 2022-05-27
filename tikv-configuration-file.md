@@ -856,7 +856,7 @@ coprocessor 相关的配置项。
 + 分裂后新 Region 的 key 的个数，此值属于估算值。
 + 默认值：960000
 
-### `enable-region-bucket`
+### `enable-region-bucket` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + 是否开启 region bucket，将 Region 划分为更小的区间。Bucket 的详细详细设计可见 [RFC: Dynamic size region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md).
 + 默认值：false
@@ -867,9 +867,9 @@ coprocessor 相关的配置项。
 > - 这个参数仅在 `region-split-size` 调到两倍 `region-bucket-size` 及以上时才有意义，否则不会真正生成 bucket。
 > - 将 `region-split-size` 调大可能会有潜在的性能回退、搬迁缓慢的风险。
 
-### `region-bucket-size`
+### `region-bucket-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ 设置 region bucket 启用时 bucket 的预期大小。
++ 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
 + 默认值：96MiB
 
 ## rocksdb
