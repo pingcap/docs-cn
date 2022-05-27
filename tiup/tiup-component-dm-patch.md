@@ -1,6 +1,6 @@
 ---
 title: 在线应用 Hotfix 到 DM 集群
-summary: 如何应用 hotfix 补丁包到 DM 集群。
+summary: 了解如何应用 hotfix 补丁包到 DM 集群。
 ---
 
 # 在线应用 Hotfix 到 DM 集群
@@ -72,15 +72,15 @@ tiup dm patch <cluster-name> <package-path> [flags]
 
 ## 在线应用 Hotfix 示例
 
-以下将在使用 TiUP 部署的 DM 环境中演示如何应用`v5.3.0-hotfix`到`v5.3.0`集群，其他部署方式可能需要调整部分操作。
+以下将在使用 TiUP 部署的 DM 环境中演示如何应用 `v5.4.0-hotfix` 到 `v5.4.0`集群，其他部署方式可能需要调整部分操作。
 
 > **注意：**
 >
-> hotfix 仅用于紧急修复，其日常维护较为复杂，建议在正式版本发布后及时升级。
+> Hotfix 仅用于紧急修复，其日常维护较为复杂，建议在正式版本发布后及时升级。
 
 ### 准备工作
 
-在开始应用 Hotfix 之前，请准备好 hotfix 补丁包 `dm-linux-amd64.tar.gz`。并确认当前环境 DM 软件版本：
+在开始应用 Hotfix 之前，请准备好 Hotfix 补丁包 `dm-linux-amd64.tar.gz`。并确认当前环境 DM 软件版本：
 
 ```shell
 /home/tidb/dm/deploy/dm-master-8261/bin/dm-master/dm-master -V
@@ -113,7 +113,7 @@ Go Version: go version go1.16.4 linux/amd64
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # 解压 hotfix 压缩包并替换
+    # 解压 Hotfix 压缩包并替换
     cd /root; tar -zxvf dm-linux-amd64.tar.gz 
     cp /root/dm-linux-amd64/bin/dm-master /tmp/package/dm-master/dm-master 
     cp /root/dm-linux-amd64/bin/dm-worker /tmp/package/dm-worker/dm-worker
@@ -126,7 +126,7 @@ Go Version: go version go1.16.4 linux/amd64
 
 3. 应用补丁
 
-    查询当前集群状态, 以集群名称`dm-test`为示例
+    查询当前集群状态, 以名称为 `dm-test` 的集群为例
 
     {{< copyable "shell-regular" >}}
 
@@ -152,16 +152,16 @@ Go Version: go version go1.16.4 linux/amd64
     Total nodes: 5
     ```
 
-    指定节点或指定角色应用补丁，若`-R`和`-N`同时使用将会取其交集
+    将补丁应用到指定节点或指定角色，若 `-R` 和 `-N` 同时使用，将会取其交集
 
     {{< copyable "shell-regular" >}}
 
     ```
-    # 为指定节点应用 patch
+    # 为指定节点应用补丁
     tiup dm patch dm-test dm-master-hotfix-linux-amd64.tar.gz -N 172.16.100.21:8261
     tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -N 172.16.100.21:8262
 
-    # 或者根据角色应用 patch
+    # 为指定角色应用补丁
     tiup dm patch dm-test dm-master-hotfix-linux-amd64.tar.gz -R dm-master
     tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -R dm-worker
     ```
