@@ -470,28 +470,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：false
 
-## prepared-plan-cache
-
-prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
-
-### `enabled`
-
-+ 开启 prepare 语句的 plan cache。
-+ 默认值：false
-
-### `capacity`
-
-+ 缓存语句的数量。
-+ 默认值：1000
-+ 类型为 uint，小于 0 的值会被转化为大整数。
-
-### `memory-guard-ratio`
-
-+ 用于防止 prepare plan cache 的内存用量超过 performance.server-memory-quota。当 prepare plan cache 的内存用量超过 server-memory-quota * (1 - prepared-plan-cache.memory-guard-ratio) 时，TiDB 会剔除 LRU 中的元素。
-+ 默认值：0.1
-+ 最小值：0
-+ 最大值：1
-
 ## opentracing
 
 opentracing 的相关的设置。
