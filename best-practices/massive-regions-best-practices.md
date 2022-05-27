@@ -136,14 +136,6 @@ Region 分片的大小可以通过 [`coprocessor.region-split-size`](/tikv-confi
 
 Region 分片调大以后，为了增加查询并发，应当设置 [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) 为 `true`。这个配置会将每个 Region 分片划分为更小的区间 (bucket)，并且以这个更小的区间作为并发查询单位。bucket 的大小通过 [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) 来控制，默认值为 `96MiB`。
 
-如果分片大小达到 512 MiB 及以上，可以添加 split-bucket-scheduler 调度器，以加速热点调度。
-
-{{< copyable "" >}}
-
-```
->> pd-ctl scheduler add split-bucket-scheduler
-```
-
 ## 其他问题和解决方案
 
 ### 切换 PD Leader 的速度慢
