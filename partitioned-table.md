@@ -718,6 +718,8 @@ SELECT fname, lname, region_code, dob
 * partition_column = constant
 * partition_column IN (constant1, constant2, ..., constantN)
 
+分区裁剪暂不支持 `LIKE` 语句。
+
 ### 分区裁剪生效的场景
 
 1. 分区裁剪需要使用分区表上面的查询条件，所以根据优化器的优化规则，如果查询条件不能下推到分区表，则相应的查询语句无法执行分区裁剪。
@@ -1436,3 +1438,5 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 ```
 
 从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+
+目前，静态和动态裁剪模式都不支持执行计划缓存。
