@@ -273,6 +273,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
     事务写入时，对 key 的存在性断言报错，请参考[数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md#error-8141)。
 
+* Error Number: 8143
+
+    非事务 DML 语句的一个 batch 报错，语句中止，请参考[非事务 DML 语句](/non-transactional-dml.md)
+
 * Error Number: 8200
 
     尚不支持的 DDL 语法。请参考[与 MySQL DDL 的兼容性](/mysql-compatibility.md#ddl-的限制)。
