@@ -40,7 +40,7 @@ DESC analyze_status;
 {{< copyable "sql" >}}
 
 ```sql
-select * from information_schema.analyze_status;
+SELECT * FROM information_schema.analyze_status;
 ```
 
 ```sql
