@@ -285,6 +285,19 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
+##### 动态裁剪模式下的分区表统计信息
+
+分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。 目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式开启的情况下，任一分区上的统计信息更新都会触发 GlobalStats 的更新。
+
+> **注意：**
+>
+> - 当触发 GlobalStats 更新时：
+>
+>     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GloalStats， 并通过 warning 信息提示用户缺少分区的统计信息。
+>     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GloalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
+>
+> - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
+
 #### 增量收集
 
 对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来单独分析新增的部分，以提高分析的速度。
@@ -393,6 +406,22 @@ TiDB 支持持久化的配置项包括：
 > **注意：**
 >
 > 当再次开启 `ANALYZE` 配置持久化功能时，如果之前记录的持久化配置项已经不适用当前的数据，请手动执行 `ANALYZE` 语句并指定新的持久化配置项。
+
+#### 分区表的 ANALYZE 配置持久化功能
+
+在静态裁剪模式下 ANALYZE 分区表时，配置持久化遵守：
+
+- ANALYZE TABLE 时会持久化表级别的配置和实际被 ANALYZE 的所有分区的配置
+- 分区的统计信息会继承使用表级别的持久化配置
+- ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置只持久化到分区级别，不会影响表级别的持久化配置
+- 当 ANALYZE 语句指定了配置，且同时存在持久化配置时，按照 语句 > 分区 > 表 的优先级继承和重写配置信息
+
+在[动态裁剪模式](/partitioned-table.md#动态裁剪模式)下 ANALYZE 分区表时，配置持久化遵守：
+
+- ANALYZE TABLE 时只持久化表级别的配置
+- 分区的统计信息会继承使用表级别的持久化配置
+- GlobalStats 会使用表级别的持久化配置
+- ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置会被忽略，且不会被持久化
 
 ### 查看 ANALYZE 状态
 
@@ -592,15 +621,29 @@ SHOW STATS_TOPN [ShowLikeOrWhere];
 
 可以通过执行 `DROP STATS` 语句来删除统计信息。
 
-语法如下：
-
 {{< copyable "sql" >}}
 
 ```sql
 DROP STATS TableName;
 ```
 
-该语句会删除 TableName 中所有的统计信息。
+该语句会删除 TableName 中所有的统计信息，如果是分区表，包括所有分区的统计信息和分区动态裁剪模式下生成的 GlobalStats。
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName PARTITION PartitionNameList;
+```
+
+该语句只删除 PartitionNameList 中对应的分区的统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName GLOBAL;
+```
+
+该语句只删除该表在分区动态裁剪模式下生成的 GlobalStats。
 
 ## 统计信息的加载
 
