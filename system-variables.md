@@ -1636,14 +1636,6 @@ set tidb_slow_log_threshold = 200;
 - 范围：`[-1, 256]`
 - TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。
 
-示例：
-
-{{< copyable "sql" >}}
-
-```sql
-set tidb_max_tiflash_threads = 10;
-```
-
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
