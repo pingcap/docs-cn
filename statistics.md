@@ -330,29 +330,22 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
-1. 执行以下 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
+1. 执行以下 SQL 语句：
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT ci.instance as instance, cp.id as id FROM information_schema.cluster_info ci, information_schema.cluster_processlist cp WHERE ci.status_address = cp.instance and ci.type = 'tidb' and cp.info like 'analyze table %' and cp.user = '' and cp.host = '';
+    SHOW ANALYZE STATUS
     ```
 
-    如果输出结果为空，说明后台没有正在执行的 `ANALYZE` 任务。
+    查看 `instance` 列和 `process_id` 列获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
 
-2. 使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后执行以下 `KILL` 语句：
+2. 终止正在后台运行的 `ANALYZE` 任务。
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    KILL TIDB ${id};
-    ```
-
-    `${id}` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
-
-    > **注意：**
-    >
-    > 只有当使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
+   - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`），你可以直接执行 `KILL TIDB ${id};` 语句。其中，${id} 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
+   - 如果 `enable-global-kill` 的值为 `false`，你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ${id};` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
+  
+关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
@@ -415,17 +408,25 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
 
-目前 `SHOW ANALYZE STATUS` 会输出 7 列，具体如下：
+目前 `SHOW ANALYZE STATUS` 会输出 11 列，具体如下：
 
 | 列名 | 说明            |
 | -------- | ------------- |
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息。如果分析索引则会包含索引名 |
-| row_count | 已经分析的行数 |
+| job_info | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。 |
+| processed_rows | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
+| end_time | 任务结束执行的时间 |
 | state | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
+| fail_reason | 任务失败的原因。如果执行成功则为 `NULL`。 |
+| instance | 执行任务的 TiDB 实例 |
+| process_id | 执行任务的 process ID |
+
+从 TiDB v6.1.0 起，执行 `SHOW ANALYZE STATUS` 语句将显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。在 TiDB v6.1.0 之前，执行 `SHOW ANALYZE STATUS` 语句仅显示实例级别的任务，且 TiDB 重启后任务记录会被清空。
+
+`SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
 
 当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 且 TiDB 后台的统计信息自动更新任务的内存占用超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
 
