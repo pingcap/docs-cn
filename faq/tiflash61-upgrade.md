@@ -20,7 +20,7 @@ v4 用户已经接近产品周期尾声，请及时尽早升级到主流版本�
 #### <a name="proxy"></a>TiFlash Proxy
 TiFlash 在 6.1 版本将 Proxy 做了升级（与 TiKV 6.0 版本对齐）。该版本升级了 rocksdb 的版本，在升级过程中会自动将数据格式转换为新版本。
 正常升级风险不大，但有特殊需要的用户请注意：6.1 降级到之前的任意低版本时，会无法解析新版的 rocksdb 配置，导致 TiFlash 重启失败。请事先做好升级验证工作并尽可能做好应急方案（确保 TiKV 数据可用，并预估重新同步数据可能造成的影响）。
-##### Workaround: 
+##### 测试环境及特殊回退需求下的对策
 强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[此文](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tiflash-cluster)。
 
 #### Partition Table Dynamic Pruning
@@ -45,10 +45,10 @@ Partition Table Dynamic Pruning
 如用户关闭了分区表动态分区裁剪，可略过此段。
 TiDB 6.0之后的全新安装会默认开启“动态分区裁剪”（Dynamic Pruning），旧版本升级过程遵循用户已由有设定，不会自动开启（相对的也不会关闭）此功能。6.0 版本用户在升级过程中不需要做任何特别操作，但本文提示用户，升级过程中将会发生自动的分区表全局统计信息的更新动作。
 
-##### TiFlash PageStorage
+#### TiFlash PageStorage
 
 同 v5.x 升级至 v6.1。
 
-##### TiFlash Proxy
+#### TiFlash Proxy
 参见 v5.x -> v6.1 [升级说明](#proxy)
 
