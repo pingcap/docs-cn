@@ -23,11 +23,11 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 
 ## TiDB 扩展字段
 
-默认情况下，Avro 只会在 DML 事件中囊括发生数据变更的行中的所有数据信息，不包括数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时会新增三个字段：
+默认情况下，Avro 只收集在 DML 事件中发生数据变更的行的所有数据信息，不收集数据变更的类型和 TiDB 专有的 CommitTS 事务唯一标识信息。为了解决这个问题，TiCDC 在 Avro 协议格式中附加了 TiDB 扩展字段。当 `sink-uri` 中设置 `enable-tidb-extension` 为 `true` （默认为 `false`）后，TiCDC 生成 Avro 消息时会新增三个字段：
 
 - `_tidb_op`：DML 的类型，"c" 表示插入，"u" 表示更新。
 - `_tidb_commit_ts`：事务唯一标识信息。
-- `_tidb_commit_physical_time`：事务标识信息中的现实时间时间戳。
+- `_tidb_commit_physical_time`：事务标识信息中现实时间的时间戳。
 
 配置样例如下所示：
 
@@ -77,7 +77,7 @@ Key 中的 `fields` 只包含主键或唯一索引列。
 
 Value 数据格式默认与 Key 数据格式相同，但是 Value 的 `fields` 中包含了所有的列，而不仅仅是主键列。
 
-如果打开了 TiDB 扩展字段选项，那么 Value 数据格式将会变成
+如果开启了 [TiDB 扩展字段](#tidb-扩展字段)，那么 Value 数据格式将会变成：
 
 ```
 {
@@ -176,7 +176,7 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 | SET        | SET       | string    |                                                                                                                           |
 | DECIMAL    | DECIMAL   | bytes     | 当 `avro-decimal-handling-mode` 为 string 时，AVRO_TYPE 也为 string。                                                         |
 
-对于 Avro 协议，还有另外两个 `sink-uri` 参数: `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode`，影响着 Column 数据格式:
+对于 Avro 协议，另外两个 `sink-uri` 参数 `avro-decimal-handling-mode` 和 `avro-bigint-unsigned-handling-mode` 也会影响 Column 数据格式:
 
 - `avro-decimal-handling-mode` 决定了如何处理 DECIMAL 字段，它有两个选项：
 
@@ -247,13 +247,13 @@ DECIMAL(10, 4)
 
 ## DDL 事件与 Schema 变更
 
-Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决 schema 的兼容性问题。
+Avro 并不会向下游生成 DDL 事件。Avro 会在每次 DML 事件发生时检测是否发生 schema 变更，如果发生了 schema 变更，Avro 会生成新的 schema，并尝试向 Schema Registry 注册。注册时，Schema Registry 会做兼容性检测，如果此次 schema 变更没有通过兼容性检测，注册将会失败，Avro 并不会尝试解决 schema 的兼容性问题。
 
-同时，即使通过兼容性检测并成功注册新版本，数据的生产者和消费者可能仍然需要升级才能正确工作。
+同时，即使 schema 变更通过兼容性检测并成功注册新版本，数据的生产者和消费者可能仍然需要升级才能正确工作。
 
 比如，Confluent Schema Registry 默认的兼容性策略是 BACKWARD，在这种策略下，如果你在源表增加一个非空列，Avro 在生成新 schema 向 Schema Registry 注册时将会因为兼容性问题失败，这个时候 changefeed 将会进入 error 状态。
 
-如需了解更多 schema 相关信息，请参阅 [Schema Registry 的相关资料](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
+如需了解更多 schema 相关信息，请参阅 [Schema Registry 的相关文档](https://docs.confluent.io/platform/current/schema-registry/avro.html)。
 
 ## Topic 分发
 
