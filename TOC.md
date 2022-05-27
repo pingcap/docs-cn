@@ -169,6 +169,7 @@
         - [TiKV 线程调优](/tune-tikv-thread-performance.md)
         - [TiKV 内存调优](/tune-tikv-memory-performance.md)
         - [TiKV Follower Read](/follower-read.md)
+        - [Region 性能调优](/tune-region-performance.md)
         - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
   - SQL 性能调优
