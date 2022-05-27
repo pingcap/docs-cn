@@ -23,8 +23,9 @@
   - 快速开始
     - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
-    - TiDB 的简单 CRUD 应用程序
+    - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
+      - [Golang](/develop/dev-guide-sample-application-golang.md)
   - 示例程序
     - [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)
   - 连接到 TiDB
@@ -549,9 +550,11 @@
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
+        - [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
+      - [`BATCH`](/sql-statements/sql-statement-batch.md)
       - [`BEGIN`](/sql-statements/sql-statement-begin.md)
       - [`CHANGE COLUMN`](/sql-statements/sql-statement-change-column.md)
       - [`CHANGE DRAINER`](/sql-statements/sql-statement-change-drainer.md)
@@ -700,6 +703,7 @@
       - [隔离级别](/transaction-isolation-levels.md)
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
+      - [非事务 DML 语句](/non-transactional-dml.md)
     - 垃圾回收 (GC)
       - [GC 机制简介](/garbage-collection-overview.md)
       - [GC 配置](/garbage-collection-configuration.md)

@@ -129,6 +129,7 @@ show warnings;
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
 | raftstore.raft-max-size-per-msg | 允许生成的单个消息包的大小，软限制 |
+| raftstore.raft-entry-max-size | 单个 Raft 日志最大大小，硬限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
@@ -168,6 +169,10 @@ show warnings;
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
+| quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
+| quota.foreground-write-bandwidth | 限制事务写入的带宽，软限制 |
+| quota.foreground-read-bandwidth | 限制事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
+| quota.max-delay-duration | 单次前台读写请求被强制等待的最大时间 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
@@ -195,6 +200,9 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
+| server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
+| server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
+| server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |

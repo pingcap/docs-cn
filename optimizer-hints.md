@@ -244,6 +244,48 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 
 - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
 
+### LEADING(t1_name [, tl_name ...])
+
+`LEADING(t1_name [, tl_name ...])` 提示优化器在生成多表连接的执行计划时，按照 hint 中表名出现的顺序来确定多表连接的顺序。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+```
+
+在以上多表连接查询语句中，`LEADING()` 中表出现的顺序决定了优化器将会先对表 `t1` 和 `t2` 进行连接，再将结果和表 `t3` 进行连接。该 hint 比 [`STRAIGHT_JOIN`](#straight_join) 更为通用。
+
+`LEADING` hint 在以下情况下会失效：
+
++ 指定了多个 `LEADING` hint
++ `LEADING` hint 中指定的表名不存在
++ `LEADING` hint 中指定了重复的表名
++ 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
++ 已经存在 `straight_join()` hint
++ 查询语句中包含 outer join
++ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`）同时使用时
+
+当出现了上述失效的情况，会输出 warning 警告。
+
+```sql
+-- 指定了多个 LEADING hint
+
+SELECT /*+ LEADING(t1, t2) LEADING(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+
+-- 通过执行 `show warnings` 了解具体产生冲突的原因
+
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                           |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Warning | 1815 | We can only use one leading hint at most, when multiple leading hints are used, all leading hints will be invalid |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+```
+
 ## 查询范围生效的 Hint
 
 这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
@@ -340,6 +382,21 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 ```sql
 prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 ```
+
+### STRAIGHT_JOIN()
+
+`STRAIGHT_JOIN()` 提示优化器在生成表连接顺序时按照表名在 `FROM` 子句中出现的顺序进行连接。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ STRAIGHT_JOIN() */ * FROM t t1, t t2 WHERE t1.a = t2.a;
+```
+
+> **注意：**
+>
+> - `STRAIGHT_JOIN` 优先级高于 `LEADING`，当这两类 Hint 同时存在时，`LEADING` 不会生效。
+> - 建议使用 `LEADING` Hint，它比 `STRAIGHT_JOIN` Hint 更通用。
 
 ### NTH_PLAN(N)
 
