@@ -1485,10 +1485,6 @@ explain select * from t where age=5;
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
-> **警告：**
->
-> 目前分区表动态裁剪模式为实验特性，不建议在生产环境中使用。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：static

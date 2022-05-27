@@ -718,6 +718,8 @@ SELECT fname, lname, region_code, dob
 * partition_column = constant
 * partition_column IN (constant1, constant2, ..., constantN)
 
+分区裁剪暂不支持 `LIKE` 语句。
+
 ### 分区裁剪生效的场景
 
 1. 分区裁剪需要使用分区表上面的查询条件，所以根据优化器的优化规则，如果查询条件不能下推到分区表，则相应的查询语句无法执行分区裁剪。
@@ -1300,10 +1302,6 @@ select * from t;
 
 ### 动态裁剪模式
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
 
 {{< copyable "sql" >}}
@@ -1360,78 +1358,21 @@ mysql> explain select * from t1 where id < 150;
 
 从以上查询结果可知，执行计划中的 Union 消失了，分区裁剪依然生效，且执行计划只访问了 `p0` 和 `p1` 两个分区。
 
-`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
+`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式下，执行计划可以使用 IndexJoin 的方式，这在 `static` 模式下是无法实现的。请看下面的例子：
 
-+ 不能使用 Plan Cache（见以下示例一和示例二）
-+ 不能使用 IndexJoin 的执行方式（见以下示例三和示例四）
-
-**示例一**：以下示例在配置文件中开启 Plan Cache 功能，并在 `static` 模式下执行同一个查询两次。
+**示例一**：以下示例在 `static` 模式下执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set @a=150;
-Query OK, 0 rows affected (0.00 sec)
+mysql> create table t1 (id int, age int, key(id)) partition by range(id)
+    -> (partition p0 values less than (100),
+    ->  partition p1 values less than (200),
+    ->  partition p2 values less than (300),
+    ->  partition p3 values less than (400));
+Query OK, 0 rows affected (0,08 sec)
+mysql> create table t2 (id int, code int);
 
-mysql> set @@tidb_partition_prune_mode = 'static';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> prepare stmt from 'select * from t1 where id < ?';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
--- static 模式下执行两次相同的查询，第二次无法命中缓存
-mysql> select @@last_plan_from_cache;
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      0 |
-+------------------------+
-1 row in set (0.00 sec)
-```
-
-`last_plan_from_cache` 变量可以显示上一次查询是否命中 Plan Cache。从以上示例一可知，在 `static` 模式下，即使在分区表上执行同一个查询多次，也不会命中 Plan Cache。
-
-**示例二**：以下示例在 `dynamic` 模式下执行与示例一相同的操作。
-
-{{< copyable "sql" >}}
-
-```sql
-mysql> set @@tidb_partition_prune_mode = 'dynamic';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> prepare stmt from 'select * from t1 where id < ?';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
--- dynamic 模式下第二次执行命中缓存
-mysql> select @@last_plan_from_cache;
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      1 |
-+------------------------+
-1 row in set (0.00 sec)
-```
-
-由示例二结果可知，开启 `dynamic` 模式后，分区表查询能命中 Plan Cache 。
-
-**示例三**：以下示例在 `static` 模式下尝试执行计划带 IndexJoin 的查询。
-
-{{< copyable "sql" >}}
-
-```sql
-mysql> create table t2(id int, code int);
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> set @@tidb_partition_prune_mode = 'static';
@@ -1460,11 +1401,19 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 |       └─TableFullScan_34       | 10000.00 | cop[tikv] | table:t1, partition:p3 | keep order:false, stats:pseudo                 |
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+
 17 rows in set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                            |
++---------+------+------------------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1, t2) */ or /*+ TIDB_INLJ(t1, t2) */ is inapplicable |
++---------+------+------------------------------------------------------------------------------------+
+1 row in set (0,00 sec)
 ```
 
-从以上示例三结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
+从以上示例一结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
 
-**示例四**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
+**示例二**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
@@ -1488,4 +1437,6 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 8 rows in set (0.00 sec)
 ```
 
-从示例四结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+
+目前，静态和动态裁剪模式都不支持执行计划缓存。
