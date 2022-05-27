@@ -487,6 +487,7 @@
     - [TiCDC Open API](/ticdc/ticdc-open-api.md)
     - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+    - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
   - sync-diff-inspector
@@ -550,6 +551,7 @@
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
+        - [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
@@ -683,6 +685,7 @@
       - [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md)
       - [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
+      - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
       - [JSON 函数](/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)

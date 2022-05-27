@@ -669,22 +669,34 @@ sudo systemctl enable ntpd.service
 
 ## 安装 numactl 工具
 
-本段主要介绍如果安装 NUMA 工具。在生产环境中，因为硬件机器配置往往高于需求，为了更合理规划资源，会考虑单机多实例部署 TiDB 或者 TiKV。NUMA 绑核工具的使用，主要为了防止 CPU 资源的争抢，引发性能衰退。
+本段主要介绍如何安装 NUMA 工具。在生产环境中，因为硬件机器配置往往高于需求，为了更合理规划资源，会考虑单机多实例部署 TiDB 或者 TiKV。NUMA 绑核工具的使用，主要为了防止 CPU 资源的争抢，引发性能衰退。
 
 > **注意：**
 >
 > - NUMA 绑核是用来隔离 CPU 资源的一种方法，适合高配置物理机环境部署多实例使用。
 > - 通过 `tiup cluster deploy` 完成部署操作，就可以通过 `exec` 命令来进行集群级别管理工作。
 
-1. 登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）
+安装 NUMA 工具有两种方法：
+
+方法 1：登录到目标节点进行安装（以 CentOS Linux release 7.7.1908 (Core) 为例）。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+sudo yum -y install numactl
+```
+
+方法 2：通过 `tiup cluster exec` 在已有集群上进行批量安装。
+
+- 如果尚未部署 TiDB 集群，你可以参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署：
 
     {{< copyable "shell-regular" >}}
 
     ```bash
-    sudo yum -y install numactl
+    tiup cluster deploy tidb-test v6.0.0 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
-2. 通过 TiUP 的 cluster 执行完 exec 命令来完成批量安装
+- `tiup cluster exec` 命令的说明：
 
     {{< copyable "shell-regular" >}}
 
@@ -704,7 +716,7 @@ sudo systemctl enable ntpd.service
         --sudo             use root permissions (default false)
     ```
 
-    将 tidb-test 集群所有目标主机通过 sudo 权限执行安装命令
+- 将 `tidb-test` 集群所有目标主机通过 `sudo` 权限执行安装命令：
 
     {{< copyable "shell-regular" >}}
 
