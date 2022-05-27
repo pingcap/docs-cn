@@ -1598,10 +1598,6 @@ explain select * from t where age=5;
 
 ### tidb_partition_prune_mode <span class="version-mark">New in v5.1</span>
 
-> **Warning:**
-
-> Currently, the dynamic pruning mode for partitioned tables is an experimental feature. It is not recommended that you use it in production environments.
-
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Default value: `static`
