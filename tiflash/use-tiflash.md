@@ -338,7 +338,7 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 > **注意：**
 >
-> 设为 `true` 时，所有查询的表都会只读取 TiFlash 副本，设为 `false` 则只读取 TiKV 副本。设为 `true` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
+> 设为 `tiflash` 时，所有查询的表都会只读取 TiFlash 副本，设为 `tikv` 则只读取 TiKV 副本。设为 `tiflash` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
 
 可以使用以下任意一种方式进行设置：
 
@@ -369,6 +369,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
     * 支持的 Join 类型包括 Inner Join、Left Join、Semi Join、Anti Semi Join、Left Semi Join、Anti Left Semi Join
     * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join）；在计算 Cartesian Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
+* Window：当前支持下推的窗口函数包括：rown_umber()、rank() 和 dense_rank()
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
@@ -376,7 +377,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce, is`
 * 位运算：`bitand, bitor, bigneg, bitxor`
 * 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp, regexp`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname, to_seconds, to_days, from_days, weekofyear`
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
@@ -604,7 +605,6 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
 
 * TiFlash 计算层：
     * 不支持检查溢出的数值。例如将两个 `BIGINT` 类型的最大值相加 `9223372036854775807 + 9223372036854775807`，该计算在 TiDB 中预期的行为是返回错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2` 且无报错。
-    * 不支持窗口函数。
     * 不支持从 TiKV 读取数据。
     * 目前 TiFlash 中的 `sum` 函数不支持传入字符串类型的参数，但 TiDB 在编译时无法检测出这种情况。所以当执行类似于 `select sum(string_col) from t` 的语句时，TiFlash 会报错 `[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`。要避免这类报错，需要手动把 SQL 改写成 `select sum(cast(string_col as double)) from t`。
     * TiFlash 目前的 Decimal 除法计算和 TiDB 存在不兼容的情况。例如在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用精度高于编译时推断出来的类型。这导致在一些带有 Decimal 除法的 SQL 语句在 TiDB + TiKV 上的执行结果会和 TiDB + TiFlash 上的执行结果不一样，示例如下：

@@ -428,6 +428,17 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 `SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
 
+当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 且 TiDB 后台的统计信息自动更新任务的内存占用超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
+
+```sql
+mysql> SHOW ANALYZE STATUS [ShowLikeOrWhere];
++--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
+| Table_schema | Table_name | Partition_name | Job_info                                                                                  | Processed_rows | Start_time          | End_time            | State    | Fail_reason                                                                   | 
++--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
+| test         | sbtest1    |                | retry auto analyze table all columns with 100 topn, 0.055 samplerate                      |        2000000 | 2022-05-07 16:41:09 | 2022-05-07 16:41:20 | finished | NULL                                                                          | 
+| test         | sbtest1    |                | auto analyze table all columns with 100 topn, 0.5 samplerate                              |              0 | 2022-05-07 16:40:50 | 2022-05-07 16:41:09 | failed   | analyze panic due to memory quota exceeds, please try with smaller samplerate |
+```
+
 ## 统计信息的查看
 
 你可以通过一些语句来查看统计信息的状态。

@@ -102,19 +102,21 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 > **注意：**
 >
-> 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
+> - 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
 >
-> ```sql
-> mysql> show placement labels;
-> +--------+----------------+
-> | Key    | Values         |
-> +--------+----------------+
-> | disk   | ["ssd"]        |
-> | region | ["us-east-1"]  |
-> | zone   | ["us-east-1a"] |
-> +--------+----------------+
-> 3 rows in set (0.00 sec)
-> ```
+>     ```sql
+>     mysql> show placement labels;
+>     +--------+----------------+
+>     | Key    | Values         |
+>     +--------+----------------+
+>     | disk   | ["ssd"]        |
+>     | region | ["us-east-1"]  |
+>     | zone   | ["us-east-1a"] |
+>     +--------+----------------+
+>     3 rows in set (0.00 sec)
+>     ```
+>
+> - 使用 `CREATE PLACEMENT POLICY` 创建放置规则时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|

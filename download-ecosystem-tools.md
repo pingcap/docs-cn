@@ -20,13 +20,12 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 ## 下载步骤
 
-1. 访问 [TiDB 社区版](https://pingcap.com/zh/product-community/) 页面。
-2. 点击 **同意 PingCAP 社区软件许可协议**。
-3. 找到 **TiDB-community-toolkit 软件包**，点击**立即下载**。
+1. 访问 [TiDB 社区版](https://pingcap.com/zh/product-community/)页面。
+2. 找到 **TiDB-community-toolkit 软件包**，点击**立即下载**。
 
 > **注意：**
 >
-> - 点击**立即下载**后，默认下载当前 TiDB 的最新发布版本。如需下载历史版本，请在 [TiDB 社区版](https://pingcap.com/zh/product-community/) 页面底部查看历史版本下载信息。
+> - 点击**立即下载**后，默认下载当前 TiDB 的最新发布版本。如需下载历史版本，请在 [TiDB 社区版](https://pingcap.com/zh/product-community/)页面底部查看历史版本下载信息。
 > - 如果需要在 Kubernetes 上部署运维 TiDB，无需下载 TiDB-community-toolkit 软件包，请参考[离线安装 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator#离线安装-tidb-operator)。
 
 ## TiDB 工具包说明
