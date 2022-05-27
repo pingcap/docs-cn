@@ -143,7 +143,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
 
-    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Post、User、Password 的参数：
+    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
     {{< copyable "" >}}
 
@@ -155,7 +155,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setPassword("");
     ```
 
-    若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+    若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
     {{< copyable "shell-regular" >}}
 

@@ -13,7 +13,7 @@ aliases: ['/zh/tidb/dev/sample-application-java']
 
 > **注意：**
 >
-> 推荐使用 Java 8 以上版本进行 TiDB 的应用程序的编写。
+> 推荐使用 Java 8 及以上版本进行 TiDB 的应用程序的编写。
 
 > **建议：**
 >
@@ -535,9 +535,9 @@ public class JDBCExample
         // 2. And then, create DAO to manager your data.
         PlayerDAO dao = new PlayerDAO(mysqlDataSource);
 
-        // 3. Run some simple example.
+        // 3. Run some simple examples.
 
-        // Create a player, has a coin and a goods.
+        // Create a player, who has a coin and a goods..
         dao.createPlayers(Collections.singletonList(new PlayerBean("test", 1, 1)));
 
         // Get a player.
@@ -545,7 +545,7 @@ public class JDBCExample
         System.out.printf("PlayerDAO.getPlayer:\n    => id: %s\n    => coins: %s\n    => goods: %s\n",
                 testPlayer.getId(), testPlayer.getCoins(), testPlayer.getGoods());
 
-        // Create players with bulk inserts, insert 1919 players totally, and per batch for 114 players.
+        // Create players with bulk inserts. Insert 1919 players totally, with 114 players per batch.
         int addedCount = dao.bulkInsertRandomPlayers(1919, 114);
         System.out.printf("PlayerDAO.bulkInsertRandomPlayers:\n    => %d total inserted players\n", addedCount);
 
@@ -556,7 +556,7 @@ public class JDBCExample
         // Print 3 players.
         dao.printPlayers(3);
 
-        // 4. Getting further.
+        // 4. Explore more.
 
         // Player 1: id is "1", has only 100 coins.
         // Player 2: id is "2", has 114514 coins, and 20 goods.
@@ -568,12 +568,12 @@ public class JDBCExample
         System.out.printf("PlayerDAO.createPlayers:\n    => %d total inserted players\n", addedCount);
 
         // Player 1 wants to buy 10 goods from player 2.
-        // It will cost 500 coins, but player 1 can't afford it.
+        // It will cost 500 coins, but player 1 cannot afford it.
         System.out.println("\nPlayerDAO.buyGoods:\n    => this trade will fail");
         int updatedCount = dao.buyGoods(player2.getId(), player1.getId(), 10, 500);
         System.out.printf("PlayerDAO.buyGoods:\n    => %d total update players\n", updatedCount);
 
-        // So player 1 have to reduce his incoming quantity to two.
+        // So player 1 has to reduce the incoming quantity to two.
         System.out.println("\nPlayerDAO.buyGoods:\n    => this trade will success");
         updatedCount = dao.buyGoods(player2.getId(), player1.getId(), 2, 100);
         System.out.printf("PlayerDAO.buyGoods:\n    => %d total update players\n", updatedCount);
@@ -831,7 +831,7 @@ public class HibernateExample
             // 2. And then, create DAO to manager your data.
             PlayerDAO playerDAO = new PlayerDAO();
 
-            // 3. Run some simple example.
+            // 3. Run some simple examples.
 
             // Create a player who has 1 coin and 1 goods.
             playerDAO.runTransaction(session, playerDAO.createPlayers(Collections.singletonList(
@@ -849,7 +849,7 @@ public class HibernateExample
             // Print 3 players.
             playerDAO.runTransaction(session, playerDAO.printPlayers(3));
 
-            // 4. Getting further.
+            // 4. Explore more.
 
             // Player 1: id is "1", has only 100 coins.
             // Player 2: id is "2", has 114514 coins, and 20 goods.
@@ -862,13 +862,13 @@ public class HibernateExample
             System.out.printf("PlayerDAO.createPlayers:\n    => %d total inserted players\n", addedCount);
 
             // Player 1 wants to buy 10 goods from player 2.
-            // It will cost 500 coins, but player 1 can't afford it.
+            // It will cost 500 coins, but player 1 cannot afford it.
             System.out.println("\nPlayerDAO.buyGoods:\n    => this trade will fail");
             Integer updatedCount = (Integer)playerDAO.runTransaction(session,
                     playerDAO.buyGoods(player2.getId(), player1.getId(), 10, 500));
             System.out.printf("PlayerDAO.buyGoods:\n    => %d total update players\n", updatedCount);
 
-            // So player 1 have to reduce his incoming quantity to two.
+            // So player 1 has to reduce the incoming quantity to two.
             System.out.println("\nPlayerDAO.buyGoods:\n    => this trade will success");
             updatedCount = (Integer)playerDAO.runTransaction(session,
                     playerDAO.buyGoods(player2.getId(), player1.getId(), 2, 100));
@@ -932,7 +932,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 <div label="使用 JDBC" href="tidb-cloud-jdbc">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host、Post、User、Password 的参数：
+若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
 {{< copyable "" >}}
 
@@ -944,7 +944,7 @@ mysqlDataSource.setUser("root");
 mysqlDataSource.setPassword("");
 ```
 
-若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
 ```
 mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
@@ -996,7 +996,7 @@ mysqlDataSource.setPassword("123456");
 </hibernate-configuration>
 ```
 
-若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
 ```
 mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
@@ -1042,7 +1042,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 <div label="使用 JDBC" href="run-jdbc">
 
-运行 `make`，这是两个操作的组合：
+运行 `make`，这是以下两个操作的组合：
 
 - 清理并构建 (make build)： `mvn clean package`
 - 运行 (make run)： `java -jar target/plain-java-jdbc-0.0.1-jar-with-dependencies.jar`
@@ -1053,7 +1053,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 <div label="使用 Hibernate（推荐）" href="run-hibernate">
 
-运行 `make`，这是两个操作的组合：
+运行 `make`，这是以下两个操作的组合：
 
 - 清理并构建 (make build)：`mvn clean package`
 - 运行 (make run)：`java -jar target/plain-java-hibernate-0.0.1-jar-with-dependencies.jar`

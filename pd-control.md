@@ -1222,7 +1222,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
+### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -1261,9 +1261,17 @@ Encoding 格式示例：
 >> store delete 1
 ```
 
+撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
+
+{{< copyable "" >}}
+
+```bash
+>> store cancel-delete 1
 ```
-......
-```
+
+> **注意：**
+>
+> 若下线过程中切换了 PD leader，需要手动修改 store limit。
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
 
@@ -1328,15 +1336,14 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
-### `unsafe remove-failed-stores [store-ids | show | history]`
+### `unsafe remove-failed-stores [store-ids | show]`
 
 > **警告：**
 >
 > - 此功能为有损恢复，无法保证数据和数据索引完整性。
-> - 此功能为实验特性，其接口、策略和内部实现在最终发布时可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
 > - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
 
-用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。详见 [Online Unsafe Recovery](/online-unsafe-recovery.md)。
 
 执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
 
@@ -1362,28 +1369,7 @@ Success!
 ]
 ```
 
-```bash
->> unsafe remove-failed-stores history
-```
-
-```bash
-[
-  "Store reports collection:",
-  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
-  "Store 8: region ...",
-  "...",
-  "Recovery Plan:",
-  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
-  "Store 8, ..."
-  "...",
-  "Execution Progress:",
-  "Store 10 finished,",
-  "Store 7 not yet finished",
-  "...",
-]
-```
-
-## jq 格式化 json 输出示例
+## jq 格式化 JSON 输出示例
 
 ### 简化 `store` 的输出
 
