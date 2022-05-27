@@ -108,14 +108,14 @@ This document lists the features supported in each TiDB version. Note that suppo
 
 ## Partitioning
 
-| Partitioning                                             | 6.0| 5.4          |   5.3    |   5.2    |   5.1    |   5.0    | 4.0 |
-| ------------------------------------------------------------ | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :-----: |
-| [Range partitioning](/partitioned-table.md)                  | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
-| [Hash partitioning](/partitioned-table.md)                   | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
-| [List partitioning](/partitioned-table.md)                   | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |    N    |
-| [List COLUMNS partitioning](/partitioned-table.md)           | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |    N    |
-| [`EXCHANGE PARTITION`](/partitioned-table.md)                | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |    N    |
-| [Dynamic Pruning](/partitioned-table.md#dynamic-pruning-mode) | Experimental | Experimental | Experimental | Experimental | Experimental |      N       |    N    |
+| Partitioning                                             | 6.1 | 6.0| 5.4          |   5.3    |   5.2    |   5.1    |   5.0    | 4.0 |
+| ------------------------------------------------------------ | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :-----: |
+| [Range partitioning](/partitioned-table.md)                  | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
+| [Hash partitioning](/partitioned-table.md)                   | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
+| [List partitioning](/partitioned-table.md)                   | Y | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |    N    |
+| [List COLUMNS partitioning](/partitioned-table.md)           | Y | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |    N    |
+| [`EXCHANGE PARTITION`](/partitioned-table.md)                | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |    N    |
+| [Dynamic Pruning](/partitioned-table.md#dynamic-pruning-mode) | Y | Experimental | Experimental | Experimental | Experimental | Experimental |      N       |    N    |
 
 ## Statistics
 

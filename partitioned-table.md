@@ -166,10 +166,6 @@ Range partitioning is particularly useful when one or more of the following cond
 
 ### List partitioning
 
-> **Warning:**
->
-> List partitioning is an experimental feature. It is not recommended that you use it in the production environment.
-
 Before creating a List partitioned table, you need to set the value of the session variable `tidb_enable_list_partition` to `ON`.
 
 {{< copyable "sql" >}}

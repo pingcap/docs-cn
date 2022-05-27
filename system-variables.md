@@ -837,10 +837,6 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_list_partition <span class="version-mark">New in v5.0</span>
 
-> **Warning:**
->
-> Currently, List partition and List COLUMNS partition are experimental features. It is not recommended that you use it in production environments.
-
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Default value: `OFF`

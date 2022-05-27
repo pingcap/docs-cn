@@ -159,10 +159,6 @@ To ensure that enough followers are placed in the primary region (`us-east-1`) s
 
 ### Assign placement to a partitioned table
 
-> **Note:**
->
-> The following example uses list partitioning, which is currently an experimental feature of TiDB. Partitioned tables also require the `PRIMARY KEY` to be included in all columns in the table's partitioning function.
-
 In addition to assigning placement options to tables, you can also assign the options to table partitions. For example:
 
 ```sql
