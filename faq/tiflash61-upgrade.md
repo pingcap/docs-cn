@@ -25,7 +25,7 @@ TiFlash 在 6.1 版本将 Proxy 做了升级（与 TiKV 6.0 版本对齐）。�
 
 #### Partition Table Dynamic Pruning
 如用户没有也不打算开启动态分区裁剪，可略过此段。
-TiDB 6.1 全新安装会默认开启“动态分区裁剪”（Dynamic Pruning）， 6.0之前的版本则默认关闭。旧版本升级过程遵循用户已由设定，不会自动开启（相对的也不会关闭）此功能。升级完成之后如果打开此功能则需要由用户手动更新分区表的全局统计信息。请参考以下详细升级说明：（link）
+TiDB 6.1 全新安装会默认开启“动态分区裁剪”（Dynamic Pruning）， 6.0之前的版本则默认关闭。旧版本升级过程遵循用户已由设定，不会自动开启（相对的也不会关闭）此功能。升级完成之后如果打开此功能则需要由用户手动更新分区表的全局统计信息。请务必参考以下详细说明：[动态分区裁剪](https://github.com/pingcap/docs-cn/blob/3a24eb9e532b7281cbf16386ef4dccd0b4c95eaa/statistics.md#%E5%8A%A8%E6%80%81%E8%A3%81%E5%89%AA%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%88%86%E5%8C%BA%E8%A1%A8%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF)
 
 #### TiFlash PageStorage
 v6.1 默认升级到 PageStorage V3 版本，即默认 format_version 为 4。新版本大幅降低了峰值写 IO 流量；以及高并发或者重型查询情况下，TiFlash 数据 GC 带来的 CPU 占用问题。
