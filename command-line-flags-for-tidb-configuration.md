@@ -189,8 +189,3 @@ When you start the TiDB cluster, you can use command-line options or environment
 
 + The names of the tables to be repaired in the repair mode.
 + Default: `""`
-
-## `--require-secure-transport`
-
-+ Determines whether to require the client to use the secure mode for data transport.
-+ Default: `false`

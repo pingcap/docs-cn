@@ -26,22 +26,14 @@ The TiDB configuration file supports more options than command-line parameters. 
 + Maximum Value (64-bit platforms): `18446744073709551615`
 + Maximum Value (32-bit platforms): `4294967295`
 
-### `mem-quota-query`
-
-- The maximum memory available for a single SQL statement.
-- Default value: `1073741824` (in bytes)
-- Note: When you upgrade the cluster from v2.0.x or v3.0.x to v4.0.9 or later versions, the default value of this configuration is `34359738368`.
-- Requests that require more memory than this value are handled based on the behavior defined by `oom-action`.
-- This value is the initial value of the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
-
 ### `oom-use-tmp-storage`
 
-+ Controls whether to enable the temporary storage for some operators when a single SQL statement exceeds the memory quota specified by `mem-quota-query`.
++ Controls whether to enable the temporary storage for some operators when a single SQL statement exceeds the memory quota specified by the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
 + Default value:  `true`
 
 ### `tmp-storage-path`
 
-+ Specifies the temporary storage path for some operators when a single SQL statement exceeds the memory quota specified by `mem-quota-query`.
++ Specifies the temporary storage path for some operators when a single SQL statement exceeds the memory quota specified by the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
 + Default value: `<temporary directory of OS>/<OS user ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`. `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` is the `Base64` encoding result of `<host>:<port>/<statusHost>:<statusPort>`.
 + This configuration takes effect only when `oom-use-tmp-storage` is `true`.
 
@@ -52,22 +44,6 @@ The TiDB configuration file supports more options than command-line parameters. 
 + When the value of this configuration is smaller than `0`, the above check and limit do not apply.
 + Default value: `-1`
 + When the remaining available storage in `tmp-storage-path` is lower than the value defined by `tmp-storage-quota`, the TiDB server reports an error when it is started, and exits.
-
-### `oom-action`
-
-- Specifies what operation TiDB performs when a single SQL statement exceeds the memory quota specified by `mem-quota-query` and cannot be spilled over to disk.
-- Default value: `"cancel"` (In TiDB v4.0.2 and earlier versions, the default value is `"log"`)
-- The valid options are `"log"` and `"cancel"`. When `oom-action="log"`, it prints the log only. When `oom-action="cancel"`, it cancels the operation and outputs the log.
-
-### `lower-case-table-names`
-
-- Configures the value of the `lower_case_table_names` system variable.
-- Default value: `2`
-- For details, see the [MySQL description](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names) of this variable.
-
-    > **Note:**
-    >
-    > Currently, TiDB only supports setting the value of this option to `2`. This means it is case-sensitive when you save a table name, but case-insensitive when you compare table names. The comparison is based on the lower case.
 
 ### `lease`
 
@@ -236,12 +212,6 @@ Configuration items related to log.
 - Default value: `10000`
 - When the number of query rows (including the intermediate results based on statistics) is larger than this value, it is an `expensive` operation and outputs log with the `[EXPENSIVE_QUERY]` prefix.
 
-### `query-log-max-len`
-
-- The maximum length of SQL output.
-- Default value: `4096`
-- When the length of the statement is longer than `query-log-max-len`, the statement is truncated to output.
-
 ## log.file
 
 Configuration items related to log files.
@@ -274,11 +244,6 @@ Configuration items related to log files.
 ## Security
 
 Configuration items related to security.
-
-### `require-secure-transport`
-
-- Determines whether to require the client to use the secure mode for data transport.
-- Default value: `false`
 
 ### `enable-sem`
 
@@ -372,12 +337,6 @@ Configuration items related to performance.
 - Unit: Millisecond
 - The transaction that holds locks longer than this time can only be committed or rolled back. The commit might not be successful.
 
-### `committer-concurrency`
-
-+ The number of goroutines for requests related to executing commit in the commit phase of the single transaction.
-+ Default value: `128`
-+ If the transaction to commit is too large, the waiting time for the flow control queue when the transaction is committed might be too long. In this situation, you can increase the configuration value to speed up the commit.
-
 ### `stmt-count-limit`
 
 - The maximum number of statements allowed in a single TiDB transaction.
@@ -427,11 +386,6 @@ Configuration items related to performance.
     - `mysql.stats_histograms`/`mysql.stats_buckets` and `mysql.stats_top_n`: TiDB no longer automatically analyzes and proactively updates statistics.
     - `mysql.stats_feedback`: TiDB no longer updates the statistics of the tables and indexes according to a part of statistics returned by the queried data.
 
-### `run-auto-analyze`
-
-- Determines whether TiDB executes automatic analysis.
-- Default value: `true`
-
 ### `feedback-probability`
 
 - The probability that TiDB collects the feedback statistics of each query.
@@ -467,26 +421,25 @@ Configuration items related to performance.
 + Default value: `false`
 + This configuration item controls the initial value of [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-new-in-v51). For example, when this configuration item is set to `true`, the default value of `tidb_enforce_mpp` is `ON`.
 
-## prepared-plan-cache
+### `stats-load-concurrency` <span class="version-mark">New in v5.4.0</span>
 
-The [`plan cache`](/sql-prepared-plan-cache.md) configuration of the `PREPARE` statement.
+> **WARNING:**
+>
+> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
 
-### `enabled`
++ The maximum number of columns that the TiDB synchronously loading statistics feature can process concurrently.
++ Default value: `5`
++ Currently, the valid value range is `[1, 128]`.
 
-- Determines whether to enable Plan Cache of the `PREPARE` statement.
-- Default value: `false`
+### `stats-load-queue-size` <span class="version-mark">New in v5.4.0</span>
 
-### `capacity`
+> **WARNING:**
+>
+> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
 
-- The number of cached statements.
-- Default value: `1000`
-- The type is `UINT`. Values less than `0` are converted to large integers.
-
-### `memory-guard-ratio`
-
-- It is used to prevent `performance.max-memory` from being exceeded. When `max-memory * (1 - prepared-plan-cache.memory-guard-ratio)` is exceeded, the elements in the LRU are removed.
-- Default value: `0.1`
-- The minimum value is `0`; the maximum value is `1`.
++ The maximum number of column requests that the TiDB synchronously loading statistics feature can cache.
++ Default value: `1000`
++ Currently, the valid value range is `[1, 100000]`.
 
 ## opentracing
 
@@ -718,23 +671,3 @@ The `experimental` section, introduced in v3.1.0, describes the configurations r
 
 + Controls whether an expression index can be created. Since TiDB v5.2.0, if the function in an expression is safe, you can create an expression index directly based on this function without enabling this configuration. If you want to create an expression index based on other functions, you can enable this configuration, but correctness issues might exist. By querying the `tidb_allow_function_for_expression_index` variable, you can get the functions that are safe to be directly used for creating an expression.
 + Default value: `false`
-
-### `stats-load-concurrency` <span class="version-mark">New in v5.4.0</span>
-
-> **WARNING:**
->
-> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
-
-+ The maximum number of columns that the TiDB synchronously loading statistics feature can process concurrently.
-+ Default value: `5`
-+ Currently, the valid value range is `[1, 128]`.
-
-### `stats-load-queue-size` <span class="version-mark">New in v5.4.0</span>
-
-> **WARNING:**
->
-> Currently, synchronously loading statistics is an experimental feature. It is not recommended that you use it in production environments.
-
-+ The maximum number of column requests that the TiDB synchronously loading statistics feature can cache.
-+ Default value: `1000`
-+ Currently, the valid value range is `[1, 100000]`.

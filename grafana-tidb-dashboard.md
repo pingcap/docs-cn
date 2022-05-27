@@ -59,7 +59,7 @@ To understand the key metrics displayed on the TiDB dashboard, check the followi
     - Transaction Statement Num: the number of SQL statements in a transaction
     - Transaction Retry Num: the number of times that a transaction retries
     - Session Retry Error OPS: the number of errors encountered during the transaction retry per second. This metric includes two error types: retry failure and exceeding the maximum number of retries
-    - Commit Token Wait Duration: the wait duration in the flow control queue during the transaction commit. If the wait duration is long, it means that the transaction to commit is too large and the flow is controlled. If the system still has resources available, you can speed up the commit process by increasing the `committer-concurrency` value in the TiDB configuration file
+    - Commit Token Wait Duration: the wait duration in the flow control queue during the transaction commit. If the wait duration is long, it means that the transaction to commit is too large and the flow is controlled. If the system still has resources available, you can speed up the commit process by increasing the system variable `tidb_committer_concurrency`.
     - KV Transaction OPS: the number of transactions executed per second within each TiDB instance
         - A user transaction might trigger multiple transaction executions in TiDB, including reading internal metadata, atomic retries of the user transaction, and so on
         - TiDB's internally scheduled tasks also operate on the database through transactions, which are also included in this panel

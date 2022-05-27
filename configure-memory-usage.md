@@ -6,58 +6,34 @@ aliases: ['/docs/dev/configure-memory-usage/','/docs/dev/how-to/configure/memory
 
 # TiDB Memory Control
 
-Currently, TiDB can track the memory quota of a single SQL query and take actions to prevent OOM (out of memory) or troubleshoot OOM when the memory usage exceeds a specific threshold value. In the TiDB configuration file, you can configure the options as below to control TiDB behaviors when the memory quota exceeds the threshold value:
+Currently, TiDB can track the memory quota of a single SQL query and take actions to prevent OOM (out of memory) or troubleshoot OOM when the memory usage exceeds a specific threshold value. The system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) specifies the action to take when a query reaches the memory limit:
 
-```
-# Valid options: ["log", "cancel"]
-oom-action = "cancel"
-```
-
-- If the configuration item above uses "log", when the memory quota of a single SQL query exceeds the threshold value which is controlled by the `tidb_mem_quota_query` variable, TiDB prints an entry of log. Then the SQL query continues to be executed. If OOM occurs, you can find the corresponding SQL query in the log.
-- If the configuration item above uses "cancel", when the memory quota of a single SQL query exceeds the threshold value, TiDB stops executing the SQL query immediately and returns an error to the client. The error information clearly shows the memory usage of each physical execution operator that consumes much memory in the SQL execution process.
+- A value of `LOG` means that queries will continue to execute when the [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) limit is reached, but TiDB will print an entry to the log.
+- A value of `CANCEL` means TiDB stops executing the SQL query immediately after the [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) limit is reached, and returns an error to the client. The error information clearly shows the memory usage of each physical execution operator that consumes memory in the SQL execution process.
 
 ## Configure the memory quota of a query
 
-In the configuration file, you can set the default Memory Quota for each Query. The following example sets it to 32GB:
-
-```
-mem-quota-query = 34359738368
-```
-
-In addition, you can control the memory quota of a query using the following session variables. Generally, you only need to configure `tidb_mem_quota_query`. Other variables are used for advanced configuration which most users do not need to care about.
-
-| Variable Name                    | Description                                       | Unit | Default Value |
-| -------------------------------- | ------------------------------------------------- | ---- | ------------- |
-| tidb_mem_quota_query             | Control the memory quota of a query               | Byte | 1 << 30 (1 GB)  |
-| tidb_mem_quota_hashjoin          | Control the memory quota of "HashJoinExec"        | Byte | 32 << 30      |
-| tidb_mem_quota_mergejoin         | Control the memory quota of "MergeJoinExec"       | Byte | 32 << 30      |
-| tidb_mem_quota_sort              | Control the memory quota of "SortExec"            | Byte | 32 << 30      |
-| tidb_mem_quota_topn              | Control the memory quota of "TopNExec"            | Byte | 32 << 30      |
-| tidb_mem_quota_indexlookupreader | Control the memory quota of "IndexLookUpExecutor" | Byte | 32 << 30      |
-| tidb_mem_quota_indexlookupjoin   | Control the memory quota of "IndexLookUpJoin"     | Byte | 32 << 30      |
-| tidb_mem_quota_nestedloopapply   | Control the memory quota of "NestedLoopApplyExec" | Byte | 32 << 30      |
-
-Some usage examples:
+The system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) sets the limit for a query in bytes. Some usage examples:
 
 {{< copyable "sql" >}}
 
 ```sql
 -- Set the threshold value of memory quota for a single SQL query to 8GB:
-set @@tidb_mem_quota_query = 8 << 30;
+SET tidb_mem_quota_query = 8 << 30;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
 -- Set the threshold value of memory quota for a single SQL query to 8MB:
-set @@tidb_mem_quota_query = 8 << 20;
+SET tidb_mem_quota_query = 8 << 20;
 ```
 
 {{< copyable "sql" >}}
 
 ```sql
 -- Set the threshold value of memory quota for a single SQL query to 8KB:
-set @@tidb_mem_quota_query = 8 << 10;
+SET tidb_mem_quota_query = 8 << 10;
 ```
 
 ## Configure the memory usage threshold of a tidb-server instance
@@ -93,7 +69,6 @@ The following example constructs a memory-intensive SQL statement that triggers 
     {{< copyable "" >}}
 
     ```toml
-    mem-quota-query = 34359738368  // Increases the memory limit of each query to construct SQL statements that take up larger memory.
     [performance]
     memory-usage-alarm-ratio = 0.8
     ```
@@ -132,7 +107,7 @@ The following example constructs a memory-intensive SQL statement that triggers 
 
 TiDB supports disk spill for execution operators. When the memory usage of a SQL execution exceeds the memory quota, tidb-server can spill the intermediate data of execution operators to the disk to relieve memory pressure. Operators supporting disk spill include Sort, MergeJoin, HashJoin, and HashAgg.
 
-- The disk spill behavior is jointly controlled by the [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query), [`oom-use-tmp-storage`](/tidb-configuration-file.md#oom-use-tmp-storage), [`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path), and [`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) parameters.
+- The disk spill behavior is jointly controlled by [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query), [`oom-use-tmp-storage`](/tidb-configuration-file.md#oom-use-tmp-storage), [`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path), and [`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) parameters.
 - When the disk spill is triggered, TiDB outputs a log containing the keywords `memory exceeds quota, spill to disk now` or `memory exceeds quota, set aggregate mode to spill-mode`.
 - Disk spill for the Sort, MergeJoin, and HashJoin operator is introduced in v4.0.0; disk spill for the HashAgg operator is introduced in v5.2.0.
 - When the SQL executions containing Sort, MergeJoin, or HashJoin cause OOM, TiDB triggers disk spill by default. When SQL executions containing HashAgg cause OOM, TiDB does not trigger disk spill by default. You can configure the system variable `tidb_executor_concurrency = 1` to trigger disk spill for HashAgg.
@@ -148,7 +123,7 @@ The following example uses a memory-consuming SQL statement to demonstrate the d
     {{< copyable "sql" >}}
 
     ```sql
-    set tidb_mem_quota_query = 1 << 30;
+    SET tidb_mem_quota_query = 1 << 30;
     ```
 
 2. Create a single table `CREATE TABLE t(a int);` and insert 256 rows of different data.
@@ -172,7 +147,7 @@ The following example uses a memory-consuming SQL statement to demonstrate the d
     {{< copyable "sql" >}}
 
     ```sql
-    set tidb_executor_concurrency = 1;
+    SET tidb_executor_concurrency = 1;
     ```
 
 5. Execute the same SQL statement. You can find that this time, the statement is successfully executed and no error message is returned. From the following detailed execution plan, you can see that HashAgg has used 600 MB of hard disk space.

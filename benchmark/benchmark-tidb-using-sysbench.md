@@ -11,13 +11,12 @@ It is recommended to use Sysbench 1.0 or later, which can be [downloaded here](h
 
 ### TiDB configuration
 
-Higher log level means fewer logs to be printed and thus positively influences TiDB performance. Enable `prepared plan cache` in the TiDB configuration to lower the cost of optimizing execution plan. Specifically, you can add the following command in the TiUP configuration file:
+Higher log level means fewer logs to be printed and thus positively influences TiDB performance. Specifically, you can add the following command in the TiUP configuration file:
 
 ```yaml
 server_configs:
   tidb:
     log.level: "error"
-    prepared-plan-cache.enabled: true
 ```
 
 ### TiKV configuration

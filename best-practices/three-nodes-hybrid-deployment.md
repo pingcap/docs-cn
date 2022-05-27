@@ -44,7 +44,6 @@ tikv:
     rocksdb.rate-bytes-per-sec: “200M”
 
   tidb:
-    performance.committer-concurrency: 4
     performance.max-procs: 8
 ```
 

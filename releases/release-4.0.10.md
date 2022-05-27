@@ -92,7 +92,7 @@ TiDB version: 4.0.10
 
     + Dumpling
 
-        - Avoid TiDB out of memory (OOM) by setting the default behavior of `tidb_mem_quota_query` [#233](https://github.com/pingcap/dumpling/pull/233)
+        - Avoid TiDB out of memory (OOM) by setting the default behavior of [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) [#233](https://github.com/pingcap/dumpling/pull/233)
 
     + Backup & Restore (BR)
 

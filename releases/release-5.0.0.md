@@ -368,7 +368,7 @@ This feature is enabled by default. You can disable it by running the `pd-ctl co
 
 ### Optimize the memory management module to reduce system OOM risks
 
-Track the memory usage of aggregate functions. This feature is enabled by default. When SQL statements with aggregate functions are executed, if the total memory usage of the current query exceeds the threshold set by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query), the system automatically performs operations defined by [`oom-action`](/tidb-configuration-file.md#oom-action).
+Track the memory usage of aggregate functions. This feature is enabled by default. When SQL statements with aggregate functions are executed, if the total memory usage of the current query exceeds the threshold set by `mem-quota-query`, the system automatically performs operations defined by `oom-action`.
 
 ### Improve the system availability during network partition
 

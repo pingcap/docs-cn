@@ -181,7 +181,8 @@ mysql> SELECT * FROM t1;
 
 ### ddl_slow_threshold
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `300`
 - Unit: Milliseconds
 - Log DDL operations whose execution time exceeds the threshold value.
@@ -320,13 +321,15 @@ This variable is an alias for `last_insert_id`.
 
 ### plugin_dir
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: ""
 - Indicates the directory to load plugins as specified by a command-line flag.
 
 ### plugin_load
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: ""
 - Indicates the plugins to load when TiDB is started. These plugins are specified by a command-line flag and separated by commas.
 
@@ -352,6 +355,15 @@ This variable is an alias for `last_insert_id`.
 - Range: `[0, 2147483647]`
 - This variable is used to seed the random value generator used in the `RAND()` SQL function.
 - The behavior of this variable is MySQL compatible.
+
+### require_secure_transport <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `OFF`
+- This variable ensures that all connections to TiDB are either on a local socket, or using TLS. See [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md) for additional details.
+- Setting this variable to `ON` requires you to connect to TiDB from a session that has TLS enabled. This helps prevent lock-out scenarios when TLS is not configured correctly.
+- This setting was previously a `tidb.toml` option (`security.require-secure-transport`), but changed to a system variable starting from TiDB v6.1.0.
 
 ### skip_name_resolve <span class="version-mark">New in v5.2.0</span>
 
@@ -495,7 +507,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 > **Note:**
 >
-> Only when the `run-auto-analyze` option is enabled in the starting configuration file of TiDB, the `auto_analyze` feature can be triggered.
+> This feature requires the system variable `tidb_enable_auto_analyze` set to `ON`.
 
 ### tidb_auto_analyze_start_time
 
@@ -568,7 +580,8 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 ### tidb_check_mb4_value_in_utf8
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `ON`
 - This variable is used to enforce that the `utf8` character set only stores values from the [Basic Multilingual Plane (BMP)](https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane). To store characters outside the BMP, it is recommended to use the `utf8mb4` character set.
 - You might need to disable this option when upgrading your cluster from an earlier version of TiDB where the `utf8` checking was more relaxed. For details, see [FAQs After Upgrade](/faq/upgrade-faq.md).
@@ -580,6 +593,16 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 - Unit: Threads
 - This variable is used to set the scan index concurrency of executing the `ADMIN CHECKSUM TABLE` statement.
 - When the variable is set to a larger value, the execution performance of other queries is affected.
+
+### tidb_committer_concurrency <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `128`
+- Range: `[1, 10000]`
+- The number of goroutines for requests related to executing commit in the commit phase of the single transaction.
+- If the transaction to commit is too large, the waiting time for the flow control queue when the transaction is committed might be too long. In this situation, you can increase the configuration value to speed up the commit.
+- This setting was previously a `tidb.toml` option (`performance.committer-concurrency`), but changed to a system variable starting from TiDB v6.1.0.
 
 ### tidb_config
 
@@ -737,12 +760,28 @@ Constraint checking is always performed in place for pessimistic transactions (d
 > - If you have enabled TiDB Binlog, enabling this variable cannot improve the performance. To improve the performance, it is recommended to use [TiCDC](/ticdc/ticdc-overview.md) instead.
 > - Enabling this parameter only means that Async Commit becomes an optional mode of transaction commit. In fact, the most suitable mode of transaction commit is determined by TiDB.
 
+### tidb_enable_auto_analyze <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `ON`
+- Determines whether TiDB automatically updates table statistics as a background operation.
+- This setting was previously a `tidb.toml` option (`performance.run-auto-analyze`), but changed to a system variable starting from TiDB v6.1.0.
+
 ### tidb_enable_auto_increment_in_generated
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
 - Default value: `OFF`
 - This variable is used to determine whether to include the `AUTO_INCREMENT` columns when creating a generated column or an expression index.
+
+### tidb_enable_batch_dml <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `OFF`
+- Determines if TiDB permits non-transactional 'batched' statements. Only the value of `OFF` can be considered safe, as batch DML does not provide ACID guarantees.
+- This setting was previously a `tidb.toml` option (`enable-batch-dml`), but changed to a system variable starting from TiDB v6.1.0.
 
 ### tidb_enable_cascades_planner
 
@@ -774,7 +813,8 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_collect_execution_info
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `ON`
 - This variable controls whether to record the execution information of each operator in the slow query log.
 
@@ -883,6 +923,14 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: `OFF`
 - This variable controls whether to enable concurrency for the `Apply` operator. The number of concurrencies is controlled by the `tidb_executor_concurrency` variable. The `Apply` operator processes correlated subqueries and has no concurrency by default, so the execution speed is slow. Setting this variable value to `1` can increase concurrency and speed up execution. Currently, concurrency for `Apply` is disabled by default.
 
+### tidb_enable_prepared_plan_cache <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `ON`
+- Determines whether to enable [Prepared Plan Cache](/sql-prepared-plan-cache.md). When it is enabled, the execution plans of `Prepare` and `Execute` are cached so that the subsequent executions skip optimizing the execution plans, which brings performance improvement.
+- This setting was previously a `tidb.toml` option (`prepared-plan-cache.enabled`), but changed to a system variable starting from TiDB v6.1.0.
+
 ### tidb_enable_pseudo_for_outdated_stats <span class="version-mark">New in v5.3.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -903,7 +951,8 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 ### tidb_enable_slow_log
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `ON`
 - This variable is used to control whether to enable the slow log feature.
 
@@ -1073,7 +1122,8 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 ### tidb_expensive_query_time_threshold
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `60`
 - Range: `[10, 2147483647]`
 - Unit: Seconds
@@ -1083,7 +1133,8 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 ### tidb_force_priority
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `NO_PRIORITY`
 - This variable is used to change the default priority for statements executed on a TiDB server. A use case is to ensure that a particular user that is performing OLAP queries receives lower priority than users performing OLTP queries.
 - You can set the value of this variable to `NO_PRIORITY`, `LOW_PRIORITY`, `DELAYED` or `HIGH_PRIORITY`.
@@ -1315,6 +1366,16 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Range: `[100, 16384]`
 - This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100 ~ 16384.
 
+### tidb_mem_oom_action <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `CANCEL`
+- Possible values: `CANCEL`, `LOG`
+- Specifies what operation TiDB performs when a single SQL statement exceeds the memory quota specified by `tidb_mem_quota_query` and cannot be spilled over to disk. See [TiDB Memory Control](/configure-memory-usage.md) for details.
+- The default value is `CANCEL`, but in TiDB v4.0.2 and earlier versions, the default value is `LOG`.
+- This setting was previously a `tidb.toml` option (`oom-action`), but changed to a system variable starting from TiDB v6.1.0.
+
 ### tidb_mem_quota_apply_cache <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -1337,16 +1398,19 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 ### tidb_mem_quota_query
 
-- Scope: SESSION
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
 - Default value: `1073741824` (1 GiB)
 - Range: `[-1, 9223372036854775807]`
 - Unit: Bytes
 - This variable is used to set the threshold value of memory quota for a query.
-- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by the OOMAction option in the configuration file. The initial value of this variable is configured by [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query).
+- If the memory quota of a query during execution exceeds the threshold value, TiDB performs the operation designated by `tidb_mem_oom_action`.
+- This setting was previously session scoped and used the value of `mem-quota-query` from `tidb.toml` as an initial value. Starting from v6.1.0 `tidb_mem_quota_query` is now a `SESSION | GLOBAL` scoped variable.
 
 ### tidb_memory_usage_alarm_ratio
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `0.8`
 - TiDB triggers an alarm when the percentage of the memory it takes exceeds a certain threshold. For the detailed usage description of this feature, see [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-new-in-v409).
 - You can set the initial value of this variable by configuring [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-new-in-v409).
@@ -1561,10 +1625,29 @@ explain select * from t where age=5;
 
 ### tidb_pprof_sql_cpu <span class="version-mark">New in v4.0</span>
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `0`
 - Range: `[0, 1]`
 - This variable is used to control whether to mark the corresponding SQL statement in the profile output to identify and troubleshoot performance issues.
+
+### tidb_prepared_plan_cache_memory_guard_ratio <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `0.1`
+- Range: `[0, 1]`
+- This setting is used to prevent the tidb.toml option `performance.max-memory` from being exceeded. When `max-memory` * (1 - `tidb_prepared_plan_cache_memory_guard_ratio`) is exceeded, the elements in the LRU are removed.
+- This setting was previously a `tidb.toml` option (`prepared-plan-cache.memory-guard-ratio`), but changed to a system variable starting from TiDB v6.1.0.
+
+### tidb_prepared_plan_cache_size <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `100`
+- Range: `[1, 100000]`
+- The maximum number of statements that can be cached in the prepared plan cache.
+- This setting was previously a `tidb.toml` option (`prepared-plan-cache.capacity`), but changed to a system variable starting from TiDB v6.1.0.
 
 ### tidb_projection_concurrency
 
@@ -1582,17 +1665,13 @@ explain select * from t where age=5;
 
 ### tidb_query_log_max_len
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: Yes
 - Default value: `4096` (4 KiB)
-- Range: `[-1, 9223372036854775807]`
+- Range: `[0, 1073741824]`
 - Unit: Bytes
-- The maximum length of the SQL statement output. When the output length of a statement is larger than the `tidb_query-log-max-len` value, the statement is truncated to output.
-
-Usage example:
-
-```sql
-SET tidb_query_log_max_len = 20
-```
+- The maximum length of the SQL statement output. When the output length of a statement is larger than the `tidb_query_log_max_len` value, the statement is truncated to output.
+- This setting was previously also available a tidb.toml option (`log.query-log-max-len`), but is only a system variable starting from TiDB v6.1.0.
 
 ### tidb_rc_read_check_ts <span class="version-mark">New in v6.0.0</span>
 
@@ -1616,7 +1695,8 @@ SET tidb_query_log_max_len = 20
 
 ### tidb_record_plan_in_slow_log
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `ON`
 - This variable is used to control whether to include the execution plan of slow queries in the slow log.
 
@@ -1724,7 +1804,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### tidb_slow_log_threshold
 
-- Scope: INSTANCE
+- Scope: GLOBAL
+- Persists to cluster: No
 - Default value: `300`
 - Range: `[-1, 9223372036854775807]`
 - Unit: Milliseconds

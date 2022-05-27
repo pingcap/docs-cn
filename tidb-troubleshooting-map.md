@@ -126,7 +126,7 @@ Refer to [5 PD issues](#5-pd-issues).
 
   > **Note:**
   >
-  > The default threshold for a single SQL memory usage is `1GB` (in bytes, scope:`SESSION`). You can set this parameter by configuring `tidb_mem_quota_query`. You can also modify the `mem-quota-query` item (in bytes) in the configuration file by hot loading the configuration items.
+  > The default threshold for a single SQL memory usage is `1GB`. You can set this parameter by configuring the system variable [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query).
 
 - 3.2.3 Mitigate OOM issues
 

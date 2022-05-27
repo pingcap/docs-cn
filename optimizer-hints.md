@@ -319,7 +319,7 @@ In the following hint, `MEMORY_QUOTA(1024 MB)` means that the memory usage is li
 select /*+ MEMORY_QUOTA(1024 MB) */ * from t;
 ```
 
-In addition to this hint, the `tidb_mem_quota_query` system variable can also limit the memory usage of a statement.
+In addition to this hint, the [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) system variable can also limit the memory usage of a statement.
 
 ### READ_CONSISTENT_REPLICA()
 
@@ -337,7 +337,7 @@ In addition to this hint, setting the `tidb_replica_read` environment variable t
 
 The `IGNORE_PLAN_CACHE()` hint reminds the optimizer not to use the Plan Cache when handling the current `prepare` statement.
 
-This hint is used to temporarily disable the Plan Cache for a certain type of queries when [prepare-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) is enabled.
+This hint is used to temporarily disable the Plan Cache for a certain type of queries when [prepare-plan-cache](/sql-prepared-plan-cache.md) is enabled.
 
 In the following example, the Plan Cache is forcibly disabled when executing the `prepare` statement.
 

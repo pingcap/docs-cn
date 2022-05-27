@@ -318,7 +318,6 @@ The following TiDB configuration items can be modified online:
 
 | Configuration item | SQL variable | Description |
 | :--- | :--- |
-| `mem-quota-query` | `tidb_mem_quota_query` | The memory usage limit of a query |
 | `log.enable-slow-log` | `tidb_enable_slow_log` | Whether to enable slow log |
 | `log.slow-threshold` | `tidb_slow_log_threshold` | The threshold of slow log |
 | `log.expensive-threshold` | `tidb_expensive_query_time_threshold` | The threshold of a expensive query |
