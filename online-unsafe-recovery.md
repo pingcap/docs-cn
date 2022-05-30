@@ -63,7 +63,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 - `collect report`：初始阶段，第一次接收 TiKV 的报告获得的全局信息。
 - `tombstone tiflash learner`：删除不健康的 Region 中，比其他健康 Peer 要新的 TiFlash learner，防止极端情况。
-- `force leader for commit merge`：特殊阶段，在有未完成的 commit merge 时出现，优先对有 commit merge 的 Region 进行 force leader，防止极端情况。
+- `force leader for commit merge`：特殊阶段。在有未完成的 commit merge 时出现，优先对有 commit merge 的 Region 进行 `force leader`，防止极端情况。
 - `force leader`：强制不健康的 Region 在剩余的健康 Peer 中指定一个成为 Raft leader。
 - `demote failed voter`：将 Region 不健康的 Voter 降级为 Learner，之后 Region 就可以正常地选出 Raft leader。
 - create empty region：创建空 Region 补足 key range 空洞，主要针对的是某些 Region 的所有副本所在的 Store 都损坏了。
