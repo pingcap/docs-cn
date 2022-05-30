@@ -163,10 +163,6 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### List 分区
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
 
 {{< copyable "sql" >}}
