@@ -335,6 +335,9 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
     # 启动 TiEM
     TIUP_HOME=/home/tidb/.em tiup em start em-test
+
+    # 注释 db_path，如果不注释，后续对 em 的重启，扩容等操作可能会将数据变更还原
+    sed -i "s/  db_path:/# db_path:/" /home/tidb/.em/storage/em/clusters/em-test/meta.yaml
     ```
 
 6. 重建资源机器的 filebeat。
