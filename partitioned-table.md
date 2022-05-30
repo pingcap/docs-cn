@@ -1509,7 +1509,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 #### 为动态裁剪模式更新所有分区表统计信息
 
-找到所有的分区表：
+1. 找到所有的分区表：
 
 {{< copyable "sql" >}}
 
@@ -1525,7 +1525,7 @@ mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
 1 row in set (0.02 sec)
 ```
 
-生成所有分区表的更新统计信息的语句：
+2. 生成所有分区表的更新统计信息的语句：
 
 {{< copyable "sql" >}}
 
@@ -1543,7 +1543,7 @@ mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL
 
 可以按需将 `ALL COLUMNS` 改为实际需要的列。
 
-将批量更新语句导出到文件：
+3. 将批量更新语句导出到文件：
 
 {{< copyable "sql" >}}
 
@@ -1553,7 +1553,7 @@ $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE T
      where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
 ```
 
-执行批量更新：
+4. 执行批量更新：
 
 {{< copyable "sql" >}}
 
