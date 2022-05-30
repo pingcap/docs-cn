@@ -26,7 +26,6 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 * 部分节点受到永久性损坏，导致节点无法重启，造成业务端的部分数据不可读、不可写。
 * 可以容忍数据丢失，希望受影响的数据恢复读写。
-* 希望在线一站式恢复数据。
 
 ## 使用步骤
 
@@ -37,7 +36,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 * 离线节点导致部分数据确实不可用。
 * 离线节点确实无法自动恢复或重启。
 
-### 第 1 步：移除无法自动恢复的节点
+### 第 1 步：指定无法恢复的节点
 
 使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的 TiKV 节点，并触发自动恢复。
 
@@ -52,14 +51,24 @@ Online Unsafe Recovery 功能适用于以下场景：
 > **注意：**
 >
 > - 由于此命令需要收集来自所有 Peer 的信息，可能会造成 PD 短时间内有明显的内存使用量上涨（10 万个 Peer 预计使用约 500 MiB 内存）。
-> - 若执行过程中 PD 发生重启，需重新触发命令。
-> - 一旦执行该命令，所指定的节点将被设为 Tombstone 状态，不再允许启动。
+> - 若执行过程中 PD 发生重启，则恢复中断，需重新触发命令。
+> - 一旦执行，所指定的节点将被设为 Tombstone 状态，不再允许启动。
+> - 执行过程中，所有调度以及 split/merge 都会被暂停，待恢复成功或失败后自动恢复。
 
 ### 第 2 步：查看进度等待结束
 
 节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，查看移除进度。
 
-恢复过程分为多个阶段，每个阶段的进度都以 JSON 格式输出。每一阶段的输出内容包括信息、时间，以及具体的恢复计划。例如：
+恢复过程有多个可能的阶段：
+
+- collect report: 初始阶段，第一次接收 TiKV 的报告获得全局信息。
+- tombstone tiflash learner：删除不健康 Region 中，比其他健康 Peer 要新的 Tiflash learner，防止极端情况。
+- force leader for commit merge：特殊阶段，在有未完成的 commit merge 时出现，优先对有 commit merge 的 Region 进行 force leader，防止极端情况。
+- force leader：强制不健康的 Region 在剩余的健康 Peer 中指定一个成为 Raft leader。
+- demote failed voter：将 Region 的不健康的 Voter 降级为 Learner，如此之后 Region 就能正常的选出 Raft leader。 
+- create empty region：创建空 Region 补足 key range 空洞，主要针对的是某些 Region 的所有副本所在的 Store 都损坏了。
+
+每一阶段按照 JSON 格式输出，包括信息，时间，以及具体的恢复计划。例如：
 
 ```json
 [
@@ -106,7 +115,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输出中最后一阶段的 `Collecting reports from alive stores` 显示 PD 下发恢复计划和接受 TiKV 报告的具体状态。
 
-整个恢复过程包括多个阶段，并且可能存在某一阶段的多次重试。一般情况下，预计时间为 3~10 个 store heartbeat 周期（一个 store heartbeat 默认为 10s)。当恢复完成后，命令执行结果最后一阶段显示 `"Unsafe recovery finished"`，以及受影响的 Region 所属的 table id（若无或使用 RawKV 则不显示）和受影响的 SQL 元数据 Region。如：
+整个恢复过程包括多个阶段，可能存在某一阶段的多次重试。一般情况下，预计时间为 3~10 个 store heartbeat 周期（一个 store heartbeat 默认为 10s)。当恢复完成后，命令执行结果最后一阶段显示 `"Unsafe recovery finished"`，以及受影响的 Region 所属的 table id（若无或使用 RawKV 则不显示）和受影响的 SQL 元数据 Region。如：
 
 ```json
 {
@@ -128,10 +137,38 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 }
 ```
 
-### 第 3 步： 检查数据索引一致性
+### 第 3 步：检查数据索引一致性（RawKV 不需要）
 
-当恢复完成后，你可以尝试执行一些简单 SQL 查询或写入操作确保数据可以读写。执行完成后，可能会导致数据索引不一致，请使用 `ADMIN CHECK`、`ADMIN RECOVER`、`ADMIN CLEANUP` 命令进行数据索引的一致性检查及恢复。
+执行完成后，可能会导致数据索引不一致，请使用 SQL 的 `ADMIN CHECK`、`ADMIN RECOVER`、`ADMIN CLEANUP` 命令对受影响的表（从 finished 输出的 Affected table ids 可知）进行数据索引的一致性检查及恢复。
 
 > **注意：**
 >
 > 数据可以读写并不代表没有数据丢失。
+
+### 第 4 步：移除无法恢复的节点（可选）
+
+使用 PD Control 执行 [`store remove-tombstone`] 命令，从 PD 的元数据中删除已无法恢复的节点。
+
+注意，恢复把一些 failed voter 变成了 learner，之后还需要 PD 调度经过一些时间将这些 failed learner 移除。只有将 failed learner 都移除后，才能成功进行 `store remove-tombstone`。 另外建议及时添加新的节点。
+
+待从 PD 中移除 Tombstone TiKV 后，方可将这些 TiKV 从拓扑中移去。操作见：
+
+#### TiUP 部署
+
+```bash
+$ tiup cluster prune <cluster-name>
+```
+
+#### TiDB Operator 部署
+
+1. 删除该 PersistentVolumeClaim
+
+```bash
+$ kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+```
+
+2. 删除 TiKV Pod ，并等待新创建的 TiKV Pod 加入集群
+
+```bash
+$ kubectl delete -n ${namespace} pod ${pod_name}
+```
