@@ -1310,6 +1310,72 @@ TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使�
 set @@session.tidb_partition_prune_mode = 'dynamic'
 ```
 
+动态裁剪模式下，分区表需要用到表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+
+从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到下一次 `auto-analyze` 周期才会更新生成汇总统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> set session tidb_partition_prune_mode = 'dynamic';
+
+mysql> show stats_meta where table_name like "t";
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:23:34 |            2 |         4 |
+| test    | t          | p2             | 2022-05-27 20:23:34 |            2 |         4 |
++---------+------------+----------------+---------------------+--------------+-----------+
+3 rows in set (0.01 sec)
+
+mysql> show stats_meta where table_name like "t";
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:23:34 |            2 |         4 |
+| test    | t          | p2             | 2022-05-27 20:23:34 |            2 |         4 |
++---------+------------+----------------+---------------------+--------------+-----------+
+3 rows in set (0.01 sec)
+```
+
+此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
+
+{{< copyable "sql" >}}
+
+```sql
+mysql> analyze table t partition p1;
+Query OK, 0 rows affected, 1 warning (0.06 sec)
+
+mysql> show stats_meta where table_name like "t";
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | global         | 2022-05-27 20:50:53 |            0 |         5 |
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:50:52 |            0 |         2 |
+| test    | t          | p2             | 2022-05-27 20:50:08 |            0 |         2 |
++---------+------------+----------------+---------------------+--------------+-----------+
+4 rows in set (0.00 sec)
+```
+
+若 analyze 过程中提示如下 warning，说明分区的统计信息之间存在不一致，需要重新收集分区或整个表统计信息。
+
+```
+| Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions
+```
+
+也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表的统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表的统计信息)。
+
+表级别统计信息准备好后，即可开启全局的动态裁剪模式。
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_partition_prune_mode = dynamic
+```
+
 在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。下面例子进行了一个简单的读取操作，可以发现 TiDB 用 Union 合并了对应两个分区的结果：
 
 {{< copyable "sql" >}}
@@ -1440,3 +1506,58 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
 
 目前，静态和动态裁剪模式都不支持执行计划缓存。
+
+#### 为动态裁剪模式更新所有分区表的统计信息
+
+1. 找到所有的分区表：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    +-------------------------------------+
+    | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
+    +-------------------------------------+
+    | test.t                              |
+    +-------------------------------------+
+    1 row in set (0.02 sec)
+    ```
+
+2. 生成所有分区表的更新统计信息的语句：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    +----------------------------------------------------------------------+
+    | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
+    +----------------------------------------------------------------------+
+    | ANALYZE TABLE test.t ALL COLUMNS;                                    |
+    +----------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
+
+    可以按需将 `ALL COLUMNS` 改为实际需要的列。
+
+3. 将批量更新语句导出到文件：
+
+    {{< copyable "sql" >}}
+
+    ```
+    $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+         from information_schema.PARTITIONS \
+         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```
+
+4. 执行批量更新：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    mysql> SET session tidb_partition_prune_mode = dynamic;
+    mysql> source gatherGlobalStats.sql
+    ```
