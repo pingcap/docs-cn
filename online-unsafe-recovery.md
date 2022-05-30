@@ -61,7 +61,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 恢复过程有多个可能的阶段：
 
-- collect report: 初始阶段，第一次接收 TiKV 的报告获得全局信息。
+- `collect report`：初始阶段，第一次接收 TiKV 的报告获得的全局信息。
 - tombstone tiflash learner：删除不健康 Region 中，比其他健康 Peer 要新的 Tiflash learner，防止极端情况。
 - force leader for commit merge：特殊阶段，在有未完成的 commit merge 时出现，优先对有 commit merge 的 Region 进行 force leader，防止极端情况。
 - force leader：强制不健康的 Region 在剩余的健康 Peer 中指定一个成为 Raft leader。
