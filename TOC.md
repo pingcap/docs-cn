@@ -71,8 +71,7 @@
     - [Unstable Result Set](/develop/dev-guide-unstable-result-set.md)
     - [Timeouts](/develop/dev-guide-timeouts-in-tidb.md)
   - Reference
-    - SQL
-      - [Bookshop Example Application](/develop/dev-guide-bookshop-schema-design.md)
+    - [Bookshop Example Application](/develop/dev-guide-bookshop-schema-design.md)
     - Guidelines
       - [Object Naming Convention](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
