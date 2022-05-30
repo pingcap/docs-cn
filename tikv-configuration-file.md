@@ -724,6 +724,12 @@ raftstore 相关的配置项。
 + 默认值：128
 + 最小值：10
 
+### `max-snapshot-file-raw-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 当 snapshot 文件大于该配置项指定的大小时，snapshot 文件会被切割为多个文件。
++ 默认值：100MiB
++ 最小值：100MiB
+
 ### `snap-apply-batch-size`
 
 + 当导入 snapshot 文件需要写数据时，内存写缓存的大小
@@ -855,24 +861,40 @@ coprocessor 相关的配置项。
 ### `region-max-size`
 
 + Region 容量空间最大值，超过时系统分裂成多个 Region。
-+ 默认值：144MB
-+ 单位：KB|MB|GB
++ 默认值：`region-split-size / 2 * 3`
++ 单位：KiB|MiB|GiB
 
 ### `region-split-size`
 
 + 分裂后新 Region 的大小，此值属于估算值。
-+ 默认值：96MB
-+ 单位：KB|MB|GB
++ 默认值：96MiB
++ 单位：KiB|MiB|GiB
 
 ### `region-max-keys`
 
 + Region 最多允许的 key 的个数，超过时系统分裂成多个 Region。
-+ 默认值：1440000
++ 默认值：`region-split-keys / 2 * 3`
 
 ### `region-split-keys`
 
 + 分裂后新 Region 的 key 的个数，此值属于估算值。
 + 默认值：960000
+
+### `enable-region-bucket` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 是否将 Region 划分为更小的区间 bucket，并且以 bucket 作为并发查询单位，以提高扫描数据的并发度。bucket 的详细设计可见 [Dynamic size Region](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md)。
++ 默认值：false
+
+> **警告：**
+>
+> - `enable-region-bucket` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
+> - 这个参数仅在 `region-split-size` 调到两倍 `region-bucket-size` 及以上时才有意义，否则不会真正生成 bucket。
+> - 将 `region-split-size` 调大可能会有潜在的性能回退、数据调度缓慢的风险。
+
+### `region-bucket-size` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
++ 默认值：96MiB
 
 ## rocksdb
 
