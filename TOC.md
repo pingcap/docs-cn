@@ -63,6 +63,7 @@
     - [概览](/develop/dev-guide-optimize-sql-overview.md)
     - [SQL 性能调优](/develop/dev-guide-optimize-sql.md)
     - [性能调优最佳实践](/develop/dev-guide-optimize-sql-best-practices.md)
+    - [索引的最佳实践](/develop/dev-guide-index-best-practice.md)
     - 其他优化
       - [避免隐式类型转换](/develop/dev-guide-implicit-type-conversion.md)
       - [唯一序列号生成方案](/develop/dev-guide-unique-serial-number-generation.md)
@@ -72,8 +73,7 @@
       - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
       - [超时](/develop/dev-guide-timeouts-in-tidb.md)
   - 引用文档
-    - SQL
-      - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
+    - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
     - 规范
       - [命名规范](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
