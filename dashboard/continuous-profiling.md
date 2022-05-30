@@ -21,15 +21,12 @@ Continuous Profiling is an enhanced feature of [Manual Profiling](/dashboard/das
 - Manual Profiling can only be used to analyze current occurring problems, while Continuous Profiling can be used to analyze both the current and historical problems.
 - Manual Profiling allows to collect specific performance data for specific instances, while Continuous Profiling collects all performance data for all instances.
 - Continuous Profiling stores more performance data, therefore it takes up more disk space.
-- Continuous Profiling currently does not collect performance data from TiFlash due to the impact to the stability when profiling is performed frequently.
 
 ## Supported performance data
 
-All performance data in [Manual Profiling](/dashboard/dashboard-profiling.md#supported-performance-data) is collected except for TiFlash CPU data, which is not collected due to stability reasons.
+All performance data in [Manual Profiling](/dashboard/dashboard-profiling.md#supported-performance-data) is collected.
 
-- CPU: The CPU overhead of each internal function on TiDB, TiKV and PD instances
-
-  > The CPU overhead of TiKV instances is currently not supported in ARM architecture.
+- CPU: The CPU overhead of each internal function on TiDB, TiKV, TiFlash, and PD instances
 
 - Heap: The memory consumption of each internal function on TiDB and PD instances
 
