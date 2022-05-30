@@ -1511,53 +1511,53 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 1. 找到所有的分区表：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
-    from information_schema.PARTITIONS
-    where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
-+-------------------------------------+
-| concat(TABLE_SCHEMA,'.',TABLE_NAME) |
-+-------------------------------------+
-| test.t                              |
-+-------------------------------------+
-1 row in set (0.02 sec)
-```
+    ```sql
+    mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    +-------------------------------------+
+    | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
+    +-------------------------------------+
+    | test.t                              |
+    +-------------------------------------+
+    1 row in set (0.02 sec)
+    ```
 
 2. 生成所有分区表的更新统计信息的语句：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
-    from information_schema.PARTITIONS
-    where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
-+----------------------------------------------------------------------+
-| concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
-+----------------------------------------------------------------------+
-| ANALYZE TABLE test.t ALL COLUMNS;                                    |
-+----------------------------------------------------------------------+
-1 row in set (0.01 sec)
-```
+    ```sql
+    mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    +----------------------------------------------------------------------+
+    | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
+    +----------------------------------------------------------------------+
+    | ANALYZE TABLE test.t ALL COLUMNS;                                    |
+    +----------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
 
-可以按需将 `ALL COLUMNS` 改为实际需要的列。
+    可以按需将 `ALL COLUMNS` 改为实际需要的列。
 
 3. 将批量更新语句导出到文件：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```
-$ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
-     from information_schema.PARTITIONS \
-     where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
-```
+    ```
+    $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+         from information_schema.PARTITIONS \
+         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```
 
 4. 执行批量更新：
 
-{{< copyable "sql" >}}
+    {{< copyable "sql" >}}
 
-```sql
-mysql> SET session tidb_partition_prune_mode = dynamic;
-mysql> source gatherGlobalStats.sql
-```
+    ```sql
+    mysql> SET session tidb_partition_prune_mode = dynamic;
+    mysql> source gatherGlobalStats.sql
+    ```
