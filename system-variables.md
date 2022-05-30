@@ -1713,6 +1713,13 @@ set tidb_slow_log_threshold = 200;
 - 默认值：""
 - 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 `"2017-11-11 20:20:20"` 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
+### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
+
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
 > **警告：**
@@ -1979,10 +1986,3 @@ set tidb_slow_log_threshold = 200;
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`0`
-- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
