@@ -15,6 +15,8 @@ TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#
 
 开启 [Hibernate Region](/best-practices/massive-regions-best-practices.md#方法四开启-hibernate-region-功能) 或 [`Region Merge`](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 也可以减少过多 Region 带来的性能开销。
 
+## 使用 `region-split-size` 调整 Region 大小
+
 > **警告：**
 >
 > - 自定义 Region 大小是在 TiDB v6.1.0 引入的实验特性，不建议在生产环境中配置。使用此特性的风险包括：
@@ -22,8 +24,6 @@ TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#
 > + 更容易发生性能抖动。
 > + 查询性能回退，尤其是大范围数据查询的性能会有回退。
 > + 调度变慢。
-
-## 使用 `region-split-size` 调整 Region 大小
 
 Region 的大小可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 进行设置。推荐的 Region 大小为 96 MiB、128 MiB、256 MiB。`region-split-size` 越大，性能会越容易发生抖动。不推荐将 Region 大小设置超过 1 GiB，强烈建议不超过 10 GiB。如果你使用了 TiFlash，则 Region 大小不能超过 256 MiB。Region 调大以后，使用 Dumpling 工具时，需要降低并发，否则 TiDB 会有 OOM 的风险。
 
