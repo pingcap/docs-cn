@@ -289,8 +289,8 @@ SASL/GSSAPI 认证方式详见 [Configuring GSSAPI](https://docs.confluent.io/pl
 
 TiCDC 能够正常工作所需的最小权限集合如下：
 
-1. 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 和 `Write` 权限
-2. 对 Cluster 资源类型的 `DescribeConfigs` 权限。
+- 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 和 `Write` 权限。
+- 对 Cluster 资源类型的 `DescribeConfigs` 权限。
 
 #### TiCDC 集成 Kafka Connect (Confluent Platform)
 
