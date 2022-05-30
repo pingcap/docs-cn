@@ -75,7 +75,7 @@ In the above table, the result of `SELECT HEX('a');` in the `utf8mb4` byte set i
 
 ### Other MySQL compatibility
 
-* Currently, TiDB does not support using the `ALTER TABLE` statement to convert other character set types to `gbk` or from `gbk` to other character set types.
+- Currently, TiDB does not support using the `ALTER TABLE` statement to convert other character set types to `gbk` or from `gbk` to other character set types.
 
 * TiDB does not support the use of `_gbk`. For example:
 
@@ -86,14 +86,16 @@ In the above table, the result of `SELECT HEX('a');` in the `utf8mb4` byte set i
   ERROR 1115 (42000): Unsupported character introducer: 'gbk'
   ```
 
-* Currently, for binary characters of the `ENUM` and `SET` types, TiDB deals with them as the `utf8mb4` character set.
+- Currently, for binary characters of the `ENUM` and `SET` types, TiDB deals with them as the `utf8mb4` character set.
 
 ## Component compatibility
 
-* Currently, TiCDC and TiFlash do not support the GBK character set.
+- Currently, TiFlash does not support the GBK character set.
 
-* TiDB Data Migration (DM) does not support migrating `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
+- TiDB Data Migration (DM) does not support migrating `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
 
-* TiDB Lightning does not support importing `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
+- TiDB Lightning does not support importing `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
 
-* Backup & Restore (BR) versions earlier than v5.4.0 do not support recovering `charset=GBK` tables. No version of BR supports recovering `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
+- TiCDC versions earlier than v6.1.0 do not support replicating `charset=GBK` tables. No version of TiCDC supports replicating `charset=GBK` tables to TiDB clusters earlier than v6.1.0.
+
+- Backup & Restore (BR) versions earlier than v5.4.0 do not support recovering `charset=GBK` tables. No version of BR supports recovering `charset=GBK` tables to TiDB clusters earlier than v5.4.0.
