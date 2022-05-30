@@ -1361,17 +1361,21 @@ mysql> show stats_meta where table_name like "t";
 ```
 
 若 analyze 过程中提示如下的 warning，说明分区的统计信息之间存在不一致，则需要重新收集分区或整个表统计信息使一致。
-| Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions      
+
+```
+| Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions
 ```
 
 也可以使用脚本来统一更新所有的分区表统计信息，详见 [为动态裁剪模式更新所有分区表统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表统计信息)。
 
 表级别统计信息准备好后，即可开启全局的动态裁剪模式。
+
 {{< copyable "sql" >}}
 
 ```sql
 set global tidb_partition_prune_mode = dynamic
 ```
+
 在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。下面例子进行了一个简单的读取操作，可以发现 TiDB 用 Union 合并了对应两个分区的结果：
 
 {{< copyable "sql" >}}
@@ -1502,6 +1506,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
 
 目前，静态和动态裁剪模式都不支持执行计划缓存。
+
 #### 为动态裁剪模式更新所有分区表统计信息
 
 找到所有的分区表：
@@ -1509,8 +1514,8 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME) 
-    from information_schema.PARTITIONS 
+mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+    from information_schema.PARTITIONS
     where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
 +-------------------------------------+
 | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
@@ -1526,7 +1531,7 @@ mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
 
 ```sql
 mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
-    from information_schema.PARTITIONS 
+    from information_schema.PARTITIONS
     where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
 +----------------------------------------------------------------------+
 | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
@@ -1554,5 +1559,5 @@ $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE T
 
 ```sql
 mysql> SET session tidb_partition_prune_mode = dynamic;
-mysql> source gatherGlobalStats.sql 
+mysql> source gatherGlobalStats.sql
 ```
