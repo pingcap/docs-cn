@@ -147,28 +147,41 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 
 ### 第 4 步：移除无法恢复的节点（可选）
 
-使用 PD Control 执行 [`store remove-tombstone`] 命令，从 PD 的元数据中删除已无法恢复的节点。
+使用 PD Control 执行 [`store remove-tombstone`](/pd-control.md#store-delete--cancel-delete--label--weight--remove-tombstone--limit--storeid---jq"query-string") 命令，从 PD 的元数据中删除已无法恢复的节点。
 
-注意，恢复把一些 failed voter 变成了 learner，之后还需要 PD 调度经过一些时间将这些 failed learner 移除。只有将 failed learner 都移除后，才能成功进行 `store remove-tombstone`。 另外建议及时添加新的节点。
+> **注意：**
+>
+> - 恢复操作把一些 failed Voter 变成了 failed Learner，之后还需要 PD 调度经过一些时间将这些 failed Learner 移除。只有将 failed Learner 都移除后，才能成功进行 `store remove-tombstone`。
+> - 建议及时添加新的节点。
 
-待从 PD 中移除 Tombstone TiKV 后，方可将这些 TiKV 从拓扑中移去。操作见：
+从 PD 中移除 Tombstone 状态的 TiKV 后，才能将这些 TiKV 从拓扑中移去。具体操作如下：
 
-#### TiUP 部署
+<SimpleTab>
+<div label="通过 TiUP 部署的节点">
 
-```bash
-$ tiup cluster prune <cluster-name>
-```
-
-#### TiDB Operator 部署
-
-1. 删除该 PersistentVolumeClaim
+{{< copyable "shell-regular" >}}
 
 ```bash
-$ kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+tiup cluster prune <cluster-name>
 ```
 
-2. 删除 TiKV Pod ，并等待新创建的 TiKV Pod 加入集群
+</div>
+<div label="通过 TiDB Operator 部署的节点">
 
-```bash
-$ kubectl delete -n ${namespace} pod ${pod_name}
-```
+1. 删除该 `PersistentVolumeClaim`。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+    ```
+
+2. 删除 TiKV Pod，并等待新创建的 TiKV Pod 加入集群。
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl delete -n ${namespace} pod ${pod_name}
+    ```
+
+</SimpleTab>
