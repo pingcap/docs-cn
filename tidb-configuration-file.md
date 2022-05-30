@@ -199,12 +199,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-timestamp`
 
 + 是否在日志中输出时间戳。
-+ 默认值：true
++ 默认值：null
 + 如果设置为 false，那么日志里面将不会输出时间戳。
 
 > **注意：**
 >
-> 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
+> - 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。
+> - 当前 TiDB 默认使用 `disable-timestamp` 来决定是否在日志中输出时间戳，此时 `enable-timestamp` 的值为 `null`。
+> - 在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
 
 ### `enable-slow-log`
 
@@ -270,6 +272,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 保留的日志的最大数量。
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
+
+### `memory-limit`
+
++ 指定 Raft Engine 使用内存的上限。
++ 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
++ 默认值：`系统总内存 * 15%`
 
 ## security
 
