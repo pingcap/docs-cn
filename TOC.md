@@ -68,10 +68,9 @@
       - [避免隐式类型转换](/develop/dev-guide-implicit-type-conversion.md)
       - [唯一序列号生成方案](/develop/dev-guide-unique-serial-number-generation.md)
   - 故障诊断
-    - [概览](/develop/dev-guide-troubleshoot-overview.md)
-    - 其他故障或限制
-      - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
-      - [超时](/develop/dev-guide-timeouts-in-tidb.md)
+    - [SQL 或事务问题](/develop/dev-guide-troubleshoot-overview.md)
+    - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
+    - [超时](/develop/dev-guide-timeouts-in-tidb.md)
   - 引用文档
     - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
     - 规范
