@@ -1485,10 +1485,6 @@ explain select * from t where age=5;
 
 ### `tidb_partition_prune_mode` <span class="version-mark">从 v5.1 版本开始引入</span>
 
-> **警告：**
->
-> 目前分区表动态裁剪模式为实验特性，不建议在生产环境中使用。
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：static
@@ -1697,6 +1693,14 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 set tidb_slow_log_threshold = 200;
 ```
 
+### `tidb_max_tiflash_threads`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`-1`
+- 范围：`[-1, 256]`
+- TiFlash 中 request 执行的最大并发度。默认值为 -1，表示该系统变量无效。0 表示由 TiFlash 系统自动设置该值。
+
 ### `tidb_slow_query_file`
 
 - 作用域：SESSION
@@ -1708,6 +1712,13 @@ set tidb_slow_log_threshold = 200;
 - 作用域：SESSION
 - 默认值：""
 - 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 `"2017-11-11 20:20:20"` 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
+
+### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
 
 ### `tidb_stats_load_sync_wait` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1975,10 +1986,3 @@ set tidb_slow_log_threshold = 200;
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
-
-### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`0`
-- 这个变量用于控制 TiDB 内部统计信息缓存使用内存的上限。
