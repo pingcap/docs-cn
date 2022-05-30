@@ -276,7 +276,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `memory-limit`
 
 + 指定 Raft Engine 使用内存的上限。
-+ 当该配置项未设置时，Raft Engine 默认使用系统可用内存的 15%。
++ 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
 + 默认值：`系统总内存 * 15%`
 
 ## security
