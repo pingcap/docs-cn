@@ -24,22 +24,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 最大值（64 位平台）：`18446744073709551615`
 + 最大值（32 位平台）：`4294967295`
 
-### `mem-quota-query`
-
-+ 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
-+ 默认值：1073741824
-+ 注意：当集群从 v2.0.x 或 v3.0.x 版本直接升级至 v4.0.9 及以上版本时，该配置默认值为 34359738368。
-+ 超过该值的请求会被 `oom-action` 定义的行为所处理。
-+ 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
-
 ### `oom-use-tmp-storage`
 
-+ 设置是否在单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时为某些算子启用临时磁盘。
++ 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
 + 默认值：true
 
 ### `tmp-storage-path`
 
-+ 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
++ 单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时，某些算子的临时磁盘存储位置。
 + 默认值：`<操作系统临时文件夹>/<操作系统用户ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`。其中 `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` 是对 `<host>:<port>/<statusHost>:<statusPort>` 进行 `Base64` 编码的输出结果。
 + 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
@@ -51,22 +43,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `tmp-storage-quota` 小于 0 时则没有上述检查与限制。
 + 默认值：-1
 + 当 `tmp-storage-path` 的剩余可用容量低于 `tmp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
-
-### `oom-action`
-
-+ 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
-+ 默认值："cancel"
-+ 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
-
-### `lower-case-table-names`
-
-+ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
-+ 默认值：2
-+ 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
-
-> **注意：**
->
-> 目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
 ### `lease`
 
@@ -236,12 +212,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
 
-### `query-log-max-len`
-
-+ 最长的 SQL 输出长度。
-+ 默认值：4096
-+ 当语句的长度大于 `query-log-max-len`，将会被截断输出。
-
 ## log.file
 
 日志文件相关的配置项。
@@ -274,11 +244,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ## security
 
 安全相关配置。
-
-### `require-secure-transport`
-
-- 配置是否要求客户端使用安全传输模式。
-- 默认值：`false`
 
 ### `enable-sem`
 
@@ -388,12 +353,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：毫秒
 + 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
-### `committer-concurrency`
-
-+ 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量
-+ 默认值：128
-+ 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过调大该配置项来加速提交。
-
 ### `stmt-count-limit`
 
 + TiDB 单个事务允许的最大语句条数限制。
@@ -430,11 +389,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
-### `run-auto-analyze`
-
-+ TiDB 是否做自动的 Analyze。
-+ 默认值：true
-
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
@@ -470,6 +424,26 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 用于控制是否忽略优化器代价估算，强制使用 TiFlash 的 MPP 模式执行查询。
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
+
+### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
+
++ TiDB 统计信息同步加载功能可以并发处理的最大列数
++ 默认值：5
++ 目前的合法值范围：`[1, 128]`
+
+### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
+
+> **警告：**
+>
+> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
+
++ 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
++ 默认值：1000
++ 目前的合法值范围：`[1, 100000]`
 
 ### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -708,23 +682,3 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false
-
-### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
-+ TiDB 统计信息同步加载功能可以并发处理的最大列数
-+ 默认值：5
-+ 目前的合法值范围：`[1, 128]`
-
-### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
-+ 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
-+ 默认值：1000
-+ 目前的合法值范围：`[1, 100000]`

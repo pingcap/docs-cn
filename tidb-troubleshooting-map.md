@@ -119,7 +119,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     > **注意：**
     >
-    > 单条 SQL 内存阈值的默认值为 `1GB`，可通过 `tidb_mem_quota_query` 系统变量进行设置，作用域为 `SESSION`，单位为 `Byte`。也可以通过配置项热加载的方式，对配置文件中的 `mem-quota-query` 项进行修改，单位为 `Byte`。
+    > 单条 SQL 内存阈值的默认值为 `1GB`，可通过系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 进行设置。
 
 - 3.2.3 缓解 OOM 问题
 

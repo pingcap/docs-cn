@@ -316,7 +316,6 @@ select @@tidb_slow_log_threshold;
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
-| mem-quota-query | tidb_mem_quota_query | 查询语句的内存使用限制 |
 | log.enable-slow-log | tidb_enable_slow_log | 慢日志的开关 |
 | log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
