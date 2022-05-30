@@ -1366,7 +1366,7 @@ mysql> show stats_meta where table_name like "t";
 | Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions
 ```
 
-也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表统计信息)。
+也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表的统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表的统计信息)。
 
 表级别统计信息准备好后，即可开启全局的动态裁剪模式。
 
@@ -1507,7 +1507,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 目前，静态和动态裁剪模式都不支持执行计划缓存。
 
-#### 为动态裁剪模式更新所有分区表统计信息
+#### 为动态裁剪模式更新所有分区表的统计信息
 
 1. 找到所有的分区表：
 
