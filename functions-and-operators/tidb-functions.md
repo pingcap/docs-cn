@@ -355,7 +355,7 @@ select tidb_decode_sql_digests(@digests, 10);
     - `WHERE` 子查询无法使用 SHARD INDEX。
     - SHARD INDEX 只能打散整型字段的唯一索引。
     - SHARD INDEX 联合索引可能失效。
-    - SHARD INDEX 无法走 FastPlan 流程。
+    - SHARD INDEX 无法走 FastPlan 流程，影响优化器性能。
     - SHARD INDEX 无法使用执行计划缓存。
 
 ### 语法图
