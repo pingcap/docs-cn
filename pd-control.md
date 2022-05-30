@@ -880,7 +880,7 @@ Usage:
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit ] <store_id>  [--jq="<query string>"]`
+### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 Use this command to view the store information or remove a specified store. For a jq formatted output, see [jq-formatted-json-output-usage](#jq-formatted-json-output-usage).
 
@@ -896,6 +896,7 @@ Usage:
 ......
 >> store delete 1                      // Delete the store with the store id of 1
 ......
+>> store cancel-delete 1               // Cancel the delete operation previously performed on the store with the id of 1 which is in the offline state. After the cancellation, the store will enter the up state. Note that this command cannot make the tombstone store back to the up state. If the PD leader has been switched during the offline process, you need to manually modify the store limit.
 >> store label 1 zone cn               // Set the value of the label with the "zone" key to "cn" for the store with the store id of 1
 >> store weight 1 5 10                 // Set the leader weight to 5 and Region weight to 10 for the store with the store id of 1
 >> store remove-tombstone              // Remove stores that are in tombstone state
