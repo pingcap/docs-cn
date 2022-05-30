@@ -1825,6 +1825,13 @@ SET tidb_slow_log_threshold = 200;
 - Default value: ""
 - This variable is used to set the time point at which the data is read by the session. For example, when you set the variable to "2017-11-11 20:20:20" or a TSO number like "400036290571534337", the current session reads the data of this moment.
 
+### tidb_stats_cache_mem_quota <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `0`
+- This variable sets the memory quota for the TiDB statistics cache.
+
 ### tidb_stats_load_pseudo_timeout <span class="version-mark">New in v5.4.0</span>
 
 > **Warning:**
