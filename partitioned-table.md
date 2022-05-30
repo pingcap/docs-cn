@@ -1310,9 +1310,9 @@ TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使�
 set @@session.tidb_partition_prune_mode = 'dynamic'
 ```
 
-动态裁剪模式下的分区表需要用到表级别的汇总统计信息，即 GlobalStats，详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+动态裁剪模式下，分区表需要用到表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
 
-从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集汇总统计信息。在刚切到 `dynamic` 的时候，分区表上仍然只有分区的统计信息，需要等到下一次 `auto-analyze` 周期才会更新生成汇总统计信息。
+从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到下一次 `auto-analyze` 周期才会更新生成汇总统计信息。
 
 {{< copyable "sql" >}}
 
@@ -1360,13 +1360,13 @@ mysql> show stats_meta where table_name like "t";
 4 rows in set (0.00 sec)
 ```
 
-若 analyze 过程中提示如下的 warning，说明分区的统计信息之间存在不一致，则需要重新收集分区或整个表统计信息使一致。
+若 analyze 过程中提示如下 warning，说明分区的统计信息之间存在不一致，需要重新收集分区或整个表统计信息。
 
 ```
 | Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions
 ```
 
-也可以使用脚本来统一更新所有的分区表统计信息，详见 [为动态裁剪模式更新所有分区表统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表统计信息)。
+也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表统计信息)。
 
 表级别统计信息准备好后，即可开启全局的动态裁剪模式。
 
