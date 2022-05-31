@@ -711,6 +711,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 
 > **注意：**
+>
 > 从 v6.1 开始，为了明确配置项的含义，用来指定 partition 分发器的配置项由原来的 `dispatcher` 改为 `partition`，`partition` 为 `dispatcher` 的别名。例如，以下两条规则完全等价：
 > 
 > ```
