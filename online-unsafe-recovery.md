@@ -147,7 +147,7 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 
 ### 第 4 步：移除无法恢复的节点（可选）
 
-使用 PD Control 执行 [`store remove-tombstone`](/pd-control.md#store-delete--cancel-delete--label--weight--remove-tombstone--limit--storeid---jq"query-string") 命令，从 PD 的元数据中删除已无法恢复的节点。
+使用 PD Control 执行 [`store remove-tombstone`](/pd-control.md#store-delete--cancel-delete--label--weight--remove-tombstone--limit--store_id---jqquery-string) 命令，从 PD 的元数据中删除已无法恢复的节点。
 
 > **注意：**
 >
