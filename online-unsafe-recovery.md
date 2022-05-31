@@ -184,4 +184,5 @@ tiup cluster prune <cluster-name>
     kubectl delete -n ${namespace} pod ${pod_name}
     ```
 
+</div>
 </SimpleTab>
