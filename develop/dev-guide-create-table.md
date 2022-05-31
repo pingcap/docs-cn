@@ -330,11 +330,12 @@ EXPLAIN ANALYZE SELECT HOUR(`rated_at`), AVG(`score`) FROM `bookshop`.`ratings` 
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql
+mycli
     -u root \
     -h {host} \
     -P {port} \
     -p {password} \
+     --no-warn \
     < init.sql
 ```
 
@@ -412,7 +413,7 @@ SHOW TABLES IN `bookshop`;
 
 ### `CREATE TABLE` 执行时应遵守的规则
 
-- 不推荐使用客户端的 Driver 或 ORM 来执行数据库模式的更改。基于过往经验，建议使用 [MySQL 客户端](https://dev.mysql.com/doc/refman/8.0/en/mysql.html)或使用任意你喜欢的 GUI 客户端来进行数据库模式的更改。本文档中，将在大多数场景下，使用 **MySQL 客户端** 传入 SQL 文件来执行数据库模式的更改。
+- 不推荐使用客户端的 Driver 或 ORM 来执行数据库模式的更改。基于过往经验，建议使用 [mycli 客户端](https://www.mycli.net/)或使用任意你喜欢的 GUI 客户端来进行数据库模式的更改。本文档中，将在大多数场景下，使用 **mycli 客户端** 传入 SQL 语句或 SQL 文件来执行数据库模式的更改。
 - 遵循 SQL 开发规范中的[建表删表规范](/develop/dev-guide-sql-development-specification.md#建表删表规范)，建议业务应用内部封装建表删表语句增加判断逻辑。
 
 ## 更进一步

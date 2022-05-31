@@ -38,7 +38,7 @@ CREATE DATABASE IF NOT EXISTS `bookshop`;
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql
+mycli
     -u root \
     -h {host} \
     -P {port} \
@@ -51,7 +51,7 @@ mysql
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql
+mycli
     -u root \
     -h {host} \
     -P {port} \

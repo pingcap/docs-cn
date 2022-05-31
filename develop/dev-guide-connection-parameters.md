@@ -241,7 +241,7 @@ UPDATE `t` SET `a` = 11 WHERE `id` = 2;
 UPDATE `t` SET `a` = 12 WHERE `id` = 3;
 ```
 
-另外，因为一个[客户端 bug](https://bugs.mysql.com/bug.php?id=96623)，批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`，推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
+另外，因为一个[MySQL JDBC bug](https://bugs.mysql.com/bug.php?id=96623)，批量更新时如果要配置 `rewriteBatchedStatements = true` 和 `useServerPrepStmts = true`，推荐同时配置 `allowMultiQueries = true` 参数来避免这个 bug。
 
 #### 集成参数
 

@@ -30,82 +30,39 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 ## 第 2 步：连接到集群
 
-1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。
+1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。推荐使用 [mycli](https://www.mycli.net/)，这是一个使用 Python 编写的现代 MySQL 客户端。
 
     <SimpleTab>
 
     <div label="macOS">
 
-    如果你没有安装 Homebrew，请移步 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
+    如果你没有安装 Homebrew，请移步 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。安装后等待安装完毕即可：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    brew install mysql-client
+    brew install mycli
     ```
 
-    在安装完成的命令行输出中，得到以下信息：
-
-    ```
-    mysql-client is keg-only, which means it was not symlinked into /opt/homebrew,
-    because it conflicts with mysql (which contains client libraries).
-
-    If you need to have mysql-client first in your PATH, run:
-    echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
-
-    For compilers to find mysql-client you may need to set:
-    export LDFLAGS="-L/opt/homebrew/opt/mysql-client/lib"
-    export CPPFLAGS="-I/opt/homebrew/opt/mysql-client/include"
-    ```
-
-    请运行其中的此行（命令行输出若与此处文档不一致，请以命令行输出为准）：
+    验证是否安装成功：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    echo 'export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"' >> ~/.zshrc
-    ```
-
-    完成后，生效该配置文件（例如 `~/.zshrc`），并验证 MySQL 客户端是否安装成功：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    source ~/.zshrc
-    mysql --version
+    mycli --version
     ```
 
     预期会得到形如以下的输出：
 
     ```
-    mysql  Ver 8.0.28 for macos12.0 on arm64 (Homebrew)
+    Version: 1.25.0
     ```
 
     </div>
 
-    <div label="Linux">
+    <div label="其他平台">
 
-    以 CentOS 7 为例：
-
-    {{< copyable "shell-root" >}}
-
-    ```shell
-    yum install mysql
-    ```
-
-    完成后，请验证 MySQL 客户端是否安装成功：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    mysql --version
-    ```
-
-    预期会得到形如以下的输出：
-
-    ```
-    mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
-    ```
+    请参考 [mycli 安装页面](https://www.mycli.net/install)，推荐使用其中的 **Python Package** 章节，即使用 pip 包管理器进行安装。
 
     </div>
 
@@ -113,10 +70,20 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 2. 运行第 1 步中得到的连接字符串。
 
+    将连接字符串中的 `mysql` 命令改为 `mycli` 命令。即，若得到的连接字符串为：
+
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
+    mysql --connect-timeout 15 -u <user> -h <host> -P <port> -p
+    ```
+
+    则需改为运行：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    mycli -u <user> -h <host> -P <port>
     ```
 
 3. 填写密码，完成登录。

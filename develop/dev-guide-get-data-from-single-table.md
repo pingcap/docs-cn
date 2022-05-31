@@ -27,7 +27,7 @@ aliases: ['/zh/tidb/dev/get-data-from-single-table']
 <SimpleTab>
 <div label="SQL" href="simple-sql">
 
-在 MySQL Client 等客户端输入并执行如下 SQL 语句：
+在 mycli 等客户端输入并执行如下 SQL 语句：
 
 {{< copyable "sql" >}}
 

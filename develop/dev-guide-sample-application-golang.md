@@ -726,12 +726,12 @@ func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
 
 > 在 Gitpod Playground 中尝试 go-sql-driver/mysql: [现在就试试](https://gitpod.io/#targetMode=sqldriver/https://github.com/pingcap-inc/tidb-example-golang)
 
-使用 go-sql-driver/mysql 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `sqldriver` 目录下运行：
+使用 go-sql-driver/mysql 时，需手动初始化数据库表，若你本地已经安装了 `mycli`，且使用本地集群，可直接在 `sqldriver` 目录下运行：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-make mysql
+make prepare
 ```
 
 或直接执行：
@@ -739,10 +739,10 @@ make mysql
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
+mycli --host 127.0.0.1 --port 4000 -u root --no-warn < sql/dbinit.sql
 ```
 
-若你不使用本地集群，或未安装 **mysql-client**，请直接登录你的集群，并运行 `sql/dbinit.sql` 文件内的 SQL 语句。
+若你不使用本地集群，或未安装 **mycli**，请直接登录你的集群，并运行 `sql/dbinit.sql` 文件内的 SQL 语句。
 
 </div>
 
@@ -822,7 +822,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 运行 `make all`，这是以下三个操作的组合：
 
-- 创建表 (make mysql)：`mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql`
+- 创建表 (make prepare)：`mycli --host 127.0.0.1 --port 4000 -u root --no-warn < sql/dbinit.sql`
 - 构建二进制 (make build)： `go build -o bin/sql-driver-example`
 - 运行 (make run)： `./bin/sql-driver-example`
 

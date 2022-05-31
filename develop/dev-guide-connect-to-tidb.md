@@ -6,21 +6,17 @@ aliases: ['/zh/tidb/dev/connect-to-tidb']
 
 # 连接到 TiDB
 
-**TiDB** 高度兼容 **MySQL 5.7** 协议，全量的客户端链接参数列表，请参阅 [MySQL Client Options](https://dev.mysql.com/doc/refman/5.7/en/mysql-command-options.html)。
+**TiDB** 高度兼容 **MySQL 5.7** 协议，请参阅 [MySQL 客户端/服务器协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)。这使得大多数客户端驱动程序和 ORM 框架可以像连接到 MySQL 一样地连接到 TiDB。
 
-TiDB 支持 [MySQL 客户端/服务器协议](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)。这使得大多数客户端驱动程序和 ORM 框架可以像连接到 MySQL 一样地连接到 TiDB。
+## TiDB 命令行工具
 
-## MySQL Client
-
-你可以使用 MySQL Client 作为 TiDB 的命令行工具。在 [MySQL Shell 官方文档](https://dev.mysql.com/doc/mysql-shell/8.0/en/mysql-shell-install.html) 你可以找到不同操作系统的安装方式。在安装完后你可以使用如下命令行连接到 TiDB：
+PingCAP 推荐使用 [mycli](https://www.mycli.net/) 作为 TiDB 的命令行工具。在 [mycli 官方文档](https://www.mycli.net/install) 你可以找到不同操作系统的安装方式。在安装完后你可以使用如下命令行连接到 TiDB：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql --host <tidb_server_host> --port 4000 -u root -p --comments
+mycli --host <tidb_server_host> --port <port> -u <username>
 ```
-
-注意：MySQL 命令行客户端在 5.7.7 版本之前默认清除了 [Optimizer Hints](/optimizer-hints.md#optimizer-hints)。如果需要在这些早期版本的客户端中使用 Hint 语法，需要在启动客户端时加上 `--comments` 选项。
 
 ## JDBC
 

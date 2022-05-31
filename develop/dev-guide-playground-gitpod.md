@@ -73,16 +73,15 @@ tasks:
         cd plain-java-jdbc
         code src/main/resources/dbinit.sql
         code src/main/java/com/pingcap/JDBCExample.java
-        make mysql
+        make all
       elif [ "$targetMode" == "plain-java-hibernate" ]
       then
-        cd plain-java-hibernate
-        make
+        make plain-java-hibernate
       elif [ "$targetMode" == "spring-jpa-hibernate" ]
       then
-        cd spring-jpa-hibernate
-        make
+        make spring-jpa-hibernate
       fi
+
 ports:
   - port: 8080
     visibility: public
@@ -103,8 +102,10 @@ ports:
 ```dockerfile
 FROM gitpod/workspace-java-17
 
-RUN sudo apt install mysql-client -y
-RUN curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+RUN sudo apt-get install python3-pip -y && \
+    sudo pip install pip -U -q && \
+    sudo pip install mycli -q && \
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
 ```
 
 然后需要更新`.gitpod.yml`：
@@ -135,16 +136,15 @@ tasks:
         cd plain-java-jdbc
         code src/main/resources/dbinit.sql
         code src/main/java/com/pingcap/JDBCExample.java
-        make mysql
+        make all
       elif [ "$targetMode" == "plain-java-hibernate" ]
       then
-        cd plain-java-hibernate
-        make
+        make plain-java-hibernate
       elif [ "$targetMode" == "spring-jpa-hibernate" ]
       then
-        cd spring-jpa-hibernate
-        make
+        make spring-jpa-hibernate
       fi
+
 ports:
   - port: 8080
     visibility: public

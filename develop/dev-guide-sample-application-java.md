@@ -896,12 +896,12 @@ public class HibernateExample
 
 > 在 Gitpod Playground 中尝试 JDBC: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
-使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
+使用 JDBC 时，需手动初始化数据库表，若你本地已经安装了 `mycli`，且使用本地集群，可直接在 `plain-java-jdbc` 目录下运行：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-make mysql
+make prepare
 ```
 
 或直接执行：
@@ -909,10 +909,11 @@ make mysql
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
+mycli --host 127.0.0.1 --port 4000 -u root --no-warn < src/main/resources/dbinit.sql
+mycli --host 127.0.0.1 --port 4000 -u root -e "TRUNCATE test.player"
 ```
 
-若你不使用本地集群，或未安装 **mysql-client**，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
+若你不使用本地集群，或未安装 **mycli**，请直接登录你的集群，并运行 `src/main/resources/dbinit.sql` 文件内的 SQL 语句。
 
 </div>
 
