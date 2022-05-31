@@ -49,6 +49,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - Determines whether to allow explicitly specifying the values of the column with the `AUTO_RANDOM` attribute in the `INSERT` statement.
 
@@ -56,6 +57,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1`
 - Range: `[1, 65535]`
 - Controls the step size of `AUTO_INCREMENT` values to be allocated to a column. It is often used in combination with `auto_increment_offset`.
@@ -64,6 +66,7 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1`
 - Range: `[1, 65535]`
 - Controls the initial offset of `AUTO_INCREMENT` values to be allocated to a column. This setting is often used in combination with `auto_increment_increment`. For example:
@@ -98,6 +101,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - Controls whether statements should automatically commit when not in an explicit transaction. See [Transaction Overview](/transaction-overview.md#autocommit) for more information.
 
@@ -168,6 +172,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1000`
 - Range: `[0, 4294967295]`
 - Controls the maximum recursion depth in Common Table Expressions.
@@ -191,6 +196,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `mysql_native_password`
 - Possible values: `mysql_native_password`, `caching_sha2_password`
 - This variable sets the authentication method that the server advertises when the server-client connection is being established. Possible values for this variable are documented in [Authentication plugin status](/security-compatibility-with-mysql.md#authentication-plugin-status).
@@ -200,6 +206,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 7]`
 - Sets the week format used by the `WEEK()` function.
@@ -208,6 +215,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - For compatibility, TiDB returns foreign key checks as `OFF`.
 
@@ -215,6 +223,7 @@ mysql> SELECT * FROM t1;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1024`
 - Range: `[4, 18446744073709551615]`
 - The maximum buffer size for items in the `GROUP_CONCAT()` function.
@@ -252,6 +261,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `50`
 - Range: `[1, 3600]`
 - Unit: Seconds
@@ -261,6 +271,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `28800`
 - Range: `[1, 31536000]`
 - Unit: Seconds
@@ -276,12 +287,14 @@ This variable is an alias for `last_insert_id`.
 ### last_plan_from_binding <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to show whether the execution plan used in the previous statement was influenced by a [plan binding](/sql-plan-management.md)
 
 ### last_plan_from_cache <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to show whether the execution plan used in the previous `execute` statement is taken directly from the plan cache.
 
@@ -294,6 +307,7 @@ This variable is an alias for `last_insert_id`.
 ### log_bin
 
 - Scope: NONE
+- Type: Boolean
 - Default value: `OFF`
 - This variable indicates whether [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) is used.
 
@@ -301,6 +315,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `67108864`
 - Range: `[1024, 1073741824]`
 - Unit: Bytes
@@ -310,6 +325,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 2147483647]`
 - Unit: Milliseconds
@@ -336,6 +352,7 @@ This variable is an alias for `last_insert_id`.
 ### port
 
 - Scope: NONE
+- Type: Integer
 - Default value: `4000`
 - Range: `[0, 65535]`
 - The port that the `tidb-server` is listening on when speaking the MySQL protocol.
@@ -343,6 +360,7 @@ This variable is an alias for `last_insert_id`.
 ### rand_seed1
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 2147483647]`
 - This variable is used to seed the random value generator used in the `RAND()` SQL function.
@@ -351,6 +369,7 @@ This variable is an alias for `last_insert_id`.
 ### rand_seed2
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 2147483647]`
 - This variable is used to seed the random value generator used in the `RAND()` SQL function.
@@ -360,6 +379,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable ensures that all connections to TiDB are either on a local socket, or using TLS. See [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md) for additional details.
 - Setting this variable to `ON` requires you to connect to TiDB from a session that has TLS enabled. This helps prevent lock-out scenarios when TLS is not configured correctly.
@@ -369,6 +389,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls whether the `tidb-server` instance resolves hostnames as a part of the connection handshake.
 - When the DNS is unreliable, you can enable this option to improve network performance.
@@ -393,6 +414,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - Indicates whether to write changes to [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md) or not.
 
@@ -411,6 +433,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `18446744073709551615`
 - Range: `[0, 18446744073709551615]`
 - Unit: Rows
@@ -444,6 +467,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1`
 - Range: `[0, 2]`
 - This variable is used to control how TiDB sends a coprocessor request to TiFlash. It has the following values:
@@ -469,6 +493,7 @@ This variable is an alias for `last_insert_id`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - Controls whether to use the MPP mode of TiFlash to execute queries. The value options are as follows:
     - `0` or `OFF`, which means that the MPP mode will not be used.
@@ -479,6 +504,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 ### tidb_allow_remove_auto_inc <span class="version-mark">New in v2.1.18 and v3.0.4</span>
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether the `AUTO_INCREMENT` property of a column is allowed to be removed by executing `ALTER TABLE MODIFY` or `ALTER TABLE CHANGE` statements. It is not allowed by default.
 
@@ -486,6 +512,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `2`
 - Range: `[1, 2]`
 - Controls how TiDB collects statistics.
@@ -495,6 +522,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Time
 - Default value: `23:59 +0000`
 - This variable is used to restrict the time window that the automatic update of statistics is permitted. For example, to only allow automatic statistics updates between 1AM and 3AM, set `tidb_auto_analyze_start_time='01:00 +0000'` and `tidb_auto_analyze_end_time='03:00 +0000'`.
 
@@ -502,7 +530,9 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Float
 - Default value: `0.5`
+- Range: `[0, 18446744073709551615]`
 - This variable is used to set the threshold when TiDB automatically executes [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) in a background thread to update table statistics. For example, a value of 0.5 means that auto-analyze is triggered when greater than 50% of the rows in a table have been modified. Auto-analyze can be restricted to only execute during certain hours of the day by specifying `tidb_auto_analyze_start_time` and `tidb_auto_analyze_end_time`.
 
 > **Note:**
@@ -513,6 +543,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Time
 - Default value: `00:00 +0000`
 - This variable is used to restrict the time window that the automatic update of statistics is permitted. For example, to only allow automatic statistics updates between 1AM and 3AM, set `tidb_auto_analyze_start_time='01:00 +0000'` and `tidb_auto_analyze_end_time='03:00 +0000'`.
 
@@ -520,6 +551,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `10`
 - Range: `[1, 2147483647]`
 - This variable is used to set the `backoff` time when the read request meets a lock.
@@ -528,6 +560,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `2`
 - Range: `[0, 2147483647]`
 - This variable is used to increase the weight of the maximum time of TiDB `backoff`, that is, the maximum retry time for sending a retry request when an internal network or other component (TiKV, PD) failure is encountered. This variable can be used to adjust the maximum retry time and the minimum value is 1.
@@ -539,6 +572,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 ### tidb_batch_insert
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable permits `tidb_dml_batch_size` to be used in `INSERT` statements.
 - Only the value `OFF` provides ACID compliance. Setting this to any other value breaks the atomicity and isolation guarantees of TiDB, because an individual `INSERT` statement will be split into smaller transactions.
@@ -547,6 +581,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `10240`
 - Range: `[0, 9223372036854775807]`
 - Unit: Rows
@@ -556,6 +591,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `104857600` (100 MiB)
 - Range: `[0, 9223372036854775807]`
 - Unit: Bytes
@@ -574,6 +610,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to enable the [baseline capturing](/sql-plan-management.md#baseline-capturing) feature. This feature depends on the statement summary, so you need to enable the statement summary before you use baseline capturing.
 - After this feature is enabled, the historical SQL statements in the statement summary are traversed periodically, and bindings are automatically created for SQL statements that appear at least twice.
@@ -582,6 +619,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to enforce that the `utf8` character set only stores values from the [Basic Multilingual Plane (BMP)](https://en.wikipedia.org/wiki/Plane_(Unicode)#Basic_Multilingual_Plane). To store characters outside the BMP, it is recommended to use the `utf8mb4` character set.
 - You might need to disable this option when upgrading your cluster from an earlier version of TiDB where the `utf8` checking was more relaxed. For details, see [FAQs After Upgrade](/faq/upgrade-faq.md).
@@ -598,6 +636,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `128`
 - Range: `[1, 10000]`
 - The number of goroutines for requests related to executing commit in the commit phase of the single transaction.
@@ -614,6 +653,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This setting only applies to optimistic transactions. When this variable is set to `OFF`, checking for duplicate values in UNIQUE indexes is deferred until the transaction commits. This helps improve performance, but might be an unexpected behavior for some applications. See [Constraints](/constraints.md) for details.
 
@@ -650,6 +690,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `512`
 - Range: `[0, 9223372036854775807]`
 - This variable is used to set the number of retries when the DDL operation fails. When the number of retries exceeds the parameter value, the wrong DDL operation is canceled.
@@ -658,6 +699,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `256`
 - Range: `[32, 10240]`
 - Unit: Rows
@@ -676,6 +718,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `4`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -685,6 +728,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to set whether to disable the automatic retry of explicit optimistic transactions. The default value of `ON` means that transactions will not automatically retry in TiDB and `COMMIT` statements might return errors that need to be handled in the application layer.
 
@@ -700,6 +744,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `15`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -712,6 +757,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 2147483647]`
 - Unit: Rows
@@ -723,6 +769,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to specify whether to enable the one-phase commit feature for transactions that only affect one Region. Compared with the often-used two-phase commit, one-phase commit can greatly reduce the latency of transaction commit and increase the throughput.
 
@@ -736,6 +783,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to enable the `AMEND TRANSACTION` feature. If you enable the `AMEND TRANSACTION` feature in a pessimistic transaction, when concurrent DDL operations and SCHEMA VERSION changes exist on tables associated with this transaction, TiDB attempts to amend the transaction. TiDB corrects the transaction commit to make the commit consistent with the latest valid SCHEMA VERSION so that the transaction can be successfully committed without getting the `Information schema is changed` error. This feature is effective on the following concurrent DDL operations:
 
@@ -751,6 +799,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable controls whether to enable the async commit feature for the second phase of the two-phase transaction commit to perform asynchronously in the background. Enabling this feature can reduce the latency of transaction commit.
 
@@ -764,6 +813,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - Determines whether TiDB automatically updates table statistics as a background operation.
 - This setting was previously a `tidb.toml` option (`performance.run-auto-analyze`), but changed to a system variable starting from TiDB v6.1.0.
@@ -772,6 +822,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to determine whether to include the `AUTO_INCREMENT` columns when creating a generated column or an expression index.
 
@@ -779,6 +830,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - Determines if TiDB permits non-transactional 'batched' statements. Only the value of `OFF` can be considered safe, as batch DML does not provide ACID guarantees.
 - This setting was previously a `tidb.toml` option (`enable-batch-dml`), but changed to a system variable starting from TiDB v6.1.0.
@@ -791,12 +843,14 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to enable the cascades planner.
 
 ### tidb_enable_chunk_rpc <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the `Chunk` data encoding format in Coprocessor.
 
@@ -804,6 +858,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `INT_ONLY`
 - Possible values: `OFF`, `ON`, `INT_ONLY`
 - This variable is used to control whether to create the primary key as a [clustered index](/clustered-indexes.md) by default. "By default" here means that the statement does not explicitly specify the keyword `CLUSTERED`/`NONCLUSTERED`. Supported values are `OFF`, `ON`, and `INT_ONLY`:
@@ -815,6 +870,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Boolean
 - Default value: `ON`
 - This variable controls whether to record the execution information of each operator in the slow query log.
 
@@ -826,12 +882,14 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls whether to enable TiDB to collect `PREDICATE COLUMNS`. After enabling the collection, if you disable it, the information of previously collected `PREDICATE COLUMNS` is cleared. For details, see [Collect statistics on some columns](/statistics.md#collect-statistics-on-some-columns).
 
 ### tidb_enable_enhanced_security
 
 - Scope: NONE
+- Type: Boolean
 - Default value: `OFF`
 - This variable indicates whether the TiDB server you are connected to has the Security Enhanced Mode (SEM) enabled. To change its value, you need to modify the value of `enable-sem` in your TiDB server configuration file and restart the TiDB server.
 - SEM is inspired by the design of systems such as [Security-Enhanced Linux](https://en.wikipedia.org/wiki/Security-Enhanced_Linux). It reduces the abilities of users with the MySQL `SUPER` privilege and instead requires `RESTRICTED` fine-grained privileges to be granted as a replacement. These fine-grained privileges include:
@@ -848,6 +906,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to enable the statistics `Fast Analyze` feature.
 - If the statistics `Fast Analyze` feature is enabled, TiDB randomly samples about 10,000 rows of data as statistics. When the data is distributed unevenly or the data size is small, the statistics accuracy is low. This might lead to a non-optimal execution plan, for example, selecting a wrong index. If the execution time of the regular `Analyze` statement is acceptable, it is recommended to disable the `Fast Analyze` feature.
@@ -864,6 +923,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the index merge feature.
 
@@ -871,6 +931,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable permits `INSTANCE` scoped variables to be set using the `SET SESSION` as well as `SET GLOBAL` syntax.
 - This option is enabled by default for compatibility with earlier versions of TiDB.
@@ -879,6 +940,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to enable the `LIST (COLUMNS) TABLE PARTITION` feature.
 
@@ -886,6 +948,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to enable TiDB mutation checker, which is a tool used to check consistency between data and indexes during the execution of DML statements. If the checker returns an error for a statement, TiDB rolls back the execution of the statement. Enabling this variable causes a slight increase in CPU usage. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md ).
 
@@ -893,6 +956,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `OFF`
 - Possible values: `OFF`, `ON`, `WARN`
 - By default, TiDB returns an error when you attempt to use the syntax for functionality that is not yet implemented. When the variable value is set to `ON`, TiDB silently ignores such cases of unavailable functionality, which is helpful if you cannot make changes to the SQL code.
@@ -911,6 +975,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls whether to use the method of paging to send coprocessor requests in `IndexLookUp` operator.
 - User scenarios: For read queries that use `IndexLookup` and `Limit` and that `Limit` cannot be pushed down to `IndexScan`, there might be high latency for the read queries and high CPU usage for TiKV's `unified read pool`. In such cases, because the `Limit` operator only requires a small set of data, if you set `tidb_enable_paging` to `ON`, TiDB processes less data, which reduces query latency and resource consumption.
@@ -920,6 +985,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls whether to enable concurrency for the `Apply` operator. The number of concurrencies is controlled by the `tidb_executor_concurrency` variable. The `Apply` operator processes correlated subqueries and has no concurrency by default, so the execution speed is slow. Setting this variable value to `1` can increase concurrency and speed up execution. Currently, concurrency for `Apply` is disabled by default.
 
@@ -927,6 +993,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - Determines whether to enable [Prepared Plan Cache](/sql-prepared-plan-cache.md). When it is enabled, the execution plans of `Prepare` and `Execute` are cached so that the subsequent executions skip optimizing the execution plans, which brings performance improvement.
 - This setting was previously a `tidb.toml` option (`prepared-plan-cache.enabled`), but changed to a system variable starting from TiDB v6.1.0.
@@ -935,6 +1002,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable controls the behavior of the optimizer on using statistics of a table when the statistics are outdated.
 - The optimizer determines whether the statistics of a table is outdated in this way: since the last time `ANALYZE` is executed on a table to get the statistics, if 80% of the table rows are modified (the modified row count divided by the total row count), the optimizer determines that the statistics of this table is outdated. You can change this ratio using the [`pseudo-estimate-ratio`](/tidb-configuration-file.md#pseudo-estimate-ratio) configuration.
@@ -945,6 +1013,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable controls whether to enable the dynamic memory control feature for the operator that reads data. By default, this operator enables the maximum number of threads that [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) allows to read data. When the memory usage of a single SQL statement exceeds [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) each time, the operator that reads data stops one thread.
 - When the operator that reads data has only one thread left and the memory usage of a single SQL statement continues to exceed [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query), this SQL statement triggers other memory control behaviors, such as [spilling data to disk](/tidb-configuration-file.md#oom-use-tmp-storage).
@@ -953,6 +1022,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the slow log feature.
 
@@ -960,6 +1030,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the statement summary feature. If enabled, SQL execution information like time consumption is recorded to the `information_schema.STATEMENTS_SUMMARY` system table to identify and troubleshoot SQL performance issues.
 
@@ -967,6 +1038,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control if tables can be created with invalid definitions of type `DOUBLE`. This setting is intended to provide an upgrade path from earlier versions of TiDB, which were less strict in validating types.
 - The default value of `ON` is compatible with MySQL.
@@ -992,6 +1064,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `ON`
 - Possible values: `OFF`, `ON`, `AUTO`
 - This variable is used to set whether to enable the `TABLE PARTITION` feature:
@@ -1003,6 +1076,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to dynamically control whether the telemetry collection in TiDB is enabled. By setting the value to `OFF`, the telemetry collection is disabled. If the [`enable-telemetry`](/tidb-configuration-file.md#enable-telemetry-new-in-v402) TiDB configuration item is set to `false` on all TiDB instances, the telemetry collection is always disabled and this system variable will not take effect. See [Telemetry](/telemetry.md) for details.
 
@@ -1014,6 +1088,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to enable the [Top SQL](/dashboard/top-sql.md) feature.
 
@@ -1021,6 +1096,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to enable the TSO Follower Proxy feature. When the value is `OFF`, TiDB only gets TSO from the PD leader. After this feature is enabled, TiDB gets TSO by evenly sending requests to all PD nodes and forwarding TSO requests through PD followers. This helps reduce the CPU pressure of PD leader.
 - Scenarios for enabling TSO Follower Proxy:
@@ -1035,6 +1111,7 @@ Query OK, 0 rows affected (0.09 sec)
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable vectorized execution.
 
@@ -1042,12 +1119,14 @@ Query OK, 0 rows affected (0.09 sec)
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the support for window functions. Note that window functions may use reserved keywords. This might cause SQL statements that could be executed normally cannot be parsed after upgrading TiDB. In this case, you can set `tidb_enable_window_function` to `OFF`.
 
 ### tidb_enforce_mpp <span class="version-mark">New in v5.1</span>
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - To change this default value, modify the [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) configuration value.
 - Controls whether to ignore the optimizer's cost estimation and to forcibly use TiFlash's MPP mode for query execution. The value options are as follows:
@@ -1060,6 +1139,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to enable the baseline evolution feature. For detailed introduction or usage , see [Baseline Evolution](/sql-plan-management.md#baseline-evolution).
 - To reduce the impact of baseline evolution on the cluster, use the following configurations:
@@ -1070,6 +1150,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Time
 - Default value: `23:59 +0000`
 - This variable is used to set the end time of baseline evolution in a day.
 
@@ -1077,6 +1158,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `600`
 - Range: `[-1, 9223372036854775807]`
 - Unit: Seconds
@@ -1086,6 +1168,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Time
 - Default value: `00:00 +0000`
 - This variable is used to set the start time of baseline evolution in a day.
 
@@ -1093,6 +1176,7 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `5`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1124,6 +1208,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Integer
 - Default value: `60`
 - Range: `[10, 2147483647]`
 - Unit: Seconds
@@ -1143,6 +1228,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1152,6 +1238,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - Enables garbage collection for TiKV. Disabling garbage collection will reduce system performance, as old versions of rows will no longer be purged.
 
@@ -1159,6 +1246,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Duration
 - Default value: `10m0s`
 - Range: `[10m0s, 8760h0m0s]`
 - The time limit during which data is retained for each GC, in the format of Go Duration. When a GC happens, the current time minus this value is the safe point.
@@ -1174,6 +1262,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Duration
 - Default value: `10m0s`
 - Range: `[10m0s, 8760h0m0s]`
 - Specifies the GC interval, in the format of Go Duration, for example, `"1h30m"`, and `"15m"`
@@ -1186,6 +1275,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `LEGACY`
 - Possible values: `PHYSICAL`, `LEGACY`
     - `LEGACY`: Uses the old way of scanning, that is, disable Green GC.
@@ -1196,6 +1286,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to record all SQL statements in the [log](/tidb-configuration-file.md#logfile). This feature is disabled by default. If maintenance personnel needs to trace all SQL statements when locating issues, they can enable this feature.
 - To see all records of this feature in the log, query the `"GENERAL_LOG"` string. The following information is recorded:
@@ -1217,6 +1308,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1231,6 +1323,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1246,6 +1339,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1257,6 +1351,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to ignore the commands for closing prepared statement cache.
 - When this variable is set to `ON`, the `COM_STMT_CLOSE` command of the Binary protocol and the [`DEALLOCATE PREPARE`](/sql-statements/sql-statement-deallocate.md) statement of the text protocol are ignored. For details, see [Ignore the `COM_STMT_CLOSE` command and the `DEALLOCATE PREPARE` statement](/sql-prepared-plan-cache.md#ignore-the-com_stmt_close-command-and-the-deallocate-prepare-statement).
@@ -1265,6 +1360,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `25000`
 - Range: `[1, 2147483647]`
 - Unit: Rows
@@ -1279,6 +1375,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1294,6 +1391,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1304,6 +1402,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `20000`
 - Range: `[1, 2147483647]`
 - Unit: Rows
@@ -1314,6 +1413,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -1324,6 +1424,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `32`
 - Range: `[1, 32]`
 - Unit: Rows
@@ -1338,6 +1439,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 ### tidb_log_file_max_days <span class="version-mark">New in v5.3.0</span>
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 2147483647]`
 - This variable is used to adjust the maximum days of logger on the current TiDB instance. Its value defaults to the value of the [`max-days`](/tidb-configuration-file.md#max-days) configuration in the configuration file. Changing the variable value only affects the current TiDB instance. After TiDB is restarted, the variable value is reset and the configuration value is not affected.
@@ -1345,6 +1447,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 ### tidb_low_resolution_tso
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to enable the low precision TSO feature. After this feature is enabled, new transactions use a timestamp updated every 2 seconds to read data.
 - The main applicable scenario is to reduce the overhead of acquiring TSO for small read-only transactions when reading old data is acceptable.
@@ -1353,6 +1456,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1024`
 - Range: `[32, 2147483647]`
 - Unit: Rows
@@ -1362,6 +1466,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1024`
 - Range: `[100, 16384]`
 - This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100 ~ 16384.
@@ -1370,6 +1475,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `CANCEL`
 - Possible values: `CANCEL`, `LOG`
 - Specifies what operation TiDB performs when a single SQL statement exceeds the memory quota specified by `tidb_mem_quota_query` and cannot be spilled over to disk. See [TiDB Memory Control](/configure-memory-usage.md) for details.
@@ -1380,6 +1486,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `33554432` (32 MiB)
 - Range: `[0, 9223372036854775807]`
 - Unit: Bytes
@@ -1390,6 +1497,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `67108864`
 - Range: `[0, 2147483647]`
 - Unit: Bytes
@@ -1400,6 +1508,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1073741824` (1 GiB)
 - Range: `[-1, 9223372036854775807]`
 - Unit: Bytes
@@ -1411,13 +1520,16 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Float
 - Default value: `0.8`
+- Range: `[0, 1]`
 - TiDB triggers an alarm when the percentage of the memory it takes exceeds a certain threshold. For the detailed usage description of this feature, see [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-new-in-v409).
 - You can set the initial value of this variable by configuring [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-new-in-v409).
 
 ### tidb_metric_query_range_duration <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `60`
 - Range: `[10, 216000]`
 - Unit: Seconds
@@ -1426,6 +1538,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 ### tidb_metric_query_step <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `60`
 - Range: `[10, 216000]`
 - Unit: Seconds
@@ -1435,6 +1548,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `OFF`
 - Possible values: `OFF`, `ON`, `WARN`
 - This variable controls whether to allow multiple queries to be executed in the same `COM_QUERY` call.
@@ -1460,6 +1574,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 ### tidb_opt_agg_push_down
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function to the position before Join, Projection, and UnionAll.
 - When the aggregate operation is slow in query, you can set the variable value to ON.
@@ -1468,6 +1583,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1`
 - Range: `[0, 2147483647]`
 - When the method that estimates the number of rows based on column order correlation is not available, the heuristic estimation method is used. This variable is used to control the behavior of the heuristic method.
@@ -1480,12 +1596,15 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Float
 - Default value: `0.9`
+- Range: `[0, 1]`
 - This variable is used to set the threshold value that determines whether to enable estimating the row count by using column order correlation. If the order correlation between the current column and the `handle` column exceeds the threshold value, this method is enabled.
 
 ### tidb_opt_distinct_agg_push_down
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether the optimizer executes the optimization operation of pushing down the aggregate function with `distinct` (such as `select count(distinct a) from t`) to Coprocessor.
 - When the aggregate function with the `distinct` operation is slow in the query, you can set the variable value to `1`.
@@ -1522,6 +1641,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether the optimizer estimates the number of rows based on column order correlation
 
@@ -1529,6 +1649,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to set whether to enable the optimization rule that converts a subquery to join and aggregation.
 - For example, after you enable this optimization rule, the subquery is converted as follows:
@@ -1553,6 +1674,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `100`
 - Range: `[0, 2147483647]`
 - This variable is used to set the threshold that determines whether to push the Limit or TopN operator down to TiKV.
@@ -1562,6 +1684,7 @@ mysql> desc select count(distinct a) from test.t;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - After you set the value of this variable to `ON`, the optimizer always prefers range scans over full table scans.
 - In the following example, before you enable `tidb_opt_prefer_range_scan`, the TiDB optimizer performs a full table scan. After you enable `tidb_opt_prefer_range_scan`, the optimizer selects an index range scan.
@@ -1607,6 +1730,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable controls whether to enable the [ANALYZE configuration persistence](/statistics.md#persist-analyze-configurations) feature.
 
@@ -1614,6 +1738,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `STRICT`
 - Possible values: `STRICT`, `IGNORE`
 - This variable controls whether DDL statements ignore the [placement rules specified in SQL](/placement-rules-in-sql.md). When the variable value is `IGNORE`, all placement rule options are ignored.
@@ -1623,6 +1748,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 1]`
 - This variable is used to control whether to mark the corresponding SQL statement in the profile output to identify and troubleshoot performance issues.
@@ -1631,6 +1757,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Float
 - Default value: `0.1`
 - Range: `[0, 1]`
 - This setting is used to prevent the tidb.toml option `performance.max-memory` from being exceeded. When `max-memory` * (1 - `tidb_prepared_plan_cache_memory_guard_ratio`) is exceeded, the elements in the LRU are removed.
@@ -1640,6 +1767,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `100`
 - Range: `[1, 100000]`
 - The maximum number of statements that can be cached in the prepared plan cache.
@@ -1653,6 +1781,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[-1, 256]`
 - Unit: Threads
@@ -1663,11 +1792,12 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `4096` (4 KiB)
 - Range: `[0, 1073741824]`
 - Unit: Bytes
 - The maximum length of the SQL statement output. When the output length of a statement is larger than the `tidb_query_log_max_len` value, the statement is truncated to output.
-- This setting was previously also available a tidb.toml option (`log.query-log-max-len`), but is only a system variable starting from TiDB v6.1.0.
+- This setting was previously also available as a `tidb.toml` option (`log.query-log-max-len`), but is only a system variable starting from TiDB v6.1.0.
 
 ### tidb_rc_read_check_ts <span class="version-mark">New in v6.0.0</span>
 
@@ -1678,6 +1808,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to optimize the timestamp acquisition, which is suitable for scenarios with read-committed isolation level where read-write conflicts are rare. Enabling this variable can avoid the latency and cost of getting the global timestamp, and can optimize the transaction-level read latency.
 - If read-write conflicts are severe, enabling this feature will increase the cost and latency of getting the global timestamp, and might cause performance regression. For details, see [Read Committed isolation level](/transaction-isolation-levels.md#read-committed-isolation-level).
@@ -1685,6 +1816,7 @@ explain select * from t where age=5;
 ### tidb_read_staleness <span class="version-mark">New in v5.4.0</span>
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `0`
 - Range: `[-2147483648, 0]`
 - This variable is used to set the time range of historical data that TiDB can read in the current session. After setting the value, TiDB selects a timestamp as new as possible from the range allowed by this variable, and all subsequent read operations are performed against this timestamp. For example, if the value of this variable is set to `-5`, on the condition that TiKV has the corresponding historical version's data, TiDB selects a timestamp as new as possible within a 5-second time range.
@@ -1693,6 +1825,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to include the execution plan of slow queries in the slow log.
 
@@ -1700,6 +1833,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls whether to hide user information in the SQL statement being recorded into the TiDB log and slow log.
 - When you set the variable to `1`, user information is hidden. For example, if the executed SQL statement is `insert into t values (1,2)`, the statement is recorded as `insert into t values (?,?)` in the log.
@@ -1708,6 +1842,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable controls whether the optimizer can use a query condition including null equivalence as a prefix condition for index access.
 - This variable is enabled by default. When it is enabled, the optimizer can reduce the volume of index data to be accessed, which accelerates query execution. For example, if a query involves multiple-column indexes `index(a, b)` and the query condition contains `a<=>null and b=1`, the optimizer can use both `a<=>null` and `b=1` in the query condition for index access. If the variable is disabled, because `a<=>null and b=1` includes the null equivalence condition, the optimizer does not use `b=1` for index access.
@@ -1716,6 +1851,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `leader`
 - Possible values: `leader`, `follower`, `leader-and-follower`, `closest-replicas`
 - This variable is used to control where TiDB reads data. Here are three options:
@@ -1728,6 +1864,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls the read-only status of the entire cluster. When the variable is `ON`, all TiDB servers in the entire cluster are in the read-only mode. In this case, TiDB only executes the statements that do not modify data, such as `SELECT`, `USE`, and `SHOW`. For other statements such as `INSERT` and `UPDATE`, TiDB rejects executing those statements in the read-only mode.
 - Enabling the read-only mode using this variable only ensures that the entire cluster finally enters the read-only status. If you have changed the value of this variable in a TiDB cluster but the change has not yet propagated to other TiDB servers, the un-updated TiDB servers are still **not** in the read-only mode.
@@ -1743,6 +1880,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `10`
 - Range: `[-1, 9223372036854775807]`
 - This variable is used to set the maximum number of the retries for optimistic transactions. When a transaction encounters retryable errors (such as transaction conflicts, very slow transaction commit, or table schema changes), this transaction is re-executed according to this variable. Note that setting `tidb_retry_limit` to `0` disables the automatic retry. This variable only applies to optimistic transactions, not to pessimistic transactions.
@@ -1751,6 +1889,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `2`
 - Range: `[1, 2]`
 - Controls the format version of the newly saved data in the table. In TiDB v4.0, the [new storage row format](https://github.com/pingcap/tidb/blob/master/docs/design/2018-07-19-row-format.md) version `2` is used by default to save new data.
@@ -1761,6 +1900,7 @@ explain select * from t where age=5;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - By default, Regions are split for a new table when it is being created in TiDB. After this variable is enabled, the newly split Regions are scattered immediately during the execution of the `CREATE TABLE` statement. This applies to the scenario where data need to be written in batches right after the tables are created in batches, because the newly split Regions can be scattered in TiKV beforehand and do not have to wait to be scheduled by PD. To ensure the continuous stability of writing data in batches, the `CREATE TABLE` statement returns success only after the Regions are successfully scattered. This makes the statement's execution time multiple times longer than that when you disable this variable.
 - Note that if `SHARD_ROW_ID_BITS` and `PRE_SPLIT_REGIONS` have been set when a table is created, the specified number of Regions are evenly split after the table creation.
@@ -1769,6 +1909,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to skip ASCII validation.
 - Validating ASCII characters affects the performance. When you are sure that the input characters are valid ASCII characters, you can set the variable value to `ON`.
@@ -1777,6 +1918,7 @@ explain select * from t where age=5;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - After this switch is enabled, if an isolation level unsupported by TiDB is assigned to `tx_isolation`, no error is reported. This helps improve compatibility with applications that set (but do not depend on) a different isolation level.
 
@@ -1794,6 +1936,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to set whether to skip UTF-8 validation.
 - Validating UTF-8 characters affects the performance. When you are sure that the input characters are valid UTF-8 characters, you can set the variable value to `ON`.
@@ -1802,6 +1945,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 - Scope: GLOBAL
 - Persists to cluster: No
+- Type: Integer
 - Default value: `300`
 - Range: `[-1, 9223372036854775807]`
 - Unit: Milliseconds
@@ -1829,7 +1973,9 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `0`
+- Range: `[0, 1099511627776]`
 - This variable sets the memory quota for the TiDB statistics cache.
 
 ### tidb_stats_load_pseudo_timeout <span class="version-mark">New in v5.4.0</span>
@@ -1840,6 +1986,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable controls how TiDB behaves when the waiting time of SQL optimization reaches the timeout to synchronously load complete column statistics. The default value `OFF` means that SQL execution fails after the timeout. If you set this variable to `ON`, the SQL optimization gets back to using pseudo statistics after the timeout.
 
@@ -1851,6 +1998,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 2147483647]`
 - Unit: Milliseconds
@@ -1860,6 +2008,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `24`
 - Range: `[0, 255]`
 - This variable is used to set the history capacity of [statement summary tables](/statement-summary-tables.md).
@@ -1868,6 +2017,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether to include the SQL information of TiDB in [statement summary tables](/statement-summary-tables.md).
 
@@ -1875,6 +2025,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `4096`
 - Range: `[0, 2147483647]`
 - This variable is used to control the length of the SQL string in [statement summary tables](/statement-summary-tables.md).
@@ -1883,6 +2034,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `3000`
 - Range: `[1, 32767]`
 - This variable is used to set the maximum number of statements that [statement summary tables](/statement-summary-tables.md) store in memory.
@@ -1891,6 +2043,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `1800`
 - Range: `[1, 2147483647]`
 - Unit: Seconds
@@ -1900,6 +2053,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `0`
 - Range: `[0, 9223372036854775807]`
 - This variable is used to limit the maximum number of requests TiDB can send to TiKV at the same time. 0 means no limit.
@@ -1908,6 +2062,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `OFF`
 - This variable is used to control whether the `SYSDATE` function can be replaced by the `NOW` function. This configuration item has the same effect as the MySQL option [`sysdate-is-now`](https://dev.mysql.com/doc/refman/8.0/en/server-options.html#option_mysqld_sysdate-is-now).
 
@@ -1915,6 +2070,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `3`
 - Range: `[1, 10]`
 - Unit: Seconds
@@ -1924,6 +2080,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `67108864`
 - Range: `[1048576, 137438953472]`
 - Unit: Bytes
@@ -1933,6 +2090,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `5000`
 - Range: `[1, 10000]`
 - This variable is used to control the maximum number of SQL statement types collected by [Top SQL](/dashboard/top-sql.md) per minute.
@@ -1945,6 +2103,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `100`
 - Range: `[1, 5000]`
 - This variable is used to control how many SQL statements that contribute the most to the load (that is, top N) can be recorded by [Top SQL](/dashboard/top-sql.md) per minute.
@@ -1953,7 +2112,9 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: GLOBAL
 - Persists to cluster: Yes
+- Type: Float
 - Default value: `0`
+- Range: `[0, 10]`
 - Range: `[0, 10]`
 - Unit: Milliseconds
 - This variable is used to set the maximum waiting time for a batch operation when TiDB requests TSO from PD. The default value is `0`, which means no extra waiting time.
@@ -1972,6 +2133,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `OFF`
 - Possible values: `OFF`, `FAST`, `STRICT`
 - This variable is used to control the assertion level. Assertion is a consistency check between data and indexes, which checks whether a key being written exists in the transaction commit process. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md ).
@@ -1984,6 +2146,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `pessimistic`
 - Possible values: `pessimistic`, `optimistic`
 - This variable is used to set the transaction mode. TiDB 3.0 supports the pessimistic transactions. Since TiDB 3.0.8, the [pessimistic transaction mode](/pessimistic-transaction.md) is enabled by default.
@@ -1994,12 +2157,14 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable is used to control whether to enable the execution plan binding feature. It is enabled by default, and can be disabled by assigning the `OFF` value. For the use of the execution plan binding, see [Execution Plan Binding](/sql-plan-management.md#create-a-binding).
 
 ### tidb_wait_split_region_finish
 
 - Scope: SESSION
+- Type: Boolean
 - Default value: `ON`
 - It usually takes a long time to scatter Regions, which is determined by PD scheduling and TiKV loads. This variable is used to set whether to return the result to the client after all Regions are scattered completely when the `SPLIT REGION` statement is being executed:
     - `ON` requires that the `SPLIT REGIONS` statement waits until all Regions are scattered.
@@ -2009,6 +2174,7 @@ SET tidb_slow_log_threshold = 200;
 ### tidb_wait_split_region_timeout
 
 - Scope: SESSION
+- Type: Integer
 - Default value: `300`
 - Range: `[1, 2147483647]`
 - Unit: Seconds
@@ -2022,6 +2188,7 @@ SET tidb_slow_log_threshold = 200;
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `-1`
 - Range: `[1, 256]`
 - Unit: Threads
@@ -2039,13 +2206,16 @@ SET tidb_slow_log_threshold = 200;
 ### timestamp
 
 - Scope: SESSION
+- Type: Float
 - Default value: `0`
+- Range: `[0, 2147483647]`
 - A non-empty value of this variable indicates the UNIX epoch that is used as the timestamp for `CURRENT_TIMESTAMP()`, `NOW()`, and other functions. This variable might be used in data restore or replication.
 
 ### transaction_isolation
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Enumeration
 - Default value: `REPEATABLE-READ`
 - Possible values: `READ-UNCOMMITTED`, `READ-COMMITTED`, `REPEATABLE-READ`, `SERIALIZABLE`
 - This variable sets the transaction isolation. TiDB advertises `REPEATABLE-READ` for compatibility with MySQL, but the actual isolation level is Snapshot Isolation. See [transaction isolation levels](/transaction-isolation-levels.md) for further details.
@@ -2082,6 +2252,7 @@ This variable is an alias for `transaction_isolation`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Integer
 - Default value: `28800`
 - Range: `[0, 31536000]`
 - Unit: Seconds
@@ -2097,5 +2268,6 @@ This variable is an alias for `transaction_isolation`.
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
+- Type: Boolean
 - Default value: `ON`
 - This variable controls whether to use the high precision mode when computing the window functions.
