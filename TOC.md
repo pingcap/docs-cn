@@ -433,6 +433,8 @@
     - [FAQ](/tiem/tiem-faq.md)
     - [发布版本历史](/tiem/tiem-release-notes.md)
       - [v1.0.0](/tiem/tiem-release-1.0.0.md)
+      - [v1.0.1](/tiem/tiem-release-1.0.1.md)
+      - [v1.0.2](/tiem/tiem-release-1.0.2.md)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
