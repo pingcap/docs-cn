@@ -4,7 +4,7 @@ title: TiEM 1.0.1 release notes
 <!-- markdownlint-disable MD001 -->
 # TiEM 1.0.1 Release Notes
 
-2022 年 5 月 30 日，TiEM 发布 1.0.1 版。该版本在 1.0.0 版的基础上，增加了 TiDB 支持版本，对 TiEM 安全性做出了改进。
+2022 年 5 月 30 日，TiEM 发布 1.0.1 版。该版本在 1.0.0 版的基础上，增加了 TiDB 支持版本，优化了 TiEM 功能逻辑，对 TiEM 安全性做出了改进。
 
 ## TiEM
 
