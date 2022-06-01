@@ -8,7 +8,7 @@ title: TiEM 1.0.1 release notes
 
 ## TiEM
 
-- 新增支持 TiDB 6.0 的部署
+- 新增支持 TiDB 6.0
 - 优化 workflow 逻辑，支持重启继续执行
 - 修复一些安全基线漏洞
 - 替换 Elastic Search, Filebeat, Kibana, Grafana 为 OSS 版本
