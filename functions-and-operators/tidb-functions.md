@@ -338,7 +338,7 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 创建方式：
 
-    当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群扩展性。
+    当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群可扩展性。
 
 - 适用场景：
 
@@ -374,7 +374,7 @@ TIDBShardExpr ::=
     {{< copyable "sql" >}}
 
     ```sql
-    select TIDB_SHARD(12373743746);
+    SELECT TIDB_SHARD(12373743746);
     ```
 
 - 计算得出 SHARD 值为：
@@ -393,7 +393,7 @@ TIDBShardExpr ::=
     {{< copyable "sql" >}}
 
     ```sql
-    create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a));
+    CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
     ```
 
 ### MySQL 兼容性
