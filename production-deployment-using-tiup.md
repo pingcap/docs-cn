@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
+summary: 了解如何使用 TiUP 部署 TiDB 集群。
 ---
 
 # 使用 TiUP 部署 TiDB 集群
