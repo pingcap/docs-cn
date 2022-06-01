@@ -23,7 +23,7 @@ TiFlash 在 6.1 版本将 Proxy 做了升级（与 TiKV 6.0 版本对齐）。�
 正常升级风险不大，但有特殊需要的用户请注意：6.1 降级到之前的任意低版本时，会无法解析新版的 rocksdb 配置，导致 TiFlash 重启失败。请事先做好升级验证工作并尽可能做好应急方案（确保 TiKV 数据可用，并预估重新同步数据可能造成的影响）。
 
 ##### 测试环境及特殊回退需求下的对策
-强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[此文](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tiflash-cluster)。
+确保TiKV相应表中数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tiflash-cluster)。
 
 #### Partition Table Dynamic Pruning
 如用户没有也不打算开启动态分区裁剪，可略过此段。
@@ -40,6 +40,9 @@ v6.1 默认升级到 PageStorage V3 版本，即默认 format_version 为 4。�
 3. 具体实例跑的版本，可以在 grafana 对应监控查看（Tiflash summary → storage pool → global run mode 和 storage pool run mode）。
   1. Global run mode 对应了全局的运行模式。
   2. Storage pool run mode 对应了单表的运行模式。
+
+##### 测试环境及特殊回退需求下的对策
+确保相应表中 TiKV 副本的数据可用，删除 TiFlash 副本，之后重新同步数据。删除副本操作步骤详见[用户手册](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)。
 
 ### v6.0 to v6.1
 #### Partition Table Dynamic Pruning
