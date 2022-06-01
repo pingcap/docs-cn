@@ -29,11 +29,11 @@ TiDB Lightning 支持从以下位置读取：
 
 TiDB Lightning 目前支持两种导入方式，通过`backend`配置区分。不同的模式决定 TiDB Lightning 如何将数据导入到目标 TiDB 集群。
 
-- [SST Mode](/tidb-lightning/tidb-lightning-sst-mode.md)：TiDB Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对上传到各个 TiKV 节点，最后调用 TiKV Ingest 接口将数据插入到 TiKV 的 RocksDB 中。如果用于初始化导入，请优先考虑使用 SST 模式，其拥有较高的导入速度。
+- [Physical Import Mode](/tidb-lightning/tidb-lightning-sst-mode.md)：TiDB Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对上传到各个 TiKV 节点，最后调用 TiKV Ingest 接口将数据插入到 TiKV 的 RocksDB 中。如果用于初始化导入，请优先考虑使用 Physical Import Mode，其拥有较高的导入速度。
 
-- [SQL Mode](/tidb-lightning/tidb-lightning-sql-mode.md)：TiDB Lightning 先将数据编码成 SQL，然后直接运行这些 SQL 语句进行数据导入。如果需要导入的集群为生产环境线上集群，或需要导入的目标表中已包含有数据，则应使用 SQL 模式。
+- [Logical Import Mode](/tidb-lightning/tidb-lightning-sql-mode.md)：TiDB Lightning 先将数据编码成 SQL，然后直接运行这些 SQL 语句进行数据导入。如果需要导入的集群为生产环境线上集群，或需要导入的目标表中已包含有数据，则应使用 SQL 模式。
 
-| 导入模式 | SST Mode | SQL Mode |
+| 导入模式 | Physical Import Mode | Logical Import Mode |
 |:---|:---|:---|
 | 速度 | 快 (100 ~ 500 GiB/小时) | 慢 (10 ~ 50 GiB/小时) |
 | 资源使用率 | 高 | 低 |

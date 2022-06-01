@@ -1,8 +1,8 @@
 ---
-title: TiDB Lightning SST Mode 必要条件及限制
+title: TiDB Lightning Physical Import Mode 必要条件及限制
 ---
 
-# TiDB Lightning SST Mode 必要条件及限制
+# TiDB Lightning Physical Import Mode 必要条件及限制
 
 ## 运行环境需求
 
@@ -28,11 +28,11 @@ title: TiDB Lightning SST Mode 必要条件及限制
 
 ## 使用限制
 
-- 请勿使用 SST 模式向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。
+- 请勿使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，这将对在线业务产生严重影响。
 
 - 默认情况下，不应同时启动多个 TiDB Lightning 实例向同一 TiDB 集群导入数据，而应考虑使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性。
 
-- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 SST Mode 和 SQL Mode 导入同一 TiDB 集群。
+- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
 
 ## 与其他组件一同使用的注意事项
 
@@ -46,4 +46,4 @@ title: TiDB Lightning SST Mode 必要条件及限制
 
 - TiDB Lightning 与 TiCDC 一起使用时需要注意：
 
-    - TiCDC 无法捕获 SST Mode 插入的数据。
+    - TiCDC 无法捕获 Physical Import Mode 插入的数据。
