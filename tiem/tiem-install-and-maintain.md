@@ -250,9 +250,41 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 ## 升级 TiEM
 
-本节适用于已经安装过 TiEM 1.0.0 版本并打算升级 TiEM 的用户。如首次安装可跳过本节。
+本节适用于已经安装过 TiEM 并打算升级 TiEM 的用户。如首次安装可跳过本节，参考[离线部署 TiEM](#离线部署-tiem)安装 TiEM 1.0.2。
 
-由于 TiEM 1.0.1 与 1.0.0 版本存在一些不兼容，此次升级增加了一部分兼容性的步骤，后续版本的升级将更加平滑，无需销毁现有 TiEM。
+> **注意：**
+>
+> 如果您现在安装的是 TiEM 1.0.0 版本，请参见[兼容性升级 TiEM 1.0.1](#兼容性升级-tiem-101)，先升级到 TiEM 1.0.1，再参考本小节升级到 TiEM 1.0.2。
+> 如果您现在安装的是 TiEM 1.0.1 版本，请直接参考本小节升级到 TiEM 1.0.2。
+
+1. 升级 TiEM 离线包。
+
+    参考[离线部署 TiEM](#离线部署-tiem) 中第 1-3 步：通过 TiEM 产品团队获得最新 TiEM 离线包，发送 TiEM 离线安装包至目标集群的 TiEM 中控机，解压离线包。执行更新 TiEM 离线包命令。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # user 为之前部署 TiEM 的帐户，默认为 tidb
+    sudo sh em-enterprise-server-v<版本号>-linux-amd64/update.sh <user>
+    ```
+
+2. 执行升级 TiEM 命令。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 切换到 tidb 账号下
+    su - tidb
+
+    # 将集群 <cluster-name> 升级到特定版本 <version>
+    # 目前仅支持原地停机升级，并且暂不支持版本降级和回退。为安全起见，请按照 停止集群 > 备份 tiem元数据 > 升级集群的流程操作
+    TIUP_HOME=/home/tidb/.em tiup em upgrade <cluster-name> <version>
+
+## 兼容性升级 TiEM 1.0.1
+
+本节适用于已经安装过 TiEM 1.0.0 版本并打算升级 TiEM 的用户。如首次安装可跳过本节，参考[离线部署 TiEM](#离线部署-tiem)安装 TiEM 1.0.2。
+
+由于 TiEM 1.0.1 与 1.0.0 版本存在一些不兼容，不能直接通过常规的[升级 TiEM](#升级-tiem)方式的进行升级，故在此特别提供了兼容性升级步骤。
 
 1. 升级 TiEM 离线包。
 
