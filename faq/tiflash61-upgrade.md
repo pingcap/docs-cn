@@ -34,12 +34,12 @@ v6.1 默认升级到 PageStorage V3 版本（对应配置项参数 format_versio
 
 1. 已有节点升级 v6.1 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
 2. 通常不能做到完全的转换，这会带来一定系统开销（通常不影响业务）。用户也可以使用[手动 compact 命令](/sql-statements/sql-statement-alter-table-compact.md)触发一个 compaction 动作。在文件 Compaction 过程中，相关表的数据转成新版本格式。操作步骤如下。
-  * 对每张有 TiFlash replica 的表执行 
+    * 对每张有 TiFlash replica 的表执行 
      ```alter table <table_name> compact tiflash replica;```
-  * 重启 TiFlash 节点
+    * 重启 TiFlash 节点
 3. 具体实例跑的版本，可以在 grafana 对应监控查看（Tiflash summary → storage pool → global run mode 和 storage pool run mode）。
-  * Global run mode 对应了全局的运行模式。
-  * Storage pool run mode 对应了单表的运行模式。
+    * Global run mode 对应了全局的运行模式。
+    * Storage pool run mode 对应了单表的运行模式。
 
 ##### 测试环境及特殊回退需求下的对策
 确保相应表中 TiKV 副本的数据可用，删除 TiFlash 副本，之后重新生成 TiFlash 副本并同步数据。删除副本操作步骤详见[用户手册](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)。
