@@ -1,7 +1,7 @@
 # TiFlash 6.1 升级帮助
 
 ## 标准升级流程和操作
-使用 TiUP 升级的用户请参[照用户手册](https://docs.pingcap.com/tidb/v6.0/upgrade-tidb-using-tiup)，以及[常见问题帮助](https://docs.pingcap.com/tidb/v6.0/upgrade-faq#upgrade-and-after-upgrade-faqs)。TiDB Cloud 用户请关注 Cloud 平台相关说明。
+使用 TiUP 升级的用户请参照[用户手册](https://docs.pingcap.com/tidb/v6.0/upgrade-tidb-using-tiup)，以及[常见问题帮助](https://docs.pingcap.com/tidb/v6.0/upgrade-faq#upgrade-and-after-upgrade-faqs)。TiDB Cloud 用户请关注 Cloud 平台相关说明。
 **友情提示**：生产环境用户升级请务必做好相关测试验证工作。
 
 ## 版本升降级兼容性说明和对应方法
