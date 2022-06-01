@@ -33,10 +33,6 @@ TiEM 使用 TiDB 及其生态工具、API 完成数据库管理产品功能，Ti
 
 ![TiEM 架构图](/media/tiem/tiem-architecture.png)
 
-### TiEM 开源吗？
-
-目前 TiEM 暂未开源，未来会根据 PingCAP 的规划决定是否开源。
-
 ## 主机资源管理 FAQ
 
 ### 何时导入主机资源到 TiEM？
