@@ -347,7 +347,7 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 使用限制：
 
-    - 非等值或 `IN` 查询无法使用索引。
+    - 非等值查询无法使用索引。
     - 查询条件中 `AND` 和 `OR` 混合且最外层是 `AND` 算子时无法使用 SHARD INDEX。
     - `GROUP BY` 无法使用 SHARD INDEX。
     - `ORDER BY` 无法使用 SHARD INDEX。
