@@ -338,7 +338,7 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 创建方式：
 
-    当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群扩展性。
+    当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群可扩展性。
 
 - 适用场景：
 
@@ -347,16 +347,16 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 使用限制：
 
-    - 非等值或 `IN` 查询无法使用索引。
-    - 查询条件中 `AND` 和 `OR` 混合且最外层是 `AND` 算子时无法使用 SHARED INDEX。
-    - `GROUP BY` 无法使用 SHARED INDEX。
-    - `ORDER BY` 无法使用 SHARED INDEX。
-    - `ON` 子句无法使用 SHARED INDEX。
-    - `WHERE` 子查询无法使用 SHARED INDEX。
-    - SHARED INDEX 只能打散整型字段的唯一索引。
-    - SHARED INDEX 联合索引可能失效。
-    - SHARED INDEX 无法走 FastPlan 流程。
-    - SHARED INDEX 无法使用执行计划缓存。
+    - 非等值查询无法使用索引。
+    - 查询条件中 `AND` 和 `OR` 混合且最外层是 `AND` 算子时无法使用 SHARD INDEX。
+    - `GROUP BY` 无法使用 SHARD INDEX。
+    - `ORDER BY` 无法使用 SHARD INDEX。
+    - `ON` 子句无法使用 SHARD INDEX。
+    - `WHERE` 子查询无法使用 SHARD INDEX。
+    - SHARD INDEX 只能打散整型字段的唯一索引。
+    - SHARD INDEX 联合索引可能失效。
+    - SHARD INDEX 无法走 FastPlan 流程，影响优化器性能。
+    - SHARD INDEX 无法使用执行计划缓存。
 
 ### 语法图
 
@@ -374,7 +374,7 @@ TIDBShardExpr ::=
     {{< copyable "sql" >}}
 
     ```sql
-    select TIDB_SHARD(12373743746);
+    SELECT TIDB_SHARD(12373743746);
     ```
 
 - 计算得出 SHARD 值为：
@@ -393,7 +393,7 @@ TIDBShardExpr ::=
     {{< copyable "sql" >}}
 
     ```sql
-    create table test(id int primary key clustered, a int, b int, unique key uk((tidb_shard(a)), a));
+    CREATE TABLE test(id INT PRIMARY KEY CLUSTERED, a INT, b INT, UNIQUE KEY uk((tidb_shard(a)), a));
     ```
 
 ### MySQL 兼容性
