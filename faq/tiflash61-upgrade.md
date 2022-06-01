@@ -1,7 +1,7 @@
 # TiFlash 6.1 升级帮助
 
 ## 标准升级流程和操作
-使用 TiUP 升级的用户请参[照用户手册](https://docs.pingcap.com/tidb/v6.0/upgrade-tidb-using-tiup)，以及[常见问题帮助](https://docs.pingcap.com/tidb/v6.0/upgrade-faq#upgrade-and-after-upgrade-faqs)。TiDB Cloud 用户请关注 Cloud 平台相关说明。
+使用 TiUP 升级的用户请参[照用户手册](<https://docs.pingcap.com/tidb/v6.0/upgrade-tidb-using-tiup>)，以及[常见问题帮助](<https://docs.pingcap.com/tidb/v6.0/upgrade-faq#upgrade-and-after-upgrade-faqs>)。TiDB Cloud 用户请关注 Cloud 平台相关说明。
 **友情提示**：生产环境用户升级请务必做好相关测试验证工作。
 
 ## 版本升降级兼容性说明和对应方法
@@ -23,11 +23,11 @@ TiFlash 在 6.1 版本将 Proxy 做了升级（与 TiKV 6.0 版本对齐）。�
 正常升级风险不大，但有特殊需要的用户请注意：6.1 降级到之前的任意低版本时，会无法解析新版的 rocksdb 配置，导致 TiFlash 重启失败。请事先做好升级验证工作并尽可能做好应急方案（确保 TiKV 数据可用，并预估重新同步数据可能造成的影响）。
 
 ##### 测试环境及特殊回退需求下的对策
-确保相应表中 TiKV 副本的数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tiflash-cluster)。
+确保相应表中 TiKV 副本的数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](<https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tiflash-cluster>)。
 
 #### Partition Table Dynamic Pruning 动态分区裁剪
 如用户没有也不打算开启动态分区裁剪，可略过此段。
-TiDB 6.1 全新安装会默认开启“动态分区裁剪”（Dynamic Pruning）， 6.0之前的版本则默认关闭。旧版本升级过程遵循用户已由设定，不会自动开启（相对的也不会关闭）此功能。升级完成之后如果打开此功能则需要由用户手动更新分区表的全局统计信息。请务必参考以下详细说明：[动态分区裁剪](https://github.com/pingcap/docs-cn/blob/3a24eb9e532b7281cbf16386ef4dccd0b4c95eaa/statistics.md#%E5%8A%A8%E6%80%81%E8%A3%81%E5%89%AA%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%88%86%E5%8C%BA%E8%A1%A8%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF)
+TiDB 6.1 全新安装会默认开启“动态分区裁剪”（Dynamic Pruning）， 6.0之前的版本则默认关闭。旧版本升级过程遵循用户已由设定，不会自动开启（相对的也不会关闭）此功能。升级完成之后如果打开此功能则需要由用户手动更新分区表的全局统计信息。请务必参考以下详细说明：[动态分区裁剪](<https://github.com/pingcap/docs-cn/blob/3a24eb9e532b7281cbf16386ef4dccd0b4c95eaa/statistics.md#%E5%8A%A8%E6%80%81%E8%A3%81%E5%89%AA%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%88%86%E5%8C%BA%E8%A1%A8%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF>)
 
 #### TiFlash PageStorage
 v6.1 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在高并发或者重型查询情况下，TiFlash 数据 GC 带来的 CPU 占用高问题得到缓解。
@@ -42,7 +42,7 @@ v6.1 默认升级到 PageStorage V3 版本（对应配置项参数 format_versio
   2. Storage pool run mode 对应了单表的运行模式。
 
 ##### 测试环境及特殊回退需求下的对策
-确保相应表中 TiKV 副本的数据可用，删除 TiFlash 副本，之后重新生成 TiFlash 副本并同步数据。删除副本操作步骤详见[用户手册](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)。
+确保相应表中 TiKV 副本的数据可用，删除 TiFlash 副本，之后重新生成 TiFlash 副本并同步数据。删除副本操作步骤详见[用户手册](<https://docs.pingcap.com/zh/tidb/stable/use-tiflash>)。
 
 ### v6.0 to v6.1
 #### Partition Table Dynamic Pruning 动态分区裁剪
