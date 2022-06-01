@@ -25,7 +25,7 @@ TiFlash 在 6.1 版本将 Proxy 做了升级（与 TiKV 6.0 版本对齐）。�
 ##### 测试环境及特殊回退需求下的对策
 确保TiKV相应表中数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](https://docs.pingcap.com/tidb/stable/scale-tidb-using-tiup#scale-in-a-tiflash-cluster)。
 
-#### Partition Table Dynamic Pruning
+#### Partition Table Dynamic Pruning 动态分区裁剪
 如用户没有也不打算开启动态分区裁剪，可略过此段。
 TiDB 6.1 全新安装会默认开启“动态分区裁剪”（Dynamic Pruning）， 6.0之前的版本则默认关闭。旧版本升级过程遵循用户已由设定，不会自动开启（相对的也不会关闭）此功能。升级完成之后如果打开此功能则需要由用户手动更新分区表的全局统计信息。请务必参考以下详细说明：[动态分区裁剪](https://github.com/pingcap/docs-cn/blob/3a24eb9e532b7281cbf16386ef4dccd0b4c95eaa/statistics.md#%E5%8A%A8%E6%80%81%E8%A3%81%E5%89%AA%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%88%86%E5%8C%BA%E8%A1%A8%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF)
 
@@ -45,7 +45,7 @@ v6.1 默认升级到 PageStorage V3 版本，即默认 format_version 为 4。�
 确保相应表中 TiKV 副本的数据可用，删除 TiFlash 副本，之后重新同步数据。删除副本操作步骤详见[用户手册](https://docs.pingcap.com/zh/tidb/stable/use-tiflash)。
 
 ### v6.0 to v6.1
-#### Partition Table Dynamic Pruning
+#### Partition Table Dynamic Pruning 动态分区裁剪
 
 如用户关闭了分区表动态分区裁剪，可略过此段。
 TiDB 6.0之后的全新安装会默认开启“动态分区裁剪”（Dynamic Pruning），旧版本升级过程遵循用户已由有设定，不会自动开启（相对的也不会关闭）此功能。6.0 版本用户在升级过程中不需要做任何特别操作，但本文提示用户，升级过程中将会发生自动的分区表全局统计信息的更新动作。
