@@ -48,7 +48,7 @@ v6.1 默认升级到 PageStorage V3 版本（对应配置项参数 format_versio
      ```
      alter table <table_name> compact tiflash replica;
      ```
-     
+
     * 重启 TiFlash 节点
 3. 具体实例跑的版本，可以在 grafana 对应监控查看（Tiflash summary → storage pool → global run mode 和 storage pool run mode）。
     * Global run mode 对应了全局的运行模式。
@@ -72,4 +72,3 @@ TiDB 6.0之后的全新安装会默认开启“动态分区裁剪”（Dynamic P
 #### TiFlash Proxy
 
 参见 v5.x to v6.1 [升级说明](#proxy)
-
