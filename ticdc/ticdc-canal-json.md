@@ -15,7 +15,8 @@ Event 分为三类：
 
 * DDL Event：代表 DDL 变更记录，在上游成功执行 DDL 语句后发出，DDL Event 会被发送到索引为 0 的 MQ Partition。
 * DML Event：代表一行数据变更记录，在行变更发生时该类 Event 被发出，包含变更后该行的相关信息。
-* WATERMARK Event：代表一个特殊的时间点，表示在这个时间点前收到的 Event 是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 `enable-tidb-extension=true` 时生效。
+* WATERMARK Event：代表一个特殊的时间点，表示在这个时间点前收到的 Event 是完整的。仅适用于 TiDB 扩展字段，当你在 `sink-uri` 中设置 `
+sion=true` 时生效。
 
 使用 `Canal-JSON` 时的配置样例如下所示：
 
@@ -40,7 +41,7 @@ Canal-JSON 协议本是为 MySQL 设计的，其中并不包含 TiDB 专有的 C
 cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-canal-json-enable-tidb-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=canal-json&enable-tidb-extension=true"
 ```
 
-`enable-tidb-extension` 默认为 `false`，仅当使用 Canal-JSON 时生效。
+`enable-tidb-extension` 默认为 `false`。
 
 ## Message 格式定义
 
