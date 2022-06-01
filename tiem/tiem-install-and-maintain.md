@@ -279,6 +279,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     # 将集群 <cluster-name> 升级到特定版本 <version>
     # 目前仅支持原地停机升级，并且暂不支持版本降级和回退。为安全起见，请按照 停止集群 > 备份 tiem元数据 > 升级集群的流程操作
     TIUP_HOME=/home/tidb/.em tiup em upgrade <cluster-name> <version>
+    ```
 
 ## 兼容性升级 TiEM 1.0.1
 
