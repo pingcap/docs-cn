@@ -21,9 +21,9 @@ Lightning 运行时将查找`data-source-dir`中所有符合命令规则的文�
     - 包含 `CREATE DATABASE` DDL 语句的文件 `${db_name}-schema-create.sql`
 - 数据文件命名规则：
     - 包含整张表的数据文件需命名为 `${db_name}.${table_name}.${csv|sql|parquet}`，该文件会被导入 `${db_name}.${table_name}` 表
-    - 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.001.${csv|sql|parquet}`。数字部分不需要连续但必须递增，并用零填充为相同的位数。
+    - 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.001.${csv|sql|parquet}`。
 
-Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过`region-concurrency`配置控制）。因此大文件的导入时性能比较差。通常建议单个文件尺寸在 256MiB ~ 1GiB 之间以获得最好的性能。
+Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过`region-concurrency`配置控制）。因此大文件的导入时性能比较差。通常建议单个文件尺寸 256MiB 以获得最好的性能。
 
 ## CSV
 
@@ -47,7 +47,7 @@ delimiter = '"'
 # 行尾定界字符，支持一个或多个字符。设置为空（默认值）表示 "\n"（换行）和 "\r\n" （回车+换行），均表示行尾。
 terminator = ""
 # CSV 文件是否包含表头。
-# 如果为 true，首行将会被跳过。
+# 如果为 true，首行将会被跳过，且基于首行映射目标表的列。
 header = true
 # CSV 是否包含 NULL。
 # 如果为 true，CSV 文件的任何列都不能解析为 NULL。
@@ -264,7 +264,7 @@ Lightning 在处理 SQL 文件时，由于无法对单个文件进行快速分�
 
 ## Parquet
 
-Lightning 目前仅支持由 Amazon Aurora 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，必须使用如下配置：
+Lightning 目前仅支持由 Amazon Aurora 导出快照生成的 Parquet 文件。要识别其在 S3 的文件组织形式，需要使用如下配置匹配到所有的数据文件：
 
 ```
 [[mydumper.files]]
@@ -274,6 +274,8 @@ schema = '$1'
 table = '$2'
 type = '$3'
 ```
+
+注意，此处仅说明 Aurora snapshot 导出的 parquet 文件如何匹配。Schema 文件需要单独导出及处理。
 
 关于 `mydumper.files`,请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)。
 

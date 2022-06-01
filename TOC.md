@@ -344,14 +344,14 @@
       - [Parquet](/tidb-lightning/tidb-lightning-datasource.md#parquet)
       - [自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)
       - [表库过滤](/table-filter.md)
-    - SST 导入模式
+    - Physical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-sst-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)
       - [配置及使用](/tidb-lightning/tidb-lightning-sst-mode.md#配置及使用)
       - [冲突检测](/tidb-lightning/tidb-lightning-sst-mode.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-sst-mode.md#性能调优)
       - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-    - SQL 导入模式
+    - Logical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-sql-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-requirements.md)
       - [配置及使用](/tidb-lightning/tidb-lightning-sql-mode.md#配置及使用)

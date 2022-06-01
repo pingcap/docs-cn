@@ -102,8 +102,8 @@ data-source-dir = "/path/to/source-dir"
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
 incremental-import = true
-# "local"：SST 导入模式，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：SQL 导入模式。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
+# "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"Logical Import Mode。TB 级以下数据量也可以采用，下游 TiDB 可正常提供服务。
 backend = "local"
 
 # 设置本地排序数据的路径

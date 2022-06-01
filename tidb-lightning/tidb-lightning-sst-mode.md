@@ -1,16 +1,16 @@
 ---
-title: TiDB Lightning SST Mode
+title: TiDB Lightning Physical Import Mode
 ---
 
-# TiDB Lightning SST Mode
+# TiDB Lightning Physical Import Mode
 
-TiDB Lightning SST Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。SST Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)。
+TiDB Lightning Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的形式插入 TiKV 节点，是一种高效、快速的导入模式。Physical Import Mode 适合导入最高 100 TB 数据量，使用前请务必自行阅读[必要条件及限制](/tidb-lightning/tidb-lightning-sst-requirements.md)。
 
 ## 原理说明
 
 1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
 
-2. `tidb-lightning` 在目标数据库建立架构和表，并获取其元数据。
+2. `tidb-lightning` 在目标数据库建立表结构，并获取其元数据。
 
 3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以多个并发导入。
 
@@ -28,7 +28,7 @@ TiDB Lightning SST Mode 不经过 SQL 接口，而是直接将数据以键值对
 
 ## 配置及使用
 
-可以通过以下配置文件使用 SST Mode 执行数据导入：
+可以通过以下配置文件使用 Physical Import Mode 执行数据导入：
 
 ```toml
 [lightning]
@@ -47,7 +47,7 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [tikv-importer]
-# 导入模式配置，设为 local 即使用 SST Mode
+# 导入模式配置，设为 local 即使用 Physical Import Mode
 backend = "local"
 
 # 冲突数据处理方式
@@ -140,16 +140,16 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 ```
 
-根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。更多信息可参考[SST 导入模式下解决重复问题](/tidb-lightning/tidb-lightning-error-resolution.md#sst-导入模式下解决重复问题)
+根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。更多信息可参考[Physical Import Mode 解决重复问题](/tidb-lightning/tidb-lightning-error-resolution.md#physical-import-mode-下解决重复问题)
 
 ## 性能调优
 
-**提高 Lightning SST Mode 导入性能最直接有效的方法：**
+**提高 Lightning Physical Import Mode 导入性能最直接有效的方法：**
 
 - **升级 Lightning 所在节点的硬件，尤其重要的是 CPU 和 sorted-key-dir 所在存储设备的性能。**
 - **使用[并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)特性实现水平扩展。**
 
-当然，Lightning 也提供了部分并发相关配置以影响 SST Mode 的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
+当然，Lightning 也提供了部分并发相关配置以影响 Physical Import Mode 的导入性能。但是从长期实践的经验总结来看，以下四个配置项一般保持默认值即可，调整其数值并不会带来显著的性能提升，可作为了解内容阅读。
 
 ```
 [lightning]

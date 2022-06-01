@@ -1,14 +1,14 @@
 ---
-title: TiDB Lightning SQL Mode 
+title: TiDB Lightning Logical Import Mode 
 ---
 
-# TiDB Lightning SQL Mode 
+# TiDB Lightning Logical Import Mode 
 
-虽然 SST Mode 具有高性能的优点，但由于其目前无法保证 ACID，且影响 TiDB 集群对外提供服务，因此一般建议仅用于 TiDB 集群初始化数据导入的场景。对于已有数据、对外提供服务的 TiDB 集群，推荐使用 SQL Mode 导入数据。SQL Mode 的行为与正常执行 SQL 并无差异，可保证 ACID。
+虽然 Physical Import Mode 具有高性能的优点，但由于其目前无法保证 ACID，且影响 TiDB 集群对外提供服务，因此一般建议仅用于 TiDB 集群初始化数据导入的场景。对于已有数据、对外提供服务的 TiDB 集群，推荐使用 Logical Import Mode 导入数据。Logical  Import Mode 的行为与正常执行 SQL 并无差异，可保证 ACID。
 
 ## 配置及使用
 
-可以通过以下配置文件使用 SQL Mode 执行数据导入：
+可以通过以下配置文件使用 Logical Import Mode 执行数据导入：
 
 ```toml
 [lightning]
@@ -27,10 +27,10 @@ check-requirements = true
 data-source-dir = "/data/my_database"
 
 [tikv-importer]
-# 导入模式配置，设为 tidb 即使用 SST Mode
+# 导入模式配置，设为 tidb 即使用 Logical Import Mode
 backend = "tidb"
 
-# SQL Mode 插入重复数据时执行的操作。
+# Logical  Import Mode 插入重复数据时执行的操作。
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
@@ -52,7 +52,7 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 冲突数据检测
 
-冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。Lightning 的 SQL Mode 通过 `on-duplicate` 配置冲突数据检测的策略，根据策略 Lightning 使用不同的 SQL 语句进行插入。
+冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。Lightning 的 Logical Import Mode 通过 `on-duplicate` 配置冲突数据检测的策略，根据策略 Lightning 使用不同的 SQL 语句进行插入。
 
 | 设置 | 冲突时默认行为 | 对应 SQL 语句 |
 |:---|:---|:---|
@@ -62,9 +62,9 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 性能调优
 
-1. Lightning SQL Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)
+1. Lightning Logical Import Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)
 
-2. 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。 `region-concurrency`默认值为 CPU 核数，其含义在 SST Mode 和 SQL Mode 下有所不同，SQL Mode 的 `region-concurrency` 表示写入并发数。配置示例：
+2. 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。 `region-concurrency`默认值为 CPU 核数，其含义在 Physical Import Mode 和 Logical Import Mode 下有所不同，Logical Import Mode 的 `region-concurrency` 表示写入并发数。配置示例：
 
     ```toml
     [lightning]
