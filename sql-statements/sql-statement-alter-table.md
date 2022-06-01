@@ -1,21 +1,30 @@
 ---
 title: ALTER TABLE | TiDB SQL Statement Reference
 summary: An overview of the usage of ALTER TABLE for the TiDB database.
-aliases: ['/docs/dev/sql-statements/sql-statement-alter-table/','/docs/dev/reference/sql/statements/alter-table/']
+aliases:
+[
+    "/docs/dev/sql-statements/sql-statement-alter-table/",
+    "/docs/dev/reference/sql/statements/alter-table/",
+]
 ---
 
 # ALTER TABLE
 
 This statement modifies an existing table to conform to a new table structure. The statement `ALTER TABLE` can be used to:
 
-* [`ADD`](/sql-statements/sql-statement-add-index.md), [`DROP`](/sql-statements/sql-statement-drop-index.md), or [`RENAME`](/sql-statements/sql-statement-rename-index.md) indexes
-* [`ADD`](/sql-statements/sql-statement-add-column.md), [`DROP`](/sql-statements/sql-statement-drop-column.md), [`MODIFY`](/sql-statements/sql-statement-modify-column.md) or [`CHANGE`](/sql-statements/sql-statement-change-column.md) columns
+- [`ADD`](/sql-statements/sql-statement-add-index.md), [`DROP`](/sql-statements/sql-statement-drop-index.md), or [`RENAME`](/sql-statements/sql-statement-rename-index.md) indexes
+- [`ADD`](/sql-statements/sql-statement-add-column.md), [`DROP`](/sql-statements/sql-statement-drop-column.md), [`MODIFY`](/sql-statements/sql-statement-modify-column.md) or [`CHANGE`](/sql-statements/sql-statement-change-column.md) columns
+- [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) table data
 
 ## Synopsis
 
 ```ebnf+diagram
 AlterTableStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
+    'ALTER' IgnoreOptional 'TABLE' TableName (
+        AlterTableSpecListOpt AlterTablePartitionOpt |
+        'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt |
+        'COMPACT' 'TIFLASH' 'REPLICA'
+    )
 
 TableName ::=
     Identifier ('.' Identifier)?
@@ -152,31 +161,31 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 
 The following major restrictions apply to `ALTER TABLE` in TiDB:
 
-* Making multiple changes in a single `ALTER TABLE` statement is currently not supported. 
+- Making multiple changes in a single `ALTER TABLE` statement is currently not supported.
 
-* Changes of the [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) types on primary key columns are not supported.
+- Changes of the [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) types on primary key columns are not supported.
 
-* Changes of column types on partitioned tables are not supported.
+- Changes of column types on partitioned tables are not supported.
 
-* Changes of column types on generated columns are not supported.
+- Changes of column types on generated columns are not supported.
 
-* Changes of some data types (for example, some TIME, Bit, Set, Enum, and JSON types) are not supported due to the compatibility issues of the `CAST` function's behavior between TiDB and MySQL.
+- Changes of some data types (for example, some TIME, Bit, Set, Enum, and JSON types) are not supported due to the compatibility issues of the `CAST` function's behavior between TiDB and MySQL.
 
-* Spatial data types are not supported.
+- Spatial data types are not supported.
 
-* `ALTER TABLE t CACHE | NOCACHE` is a TiDB extension to MySQL syntax. For details, see [Cached Tables](/cached-tables.md).
+- `ALTER TABLE t CACHE | NOCACHE` is a TiDB extension to MySQL syntax. For details, see [Cached Tables](/cached-tables.md).
 
 For further restrictions, see [MySQL Compatibility](/mysql-compatibility.md#ddl).
 
 ## See also
 
-* [MySQL Compatibility](/mysql-compatibility.md#ddl)
-* [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
-* [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
-* [ADD INDEX](/sql-statements/sql-statement-add-index.md)
-* [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
-* [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
-* [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
-* [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
-* [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
-* [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
+- [MySQL Compatibility](/mysql-compatibility.md#ddl)
+- [ADD COLUMN](/sql-statements/sql-statement-add-column.md)
+- [DROP COLUMN](/sql-statements/sql-statement-drop-column.md)
+- [ADD INDEX](/sql-statements/sql-statement-add-index.md)
+- [DROP INDEX](/sql-statements/sql-statement-drop-index.md)
+- [RENAME INDEX](/sql-statements/sql-statement-rename-index.md)
+- [ALTER INDEX](/sql-statements/sql-statement-alter-index.md)
+- [CREATE TABLE](/sql-statements/sql-statement-create-table.md)
+- [DROP TABLE](/sql-statements/sql-statement-drop-table.md)
+- [SHOW CREATE TABLE](/sql-statements/sql-statement-show-create-table.md)
