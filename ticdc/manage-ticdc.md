@@ -223,8 +223,8 @@ URI 中可配置的的参数如下：
 | `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）|
 | `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选） |
 | `sasl-gssapi-service-name` | gssapi 服务名称（可选） |
-| `sasl-gssapi-user` | gssapi `user` 认证类型使用的用户名 |
-| `sasl-gssapi-password` | gssapi `user` 认证类型使用的密码 |
+| `sasl-gssapi-user` | gssapi 认证类型使用的用户名（可选） |
+| `sasl-gssapi-password` | gssapi 认证类型使用的密码（可选） |
 | `sasl-gssapi-realm` | gssapi realm 名称（可选） |
 | `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选） |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
@@ -661,7 +661,7 @@ protocol = "canal-json"
 
 ### Topic 分发器
 
-Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。
+Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。topic 的总数建议小于 1000。
 
 Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
 
