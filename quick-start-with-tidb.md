@@ -1,5 +1,6 @@
 ---
 title: TiDB 数据库快速上手指南
+summary: 了解如何快速上手使用 TiDB 数据库。
 ---
 
 # TiDB 数据库快速上手指南
