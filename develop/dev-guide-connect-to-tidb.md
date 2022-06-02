@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/connect-to-tidb']
 
 ## TiDB 命令行工具
 
-PingCAP 推荐使用 [mycli](https://www.mycli.net/) 作为 TiDB 的命令行工具。在 [mycli 官方文档](https://www.mycli.net/install) 你可以找到不同操作系统的安装方式。在安装完后你可以使用如下命令行连接到 TiDB：
+PingCAP 推荐使用 [mycli](https://www.mycli.net/) 作为 TiDB 的命令行工具，这是一个使用 Python 编写的 MySQL 客户端，其比 MySQL 官方的 mysql-client 更加智能和现代化。在 [mycli 官方文档](https://www.mycli.net/install) 你可以找到不同操作系统的安装方式。在安装完后你可以使用如下命令行连接到 TiDB：
 
 {{< copyable "shell-regular" >}}
 

@@ -30,7 +30,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 ## 第 2 步：连接到集群
 
-1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。推荐使用 [mycli](https://www.mycli.net/)，这是一个使用 Python 编写的现代 MySQL 客户端。
+1. 若未安装 MySQL 客户端，请选择自己的操作系统，按以下步骤安装。推荐使用 [mycli](https://www.mycli.net/)，这是一个使用 Python 编写的 MySQL 客户端，其比 MySQL 官方的 mysql-client 更加智能和现代化。
 
     <SimpleTab>
 
