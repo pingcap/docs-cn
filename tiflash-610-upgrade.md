@@ -34,7 +34,7 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。该版�
 
 ##### 测试环境及特殊回退需求下的对策
 
-确保相应表中 TiKV 副本的数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](/scale-tidb-using-tiup.md#scale-in-a-tiflash-cluster)。
+确保相应表中 TiKV 副本的数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
 
 #### 动态分区裁剪
 
