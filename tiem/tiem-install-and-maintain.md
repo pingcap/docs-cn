@@ -298,21 +298,21 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 2. 做升级 TiEM 之前的准备。
 
-    执行命令备份数据等升级的兼容性准备，我们将在此步骤中自动为您备份好 1.0.0 TiEM 的数据。请注意，在此只后不要再通过 TiEM 界面做其它操作直到升级完成，以避免最新的数据没有被备份导致升级后数据丢失。
+    执行以下命令为 TiEM 升级做准备。以下命令会自动备份 TiEM v1.0.0 中的数据。请注意，执行完此命令后直至升级完成，请不要再通过 TiEM 界面做其它操作，以避免备份未包含最新数据导致升级后数据丢失的情况。
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # user 为之前部署 TiEM 的帐户，默认为 tidb
+    # user 为之前部署 TiEM v1.0.0 的帐户，默认为 tidb
     # cluster-name 为当前部署的 TiEM 名称，默认为 em-test
     sudo sh em-enterprise-server-v1.0.1-linux-amd64/prepare_upgrade.sh <user> <TiEM 中控机 IP> <cluster-name>
     ```
 
 3. 检查新的 TiEM 部署拓扑文件。
 
-    有些用户可能之前部署 TiEM v1.0.0 时对于 `config.yaml` 文件做了自定义修改，所以参考下列子步骤查看原来的配置文件 `config.yaml` 和新的配置文件 `config-v1.0.1.yaml` 的区别，并做相应修改。
+    如果你在部署 TiEM v1.0.0 时曾对 `config.yaml` 文件做了自定义修改，请参考下列子步骤查看 v1.0.0 的配置文件 `config.yaml` 和待部署 v1.0.1 配置文件 `config-v1.0.1.yaml` 的区别，并做相应修改。
 
-    1. 切换到 tidb 账号下
+    1. 切换至 `tidb` 账号。
 
         {{< copyable "shell-regular" >}}
 
@@ -322,7 +322,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
     2. 查看配置变更
 
-       查看内容生效部分的区别是否仅为 `db_path` 那一行。若是则可跳过本步骤，无须继续后续子步骤，若不是请继续执行后续子步骤。
+       对比 `config.ymal` 和 `config-v1.0.1.yaml` 生效内容的差异。如果差异仅为 `db_path` 所在行，则可跳过本步骤，无须执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`），可直接进入删除 TiEM v1.0.0 的步骤。如果差异不止 `db_path` 所在行，还存在其它差异，则需要继续执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`）。
 
         {{< copyable "shell-regular" >}}
 
@@ -342,7 +342,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     
     4. 更新 `config-v1.0.1.yaml`
 
-       将子步骤 3 中备份的 `db_path` 填写至 `config-v1.0.1.yaml` ，注意空格的缩进，下面是个例子。
+       将子步骤 3（备份 `db_path`）中备份的 `db_path` 填写至 `config-v1.0.1.yaml` ，注意空格的缩进。示例如下：。
 
         ```yaml
         em_cluster_servers:
@@ -383,7 +383,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     # 启动 TiEM
     TIUP_HOME=/home/tidb/.em tiup em start em-test
 
-    # 注释 db_path，如果不注释，后续对 em 的重启，扩容等操作可能会将数据变更还原
+    # 将 db_path 注释掉。如果不注释，后续对 em 进行重启、扩容等操作时 TiEM 可能会将数据变更还原
     sed -i "s/  db_path:/# db_path:/" /home/tidb/.em/storage/em/clusters/em-test/meta.yaml
     ```
 
@@ -401,7 +401,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 7. 使集群日志功能生效
 
-    待所有上述步骤完成后，您已经完成了大部分的升级。由于兼容性升级过程中，进行了资源机器 filebeat 的重装，为了使得查看 TiDB 集群日志功能在 TiEM 中生效，需要您手动在 TiEM 界面操作重启 TiDB 集群以刷新配置。为避免影响用户服务，请尽量在业务低峰期操作。
+    待所有上述步骤完成后，大部分的升级已完成。由于在升级过程中，TiEM 对资源机器的 filebeat 进行了重装。为了使得查看 TiDB 集群日志功能在 TiEM 中生效，你需要手动在 TiEM 界面操作重启 TiDB 集群以刷新配置。为避免影响用户服务，请尽量在业务低峰期操作。
 
 ## 备份恢复 TiEM 元信息
 
