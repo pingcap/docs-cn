@@ -350,7 +350,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     
     5. 更新 `config-v1.0.1.yaml`。
 
-       将子步骤 3（备份 `db_path`）中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
+        覆盖配置文件后，将子步骤 3 中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
 
         ```yaml
         em_cluster_servers:
