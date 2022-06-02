@@ -320,9 +320,9 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
         su - tidb
         ```
 
-    2. 查看配置变更
+    2. 查看配置变更。
 
-       对比 `config.ymal` 和 `config-v1.0.1.yaml` 生效内容的差异。如果差异仅为 `db_path` 所在行，则可跳过本步骤，无须执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`），可直接进入删除 TiEM v1.0.0 的步骤。如果差异不止 `db_path` 所在行，还存在其它差异，则需要继续执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`）。
+        对比 `config.ymal` 和 `config-v1.0.1.yaml` 生效内容的差异。如果差异仅为 `db_path` 所在行，则可跳过本步骤，无须执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`），可直接进入删除 TiEM v1.0.0 的步骤。如果差异不仅有 `db_path` 所在行，还存在其它差异，则需要继续执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`）。
 
         {{< copyable "shell-regular" >}}
 
@@ -330,19 +330,19 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
         diff config.yaml config-v1.0.1.yaml
         ```
 
-    3. 备份 `db_path`
+    3. 备份 `db_path`。
 
-       `db_path` 这一栏为 TiEM v1.0.0 备份数据的路径，在做升级 TiEM 之前的准备这一步骤时已经自动在 `config-v1.0.1.yaml` 中写好了备份路径，这样部署 TiEM v1.0.1 时能够将原先备份的数据恢复回去。
+       `db_path` 为 TiEM v1.0.0 备份数据的路径。在“升级 TiEM 之前的准备”这一步骤时 TiEM 已经自动在 `config-v1.0.1.yaml` 中写好了备份路径，这样部署 TiEM v1.0.1 时能够将备份的 v1.0.0 数据恢复到 v1.0.1。
 
-       请查看 `config-v1.0.1.yaml` 中 `db_path` 那一行的内容并备份，下面是个例子。
+        查看 `config-v1.0.1.yaml` 中 `db_path` 那一行的内容并备份，示例如下：
 
         ```yaml
         db_path: "/home/tidb/em-backup-20220511-154415/em.db"
         ```
-    
-    4. 更新 `config-v1.0.1.yaml`
 
-       将子步骤 3（备份 `db_path`）中备份的 `db_path` 填写至 `config-v1.0.1.yaml` ，注意空格的缩进。示例如下：。
+    4. 更新 `config-v1.0.1.yaml`。
+
+       将子步骤 3（备份 `db_path`）中备份的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
 
         ```yaml
         em_cluster_servers:
