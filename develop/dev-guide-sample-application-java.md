@@ -821,8 +821,7 @@ public interface PlayerMapper {
 }
 ```
 
-`PlayerMapper.xml` 是使用 Mybatis Generator 生成出的映射
-XML 文件，Mybatis 将使用这个文件自动生成 `PlayerMapper` 接口的实现类：
+`PlayerMapper.xml` 是使用 Mybatis Generator 生成出的映射 XML 文件，Mybatis 将使用这个文件自动生成 `PlayerMapper` 接口的实现类：
 
 {{< copyable "" >}}
 
