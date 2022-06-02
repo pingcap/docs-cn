@@ -18,7 +18,7 @@ TiDB Lightning 并行导入可以用于以下场景：
 >
 > - 并行导入只支持初始化 TiDB 的空表，不支持导入数据到已有业务写入的数据表，否则可能会导致数据不一致的情况。
 > 
-> - 并行导入一般用于 SST 导入模式。
+> - 并行导入一般用于 Physical Import Mode; Logical Import Mode 虽然也能用，但是一般不会带来明显的性能提升。
 
 下图展示了并行导入分库分表的工作流程。在该场景中，你可以使用多个 TiDB Lightning 实例导入 MySQL 的分表到下游的 TiDB 集群。
 
