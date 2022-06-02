@@ -583,27 +583,103 @@ worker-num = 16
 
 [sink]
 # For the sink of MQ type, you can use dispatchers to configure the event dispatcher.
-# Supports four dispatchers: default, ts, rowid, and table.
-# The dispatcher rules are as follows:
-# - default: When multiple unique indexes (including the primary key) exist or the Old Value feature is enabled, events are dispatched in the table mode. When only one unique index (or the primary key) exists, events are dispatched in the rowid mode.
-# - ts: Use the commitTs of the row change to create Hash and dispatch events.
-# - index-value: Use the value of the primary key or the unique index of the table to create Hash and dispatch events.
-# - table: Use the schema name of the table and the table name to create Hash and dispatch events.
-# The matching syntax of matcher is the same as the filter rule syntax.
+# Since v6.1, TiDB supports two types of event dispatchers: partition and topic. For more information, see the following section.
+# The matching syntax of matcher is the same as the filter rule syntax. For details about the matcher rules, see the following section.
+
 dispatchers = [
-    {matcher = ['test1.*', 'test2.*'], dispatcher = "ts"},
-    {matcher = ['test3.*', 'test4.*'], dispatcher = "rowid"},
+    {matcher = ['test1.*', 'test2.*'], topic = "Topic expression 1", partition = "ts" },
+    {matcher = ['test3.*', 'test4.*'], topic = "Topic expression 2", partition = "index-value" },
+    {matcher = ['test1.*', 'test5.*'], topic = "Topic expression 3", partition = "table"},
+    {matcher = ['test6.*'], partition = "ts"}
 ]
 # For the sink of MQ type, you can specify the protocol format of the message.
 # Currently the following protocols are supported: canal-json, open-protocol, canal, avro, and maxwell.
 protocol = "canal-json"
-
 ```
 
 ### Notes for compatibility
 
 * In TiCDC v4.0.0, `ignore-txn-commit-ts` is removed and `ignore-txn-start-ts` is added, which uses start_ts to filter transactions.
 * In TiCDC v4.0.2, `db-dbs`/`db-tables`/`ignore-dbs`/`ignore-tables` are removed and `rules` is added, which uses new filter rules for databases and tables. For detailed filter syntax, see [Table Filter](/table-filter.md).
+
+## Customize the rules for Topic and Partition dispatchers of Kafka Sink
+
+### Matcher rules
+
+In the example of the previous section:
+
+- For the tables that match the matcher rule, they are dispatched according to the policy specified by the corresponding topic expression. For example, the `test3.aa` table is dispatched according to "Topic expression 2"; the `test5.aa` table is dispatched according to "Topic expression 3".
+- For a table that matches multiple matcher rules, it is dispatched according to the first matching topic expression. For example, the `test1.aa` table is distributed according to "Topic expression 1".
+- For tables that do not match any matcher rule, the corresponding data change events are sent to the default topic specified in `--sink-uri`. For example, the `test10.aa` table is sent to the default topic.
+- For tables that match the matcher rule but do not specify a topic dispatcher, the corresponding data changes are sent to the default topic specified in `--sink-uri`. For example, the `test6.aa` table is sent to the default topic.
+
+### Topic dispatchers
+
+You can use topic = "xxx" to specify a Topic dispatcher and use topic expressions to implement flexible topic dispatching policies. It is recommended that the total number of topics be less than 1000.
+
+The format of the Topic expression is `[prefix]{schema}[middle][{table}][suffix]`.
+
+- `prefix`: optional. Indicates the prefix of the Topic Name.
+- `{schema}`: required. Used to match the schema name.
+- `middle`: optional. Indicates the delimiter between schema name and table name.
+- `{table}`: optional. Used to match the table name.
+- `suffix`: optional. Indicates the suffix of the Topic Name.
+
+`prefix`, `middle` and `suffix` can only include the following characters: `a-z`, `A-Z`, `0-9`, `.`, `_` and `-`. `{schema}` and `{table}` are both lowercase. Placeholders such as `{Schema}` and `{TABLE}` are invalid.
+
+Some examples:
+
+- `matcher = ['test1.table1', 'test2.table2'], topic = "hello_{schema}_{table}"`
+    - The data change events corresponding to `test1.table1` are sent to the topic named `hello_test1_table1`.
+    - The data change events corresponding to `test2.table2` are sent to the topic named `hello_test2_table2`.
+- `matcher = ['test3.*', 'test4.*'], topic = "hello_{schema}_world"`
+    - The data change events corresponding to all tables in `test3` are sent to the topic named `hello_test3_world`.
+    - The data change events corresponding to all tables in `test4` are sent to the topic named `hello_test4_world`.
+- `matcher = ['*.*'], topic = "{schema}_{table}"`
+    - All tables listened by TiCDC are dispatched to separate topics according to the "schema_table" rule. For example, for the `test.account` table, TiCDC dispatches its data change log to a Topic named `test_account`.
+
+### Dispatch DDL events
+
+#### Schema-level DDLs
+
+DDLs that are not related to a specific table are called schema-level DDLs, such as `create database` and `drop database`. The events corresponding to schema-level DDLs are sent to the default topic specified in `--sink-uri`.
+
+#### Table-level DDLs
+
+DDLs that are related to a specific table are called table-level DDLs, such as `alter table` and `create table`. The events corresponding to table-level DDLs are sent to the corresponding topic according to dispatcher configurations.
+
+For example, for a dispatcher like `matcher = ['test.*'], topic = {schema}_{table}`, DDL events are dispatched as follows:
+
+- If a single table is involved in the DDL event, the DDL event is sent to the corresponding topic as is. For example, for the DDL event `drop table test.table1`, the event is sent to the topic named `test_table1`.
+- If multiple tables are involved in the DDL event (`rename table` / `drop table` / `drop view` may involve multiple tables), the DDL event is split into multiple events and sent to the corresponding topics. For example, for the DDL event `rename table test.table1 to test.table10, test.table2 to test.table20`, the event `rename table test.table1 to test.table10` is sent to the topic named `test_table1` and the event `rename table test.table2 to test.table20` is sent to the topic named `test.table2`.
+
+### Partition dispatchers
+
+You can use `partition = "xxx"` to specify a partition dispatcher. It supports four dispatchers: default, ts, index-value, and table. The dispatcher rules are as follows:
+
+- default: When multiple unique indexes (including the primary key) exist or the Old Value feature is enabled, events are dispatched in the table mode. When only one unique index (or the primary key) exists, events are dispatched in the index-value mode.
+- ts: Use the commitTs of the row change to hash and dispatch events.
+- index-value: Use the value of the primary key or the unique index of the table to hash and dispatch events.
+- table: Use the schema name of the table and the table name to hash and dispatch events.
+
+> **Note:**
+>
+>
+> Since v6.1, to clarify the meaning of the configuration, the configuration used to specify the partition dispatcher has been changed from `dispatcher` to `partition`, with `partition` being an alias for `dispatcher`. For example, the following two rules are exactly equivalent.
+>
+> ```
+> [sink]
+> dispatchers = [
+>    {matcher = ['*.*'], dispatcher = "ts"},
+>    {matcher = ['*.*'], partition = "ts"},
+> ]
+> ```
+>
+> However, `dispatcher` and `partition` cannot appear in the same rule. For example, the following rule is invalid.
+>
+> ```
+> {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
+> ```
 
 ## Output the historical value of a Row Changed Event <span class="version-mark">New in v4.0.5</span>
 
