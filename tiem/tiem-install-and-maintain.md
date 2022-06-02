@@ -248,7 +248,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 | login-private-key-path | 位于 TiEM 中控机上登录 TiDB 资源机使用的私钥路径 | /home/tidb/.ssh/id_rsa |
 | login-public-key-path | 位于 TiEM 中控机登录 TiDB 资源机使用的公钥路径 | /home/tidb/.ssh/id_rsa.pub |
 
-## 升级 TiEM
+## 升级 TiEM（适用于 v1.0.1 及以上版本）
 
 本节适用于已经安装过 TiEM 并打算升级 TiEM 的用户。如首次安装可跳过本节，参考[离线部署 TiEM](#离线部署-tiem) 安装 TiEM 1.0.2。
 
