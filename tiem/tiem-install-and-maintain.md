@@ -330,7 +330,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
         diff config.yaml config-v1.0.1.yaml
         ```
 
-    3. 记下 config-v1.0.1.yaml` 中的数据备份路径 `db_path`。
+    3. 记下 `config-v1.0.1.yaml` 中的数据备份路径 `db_path`。
 
        `db_path` 为 TiEM 备份数据的路径。在“升级 TiEM 之前的准备”这一步中 TiEM 已经自动在 `config-v1.0.1.yaml` 中写好了默认的 v1.0.1 数据备份路径，此前已备份的 v1.0.0 数据将恢复到该路径下。
 
