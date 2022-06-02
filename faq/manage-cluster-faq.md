@@ -45,15 +45,15 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### 如何规范停止 TiDB？
 
-- 使用了 load balancer （推荐）：先停止 load balancer，然后执行 `SHUTDOWN` 语句。此时 TiDB 会根据 [graceful-wait-before-shutdown](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 设置值等所有会话断开，然后停止运行。
+- 若使用了 load balancer（推荐）：先停止 load balancer，然后执行 `SHUTDOWN` 语句。此时 TiDB 会根据 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 设置值等待所有会话断开，然后停止运行。
 
-- 未使用 load balancer：执行 `SHUTDOWN` 语句，TiDB 组件会做 graceful shutdown。
+- 若未使用 load balancer：执行 `SHUTDOWN` 语句，TiDB 组件会做 graceful shutdown。
 
 ### TiDB 里面可以执行 kill 命令吗？
 
 - Kill DML 语句：
 
-    查询 `information_schema.cluster_processlist`，得到正在执行 DML 语句的 TiDB 实例地址和 session ID，然后执行 kill 语句。
+    查询 `information_schema.cluster_processlist`，获取正在执行 DML 语句的 TiDB 实例地址和 session ID，然后执行 kill 命令。
 
     TiDB 从 v6.1.0 起新增 Global Kill 功能（由 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 配置项控制，默认启用）。启用 Global Kill 功能时，直接执行 `kill session_id` 即可。
 
