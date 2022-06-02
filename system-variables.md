@@ -409,6 +409,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > 只有在 TiDB 的启动配置文件中开启了 `run-auto-analyze` 选项，该 TiDB 集群才会触发 `auto_analyze`。
 
 ### `tidb_max_auto_analyze_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`43200`
