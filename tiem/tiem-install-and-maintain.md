@@ -248,13 +248,18 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 | login-private-key-path | 位于 TiEM 中控机上登录 TiDB 资源机使用的私钥路径 | /home/tidb/.ssh/id_rsa |
 | login-public-key-path | 位于 TiEM 中控机登录 TiDB 资源机使用的公钥路径 | /home/tidb/.ssh/id_rsa.pub |
 
-## 升级 TiEM
+## 升级 TiEM（适用于 v1.0.1 及以上版本）
 
-本节适用于已经安装过 TiEM 并打算升级 TiEM 的用户。如首次安装可跳过本节。
+本节适用于安装过 TiEM v1.0.1 及以上版本，并打算升级 TiEM 的用户。如首次安装可跳过本节。
+
+> **注意：**
+>
+> - 本节介绍的方法仅适用于从 TiEM v1.0.1 升级至 v1.0.2 及以上版本，不适用于从 v1.0.0 升级至 v1.0.1 及以上版本。
+> - 如果你已安装 TiEM v1.0.0 版本，想要升级至 v1.0.1 及以上版本，则需要先参考[升级 TiEM v1.0.0 至 v1.0.1](#升级-tiem-v100-至-v101) 进行升级，再参考本节内容从 v1.0.1 升级至较新的目标版本。
 
 1. 升级 TiEM 离线包。
 
-    参考[离线部署 TiEM](#离线部署-tiem) 中第 1-3 步：通过 TiEM 产品团队获得最新 TiEM 离线包，发送 TiEM 离线安装包至目标集群的 TiEM 中控机，解压离线包。执行更新 TiEM 离线包命令。
+    参考[离线部署 TiEM](#离线部署-tiem) 中第 1-3 步：通过 TiEM 产品团队获得最新 TiEM 离线包，发送 TiEM 离线安装包至目标集群的 TiEM 中控机，解压离线包。然后执行下面命令更新 TiEM 离线包。
 
     {{< copyable "shell-regular" >}}
 
@@ -275,6 +280,136 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     # 目前仅支持原地停机升级，并且暂不支持版本降级和回退。为安全起见，请按照 停止集群 > 备份 tiem元数据 > 升级集群的流程操作
     TIUP_HOME=/home/tidb/.em tiup em upgrade <cluster-name> <version>
     ```
+
+## 升级 TiEM v1.0.0 至 v1.0.1
+
+本节介绍的方法适用于 从 v1.0.0 升级至 v1.0.1。如需升级至更高版本，请先升级至 v1.0.1，再参考[升级 TiEM（适用于 v1.0.1 及以上版本）](#升级-tiem适用于-v101-及以上版本)进行升级。如首次安装可跳过本节。
+
+1. 升级 TiEM 离线包。
+
+    参考[离线部署 TiEM](#离线部署-tiem) 中第 1-3 步：通过 TiEM 产品团队获得最新 TiEM 离线包，发送 TiEM 离线安装包至目标集群的 TiEM 中控机，解压离线包。然后执行下面命令更新 TiEM 离线包。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # user 为之前部署 TiEM 的帐户，默认为 tidb
+    sudo sh em-enterprise-server-v1.0.1-linux-amd64/update.sh <user>
+    ```
+
+2. 做升级 TiEM 之前的准备。
+
+    执行以下命令为 TiEM 升级做准备。以下命令会自动备份 TiEM v1.0.0 中的数据。请注意，执行完此命令后直至升级完成，请不要再通过 TiEM 界面做其它操作，以避免备份未包含最新数据导致升级后数据丢失的情况。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # user 为之前部署 TiEM v1.0.0 的帐户，默认为 tidb
+    # cluster-name 为当前部署的 TiEM 名称，默认为 em-test
+    sudo sh em-enterprise-server-v1.0.1-linux-amd64/prepare_upgrade.sh <user> <TiEM 中控机 IP> <cluster-name>
+    ```
+
+3. 检查新的 TiEM 部署拓扑文件。
+
+    如果你在部署 TiEM v1.0.0 时曾对 `config.yaml` 文件做了自定义修改，请参考下列子步骤查看 v1.0.0 的配置文件 `config.yaml` 和待部署 v1.0.1 配置文件 `config-v1.0.1.yaml` 的区别，并做相应修改。
+
+    1. 切换至 `tidb` 账号。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        su - tidb
+        ```
+
+    2. 查看配置变更。
+
+        对比 `config.yaml` 和 `config-v1.0.1.yaml` 生效内容的差异。如果差异仅为 `db_path` 所在行，则可跳过本步骤，无须执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`），可直接进入删除 TiEM v1.0.0 的步骤。如果差异不仅有 `db_path` 所在行，还存在其它差异，则需要继续执行后续子步骤（备份 `db_path` 以及更新 `config-v1.0.1.yaml`）。
+
+        {{< copyable "shell-regular" >}}
+
+        ```shell
+        diff config.yaml config-v1.0.1.yaml
+        ```
+
+    3. 记下 `config-v1.0.1.yaml` 中的数据备份路径 `db_path`。
+
+       `db_path` 为 TiEM 备份数据的路径。在“升级 TiEM 之前的准备”这一步中 TiEM 已经自动在 `config-v1.0.1.yaml` 中写好了默认的 v1.0.1 数据备份路径，此前已备份的 v1.0.0 数据将恢复到该路径下。
+
+        查看 `config-v1.0.1.yaml` 中的 `db_path`，记下该行内容，在以下子步骤 5 中更新 `config-v1.0.1.yaml` 时需要用到该行内容。示例如下：
+
+        ```yaml
+        db_path: "/home/tidb/em-backup-20220511-154415/em.db"
+        ```
+
+    4. 覆盖 `config-v1.0.1.yaml`。
+
+       将 TiEM v1.0.0 的 `config.yaml` 文件复制一份并覆盖 v1.0.1 的 `config-v1.0.1.yaml`。
+
+        ```shell
+        cp config.yaml config-v1.0.1.yaml
+        ```
+    
+    5. 更新 `config-v1.0.1.yaml`。
+
+        覆盖配置文件后，将子步骤 3 中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
+
+        ```yaml
+        em_cluster_servers:
+          - host: 127.0.0.1
+            db_path: "/home/tidb/em-backup-20220511-154415/em.db"
+        ```
+
+4. 删除 TiEM 1.0.0。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 切换到 tidb 账号下
+    su - tidb
+
+    # 查看现有 TiEM 服务
+    TIUP_HOME=/home/tidb/.em tiup em list
+
+    # 删除指定的 TiEM 服务
+    TIUP_HOME=/home/tidb/.em tiup em destroy <cluster-name>
+    ```
+
+5. 部署 TiEM 1.0.1。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 切换到 tidb 账号下
+    su - tidb
+
+    # 更新 em 工具
+    TIUP_HOME=/home/tidb/.em tiup update em
+    TIUP_HOME=/home/tidb/.em tiup update --all
+
+    # 部署名称为 "em-test" 的 TiEM
+    TIUP_HOME=/home/tidb/.em tiup em deploy em-test 1.0.1 config-v1.0.1.yaml -u <具有sudo权限的账号> -p
+
+    # 启动 TiEM
+    TIUP_HOME=/home/tidb/.em tiup em start em-test
+
+    # 将 db_path 注释掉。如果不注释，后续对 em 进行重启、扩容等操作时 TiEM 可能会将数据变更还原
+    sed -i "s/  db_path:/# db_path:/" /home/tidb/.em/storage/em/clusters/em-test/meta.yaml
+    ```
+
+6. 重建资源机器的 filebeat。
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 切换到 tidb 账号下
+    su - tidb
+
+    # 重建资源机器 filebeat    
+    TIUP_HOME=/home/tidb/.em tiup em scale-out em-test /home/tidb/em-v1.0.0-backup/resource-filebeat-scale-out-topology.yaml --user tidb -i /home/tidb/.ssh/tiup_rsa --wait-timeout 360 --yes
+    ```
+
+7. 使集群日志功能生效
+
+    待所有上述步骤完成后，大部分的升级已完成。由于在升级过程中，TiEM 对资源机器的 filebeat 进行了重装。为了使得查看 TiDB 集群日志功能在 TiEM 中生效，你需要手动在 TiEM 界面操作重启 TiDB 集群以刷新配置。为避免影响用户服务，请尽量在业务低峰期操作。
 
 ## 备份恢复 TiEM 元信息
 

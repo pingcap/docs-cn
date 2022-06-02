@@ -5,6 +5,14 @@ summary: 了解 TiEM v1.0.0 版本的发版说明。
 
 # TiDB Enterprise Manager v1.0.0 Release Notes
 
+发布日期：2022 年 4 月 7 日
+
+TiEM 版本：1.0.0
+
+> **注意：**
+>
+> TiEM v1.0.0 未开源。若要获取 v1.0.0 的安装包或相关支持，请联系 TiEM 团队。
+
 TiDB Enterprise Manager (TiEM) 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
 
 TiDB Enterprise Manager 不仅提供对 TiDB 集群的全生命周期的可视化管理，也同时一站式提供 TiDB 数据库参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
