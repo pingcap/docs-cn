@@ -14,7 +14,7 @@ This section lists some FAQs and their solutions when you upgrade TiDB.
 
 ### What are the effects of rolling updates?
 
-When you apply rolling updates to the TiDB services, the running application is not affected. You need to configure the minimum cluster topology (TiDB \* 2, PD \* 3, TiKV \* 3). If the Pump or Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you upgrade TiDB, Pump is also upgraded.
+When you apply rolling updates to the TiDB services, the running application is affected to varying degrees. Therefore, it is not recommended that you perform a rolling update during business peak hours. You need to configure the minimum cluster topology (TiDB \* 2, PD \* 3, TiKV \* 3). If the Pump or Drainer service is involved in the cluster, it is recommended to stop Drainer before rolling updates. When you upgrade TiDB, Pump is also upgraded.
 
 ### Can I upgrade the TiDB cluster during the DDL execution?
 
@@ -26,7 +26,7 @@ In addition, during the cluster upgrade, **DO NOT** execute any DDL statement. O
 
 ### How to upgrade TiDB using the binary?
 
-It is not recommended to deploy TiDB using the binary. The TiDB support for upgrading using Binary is not as friendly as using TiUP. It is recommended to [deploy TiDB using TiUP](/production-deployment-using-tiup.md).
+It is not recommended to upgrade TiDB using the binary. Instead, it is recommended to [upgrade TiDB using TiUP](/upgrade-tidb-using-tiup.md) or [upgrade a TiDB cluster in Kubernetes](https://docs.pingcap.com/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster), which ensures both version consistency and compatibility.
 
 ## After upgrade FAQs
 

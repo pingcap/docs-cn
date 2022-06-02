@@ -9,6 +9,8 @@ This document summarizes the FAQs related to TiDB cluster management.
 
 ## Daily management
 
+This section describes common problems you might encounter during daily cluster management, their causes, and solutions.
+
 ### How to log into TiDB?
 
 You can log into TiDB like logging into MySQL. For example:
@@ -35,16 +37,25 @@ By default, TiDB/PD/TiKV outputs standard error in the logs. If a log file is sp
 
 ### How to safely stop TiDB?
 
-Kill all the services using `kill` directly. The components of TiDB will do `graceful shutdown`.
+- If a load balancer is running (recommended): Stop the load balancer and execute the SQL statement `SHUTDOWN`. Then TiDB waits for a period as specified by [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-new-in-v50) until all sessions are terminated. Then TiDB stops running.
+
+- If no load balancer is running: Execute the `SHUTDOWN` statement. Then TiDB components are gracefully stopped.
 
 ### Can `kill` be executed in TiDB?
 
-- You can `kill` DML statements. First use `show processlist` to find the ID corresponding with the session, and then run `kill tidb [session id]`.
-- You can `kill` DDL statements. First use `admin show ddl jobs` to find the ID of the DDL job you need to kill, and then run `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`. For more details, see the [`ADMIN` statement](/sql-statements/sql-statement-admin.md).
+- Kill DML statements:
+
+    First use `information_schema.cluster_processlist` to find TiDB instance address and session ID, and then run the kill command.
+
+    TiDB v6.1.0 introduces the Global Kill feature (controlled by the `enable-global-kill` configuration, which is enabled by default). If Global Kill is enabled, just execute `kill session_id`.
+
+    If the TiDB version is earlier than v6.1.0, or the Global Kill feature is not enabled, `kill session_id` does not take effect by default. To terminate a DML statement, you should connect the client directly to the TiDB instance that is executing the DML statement and then execute the `kill tidb session_id` statement. If the client connects to another TiDB instance or there is a proxy between the client and the TiDB cluster, the `kill tidb session_id` statement might be routed to another TiDB instance, which might incorrectly terminate another session. For details, see [`KILL`](/sql-statements/sql-statement-kill.md).
+
+- Kill DDL statements: First use `admin show ddl jobs` to find the ID of the DDL job you need to terminate, and then run `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`. For more details, see the [`ADMIN` statement](/sql-statements/sql-statement-admin.md).
 
 ### Does TiDB support session timeout?
 
-TiDB does not currently support session timeout at the database level. At present, if you want to achieve timeout, when there is no LB (Load Balancing), you need to record the ID of the initiated Session on the application side. You can customize the timeout through the application. After timeout, you need to go to the node that initiated the Query Use `kill tidb [session id]` to kill SQL. It is currently recommended to use an application program to achieve session timeout. When the timeout period is reached, the application layer will throw an exception and continue to execute subsequent program segments.
+TiDB currently supports two timeouts, [`wait_timeout`](/system-variables.md#wait_timeout) and [`interactive_timeout`](/system-variables.md#interactive_timeout).
 
 ### What is the TiDB version management strategy for production environment? How to avoid frequent upgrade?
 
@@ -115,6 +126,8 @@ In the following situations, even you have enabled the [Async Commit](/system-va
 
 ## PD management
 
+This section describes common problems you may encounter during PD management, their causes, and solutions.
+
 ### The `TiKV cluster is not bootstrapped` message is displayed when I access PD
 
 Most of the APIs of PD are available only when the TiKV cluster is initialized. This message is displayed if PD is accessed when PD is started while TiKV is not started when a new cluster is deployed. If this message is displayed, start the TiKV cluster. When TiKV is initialized, PD is accessible.
@@ -160,6 +173,8 @@ The offline node usually indicates the TiKV node. You can determine whether the 
 2. Delete the `node_exporter` data of the corresponding node from the Prometheus configuration file.
 
 ## TiDB server management
+
+This section describes common problems you may encounter during TiDB server management, their causes, and solutions.
 
 ### How to set the `lease` parameter in TiDB?
 
@@ -269,6 +284,8 @@ In addition, in the above statement:
 - `Disk_Size` indicates the size of the table after compression. This is an approximate value and can be calculated according to `Approximate_Size` and `store_size_amplification`.
 
 ## TiKV server management
+
+This section describes common problems you might encounter during TiKV server management, their causes, and solutions.
 
 ### What is the recommended number of replicas in the TiKV cluster? Is it better to keep the minimum number for high availability?
 
@@ -383,6 +400,8 @@ No. TiDB (or data created from the transactional API) relies on a specific key f
 
 ## TiDB testing
 
+This section describes common problems you might encounter during TiDB testing, their causes, and solutions.
+
 ### What is the performance test result for TiDB using Sysbench?
 
 At the beginning, many users tend to do a benchmark test or a comparison test between TiDB and MySQL. We have also done a similar official test and find the test result is consistent at large, although the test data has some bias. Because the architecture of TiDB differs greatly from MySQL, it is hard to find a benchmark point. The suggestions are as follows:
@@ -404,6 +423,10 @@ TiDB is not suitable for tables of small size (such as below ten million level),
 
 ## Backup and restoration
 
+This section describes common problems you may encounter during backup and restoration, their causes, and solutions.
+
 ### How to back up data in TiDB?
 
 Currently, for the backup of a large volume of data, the preferred method is using [BR](/br/backup-and-restore-tool.md). Otherwise, the recommended tool is [Dumpling](/dumpling-overview.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is worse than [BR](/br/backup-and-restore-tool.md) and it needs much more time to back up and restore large volumes of data.
+
+For more FAQs about BR, see [BR FAQs](/br/backup-and-restore-faq.md).
