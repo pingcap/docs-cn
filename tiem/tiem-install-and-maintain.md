@@ -303,7 +303,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # user 为之前部署 TiEM 的帐户，默认为 tidb
+    # user 为之前部署 TiEM v1.0.0 的帐户，默认为 tidb
     # cluster-name 为当前部署的 TiEM 名称，默认为 em-test
     sudo sh em-enterprise-server-v1.0.1-linux-amd64/prepare_upgrade.sh <user> <TiEM 中控机 IP> <cluster-name>
     ```
