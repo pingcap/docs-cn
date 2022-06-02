@@ -350,7 +350,6 @@
       - [配置及使用](/tidb-lightning/tidb-lightning-sst-mode.md#配置及使用)
       - [冲突检测](/tidb-lightning/tidb-lightning-sst-mode.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-sst-mode.md#性能调优)
-      - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
     - Logical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-sql-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-requirements.md)
@@ -359,6 +358,7 @@
       - [性能调优](/tidb-lightning/tidb-lightning-sql-mode.md#性能调优)
     - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
     - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+    - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
     - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
     - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
     - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
