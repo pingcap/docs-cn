@@ -312,29 +312,45 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 3. 检查新的 TiEM 部署拓扑文件。
 
-    有些用户可能之前部署 TiEM 1.0.0 时对于 config.yaml 文件做了自定义修改，所以请查看原来的配置文件 config.yaml 和 新的配置文件 config-v1.0.1.yaml 的内容生效部分的区别是否仅为 db_path 那一行。若是请跳过本步骤，若不是请手动执行以下操作。
+    有些用户可能之前部署 TiEM v1.0.0 时对于 `config.yaml` 文件做了自定义修改，所以参考下列子步骤查看原来的配置文件 `config.yaml` 和新的配置文件 `config-v1.0.1.yaml` 的区别，并做相应修改。
 
-    其中 db_path 这一栏是为了在你部署 TiEM 1.0.1 时能够将原先 TiEM 1.0.0 备份的数据恢复回去。
+    1. 切换到 tidb 账号下
 
-    {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
+        ```shell
+        su - tidb
+        ```
 
-    # 0. 查看配置变更
-    diff config.yaml config-v1.0.1.yaml
+    2. 查看配置变更
 
-    # 1. 查看 config-v1.0.1.yaml 中 db_path 那一行的内容并备份，例如 db_path: "/home/tidb/em-backup-20220511-154415/em.db"
+       查看内容生效部分的区别是否仅为 `db_path` 那一行。若是则可跳过本步骤，无须继续后续子步骤，若不是请继续执行后续子步骤。
 
-    # 2. 将 config.yaml 覆盖 config-1.0.1.yaml
-    cp config.yaml config-1.0.1.yaml
+        {{< copyable "shell-regular" >}}
 
-    # 3. 在 config-1.0.1.yaml 中塞入步骤1中的 db_path ，注意空格的缩进，类似下面的示例
-    em_cluster_servers:
-      - host: 127.0.0.1
+        ```shell
+        diff config.yaml config-v1.0.1.yaml
+        ```
+
+    3. 备份 `db_path`
+
+       `db_path` 这一栏是为了在你部署 TiEM v1.0.1 时能够将原先 TiEM v1.0.0 备份的数据恢复回去。
+
+       请查看 `config-v1.0.1.yaml` 中 `db_path` 那一行的内容并备份，下面是个例子。
+
+        ```yaml
         db_path: "/home/tidb/em-backup-20220511-154415/em.db"
-    ```
+        ```
+    
+    4. 更新 `config-1.0.1.yaml`
+
+       将子步骤 3 中备份的 `db_path` 填写至 `config-1.0.1.yaml` ，注意空格的缩进，下面是个例子。
+
+        ```yaml
+        em_cluster_servers:
+          - host: 127.0.0.1
+            db_path: "/home/tidb/em-backup-20220511-154415/em.db"
+        ```
 
 4. 删除 TiEM 1.0.0。
 
