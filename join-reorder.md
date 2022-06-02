@@ -47,9 +47,8 @@ The above process is the Join Reorder algorithm currently used in TiDB.
 
 ## Limitations of Join Reorder algorithm
 
-The current Join Reorder algorithm has the following limitations:
+The current Join Reorder algorithm has the following limitation:
 
-- The Join Reorder for Outer Join is not supported
 - Limited by the calculation methods of the result sets, the algorithm cannot ensure it selects the optimum join order.
 
 Currently, the `STRAIGHT_JOIN` syntax is supported in TiDB to force a join order. For more information, refer to [Description of the syntax elements](/sql-statements/sql-statement-select.md#description-of-the-syntax-elements).
