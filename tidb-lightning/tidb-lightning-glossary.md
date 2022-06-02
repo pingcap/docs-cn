@@ -32,7 +32,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-glossary/','/docs-cn/dev/r
 
 也称作 Back end（后端），用于接受 TiDB Lightning 解析结果。
 
-详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
+详情参阅 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-overview.md)。
 
 <!-- C -->
 
