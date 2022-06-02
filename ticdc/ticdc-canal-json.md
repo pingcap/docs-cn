@@ -27,7 +27,7 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-cana
 
 ## TiDB extension field
 
-The Canal-JSON protocol is originally designed for MySQL. It does not contain important fields such as the TiDB-specific unique identifier for the CommitTS transaction. To solve this problem, TiCDC appends a TiDB extension field to the Canal-JSON protocol format. After you set `enable-tidb-extension` to `true` (defaults to `false`) in `sink-uri`, TiCDC behaves as follows when generating Canal-JSON messages:
+The Canal-JSON protocol is originally designed for MySQL. It does not contain important fields such as the TiDB-specific unique identifier for the CommitTS transaction. To solve this problem, TiCDC appends a TiDB extension field to the Canal-JSON protocol format. After you set `enable-tidb-extension` to `true` (`false` by default) in `sink-uri`, TiCDC behaves as follows when generating Canal-JSON messages:
 
 * TiCDC sends DML Event and DDL Event messages that contain a field named `_tidb`.
 * TiCDC sends WATERMARK Event messages.
