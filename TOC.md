@@ -351,7 +351,7 @@
       - [性能调优](/tidb-lightning/tidb-lightning-sst-mode-usage.md#性能调优)
     - Logical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-sql-mode.md)
-      - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-mode.md#tidb-lightning-logical-import-mode-必要条件及限制)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-sql-mode.md#必要条件及限制)
       - [配置及使用](/tidb-lightning/tidb-lightning-sql-mode-usage.md#配置及使用)
       - [冲突检测](/tidb-lightning/tidb-lightning-sql-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-sql-mode-usage.md#性能调优)
