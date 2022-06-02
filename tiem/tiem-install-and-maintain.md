@@ -312,7 +312,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
     如果你在部署 TiEM v1.0.0 时曾对 `config.yaml` 文件做了自定义修改，请参考下列子步骤查看 v1.0.0 的配置文件 `config.yaml` 和待部署 v1.0.1 配置文件 `config-v1.0.1.yaml` 的区别，并做相应修改。
 
-    1. 切换到 tidb 账号下
+    1. 切换至 `tidb` 账号。
 
         {{< copyable "shell-regular" >}}
 
