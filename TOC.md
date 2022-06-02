@@ -338,7 +338,7 @@
     - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
     - 数据源
-      - [文件匹配规则](/tidb-lightning/tidb-lightning-datasource.md#tidb-lightning-数据源)
+      - [文件匹配规则](/tidb-lightning/tidb-lightning-datasource.md)
       - [CSV](/tidb-lightning/tidb-lightning-datasource.md#csv)
       - [SQL](/tidb-lightning/tidb-lightning-datasource.md#sql)
       - [Parquet](/tidb-lightning/tidb-lightning-datasource.md#parquet)
