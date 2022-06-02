@@ -281,7 +281,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     TIUP_HOME=/home/tidb/.em tiup em upgrade <cluster-name> <version>
     ```
 
-## 兼容性升级 TiEM 1.0.1
+## 升级 TiEM v1.0.0 至 v1.0.1
 
 本节适用于已经安装过 TiEM 1.0.0 版本并打算升级 TiEM 的用户。如首次安装可跳过本节，参考[离线部署 TiEM](#离线部署-tiem) 安装 TiEM 1.0.2。
 
