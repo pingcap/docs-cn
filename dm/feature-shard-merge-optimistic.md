@@ -31,22 +31,32 @@ It takes some risks to use the optimistic mode. Follow these rules when you use 
 - If you perform an A/B test, perform the test **ONLY** on one sharded table.
 - After the A/B test is finished, migrate only the most direct DDL statement(s) to the final schema. Do not re-execute every right or wrong step of the test.
 
-    For example, if you have executed `ADD COLUMN A INT; DROP COLUMN A; ADD COLUMN A FLOAT;` in a sharded table, you only need to execute `ADD COLUMN A FLOAT` in other sharded tables. You do not need to executed all of the three DDL statements again.
+    For example, if you have executed `ADD COLUMN A INT; DROP COLUMN A; ADD COLUMN A FLOAT;` in a sharded table, you only need to execute `ADD COLUMN A FLOAT` in other sharded tables. You do not need to execute all of the three DDL statements again.
 
 - Observe the status of the DM migration when executing the DDL statement. When an error is reported, you need to determine whether this batch of DDL statements will cause data inconsistency.
 
-Currently, the following statements are not supported in the optimistic mode:
+In the optimistic mode, most of the DDL statements executed in the upstream are automatically migrated to the downstream with no extra effort required. These DDL statements are called "Type 1 DDL".
 
-- `ALTER TABLE table_name ADD COLUMN column_name datatype NOT NULL` (To add a `NOT NULL` column without a default value).
-- `ALTER TABLE table_name ADD COLUMN column_name datetime DEFAULT NOW()` (To add a column with a varying value).
-- `ALTER TABLE table_name ADD COLUMN col1 INT, DROP COLUMN col2` (Contains both `ADD COLUMN` and `DROP COLUMN` in one DDL statement).
-- `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;` (To rename a column).
-- `ALTER TABLE table_name RENAME INDEX index_1 TO index_2;` (To rename an index).
+DDL statements that change the column name, the column type, or the column default value are called "Type 2 DDL". When you execute Type 2 DDL statements in the upstream, make sure that you execute the DDL statements in all sharded tables in the same order.
+
+Some examples of Type 2 DDL statements are as follows:
+
+- Alter the type of a column: `ALTER TABLE table_name MODIFY COLUMN column_name VARCHAR(20)`.
+- Rename a column: `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`.
+- Add a `NOT NULL` column without a default value: `ALTER TABLE table_name ADD COLUMN column_1 NOT NULL;`.
+- Rename an index: `ALTER TABLE table_name RENAME INDEX index_1 TO index_2;`.
+
+When the sharded tables execute the DDL statements above, if the execution order is different, the migration is interrupted. For example:
+
+- Shard 1 renames a column and then alters the column type:
+    1. Rename a column: `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`.
+    2. Alter the column type: `ALTER TABLE table_name MODIFY COLUMN column_3 VARCHAR(20);`.
+- Shard 2 alters a column type and then renames the column:
+    1. Alter a column type: `ALTER TABLE table_name MODIFY COLUMN column_3 VARCHAR(20)`.
+    2. Rename a column: `ALTER TABLE table_name RENAME COLUMN column_1 TO column_2;`.
 
 In addition, the following restrictions apply to both the optimistic mode and the pessimistic mode:
 
-- In an incremental replication task, ensure that each sharded table's schema that corresponds to the binlog position at the start of the task is consistent with each other.
-- The new table added to a sharding group must have a consistent table schema with that of other members. The `CREATE/RENAME TABLE` statement is forbidden when a batch of DDL statements is being executed.
 - `DROP TABLE` or `DROP DATABASE` is not supported.
 - `TRUNCATE TABLE` is not supported.
 - Each DDL statement must involve operations on only one table.
