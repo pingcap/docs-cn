@@ -6,70 +6,18 @@ title: TiDB Lightning Logical Import Mode
 
 虽然 Physical Import Mode 具有高性能的优点，但由于其目前无法保证 ACID，且影响 TiDB 集群对外提供服务，因此一般建议仅用于 TiDB 集群初始化数据导入的场景。对于已有数据、对外提供服务的 TiDB 集群，推荐使用 Logical Import Mode 导入数据。Logical  Import Mode 的行为与正常执行 SQL 并无差异，可保证 ACID。
 
-## 配置及使用
+## TiDB Lightning Logical Import Mode 必要条件及限制
 
-可以通过以下配置文件使用 Logical Import Mode 执行数据导入：
+### 运行环境需求
 
-```toml
-[lightning]
-# 日志
-level = "info"
-file = "tidb-lightning.log"
-max-size = 128 # MB
-max-days = 28
-max-backups = 14
+**操作系统**：建议使用新的、纯净版 CentOS 7 实例，你可以在本地虚拟化一台主机，或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程中，默认会占满 CPU，建议单独部署在一台主机上。如果条件不允许，你可以将 TiDB Lightning 和其他组件（比如`tikv-server`）部署在同一台机器上，然后设置`region-concurrency` 配置项的值为逻辑 CPU 数的 75%，以限制 TiDB Lightning 对 CPU 资源的使用。
 
-# 启动之前检查集群是否满足最低需求。
-check-requirements = true
+**内存和 CPU**：
 
-[mydumper]
-# 本地源数据目录或外部存储 URL
-data-source-dir = "/data/my_database"
+建议使用 4 核以上的 CPU 和 8 GiB 以上内存以获得更好的性能。根据长期的实践经验，Lightning 的 Logical Import Mode 没有显著（5GiB 以上）的内存占用，但上调`region-concurrency`默认值将导致内存量增加。
 
-[tikv-importer]
-# 导入模式配置，设为 tidb 即使用 Logical Import Mode
-backend = "tidb"
+**网络**：建议使用 1Gbps 或 10Gbps 以太网卡。
 
-# Logical  Import Mode 插入重复数据时执行的操作。
-# - replace：新数据替代已有数据
-# - ignore：保留已有数据，忽略新数据
-# - error：中止导入并报错
-on-duplicate = "replace"
+### 使用限制
 
-[tidb]
-# 目标集群的信息。tidb-server 的地址，填一个即可。
-host = "172.16.31.1"
-port = 4000
-user = "root"
-# 设置连接 TiDB 的密码，可为明文或 Base64 编码。
-password = ""
-# tidb-lightning 引用了 TiDB 库，并生成产生一些日志。
-# 设置 TiDB 库的日志等级。
-log-level = "error"
-```
-
-Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-lightning/tidb-lightning-configuration.md)。
-
-## 冲突数据检测
-
-冲突数据，即两条或两条以上的记录存在 PK/UK 列数据重复的情况。当数据源中的记录存在冲突数据，将导致该表真实总行数和使用唯一索引查询的总行数不一致的情况。Lightning 的 Logical Import Mode 通过 `on-duplicate` 配置冲突数据检测的策略，根据策略 Lightning 使用不同的 SQL 语句进行插入。
-
-| 设置 | 冲突时默认行为 | 对应 SQL 语句 |
-|:---|:---|:---|
-| `replace` | 新数据替代旧数据 | `REPLACE INTO ...` |
-| `ignore` | 保留旧数据，忽略新数据 | `INSERT IGNORE INTO ...` |
-| `error` | 中止导入 | `INSERT INTO ...` |
-
-## 性能调优
-
-1. Lightning Logical Import Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)
-
-2. 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。 `region-concurrency`默认值为 CPU 核数，其含义在 Physical Import Mode 和 Logical Import Mode 下有所不同，Logical Import Mode 的 `region-concurrency` 表示写入并发数。配置示例：
-
-    ```toml
-    [lightning]
-
-    region-concurrency = 32
-    ```
-
-3. 调整目标 TiDB 集群的[raftstore.apply-pool-size](/tikv-configuration-file.md#apply-pool-size)和[raftstore.store-pool-size](/tikv-configuration-file.md#store-pool-size)参数也可能提升导入速度。
+- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
