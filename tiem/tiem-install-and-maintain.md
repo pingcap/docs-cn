@@ -342,9 +342,9 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
         db_path: "/home/tidb/em-backup-20220511-154415/em.db"
         ```
     
-    4. 更新 `config-1.0.1.yaml`
+    4. 更新 `config-v1.0.1.yaml`
 
-       将子步骤 3 中备份的 `db_path` 填写至 `config-1.0.1.yaml` ，注意空格的缩进，下面是个例子。
+       将子步骤 3 中备份的 `db_path` 填写至 `config-v1.0.1.yaml` ，注意空格的缩进，下面是个例子。
 
         ```yaml
         em_cluster_servers:
