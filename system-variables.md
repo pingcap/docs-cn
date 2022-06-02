@@ -1699,7 +1699,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 set tidb_slow_log_threshold = 200;
 ```
 
-### `tidb_max_tiflash_threads`
+### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
