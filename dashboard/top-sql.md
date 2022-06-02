@@ -23,10 +23,6 @@ Top SQL is suitable for analyzing performance issues. The following are some typ
 * The CPU usage of the cluster has drastically changed and you want to know the major cause.
 * Analyze the most resource-intensive SQL statements in the cluster and optimize them to reduce hardware costs.
 
-> **Note:**
->
-> Top SQL currently does not collect the CPU overhead of the SQL statements that were running before the Top SQL feature was enabled. Therefore, it is recommended to [enable the Top SQL feature](#enable-top-sql) as soon as possible instead of enabling it until you have already encountered performance problems.
-
 Top SQL cannot be used to pinpoint non-performance issues, such as incorrect data or abnormal crashes.
 
 The Top SQL feature is still in an early stage and is being continuously enhanced. Here are some scenarios that are **not supported** at the moment:
