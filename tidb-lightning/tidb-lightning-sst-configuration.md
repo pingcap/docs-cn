@@ -1,10 +1,10 @@
 ---
-title: TiDB Lightning SST Mode 配置
+title: TiDB Lightning 配置
 ---
 
-# TiDB Lightning SST Mode 配置
+# TiDB Lightning 配置
 
-## SST Mode 完整配置
+## Physical Import Mode 完整配置
 
 ```toml
 
