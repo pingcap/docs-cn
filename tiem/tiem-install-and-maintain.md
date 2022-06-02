@@ -342,7 +342,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
     4. 覆盖 `config-v1.0.1.yaml`。
 
-       将部署 TiEM v1.0.0 的 `config.yaml` 文件复制一份到 `config-v1.0.1.yaml`。
+       将 TiEM v1.0.0 的 `config.yaml` 文件复制一份并覆盖 v1.0.1 的 `config-v1.0.1.yaml`。
 
         ```shell
         cp config.yaml config-v1.0.1.yaml
