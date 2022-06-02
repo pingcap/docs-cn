@@ -53,9 +53,9 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 - Kill DML 语句：
 
-    查询 `information_schema.cluster_processlist`，获取正在执行 DML 语句的 TiDB 实例地址和 session ID，然后执行 kill 命令。
-
-    客户端需要连接到正在执行 DML 语句的 TiDB 实例，然后执行 `kill tidb session_id` 才能 kill DML 语句。如果客户端连接到其他 TiDB 实例或者客户端和 TiDB 集群之间有代理，`kill tidb session_id` 可能会被路由到其他的 TiDB 实例，从而错误地终止其他会话。具体可以参考 [`KILL`](/sql-statements/sql-statement-kill.md)。
+    查询 `information_schema.cluster_processlist`，获取正在执行 DML 语句的 TiDB 实例地址和 session ID。然后将客户端连接到正在执行 DML 语句的 TiDB 实例，执行 `kill tidb session_id`。
+    
+    如果客户端连接到其他 TiDB 实例或者客户端和 TiDB 集群之间有代理，`kill tidb session_id` 可能会被路由到其他的 TiDB 实例，从而错误地终止其他会话。具体可以参考 [`KILL`](/sql-statements/sql-statement-kill.md)。
 
 - Kill DDL 语句：执行 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [`ADMIN`](/sql-statements/sql-statement-admin.md)。
 
