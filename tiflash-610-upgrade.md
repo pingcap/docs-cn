@@ -34,7 +34,7 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。该版�
 
 ##### 测试环境及特殊回退需求下的对策
 
-确保相应表中 TiKV 副本的数据可用，强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[用户手册](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
+强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
 
 #### 动态分区裁剪
 
@@ -57,14 +57,11 @@ v6.1.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_vers
 
     - 重启 TiFlash 节点
 
-- 具体实例版本，可以在 Grafana 对应监控查看（Tiflash summary → storage pool → global run mode 和 storage pool run mode）。
-
-    - Global run mode 对应了全局的运行模式。
-    - Storage pool run mode 对应了单表的运行模式。
+- 具体表运行的数据版本，可以在 Grafana 对应监控查看（Tiflash summary → storage pool → Storage Pool Run Mode）。
 
 ##### 测试环境及特殊回退需求下的对策
 
-确保相应表中 TiKV 副本的数据可用，删除 TiFlash 副本。然后，重新生成 TiFlash 副本，并同步数据。删除副本操作步骤详见[构建 TiFlash 副本](/tiflash/use-tiflash.md#构建-tiflash-副本)。
+强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
 
 ### 升级 v6.0.0 至 v6.1.0
 
