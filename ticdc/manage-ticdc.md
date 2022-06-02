@@ -223,8 +223,8 @@ URI 中可配置的的参数如下：
 | `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）|
 | `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选） |
 | `sasl-gssapi-service-name` | gssapi 服务名称（可选） |
-| `sasl-gssapi-user` | gssapi 认证类型使用的用户名（可选） |
-| `sasl-gssapi-password` | gssapi 认证类型使用的密码（可选） |
+| `sasl-gssapi-user` | gssapi 认证使用的用户名（可选） |
+| `sasl-gssapi-password` | gssapi 认证使用的密码（可选） |
 | `sasl-gssapi-realm` | gssapi realm 名称（可选） |
 | `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选） |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
