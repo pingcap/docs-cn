@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
 
 使用 TiUP 部署 TiDB 集群时，你可以一键部署监控系统 (Prometheus & Grafana)，参考监控架构 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
-目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview 等。TiDB 分为 TiDB 和 TiDB Summary 面板，两个面板的区别如下：
+目前 Grafana Dashboard 整体分为 PD、TiDB、TiKV、Node\_exporter、Overview、Performance\_overview 等。TiDB 分为 TiDB 和 TiDB Summary 面板，两个面板的区别如下：
 
 - TiDB 面板：提供尽可能全面的信息，供排查集群异常。
 - TiDB Summary 面板：将 TiDB 面板中用户最为关心的部分抽取出来，并做了些许修改。主要用于提供数据库日常运行中用户关心的数据，如 QPS、TPS、响应延迟等，以便作为外部展示、汇报用的监控信息。
@@ -81,6 +81,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Execution Duration：执行 SQL 语句执行计划耗时。
     - Expensive Executor OPS：每秒消耗系统资源比较多的算子。包括 Merge Join、Hash Join、Index Look Up Join、Hash Agg、Stream Agg、Sort、TopN 等。
     - Queries Using Plan Cache OPS：每秒使用 Plan Cache 的查询数量。
+    - Plan Cache Miss OPS：每秒出现 Plan Cache Miss 的数量。
 
 - Distsql
     - Distsql Duration：Distsql 处理的时长

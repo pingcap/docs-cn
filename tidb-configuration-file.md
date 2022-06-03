@@ -170,11 +170,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
-#### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
+### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 用于开启 Global Kill（跨节点终止查询或连接）功能。
++ 默认值：true
++ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
 ## log
 
@@ -193,12 +199,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-timestamp`
 
 + 是否在日志中输出时间戳。
-+ 默认值：true
++ 默认值：null
 + 如果设置为 false，那么日志里面将不会输出时间戳。
 
 > **注意：**
 >
-> 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
+> - 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。
+> - 当前 TiDB 默认使用 `disable-timestamp` 来决定是否在日志中输出时间戳，此时 `enable-timestamp` 的值为 `null`。
+> - 在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
 
 ### `enable-slow-log`
 
@@ -265,6 +273,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
+### `memory-limit`
+
++ 指定 Raft Engine 使用内存的上限。
++ 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
++ 默认值：`系统总内存 * 15%`
+
 ## security
 
 安全相关配置。
@@ -325,6 +339,12 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 控制 TiDB 启动时是否自动生成 TLS 证书。
 + 默认值：`false`
+
+### `tls-version`
+
++ 设置用于连接 MySQL 协议的最低 TLS 版本。
++ 默认值：""，支持 TLSv1.1 及以上版本。
++ 可选值：`"TLSv1.0"`、`"TLSv1.1"`、`"TLSv1.2"` 和 `"TLSv1.3"`
 
 ## performance
 
@@ -459,27 +479,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
-## prepared-plan-cache
+### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
-
-### `enabled`
-
-+ 开启 prepare 语句的 plan cache。
++ 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：false
-
-### `capacity`
-
-+ 缓存语句的数量。
-+ 默认值：1000
-+ 类型为 uint，小于 0 的值会被转化为大整数。
-
-### `memory-guard-ratio`
-
-+ 用于防止 prepare plan cache 的内存用量超过 performance.server-memory-quota。当 prepare plan cache 的内存用量超过 server-memory-quota * (1 - prepared-plan-cache.memory-guard-ratio) 时，TiDB 会剔除 LRU 中的元素。
-+ 默认值：0.1
-+ 最小值：0
-+ 最大值：1
 
 ## opentracing
 
@@ -732,4 +735,4 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
 + 默认值：1000
-+ 目前的合法值范围： `[1, 100000]`
++ 目前的合法值范围：`[1, 100000]`

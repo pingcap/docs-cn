@@ -207,6 +207,11 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 + PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
 + 默认值：30m
 
+### `max-store-preparing-time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度，但是不影响 Region 向这个新上线 store 的迁移。通常用户无需修改该配置项。
++ 默认值：48h
+
 ### `leader-schedule-limit`
 
 + 同时进行 leader 调度的任务个数。

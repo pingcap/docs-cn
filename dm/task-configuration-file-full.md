@@ -1,6 +1,6 @@
 ---
 title: DM 任务完整配置文件介绍
-aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/']
+aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/docs-cn/tidb-data-migration/dev/dm-portal/','/zh/tidb/dev/task-configuration-file']
 ---
 
 # DM 任务完整配置文件介绍
@@ -22,7 +22,6 @@ aliases: ['/docs-cn/tidb-data-migration/dev/task-configuration-file-full/','/doc
 ## ********* 基本信息配置 *********
 name: test                      # 任务名称，需要全局唯一
 task-mode: all                  # 任务模式，可设为 "full" - "只进行全量数据迁移"、"incremental" - "Binlog 实时同步"、"all" - "全量 + Binlog 实时同步"
-is-sharding: true               # 该配置项从 DM v2.0.0 起弃用，其功能被 `shard-mode` 取代，建议使用 `shard-mode` 代替 `is-sharding`
 shard-mode: "pessimistic"       # 任务协调模式，可选的模式有 ""、"pessimistic、"optimistic"。默认值为 "" 即无需协调。如果是分库分表合并任务，请设置为悲观协调模式 "pessimistic"。
                                 # 在 v2.0.6 版本后乐观模式逐渐成熟，深入了解乐观协调模式的原理和使用限制后，也可以设置为乐观协调模式 "optimistic"
 meta-schema: "dm_meta"          # 下游储存 `meta` 信息的数据库
@@ -32,7 +31,7 @@ case-sensitive: false           # schema/table 是否大小写敏感
 online-ddl: true                # 支持上游 "gh-ost" 、"pt" 的自动处理
 online-ddl-scheme: "gh-ost"     # `online-ddl-scheme` 已被弃用，建议使用 `online-ddl`。
 clean-dump-file: true           # 是否清理 dump 阶段产生的文件，包括 metadata 文件、建库建表 SQL 文件以及数据导入 SQL 文件
-collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。 
+collation_compatible: "loose"   # 同步 CREATE 语句中缺省 Collation 的方式，可选 "loose" 和 "strict"，默认为 "loose"。"loose" 模式不会显式补充上游缺省的 Collation，"strict" 会显式补充上游缺省的 Collation。当使用 "strict" 模式，但下游不支持上游缺省的 Collation 时，下游可能会报错。
 ignore-checking-items: []       # 忽略检查项。可用值请参考 precheck 说明页面。
 
 target-database:                # 下游数据库实例配置
@@ -107,7 +106,7 @@ loaders:                             # load 处理单元的运行配置参数
 
     # 保存上游全量导出数据的目录。该配置项的默认值为 "./dumped_data"。
     # 支持配置为本地文件系统路径，也支持配置为 Amazon S3 路径，如: s3://dm_bucket/dumped_data?region=us-west-2&endpoint=s3-website.us-east-2.amazonaws.com&access_key=s3accesskey&secret_access_key=s3secretkey&force_path_style=true
-    dir: "./dumped_data"             
+    dir: "./dumped_data"
 
     # 全量阶段数据导入的模式。可以设置为如下几种模式：
     # - "sql"(默认)。使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) TiDB-backend 进行导入。
