@@ -17,7 +17,7 @@ TiDB 的备份恢复功能 Backup & Restore (BR) 支持将 Amazon S3 或支持 S
 
 ### S3 目录访问权限
 
-在备份之前，需要为 BR 访问 S3 中的备份目录设置相应的访问权限。
+在备份之前，为 BR 访问 S3 中的备份目录设置相应的访问权限。
 
 - 备份时 TiKV 和 BR 需要的最小权限，赋予备份数据目录 `s3:ListBucket`、`s3:PutObject` 和 `s3:AbortMultipartUpload`。
 - 恢复时 TiKV 和 BR 需要的最小权限，赋予备份数据目录 `s3:ListBucket` 和 `s3:GetObject`。

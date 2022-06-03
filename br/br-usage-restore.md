@@ -61,7 +61,7 @@ BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢�
 
 要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。执行 `br restore db --help` 可获取该命令的使用帮助。
 
-用例：将 s3 中名为 `backup-data` 的 bucket 下的 `db-test/2022-01-30/` 中的 `test` 库的相关的数据恢复的集群中。
+用例：将 s3 中名为 `backup-data` 的 bucket 下的 `db-test/2022-01-30/` 中的 `test` 库的相关数据恢复到集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -172,7 +172,11 @@ BR 会默认备份 `mysql` 数据库下的表。在执行恢复时，`mysql` 下
 br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 ```
 
-在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
+在上面的命令中，
+
+- `-f '*.*'` 用于覆盖掉默认的规则。
+- `-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。
+- `-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。
 
 如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
 
@@ -196,8 +200,8 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 ## 恢复性能和影响
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响；
-- 备份数据恢复速度，能够达到（单台 TiKV 节点） 100 MB/s。
+- 备份数据的恢复速度，与集群配置、部署、运行的业务都有比较大的关系。一般情况下，备份数据恢复速度能够达到（单台 TiKV 节点） 100 MB/s。
 
 > **注意：**
 >
-> 备份数据的恢复速度，与集群配置、部署、运行的业务都有比较大的关系，以上结论，经过多个场景的仿真测试，并且在部分合作用户场景中，得到验证，具有一定的参考意义。 但是在不同用户场景中恢复速度，最好以用户自己的测试结论为准。
+> 以上结论，经过多个场景的仿真测试，并且在部分合作用户场景中，得到验证，具有一定的参考意义。 但是在不同用户场景中恢复速度，最好以用户自己的测试结论为准。

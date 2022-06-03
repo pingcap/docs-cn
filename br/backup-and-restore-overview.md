@@ -1,7 +1,7 @@
 ---
 title: BR 简介
 summary: 了解 BR 工具是什么、有什么用。
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/docs-cn/br/backup-and-restore-tool/','/zh/tidb/dev/backup-and-restore-tool']
+aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/zh/tidb/dev/backup-and-restore-tool']
 ---
 
 # BR 简介
@@ -55,11 +55,9 @@ BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NF
 
 在使用 BR 之前需要先了解 BR 存在的使用上的限制。
 
-#### 不支持的场景
+#### 场景限制
 
-以下是 BR 不支持的场景：
-
-- BR 恢复数据到运行 TiCDC 或 TiDB Binlog 的上游集群时，恢复的数据无法由 TiCDC 或 TiDB Binlog 同步到下游集群。
+BR 恢复数据到运行 TiCDC 或 TiDB Binlog 的上游集群时，恢复的数据无法由 TiCDC 或 TiDB Binlog 同步到下游集群。
 
 #### 功能的兼容性
 
