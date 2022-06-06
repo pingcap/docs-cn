@@ -1,5 +1,6 @@
 ---
 title: 使用 TiUP 部署 TiDB 集群
+summary: 了解如何使用 TiUP 部署 TiDB 集群。
 aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/dev/production-offline-deployment-using-tiup','/docs-cn/dev/production-deployment-using-tiup/','/docs-cn/dev/how-to/deploy/orchestrated/tiup/','/docs-cn/dev/tiflash/deploy-tiflash/','/docs-cn/dev/reference/tiflash/deploy/','/zh/tidb/dev/deploy-test-cluster-using-docker-compose','/zh/tidb/dev/test-deployment-using-docker']
 ---
 
@@ -203,6 +204,18 @@ source /home/tidb/.bash_profile
 
 `local_install.sh` 脚本会自动执行 `tiup mirror set tidb-community-server-${version}-linux-amd64` 命令将当前镜像地址设置为 `tidb-community-server-${version}-linux-amd64`。
 
+若需将 server 和 toolkit 两个离线镜像合并，执行以下命令合并离线组件到 server 目录下。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
+cd tidb-community-server-${version}-linux-amd64/
+cp -rp keys ~/.tiup/
+tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
+```
+    
 若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 </div>
@@ -227,7 +240,7 @@ tiup cluster template > topology.yaml
     ```shell
     tiup cluster template --full > topology.yaml
     ```
-    
+
 - 跨机房部署场景：跨机房部署 TiDB 集群，详情参见[跨机房部署拓扑架构](/geo-distributed-deployment-topology.md)。
 
     {{< copyable "shell-regular" >}}
@@ -289,7 +302,12 @@ alertmanager_servers:
 >
 > - 如果需要指定在目标机创建的用户组名，可以参考[这个例子](https://github.com/pingcap/tiup/blob/master/embed/examples/cluster/topology.example.yaml#L7)。
 
-更多参数说明，请参考 [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)、[TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)、[PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml) 和 [TiFlash 配置参数](/tiflash/tiflash-configuration.md)。
+更多参数说明，请参考：
+
+- [TiDB `config.toml.example`](https://github.com/pingcap/tidb/blob/master/config/config.toml.example)
+- [TiKV `config.toml.example`](https://github.com/tikv/tikv/blob/master/etc/config-template.toml)
+- [PD `config.toml.example`](https://github.com/pingcap/pd/blob/master/conf/config.toml)
+- [TiFlash `config.toml.example`](https://github.com/pingcap/tiflash/blob/master/etc/config-template.toml)
 
 ## 第 4 步：执行部署命令
 

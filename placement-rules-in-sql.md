@@ -18,6 +18,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 - 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
 - 把热点数据的 leader 放到高性能的 TiKV 实例上
 - 将冷数据分离到不同的存储中以提高可用性
+- 支持物理隔离不同用户之间的计算资源，满足实例内部不同用户的隔离需求，以及不同混合负载 CPU、I/O、内存等资源隔离的需求
 
 ## 指定放置规则
 
@@ -101,19 +102,21 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 > **注意：**
 >
-> 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
+> - 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
 >
-> ```sql
-> mysql> show placement labels;
-> +--------+----------------+
-> | Key    | Values         |
-> +--------+----------------+
-> | disk   | ["ssd"]        |
-> | region | ["us-east-1"]  |
-> | zone   | ["us-east-1a"] |
-> +--------+----------------+
-> 3 rows in set (0.00 sec)
-> ```
+>     ```sql
+>     mysql> show placement labels;
+>     +--------+----------------+
+>     | Key    | Values         |
+>     +--------+----------------+
+>     | disk   | ["ssd"]        |
+>     | region | ["us-east-1"]  |
+>     | zone   | ["us-east-1a"] |
+>     +--------+----------------+
+>     3 rows in set (0.00 sec)
+>     ```
+>
+> - 使用 `CREATE PLACEMENT POLICY` 创建放置规则时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
@@ -158,10 +161,6 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 
 ### 为分区表指定放置规则
 
-> **注意：**
->
-> 以下示例使用的 List 分区目前为 TiDB 实验特性。在表的分区功能中，要求主键里包含所有分区函数中使用的列。
-
 除了给表绑定放置策略之外，你还可以给表分区绑定放置策略。示例如下：
 
 ```sql
@@ -205,7 +204,7 @@ ALTER DATABASE test PLACEMENT POLICY=p2;  -- 更改默认的放置规则，但�
 
 CREATE TABLE t2 (a INT);  -- 创建表 t2，默认的放置策略 p2 在 t2 上生效。
 
-CREATE TABLE t3 (a INT) POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 p2 策略在 t3 上不生效。
+CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- 创建表 t3。因为语句中已经指定了其他放置规则，默认的 p2 策略在 t3 上不生效。
 
 ALTER DATABASE test PLACEMENT POLICY=p3;  -- 再次更改默认的放置规则，此更改不影响已有的表。
 
@@ -238,11 +237,11 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd:1,+disk=hdd:2}`) 指定。
+该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=hdd: 2}`) 指定。
 
 在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
 
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
 
 > **注意：**
 >
@@ -252,7 +251,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 | 工具名称 | 最低兼容版本 | 说明 |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-tool.md#兼容性) |
+| Backup & Restore (BR) | 6.0 | 支持放置规则的导入与导出，见 [BR 兼容性](/br/backup-and-restore-overview.md#功能的兼容性) |
 | TiDB Lightning | 暂时不兼容 | 导入包含放置策略的数据时会报错 |
 | TiCDC | 6.0 | 忽略放置规则，不同步规则到下游集群 |
 | TiDB Binlog | 6.0 | 忽略放置规则，不同步规则到下游集群 |
