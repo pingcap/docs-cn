@@ -87,71 +87,14 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 如果 TiEM 中控机通过用户名密钥访问 TiDB 资源机，需要参照指定 TiEM 中控机登录 TiDB 资源机的用户名和密钥，在配置文件 config.yaml 中指定用户名和密钥。
 
-## 在线部署 TiEM
-
-本节介绍如何在线部署 TiEM，步骤如下：
-
-> **注意：**
->
-> TiEM 1.0.0 中在线仓库仅 PingCAP 内部可访问。外部客户部署 TiEM 请参见[离线部署 TiEM](#离线部署-tiem)。
-
-1. 配置 TiEM 部署拓扑文件。
-
-    将部署 TiEM 的拓扑 YAML 文件放置于中控机上（推荐放置于 `/opt` 目录，不能放置于 `/root` 目录下）。简单最小拓扑配置模版 config.yaml 参见 [TiEM 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/tiem-topology-config.yaml)。
-
-2. 在线安装 TiUP 工具。
-
-    通过[在线方式](/production-deployment-using-tiup.md)安装 TiUP 工具（版本 1.9.0 及以上）。请将该 TiUP 工具安装于下一步“执行脚本在线安装 TiEM”中具有 sudo 权限的同一账号下。
-
-3. 执行脚本在线安装 TiEM。
-
-    将 [tiem_online_install.sh](/scripts/tiem-online-deploy.sh) 拷贝到中控机，并以具备 `sudo` 权限的账号执行下面的命令：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    sudo sh tiem_online_install.sh <在线仓库地址> <TiEM 拓扑文件绝对路径>
-    ```
-
-    例如，假设 TiEM 在线仓库地址为 <http://172.16.5.148:8080/tiup-repo/>。以通过在线方式部署 TiEM-v1.0.0 为例，在线部署命令行参数为：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    sudo sh tiem_online_install.sh http://172.16.5.148:8080/tiup-repo/ /opt/config.yaml
-    ```
-
-4. 生成 `tidb` 帐户下的密钥。
-
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
-
-    # 生成 rsa 密钥
-    ssh-keygen -t rsa
-
-    # 复制密钥到 tiup_rsa
-    cp /home/tidb/.ssh/id_rsa /home/tidb/.ssh/tiup_rsa
-    ```
-
-5. 执行命令部署 TiEM。
-
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
-
-    # 部署名称为 "em-test" 的 TiEM，注意这个版本号不带 v，比如 v1.0.0 实际输入的是 1.0.0
-    TIUP_HOME=/home/tidb/.em tiup em deploy em-test <版本号> /opt/config.yaml -u <具有 sudo 权限的账号> -p
-
-    # 启动 TiEM
-    TIUP_HOME=/home/tidb/.em tiup em start em-test
-    ```
-
 ## 离线部署 TiEM
 
-本节介绍如何在离线环境部署 TiEM。
+本节介绍如何在离线环境部署 TiEM。当前 TiEM 只支持通过离线部署。
 
-1. 联系 PingCAP 售前人员或 [zhoupeng@pingcap.com](mailto:zhoupeng@pingcap.com)，获取 TiEM 离线安装包。
+1. 通过 `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` 下载 TiEM 离线安装包。
+
+    下载链接中的 `{version}` 为 TiEM 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `{version}` 替换为目标版本号。
+
 2. 发送 TiEM 离线安装包至 TiEM 中控机。
 
     离线安装包放置于 TiEM 中控机，使用具有 sudo 权限的账号执行后续操作。
@@ -347,7 +290,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
         ```shell
         cp config.yaml config-v1.0.1.yaml
         ```
-    
+
     5. 更新 `config-v1.0.1.yaml`。
 
         覆盖配置文件后，将子步骤 3 中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
@@ -403,7 +346,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     # 切换到 tidb 账号下
     su - tidb
 
-    # 重建资源机器 filebeat    
+    # 重建资源机器 filebeat
     TIUP_HOME=/home/tidb/.em tiup em scale-out em-test /home/tidb/em-v1.0.0-backup/resource-filebeat-scale-out-topology.yaml --user tidb -i /home/tidb/.ssh/tiup_rsa --wait-timeout 360 --yes
     ```
 
