@@ -12,6 +12,7 @@ aliases: ['/docs-cn/dev/garbage-collection-configuration/','/docs-cn/dev/referen
 * [`tidb_gc_life_time`](/system-variables.md#tidb_gc_life_time-从-v50-版本开始引入)
 * [`tidb_gc_concurrency`](/system-variables.md#tidb_gc_concurrency-从-v50-版本开始引入)
 * [`tidb_gc_scan_lock_mode`](/system-variables.md#tidb_gc_scan_lock_mode-从-v50-版本开始引入)
+* [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入)
 
 ## 流控
 
@@ -33,9 +34,9 @@ TiDB 5.0 及之后的版本不再需要向各个 TiKV Region 都发送触发 GC 
 
 ## TiDB 6.1.0 引入的变化
 
-在 TiDB 6.1.0 之前的版本中，TiDB 内部事务不会影响 GC Safe Point 推进。从 TiDB 6.1.0 版本起，计算 Safe Point 时会考虑内部事务的 startTS，从而解决内部事务因访问数据被清理掉而导致失败的问题。带来的负面影响是如果内部事务运行时间过长，会导致 Safe Point 长时间不推进，进而会影响业务性能。
+在 TiDB 6.1.0 之前的版本中，TiDB 内部事务不会影响 GC safe point 推进。从 TiDB 6.1.0 版本起，计算 safe point 时会考虑内部事务的 startTS，从而解决内部事务因访问数据被清理掉而导致失败的问题。带来的负面影响是如果内部事务运行时间过长，会导致 safe point 长时间不推进，进而会影响业务性能。
 
- TiDB v6.1.0 引入了配置变量 [`tidb_gc_max_wait_time`](#tidb_gc_max_wait_time-从-v610-版本开始引入) 控制活跃事务阻塞 GC Safe Point 推进的最长时间，超过该值后 GC Safe Point 会强制向后推进。
+ TiDB v6.1.0 引入了系统变量 [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入) 控制活跃事务阻塞 GC safe point 推进的最长时间，超过该值后 GC safe point 会强制向后推进。
 
 ## GC in Compaction Filter 机制
 
