@@ -49,7 +49,30 @@ TiDB 事务模型灵感源自 Google Percolator 模型，主体是一个两阶�
 
 #### 1.1.9 TiDB 是否支持其他存储引擎？
 
-是的，除了 TiKV 之外，TiDB 还支持一些流行的单机存储引擎，比如 GolevelDB、RocksDB、BoltDB 等。如果一个存储引擎是支持事务的 KV 引擎，并且能提供一个满足 TiDB 接口要求的 Client，即可接入 TiDB。
+是的，除了 TiKV 之外，TiDB 还支持一些单机存储引擎，比如 UniStore 和 MockTiKV。注意，TiDB 后续版本可能不再支持 MockTiKV。
+
+要查看 TiDB 支持的存储引擎，可使用以下命令：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+./bin/tidb-server -h
+```
+
+返回结果如下：
+
+```shell
+Usage of ./bin/tidb-server:
+  -L string
+        log level: info, debug, warn, error, fatal (default "info")
+  -P string
+        tidb server port (default "4000")
+  -V    print version information and exit (default false)
+.........
+  -store string
+        registered store name, [tikv, mocktikv, unistore] (default "unistore")
+  ......
+```
 
 #### 1.1.10 除了官方文档，有没有其他 TiDB 知识获取途径？
 

@@ -17,3 +17,8 @@ http://9.9.9.9:2379/
 http:/DASHBOARD_IP:PORT/dashboard
 http:/\$%7Btidb-server-ip%7D:\$%7Btidb-server-status-port%7D/
 https://kms.us-west-2.amazonaws.com
+http://maven.apache.org/POM/4.0.0
+http://oss-cn-hangzhou-internal.aliyuncs.com/
+https://s.tidb.io/msmo6awg
+https://kb.pingcap.com/shared/v1/wu2JbFeNa5GMVkQog4sWk3kATU-CSeFsr-MXRHp_iaNJyXNTad35IQ7Qljko_2-KOgaFNe5QiMwqNnptRV0o5GTSDQUR-K5Vaxh6DLiwnUI
+http://172.16.x.xxx:2379/pd/api/v1/config/rule

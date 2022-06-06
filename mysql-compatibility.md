@@ -41,7 +41,10 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * `CREATE TABLE tblName AS SELECT stmt` 语法 [#4754](https://github.com/pingcap/tidb/issues/4754)
 * `CHECK TABLE` 语法 [#4673](https://github.com/pingcap/tidb/issues/4673)
 * `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
-* `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
+* `REPAIR TABLE` 语法
+* `OPTIMIZE TABLE` 语法
+* `HANDLER` 语句
+* `CREATE TABLESPACE` 语句
 
 ## 与 MySQL 有差异的特性详细说明
 
@@ -78,6 +81,10 @@ mysql> SELECT _tidb_rowid, id FROM t;
 3 rows in set (0.01 sec)
 ```
 
+> **注意：**
+>
+> 使用 `AUTO_INCREMENT` 可能会给生产环境带热点问题，因此推荐使用 [`AUTO_RANDOM`](/auto-random.md) 代替。详情请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
+
 ### Performance schema
 
 TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标，所以 Performance schema 部分表是空表。
@@ -99,11 +106,13 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
 * TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
 * 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
-* 分区表支持 Hash、Range 和 `Add`/`Drop`/`Truncate`/`Coalesce`。其他分区操作将被忽略，可能会报 `Warning: Unsupported partition type, treat as normal table` 错误。不支持以下分区表语法：
-    + `PARTITION BY LIST`
+* 分区表支持 `HASH`、`RANGE` 和 `LIST` 分区类型。对于不支持的分区类型，TiDB 可能会报 `Warning: Unsupported partition type %s, treat as normal table` 错误，其中 `%s` 为不支持的具体分区类型。
+* 分区表还支持 `ADD`、`DROP`、`TRUNCATE` 操作。其他分区操作会被忽略。TiDB 不支持以下分区表语法：
     + `PARTITION BY KEY`
     + `SUBPARTITION`
-    + `{CHECK|EXCHANGE|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE} PARTITION`
+    + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
+
+    更多详情，请参考[分区表文档](/partitioned-table.md)。
 
 ### `ANALYZE TABLE`
 
@@ -119,6 +128,10 @@ TiDB 中的[信息统计](/statistics.md#手动收集)与 MySQL 中的有所不�
 
 详情参见 [`SELECT`](/sql-statements/sql-statement-select.md)。
 
+### `UPDATE` 语句
+
+详情参见 [`UPDATE`](/sql-statements/sql-statement-update.md)。
+
 ### 视图
 
 TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写入操作。
@@ -132,6 +145,8 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 * 关于 TiDB 对字符集和排序规则的支持情况，详见[字符集和排序规则](/character-set-and-collation.md)。
 
 * 关于 GBK 字符集与 MySQL 的兼容情况，详见 [GBK 兼容情况](/character-set-gbk.md#与-mysql-的兼容性)。
+
+* TiDB 继承表中使用的字符集作为国家字符集。
 
 ### 存储引擎
 
