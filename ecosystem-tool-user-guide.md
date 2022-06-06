@@ -8,7 +8,7 @@ TiDB 提供了丰富的工具，可以帮助你进行部署运维、数据管理
 
 ## 部署运维工具
 
-TiDB 提供了 TiUP、TiDB Operator 和 TiDB Enterprise Manager 三种部署运维工具，满足你在不同系统环境下的部署运维需求。
+TiDB 提供了 TiUP、TiDB Operator 和 TiDB Enterprise Manager (TiEM) 三种部署运维工具，满足你在不同系统环境下的部署运维需求。
 
 ### 在物理机或虚拟机上部署运维 TiDB
 
@@ -25,17 +25,17 @@ TiDB 提供了 TiUP、TiDB Operator 和 TiDB Enterprise Manager 三种部署运�
 - [TiUP 组件管理](/tiup/tiup-component-management.md)
 - 适用 TiDB 版本：v4.0 及以上
 
-#### TiDB Enterprise Manager
+#### TiEM
 
-[TiDB Enterprise Manager (TiDB Enterprise Manager)](/tidb-enterprise-manager/tidb-enterprise-manager-overview.md) 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+[TiDB Enterprise Manager (TiEM)](/tiem/tiem-overview.md) 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
 
-TiDB Enterprise Manager 不仅提供对 TiDB 集群的全生命周期的可视化管理，也同时一站式提供 TiDB 数据库参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
+TiEM 不仅提供对 TiDB 集群的全生命周期的可视化管理，也同时一站式提供 TiDB 数据库参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
 基本信息：
 
-- [TiDB Enterprise Manager 使用场景](/tidb-enterprise-manager/tidb-enterprise-manager-overview.md#使用场景)
-- [TiDB Enterprise Manager 安装和运维指南](/tidb-enterprise-manager/tidb-enterprise-manager-install-and-maintain.md)
-- [TiDB Enterprise Manager 与 TiUP 的关系](/tidb-enterprise-manager/tidb-enterprise-manager-faq.md#tidb-enterprise-manager-与-tiup-的关系是什么)
+- [TiEM 使用场景](/tiem/tiem-overview.md#使用场景)
+- [TiEM 安装和运维指南](/tiem/tiem-install-and-maintain.md)
+- [TiEM 与 TiUP 的关系](/tiem/tiem-faq.md#tiem-与-tiup-的关系是什么)
 
 ### 在 Kubernetes 上部署运维 TiDB - TiDB Operator
 
