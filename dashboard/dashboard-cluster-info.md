@@ -1,7 +1,6 @@
 ---
 title: TiDB Dashboard 集群信息页面
 summary: 查看整个集群中 TiDB、TiKV、PD、TiFlash 组件的运行状态及其所在主机的运行状态
-aliases: ['/docs-cn/dev/dashboard/dashboard-cluster-info/']
 ---
 
 # TiDB Dashboard 集群信息页面

@@ -1,7 +1,6 @@
 ---
 title: TiDB Data Migration 1.0.x 到 2.0+ 手动升级
 summary: 了解如何从 TiDB Data Migration 1.0.x 手动升级到 2.0+。
-aliases: ['/docs-cn/tidb-data-migration/dev/manually-upgrade-dm-1.0-to-2.0/']
 ---
 
 # TiDB Data Migration 1.0.x 到 2.0+ 手动升级

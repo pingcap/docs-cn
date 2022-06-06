@@ -1,7 +1,6 @@
 ---
 title: 优化规则与表达式下推的黑名单
 summary: 了解优化规则与表达式下推的黑名单。
-aliases: ['/docs-cn/dev/blacklist-control-plan/','/zh/tidb/dev/blacklist-control-plan']
 ---
 
 # 优化规则与表达式下推的黑名单

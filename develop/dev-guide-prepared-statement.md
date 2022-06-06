@@ -1,7 +1,6 @@
 ---
 title: 预处理语句
 summary: 介绍 TiDB 的预处理语句功能。
-aliases: ['/zh/tidb/dev/prepared-statement']
 ---
 
 # 预处理语句

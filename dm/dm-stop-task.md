@@ -1,7 +1,6 @@
 ---
 title: 停止数据迁移任务
 summary: 了解 TiDB Data Migration 如何停止数据迁移任务。
-aliases: ['/docs-cn/tidb-data-migration/dev/stop-task/']
 ---
 
 # 停止数据迁移任务

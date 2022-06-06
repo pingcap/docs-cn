@@ -1,7 +1,6 @@
 ---
 title: INSPECTION_RULES
 summary: 了解 information_schema 表 `INSPECTION_RULES`。
-aliases: ['/docs-cn/dev/information-schema/information-schema-inspection-rules/']
 ---
 
 # INSPECTION_RULES

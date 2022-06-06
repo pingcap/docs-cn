@@ -1,6 +1,5 @@
 ---
 title: TiDB 3.1.1 Release Notes
-aliases: ['/docs-cn/dev/releases/release-3.1.1/','/docs-cn/dev/releases/3.1.1/']
 ---
 
 # TiDB 3.1.1 Release Notes
@@ -38,7 +37,7 @@ TiDB Ansible 版本：3.1.1
 
     - 修复当 Region 处于非 normal 状态时读取产生的数据错误
     - 修复 TiFlash 中表名的映射方式以正确支持 `recover table`/`flashback table`
-    - 修复数据存储路径以解决 `rename table` 时潜在的数据丢失问题 
+    - 修复数据存储路径以解决 `rename table` 时潜在的数据丢失问题
     - 修复在线更新时的读模型以优化读性能
     - 修复 database/table name 含特殊字符，升级后无法正常启动的问题
 
