@@ -1775,7 +1775,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
     mycli --host 127.0.0.1 --port 4000 -u root -e "TRUNCATE test.player"
     ```
 
-- 清理并构建 (make gen)：
+- 清理并构建 (`make gen`)：
 
     {{< copyable "shell-regular" >}}
 
