@@ -490,6 +490,22 @@
     - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
+  - TiDB Enterprise Manager
+    - [概述](/tiem/tiem-overview.md)
+    - [安装和运维](/tiem/tiem-install-and-maintain.md)
+    - [快速操作](/tiem/tiem-quick-start.md)
+    - 操作指南
+      - [登录与初始化](/tiem/tiem-login-and-initialize.md)
+      - [管理集群资源](/tiem/tiem-manage-host-resources.md)
+      - [管理集群](/tiem/tiem-manage-clusters.md)
+      - [导入与导出数据](/tiem/tiem-import-and-export-data.md)
+      - [管理任务](/tiem/tiem-manage-tasks.md)
+      - [管理系统](/tiem/tiem-manage-system.md)
+    - [FAQ](/tiem/tiem-faq.md)
+    - [发布版本历史](/tiem/tiem-release-notes.md)
+      - [v1.0.2](/tiem/tiem-release-1.0.2.md)
+      - [v1.0.1](/tiem/tiem-release-1.0.1.md)
+      - [v1.0.0](/tiem/tiem-release-1.0.0.md)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
