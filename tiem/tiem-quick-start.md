@@ -85,7 +85,7 @@ TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环�
 | Disk Type       | 磁盘类型，包括：NVMe SSD、SSD、SATA 三种类型                 |
 | Disks           | 磁盘信息，包括磁盘名称、容量、状态、路径，示例：{"name": "sda","capacity": 256,"status": "Available", "path": "/mnt/sda"} |
 
-如果通过用户名密钥方式导入主机，需要在 TiEM 安装前配置用户名和密钥路径，参见 [TiEM v1.0.0 安装和运维手册 - 指定 TiEM 中控机登录 TiDB 资源机的账户和密钥](/tiem/tiem-install-and-maintain.md#指定-tiem-中控机登录-tidb-资源机的帐户和密钥)。
+如果通过用户名密钥方式导入主机，需要在 TiEM 安装前配置用户名和密钥路径，参见[指定 TiEM 中控机登录 TiDB 资源机的账户和密钥](/tiem/tiem-install-and-maintain.md#指定-tiem-中控机登录-tidb-资源机的帐户和密钥)。
 
 ## 创建集群
 

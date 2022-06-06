@@ -23,7 +23,7 @@ TiEM Web UI 即用户可见的 TiEM 界面，展示用户输入以及服务端�
 
 ### OpenAPI
 
-TiEM 提供数据库管理操作的 OpenAPI，帮助用户灵活完成自动化任务或第三方集成。在 TiEM v1.0.0 中 OpenAPI 为实验特性。
+TiEM 提供数据库管理操作的 OpenAPI，帮助用户灵活完成自动化任务或第三方集成。当前 OpenAPI 为实验特性，不建议在生产环境中使用。
 
 ### 业务逻辑
 

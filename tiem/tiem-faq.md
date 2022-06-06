@@ -31,7 +31,7 @@ TiEM 使用 TiDB 及其生态工具、API 提供数据库管理产品功能，Ti
 
 ### 何时导入主机资源到 TiEM？
 
-在创建新集群或导入现有集群前，你需要将集群所需的主机资源导入到 TiEM。具体步骤参见 [TiEM v1.0.0 用户手册 - 5.3 资源管理](/tiem/tiem-manage-host-resources.md)。
+在创建新集群或导入现有集群前，你需要将集群所需的主机资源导入到 TiEM。具体步骤参见 [TiEM 资源管理](/tiem/tiem-manage-host-resources.md)。
 
 ## TiEM 安装部署 FAQ
 
