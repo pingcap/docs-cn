@@ -588,7 +588,7 @@ public class JDBCExample
 
 当前开源比较流行的 Java 应用持久层框架为 [Mybatis](https://mybatis.org/mybatis-3/index.html)，我们将搭配使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) ，以 Maven 插件的方式，对部分持久层代码进行生成。
 
-进入目录 `plain-java-mybatis` ：
+进入目录 `plain-java-mybatis`：
 
 {{< copyable "shell-regular" >}}
 
