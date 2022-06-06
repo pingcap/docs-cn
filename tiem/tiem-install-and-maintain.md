@@ -15,7 +15,7 @@ summary: 了解 TiEM 安装部署流程，指导数据库管理员完成 TiDB En
 
 要部署和运行 TiEM 服务，确保 Linux 操作系统的版本满足以下要求：
 
-| Linux 操作系统平台 | 版本 |
+| Linux 操作系统 | 版本 |
 | :--- | :--- |
 | Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本 |
 | CentOS  | 7.3 及以上的 7.x 版本 |
@@ -55,8 +55,8 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 | 组件       | 默认端口     | 说明                                   |
 | ---------- | ------------ | -------------------------------------- |
-| Web server | 4180 或 4183 | HTTP 端口：4180<br />HTTPS 端口： 4183 |
-| OpenAPI server| 4100 或 4103 | OpenAPI 服务端口: 4100<br />OpenAPI 监控端口: 4103 |
+| Web server | 4180 或 4183 | HTTP 端口：4180<br />HTTPS 端口：4183 |
+| OpenAPI server| 4100 或 4103 | OpenAPI 服务端口: 4100<br />OpenAPI 监控端口：4103 |
 | Cluster server | 4101 或 4104 | 集群服务端口 |
 | File server | 4102 或 4105 | 文件上传或下载的服务器端口 |
 | etcd | 4106 或 4107 | etcd 服务端口 |
@@ -85,7 +85,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 在线部署 TiEM 前，你需要准备好 YAML 拓扑文件。TiEM 离线包中包含 YAML 拓扑文件模板。本节介绍用于部署 TiEM 拓扑配置模版。见 [TiEM 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/tiem-topology-config.yaml)。
 
-如果 TiEM 中控机通过用户名密钥访问 TiDB 资源机，需要参照指定 TiEM 中控机登录 TiDB 资源机的用户名和密钥，在配置文件 config.yaml 中指定用户名和密钥。
+如果 TiEM 中控机通过用户名密钥访问 TiDB 资源机，需要参照指定 TiEM 中控机登录 TiDB 资源机的用户名和密钥，在配置文件 `config.yaml` 中指定用户名和密钥。
 
 ## 离线部署 TiEM
 
@@ -293,7 +293,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
     5. 更新 `config-v1.0.1.yaml`。
 
-        覆盖配置文件后，将子步骤 3 中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
+        覆盖配置文件后，将子步骤 3 中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：
 
         ```yaml
         em_cluster_servers:
@@ -301,7 +301,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
             db_path: "/home/tidb/em-backup-20220511-154415/em.db"
         ```
 
-4. 删除 TiEM 1.0.0。
+4. 删除 TiEM v1.0.0。
 
     {{< copyable "shell-regular" >}}
 
@@ -316,7 +316,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     TIUP_HOME=/home/tidb/.em tiup em destroy <cluster-name>
     ```
 
-5. 部署 TiEM 1.0.1。
+5. 部署 TiEM v1.0.1。
 
     {{< copyable "shell-regular" >}}
 
@@ -350,7 +350,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     TIUP_HOME=/home/tidb/.em tiup em scale-out em-test /home/tidb/em-v1.0.0-backup/resource-filebeat-scale-out-topology.yaml --user tidb -i /home/tidb/.ssh/tiup_rsa --wait-timeout 360 --yes
     ```
 
-7. 使集群日志功能生效
+7. 使集群日志功能生效。
 
     待所有上述步骤完成后，大部分的升级已完成。由于在升级过程中，TiEM 对资源机器的 filebeat 进行了重装。为了使得查看 TiDB 集群日志功能在 TiEM 中生效，你需要手动在 TiEM 界面操作重启 TiDB 集群以刷新配置。为避免影响用户服务，请尽量在业务低峰期操作。
 
@@ -390,10 +390,10 @@ TiEM 默认的集群备份路径相关配置参数如下：
 | 配置描述 | 配置参数名 | 参考值 |
 | --- | --- | --- |
 | TiDB 集群备份的存储类型（仅支持 NFS 或 S3） | BackupStorageType | 's3' 或 'nfs' |
-| TiDB 集群备份的存储路径 （S3 bucket 路径，或 NFS share 的绝对路径） | BackupStoragePath | 'bucketPath/backup' (S3 路径示例）<br />'/mnt/nfspath'（NFS 路径示例）|
+| TiDB 集群备份的存储路径（S3 bucket 路径，或 NFS share 的绝对路径） | BackupStoragePath | 'bucketPath/backup' (S3 路径示例）<br />'/mnt/nfspath'（NFS 路径示例）|
 | TiDB 集群备份在 S3 共享存储时，S3 的 AccessKey | BackupS3AccessKey | '' |
 | TiDB 集群备份在 S3 共享存储时，S3 的 SecretAccessKey | BackupS3SecretAccessKey | '' |
-| TiDB 集群备份在 S3 共享存储时,S3 的 Endpoint（域名） | BackupS3Endpoint | '' |
+| TiDB 集群备份在 S3 共享存储时，S3 的 Endpoint（域名） | BackupS3Endpoint | '' |
 
 当前不支持通过 TiEM 界面修改备份路径。如需修改备份路径，需要通过 OpenAPI 修改配置参数，以修改配置参数 "BackupS3AccessKey" 为例：
 
@@ -431,10 +431,10 @@ TiEM 默认的导入导出路径在 TiEM 中控机上，细节如下：
 
 | 配置描述 | 配置参数名 | 参考值 |
 | --- | --- | --- |
-| TiEM 共享存储中导入文件存储位置（建议配置为 NFS 共享存储） | ImportShareStoragePath | `/home/tiem/import`（备注：中控机 tiem 账号拥有该路径的读写权限）|
-| TiEM 共享存储中导出文件存储的位置（建议配置为 NFS 共享存储） | ExportShareStoragePath | `/home/tiem/export`（备注：中控机 tiem 账号拥有该路径的读写权限）|
+| TiEM 共享存储中导入文件存储位置（建议配置为 NFS 共享存储） | ImportShareStoragePath | `/home/tiem/import`（备注：中控机 `tiem` 账号拥有该路径的读写权限）|
+| TiEM 共享存储中导出文件存储的位置（建议配置为 NFS 共享存储） | ExportShareStoragePath | `/home/tiem/export`（备注：中控机 `tiem` 账号拥有该路径的读写权限）|
 
-当前 TiEM 不支持通过 TiEM 界面修改导入导出的路径。如需修导入导出路径，需要通过OpenAPI 对配置进行修改，以修改 “ImportShareStoragePath” 为例：
+当前 TiEM 不支持通过 TiEM 界面修改导入导出的路径。如需修导入导出路径，需要通过 OpenAPI 对配置进行修改，以修改 “ImportShareStoragePath” 为例：
 
 1. 登录获取 user token。
 
