@@ -1,19 +1,19 @@
 ---
 title: TiDB Enterprise Manager 集群管理
-summary: 了解如何通过 TiEM 对 TiDB 集群进行操作和管理。
+summary: 了解如何通过 TiDB Enterprise Manager 对 TiDB 集群进行操作和管理。
 ---
 
 # TiDB Enterprise Manager 集群管理
 
-本文档介绍如何通过 TiDB Enterprise Manager (TiEM) 对 TiDB 集群进行操作和管理。
+本文档介绍如何通过 TiDB Enterprise Manager 对 TiDB 集群进行操作和管理。
 
 ## 创建集群
 
-TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集群配置。
+TiDB Enterprise Manager 部署完成后，你可以通过 TiDB Enterprise Manager 创建 TiDB 集群，并自定义集群配置。
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台
+* 已登录 TiDB Enterprise Manager 控制台
 * 已完成主机资源导入
 
 创建集群的操作步骤如下：
@@ -45,7 +45,7 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 待删除的 TiDB 集群已存在。
 
 > **注意：**
@@ -68,7 +68,7 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 集群已创建。
 
 > **注意：**
@@ -92,7 +92,7 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 集群已创建。
 
 > **注意：**
@@ -141,11 +141,11 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 ## 查看集群详情
 
-你可通过 TiEM 查看集群配置、运行情况、计算、存储、调度等各引擎列表及信息详情。
+你可通过 TiDB Enterprise Manager 查看集群配置、运行情况、计算、存储、调度等各引擎列表及信息详情。
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 集群已创建。
 
 查看集群详情的操作步骤如下：
@@ -155,11 +155,11 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 ## 性能分析
 
-你可通过 TiEM 查看集群的 SQL 语句分析、慢 SQL 查询分析、流量可视化、集群诊断。
+你可通过 TiDB Enterprise Manager 查看集群的 SQL 语句分析、慢 SQL 查询分析、流量可视化、集群诊断。
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 集群已创建。 ß
 
 性能分析的操作步骤如下：
@@ -177,7 +177,7 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 进行操作前，确保以下条件已满足：
 
-* 已登录TiEM控制台。
+* 已登录TiDB Enterprise Manager控制台。
 * 集群已创建。
 
 日志管理的操作步骤如下：
@@ -193,11 +193,11 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 ## 集群监控
 
-在 TiEM 中，你可通过集成的 Grafana 面板查看集群整体、组件、节点实例的运行情况（组件分别展示：PD、TiDB、TiKV）。
+在 TiDB Enterprise Manager 中，你可通过集成的 Grafana 面板查看集群整体、组件、节点实例的运行情况（组件分别展示：PD、TiDB、TiKV）。
 
 进行操作前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 集群已创建。
 
 查看集群监控的操作步骤如下：
@@ -209,13 +209,13 @@ TiEM 部署完成后，你可以通过 TiEM 创建 TiDB 集群，并自定义集
 
 ## 告警管理
 
-TiEM 集成了 TiDB 集群组件的报价规则，按照严重程度由高到低罗列。报警项可分为紧急级别 > 严重级别 > 警告级别三类。该分级适用于以下各组件的报警项。
+TiDB Enterprise Manager 集成了 TiDB 集群组件的报价规则，按照严重程度由高到低罗列。报警项可分为紧急级别 > 严重级别 > 警告级别三类。该分级适用于以下各组件的报警项。
 
 TiDB 集群告警规则可参见在线文档：[TiDB 集群报警规则](/alert-rules.md)
 
 进行告警管理前，确保以下条件已满足：
 
-* 已登录 TiEM 控制台。
+* 已登录 TiDB Enterprise Manager 控制台。
 * 集群已创建。
 
 告警管理的操作步骤如下：
@@ -225,11 +225,11 @@ TiDB 集群告警规则可参见在线文档：[TiDB 集群报警规则](/alert-
 
 ## 参数管理
 
-你可通过 TiEM 查看集群实例的参数信息，并修改集群的参数运行值。
+你可通过 TiDB Enterprise Manager 查看集群实例的参数信息，并修改集群的参数运行值。
 
 进行操作前，确保以下条件已满足：
 
-* 已登录TiEM控制台
+* 已登录TiDB Enterprise Manager控制台
 * 集群已创建
 
 参数管理的操作步骤如下：
@@ -241,18 +241,18 @@ TiDB 集群告警规则可参见在线文档：[TiDB 集群报警规则](/alert-
 
 ## 备份管理-数据备份
 
-TiEM 提供自动定期备份功能。集群创建成功并开始正常运行后，你可对集群设置定期备份时间，TiEM 会对集群数据进行定时备份，备份的数据将保存到你所设置的存储位置中（S3 兼容存储和 NFS 共享存储）。你也可以逐条删除不需要的备份数据文件。
+TiDB Enterprise Manager 提供自动定期备份功能。集群创建成功并开始正常运行后，你可对集群设置定期备份时间，TiDB Enterprise Manager 会对集群数据进行定时备份，备份的数据将保存到你所设置的存储位置中（S3 兼容存储和 NFS 共享存储）。你也可以逐条删除不需要的备份数据文件。
 
 进行操作前，确保以下条件已满足：
 
-* 已经登录TiEM控制台。
+* 已经登录TiDB Enterprise Manager控制台。
 * 集群已创建。
 
 > **注意：**
 >
 > * 备份保存的默认文件夹不可修改。
 
-TiEM 默认的集群备份路径相关配置参数如下：
+TiDB Enterprise Manager 默认的集群备份路径相关配置参数如下：
 
 | **配置描述**                                                 | **配置参数名**          | **参考值**                                                   |
 | ------------------------------------------------------------ | ----------------------- | ------------------------------------------------------------ |
@@ -262,9 +262,9 @@ TiEM 默认的集群备份路径相关配置参数如下：
 | TiDB 集群备份在 S3 共享存储时，S3 的 SecretAccessKey         | BackupS3SecretAccessKey | ''                                                           |
 | TiDB 集群备份在 S3 共享存储时,S3 的 Endpoint（域名）         | BackupS3Endpoint        | ''                                                           |
 
-当前不支持通过 TiEM 界面修改备份路径。如需修改备份路径，需要通过 OpenAPI 修改配置参数，以修改配置参数 `BackupS3AccessKey` 为例：
+当前不支持通过 TiDB Enterprise Manager 界面修改备份路径。如需修改备份路径，需要通过 OpenAPI 修改配置参数，以修改配置参数 `BackupS3AccessKey` 为例：
 
-1. 登录 TiEM 获取 user token。
+1. 登录 TiDB Enterprise Manager 获取 user token。
 
     {{< copyable "shell-regular" >}}
 
@@ -274,7 +274,7 @@ TiEM 默认的集群备份路径相关配置参数如下：
 
     > **注意：**
     >
-    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
+    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiDB Enterprise Manager 中控机的 IP 地址和 WebServer 服务端口。
 
 2. 查看配置参数值。
 
@@ -305,7 +305,7 @@ TiEM 默认的集群备份路径相关配置参数如下：
 
 ## 备份管理-数据恢复
 
-使用 TiEM 的备份数据恢复功能，将一个 TiDB 集群的备份数据恢复到一个新集群。
+使用 TiDB Enterprise Manager 的备份数据恢复功能，将一个 TiDB 集群的备份数据恢复到一个新集群。
 
 进行操作前，确保以下条件已满足：
 
@@ -328,7 +328,7 @@ TiEM 默认的集群备份路径相关配置参数如下：
 
 ## 数据同步
 
-通过 TiEM，你可以使用 TiDB 增量数据同步功能，从配置了 TiCDC 组件的上游 TiDB 集群，将增量数据同步到下游系统（TiDB 数据库、MySQL 数据库或 Kafka）。
+通过 TiDB Enterprise Manager，你可以使用 TiDB 增量数据同步功能，从配置了 TiCDC 组件的上游 TiDB 集群，将增量数据同步到下游系统（TiDB 数据库、MySQL 数据库或 Kafka）。
 
 进行操作前，确保以下条件已满足：
 
@@ -358,7 +358,7 @@ TiEM 默认的集群备份路径相关配置参数如下：
 
 ## 查看参数组
 
-TiEM v1.0.0 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组（暂不支持 TiDB v6.0 参数组），你可查看参数组下的参数详情。
+TiDB Enterprise Manager v1.0.0 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组（暂不支持 TiDB v6.0 参数组），你可查看参数组下的参数详情。
 
 进行操作前，确保以下条件已满足：
 
@@ -371,7 +371,7 @@ TiEM v1.0.0 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参�
 
 ## 编辑、复制、应用参数组
 
-TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组，你可直接应用默认参数组到集群实例，也可复制默认参数组并根据实际运行情况对参数进行调优。
+TiDB Enterprise Manager 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组，你可直接应用默认参数组到集群实例，也可复制默认参数组并根据实际运行情况对参数进行调优。
 
 进行操作前，确保以下条件已满足：
 
@@ -386,7 +386,7 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
 
 ## 接管集群
 
-你可通过 TiEM 接管已有的 TiDB 集群。
+你可通过 TiDB Enterprise Manager 接管已有的 TiDB 集群。
 
 进行操作前，确保以下条件已满足：
 
@@ -403,11 +403,11 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
     * 接管集群中控机 SSH 用户名
     * 接管集群中控机 SSH 密码
     * 接管集群中控机 TiUP 路径（即 `.tiup` 目录所在路径，不含结尾的 `/`，例如 `/root/.tiup` ）
-5. 导入接管集群的主机（导入主机流程参见[导入主机](/tiem/tiem-manage-host-resources.md#导入主机)）。
+5. 导入接管集群的主机（导入主机流程参见[导入主机](/tidb-enterprise-manager/tidb-enterprise-manager-manage-host-resources.md#导入主机)）。
 
 ## 重启集群
 
-你可在 TiEM 上重启指定的 TiDB 集群。
+你可在 TiDB Enterprise Manager 上重启指定的 TiDB 集群。
 
 进行操作前，确保以下条件已满足：
 
@@ -421,11 +421,11 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
 
 ## 停止集群
 
-你可在 TiEM 上停止指定的 TiDB 集群。
+你可在 TiDB Enterprise Manager 上停止指定的 TiDB 集群。
 
 进行操作前，确保以下条件已满足：
 
-* 已经登录 TiEM 控制台。
+* 已经登录 TiDB Enterprise Manager 控制台。
 
 停止集群的操作步骤如下：
 
@@ -435,14 +435,14 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
 
 ## 克隆集群
 
-你可通过 TiEM 从一个 TiDB 集群克隆出一个新集群。新集群与源集群之间数量关系可配置为：
+你可通过 TiDB Enterprise Manager 从一个 TiDB 集群克隆出一个新集群。新集群与源集群之间数量关系可配置为：
 
 * 全量：克隆集群并与源集群建立主备关系，主集群实时向备集群同步数据
 * 快照：克隆集群，但不建立主备关系
 
 进行操作前，确保以下条件已满足：
 
-* 已经登录 TiEM 控制台。
+* 已经登录 TiDB Enterprise Manager 控制台。
 * 已有 TiDB 集群。
 
 > **注意：**
@@ -460,7 +460,7 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
 
 ## 切换主备集群
 
-你可通过 TiEM 选择一个备集群，并将其切换为主集群，此时集群的原主集群将自动被切换为备集群。
+你可通过 TiDB Enterprise Manager 选择一个备集群，并将其切换为主集群，此时集群的原主集群将自动被切换为备集群。
 
 进行操作前，确保以下条件已满足：
 
@@ -479,11 +479,11 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
 
 ## 原地升级集群
 
-你可通过 TiEM 将指定的 TiDB 集群升级为更高版本的集群。
+你可通过 TiDB Enterprise Manager 将指定的 TiDB 集群升级为更高版本的集群。
 
 进行操作前，确保以下条件已满足：
 
-* 已经登录 TiEM 控制台。
+* 已经登录 TiDB Enterprise Manager 控制台。
 
 原地升级集群的操作步骤如下：
 
@@ -496,13 +496,13 @@ TiEM 为 TiDB v5.1.x、v5.2.x、v5.3.x、v5.4.x 提供内置的默认参数组�
 
 ## 巡检集群
 
-你可通过 TiEM 巡检功能检查集群各个维度是否健康，包括集群资源分配是否泄露，Region 是否健康，参数配置是否正常等等。
+你可通过 TiDB Enterprise Manager 巡检功能检查集群各个维度是否健康，包括集群资源分配是否泄露，Region 是否健康，参数配置是否正常等等。
 
 进行操作前，确保以下条件已满足：
 
-* 已经登录 TiEM 控制台
+* 已经登录 TiDB Enterprise Manager 控制台
 
-TiEM 于每天 23:00 自动进行集群巡检。
+TiDB Enterprise Manager 于每天 23:00 自动进行集群巡检。
 
 查看巡检结果的方法：在工作流任务管理中查看任务名为 "CheckPlatform" 的任务流，点击 **checkHosts** 步骤可以查看，如下图所示：
 

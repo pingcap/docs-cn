@@ -10,16 +10,16 @@ title: TiDB Enterprise Manager v1.0.1 Release Notes
 
 > **注意：**
 >
-> TiEM v1.0.1 未开源。若要获取 v1.0.1 的安装包或相关支持，请联系 TiEM 团队。
+> TiDB Enterprise Manager v1.0.1 未开源。若要获取 v1.0.1 的安装包或相关支持，请联系 TiDB Enterprise Manager 团队。
 
-该版本在 TiEM [1.0.0](/tiem/tiem-release-1.0.0.md) 的基础上，进行了以下更新：
+该版本在 TiDB Enterprise Manager [1.0.0](/tidb-enterprise-manager/tidb-enterprise-manager-release-1.0.0.md) 的基础上，进行了以下更新：
 
 - 新增对 TiDB v6.0.0 集群的支持
 - 优化 workflow 逻辑，支持重启继续执行
-- 修复一些安全基线漏洞，提升了 TiEM 安全性
+- 修复一些安全基线漏洞，提升了 TiDB Enterprise Manager 安全性
 - 替换 Elasticsearch、Filebeat、Kibana、Grafana 为 OSS 版本
 
-TiEM v1.0.1 支持的 TiDB 版本如下：
+TiDB Enterprise Manager v1.0.1 支持的 TiDB 版本如下：
 
 - v6.0.0
 - v5.4.0
