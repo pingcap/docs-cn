@@ -213,6 +213,11 @@ Configuration items related to scheduling
 + The downtime after which PD judges that the disconnected store can not be recovered. When PD fails to receive the heartbeat from a store after the specified period of time, it adds replicas at other nodes.
 + Default value: `30m`
 
+### `max-store-preparing-time` <span class="version-mark">New in v6.1.0</span>
+
++ Controls the maximum waiting time for the store to go online. During the online stage of a store, PD can query the online progress of the store. When the specified time is exceeded, PD assumes that the store has been online and cannot query the online progress of the store again. But this does not prevent Regions from transferring to the new online store. In most scenarios, you do not need to adjust this parameter.
++ Default value: `48h`
+
 ### `leader-schedule-limit`
 
 + The number of Leader scheduling tasks performed at the same time
