@@ -7,7 +7,7 @@ summary: 如何使用 Online Unsafe Recovery。
 
 > **警告：**
 >
-> - 此功能为有损恢复，无法保证数据和数据索引完整性。
+> 此功能为有损恢复，无法保证数据和数据索引完整性。
 
 当多数副本的永久性损坏造成部分数据不可读写时，可以使用 Online Unsafe Recovery 功能进行数据有损恢复。
 
@@ -42,7 +42,7 @@ Online Unsafe Recovery 功能适用于以下场景：
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...> 
+pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 ```
 
 命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。命令输出 `Failed` 表示注册任务失败，可能的错误有：
