@@ -1930,6 +1930,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`FAST`
 - 可选值：`OFF`，`FAST`，`STRICT`
 - 这个变量用于设置 assertion 级别。assertion 是一项在事务提交过程中进行的数据索引一致性校验，它对正在写入的 key 是否存在进行检查。如果不符则说明数据索引不一致，会导致事务 abort。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
+- 对于新创建的 v6.0 及以上的集群，默认值为 `FAST`。对于升级版本的集群，如果升级前是低于 v6.0 的版本，升级后默认值为 `OFF`。
 
     - `OFF`: 关闭该检查。
     - `FAST`: 开启大多数检查项，对性能几乎无影响。
