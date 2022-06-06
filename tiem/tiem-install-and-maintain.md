@@ -87,65 +87,9 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 如果 TiEM 中控机通过用户名密钥访问 TiDB 资源机，需要参照指定 TiEM 中控机登录 TiDB 资源机的用户名和密钥，在配置文件 config.yaml 中指定用户名和密钥。
 
-## 在线部署 TiEM
-
-本节介绍如何在线部署 TiEM，步骤如下：
-
-1. 配置 TiEM 部署拓扑文件。
-
-    将部署 TiEM 的拓扑 YAML 文件放置于中控机上（推荐放置于 `/opt` 目录，不能放置于 `/root` 目录下）。简单最小拓扑配置模版 config.yaml 参见 [TiEM 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/tiem-topology-config.yaml)。
-
-2. 在线安装 TiUP 工具。
-
-    通过[在线方式](/production-deployment-using-tiup.md)安装 TiUP 工具（版本 1.9.0 及以上）。请将该 TiUP 工具安装于下一步“执行脚本在线安装 TiEM”中具有 sudo 权限的同一账号下。
-
-3. 执行脚本在线安装 TiEM。
-
-    将 [tiem_online_install.sh](/scripts/tiem-online-deploy.sh) 拷贝到中控机，并以具备 `sudo` 权限的账号执行下面的命令：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    sudo sh tiem_online_install.sh <在线仓库地址> <TiEM 拓扑文件绝对路径>
-    ```
-
-    例如，假设 TiEM 在线仓库地址为 <http://172.16.5.148:8080/tiup-repo/>。以通过在线方式部署 TiEM-v1.0.0 为例，在线部署命令行参数为：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    sudo sh tiem_online_install.sh http://172.16.5.148:8080/tiup-repo/ /opt/config.yaml
-    ```
-
-4. 生成 `tidb` 帐户下的密钥。
-
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
-
-    # 生成 rsa 密钥
-    ssh-keygen -t rsa
-
-    # 复制密钥到 tiup_rsa
-    cp /home/tidb/.ssh/id_rsa /home/tidb/.ssh/tiup_rsa
-    ```
-
-5. 执行命令部署 TiEM。
-
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
-
-    # 部署名称为 "em-test" 的 TiEM，注意这个版本号不带 v，比如 v1.0.0 实际输入的是 1.0.0
-    TIUP_HOME=/home/tidb/.em tiup em deploy em-test <版本号> /opt/config.yaml -u <具有 sudo 权限的账号> -p
-
-    # 启动 TiEM
-    TIUP_HOME=/home/tidb/.em tiup em start em-test
-    ```
-
 ## 离线部署 TiEM
 
-本节介绍如何在离线环境部署 TiEM。
+本节介绍如何在离线环境部署 TiEM。当前 TiEM 只支持通过离线部署。
 
 1. 通过 `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` 下载 TiEM 离线安装包。
 
