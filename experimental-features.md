@@ -10,7 +10,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 性能
 
-+ [Raft Engine](/tikv-configuration-file.md#raft-engine)（v5.4 实验特性）
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
 + [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
 
@@ -37,7 +36,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 配置管理
 
-+ 将配置参数持久化存储到 PD 中，并且可以动态修改配置项的功能。（v4.0 实验特性）
 + [SHOW CONFIG](/sql-statements/sql-statement-show-config.md)。（v4.0 实验特性）
 
 ## TiDB 数据共享订阅
@@ -49,6 +47,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan实验功能)。（v4.0 实验特性）
 + [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。（v4.0 实验特性）
 + TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
++ 将 Region 划分为更小的区间 bucket，并且[以 bucket 作为并发查询单位](/tune-region-performance.md#使用-bucket-增加并发)，以提高扫描数据的并发度。（v6.1.0 实验特性）
 
 ## 备份与恢复
 
@@ -66,4 +65,3 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。（v4.0 实验特性）
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。（v4.0 实验特性）
-+ [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
