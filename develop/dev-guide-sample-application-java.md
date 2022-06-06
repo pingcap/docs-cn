@@ -1576,7 +1576,7 @@ mysqlDataSource.setPassword("123456");
 
 <div label="使用 Mybatis（推荐）" href="tidb-cloud-mybatis">
 
-若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `mybatis-config.xml` 内关于 dataSource.url、dataSource.username、dataSource.password 的参数：
+若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
 
 {{< copyable "" >}}
 
