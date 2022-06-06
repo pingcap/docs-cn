@@ -1,0 +1,100 @@
+global:
+  user: "tiem"
+  group: "tiem"
+  ssh_port: 22
+  deploy_dir: "/em-deploy"
+  data_dir: "/em-data"
+  arch: "amd64"
+  log_level: "info"
+  # specify the external elasticsearch address. default is empty
+  # and elasticsearch_servers can only have one value
+  external_elasticsearch_url: ""
+  login_host_user: ""
+  login_private_key_path: ""
+  login_public_key_path: ""
+
+# filebeat deploy by monitored
+monitored:
+  node_exporter_port: 4124
+
+tiem_cluster_servers:
+  - host: 172.16.5.148
+    port: 4101
+    metrics_port: 4104
+    registry_client_port: 4106
+    registry_peer_port: 4107
+    # specify the recovery DB path for the central control unit
+    db_path: ""
+    deploy_dir: "/tiem-deploy/tiem-cluster-4101"
+    data_dir: "/tiem-data/tiem-cluster-41101"
+tiem_api_servers:
+  - host: 172.16.5.148
+    port: 4100
+    metrics_port: 4103
+    deploy_dir: "/tiem-deploy/tiem-api-4100"
+    data_dir: "/tiem-data/tiem-api-4100"
+
+tiem_file_servers:
+  - host: 172.16.5.148
+    port: 4102
+    metrics_port: 4105
+    deploy_dir: "/tiem-deploy/tiem-file-4102"
+    data_dir: "/tiem-data/tiem-file-4102"
+
+tiem_web_servers:
+  - host: 172.16.5.148
+    port: 4180
+    deploy_dir: "/tiem-deploy/tiem-web-4180"
+    data_dir: "/tiem-data/tiem-web-4180"
+
+elasticsearch_servers:
+  - host: 172.16.5.148
+    port: 4108
+    # Specify heap memory size, default by 4g
+    heap_size: "4g"
+    deploy_dir: "/tiem-deploy/elasticsearch-4108"
+    data_dir: "/tiem-data/elasticsearch-4108"
+
+kibana_servers:
+  - host: 172.16.5.148
+    port: 4109
+    deploy_dir: "/tiem-deploy/kibana-4109"
+    data_dir: "/tiem-data/kibana-4109"
+monitoring_servers:
+  - host: 172.16.5.148
+    port: 4110
+    deploy_dir: "/tiem-deploy/prometheus-4110"
+    data_dir: "/tiem-data/prometheus-4110"
+
+grafana_servers:
+  - host: 172.16.5.148
+    port: 4111
+    deploy_dir: "/tiem-deploy/grafana-4111"
+    data_dir: "/tiem-data/grafana-4111"
+
+alertmanager_servers:
+  - host: 172.16.5.148
+    web_port: 4112
+    cluster_port: 4113
+    deploy_dir: "/tiem-deploy/alertmanager-4112"
+    data_dir: "/tiem-data/alertmanager-4112"
+
+tracer_servers:
+  - host: 172.16.5.148
+    port: 4114
+    web_port: 4115
+    zipkin_thrift_port: 4116
+    compact_thrift_port: 4117
+    binary_thrift_port: 4118
+    agent_serve_port: 4119
+    jaeger_thrift_port: 4120
+    jaeger_host_port: 4121
+    collector_port: 4122
+    grpc_serve_port: 4123
+    deploy_dir: "/tiem-deploy/tracer-4114"
+    data_dir: "/tiem-data/tracer-4114"
+
+filebeat_servers:
+  - host: 172.16.5.148
+    deploy_dir: "/tiem-deploy/filebeat-0"
+    data_dir: "/tiem-data/filebeat-0"
