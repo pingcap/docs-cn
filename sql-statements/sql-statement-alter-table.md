@@ -1,11 +1,7 @@
 ---
 title: ALTER TABLE | TiDB SQL Statement Reference
 summary: An overview of the usage of ALTER TABLE for the TiDB database.
-aliases:
-[
-    "/docs/dev/sql-statements/sql-statement-alter-table/",
-    "/docs/dev/reference/sql/statements/alter-table/",
-]
+aliases: ['/docs/dev/sql-statements/sql-statement-alter-table/','/docs/dev/reference/sql/statements/alter-table/']
 ---
 
 # ALTER TABLE
