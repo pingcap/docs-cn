@@ -1336,7 +1336,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：字节
 - 这个变量用来设置一条查询语句的内存使用阈值。
 - 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
-- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 SESSION。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
 ### `tidb_memory_usage_alarm_ratio`
 
