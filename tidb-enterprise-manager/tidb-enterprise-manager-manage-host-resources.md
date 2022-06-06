@@ -1,21 +1,21 @@
 ---
 title: TiDB Enterprise Manager 主机资源管理
-summary: 如何通过 TiEM 管理主机资源。
+summary: 如何通过 TiDB Enterprise Manager 管理主机资源。
 ---
 
 # TiDB Enterprise Manager 主机资源管理
 
-本文档介绍如何通过 TiEM 管理主机资源，包括导入、查看、删除主机资源。
+本文档介绍如何通过 TiDB Enterprise Manager 管理主机资源，包括导入、查看、删除主机资源。
 
 ## 导入主机
 
-系统初始化或者扩容机器时，系统管理员需将机器信息导入 TiEM 平台，TiEM 将导入的机器加入到集群中，由平台统一管理。
+系统初始化或者扩容机器时，系统管理员需将机器信息导入 TiDB Enterprise Manager 平台，TiDB Enterprise Manager 将导入的机器加入到集群中，由平台统一管理。
 
 ### 前置条件
 
 将主机节点加入 TiDB 集群前，需要保证：
 
-- 已经登录 TiEM 控制台
+- 已经登录 TiDB Enterprise Manager 控制台
 - 已安装主机的操作系统和所依赖的软件，并通过测试
 
 > **注意：**
@@ -23,9 +23,9 @@ summary: 如何通过 TiEM 管理主机资源。
 > - 你需要按照主机模板完整、正确地填写字段信息。详情参见本节中[主机模板字段说明](#主机模板字段说明)。
 > - 导入主机时，TiDB 会对主机进行检查，参见 [TiDB 环境与系统配置检查](/check-before-deployment.md)。
 
-TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环境中 SSH 端口不为默认的 `22`，可通过 OpenAPI 修改 `config_default_ssh_port` 参数来配置主机的默认登陆端口，该参数默认值为 `22`。以下示例通过 OpenAPI 修改 `config_default_ssh_port` 参数的值，从而修改主机的默认登陆端口：
+TiDB Enterprise Manager 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环境中 SSH 端口不为默认的 `22`，可通过 OpenAPI 修改 `config_default_ssh_port` 参数来配置主机的默认登陆端口，该参数默认值为 `22`。以下示例通过 OpenAPI 修改 `config_default_ssh_port` 参数的值，从而修改主机的默认登陆端口：
 
-1. 登录 TiEM 获取用户 Token。
+1. 登录 TiDB Enterprise Manager 获取用户 Token。
 
     {{< copyable "shell-regular" >}}
 
@@ -35,7 +35,7 @@ TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环�
 
     > **注意：**
     >
-    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiEM 中控机的 IP 地址和 WebServer 服务端口。
+    > 你需要将以上命令中 `172.16.6.206:4180` 替换为实际环境中 TiDB Enterprise Manager 中控机的 IP 地址和 WebServer 服务端口。
 
 2. 查看 `config_default_ssh_port` 的参数值。
 
@@ -78,16 +78,16 @@ TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环�
 | vCPU            | CPU 核数                                                     |
 | Memory          | 内存大小                                                     |
 | NIC             | 网卡规格                                                     |
-| Cluster Purpose | 区分主机用来部署什么类型的集群，包括 TiDB、DM、TiEM          |
+| Cluster Purpose | 区分主机用来部署什么类型的集群，包括 TiDB、DM、TiDB Enterprise Manager          |
 | Host Purpose    | 主机用途：用来区分部署的组件类型，包括：Compute、Storage、Schedule 三种用途。多种用途以逗号 “,” 连接，例如 ‘Compute,Storage,Schedule’ |
 | Disk Type       | 磁盘类型，包括：NVMe SSD、SSD、SATA 三种类型                 |
 | Disks           | 磁盘信息，包括磁盘名称、容量、状态、路径，示例：{"name": "sda","capacity": 256,"status": "Available", "path": "/mnt/sda"} |
 
-如果通过用户名密钥方式导入主机，需要在 TiEM 安装前配置用户名和密钥路径，参见[指定 TiEM 中控机登录 TiDB 资源机的账户和密钥](/tiem/tiem-install-and-maintain.md#指定-tiem-中控机登录-tidb-资源机的帐户和密钥)。
+如果通过用户名密钥方式导入主机，需要在 TiDB Enterprise Manager 安装前配置用户名和密钥路径，参见[指定 TiDB Enterprise Manager 中控机登录 TiDB 资源机的账户和密钥](/tidb-enterprise-manager/tidb-enterprise-manager-install-and-maintain.md#指定-tidb-enterprise-manager-中控机登录-tidb-资源机的帐户和密钥)。
 
 ## 查看主机列表
 
-查看 TiEM 当前管理的所有主机信息列表。
+查看 TiDB Enterprise Manager 当前管理的所有主机信息列表。
 
 操作步骤如下：
 
@@ -96,7 +96,7 @@ TiEM 中控机通过 SSH 连接主机，默认连接端口为 `22`。如果环�
 
 ## 删除主机
 
-从 TiEM 主机资源池中删除主机。
+从 TiDB Enterprise Manager 主机资源池中删除主机。
 
 操作步骤如下：
 
