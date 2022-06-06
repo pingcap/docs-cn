@@ -405,7 +405,7 @@ Query OK, 1 row affected # TiDB 会执行成功，而在 MySQL 中，则由于�
 
 ### 新框架下的排序规则支持
 
-TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)，在集群初次初始化时决定是否启用新排序规则框架。在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用新排序规则框架：
+TiDB 4.0 新增了完整的排序规则支持框架，从语义上支持了排序规则，并新增了配置开关 `new_collations_enabled_on_first_bootstrap`，在集群初次初始化时决定是否启用新排序规则框架。如需启用新排序规则框架，可将 `new_collations_enabled_on_first_bootstrap` 的值设为 `true`，详情参见 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap)。要在该配置开关打开之后初始化集群，可以通过 `mysql`.`tidb` 表中的 `new_collation_enabled` 变量确认是否启用了新排序规则框架：
 
 {{< copyable "sql" >}}
 

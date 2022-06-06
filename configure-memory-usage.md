@@ -5,36 +5,21 @@ aliases: ['/docs-cn/dev/configure-memory-usage/','/docs-cn/dev/how-to/configure/
 
 # TiDB 内存控制文档
 
-目前 TiDB 已经能够做到追踪单条 SQL 查询过程中的内存使用情况，当内存使用超过一定阈值后也能采取一些操作来预防 OOM 或者排查 OOM 原因。在 TiDB 的配置文件中，我们可以使用如下配置来控制内存使用超阈值时 TiDB 的行为：
+目前 TiDB 已经能够做到追踪单条 SQL 查询过程中的内存使用情况，当内存使用超过一定阈值后也能采取一些操作来预防 OOM 或者排查 OOM 原因。你可以使用系统变量 [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) 来控制查询超过内存限制后所采取的操作：
 
-{{< copyable "" >}}
-
-```
-# Valid options: ["log", "cancel"]
-oom-action = "cancel"
-```
-
-- 如果上面的配置项使用的是 "log"，那么当一条 SQL 的内存使用超过一定阈值（由 session 变量 `tidb_mem_quota_query` 来控制）后，TiDB 会在 log 文件中打印一条 LOG，然后这条 SQL 继续执行，之后如果发生了 OOM 可以在 LOG 中找到对应的 SQL。
-- 如果上面的配置项使用的是 "cancel"，那么当一条 SQL 的内存使用超过一定阈值后，TiDB 会立即中断这条 SQL 的执行并给客户端返回一个 error，error 信息中会详细写明这条 SQL 执行过程中各个占用内存比较多的物理执行算子的内存使用情况。
+- 如果变量值为 `LOG`，那么当一条 SQL 的内存使用超过一定阈值（由 session 变量 `tidb_mem_quota_query` 控制）后，这条 SQL 会继续执行，但 TiDB 会在 log 文件中打印一条 LOG。
+- 如果变量值为 `CANCEL`，那么当一条 SQL 的内存使用超过一定阈值后，TiDB 会立即中断这条 SQL 的执行，并给客户端返回一个错误，错误信息中会详细写明在这条 SQL 执行过程中占用内存的各个物理执行算子的内存使用情况。
 
 ## 如何配置一条 SQL 执行过程中的内存使用阈值
 
-可以在配置文件中设置每个 Query 默认的 Memory Quota，例如将其设置为 32GB：
-
-{{< copyable "" >}}
-
-```
-mem-quota-query = 34359738368
-```
-
-此外还可通过 session 变量 `tidb_mem_quota_query` 来控制一条 Query 中的内存使用。几个使用例子：
+使用系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 来配置一条 SQL 执行过程中的内存使用阈值，单位为字节。例如：
 
 配置整条 SQL 的内存使用阈值为 8GB：
 
 {{< copyable "sql" >}}
 
 ```sql
-set @@tidb_mem_quota_query = 8 << 30;
+SET tidb_mem_quota_query = 8 << 30;
 ```
 
 配置整条 SQL 的内存使用阈值为 8MB：
@@ -42,7 +27,7 @@ set @@tidb_mem_quota_query = 8 << 30;
 {{< copyable "sql" >}}
 
 ```sql
-set @@tidb_mem_quota_query = 8 << 20;
+SET tidb_mem_quota_query = 8 << 20;
 ```
 
 配置整条 SQL 的内存使用阈值为 8KB：
@@ -50,7 +35,7 @@ set @@tidb_mem_quota_query = 8 << 20;
 {{< copyable "sql" >}}
 
 ```sql
-set @@tidb_mem_quota_query = 8 << 10;
+SET tidb_mem_quota_query = 8 << 10;
 ```
 
 ## 如何配置 tidb-server 实例使用内存的阈值
@@ -86,7 +71,7 @@ server-memory-quota = 34359738368
     {{< copyable "" >}}
 
     ```toml
-    mem-quota-query = 34359738368  // 将单条 SQL 内存限制调高，以便于构造占用内存较大的 SQL
+    mem-quota-query = 34359738368
     [performance]
     memory-usage-alarm-ratio = 0.8
     ```
@@ -124,7 +109,7 @@ server-memory-quota = 34359738368
 
 TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 Memory Quota 时，tidb-server 可以通过落盘执行算子的中间数据，缓解内存压力。支持落盘的算子有：Sort、MergeJoin、HashJoin、HashAgg。
 
-- 落盘行为由参数 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query)、[`oom-use-tmp-storage`](/tidb-configuration-file.md#oom-use-tmp-storage)、[`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path)、[`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) 共同控制。
+- 落盘行为由参数 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query)、[`oom-use-tmp-storage`](/tidb-configuration-file.md#oom-use-tmp-storage)、[`tmp-storage-path`](/tidb-configuration-file.md#tmp-storage-path)、[`tmp-storage-quota`](/tidb-configuration-file.md#tmp-storage-quota) 共同控制。
 - 当落盘被触发时，TiDB 会在日志中打印一条包含关键字 `memory exceeds quota, spill to disk now` 或 `memory exceeds quota, set aggregate mode to spill-mode` 的日志。
 - Sort、MergeJoin、HashJoin 落盘是从 v4.0.0 版本开始引入的，HashAgg 落盘是从 v5.2.0 版本开始引入的。
 - 当包含 Sort、MergeJoin 或 HashJoin 的 SQL 语句引起内存 OOM 时，TiDB 默认会触发落盘。当包含 HashAgg 算子的 SQL 语句引起内存 OOM 时，TiDB 默认不触发落盘，请设置系统变量 `tidb_executor_concurrency = 1` 来触发 HashAgg 落盘功能。
@@ -140,7 +125,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     {{< copyable "sql" >}}
 
     ```sql
-    set tidb_mem_quota_query = 1 << 30;
+    SET tidb_mem_quota_query = 1 << 30;
     ```
 
 2. 创建单表 `CREATE TABLE t(a int);` 并插入 256 行不同的数据。
@@ -164,7 +149,7 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
     {{< copyable "sql" >}}
 
     ```sql
-    set tidb_executor_concurrency = 1;
+    SET tidb_executor_concurrency = 1;
     ```
 
 5. 执行相同的 SQL 语句，不再返回错误，可以执行成功。从详细的执行计划可以看出，HashAgg 使用了 600MB 的硬盘空间。
