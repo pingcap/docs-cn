@@ -978,7 +978,7 @@ public interface PlayerMapperEx extends PlayerMapper {
 </mapper>
 ```
 
-`PlayerDAO.java` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。在其中定义了一系列数据的操作方法，用来对提供数据的写入能力。
+`PlayerDAO.java` 是程序用来管理数据对象的类。其中 `DAO` 是 [Data Access Object](https://en.wikipedia.org/wiki/Data_access_object) 的缩写。在其中定义了一系列数据的操作方法，用于数据的写入。
 
 {{< copyable "" >}}
 
