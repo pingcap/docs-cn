@@ -23,7 +23,7 @@ TiEM 面向三类用户：IT 系统管理员、数据库管理员 DBA、数据�
 
 ### TiEM 与 TiUP 的关系是什么？
 
-TiEM 使用 TiDB 及其生态工具、API 完成数据库管理产品功能，TiUP 是 TiEM 使用的工具之一。TiEM 产品架构图如下：
+TiEM 使用 TiDB 及其生态工具、API 提供数据库管理产品功能，TiUP 是 TiEM 使用的工具之一。TiEM 产品架构图如下：
 
 ![TiEM 架构图](/media/tiem/tiem-architecture.png)
 
