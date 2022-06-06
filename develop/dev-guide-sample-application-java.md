@@ -740,7 +740,7 @@ cd plain-java-mybatis
 </plugin>
 ```
 
-在 Maven 插件内引入后，可删除旧的生成文件后，通过命令：`mvn mybatis-generate` 生成新的文件。或者你也可以使用已经编写好的 make 命令： `make gen` 来同时删除旧文件，并生成新文件。
+在 Maven 插件内引入后，可删除旧的生成文件后，通过命令 `mvn mybatis-generate` 生成新的文件。或者你也可以使用已经编写好的 `make` 命令，通过 `make gen` 来同时删除旧文件，并生成新文件。
 
 > **注意：**
 >
