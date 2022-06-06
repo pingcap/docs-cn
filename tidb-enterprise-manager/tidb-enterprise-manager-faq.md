@@ -25,7 +25,7 @@ TiDB Enterprise Manager 面向三类用户：IT 系统管理员、数据库管�
 
 TiDB Enterprise Manager 使用 TiDB 及其生态工具、API 提供数据库管理产品功能，TiUP 是 TiDB Enterprise Manager 使用的工具之一。TiDB Enterprise Manager 产品架构图如下：
 
-![TiDB Enterprise Manager 架构图](/media/tidb-enterprise-manager/tidb-enterprise-manager-architecture.png)
+![TiDB Enterprise Manager 架构图](/media/tiem/tiem-architecture.png)
 
 ## 主机资源管理 FAQ
 
