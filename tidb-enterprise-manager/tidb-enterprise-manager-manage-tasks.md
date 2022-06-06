@@ -5,9 +5,9 @@ summary:
 
 # TiDB Enterprise Manager 工作流任务查看
 
-TiEM 提供工作流任务页面，你可以从该页面查看在 TiEM 控制台发起的用户任务进展，以及分析任务失败的原因。
+TiDB Enterprise Manager 提供工作流任务页面，你可以从该页面查看在 TiDB Enterprise Manager 控制台发起的用户任务进展，以及分析任务失败的原因。
 
-查看工作流任务列表及详情前，确保已经登录 TiEM 控制台。
+查看工作流任务列表及详情前，确保已经登录 TiDB Enterprise Manager 控制台。
 
 查看工作流任务列表及详情的步骤如下：
 
