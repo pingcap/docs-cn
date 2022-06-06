@@ -266,10 +266,6 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
 
-    > **注意：**
-    >
-    > 自 v1.0.2 起，TiDB Enterprise Manager 已开放源代码，你可自助获取产品离线包，见 [TiDB Enterprise Manager 下载](/download-ecosystem-tools.md#tidb-enterprise-manager-下载)。
-
 - 支持监控组件的自定义配置
 
     使用 TiUP 部署 TiDB 集群时，TiUP 会同时自动部署 Prometheus、Grafana 和 Alertmanager 等监控组件，并且在集群扩容中自动为新增节点添加监控配置。通过在 `topology.yaml` 文件中添加对应的配置项，你可以对监控组件进行自定义配置。
