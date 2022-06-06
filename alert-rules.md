@@ -419,7 +419,7 @@ This section gives the alert rules for the TiKV component.
 
 * Solution:
 
-    Adjust the `block-cache-size` value of both `rockdb.defaultcf` and `rocksdb.writecf`.
+    Adjust the `block-cache-size` value of both `rocksdb.defaultcf` and `rocksdb.writecf`.
 
 #### `TiKV_GC_can_not_work`
 
