@@ -1765,7 +1765,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 
 运行 `make`，这是以下四个操作的组合：
 
-- 创建表 (make prepare)：
+- 创建表 (`make prepare`)：
 
     {{< copyable "shell-regular" >}}
 
