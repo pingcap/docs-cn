@@ -1306,7 +1306,10 @@ TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使�
 set @@session.tidb_partition_prune_mode = 'dynamic'
 ```
 
-动态裁剪模式下，分区表需要用到表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+session 级别的动态裁剪模式，只对当前 session 下执行的手动 analyze 和 SQL 起作用。
+
+静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+
 
 从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到下一次 `auto-analyze` 周期才会更新生成汇总统计信息。
 
@@ -1314,16 +1317,6 @@ set @@session.tidb_partition_prune_mode = 'dynamic'
 
 ```sql
 mysql> set session tidb_partition_prune_mode = 'dynamic';
-
-mysql> show stats_meta where table_name like "t";
-+---------+------------+----------------+---------------------+--------------+-----------+
-| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
-+---------+------------+----------------+---------------------+--------------+-----------+
-| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
-| test    | t          | p1             | 2022-05-27 20:23:34 |            2 |         4 |
-| test    | t          | p2             | 2022-05-27 20:23:34 |            2 |         4 |
-+---------+------------+----------------+---------------------+--------------+-----------+
-3 rows in set (0.01 sec)
 
 mysql> show stats_meta where table_name like "t";
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -1364,7 +1357,7 @@ mysql> show stats_meta where table_name like "t";
 
 也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表的统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表的统计信息)。
 
-表级别统计信息准备好后，即可开启全局的动态裁剪模式。
+表级别统计信息准备好后，即可开启全局的动态裁剪模式。全局动态裁剪模式，对全局所有的 SQL 和对后台的统计信息自动收集（即 auto analyze）起作用。
 
 {{< copyable "sql" >}}
 
