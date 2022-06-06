@@ -91,10 +91,6 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 本节介绍如何在线部署 TiEM，步骤如下：
 
-> **注意：**
->
-> TiEM 1.0.0 中在线仓库仅 PingCAP 内部可访问。外部客户部署 TiEM 请参见[离线部署 TiEM](#离线部署-tiem)。
-
 1. 配置 TiEM 部署拓扑文件。
 
     将部署 TiEM 的拓扑 YAML 文件放置于中控机上（推荐放置于 `/opt` 目录，不能放置于 `/root` 目录下）。简单最小拓扑配置模版 config.yaml 参见 [TiEM 拓扑配置模版 config.yaml（单机版）](https://github.com/pingcap/docs-cn/blob/master/config-templates/tiem-topology-config.yaml)。
@@ -151,7 +147,10 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
 
 本节介绍如何在离线环境部署 TiEM。
 
-1. 联系 PingCAP 售前人员或 [zhoupeng@pingcap.com](mailto:zhoupeng@pingcap.com)，获取 TiEM 离线安装包。
+1. 通过 `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` 下载 TiEM 离线安装包。
+
+    下载链接中的 `{version}` 为 TiEM 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `{version}` 替换为目标版本号。
+
 2. 发送 TiEM 离线安装包至 TiEM 中控机。
 
     离线安装包放置于 TiEM 中控机，使用具有 sudo 权限的账号执行后续操作。
@@ -347,7 +346,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
         ```shell
         cp config.yaml config-v1.0.1.yaml
         ```
-    
+
     5. 更新 `config-v1.0.1.yaml`。
 
         覆盖配置文件后，将子步骤 3 中拷贝的 `db_path` 填写至 `config-v1.0.1.yaml`，注意空格的缩进。示例如下：。
@@ -403,7 +402,7 @@ TiEM 正常运行需要网络环境提供如下端口配置，管理员可根据
     # 切换到 tidb 账号下
     su - tidb
 
-    # 重建资源机器 filebeat    
+    # 重建资源机器 filebeat
     TIUP_HOME=/home/tidb/.em tiup em scale-out em-test /home/tidb/em-v1.0.0-backup/resource-filebeat-scale-out-topology.yaml --user tidb -i /home/tidb/.ssh/tiup_rsa --wait-timeout 360 --yes
     ```
 

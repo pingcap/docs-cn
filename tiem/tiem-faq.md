@@ -17,15 +17,9 @@ TiEM 管理的集群可以部署在用户自建的数据中心或公有云。
 
 TiEM 面向三类用户：IT 系统管理员、数据库管理员 DBA、数据库应用开发人员。
 
-### TiEM v1.0.0 支持的 TiDB 版本有哪些？
+### TiEM 支持的 TiDB 版本有哪些？
 
-TiEM v1.0.0 支持以下 TiDB 版本：
-
-- TiDB v5.0.x
-- TiDB v5.1.x
-- TiDB v5.2.x
-- TiDB v5.3.x
-- TiDB v5.4.x
+见 [TiEM 支持的 TiDB 版本](/tiem/tiem-release-notes.md#tiem-支持的-tidb-版本)。
 
 ### TiEM 与 TiUP 的关系是什么？
 
@@ -79,7 +73,7 @@ TiEM 支持将数据备份至 S3 兼容存储和 NFS 共享存储。
 
 ### 如何设置 TiEM 的备份路径？
 
-TiEM v1.0.0 不支持通过前端界面修改备份路径，修改备份路径方法参考 [TiEM v1.0.0 用户手册 -第 5.4.13 节 备份管理](/tiem/tiem-manage-clusters.md)。
+TiEM v1.0.0 不支持通过前端界面修改备份路径，修改备份路径方法参考 [TiEM 备份管理](/tiem/tiem-manage-clusters.md#备份管理-数据备份)。
 
 ## 数据导入与导出 FAQ
 
@@ -101,7 +95,7 @@ TiEM 共享存储是用户事先设定好用于保存导入导出文件的文件
 
 ### 如何修改 TiEM 共享存储路径？
 
-参见[TiEM v1.0.0 用户手册 - 第 5.5 数据导入与导出](/tiem/tiem-import-and-export-data.md)。
+参见 [TiDB Enterprise Manager 数据导入与导出](/tiem/tiem-import-and-export-data.md)。
 
 ## 集群扩容缩容 FAQ
 

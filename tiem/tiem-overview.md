@@ -5,9 +5,11 @@ summary: 了解 TiEM 产品定位，总体介绍。
 
 # TiDB Enterprise Manager 概览
 
-TiDB Enterprise Manager (TiEM) 是为分布式数据库 TiDB 打造的管控平台企业版软件和数据库运维管理平台，主要为 TiDB 提供数据库集群管理功能、主机管理功能和平台管理功能，涵盖了数据库运维人员 (DBA) 在 TiDB 上进行的常用运维操作，帮助 DBA 对 TiDB 进行自动化、自助化和可视化管理。
+TiDB Enterprise Manager (TiEM) 是为分布式数据库 TiDB 打造的管控平台软件和数据库运维管理平台，主要为 TiDB 提供数据库集群管理功能、主机管理功能和平台管理功能，涵盖了数据库运维人员 (DBA) 在 TiDB 上进行的常用运维操作，帮助 DBA 对 TiDB 进行自动化、自助化和可视化管理。
 
 TiEM 可帮助 DBA 避免因人工操作失误导致的数据库故障，保障数据库安全、稳定、高效地运行，降低运维 TiDB 的难度，提升 DBA 工作效率。
+
+自 v1.0.2 版本起，TiEM 正式开放源码，详见 GitHub 仓库 [tiem](https://github.com/pingcap/tiem) 和 [tiem-ui](https://github.com/pingcap/tiem-ui)。
 
 ## 软件架构
 
@@ -110,7 +112,7 @@ TiDB 自身采用多副本的数据存储，TiEM 根据调度策略将 TiDB 的�
 
 ### 集群参数管理
 
-- 提供 TiDB 版本对应参数组模板（TiEM 1.0.0 支持 TiDB 5.0.x， 5.1.x， 5.2.x， 5.3.x， 5.4.x 参数，暂不支持 TiDB 6.0 参数）
+- 提供 TiDB 版本对应参数组模板。TiEM 支持的 TiDB 版本，见 [TiEM 支持的 TiDB 版本](/tiem/tiem-release-notes.md#tiem-支持的-tidb-版本)。
 - 提供统一界面查看、修改 TiDB 集群参数
 
 ### 工作流任务管理
