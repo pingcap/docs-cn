@@ -1,7 +1,6 @@
 ---
 title: TABLE_CONSTRAINTS
 summary: 了解 information_schema 表 `TABLE_CONSTRAINTS`。
-aliases: ['/docs-cn/dev/information-schema/information-schema-table-constraints/']
 ---
 
 # TABLE_CONSTRAINTS

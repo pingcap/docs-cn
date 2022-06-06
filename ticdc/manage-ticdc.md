@@ -1,6 +1,5 @@
 ---
 title: TiCDC 运维操作及任务管理
-aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc/manage/','/docs-cn/dev/reference/tools/ticdc/sink/','/docs-cn/dev/ticdc/sink-url/']
 ---
 
 # TiCDC 运维操作及任务管理
@@ -670,7 +669,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 - `middle`：可选项，代表库表名之间的分隔符。
 - `{table}`：可选项，用于匹配表名。
 - `suffix`：可选项，代表 Topic Name 的后缀。
- 
+
 其中 `prefix`、`middle` 以及 `suffix` 仅允许出现大小写字母（`a-z`、`A-Z`）、数字（`0-9`）、点号（`.`）、下划线（`_`）和中划线（`-`）；`{schema}`、`{table}` 均为小写，诸如 `{Schema}` 以及 `{TABLE}` 这样的占位符是无效的。
 
 一些示例如下：
@@ -713,7 +712,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > **注意：**
 >
 > 从 v6.1 开始，为了明确配置项的含义，用来指定 partition 分发器的配置项由原来的 `dispatcher` 改为 `partition`，`partition` 为 `dispatcher` 的别名。例如，以下两条规则完全等价：
-> 
+>
 > ```
 > [sink]
 > dispatchers = [
@@ -721,9 +720,9 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 >    {matcher = ['*.*'], partition = "ts"},
 > ]
 > ```
-> 
+>
 > 但是 `dispatcher` 与 `partition` 不能出现在同一条规则中。例如，以下规则非法：
-> 
+>
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```

@@ -1,6 +1,5 @@
 ---
 title: 使用 DM binary 部署 DM 集群
-aliases: ['/docs-cn/tidb-data-migration/dev/deploy-a-dm-cluster-using-binary/']
 ---
 
 # 使用 DM binary 部署 DM 集群

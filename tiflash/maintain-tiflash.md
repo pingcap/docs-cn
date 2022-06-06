@@ -1,6 +1,5 @@
 ---
 title: TiFlash 集群运维
-aliases: ['/docs-cn/dev/tiflash/maintain-tiflash/','/docs-cn/dev/reference/tiflash/maintain/']
 ---
 
 # TiFlash 集群运维
@@ -24,7 +23,7 @@ aliases: ['/docs-cn/dev/tiflash/maintain-tiflash/','/docs-cn/dev/reference/tifla
     ```
 
 - 在 TiFlash 日志（日志路径见[配置文件 tiflash.toml [logger] 部分](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)）中查看 TiFlash 版本，例如：
-   
+
     ```
     <information>: TiFlash version: TiFlash 0.2.0 master-375035282451103999f3863c691e2fc2
     ```

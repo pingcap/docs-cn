@@ -1,7 +1,6 @@
 ---
 title: PROCESSLIST
 summary: 了解 information_schema 表 `PROCESSLIST`。
-aliases: ['/docs-cn/dev/information-schema/information-schema-processlist/']
 ---
 
 # PROCESSLIST
@@ -55,7 +54,7 @@ SELECT * FROM processlist\G
    STATE: autocommit
     INFO: SELECT * FROM processlist
      MEM: 0
-TxnStart: 
+TxnStart:
 1 row in set (0.00 sec)
 ```
 

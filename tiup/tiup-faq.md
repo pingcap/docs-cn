@@ -1,6 +1,5 @@
 ---
 title: TiUP FAQ
-aliases: ['/docs-cn/dev/tiup/tiup-faq/']
 ---
 
 # TiUP FAQ
@@ -51,5 +50,5 @@ TiUP Playground 组件主要定位是快速上手和搭建单机的开发环境�
 ```
 vi /etc/ssh/sshd_config
 MaxSessions 1000
-MaxStartups 1000 
+MaxStartups 1000
 ```

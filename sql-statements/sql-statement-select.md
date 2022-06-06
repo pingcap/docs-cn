@@ -1,7 +1,6 @@
 ---
 title: SELECT
 summary: TiDB 数据库中 SELECT 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/reference/sql/statements/select/']
 ---
 
 # SELECT
@@ -33,7 +32,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-select/','/docs-cn/dev/refe
 **TableRefsClause:**
 
 ```ebnf+diagram
-TableRefsClause ::= 
+TableRefsClause ::=
     TableRef AsOfClause? ( ',' TableRef AsOfClause? )*
 
 AsOfClause ::=
@@ -75,7 +74,7 @@ AsOfClause ::=
 **SelectLockOpt:**
 
 ```ebnf+diagram
-SelectLockOpt ::= 
+SelectLockOpt ::=
     ( ( 'FOR' 'UPDATE' ( 'OF' TableList )? 'NOWAIT'? )
 |   ( 'LOCK' 'IN' 'SHARE' 'MODE' ) )?
 

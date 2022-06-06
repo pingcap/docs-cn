@@ -1,6 +1,5 @@
 ---
 title: PD 重要监控指标详解
-aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monitoring-metrics/pd-dashboard/']
 ---
 
 # PD 重要监控指标详解
@@ -36,7 +35,7 @@ aliases: ['/docs-cn/dev/grafana-pd-dashboard/','/docs-cn/dev/reference/key-monit
 
 ## Operator
 
-- Schedule operator create：新创建的不同 operator 的数量，单位 opm 代表一分钟内创建的个数 
+- Schedule operator create：新创建的不同 operator 的数量，单位 opm 代表一分钟内创建的个数
 - Schedule operator check：已检查的 operator 的次数，主要检查是否当前步骤已经执行完成，如果是，则执行下一个步骤
 - Schedule operator finish：已完成调度的 operator 的数量
 - Schedule operator timeout：已超时的 operator 的数量

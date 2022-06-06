@@ -1,7 +1,6 @@
 ---
 title: 两地三中心部署
 summary: 介绍两地三中心部署方式。
-aliases: ['/docs-cn/dev/three-data-centers-in-two-cities-deployment/']
 ---
 
 # 两地三中心部署
@@ -192,7 +191,7 @@ tikv_servers:
     ```
     config set label-property reject-leader dc 3
     ```
-  
+
     > **注意：**
     >
     > TiDB 5.2 及以上版本默认不支持 `label-property` 配置。若要设置副本策略，请使用 [Placement Rules](/configure-placement-rules.md)。

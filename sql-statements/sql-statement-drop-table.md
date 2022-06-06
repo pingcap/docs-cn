@@ -1,7 +1,6 @@
 ---
 title: DROP TABLE
 summary: TiDB 数据库中 DROP TABLE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-table/','/docs-cn/dev/reference/sql/statements/drop-table/']
 ---
 
 # DROP TABLE

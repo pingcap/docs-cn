@@ -1,6 +1,5 @@
 ---
 title: 使用 TiFlash
-aliases: ['/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/']
 ---
 
 如果需要快速体验以 TPC-H 为例子，从导入到查询的完整流程，可以参考 [HTAP 快速上手指南](/quick-start-with-htap.md)
@@ -385,7 +384,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 
 ### 其他限制
 
-* 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash 
+* 所有包含 Bit、Set 和 Geometry 类型的表达式均不能下推到 TiFlash
 * date_add、date_sub、adddate 和 subdate 中的 interval 类型只支持如下几种，如使用了其他类型的 interval，TiFlash 会在运行时报错。
     * DAY
     * WEEK

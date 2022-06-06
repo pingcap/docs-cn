@@ -1,6 +1,5 @@
 ---
 title: 谓词下推
-aliases: ['/docs-cn/dev/predicate-push-down/']
 ---
 
 # 谓词下推
@@ -13,7 +12,7 @@ aliases: ['/docs-cn/dev/predicate-push-down/']
 
 以下通过一些例子对谓词下推优化进行说明，其中示例1、2、3为谓词下推适用的案例，示例4、5、6为谓词下推不适用的案例。
 
-### 示例 1: 谓词下推到存储层 
+### 示例 1: 谓词下推到存储层
 
 ```sql
 create table t(id int primary key, a int);
@@ -46,7 +45,7 @@ explain select * from t where a < substring('123', 1, 1);
 
 该查询与示例 1 中的查询生成了完成一样的执行计划，这是因为谓词 `a < substring('123', 1, 1)` 的 `substring` 的入参均为常量，因此可以提前计算，进而简化得到等价的谓词 `a < 1`。进一步的，可以将 `a < 1` 下推至 TiKV 上。
 
-### 示例 3: 谓词下推到 join 下方 
+### 示例 3: 谓词下推到 join 下方
 
 ```sql
 create table t(id int primary key, a int not null);
