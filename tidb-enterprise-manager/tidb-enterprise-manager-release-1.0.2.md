@@ -8,12 +8,12 @@ title: TiDB Enterprise Manager v1.0.2 Release Notes
 
 发布版本：1.0.2
 
-TiDB Enterprise Manager (TiEM) 自 v1.0.2 起正式开放源代码。在 [v1.0.1](/tiem/tiem-release-1.0.1.md) 版的基础上，v1.0.2 有如下更新：
+TiDB Enterprise Manager 自 v1.0.2 起正式开放源代码。在 [v1.0.1](/tidb-enterprise-manager/tidb-enterprise-manager-release-1.0.1.md) 版的基础上，v1.0.2 有如下更新：
 
 - 新增对 TiDB v6.1.0 集群的支持
 - 增加修改密码功能，首次安装后必须修改密码才能完成登录
 
-TiEM v1.0.2 支持的 TiDB 版本如下：
+TiDB Enterprise Manager v1.0.2 支持的 TiDB 版本如下：
 
 - v6.1.0
 - v6.0.0
