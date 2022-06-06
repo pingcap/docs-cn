@@ -24,10 +24,10 @@ SET  GLOBAL tidb_distsql_scan_concurrency = 10;
 > **注意：**
 >
 > 部分 `GLOBAL` 作用域的变量会持久化到 TiDB 集群中。文档中的变量有一个“是否持久化到集群”的说明，可以为“是”或者“否”。
-> 
+>
 > - 对于持久化到集群的变量，当该全局变量被修改后，会通知所有 TiDB 服务器刷新其系统变量缓存。在集群中增加一个新的 TiDB 服务器时，或者重启现存的 TiDB 服务器时，都将自动使用该持久化变量。
 > - 对于不持久化到集群的变量，对变量的修改只对当前连接的 TiDB 实例生效。如果需要保留设置过的值，需要在 `tidb.toml` 配置文件中声明。
-> 
+>
 > 此外，由于应用和连接器通常需要读取 MySQL 变量，为了兼容这一需求，在 TiDB 中，部分 MySQL 的变量既可读取也可设置。例如，尽管 JDBC 连接器不依赖于查询缓存 (query cache) 的行为，但仍然可以读取和设置查询缓存。
 
 > **注意：**
@@ -152,7 +152,8 @@ mysql> SELECT * FROM t1;
 
 ### `ddl_slow_threshold`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`300`
 - 单位：毫秒
 - 耗时超过该阈值的 DDL 操作会被输出到日志。
@@ -236,13 +237,15 @@ mysql> SELECT * FROM t1;
 
 ### `plugin_dir`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：""
 - 指定加载插件的目录。
 
 ### `plugin_load`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：""
 - 指定 TiDB 启动时加载的插件，多个插件之间用逗号（,）分隔。
 
@@ -268,6 +271,15 @@ mysql> SELECT * FROM t1;
 - 范围：`[0, 2147483647]`
 - 该变量用于为 SQL 函数 `RAND()` 中使用的随机值生成器添加种子。
 - 该变量的行为与 MySQL 兼容。
+
+### require_secure_transport <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 该变量控制是否所有 TiDB 的连接都在本地 socket 上进行通信，或使用 TLS。详情见[为 TiDB 客户端服务端间通信开启加密传输](/enable-tls-between-clients-and-servers.md)。
+- 该变量设置为 `ON` 时，必须使用开启 TLS 的会话连接到 TiDB，防止在 TLS 配置不正确时出现锁定的情况。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`security.require-secure-transport`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
 ### skip_name_resolve <span class="version-mark">从 v5.2.0 版本开始引入</span>
 
@@ -384,7 +396,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 > **注意：**
 >
-> 只有在 TiDB 的启动配置文件中开启了 `run-auto-analyze` 选项，该 TiDB 才会触发 `auto_analyze`。
+> 当系统变量 `tidb_enable_auto_analyze` 设置为 `ON` 时，TiDB 才会触发 `auto_analyze`。
 
 ### `tidb_auto_analyze_start_time`
 
@@ -479,10 +491,21 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_check_mb4_value_in_utf8`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`ON`
 - 设置该变量为 `ON` 可强制只存储[基本多文种平面 (BMP)](https://zh.wikipedia.org/zh-hans/Unicode字符平面映射) 编码区段内的 `utf8` 字符值。若要存储 BMP 区段外的 `utf8` 值，推荐使用 `utf8mb4` 字符集。
 - 早期版本的 TiDB 中 (v2.1.x)，`utf8` 检查更为宽松。如果你的 TiDB 集群是从早期版本升级的，推荐关闭该变量，详情参阅[升级与升级后常见问题](/faq/upgrade-faq.md)。
+
+### tidb_committer_concurrency <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`128`
+- 范围：`[1, 10000]`
+- 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量。
+- 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长。此时，可以通过调大该配置项来加速提交。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`performance.committer-concurrency`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
 ### `tidb_checksum_table_concurrency`
 
@@ -659,12 +682,28 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
+### `tidb_enable_auto_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 该变量控制 TiDB 是否以后台操作自动更新表的统计信息。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`performance.run-auto-analyze`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+
 ### `tidb_enable_auto_increment_in_generated`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
+
+### tidb_enable_batch_dml <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 该变量控制 TiDB 是否允许非事务的“批处理”语句。由于 batch DML 不提供 ACID 保证，只有该变量设置为 `OFF` 时才是安全的。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`enable-batch-dml`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
 ### `tidb_enable_cascades_planner`
 
@@ -696,7 +735,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_collect_execution_info`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`ON`
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
@@ -760,14 +800,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`ON` 
+- 默认值：`ON`
 - 这个变量用于控制是否开启 index merge 功能。
 
 ### tidb_enable_legacy_instance_scope <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`ON` 
+- 默认值：`ON`
 - 这个变量用于允许使用 `SET SESSION` 对 `INSTANCE` 作用域的变量进行设置，用法同 `SET GLOBAL`。
 - 为了兼容之前的 TiDB 版本，该变量值默认为 `ON`。
 
@@ -775,7 +815,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`OFF`
+- 默认值：`ON`
 - 这个变量用来设置是否开启 `LIST (COLUMNS) TABLE PARTITION` 特性。
 
 ### `tidb_enable_mutation_checker`（从 v6.0.0 版本开始引入）
@@ -853,7 +893,8 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_slow_log`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`ON`
 - 这个变量用于控制是否开启 slow log 功能。
 
@@ -1021,7 +1062,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_expensive_query_time_threshold`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`60`
 - 范围：`[10, 2147483647]`
 - 单位：秒
@@ -1029,7 +1071,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_force_priority`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
@@ -1260,6 +1303,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[100, 16384]`
 - 这个变量用来设置缓存 schema 版本信息（对应版本修改的相关 table IDs）的个数限制，可设置的范围 100 - 16384。此变量在 2.1.18 及之后版本支持。
 
+### tidb_mem_oom_action <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`CANCEL`
+- 可选值：`CANCEL`，`LOG`
+- 该变量控制当单个查询使用的内存超过限制 (`tidb_mem_quota_query`) 且不能再利用临时磁盘时，TiDB 所采取的操作。详情见 [TiDB 内存控制](/configure-memory-usage.md)。
+- 该变量默认值为 `CANCEL`，但在 TiDB v4.0.2 及之前的版本中，默认值为 `LOG`。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`oom-action`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+
 ### `tidb_mem_quota_apply_cache` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1282,16 +1335,19 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 
 ### `tidb_mem_quota_query`
 
-- 作用域：SESSION
+- 作用域：SESSION ｜ GLOBAL
+- 是否持久化到集群：是
 - 默认值：`1073741824` (1 GiB)
 - 范围：`[-1, 9223372036854775807]`
 - 单位：字节
 - 这个变量用来设置一条查询语句的内存使用阈值。
-- 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发 TiDB 启动配置文件中 OOMAction 项所指定的行为。该变量的初始值由配置项 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 配置。
+- 如果一条查询语句执行过程中使用的内存空间超过该阈值，会触发系统变量 [`tidb_mem_oom_action`](#tidb_mem_oom_action-从-v610-版本开始引入) 中指定的行为。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`mem-quota-query`) 进行配置，且作用域为 `SESSION`。升级到 v6.1.0 时会自动继承原有设置，作用域变更为 `SESSION | GLOBAL`。
 
 ### `tidb_memory_usage_alarm_ratio`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`0.8`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
@@ -1514,7 +1570,8 @@ explain select * from t where age=5;
 
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`0`
 - 范围：`[0, 1]`
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
@@ -1552,11 +1609,13 @@ explain select * from t where age=5;
 
 ### `tidb_query_log_max_len`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：是
 - 默认值：`4096` (4 KiB)
-- 范围：`[-1, 9223372036854775807]`
+- 范围：`[0, 1073741824]`
 - 单位：字节
-- 最长的 SQL 输出长度。当语句的长度大于 query-log-max-len，将会被截断输出。
+- 该变量控制 SQL 语句输出的最大长度。当一条 SQL 语句的输出长度大于 `tidb_query_log_max_len` 时，输出将会被截断。
+- 在 v6.1.0 之前这个开关也可以通过 TiDB 配置文件 (`log.query-log-max-len`) 进行配置，升级到 v6.1.0 后仅可通过系统变量配置。
 
 示例：
 
@@ -1588,7 +1647,8 @@ SET tidb_query_log_max_len = 20;
 
 ### `tidb_record_plan_in_slow_log`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`ON`
 - 这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
 
@@ -1685,7 +1745,8 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 
 ### `tidb_slow_log_threshold`
 
-- 作用域：INSTANCE
+- 作用域：GLOBAL
+- 是否持久化到集群：否
 - 默认值：`300`
 - 范围：`[-1, 9223372036854775807]`
 - 单位：毫秒

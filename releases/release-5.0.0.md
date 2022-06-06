@@ -362,7 +362,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### 优化内存管理模块，降低系统 OOM 的风险
 
-跟踪统计聚合函数的内存使用情况，系统默认开启该功能，开启后带有聚合函数的 SQL 语句在执行时，如果当前查询内存总的使用量超过 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 阈值时，系统自动采用 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的相应操作。
+跟踪统计聚合函数的内存使用情况，系统默认开启该功能，开启后带有聚合函数的 SQL 语句在执行时，如果当前查询内存总的使用量超过 `mem-quota-query` 阈值时，系统自动采用 `oom-action` 定义的相应操作。
 
 ### 提升系统在发生网络分区时的可用性
 

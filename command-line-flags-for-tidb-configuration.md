@@ -193,8 +193,3 @@ aliases: ['/docs-cn/dev/command-line-flags-for-tidb-configuration/','/docs-cn/de
 
 + 修复模式下需要修复的表名
 + 默认：""
-
-## `--require-secure-transport`
-
-+ 是否要求客户端使用安全传输模式
-+ 默认：false
