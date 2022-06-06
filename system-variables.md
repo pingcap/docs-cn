@@ -1777,7 +1777,7 @@ explain select * from t where age=5;
 - Type: Float
 - Default value: `0.1`
 - Range: `[0, 1]`
-- This setting is used to prevent the tidb.toml option `performance.max-memory` from being exceeded. When `max-memory` * (1 - `tidb_prepared_plan_cache_memory_guard_ratio`) is exceeded, the elements in the LRU are removed.
+- The threshold at which the prepared plan cache triggers a memory protection mechanism. For details, see [Memory management of Prepared Plan Cache](/sql-prepared-plan-cache.md).
 - This setting was previously a `tidb.toml` option (`prepared-plan-cache.memory-guard-ratio`), but changed to a system variable starting from TiDB v6.1.0.
 
 ### tidb_prepared_plan_cache_size <span class="version-mark">New in v6.1.0</span>
@@ -1787,7 +1787,7 @@ explain select * from t where age=5;
 - Type: Integer
 - Default value: `100`
 - Range: `[1, 100000]`
-- The maximum number of statements that can be cached in the prepared plan cache.
+- The maximum number of plans that can be cached in a session. For details, see [Memory management of Prepared Plan Cache](/sql-prepared-plan-cache.md).
 - This setting was previously a `tidb.toml` option (`prepared-plan-cache.capacity`), but changed to a system variable starting from TiDB v6.1.0.
 
 ### tidb_projection_concurrency

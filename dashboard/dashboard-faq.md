@@ -57,7 +57,7 @@ If your deployment tool is TiUP, take the following steps to solve this problem.
 
 ### An `invalid connection` error is shown on the **Slow Queries** page
 
-The possible reason is that you have enabled the Prepared Plan Cache feature of TiDB. As an experimental feature, when enabled, Prepared Plan Cache might not function properly in specific TiDB versions, which could cause this problem in TiDB Dashboard (and other applications). You can disable Prepared Plan Cache by setting the system variable `tidb_enable_prepared_plan_cache = OFF`.
+The possible reason is that you have enabled the Prepared Plan Cache feature of TiDB. As an experimental feature, when enabled, Prepared Plan Cache might not function properly in specific TiDB versions, which could cause this problem in TiDB Dashboard (and other applications). You can disable Prepared Plan Cache by setting the system variable [`tidb_enable_prepared_plan_cache = OFF`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610).
 
 ### A `required component NgMonitoring is not started` error is shown
 

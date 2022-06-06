@@ -83,6 +83,7 @@ To understand the key metrics displayed on the TiDB dashboard, check the followi
     - Execution Duration: the statistics of the execution time for SQL statements
     - Expensive Executor OPS: the statistics of the operators that consume many system resources per second, including `Merge Join`, `Hash Join`, `Index Look Up Join`, `Hash Agg`, `Stream Agg`, `Sort`, `TopN`, and so on
     - Queries Using Plan Cache OPS: the statistics of queries using the Plan Cache per second
+    - Plan Cache Miss OPS: the statistics of the number of times that the Plan Cache is missed per second
 
 - Distsql
     - Distsql Duration: the processing time of Distsql statements
