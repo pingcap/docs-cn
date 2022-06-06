@@ -22,7 +22,7 @@ v4.x.x 已近品周期尾声，请尽早升级到主流版本。商业客户请�
 
 ### 升级 v5.x.x 至 v6.0.0
 
-v6.0.0 作为非 LTS 版本，不会推出后续的 bug 修复版，建议商业客户慎用。尽可能使用 v6.1.0 及之后的 LTS 版本。
+v6.0.0 作为非 LTS 版本，不会推出后续的 bug 修复版，建议尽可能使用 v6.1.0 及之后的 LTS 版本。
 
 ### 升级 v5.x.x 至 v6.1.0
 
@@ -48,18 +48,18 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。新的 P
 
 #### TiFlash PageStorage
 
-v6.1.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在高并发或者重型查询情况下，TiFlash 数据 GC 带来的 CPU 占用高问题得到缓解。
+TiFlash v6.1.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在高并发或者重型查询情况下，可以有效缓解 TiFlash 数据 GC 带来的 CPU 占用高的问题。
 
 - 已有节点升级 v6.1.0 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
-- 不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要请用户提起注意）。你也可以使用[手动 compact 命令](/sql-statements/sql-statement-alter-table-compact.md)触发一个 compaction 动作。在 compaction 过程中，相关表的数据转成新版本格式。操作步骤如下：
+- 新旧版本的数据格式不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要注意）。升级完成后，请使用[手动 compact 命令](/sql-statements/sql-statement-alter-table-compact.md)触发一个 compaction 动作将相关表的数据转成新版本格式。操作步骤如下：
 
-    - 对每张有 TiFlash 副本（replica）的表执行如下命令：
+    1. 对每张有 TiFlash 副本（replica）的表执行如下命令：
 
      ```
      alter table <table_name> compact tiflash replica;
      ```
 
-    - 重启 TiFlash 节点。
+    2. 重启 TiFlash 节点。
 
 具体表运行的数据版本，可以在 Grafana 对应监控查看（Tiflash summary → storage pool → Storage Pool Run Mode）。
 
@@ -71,11 +71,11 @@ v6.1.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_vers
 
 #### 动态分区裁剪
 
-如用户你关闭了分区表动态分区裁剪，可略过本部分。
+如果你没有也不打算开启动态分区裁剪，可略过本部分。
 
 TiDB v6.0.0 之后的全新安装会默认开启动态分区裁剪（Dynamic Pruning），旧版本升级遵循用户已有设定，不会自动开启（相对的也不会关闭）此功能。
 
-如果你使用的是 TiDB 6.0.0，在升级过程中，不需要做任何特别操作，但是注意，升级过程中，分区表全局统计信息将会自动更新。
+在从 v6.0.0 至 v6.1.0 的升级过程中，你不需要做任何特别操作，但是注意，分区表全局统计信息将会自动更新。
 
 #### TiFlash PageStorage
 
