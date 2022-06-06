@@ -211,7 +211,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 
 非事务 DML 语句中，batch size 越大，拆分出来的 SQL 语句越少，每个 SQL 语句执行起来越慢。最优的 batch size 依据 workload 而定。根据经验值，推荐从 50000 开始尝试。过小和过大的 batch size 都会导致执行效率下降。
 
-每个 batch 的信息存储在内存里，因此 batch 数量过多会显著增加内存消耗。这也是 batch size 不能过小的原因之一。非事务语句用于存储 batch 信息消耗的内存上限与 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 相同，超出这个限制时触发的操作由 [`oom-action`](/tidb-configuration-file.md#oom-action) 配置项控制。
+每个 batch 的信息存储在内存里，因此 batch 数量过多会显著增加内存消耗。这也是 batch size 不能过小的原因之一。非事务语句用于存储 batch 信息消耗的内存上限与 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 相同，超出这个限制时触发的操作由系统变量 [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) 控制。
 
 ## 使用限制
 
@@ -226,7 +226,7 @@ BATCH ON id LIMIT 2 DELETE /*+ USE_INDEX(t)*/ FROM t where v < 6;
 - 不能与 `prepare` 语句一起使用。
 - 划分列不支持 `ENUM`，`BIT`，`SET`，`JSON` 类型。
 - 不支持用在[临时表](/temporary-tables.md)上。
-- 不支持[公共表表达式](/develop/use-common-table-expression.md）。
+- 不支持[公共表表达式](/develop/dev-guide-use-common-table-expression.md）。
 
 ## 控制 batch 执行失败
 

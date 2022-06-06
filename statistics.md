@@ -459,6 +459,8 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 且 TiDB 后台的统计信息自动更新任务的内存占用超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
 
+当 [`tidb_max_auto_analyze_time`](/system-variables.md#tidb_max_auto_analyze_time-从-v610-版本开始引入) 大于 0 时，如果后台统计信息自动更新任务的执行时间超过这个阈值，该任务会被终止。
+
 ```sql
 mysql> SHOW ANALYZE STATUS [ShowLikeOrWhere];
 +--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|

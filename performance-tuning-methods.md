@@ -444,9 +444,9 @@ Store 线程的 Commit Log Duration 明显比 Apply Log Duration 高，并且 Ap
 - 如果 TiDB 为 v5.4.0 及之后的版本，考虑启用 [`Raft Engine`](/tikv-configuration-file.md#raft-engine)，Raft Engine 具有更轻量的执行路径，在一些场景下显著减少 IO 写入量和写入请求的长尾延迟，启用方式为设置：`raft-engine.enable: true`
 - 如果 TiKV CPU 资源充足，且 TiDB 为 v5.3.0 及之后的版本，考虑启用 [`StoreWriter`](/tune-tikv-thread-performance.md#tikv-线程池调优)。启用方式：`raftstore.store-io-pool-size: 1`。
 
-## 低于 v6.0.0 的 TiDB 版本如何使用 Performance overview 面板
+## 低于 v6.1.0 的 TiDB 版本如何使用 Performance overview 面板
 
-从 v6.0.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。如果你的 TiDB 版本低于 v6.0.0，需要手工导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)
+从 v6.1.0 起，TiDB Grafana 组件默认内置了 Performance Overview 面板。Performance overview 面板兼容 TiDB v4.x 和 v5.x 版本。如果你的 TiDB 版本低于 v6.1.0，需要手动导入 [`performance_overview.json`](https://github.com/pingcap/tidb/blob/master/metrics/grafana/performance_overview.json)。
 
 导入方法如图所示：
 

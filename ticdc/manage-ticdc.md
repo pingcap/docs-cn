@@ -210,14 +210,23 @@ URI 中可配置的的参数如下：
 | `replication-factor` | Kafka 消息保存副本数（可选，默认值 `1`）                       |
 | `protocol` | 输出到 Kafka 的消息协议，可选值有 `canal-json`、`open-protocol`、`canal`、`avro`、`maxwell` |
 | `auto-create-topic` | 当传入的 `topic-name` 在 Kafka 集群不存在时，TiCDC 是否要自动创建该 topic（可选，默认值 `true`） |
-| `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加 TiDB 扩展字段。|
+| `enable-tidb-extension` | 可选，默认值是 `false`。当输出协议为 `canal-json` 时，如果该值为 `true`，TiCDC 会发送 Resolved 事件，并在 Kafka 消息中添加 TiDB 扩展字段。从 6.1.0 开始，该参数也可以和输出协议 `avro` 一起使用。如果该值为 `true`，TiCDC 会在 Kafka 消息中添加三个 TiDB 扩展字段。|
 | `max-batch-size` |  从 v4.0.9 开始引入。当消息协议支持把多条变更记录输出至一条 Kafka 消息时，该参数用于指定这一条 Kafka 消息中变更记录的最多数量。目前，仅当 Kafka 消息的 `protocol` 为 `open-protocol` 时有效（可选，默认值 `16`）|
+| `enable-tls` | 连接下游 Kafka 实例是否使用 TLS（可选，默认值 `false`） |
 | `ca`       | 连接下游 Kafka 实例所需的 CA 证书文件路径（可选） |
 | `cert`     | 连接下游 Kafka 实例所需的证书文件路径（可选） |
 | `key`      | 连接下游 Kafka 实例所需的证书密钥文件路径（可选） |
-| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的用户名（authcid）（可选） |
-| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的密码（可选） |
-| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL/SCRAM 验证的名称（可选） |
+| `sasl-user` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的用户名（authcid）（可选） |
+| `sasl-password` | 连接下游 Kafka 实例所需的 SASL/PLAIN 或 SASL/SCRAM 认证的密码（可选） |
+| `sasl-mechanism` | 连接下游 Kafka 实例所需的 SASL 认证方式的名称，可选值有 `plain`、`scram-sha-256`、`scram-sha-512` 和 `gssapi` |
+| `sasl-gssapi-auth-type` | gssapi 认证类型，可选值有 `user` 和 `keytab`（可选） |
+| `sasl-gssapi-keytab-path` | gssapi keytab 路径（可选）|
+| `sasl-gssapi-kerberos-config-path` | gssapi kerberos 配置路径（可选） |
+| `sasl-gssapi-service-name` | gssapi 服务名称（可选） |
+| `sasl-gssapi-user` | gssapi 认证使用的用户名（可选） |
+| `sasl-gssapi-password` | gssapi 认证使用的密码（可选） |
+| `sasl-gssapi-realm` | gssapi realm 名称（可选） |
+| `sasl-gssapi-disable-pafxfast` | gssapi 是否禁用 PA-FX-FAST（可选） |
 | `dial-timeout` | 和下游 Kafka 建立连接的超时时长，默认值为 `10s` |
 | `read-timeout` | 读取下游 Kafka 返回的 response 的超时时长，默认值为 `10s` |
 | `write-timeout` | 向下游 Kafka 发送 request 的超时时长，默认值为 `10s` |
@@ -233,6 +242,55 @@ URI 中可配置的的参数如下：
 > **注意：**
 >
 > 当 `protocol` 为 `open-protocol` 时，TiCDC 会尽量避免产生长度超过 `max-message-bytes` 的消息。但如果单条数据变更记录需要超过 `max-message-bytes` 个字节来表示，为了避免静默失败，TiCDC 会试图输出这条消息并在日志中输出 Warning。
+
+#### TiCDC 使用 Kafka 的认证与授权
+
+使用 Kafka 的 SASL 认证时配置样例如下所示：
+
+- SASL/PLAIN
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&sasl-user=alice-user&sasl-password=alice-secret&sasl-mechanism=plain"
+  ```
+
+- SASL/SCRAM
+
+  SCRAM-SHA-256、SCRAM-SHA-512 与 PLAIN 方式类似，只需要将 `sasl-mechanism` 指定为对应的认证方式即可。
+
+- SASL/GSSAPI
+
+  SASL/GSSAPI `user` 类型认证：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&sasl-mechanism=gssapi&sasl-gssapi-auth-type=user&sasl-gssapi-kerberos-config-path=/etc/krb5.conf&sasl-gssapi-service-name=kafka&sasl-gssapi-user=alice/for-kafka&sasl-gssapi-password=alice-secret&sasl-gssapi-realm=example.com"
+  ```
+
+  `sasl-gssapi-user` 和 `sasl-gssapi-realm` 的值与 kerberos 中指定的 [principle](https://web.mit.edu/kerberos/krb5-1.5/krb5-1.5.4/doc/krb5-user/What-is-a-Kerberos-Principal_003f.html) 有关。例如，principle 为 `alice/for-kafka@example.com`，则 `sasl-gssapi-user` 和 `sasl-gssapi-realm` 的值应该分别指定为 `alice/for-kafka` 和 `example.com`。
+
+  SASL/GSSAPI `keytab` 类型认证：
+
+  {{< copyable "shell-regular" >}}
+
+  ```shell
+  --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.4.0&sasl-mechanism=gssapi&sasl-gssapi-auth-type=keytab&sasl-gssapi-kerberos-config-path=/etc/krb5.conf&sasl-gssapi-service-name=kafka&sasl-gssapi-user=alice/for-kafka&sasl-gssapi-keytab-path=/var/lib/secret/alice.key&sasl-gssapi-realm=example.com"
+  ```
+
+  SASL/GSSAPI 认证方式详见 [Configuring GSSAPI](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_gssapi.html)。
+
+- TLS/SSL 加密
+
+  如果 Kafka broker 启用了 TLS/SSL 加密，则需要在 `--sink-uri` 中增加 `enable-tls=true` 参数值。如果需要使用自签名证书，则还需要在 `--sink-uri` 中指定 `ca`、`cert` 跟 `key` 几个参数。
+
+- ACL 授权
+
+  TiCDC 能够正常工作所需的最小权限集合如下：
+
+    - 对 Topic [资源类型](https://docs.confluent.io/platform/current/kafka/authorization.html#resources)的 `Create` 和 `Write` 权限。
+    - 对 Cluster 资源类型的 `DescribeConfigs` 权限。
 
 #### TiCDC 集成 Kafka Connect (Confluent Platform)
 
@@ -571,7 +629,7 @@ worker-num = 16
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
-# 支持 partition 及 topic 两种 event 分发器。二者的详细说明见下一节。
+# 支持 partition 及 topic（从 v6.1 开始支持）两种 event 分发器。二者的详细说明见下一节。
 # matcher 的匹配语法和过滤器规则语法相同，matcher 匹配规则的详细说明见下一节。
 dispatchers = [
     {matcher = ['test1.*', 'test2.*'], topic = "Topic 表达式 1", partition = "ts" },
@@ -603,7 +661,7 @@ protocol = "canal-json"
 
 ### Topic 分发器
 
-Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。
+Topic 分发器用 topic = "xxx" 来指定，并使用 topic 表达式来实现灵活的 topic 分发策略。topic 的总数建议小于 1000。
 
 Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，详细解释如下：
 
@@ -619,7 +677,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 
 - `matcher = ['test1.table1', 'test2.table2'], topic = "hello_{schema}_{table}"`
     - 对于表 `test1.table1` 对应的数据变更事件，发送到名为 `hello_test1_table1` 的 topic 中
-    - 对于表 `test2.table2` 对应的数据变更时间，发送到名为 `hello_test2_table2` 的 topic 中
+    - 对于表 `test2.table2` 对应的数据变更事件，发送到名为 `hello_test2_table2` 的 topic 中
 - `matcher = ['test3.*', 'test4.*'], topic = "hello_{schema}_world"`
     - 对于 `test3` 下的所有表对应的数据变更事件，发送到名为 `hello_test3_world` 的 topic 中
     - 对于 `test4` 下的所有表对应的数据变更事件，发送到名为 `hello_test4_ world` 的 topic 中
@@ -653,6 +711,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 - table：以表的 schema 名和 table 名做 Hash 计算并进行 event 分发
 
 > **注意：**
+>
 > 从 v6.1 开始，为了明确配置项的含义，用来指定 partition 分发器的配置项由原来的 `dispatcher` 改为 `partition`，`partition` 为 `dispatcher` 的别名。例如，以下两条规则完全等价：
 > 
 > ```

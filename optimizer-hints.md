@@ -353,7 +353,7 @@ SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 inner join t2 WHERE t1.id = t2.
 SELECT /*+ MEMORY_QUOTA(1024 MB) */ * FROM t;
 ```
 
-除了 Hint 外，系统变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
+除了 Hint 外，系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 也能限制语句执行的内存使用。
 
 ### READ_CONSISTENT_REPLICA()
 

@@ -108,14 +108,14 @@ aliases: ['/docs-cn/dev/basic-features/']
 
 ## 分区
 
-| 分区                                           |   6.0   |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0 |
-| ---------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :-: |
-| [Range 分区](/partitioned-table.md)            |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |  Y  |
-| [Hash 分区](/partitioned-table.md)             |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |  Y  |
-| [List 分区](/partitioned-table.md)             | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |  N  |
-| [List COLUMNS 分区](/partitioned-table.md)     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |  N  |
-| [`EXCHANGE PARTITION`](/partitioned-table.md)  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |  N  |
-| [动态裁剪](/partitioned-table.md#动态裁剪模式) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N     |  N  |
+| 分区                                             | 6.1 | 6.0| 5.4          |   5.3    |   5.2    |   5.1    |   5.0    | 4.0 |
+| ------------------------------------------------------------ | :--: | :--: | ------------ | :----------: | :----------: | :----------: | :----------: | :-----: |
+| [Range 分区](/partitioned-table.md)                  | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
+| [Hash 分区](/partitioned-table.md)                   | Y | Y | Y            |      Y       |      Y       |      Y       |      Y       |    Y    |
+| [List 分区](/partitioned-table.md)                   | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
+| [List COLUMNS 分区](/partitioned-table.md)           | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
+| [`EXCHANGE PARTITION`](/partitioned-table.md)                | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |    N    |
+| [动态裁剪](/partitioned-table.md#动态裁剪模式) | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |      N       |    N    |
 
 ## 统计信息
 
