@@ -58,4 +58,5 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiEM 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。
+> - 下载链接中的 `{version}` 为 TiEM 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。
+> - TiEM 是从 v1.0.2 起开放源代码的，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
