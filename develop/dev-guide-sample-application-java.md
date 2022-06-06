@@ -1785,7 +1785,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
     mvn mybatis-generator:generate
     ```
 
-- 清理并构建 (make build)：`mvn clean package`
+- 清理并构建 (`make build`)：`mvn clean package`
 - 运行 (make run)：`java -jar target/plain-java-mybatis-0.0.1-jar-with-dependencies.jar`
 
 你也可以单独运行这四个 `make` 命令或原生命令。
