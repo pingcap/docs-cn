@@ -19,7 +19,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8001
 
-    请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整 `mem-quota-query` 来增大单个 SQL 使用的内存上限。
+    请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 来增大单个 SQL 使用的内存上限。
 
 * Error Number: 8002
 
