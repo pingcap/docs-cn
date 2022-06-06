@@ -112,7 +112,7 @@ TiDB 自身采用多副本的数据存储，TiEM 根据调度策略将 TiDB 的�
 
 ### 集群参数管理
 
-- 提供 TiDB 版本对应参数组模板。TiEM 支持的 TiDB 版本，见 [TiEM 支持的 TiDB 版本](/tiem/tiem-release-notes.md#tiem-支持的-tidb-版本)。
+- 提供 TiDB 版本对应的参数组模板。关于支持的 TiDB 版本，参见 [TiEM 支持的 TiDB 版本](/tiem/tiem-release-notes.md#tiem-支持的-tidb-版本)。
 - 提供统一界面查看、修改 TiDB 集群参数
 
 ### 工作流任务管理
