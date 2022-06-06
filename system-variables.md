@@ -409,6 +409,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
+> **警告：**
+>
+> 目前 analyze 的内存 quota 功能为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`0`
