@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 # TiDB 工具下载
 
-本文介绍如何下载 TiDB 工具包以及 [TiDB Enterprise Manager](/tidb-enterprise-manager/tidb-enterprise-manager-overview.md)。
+本文介绍如何下载 TiDB 工具包以及 [TiDB Enterprise Manager (TiEM)](/tiem/tiem-overview.md)。
 
 ## TiDB 工具包下载
 
@@ -48,9 +48,9 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [PD Control](/pd-control.md)  | `pd-recover-{version}-linux-amd64.tar` |
 | [PD Recover](/pd-recover.md)  | `etcdctl` |
 
-## TiDB Enterprise Manager 下载
+## TiEM 下载
 
-[TiDB Enterprise Manager](/tidb-enterprise-manager/tidb-enterprise-manager-overview.md) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiDB Enterprise Manager：
+[TiDB Enterprise Manager (TiEM)](/tiem/tiem-overview.md) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiEM：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
@@ -58,5 +58,5 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 > **注意：**
 >
-> - 下载链接中的 `{version}` 为 TiDB Enterprise Manager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。
-> - TiDB Enterprise Manager 是从 v1.0.2 起开放源代码的，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
+> - 下载链接中的 `{version}` 为 TiEM 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。
+> - TiEM 是从 v1.0.2 起开放源代码的，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
