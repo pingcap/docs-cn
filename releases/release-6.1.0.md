@@ -97,7 +97,7 @@ TiDB 版本：6.1.0
 
     默认开启分区表动态裁剪功能，以提升数据分析场景下的性能。6.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 6.1 版本升级完成后新创建的分区表无需此动作）。如果你已经在使用分区表且希望升级至 v6.1.0，请参阅 [TiFlash v6.1.0 升级帮助](/tiflash-610-upgrade.md) 了解升级注意事项。
 
-    [用户文档：MPP 模式访问分区表](/use-tiflash.md#mpp-模式访问分区表)，[用户文档：动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
+    [用户文档：MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[用户文档：动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 
 * TiFlash 新的存储格式以增强性能和稳定性
 
@@ -105,7 +105,7 @@ TiDB 版本：6.1.0
 
     注意升级后不支持原地降级，旧版本不能识别新的数据格式。用户需做好升级准备工作。测试过程中的降级回退 workaround 参照 [TiFlash v6.1.0 升级帮助](/tiflash-610-upgrade.md)。
 
-    [用户文档](/tiflash/tiflash-configuration#配置文件-tiflashtoml)，[#3594](https://github.com/pingcap/tiflash/issues/3594)
+    [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，[#3594](https://github.com/pingcap/tiflash/issues/3594)
 
 ### 稳定性
 
@@ -236,7 +236,7 @@ TiDB 版本：6.1.0
 | [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 修改 | 默认值从 `OFF` 改为 `ON`。 |
 | [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) | 修改 | 增加 Global 作用域，变量值可以持久化到集群。 |
 | [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len) | 修改 | 变量作用域由 INSTANCE 修改为 GLOBAL，变量值可以持久化到集群。取值范围修改为 `[0, 1073741824]`。 |
-| [`require_secure_transport`](system-variables.md#require_secure_transport-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `require-secure-transport` 转化而来。 |
+| [`require_secure_transport`](/system-variables.md#require_secure_transport-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `require-secure-transport` 转化而来。 |
 | [`tidb_committer_concurrency`](/system-variables.md#tidb_committer_concurrency-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `committer-concurrency` 转化而来。 |
 | [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `run-auto-analyze` 转化而来。 |
 | [`tidb_enable_batch_dml`](/system-variables.md#tidb_enable_batch_dml-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `enable-batch-dml` 转化而来。 |
@@ -245,7 +245,7 @@ TiDB 版本：6.1.0
 | [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `prepared-plan-cache.enabled` 转化而来。 |
 | [`tidb_gc_max_wait_time`](/system-variables.md#tidb_gc_max_wait_time-从-v610-版本开始引入) | 新增 | 用于指定活跃事务阻碍 GC safe point 推进的最大时间。 |
 | [`tidb_max_auto_analyze_time`](/system-variables.md#tidb_max_auto_analyze_time-从-v610-版本开始引入) | 新增 | 用于指定自动 ANALYZE 的最大执行时间。 |
-| [`tidb_max_tiflash_threads`](/master/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) | 新增 | 由 TiFlash 配置项 `max_threads`<br/> 转化而来，表示 TiFlash 中 request 执行的最大并发度。 |
+| [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) | 新增 | 由 TiFlash 配置项 `max_threads`<br/> 转化而来，表示 TiFlash 中 request 执行的最大并发度。 |
 | [`tidb_mem_oom_action`](/system-variables.md#tidb_mem_oom_action-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `oom-action` 转化而来。 |
 | [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) | 新增 | 控制 TiDB 更新统计信息时总的内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。 |
 | [`tidb_nontransactional_ignore_error`](/system-variables.md#tidb_nontransactional_ignore_error-从-v610-版本开始引入) | 新增 | 设置是否在非事务语句中立刻返回错误。 |
