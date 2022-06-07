@@ -7,8 +7,7 @@ summary: 如何使用 Online Unsafe Recovery。
 
 > **警告：**
 >
-> - 此功能为有损恢复，无法保证数据和数据索引完整性。
-> - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
+> 此功能为有损恢复，无法保证数据和数据索引完整性。
 
 当多数副本的永久性损坏造成部分数据不可读写时，可以使用 Online Unsafe Recovery 功能进行数据有损恢复。
 
@@ -40,6 +39,12 @@ Online Unsafe Recovery 功能适用于以下场景：
 
 使用 PD Control 执行 [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show) 命令，指定已确定无法恢复的 TiKV 节点，并触发自动恢复。
 
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
+```
+
 命令输出 `Success` 表示向 PD 注册任务成功。但仅表示请求已被接受，并不代表恢复成功。恢复任务在后台进行，具体进度使用 [`show`](#第-2-步查看进度等待结束) 查看。命令输出 `Failed` 表示注册任务失败，可能的错误有：
 
 - `unsafe recovery is running`：已经有正在进行的恢复任务
@@ -58,6 +63,12 @@ Online Unsafe Recovery 功能适用于以下场景：
 ### 第 2 步：查看进度等待结束
 
 节点移除命令运行成功后，使用 PD Control 执行 [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules) 命令，查看移除进度。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl -u <pd_addr> unsafe remove-failed-stores show
+```
 
 恢复过程有多个可能的阶段：
 
@@ -128,6 +139,11 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 }
 ```
 
+> **注意：**
+>
+> - 恢复操作把一些 failed Voter 变成了 failed Learner，之后还需要 PD 调度经过一些时间将这些 failed Learner 移除。
+> - 建议及时添加新的节点。
+
 若执行过程中发生错误，最后一阶段会显示 `"Unsafe recovery failed"` 以及具体错误。如：
 
 ```json
@@ -146,15 +162,6 @@ PD 下发恢复计划后，会等待 TiKV 上报执行的结果。如上述输�
 > 数据可以读写并不代表没有数据丢失。
 
 ### 第 4 步：移除无法恢复的节点（可选）
-
-使用 PD Control 执行 [`store remove-tombstone`](/pd-control.md#store-delete--cancel-delete--label--weight--remove-tombstone--limit--store_id---jqquery-string) 命令，从 PD 的元数据中删除已无法恢复的节点。
-
-> **注意：**
->
-> - 恢复操作把一些 failed Voter 变成了 failed Learner，之后还需要 PD 调度经过一些时间将这些 failed Learner 移除。只有将 failed Learner 都移除后，才能成功进行 `store remove-tombstone`。
-> - 建议及时添加新的节点。
-
-从 PD 中移除 Tombstone 状态的 TiKV 后，才能将这些 TiKV 从拓扑中移去。具体操作如下：
 
 <SimpleTab>
 <div label="通过 TiUP 部署的节点">
