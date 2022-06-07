@@ -260,11 +260,11 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 企业级数据库管理平台 TiDB Enterprise Manager
 
-    TiDB Enterprise Manager (TiEM) 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+    TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
 
-    TiEM 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
+    TiDB Enterprise Manager 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
-    TiEM 当前为企业版特性。要获取 TiEM 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
+    TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
 
 - 支持监控组件的自定义配置
 
@@ -285,7 +285,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 | `placement_checks` | 删除 | 该变量用于控制 DDL 语句是否验证通过 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。已被 `tidb_placement_mode` 替代。 |
 | `tidb_enable_alter_placement` | 删除 | 该变量用于开启 [Placement Rules in SQL](/placement-rules-in-sql.md)。 |
 | `tidb_mem_quota_hashjoin`<br/>`tidb_mem_quota_indexlookupjoin`<br/>`tidb_mem_quota_indexlookupreader` <br/>`tidb_mem_quota_mergejoin`<br/>`tidb_mem_quota_sort`<br/>`tidb_mem_quota_topn` | 删除 | 从 TiDB v5.0.0 起，这几个变量被 `tidb_mem_quota_query` 取代并从系统变量文档中移除，为了保证兼容性代码中还保留。从 TiDB v6.0.0 起，代码中也正式移除这些变量。 |
-| [`tidb_enable_mutation_checker`](/system-variables.md#tidb_enable_mutation_checker从-v600-版本开始引入) | 新增 | 设置是否开启 mutation checker，默认开启。 |
+| [`tidb_enable_mutation_checker`](/system-variables.md#tidb_enable_mutation_checker从-v600-版本开始引入) | 新增 | 设置是否开启 mutation checker，默认开启。如果从低于 v6.0.0 的版本升级到 v6.0.0，升级后默认关闭。 |
 | [`tidb_ignore_prepared_cache_close_stmt`](/system-variables.md#tidb_ignore_prepared_cache_close_stmt从-v60-版本开始引入) | 新增 | 设置是否忽略关闭 Prepared Statement 的指令，默认值为 `OFF`。 |
 | [`tidb_mem_quota_binding_cache`](/system-variables.md#tidb_mem_quota_binding_cache从-v60-版本开始引入) | 新增 | 设置存放 `binding` 的缓存的内存使用阈值，默认值为 `67108864` (64 MiB)。 |
 | [`tidb_placement_mode`](/system-variables.md#tidb_placement_mode从-v600-版本开始引入) | 新增 | 控制 DDL 语句是否忽略 [Placement Rules in SQL](/placement-rules-in-sql.md) 指定的放置规则。默认值为 `strict`，表示不忽略。 |
@@ -294,7 +294,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 | [`tidb_table_cache_lease`](/system-variables.md#tidb_table_cache_lease从-v600-版本开始引入) | 新增 | 用来控制缓存表（新增 feature）的 lease 时间，默认值是 3 秒。 |
 | [`tidb_top_sql_max_meta_count`](/system-variables.md#tidb_top_sql_max_meta_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟最多收集 SQL 语句类型的数量，默认值为 `5000`。 |
 | [`tidb_top_sql_max_time_series_count`](/system-variables.md#tidb_top_sql_max_time_series_count-从-v600-版本开始引入) | 新增 | 用于控制 [Top SQL](/dashboard/top-sql.md) 每分钟保留消耗负载最大的前多少条 SQL（即 Top N）的数据，默认值为 `100`。 |
-| [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level从-v600-版本开始引入) | 新增 | 设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验。默认仅开启对性能影响微小的检查，包含大部分检查效果。 |
+| [`tidb_txn_assertion_level`](/system-variables.md#tidb_txn_assertion_level从-v600-版本开始引入) | 新增 | 设置 assertion 级别，assertion 是一项在事务提交过程中进行的数据索引一致性校验。默认仅开启对性能影响微小的检查，包含大部分检查效果。如果从低于 v6.0.0 的版本升级到 v6.0.0，升级后默认关闭检查。 |
 
 ### 配置文件参数
 
