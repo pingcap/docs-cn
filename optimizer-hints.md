@@ -254,6 +254,46 @@ This hint takes effect on strict conditions, including:
 
 - If the query can select a single index scan in addition to full table scan, the optimizer does not select index merge.
 
+### LEADING(t1_name [, tl_name ...])
+
+The `LEADING(t1_name [, tl_name ...])` hint reminds the optimizer that, when generating the execution plan, to determine the order of multi-table joins according to the order of table names specified in the hint. For example:
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+```
+
+In the above query with multi-table joins, the order of joins is determined by the order of table names specified in the `LEADING()` hint. The optimizer will first join `t1` and `t2` and then join the result with `t3`. This hint is more general than [`STRAIGHT_JOIN`](#straight_join).
+
+The `LEADING` hint does not take effect in the following situations:
+
++ Multiple `LEADING` hints are specified.
++ The table name specified in the `LEADING` hint does not exist.
++ A duplicated table name is specified in the `LEADING` hint.
++ The optimizer cannot perform join operations according to the order as specified by the `LEADING` hint.
++ The `straight_join()` hint already exists.
++ The query contains an outer join.
++ Any of the `MERGE_JOIN`, `INL_JOIN`, `INL_HASH_JOIN`, and `HASH_JOIN` hints is used at the same time.
+
+In the above situations, a warning is generated.
+
+```sql
+-- Multiple `LEADING` hints are specified.
+SELECT /*+ LEADING(t1, t2) LEADING(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+
+-- To learn why the `LEADING` hint fails to take effect, execute `show warnings`.
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                           |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Warning | 1815 | We can only use one leading hint at most, when multiple leading hints are used, all leading hints will be invalid |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+```
+
 ## Hints that take effect in the whole query
 
 This category of hints can only follow behind the **first** `SELECT`, `UPDATE` or `DELETE` keyword, which is equivalent to modifying the value of the specified system variable when this query is executed. The priority of the hint is higher than that of existing system variables.
@@ -346,6 +386,21 @@ In the following example, the Plan Cache is forcibly disabled when executing the
 ```sql
 prepare stmt from 'select  /*+ IGNORE_PLAN_CACHE() */ * from t where t.id = ?';
 ```
+
+### STRAIGHT_JOIN()
+
+The `STRAIGHT_JOIN()` hint reminds the optimizer to join tables in the order of table names in the `FROM` clause when generating the join plan.
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ STRAIGHT_JOIN() */ * FROM t t1, t t2 WHERE t1.a = t2.a;
+```
+
+> **Note:**
+>
+> - `STRAIGHT_JOIN` has higher priority over `LEADING`. When both hints are used, `LEADING` does not take effect.
+> - It is recommended to use the `LEADING` hint, which is more general than the `STRAIGHT_JOIN` hint.
 
 ### NTH_PLAN(N)
 
