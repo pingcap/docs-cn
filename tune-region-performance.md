@@ -25,7 +25,7 @@ TiKV 自动将底层数据进行[分片](/best-practices/tidb-best-practices.md#
 > + 查询性能回退，尤其是大范围数据查询的性能会有回退。
 > + 调度变慢。
 
-Region 的大小可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 进行设置。推荐的 Region 大小为 96 MiB、128 MiB、256 MiB。`region-split-size` 越大，性能会越容易发生抖动。不推荐将 Region 大小设置超过 1 GiB，强烈建议不超过 10 GiB。如果你使用了 TiFlash，则 Region 大小不能超过 256 MiB。Region 调大以后，使用 Dumpling 工具时，需要降低并发，否则 TiDB 会有 OOM 的风险。
+Region 的大小可以通过 [`coprocessor.region-split-size`](/tikv-configuration-file.md#region-split-size) 进行设置。推荐的 Region 大小为 96 MiB、128 MiB、256 MiB。`region-split-size` 越大，性能会越容易发生抖动。不推荐将 Region 大小设置超过 1 GiB，强烈建议不超过 10 GiB。如果你使用了 TiFlash，则 Region 大小不能超过 256 MiB。如果使用 Dumpling 工具，则 Region 大小不能超过 1 GiB。Region 调大以后，使用 Dumpling 工具时，需要降低并发，否则 TiDB 会有 OOM 的风险。
 
 ## 使用 bucket 增加并发
 
