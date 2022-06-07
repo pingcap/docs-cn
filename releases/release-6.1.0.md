@@ -1,5 +1,5 @@
 ---
-title: TiDB 6.0.0 Release Notes
+title: TiDB 6.1.0 Release Notes
 ---
 
 # TiDB v6.1.0 Release Notes
@@ -11,7 +11,7 @@ TiDB 版本：6.1.0
 在 6.1.0 版本中，你可以获得以下关键特性：
 
 - List, List columns 分区方式 GA，与 MySQL 5.7 兼容
-- TiFlash 分区表动态裁剪  GA
+- TiFlash 分区表动态裁剪 GA
 - 支持兼容 MySQL 的用户级别锁管理
 - 支持非事务性 DML 语法（目前仅支持 DELETE）
 - TiFlash 支持按需触发物理数据整理（Compaction）
@@ -320,7 +320,7 @@ TiDB 版本：6.1.0
     * 若升级前集群指定的配置文件中，存在已经配置的项，则升级过程中 TiDB 将会将配置项的值自动更新为对应系统变量的值，以保证升级后，系统的行为不会因为参数的优化发生变化。
     * 上述自动更新仅在升级过程中发生一次，升级完成之后，被废弃的配置项不再有任何效果。
 
-* TiFlash 的新存储格式不能直接从 v3 降级到 v2，详情请参考 [TiFlash 升级指南]()。
+* TiFlash 的新存储格式不能直接从 v3 降级到 v2，详情请参考 [TiFlash 升级指南](/tiflash-610-upgrade.md)。
 
 * DM WebUI 移除 Dashboard 页面。
 
@@ -382,7 +382,7 @@ TiDB 版本：6.1.0
     - 修复集群的 PD 节点被替换后一些 DDL 语句会卡住一段时间的问题 [#33908](https://github.com/pingcap/tidb/issues/33908)
     - (dup: release-5.4.1.md > Bug 修复> TiDB) 修复了查询 `INFORMATION _SCHEMA.CLUSTER_SLOW_QUERTY` 表导致 TiDB 服务器 OOM 的问题，在 Grafana dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
     - (dup: release-5.2.4.md > Bug 修复> TiDB) 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
-    - 修复 TopSQL 模块的内存泄露问题 [#34525](https://github.com/pingcap/tidb/issues/34525] [#34502](https://github.com/pingcap/tidb/issues/34502)
+    - 修复 TopSQL 模块的内存泄露问题 [#34525](https://github.com/pingcap/tidb/issues/34525)，[#34502](https://github.com/pingcap/tidb/issues/34502)
     - 修复 Plan Cache 对于 PointGet 计划有时候会出错的问题 [#3237](https://github.com/pingcap/tidb/issues/3237)
     - 修复在 RC 隔离情况下 Plan Cache 启用时可能导致查询结果错误的问题 [#34447](https://github.com/pingcap/tidb/issues/34447)
 
