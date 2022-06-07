@@ -16,11 +16,8 @@ TiDB 版本：6.1.0
 - 支持非事务性 DML 语法（目前仅支持 DELETE）
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
-- TiFlash 列存更新了存储格式，以增强性能和稳定性
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
 - DM 合库合表迁移场景的乐观 DDL 协调模式正式 GA
-
-* 注： TiFlash 6.1 引入了较多新功能，为方便顺畅升级，请参考 [TiFlash v6.1.0 升级帮助](/tiflash-610-upgrade.md)。*
 
 ## 新功能
 
@@ -99,14 +96,6 @@ TiDB 版本：6.1.0
 
     [用户文档：MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[用户文档：动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 
-* TiFlash 新的存储格式以增强性能和稳定性
-
-    新的存储格式减少后台任务 IO 流量及 CPU 占用，提升高负载下的稳定性。
-
-    注意升级后不支持原地降级，旧版本不能识别新的数据格式。用户需做好升级准备工作。测试过程中的降级回退 workaround 参照 [TiFlash v6.1.0 升级帮助](/tiflash-610-upgrade.md)。
-
-    [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，[#3594](https://github.com/pingcap/tiflash/issues/3594)
-
 ### 稳定性
 
 * SST 故障自动恢复
@@ -155,7 +144,7 @@ TiDB 版本：6.1.0
     * TiKV 支持部分参数在线变更。详细变更列表请查看[其他](#其他)。
     * TiFlash 配置项 `max_threads` 转化为系统变量 `tidb_max_tiflash_threads`，从而支持配置项在线变更和持久化。转化后，原有配置项不会废弃。
 
-    对于从 6.1 之前版本升级到 6.1 的集群（包括滚动升级和停机升级），请注意：
+    对于从 v6.1.0 之前版本升级到 v6.1.0 的集群（包括滚动升级和停机升级），请注意：
 
     * 若升级前集群指定的配置文件中，存在已经配置的项，则升级过程中 TiDB 将会将配置项的值自动更新为对应系统变量的值，以保证升级后，系统的行为不会因为参数的优化发生变化。
     * 上述自动更新仅在升级过程中发生一次，升级完成之后，被废弃的配置项不再有任何效果。
@@ -281,7 +270,6 @@ TiDB 版本：6.1.0
 | TiKV | [`storage.background-error-recovery-window`](/tikv-configuration-file.md#background-error-recovery-window-从-v610-版本开始引入) | 新增 | RocksDB 检测到可恢复的后台错误后，所允许的最长恢复时间。 |
 | TiKV | [`storage.block-cache.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-从-v610-版本开始引入) | 新增 | 控制 store 上线阶段的最长等待时间。 |
-| TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#tiflash-配置参数) | 修改 | `format_version` 默认值变更为 4，v6.1.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗 |
 | TiCDC | [`enable-tls`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
 | TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)。 |
 | TiCDC | [`avro-decimal-handling-mode`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)<br/>[`avro-bigint-unsigned-handling-mode`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制 Avro 格式的输出细节。 |
@@ -319,8 +307,6 @@ TiDB 版本：6.1.0
 
     * 若升级前集群指定的配置文件中，存在已经配置的项，则升级过程中 TiDB 将会将配置项的值自动更新为对应系统变量的值，以保证升级后，系统的行为不会因为参数的优化发生变化。
     * 上述自动更新仅在升级过程中发生一次，升级完成之后，被废弃的配置项不再有任何效果。
-
-* TiFlash 的新存储格式不能直接从 v3 降级到 v2，详情请参考 [TiFlash 升级指南](/tiflash-610-upgrade.md)。
 
 * DM WebUI 移除 Dashboard 页面。
 
@@ -403,10 +389,6 @@ TiDB 版本：6.1.0
     - 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题   [#4941](https://github.com/tikv/pd/issues/4941)
     - 修复 PD leader 转移后调度不能立即启动的问题 [4769](https://github.com/tikv/pd/issues/4769)
 
-+ TiDB Dashboard
-
-    - 修复 Top SQL 功能无法统计到其开启时刻正在运行的 SQL 的问题 [#33859](https://github.com/pingcap/tidb/issues/33859)
-
 + TiFlash
 
     - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
@@ -418,6 +400,10 @@ TiDB 版本：6.1.0
         - 优化了 ddl schema 缓存方式，降低了内存消耗 [#1386](https://github.com/pingcap/tiflow/issues/1386)
         - 避免大事务导致的 OOM 问题 [#5280](https://github.com/pingcap/tiflow/issues/5280)
         - 修复了增量扫描特殊场景下的数据丢失问题 [#5468](https://github.com/pingcap/tiflow/issues/5468)
+
+    + TiDB Dashboard
+
+        - 修复 Top SQL 功能无法统计到其开启时刻正在运行的 SQL 的问题 [#33859](https://github.com/pingcap/tidb/issues/33859)
 
     + TiDB Data Migration (DM)
 
