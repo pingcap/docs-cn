@@ -427,7 +427,7 @@ TiDB 支持持久化的配置项包括：
 
 > **警告：**
 >
-> 目前 ANALYZE 的内存 quota 功能为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
+> 目前限制 ANALYZE 的内存使用量为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
 
 TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通过 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
 
