@@ -423,7 +423,6 @@ TiDB 支持持久化的配置项包括：
 - GlobalStats 会使用表级别的持久化配置
 - ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置会被忽略，且不会被持久化
 
-
 ### 统计信息收集的内存限制
 
 TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通过 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
