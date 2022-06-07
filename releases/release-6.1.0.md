@@ -26,13 +26,13 @@ TiDB 版本：6.1.0
 
 ### SQL
 
-* List, List columns 分区方式正式 GA，与MySQL 5.7 兼容。
+* List, List columns 分区方式正式 GA，与 MySQL 5.7 兼容。
 
     [用户文档：List 分区](/partitioned-table.md#list-分区)，[用户文档：List COLUMNS 分区](/partitioned-table.md#list-columns-分区)
 
 * 支持通过 SQL 语句对 TiFlash 副本立即触发物理数据整理（Compaction）。
 
-    在当前 TiFlash 后台自动整理物理数据（Compaction）机制基础上，新增 compact  命令,帮助刷新旧格式数据，提升读写性能。推荐在升级至 v6.1.0 之后，执行该语句以清理数据。此语句是对标准 SQL 语法的扩展，对 MySQL 客户端保持兼容。升级之外场景一般不需要特别关注。
+    在当前 TiFlash 后台自动整理物理数据（Compaction）机制基础上，新增 compact 命令，帮助刷新旧格式数据，提升读写性能。推荐在升级至 v6.1.0 之后，执行该语句以清理数据。此语句是对标准 SQL 语法的扩展，对 MySQL 客户端保持兼容。升级之外场景一般不需要特别关注。
 
     [用户文档](/sql-statements/sql-statement-alter-table-compact.md)，[#4145](https://github.com/pingcap/tiflash/issues/4145)
 
@@ -168,7 +168,7 @@ TiDB 版本：6.1.0
 
     支持通过 `enable-global-kill` 配置项（默认开启）设置全局 kill 开关。
 
-    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登陆到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启`enable-global-kill`  配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
+    在 TiDB v6.1.0 之前，当某个特定操作占用大量资源引发集群稳定性问题时，你需要先登陆到对应的 TiDB 节点，然后运行 `kill [TiDB] id` 命令终止对应的连接及操作。在 TiDB 节点多的情况下，这种方式使用不便，并且容易误操作。从 v6.1.0 起，当开启 `enable-global-kill`  配置项时，你可以在任意 TiDB 节点运行 kill 命令终止指定的连接及操作，而无需担心客户端和 TiDB 中间有代理时错误地终止其他查询或会话。目前 TiDB 暂时不支持用 Ctrl+C 终止查询或会话。
 
     [用户文档](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，[#8854](https://github.com/pingcap/tidb/issues/8854)
 
@@ -259,7 +259,7 @@ TiDB 版本：6.1.0
 |:---|:---|:---|:-----|
 | TiDB | `committer-concurrency` | 删除 | 转化为系统变量 `tidb_committer_concurrency` |
 | TiDB | `enable-batch-dml` | 删除 | 转化为系统变量 `tidb_enable_batch_dml` |
-| TiDB | `lower-case-table-names` | 删除 | TiDB 目前只支持`lower_case_table_name=2`, 如果升级前设置了其他值，升级到 v6.1.0 后该值会丢失。 |
+| TiDB | `lower-case-table-names` | 删除 | TiDB 目前只支持`lower_case_table_name=2`，如果升级前设置了其他值，升级到 v6.1.0 后该值会丢失。 |
 | TiDB | `mem-quota-query` | 删除 | 转化为系统变量 `tidb_mem_quota_query` |
 | TiDB | `oom-action` | 删除 | 转化为系统变量 `tidb_mem_oom_action` |
 | TiDB | `prepared-plan-cache.capacity` | 删除 | 转化为系统变量 `tidb_prepared_plan_cache_size` |
@@ -272,8 +272,8 @@ TiDB 版本：6.1.0
 | TiKV | [`raft-engine.enable`](/tikv-configuration-file.md#enable-1) | 修改 | 默认值从 `false` 修改为 `true`。 |
 | TiKV | [`region-max-keys`](/tikv-configuration-file.md#region-max-keys) | 修改 | 默认值从 1440000 修改为 `region-split-keys / 2 * 3`。 |
 | TiKV | [`region-max-size`](/tikv-configuration-file.md#region-max-size) | 修改 | 默认值从 144 MB 修改为 `region-split-size / 2 * 3`。 |
-| TiKV | [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) | 新增 | 控制是否开启 region bucket 将 region 划分为更小的区间。 |
-| TiKV | [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) | 新增 | 设置 bucket 的预期大小。 |
+| TiKV | [`coprocessor.enable-region-bucket`](/tikv-configuration-file.md#enable-region-bucket-从-v610-版本开始引入) | 新增 | 是否将 Region 划分为更小的区间 bucket。 |
+| TiKV | [`coprocessor.region-bucket-size`](/tikv-configuration-file.md#region-bucket-size-从-v610-版本开始引入) | 新增 | 设置 `enable-region-bucket` 启用时 bucket 的预期大小。 |
 | TiKV | [`causal-ts.renew-batch-min-size`](/tikv-configuration-file.md#renew-batch-min-size) | 新增 | 时间戳缓存的最小数量。 |
 | TiKV | [`causal-ts.renew-interval`](/tikv-configuration-file.md#renew-interval) | 新增 | 刷新本地缓存时间戳的周期。 |
 | TiKV | [`max-snapshot-file-raw-size`](/tikv-configuration-file.md#max-snapshot-file-raw-size-从-v610-版本开始引入) | 新增 | 当 snapshot 文件大于该配置项指定的大小时，snapshot 文件会被切割为多个文件。 |
