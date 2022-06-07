@@ -338,7 +338,7 @@ select tidb_decode_sql_digests(@digests, 10);
 
 - 创建方式：
 
-    当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群可扩展性。
+    使用 `uk((tidb_shard(a)), a))` 为字段 `a` 创建一个 SHARD INDEX。当二级唯一索引 `uk((tidb_shard(a)), a))` 的索引字段 `a` 上存在因单调递增或递减而产生的热点时，索引的前缀 `tidb_shard(a)` 会打散热点，从而提升集群可扩展性。
 
 - 适用场景：
 
