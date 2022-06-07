@@ -544,7 +544,9 @@ Type "I consent" to continue, anything else to exit: I consent
 
 ### Print information related to damaged SST files
 
-Damaged SST files in TiKV might cause the TiKV process to panic. To clean up the damaged SST files, you will need the information of these files. To get the information, you can execute the `bad-ssts` command in TiKV Control. The needed information is shown in the output. The following is an example command and output.
+Damaged SST files in TiKV might cause TiKV processes to panic. Before TiDB v6.1.0, these files cause TiKV to panic immediately. Since TiDB v6.1.0, TiKV processes panic 1 hour after SST files are damaged.
+
+To clean up the damaged SST files, you can run the `bad-ssts` command in TiKV Control to show the needed information. The following is an example command and output.
 
 > **Note:**
 >
