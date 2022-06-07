@@ -376,22 +376,20 @@ TiDB 版本：6.1.0
 
     - 修复 `in` 函数处理 `bit` 数据类型时可能会导致 TiDB panic 的问题 [#33070](https://github.com/pingcap/tidb/issues/33070)
     - 修复 `UnionScan` 无法保序导致的查询结果不正确的问题 [#33175](https://github.com/pingcap/tidb/issues/33175)
-    - (dup: release-5.4.1.md > Bug 修复> TiDB) 修复特定情况下 Merge Join 执行结果错误的问题[#33042](https://github.com/pingcap/tidb/issues/33042)
+    - 修复特定情况下 Merge Join 执行结果错误的问题 [#33042](https://github.com/pingcap/tidb/issues/33042)
     - 修复动态裁减模式下 `index join` 的结果可能会错误的问题 [#33231](https://github.com/pingcap/tidb/issues/33231)
     - 修复分区表的一些分区被 `DROP` 删除后数据可能不被 GC 垃圾回收的问题 [#33620](https://github.com/pingcap/tidb/issues/33620)
     - 修复集群的 PD 节点被替换后一些 DDL 语句会卡住一段时间的问题 [#33908](https://github.com/pingcap/tidb/issues/33908)
-    - (dup: release-5.4.1.md > Bug 修复> TiDB) 修复了查询 `INFORMATION _SCHEMA.CLUSTER_SLOW_QUERTY` 表导致 TiDB 服务器 OOM 的问题，在 Grafana dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
-    - (dup: release-5.2.4.md > Bug 修复> TiDB) 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
+    - 修复了查询 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 表导致 TiDB 服务器 OOM 的问题，在 Grafana dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
+    - 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
     - 修复 TopSQL 模块的内存泄露问题 [#34525](https://github.com/pingcap/tidb/issues/34525)，[#34502](https://github.com/pingcap/tidb/issues/34502)
     - 修复 Plan Cache 对于 PointGet 计划有时候会出错的问题 [#3237](https://github.com/pingcap/tidb/issues/3237)
     - 修复在 RC 隔离情况下 Plan Cache 启用时可能导致查询结果错误的问题 [#34447](https://github.com/pingcap/tidb/issues/34447)
 
 + TiKV
 
-    - (dup: release-5.4.1.md > Bug 修复> TiKV)修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic 的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
-    - (dup: release-5.4.1.md > Bug 修复> TiKV)修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     - 修复下线一个 TiKV 实例导致 Raft log lag 越来越大的问题 [#12161](https://github.com/tikv/tikv/issues/12161)
-    - (dup: release-5.4.1.md > Bug 修复> TiKV)修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
+    - 修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
     - 修复从 v5.3.1、v5.4.0 升级到 v6.0.0 时 TiKV 报 `failed to load_latest_options` 错误的问题 [#12269](https://github.com/tikv/tikv/issues/12269)
     - 修复内存资源不足时 append Raft log 导致 OOM 的问题 [#11379](https://github.com/tikv/tikv/issues/11379)
     - 修复销毁 peer 和批量分裂 Region 之间的竞争导致的 TiKV panic [#12368](https://github.com/tikv/tikv/issues/12368)
@@ -426,17 +424,17 @@ TiDB 版本：6.1.0
         - 修复 `start-time` 时区问题，从使用下游时区改为使用上游时区  [#5471](https://github.com/pingcap/tiflow/issues/5471)
         - 修复任务自动恢复后，DM 会占用更多磁盘空间的问题[#3734](https://github.com/pingcap/tiflow/issues/3734), [#5344](https://github.com/pingcap/tiflow/issues/5344)
         - 修复 checkpoint flush 可能导致失败行数据被跳过的问题[#5279](https://github.com/pingcap/tiflow/issues/5279)
-        - (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Data Migration (DM))修复在 DDL event 被跳过并且人工修复下游 schema 后，schema tracker 无法追踪最新表结构的问题 [#5272](https://github.com/pingcap/tiflow/issues/5272)
+        - 修复了某些情况下，过滤 DDL 并在下游手动执行会导致同步任务不能自动重试恢复的问题 [#5272](https://github.com/pingcap/tiflow/issues/5272)
         - 修复在未设置 `case-sensitive: true` 时无法同步大写表的问题[#5255](https://github.com/pingcap/tiflow/issues/5255)
-        - (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Data Migration (DM))修复极端情况下索引、主键数量和顺序可能导致 Schema Tracker Panic 的问题 [#5159](https://github.com/pingcap/tiflow/issues/5159)
-        - (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Data Migration (DM))修复 DM 可能大量打印 Checkpoint 日志的问题 [5063](https://github.com/pingcap/tiflow/issues/5063)
+        - 修复了在 `SHOW CREATE TABLE` 语句返回的索引中，主键没有排在第一位导致的 DM worker panic 的问题 [#5159](https://github.com/pingcap/tiflow/issues/5159)
+        - 修复了当开启 GTID 模式或者任务自动恢复时，可能出现一段时间 CPU 占用高并打印大量日志的问题 [#5063](https://github.com/pingcap/tiflow/issues/5063)
         - 修复 DM Web UI offline 选项及其他使用问题 [#4993](https://github.com/pingcap/tiflow/issues/4993)
         - 修复上游 GTID 配置为空时，增量任务启动失败的问题[#3731](https://github.com/pingcap/tiflow/issues/3731)
         - 修复空配置可能导致 dm-master panic 的问题[#3732](https://github.com/pingcap/tiflow/issues/3732)
 
     + TiDB Lightning
 
-        - (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Lightning)修复 precheck 未检查磁盘空间及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
+        - 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
         - 修复 schema 路由错误的问题 [#33381](https://github.com/pingcap/tidb/issues/33381)
         - 修复 TiDB Lightning panic 时 PD 配置未正确恢复的问题[#31733](https://github.com/pingcap/tidb/issues/31733)
         - 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
