@@ -111,6 +111,12 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
     [User document](/functions-and-operators/expressions-pushed-down.md#add-to-the-blocklist), [#30738](https://github.com/pingcap/tidb/issues/30738)
 
+- Optimization of hotspot index
+
+    Writing monotonically increasing data in batches to the secondary index causes an index hotspot and affects the overall write throughput. Since v6.0.0, TiDB supports scattering the index hotspot using the `tidb_shard` function to improve the write performance. Currently, `tidb_shard` only takes effect on the unique secondary index. This application-friendly solution does not require modifying the original query conditions. You can use this solution in the scenarios of high write throughput, point queries, and batch point queries. Note that using the data that has been scattered by range queries in the application might cause a performance regression. Therefore, do not use this function in such cases without verification.
+
+    [User document](/functions-and-operators/tidb-functions.md#tidb_shard), [#31040](https://github.com/pingcap/tidb/issues/31040)
+
 - Support dynamic pruning mode for partitioned tables in TiFlash MPP engine (experimental)
 
     In this mode, TiDB can read and compute the data on partitioned tables using the MPP engine of TiFlash, which greatly improves the query performance of partitioned tables.
