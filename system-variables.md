@@ -1266,6 +1266,15 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 >     - A large amount of history data may affect performance to a certain degree, especially for range queries such as `select count(*) from t`
 > - If there is any transaction that has been running longer than `tidb_gc_life_time`, during GC, the data since `start_ts` is retained for this transaction to continue execution. For example, if `tidb_gc_life_time` is configured to 10 minutes, among all transactions being executed, the transaction that starts earliest has been running for 15 minutes, GC will retain data of the recent 15 minutes.
 
+### tidb_gc_max_wait_time <span class="version-mark">New in v6.1.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `86400`
+- Range: `[600, 31536000]`
+- Unit: Seconds
+- This variable is used to set the maximum time that active transactions block the GC safe point. During each time of GC, the safe point does not exceed the start time of the ongoing transactions by default. If the runtime of active transactions does not exceed this variable value, the GC safe point will be blocked until the runtime exceeds this value. This variable value is an integer type.
+
 ### tidb_gc_run_interval <span class="version-mark">New in v5.0</span>
 
 - Scope: GLOBAL
