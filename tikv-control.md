@@ -406,7 +406,11 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB
 success
 ```
 
-### Force Regions to recover services from failure of multiple replicas (use with caution)
+### Force Regions to recover services from failure of multiple replicas (deprecated)
+
+> **Warning:**
+>
+> It is not recommended to use this feature. Instead, you can use Online Unsafe Recovery in `pd-ctl` which provides one-stop automatic recovery capabilities. Extra operations such as stopping services are not needed. For detailed introduction, see [Online Unsafe Recovery](/online-unsafe-recovery.md).
 
 You can use the `unsafe-recover remove-fail-stores` command to remove the failed machines from the peer list of Regions. Before running this command, you need to stop the service of the target TiKV store to release file locks.
 

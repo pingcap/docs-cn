@@ -7,19 +7,17 @@ summary: Learn how to use Online Unsafe Recovery.
 
 > **Warning:**
 >
-> - Online Unsafe Recovery is a type of lossy recovery. If you use this feature, the integrity of data and data indexes cannot be guaranteed.
-> - Online Unsafe Recovery is an experimental feature, and it is **NOT** recommended to use it in the production environment. The interface, strategy, and internal implementation of this feature might change when it becomes generally available (GA). Although this feature has been tested in some scenarios, it is not thoroughly validated and might cause system unavailability.
-> - It is recommended to perform the feature-related operations with the support from the TiDB team. If any misoperation is performed, it might be hard to recover the cluster.
+> Online Unsafe Recovery is a type of lossy recovery. If you use this feature, the integrity of data and data indexes cannot be guaranteed.
 
 When permanently damaged replicas cause part of data on TiKV to be unreadable and unwritable, you can use the Online Unsafe Recovery feature to perform a lossy recovery operation.
 
 ## Feature description
 
-In TiDB, the same data might be stored in multiple stores at the same time according to the replica rules defined by users. This guarantees that data is still readable and writable even if a single or a few stores are temporarily offline or damaged. However, when most or all replicas of a Region go offline during a short period of time, the Region becomes temporarily unavailable, by design, to ensure data integrity.
+In TiDB, the same data might be stored in multiple stores at the same time according to the replica rules defined by users. This guarantees that data is still readable and writable even if a single or a few stores are temporarily offline or damaged. However, when most or all replicas of a Region go offline during a short period of time, the Region becomes temporarily unavailable and cannot be read or written.
 
 Suppose that multiple replicas of a data range encounter issues like permanent damage (such as disk damage), and these issues cause the stores to stay offline. In this case, this data range is temporarily unavailable. If you want the cluster back in use and also accept data rewind or data loss, in theory, you can re-form the majority of replicas by manually removing the failed replicas from the group. This allows application-layer services to read and write this data range (might be stale or empty) again.
 
-In this case, if some stores with loss-tolerant data are permanently damaged, you can perform a lossy recovery operation by using Online Unsafe Recovery. Using this feature, PD, under its global perspective, collects the metadata of data shards from all stores and generates a real-time and complete recovery plan. Then, PD distributes the plan to all surviving stores to make them perform data recovery tasks. In addition, once the data recovery plan is distributed, PD periodically monitors the recovery progress and re-send the plan when necessary.
+In this case, if some stores with loss-tolerant data are permanently damaged, you can perform a lossy recovery operation by using Online Unsafe Recovery. When you use this feature, PD automatically pauses Region scheduling (including split and merge), collects the metadata of data shards from all stores, and then, under its global perspective, generates a real-time and complete recovery plan. Then, PD distributes the plan to all surviving stores to make them perform data recovery tasks. In addition, once the data recovery plan is distributed, PD periodically monitors the recovery progress and re-send the plan when necessary.
 
 ## User scenarios
 
@@ -38,47 +36,163 @@ Before using Online Unsafe Recovery, make sure that the following requirements a
 * The offline stores indeed cause some pieces of data to be unavailable.
 * The offline stores cannot be automatically recovered or restarted.
 
-### Step 1. Disable all types of scheduling
+### Step 1. Specify the stores that cannot be recovered
 
-You need to temporarily disable all types of internal scheduling, such as load balancing. After disabling them, it is recommended to wait for about 10 minutes so that the triggered scheduling can have sufficient time to complete the scheduled tasks.
+Use PD Control to specify the TiKV nodes that cannot be recovered and trigger the automatic recovery by running [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show).
+
+{{< copyable "shell-regular" >}}
+
+```bash
+pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
+```
+
+If the command returns `Success`, PD Control has successfully registered the task to PD. This only means that the request has been accepted, not that the recovery has been successfully performed. The recovery task is performed in the background. To see the recovery progress, use [`show`](#step-2-check-the-recovery-progress-and-wait-for-the-completion).
+
+If the command returns `Failed`, PD Control has failed to register the task to PD. The possible errors are as follows:
+
+- `unsafe recovery is running`: There is already an ongoing recovery task.
+- `invalid input store x doesn't exist`: The specified store ID does not exist.
+- `invalid input store x is up and connected`: The specified store with the ID is still healthy and should not be recovered.
+
+To specify the longest allowable duration of a recovery task, use the `--timeout <seconds>` option. If this option is not specified, the longest duration is 5 minutes by default. When the timeout occurs, the recovery is interrupted and returns an error.
 
 > **Note:**
 >
-> After the scheduling is disabled, the system cannot resolve data hotspot issues. Therefore, you need to enable the scheduling as soon as possible after the recovery is completed.
+> - Because this command needs to collect information from all peers, it might cause an increase in memory usage (100,000 peers are estimated to use 500 MiB of memory).
+> - If PD restarts when the command is running, the recovery is interrupted and you need to trigger the task again.
+> - Once the command is running, the specified stores will be set to the Tombstone status, and you cannot restart these stores.
+> - When the command is running, all scheduling tasks and split/merge are paused and will be resumed automatically after the recovery is successful or fails.
 
-1. Use PD Control to get the current configuration by running the [`config show`](/pd-control.md#config-show--set-option-value--placement-rules) command.
-2. Use PD Control to disable all types of scheduling. For example:
+### Step 2. Check the recovery progress and wait for the completion
 
-    * [`config set region-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-    * [`config set replica-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
-    * [`config set merge-schedule-limit 0`](/pd-control.md#config-show--set-option-value--placement-rules)
+When the above store removal command runs successfully, you can use PD Control to check the removal progress by running [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules).
 
-### Step 2. Remove the stores that cannot be automatically recovered
+{{< copyable "shell-regular" >}}
 
-Use PD Control to remove the stores that cannot be automatically recovered by running the [`unsafe remove-failed-stores <store_id>[,<store_id>,...]`](/pd-control.md#unsafe-remove-failed-stores-store-ids--show--history) command.
+```bash
+pd-ctl -u <pd_addr> unsafe remove-failed-stores show
+```
 
-> **Note:**
->
-> The returned result of this command only indicates that the request is accepted, not that the recovery is completed successfully. The stores are actually recovered in the background.
+The recovery process has multiple possible stages:
 
-### Step 3. Check the progress
+- `collect report`: The initial stage in which PD collects reports from TiKV and gets global information.
+- `tombstone tiflash learner`: Among the unhealthy Regions, delete the TiFlash learners that are newer than other healthy peers, to prevent such an extreme situation and the possible panic.
+- `force leader for commit merge`: A special stage. When there is an uncompleted commit merge, `force leader` is first performed on the Regions with commit merge, in case of extreme situations.
+- `force leader`: Forces unhealthy Regions to assign a Raft leader among the remaining healthy peers.
+- `demote failed voter`: Demotes the Region's failed voters to learners, and then the Regions can select a Raft leader as normal.
+- `create empty region`: Creates an empty Region to fill in the space in the key range. This is to resolve the case that the stores with all replicas of some Regions have been damaged.
 
-When the above store removal command runs successfully, you can use PD Control to check the removal progress by running the [`unsafe remove-failed-stores show`](/pd-control.md#config-show--set-option-value--placement-rules) command. When the command result shows "Last recovery has finished", the system recovery is completed.
+Each of the above stages is output in the JSON format, including information, time, and a detailed recovery plan. For example:
 
-### Step 4. Test read and write tasks
+```json
+[
+    {
+        "info": "Unsafe recovery enters collect report stage: failed stores 4, 5, 6",
+        "time": "......"
+    },
+    {
+        "info": "Unsafe recovery enters force leader stage",
+        "time": "......",
+        "actions": {
+            "store 1": [
+                "force leader on regions: 1001, 1002"
+            ],
+            "store 2": [
+                "force leader on regions: 1003"
+            ]
+        }
+    },
+    {
+        "info": "Unsafe recovery enters demote failed voter stage",
+        "time": "......",
+        "actions": {
+            "store 1": [
+                "region 1001 demotes peers { id:101 store_id:4 }, { id:102 store_id:5 }",
+                "region 1002 demotes peers { id:103 store_id:5 }, { id:104 store_id:6 }",
+            ],
+            "store 2": [
+                "region 1003 demotes peers { id:105 store_id:4 }, { id:106 store_id:6 }",
+            ]
+        }
+    },
+    {
+        "info": "Collecting reports from alive stores(1/3)",
+        "time": "......",
+        "details": [
+            "Stores that have not dispatched plan: ",
+            "Stores that have reported to PD: 4",
+            "Stores that have not reported to PD: 5, 6",
+        ]
+    }
+]
+```
 
-After the progress command shows that the recovery task is completed, you can try to execute some simple SQL queries like the following example or perform write tasks to ensure that the data is readable and writable.
+After PD has successfully dispatched the recovery plan, it waits for TiKV to report the execution results. As you can see in `Collecting reports from alive stores`, the last stage of the above output, this part of the output shows the detailed statuses of PD dispatching recovery plan and receiving reports from TiKV.
 
-```sql
-select count(*) from table_that_suffered_from_group_majority_failure;
+The whole recovery process takes multiple stages and one stage might be retried multiple times. Usually, the estimated duration is 3 to 10 periods of store heartbeat (one period of store heartbeat is 10 seconds by default). After the recovery is completed, the last stage in the command output shows `"Unsafe recovery finished"`, the table IDs to which the affected Regions belong (if there is none or RawKV is used, the output does not show the table IDs), and the affected SQL meta Regions. For example:
+
+```json
+{
+    "info": "Unsafe recovery finished",
+    "time": "......",
+    "details": [
+        "Affected table ids: 64, 27",
+        "Affected meta regions: 1001",
+    ]
+}
 ```
 
 > **Note:**
 >
-> The situation that data can be read and written does not indicate there is no data loss.
+> - The recovery operation has turned some failed voters to failed learners. Then PD scheduling needs some time to remove these failed learners.
+> - It is recommended to add new stores in time.
 
-### Step 5. Restart the scheduling
+If an error occurs during the task, the last stage in the output shows `"Unsafe recovery failed"` and the error message. For example:
 
-To restart the scheduling, you need to adjust the `0` value of `config set region-schedule-limit 0`, `config set replica-schedule-limit 0`, and `config set merge-schedule-limit 0` modified in step 1 to the initial values.
+```json
+{
+    "info": "Unsafe recovery failed: <error>",
+    "time": "......"
+}
+```
 
-Then, the whole process is finished.
+### Step 3. Check the consistency of data and index (not required for RawKV)
+
+After the recovery is completed, the data and index might be inconsistent. Use the SQL commands `ADMIN CHECK`, `ADMIN RECOVER`, and `ADMIN CLEANUP` to check the consistency of the affected tables (you can get IDs from the output of `"Unsafe recovery finished"`) for data consistency and index consistency, and to recover the tables.
+
+> **Note:**
+>
+> Although the data can be read and written, it does not mean that there is no data loss.
+
+### Step 4: Remove unrecoverable stores (optional)
+
+<SimpleTab>
+<div label="Stores deployed using TiUP">
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tiup cluster prune <cluster-name>
+```
+
+</div>
+<div label="Stores deployed using TiDB Operator">
+
+1. Delete the `PersistentVolumeClaim`.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl delete -n ${namespace} pvc ${pvc_name} --wait=false
+    ```
+
+2. Delete the TiKV Pod and wait for newly created TiKV Pods to join the cluster.
+
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    kubectl delete -n ${namespace} pod ${pod_name}
+    ```
+
+</div>
+</SimpleTab>
