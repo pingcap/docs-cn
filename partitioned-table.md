@@ -1309,7 +1309,7 @@ set @@session.tidb_partition_prune_mode = 'dynamic'
 
 静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
 
-从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到下一次 `auto-analyze` 周期才会更新生成汇总统计信息。
+从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到全局 `dynamic` 动态裁剪模式开启后的下一次 `auto-analyze` 周期，才会更新生成汇总统计信息。
 
 {{< copyable "sql" >}}
 
@@ -1327,7 +1327,7 @@ mysql> show stats_meta where table_name like "t";
 3 rows in set (0.01 sec)
 ```
 
-此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
+为保证开启全局 `dynamic` 动态裁剪模式时，SQL 可以用上正确的统计信息，此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
 
 {{< copyable "sql" >}}
 
@@ -1532,8 +1532,6 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 3. 将批量更新语句导出到文件：
 
-    {{< copyable "sql" >}}
-
     ```
     $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
          from information_schema.PARTITIONS \
@@ -1541,6 +1539,13 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     ```
 
 4. 执行批量更新：
+
+    在 source 之前处理 SQL 文件：
+
+    ```
+    sed -i "" '1d' gatherGlobalStats.sql --- mac
+    sed -i '1d' gatherGlobalStats.sql --- linux
+    ```
 
     {{< copyable "sql" >}}
 
