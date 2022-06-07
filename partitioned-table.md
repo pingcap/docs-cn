@@ -1315,9 +1315,11 @@ set @@session.tidb_partition_prune_mode = 'dynamic'
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set session tidb_partition_prune_mode = 'dynamic';
+set session tidb_partition_prune_mode = 'dynamic';
+show stats_meta where table_name like "t";
+```
 
-mysql> show stats_meta where table_name like "t";
+```
 +---------+------------+----------------+---------------------+--------------+-----------+
 | Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -1333,10 +1335,11 @@ mysql> show stats_meta where table_name like "t";
 {{< copyable "sql" >}}
 
 ```sql
-mysql> analyze table t partition p1;
-Query OK, 0 rows affected, 1 warning (0.06 sec)
+analyze table t partition p1;
+show stats_meta where table_name like "t";
+```
 
-mysql> show stats_meta where table_name like "t";
+```
 +---------+------------+----------------+---------------------+--------------+-----------+
 | Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -1377,6 +1380,9 @@ mysql> create table t1(id int, age int, key(id)) partition by range(id) (
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> explain select * from t1 where id < 150;
+```
+
+```
 +------------------------------+----------+-----------+------------------------+--------------------------------+
 | id                           | estRows  | task      | access object          | operator info                  |
 +------------------------------+----------+-----------+------------------------+--------------------------------+
@@ -1502,9 +1508,12 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
         from information_schema.PARTITIONS
         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
     +-------------------------------------+
     | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
     +-------------------------------------+
@@ -1518,9 +1527,12 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+    select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
         from information_schema.PARTITIONS
         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
     +----------------------------------------------------------------------+
     | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
     +----------------------------------------------------------------------+
@@ -1532,11 +1544,13 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     可以按需将 `ALL COLUMNS` 改为实际需要的列。
 
 3. 将批量更新语句导出到文件：
+    
+    {{< copyable "sql" >}}
 
-    ```
-    $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
-         from information_schema.PARTITIONS \
-         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```sql
+    mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+        from information_schema.PARTITIONS \
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
     ```
 
 4. 执行批量更新：
@@ -1551,6 +1565,6 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    mysql> SET session tidb_partition_prune_mode = dynamic;
-    mysql> source gatherGlobalStats.sql
+    SET session tidb_partition_prune_mode = dynamic;
+    source gatherGlobalStats.sql
     ```
