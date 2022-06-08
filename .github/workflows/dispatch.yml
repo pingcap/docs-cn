@@ -4,7 +4,12 @@ on:
   push:
     branches:
       #- master
-      - release-*
+      #- release-*
+      - release-2.1
+      - release-3.*
+      - release-4.0
+      - release-5.*
+      - release-6.0
 
 jobs:
   trigger:
