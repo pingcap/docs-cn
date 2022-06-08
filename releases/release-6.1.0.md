@@ -210,7 +210,7 @@ TiDB 版本：6.1.0
 
     * TiCDC 支持 SASL GSSAPI 认证类型。增加了使用 Kafka 的 SASL 认证示例。
 
-        [用户文档](/ticdc/manage-ticdc.md#TiCDC-使用-Kafka-的认证与授权)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
+        [用户文档](/ticdc/manage-ticdc.md#ticdc-使用-kafka-的认证与授权)，[#4423](https://github.com/pingcap/tiflow/issues/4423)
 
 * TiCDC 支持同步使用 GBK 编码的上游表。
 
