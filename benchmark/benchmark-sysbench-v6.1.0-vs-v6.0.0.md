@@ -30,7 +30,7 @@ title: TiDB Sysbench 性能对比测试报告 - v6.1.0 对比 v6.0.0
 
 ### 参数配置
 
-两个版本使用相同的配置
+两个版本使用相同的配置。
 
 #### TiDB 参数配置
 
@@ -65,7 +65,7 @@ set global tidb_hashagg_partial_concurrency=1;
 set global tidb_enable_async_commit = 1;
 set global tidb_enable_1pc = 1;
 set global tidb_guarantee_linearizability = 0;
-set global tidb_enable_clustered_index = 1; 
+set global tidb_enable_clustered_index = 1;
 set global tidb_prepared_plan_cache_size=1000;
 ```
 
@@ -180,7 +180,6 @@ v6.1.0 对比 v6.0.0，Update Non-index 性能提升了 3.88%。
 |300|18085.79|19198.89|25.28|23.95|6.15|
 |600|22210.8|22877.58|42.61|41.85|3.00|
 |900|25249.81|26431.12|55.82|53.85|4.68|
-
 
 v6.1.0 对比 v6.0.0，Update Index 性能提升 4.61%。
 
