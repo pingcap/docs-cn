@@ -2022,6 +2022,10 @@ SET tidb_slow_log_threshold = 200;
 
 ### tidb_stats_cache_mem_quota <span class="version-mark">New in v6.1.0</span>
 
+> **Warning:**
+>
+> This variable is an experimental feature. It is not recommended to use it in production environments.
+
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Type: Integer
