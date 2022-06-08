@@ -26,6 +26,7 @@ Currently, the `help_topic` is NULL.
 - `stats_buckets`: the buckets of statistics
 - `stats_histograms`: the histograms of statistics
 - `stats_meta`: the meta information of tables, such as the total number of rows and updated rows
+- `analyze_jobs`: the ongoing statistics collection tasks and the history task records within the last 7 days
 
 ## GC worker system tables
 

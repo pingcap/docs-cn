@@ -335,29 +335,22 @@ Before TiDB v5.0, when you execute a query, TiDB collects feedback with `feedbac
 
 Since TiDB v6.0, TiDB supports using the `KILL` statement to terminate an `ANALYZE` task running in the background. If you find that an `ANALYZE` task running in the background consumes a lot of resources and affects your application, you can terminate the `ANALYZE` task by taking the following steps:
 
-1. Execute the following SQL statement to get the TiDB instance address and the `ID` of the background `ANALYZE` task:
+1. Execute the following SQL statement:
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT ci.instance as instance, cp.id as id FROM information_schema.cluster_info ci, information_schema.cluster_processlist cp WHERE ci.status_address = cp.instance and ci.type = 'tidb' and cp.info like 'analyze table %' and cp.user = '' and cp.host = '';
+    SHOW ANALYZE STATUS
     ```
 
-    If there is no result, no `ANALYZE` task is running in the background.
+    By checking the `instance` column and the `process_id` column in the result, you can get the TiDB instance address and the task `ID` of the background `ANALYZE` task.
 
-2. Use a client to connect to the TiDB instance where the background `ANALYZE` task is running, and then execute the following `KILL` statement:
+2. Terminate the `ANALYZE` task that is running in the background.
 
-    {{< copyable "sql" >}}
+   - If [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610) is `true` (`true` by default), you can execute the `KILL TIDB ${id};` statement directly, where `${id}` is the `ID` of the background `ANALYZE` task obtained from the previous step.
+   - If `enable-global-kill` is `false`, you need to use a client to connect to the TiDB instance that is executing the backend `ANALYZE` task, and then execute the `KILL TIDB ${id};` statement. If you use a client to connect to another TiDB instance, or if there is a proxy between the client and the TiDB cluster, the `KILL` statement cannot terminate the background `ANALYZE` task.
 
-    ```sql
-    KILL TIDB ${id};
-    ```
-
-    `${id}` is the `ID` of the background `ANALYZE` task obtained in the previous step.
-
-    > **Note:**
-    >
-    > The above `KILL` statement only works on a TiDB instance that is executing a background `ANALYZE` task. Therefore, you must use a client to connect to that TiDB instance first. If you use a client to connect to another TiDB instance, or if there is a proxy between the client and TiDB, the `KILL` statement cannot terminate the background `ANALYZE` task. For more information, see [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md).
+For more information on the `KILL` statement, see [`KILL`](/sql-statements/sql-statement-kill.md).
 
 ### Control `ANALYZE` concurrency
 
@@ -418,17 +411,24 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere]
 
 This statement returns the state of `ANALYZE`. You can use `ShowLikeOrWhere` to filter the information you need.
 
-Currently, the `SHOW ANALYZE STATUS` statement returns the following 7 columns:
+Currently, the `SHOW ANALYZE STATUS` statement returns the following 11 columns:
 
 | Column name | Description            |
 | :-------- | :------------- |
 | table_schema  |  The database name    |
 | table_name | The table name |
 | partition_name| The partition name |
-| job_info | The task information. The element includes index names when index analysis is performed. |
-| row_count | The number of rows that have been analyzed |
+| job_info | The task information. If an index is analyzed, this information will include the index name. When `tidb_analyze_version =2`, this information will include configuration items such as sample rate. |
+| processed_rows | The number of rows that have been analyzed |
 | start_time | The time at which the task starts |
 | state | The state of a task, including `pending`, `running`, `finished`, and `failed` |
+| fail_reason | The reason why the task fails. If the execution is successful, the value is `NULL`. |
+| instance | The TiDB instance that executes the task |
+| process_id | The process ID that executes the task |
+
+Starting from TiDB v6.1.0, the `SHOW ANALYZE STATUS` statement supports showing cluster-level tasks. Even after a TiDB restart, you can still view task records before the restart using this statement. Before TiDB v6.1.0, the `SHOW ANALYZE STATUS` statement can only show instance-level tasks, and task records are cleared after a TiDB restart.
+
+`SHOW ANALYZE STATUS` shows the most recent task records only. Starting from TiDB v6.1.0, you can view the history tasks within the last 7 days through the system table `mysql.analyze_jobs`.
 
 ## View statistics
 
