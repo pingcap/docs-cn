@@ -1268,7 +1268,8 @@ Encoding 格式示例：
 
 > **注意：**
 >
-> * store 的 label 方法使用合并策略，除 PD 可以存放 store label 信息外，TiKV 进程启动配置文件内也可以存放 store label 信息，两者会进行合并标识。建议不要同时使用两种 label 方式，使用 tiup 修改配置文件的 label 时，PD 存放的 store label 信息可以使用 store label <id> --force 进行清空，实现 store label 的集中管理。
+> - store 的 label 方法使用合并策略，除 PD 可以存放 store label 信息外，TiKV 进程启动的配置文件内也可以存放 store label 信息，两者会进行合并标识。
+> - 建议不要同时使用两种 label 存放方式。使用 `tiup` 修改配置文件的 label 时，PD 存放的 store label 信息可以使用 `store label <id> --force` 进行清空，实现 store label 的集中管理。
 
 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
 
