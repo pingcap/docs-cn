@@ -69,11 +69,11 @@ TiDB 版本：6.1.0
 
 * 支持 join order hint 语法
 
-    * LEADING hint: 提示优化器使用指定的顺序作为连接前缀，好的连接前缀顺序可以在连接初期快速地降低数据量，提升查询性能。
+    * `LEADING` hint：提示优化器使用指定的顺序作为连接前缀，好的连接前缀顺序可以在连接初期快速地降低数据量，提升查询性能。
 
         [用户文档](/optimizer-hints.md#leadingt1_name--tl_name-)
 
-    * STRAIGHT_JOIN hint: 提示优化器按照表在 `FROM` 子句中的出现顺序进行连接。
+    * `STRAIGHT_JOIN` hint：提示优化器按照表在 `FROM` 子句中的出现顺序进行连接。
 
         [用户文档](/optimizer-hints.md#straight_join)
 
@@ -161,14 +161,14 @@ TiDB 版本：6.1.0
 
     [用户文档](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，[#8854](https://github.com/pingcap/tidb/issues/8854)
 
-* TiKV API v2
+* TiKV API V2
 
     在 v6.1.0 之前，TiKV 作为 Raw Key Value 存储时，由于仅存储了客户端传入的原始数据，因此只提供基本的 Key Value 读写能力。
 
-    TiKV API v2 提供了新的 Raw Key Value 存储格式与访问接口，包括：
+    TiKV API V2 提供了新的 Raw Key Value 存储格式与访问接口，包括：
 
-    * 数据以 MVCC（Multi Version Concurrency Control）方式存储，并记录了数据的变更时间戳。这个特性将为实现 Change Data Capture、增量备份与恢复等打下基础。
-    * 数据根据不同的使用方式划分范围，支持单一集群 TiDB / 事务 KV / RawKV 应用共存。
+    * 数据以 MVCC（Multi-Version Concurrency Control）方式存储，并记录了数据的变更时间戳。这个特性将为实现 Change Data Capture、增量备份与恢复等打下基础。
+    * 数据根据不同的使用方式划分范围，支持单一集群 TiDB、事务 KV、RawKV 应用共存。
 
     注意：由于底层存储格式发生了重大变化，启用 API V2 后，不能将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
 
@@ -178,7 +178,7 @@ TiDB 版本：6.1.0
 
 * 支持兼容 MySQL 的用户级别锁管理
 
-    用户级别锁是 MySQL 通过内置函数提供的用户命名锁管理系统。它们可以提供锁阻塞，等待，等锁管理能力。用户级别锁在 ORM 框架中也有较为广泛的应用，例如 RoR, Elixir 和 Ecto 等。TiDB 从 v6.1.0 版本开始支持兼容 MySQL 的用户级别锁管理，支持 `GET_LOCK`，`RELEASE_LOCK`, `RELEASE_ALL_LOCKS` 函数。
+    用户级别锁是 MySQL 通过内置函数提供的用户命名锁管理系统。它们可以提供锁阻塞，等待，等锁管理能力。用户级别锁在 ORM 框架中也有较为广泛的应用，例如 RoR，Elixir 和 Ecto 等。TiDB 从 v6.1.0 版本开始支持兼容 MySQL 的用户级别锁管理，支持 `GET_LOCK`，`RELEASE_LOCK`，`RELEASE_ALL_LOCKS` 函数。
 
     [用户文档](/functions-and-operators/locking-functions.md)，[#14994](https://github.com/pingcap/tidb/issues/14994)
 
@@ -360,7 +360,7 @@ TiDB 版本：6.1.0
 
 + TiDB
 
-    - 修复 `in` 函数处理 `bit` 数据类型时可能会导致 TiDB panic 的问题 [#33070](https://github.com/pingcap/tidb/issues/33070)
+    - 修复 `IN` 函数处理 `BIT` 数据类型时可能会导致 TiDB panic 的问题 [#33070](https://github.com/pingcap/tidb/issues/33070)
     - 修复 `UnionScan` 无法保序导致的查询结果不正确的问题 [#33175](https://github.com/pingcap/tidb/issues/33175)
     - 修复特定情况下 Merge Join 执行结果错误的问题 [#33042](https://github.com/pingcap/tidb/issues/33042)
     - 修复动态裁减模式下 `index join` 的结果可能会错误的问题 [#33231](https://github.com/pingcap/tidb/issues/33231)
