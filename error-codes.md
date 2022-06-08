@@ -344,6 +344,10 @@ TiDB is compatible with the error codes in MySQL, and in most cases returns the 
 
     When a transaction is being committed, the existence assertion of a key fails. For more information,see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md#error-8141).
 
+* Error Number: 8143
+
+    During the execution of a non-transactional DML statement, if a batch fails, the statement is stopped. For more information, see [Non-transactional DML statements](/non-transactional-dml.md).
+
 * Error Number: 8200
 
     The DDL syntax is not yet supported.

@@ -952,6 +952,15 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Default value: `OFF`
 - This variable is used to control whether to enable TiDB mutation checker, which is a tool used to check consistency between data and indexes during the execution of DML statements. If the checker returns an error for a statement, TiDB rolls back the execution of the statement. Enabling this variable causes a slight increase in CPU usage. For more information, see [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md ).
 
+### tidb_enable_new_only_full_group_by_check <span class="version-mark">New in v6.1.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `OFF`
+- Value options: `OFF` and `ON`
+- This variable controls the behavior when TiDB performs the `ONLY_FULL_GOUP_BY` check. For detailed information about `ONLY_FULL_GROUP_BY`, see the [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by). In v6.1.0, TiDB handles this check more strictly and correctly.
+- To avoid potential compatibility issues caused by version upgrades, the default value of this variable is `OFF` in v6.1.0.
+
 ### tidb_enable_noop_functions <span class="version-mark">New in v4.0</span>
 
 - Scope: SESSION | GLOBAL
@@ -1588,14 +1597,14 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 > * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
 
-### tidb_enable_new_only_full_group_by_check <span class="version-mark">New in v6.1.0</span>
+### tidb_nontransactional_ignore_error <span class="version-mark">New in v6.1.0</span>
 
 - Scope: SESSION | GLOBAL
 - Persists to cluster: Yes
-- Default value: `OFF`
-- Value options: `OFF` and `ON`
-- This variable controls the behavior when TiDB performs the `ONLY_FULL_GOUP_BY` check. For detailed information about `ONLY_FULL_GROUP_BY`, see the [MySQL documentation](https://dev.mysql.com/doc/refman/8.0/en/sql-mode.html#sqlmode_only_full_group_by). In v6.1.0, TiDB handles this check more strictly and correctly.
-- To avoid potential compatibility issues caused by version upgrades, the default value of this variable is `OFF` in v6.1.0.
+- Default value: `0`
+- This variable specifies whether to return an error immediately when the error occurs in a non-transactional DML statement.
+- When the value is set to `0`, the non-transactional DML statement stops immediately at the first error and returns the error. All the following batches are canceled.
+- When the value is set to `1` and an error occurs in a batch, the following batches will continue to be executed until all batches are executed. All errors occurred during the execution process are returned together in the result.
 
 ### tidb_opt_agg_push_down
 
