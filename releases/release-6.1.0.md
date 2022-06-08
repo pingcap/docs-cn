@@ -246,16 +246,16 @@ TiDB 版本：6.1.0
 
 | 配置文件 | 配置项 | 修改类型 | 描述 |
 |:---|:---|:---|:-----|
-| TiDB | `committer-concurrency` | 删除 | 转化为系统变量 `tidb_committer_concurrency` |
-| TiDB | `enable-batch-dml` | 删除 | 转化为系统变量 `tidb_enable_batch_dml` |
+| TiDB | `committer-concurrency` | 删除 | 转化为系统变量 `tidb_committer_concurrency`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `enable-batch-dml` | 删除 | 转化为系统变量 `tidb_enable_batch_dml`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
 | TiDB | `lower-case-table-names` | 删除 | TiDB 目前只支持`lower_case_table_name=2`，如果升级前设置了其他值，升级到 v6.1.0 后该值会丢失。 |
-| TiDB | `mem-quota-query` | 删除 | 转化为系统变量 `tidb_mem_quota_query` |
-| TiDB | `oom-action` | 删除 | 转化为系统变量 `tidb_mem_oom_action` |
-| TiDB | `prepared-plan-cache.capacity` | 删除 | 转化为系统变量 `tidb_prepared_plan_cache_size` |
-| TiDB | `prepared-plan-cache.enabled` | 删除 | 转化为系统变量 `tidb_enable_prepared_plan_cache` |
-| TiDB | `query-log-max-len` | 删除 | 转化为系统变量 `tidb_query_log_max_len` |
-| TiDB | `require-secure-transport` | 删除 | 转化为系统变量 `require_secure_transport` |
-| TiDB | `run-auto-analyze` | 删除 | 转化为系统变量 `tidb_enable_auto_analyze` |
+| TiDB | `mem-quota-query` | 删除 | 转化为系统变量 `tidb_mem_quota_query`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `oom-action` | 删除 | 转化为系统变量 `tidb_mem_oom_action`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `prepared-plan-cache.capacity` | 删除 | 转化为系统变量 `tidb_prepared_plan_cache_size`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `prepared-plan-cache.enabled` | 删除 | 转化为系统变量 `tidb_enable_prepared_plan_cache`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `query-log-max-len` | 删除 | 转化为系统变量 `tidb_query_log_max_len`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `require-secure-transport` | 删除 | 转化为系统变量 `require_secure_transport`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
+| TiDB | `run-auto-analyze` | 删除 | 转化为系统变量 `tidb_enable_auto_analyze`。该配置项不再生效，如需修改，需修改对应的系统参数。 |
 | TiDB | [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) | 新增 | 当该配置项值默认为 `true` ，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。 |
 | TiDB | [`enable-stats-cache-mem-quota`](/tidb-configuration-file.md#enable-stats-cache-mem-quota-从-v610-版本开始引入) | 新增 | 控制 TiDB 是否开启统计信息缓存的内存上限。 |
 | TiKV | [`raft-engine.enable`](/tikv-configuration-file.md#enable-1) | 修改 | 默认值从 `false` 修改为 `true`。 |
