@@ -691,10 +691,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_mutation_checker`（从 v6.0.0 版本开始引入）
 
 - 作用域：SESSION | GLOBAL
-<<<<<<< HEAD
-=======
 - 是否持久化到集群：是
->>>>>>> 18fdd2f3d (Fix two sysvars' default values. (#9660))
 - 默认值：`ON`
 - 这个变量用于设置是否开启 mutation checker。mutation checker 是一项在 DML 语句执行过程中进行的数据索引一致性校验，校验报错会回滚当前语句。开启该校验会导致 CPU 使用轻微上升。详见[数据索引一致性报错](/troubleshoot-data-inconsistency-errors.md)。
 - 对于新创建的 v6.0.0 及以上的集群，默认值为 `ON`。对于升级版本的集群，如果升级前是低于 v6.0.0 的版本，升级后默认值为 `OFF`。
