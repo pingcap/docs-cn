@@ -27,7 +27,7 @@ TiDB 版本：6.1.0
 
     [用户文档：List 分区](/partitioned-table.md#list-分区)，[用户文档：List COLUMNS 分区](/partitioned-table.md#list-columns-分区)
 
-* 支持通过 SQL 语句对 TiFlash 副本立即触发物理数据整理（Compaction）。
+* 支持通过 SQL 语句对 TiFlash 副本立即触发物理数据整理 (Compaction)（实验特性）
 
     在当前 TiFlash 后台自动整理物理数据（Compaction）机制基础上，新增 compact 命令，帮助刷新旧格式数据，提升读写性能。推荐在升级至 v6.1.0 之后，执行该语句以清理数据。此语句是对标准 SQL 语法的扩展，对 MySQL 客户端保持兼容。升级之外场景一般不需要特别关注。
 
