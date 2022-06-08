@@ -482,7 +482,6 @@ prepare 语句的 Plan cache 设置。
 + 单位：MB
 + 类型：Float
 
-<<<<<<< HEAD
 ### `admission-max-result-mb`
 
 + 指定能被缓存的最大单个下推计算结果集。若单个下推计算在 Coprocessor 上返回的结果集小于该参数指定的大小，则结果集会被缓存。调大该值可以缓存更多种类下推请求，但也将导致缓存空间更容易被占满。注意，每个下推计算结果集大小一般都会小于 Region 大小，因此将该值设置得远超过 Region 大小没有意义。
@@ -502,22 +501,6 @@ prepare 语句的 Plan cache 设置。
 + 默认值：500
 + 类型：uint
 
-## txn-local-latches
-
-事务内存锁相关配置，当本地事务冲突比较多时建议开启。
-
-### `enable`
-
-+ 开启或关闭事务内存锁
-+ 默认值：false
-
-### `capacity`
-
-+ Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：2048000
-
-=======
->>>>>>> 513a499f5 (remove txn-local-latches from config (#9710))
 ## binlog
 
 TiDB Binlog 相关配置。
