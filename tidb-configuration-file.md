@@ -666,6 +666,7 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 ### deadlock-history-collect-retryable
 
 + Controls whether the [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) table collects the information of retryable deadlock errors. For the description of retryable deadlock errors, see [Retryable deadlock errors](/information-schema/information-schema-deadlocks.md#retryable-deadlock-errors).
++ Default value: `false`
 
 ### pessimistic-auto-commit (New in v6.0.0)
 
