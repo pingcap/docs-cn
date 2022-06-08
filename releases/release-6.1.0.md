@@ -268,7 +268,7 @@ TiDB 版本：6.1.0
 | TiKV | [`max-snapshot-file-raw-size`](/tikv-configuration-file.md#max-snapshot-file-raw-size-从-v610-版本开始引入) | 新增 | 当 snapshot 文件大于该配置项指定的大小时，snapshot 文件会被切割为多个文件。 |
 | TiKV | [`raft-engine.memory-limit`](/tikv-configuration-file.md#memory-limit) | 新增 | 指定 Raft Engine 使用内存的上限。 |
 | TiKV | [`storage.background-error-recovery-window`](/tikv-configuration-file.md#background-error-recovery-window-从-v610-版本开始引入) | 新增 | RocksDB 检测到可恢复的后台错误后，所允许的最长恢复时间。 |
-| TiKV | [`storage.block-cache.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
+| TiKV | [`storage.api-version`](/tikv-configuration-file.md#api-version-从-v610-版本开始引入) | 新增 | TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。 |
 | PD | [`schedule.max-store-preparing-time`](/pd-configuration-file.md#max-store-preparing-time-从-v610-版本开始引入) | 新增 | 控制 store 上线阶段的最长等待时间。 |
 | TiCDC | [`enable-tls`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka) | 新增 | 控制是否使用 TLS 连接 Kafka。 |
 | TiCDC | `sasl-gssapi-user`<br/>`sasl-gssapi-password`<br/>`sasl-gssapi-auth-type`<br/>`sasl-gssapi-service-name`<br/>`sasl-gssapi-realm`<br/>`sasl-gssapi-key-tab-path`<br/>`sasl-gssapi-kerberos-config-path` | 新增 | 支持 Kafka SASL/GSSAPI 认证所需要的参数。详情见 [Sink URI 配置 `kafka`](/ticdc/manage-ticdc.md#sink-uri-配置-kafka)。 |
