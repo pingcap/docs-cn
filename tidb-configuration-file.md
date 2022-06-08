@@ -374,7 +374,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `query-feedback-limit`
 
 + 在内存中缓存的最大 Query Feedback 数量，超过这个数量的 Feedback 会被丢弃。
-+ 默认值：1024
++ 默认值：512
 
 ### `pseudo-estimate-ratio`
 
