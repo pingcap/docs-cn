@@ -223,7 +223,7 @@ TiDB 版本：6.1.0
 | 变量名 | 修改类型 | 描述 |
 |:---|:--|:----|
 | [`tidb_enable_list_partition`](/system-variables.md#tidb_enable_list_partition-从-v50-版本开始引入) | 修改 | 默认值从 `OFF` 改为 `ON`。 |
-| [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) | 修改 | 增加 Global 作用域，变量值可以持久化到集群。 |
+| [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) | 修改 | 增加 GLOBAL 作用域，变量值可以持久化到集群。 |
 | [`tidb_query_log_max_len`](/system-variables.md#tidb_query_log_max_len) | 修改 | 变量作用域由 INSTANCE 修改为 GLOBAL，变量值可以持久化到集群。取值范围修改为 `[0, 1073741824]`。 |
 | [`require_secure_transport`](/system-variables.md#require_secure_transport-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `require-secure-transport` 转化而来。 |
 | [`tidb_committer_concurrency`](/system-variables.md#tidb_committer_concurrency-从-v610-版本开始引入) | 新增 | 由 TiDB 配置项 `committer-concurrency` 转化而来。 |
@@ -248,7 +248,7 @@ TiDB 版本：6.1.0
 |:---|:---|:---|:-----|
 | TiDB | `committer-concurrency` | 删除 | 转化为系统变量 `tidb_committer_concurrency`。该配置项不再生效，如需修改，需修改对应的系统变量。 |
 | TiDB | `enable-batch-dml` | 删除 | 转化为系统变量 `tidb_enable_batch_dml`。该配置项不再生效，如需修改，需修改对应的系统变量。 |
-| TiDB | `lower-case-table-names` | 删除 | TiDB 目前只支持`lower_case_table_name=2`，如果升级前设置了其他值，升级到 v6.1.0 后该值会丢失。 |
+| TiDB | `lower-case-table-names` | 删除 | TiDB 目前只支持 `lower_case_table_name=2`，如果升级前设置了其他值，升级到 v6.1.0 后该值会丢失。 |
 | TiDB | `mem-quota-query` | 删除 | 转化为系统变量 `tidb_mem_quota_query`。该配置项不再生效，如需修改，需修改对应的系统变量。 |
 | TiDB | `oom-action` | 删除 | 转化为系统变量 `tidb_mem_oom_action`。该配置项不再生效，如需修改，需修改对应的系统变量。 |
 | TiDB | `prepared-plan-cache.capacity` | 删除 | 转化为系统变量 `tidb_prepared_plan_cache_size`。该配置项不再生效，如需修改，需修改对应的系统变量。 |
