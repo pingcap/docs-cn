@@ -7,9 +7,9 @@
   - [Basic Features](/basic-features.md)
   - [Experimental Features](/experimental-features.md)
   - Benchmarks
-    - [v6.0 Sysbench Performance Test Report](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
-    - [v6.0 TPC-C Performance Test Report](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
-    - [Performance Comparison between TiFlash and Greenplum/Spark](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
+    - [v6.1 Sysbench Performance Test Report](/benchmark/benchmark-sysbench-v6.1.0-vs-v6.0.0.md)
+    - [v6.1 TPC-C Performance Test Report](/benchmark/v6.1-performance-benchmarking-with-tpcc.md)
+    - [Performance Comparison between TiFlash and Greenplum/Spark](/benchmark/v6.1-performance-benchmarking-with-tpch.md)
   - [MySQL Compatibility](/mysql-compatibility.md)
   - [TiDB Limitations](/tidb-limitations.md)
   - [Credits](/credits.md)
@@ -32,7 +32,7 @@
     - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
     - [Connect to TiDB](/develop/dev-guide-connect-to-tidb.md)
     - [Connection Pools and Connection Parameters](/develop/dev-guide-connection-parameters.md)
-  - Design Database Schema 
+  - Design Database Schema
     - [Overview](/develop/dev-guide-schema-design-overview.md)
     - [Create a Database](/develop/dev-guide-create-database.md)
     - [Create a Table](/develop/dev-guide-create-table.md)
