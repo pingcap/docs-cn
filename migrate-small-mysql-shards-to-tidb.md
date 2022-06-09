@@ -94,6 +94,7 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
+
 |参数           |描述|
 |-              |-|
 |--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
