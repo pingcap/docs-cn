@@ -322,17 +322,9 @@ select @@tidb_slow_log_threshold;
 
 ### 在线修改 TiFlash 配置
 
-支持在线修改的配置项和相应的 TiDB 系统变量如下：
+目前，你可以通过修改系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 来在线修改 TiFlash 配置项 `max_threads`。`tidb_max_tiflash_threads` 表示 TiFlash 中 request 执行的最大并发度。
 
-| 配置项 | 对应变量 | 简介 |
-| --- | --- | --- |
-| max_threads | tidb_max_tiflash_threads | TiFlash 中 request 执行的最大并发度 |
-
-在线修改 TiFlash 配置，你也可以通过修改[系统变量](/system-variables.md)来实现。
-
-下面例子展示了如何通过设置系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 的值在线修改配置项 `max_threads`。
-
-`max_threads` 默认值是 -1，表示此系统变量无效，由 TiFlash 的配置文件决定 max_threads。你可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
+`tidb_max_tiflash_threads` 默认值是 `-1`，表示此系统变量无效，由 TiFlash 的配置文件决定 max_threads。你可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
 
 {{< copyable "sql" >}}
 
