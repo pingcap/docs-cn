@@ -12,3 +12,5 @@ gen
 *.swp
 
 /node_modules/
+
+tmp/

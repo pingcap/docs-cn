@@ -1,0 +1,64 @@
+name: cron
+
+on:
+  schedule:
+    - cron: "30 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  ja:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        name: Download translator repo
+        with:
+          repository: "shczhen/markdown-translator"
+          path: "markdown-translator"
+      - uses: actions/checkout@v3
+        name: Download docs repo and specified branch
+        with:
+          ref: "i18n-ja-release-5.4"
+          path: "docs"
+      - uses: actions/setup-node@v3
+        name: Setup node 16
+        with:
+          node-version: 16
+
+      - run: |
+          sudo apt install tree -y
+
+      - name: Download files by comparing commits
+        run: |
+          export GH_TOKEN=${{github.token}}
+          cd docs
+          npm i
+          node scripts/filterUpdateFiles.js
+          tree tmp
+          cd ..
+      - name: Copy new files to translator folder
+        run: |
+          cp -r docs/tmp markdown-translator/markdowns
+      - name: Config and translate
+        run: |
+          cd markdown-translator
+          echo ${{secrets.GCP_KEY}} | base64 --decode >> key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=key.json
+          export PROJECT_ID=${{ secrets.GCP_PROJECT_ID }}
+          export GLOSSARY_ID=${{ secrets.GCP_GLOSSARY_ID }}
+          yarn
+          node src/index.js
+          cd ..
+      - name: Copy translated files to docs repo
+        run: |
+          cp -r markdown-translator/output/markdowns/* docs/
+
+      - name: Git commit and push
+        run: |
+          cd docs
+          git status
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "update translated files"
+          git push
