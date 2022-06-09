@@ -293,8 +293,8 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 >
 > - 当触发 GlobalStats 更新时：
 >
->     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GloalStats， 并通过 warning 信息提示用户缺少分区的统计信息。
->     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GloalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
+>     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GlobalStats， 并通过 warning 信息提示用户缺少分区的统计信息。
+>     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GlobalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
 >
 > - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
 
