@@ -897,6 +897,10 @@ coprocessor 相关的配置项。
 + 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
 + 默认值：96MiB
 
+> **警告：**
+>
+> `region-bucket-size` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
+
 ## rocksdb
 
 rocksdb 相关的配置项。
