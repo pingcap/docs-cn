@@ -10,21 +10,22 @@ on:
       - release-4.0
       - release-5.*
       - release-6.0
+      - i18n-ja-release-5.4
 
 jobs:
   trigger:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Extract sha
-      id: extract
-      shell: bash
-      run: |
-        echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
+      - name: Extract sha
+        id: extract
+        shell: bash
+        run: |
+          echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
 
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v1
-      with:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
           token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
           repository: pingcap/website-docs
           event-type: ${{ github.repository }}/${{ github.ref_name }}-${{ steps.extract.outputs.sha }}
