@@ -17,17 +17,9 @@ PD Recover is a disaster recovery tool of PD, used to recover the PD cluster whi
 >
 > Generally, you do not need to compile source code because the PD Control tool already exists in the released binary or Docker. However, developer users can refer to the instructions above for compiling source code.
 
-## Download TiDB installation package
+## Download TiDB Toolkit
 
-To download the latest version of PD Recover, directly download the TiDB package, because PD Recover is included in the TiDB package.
-
-| Package name | OS | Architecture | SHA256 checksum |
-|:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz` (pd-recover) | Linux | amd64 | `https://download.pingcap.org/tidb-{version}-linux-amd64.sha256` |
-
-> **Note:**
->
-> `{version}` indicates the version number of TiDB. For example, if `{version}` is `v6.0.0`, the package download link is `https://download.pingcap.org/tidb-v6.0.0-linux-amd64.tar.gz`.
+The PD Recover installation package is included in the TiDB Toolkit. To download the TiDB Toolkit, see [Download TiDB Tools](/download-ecosystem-tools.md).
 
 ## Quick Start
 

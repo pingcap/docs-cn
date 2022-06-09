@@ -67,7 +67,7 @@ You can find deployment instructions in [TiDB Quick Start Guide](/quick-start-wi
 
 #### Step 2: Download the TiDB Lightning installation package
 
-Refer to the [TiDB enterprise tools download page](/download-ecosystem-tools.md#tidb-lightning) to download the TiDB Lightning package.
+Refer to the [Download TiDB Tools](/download-ecosystem-tools.md) document to download the TiDB Lightning package.
 
 > **Note:**
 >

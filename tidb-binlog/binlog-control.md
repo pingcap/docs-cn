@@ -22,32 +22,7 @@ The following are its usage scenarios:
 
 ## Download `binlogctl`
 
-> **Note:**
->
-> It is recommended that the version of the Control tool you use is consistent with the version of the cluster.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.tar.gz &&
-wget https://download.pingcap.org/tidb-{version}-linux-amd64.sha256
-```
-
-To check the file integrity, execute the following command. If the result is OK, the file is correct.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-{version}-linux-amd64.sha256
-```
-
-To check the file integrity, execute the following command. If the result is OK, the file is correct.
-
-{{< copyable "shell-regular" >}}
-
-```bash
-sha256sum -c tidb-enterprise-tools-latest-linux-amd64.sha256
-```
+`binlogctl` is included in the TiDB Toolkit. To download the TiDB Toolkit, see [Download TiDB Tools](/download-ecosystem-tools.md).
 
 ## Descriptions
 

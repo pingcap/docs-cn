@@ -48,9 +48,7 @@ Before the data import, you need to deploy a TiDB cluster. In this tutorial, TiD
 
 ### Step 2: Download TiDB Lightning installation package
 
-Download the TiDB Lightning installation package from the following link:
-
-- **v5.4.0**: [tidb-toolkit-v5.4.0-linux-amd64.tar.gz](https://download.pingcap.org/tidb-toolkit-v5.4.0-linux-amd64.tar.gz)
+The TiDB Lightning installation package is included in the TiDB Toolkit. To download the TiDB Toolkit, see [Download TiDB Tools](/download-ecosystem-tools.md).
 
 > **Note:**
 >

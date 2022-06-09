@@ -36,7 +36,7 @@ You can estimate the performance of your backup or restoration operation based o
 
 ### Deployment method
 
-It is recommended that you deploy the TiDB cluster using [TiUP](/tiup/tiup-cluster.md) and get BR by downloading [TiDB Toolkit](/download-ecosystem-tools.md#br-backup-and-restore).
+It is recommended that you deploy the TiDB cluster using [TiUP](/tiup/tiup-cluster.md) and get BR by downloading [TiDB Toolkit](/download-ecosystem-tools.md).
 
 ### Cluster versions
 
