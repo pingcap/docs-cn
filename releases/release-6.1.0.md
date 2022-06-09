@@ -161,7 +161,7 @@ TiDB 版本：6.1.0
 
     [用户文档](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入)，[#8854](https://github.com/pingcap/tidb/issues/8854)
 
-* TiKV API V2
+* TiKV API V2（实验特性）
 
     在 v6.1.0 之前，TiKV 作为 Raw Key Value 存储时，由于仅存储了客户端传入的原始数据，因此只提供基本的 Key Value 读写能力。
 
