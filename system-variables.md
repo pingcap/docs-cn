@@ -408,18 +408,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `tidb_auto_analyze_start_time='01:00 +0000'`
     - `tidb_auto_analyze_end_time='03:00 +0000'`
 
-### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`0`
-- 单位：字节
-- 这个变量用来控制 TiDB 更新统计信息时的最大总内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。当总的内存占用超过这个阈值时，用户执行的 `ANALYZE` 会被终止退出，并通过错误信息提示用户尝试更小的采样率或稍后重试。如果 TiDB 后台自动执行的统计信息更新任务因内存超限而退出，且使用的采样率高于默认值，则会使用默认采样率重试一次。当该变量值为负数或零时，TiDB 不对更新统计信息的前后台任务进行内存限制。
-
-> **注意：**
->
-> 只有在 TiDB 的启动配置文件中开启了 `run-auto-analyze` 选项，该 TiDB 集群才会触发 `auto_analyze`。
-
 ### `tidb_max_auto_analyze_time` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：GLOBAL
@@ -1314,6 +1302,22 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 该变量默认值为 `CANCEL`，但在 TiDB v4.0.2 及之前的版本中，默认值为 `LOG`。
 - 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`oom-action`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
 
+### `tidb_mem_quota_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 目前限制 ANALYZE 的内存使用量为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`0`
+- 单位：字节
+- 这个变量用来控制 TiDB 更新统计信息时的最大总内存占用，包括用户执行的 [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md) 和 TiDB 后台自动执行的统计信息更新任务。当总的内存占用超过这个阈值时，用户执行的 `ANALYZE` 会被终止退出，并通过错误信息提示用户尝试更小的采样率或稍后重试。如果 TiDB 后台自动执行的统计信息更新任务因内存超限而退出，且使用的采样率高于默认值，则会使用默认采样率重试一次。当该变量值为负数或零时，TiDB 不对更新统计信息的前后台任务进行内存限制。
+
+> **注意：**
+>
+> 只有在 TiDB 的启动配置文件中开启了 `run-auto-analyze` 选项，该 TiDB 集群才会触发 `auto_analyze`。
+
 ### `tidb_mem_quota_apply_cache` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1782,6 +1786,10 @@ set tidb_slow_log_threshold = 200;
 - 这个变量用来设置当前会话期待读取的历史数据所处时刻。比如当设置为 `"2017-11-11 20:20:20"` 时或者一个 TSO 数字 "400036290571534337"，当前会话将能读取到该时刻的数据。
 
 ### `tidb_stats_cache_mem_quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量为实验特性，不推荐在生产环境中使用。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是

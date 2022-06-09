@@ -1,12 +1,12 @@
 ---
-title: TiDB Sysbench 性能对比测试报告 - v6.0.0 对比 v5.4.0
+title: TiDB Sysbench 性能对比测试报告 - v6.1.0 对比 v6.0.0
 ---
 
-# TiDB Sysbench 性能对比测试报告 - v6.0.0 对比 v5.4.0
+# TiDB Sysbench 性能对比测试报告 - v6.1.0 对比 v6.0.0
 
 ## 测试概况
 
-本次测试对比了 TiDB v6.0.0 和 v5.4.0 在 OLTP 场景下的 Sysbench 性能表现。结果显示，相比于 v5.4.0，v6.0.0 的 Read Write 负载性能有大幅提升，提升了 16.17%。其他负载性能基本与 v5.4.0 的持平。
+本次测试对比了 TiDB v6.1.0 和 v6.0.0 在 OLTP 场景下的 Sysbench 性能表现。结果显示，相比于 v6.0.0，v6.1.0 的写性能有提升，Write-heavy 负载性能有 2.33% 到 4.61% 的提升。
 
 ## 测试环境 (AWS EC2)
 
@@ -23,14 +23,14 @@ title: TiDB Sysbench 性能对比测试报告 - v6.0.0 对比 v5.4.0
 
 | 服务类型   | 软件版本   |
 |:----------|:-----------|
-| PD        | v5.4.0、v6.0.0   |
-| TiDB      | v5.4.0、v6.0.0   |
-| TiKV      | v5.4.0、v6.0.0   |
+| PD        | v6.0.0、v6.1.0   |
+| TiDB      | v6.0.0、v6.1.0   |
+| TiKV      | v6.0.0、v6.1.0   |
 | Sysbench  | 1.1.0-df89d34   |
 
 ### 参数配置
 
-两个版本使用相同的配置
+两个版本使用相同的配置。
 
 #### TiDB 参数配置
 
@@ -51,11 +51,8 @@ storage.scheduler-worker-pool-size: 5
 raftstore.store-pool-size: 3
 raftstore.apply-pool-size: 3
 rocksdb.max-background-jobs: 8
-raftdb.max-background-jobs: 4
-raftdb.allow-concurrent-memtable-write: true
 server.grpc-concurrency: 6
 readpool.storage.normal-concurrency: 10
-pessimistic-txn.pipelined: true
 ```
 
 #### TiDB 全局变量配置
@@ -69,6 +66,7 @@ set global tidb_enable_async_commit = 1;
 set global tidb_enable_1pc = 1;
 set global tidb_guarantee_linearizability = 0;
 set global tidb_enable_clustered_index = 1;
+set global tidb_prepared_plan_cache_size=1000;
 ```
 
 #### HAProxy 配置 - haproxy.cfg 文件
@@ -104,7 +102,7 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 
 ## 测试方案
 
-1. 通过 TiUP 部署 TiDB v6.0.0 和 v5.4.0。
+1. 通过 TiUP 部署 TiDB v6.1.0 和 v6.0.0。
 2. 通过 Sysbench 导入 16 张表，每张表有 1000 万行数据。
 3. 分别对每个表执行 `analyze table` 命令。
 4. 备份数据，用于不同并发测试前进行数据恢复，以保证每次数据一致。
@@ -153,48 +151,48 @@ sysbench $testname \
 
 ### Point Select 性能
 
-| Threads   | v5.4.0 TPS | v6.0.0 TPS  | v5.4.0 95% latency (ms) | v6.0.0 95% latency (ms)   | TPS 提升 (%)  |
+| Threads   | v6.0.0 TPS | v6.1.0 TPS  | v6.0.0 95% latency (ms) | v6.1.0 95% latency (ms)   | TPS 提升 (%)  |
 |:----------|:----------|:----------|:----------|:----------|:----------|
-|300|260085.19|265207.73|1.82|1.93|1.97|
-|600|378098.48|365173.66|2.48|2.61|-3.42|
-|900|441294.61|424031.23|3.75|3.49|-3.91|
+|300|268934.84|265353.15|1.89|1.96|-1.33|
+|600|365217.96|358976.94|2.57|2.66|-1.71|
+|900|420799.64|407625.11|3.68|3.82|-3.13|
 
-v6.0.0 对比 v5.4.0，Point Select 性能基本持平，略下降了 1.79%。
+v6.1.0 对比 v6.0.0，Point Select 性能基本持平，略下降了 2.1%。
 
-![Point Select](/media/sysbench_v540vsv600_point_select.png)
+![Point Select](/media/sysbench_v600vsv610_point_select.png)
 
 ### Update Non-index 性能
 
-| Threads   | v5.4.0 TPS | v6.0.0 TPS  | v5.4.0 95% latency (ms) | v6.0.0 95% latency (ms)   | TPS 提升 (%)  |
+| Threads   | v6.0.0 TPS | v6.1.0 TPS  | v6.0.0 95% latency (ms) | v6.1.0 95% latency (ms)   | TPS 提升 (%)  |
 |:----------|:----------|:----------|:----------|:----------|:----------|
-|300|41528.7|40814.23|11.65|11.45|-1.72|
-|600|53220.96|51746.21|19.29|20.74|-2.77|
-|900|59977.58|59095.34|26.68|28.16|-1.47|
+|300|41778.95|42991.9|11.24|11.45|2.90 |
+|600|52045.39|54099.58|20.74|20.37|3.95|
+|900|59243.35|62084.65|27.66|26.68|4.80|
 
-v6.0.0 对比 v5.4.0，Update Non-index 性能基本持平，略下降了 1.98%。
+v6.1.0 对比 v6.0.0，Update Non-index 性能提升了 3.88%。
 
-![Update Non-index](/media/sysbench_v540vsv600_update_non_index.png)
+![Update Non-index](/media/sysbench_v600vsv610_update_non_index.png)
 
 ### Update Index 性能
 
-| Threads   | v5.4.0 TPS | v6.0.0 TPS  | v5.4.0 95% latency (ms) | v6.0.0 95% latency (ms)   | TPS 提升 (%)  |
+| Threads   | v6.0.0 TPS | v6.1.0 TPS  | v6.0.0 95% latency (ms) | v6.1.0 95% latency (ms)   | TPS 提升 (%)  |
 |:----------|:----------|:----------|:----------|:----------|:----------|
-|300|18659.11|18187.54|23.95|25.74|-2.53|
-|600|23195.83|22270.81|40.37|44.17|-3.99|
-|900|25798.31|25118.78|56.84|57.87|-2.63|
+|300|18085.79|19198.89|25.28|23.95|6.15|
+|600|22210.8|22877.58|42.61|41.85|3.00|
+|900|25249.81|26431.12|55.82|53.85|4.68|
 
-v6.0.0 对比 v5.4.0，Update Index 性能下降了 3.05%。
+v6.1.0 对比 v6.0.0，Update Index 性能提升 4.61%。
 
-![Update Index](/media/sysbench_v540vsv600_update_index.png)
+![Update Index](/media/sysbench_v600vsv610_update_index.png)
 
 ### Read Write 性能
 
-| Threads   | v5.4.0 TPS  | v6.0.0 TPS | v5.4.0 95% latency (ms) | v6.0.0 95% latency (ms)   | TPS 提升 (%)  |
+| Threads   | v6.0.0 TPS  | v6.1.0 TPS | v6.0.0 95% latency (ms) | v6.1.0 95% latency (ms)   | TPS 提升 (%)  |
 |:----------|:----------|:----------|:----------|:----------|:----------|
-|300|4141.72|4829.01|97.55|82.96|16.59|
-|600|4892.76|5693.12|173.58|153.02|16.36|
-|900|5217.94|6029.95|257.95|235.74|15.56|
+|300|4856.23|4914.11|84.47|82.96|1.19|
+|600|5676.46|5848.09|161.51|150.29|3.02|
+|900|6072.97|6223.95|240.02|223.34|2.49|
 
-v6.0.0 对比 v5.4.0，Read Write 性能有大幅提升，提升了 16.17%。
+v6.1.0 对比 v6.0.0，Read Write 性能提升了 2.23%。
 
-![Read Write](/media/sysbench_v540vsv600_read_write.png)
+![Read Write](/media/sysbench_v600vsv610_read_write.png)
