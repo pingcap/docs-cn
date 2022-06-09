@@ -1554,7 +1554,7 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 
 4. 执行批量更新：
 
-    在 source 之前处理 SQL 文件：
+    在运行 source 命令之前处理 SQL 文件：
 
     ```
     sed -i "" '1d' gatherGlobalStats.sql --- mac
