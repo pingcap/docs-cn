@@ -2008,6 +2008,14 @@ Usage example:
 SET tidb_slow_log_threshold = 200;
 ```
 
+### tidb_max_tiflash_threads <span class="version-mark">New in v6.1.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `-1`
+- Range: `[-1, 256]`
+- This variable is used to set the maximum concurrency for TiFlash to execute a request. The default value is `-1`, indicating that this system variable is invalid. When the value is `0`, the maximum number of threads is automatically configured by TiFlash.
+
 ### tidb_slow_query_file
 
 - Scope: SESSION

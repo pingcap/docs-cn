@@ -8,10 +8,6 @@ aliases: ['/docs/dev/dynamic-config/']
 
 This document describes how to modify the cluster configuration online.
 
-> **Note:**
->
-> This feature is experimental. It is **NOT** recommended to use this feature in the production environment.
-
 You can update the configuration of components (including TiDB, TiKV, and PD) online using SQL statements, without restarting the cluster components. Currently, the method of changing TiDB instance configuration is different from that of changing configuration of other components (such TiKV and PD).
 
 ## Common Operations
@@ -293,7 +289,7 @@ For detailed parameter description, refer to [PD Configuration File](/pd-configu
 
 Currently, the method of changing TiDB configuration is different from that of changing TiKV and PD configurations. You can modify TiDB configuration by using [system variables](/system-variables.md).
 
-The following example shows how to modify `slow-threshold` online by using the `tidb_slow_log_threshold` variable. 
+The following example shows how to modify `slow-threshold` online by using the `tidb_slow_log_threshold` variable.
 
 The default value of `slow-threshold` is 300 ms. You can set it to 200 ms by using `tidb_slow_log_threshold`.
 
@@ -329,3 +325,34 @@ The following TiDB configuration items can be modified online:
 | `log.enable-slow-log` | `tidb_enable_slow_log` | Whether to enable slow log |
 | `log.slow-threshold` | `tidb_slow_log_threshold` | The threshold of slow log |
 | `log.expensive-threshold` | `tidb_expensive_query_time_threshold` | The threshold of a expensive query |
+
+### Modify TiFlash configuration online
+
+Currently, you can modify the TiFlash configuration `max_threads` by using the system variable [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-new-in-v610), which specifies the maximum concurrency for TiFlash to execute a request.
+
+The default value of `tidb_max_tiflash_threads` is `-1`, indicating that this system variable is invalid and depends on the setting of the TiFlash configuration file. You can set `max_threads` to 10 by using `tidb_max_tiflash_threads`:
+
+{{< copyable "sql" >}}
+
+```sql
+set tidb_max_tiflash_threads = 10;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select @@tidb_max_tiflash_threads;
+```
+
+```sql
++----------------------------+
+| @@tidb_max_tiflash_threads |
++----------------------------+
+| 10                         |
++----------------------------+
+1 row in set (0.00 sec)
+```
