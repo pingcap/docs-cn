@@ -876,6 +876,10 @@ Configuration items related to Coprocessor.
 + The size of a bucket when `enable-region-bucket` is true.
 + Default value: `96MiB`
 
+> **Warning:**
+>
+> `region-bucket-size` is an experimental feature introduced in TiDB v6.1.0. It is not recommended that you use it in production environments.
+
 ## RocksDB
 
 Configuration items related to RocksDB
