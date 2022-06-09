@@ -243,12 +243,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：0
 + 默认全部保存；如果设置为 7，会最多保留 7 个老的日志文件。
 
-### `memory-limit`
-
-+ 指定 Raft Engine 使用内存的上限。
-+ 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
-+ 默认值：`系统总内存 * 15%`
-
 ## security
 
 安全相关配置。
@@ -406,7 +400,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `query-feedback-limit`
 
 + 在内存中缓存的最大 Query Feedback 数量，超过这个数量的 Feedback 会被丢弃。
-+ 默认值：1024
++ 默认值：512
 
 ### `pseudo-estimate-ratio`
 
@@ -454,6 +448,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 目前的合法值范围：`[1, 100000]`
 
 ### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+> **警告：**
+>
+> 该变量为实验特性，不推荐在生产环境中使用。
 
 + 用于控制 TiDB 是否开启统计信息缓存的内存上限。
 + 默认值：false
@@ -593,20 +591,6 @@ opentracing.reporter 相关的设置。
 + 默认值：1000.0
 + 单位：MB
 + 类型：Float
-
-## txn-local-latches
-
-事务内存锁相关配置，当本地事务冲突比较多时建议开启。
-
-### `enabled`
-
-+ 开启或关闭事务内存锁
-+ 默认值：false
-
-### `capacity`
-
-+ Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：2048000
 
 ## binlog
 
