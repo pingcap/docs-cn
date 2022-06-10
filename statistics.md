@@ -286,6 +286,19 @@ When `IndexNameList` is empty, this syntax collects statistics on all indexes in
     ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
+##### Collect statistics of partitioned tables in dynamic pruning mode
+
+When accessing partitioned tables in [dynamic pruning mode](/partitioned-table.md#dynamic-pruning-mode), TiDB collects table-level statistics, which is called GlobalStats. Currently, GlobalStats is aggregated from statistics of all partitions. In dynamic pruning mode, a statistics update of any partitioned table can trigger the GlobalStats to be updated.
+
+> **Note:**
+>
+> - When GlobalStats update is triggered:
+>
+>     - If some partitions have no statistics (such as a new partition that has never been analyzed), GlobalStats generation is interrupted and a warning message is displayed saying that no statistics are available on partitions.
+>     - If statistics of some columns are absent in specific partitions (different columns are specified for analyzing in these partitions), GlobalStats generation is interrupted when statistics of these columns are aggregated, and a warning message is displayed saying that statistics of some columns are absent in specific partitions.
+>
+> - In dynamic pruning mode, the Analyze configurations of partitions and tables should be the same. Therefore, if you specify the `COLUMNS` configuration following the `ANALYZE TABLE TableName PARTITION PartitionNameList` statement or the `OPTIONS` configuration following `WITH`, TiDB will ignore them and return a warning.
+
 #### Incremental collection
 
 To improve the speed of analysis after full collection, incremental collection could be used to analyze the newly added sections in monotonically non-decreasing columns such as time columns.
@@ -603,15 +616,29 @@ Currently, the `SHOW STATS_TOPN` statement returns the following 7 columns:
 
 You can run the `DROP STATS` statement to delete statistics.
 
-Syntax as follows:
-
 {{< copyable "sql" >}}
 
 ```sql
 DROP STATS TableName
 ```
 
-The statement deletes statistics of all the tables in `TableName`.
+The preceding statement deletes all statistics of `TableName`. If a partitioned table is specified, this statement will delete statistics of all partitions in this table as well as GlobalStats generated in dynamic pruning mode.
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName PARTITION PartitionNameList;
+```
+
+This preceding statement only deletes statistics of the specified partitions in `PartitionNameList`.
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName GLOBAL;
+```
+
+The preceding statement only deletes GlobalStats generated in dynamic pruning mode of the specified table.
 
 ## Load statistics
 
