@@ -404,8 +404,8 @@ TiDB 版本：6.1.0
 
     + TiDB Data Migration (DM)
 
-        - 修复 `start-time` 时区问题，从使用下游时区改为使用上游时区  [#5471](https://github.com/pingcap/tiflow/issues/5471)
-        - 修复任务自动恢复后，DM 会占用更多磁盘空间的问题 [#3734](https://github.com/pingcap/tiflow/issues/3734), [#5344](https://github.com/pingcap/tiflow/issues/5344)
+        - 修复 `start-time` 时区问题，从使用下游时区改为使用上游时区 [#5471](https://github.com/pingcap/tiflow/issues/5471)
+        - 修复任务自动恢复后，DM 会占用更多磁盘空间的问题 [#3734](https://github.com/pingcap/tiflow/issues/3734)，[#5344](https://github.com/pingcap/tiflow/issues/5344)
         - 修复 checkpoint flush 可能导致失败行数据被跳过的问题 [#5279](https://github.com/pingcap/tiflow/issues/5279)
         - 修复了某些情况下，过滤 DDL 并在下游手动执行会导致同步任务不能自动重试恢复的问题 [#5272](https://github.com/pingcap/tiflow/issues/5272)
         - 修复在未设置 `case-sensitive: true` 时无法同步大写表的问题 [#5255](https://github.com/pingcap/tiflow/issues/5255)
