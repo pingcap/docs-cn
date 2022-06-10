@@ -631,7 +631,7 @@ cd plain-java-mybatis
 - `src/main/java/com/pingcap/model/PlayerMapper.java`：Player Mapper 的接口文件
 - `src/main/resources/mapper/PlayerMapper.xml`：Player Mapper 的 XML 映射，它是 Mybatis 用于生成对应的接口（Player Mapper 接口）的实现类的配置
 
-这些文件的生成策略被写在了 `mybatis-generator.xml` 配置文件内，它是 [Mybatis Generator](https://mybatis.org/generator/quickstart.html) 的配置文件，已在配置文件中进行逐行解释了使用方法：
+这些文件的生成策略被写在了 `mybatis-generator.xml` 配置文件内，它是 [Mybatis Generator](https://mybatis.org/generator/quickstart.html) 的配置文件，下面配置文件中添加了使用方法的说明：
 
 {{< copyable "" >}}
 
