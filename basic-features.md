@@ -128,7 +128,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [扩展统计信息（多列）](/statistics.md)                    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N        |
 | [统计反馈](/statistics.md#自动更新)                       | 已废弃 | 已废弃 |  已废弃  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [动态剪裁](/partitioned-table.md) | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N |
+| [动态剪裁](/partitioned-table.md#动态裁剪模式) | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N |
 
 ## 安全
 
