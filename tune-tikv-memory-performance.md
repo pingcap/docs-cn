@@ -6,7 +6,7 @@ aliases: ['/docs/dev/tune-tikv-performance/','/docs/dev/reference/performance/tu
 
 # Tune TiKV Memory Parameter Performance
 
-This document describes how to tune the TiKV parameters for optimal performance.
+This document describes how to tune the TiKV parameters for optimal performance. You can find the default configuration file in [etc/config-template.toml](https://github.com/tikv/tikv/blob/master/etc/config-template.toml). To modify the configuration, you can [use TiUP](/maintain-tidb-using-tiup.md#modify-the-configuration) or [modify TiKV online](/dynamic-config.md#modify-tikv-configuration-online) for a limited set of configuration items. For the complete configuration, see [TiKV configuration file](/tikv-configuration-file.md).
 
 TiKV uses RocksDB for persistent storage at the bottom level of the TiKV architecture. Therefore, many of the performance parameters are related to RocksDB. TiKV uses two RocksDB instances: the default RocksDB instance stores KV data, the Raft RocksDB instance (RaftDB) stores Raft logs.
 
