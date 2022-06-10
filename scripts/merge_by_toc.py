@@ -9,6 +9,7 @@ from __future__ import print_function, unicode_literals
 
 import re
 import os
+import sys
 
 followups = []
 in_toc = False
@@ -23,8 +24,12 @@ heading_patthern = re.compile(r'(^#+|\n#+)\s')
 # match copyable snippet code
 copyable_snippet_pattern = re.compile(r'{{< copyable .* >}}')
 
+sysArgvList = sys.argv
 
-entry_file = "TOC.md"
+try:
+    entry_file = sys.argv[1]
+except IndexError:
+    entry_file = "TOC.md"
 
 # stage 1, parse toc
 with open(entry_file) as fp:
@@ -146,6 +151,9 @@ for type_, level, name in followups:
             print("generate file error: ignore!")
 
 # stage 4, generage final doc.md
-target_doc_file = 'doc.md'
+try:
+    target_doc_file = sys.argv[2]
+except IndexError:
+    target_doc_file = 'doc.md'
 with open(target_doc_file, 'w') as fp:
     fp.write('\n'.join(contents))

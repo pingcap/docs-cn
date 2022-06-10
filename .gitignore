@@ -13,4 +13,8 @@ gen
 
 /node_modules/
 
+<<<<<<< HEAD
 tmp/
+=======
+tmp/
+>>>>>>> 5f7025540 (Add cloud scripts (#8769))
