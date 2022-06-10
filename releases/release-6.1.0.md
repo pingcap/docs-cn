@@ -17,7 +17,7 @@ TiDB 版本：6.1.0
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
-- DM 合库合表迁移场景的乐观 DDL 协调模式正式 GA
+- DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
 ## 新功能
 
@@ -39,7 +39,7 @@ TiDB 版本：6.1.0
     * `DENSE_RANK()`
     * `ROW_NUMBER()`
 
-    [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#33072](https://github.com/pingcap/tidb/issues/33072)
+  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#33072](https://github.com/pingcap/tidb/issues/33072)
 
 ### 可观测性
 
@@ -74,7 +74,7 @@ TiDB 版本：6.1.0
 
     该特性提供更多的手段帮助用户固定连接顺序，合理运用 hint 语法，可以有效提升 SQL 性能和集群稳定性。
 
-    用户文档：[`LEADING`](/optimizer-hints.md#leadingt1_name--tl_name-)，[`STRAIGHT_JOIN`](/optimizer-hints.md#straight_join)，[#29932](https://github.com/pingcap/tidb/issues/29932)
+  用户文档：[`LEADING`](/optimizer-hints.md#leadingt1_name--tl_name-)，[`STRAIGHT_JOIN`](/optimizer-hints.md#straight_join)，[#29932](https://github.com/pingcap/tidb/issues/29932)
 
 * 新增以下函数的支持：
 
@@ -83,7 +83,7 @@ TiDB 版本：6.1.0
     * `TO_SECONDS`
     * `WEEKOFYEAR`
 
-    [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
+  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
 
 * 支持分区表动态裁剪
 
@@ -133,20 +133,20 @@ TiDB 版本：6.1.0
 
 * TiDB/TiKV/TiFlash 参数支持在线修改
 
-    在 v6.1.0 之前的版本中，配置变更后，必须重启 TiDB 集群，配置才会生效，这对在线业务会造成一定的影响。TiDB v6.1.0 引入了在线修改配置功能，参数修改后，无需重启，即可生效。具体优化如下：
+  在 v6.1.0 之前的版本中，配置变更后，必须重启 TiDB 集群，配置才会生效，这对在线业务会造成一定的影响。TiDB v6.1.0 引入了在线修改配置功能，参数修改后，无需重启，即可生效。具体优化如下：
 
     * TiDB 将部分配置项转化为系统变量，所有变量支持在线变更，并支持持久化。请注意，转化后，原有配置项将被废弃。详细变更列表请查看[配置文件参数](#配置文件参数)。
     * TiKV 支持部分参数在线变更。详细变更列表请查看[其他](#其他)。
     * TiFlash 配置项 `max_threads` 转化为系统变量 `tidb_max_tiflash_threads`，从而支持配置项在线变更和持久化。转化后，原有配置项不会废弃。
 
-    对于从 v6.1.0 之前版本升级到 v6.1.0 的集群（包括滚动升级和停机升级），请注意：
+  对于从 v6.1.0 之前版本升级到 v6.1.0 的集群（包括滚动升级和停机升级），请注意：
 
     * 若升级前集群指定的配置文件中，存在已经配置的项，则升级过程中 TiDB 将会将配置项的值自动更新为对应系统变量的值，以保证升级后，系统的行为不会因为参数的优化发生变化。
     * 上述自动更新仅在升级过程中发生一次，升级完成之后，被废弃的配置项不再有任何效果。
 
-    通过本次优化，客户可以在线修改参数生效并持久化，方便客户进行日常运维，避免重启生效对在线业务造成的影响。
+  通过本次优化，客户可以在线修改参数生效并持久化，方便客户进行日常运维，避免重启生效对在线业务造成的影响。
 
-    [用户文档](/dynamic-config.md)
+  [用户文档](/dynamic-config.md)
 
 * 支持全局 kill 查询或连接
 
@@ -165,9 +165,9 @@ TiDB 版本：6.1.0
     * 数据以 MVCC 方式存储，并记录了数据的变更时间戳。这个特性将为实现 Change Data Capture、增量备份与恢复等打下基础。
     * 数据根据不同的使用方式划分范围，支持单一集群 TiDB、事务 KV、RawKV 应用共存。
 
-    <Warning>
-    由于底层存储格式发生了重大变化，启用 API V2 后，不能将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
-    </Warning>
+  <Warning>
+  由于底层存储格式发生了重大变化，启用 API V2 后，不能将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
+  </Warning>
 
     [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)，[#11745](https://github.com/tikv/tikv/issues/11745)
 
@@ -373,7 +373,7 @@ TiDB 版本：6.1.0
 
     - 修复下线一个 TiKV 实例导致 Raft log lag 越来越大的问题 [#12161](https://github.com/tikv/tikv/issues/12161)
     - 修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
-    - 修复从 v5.3.1、v5.4.0 升级到 v6.0.0 时 TiKV 报 `failed to load_latest_options` 错误的问题 [#12269](https://github.com/tikv/tikv/issues/12269)
+    - 修复从 v5.3.1、v5.4.0 升级到 v6.0.0 及以上版本时 TiKV 报 `failed to load_latest_options` 错误的问题 [#12269](https://github.com/tikv/tikv/issues/12269)
     - 修复内存资源不足时 append Raft log 导致 OOM 的问题 [#11379](https://github.com/tikv/tikv/issues/11379)
     - 修复销毁 peer 和批量分裂 Region 之间的竞争导致的 TiKV panic [#12368](https://github.com/tikv/tikv/issues/12368)
     - 修复 `stats_monitor` 线程陷入死循环导致短期内 TiKV 内存占用陡增的问题 [#12416](https://github.com/tikv/tikv/issues/12416)
