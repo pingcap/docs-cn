@@ -95,7 +95,7 @@ TiDB 版本：6.1.0
 
 * SST 故障自动恢复
 
-    当 RocksDB 后台检测到故障 SST 文件后，TiKV 会尝试通过调度所涉及的故障 Peer，并利用其它副本恢复该节点数据，用户可以通过参数 `background-error-recovery-window` 设置允许的最长恢复时间。如果恢复操作未能在设置的时间窗口内完成，TiKV 会自动崩溃。该特性对于可恢复存储故障进行自动检测和恢复，提升了集群稳定性。
+    当 RocksDB 后台检测到故障 SST 文件后，TiKV 会尝试通过调度所涉及的故障 Peer，并利用其它副本恢复该节点数据，用户可以通过参数 `background-error-recovery-window` 设置允许的最长恢复时间。如果恢复操作未能在设置的时间窗口内完成，TiKV 将会崩溃。该特性对于可恢复存储故障进行自动检测和恢复，提升了集群稳定性。
 
     [用户文档](/tikv-configuration-file.md#background-error-recovery-window-从-v610-版本开始引入)，[#10578](https://github.com/tikv/tikv/issues/10578)
 
