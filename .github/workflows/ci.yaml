@@ -17,7 +17,13 @@ jobs:
         run: ./scripts/verify-links.sh
       - name: Verify internal link anchors
         run: ./scripts/verify-link-anchors.sh
+      - name: Check TOC-tidb-cloud.md existence
+        id: check_cloud_toc
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "TOC-tidb-cloud.md"
       - name: Verify internal links - cloud only
+        if: steps.check_cloud_toc.outputs.files_exists == 'true'
         run: |
           npm i
           node ./scripts/filterCloudDoc.js
