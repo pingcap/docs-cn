@@ -11,7 +11,7 @@ summary: 了解 TiCDC 软硬件环境要求以及如何安装部署 TiCDC。
 
 在生产环境中，TiCDC 的软件和硬件配置推荐如下：
 
-| Linux 操作系统平台       | 版本         |
+| Linux 操作系统       | 版本         |
 | :----------------------- | :----------: |
 | Red Hat Enterprise Linux | 7.3 及以上   |
 | CentOS                   | 7.3 及以上   |

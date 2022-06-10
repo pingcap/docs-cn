@@ -216,19 +216,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
  tiup diag upload
  ```
 
-输出结果示例如下：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-[root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-Completed!
-Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
-```
-
-完成上传后，你可以打开 `Download URL` 中的数据访问链接进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接查看数据，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
 
 #### 方式 2：打包后上传
 
@@ -259,19 +247,7 @@ Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
     tiup diag upload ${filepath}
     ```
 
-    输出结果示例如下：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-    Completed!
-    Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
-    ```
-
-3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+    完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
 
 ## 本地快速检查集群状态
 

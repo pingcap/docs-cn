@@ -22,7 +22,7 @@ TiDB 版本：5.1
 
 > **注意：**
 >
-> 当从一个早期的 TiDB 版本升级到 TiDB 5.1 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。 
+> 当从一个早期的 TiDB 版本升级到 TiDB 5.1 时，如需了解所有中间版本对应的兼容性更改说明，请查看对应版本的 [Release Note](/releases/release-notes.md)。
 
 ### 系统变量
 
@@ -40,7 +40,7 @@ TiDB 版本：5.1
 | 配置文件   | 配置项   | 修改类型   | 描述   |
 |:----------|:-----------|:-----------|:-----------|
 | TiDB 配置文件  | [`security.enable-sem`](/tidb-configuration-file.md#enable-sem)  | 新增  | 控制是否启用安全增强模式 (SEM)。默认值为 `false`，代表未启用。 |
-| TiDB 配置文件  | [`performance.committer-concurrency`](/tidb-configuration-file.md#committer-concurrency)  | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的并发数。默认值从 `16` 修改为 `128`。|
+| TiDB 配置文件  | `performance.committer-concurrency` | 修改  | 在单个事务的提交阶段，控制用于执行提交操作相关请求的并发数。默认值从 `16` 修改为 `128`。|
 | TiDB 配置文件  | [`performance.tcp-no-delay`](/tidb-configuration-file.md#tcp-no-delay)  | 新增  | 控制 TiDB 是否在 TCP 层开启 TCP_NODELAY。 默认值为 `true`，代表开启。 |
 | TiDB 配置文件  | [`performance.enforce-mpp`](/tidb-configuration-file.md#enforce-mpp)  | 新增  | 用于在实例级别控制 TiDB 是否忽略优化器代价估算，强制使用 MPP 模式，默认值为 `false`。该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。 |
 | TiDB 配置文件  | [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity)  | 新增  | 控制单个 TiDB 节点的 [`INFORMATION_SCHEMA.DEADLOCKS`](/information-schema/information-schema-deadlocks.md) 表最多可记录的死锁事件个数，默认值为 “10”。 |
@@ -119,19 +119,19 @@ TiDB 版本：5.1
     `tidb_analyze_version = 2` 默认启用，避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
 
     [用户文档](/statistics.md)
- 
+
 ### 事务
 
 + 新增锁视图 (Lock View)（实验特性）
 
     Lock View 用于提供关于悲观锁的锁冲突和锁等待的更多信息，方便 DBA 通过锁视图功能来观察事务加锁情况以及排查死锁问题等 [#24199](https://github.com/pingcap/tidb/issues/24199)
-    
+
     用户文档：
 
     - 查看集群中所有 TiKV 节点上当前正在发生的悲观锁等锁：[`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md)
     - 查看 TiDB 节点上最近发生的若干次死锁错误：[`DEADLOCKS`](/information-schema/information-schema-deadlocks.md)
     - 查看 TiDB 节点上正在执行的事务的信息：[`TIDB_TRX`](/information-schema/information-schema-tidb-trx.md)
-    
+
 ### 性能
 
 + 数据副本非一致性读 (Stale Read)（实验特性）

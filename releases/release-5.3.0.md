@@ -41,7 +41,7 @@ TiDB 版本：5.3.0
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
+| TiDB | `prepared-plan-cache.capacity` | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 `memory-usage-limit` 参数， 升级后该参数值根据 `storage.block-cache.capacity` 来计算。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。|
@@ -350,6 +350,8 @@ TiDB 在遥测中新增收集 TEMPORARY TABLE 功能的开启情况。收集的�
     - 修复当导出带有 `new collation` 数据的表的统计信息时报 `data too long` 错误的问题 [#27024](https://github.com/pingcap/tidb/issues/27024)
     - 修复 `TIDB_TRX` 中不包含重试事务的问题 [#28670](https://github.com/pingcap/tidb/pull/28670)
     - 修复配置项 `plugin_dir` 的默认值错误问题 [#28084](https://github.com/pingcap/tidb/issues/28084)
+    - 修复 `CONVERT_TZ` 函数在指定时区和 UTC 偏移量时返回 `NULL` 的问题 [#8311](https://github.com/pingcap/tidb/issues/8311)
+    - 修复如果 `character_set_server` 和 `collation_server` 指定的字符集未在 `CREATE SCHEMA` 语句中指定时，那么创建的新表结构不使用 `character_set_server` 和 `collation_server` 指定的字符集的问题 [#27214](https://github.com/pingcap/tidb/issues/27214)
 
 + TiKV
 
