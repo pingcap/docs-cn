@@ -216,19 +216,7 @@ If the network where the cluster is located can access the internet, you can dir
 tiup diag upload
 ```
 
-The following is an example output:
-
-{{< copyable "shell-regular" >}}
-
-```bash
-[root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-Completed!
-Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
-```
-
-After the upload is complete, you can open the link of `Download URL` to see the uploaded data or send the link to the PingCAP technical support staff you contacted before.
+After the upload is completed, the `Download URL` is displayed in the output. You can open the link of `Download URL` to see the uploaded data or send the link to the PingCAP technical support staff you contacted before.
 
 #### Method 2. Pack and upload data
 
