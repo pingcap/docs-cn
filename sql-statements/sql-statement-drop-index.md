@@ -11,23 +11,11 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-index/','/docs-cn/dev/
 ## 语法图
 
 ```ebnf+diagram
-AlterTableDropIndexStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
+AlterTableDropIndexStmt
+         ::= 'ALTER' 'IGNORE'? 'TABLE' AlterTableDropIndexSpec ( ',' AlterTableDropIndexSpec )*
 
-IgnoreOptional ::=
-    'IGNORE'?
-
-TableName ::=
-    Identifier ('.' Identifier)?
-
-AlterTableDropIndexSpec ::=
-    'DROP' ( KeyOrIndex | 'FOREIGN' 'KEY' ) IfExists Identifier
-
-KeyOrIndex ::=
-    'KEY'
-|   'INDEX'
-
-IfExists ::= ( 'IF' 'EXISTS' )?
+AlterTableDropIndexSpec
+         ::= 'DROP' ( 'FOREIGN'? 'KEY' | 'INDEX' ) ( 'IF' 'EXISTS' )? Identifier
 ```
 
 ## 示例
