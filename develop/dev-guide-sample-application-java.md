@@ -587,7 +587,7 @@ public class JDBCExample
 
 可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码。并非最佳实践。
 
-当前开源比较流行的 Java 应用持久层框架为 [Mybatis](https://mybatis.org/mybatis-3/index.html)，我们将搭配使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) ，以 Maven 插件的方式，对部分持久层代码进行生成。
+当前开源比较流行的 Java 应用持久层框架为 [Mybatis](https://mybatis.org/mybatis-3/index.html)，本文将搭配使用 [MyBatis Generator](https://mybatis.org/generator/quickstart.html) ，以 Maven 插件的方式，对部分持久层代码进行生成。
 
 进入目录 `plain-java-mybatis`：
 
