@@ -279,7 +279,7 @@ CREATE TABLE `bookshop`.`ratings` (
   PRIMARY KEY (`book_id`,`user_id`) CLUSTERED,
   UNIQUE KEY `uniq_book_user_idx` (`book_id`,`user_id`)
 ) DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-ALTER TABLE `bookshop`.`rating` SET TIFLASH REPLICA 1;
+ALTER TABLE `bookshop`.`ratings` SET TIFLASH REPLICA 1;
 
 DROP TABLE IF EXISTS `bookshop`.`users`;
 CREATE TABLE `bookshop`.`users` (

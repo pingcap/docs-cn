@@ -43,12 +43,12 @@ The following are some best practices to follow when you delete data:
 
 ## Example
 
-Suppose you find an application error within a specific time period and you need to delete all the data for the [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-table) within this period, for example, from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`. In this case, you can use the `SELECT` statement to check the number of records to be deleted.
+Suppose you find an application error within a specific time period and you need to delete all the data for the [ratings](/develop/dev-guide-bookshop-schema-design.md#ratings-table) within this period, for example, from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`. In this case, you can use the `SELECT` statement to check the number of records to be deleted.
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 If more than 10,000 records are returned, use [Bulk-Delete](#bulk-delete) to delete them.
@@ -61,7 +61,7 @@ If fewer than 10,000 records are returned, use the following example to delete t
 {{< copyable "sql" >}}
 
 ```sql
-DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 </div>
@@ -74,15 +74,18 @@ DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at`
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
 
 try (Connection connection = ds.getConnection()) {
-    PreparedStatement pstmt = connection.prepareStatement("DELETE FROM `rating` WHERE `rating_at` >= ? AND  `rating_at` <= ?");
+    String sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql);
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.MILLISECOND, 0);
 
     calendar.set(2022, Calendar.APRIL, 15, 0, 0, 0);
-    pstmt.setTimestamp(1, new Timestamp(calendar.getTimeInMillis()));
+    preparedStatement.setTimestamp(1, new Timestamp(calendar.getTimeInMillis()));
 
     calendar.set(2022, Calendar.APRIL, 15, 0, 15, 0);
-    pstmt.setTimestamp(2, new Timestamp(calendar.getTimeInMillis()));
+    preparedStatement.setTimestamp(2, new Timestamp(calendar.getTimeInMillis()));
+
+    preparedStatement.executeUpdate();
 } catch (SQLException e) {
     e.printStackTrace();
 }
@@ -93,7 +96,7 @@ try (Connection connection = ds.getConnection()) {
 
 > **Note:**
 >
-> Note that the `rating_at` field is of the `DATETIME` type in [Date and Time Types](/data-type-date-and-time.md). You can assume that it is stored as a literal quantity in TiDB, independent of the time zone. On the other hand, the `TIMESTAMP` type stores a timestamp and thus displays a different time string in a different [time zone](/configure-time-zone.md).
+> Note that the `rated_at` field is of the `DATETIME` type in [Date and Time Types](/data-type-date-and-time.md). You can assume that it is stored as a literal quantity in TiDB, independent of the time zone. On the other hand, the `TIMESTAMP` type stores a timestamp and thus displays a different time string in a different [time zone](/configure-time-zone.md).
 >
 > Also, like MySQL, the `TIMESTAMP` data type is affected by the [year 2038 problem](https://en.wikipedia.org/wiki/Year_2038_problem). It is recommended to use the `DATETIME` type if you store values larger than 2038.
 
