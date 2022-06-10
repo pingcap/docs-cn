@@ -1506,7 +1506,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 > 在 Gitpod Playground 中尝试 JDBC：[现在就试试](https://gitpod.io/#targetMode=plain-java-mybatis/https://github.com/pingcap-inc/tidb-example-java)
 
-使用 JDBC 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下运行：
+使用 JDBC 时，需手动初始化数据库表。若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `plain-java-mybatis` 目录下通过 `make prepare` 运行：
 
 {{< copyable "shell-regular" >}}
 
