@@ -164,17 +164,21 @@
   - [Troubleshoot Write Conflicts in Optimistic Transactions](/troubleshoot-write-conflicts.md)
   - [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md)
 - Performance Tuning
-  - System Tuning
-    - [Operating System Tuning](/tune-operating-system.md)
-  - Software Tuning
-    - Configuration
-      - [Tune TiDB Memory](/configure-memory-usage.md)
-      - [Tune TiKV Threads](/tune-tikv-thread-performance.md)
-      - [Tune TiKV Memory](/tune-tikv-memory-performance.md)
-      - [TiKV Follower Read](/follower-read.md)
-      - [Tune Region Performance](/tune-region-performance.md)
-      - [TiFlash Tuning](/tiflash/tune-tiflash-performance.md)
-    - [Coprocessor Cache](/coprocessor-cache.md)
+  - Tuning Guide
+    - [Performance Tuning Overview](/performance-tuning-overview.md)
+    - [Performance Tuning Practices for OLTP Scenarios](/performance-tuning-practices.md)
+  - Configuration Tuning
+    - System Tuning
+      - [Operating System Tuning](/tune-operating-system.md)
+    - Software Tuning
+      - Configuration
+        - [Tune TiDB Memory](/configure-memory-usage.md)
+        - [Tune TiKV Threads](/tune-tikv-thread-performance.md)
+        - [Tune TiKV Memory](/tune-tikv-memory-performance.md)
+        - [TiKV Follower Read](/follower-read.md)
+        - [Tune Region Performance](/tune-region-performance.md)
+        - [Tune TiFlash Performance](/tiflash/tune-tiflash-performance.md)
+      - [Coprocessor Cache](/coprocessor-cache.md)
   - SQL Tuning
     - [Overview](/sql-tuning-overview.md)
     - Understanding the Query Execution Plan
