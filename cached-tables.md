@@ -240,9 +240,9 @@ Cached tables **CANNOT** be used in the following scenarios:
 - Setting the system variable `tidb_snapshot` to read historical data.
 - During modification, the cached data becomes invalid until the data is reloaded.
 
-## Compatibility with TiDB ecosystem tools
+## Compatibility with TiDB migration tools
 
-The cached table is a TiDB extension to MySQL syntax. Only TiDB can recognize the `ALTER TABLE ... CACHE` statement. TiDB ecosystem tools **DO NOT** support cached tables, including Backup & Restore (BR), TiCDC, and Dumpling. These tools treat cached tables as normal tables.
+The cached table is a TiDB extension to MySQL syntax. Only TiDB can recognize the `ALTER TABLE ... CACHE` statement. TiDB migration tools **DO NOT** support cached tables, including Backup & Restore (BR), TiCDC, and Dumpling. These tools treat cached tables as normal tables.
 
 That is to say, when a cached table is backed up and restored, it becomes a normal table. If the downstream cluster is a different TiDB cluster and you want to continue using the cached table feature, you can manually enable cached tables on the downstream cluster by executing `ALTER TABLE ... CACHE` on the downstream table.
 

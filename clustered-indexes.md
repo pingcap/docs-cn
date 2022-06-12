@@ -182,9 +182,9 @@ Since TiDB v5.0, the clustered index feature is fully supported for all types of
 
 TiDB specific comment syntax supports wrapping the keywords `CLUSTERED` and `NONCLUSTERED` in a comment. The result of `SHOW CREATE TABLE` also contains TiDB specific SQL comments. MySQL databases and TiDB databases of an earlier version will ignore these comments.
 
-### Compatibility with TiDB ecosystem tools
+### Compatibility with TiDB migration tools
 
-The clustered index feature is only compatible with the following ecosystem tools in v5.0 and later versions:
+The clustered index feature is only compatible with the following migration tools in v5.0 and later versions:
 
 - Backup and restore tools: BR, Dumpling, and TiDB Lightning.
 - Data migration and replication tools: DM and TiCDC.

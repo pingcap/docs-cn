@@ -203,7 +203,7 @@ The best way to learn about a system or solve the problem is to read its documen
 
 TiDB has a large number of official documents both in Chinese and English. If you have met an issue, you can start from [FAQ](/faq/tidb-faq.md) and [TiDB Cluster Troubleshooting Guide](/troubleshoot-tidb-cluster.md). You can also search the issue list or create an issue in [TiDB repository on GitHub](https://github.com/pingcap/tidb).
 
-TiDB also has many useful ecosystem tools. See [Ecosystem Tool Overview](/ecosystem-tool-user-guide.md) for details.
+TiDB also has many useful migration tools. See [Migration Tool Overview](/ecosystem-tool-user-guide.md) for details.
 
 For more articles on the technical details of TiDB, see the [PingCAP official blog site](https://pingcap.com/blog/).
 

@@ -63,9 +63,9 @@ In v5.3, the key new features or improvements are as follows:
     - Since v5.3.0, TiCDC and BR support [global temporary tables](/temporary-tables.md#global-temporary-tables). If you use TiCDC and BR of a version earlier than v5.3.0 to replicate global temporary tables to the downstream, a table definition error occurs.
     - The following clusters are expected to be v5.3.0 or later; otherwise, data error is reported when you create a global temporary table:
 
-        - the cluster to be imported using TiDB ecosystem tools
-        - the cluster restored using TiDB ecosystem tools
-        - the downstream cluster in a replication task using TiDB ecosystem tools
+        - the cluster to be imported using TiDB migration tools
+        - the cluster restored using TiDB migration tools
+        - the downstream cluster in a replication task using TiDB migration tools
     - For the compatibility information of temporary tables, refer to [Compatibility with MySQL temporary tables](/temporary-tables.md#compatibility-with-mysql-temporary-tables) and [Compatibility restrictions with other TiDB features](/temporary-tables.md#compatibility-restrictions-with-other-tidb-features).
 
 - For releases earlier than v5.3.0, TiDB reports an error when a system variable is set to an illegal value. For v5.3.0 and later releases, TiDB returns success with a warning such as "|Warning | 1292 | Truncated incorrect xxx: 'xx'" when a system variable is set to an illegal value.

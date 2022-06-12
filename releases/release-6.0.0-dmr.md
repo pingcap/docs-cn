@@ -331,7 +331,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 - The data placement policy has the following compatibility changes:
     - Binding is not supported. The direct placement option is removed from the syntax.
     - The `CREATE PLACEMENT POLICY` and `ALTER PLACEMENT POLICY` statements no longer support the `VOTERS` and `VOTER_CONSTRAINTS` placement options.
-    - TiDB ecosystem tools (TiDB Binlog, TiCDC, and BR) are now compatible with placement rules. The placement option is moved to a special comment in TiDB Binlog.
+    - TiDB migration tools (TiDB Binlog, TiCDC, and BR) are now compatible with placement rules. The placement option is moved to a special comment in TiDB Binlog.
     - The `information_schema.placement_rules` system table is renamed to `information_schema.placement_policies`. This table now only displays information about placement policies.
     - The `placement_checks` system variable is replaced by `tidb_placement_mode`.
     - It is prohibited to add partitions with placement rules to tables that have TiFlash replicas.

@@ -313,11 +313,11 @@ Local temporary tables in TiDB do **NOT** support the following feature:
 
 - Reading historical data using the `tidb_snapshot` system variable.
 
-## TiDB ecosystem tool support
+## TiDB migration tool support
 
-Local temporary tables are not exported, backed up or replicated by TiDB ecosystem tools, because these tables are visible only to the current session.
+Local temporary tables are not exported, backed up or replicated by TiDB migration tools, because these tables are visible only to the current session.
 
-Global temporary tables are exported, backed up, and replicated by TiDB ecosystem tools, because the table definition is globally visible. Note that the data on the tables are not exported.
+Global temporary tables are exported, backed up, and replicated by TiDB migration tools, because the table definition is globally visible. Note that the data on the tables are not exported.
 
 > **Note:**
 >
