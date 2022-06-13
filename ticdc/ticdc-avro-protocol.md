@@ -16,7 +16,14 @@ Avro 是由 [Apache Avro™](https://avro.apache.org/) 定义的一种数据交�
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro" --schema-registry=http://127.0.0.1:8081
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 `--schema-registry` 的值支持 https 协议和 username:password 认证，比如`--schema-registry=https://username:password@schema-registry-uri.com`，username 和 password 必须经过 URL 编码。
@@ -34,8 +41,15 @@ cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
 ```
+
+ ```shell
+ [sink]
+ dispatchers = [
+  {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+ ]
+ ```
 
 ## 数据格式定义
 
@@ -186,14 +200,21 @@ Column 数据格式即 Key/Value 数据格式中的 `{{ColumnValueBlock}}` 部�
 - `avro-bigint-unsigned-handling-mode` 决定了如何处理 BIGINT UNSIGNED 字段，它有两个选项：
 
     - string：Avro 将 BIGINT UNSIGNED 字段以 string 的方式处理。
-    - long：Avro 将 BIGINT UNSIGNED 字段以 64 位有符号整数处理，值可能会溢出。
+    - long：Avro 将 BIGINT UNSIGNED 字段以 64 位有符号整数处理，大于 9223372036854775807 的值会发生溢出。
 
 配置样例如下所示：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-string-option" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 大多数的 SQL Type 都会映射成基础的 Column 数据格式，但有一些类型会在基础数据格式上拓展，提供更多的信息。
