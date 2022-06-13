@@ -301,7 +301,14 @@ Sample configuration:
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&replication-factor=3" --schema-registry="http://127.0.0.1:8081"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --schema-registry="http://127.0.0.1:8081" --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 For detailed integration guide, see [Quick Start Guide on Integrating TiDB with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md).

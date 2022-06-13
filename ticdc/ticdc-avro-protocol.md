@@ -16,7 +16,14 @@ The following is a configuration example using Avro:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro" --schema-registry=http://127.0.0.1:8081
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 The value of `--schema-registry` supports the `https` protocol and `username:password` authentication, for example, `--schema-registry=https://username:password@schema-registry-uri.com`. The username and password must be URL-encoded.
@@ -34,7 +41,14 @@ The following is a configuration example:
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&enable-tidb-extension=true" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 ## Definition of the data format
@@ -186,14 +200,21 @@ In the Avro protocol, two other `sink-uri` parameters might affect the Column da
 - `avro-bigint-unsigned-handling-mode` controls how Avro handles BIGINT UNSIGNED fields, including:
 
     - string: Avro handles BIGINT UNSIGNED fields as strings.
-    - long: Avro handles BIGINT UNSIGNED fields as 64-bit signed integers, which might result in overflow.
+    - long: Avro handles BIGINT UNSIGNED fields as 64-bit signed integers. When the value is greater than `9223372036854775807`, overflow will occur.
 
 The following is a configuration example:
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-enable-extension" --sink-uri="kafka://127.0.0.1:9092/topic-name?kafka-version=2.6.0&protocol=avro&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081
+cdc cli changefeed create --pd=http://127.0.0.1:2379 --changefeed-id="kafka-avro-string-option" --sink-uri="kafka://127.0.0.1:9092/topic-name?protocol=avro&avro-decimal-handling-mode=string&avro-bigint-unsigned-handling-mode=string" --schema-registry=http://127.0.0.1:8081 --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 Most SQL types are mapped to the base Column data format. Some other SQL types extend the base data format to provide more information.
