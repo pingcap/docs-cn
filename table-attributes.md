@@ -7,8 +7,8 @@ summary: 介绍 TiDB 的 `ATTRIBUTES` 使用方法。
 
 表属性是 TiDB 从 5.3.0 版本开始引入的新特性，用于为表或分区添加特定的属性，以对表或分区执行相应属性对应的操作，例如可以利用表属性控制 Region 的合并。
 
-> **注意：** 
-> 
+> **注意：**
+>
 > - 目前 TiDB 仅支持为表或分区添加 `merge_option` 属性，用于控制 Region 合并。该属性仅能处理部分热点问题。如需了解更多的热点问题处理相关内容，请参阅 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md)。
 > - 当使用 TiDB Binlog 或 TiCDC 进行同步或者使用 BR 进行增量备份时，同步和备份会跳过设置表属性的 DDL 语句。如需在下游或者备份集群使用表属性，需要在下游或者备份集群手动执行该 DDL 语句以设置表属性。
 > - TiDB v5.4.0 **不支持** Index Region。有关 Index Region 的具体信息可以参考 [Split Index Region](/sql-statements/sql-statement-split-region.md#split-index-region)。
@@ -122,7 +122,7 @@ ALTER TABLE t PARTITION p ATTRIBUTES 'merge_option=allow';
 
 同时配置上述两个属性时，实际分区 `p` 的 Region 可以被合并。当分区的属性被重置时，分区 `p` 则会继承表 `t` 的属性，Region 无法被合并。
 
-> **注意：** 
-> 
+> **注意：**
+>
 > - 如果目前只存在分区表的属性，即使配置 `merge_option=allow`，分区也会默认按照实际分区数量切分成多个 Region。如需合并所有 Region，则需要[重置该分区表的属性](#使用方法)。
 > - 使用该属性需要注意 PD 的参数 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 的配置。如果没有配置 `merge_option`，Region 在超过 `split-merge-interval` 指定的时间后满足条件即可合并。如果配置了 `merge_option`，则超过指定时间后会根据 `merge_option` 的配置情况再决定是否可以合并。
