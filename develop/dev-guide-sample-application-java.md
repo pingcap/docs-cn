@@ -1628,7 +1628,7 @@ mysqlDataSource.setPassword("123456");
 mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
 ```
 
-那么此处应将配置文件更改为：
+那么此处应将配置文件中 `dataSource` 节点内更改为：
 
 {{< copyable "" >}}
 
@@ -1639,22 +1639,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 
-<configuration>
-    <settings>
-        <setting name="cacheEnabled" value="true"/>
-        <setting name="lazyLoadingEnabled" value="false"/>
-        <setting name="aggressiveLazyLoading" value="true"/>
-        <setting name="logImpl" value="LOG4J"/>
-    </settings>
-
-    <typeAliases>
-        <package name="com.pingcap.dao"/>
-    </typeAliases>
-
-    <environments default="development">
-        <environment id="development">
-            <!-- JDBC transaction manager -->
-            <transactionManager type="JDBC"/>
+        ...
             <!-- Database pool -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver"/>
@@ -1662,13 +1647,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
                 <property name="username" value="root"/>
                 <property name="password" value="123456"/>
             </dataSource>
-        </environment>
-    </environments>
-
-    <mappers>
-        <mapper resource="mapper/PlayerMapper.xml"/>
-        <mapper resource="mapper/PlayerMapperEx.xml"/>
-    </mappers>
+        ...
 
 </configuration>
 ```
