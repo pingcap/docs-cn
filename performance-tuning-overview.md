@@ -99,7 +99,7 @@ In contrast, databases have a complete record of performance metrics such as que
 - If the bottleneck is not in databases, you need to rely on the resource utilization collected outside databases or profile the application to identify the bottleneck outside databases. Common scenarios include insufficient resources of an application or proxy server, and insufficient usage of hardware resources caused by serial points in an application.
 - If bottlenecks are in databases, you can analyze and diagnose the database performances using comprehensive tuning tools. Common scenarios include the presence of slow SQL, unreasonable usage of a database by an application, and the presence of read and write hotspots in databases.
 
-<!-- For more information about the analysis and diagnostic methods and tools, see [Performance Tuning Methods](/performance-tuning-methods.md). -->
+For more information about the analysis and diagnostic methods and tools, see [Performance Analysis and Tuning](/performance-tuning-methods.md).
 
 ### Step 4. Propose tuning solutions, and evaluate the benefits, risks, and costs of each solution
 
