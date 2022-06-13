@@ -12,14 +12,14 @@ You can also use the HTTP interface (the TiCDC OpenAPI feature) to manage the Ti
 
 ## Upgrade TiCDC using TiUP
 
-This section introduces how to upgrade the TiCDC cluster using TiUP. In the following example, assume that you need to upgrade TiCDC and the entire TiDB cluster to v6.0.0.
+This section introduces how to upgrade the TiCDC cluster using TiUP. In the following example, assume that you need to upgrade TiCDC and the entire TiDB cluster to v6.1.0.
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v6.0.0
+tiup cluster upgrade <cluster-name> v6.1.0
 ```
 
 ### Notes for upgrade
@@ -811,8 +811,8 @@ TiCDC replication lag increases in the following scenarios:
 ```toml
 [consistent]
 # Consistency level. Options include:
-# - none: the default value. In a non-disaster scenario, eventual consistency is only guaranteed if and only if finished-ts is specified. 
-# - eventual: Uses redo log to guarantee eventual consistency in case of the primary cluster disasters. 
+# - none: the default value. In a non-disaster scenario, eventual consistency is only guaranteed if and only if finished-ts is specified.
+# - eventual: Uses redo log to guarantee eventual consistency in case of the primary cluster disasters.
 level = "eventual"
 
 # Individual redo log file size, in MiB. By default, it's 64. It is recommended to be no more than 128.
