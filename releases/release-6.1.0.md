@@ -4,7 +4,7 @@ title: TiDB 6.1.0 Release Notes
 
 # TiDB v6.1.0 Release Notes
 
-发版日期：2022 年 x 月 x 日
+发版日期：2022 年 6 月 13 日
 
 TiDB 版本：6.1.0
 
