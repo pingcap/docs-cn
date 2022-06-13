@@ -1,6 +1,6 @@
 ---
 title: TiDB Dashboard 常见问题
-aliases: ["/docs-cn/dev/dashboard/dashboard-faq/"]
+aliases: ['/docs-cn/dev/dashboard/dashboard-faq/']
 ---
 
 # TiDB Dashboard 常见问题
@@ -65,55 +65,55 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
 
 第 1 步：检查 TiUP Cluster 版本
 
-1. 检查 TiUP Cluster 版本，NgMonitoring 组件需要较高版本的部署工具支持（TiUP v1.9.0 及以上）：
+  1. 检查 TiUP Cluster 版本，NgMonitoring 组件需要较高版本的部署工具支持（TiUP v1.9.0 及以上）：
 
-   {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-   ```shell
-   tiup cluster --version
-   ```
+        ```shell
+        tiup cluster --version
+        ```
 
-   上述命令可查看 TiUP Cluster 的具体版本。例如：
+        上述命令可查看 TiUP Cluster 的具体版本。例如：
 
-   ```
-   tiup version 1.9.0 tiup
-   Go Version: go1.17.2
-   Git Ref: v1.9.0
-   ```
+        ```
+        tiup version 1.9.0 tiup
+        Go Version: go1.17.2
+        Git Ref: v1.9.0
+        ```
 
-2. 如果 TiUP 版本低于 v1.9.0，升级 TiUP 和 TiUP Cluster 版本至最新。
+  2. 如果 TiUP 版本低于 v1.9.0，升级 TiUP 和 TiUP Cluster 版本至最新。
 
-   {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-   ```shell
-   tiup update --all
-   ```
+        ```shell
+        tiup update --all
+        ```
 
 第 2 步：在中控机上，通过 TiUP 添加 ng_port 配置项，然后重启 Prometheus 节点。
 
-1. 以编辑模式打开集群的配置文件：
+  1. 以编辑模式打开集群的配置文件：
 
-   {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-   ```shell
-   tiup cluster edit-config ${cluster-name}
-   ```
+        ```shell
+        tiup cluster edit-config ${cluster-name}
+        ```
 
-2. 在 `monitoring_servers` 下面增加 `ng_port:12020` 参数：
+  2. 在 `monitoring_servers` 下面增加 `ng_port:12020` 参数：
 
-   ```
-   monitoring_servers:
-   - host: 172.16.6.6
-     ng_port: 12020
-   ```
+        ```
+        monitoring_servers:
+        - host: 172.16.6.6
+          ng_port: 12020
+        ```
 
-3. 重启 Prometheus 节点：
+  3. 重启 Prometheus 节点：
 
-   {{< copyable "shell-regular" >}}
+        {{< copyable "shell-regular" >}}
 
-   ```shell
-   tiup cluster reload ${cluster-name} --role prometheus
-   ```
+        ```shell
+        tiup cluster reload ${cluster-name} --role prometheus
+        ```
 
 如果执行完上述步骤后依然提示 NgMonitoring 未启动，请联系 PingCAP 技术支持获取帮助。
 
@@ -148,14 +148,14 @@ tiup update playground
 
 2. 打开浏览器的开发者工具。各浏览器的打开方式不同。
 
-   - Firefox：**菜单** > **Web 开发者** > **切换工具箱**（译者注：此处修改为最新的 Firefox Quantum），或者**工具栏** > **切换工具箱**。
-   - Chrome：**菜单** > **更多工具** > **开发者工具**。
-   - Safari：**Develop** > **Show Web Inspector**。如果你看不到 Develop 菜单，选择 **Preferences** > **Advanced**，然后点击 **Show Develop menu in menu bar** 复选框。
+    - Firefox：**菜单** > **Web 开发者** > **切换工具箱**（译者注：此处修改为最新的 Firefox Quantum），或者**工具栏** > **切换工具箱**。
+    - Chrome：**菜单** > **更多工具** > **开发者工具**。
+    - Safari：**Develop** > **Show Web Inspector**。如果你看不到 Develop 菜单，选择 **Preferences** > **Advanced**，然后点击 **Show Develop menu in menu bar** 复选框。
 
-   以 Chrome 为例：
+    以 Chrome 为例：
 
-   ![打开开发者工具](/media/dashboard/dashboard-faq-devtools.png)
+    ![打开开发者工具](/media/dashboard/dashboard-faq-devtools.png)
 
 3. 选中 **Application** 面板，展开 **Local Storage** 菜单并选中 **TiDB Dashboard 页面的域名**，点击 **Clear All**。
 
-   ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
+    ![清理 Local Storage](/media/dashboard/dashboard-faq-devtools-application.png)
