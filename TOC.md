@@ -499,6 +499,7 @@
     - [Scheduling](/tidb-scheduling.md)
   - Key Monitoring Metrics
     - [Overview](/grafana-overview-dashboard.md)
+    - [Performance Overview](/grafana-performance-overview-dashboard.md)
     - [TiDB](/grafana-tidb-dashboard.md)
     - [PD](/grafana-pd-dashboard.md)
     - [TiKV](/grafana-tikv-dashboard.md)

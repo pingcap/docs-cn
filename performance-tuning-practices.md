@@ -5,7 +5,7 @@ summary: This document describes how to analyze and tune performance for OLTP wo
 
 # Performance Tuning Practices for OLTP Scenarios
 
-TiDB provides comprehensive performance diagnostics and analysis features, such as [Top SQL](/dashboard/top-sql.md) and [Continuous Profiling](/dashboard/continuous-profiling.md) features on the TiDB Dashboard, and TiDB Performance Overview Dashboard.
+TiDB provides comprehensive performance diagnostics and analysis features, such as [Top SQL](/dashboard/top-sql.md) and [Continuous Profiling](/dashboard/continuous-profiling.md) features on the TiDB Dashboard, and TiDB [Performance Overview Dashboard](/grafana-performance-overview-dashboard.md).
 
 This document describes how to use these features together to analyze and compare the performance of the same OLTP workload in seven different runtime scenarios, which demonstrates a performance tuning process to help you analyze and tune TiDB performance efficiently.
 
@@ -434,6 +434,6 @@ By comparing the performance of each scenario, we can draw the following conclus
 
     - With the [Top SQL](/dashboard/top-sql.md) feature, you can visually monitor and explore the CPU consumption of each SQL statement in your database during execution to troubleshoot database performance issues.
     - With [Continuous Profiling](/dashboard/continuous-profiling.md), you can continuously collect performance data from each instance of TiDB, TiKV, and PD. When applications use different interfaces to interact with TiDB, the difference in the CPU consumption of TiDB is huge.
-    - With Performance Overview dashboard, you can get an overview of database time and SQL execution time breakdown information. You can analyze and diagnose performance based on database time to determine whether the performance bottleneck of the entire system is in TiDB or not. If the bottleneck is in TiDB, you can use the database time and latency breakdowns, along with load profile and resource usage, to identify performance bottlenecks within TiDB and tune the performance accordingly.
+    - With [Performance Overview Dashboard](/grafana-performance-overview-dashboard.md), you can get an overview of database time and SQL execution time breakdown information. You can analyze and diagnose performance based on database time to determine whether the performance bottleneck of the entire system is in TiDB or not. If the bottleneck is in TiDB, you can use the database time and latency breakdowns, along with load profile and resource usage, to identify performance bottlenecks within TiDB and tune the performance accordingly.
 
 With a combination usage of these features, you can analyze and tune performance for real-world applications efficiently.
