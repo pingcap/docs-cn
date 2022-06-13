@@ -26,8 +26,8 @@ TiUniManager 默认的导入导出路径是在 TiUniManager 中控机上，细�
 
 | **配置描述**                                                 | **配置参数名**         | **参考值**                                                   |
 | ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ |
-| TiUniManager 共享存储中导入文件的存储位置（建议配置为 NFS 共享存储） | `ImportShareStoragePath` | `/home/tiem/import`（备注：中控机 `tiem` 账号拥有该路径的读写权限) |
-| TiUniManager 共享存储中导出文件的存储位置（建议配置为 NFS 共享存储） | `ExportShareStoragePath` | `/home/tiem/export`（备注：中控机 `tiem` 账号拥有该路径的读写权限） |
+| TiUniManager 共享存储中导入文件的存储位置（建议配置为 NFS 共享存储） | `ImportShareStoragePath` | `/home/tidb/import`（备注：中控机 `tidb` 账号拥有该路径的读写权限) |
+| TiUniManager 共享存储中导出文件的存储位置（建议配置为 NFS 共享存储） | `ExportShareStoragePath` | `/home/tidb/export`（备注：中控机 `tidb` 账号拥有该路径的读写权限） |
 
 当前 TiUniManager 不支持通过前端界面修改导入路径。如需修导入路径，需要通过 OpenAPI 对配置进行修改，以修改 `ImportShareStoragePath` 为例：
 

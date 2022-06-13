@@ -369,7 +369,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
     ```shell
     # 切换到 tidb 账号下
-    su - tiem
+    su - tidb
 
     # 将当前 TiUniManager 系统 <cluster-name> 的元数据备份到中控机的 <target-path>
     TIUP_HOME=/home/tidb/.em tiup em backup <cluster-name> <target-path> -N <tiunimanager-ip>
@@ -381,7 +381,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
     ```shell
     # 切换到 tidb 账号下
-    su - tiem
+    su - tidb
 
     db_path: "/home/tidb/em.db"
     ```
@@ -436,8 +436,8 @@ TiUniManager 默认的导入导出路径在 TiUniManager 中控机上，细节�
 
 | 配置描述 | 配置参数名 | 参考值 |
 | --- | --- | --- |
-| TiUniManager 共享存储中导入文件存储位置（建议配置为 NFS 共享存储） | ImportShareStoragePath | `/home/tiem/import`（备注：中控机 `tiem` 账号拥有该路径的读写权限）|
-| TiUniManager 共享存储中导出文件存储的位置（建议配置为 NFS 共享存储） | ExportShareStoragePath | `/home/tiem/export`（备注：中控机 `tiem` 账号拥有该路径的读写权限）|
+| TiUniManager 共享存储中导入文件存储位置（建议配置为 NFS 共享存储） | ImportShareStoragePath | `/home/tidb/import`（备注：中控机 `tidb` 账号拥有该路径的读写权限）|
+| TiUniManager 共享存储中导出文件存储的位置（建议配置为 NFS 共享存储） | ExportShareStoragePath | `/home/tidb/export`（备注：中控机 `tidb` 账号拥有该路径的读写权限）|
 
 当前 TiUniManager 不支持通过 TiUniManager 界面修改导入导出的路径。如需修导入导出路径，需要通过 OpenAPI 对配置进行修改，以修改 “ImportShareStoragePath” 为例：
 

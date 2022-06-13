@@ -9,7 +9,7 @@ TiUniManager 是为分布式数据库 TiDB 打造的管控平台软件和数据�
 
 TiUniManager 可帮助 DBA 避免因人工操作失误导致的数据库故障，保障数据库安全、稳定、高效地运行，降低运维 TiDB 的难度，提升 DBA 工作效率。
 
-自 v1.0.2 版本起，TiUniManager 正式开放源码，详见 GitHub 仓库 [tiem](https://github.com/pingcap/tiem) 和 [tiem-ui](https://github.com/pingcap/tiem-ui)。
+自 v1.0.2 版本起，TiUniManager 正式开放源码，详见 GitHub 仓库 [tiunimanager](https://github.com/pingcap/tiunimanager)。
 
 ## 软件架构
 
