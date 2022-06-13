@@ -717,7 +717,7 @@ cd plain-java-mybatis
 </generatorConfiguration>
 ```
 
-`mybatis-generator.xml` 在 `pom.xml` 中，以 Maven 插件的方式被引入：
+`mybatis-generator.xml` 在 `pom.xml` 中，以 `mybatis-generator-maven-plugin` 插件配置的方式被引入：
 
 ```xml
 <plugin>
