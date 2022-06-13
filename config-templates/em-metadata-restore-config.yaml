@@ -1,6 +1,6 @@
 global:
-  user: "tiem"
-  group: "tiem"
+  user: "tidb"
+  group: "tidb"
   ssh_port: 22
   deploy_dir: "/em-deploy"
   data_dir: "/em-data"
@@ -17,7 +17,7 @@ global:
 monitored:
   node_exporter_port: 4124
 
-tiem_cluster_servers:
+em_cluster_servers:
   - host: 172.16.5.148
     port: 4101
     metrics_port: 4104
@@ -25,59 +25,59 @@ tiem_cluster_servers:
     registry_peer_port: 4107
     # specify the recovery DB path for the central control unit
     db_path: ""
-    deploy_dir: "/tiem-deploy/tiem-cluster-4101"
-    data_dir: "/tiem-data/tiem-cluster-41101"
-tiem_api_servers:
+    deploy_dir: "/em-deploy/em-cluster-4101"
+    data_dir: "/em-data/em-cluster-41101"
+em_api_servers:
   - host: 172.16.5.148
     port: 4100
     metrics_port: 4103
-    deploy_dir: "/tiem-deploy/tiem-api-4100"
-    data_dir: "/tiem-data/tiem-api-4100"
+    deploy_dir: "/em-deploy/em-api-4100"
+    data_dir: "/em-data/em-api-4100"
 
-tiem_file_servers:
+em_file_servers:
   - host: 172.16.5.148
     port: 4102
     metrics_port: 4105
-    deploy_dir: "/tiem-deploy/tiem-file-4102"
-    data_dir: "/tiem-data/tiem-file-4102"
+    deploy_dir: "/em-deploy/em-file-4102"
+    data_dir: "/em-data/em-file-4102"
 
-tiem_web_servers:
+em_web_servers:
   - host: 172.16.5.148
     port: 4180
-    deploy_dir: "/tiem-deploy/tiem-web-4180"
-    data_dir: "/tiem-data/tiem-web-4180"
+    deploy_dir: "/em-deploy/em-web-4180"
+    data_dir: "/em-data/em-web-4180"
 
 elasticsearch_servers:
   - host: 172.16.5.148
     port: 4108
     # Specify heap memory size, default by 4g
     heap_size: "4g"
-    deploy_dir: "/tiem-deploy/elasticsearch-4108"
-    data_dir: "/tiem-data/elasticsearch-4108"
+    deploy_dir: "/em-deploy/elasticsearch-4108"
+    data_dir: "/em-data/elasticsearch-4108"
 
 kibana_servers:
   - host: 172.16.5.148
     port: 4109
-    deploy_dir: "/tiem-deploy/kibana-4109"
-    data_dir: "/tiem-data/kibana-4109"
+    deploy_dir: "/em-deploy/kibana-4109"
+    data_dir: "/em-data/kibana-4109"
 monitoring_servers:
   - host: 172.16.5.148
     port: 4110
-    deploy_dir: "/tiem-deploy/prometheus-4110"
-    data_dir: "/tiem-data/prometheus-4110"
+    deploy_dir: "/em-deploy/prometheus-4110"
+    data_dir: "/em-data/prometheus-4110"
 
 grafana_servers:
   - host: 172.16.5.148
     port: 4111
-    deploy_dir: "/tiem-deploy/grafana-4111"
-    data_dir: "/tiem-data/grafana-4111"
+    deploy_dir: "/em-deploy/grafana-4111"
+    data_dir: "/em-data/grafana-4111"
 
 alertmanager_servers:
   - host: 172.16.5.148
     web_port: 4112
     cluster_port: 4113
-    deploy_dir: "/tiem-deploy/alertmanager-4112"
-    data_dir: "/tiem-data/alertmanager-4112"
+    deploy_dir: "/em-deploy/alertmanager-4112"
+    data_dir: "/em-data/alertmanager-4112"
 
 tracer_servers:
   - host: 172.16.5.148
@@ -91,10 +91,10 @@ tracer_servers:
     jaeger_host_port: 4121
     collector_port: 4122
     grpc_serve_port: 4123
-    deploy_dir: "/tiem-deploy/tracer-4114"
-    data_dir: "/tiem-data/tracer-4114"
+    deploy_dir: "/em-deploy/tracer-4114"
+    data_dir: "/em-data/tracer-4114"
 
 filebeat_servers:
   - host: 172.16.5.148
-    deploy_dir: "/tiem-deploy/filebeat-0"
-    data_dir: "/tiem-data/filebeat-0"
+    deploy_dir: "/em-deploy/filebeat-0"
+    data_dir: "/em-data/filebeat-0"
