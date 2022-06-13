@@ -7,6 +7,7 @@ jobs:
   pull:
     runs-on: ubuntu-latest
     steps:
+<<<<<<< HEAD
     - name: Check out
       uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -16,3 +17,16 @@ jobs:
       run: ./scripts/verify-links.sh
     - name: Verify internal link anchors
       run: ./scripts/verify-link-anchors.sh
+=======
+      - name: Check out
+        uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Verify duplicated file names
+        run: ./scripts/verify-duplicated-file-name.sh
+      - name: Verify internal links
+        run: ./scripts/verify-links.sh
+      - name: Verify internal link anchors
+        run: ./scripts/verify-link-anchors.sh
+>>>>>>> f22eafc8b (ci: update node-version to 16 (#9804))
