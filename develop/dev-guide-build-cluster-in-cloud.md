@@ -13,7 +13,7 @@ If you need to run TiDB on your local machine, see [Starting TiDB Locally](/quic
 
 ## Step 1. Create a free cluster
 
-1. If you do not have a TiDB Cloud account, click [TiDB Cloud](https://tidbcloud.com/signup) to sign up for an account.
+1. If you do not have a TiDB Cloud account, click [TiDB Cloud](https://tidbcloud.com/free-trial) to sign up for an account.
 2. [Sign in](https://tidbcloud.com/) with your TiDB Cloud account.
 3. To create a Developer Tier cluster for one year free, you can either select the **Developer Tier** plan on the [plan page](https://tidbcloud.com/console/plans) or click [Create a Cluster (Dev Tier)](https://tidbcloud.com/console/create-cluster?tier=dev).
 4. On the **Create a Cluster (Dev Tier)** page, set up your cluster name, password, cloud provider (for now, only AWS is available for Developer Tier), and region (a nearby region is recommended). Then click **Create** to create your cluster.
