@@ -1,6 +1,7 @@
 ---
 title: Developer Overview
 summary: Introduce the overview of the developer guide.
+aliases: ['/tidb/dev/connectors-and-apis/','/tidb/stable/connectors-and-apis/','/appdev/dev/app-dev-overview']
 ---
 
 # Developer Guide Overview
