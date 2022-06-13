@@ -30,6 +30,10 @@ Batch Create Table is a feature introduced in TiDB v6.0.0. This feature is enabl
 
 Baseline Capturing captures queries that meet capturing conditions and create bindings for them. It is used for [preventing regression of execution plans during an upgrade](/sql-plan-management.md#prevent-regression-of-execution-plans-during-an-upgrade).
 
+### Bucket
+
+A [Region](#regionpeerraft-group) is logically divided into several small ranges called bucket. TiKV collects query statistics by buckets and reports the bucket status to PD. For details, see the [Bucket design doc](https://github.com/tikv/rfcs/blob/master/text/0082-dynamic-size-region.md#bucket).
+
 ## C
 
 ### Cached Table
