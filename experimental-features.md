@@ -10,9 +10,9 @@ This document introduces the experimental features of TiDB in different versions
 
 ## Performance
 
-+ [Raft Engine](/tikv-configuration-file.md#raft-engine). (Introduced in v5.4)
 + [Support collecting statistics for `PREDICATE COLUMNS`](/statistics.md#collect-statistics-on-some-columns) (Introduced in v5.4)
 + [Support synchronously loading statistics](/statistics.md#load-statistics). (Introduced in v5.4)
++ [Control the memory quota for collecting statistics](/statistics.md#the-memory-quota-for-collecting-statistics). (Introduced in v6.1.0)
 
 ## Stability
 
@@ -34,10 +34,10 @@ This document introduces the experimental features of TiDB in different versions
 + [User-Defined Variables](/user-defined-variables.md) (Introduced in v2.1)
 + [JSON data type](/data-type-json.md) and [JSON functions](/functions-and-operators/json-functions.md) (Introduced in v2.1)
 + [View](/information-schema/information-schema-views.md) (Introduced in v2.1)
++ [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md) (Introduced in v6.1.0)
 
 ## Configuration management
 
-+ Persistently store configuration parameters in PD, and support dynamically modifying configuration items. (Introduced in v4.0)
 + [SHOW CONFIG](/sql-statements/sql-statement-show-config.md) (Introduced in v4.0)
 
 ## Data sharing and subscription
@@ -49,6 +49,8 @@ This document introduces the experimental features of TiDB in different versions
 + [Disable Titan](/storage-engine/titan-configuration.md#disable-titan-experimental) (Introduced in v4.0)
 + [Titan Level Merge](/storage-engine/titan-configuration.md#level-merge-experimental) (Introduced in v4.0)
 + TiFlash supports distributing the new data of the storage engine on multiple hard drives to share the I/O pressure. (Introduced in v4.0)
++ Divide Regions are divided into buckets. [Buckets are used as the unit of concurrent query](/tune-region-performance.md#use-bucket-to-increase-concurrency) to improve the scan concurrency. (Introduced in v6.1.0)
++ TiKV introduces [API V2](/tikv-configuration-file.md#api-version-new-in-v610). (Introduced in v6.1.0)
 
 ## Backup and restoration
 
@@ -66,4 +68,3 @@ This document introduces the experimental features of TiDB in different versions
 
 + [SQL diagnostics](/information-schema/information-schema-sql-diagnostics.md) (Introduced in v4.0)
 + [Cluster diagnostics](/dashboard/dashboard-diagnostics-access.md) (Introduced in v4.0)
-+ [Online Unsafe Recovery](/online-unsafe-recovery.md) (Introduced in v5.3)
