@@ -1,6 +1,8 @@
-http://grafana_ip:3000/?
-http://ip:2379/?
-https://github.com/.*/pull/?
-https://github.com/.*/issues/?
-file://.*?http:/\$%7BPD_IP%7D:\$%7BPD_PORT%7D/dashboard/?
-file:///home/runner/work/docs/docs/develop/?
+http://grafana_ip:3000.*
+http://ip:2379.*
+https://github.com/.*/pull/.*
+https://github.com/.*/issues/.*
+file://.*?http:/\$%7BPD_IP%7D:\$%7BPD_PORT%7D/dashboard.*
+file:///home/runner/work/docs/docs/develop/.*
+file:///home/runner/work/docs-cn/docs-cn/develop/.*
+https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.28
