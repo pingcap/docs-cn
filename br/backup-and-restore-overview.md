@@ -1,11 +1,7 @@
 ---
 title: BR 简介
 summary: 了解 BR 工具是什么、有什么用。
-<<<<<<< HEAD
 aliases: ['/zh/tidb/v6.0/backup-and-restore-tool']
-=======
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/zh/tidb/dev/backup-and-restore-tool']
->>>>>>> f74d25f87 (Refine BR docs after translation (#9341))
 ---
 
 # BR 简介
