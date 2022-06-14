@@ -57,7 +57,7 @@ TiDB HTAP 可以满足企业海量数据的增产需求、降低运维的风险�
 
 - TiSpark
 
-    - 如果你的业务需要基于 Spark 进行分析，请部署 TiSpark（暂不支持 Spark 3.x）。具体步骤，请参阅 [TiSpark 用户指南](/tispark-overview.md)。
+    - 如果你的业务需要基于 Spark 进行分析，请部署 TiSpark。具体步骤，请参阅 [TiSpark 用户指南](/tispark-overview.md)。
 
 <!--    - 实时流处理
   - 如果你想将 TiDB 与 Flink 结合构建高效易用的实时数仓，请参与 Apache Flink x TiDB Meetup 系列讲座。-->
