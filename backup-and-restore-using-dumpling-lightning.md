@@ -1,6 +1,6 @@
 ---
 title: 使用 Dumpling/TiDB Lightning 备份与恢复
-aliases: ['/docs-cn/stable/backup-and-restore-using-dumpling-lightning/','/docs-cn/v4.0/backup-and-restore-using-dumpling-lightning/','/docs-cn/stable/export-or-backup-using-dumpling/','/docs-cn/v4.0/export-or-backup-using-dumpling/','/zh/tidb/v4.0/export-or-backup-using-dumpling']
+aliases: ['/docs-cn/stable/backup-and-restore-using-dumpling-lightning/','/docs-cn/v4.0/backup-and-restore-using-dumpling-lightning/','/docs-cn/stable/export-or-backup-using-dumpling/','/docs-cn/v4.0/export-or-backup-using-dumpling/','/zh/tidb/v4.0/export-or-backup-using-dumpling','/zh/tidb/v5.0/backup-and-restore-using-dumpling-lightning/','/zh/tidb/v5.1/backup-and-restore-using-dumpling-lightning/','/zh/tidb/v5.2/backup-and-restore-using-dumpling-lightning/','/zh/tidb/v5.3/backup-and-restore-using-dumpling-lightning/','/zh/tidb/v5.4/backup-and-restore-using-dumpling-lightning/','/zh/tidb/v6.0/backup-and-restore-using-dumpling-lightning/','/zh/tidb/dev/backup-and-restore-using-dumpling-lightning/','/zh/tidb/stable/backup-and-restore-using-dumpling-lightning/']
 ---
 
 # 使用 Dumpling/TiDB Lightning 备份与恢复
