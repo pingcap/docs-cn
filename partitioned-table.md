@@ -260,10 +260,6 @@ test> select * from t;
 
 ### List COLUMNS 分区
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
 
 假设商店员工分别来自以下 12 个城市，想要根据相关规定分成 4 个区域，如下表所示：
@@ -1306,26 +1302,20 @@ TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使�
 set @@session.tidb_partition_prune_mode = 'dynamic'
 ```
 
-动态裁剪模式下，分区表需要用到表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+普通查询和手动 analyze 使用的是 session 级别的 `tidb_partition_prune_mode` 设置，后台的 auto-analyze 使用的是 global 级别的 `tidb_partition_prune_mode` 设置。
 
-从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到下一次 `auto-analyze` 周期才会更新生成汇总统计信息。
+静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+
+从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到全局 `dynamic` 动态裁剪模式开启后的下一次 `auto-analyze` 周期，才会更新生成汇总统计信息。
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set session tidb_partition_prune_mode = 'dynamic';
+set session tidb_partition_prune_mode = 'dynamic';
+show stats_meta where table_name like "t";
+```
 
-mysql> show stats_meta where table_name like "t";
-+---------+------------+----------------+---------------------+--------------+-----------+
-| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
-+---------+------------+----------------+---------------------+--------------+-----------+
-| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
-| test    | t          | p1             | 2022-05-27 20:23:34 |            2 |         4 |
-| test    | t          | p2             | 2022-05-27 20:23:34 |            2 |         4 |
-+---------+------------+----------------+---------------------+--------------+-----------+
-3 rows in set (0.01 sec)
-
-mysql> show stats_meta where table_name like "t";
+```
 +---------+------------+----------------+---------------------+--------------+-----------+
 | Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -1336,15 +1326,16 @@ mysql> show stats_meta where table_name like "t";
 3 rows in set (0.01 sec)
 ```
 
-此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
+为保证开启全局 `dynamic` 动态裁剪模式时，SQL 可以用上正确的统计信息，此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> analyze table t partition p1;
-Query OK, 0 rows affected, 1 warning (0.06 sec)
+analyze table t partition p1;
+show stats_meta where table_name like "t";
+```
 
-mysql> show stats_meta where table_name like "t";
+```
 +---------+------------+----------------+---------------------+--------------+-----------+
 | Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
 +---------+------------+----------------+---------------------+--------------+-----------+
@@ -1364,7 +1355,7 @@ mysql> show stats_meta where table_name like "t";
 
 也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表的统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表的统计信息)。
 
-表级别统计信息准备好后，即可开启全局的动态裁剪模式。
+表级别统计信息准备好后，即可开启全局的动态裁剪模式。全局动态裁剪模式，对全局所有的 SQL 和对后台的统计信息自动收集（即 auto analyze）起作用。
 
 {{< copyable "sql" >}}
 
@@ -1385,6 +1376,9 @@ mysql> create table t1(id int, age int, key(id)) partition by range(id) (
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> explain select * from t1 where id < 150;
+```
+
+```
 +------------------------------+----------+-----------+------------------------+--------------------------------+
 | id                           | estRows  | task      | access object          | operator info                  |
 +------------------------------+----------+-----------+------------------------+--------------------------------+
@@ -1510,9 +1504,12 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    mysql> select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
         from information_schema.PARTITIONS
         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
     +-------------------------------------+
     | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
     +-------------------------------------+
@@ -1526,9 +1523,12 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     {{< copyable "sql" >}}
 
     ```sql
-    mysql> select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+    select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
         from information_schema.PARTITIONS
         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
     +----------------------------------------------------------------------+
     | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
     +----------------------------------------------------------------------+
@@ -1540,20 +1540,27 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
     可以按需将 `ALL COLUMNS` 改为实际需要的列。
 
 3. 将批量更新语句导出到文件：
-
+    
     {{< copyable "sql" >}}
 
-    ```
-    $ mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
-         from information_schema.PARTITIONS \
-         where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```sql
+    mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+        from information_schema.PARTITIONS \
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
     ```
 
 4. 执行批量更新：
 
+    在运行 source 命令之前处理 SQL 文件：
+
+    ```
+    sed -i "" '1d' gatherGlobalStats.sql --- mac
+    sed -i '1d' gatherGlobalStats.sql --- linux
+    ```
+
     {{< copyable "sql" >}}
 
     ```sql
-    mysql> SET session tidb_partition_prune_mode = dynamic;
-    mysql> source gatherGlobalStats.sql
+    SET session tidb_partition_prune_mode = dynamic;
+    source gatherGlobalStats.sql
     ```

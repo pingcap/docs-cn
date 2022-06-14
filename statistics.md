@@ -293,8 +293,8 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
 >
 > - 当触发 GlobalStats 更新时：
 >
->     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GloalStats， 并通过 warning 信息提示用户缺少分区的统计信息。
->     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GloalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
+>     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GlobalStats， 并通过 warning 信息提示用户缺少分区的统计信息。
+>     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GlobalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
 >
 > - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
 
@@ -422,6 +422,23 @@ TiDB 支持持久化的配置项包括：
 - 分区的统计信息会继承使用表级别的持久化配置
 - GlobalStats 会使用表级别的持久化配置
 - ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置会被忽略，且不会被持久化
+
+### 统计信息收集的内存限制
+
+> **警告：**
+>
+> 目前限制 ANALYZE 的内存使用量为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
+
+TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通过 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
+
+要合理地配置 `tidb_mem_quota_analyze` 值，你需要考虑集群的数据。在使用默认采样率的情况下，主要考虑列的数量、列上的值的大小，以及 TiDB 的内存配置。你可参考以下建议来配置变量的最大值和最小值：
+
+> **注意：**
+>
+> 以下配置建议仅供参考，实际配置需要在真实场景中测试确定。
+
+- 最小值：需要大于 TiDB 从集群上列最多的表收集统计信息时使用的最大内存。一个粗略的参考信息是，在测试集上，20 列的表在默认配置下，统计信息收集的最大内存使用约为 800 MiB；160 列的表在默认配置下，统计信息收集的最大内存使用约为 5 GiB。
+- 最大值：需要小于集群在不进行统计信息收集时的内存空余量。
 
 ### 查看 ANALYZE 状态
 

@@ -9,7 +9,7 @@ summary: TiDB 数据库中 ALTER TABLE ... COMPACT 语句的使用概况。
 >
 > 该语句目前是实验性功能，不建议在生产环境中使用。
 
-发生写入后，TiDB 后台会自动进行数据整理（Compaction）。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。使用 `ALTER TABLE ... COMPACT` 语句可以立即对指定的表进行数据整理，而无需等待后台触发。
+TiDB 存储节点在后台会自动发起数据整理（Compaction）。数据整理时，表中的物理数据会被重写，如清理已删除的数据、合并多版本数据等，从而可以获得更高的访问性能，并减少磁盘空间占用。使用 `ALTER TABLE ... COMPACT` 语句可以立即对指定的表进行数据整理，而无需等待后台触发。
 
 该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。但执行过程中会占用一定量的 IO 及 CPU 资源，可能对业务延迟造成影响。
 
@@ -51,7 +51,7 @@ ALTER TABLE employees SET TIFLASH REPLICA 2;
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE employee COMPACT TIFLASH REPLICA;
+ALTER TABLE employees COMPACT TIFLASH REPLICA;
 ```
 
 ## 并发度
@@ -64,7 +64,7 @@ ALTER TABLE employee COMPACT TIFLASH REPLICA;
 
 ## MySQL 兼容性
 
-`ALTER TABLE ... COMPACT` 语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 5.7 ~ 8.0 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
+`ALTER TABLE ... COMPACT` 语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
 
 ## TiDB Binlog 及 TiCDC 兼容性
 
