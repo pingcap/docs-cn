@@ -191,7 +191,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 ```sql
 create table t(a bigint, b bigint);
-desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
+explain format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
 ```
 
 ```

@@ -111,6 +111,12 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     [用户文档](/functions-and-operators/expressions-pushed-down.md#加入黑名单)，[#30738](https://github.com/pingcap/tidb/issues/30738)
 
+- 热点索引优化
+
+    在二级索引上批量写入单调递增的值会形成索引热点，影响整体写入吞吐。自 v6.0.0 起，TiDB 支持通过 `tidb_shard` 函数将热点索引打散，以提升写入性能。目前 `tidb_shard` 只能打散二级唯一索引的热点。该方案不需要用户修改原有查询条件，对业务非常友好，适用于高吞吐写入、点查询、批量点查询场景。请注意如果业务中使用范围查询打散后的数据，可能造成性能回退，请验证后使用。
+
+    [用户文档](/functions-and-operators/tidb-functions.md#tidb_shard)，[#31040](https://github.com/pingcap/tidb/issues/31040)
+
 - TiFlash MPP 引擎支持分区表的动态裁剪模式（实验特性）
 
     在该模式下，TiDB 也可以使用 TiFlash MPP 引擎读取和计算分区表的数据，从而大大提升分区表的查询性能。
@@ -124,7 +130,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
         - 逻辑函数： `IS`，`IS NOT`
         - 字符串函数：`REGEXP()`，`NOT REGEXP()`
         - 数学函数：`GREATEST(int/real)`，`LEAST(int/real)`
-        - 日期函数：`DAYOFNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
+        - 日期函数：`DAYNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
         - 算子：Anti Left Outer Semi Join, Left Outer Semi Join
 
         [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)
@@ -254,11 +260,11 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 企业级数据库管理平台 TiDB Enterprise Manager
 
-    TiDB Enterprise Manager (TiEM) 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
+    TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的企业级数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
 
-    TiEM 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
+    TiDB Enterprise Manager 不仅为 TiDB 集群提供全生命周期的可视化管理，也同时一站式提供 TiDB 数据库的参数管理、数据库版本升级、克隆集群、主备集群切换、数据导入导出、数据同步、数据备份恢复服务，能有效提高 TiDB 集群运维效率，降低企业运维成本。
 
-    TiEM 当前为企业版特性。要获取 TiEM 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
+    TiDB Enterprise Manager 当前为企业版特性。要获取 TiDB Enterprise Manager 及其文档，请在 [TiDB 产品页面](https://pingcap.com/zh/product/#SelectProduct)**企业版**下点击**立即咨询**与 PingCAP 取得联系。
 
 - 支持监控组件的自定义配置
 
@@ -559,7 +565,7 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     - 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
     - 修复 TsSet 转换可能发生未定义行为 (UB) 的问题 [#12070](https://github.com/tikv/tikv/issues/12070)
     - 修复 Replica Read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
-    - 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
+    - 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic 的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
     - 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12329](https://github.com/tikv/tikv/issues/12329)
     - 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
     - 修复 TiKV 在退出时可能误报 panic 的问题 [#12231](https://github.com/tikv/tikv/issues/12231)
@@ -632,3 +638,5 @@ TiDB 提供两个[离线包下载](https://pingcap.com/zh/product-community/)：
     + TiDB Binlog
 
         - 修复了上游写大事务向 Kafka 同步时可能会导致 TiDB Binlog 被跳过的问题 [#1136](https://github.com/pingcap/tidb-binlog/issues/1136)
+
+如果你在使用 TiDB v6.0.0 的过程中遇到问题，可以到 [AskTUG 论坛](https://asktug.com/tags/tidb-v6)浏览、搜索或反馈问题。

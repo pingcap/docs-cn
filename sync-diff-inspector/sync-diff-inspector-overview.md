@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/sync-diff-inspector/sync-diff-inspector-overview/','/doc
 
 你可通过以下方式下载 sync-diff-inspector：
 
-+ Binary 包。点击 [tidb-enterprise-tools-nightly-linux-amd64](https://download.pingcap.org/tidb-enterprise-tools-nightly-linux-amd64.tar.gz) 进行下载。
++ Binary 包。sync-diff-inspector 的安装包位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
 + Docker 镜像。执行以下命令进行下载：
 
     {{< copyable "shell-regular" >}}
@@ -170,7 +170,7 @@ collation = ""
 {{< copyable "shell-regular" >}}
 
 ```bash
-./bin/sync_diff_inspector --config=./config.toml
+./sync_diff_inspector --config=./config.toml
 ```
 
 该命令最终会在 `config.toml` 中的 `output-dir` 输出目录输出本次比对的检查报告 `summary.txt` 和日志 `sync_diff.log`。在输出目录下还会生成由 `config.toml` 文件内容哈希值命名的文件夹，该文件夹下包括断点续传 checkpoint 结点信息以及数据存在不一致时生成的 SQL 修复数据。
