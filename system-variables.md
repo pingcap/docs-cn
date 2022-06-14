@@ -685,14 +685,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
 
-### tidb_enable_batch_dml <span class="version-mark">从 v6.1.0 版本开始引入</span>
-
-- 作用域：GLOBAL
-- 是否持久化到集群：是
-- 默认值：`OFF`
-- 该变量控制 TiDB 是否允许非事务的“批处理”语句。由于 batch DML 不提供 ACID 保证，只有该变量设置为 `OFF` 时才是安全的。
-- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`enable-batch-dml`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
-
 ### `tidb_enable_cascades_planner`
 
 > **警告：**
