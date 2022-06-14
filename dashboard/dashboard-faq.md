@@ -131,6 +131,20 @@ Deploy the NgMonitoring component by following instructions in the [Enable Conti
 
 </details>
 
+<details>
+  <summary>Clusters Started using TiUP Playground</summary>
+
+When starting the cluster, TiUP Playground (>= v1.8.0) automatically starts the NgMonitoring component. To update TiUP Playground to the latest version, run the following command:
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self
+tiup update playground
+```
+
+</details>
+
 ### An `unknown field` error is shown on the **Slow Queries** page
 
 If the `unknown field` error appears on the **Slow Queries** page after the cluster upgrade, the error is related to a compatibility issue caused by the difference between TiDB Dashboard server fields (which might be updated) and user preferences fields (which are in the browser cache). This issue has been fixed. If your cluster is earlier than v5.0.3 or v4.0.14, perform the following steps to clear your browser cache:
