@@ -30,7 +30,7 @@ This test runs in a Kubernetes cluster deployed with 3 TiDB instances, 3 TiKV in
 | TiKV  | `4151dc8878985df191b47851d67ca21365396133` |
 |  PD   | `811ce0b9a1335d1b2a049fd97ef9e186f1c9efc1` |
 
-Sysbench version：1.0.17
+Sysbench version: 1.0.17
 
 ### TiDB parameter configuration
 

@@ -52,7 +52,7 @@ If you want to resume replication from the original checkpoint, perform the foll
 4. Reconnect the TiDB cluster to the service.
 5. Make sure that the old version of Drainer has replicated the data in the old version of Pump to the downstream completely;
 
-    Query the `status` interface of Drainer，command as below：
+    Query the `status` interface of Drainer, command as below:
 
     {{< copyable "shell-regular" >}}
 

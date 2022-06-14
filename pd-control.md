@@ -606,7 +606,7 @@ Usage:
 
 Use this command to query all Regions in a given range `[startkey, endkey)`. Ranges without `endKey`s are supported.
 
-The `limit` parameter limits the number of keys. The default value of `limit` is `16`, and the value of `-1` means unlimited keys. 
+The `limit` parameter limits the number of keys. The default value of `limit` is `16`, and the value of `-1` means unlimited keys.
 
 Usage:
 
@@ -730,7 +730,7 @@ Description of various types:
 - miss-peer: the Region without enough replicas
 - extra-peer: the Region with extra replicas
 - down-peer: the Region in which some replicas are Down
-- pending-peer：the Region in which some replicas are Pending
+- pending-peer: the Region in which some replicas are Pending
 
 Usage:
 

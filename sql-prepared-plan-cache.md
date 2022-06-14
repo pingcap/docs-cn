@@ -55,7 +55,7 @@ There are several points worth noting about execution plan caching and query per
 
 Since v6.1.0 the execution plan cache is enabled by default. You can control prepared plan cache via the system variable [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610).
 
-> **Note：**
+> **Note:**
 >
 > The execution plan cache feature applies only to `Prepare` / `Execute` queries and does not take effect for normal queries.
 

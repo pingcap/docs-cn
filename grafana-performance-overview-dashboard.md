@@ -84,7 +84,7 @@ Generally, dividing `tso - cmd` by `tso - request` yields the average batch size
 - CPU-Avg: Average CPU utilization of all TiKV instances
 - CPU-Delta: Maximum CPU utilization of all TiKV instances minus minimum CPU utilization of all TiKV instances
 - CPU-MAX: Maximum CPU utilization among all TiKV instances
-- IO-Avg：Average MBps of all TiKV instances
+- IO-Avg: Average MBps of all TiKV instances
 - IO-Delt: Maximum MBps of all TiKV instances minus minimum MBps of all TiKV instances
 - IO-MAX: Maximum MBps of all TiKV instances
 

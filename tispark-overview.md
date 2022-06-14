@@ -38,9 +38,9 @@ The following table lists the compatibility information of the supported TiSpark
 
 | TiSpark version | TiDB, TiKV, and PD versions | Spark version | Scala version |
 | ---------------  | -------------------- | -------------  | ------------- |
-| 2.4.x-scala_2.11 | 5.x，4.x             | 2.3.x，2.4.x    | 2.11          |
-| 2.4.x-scala_2.12 | 5.x，4.x             | 2.4.x           | 2.12          |
-| 2.5.x            | 5.x，4.x             | 3.0.x，3.1.x    | 2.12           |
+| 2.4.x-scala_2.11 | 5.x, 4.x             | 2.3.x, 2.4.x    | 2.11          |
+| 2.4.x-scala_2.12 | 5.x, 4.x             | 2.4.x           | 2.12          |
+| 2.5.x            | 5.x, 4.x             | 3.0.x, 3.1.x    | 2.12           |
 
 TiSpark runs in any Spark mode such as YARN, Mesos, and Standalone.
 
@@ -365,7 +365,7 @@ Q: Can I mix Spark with TiKV?
 
 A: If TiDB and TiKV are overloaded and run critical online tasks, consider deploying TiSpark separately. You also need to consider using different NICs to ensure that OLTP's network resources are not compromised and affect online business. If the online business requirements are not high or the loading is not large enough, you can consider mixing TiSpark with TiKV deployment.
 
-Q: What can I do if `warning：WARN ObjectStore:568 - Failed to get database` is returned when executing SQL statements using TiSpark?
+Q: What can I do if `warning: WARN ObjectStore:568 - Failed to get database` is returned when executing SQL statements using TiSpark?
 
 A: You can ignore this warning. It occurs because Spark tries to load two nonexistent databases (`default` and `global_temp`) in its catalog. If you want to mute this warning, modify [log4j](https://github.com/pingcap/tidb-docker-compose/blob/master/tispark/conf/log4j.properties#L43) by adding `log4j.logger.org.apache.hadoop.hive.metastore.ObjectStore=ERROR` to the `log4j` file in `tispark/conf`. You can add the parameter to the `log4j` file of the `config` under Spark. If the suffix is `template`, you can use the `mv` command to change it to `properties`.
 
@@ -379,6 +379,6 @@ A: By default, TiSpark searches for the Hive database by reading the Hive metada
 
 If you do not need this default behavior, do not configure the Hive metadata in hive-site.
 
-Q: What can I do if `Error：java.io.InvalidClassException: com.pingcap.tikv.region.TiRegion; local class incompatible: stream classdesc serialVersionUID ...` is returned when TiSpark is executing a Spark task?
+Q: What can I do if `Error: java.io.InvalidClassException: com.pingcap.tikv.region.TiRegion; local class incompatible: stream classdesc serialVersionUID ...` is returned when TiSpark is executing a Spark task?
 
 A: The error message shows a `serialVersionUID` conflict, which occurs because you have used `class` and `TiRegion` of different versions. Because `TiRegion` only exists in TiSpark, multiple versions of TiSpark packages might be used. To fix this error, you need to make sure the version of TiSpark dependency is consistent among all nodes in the cluster.

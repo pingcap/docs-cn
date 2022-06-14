@@ -17,7 +17,7 @@ The isolation levels supported by TiDB are **RC (Read Committed)** and **SI (Sna
 
 The `SI` isolation level of TiDB can avoid **Phantom Reads**, but the `RR` in ANSI/ISO SQL standard cannot.
 
-The following two examples show what **phantom reads** is. 
+The following two examples show what **phantom reads** is.
 
 - Example 1: **Transaction A** first gets `n` rows according to the query, and then **Transaction B** changes `m` rows other than these `n` rows or adds `m` rows that match the query of **Transaction A**. When **Transaction A** runs the query again, it finds that there are `n+m` rows that match the condition. It is like a phantom, so it is called a **phantom read**.
 
@@ -154,7 +154,7 @@ public class EffectWriteSkew {
 }
 ```
 
-SQL log：
+SQL log:
 
 {{< copyable "sql" >}}
 

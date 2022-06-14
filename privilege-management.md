@@ -407,7 +407,7 @@ User identity is based on two pieces of information: `Host`, the host that initi
 
 When the connection is successful, the request verification process checks whether the operation has the privilege.
 
-For database-related requests (`INSERT`, `UPDATE`), the request verification process first checks the user’s global privileges in the `mysql.user` table. If the privilege is granted, you can access directly. If not, check the `mysql.db` table.
+For database-related requests (`INSERT`, `UPDATE`), the request verification process first checks the user's global privileges in the `mysql.user` table. If the privilege is granted, you can access directly. If not, check the `mysql.db` table.
 
 The `user` table has global privileges regardless of the default database. For example, the `DELETE` privilege in `user` can apply to any row, table, or database.
 

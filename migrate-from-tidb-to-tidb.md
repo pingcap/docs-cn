@@ -127,7 +127,7 @@ After setting up the environment, you can use the backup and restore functions o
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
     Query OK, 0 rows affected (0.01 sec)
     MySQL [test]> SELECT @@global.tidb_gc_enable;
-    +-------------------------+：
+    +-------------------------+:
     | @@global.tidb_gc_enable |
     +-------------------------+
     |                       0 |

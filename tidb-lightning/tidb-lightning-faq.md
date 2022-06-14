@@ -147,7 +147,7 @@ upload-speed-limit = "100MB"
 
 ## Why TiDB Lightning requires so much free space in the target TiKV cluster?
 
-With the default settings of 3 replicas, the space requirement of the target TiKV cluster is 6 times the size of data source. The extra multiple of “2” is a conservative estimation because the following factors are not reflected in the data source:
+With the default settings of 3 replicas, the space requirement of the target TiKV cluster is 6 times the size of data source. The extra multiple of "2" is a conservative estimation because the following factors are not reflected in the data source:
 
 - The space occupied by indices
 - Space amplification in RocksDB

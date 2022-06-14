@@ -20,7 +20,7 @@ Before reading this document, you need to prepare the following:
 
 There are two ways to insert multiple rows of data. For example, if you need to insert **3** players' data.
 
-- A **multi-line insertion statement**：
+- A **multi-line insertion statement**:
 
     {{< copyable "sql" >}}
 
@@ -28,7 +28,7 @@ There are two ways to insert multiple rows of data. For example, if you need to 
     INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2), (3, 300, 5);
     ```
 
-- Multiple **single-line insertion statements**：
+- Multiple **single-line insertion statements**:
 
     {{< copyable "sql" >}}
 
@@ -160,7 +160,7 @@ In this case, you **cannot** use SQL like the following to insert:
 INSERT INTO `bookshop`.`users` (`id`, `balance`, `nickname`) VALUES (1, 0.00, 'nicky');
 ```
 
-An error will occur：
+An error will occur:
 
 ```
 ERROR 8216 (HY000): Invalid auto random: Explicit insertion on auto_random column is disabled. Try to set @@allow_auto_random_explicit_insert = true.

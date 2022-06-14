@@ -40,7 +40,7 @@ config export [--dir directory]
 
 ### Parameter explanation
 
-- `dir`：
+- `dir`:
     - optional
     - specifies the file path for exporting
     - the default value is `./configs`
@@ -73,7 +73,7 @@ config import [--dir directory]
 
 ### Parameter explanation
 
-- `dir`：
+- `dir`:
     - optional
     - specifies the file path for importing
     - the default value is `./configs`

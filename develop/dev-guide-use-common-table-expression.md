@@ -5,7 +5,7 @@ summary: Learn the CTE feature of TiDB, which help you write SQL statements more
 
 # Common Table Expression
 
-In some transaction scenarios, due to application complexity, you might need to write a single SQL statement of up to 2,000 lines. The statement probably contains a lot of aggregations and multi-level subquery nesting. Maintaining such a long SQL statement can be a developer’s nightmare.
+In some transaction scenarios, due to application complexity, you might need to write a single SQL statement of up to 2,000 lines. The statement probably contains a lot of aggregations and multi-level subquery nesting. Maintaining such a long SQL statement can be a developer's nightmare.
 
 To avoid such a long SQL statement, you can simplify queries by using [Views](/develop/dev-guide-use-views.md) or cache intermediate query results by using [Temporary tables](/develop/dev-guide-use-temporary-tables.md).
 
@@ -183,7 +183,7 @@ WITH RECURSIVE <query_name> AS (
 SELECT ... FROM <query_name>;
 ```
 
-A classic example is to generate a set of [Fibonacci numbers](https://en.wikipedia.org/wiki/Fibonacci_number) with recursive CTE：
+A classic example is to generate a set of [Fibonacci numbers](https://en.wikipedia.org/wiki/Fibonacci_number) with recursive CTE:
 
 {{< copyable "sql" >}}
 

@@ -59,10 +59,10 @@ If many write conflicts exist in the cluster, it is recommended to find out the 
 The explanation of the log above is as follows:
 
 * `[kv:9007]Write conflict`: indicates the write-write conflict.
-* `txnStartTS=416617006551793665`：indicates the `start_ts` of the current transaction. You can use the `pd-ctl` tool to convert `start_ts` to physical time.
+* `txnStartTS=416617006551793665`: indicates the `start_ts` of the current transaction. You can use the `pd-ctl` tool to convert `start_ts` to physical time.
 * `conflictStartTS=416617018650001409`: indicates the `start_ts` of the write conflict transaction.
 * `conflictCommitTS=416617023093080065`: indicates the `commit_ts` of the write conflict transaction.
-* `key={tableID=47, indexID=1, indexValues={string, }}`：indicates the write conflict key. `tableID` indicates the ID of the write conflict table. `indexID` indicates the ID of write conflict index. If the write conflict key is a record key, the log prints `handle=x`, indicating which record(row) has a conflict. `indexValues` indicates the value of the index that has a conflict.
+* `key={tableID=47, indexID=1, indexValues={string, }}`: indicates the write conflict key. `tableID` indicates the ID of the write conflict table. `indexID` indicates the ID of write conflict index. If the write conflict key is a record key, the log prints `handle=x`, indicating which record(row) has a conflict. `indexValues` indicates the value of the index that has a conflict.
 * `primary={tableID=47, indexID=1, indexValues={string, }}`: indicates the primary key information of the current transaction.
 
 You can use the `pd-ctl` tool to convert the timestamp to readable time:

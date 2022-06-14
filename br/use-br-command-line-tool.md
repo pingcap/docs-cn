@@ -482,7 +482,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > Although you can back up system tables (such as `mysql.tidb`) using the BR tool, BR ignores the following system tables even if you use the `--filter` setting to perform the restoration:
 >
 > - Statistical information tables (`mysql.stat_*`)
-> - System variable tables (`mysql.tidb`，`mysql.global_variables`)
+> - System variable tables (`mysql.tidb`, `mysql.global_variables`)
 > - User information tables (such as `mysql.user` and `mysql.columns_priv`)
 > - [Other system tables](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/systable_restore.go#L31)
 

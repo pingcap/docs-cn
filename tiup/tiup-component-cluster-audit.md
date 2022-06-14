@@ -29,6 +29,6 @@ tiup cluster audit [audit-id] [flags]
 - If `[audit-id]` is not specified, a table with the following fields is output:
     - ID: the `audit-id` corresponding to the record
     - Time: the execution time of the command corresponding to the record
-    - Command：the command corresponding to the record
+    - Command: the command corresponding to the record
 
 [<< Back to the previous page - TiUP Cluster command list](/tiup/tiup-component-cluster.md#command-list)

@@ -65,7 +65,7 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | :------ | :------ |:-------- |
 | Log | `tiflash.log` | `--include=log` |
 | Error log | `tiflash_stderr.log` | `--include=log` |
-| Configuration file |  `tiflash-learner.toml`，`tiflash-preprocessed.toml`，`tiflash.toml` | `--include=config` |
+| Configuration file |  `tiflash-learner.toml`, `tiflash-preprocessed.toml`, `tiflash.toml` | `--include=config` |
 | Real-time configuration | `config.json` | `--include=config` |
 | Performance data | `cpu_profile.proto` | `--include=perf` |
 

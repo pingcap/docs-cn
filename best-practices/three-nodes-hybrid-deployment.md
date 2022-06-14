@@ -41,7 +41,7 @@ tikv:
     gc.max-write-bytes-per-sec: 300K
     rocksdb.max-background-jobs: 3
     rocksdb.max-sub-compactions: 1
-    rocksdb.rate-bytes-per-sec: “200M”
+    rocksdb.rate-bytes-per-sec: "200M"
 
   tidb:
     performance.max-procs: 8

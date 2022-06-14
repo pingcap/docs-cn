@@ -37,7 +37,7 @@ Value: rowID
 
 Index data has two types: the unique index and the non-unique index.
 
-- For unique indexes, you can follow the coding rules above. 
+- For unique indexes, you can follow the coding rules above.
 - For non-unique indexes, a unique key cannot be constructed through this encoding, because the `tablePrefix{tableID}_indexPrefixSep{indexID}` of the same index is the same and the `ColumnsValue` of multiple rows might be the same. The encoding rule for non-unique indexes is as follows:
 
     ```
@@ -102,8 +102,8 @@ Statement example:
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE：CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;
-ALTER TABLE：ALTER TABLE t SHARD_ROW_ID_BITS = 4;
+CREATE TABLE: CREATE TABLE t (c int) SHARD_ROW_ID_BITS = 4;
+ALTER TABLE: ALTER TABLE t SHARD_ROW_ID_BITS = 4;
 ```
 
 The value of `SHARD_ROW_ID_BITS` can be dynamically modified. The modified value only takes effect for newly written data.

@@ -27,7 +27,7 @@ There are multiple Column Families on TiKV cluster which are mainly used to stor
 
 Default CF : Write CF = 4 : 1
 
-Configuring the block cache of RocksDB on TiKV should be based on the machine’s memory size, in order to make full use of the memory. To deploy a TiKV cluster on a 40GB virtual machine, it is recommended to configure the block cache as follows:
+Configuring the block cache of RocksDB on TiKV should be based on the machine's memory size, in order to make full use of the memory. To deploy a TiKV cluster on a 40GB virtual machine, it is recommended to configure the block cache as follows:
 
 ```yaml
 server_configs:

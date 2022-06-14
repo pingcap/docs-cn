@@ -70,7 +70,7 @@ Based on the import mode and features enabled, downstream database users should 
    </tr>
    <tr>
       <td>Optional</td>
-      <td>checkpoint.driver = “mysql”</td>
+      <td>checkpoint.driver = "mysql"</td>
       <td>checkpoint.schema setting</td>
       <td>SELECT,INSERT,UPDATE,DELETE,CREATE,DROP</td>
       <td>Required when checkpoint information is stored in databases, instead of files</td>

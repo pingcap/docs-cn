@@ -25,7 +25,7 @@ In 6.0.0-DMR, the key new features or improvements are as follows:
 - Provide PingCAP Clinic, an automatic diagnosis service for TiDB clusters (Technical Preview version).
 - Provide TiDB Enterprise Manager, an enterprise-level database management platform.
 
-Also, as a core component of TiDB’s HTAP solution, TiFlash<sup>TM</sup> is officially open source in this release. For details, see [TiFlash repository](https://github.com/pingcap/tiflash).
+Also, as a core component of TiDB's HTAP solution, TiFlash<sup>TM</sup> is officially open source in this release. For details, see [TiFlash repository](https://github.com/pingcap/tiflash).
 
 ## Release strategy changes
 
@@ -161,7 +161,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 - Enable all I/O checks (Checksum) by default
 
-    This feature was introduced in v5.4.0 as experimental. It enhances data accuracy and security without imposing an obvious impact on users’ businesses.
+    This feature was introduced in v5.4.0 as experimental. It enhances data accuracy and security without imposing an obvious impact on users' businesses.
 
     Warning: Newer version of data format cannot be downgraded in place to versions earlier than v5.4.0. During such a downgrade, you need to delete TiFlash replicas and replicate data after the downgrade. Alternatively, you can perform a downgrade by referring to [dttool migrate](/tiflash/tiflash-command-line-flags.md#dttool-migrate).
 
@@ -320,7 +320,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 | TiKV | [`quota`](/tikv-configuration-file.md#quota) | Newly added | Add configuration items related to Quota Limiter, which limit the resources occupied by frontend requests. Quota Limiter is an experimental feature and is disabled by default. New quota-related configuration items are `foreground-cpu-time`, `foreground-write-bandwidth`, `foreground-read-bandwidth`, and `max-delay-duration`. |
 | TiFlash | [`profiles.default.dt_compression_method`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | Specifies the compression algorithm for TiFlash. The optional values are `LZ4`, `zstd` and `LZ4HC`, all case insensitive. The default value is `LZ4`. |
 | TiFlash | [`profiles.default.dt_compression_level`](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file) | Newly added | Specifies the compression level of TiFlash. The default value is `1`. |
-| DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | The import mode during the full import phase. Since v6.0, DM uses TiDB Lightning’s TiDB-backend mode to import data during the full import phase; the previous Loader component is no longer used. This is an internal replacement and has no obvious impact on daily operations.<br/>The default value is set to `sql`, which means using `tidb-backend` mode. In some rare cases, `tidb-backend` might not be fully compatible. You can fall back to Loader mode by configuring this parameter to `loader`. |
+| DM | [`loaders.<name>.import-mode`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | The import mode during the full import phase. Since v6.0, DM uses TiDB Lightning's TiDB-backend mode to import data during the full import phase; the previous Loader component is no longer used. This is an internal replacement and has no obvious impact on daily operations.<br/>The default value is set to `sql`, which means using `tidb-backend` mode. In some rare cases, `tidb-backend` might not be fully compatible. You can fall back to Loader mode by configuring this parameter to `loader`. |
 | DM | [`loaders.<name>.on-duplicate`](/dm/task-configuration-file-full.md#task-configuration-file-template-advanced) | Newly added | Specifies the methods to resolve conflicts during the full import phase. The default value is `replace`, which means using the new data to replace the existing data. |
 | TiCDC | [`dial-timeout`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | The timeout in establishing a connection with the downstream Kafka. The default value is `10s`. |
 | TiCDC | [`read-timeout`](/ticdc/manage-ticdc.md#configure-sink-uri-with-kafka) | Newly added | The timeout in getting a response returned by the downstream Kafka. The default value is `10s`. |
@@ -574,7 +574,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
         - Fix a bug that TiDB Lightning may not delete the metadata schema when some import tasks do not contain source files [#28144](https://github.com/pingcap/tidb/issues/28144)
         - Fix the panic that occurs when the table names in the source file and in the target cluster are different [#31771](https://github.com/pingcap/tidb/issues/31771)
-        - Fix the checksum error “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
+        - Fix the checksum error "GC life time is shorter than transaction duration" [#32733](https://github.com/pingcap/tidb/issues/32733)
         - Fix the issue that TiDB Lightning gets stuck when it fails to check empty tables [#31797](https://github.com/pingcap/tidb/issues/31797)
 
     + Dumpling

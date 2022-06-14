@@ -277,7 +277,7 @@ In each iteration, `SELECT` queries in order of the primary key. It selects prim
 
 In Java (JDBC), a bulk-update application might be similar to the following:
 
-**Code：**
+**Code:**
 
 {{< copyable "" >}}
 

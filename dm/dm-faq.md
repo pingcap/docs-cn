@@ -130,11 +130,11 @@ Since DM v2.0, if you directly run the `start-task` command with the task config
 
 This error can be handled by [manually importing DM migration tasks of a DM 1.0 cluster to a DM 2.0 cluster](/dm/manually-upgrade-dm-1.0-to-2.0.md).
 
-## Why does TiUP fail to deploy some versions of DM (for example, v2.0.0-hotfix)？
+## Why does TiUP fail to deploy some versions of DM (for example, v2.0.0-hotfix)?
 
 You can use the `tiup list dm-master` command to view the DM versions that TiUP supports to deploy. TiUP does not manage DM versions which are not shown by this command.
 
-## How to handle the error `parse mydumper metadata error: EOF` that occurs when DM is replicating data？
+## How to handle the error `parse mydumper metadata error: EOF` that occurs when DM is replicating data?
 
 You need to check the error message and log files to further analyze this error. The cause might be that the dump unit does not produce the correct metadata file due to a lack of permissions.
 

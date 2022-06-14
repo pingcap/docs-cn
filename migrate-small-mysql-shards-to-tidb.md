@@ -21,7 +21,7 @@ Both MySQL Instance 1 and MySQL Instance 2 contain the following schemas and tab
 | store_01 | sale_01, sale_02 |
 | store_02 | sale_01, sale_02 |
 
-Target schemas and tables：
+Target schemas and tables:
 
 | Schema | Table |
 |:------|:------|

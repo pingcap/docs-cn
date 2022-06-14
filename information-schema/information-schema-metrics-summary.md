@@ -138,8 +138,8 @@ The second and third rows of the query results above indicate that the `Select` 
 
 In addition to the example above, you can use the monitoring summary table to quickly find the module with the largest change from the monitoring data by comparing the full link monitoring items of the two time periods, and quickly locate the bottleneck. The following example compares all monitoring items in two periods (where t1 is the baseline) and sorts these items according to the greatest difference:
 
-* Period t1：`("2020-03-03 17:08:00", "2020-03-03 17:11:00")`
-* Period t2：`("2020-03-03 17:18:00", "2020-03-03 17:21:00")`
+* Period t1: `("2020-03-03 17:08:00", "2020-03-03 17:11:00")`
+* Period t2: `("2020-03-03 17:18:00", "2020-03-03 17:21:00")`
 
 The monitoring items of the two time periods are joined according to `METRICS_NAME` and sorted according to the difference value. `TIME_RANGE` is the hint that specifies the query time.
 
@@ -182,7 +182,7 @@ ORDER BY ratio DESC LIMIT 10;
 From the query result above, you can get the following information:
 
 * `tib_slow_query_cop_process_total_time` (the time consumption of `cop process` in TiDB slow queries) in the period t2 is 5,865 times higher than that in period t1.
-* `tidb_distsql_partial_scan_key_total_num` (the number of keys to scan requested by TiDB’s `distsql`) in period t2 is 3,648 times higher than that in period t1. During period t2, `tidb_slow_query_cop_wait_total_time` (the waiting time of Coprocessor requesting to queue up in the TiDB slow query) is 267 times higher than that in period t1.
+* `tidb_distsql_partial_scan_key_total_num` (the number of keys to scan requested by TiDB's `distsql`) in period t2 is 3,648 times higher than that in period t1. During period t2, `tidb_slow_query_cop_wait_total_time` (the waiting time of Coprocessor requesting to queue up in the TiDB slow query) is 267 times higher than that in period t1.
 * `tikv_cop_total_response_size` (the size of the TiKV Coprocessor request result) in period t2 is 192 times higher than that in period t1.
 * `tikv_cop_scan_details` in period t2 (the scan requested by the TiKV Coprocessor) is 105 times higher than that in period t1.
 

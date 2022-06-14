@@ -84,7 +84,7 @@ This section introduces parameters related to `Prepare`.
 
 ##### `useServerPrepStmts`
 
-`useServerPrepStmts` is set to `false` by default, that is, even if you use the Prepare API, the “prepare” operation will be done only on the client. To avoid the parsing overhead of the server, if the same SQL statement uses the Prepare API multiple times, it is recommended to set this configuration to `true`.
+`useServerPrepStmts` is set to `false` by default, that is, even if you use the Prepare API, the "prepare" operation will be done only on the client. To avoid the parsing overhead of the server, if the same SQL statement uses the Prepare API multiple times, it is recommended to set this configuration to `true`.
 
 To verify that this setting already takes effect, you can do:
 
@@ -129,7 +129,7 @@ To verify that this setting already takes effect, you can do:
 While processing batch writes, it is recommended to configure `rewriteBatchedStatements=true`. After using `addBatch()` or `executeBatch()`, JDBC still sends SQL one by one by default, for example:
 
 ```java
-pstmt = prepare(“insert into t (a) values(?)”);
+pstmt = prepare("insert into t (a) values(?)");
 pstmt.setInt(1, 10);
 pstmt.addBatch();
 pstmt.setInt(1, 11);
@@ -198,7 +198,7 @@ In addition, because of a [client bug](https://bugs.mysql.com/bug.php?id=96623),
 
 Through monitoring, you might notice that although the application only performs `INSERT` operations to the TiDB cluster, there are a lot of redundant `SELECT` statements. Usually this happens because JDBC sends some SQL statements to query the settings, for example, `select @@session.transaction_read_only`. These SQL statements are useless for TiDB, so it is recommended that you configure `useConfigs=maxPerformance` to avoid extra overhead.
 
-`useConfigs=maxPerformance` configuration includes a group of configurations：
+`useConfigs=maxPerformance` configuration includes a group of configurations:
 
 ```ini
 cacheServerConfiguration=true

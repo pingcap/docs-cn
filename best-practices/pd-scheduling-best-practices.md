@@ -139,8 +139,8 @@ You can use store commands of pd-ctl to query balance status of each store.
 
 The **Grafana PD/Statistics - hotspot** page shows the metrics about hot regions, among which:
 
-- Hot write region’s leader/peer distribution: the leader/peer distribution in hot write regions
-- Hot read region’s leader distribution: the leader distribution in hot read regions
+- Hot write region's leader/peer distribution: the leader/peer distribution in hot write regions
+- Hot read region's leader distribution: the leader distribution in hot read regions
 
 You can also query the status of hot regions using pd-ctl with the following commands:
 
@@ -297,4 +297,4 @@ If a TiKV node fails, PD defaults to setting the corresponding node to the **dow
 
 Practically, if a node failure is considered unrecoverable, you can immediately take it offline. This makes PD replenish replicas soon in another node and reduces the risk of data loss. In contrast, if a node is considered recoverable, but the recovery cannot be done in 30 minutes, you can temporarily adjust `max-store-down-time` to a larger value to avoid unnecessary replenishment of the replicas and resources waste after the timeout.
 
-In TiDB v5.2.0, TiKV introduces the mechanism of slow TiKV node detection. By sampling the requests in TiKV, this mechanism works out a score ranging from 1 to 100. A TiKV node with a score higher than or equal to 80 is marked as slow. You can add [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config) to detect and schedule slow nodes. If only one TiKV is detected as slow, and the slow score reaches the upper limit (100 by default), the leader in this node will be evicted (similar to the effect of `evict-leader-scheduler`). 
+In TiDB v5.2.0, TiKV introduces the mechanism of slow TiKV node detection. By sampling the requests in TiKV, this mechanism works out a score ranging from 1 to 100. A TiKV node with a score higher than or equal to 80 is marked as slow. You can add [`evict-slow-store-scheduler`](/pd-control.md#scheduler-show--add--remove--pause--resume--config) to detect and schedule slow nodes. If only one TiKV is detected as slow, and the slow score reaches the upper limit (100 by default), the leader in this node will be evicted (similar to the effect of `evict-leader-scheduler`).

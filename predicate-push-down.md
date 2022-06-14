@@ -8,7 +8,7 @@ aliases: ['/tidb/dev/predicates-push-down']
 
 This document introduces one of the TiDB's logic optimization rules—Predicate Push Down (PPD). It aims to help you understand the predicate push down and know its applicable and inapplicable scenarios.
 
-PPD pushes down selection operators to data source as close as possible to complete data filtering as early as possible, which significantly reduces the cost of data transmission or computation. 
+PPD pushes down selection operators to data source as close as possible to complete data filtering as early as possible, which significantly reduces the cost of data transmission or computation.
 
 ## Examples
 
@@ -69,7 +69,7 @@ explain select * from t join s on t.a = s.a where t.a < 1;
 
 In this query, the predicate `t.a < 1` is pushed below join to filter in advance, which can reduce the calculation overhead of join.
 
-In addition，This SQL statement has an inner join executed, and the `ON` condition is `t.a = s.a`. The predicate `s.a <1` can be derived from `t.a < 1` and pushed down to `s` table below the join operator. Filtering the `s` table can further reduce the calculation overhead of join.
+In addition, This SQL statement has an inner join executed, and the `ON` condition is `t.a = s.a`. The predicate `s.a <1` can be derived from `t.a < 1` and pushed down to `s` table below the join operator. Filtering the `s` table can further reduce the calculation overhead of join.
 
 ### Case 4: predicates that are not supported by storage layers cannot be pushed down
 
@@ -108,9 +108,9 @@ explain select * from t left join s on t.a = s.a where s.a is null;
 6 rows in set (0.00 sec)
 ```
 
-In this query，there is a predicate `s.a is null` on the inner table `s`.
+In this query, there is a predicate `s.a is null` on the inner table `s`.
 
-From the `explain` results，we can see that the predicate is not pushed below join operator. This is because the outer join fills the inner table with `NULL` values when the `on` condition isn't satisfied, and the predicate `s.a is null` is used to filter the results after the join. If it is pushed down to the inner table below join, the execution plan is not equivalent to the original one.
+From the `explain` results, we can see that the predicate is not pushed below join operator. This is because the outer join fills the inner table with `NULL` values when the `on` condition isn't satisfied, and the predicate `s.a is null` is used to filter the results after the join. If it is pushed down to the inner table below join, the execution plan is not equivalent to the original one.
 
 ### Case 6: the predicates which contain user variables cannot be pushed down
 
@@ -128,11 +128,11 @@ explain select * from t where a < @a;
 3 rows in set (0.00 sec)
 ```
 
-In this query，there is a predicate `a < @a` on table `t`. The `@a` of the predicate is a user variable.
+In this query, there is a predicate `a < @a` on table `t`. The `@a` of the predicate is a user variable.
 
 As can be seen from `explain` results, the predicate is not like case 2, which is simplified to `a < 1` and pushed down to TiKV. This is because the value of the user variable `@a` may change during the computation, and TiKV is not aware of the changes. So TiDB does not replace `@a` with `1`, and does not push down it to TiKV.
 
-An example to help you understand is as follows：
+An example to help you understand is as follows:
 
 ```sql
 create table t(id int primary key, a int);
@@ -148,4 +148,4 @@ select id, a, @a:=@a+1 from t where a = @a;
 2 rows in set (0.00 sec)
 ```
 
-As you can see from this query, the value of `@a` will change during the query. So if you replace `a = @a` with `a = 1` and push it down to TiKV, it's not an equivalent execution plan. 
+As you can see from this query, the value of `@a` will change during the query. So if you replace `a = @a` with `a = 1` and push it down to TiKV, it's not an equivalent execution plan.

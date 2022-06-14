@@ -15,7 +15,7 @@ To enable OpenAPI, perform one of the following operations:
     openapi = true
     ```
 
-+ If your DM cluster has been deployed using TiUP, add the following configuration to the topology file：
++ If your DM cluster has been deployed using TiUP, add the following configuration to the topology file:
 
     ```yaml
     server_configs:

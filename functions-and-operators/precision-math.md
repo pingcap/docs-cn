@@ -107,7 +107,7 @@ The following results are returned in different SQL modes:
 
 The result of the `ROUND()` function depends on whether its argument is exact or approximate:
 
-- For exact-value numbers, the `ROUND()` function uses the “round half up” rule.
+- For exact-value numbers, the `ROUND()` function uses the "round half up" rule.
 - For approximate-value numbers, the results in TiDB differs from that in MySQL:
 
     ```sql

@@ -193,7 +193,7 @@ The default setting is already tuned for CSV following RFC 4180.
 
 ```toml
 [mydumper.csv]
-separator = ',' # It is not recommended to use the default ‘,’. It is recommended to use ‘\|+\|‘ or other uncommon character combinations.
+separator = ',' # It is not recommended to use the default ','. It is recommended to use '\|+\|' or other uncommon character combinations.
 delimiter = '"'
 header = true
 not-null = false

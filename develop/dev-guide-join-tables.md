@@ -5,7 +5,7 @@ summary: This document describes how to use multi-table join queries.
 
 # Multi-table Join Queries
 
-In many scenarios，you need to use one query to get data from multiple tables. You can use the `JOIN` statement to combine the data from two or more tables.
+In many scenarios, you need to use one query to get data from multiple tables. You can use the `JOIN` statement to combine the data from two or more tables.
 
 ## Join types
 

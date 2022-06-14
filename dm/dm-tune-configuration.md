@@ -25,7 +25,7 @@ During full backup, DM splits the data of each table into multiple chunks accord
 >
 > - You cannot update the value of `mydumpers` after the migration task is created. Be sure about the value of each option before creating the task. If you need to update the value, stop the task using dmctl, update the configuration file, and re-create the task.
 > - `mydumpers`.`threads` can be replaced with the `mydumper-thread` configuration item for simplicity.
-> - If `rows` is set，DM ignores the value of `chunk-filesize`.
+> - If `rows` is set, DM ignores the value of `chunk-filesize`.
 
 ## Full data import
 

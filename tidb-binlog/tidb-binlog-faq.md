@@ -36,7 +36,7 @@ To replicate data to the downstream MySQL or TiDB cluster, Drainer must have the
 
 1. Check whether Pump's GC works well:
 
-    - Check whether the **gc_tso** time in Pump’s monitoring panel is identical with that of the configuration file.
+    - Check whether the **gc_tso** time in Pump's monitoring panel is identical with that of the configuration file.
 
 2. If GC works well, perform the following steps to reduce the amount of space required for a single Pump:
 

@@ -38,7 +38,7 @@ In TiDB pessimistic transaction mode, if two clients execute the following state
 
 After client-B encounters a deadlock error, TiDB automatically rolls back the transaction in client-B. Updating `id=2` in client-A will be executed successfully. You can then run `COMMIT` to finish the transaction.
 
-### Solution 1：avoid deadlocks
+### Solution 1: avoid deadlocks
 
 To get better performance, you can avoid deadlocks at the application level by adjusting the business logic or schema design. In the example above, if client-B also uses the same update order as client-A, that is, they update books with `id=1` first, and then update books with `id=2`. The deadlock can then be avoided:
 

@@ -143,9 +143,9 @@ DROP INDEX idx1 ON t1;
 ```
 
 > **Note:**
-> 
+>
 > Expression index involves various kinds of expressions. To ensure correctness, only some fully tested functions are allowed for creating an expression index. This means that only these functions are allowed in expressions in a production environment. You can get these functions by querying `tidb_allow_function_for_expression_index` variable. In future versions, more functions might be added to the list.
-> 
+>
 > {{< copyable "sql" >}}
 >
 > ```sql
@@ -157,11 +157,11 @@ DROP INDEX idx1 ON t1;
 > +--------------------------------------------+
 > 1 row in set (0.00 sec)
 > ```
-> 
+>
 > For the functions that are not included in the returned result above, those functions are not fully tested and not recommended for a production environment, which can be seen as experimental. Other expressions such as operators, `cast`, and `case when` are also seen as experimental and not recommended for production. However, if you still want to use those expressions, you can make the following configuration in the [TiDB configuration file](/tidb-configuration-file.md#allow-expression-index-new-in-v400):
-> 
+>
 > {{< copyable "sql" >}}
-> 
+>
 > ```sql
 > allow-expression-index = true
 > ```
@@ -177,7 +177,7 @@ DROP INDEX idx1 ON t1;
 > - Window functions.
 > - ROW functions, such as `create table t (j json, key k (((j,j))));`.
 > - Aggregate functions.
-> 
+>
 > An expression index implicitly takes up a name (for example, `_V$_{index_name}_{index_offset}`). If you try to create a new expression index with the name that a column has already had, an error occurs. In addition, if you add a new column with the same name, an error also occurs.
 >
 > Make sure that the number of function parameters in the expression of an expression index is correct.
@@ -222,7 +222,7 @@ If the same expression is included in the aggregate (`GROUP BY`) functions, the 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT max(lower(col1)) FROM t；
+SELECT max(lower(col1)) FROM t;
 SELECT min(col1) FROM t GROUP BY lower(col1);
 ```
 

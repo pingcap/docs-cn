@@ -50,7 +50,7 @@ filters:
   | drop index      | DDL  | Drop index event      |
   | alter table     | DDL  | Alter table event     |
 
-- `sql-pattern`：Filters specified DDL SQL statements. The matching rule supports using a regular expression.
+- `sql-pattern`: Filters specified DDL SQL statements. The matching rule supports using a regular expression.
 - `action`: `Do` or `Ignore`
 
     - `Do`: the allow list. A binlog event is replicated if meeting either of the following two conditions:

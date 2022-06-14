@@ -92,7 +92,7 @@ The `MERGE_JOIN(t1_name [, tl_name ...])` hint tells the optimizer to use the so
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ MERGE_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+select /*+ MERGE_JOIN(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 ```
 
 > **Note:**
@@ -106,7 +106,7 @@ The `INL_JOIN(t1_name [, tl_name ...])` hint tells the optimizer to use the inde
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ INL_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+select /*+ INL_JOIN(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 ```
 
 The parameter(s) given in `INL_JOIN()` is the candidate table for the inner table when you create the query plan. For example, `INL_JOIN(t1)` means that TiDB only considers using `t1` as the inner table to create a query plan. If the candidate table has an alias, you must use the alias as the parameter in `INL_JOIN()`; if it does not has an alias, use the table's original name as the parameter. For example, in the `select /*+ INL_JOIN(t1) */ * from t t1, t t2 where t1.a = t2.b;` query, you must use the `t` table's alias `t1` or `t2` rather than `t` as `INL_JOIN()`'s parameter.
@@ -126,7 +126,7 @@ The `HASH_JOIN(t1_name [, tl_name ...])` hint tells the optimizer to use the has
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ HASH_JOIN(t1, t2) */ * from t1，t2 where t1.id = t2.id;
+select /*+ HASH_JOIN(t1, t2) */ * from t1, t2 where t1.id = t2.id;
 ```
 
 > **Note:**
@@ -140,7 +140,7 @@ The `HASH_AGG()` hint tells the optimizer to use the hash aggregation algorithm 
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ HASH_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
+select /*+ HASH_AGG() */ count(*) from t1, t2 where t1.a > 10 group by t1.id;
 ```
 
 ### STREAM_AGG()
@@ -150,7 +150,7 @@ The `STREAM_AGG()` hint tells the optimizer to use the stream aggregation algori
 {{< copyable "sql" >}}
 
 ```sql
-select /*+ STREAM_AGG() */ count(*) from t1，t2 where t1.a > 10 group by t1.id;
+select /*+ STREAM_AGG() */ count(*) from t1, t2 where t1.a > 10 group by t1.id;
 ```
 
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
