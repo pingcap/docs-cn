@@ -433,7 +433,7 @@ Kibana 是一个针对 Elasticsearch 的开源分析及可视化平台，用来�
 完成 TiUniManager 安装后，建议用户通过系统防火墙为 Elasticsearch 和 Kibana 添加网络访问控制，仅允许 TiUniManager 中控机与上述组件通信，参考命令如下所示：
 
 ```shell
-# 允许来自 TiEM 中控机的连接
+# 允许来自 TiUniManager 中控机的连接
 iptables -A INPUT -p tcp -s <tiunimanager addr> --dport <elasticsearch port> -j ACCEPT
 
 # 拒绝其它 IP 的访问
