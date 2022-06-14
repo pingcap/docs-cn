@@ -20,7 +20,7 @@ summary: 了解如何通过 TiUniManager 管理系统。
 
 ## 查看系统日志
 
-查看 TiUniManager 系统日志的步骤如下：。、
+查看 TiUniManager 系统日志的步骤如下：
 
 1. 登录 TiUniManager 控制台。
 2. 进入**系统管理** > **系统日志**页面查看系统日志。
@@ -55,45 +55,16 @@ TiUniManager 默认包含以下告警规则，以便接受相应的告警通知�
 
 ## TiUniManager 告警设置
 
-TiUniManager 告警设置支持钉钉、Email 等告警通道，具体见 [List of notifiers supported by Grafana](https://grafana.com/docs/grafana/latest/alerting/unified-alerting/contact-points/#list-of-notifiers-supported-by-grafana)。TiUniManager 默认提供钉钉告警通道，部署完成后，需要修改钉钉告警通道，将 URL 配置为实际使用的钉钉群机器人 Webhook 地址。
+TiUniManager 告警设置支持钉钉、Email 等告警通道，具体见 [List of notifiers supported by Grafana](https://grafana.com/docs/grafana/latest/alerting/unified-alerting/contact-points/#list-of-notifiers-supported-by-grafana)。在设置 TiUniManager 告警前，确保已登录 TiUniManager 控制台。
 
-在设置 TiUniManager 告警前，确保已登录 TiUniManager 控制台。
+以下示例基于 Grafana v7.5.15，展示如何在 Grafana 上配置钉钉的告警通道。
 
-以下示例基于 Grafana v8.4.4，展示如何在 Grafana 上配置钉钉的告警通道。
+1. 打开 **Notification channels** 配置页面，点击 **New channel** 创建通道。
 
-1. 创建消息模板
+    ![Notification channels - New channel](/media/tiunimanager/tiunimanager-notification-channels-new-channel.png)
 
-    1. 打开 **Contact Points** 配置页面，点击 **New template** 创建消息模板
+2. 配置消息接收方，示例如下：
 
-        ![Contact Points - New template](/media/tiunimanager/tiunimanager-contact-points-new-template.png)
+    ![Notification channels - Edit config](/media/tiunimanager/tiunimanager-notification-channels-edit-config.png)
 
-    2. 编辑消息模板。
-
-        ![Contact Points - Edit template](/media/tiunimanager/tiunimanager-edit-messages.png)
-
-        说明：
-
-        + 消息模板语法和 Golang 语言模板的语法一致。
-        + 关于模板中的变量，参考 [Grafana 文档 - Template data](https://grafana.com/docs/grafana/latest/alerting/unified-alerting/message-templating/template-data/)。
-
-2. 创建 Contact Point。
-
-    1. 打开 **Contact Points** 配置页面，点击 **New contact point** 创建消息接收方。
-
-        ![Contact Points - New contact point](/media/tiunimanager/tiunimanager-new-contact-point.png)
-
-    2. 配置消息接收方，示例如下：
-
-        ![Contact Points - message receiver](/media/tiunimanager/tiunimanager-message-receiver-config.png)
-
-        若要接入钉钉自定义机器人，参考[钉钉文档 - 自定义机器人接入](https://open.dingtalk.com/document/group/custom-robot-access)。
-
-3. 配置告警通知策略。
-
-    1. 打开 **Notification policies** 配置页面，点击 **Edit** 编辑根策略。
-
-        ![Notification policies](/media/tiunimanager/tiunimanager-notification-policies.png)
-
-    2. 编辑策略：
-
-        ![编辑策略](/media/tiunimanager/tiunimanager-edit-policies.png)
+    若要接入钉钉自定义机器人，参考[钉钉文档 - 自定义机器人接入](https://open.dingtalk.com/document/group/custom-robot-access)。
