@@ -33,11 +33,11 @@ For more information about use cases of TiDB HTAP, see [blogs about HTAP on the 
 
 ## Architecture
 
-In TiDB, a row-based storage engine [TiKV](/tikv-overview.md) for Online Transactional Processing (OLTP) and a columnar storage engine [TiFlash](/tiflash/tiflash-overview.md) for Online Analytical Processing (OLAP) co-exist, replicate data automatically, and keep strong consistency. 
+In TiDB, a row-based storage engine [TiKV](/tikv-overview.md) for Online Transactional Processing (OLTP) and a columnar storage engine [TiFlash](/tiflash/tiflash-overview.md) for Online Analytical Processing (OLAP) co-exist, replicate data automatically, and keep strong consistency.
 
 For more information about the architecture, see [architecture of TiDB HTAP](/tiflash/tiflash-overview.md#architecture).
 
-## Environment preparation 
+## Environment preparation
 
 Before exploring the features of TiDB HTAP, you need to deploy TiDB and the corresponding storage engines according to the data volume. If the data volume is large (for example, 100 T), it is recommended to use TiFlash Massively Parallel Processing (MPP) as the primary solution and TiSpark as the supplementary solution.
 
@@ -53,7 +53,7 @@ Before exploring the features of TiDB HTAP, you need to deploy TiDB and the corr
 
 - TiSpark
 
-    - If your data needs to be analyzed with Spark, deploy TiSpark (Spark 3.x is not currently supported). For specific process, see [TiSpark User Guide](/tispark-overview.md).
+    - If your data needs to be analyzed with Spark, deploy TiSpark. For specific process, see [TiSpark User Guide](/tispark-overview.md).
 
 <!--    - Real-time stream processing
   - If you want to build an efficient and easy-to-use real-time data warehouse with TiDB and Flink, you are welcome to participate in Apache Flink x TiDB meetups.-->
