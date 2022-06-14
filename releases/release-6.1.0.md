@@ -76,7 +76,7 @@ TiDB 版本：6.1.0
 
   用户文档：[`LEADING`](/optimizer-hints.md#leadingt1_name--tl_name-)，[`STRAIGHT_JOIN`](/optimizer-hints.md#straight_join)，[#29932](https://github.com/pingcap/tidb/issues/29932)
 
-* 新增以下函数的支持：
+* TiFlash 新增对以下函数的支持： 
 
     * `FROM_DAYS`
     * `TO_DAYS`
