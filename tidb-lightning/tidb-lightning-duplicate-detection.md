@@ -6,7 +6,7 @@
 lighting默认的配置为None，即 lightning 不会开启冲突检测，如果存在冲突数据时（PK/UK 列重复），则会导致该表真实总行数和使用唯一索引查询的总行数不一致的情况，并且 checksum 验证无法通过（checksum mismatched remote vs local）, 从而造成 lightning 报错退出。但lightning仍会将全部数据写入到 TiDB 中。
 ### record
 仅将重复数据添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。该表结构如下：
-···
+```
 CREATE TABLE conflict_error_v1 (
     task_id     bigint NOT NULL,
     create_time datetime(6) NOT NULL DEFAULT now(6),
@@ -20,7 +20,7 @@ CREATE TABLE conflict_error_v1 (
     raw_row     mediumblob NOT NULL,
     KEY (task_id, table_name)
 );
-···
+```
 record 模式会保留所有数据，并跳过 checksum 环节，因此 lightning 不会报错。你可以根据`lightning_task_info.conflict_error_v1` 表中记录的信息手动处理这些重复数据。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 'none' 模式。
 ### remove
 除了将重复数据添加到`lightning_task_info.conflict_error_v1` 表中并跳过 checksum 外，remove 模式下lighting还会自动将重复数据从 TiDB 中删除。
@@ -55,17 +55,21 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
 +---------------------+------------+----------------------------------------------------------------------------------------+
 ```
 当查询`order_line`表时，record 模式会显示包括重复数据在内的所有数据：
+```
  ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount | ol_dist_info       
 ---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
     2676 |      10 |      13 |        12 |   75658 |             11 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj 
     2677 |      10 |      10 |        11 |   75656 |             10 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj 
     2677 |      10 |      10 |        11 |   75656 |             10 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj 
 (3 rows)
+```
 而 remove 模式仅显示非重复数据：
+```
  ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount | ol_dist_info       
 ---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
     2676 |      10 |      13 |        12 |   75658 |             11 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj 
 (1 rows)
+```
 
 在 local-backend 下冲突检测的特点是将键值对插入到 TiDB 中后，再将重复的键值对转换成 SQL 语句根据选择的不同配置进行处理，导致 TiDB 中有可能存在重复数据。
 
