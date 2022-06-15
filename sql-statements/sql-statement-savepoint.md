@@ -18,7 +18,7 @@ RELEASE SAVEPOINT identifier
 
 `ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定名字的事务保存点，而不终止该事务。当前事务在设置保存点后，对表数据所做的修改将在回滚中撤销，且删除事务保存点之后的所有保存点。悲观事务中，对于已经持有的悲观锁不会回滚，而是在事务结束时才释放。
 
-如果 `ROLLBACK TO SAVEPOINT` 语句中指定名字的保存点不存在，则会返回以下报错：
+如果 `ROLLBACK TO SAVEPOINT` 语句中指定名称的保存点不存在，则会返回以下错误信息：
 
 ```
 ERROR 1305 (42000): SAVEPOINT identifier does not exist
