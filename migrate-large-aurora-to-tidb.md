@@ -6,17 +6,22 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 # 从大数据量 Amazon Aurora 迁移数据到 TiDB
 
-本文档介绍如何从大数据量 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)，具有以下特征：
+本文档介绍如何从大数据量 Amazon Aurora 迁移数据到 TiDB，迁移过程采用 [DB snapshot](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html)。
 
-- 操作较为复杂，需要使用 Dumpling、TiDB Lightning、DM 三种迁移工具。
-- 创建新快照的过程对在线业务有影响。
+使用该方式迁移数据有以下优势：
+
 - 节约全量数据导入过程的时间和空间消耗。
 - 全量导入性能较好，适用于 TB 级以上数据量迁移。
 
+使用该方式迁移数据有以下局限性：
+
+- 操作较为复杂，需要使用 Dumpling、TiDB Lightning、DM 三种迁移工具。
+- 创建新快照的过程对在线业务有影响。
+
 整个迁移包含两个过程：
 
-- 使用 Lightning 导入全量数据到 TiDB
-- 使用 DM 持续增量同步到 TiDB（可选）
+- [使用 Lightning 导入全量数据到 TiDB](#导入全量数据到-tidb)
+- [使用 DM 持续增量同步到 TiDB（可选）](#持续增量同步数据到-tidb可选)
 
 ## 前提条件
 
@@ -24,23 +29,23 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 - [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
-## Aurora 开启 binlog
+## 为 Aurora 开启 binlog
 
-若要持续、增量从 Aurora 迁移数据，则必须开启 binlog。
+若要持续、增量地从 Aurora 迁移数据，则必须开启 binlog。
 
-1. 通过以下网址打开 Amazon RDS 控制台：[https://console.aws.amazon.com/rds/](https://console.aws.amazon.com/rds/)。
+1. 打开 [Amazon RDS 控制台](https://console.aws.amazon.com/rds/)。
 
 2. 在导航窗格中，选择参数组。
 
-3. 选择您要修改的数据库集群所使用的参数组。
+3. 选择你要修改的数据库集群所使用的参数组。
 
-4. 您无法修改默认参数组。如果数据库集群使用默认参数组，则创建新的参数组并将其与数据库集群关联。
+4. （可选）如果数据库集群使用默认参数组，由于默认参数组无法被修改，你需要创建新的参数组并将其与数据库集群关联。
 
-5. 从 Parameter group actions (参数组操作) 中，选择 Edit (编辑)。
+5. 从 **Parameter group actions**（参数组操作）中，选择 **Edit**(编辑)。
 
-6. 将`binlog_format`参数设置为`ROW`，`binlog_row_image`参数设置为`full`。
+6. 将 `binlog_format` 参数设置为 `ROW`，将 `binlog_row_image` 参数设置为 `full`。
 
-7. 选择保存更改以保存对数据库集群参数组的更新(Aurora 可能需要重启)。
+7. 选择保存更改以保存对数据库集群参数组的更新（Aurora 可能需要重启）。
 
 更多信息可参考[配置 Aurora MySQL 二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
 
@@ -48,7 +53,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 
 ### 第 1 步： 导出 Aurora 快照文件到 Amazon S3
 
-1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置，且时间为 T1：
+1. 在 Aurora 上，执行以下命令，查询并记录当前 binlog 位置，并将当前时间记为 T1：
 
     ```sql
     mysql> SHOW MASTER STATUS;
@@ -65,13 +70,18 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
     1 row in set (0.012 sec)
     ```
 
-2. 创建快照，此操作时间为 T2。
+2. 创建快照，将此操作时间记为 T2。
 
 3. 导出 Aurora 快照文件到 S3。导出快照的方法可参考 [Aurora 官方文档](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_ExportSnapshot.html)。
 
 ### 第 2 步： 导出 schema 文件
 
-由于 Aurora 生成的快照文件并不包含建表语句文件，你需要使用 Dumpling 自行导出 schema 并使用 TiDB Lightning 在下游创建 schema。你也可以跳过此步骤，以手动方式在下游自行创建 schema。
+由于 Aurora 生成的快照文件并不包含建表语句文件，你需要在下游创建 schema：
+
+* 方法 1: 使用 Dumpling 自行导出 schema 后，使用 TiDB Lightning 在下游创建 schema。
+* 方法 2：以手动方式在下游自行创建 schema。
+
+这一节介绍方法 1 中如何使用 Dumpling 导出 schema 文件。
 
 运行以下命令，使用 Dumpling 导出 schema 文件。建议使用 `--filter` 参数仅导出所需表的 schema：
 
@@ -81,7 +91,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 tiup dumpling --host ${host} --port 3306 --user root --password ${password} --consistency none --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
 ```
 
-命令中所用参数描述如下。如需更多信息可参考[使用 Dumpling 导出数据](/dumpling-overview.md)。
+命令中所用参数描述如下。如需更多信息可参考 [Dumpling 主要选项表](/dumpling-overview.md#dumpling-主要选项表)。
 
 |参数               |说明|
 |-                  |-|
@@ -265,9 +275,9 @@ syncers:            # sync 处理单元的运行配置参数。
 
 > **注意：**
 >
-> 由于 `SHOW MASTER STATUS` 的时间 (T1) 与创建快照的时 (T2) 存在时间差，增量同步可能出现数据冲突错误。因此前述任务配置中启用了 safe-mode，但不建议长期运行 safe-mode，待 binlog 同步位置超过 T2 后可关闭 safe-mode。
+> 由于 `SHOW MASTER STATUS` 的时间 (T1) 与创建快照的时 (T2) 存在时间差，增量同步可能出现数据冲突错误，因此前述任务配置中启用了[安全模式](/dm/dm-safe-mode.md) (`safe-mode`)。不建议长期运行安全模式，待 binlog 同步位置超过 T2 后可关闭安全模式。
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
 ### 第 3 步： 启动任务
 

@@ -8,8 +8,9 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 本文档介绍如何从小数据量 Amazon Aurora 迁移数据到 TiDB。相比[从大数据量 Amazon Aurora 迁移数据到 TiDB](/migrate-small-aurora-to-tidb.md)，从小数据量 Amazon Aurora 迁移数据具有以下特征：
 
 - 操作简单，仅需使用一种工具 DM。
-- 全量导入性能较低，适合 TB 级以下数据量或对迁移时长要求不高的场景。
 - 适合合库合表迁移的场景。
+
+使用该方法迁移数据有以下局限性：全量导入性能较低，适合 TB 级以下数据量或对迁移时长要求不高的场景。
 
 如果目标 Aurora 已经对外提供服务，全量阶段可能对其产生负面影响，因此本文提供两种方式迁移。
 
@@ -22,23 +23,23 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 - [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)。
 - DM 所在环境需具备足以容纳全量数据的存储空间。
 
-## Aurora 开启 binlog
+## 为 Aurora 开启 binlog
 
-若要持续、增量从 Aurora 迁移数据，则必须开启 binlog。
+若要持续、增量地从 Aurora 迁移数据，则必须开启 binlog。
 
-1. 通过以下网址打开 Amazon RDS 控制台：[https://console.aws.amazon.com/rds/](https://console.aws.amazon.com/rds/)。
+1. 打开 [Amazon RDS 控制台](https://console.aws.amazon.com/rds/)。
 
 2. 在导航窗格中，选择参数组。
 
-3. 选择您要修改的数据库集群所使用的参数组。
+3. 选择你要修改的数据库集群所使用的参数组。
 
-4. 您无法修改默认参数组。如果数据库集群使用默认参数组，则创建新的参数组并将其与数据库集群关联。
+4. （可选）如果数据库集群使用默认参数组，由于默认参数组无法被修改，你需要创建新的参数组并将其与数据库集群关联。
 
-5. 从 Parameter group actions (参数组操作) 中，选择 Edit (编辑)。
+5. 从 **Parameter group actions** (参数组操作) 中，选择 **Edit**(编辑)。
 
-6. 将`binlog_format`参数设置为`ROW`，`binlog_row_image`参数设置为`full`。
+6. 将 `binlog_format` 参数设置为 `ROW`，将 `binlog_row_image` 参数设置为 `full`。
 
-7. 选择保存更改以保存对数据库集群参数组的更新(Aurora 可能需要重启)。
+7. 选择保存更改以保存对数据库集群参数组的更新（Aurora 可能需要重启）。
 
 更多信息可参考[配置 Aurora MySQL 二进制日志记录](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/USER_LogAccess.MySQL.BinaryFormat.html)。
 
@@ -46,11 +47,11 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 
 确保保留足够的 binlog，否则后续增量同步将无法进行。
 
-### 第 1 步： 创建数据源
+### 第 1 步：创建数据源
 
 1. 为了避免对当前业务产生影响，使用[快照](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/USER_CreateSnapshotCluster.html)或者[克隆](https://docs.aws.amazon.com/zh_cn/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Clone.html)复制一个新的 Aurora 实例作为全量迁移数据源。为方便表述，生产集群简称“Aurora-A”，从快照恢复的新的实例简称为“Aurora-B”。
 
-2. 新建 `source1.yaml` 文件, 写入以下内容：
+2. 为 `Aurora-A` 新建 `source1.yaml` 文件，写入以下内容：
 
     {{< copyable "" >}}
 
@@ -67,7 +68,7 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
 
     如果需要将多个表库合并导入 TiDB，可参考[合库合表迁移到 TiDB](/migrate-small-mysql-shards-to-tidb.md)。
 
-3. 在终端中执行下面的命令，将数据源配置加载到 DM 集群中:
+3. 在终端中执行下面的命令，将 `Aurora-A` 数据源配置加载到 DM 集群中:
 
     {{< copyable "shell-regular" >}}
 
@@ -82,9 +83,9 @@ summary: 介绍如何迁移 TB 级以下 Amazon Aurora 到 TiDB。
     |`--master-addr`  |dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：`172.16.10.71:8261`|
     |`operate-source create`|向 DM 集群加载数据源|
 
-以同样的方式创建`Aurora-B`数据源。
+4. 重复第 2 步 ~ 第 3 步，以同样的方式创建 `Aurora-B` 数据源。
 
-### 第 2 步： 创建迁移任务
+### 第 2 步：创建迁移任务
 
 新建 `task1.yaml` 文件，写入以下内容：
 
@@ -129,12 +130,12 @@ mydumpers:                           # dump 处理单元的运行配置参数
 
 > **注意：**
 >
-> 全量任务开始时，DM 将执行以下两条 SQL 语句，以避免导出过程中 DDL 的影响，且部分 DDL 可能被阻塞：
+> 全量任务开始时，DM 将执行以下两条 SQL 语句，以避免导出过程中 DDL 对任务的影响。执行后，部分 DDL 可能被阻塞：
 >
 > - `SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ`
 > - `START TRANSACTION /*!40108 WITH CONSISTENT SNAPSHOT */`
 
-### 第 3 步： 启动任务
+### 第 3 步：启动任务
 
 1. 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
@@ -161,7 +162,7 @@ mydumpers:                           # dump 处理单元的运行配置参数
 
 如果任务启动失败，可根据返回结果的提示进行配置变更后，再次执行上述命令，重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
-### 第 4 步： 查看任务状态
+### 第 4 步：查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
@@ -173,13 +174,13 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
-### 第 5 步： 创建增量迁移任务
+### 第 5 步：创建增量迁移任务
 
 待全量任务执行结束后。在 Aurora-B 的控制台搜索 `Alarms and Recent Events` 关键字，记录 binlog 位置信息：
 
-  ```
-  Binlog position from crash recovery is mysql-bin-changelog.000003 23910021
-  ```
+```
+Binlog position from crash recovery is mysql-bin-changelog.000003 23910021
+```
 
 新建 `task2.yaml` 文件，写入以下内容：
 
@@ -214,12 +215,11 @@ mysql-instances:
     meta:                               # task-mode 为 incremental 且下游数据库的 checkpoint 不存在时 binlog 迁移开始的位置; 如果 checkpoint 存在，则以 checkpoint 为准。
       binlog-name: "mysql-bin-changelog.000003"   # 记录的日志位置 。
       binlog-pos: 23910021
-
 ```
 
 以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
 
-### 第 6 步： 启动任务
+### 第 6 步：启动任务
 
 1. 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
@@ -248,7 +248,7 @@ mysql-instances:
 
 ## 方式二：从在线业务数据库直接迁移
 
-### 第 1 步： 创建数据源
+### 第 1 步：创建数据源
 
 1. 新建 `source1.yaml` 文件，写入以下内容：
 
@@ -328,12 +328,12 @@ mydumpers:                           # dump 处理单元的运行配置参数
 
 > **注意：**
 >
-> 全量任务开始时，DM 将执行以下两条 SQL 语句，以避免导出过程中 DDL 的影响，且部分 DDL 可能被阻塞：
+> 全量任务开始时，DM 将执行以下两条 SQL 语句，以避免导出过程中 DDL 对任务的影响。执行后，部分 DDL 可能被阻塞：
 >
 > - `SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ`
 > - `START TRANSACTION /*!40108 WITH CONSISTENT SNAPSHOT */`
 
-### 第 3 步： 启动任务
+### 第 3 步：启动任务
 
 1. 在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率：
 
