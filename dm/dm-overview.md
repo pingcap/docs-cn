@@ -102,6 +102,18 @@ DM 支持对源数据的分库分表进行合并迁移，但有一些使用限�
 
     - 当 DM-worker 通过虚拟 IP（VIP）连接到 MySQL 且要切换 VIP 指向的 MySQL 实例时，DM 内部不同的 connection 可能会同时连接到切换前后不同的 MySQL 实例，造成 DM 拉取的 binlog 与从上游获取到的其他状态不一致，从而导致难以预期的异常行为甚至数据损坏。如需切换 VIP 指向的 MySQL 实例，请参考[虚拟 IP 环境下的上游主从切换](/dm/usage-scenario-master-slave-switch.md#虚拟-ip-环境下切换-dm-worker-与-mysql-实例的连接)对 DM 手动执行变更。
 
+<<<<<<< HEAD
 + GBK 字符集兼容性限制
+=======
+DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/LICENSE) 了解更多信息。
+
+## 版本变更说明
+
+在 v5.4 之前，DM 工具的文档独立于 TiDB 文档。要访问这些早期版本的 DM 文档，请点击以下链接：
+
+- [DM v5.3 文档](https://docs.pingcap.com/zh/tidb-data-migration/v5.3)
+- [DM v2.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v2.0/)
+- [DM v1.0 文档](https://docs.pingcap.com/zh/tidb-data-migration/v1.0/)
+>>>>>>> 65a1835b1 (fix broken links (#9840))
 
     - DM 在 v5.4.0 之前不支持将 `charset=GBK` 的表迁移到 TiDB。
