@@ -351,12 +351,6 @@ TiSpark 可以使用 TiDB 的统计信息：
 
 从 TiSpark 2.0 开始，统计信息将会默认被读取。
 
-统计信息将在 Spark Driver 进行缓存，请确定 Driver 内存足够缓存统计信息。可以在`spark-defaults.conf`中开启或关闭统计信息读取：
-
-| Property Name | Default | Description
-| --------   | -----:   | :----: |
-| spark.tispark.statistics.auto_load | true | 是否默认进行统计信息读取 |
-
 ## TiSpark FAQ
 
 - Q. 是独立部署还是和现有 Spark／Hadoop 集群共用资源？

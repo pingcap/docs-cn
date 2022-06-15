@@ -1,6 +1,6 @@
 ---
 title: TiDB 简介
-aliases: ['/docs-cn/stable/overview/','/docs-cn/v4.0/overview/','/docs-cn/stable/key-features/']
+aliases: ['/docs-cn/v4.0/overview/']
 ---
 
 # TiDB 简介

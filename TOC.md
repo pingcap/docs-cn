@@ -66,6 +66,7 @@
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       - [外部存储](/br/backup-and-restore-storages.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+    - [使用 Dumpling/TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
   - [读取历史数据](/read-historical-data.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
@@ -537,7 +538,6 @@
   - [高可用 FAQ](/faq/high-availability-faq.md)
   - [高可靠 FAQ](/faq/high-reliability-faq.md)
   - [迁移 FAQ](/faq/migration-tidb-faq.md)
-- [术语表](/glossary.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
   - v4.0
@@ -652,3 +652,4 @@
     - [RC3](/releases/release-rc.3.md)
     - [RC2](/releases/release-rc.2.md)
     - [RC1](/releases/release-rc.1.md)
+- [术语表](/glossary.md)
