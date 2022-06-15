@@ -1,6 +1,7 @@
 ---
 title: BR 简介
 summary: 了解 BR 工具是什么、有什么用。
+aliases:['/zh/tidb/stable/backup-and-restore-tool/']
 ---
 
 # BR 简介
