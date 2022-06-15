@@ -70,7 +70,7 @@ tiup install dm dmctl
 
 ## License
 
-DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/dm/LICENSE) 了解更多信息。
+DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/LICENSE) 了解更多信息。
 
 ## 版本变更说明
 
