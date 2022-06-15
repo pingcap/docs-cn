@@ -20,16 +20,17 @@ TiDB 为第三方工具提供以下级别的支持：
 
 # Drivers
 
-| 编程语言       | 驱动                                                                       | 最新测试版本  | 支持级别 | TiDB 适配器 | 教程                                                                             |
-|------------|--------------------------------------------------------------------------|---------|------|----------|--------------------------------------------------------------------------------|
-| C          | [MySQL Connector/C](https://downloads.mysql.com/archives/c-c/)           | 6.1.11  | Beta | N/A      | N/A                                                                            |
-| C#(.Net)   | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/)       | 8.0.28  | Beta | N/A      | N/A                                                                            |
-| C#(.Net)   | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/)     | 8.0.28  | Beta | N/A      | N/A                                                                            |
-| Go         | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)            | v1.6.0  | Full | N/A      | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
-| Java       | [JDBC](https://dev.mysql.com/downloads/connector/j/)                     | 5.1.46  | Full | N/A      | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)     |
-| JavaScript | [mysql](https://github.com/mysqljs/mysql)                                | v2.18.1 | Beta | N/A      | N/A                                                                            |
-| PHP        | [MySQL Connector/PHP](https://downloads.mysql.com/archives/c-php/)       | 5.0.37  | Beta | N/A      | N/A                                                                            |
-| Python     | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) | 8.0.28  | Beta | N/A      | N/A                                                                            |
+| 编程语言       | 驱动                                                                       | 最新测试版本  | 支持级别 | TiDB 适配器                                                                                   | 教程                                                                             |
+|------------|--------------------------------------------------------------------------|---------|------|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| C          | [MySQL Connector/C](https://downloads.mysql.com/archives/c-c/)           | 6.1.11  | Beta | N/A                                                                                        | N/A                                                                            |
+| C#(.Net)   | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/)       | 8.0.28  | Beta | N/A                                                                                        | N/A                                                                            |
+| C#(.Net)   | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/)     | 8.0.28  | Beta | N/A                                                                                        | N/A                                                                            |
+| Go         | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)            | v1.6.0  | Full | N/A                                                                                        | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
+| Java       | [JDBC](https://dev.mysql.com/downloads/connector/j/)                     | 5.1.46  | Full | N/A                                                                                        | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)     |
+| Java       | [JDBC](https://dev.mysql.com/downloads/connector/j/)                     | 8.0.29  | Full | [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j/tree/release/8.0) | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)     |
+| JavaScript | [mysql](https://github.com/mysqljs/mysql)                                | v2.18.1 | Beta | N/A                                                                                        | N/A                                                                            |
+| PHP        | [MySQL Connector/PHP](https://downloads.mysql.com/archives/c-php/)       | 5.0.37  | Beta | N/A                                                                                        | N/A                                                                            |
+| Python     | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) | 8.0.28  | Beta | N/A                                                                                        | N/A                                                                            |
 
 # ORM 框架
 
