@@ -9,14 +9,14 @@ aliases: ['/docs-cn/dev/ticdc/manage-ticdc/','/docs-cn/dev/reference/tools/ticdc
 
 ## 使用 TiUP 升级 TiCDC
 
-本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.0.0。
+本部分介绍如何使用 TiUP 来升级 TiCDC 集群。在以下例子中，假设需要将 TiCDC 组件和整个 TiDB 集群升级到 v6.1.0。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
 tiup update --self && \
 tiup update --all && \
-tiup cluster upgrade <cluster-name> v6.0.0
+tiup cluster upgrade <cluster-name> v6.1.0
 ```
 
 ### 升级的注意事项
@@ -301,7 +301,14 @@ URI 中可配置的的参数如下：
 {{< copyable "shell-regular" >}}
 
 ```shell
---sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --schema-registry="http://127.0.0.1:8081"
+--sink-uri="kafka://127.0.0.1:9092/topic-name?&protocol=avro&replication-factor=3" --schema-registry="http://127.0.0.1:8081" --config changefeed_config.toml
+```
+
+```shell
+[sink]
+dispatchers = [
+ {matcher = ['*.*'], topic = "tidb_{schema}_{table}"},
+]
 ```
 
 集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-confluent-using-ticdc.md)。
@@ -670,7 +677,7 @@ Topic 表达式的基本规则为 `[prefix]{schema}[middle][{table}][suffix]`，
 - `middle`：可选项，代表库表名之间的分隔符。
 - `{table}`：可选项，用于匹配表名。
 - `suffix`：可选项，代表 Topic Name 的后缀。
- 
+
 其中 `prefix`、`middle` 以及 `suffix` 仅允许出现大小写字母（`a-z`、`A-Z`）、数字（`0-9`）、点号（`.`）、下划线（`_`）和中划线（`-`）；`{schema}`、`{table}` 均为小写，诸如 `{Schema}` 以及 `{TABLE}` 这样的占位符是无效的。
 
 一些示例如下：
@@ -713,7 +720,7 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 > **注意：**
 >
 > 从 v6.1 开始，为了明确配置项的含义，用来指定 partition 分发器的配置项由原来的 `dispatcher` 改为 `partition`，`partition` 为 `dispatcher` 的别名。例如，以下两条规则完全等价：
-> 
+>
 > ```
 > [sink]
 > dispatchers = [
@@ -721,9 +728,9 @@ partition 分发器用 partition = "xxx" 来指定，支持 default、ts、index
 >    {matcher = ['*.*'], partition = "ts"},
 > ]
 > ```
-> 
+>
 > 但是 `dispatcher` 与 `partition` 不能出现在同一条规则中。例如，以下规则非法：
-> 
+>
 > ```
 > {matcher = ['*.*'], dispatcher = "ts", partition = "table"},
 > ```

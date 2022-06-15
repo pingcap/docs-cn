@@ -49,7 +49,7 @@ DELETE FROM {table} WHERE {filter}
 {{< copyable "sql" >}}
 
 ```sql
-SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 - 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
@@ -61,7 +61,7 @@ SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `r
 {{< copyable "sql" >}}
 
 ```sql
-DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 </div>
@@ -74,15 +74,18 @@ DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at`
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
 
 try (Connection connection = ds.getConnection()) {
-    PreparedStatement pstmt = connection.prepareStatement("DELETE FROM `rating` WHERE `rating_at` >= ? AND  `rating_at` <= ?");
+    String sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql);
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.MILLISECOND, 0);
 
     calendar.set(2022, Calendar.APRIL, 15, 0, 0, 0);
-    pstmt.setTimestamp(1, new Timestamp(calendar.getTimeInMillis()));
+    preparedStatement.setTimestamp(1, new Timestamp(calendar.getTimeInMillis()));
 
     calendar.set(2022, Calendar.APRIL, 15, 0, 15, 0);
-    pstmt.setTimestamp(2, new Timestamp(calendar.getTimeInMillis()));
+    preparedStatement.setTimestamp(2, new Timestamp(calendar.getTimeInMillis()));
+
+    preparedStatement.executeUpdate();
 } catch (SQLException e) {
     e.printStackTrace();
 }
@@ -133,7 +136,7 @@ func main() {
 
 > **注意：**
 >
-> `rating_at` 字段为[日期和时间类型](/data-type-date-and-time.md) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](/configure-time-zone.md)时，展示不同的时间字符串。
+> `rated_at` 字段为[日期和时间类型](/data-type-date-and-time.md) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](/configure-time-zone.md)时，展示不同的时间字符串。
 >
 > 另外，和 MySQL 一样，`TIMESTAMP` 数据类型受 [2038 年问题](https://zh.wikipedia.org/wiki/2038%E5%B9%B4%E9%97%AE%E9%A2%98)的影响。如果存储的值大于 2038，建议使用 `DATETIME` 类型。
 

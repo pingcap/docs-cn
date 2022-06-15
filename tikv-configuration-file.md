@@ -390,21 +390,6 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 如果恢复操作未能在该时间窗口内完成，TiKV 会崩溃。
 + 默认值：1h
 
-## storage.block-cache
-
-RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
-
-### `shared`
-
-+ 是否开启共享 block cache。
-+ 默认值：true
-
-### `capacity`
-
-+ 共享 block cache 的大小。
-+ 默认值：系统总内存大小的 45%
-+ 单位：KB|MB|GB
-
 ### `api-version` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 + TiKV 作为 Raw Key Value 存储数据时使用的存储格式与接口版本。
@@ -419,8 +404,24 @@ RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为�
 
 > **警告：**
 >
+> - API V2 是 TiKV 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 > - **只能**在部署新的 TiKV 集群时将 `api-version` 的值设置为 `2`，**不能**在已有的 TiKV 集群中修改该配置项的值。由于 API V1 和 API V2 存储的数据格式不相同，如果在已有的 TiKV 集群中修改该配置项，会造成不同格式的数据存储在同一个集群，导致数据损坏。这种情况下，启动 TiKV 集群时会报 "unable to switch storage.api_version" 错误。
 > - 启用 API V2 后，**不能**将 TiKV 集群回退到 v6.1.0 之前的版本，否则可能导致数据损坏。
+
+## storage.block-cache
+
+RocksDB 多个 CF 之间共享 block cache 的配置选项。当开启时，为每个 CF 单独配置的 block cache 将无效。
+
+### `shared`
+
++ 是否开启共享 block cache。
++ 默认值：true
+
+### `capacity`
+
++ 共享 block cache 的大小。
++ 默认值：系统总内存大小的 45%
++ 单位：KB|MB|GB
 
 ## storage.flow-control
 
@@ -895,6 +896,10 @@ coprocessor 相关的配置项。
 
 + 设置 `enable-region-bucket` 启用时 bucket 的预期大小。
 + 默认值：96MiB
+
+> **警告：**
+>
+> `region-bucket-size` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 
 ## rocksdb
 
@@ -1464,6 +1469,12 @@ Raft Engine 相关的配置项。
 + 默认值：`4`
 + 最小值：`1`
 
+### `memory-limit`
+
++ 指定 Raft Engine 使用内存的上限。
++ 当该配置项未设置时，Raft Engine 默认使用系统总内存的 15%。
++ 默认值：`系统总内存 * 15%`
+
 ## security
 
 安全相关配置项。
@@ -1673,6 +1684,10 @@ Raft Engine 相关的配置项。
 用于 TiKV API V2（`storage.api-version = 2`）中时间戳获取相关的配置项。
 
 为了降低写请求延迟，TiKV 会定期获取一批时间戳缓存在本地，避免频繁访问 PD。当本地缓存的时间戳用完，会立即发起一次时间戳请求。这种情况下，部分写请求的延迟会增大。TiKV 会根据负载情况动态调整时间戳缓存的大小，以减少这种情况的发生，大部分情况下不需要做参数调整。
+
+> **警告：**
+>
+> - API V2 是 TiKV 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 
 ### `renew-interval`
 
