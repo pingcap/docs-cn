@@ -221,7 +221,6 @@ show warnings;
 
     在 Grafana 界面，选择 **TiFlash-Proxy-Details** > **Thread CPU** > **Region task worker pre-handle/generate snapshot CPU**，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
 
-
 ## 数据同步慢
 
 同步慢可能由多种原因引起，你可以按以下步骤进行排查。
