@@ -119,7 +119,7 @@ TiDB Ansible 版本：3.0.0-rc.1
     - Importer 支持 upload SST 到 TiKV 限速 [#4412](https://github.com/tikv/tikv/pull/4412)
     - Lightning 优化导入表的顺序，按照表的数据大小顺序进行导入，减少导入过程中大表执行 checksum 和 Analyze 对集群的影响，并且提高 Checksum 和 Analyze 的成功率 [#156](https://github.com/pingcap/tidb-lightning/pull/156)
     - 提升 Lightning encode SQL 性能，性能提升 50%，直接解析数据源文件内容成 TiDB 的 types.Datum，省去 KV encoder 的多余解析工作 [#145](https://github.com/pingcap/tidb-lightning/pull/145)
-    - 日志格式改为 [Unified Log Format](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md) [#162](https://github.com/pingcap/tidb-lightning/pull/162)
+    - 日志格式改为 Unified Log Format [#162](https://github.com/pingcap/tidb-lightning/pull/162)
     - 新增一些命令行选项，即使缺少配置文件也能使用。[#157](https://github.com/pingcap/tidb-lightning/pull/157)
 + 数据同步对比工具 (sync-diff-inspector)
     - 支持 checkpoint，记录校验状态，重启后从上次进度继续校验 [#224](https://github.com/pingcap/tidb-tools/pull/224)
