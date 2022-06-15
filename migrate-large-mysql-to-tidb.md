@@ -25,7 +25,7 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 
 **磁盘空间**：
 
-- Dumpling 需要足够储存整个数据源的存储空间。
+- Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
 - 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
 
@@ -75,7 +75,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     |-B 或 --database  | 导出指定数据库 |
     |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。|
 
-    请确保 `${data-path}` 拥有足够的空间。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
+    请确保 `${data-path}` 的空间可以容纳要导出的所有上游表，计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
 
 2. 查看在 `${data-path}` 目录下的 `metadata` 文件，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息，这将在第 3 步增量同步的时候使用。
 
