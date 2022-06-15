@@ -329,7 +329,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 - 数据放置策略的兼容性变更：
     - 不支持绑定，并从语法中删除直接放置 (direct placement) 选项。
     - `CREATE PLACEMENT POLICY` 和 `ALTER PLACEMENT POLICY` 语句不再支持 `VOTERS` 和 `VOTER_CONSTRAINTS` 放置选项。
-    - TiDB 生态工具（TiDB Binlog、TiCDC、BR）现在兼容 placement rules。Placement 选项移到 binlog 的特殊注释中。
+    - TiDB 数据迁移工具（TiDB Binlog、TiCDC、BR）现在兼容 placement rules。Placement 选项移到 binlog 的特殊注释中。
     - 系统表 `information_schema.placement_rules` 重命名为 `information_schema.placement_policies`。此表现在只展示放置策略的信息。
     - 系统变量 `placement_checks` 被 `tidb_placement_mode` 替代。
     - 禁止在有 TiFlash 副本的表上添加带放置规则的分区。
