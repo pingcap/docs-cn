@@ -58,3 +58,8 @@ TiDB 为第三方工具提供以下级别的支持：
 |-----------------------------------------------|---------|------|-----|
 | [DBeaver](https://dbeaver.io/)                | 22.1.0  | Beat | N/A |
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Beat | N/A |
+
+# 推荐阅读
+
+- [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
+- [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)
