@@ -7,7 +7,7 @@ aliases: ['/docs-cn/tidb-data-migration/dev/manually-handling-sharding-ddl-locks
 
 在分库分表合并迁移发生异常时，你需要使用 `shard-ddl-lock` 命令手动处理 sharding DDL lock。
 
-在 DM 中有[悲观模式](/dm/feature-shard-merge-pessimistic.md)与[乐观模式](/dm/feature-shard-merge-optimistic.md)两种分库分表合并迁移模式。两种模式中的`shard-ddl-lock` 的概念存在差异：
+在 DM 中有[悲观模式](/dm/feature-shard-merge-pessimistic.md)与[乐观模式](/dm/feature-shard-merge-optimistic.md)两种分库分表合并迁移模式。两种模式中的 `shard-ddl-lock` 的概念存在差异：
 
 - 在悲观模式中，DM 使用 sharding DDL lock 来确保分库分表的 DDL 操作可以正确执行。绝大多数情况下，该锁定机制可自动完成；但在部分异常情况发生时，需要使用 `shard-ddl-lock` 手动处理异常的 DDL lock。
 - 在乐观模式中，DM 使用表结构与 DDL 信息来确保分库分表的 DDL 操作可以正确执行。sharding DDL Lock 在乐观模式中用于表示是否所有分表可以生成兼容表结构。绝大多数情况不需人为干预，仅当分库分表表结构存在不可解冲突时，才需要使用 `shard-ddl-lock` 手动处理异常表结构。
@@ -82,7 +82,7 @@ shard-ddl-lock test
             "task": "test",                                # lock 所属的任务名
             "mode": "pessimistic"                          # shard DDL 协调模式，可为悲观模式 "pessimistic" 或乐观模式 "optimistic"
             "owner": "mysql-replica-01",                   # lock 的 owner，在悲观模式时为第一个遇到该 DDL 的 source ID
-            "DDLs": [                                      # 在悲观模式时为 lock 对应的 DDL 列表，在乐观模式时总为空
+            "DDLs": [                                      # 在悲观模式时为 lock 对应的 DDL 列表
                 "USE `shard_db`; ALTER TABLE `shard_db`.`shard_table` DROP COLUMN `c2`;"
             ],
             "synced": [                                    # 已经收到对应 MySQL 实例内所有分表 DDL 的 source 列表
@@ -145,7 +145,11 @@ shard-ddl-lock test
 <SimpleTab>
 <div label="悲观模式">
 
-[悲观模式](/dm/feature-shard-merge-pessimistic.md) `unlock` 包括操作：请求 owner 执行 DDL 操作，请求其他非 owner 的 DM-worker 跳过 DDL 操作，移除 DM-master 上的 lock 信息。
+[悲观模式](/dm/feature-shard-merge-pessimistic.md) `unlock` 包括以下操作：
+
+* 请求 owner 执行 DDL 操作。
+* 请求其他非 owner 的 DM-worker 跳过 DDL 操作。
+* 移除 DM-master 上的 lock 信息。
 
 {{< copyable "shell-regular" >}}
 
@@ -190,7 +194,11 @@ Global Flags:
 
 <div label="乐观模式">
 
-[乐观模式](/dm/feature-shard-merge-optimistic.md) `unlock` 包括操作：请求指定的处于冲突状态的上游表 执行/跳过 冲突 DDL 操作，对其他非指定的表不会进行任何操作，若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
+[乐观模式](/dm/feature-shard-merge-optimistic.md) `unlock` 包括以下操作：
+
+* 请求指定的处于冲突状态的上游表执行或跳过冲突 DDL 操作。
+* 对其他非指定的表不会进行任何操作。
+* 若操作后 DM-master 可以为所有分表生成兼容表结构，则 DM-master 上的 lock 信息将被自动移除。
 
 {{< copyable "shell-regular" >}}
 
@@ -225,15 +233,15 @@ Global Flags:
 
 + `-s, --source`：
     - flag 参数，string，乐观模式必填且目前只支持写一个
-    - 执行需要执行 unlock 操作的上游的 source ID，可通过 `shard-ddl-lock` 命令获取
+    - 指定需要执行 unlock 操作的上游的 source ID，可通过 `shard-ddl-lock` 命令获取
 
 + `-d, --database`：
     - flag 参数，string，乐观模式必填且目前只支持写一个
-    - 执行需要执行 unlock 操作的上游的数据库名称，可通过 `shard-ddl-lock` 命令获取
+    - 指定需要执行 unlock 操作的上游的数据库名称，可通过 `shard-ddl-lock` 命令获取
 
 + `-t, --table`：
     - flag 参数，string，乐观模式必填且目前只支持写一个
-    - 执行需要执行 unlock 操作的上游的表名称，可通过 `shard-ddl-lock` 命令获取
+    - 指定需要执行 unlock 操作的上游的表名称，可通过 `shard-ddl-lock` 命令获取
 
 + `lock-id`：
     - 非 flag 参数，string，必选
@@ -507,7 +515,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 #### Lock 异常原因
 
-在 DM-master 尝试自动协调乐观 DDL，需要等待所有 MySQL source 的表结构达到一致状态，锁信息才会被清除（详见[乐观分表合并协调原理](/dm/feature-shard-merge-optimistic.md#原理)）。如果 sharding DDL 在迁移过程中出现分表的 DDL 生成了不一致表结构，例如部分分表添加 default 0 的列而部分添加 default 1 的列，将造成 DM-master 无法生成兼容表结构，从而使得锁无法自动 unlock。
+在 DM-master 尝试自动协调乐观 DDL，需要等待所有 MySQL source 的表结构达到一致状态，锁信息才会被清除（详见[乐观分表合并协调原理](/dm/feature-shard-merge-optimistic.md#原理)）。在 sharding DDL 迁移过程中，如果分表的 DDL 生成了不一致的表结构，例如部分分表添加 default 0 的列、而另一部分分表添加 default 1 的列，将造成 DM-master 无法生成兼容表结构，从而使得锁无法自动 unlock。
 
 #### 手动处理示例
 
@@ -673,7 +681,7 @@ MySQL 及 DM 操作与处理流程如下：
 
 6. DM-master 上 ID 为 ```test-`shardddl`.`tb` ``` 的 lock 无法为 `mysql-replica-02` 上的 `shardddl1`.`tb1` 的 DDL 生成兼容表结构，`shard-ddl-lock` 返回的 `unsynced` 中一直包含 `mysql-replica-02` 的信息。
 
-7. 使用 `shard-ddl-lock unlock` 来请求 DM-master 主动 unlock 该 DDL lock。
+7. 使用 `shard-ddl-lock unlock` 来请求 DM-master 主动 unlock 第一个分表 (`shardddl1`.`tb1`) 的 DDL lock。
 
     执行 `shard-ddl-lock unlock` 命令。根据第 5 步中 `query-status` 命令输出中的 `blockDDLOwner` 信息，指定 `-s`、`-d`、`-t` 这三个参数，每个参数有且仅有一个值。
 
@@ -692,7 +700,7 @@ MySQL 及 DM 操作与处理流程如下：
 
     当存在任意 MySQL source 报错时，`result` 将为 `false`，此时请仔细检查各 MySQL source 的错误是否是预期可接受的。
 
-8. 重复第 7 步，跳过第二个分表的 DDL。
+8. 重复第 7 步，unlock 第二个分表 (`shardddl1`.`tb2`) 的 DDL lock。
 9. 使用 `shard-ddl-lock` 确认 DDL lock 是否被成功 unlock。
 
     ```bash
@@ -712,21 +720,21 @@ MySQL 及 DM 操作与处理流程如下：
 
     {{< copyable "sql" >}}
 
-     ```sql
-     SHOW CREATE TABLE shardddl.tb;
-     ```
+    ```sql
+    SHOW CREATE TABLE shardddl.tb;
+    ```
 
-     ```
-     +-------------+--------------------------------------------------+
-     | Table       | Create Table                                     |
-     +-------------+--------------------------------------------------+
-     | tb    | CREATE TABLE `tb` (
-     `a` int(11) NOT NULL,
-     `b` int(11) DEFAULT '0',
-     PRIMARY KEY (`a`)
-     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
-     +-------------+--------------------------------------------------+
-     ```
+    ```
+    +-------------+--------------------------------------------------+
+    | Table       | Create Table                                     |
+    +-------------+--------------------------------------------------+
+    | tb    | CREATE TABLE `tb` (
+    `a` int(11) NOT NULL,
+    `b` int(11) DEFAULT '0',
+    PRIMARY KEY (`a`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+    +-------------+--------------------------------------------------+
+    ```
 
 11. 使用 `query-status` 确认迁移任务是否正常。
 
@@ -737,7 +745,7 @@ MySQL 及 DM 操作与处理流程如下：
 因此，在手动解锁 DDL lock 后，需要再执行以下操作：
 
 1. 使用 `pause-task` 暂停运行中的任务。
-2. 使用 `binlog-schema update` 更新 skip 的表的表结构为兼容的表结构。
+2. 使用 `binlog-schema update` 更新跳过的分表的表结构为兼容的表结构。
 3. 使用 `resume-task` 恢复任务运行。
 
 > **注意：**
