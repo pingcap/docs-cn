@@ -565,6 +565,7 @@ Empty set (0.00 sec)
 You can see that the inserted record `(NULL, 'mothra')` falls into the same partition as `(0, 'gigan')`.
 
 > **Note:**
+>
 > `NULL` values by Hash partitions in TiDB are handled in the same way as described in [How MySQL Partitioning Handles NULL](https://dev.mysql.com/doc/refman/8.0/en/partitioning-handling-nulls.html), which, however, is not consistent with the actual behavior of MySQL. In other words, MySQL's implementation in this case is not consistent with its documentation.
 >
 > In this case, the actual behavior of TiDB is in line with the description of this document.
