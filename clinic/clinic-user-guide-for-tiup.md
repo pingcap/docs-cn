@@ -48,7 +48,7 @@ Before using PingCAP Clinic, you need to install Diag (a component to collect da
 
     > **Note:**
     >
-    > - For clusters without an internet connection, you need to deploy Diag offline. For details, refer to [Deploy TiUP offline: Method 2](/production-deployment-using-tiup.md#method-2-deploy-tiup-offline).
+    > - For clusters without an internet connection, you need to deploy Diag offline. For details, refer to [Deploy TiUP offline: Method 2](/production-deployment-using-tiup.md#deploy-tiup-offline).
     > - Diag is **only** provided in the TiDB Server offline mirror package of v5.4.0 or later.
 
 2. Get and set an access token (token) to upload data.

@@ -101,5 +101,5 @@ tiup update --self && tiup update dm
 
 ## See also
 
-- [Deploy TiUP offline](/production-deployment-using-tiup.md#method-2-deploy-tiup-offline)
+- [Deploy TiUP offline](/production-deployment-using-tiup.md#deploy-tiup-offline)
 - [Download and install tools in binary](/download-ecosystem-tools.md)

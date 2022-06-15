@@ -40,7 +40,7 @@ Other Linux OS versions such as Debian Linux and Fedora Linux might work but are
 
 > **Note:**
 >
-> It is required that you [deploy TiUP on the control machine](/production-deployment-using-tiup.md#step-2-install-tiup-on-the-control-machine) to operate and manage TiDB clusters.
+> It is required that you [deploy TiUP on the control machine](/production-deployment-using-tiup.md#step-2-deploy-tiup-on-the-control-machine) to operate and manage TiDB clusters.
 
 ### Target machines
 

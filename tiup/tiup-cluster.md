@@ -220,7 +220,7 @@ For the PD component, `|L` or `|UI` might be appended to `Up` or `Down`. `|L` in
 
 > **Note:**
 >
-> This section describes only the syntax of the scale-in command. For detailed steps of online scaling, refer to [Scale the TiDB Cluster Using TiUP](/scale-tidb-using-tiup.md).
+> This section describes only the syntax of the scale-in command. For detailed steps of online scaling, refer to [Scale a TiDB Cluster Using TiUP](/scale-tidb-using-tiup.md).
 
 Scaling in a cluster means making some node(s) offline. This operation removes the specific node(s) from the cluster and deletes the remaining files.
 
@@ -289,7 +289,7 @@ After PD schedules the data on the node to other TiKV nodes, this node will be d
 
 > **Note:**
 >
-> This section describes only the syntax of the scale-out command. For detailed steps of online scaling, refer to [Scale the TiDB Cluster Using TiUP](/scale-tidb-using-tiup.md).
+> This section describes only the syntax of the scale-out command. For detailed steps of online scaling, refer to [Scale a TiDB Cluster Using TiUP](/scale-tidb-using-tiup.md).
 
 The scale-out operation has an inner logic similar to that of deployment: the TiUP cluster component firstly ensures the SSH connection of the node, creates the required directories on the target node, then executes the deployment operation, and starts the node service.
 

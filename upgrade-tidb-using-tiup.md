@@ -74,7 +74,7 @@ Before upgrading your TiDB cluster, you first need to upgrade TiUP or TiUP mirro
 >
 > If the cluster to upgrade was deployed not using the offline method, skip this step.
 
-Refer to [Deploy a TiDB Cluster Using TiUP - Deploy TiUP offline](/production-deployment-using-tiup.md#method-2-deploy-tiup-offline) to download the TiUP mirror of the new version and upload it to the control machine. After executing `local_install.sh`, TiUP will complete the overwrite upgrade.
+Refer to [Deploy a TiDB Cluster Using TiUP - Deploy TiUP offline](/production-deployment-using-tiup.md#deploy-tiup-offline) to download the TiUP mirror of the new version and upload it to the control machine. After executing `local_install.sh`, TiUP will complete the overwrite upgrade.
 
 {{< copyable "shell-regular" >}}
 
