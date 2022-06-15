@@ -93,7 +93,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
 1. 通过 `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` 下载 TiUniManager 离线安装包。
 
-    下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/tidb-toolkit-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `{version}` 替换为目标版本号。
+    下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `{version}` 替换为目标版本号。
 
 2. 发送 TiUniManager 离线安装包至 TiUniManager 中控机。
 
