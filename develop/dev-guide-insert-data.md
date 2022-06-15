@@ -130,6 +130,81 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 </div>
 
+<div label="Golang">
+
+```go
+package main
+
+import (
+    "database/sql"
+    "strings"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+type Player struct {
+    ID    string
+    Coins int
+    Goods int
+}
+
+func bulkInsertPlayers(db *sql.DB, players []Player, batchSize int) error {
+    tx, err := db.Begin()
+    if err != nil {
+        return err
+    }
+
+    stmt, err := tx.Prepare(buildBulkInsertSQL(batchSize))
+    if err != nil {
+        return err
+    }
+
+    defer stmt.Close()
+
+    for len(players) > batchSize {
+        if _, err := stmt.Exec(playerToArgs(players[:batchSize])...); err != nil {
+            tx.Rollback()
+            return err
+        }
+
+        players = players[batchSize:]
+    }
+
+    if len(players) != 0 {
+        if _, err := tx.Exec(buildBulkInsertSQL(len(players)), playerToArgs(players)...); err != nil {
+            tx.Rollback()
+            return err
+        }
+    }
+
+    if err := tx.Commit(); err != nil {
+        tx.Rollback()
+        return err
+    }
+
+    return nil
+}
+
+func playerToArgs(players []Player) []interface{} {
+    var args []interface{}
+    for _, player := range players {
+        args = append(args, player.ID, player.Coins, player.Goods)
+    }
+    return args
+}
+
+func buildBulkInsertSQL(amount int) string {
+    return "INSERT INTO player (id, coins, goods) VALUES (?, ?, ?)" + strings.Repeat(",(?,?,?)", amount-1)
+}
+```
+
+有关 Golang 的完整示例，可参阅：
+
+- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 go-sql-driver/mysql](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
+- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 gorm](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
+
+</div>
+
 </SimpleTab>
 
 ## 批量插入

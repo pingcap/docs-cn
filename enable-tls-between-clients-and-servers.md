@@ -19,7 +19,7 @@ TiDB 服务端支持启用基于 TLS（传输层安全）协议的加密连接�
 
 另外，与 MySQL 相同，TiDB 也支持在同一 TCP 端口上开启 TLS 连接或非 TLS 连接。对于开启了 TLS 连接支持的 TiDB 服务端，客户端既可以选择通过加密连接安全地连接到该 TiDB 服务端，也可以选择使用普通的非加密连接。如需使用加密连接，你可以通过以下方式进行配置：
 
-+ 通过在启动参数中配置 `--require-secure-transport` 要求所有用户必须使用加密连接来连接到 TiDB。
++ 通过配置系统变量 `require_secure_transport` 要求所有用户必须使用加密连接来连接到 TiDB。
 + 通过在创建用户 (`create user`)，或修改已有用户 (`alter user`) 时指定 `REQUIRE SSL` 要求指定用户必须使用加密连接来连接 TiDB。以创建用户为例：
 
     ```sql

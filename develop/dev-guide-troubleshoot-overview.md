@@ -1,10 +1,10 @@
 ---
-title: 故障诊断概览
-summary: 大致介绍 TiDB 中故障诊断办法，可快速导航到具体故障诊断页面。
+title: SQL 或事务问题
+summary: 学习诊断在应用开发过程中可能产生的 SQL 或事务问题的方法。
 aliases: ['/zh/tidb/dev/troubleshoot-overview']
 ---
 
-# 故障诊断概览
+# SQL 或事务问题
 
 本章介绍在开发应用过程中可能遇到的常见问题的诊断处理方法。
 
