@@ -5,7 +5,7 @@
 
 ## Local-backend 模式
 
-当使用 local-backend 模式进行数据导入时，可以在 lighting 配置文件中的 duplicate-detection 选项进行配置。一共有三种检测模式：
+当使用 local-backend 模式进行数据导入时，可以在 lightning 配置文件中的 duplicate-detection 选项进行配置。一共有三种检测模式：
 
 ### none
 
@@ -83,15 +83,15 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
 
 ## tidb-backend 模式
 
-tidb-backend 模式通过直接执行 sql 语句导入数据，该模式的冲突检测可由配置文件中的 on-duplicate 进行选择。一共有三种模式:
+tidb-backend 模式通过直接执行 SQL 语句导入数据，该模式的冲突检测可由配置文件中的 on-duplicate 进行选择。一共有三种模式:
 
 ### replace
 
-在 replace 模式下，遇到冲突数据时，会执行 ```REPLACE INTO …```，该 sql 语句会将数据库中的冲突数据替换为当前的冲突数据。
+在 replace 模式下，遇到冲突数据时，会执行 ```REPLACE INTO …```，该 SQL 语句会将数据库中的冲突数据替换为当前的冲突数据。
 
 ### ignore
 
-在 ignore 模式下会执行 ```INSERT IGNORE INTO …```，如果插入的数据与 TiDB 中的数据发生冲突，该 sql 语句会忽略该插入指令，也就是说，保留 TiDB 中的数据并忽略当前的冲突数据。
+在 ignore 模式下会执行 ```INSERT IGNORE INTO …```，如果插入的数据与 TiDB 中的数据发生冲突，该 SQL 语句会忽略该插入指令，也就是说，保留 TiDB 中的数据并忽略当前的冲突数据。
 
 ### error
 
