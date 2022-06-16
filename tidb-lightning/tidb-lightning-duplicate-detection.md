@@ -9,7 +9,7 @@
 
 ### none
 
-lighting默认的配置为 none，即 lightning 不会开启冲突检测，如果存在冲突数据时（PK/UK 列重复），则会导致该表真实总行数和使用唯一索引查询的总行数不一致的情况，并且 checksum 验证无法通过（checksum mismatched remote vs local）, 从而造成 lightning 报错退出。但lightning仍会将全部数据写入到 TiDB 中。
+lighting 默认的配置为 none，即 lightning 不会开启冲突检测，如果存在冲突数据时（PK/UK 列重复），则会导致该表真实总行数和使用唯一索引查询的总行数不一致的情况，并且 checksum 验证无法通过（checksum mismatched remote vs local）, 从而造成 lightning 报错退出。但 lightning 仍会将全部数据写入到 TiDB 中。
 
 ### record
 
@@ -33,7 +33,7 @@ record 模式会保留所有数据，并跳过 checksum 环节，因此 lightnin
 
 ### remove
 
-除了将重复数据添加到`lightning_task_info.conflict_error_v1` 表中并跳过 checksum 外，remove 模式下 lighting 还会自动将重复数据从 TiDB 中删除。
+和record模式类似，会将重复数据添加到`lightning_task_info.conflict_error_v1` 表中并跳过 checksum，但 remove 模式下 lighting 还会将所有重复数据从 TiDB 中删除。 如果若干条数据发生冲突，这些重复数据均不会被保留在 TiDB 中，但可以在`lightning_task_info.conflict_error_v1` 表查询。
 
 假设一张表`order_line`的表结构如下：
 
@@ -80,8 +80,6 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
     2676 |      10 |      13 |        12 |   75658 |             11 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj 
 (1 rows)
 ```
-
-在 local-backend 下冲突检测的特点是将键值对插入到 TiDB 中后，再将重复的键值对转换成 SQL 语句根据选择的不同配置进行处理，导致 TiDB 中有可能存在重复数据。
 
 ## tidb-backend 模式
 
