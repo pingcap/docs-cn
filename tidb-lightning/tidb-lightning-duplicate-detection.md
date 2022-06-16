@@ -14,6 +14,7 @@ lightning 默认的配置为 none，即 lightning 不会开启冲突检测，如
 ### record
 
 仅将冲突数据添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。该表结构如下：
+
 ```
 CREATE TABLE conflict_error_v1 (
     task_id     bigint NOT NULL,
@@ -29,6 +30,7 @@ CREATE TABLE conflict_error_v1 (
     KEY (task_id, table_name)
 );
 ```
+
 record 模式会保留所有数据，并跳过 checksum 环节，因此 lightning 不会报错。你可以根据`lightning_task_info.conflict_error_v1` 表中记录的信息手动处理这些冲突数据。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用 none 模式。
 
 ### remove
@@ -64,7 +66,9 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
 | `tpcc`.`order_line` | PRIMARY    | 3 | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj") |
 +---------------------+------------+----------------------------------------------------------------------------------------+
 ```
+
 当查询`order_line`表时，record 模式下 TiDB 存有包括冲突数据在内的所有数据：
+
 ```
  ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount | ol_dist_info       
 ---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
@@ -73,7 +77,9 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
     2677 |      10 |      10 |        11 |   75656 |             10 |               |           5 | 5831.97   | HT5DN3EVb6kWTd4L37bsbogj 
 (3 rows)
 ```
+
 而 remove 模式下 TiDB 仅保留了非冲突数据：
+
 ```
  ol_o_id | ol_d_id | ol_w_id | ol_number | ol_i_id | ol_supply_w_id | ol_delivery_d | ol_quantity | ol_amount | ol_dist_info       
 ---------+---------+---------+-----------+---------+----------------+---------------+-------------+-----------+--------------------------
@@ -101,4 +107,5 @@ tidb-backend 模式通过直接执行 SQL 语句导入数据，该模式的冲�
 Error: restore table `test`.`order_line` failed: Error 1062: Duplicate entry '10-10-2677-11' for key 'PRIMARY'
 tidb lightning encountered error:  restore table `test`.`order_line` failed: Error 1062: Duplicate entry '10-10-2677-11' for key 'PRIMARY'
 ```
+
 在 tidb-backend 模式中，由于执行的 SQL 语句的特性，三种配置下 TiDB 中均不会存在冲突数据。
