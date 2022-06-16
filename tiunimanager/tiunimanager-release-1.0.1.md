@@ -11,7 +11,7 @@ title: TiDB Enterprise Manager v1.0.1 Release Notes
 > **注意：**
 >
 > - TiDB Enterprise Manager v1.0.1 未开源。若要获取 v1.0.1 的安装包或相关支持，请联系 TiUniManager 团队。
-> - 自 v1.0.2 起，产品名由 TiDB Enterprise Manager 改为 TiUniManager。
+> - 自 v1.0.2 起，TiDB Enterprise Manager 更名为 TiUniManager。
 
 该版本在 TiDB Enterprise Manager [1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md) 的基础上，进行了以下更新：
 
