@@ -342,6 +342,7 @@
       - [tiup-bench](/tiup/tiup-bench.md)
   - PingCAP Clinic Diagnostic Service (Technical Preview)
     - [Overview](/clinic/clinic-introduction.md)
+    - [Quick Start](/clinic/quick-start-with-clinic.md)
     - [Use PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic Diagnostic Data](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
