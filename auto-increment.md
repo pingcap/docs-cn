@@ -162,7 +162,7 @@ Records: 2  Duplicates: 1  Warnings: 0
 3 rows in set (0.00 sec)
 ```
 
-在以上示例 `INSERT INTO t (a) VALUES ('A'), ('C') ON DUPLICATE KEY UPDATE cnt = cnt + 1;` 语句中，自增值 `3` 被分配为 `A` 键对应的 `id` 值，但实际上 `3` 并未作为 `id` 值插入到数据库中。这是因为该 `INSERT` 语句包含一个重复键 `A`，使得自增序列不连续，出现了间隙。该行为尽管与 MySQL 不同，但仍是合法的。MySQL 在其他情况下也会出现自增序列不连续的情况，例如事务被中止和回滚时。
+在以上示例 `INSERT INTO t (a) VALUES ('A'), ('C') ON DUPLICATE KEY UPDATE cnt = cnt + 1;` 语句中，自增值 `3` 被分配为 `A` 键对应的 `id` 值，但实际上 `3` 并未作为 `id` 值插入进表中。这是因为该 `INSERT` 语句包含一个重复键 `A`，使得自增序列不连续，出现了间隙。该行为尽管与 MySQL 不同，但仍是合法的。MySQL 在其他情况下也会出现自增序列不连续的情况，例如事务被中止和回滚时。
 
 ## AUTO_ID_CACHE
 
