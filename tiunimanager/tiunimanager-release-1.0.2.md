@@ -4,7 +4,7 @@ title: TiUniManager v1.0.2 Release Notes
 
 # TiUniManager v1.0.2 Release Notes
 
-发布日期：2022 年 x 月 x 日
+发布日期：2022 年 6 月 16 日
 
 发布版本：1.0.2
 
