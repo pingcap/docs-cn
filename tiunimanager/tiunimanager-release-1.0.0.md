@@ -11,8 +11,8 @@ TiDB Enterprise Manager 版本：1.0.0
 
 > **注意：**
 >
-> TiDB Enterprise Manager v1.0.0 未开源。若要获取 v1.0.0 的安装包或相关支持，请联系 TiUniManager 团队。
-> 自 v1.0.2 起，TiDB Enterprise Manager 正式更名为 TiUniManager。
+> - TiDB Enterprise Manager v1.0.0 未开源。若要获取 v1.0.0 的安装包或相关支持，请联系 TiUniManager 团队。
+> - 自 v1.0.2 起，TiDB Enterprise Manager 正式更名为 TiUniManager。
 
 TiDB Enterprise Manager 是一款以 TiDB 数据库为核心的数据库管理平台，帮助用户在私有部署 (on-premises) 或公有云环境中管理 TiDB 集群。
 
