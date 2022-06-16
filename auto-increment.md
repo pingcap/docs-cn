@@ -129,7 +129,7 @@ Records: 3  Duplicates: 0  Warnings: 0
 TiDB 能保证自增值的单调性，但并不能保证其连续性。参考以下示例：
 
 ```sql
-CREATE TABLE t (id INT NOT NULL PRIMARY KEY auto_increment, a VARCHAR(10), cnt INT NOT NULL DEFAULT 1, UNIQUE KEY (a));
+CREATE TABLE t (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, a VARCHAR(10), cnt INT NOT NULL DEFAULT 1, UNIQUE KEY (a));
 INSERT INTO t (a) VALUES ('A'), ('B');
 SELECT * FROM t;
 INSERT INTO t (a) VALUES ('A'), ('C') ON DUPLICATE KEY UPDATE cnt = cnt + 1;
@@ -172,7 +172,7 @@ Records: 2  Duplicates: 1  Warnings: 0
 {{< copyable "sql" >}}
 
 ```sql
-CREATE TABLE t (a int PRIMARY KEY AUTO_INCREMENT, b timestamp NOT NULL DEFAULT NOW());
+CREATE TABLE t (a INT PRIMARY KEY AUTO_INCREMENT, b TIMESTAMP NOT NULL DEFAULT NOW());
 INSERT INTO t (a) VALUES (NULL), (NULL), (NULL);
 INSERT INTO t (a) VALUES (NULL);
 SELECT * FROM t;
