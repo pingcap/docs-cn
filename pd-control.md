@@ -1270,7 +1270,6 @@ Encoding 格式示例：
 >
 > - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
 > - 如果希望使用 TiUP 统一管理 store label 的话，可以在集群重启前，使用 pd-ctl 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
-> - 建议不要同时使用两种 label 存放方式。使用 `tiup` 修改配置文件的 label 时，PD 存放的 store label 信息可以使用 `store label <id> --force` 进行清空，实现 store label 的集中管理。
 
 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
 
