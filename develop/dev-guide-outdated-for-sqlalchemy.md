@@ -1,7 +1,6 @@
 ---
 title: App Development for SQLAlchemy
 summary: Learn how to build a simple Python application based on TiDB and SQLAlchemy.
-aliases: ['/appdev/dev/for-sqlalchemy']
 ---
 
 # App Development for SQLAlchemy

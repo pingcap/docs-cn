@@ -1,7 +1,6 @@
 ---
 title: App Development for mysql-connector-python
 summary: Learn how to build a simple Python application based on TiDB and mysql-connector-python.
-aliases: ['/appdev/dev/for-python-mysql-connector']
 ---
 
 # App Development for the mysql-connector-python

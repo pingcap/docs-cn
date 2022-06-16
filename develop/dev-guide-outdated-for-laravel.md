@@ -1,7 +1,6 @@
 ---
 title: App Development for Laravel
 summary: Learn how to build a simple PHP application based on TiDB and Laravel.
-aliases: ['/appdev/dev/for-laravel']
 ---
 
 # App Development for Laravel

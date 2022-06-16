@@ -1,7 +1,6 @@
 ---
 title: App Development for Django
 summary: Learn how to build a simple Python application using TiDB and Django.
-aliases: ['/appdev/dev/for-django']
 ---
 
 # App Development for Django

@@ -1,7 +1,6 @@
 ---
 title: App Development for GORM
 summary: Learn how to build a simple Golang application based on TiDB and GORM.
-aliases: ['/appdev/dev/for-gorm']
 ---
 
 # App Development for GORM
