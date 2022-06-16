@@ -352,7 +352,7 @@ Relay log 本地存储的目录结构示例如下：
 
     - DM-worker 把从上游数据库迁移到的 binlog 存储在同一目录下，每个目录都为一个 `subdir`。
     - `subdir` 的命名格式为 `<上游数据库 UUID>.<本地 subdir 序列号>`。
-    - 在上游进行 master 和 slave 实例切换后，DM-worker 会生成一个序号递增的新 `subdir` 目录。
+    - 在上游进行 primary 和 secondary 实例切换后，DM-worker 会生成一个序号递增的新 `subdir` 目录。
     - 在以上示例中，对于 `7e427cc0-091c-11e9-9e45-72b7c59d52d7.000001` 这一目录，`7e427cc0-091c-11e9-9e45-72b7c59d52d7` 是上游数据库的 UUID，`000001` 是本地 `subdir` 的序列号。
 
 - `server-uuid.index`：记录当前可用的 `subdir` 目录。
