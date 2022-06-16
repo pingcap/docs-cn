@@ -825,6 +825,8 @@ SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项
 {{< copyable "sql" >}}
 
 ```sql
+SET @@sql_mode = '';
+
 CREATE TABLE employees  (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(25) NOT NULL,
