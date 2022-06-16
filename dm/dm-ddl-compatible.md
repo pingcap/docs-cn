@@ -135,7 +135,7 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
 
 ## 合库合表迁移任务
 
-当使用悲观协调模式和乐观协调模式进行分库分表合并迁移时， DDL 同步的行为存在变更，具体请参考[悲观模式](/dm/feature-shard-merge-pessimistic.md)和[乐观模式](/dm/feature-shard-merge-optimistic.md)。
+当使用悲观协调模式和乐观协调模式进行分库分表合并迁移时，DDL 同步的行为存在变更，具体请参考[悲观模式](/dm/feature-shard-merge-pessimistic.md)和[乐观模式](/dm/feature-shard-merge-optimistic.md)。
 
 ## Online DDL
 
