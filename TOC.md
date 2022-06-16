@@ -502,7 +502,8 @@
       - [管理任务](/tiunimanager/tiunimanager-manage-tasks.md)
       - [管理系统](/tiunimanager/tiunimanager-manage-system.md)
     - [FAQ](/tiunimanager/tiunimanager-faq.md)
-    - [发布版本历史](/tiunimanager/tiunimanager-release-notes.md)
+    - 发布版本历史
+      - [发布版本汇总](/tiunimanager/tiunimanager-release-notes.md)
       - [v1.0.2](/tiunimanager/tiunimanager-release-1.0.2.md)
       - [v1.0.1](/tiunimanager/tiunimanager-release-1.0.1.md)
       - [v1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md)
