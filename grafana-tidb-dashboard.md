@@ -57,12 +57,12 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Transaction Statement Num：事务中的 SQL 语句数量
     - Transaction Retry Num：事务重试次数
     - Session Retry Error OPS：事务重试时每秒遇到的错误数量，分为重试失败和超过最大重试次数两种类型
-    - Commit Token Wait Duration：事务提交时的流控队列等待时间。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大 TiDB 配置文件中 `committer-concurrency` 值来加速提交
+    - Commit Token Wait Duration：事务提交时的流控队列等待时间。当出现较长等待时，代表提交事务过大，正在限流。如果系统还有资源可以使用，可以通过增大系统变量 `tidb_committer_concurrency` 的值来加速提交
     - KV Transaction OPS：每个 TiDB 内部每秒执行的事务数量
         - 一个用户的事务，在 TiDB 内部可能会触发多次事务执行，其中包含，内部元数据的读取，用户事务原子性地多次重试执行等
         - TiDB 内部的定时任务也会通过事务来操作数据库，这部分也包含在这个面板里
     - KV Transaction Duration：每个 TiDB 内部执行事务的耗时
-    - Transaction Regions Num：事务操作的 Region 数量  
+    - Transaction Regions Num：事务操作的 Region 数量
     - Transaction Write KV Num Rate and Sum：事务写入 KV 的速率总和
     - Transaction Write KV Num：事务操作的 KV 数量
     - Statement Lock Keys：单个语句的加锁个数
@@ -71,7 +71,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Transaction Write Size Bytes：事务写入的数据大小
     - Acquire Pessimistic Locks Duration：加锁所消耗的时间
     - TTL Lifetime Reach Counter：事务的 TTL 寿命上限。TTL 上限默认值 1 小时，它的含义是从悲观事务第一次加锁，或者乐观事务的第一个 prewrite 开始，超过了 1 小时。可以通过修改 TiDB 配置文件中 `max-txn-ttl` 来改变 TTL 寿命上限
-    - Load Safepoint OPS：加载 Safepoint 的次数。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉    
+    - Load Safepoint OPS：加载 Safepoint 的次数。Safepoint 作用是在事务读数据时，保证不读到 Safepoint 之前的数据，保证数据安全。因为，Safepoint 之前的数据有可能被 GC 清理掉
     - Pessimistic Statement Retry OPS：悲观语句重试次数。当语句尝试加锁时，可能遇到写入冲突，此时，语句会重新获取新的 snapshot 并再次加锁
     - Transaction Types Per Seconds：每秒采用两阶段提交 (2PC)、异步提交 （Async Commit) 和一阶段提交 (1PC) 机制的事务数量，提供成功和失败两种数量
 
@@ -81,6 +81,7 @@ aliases: ['/docs-cn/dev/grafana-tidb-dashboard/','/docs-cn/dev/reference/key-mon
     - Execution Duration：执行 SQL 语句执行计划耗时。
     - Expensive Executor OPS：每秒消耗系统资源比较多的算子。包括 Merge Join、Hash Join、Index Look Up Join、Hash Agg、Stream Agg、Sort、TopN 等。
     - Queries Using Plan Cache OPS：每秒使用 Plan Cache 的查询数量。
+    - Plan Cache Miss OPS：每秒出现 Plan Cache Miss 的数量。
 
 - Distsql
     - Distsql Duration：Distsql 处理的时长

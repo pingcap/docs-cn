@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/create-database']
 
 # 创建数据库
 
-在这个章节当中，将开始介绍如何使用 SQL 以及多种编程语言来创建数据库，及创建数据库时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建数据库部分展开介绍。
+在这个章节当中，将开始介绍如何使用 SQL 来创建数据库，及创建数据库时应遵守的规则。将在这个章节中围绕 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 这个应用程序来对 TiDB 的创建数据库部分展开介绍。
 
 > **注意：**
 >

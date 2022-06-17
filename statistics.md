@@ -285,6 +285,19 @@ ANALYZE TABLE TableName INDEX [IndexNameList] [WITH NUM BUCKETS|TOPN|CMSKETCH DE
     ANALYZE TABLE TableName PARTITION PartitionNameList [COLUMNS ColumnNameList|PREDICATE COLUMNS|ALL COLUMNS] [WITH NUM BUCKETS|TOPN|CMSKETCH DEPTH|CMSKETCH WIDTH]|[WITH NUM SAMPLES|WITH FLOATNUM SAMPLERATE];
     ```
 
+##### 动态裁剪模式下的分区表统计信息
+
+分区表在开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)的情况下，TiDB 将收集表级别的汇总统计信息，以下称 GlobalStats。 目前 GlobalStats 由分区统计信息合并汇总得到。在动态裁剪模式开启的情况下，任一分区上的统计信息更新都会触发 GlobalStats 的更新。
+
+> **注意：**
+>
+> - 当触发 GlobalStats 更新时：
+>
+>     - 若某些分区上缺少统计信息（比如新增的未 analyze 过的分区），会停止生成 GlobalStats， 并通过 warning 信息提示用户缺少分区的统计信息。
+>     - 若某些列的统计信息合并过程中，缺少某些分区在该列上的统计信息（在不同分区上 analyze 时指定了不同的列），会停止生成 GlobalStats，并通过 warning 信息提示用户缺少列在分区上的统计信息。
+>
+> - 在动态裁剪模式开启的情况下，分区和表的 ANALYZE 配置需要保持一致，因此 ANALYZE TABLE TableName PARTITION PartitionNameList 命令后指定的 COLUMNS 配置和 WITH 后指定的 OPTIONS 配置将被忽略，并会通过 warning 信息提示用户。
+
 #### 增量收集
 
 对于类似时间列这样的单调不减列，在进行全量收集后，可以使用增量收集来单独分析新增的部分，以提高分析的速度。
@@ -330,29 +343,22 @@ ANALYZE INCREMENTAL TABLE TableName PARTITION PartitionNameList INDEX [IndexName
 
 从 TiDB v6.0 起，TiDB 支持通过 `KILL` 语句终止正在后台运行的 `ANALYZE` 任务。如果发现正在后台运行的 `ANALYZE` 任务消耗大量资源影响业务，你可以通过以下步骤终止该 `ANALYZE` 任务：
 
-1. 执行以下 SQL 语句获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`：
+1. 执行以下 SQL 语句：
 
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT ci.instance as instance, cp.id as id FROM information_schema.cluster_info ci, information_schema.cluster_processlist cp WHERE ci.status_address = cp.instance and ci.type = 'tidb' and cp.info like 'analyze table %' and cp.user = '' and cp.host = '';
+    SHOW ANALYZE STATUS
     ```
 
-    如果输出结果为空，说明后台没有正在执行的 `ANALYZE` 任务。
+    查看 `instance` 列和 `process_id` 列获得正在执行后台 `ANALYZE` 任务的 TiDB 实例地址和任务 `ID`。
 
-2. 使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后执行以下 `KILL` 语句：
+2. 终止正在后台运行的 `ANALYZE` 任务。
 
-    {{< copyable "sql" >}}
-
-    ```sql
-    KILL TIDB ${id};
-    ```
-
-    `${id}` 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
-
-    > **注意：**
-    >
-    > 只有当使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例时，执行 `KILL` 语句才能终止后台的 `ANALYZE` 任务。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
+   - 如果 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 的值为 `true` (默认为 `true`），你可以直接执行 `KILL TIDB ${id};` 语句。其中，${id} 为上一步中查询得到的后台 `ANALYZE` 任务的 `ID`。
+   - 如果 `enable-global-kill` 的值为 `false`，你需要先使用客户端连接到执行后台 `ANALYZE` 任务的 TiDB 实例，然后再执行 `KILL TIDB ${id};` 语句。如果使用客户端连接到其他 TiDB 实例，或者客户端和 TiDB 中间有代理，`KILL` 语句不能终止后台的 `ANALYZE` 任务。
+  
+关于 `KILL` 语句的更多信息，请参考 [`KILL [TIDB]`](/sql-statements/sql-statement-kill.md)。
 
 ### 控制 ANALYZE 并发度
 
@@ -401,6 +407,39 @@ TiDB 支持持久化的配置项包括：
 >
 > 当再次开启 `ANALYZE` 配置持久化功能时，如果之前记录的持久化配置项已经不适用当前的数据，请手动执行 `ANALYZE` 语句并指定新的持久化配置项。
 
+#### 分区表的 ANALYZE 配置持久化功能
+
+在静态裁剪模式下 ANALYZE 分区表时，配置持久化遵守：
+
+- ANALYZE TABLE 时会持久化表级别的配置和实际被 ANALYZE 的所有分区的配置
+- 分区的统计信息会继承使用表级别的持久化配置
+- ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置只持久化到分区级别，不会影响表级别的持久化配置
+- 当 ANALYZE 语句指定了配置，且同时存在持久化配置时，按照 语句 > 分区 > 表 的优先级继承和重写配置信息
+
+在[动态裁剪模式](/partitioned-table.md#动态裁剪模式)下 ANALYZE 分区表时，配置持久化遵守：
+
+- ANALYZE TABLE 时只持久化表级别的配置
+- 分区的统计信息会继承使用表级别的持久化配置
+- GlobalStats 会使用表级别的持久化配置
+- ANALYZE TABLE ... PARTITION ... WITH ... 所指定的分区配置会被忽略，且不会被持久化
+
+### 统计信息收集的内存限制
+
+> **警告：**
+>
+> 目前限制 ANALYZE 的内存使用量为实验特性，在生产环境中使用时可能存在内存统计有误差的情况。
+
+TiDB 从 v6.1.0 开始引入了统计信息收集的内存限制，你可以通过 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 变量来控制 TiDB 更新统计信息时的最大总内存占用。
+
+要合理地配置 `tidb_mem_quota_analyze` 值，你需要考虑集群的数据。在使用默认采样率的情况下，主要考虑列的数量、列上的值的大小，以及 TiDB 的内存配置。你可参考以下建议来配置变量的最大值和最小值：
+
+> **注意：**
+>
+> 以下配置建议仅供参考，实际配置需要在真实场景中测试确定。
+
+- 最小值：需要大于 TiDB 从集群上列最多的表收集统计信息时使用的最大内存。一个粗略的参考信息是，在测试集上，20 列的表在默认配置下，统计信息收集的最大内存使用约为 800 MiB；160 列的表在默认配置下，统计信息收集的最大内存使用约为 5 GiB。
+- 最大值：需要小于集群在不进行统计信息收集时的内存空余量。
+
 ### 查看 ANALYZE 状态
 
 在执行 `ANALYZE` 时，可以通过 SQL 语句来查看当前 `ANALYZE` 的状态。
@@ -415,17 +454,38 @@ SHOW ANALYZE STATUS [ShowLikeOrWhere];
 
 该语句会输出 `ANALYZE` 的状态，可以通过使用 `ShowLikeOrWhere` 来筛选需要的信息。
 
-目前 `SHOW ANALYZE STATUS` 会输出 7 列，具体如下：
+目前 `SHOW ANALYZE STATUS` 会输出 11 列，具体如下：
 
 | 列名 | 说明            |
 | -------- | ------------- |
 | table_schema  |  数据库名    |
 | table_name | 表名 |
 | partition_name| 分区名 |
-| job_info | 任务具体信息。如果分析索引则会包含索引名 |
-| row_count | 已经分析的行数 |
+| job_info | 任务具体信息。如果分析索引，该信息会包含索引名。当 `tidb_analyze_version =2` 时，该信息会包含采样率等配置项。 |
+| processed_rows | 已经分析的行数 |
 | start_time | 任务开始执行的时间 |
+| end_time | 任务结束执行的时间 |
 | state | 任务状态，包括 pending（等待）、running（正在执行）、finished（执行成功）和 failed（执行失败）|
+| fail_reason | 任务失败的原因。如果执行成功则为 `NULL`。 |
+| instance | 执行任务的 TiDB 实例 |
+| process_id | 执行任务的 process ID |
+
+从 TiDB v6.1.0 起，执行 `SHOW ANALYZE STATUS` 语句将显示集群级别的任务，且 TiDB 重启后仍能看到重启之前的任务记录。在 TiDB v6.1.0 之前，执行 `SHOW ANALYZE STATUS` 语句仅显示实例级别的任务，且 TiDB 重启后任务记录会被清空。
+
+`SHOW ANALYZE STATUS` 仅显示最近的任务记录。从 TiDB v6.1 起，你可以通过系统表 `mysql.analyze_jobs` 查看过去 7 天内的历史记录。
+
+当设置了 [`tidb_mem_quota_analyze`](/system-variables.md#tidb_mem_quota_analyze-从-v610-版本开始引入) 且 TiDB 后台的统计信息自动更新任务的内存占用超过了这个阈值时，自动更新任务会重试。失败的任务和重试的任务都可以在 `SHOW ANALYZE STATUS` 的结果中查看。
+
+当 [`tidb_max_auto_analyze_time`](/system-variables.md#tidb_max_auto_analyze_time-从-v610-版本开始引入) 大于 0 时，如果后台统计信息自动更新任务的执行时间超过这个阈值，该任务会被终止。
+
+```sql
+mysql> SHOW ANALYZE STATUS [ShowLikeOrWhere];
++--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
+| Table_schema | Table_name | Partition_name | Job_info                                                                                  | Processed_rows | Start_time          | End_time            | State    | Fail_reason                                                                   | 
++--------------+------------+----------------+-------------------------------------------------------------------------------------------+----------------+---------------------+---------------------+----------+-------------------------------------------------------------------------------|
+| test         | sbtest1    |                | retry auto analyze table all columns with 100 topn, 0.055 samplerate                      |        2000000 | 2022-05-07 16:41:09 | 2022-05-07 16:41:20 | finished | NULL                                                                          | 
+| test         | sbtest1    |                | auto analyze table all columns with 100 topn, 0.5 samplerate                              |              0 | 2022-05-07 16:40:50 | 2022-05-07 16:41:09 | failed   | analyze panic due to memory quota exceeds, please try with smaller samplerate |
+```
 
 ## 统计信息的查看
 
@@ -580,15 +640,29 @@ SHOW STATS_TOPN [ShowLikeOrWhere];
 
 可以通过执行 `DROP STATS` 语句来删除统计信息。
 
-语法如下：
-
 {{< copyable "sql" >}}
 
 ```sql
 DROP STATS TableName;
 ```
 
-该语句会删除 TableName 中所有的统计信息。
+该语句会删除 TableName 中所有的统计信息，如果是分区表，包括所有分区的统计信息和分区动态裁剪模式下生成的 GlobalStats。
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName PARTITION PartitionNameList;
+```
+
+该语句只删除 PartitionNameList 中对应的分区的统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+DROP STATS TableName GLOBAL;
+```
+
+该语句只删除该表在分区动态裁剪模式下生成的 GlobalStats。
 
 ## 统计信息的加载
 
