@@ -36,7 +36,7 @@ DM-worker 内部用于读取上游 Binlog 或本地 Relay log 并迁移到下游
 
 ### Bound
 
-DM worker 与 source 的绑定关系，即一个 DM worker 在同一时间仅能处理一个 source 的迁移任务。当 DM worker 拉取某个 source 的 relay log 后，该 DM worker 将不能再处理其他 source 的迁移任务。
+DM worker 与 source 的绑定关系，即一个 DM worker 在同一时间仅能处理一个 source 的迁移任务。当 DM worker 开始接收某个 source 的 binlog 后，该 DM worker 将不能再处理其他 source 的迁移任务。
 
 ## C
 
