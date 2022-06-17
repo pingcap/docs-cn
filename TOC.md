@@ -76,8 +76,6 @@
     - Guidelines
       - [Object Naming Convention](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
-  - Cloud Native Development Environment
-    - [Gitpod](/develop/dev-guide-playground-gitpod.md)
     - Archived Docs
       - [For Hibernate ORM](/develop/dev-guide-outdated-for-hibernate-orm.md)
       - [For Django](/develop/dev-guide-outdated-for-django.md)
@@ -86,6 +84,8 @@
       - [For GORM](/develop/dev-guide-outdated-for-gorm.md)
       - [For mysql-connector-python](/develop/dev-guide-outdated-for-python-mysql-connector.md)
       - [For Laravel](/develop/dev-guide-outdated-for-laravel.md)
+  - Cloud Native Development Environment
+    - [Gitpod](/develop/dev-guide-playground-gitpod.md)
 - Deploy
   - [Software and Hardware Requirements](/hardware-and-software-requirements.md)
   - [Environment Configuration Checklist](/check-before-deployment.md)
