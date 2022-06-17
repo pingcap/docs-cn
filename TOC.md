@@ -76,6 +76,8 @@
     - Guidelines
       - [Object Naming Convention](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
+  - Cloud Native Development Environment
+    - [Gitpod](/develop/dev-guide-playground-gitpod.md)
     - Archived Docs
       - [For Hibernate ORM](/develop/dev-guide-outdated-for-hibernate-orm.md)
       - [For Django](/develop/dev-guide-outdated-for-django.md)
