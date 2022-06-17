@@ -281,6 +281,18 @@ max-allowed-packet = 67_108_864
 # tls = ""
 # 指定证书和密钥用于 TLS 连接 MySQL。
 # 默认为 [security] 部分的副本。
+
+# [[routes]]
+# 表的导入路由规则
+# schema-pattern = "shard_db_*"
+# schema 的通配规则
+# table-pattern = "shard_table_*"
+# table 的通配规则
+# target-schema = "shard_db"
+# 导入的目标 schema
+# target-table = "shard_table"
+# 导入的目标 table
+
 # [tidb.security]
 # CA 的公钥证书。设置为空字符串可禁用 SQL 的 TLS。
 # ca-path = "/path/to/ca.pem"
