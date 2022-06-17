@@ -12,7 +12,7 @@ DM 同步过程中，根据 DDL 语句以及所处场景的不同，将采用不
 
 <table>
     <tr>
-        <th>Description</th>
+        <th>描述</th>
         <th>SQL</th>
     </tr>
     <tr>
