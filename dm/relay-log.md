@@ -206,13 +206,6 @@ pause-relay -s mysql-replica-01 -s mysql-replica-02
 }
 ```
 
-<<<<<<< HEAD
-{{< copyable "" >}}
-
-```bash
-» resume-relay -s mysql-replica-01
-```
-=======
 </details>
 
 {{< copyable "" >}}
@@ -223,7 +216,6 @@ resume-relay -s mysql-replica-01
 
 <details>
 <summary>期望输出</summary>
->>>>>>> 2856a3529 (Add introduction  of  dm relay  log (#8780))
 
 ```
 {
