@@ -13,55 +13,62 @@ TiDB 对 MySQL 协议的支持，使得大部分适配 MySQL 的 Driver、ORM �
 PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 - Full: 表明 PingCAP 将尽力支持该工具的绝大多数功能兼容性。将定期地对下表中记录的最新版本进行测试。
-- Beta: 表名 PingCAP 正在努力支持该工具。该工具的主要功能将与 TiDB 兼容(连接数据库及基本数据库操作)，但有可能会出现意外行为，且可能需要额外的步骤进行集成。
+- Beta: 表明 PingCAP 正在努力为该工具提供全面支持。该工具的主要功能可以和 TiDB 兼容（例如连接和数据库的基本操作），但缺乏对该工具所有功能的支持，有可能出现一些意外的行为。
+
+> **注意：**
+>
+> 除非明确说明，否则对于支持的 driver 或者 ORM 框架并不包括[应用端事务重试和错误处理](/develop/dev-guide-transaction-troubleshoot.md#应用端重试和错误处理)。
 
 如果你在使用此处列出的工具连接 TiDB 时出现问题，请提出一个包含详细信息的[问题](https://github.com/pingcap/tidb/issues/new?assignees=&labels=type%2Fquestion&template=general-question.md)，以帮助在此工具的支持上得到进展。
 
 ## Driver
 
-|    语言    |                                   驱动                                   |                                        最新已测试版本                                        | 支持等级 | TiDB 适配器地址 | 教程地址 |
-| :--------: | :----------------------------------------------------------------------: | :------------------------------------------------------------------------------------------: | :------: | :-------------: | :------: |
-|     C      |      [MySQL Connector/C](https://downloads.mysql.com/archives/c-c/)      |                                            6.1.11                                            |
-|  C#(.Net)  |    [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/)    |                                            8.0.27                                            |
-|     ⬆️     |   [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/)   |                                            8.0.27                                            |
-|     Go     | [go-sql-driver/mysql](https://pkg.go.dev/github.com/go-sql-driver/mysql) |                                            1.6.0                                             |
-|    Java    |          [JDBC](https://dev.mysql.com/doc/connector-j/8.0/en/)           | [8.0.28](https://mvnrepository.com/artifact/mysql/mysql-connector-java/8.0.28)(Maven Center) |
-| JavaScript |                [mysql](https://github.com/mysqljs/mysql)                 |                    [2.18.1](https://www.npmjs.com/package/mysql)(npm.js)                     |
-|    PHP     |    [MySQL Connector/PHP](https://downloads.mysql.com/archives/c-php/)    |                                            5.0.37                                            |
-|   Python   | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) |                                            8.0.27                                            |
+| 编程语言       | 驱动                                                                       | 最新已测试版本 | 支持等级 | TiDB 适配器                                                                                   | 教程                                                                             |
+|------------|--------------------------------------------------------------------------|---------|------|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| C          | [MySQL Connector/C](https://downloads.mysql.com/archives/c-c/)           | 6.1.11  | Beta | N/A                                                                                        | N/A                                                                            |
+| C#(.Net)   | [MySQL Connector/NET](https://downloads.mysql.com/archives/c-net/)       | 8.0.28  | Beta | N/A                                                                                        | N/A                                                                            |
+| C#(.Net)   | [MySQL Connector/ODBC](https://downloads.mysql.com/archives/c-odbc/)     | 8.0.28  | Beta | N/A                                                                                        | N/A                                                                            |
+| Go         | [go-sql-driver/mysql](https://github.com/go-sql-driver/mysql)            | v1.6.0  | Full | N/A                                                                                        | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
+| Java       | [JDBC](https://dev.mysql.com/downloads/connector/j/)                     | 5.1.46  | Full | N/A                                                                                        | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)     |
+| Java       | [JDBC](https://dev.mysql.com/downloads/connector/j/)                     | 8.0.29  | Full | [pingcap/mysql-connector-j](https://github.com/pingcap/mysql-connector-j/tree/release/8.0) | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)     |
+| JavaScript | [mysql](https://github.com/mysqljs/mysql)                                | v2.18.1 | Beta | N/A                                                                                        | N/A                                                                            |
+| PHP        | [MySQL Connector/PHP](https://downloads.mysql.com/archives/c-php/)       | 5.0.37  | Beta | N/A                                                                                        | N/A                                                                            |
+| Python     | [MySQL Connector/Python](https://downloads.mysql.com/archives/c-python/) | 8.0.28  | Beta | N/A                                                                                        | N/A                                                                            |
 
 ## ORM
 
-|  语言  |                                                                                     框架                                                                                      | 最新已测试版本 | 支持等级 | TiDB 适配器地址 | 教程地址 |
-| :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------: | :------------: | :------: | :-------------: | :------: |
-|   Go   |                                                                    [gorm](https://github.com/go-gorm/gorm)                                                                    |     1.23.2     |
-|   ⬆️   |                                                                    [upper/db](https://github.com/upper/db)                                                                    |     4.5.2      |
-|   ⬆️   |                                                                    [beego](https://github.com/beego/beego)                                                                    |     2.0.2      |
-|  Java  | [Hibernate](https://hibernate.org/orm/) (including [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial)) |  5.6.5.Final   |
-|   ⬆️   |                                                                   [MyBatis](https://mybatis.org/mybatis-3/)                                                                   |     3.5.9      |
-| JS/TS  |                                                             [sequelize](https://www.npmjs.com/package/sequelize)                                                              |     6.17.0     |
-|   ⬆️   |                                                                        [Knex.js](https://knexjs.org/)                                                                         |     1.0.4      |
-|   ⬆️   |                                                                    [Prisma Client](https://www.prisma.io/)                                                                    |     3.10.0     |
-|   ⬆️   |                                                               [TypeORM](https://www.npmjs.com/package/typeorm)                                                                |     0.2.45     |
-|  PHP   |
-| Python |                          [Django](https://pypi.org/project/Django/) (including [GeoDjango](https://docs.djangoproject.com/en/4.0/ref/contrib/gis/))                           |     4.0.3      |
-|   ⬆️   |                                                                 [peewee](https://github.com/coleifer/peewee/)                                                                 |    3.14.10     |
-|   ⬆️   |                                                                        [PonyORM](https://ponyorm.org/)                                                                        |     0.7.16     |
-|   ⬆️   |                                                                   [SQLAlchemy](https://www.sqlalchemy.org/)                                                                   |     1.4.32     |
+| 编程语言                  | ORM 框架                                                                                                                                                                        | 最新已测试版本     | 支持等级 | TiDB 适配器                                               | 教程                                                                             |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------|------|--------------------------------------------------------|--------------------------------------------------------------------------------|
+| Go                    | [gorm](https://github.com/go-gorm/gorm)                                                                                                                                       | v1.23.5     | Full | N/A                                                    | [TiDB 和 Golang 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-golang.md) |
+| Go                    | [beego](https://github.com/beego/beego)                                                                                                                                       | v2.0.3      | Full | N/A                                                    | N/A                                                                            |
+| Go                    | [upper/db](https://github.com/upper/db)                                                                                                                                       | v4.5.2      | Full | N/A                                                    | N/A                                                                            |
+| Go                    | [xorm](https://gitea.com/xorm/xorm)                                                                                                                                           | v1.3.1      | Full | N/A                                                    | N/A                                                                            |
+| Java                  | [Hibernate](https://hibernate.org/orm/) (including [Hibernate Spatial](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html#spatial)) | 5.6.5.Final | Beta | N/A                                                    | [TiDB 和 Java 的简单 CRUD 应用程序](/develop/dev-guide-sample-application-java.md)     |
+| Java                  | [mybatis](https://mybatis.org/mybatis-3/)                                                                                                                                     | v3.5.10     | Beta | N/A                                                    | N/A                                                                            |
+| JavaScript/TypeScript | [sequelize](https://www.npmjs.com/package/sequelize)                                                                                                                          | v6.20.1     | Beta | N/A                                                    | N/A                                                                            |
+| JavaScript/TypeScript | [Knex.js](https://knexjs.org/)                                                                                                                                                | v1.0.7      | Beta | N/A                                                    | N/A                                                                            |
+| JavaScript/TypeScript | [Prisma Client](https://www.prisma.io/)                                                                                                                                       | 3.15.1      | Beta | N/A                                                    | N/A                                                                            |
+| JavaScript/TypeScript | [TypeORM](https://www.npmjs.com/package/typeorm)                                                                                                                              | v0.3.6      | Beta | N/A                                                    | N/A                                                                            |
+| PHP                   | [laravel](https://laravel.com/)                                                                                                                                               | v9.1.10     | Beta | [laravel-tidb](https://github.com/colopl/laravel-tidb) | N/A                                                                            |
+| Python                | [Django](https://pypi.org/project/Django/) (including [GeoDjango](https://docs.djangoproject.com/en/4.0/ref/contrib/gis/)  )                                                  | v4.0.5      | Beta | N/A                                                    | N/A                                                                            |
+| Python                | [peewee](https://github.com/coleifer/peewee/)                                                                                                                                 | v3.14.10    | Beta | N/A                                                    | N/A                                                                            |
+| Python                | [PonyORM](https://ponyorm.org/)                                                                                                                                               | v0.7.16     | Beta | N/A                                                    | N/A                                                                            |
+| Python                | [SQLAlchemy](https://www.sqlalchemy.org/)                                                                                                                                     | v1.4.37     | Beta | N/A                                                    | N/A                                                                            |
 
 ## 应用框架
 
 | 应用框架 |    数据接入框架     | 最新已测试版本 | 支持等级 | 教程地址 |
 | :------: | :-----------------: | :------------: | :------: | :------: |
 |  Spring  |        JDBC         |
-|    ⬆️    | JPA(with Hibernate) |
-|    ⬆️    |       MyBatis       |
+|  Spring  | JPA(with Hibernate) |
+|  Spring  |       MyBatis       |
 
 ## GUI
 
-|                  GUI                   | 最新已测试版本 | 支持等级 | 教程地址 |
-| :------------------------------------: | :------------: | :------: | :------: |
-| [Navicat](https://www.navicat.com/en/) |
+| GUI                                           | 最新测试版本  | 支持级别 | 教程  |
+|-----------------------------------------------|---------|------|-----|
+| [DBeaver](https://dbeaver.io/)                | 22.1.0  | Beat | N/A |
+| [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Beat | N/A |
 
 ## IDE
 
