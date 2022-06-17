@@ -1,6 +1,6 @@
 extends: existence
 message: Consider using a clearer word than '%s' because it may cause confusion.
-level: error
+level: suggestion
 code: false
 ignorecase: true
 tokens:
