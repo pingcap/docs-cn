@@ -901,7 +901,6 @@ coprocessor 相关的配置项。
 >
 > `region-bucket-size` 是 TiDB 在 v6.1.0 中引入的实验特性，不建议在生产环境中使用。
 
-
 ### `report-region-buckets-tick-interval` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 > **警告：**
