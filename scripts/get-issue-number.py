@@ -33,50 +33,24 @@ import requests
 from tempfile import mkstemp
 from shutil import move
 from os import remove
-from bs4 import BeautifulSoup
 
-def get_issue_link(pr_url):
-
-    print("Connecting to " + pr_url + " ...")
-
-    response = requests.get(pr_url)
-
-    if response:
-
-        resp = BeautifulSoup(response.text, "html.parser")
-
-        table = resp.find("table", "d-block")
-
-        paragraphs = table.findAll("p")
-
-        flag = 0
-        match = 0
-
-        for p in  paragraphs:
-            # print(p.contents[0])
-
-            if isinstance(p.contents[0], str):
-                match = re.search(r'(Issue Number)|(fix)|(bug).*', p.contents[0], re.I)
-
-            if match or p.find('span', attrs = {"class": "issue-keyword"}):
-                issue_link = p.find('a', attrs = {"data-hovercard-type":"issue"}) or p.find('a', attrs = {"class": "issue-link"})
-                if issue_link:
-                    flag = 1
-                    link = issue_link['href']
-                break
-
-        if flag:
-            print('Related issue number: ' + link)
-            return link
+def get_issue_link(repo, pr_num):
+    pr_url = 'https://api.github.com/repos/{}/issues/{}'.format(repo, pr_num)
+    response = requests.get(pr_url, auth = ("user", token)).json()
+    body = response.get("body")
+    if body:
+        match_link = re.search(r'(?:(?:Issue Number)|(?:fix)|(?:bug)|(?:cc)|(?:ref)|(?:close)).*?(https?://(?:www\.)?github\.com/.*?/issues/(\d+))', body, re.I)
+        if match_link:
+            issue_url = match_link.group(1)
+            issue_num = match_link.group(2)
+            return issue_url, issue_num
         else:
-            print("No related issue number.\n")
-            return 0
-
-        #print(paragraphs)
-
-    else:
-        print('Connection failed. No html content')
-        return 0
+            match_num = re.search(r'(?:(?:Issue Number)|(?:fix)|(?:bug)|(?:cc)|(?:ref)|(?:close)).*?#(\d+)', body, re.I)
+            if match_num:
+                issue_num = match_num.group(1)
+                issue_url = 'https://github.com/{}/issues/{}'.format(repo, issue_num)
+                return issue_url, issue_num
+    return None, None
 
 def change_pr_to_issue(filename):
 
@@ -88,35 +62,34 @@ def change_pr_to_issue(filename):
 
             for line in source_file:
 
-                if re.match(r'## Bug',line):
+                if re.match(r'# TiDB .* Release Notes',line):
                     match_start = 0
                     print("Match Start\n")
 
                 if match_start == 0:
-                    matchObj = re.search(r'\[#\d+\]\([a-zA-z]+://[^\s]*\)',line)
+                    matchObj = re.search(r'\[(#\d+)\]\(https?://(?:www\.)?github\.com/(.*?)/pull/(\d+).*?\)',line)
                     if matchObj:
-                        link = re.search(r'[a-zA-z]+://[^\s]*[^\)]', matchObj.group())
-                        pr_url = link.group()
-                        issue_url = get_issue_link(pr_url)
-
+                        repo = matchObj.group(2)
+                        pr_num = matchObj.group(3)
+                        issue_url, issue_num = get_issue_link(repo, pr_num)
                         # 判断有记录 issue link 的在原文件中替换
-                        if issue_url:
-                            issue_num = re.search(r'\d+', issue_url)
-                            issue_md = '[#' + issue_num.group() + ']' + '(' + issue_url + ')'
-                            line = re.sub(r'\[#\d+\]\([a-zA-z]+://[^\s]*\)', issue_md, line)
-                            print(issue_md + '\n')
-
+                        if issue_url and issue_num:
+                            begin, end = matchObj.span(0)
+                            line = line[:begin] + "[#{}]({})".format(issue_num, issue_url) + line[end:]
                 target_file.write(line)
 
     remove(source_file_path)
     move(target_file_path, source_file_path)
 
-# get_issue_link("https://github.com/pingcap/tidb/pull/22924")
+# get_issue_link("pingcap/tidb","34111")
 
 # change_pr_to_issue('./releases/release-4.0.13.md')
 
-if __name__ == "__main__":
+# Please add your GitHub token to environment variables.
+# When you first use this script, you can execute the following command `export GitHubToken="your_token"` to add your token.
 
+if __name__ == "__main__":
+    token = os.environ["GitHubToken"]
     for filename in sys.argv[1:]:
         if os.path.isfile(filename):
             change_pr_to_issue(filename)
