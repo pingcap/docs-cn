@@ -35,7 +35,6 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | Slow log | `tidb_slow_query.log` | `--include=log` |
 | Configuration file | `tidb.toml` | `--include=config` |
 | Real-time configuration | `config.json` | `--include=config` |
-| Performance data | `cpu_profile.proto`, `mem_heap.proto`, `goroutine.txt`, `mutex.txt` | `--include=perf` |
 
 ### TiKV diagnostic data
 
@@ -45,7 +44,6 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | Error log | `tikv_stderr.log` | `--include=log` |
 | Configuration file | `tikv.toml` | `--include=config` |
 | Real-time configuration | `config.json` | `--include=config` |
-| Performance data | `cpu_profile.proto` | `--include=perf` |
 
 ### PD diagnostic data
 
@@ -57,7 +55,6 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | Real-time configuration | `config.json` | `--include=config` |
 | Outputs of the command `tiup ctl pd -u http://${pd IP}:${PORT} store` | `store.json` | `--include=config` |
 | Outputs of the command `tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show` | `placement-rule.json` | `--include=config` |
-| Performance data | `cpu_profile.proto`, `mem_heap.proto`, `goroutine.txt`, `mutex.txt` | `--include=perf` |
 
 ### TiFlash diagnostic data
 
@@ -67,7 +64,6 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | Error log | `tiflash_stderr.log` | `--include=log` |
 | Configuration file |  `tiflash-learner.toml`, `tiflash-preprocessed.toml`, `tiflash.toml` | `--include=config` |
 | Real-time configuration | `config.json` | `--include=config` |
-| Performance data | `cpu_profile.proto` | `--include=perf` |
 
 ### TiCDC diagnostic data
 
@@ -76,7 +72,6 @@ This section lists the types of diagnostic data that can be collected by Diag fr
 | Log | `ticdc.log` | `--include=log`|
 | Error log | `ticdc_stderr.log` | `--include=log` |
 | Configuration file | `ticdc.toml` | `--include=config` |
-| Performance data | `cpu_profile.proto`, `mem_heap.proto`, `goroutine.txt`, `mutex.txt` | `--include=perf` |
 | Debug data | `info.txt`, `status.txt`, `changefeeds.txt`, `captures.txt`, `processors.txt` | `--include=debug` |
 
 ### Prometheus monitoring data
