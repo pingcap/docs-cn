@@ -67,7 +67,7 @@ TIUP_CLUSTER_DEBUG=enable tiup cluster list
 - TiSpark 的部分配置信息，如读取引擎、是否开启流式读取等
 - 用户集群部署情况，包括 TiSpark 所在节点的机器硬件信息、操作系统信息和组件版本号等
 
-当 TiSpark 被使用时，可以通过查看 Spark 日志来了解 TiSpark 收集的使用情况信息内容，需要把 Spark 日志级别调至 INFO 或更低，例如：
+使用 TiSpark 时，可以通过查看 Spark 日志来了解 TiSpark 收集的使用情况，可将 Spark 日志级别调至 INFO 或更低，例如：
 
 {{< copyable "shell-regular" >}}
 
