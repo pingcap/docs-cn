@@ -63,7 +63,7 @@ Slow Query 基础信息：
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
 * `Index_names`: 表示这个语句执行用到的索引。
-* `Stats`: 表示这个语句涉及表的统计信息健康状态。`pseudo` 状态表示统计信息状态不健康，即无统计信息可用。
+* `Stats`: 表示这个语句涉及表的统计信息健康状态，`pseudo` 状态表示统计信息状态不健康。
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
