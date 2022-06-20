@@ -29,14 +29,15 @@ Here is a configuration example of the `Datasource config` section:
 
 ```toml
 ######################### Datasource config ########################
-[data-sources.mysql1]
-    host = "127.0.0.1"
-    port = 3306
+[data-sources.uptidb]
+    host = "172.16.0.1"
+    port = 4000
     user = "root"
     password = ""
-    snapshot = "409621863377928345"
-[data-sources.tidb0]
-    host = "127.0.0.1"
+    snapshot = "409621863377928194"
+
+[data-sources.downtidb]
+    host = "172.16.0.2"
     port = 4000
     user = "root"
     snapshot = "409621863377928345"
