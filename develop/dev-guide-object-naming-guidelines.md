@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
 
 # 对象命名规范
 
-用于规范数据库对象的名命，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
+用于规范数据库对象的命名，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
 
 ## 原则
 
@@ -29,7 +29,6 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
     - 业务运营临时统计表（`tmp_st_{business code}_{creator abbreviation}_{date}`）
     - 账期归档表（`t_crm_ec_record_YYYY{MM}{dd}`）
 - 不同业务模块的表单独建立 DATABASE，并增加相应注释。
-- 目前 TiDB 只支持将 `lower-case-table-names` 值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
 ## 字段命名规范
 

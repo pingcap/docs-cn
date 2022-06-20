@@ -5,7 +5,9 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 # TiDB 工具下载
 
-本文介绍如何下载 TiDB 工具包。
+本文介绍如何下载 TiDB 工具包以及 [TiUniManager](/tiunimanager/tiunimanager-overview.md)。
+
+## TiDB 工具包下载
 
 TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具 Dumpling、数据导入工具 TiDB Lightning、备份恢复工具 BR。
 
@@ -13,12 +15,12 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 >
 > 如果你的部署环境能访问互联网，无需单独下载 TiDB 工具包，可以直接通过使用 [TiUP 命令一键部署](/tiup/tiup-component-management.md)所需的 TiDB 工具。
 
-## 环境要求
+### 环境要求
 
 - 操作系统：Linux
 - 架构：amd64
 
-## 下载步骤
+### 下载步骤
 
 1. 访问 [TiDB 社区版](https://pingcap.com/zh/product-community/)页面。
 2. 找到 **TiDB-community-toolkit 软件包**，点击**立即下载**。
@@ -28,7 +30,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 > - 点击**立即下载**后，默认下载当前 TiDB 的最新发布版本。如需下载历史版本，请在 [TiDB 社区版](https://pingcap.com/zh/product-community/)页面底部查看历史版本下载信息。
 > - 如果需要在 Kubernetes 上部署运维 TiDB，无需下载 TiDB-community-toolkit 软件包，请参考[离线安装 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/deploy-tidb-operator#离线安装-tidb-operator)。
 
-## TiDB 工具包说明
+### TiDB 工具包说明
 
 在 TiDB 工具包中，你可以依据要使用的工具，选择安装对应的离线包。
 
@@ -45,3 +47,16 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
 | [PD Control](/pd-control.md)  | `pd-recover-{version}-linux-amd64.tar` |
 | [PD Recover](/pd-recover.md)  | `etcdctl` |
+
+## TiUniManager 下载
+
+[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiUniManager：
+
+| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
+|:---|:---|:---|:---|
+| `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
+> - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。

@@ -16,7 +16,7 @@ KillStmt ::= 'KILL' 'TIDB'? ( 'CONNECTION' | 'QUERY' )? CONNECTION_ID
 
 ## 示例
 
-查询当前集群中所有所有活跃查询，并终止其中某一个连接：
+查询当前集群中所有活跃查询，并终止其中某一个连接：
 
 {{< copyable "sql" >}}
 
