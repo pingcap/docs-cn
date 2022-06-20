@@ -412,6 +412,9 @@
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
+          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+        - 运行机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -490,6 +493,23 @@
     - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
+  - TiUniManager
+    - [概述](/tiunimanager/tiunimanager-overview.md)
+    - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
+    - [快速操作](/tiunimanager/tiunimanager-quick-start.md)
+    - 操作指南
+      - [登录与初始化](/tiunimanager/tiunimanager-login-and-initialize.md)
+      - [管理集群资源](/tiunimanager/tiunimanager-manage-host-resources.md)
+      - [管理集群](/tiunimanager/tiunimanager-manage-clusters.md)
+      - [导入与导出数据](/tiunimanager/tiunimanager-import-and-export-data.md)
+      - [管理任务](/tiunimanager/tiunimanager-manage-tasks.md)
+      - [管理系统](/tiunimanager/tiunimanager-manage-system.md)
+    - [FAQ](/tiunimanager/tiunimanager-faq.md)
+    - 发布版本历史
+      - [发布版本汇总](/tiunimanager/tiunimanager-release-notes.md)
+      - [v1.0.2](/tiunimanager/tiunimanager-release-1.0.2.md)
+      - [v1.0.1](/tiunimanager/tiunimanager-release-1.0.1.md)
+      - [v1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -551,7 +571,7 @@
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
-        - [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
+      - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)

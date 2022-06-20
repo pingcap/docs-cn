@@ -6,7 +6,7 @@ aliases: ['/zh/tidb/dev/object-naming-guidelines']
 
 # 对象命名规范
 
-用于规范数据库对象的名命，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
+用于规范数据库对象的命名，如数据库（DATABASE）、表（TABLE）、索引（INDEX）、用户（USER）等的命名约定。
 
 ## 原则
 

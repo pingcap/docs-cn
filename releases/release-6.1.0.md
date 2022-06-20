@@ -76,7 +76,7 @@ TiDB 版本：6.1.0
 
   用户文档：[`LEADING`](/optimizer-hints.md#leadingt1_name--tl_name-)，[`STRAIGHT_JOIN`](/optimizer-hints.md#straight_join)，[#29932](https://github.com/pingcap/tidb/issues/29932)
 
-* TiFlash 新增对以下函数的支持： 
+* TiFlash 新增对以下函数的支持：
 
     * `FROM_DAYS`
     * `TO_DAYS`
@@ -87,7 +87,7 @@ TiDB 版本：6.1.0
 
 * 支持分区表动态裁剪
 
-    默认开启分区表动态裁剪功能，以提升数据分析场景下的性能。v6.0.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 v6.1.0 升级完成后新创建的分区表无需此动作）。
+    支持分区表动态裁剪功能，以提升数据分析场景下的性能。v6.0.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 v6.1.0 升级完成后新创建的分区表无需此动作）。
 
     用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 

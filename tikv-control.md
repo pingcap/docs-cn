@@ -115,7 +115,7 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--db` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
+- **本地模式**。通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
@@ -286,6 +286,7 @@ middle_key_by_approximate_size:
 
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
+- `--data-dir` 参数指定本地 TiKV 数据的目录路径。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 - `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
