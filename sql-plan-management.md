@@ -379,7 +379,7 @@ INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VA
 
 当需要升级 TiDB 集群时，你可以利用自动捕获绑定对潜在的计划回退风险进行一定程度的防护，具体流程为：
 
-1. 升级前打开自动捕获一段时间。
+1. 升级前打开自动捕获。
 
     > **注意：**
     >
