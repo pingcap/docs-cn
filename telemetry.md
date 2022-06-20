@@ -252,7 +252,7 @@ tiup telemetry disable
 
 ### 禁用 TiSpark 遥测
 
-可以通过修改 Spark 配置文件中 `spark.tispark.telemetry.enable = false` 禁用 TiSpark 的遥测功能。
+可以通过在 Spark 配置文件设置 `spark.tispark.telemetry.enable = false` 来禁用 TiSpark 的遥测功能。
 
 ## 查看遥测启用状态
 
