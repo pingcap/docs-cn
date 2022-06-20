@@ -413,6 +413,8 @@
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
           - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+        - 运行机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
