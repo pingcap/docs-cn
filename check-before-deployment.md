@@ -683,7 +683,7 @@ sudo systemctl enable ntpd.service
 sudo yum -y install numactl
 ```
 
-方法 2：通过 `tiup cluster exec` 在已有集群上进行批量安装。
+方法 2：通过 `tiup cluster exec` 在集群上批量安装 NUMA。
 
 1. 使用 TiUP 安装 TiDB 集群，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署。如果本地已有集群，可跳过这一步。
 
