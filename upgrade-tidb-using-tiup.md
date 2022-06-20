@@ -84,7 +84,19 @@ sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
 
-After the overwrite upgrade, execute the following command to upgrade the TiUP Cluster component.
+After the overwrite upgrade, run the following command to merge the server and toolkit offline mirrors to the server directory:
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
+cd tidb-community-server-${version}-linux-amd64/
+cp -rp keys ~/.tiup/
+tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
+```
+
+After merging the mirrors, run the following command to upgrade the TiUP Cluster component:
 
 {{< copyable "shell-regular" >}}
 
