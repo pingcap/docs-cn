@@ -1,5 +1,6 @@
 ---
 title: TiDB 数据库快速上手指南
+summary: 了解如何快速上手使用 TiDB 数据库。
 aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started/local-cluster/install-from-docker-compose/']
 ---
 
@@ -18,7 +19,7 @@ aliases: ['/docs-cn/dev/quick-start-with-tidb/','/docs-cn/dev/how-to/get-started
 >
 >     - 如需在生产环境部署 TiDB，请参考[在生产环境中部署 TiDB 指南](/production-deployment-using-tiup.md)。
 >     - 如需在 Kubernetes 上部署 TiDB，请参考[快速上手 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/get-started)。
->     - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/beta/tidb-cloud-quickstart)。
+>     - 如需在云上管理 TiDB，请参考 [TiDB Cloud 快速上手指南](https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart)。
 
 要快速了解 TiUP 的基本功能、使用 TiUP 快速搭建 TiDB 集群的方法与连接 TiDB 集群并执行 SQL 的方法，建议先观看下面的培训视频（时长 15 分钟）。注意本视频只作为学习参考，如需了解 [TiUP](/tiup/tiup-overview.md) 的具体使用方法和 [TiDB 快速上手具体操作步骤](#部署本地测试集群)，请以文档内容为准。
 
@@ -82,10 +83,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v6.0.0 --db 2 --pd 3 --kv 3
+        tiup playground v6.1.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v6.0.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v6.1.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^
@@ -199,10 +200,10 @@ TiDB 是一个分布式系统。最基础的 TiDB 测试集群通常由 2 个 Ti
         {{< copyable "shell-regular" >}}
 
         ```shell
-        tiup playground v6.0.0 --db 2 --pd 3 --kv 3
+        tiup playground v6.1.0 --db 2 --pd 3 --kv 3
         ```
 
-        上述命令会在本地下载并启动某个版本的集群（例如 v6.0.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
+        上述命令会在本地下载并启动某个版本的集群（例如 v6.1.0）。最新版本可以通过执行 `tiup list tidb` 来查看。运行结果将显示集群的访问方式：
 
         ```log
         CLUSTER START SUCCESSFULLY, Enjoy it ^-^

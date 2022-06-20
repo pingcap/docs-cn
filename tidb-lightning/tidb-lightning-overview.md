@@ -17,7 +17,7 @@ TiDB Lightning 有以下两个主要的使用场景：
 - 导入 [Dumpling](/dumpling-overview.md)输出的数据、CSV 文件或 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。
 - 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
 
-要快速了解 Lightning 的基本原理和使用方法，建议先观看下面的培训视频（时长 28 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
+要快速了解 Lightning 的基本原理和使用方法，建议先观看下面的培训视频（时长 32 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
 <video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+19.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+19.png"></video>
 

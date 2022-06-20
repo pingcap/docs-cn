@@ -61,7 +61,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 `ERROR 8134 (HY000): data inconsistency in table: t, index: c2, col: c2, handle: "2", index-values:"KindInt64 13" != record-values:"KindInt64 12", compare err:<nil>`
 
-上述错误表明，对于表 `t` 中的 `c2` 索引，某行对应的索引键值对中的 handle 值是 13，行记录键值对中的 handle 值是 12。
+上述错误表明，对于表 `t` 中的 `c2` 索引，handle 为 2 的行对应的索引键值对中列 c2 的值是 13，行记录键值对中列 c2 的值是 12。
 
 #### Error 8223
 

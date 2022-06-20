@@ -139,7 +139,7 @@ Drainer="192.168.0.13"
         {{< copyable "shell-regular" >}}
 
         ```bash
-        ./bin/pump -config pump.toml
+        ./pump -config pump.toml
         ```
 
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
@@ -348,7 +348,7 @@ Drainer="192.168.0.13"
         {{< copyable "shell-regular" >}}
 
         ```bash
-        ./bin/drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
+        ./drainer -config drainer.toml -initial-commit-ts {initial-commit-ts}
         ```
 
         如果命令行参数与配置文件中的参数重合，则使用命令行设置的参数的值。
