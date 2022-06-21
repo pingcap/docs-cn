@@ -56,31 +56,31 @@ Slow Query 基础信息：
 * `Parse_time`：表示这个语句在语法解析阶段花费的时间。
 * `Compile_time`：表示这个语句在查询优化阶段花费的时间。
 * `Optimize_time`：表示这个语句在优化查询计划阶段花费的时间。
-* `Wait_TS`: 表示这个语句在等待获取事务 TS 阶段花费的时间。
+* `Wait_TS`：表示这个语句在等待获取事务 TS 阶段花费的时间。
 * `Query`：表示 SQL 语句。慢日志里面不会打印 `Query`，但映射到内存表后，对应的字段叫 `Query`。
 * `Digest`：表示 SQL 语句的指纹。
 * `Txn_start_ts`：表示事务的开始时间戳，也是事务的唯一 ID，可以用这个值在 TiDB 日志中查找事务相关的其他日志。
 * `Is_internal`：表示是否为 TiDB 内部的 SQL 语句。`true` 表示 TiDB 系统内部执行的 SQL 语句，`false` 表示用户执行的 SQL 语句。
-* `Index_names`: 表示这个语句执行用到的索引。
-* `Stats`: 表示这个语句涉及表的统计信息健康状态，`pseudo` 状态表示统计信息状态不健康。
+* `Index_names`：表示这个语句执行用到的索引。
+* `Stats`：表示这个语句涉及表的统计信息健康状态，`pseudo` 状态表示统计信息状态不健康。
 * `Succ`：表示语句是否执行成功。
 * `Backoff_time`：表示语句遇到需要重试的错误时在重试前等待的时间。常见的需要重试的错误有以下几种：遇到了 lock、Region 分裂、`tikv server is busy`。
 * `Plan`：表示语句的执行计划，用 `select tidb_decode_plan('xxx...')` SQL 语句可以解析出具体的执行计划。
 * `Prepared`：表示这个语句是否是 `Prepare` 或 `Execute` 的请求。
 * `Plan_from_cache`：表示这个语句是否命中了执行计划缓存。
-* `Plan_from_binding`: 表示这个语句是否用的绑定的执行计划。
-* `Has_more_results`: 表示这个语句的查询结果是否还有更多的数据待用户发起 `fetch` 命令获取。
+* `Plan_from_binding`：表示这个语句是否用的绑定的执行计划。
+* `Has_more_results`：表示这个语句的查询结果是否还有更多的数据待用户发起 `fetch` 命令获取。
 * `Rewrite_time`：表示这个语句在查询改写阶段花费的时间。
 * `Preproc_subqueries`：表示这个语句中被提前执行的子查询个数，如 `where id in (select if from t)` 这个子查询就可能被提前执行。
 * `Preproc_subqueries_time`：表示这个语句中被提前执行的子查询耗时。
 * `Exec_retry_count`：表示这个语句执行的重试次数。一般出现在悲观事务中，上锁失败时重试执行该语句。
 * `Exec_retry_time`：表示这个语句的重试执行时间。例如某个查询一共执行了三次（前两次失败），则 `Exec_retry_time` 表示前两次的执行时间之和，`Query_time` 减去 `Exec_retry_time` 则为最后一次执行时间。
-* `KV_total`: 表示这个语句在 TiKV/TiFlash 上所有 RPC 请求花费的时间。
-* `PD_total`: 表示这个语句在 PD 上所有 RPC 请求花费的时间。
-* `Backoff_total`: 表示这个语句在执行过程中所有 backoff 花费的时间。
-* `Write_sql_response_total`: 表示这个语句把结果发送回客户端花费的时间。
-* `Result_rows`: 表示这个语句查询结果的行数。
-* `IsExplicitTxn`: 表示这个语句是否在一个明确声明的事务中。如果是 `false`，表示这个语句的事务是 `autocommit=1`，即语句执行完成后就自动提交的事务。
+* `KV_total`：表示这个语句在 TiKV/TiFlash 上所有 RPC 请求花费的时间。
+* `PD_total`：表示这个语句在 PD 上所有 RPC 请求花费的时间。
+* `Backoff_total`：表示这个语句在执行过程中所有 backoff 花费的时间。
+* `Write_sql_response_total`：表示这个语句把结果发送回客户端花费的时间。
+* `Result_rows`：表示这个语句查询结果的行数。
+* `IsExplicitTxn`：表示这个语句是否在一个明确声明的事务中。如果是 `false`，表示这个语句的事务是 `autocommit=1`，即语句执行完成后就自动提交的事务。
 
 和事务执行相关的字段：
 
@@ -98,7 +98,7 @@ Slow Query 基础信息：
 
 和硬盘使用相关的字段：
 
-* `Disk_max`: 表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
+* `Disk_max`：表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
 
@@ -577,7 +577,7 @@ admin show slow top all 5;
 | start | SQL 语句执行开始时间 |
 | duration | SQL 语句执行持续时间 |
 | details | 执行语句的详细信息 |
-| succ | SQL 语句执行是否成功，1: 成功，0: 失败 |
+| succ | SQL 语句执行是否成功，1：成功，0：失败 |
 | conn_id | session 连接 ID |
 | transaction_ts | 事务提交的 commit ts |
 | user | 执行该语句的用户名 |
