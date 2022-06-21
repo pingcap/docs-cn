@@ -258,6 +258,79 @@ show warnings;
 >
 > 由于 TiDB 存在一些内嵌 SQL 保证一些功能的正确性，所以自动捕获绑定时会默认屏蔽内嵌 SQL。
 
+<<<<<<< HEAD
+=======
+### 过滤捕获绑定
+
+使用本功能，你可以设置黑名单，将满足黑名单规则的查询排除在捕获范围之外。黑名单支持的过滤维度包括表名、频率和用户名。
+
+#### 使用方式
+
+将过滤规则插入到系统表 `mysql.capture_plan_baselines_blacklist` 中，该过滤规则即刻起会在整个集群范围内生效。
+
+{{< copyable "sql" >}}
+
+```sql
+-- 按照表名进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.t');
+
+-- 通过通配符来实现按照数据库名和表名进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'test.table_*');
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('table', 'db_*.table_*');
+
+-- 按照执行频率进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('frequency', '2');
+
+-- 按照用户名进行过滤
+INSERT INTO mysql.capture_plan_baselines_blacklist(filter_type, filter_value) VALUES('user', 'user1');
+```
+
+| **维度名称** | **说明**                                                     | 注意事项                                                     |
+| :----------- | :----------------------------------------------------------- | ------------------------------------------------------------ |
+| table        | 按照表名进行过滤，每个过滤规则均采用 `db.table` 形式，支持通配符。详细规则可以参考[直接使用表名](/table-filter.md#直接使用表名)和[使用通配符](/table-filter.md#使用通配符)。 | 字母大小写不敏感，如果包含非法内容，日志会输出 `[sql-bind] failed to load mysql.capture_plan_baselines_blacklist` 警告。 |
+| frequency    | 按照频率进行过滤，默认捕获执行超过一次的语句。可以设置较大值来捕获执行频繁的语句。 | 插入的值小于 1 会被认为是非法值，同时，日志会输出 `[sql-bind] frequency threshold is less than 1, ignore it` 警告。如果插入了多条频率过滤规则，频率最大的值会被用作过滤条件。 |
+| user         | 按照用户名进行过滤，黑名单用户名执行的语句不会被捕获。                           | 如果多个用户执行同一条语句，只有当他们的用户名都在黑名单的时候，该语句才不会被捕获。 |
+
+> **注意：**
+>
+> - 修改黑名单需要数据库的 super privilege 权限。
+>
+> - 如果黑名单包含了非法的过滤内容时，TiDB 会在日志中输出 `[sql-bind] unknown capture filter type, ignore it` 进行提示。
+
+### 升级时的计划回退防护
+
+当需要升级 TiDB 集群时，你可以利用自动捕获绑定对潜在的计划回退风险进行一定程度的防护，具体流程为：
+
+1. 升级前打开自动捕获。
+
+    > **注意：**
+    >
+    > 经测试，长期打开自动捕获对集群负载的性能影响很小。尽量长期打开自动捕获，以确保重要的查询（出现过两次及以上）都能被捕获到。
+
+2. 进行 TiDB 集群的升级。在升级完成后，这些通过捕获的绑定会发挥作用，确保在升级后，查询的计划不会改变。
+3. 升级完成后，根据情况手动删除绑定。
+
+    - 通过[`SHOW GLOBAL BINDINGS`](#查看绑定)语句检查绑定来源：
+
+        根据输出中的 `Source` 字段对绑定的来源进行区分，确认是通过捕获 (`capture`) 生成还是通过手动创建 (`manual`) 生成。
+
+    - 确定 `capture` 的绑定是否需要保留：
+
+        ```
+        -- 查看绑定生效时的计划
+        SET @@SESSION.TIDB_USE_PLAN_BASELINES = true;
+        EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+
+        -- 查看绑定不生效时的计划
+        SET @@SESSION.TIDB_USE_PLAN_BASELINES = false;
+        EXPLAIN FORMAT='VERBOSE' SELECT * FROM t1 WHERE ...;
+        ```
+
+        - 如果屏蔽绑定前后，查询得到的计划一致，则可以安全删除此绑定。
+
+        - 如果计划不一样，则可能需要对此计划变化的原因进行排查，如检查统计信息等操作。在这种情况下需要保留此绑定，确保计划不发生变化。
+
+>>>>>>> fbfe1ab0f (ambiguous words: clarify words (#9907))
 ## 自动演进绑定 (Baseline Evolution)
 
 自动演进绑定，在 TiDB 4.0 版本引入，是执行计划管理的重要功能之一。
