@@ -203,7 +203,7 @@ listen tidb-cluster                        # 配置 database 负载均衡。
    server tidb-3 10.9.64.166:4000 check inter 2000 rise 2 fall 3
 ```
 
-如要通过 show processlist 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
+如要通过 `SHOW PROCESSLIST` 查看连接来源 IP，需要配置使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB。
 
 ```yaml
    server tidb-1 10.9.18.229:4000 send-proxy check inter 2000 rise 2 fall 3       
@@ -213,7 +213,7 @@ listen tidb-cluster                        # 配置 database 负载均衡。
 
 > **注意：**
 >
-> 使用 PROXY 协议，需要对应地添加 tidb server 的 `proxy-protocol.networks` 配置文件参数。
+> 使用 PROXY 协议时，你需要在 tidb-server 的 `proxy-protocol.networks` 配置文件中添加对应的参数。
 
 ### 启动 HAProxy
 
