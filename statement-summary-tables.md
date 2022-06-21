@@ -125,11 +125,11 @@ set global tidb_stmt_summary_history_size = 24;
 
 > **注意：**
 >
-> `tidb_stmt_summary_history_size`、`tidb_stmt_summary_max_stmt_count`、`tidb_stmt_summary_max_sql_length` 这些配置都影响内存占用，建议根据实际情况调整，不宜设置得过大。
+> `tidb_stmt_summary_history_size`、`tidb_stmt_summary_max_stmt_count`、`tidb_stmt_summary_max_sql_length` 这些配置都影响内存占用，建议根据实际情况调整（取决于 SQL 大小、SQL 数量、机器配置）不宜设置得过大。内存大小可通过 `tidb_stmt_summary_history_size` \* `tidb_stmt_summary_max_stmt_count` \* `tidb_stmt_summary_max_sql_length` \* `3` 来进行估算。
 
 ### 为 statement summary 设定合适的大小
 
-在系统运行一段时间后，可以查看 `statements_summary` 表检查是否发生了 evict，例如：
+在系统运行一段时间后（视系统负载而定），可以查看 `statements_summary` 表检查是否发生了 evict，例如：
 
 ```sql
 select @@global.tidb_stmt_summary_max_stmt_count;
