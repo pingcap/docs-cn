@@ -181,7 +181,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 处理方法：
 
-    MySQL 报错的情况较多，参考[`TiCDC 常见问题和故障处理`](/ticdc/troubleshoot-ticdc.md)。
+    MySQL 报错的情况较多，参考[`TiCDC 故障处理`](/ticdc/troubleshoot-ticdc.md)。
 
 ### `ticdc_memory_abnormal`
 

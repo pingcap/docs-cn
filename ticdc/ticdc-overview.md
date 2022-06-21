@@ -153,6 +153,7 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 
 如果 TiCDC 的上游集群包含全局临时表，下游集群也必须是 TiDB 5.3.0 及以上版本，否则同步报错。
 
-## TiCDC 常见问题
+## TiCDC 常见问题与故障处理
 
-在使用 TiCDC 过程中经常遇到的问题以及相对应的解决方案请参考 [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)。
+- 使用 TiCDC 过程中经常遇到的问题，请参考 [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)。
+- 使用 TiCDC 过程中遇到的故障及解决，请参考 [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)。
