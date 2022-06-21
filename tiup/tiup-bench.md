@@ -128,6 +128,14 @@ Flags:
     tiup bench tpcc --warehouses 4 prepare --output data --pprof :10111
     ```
 
+8. Clean up data:
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    tiup bench tpcc cleanup
+    ```
+
 ## Run TPC-H test using TiUP
 
 The TiUP bench component supports the following commands and parameters to run the TPC-H test:
