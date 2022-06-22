@@ -572,18 +572,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_enable_change_multi_schema`
 
+> **警告：**
+>
+> TiDB 未来会支持更多种类的多模式对象变更，该系统变量将在后续版本中移除。
+
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用于控制是否允许在一个 ALTER TABLE 语句中变更多个列或者索引。在该变量为 `ON` 的情况下，目前仅支持以下的多模式对象变更：
+- 这个变量用于控制是否允许在一个 `ALTER TABLE` 语句中变更多个列或者索引。该变量值为 `ON` 时，仅支持以下多模式对象变更：
     - 添加多列，例如 `ATLER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT;`。
     - 删除多列，例如 `ATLER TABLE t DROP COLUMN c1, DROP COLUMN c2;`。
     - 删除多个索引，例如 `ATLER TABLE t DROP INDEX i1, DROP INDEX i2;`。
     - 删除被单列索引所覆盖的列，例如 `ALTER TABLE t DROP COLUMN c1`, 表结构中包含 `INDEX idx(c1)`。
-
-> **注意：**
->
-> TiDB 未来会支持更多种类的多模式对象变更，该系统变量将在后续版本中移除。
 
 ### `tidb_enable_cascades_planner`
 
