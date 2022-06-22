@@ -85,7 +85,7 @@ Slow Query 基础信息：
 
 和硬盘使用相关的字段：
 
-* `Disk_max`: 表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
+* `Disk_max`：表示执行期间 TiDB 使用的最大硬盘空间，单位为 byte。
 
 和 SQL 执行的用户相关的字段：
 
@@ -562,7 +562,7 @@ admin show slow top all 5;
 | start | SQL 语句执行开始时间 |
 | duration | SQL 语句执行持续时间 |
 | details | 执行语句的详细信息 |
-| succ | SQL 语句执行是否成功，1: 成功，0: 失败 |
+| succ | SQL 语句执行是否成功，1：成功，0：失败 |
 | conn_id | session 连接 ID |
 | transcation_ts | 事务提交的 commit ts |
 | user | 执行该语句的用户名 |
