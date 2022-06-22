@@ -126,6 +126,20 @@ NgMonitoring 是 TiDB v5.4.0 及以上集群中内置的高级监控组件，用
 
 </details>
 
+<details>
+  <summary>使用 TiUP Playground 启动的集群</summary>
+
+TiUP Playground (>= v1.8.0) 在启动集群时会自动启动 NgMonitoring 组件。可使用以下命令更新 TiUP Playground 到最新版：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+tiup update --self
+tiup update playground
+```
+
+</details>
+
 ### 慢查询页面显示 `unknown field` 错误
 
 集群升级后，如果慢查询页面出现 `unknown field` 错误，是由于升级后新版本 TiDB Dashboard 字段与浏览器缓存内的用户偏好设置的字段不兼容导致的。该问题已修复。如果你的集群版本低于 v5.0.3 或 v4.0.14，需要执行以下步骤清理浏览器缓存：

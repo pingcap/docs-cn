@@ -162,18 +162,18 @@
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
     - [优化实践](/performance-tuning-practices.md)
-  - 配置优化
-    - 系统调优
+  - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
-    - 软件调优
-      - 配置
-        - [TiDB 内存调优](/configure-memory-usage.md)
-        - [TiKV 线程调优](/tune-tikv-thread-performance.md)
-        - [TiKV 内存调优](/tune-tikv-memory-performance.md)
-        - [TiKV Follower Read](/follower-read.md)
-        - [Region 性能调优](/tune-region-performance.md)
-        - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+      - [TiDB 内存调优](/configure-memory-usage.md)
+      - [TiKV 线程调优](/tune-tikv-thread-performance.md)
+      - [TiKV 内存调优](/tune-tikv-memory-performance.md)
+      - [TiKV Follower Read](/follower-read.md)
+      - [Region 性能调优](/tune-region-performance.md)
+      - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
+      - 垃圾回收 (GC)
+        - [GC 机制简介](/garbage-collection-overview.md)
+        - [GC 配置](/garbage-collection-configuration.md)
   - SQL 性能调优
     - [SQL 性能调优概览](/sql-tuning-overview.md)
     - 理解 TiDB 执行计划
@@ -364,20 +364,20 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
-        - [创建数据源](/dm/quick-start-create-source.md)
-        - [数据源操作](/dm/dm-manage-source.md)
-        - [任务配置向导](/dm/dm-task-configuration-guide.md)
-        - [Table routing](/dm/dm-key-features.md#table-routing)
-        - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
-        - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
-        - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
-        - 迁移任务操作
-            - [任务前置检查](/dm/dm-precheck.md)
-            - [创建任务](/dm/dm-create-task.md)
-            - [查询状态](/dm/dm-query-status.md)
-            - [暂停任务](/dm/dm-pause-task.md)
-            - [恢复任务](/dm/dm-resume-task.md)
-            - [停止任务](/dm/dm-stop-task.md)
+      - [创建数据源](/dm/quick-start-create-source.md)
+      - [数据源操作](/dm/dm-manage-source.md)
+      - [任务配置向导](/dm/dm-task-configuration-guide.md)
+      - [Table routing](/dm/dm-key-features.md#table-routing)
+      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
+      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - 迁移任务操作
+        - [任务前置检查](/dm/dm-precheck.md)
+        - [创建任务](/dm/dm-create-task.md)
+        - [查询状态](/dm/dm-query-status.md)
+        - [暂停任务](/dm/dm-pause-task.md)
+        - [恢复任务](/dm/dm-resume-task.md)
+        - [停止任务](/dm/dm-stop-task.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
@@ -412,6 +412,9 @@
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
+          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+        - 运行机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -490,6 +493,23 @@
     - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
+  - TiUniManager
+    - [概述](/tiunimanager/tiunimanager-overview.md)
+    - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
+    - [快速操作](/tiunimanager/tiunimanager-quick-start.md)
+    - 操作指南
+      - [登录与初始化](/tiunimanager/tiunimanager-login-and-initialize.md)
+      - [管理集群资源](/tiunimanager/tiunimanager-manage-host-resources.md)
+      - [管理集群](/tiunimanager/tiunimanager-manage-clusters.md)
+      - [导入与导出数据](/tiunimanager/tiunimanager-import-and-export-data.md)
+      - [管理任务](/tiunimanager/tiunimanager-manage-tasks.md)
+      - [管理系统](/tiunimanager/tiunimanager-manage-system.md)
+    - [FAQ](/tiunimanager/tiunimanager-faq.md)
+    - 发布版本历史
+      - [发布版本汇总](/tiunimanager/tiunimanager-release-notes.md)
+      - [v1.0.2](/tiunimanager/tiunimanager-release-1.0.2.md)
+      - [v1.0.1](/tiunimanager/tiunimanager-release-1.0.1.md)
+      - [v1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -551,7 +571,7 @@
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
-        - [`COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
+      - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
@@ -706,9 +726,6 @@
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
       - [非事务 DML 语句](/non-transactional-dml.md)
-    - 垃圾回收 (GC)
-      - [GC 机制简介](/garbage-collection-overview.md)
-      - [GC 配置](/garbage-collection-configuration.md)
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)

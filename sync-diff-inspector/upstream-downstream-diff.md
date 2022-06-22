@@ -33,15 +33,15 @@ select * from tidb_binlog.checkpoint;
 
 ```toml
 ######################### Datasource config ########################
-[data-sources.mysql1]
-    host = "127.0.0.1"
-    port = 3306
+[data-sources.uptidb]
+    host = "172.16.0.1"
+    port = 4000
     user = "root"
     password = ""
-    snapshot = "409621863377928345"
+    snapshot = "409621863377928194"
 
-[data-sources.tidb0]
-    host = "127.0.0.1"
+[data-sources.downtidb]
+    host = "172.16.0.2"
     port = 4000
     user = "root"
     password = ""

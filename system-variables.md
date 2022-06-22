@@ -437,13 +437,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
 
-### `tidb_batch_insert`
-
-- 作用域：SESSION
-- 默认值：`OFF`
-- 该变量允许 `tidb_dml_batch_size` 变量作用于 `INSERT` 语句。
-- 只有该变量值为 `OFF` 才符合 ACID 原则。将该变量修改为任何其他值，会破坏 TiDB 的原子性和隔离性保证，因为每个 `INSERT` 语句都会被分割成较小的事务。
-
 ### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -578,7 +571,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的 batch size。比如 `ADD INDEX` 操作，需要回填索引数据，通过并发 `tidb_ddl_reorg_worker_cnt` 个 worker 一起回填数据，每个 worker 以 batch 为单位进行回填。
 
     - 如果 `ADD INDEX` 操作时有较多 `UPDATE` 操作或者 `REPLACE` 等更新操作，batch size 越大，事务冲突的概率也会越大，此时建议调小 batch size 的值，最小值是 32。
-    - 在没有事务冲突的情况下，batch size 可设为较大值，最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
+    - 在没有事务冲突的情况下，batch size 可设为较大值（需要参考 worker 数量，见[线上负载与 `ADD INDEX` 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)），最大值是 10240，这样回填数据的速度更快，但是 TiKV 的写入压力也会变大。
 
 ### `tidb_ddl_reorg_priority`
 
@@ -617,7 +610,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[1, 256]`
 - 这个变量用来设置 scan 操作的并发度。
 - AP 类应用适合较大的值，TP 类应用适合较小的值。对于 AP 类应用，最大值建议不要超过所有 TiKV 节点的 CPU 核数。
-- 若表的分区较多可以适当调小该参数，避免 TiKV 内存溢出 (OOM)。
+- 若表的分区较多可以适当调小该参数（取决于扫描数据量的大小以及扫描频率），避免 TiKV 内存溢出 (OOM)。
 
 ### `tidb_dml_batch_size`
 
@@ -626,7 +619,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`0`
 - 范围：`[0, 2147483647]`
 - 这个变量的值大于 `0` 时，TiDB 会将 `INSERT` 或 `LOAD DATA` 等语句在更小的事务中批量提交。这样可减少内存使用，确保大批量修改时事务大小不会达到 `txn-total-size-limit` 限制。
-- 要使 `tidb_dml_batch_size` 作用于 `INSERT` 语句，你还需要将系统变量 [`tidb_batch_insert`](#tidb_batch_insert) 设置为 `ON`。
 - 只有变量值为 `0` 时才符合 ACID 要求。否则无法保证 TiDB 的原子性和隔离性要求。
 
 ### `tidb_enable_1pc` <span class="version-mark">从 v5.0 版本开始引入</span>
@@ -685,13 +677,20 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`OFF`
 - 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
 
-### tidb_enable_batch_dml <span class="version-mark">从 v6.1.0 版本开始引入</span>
+### `tidb_enable_change_multi_schema`
+
+> **警告：**
+>
+> TiDB 未来会支持更多种类的多模式对象变更，该系统变量将在后续版本中移除。
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`OFF`
-- 该变量控制 TiDB 是否允许非事务的“批处理”语句。由于 batch DML 不提供 ACID 保证，只有该变量设置为 `OFF` 时才是安全的。
-- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`enable-batch-dml`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+- 这个变量用于控制是否允许在一个 `ALTER TABLE` 语句中变更多个列或者索引。该变量值为 `ON` 时，仅支持以下多模式对象变更：
+    - 添加多列，例如 `ATLER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT;`。
+    - 删除多列，例如 `ATLER TABLE t DROP COLUMN c1, DROP COLUMN c2;`。
+    - 删除多个索引，例如 `ATLER TABLE t DROP INDEX i1, DROP INDEX i2;`。
+    - 删除被单列索引所覆盖的列，例如 `ALTER TABLE t DROP COLUMN c1`, 表结构中包含 `INDEX idx(c1)`。
 
 ### `tidb_enable_cascades_planner`
 
@@ -1747,6 +1746,10 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 默认值：`OFF`
 - 这个变量用来设置是否校验 UTF-8 字符的合法性。
 - 校验 UTF-8 字符会损耗些许性能。当你确认输入的字符串为有效的 UTF-8 字符时，可以将其设置为 `ON`。
+
+> **注意：**
+>
+> 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
 
 ### `tidb_slow_log_threshold`
 
