@@ -33,7 +33,7 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
 ### 使用本地集群
 
-此处将简要叙述启动一个测试集群的过程，你可查阅[部署本地测试TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)获得更多信息。
+此处将简要叙述启动一个测试集群的过程，你可查阅[部署本地测试 TiDB 集群](/quick-start-with-tidb.md#部署本地测试集群)或[部署正式 TiDB 集群](/production-deployment-using-tiup.md)获得更多信息。
 
 ## 第 2 步：安装 JDK
 
