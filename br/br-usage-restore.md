@@ -47,7 +47,7 @@ br restore full \
 ```shell
 br restore full \
     --pd "${PDIP}:2379" \
-    --storage "local:///tmp/backup" \
+    --storage "s3://backup-data/2022-01-30/" \
     --ratelimit 128 \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
