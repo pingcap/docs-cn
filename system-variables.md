@@ -531,6 +531,39 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > - 启用 TiDB Binlog 后，开启该选项无法获得性能提升。要获得性能提升，建议使用 [TiCDC](/ticdc/ticdc-overview.md) 替代 TiDB Binlog。
 > - 启用该参数仅意味着 Async Commit 成为可选的事务提交模式，实际由 TiDB 自行判断选择最合适的提交模式进行事务提交。
 
+<<<<<<< HEAD
+=======
+### `tidb_enable_auto_analyze` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 该变量控制 TiDB 是否以后台操作自动更新表的统计信息。
+- 在 v6.1.0 之前这个开关通过 TiDB 配置文件 (`performance.run-auto-analyze`) 进行配置，升级到 v6.1.0 时会自动继承原有设置。
+
+### `tidb_enable_auto_increment_in_generated`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量用于控制是否允许在创建生成列或者表达式索引时引用自增列。
+
+### `tidb_enable_change_multi_schema`
+
+> **警告：**
+>
+> TiDB 未来会支持更多种类的多模式对象变更，该系统变量将在后续版本中移除。
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 这个变量用于控制是否允许在一个 `ALTER TABLE` 语句中变更多个列或者索引。该变量值为 `ON` 时，仅支持以下多模式对象变更：
+    - 添加多列，例如 `ATLER TABLE t ADD COLUMN c1 INT, ADD COLUMN c2 INT;`。
+    - 删除多列，例如 `ATLER TABLE t DROP COLUMN c1, DROP COLUMN c2;`。
+    - 删除多个索引，例如 `ATLER TABLE t DROP INDEX i1, DROP INDEX i2;`。
+    - 删除被单列索引所覆盖的列，例如 `ALTER TABLE t DROP COLUMN c1`, 表结构中包含 `INDEX idx(c1)`。
+
+>>>>>>> cdf2f060d (add description for @@tidb_enable_change_multi_schema (#9952))
 ### `tidb_enable_cascades_planner`
 
 > **警告：**
