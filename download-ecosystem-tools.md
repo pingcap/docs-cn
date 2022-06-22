@@ -45,8 +45,8 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-amd64.tar.gz`  |
 | [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
 | [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
-| [PD Control](/pd-control.md)  | `pd-recover-{version}-linux-amd64.tar` |
-| [PD Recover](/pd-recover.md)  | `etcdctl` |
+| [PD Control](/pd-control.md)  | `etcdctl` |
+| [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-amd64.tar` |
 
 ## TiUniManager 下载
 
