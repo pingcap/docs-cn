@@ -42,7 +42,7 @@ FlashbackToNewName ::=
 
 如果删除了一张表并过了 GC lifetime，就不能再用 `FLASHBACK TABLE` 语句来恢复被删除的数据了，否则会返回错误，错误类似于 `Can't find dropped/truncated table 't' in GC safe point 2020-03-16 16:34:52 +0800 CST`。
 
-`FLASHBACK TABLE` 语法仅能将表恢复到相同的数据库下，需 `use db` 进行使用，不支持 `DB`.`TableNmae` 的写法。
+`FLASHBACK TABLE` 语法只能将表恢复到原来的数据库下，不支持把表恢复到其他的数据库。
 
 在开启 TiDB Binlog 时使用 `FLASHBACK TABLE` 需要注意以下情况：
 
