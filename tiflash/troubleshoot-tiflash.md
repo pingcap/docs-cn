@@ -213,10 +213,6 @@ show warnings;
     - 执行 `pd-ctl region check-down-peer` 命令检查是否有 `down peer`。
     - 如果存在 `down peer`，执行 `pd-ctl operator add remove-peer\<region-id> \<tiflash-store-id>` 命令将其清除。
 
-3. 查看 CPU 使用率。
-
-    在 Grafana 界面，选择 **TiFlash-Proxy-Details** > **Thread CPU** > **Region task worker pre-handle/generate snapshot CPU**，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
-
 ## 数据同步慢
 
 同步慢可能由多种原因引起，你可以按以下步骤进行排查。
