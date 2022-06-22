@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 (1 row)
 ```
 
-与实际情况并不一致。
+与实际情况并不一致，仅返回了以主键查找数据时符合条件的第一条数据。
 
 ### record
 
