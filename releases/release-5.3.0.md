@@ -113,7 +113,7 @@ TiDB 版本：5.3.0
 
     增加 `ALTER TABLE [PARTITION] ATTRIBUTES` 语句支持，允许用户为表和分区设置属性。目前 TiDB 仅支持设置 `merge_option` 属性。通过为表或分区添加 `merge_option` 属性，用户可以显式控制 Region 是否合并。
 
-    应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
+    应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后（由 PD 参数 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 控制）没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
 
     [用户文档](/table-attributes.md)，[#3839](https://github.com/tikv/pd/issues/3839)
 

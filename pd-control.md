@@ -352,7 +352,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set region-schedule-limit 2
     ```
 
-- 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。
+- 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
 
     最多同时进行 4 个 replica 调度：
 
@@ -362,7 +362,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set replica-schedule-limit 4
     ```
 
-- `merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。
+- `merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
 
     最多同时进行 16 个 merge 调度：
 
@@ -372,7 +372,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set merge-schedule-limit 16
     ```
 
-- `hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。
+- `hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
 
     最多同时进行 4 个 Hot Region 调度：
 
@@ -1280,6 +1280,19 @@ Encoding 格式示例：
 ```bash
 >> store label 1 zone cn
 ```
+
+清除 store id 为 1 的 label：
+
+{{< copyable "" >}}
+
+```bash
+>> store label 1 --force
+```
+
+> **注意：**
+>
+> - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
+> - 如果希望使用 TiUP 统一管理 store label 的话，可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
 
 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
 

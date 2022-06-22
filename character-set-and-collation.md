@@ -378,6 +378,10 @@ SELECT _utf8mb4'string' COLLATE utf8mb4_general_ci;
 
 如果不希望报错，可以通过 `set @@tidb_skip_utf8_check=1;` 跳过字符检查。
 
+> **注意：**
+>
+> 跳过字符检查可能会使 TiDB 检测不到应用写入的非法 UTF-8 字符，进一步导致执行 `ANALYZE` 时解码错误，以及引入其他未知的编码问题。如果应用不能保证写入字符串的合法性，不建议跳过该检查。
+
 ## 排序规则支持
 
 排序规则的语法支持和语义支持受到配置项 [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 的影响。这里语法支持和语义支持有所区别。语法支持是指 TiDB 能够解析和设置排序规则；而语义支持是指 TiDB 能够在比较字符串时正确地使用排序规则。

@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 1.1.1 `Region is Unavailable` 一般是由于 Region 在一段时间不可用（可能会遇到 `TiKV server is busy`；或者发送给 TiKV 的请求由于 `not leader` 或者 `epoch not match` 等原因被打回；又或者请求 TiKV 超时等），TiDB 内部会进行 `backoff` 重试。`backoff` 的时间超过一定阈值（默认 20s）后就会报错给客户端。如果 `backoff` 在阈值内，客户端对该错误无感知。
 
-- 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region 在一定时期内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
+- 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region OOM 期间内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
 
 - 1.1.3 TiKV 报 `TiKV server is busy` 错误，超过 `backoff` 时间，参考 [4.3 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。`TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间。
 

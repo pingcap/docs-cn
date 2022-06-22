@@ -139,20 +139,8 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     ```
 
 7. 编辑拓扑配置文件。根据实际环境，你可编辑位于 `/home/tidb/` 下的拓扑配置文件 `config.yaml`。
-8. 执行命令部署 TiUniManager。
 
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
-
-    # 部署名称为 "em-test" 的 TiUniManager，注意这里的版本号不带 v，比如 v1.0.0 的版本号，正确的输入是 1.0.0
-    TIUP_HOME=/home/tidb/.em tiup em deploy em-test <版本号> config.yaml -u <具有sudo权限的账号> -p
-
-    # 启动 TiUniManager
-    TIUP_HOME=/home/tidb/.em tiup em start em-test
-    ```
-
-9. 导入 TiDB Server 离线镜像包。
+8. 导入 TiDB Server 离线镜像包。
 
     离线环境下，需要在 TiUniManager 中控机本地目录上导入 TiDB 离线镜像包，否则无法通过 TiUniManager 中控机完成对 TiDB 集群的日常管理。
 
@@ -177,6 +165,19 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
     # 查看 TiDB 镜像源地址
     tiup mirror show
+    ```
+
+9. 执行命令部署 TiUniManager。
+
+    ```shell
+    # 切换到 tidb 账号下
+    su - tidb
+
+    # 部署名称为 "em-test" 的 TiUniManager，注意这里的版本号不带 v，比如 v1.0.0 的版本号，正确的输入是 1.0.0
+    TIUP_HOME=/home/tidb/.em tiup em deploy em-test <版本号> config.yaml -u <具有sudo权限的账号> -p
+
+    # 启动 TiUniManager
+    TIUP_HOME=/home/tidb/.em tiup em start em-test
     ```
 
 ## 指定 TiUniManager 中控机登录 TiDB 资源机的帐户和密钥
