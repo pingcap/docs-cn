@@ -211,7 +211,7 @@ show warnings;
 2. 检查是否有 `down peer` （`down peer` 没有清理干净可能会导致同步卡住）。
 
     - 执行 `pd-ctl region check-down-peer` 命令检查是否有 `down peer`。
-    - 如果存在 `down peer`，执行 `pd-ctl operator add remove-peer\<region-id> \<tiflash-store-id>` 命令将其清除。
+    - 如果存在 `down peer`，执行 `pd-ctl operator add remove-peer <region-id> <tiflash-store-id>` 命令将其清除。
 
 ## 数据同步慢
 
