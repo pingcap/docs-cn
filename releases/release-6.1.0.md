@@ -97,7 +97,7 @@ In 6.1.0, the key new features or improvements are as follows:
 
     When RocksDB detects a damaged SST file in the background, TiKV will try to schedule the affected Peer and recover its data using other replicas. You can set the maximum allowable time for the recovery using the `background-error-recovery-window` parameter. If the recovery operation is not completed within the time window, TiKV will panic. This feature automatically detects and recovers recoverable damaged storage, thus improving the cluster stability.
 
-    [User document](/tikv-configuration-file.md#background-error-recovery-window-new-in-v610), [#10578](https://github.com/tikv/tikv/issues/10578`)`
+    [User document](/tikv-configuration-file.md#background-error-recovery-window-new-in-v610), [#10578](https://github.com/tikv/tikv/issues/10578)
 
 * Support non-transactional DML statement
 
