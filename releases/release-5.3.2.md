@@ -65,7 +65,10 @@ TiDB 版本：5.3.2
     - 修复 replica read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
     - 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
     - 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
-
++ PD
+      - 修复 PD 由于 Region 没有 Leader 导致的 Panic 的问题 [#5005](https://github.com/tikv/pd/issues/5005)
+      - 修复在 PD Leader 切换后调度长时间没有进行的问题 [#4769](https://github.com/tikv/pd/issues/4769)
+      - 修复极端情况下 TSO 回退的问题 [#4884](https://github.com/tikv/pd/issues/4884)
 + TiFlash
 
     - 修复配置文件的一些问题 [#4093](https://github.com/pingcap/tiflash/issues/4093), [#4091](https://github.com/pingcap/tiflash/issues/4091)
