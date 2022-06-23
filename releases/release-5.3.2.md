@@ -13,7 +13,8 @@ TiDB 版本：5.3.2
 + TiDB
 
     - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
-
++ PD
+     - 默认不编译 swagger API [#4932](https://github.com/tikv/pd/issues/4932)
 ## 提升改进
 
 + TiKV
