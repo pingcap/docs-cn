@@ -272,5 +272,4 @@ If there are multiple disks with different I/O metrics on your TiFlash node, it 
 
 > **Warning:**
 >
-> - The `[storage]` configuration is supported in TiUP since v1.2.5. If your TiDB cluster version is v4.0.9 or later, make sure that your TiUP version is v1.2.5 or later. Otherwise, the data directories defined in `[storage]` will not be managed by TiUP.
-> - After using the [storage] configurations, downgrading your cluster to a version earlier than v4.0.9 might cause **data loss** on TiFlash..
+> The `[storage]` configuration is supported in TiUP since v1.2.5. If your TiDB cluster version is v4.0.9 or later, make sure that your TiUP version is v1.2.5 or later. Otherwise, the data directories defined in `[storage]` will not be managed by TiUP.
