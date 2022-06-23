@@ -13,8 +13,10 @@ TiDB 版本：5.3.2
 + TiDB
 
     - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
+
 + PD
      - 默认不编译 swagger API [#4932](https://github.com/tikv/pd/issues/4932)
+
 ## 提升改进
 
 + TiKV
@@ -65,6 +67,13 @@ TiDB 版本：5.3.2
     - 修复 replica read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
     - 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
     - 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
+
++ PD
+      - 修复 PD 由于 Hot Region 没有 Leader 导致的 Panic 的问题 [#5005](https://github.com/tikv/pd/issues/5005)
+      - 修复在 PD Leader 切换后调度长时间没有进行的问题 [#4769](https://github.com/tikv/pd/issues/4769)
+      - 修复极端情况下 TSO 回退的问题 [#4884](https://github.com/tikv/pd/issues/4884)
+      - 修复高空间磁盘容量写满的情况下没有产生调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
+      - 修复 `SchedulerMaxWaitingOperator ` 设置为 1 时，不产生调度的问题 [#4946](https://github.com/tikv/pd/issues/4946)
 
 + TiFlash
 
