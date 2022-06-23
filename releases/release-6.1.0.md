@@ -227,7 +227,6 @@ In 6.1.0, the key new features or improvements are as follows:
 | [`require_secure_transport`](/system-variables.md#require_secure_transport-new-in-v610) | Newly added | This setting was previously a `tidb.toml` option (`security.require-secure-transport`), but changed to a system variable starting from TiDB v6.1.0. |
 | [`tidb_committer_concurrency`](/system-variables.md#tidb_committer_concurrency-new-in-v610) | Newly added | This setting was previously a `tidb.toml` option (`performance.committer-concurrency`), but changed to a system variable starting from TiDB v6.1.0. |
 | [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-new-in-v610) | Newly added | This setting was previously a `tidb.toml` option (`run-auto-analyze`), but changed to a system variable starting from TiDB v6.1.0. |
-| [`tidb_enable_batch_dml`](/system-variables.md#tidb_enable_batch_dml-new-in-v610) | Newly added | This setting was previously a `tidb.toml` option (`enable-batch-dml`), but changed to a system variable starting from TiDB v6.1.0. |
 | [`tidb_enable_new_only_full_group_by_check`](/system-variables.md#tidb_enable_new_only_full_group_by_check-new-in-v610) | Newly added | This variable controls the behavior when TiDB performs the `ONLY_FULL_GOUP_BY` check. |
 | [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) | Newly added | Since v6.1.0, the Join Reorder algorithm of TiDB supports Outer Join. This variable controls the support behavior, and the default value is `ON`. |
 | [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-new-in-v610) | Newly added | This setting was previously a `tidb.toml` option (`prepared-plan-cache.enabled`), but changed to a system variable starting from TiDB v6.1.0. |
@@ -246,7 +245,6 @@ In 6.1.0, the key new features or improvements are as follows:
 | Configuration file | Configuration | Change type | Description |
 |---|---|---|---|
 | TiDB | `committer-concurrency` | Deleted | Replaced by the system variable `tidb_committer_concurrency`. This configuration item is no longer valid, if you want to modify the value, you need to modify the corresponding system variable. |
-| TiDB | `enable-batch-dml` | Deleted | Replaced by the system variable `tidb_enable_batch_dml`. This configuration item is no longer valid, if you want to modify the value, you need to modify the corresponding system variable. |
 | TiDB | `lower-case-table-names` | Deleted | Currently TiDB only supports `lower_case_table_name=2`. If another value is set, after the cluster is upgraded to v6.1.0, the value is lost.  |
 | TiDB | `mem-quota-query` | Deleted | Replaced by the system variable `tidb_mem_quota_query`. This configuration item is no longer valid, if you want to modify the value, you need to modify the corresponding system variable. |
 | TiDB | `oom-action` | Deleted | Replaced by the system variable `tidb_mem_oom_action`. This configuration item is no longer valid, if you want to modify the value, you need to modify the corresponding system variable. |

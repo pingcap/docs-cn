@@ -40,7 +40,6 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'tidb%';
 | tidb_backoff_weight                 | 2                   |
 | tidb_batch_commit                   | 0                   |
 | tidb_batch_delete                   | 0                   |
-| tidb_batch_insert                   | 0                   |
 | tidb_build_stats_concurrency        | 4                   |
 | tidb_capture_plan_baselines         | off                 |
 | tidb_check_mb4_value_in_utf8        | 1                   |
