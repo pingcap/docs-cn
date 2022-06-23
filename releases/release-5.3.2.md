@@ -14,8 +14,6 @@ TiDB 版本：5.3.2
 
     - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
 
-## 功能增强
-
 ## 提升改进
 
 + TiKV
@@ -24,6 +22,12 @@ TiDB 版本：5.3.2
     - 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
     - 降低写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）。具体调优操作，请参考 [TiKV 线程池性能调优](https://docs.pingcap.com/zh/tidb/dev/tune-tikv-thread-performance) [#10540](https://github.com/tikv/tikv/issues/10540)
     - 在 Raft 日志垃圾回收模块中添加了更多监控指标，从而定位该模块中出现的性能问题 [#11374](https://github.com/tikv/tikv/issues/11374)
+
++ Tools
+
+    + TiDB Data Migration (DM)
+
+        - 支持 Syncer 使用 DM-worker 的工作目录写内部文件，不再使用 /tmp 目录。任务停止后会清理掉该目录 [#4107](https://github.com/pingcap/tiflow/issues/4107)
 
 ## Bug 修复
 
@@ -81,3 +85,27 @@ TiDB 版本：5.3.2
     - 修复 corner case 下面 cast string as double 结果和 TiDB 不一致的问题 [#3475](https://github.com/pingcap/tiflash/issues/3475)
     - 修复 cast string to datetime 时，microsecond 结果可能不对的问题 [#3556](https://github.com/pingcap/tiflash/issues/3556)
 
++ Tools
+
+    + TiCDC
+
+        - 修复切换 owner 会导致其 metrics 数据不正确的问题 [#4774](https://github.com/pingcap/tiflow/issues/4774)
+        - 修复 redo log manager 提前 flush log 的问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
+        - 修复当一部分表没有被 redo writer 管理时 resolved ts 提前推进的问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
+        - 添加uuid 作为 redo log file 的后缀以解决文件名冲突引起的数据丢失问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
+        - 修复 mysql sink 可能会保存错误的 checkpointTs 的问题 [#5107](https://github.com/pingcap/tiflow/issues/5107)
+        - 修复 TiCDC 集群升级后可能后 panic 的问题 [#5266](https://github.com/pingcap/tiflow/issues/5266)
+        - 修复在同一节点反复调入调出一张表可能会导致同步任务 (changefeed) 被卡住的问题 [#4464](https://github.com/pingcap/tiflow/issues/4464)
+        - 修复了在开启 TLS 后，`--pd` 中设置的第一个 PD 不可用导致 TiCDC 无法启动的问题 [#4777](https://github.com/pingcap/tiflow/issues/4777)
+        - 修复当 PD 状态不正常时 OpenAPI 可能会卡住的问题 [#4778](https://github.com/pingcap/tiflow/issues/4778)
+        - 修复 Unified Sorter 的 workerpool 稳定性问题 [#4447](https://github.com/pingcap/tiflow/issues/4447)
+        - 修复某些情况下序列对象被错误同步的问题 [#4552](https://github.com/pingcap/tiflow/issues/4552)
+
+    + TiDB Data Migration (DM)
+
+        - 修复任务自动恢复后，DM 会占用更多磁盘空间的问题 [#3734](https://github.com/pingcap/tiflow/issues/3734)，[#5344](https://github.com/pingcap/tiflow/issues/5344)
+        - 修复在未设置 `case-sensitive: true` 时无法同步大写表的问题 [#5255](https://github.com/pingcap/tiflow/issues/5255)
+        - 修复了某些情况下，过滤 DDL 并在下游手动执行会导致同步任务不能自动重试恢复的问题 [#5272](https://github.com/pingcap/tiflow/issues/5272)
+        - 修复了在 `SHOW CREATE TABLE` 语句返回的索引中，主键没有排在第一位导致的 DM worker panic 的问题 [#5159](https://github.com/pingcap/tiflow/issues/5159)
+        - 修复了当开启 GTID 模式或者任务自动恢复时，可能出现一段时间 CPU 占用高并打印大量日志的问题 [#5063](https://github.com/pingcap/tiflow/issues/5063)
+        - 修复了 v5.3.1 中重启 master 后 relay log 可能会被关闭的问题 [#4803](https://github.com/pingcap/tiflow/issues/4803)
