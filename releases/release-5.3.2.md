@@ -18,6 +18,13 @@ TiDB 版本：5.3.2
 
 ## 提升改进
 
++ TiKV
+
+    - 健康检查可以检测到无法正常工作的 Raftstore，使得 TiKV client 可以及时更新 Region Cache [#12398](https://github.com/tikv/tikv/issues/12398)
+    - 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
+    - 降低写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）。具体调优操作，请参考 [TiKV 线程池性能调优](https://docs.pingcap.com/zh/tidb/dev/tune-tikv-thread-performance) [#10540](https://github.com/tikv/tikv/issues/10540)
+    - 在 Raft 日志垃圾回收模块中添加了更多监控指标，从而定位该模块中出现的性能问题 [#11374](https://github.com/tikv/tikv/issues/11374)
+
 ## Bug 修复
 
 + TiDB
@@ -35,6 +42,24 @@ TiDB 版本：5.3.2
     - 修复使用 left join 同时删除多张表数据时可能出现错误结果的问题 [#31321](https://github.com/pingcap/tidb/issues/31321)
     - 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
     - 修复 TiDB 的后台 HTTP 服务可能没有正确关闭导致集群状态异常的问题 [#30571](https://github.com/pingcap/tidb/issues/30571)
+
++ TiKV
+
+    - 修复了 PD Client 频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
+    - 修复了 datetime 类型的数据包含小数部分和 'Z' 后缀导致检查报错的问题 [#12739](https://github.com/tikv/tikv/issues/12739)
+    - 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673)
+    - 修复了在悲观事务中使用 async-commit 导致重复的提交记录的问题 [#12615](https://github.com/tikv/tikv/issues/12615)
+    - 修复了在使用 Follower Read 时，可能会报 invalid store ID 0 错误的问题 [#12478](https://github.com/tikv/tikv/issues/12478)
+    - 修复了销毁 peer 和批量分裂 Region 之间的竞争导致的 TiKV panic [#12368](https://github.com/tikv/tikv/issues/12368)
+    - 修复了在网络状况不好时，已成功提交的乐观事务可能返回 `Write Conflict` 的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
+    - 修复待 merge 的 Region 无效会导致 TiKV panic 且非预期地销毁 peer 的问题 [#12232](https://github.com/tikv/tikv/issues/12232)
+    - 修复旧信息造成 TiKV panic 的问题 [#12023](https://github.com/tikv/tikv/issues/12023)
+    - 修复因内存统计指标溢出而造成的间歇性丢包和内存不足 (OOM) 的问题 [#12160](https://github.com/tikv/tikv/issues/12160)
+    - 修复在 Ubuntu 18.04 下进行性能分析会造成 TiKV panic 的问题 [#9765](https://github.com/tikv/tikv/issues/9765)
+    - 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12329](https://github.com/tikv/tikv/issues/12329)
+    - 修复 replica read 可能违反线性一致性的问题 [#12109](https://github.com/tikv/tikv/issues/12109)
+    - 修复合并 Region 时因 target peer 被一个未进行初始化就被销毁的 peer 所替换，从而引起 TiKV panic 的问题 [#12048](https://github.com/tikv/tikv/issues/12048)
+    - 修复 TiKV 运行 2 年以上可能 panic 的问题 [#11940](https://github.com/tikv/tikv/issues/11940)
 
 + TiFlash
 
