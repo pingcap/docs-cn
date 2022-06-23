@@ -15,7 +15,7 @@ The TiDB configuration file supports more options than command-line parameters. 
 
 - Determines whether to create a separate Region for each table.
 - Default value: `true`
-- It is recommended to set it to `false` if you need to create a large number of tables.
+- It is recommended to set it to `false` if you need to create a large number of tables (for example, more than 100 thousand tables).
 
 ### `token-limit`
 
@@ -676,7 +676,7 @@ For pessimistic transaction usage, refer to [TiDB Pessimistic Transaction Mode](
 
 + Determines the transaction mode that the auto-commit transaction uses when the pessimistic transaction mode is globally enabled (`tidb_txn_mode='pessimistic'`). By default, even if the pessimistic transaction mode is globally enabled, the auto-commit transaction still uses the optimistic transaction mode. After enabling `pessimistic-auto-commit` (set to `true`), the auto-commit transaction also uses pessimistic mode, which is consistent with the other explicitly committed pessimistic transactions.
 + For scenarios with conflicts, after enabling this configuration, TiDB includes auto-commit transactions into the global lock-waiting management, which avoids deadlocks and mitigates the latency spike brought by deadlock-causing conflicts.
-+ For scenarios with no conflicts, if there are many auto-commit transactions, and a single transaction operates a large data volume, enabling this configuration causes performance regression. For example, the auto-commit `INSERT INTO SELECT` statement.
++ For scenarios with no conflicts, if there are many auto-commit transactions (the specific number is determined by the real scenarios. For example, the number of auto-commit transactions accounts for more than half of the total number of applications), and a single transaction operates a large data volume, enabling this configuration causes performance regression. For example, the auto-commit `INSERT INTO SELECT` statement.
 + Default value: `false`
 
 ## experimental

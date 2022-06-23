@@ -87,7 +87,7 @@ The BR tool already supports self-adapting to GC. It automatically registers `ba
 For the detailed usage of the `br backup` command, refer to [Use BR Command-line for Backup and Restoration](/br/use-br-command-line-tool.md).
 
 1. Before executing the `br backup` command, ensure that no DDL is running on the TiDB cluster.
-2. Ensure that the storage device where the backup will be created has sufficient space.
+2. Ensure that the storage device where the backup will be created has sufficient space (no less than 1/3 of the disk space of the backup cluster).
 
 ### Preparation for restoration
 

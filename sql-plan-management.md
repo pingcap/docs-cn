@@ -373,7 +373,7 @@ Insert filtering conditions into the system table `mysql.capture_plan_baselines_
 
  Before upgrading a TiDB cluster, you can use baseline capturing to prevent regression of execution plans by performing the following steps:
 
-1. Enable baseline capturing and keep it working for a period of time.
+1. Enable baseline capturing and keep it working.
 
     > **Note:**
     >

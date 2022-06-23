@@ -714,7 +714,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - Unit: Rows
 - This variable is used to set the batch size during the `re-organize` phase of the DDL operation. For example, when TiDB executes the `ADD INDEX` operation, the index data needs to backfilled by `tidb_ddl_reorg_worker_cnt` (the number) concurrent workers. Each worker backfills the index data in batches.
     - If many updating operations such as `UPDATE` and `REPLACE` exist during the `ADD INDEX` operation, a larger batch size indicates a larger probability of transaction conflicts. In this case, you need to adjust the batch size to a smaller value. The minimum value is 32.
-    - If the transaction conflict does not exist, you can set the batch size to a large value. This can increase the speed of the backfilling data, but the write pressure on TiKV also becomes higher.
+    - If the transaction conflict does not exist, you can set the batch size to a large value (consider the worker count. See [Interaction Test on Online Workloads and `ADD INDEX` Operations](/benchmark/online-workloads-and-add-index-operations.md) for reference). This can increase the speed of the backfilling data, but the write pressure on TiKV also becomes higher.
 
 ### tidb_ddl_reorg_priority
 
@@ -760,7 +760,7 @@ Constraint checking is always performed in place for pessimistic transactions (d
 - This variable is used to set the concurrency of the `scan` operation.
 - Use a bigger value in OLAP scenarios, and a smaller value in OLTP scenarios.
 - For OLAP scenarios, the maximum value should not exceed the number of CPU cores of all the TiKV nodes.
-- If a table has a lot of partitions, you can reduce the variable value appropriately to avoid TiKV becoming out of memory (OOM).
+- If a table has a lot of partitions, you can reduce the variable value appropriately (determined by the size of the data to be scanned and the frequency of the scan) to avoid TiKV becoming out of memory (OOM).
 
 ### tidb_dml_batch_size
 

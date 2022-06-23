@@ -318,9 +318,9 @@ When Dumpling is exporting a large single table from TiDB, Out of Memory (OOM) m
 + Reduce the value of `--tidb-mem-quota-query` to `8589934592` (8 GB) or lower. `--tidb-mem-quota-query` controls the memory usage of a single query statement in TiDB.
 + Adjust the `--params "tidb_distsql_scan_concurrency=5"` parameter. [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) is a session variable which controls the concurrency of the scan operations in TiDB.
 
-### TiDB GC settings when exporting a large volume of data
+### TiDB GC settings when exporting a large volume of data (more than 1 TB)
 
-When exporting data from TiDB, if the TiDB version is later than or equal to v4.0.0 and Dumpling can access the PD address of the TiDB cluster, Dumpling automatically extends the GC time without affecting the original cluster.
+When exporting data from TiDB (more than 1 TB), if the TiDB version is later than or equal to v4.0.0 and Dumpling can access the PD address of the TiDB cluster, Dumpling automatically extends the GC time without affecting the original cluster.
 
 In other scenarios, if the data size is very large, to avoid export failure due to GC during the export process, you can extend the GC time in advance:
 

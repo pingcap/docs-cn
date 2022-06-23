@@ -427,6 +427,6 @@ This section describes common problems you may encounter during backup and resto
 
 ### How to back up data in TiDB?
 
-Currently, for the backup of a large volume of data, the preferred method is using [BR](/br/backup-and-restore-tool.md). Otherwise, the recommended tool is [Dumpling](/dumpling-overview.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is worse than [BR](/br/backup-and-restore-tool.md) and it needs much more time to back up and restore large volumes of data.
+Currently, for the backup of a large volume of data (more than 1 TB), the preferred method is using [BR](/br/backup-and-restore-tool.md). Otherwise, the recommended tool is [Dumpling](/dumpling-overview.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is worse than [BR](/br/backup-and-restore-tool.md) and it needs much more time to back up and restore large volumes of data.
 
 For more FAQs about BR, see [BR FAQs](/br/backup-and-restore-faq.md).

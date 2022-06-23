@@ -211,10 +211,6 @@ After deploying a TiFlash node and starting replication (by performing the ALTER
     - If the keyword is found, the PD schedules properly.
     - If not, the PD does not schedule properly. Contact PingCAP technical support for help.
 
-> **Note:**
->
-> When there are many small Regions in the table to be replicated, and the `region merge` parameter is enabled or set to a large value, the replication progress might stay unchanged or be reduced in a period of time.
-
 ## Data replication gets stuck
 
 If data replication on TiFlash starts normally but then all or some data fails to be replicated after a period of time, you can confirm or resolve the issue by performing the following steps:

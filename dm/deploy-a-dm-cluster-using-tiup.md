@@ -16,7 +16,7 @@ TiUP supports deploying DM v2.0 or later DM versions. This document introduces h
 
 ## Prerequisites
 
-When DM performs a full data replication task, the DM-worker is bound with only one upstream database. The DM-worker first exports the full amount of data locally, and then imports the data into the downstream database. Therefore, the worker's host needs sufficient storage space (The storage path is specified later when you create the task).
+When DM performs a full data replication task, the DM-worker is bound with only one upstream database. The DM-worker first exports the full amount of data locally, and then imports the data into the downstream database. Therefore, the worker's host space must be large enough to store all upstream tables to be exported. The storage path is specified later when you create the task.
 
 In addition, you need to meet the [hardware and software requirements](/dm/dm-hardware-and-software-requirements.md) when deploying a DM cluster.
 
