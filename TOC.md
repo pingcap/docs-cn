@@ -337,6 +337,7 @@
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
     - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
+    - [快速上手教程](/get-started-with-tidb-lightning.md)
     - 数据源
       - [文件匹配规则](/tidb-lightning/tidb-lightning-datasource.md)
       - [CSV](/tidb-lightning/tidb-lightning-datasource.md#csv)
@@ -360,14 +361,13 @@
     - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
     - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
     - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
-    - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
-    - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
-    - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    - 示例
-      - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-    - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+    - 参考手册
+      - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
+      - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
+      - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+      - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [快速开始](/dm/quick-start-with-dm.md)

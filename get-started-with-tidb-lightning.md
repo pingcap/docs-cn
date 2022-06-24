@@ -3,7 +3,7 @@ title: TiDB Lightning 教程
 aliases: ['/docs-cn/dev/get-started-with-tidb-lightning/','/docs-cn/dev/how-to/get-started/tidb-lightning/']
 ---
 
-# TiDB Lightning 教程
+# TiDB Lightning 快速上手
 
 本教程假设使用的是若干新的、纯净版 CentOS 7 实例，你可以（使用 VMware、VirtualBox 及其他工具）在本地虚拟化或在供应商提供的平台上部署一台小型的云虚拟主机。因为 TiDB Lightning 对计算机资源消耗较高，建议分配 16 GB 以上的内存以及 32 核以上的 CPU 以获取最佳性能。
 
