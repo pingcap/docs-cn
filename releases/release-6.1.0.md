@@ -175,7 +175,7 @@ TiDB 版本：6.1.0
 
 * 支持兼容 MySQL 的用户级别锁管理
 
-    用户级别锁是 MySQL 通过内置函数提供的用户命名锁管理系统。它们可以提供锁阻塞、等待、等锁管理能力。用户级别锁在 ORM 框架中也有较为广泛的应用，例如 RoR、Elixir 和 Ecto 等。TiDB 从 v6.1.0 版本开始支持兼容 MySQL 的用户级别锁管理，支持 `GET_LOCK`、`RELEASE_LOCK`、`RELEASE_ALL_LOCKS` 函数。
+    用户级别锁是 MySQL 通过内置函数提供的用户命名锁管理系统。它们可以提供锁阻塞、等待、等锁管理能力。用户级别锁在 ORM 框架中也有较为广泛的应用，例如 Rails、Elixir 和 Ecto 等。TiDB 从 v6.1.0 版本开始支持兼容 MySQL 的用户级别锁管理，支持 `GET_LOCK`、`RELEASE_LOCK`、`RELEASE_ALL_LOCKS` 函数。
 
     [用户文档](/functions-and-operators/locking-functions.md)，[#14994](https://github.com/pingcap/tidb/issues/14994)
 
