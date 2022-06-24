@@ -198,13 +198,13 @@ CREATE PLACEMENT POLICY p3 FOLLOWERS=2;
 
 CREATE TABLE t1 (a INT);  -- Creates a table t1 with no placement options.
 
-ALTER DATABASE test POLICY=p2;  -- Changes the default placement option, and does not apply to the existing table t1.
+ALTER DATABASE test PLACEMENT POLICY=p2;  -- Changes the default placement option, and does not apply to the existing table t1.
 
 CREATE TABLE t2 (a INT);  -- Creates a table t2 with the default placement policy p2.
 
 CREATE TABLE t3 (a INT) PLACEMENT POLICY=p1;  -- Creates a table t3 without the default policy p2, because this statement has specified another placement rule.
 
-ALTER DATABASE test POLICY=p3;  -- Changes the default policy, and does not apply to existing tables.
+ALTER DATABASE test PLACEMENT POLICY=p3;  -- Changes the default policy, and does not apply to existing tables.
 
 CREATE TABLE t4 (a INT);  -- Creates a table t4 with the default policy p3.
 
