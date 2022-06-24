@@ -142,18 +142,24 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 切分完成以后，可以通过 `SHOW TABLE test_hotspot REGIONS;` 语句查看打散的情况。如果 `SCATTERING` 列值全部为 `0`，代表调度成功。
 
-也可以通过 [table-regions.py](https://github.com/pingcap/tidb-ansible/blob/dabf60baba5e740a4bee9faf95e77563d8084be1/scripts/table-regions.py) 脚本，查看 Region 的分布。目前分布已经比较均匀了：
+也可以通过以下 SQL 语句查看 Region 的分布。你需要将 `table_name` 替换为实际的表名。
 
-```
-[root@172.16.4.4 scripts]# python table-regions.py --host 172.16.4.3 --port 31453 test test_hotspot
-[RECORD - test.test_hotspot] - Leaders Distribution:
-  total leader count: 127
-  store: 1, num_leaders: 21, percentage: 16.54%
-  store: 4, num_leaders: 20, percentage: 15.75%
-  store: 6, num_leaders: 21, percentage: 16.54%
-  store: 46, num_leaders: 21, percentage: 16.54%
-  store: 82, num_leaders: 23, percentage: 18.11%
-  store: 62, num_leaders: 21, percentage: 16.54%
+{{< copyable "sql" >}}
+
+```sql
+SELECT
+    p.STORE_ID,
+    COUNT(s.REGION_ID) PEER_COUNT
+FROM
+    INFORMATION_SCHEMA.TIKV_REGION_STATUS s
+    JOIN INFORMATION_SCHEMA.TIKV_REGION_PEERS p ON s.REGION_ID = p.REGION_ID
+WHERE
+    TABLE_NAME = 'table_name'
+    AND p.is_leader = 1
+GROUP BY
+    p.STORE_ID
+ORDER BY
+    PEER_COUNT DESC;
 ```
 
 再重新运行写入负载：
