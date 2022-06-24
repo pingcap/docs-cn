@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 # TiDB Lightning 部署与执行
 
-本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读
+本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读：
 
 - [Physical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-sst-mode.md#必要条件及限制)
 - [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-sql-mode.md#必要条件及限制)
@@ -20,7 +20,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-   安装完成后，`~/.bashrc` 已将 TiUP 加入到路径中，你需要新开一个终端或重新声明全局变量 `source ~/.bashrc` 来使用 TiUP。(也可能是`～/.profile`，以 TiUP 输出为准。)
+   安装完成后，`~/.bashrc` 已将 TiUP 加入到路径中，你需要新开一个终端或重新声明全局变量 `source ~/.bashrc` 来使用 TiUP。(也可能是`~/.profile`，以 TiUP 输出为准。)
 
 2. 安装 TiUP DM 组件：
 
@@ -36,7 +36,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 参考[工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
 
-解压 Lightning 压缩包即可获得`tidb-lightning`执行性文件。
+解压 Lightning 压缩包即可获得 `tidb-lightning` 可执行文件。
 
 ```bash
 tar -zxvf tidb-lightning-${version}-linux-amd64.tar.gz
