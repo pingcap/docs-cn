@@ -456,7 +456,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 }
 ```
 
-### 场景五：将某张表迁移至 TiFlash 集群
+### 场景五：将某张表迁移至 SSD 节点
 
 与场景三不同，这个场景不是要在原有配置的基础上增加新副本，而是要强制覆盖一段数据的其它配置，因此需要通过配置规则分组来指定一个足够大的 index 以及设置 override 来覆盖原有规则。
 
@@ -466,16 +466,16 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ```json
 {
-  "group_id": "tiflash-override",
-  "id": "learner-replica-table-ttt",
+  "group_id": "ssd-override",
+  "id": "ssd-table-45",
   "start_key": "7480000000000000ff2d5f720000000000fa",
   "end_key": "7480000000000000ff2e00000000000000f8",
   "role": "voter",
   "count": 3,
   "label_constraints": [
-    {"key": "engine", "op": "in", "values": ["tiflash"]}
+    {"key": "disk", "op": "in", "values": ["ssd"]}
   ],
-  "location_labels": ["host"]
+  "location_labels": ["rack", "host"]
 }
 ```
 
@@ -485,7 +485,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ```json
 {
-  "id": "tiflash-override",
+  "id": "ssd-override",
   "index": 1024,
   "override": true,
 }
