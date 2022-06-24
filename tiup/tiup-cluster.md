@@ -443,7 +443,7 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
-      --ssh string        (实验特性)ssh 执行类型: 'builtin', 'system', 'none'.
+      --ssh string        （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
@@ -493,7 +493,7 @@ Flags:
   -r, --rename NAME        重命名被导入的集群
 
 Global Flags:
-      --ssh string        (实验特性)ssh 执行类型: 'builtin', 'system', 'none'.
+      --ssh string        （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
