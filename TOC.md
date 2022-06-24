@@ -460,6 +460,7 @@
       - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
       - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+      - [故障处理](/br/troubleshoot-br.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
