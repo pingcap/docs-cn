@@ -294,6 +294,7 @@ summary: 了解 BR 相关的故障以及解决方法。
         |    3 |
         +------+
         3 rows in set (0.01 sec)
+        ```
 
     3. 使用 Dumpling 备份 trun-tab 表的数据，snapshot 的时间为 `2021-08-03 16:55:24`：
 
@@ -401,6 +402,7 @@ summary: 了解 BR 相关的故障以及解决方法。
         |    6 |
         +------+
         10 rows in set (0.00 sec)
+        ```
 
 至此，两次 TRUNCATE 操作的数据均恢复完成。
 
