@@ -19,7 +19,15 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 ### 下载安装包
 
-PD Control 的安装包 `etcdctl` 位于 TiDB 离线工具包中。下载方式，请参考 [TiDB 工具下载](/download-ecosystem-tools.md)。
+如需下载最新版本的 `pd-ctl`，直接下载 TiDB 安装包即可。`pd-ctl` 位于 TiDB 安装包的 `ctl-{version}-linux-amd64.tar.gz` 中。
+
+| 安装包                                                                    | 操作系统 | 架构  | SHA256 校验和                                                    |
+| :------------------------------------------------------------------------ | :------- | :---- | :--------------------------------------------------------------- |
+| `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.tar.gz` (pd-ctl) | Linux    | amd64 | `https://download.pingcap.org/tidb-community-server-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v6.1.0` 版本的下载链接为 `https://download.pingcap.org/tidb-community-server-v6.1.0-linux-amd64.tar.gz`。
 
 ### 源码编译
 
