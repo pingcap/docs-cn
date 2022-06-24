@@ -19,10 +19,10 @@ Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.10.0/cluste
 Deploy a TiDB cluster for production
 
 Usage:
-  tiup cluster [flags]
-  tiup [command]
+  tiup cluster [command]
 
 Available Commands:
+  check       对集群进行预检
   deploy      部署集群
   start       启动已部署的集群
   stop        停止集群
@@ -32,7 +32,6 @@ Available Commands:
   clean       清理数据
   destroy     销毁集群
   upgrade     升级集群
-  exec        在集群的一个或多个机器上执行命令
   display     获取集群信息
   list        获取集群列表
   audit       查看集群操作日志
