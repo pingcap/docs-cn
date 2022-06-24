@@ -62,7 +62,7 @@ MEDIUMTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
 
 ### `LONGTEXT` type
 
-The `LONGTEXT` type is similar to the [`TEXT` type](#text-type). The difference is that the maximum column length of `LONGTEXT` is 4,294,967,295.
+The `LONGTEXT` type is similar to the [`TEXT` type](#text-type). The difference is that the maximum column length of `LONGTEXT` is 4,294,967,295. But due to the [Limitation on a single column in TiDB](/tidb-limitations.md#limitation-on-a-single-column), the maximum storage size of a single column in TiDB is 6 MB.
 
 ```sql
 LONGTEXT [CHARACTER SET charset_name] [COLLATE collation_name]
@@ -110,7 +110,7 @@ MEDIUMBLOB
 
 ### `LONGBLOB` type
 
-The `LONGBLOB` type is similar to the [`BLOB` type](#blob-type). The difference is that the maximum column length of `LONGBLOB` is 4,294,967,295.
+The `LONGBLOB` type is similar to the [`BLOB` type](#blob-type). The difference is that the maximum column length of `LONGBLOB` is 4,294,967,295. But due to the [Limitation on a single column in TiDB](/tidb-limitations.md#limitation-on-a-single-column), the maximum storage size of a single column in TiDB is 6 MB.
 
 ```sql
 LONGBLOB
