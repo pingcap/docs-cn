@@ -9,7 +9,7 @@ summary: 了解 BR 相关的故障以及解决方法。
 
 ## 如果对数据进行了误操作，如何快速恢复？
 
-如果对数据进行了错误的 UPDATE、DELETE、Truncate 或 DROP 时，你可以通过使用 tidb_snapshot 将数据恢复到误操作之前的状态。本文以误操作 UPDATE 和 TRUNCATE 为例，介绍如何恢复数据。
+如果对数据进行了错误的 UPDATE、DELETE、TRUNCATE 或 DROP 时，你可以通过使用 tidb_snapshot 将数据恢复到误操作之前的状态。本文以误操作 UPDATE 和 TRUNCATE 为例，介绍如何恢复数据。
 
 ### 如何快速恢复被 UPDATE 的数据？
 
@@ -99,7 +99,7 @@ summary: 了解 BR 相关的故障以及解决方法。
 
 5. 开始数据恢复。
 
-    设置 tidb_snapshot 为数据修改前的时间点，此处为 "2020-10-08 16:45:26";
+    设置 tidb_snapshot 为数据修改前的时间点，此处为 `2020-10-08 16:45:26`:
 
     {{< copyable "sql" >}}
 
@@ -118,7 +118,7 @@ summary: 了解 BR 相关的故障以及解决方法。
     3 rows in set (0.00 sec)
     ```
 
-    可以看到，数据已恢复到修改前的状态。如果数据未恢复到目标状态，请继续反复修改 tidb_snapshot，查看历史数据是否满足数据恢复需求，根据 tidb_snapshot 的查询结果生成反向 SQL。
+    可以看到，数据已恢复到修改前的状态。如果数据未恢复到目标状态，请继续反复修改 tidb_snapshot，查看历史数据是否满足数据恢复需求，然后根据 tidb_snapshot 的查询结果执行 SQL 语句。
 
 6. 清空当前 session tidb_snapshot 变量：
 
@@ -247,7 +247,7 @@ summary: 了解 BR 相关的故障以及解决方法。
     - 第一次 TRUNCATE：2021-08-03 16:55:25
     - 第二次 TRUNCATE：2021-08-03 16:57:14
 
-    查看当前 GC 保留的 safe point，本示例中为 2021-08-03 16:55:09 +0800，因此满足数据恢复要求：
+    查看当前 GC 保留的 safe point，本示例中为 `2021-08-03 16:55:09 +0800`，因此满足数据恢复要求：
 
     {{< copyable "sql" >}}
 
