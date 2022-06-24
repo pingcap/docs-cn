@@ -62,15 +62,15 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 
 | 函数                     | 功能描述 |
 | --------------------------------- | ----------- |
-| [JSON_PRETTY(json_doc)][json_pretty] |美化 JSON 文档的格式 |
+| [JSON_PRETTY(json_doc)][json_pretty] |格式化 JSON 文档 |
 | [JSON_STORAGE_SIZE(json_doc)][json_storage_size] | 返回存储 JSON 值所需的大致字节大小，由于不考虑 TiKV 压缩的字节大小，因此函数的输出与 MySQL 不严格兼容 |
 
 ## 聚合函数
 
 | 函数                    | 功能描述 |
 | --------------------------------- | ----------- |
-| [JSON_ARRAYAGG(key)][json_arrayagg] | 提供键的聚合 |
-| [JSON_OBJECTAGG(key, value)][json_objectagg] | 提供给定键的值的聚合 |
+| [JSON_ARRAYAGG(key)][json_arrayagg] | 提供指定列 key 的聚合 |
+| [JSON_OBJECTAGG(key, value)][json_objectagg] | 提供给定两列键值对的聚合 |
 
 ## 另请参阅
 
