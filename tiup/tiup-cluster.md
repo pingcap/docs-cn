@@ -44,9 +44,9 @@ Available Commands:
   help        打印 Help 信息
 
 Flags:
-  -c, --concurrency int     最大并行任务数(默认值为 5)
+  -c, --concurrency int     最大并行任务数（默认值为 5）
   -h, --help                帮助信息
-      --ssh string          (实验特性)ssh 执行类型: 'builtin', 'system', 'none'.
+      --ssh string          （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --ssh-timeout uint    SSH 连接超时时间
   -v, --version             版本信息
       --wait-timeout uint   等待操作超时的时间
