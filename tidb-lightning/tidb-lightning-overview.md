@@ -19,7 +19,7 @@ TiDB Lightning 支持以下文件类型：
 
 TiDB Lightning 支持从以下位置读取：
 
-- Local filesystem
+- 本地
 - [Amazon S3](/br/backup-and-restore-storages.md#s3-的-url-参数)
 - [Google GCS](/br/backup-and-restore-storages.md#gcs-的-url-参数)
 
