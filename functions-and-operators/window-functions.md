@@ -10,7 +10,7 @@ The usage of window functions in TiDB is similar to that in MySQL 8.0. For detai
 
 Because window functions reserve additional words in the parser, TiDB provides an option to disable window functions. If you receive errors parsing SQL statements after upgrading, try setting `tidb_enable_window_function=0`.
 
-TiDB supports the following window functions:
+Except for `GROUP_CONCAT()` and `APPROX_PERCENTILE()`, TiDB supports all [`GROUP BY` aggregate functions](/functions-and-operators/aggregate-group-by-functions.md). In addition, TiDB supports the following window functions:
 
 | Function name | Feature description |
 | :-------------- | :------------------------------------- |

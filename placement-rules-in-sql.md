@@ -102,19 +102,21 @@ Rules that are attached to objects are applied *asynchronously*. To view the cur
 
 > **Note:**
 >
-> Placement options depend on labels correctly specified in the configuration of each TiKV node. For example, the `PRIMARY_REGION` option depends on the `region` label in TiKV. To see a summary of all labels available in your TiKV cluster, use the statement [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md):
+> - Placement options depend on labels correctly specified in the configuration of each TiKV node. For example, the `PRIMARY_REGION` option depends on the `region` label in TiKV. To see a summary of all labels available in your TiKV cluster, use the statement [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md):
 >
-> ```sql
-> mysql> show placement labels;
-> +--------+----------------+
-> | Key    | Values         |
-> +--------+----------------+
-> | disk   | ["ssd"]        |
-> | region | ["us-east-1"]  |
-> | zone   | ["us-east-1a"] |
-> +--------+----------------+
-> 3 rows in set (0.00 sec)
-> ```
+>    ```sql
+>    mysql> show placement labels;
+>    +--------+----------------+
+>    | Key    | Values         |
+>    +--------+----------------+
+>    | disk   | ["ssd"]        |
+>    | region | ["us-east-1"]  |
+>    | zone   | ["us-east-1a"] |
+>    +--------+----------------+
+>    3 rows in set (0.00 sec)
+>    ```
+>
+> - When you use `CREATE PLACEMENT POLICY` to create a placement policy, TiDB does not check whether the labels exist. Instead, TiDB performs the check when you attach the policy to a table.
 
 | Option Name                | Description                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|

@@ -481,13 +481,15 @@ You can view the statistics status using the following statements.
 
 You can use the `SHOW STATS_META` statement to view the total number of rows and the number of updated rows.
 
-The syntax of `ShowLikeOrWhereOpt` is as follows:
-
 {{< copyable "sql" >}}
 
 ```sql
-SHOW STATS_META [ShowLikeOrWhere]
+SHOW STATS_META [ShowLikeOrWhere];
 ```
+
+The syntax of `ShowLikeOrWhereOpt` is as follows:
+
+![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 
@@ -508,13 +510,17 @@ Currently, the `SHOW STATS_META` statement returns the following 6 columns:
 
 You can use the `SHOW STATS_HEALTHY` statement to check the health state of tables and roughly estimate the accuracy of the statistics. When `modify_count` >= `row_count`, the health state is 0; when `modify_count` < `row_count`, the health state is (1 - `modify_count`/`row_count`) * 100.
 
+The syntax is as follows:
+
+{{< copyable "sql" >}}
+
+```sql
+SHOW STATS_HEALTHY [ShowLikeOrWhere];
+```
+
 The synopsis of `SHOW STATS_HEALTHY` is:
 
 ![ShowStatsHealthy](/media/sqlgram/ShowStatsHealthy.png)
-
-and the synopsis of the `ShowLikeOrWhereOpt` part is:
-
-![ShowLikeOrWhereOpt](/media/sqlgram/ShowLikeOrWhereOpt.png)
 
 Currently, the `SHOW STATS_HEALTHY` statement returns the following 4 columns:
 

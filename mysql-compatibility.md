@@ -78,6 +78,10 @@ mysql> SELECT _tidb_rowid, id FROM t;
 3 rows in set (0.01 sec)
 ```
 
+> **Note:**
+>
+> The `AUTO_INCREMENT` attribute might cause hotspot in production environments. See [Troubleshoot HotSpot Issues](/troubleshoot-hot-spot-issues.md) for details. It is recommended to use [`AUTO_RANDOM`](/auto-random.md) instead.
+
 ### Performance schema
 
 TiDB uses a combination of [Prometheus and Grafana](/tidb-monitoring-api.md) to store and query the performance monitoring metrics. Performance schema tables return empty results in TiDB.
