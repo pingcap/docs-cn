@@ -170,7 +170,7 @@ TiDB 版本：5.4.0
 
     支持使用 [Raft Engine](https://github.com/tikv/raft-engine) 作为 TiKV 的日志存储引擎。与使用 RocksDB 相比，Raft Engine 可以减少至多 40% 的 TiKV I/O 写流量和 10% 的 CPU 使用，同时在特定负载下提升 5% 左右前台吞吐，减少 20% 尾延迟。此外，Raft Engine 提升了日志回收效率，修复了极端条件下日志堆积的问题。
 
-    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级或者降级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
+    Raft Engine 目前仍属于实验特性，并默认关闭。另外请注意 v5.4.0 版本的 Raft Engine 数据格式与之前版本不兼容，对集群做升级操作之前，需要确保所有 TiKV 节点上的 Raft Engine 已被关闭。只建议在 v5.4.0 及以后的版本使用 Raft Engine。
 
     [用户文档](/tikv-configuration-file.md#raft-engine)
 
