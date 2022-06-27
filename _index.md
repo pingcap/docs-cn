@@ -85,7 +85,7 @@ summary: 了解 TiDB 数据库。
 - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
 - [热点问题处理](/troubleshoot-hot-spot-issues.md)
 - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
-- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)
 - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 
 </NavColumn>
