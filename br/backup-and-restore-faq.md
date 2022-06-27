@@ -225,3 +225,7 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 ## BR 备份恢复后监控显示磁盘使用空间不一致
 
 这个情况多数是因为备份时集群的数据压缩比率和恢复时的默认值不一致导致的，只要恢复的 checksum 阶段顺利通过，可以忽略这个问题，不影响正常使用。
+
+## 恢复 Placement Rule 到集群时为什么会报错？
+
+BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.0.0 及以上版本开始支持并提供了命令行选项 `--with-tidb-placement-mode=strict/ignore` 来控制放置规则的导入模式。默认值为 `strict`，代表导入并检查放置规则，当`--with-tidb-placement-mode` 设置为 `ignore` 时，BR 会忽略所有的放置规则。
