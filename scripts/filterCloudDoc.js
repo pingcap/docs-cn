@@ -1,8 +1,14 @@
 import {
   getAllMdList,
   copySingleFileSync,
-  copyDirectorySync,
+  copyFileWithCustomContentSync,
+  copyDirectoryWithCustomContentSync,
+  removeCustomContent,
 } from "./utils.js";
+
+const contentHandler = (content = "") => {
+  return removeCustomContent("tidb-cloud", content);
+};
 
 const extractFilefromList = (
   fileList = [],
@@ -10,7 +16,11 @@ const extractFilefromList = (
   outputPath = "."
 ) => {
   fileList.forEach((filePath) => {
-    copySingleFileSync(`${inputPath}/${filePath}`, `${outputPath}/${filePath}`);
+    copyFileWithCustomContentSync(
+      `${inputPath}/${filePath}`,
+      `${outputPath}/${filePath}`,
+      contentHandler
+    );
   });
 };
 
@@ -19,7 +29,11 @@ const main = () => {
 
   extractFilefromList(filteredLinkList, ".", "./tmp");
   copySingleFileSync("TOC-tidb-cloud.md", "./tmp/TOC.md");
-  copyDirectorySync("./tidb-cloud/", "./tmp/tidb-cloud/");
+  copyDirectoryWithCustomContentSync(
+    "./tidb-cloud/",
+    "./tmp/tidb-cloud/",
+    contentHandler
+  );
 };
 
 main();
