@@ -22,7 +22,6 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/']
 
     你可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
 
-
     ```
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1# 查看集群状态
     tiup status

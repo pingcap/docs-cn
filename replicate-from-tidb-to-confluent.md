@@ -4,7 +4,7 @@ summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud。
 aliases: ['/zh/tidb/dev/integrate-confluent-using-ticdc/']
 ---
 
-# 从 TiDB 同步数据到 Confluent Cloud
+# 从 TiDB 同步数据至 Confluent Cloud
 
 Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存储和管理连续的实时流数据，具备丰富的数据集成能力。自 v6.1.0 开始，TiCDC 支持将增量变更数据以 Avro 格式输出到 Confluent。本文档介绍如何使用 TiCDC 将 TiDB 的增量数据同步到 Confluent Cloud，并借助 Confluent Cloud 的能力最终将数据分别同步到 ksqlDB、Snowflake、SQL Server。主要内容包括：
 
@@ -29,7 +29,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     tiup status
     ```
 
-    如果 TiUP 尚未安装，可以参考[安装 TiUP](/tiup/tiup-overview.md)。在生产环境下，可以参考[ TiUP 安装部署 TiCDC 集群](/ticdc/deploy-ticdc.md)，完成 TiCDC 集群部署工作。
+    如果 TiUP 尚未安装，可以参考[安装 TiUP](/tiup/tiup-overview.md)。在生产环境下，可以参考 [TiUP 安装部署 TiCDC 集群](/ticdc/deploy-ticdc.md)，完成 TiCDC 集群部署工作。
 
 2. 注册 Confluent Cloud 并创建 Confluent 集群。
 
