@@ -114,6 +114,13 @@
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
+- 数据同步
+  - [数据同步综述](/replicatation-overview.md)
+  - [同步工具](/replication-tools.md)
+  - 数据同步场景
+    - [从 TiDB 同步至 Confluent Cloud](/replicate-from-tidb-to-confluent.md)
+    - [从 TiDB 同步至 Apache Kafka 和 Apache Flink](/replicate-from-tidb-to-kafka-flink.md)
+    - [从 TiDB 同步至与 MySQL 兼容的数据库](/replicate-from-tidb-to-mysql.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
