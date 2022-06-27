@@ -1,11 +1,5 @@
 ---
-<<<<<<< HEAD
-title: TiCDC 常见问题和故障处理
-=======
 title: TiCDC 故障处理
-summary: 了解如何解决使用 TiCDC 时经常遇到的问题。
-aliases: ['/docs-cn/dev/ticdc/troubleshoot-ticdc/','/docs-cn/dev/reference/tools/ticdc/troubleshoot/']
->>>>>>> 9c21cbcf2 (ticdc: adjust TOC and reorganize troubleshooting & faq (#9945))
 ---
 
 # TiCDC 故障处理
