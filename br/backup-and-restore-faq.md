@@ -229,11 +229,11 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.0.0 及以上版本开始支持并提供了命令行选项 `--with-tidb-placement-mode=strict/ignore` 来控制放置规则的导入模式。默认值为 `strict`，代表导入并检查放置规则，当`--with-tidb-placement-mode` 设置为 `ignore` 时，BR 会忽略所有的放置规则。
 
-## BR 报 `new_collations_enabled_on_first_bootstrap` 不匹配，该如何处理？
+## BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？
 
 从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
 
 如果需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要检查上下游集群中的该配置项是否相同：
 
 - 若该配置项相同，则可在恢复命令中添加 `--check-requirements=false` 以跳过此项配置检查。
-- 若该配置项不相同，且进行强行恢复，BR 会报[数据校验错误](/br/backup-and-restore-tool.md#使用限制)。
+- 若该配置项不相同，且进行强行恢复，BR 会报数据校验错误。
