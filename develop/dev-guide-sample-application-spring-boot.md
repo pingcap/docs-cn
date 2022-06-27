@@ -200,8 +200,8 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
     ```xml
     <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
     </dependency>
     ```
 
@@ -211,14 +211,14 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
     ```xml
     <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-    <exclusions>
-        <exclusion>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core-jakarta</artifactId>
-        </exclusion>
-    </exclusions>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-jpa</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core-jakarta</artifactId>
+            </exclusion>
+        </exclusions>
     </dependency>
     ```
 
@@ -228,9 +228,9 @@ aliases: ['/zh/tidb/dev/sample-application-spring-boot']
 
     ```xml
     <dependency>
-    <groupId>org.hibernate.orm</groupId>
-    <artifactId>hibernate-core</artifactId>
-    <version>6.0.0.CR2</version>
+        <groupId>org.hibernate.orm</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>6.0.0.CR2</version>
     </dependency>
     ```
 
