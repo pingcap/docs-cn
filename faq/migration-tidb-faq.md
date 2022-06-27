@@ -166,7 +166,7 @@ No. None of the DDL operations can be executed on the target table when you load
 
 ### Does TiDB support the `replace into` syntax?
 
-Yes. But the `load data` does not support the `replace into` syntax.
+Yes.
 
 ### Why does the query speed getting slow after deleting data?
 
