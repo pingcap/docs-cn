@@ -339,10 +339,10 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：6291456
 + 单位：Byte
 + 事务中单个 key-value 记录的大小限制。若超出该限制，TiDB 将会返回 `entry too large` 错误。该配置项的最大值不超过 `125829120`（表示 120MB）。
+
 > **注意：**
 >
 > 当需要调整 `txn-entry-size-limit` 时，仍然需要同时调整下面两个参数为了让 tikv 之间的通信不受到影响：[`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size)、[`max-grpc-send-msg-len`](/tikv-configuration-file.md#max-grpc-send-msg-len) 。
-
 
 ### `txn-total-size-limit`
 
