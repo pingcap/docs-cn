@@ -15,6 +15,7 @@ TiDB 版本：5.3.2
     (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
 
 + PD
+
      (dup: release-6.1.0.md > 改进提升> PD)- 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
 
 ## 提升改进
