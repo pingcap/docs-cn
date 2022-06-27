@@ -63,10 +63,10 @@ TiDB 版本：5.3.2
 
 + TiKV
 
-    - 修复了 PD Client 频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
-    - 修复了 datetime 类型的数据包含小数部分和 'Z' 后缀导致检查报错的问题 [#12739](https://github.com/tikv/tikv/issues/12739)
+    - 修复了 PD 客户端频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
+    - 修复了 `DATETIME` 类型的数据包含小数部分和 `Z` 后缀导致检查报错的问题 [#12739](https://github.com/tikv/tikv/issues/12739)
     - 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673)
-    - 修复了在悲观事务中使用 async-commit 导致重复的提交记录的问题 [#12615](https://github.com/tikv/tikv/issues/12615)
+    - 修复了在悲观事务中使用 Async Commit 导致重复提交记录的问题 [#12615](https://github.com/tikv/tikv/issues/12615)
     (dup: release-6.1.0.md > 错误修复> TiKV)- 修复进行 Follower Read 时，可能会报 `invalid store ID 0` 错误的问题 [#12478](https://github.com/tikv/tikv/issues/12478)
     (dup: release-6.1.0.md > 错误修复> TiKV)- 修复销毁 peer 和批量分裂 Region 之间的竞争导致的 TiKV panic [#12368](https://github.com/tikv/tikv/issues/12368)
     (dup: release-5.4.1.md > Bug 修复> TiKV)- 修复网络出现问题的情况下，已成功提交的乐观事务可能报 `Write Conflict` 错误的问题 [#34066](https://github.com/pingcap/tidb/issues/34066)
