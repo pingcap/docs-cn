@@ -449,4 +449,5 @@ tiup cluster display tidb-test
 如果你已同时部署了 [TiCDC](/ticdc/ticdc-overview.md)，接下来可参阅以下文档：
 
 - [TiCDC 任务管理](/ticdc/manage-ticdc.md)
-- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 常见问题](/ticdc/ticdc-faq.md)

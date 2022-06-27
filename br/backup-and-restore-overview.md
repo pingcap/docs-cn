@@ -24,10 +24,10 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 ### 对 TiDB 集群进行备份
 
-- **集群快照备份**：TiDB 集群快照数据只包含某个物理时间点上集群的最新的，满足事务一致性的所有数据。BR 支持备份集群快照数据，使用请参考[备份 TiDB 集群快照](/br/br-usage-backup.md#备份-tidb-集群快照)。
+- **集群快照备份**：TiDB 集群快照数据只包含某个物理时间点上集群满足事务一致性的所有数据。BR 支持备份集群快照数据，使用请参考[备份 TiDB 集群快照](/br/br-usage-backup.md#备份-tidb-集群快照)。
 - **集群增量备份**：TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的变化差异的数据。 增量数据相对比全量数据而言数据量更小，适合配合快照备份一起使用，减少备份的数据量。使用请参考[备份 TiDB 集群增量数据](/br/br-usage-backup.md#备份-tidb-集群增量数据)。
 - **只备份指定库表**：BR 支持在快照备份和增量数据备份的基础上，过滤掉不需要的备份数据，帮助用户实现只备份关键业务的数据。使用请参考[备份 TiDB 集群的指定库表的数据](/br/br-usage-backup.md#备份-tidb-集群的指定库表的数据)。
-- **备份数据加密**： BR 支持在备份端，或备份到 Amazon S3 的时候在存储服务端，进行备份数据加密，用户可以根据自己情况选择其中一种使用。使用请参考[备份数据加密](/br/br-usage-backup.md#备份数据加密)。
+- **备份数据加密**： BR 支持备份数据加密和 Amazon S3 服务端加密，用户可以根据自己情况选择其中一种使用。使用请参考[备份数据加密](/br/br-usage-backup.md#备份数据加密)。
 
 #### 备份对性能的影响
 
@@ -74,7 +74,7 @@ BR 和 TiDB 集群的兼容性问题分为两方面：
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
 | 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 `tidb_enable_clustered_index` 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
-| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/br/backup-and-restore-faq.md#br-为什么会报-new_collations_enabled_on_first_bootstrap-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 
 在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
