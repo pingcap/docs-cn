@@ -407,9 +407,10 @@
       - [处理告警](/dm/dm-handle-alerts.md)
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
-        - 架构组件
+        - 架构及组件原理
           - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [Checkpoint](/dm/dm-checkpoint.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
           - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
