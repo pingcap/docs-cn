@@ -15,7 +15,6 @@ aliases: ['/docs-cn/dev/faq/migration-tidb-faq/']
 - [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)
 - [Data Migration 常见问题](/dm/dm-faq.md)
 - [TiCDC 常见问题](/ticdc/ticdc-faq.md)
-- [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)
 
 ## 全量数据导出导入
 
