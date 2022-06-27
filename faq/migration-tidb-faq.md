@@ -13,7 +13,7 @@ For the frequently asked questions about migration-related tools, click the corr
 - [TiDB Binlog FAQ](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)
 - [TiDB Data Migration (DM) FAQs](/dm/dm-faq.md)
-- [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC FAQs](/ticdc/ticdc-faq.md)
 
 ## Full data export and import
 

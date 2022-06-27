@@ -432,3 +432,4 @@ If you have deployed [TiCDC](/ticdc/ticdc-overview.md) along with the TiDB clust
 
 - [Manage TiCDC Cluster and Replication Tasks](/ticdc/manage-ticdc.md)
 - [Troubleshoot TiCDC](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC FAQs](/ticdc/ticdc-faq.md)

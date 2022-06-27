@@ -255,7 +255,7 @@ After setting up the environment, you can use the backup and restore functions o
 
 3. Enable GC.
 
-    In incremental migration using TiCDC, GC only removes history data that is replicated. Therefore, after creating a changefeed, you need to run the following command to enable GC. For details, see [What is the complete behavior of TiCDC garbage collection (GC) safepoint?](/ticdc/troubleshoot-ticdc.md#what-is-the-complete-behavior-of-ticdc-garbage-collection-gc-safepoint).
+    In incremental migration using TiCDC, GC only removes history data that is replicated. Therefore, after creating a changefeed, you need to run the following command to enable GC. For details, see [What is the complete behavior of TiCDC garbage collection (GC) safepoint?](/ticdc/ticdc-faq.md#what-is-the-complete-behavior-of-ticdc-garbage-collection-gc-safepoint).
 
     {{< copyable "sql" >}}
 
