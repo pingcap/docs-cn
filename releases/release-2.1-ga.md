@@ -208,7 +208,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
     - Add more built-in functions
 
-    - [Add Coprocessor `ReadPool` to improve the concurrency in processing the requests](https://github.com/tikv/rfcs/blob/master/text/2017-12-22-read-pool.md)
+    - [Add Coprocessor `ReadPool` to improve the concurrency in processing the requests](https://github.com/tikv/rfcs/blob/master/text/0010-read-pool.md)
 
     - Fix the time function parsing issue and the time zone related issues
 
@@ -220,7 +220,7 @@ On November 30, 2018, TiDB 2.1 GA is released. See the following updates in this
 
     - Fold the continuous Rollback records to ensure the read performance
 
-    - [Add the `UnsafeDestroyRange` API to support to collecting space for the dropping table/index](https://github.com/tikv/rfcs/blob/master/text/2018-08-29-unsafe-destroy-range.md)
+    - [Add the `UnsafeDestroyRange` API to support to collecting space for the dropping table/index](https://github.com/tikv/rfcs/blob/master/text/0002-unsafe-destroy-range.md)
 
     - Separate the GC module to reduce the impact on write
 

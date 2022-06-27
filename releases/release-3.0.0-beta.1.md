@@ -54,7 +54,7 @@ On March 26, 2019, TiDB 3.0.0 Beta.1 is released. The corresponding TiDB Ansible
     - Support managing the sending binlog strategy by using the configuration file [#9864](https://github.com/pingcap/tidb/pull/9864)
     - Support querying the slow log by using the `INFORMATION_SCHEMA.SLOW_QUERY` memory table [#9290](https://github.com/pingcap/tidb/pull/9290)
     - Change the MySQL version displayed in TiDB from 5.7.10 to 5.7.25 [#9553](https://github.com/pingcap/tidb/pull/9553)
-    - Unify the [log format](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md) for easy collection and analysis by tools
+    - Unify the [log format](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md) for easy collection and analysis by tools
     - Add the `high_error_rate_feedback_total` monitoring item to record the difference between the actual data volume and the estimated data volume based on statistics [#9209](https://github.com/pingcap/tidb/pull/9209)
     - Add the QPS monitoring item in the database dimension, which can be enabled by using a configuration item [#9151](https://github.com/pingcap/tidb/pull/9151)
 + DDL
