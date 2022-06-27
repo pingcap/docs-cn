@@ -1,9 +1,9 @@
 ---
-title: 常见问题解答
+title: TiCDC 常见问题解答
 summary: 了解 TiCDC 相关的常见问题。
 ---
 
-# 常见问题解答
+# TiCDC 常见问题解答
 
 本文档总结了使用 TiCDC 时经常遇到的问题。
 
