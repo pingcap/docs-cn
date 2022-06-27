@@ -60,20 +60,20 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 
 | 函数                     | 功能描述 |
 | --------------------------------- | ----------- |
+| [JSON_PRETTY(json_doc)][json_pretty] |格式化 JSON 文档 |
 | [JSON_STORAGE_SIZE(json_doc)][json_storage_size] | 返回存储 JSON 值所需的大致字节大小，由于不考虑 TiKV 压缩的字节大小，因此函数的输出与 MySQL 不严格兼容 |
 
 ## 聚合函数
 
 | 函数                    | 功能描述 |
 | --------------------------------- | ----------- |
-| [JSON_OBJECTAGG(key, value)][json_objectagg] | 提供给定键的值的聚合 |
+| [JSON_OBJECTAGG(key, value)][json_objectagg] | 提供给定两列键值对的聚合 |
 
 ## 未支持的函数
 
 TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://github.com/pingcap/tidb/issues/7546):
 
 * `JSON_MERGE_PATCH`
-* `JSON_PRETTY`
 * `JSON_ARRAYAGG`
 
 ## 另请参阅
@@ -130,3 +130,9 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
 
 [json_array_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
+
+[json_objectagg]: https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg
+
+[json_pretty]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty
+
+[json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size
