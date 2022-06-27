@@ -263,7 +263,7 @@ spring:
 若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
 ```
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 ```
 
 那么此处应将参数更改为：
@@ -271,7 +271,7 @@ mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.
 ```yaml
 spring:
   datasource:
-    url: jdbc:mysql://tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com:4000/test
+    url: jdbc:mysql://xxx.tidbcloud.com:4000/test
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
