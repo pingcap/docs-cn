@@ -488,7 +488,7 @@
     - [常见问题解答](/ticdc/ticdc-faq.md)
     - [监控指标](/ticdc/monitor-ticdc.md)
     - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - [参考指南]
+    - 参考指南
       - [TiCDC Open API](/ticdc/ticdc-open-api.md)
       - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
       - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
