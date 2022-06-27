@@ -488,11 +488,19 @@ Configuration items related to Raftstore.
 
 ### `raft-base-tick-interval`
 
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
+
 + The time interval at which the Raft state machine ticks
 + Default value: `"1s"`
 + Minimum value: greater than `0`
 
 ### `raft-heartbeat-ticks`
+
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
 
 + The number of passed ticks when the heartbeat is sent. This means that a heartbeat is sent at the time interval of `raft-base-tick-interval` * `raft-heartbeat-ticks`.
 + Default value: `2`
@@ -500,11 +508,19 @@ Configuration items related to Raftstore.
 
 ### `raft-election-timeout-ticks`
 
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
+
 + The number of passed ticks when Raft election is initiated. This means that if Raft group is missing the leader, a leader election is initiated approximately after the time interval of `raft-base-tick-interval` * `raft-election-timeout-ticks`.
 + Default value: `10`
 + Minimum value: `raft-heartbeat-ticks`
 
 ### `raft-min-election-timeout-ticks`
+
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
 
 + The minimum number of ticks during which the Raft election is initiated. If the number is `0`, the value of `raft-election-timeout-ticks` is used. The value of this parameter must be greater than or equal to `raft-election-timeout-ticks`.
 + Default value: `0`
@@ -512,11 +528,19 @@ Configuration items related to Raftstore.
 
 ### `raft-max-election-timeout-ticks`
 
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
+
 + The maximum number of ticks during which the Raft election is initiated. If the number is `0`, the value of `raft-election-timeout-ticks` * `2` is used.
 + Default value: `0`
 + Minimum value: `0`
 
 ### `raft-max-size-per-msg`
+
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
 
 + The soft limit on the size of a single message packet
 + Default value: `"1MB"`
@@ -525,6 +549,10 @@ Configuration items related to Raftstore.
 + Unit: KB|MB|GB
 
 ### `raft-max-inflight-msgs`
+
+> **Note:**
+>
+> This configuration item cannot be queried via SQL statements but can be configured in the configuration file.
 
 + The number of Raft logs to be confirmed. If this number is exceeded, the Raft state machine slows down log sending.
 + Default value: `256`
