@@ -12,6 +12,9 @@ TiDB 版本：5.4.2
 
 ## 提升改进
 
++ PD
+    - 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
+
 ## Bug 修复
 
 + PingCAP/TiFlash
