@@ -8,7 +8,7 @@ from string import Template
 docs_cn_url = 'https://github.com/pingcap/docs-cn/pulls?q=is%3Apr'
 docs_url = 'https://github.com/pingcap/docs/pulls?q=is%3Apr'
 open_url = '+is%3Aopen+is%3Apr'
-close_url = '+is%3Amerged+label%3Atranslation%2Fdoing'
+close_url = '+is%3Aclosed+label%3Atranslation%2Fdoing'
 v61 = '+label%3Av6.1'
 type_compatibility_change = '+label%3Atype%2Fcompatibility-or-feature-change'
 type_oncall = '+label%3AONCALL'
