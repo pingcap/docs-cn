@@ -86,7 +86,7 @@ TiDB 版本：5.3.2
     (dup: release-6.1.0.md > Bug fixes> PD)- Fix the issue that a removed tombstone store appears again after the PD leader transfer ​​[#4941](https://github.com/tikv/pd/issues/4941)
     (dup: release-6.1.0.md > 错误修复> PD)- 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
     (dup: release-5.4.1.md > Bug 修复> PD)- 修复存在较大空间 Store 时（例如 2T），无法检测满的小空间 Store，从而无法进行平衡调度的问题 [#4805](https://github.com/tikv/pd/issues/4805)
-    - 修复 `SchedulerMaxWaitingOperator ` 设置为 1 时，不产生调度的问题 [#4946](https://github.com/tikv/pd/issues/4946)
+    - 修复 `SchedulerMaxWaitingOperator` 设置为 `1` 时不产生调度的问题 [#4946](https://github.com/tikv/pd/issues/4946)
     (dup: release-5.4.1.md > Bug Fixes> PD)- Fix the issue that the label distribution has residual labels in the metrics [#4825](https://github.com/tikv/pd/issues/4825)
 
 + TiFlash
