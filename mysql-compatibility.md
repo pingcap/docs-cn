@@ -91,7 +91,11 @@ TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控
 
 ### 查询计划
 
-`EXPLAIN`/`EXPLAIN FOR` 输出格式、内容、权限设置与 MySQL 有比较大的差别，参见[理解 TiDB 执行计划](/explain-overview.md)。
+TiDB 中，执行计划（`EXPLAIN` 和 `EXPLAIN FOR`）在输出格式、内容、权限设置方面与 MySQL 有较大差别。
+
+MySQL 系统变量 `optimizer_switch` 在 TiDB 中是只读的，对查询计划没有影响。你还可以在 [optimizer hints](/optimizer-hints.md) 中使用与 MySQL 类似的语法，但可用的 hint 和实现原理可能会有所不同。
+
+详情参见[理解 TiDB 执行计划](/explain-overview.md)。
 
 ### 内建函数
 
