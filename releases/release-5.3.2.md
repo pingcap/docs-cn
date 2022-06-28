@@ -46,7 +46,7 @@ TiDB 版本：5.3.2
 
 + TiDB
 
-    (dup: release-6.0.0-dmr.md > Bug fixes> Tools> Dumpling)- Fix the issue that Amazon S3 cannot correctly calculate the size of compressed data [#30534](https://github.com/pingcap/tidb/issues/30534)
+    (dup: release-6.0.0-dmr.md > Bug fixes> Tools> Dumpling)- 修复了 Amazon S3 无法正确计算压缩数据大小的问题 [#30534](https://github.com/pingcap/tidb/issues/30534)
     (dup: release-5.4.0.md > Bug 修复> TiDB)- 修复乐观事务下数据索引可能不一致的问题 [#30410](https://github.com/pingcap/tidb/issues/30410)
     (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复当 SQL 语句中存在 JSON 类型列与 `CHAR` 类型列连接时，SQL 出错的问题 [#29401](https://github.com/pingcap/tidb/issues/29401)
     - 如果发生网络连接问题，TiDB 并不总是能正确释放已断开会话所占有的资源。该修复可以确保 TiDB 回滚打开的事务以及释放其他相关资源。[#34722](https://github.com/pingcap/tidb/issues/34722)
