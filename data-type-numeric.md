@@ -154,14 +154,14 @@ The meaning of the fields:
 
 | Syntax Element | Description |
 | -------- | ------------------------------- |
-| M | the total number of digits |
+| M | the total number of decimal digits  |
 | D | the number of digits after the decimal point |
 | UNSIGNED | UNSIGNED. If omitted, it is SIGNED. |
 | ZEROFILL | If you specify ZEROFILL for a numeric column, TiDB automatically adds the UNSIGNED attribute to the column. |
 
 ### `DECIMAL` type
 
-`DECIMAL` and its alias `NUMERIC` stores a packed "exact" fixed-point number. M is the total number of digits (the precision, the number of integer digits + the number of decimal digits), and D is the number of digits after the decimal point (the scale). The decimal point and (for negative numbers) the - sign are not counted in M. If D is 0, values have no decimal point or fractional part. The maximum number of digits (M) for DECIMAL is 65. The maximum number of supported decimals (D) is 30. If D is omitted, the default is 0. If M is omitted, the default is 10.
+`DECIMAL` and its alias `NUMERIC` store a packed "exact" fixed-point number. M is the total number of decimal digits (the precision), and D is the number of digits after the decimal point (the scale). The decimal point and (for negative numbers) the - sign are not counted in M. If D is 0, values have no decimal point or fractional part. The maximum number of digits (M) for DECIMAL is 65. The maximum number of supported decimals (D) is 30. If D is omitted, the default is 0. If M is omitted, the default is 10.
 
 ```sql
 DECIMAL[(M[,D])] [UNSIGNED] [ZEROFILL]
