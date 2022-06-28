@@ -13,3 +13,7 @@ TiDB 版本：5.4.2
 ## 提升改进
 
 ## Bug 修复
+
++ PingCAP/TiFlash
+    <!--compute-->
+    - 修复因为溢出导致的 Decimal 比较结果错误. [#4512](https://github.com/pingcap/tiflash/issues/4512)
