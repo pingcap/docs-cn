@@ -115,7 +115,7 @@
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
 - 数据集成
-  - [数据集成综述](/replicatation-overview.md)
+  - [数据集成综述](/replication-overview.md)
   - [同步工具](/replication-tools.md)
   - 数据集成场景
     - [与 Confluent Cloud 进行数据集成](/replicate-from-tidb-to-confluent.md)
