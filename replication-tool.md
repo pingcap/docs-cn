@@ -1,16 +1,16 @@
 ---
-title: 数据同步工具
-summary: 了解数据同步工具 TiCDC 的原理、架构和功能。
+title: 数据集成工具
+summary: 了解数据集成工具 TiCDC 的原理、架构和功能。
 ---
 
-# 数据同步工具
+# 数据集成工具
 
-[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款 TiDB 增量数据同步工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。
+[TiCDC](https://github.com/pingcap/tiflow/tree/master/cdc) 是一款 TiDB 增量数据复制工具，通过拉取上游 TiKV 的数据变更日志，TiCDC 可以将数据解析为有序的行级变更数据输出到下游。
 
 ## TiCDC 适用场景
 
 - 数据库灾备：TiCDC 可以用于同构数据库之间的灾备场景，能够在灾难发生时保证主备集群数据的最终一致性，目前该场景仅支持 TiDB 作为主备集群。
-- 数据集成：TiCDC 提供 [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)，支持其他系统订阅数据变更，能够为监控、缓存、全文索引、数据分析、异构数据库的主从复制等场景提供数据源。
+- 数据集成：TiCDC 提供 [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)、[AVRO](/ticdc/ticdc-avro-protocol.md)，支持其他系统订阅数据变更，能够为监控、缓存、全文索引、数据分析、异构数据库的主从复制等场景提供数据源。
 
 ## TiCDC 架构
 
@@ -19,17 +19,6 @@ TiCDC 运行时是一种无状态节点，通过 PD 内部的 etcd 实现高可�
 TiCDC 的系统架构如下图所示：
 
 ![TiCDC architecture](/media/ticdc/cdc-architecture.png)
-
-### 系统角色
-
-- TiKV CDC 组件：只输出 key-value (KV) change log。
-    - 内部逻辑拼装 KV change log。
-    - 提供输出 KV change log 的接口，发送数据包括实时 change log 和增量扫的 change log。
-
-- `capture`：TiCDC 运行进程，多个 `capture` 组成一个 TiCDC 集群，负责 KV change log 的同步。
-    - 每个 `capture` 负责拉取一部分 KV change log。
-    - 对拉取的一个或多个 KV change log 进行排序。
-    - 向下游还原事务或按照 TiCDC Open Protocol 进行输出。
 
 ## 同步功能介绍
 
@@ -40,7 +29,7 @@ TiCDC 的系统架构如下图所示：
 目前 TiCDC sink 模块支持同步数据到以下下游：
 
 - MySQL 协议兼容的数据库，提供最终一致性支持。
-- 以 TiCDC Open Protocol 输出到 Kafka，可实现行级别有序、最终一致性或严格事务一致性三种一致性保证。
+- 以 [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)、[AVRO](/ticdc/ticdc-avro-protocol.md) 格式输出到 Apache Kafka 或 Confluent。
 
 ### 同步顺序保证和一致性保证
 
@@ -49,7 +38,7 @@ TiCDC 的系统架构如下图所示：
 - TiCDC 对于所有的 DDL/DML 都能对外输出**至少一次**。
 - TiCDC 在 TiKV/TiCDC 集群故障期间可能会重复发相同的 DDL/DML。对于重复的 DDL/DML：
     - MySQL sink 可以重复执行 DDL，对于在下游可重入的 DDL （譬如 truncate table）直接执行成功；对于在下游不可重入的 DDL（譬如 create table），执行失败，TiCDC 会忽略错误继续同步。
-    - Kafka sink 会发送重复的消息，但重复消息不会破坏 Resolved Ts 的约束，用户可以在 Kafka 消费端进行过滤。
+    - Kafka sink 可能会发送重复的消息，对于大多数场景，这不会引发正确性问题。对重复消息敏感的业务，用户可以在 Kafka 消费端进行过滤。
 
 #### 数据同步一致性
 
@@ -64,7 +53,6 @@ TiCDC 的系统架构如下图所示：
 
     - TiCDC 提供不同的数据分发策略，可以按照表、主键或 ts 等策略分发数据到不同 Kafka partition。
     - 不同分发策略下 consumer 的不同实现方式，可以实现不同级别的一致性，包括行级别有序、最终一致性或跨表事务一致性。
-    - TiCDC 没有提供 Kafka 消费端实现，只提供了 [TiCDC 开放数据协议](/ticdc/ticdc-open-protocol.md)，用户可以依据该协议实现 Kafka 数据的消费端。
 
 ## TiCDC 使用限制
 

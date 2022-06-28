@@ -4,7 +4,7 @@ summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Apache Kafka 和 Apac
 aliases: ['/zh/tidb/dev/replicate-data-to-kafka/']
 ---
 
-# 从 TiDB 同步数据至 Apache Kafka 和 Apache Flink
+# 与 Apache Kafka 和 Apache Flink 进行数据集成
 
 本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的数据同步到 Apache Kafka。主要包含以下内容：
 

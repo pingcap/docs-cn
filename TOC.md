@@ -108,19 +108,18 @@
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
-    - [从 TiDB 同步数据至 Apache Kafka](/replicate-data-to-kafka.md)
+    - [从 TiDB 集群迁移数据至 MySQL 兼容数据库](/replicate-from-tidb-to-mysql.md)
   - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
-- 数据同步
-  - [数据同步综述](/replicatation-overview.md)
+- 数据集成
+  - [数据集成综述](/replicatation-overview.md)
   - [同步工具](/replication-tools.md)
-  - 数据同步场景
-    - [从 TiDB 同步至 Confluent Cloud](/replicate-from-tidb-to-confluent.md)
-    - [从 TiDB 同步至 Apache Kafka 和 Apache Flink](/replicate-from-tidb-to-kafka-flink.md)
-    - [从 TiDB 同步至与 MySQL 兼容的数据库](/replicate-from-tidb-to-mysql.md)
+  - 数据集成场景
+    - [与 Confluent Cloud 进行数据集成](/replicate-from-tidb-to-confluent.md)
+    - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-from-tidb-to-kafka-flink.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
