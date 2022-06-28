@@ -93,13 +93,13 @@ TiDB 版本：5.3.2
 
     (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复错误地配置存储目录会导致非预期行为的问题 [#4093](https://github.com/pingcap/tiflash/issues/4093)
     (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复 TiFlash 节点上遗留了与 Region range 不匹配的数据的问题 [#4414](https://github.com/pingcap/tiflash/issues/4414)
-    - 修复在添加一些 `NOT NULL` 的列时报错的问题 [#4596](https://github.com/pingcap/tiflash/issues/4596)
-    - 修复在重启过程中出现 `commit state jump backward` 错误的问题 [#2576](https://github.com/pingcap/tiflash/issues/2576)
+    - 修复在添加一些 `NOT NULL` 的列时报 `TiFlash_schema_error` 的问题 [#4596](https://github.com/pingcap/tiflash/issues/4596)
+    - 修复由于 `commit state jump backward` 错误导致 TiFlash 反复崩溃的问题 [#2576](https://github.com/pingcap/tiflash/issues/2576)
     (dup: release-6.1.0.md > 错误修复> TiFlash)- 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
     (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复启用本地隧道时取消 MPP 查询可能导致任务永远挂起的问题 [#4229](https://github.com/pingcap/tiflash/issues/4229)
     - 修复 TiFlash 使用远程读时可能会误报集群 TiFlash 版本不一致的问题 [#3713](https://github.com/pingcap/tiflash/issues/3713)
-    - 修复 MPP query 会随机碰到 grpc keepalive timeout 导致 query 失败的问题 [#4662](https://github.com/pingcap/tiflash/issues/4662)
-    - 修复 MPP exchange receiver 如果出现大量重试可能会导致 query hang 住的问题 [#3473](https://github.com/pingcap/tiflash/pull/3473)
+    - 修复 MPP query 会随机碰到 gRPC keepalive timeout 导致 query 失败的问题 [#4662](https://github.com/pingcap/tiflash/issues/4662)
+    - 修复 MPP exchange receiver 如果出现大量重试可能会导致 query hang 的问题 [#3473](https://github.com/pingcap/tiflash/pull/3473)
     (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复将 `DATETIME` 转换为 `DECIMAL` 时结果错误的问题 [#4151](https://github.com/pingcap/tiflash/issues/4151)
     (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复将 `FLOAT` 类型转换为 `DECIMAL` 类型可能造成溢出的问题 [#3998](https://github.com/pingcap/tiflash/issues/3998)
     - 修复 `json_length` 对空字符串可能会报 `index out of bounds` 错误的问题 [#2705](https://github.com/pingcap/tiflash/issues/2705)
@@ -107,7 +107,7 @@ TiDB 版本：5.3.2
     (dup: release-5.4.1.md > Bug 修复> TiFlash)- 修复在执行带有 `JOIN` 的查询遇到错误时可能被挂起的问题 [#4195](https://github.com/pingcap/tiflash/issues/4195)
     (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复查询语句包含 `where <string>` 时查询结果出错的问题 [#3447](https://github.com/pingcap/tiflash/issues/3447)
     (dup: release-5.2.4.md > Bug 修复> TiFlash)- 修复 `CastStringAsReal` 在 TiFlash 的行为与在 TiDB、TiKV 的行为不一致的问题 [#3475](https://github.com/pingcap/tiflash/issues/3475)
-    - 修复 cast string to datetime 时，microsecond 结果可能不对的问题 [#3556](https://github.com/pingcap/tiflash/issues/3556)
+    - 修复 cast string to datetime 时，`microsecond` 结果可能不对的问题 [#3556](https://github.com/pingcap/tiflash/issues/3556)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix potential errors when querying on a table with many delete operations [#4747](https://github.com/pingcap/tiflash/issues/4747)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that TiFlash reports many "Keepalive watchdog fired" errors randomly [#4192](https://github.com/pingcap/tiflash/issues/4192)
     (dup: release-5.4.1.md > Bug Fixes> TiFlash)- Fix a bug that data not matching any region range remains on a TiFlash node [#4414](https://github.com/pingcap/tiflash/issues/4414)
@@ -131,7 +131,7 @@ TiDB 版本：5.3.2
         (dup: release-5.4.1.md > Bug Fixes> Tools> Backup & Restore (BR))- Fix the issue that BR does not retry enough times when Regions are not consistent during restoration [#33419](https://github.com/pingcap/tidb/issues/33419)
         (dup: release-6.0.0-dmr.md > Bug fixes> Tools> Backup & Restore (BR))- Fix a bug that BR gets stuck when the restore operation meets some unrecoverable errors [#33200](https://github.com/pingcap/tidb/issues/33200)
         (dup: release-5.4.1.md > Bug Fixes> Tools> Backup & Restore (BR))- Fix the issue that BR fails to back up RawKV [#32607](https://github.com/pingcap/tidb/issues/32607)
-        - Fix the issue that backup cannot handle s3 internal error. [#34350](https://github.com/pingcap/tidb/issues/34350)
+        - 修复 BR 无法处理 S3 内部错误的问题 [#34350](https://github.com/pingcap/tidb/issues/34350)
 
     + TiCDC
 
