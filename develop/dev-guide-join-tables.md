@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/join-tables']
 
 ## Join 类型
 
-此节将详细叙述 Join 的链接类型。
+此节将详细叙述 Join 的连接类型。
 
 ### 内连接 INNER JOIN
 
@@ -203,12 +203,6 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 右外连接返回右表中的所有记录，以及左表当中能够匹配连接条件的值，没有匹配的值则使用 `NULL` 填充。
 
 ![Right Outer Join](/media/develop/right-outer-join.png)
-
-### 全外连接 FULL OUTER JOIN
-
-全外连接将左表与右表的所有记录进行连接，只要左表或右表其中一个存在匹配，则返回该条记录。如果在另外一张表当中没有找到能够满足连接条件的值，则使用 `NULL` 填充。
-
-![Full Outer Join](/media/develop/full-outer-join.png)
 
 ### 交叉连接 CROSS JOIN
 
