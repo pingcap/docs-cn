@@ -47,7 +47,7 @@ On March 26, 2019, TiDB 3.0.0 Beta.1 is released. The corresponding TiDB Ansible
     - Support `CREATE ROLE` [#9461](https://github.com/pingcap/tidb/pull/9461)
 + Server
     - Add the `/debug/zip` HTTP interface to get information of the current TiDB instance [#9651](https://github.com/pingcap/tidb/pull/9651)
-    - Support the `show pump status` and `show drainer status` SQL statements to check the Pump or Drainer status [9456](https://github.com/pingcap/tidb/pull/9456)
+    - Support the `show pump status` and `show drainer status` SQL statements to check the Pump or Drainer status [#9456](https://github.com/pingcap/tidb/pull/9456)
     - Support modifying the Pump or Drainer status by using SQL statements [#9789](https://github.com/pingcap/tidb/pull/9789)
     - Support adding HASH fingerprints to SQL text for easy tracking of slow SQL statements [#9662](https://github.com/pingcap/tidb/pull/9662)
     - Add the `log_bin` system variable ("0" by default) to control the enabling state of binlog; only support checking the state currently [#9343](https://github.com/pingcap/tidb/pull/9343)
