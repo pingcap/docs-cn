@@ -122,9 +122,12 @@
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
-    - [使用 BR 备份集群](/br/br-usage-backup.md)
-    - [使用 BR 恢复集群](/br/br-usage-restore.md)
-    - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
+    - [备份与恢复综述](/br-overview.md)
+    - 物理备份与恢复
+      - [使用 BR 备份集群](/br/br-usage-backup.md)
+      - [使用 BR 恢复集群](/br/br-usage-restore.md)
+      - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
+    - [逻辑备份与恢复](/backup-and-restore-using-dumpling-and-lightning.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
