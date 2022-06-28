@@ -115,8 +115,8 @@
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
 - 数据同步
-  - [数据同步综述](/replicatation-overview.md)
-  - [同步工具](/replication-tools.md)
+  - [数据复制综述](/replication-overview.md)
+  - [复制工具](/replication-tool.md)
   - 数据同步场景
     - [从 TiDB 同步至 Confluent Cloud](/replicate-from-tidb-to-confluent.md)
     - [从 TiDB 同步至 Apache Kafka 和 Apache Flink](/replicate-from-tidb-to-kafka-flink.md)
