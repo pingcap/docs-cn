@@ -130,7 +130,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
         - Logical functions: `IS`, `IS NOT`
         - String functions: `REGEXP()`, `NOT REGEXP()`
         - Mathematical functions: `GREATEST(int/real)`, `LEAST(int/real)`
-        - Date functions: `DAYOFNAME()`, `DAYOFMONTH()`, `DAYOFWEEK()`, `DAYOFYEAR()`, `LAST_DAY()`, `MONTHNAME()`
+        - Date functions: `DAYNAME()`, `DAYOFMONTH()`, `DAYOFWEEK()`, `DAYOFYEAR()`, `LAST_DAY()`, `MONTHNAME()`
         - Operators: Anti Left Outer Semi Join, Left Outer Semi Join
 
         [User document](/tiflash/use-tiflash.md#supported-push-down-calculations)
