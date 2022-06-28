@@ -127,4 +127,3 @@ TiDB 支持对执行算子的数据落盘功能。当 SQL 的内存使用超过 
 - 当落盘被触发时，TiDB 会在日志中打印一条包含关键字 `memory exceeds quota, spill to disk now` 或 `memory exceeds quota, set aggregate mode to spill-mode` 的日志。
 - Sort、MergeJoin、HashJoin 落盘是从 v4.0.0 版本开始引入的。
 - 当包含 Sort、MergeJoin 或 HashJoin 的 SQL 语句引起内存 OOM 时，TiDB 默认会触发落盘。
-
