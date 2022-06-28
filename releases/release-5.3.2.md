@@ -40,7 +40,7 @@ TiDB 版本：5.3.2
 
     + TiDB Lightning
 
-        (dup: release-6.1.0.md > Improvements> Tools> TiDB Lightning)- Optimize Scatter Region to batch mode to improve the stability of the Scatter Region process [#33618](https://github.com/pingcap/tidb/issues/33618)
+        (dup: release-6.1.0.md > Improvements> Tools> TiDB Lightning)- 优化 Scatter Region 为批量模式，提升 Scatter Region 过程的稳定性 [#33618](https://github.com/pingcap/tidb/issues/33618)
 
 ## Bug 修复
 
@@ -158,6 +158,6 @@ TiDB 版本：5.3.2
 
     + TiDB Lightning
 
-        (dup: release-6.1.0.md > Bug fixes> Tools> TiDB Lightning)- Fix the issue of Local-backend import failure caused by out-of-bounds data in the `auto_increment` column [#27937](https://github.com/pingcap/tidb/issues/27937)
-        (dup: release-5.4.1.md > Bug Fixes> Tools> TiDB Lightning)- Fix the issue that the precheck does not check local disk resources and cluster availability [#34213](https://github.com/pingcap/tidb/issues/34213)
-        (dup: release-5.4.1.md > Bug Fixes> Tools> TiDB Lightning)- Fix the checksum error "GC life time is shorter than transaction duration" [#32733](https://github.com/pingcap/tidb/issues/32733)
+        (dup: release-6.1.0.md > Bug fixes> Tools> TiDB Lightning)- 修复由 `auto_increment` 列的数据越界导致 local 模式导入失败的问题 [#29737](https://github.com/pingcap/tidb/issues/27937)
+        (dup: release-5.4.1.md > Bug Fixes> Tools> TiDB Lightning)- 修复前置检查中没有检查本地磁盘空间以及集群是否可用的问题 [#34213](https://github.com/pingcap/tidb/issues/34213)
+        (dup: release-5.4.1.md > Bug Fixes> Tools> TiDB Lightning)- 修复了 checksum 报错 “GC life time is shorter than transaction duration” [#32733](https://github.com/pingcap/tidb/issues/32733)
