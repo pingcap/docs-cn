@@ -330,7 +330,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 ### 5.4 Grafana 显示问题
 
-- 5.4.1 监控 **Grafana** -> **PD** -> **cluster** -> **role** 显示 follower，Grafana 表达式问题，在 v3.0.8 版本修复，见 [#1065](https://github.com/pingcap/tidb-ansible/pull/1065)。详情请参考案例 [case-1022](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1022.md)。
+- 5.4.1 监控 **Grafana** -> **PD** -> **cluster** -> **role** 显示 follower，Grafana 表达式问题，在 v3.0.8 版本修复。
 
 ## 6. 生态 Tools 问题
 

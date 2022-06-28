@@ -160,7 +160,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+    mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
     ```
 
     那么此处应将参数更改为：
@@ -168,7 +168,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     {{< copyable "" >}}
 
     ```java
-    mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
+    mysqlDataSource.setServerName("xxx.tidbcloud.com");
     mysqlDataSource.setPortNumber(4000);
     mysqlDataSource.setDatabaseName("test");
     mysqlDataSource.setUser("root");

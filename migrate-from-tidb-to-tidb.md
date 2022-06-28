@@ -236,7 +236,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 3. 重新开启 GC。
 
-    TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md#ticdc-gc-safepoint-的完整行为是什么)。
+    TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 
     {{< copyable "sql" >}}
 
