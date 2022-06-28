@@ -154,7 +154,7 @@ TiDB 版本：5.3.2
         (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复了某些情况下，过滤 DDL 并在下游手动执行会导致同步任务不能自动重试恢复的问题 [#5272](https://github.com/pingcap/tiflow/issues/5272)
         (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复了在 `SHOW CREATE TABLE` 语句返回的索引中，主键没有排在第一位导致的 DM worker panic 的问题 [#5159](https://github.com/pingcap/tiflow/issues/5159)
         (dup: release-5.4.1.md > Bug 修复> Tools> TiDB Data Migration (DM))- 修复了当开启 GTID 模式或者任务自动恢复时，可能出现一段时间 CPU 占用高并打印大量日志的问题 [#5063](https://github.com/pingcap/tiflow/issues/5063)
-        - 修复了 v5.3.1 中重启 master 后 relay log 可能会被关闭的问题 [#4803](https://github.com/pingcap/tiflow/issues/4803)
+        - 修复了重启 DM-master 后 relay log 可能会被关闭的问题 [#4803](https://github.com/pingcap/tiflow/issues/4803)
 
     + TiDB Lightning
 
