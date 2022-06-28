@@ -203,12 +203,6 @@ A right outer join returns all the records in the right table and the values ​
 
 ![Right Outer Join](/media/develop/right-outer-join.png)
 
-### FULL OUTER JOIN
-
-A full outer join is based on all the records in the left table and the right table. Whether or not the join condition is met, it returns all the matching records when there is a match in the left table or the right table. If no value matches the join condition, it is filled with `NULL`.
-
-![Full Outer Join](/media/develop/full-outer-join.png)
-
 ### CROSS JOIN
 
 When the join condition is constant, the inner join between the two tables is called a [cross join](https://en.wikipedia.org/wiki/Join_(SQL)#Cross_join). A cross join joins every record of the left table to all the records of the right table. If the number of records in the left table is `m` and the number of records in the right table is `n`, then `m \* n` records will be generated in the result set.
