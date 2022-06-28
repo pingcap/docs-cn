@@ -129,7 +129,7 @@ TiUniManager 部署完成后，你可以通过 TiUniManager 创建 TiDB 集群�
 
 > **注意：**
 >
-> 删除集群同时将删除集群上自动备份的数据。如果需要某个备份数据，应在删除实例之前将该备份恢复到新实例上，数据恢复操作可参见 [TiUniManager 用户手册 - 备份管理-数据恢复](/tiunimanager/tiunimanager-manage-clusters.md#备份管理---数据恢复) 。
+> 删除集群同时将删除集群上自动备份的数据。如果需要某个备份数据，应在删除实例之前将该备份恢复到新实例上，数据恢复操作可参见[备份管理 - 数据恢复](/tiunimanager/tiunimanager-manage-clusters.md#备份管理---数据恢复) 。
 
 ### 操作步骤
 
