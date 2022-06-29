@@ -126,7 +126,7 @@ Go Version: go version go1.16.4 linux/amd64
 
 3. 应用补丁。
 
-    查询当前集群状态, 以名称为 `dm-test` 的集群为例：
+    查询当前集群状态，以名称为 `dm-test` 的集群为例：
 
     {{< copyable "shell-regular" >}}
 
