@@ -21,7 +21,6 @@ TiDB 版本：5.3.2
     - 减少 Raft 客户端的系统调用并提高 CPU 效率 [#11309](https://github.com/tikv/tikv/issues/11309)
     - 健康检查可以检测到无法正常工作的 Raftstore，使得 TiKV client 可以及时更新 Region Cache [#12398](https://github.com/tikv/tikv/issues/12398)
     - 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
-    (dup: release-5.3.0.md > 提升改进> TiKV> 增强磁盘空间防护能力，提升存储稳定性。)- 降低写入延迟，从 Raftstore 线程池中分离出 IO 线程池（默认不开启）。具体调优操作，请参考 [TiKV 线程池性能调优](/tune-tikv-thread-performance.md) [#10540](https://github.com/tikv/tikv/issues/10540)
     - 在 Raft 日志垃圾回收模块中添加了更多监控指标，从而定位该模块中出现的性能问题 [#11374](https://github.com/tikv/tikv/issues/11374)
 
 + Tools
