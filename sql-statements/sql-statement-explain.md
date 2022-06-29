@@ -245,8 +245,12 @@ The `xx.dot` is the result returned by the above statement.
 ## MySQL 兼容性
 
 * `EXPLAIN` 的格式和 TiDB 中潜在的执行计划都与 MySQL 有很大不同。
+<<<<<<< HEAD
 * TiDB 不像 MySQL 那样支持 `EXPLAIN FORMAT = JSON`。
 * TiDB 目前不支持插入语句的 `EXPLAIN`。
+=======
+* TiDB 不支持 `FORMAT=JSON` 或 `FORMAT=TREE` 选项。
+>>>>>>> 3490a79b2 (sql-statements: update claims on optimizer/explain compatibility (#10289))
 
 ## `EXPLAIN FOR CONNECTION`
 
