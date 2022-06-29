@@ -24,6 +24,11 @@ TiDB 版本：5.4.2
 
 ## Bug 修复
 
++ TiDB
+
+    - 修复在网络断连时，断连的会话资源可能没有清理的问题。[#34722](https://github.com/pingcap/tidb/issues/34722)
+    - 修复在查询包含 CTE 的视图时，可能误报 `references invalid table` 的问题。[#33965](https://github.com/pingcap/tidb/issues/33965)
+
 + TiKV
 
     - Fix the issue of unexpected `panic` on analyzed statistics when `max_sample_size` is set to `0`. [#11192](https://github.com/tikv/tikv/issues/11192)
