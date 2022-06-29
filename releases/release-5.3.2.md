@@ -10,6 +10,10 @@ TiDB 版本：5.3.2
 
 ## 兼容性变更
 
++ TiDB
+
+    - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
+
 + PD
 
     - 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
@@ -52,7 +56,6 @@ TiDB 版本：5.3.2
     - 修复 TiDB 可能向 TiFlash 发送重复任务的问题 [#32814](https://github.com/pingcap/tidb/issues/32814)
     - 修复 TiDB 的后台 HTTP 服务可能没有正确关闭导致集群状态异常的问题 [#30571](https://github.com/pingcap/tidb/issues/30571)
     - 修复 TiDB 由于 `fatal error: concurrent map read and map write` 发生崩溃的问题 [#35340](https://github.com/pingcap/tidb/issues/35340)
-    - 修复当 auto ID 超出范围时，`REPLACE` 语句错误地修改了其它行的问题 [#29483](https://github.com/pingcap/tidb/issues/29483)
 
 + TiKV
 
