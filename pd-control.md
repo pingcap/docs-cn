@@ -115,7 +115,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> cluster
+cluster
 ```
 
 ```
@@ -134,7 +134,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> config show
+config show
 ```
 
 ```
@@ -176,7 +176,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> config show all
+config show all
 ```
 
 显示 replication 的相关 config 信息：
@@ -184,7 +184,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> config show replication
+config show replication
 ```
 
 ```
@@ -202,7 +202,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> config show cluster-version
+config show cluster-version
 ```
 
 ```
@@ -467,7 +467,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> health
+health
 ```
 
 ```
@@ -494,7 +494,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> hot read
+hot read
 ```
 
 显示写热点信息：
@@ -502,7 +502,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> hot write
+hot write
 ```
 
 显示所有 store 的读写信息：
@@ -510,7 +510,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> hot store
+hot store
 ```
 
 显示历史读写热点信息:
@@ -592,7 +592,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> label
+label
 ```
 
 显示所有包含 label 为 "zone":"cn" 的 store：
@@ -600,7 +600,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> label store zone cn
+label store zone cn
 ```
 
 ### `member [delete | leader_priority | leader [show | resign | transfer <member_name>]]`
@@ -612,7 +612,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> member
+member
 ```
 
 ```
@@ -629,7 +629,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
 {{< copyable "" >}}
 
 ```bash
->> member delete name pd2
+member delete name pd2
 ```
 
 ```
@@ -641,7 +641,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> member delete id 1319539429105371180
+member delete id 1319539429105371180
 ```
 
 ```
@@ -653,7 +653,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> member leader show
+member leader show
 ```
 
 ```
@@ -670,7 +670,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> member leader resign
+member leader resign
 ```
 
 ```
@@ -682,7 +682,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> member leader transfer pd3
+member leader transfer pd3
 ```
 
 ```
@@ -698,7 +698,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> operator show                                        // 显示所有的 operators
+operator show                                        // 显示所有的 operators
 >> operator show admin                                  // 显示所有的 admin operators
 >> operator show leader                                 // 显示所有的 leader operators
 >> operator show region                                 // 显示所有的 Region operators
@@ -726,7 +726,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> ping
+ping
 ```
 
 ```
@@ -742,7 +742,7 @@ time: 43.12698ms
 {{< copyable "" >}}
 
 ```bash
->> region
+region
 ```
 
 ```
@@ -757,7 +757,7 @@ time: 43.12698ms
 {{< copyable "" >}}
 
 ```bash
->> region 2
+region 2
 ```
 
 ```
@@ -797,7 +797,7 @@ Hex 格式（默认）示例：
 {{< copyable "" >}}
 
 ```bash
->> region key 7480000000000000FF1300000000000000F8
+region key 7480000000000000FF1300000000000000F8
 {
   "region": {
     "id": 2,
@@ -811,7 +811,7 @@ Raw 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region key --format=raw abc
+region key --format=raw abc
 ```
 
 ```
@@ -828,7 +828,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region key --format=encode 't\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372'
+region key --format=encode 't\200\000\000\000\000\000\000\377\035_r\200\000\000\000\000\377\017U\320\000\000\000\000\000\372'
 ```
 
 ```
@@ -849,7 +849,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region scan
+region scan
 ```
 
 ```
@@ -868,7 +868,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region sibling 2
+region sibling 2
 ```
 
 ```
@@ -887,7 +887,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a
+region keys --format=raw a
 ```
 
 ```
@@ -902,7 +902,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a z
+region keys --format=raw a z
 ```
 
 ```
@@ -917,7 +917,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a z -1
+region keys --format=raw a z -1
 ```
 
 ```
@@ -932,7 +932,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a "" 20 
+region keys --format=raw a "" 20 
 ```
 
 ```
@@ -951,7 +951,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region store 2
+region store 2
 ```
 
 ```
@@ -970,7 +970,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region topread
+region topread
 ```
 
 ```
@@ -989,7 +989,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region topwrite
+region topwrite
 ```
 
 ```
@@ -1008,7 +1008,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region topconfver
+region topconfver
 ```
 
 ```
@@ -1027,7 +1027,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region topversion
+region topversion
 ```
 
 ```
@@ -1046,7 +1046,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region topsize
+region topsize
 ```
 
 ```
@@ -1070,7 +1070,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region check miss-peer
+region check miss-peer
 ```
 
 ```
@@ -1089,7 +1089,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> scheduler show                                         // 显示所有已经创建的 schedulers
+scheduler show                                         // 显示所有已经创建的 schedulers
 >> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
 >> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
@@ -1113,7 +1113,7 @@ Encoding 格式示例：
 在 v6.0.0 前，PD 不带有该配置（即 `balance-leader batch=1`）。在 v6.0.0 或更高版本中，`balance-leader batch` 的默认值为 `4`。如果你想为该配置项设置大于 `4` 的值，你需要同时调大 [`scheduler-max-waiting-operator`](#config-show--set-option-value--placement-rules)（默认值 `5`）。同时调大两个配置项后，你才能体验预期的加速效果。
 
 ```bash
->> scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
+scheduler config balance-leader-scheduler set batch 3  // 将 balance-leader 调度器可以批量执行的算子大小设置为 3
 ```
 
 ### `scheduler config balance-hot-region-scheduler`
@@ -1123,7 +1123,7 @@ Encoding 格式示例：
 示例：
 
 ```bash
->> scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的所有配置
+scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调度器的所有配置
 {
   "min-hot-byte-rate": 100,
   "min-hot-key-rate": 10,
@@ -1231,7 +1231,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store
+store
 ```
 
 ```
@@ -1246,7 +1246,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store 1
+store 1
 ```
 
 ```
@@ -1258,7 +1258,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store delete 1
+store delete 1
 ```
 
 撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
@@ -1266,7 +1266,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store cancel-delete 1
+store cancel-delete 1
 ```
 
 > **注意：**
@@ -1278,7 +1278,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store label 1 zone cn
+store label 1 zone cn
 ```
 
 清除 store id 为 1 的 label：
@@ -1286,7 +1286,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store label 1 --force
+store label 1 --force
 ```
 
 > **注意：**
@@ -1299,13 +1299,13 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> store weight 1 5 10
+store weight 1 5 10
 ```
 
 {{< copyable "" >}}
 
 ```bash
->> store remove-tombstone              // 删除所有 tombstone 状态的 store
+store remove-tombstone              // 删除所有 tombstone 状态的 store
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
 >> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
 >> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
@@ -1329,7 +1329,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> log warn
+log warn
 ```
 
 ### `tso`
@@ -1341,7 +1341,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> tso 395181938313123110
+tso 395181938313123110
 ```
 
 ```
@@ -1361,7 +1361,7 @@ logic:  120102
 执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
 
 ```bash
->> unsafe remove-failed-stores 101,102,103
+unsafe remove-failed-stores 101,102,103
 ```
 
 ```bash
@@ -1371,7 +1371,7 @@ Success!
 显示正在运行的 Online Unsafe Recovery 的当前状态或历史状态。
 
 ```bash
->> unsafe remove-failed-stores show
+unsafe remove-failed-stores show
 ```
 
 ```bash
@@ -1389,7 +1389,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> store --jq=".stores[].store | { id, address, state_name}"
+store --jq=".stores[].store | { id, address, state_name}"
 ```
 
 ```
@@ -1403,7 +1403,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> store --jq=".stores[] | {id: .store.id, available: .status.available}"
+store --jq=".stores[] | {id: .store.id, available: .status.available}"
 ```
 
 ```
@@ -1417,7 +1417,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
+store --jq='.stores[].store | select(.state_name!="Up") | { id, address, state_name}'
 ```
 
 ```
@@ -1431,7 +1431,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
+store --jq='.stores[].store | select(.labels | length>0 and contains([{"key":"engine","value":"tiflash"}])) | { id, address, state_name}'
 ```
 
 ```
@@ -1445,7 +1445,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
+region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id]}"
 ```
 
 ```
@@ -1461,7 +1461,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
+region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length != 3)}"
 ```
 
 ```
@@ -1476,7 +1476,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
+region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==30))}"
 ```
 
 ```
@@ -1490,7 +1490,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
+region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(any(.==(30,31)))}"
 ```
 
 ```
@@ -1507,7 +1507,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
+region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length as $total | map(if .==(1,30,31) then . else empty end) | length>=$total-length) }"
 ```
 
 ```
@@ -1522,7 +1522,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
+region --jq=".regions[] | {id: .id, peer_stores: [.peers[].store_id] | select(length>1 and any(.==1) and all(.!=(30,31)))}"
 ```
 
 ```
@@ -1534,7 +1534,7 @@ Success!
 {{< copyable "" >}}
 
 ```bash
->> region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
+region --jq=".regions[] | {id: .id, remove_peer: [.peers[].store_id] | select(length>1) | map(if .==(30,31) then . else empty end) | select(length==1)}"
 ```
 
 ```
