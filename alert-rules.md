@@ -232,7 +232,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 规则描述：
 
-    Region 的副本数小于 `max-replicas` 配置的值。这通常是由于 TiKV 宕机等问题导致一段时间内一些 Region 缺副本。
+    Region 的副本数小于 `max-replicas` 配置的值。
 
 * 处理方法：
 
@@ -417,7 +417,7 @@ aliases: ['/docs-cn/dev/alert-rules/','/docs-cn/dev/reference/alert-rules/']
 
 * 处理方法：
 
-    调整 `rockdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
+    调整 `rocksdb.defaultcf` 和 `rocksdb.writecf` 的 `block-cache-size` 的大小。
 
 #### `TiKV_GC_can_not_work`
 

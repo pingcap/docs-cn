@@ -163,10 +163,6 @@ Range 分区在下列条件之一或者多个都满足时，尤其有效：
 
 ### List 分区
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 在创建 List 分区表之前，需要先将 session 变量 `tidb_enable_list_partition` 的值设置为 `ON`。
 
 {{< copyable "sql" >}}
@@ -263,10 +259,6 @@ test> select * from t;
 ```
 
 ### List COLUMNS 分区
-
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
 
 List COLUMNS 分区是 List 分区的一种变体，可以将多个列用作分区键，并且可以将整数类型以外的数据类型的列用作分区列。你还可以使用字符串类型、`DATE` 和 `DATETIME` 类型的列。
 
@@ -718,6 +710,8 @@ SELECT fname, lname, region_code, dob
 * partition_column = constant
 * partition_column IN (constant1, constant2, ..., constantN)
 
+分区裁剪暂不支持 `LIKE` 语句。
+
 ### 分区裁剪生效的场景
 
 1. 分区裁剪需要使用分区表上面的查询条件，所以根据优化器的优化规则，如果查询条件不能下推到分区表，则相应的查询语句无法执行分区裁剪。
@@ -831,6 +825,8 @@ SELECT 语句中支持分区选择。实现通过使用一个 `PARTITION` 选项
 {{< copyable "sql" >}}
 
 ```sql
+SET @@sql_mode = '';
+
 CREATE TABLE employees  (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(25) NOT NULL,
@@ -1300,16 +1296,73 @@ select * from t;
 
 ### 动态裁剪模式
 
-> **警告：**
->
-> 该功能目前为实验特性，不建议在生产环境中使用。
-
 TiDB 访问分区表有两种模式，`dynamic` 和 `static`，目前默认使用 `static` 模式。如果想开启 `dynamic` 模式，需要手动将 `tidb_partition_prune_mode` 设置为 `dynamic`。
 
 {{< copyable "sql" >}}
 
 ```sql
 set @@session.tidb_partition_prune_mode = 'dynamic'
+```
+
+普通查询和手动 analyze 使用的是 session 级别的 `tidb_partition_prune_mode` 设置，后台的 auto-analyze 使用的是 global 级别的 `tidb_partition_prune_mode` 设置。
+
+静态裁剪模式下，分区表使用的是分区级别的统计信息，而动态裁剪模式下，分区表用的是表级别的汇总统计信息，即 GlobalStats。详见[动态裁剪模式下的分区表统计信息](/statistics.md#动态裁剪模式下的分区表统计信息)。
+
+从 `static` 静态裁剪模式切到 `dynamic` 动态裁剪模式时，需要手动检查和收集统计信息。在刚切换到 `dynamic` 时，分区表上仍然只有分区的统计信息，需要等到全局 `dynamic` 动态裁剪模式开启后的下一次 `auto-analyze` 周期，才会更新生成汇总统计信息。
+
+{{< copyable "sql" >}}
+
+```sql
+set session tidb_partition_prune_mode = 'dynamic';
+show stats_meta where table_name like "t";
+```
+
+```
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:23:34 |            2 |         4 |
+| test    | t          | p2             | 2022-05-27 20:23:34 |            2 |         4 |
++---------+------------+----------------+---------------------+--------------+-----------+
+3 rows in set (0.01 sec)
+```
+
+为保证开启全局 `dynamic` 动态裁剪模式时，SQL 可以用上正确的统计信息，此时需要手动触发一次 `analyze` 来更新汇总统计信息，可以通过 `analyze` 表或者单个分区来更新。
+
+{{< copyable "sql" >}}
+
+```sql
+analyze table t partition p1;
+show stats_meta where table_name like "t";
+```
+
+```
++---------+------------+----------------+---------------------+--------------+-----------+
+| Db_name | Table_name | Partition_name | Update_time         | Modify_count | Row_count |
++---------+------------+----------------+---------------------+--------------+-----------+
+| test    | t          | global         | 2022-05-27 20:50:53 |            0 |         5 |
+| test    | t          | p0             | 2022-05-27 20:23:34 |            1 |         2 |
+| test    | t          | p1             | 2022-05-27 20:50:52 |            0 |         2 |
+| test    | t          | p2             | 2022-05-27 20:50:08 |            0 |         2 |
++---------+------------+----------------+---------------------+--------------+-----------+
+4 rows in set (0.00 sec)
+```
+
+若 analyze 过程中提示如下 warning，说明分区的统计信息之间存在不一致，需要重新收集分区或整个表统计信息。
+
+```
+| Warning | 8244 | Build table: `t` column: `a` global-level stats failed due to missing partition-level column stats, please run analyze table to refresh columns of all partitions
+```
+
+也可以使用脚本来统一更新所有的分区表统计信息，详见[为动态裁剪模式更新所有分区表的统计信息](/partitioned-table.md#为动态裁剪模式更新所有分区表的统计信息)。
+
+表级别统计信息准备好后，即可开启全局的动态裁剪模式。全局动态裁剪模式，对全局所有的 SQL 和对后台的统计信息自动收集（即 auto analyze）起作用。
+
+{{< copyable "sql" >}}
+
+```sql
+set global tidb_partition_prune_mode = dynamic
 ```
 
 在 `static` 模式下，TiDB 用多个算子单独访问每个分区，然后通过 Union 将结果合并起来。下面例子进行了一个简单的读取操作，可以发现 TiDB 用 Union 合并了对应两个分区的结果：
@@ -1325,6 +1378,9 @@ mysql> create table t1(id int, age int, key(id)) partition by range(id) (
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> explain select * from t1 where id < 150;
+```
+
+```
 +------------------------------+----------+-----------+------------------------+--------------------------------+
 | id                           | estRows  | task      | access object          | operator info                  |
 +------------------------------+----------+-----------+------------------------+--------------------------------+
@@ -1360,78 +1416,21 @@ mysql> explain select * from t1 where id < 150;
 
 从以上查询结果可知，执行计划中的 Union 消失了，分区裁剪依然生效，且执行计划只访问了 `p0` 和 `p1` 两个分区。
 
-`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式还解决了两个 `static` 模式无法解决的问题：
+`dynamic` 模式让执行计划更简单清晰，省略 Union 操作可提高执行效率，还可避免 Union 并发管理的问题。此外 `dynamic` 模式下，执行计划可以使用 IndexJoin 的方式，这在 `static` 模式下是无法实现的。请看下面的例子：
 
-+ 不能使用 Plan Cache（见以下示例一和示例二）
-+ 不能使用 IndexJoin 的执行方式（见以下示例三和示例四）
-
-**示例一**：以下示例在配置文件中开启 Plan Cache 功能，并在 `static` 模式下执行同一个查询两次。
+**示例一**：以下示例在 `static` 模式下执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
 ```sql
-mysql> set @a=150;
-Query OK, 0 rows affected (0.00 sec)
+mysql> create table t1 (id int, age int, key(id)) partition by range(id)
+    -> (partition p0 values less than (100),
+    ->  partition p1 values less than (200),
+    ->  partition p2 values less than (300),
+    ->  partition p3 values less than (400));
+Query OK, 0 rows affected (0,08 sec)
+mysql> create table t2 (id int, code int);
 
-mysql> set @@tidb_partition_prune_mode = 'static';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> prepare stmt from 'select * from t1 where id < ?';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
--- static 模式下执行两次相同的查询，第二次无法命中缓存
-mysql> select @@last_plan_from_cache;
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      0 |
-+------------------------+
-1 row in set (0.00 sec)
-```
-
-`last_plan_from_cache` 变量可以显示上一次查询是否命中 Plan Cache。从以上示例一可知，在 `static` 模式下，即使在分区表上执行同一个查询多次，也不会命中 Plan Cache。
-
-**示例二**：以下示例在 `dynamic` 模式下执行与示例一相同的操作。
-
-{{< copyable "sql" >}}
-
-```sql
-mysql> set @@tidb_partition_prune_mode = 'dynamic';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> prepare stmt from 'select * from t1 where id < ?';
-Query OK, 0 rows affected (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
-mysql> execute stmt using @a;
-Empty set (0.00 sec)
-
--- dynamic 模式下第二次执行命中缓存
-mysql> select @@last_plan_from_cache;
-+------------------------+
-| @@last_plan_from_cache |
-+------------------------+
-|                      1 |
-+------------------------+
-1 row in set (0.00 sec)
-```
-
-由示例二结果可知，开启 `dynamic` 模式后，分区表查询能命中 Plan Cache 。
-
-**示例三**：以下示例在 `static` 模式下尝试执行计划带 IndexJoin 的查询。
-
-{{< copyable "sql" >}}
-
-```sql
-mysql> create table t2(id int, code int);
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> set @@tidb_partition_prune_mode = 'static';
@@ -1460,11 +1459,19 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 |       └─TableFullScan_34       | 10000.00 | cop[tikv] | table:t1, partition:p3 | keep order:false, stats:pseudo                 |
 +--------------------------------+----------+-----------+------------------------+------------------------------------------------+
 17 rows in set, 1 warning (0.00 sec)
+
+mysql> show warnings;
++---------+------+------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                            |
++---------+------+------------------------------------------------------------------------------------+
+| Warning | 1815 | Optimizer Hint /*+ INL_JOIN(t1, t2) */ or /*+ TIDB_INLJ(t1, t2) */ is inapplicable |
++---------+------+------------------------------------------------------------------------------------+
+1 row in set (0,00 sec)
 ```
 
-从以上示例三结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
+从以上示例一结果可知，即使使用了 `TIDB_INLJ` 的 hint，也无法使得带分区表的查询选上带 IndexJoin 的执行计划。
 
-**示例四**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
+**示例二**：以下示例在 `dynamic` 模式下尝试执行计划带 IndexJoin 的查询。
 
 {{< copyable "sql" >}}
 
@@ -1488,4 +1495,74 @@ mysql> explain select /*+ TIDB_INLJ(t1, t2) */ t1.* from t1, t2 where t2.code = 
 8 rows in set (0.00 sec)
 ```
 
-从示例四结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+从示例二结果可知，开启 `dynamic` 模式后，带 IndexJoin 的计划在执行查询时被选上。
+
+目前，静态和动态裁剪模式都不支持执行计划缓存。
+
+#### 为动态裁剪模式更新所有分区表的统计信息
+
+1. 找到所有的分区表：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select distinct concat(TABLE_SCHEMA,'.',TABLE_NAME)
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
+    +-------------------------------------+
+    | concat(TABLE_SCHEMA,'.',TABLE_NAME) |
+    +-------------------------------------+
+    | test.t                              |
+    +-------------------------------------+
+    1 row in set (0.02 sec)
+    ```
+
+2. 生成所有分区表的更新统计信息的语句：
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;')
+        from information_schema.PARTITIONS
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');
+    ```
+
+    ```
+    +----------------------------------------------------------------------+
+    | concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') |
+    +----------------------------------------------------------------------+
+    | ANALYZE TABLE test.t ALL COLUMNS;                                    |
+    +----------------------------------------------------------------------+
+    1 row in set (0.01 sec)
+    ```
+
+    可以按需将 `ALL COLUMNS` 改为实际需要的列。
+
+3. 将批量更新语句导出到文件：
+    
+    {{< copyable "sql" >}}
+
+    ```sql
+    mysql --host xxxx --port xxxx -u root -p -e "select distinct concat('ANALYZE TABLE ',TABLE_SCHEMA,'.',TABLE_NAME,' ALL COLUMNS;') \
+        from information_schema.PARTITIONS \
+        where TABLE_SCHEMA not in ('INFORMATION_SCHEMA','mysql','sys','PERFORMANCE_SCHEMA','METRICS_SCHEMA');" | tee gatherGlobalStats.sql
+    ```
+
+4. 执行批量更新：
+
+    在运行 source 命令之前处理 SQL 文件：
+
+    ```
+    sed -i "" '1d' gatherGlobalStats.sql --- mac
+    sed -i '1d' gatherGlobalStats.sql --- linux
+    ```
+
+    {{< copyable "sql" >}}
+
+    ```sql
+    SET session tidb_partition_prune_mode = dynamic;
+    source gatherGlobalStats.sql
+    ```

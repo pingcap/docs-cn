@@ -13,15 +13,15 @@ aliases: ['/docs-cn/dev/tiflash/tiflash-configuration/','/docs-cn/dev/reference/
 
 - [`replica-schedule-limit`](/pd-configuration-file.md#replica-schedule-limit)：用来控制 replica 相关 operator 的产生速度（涉及到下线、补副本的操作都与该参数有关）
 
-    > **注意：**
-    >
-    > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
+  > **注意：**
+  >
+  > 不要超过 `region-schedule-limit`，否则会影响正常 TiKV 之间的 Region 调度。
 
 - `store-balance-rate`：用于限制每个 TiKV store 或 TiFlash store 的 Region 调度速度。注意这个参数只对新加入集群的 store 有效，如果想立刻生效请用下面的方式。
 
-    > **注意：**
-    >
-    > 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且 `store limit` 命令有部分变化。该命令变化的细节请参考 [store-limit 文档](/configure-store-limit.md)。
+  > **注意：**
+  >
+  > 4.0.2 版本之后（包括 4.0.2 版本）废弃了 `store-balance-rate` 参数且 `store limit` 命令有部分变化。该命令变化的细节请参考 [store-limit 文档](/configure-store-limit.md)。
 
     - 使用 `pd-ctl -u <pd_ip:pd_port> store limit <store_id> <value>` 命令单独设置某个 store 的 Region 调度速度。（`store_id` 可通过 `pd-ctl -u <pd_ip:pd_port> store` 命令获得）如果没有单独设置，则继承 `store-balance-rate` 的设置。你也可以使用 `pd-ctl -u <pd_ip:pd_port> store limit` 命令查看当前设置值。
 
@@ -66,9 +66,8 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
-    ## * format_version = 3 v6.0.0 版本的默认文件格式，具有更完善的检验功能
-    ## * format_version = 4 v6.1.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
-    # format_version = 4
+    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
+    # format_version = 3
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -158,18 +157,28 @@ delta_index_cache_size = 0
 [profiles.default]
     ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。不建议修改默认选项。
     # dt_enable_logical_split = false
+
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage = 0
+
     ## 所有查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
     max_memory_usage_for_all_queries = 0
+
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 cop 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     cop_pool_size = 0
+
     ## 从 v5.0 引入，表示 TiFlash Coprocessor 最多同时执行的 batch 请求数量。如果请求数量超过了该配置指定的值，多出的请求会排队等待。如果设为 0 或不设置，则使用默认值，即物理核数的两倍。
     batch_cop_pool_size = 0
+
+    ## 从 v6.1 引入，指定 TiFlash 执行来自 TiDB 的 ALTER TABLE ... COMPACT 请求时，能同时并行处理的请求数量。
+    ## 如果这个值没有设置或设为了 0，则会采用默认值（1）。
+    manual_compact_pool_size = 1
+
     ## 从 v5.4.0 引入，表示是否启用弹性线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 true。
     # enable_elastic_threadpool = true
     # TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
     dt_compression_method = "LZ4"
+
     # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 
@@ -238,5 +247,4 @@ TiDB v4.0.9 及之后的版本中，TiFlash 支持将存储引擎的主要数据
 
 > **警告：**
 >
-> * `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。
-> * 在 TiFlash 节点改为使用 `[storage]` 配置后，如果将集群版本降级到低于 v4.0.9，可能导致 TiFlash 部分数据丢失。
+> `[storage]` 参数从 TiUP v1.2.5 版本开始支持。如果你的 TiDB 版本为 v4.0.9 及以上，请确保你的 TiUP 版本不低于 v1.2.5，否则 `[storage]` 中定义的数据目录不会被 TiUP 纳入管理。

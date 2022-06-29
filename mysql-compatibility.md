@@ -43,7 +43,6 @@ aliases: ['/docs-cn/dev/mysql-compatibility/','/docs-cn/dev/reference/mysql-comp
 * `CHECKSUM TABLE` 语法 [#1895](https://github.com/pingcap/tidb/issues/1895)
 * `REPAIR TABLE` 语法
 * `OPTIMIZE TABLE` 语法
-* `GET_LOCK` 和 `RELEASE_LOCK` 函数 [#14994](https://github.com/pingcap/tidb/issues/14994)
 * `HANDLER` 语句
 * `CREATE TABLESPACE` 语句
 
@@ -82,13 +81,21 @@ mysql> SELECT _tidb_rowid, id FROM t;
 3 rows in set (0.01 sec)
 ```
 
+> **注意：**
+>
+> 使用 `AUTO_INCREMENT` 可能会给生产环境带热点问题，因此推荐使用 [`AUTO_RANDOM`](/auto-random.md) 代替。详情请参考 [TiDB 热点问题处理](/troubleshoot-hot-spot-issues.md#tidb-热点问题处理)。
+
 ### Performance schema
 
 TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控指标，所以 Performance schema 部分表是空表。
 
 ### 查询计划
 
-`EXPLAIN`/`EXPLAIN FOR` 输出格式、内容、权限设置与 MySQL 有比较大的差别，参见[理解 TiDB 执行计划](/explain-overview.md)。
+TiDB 中，执行计划（`EXPLAIN` 和 `EXPLAIN FOR`）在输出格式、内容、权限设置方面与 MySQL 有较大差别。
+
+MySQL 系统变量 `optimizer_switch` 在 TiDB 中是只读的，对查询计划没有影响。你还可以在 [optimizer hints](/optimizer-hints.md) 中使用与 MySQL 类似的语法，但可用的 hint 和实现原理可能会有所不同。
+
+详情参见[理解 TiDB 执行计划](/explain-overview.md)。
 
 ### 内建函数
 
@@ -99,7 +106,7 @@ TiDB 主要使用 Prometheus 和 Grafana 来存储及查询相关的性能监控
 TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相比，TiDB 中的 DDL 存在以下限制：
 
 * 不能在单条 `ALTER TABLE` 语句中完成多个操作。例如，不能在单个语句中添加多个列或索引，否则，可能会输出 `Unsupported multi schema change` 的错误。
-* `ALTER TABLE` 不支持少部分类型的变更。比如，TiDB 不支持从 `DECIMAL` 到 `DATE` 的变更。当遇到不支持的类型变更时，TiDB 将会报 `Unsupported modify column: type %d not match origin %d` 的错误。更多细节，请参考[`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md)。
+* `ALTER TABLE` 不支持少部分类型的变更。比如，TiDB 不支持从 `DECIMAL` 到 `DATE` 的变更。当遇到不支持的类型变更时，TiDB 将会报 `Unsupported modify column: type %d not match origin %d` 的错误。更多细节，请参考 [`ALTER TABLE`](/sql-statements/sql-statement-modify-column.md)。
 * TiDB 中，`ALGORITHM={INSTANT,INPLACE,COPY}` 语法只作为一种指定，并不更改 `ALTER` 算法，详情参阅 [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)。
 * 不支持添加或删除 `CLUSTERED` 类型的主键。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 * 不支持指定不同类型的索引 (`HASH|BTREE|RTREE|FULLTEXT`)。若指定了不同类型的索引，TiDB 会解析并忽略这些索引。
@@ -109,7 +116,7 @@ TiDB 中，所有支持的 DDL 变更操作都是在线执行的。与 MySQL 相
     + `SUBPARTITION`
     + `{CHECK|TRUNCATE|OPTIMIZE|REPAIR|IMPORT|DISCARD|REBUILD|REORGANIZE|COALESCE} PARTITION`
 
-    更多详情，请参考[分区表文档](/partitioned-table.md)。
+  更多详情，请参考[分区表文档](/partitioned-table.md)。
 
 ### `ANALYZE TABLE`
 
@@ -147,7 +154,7 @@ TiDB 中的视图不可更新，不支持 `UPDATE`、`INSERT`、`DELETE` 等写�
 
 ### 存储引擎
 
-- 仅在语法上兼容创建表时指定存储引擎，实际上 TiDB 会将元信息统一描述为 InnoDB 存储引擎。TiDB 支持类似 MySQL 的存储引擎抽象，但需要在系统启动时通过[`--store`](/command-line-flags-for-tidb-configuration.md#--store) 配置项来指定存储引擎。
+- 仅在语法上兼容创建表时指定存储引擎，实际上 TiDB 会将元信息统一描述为 InnoDB 存储引擎。TiDB 支持类似 MySQL 的存储引擎抽象，但需要在系统启动时通过 [`--store`](/command-line-flags-for-tidb-configuration.md#--store) 配置项来指定存储引擎。
 
 ### SQL 模式
 

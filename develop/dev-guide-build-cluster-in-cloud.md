@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 ## 第 1 步：创建免费集群
 
-1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/signup)。
+1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
 3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 Developer Tier 方案，或直接点击[创建 Dev Tier 集群](https://tidbcloud.com/console/create-cluster?tier=dev)，进入 **Create a Cluster (Dev Tier)** 页面。
 4. 请在 **Create a Cluster (Dev Tier)** 页面填写集群名称/密码/云服务商（暂时仅可选择 AWS）/ 可用区（建议就近选择）后，点击 **Create** 按钮创建集群。
@@ -143,7 +143,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
 
-    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Post、User、Password 的参数：
+    更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
     {{< copyable "" >}}
 
@@ -155,12 +155,12 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setPassword("");
     ```
 
-    若你设定的密码为 `123456`，在 TiDB Cloud 得到的连接字符串为：
+    若你设定的密码为 `123456`，而且从 TiDB Cloud 得到的连接字符串为：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+    mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
     ```
 
     那么此处应将参数更改为：
@@ -168,7 +168,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     {{< copyable "" >}}
 
     ```java
-    mysqlDataSource.setServerName("tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com");
+    mysqlDataSource.setServerName("xxx.tidbcloud.com");
     mysqlDataSource.setPortNumber(4000);
     mysqlDataSource.setDatabaseName("test");
     mysqlDataSource.setUser("root");

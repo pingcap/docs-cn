@@ -7,6 +7,10 @@ aliases: ['/docs-cn/dev/releases/release-notes/','/docs-cn/dev/releases/rn/']
 
 TiDB 历史版本发布声明如下：
 
+## 6.1
+
+- [6.1.0](/releases/release-6.1.0.md)
+
 ## 6.0
 
 - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
@@ -18,6 +22,7 @@ TiDB 历史版本发布声明如下：
 
 ## 5.3
 
+- [5.3.2](/releases/release-5.3.2.md)
 - [5.3.1](/releases/release-5.3.1.md)
 - [5.3.0](/releases/release-5.3.0.md)
 

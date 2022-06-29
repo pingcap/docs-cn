@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/functions-and-operators/json-functions/','/docs-cn/dev/r
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布后，又增加了更多 JSON 函数，TiDB 并未支持所有这些函数（参见[未支持的函数](#未支持的函数)）。
+TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。
 
 ## 创建 JSON 值的函数
 
@@ -40,6 +40,7 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 | [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)][json_array_insert] | 将数组插入 JSON 文档，并返回修改后的文档 |
 | [JSON_INSERT(json_doc, path, val[, path, val] ...)][json_insert] | 在 JSON 文档中在某一路径下插入子文档 |
 | [JSON_MERGE(json_doc, json_doc[, json_doc] ...)][json_merge]  | 已废弃的 `JSON_MERGE_PRESERVE` 别名 |
+| [JSON_MERGE_PATCH(json_doc, json_doc[, json_doc] ...)][json_merge_patch]  | 合并 JSON 文档 |
 | [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)][json_merge_preserve]  | 将两个或多个 JSON 文档合并成一个文档，并返回合并结果 |
 | [JSON_REMOVE(json_doc, path[, path] ...)][json_remove]    | 移除 JSON 文档中某一路径下的子文档 |
 | [JSON_REPLACE(json_doc, path, val[, path, val] ...)][json_replace] | 替换 JSON 文档中的某一路径下的子文档 |
@@ -61,21 +62,15 @@ TiDB 支持 MySQL 5.7 GA 版本发布的大多数 JSON 函数。MySQL 5.7 发布
 
 | 函数                     | 功能描述 |
 | --------------------------------- | ----------- |
+| [JSON_PRETTY(json_doc)][json_pretty] |格式化 JSON 文档 |
 | [JSON_STORAGE_SIZE(json_doc)][json_storage_size] | 返回存储 JSON 值所需的大致字节大小，由于不考虑 TiKV 压缩的字节大小，因此函数的输出与 MySQL 不严格兼容 |
 
 ## 聚合函数
 
 | 函数                    | 功能描述 |
 | --------------------------------- | ----------- |
-| [JSON_OBJECTAGG(key, value)][json_objectagg] | 提供给定键的值的聚合 |
-
-## 未支持的函数
-
-TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://github.com/pingcap/tidb/issues/7546):
-
-* `JSON_MERGE_PATCH`
-* `JSON_PRETTY`
-* `JSON_ARRAYAGG`
+| [JSON_ARRAYAGG(key)][json_arrayagg] | 提供指定列 key 的聚合 |
+| [JSON_OBJECTAGG(key, value)][json_objectagg] | 提供给定两列键值对的聚合 |
 
 ## 另请参阅
 
@@ -101,6 +96,8 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_remove]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove
 
 [json_merge]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge
+
+[json_merge_patch]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-patch
 
 [json_merge_preserve]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-preserve
 
@@ -131,3 +128,11 @@ TiDB 暂未支持以下 JSON 函数。相关进展参见 [TiDB #7546](https://gi
 [json_array_append]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append
 
 [json_array_insert]: https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert
+
+[json_arrayagg]: https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-arrayagg
+
+[json_objectagg]: https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-objectagg
+
+[json_pretty]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty
+
+[json_storage_size]: https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-storage-size

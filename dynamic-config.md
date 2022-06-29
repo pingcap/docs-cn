@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/dynamic-config/']
 
 # 在线修改集群配置
 
-> **警告：**
->
-> 该功能目前是实验性阶段，不建议在生产环境中使用。
-
 在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件 (TiKV, PD) 的有所不同。
 
 ## 常用操作
@@ -285,7 +281,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ### 在线修改 TiDB 配置
 
-在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过[系统变量](/system-variables.md)来完成修改。
+在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，你可以通过修改[系统变量](/system-variables.md)来实现。
 
 下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。
 
@@ -320,7 +316,37 @@ select @@tidb_slow_log_threshold;
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
-| mem-quota-query | tidb_mem_quota_query | 查询语句的内存使用限制 |
 | log.enable-slow-log | tidb_enable_slow_log | 慢日志的开关 |
 | log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+
+### 在线修改 TiFlash 配置
+
+目前，你可以通过修改系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 来在线修改 TiFlash 配置项 `max_threads`。`tidb_max_tiflash_threads` 表示 TiFlash 中 request 执行的最大并发度。
+
+`tidb_max_tiflash_threads` 默认值是 `-1`，表示此系统变量无效，由 TiFlash 的配置文件决定 max_threads。你可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
+
+{{< copyable "sql" >}}
+
+```sql
+set tidb_max_tiflash_threads = 10;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select @@tidb_max_tiflash_threads;
+```
+
+```sql
++----------------------------+
+| @@tidb_max_tiflash_threads |
++----------------------------+
+| 10                         |
++----------------------------+
+1 row in set (0.00 sec)
+```

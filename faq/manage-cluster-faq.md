@@ -9,6 +9,8 @@ summary: 介绍 TiDB 集群管理的常见问题、原因及解决方法。
 
 ## 集群日常管理
 
+本小节介绍集群日程管理中的常见问题、原因及解决方法。
+
 ### TiDB 如何登录？
 
 和 MySQL 登录方式一样，可以按照下面例子进行登录。
@@ -43,16 +45,25 @@ mysql -h 127.0.0.1 -uroot -P4000
 
 ### 如何规范停止 TiDB？
 
-可以直接 kill 掉所有服务。如果使用 kill 命令，TiDB 的组件会做 graceful 的 shutdown。
+- 若使用了 load balancer（推荐）：先停止 load balancer，然后执行 `SHUTDOWN` 语句。此时 TiDB 会根据 [`graceful-wait-before-shutdown`](/tidb-configuration-file.md#graceful-wait-before-shutdown-从-v50-版本开始引入) 设置值等待所有会话断开，然后停止运行。
+
+- 若未使用 load balancer：执行 `SHUTDOWN` 语句，TiDB 组件会做 graceful shutdown。
 
 ### TiDB 里面可以执行 kill 命令吗？
 
-- 可以 kill DML 语句，首先使用 `show processlist`，找到对应 session 的 id，然后执行 `kill tidb [session id]`。
-- 可以 kill DDL 语句，首先使用 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [admin 操作](/sql-statements/sql-statement-admin.md)。
+- Kill DML 语句：
+
+    查询 `information_schema.cluster_processlist`，获取正在执行 DML 语句的 TiDB 实例地址和 session ID，然后执行 kill 命令。
+
+    TiDB 从 v6.1.0 起新增 Global Kill 功能（由 [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-从-v610-版本开始引入) 配置项控制，默认启用）。启用 Global Kill 功能时，直接执行 `kill session_id` 即可。
+
+    对于 TiDB v6.1.0 之前的版本，或未启用 Global Kill 功能时，`kill session_id` 默认不生效，客户端需要连接到正在执行 DML 语句的 TiDB 实例，然后执行 `kill tidb session_id` 才能 kill DML 语句。如果客户端连接到其他 TiDB 实例或者客户端和 TiDB 集群之间有代理，`kill tidb session_id` 可能会被路由到其他的 TiDB 实例，从而错误地终止其他会话。具体可以参考 [`KILL`](/sql-statements/sql-statement-kill.md)。
+
+- Kill DDL 语句：执行 `admin show ddl jobs`，查找需要 kill 的 DDL job ID，然后执行 `admin cancel ddl jobs 'job_id' [, 'job_id'] ...`。具体可以参考 [`ADMIN`](/sql-statements/sql-statement-admin.md)。
 
 ### TiDB 是否支持会话超时？
 
-TiDB 暂不支持数据库层面的会话超时，目前想要实现超时，在没 LB (Load Balancing) 的时候，需要应用侧记录发起的 Session 的 ID，通过应用自定义超时，超时以后需要到发起 Query 的节点上用 `kill tidb [session id]` 来杀掉 SQL。目前建议使用应用程序来实现会话超时，当达到超时时间，应用层就会抛出异常继续执行后续的程序段。
+TiDB 目前支持 [`wait_timeout`](/system-variables.md#wait_timeout) 和 [`interactive_timeout`](/system-variables.md#interactive_timeout) 两种超时。
 
 ### TiDB 生产环境的版本管理策略是怎么样的？如何尽可能避免频繁升级？
 
@@ -73,7 +84,7 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 
 ### 有没有图形化部署 TiDB 的工具？
 
-暂时没有。
+有。你可以使用 [TiUniManager](/tiunimanager/tiunimanager-overview.md)，它是一款为分布式数据库 TiDB 打造的管控平台软件和数据库运维管理平台，为 TiDB 提供数据库集群管理功能、主机管理功能和平台管理功能，涵盖了数据库运维人员 (DBA) 在 TiDB 上进行的常用运维操作，帮助 DBA 对 TiDB 进行自动化、自助化和可视化管理。
 
 ### TiDB 如何进行水平扩展？
 
@@ -107,6 +118,8 @@ TiDB 目前社区非常活跃，在 1.0 GA 版本发布后，还在不断的优�
 - TiDB 只在事务写入不超过 256 个键值对，以及所有键值对里键的总大小不超过 4 KB 时，才会使用异步提交或一阶段提交特性。这是因为对于写入量大的事务，异步提交不能明显提升执行性能。
 
 ## PD 管理
+
+本小节介绍 PD 管理中的常见问题、原因及解决方法。
 
 ### 访问 PD 报错：TiKV cluster is not bootstrapped
 
@@ -146,6 +159,8 @@ Client 连接只能通过 TiDB 访问集群，TiDB 负责连接 PD 与 TiKV，PD
 下线节点一般指 TiKV 节点通过 pd-ctl 或者监控判断节点是否下线完成。节点下线完成后，手动停止下线节点上相关的服务。从 Prometheus 配置文件中删除对应节点的 node_exporter 信息。
 
 ## TiDB server 管理
+
+本小节介绍 TiDB server 管理中的常见问题、原因及解决方法。
 
 ### TiDB 的 lease 参数应该如何设置？
 
@@ -244,6 +259,8 @@ GROUP BY db_name , table_name;
 - `Disk_Size` 表示压缩后表的大小，可根据 `Approximate_Size` 和 `store_size_amplification` 得出估算值。
 
 ## TiKV 管理
+
+本小节介绍 TiKV 管理中的常见问题、原因及解决方法。
 
 ### TiKV 集群副本建议配置数量是多少，是不是最小高可用配置（3个）最好？
 
@@ -350,6 +367,8 @@ TiKV 的内存占用主要来自于 RocksDB 的 block-cache，默认为系统总
 
 ## TiDB 测试
 
+本小节介绍 TiDB 测试中的常见问题、原因及解决方法。
+
 ### TiDB Sysbench 基准测试结果如何？
 
 很多用户在接触 TiDB 都习惯做一个基准测试或者 TiDB 与 MySQL 的对比测试，官方也做了一个类似测试。我们汇总很多测试结果后，发现虽然测试的数据有一定的偏差，但结论或者方向基本一致，由于 TiDB 与 MySQL 由于架构上的差别非常大，很多方面是很难找到一个基准点，所以官方的建议两点：
@@ -369,8 +388,12 @@ TiDB 设计的目标就是针对 MySQL 单台容量限制而被迫做的分库�
 
 ## TiDB 备份恢复
 
+本小节介绍 TiDB 备份恢复中的常见问题、原因及解决方法。
+
 ### TiDB 主要备份方式？
 
-目前，数据量大时推荐使用 [BR](/br/backup-and-restore-overview.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
+目前，数据量大时（大于 1 TB）推荐使用 [BR](/br/backup-and-restore-overview.md) 进行备份。其他场景推荐使用 [Dumpling](/dumpling-overview.md) 进行备份。
 
 尽管 TiDB 也支持使用 MySQL 官方工具 `mysqldump` 进行数据备份和恢复，但其性能低于 [Dumpling](/dumpling-overview.md)，并且 `mysqldump` 备份和恢复大量数据的耗费更长。
+
+其他 BR 相关问题，可以参考 [BR FAQ](/br/backup-and-restore-faq.md)。

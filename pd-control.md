@@ -322,7 +322,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set max-store-down-time 30m
     ```
 
-- `max-store-preparing-time` 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度。
+- `max-store-preparing-time` 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度，但是不影响 Region 向这个新上线 store 的迁移。通常用户无需修改该配置项。
 
     设置 store 上线阶段最多等待 4 小时：
 
@@ -352,7 +352,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set region-schedule-limit 2
     ```
 
-- 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。
+- 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
 
     最多同时进行 4 个 replica 调度：
 
@@ -362,7 +362,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set replica-schedule-limit 4
     ```
 
-- `merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。
+- `merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
 
     最多同时进行 16 个 merge 调度：
 
@@ -372,7 +372,7 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set merge-schedule-limit 16
     ```
 
-- `hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。
+- `hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
 
     最多同时进行 4 个 Hot Region 调度：
 
@@ -1222,7 +1222,7 @@ Encoding 格式示例：
     >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
-### `store [delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
+### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
 
 用于显示 store 信息或者删除指定 store。使用 jq 格式化输出请参考 [jq 格式化 json 输出示例](#jq-格式化-json-输出示例)。示例如下。
 
@@ -1261,9 +1261,17 @@ Encoding 格式示例：
 >> store delete 1
 ```
 
+撤销已使用 store delete 下线并处于 Offline 状态的 store。撤销后，该 store 会从 Offline 状态变为 Up 状态。注意，该命令无法使 Tombstone 状态的 store 变回 Up 状态。以下示例撤销已使用 store delete 下线的 store，其 store id 为 1：
+
+{{< copyable "" >}}
+
+```bash
+>> store cancel-delete 1
 ```
-......
-```
+
+> **注意：**
+>
+> 若下线过程中切换了 PD leader，需要手动修改 store limit。
 
 设置 store id 为 1 的 store 的键为 "zone" 的 label 的值为 "cn"：
 
@@ -1272,6 +1280,19 @@ Encoding 格式示例：
 ```bash
 >> store label 1 zone cn
 ```
+
+清除 store id 为 1 的 label：
+
+{{< copyable "" >}}
+
+```bash
+>> store label 1 --force
+```
+
+> **注意：**
+>
+> - store 的 label 更新方法使用的是合并策略。如果修改了 TiKV 配置文件中的 store label，进程重启之后，PD 会将自身存储的 store label 与其进行合并更新，并持久化合并后的结果。
+> - 如果希望使用 TiUP 统一管理 store label 的话，可以在集群重启前，使用 PD Control 的 `store label <id> --force` 命令将 PD 存储的 store label 清空。
 
 设置 store id 为 1 的 store 的 leader weight 为 5，Region weight 为 10：
 
@@ -1328,15 +1349,14 @@ system:  2017-10-09 05:50:59 +0800 CST
 logic:  120102
 ```
 
-### `unsafe remove-failed-stores [store-ids | show | history]`
+### `unsafe remove-failed-stores [store-ids | show]`
 
 > **警告：**
 >
 > - 此功能为有损恢复，无法保证数据和数据索引完整性。
-> - 此功能为实验特性，其接口、策略和内部实现在最终发布时可能会有所变化。虽然已通过部分场景的测试，但尚未经过广泛验证，使用此功能可能导致系统不可用，不建议在生产环境中使用。
 > - 建议在 TiDB 团队支持下进行相关操作，操作不当可能导致集群难以恢复。
 
-用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。
+用于在多数副本永久损坏造成数据不可用时进行有损恢复。示例如下。详见 [Online Unsafe Recovery](/online-unsafe-recovery.md)。
 
 执行 Online Unsafe Recovery，移除永久损坏的节点 (Store):
 
@@ -1362,28 +1382,7 @@ Success!
 ]
 ```
 
-```bash
->> unsafe remove-failed-stores history
-```
-
-```bash
-[
-  "Store reports collection:",
-  "Store 7: region 3 [start_key, end_key), {peer1, peer2, peer3} region 4 ...",
-  "Store 8: region ...",
-  "...",
-  "Recovery Plan:",
-  "Store 7, creates: region 11, region 12, ...; updates: region 21, region 22, ... deletes: ... ",
-  "Store 8, ..."
-  "...",
-  "Execution Progress:",
-  "Store 10 finished,",
-  "Store 7 not yet finished",
-  "...",
-]
-```
-
-## jq 格式化 json 输出示例
+## jq 格式化 JSON 输出示例
 
 ### 简化 `store` 的输出
 

@@ -170,7 +170,7 @@ PD 在副本调度时，会按照 label 层级，保证同一份数据的不同�
 
 在 5 副本配置的前提下，如果 z3 出现了整体故障或隔离，并且 z3 在一段时间后仍然不能恢复（由 `max-store-down-time` 控制），PD 会通过调度补齐 5 副本，此时可用的主机只有 4 个了，故而无法保证 host 级别的隔离，于是可能出现多个副本被调度到同一台主机的情况。
 
-但假如 `isolation-level` 设置不为空，值为 `zone`，这样就规定了 Region 副本在物理层面上的最低隔离要求，也就是说 PD 一定会保证同一 Region 的副本分散于不同的 zone 之上。即便遵循此隔离限制会无法满足 `max-replicas` 的多副本要求，PD 也不会进行相应的调度。例如，当前存在 TiKV 集群的三个机房 z1/z2/z3，在三副本的设置下，PD 会将同一 Region 的三个副本分别分散调度至这三个机房。若此时 z1 整个机房发生了停电事故并在一段时间后仍然不能恢复，PD 会认为 z1 上的 Region 副本不再可用。但由于 `isolation-level` 设置为了 `zone`，PD 需要严格保证不同的 Region 副本不会落到同一 zone 上。此时的 z2 和 z3 均已存在副本，则 PD 在 `isolation-level` 的最小强制隔离级别限制下便不会进行任何调度，即使此时仅存在两个副本。
+但假如 `isolation-level` 设置不为空，值为 `zone`，这样就规定了 Region 副本在物理层面上的最低隔离要求，也就是说 PD 一定会保证同一 Region 的副本分散于不同的 zone 之上。即便遵循此隔离限制会无法满足 `max-replicas` 的多副本要求，PD 也不会进行相应的调度。例如，当前存在 TiKV 集群的三个机房 z1/z2/z3，在三副本的设置下，PD 会将同一 Region 的三个副本分别分散调度至这三个机房。若此时 z1 整个机房发生了停电事故并在一段时间后（由 [`max-store-down-time`](/pd-configuration-file.md#max-store-down-time) 控制，默认为 30 分钟）仍然不能恢复，PD 会认为 z1 上的 Region 副本不再可用。但由于 `isolation-level` 设置为了 `zone`，PD 需要严格保证不同的 Region 副本不会落到同一 zone 上。此时的 z2 和 z3 均已存在副本，则 PD 在 `isolation-level` 的最小强制隔离级别限制下便不会进行任何调度，即使此时仅存在两个副本。
 
 类似地，`isolation-level` 为 `rack` 时，最小隔离级别便为同一机房的不同 rack。在此设置下，如果能在 zone 级别保证隔离，会首先保证 zone 级别的隔离。只有在 zone 级别隔离无法完成时，才会考虑避免出现在同一 zone 同一 rack 的调度，并以此类推。
 

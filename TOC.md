@@ -3,13 +3,13 @@
 
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
+  - [TiDB 6.1 Release Notes](/releases/release-6.1.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v6.0 对比 v5.4](/benchmark/benchmark-sysbench-v6.0.0-vs-v5.4.0.md)
-    - [TPC-C 性能对比 - v6.0 对比 v5.4](/benchmark/v6.0-performance-benchmarking-with-tpcc.md)
-    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.0-performance-benchmarking-with-tpch.md)
+    - [Sysbench 性能对比 - v6.1 对比 v6.0](/benchmark/benchmark-sysbench-v6.1.0-vs-v6.0.0.md)
+    - [TPC-C 性能对比 - v6.1 对比 v6.0](/benchmark/v6.1-performance-benchmarking-with-tpcc.md)
+    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.1-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
@@ -23,8 +23,9 @@
   - 快速开始
     - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
-    - TiDB 的简单 CRUD 应用程序
+    - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
+      - [Golang](/develop/dev-guide-sample-application-golang.md)
   - 示例程序
     - [使用 Spring Boot 构建 TiDB 应用程序](/develop/dev-guide-sample-application-spring-boot.md)
   - 连接到 TiDB
@@ -62,17 +63,16 @@
     - [概览](/develop/dev-guide-optimize-sql-overview.md)
     - [SQL 性能调优](/develop/dev-guide-optimize-sql.md)
     - [性能调优最佳实践](/develop/dev-guide-optimize-sql-best-practices.md)
+    - [索引的最佳实践](/develop/dev-guide-index-best-practice.md)
     - 其他优化
       - [避免隐式类型转换](/develop/dev-guide-implicit-type-conversion.md)
       - [唯一序列号生成方案](/develop/dev-guide-unique-serial-number-generation.md)
   - 故障诊断
-    - [概览](/develop/dev-guide-troubleshoot-overview.md)
-    - 其他故障或限制
-      - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
-      - [超时](/develop/dev-guide-timeouts-in-tidb.md)
+    - [SQL 或事务问题](/develop/dev-guide-troubleshoot-overview.md)
+    - [结果集不稳定](/develop/dev-guide-unstable-result-set.md)
+    - [超时](/develop/dev-guide-timeouts-in-tidb.md)
   - 引用文档
-    - SQL
-      - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
+    - [Bookshop 示例应用](/develop/dev-guide-bookshop-schema-design.md)
     - 规范
       - [命名规范](/develop/dev-guide-object-naming-guidelines.md)
       - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
@@ -162,17 +162,18 @@
     - [优化概述](/performance-tuning-overview.md)
     - [优化方法](/performance-tuning-methods.md)
     - [优化实践](/performance-tuning-practices.md)
-  - 配置优化
-    - 系统调优
+  - 配置调优
       - [操作系统性能参数调优](/tune-operating-system.md)
-    - 软件调优
-      - 配置
-        - [TiDB 内存调优](/configure-memory-usage.md)
-        - [TiKV 线程调优](/tune-tikv-thread-performance.md)
-        - [TiKV 内存调优](/tune-tikv-memory-performance.md)
-        - [TiKV Follower Read](/follower-read.md)
-        - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
+      - [TiDB 内存调优](/configure-memory-usage.md)
+      - [TiKV 线程调优](/tune-tikv-thread-performance.md)
+      - [TiKV 内存调优](/tune-tikv-memory-performance.md)
+      - [TiKV Follower Read](/follower-read.md)
+      - [Region 性能调优](/tune-region-performance.md)
+      - [TiFlash 调优](/tiflash/tune-tiflash-performance.md)
       - [下推计算结果缓存](/coprocessor-cache.md)
+      - 垃圾回收 (GC)
+        - [GC 机制简介](/garbage-collection-overview.md)
+        - [GC 配置](/garbage-collection-configuration.md)
   - SQL 性能调优
     - [SQL 性能调优概览](/sql-tuning-overview.md)
     - 理解 TiDB 执行计划
@@ -370,6 +371,7 @@
       - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
+    - [架构简介](/dm/dm-arch.md)
     - [快速开始](/dm/quick-start-with-dm.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
@@ -378,20 +380,20 @@
       - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
       - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
     - 入门指南
-        - [创建数据源](/dm/quick-start-create-source.md)
-        - [数据源操作](/dm/dm-manage-source.md)
-        - [任务配置向导](/dm/dm-task-configuration-guide.md)
-        - [Table routing](/dm/dm-key-features.md#table-routing)
-        - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
-        - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
-        - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
-        - 迁移任务操作
-            - [任务前置检查](/dm/dm-precheck.md)
-            - [创建任务](/dm/dm-create-task.md)
-            - [查询状态](/dm/dm-query-status.md)
-            - [暂停任务](/dm/dm-pause-task.md)
-            - [恢复任务](/dm/dm-resume-task.md)
-            - [停止任务](/dm/dm-stop-task.md)
+      - [创建数据源](/dm/quick-start-create-source.md)
+      - [数据源操作](/dm/dm-manage-source.md)
+      - [任务配置向导](/dm/dm-task-configuration-guide.md)
+      - [Table routing](/dm/dm-key-features.md#table-routing)
+      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
+      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - 迁移任务操作
+        - [任务前置检查](/dm/dm-precheck.md)
+        - [创建任务](/dm/dm-create-task.md)
+        - [查询状态](/dm/dm-query-status.md)
+        - [暂停任务](/dm/dm-pause-task.md)
+        - [恢复任务](/dm/dm-resume-task.md)
+        - [停止任务](/dm/dm-stop-task.md)
     - 进阶教程
       - 分库分表合并迁移
         - [概述](/dm/feature-shard-merge.md)
@@ -422,10 +424,12 @@
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
         - 架构组件
-          - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
+          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+        - 运行机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
         - 命令行
           - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
         - 配置文件
@@ -495,14 +499,35 @@
     - [概述](/ticdc/ticdc-overview.md)
     - [安装部署](/ticdc/deploy-ticdc.md)
     - [运维管理](/ticdc/manage-ticdc.md)
-    - [故障诊断](/ticdc/troubleshoot-ticdc.md)
-    - [监控指标](/ticdc/monitor-ticdc.md)
-    - [报警规则](/ticdc/ticdc-alert-rules.md)
-    - [TiCDC Open API](/ticdc/ticdc-open-api.md)
-    - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
-    - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-    - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    - 监控告警
+      - [监控指标](/ticdc/monitor-ticdc.md)
+      - [报警规则](/ticdc/ticdc-alert-rules.md)
+    - [故障处理](/ticdc/troubleshoot-ticdc.md)
+    - 参考指南
+      - [TiCDC Open API](/ticdc/ticdc-open-api.md)
+      - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
+      - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
+      - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
+      - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+    - [常见问题解答](/ticdc/ticdc-faq.md)
     - [术语表](/ticdc/ticdc-glossary.md)
+  - TiUniManager
+    - [概述](/tiunimanager/tiunimanager-overview.md)
+    - [安装和运维](/tiunimanager/tiunimanager-install-and-maintain.md)
+    - [快速操作](/tiunimanager/tiunimanager-quick-start.md)
+    - 操作指南
+      - [登录与初始化](/tiunimanager/tiunimanager-login-and-initialize.md)
+      - [管理集群资源](/tiunimanager/tiunimanager-manage-host-resources.md)
+      - [管理集群](/tiunimanager/tiunimanager-manage-clusters.md)
+      - [导入与导出数据](/tiunimanager/tiunimanager-import-and-export-data.md)
+      - [管理任务](/tiunimanager/tiunimanager-manage-tasks.md)
+      - [管理系统](/tiunimanager/tiunimanager-manage-system.md)
+    - [FAQ](/tiunimanager/tiunimanager-faq.md)
+    - 发布版本历史
+      - [发布版本汇总](/tiunimanager/tiunimanager-release-notes.md)
+      - [v1.0.2](/tiunimanager/tiunimanager-release-1.0.2.md)
+      - [v1.0.1](/tiunimanager/tiunimanager-release-1.0.1.md)
+      - [v1.0.0](/tiunimanager/tiunimanager-release-1.0.0.md)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
@@ -564,6 +589,7 @@
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
+      - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
@@ -697,6 +723,7 @@
       - [位函数和操作符](/functions-and-operators/bit-functions-and-operators.md)
       - [Cast 函数和操作符](/functions-and-operators/cast-functions-and-operators.md)
       - [加密和压缩函数](/functions-and-operators/encryption-and-compression-functions.md)
+      - [锁函数](/functions-and-operators/locking-functions.md)
       - [信息函数](/functions-and-operators/information-functions.md)
       - [JSON 函数](/functions-and-operators/json-functions.md)
       - [GROUP BY 聚合函数](/functions-and-operators/aggregate-group-by-functions.md)
@@ -717,9 +744,6 @@
       - [乐观事务](/optimistic-transaction.md)
       - [悲观事务](/pessimistic-transaction.md)
       - [非事务 DML 语句](/non-transactional-dml.md)
-    - 垃圾回收 (GC)
-      - [GC 机制简介](/garbage-collection-overview.md)
-      - [GC 配置](/garbage-collection-configuration.md)
     - [视图](/views.md)
     - [分区表](/partitioned-table.md)
     - [临时表](/temporary-tables.md)
@@ -853,12 +877,15 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
+  - v6.1
+    - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3
+    - [5.3.2](/releases/release-5.3.2.md)
     - [5.3.1](/releases/release-5.3.1.md)
     - [5.3.0](/releases/release-5.3.0.md)
   - v5.2

@@ -10,9 +10,9 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 性能
 
-+ [Raft Engine](/tikv-configuration-file.md#raft-engine)（v5.4 实验特性）
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
 + [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
++ [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
 
 ## 稳定性
 
@@ -29,18 +29,15 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## SQL 功能
 
-+ List 分区表 (List Partition)。（v5.0 实验特性）
-+ List Column 分区表 (List Column Partition)。（v5.0 实验特性）
-+ [分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。（v5.1 实验特性）
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [JSON 数据类型](/data-type-json.md)及 [JSON 函数](/functions-and-operators/json-functions.md)。（v2.1 实验特性）
 + [View](/information-schema/information-schema-views.md)。（v2.1 实验特性）
++ [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。（v6.1.0 实验特性）
 
 ## 配置管理
 
-+ 将配置参数持久化存储到 PD 中，并且可以动态修改配置项的功能。（v4.0 实验特性）
 + [SHOW CONFIG](/sql-statements/sql-statement-show-config.md)。（v4.0 实验特性）
 
 ## TiDB 数据共享订阅
@@ -52,6 +49,8 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan实验功能)。（v4.0 实验特性）
 + [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。（v4.0 实验特性）
 + TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
++ 将 Region 划分为更小的区间 bucket，并且[以 bucket 作为并发查询单位](/tune-region-performance.md#使用-bucket-增加并发)，以提高扫描数据的并发度。（v6.1.0 实验特性）
++ TiKV 引入 [API v2](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。（v6.1.0 实验特性）
 
 ## 备份与恢复
 
@@ -69,4 +68,3 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)。（v4.0 实验特性）
 + [集群诊断](/dashboard/dashboard-diagnostics-access.md)。（v4.0 实验特性）
-+ [在线有损恢复](/online-unsafe-recovery.md)。（v5.3 实验特性）
