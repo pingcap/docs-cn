@@ -31,7 +31,7 @@ TiDB 版本：5.3.2
 
     + TiDB Data Migration (DM)
 
-        - 支持 Syncer 使用 DM-worker 的工作目录写内部文件，不再使用 /tmp 目录。任务停止后会清理掉该目录 [#4107](https://github.com/pingcap/tiflow/issues/4107)
+        - 支持 Syncer 使用 DM-worker 的工作目录写内部文件，不再使用 `/tmp` 目录。任务停止后会清理掉该目录 [#4107](https://github.com/pingcap/tiflow/issues/4107)
 
     + TiDB Lightning
 
