@@ -928,7 +928,7 @@ Suppose that the password you set is `123456` and the connection string you get 
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 ```
 
 In this case, you can modify the parameters as follows:
@@ -946,7 +946,7 @@ In this case, you can modify the parameters as follows:
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.TiDBDialect</property>
-        <property name="hibernate.connection.url">jdbc:mysql://tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com:4000/test</property>
+        <property name="hibernate.connection.url">jdbc:mysql://xxx.tidbcloud.com:4000/test</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">123456</property>
         <property name="hibernate.connection.autocommit">false</property>

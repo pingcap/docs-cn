@@ -201,7 +201,7 @@ If you set the password to `123456`, the connection string you get in TiDB Cloud
 {{< copyable "shell-regular" >}}
 
 ```shell
-mysql --connect-timeout 15 -u root -h tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com -P 4000 -p
+mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 ```
 
 Accordingly, the parameters must be set as folows:
@@ -211,7 +211,7 @@ Accordingly, the parameters must be set as folows:
 ```yaml
 spring:
   datasource:
-    url: jdbc:mysql://tidb.e049234d.d40d1f8b.us-east-1.prod.aws.tidbcloud.com:4000/test
+    url: jdbc:mysql://xxx.tidbcloud.com:4000/test
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
