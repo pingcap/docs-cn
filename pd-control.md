@@ -518,7 +518,7 @@ hot store
 {{< copyable "" >}}
 
 ```
->> hot history startTime endTime [ <name> <value> ]
+hot history startTime endTime [ <name> <value> ]
 ```
 
 例如查询时间 `1629294000000` 到 `1631980800000` （毫秒）之间的历史热点 Region 信息:
@@ -526,7 +526,7 @@ hot store
 {{< copyable "" >}}
 
 ```
->> hot history 1629294000000 1631980800000
+hot history 1629294000000 1631980800000
 ```
 
 ```
@@ -557,7 +557,7 @@ hot store
 {{< copyable "" >}}
 
 ```
->> hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true
+hot history 1629294000000 1631980800000 hot_region_type read region_id 1,2,3 store_id 1,2,3 peer_id 1,2,3 is_leader true is_learner true
 ```
 
 ```
@@ -698,7 +698,7 @@ member leader transfer pd3
 {{< copyable "" >}}
 
 ```bash
-operator show                                        // 显示所有的 operators
+>> operator show                                        // 显示所有的 operators
 >> operator show admin                                  // 显示所有的 admin operators
 >> operator show leader                                 // 显示所有的 leader operators
 >> operator show region                                 // 显示所有的 Region operators
@@ -1089,7 +1089,7 @@ region check miss-peer
 {{< copyable "" >}}
 
 ```bash
-scheduler show                                         // 显示所有已经创建的 schedulers
+>> scheduler show                                         // 显示所有已经创建的 schedulers
 >> scheduler add grant-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 调度到 store 1
 >> scheduler add evict-leader-scheduler 1                 // 把 store 1 上的所有 Region 的 leader 从 store 1 调度出去
 >> scheduler config evict-leader-scheduler                // v4.0.0 起，展示该调度器具体在哪些 store 上
@@ -1305,7 +1305,7 @@ store weight 1 5 10
 {{< copyable "" >}}
 
 ```bash
-store remove-tombstone              // 删除所有 tombstone 状态的 store
+>> store remove-tombstone              // 删除所有 tombstone 状态的 store
 >> store limit                         // 显示所有 store 添加和删除 peer 的速度上限
 >> store limit add-peer                // 显示所有 store 添加 peer 的速度上限
 >> store limit remove-peer             // 显示所有 store 删除 peer 的速度上限
