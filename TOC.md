@@ -356,6 +356,7 @@
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
+    - [架构简介](/dm/dm-arch.md)
     - [快速开始](/dm/quick-start-with-dm.md)
     - 部署 DM 集群
       - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
@@ -408,7 +409,6 @@
       - [日常巡检](/dm/dm-daily-check.md)
      - 参考手册
         - 架构组件
-          - [DM 架构简介](/dm/dm-arch.md)
           - [DM-worker 说明](/dm/dm-worker-intro.md)
           - [安全模式](/dm/dm-safe-mode.md)
           - [Relay Log](/dm/relay-log.md)
