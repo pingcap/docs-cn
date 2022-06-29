@@ -19,8 +19,8 @@ summary: 了解如何应用 hotfix 补丁包到 DM 集群。
 tiup dm patch <cluster-name> <package-path> [flags]
 ```
 
-- `<cluster-name>` 代表要操作的集群名
-- `<package-path>` 为用于替换的二进制包
+- `<cluster-name>` 代表要操作的集群名。
+- `<package-path>` 为用于替换的二进制包。
 
 ### 准备条件
 
