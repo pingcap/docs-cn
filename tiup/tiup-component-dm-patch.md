@@ -80,13 +80,13 @@ tiup dm patch <cluster-name> <package-path> [flags]
 
 ### 准备工作
 
-在开始应用 Hotfix 之前，请准备好 Hotfix 补丁包 `dm-linux-amd64.tar.gz`。并确认当前环境 DM 软件版本：
+在开始应用 Hotfix 之前，请准备好 Hotfix 补丁包 `dm-linux-amd64.tar.gz`，并确认当前环境 DM 软件版本：
 
 ```shell
 /home/tidb/dm/deploy/dm-master-8261/bin/dm-master/dm-master -V
 ```
 
-输出示例
+输出示例：
 
 ```
 Release Version: v5.3.0
@@ -98,7 +98,7 @@ Go Version: go version go1.16.4 linux/amd64
 
 ### 制作 Patch 补丁包并应用到 DM 集群
 
-1. 准备当前环境版本的 DM 软件包
+1. 准备当前环境版本的 DM 软件包：
 
     {{< copyable "shell-regular" >}}
 
@@ -108,14 +108,14 @@ Go Version: go version go1.16.4 linux/amd64
     tar -zxvf /root/.tiup/storage/dm/packages/dm-worker-v5.3.0-linux-amd64.tar.gz -C /tmp/package/
     ```
 
-2. 替换新的二进制文件
+2. 替换新的二进制文件：
 
     {{< copyable "shell-regular" >}}
 
     ```shell
     # 解压 Hotfix 压缩包并替换
-    cd /root; tar -zxvf dm-linux-amd64.tar.gz 
-    cp /root/dm-linux-amd64/bin/dm-master /tmp/package/dm-master/dm-master 
+    cd /root; tar -zxvf dm-linux-amd64.tar.gz
+    cp /root/dm-linux-amd64/bin/dm-master /tmp/package/dm-master/dm-master
     cp /root/dm-linux-amd64/bin/dm-worker /tmp/package/dm-worker/dm-worker
 
     # 重新打包
@@ -124,9 +124,9 @@ Go Version: go version go1.16.4 linux/amd64
     cd /tmp/package/ && tar -czvf dm-worker-hotfix-linux-amd64.tar.gz dm-worker/
     ```
 
-3. 应用补丁
+3. 应用补丁。
 
-    查询当前集群状态, 以名称为 `dm-test` 的集群为例
+    查询当前集群状态, 以名称为 `dm-test` 的集群为例：
 
     {{< copyable "shell-regular" >}}
 
@@ -134,7 +134,7 @@ Go Version: go version go1.16.4 linux/amd64
     tiup dm display dm-test
     ```
 
-    输出示例
+    输出示例：
 
     ```
     Cluster type:       dm
@@ -152,7 +152,7 @@ Go Version: go version go1.16.4 linux/amd64
     Total nodes: 5
     ```
 
-    将补丁应用到指定节点或指定角色，若 `-R` 和 `-N` 同时使用，将会取其交集
+    将补丁应用到指定节点或指定角色，若同时使用 `-R` 和 `-N`，将会取其交集。
 
     {{< copyable "shell-regular" >}}
 
@@ -166,7 +166,7 @@ Go Version: go version go1.16.4 linux/amd64
     tiup dm patch dm-test dm-worker-hotfix-linux-amd64.tar.gz -R dm-worker
     ```
 
-4. 查看补丁应用结果
+4. 查看补丁应用结果：
 
     {{< copyable "shell-regular" >}}
 
@@ -174,7 +174,7 @@ Go Version: go version go1.16.4 linux/amd64
     /home/tidb/dm/deploy/dm-master-8261/bin/dm-master/dm-master -V
     ```
 
-    输出示例
+    输出示例：
 
     ```
     Release Version: v5.3.0-20211230
@@ -184,7 +184,7 @@ Go Version: go version go1.16.4 linux/amd64
     Go Version: go version go1.16.4 linux/amd64
     ```
 
-    集群信息也会有所变化
+    集群信息也会有所变化：
 
     {{< copyable "shell-regular" >}}
 
@@ -192,7 +192,7 @@ Go Version: go version go1.16.4 linux/amd64
     tiup dm display dm-test
     ```
 
-    输出示例
+    输出示例：
 
     ```
     Starting component `dm`: /root/.tiup/components/dm/v1.8.1/tiup-dm display dm-test
