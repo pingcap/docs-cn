@@ -28,7 +28,6 @@ It is recommended to differentiate database names by business, product, or other
     - Temporary table of business operations: `tmp_st_{business code}_{creator abbreviation}_{date}`
     - Record table of accounts period: `t_crm_ec_record_YYYY{MM}{dd}`
 - Create separate databases for tables of different business modules and add annotations accordingly.
-- Currently, TiDB only supports setting the value of `lower-case-table-names` to `2`. This means it is case-sensitive when you save a table name, but case-insensitive when you compare table names. The comparison is based on the lower case.
 
 ## Column naming convention
 
