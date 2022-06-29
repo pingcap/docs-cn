@@ -17,7 +17,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 1. 部署上游 TiDB 集群。
 
-    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](//tiup/tiup-cluster.md)。
+    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](/tiup/tiup-cluster.md)。
 
     {{< copyable "shell-regular" >}}
 
@@ -49,10 +49,9 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     关于 go-tpc 的更多详细内容，可以参考[如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)。
 
-
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [Dumpling](dumpling-overview.md) 工具导出上游集群的全量数据。
+搭建好测试环境后，可以使用 [Dumpling](/dumpling-overview.md) 工具导出上游集群的全量数据。
 
 1. 关闭 GC。
 
@@ -170,7 +169,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 3. 重新开启 GC。
 
-    TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md#ticdc-gc-safepoint-的完整行为是什么)。
+    TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 
     {{< copyable "sql" >}}
 
