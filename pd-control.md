@@ -216,7 +216,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-snapshot-count 64
+    config set max-snapshot-count 64
     ```
 
 - `max-pending-peer-count` 控制单个 store 的 pending peer 上限，调度受制于这个配置来防止在部分节点产生大量日志落后的 Region。需要加快补副本或 balance 速度可以适当调大这个值，设置为 0 则表示不限制。
@@ -226,7 +226,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-pending-peer-count 64
+    config set max-pending-peer-count 64
     ```
 
 - `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
@@ -236,7 +236,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-merge-region-size 16
+    config set max-merge-region-size 16
     ```
 
 - `max-merge-region-keys` 控制 Region Merge 的 keyCount 上限。当 Region KeyCount 大于指定值时 PD 不会将其与相邻的 Region 合并。
@@ -246,7 +246,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-merge-region-keys 50000
+    config set max-merge-region-keys 50000
     ```
 
 - `split-merge-interval` 控制对同一个 Region 做 `split` 和 `merge` 操作的间隔，即对于新 `split` 的 Region 一段时间内不会被 `merge`。
@@ -256,7 +256,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set split-merge-interval 24h
+    config set split-merge-interval 24h
     ```
 
 - `enable-one-way-merge` 用于控制是否只允许和相邻的后一个 Region 进行合并。当设置为 `false` 时，PD 允许与相邻的前后 Region 进行合并。
@@ -266,7 +266,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set enable-one-way-merge true
+    config set enable-one-way-merge true
     ```
 
 - `enable-cross-table-merge` 用于开启跨表 Region 的合并。当设置为 `false` 时，PD 不会合并不同表的 Region。该选项只在键类型为 "table" 时生效。
@@ -276,7 +276,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set enable-cross-table-merge true
+    config set enable-cross-table-merge true
     ```
 
 - `key-type` 用于指定集群的键编码类型。支持的类型有 `["table", "raw", "txn"]`，默认值为 "table"。
@@ -289,7 +289,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set key-type raw
+    config set key-type raw
     ```
 
 - `region-score-formula-version` 用于设置 Region 算分公式的版本，支持的值有 `["v1", "v2"]`。v2 版本公式有助于减少上下线等场景下冗余的 balance Region 调度。
@@ -299,7 +299,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set region-score-formula-version v2
+    config set region-score-formula-version v2
     ```
 
 - `patrol-region-interval` 控制 replicaChecker 检查 Region 健康状态的运行频率，越短则运行越快，通常状况不需要调整。
@@ -309,7 +309,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set patrol-region-interval 10ms
+    config set patrol-region-interval 10ms
     ```
 
 - `max-store-down-time` 为 PD 认为失联 store 无法恢复的时间，当超过指定的时间没有收到 store 的心跳后，PD 会在其他节点补充副本。
@@ -319,7 +319,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-store-down-time 30m
+    config set max-store-down-time 30m
     ```
 
 - `max-store-preparing-time` 控制 store 上线阶段的最长等待时间。在 store 的上线阶段，PD 可以查询该 store 的上线进度。当超过该配置项指定的时间后，PD 会认为该 store 已完成上线，无法再次查询这个 store 的上线进度，但是不影响 Region 向这个新上线 store 的迁移。通常用户无需修改该配置项。
@@ -329,7 +329,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set max-store-preparing-time 4h
+    config set max-store-preparing-time 4h
     ```
 
 - 通过调整 `leader-schedule-limit` 可以控制同时进行 leader 调度的任务个数。这个值主要影响 *leader balance* 的速度，值越大调度得越快，设置为 0 则关闭调度。Leader 调度的开销较小，需要的时候可以适当调大。
@@ -339,7 +339,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set leader-schedule-limit 4
+    config set leader-schedule-limit 4
     ```
 
 - 通过调整 `region-schedule-limit` 可以控制同时进行 Region 调度的任务个数。这个值可以避免创建过多的 Region balance operator。默认值为 `2048`，对所有大小的集群都足够。设置为 `0` 则关闭调度。Region 调度的速度通常受到 `store-limit` 的限制，但除非你熟悉该设置，否则不推荐自定义该参数。
@@ -349,7 +349,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set region-schedule-limit 2
+    config set region-schedule-limit 2
     ```
 
 - 通过调整 `replica-schedule-limit` 可以控制同时进行 replica 调度的任务个数。这个值主要影响节点挂掉或者下线的时候进行调度的速度，值越大调度得越快，设置为 0 则关闭调度。Replica 调度的开销较大，所以这个值不宜调得太大。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
@@ -359,7 +359,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set replica-schedule-limit 4
+    config set replica-schedule-limit 4
     ```
 
 - `merge-schedule-limit` 控制同时进行的 Region Merge 调度的任务，设置为 0 则关闭 Region Merge。Merge 调度的开销较大，所以这个值不宜调得过大。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
@@ -369,7 +369,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set merge-schedule-limit 16
+    config set merge-schedule-limit 16
     ```
 
 - `hot-region-schedule-limit` 控制同时进行的 Hot Region 调度的任务，设置为 0 则关闭调度。这个值不宜调得过大，否则可能对系统性能造成影响。注意：该参数通常保持为默认值。如需调整，需要根据实际情况反复尝试设置该值大小。
@@ -379,7 +379,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set hot-region-schedule-limit 4
+    config set hot-region-schedule-limit 4
     ```
 
 - `hot-region-cache-hits-threshold` 用于设置识别热点 Region 所需的分钟数，只有 Region 处于热点状态持续时间超过该分钟数后，才能参与热点调度。
@@ -391,7 +391,7 @@ config show cluster-version
     {{< copyable "" >}}
 
     ```bash
-    >> config set tolerant-size-ratio 20
+    config set tolerant-size-ratio 20
     ```
 
 - `low-space-ratio` 用于设置 store 空间不足的阈值。当节点的空间占用比例超过指定值时，PD 会尽可能避免往对应节点迁移数据，同时主要针对剩余空间大小进行调度，避免对应节点磁盘空间被耗尽。
@@ -1158,43 +1158,43 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
 - `min-hot-byte-rate` 指计数的最小字节数，通常为 100。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set min-hot-byte-rate 100
+    scheduler config balance-hot-region-scheduler set min-hot-byte-rate 100
     ```
 
 - `min-hot-key-rate` 指计数的最小 key 数，通常为 10。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
+    scheduler config balance-hot-region-scheduler set min-hot-key-rate 10
     ```
 
 - `min-hot-query-rate` 指计数的最小 query 数，通常为 10。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set min-hot-query-rate 10
+    scheduler config balance-hot-region-scheduler set min-hot-query-rate 10
     ```
 
 - `max-zombie-rounds` 指一个 operator 可被纳入 pending influence 所允许的最大心跳次数。如果将它设置为更大的值，更多的 operator 可能会被纳入 pending influence。通常用户不需要修改这个值。pending influence 指的是在调度中产生的、但仍生效的影响。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set max-zombie-rounds 3
+    scheduler config balance-hot-region-scheduler set max-zombie-rounds 3
     ```
 
 - `max-peer-number` 指最多要被解决的 peer 数量。这个配置可避免调度器处理速度过慢。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set max-peer-number 1000
+    scheduler config balance-hot-region-scheduler set max-peer-number 1000
     ```
 
 - `byte-rate-rank-step-ratio`、`key-rate-rank-step-ratio`、`query-rate-rank-step-ratio` 和 `count-rank-step-ratio` 分别控制 byte、key、query 和 count 的 step ranks。rank-step-ratio 决定了计算 rank 时的 step 值。`great-dec-ratio` 和 `minor-dec-ratio` 控制 `dec` 的 rank。通常用户不需要修改这些配置项。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
+    scheduler config balance-hot-region-scheduler set byte-rate-rank-step-ratio 0.05
     ```
 
 - `src-tolerance-ratio` 和 `dst-tolerance-ratio` 是期望调度器的配置项。`tolerance-ratio` 的值越小，调度就越容易。当出现冗余调度时，你可以适当调大这个值。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
+    scheduler config balance-hot-region-scheduler set src-tolerance-ratio 1.1
     ```
 
 - `read-priorities`、`write-leader-priorities` 和 `write-peer-priorities` 用于控制调度器优先从哪些维度进行热点均衡，支持配置两个维度。
@@ -1207,19 +1207,19 @@ scheduler config balance-hot-region-scheduler  // 显示 balance-hot-region 调�
     > 若集群的所有组件未全部升级到 v5.2 及以上版本，`query` 维度的配置不生效，部分组件升级完成后调度器仍默认优先从 `byte` 和 `key` 维度进行热点均衡，集群的所有组件全部升级完成后，也会继续保持这样的兼容配置，可通过 `pd-ctl` 查看实时配置。通常用户不需要修改这些配置项。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set read-priorities query,byte
+    scheduler config balance-hot-region-scheduler set read-priorities query,byte
     ```
 
 - `strict-picking-store` 是控制热点调度搜索空间的开关，通常为打开。当打开时，热点调度的目标是保证所配置的两个维度的热点均衡。当关闭后，热点调度只保证处于第一优先级的维度的热点均衡表现更好，但可能会导致其他维度的热点不再那么均衡。通常用户不需要修改这个配置项。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set strict-picking-store true
+    scheduler config balance-hot-region-scheduler set strict-picking-store true
     ```
 
 - `enable-for-tiflash` 是控制热点调度是否对 TiFlash 生效的开关。通常为打开，关闭后将不会产生 TiFlash 实例之间的热点调度。
 
     ```bash
-    >> scheduler config balance-hot-region-scheduler set enable-for-tiflash true
+    scheduler config balance-hot-region-scheduler set enable-for-tiflash true
     ```
 
 ### `store [delete | cancel-delete | label | weight | remove-tombstone | limit ] <store_id> [--jq="<query string>"]`
