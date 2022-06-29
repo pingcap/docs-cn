@@ -336,15 +336,15 @@
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
-    - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
+    - [快速上手](/get-started-with-tidb-lightning.md)
+    - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
     - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
-    - [快速上手教程](/get-started-with-tidb-lightning.md)
     - 数据源
-      - [文件匹配规则](/tidb-lightning/tidb-lightning-datasource.md)
-      - [CSV](/tidb-lightning/tidb-lightning-datasource.md#csv)
-      - [SQL](/tidb-lightning/tidb-lightning-datasource.md#sql)
-      - [Parquet](/tidb-lightning/tidb-lightning-datasource.md#parquet)
-      - [自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)
+      - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
+      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
+      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
+      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
+      - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
     - Physical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-sst-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-sst-mode.md#必要条件及限制)

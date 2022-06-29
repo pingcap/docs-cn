@@ -1,9 +1,9 @@
 ---
-title: TiDB Lightning 部署与执行
+title: 部署 TiDB Lightning
 aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 ---
 
-# TiDB Lightning 部署与执行
+# 部署 TiDB Lightning
 
 本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读：
 

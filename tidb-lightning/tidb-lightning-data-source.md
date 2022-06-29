@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 数据源
 summary: 了解 TiDB Lightning 支持的各类型数据源。
-aliases: ['/docs-cn/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/']
+aliases: ['/zh/tidb/dev/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/csv/']
 ---
 
 # TiDB Lightning 数据源
@@ -305,7 +305,7 @@ type = '$3'
 
 注意，此处仅说明 Aurora snapshot 导出的 parquet 文件如何匹配。Schema 文件需要单独导出及处理。
 
-关于 `mydumper.files`，请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)。
+关于 `mydumper.files`，请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)。
 
 ## 自定义文件匹配
 

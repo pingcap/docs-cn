@@ -11,7 +11,7 @@ summary: 了解 TiDB Lightning 运行时对目标数据库的必需条件。
 
 TiDB Lightning 导入数据时，根据导入方式和启用特性等，需要下游数据库用户具备不同的权限，可参考下表：
 
-<table border="1">
+<table>
    <tr>
       <td></td>
       <td>特性</td>
