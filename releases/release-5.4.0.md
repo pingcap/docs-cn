@@ -79,6 +79,12 @@ In v5.4, the key new features or improvements are as follows:
 - Since v5.4.0, if you create a SQL binding for an execution plan that has been cached via Plan Cache, the binding invalidates the plan already cached for the corresponding query. The new binding does not affect execution plans cached before v5.4.0.
 - In v5.3 and earlier versions, [TiDB Data Migration (DM)](https://docs.pingcap.com/tidb-data-migration/v5.3/) documentation is independent of TiDB documentation. Since v5.4, DM documentation is integrated into TiDB documentation with the same version. You can directly read [DM documentation](/dm/dm-overview.md) without accessing the DM documentation site.
 - Remove the experimental feature of Point-in-time recovery (PITR) along with cdclog. Since v5.4.0, cdclog-based PITR and cdclog are no longer supported.
+- Make the behavior of setting system variables to the "DEFAULT" more MySQL-compatible [#29680](https://github.com/pingcap/tidb/pull/29680)
+- Set the system variable `lc_time_names` to read-only [#30084](https://github.com/pingcap/tidb/pull/30084)
+- Set the scope of `tidb_store_limit` from INSTANCE or GLOBAL to GLOBAL [#30756](https://github.com/pingcap/tidb/pull/30756)
+- Forbid converting the integer type column to the time type column when the column contains zero [#25728](https://github.com/pingcap/tidb/pull/25728)
+- Fix the issue that no error is reported for the `Inf` or `NAN` value when inserting floating-point values [#30148](https://github.com/pingcap/tidb/pull/30148)
+- Fix the issue that the `REPLACE` statement incorrectly changes other rows when the auto ID is out of range [#30301](https://github.com/pingcap/tidb/pull/30301)
 
 ## New features
 
@@ -294,7 +300,6 @@ In v5.4, the key new features or improvements are as follows:
 
 + TiDB
 
-    - Add a new system variable [`tidb_enable_paging`](/system-variables.md#tidb_enable_paging-new-in-v540) to determine whether to use paging to send Coprocessor requests. Enabling this feature can reduce the amount of data to process and to reduce latency and resource consumption [#30578](https://github.com/pingcap/tidb/issues/30578)
     - Support the `ADMIN {SESSION | INSTANCE | GLOBAL} PLAN_CACHE` syntax to clear the cached query plan [#30370](https://github.com/pingcap/tidb/pull/30370)
 
 + TiKV
