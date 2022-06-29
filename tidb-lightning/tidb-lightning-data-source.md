@@ -26,18 +26,17 @@ Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则的文
 </thead>
 <tbody>
   <tr>
-    <td>Schema 文件</td>
+    <td rowspan="2">Schema 文件</td>
     <td>包含 DDL 语句 `CREATE TABLE` 的文件</td>
     <td>`${db_name}.${table_name}-schema.sql`</td>
   </tr>
   <tr>
-    <td>Schema 文件</td>
-    <td>包含 <br>`CREATE DATABASE`<br> DDL 语句的文件</td>
+    <td>包含 `CREATE DATABASE` DDL 语句的文件</td>
     <td>`${db_name}-schema-create.sql`</td>
   </tr>
   <tr>
     <td rowspan="2">数据文件</td>
-    <td>包含整张表的数据文件，该文件会被导入 <br>`${db_name}.${table_name}`<br> 表</td>
+    <td>包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表</td>
     <td>`${db_name}.${table_name}.${csv|sql|parquet}`</td>
   </tr>
   <tr>
