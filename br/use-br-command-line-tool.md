@@ -193,6 +193,10 @@ br backup full \
 
 ### 增量备份
 
+<Warning>
+当前该功能为实验特性，不建议在生产环境中使用。
+</Warning>
+
 如果想要备份增量，只需要在备份的时候指定**上一次的备份时间戳** `--lastbackupts` 即可。
 
 注意增量备份有以下限制：
@@ -220,7 +224,7 @@ br backup full\
 LAST_BACKUP_TS=`br validate decode --field="end-version" -s local:///home/tidb/backupdata | tail -n1`
 ```
 
-示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。 
+示例备份的增量数据记录 `(LAST_BACKUP_TS, current PD timestamp]` 之间的数据变更，以及这段时间内的 DDL。在恢复的时候，BR 会先把所有 DDL 恢复，而后才会恢复数据。
 
 ### 加密备份数据（实验性功能）
 
@@ -290,7 +294,7 @@ br backup raw --pd $PD_ADDR \
 > * 在数据恢复的时候，每个 Peer 分布的位置是随机的，事先并不知道哪个节点将读取哪个文件。
 >
 > 使用共享存储可以避免这些情况。例如，在本地路径上安装 NFS，或使用 S3。利用这些网络存储，各个节点都可以自动读取每个 SST 文件，此时上述注意事项不再适用。
-> 
+>
 > 同时，请注意同一时间对同一个集群只能运行一个恢复任务，否则可能会出现非预期的行为，详见 [FAQ](/br/backup-and-restore-faq.md#是否可以同时使用多个-br-进程对单个集群进行恢复)。
 
 ### 恢复全部备份数据
@@ -446,7 +450,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - 系统变量表（`mysql.tidb`，`mysql.global_variables`）
 > - 用户信息表（`mysql.user`，`mysql.columns_priv`，等等）
 > - [其他系统表](https://github.com/pingcap/tidb/blob/v5.4.0/br/pkg/restore/systable_restore.go#L31)
-> 
+>
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
 ### 解密恢复数据（实验性功能）
