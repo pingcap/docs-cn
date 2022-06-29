@@ -11,23 +11,11 @@ This statement removes an index from a specified table, marking space as free in
 ## Synopsis
 
 ```ebnf+diagram
-AlterTableDropIndexStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
+AlterTableDropIndexStmt
+         ::= 'ALTER' 'IGNORE'? 'TABLE' AlterTableDropIndexSpec ( ',' AlterTableDropIndexSpec )*
 
-IgnoreOptional ::=
-    'IGNORE'?
-
-TableName ::=
-    Identifier ('.' Identifier)?
-
-AlterTableDropIndexSpec ::=
-    'DROP' ( KeyOrIndex | 'FOREIGN' 'KEY' ) IfExists Identifier
-
-KeyOrIndex ::=
-    'KEY'
-|   'INDEX'
-
-IfExists ::= ( 'IF' 'EXISTS' )?
+AlterTableDropIndexSpec
+         ::= 'DROP' ( 'FOREIGN'? 'KEY' | 'INDEX' ) ( 'IF' 'EXISTS' )? Identifier
 ```
 
 ## Examples
