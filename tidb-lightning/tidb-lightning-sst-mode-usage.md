@@ -1,8 +1,8 @@
 ---
-title: Physical Import Mode 使用
+title: 使用 Physical Import Mode
 ---
 
-# Physical Import Mode 使用
+# 使用 Physical Import Mode
 
 本文档介绍如何编写 Physical Import Mode 的配置文件，如何进行性能调优等内容。
 

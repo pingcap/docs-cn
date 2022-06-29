@@ -1,8 +1,8 @@
 ---
-title: Logical Import Mode 使用
+title: 使用 Logical Import Mode
 ---
 
-# Logical Import Mode 使用
+# 使用 Logical Import Mode
 
 本文档介绍如何编写 Logical Import Mode 的配置文件，如何进行性能调优等内容。
 
@@ -30,7 +30,7 @@ data-source-dir = "/data/my_database"
 # 导入模式配置，设为 tidb 即使用 Logical Import Mode
 backend = "tidb"
 
-# Logical  Import Mode 插入重复数据时执行的操作。
+# Logical Import Mode 插入重复数据时执行的操作。
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错

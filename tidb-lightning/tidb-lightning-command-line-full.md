@@ -43,7 +43,7 @@ summary: 使用命令行配置 TiDB Lightning。
 
 ### `tidb-lightning-ctl`
 
-使用 `tidb-lightning-ctl` 可以对下列参数进行配置：
+所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。此外，使用 `tidb-lightning-ctl` 还可以对下列参数进行配置：
 
 | 参数 | 描述 |
 |:----|:----------|
@@ -58,5 +58,3 @@ summary: 使用命令行配置 TiDB Lightning。
 | --checkpoint-remove *tablename* | 无条件删除表的断点 |
 
 *tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
-
-此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。

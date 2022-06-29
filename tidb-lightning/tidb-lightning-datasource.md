@@ -14,16 +14,40 @@ TiDB Lightning 支持从多种类型的文件导入数据到 TiDB 集群。通�
 data-source-dir = "/data/my_database"
 ```
 
-Lightning 运行时将查找`data-source-dir`中所有符合命令规则的文件。
+Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则的文件。
 
-- Schema 文件命令规则：
-    - 包含 DDL 语句 `CREATE TABLE` 的文件 `${db_name}.${table_name}-schema.sql` 
-    - 包含 `CREATE DATABASE` DDL 语句的文件 `${db_name}-schema-create.sql`
-- 数据文件命名规则：
-    - 包含整张表的数据文件需命名为 `${db_name}.${table_name}.${csv|sql|parquet}`，该文件会被导入 `${db_name}.${table_name}` 表
-    - 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀，如 `${db_name}.${table_name}.001.${csv|sql|parquet}`。
+<table>
+<thead>
+  <tr>
+    <th>文件类型</th>
+    <th>分类</th>
+    <th>命名规则</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>Schema 文件</td>
+    <td>包含 DDL 语句 `CREATE TABLE` 的文件</td>
+    <td>`${db_name}.${table_name}-schema.sql`</td>
+  </tr>
+  <tr>
+    <td>Schema 文件</td>
+    <td>包含 <br>`CREATE DATABASE`<br> DDL 语句的文件</td>
+    <td>`${db_name}-schema-create.sql`</td>
+  </tr>
+  <tr>
+    <td rowspan="2">数据文件</td>
+    <td>包含整张表的数据文件，该文件会被导入 <br>`${db_name}.${table_name}`<br> 表</td>
+    <td>`${db_name}.${table_name}.${csv|sql|parquet}`</td>
+  </tr>
+  <tr>
+    <td>如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀</td>
+    <td>`${db_name}.${table_name}.001.${csv|sql|parquet}`</td>
+  </tr>
+</tbody>
+</table>
 
-Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过`region-concurrency`配置控制）。因此大文件的导入时性能比较差。通常建议单个文件尺寸 256MiB 以获得最好的性能。
+Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数据处理协程是文件级别的并发（通过 `region-concurrency` 配置控制）。因此导入大文件时性能比较差。通常建议单个文件尺寸为 256MiB，以获得最好的性能。
 
 ## CSV
 
@@ -31,7 +55,7 @@ Lightning 尽量并行处理数据，由于文件必须顺序读取，所以数�
 
 CSV 文件是没有表结构的。要导入 TiDB，就必须为其提供表结构。可以通过以下任一方法实现：
 
-* 创建包含 DDL 语句的`${db_name}.${table_name}-schema.sql`和`${db_name}-schema-create.sql`。
+* 创建包含 DDL 语句的 `${db_name}.${table_name}-schema.sql` 和 `${db_name}-schema-create.sql`。
 * 在 TiDB 中手动创建。
 
 ### 配置
@@ -61,7 +85,11 @@ backslash-escape = true
 trim-last-separator = false
 ```
 
-对于诸如 `separator`，`delimiter` 和 `terminator` 等取值为字符串的配置项，如果需要设置的字符串中包含特殊字符，可以通过使用反斜杠 `\` 转义的方式进行输入，输入的转义序列必须被包含在一对*双引号* `"` 之间。例如，设置 `separator = "\u001f"` 表示使用 ASCII 字符 0X1F 作为字符串定界符。另外，也可以使用*单引号*字符串 `'...'` 禁止对字符进行转义。另外，设置 `separator = '\n'` 表示使用两个字符 `\` + `n` 作为字符串定界符，而不是转义后的换行符 `\n`。
+对于诸如 `separator`，`delimiter` 和 `terminator` 等取值为字符串的配置项，如果需要设置的字符串中包含特殊字符，可以通过使用反斜杠 `\` 转义的方式进行输入，输入的转义序列必须被包含在一对*双引号* `"` 之间。例如，设置 `separator = "\u001f"` 表示使用 ASCII 字符 0X1F 作为字符串定界符。
+
+你也可以使用*单引号*字符串 `'...'` 禁止对字符进行转义。
+
+另外，设置 `separator = '\n'` 表示使用两个字符 `\` + `n` 作为字符串定界符，而不是转义后的换行符 `\n`。
 
 更多详细的内容请参考 [TOML v1.0.0 标准](https://toml.io/cn/v1.0.0#%E5%AD%97%E7%AC%A6%E4%B8%B2)。
 
@@ -88,12 +116,12 @@ trim-last-separator = false
 
 - 对应 LOAD DATA 语句中的 `FIELDS ENCLOSED BY` 项。
 
-[RFC 4180]: https://tools.ietf.org/html/rfc4180
+参考 [RFC 4180](https://tools.ietf.org/html/rfc4180)。
 
 #### `terminator`
 
 - 指定行尾定界符。
-- 如果 `terminator` 为空，表示 "\\n"（换行）和 "\\r\\n" （回车+换行），均表示行尾。
+- 如果 `terminator` 为空，则 "\\n"（换行）和 "\\r\\n" （回车+换行）均表示行尾。
 - 对应 LOAD DATA 语句中的 `LINES TERMINATED BY` 项。
 
 #### `header`
@@ -171,7 +199,7 @@ TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例�
 * 不可使用行前缀 （`LINES STARTING BY`）。
 * 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
 
-### 设置 `strict-format` 启用严格格式
+### 启用严格格式
 
 导入文件的大小统一约为 256 MB 时，TiDB Lightning 可达到最佳工作状态。如果导入单个 CSV 大文件，TiDB Lightning 只能使用一个线程来处理，这会降低导入速度。
 
@@ -277,19 +305,19 @@ type = '$3'
 
 注意，此处仅说明 Aurora snapshot 导出的 parquet 文件如何匹配。Schema 文件需要单独导出及处理。
 
-关于 `mydumper.files`,请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)。
+关于 `mydumper.files`，请参考[自定义文件匹配](/tidb-lightning/tidb-lightning-datasource.md#自定义文件匹配)。
 
 ## 自定义文件匹配
 
 Lightning 仅识别符合命名要求的数据文件，但在某些情况下已提供的数据文件并不符合要求，因此可能出现 Lightning 在极短的时间结束，处理文件数量为 0 的情况。
 
-为了解决此类问题，Lightning 提供了`[[mydumper.files]]`配置用于通过自定义表达式匹配数据文件。
+为了解决此类问题，Lightning 提供了 `[[mydumper.files]]` 配置用于通过自定义表达式匹配数据文件。
 
 以 AWS Aurora 导出至 S3 的快照文件为例，Parquet 文件的完整路径为：`S3://some-bucket/some-subdir/some-database/some-database.some-table/part-00000-c5a881bb-58ff-4ee6-1111-b41ecff340a3-c000.gz.parquet`。
 
-通常`data-source-dir`会被配置为`S3://some-bucket/some-subdir/some-database/`以导入`some-database`库。
+通常 `data-source-dir` 会被配置为`S3://some-bucket/some-subdir/some-database/` 以导入 `some-database` 库。
 
-根据上述 Parquet 文件的路径，我们可以编写正则表达式`(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为`some-database` ，index=2 的内容为`some-table`，index=3 的内容为`parquet`。
+根据上述 Parquet 文件的路径，你可以编写正则表达式 `(?i)^(?:[^/]*/)*([a-z0-9_]+)\.([a-z0-9_]+)/(?:[^/]*/)*(?:[a-z0-9\-_.]+\.(parquet))$`，得到的 match group 中 index=1 的内容为 `some-database` ，index=2 的内容为 `some-table`，index=3 的内容为 `parquet`。
 
 根据上述正则表达式及相应的 index 编写配置文件，Lightning 即可识别非默认命名规则的文件，最终实际配置如下：
 
@@ -304,7 +332,7 @@ type = '$3'
 
 - **schema**：目标库名称，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$1”。
-    - 直接填写期望导入的库名，例如“db1”。所有匹配到的文件均会导入“db1”。
+    - 直接填写期望导入的库名，例如 “db1”。所有匹配到的文件均会导入 “db1”。
 - **table**：目标表名称，值可以为：
     - 正则表达式匹配到的 group 序号，例如 “$2”。
     - 直接填写期望导入的库名，例如“table1”。所有匹配到的文件均会导入“table1”。
