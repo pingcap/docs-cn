@@ -16,7 +16,7 @@ Since TiDB 4.0, all TiDB migration tools share a common filter syntax to define 
 
 Table filters can be applied to the tools using multiple `-f` or `--filter` command line parameters. Each filter is in the form of `db.table`, where each part can be a wildcard (further explained in the [next section](#wildcards)). The following lists the example usage in each tool.
 
-* [BR](/br/backup-and-restore-tool.md):
+* [BR](/br/backup-and-restore-overview.md):
 
     {{< copyable "shell-regular" >}}
 

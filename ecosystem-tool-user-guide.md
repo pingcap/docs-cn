@@ -77,11 +77,11 @@ The following are the basics of TiDB Lightning:
 
 ### Backup and restore
 
-[Backup & Restore](/br/backup-and-restore-tool.md) (BR) is a command-line tool for distributed backup and restore of the TiDB cluster data. BR can effectively back up and restore TiDB clusters of huge data volume.
+[Backup & Restore](/br/backup-and-restore-overview.md) (BR) is a command-line tool for distributed backup and restore of the TiDB cluster data. BR can effectively back up and restore TiDB clusters of huge data volume.
 
 The following are the basics of BR:
 
-- [Input and output data source](/br/backup-and-restore-tool.md#types-of-backup-files): SST + `backupmeta` file
+- [Input and output data source](/br/backup-and-restore-design.md#types-of-backup-files): SST + `backupmeta` file
 - Supported TiDB versions: v3.1 and v4.0
 - Kubernetes support: Yes. See [Back up Data to S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/backup-to-aws-s3-using-br) and [Restore Data from S3-Compatible Storage Using BR](https://docs.pingcap.com/tidb-in-kubernetes/stable/restore-from-aws-s3-using-br) for details.
 

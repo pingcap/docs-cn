@@ -6,7 +6,7 @@ aliases: ['/docs/dev/br/backup-and-restore-storages/']
 
 # External Storages
 
-Backup & Restore (BR), TiDB Lighting, and Dumpling support reading and writing data on the local filesystem and on Amazon S3. BR also supports reading and writing data on the Google Cloud Storage (GCS) and [Azure Blob Storage (Azblob)](/br/backup-and-restore-azblob.md). These are distinguished by the URL scheme in the `--storage` parameter passed into BR, in the `-d` parameter passed into TiDB Lightning, and in the `--output` (`-o`) parameter passed into Dumpling.
+Backup & Restore (BR), TiDB Lightning, and Dumpling support reading and writing data on the local filesystem and on Amazon S3. BR also supports reading and writing data on the [Google Cloud Storage (GCS)](/br/backup-storage-gcs.md) and [Azure Blob Storage (Azblob)](/br/backup-storage-azblob.md). These are distinguished by the URL scheme in the `--storage` parameter passed into BR, in the `-d` parameter passed into TiDB Lightning, and in the `--output` (`-o`) parameter passed into Dumpling.
 
 ## Schemes
 
@@ -78,7 +78,7 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
 | `region` | Service Region for Amazon S3 (default to `us-east-1`) |
 | `use-accelerate-endpoint` | Whether to use the accelerate endpoint on Amazon S3 (default to `false`) |
 | `endpoint` | URL of custom endpoint for S3-compatible services (for example, `https://s3.example.com/`) |
-| `force-path-style` | Use path style access rather than virtual hosted style access (default to `false`) |
+| `force-path-style` | Use path style access rather than virtual hosted style access (default to `true`) |
 | `storage-class` | Storage class of the uploaded objects (for example, `STANDARD`, `STANDARD_IA`) |
 | `sse` | Server-side encryption algorithm used to encrypt the upload (empty, `AES256` or `aws:kms`) |
 | `sse-kms-key-id` | If `sse` is set to `aws:kms`, specifies the KMS ID |
@@ -86,7 +86,9 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
 
 > **Note:**
 >
-> It is not recommended to pass in the access key and secret access key directly in the storage URL, because these keys are logged in plain text. The migration tools try to infer these keys from the environment in the following order:
+> It is not recommended to pass in the access key and secret access key directly in the storage URL, because these keys are logged in plain text.
+
+If the access key and secret access key are not specified, the migration tools try to infer these keys from the environment in the following order:
 
 1. `$AWS_ACCESS_KEY_ID` and `$AWS_SECRET_ACCESS_KEY` environment variables
 2. `$AWS_ACCESS_KEY` and `$AWS_SECRET_KEY` environment variables
@@ -120,15 +122,13 @@ When `credentials-file` is not specified, the migration tool will try to infer t
 To ensure that TiKV and BR use the same storage account, BR determines the value of `account-name`. That is, `send-credentials-to-tikv = true` is set by default. BR infers these keys from the environment in the following order:
 
 1. If both `account-name` **and** `account-key` are specified, the key specified by this parameter is used.
-2. If `account-key` is not specified, then BR tries to read the related credentials from environment variables on the node of BR.
-    - BR reads `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` first. At the same time, BR allows TiKV to read the above three environment variables from the respective nodes and access using Azure AD (Azure Active Directory).
-        - `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` respectively refer to the application ID `client_id`, the tenant ID `tenant_id`, and the client password `client_secret` of Azure application.
-        - To learn how to check whether the operating system has configured `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET`, or if you need to configure these variables as parameters, refer to [Configure environment variables as parameters](/br/backup-and-restore-azblob.md#configure-environment-variables-as-parameters).
-3. If the above three environment variables are not configured in the BR node, BR tries to read `$AZURE_STORAGE_KEY` using an access key.
+2. If `account-key` is not specified, BR tries to read the related credentials from environment variables on the node of BR. BR reads `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` first. At the same time, BR allows TiKV to read these three environment variables from the respective nodes and access the variables using Azure AD (Azure Active Directory).
+3. If the preceding three environment variables are not configured in the BR node, BR tries to read `$AZURE_STORAGE_KEY` using an access key.
 
 > **Note:**
 >
-> When using Azure Blob Storage as the external storage, you must set `send-credentials-to-tikv = true` (which is set by default). Otherwise, the backup task will fail.
+> - When using Azure Blob Storage as the external storage, you should set `send-credentials-to-tikv = true` (which is set by default). Otherwise, the backup task will fail.
+> - `$AZURE_CLIENT_ID`, `$AZURE_TENANT_ID`, and `$AZURE_CLIENT_SECRET` respectively refer to the application ID `client_id`, the tenant ID `tenant_id`, and the client password `client_secret` of the Azure application. For details about how to confirm the presence of the three environment variables, or how to configure the environment variables as parameters, see [Configure environment variables](/br/backup-storage-azblob.md#configure-environment-variables).
 
 ## Command-line parameters
 
@@ -150,15 +150,15 @@ If you have specified URL parameters and command-line parameters at the same tim
 |:----------|:------|
 | `--s3.region` | Amazon S3's service region, which defaults to `us-east-1`. |
 | `--s3.endpoint` | The URL of custom endpoint for S3-compatible services. For example, `https://s3.example.com/`. |
-| `--s3.storage-class` | The storage class of the upload object. For example, `STANDARD` and `STANDARD_IA`. |
+| `--s3.storage-class` | The storage class of the upload object. For example, `STANDARD` or `STANDARD_IA`. |
 | `--s3.sse` | The server-side encryption algorithm used to encrypt the upload. The value options are empty, `AES256` and `aws:kms`. |
 | `--s3.sse-kms-key-id` | If `--s3.sse` is configured as `aws:kms`, this parameter is used to specify the KMS ID. |
-| `--s3.acl` | The canned ACL of the upload object. For example, `private` and `authenticated-read`. |
+| `--s3.acl` | The canned ACL of the upload object. For example, `private` or `authenticated-read`. |
 | `--s3.provider` | The type of the S3-compatible service. The supported types are `aws`, `alibaba`, `ceph`, `netease` and `other`. |
 
 To export data to non-AWS S3 cloud storage, specify the cloud provider and whether to use `virtual-hosted style`. In the following examples, data is exported to the Alibaba Cloud OSS storage:
 
-* Export data to Alibaba Cloud OSS using Dumpling:
++ Export data to Alibaba Cloud OSS using Dumpling:
 
     {{< copyable "shell-regular" >}}
 
@@ -170,7 +170,7 @@ To export data to non-AWS S3 cloud storage, specify the cloud provider and wheth
        -r 200000 -F 256MiB
     ```
 
-* Back up data to Alibaba Cloud OSS using BR:
++ Back up data to Alibaba Cloud OSS using BR:
 
     {{< copyable "shell-regular" >}}
 
@@ -184,7 +184,7 @@ To export data to non-AWS S3 cloud storage, specify the cloud provider and wheth
         --log-file backuptable.log
     ```
 
-* Export data to Alibaba Cloud OSS using TiDB Lightning. You need to specify the following content in the YAML-formatted configuration file:
++ Export data to Alibaba Cloud OSS using TiDB Lightning. You need to specify the following content in the YAML-formatted configuration file:
 
     {{< copyable "" >}}
 
@@ -197,9 +197,9 @@ To export data to non-AWS S3 cloud storage, specify the cloud provider and wheth
 
 | Command-line parameter | Description |
 |:----------|:------|
-| `--gcs.credentials-file` |  The path of the JSON-formatted credential on the tool node. |
-| `--gcs.storage-class` | The storage type of the upload object, such as `STANDARD` and `COLDLINE`.  |
-| `--gcs.predefined-acl` | The pre-defined ACL of the upload object, such as `private` and `project-private`. |
+| `--gcs.credentials-file` |  The path of the JSON-formatted credential on the tool node |
+| `--gcs.storage-class` | The storage type of the upload objects (for example, `STANDARD` or `COLDLINE`)  |
+| `--gcs.predefined-acl` | The pre-defined ACL of the upload objects (for example, `private` or `project-private`) |
 
 ### Azblob command-line parameters
 

@@ -32,9 +32,9 @@ If the full data volume is large (at the TB level), you can first use [Dumpling]
 
 ## Back up and restore TiDB cluster
 
-If you need to back up a TiDB cluster or restore backed up data to the cluster, use [BR](/br/backup-and-restore-tool.md) (Backup & Restore).
+If you need to back up a TiDB cluster or restore backed up data to the cluster, use [BR](/br/backup-and-restore-overview.md) (Backup & Restore).
 
-In addition, BR can also be used to perform [incremental backup](/br/use-br-command-line-tool.md#back-up-incremental-data) and [incremental restore](/br/use-br-command-line-tool.md#restore-incremental-data) of TiDB cluster data.
+In addition, BR can also be used to perform [incremental backup](/br/br-usage-backup.md#back-up-incremental-data) and [incremental restore](/br/br-usage-restore.md#restore-incremental-data) of TiDB cluster data.
 
 ## Migrate data to TiDB
 

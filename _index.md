@@ -59,7 +59,7 @@ Designed for the cloud, TiDB provides flexible scalability, reliability and secu
 
 - [Upgrade TiDB Using TiUP](/upgrade-tidb-using-tiup.md)
 - [Scale TiDB Using TiUP](/scale-tidb-using-tiup.md)
-- [Back up and Restore Data](/br/backup-and-restore-tool.md)
+- [Back up and Restore Data](/br/backup-and-restore-overview.md)
 - [Deploy and Manage TiCDC](/ticdc/manage-ticdc.md)
 - [Maintain TiDB Using TiUP](/maintain-tidb-using-tiup.md)
 - [Maintain TiFlash](/tiflash/maintain-tiflash.md)

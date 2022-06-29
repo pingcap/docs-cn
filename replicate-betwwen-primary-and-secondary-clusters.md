@@ -12,7 +12,7 @@ This document describes how to configure a TiDB primary (upstream) cluster and a
 2. Replicate incremental data from the primary cluster to the secondary cluster.
 3. Recover data consistently by using Redo log when the primary cluster is down.
 
-To replicate incremental data from a running TiDB cluster to its secondary cluster, you can use [Backup & Restore (BR)](/br/backup-and-restore-tool.md) and [TiCDC](/ticdc/ticdc-overview.md).
+To replicate incremental data from a running TiDB cluster to its secondary cluster, you can use Backup & Restore [BR](/br/backup-and-restore-overview.md) and [TiCDC](/ticdc/ticdc-overview.md).
 
 ## Step 1. Set up the environment
 
@@ -111,11 +111,11 @@ To replicate incremental data from a running TiDB cluster to its secondary clust
 
 ## Step 2. Migrate full data
 
-After setting up the environment, you can use the backup and restore functions of [BR](https://github.com/pingcap/br) to migrate full data. BR can be started in [several ways](/br/backup-and-restore-tool.md#how-to-use-br). In this document, we use the SQL statements, `BACKUP` and `RESTORE`.
+After setting up the environment, you can use the backup and restore functions of [BR](https://github.com/pingcap/br) to migrate full data. BR can be started in [three ways](/br/br-deployment.md#use-br). In this document, we use the SQL statements, `BACKUP` and `RESTORE`.
 
 > **Note:**
 >
-> If the versions of the upstream and downstream clusters are different, you should check [BR compatibility](/br/backup-and-restore-tool.md#compatibility). In this document, we assume that the upstream and downstream clusters are the same version.
+> If the versions of the upstream and downstream clusters are different, you should check [BR compatibility](/br/backup-and-restore-overview.md#before-you-use-br). In this document, we assume that the upstream and downstream clusters are the same version.
 
 1. Disable GC.
 

@@ -1,10 +1,10 @@
 ---
-title: Backup & Restore FAQ
-summary: Learn about Frequently Asked Questions (FAQ) and the solutions of BR.
+title: Backup & Restore FAQs
+summary: Learn about Frequently Asked Questions (FAQs) and the solutions of BR.
 aliases: ['/docs/dev/br/backup-and-restore-faq/']
 ---
 
-# Backup & Restore FAQ
+# Backup & Restore FAQs
 
 This document lists the frequently asked questions (FAQs) and the solutions about Backup & Restore (BR).
 
@@ -15,11 +15,11 @@ Starting from TiDB v5.4.0, BR introduces the auto-tune feature for backup tasks.
 TiKV supports [dynamically configuring](/tikv-control.md#modify-the-tikv-configuration-dynamically) the auto-tune feature. You can enable or disable the feature by the following methods without restarting your cluster:
 
 - Disable auto-tune: Set the TiKV configuration item [`backup.enable-auto-tune`](/tikv-configuration-file.md#enable-auto-tune-new-in-v540) to `false`.
-- Enable auto-tune: Set `backup.enable-auto-tune` to `true`. For clusters that upgrade from v5.3.x to v5.4.0 or later versions, the auto-tune feature is disabled by default. You need to manually enable it.
+- Enable auto-tune: Set `backup.enable-auto-tune` to `true`. For clusters upgraded from v5.3.x to v5.4.0 or later versions, the auto-tune feature is disabled by default. You need to manually enable it.
 
 To use `tikv-ctl` to enable or disable auto-tune, refer to [Use auto-tune](/br/br-auto-tune.md#use-auto-tune).
 
-In addition, this feature also reduces the default number of threads used by backup tasks. For details, see `backup.num-threads`](/tikv-configuration-file.md#num-threads-1). Therefore, on the Grafana Dashboard, the speed, CPU usage, and I/O resource utilization used by backup tasks are lower than those of versions earlier than v5.4. Before v5.4, the default value of `backup.num-threads` was `CPU * 0.75`, that is, the number of threads used by backup tasks makes up 75% of the logical CPU cores. The maximum value of it was `32`. Starting from v5.4, the default value of this configuration item is `CPU * 0.5`, and its maximum value is `8`.
+In addition, auto-tune reduces the default number of threads used by backup tasks. For details, see `backup.num-threads`](/tikv-configuration-file.md#num-threads-1). Therefore, on the Grafana Dashboard, the speed, CPU usage, and I/O resource utilization used by backup tasks are lower than those of versions earlier than v5.4.0. Before v5.4.0, the default value of `backup.num-threads` was `CPU * 0.75`, that is, the number of threads used by backup tasks makes up 75% of the logical CPU cores. The maximum value of it was `32`. Starting from v5.4.0, the default value of this configuration item is `CPU * 0.5`, and its maximum value is `8`.
 
 When you perform backup tasks on an offline cluster, to speed up the backup, you can modify the value of `backup.num-threads` to a larger number using `tikv-ctl`.
 
@@ -27,27 +27,27 @@ When you perform backup tasks on an offline cluster, to speed up the backup, you
 
 When you restore data, each node must have access to **all** backup files (SST files). By default, if `local` storage is used, you cannot restore data because the backup files are scattered among different nodes. Therefore, you have to copy the backup file of each TiKV node to the other TiKV nodes.
 
-It is recommended to mount an NFS disk as a backup disk during backup. For details, see [Back up a single table to a network disk](/br/backup-and-restore-use-cases.md#back-up-a-single-table-to-a-network-disk-recommended-in-production-environment).
+It is recommended that you mount an NFS disk as a backup disk during backup. For details, see [Back up a single table to a network disk](/br/backup-and-restore-use-cases.md#back-up-a-single-table-to-a-network-disk-recommended-for-production-environments).
 
-## How much does it affect the cluster during backup using BR?
+## How much impact does a backup operation have on the cluster?
 
-For TiDB v5.4.0 or later versions, BR not only reduces the default CPU utilization used by backup tasks but also limits the resources used by backup tasks in the cluster with heavy workloads. Therefore, when you use the default configuration for backup tasks in the v5.4.0 cluster with heavy workloads, the impact of the tasks on the cluster performance is significantly less than the impact for the clusters earlier than v5.4.0. For details, see [BR Auto-tune](/br/br-auto-tune.md).
+For TiDB v5.4.0 or later versions, BR not only reduces the default CPU utilization used by backup tasks, but also introduces the [BR Auto-tune](/br/br-auto-tune.md) feature to limit the resources used by backup tasks in the cluster with heavy workloads. Therefore, when you use the default configuration for backup tasks in a v5.4.0 cluster with heavy workloads, the impact of the tasks on the cluster performance is significantly less than that on the clusters earlier than v5.4.0.
 
 The following is an internal test on a single node. The test results show that when you use the default configuration of v5.4.0 and v5.3.0 in the **full-speed backup** scenario, the impact of backup using BR on cluster performance is quite different. The detailed test results are as follows:
 
 - When BR uses the default configuration of v5.3.0, the QPS of write-only workload is reduced by 75%.
-- When BR uses the default configuration of v5.4.0, the QPS for the same workload is reduced by 25%. However, when this configuration is used, the speed of backup tasks using BR becomes correspondingly slower. The time required is 1.7 times that of the v5.3.0 configuration.
+- When BR uses the default configuration of v5.4.0, the QPS for the same workload is reduced by 25%. However, when this configuration is used, the duration of backup tasks using BR becomes correspondingly longer. The time required is 1.7 times that of the v5.3.0 configuration.
 
-If you need to manually control the impact of backup tasks on cluster performance, you can use the following solutions. These two methods can reduce the impact of backup tasks on the cluster, but they also reduce the speed of backup tasks.
+You can use either of the following solutions to manually control the impact of backup tasks on cluster performance. Note that these methods reduce the impact of backup tasks on the cluster, but they also reduce the speed of backup tasks.
 
 - Use the `--ratelimit` parameter to limit the speed of backup tasks. Note that this parameter limits the speed of **saving backup files to external storage**. When calculating the total size of backup files, use the `backup data size(after compressed)` in the backup log as a benchmark.
-- Adjust the TiKV configuration item [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) to limit the resources used by backup tasks. This configuration item determines the number of threads used by backup tasks. When BR uses no more than `8` threads for backup tasks, and the total CPU utilization of the cluster does not exceed 60%, the backup tasks have little impact on the cluster, regardless of the read and write workload.
+- Adjust the TiKV configuration item [`backup.num-threads`](/tikv-configuration-file.md#num-threads-1) to limit the number of threads used by backup tasks. When BR uses no more than `8` threads for backup tasks, and the total CPU utilization of the cluster does not exceed 60%, the backup tasks have little impact on the cluster, regardless of the read and write workload.
 
 ## Does BR back up system tables? During data restoration, do they raise conflicts?
 
-Before v5.1.0, BR filtered out data from the system schema `mysql` during the backup. Since v5.1.0, BR **backs up** all data by default, including the system schemas `mysql.*`.
+Before v5.1.0, BR filters out data from the system schemas `mysql.*` during the backup. Since v5.1.0, BR **backs up** all data by default, including the system schemas `mysql.*`.
 
-During data restoration, system tables do not raise conflicts. The technical implementation of restoring the system tables in `mysql.*` is not complete yet, so the tables in the system schema `mysql` are **not** restored by default, which means no conflicts will be raised. For more details, refer to the [Back up and restore table data in the `mysql` system schema (experimental feature)](/br/backup-and-restore-tool.md#back-up-and-restore-table-data-in-the-mysql-system-schema-experimental-feature).
+The technical implementation of restoring the system tables in `mysql.*` is not complete yet, so the tables in the system schema `mysql` are **not restored** by default, which means no conflicts will be raised. For more details, refer to [Restore tables created in the `mysql` schema (experimental)](/br/br-usage-restore.md#restore-tables-created-in-the-mysql-schema).
 
 ## What should I do to handle the `Permission denied` or `No such file or directory` error, even if I have tried to run BR using root in vain?
 
@@ -128,11 +128,13 @@ Running BR with the root access might fail due to the disk permission, because t
     drwxr-xr-x 11 root root 310 Jul  4 10:35 ..
     ```
 
-    From the above output, you can find that the `tikv-server` instance is started by the user `tidb_ouo`. But the user `tidb_ouo` does not have the write permission for `backup`, the backup fails.
+    From the above output, you can find that the `tikv-server` instance is started by the user `tidb_ouo`. But the user `tidb_ouo` does not have the write permission for `backup`. Therefore, the backup fails.
 
 ## What should I do to handle the `Io(Os...)` error?
 
-Almost all of these problems are system call errors that occur when TiKV writes data to the disk. For example, if you encounter error messages such as `Io(Os {code: 13, kind: PermissionDenied...})` or `Io(Os {code: 2, kind: NotFound...})`, you can first check the mounting method and the file system of the backup directory, and try to back up data to another folder or another hard disk.
+Almost all of these problems are system call errors that occur when TiKV writes data to the disk, for example, `Io(Os {code: 13, kind: PermissionDenied...})` or `Io(Os {code: 2, kind: NotFound...})`.
+
+To address such problems, first check the mounting method and the file system of the backup directory, and try to back up data to another folder or another hard disk.
 
 For example, you might encounter the `Code: 22(invalid argument)` error when backing up data to the network disk built by `samba`.
 
@@ -140,7 +142,7 @@ For example, you might encounter the `Code: 22(invalid argument)` error when bac
 
 This error might occur when the capacity of the cluster to restore (using BR) is insufficient. You can further confirm the cause by checking the monitoring metrics of this cluster or the TiKV log.
 
-To handle this issue, you can try to scale out the cluster resources, reduce the concurrency during restore, and enable the `RATE_LIMIT` option.
+To handle this issue, you can try to scale out the cluster resources, reduce the concurrency during restoration, and enable the `RATE_LIMIT` option.
 
 ## Where are the backed up files stored when I use `local` storage?
 
@@ -174,9 +176,9 @@ When using BR to restore the backup data with the value of [`--ddl-batch-size`](
 
 If the cluster backed up using BR has TiFlash, `TableInfo` stores the TiFlash information when BR restores the backup data. If the cluster to be restored does not have TiFlash, the `region is unavailable` error is reported.
 
-## Does BR support in-place full recovery of some historical backup?
+## Does BR support in-place full restoration of some historical backup?
 
-No. BR does not support in-place full recovery of some historical backup.
+No. BR does not support in-place full restoration of some historical backup.
 
 ## How can I use BR for incremental backup in the Kubernetes environment?
 
@@ -201,3 +203,35 @@ If you do not execute `ANALYZE` on the table, TiDB will fail to select the optim
 + When BR restores data, it modifies some global configurations of PD. Therefore, if you use multiple BR processes for data restore at the same time, these configurations might be mistakenly overwritten and cause abnormal cluster status.
 + BR consumes a lot of cluster resources to restore data, so in fact, running BR processes in parallel improves the restore speed only to a limited extent.
 + There has been no test for running multiple BR processes in parallel for data restore, so it is not guaranteed to succeed.
+
+## What should I do if the backup log reports `key locked Error`?
+
+Error message in the log: `log - ["backup occur kv error"][error="{\"KvError\":{\"locked\":`
+
+If a key is locked during the backup process, BR tries to resolve the lock. If this error occurs only occasionally, the correctness of the backup is not affected.
+
+## What should I do if a backup operation fails?
+
+Error message in the log: `log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
+
+If a backup operation fails and the preceding message occurs, perform one of the following operations and then start the backup again:
+
+- Change the directory for the backup. For example, change `/dir/backup_local/` to `/dir/backup-2020-01-01/`.
+- Delete the backup directories of all TiKV nodes and BR nodes.
+
+## What should I do if the disk usage shown on the monitoring node is inconsistent after BR backup or restoration?
+
+This inconsistency is caused by the fact that the data compression rate used in backup is different from the default rate used in restoration. If the checksum succeeds, you can ignore this issue.
+
+## Why does an error occur when I restore placement rules to a cluster?
+
+Before v6.0.0, BR does not support [placement rules](/placement-rules-in-sql.md). Starting from v6.0.0, BR supports placement rules and introduces a command-line option `--with-tidb-placement-mode=strict/ignore` to control the backup and restore mode of placement rules. With the default value `strict`, BR imports and validates placement rules, but ignores all placement rules when the value is `ignore`.
+
+## Why does BR report `new_collations_enabled_on_first_bootstrap` mismatch?
+
+Since TiDB v6.0.0, the default value of [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) has changed from `false` to `true`. BR backs up the `new_collations_enabled_on_first_bootstrap` configuration of the upstream cluster and then checks whether the value of this configuration is consistent between the upstream and downstream clusters. If the value is consistent, BR safely restores the data backed up in the upstream cluster to the downstream cluster. If the value is inconsistent, BR does not perform the data restore and reports an error.
+
+Suppose that you have backed up the data in a TiDB cluster of an earlier version of v6.0.0, and you want to restore this data to a TiDB cluster of v6.0.0 or later versions. In this situation, you need to manually check whether the value of `new_collations_enabled_on_first_bootstrap` is consistent between the upstream and downstream clusters:
+
+- If the value is consistent, you can add `--check-requirements=false` to the restoration command to skip this configuration check.
+- If the value is inconsistent, and you forcibly perform the restoration, BR reports a data validation error.

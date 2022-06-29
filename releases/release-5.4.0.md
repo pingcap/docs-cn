@@ -214,7 +214,7 @@ In v5.4, the key new features or improvements are as follows:
 
    Backup & Restore (BR) supports Azure Blob Storage as a remote backup storage. If you deploy TiDB in Azure Cloud, now you can back up the cluster data to the Azure Blob Storage service.
 
-    [User document](/br/backup-and-restore-azblob.md)
+    [User document](/br/backup-storage-azblob.md)
 
 ### Data migration
 

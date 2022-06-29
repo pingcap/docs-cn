@@ -148,7 +148,7 @@ The client connection can only access the cluster through TiDB. TiDB connects PD
 
 For the relationship between each status, refer to [Relationship between each status of a TiKV store](/tidb-scheduling.md#information-collection).
 
-You can use PD Control to check the status information of a TiKV store. 
+You can use PD Control to check the status information of a TiKV store.
 
 ### What is the difference between the `leader-schedule-limit` and `region-schedule-limit` scheduling parameters in PD?
 
@@ -427,6 +427,6 @@ This section describes common problems you may encounter during backup and resto
 
 ### How to back up data in TiDB?
 
-Currently, for the backup of a large volume of data (more than 1 TB), the preferred method is using [BR](/br/backup-and-restore-tool.md). Otherwise, the recommended tool is [Dumpling](/dumpling-overview.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is worse than [BR](/br/backup-and-restore-tool.md) and it needs much more time to back up and restore large volumes of data.
+Currently, for the backup of a large volume of data (more than 1 TB), the preferred method is using [BR](/br/backup-and-restore-overview.md). Otherwise, the recommended tool is [Dumpling](/dumpling-overview.md). Although the official MySQL tool `mysqldump` is also supported in TiDB to back up and restore data, its performance is no better than BR and it needs much more time to back up and restore large volumes of data.
 
 For more FAQs about BR, see [BR FAQs](/br/backup-and-restore-faq.md).

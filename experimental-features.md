@@ -54,7 +54,7 @@ This document introduces the experimental features of TiDB in different versions
 
 ## Backup and restoration
 
-+ [Back up Raw KV](/br/use-br-command-line-tool.md#back-up-raw-kv-experimental-feature) (Introduced in v3.1)
++ [Back up and restore RawKV](/br/rawkv-backup-and-restore.md) (Introduced in v3.1)
 
 ## Data migration
 

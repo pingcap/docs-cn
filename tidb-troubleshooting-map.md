@@ -268,7 +268,7 @@ Check the specific cause for busy by viewing the monitor **Grafana** -> **TiKV**
 
 ### 4.5 TiKV write is slow
 
-- 4.5.1 Check whether the TiKV write is low by viewing the `prewrite/commit/raw-put` duration of TiKV gRPC (only for raw KV clusters). Generally, you can locate the slow phase according to the [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png). Some common situations are listed as follows.
+- 4.5.1 Check whether the TiKV write is low by viewing the `prewrite/commit/raw-put` duration of TiKV gRPC (only for RawKV clusters). Generally, you can locate the slow phase according to the [performance-map](https://github.com/pingcap/tidb-map/blob/master/maps/performance-map.png). Some common situations are listed as follows.
 
 - 4.5.2 The scheduler CPU is busy (only for transaction kv).
 

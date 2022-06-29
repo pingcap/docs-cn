@@ -251,7 +251,7 @@ In dictionary format, constraints also indicate a number of instances that apply
 
 | Tool Name | Minimum supported version | Description |
 | --- | --- | --- |
-| Backup & Restore (BR) | 6.0 | Supports importing and exporting placement rules. Refer to [BR Compatibility](/br/backup-and-restore-tool.md#compatibility) for details. |
+| Backup & Restore (BR) | 6.0 | Supports importing and exporting placement rules. Refer to [BR Compatibility](/br/backup-and-restore-overview.md#compatibility) for details. |
 | TiDB Lightning | Not compatible yet | An error is reported when TiDB Lightning imports backup data that contains placement policies  |
 | TiCDC | 6.0 | Ignores placement rules, and does not replicate the rules to the downstream |
 | TiDB Binlog | 6.0 | Ignores placement rules, and does not replicate the rules to the downstream |

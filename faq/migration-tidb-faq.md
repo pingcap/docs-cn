@@ -9,7 +9,7 @@ This document summarizes the frequently asked questions (FAQs) related to TiDB d
 
 For the frequently asked questions about migration-related tools, click the corresponding links in the list below:
 
-- [Backup & Restore FAQ](/br/backup-and-restore-faq.md)
+- [Backup & Restore FAQs](/br/backup-and-restore-faq.md)
 - [TiDB Binlog FAQ](/tidb-binlog/tidb-binlog-faq.md)
 - [TiDB Lightning FAQs](/tidb-lightning/tidb-lightning-faq.md)
 - [TiDB Data Migration (DM) FAQs](/dm/dm-faq.md)
