@@ -9,6 +9,7 @@ summary: 了解 TiDB 的版本发布时间线。
 
 | 版本 | 发布日期 |
 | :--- | :--- |
+| [5.3.2](/releases/release-5.3.2.md) | 2022-06-29 |
 | [6.1.0](/releases/release-6.1.0.md) | 2022-06-13 |
 | [5.4.1](/releases/release-5.4.1.md) | 2022-05-13 |
 | [5.2.4](/releases/release-5.2.4.md) | 2022-04-26 |
