@@ -72,7 +72,7 @@ FROM
   (WITH RECURSIVE nr(n) AS
     (SELECT 1                              -- 从 1 开始 CTE
       UNION ALL SELECT n + 1               -- 每次循环 n 增加 1
-      FROM nr WHERE n < 1000000            -- 在 1_000_000 上停止循环
+      FROM nr WHERE n < 1000000            -- 当 n 为 1_000_000 时停止循环
     ) SELECT n FROM nr
   ) a;
 ```
