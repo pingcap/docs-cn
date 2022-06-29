@@ -20,6 +20,7 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 ## 5.3
 
+- [5.3.2](/releases/release-5.3.2.md)
 - [5.3.1](/releases/release-5.3.1.md)
 - [5.3.0](/releases/release-5.3.0.md)
 
