@@ -4,7 +4,7 @@ title: TiDB 5.3.2 Release Notes
 
 # TiDB 5.3.2 Release Notes
 
-发版日期：2022 年 6 月 x 日
+发版日期：2022 年 6 月 29 日
 
 TiDB 版本：5.3.2
 
