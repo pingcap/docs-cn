@@ -1,9 +1,9 @@
 ---
-title: 使用 Dumpling/TiDB Lightning 备份与恢复
+title: 使用 Dumpling 和 TiDB Lightning 备份与恢复
 summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数据。
 ---
 
-# 使用 Dumpling/TiDB Lightning 备份与恢复
+# 使用 Dumpling 和 TiDB Lightning 备份与恢复
 
 本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量备份与恢复。
 
@@ -112,7 +112,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     关于更多 TiDB Lightning 的配置，请参考 [TiDB Lightning 配置参数](/tidb-lightning/tidb-lightning-configuration.md)。
 
-2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 
     若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
