@@ -33,7 +33,7 @@ In this command, the values of `--start` and `--end` are decoded using the forma
 
 - "raw": The input string is directly encoded as a key in binary format.
 - "hex": The default encoding format. The input string is treated as a hexadecimal number.
-- "escaped": First escape (backslash) the input string, and then encode it into binary format, for example, 'abc\xFF\x00\r\n'.
+- "escaped": First escape (backslash) the input string, and then encode it into binary format, for example, `abc\xFF\x00\r\n`.
 
 > **Note:**
 >
