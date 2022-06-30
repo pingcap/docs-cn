@@ -36,7 +36,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 建议使用 32 核以上的 CPU 和 64 GiB 以上内存以获得更好的性能。
 
-> **说明：**
+> **注意：**
 >
 > 导入大量数据时，一个并发对内存的占用在 2 GiB 左右，也就是说总内存占用最大可达到 region-concurrency * 2 GiB。`region-concurrency` 默认与逻辑 CPU 的数量相同。如果内存的大小（GiB）小于逻辑 CPU 数量的两倍或运行时出现 OOM，需要手动调低 `region-concurrency` 参数以避免 TiDB Lightning OOM。
 
