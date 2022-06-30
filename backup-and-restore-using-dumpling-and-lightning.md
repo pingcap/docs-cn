@@ -7,11 +7,19 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量备份与恢复。
 
-在备份恢复过程中，我们会使用 [Dumpling](/dumpling-overview.md) 从 TiDB 导出数据进行备份，然后使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据至 TiDB 实现恢复。
+在备份恢复过程中，[Dumpling](/dumpling-overview.md) 用于从 TiDB 导出数据进行备份，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 用于导入数据至 TiDB 实现恢复。
 
 ## 前提条件
 
-- [安装 Dumpling 和 TiDB Lightning。](/migration-tools.md)
+- 安装和运行 Dumpling。
+
+    使用 TiUP 执行 `tiup install dumpling` 命令。获取后，使用 `tiup dumpling ...` 命令运行 Dumpling。或者，下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools)。
+
+- 安装和运行 TiDB Lightning。
+
+    1. 下载包含 TiDB Lightning 的 [tidb-toolkit 安装包](/download-ecosystem-tools)。
+    2. 运行 TiDB Lightning，参考 [启动 TiDB Lightning](/get-started-with-tidb-lightning.md#第-3-步启动-tidb-lightning)。
+
 - [获取 Dumpling 所需上游数据库权限。](/dumpling-overview.md#从-tidbmysql-导出数据)
 - [获取 TiDB Lightning 所需下游数据库权限。](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
 
@@ -130,7 +138,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
    - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，此时，数据导入成功，恢复完成。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed`，如果有，数据导入成功，恢复完成。
 
 > **注意：**
 >
