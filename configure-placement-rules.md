@@ -283,7 +283,7 @@ pd-ctl config placement-rules rule-bundle get pd
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle get pd -out="group.json"
+pd-ctl config placement-rules rule-bundle get pd --out="group.json"
 ```
 
 修改完成后，使用 `rule-bundle set` 子命令将文件中的配置保存至 PD 服务器。与前面介绍的 `save` 不同，此命令会替换服务器端该分组内的所有规则。
@@ -291,7 +291,7 @@ pd-ctl config placement-rules rule-bundle get pd -out="group.json"
 {{< copyable "shell-regular" >}}
 
 ```bash
-pd-ctl config placement-rules rule-bundle set pd -in="group.json"
+pd-ctl config placement-rules rule-bundle set pd --in="group.json"
 ```
 
 ### 使用 pd-ctl 查看和修改所有配置
