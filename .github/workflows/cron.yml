@@ -63,7 +63,7 @@ jobs:
           git commit -m "update translated files"
           git push
 
-  ja-6.1:
+  ja-6-1:
     runs-on: ubuntu-latest
 
     steps:
