@@ -219,8 +219,6 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup cdc cli changefeed create --pd=http://172.16.6.122:2379 --sink-uri="mysql://root:@172.16.6.125:4000" --changefeed-id="upstream-to-downstream" --start-ts="431434047157698561"
     ```
@@ -237,8 +235,6 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 3. 重新开启 GC。
 
     TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
-
-    {{< copyable "sql" >}}
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
@@ -257,8 +253,6 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，主要分为三个步骤：
 
 1. 停止上游集群的写业务。确认上游数据已全部同步到下游后，停止上游到下游集群的 changefeed。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # 停止旧集群到新集群的 changefeed
@@ -280,8 +274,6 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     ```
 
 2. 创建下游到上游集群的 changefeed。由于此时上下游数据是一致的，且没有新数据写入，因此可以不指定 start-ts，默认为当前时间：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cdc cli changefeed create --pd=http://172.16.6.125:2379 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"

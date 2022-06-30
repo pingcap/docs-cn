@@ -31,8 +31,6 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 
 **说明**：目前无法精确计算 Dumpling 从 MySQL 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
 
-{{< copyable "" >}}
-
 ```sql
 /* 统计所有 schema 大小，单位 MiB，注意修改 ${schema_name} */
 SELECT table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(index_length)/1024/1024 AS index_length,SUM(data_length+index_length)/1024/1024 AS SUM FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_schema;
@@ -51,8 +49,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 ## 第 1 步： 从 MySQL 导出全量数据
 
 1. 运行以下命令，从 MySQL 导出全量数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MiB -B my_db1 -f 'my_db1.table[12]' -o 's3://my-bucket/sql-backup?region=us-west-2'
@@ -90,8 +86,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 1. 编写配置文件 `tidb-lightning.toml`：
 
-    {{< copyable "" >}}
-
     ```toml
     [lightning]
     # 日志
@@ -125,8 +119,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
@@ -153,8 +145,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 1. 新建 `source1.yaml` 文件, 写入以下内容：
 
-    {{< copyable "" >}}
-
     ```yaml
     # 唯一命名，不可重复。
     source-id: "mysql-01"
@@ -171,8 +161,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 2. 在终端中执行下面的命令，使用 `tiup dmctl` 将数据源配置加载到 DM 集群中:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
     ```
@@ -187,8 +175,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 ### 添加同步任务
 
 1. 编辑 `task.yaml`，配置增量同步模式，以及每个数据源的同步起点：
-
-    {{< copyable "shell-regular" >}}
 
     ```yaml
     name: task-test                      # 任务名称，需要全局唯一。
@@ -227,15 +213,11 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup dmctl --master-addr ${advertise-addr} check-task task.yaml
     ```
 
 2. 使用 `tiup dmctl` 执行以下命令启动数据迁移任务：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
@@ -253,8 +235,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 ### 查看任务状态
 
 如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
-
-{{< copyable "shell-regular" >}}
 
 ```shell
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}

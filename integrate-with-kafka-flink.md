@@ -129,7 +129,7 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/']
 
     随后，执行如下语句创建 Table：
 
-    ```
+    ```sql
     CREATE TABLE tpcc_orders (
         o_id INTEGER,
         o_d_id INTEGER,

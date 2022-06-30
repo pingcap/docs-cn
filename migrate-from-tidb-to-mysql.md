@@ -18,8 +18,6 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](/tiup/tiup-cluster.md)。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     # 创建上游集群
     tiup playground --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
@@ -55,8 +53,6 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 1. 关闭 GC。
 
     为了保证增量迁移过程中新写入的数据不丢失，在开始全量导出之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。
-
-    {{< copyable "sql" >}}
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
@@ -107,15 +103,11 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```
     sync_diff_inspector -C ./config.yaml
     ```
 
     关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置为：
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # Diff Configuration.
@@ -151,9 +143,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```
     tiup ctl:v6.1.0 cdc changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
     ```
 
@@ -169,8 +159,6 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 3. 重新开启 GC。
 
     TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
-
-    {{< copyable "sql" >}}
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
@@ -189,8 +177,6 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，主要分为三个步骤：
 
 1. 停止上游集群的写业务。确认上游数据已全部同步到下游后，停止上游到下游集群的 changefeed。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # 停止旧集群到新集群的 changefeed
