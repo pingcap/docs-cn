@@ -115,11 +115,10 @@
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
 - 数据集成
-  - [数据集成综述](/replication-overview.md)
-  - [同步工具](/replication-tools.md)
+  - [数据集成概述](/integration-overview.md)
   - 数据集成场景
-    - [与 Confluent Cloud 进行数据集成](/replicate-from-tidb-to-confluent.md)
-    - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-from-tidb-to-kafka-flink.md)
+    - [与 Confluent Cloud 进行数据集成](/integrate-with-confluent.md)
+    - [与 Apache Kafka 和 Apache Flink 进行数据集成](/integrate-with-kafka-flink.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)

@@ -1,7 +1,6 @@
 ---
 title: 从 TiDB 集群迁移数据至 MySQL 兼容数据库
 summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
-aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 ---
 
 # 从 TiDB 集群迁移数据至 MySQL 兼容数据库
@@ -82,7 +81,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     ```
     tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o ./dumpling_output -r 200000 -F256MiB
     ```
-    
+
     导出完毕后，执行如下命令查看导数数据的元信息，metadata 文件中的 Pos 即是导出快照的 TSO，记这个数字为 BackupTS：
 
     ```
