@@ -73,7 +73,7 @@ TiUniManager 支持将数据备份至 S3 兼容存储和 NFS 共享存储。
 
 ### 如何设置 TiUniManager 的备份路径？
 
-TiUniManager 目前不支持通过前端界面修改备份路径，修改备份路径方法参考 [TiUniManager 备份管理](/tiunimanager/tiunimanager-manage-clusters.md#备份管理-数据备份)。
+TiUniManager 目前不支持通过前端界面修改备份路径，修改备份路径方法参考 [TiUniManager 备份管理](/tiunimanager/tiunimanager-manage-clusters.md#备份管理---数据备份)。
 
 ## 数据导入与导出 FAQ
 
