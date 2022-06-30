@@ -62,18 +62,18 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)。
 
-    |参数               |说明|
-    |-                  |-|
-    |-u 或 --user       |MySQL 数据库的用户|
-    |-p 或 --password   |MySQL 数据库的用户密码|
-    |-P 或 --port       |MySQL 数据库的端口|
-    |-h 或 --host       |MySQL 数据库的 IP 地址|
-    |-t 或 --thread     |导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64。|
-    |-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
-    |-r 或 --row        |用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。|
-    |-F                 |指定单个文件的最大大小，单位为 MiB。强烈建议使用`-F`参数以避免单表过大导致备份过程中断|
-    |-B 或 --database  | 导出指定数据库 |
-    |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。|
+    | 参数              | 说明 |
+    | -                 | - |
+    | `-u` 或 `--user`       | MySQL 数据库的用户 |
+    | `-p` 或 `--password`   | MySQL 数据库的用户密码 |
+    | `-P` 或 `--port`       | MySQL 数据库的端口 |
+    | `-h` 或 `--host`       | MySQL 数据库的 IP 地址 |
+    | `-t` 或 `--thread`     | 导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64 |
+    | `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md) |
+    | `-r` 或 `--row`        | 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用 |
+    | `-F`                   | 指定单个文件的最大大小，单位为 MiB。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断 |
+    | `-B` 或 `--database`   | 导出指定数据库 |
+    | `-f` 或 `--filter`     | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)|
 
     请确保 `${data-path}` 的空间可以容纳要导出的所有上游表，计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
 
@@ -139,7 +139,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
    - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。
 
 > **注意：**
 >
