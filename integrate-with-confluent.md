@@ -101,14 +101,14 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     将如下字段替换为[步骤 2](#第-2-步创建-access-key-pair)中创建和记录的值：
 
-    - <broker\_endpoint>
-    - <broker\_api\_key>
-    - <broker\_api\_secret>
-    - <schema\_registry\_api\_key>
-    - <schema\_registry\_api\_secret>
-    - <schema\_registry\_endpoint>
+    - `<broker\_endpoint>`
+    - `<broker\_api\_key>`
+    - `<broker\_api\_secret>`
+    - `<schema\_registry\_api\_key>`
+    - `<schema\_registry\_api\_secret>`
+    - `<schema\_registry\_endpoint>`
 
-    其中 **<schema\_registry\_api\_secret>** 需要经过 [HTML URL 编码](https://www.w3schools.com/tags/ref_urlencode.asp)后再替换，替换完毕后示例如下：
+    其中 `<schema\_registry\_api\_secret>` 需要经过 [HTML URL 编码](https://www.w3schools.com/tags/ref_urlencode.asp)后再替换，替换完毕后示例如下：
 
     ```
     tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
