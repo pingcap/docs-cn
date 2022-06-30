@@ -23,7 +23,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 1. 部署集群。
 
-    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](//tiup/tiup-cluster.md)。
+    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](/tiup/tiup-cluster.md)。
 
     {{< copyable "shell-regular" >}}
 

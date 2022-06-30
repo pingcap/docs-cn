@@ -18,16 +18,16 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/']
 
 ## 第 1 步：搭建环境
 
-1. 部署 TiCDC 集群。
+1. 部署包含 TiCDC 的 TiDB 集群。
 
-    你可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
+    在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
 
     ```
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1# 查看集群状态
     tiup status
     ```
 
-    生产环境下，可以参考 [TiCDC 部署](/ticdc/deploy-ticdc.md)，完成 TiCDC 集群部署工作。
+    如果尚未安装 TiUP，可以参考[安装 TiUP](/tiup/tiup-overview.md)。在生产环境下，可以参考 [TiUP 安装部署 TiCDC 集群](/ticdc/deploy-ticdc.md)，完成 TiCDC 集群部署工作。
 
 2. 部署 Kafka 集群。
 
@@ -41,54 +41,56 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/']
 
 ## 第 2 步：创建 Kafka Changefeed
 
-根据 Flink 的要求和规范，每张表的增量数据需要发送到独立的 Topic 中，并且每个事件需要按照主键值分发 Partition。因此，我们创建一个名为 `changefeed.conf` 的配置文件，填写如下内容：
+1. 创建 changefeed 配置文件。
 
-```
-[sink]
-dispatchers = [
- {matcher = ['*.*'], topic = "tidb_{schema}_{table}", partition="index-value"},
-]
-```
+    根据 Flink 的要求和规范，每张表的增量数据需要发送到独立的 Topic 中，并且每个事件需要按照主键值分发 Partition。因此，需要创建一个名为 `changefeed.conf` 的配置文件，填写如下内容：
 
-关于配置文件中 dispatchers 的详细解释，详见：[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](https://docs.pingcap.com/zh/tidb/stable/manage-ticdc#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
+    ```
+    [sink]
+    dispatchers = [
+    {matcher = ['*.*'], topic = "tidb_{schema}_{table}", partition="index-value"},
+    ]
+    ```
 
-执行如下命令，创建一个 changefeed，将增量数据输出到 Kafka：
+    关于配置文件中 dispatchers 的详细解释，详见：[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](https://docs.pingcap.com/zh/tidb/stable/manage-ticdc#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
 
-```
-tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
-```
+2. 创建一个 changefeed，将增量数据输出到 Kafka：
 
-如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相信信息，内容如下：
+    ```
+    tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
+    ```
 
-```
-Create changefeed successfully!
-ID: kafka-changefeed
-Info: {... changfeed info json struct ...}
-```
+    - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相信信息，内容如下：
 
-如果命令长时间没有返回，你需要检查当前执行命令所在服务器到 sink-uri 中指定的 Kafka 机器的网络可达性，保证二者之间的网络连接正常。
+        ```
+        Create changefeed successfully!
+        ID: kafka-changefeed
+        Info: {... changfeed info json struct ...}
+        ```
 
-生产环境下 Kafka 集群通常有多个 broker 节点，你可以在 sink-uri 中配置多个 broker 的访问地址，这有助于提升 changefeed 到 Kafka 集群访问的稳定性，当部分被配置的 Kafka 节点故障的时候，changefeed 依旧可以正常工作。假设 Kafka 集群中有 3 个 broker 节点，地址分别为 127.0.0.1:9092 / 127.0.0.2:9092 / 127.0.0.3:9092，可以参考如下 sink-uri 创建 changefeed:
+    - 如果命令长时间没有返回，你需要检查当前执行命令所在服务器到 sink-uri 中指定的 Kafka 机器的网络可达性，保证二者之间的网络连接正常。
 
-```
-tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092/kafka-topic-name?protocol=canal-json&partition-num=3&replication-factor=1&max-message-bytes=1048576" --config="changefeed.conf"
-```
+    生产环境下 Kafka 集群通常有多个 broker 节点，你可以在 sink-uri 中配置多个 broker 的访问地址，这有助于提升 changefeed 到 Kafka 集群访问的稳定性，当部分被配置的 Kafka 节点故障的时候，changefeed 依旧可以正常工作。假设 Kafka 集群中有 3 个 broker 节点，地址分别为 127.0.0.1:9092 / 127.0.0.2:9092 / 127.0.0.3:9092，可以参考如下 sink-uri 创建 changefeed:
 
-上述命令执行返回之后，可以通过如下命令，查看 changefeed 的状态:
+    ```
+    tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092/kafka-topic-name?protocol=canal-json&partition-num=3&replication-factor=1&max-message-bytes=1048576" --config="changefeed.conf"
+    ```
 
-```
-tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
-```
+3. changefeed 创建成功后，执行如下命令，查看 changefeed 的状态:
 
-可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md#管理同步任务-changefeed)，对 changefeed 状态进行管理。
+    ```
+    tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
+    ```
+
+    可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md#管理同步任务-changefeed)，对 changefeed 状态进行管理。
 
 ## 第 3 步：TiDB 产生事件变更数据
 
 完成以上步骤后，TiCDC 会将上游 TiDB 的增量数据变更日志发送到 Kafka，下面对 TiDB 写入数据，以产生增量数据变更日志。
 
-1. 模拟业务负载
+1. 模拟业务负载。
 
-    在测试实验环境下，我们可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。如下命令，首先在上游 TiDB 创建名为 tpcc 的数据库，然后使用 TiUP bench 写入数据到刚创建的 tpcc 数据库中。
+    在测试实验环境下，可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。如下命令，首先在上游 TiDB 创建名为 `tpcc` 的数据库，然后使用 TiUP bench 写入数据到这个数据库中。
 
     ```
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 prepare
@@ -97,7 +99,7 @@ tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
 
     关于 go-tpc 的更多详细内容，可以参考[如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)。
 
-2. 消费 Kafka Topic 中的数据
+2. 消费 Kafka Topic 中的数据。
 
     changefeed 正常运行时，会向 Kafka Topic 写入数据，你可以通过由 Kafka 提供的 kafka-console-consumer.sh, 观测到数据成功被写入到 Kafka Topic 中：
 
@@ -105,7 +107,7 @@ tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
     ./bin/kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --from-beginning --topic `${topic-name}`
     ```
 
-至此，我们已经将 TiDB 的增量数据变更日志实时地复制到 Kafka。接下来，我们将尝试使用 Flink 消费 Kafka 数据。当然，您也可以自行开发适用于业务场景的 Kafka 消费端。
+至此，TiDB 的增量数据变更日志就实时地复制到了 Kafka。下一步，你可以使用 Flink 消费 Kafka 数据。当然，你也可以自行开发适用于业务场景的 Kafka 消费端。
 
 ## 第 4 步：配置 Flink 消费 Kafka 数据（可选）
 
@@ -162,4 +164,4 @@ tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
 
     ![SQL query result](/media/integrate/sql-query-result.png)
 
-至此，TiDB 与 Flink 的数据集成步骤已完成。
+至此，就完成了 TiDB 与 Flink 的数据集成。

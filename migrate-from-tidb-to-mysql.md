@@ -1,11 +1,11 @@
 ---
-title: 从 TiDB 集群迁移数据至 MySQL 兼容数据库
+title: 从 TiDB 集群迁移数据至 MySQL 兼容的数据库
 summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 ---
 
-# 从 TiDB 集群迁移数据至 MySQL 兼容数据库
+# 从 TiDB 集群迁移数据至 MySQL 兼容的数据库
 
-本文档介绍如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库，如 Aurora、MySQL、MariaDB 等。本文将模拟整个迁移过程，具体包括以下四个步骤：
+本文档介绍如何将数据从 TiDB 集群迁移至 MySQL 兼容的数据库，如 Aurora、MySQL、MariaDB 等。本文将模拟整个迁移过程，具体包括以下四个步骤：
 
 1. 搭建环境
 2. 迁移全量数据
@@ -35,7 +35,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
     docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql
     ```
 
-    在生产环境中，您可以参考 [Installing MySQL](https://dev.mysql.com/doc/refman/8.0/en/installing.html) 来部署 MySQL 实例。
+    在生产环境中，你可以参考 [Installing MySQL](https://dev.mysql.com/doc/refman/8.0/en/installing.html) 来部署 MySQL 实例。
 
 3. 模拟业务负载。
 
@@ -82,7 +82,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
     tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o ./dumpling_output -r 200000 -F256MiB
     ```
 
-    导出完毕后，执行如下命令查看导数数据的元信息，metadata 文件中的 Pos 即是导出快照的 TSO，记这个数字为 BackupTS：
+    导出完毕后，执行如下命令查看导出数据的元信息，metadata 文件中的 `Pos` 就是导出快照的 TSO，将其记录为 BackupTS：
 
     ```
     [root@test ~]# cat dumpling_output/metadata
