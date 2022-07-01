@@ -1,9 +1,9 @@
 ---
-title: Use PingCAP Clinic
+title: Troubleshoot TiDB Cluster Using PingCAP Clinic
 summary: Learn how to use the PingCAP Clinic Diagnostic Service to troubleshoot cluster problems remotely and perform a quick check of the cluster status on a cluster deployed using TiUP.
 ---
 
-# Use PingCAP Clinic
+# Troubleshoot TiDB Cluster Using PingCAP Clinic
 
 For TiDB clusters and DM clusters deployed using TiUP, you can use PingCAP Clinic Diagnostic Service (PingCAP Clinic) to troubleshoot cluster problems remotely and perform a quick check on cluster status locally using Diag client (Diag) and [Clinic Server China](https://clinic.pingcap.com.cn) (Clinic Server). For details about Diag and Clinic Server, see [PingCAP Clinic components](/clinic/clinic-introduction.md).
 
@@ -11,7 +11,7 @@ PingCAP Clinic is currently in the Technical Preview stage.
 
 > **Note:**
 >
-> PingCAP Clinic temporarily **does not support** collecting data from the clusters deployed using TiDB Ansible.
+> PingCAP Clinic **does not support** collecting data from the clusters deployed using TiDB Ansible.
 
 ## User scenarios
 
@@ -55,14 +55,14 @@ Before using PingCAP Clinic, you need to install Diag (a component to collect da
 
     When uploading collected data through Diag, you need a token for user authentication. If you already set a token Diag, you can reuse the token and skip this step.
 
-    To get a token, log in to [Clinic Server](https://clinic.pingcap.com.cn) and click the icon in the lower-right corner of the Cluster page. Next, select **Get Access Token For Diag Tool**, click **+** in the pop-up window, and then copy and save the displayed token information.
+    To get a token, log in to [Clinic Server](https://clinic.pingcap.com.cn) and click the icon in the lower-right corner of the Cluster page. Next, select **Get Access Token For Diag Tool**, click **+** in the pop-up window. Make sure that you have copied and saved the displayed token information.
 
     ![Get the Token](/media/clinic-get-token.png)
 
     > **Note:**
     >
     > - When accessing Clinic Server for the first time, before getting a token, you need to log in to [Clinic Server](https://clinic.pingcap.com.cn) using your AskTUG account and create an organization first.
-    > - For data security, TiDB only displays the token information when it is created. If you lost the information, you can delete the old token and create a new one.
+    > - For data security, TiDB only displays the token upon the token creation. If you have lost the token, delete the old token and create a new one.
     > - A token is only used for uploading data.
 
     Then, set the token in Diag. For example:
