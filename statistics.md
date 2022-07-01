@@ -69,7 +69,7 @@ A hash collision might occur since Count-Min Sketch is a hash structure. In the 
 
 ## Top-N values
 
-Top-N values are values with the top N occurrences in a column or index. TiDB records the values and occurences of Top-N values.
+Top-N values are values with the top N occurrences in a column or index. TiDB records the values and occurrences of Top-N values.
 
 ## Collect statistics
 
