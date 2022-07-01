@@ -20,6 +20,8 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 - [BR 工具简介](/br/backup-and-restore-overview.md)
 - [BR 命令行介绍](/br/use-br-command-line-tool.md)
 
+如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，可使用 Dumpling 导出数据，实现备份。具体备份操作，参考[使用 Dumpling 备份全量数据](/backup-and-restore-using-dumpling-and-lightning.md#使用-dumpling-备份全量数据)。
+
 ## 备份 TiDB 集群快照
 
 TiDB 集群快照数据是只包含某个物理时间点上集群满足事务一致性的数据。使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
