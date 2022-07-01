@@ -324,6 +324,7 @@
         - [使用 OpenAPI 运维集群](/dm/dm-open-api.md)
       - 升级版本
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+        - [在线应用 Hotfix 到 DM 集群](/tiup/tiup-component-dm-patch.md)
       - [创建数据源](/dm/quick-start-create-source.md)
       - [管理数据源](/dm/dm-manage-source.md)
       - 管理迁移任务
