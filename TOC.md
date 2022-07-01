@@ -198,7 +198,99 @@
     - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
     - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
     - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+<<<<<<< HEAD
   - [TiDB Data Migration](/dm/dm-overview.md)
+=======
+  - TiDB Data Migration
+    - [关于 Data Migration](/dm/dm-overview.md)
+    - [架构简介](/dm/dm-arch.md)
+    - [快速开始](/dm/quick-start-with-dm.md)
+    - 部署 DM 集群
+      - [软硬件要求](/dm/dm-hardware-and-software-requirements.md)
+      - [使用 TiUP 联网部署（推荐）](/dm/deploy-a-dm-cluster-using-tiup.md)
+      - [使用 TiUP 离线部署](/dm/deploy-a-dm-cluster-using-tiup-offline.md)
+      - [使用 Binary 部署](/dm/deploy-a-dm-cluster-using-binary.md)
+      - [在 Kubernetes 环境中部署](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-tidb-dm)
+    - 入门指南
+      - [创建数据源](/dm/quick-start-create-source.md)
+      - [数据源操作](/dm/dm-manage-source.md)
+      - [任务配置向导](/dm/dm-task-configuration-guide.md)
+      - [Table routing](/dm/dm-key-features.md#table-routing)
+      - [Block & Allow Lists](/dm/dm-key-features.md#block--allow-table-lists)
+      - [过滤 binlog 事件](/dm/dm-key-features.md#binlog-event-filter)
+      - [通过 SQL 表达式过滤 DML](/dm/feature-expression-filter.md)
+      - 迁移任务操作
+        - [任务前置检查](/dm/dm-precheck.md)
+        - [创建任务](/dm/dm-create-task.md)
+        - [查询状态](/dm/dm-query-status.md)
+        - [暂停任务](/dm/dm-pause-task.md)
+        - [恢复任务](/dm/dm-resume-task.md)
+        - [停止任务](/dm/dm-stop-task.md)
+    - 进阶教程
+      - 分库分表合并迁移
+        - [概述](/dm/feature-shard-merge.md)
+        - [悲观模式](/dm/feature-shard-merge-pessimistic.md)
+        - [乐观模式](/dm/feature-shard-merge-optimistic.md)
+        - [手动处理 Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
+      - [迁移使用 GH-ost/PT-osc 的数据源](/dm/feature-online-ddl.md)
+      - [上下游列数量不一致的迁移](/migrate-with-more-columns-downstream.md)
+    - 运维管理
+      - 集群版本升级
+        - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
+        - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+        - [在线应用 Hotfix 到 DM 集群](/tiup/tiup-component-dm-patch.md)
+      - 集群运维工具
+        - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
+        - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
+      - 性能调优
+        - [性能数据](/dm/dm-benchmark-v5.4.0.md)
+        - [配置调优](/dm/dm-tune-configuration.md)
+        - [如何进行压力测试](/dm/dm-performance-test.md)
+        - [性能问题及处理方法](/dm/dm-handle-performance-issues.md)
+      - 数据源管理
+        - [变更同步的数据源地址](/dm/usage-scenario-master-slave-switch.md)
+      - 任务管理
+        - [处理出错的 DDL 语句](/dm/handle-failed-ddl-statements.md)
+        - [管理迁移表的表结构](/dm/dm-manage-schema.md)
+      - [导出和导入集群的数据源和任务配置](/dm/dm-export-import-config.md)
+      - [处理告警](/dm/dm-handle-alerts.md)
+      - [日常巡检](/dm/dm-daily-check.md)
+     - 参考手册
+        - 架构组件
+          - [DM-worker 说明](/dm/dm-worker-intro.md)
+          - [安全模式](/dm/dm-safe-mode.md)
+          - [Relay Log](/dm/relay-log.md)
+          - [DDL 特殊处理说明](/dm/dm-ddl-compatible.md)
+        - 运行机制
+          - [DML 同步机制](/dm/dm-dml-replication-logic.md)
+        - 命令行
+          - [DM-master & DM-worker](/dm/dm-command-line-flags.md)
+        - 配置文件
+          - [概述](/dm/dm-config-overview.md)
+          - [数据源配置](/dm/dm-source-configuration-file.md)
+          - [迁移任务配置](/dm/task-configuration-file-full.md)
+          - [DM-master 配置](/dm/dm-master-configuration-file.md)
+          - [DM-worker 配置](/dm/dm-worker-configuration-file.md)
+          - [Table Selector](/dm/table-selector.md)
+        - [OpenAPI](/dm/dm-open-api.md)
+        - [兼容性目录](/dm/dm-compatibility-catalog.md)
+        - 安全
+          - [为 DM 的连接开启加密传输](/dm/dm-enable-tls.md)
+          - [生成自签名证书](/dm/dm-generate-self-signed-certificates.md)
+        - 监控告警
+          - [监控指标](/dm/monitor-a-dm-cluster.md)
+          - [告警信息](/dm/dm-alert-rules.md)
+        - [错误码](/dm/dm-error-handling.md#常见故障处理方法)
+        - [术语表](/dm/dm-glossary.md)
+      - 使用示例
+        - [使用 DM 迁移数据](/dm/migrate-data-using-dm.md)
+        - [快速创建迁移任务](/dm/quick-start-create-task.md)
+        - [分表合并数据迁移最佳实践](/dm/shard-merge-best-practices.md)
+      - 异常解决
+        - [常见问题](/dm/dm-faq.md)
+        - [错误处理及恢复](/dm/dm-error-handling.md)
+      - [版本发布历史](/dm/dm-release-notes.md)
+>>>>>>> 6fa2cc30f (Add example about how to apply hotfix to dm cluster (#8143))
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
