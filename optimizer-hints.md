@@ -84,7 +84,7 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
 > **注意：**
@@ -98,7 +98,7 @@ SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
 `INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
@@ -118,12 +118,22 @@ SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
 > **注意：**
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
+
+### ORDERED_HASH_JOIN(t1_name [, tl_name ...])
+
+`ORDERED_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时使用 Hint 中出现的第一个表来构建哈希表，执行 Hash Join 算法。除了 `TiDB_HJ` 别名之外的其他用法和注意事项和 `HASH_JOIN` 一致。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ ORDERED_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
+```
 
 ### HASH_AGG()
 
@@ -132,7 +142,7 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ HASH_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
+SELECT /*+ HASH_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
 ### STREAM_AGG()
@@ -142,7 +152,7 @@ SELECT /*+ HASH_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ STREAM_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
+SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
