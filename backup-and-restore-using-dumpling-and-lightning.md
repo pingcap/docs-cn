@@ -11,17 +11,10 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 ## 前提条件
 
-- 安装和运行 Dumpling。
-
-    使用 TiUP 执行 `tiup install dumpling` 命令。获取后，使用 `tiup dumpling ...` 命令运行 Dumpling。或者，下载包含 Dumpling 的 [tidb-toolkit 安装包](/download-ecosystem-tools)。
-
-- 安装和运行 TiDB Lightning。
-
-    1. 下载包含 TiDB Lightning 的 [tidb-toolkit 安装包](/download-ecosystem-tools)。
-    2. 运行 TiDB Lightning，参考 [启动 TiDB Lightning](/get-started-with-tidb-lightning.md#第-3-步启动-tidb-lightning)。
-
-- [获取 Dumpling 所需上游数据库权限。](/dumpling-overview.md#从-tidbmysql-导出数据)
-- [获取 TiDB Lightning 所需下游数据库权限。](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+- [下载和安装 Dumpling](/download-ecosystem-tools.md)
+- [下载和安装 TiDB Lightning](/download-ecosystem-tools.md)
+- [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
+- [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
 
 ## 资源要求
 
