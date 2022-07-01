@@ -26,8 +26,15 @@ TiDB 版本：5.4.2
 
 + TiDB
 
+    <!--planner-->
+
+    <!--transaction-->
+
+    <!--sql-infra-->
     - 修复在网络断连时，断连的会话资源可能没有清理的问题。[#34722](https://github.com/pingcap/tidb/issues/34722)
     - 修复在查询包含 CTE 的视图时，可能误报 `references invalid table` 的问题。[#33965](https://github.com/pingcap/tidb/issues/33965)
+
+    <!--diagnosis-->
 
 + TiKV
 
