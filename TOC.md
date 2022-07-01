@@ -391,6 +391,7 @@
       - 集群版本升级
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+        - [在线应用 Hotfix 到 DM 集群](/tiup/tiup-component-dm-patch.md)
       - 集群运维工具
         - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
         - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
