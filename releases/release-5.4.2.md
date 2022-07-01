@@ -35,6 +35,7 @@ TiDB 版本：5.4.2
     - 修复在查询包含 CTE 的视图时，可能误报 `references invalid table` 的问题。[#33965](https://github.com/pingcap/tidb/issues/33965)
 
     <!--diagnosis-->
+    - 修复在 SQL 语句分析中并发读写 map 的问题。[#35340](https://github.com/pingcap/tidb/issues/35340)
 
 + TiKV
 
@@ -57,5 +58,9 @@ TiDB 版本：5.4.2
     (dup: release-6.1.0.md > 错误修复> PD)- 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
 
 + PingCAP/TiFlash
+
+    <!--storage-->
+    - 修复在 clustered index 表删除列导致 TiFlash 进程退出的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
     <!--compute-->
     - 修复因为溢出导致的 Decimal 比较结果错误. [#4512](https://github.com/pingcap/tiflash/issues/4512)
