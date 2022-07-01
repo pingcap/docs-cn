@@ -909,6 +909,15 @@ Configuration items related to Coprocessor.
 >
 > `region-bucket-size` is an experimental feature introduced in TiDB v6.1.0. It is not recommended that you use it in production environments.
 
+### `report-region-buckets-tick-interval` <span class="version-mark">New in v6.1.0</span>
+
+> **Warning:**
+>
+> `report-region-buckets-tick-interval` is an experimental feature introduced in TiDB v6.1.0. It is not recommended that you use it in production environments.
+
++ The interval at which TiKV reports bucket information to PD when `enable-region-bucket` is true.
++ Default value: `10s`
+
 ## RocksDB
 
 Configuration items related to RocksDB
