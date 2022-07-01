@@ -311,7 +311,7 @@ dispatchers = [
 ]
 ```
 
-集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/ticdc/integrate-with-confluent.md)。
+集成具体步骤详见 [TiDB 集成 Confluent Platform 快速上手指南](/integrate-with-confluent.md)。
 
 #### Sink URI 配置 `pulsar`
 
