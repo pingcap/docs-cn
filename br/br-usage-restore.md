@@ -21,6 +21,8 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 - [BR 工具简介](/br/backup-and-restore-overview.md)
 - [BR 命令行介绍](/br/use-br-command-line-tool.md)
 
+如果你需要恢复 Dumpling 导出的数据、CSV 文件或 Amazon Aurora 生成的 Apache Parquet 文件，且数据恢复不基于指定时间，则可以使用 TiDB Lightning 来导入数据，实现恢复。具体恢复操作，请参考 [使用 TiDB Lightning 恢复全量数据](/backup-and-restore-using-dumpling-and-lightning.md#使用-tidb-lightning-恢复全量数据)。
+
 ## 恢复快照备份数据
 
 BR 支持在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。
