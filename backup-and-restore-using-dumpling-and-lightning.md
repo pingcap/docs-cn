@@ -11,8 +11,16 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 ## 前提条件
 
-- [下载和安装 Dumpling](/download-ecosystem-tools.md)
-- [下载和安装 TiDB Lightning](/download-ecosystem-tools.md)
+- 安装和运行 Dumpling：
+
+    - 安装 Dumpling：执行 `tiup install dumpling` 命令。
+    - 运行 Dumpling：执行 `tiup dumpling ...` 命令。
+
+- 安装和运行 TiDB Lightning：
+
+    - 安装 TiDB Lightning：执行 `tiup install tidb lightning` 命令
+    - 运行 TiDB Lightning：执行 `tiup tidb lightning ...` 命令
+
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
 - [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
 
@@ -24,13 +32,14 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 **磁盘空间**：
 
+推荐使用 Amazon S3、Google Cloud Storage (GCS) 和 Azure Blob Storage 等外部存储，以便能够快速存储备份文件，且不受磁盘空间限制。
+
+如果需要保存单次备份数据到本地磁盘，需要注意以下磁盘空间限制：
+
 - Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
-- 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
 
 **说明**：目前无法精确计算 Dumpling 从 TiDB 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
-
-{{< copyable "" >}}
 
 ```sql
 /* 统计所有 schema 大小，单位 MiB，注意修改 ${schema_name} */
@@ -51,38 +60,19 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 1. 运行以下命令，从 TiDB 导出全量数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MiB -B my_db1 -f 'my_db1.table[12]' -o 's3://my-bucket/sql-backup?region=us-west-2'
     ```
 
     Dumpling 默认导出数据格式为 SQL 文件，你也可以通过设置 `--filetype` 指定导出文件的类型。
 
-    以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)。
-
-    | 参数               | 说明 |
-    | -                  | - |
-    | `-u` 或 `--user`       | MySQL 数据库的用户 |
-    | `-p` 或 `--password`   | MySQL 数据库的用户密码 |
-    | `-P` 或 `--port`       | MySQL 数据库的端口 |
-    | `-h` 或 `--host`       | MySQL 数据库的 IP 地址 |
-    | `-t` 或 `--thread`     | 导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64 |
-    | `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md) |
-    | `-r` 或 `--row`        | 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用 |
-    | `-F`                   | 指定单个文件的最大大小，单位为 MiB。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断 |
-    | `-B` 或 `--database`   | 导出指定数据库 |
-    | `-f` 或 `--filter`     | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)|
-
-    请确保 `${data-path}` 的空间可以容纳要导出的所有上游表，计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
+    关于更多 Dumpling 的配置，请参考 [Dumpling 主要选项表](dumpling-overview#dumpling-主要选项表)。
 
 2. 导出完成后，可以在数据存储目录查看导出的备份文件。
 
 ## 使用 TiDB Lightning 恢复全量数据
 
 1. 编写配置文件 `tidb-lightning.toml`：
-
-    {{< copyable "" >}}
 
     ```toml
     [lightning]
@@ -117,8 +107,6 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
@@ -131,7 +119,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
    - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed`，如果有，数据导入成功，恢复完成。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed`，如果有，数据导入成功，恢复完成。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
 > **注意：**
 >
