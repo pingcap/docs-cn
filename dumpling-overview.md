@@ -1,5 +1,5 @@
 ---
-title: Dumpling 使用文档
+title: 使用 Dumpling 导出数据
 summary: 使用 Dumpling 从 TiDB 导出数据。
 aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/docs-cn/dev/reference/tools/mydumper/','/zh/tidb/dev/mydumper-overview/']
 ---
@@ -27,7 +27,7 @@ aliases: ['/docs-cn/dev/dumpling-overview/','/docs-cn/dev/mydumper-overview/','/
 
 TiDB 还提供了其他工具，你可以根据需要选择使用：
 
-- 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-tool.md)。
+- 如果需要直接备份 SST 文件（键值对），或者对延迟不敏感的增量备份，请使用备份工具 [BR](/br/backup-and-restore-overview.md)。
 - 如果需要实时的增量备份，请使用 [TiCDC](/ticdc/ticdc-overview.md)。
 - 所有的导出数据都可以用 [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md) 导回到 TiDB。
 
@@ -82,19 +82,25 @@ dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o /tmp/test -r 200000
 
 ### 导出为 CSV 文件
 
-假如导出数据的格式是 CSV（使用 `--filetype csv` 即可导出 CSV 文件），还可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录，例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
+你可以通过使用 `--filetype csv` 导出数据到 CSV 文件。
+
+当你导出 CSV 文件时，你可以使用 `--sql <SQL>` 导出指定 SQL 选择出来的记录。例如，导出 `test.sbtest1` 中所有 `id < 100` 的记录：
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'select * from `test`.`sbtest1` where id < 100'
+./dumpling -u root -P 4000 -h 127.0.0.1 -o /tmp/test --filetype csv --sql 'select * from `test`.`sbtest1` where id < 100' -F 100MiB --output-filename-template 'test.sbtest1.{{.Index}}'
 ```
+
+以上命令中：
+
+- `--sql` 选项仅仅可用于导出 CSV 文件的场景。上述命令将在要导出的所有表上执行 `SELECT * FROM <table-name> WHERE id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
+- 使用 `--sql` 配置导出时，Dumpling 无法获知导出的表库信息，此时可以使用 `--output-filename-template` 选项来指定 CSV 文件的文件名格式，以方便后续使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 导入数据文件。例如 `--output-filename-template='test.sbtest1.{{.Index}}'` 指定导出的 CSV 文件为 `test.sbtest1.000000000`、`test.sbtest1.000000001` 等。
+- 你可以使用 `--csv-separator`、`--csv-delimiter` 等选项，配置 CSV 文件的格式。具体信息可查阅 [Dumpling 主要选项表](#dumpling-主要选项表)。
 
 > **注意：**
 >
-> - `--sql` 选项仅仅可用于导出 CSV 的场景。
-> - 该命令将在要导出的所有表上执行 `select * from <table-name> where id < 100` 语句。如果部分表没有指定的字段，那么导出会失败。
-> - Dumpling 导出不区分`字符串`与`关键字`。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
+> Dumpling 导出不区分*字符串*与*关键字*。如果导入的数据是 Boolean 类型的 `true` 和 `false`，导出时会被转换为 `1` 和 `0` 。
 
 ### 输出文件格式
 
@@ -276,9 +282,9 @@ Dumpling 可以通过 `--snapshot` 指定导出某个 [tidb_snapshot](/read-hist
 
 即可导出 TSO 为 `417773951312461825` 或 `2020-07-02 17:12:45` 时的 TiDB 历史数据快照。
 
-### 控制导出 TiDB 大表时的内存使用
+### 控制导出 TiDB 大表（超过 1 TB）时的内存使用
 
-Dumpling 导出 TiDB 较大单表时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
+Dumpling 导出 TiDB 较大单表（超过 1 TB）时，可能会因为导出数据过大导致 TiDB 内存溢出 (OOM)，从而使连接中断导出失败。可以通过以下参数减少 TiDB 的内存使用。
 
 + 设置 `-r` 参数，可以划分导出数据区块减少 TiDB 扫描数据的内存开销，同时也可开启表内并发提高导出效率。当上游为 TiDB 且版本为 v3.0 或更新版本时，该参数大于 0 表示使用 TiDB region 信息划分表内并发，具体取值将不再生效。
 + 调小 `--tidb-mem-quota-query` 参数到 `8589934592` (8GB) 或更小。可控制 TiDB 单条查询语句的内存使用。

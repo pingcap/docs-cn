@@ -1,7 +1,7 @@
 ---
 title: Data Migration 简介
 summary: 了解 TiDB Data Migration
-aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/']
+aliases: ['/docs-cn/tidb-data-migration/dev/overview/','/docs-cn/tools/dm/overview/','/zh/tidb/dev/quick-create-migration-task','/zh/tidb/dev/scenarios']
 ---
 
 # 产品简介
@@ -67,11 +67,10 @@ tiup install dm dmctl
 
 - [GitHub](https://github.com/pingcap/tiflow/tree/master/dm)
 - [AskTUG](https://asktug.com/tags/dm)
-- [Slack](https://slack.tidb.io/invite?team=tidb-community&channel=sig-migrate&ref=github_sig)
 
 ## License
 
-DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/dm/LICENSE) 了解更多信息。
+DM 遵循 Apache 2.0 协议，在 [LICENSE](https://github.com/pingcap/tiflow/blob/master/LICENSE) 了解更多信息。
 
 ## 版本变更说明
 

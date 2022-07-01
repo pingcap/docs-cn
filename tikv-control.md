@@ -115,7 +115,7 @@ tikv-ctl 提供以下两种运行模式：
     store:"127.0.0.1:20160" compact db:KV cf:default range:([], []) success!
     ```
 
-- **本地模式**。通过 `--db` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
+- **本地模式**。通过 `--data-dir` 选项来指定本地 TiKV 数据的目录路径。在此模式下，需要停止正在运行的 TiKV 实例。
 
 以下如无特殊说明，所有命令都同时支持这两种模式。
 
@@ -286,6 +286,7 @@ middle_key_by_approximate_size:
 
 - `--host` 参数可以指定要 compact 的 TiKV。
 - `-d` 参数可以指定要 compact 的 RocksDB，有 `kv` 和 `raft` 参数值可以选。
+- `--data-dir` 参数指定本地 TiKV 数据的目录路径。
 - `--threads` 参数可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 - `--bottommost` 参数可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
@@ -373,6 +374,7 @@ DebugClient::check_region_consistency: RpcFailure(RpcStatus { status: Unknown, d
 
 > **注意：**
 >
+> - 目前 consistency-check 与 TiDB GC 操作不兼容，存在误报错误的可能，因此不建议使用该命令。
 > - **该命令只支持远程模式**。
 > - 即使该命令返回了成功信息，也需要检查是否有 TiKV panic 了。因为该命令只是向 Leader 请求进行一致性检查，但整个检查流程是否成功并不能在客户端知道。
 
@@ -487,7 +489,11 @@ tikv-ctl --host ip:port modify-tikv-config -n rocksdb.rate-bytes-per-sec -v "1GB
 success
 ```
 
-### 强制 Region 从多副本失败状态恢复服务（慎用）
+### 强制 Region 从多副本失败状态恢复服务（弃用）
+
+> **警告：**
+> 
+> 不推荐使用该功能，恢复需求可通过 `pd-ctl` 的 Online Unsafe Recovery 功能实现。它提供了一键式自动恢复的能力，无需停止服务等额外操作，具体使用方式请参考 [Online Unsafe Recovery 使用文档](/online-unsafe-recovery.md)。
 
 `unsafe-recover remove-fail-stores` 命令可以将故障机器从指定 Region 的 peer 列表中移除。运行命令之前，需要目标 TiKV 先停掉服务以便释放文件锁。
 
@@ -630,7 +636,9 @@ Type "I consent" to continue, anything else to exit: I consent
 
 ### 打印损坏的 SST 文件信息
 
-TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。为了清理掉这些文件，你可以使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
+TiKV 中损坏的 SST 文件会导致 TiKV 进程崩溃。在 TiDB v6.1.0 之前，损坏的 SST 文件会导致 TiKV 进程立即崩溃。从 TiDB v6.1.0 起，TiKV 进程会在 SST 文件损坏 1 小时后崩溃。
+
+为了方便清理掉这些 SST 文件，你可以先使用 `bad-ssts` 命令打印出损坏的 SST 文件信息。
 
 > **注意：**
 >

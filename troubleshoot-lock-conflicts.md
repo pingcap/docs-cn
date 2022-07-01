@@ -214,7 +214,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 处理建议：
 
-* 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 100 ms，单次最大 3000 ms，总共最大 20000 ms
+* 在遇到读写冲突时会有 backoff 自动重试机制，如上述示例中 Txn1 会进行 backoff 重试，单次初始 10 ms，单次最大 3000 ms，总共最大 20000 ms
 
 * 可以使用 TiDB Control 的子命令 [decoder](/tidb-control.md#decoder-命令) 来查看指定 key 对应的行的 table id 以及 rowid：
 
@@ -238,7 +238,7 @@ Txn0 完成了 Prewrite，在 Commit 的过程中 Txn1 对该 key 发起了读�
 
 处理建议：
 
-* 监控中出现少量 txnLock，无需过多关注。后台会自动进行 backoff 重试，单次初始 200 ms，单次最大 3000 ms。
+* 监控中出现少量 txnLock，无需过多关注。后台会自动进行 backoff 重试，单次初始 100 ms，单次最大 3000 ms。
 * 如果出现大量的 txnLock，需要从业务的角度评估下冲突的原因。
 * 使用悲观锁模式。
 
@@ -274,8 +274,8 @@ TxnLockNotFound 错误是由于事务提交的慢了，超过了 TTL 的时间�
     查看提交间隔：
 
     ```shell
-    ./pd-ctl tso [start_ts]
-    ./pd-ctl tso [commit_ts]
+    tiup ctl pd tso [start_ts]
+    tiup ctl pd tso [commit_ts]
     ```
 
 * 建议检查下是否是因为写入性能的缓慢导致事务提交的效率差，进而出现了锁被清除的情况。

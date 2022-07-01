@@ -1,7 +1,7 @@
 ---
 title: TiDB 简介
 summary: 了解 TiDB 数据库。
-aliases: ['/docs-cn/dev/']
+aliases: ['/docs-cn/dev/','/docs-cn/','/docs-cn/stable/']
 ---
 
 <!-- markdownlint-disable MD046 -->
@@ -16,7 +16,7 @@ aliases: ['/docs-cn/dev/']
 
 - [TiDB 简介](/overview.md)
 - [基本功能](/basic-features.md)
-- [TiDB 6.0 Release Notes](/releases/release-6.0.0-dmr.md)
+- [TiDB 6.1 Release Notes](/releases/release-6.1.0.md)
 - [TiDB 版本发布时间线](/releases/release-timeline.md)
 - [与 MySQL 的兼容性](/mysql-compatibility.md)
 - [使用限制](/tidb-limitations.md)
@@ -59,7 +59,7 @@ aliases: ['/docs-cn/dev/']
 
 - [升级 TiDB 版本](/upgrade-tidb-using-tiup.md)
 - [扩容与缩容](/scale-tidb-using-tiup.md)
-- [备份与恢复](/br/backup-and-restore-tool.md)
+- [备份与恢复](/br/backup-and-restore-overview.md)
 - [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
 - [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
 - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
@@ -86,7 +86,7 @@ aliases: ['/docs-cn/dev/']
 - [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
 - [热点问题处理](/troubleshoot-hot-spot-issues.md)
 - [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
-- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
+- [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)
 - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
 
 </NavColumn>
