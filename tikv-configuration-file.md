@@ -480,6 +480,7 @@ raftstore 相关的配置项。
 
 + 存储容量，即允许的最大数据存储大小。如果没有设置，则使用当前磁盘容量。如果要将多个 TiKV 实例部署在同一块物理磁盘上，需要在 TiKV 配置中添加该参数，参见[混合部署的关键参数介绍](/hybrid-deployment-topology.md#混合部署的关键参数介绍)。
 + 默认值：0
++ 单位：KB|MB|GB
 
 ### `raftdb-path`
 
@@ -1210,12 +1211,13 @@ bloom filter 为每个 key 预留的长度。
 
 ### `max-bytes-for-level-base`
 
-+ base level (L1) 最大字节数，一般设置为 memtable 大小 4 倍。
++ base level (L1) 最大字节数，一般设置为 memtable 大小 4 倍。当 L1 的数据量大小达到 `max-bytes-for-level-base` 限定的值的时候，会触发 L1 的 SST 文件和 L2 中有 overlap 的 SST 文件进行 compaction。
 + `defaultcf` 默认值：`"512MB"`
 + `writecf` 默认值：`"512MB"`
 + `lockcf` 默认值：`"128MB"`
 + 最小值：0
 + 单位：KB|MB|GB
++ 建议 `max-bytes-for-level-base` 的取值和 L0 的数据量大致相等，以减少不必要的 compaction。假如压缩方式为 "no:no:lz4:lz4:lz4:lz4:lz4"，那么 `max-bytes-for-level-base` 的值应该是 `write-buffer-size * 4`，因为 L0 和 L1 均没有压缩，且 L0 触发 compaction 的条件是 SST 文件的个数到达 4（默认值）。当 L0 和 L1 都发生了 compaction 时，需要分析 RocksDB 的日志了解由一个 memtable 压缩成的 SST 文件的大小。如果文件大小为 32MB，那么 `max-bytes-for-level-base` 的值建议设为 32MB * 4 = 128MB。
 
 ### `target-file-size-base`
 
