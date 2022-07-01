@@ -1,8 +1,8 @@
 ---
-title: TiDB Lightning 配置
+title: TiDB Lightning Physical Import Mode 配置
 ---
 
-# TiDB Lightning 配置
+# TiDB Lightning Physical Import Mode 配置
 
 ## Physical Import Mode 完整配置
 

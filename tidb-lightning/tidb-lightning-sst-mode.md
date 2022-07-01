@@ -8,7 +8,7 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 ## 原理说明
 
-1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
+1. 在导入数据之前，TiDB Lightning  会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止 PD 调度和自动压缩。
 
 2. `tidb-lightning` 在目标数据库建立表结构，并获取其元数据。
 

@@ -62,9 +62,9 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 
 ## 性能调优
 
-1. Lightning Logical Import Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)
+- Lightning Logical Import Mode 性能很大程度上取决于目标 TiDB 集群的写入性能，当遇到性能瓶颈时可参考 TiDB 相关[性能优化文档](/best-practices/high-concurrency-best-practices.md)
 
-2. 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。 `region-concurrency`默认值为 CPU 核数，其含义在 Physical Import Mode 和 Logical Import Mode 下有所不同，Logical Import Mode 的 `region-concurrency` 表示写入并发数。配置示例：
+- 如果发现目标 TiDB 集群的的写入尚未达到瓶颈，可以考虑增加 Lightning 配置中 `region-concurrency` 的值。 `region-concurrency`默认值为 CPU 核数，其含义在 Physical Import Mode 和 Logical Import Mode 下有所不同，Logical Import Mode 的 `region-concurrency` 表示写入并发数。配置示例：
 
     ```toml
     [lightning]
@@ -72,4 +72,4 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
     region-concurrency = 32
     ```
 
-3. 调整目标 TiDB 集群的[raftstore.apply-pool-size](/tikv-configuration-file.md#apply-pool-size)和[raftstore.store-pool-size](/tikv-configuration-file.md#store-pool-size)参数也可能提升导入速度。
+- 调整目标 TiDB 集群的[raftstore.apply-pool-size](/tikv-configuration-file.md#apply-pool-size)和[raftstore.store-pool-size](/tikv-configuration-file.md#store-pool-size)参数也可能提升导入速度。
