@@ -68,7 +68,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     Dumpling 默认导出数据格式为 SQL 文件，你也可以通过设置 `--filetype` 指定导出文件的类型。
 
-    关于更多 Dumpling 的配置，请参考 [Dumpling 主要选项表](/dumpling-overview#dumpling-主要选项表)。
+    关于更多 Dumpling 的配置，请参考 [Dumpling 主要选项表](/dumpling-overview.md#dumpling-主要选项表)。
 
 2. 导出完成后，可以在数据存储目录 `s3://my-bucket/sql-backup?region=us-west-2` 查看导出的备份文件。
 
