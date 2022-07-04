@@ -155,19 +155,19 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
           logger.level: "info"
         learner_config:
           server.labels:
-            zone: z1
+            zone: "z1"
       - host: 172.16.5.82
         config:
           logger.level: "info"
         learner_config:
           server.labels:
-            zone: z1
+            zone: "z1"
       - host: 172.16.5.85
         config:
           logger.level: "info"
         learner_config:
           server.labels:
-            zone: z2
+            zone: "z2"
     ```
 
     注：旧版本中的 `flash.proxy.labels` 配置无法处理可用区名字中的特殊字符，建议使用 `learner_config` 中的 `server.labels` 来进行配置。
