@@ -43,21 +43,23 @@ TiDB 版本：5.4.2
 
 + TiKV
 
-    - Fix the issue of unexpected `panic` on analyzed statistics when `max_sample_size` is set to `0`. [#11192](https://github.com/tikv/tikv/issues/11192)
+    - 修复 `max_sample_size` 为 `0` 时 analyze 可能导致 panic 的问题 [#11192](https://github.com/tikv/tikv/issues/11192)
     (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 TiKV 在退出时可能误报 panic 的问题 [#12231](https://github.com/tikv/tikv/issues/12231)
-    - Fix possible panic when source peer catch up logs by snapshot in merge [#12663](https://github.com/tikv/tikv/issues/12663)
-    - Fix potential panic when a peer is being split and destroyed at the same time [#12825](https://github.com/tikv/tikv/issues/12825)
-    - Fix bug which causes frequent pd client reconnection [#12345](https://github.com/tikv/tikv/issues/12345)
-    - Fix a wrong check in datetime when the datetime has a fraction and 'Z' [#12739](https://github.com/tikv/tikv/issues/12739)
-    - Fix tikv crash when conv empty string [#12673](https://github.com/tikv/tikv/issues/12673)
-    - Fix possible duplicate commit record in async-commit pessimistic transactions. [#12615](https://github.com/tikv/tikv/issues/12615)
+    - 修复 merge source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663)
+    - 修复一个 peer 同时进行 split 和 destroy 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825)
+    - 修复 pd client 可能频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
+    - 修复查询 datatime 中包含小数以及 'Z' 时误报格式错误的问题 [#12739](https://github.com/tikv/tikv/issues/12739)
+    - 修复查询中 conv 有空字符串时 panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673)
+    - 修复 async commit 悲观事务中可能导致有重复的 commit record 的问题 [#12615](https://github.com/tikv/tikv/issues/12615)
     (dup: release-6.1.0.md > 错误修复> TiKV)- 修复进行 Follower Read 时，可能会报 `invalid store ID 0` 错误的问题 [#12478](https://github.com/tikv/tikv/issues/12478)
     (dup: release-6.1.0.md > 错误修复> TiKV)- 修复销毁 peer 和批量分裂 Region 之间的竞争导致的 TiKV panic [#12368](https://github.com/tikv/tikv/issues/12368)
     (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12329](https://github.com/tikv/tikv/issues/12329)
+     - 修复在 aufs 文件系统上启动 TiKV 报错的问题 [#12543](https://github.com/tikv/tikv/issues/12543)
+
 
 + PD
     (dup: release-6.1.0.md > 错误修复> PD)- 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
-    - 修复因为 region 没有 leader 而导致热点调度 panic 的问题 [#5005](https://github.com/tikv/pd/issues/5005)
+    - 修复由于 Hot Region 没有 leader 导致 PD Panic 的问题 [#5005](https://github.com/tikv/pd/issues/5005)
     (dup: release-6.1.0.md > 错误修复> PD)- 修复 PD leader 转移后调度不能立即启动的问题 [4769](https://github.com/tikv/pd/issues/4769)
     (dup: release-6.1.0.md > 错误修复> PD)- 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
 
