@@ -11,10 +11,10 @@ summary: 了解使用 TiCDC 进行数据集成的具体场景。
 
 你可以使用 TiCDC 将 TiDB 的增量数据同步到 Confluent Cloud，并借助 Confluent Cloud 的能力最终将数据分别同步到 ksqlDB、Snowflake、SQL Server。
 
-[与 Confluent Cloud 进行数据集成](/integrate-with-confluent.md)
+[与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
 
 ## 与 Apache Kafka 和 Apache Flink 进行数据集成
 
 你可以使用 TiCDC 将 TiDB 的增量数据同步到 Apache Kafka，并使用 Apache Flink 消费 Kafka 中的数据。
 
-[与 Apache Kafka 和 Apache Flink 进行数据集成](/integrate-with-kafka-flink.md)
+[与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)

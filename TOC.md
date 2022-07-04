@@ -108,7 +108,7 @@
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
-    - [从 TiDB 集群迁移数据至 MySQL 兼容的数据库](/migrate-from-tidb-to-mysql.md)
+    - [从 TiDB 集群迁移数据至兼容 MySQL 的数据库](/migrate-from-tidb-to-mysql.md)
   - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
@@ -117,8 +117,8 @@
 - 数据集成
   - [数据集成概述](/integration-overview.md)
   - 数据集成场景
-    - [与 Confluent Cloud 进行数据集成](/integrate-with-confluent.md)
-    - [与 Apache Kafka 和 Apache Flink 进行数据集成](/integrate-with-kafka-flink.md)
+    - [与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
+    - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)

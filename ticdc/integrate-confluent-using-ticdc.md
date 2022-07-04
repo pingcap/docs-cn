@@ -1,7 +1,6 @@
 ---
 title:  与 Confluent Cloud 进行数据集成
 summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud。
-aliases: ['/zh/tidb/dev/integrate-confluent-using-ticdc/']
 ---
 
 # 与 Confluent Cloud 进行数据集成
