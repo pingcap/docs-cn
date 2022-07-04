@@ -50,7 +50,7 @@ You can access the Continuous Profiling page using either of the following metho
 >
 > To use Continuous Profiling, your cluster should be deployed or upgraded with a recent version of TiUP (v1.9.0 or above) or TiDB Operator (v1.3.0 or above). If your cluster was upgraded using an earlier version of TiUP or TiDB Operator, see [FAQ](/dashboard/dashboard-faq.md#a-required-component-ngmonitoring-is-not-started-error-is-shown) for instructions.
 
-Continuous Profiling is not enabled by default. After enabling it, you can have performance data continuously collected in the background without keeping the web pages always active. Data collected can be kept for a certain period of time and expired data is automatically cleared.
+Continuous Profiling is enabled by default since TiDB v6.1.0. After enabling it, you can have performance data continuously collected in the background without keeping the web pages always active. Data collected can be kept for a certain period of time and expired data is automatically cleared.
 
 To enable this feature:
 
