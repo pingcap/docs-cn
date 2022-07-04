@@ -65,7 +65,7 @@ On March 26, 2019, TiDB 3.0.0 Beta.1 is released. The corresponding TiDB Ansible
 
 ## PD
 
-+ Unify the [log format](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md) for easy collection and analysis by tools
++ Unify the [log format](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md) for easy collection and analysis by tools
 + Simulator
     - Support different heartbeat intervals in different stores [#1418](https://github.com/pingcap/pd/pull/1418)
     - Add a case about importing data [#1263](https://github.com/pingcap/pd/pull/1263)
@@ -82,7 +82,7 @@ On March 26, 2019, TiDB 3.0.0 Beta.1 is released. The corresponding TiDB Ansible
     - Define the `BatchExecutor` to interface and implement the way of converting requests to `BatchExecutor` [#4243](https://github.com/tikv/tikv/pull/4243)
     - Implement transforming the expression tree into the RPN format [#4329](https://github.com/tikv/tikv/pull/4329)
     - Implement the `BatchTableScanExecutor` vectorization operator to accelerate calculation [#4351](https://github.com/tikv/tikv/pull/4351)
-+ Unify the [log format](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md) for easy collection and analysis by tools
++ Unify the [log format](https://github.com/tikv/rfcs/blob/master/text/0018-unified-log-format.md) for easy collection and analysis by tools
 + Support using the Local Reader to read in the Raw Read interface [#4222](https://github.com/tikv/tikv/pull/4222)
 + Add metrics about configuration information [#4206](https://github.com/tikv/tikv/pull/4206)
 + Add metrics about key exceeding bound [#4255](https://github.com/tikv/tikv/pull/4255)
