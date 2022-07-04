@@ -11,10 +11,12 @@ TiDB 版本：5.4.2
 ## 兼容性更改
 
 ## 提升改进
+
 + TiDB
 
     <!--transaction-->
     - 通过不向非健康状态的 TiKV 发送请求提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
+
 + TiKV
 
     - 当 TLS 证书更新时自动重新加载 [#12546](https://github.com/tikv/tikv/issues/12546)
@@ -22,7 +24,14 @@ TiDB 版本：5.4.2
     (dup: release-5.2.4.md > 提升改进> TiKV)- 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
 
 + PD
+
     (dup: release-6.1.0.md > 改进提升> PD)- 默认关闭编译 swagger server [#4932](https://github.com/tikv/pd/issues/4932)
+
++ Tools
+
+    + TiDB Lightning
+
+        (dup: release-6.1.0.md > 改进提升> Tools> TiDB Lightning)- 优化 Scatter Region 为批量模式，提升 Scatter Region 过程的稳定性 [#33618](https://github.com/pingcap/tidb/issues/33618)
 
 ## Bug 修复
 
@@ -75,10 +84,19 @@ TiDB 版本：5.4.2
     <!--storage-->
     - 修复在 clustered index 表删除列导致 TiFlash 进程退出的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154)
     (dup: release-6.1.0.md > 错误修复> TiFlash)- 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+
     <!--compute-->
     (dup: release-5.3.2.md > Bug 修复> TiFlash)- 修复极端情况下 decimal 比较结果可能有误的问题 [#4512](https://github.com/pingcap/tiflash/issues/4512)
 
 + Tools
+
+    + Backup & Restore (BR)
+
+        - 修复了 RawKV 模式下 BR 报错 ErrRestoreTableIDMismatch 的问题 [35279](https://github.com/pingcap/tidb/issues/35279)
+        - 修复了保存文件的错误没有正确重试的问题 [#34865](https://github.com/pingcap/tidb/issues/34865)
+        - 修复了 BR 运行时 panic 的问题 [#34956](https://github.com/pingcap/tidb/issues/34956)
+        (dup: release-5.3.2.md > Bug 修复> Tools> Backup & Restore (BR))- 修复 BR 无法处理 S3 内部错误的问题 [#34350](https://github.com/pingcap/tidb/issues/34350)
+        (dup: release-6.0.0-dmr.md > Bug 修复> Tools> Backup & Restore (BR))- 修复了当恢复操作遇到一些无法恢复的错误时，BR 被卡住的问题 [#33200](https://github.com/pingcap/tidb/issues/33200)
 
     + TiCDC
 
@@ -89,3 +107,8 @@ TiDB 版本：5.4.2
         - 修复了 Region Leader 丢失不断重试直到超过次数上限后同步中断的问题 [#5230](https://github.com/pingcap/tiflow/issues/5230)
         (dup: release-5.3.2.md > Bug 修复> Tools> TiCDC)- 修复 MySQL Sink 可能会保存错误的 checkpointTs 的问题 [#5107](https://github.com/pingcap/tiflow/issues/5107)
         - 修复了 http server 中潜在的 goroutine 泄露问题 [#5303](https://github.com/pingcap/tiflow/issues/5303)
+
+    + TiDB Data Migration (DM)
+
+        - 修复了任务自动 resume 后 DM 会占用更大的磁盘空间的问题 [#5344](https://github.com/pingcap/tiflow/issues/5344)
+        (dup: release-6.1.0.md > 错误修复> Tools> TiDB Data Migration (DM))- 修复在未设置 `case-sensitive: true` 时无法同步大写表的问题 [#5255](https://github.com/pingcap/tiflow/issues/5255)
