@@ -115,11 +115,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
     ```
 
-3. 导入开始后，可以采用以下任意方式查看进度：
-
-   - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-   - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-   - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
+3. 导入开始后，可以通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
 
 4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed`，如果有，数据导入成功，恢复完成。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
