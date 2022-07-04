@@ -69,3 +69,15 @@ TiDB 版本：5.4.2
     - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
     <!--compute-->
     - 修复因为溢出导致的 Decimal 比较结果错误. [#4512](https://github.com/pingcap/tiflash/issues/4512)
+
++ Tools
+
+  + TiCDC
+
+    - 修复了一个特殊情况下增量扫可能造成数据丢失的问题 [#5468](https://github.com/pingcap/tiflow/issues/5468)
+    - 修复了 cdc 可能在 redo 日志写完之前错误地刷盘的问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
+    - 修复了 cdc 可能在 redo 日志写完之前过早推进 resolved ts 的问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
+    - 为 redo 日志增加了基于 uuid 的后缀，以免潜在的名字冲突造成数据丢失 [#5486](https://github.com/pingcap/tiflow/issues/5486)
+    - 修复了 Region Leader 丢失不断重试直到超过次数上限后同步中断的问题 [#5230](https://github.com/pingcap/tiflow/issues/5230)
+    - 修复了 MySQL Sink 可能上报错误地 checkpoint 时间戳的问题 [#5107](https://github.com/pingcap/tiflow/issues/5107)
+    - 修复了 http server 中潜在的 goroutine 泄露问题 [#5303](https://github.com/pingcap/tiflow/issues/5303)
