@@ -124,7 +124,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     - 如果命令长时间没有返回，请检查当前执行命令所在服务器到 Confluent Cloud 之间网络可达性，参考 [Test connectivity to Confluent Cloud](https://docs.confluent.io/cloud/current/networking/testing.html)。
 
-3. Changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
+3. changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
 
     ```shell
     tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
