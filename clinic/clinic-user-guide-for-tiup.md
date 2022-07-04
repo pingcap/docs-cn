@@ -1,9 +1,9 @@
 ---
-title: 使用 PingCAP Clinic
+title: 使用 PingCAP Clinic 诊断 TiDB 集群
 summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
 ---
 
-# 使用 PingCAP Clinic
+# 使用 PingCAP Clinic 诊断 TiDB 集群
 
 对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
