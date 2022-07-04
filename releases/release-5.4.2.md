@@ -14,9 +14,8 @@ TiDB 版本：5.4.2
 
 + TiKV
 
-    - Reload TLS certificate automatically when it changes. [#12546](https://github.com/tikv/tikv/issues/12546)
+    - 当 TLS 证书更新时自动重新加载 [#12546](https://github.com/tikv/tikv/issues/12546)
     (dup: release-6.1.0.md > 改进提升> TiKV)- 健康检查可以检测到无法正常工作的 Raftstore，使得 TiKV client 可以及时更新 Region Cache [#12398](https://github.com/tikv/tikv/issues/12398)
-    - Use `posix_fallocate` for space reservation. [#12543](https://github.com/tikv/tikv/issues/12543)
     (dup: release-5.2.4.md > 提升改进> TiKV)- 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
 
 + PD
