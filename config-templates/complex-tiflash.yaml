@@ -124,6 +124,10 @@ tiflash_servers:
     #   # storage.latest.capacity: [ 161061273600 ]
     # learner_config:
     #   log-level: "info"
+    #   server.labels:
+    #     zone: z2
+    #     dc: dc2
+    #     host: host2
   # - host: 10.0.1.12
   # - host: 10.0.1.13
 

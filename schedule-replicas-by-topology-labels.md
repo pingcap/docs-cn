@@ -38,6 +38,21 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 labels = "zone=<zone>,rack=<rack>,host=<host>"
 ```
 
+TiFlash 同样支持。
+
+{{< copyable "" >}}
+
+```toml
+[learner_config]
+[learner_config.server]
+[learner_config.server.labels]
+zone="<zone>"
+dc="<dc>"
+rack="<rack>"
+host="<host>"
+```
+
+
 ### 设置 PD 的 `location-labels` 配置
 
 根据前面的描述，标签可以是用来描述 TiKV 属性的任意键值对，但 PD 无从得知哪些标签是用来标识地理位置的，而且也无从得知这些标签的层次关系。因此，PD 也需要一些配置来使得 PD 理解 TiKV 节点拓扑。
