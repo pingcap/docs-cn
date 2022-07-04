@@ -11,7 +11,10 @@ TiDB 版本：5.4.2
 ## 兼容性更改
 
 ## 提升改进
++ TiDB
 
+    <!--transaction-->
+    - 通过不向非健康状态的 TiKV 发送请求提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
 + TiKV
 
     - 当 TLS 证书更新时自动重新加载 [#12546](https://github.com/tikv/tikv/issues/12546)
@@ -33,7 +36,7 @@ TiDB 版本：5.4.2
     - 修复了 Plan Cache 在 evict 时使用了错误的 memory usage 指标的问题。[#34613](https://github.com/pingcap/tidb/issues/34613)
 
     <!--transaction-->
-    - 通过不向非健康状态的 TiKV 发送请求提升可用性 [#34609](https://github.com/pingcap/tidb/pull/34609)
+    - 修复了 loda data 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198)
     - 避免在悲观事务中报出 Write Conflict 错误 [#11612](https://github.com/tikv/tikv/issues/11612)
     - 修复了在遇到 region error 和网络问题时 prewrite 请求不幂等的问题[#34875](https://github.com/pingcap/tidb/issues/34875)
     - 修复了回滚 async commit 事务可能导致事务不满足原子性的问题 [#33641](https://github.com/pingcap/tidb/issues/33641)
