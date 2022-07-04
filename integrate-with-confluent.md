@@ -23,7 +23,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     在实验或测试环境中，可以使用 TiUP Playground 功能快速部署 TiCDC，命令如下：
 
-    ```
+    ```shell
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
     # 查看集群状态
     tiup status
@@ -78,13 +78,13 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     以上步骤也可以通过 Confluent CLI 实现，详见 [Connect Confluent CLI to Confluent Cloud Cluster](https://docs.confluent.io/confluent-cli/current/connect.html)。
 
-### 第 3 步：创建 Kafka Changefeed
+### 第 3 步：创建 Kafka changefeed
 
 1. 创建 changefeed 配置文件。
 
     根据 Avro 协议和 Confluent Connector 的要求和规范，每张表的增量数据需要发送到独立的 Topic 中，并且每个事件需要按照主键值分发 Partition。因此，需要创建一个名为 `changefeed.conf` 的配置文件，填写如下内容：
 
-    ```
+    ```shell
     [sink]
     dispatchers = [
     {matcher = ['*.*'], topic = "tidb_{schema}_{table}", partition="index-value"},
@@ -95,7 +95,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 2. 创建一个 changefeed，将增量数据输出到 Confluent Cloud：
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://<broker_endpoint>/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=<broker_api_key>&sasl-password=<broker_api_secret>" --schema-registry="https://<schema_registry_api_key>:<schema_registry_api_secret>@<schema_registry_endpoint>" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
@@ -110,13 +110,13 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     其中 `<schema_registry_api_secret>` 需要经过 [HTML URL 编码](https://www.w3schools.com/tags/ref_urlencode.asp)后再替换，替换完毕后示例如下：
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://xxx-xxxxx.ap-east-1.aws.confluent.cloud:9092/ticdc-meta?protocol=avro&replication-factor=3&enable-tls=true&auto-create-topic=true&sasl-mechanism=plain&sasl-user=L5WWA4GK4NAT2EQV&sasl-password=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" --schema-registry="https://7NBH2CAFM2LMGTH7:xxxxxxxxxxxxxxxxxx@yyy-yyyyy.us-east-2.aws.confluent.cloud" --changefeed-id="confluent-changefeed" --config changefeed.conf
     ```
 
     - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相关信息，内容如下：
 
-        ```
+        ```shell
         Create changefeed successfully!
         ID: confluent-changefeed
         Info: {... changfeed info json struct ...}
@@ -126,7 +126,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 3. Changefeed 创建成功后，执行如下命令，查看 changefeed 的状态：
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
@@ -140,7 +140,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     在测试实验环境下，可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。执行以下命令，会首先在上游 TiDB 创建名为 `tpcc` 的数据库，然后使用 TiUP bench 写入数据到这个数据库中。
 
-    ```
+    ```shell
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 prepare
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 run --time 300s
     ```
@@ -163,14 +163,14 @@ ksqlDB 是一种面向流式数据处理的数据库。你可以直接在 Conflu
 
 2. 在 ksqlDB Editor 中执行如下命令，创建一个用于读取 `tidb_tpcc_orders` Topic 的 STREAM。
 
-    ```
+    ```sql
     CREATE STREAM orders (o_id INTEGER, o_d_id INTEGER, o_w_id INTEGER, o_c_id INTEGER, o_entry_d STRING, o_carrier_id INTEGER, o_ol_cnt INTEGER, o_all_local INTEGER) WITH (kafka_topic='tidb_tpcc_orders', partitions=3, value_format='AVRO');
     ```
 
 3. 执行如下命令查询 orders STREAM 数据：
 
-    ```
-    select * from ORDERS EMIT CHANGES;
+    ```sql
+    SELECT * FROM ORDERS EMIT CHANGES;
     ```
 
     ![Select from orders](/media/integrate/select-from-orders.png)
@@ -217,7 +217,7 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
 
 1. 连接 SQL Server 服务器，创建名为 `tpcc` 的数据库：
 
-    ```
+    ```shell
     [ec2-user@ip-172-1-1-1 bin]$ sqlcmd -S 10.61.43.14,1433 -U admin
     Password:
     1> create database tpcc
@@ -259,7 +259,7 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
     | Input Kafka record key format | AVRO |
     | Delete on null | true |
 
-6. 配置完成后，选择 **Continue**，直到 Connector 创建完成。等待 Connector 状态变为 **RUNNING**，这个过程可能持续数分钟。
+6. 配置完成后，选择 **Continue**，等待 Connector 状态变为 **RUNNING**，这个过程可能持续数分钟。
 
     ![Results](/media/integrate/results.png)
 

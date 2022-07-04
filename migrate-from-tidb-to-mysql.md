@@ -29,7 +29,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     在实验环境中，我们可以使用 Docker 快速部署 MySQL 实例，执行如下命令：
 
-    ```
+    ```shell
     docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql
     ```
 
@@ -39,7 +39,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     在测试实验环境下，我们可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。如下命令，首先在上游 TiDB 创建名为 tpcc 的数据库，然后使用 TiUP bench 写入数据到刚创建的 tpcc 数据库中。
 
-    ```
+    ```shell
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 prepare
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 run --time 300s
     ```
@@ -74,13 +74,13 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     使用 Dumpling 导出 SQL 格式的数据：
 
-    ```
+    ```shell
     tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o ./dumpling_output -r 200000 -F256MiB
     ```
 
     导出完毕后，执行如下命令查看导出数据的元信息，metadata 文件中的 `Pos` 就是导出快照的 TSO，将其记录为 BackupTS：
 
-    ```
+    ```shell
     [root@test ~]# cat dumpling_output/metadata
     Started dump at: 2022-06-28 17:49:54
     SHOW MASTER STATUS:
@@ -95,7 +95,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     我们使用开源工具 MyLoader 导入数据到下游 MySQL，MyLoader 的安装和详细用例详见：[MyDumpler/MyLoader](https://github.com/mydumper/mydumper)。执行一下指令，将 Dumpling 导出的上游全量数据导入到下游 MySQL 实例：
 
-    ```
+    ```shell
     myloader -h 127.0.0.1 -P 3306 -d ./dumpling_output/
     ```
 
@@ -103,7 +103,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。
 
-    ```
+    ```shell
     sync_diff_inspector -C ./config.yaml
     ```
 
@@ -143,7 +143,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至 MySQL 兼容数据库
 
     在上游集群中，执行以下命令创建从上游到下游集群的同步链路：
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed create --pd=http://127.0.0.1:2379 --sink-uri="mysql://root:@127.0.0.1:3306" --changefeed-id="upstream-to-downstream" --start-ts="434217889191428107"
     ```
 

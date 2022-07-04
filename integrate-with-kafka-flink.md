@@ -22,8 +22,9 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
 
     在实验或测试环境中，可以使用 TiUP Playground 功能，快速部署 TiCDC ，命令如下：
 
-    ```
-    tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1# 查看集群状态
+    ```shell
+    tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1
+    # 查看集群状态
     tiup status
     ```
 
@@ -39,30 +40,30 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
     - 实验环境，可以参考 [Apache Flink First steps](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/try-flink/local_installation/) 启动 Flink 集群。
     - 生产环境，可以参考 [Apache Kafka Deployment](https://nightlies.apache.org/flink/flink-docs-release-1.15/docs/deployment/overview/) 部署 Flink 生产集群。
 
-## 第 2 步：创建 Kafka Changefeed
+## 第 2 步：创建 Kafka changefeed
 
 1. 创建 changefeed 配置文件。
 
     根据 Flink 的要求和规范，每张表的增量数据需要发送到独立的 Topic 中，并且每个事件需要按照主键值分发 Partition。因此，需要创建一个名为 `changefeed.conf` 的配置文件，填写如下内容：
 
-    ```
+    ```shell
     [sink]
     dispatchers = [
     {matcher = ['*.*'], topic = "tidb_{schema}_{table}", partition="index-value"},
     ]
     ```
 
-    关于配置文件中 dispatchers 的详细解释，详见：[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](https://docs.pingcap.com/zh/tidb/stable/manage-ticdc#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
+    关于配置文件中 dispatchers 的详细解释，参考[自定义 Kafka Sink 的 Topic 和 Partition 的分发规则](/ticdc/manage-ticdc.md#自定义-kafka-sink-的-topic-和-partition-的分发规则)。
 
 2. 创建一个 changefeed，将增量数据输出到 Kafka：
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
     ```
 
     - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相信信息，内容如下：
 
-        ```
+        ```shell
         Create changefeed successfully!
         ID: kafka-changefeed
         Info: {... changfeed info json struct ...}
@@ -72,13 +73,13 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
 
     生产环境下 Kafka 集群通常有多个 broker 节点，你可以在 sink-uri 中配置多个 broker 的访问地址，这有助于提升 changefeed 到 Kafka 集群访问的稳定性，当部分被配置的 Kafka 节点故障的时候，changefeed 依旧可以正常工作。假设 Kafka 集群中有 3 个 broker 节点，地址分别为 127.0.0.1:9092 / 127.0.0.2:9092 / 127.0.0.3:9092，可以参考如下 sink-uri 创建 changefeed:
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092,127.0.0.2:9092,127.0.0.3:9092/kafka-topic-name?protocol=canal-json&partition-num=3&replication-factor=1&max-message-bytes=1048576" --config="changefeed.conf"
     ```
 
 3. changefeed 创建成功后，执行如下命令，查看 changefeed 的状态:
 
-    ```
+    ```shell
     tiup ctl:v6.1.0 cdc changefeed list --pd="http://127.0.0.1:2379"
     ```
 
@@ -92,7 +93,7 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
 
     在测试实验环境下，可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。如下命令，首先在上游 TiDB 创建名为 `tpcc` 的数据库，然后使用 TiUP bench 写入数据到这个数据库中。
 
-    ```
+    ```shell
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 prepare
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 run --time 300s
     ```
@@ -103,7 +104,7 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
 
     changefeed 正常运行时，会向 Kafka Topic 写入数据，你可以通过由 Kafka 提供的 kafka-console-consumer.sh, 观测到数据成功被写入到 Kafka Topic 中：
 
-    ```
+    ```shell
     ./bin/kafka-console-consumer.sh --bootstrap-server 127.0.0.1:9092 --from-beginning --topic `${topic-name}`
     ```
 
@@ -123,7 +124,7 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
 
     你可以在 Flink 的安装目录执行如下命令，启动 Flink SQL 交互式客户端：
 
-    ```
+    ```shell
     [root@flink flink-1.15.0]# ./bin/sql-client.sh
     ```
 
@@ -154,10 +155,10 @@ aliases: ['/zh/tidb/dev/replicate-data-to-kafka/','/zh/tidb/dev/replicate-increm
 
 3. 查询 Table 内容。
 
-    执行如下命令，查询 tpcc\_orders 表中的数据：
+    执行如下命令，查询 `tpcc_orders` 表中的数据：
 
-    ```
-    select * from tpcc_orders;
+    ```sql
+    SELECT * FROM tpcc_orders;
     ```
 
     执行成功后，可以观察到有数据输出，如下图：
