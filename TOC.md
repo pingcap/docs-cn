@@ -264,7 +264,7 @@
   - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
