@@ -21,7 +21,7 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 - [恢复工具简介](/br/backup-and-restore-overview.md)
 - [恢复工具命令行介绍](/br/use-br-command-line-tool.md)
 
-如果你需要恢复 Dumpling 导出的数据、CSV 文件或 Amazon Aurora 生成的 Apache Parquet 文件，可以使用 TiDB Lightning 来导入数据，实现恢复。具体恢复操作，请参考 [使用 TiDB Lightning 恢复全量数据](/backup-and-restore-using-dumpling-and-lightning.md#使用-tidb-lightning-恢复全量数据)。
+如果你需要恢复 Dumpling 导出的数据、CSV 文件或 Amazon Aurora 生成的 Apache Parquet 文件，可以使用 TiDB Lightning 来导入数据，实现恢复。具体恢复操作，请参考 [使用 TiDB Lightning 恢复全量数据](/backup-and-restore-using-dumpling-lightning.md#使用-tidb-lightning-恢复全量数据)。
 
 ## 恢复快照备份数据
 
