@@ -14,7 +14,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 1.1.1 `Region is Unavailable` 一般是由于 Region 在一段时间不可用（可能会遇到 `TiKV server is busy`；或者发送给 TiKV 的请求由于 `not leader` 或者 `epoch not match` 等原因被打回；又或者请求 TiKV 超时等），TiDB 内部会进行 `backoff` 重试。`backoff` 的时间超过一定阈值（默认 20s）后就会报错给客户端。如果 `backoff` 在阈值内，客户端对该错误无感知。
 
-- 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region 在一定时期内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
+- 1.1.2 多台 TiKV 同时内存不足 (OOM)，导致 Region OOM 期间内没有 Leader，见案例 [case-991](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case991.md)。
 
 - 1.1.3 TiKV 报 `TiKV server is busy` 错误，超过 `backoff` 时间，参考 [4.3 客户端报 `server is busy` 错误](#43-客户端报-server-is-busy-错误)。`TiKV server is busy` 属于内部流控机制，后续可能不计入 `backoff` 时间。
 
@@ -119,7 +119,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
     > **注意：**
     >
-    > 单条 SQL 内存阈值的默认值为 `1GB`，可通过 `tidb_mem_quota_query` 系统变量进行设置，作用域为 `SESSION`，单位为 `Byte`。也可以通过配置项热加载的方式，对配置文件中的 `mem-quota-query` 项进行修改，单位为 `Byte`。
+    > 单条 SQL 内存阈值的默认值为 `1GB`，可通过系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 进行设置。
 
 - 3.2.3 缓解 OOM 问题
 
@@ -330,7 +330,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 ### 5.4 Grafana 显示问题
 
-- 5.4.1 监控 **Grafana** -> **PD** -> **cluster** -> **role** 显示 follower，Grafana 表达式问题，在 v3.0.8 版本修复，见 [#1065](https://github.com/pingcap/tidb-ansible/pull/1065)。详情请参考案例 [case-1022](https://github.com/pingcap/tidb-map/blob/master/maps/diagnose-case-study/case1022.md)。
+- 5.4.1 监控 **Grafana** -> **PD** -> **cluster** -> **role** 显示 follower，Grafana 表达式问题，在 v3.0.8 版本修复。
 
 ## 6. 生态 Tools 问题
 
@@ -535,7 +535,7 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
 
 - 7.2.2 `write conflict` 乐观事务中的写写冲突，同时多个事务对相同的 key 进行修改，只有一个事务会成功，其他事务会自动重取 timestamp 然后进行重试，不影响业务。如果业务冲突很严重可能会导致重试多次之后事务失败，这种情况下建议使用悲观锁。
 
-- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL（小事务默认 3s）时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。
+- 7.2.3 `TxnLockNotFound` 事务提交太慢，过了 TTL (Time To Live) 时间之后被其他事务回滚了，该事务会自动重试，通常情况下对业务无感知。对于 0.25 MB 以内的小事务，TTL 默认时间为 3 秒。
 
 - 7.2.4 `PessimisticLockNotFound` 类似 `TxnLockNotFound`，悲观事务提交太慢被其他事务回滚了。
 

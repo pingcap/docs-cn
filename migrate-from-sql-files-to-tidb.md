@@ -25,12 +25,10 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
 * **方法一**：使用 TiDB Lightning 创建表结构。
 
-    1. 编写包含 DDL 语句的 SQL 文件。
+    编写包含 DDL 语句的 SQL 文件：
 
-        - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
-        - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
-
-    2. 后续导入过程中，在 `tidb-lightning.toml` 中添加如下设置：
+    - 文件名格式为 `${db_name}-schema-create.sql`，其内容需包含 `CREATE DATABASE` 语句。
+    - 文件名格式为 `${db_name}.${table_name}-schema.sql`，其内容需包含 `CREATE TABLE` 语句。
 
 * **方法二**：手动在下游 TiDB 建库和表。
 
@@ -49,8 +47,8 @@ file = "tidb-lightning.log"
 [tikv-importer]
 # "local"：默认使用该模式，适用于 TiB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
 backend = "local"
-# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参 https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends。
-# 设置排序的键值对的临时存放地址。目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。
+# # "tidb"：TiB 级以下数据量也可以采用 `tidb` 后端模式，下游 TiDB 可正常提供服务。关于后端模式更多信息请参考 https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-backends 。
+# 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 I/O 会获得更好的导入性能。
 sorted-kv-dir = "${sorted-kv-dir}"
 
 [mydumper]
@@ -67,7 +65,7 @@ status-port = ${status-port}  # 导入过程 Lightning 需要在从 TiDB 的“�
 pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取部分信息，例如 172.16.31.3:2379。当 backend = "local" 时 status-port 和 pd-addr 必须正确填写，否则导入将出现异常。
 ```
 
-关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md).
+关于配置文件更多信息，可参阅 [TiDB Lightning Configuration](/tidb-lightning/tidb-lightning-configuration.md)。
 
 ## 第 4 步：执行导入
 
@@ -80,7 +78,7 @@ pd-addr = "${ip}:${port}"     # 集群 PD 的地址，Lightning 通过 PD 获取
 ```shell
 export AWS_ACCESS_KEY_ID=${access_key}
 export AWS_SECRET_ACCESS_KEY=${secret_key}
-nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
+nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
 ```
 
 同时，TiDB Lightning 还支持从 `~/.aws/credentials` 读取凭证文件。

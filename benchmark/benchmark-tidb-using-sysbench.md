@@ -11,13 +11,12 @@ aliases: ['/docs-cn/dev/benchmark/benchmark-tidb-using-sysbench/','/docs-cn/dev/
 
 ### TiDB 配置
 
-升高日志级别，可以减少打印日志数量，对 TiDB 的性能有积极影响。开启 TiDB 配置中的 `prepared plan cache`，以减少优化执行计划的开销。具体在 TiUP 配置文件中加入：
+升高日志级别，可以减少打印日志数量，对 TiDB 的性能有积极影响。具体在 TiUP 配置文件中加入：
 
 ```yaml
 server_configs:
   tidb:
     log.level: "error"
-    prepared-plan-cache.enabled: true
 ```
 
 ### TiKV 配置

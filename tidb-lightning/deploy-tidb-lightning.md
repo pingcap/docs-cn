@@ -7,8 +7,6 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 本文主要介绍 TiDB Lightning 使用 Local-backend 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。
 
-如果使用 Local-backend 进行数据导入，TiDB Lightning 运行后，**TiDB 集群将无法正常对外提供服务**。如果你不希望 TiDB 集群的对外服务受到影响，可以参考 [TiDB Lightning TiDB-backend](/tidb-lightning/tidb-lightning-backends.md#tidb-lightning-tidb-backend) 中的硬件需求与部署方式进行数据导入。
-
 ## 注意事项
 
 在使用 TiDB Lightning 前，需注意以下事项：
@@ -44,7 +42,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 {{< copyable "shell-regular" >}}
 
 ```sh
-./bin/dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
+./dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
 ```
 
 其中：
@@ -68,7 +66,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 #### 第 2 步：下载 TiDB Lightning 安装包
 
-在[工具下载](/download-ecosystem-tools.md#tidb-lightning)页面下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
+参考[工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
 
 #### 第 3 步：启动 `tidb-lightning`
 
@@ -76,7 +74,9 @@ aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/ref
 
 2. 将数据源写入到同样的机器。
 
-3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。`sorted-kv-dir`需要设置为一个空的目录，并且确保所在的磁盘有较多空闲的空间。
+3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。
+
+    `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。详情参见 [TiDB Lightning 运行时资源要求](/tidb-lightning/tidb-lightning-requirements.md#tidb-lightning-运行时资源要求)。
 
     ```toml
     [lightning]

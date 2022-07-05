@@ -25,7 +25,7 @@ summary: 介绍如何从大数据量 MySQL 迁移数据到 TiDB。
 
 **磁盘空间**：
 
-- Dumpling 需要足够储存整个数据源的存储空间。
+- Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
 - 若全量数据量较大，可适当加长上游 binlog 保存时间，以避免增量同步时缺必要 binlog 导致重做。
 
@@ -75,7 +75,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     |-B 或 --database  | 导出指定数据库 |
     |-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。|
 
-    请确保 `${data-path}` 拥有足够的空间。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
+    请确保 `${data-path}` 的空间可以容纳要导出的所有上游表，计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。强烈建议使用 `-F` 参数以避免单表过大导致备份过程中断。
 
 2. 查看在 `${data-path}` 目录下的 `metadata` 文件，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息，这将在第 3 步增量同步的时候使用。
 
@@ -102,7 +102,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     # "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
     # "tidb"：TB 级以下数据量也可以采用`tidb`后端模式，下游 TiDB 可正常提供服务。 关于后端模式更多信息请参阅：https://docs.pingcap.com/tidb/stable/tidb-lightning-backends
     backend = "local"
-    # 设置排序的键值对的临时存放地址，目标路径需要是一个空目录，至少需要数据源最大单表的空间，建议与 `data-source-dir` 不同磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
+    # 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。建议设为与 `data-source-dir` 不同的磁盘目录并使用闪存介质，独占 IO 会获得更好的导入性能
     sorted-kv-dir = "${sorted-kv-dir}"
 
     [mydumper]
@@ -130,7 +130,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     ```shell
     export AWS_ACCESS_KEY_ID=${access_key}
     export AWS_SECRET_ACCESS_KEY=${secret_key}
-    nohup tiup tidb-lightning -config tidb-lightning.toml  > nohup.out 2>&1 &
+    nohup tiup tidb-lightning -config tidb-lightning.toml > nohup.out 2>&1 &
     ```
 
 3. 导入开始后，可以采用以下任意方式查看进度：
@@ -143,7 +143,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
 > **注意：**
 >
-> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning  正常退出，不代表任务完成。
+> 无论导入成功与否，最后一行都会显示 `tidb lightning exit`。它只是表示 TiDB Lightning 正常退出，不代表任务完成。
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
@@ -223,7 +223,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     #    safe-mode: true # 设置为 true，会将来自数据源的 INSERT 改写为 REPLACE，将 UPDATE 改写为 DELETE 与 REPLACE，从而保证在表结构中存在主键或唯一索引的条件下迁移数据时可以重复导入 DML。在启动或恢复增量复制任务的前 1 分钟内 TiDB DM 会自动启动 safe mode。
     ```
 
-    以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
+    以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
     在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
@@ -248,7 +248,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
     |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr},例如：172.16.10.71:8261|
     |`start-task`|命令用于创建数据迁移任务|
 
-    如果任务启动失败，可根据返回结果的提示进行配置变更，再执行上述命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)。
+    如果任务启动失败，可根据返回结果的提示进行配置变更，再执行上述命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。
 
 ### 查看任务状态
 

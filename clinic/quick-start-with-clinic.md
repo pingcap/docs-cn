@@ -53,6 +53,10 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     tiup diag config clinic.token ${token-value}
     ```
 
+6. 开启日志脱敏配置（可选步骤）。
+
+    TiDB 在提供详细的日志信息时可能会打印数据库的敏感信息（例如用户数据）。如果希望本地日志及上传到 Clinic Server 的日志中不带有敏感信息，你可以开启日志脱敏配置。具体操作请参考[日志脱敏](/log-redaction.md#tidb-组件日志脱敏)。
+
 ## 体验步骤
 
 1. 运行 Diag，采集诊断数据。
@@ -83,14 +87,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
         tiup diag upload ${filepath}
         ```
 
-        输出结果示例如下：
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        Completed!
-        Download URL: "https://clinic.pingcap.com/clinic/#/orgs/75/clusters/7055188676317281573 "
-        ```
+        完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。
 
         > **注意：**
         >
@@ -107,5 +104,5 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 ## 探索更多
 
 - [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)
-- [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+- [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
 - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)

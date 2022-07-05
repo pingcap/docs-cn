@@ -1,9 +1,9 @@
 ---
-title: 使用 PingCAP Clinic
+title: 使用 PingCAP Clinic 诊断 TiDB 集群
 summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clinic 诊断服务远程定位集群问题和本地快速检查集群状态。
 ---
 
-# 使用 PingCAP Clinic
+# 使用 PingCAP Clinic 诊断 TiDB 集群
 
 对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
@@ -72,6 +72,10 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     ```bash
     tiup diag config clinic.token ${token-value}
     ```
+
+3. 开启日志脱敏配置（可选步骤）。
+
+    TiDB 在提供详细的日志信息时可能会打印数据库的敏感信息（例如用户数据）。如果希望本地日志及上传到 Clinic Server 的日志中不带有敏感信息，你可以开启日志脱敏配置。具体操作请参考[日志脱敏](/log-redaction.md#tidb-组件日志脱敏)。
 
 ## 远程定位集群问题
 
@@ -212,19 +216,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
  tiup diag upload
  ```
 
-输出结果示例如下：
-
-{{< copyable "shell-regular" >}}
-
-```bash
-[root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-Completed!
-Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
-```
-
-完成上传后，你可以打开 `Download URL` 中的数据访问链接进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接查看数据，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
 
 #### 方式 2：打包后上传
 
@@ -255,19 +247,7 @@ Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
     tiup diag upload ${filepath}
     ```
 
-    输出结果示例如下：
-
-    {{< copyable "shell-regular" >}}
-
-    ```bash
-    [root@Copy-of-VM-EE-CentOS76-v1 qiaodan]# tiup diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag upload /home/qiaodan/diag-fNTnz5MGhr6
-    >>>>>>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>
-    Completed!
-    Download URL: "https://clinic.pingcap.com.cn/portal/#/orgs/4/clusters/XXXX"
-    ```
-
-3. 完成上传后，你可以打开 `Download URL` 中的数据访问链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的数据访问链接发给与你对接的 PingCAP 技术支持人员。
+    完成上传后，Diag 会提示诊断数据的下载路径 `Download URL`。你可以打开 `Download URL` 中的链接，在 Clinic Server 页面进行数据查看，也可以将 `Download URL` 中的链接发给与你对接的 PingCAP 技术支持人员。
 
 ## 本地快速检查集群状态
 

@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/shard-row-id-bits/']
 
 对于非整数主键或没有主键的表，TiDB 会使用一个隐式的自增 rowid。大量执行 `INSERT` 插入语句时会把数据集中写入单个 Region，造成写入热点。
 
-通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。但是设置的过大会造成 RPC 请求数放大，增加 CPU 和网络开销。
+通过设置 `SHARD_ROW_ID_BITS`，可以把 rowid 打散写入多个不同的 Region，缓解写入热点问题。
 
 - `SHARD_ROW_ID_BITS = 4` 表示 16 个分片
 - `SHARD_ROW_ID_BITS = 6` 表示 64 个分片

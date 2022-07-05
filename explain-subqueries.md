@@ -97,7 +97,7 @@ EXPLAIN SELECT * FROM t1 WHERE id IN (SELECT t1_id FROM t3);
 
 ## Semi Join（关联查询）
 
-在前两个示例中，通过 `HashAgg` 聚合操作或通过 `UNIQUE` 约束保证子查询数据的唯一性之后，TiDB 才能够执行 `Inner Join` 操作。这两种连接均使用了 `Index Join`。
+在前两个示例中，通过 `StreamAgg` 聚合操作或通过 `UNIQUE` 约束保证子查询数据的唯一性之后，TiDB 才能够执行 `Inner Join` 操作。这两种连接均使用了 `Index Join`。
 
 下面的例子中，TiDB 优化器则选择了一种不同的执行计划：
 

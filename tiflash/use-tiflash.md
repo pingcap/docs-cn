@@ -14,14 +14,18 @@ TiFlash 部署完成后并不会自动同步数据，而需要手动指定需要
 - [使用 TiDB 读取 TiFlash](#使用-tidb-读取-tiflash)
 - [使用 TiSpark 读取 TiFlash](#使用-tispark-读取-tiflash)
 
-## 按表构建 TiFlash 副本
+## 构建 TiFlash 副本
+
+本章节介绍如何按表和库构建 TiFlash副本，以及如何设置可用区来调度副本。
+
+### 按表构建 TiFlash 副本
 
 TiFlash 接入 TiKV 集群后，默认不会开始同步数据。可通过 MySQL 客户端向 TiDB 发送 DDL 命令来为特定的表建立 TiFlash 副本：
 
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE table_name SET TIFLASH REPLICA count
+ALTER TABLE table_name SET TIFLASH REPLICA count;
 ```
 
 该命令的参数说明如下：
@@ -35,7 +39,7 @@ ALTER TABLE table_name SET TIFLASH REPLICA count
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2;
 ```
 
 删除副本：
@@ -43,7 +47,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 2
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
+ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0;
 ```
 
 注意事项：
@@ -53,7 +57,7 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
     {{< copyable "sql" >}}
 
     ```sql
-    CREATE TABLE table_name like t
+    CREATE TABLE table_name like t;
     ```
 
 * 如果集群版本 \< v4.0.6，若先对表创建 TiFlash 副本，再使用 TiDB Lightning 导入数据，会导致数据导入失败。需要在使用 TiDB Lightning 成功导入数据至表后，再对相应的表创建 TiFlash 副本。
@@ -64,14 +68,14 @@ ALTER TABLE `tpch50`.`lineitem` SET TIFLASH REPLICA 0
 
 * v5.1 版本及后续版本将不再支持设置系统表的 replica。在集群升级前，需要清除相关系统表的 replica，否则升级到较高版本后将无法再修改系统表的 replica 设置。
 
-### 查看表同步进度
+#### 查看表同步进度
 
 可通过如下 SQL 语句查看特定表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态：
 
 {{< copyable "sql" >}}
 
 ```sql
-SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>'
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
 ```
 
 查询结果中：
@@ -79,7 +83,66 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 * AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
 * PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
-### 可用区设置
+### 按库构建 TiFlash 副本
+
+类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE db_name SET TIFLASH REPLICA count;
+```
+
+在该命令中，`count` 表示 TiFlash 的副本数。当设置 `count` 值为 0 时，表示删除现有的 TiFlash 副本。
+
+命令示例：
+
+执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2;
+```
+
+执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
+
+{{< copyable "sql" >}}
+
+```sql
+ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0;
+```
+
+> **注意：**
+>
+> - 该命令实际是为用户执行一系列 DDL 操作，对资源要求比较高。如果在执行过程中出现中断，已经执行成功的操作不会回退，未执行的操作不会继续执行。
+>
+> - 从命令执行开始到该库中所有表都已**同步完成**之前，不建议执行和该库相关的 TiFlash 副本数量设置或其他 DDL 操作，否则最终状态可能非预期。非预期场景包括：
+>     - 先设置 TiFlash 副本数量为 2，在库中所有的表都同步完成前，再设置 TiFlash 副本数量为 1，不能保证最终所有表的 TiFlash 副本数量都为 1 或都为 2。
+>     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
+>     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
+>
+> - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
+
+#### 查看库同步进度
+
+类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>';
+```
+
+可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>");
+```
+
+### 设置可用区
 
 在配置副本时，如果为了考虑容灾，需要将 TiFlash 的不同数据副本分布到多个数据中心，则可以按如下步骤进行配置：
 
@@ -103,7 +166,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
     {{< copyable "sql" >}}
 
     ```sql
-    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels
+    ALTER TABLE table_name SET TIFLASH REPLICA count LOCATION LABELS location_labels;
     ```
 
     例如：
@@ -118,97 +181,38 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>
 
     ```shell
     > tiup ctl:<version> pd -u<pd-host>:<pd-port> store
-    
+
         ...
-    
+
         "address": "172.16.5.82:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 4,
-    
+
         ...
-    
+
         "address": "172.16.5.81:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z1" }
         ],
         "region_count": 5,
-    
+
         ...
-    
+
         "address": "172.16.5.85:23913",
         "labels": [
           { "key": "engine", "value": "tiflash"},
           { "key": "zone", "value": "z2" }
         ],
         "region_count": 9,
-    
+
         ...
     ```
 
 关于使用 label 进行副本调度划分可用区的更多内容，可以参考[通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)，[同城多数据中心部署 TiDB](/multi-data-centers-in-one-city-deployment.md) 与[两地三中心部署](/three-data-centers-in-two-cities-deployment.md)。
-
-## 按库构建 TiFlash 副本
-
-类似于按表构建 TiFlash 副本的方式，你可以在 MySQL 客户端向 TiDB 发送 DDL 命令来为指定数据库中的所有表建立 TiFlash 副本：
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER DATABASE db_name SET TIFLASH REPLICA count
-```
-
-在该命令中，`count` 表示 TiFlash 的副本数。当设置 `count` 值为 0 时，表示删除现有的 TiFlash 副本。
-
-命令示例：
-
-执行以下命令可以为 `tpch50` 库中的所有表建立 2 个 TiFlash 副本。
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER DATABASE `tpch50` SET TIFLASH REPLICA 2
-```
-
-执行以下命令可以删除为 `tpch50` 库建立的 TiFlash 副本：
-
-{{< copyable "sql" >}}
-
-```sql
-ALTER DATABASE `tpch50` SET TIFLASH REPLICA 0
-```
-
-> **注意：**
->
-> - 该命令实际是为用户执行一系列 DDL 操作，对资源要求比较高。如果在执行过程中出现中断，已经执行成功的操作不会回退，未执行的操作不会继续执行。
->
-> - 从命令执行开始到该库中所有表都已**同步完成**之前，不建议执行和该库相关的 TiFlash 副本数量设置或其他 DDL 操作，否则最终状态可能非预期。非预期场景包括：
->     - 先设置 TiFlash 副本数量为 2，在库中所有的表都同步完成前，再设置 TiFlash 副本数量为 1，不能保证最终所有表的 TiFlash 副本数量都为 1 或都为 2。
->     - 在命令执行到结束期间，如果在该库下创建表，则**可能**会对这些新增表创建 TiFlash 副本。
->     - 在命令执行到结束期间，如果为该库下的表添加索引，则该命令可能陷入等待，直到添加索引完成。
->
-> - 该命令会跳过系统表、视图、临时表以及包含了 TiFlash 不支持字符集的表。
-
-### 查看库同步进度
-
-类似于按表构建，按库构建 TiFlash 副本的命令执行成功，不代表所有表都已同步完成。可以执行下面的 SQL 语句检查数据库中所有已设置 TiFlash Replica 表的同步进度：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>'
-```
-
-可以执行下面的 SQL 语句检查数据库中尚未设置 TiFlash Replica 的表名：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>" and TABLE_NAME not in (SELECT TABLE_NAME FROM information_schema.tiflash_replica where TABLE_SCHEMA = "<db_name>")
-```
 
 ## 使用 TiDB 读取 TiFlash
 
@@ -334,7 +338,7 @@ TiSpark 目前提供类似 TiDB 中 engine 隔离的方式读取 TiFlash，方�
 
 > **注意：**
 >
-> 设为 `true` 时，所有查询的表都会只读取 TiFlash 副本，设为 `false` 则只读取 TiKV 副本。设为 `true` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
+> 设为 `tiflash` 时，所有查询的表都会只读取 TiFlash 副本，设为 `tikv` 则只读取 TiKV 副本。设为 `tiflash` 时，要求查询所用到的表都必须已创建了 TiFlash 副本，对于未创建 TiFlash 副本的表的查询会报错。
 
 可以使用以下任意一种方式进行设置：
 
@@ -365,6 +369,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
     * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
     * 支持的 Join 类型包括 Inner Join、Left Join、Semi Join、Anti Semi Join、Left Semi Join、Anti Left Semi Join
     * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join）；在计算 Cartesian Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
+* Window：当前支持下推的窗口函数包括：row_number()、rank() 和 dense_rank()
 
 在 TiDB 中，算子之间会呈现树型组织结构。一个算子能下推到 TiFlash 的前提条件，是该算子的所有子算子都能下推到 TiFlash。因为大部分算子都包含有表达式计算，当且仅当一个算子所包含的所有表达式均支持下推到 TiFlash 时，该算子才有可能下推给 TiFlash。目前 TiFlash 支持下推的表达式包括：
 
@@ -372,7 +377,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * 逻辑函数：`and, or, not, case when, if, ifnull, isnull, in, like, coalesce, is`
 * 位运算：`bitand, bitor, bigneg, bitxor`
 * 字符串函数：`substr, char_length, replace, concat, concat_ws, left, right, ascii, length, trim, ltrim, rtrim, position, format, lower, ucase, upper, substring_index, lpad, rpad, strcmp, regexp`
-* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname`
+* 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname, to_seconds, to_days, from_days, weekofyear`
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
 * 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
@@ -493,67 +498,68 @@ TiFlash 提供了两个全局/会话变量决定是否选择 Broadcast Hash Join
 
 如果希望使用 MPP 模式访问分区表，需要先开启[动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
-> **警告：**
->
-> - 目前，分区表的动态裁剪模式为实验特性，不建议在生产环境中使用。
->
-> - 如果分区表中包含 `time` 类型的列，不能开启动态裁剪模式。否则，当查询选择了 `time` 类型的列时，TiFlash 会崩溃。
-
 示例如下：
 
 ```sql
 mysql> DROP TABLE if exists test.employees;
 Query OK, 0 rows affected, 1 warning (0.00 sec)
-
-mysql> CREATE TABLE test.employees (  id int(11) NOT NULL,  fname varchar(30) DEFAULT NULL,  lname varchar(30) DEFAULT NULL,  hired date NOT NULL DEFAULT '1970-01-01',  separated date DEFAULT '99
-99-12-31',  job_code int(11) DEFAULT NULL,  store_id int(11) NOT NULL  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin  PARTITION BY RANGE (store_id)  (PARTITION p0 VALUES LESS THAN (
-6),  PARTITION p1 VALUES LESS THAN (11),  PARTITION p2 VALUES LESS THAN (16), PARTITION p3 VALUES LESS THAN (MAXVALUE));
+mysql> CREATE TABLE test.employees
+(id int(11) NOT NULL,
+ fname varchar(30) DEFAULT NULL,
+ lname varchar(30) DEFAULT NULL,
+ hired date NOT NULL DEFAULT '1970-01-01',
+ separated date DEFAULT '9999-12-31',
+ job_code int DEFAULT NULL,
+ store_id int NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin
+PARTITION BY RANGE (store_id)
+(PARTITION p0 VALUES LESS THAN (6),
+ PARTITION p1 VALUES LESS THAN (11),
+ PARTITION p2 VALUES LESS THAN (16),
+ PARTITION p3 VALUES LESS THAN (MAXVALUE));
 Query OK, 0 rows affected (0.10 sec)
 
 mysql> ALTER table test.employees SET tiflash replica 1;
 Query OK, 0 rows affected (0.09 sec)
-
 mysql> SET tidb_partition_prune_mode=static;
 Query OK, 0 rows affected (0.00 sec)
-
 mysql> explain SELECT count(*) FROM test.employees;
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
 | id                               | estRows  | task              | access object                 | operator info                     |
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
-| HashAgg_19                       | 1.00     | root              |                               | funcs:count(Column#10)->Column#9  |
-| └─PartitionUnion_21              | 4.00     | root              |                               |                                   |
-|   ├─StreamAgg_40                 | 1.00     | root              |                               | funcs:count(Column#12)->Column#10 |
-|   │ └─TableReader_41             | 1.00     | root              |                               | data:StreamAgg_27                 |
-|   │   └─StreamAgg_27             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#12         |
-|   │     └─TableFullScan_39       | 10000.00 | batchCop[tiflash] | table:employees, partition:p0 | keep order:false, stats:pseudo    |
-|   ├─StreamAgg_63                 | 1.00     | root              |                               | funcs:count(Column#14)->Column#10 |
-|   │ └─TableReader_64             | 1.00     | root              |                               | data:StreamAgg_50                 |
-|   │   └─StreamAgg_50             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#14         |
-|   │     └─TableFullScan_62       | 10000.00 | batchCop[tiflash] | table:employees, partition:p1 | keep order:false, stats:pseudo    |
-|   ├─StreamAgg_86                 | 1.00     | root              |                               | funcs:count(Column#16)->Column#10 |
-|   │ └─TableReader_87             | 1.00     | root              |                               | data:StreamAgg_73                 |
-|   │   └─StreamAgg_73             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#16         |
-|   │     └─TableFullScan_85       | 10000.00 | batchCop[tiflash] | table:employees, partition:p2 | keep order:false, stats:pseudo    |
-|   └─StreamAgg_109                | 1.00     | root              |                               | funcs:count(Column#18)->Column#10 |
-|     └─TableReader_110            | 1.00     | root              |                               | data:StreamAgg_96                 |
-|       └─StreamAgg_96             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#18         |
-|         └─TableFullScan_108      | 10000.00 | batchCop[tiflash] | table:employees, partition:p3 | keep order:false, stats:pseudo    |
+| HashAgg_18                       | 1.00     | root              |                               | funcs:count(Column#10)->Column#9  |
+| └─PartitionUnion_20              | 4.00     | root              |                               |                                   |
+|   ├─StreamAgg_35                 | 1.00     | root              |                               | funcs:count(Column#12)->Column#10 |
+|   │ └─TableReader_36             | 1.00     | root              |                               | data:StreamAgg_26                 |
+|   │   └─StreamAgg_26             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#12         |
+|   │     └─TableFullScan_34       | 10000.00 | batchCop[tiflash] | table:employees, partition:p0 | keep order:false, stats:pseudo    |
+|   ├─StreamAgg_52                 | 1.00     | root              |                               | funcs:count(Column#14)->Column#10 |
+|   │ └─TableReader_53             | 1.00     | root              |                               | data:StreamAgg_43                 |
+|   │   └─StreamAgg_43             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#14         |
+|   │     └─TableFullScan_51       | 10000.00 | batchCop[tiflash] | table:employees, partition:p1 | keep order:false, stats:pseudo    |
+|   ├─StreamAgg_69                 | 1.00     | root              |                               | funcs:count(Column#16)->Column#10 |
+|   │ └─TableReader_70             | 1.00     | root              |                               | data:StreamAgg_60                 |
+|   │   └─StreamAgg_60             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#16         |
+|   │     └─TableFullScan_68       | 10000.00 | batchCop[tiflash] | table:employees, partition:p2 | keep order:false, stats:pseudo    |
+|   └─StreamAgg_86                 | 1.00     | root              |                               | funcs:count(Column#18)->Column#10 |
+|     └─TableReader_87             | 1.00     | root              |                               | data:StreamAgg_77                 |
+|       └─StreamAgg_77             | 1.00     | batchCop[tiflash] |                               | funcs:count(1)->Column#18         |
+|         └─TableFullScan_85       | 10000.00 | batchCop[tiflash] | table:employees, partition:p3 | keep order:false, stats:pseudo    |
 +----------------------------------+----------+-------------------+-------------------------------+-----------------------------------+
-18 rows in set, 4 warnings (0.00 sec)
+18 rows in set (0,00 sec)
 
 mysql> SET tidb_partition_prune_mode=dynamic;
 Query OK, 0 rows affected (0.00 sec)
-
 mysql> explain SELECT count(*) FROM test.employees;
-+------------------------------+----------+-------------------+-----------------+----------------------------------+
-| id                           | estRows  | task              | access object   | operator info                    |
-+------------------------------+----------+-------------------+-----------------+----------------------------------+
-| HashAgg_21                   | 1.00     | root              |                 | funcs:count(Column#11)->Column#9 |
-| └─TableReader_23             | 1.00     | root              | partition:all   | data:ExchangeSender_22           |
-|   └─ExchangeSender_22        | 1.00     | batchCop[tiflash] |                 | ExchangeType: PassThrough        |
-|     └─HashAgg_9              | 1.00     | batchCop[tiflash] |                 | funcs:count(1)->Column#11        |
-|       └─TableFullScan_20     | 10000.00 | batchCop[tiflash] | table:employees | keep order:false, stats:pseudo   |
-+------------------------------+----------+-------------------+-----------------+----------------------------------+
++------------------------------+----------+--------------+-----------------+---------------------------------------------------------+
+| id                           | estRows  | task         | access object   | operator info                                           |
++------------------------------+----------+--------------+-----------------+---------------------------------------------------------+
+| HashAgg_17                   | 1.00     | root         |                 | funcs:count(Column#11)->Column#9                        |
+| └─TableReader_19             | 1.00     | root         | partition:all   | data:ExchangeSender_18                                  |
+|   └─ExchangeSender_18        | 1.00     | mpp[tiflash] |                 | ExchangeType: PassThrough                               |
+|     └─HashAgg_8              | 1.00     | mpp[tiflash] |                 | funcs:count(1)->Column#11                               |
+|       └─TableFullScan_16     | 10000.00 | mpp[tiflash] | table:employees | keep order:false, stats:pseudo, PartitionTableScan:true |
++------------------------------+----------+--------------+-----------------+---------------------------------------------------------+
+5 rows in set (0,00 sec)
 ```
 
 ## TiFlash 数据校验
@@ -600,7 +606,6 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
 
 * TiFlash 计算层：
     * 不支持检查溢出的数值。例如将两个 `BIGINT` 类型的最大值相加 `9223372036854775807 + 9223372036854775807`，该计算在 TiDB 中预期的行为是返回错误 `ERROR 1690 (22003): BIGINT value is out of range`，但如果该计算在 TiFlash 中进行，则会得到溢出的结果 `-2` 且无报错。
-    * 不支持窗口函数。
     * 不支持从 TiKV 读取数据。
     * 目前 TiFlash 中的 `sum` 函数不支持传入字符串类型的参数，但 TiDB 在编译时无法检测出这种情况。所以当执行类似于 `select sum(string_col) from t` 的语句时，TiFlash 会报错 `[FLASH:Coprocessor:Unimplemented] CastStringAsReal is not supported.`。要避免这类报错，需要手动把 SQL 改写成 `select sum(cast(string_col as double)) from t`。
     * TiFlash 目前的 Decimal 除法计算和 TiDB 存在不兼容的情况。例如在进行 Decimal 相除的时候，TiFlash 会始终按照编译时推断出来的类型进行计算，而 TiDB 则在计算过程中采用精度高于编译时推断出来的类型。这导致在一些带有 Decimal 除法的 SQL 语句在 TiDB + TiKV 上的执行结果会和 TiDB + TiFlash 上的执行结果不一样，示例如下：
@@ -608,16 +613,16 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         ```sql
         mysql> create table t (a decimal(3,0), b decimal(10, 0));
         Query OK, 0 rows affected (0.07 sec)
-        
+
         mysql> insert into t values (43, 1044774912);
         Query OK, 1 row affected (0.03 sec)
-        
+
         mysql> alter table t set tiflash replica 1;
         Query OK, 0 rows affected (0.07 sec)
-        
+
         mysql> set session tidb_isolation_read_engines='tikv';
         Query OK, 0 rows affected (0.00 sec)
-        
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         +--------+-----------------------+
         | a/b    | a/b + 0.0000000000001 |
@@ -625,10 +630,10 @@ TiFlash 在以下情况与 TiDB 存在不兼容问题：
         | 0.0000 |       0.0000000410001 |
         +--------+-----------------------+
         1 row in set (0.00 sec)
-        
+
         mysql> set session tidb_isolation_read_engines='tiflash';
         Query OK, 0 rows affected (0.00 sec)
-        
+
         mysql> select a/b, a/b + 0.0000000000001 from t where a/b;
         Empty set (0.01 sec)
         ```
