@@ -15,7 +15,6 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本
 - 增加重要数据的副本数，提高业务可用性和数据可靠性
-- 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
 - 把热点数据的 leader 放到高性能的 TiKV 实例上
 - 将冷数据分离到不同的存储中以提高可用性
 
@@ -175,12 +174,18 @@ CREATE TABLE t1 (
   userdata VARCHAR(100) NOT NULL
 ) PLACEMENT POLICY=p1 PARTITION BY LIST COLUMNS (country) (
   PARTITION pEurope VALUES IN ('DE', 'FR', 'GB') PLACEMENT POLICY=europe,
-  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica
+  PARTITION pNorthAmerica VALUES IN ('US', 'CA', 'MX') PLACEMENT POLICY=northamerica,
   PARTITION pAsia VALUES IN ('CN', 'KR', 'JP')
 );
 ```
 
 如果分区没有绑定任何放置策略，分区将尝试继承表上可能存在的策略。比如，`pEurope` 分区将会应用 `europe` 策略，而 `pAsia` 分区将会应用表 `t1` 的放置策略 `p1`。如果 `t1` 没有绑定任何策略，`pAsia` 就不会应用任何策略。
+
+支持更改指定分区的放置策略。示例如下：
+
+```sql
+ALTER TABLE t1 PARTITION pEurope PLACEMENT POLICY=p1;
+```
 
 ### 为数据库配置默认的放置规则
 
@@ -217,14 +222,14 @@ ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4�
 以下示例设置了一个约束，要求数据必须位于某个 TiKV 节点，且该节点的 `disk` 标签必须匹配特定的值：
 
 ```sql
-CREATE PLACEMENT POLICY storeonfastssd CONSTRAINTS="[+disk=ssd]";
-CREATE PLACEMENT POLICY storeonhdd CONSTRAINTS="[+disk=hdd]";
+CREATE PLACEMENT POLICY storeonfastssd CONSTRAINTS="[+disk=nvmessd]";
+CREATE PLACEMENT POLICY storeonssd CONSTRAINTS="[+disk=ssd]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
 CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
-  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storeonhdd,
+  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storeonssd,
   PARTITION p1 VALUES LESS THAN (2005),
   PARTITION p2 VALUES LESS THAN (2010),
   PARTITION p3 VALUES LESS THAN (2015),
@@ -232,15 +237,15 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd:1,+disk=hdd:2}`) 指定。
+该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=nvmessd:1,+disk=ssd:2}`) 指定。
 
-在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
+在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=ssd` 表示 `disk` 标签值不能为 `ssd`。
 
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=ssd":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `ssd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
 
 > **注意：**
 >
-> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=hdd:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
+> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=mvmessd:1,+disk=ssd:2}" 错误地解析成 '{"+disk=mvmessd:1": null, "+disk=ssd:1": null}'，不符合预期。但 "{+disk=mvmessd: 1,+disk=ssd: 1}" 能被正确解析成 '{"+disk=mvmessd": 1, "+disk=ssd": 1}'。
 
 ## 工具兼容性
 
