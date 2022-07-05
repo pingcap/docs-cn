@@ -35,7 +35,11 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 ```toml
 [server]
-labels = "zone=<zone>,rack=<rack>,host=<host>"
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
 ```
 
 TiFlash 支持使用配置文件的方式：
@@ -43,13 +47,12 @@ TiFlash 支持使用配置文件的方式：
 {{< copyable "" >}}
 
 ```toml
-[learner_config]
-[learner_config.server]
-[learner_config.server.labels]
-zone="<zone>"
-dc="<dc>"
-rack="<rack>"
-host="<host>"
+[server]
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
 ```
 
 ### 设置 PD 的 `location-labels` 配置
