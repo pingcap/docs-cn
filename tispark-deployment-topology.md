@@ -109,3 +109,9 @@ spark.tispark.pd.addresses {$pd_ip}:{$pd_port}
 - spark_env
 
 具体可参考[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml)
+
+
+## 限制
+
+- 暂不支持 TiSpark 及其相关组件的升级，同时 TiDB 的升级不影响 TiSpark 及其相关组件
+- 由于 TiSpark jar 包[命名规则的变化](https://github.com/pingcap/tispark/releases/tag/v3.0.0), TiUP 会以重命名的方式统一包名。如 `tispark-assembly-3.0-2.5.1.jar` 会被重命名为 `tispark-assembly-3.0_2.12-2.5.1.jar`
