@@ -103,6 +103,9 @@ tispark_masters:
     # web_port: 8080
     # deploy_dir: "/tidb-deploy/tispark-master-7077"
     # java_home: "/usr/local/bin/java-1.8.0"
+    # spark_version : "v3.2.1"
+    # tispark_version : "v3.0.1"
+    # scala_version : "v2.12"
     # spark_config:
     #   spark.driver.memory: "2g"
     #   spark.eventLog.enabled: "False"

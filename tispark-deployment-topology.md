@@ -44,3 +44,68 @@ aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 TiUP 不提供自动安装 JRE 的支持，该操作需要用户自行完成。JRE 8 的安装方法可以参考 [OpenJDK 的文档说明](https://openjdk.java.net/install/)。
 
 如果部署服务器上已经安装有 JRE 8，但不在系统的默认包管理工具路径中，可以通过在拓扑配置中设置 `java_home` 参数来指定要使用的 JRE 环境所在的路径。该参数对应系统环境变量 `JAVA_HOME`。
+
+> **注意：**
+> 需保证 TiUP 对应用户有权限访问自行安装的 JRE 环境所在路径
+
+## Spark 部署方式
+
+TiUP cluster 目前仅支持以 standalone 方式部署 Spark。
+
+## 版本选择
+
+TIUP 提供以下参数进行版本选择，版本选择参数仅需在 tispark_masters 下配置，无需额外在 tispark_workers 下配置：
+
+- tispark_version
+- spark_version
+- scala_version
+
+spark_version 用于指定 Spark 版本，tispark_version 用于指定 TiSpark 版本。由于 TiSpark 一个版本下可能存在多个 jar 包，因此还需要 scala_version 最终确定所需 jar 包。具体规则如下：
+
+1. tispark_version 与 spark_version 需要同时配置或同时不配置。当不配置时，会拉取 TiUP 仓库内的最新版本
+2. scala_version 是可选参数，不配置时默认为 `v2.12`
+3. 若配置的版本参数无法找到对应的 jar 包，则会报错
+
+参考 [TiSpark Wiki](https://github.com/pingcap/tispark/wiki/Getting-TiSpark#getting-tispark-jar) 来正确配置版本参数
+
+举个例子，TiSpark 3.0.1 同时兼容 Spark 3.0.x,3.1.x 和 3.2.x，同时只支持 scala 2.12。那么如下是可行的版本参数
+- tispark_version v3.0.1, spark_version 3.0.3, scala_version 2.12
+- tispark_version v3.0.1, spark_version 3.1.3, scala_version 2.12
+- tispark_version v3.0.1, spark_version 3.2.1, scala_version 2.12
+
+
+## 配置文件
+
+TiUP 会自动生成最简配置如下：
+
+spark-env.sh
+```
+SPARK_MASTER_HOST=${ip}
+SPARK_MASTER_PORT=7077
+SPARK_MASTER_WEBUI_PORT=8080
+SPARK_PUBLIC_DNS=${ip}
+```
+
+spark-default.conf
+```
+# TiSpark >= 2.5.0
+
+spark.master   spark://${master_ip}:{master_port}
+spark.sql.extensions   org.apache.spark.sql.TiExtensions
+spark.tispark.pd.addresses {$pd_ip}:{$pd_port}
+spark.sql.catalog.tidb_catalog  org.apache.spark.sql.catalyst.catalog.TiCatalog
+spark.sql.catalog.tidb_catalog.pd.addresses {$pd_ip}:{$pd_port}
+
+# TiSpark < 2.5.0
+
+spark.master   spark://${master_ip}:{master_port}
+spark.sql.extensions   org.apache.spark.sql.TiExtensions
+spark.tispark.pd.addresses {$pd_ip}:{$pd_port}
+```
+
+还可以使用如下参数来额外配置参数
+
+- spark_config
+- spark_env
+
+具体可参考[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml)
