@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/schedule-replicas-by-topology-labels/','/docs-cn/dev/how
 
 ## 根据集群拓扑配置 labels
 
-### 设置 TiKV 的 `labels` 配置
+### 设置 TiKV/TiFlash 的 `labels` 配置
 
 TiKV 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 在启动后，会将自身的标签上报给 PD，因此我们可以使用标签来标识 TiKV 节点的地理位置。
 
@@ -38,7 +38,7 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 labels = "zone=<zone>,rack=<rack>,host=<host>"
 ```
 
-TiFlash 同样支持。
+TiFlash 支持使用配置文件的方式：
 
 {{< copyable "" >}}
 
@@ -111,9 +111,9 @@ pd-ctl config set isolation-level zone
 
 ### 使用 TiUP 进行配置（推荐）
 
-如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。
+下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。集群的 TiFlash 分布在三个 zone，每个 zone 内有两台主机，其中 z4 每台主机部署两个 TiKV 实例，z5 和 z6 每台主机部署 1 个实例。以下例子中 `tiflash-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
@@ -163,6 +163,51 @@ tikv_servers:
     config:
       server.labels:
         zone: z3
+        host: h2
+
+tiflash_servers:
+# z4
+  - host: tiflash-1
+    learner_config:
+      server.labels:
+        zone: z4
+        host: h1
+   - host: tiflash-2
+    learner_config:
+      server.labels:
+        zone: z4
+        host: h1
+  - host: tiflash-3
+    learner_config:
+      server.labels:
+        zone: z4
+        host: h2
+  - host: tiflash-4
+    learner_config:
+      server.labels:
+        zone: z4
+        host: h2
+# z5
+  - host: tiflash-5
+    learner_config:
+      server.labels:
+        zone: z5
+        host: h1
+   - host: tiflash-6
+    learner_config:
+      server.labels:
+        zone: z5
+        host: h2
+# z6
+  - host: tiflash-7
+    learner_config:
+      server.labels:
+        zone: z6
+        host: h1
+  - host: tiflash-8
+    learner_config:
+      server.labels:
+        zone: z6
         host: h2
 ```
 
