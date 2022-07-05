@@ -436,7 +436,7 @@ table ttt ranges: (NOTE: key range might be changed after DDL)
 
 ### 场景四：为某张表在有高性能磁盘的北京节点添加 2 个 Follower 副本
 
-这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型不能为 ssd
+这个例子展示了比较复杂的 `label_constraints` 配置，下面的例子限定了副本放置在 bj1 或 bj2 机房，且磁盘类型不能为 ssd。
 
 {{< copyable "" >}}
 
