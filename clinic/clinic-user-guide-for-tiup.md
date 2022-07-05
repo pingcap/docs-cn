@@ -55,7 +55,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可跳过此步骤。
 
-    首先，通过以下方法获取 Token：登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+    首先，通过以下方法获取 Token：登录 Clinic Server ([Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区；[Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
 
     ![Token 示例](/media/clinic-get-token.png)
 
@@ -72,6 +72,16 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     ```bash
     tiup diag config clinic.token ${token-value}
     ```
+    
+    接着，参考以下命令行，在 Diag 中设置 Region：中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag config clinic.region ${region-value}
+    ```
+    > **注意：**
+    >
+    > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
 
 3. 开启日志脱敏配置（可选步骤）。
 
@@ -204,7 +214,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 > **注意：**
 >
-> 如果在上传前没有在 Diag 中设置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
+> 如果在上传前没有在 Diag 中设置 Token 或 Region，Diag 会提示上传失败，并提醒你进行设置。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
 
 #### 方式 1：直接上传
 
@@ -332,8 +342,8 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    你可以先尝试登录 [Clinic Server](https://clinic.pingcap.com.cn)。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
+    你可以先尝试登录 Clinic Server。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 
-    在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
+    最长 180 天，用户可以随时通过 Clinic Server 页面删除自己上传的集群诊断数据。
