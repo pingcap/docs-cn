@@ -113,7 +113,7 @@ pd-ctl config set isolation-level zone
 
 如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。集群的 TiFlash 分布在三个 zone，每个 zone 内有两台主机，其中 z4 每台主机部署两个 TiFlash 实例，z5 和 z6 每台主机部署 1 个实例。以下例子中 `tiflash-n` 代表第 n 个 TiFlash 节点的 IP 地址。
+下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，每个 zone 内有四台主机，其中 z1 其中两台主机分别部署两个 TiKV 实例，另外两台分别部署一个 TiFlash 实例，z2 和 z3 其中两台主机分别部署一个 TiKV实例，另外两台分别部署一个 TiFlash 实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
@@ -166,49 +166,39 @@ tikv_servers:
         host: h2
 
 tiflash_servers:
-# z4
+# z1
   - host: tiflash-1
     learner_config:
       server.labels:
-        zone: z4
-        host: h1
+        zone: z1
+        host: h3
    - host: tiflash-2
     learner_config:
       server.labels:
-        zone: z4
-        host: h1
-  - host: tiflash-3
-    learner_config:
-      server.labels:
-        zone: z4
-        host: h2
-  - host: tiflash-4
-    learner_config:
-      server.labels:
-        zone: z4
-        host: h2
-# z5
+        zone: z1
+        host: h4
+# z2
   - host: tiflash-5
     learner_config:
       server.labels:
-        zone: z5
-        host: h1
+        zone: z2
+        host: h3
    - host: tiflash-6
     learner_config:
       server.labels:
-        zone: z5
-        host: h2
-# z6
+        zone: z2
+        host: h4
+# z3
   - host: tiflash-7
     learner_config:
       server.labels:
-        zone: z6
-        host: h1
+        zone: z3
+        host: h3
   - host: tiflash-8
     learner_config:
       server.labels:
-        zone: z6
-        host: h2
+        zone: z3
+        host: h4
 ```
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。

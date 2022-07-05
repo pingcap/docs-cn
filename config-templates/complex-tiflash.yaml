@@ -92,7 +92,10 @@ tikv_servers:
     # # The following configs are used to overwrite the `server_configs.tikv` values.
     # config:
     #   server.grpc-concurrency: 4
-    #   server.labels: { zone: "zone1", dc: "dc1", host: "host1" }
+    #   server.labels:
+    #     zone: "zone1"
+    #     dc: "dc1"
+    #     host: "host1"
   - host: 10.0.1.2
   - host: 10.0.1.3
 
