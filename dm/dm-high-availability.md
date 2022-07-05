@@ -32,7 +32,7 @@ summary: 了解 DM 高可用机制的内部机制，以及对迁移任务的影�
     - 若非 Leader 节点，则进行 redirect 给 Leader 节点。
     - 若 dmctl 和 WebUI 请求需要调用 DM worker 进行信息收集或者操作，则由 DM master 的 Scheduler 模块通过 gRPC 接口调用 DM worker。
 
-- **DM master 与 DM worker 调用流程。**DM worker 启动时会通过 gRPC 调用 DM master 来注册 worker 信息，DM master 主要调用 Scheduler 模块实现相关的逻辑。其中，Scheduler 会将 DM worker 信息写入到 etcd，并对其进行监听。DM worker 在注册之后，会通过 etcd 实现 Keep-Alive。若 DM worker 发生故障，DM master 的 Scheduler 模块的监听会发现该 DM worker 出现故障，从而将该 DM worker 上的相关任务进行转移。
+- **DM master 与 DM worker 调用流程。**DM worker 启动时会通过 gRPC 调用 DM master 来注册 worker 信息，DM master 主要调用 Scheduler 模块实现相关的逻辑。DM worker 在注册之后，会通过 etcd 实现 Keep-Alive。若 DM worker 发生故障，DM master 的 Scheduler 模块的监听会发现该 DM worker 出现故障，从而将该 DM worker 上的相关任务进行转移。
 
 ## DM master 高可用机制
 
