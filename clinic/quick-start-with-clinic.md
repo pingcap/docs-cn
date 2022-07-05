@@ -30,7 +30,12 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     tiup install diag
     ```
 
-2. 登录 [Clinic Server](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+2. 登录 Clinic Server。
+
+    > **注意：**
+    >
+    > - 中国区用户，打开 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+    > - 美国区用户，打开 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 登录界面。如果你尚未注册帐号，可以在该界面进行注册。Clinic 只是通过 TiDB Cloud 账号进行 SSO 登录，并不要求用户必须使用该服务。
 
 3. 在 Clinic Server 中，依据页面提示创建组织 (Organization)。组织是一系列 TiDB 集群的集合。你可以在所创建的组织上上传诊断数据。
 
@@ -45,13 +50,23 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-5. 在 Diag 中设置 Token：
-
+5. 在 Diag 中设置 Token 和 Region：
+    设置 Token：
     {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag config clinic.token ${token-value}
     ```
+
+    设置 Region：中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
+    {{< copyable "shell-regular" >}}
+
+    ```bash
+    tiup diag config clinic.region ${region-value}
+    ```
+    > **注意：**
+    >
+    > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
 
 6. 开启日志脱敏配置（可选步骤）。
 
