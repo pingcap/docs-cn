@@ -178,23 +178,23 @@ tiflash_servers:
         zone: z1
         host: h4
 # z2
-  - host: tiflash-5
+  - host: tiflash-3
     learner_config:
       server.labels:
         zone: z2
         host: h3
-   - host: tiflash-6
+   - host: tiflash-4
     learner_config:
       server.labels:
         zone: z2
         host: h4
 # z3
-  - host: tiflash-7
+  - host: tiflash-5
     learner_config:
       server.labels:
         zone: z3
         host: h3
-  - host: tiflash-8
+  - host: tiflash-6
     learner_config:
       server.labels:
         zone: z3
