@@ -1,6 +1,7 @@
 ---
 title: Data Migration 简介
 summary: 了解 TiDB Data Migration
+aliases: ['/zh/tidb-data-migration/']
 ---
 
 # 产品简介
