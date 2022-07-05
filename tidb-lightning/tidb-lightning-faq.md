@@ -42,7 +42,7 @@ TiDB Lightning 的版本应与集群相同。如果使用 Local-backend 模式�
 4. 重启 `tikv-importer`。
 5. 重启 `tidb-lightning` 并等待，**直到程序因校验和错误（如果有的话）而失败**。
     * 重启 `tikv-importer` 将清除所有仍在写入的引擎文件，但是 `tidb-lightning` 并不会感知到该操作。从 v3.0 开始，最简单的方法是让 `tidb-lightning` 继续，然后再重试。
-6. [清除失败的表及断点](#checkpoint-for--has-invalid-status错误码)。
+6. [清除失败的表及断点](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)。
 7. 再次重启 `tidb-lightning`。
 
 如果使用 Local-backend 和 TiDB-backend，操作和 Importer-backend 的 `tikv-importer` 仍在运行时相同。
