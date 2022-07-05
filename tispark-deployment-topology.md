@@ -110,7 +110,6 @@ spark.tispark.pd.addresses {$pd_ip}:{$pd_port}
 
 具体可参考[详细 TiSpark 配置模板](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tispark.yaml)
 
-
 ## 限制
 
 - 暂不支持 TiSpark 及其相关组件的升级，同时 TiDB 的升级不影响 TiSpark 及其相关组件
