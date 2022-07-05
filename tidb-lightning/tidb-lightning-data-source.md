@@ -195,8 +195,8 @@ trim-last-separator = false
 
 TiDB Lightning 并不完全支持 `LOAD DATA` 语句中的所有配置项。例如：
 
-* 不可使用行前缀 （`LINES STARTING BY`）。
-* 不可跳过表头（`IGNORE n LINES`）。如有表头，必须是有效的列名。
+* 不可使用行前缀 (`LINES STARTING BY`)。
+* 不可跳过表头 (`IGNORE n LINES`)。如有表头，必须是有效的列名。
 
 ### 启用严格格式
 
