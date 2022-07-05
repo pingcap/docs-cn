@@ -7,7 +7,7 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 本文档介绍如何使用 Dumpling 和 TiDB Lightning 进行全量备份与恢复。
 
-在备份恢复过程中，[Dumpling](/dumpling-overview.md) 用于从 TiDB 导出数据进行备份，[TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 用于导入数据至 TiDB 实现恢复。
+在备份与恢复场景中，如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，你可以使用 [Dumpling](/dumpling-overview.md) 从 TiDB 数据库导出数据进行备份，再使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) 将数据导入至 TiDB 数据库实现恢复。更多备份与恢复的相关信息，参见[使用 BR 备份集群](/br/br-usage-backup.md)与[使用 BR 恢复集群](/br/br-usage-restore.md)。
 
 ## 前提条件
 
@@ -30,7 +30,7 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 **操作系统**：本文档示例使用的是若干新的、纯净版 CentOS 7 实例，你可以在本地虚拟化一台主机，或在供应商提供的平台上部署一台小型的云虚拟主机。TiDB Lightning 运行过程中，默认会占满 CPU，建议单独部署在一台主机上。如果条件不允许，你可以将 TiDB Lightning 和其他组件（比如 `tikv-server`）部署在同一台机器上，然后设置 `region-concurrency` 配置项的值为逻辑 CPU 数的 75%，以限制 TiDB Lightning 对 CPU 资源的使用。
 
-**内存和 CPU**：因为 TiDB Lightning 对计算机资源消耗较高，建议分配 64 GB 以上的内存以及 32 核以上的 CPU，而且确保 CPU 核数和内存（GB）比为 1:2 以上，以获取最佳性能。
+**内存和 CPU**：因为 TiDB Lightning 对计算机资源消耗较高，建议分配 64 GB 以上的内存以及 32 核以上的 CPU，而且确保 CPU 核数和内存 (GB) 比为 1:2 以上，以获取最佳性能。
 
 **磁盘空间**：
 
