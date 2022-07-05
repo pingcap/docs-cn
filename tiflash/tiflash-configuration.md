@@ -224,6 +224,7 @@ delta_index_cache_size = 0
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
 ### 通过拓扑 label 进行副本调度
+
 [TiFlash 设置可用区](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E8%AE%BE%E7%BD%AE%E5%8F%AF%E7%94%A8%E5%8C%BA)
 
 ### 多盘部署
