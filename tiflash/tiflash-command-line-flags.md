@@ -31,7 +31,7 @@ This document introduces the command-line flags that you can use when you launch
     - `--frame`: The size of the validation frame. The default value is `1048576`. This parameter is effective only when `version` is `2`.
     - `--compression`: The target compression algorithm. The value options are `LZ4` (default), `LZ4HC`, `zstd`, and `none`.
     - `--level`: The target compression level. If not specified, the recommended compression level is used by default according to the compression algorithm. If `compression` is set to `LZ4` or `zstd`, the default level is 1. If `compression` is set to `LZ4HC`, the default level is 9. 
-    - `--config-file`: The configuration file of `dttool migrate` is the same as the [configuration file of `server`](/tiflash/tiflash-command-line-flags.md#server---config-file). When you use the configuration file, exit the local TiFlash server instance. For more information, see `--imitative`.
+    - `--config-file`: The configuration file of `dttool migrate` is the same as the [configuration file of `server`](/tiflash/tiflash-command-line-flags.md#server---config-file). For more information, see `--imitative`.
     - `--file-id`: The ID of the DTFile. For example, the ID of the DTFile `dmf_123` is `123`.
     - `--workdir`: The parent directory of `dmf_xxx`.
     - `--dry`: The dry run mode. Only the migration process is output.
