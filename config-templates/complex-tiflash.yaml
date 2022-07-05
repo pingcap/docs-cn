@@ -128,7 +128,7 @@ tiflash_servers:
     # learner_config:
     #   log-level: "info"
     #   server.labels:
-    #     zone: "z2"
+    #     zone: "zone2"
     #     dc: "dc2"
     #     host: "host2"
   # - host: 10.0.1.12
