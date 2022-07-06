@@ -382,7 +382,7 @@ TiDB 版本：6.1.0
     - 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
     - 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
     - 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题 [#4941](https://github.com/tikv/pd/issues/4941)
-    - 修复 PD leader 转移后调度不能立即启动的问题 [4769](https://github.com/tikv/pd/issues/4769)
+    - 修复 PD leader 转移后调度不能立即启动的问题 [#4769](https://github.com/tikv/pd/issues/4769)
 
 + TiDB Dashboard
 
@@ -390,7 +390,7 @@ TiDB 版本：6.1.0
 
 + TiFlash
 
-    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
 
 + Tools
 

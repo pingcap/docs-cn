@@ -13,7 +13,7 @@ summary: 了解如何登录 TiUniManager 并进行产品初始化。
 
 要登录 TiUniManager 控制台，你需要先参考 [TiUniManager 安装手册](/tiunimanager/tiunimanager-install-and-maintain.md) 开启 TiUniManager 服务。
 
-> **注意事项：**
+> **注意：**
 >
 > 当前 TiUniManager 暂不支持找回密码。
 
@@ -27,7 +27,7 @@ summary: 了解如何登录 TiUniManager 并进行产品初始化。
 
 已登录 TiUniManager 控制台的用户可以退出登录，返回登录页面。
 
-> **注意事项：**
+> **注意：**
 >
 > 退出登录后，TiUniManager 会清除缓存数据。如果再次登录同一用户，之前未保存的编辑信息会丢失。
 
