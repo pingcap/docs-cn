@@ -29,7 +29,7 @@ CREATE TABLE t (a BIGINT AUTO_RANDOM(6), b VARCHAR(255), PRIMARY KEY (a));
 在用户执行 `INSERT` 语句时，
 
 - 如果语句中显式指定了 `AUTO_RANDOM` 列的值，则该值会被正常插入到表中；
-- 如果语句中没有显式指定 `AUTO_RANDOM` 列的值，TiDB 会自动生成一个看起来随机的值插入到表中。
+- 如果语句中没有显式指定 `AUTO_RANDOM` 列的值，TiDB 会自动生成一个随机的值插入到表中。
 
 例如：
 
