@@ -111,9 +111,9 @@ Hibernate Region 在 [TiKV master](https://github.com/tikv/tikv/tree/master) 分
 {{< copyable "" >}}
 
 ```
->> pd-ctl config set max-merge-region-size 20
->> pd-ctl config set max-merge-region-keys 200000
->> pd-ctl config set merge-schedule-limit 8
+config set max-merge-region-size 20
+config set max-merge-region-keys 200000
+config set merge-schedule-limit 8
 ```
 
 详情请参考[如何配置 Region Merge（英文）](https://tikv.org/docs/4.0/tasks/configure/region-merge/) 和 [PD 配置文件描述](/pd-configuration-file.md#schedule)。
