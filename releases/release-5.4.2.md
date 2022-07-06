@@ -82,7 +82,7 @@ TiDB 版本：5.4.2
 + PingCAP/TiFlash
 
     <!--storage-->
-    - 修复在 clustered index 表删除列导致 TiFlash 进程退出的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154)
+    - 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154)
     (dup: release-6.1.0.md > 错误修复> TiFlash)- 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
 
     <!--compute-->
@@ -92,8 +92,8 @@ TiDB 版本：5.4.2
 
     + Backup & Restore (BR)
 
-        - 修复了 RawKV 模式下 BR 报错 ErrRestoreTableIDMismatch 的问题 [35279](https://github.com/pingcap/tidb/issues/35279)
-        - 修复了保存文件的错误没有正确重试的问题 [#34865](https://github.com/pingcap/tidb/issues/34865)
+        - 修复了 RawKV 模式下 BR 报 `ErrRestoreTableIDMismatch` 错误的问题 [35279](https://github.com/pingcap/tidb/issues/35279)
+        - 修复了出现保存文件错误时 BR 没有重试的问题 [#34865](https://github.com/pingcap/tidb/issues/34865)
         - 修复了 BR 运行时 panic 的问题 [#34956](https://github.com/pingcap/tidb/issues/34956)
         (dup: release-5.3.2.md > Bug 修复> Tools> Backup & Restore (BR))- 修复 BR 无法处理 S3 内部错误的问题 [#34350](https://github.com/pingcap/tidb/issues/34350)
         (dup: release-6.0.0-dmr.md > Bug 修复> Tools> Backup & Restore (BR))- 修复了当恢复操作遇到一些无法恢复的错误时，BR 被卡住的问题 [#33200](https://github.com/pingcap/tidb/issues/33200)
