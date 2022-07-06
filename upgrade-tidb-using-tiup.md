@@ -162,7 +162,7 @@ tiup cluster upgrade <cluster-name> v6.0.0
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
 > - 若想将 TiFlash 从 5.3 之前的版本升级到 5.3 及之后的版本，必须进行 TiFlash 的停机升级。参考如下步骤，可以在确保其他组件正常运行的情况下升级 TiFlash：
 >   1. 关闭 TiFlash 实例 `tiup cluster stop <cluster-name> -R tiflash`
->   2. 使用 `--offline` 参数离线升级集群 `tiup cluster upgrade <cluster-name> <version> --offline`
+>   2. 使用 `--offline` 参数升级集群而不重启 `tiup cluster upgrade <cluster-name> <version> --offline`
 >   3. reload 整个集群 `tiup cluster reload <cluster-name>`
 
 #### 停机升级
