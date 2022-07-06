@@ -330,7 +330,7 @@
   - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
@@ -459,7 +459,8 @@
       - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
       - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
       - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
-      - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+      - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
