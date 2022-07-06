@@ -225,7 +225,7 @@ delta_index_cache_size = 0
 
 ### 通过拓扑 label 进行副本调度
 
-[TiFlash 设置可用区](https://docs.pingcap.com/zh/tidb/stable/use-tiflash#%E8%AE%BE%E7%BD%AE%E5%8F%AF%E7%94%A8%E5%8C%BA)
+[TiFlash 设置可用区](/tiflash/use-tiflash.md#设置可用区)
 
 ### 多盘部署
 
