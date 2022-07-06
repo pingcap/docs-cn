@@ -42,7 +42,7 @@ rack = "<rack>"
 host = "<host>"
 ```
 
-TiFlash 支持使用配置文件的方式：
+TiFlash 支持通过 tiflash-learner.toml （tiflash-proxy 的配置文件）的方式设置 labels：
 
 {{< copyable "" >}}
 
