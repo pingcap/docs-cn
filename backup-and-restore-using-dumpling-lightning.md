@@ -13,13 +13,13 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 - 安装和运行 Dumpling：
 
-    ```
+    ```shell
     tiup install dumpling && tiup dumpling
     ```
 
 - 安装和运行 TiDB Lightning：
 
-    ```
+    ```shell
     tiup install tidb lightning && tiup tidb lightning
     ```
 
