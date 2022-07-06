@@ -15,7 +15,7 @@ TiDB 版本：5.4.2
 + TiDB
 
     <!--transaction-->
-    - 通过不向非健康状态的 TiKV 发送请求提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
+    - 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
 
 + TiKV
 
@@ -38,21 +38,21 @@ TiDB 版本：5.4.2
 + TiDB
 
     <!--planner-->
-    - 修复在 binary protocol 下 Plan Cache 有时会缓存错误的 TableDual 计划的问题。[#34690] (https://github.com/pingcap/tidb/issues/34690) [#34678] (https://github.com/pingcap/tidb/issues/34678)
-    - 修复了执行计划在 EqualAll 的情况下，把 TiFlash 的 firstrow agg func 的 null flag 设错的问题。[#34584](https://github.com/pingcap/tidb/issues/34584)
-    - 修复了执行计划在 TiFlash 下 aggregate 下推过 join 时，两阶段 aggregate 处理错误的问题。[#34682](https://github.com/pingcap/tidb/issues/34682)
-    - 修复了执行计划在 aggregate 下推过 outer join 时，final aggregate 的 null flag 被设错的问题。[#34465](https://github.com/pingcap/tidb/issues/34465)
-    - 修复了 Plan Cache 在 evict 时使用了错误的 memory usage 指标的问题。[#34613](https://github.com/pingcap/tidb/issues/34613)
+    - 修复在 binary protocol 下 Plan Cache 有时会缓存错误的 TableDual 计划的问题 [#34690] (https://github.com/pingcap/tidb/issues/34690) [#34678] (https://github.com/pingcap/tidb/issues/34678)
+    - 修复了执行计划在 EqualAll 的情况下，把 TiFlash 的 `firstrow` 聚合函数的 null flag 设错的问题 [#34584](https://github.com/pingcap/tidb/issues/34584)
+    - 修复了执行处理器为 TiFlash 生成错误的两阶段 aggregate 计划的问题 [#34682](https://github.com/pingcap/tidb/issues/34682)
+    - 修复了 `tidb_opt_agg_push_down` 和 `tidb_enforce_mpp` 启用时执行处理器的错误行为 [#34465](https://github.com/pingcap/tidb/issues/34465)
+    - 修复了 Plan Cache 在被 evict 时使用了错误的 memory usage 指标的问题 [#34613](https://github.com/pingcap/tidb/issues/34613)
 
     <!--transaction-->
-    - 修复了 loda data 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198)
-    - 避免在悲观事务中报出 Write Conflict 错误 [#11612](https://github.com/tikv/tikv/issues/11612)
-    - 修复了在遇到 region error 和网络问题时 prewrite 请求不幂等的问题[#34875](https://github.com/pingcap/tidb/issues/34875)
+    - 修复了 `LOAD DATA` 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198)
+    - 避免在悲观事务中报出 `Write Conflict` 错误 [#11612](https://github.com/tikv/tikv/issues/11612)
+    - 修复了在遇到 Region error 和网络问题时 prewrite 请求不幂等的问题 [#34875](https://github.com/pingcap/tidb/issues/34875)
     - 修复了回滚 async commit 事务可能导致事务不满足原子性的问题 [#33641](https://github.com/pingcap/tidb/issues/33641)
 
     <!--sql-infra-->
     (dup: release-5.3.2.md > Bug 修复> TiDB)- 如果发生网络连接问题，TiDB 并不总是能正确释放已断开会话所占有的资源。该修复可以确保 TiDB 回滚打开的事务以及释放其他相关资源。[#34722](https://github.com/pingcap/tidb/issues/34722)
-    - 修复在查询包含 CTE 的视图时，可能误报 `references invalid table` 的问题。[#33965](https://github.com/pingcap/tidb/issues/33965)
+    - 修复在查询包含 CTE 的视图时，可能误报 `references invalid table` 的问题 [#33965](https://github.com/pingcap/tidb/issues/33965)
 
     <!--diagnosis-->
     (dup: release-5.3.2.md > Bug 修复> TiDB)- 修复 TiDB 由于 `fatal error: concurrent map read and map write` 发生崩溃的问题 [#35340](https://github.com/pingcap/tidb/issues/35340)
