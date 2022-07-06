@@ -5,7 +5,7 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 
 # 使用 BR 恢复集群
 
-下面介绍各种恢复 TiDB 备份数据功能的使用方式，包括：
+本文介绍恢复 TiDB 集群的方式，包括：
 
 - [恢复快照备份数据](#恢复快照备份数据)
 - [恢复单个数据库的数据](#恢复单个数据库的数据)
@@ -16,10 +16,12 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 - [恢复加密的备份数据](#恢复加密的备份数据)
 - [恢复创建在 `mysql` 数据库下的表](#恢复创建在-mysql-数据库下的表)
 
-如果你还不熟悉 Backup & Restore (BR)，建议先阅读以下文档，充分了解 BR 使用限制和方法
+如果你还不熟悉恢复工具，建议先阅读以下文档，充分了解恢复工具的使用方法和限制：
 
-- [BR 工具简介](/br/backup-and-restore-overview.md)
-- [BR 命令行介绍](/br/use-br-command-line-tool.md)
+- [恢复工具简介](/br/backup-and-restore-overview.md)
+- [恢复工具命令行介绍](/br/use-br-command-line-tool.md)
+
+如果你需要恢复 Dumpling 导出的数据、CSV 文件或 Amazon Aurora 生成的 Apache Parquet 文件，可以使用 TiDB Lightning 来导入数据，实现恢复。具体恢复操作，请参考[使用 TiDB Lightning 恢复全量数据](/backup-and-restore-using-dumpling-lightning.md#使用-tidb-lightning-恢复全量数据)。
 
 ## 恢复快照备份数据
 
