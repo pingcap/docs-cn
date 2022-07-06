@@ -1,7 +1,6 @@
 ---
 title: RENAME USER
 summary: TiDB 数据库中 RENAME USER 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-rename-user/','/docs-cn/dev/reference/sql/statements/rename-user/']
 ---
 
 # RENAME USER
@@ -23,8 +22,6 @@ Username ::=
 
 ## 示例
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 ```
@@ -32,8 +29,6 @@ CREATE USER 'newuser' IDENTIFIED BY 'mypassword';
 ```
 Query OK, 1 row affected (0.02 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW GRANTS FOR 'newuser';
@@ -48,8 +43,6 @@ SHOW GRANTS FOR 'newuser';
 1 row in set (0.00 sec)
 ```
 
-{{< copyable "sql" >}}
-
 ```sql
 RENAME USER 'newuser' TO 'testuser';
 ```
@@ -57,8 +50,6 @@ RENAME USER 'newuser' TO 'testuser';
 ```
 Query OK, 0 rows affected (0.08 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW GRANTS FOR 'testuser';
@@ -72,8 +63,6 @@ SHOW GRANTS FOR 'testuser';
 +--------------------------------------+
 1 row in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SHOW GRANTS FOR 'newuser';
