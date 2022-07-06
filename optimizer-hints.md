@@ -287,7 +287,7 @@ SHOW WARNINGS;
 ```
 ### MERGE()
 
-`MERGE()` 会关闭在执行[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中对当前子查询的物化过程，并将内部查询内联展开到外部查询。该Hint适用于非递归的公共表表达式查询，某些场景下，会比默认开辟一块临时空间的效果更好。例如将外部查询的条件下推：
+`MERGE()` 会关闭在执行[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中对当前子查询的物化过程，并将内部查询内联展开到外部查询。该Hint适用于非递归的公共表表达式查询，某些场景下，会比默认开辟一块临时空间的效果更好。例如将外部查询的条件下推： 
 
 {{< copyable "sql" >}}
 
