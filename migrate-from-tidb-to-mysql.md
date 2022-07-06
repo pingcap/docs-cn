@@ -27,17 +27,17 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 2. 部署下游 MySQL 实例。
 
-    在实验环境中，我们可以使用 Docker 快速部署 MySQL 实例，执行如下命令：
+    - 在实验环境中，可以使用 Docker 快速部署 MySQL 实例，执行如下命令：
 
-    ```shell
-    docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql
-    ```
+        ```shell
+        docker run --name some-mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -p 3306:3306 -d mysql
+        ```
 
-    在生产环境中，你可以参考 [Installing MySQL](https://dev.mysql.com/doc/refman/8.0/en/installing.html) 来部署 MySQL 实例。
+    - 在生产环境中，可以参考 [Installing MySQL](https://dev.mysql.com/doc/refman/8.0/en/installing.html) 来部署 MySQL 实例。
 
 3. 模拟业务负载。
 
-    在测试实验环境下，我们可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。如下命令，首先在上游 TiDB 创建名为 tpcc 的数据库，然后使用 TiUP bench 写入数据到刚创建的 tpcc 数据库中。
+    在测试实验环境下，可以使用 go-tpc 向上游 TiDB 集群写入数据，以让 TiDB 产生事件变更数据。执行如下命令，将首先在上游 TiDB 创建名为 tpcc 的数据库，然后使用 TiUP bench 写入数据到刚创建的 tpcc 数据库中。
 
     ```shell
     tiup bench tpcc -H 127.0.0.1 -P 4000 -D tpcc --warehouses 4 prepare
@@ -72,24 +72,24 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 2. 备份数据。
 
-    使用 Dumpling 导出 SQL 格式的数据：
+    1. 使用 Dumpling 导出 SQL 格式的数据：
 
-    ```shell
-    tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o ./dumpling_output -r 200000 -F256MiB
-    ```
+        ```shell
+        tiup dumpling -u root -P 4000 -h 127.0.0.1 --filetype sql -t 8 -o ./dumpling_output -r 200000 -F256MiB
+        ```
 
-    导出完毕后，执行如下命令查看导出数据的元信息，metadata 文件中的 `Pos` 就是导出快照的 TSO，将其记录为 BackupTS：
+    2. 导出完毕后，执行如下命令查看导出数据的元信息，metadata 文件中的 `Pos` 就是导出快照的 TSO，将其记录为 BackupTS：
 
-    ```shell
-    [root@test ~]# cat dumpling_output/metadata
-    Started dump at: 2022-06-28 17:49:54
-    SHOW MASTER STATUS:
-            Log: tidb-binlog
-            Pos: 434217889191428107
-            GTID:
+        ```shell
+        [root@test ~]# cat dumpling_output/metadata
+        Started dump at: 2022-06-28 17:49:54
+        SHOW MASTER STATUS:
+                Log: tidb-binlog
+                Pos: 434217889191428107
+                GTID:
 
-    Finished dump at: 2022-06-28 17:49:57
-    ```
+        Finished dump at: 2022-06-28 17:49:57
+        ```
 
 3. 恢复数据。
 
