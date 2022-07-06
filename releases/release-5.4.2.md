@@ -38,7 +38,7 @@ TiDB 版本：5.4.2
 + TiDB
 
     <!--planner-->
-    - 修复在 binary protocol 下 Plan Cache 有时会缓存错误的 TableDual 计划的问题 [#34690] (https://github.com/pingcap/tidb/issues/34690) [#34678] (https://github.com/pingcap/tidb/issues/34678)
+    - 修复在 binary protocol 下 Plan Cache 有时会缓存错误的 TableDual 计划的问题 [#34690](https://github.com/pingcap/tidb/issues/34690) [#34678](https://github.com/pingcap/tidb/issues/34678)
     - 修复了执行计划在 EqualAll 的情况下，把 TiFlash 的 `firstrow` 聚合函数的 null flag 设错的问题 [#34584](https://github.com/pingcap/tidb/issues/34584)
     - 修复了执行处理器为 TiFlash 生成错误的两阶段 aggregate 计划的问题 [#34682](https://github.com/pingcap/tidb/issues/34682)
     - 修复了 `tidb_opt_agg_push_down` 和 `tidb_enforce_mpp` 启用时执行处理器的错误行为 [#34465](https://github.com/pingcap/tidb/issues/34465)
