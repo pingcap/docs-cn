@@ -24,7 +24,7 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
     ```
 
 - [获取 Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
-- [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
+- [获取 TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#目标数据库权限要求)
 
 ## 资源要求
 
@@ -38,7 +38,7 @@ summary: 了解如何使用 Dumpling 和 TiDB Lightning 备份与恢复集群数
 
 如果需要保存单次备份数据到本地磁盘，需要注意以下磁盘空间限制：
 
-- Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)。
+- Dumpling 需要能够储存整个数据源的存储空间，即可以容纳要导出的所有上游表的空间。计算方式参考[目标数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#目标数据库所需空间)。
 - TiDB Lightning 导入期间，需要临时空间来存储排序键值对，磁盘空间需要至少能存储数据源的最大单表。
 
 **说明**：目前无法精确计算 Dumpling 从 TiDB 导出的数据大小，但你可以用下面 SQL 语句统计信息表的 `data_length` 字段估算数据量：
