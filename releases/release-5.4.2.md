@@ -19,7 +19,7 @@ TiDB 版本：5.4.2
 
 + TiKV
 
-    - 当 TLS 证书更新时自动重新加载 [#12546](https://github.com/tikv/tikv/issues/12546)
+    - 当 TLS 证书更新时自动重新加载，以提升可用性 [#12546](https://github.com/tikv/tikv/issues/12546)
     (dup: release-6.1.0.md > 改进提升> TiKV)- 健康检查可以检测到无法正常工作的 Raftstore，使得 TiKV client 可以及时更新 Region Cache [#12398](https://github.com/tikv/tikv/issues/12398)
     (dup: release-5.2.4.md > 提升改进> TiKV)- 通过将 leader 转让给 CDC observer 减少延迟抖动 [#12111](https://github.com/tikv/tikv/issues/12111)
 
@@ -59,10 +59,10 @@ TiDB 版本：5.4.2
 
 + TiKV
 
-    - 修复 `max_sample_size` 为 `0` 时 analyze 可能导致 panic 的问题 [#11192](https://github.com/tikv/tikv/issues/11192)
+    - 修复 `max_sample_size` 为 `0` 时 ANALYZE 可能导致 panic 的问题 [#11192](https://github.com/tikv/tikv/issues/11192)
     (dup: release-6.0.0-dmr.md > Bug 修复> TiKV)- 修复 TiKV 在退出时可能误报 panic 的问题 [#12231](https://github.com/tikv/tikv/issues/12231)
-    - 修复 merge source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663)
-    - 修复一个 peer 同时进行 split 和 destroy 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825)
+    - 修复在 merge 时 source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663)
+    - 修复同时分裂和销毁一个 peer 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825)
     (dup: release-5.3.2.md > Bug 修复> TiKV)- 修复了 PD 客户端遇到报错时频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
     (dup: release-5.3.2.md > Bug 修复> TiKV)- 修复了 `DATETIME` 类型的数据包含小数部分和 `Z` 后缀导致检查报错的问题 [#12739](https://github.com/tikv/tikv/issues/12739)
     (dup: release-5.3.2.md > Bug 修复> TiKV)- 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673)
@@ -70,8 +70,7 @@ TiDB 版本：5.4.2
     (dup: release-6.1.0.md > 错误修复> TiKV)- 修复进行 Follower Read 时，可能会报 `invalid store ID 0` 错误的问题 [#12478](https://github.com/tikv/tikv/issues/12478)
     (dup: release-6.1.0.md > 错误修复> TiKV)- 修复销毁 peer 和批量分裂 Region 之间的竞争导致的 TiKV panic [#12368](https://github.com/tikv/tikv/issues/12368)
     (dup: release-5.2.4.md > Bug 修复> TiKV)- 修复 tikv-ctl 对 `bad-ssts` 结果字符串进行错误匹配的问题 [#12329](https://github.com/tikv/tikv/issues/12329)
-     - 修复在 aufs 文件系统上启动 TiKV 报错的问题 [#12543](https://github.com/tikv/tikv/issues/12543)
-
+    - 修复在 aufs 上启动 TiKV 报错的问题 [#12543](https://github.com/tikv/tikv/issues/12543)
 
 + PD
     (dup: release-6.1.0.md > 错误修复> PD)- 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
