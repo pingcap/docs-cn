@@ -26,7 +26,7 @@ PD Control 是 PD 的命令行工具，用于获取集群状态信息和调整�
 
 > **注意：**
 >
-> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.1` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.1-linux-amd64.tar.gz`。
+> 下载链接中的 `{version}` 为 TiDB 的版本号。例如 `v5.4.2` 版本的下载链接为 `https://download.pingcap.org/tidb-v5.4.2-linux-amd64.tar.gz`。
 
 ### 源码编译
 
@@ -929,7 +929,7 @@ Encoding 格式示例：
 {{< copyable "" >}}
 
 ```bash
->> region keys --format=raw a "" 20 
+>> region keys --format=raw a "" 20
 ```
 
 ```
