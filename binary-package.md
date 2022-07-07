@@ -5,7 +5,7 @@ summary: 了解 TiDB 离线包及其内容物。
 
 # TiDB 离线包
 
-TiDB 提供两个离线包：`TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包。下载地址见[PingCAP 官网](https://pingcap.com/zh/product-community/)。
+TiDB 提供两个离线包：`TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包。下载地址见 [PingCAP 官网](https://pingcap.com/zh/product-community/)。
 
 `TiDB-community-server` 软件包包含以下内容物：
 
