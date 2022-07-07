@@ -103,12 +103,12 @@ TiDB 版本：5.4.2
         (dup: release-5.3.2.md > 错误修复> Tools> TiCDC)- 修复 redo log manager 提前 flush log 的问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
         (dup: release-5.3.2.md > 错误修复> Tools> TiCDC)- 修复当一部分表没有被 redo writer 管理时 resolved ts 提前推进的问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
         (dup: release-5.3.2.md > 错误修复> Tools> TiCDC)- 添加 UUID 作为 redo log file 的后缀以解决文件名冲突引起的数据丢失问题 [#5486](https://github.com/pingcap/tiflow/issues/5486)
-        - 修复了 Region Leader 丢失不断重试直到超过次数上限后同步中断的问题 [#5230](https://github.com/pingcap/tiflow/issues/5230)
+        - 修复了 Region Leader 丢失时重试超过次数上限后同步中断的问题 [#5230](https://github.com/pingcap/tiflow/issues/5230)
         (dup: release-5.3.2.md > Bug 修复> Tools> TiCDC)- 修复 MySQL Sink 可能会保存错误的 checkpointTs 的问题 [#5107](https://github.com/pingcap/tiflow/issues/5107)
-        - 修复了 http server 中潜在的 goroutine 泄露问题 [#5303](https://github.com/pingcap/tiflow/issues/5303)
+        - 修复了 HTTP server 中潜在的 goroutine 泄露问题 [#5303](https://github.com/pingcap/tiflow/issues/5303)
         - 修复了元信息所在 Region 发生变化时可能导致延迟上升的问题 [#4756](https://github.com/pingcap/tiflow/issues/4756) [#4762](https://github.com/pingcap/tiflow/issues/4762)
 
     + TiDB Data Migration (DM)
 
-        - 修复了任务自动 resume 后 DM 会占用更大的磁盘空间的问题 [#5344](https://github.com/pingcap/tiflow/issues/5344)
+        - 修复了任务自动恢复后 DM 会占用更大的磁盘空间的问题 [#5344](https://github.com/pingcap/tiflow/issues/5344)
         (dup: release-6.1.0.md > 错误修复> Tools> TiDB Data Migration (DM))- 修复在未设置 `case-sensitive: true` 时无法同步大写表的问题 [#5255](https://github.com/pingcap/tiflow/issues/5255)
