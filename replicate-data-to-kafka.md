@@ -1,12 +1,6 @@
 ---
-<<<<<<< HEAD
-title: 从 TiDB 同步数据至 Apache Kafka
-summary: 了解如何从 TiDB 集群同步数据至 Apache Kafka 集群。
-=======
 title: 与 Apache Kafka 和 Apache Flink 进行数据集成
 summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Apache Kafka 和 Apache Flink。
-aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
->>>>>>> 9d231a0f4 (ticdc: add 4 docs for data replication scenarios (#10276))
 ---
 
 # 与 Apache Kafka 和 Apache Flink 进行数据集成
