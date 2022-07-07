@@ -7,205 +7,61 @@ summary: 了解 TiDB 离线包及其内容物。
 
 TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包。下载地址见 [PingCAP 官网](https://pingcap.com/zh/product-community/)。
 
-离线包的内容物如下：
+`TiDB-community-server` 软件包的内容物如下：
 
-<table>
-<thead>
-  <tr>
-    <th>离线包</th>
-    <th>内容物</th>
-    <th>描述</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td rowspan="18">TiDB-community-server 软件包</td>
-    <td>tidb-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tikv-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tiflash-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>pd-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>ctl-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>grafana-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>alertmanager-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>blackbox_exporter-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>prometheus-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>node_exporter-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tiup-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tiup-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>local_install.sh</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>cluster-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>insight-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>diag-{version}-linux-amd64.tar.gz</td>
-    <td>在 v6.0.0 新增</td>
-  </tr>
-  <tr>
-    <td>influxdb-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>playground-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td rowspan="28">TiDB-community-toolkit 软件包</td>
-    <td>tikv-importer-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>pd-recover-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>etcdctl</td>
-    <td>在 v6.0.0 新增</td>
-  </tr>
-  <tr>
-    <td>tiup-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tiup-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tidb-lightning-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tidb-lightning-ctl</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>dumpling-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>cdc-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>dm-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>dm-worker-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>dm-master-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>dmctl-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>br-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>spark-{version}-any-any.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>tispark-{version}-any-any.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>package-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>bench-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>errdoc-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>dba-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>PCC-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>pump-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>drainer-{version}-linux-amd64.tar.gz</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>binlogctl</td>
-    <td>在 v6.0.0 新增</td>
-  </tr>
-  <tr>
-    <td>sync_diff_inspector</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>reparo</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>arbiter</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td>mydumper</td>
-    <td>在 v6.0.0 新增</td>
-  </tr>
-</tbody>
-</table>
+| 内容物 | 描述 |
+|---|---|
+| tidb-{version}-linux-amd64.tar.gz |  |
+| tikv-{version}-linux-amd64.tar.gz |  |
+| tiflash-{version}-linux-amd64.tar.gz |  |
+| pd-{version}-linux-amd64.tar.gz |  |
+| ctl-{version}-linux-amd64.tar.gz |  |
+| grafana-{version}-linux-amd64.tar.gz |  |
+| alertmanager-{version}-linux-amd64.tar.gz |  |
+| blackbox_exporter-{version}-linux-amd64.tar.gz |  |
+| prometheus-{version}-linux-amd64.tar.gz |  |
+| node_exporter-{version}-linux-amd64.tar.gz |  |
+| tiup-linux-amd64.tar.gz |  |
+| tiup-{version}-linux-amd64.tar.gz |  |
+| local_install.sh |  |
+| cluster-{version}-linux-amd64.tar.gz |  |
+| insight-{version}-linux-amd64.tar.gz |  |
+| diag-{version}-linux-amd64.tar.gz | 在 v6.0.0 新增 |
+| influxdb-{version}-linux-amd64.tar.gz |  |
+| playground-{version}-linux-amd64.tar.gz |  |
+
+`TiDB-community-toolkit` 软件包的内容物如下：
+
+| 内容物 | 描述 |
+|---|---|
+| tikv-importer-{version}-linux-amd64.tar.gz |  |
+| pd-recover-{version}-linux-amd64.tar.gz |  |
+| etcdctl | 在 v6.0.0 新增 |
+| tiup-linux-amd64.tar.gz |  |
+| tiup-{version}-linux-amd64.tar.gz |  |
+| tidb-lightning-{version}-linux-amd64.tar.gz |  |
+| tidb-lightning-ctl |  |
+| dumpling-{version}-linux-amd64.tar.gz |  |
+| cdc-{version}-linux-amd64.tar.gz |  |
+| dm-{version}-linux-amd64.tar.gz |  |
+| dm-worker-{version}-linux-amd64.tar.gz |  |
+| dm-master-{version}-linux-amd64.tar.gz |  |
+| dmctl-{version}-linux-amd64.tar.gz |  |
+| br-{version}-linux-amd64.tar.gz |  |
+| spark-{version}-any-any.tar.gz |  |
+| tispark-{version}-any-any.tar.gz |  |
+| package-{version}-linux-amd64.tar.gz |  |
+| bench-{version}-linux-amd64.tar.gz |  |
+| errdoc-{version}-linux-amd64.tar.gz |  |
+| dba-{version}-linux-amd64.tar.gz |  |
+| PCC-{version}-linux-amd64.tar.gz |  |
+| pump-{version}-linux-amd64.tar.gz |  |
+| drainer-{version}-linux-amd64.tar.gz |  |
+| binlogctl | 在 v6.0.0 新增 |
+| sync_diff_inspector |  |
+| reparo |  |
+| arbiter |  |
+| mydumper | 在 v6.0.0 新增 |
 
 ## 延伸阅读
 
