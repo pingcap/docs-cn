@@ -1,7 +1,7 @@
 ---
 title: TiDB Lightning 数据源
 summary: 了解 TiDB Lightning 支持的各类型数据源。
-aliases: ['/zh/tidb/dev/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/tidb-lightning/migrate-from-csv-using-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/csv/']
+aliases: ['/zh/tidb/stable/migrate-from-csv-using-tidb-lightning/']
 ---
 
 # TiDB Lightning 数据源

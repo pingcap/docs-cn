@@ -1,9 +1,5 @@
 ---
 title: TiDB Lightning 常见问题
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-faq/','/docs-cn/dev/faq/tidb-lightning/']
->>>>>>> 9ac0f70b7 (*: refactor Lightning documents (#9653))
 ---
 
 # TiDB Lightning 常见问题

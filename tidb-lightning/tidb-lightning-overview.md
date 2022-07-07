@@ -1,9 +1,6 @@
 ---
 title: TiDB Lightning 简介
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/reference/tools/tidb-lightning/overview/','/docs-cn/tools/lightning/overview-architecture/','/zh/tidb/dev/tidb-lightning-backends/','/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/','/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/dev/loader-overview/']
->>>>>>> 9ac0f70b7 (*: refactor Lightning documents (#9653))
+aliases: ['/zh/tidb/stable/tidb-lightning-backends/']
 ---
 
 # TiDB Lightning 简介
