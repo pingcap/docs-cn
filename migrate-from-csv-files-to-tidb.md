@@ -181,4 +181,4 @@ trim-last-separator = true
 
 ## 探索更多
 
-- [CSV 支持与限制](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+- [CSV 支持与限制](/tidb-lightning/tidb-lightning-data-source.md#csv)

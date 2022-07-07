@@ -17,7 +17,7 @@ summary: 本文档介绍 TiDB 工具的常见适用场景与工具选择。
 
 ## 从 CSV 导入数据到 TiDB
 
-当需要将其他工具导出的格式兼容的 CSV files 导入到 TiDB 时，可使用 [TiDB Lightning](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)。
+当需要将其他工具导出的格式兼容的 CSV files 导入到 TiDB 时，可使用 [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)。
 
 ## 从 MySQL/Aurora 导入全量数据
 
