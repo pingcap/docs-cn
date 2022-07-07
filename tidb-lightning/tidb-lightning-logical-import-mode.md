@@ -1,8 +1,8 @@
 ---
-title: Logical Import Mode 
+title: Logical Import Mode
 ---
 
-# Logical Import Mode 
+# Logical Import Mode
 
 Logical Import Mode 下，TiDB Lightning 先将数据编码成 SQL，然后直接运行这些 SQL 语句进行数据导入。对于已有数据、对外提供服务的 TiDB 集群，推荐使用 Logical Import Mode 导入数据。Logical  Import Mode 的行为与正常执行 SQL 并无差异，可保证 ACID。
 
@@ -22,4 +22,4 @@ Logical Import Mode 下，TiDB Lightning 先将数据编码成 SQL，然后直�
 
 ### 使用限制
 
-- 使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。
+使用多个 TiDB Lightning 向同一目标导入时，请勿混用不同的 backend，即不可同时使用 Physical Import Mode 和 Logical Import Mode 导入同一 TiDB 集群。

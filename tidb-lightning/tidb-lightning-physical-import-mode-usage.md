@@ -120,7 +120,7 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 ```
 
-根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。更多信息可参考[Physical Import Mode 解决重复问题](/tidb-lightning/tidb-lightning-error-resolution.md#physical-import-mode-下解决重复问题)
+根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。更多信息可参考 [Physical Import Mode 解决重复问题](/tidb-lightning/tidb-lightning-error-resolution.md#physical-import-mode-下解决重复问题)。
 
 ## 性能调优
 
@@ -160,6 +160,6 @@ io-concurrency = 5
 
 `io-concurrency` 用于控制文件读取并发度，默认值为 5。可以认为在某个时刻只有 5 个句柄在执行读操作。由于文件读取速度一般不会是瓶颈，所以使用默认值即可。
 
-读取文件数据后，lightning 还需要做后续处理，例如将数据在本地进行编码和排序。此类操作的并发度由`region-concurrency`配置控制。`region-concurrency` 的默认值为 CPU 核数，通常无需调整，建议不要将 Lightning 与其它组件部署在同一主机，如果客观条件限制必须混合部署，则需要根据实际负载调低`region-concurrency`。
+读取文件数据后，lightning 还需要做后续处理，例如将数据在本地进行编码和排序。此类操作的并发度由 `region-concurrency` 配置控制。`region-concurrency` 的默认值为 CPU 核数，通常无需调整，建议不要将 Lightning 与其它组件部署在同一主机，如果客观条件限制必须混合部署，则需要根据实际负载调低 `region-concurrency`。
 
 此外，TiKV 的 [num-threads](/tikv-configuration-file.md#num-threads) 配置也可能影响性能，新集群建议设置为 CPU 核数。
