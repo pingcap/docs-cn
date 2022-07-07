@@ -630,6 +630,7 @@
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
       - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
+      - [`RENAME USER`](/sql-statements/sql-statement-rename-user.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
       - [`RESTORE`](/sql-statements/sql-statement-restore.md)
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
