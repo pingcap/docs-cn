@@ -7,9 +7,9 @@ summary: 了解 TiDB 离线包及其内容物。
 
 TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包。下载地址见 [PingCAP 官网](https://pingcap.com/zh/product-community/)。
 
-`TiDB-community-server` 软件包的内容物如下：
+`TiDB-community-server` 软件包中包含以下内容：
 
-| 内容物 | 描述 |
+| 内容物 | 变更说明 |
 |---|---|
 | tidb-{version}-linux-amd64.tar.gz |  |
 | tikv-{version}-linux-amd64.tar.gz |  |
@@ -30,13 +30,13 @@ TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB
 | influxdb-{version}-linux-amd64.tar.gz |  |
 | playground-{version}-linux-amd64.tar.gz |  |
 
-`TiDB-community-toolkit` 软件包的内容物如下：
+`TiDB-community-toolkit` 软件包中包含以下内容：
 
 | 内容物 | 描述 |
 |---|---|
 | tikv-importer-{version}-linux-amd64.tar.gz |  |
 | pd-recover-{version}-linux-amd64.tar.gz |  |
-| etcdctl | 在 v6.0.0 新增 |
+| etcdctl | 从 v6.0.0 起新增 |
 | tiup-linux-amd64.tar.gz |  |
 | tiup-{version}-linux-amd64.tar.gz |  |
 | tidb-lightning-{version}-linux-amd64.tar.gz |  |
@@ -57,11 +57,11 @@ TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB
 | PCC-{version}-linux-amd64.tar.gz |  |
 | pump-{version}-linux-amd64.tar.gz |  |
 | drainer-{version}-linux-amd64.tar.gz |  |
-| binlogctl | 在 v6.0.0 新增 |
+| binlogctl | 从 v6.0.0 起新增 |
 | sync_diff_inspector |  |
 | reparo |  |
 | arbiter |  |
-| mydumper | 在 v6.0.0 新增 |
+| mydumper | 从 v6.0.0 起新增 |
 
 ## 延伸阅读
 
