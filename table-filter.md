@@ -18,31 +18,24 @@ Table filters can be applied to the tools using multiple `-f` or `--filter` comm
 
 * [BR](/br/backup-and-restore-overview.md):
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
+    ```
+
+    ```shell
     ./br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [Dumpling](/dumpling-overview.md):
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
-    #          ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md):
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 ### TOML configuration files
