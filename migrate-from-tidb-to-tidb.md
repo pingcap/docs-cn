@@ -181,7 +181,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置如下：
 
-    ```yaml
+    ```toml
     # Diff Configuration.
     ######################### Datasource config #########################
     [data-sources]

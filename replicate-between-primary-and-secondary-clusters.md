@@ -183,7 +183,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)。在本文中，相应的配置如下：
 
-    ```yaml
+    ```toml
     # Diff Configuration.
     ######################### Global config #########################
     check-thread-count = 4
@@ -221,7 +221,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 2. 创建同步任务。
 
-    创建 Changefeed 配置文件并保存为 `changefeed.toml`。
+    创建 changefeed 配置文件并保存为 `changefeed.toml`。
 
     {{< copyable "toml" >}}
 

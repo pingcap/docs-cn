@@ -169,7 +169,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     |参数           |描述|
     |-              |-|
-    |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
+    |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261|
     |`operate-source create`|向 DM 集群加载数据源|
 
 ### 添加同步任务
@@ -227,7 +227,7 @@ SELECT table_name,table_schema,SUM(data_length)/1024/1024 AS data_length,SUM(ind
 
     |参数|描述|
     |-|-|
-    |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr},例如：172.16.10.71:8261|
+    |`--master-addr`|dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261|
     |`start-task`|命令用于创建数据迁移任务|
 
     如果任务启动失败，可根据返回结果的提示进行配置变更，再执行上述命令重新启动任务。遇到问题请参考[故障及处理方法](/dm/dm-error-handling.md)以及[常见问题](/dm/dm-faq.md)。

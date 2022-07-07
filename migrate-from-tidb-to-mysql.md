@@ -16,7 +16,7 @@ summary: 了解如何将数据从 TiDB 集群迁移至与 MySQL 兼容的数据�
 
 1. 部署上游 TiDB 集群。
 
-    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](/tiup/tiup-cluster.md)。
+    使用 TiUP Playground 快速部署上下游测试集群。更多部署信息，请参考 [TiUP 官方文档](/tiup/tiup-cluster.md)。
 
     ```shell
     # 创建上游集群
