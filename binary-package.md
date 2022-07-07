@@ -26,7 +26,7 @@ TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB
 | local_install.sh |  |
 | cluster-{version}-linux-amd64.tar.gz |  |
 | insight-{version}-linux-amd64.tar.gz |  |
-| diag-{version}-linux-amd64.tar.gz | 在 v6.0.0 新增 |
+| diag-{version}-linux-amd64.tar.gz | 从 v6.0.0 起新增 |
 | influxdb-{version}-linux-amd64.tar.gz |  |
 | playground-{version}-linux-amd64.tar.gz |  |
 
