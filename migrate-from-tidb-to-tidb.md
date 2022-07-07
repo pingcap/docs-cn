@@ -23,7 +23,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 1. 部署集群。
 
-    使用 tiup playground 快速部署上下游测试集群。更多部署信息，请参考 [tiup 官方文档](/tiup/tiup-cluster.md)。
+    使用 TiUP Playground 快速部署上下游测试集群。更多部署信息，请参考 [TiUP 官方文档](/tiup/tiup-cluster.md)。
 
     {{< copyable "shell-regular" >}}
 
@@ -46,11 +46,9 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
-    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 10000 行初始数据。tidb-config 的配置如下：
+    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表，每张表包含 10000 行初始数据。tidb-config 的配置如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```yaml
     mysql-host=172.16.6.122 # 这里需要替换为实际上游集群 ip
     mysql-port=4000
     mysql-user=root
@@ -94,10 +92,10 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     上述命令行启动了一个单节点的 minio server 模拟 S3 服务，其相关参数为：
 
-     - Endpoint: <http://${HOST_IP}:6060/>
-     - Access-key: minio
-     - Secret-access-key: miniostorage
-     - Bucket: backup
+    - Endpoint: <http://${HOST_IP}:6060/>
+    - Access-key: minio
+    - Secret-access-key: miniostorage
+    - Bucket: backup
 
     相应的访问链接为：
 
@@ -135,7 +133,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     > **注意：**
     >
-    > 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 RATE_LIMIT 限制备份操作对线上业务的影响。
+    > 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
 
 2. 备份数据。
 
@@ -181,11 +179,9 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     sync_diff_inspector -C ./config.yaml
     ```
 
-    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置为：
+    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)，在本文中，相应的配置如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```yaml
     # Diff Configuration.
     ######################### Datasource config #########################
     [data-sources]
@@ -225,10 +221,10 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
     以上命令中：
 
-     - `--pd`：实际的上游集群的地址
-     - `--sink-uri`：同步任务下游的地址
-     - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
-     - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点，也就是[第 2 步：迁移全量数据](/migrate-from-tidb-to-mysql.md#第-2-步迁移全量数据)中 “备份数据” 提到的 BackupTS
+    - `--pd`：实际的上游集群的地址
+    - `--sink-uri`：同步任务下游的地址
+    - `--changefeed-id`：同步任务的 ID，格式需要符合正则表达式 ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
+    - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点，也就是[第 2 步：迁移全量数据](/migrate-from-tidb-to-mysql.md#第-2-步迁移全量数据)中 “备份数据” 提到的 BackupTS
 
     更多关于 changefeed 的配置，请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
 
@@ -250,7 +246,7 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
 
 ## 第 4 步：平滑切换业务
 
-通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，主要分为三个步骤：
+通过 TiCDC 创建上下游的同步链路后，原集群的写入数据会以非常低的延迟同步到新集群，此时可以逐步将读流量迁移到新集群了。观察一段时间，如果新集群表现稳定，就可以将写流量接入新集群，步骤如下：
 
 1. 停止上游集群的写业务。确认上游数据已全部同步到下游后，停止上游到下游集群的 changefeed。
 

@@ -14,7 +14,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 - 使用 Kafka console consumer 观察数据被写入到指定的 Topic
 - （可选）配置 Flink 集群消费 Kafka 内数据，实现 TiDB 与 Flink 的数据集成
 
-上述过程将会基于实验环境进行，同时也可以参考上述执行步骤，搭建生产级别的集群。
+上述过程将会基于实验环境进行。你也可以参考上述执行步骤，搭建生产级别的集群。
 
 ## 第 1 步：搭建环境
 
@@ -85,7 +85,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
     可以参考 [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md#管理同步任务-changefeed)，对 changefeed 状态进行管理。
 
-## 第 3 步：TiDB 产生事件变更数据
+## 第 3 步：写入数据以产生变更日志
 
 完成以上步骤后，TiCDC 会将上游 TiDB 的增量数据变更日志发送到 Kafka，下面对 TiDB 写入数据，以产生增量数据变更日志。
 
