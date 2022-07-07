@@ -55,7 +55,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。该服务提供以下两�
 - 在 TiUP 部署环境使用 PingCAP Clinic
 
     - [快速上手 PingCAP Clinic](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [PingCAP Clinic 数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
 
 - 在 TiDB Operator 部署环境使用 PingCAP Clinic

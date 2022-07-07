@@ -155,5 +155,5 @@ TiCDC 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时
 
 ## TiCDC 常见问题与故障处理
 
-- 使用 TiCDC 过程中经常遇到的问题，请参考 [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)。
+- 使用 TiCDC 过程中经常遇到的问题，请参考 [TiCDC 常见问题](/ticdc/ticdc-faq.md)。
 - 使用 TiCDC 过程中遇到的故障及解决，请参考 [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)。

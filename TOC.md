@@ -330,7 +330,7 @@
   - PingCAP Clinic 诊断服务 (Technical Preview)
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
@@ -407,6 +407,7 @@
       - 集群版本升级
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
         - [1.0.x 到 2.0+ 手动升级](/dm/manually-upgrade-dm-1.0-to-2.0.md)
+        - [在线应用 Hotfix 到 DM 集群](/tiup/tiup-component-dm-patch.md)
       - 集群运维工具
         - [使用 WebUI 管理迁移任务](/dm/dm-webui-guide.md)
         - [使用 dmctl 管理迁移任务](/dm/dmctl-introduction.md)
@@ -474,7 +475,8 @@
       - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
       - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
       - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
-      - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+      - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -644,6 +646,7 @@
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
       - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
+      - [`RENAME USER`](/sql-statements/sql-statement-rename-user.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
       - [`RESTORE`](/sql-statements/sql-statement-restore.md)
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
