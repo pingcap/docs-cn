@@ -16,7 +16,7 @@ data-source-dir = "/data/my_database"
 
 Lightning 运行时将查找 `data-source-dir` 中所有符合命令规则的文件。
 
-| 文件类型 | 分类	| 命名规则 |
+| 文件类型 | 分类 | 命名规则 |
 |:--|:--|:---|
 |Schema 文件|包含 DDL 语句 `CREATE TABLE` 的文件|`${db_name}.${table_name}-schema.sql`|
 |Schema 文件|包含 `CREATE DATABASE` DDL 语句的文件|`${db_name}-schema-create.sql`|
