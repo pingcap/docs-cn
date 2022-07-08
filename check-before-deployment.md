@@ -197,7 +197,7 @@ TiDB 是一套分布式数据库系统，需要节点间保证时间的同步，
 
       若发现系统既没有配置 `chronyd` 也没有配置 `ntpd` ，则表示系统尚未安装任一服务。此时，应先安装其中一个服务，并保证它可以自动启动，默认使用 `ntpd`。
 
-        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。 
+        如果你使用的系统配置是 `chronyd`，请直接执行步骤 3。
 
 2. 执行 `ntpstat` 命令检测是否与 NTP 服务器同步：
 
@@ -688,7 +688,7 @@ sudo yum -y install numactl
 1. 使用 TiUP 安装 TiDB 集群，参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)完成 `tidb-test` 集群的部署。如果本地已有集群，可跳过这一步。
 
     ```bash
-    tiup cluster deploy tidb-test v5.4.1 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
+    tiup cluster deploy tidb-test v5.4.2 ./topology.yaml --user root [-p] [-i /home/root/.ssh/gcp_rsa]
     ```
 
 2. 执行 `tiup cluster exec` 命令，以 `sudo` 权限在 `tidb-test` 集群所有目标主机上安装 NUMA。
