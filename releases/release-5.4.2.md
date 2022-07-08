@@ -43,7 +43,7 @@ TiDB 版本：5.4.2
     - 避免在悲观事务中报出 `Write Conflict` 错误 [#11612](https://github.com/tikv/tikv/issues/11612)
     - 修复了在遇到 Region error 和网络问题时 prewrite 请求不幂等的问题 [#34875](https://github.com/pingcap/tidb/issues/34875)
     - 修复了回滚 async commit 事务可能导致事务不满足原子性的问题 [#33641](https://github.com/pingcap/tidb/issues/33641)
-    - 如果发生网络连接问题，TiDB 并不总是能正确释放已断开会话所占有的资源。该修复可以确保 TiDB 回滚打开的事务以及释放其他相关资源。[#34722](https://github.com/pingcap/tidb/issues/34722)
+    - 如果发生网络连接问题，TiDB 并不总是能正确释放已断开会话所占有的资源。该修复可以确保 TiDB 回滚打开的事务以及释放其他相关资源 [#34722](https://github.com/pingcap/tidb/issues/34722)
     - 修复在查询包含 CTE 的视图时，可能误报 `references invalid table` 的问题 [#33965](https://github.com/pingcap/tidb/issues/33965)
     - 修复 TiDB 由于 `fatal error: concurrent map read and map write` 发生崩溃的问题 [#35340](https://github.com/pingcap/tidb/issues/35340)
 
