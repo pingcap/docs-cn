@@ -14,26 +14,13 @@ jobs:
         uses: foxundermoon/setup-qshell@v5
         with:
           version: '2.6.2'
+
+      - name: Download PDF list
+        run: |
+          curl https://raw.githubusercontent.com/pingcap/docs-cn/master/resources/cdnfresh.txt --output cdnfresh.txt
+          cat cdnfresh.txt
+
       - name: refresh url
         run: |
           qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
-          echo 'https://download.pingcap.org/tidb-dev-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-dev-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-stable-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-stable-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v6.0-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v6.0-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.4-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.4-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.3-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.3-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.2-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.2-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.1-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.1-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.0-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v5.0-en-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v4.0-zh-manual.pdf' >> cdnfresh.txt
-          echo 'https://download.pingcap.org/tidb-v4.0-en-manual.pdf' >> cdnfresh.txt
-          cat cdnfresh.txt
           qshell cdnrefresh -i cdnfresh.txt
