@@ -167,11 +167,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=nvme` 表示 `disk` 标签必须设为 `nvme`，`-disk=nvme` 表示 `disk` 标签值不能为 `nvme`。
 
-<<<<<<< HEAD
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
-=======
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
->>>>>>> 6789f6f87 (*: Remove hdd descriptions in placement-rules-in-sql (#10357))
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1:1,+region=us-east-2:1,+region=us-west-1:1,+any:1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`，1 个 follower 可位于任意区域。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme":1,"+region=us-west-1":1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
 
 > **注意：**
 >
