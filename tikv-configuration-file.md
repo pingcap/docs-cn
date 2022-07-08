@@ -1708,7 +1708,7 @@ Raft Engine 相关的配置项。
 + 限制后端事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `support-auto-tune`（从 v6.2.0 版本开始引入）
+### `enable-auto-tune`（从 v6.2.0 版本开始引入）
 
 + 是否支持 quota 动态调整；如果打开，后端请求的限制 quota 会根据 TiKV 实例的负载情况动态调整。
 + 默认值： false （即不支持动态调整）
