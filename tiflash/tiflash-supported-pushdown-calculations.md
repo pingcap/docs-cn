@@ -19,7 +19,7 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * Limit：该算子对数据进行 limit 运算
 * Project：该算子对数据进行投影运算
 * HashJoin：该算子基于 [Hash Join](/explain-joins.md#hash-join) 算法对数据进行连接运算：
-    * 只有在 [MPP 模式](#使用-mpp-模式)下才能被下推
+    * 只有在 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)下才能被下推
     * 支持的 Join 类型包括 Inner Join、Left Join、Semi Join、Anti Semi Join、Left Semi Join、Anti Left Semi Join
     * 对于上述类型，既支持带等值条件的连接，也支持不带等值条件的连接（即 Cartesian Join）；在计算 Cartesian Join 时，只会使用 Broadcast 算法，而不会使用 Shuffle Hash Join 算法
 * Window：当前支持下推的窗口函数包括：row_number()、rank() 和 dense_rank()
