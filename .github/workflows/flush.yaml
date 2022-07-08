@@ -17,7 +17,7 @@ jobs:
           version: '2.6.2'
       - name: refresh url
         run: |
-          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} ${{ secrets.QINIU_BUCKET_NAME }}
+          qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} tidb
           echo 'https://download.pingcap.org/tidb-dev-zh-manual.pdf' >> cdnfresh.txt
           echo 'https://download.pingcap.org/tidb-dev-en-manual.pdf' >> cdnfresh.txt
           echo 'https://download.pingcap.org/tidb-stable-zh-manual.pdf' >> cdnfresh.txt
@@ -36,4 +36,5 @@ jobs:
           echo 'https://download.pingcap.org/tidb-v5.0-en-manual.pdf' >> cdnfresh.txt
           echo 'https://download.pingcap.org/tidb-v4.0-zh-manual.pdf' >> cdnfresh.txt
           echo 'https://download.pingcap.org/tidb-v4.0-en-manual.pdf' >> cdnfresh.txt
+          cat cdnfresh.txt
           qshell cdnrefresh -i cdnfresh.txt
