@@ -39,7 +39,7 @@ In 6.1.0, the key new features or improvements are as follows:
     * `DENSE_RANK()`
     * `ROW_NUMBER()`
 
-  [User document](/tiflash/use-tiflash.md#supported-push-down-calculations), [#33072](https://github.com/pingcap/tidb/issues/33072)
+  [User document](/tiflash/tiflash-supported-pushdown-calculations.md), [#33072](https://github.com/pingcap/tidb/issues/33072)
 
 ### Observability
 
@@ -83,13 +83,13 @@ In 6.1.0, the key new features or improvements are as follows:
     * `TO_SECONDS`
     * `WEEKOFYEAR`
 
-    [User document](/tiflash/use-tiflash.md#supported-push-down-calculations), [#4679](https://github.com/pingcap/tiflash/issues/4679), [#4678](https://github.com/pingcap/tiflash/issues/4678), [#4677](https://github.com/pingcap/tiflash/issues/4677)
+    [User document](/tiflash/tiflash-supported-pushdown-calculations.md), [#4679](https://github.com/pingcap/tiflash/issues/4679), [#4678](https://github.com/pingcap/tiflash/issues/4678), [#4677](https://github.com/pingcap/tiflash/issues/4677)
 
 * TiFlash supports partitioned tables in dynamic pruning mode.
 
     To enhance performance in OLAP scenarios, dynamic pruning mode is supported for partitioned tables. If your TiDB is upgraded from versions earlier than v6.0.0, it is recommended that you manually update statistics of existing partitioned tables, so as to maximize the performance (not required for new installations or new partitions created after upgrade to v6.1.0).
 
-    User documents: [Access partitioned tables in the MPP mode](/tiflash/use-tiflash.md#access-partitioned-tables-in-the-mpp-mode), [Dynamic pruning mode](/partitioned-table.md#dynamic-pruning-mode), [#3873](https://github.com/pingcap/tiflash/issues/3873)
+    User documents: [Access partitioned tables in the MPP mode](/tiflash/use-tiflash-mpp-mode.md#access-partitioned-tables-in-the-mpp-mode), [Dynamic pruning mode](/partitioned-table.md#dynamic-pruning-mode), [#3873](https://github.com/pingcap/tiflash/issues/3873)
 
 ### Stability
 

@@ -53,7 +53,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
 - Support building TiFlash replicas by databases. To add TiFlash replicas for all tables in a database, you only need to use a single SQL statement, which greatly saves operation and maintenance costs.
 
-    [User document](/tiflash/use-tiflash.md#create-tiflash-replicas-for-databases)
+    [User document](/tiflash/create-tiflash-replicas.md#create-tiflash-replicas-for-databases)
 
 ### Transaction
 
@@ -121,7 +121,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
     In this mode, TiDB can read and compute the data on partitioned tables using the MPP engine of TiFlash, which greatly improves the query performance of partitioned tables.
 
-    [User document](/tiflash/use-tiflash.md#access-partitioned-tables-in-the-mpp-mode)
+    [User document](/tiflash/use-tiflash-mpp-mode.md#access-partitioned-tables-in-the-mpp-mode)
 
 - Improve the computing performance of the MPP engine
 
@@ -133,7 +133,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
         - Date functions: `DAYNAME()`, `DAYOFMONTH()`, `DAYOFWEEK()`, `DAYOFYEAR()`, `LAST_DAY()`, `MONTHNAME()`
         - Operators: Anti Left Outer Semi Join, Left Outer Semi Join
 
-        [User document](/tiflash/use-tiflash.md#supported-push-down-calculations)
+        [User document](/tiflash/tiflash-supported-pushdown-calculations.md)
 
     - The elastic thread pool (enabled by default) becomes GA. This feature aims to improve CPU utilization.
 
@@ -165,7 +165,7 @@ TiDB v6.0.0 is a DMR, and its version is 6.0.0-DMR.
 
     Warning: Newer version of data format cannot be downgraded in place to versions earlier than v5.4.0. During such a downgrade, you need to delete TiFlash replicas and replicate data after the downgrade. Alternatively, you can perform a downgrade by referring to [dttool migrate](/tiflash/tiflash-command-line-flags.md#dttool-migrate).
 
-    [User document](/tiflash/use-tiflash.md#use-data-validation)
+    [User document](/tiflash/tiflash-data-validation.md)
 
 - Improve thread utilization
 

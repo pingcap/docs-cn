@@ -272,7 +272,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 - `{table_name}`: The table name.
 - `{count}`: The number of replicated replicas. If it is 0, replicated replicas are deleted.
 
-**TiFlash** will then replicate the table. When a query is performed, TiDB automatically selects TiKV (row-based) or TiFlash (column-based) for the query based on cost optimization. Alternatively, you can manually specify whether the query uses a **TiFlash** replica. To learn how to specify it, refer to [Use TiDB to read TiFlash replicas](/tiflash/use-tiflash.md#use-tidb-to-read-tiflash-replicas).
+**TiFlash** will then replicate the table. When a query is performed, TiDB automatically selects TiKV (row-based) or TiFlash (column-based) for the query based on cost optimization. Alternatively, you can manually specify whether the query uses a **TiFlash** replica. To learn how to specify it, refer to [Use TiDB to read TiFlash replicas](/tiflash/use-tidb-to-read-tiflash.md).
 
 ### An example of using HTAP capabilities
 

@@ -127,7 +127,7 @@ In v5.4, the key new features or improvements are as follows:
     - Improve the efficiency of converting data from row-based storage format to column-based storage format when replicating data from TiKV, which brings 50% improvement in the overall performance of data replication
     - Improve TiFlash performance and stability by tuning the default values of some configuration items. In an HTAP hybrid load, the performance of simple queries on a single table improves up to 20%.
 
-    User documents: [Supported push-down calculations](/tiflash/use-tiflash.md#supported-push-down-calculations), [Configure the tiflash.toml file](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file)
+    User documents: [Supported push-down calculations](/tiflash/tiflash-supported-pushdown-calculations.md), [Configure the tiflash.toml file](/tiflash/tiflash-configuration.md#configure-the-tiflashtoml-file)
 
 - **Read historical data within a specified time range through a session variable**
 

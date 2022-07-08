@@ -423,7 +423,7 @@ If the output log shows `Up` status, the cluster is running properly.
 
 If you have deployed [TiFlash](/tiflash/tiflash-overview.md) along with the TiDB cluster, see the following documents:
 
-- [Use TiFlash](/tiflash/use-tiflash.md)
+- [Use TiFlash](/tiflash/tiflash-overview.md#use-tiflash)
 - [Maintain a TiFlash Cluster](/tiflash/maintain-tiflash.md)
 - [TiFlash Alert Rules and Solutions](/tiflash/tiflash-alert-rules.md)
 - [Troubleshoot TiFlash](/tiflash/troubleshoot-tiflash.md)

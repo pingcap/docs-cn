@@ -254,11 +254,11 @@ SELECT * FROM acc;
 
 You can use the `EXPLAIN` statement to check the execution plan of the above SQL statement. If `cop[tiflash]` and `cop[tikv]` appear in the task column at the same time, it means that TiFlash and TiKV are both scheduled to complete this query. Note that TiFlash and TiKV storage engines usually use different TiDB nodes, so the two query types are not affected by each other.
 
-For more information about how TiDB chooses to use TiFlash, see [Use TiDB to read TiFlash replicas](/tiflash/use-tiflash.md#use-tidb-to-read-tiflash-replicas)
+For more information about how TiDB chooses to use TiFlash, see [Use TiDB to read TiFlash replicas](/tiflash/use-tidb-to-read-tiflash.md)
 
 ## Read more
 
 - [Quick Start with HTAP](/quick-start-with-htap.md)
 - [Explore HTAP](/explore-htap.md)
 - [Window Functions](/functions-and-operators/window-functions.md)
-- [Use TiFlash](/tiflash/use-tiflash.md)
+- [Use TiFlash](/tiflash/tiflash-overview.md#use-tiflash)
