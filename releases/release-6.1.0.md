@@ -390,7 +390,7 @@ TiDB 版本：6.1.0
 
 + TiFlash
 
-    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
 
 + Tools
 
