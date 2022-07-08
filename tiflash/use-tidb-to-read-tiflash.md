@@ -5,6 +5,8 @@ summary: 了解如何使用 TiDB 读取 TiFlash 副本。
 
 # 使用 TiDB 读取 TiFlash
 
+本文档介绍如何使用 TiDB 读取 TiFlash 副本。
+
 TiDB 提供三种读取 TiFlash 副本的方式。如果添加了 TiFlash 副本，而没有做任何 engine 的配置，则默认使用 CBO 方式。
 
 ## 智能选择
