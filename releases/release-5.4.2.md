@@ -75,7 +75,7 @@ TiDB 版本：5.4.2
 + PD
     - 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
     - 修复由于 Hot Region 没有 leader 导致 PD Panic 的问题 [#5005](https://github.com/tikv/pd/issues/5005)
-    - 修复 PD leader 转移后调度不能立即启动的问题 [4769](https://github.com/tikv/pd/issues/4769)
+    - 修复 PD leader 转移后调度不能立即启动的问题 [#4769](https://github.com/tikv/pd/issues/4769)
     - 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
 
 + PingCAP/TiFlash
@@ -90,7 +90,7 @@ TiDB 版本：5.4.2
 
     + Backup & Restore (BR)
 
-        - 修复了 RawKV 模式下 BR 报 `ErrRestoreTableIDMismatch` 错误的问题 [35279](https://github.com/pingcap/tidb/issues/35279)
+        - 修复了 RawKV 模式下 BR 报 `ErrRestoreTableIDMismatch` 错误的问题 [#35279](https://github.com/pingcap/tidb/issues/35279)
         - 修复了出现保存文件错误时 BR 没有重试的问题 [#34865](https://github.com/pingcap/tidb/issues/34865)
         - 修复了 BR 运行时 panic 的问题 [#34956](https://github.com/pingcap/tidb/issues/34956)
         - 修复 BR 无法处理 S3 内部错误的问题 [#34350](https://github.com/pingcap/tidb/issues/34350)
