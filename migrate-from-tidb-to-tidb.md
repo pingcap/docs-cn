@@ -111,7 +111,7 @@ This document exemplifies the whole migration process and contains the following
 
 ## Step 2. Migrate full data
 
-After setting up the environment, you can use the backup and restore functions of [BR](https://github.com/pingcap/br) to migrate full data. BR can be started in [three ways](/br/br-deployment.md#use-br). In this document, we use the SQL statements, `BACKUP` and `RESTORE`.
+After setting up the environment, you can use the backup and restore functions of [BR](https://github.com/pingcap/tidb/tree/master/br) to migrate full data. BR can be started in [three ways](/br/br-deployment.md#use-br). In this document, we use the SQL statements, `BACKUP` and `RESTORE`.
 
 > **Note:**
 >
