@@ -1,10 +1,5 @@
 ---
-<<<<<<< HEAD
-title: TiDB Lightning 部署与执行
-=======
 title: 部署 TiDB Lightning
-aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
->>>>>>> 9ac0f70b7 (*: refactor Lightning documents (#9653))
 ---
 
 # 部署 TiDB Lightning
