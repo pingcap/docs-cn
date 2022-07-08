@@ -159,11 +159,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 );
 ```
 
-<<<<<<< HEAD
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd:1,+disk=hdd:2}`) 指定。
-=======
 该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=nvme: 2}`) 指定。
->>>>>>> 6789f6f87 (*: Remove hdd descriptions in placement-rules-in-sql (#10357))
 
 在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=nvme` 表示 `disk` 标签必须设为 `nvme`，`-disk=nvme` 表示 `disk` 标签值不能为 `nvme`。
 
