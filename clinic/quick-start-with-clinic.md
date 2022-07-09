@@ -15,7 +15,7 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
 
 > **注意：**
 >
-> - 本指南提供的采集和上传数据的方式仅适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。
+> - 本指南提供的采集和上传数据的方式仅适用于使用 [TiUP 部署](/production-deployment-using-tiup.md)的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [Operator 环境的 Clinic 操作手册](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 > - 通过 PingCAP Clinic 采集和上传的数据**仅**用于定位和诊断集群问题。
 
 ## 准备工作
