@@ -13,8 +13,6 @@ Clinic Server 是部署在云端的云服务，根据数据存储的位置不同
 - [Clinic Server 中国区](https://clinic.pingcap.com.cn)：如果你把采集的数据上传到了 Clinic Server 中国区，这些数据将存储于 PingCAP 设立在 AWS 中国区（北京）的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 - [Clinic Server 美国区](https://clinic.pingcap.com)：如果你把采集的数据上传到了 Clinic Server 美国区，这些数据将存储于 PingCAP 设立在 AWS 美国区的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 
-在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
-
 ## TiDB 集群
 
 本节列出了 Diag 在使用 TiUP 部署的 TiDB 集群中能够采集的诊断数据类型。
