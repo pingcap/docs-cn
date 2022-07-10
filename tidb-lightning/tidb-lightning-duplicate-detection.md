@@ -49,10 +49,10 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 ```
    Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression | Clustered 
 ------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------
- order_line |          0 | PRIMARY  |            1 | ol_w_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO order_line |          0 | PRIMARY  |            2 | ol_d_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO 
- order_line |          0 | PRIMARY  |            3 | ol_o_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO 
- order_line |          0 | PRIMARY  |            4 | ol_number   | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO 
-(4 rows)
+ order_line |          0 | PRIMARY  |            1 | ol_w_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO order_line |          0 | PRIMARY  |            2 | ol_d_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+ order_line |          0 | PRIMARY  |            3 | ol_o_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+ order_line |          0 | PRIMARY  |            4 | ol_number   | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO
+ (4 rows)
 
 ```
 
