@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/user-account-management/','/docs-cn/dev/reference/securi
 
 要快速了解 TiDB 如何进行认证与赋权并创建与管理用户账户，建议先观看下面的培训视频（时长 22 分钟）。注意本视频只作为学习参考，如需了解具体的用户账户管理方法，请参考本文档的内容。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+11.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+11.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson11_security.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+11.png"></video>
 
 ## 用户名和密码
 

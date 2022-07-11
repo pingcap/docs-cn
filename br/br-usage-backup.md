@@ -5,7 +5,7 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 
 # 使用 BR 备份集群
 
-下面介绍各种备份 TiDB 集群功能的使用方式，包括：
+本文介绍备份 TiDB 集群的方式，包括：
 
 - [备份 TiDB 集群快照](#备份-tidb-集群快照)
 - [备份单个数据库的数据](#备份单个数据库的数据)
@@ -15,14 +15,16 @@ summary: 了解如何使用 BR 命令行进行数据备份。
 - [备份 TiDB 集群增量数据](#备份-tidb-集群增量数据)
 - [备份数据加密](#备份数据加密)
 
-如果你还不熟悉 Backup & Restore (BR)，建议先阅读以下文档，充分了解 BR 使用限制和方法：
+如果你还不熟悉备份工具，建议先阅读以下文档，充分了解备份工具的使用方法和限制：
 
-- [BR 工具简介](/br/backup-and-restore-overview.md)
-- [BR 命令行介绍](/br/use-br-command-line-tool.md)
+- [备份工具简介](/br/backup-and-restore-overview.md)
+- [备份工具命令行介绍](/br/use-br-command-line-tool.md)
+
+如果需要全量备份少量数据（例如小于 50 GB），且不要求备份速度，也可以选择 Dumpling 导出数据，实现备份。具体备份操作，参考[使用 Dumpling 备份全量数据](/backup-and-restore-using-dumpling-lightning.md#使用-dumpling-备份全量数据)。
 
 ## 备份 TiDB 集群快照
 
-TiDB 集群快照数据是只包含某个物理时间点上集群的最新的、满足事务一致性的数据。使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
+TiDB 集群快照数据是只包含某个物理时间点上集群满足事务一致性的数据。使用 `br backup full` 可以备份 TiDB 最新的或者指定时间点的快照数据。执行 `br backup full --help` 可获取该命令的使用帮助。
 
 用例：将时间为 '2022-01-30 07:42:23' 的集群快照数据备份到 S3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中。
 

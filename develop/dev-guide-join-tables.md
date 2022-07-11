@@ -10,13 +10,15 @@ aliases: ['/zh/tidb/dev/join-tables']
 
 ## Join 类型
 
-此节将详细叙述 Join 的链接类型。
+此节将详细叙述 Join 的连接类型。
 
 ### 内连接 INNER JOIN
 
 内连接的连接结果只返回匹配连接条件的行。
 
 例如，想要知道编写过最多书的作家是谁，需要将作家基础信息表 `authors` 与书籍作者表 `book_authors` 进行连接。
+
+![Inner Join](/media/develop/inner-join.png)
 
 <SimpleTab>
 <div label="SQL" href="inner-join-sql">
@@ -90,6 +92,8 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 ### 左外连接 LEFT OUTER JOIN
 
 左外连接会返回左表中的所有数据行，以及右表当中能够匹配连接条件的值，如果在右表当中没有找到能够匹配的行，则使用 `NULL` 填充。
+
+![Left Outer Join](/media/develop/left-outer-join.png)
 
 在一些情况下，希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。
 
@@ -198,9 +202,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 右外连接返回右表中的所有记录，以及左表当中能够匹配连接条件的值，没有匹配的值则使用 `NULL` 填充。
 
-### 全外连接 FULL OUTER JOIN
-
-全外连接根据左表与右表的所有记录进行连接，如果在另外一张表当中没有找到能够满足连接条件的值则使用 `NULL` 填充。
+![Right Outer Join](/media/develop/right-outer-join.png)
 
 ### 交叉连接 CROSS JOIN
 

@@ -39,7 +39,7 @@ TiDB 版本：6.1.0
     * `DENSE_RANK()`
     * `ROW_NUMBER()`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#33072](https://github.com/pingcap/tidb/issues/33072)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#33072](https://github.com/pingcap/tidb/issues/33072)
 
 ### 可观测性
 
@@ -83,13 +83,13 @@ TiDB 版本：6.1.0
     * `TO_SECONDS`
     * `WEEKOFYEAR`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
 
 * 支持分区表动态裁剪
 
     支持分区表动态裁剪功能，以提升数据分析场景下的性能。v6.0.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 v6.1.0 升级完成后新创建的分区表无需此动作）。
 
-    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
+    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash-mpp-mode.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 
 ### 稳定性
 
@@ -175,7 +175,7 @@ TiDB 版本：6.1.0
 
 * 支持兼容 MySQL 的用户级别锁管理
 
-    用户级别锁是 MySQL 通过内置函数提供的用户命名锁管理系统。它们可以提供锁阻塞、等待、等锁管理能力。用户级别锁在 ORM 框架中也有较为广泛的应用，例如 RoR、Elixir 和 Ecto 等。TiDB 从 v6.1.0 版本开始支持兼容 MySQL 的用户级别锁管理，支持 `GET_LOCK`、`RELEASE_LOCK`、`RELEASE_ALL_LOCKS` 函数。
+    用户级别锁是 MySQL 通过内置函数提供的用户命名锁管理系统。它们可以提供锁阻塞、等待、等锁管理能力。用户级别锁在 ORM 框架中也有较为广泛的应用，例如 Rails、Elixir 和 Ecto 等。TiDB 从 v6.1.0 版本开始支持兼容 MySQL 的用户级别锁管理，支持 `GET_LOCK`、`RELEASE_LOCK`、`RELEASE_ALL_LOCKS` 函数。
 
     [用户文档](/functions-and-operators/locking-functions.md)，[#14994](https://github.com/pingcap/tidb/issues/14994)
 
@@ -364,7 +364,7 @@ TiDB 版本：6.1.0
     - 修复了查询 `INFORMATION_SCHEMA.CLUSTER_SLOW_QUERY` 表导致 TiDB 服务器 OOM 的问题，在 Grafana dashboard 中查看慢查询记录的时候可能会触发该问题 [#33893](https://github.com/pingcap/tidb/issues/33893)
     - 修复系统变量 `max_allowed_packet` 不生效的问题 [#31422](https://github.com/pingcap/tidb/issues/31422)
     - 修复 TopSQL 模块的内存泄露问题 [#34525](https://github.com/pingcap/tidb/issues/34525)，[#34502](https://github.com/pingcap/tidb/issues/34502)
-    - 修复 Plan Cache 对于 PointGet 计划有时候会出错的问题 [#3237](https://github.com/pingcap/tidb/issues/3237)
+    - 修复 Plan Cache 对于 PointGet 计划有时候会出错的问题 [#32371](https://github.com/pingcap/tidb/issues/32371)
     - 修复在 RC 隔离情况下 Plan Cache 启用时可能导致查询结果错误的问题 [#34447](https://github.com/pingcap/tidb/issues/34447)
 
 + TiKV
@@ -382,7 +382,7 @@ TiDB 版本：6.1.0
     - 修复 `not leader` 的 status code 有误的问题 [#4797](https://github.com/tikv/pd/issues/4797)
     - 修复在某些特殊情况下 TSO fallback 的问题 [#4884](https://github.com/tikv/pd/issues/4884)
     - 修复已清除的 `tombstone store` 信息在切换 PD leader 后再次出现的问题 [#4941](https://github.com/tikv/pd/issues/4941)
-    - 修复 PD leader 转移后调度不能立即启动的问题 [4769](https://github.com/tikv/pd/issues/4769)
+    - 修复 PD leader 转移后调度不能立即启动的问题 [#4769](https://github.com/tikv/pd/issues/4769)
 
 + TiDB Dashboard
 
@@ -390,7 +390,7 @@ TiDB 版本：6.1.0
 
 + TiFlash
 
-    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956</span>)
+    - 修复大量 INSERT 和 DELETE 操作后可能导致 TiFlash 数据不一致的问题 [#4956](https://github.com/pingcap/tiflash/issues/4956)
 
 + Tools
 

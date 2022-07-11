@@ -212,7 +212,7 @@ CREATE TABLE `bookshop`.`ratings` (
 
 如果你需要防止列中出现重复值，那你可以使用 `UNIQUE` 约束。
 
-例如，你需要确保用户的昵称唯一，可以这样改写 `user` 表的创建 SQL：
+例如，你需要确保用户的昵称唯一，可以这样改写 `users` 表的创建 SQL：
 
 {{< copyable "sql" >}}
 
@@ -225,13 +225,13 @@ CREATE TABLE `bookshop`.`users` (
 );
 ```
 
-如果你在 `user` 表中尝试插入相同的 `nickname`，将返回错误。
+如果你在 `users` 表中尝试插入相同的 `nickname`，将返回错误。
 
 ### 防止空值
 
 如果你需要防止列中出现空值，那就可以使用 `NOT NULL` 约束。
 
-还是使用用户昵称来举例子，除了昵称唯一，还希望昵称不可为空，于是此处可以这样改写 `user` 表的创建 SQL：
+还是使用用户昵称来举例子，除了昵称唯一，还希望昵称不可为空，于是此处可以这样改写 `users` 表的创建 SQL：
 
 {{< copyable "sql" >}}
 
@@ -273,7 +273,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 - `{table_name}`: 表名。
 - `{count}`: 同步副本数，若为 0，则表示删除同步副本。
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 文档。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 文档。
 
 ### 使用 HTAP 的示例
 

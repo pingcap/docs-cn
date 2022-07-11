@@ -57,7 +57,25 @@ CREATE TABLE IF NOT EXISTS TEST_HOTSPOT(
 {{< copyable "sql" >}}
 
 ```sql
-INSERT INTO TEST_HOTSPOT(id, age, user_name, email) values(%v, %v, '%v', '%v');
+SET SESSION cte_max_recursion_depth = 1000000;
+INSERT INTO TEST_HOTSPOT
+SELECT
+  n,                                       -- ID
+  RAND()*80,                               -- 0 到 80 之间的随机数
+  CONCAT('user-',n),
+  CONCAT(
+    CHAR(65 + (RAND() * 25) USING ascii),  -- 65 到 65+25 之间的随机数，转换为一个 A-Z 字符
+    '-user-',
+    n,
+    '@example.com'
+  )
+FROM
+  (WITH RECURSIVE nr(n) AS
+    (SELECT 1                              -- 从 1 开始 CTE
+      UNION ALL SELECT n + 1               -- 每次循环 n 增加 1
+      FROM nr WHERE n < 1000000            -- 当 n 为 1_000_000 时停止循环
+    ) SELECT n FROM nr
+  ) a;
 ```
 
 负载是短时间内密集地执行以上写入语句。
@@ -142,18 +160,24 @@ SPLIT TABLE TEST_HOTSPOT BETWEEN (0) AND (9223372036854775807) REGIONS 128;
 
 切分完成以后，可以通过 `SHOW TABLE test_hotspot REGIONS;` 语句查看打散的情况。如果 `SCATTERING` 列值全部为 `0`，代表调度成功。
 
-也可以通过 [table-regions.py](https://github.com/pingcap/tidb-ansible/blob/dabf60baba5e740a4bee9faf95e77563d8084be1/scripts/table-regions.py) 脚本，查看 Region 的分布。目前分布已经比较均匀了：
+也可以通过以下 SQL 语句查看 Region 的分布。你需要将 `table_name` 替换为实际的表名。
 
-```
-[root@172.16.4.4 scripts]# python table-regions.py --host 172.16.4.3 --port 31453 test test_hotspot
-[RECORD - test.test_hotspot] - Leaders Distribution:
-  total leader count: 127
-  store: 1, num_leaders: 21, percentage: 16.54%
-  store: 4, num_leaders: 20, percentage: 15.75%
-  store: 6, num_leaders: 21, percentage: 16.54%
-  store: 46, num_leaders: 21, percentage: 16.54%
-  store: 82, num_leaders: 23, percentage: 18.11%
-  store: 62, num_leaders: 21, percentage: 16.54%
+{{< copyable "sql" >}}
+
+```sql
+SELECT
+    p.STORE_ID,
+    COUNT(s.REGION_ID) PEER_COUNT
+FROM
+    INFORMATION_SCHEMA.TIKV_REGION_STATUS s
+    JOIN INFORMATION_SCHEMA.TIKV_REGION_PEERS p ON s.REGION_ID = p.REGION_ID
+WHERE
+    TABLE_NAME = 'table_name'
+    AND p.is_leader = 1
+GROUP BY
+    p.STORE_ID
+ORDER BY
+    PEER_COUNT DESC;
 ```
 
 再重新运行写入负载：

@@ -9,10 +9,6 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 
 本文介绍了使用这些工具的场景、优势和相关限制等信息。请根据你的需求选择合适的工具。
 
-下图显示了各迁移工具的使用场景。
-
-![TiDB Migration Tools](/media/migration-tools.png)
-
 下表介绍了迁移工具的使用场景、支持的上下游等信息。
 
 | 名称 | 使用场景 | 上游（或输入源文件） | 下游（或输出文件） |主要优势 | 使用限制 |
@@ -29,7 +25,7 @@ TiDB 提供了丰富的数据迁移相关的工具，用于全量迁移、增量
 
 从 TiDB 4.0 开始，TiUP 作为软件包管理器，帮助你轻松管理 TiDB 生态系统中的不同集群组件。现在你可以只用一个 TiUP 命令行来管理任何组件。
 
-### 第 1 步： 安装 TiUP
+### 第 1 步：安装 TiUP
 
 {{< copyable "shell-regular" >}}
 
@@ -45,7 +41,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh
 source ~/.bash_profile
 ```
 
-### 第 2 步： 安装组件
+### 第 2 步：安装组件
 
 你可以通过以下命令查看所有可用组件:
 
