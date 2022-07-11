@@ -9,7 +9,8 @@ summary: 详细说明 PingCAP Clinic 诊断服务在使用 TiUP 部署的 TiDB �
 
 通过 PingCAP Clinic 在使用 TiUP 部署的集群中采集的数据**仅**用于诊断和分析集群问题。
 
-Clinic Server 是部署在云端的云服务，根据数据存储的位置不同，分为以下两个独立的服务:
+Clinic Server 是部署在云端的云服务，根据数据存储的位置不同，分为以下两个独立的服务：
+
 - [Clinic Server 中国区](https://clinic.pingcap.com.cn)：如果你把采集的数据上传到了 Clinic Server 中国区，这些数据将存储于 PingCAP 设立在 AWS 中国区（北京）的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 - [Clinic Server 美国区](https://clinic.pingcap.com)：如果你把采集的数据上传到了 Clinic Server 美国区，这些数据将存储于 PingCAP 设立在 AWS 美国区的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 
