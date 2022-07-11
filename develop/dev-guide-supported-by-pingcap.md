@@ -65,7 +65,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## GUI
 
-| GUI                                           | 最新测试版本  | 支持级别 | 教程  |
+| GUI                                           | 最新已测试版本  | 支持等级 | 教程  |
 |-----------------------------------------------|---------|------|-----|
 | [DBeaver](https://dbeaver.io/)                | 22.1.0  | Beta | N/A |
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Beta | N/A |
