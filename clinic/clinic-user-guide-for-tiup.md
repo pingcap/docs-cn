@@ -100,20 +100,20 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     <SimpleTab>
     <div label="Clinic Server 中国区">
 
-    对于 Clinic Server 中国区，请参考以下命令，将 `region` 设置为 `cn`：
+    对于 Clinic Server 中国区，请参考以下命令，将 `region` 设置为 `CN`：
 
     ```bash
-    tiup diag config clinic.region cn
+    tiup diag config clinic.region CN
     ```
 
     </div>
 
     <div label="Clinic Server 美国区">
 
-    对于 Clinic Server 美国区，请参考以下命令，将 `region` 设置为 `us`：
+    对于 Clinic Server 美国区，请参考以下命令，将 `region` 设置为 `US`：
 
     ```bash
-    tiup diag config clinic.region us
+    tiup diag config clinic.region US
     ```
 
     </div>
