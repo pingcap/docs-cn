@@ -57,11 +57,11 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 
 ## 应用框架
 
-| 应用框架 |    数据接入框架     | 最新已测试版本 | 支持等级 | 教程地址 |
-| :------: | :-----------------: | :------------: | :------: | :------: |
-|  Spring  |        JDBC         |
-|  Spring  | JPA(with Hibernate) |
-|  Spring  |       MyBatis       |
+| 应用框架   | 数据接入框架              | 最新已测试版本 | 支持等级 | 教程地址 |
+| ------ | ------------------- | ------- | ---- | ---- |
+| Spring | JDBC                | N/A     | Beta | N/A  |
+| Spring | JPA(with Hibernate) | N/A     | Beta | N/A  |
+| Spring | MyBatis             | N/A     | Beta | N/a  |
 
 ## GUI
 
@@ -70,7 +70,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | [DBeaver](https://dbeaver.io/)                | 22.1.0  | Beta | N/A |
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Beta | N/A |
 
-|                       IDE                        | 最新已测试版本 | 支持等级 | 教程地址 |
-| :----------------------------------------------: | :------------: | :------: | :------: |
-| [DataGrip](https://www.jetbrains.com/datagrip/)  |
-| [IntelliJ IDEA](https://www.jetbrains.com/idea/) |
+| IDE                                              | 最新已测试版本 | 支持等级 | 教程地址 |
+| ------------------------------------------------ | ------- | ---- | ---- |
+| [DataGrip](https://www.jetbrains.com/datagrip/)  | N/A     | Beta | N/A  |
+| [IntelliJ IDEA](https://www.jetbrains.com/idea/) | N/A     | Beta | N/A  |
