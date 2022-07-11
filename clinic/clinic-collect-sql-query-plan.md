@@ -1,24 +1,20 @@
 ---
-title: 使用 PingCAP Clinic 采集 SQL 查询计划相关信息
+title: 使用 PingCAP Clinic Diag 采集 SQL 查询计划相关信息
 summary: 了解如何使用 PingCAP Clinic 采集 TiUP 部署集群的 SQL 查询计划相关信息。
 ---
 
-# 使用 PingCAP Clinic 采集 SQL 查询计划相关信息
+# 使用 PingCAP Clinic Diag 采集 SQL 查询计划相关信息
 
-TiDB 在 v5.3.0 中引入了 [`PLAN REPLAYER`](/sql-plan-replayer.md) 功能，能够一键式导入或导出重现查询计划相关的信息。`PLAN REPLAYER` 提供了足够简单、一站式获取并保留线上事故场景的功能，简化了优化器相关问题的排查信息提取步骤。
+TiDB 在 v5.3.0 中引入了 [`PLAN REPLAYER`](/sql-plan-replayer.md) 命令，能够“一键”式保存和恢复查询计划相关的信息。`PLAN REPLAYER` 提供了足够简单、一站式获取并保留线上事故场景的功能，简化了优化器相关问题的排查信息提取步骤。Clinic Diag 诊断客户端（下称 Diag）集成了 `PLAN REPLAYER` 功能，你可以使用 Diag 方便快捷地保存查询计划相关的数据。
 
 ## 使用说明
 
-Clinic Diag 诊断客户端（下称 Diag）集成了 `PLAN REPLAYER` 功能，支持 TiDB v4.0 以上的集群。你可以使用 Diag 方便快捷地保存查询计划相关的数据。
+Diag 可以在 TiDB v4.0 以上的集群以 ZIP 格式导出用于排查 TiDB 集群现场问题的相关信息，并方便快速地将采集的数据上传到 PingCAP Clinic 供技术支持人员查看。Diag 中采集的数据与 TiDB 中 `PLAN REPLAYER` 功能采集的数据有少量差距，具体见[采集输出结果](#采集输出结果)。
 
 > **警告：**
 >
 > - 当前该功能为实验特性，不建议在生产环境中使用。
 > - 暂时不支持采集 TiDB Operator 部署集群的数据。
-
-- 导出排查现场 TiDB 集群的相关信息，导出为 ZIP 格式的文件用于保存。
-- Diag 中采集的数据与 TiDB 中 `PLAN REPLAYER` 功能采集的数据有少量差距，具体见[采集输出结果](#采集输出结果)。
-- 方便快速地将采集的数据上传到 PingCAP Clinic，供技术支持人员查看。
 
 ## 使用方法
 
@@ -44,20 +40,20 @@ Clinic Diag 诊断客户端（下称 Diag）集成了 `PLAN REPLAYER` 功能，�
     tiup update diag
     ```
 
-### 快速采集数据
+### 采集数据
 
 执行如下 `diag collect` 命令进行数据采集：
 
 ```bash
-diag collect <clustername> --profile=tidb-plan-replayer --explain-sql=<statementfilepath>
+diag collect <cluster-name> --profile=tidb-plan-replayer --explain-sql=<statement-filepath>
 ```
 
 > **注意：**
 >
 > - 通过 `diag` 采集数据，用户需要提供 `sql-statement` 文件，该文件包含了需要采集的 SQL 语句。
-> - `statementfilepath` 是指 `sql-statement` 文件的路径。
+> - `statement-filepath` 是指 `sql-statement` 文件的路径。
 > - `PLAN REPLAYER` **不会**导出表中数据。
-> - 采集数据时只会执行 EXPLAIN，不会真正执行查询，因此采集时对数据库性能影响较小。
+> - 采集数据时只会执行 `EXPLAIN`，不会真正执行查询。因此采集时对数据库性能影响较小。
 
 `sql-statement` 的文件内容示例：
 
@@ -87,7 +83,7 @@ SELECT * FROM information_schema.slow_query;SELECT * FROM information_schema.sta
 
 ### 自定义采集
 
-你可以创建自定义的 profile 文件采集上述[输出结果](#采集输出结果)中的部分数据。下面为一个示例的 profile 文件 `tidb-plan-replayer.toml`：
+你可以自定义配置文件使 Diag 采集上述[输出结果](#采集输出结果)中的部分数据。下面为一个示例的配置文件 `tidb-plan-replayer.toml`：
 
 ```toml
 name = "tidb-plan-replayer"
@@ -112,8 +108,8 @@ roles = [
 ]
 ```
 
-进行自定义采集，你需要通过 `--profile` 参数指定 profile 文件的路径：
+通过 `--profile` 参数指定配置文件的路径来进行自定义采集：
 
 ```bash
-diag collect <clustername> --profile=<profilefilepath> --explain-sql=<statementfilepath>
+diag collect <cluster-name> --profile=<profile-filepath> --explain-sql=<statement-filepath>
 ```
