@@ -53,12 +53,6 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | Python                | [peewee](https://github.com/coleifer/peewee/)                                                                                                                                 | v3.14.10    | Beta | N/A                                                    | N/A                                                                            |
 | Python                | [PonyORM](https://ponyorm.org/)                                                                                                                                               | v0.7.16     | Beta | N/A                                                    | N/A                                                                            |
 | Python                | [SQLAlchemy](https://www.sqlalchemy.org/)                                                                                                                                     | v1.4.37     | Beta | N/A                                                    | N/A                                                                            |
-| 应用框架   | 数据接入框架              | 最新已测试版本 | 支持等级 | 教程 |
-| ------ | ------------------- | ------- | ---- | ---- |
-| Spring | JDBC                | N/A     | Beta | N/A  |
-| Spring | JPA(with Hibernate) | N/A     | Beta | N/A  |
-| Spring | MyBatis             | N/A     | Beta | N/a  |
-
 ## GUI
 
 | GUI                                           | 最新已测试版本  | 支持等级 | 教程  |
