@@ -63,28 +63,45 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-5. 在 Diag 中设置 Token 和 Region：
+5. 在 Diag 中设置 `token` 和 `region`：
 
-    - 设置 Token：
-        {{< copyable "shell-regular" >}}
+    - 设置 `clinic.token`：
 
         ```bash
         tiup diag config clinic.token ${token-value}
         ```
 
-    - 设置 Region：
+    - 设置 `clinic.region`：
 
-        中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
-
-        {{< copyable "shell-regular" >}}
-
-        ```bash
-        tiup diag config clinic.region ${region-value}
-        ```
+        `region` 决定数据打包时使用的加密证书和上传的目标 Clinic Server 地址。参考以下命令，根据你的 Clinic Server 在 Diag 中设置 `clinic.region`。
 
         > **注意：**
         >
-        > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
+        > - Diag v0.9.0 及以后的版本支持自行设置 `region`。
+        > - 对于 Diag v0.9.0 之前的版本，数据默认上传到中国区的 Clinic Server。
+        > - 如果你的 Diag 是 v0.9.0，你可以通过 `tiup update diag` 命令将其升级至最新版后设置 `region`。
+
+        <SimpleTab>
+        <div label="Clinic Server 中国区">
+
+        对于 Clinic Server 中国区，请参考以下命令，将 `region` 设置为 `cn`：
+
+        ```bash
+        tiup diag config clinic.region cn
+        ```
+
+        </div>
+
+        <div label="Clinic Server 美国区">
+
+        对于 Clinic Server 美国区，请参考以下命令，将 `region` 设置为 `us`：
+
+        ```bash
+        tiup diag config clinic.region us
+        ```
+
+        </div>
+        </SimpleTab>
 
 6. 开启日志脱敏配置（可选步骤）。
 
@@ -111,8 +128,6 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     > 上传数据（数据包文件夹）的大小不得超过 10 GB，否则会导致上传失败。
 
     - 如果你的集群所在的网络可以访问互联网，你可以通过以下命令上传已采集的数据包文件夹：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         tiup diag upload ${filepath}
