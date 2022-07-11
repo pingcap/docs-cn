@@ -2014,12 +2014,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - Unit: Milliseconds
 - This variable is used to output the threshold value of the time consumed by the slow log. When the time consumed by a query is larger than this value, this query is considered as a slow log and its log is output to the slow query log.
 
-Usage example:
-
-```sql
-SET tidb_slow_log_threshold = 200;
-```
-
 ### tidb_max_tiflash_threads <span class="version-mark">New in v6.1.0</span>
 
 - Scope: SESSION | GLOBAL
