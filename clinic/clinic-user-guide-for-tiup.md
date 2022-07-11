@@ -34,15 +34,11 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
-        {{< copyable "shell-regular" >}}
-
         ```bash
         tiup install diag
         ```
 
     - 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         tiup update diag
@@ -69,18 +65,16 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     然后，参考以下命令行，在 Diag 中设置该 Token：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag config clinic.token ${token-value}
     ```
-    
+
     接着，参考以下命令行，在 Diag 中设置 Region：中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag config clinic.region ${region-value}
     ```
+
     > **注意：**
     >
     > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
@@ -109,8 +103,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag collect ${cluster-name} -f="-4h" -t="-2h"
     ```
@@ -137,8 +129,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     Estimated size of data to collect:
     Host               Size       Target
@@ -158,8 +148,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
     ```
@@ -169,8 +157,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 1. 运行 Diag 数据采集命令。
 
     例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag collectdm ${cluster-name} -f="-4h" -t="-2h"
@@ -185,8 +171,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     采集数据需要一定的时间，具体所需时间与需要收集的数据量有关。例如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
@@ -236,8 +220,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 1. 打包在[第 2 步：采集数据](#第-2-步采集数据)中采集的数据，并对其数据包进行压缩和加密：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag package ${filepath}
     ```
@@ -253,8 +235,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 2. 使用可以访问互联网的机器上传数据压缩包。
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag upload ${filepath}
     ```
@@ -267,8 +247,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 1. 采集配置数据：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag collect ${cluster-name} --include="config"
     ```
@@ -276,8 +254,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     配置文件数据较小，采集后会默认存放至当前路径下。在测试环境中，对于一个 18 个节点的集群，配置文件数据量小于 10 KB。
 
 2. 诊断配置数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag check ${subdir-in-output-data}
@@ -288,8 +264,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 3. 查看诊断结果：
 
     诊断结果会在命令行中返回，示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag check diag-fNTnz5MGhr6
@@ -334,7 +308,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     Result report and record are saved at diag-fNTnz5MGhr6/report-220125153215
     ```
 
-    在上述示例诊断结果信息的最后一部分（即 '#### 诊断结果文档的保存路径'）中，对于被发现的每一条潜在的配置问题，Diag 都会提供对应的知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`。
+    在上述示例诊断结果信息的最后一部分（即“#### 诊断结果文档的保存路径”）中，对于被发现的每一条潜在的配置问题，Diag 都会提供对应的知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`。
 
 ## 常见问题
 
