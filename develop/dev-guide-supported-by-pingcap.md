@@ -1,12 +1,11 @@
 ---
 title: PingCAP 维护的三方库
 aliases: ['/zh/tidb/dev/supported-by-pingcap']
-
 ---
 
 # PingCAP 维护的三方库
 
-TiDB 对 MySQL 协议的支持，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容。将适配一组满足大多数语言和框架的工具，此页面上将展示这些工具和它们的支持等级。
+TiDB 对 MySQL 协议的支持，使得大部分适配 MySQL 的 Driver、ORM 及其他工具与 TiDB 兼容，此页面上将展示这些工具和它们的支持等级。
 
 ## 支持等级
 
