@@ -43,11 +43,11 @@ max-error = 0
 * 原始 CSV、SQL 或者 Parquet 文件中的语法错误，例如未闭合的引号
 * I/O、网络、或系统权限错误
 
-在 Local 后端模式下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
+在 Physical Import Mode 下，唯一键/主键的冲突是单独处理的。相关内容将在接下来的章节进行介绍。
 
-## Local-backend 模式下解决重复问题
+## Physical Import Mode 下解决重复问题
 
-Local-backend 模式下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB-backend 模式不同，TiDB Lightning 在 Local-backend 模式下直到任务结束才会检测重复行。因此，Local-backend 模式下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。你可以通过配置该参数的行为，来决定如何处理有冲突的数据。
+Physical Import Mode 下，TiDB Lightning 导入数据时先将数据转换成 KV 对数组（KV pairs），然后批量添加到 TiKV 中。与 TiDB-backend 模式不同，TiDB Lightning 在 Physical Import Mode 下直到任务结束才会检测重复行。因此，Physical Import Mode 下的重复错误不是通过 `max-error` 进行控制，而是通过 `duplicate-resolution` 配置项进行控制的。你可以通过配置该参数的行为，来决定如何处理有冲突的数据。
 
 {{< copyable "" >}}
 
@@ -131,7 +131,7 @@ CREATE TABLE conflict_error_v1 (
 
 **type_error_v1** 记录由 `max-error` 配置项管理的所有[类型错误 (Type error)](#类型错误-type-error)。每个错误一行。
 
-**conflict_error_v1** 记录所有[后端中的唯一键/主键冲突](#local-backend-模式下解决重复问题)。每对冲突有两行。
+**conflict_error_v1** 记录所有[后端中的唯一键/主键冲突](#physical-import-mode-下解决重复问题)。每对冲突有两行。
 
 | 列名     | 语法 | 类型 | 冲突 | 说明                                                                                                                         |
 | ------------ | ------ | ---- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------- |

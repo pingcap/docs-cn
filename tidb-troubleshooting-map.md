@@ -481,31 +481,31 @@ aliases: ['/docs-cn/dev/tidb-troubleshooting-map/','/docs-cn/dev/how-to/troubles
         - 自增 (AUTO_INCREMENT) 的列需要为正数，不能为 0。
         - 单一键和主键 (UNIQUE and PRIMARY KEYs) 不能有重复的值。
 
-    - 解决办法：参考[官网步骤处理](/tidb-lightning/tidb-lightning-faq.md#checksum-failed-checksum-mismatched-remote-vs-local)。
+    - 解决办法：参考[官网步骤处理](/tidb-lightning/troubleshoot-tidb-lightning.md#checksum-failed-checksum-mismatched-remote-vs-local)。
 
 - 6.3.4 `Checkpoint for … has invalid status:(错误码)`
 
     - 原因：断点续传已启用。TiDB Lightning 或 TiKV Importer 之前发生了异常退出。为了防止数据意外损坏，TiDB Lightning 在错误解决以前不会启动。错误码是小于 25 的整数，可能的取值是 0、3、6、9、12、14、15、17、18、20、21。整数越大，表示异常退出所发生的步骤在导入流程中越晚。
 
-    - 解决办法：参考[官网步骤](/tidb-lightning/tidb-lightning-faq.md#checkpoint-for--has-invalid-status错误码)处理。
+    - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#checkpoint-for--has-invalid-status错误码)处理。
 
 - 6.3.5 `ResourceTemporarilyUnavailable("Too many open engines …: 8")`
 
     - 原因：并行打开的引擎文件 (engine files) 超出 tikv-importer 里的限制。这可能由配置错误引起。即使配置没问题，如果 tidb-lightning 曾经异常退出，也有可能令引擎文件残留在打开的状态，占据可用的数量。
 
-    - 解决办法：参考[官网步骤处理](/tidb-lightning/tidb-lightning-faq.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
+    - 解决办法：参考[官网步骤处理](/tidb-lightning/troubleshoot-tidb-lightning.md#resourcetemporarilyunavailabletoo-many-open-engines--)。
 
 - 6.3.6 `cannot guess encoding for input file, please convert to UTF-8 manually`
 
     - 原因：TiDB Lightning 只支持 UTF-8 和 GB-18030 编码的表架构。此错误代表数据源不是这里任一个编码。也有可能是文件中混合了不同的编码，例如在不同的环境运行过 `ALTER TABLE`，使表架构同时出现 UTF-8 和 GB-18030 的字符。
 
-    - 解决办法：参考[官网步骤](/tidb-lightning/tidb-lightning-faq.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
+    - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#cannot-guess-encoding-for-input-file-please-convert-to-utf-8-manually)处理。
 
 - 6.3.7 `[sql2kv] sql encode error = [types:1292]invalid time format: '{1970 1 1 0 45 0 0}'`
 
     - 原因：一个 timestamp 类型的时间戳记录了不存在的时间值。时间值不存在是由于夏令时切换或超出支持的范围（1970 年 1 月 1 日至 2038 年 1 月 19 日）。
 
-    - 解决办法：参考[官网步骤](/tidb-lightning/tidb-lightning-faq.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-)处理。
+    - 解决办法：参考[官网步骤](/tidb-lightning/troubleshoot-tidb-lightning.md#sql2kv-sql-encode-error--types1292invalid-time-format-1970-1-1-)处理。
 
 ## 7. 常见日志分析
 
