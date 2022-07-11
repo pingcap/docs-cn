@@ -5,15 +5,15 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 # 使用 PingCAP Clinic 诊断 TiDB 集群
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 Clinic Server 云诊断平台（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
 目前，PingCAP Clinic 处于 Technical Preview 阶段。
 
 > **注意：**
 >
-> 本文档**仅**适用于使用 TiDB TiUP 部署的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [Operator 环境的 Clinic 操作手册](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+> - 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
 >
-> PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
+> - PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
@@ -53,9 +53,27 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可跳过此步骤。
 
-    首先，通过以下方法获取 Token：登录 Clinic Server ([Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区；[Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+    首先，通过以下方法获取 Token：
 
-    ![Token 示例](/media/clinic-get-token.png)
+    - 登录 Clinic Server
+
+        <SimpleTab>
+        <div label="Clinic Server 中国区">
+
+        [Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区。
+
+        </div>
+
+        <div label="Clinic Server 美国区">
+
+        [Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。
+
+        </div>
+        </SimpleTab>
+
+    - 点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+
+        ![Token 示例](/media/clinic-get-token.png)
 
     > **注意：**
     >
@@ -69,17 +87,39 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     tiup diag config clinic.token ${token-value}
     ```
 
-    接着，参考以下命令行，在 Diag 中设置 Region：中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
+3. 在 Diag 中设置 `region`。
 
-    ```bash
-    tiup diag config clinic.region ${region-value}
-    ```
+    `region` 决定数据打包时使用的加密证书和上传的目标 Clinic Server 地址。参考以下命令，根据你的 Clinic Server 在 Diag 中设置 `clinic.region`。
 
     > **注意：**
     >
-    > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
+    > - Diag v0.9.0 及以后的版本支持自行设置 `region`。
+    > - 对于 Diag v0.9.0 之前的版本，数据默认上传到中国区的 Clinic Server。
+    > - 如果你的 Diag 是 v0.9.0，你可以通过 `tiup update diag` 命令将其升级至最新版后设置 `region`。
 
-3. 开启日志脱敏配置（可选步骤）。
+    <SimpleTab>
+    <div label="Clinic Server 中国区">
+
+    对于 Clinic Server 中国区，请参考以下命令，将 `region` 设置为 `cn`：
+
+    ```bash
+    tiup diag config clinic.region cn
+    ```
+
+    </div>
+
+    <div label="Clinic Server 美国区">
+
+    对于 Clinic Server 美国区，请参考以下命令，将 `region` 设置为 `us`：
+
+    ```bash
+    tiup diag config clinic.region us
+    ```
+
+    </div>
+    </SimpleTab>
+
+4. 开启日志脱敏配置（可选步骤）。
 
     TiDB 在提供详细的日志信息时可能会打印数据库的敏感信息（例如用户数据）。如果希望本地日志及上传到 Clinic Server 的日志中不带有敏感信息，你可以开启日志脱敏配置。具体操作请参考[日志脱敏](/log-redaction.md#tidb-组件日志脱敏)。
 
