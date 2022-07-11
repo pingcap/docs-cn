@@ -43,6 +43,7 @@ Available Commands:
 
 Flags:
   -c, --concurrency int     最大并行任务数（默认值为 5）
+      --format string       (实验特性) 输出的格式, 支持 [default, json] (默认值为 "default")
   -h, --help                帮助信息
       --ssh string          （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --ssh-timeout uint    SSH 连接超时时间
