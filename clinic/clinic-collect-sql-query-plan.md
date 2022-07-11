@@ -77,7 +77,7 @@ SELECT * FROM information_schema.slow_query;SELECT * FROM information_schema.sta
 | 3 | TiDB 执行计划绑定信息 (SQL Binding) | `sql_bind` | `sql_bind/global_bind.csv` |
 | 4 | `sql-statement` 中所包含的表结构 | `statistics` | `statistics/<db.table>.schema` |
 | 5 | `sql-statement` 中所包含表的统计信息 | `statistics` | `statistics/<db.table>.json` |
-| 6 | EXPLAIN `sql-statement` 的结果 | `explain` | `explain/sql0` |
+| 6 | `EXPLAIN [ANALYZE] sql-statement` 的结果 | `explain` | `explain/sql0` |
 | 7 | <ul><li>TiDB 日志</li><li>TiUP Cluster 操作日志</li></ul> | <ul><li>`log`</li><li>`-R=tidb`</li></ul> | `tidb.log`，`tidb_slow_query.log`，`tidb_stdeer.log`，`cluster_audit/$auditfilename` |
 | 8 | 默认采集的集群信息<ul><li>集群基础信息</li><li>Diag 本次采集记录</li></ul> | default | `cluster.json`，`meta.yaml`，`$collectid_diag_audit.log` |
 
