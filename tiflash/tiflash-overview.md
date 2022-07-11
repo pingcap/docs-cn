@@ -1,9 +1,6 @@
 ---
 title: TiFlash 简介
-<<<<<<< HEAD
-=======
-aliases: ['/docs-cn/dev/tiflash/tiflash-overview/','/docs-cn/dev/reference/tiflash/overview/','/docs-cn/dev/tiflash/use-tiflash/','/docs-cn/dev/reference/tiflash/use-tiflash/','/zh/tidb/dev/use-tiflash']
->>>>>>> ec62c0a8b (tiflash refactor: split use-tiflash into multiple docs (#10424))
+['/zh/tidb/stable/use-tiflash','/zh/tidb/v6.1/use-tiflash']
 ---
 
 # TiFlash 简介
