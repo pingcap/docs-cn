@@ -70,7 +70,7 @@ PingCAP 与开源社区合作，通过三方工具提供以下支持：
 | [DBeaver](https://dbeaver.io/)                | 22.1.0  | Beta | N/A |
 | [Navicat for MySQL](https://www.navicat.com/) | 16.0.14 | Beta | N/A |
 
-| IDE                                              | 最新已测试版本 | 支持等级 | 教程地址 |
+| IDE                                              | 最新已测试版本 | 支持等级 | 教程 |
 | ------------------------------------------------ | ------- | ---- | ---- |
 | [DataGrip](https://www.jetbrains.com/datagrip/)  | N/A     | Beta | N/A  |
 | [IntelliJ IDEA](https://www.jetbrains.com/idea/) | N/A     | Beta | N/A  |
