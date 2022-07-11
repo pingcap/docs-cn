@@ -51,22 +51,27 @@ PingCAP Clinic 目前处于 Technical Preview 阶段。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
 5. 在 Diag 中设置 Token 和 Region：
-    设置 Token：
-    {{< copyable "shell-regular" >}}
 
-    ```bash
-    tiup diag config clinic.token ${token-value}
-    ```
+    - 设置 Token：
+        {{< copyable "shell-regular" >}}
 
-    设置 Region：中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
-    {{< copyable "shell-regular" >}}
+        ```bash
+        tiup diag config clinic.token ${token-value}
+        ```
 
-    ```bash
-    tiup diag config clinic.region ${region-value}
-    ```
-    > **注意：**
-    >
-    > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
+    - 设置 Region：
+
+        中国区设为 cn，美国区设为 us。Region 设置决定数据打包时使用的加密证书和上传的目标 Server 地址。
+
+        {{< copyable "shell-regular" >}}
+
+        ```bash
+        tiup diag config clinic.region ${region-value}
+        ```
+
+        > **注意：**
+        >
+        > Region 设置在 diag v0.9.0 及以后的版本中支持，早期版本默认上传数据到中国区 Server。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
 
 6. 开启日志脱敏配置（可选步骤）。
 
