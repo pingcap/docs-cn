@@ -89,7 +89,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 {{< copyable "sql" >}}
 
 ```sql
-DROP INDEX c1 on t1;
+DROP INDEX c1 ON t1;
 ```
 
 ```
