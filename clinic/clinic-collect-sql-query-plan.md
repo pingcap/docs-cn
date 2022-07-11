@@ -1,6 +1,6 @@
 ---
 title: 使用 PingCAP Clinic Diag 采集 SQL 查询计划相关信息
-summary: 了解如何使用 PingCAP Clinic 采集 TiUP 部署集群的 SQL 查询计划相关信息。
+summary: 了解如何使用 PingCAP Clinic Diag 采集 TiUP 部署集群的 SQL 查询计划相关信息。
 ---
 
 # 使用 PingCAP Clinic Diag 采集 SQL 查询计划相关信息
