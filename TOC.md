@@ -79,7 +79,7 @@
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - 第三方软件支持
-    - [PingCAP 维护的三方库](/develop/dev-guide-supported-by-pingcap.md)
+    - [PingCAP 维护的三方库](/develop/dev-guide-third-party-support.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
