@@ -53,7 +53,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     首先，通过以下方法获取 Token：
 
-    - 登录 Clinic Server
+    - 登录 Clinic Server。
 
         <SimpleTab>
         <div label="Clinic Server 中国区">
@@ -79,7 +79,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - Token 只用于上传数据。
 
-    然后，参考以下命令行，在 Diag 中设置该 Token：
+    然后，参考以下命令，在 Diag 中设置该 Token：
 
     ```bash
     tiup diag config clinic.token ${token-value}
@@ -91,14 +91,14 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     > **注意：**
     >
-    > - Diag v0.9.0 及以后的版本支持自行设置 `region`。
-    > - 对于 Diag v0.9.0 之前的版本，数据默认上传到中国区的 Clinic Server。
-    > - 如果你的 Diag 是 v0.9.0，你可以通过 `tiup update diag` 命令将其升级至最新版后设置 `region`。
+    > - Diag v0.9.0 及以后的版本支持 `region` 设置。
+    > - 对于 Diag v0.9.0 之前的版本，数据默认上传到 Clinic Server 中国区。
+    > - 如果你的 Diag 是 v0.9.0 之前的版本，你可以通过 `tiup update diag` 命令将其升级至最新版本后设置 `region`。
 
     <SimpleTab>
     <div label="Clinic Server 中国区">
 
-    对于 Clinic Server 中国区，请参考以下命令，将 `region` 设置为 `CN`：
+    对于 Clinic Server 中国区，参考以下命令，将 `region` 设置为 `CN`：
 
     ```bash
     tiup diag config clinic.region CN
@@ -108,7 +108,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     <div label="Clinic Server 美国区">
 
-    对于 Clinic Server 美国区，请参考以下命令，将 `region` 设置为 `US`：
+    对于 Clinic Server 美国区，参考以下命令，将 `region` 设置为 `US`：
 
     ```bash
     tiup diag config clinic.region US
@@ -238,7 +238,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 > **注意：**
 >
-> 如果在上传前没有在 Diag 中设置 Token 或 Region，Diag 会提示上传失败，并提醒你进行设置。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
+> 如果在上传前没有在 Diag 中设置 Token 或 `region`，Diag 会提示上传失败，并提醒你进行设置。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
 
 #### 方式 1：直接上传
 

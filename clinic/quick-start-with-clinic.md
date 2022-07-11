@@ -31,15 +31,13 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
     <SimpleTab>
     <div label="Clinic Server 中国区">
 
-    中国区用户，打开 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。
-
-    如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
+    登录 [Clinic Server 中国区](https://clinic.pingcap.com.cn)，选择 **Sign in with AskTUG** 进入 TiDB 社区 AskTUG 的登录界面。如果你尚未注册 AskTUG 帐号，可以在该界面进行注册。
 
     </div>
 
     <div label="Clinic Server 美国区">
 
-    美国区用户，打开 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 登录界面。如果你尚未注册帐号，可以在该界面进行注册。
+    登录 [Clinic Server 美国区](https://clinic.pingcap.com)，选择 **Sign in with TiDB Account** 进入 TiDB Cloud Account 的登录界面。如果你尚未注册 TiDB Cloud 帐号，可以在该界面进行注册。
 
     > **注意：**
     >
@@ -61,7 +59,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - 该 Token 只用于数据上传，访问数据时不需要使用 Token。
 
-5. 在 Diag 中设置 `token` 和 `region`：
+5. 在 Diag 中设置 Token 和 `region`：
 
     - 设置 `clinic.token`：
 
@@ -77,12 +75,12 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
         >
         > - Diag v0.9.0 及以后的版本支持自行设置 `region`。
         > - 对于 Diag v0.9.0 之前的版本，数据默认上传到中国区的 Clinic Server。
-        > - 如果你的 Diag 是 v0.9.0，你可以通过 `tiup update diag` 命令将其升级至最新版后设置 `region`。
+        > - 如果你的 Diag 是 v0.9.0 之前的版本，你可以通过 `tiup update diag` 命令将其升级至最新版后设置 `region`。
 
         <SimpleTab>
         <div label="Clinic Server 中国区">
 
-        对于 Clinic Server 中国区，请参考以下命令，将 `region` 设置为 `CN`：
+        对于 Clinic Server 中国区，参考以下命令，将 `region` 设置为 `CN`：
 
         ```bash
         tiup diag config clinic.region CN
@@ -92,7 +90,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
         <div label="Clinic Server 美国区">
 
-        对于 Clinic Server 美国区，请参考以下命令，将 `region` 设置为 `US`：
+        对于 Clinic Server 美国区，参考以下命令，将 `region` 设置为 `US`：
 
         ```bash
         tiup diag config clinic.region US

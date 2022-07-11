@@ -15,9 +15,9 @@ PingCAP Clinic 服务提供以下两个组件进行集群诊断：
     >
     > Diag 诊断客户端支持 TiDB v4.0 及以上的集群，**不支持**使用 TiDB Ansible 部署的集群。
 
-- Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。Clinic Server 为不同区域的用户提供独立服务：
-    - [Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区。
-    - [Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。
+- Clinic Server：部署在云端的云服务。Clinic Server 提供 SaaS 模式的诊断服务，不仅能接收上传到该组件的诊断数据，也可以提供在线诊断环境，用于存储、查看和诊断已上传的诊断数据，并提供集群诊断报告。根据数据存储的位置不同，Clinic Server 分为以下两个独立的服务：
+    - [Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在 AWS 中国区（北京）。
+    - [Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在 AWS 美国区。
 
 ## 使用场景
 
