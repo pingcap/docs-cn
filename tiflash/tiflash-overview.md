@@ -1,6 +1,6 @@
 ---
 title: TiFlash 简介
-['/zh/tidb/stable/use-tiflash','/zh/tidb/v6.1/use-tiflash']
+aliases: ['/zh/tidb/stable/use-tiflash','/zh/tidb/v6.1/use-tiflash']
 ---
 
 # TiFlash 简介
