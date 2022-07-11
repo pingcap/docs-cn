@@ -120,7 +120,7 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 ```
 
-根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。更多信息可参考 [Physical Import Mode 解决重复问题](/tidb-lightning/tidb-lightning-error-resolution.md#physical-import-mode-下解决重复问题)。
+根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
 
 ## 性能调优
 
