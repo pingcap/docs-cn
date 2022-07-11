@@ -53,7 +53,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
 - 新增按库构建 TiFlash 副本功能。用户仅需使用一条 SQL 即可对某一个数据库中所有的表添加 TiFlash 副本，极大地节约了运维成本。
 
-    [用户文档](/tiflash/use-tiflash.md#按库构建-tiflash-副本)
+    [用户文档](/tiflash/create-tiflash-replicas.md#按库构建-tiflash-副本)
 
 ### 事务
 
@@ -121,7 +121,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     在该模式下，TiDB 也可以使用 TiFlash MPP 引擎读取和计算分区表的数据，从而大大提升分区表的查询性能。
 
-    [用户文档](/tiflash/use-tiflash.md#mpp-模式访问分区表)
+    [用户文档](/tiflash/use-tiflash-mpp-mode.md#mpp-模式访问分区表)
 
 - 持续提升 MPP 引擎计算性能
 
@@ -133,7 +133,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
         - 日期函数：`DAYNAME()`，`DAYOFMONTH()`，`DAYOFWEEK()`，`DAYOFYEAR()`，`LAST_DAY()`，`MONTHNAME()`
         - 算子：Anti Left Outer Semi Join, Left Outer Semi Join
 
-        [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)
+        [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)
 
     - 正式引入弹性线程池，提升 CPU 利用率，默认开启此功能
 
@@ -165,7 +165,7 @@ v6.0.0 是 DMR 版本，版本名称为 6.0.0-DMR。
 
     警告：新版本数据格式将不支持原地降级为早于 v5.4 的版本，需要在降级处理时删除 TiFlash Replica 待降级完成后重新同步；或使用[离线工具进行数据版本降级](/tiflash/tiflash-command-line-flags.md#dttool-migrate)。
 
-    [用户文档](/tiflash/use-tiflash.md#使用数据校验)
+    [用户文档](/tiflash/tiflash-data-validation.md)
 
 - TiFlash 引入异步 gRPC 和 Min-TSO 调度机制，更好的管理线程使用，防止线程数过高导致的系统崩溃。
 

@@ -441,7 +441,7 @@ tiup cluster display tidb-test
 
 如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
 
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
 - [TiFlash 集群运维](/tiflash/maintain-tiflash.md)
 - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
