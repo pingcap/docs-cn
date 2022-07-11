@@ -21,36 +21,37 @@ Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.10.0/cluste
 Deploy a TiDB cluster for production
 
 Usage:
-  cluster [flags]
-  cluster [command]
+  tiup cluster [command]
 
 Available Commands:
-  check       Perform preflight checks for the cluster
+  check       Precheck a cluster
   deploy      Deploy a cluster for production
   start       Start a TiDB cluster
   stop        Stop a TiDB cluster
   restart     Restart a TiDB cluster
   scale-in    Scale in a TiDB cluster
   scale-out   Scale out a TiDB cluster
-  clean       Clean up cluster data
   destroy     Destroy a specified cluster
+  clean       (Experimental) Clean up a specified cluster
   upgrade     Upgrade a specified TiDB cluster
-  exec        Run shell command on host in the tidb cluster
   display     Display information of a TiDB cluster
   list        List all clusters
   audit       Show audit log of cluster operation
-  import      Import an exist TiDB cluster from TiDB Ansible
+  import      Import an existing TiDB cluster from TiDB-Ansible
   edit-config Edit TiDB cluster config
   reload      Reload a TiDB cluster's config and restart if needed
   patch       Replace the remote package with a specified package and restart the service
   help        Help about any command
 
 Flags:
-  -h, --help              help for cluster
-      --native-ssh        Use the system's native SSH client
-      --wait-timeout int  Timeout of waiting the operation
-      --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
-  -y, --yes               Skip all confirmations and assumes 'yes'
+  -c, --concurrency int     Maximum number of concurrent tasks allowed (defaults to `5`)
+      --format string       (EXPERIMENTAL) The format of output, available values are [default, json] (default "default")
+  -h, --help                help for tiup
+      --ssh string          (Experimental) The executor type. Optional values are 'builtin', 'system', and 'none'.
+      --ssh-timeout uint    Timeout in seconds to connect a host via SSH. Operations that don't need an SSH connection are ignored. (default 5)
+  -v, --version            TiUP version
+      --wait-timeout uint   Timeout in seconds to wait for an operation to complete. Inapplicable operations are ignored. (defaults to `120`)
+  -y, --yes                 Skip all confirmations and assumes 'yes'
 ```
 
 ## Deploy the cluster
@@ -309,10 +310,10 @@ To add a TiKV node and a PD node in the `tidb-test` cluster, take the following 
     ---
 
     pd_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
 
     tikv_servers:
-      - ip: 172.16.5.140
+      - host: 172.16.5.140
     ```
 
 2. Perform the scale-out operation. TiUP cluster adds the corresponding nodes to the cluster according to the port, directory, and other information described in `scale.yaml`.
@@ -369,7 +370,7 @@ Flags:
       --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
 
 Global Flags:
-      --native-ssh        Use the system's native SSH client
+      --ssh string          (Experimental) The executor type. Optional values are 'builtin', 'system', and 'none'.
       --wait-timeout int  Timeout of waiting the operation
       --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
   -y, --yes               Skip all confirmations and assumes 'yes'
@@ -465,7 +466,7 @@ Flags:
       --transfer-timeout int   Timeout in seconds when transferring PD and TiKV store leaders (default 300)
 
 Global Flags:
-      --native-ssh        Use the system's native SSH client
+      --ssh string          (Experimental) The executor type. Optional values are 'builtin', 'system', and 'none'.
       --wait-timeout int  Timeout of waiting the operation
       --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
   -y, --yes               Skip all confirmations and assumes 'yes'
@@ -517,7 +518,7 @@ Flags:
   -r, --rename NAME        Rename the imported cluster to NAME
 
 Global Flags:
-      --native-ssh        Use the system's native SSH client
+      --ssh string        (Experimental) The executor type. Optional values are 'builtin', 'system', and 'none'.
       --wait-timeout int  Timeout of waiting the operation
       --ssh-timeout int   Timeout in seconds to connect host via SSH, ignored for operations that don't need an SSH connection. (default 5)
   -y, --yes               Skip all confirmations and assumes 'yes'
@@ -680,13 +681,13 @@ All operations above performed on the cluster machine use the SSH client embedde
 - To use a SSH plug-in for authentication
 - To use a customized SSH client
 
-Then you can use the `--native-ssh` command-line flag to enable the system-native command-line tool:
+Then you can use the `--ssh=system` command-line flag to enable the system-native command-line tool:
 
-- Deploy a cluster: `tiup cluster deploy <cluster-name> <version> <topo> --native-ssh`
-- Start a cluster: `tiup cluster start <cluster-name> --native-ssh`
-- Upgrade a cluster: `tiup cluster upgrade ... --native-ssh`
+- Deploy a cluster: `tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`
+- Start a cluster: `tiup cluster start <cluster-name> --ssh=system`
+- Upgrade a cluster: `tiup cluster upgrade ... --ssh=system`
 
-You can add `--native-ssh` in all cluster operation commands above to use the system's native SSH client.
+You can add `--ssh=system` in all cluster operation commands above to use the system's native SSH client.
 
 To avoid adding such a flag in every command, you can use the `TIUP_NATIVE_SSH` system variable to specify whether to use the local SSH client:
 
@@ -698,7 +699,7 @@ export TIUP_NATIVE_SSH=1
 export TIUP_NATIVE_SSH=enable
 ```
 
-If you specify this environment variable and `--native-ssh` at the same time, `--native-ssh` has higher priority.
+If you specify this environment variable and `--ssh` at the same time, `--ssh` has higher priority.
 
 > **Note:**
 >
