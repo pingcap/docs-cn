@@ -1,14 +1,14 @@
 ---
 title: BR 简介
 summary: 了解 BR 工具是什么、有什么用。
-aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/docs-cn/br/backup-and-restore-tool/','/zh/tidb/dev/backup-and-restore-tool']
+aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/tools/br/br/','/docs-cn/dev/how-to/maintain/backup-and-restore/br/','/zh/tidb/dev/backup-and-restore-tool']
 ---
 
 # BR 简介
 
-[BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
+[BR](https://github.com/pingcap/tidb/tree/master/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
 
-本文介绍了 BR 的架构、功能和使用前须知（限制、最佳实践）。
+本文介绍了 BR 的架构、功能和使用前须知（限制、使用建议）。
 
 ## BR 架构
 
@@ -20,32 +20,24 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 ## BR 功能
 
-下面介绍了 BR 的主要功能特性，及其性能指标。
+本部分介绍了 BR 的备份和恢复功能及其性能指标。
 
 ### 对 TiDB 集群进行备份
 
-本部分介绍了备份操作的功能、对性能的影响及备份文件类型。
-
-#### 备份功能
-
-- **集群快照备份**：TiDB 集群快照数据只包含某个物理时间点上集群的最新的，满足事务一致性的所有数据。BR 支持备份集群快照数据，使用请参考[备份 TiDB 集群快照](/br/br-usage-backup.md#备份-tidb-集群快照)。
+- **集群快照备份**：TiDB 集群快照数据只包含某个物理时间点上集群满足事务一致性的所有数据。BR 支持备份集群快照数据，使用请参考[备份 TiDB 集群快照](/br/br-usage-backup.md#备份-tidb-集群快照)。
 - **集群增量备份**：TiDB 集群增量数据包含在某个时间段的起始和结束两个快照的变化差异的数据。 增量数据相对比全量数据而言数据量更小，适合配合快照备份一起使用，减少备份的数据量。使用请参考[备份 TiDB 集群增量数据](/br/br-usage-backup.md#备份-tidb-集群增量数据)。
 - **只备份指定库表**：BR 支持在快照备份和增量数据备份的基础上，过滤掉不需要的备份数据，帮助用户实现只备份关键业务的数据。使用请参考[备份 TiDB 集群的指定库表的数据](/br/br-usage-backup.md#备份-tidb-集群的指定库表的数据)。
-- **备份数据加密**： BR 支持在备份端，或备份到 Amazon S3 的时候在存储服务端，进行备份数据加密，用户可以根据自己情况选择其中一种使用。使用请参考[备份数据加密](/br/br-usage-backup.md#备份数据加密)。
+- **备份数据加密**： BR 支持备份数据加密和 Amazon S3 服务端加密，用户可以根据自己情况选择其中一种使用。使用请参考[备份数据加密](/br/br-usage-backup.md#备份数据加密)。
 
 #### 备份对性能的影响
 
 BR 备份期间对 TiDB 集群的影响可以保持在 20% 以下，通过合理的配置 TiDB 集群用于备份资源，影响可以降低到 10% 及更低；单 TiKV 存储节点的备份速度可以达到 50 MB/s ～ 100 MB/s，备份速度具有可扩展性；更详细说明请参考[备份性能和影响](/br/br-usage-backup.md#备份性能和影响)。
 
-##### 支持的备份存储类型
+#### 支持的备份存储类型
 
 BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NFS，或者实现 s3 协议的其他文件存储服务。使用请参考[备份数据到远端存储](/br/br-usage-backup.md#备份数据到远端存储)。
 
 ### 从备份数据恢复 TiDB 集群
-
-本部分介绍了恢复操作的功能和对性能的影响。
-
-#### 恢复功能
 
 - **恢复集群快照备份**：你可以在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。使用请参考[恢复集群快照备份](/br/br-usage-restore.md#恢复快照备份数据)。
 - **恢复集群增量备份**：你可以恢复某个时间段的增量备份数据。使用请参考[备份 TiDB 集群增量数据](/br/br-usage-restore.md#恢复增量备份数据)。
@@ -63,11 +55,9 @@ BR 支持将数据备份到 Amazon S3/Google Cloud Storage/Azure Blob Storage/NF
 
 在使用 BR 之前需要先了解 BR 存在的使用上的限制。
 
-#### 不支持的场景
+#### 场景限制
 
-以下是 BR 不支持的场景：
-
-- BR 恢复数据到运行 TiCDC 或 TiDB Binlog 的上游集群时，恢复的数据无法由 TiCDC 或 TiDB Binlog 同步到下游集群。
+BR 恢复数据到运行 TiCDC 或 TiDB Binlog 的上游集群时，恢复的数据无法由 TiCDC 或 TiDB Binlog 同步到下游集群。
 
 #### 功能的兼容性
 
@@ -84,7 +74,7 @@ BR 和 TiDB 集群的兼容性问题分为两方面：
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
 | 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 `tidb_enable_clustered_index` 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
-| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。 |
+| New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/br/backup-and-restore-faq.md#br-为什么会报-new_collations_enabled_on_first_bootstrap-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 
 在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。

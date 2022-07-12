@@ -102,10 +102,10 @@ public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
         """);
         while (rs.next()) {
             Author author = new Author();
-            author.id = rs.getLong("author_id");
-            author.name = rs.getString("author_name");
-            author.age = rs.getShort("author_age");
-            author.books = rs.getInt("books");
+            author.setId(rs.getLong("author_id"));
+            author.setName(rs.getString("author_name"));
+            author.setAge(rs.getShort("author_age"));
+            author.setBooks(rs.getInt("books"));
             authors.add(author);
         }
     }

@@ -19,8 +19,11 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
 > **注意：**
 >
+> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。 
+> - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 7.x Linux 操作系统来部署 TiDB。
+> - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM 及 XEN 主流虚拟化环境上。
 > - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
-> - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持将于 2021 年 12 月 31 日终止。
+> - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持已于 2021 年 12 月 31 日终止。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
 
 其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
@@ -72,9 +75,9 @@ TiDB 支持部署和运行在 Intel x86-64 架构的 64 位通用硬件服务器
 
 | **组件** | **CPU** | **内存** | **硬盘类型** | **网络** | **实例数量(最低要求)** |
 | --- | --- | --- | --- | --- | --- |
-| TiDB | 16 核+ | 32 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
-| PD | 4核+ | 8 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
-| TiKV | 16 核+ | 32 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
+| TiDB | 16 核+ | 48 GB+ | SAS | 万兆网卡（2 块最佳） | 2 |
+| PD | 8 核+ | 16 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
+| TiKV | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 3 |
 | TiFlash | 48 核+ | 128 GB+ | 1 or more SSDs | 万兆网卡（2 块最佳） | 2 |
 | TiCDC | 16 核+ | 64 GB+ | SSD | 万兆网卡（2 块最佳） | 2 |
 | 监控 | 8 核+ | 16 GB+ | SAS | 千兆网卡 | 1 |

@@ -160,9 +160,8 @@ TiKV 支持[动态配置](/tikv-control.md#动态修改-tikv-的配置)自动调
 
 ## BR 恢复到 TiCDC / Drainer 的上游集群时，要注意些什么？
 
-+ **BR 恢复的数据无法被同步到下游**，因为 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
-
-+ 在 4.0.3 版本之前，BR 恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
+- **BR 恢复的数据无法被同步到下游**，因为 BR 直接导入 SST 文件，而下游集群目前没有办法获得上游的 SST 文件。
+- 在 4.0.3 版本之前，BR 恢复时产生的 DDL jobs 还可能会让 TiCDC / Drainer 执行异常的 DDL。所以，如果一定要在 TiCDC / Drainer 的上游集群执行恢复，请将 BR 恢复的所有表加入 TiCDC / Drainer 的阻止名单。
 
 TiCDC 可以通过配置项中的 [`filter.rules`](https://github.com/pingcap/tiflow/blob/7c3c2336f98153326912f3cf6ea2fbb7bcc4a20c/cmd/changefeed.toml#L16) 项完成，Drainer 则可以通过 [`syncer.ignore-table`](/tidb-binlog/tidb-binlog-configuration-file.md#ignore-table) 完成。
 
@@ -204,9 +203,9 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 **强烈不建议**在单个集群中同时使用多个 BR 进程进行恢复，原因如下：
 
-+ BR 在恢复数据时，会修改 PD 的一些全局配置。如果同时使用多个 BR 进程进行恢复，这些配置可能会被错误地覆写，导致集群状态异常。
-+ 因为 BR 在恢复数据的时候会占用大量集群资源，事实上并行恢复能获得的速度提升也非常有限。
-+ 多个 BR 并行恢复的场景没有经过测试，无法保证成功。
+- BR 在恢复数据时，会修改 PD 的一些全局配置。如果同时使用多个 BR 进程进行恢复，这些配置可能会被错误地覆写，导致集群状态异常。
+- 因为 BR 在恢复数据的时候会占用大量集群资源，事实上并行恢复能获得的速度提升也非常有限。
+- 多个 BR 并行恢复的场景没有经过测试，无法保证成功。
 
 ## 备份日志中出现 `key locked Error`，该如何处理？
 
@@ -214,11 +213,28 @@ BR v4.0.9 备份统计信息使 BR 消耗过多内存，为保证备份过程正
 
 如果在备份过程中遇到 key 被锁住，目前 BR 会尝试清锁。少量报错不会影响备份的正确性。
 
-### 备份失败该如何处理？
+## 备份失败该如何处理？
 
 日志中的错误消息：`log - Error: msg:"Io(Custom { kind: AlreadyExists, error: \"[5_5359_42_123_default.sst] is already exists in /dir/backup_local/\" })"`
 
 若备份失败并出现以上错误消息，采取以下其中一种操作后再重新备份：
 
-* 更换备份数据目录。例如将 `/dir/backup-2020-01-01/` 改为 `/dir/backup_local/`。
-* 删除所有 TiKV 和 BR 节点的备份目录。
+- 更换备份数据目录。例如将 `/dir/backup-2020-01-01/` 改为 `/dir/backup_local/`。
+- 删除所有 TiKV 和 BR 节点的备份目录。
+
+## BR 备份恢复后监控显示磁盘使用空间不一致
+
+这个情况多数是因为备份时集群的数据压缩比率和恢复时的默认值不一致导致的，只要恢复的 checksum 阶段顺利通过，可以忽略这个问题，不影响正常使用。
+
+## 恢复 Placement Rule 到集群时为什么会报错？
+
+BR 在 v6.0.0 之前不支持[放置规则](/placement-rules-in-sql.md)。BR v6.0.0 及以上版本开始支持并提供了命令行选项 `--with-tidb-placement-mode=strict/ignore` 来控制放置规则的导入模式。默认值为 `strict`，代表导入并检查放置规则，当`--with-tidb-placement-mode` 设置为 `ignore` 时，BR 会忽略所有的放置规则。
+
+## BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？
+
+从 TiDB v6.0.0 版本开始，[`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置项的默认值由 `false` 改为 `true`。BR 会备份上游集群的 `new_collations_enabled_on_first_bootstrap` 配置项。当上下游集群的此项配置相同时，BR 才会将上游集群的备份数据安全地恢复到下游集群中。若上下游的该配置不相同，BR 会拒绝恢复，并报此配置项不匹配的错误。
+
+如果需要将旧版本的备份数据恢复到 TiDB v6.0.0 或更新版本的 TiDB 集群中，你需要检查上下游集群中的该配置项是否相同：
+
+- 若该配置项相同，则可在恢复命令中添加 `--check-requirements=false` 以跳过此项配置检查。
+- 若该配置项不相同，且进行强行恢复，BR 会报数据校验错误。

@@ -5,28 +5,29 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 
 # 使用 BR 恢复集群
 
-下面介绍各种恢复 TiDB 备份数据功能的使用方式，包括：
+本文介绍恢复 TiDB 集群的方式，包括：
 
 - [恢复快照备份数据](#恢复快照备份数据)
-- [恢复备份数据中指定库表的数据](#恢复备份数据中指定库表的数据)
-    - [恢复单个数据库的数据](#恢复单个数据库的数据)
-    - [恢复单张表的数据](#恢复单张表的数据)
-    - [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
+- [恢复单个数据库的数据](#恢复单个数据库的数据)
+- [恢复单张表的数据](#恢复单张表的数据)
+- [使用表库功能过滤恢复数据](#使用表库功能过滤恢复数据)
 - [从远端存储恢复备份数据](#从远端存储恢复备份数据)
 - [恢复增量备份数据](#恢复增量备份数据)
 - [恢复加密的备份数据](#恢复加密的备份数据)
 - [恢复创建在 `mysql` 数据库下的表](#恢复创建在-mysql-数据库下的表)
 
-如果你还不熟悉 Backup & Restore (BR)，建议先阅读以下文档，充分了解 BR 使用限制和方法
+如果你还不熟悉恢复工具，建议先阅读以下文档，充分了解恢复工具的使用方法和限制：
 
-- [BR 工具简介](/br/backup-and-restore-overview.md)
-- [BR 命令行介绍](/br/use-br-command-line-tool.md)
+- [恢复工具简介](/br/backup-and-restore-overview.md)
+- [恢复工具命令行介绍](/br/use-br-command-line-tool.md)
+
+如果你需要恢复 Dumpling 导出的数据、CSV 文件或 Amazon Aurora 生成的 Apache Parquet 文件，可以使用 TiDB Lightning 来导入数据，实现恢复。具体恢复操作，请参考[使用 TiDB Lightning 恢复全量数据](/backup-and-restore-using-dumpling-lightning.md#使用-tidb-lightning-恢复全量数据)。
 
 ## 恢复快照备份数据
 
 BR 支持在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。
 
-用例：将 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中属于 '2022-01-30 07:42:23' 时刻点的快照数据恢复到目标机群。
+用例：将 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中属于 `2022-01-30 07:42:23` 时刻点的快照数据恢复到目标机群。
 
 {{< copyable "shell-regular" >}}
 
@@ -40,15 +41,15 @@ br restore full \
 
 以上命令中，
 
-- `--ratelimit` 选项限制了**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）；
-- `--log-file` 选项指定把 BR 的 log 写到 `restorefull.log` 文件中。
+- `--ratelimit`：**每个 TiKV** 执行恢复任务的速度上限（单位 MiB/s）
+- `--log-file`：BR log 写入的目标文件
 
 恢复期间还有进度条会在终端中显示，进度条效果如下。当进度条前进到 100% 时，说明恢复已完成。在完成恢复后，BR 为了确保数据安全性，还会校验恢复数据。
 
 ```shell
 br restore full \
     --pd "${PDIP}:2379" \
-    --storage "local:///tmp/backup" \
+    --storage "s3://backup-data/2022-01-30/" \
     --ratelimit 128 \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
@@ -62,7 +63,7 @@ BR 支持只恢复备份数据中指定库/表的局部数据。该功能在恢�
 
 要将备份数据中的某个数据库恢复到集群中，可以使用 `br restore db` 命令。执行 `br restore db --help` 可获取该命令的使用帮助。
 
-用例：将 s3 中名为 `backup-data` 的 bucket 下的 `db-test/2022-01-30/` 中的 `test` 库的相关的数据恢复的集群中。
+用例：将 s3 中名为 `backup-data` 的 bucket 下的 `db-test/2022-01-30/` 中的 `test` 库的相关数据恢复到集群中。
 
 {{< copyable "shell-regular" >}}
 
@@ -173,7 +174,11 @@ BR 会默认备份 `mysql` 数据库下的表。在执行恢复时，`mysql` 下
 br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 ```
 
-在如上的命令中，`-f '*.*'` 用于覆盖掉默认的规则，`-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。`-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。具体原理请参考 [table filter 的文档](/table-filter.md#表库过滤语法)。
+在上面的命令中，
+
+- `-f '*.*'` 用于覆盖掉默认的规则。
+- `-f '!mysql.*'` 指示 BR 不要恢复 `mysql` 中的表，除非另有指定。
+- `-f 'mysql.usertable'` 则指定需要恢复 `mysql.usertable`。
 
 如果只需要恢复 `mysql.usertable`，而无需恢复其他表，可以使用以下命令：
 
@@ -185,20 +190,20 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 
 > **警告：**
 >
-> 虽然系统表（例如 `mysql.tidb` 等）可以通过 BR 进行备份和恢复，但是部分系统表在恢复之后可能会出现非预期的状况，已知的异常如下：
+> 系统表（例如 `mysql.tidb`）可以通过 BR 进行备份。但恢复系统表存在限制。即便是使用了 `-filter` 设置，也不能通过 BR 恢复以下系统表
 >
-> - 统计信息表（`mysql.stat_*`）无法被恢复。
-> - 系统变量表（`mysql.tidb`，`mysql.global_variables`）无法被恢复。
-> - 用户信息表（`mysql.user`，`mysql.columns_priv`，`tables_priv`, `global_grants`, `global_priv`）无法被恢复。
-> - GC 数据等系统表。
+> - 统计信息表（`mysql.stat_*`）
+> - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
+> - 用户信息表（`mysql.user`、`mysql.columns_priv`、`tables_priv`，等等）
+> - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 >
 > 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
 ## 恢复性能和影响
 
 - TiDB 恢复的时候会尽可能打满 TiKV CPU、磁盘 IO、网络带宽等资源，所以推荐在空的集群上执行备份数据的恢复，避免对正在运行的业务产生影响；
-- 备份数据恢复速度，能够达到（单台 TiKV 节点） 100 MB/s。
+- 备份数据的恢复速度，与集群配置、部署、运行的业务都有比较大的关系。一般情况下，备份数据恢复速度能够达到（单台 TiKV 节点） 100 MB/s。
 
 > **注意：**
 >
-> 备份数据的恢复速度，与集群配置、部署、运行的业务都有比较大的关系，以上结论，经过多个场景的仿真测试，并且在部分合作用户场景中，得到验证，具有一定的参考意义。 但是在不同用户场景中恢复速度，最好以用户自己的测试结论为准。
+> 以上结论，经过多个场景的仿真测试，并且在部分合作用户场景中，得到验证，具有一定的参考意义。 但是在不同用户场景中恢复速度，最好以用户自己的测试结论为准。

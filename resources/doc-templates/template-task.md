@@ -123,4 +123,4 @@ category: xxx（如 how-to）
 
 - [TiDB HTAP 形态架构](/tiflash/tiflash-overview.md#整体架构)
 - [深入探索 HTAP](/explore-htap.md)
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)

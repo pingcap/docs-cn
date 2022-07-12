@@ -68,7 +68,7 @@ set global tidb_hashagg_partial_concurrency=1;
 set global tidb_enable_async_commit = 1;
 set global tidb_enable_1pc = 1;
 set global tidb_guarantee_linearizability = 0;
-set global tidb_enable_clustered_index = 1; 
+set global tidb_enable_clustered_index = 1;
 ```
 
 #### HAProxy 配置 - haproxy.cfg 文件

@@ -47,11 +47,9 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
-    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表 ，每张表包含 10000 行初始数据。tidb-config 的配置如下：
+    这里通过 sysbench 运行 oltp_write_only 脚本，其将在测试数据库中生成 10 张表，每张表包含 10000 行初始数据。tidb-config 的配置如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```yaml
     mysql-host=172.16.6.122 # 这里需要替换为实际上游集群 ip
     mysql-port=4000
     mysql-user=root
@@ -111,7 +109,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 ## 第 2 步：迁移全量数据
 
-搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-deployment.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
+搭建好测试环境后，可以使用 [BR](https://github.com/pingcap/tidb/tree/master/br) 工具的备份和恢复功能迁移全量数据。BR 工具有多种[使用方式](/br/br-deployment.md#使用方式)，本文中使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。
 
 > **注意：**
 >
@@ -183,11 +181,9 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
     sync_diff_inspector -C ./config.yaml
     ```
 
-    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)。在本文中，相应的配置为：
+    关于 sync-diff-inspector 的配置方法，请参考[配置文件说明](/sync-diff-inspector/sync-diff-inspector-overview.md#配置文件说明)。在本文中，相应的配置如下：
 
-    {{< copyable "shell-regular" >}}
-
-    ```shell
+    ```toml
     # Diff Configuration.
     ######################### Global config #########################
     check-thread-count = 4
@@ -225,7 +221,7 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
 2. 创建同步任务。
 
-    创建 Changefeed 配置文件并保存为 changefeed.toml。
+    创建 changefeed 配置文件并保存为 `changefeed.toml`。
 
     {{< copyable "toml" >}}
 
@@ -247,15 +243,15 @@ summary: 了解如何配置一个 TiDB 集群以及该集群的 TiDB 或 MySQL �
 
     以上命令中：
 
-   * --pd: 实际的上游集群的地址
-   * --sink-uri：同步任务下游的地址
-   * --start-ts: TiCDC 同步的起点，需要设置为实际的备份时间点（也就是[第 2 步：迁移全量数据](#第-2-步迁移全量数据)提到的 BackupTS）
+    - `--pd`：实际的上游集群的地址
+    - `--sink-uri`：同步任务下游的地址
+    - `--start-ts`：TiCDC 同步的起点，需要设置为实际的备份时间点（也就是[第 2 步：迁移全量数据](#第-2-步迁移全量数据)提到的 BackupTS）
 
     更多关于 changefeed 的配置，请参考[同步任务配置文件描述](/ticdc/manage-ticdc.md#同步任务配置文件描述)。
 
 3. 重新开启 GC。
 
-    TiCDC 可以保证未同步的历史数据不会被回收。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/troubleshoot-ticdc.md#ticdc-gc-safepoint-的完整行为是什么)。
+    TiCDC 可以保证未同步的历史数据不会被回收。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 
     {{< copyable "sql" >}}
 
