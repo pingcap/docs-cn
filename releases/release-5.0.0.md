@@ -146,7 +146,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 
 ### MPP 架构
 
-[用户文档](/tiflash/use-tiflash.md)
+[用户文档](/tiflash/use-tiflash-mpp-mode.md)
 
 TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。
 
@@ -154,7 +154,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 
 经过 Benchmark 测试，在 TPC-H 100 的规模下，TiFlash MPP 提供了显著超越 Greenplum，Apache Spark 等传统分析数据库或数据湖上分析引擎的速度。借助这套架构，用户可以直接针对最新的交易数据进行大规模分析查询，且性能超越传统离线分析方案。经测试，TiDB 5.0 在同等资源下，MPP 引擎的总体性能是 Greenplum 6.15.0 与 Apache Spark 3.1.1 两到三倍之间，部分查询可达 8 倍性能差异。
 
-当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash.md)）：
+当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash-mpp-mode.md)）：
 
 + 分区表
 + Window Function
@@ -362,7 +362,7 @@ TiDB 引入的 Raft Joint Consensus 算法将成员变更操作中的“添加�
 
 ### 优化内存管理模块，降低系统 OOM 的风险
 
-跟踪统计聚合函数的内存使用情况，系统默认开启该功能，开启后带有聚合函数的 SQL 语句在执行时，如果当前查询内存总的使用量超过 [`mem-quota-query`](/tidb-configuration-file.md#mem-quota-query) 阈值时，系统自动采用 [`oom-action`](/tidb-configuration-file.md#oom-action) 定义的相应操作。
+跟踪统计聚合函数的内存使用情况，系统默认开启该功能，开启后带有聚合函数的 SQL 语句在执行时，如果当前查询内存总的使用量超过 `mem-quota-query` 阈值时，系统自动采用 `oom-action` 定义的相应操作。
 
 ### 提升系统在发生网络分区时的可用性
 

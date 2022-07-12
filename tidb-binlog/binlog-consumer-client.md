@@ -19,7 +19,7 @@ db-type = "kafka"
 # Kafka 地址
 kafka-addrs = "127.0.0.1:9092"
 # Kafka 版本号
-kafka-version = "0.8.2.0"
+kafka-version = "2.4.0"
 ```
 
 ## 自定义开发
@@ -117,7 +117,7 @@ message Binlog {
 }
 ```
 
-查看数据格式的具体定义，参见 [binlog.proto](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/binlog.proto)。
+查看数据格式的具体定义，参见 [`secondary_binlog.proto`](https://github.com/pingcap/tidb-tools/blob/master/tidb-binlog/proto/proto/secondary_binlog.proto)。
 
 ### Driver
 

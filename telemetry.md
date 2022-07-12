@@ -24,6 +24,7 @@ TiDB、TiUP 及 TiDB Dashboard 默认会收集使用情况信息，并将这些�
 - 集群的部署情况，包括各个组件所在的硬件信息（CPU、内存、磁盘）、组件版本号、操作系统版本号等
 - 系统的查询请求状态，例如查询请求次数、持续时长等
 - 系统组件的使用情况，例如 Async Commit 功能是否有被使用
+- 去识别化处理后的产品遥测数据发送端的 IP 地址
 
 可以通过执行以下 SQL 语句查看 TiDB 收集的使用情况信息内容：
 
@@ -57,6 +58,22 @@ ADMIN SHOW TELEMETRY;
 
 ```shell
 TIUP_CLUSTER_DEBUG=enable tiup cluster list
+```
+
+### TiSpark
+
+当 TiSpark 遥测功能开启时，Spark 在使用 TiSpark 时会发送会将使用情况信息分享给 PingCAP，包括（但不限于）：
+
+- 随机生成的遥测标示符
+- TiSpark 的部分配置信息，如读取引擎、是否开启流式读取等
+- 用户集群部署情况，包括 TiSpark 所在节点的机器硬件信息、操作系统信息和组件版本号等
+
+使用 TiSpark 时，可以通过查看 Spark 日志来了解 TiSpark 收集的使用情况，可将 Spark 日志级别调至 INFO 或更低，例如：
+
+{{< copyable "shell-regular" >}}
+
+```shell
+cat {spark.log} | grep Telemetry report | tail -n 1
 ```
 
 ## 禁用遥测功能
@@ -232,6 +249,10 @@ server_configs:
 ```shell
 tiup telemetry disable
 ```
+
+### 禁用 TiSpark 遥测
+
+可以通过在 Spark 配置文件设置 `spark.tispark.telemetry.enable = false` 来禁用 TiSpark 的遥测功能。
 
 ## 查看遥测启用状态
 

@@ -14,7 +14,6 @@ tiup bench
 ```
 
 ```
-Starting component `bench`: /home/tidb/.tiup/components/bench/v1.5.0/bench 
 Benchmark database with different workloads
 
 Usage:
@@ -179,4 +178,24 @@ Flags:
 
     ```shell
     tiup bench tpch cleanup
+    ```
+
+## 使用 YCSB 测试 TiKV
+
+1. 准备数据：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 必须指定 -c 参数，即插入数据的条数
+    tiup bench ycsb prepare -c 10000
+    ```
+
+2. 运行 YCSB 测试：
+
+    {{< copyable "shell-regular" >}}
+
+    ```shell
+    # 必须指定 -c 参数，即操作次数，默认 READ 流量占 95%，UPDATE 占 5%
+    tiup bench ycsb prepare -c 10000
     ```

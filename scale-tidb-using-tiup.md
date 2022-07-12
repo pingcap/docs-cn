@@ -96,7 +96,7 @@ pd_servers:
 
 > **注意：**
 >
-> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.0 及后续版本中支持，请操作前先升级 tiup cluster 版本。
+> 针对 scale-out 命令的检查功能在 tiup cluster v1.9.3 及后续版本中支持，请操作前先升级 tiup cluster 版本。
 
 （1）检查集群存在的潜在风险：
 
@@ -278,11 +278,11 @@ tiup cluster display <cluster-name>
 ```
 
 ```
-Starting /root/.tiup/components/cluster/v1.9.0/cluster display <cluster-name>
+Starting /root/.tiup/components/cluster/v1.10.0/cluster display <cluster-name>
 
 TiDB Cluster: <cluster-name>
 
-TiDB Version: v5.4.0
+TiDB Version: v6.1.0
 
 ID       Role         Host    Ports                            Status  Data Dir        Deploy Dir
 
@@ -369,7 +369,7 @@ tiup cluster display <cluster-name>
     alter table <db-name>.<table-name> set tiflash replica 0;
     ```
 
-2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/use-tiflash.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
+2. 等待相关表的 TiFlash 副本被删除（按照[查看表同步进度](/tiflash/create-tiflash-replicas.md#查看表同步进度)一节操作，查不到相关表的同步信息时即为副本被删除）。
 
 ### 2. 执行缩容操作
 

@@ -9,9 +9,11 @@ summary: 了解如何自定义 TiUP 管理的监控组件的配置。
 
 需要注意的是，TiUP 会使用自己的配置参数覆盖监控组件的配置，如果你直接修改监控组件的配置文件，修改的配置文件可能在对集群进行 deploy/scale-out/scale-in/reload 等操作中被 TiUP 所覆盖，导致配置不生效。
 
-如果需要自定义 Prometheus、Grafana 和 Alertmanager 等监控组件的配置，可以参考本文在 TiDB 集群的拓扑配置 topology.yaml 文件中添加对应的配置项。
+如果需要自定义 Prometheus、Grafana 和 Alertmanager 等监控组件的配置，请参考本文在 TiDB 集群的拓扑配置 topology.yaml 文件中添加对应的配置项。
 
 > **注意：**
+>
+> - 在自定义监控组件的配置时，请勿直接修改监控组件的配置文件。因为在对集群进行 deploy/scale-out/scale-in/reload 等操作时，TiUP 会使用自己的配置参数覆盖监控组件的配置。
 >
 > - 如果监控组件不是由 TiUP 部署和管理，可以直接修改监控组件的配置文件，无需参考本文档。
 >
@@ -82,7 +84,7 @@ monitoring_servers:
 
 2. 在 TiDB 集群的拓扑配置 topology.yaml 文件中，将自定义规则文件目录 dashboard_dir 设置为实际放置 Dashboard 配置文件的目录。
 
-以下为 topology.yaml 文件中的 monitoring_servers 配置示例：
+以下为 topology.yaml 文件中的 grafana_servers 配置示例：
 
 ```
 # # Server configs are used to specify the configuration of Grafana Servers.

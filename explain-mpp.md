@@ -5,7 +5,7 @@ summary: 了解 TiDB 中 EXPLAIN 语句返回的执行计划信息。
 
 # 用 EXPLAIN 查看 MPP 模式查询的执行计划
 
-TiDB 支持使用 [MPP 模式](/tiflash/use-tiflash.md#使用-mpp-模式)来执行查询。在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
+TiDB 支持使用 [MPP 模式](/tiflash/use-tiflash-mpp-mode.md)来执行查询。在 MPP 执行模式下，SQL 优化器会生成 MPP 的执行计划。注意 MPP 模式仅对有 [TiFlash](/tiflash/tiflash-overview.md) 副本的表生效。
 
 本文档使用的示例数据如下：
 
@@ -79,7 +79,7 @@ ExchangeSender 算子的 `operator info` 列输出了 ExchangeType 信息。目�
 {{< copyable "sql" >}}
 
 ```sql
-SET tidb_opt_broadcast_join=0; SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
+SET tidb_broadcast_join_threshold_count=0; SET tidb_broadcast_join_threshold_size=0; EXPLAIN SELECT COUNT(*) FROM t1 a JOIN t1 b ON a.id = b.id;
 ```
 
 ```sql

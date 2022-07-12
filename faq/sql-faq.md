@@ -121,10 +121,6 @@ TiDB 支持在会话或全局作用域上修改 [`sql_mode`](/system-variables.m
 
 DELETE，TRUNCATE 和 DROP 都不会立即释放空间。对于 TRUNCATE 和 DROP 操作，在达到 TiDB 的 GC (garbage collection) 时间后（默认 10 分钟），TiDB 的 GC 机制会删除数据并释放空间。对于 DELETE 操作，TiDB 的 GC 机制会删除数据，但不会立即释放空间，而是等到后续进行 compaction 时释放空间。
 
-## TiDB 是否支持 `REPLACE INTO` 语法？
-
-支持，例外是当前 `LOAD DATA` 不支持 `REPLACE INTO` 语法。
-
 ## 数据删除后查询速度为何会变慢？
 
 大量删除数据后，会有很多无用的 key 存在，影响查询效率。可以尝试开启 [Region Merge](/best-practices/massive-regions-best-practices.md#方法五开启-region-merge) 功能，具体看参考[最佳实践](https://pingcap.com/blog-cn/tidb-best-practice/)中的删除数据部分。
@@ -169,6 +165,8 @@ TiDB 支持改变 [per-session](/system-variables.md#tidb_force_priority)、[全
 触发策略：新表达到 1000 条，并且在 1 分钟内没有写入，会自动触发。
 
 当表的（修改数/当前总行数）大于 `tidb_auto_analyze_ratio` 的时候，会自动触发 `analyze` 语句。`tidb_auto_analyze_ratio` 的默认值为 0.5，即默认开启此功能。为了保险起见，在开启此功能的时候，保证了其最小值为 0.3。但是不能大于等于 `pseudo-estimate-ratio`（默认值为 0.8），否则会有一段时间使用 pseudo 统计信息，建议设置值为 0.5。
+
+你可以用系统变量 [`tidb_enable_auto_analyze`](/system-variables.md#tidb_enable_auto_analyze-从-v610-版本开始引入) 关闭 auto analyze。
 
 ## 可以使用 Hints 控制优化器行为吗？
 
