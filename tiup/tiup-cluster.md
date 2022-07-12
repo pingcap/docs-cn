@@ -20,10 +20,10 @@ Starting component `cluster`: /home/tidb/.tiup/components/cluster/v1.10.0/cluste
 Deploy a TiDB cluster for production
 
 Usage:
-  tiup cluster [flags]
-  tiup [command]
+  tiup cluster [command]
 
 Available Commands:
+  check       对集群进行预检
   deploy      部署集群
   start       启动已部署的集群
   stop        停止集群
@@ -33,7 +33,6 @@ Available Commands:
   clean       清理数据
   destroy     销毁集群
   upgrade     升级集群
-  exec        在集群的一个或多个机器上执行命令
   display     获取集群信息
   list        获取集群列表
   audit       查看集群操作日志
@@ -44,11 +43,14 @@ Available Commands:
   help        打印 Help 信息
 
 Flags:
-  -h, --help              帮助信息
-      --native-ssh        使用系统默认的 SSH 客户端
-      --wait-timeout int  等待操作超时的时间
-      --ssh-timeout int   SSH 连接超时时间
-  -y, --yes               跳过所有的确认步骤
+  -c, --concurrency int     最大并行任务数（默认值为 5）
+      --format string       (实验特性) 输出的格式, 支持 [default, json] (默认值为 "default")
+  -h, --help                帮助信息
+      --ssh string          （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
+      --ssh-timeout uint    SSH 连接超时时间
+  -v, --version             版本信息
+      --wait-timeout uint   等待操作超时的时间
+  -y, --yes                 跳过所有的确认步骤
 ```
 
 ## 部署集群
@@ -348,7 +350,7 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
-      --native-ssh        使用系统默认的 SSH 客户端
+      --ssh string        （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
@@ -442,7 +444,7 @@ Flags:
       --transfer-timeout int   transfer leader 的超时时间
 
 Global Flags:
-      --native-ssh        使用系统默认的 SSH 客户端
+      --ssh string        （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
@@ -492,7 +494,7 @@ Flags:
   -r, --rename NAME        重命名被导入的集群
 
 Global Flags:
-      --native-ssh        使用系统默认的 SSH 客户端
+      --ssh string        （实验特性）SSH 执行类型，可选值为 'builtin'、'system'、'none'。
       --wait-timeout int  等待操作超时的时间
       --ssh-timeout int   SSH 连接的超时时间
   -y, --yes               跳过所有的确认步骤
@@ -655,15 +657,15 @@ tiup cluster check <cluster-name> --cluster
 - 使用 SSH 插件来做认证
 - 使用定制的 SSH 客户端
 
-此时可以通过命令行参数 `--native-ssh` 启用系统自带命令行：
+此时可以通过命令行参数 `--ssh=system` 启用系统自带命令行：
 
-- 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --native-ssh`
-- 启动集群: `tiup cluster start <cluster-name> --native-ssh`
-- 升级集群: `tiup cluster upgrade ... --native-ssh`
+- 部署集群: `tiup cluster deploy <cluster-name> <version> <topo> --ssh=system`
+- 启动集群: `tiup cluster start <cluster-name> --ssh=system`
+- 升级集群: `tiup cluster upgrade ... --ssh=system`
 
-所有涉及集群操作的步骤都可以加上 `--native-ssh` 来使用系统自带的客户端。
+所有涉及集群操作的步骤都可以加上 `--ssh=system` 来使用系统自带的客户端。
 
-也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--native-ssh` 参数：
+也可以使用环境变量 `TIUP_NATIVE_SSH` 来指定是否使用本地 SSH 客户端，避免每个命令都需要添加 `--ssh=system` 参数：
 
 ```shell
 export TIUP_NATIVE_SSH=true
@@ -673,7 +675,7 @@ export TIUP_NATIVE_SSh=1
 export TIUP_NATIVE_SSH=enable
 ```
 
-若环境变量和 `--native-ssh` 同时指定，则以 `--native-ssh` 为准。
+若环境变量和 `--ssh` 同时指定，则以 `--ssh` 为准。
 
 > **注意：**
 >
