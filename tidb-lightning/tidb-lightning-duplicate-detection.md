@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 当我们在 TiDB 中查询主键时，该索引已创建。
 
 ```
-  Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression | Clustered 
+   Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression | Clustered 
 ------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+-----------
  order_line |          0 | PRIMARY  |            1 | ol_w_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO 
  order_line |          0 | PRIMARY  |            2 | ol_d_id     | A         |           0 |          |        |      | BTREE      |         |               | YES     |            | NO 
@@ -104,10 +104,10 @@ record 模式会保留所有数据，并跳过 checksum 环节，因此 lightnin
 ```
 mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
-|  table_name         | index_name | key_data | row_data                                                                    |
+  table_name         | index_name | key_data |row_data                                                                    
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
-| `tpcc`.`order_line` | PRIMARY    | 2 | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj") |
-| `tpcc`.`order_line` | PRIMARY    | 3 | (2677, 10, 10, 11, 75656, 10, NULL, 6, 6666.66, "HT5DN3EVb6kWTd4L37bsbogj") |
+ `tpcc`.`order_line` | PRIMARY    | 2 | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj")      
+ `tpcc`.`order_line` | PRIMARY    | 3 | (2677, 10, 10, 11, 75656, 10, NULL, 6, 6666.66, "HT5DN3EVb6kWTd4L37bsbogj") 
 +---------------------+------------+----------------------------------------------------------------------------------------+
 ```
 
