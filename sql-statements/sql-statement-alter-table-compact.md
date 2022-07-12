@@ -62,11 +62,60 @@ ALTER TABLE employees COMPACT TIFLASH REPLICA;
 
 你可以修改 TiFlash 配置文件参数 [`manual_compact_pool_size`](/tiflash/tiflash-configuration.md)，以更大资源占用为代价、获得更大的表级别并发度。例如，参数指定为 2 时，可以同时对 2 张表进行数据整理。
 
-## MySQL 兼容性
+## 观测数据整理进度
+
+你可以通过 `INFORMATION_SCHEMA.TIFLASH_TABLES` 表中 `TOTAL_DELTA_ROWS` 列来观测 TiFlash 存储引擎上数据整理的进度，或判断是否有必要对某张表发起数据整理。`TOTAL_DELTA_ROWS` 的值越大，说明还能被整理的数据越多；若 `TOTAL_DELTA_ROWS` 为 `0`，说明表中所有数据都处于最佳状态、无需整理。
+
+示例：
+
+```sql
+mysql> USE test;
+
+mysql> CREATE TABLE foo(id INT);
+
+mysql> ALTER TABLE foo SET TIFLASH REPLICA 1;
+
+mysql> SELECT TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS FROM INFORMATION_SCHEMA.TIFLASH_TABLES WHERE `TIDB_DATABASE` = "test" AND `TIDB_TABLE` = "foo" AND IS_TOMBSTONE = 0;
++------------------+-------------------+
+| TOTAL_DELTA_ROWS | TOTAL_STABLE_ROWS |
++------------------+-------------------+
+|                0 |                 0 |
++------------------+-------------------+
+
+mysql> INSERT INTO foo VALUES (1), (3), (7);
+
+-- 新写入的数据可被整理
+mysql> SELECT TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS FROM INFORMATION_SCHEMA.TIFLASH_TABLES WHERE `TIDB_DATABASE` = "test" AND `TIDB_TABLE` = "foo" AND IS_TOMBSTONE = 0;
++------------------+-------------------+
+| TOTAL_DELTA_ROWS | TOTAL_STABLE_ROWS |
++------------------+-------------------+
+|                3 |                 0 |
++------------------+-------------------+
+
+mysql> ALTER TABLE foo COMPACT TIFLASH REPLICA;
+
+-- 所有数据都处于最佳整理状态
+mysql> SELECT TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS FROM INFORMATION_SCHEMA.TIFLASH_TABLES WHERE `TIDB_DATABASE` = "test" AND `TIDB_TABLE` = "foo" AND IS_TOMBSTONE = 0;
++------------------+-------------------+
+| TOTAL_DELTA_ROWS | TOTAL_STABLE_ROWS |
++------------------+-------------------+
+|                0 |                 3 |
++------------------+-------------------+
+```
+
+提示：
+
+- 若数据整理的过程中发生了数据更新，你可能观察到数据整理完毕后 `TOTAL_DELTA_ROWS` 仍为非零值。这是正常现象，表明这些更新部分没有被整理到。若你想对这部分更新数据也进行整理，可再次执行 `ALTER TABLE ... COMPACT` 语句。
+
+- `TOTAL_DELTA_ROWS` 的单位是数据版本数，而非数据行数。例如，插入一行记录再删除该行后，`TOTAL_DELTA_ROWS` 会增加 2。
+
+## 兼容性
+
+### MySQL 兼容性
 
 `ALTER TABLE ... COMPACT` 语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
 
-## TiDB Binlog 及 TiCDC 兼容性
+### TiDB Binlog 及 TiCDC 兼容性
 
 `ALTER TABLE ... COMPACT` 语句不会导致逻辑数据变化，因而不会被 TiDB Binlog 及 TiCDC 同步到下游。
 
