@@ -106,8 +106,8 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1;
 
    table_name         | index_name | key_data |row_data                                                                    
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
-  `tpcc`.`order_line` | PRIMARY    | 2 | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj")      
-  `tpcc`.`order_line` | PRIMARY    | 3 | (2677, 10, 10, 11, 75656, 10, NULL, 6, 6666.66, "HT5DN3EVb6kWTd4L37bsbogj") 
+  `tpcc`.`order_line` | PRIMARY    | 2        | (2677, 10, 10, 11, 75656, 10, NULL, 5, 5831.97, "HT5DN3EVb6kWTd4L37bsbogj")      
+  `tpcc`.`order_line` | PRIMARY    | 3        | (2677, 10, 10, 11, 75656, 10, NULL, 6, 6666.66, "HT5DN3EVb6kWTd4L37bsbogj") 
 +---------------------+------------+----------------------------------------------------------------------------------------+
 ```
 
