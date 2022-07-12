@@ -91,9 +91,9 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
 本节介绍如何在离线环境部署 TiUniManager。当前 TiUniManager 只支持通过离线部署。
 
-1. 通过 `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` 下载 TiUniManager 离线安装包。
+1. 通过 `https://download.pingcap.org/em-enterprise-server-${version}-linux-amd64.tar.gz` 下载 TiUniManager 离线安装包。
 
-    下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `{version}` 替换为目标版本号。
+    下载链接中的 `${version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。在下载时，你需要将链接中的 `${version}` 替换为目标版本号。
 
 2. 发送 TiUniManager 离线安装包至 TiUniManager 中控机。
 
@@ -104,7 +104,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tar xzvf em-enterprise-server-<版本号>-linux-amd64.tar.gz
+    tar xzvf em-enterprise-server-${version}-linux-amd64.tar.gz
     ```
 
 4. 安装 TiUniManager。进入解压后的目录，执行 `install.sh` 脚本。
@@ -112,7 +112,7 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    sudo sh em-enterprise-server-<版本号>-linux-amd64/install.sh <TiUniManager 中控机 IP>
+    sudo sh em-enterprise-server-${version}-linux-amd64/install.sh <TiUniManager 中控机 IP>
     ```
 
 5. 声明环境变量。
@@ -139,20 +139,8 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     ```
 
 7. 编辑拓扑配置文件。根据实际环境，你可编辑位于 `/home/tidb/` 下的拓扑配置文件 `config.yaml`。
-8. 执行命令部署 TiUniManager。
 
-    ```shell
-    # 切换到 tidb 账号下
-    su - tidb
-
-    # 部署名称为 "em-test" 的 TiUniManager，注意这里的版本号不带 v，比如 v1.0.0 的版本号，正确的输入是 1.0.0
-    TIUP_HOME=/home/tidb/.em tiup em deploy em-test <版本号> config.yaml -u <具有sudo权限的账号> -p
-
-    # 启动 TiUniManager
-    TIUP_HOME=/home/tidb/.em tiup em start em-test
-    ```
-
-9. 导入 TiDB Server 离线镜像包。
+8. 导入 TiDB Server 离线镜像包。
 
     离线环境下，需要在 TiUniManager 中控机本地目录上导入 TiDB 离线镜像包，否则无法通过 TiUniManager 中控机完成对 TiDB 集群的日常管理。
 
@@ -160,9 +148,9 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     # 切换到 tidb 账号下
     su - tidb
 
-    # 下载解压 TiDB Server 离线镜像包，例如 tidb-community-server-v5.2.2-linux-amd64.tar.gz
+    # 下载解压 TiDB Server 离线镜像包，将 ${version} 手动替换为实际的 TiDB 版本号。
 
-    wget https://download.pingcap.org/tidb-community-server-v5.2.2-linux-amd64.tar.gz
+    wget https://download.pingcap.org/tidb-community-server-${version}-linux-amd64.tar.gz
     tar xzvf tidb-community-server-${version}-linux-amd64.tar.gz
 
     # 导入离线镜像包
@@ -177,6 +165,19 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
 
     # 查看 TiDB 镜像源地址
     tiup mirror show
+    ```
+
+9. 执行命令部署 TiUniManager。
+
+    ```shell
+    # 切换到 tidb 账号下
+    su - tidb
+
+    # 部署名称为 "em-test" 的 TiUniManager，注意这里的版本号不带 v，比如 v1.0.0 的版本号，正确的输入是 1.0.0
+    TIUP_HOME=/home/tidb/.em tiup em deploy em-test <版本号> config.yaml -u <具有sudo权限的账号> -p
+
+    # 启动 TiUniManager
+    TIUP_HOME=/home/tidb/.em tiup em start em-test
     ```
 
 ## 指定 TiUniManager 中控机登录 TiDB 资源机的帐户和密钥
@@ -208,8 +209,8 @@ TiUniManager 正常运行需要网络环境提供如下端口配置，管理员�
     {{< copyable "shell-regular" >}}
 
     ```shell
-    # user 为之前部署 TiUniManager 的帐户，默认为 tidb
-    sudo sh em-enterprise-server-v<版本号>-linux-amd64/update.sh <user>
+    # user 为之前部署 TiUniManager 的帐户，默认为 tidb。${version} 为 TiUniManager 的版本号，需要手动替换为实际的版本号。
+    sudo sh em-enterprise-server-${version}-linux-amd64/update.sh <user>
     ```
 
 2. 执行升级 TiUniManager 命令。
