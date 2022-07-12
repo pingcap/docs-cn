@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/tispark-deployment-topology/']
 
 > **警告：**
 >
-> TiUP Cluster 的 TiSpark 支持目前为实验特性，不建议在生产环境中使用。
+> TiUP Cluster 的 TiSpark 支持目前为废弃状态，不建议使用。
 
 ## 拓扑信息
 
