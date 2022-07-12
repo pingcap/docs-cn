@@ -891,6 +891,7 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
+  - [TiDB 离线包](/binary-package.md)
   - v6.1
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0

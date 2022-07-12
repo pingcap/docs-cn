@@ -5,7 +5,7 @@ aliases: ['/docs-cn/dev/download-ecosystem-tools/','/docs-cn/dev/reference/tools
 
 # TiDB 工具下载
 
-本文介绍如何下载 TiDB 工具包以及 [TiUniManager](/tiunimanager/tiunimanager-overview.md)。
+本文介绍如何下载 TiDB 工具包以及 [TiUniManager](/tiunimanager/tiunimanager-overview.md)。关于 TiDB 工具包的内容，请查看 [TiDB 离线包](/binary-package.md)。
 
 ## TiDB 工具包下载
 
