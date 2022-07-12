@@ -22,7 +22,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 - [本地快速检查集群状态](#本地快速检查集群状态)
 
-    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 PingCAP Clinic Technical Preview 版本主要对集群配置项提供合理性检查，用于发现不合理的配置，并提供修改建议。
+    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险，本地诊断只覆盖配置项检查。如果需要更全面的检查。推荐上传诊断数据包到 Clinic Server，使用 Clinic Server 提供的 Health Report 进行快速诊断，该 Report 可以对 Metrics、日志和配置项进行全面检查。
 
 ## 准备工作
 

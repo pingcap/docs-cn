@@ -9,7 +9,9 @@ summary: 了解如何使用 PingCAP Clinic 诊断服务快速采集、上传、�
 
 PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Server 云服务平台（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
 
-当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位和解决问题的效率，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并获取数据链接，然后将数据链接提供给技术支持人员。
+使用场景：
+- 当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位和解决问题的效率，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并获取数据链接，然后将数据链接提供给技术支持人员。
+- 在集群正常运行时，需要检查集群的运行状态，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并查看 Health Report 的结果。
 
 > **注意：**
 >
@@ -121,7 +123,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
     > **注意：**
     >
-    > 上传数据（数据包文件夹）的大小不得超过 10 GB，否则会导致上传失败。
+    > 上传数据（数据包文件夹打包压缩后的文件）的大小不得超过 3 GB，否则会导致上传失败。
 
     - 如果你的集群所在的网络可以访问互联网，你可以通过以下命令上传已采集的数据包文件夹：
 
@@ -133,7 +135,7 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
         > **注意：**
         >
-        > 使用该方式进行上传时，你需要使用 Diag v0.7.0 及以上版本。Diag 会在运行时提示版本信息。如果你早期安装过 v0.7.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
+        > 使用该方式进行上传时，你需要使用 Diag v0.9.0 及以上版本。Diag 会在运行时提示版本信息。如果你早期安装过 v0.9.0 之前版本的 Diag，你可以通过 `tiup update diag` 命令将其一键升级至最新版。
 
     - 如果你所在的集群无法访问互联网，需要先打包数据后进行上传。具体步骤，请参阅[上传方式 2：打包后上传](/clinic/clinic-user-guide-for-tiup.md#方式-2打包后上传)。
 
@@ -142,6 +144,10 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
     诊断数据默认包括集群名称、集群拓扑信息、诊断数据包中的日志内容和基于诊断数据包中的 metrics 信息重建的 Grafana Dashboard 信息。
 
     你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
+
+4. 查看 health report 结果
+
+    数据上传到 Clinic Server 后，后台将自动处理数据，在大概 5～ 15分钟后生成 Health Report。用户可以打开诊断数据链接，点击下方的 “Health Report” 入口查看报告内容。
 
 ## 探索更多
 
