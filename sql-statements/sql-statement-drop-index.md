@@ -10,6 +10,7 @@ summary: TiDB 数据库中 DROP INDEX 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
+<<<<<<< HEAD
 AlterTableDropIndexStmt ::=
     'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
 
@@ -27,6 +28,16 @@ KeyOrIndex ::=
 |   'INDEX'
 
 IfExists ::= ( 'IF' 'EXISTS' )?
+=======
+DropIndexStmt ::=
+    "DROP" "INDEX" IfExists Identifier "ON" TableName IndexLockAndAlgorithmOpt
+
+IfExists ::=
+    ( 'IF' 'EXISTS' )?
+
+IndexLockAndAlgorithmOpt ::=
+    ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
+>>>>>>> b30cf787a (update the doc of `drop index` (#10453))
 ```
 
 ## 示例
@@ -98,7 +109,7 @@ EXPLAIN SELECT * FROM t1 WHERE c1 = 3;
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE t1 DROP INDEX c1;
+DROP INDEX c1 ON t1;
 ```
 
 ```
