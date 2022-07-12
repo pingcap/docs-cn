@@ -45,11 +45,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-amd64.tar.gz`  |
 | [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
 | [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
-<<<<<<< HEAD
 | [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-amd64.tar.gz` |
-=======
-| [PD Control](/pd-control.md)  | `pd-recover-{version}-linux-amd64.tar` |
-| [PD Recover](/pd-recover.md)  | `etcdctl` |
 
 ## TiUniManager 下载
 
@@ -63,4 +59,3 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 >
 > - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
 > - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
->>>>>>> c2a996a8a (tiunimanager: merge tiunimanager docs to master and 6.1 (#9878))
