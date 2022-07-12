@@ -14,7 +14,8 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 ## 前提条件
 
 - [安装 Dumpling 和 Lightning](/migration-tools.md)。
-- [获取 Dumpling 所需 上游数据库权限](/dumpling-overview.md#需要的权限)。
+- 获取 Dumpling 所需 上游数据库权限
+    - SELECT
 - [获取 Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-faq.md#tidb-lightning-对下游数据库的账号权限要求是怎样的)。
 
 ## 导入全量数据到 TiDB
@@ -56,7 +57,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12],mydb.*' --consistency none --no-data --output 's3://my-bucket/schema-backup?region=us-west-2'
 ```
 
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
@@ -74,7 +75,9 @@ tiup dumpling --host ${host} --port 3306 --user root --password ${password} --fi
 |-B 或 --database   |导出指定数据库|
 |-T 或 --tables-list |导出指定数据表|
 |-d 或 --no-data    |不导出数据，仅导出 schema|
-|-f 或 --filter     |导出能匹配模式的表，不可用 -T 一起使用，语法可参考[table filter](/table-filter.md)|
+|-f 或 --filter     |导出能匹配模式的表，不可与 -T 一起使用，语法可参考[table filter](/table-filter.md)|
+|--consistency     |导出期间的一致性模式，Aurora 只能使用 none|
+
 
 ### 第 3 步：编写 Lightning 配置文件
 
