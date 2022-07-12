@@ -456,6 +456,10 @@
       - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
       - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+  - Point-in-time Recovery
+   - [PiTR 简介](/br/pitr-overview.md)
+   - [通过命令行使用 PiTR](/br/br-log-command-line.md)
+   - [PiTR 的使用场景示例](/br/pitr-usage.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
