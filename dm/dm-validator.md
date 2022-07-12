@@ -1,0 +1,207 @@
+---
+title: 使用增量校验功能校验增量数据
+summary: 如何使用增量校验以及简要原理
+---
+
+# 增量数据校验使用文档
+本文阐述了使用 TiDB Data Migration (下简称 DM）开启增量校验功能的场景中的一些功能特性以及限制。
+
+## 什么是增量数据校验
+在将增量数据从上游迁移到下游数据库的过程中，数据的流转往往会出现一些不可避免的错误或者丢失的情况。尽管，对于一款成熟的数据迁移产品而言，这样的概率是非常小的。但对于某些需要依赖于强数据一致的场景，如信贷、证券等业务，这种小概率的错误也可能造成不可挽回的损失。因此，银行、证券公司等会在数据迁移完成之后对数据进行全量校验，确保数据的一致性。
+然而，在某些增量复制的业务场景下，上游和下游的写入是持续的、不会中断的，这也导致我们没有办法像以往那样通过  [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 等工具对表里面的全部数据进行一致性校验，因为上下游的数据在不断的变化中。DM 的增量校验功能就是为了解决用户在不停写的增量复制过程中，仍要确保迁移结果的完整性、一致性的需求而应运而生。
+
+## 增量数据校验的原理
+![validator summary](/media/dm/dm-validator-summary.jpg)
+![validator lifecycle](/media/dm/dm-validator-lifecycle.jpg)
+
+DM 增量校验（validator）的简要架构以及工作生命周期如上图所示。处理流程如下：
+1. validator 从上游拉取 binlog 事件，拿到发生变更的数据行：
+    - validator 只会校验增量复制（syncer） 完成的事件，如果该事件还没有被 syncer 处理，则 validator 会暂停，等待 syncer 处理。
+    - 反之，则进行下面的步骤。
+2. 将 binlog 解析，并通过黑白名单、过滤器的筛选，表路由的重定向（和 syncer 保持一致）之后，将这些行变动交给在后台运行的 validation worker。
+3. validation worker 会对相同表、相同主键的行变动进行合并，避免进行“过期”的校验，并将这些行先缓存到内存中。
+4. 当 validation worker 在积攒了一定数量的行或者到了某个时间间隔之后，根据这些行的主键信息在下游数据库中查询当下的数据，并和变动行期望的数据进行对比。
+5. 如果当前配置是 full mode，会将变动行和下游数据库中获取的行数据进行每列对比；如果配置的是 fast mode，则只会判断这一行是否还存在：
+    - 如果校验成功，则从内存中将该行删除。
+    - 如果校验失败，则在一定间隔之后继续校验（不会马上报错）。
+    - 而对于某些已经在很长时间（由用户定义）内都没有校验成功的行，则将这些行定义为 error row，写入到下游的 meta 库中，用户可以通过查询迁移任务信息来获取错误行的数量等信息。
+
+## 当前版本使用限制
+1. 校验目标表必须有主键或者 not null 的唯一键
+2. 上游迁移 ddl 的限制：
+    - ddl 不能变更主键，不能调整列顺序，不能删除已有列
+    - 该表不能被 drop
+4. 不支持开启扩展列
+5. 不支持按照 expression 过滤事件的任务
+6. 由于 TiDB 和 MySQL 的浮点数精度有差异，精度范围内误差也会判断为相等（即绝对误差小于 10^-6)
+7. 不支持校验的数据类型：
+    - JSON
+    - 二进制数据
+
+## 如何开启增量校验
+### 随着任务开启
+在任务配置中加入：
+```yaml
+# 给需要开启增量校验功能的上游数据库添加增量校验配置
+mysql-instances:
+  - source-id: "mysql1"
+    block-allow-list: "bw-rule-1"
+    validator-config-name: "global"
+validators:
+  global:
+    mode: full # 也可以是 fast，默认是 none，即不开启校验
+    worker-count: 16 # 后台校验的 validation worker 数量，默认是 16 个
+    row-error-delay: 1min # 某一行多久没有验证通过会报错，默认是 30min
+```
+### 通过 dmctl 开启
+```
+dmctl --master-addr=127.0.0.1:8261 validation start [--start-time <time-string>] [--mode <mode>] [-s source ...] [<task-name> | --all-task]
+```
+`--mode` 参数指定开启的模式，可以是 fast 或者 full；`-s` 指定需要开启增量校验的源库，不指定则任务里的所有源库都开启；`--start-time` 指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00；`task-name` 是你想开启校验的任务名，或者用 `--all-task` 来表示当前所有任务都开启增量数据校验。
+
+示例：
+```shell
+dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:01:00 --mode full -s mysql1,mysql2 my_dm_task
+```
+## 增量数据校验的操作
+用 dmctl 工具可以查询到增量校验当前的校验状态，也可以对校验出的错误进行及时处理。
+
+### 查看增量校验的状态
+最简单的方法是用 dmctl query-status <task-name> 命令查看任务状态，如果开启了增量校验，校验结果会显示在每个 subtask 的 validation 字段里面。示例输出：
+```js
+"subTaskStatus": [
+    {
+        "name": "test",
+        "stage": "Running",
+        "unit": "Sync",
+        "result": null,
+        "unresolvedDDLLockID": "",
+        "sync": {
+            ...
+        },
+        "validation": {
+            "task": "test", // 任务名
+            "source": "mysql-01", // source id
+            "mode": "full", // 校验模式
+            "stage": "Running", // 当前状态，Running 或者 Paused
+            "validatorBinlog": "(mysql-bin.000001, 5989)", // 校验到的 binlog 位置
+            "validatorBinlogGtid": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // 同上，用 GTID 表示
+            "result": null, // 当增量校验异常时，显示异常信息
+            "processedRowsStatus": "insert/update/delete: 0/0/0", // 已经处理的 binlog
+            "pendingRowsStatus": "insert/update/delete: 0/0/0", // 还未校验或者校验失败，但还没报错的 binlog
+            "errorRowsStatus": "new/ignored/resolved: 0/0/0" // 校验失败并报错的 binlog，三种状态的错误会在下文讲解
+        }
+    }
+]
+```
+也可以用 dmctl validation status <taskname> 来查询：
+```
+dmctl validation status [--table-stage stage] <task-name> [flags]
+Flags:
+  -h, --help                 help for status
+      --table-stage string   filter validation tables by stage: running/stopped
+```
+可以设置 `--table-stage` 来过滤正在校验或者已经停止校验的表。示例输出：
+```js
+{
+    "result": true,
+    "msg": "",
+    "validators": [
+        {
+            "task": "test",
+            "source": "mysql-01",
+            "mode": "full",
+            "stage": "Running",
+            "validatorBinlog": "(mysql-bin.000001, 6571)",
+            "validatorBinlogGtid": "",
+            "result": null,
+            "processedRowsStatus": "insert/update/delete: 2/0/0",
+            "pendingRowsStatus": "insert/update/delete: 0/0/0",
+            "errorRowsStatus": "new/ignored/resolved: 0/0/0"
+        }
+    ],
+    "tableStatuses": [
+        {
+            "source": "mysql-01", // source id
+            "srcTable": "`db`.`test1`", // 源表名
+            "dstTable": "`db`.`test1`", // 目标表名
+            "stage": "Running", // 校验状态
+            "message": "" // 错误信息显示
+        }
+    ]
+}
+```
+另外，如果想要查询错误行的详细信息，比如错误原因、错误时间等，可以使用 validation show-error 命令：
+```
+Usage:
+  dmctl validation show-error [--error error-state] <task-name> [flags]
+
+Flags:
+      --error string   filtering type of error: all, ignored, or unprocessed (default "unprocessed")
+  -h, --help           help for show-error
+```
+示例输出：
+```js
+{
+    "result": true,
+    "msg": "",
+    "error": [
+        {
+            "id": "1", // 错误行标识符，在后续的处理错误中用到
+            "source": "mysql-replica-01", // source id
+            "srcTable": "`validator_basic`.`test`", // 错误行源表
+            "srcData": "[0, 0]", // 错误行具体数据
+            "dstTable": "`validator_basic`.`test`", // 错误行目标表
+            "dstData": "[]", // 错误行在下游的数据
+            "errorType": "Expected rows not exist", // 错误原因
+            "status": "NewErr", // 错误状态
+            "time": "2022-07-04 13:33:02", // 错误时间
+            "message": "" // 额外信息
+        }
+    ]
+}
+```
+### 处理增量校验错误
+这里引入了错误处理的概念。在增量校验出现错误时，增量校验不会停下，而是会把这些错误记录下来，让用户自己去发现处理。如果这个错误已经在下游矫正了，增量校验也不会去自动获取矫正后的信息，因此如果用户不想在 validation status 里面再看到这个错误或者给已经解决的错误打上标记，就可以使用下面这些命令：
+1. clear-error：清理掉错误行，不再看到这个错误出现在 status 里
+2. ignore-error：忽略该错误行，将这个错误行标记为 ignored
+3. resolve-error：已手动解决该错误行，将这个错误行标记为 resolved
+如果错误行没有被处理过，默认状态是 unprocessed。
+三种错误处理的用法相似：
+```
+Usage:
+  dmctl validation clear-error <task-name> <error-id|--all> [flags]
+
+Flags:
+      --all    all errors
+  -h, --help   help for clear-error
+```
+```
+Usage:
+  dmctl validation ignore-error <task-name> <error-id|--all> [flags]
+
+Flags:
+      --all    all errors
+  -h, --help   help for ignore-error
+```
+```
+Usage:
+  dmctl validation resolve-error <task-name> <error-id|--all> [flags]
+
+Flags:
+      --all    all errors
+  -h, --help   help for resolve-error
+```
+用 validation show-error 找到错误行的 id，然后就可以用 clear-error/ignore-error/resolve-error 来对这些错误进行处理或者标记了。
+
+## 停止增量数据校验
+需要将增量校验停止时，可以使用 validation stop 命令：
+```
+Usage:
+  dmctl validation stop [-s source ...] [--all-task] [task-name] [flags]
+
+Flags:
+      --all-task   whether applied to all tasks
+  -h, --help       help for stop
+```
+用法和 validation start 相似。
