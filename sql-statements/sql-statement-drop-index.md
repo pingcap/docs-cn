@@ -10,25 +10,6 @@ summary: TiDB 数据库中 DROP INDEX 的使用概况。
 ## 语法图
 
 ```ebnf+diagram
-<<<<<<< HEAD
-AlterTableDropIndexStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' AlterTableDropIndexSpec
-
-IgnoreOptional ::=
-    'IGNORE'?
-
-TableName ::=
-    Identifier ('.' Identifier)?
-
-AlterTableDropIndexSpec ::=
-    'DROP' ( KeyOrIndex | 'FOREIGN' 'KEY' ) IfExists Identifier
-
-KeyOrIndex ::=
-    'KEY'
-|   'INDEX'
-
-IfExists ::= ( 'IF' 'EXISTS' )?
-=======
 DropIndexStmt ::=
     "DROP" "INDEX" IfExists Identifier "ON" TableName IndexLockAndAlgorithmOpt
 
@@ -37,7 +18,6 @@ IfExists ::=
 
 IndexLockAndAlgorithmOpt ::=
     ( LockClause AlgorithmClause? | AlgorithmClause LockClause? )?
->>>>>>> b30cf787a (update the doc of `drop index` (#10453))
 ```
 
 ## 示例
