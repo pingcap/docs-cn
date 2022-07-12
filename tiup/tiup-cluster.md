@@ -22,7 +22,7 @@ Usage:
   tiup cluster [command]
 
 Available Commands:
-  check       对集群进行预检
+  check       对集群进行预检 
   deploy      部署集群
   start       启动已部署的集群
   stop        停止集群
