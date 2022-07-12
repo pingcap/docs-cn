@@ -7,7 +7,7 @@ summary: 了解如何快速使用 TiUniManager 进行集群操作。
 
 本文档介绍 TiUniManager 的常见操作场景以及基本的集群操作，包括将主机节点加入 TiDB 集群、创建 TiDB 集群、删除集群、接管集群。
 
-在阅读本文档前，你需要先阅读 [TiUniManager 安装和运维手册](/tiunimanager/tiunimanager-install-and-maintain.md) 完成 TiUniManager 的安装。
+在阅读本文档前，你需要先阅读 [TiUniManager 安装和运维手册](/tiunimanager/tiunimanager-install-and-maintain.md)完成 TiUniManager 的安装。
 
 ## 将主机节点加入 TiDB 集群
 
@@ -129,7 +129,7 @@ TiUniManager 部署完成后，你可以通过 TiUniManager 创建 TiDB 集群�
 
 > **注意：**
 >
-> 删除集群同时将删除集群上自动备份的数据。如果需要某个备份数据，应在删除实例之前将该备份恢复到新实例上，数据恢复操作可参见[TiUniManager 用户手册 - 备份管理-数据恢复](/tiunimanager/tiunimanager-manage-clusters.md) 。
+> 删除集群同时将删除集群上自动备份的数据。如果需要某个备份数据，应在删除实例之前将该备份恢复到新实例上，数据恢复操作可参见[备份管理 - 数据恢复](/tiunimanager/tiunimanager-manage-clusters.md#备份管理---数据恢复) 。
 
 ### 操作步骤
 
