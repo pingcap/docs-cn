@@ -79,6 +79,8 @@ SAVEPOINT sp1;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
+向表中再次插入数据并设置保存点 `sp2`：
+
 ```sql
 INSERT INTO t1 VALUES (2);
 ```
