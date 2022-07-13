@@ -49,7 +49,7 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 ## TiUniManager 下载
 
-[TiUniManager](/tiunimanager/tiunimanager-overview.md) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiUniManager：
+[TiUniManager](https://docs.pingcap.com/zh/tidb/stable/tiunimanager-overview) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiUniManager：
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
