@@ -45,6 +45,8 @@ CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
 Query OK, 0 rows affected (0.12 sec)
 ```
 
+开始当前事务：
+
 {{< copyable "sql" >}}
 
 ```sql
