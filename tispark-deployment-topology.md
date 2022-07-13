@@ -7,7 +7,7 @@ summary: Learn the deployment topology of TiSpark using TiUP based on the minima
 
 > **Warning:**
 >
-> TiSpark support in the TiUP cluster is still an experimental feature. It is **NOT** recommended to use it in the production environment.
+> TiSpark support in the TiUP cluster is deprecated. It is **NOT** recommended to use it.
 
 This document introduces the TiSpark deployment topology and how to deploy TiSpark based on the minimum cluster topology.
 
