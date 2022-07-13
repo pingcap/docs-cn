@@ -13,6 +13,10 @@ ROLLBACK TO [SAVEPOINT] identifier
 RELEASE SAVEPOINT identifier
 ```
 
+> **警告：**
+> 
+> `SAVEPOINT` 特性不支持与 TiDB Binlog 一起使用。
+
 `SAVEPOINT` 语句用于在当前事务中，设置一个指定名字保存点。如果已经存在相同名字的保存点，就删除已有的保存点并设置新的保存点。
 
 `ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定名称的事务保存点，而不终止该事务。当前事务在设置保存点后，对表数据所做的修改将在回滚中撤销，且删除事务保存点之后的所有保存点。在悲观事务中，对于已经持有的悲观锁不会回滚，而是在事务结束时才释放。
@@ -35,47 +39,39 @@ ERROR 1305 (42000): SAVEPOINT identifier does not exist
 
 创建表 `t1`：
 
-{{< copyable "sql" >}}
-
 ```sql
 CREATE TABLE t1 (a int NOT NULL PRIMARY KEY);
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.12 sec)
 ```
 
 开始当前事务：
 
-{{< copyable "sql" >}}
-
 ```sql
 BEGIN;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.00 sec)
 ```
 
 向表中插入数据并设置保存点 `sp1`：
 
-{{< copyable "sql" >}}
-
 ```sql
 INSERT INTO t1 VALUES (1);
 ```
 
-```
+```sql
 Query OK, 1 row affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SAVEPOINT sp1;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
@@ -85,33 +81,27 @@ Query OK, 0 rows affected (0.01 sec)
 INSERT INTO t1 VALUES (2);
 ```
 
-```
+```sql
 Query OK, 1 row affected (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SAVEPOINT sp2;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
 释放保存点 `sp2`： 
 
-{{< copyable "sql" >}}
-
 ```sql
 RELEASE SAVEPOINT sp2;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
-
-{{< copyable "sql" >}}
 
 回滚至保存点 `sp1`：
 
@@ -119,29 +109,25 @@ Query OK, 0 rows affected (0.01 sec)
 ROLLBACK TO SAVEPOINT sp1;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
 
 提交事务并查询表格，发现表中仅有 `sp1` 前插入的数据。
 
-{{< copyable "sql" >}}
-
 ```sql
 COMMIT;
 ```
 
-```
+```sql
 Query OK, 0 rows affected (0.01 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM t1;
 ```
 
-```
+```sql
 +---+
 | a |
 +---+
@@ -151,8 +137,6 @@ SELECT * FROM t1;
 ```
 
 ## MySQL 兼容性
-
-`SAVEPOINT` 特性不支持与 TiDB Binlog 一起使用。
 
 使用 `ROLLBACK TO SAVEPOINT` 语句将事物回滚到指定保存点时，MySQL 会释放该保存点之后才持有的锁，但在 TiDB 悲观事务中，不会立即释放该保存点之后才持有的锁，而是等到事务提交或者回滚时，才释放全部持有的锁。
 
