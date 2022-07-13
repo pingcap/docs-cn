@@ -113,6 +113,8 @@ ROLLBACK TO SAVEPOINT sp1;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
+提交事务并查询表格，发现表中仅有 `sp1` 前插入的数据。
+
 {{< copyable "sql" >}}
 
 ```sql
