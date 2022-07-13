@@ -57,6 +57,8 @@ BEGIN;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
+向表中插入数据并设置保存点 `sp1`：
+
 {{< copyable "sql" >}}
 
 ```sql
