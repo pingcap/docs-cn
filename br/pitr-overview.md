@@ -9,42 +9,45 @@ summary: 了解 PiTR 功能设计和使用。
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 `tikv: backup-stream.enable: true` 开启该功能。
 
-使用 PiTR(Point-in-time recovery) 功能，用户可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.1.0 版本开始支持 PiTR 功能，该功能可以
+使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.1.0 开始支持 PiTR 功能，满足以下需求：
 
-- 降低灾备场景下的 RPO，如实现 RPO <= 5min
-- 用于处理业务数据写错的案例，如回滚业务数据到出错事件前
-- 业务历史数据审计，满足司法审查的需求
+- 降低灾备场景下的 RPO，如实现 RPO <= 5min。
+- 处理业务数据写错的案例，如回滚业务数据到出错事件前。
+- 审计业务的历史数据，满足司法审查的需求。
 
 ## 使用 PiTR
 
-[BR](/br/backup-and-restore-overview.md) 是 PiTR 功能使用入口，通过 BR 工具用户可以完成 PiTR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点、备份数据管理。  下图为 PiTR 完整的功能使用示意图
+[BR](/br/backup-and-restore-overview.md) 是 PiTR 功能的使用入口，通过 BR 工具，你可以完成 PiTR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点、备份数据管理。
+
+下图为 PiTR 功能使用示意：
 
 ![br-arch](/media/br/pitr-usage.png)
 
-### 数据备份
+### 备份数据
 
-为了实现 PiTR，用户需要进行以下的数据备份
+为了实现 PiTR，你需要进行以下的数据备份：
 
-- 启动一个日志备份。使用 `br log start` 启动数据库日志备份任务，该任务在 TiDB 集群后台持续地运行，及时地 kv storage 的变更日志保存到备份存储中
-- 定期地执行快照（全量）备份。 使用  `br backup full` 备份集群快照到备份存储，例如，每天零点进行集群快照备份
+- 启动一个日志备份。运行 `br log start` 命令来启动数据库日志备份任务，该任务在 TiDB 集群后台持续地运行，及时地将 KV storage 的变更日志保存到备份存储中。
+- 定期地执行[快照（全量）备份](/br/br-usage-backup.md#备份-tidb-集群快照)。运行 `br backup full` 命令来备份集群快照到备份存储，例如在每天零点进行集群快照备份。
 
 ### 一键恢复数据
 
-执行 point in time recovery 时，用户使用 BR 命令 `br restore point` 调用恢复程序读取快照备份和日志备份的数据，将新集群恢复到指定时间点。
+当你执行 PiTR 一键恢复数据时，你需要运行 `br restore point` 命令来调用恢复程序读取快照备份和日志备份的数据，将新集群恢复到指定时间点。
 
 ### 管理备份数据
 
-管理备份数据时，用户至少需要考虑如何设计备份数据存放目录结构，和定期删除过期的（不再被需要的）备份数据
+在管理备份数据时，你需要考虑如何设计备份数据的存放目录结构，和定期删除过期的（不再被需要的）备份数据。
 
 - 推荐的备份数据目录组织方法
 
   - 快照备份和日志备份保存在相同的目录下，方便统一管理，例如 `backup-${cluster-id}`
   - 每个快照备份保存到命名带有备份日期的目录下，例如 `backup-${cluster-id}/snapshot-20220512000130`
   - 日志备份数据保存在一个固定目录下, 例如 `backup-${cluster-id}/log-backup`
+
 - 清理过期的（不再被需要）的备份数据
 
   - 删除快照备份时，可以直接删除快照备份数据的目录
-  - 使用 BR 命令 `br log truncate` 删除备份存储指定之前点的日志备份数据
+  - 使用 BR 命令 `br log truncate` 删除备份存储指定点之前的日志备份数据
 
 ## 使用限制
 
@@ -56,7 +59,7 @@ summary: 了解 PiTR 功能设计和使用。
 - 只支持保存数据到 S3，暂不支持 GCS/NFS/Azure Blob Storage 做为备份存储
 - 只支持集群粒度的 PiTR，不支持对单个 database/table 执行 PiTR
 - 不支持恢复数据到 TiFlash storage engine。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本
-- 开启日志备份的时候不支持在集群进行大量写入操作，例如 bulk load - INSERT INTO xxx VALUES  ... 10000 tuples ...
+- 开启日志备份的时候不支持在集群进行大量写入操作，例如 bulk load：`INSERT INTO xxx VALUES  ... 10000 tuples ...`
 - 不要随意使用 `br log stop` 命令，该命令目前只适用于不再继续使用 PiTR 的情况下使用。暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令暂停和重启日志备份任务。如果你选择使用 `br log stop` 停止备份任务，然后使用 `br log start` 重启备份任务时需要指定一个与之前不同的日志备份保存目录，不同的日志备份保存目录会影响到将不能使用 `br restore point` 进行一键恢复
 - 不支持在（单次）恢复中重复地恢复相同时间段的日志备份
 
@@ -68,7 +71,7 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。 [BR �
 
 进行日志备份的时候
 
-1. 使用 BR 运行 `br log start` 命令
+1. BR 收到 `br log start` 命令
 2. BR 在 PD 注册日志备份任务，并在 PD 保存 log backup metadata
 3. TiKV  backup executor 模块监听 PD 中日志备份任务的创建，发现任务创建后开始运行任务
 4. TiKV  backup executor 模块读取 kv 数据变更，并且写入到本地 SST 文件
@@ -76,7 +79,7 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。 [BR �
 
 进行日志恢复的时候
 
-1. 使用 BR 运行 `br restore point` 命令
+1. BR 接收到 `br restore point` 命令
 2. BR 读取备份存储中日志备份数据，并计算筛选出来需要恢复的日志备份数据
 3. BR 请求 PD 创建用于恢复日志备份数据的 region (split regions)，将 region 调度到对应的 TiKV (scatter regions)
 4. PD 调度 region 成功后，BR 将恢复数据请求发送到各个 TiKV restore executor 模块
