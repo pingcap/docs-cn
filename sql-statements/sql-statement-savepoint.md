@@ -33,6 +33,8 @@ ERROR 1305 (42000): SAVEPOINT identifier does not exist
 
 ## 示例
 
+创建表 `t1`：
+
 {{< copyable "sql" >}}
 
 ```sql
