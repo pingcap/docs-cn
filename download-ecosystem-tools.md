@@ -86,3 +86,16 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 ## TiCDC
 
 [TiCDC](/ticdc/ticdc-overview.md) 的下载方式见 [TiCDC 安装部署文档](/ticdc/deploy-ticdc.md)。
+
+## TiUniManager 下载
+
+[TiUniManager](https://docs.pingcap.com/zh/tidb/stable/tiunimanager-overview) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiUniManager：
+
+| 安装包 | 操作系统 | 架构 | SHA256 校验和 |
+|:---|:---|:---|:---|
+| `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/em-enterprise-server-{version}-linux-amd64.sha256` |
+
+> **注意：**
+>
+> - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
+> - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
