@@ -4,7 +4,7 @@ title: TiDB 工具下载
 
 # TiDB 工具下载
 
-本文介绍如何下载 TiDB 工具包以及 [TiUniManager](/tiunimanager/tiunimanager-overview.md)。
+本文介绍如何下载 TiDB 工具包以及 [TiUniManager](https://docs.pingcap.com/zh/tidb/stable/tiunimanager-overview)。
 
 ## TiDB 工具包下载
 
