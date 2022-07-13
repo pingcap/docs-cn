@@ -1,7 +1,6 @@
 ---
 title: SAVEPOINT
 summary: TiDB 数据库中 SAVEPOINT 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-savepoint/','/docs-cn/dev/reference/sql/statements/savepoint/']
 ---
 
 # SAVEPOINT
