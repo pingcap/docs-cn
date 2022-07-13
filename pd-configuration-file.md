@@ -149,22 +149,12 @@ PD 配置文件比命令行参数支持更多的选项。你可以在 [conf/conf
 ### `max-days`
 
 + 日志保留的最长天数。
-<<<<<<< HEAD
-+ 默认: 28
-+ 最小值为 1
-=======
 + 默认：0
->>>>>>> dad351d52 (Fix the default value of the log config of PD (#9557))
 
 ### `max-backups`
 
 + 日志文件保留的最大个数。
-<<<<<<< HEAD
-+ 默认: 7
-+ 最小值为 1
-=======
 + 默认：0
->>>>>>> dad351d52 (Fix the default value of the log config of PD (#9557))
 
 ## metric
 
