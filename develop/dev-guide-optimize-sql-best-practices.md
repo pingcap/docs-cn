@@ -147,7 +147,7 @@ DELETE FROM t;
 
 ### 添加索引性能最佳实践
 
-TiDB 支持在线添加索引操作，可通过 [ADD INDEX](/sql-statements/sql-statement-add-index.md) 或 [CREATE INDEX](/sql-statements/sql-statement-create-index.md) 完成索引添加操作。添加索引不会阻塞表中的数据读写。可以通过修改下面的系统变量来调整 DDL 操作 `re-organize` 阶段的并行度与回填索引的单批数量大小：
+TiDB 支持在线添加索引操作，可通过 [`ADD INDEX`](/sql-statements/sql-statement-add-index.md) 或 [`CREATE INDEX`](/sql-statements/sql-statement-create-index.md) 完成索引添加操作。添加索引不会阻塞表中的数据读写。可以通过修改下面的系统变量来调整 DDL 操作 `re-organize` 阶段的并行度与回填索引的单批数量大小：
 
 - [tidb_ddl_reorg_worker_cnt](/system-variables.md#tidb_ddl_reorg_worker_cnt)
 - [tidb_ddl_reorg_batch_size](/system-variables.md#tidb_ddl_reorg_batch_size)
