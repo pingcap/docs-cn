@@ -23,7 +23,7 @@ RELEASE SAVEPOINT identifier
 ERROR 1305 (42000): SAVEPOINT identifier does not exist
 ```
 
-`RELEASE SAVEPOINT` 语句将从当前事务中删除指定名称及之后的**_所有_**保存点。不会提交或回滚当前事务。如果指定名称的保存点不存在，则会返回以下错误信息：
+`RELEASE SAVEPOINT` 语句将从当前事务中删除指定名称及之后的**_所有_**保存点，而不会提交或回滚当前事务。如果指定名称的保存点不存在，则会返回以下错误信息：
 
 ```
 ERROR 1305 (42000): SAVEPOINT identifier does not exist
