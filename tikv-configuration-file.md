@@ -1678,18 +1678,18 @@ Raft Engine 相关的配置项。
 > - 前台限流是 TiDB 在 v6.0.0 中引入的实验特性，不建议在生产环境中使用。
 > - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
 
-### `foreground-cpu-time` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+#### `foreground-cpu-time` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 默认值：0（即无限制）
 + 单位：millicpu （当该参数值为 `1500` 时，前端请求会消耗 1.5v CPU）。
 
-### `foreground-write-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+#### `foreground-write-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 限制事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `foreground-read-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入 </span>
+#### `foreground-read-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入 </span>
 
 + 限制事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
@@ -1705,23 +1705,23 @@ Raft Engine 相关的配置项。
 > - 后台限流是 TiDB 在 v6.2.0 中引入的实验特性，不建议在生产环境中使用。
 > - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
 
-### `background-cpu-time` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+#### `background-cpu-time` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 默认值：0（即无限制）
 + 单位：millicpu （当该参数值为 `1500` 时，后端请求会消耗 1.5v CPU）。
 
-### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+#### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 限制后端事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+#### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 限制后端事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `enable-auto-tune` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+#### `enable-auto-tune` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后端请求的限制 quota。
 + 默认值：false （即关闭动态调整）
