@@ -716,7 +716,7 @@ mysql> SELECT * FROM T2;
 +------+
 ```
 
-TiDB v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 是不支持 PROPAGATION_NESTED 传播行为的。基于 Java Spring 框架的应用如果使用了 PROPAGATION_NESTED 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
+TiDB 从 v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 不支持 `PROPAGATION_NESTED` 传播行为。基于 Java Spring 框架的应用如果使用了 `PROPAGATION_NESTED` 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
 
 ## 大事务限制
 
