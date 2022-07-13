@@ -17,23 +17,23 @@ RELEASE SAVEPOINT identifier
 > 
 > `SAVEPOINT` 特性不支持与 TiDB Binlog 一起使用。
 
-`SAVEPOINT` 语句用于在当前事务中，设置一个指定名字保存点。如果已经存在相同名字的保存点，就删除已有的保存点并设置新的保存点。
+- `SAVEPOINT` 语句用于在当前事务中，设置一个指定名字保存点。如果已经存在相同名字的保存点，就删除已有的保存点并设置新的保存点。
 
-`ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定名称的事务保存点，而不终止该事务。当前事务在设置保存点后，对表数据所做的修改将在回滚中撤销，且删除事务保存点之后的所有保存点。在悲观事务中，对于已经持有的悲观锁不会回滚，而是在事务结束时才释放。
+- `ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定名称的事务保存点，而不终止该事务。当前事务在设置保存点后，对表数据所做的修改将在回滚中撤销，且删除事务保存点之后的所有保存点。在悲观事务中，对于已经持有的悲观锁不会回滚，而是在事务结束时才释放。
 
-如果 `ROLLBACK TO SAVEPOINT` 语句中指定名称的保存点不存在，则会返回以下错误信息：
+    如果 `ROLLBACK TO SAVEPOINT` 语句中指定名称的保存点不存在，则会返回以下错误信息：
 
-```
-ERROR 1305 (42000): SAVEPOINT identifier does not exist
-```
+    ```
+    ERROR 1305 (42000): SAVEPOINT identifier does not exist
+    ```
 
-`RELEASE SAVEPOINT` 语句将从当前事务中删除指定名称及之后的**_所有_**保存点，而不会提交或回滚当前事务。如果指定名称的保存点不存在，则会返回以下错误信息：
+- `RELEASE SAVEPOINT` 语句将从当前事务中删除指定名称及之后的**_所有_**保存点，而不会提交或回滚当前事务。如果指定名称的保存点不存在，则会返回以下错误信息：
 
-```
-ERROR 1305 (42000): SAVEPOINT identifier does not exist
-```
+    ```
+    ERROR 1305 (42000): SAVEPOINT identifier does not exist
+    ```
 
-当事务提交或者回滚后，事务中所有保存点都会被删除。
+    当事务提交或者回滚后，事务中所有保存点都会被删除。
 
 ## 示例
 
