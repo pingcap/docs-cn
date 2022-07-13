@@ -103,6 +103,8 @@ Query OK, 0 rows affected (0.01 sec)
 
 {{< copyable "sql" >}}
 
+回滚至保存点 `sp1`：
+
 ```sql
 ROLLBACK TO SAVEPOINT sp1;
 ```
