@@ -9,7 +9,8 @@ summary: 了解如何使用 PingCAP Clinic 诊断服务快速采集、上传、�
 
 PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Server 云服务平台（以下简称为 Clinic Server）组成。关于 Diag 和 Clinic Server 的详细介绍，请参考 [PingCAP Clinic 诊断服务简介](/clinic/clinic-introduction.md)。
 
-使用场景：
+## 使用场景
+
 - 当集群出现问题，需要远程咨询 PingCAP 技术支持时，为了提高定位和解决问题的效率，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并获取数据链接，然后将数据链接提供给技术支持人员。
 - 在集群正常运行时，需要检查集群的运行状态，你可以使用 Diag 采集诊断数据，上传数据到 Clinic Server 并查看 Health Report 的结果。
 
@@ -145,9 +146,9 @@ PingCAP Clinic 由 Diag 诊断客户端（以下简称为 Diag）和 Clinic Serv
 
     你可以通过这些数据自己查找并诊断集群问题，或者，你也可以将链接发给与你对接的 PingCAP 技术支持人员，以协助远程定位集群问题。
 
-4. 查看 health report 结果
+4. 查看 Health Report 结果。
 
-    数据上传到 Clinic Server 后，后台将自动处理数据，在大概 5～ 15分钟后生成 Health Report。用户可以打开诊断数据链接，点击下方的 “Health Report” 入口查看报告内容。
+    数据上传到 Clinic Server 后，后台将自动处理数据，在大概 5～15 分钟后生成 Health Report。用户可以打开诊断数据链接，点击下方的“Health Report”入口查看报告内容。
 
 ## 探索更多
 
