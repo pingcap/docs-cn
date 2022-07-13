@@ -226,6 +226,7 @@
     - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
+  - [TiUniManager](https://docs.pingcap.com/zh/tidb/stable/tiunimanager-overview)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
