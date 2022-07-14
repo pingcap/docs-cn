@@ -2051,3 +2051,22 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量用于控制计算窗口函数时是否采用高精度模式。
+
+### `tiflash_fine_grained_shuffle_stream_count` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`-1`
+- 范围：`[-1, 1024]`
+- 当 WindowFunction 下推到 TiFlash 执行时，可以通过该变量控制 WindowFunction 执行的并行度。不同取值含义：
+
+    * 0: 表示不使用细粒度 shuffle 功能，下推到 TiFlash 的 WindowFunction 以单线程方式执行
+    * 大于 0：表示使用细粒度 shuffle 功能，下推到 TiFlash 的 WindowFunction 会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
+    * -1: 表示使用细粒度 shuffle 功能。如果 `tidb_max_tiflash_threads` 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 `tidb_max_tiflash_threads` ，否则为默认值 8 。最终在 TiFlash 上 WindowFunction 的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`,     TiFlash 节点物理线程数)
+- 建议：WindowFunction 的性能应该随着该值的增加线性提升。但是如果设置过大，超过实际的物理线程数，反而会导致性能下降。
+
+### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`8192`
+- 细粒度 shuffle 功能开启时，该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。
+- 对性能影响：该值设置过小，会导致数据发送过于频繁，降低向量化效果。如果设置过大会导致发送频率过低，接收端大部分时间在等待数据，影响性能。
