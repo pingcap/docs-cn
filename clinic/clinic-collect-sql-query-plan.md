@@ -1,26 +1,28 @@
 ---
-title: 使用 PingCAP Clinic Diag 采集 SQL 查询计划相关信息
-summary: 了解如何使用 PingCAP Clinic Diag 采集 TiUP 部署集群的 SQL 查询计划相关信息。
+title: 使用 PingCAP Clinic Diag 采集 SQL 查询计划信息
+summary: 了解如何使用 PingCAP Clinic Diag 采集 TiUP 部署集群的 SQL 查询计划信息。
 ---
 
-# 使用 PingCAP Clinic Diag 采集 SQL 查询计划相关信息
+# 使用 PingCAP Clinic Diag 采集 SQL 查询计划信息
 
-TiDB 在 v5.3.0 中引入了 [`PLAN REPLAYER`](/sql-plan-replayer.md) 命令，能够“一键”式保存和恢复查询计划相关的信息，简化了优化器相关问题的排查信息提取步骤。Clinic Diag 诊断客户端（下称 Diag）集成了 `PLAN REPLAYER` 功能，你可以使用 Diag 方便快捷地保存查询计划相关的数据。
+TiDB 在 v5.3.0 中引入了 [`PLAN REPLAYER`](/sql-plan-replayer.md) 命令，能够快速保存和恢复查询计划相关的信息，简化了排查优化器相关问题时提取排查信息的步骤。Clinic Diag 诊断客户端（下称 Diag）集成了 `PLAN REPLAYER` 功能，你可以使用 Diag 方便快捷地保存查询计划相关的数据。
 
 ## 使用说明
 
-Diag 可以在 TiDB v4.0 以上的集群以 ZIP 格式导出用于排查 TiDB 集群现场问题的相关信息，并方便快速地将采集的数据上传到 PingCAP Clinic 供技术支持人员查看。Diag 中采集的数据与 TiDB 中 `PLAN REPLAYER` 功能采集的数据有少量差距，具体见[采集输出结果](#采集输出结果)。
+在排查 TiDB v4.0 及以上版本的集群问题时，你可以使用 Diag 将排查现场的相关数据以 ZIP 格式导出，并将导出的数据快速上传到 PingCAP Clinic 供技术支持人员查看。在使用 Diag 采集数据前，你需要提供需要采集的 SQL 语句文件。Diag 采集的数据相较于 TiDB 中 `PLAN REPLAYER` 功能采集的数据多了日志信息和集群信息，具体见[全量数据采集的输出结果](#输出结果)。
 
 > **警告：**
 >
 > - 当前该功能为实验特性，不建议在生产环境中使用。
-> - 暂时不支持采集 TiDB Operator 部署集群的数据。
+> - 暂时不支持采集使用 TiDB Operator 部署的 TiDB 集群的数据。
 
 ## 使用方法
 
+本部分介绍如何使用 Diag 采集 SQL 查询计划信息。你需要先安装 Diag，再使用 Diag 采集数据。
+
 ### 安装 Diag
 
-- 通过 TiUP 一键安装 Diag，默认安装最新版本：
+- 通过 TiUP 安装 Diag，默认安装最新版本：
 
     ```bash
     tiup install diag
@@ -40,9 +42,9 @@ Diag 可以在 TiDB v4.0 以上的集群以 ZIP 格式导出用于排查 TiDB �
     tiup update diag
     ```
 
-### 采集数据
+### 全量数据采集
 
-执行如下 `diag collect` 命令进行数据采集：
+使用如下 `diag collect` 命令进行数据采集。你需要将 `<cluster-name>` 和 `<statement-filepath>` 占位符替换为实际的值：
 
 ```bash
 diag collect <cluster-name> --profile=tidb-plan-replayer --explain-sql=<statement-filepath>
@@ -50,8 +52,8 @@ diag collect <cluster-name> --profile=tidb-plan-replayer --explain-sql=<statemen
 
 > **注意：**
 >
-> - 通过 `diag` 采集数据，用户需要提供 `sql-statement` 文件，该文件包含了需要采集的 SQL 语句。
-> - `statement-filepath` 是指 `sql-statement` 文件的路径。
+> - 通过 `diag` 采集数据前，你需要提供 `sql-statement` 文件，该文件包含了需要采集的 SQL 语句。
+> - 以上命令中 `<statement-filepath>` 是指 `sql-statement` 文件的路径。
 > - `PLAN REPLAYER` **不会**导出表中数据。
 > - 采集数据时只会执行 `EXPLAIN`，不会真正执行查询。因此采集时对数据库性能影响较小。
 
@@ -63,12 +65,12 @@ SELECT * FROM information_schema.slow_query;SELECT * FROM information_schema.sta
 
 `sql-statement` 的文件内容说明：
 
-- 如果有多条 SQL 语句需要分析，可以使用分号（;）分隔。
-- 因为 `diag` 都是新建会话进行查询，所以 SQL 文件里的 SQL 语句需要指明所使用的数据库。
+- 如果有多条 SQL 语句需要分析，可以使用分号 `;` 分隔。
+- 因为以上 `diag` 命令会新建会话进行查询，所以 SQL 文件里的 SQL 语句需要指明所使用的数据库。
 
-#### 采集输出结果
+#### 输出结果
 
-采集输出结果包含以下集群现场信息：
+全量数据采集的输出结果包含以下集群现场信息：
 
 | 序号 | 采集内容 | 调用的 Diag collector | 输出文件 |
 | :--- | :--- | :--- | :--- |
@@ -81,9 +83,9 @@ SELECT * FROM information_schema.slow_query;SELECT * FROM information_schema.sta
 | 7 | <ul><li>TiDB 日志</li><li>TiUP Cluster 操作日志</li></ul> | <ul><li>`log`</li><li>`-R=tidb`</li></ul> | `tidb.log`，`tidb_slow_query.log`，`tidb_stdeer.log`，`cluster_audit/$auditfilename` |
 | 8 | 默认采集的集群信息<ul><li>集群基础信息</li><li>Diag 本次采集记录</li></ul> | default | `cluster.json`，`meta.yaml`，`$collectid_diag_audit.log` |
 
-### 自定义采集
+### 自定义数据采集
 
-你可以自定义配置文件使 Diag 采集上述[输出结果](#采集输出结果)中的部分数据。下面为一个示例的配置文件 `tidb-plan-replayer.toml`：
+你可以自定义配置文件使 Diag 采集上述[输出结果](#输出结果)中的部分数据。下面为一个示例的配置文件 `tidb-plan-replayer.toml`：
 
 ```toml
 name = "tidb-plan-replayer"
@@ -92,7 +94,7 @@ maintainers = [
     "pingcap"
 ]
 
-# list of data types to collect
+# 要采集的数据类型
 collectors = [
     "log",
     "config",
@@ -102,13 +104,13 @@ collectors = [
     "explain"
 ]
 
-# list of component roles to collect
+# 要采集的组件
 roles = [
     "tidb"
 ]
 ```
 
-通过 `--profile` 参数指定配置文件的路径来进行自定义采集：
+通过 `--profile` 参数指定配置文件的路径来进行自定义采集。你需要将 `<cluster-name>`、`<profile-filepath>` 和 `<statement-filepath>` 替换为实际的值：
 
 ```bash
 diag collect <cluster-name> --profile=<profile-filepath> --explain-sql=<statement-filepath>
