@@ -70,7 +70,7 @@ validators:
 
 ### 方法 2：通过 dmctl 开启
 
-使用 dmctl 的 validation start 命令：
+使用 `dmctl validation start` 命令：
 
 ```
 Usage:
@@ -203,40 +203,51 @@ Flags:
 
 ### 处理增量校验错误
 
-这里引入了错误处理的概念。在增量校验出现 `error row` 时，增量校验不会停下，而是会把这些 `error row `记录下来，让用户自己去发现处理。如果这个 `error row` 已经在下游矫正了，增量校验也不会去自动获取矫正后的信息，因此如果用户不想在 validation status 里面再看到这个错误或者给已经解决的错误打上标记，就可以使用下面这些命令：
-1. clear-error：清理掉错误行，不再看到这个错误出现在 status 里
-2. ignore-error：忽略该错误行，将这个错误行标记为 ignored
-3. resolve-error：已手动解决该错误行，将这个错误行标记为 resolved
-如果错误行没有被处理过，默认状态是 unprocessed。
-三种错误处理的用法相似：
-```
-Usage:
-  dmctl validation clear-error <task-name> <error-id|--all> [flags]
+当增量数据校验出错后，你需要手动进行错误处理。
 
-Flags:
-      --all    all errors
-  -h, --help   help for clear-error
-```
-```
-Usage:
-  dmctl validation ignore-error <task-name> <error-id|--all> [flags]
+在增量校验出现 `error row` 时，增量校验不会停下，而是会把这些 `error row` 记录下来，让用户自己去发现处理。如果该 `error row` 已经在下游矫正，增量校验也不会去自动获取矫正后的信息。如果错误行没有被处理过，默认状态是 unprocessed。
 
-Flags:
-      --all    all errors
-  -h, --help   help for ignore-error
-```
-```
-Usage:
-  dmctl validation resolve-error <task-name> <error-id|--all> [flags]
+如果你不想在 validation status 中再看到这个错误、或者你需要给已经解决的错误打上标记，你可以使用 `validation show-error` 找到错误行的 id，然后使用错误处理命令来对这些错误进行处理或者标记。
 
-Flags:
-      --all    all errors
-  -h, --help   help for resolve-error
-```
-用 validation show-error 找到错误行的 id，然后就可以用 clear-error/ignore-error/resolve-error 来对这些错误进行处理或者标记了。
+dmctl 提供了三种错误处理命令：
+
+- `clear-error`：清理掉错误行，不再看到这个错误出现在 status 里。
+
+    ```
+    Usage:
+      dmctl validation clear-error <task-name> <error-id|--all> [flags]
+
+    Flags:
+          --all    all errors
+      -h, --help   help for clear-error
+    ```
+
+- `ignore-error`：忽略该错误行，将这个错误行标记为 ignored。
+
+    ```
+    Usage:
+      dmctl validation ignore-error <task-name> <error-id|--all> [flags]
+
+    Flags:
+          --all    all errors
+      -h, --help   help for ignore-error
+    ```
+
+- `resolve-error`：已手动解决该错误行，将这个错误行标记为 resolved。
+
+    ```
+    Usage:
+      dmctl validation resolve-error <task-name> <error-id|--all> [flags]
+
+    Flags:
+          --all    all errors
+      -h, --help   help for resolve-error
+    ```
 
 ## 停止增量数据校验
-需要将增量校验停止时，可以使用 validation stop 命令：
+
+如果你需要停止增量数据校验，可以使用 `validation stop` 命令：
+
 ```
 Usage:
   dmctl validation stop [-s source ...] [--all-task] [task-name] [flags]
@@ -245,4 +256,5 @@ Flags:
       --all-task   whether applied to all tasks
   -h, --help       help for stop
 ```
-用法和 validation start 相似。
+
+用法可参考 [`dmctl validation start` 命令](#方法-2通过-dmctl-开启)。
