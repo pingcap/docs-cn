@@ -231,7 +231,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 > - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 >
-> 使用显示的设置 filter 的方式恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中使用这种方式恢复系统表。
+> 使用显式设置 filter 的方式恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中使用这种方式恢复系统表。
 
 ## 恢复性能和影响
 
