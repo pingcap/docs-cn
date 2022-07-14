@@ -225,7 +225,7 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 
 > **警告：**
 >
-> 系统表（例如 `mysql.tidb`）可以通过 BR 进行备份。但在恢复除权限表以外的 `mysql`系统表时存在限制。即便是使用了 `-filter` 设置，也不能通过 BR 恢复以下系统表
+> 系统表（例如 `mysql.tidb`）可以通过 BR 进行备份，但在恢复除权限表以外的 `mysql`系统表时存在限制。即便是使用了 `-filter` 设置，也不能通过 BR 恢复以下系统表：
 >
 > - 统计信息表（`mysql.stat_*`）
 > - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
