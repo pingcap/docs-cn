@@ -64,13 +64,20 @@ validators:
 ```
 ### 通过 dmctl 开启
 ```
-dmctl --master-addr=127.0.0.1:8261 validation start [--start-time <time-string>] [--mode <mode>] [-s source ...] [<task-name> | --all-task]
+Usage:
+  dmctl validation start [--all-task] [task-name] [flags]
+
+Flags:
+      --all-task            whether applied to all tasks
+  -h, --help                help for start
+      --mode string         specify the mode of validation: full (default), fast; this flag will be ignored if the validation task has been ever enabled but currently paused (default "full")
+      --start-time string   specify the start time of binlog for validation, e.g. '2021-10-21 00:01:00' or 2021-10-21T00:01:00
 ```
-`--mode` 参数指定开启的模式，可以是 fast 或者 full；`-s` 指定需要开启增量校验的源库，不指定则任务里的所有源库都开启；`--start-time` 指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00；`task-name` 是你想开启校验的任务名，或者用 `--all-task` 来表示当前所有任务都开启增量数据校验。
+`--mode` 参数指定开启的模式，可以是 fast 或者 full；`--start-time` 指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00；`task-name` 是你想开启校验的任务名，或者用 `--all-task` 来表示当前所有任务都开启增量数据校验。
 
 示例：
 ```shell
-dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:01:00 --mode full -s mysql1,mysql2 my_dm_task
+dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:01:00 --mode full my_dm_task
 ```
 ## 增量数据校验的操作
 用 dmctl 工具可以查询到增量校验当前的校验状态，也可以对校验出的错误进行及时处理。
