@@ -34,9 +34,9 @@ There are two ways to check the TiFlash version:
 
 | Log Information | Log Description |
 |---------------|-------------------|
-| [INFO] [`<unknown>`] ["KVStore: Start to persist [region 47, applied: term 6 index 10]"] [thread_id=23] | Data starts to be replicated (the number in the square brackets at the start of the log refers to the thread ID |
-| [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handling DAG request"] [thread_id=30] | Handling DAG request, that is, TiFlash starts to handle a Coprocessor request |
-| [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handle DAG request done"] [thread_id=30] | Handling DAG request done, that is, TiFlash finishes handling a Coprocessor request |
+| `[INFO] [<unknown>] ["KVStore: Start to persist [region 47, applied: term 6 index 10]"] [thread_id=23]` | Data starts to be replicated (the number in the square brackets at the start of the log refers to the thread ID |
+| `[DEBUG] [<unknown>] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handling DAG request"] [thread_id=30]` | Handling DAG request, that is, TiFlash starts to handle a Coprocessor request |
+| `[DEBUG] [<unknown>] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handle DAG request done"] [thread_id=30]` | Handling DAG request done, that is, TiFlash finishes handling a Coprocessor request |
 
 You can find the beginning or the end of a Coprocessor request, and then locate the related logs of the Coprocessor request through the thread ID printed at the start of the log.
 
@@ -46,9 +46,10 @@ The column names and their descriptions of the `information_schema.tiflash_repli
 
 | Column Name | Description |
 |---------------|-----------|
-| TABLE_SCHEMA | database name |
-| TABLE_NAME | table name |
-| TABLE_ID | table ID |
-| REPLICA_COUNT | number of TiFlash replicas |
-| AVAILABLE | available or not (0/1)|
-| PROGRESS | replication progress [0.0~1.0] |
+| TABLE_SCHEMA | Database name |
+| TABLE_NAME | Table name |
+| TABLE_ID | Table ID |
+| REPLICA_COUNT | Number of TiFlash replicas |
+|LOCATION_LABELS | The hint for PD, based on which multiple replicas in a Region are scattered |
+| AVAILABLE | Available or not (0/1)|
+| PROGRESS | Replication progress [0.0~1.0] |
