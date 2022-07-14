@@ -49,9 +49,12 @@ DM 增量校验（validator）的简要架构如下所示：
     - JSON
     - 二进制数据
 
-## 如何开启增量校验
-### 随着任务开启
-在任务配置中加入：
+## 开启增量数据校验
+
+### 方法 1：在任务配置中开启
+
+在任务配置文件中加入以下内容：
+
 ```yaml
 # 给需要开启增量校验功能的上游数据库添加增量校验配置
 mysql-instances:
@@ -64,7 +67,11 @@ validators:
     worker-count: 4 # 后台校验的 validation worker 数量，默认是 4 个
     row-error-delay: 30m # 某一行多久没有验证通过会报错，默认是 30min
 ```
-### 通过 dmctl 开启
+
+### 方法 2：通过 dmctl 开启
+
+使用 dmctl 的 validation start 命令：
+
 ```
 Usage:
   dmctl validation start [--all-task] [task-name] [flags]
@@ -81,12 +88,18 @@ Flags:
 ```shell
 dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:01:00 --mode full my_dm_task
 ```
-## 增量数据校验的操作
-用 dmctl 工具可以查询到增量校验当前的校验状态，也可以对校验出的错误进行及时处理。
+
+## 使用增量数据校验
+
+在使用增量数据校验时，通过 dmctl 工具，你可以查询到增量校验当前的校验状态，也可以对校验出的错误进行及时处理。
 
 ### 查看增量校验的状态
-最简单的方法是用 dmctl query-status <task-name> 命令查看任务状态，如果开启了增量校验，校验结果会显示在每个 subtask 的 validation 字段里面。示例输出：
-```js
+
+你可以使用两种方式查看增量校验的状态。
+
+方式 1：用 `dmctl query-status <task-name>` 命令查看任务状态，如果开启了增量校验，校验结果会显示在每个 subtask 的 validation 字段里面。示例输出：
+
+```json
 "subTaskStatus": [
     {
         "name": "test",
@@ -112,15 +125,19 @@ dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:0
     }
 ]
 ```
-也可以用 dmctl validation status <taskname> 来查询：
+
+方式 2：使用 `dmctl validation status <taskname>` 来查询增量校验的状态：
+
 ```
 dmctl validation status [--table-stage stage] <task-name> [flags]
 Flags:
   -h, --help                 help for status
       --table-stage string   filter validation tables by stage: running/stopped
 ```
-可以设置 `--table-stage` 来过滤正在校验或者已经停止校验的表。示例输出：
-```js
+
+在上述命令中，你可以设置 `--table-stage` 来过滤正在校验或者已经停止校验的表。示例输出：
+
+```json
 {
     "result": true,
     "msg": "",
@@ -149,7 +166,9 @@ Flags:
     ]
 }
 ```
-另外，如果想要查询错误行的详细信息，比如错误原因、错误时间等，可以使用 validation show-error 命令：
+
+如果你想要查询错误行的详细信息，比如错误原因、错误时间等，可以使用 `dmctl validation show-error` 命令：
+
 ```
 Usage:
   dmctl validation show-error [--error error-state] <task-name> [flags]
@@ -158,8 +177,10 @@ Flags:
       --error string   filtering type of error: all, ignored, or unprocessed (default "unprocessed")
   -h, --help           help for show-error
 ```
+
 示例输出：
-```js
+
+```json
 {
     "result": true,
     "msg": "",
@@ -179,7 +200,9 @@ Flags:
     ]
 }
 ```
+
 ### 处理增量校验错误
+
 这里引入了错误处理的概念。在增量校验出现 `error row` 时，增量校验不会停下，而是会把这些 `error row `记录下来，让用户自己去发现处理。如果这个 `error row` 已经在下游矫正了，增量校验也不会去自动获取矫正后的信息，因此如果用户不想在 validation status 里面再看到这个错误或者给已经解决的错误打上标记，就可以使用下面这些命令：
 1. clear-error：清理掉错误行，不再看到这个错误出现在 status 里
 2. ignore-error：忽略该错误行，将这个错误行标记为 ignored
