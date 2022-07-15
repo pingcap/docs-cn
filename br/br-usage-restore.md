@@ -27,39 +27,6 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 
 BR 支持在一个空集群上执行快照备份恢复，将该集群恢复到快照备份时刻点的集群最新状态。
 
-自 BR v5.1.0 开始，全量备份会备份系统表数据。
-
-自 BR v6.2.0 起，在默认设置下（无 `filter` 等参数影响数据恢复范围），如果备份数据中包含系统表数据，恢复数据时 BR 将同时恢复系统权限相关数据，包括如下表：
-
-```
-+----------------------------------+
-| mysql.columns_priv               |
-| mysql.db                         |
-| mysql.default_roles              |
-| mysql.global_grants              |
-| mysql.global_priv                |
-| mysql.role_edges                 |
-| mysql.tables_priv                |
-| mysql.user                       |
-+----------------------------------+
-```
-
-> **注意：**
->
-> - v6.2.0 以前版本的 BR 在默认设置下只会恢复用户数据，而不会恢复系统表数据。
-> - 恢复系统权限表仅针对备份集群和恢复集群版本 >= v5.4.0 的版本，之前的集群版本建议使用旧版本 BR 或者按下面说的方式显示设置 `filter`。
-
-自 v6.2.0 起，BR 恢复数据前会检查集群是否为空，以及目标集群的系统表是否跟备份数据中的系统表兼容。如果目标集群非空或者目标集群系统表跟备份数据不兼容，BR 会提示类似如下信息，此时可参考提示信息，通过显式指定 `filter` 的方式跳过恢复系统表:
-
-```
-#######################################################################
-# the target cluster is not compatible with the backup data,
-# br cannot restore system tables.
-# you can use the following command to skip restoring system tables:
-#    br restore full --filter '*.*' --filter '!mysql.*'
-#######################################################################
-```
-
 用例：将 s3 的名为 `backup-data` bucket 下的 `2022-01-30/` 前缀目录中属于 `2022-01-30 07:42:23` 时刻点的快照数据恢复到目标机群。
 
 {{< copyable "shell-regular" >}}
@@ -86,6 +53,42 @@ br restore full \
     --ratelimit 128 \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
+```
+
+自 BR v5.1.0 开始，全量备份会备份**系统表数据**。自 BR v6.2.0 起，如果备份数据中包含系统表数据，在默认设置下（无 `filter` 等参数影响数据恢复范围），恢复数据时 BR 将同时恢复**系统权限相关数据**。v6.2.0 以前版本的 BR 在默认设置下只会恢复用户数据，而不会恢复系统表数据。
+
+BR 可恢复的系统**权限相关数据**包括如下表：
+
+```
++----------------------------------+
+| mysql.columns_priv               |
+| mysql.db                         |
+| mysql.default_roles              |
+| mysql.global_grants              |
+| mysql.global_priv                |
+| mysql.role_edges                 |
+| mysql.tables_priv                |
+| mysql.user                       |
++----------------------------------+
+```
+> **注意：**
+>
+> - 恢复系统权限表仅针对备份集群和恢复集群版本 >= v5.4.0 的版本，之前的集群版本建议使用旧版本 BR 或者按下述方式显式设置 `--filter`。
+
+自 v6.2.0 起，BR 恢复数据前会检查以下两项：
+
+- 目标集群是否为空。
+- 目标集群的系统表是否跟备份数据中的系统表兼容。
+
+如果目标集群非空或者目标集群系统表跟备份数据不兼容，BR 会提示类似如下信息。此时可参考提示信息，通过显式指定 `filter` 的方式跳过恢复系统表:
+
+```
+#######################################################################
+# the target cluster is not compatible with the backup data,
+# br cannot restore system tables.
+# you can use the following command to skip restoring system tables:
+#    br restore full --filter '*.*' --filter '!mysql.*'
+#######################################################################
 ```
 
 ## 恢复备份数据中指定库表的数据
