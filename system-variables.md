@@ -2062,7 +2062,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     * 0: 表示不使用细粒度 shuffle 功能，下推到 TiFlash 的 WindowFunction 以单线程方式执行
     * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的 WindowFunction 会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
     * -1: 表示使用细粒度 shuffle 功能。如果 `tidb_max_tiflash_threads` 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 `tidb_max_tiflash_threads` ，否则为默认值 8 。最终在 TiFlash 上 WindowFunction 的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
-- 建议：WindowFunction 的性能应该随着该值的增加线性提升。但是如果设置过大，超过实际的物理线程数，反而会导致性能下降。
+- 建议：WindowFunction 的性能应该随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
 ### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
