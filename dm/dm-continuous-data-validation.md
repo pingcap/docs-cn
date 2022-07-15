@@ -250,7 +250,7 @@ dmctl 提供了三种错误处理命令：
 
 ```
 Usage:
-  dmctl validation stop [-s source ...] [--all-task] [task-name] [flags]
+  dmctl validation stop [--all-task] [task-name] [flags]
 
 Flags:
       --all-task   whether applied to all tasks
