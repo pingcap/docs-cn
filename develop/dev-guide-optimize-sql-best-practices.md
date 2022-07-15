@@ -152,7 +152,7 @@ TiDB 支持在线添加索引操作，可通过 [`ADD INDEX`](/sql-statements/sq
 - [tidb_ddl_reorg_worker_cnt](/system-variables.md#tidb_ddl_reorg_worker_cnt)
 - [tidb_ddl_reorg_batch_size](/system-variables.md#tidb_ddl_reorg_batch_size)
 
-为了减少对在线业务的影响，添加索引的默认速度会比较保守。当添加索引的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速索引的添加：
+为了减少对在线业务的影响，添加索引的默认速度会比较保守。当添加索引的目标列仅涉及查询负载，或者与线上负载不直接相关时，可以适当调大上述变量来加速添加索引：
 
 {{< copyable "sql" >}}
 
