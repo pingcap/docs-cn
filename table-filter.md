@@ -18,31 +18,24 @@ TiDB 数据迁移工具默认情况下作用于所有数据库，但实际使用
 
 * [BR](/br/backup-and-restore-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
+    ```
+
+    ```shell
     ./br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [Dumpling](/dumpling-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
-    #          ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 ### TOML 配置文件
