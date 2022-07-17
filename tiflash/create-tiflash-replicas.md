@@ -141,14 +141,25 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
     tiflash_servers:
       - host: 172.16.5.81
         config:
-          flash.proxy.labels: zone=z1
+          logger.level: "info"
+        learner_config:
+          server.labels:
+            zone: "z1"
       - host: 172.16.5.82
         config:
-          flash.proxy.labels: zone=z1
+          logger.level: "info"
+        learner_config:
+          server.labels:
+            zone: "z1"
       - host: 172.16.5.85
         config:
-          flash.proxy.labels: zone=z2
+          logger.level: "info"
+        learner_config:
+          server.labels:
+            zone: "z2"
     ```
+
+    注：旧版本中的 `flash.proxy.labels` 配置无法处理可用区名字中的特殊字符，建议使用 `learner_config` 中的 `server.labels` 来进行配置。
 
 2. 启动集群后，在创建副本时为副本调度指定 label，语法如下：
 
