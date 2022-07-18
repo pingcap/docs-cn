@@ -10,7 +10,8 @@ Physical Import Mode 不经过 SQL 接口，而是直接将数据以键值对的
 
 1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 节点切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。`tidb-lightning` 会根据 TiDB 集群的版本决定是否停止全局调度。
 
-    当 TiDB 集群版本小于 `v6.1.0` 时，`tidb-lightning` 会暂停全局调度，否则 `tidb-lightning` 只会在向 TiKV 导入数据时暂停目标表数据范围所在 region 的调度，并在目标表导入完成后恢复。
+    - 当 TiDB 集群版本 >= v6.1.0 且 TiDB Lightning 版本 >= v6.2.0 时，`tidb-lightning` 在向 TiKV 导入数据时，只会暂停目标表数据范围所在 region 的调度，并在目标表导入完成后恢复调度。
+    - 当 TiDB 集群版本 < v6.1.0 或 TiDB Lightning 版本 < v6.2.0 时，`tidb-lightning` 会暂停全局调度。
 
 2. `tidb-lightning` 在目标数据库建立表结构，并获取其元数据。
 
