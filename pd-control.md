@@ -236,9 +236,9 @@ tiup ctl pd -u https://127.0.0.1:2379 --cacert="path/to/ca" --cert="path/to/cert
     >> config set max-pending-peer-count 64
     ```
 
-- `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 M）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
+- `max-merge-region-size` 控制 Region Merge 的 size 上限（单位是 MiB）。当 Region Size 大于指定值时 PD 不会将其与相邻的 Region 合并。设置为 0 表示不开启 Region Merge 功能。
 
-    设置 Region Merge 的 size 上限为 16 M：
+    设置 Region Merge 的 size 上限为 16 MiB：
 
     {{< copyable "" >}}
 
