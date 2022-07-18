@@ -58,7 +58,7 @@ LIMIT 10;
 </div>
 <div label="Java">
 
-在 JAVA 中内连接的示例如下：
+在 Java 中内连接的示例如下：
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -167,7 +167,7 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 </div>
 <div label="Java">
 
-在 JAVA 中左外连接的示例如下：
+在 Java 中左外连接的示例如下：
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {

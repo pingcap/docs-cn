@@ -45,7 +45,7 @@ git clone https://github.com/pingcap-inc/tidb-example-golang.git
 
 <SimpleTab>
 
-<div label="使用 go-sql-driver/mysql" href="get-code-sql-driver">
+<div label="使用 go-sql-driver/mysql">
 
 进入目录 `sqldriver`：
 
@@ -495,11 +495,11 @@ const (
 
 </div>
 
-<div label="使用 gorm（推荐）" href="get-code-gorm">
+<div label="使用 GORM（推荐）">
 
 可以看到，go-sql-driver/mysql 实现的代码略显冗余，需要自己管控错误处理逻辑，手动关闭 `*sql.Rows`，且不能很好的复用代码。并非最佳实践。
 
-当前开源比较流行的 Golang ORM 为 gorm（推荐），此处将以 v1.23.5 版本进行说明。
+当前开源比较流行的 Golang ORM 为 GORM，此处将以 v1.23.5 版本进行说明。
 
 封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，编写以下代码备用：
 
@@ -722,7 +722,7 @@ func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
 
 <SimpleTab>
 
-<div label="使用 go-sql-driver/mysql" href="sql-driver-table-init-sql-driver">
+<div label="使用 go-sql-driver/mysql">
 
 > 在 Gitpod Playground 中尝试 go-sql-driver/mysql: [现在就试试](https://gitpod.io/#targetMode=sqldriver/https://github.com/pingcap-inc/tidb-example-golang)
 
@@ -746,9 +746,11 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 </div>
 
-<div label="使用 gorm（推荐）" href="sql-driver-table-init-gorm">
+<div label="使用 GORM（推荐）">
 
-> 在 Gitpod Playground 中尝试 gorm: [现在就试试](https://gitpod.io/#targetMode=gorm/https://github.com/pingcap-inc/tidb-example-golang)
+> **说明：**
+>
+> 在 Gitpod Playground 中尝试 GORM: [现在就试试](https://gitpod.io/#targetMode=gorm/https://github.com/pingcap-inc/tidb-example-golang)
 
 无需手动初始化表。
 
@@ -760,7 +762,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 <SimpleTab>
 
-<div label="使用 go-sql-driver/mysql" href="tidb-cloud-sql-driver">
+<div label="使用 go-sql-driver/mysql">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `sqldriver.go` 内 `dsn` 参数的值：
 
@@ -786,7 +788,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 </div>
 
-<div label="使用 gorm（推荐）" href="tidb-cloud-gorm">
+<div label="使用 GORM（推荐）">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `gorm.go` 内 `dsn` 参数值：
 
@@ -818,7 +820,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 <SimpleTab>
 
-<div label="使用 go-sql-driver/mysql" href="run-sql-driver">
+<div label="使用 go-sql-driver/mysql">
 
 运行 `make all`，这是以下三个操作的组合：
 
@@ -830,7 +832,7 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 </div>
 
-<div label="使用 gorm（推荐）" href="run-gorm">
+<div label="使用 GORM（推荐）">
 
 运行 `make all`，这是以下两个操作的组合：
 
@@ -847,15 +849,15 @@ dsn := "root:123456@tcp(xxx.tidbcloud.com:4000)/test?charset=utf8mb4"
 
 <SimpleTab>
 
-<div label="使用 go-sql-driver/mysql" href="output-sql-driver">
+<div label="使用 go-sql-driver/mysql">
 
 [go-sql-driver/mysql 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#sqldriver)
 
 </div>
 
-<div label="使用 gorm（推荐）" href="output-gorm">
+<div label="使用 GORM（推荐）">
 
-[gorm 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#gorm)
+[GORM 预期输出](https://github.com/pingcap-inc/tidb-example-golang/blob/main/Expected-Output.md#gorm)
 
 </div>
 
