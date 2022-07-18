@@ -4,6 +4,7 @@ summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用�
 ---
 
 # ALTER TABLE ... SET TIFLASH MODE ...
+
 > **警告：**
 >
 > 该语句目前是实验性功能，不建议在生产环境中使用。
@@ -16,7 +17,7 @@ summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用�
 
 对表 TiFlash 模式的修改在表具有 TiFlash Replica 时才真实生效。若修改模式时，表的 TiFlash Replica 为空，则需等后续重新设置表的 TiFlash Replica 后修改的模式才真正生效。
 
-我们可以通过 `Information_schema.tiflash_replica` 这张系统表来查询对应表目前的 TiFlash table mode。
+我们可以通过 `information_schema.tiflash_replica` 这张系统表来查询对应表目前的 TiFlash table mode。
 
 ## 语法图
 
@@ -26,6 +27,7 @@ AlterTableSetTiFlashModeStmt ::=
 ```
 
 ## 示例
+
 假设我们目前有张 `test` 表，它具有一个 TiFlash 副本。
 
 {{< copyable "sql" >}}
@@ -74,9 +76,11 @@ ALTER TABLE test SET tiflash mode NORMAL
 ```
 
 ## MySQL 兼容性
+
 `ALTER TABLE ...SET TiFLASH MODE ..`  语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
 
 ## TiDB Binlog 及 TiCDC 兼容性
+
 当 下游也为 TiDB 时，`ALTER TABLE ...SET TiFLASH MODE ..` 会被 TiDB Binlog 同步到下游。其他状态下，Binlog 和 TiCDC 都不会同步该语句。
 
 ## 另请参阅
