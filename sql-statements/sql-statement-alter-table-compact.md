@@ -64,7 +64,7 @@ ALTER TABLE employees COMPACT TIFLASH REPLICA;
 
 ## 观测数据整理进度
 
-你可以通过 `INFORMATION_SCHEMA.TIFLASH_TABLES` 表中 `TOTAL_DELTA_ROWS` 列来观测 TiFlash 存储引擎上数据整理的进度，或判断是否有必要对某张表发起数据整理。`TOTAL_DELTA_ROWS` 的值越大，说明还能被整理的数据越多；若 `TOTAL_DELTA_ROWS` 为 `0`，说明表中所有数据都处于最佳状态、无需整理。
+你可以通过 `INFORMATION_SCHEMA.TIFLASH_TABLES` 表中 `TOTAL_DELTA_ROWS` 列来观测 TiFlash 存储引擎上数据整理的进度，或判断是否有必要对某张表发起数据整理。`TOTAL_DELTA_ROWS` 的值越大，说明还能被整理的数据越多；若 `TOTAL_DELTA_ROWS` 为 `0`，说明表中所有数据都处于最佳状态，无需整理。
 
 <details>
   <summary>示例：查询普通表的数据整理状态</summary>
@@ -159,16 +159,16 @@ SELECT PARTITION_NAME, TOTAL_DELTA_ROWS, TOTAL_STABLE_ROWS
 | pWest          |                0 |                 0 |
 | pCentral       |                0 |                 0 |
 +----------------+------------------+-------------------+
--- 所有分区上的数据都都处于最佳整理状态
+-- 所有分区上的数据都处于最佳整理状态
 ```
 
 </details>
 
-提示：
-
-- 若数据整理的过程中发生了数据更新，你可能观察到数据整理完毕后 `TOTAL_DELTA_ROWS` 仍为非零值。这是正常现象，表明这些更新部分没有被整理到。若你想对这部分更新数据也进行整理，可再次执行 `ALTER TABLE ... COMPACT` 语句。
-
-- `TOTAL_DELTA_ROWS` 的单位是数据版本数，而非数据行数。例如，插入一行记录再删除该行后，`TOTAL_DELTA_ROWS` 会增加 2。
+> **注意：**
+>
+> - 若数据整理的过程中发生了数据更新，你可能观察到数据整理完毕后 `TOTAL_DELTA_ROWS` 仍为非零值。这是正常现象，表明这些更新部分没有被整理到。若你想对这部分更新数据也进行整理，可再次执行 `ALTER TABLE ... COMPACT` 语句。
+>
+> - `TOTAL_DELTA_ROWS` 的单位是数据版本数，而非数据行数。例如，插入一行记录再删除该行后，`TOTAL_DELTA_ROWS` 会增加 2。
 
 ## 兼容性
 
