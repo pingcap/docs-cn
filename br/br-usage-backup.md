@@ -196,17 +196,15 @@ br backup full\
 
 BR 支持对备份到 S3 的数据进行 S3 服务端加密 (SSE)。BR S3 服务端加密也支持使用用户自行创建的 AWS KMS 密钥进行加密，详细信息请参考 [BR S3 服务端加密](/encryption-at-rest.md#br-s3-服务端加密)。
 
-## 备份数据检验
+## 校验备份数据
 
-BR 支持在备份完成后，对备份数据进行校验。
+使用 BR 完成数据备份后，你可以对备份数据进行校验。
 
 ### 检查备份数据的完整性
 
-要对备份数据计算校验和，可以使用 `tiup br debug checksum` 命令。
+要检查数据完整性，可以执行 `tiup br debug checksum` 命令对备份数据计算校验和。
 
-用例：计算 s3 上名为 `backup-data` 的 bucket 下面的 `${prefix}` 前缀目录下的备份的校验和。
-
-{{< copyable "shell-regular" >}}
+用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，计算 `${prefix}` 前缀目录下备份的校验和。
 
 ```shell
 br debug checksum \
@@ -217,11 +215,9 @@ br debug checksum \
 
 ### 将备份的 backupmeta 解码为 json 格式的可读文件
 
-在备份完成后，想要将备份的 `backupmeta` 解码为 json 格式的可读文件，查看每个备份文件的键范围、键值对总数等元信息，可以使用 `tiup br debug decode` 命令。
+在备份完成后，可通过 `tiup br debug decode` 命令将备份的 `backupmeta` 解码为 json 格式的可读文件，从而查看每个备份文件的键范围、键值对总数等元信息。
 
-用例：将 s3 上名为 `backup-data` 的 bucket 下面的 `${prefix}` 前缀目录下的备份的 `backupmeta` 解码为 json 格式的文件 `backupmeta.json`，存储在备份所在的路径为 `s3://backup-data/${prefix}/backupmeta.json`。
-
-{{< copyable "shell-regular" >}}
+用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，将 `${prefix}` 前缀目录下备份的 `backupmeta` 解码为 json 格式的文件 `backupmeta.json`，解码后的文件存储路径为 `s3://backup-data/${prefix}/backupmeta.json`。
 
 ```shell
 br debug decode \
@@ -230,11 +226,9 @@ br debug decode \
     --log-file decode-backupmeta.log
 ```
 
-将 `backupmeta` 解码为 json 格式的文件后，可以使用 `tiup br debug encode` 命令再将其编码回 `backupmeta`，生成的文件名为 `backupmeta_from_json`。
+如有需要，你也可以将 json 格式的 `backupmeta` 文件编码回解码前的状态。执行 `tiup br debug encode` 命令，生成的文件名为 `backupmeta_from_json`。
 
-用例：将 s3 上名为 `backup-data` 的 bucket 下面的 `${prefix}` 前缀目录下的备份的 `backupmeta.json` 文件编码为 `backupmeta` 文件，其文件名为 `backupmeta_from_json`，存储在备份所在的路径为 `s3://backup-data/${prefix}/backupmeta_from_json`。
-
-{{< copyable "shell-regular" >}}
+用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，将 `${prefix}` 前缀目录下备份的 `backupmeta.json` 文件编码为 `backupmeta` 文件，编码后的文件名为 `backupmeta_from_json`，存储路径为 `s3://backup-data/${prefix}/backupmeta_from_json`。
 
 ```shell
 br debug encode \
