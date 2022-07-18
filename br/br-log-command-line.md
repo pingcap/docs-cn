@@ -161,6 +161,7 @@ Usage:
   br log pause [flags]
 
 Flags:
+  --gc-ttl int         the TTL (in seconds) that PD holds for BR's GC safepoint (default 86400)
   -h, --help           help for status
   --task-name string   The task name for backup stream log. 
 
@@ -256,6 +257,7 @@ Usage:
   br log truncate [flags]
 
 Flags:
+  --dry-run        Run the command but don't really delete the files.
   -h, --help       help for truncate
   --until string   Remove all backup data until this TS.(support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'.)
   -y, --yes        Skip all prompts and always execute the command.
@@ -267,6 +269,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下
 
+- `--dry-run`: 运行命令，但是不要真正删除文件。
 - `--util`: 早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值
 - `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
 
