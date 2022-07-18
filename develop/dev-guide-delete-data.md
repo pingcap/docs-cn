@@ -53,12 +53,12 @@ SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `r
 ```
 
 - 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
-- 若返回数量小于 1 万条，可参考此处的示例进行删除：
+- 若返回数量小于 1 万条，可参考下面的示例进行删除：
 
 <SimpleTab>
-<div label="SQL" href="delete-sql">
+<div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中，删除数据的示例如下：
 
 ```sql
 DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
@@ -66,9 +66,9 @@ DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` 
 
 </div>
 
-<div label="Java" href="delete-java">
+<div label="Java">
 
-{{< copyable "" >}}
+在 JAVA 中，删除数据的示例如下：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -93,9 +93,9 @@ try (Connection connection = ds.getConnection()) {
 
 </div>
 
-<div label="Golang" href="delete-golang">
+<div label="Golang">
 
-{{< copyable "" >}}
+在 Golang 中，删除数据的示例如下：
 
 ```go
 package main
