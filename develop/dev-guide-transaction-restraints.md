@@ -33,6 +33,10 @@ For example, suppose you are writing a doctor shift management program for a hos
 
 Now there is a situation where doctors `Alice` and `Bob` are on call. Both are feeling sick, so they decide to take sick leave. They happen to click the button at the same time. Let's simulate this process with the following program:
 
+<SimpleTab>
+
+<div label="Java" href="write-skew-java">
+
 {{< copyable "" >}}
 
 ```java
@@ -154,6 +158,180 @@ public class EffectWriteSkew {
 }
 ```
 
+</div>
+
+<div label="Golang" href="write-skew-golang">
+
+To adapt TiDB transactions, write a [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util) according to the following code:
+
+{{< copyable "" >}}
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "sync"
+
+    "github.com/pingcap-inc/tidb-example-golang/util"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    openDB("mysql", "root:@tcp(127.0.0.1:4000)/test", func(db *sql.DB) {
+        writeSkew(db)
+    })
+}
+
+func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
+    db, err := sql.Open(driverName, dataSourceName)
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    runnable(db)
+}
+
+func writeSkew(db *sql.DB) {
+    err := prepareData(db)
+    if err != nil {
+        panic(err)
+    }
+
+    waitingChan, waitGroup := make(chan bool), sync.WaitGroup{}
+
+    waitGroup.Add(1)
+    go func() {
+        defer waitGroup.Done()
+        err = askForLeave(db, waitingChan, 1, 1)
+        if err != nil {
+            panic(err)
+        }
+    }()
+
+    waitGroup.Add(1)
+    go func() {
+        defer waitGroup.Done()
+        err = askForLeave(db, waitingChan, 2, 2)
+        if err != nil {
+            panic(err)
+        }
+    }()
+
+    waitGroup.Wait()
+}
+
+func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) error {
+    txnComment := fmt.Sprintf("/* txn %d */ ", goroutineID)
+    if goroutineID != 1 {
+        txnComment = "\t" + txnComment
+    }
+
+    txn, err := util.TiDBSqlBegin(db, true)
+    if err != nil {
+        return err
+    }
+    fmt.Println(txnComment + "start txn")
+
+    // Txn 1 should be waiting until txn 2 is done.
+    if goroutineID == 1 {
+        <-waitingChan
+    }
+
+    txnFunc := func() error {
+        queryCurrentOnCall := "SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = ? AND `shift_id` = ?"
+        rows, err := txn.Query(queryCurrentOnCall, true, 123)
+        if err != nil {
+            return err
+        }
+        defer rows.Close()
+        fmt.Println(txnComment + queryCurrentOnCall + " successful")
+
+        count := 0
+        if rows.Next() {
+            err = rows.Scan(&count)
+            if err != nil {
+                return err
+            }
+        }
+        rows.Close()
+
+        if count < 2 {
+            return fmt.Errorf("at least one doctor is on call")
+        }
+
+        shift := "UPDATE `doctors` SET `on_call` = ? WHERE `id` = ? AND `shift_id` = ?"
+        _, err = txn.Exec(shift, false, doctorID, 123)
+        if err == nil {
+            fmt.Println(txnComment + shift + " successful")
+        }
+        return err
+    }
+
+    err = txnFunc()
+    if err == nil {
+        txn.Commit()
+        fmt.Println("[runTxn] commit success")
+    } else {
+        txn.Rollback()
+        fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)
+    }
+
+    // Txn 2 is done. Let txn 1 run again.
+    if goroutineID == 2 {
+        waitingChan <- true
+    }
+
+    return nil
+}
+
+func prepareData(db *sql.DB) error {
+    err := createDoctorTable(db)
+    if err != nil {
+        return err
+    }
+
+    err = createDoctor(db, 1, "Alice", true, 123)
+    if err != nil {
+        return err
+    }
+    err = createDoctor(db, 2, "Bob", true, 123)
+    if err != nil {
+        return err
+    }
+    err = createDoctor(db, 3, "Carol", false, 123)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+func createDoctorTable(db *sql.DB) error {
+    _, err := db.Exec("CREATE TABLE IF NOT EXISTS `doctors` (" +
+        "    `id` int(11) NOT NULL," +
+        "    `name` varchar(255) DEFAULT NULL," +
+        "    `on_call` tinyint(1) DEFAULT NULL," +
+        "    `shift_id` int(11) DEFAULT NULL," +
+        "    PRIMARY KEY (`id`)," +
+        "    KEY `idx_shift_id` (`shift_id`)" +
+        "  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin")
+    return err
+}
+
+func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) error {
+    _, err := db.Exec("INSERT INTO `doctors` (`id`, `name`, `on_call`, `shift_id`) VALUES (?, ?, ?, ?)",
+        id, name, onCall, shiftID)
+    return err
+}
+```
+
+</div>
+
+</SimpleTab>
+
 SQL log:
 
 {{< copyable "sql" >}}
@@ -189,6 +367,10 @@ In both transactions, the application first checks if two or more doctors are on
 ![Write Skew](/media/develop/write-skew.png)
 
 Now let's change the sample program to use `SELECT FOR UPDATE` to avoid the write skew problem:
+
+<SimpleTab>
+
+<div label="Java" href="overcome-write-skew-java">
 
 {{< copyable "" >}}
 
@@ -310,6 +492,178 @@ public class EffectWriteSkew {
     }
 }
 ```
+
+</div>
+
+<div label="Golang" href="overcome-write-skew-golang">
+
+{{< copyable "" >}}
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "sync"
+
+    "github.com/pingcap-inc/tidb-example-golang/util"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    openDB("mysql", "root:@tcp(127.0.0.1:4000)/test", func(db *sql.DB) {
+        writeSkew(db)
+    })
+}
+
+func openDB(driverName, dataSourceName string, runnable func(db *sql.DB)) {
+    db, err := sql.Open(driverName, dataSourceName)
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    runnable(db)
+}
+
+func writeSkew(db *sql.DB) {
+    err := prepareData(db)
+    if err != nil {
+        panic(err)
+    }
+
+    waitingChan, waitGroup := make(chan bool), sync.WaitGroup{}
+
+    waitGroup.Add(1)
+    go func() {
+        defer waitGroup.Done()
+        err = askForLeave(db, waitingChan, 1, 1)
+        if err != nil {
+            panic(err)
+        }
+    }()
+
+    waitGroup.Add(1)
+    go func() {
+        defer waitGroup.Done()
+        err = askForLeave(db, waitingChan, 2, 2)
+        if err != nil {
+            panic(err)
+        }
+    }()
+
+    waitGroup.Wait()
+}
+
+func askForLeave(db *sql.DB, waitingChan chan bool, goroutineID, doctorID int) error {
+    txnComment := fmt.Sprintf("/* txn %d */ ", goroutineID)
+    if goroutineID != 1 {
+        txnComment = "\t" + txnComment
+    }
+
+    txn, err := util.TiDBSqlBegin(db, true)
+    if err != nil {
+        return err
+    }
+    fmt.Println(txnComment + "start txn")
+
+    // Txn 1 should be waiting until txn 2 is done.
+    if goroutineID == 1 {
+        <-waitingChan
+    }
+
+    txnFunc := func() error {
+        queryCurrentOnCall := "SELECT COUNT(*) AS `count` FROM `doctors` WHERE `on_call` = ? AND `shift_id` = ?"
+        rows, err := txn.Query(queryCurrentOnCall, true, 123)
+        if err != nil {
+            return err
+        }
+        defer rows.Close()
+        fmt.Println(txnComment + queryCurrentOnCall + " successful")
+
+        count := 0
+        if rows.Next() {
+            err = rows.Scan(&count)
+            if err != nil {
+                return err
+            }
+        }
+        rows.Close()
+
+        if count < 2 {
+            return fmt.Errorf("at least one doctor is on call")
+        }
+
+        shift := "UPDATE `doctors` SET `on_call` = ? WHERE `id` = ? AND `shift_id` = ?"
+        _, err = txn.Exec(shift, false, doctorID, 123)
+        if err == nil {
+            fmt.Println(txnComment + shift + " successful")
+        }
+        return err
+    }
+
+    err = txnFunc()
+    if err == nil {
+        txn.Commit()
+        fmt.Println("[runTxn] commit success")
+    } else {
+        txn.Rollback()
+        fmt.Printf("[runTxn] got an error, rollback: %+v\n", err)
+    }
+
+    // Txn 2 is done. Let txn 1 run again.
+    if goroutineID == 2 {
+        waitingChan <- true
+    }
+
+    return nil
+}
+
+func prepareData(db *sql.DB) error {
+    err := createDoctorTable(db)
+    if err != nil {
+        return err
+    }
+
+    err = createDoctor(db, 1, "Alice", true, 123)
+    if err != nil {
+        return err
+    }
+    err = createDoctor(db, 2, "Bob", true, 123)
+    if err != nil {
+        return err
+    }
+    err = createDoctor(db, 3, "Carol", false, 123)
+    if err != nil {
+        return err
+    }
+    return nil
+}
+
+func createDoctorTable(db *sql.DB) error {
+    _, err := db.Exec("CREATE TABLE IF NOT EXISTS `doctors` (" +
+        "    `id` int(11) NOT NULL," +
+        "    `name` varchar(255) DEFAULT NULL," +
+        "    `on_call` tinyint(1) DEFAULT NULL," +
+        "    `shift_id` int(11) DEFAULT NULL," +
+        "    PRIMARY KEY (`id`)," +
+        "    KEY `idx_shift_id` (`shift_id`)" +
+        "  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin")
+    return err
+}
+
+func createDoctor(db *sql.DB, id int, name string, onCall bool, shiftID int) error {
+    _, err := db.Exec("INSERT INTO `doctors` (`id`, `name`, `on_call`, `shift_id`) VALUES (?, ?, ?, ?)",
+        id, name, onCall, shiftID)
+    return err
+}
+```
+
+</div>
+
+</SimpleTab>
 
 SQL log:
 

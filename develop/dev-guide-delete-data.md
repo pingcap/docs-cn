@@ -92,6 +92,46 @@ try (Connection connection = ds.getConnection()) {
 ```
 
 </div>
+
+<div label="Golang" href="delete-golang">
+
+{{< copyable "" >}}
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "time"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/bookshop")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    startTime := time.Date(2022, 04, 15, 0, 0, 0, 0, time.UTC)
+    endTime := time.Date(2022, 04, 15, 0, 15, 0, 0, time.UTC)
+
+    bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?")
+    result, err := db.Exec(bulkUpdateSql, startTime, endTime)
+    if err != nil {
+        panic(err)
+    }
+    _, err = result.RowsAffected()
+    if err != nil {
+        panic(err)
+    }
+}
+```
+
+</div>
+
 </SimpleTab>
 
 > **Note:**
@@ -129,6 +169,11 @@ First, you write a `SELECT` query in a loop of your application or script. Use t
 ### Bulk-delete example
 
 Suppose you find an application error within a specific time period. You need to delete all the data for the [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-table) within this period, for example, from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`, and more than 10,000 records are written in 15 minutes. You can perform as follows.
+
+<SimpleTab>
+<div label="Java">
+
+In Java, the bulk-delete example is as follows:
 
 {{< copyable "" >}}
 
@@ -184,4 +229,65 @@ public class BatchDeleteExample
 }
 ```
 
-In each iteration, `SELECT` selects up to 1000 rows of primary key values for data in the time period from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`. Then it performs bulk-delete. Note that `TimeUnit.SECONDS.sleep(1);` at the end of each loop will cause the bulk-delete operation to pause for 1 second, preventing the bulk-delete operation from consuming too many hardware resources.
+In each iteration, `DELETE` deletes up to 1000 rows from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`.
+
+</div>
+
+<div label="Golang">
+
+In Golang, the bulk-delete example is as follows:
+
+{{< copyable "" >}}
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "time"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/bookshop")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    affectedRows := int64(-1)
+    startTime := time.Date(2022, 04, 15, 0, 0, 0, 0, time.UTC)
+    endTime := time.Date(2022, 04, 15, 0, 15, 0, 0, time.UTC)
+
+    for affectedRows != 0 {
+        affectedRows, err = deleteBatch(db, startTime, endTime)
+        if err != nil {
+            panic(err)
+        }
+    }
+}
+
+// deleteBatch delete at most 1000 lines per batch
+func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
+    bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ? LIMIT 1000")
+    result, err := db.Exec(bulkUpdateSql, startTime, endTime)
+    if err != nil {
+        return -1, err
+    }
+    affectedRows, err := result.RowsAffected()
+    if err != nil {
+        return -1, err
+    }
+
+    fmt.Printf("delete %d data\n", affectedRows)
+    return affectedRows, nil
+}
+```
+
+In each iteration, `DELETE` deletes up to 1000 rows from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`.
+
+</div>
+
+</SimpleTab>
