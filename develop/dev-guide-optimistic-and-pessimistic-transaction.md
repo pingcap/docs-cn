@@ -826,6 +826,8 @@ mysql> SELECT * FROM users;
 
 <div label="Java">
 
+使用 Java 编写乐观事务示例：
+
 **代码编写**
 
 {{< copyable "" >}}

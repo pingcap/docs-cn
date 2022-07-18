@@ -68,7 +68,7 @@ DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` 
 
 <div label="Java">
 
-在 JAVA 中，删除数据的示例如下：
+在 Java 中，删除数据的示例如下：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource

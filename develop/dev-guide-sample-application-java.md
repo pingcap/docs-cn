@@ -107,7 +107,7 @@ git clone https://github.com/pingcap-inc/tidb-example-java.git
 
 <SimpleTab>
 
-<div label="使用 JDBC" href="get-code-jdbc">
+<div label="使用 JDBC">
 
 进入目录 `plain-java-jdbc`：
 
@@ -583,7 +583,7 @@ public class JDBCExample
 
 </div>
 
-<div label="使用 Mybatis（推荐）" href="get-code-mybatis">
+<div label="使用 Mybatis（推荐）">
 
 可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码，并非最佳实践。
 
@@ -1170,7 +1170,7 @@ public class MybatisExample {
 
 </div>
 
-<div label="使用 Hibernate（推荐）" href="get-code-hibernate">
+<div label="使用 Hibernate（推荐）">
 
 可以看到，JDBC 实现的代码略显冗余，需要自己管控错误处理逻辑，且不能很好的复用代码。并非最佳实践。
 
@@ -1479,7 +1479,7 @@ public class HibernateExample
 
 <SimpleTab>
 
-<div label="使用 JDBC" href="jdbc-table-init-jdbc">
+<div label="使用 JDBC">
 
 > 在 Gitpod Playground 中尝试 JDBC: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
@@ -1503,7 +1503,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<src/main/resources/dbinit.sql
 
 </div>
 
-<div label="使用 Mybatis（推荐）" href="jdbc-table-init-mybatis">
+<div label="使用 Mybatis（推荐）">
 
 > 在 Gitpod Playground 中尝试 JDBC：[现在就试试](https://gitpod.io/#targetMode=plain-java-mybatis/https://github.com/pingcap-inc/tidb-example-java)
 
@@ -1527,7 +1527,7 @@ mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql
 
 </div>
 
-<div label="使用 Hibernate（推荐）" href="jdbc-table-init-hibernate">
+<div label="使用 Hibernate（推荐）">
 
 > 在 Gitpod Playground 中尝试 Hibernate: [现在就试试](https://gitpod.io/#targetMode=plain-java-jdbc/https://github.com/pingcap-inc/tidb-example-java)
 
@@ -1541,7 +1541,7 @@ mysql --host 127.0.0.1 --port 4000 -u root < src/main/resources/dbinit.sql
 
 <SimpleTab>
 
-<div label="使用 JDBC" href="tidb-cloud-jdbc">
+<div label="使用 JDBC">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
@@ -1575,7 +1575,7 @@ mysqlDataSource.setPassword("123456");
 
 </div>
 
-<div label="使用 Mybatis（推荐）" href="tidb-cloud-mybatis">
+<div label="使用 Mybatis（推荐）">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `mybatis-config.xml` 内关于 `dataSource.url`、`dataSource.username`、`dataSource.password` 的参数：
 
@@ -1654,7 +1654,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 </div>
 
-<div label="使用 Hibernate（推荐）" href="tidb-cloud-hibernate">
+<div label="使用 Hibernate（推荐）">
 
 若你使用非本地默认集群、TiDB Cloud 或其他远程集群，更改 `hibernate.cfg.xml` 内关于 hibernate.connection.url、hibernate.connection.username、hibernate.connection.password 的参数：
 
@@ -1730,7 +1730,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 <SimpleTab>
 
-<div label="使用 JDBC" href="run-jdbc">
+<div label="使用 JDBC">
 
 运行 `make`，这是以下两个操作的组合：
 
@@ -1741,7 +1741,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 </div>
 
-<div label="使用 Mybatis（推荐）" href="run-mybatis">
+<div label="使用 Mybatis（推荐）">
 
 运行 `make`，这是以下四个操作的组合：
 
@@ -1772,7 +1772,7 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 </div>
 
-<div label="使用 Hibernate（推荐）" href="run-hibernate">
+<div label="使用 Hibernate（推荐）">
 
 运行 `make`，这是以下两个操作的组合：
 
@@ -1789,13 +1789,13 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 
 <SimpleTab>
 
-<div label="使用 JDBC" href="output-jdbc">
+<div label="使用 JDBC">
 
 [JDBC 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-jdbc)
 
 </div>
 
-<div label="使用 Hibernate（推荐）" href="output-hibernate">
+<div label="使用 Hibernate（推荐）">
 
 [Hibernate 预期输出](https://github.com/pingcap-inc/tidb-example-java/blob/main/Expected-Output.md#plain-java-hibernate)
 
