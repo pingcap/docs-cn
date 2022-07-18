@@ -103,7 +103,6 @@ The following are some recommended operations for using BR:
 - It is recommended that you execute multiple backup or restoration operations one by one. Running backup or restoration operations in parallel reduces performance and also affects online applications. Worse still, lack of collaboration between multiple tasks might result in task failures and affect cluster performance.
 - Amazon S3, Google Cloud Storage, and Azure Blob Storage are recommended to store backup data.
 - Make sure that the BR and TiKV nodes, and the backup storage system have sufficient network bandwidth to ensure sound write/read performance. Insufficient storage capacity might be the bottleneck for a backup or restoration operation.
-- It is recommended that you disable the checksum feature (`--checksum = false`) during backup operations and only enable it during restoration operations. This is because BR by default respectively performs checksum calculation after backup and restoration operations to compare the stored data with the corresponding cluster data to ensure accuracy. Disabling this feature can reduce migration time.
 
 ### See also
 
