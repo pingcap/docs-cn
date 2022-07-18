@@ -125,16 +125,6 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
 
-### ORDERED_HASH_JOIN(t1_name [, tl_name ...])
-
-`ORDERED_HASH_JOIN(t1_name [, tl_name ...])` 提示优化器对指定表使用 Hash Join 算法，同时使用 Hint 中出现的第一个表来构建哈希表，执行 Hash Join 算法。除了 `TiDB_HJ` 别名之外的其他用法和注意事项和 `HASH_JOIN` 一致。例如：
-
-{{< copyable "sql" >}}
-
-```sql
-SELECT /*+ ORDERED_HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
-```
-
 ### HASH_AGG()
 
 `HASH_AGG()` 提示优化器对指定查询块中所有聚合函数使用 Hash Aggregation 算法。这个算法多线程并发执行，执行速度较快，但会消耗较多内存。例如：
