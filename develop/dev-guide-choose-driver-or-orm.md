@@ -53,6 +53,7 @@ TiDB 与 MySQL 有差异：
 > **注意：**
 >
 > Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 从 v6.2.0 版本开始支持[Savepoint](/sql-statements/sql-statement-savepoint.md)。
+>
 > 若你使用 Spring Data JPA 等框架，在 **@Transactional** 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
 
 你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
