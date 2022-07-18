@@ -18,7 +18,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
-    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。详情参阅 [统计信息简介 - `tidb_analyze_version = 2` 的介绍](https://docs.pingcap.com/zh/tidb/dev/statistics)。
+    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。详情参阅 [统计信息简介 - `tidb_analyze_version = 2` 的介绍](/statistics.md)。
 + 当 TiKV 部署的机型资源有限时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用[前台限流](/tikv-configuration-file.md#quota)以限制前台各类请求占用的 CPU 资源。（v6.0 实验特性）
 
 ## 调度功能
