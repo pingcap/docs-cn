@@ -46,7 +46,7 @@ scrape_configs:
 
 [Grafana](https://grafana.com/) is a web interface to visualize Prometheus metrics as dashboards.
 
-When you [deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md) and have added Grafana and Prometheus in the topology configuration, a set of [Grafana + Prometheus monitoring platform](/tidb-monitoring-framework.md) is deployed simultaneously. In this situation, you must first import [the JSON file of the dashboard](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json).
+When you [deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md) and have added Grafana and Prometheus in the topology configuration, a set of [Grafana + Prometheus monitoring platform](/tidb-monitoring-framework.md) is deployed simultaneously. In this situation, you must first import [the JSON file of the dashboard](https://raw.githubusercontent.com/pingcap/tidb/master/br/metrics/grafana/lightning.json).
 
 ### Row 1: Speed
 
