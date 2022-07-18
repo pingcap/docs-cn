@@ -367,6 +367,7 @@
     - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
     - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
     - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
+    - [磁盘配额](/tidb-lightning/tidb-lightning-disk-quota.md)
     - [故障处理](/tidb-lightning/troubleshoot-tidb-lightning.md)
     - 参考手册
       - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
