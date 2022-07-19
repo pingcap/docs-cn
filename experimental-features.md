@@ -9,10 +9,9 @@ summary: 了解 TiDB 各版本的实验特性。
 
 ## 稳定性
 
-+ TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（v5.0 实验特性）
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
-    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。
+    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。详情参阅[统计信息简介 - `tidb_analyze_version = 2` 的介绍](/statistics.md)。
 
 ## 调度功能
 
@@ -44,7 +43,6 @@ summary: 了解 TiDB 各版本的实验特性。
 
 + [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan实验功能)。
 + [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。
-+ TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
 
 ## 备份与恢复
 
