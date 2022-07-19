@@ -681,7 +681,7 @@ TiCDC 在 v6.2.0 中新增了事件过滤器功能，用户可以通过配置该
 [[filter.event-filters]]
 matcher = ["test.worker"] # 该过滤规则只会对 test 库中的 worker 表进行应用
 ignore-event = ["insert"] # 过滤掉 insert 事件
-ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者 包含 "add column" 的 DDL
+ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含列名为 name 且值为 'john' 的 delete DML
 ignore-insert-value-expr = "id >= 100" # 过滤掉包含列名为 id 且值大于等于 100 的 insert DML 
 ignore-update-old-value-expr = "age < 18" # 过滤掉包含列名为 age 且旧值小于 18 的 update DML
