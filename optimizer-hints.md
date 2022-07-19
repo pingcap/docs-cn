@@ -288,13 +288,26 @@ SHOW WARNINGS;
 
 ### MERGE()
 
-`MERGE()` 会关闭在执行[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中对当前子查询的物化过程，并将内部查询内联展开到外部查询。该Hint适用于非递归的公共表表达式查询，某些场景下，会比默认开辟一块临时空间的效果更好。例如将外部查询的条件下推： 
+`MERGE()` 会关闭在执行[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中对当前子查询的物化过程，并将内部查询内联展开到外部查询。该 Hint 适用于非递归的公共表表达式查询，某些场景下，会比默认开辟一块临时空间的效果更好。例如将外部查询的条件下推以及嵌套的 CTE 查询： 
 
 {{< copyable "sql" >}}
 
 ```sql
+-- 利用 Hint 将外部查询条件谓词下推
 WITH CTE AS (SELECT /*+ MERGE() */ * FROM tc WHERE tc.a < 60) SELECT * FROM CTE WHERE CTE.a <18;
+-- 在嵌套 CTE 查询中应用该 Hint 来指定某个 CTE 内联展开到外部查询
+with cte1 as (select * from tc), cte2 as (with cte3 as (select /*+ MERGE() */ * from te) ,cte4 as (select * from tc) select * from cte3,cte4) select * from cte2;
 ```
+
+> **注意：**
+>
+> `MERGE()` 适用于简单的 CTE 查询，但在某些场景下无法使用该 Hint: 
+>
+> - 对于[递归的CTE](/develop/dev-guide-use-common-table-expression.md#递归的-CTE)
+> - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及`DINSTINCT`等。 
+>
+> 特别地，当 CTE 引用次数过多时，性能可能不如默认物化的方式。
+
 
 ## 查询范围生效的 Hint
 
