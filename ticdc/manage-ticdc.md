@@ -632,6 +632,7 @@ rules = ['*.*', '!test.*']
 
 # 事件过滤器规则 (TiCDC v6.2.0 新增功能)
 # 事件过滤器的详细配置规则在下方的 Event Filter 配置规则中描述
+# 第一个事件过滤器规则
 [[filter.event-filters]]
 matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则只会对 test 库中的 worker 表进行应用
 ignore-event = ["insert"] # 过滤掉 insert 事件
@@ -641,16 +642,12 @@ ignore-insert-value-expr = "id >= 100" # 过滤掉包含列名为 id 且值大�
 ignore-update-old-value-expr = "age < 18" # 过滤掉包含列名为 age 且旧值小于 18 的 update DML
 ignore-update-new-value-expr = "gender = 'male'" # 过滤掉包含列名为 gender 且新值等于 male 的 update DML
 
+# 第二个事件过滤器规则
 [[filter.event-filters]]
 matcher = ["test.fruit"] # 该事件过滤器只会应用于 test.fruit 这张表
 ignore-event = ["drop table"] # 忽略 drop table 事件
 ignore-sql = ["delete"] # 忽略 delete DML
 ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略列 price 值大于 1000, 并且 origin 列值为 'no where' 的 insert DML
-
-# 注意: TiCDC v6.1.0 版本之后已经移除该配置项，用户配置该项时不会生效。
-[mounter]
-# mounter 线程数，用于解码 TiKV 输出的数据
-worker-num = 16
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
@@ -670,13 +667,13 @@ protocol = "canal-json"
 
 ### Event Filter 配置规则 <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-TiCDC 在 v6.2.0 中新增了事件过滤器功能，用户可以通过配置该规则来过滤指定 DML 和 DDL 事件。
+TiCDC 在 v6.2.0 中新增了事件过滤器功能，用户可以通过配置该规则来过滤符合指定条件的 DML 和 DDL 事件。
 
 一个事件过滤器的配置规则的例子如下：
 
 ```toml
 [filter]
-# 事件过滤器的规则应该写在 filter 配置项之下
+# 事件过滤器的规则应该写在 filter 配置项之下，可以同时配置多个事件过滤器。
 
 [[filter.event-filters]]
 matcher = ["test.worker"] # 该过滤规则只会对 test 库中的 worker 表进行应用
