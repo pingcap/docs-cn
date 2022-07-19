@@ -3,7 +3,7 @@ title: ALTER TABLE ... SET TIFLASH MODE ...
 summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用概况。
 ---
 
-# `ALTER TABLE ... SET TIFLASH MODE ... `
+# `ALTER TABLE ... SET TIFLASH MODE ...`
 
 > **警告：**
 >
