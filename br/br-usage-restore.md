@@ -74,7 +74,7 @@ BR 可恢复的**系统权限相关数据**包括如下表：
 
 > **注意：**
 >
-> - 恢复系统权限表仅针对备份集群和恢复集群版本 >= v5.4.0 的版本，之前的集群版本建议使用旧版本 BR 或者按下述方式显式设置 `--filter`。
+> - 恢复系统权限表仅针对备份集群和恢复集群版本 >= v5.4.0 的版本，之前的集群版本建议使用与其版本相同的 BR 或者按下述方式显式设置 `--filter`。
 
 自 v6.2.0 起，BR 恢复数据前会检查以下两项：
 
@@ -236,8 +236,6 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 > - 统计信息表（`mysql.stat_*`）
 > - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
 > - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
->
-> 使用显式设置 `-filter` 的方式恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中使用这种方式恢复系统表。
 
 ## 恢复性能和影响
 
