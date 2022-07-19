@@ -7,7 +7,7 @@ aliases: ['/zh/tidb/dev/use-fast-mode']
 
 本章将介绍通过使用 fast mode 来加速 AP 场景的查询的方法。
 
-## 概述：
+## 概述
 
 TiFlash 中的表默认属于 Normal Mode，在 Normal Mode 下，对应表的查询结果提供了数据一致性的保证，来提供了精准的查询结果。
 
@@ -46,6 +46,7 @@ ALTER TABLE table_name SET TIFALSH MODE NORMAL
 TiFlash 中的存储层中，数据主要存放在 Delta 部分和 Stable 部分。
 
 Normal Mode 中 TableScan 算子过程整体包括了以下步骤:
+
 1. Read data : 在 Delta 层 和 Stable 层分别建立数据流，进行各自数据的读取。
 2. Sort Merge : 将步骤1中建立的数据流进行合并，并且将数据按照 (handle,version) 顺序排列返回。
 3. Range Filter : 对步骤2中的数据进行数据范围的过滤筛选并返回。
