@@ -76,4 +76,5 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 | 单个事务最大语句数 |  在使用乐观事务并开启事务重试的情况下，默认限制 5000，可通过 [`stmt-count-limit`](/tidb-configuration-file.md#stmt-count-limit) 调整 |
 
 ## TiKV 版本的限制
+
 6.2.0 及以上版本的 TiDB 要求 TiKV 的最小版本为 6.2.0。
