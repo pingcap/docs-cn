@@ -56,7 +56,7 @@ TiDB Operator 运行在 Kubernetes 集群。在搭建好 Kubernetes 集群后，
 
 | 安装包 | 操作系统 | 架构 | SHA256 校验和 |
 |:---|:---|:---|:---|
-| `https://download.pingcap.org/tidb-dm-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/dm-{version}-linux-amd64.sha256` |
+| `https://download.pingcap.org/tidb-dm-{version}-linux-amd64.tar.gz` | Linux | amd64 | `https://download.pingcap.org/tidb-dm-{version}-linux-amd64.sha256` |
 
 > **注意：**
 >
