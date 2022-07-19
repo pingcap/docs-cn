@@ -303,7 +303,7 @@ with cte1 as (select * from tc), cte2 as (with cte3 as (select /*+ MERGE() */ * 
 >
 > `MERGE()` 适用于简单的 CTE 查询，但在某些场景下无法使用该 Hint: 
 >
-> - 对于[递归的CTE](/develop/dev-guide-use-common-table-expression.md#递归的-CTE)
+> - 对于[递归的CTE](/develop/dev-guide-use-common-table-expression.md#递归的-cte)
 > - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及`DINSTINCT`等。 
 >
 > 特别地，当 CTE 引用次数过多时，性能可能不如默认物化的方式。
