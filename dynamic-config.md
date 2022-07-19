@@ -248,7 +248,7 @@ The following PD configuration items can be modified online:
 | :--- | :--- |
 | `log.level` | The log level |
 | `cluster-version` | The cluster version |
-| `schedule.max-merge-region-size` | Controls the size limit of `Region Merge` (in MB) |
+| `schedule.max-merge-region-size` | Controls the size limit of `Region Merge` (in MiB) |
 | `schedule.max-merge-region-keys` | Specifies the maximum numbers of the `Region Merge` keys |
 | `schedule.patrol-region-interval` | Determines the frequency at which `replicaChecker` checks the health state of a Region |
 | `schedule.split-merge-interval` | Determines the time interval of performing split and merge operations on the same Region |

@@ -178,10 +178,10 @@ Usage:
     config set max-pending-peer-count 64  // Set the maximum number of pending peers to 64
     ```
 
-- `max-merge-region-size` controls the upper limit on the size of Region Merge (the unit is M). When `regionSize` exceeds the specified value, PD does not merge it with the adjacent Region. Setting it to 0 indicates disabling Region Merge.
+- `max-merge-region-size` controls the upper limit on the size of Region Merge (the unit is MiB). When `regionSize` exceeds the specified value, PD does not merge it with the adjacent Region. Setting it to 0 indicates disabling Region Merge.
 
     ```bash
-    config set max-merge-region-size 16 // Set the upper limit on the size of Region Merge to 16M
+    config set max-merge-region-size 16 // Set the upper limit on the size of Region Merge to 16 MiB
     ```
 
 - `max-merge-region-keys` controls the upper limit on the key count of Region Merge. When `regionKeyCount` exceeds the specified value, PD does not merge it with the adjacent Region.

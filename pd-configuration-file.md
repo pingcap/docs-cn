@@ -182,6 +182,7 @@ Configuration items related to scheduling
 
 + Controls the size limit of `Region Merge`. When the Region size is greater than the specified value, PD does not merge the Region with the adjacent Regions.
 + Default value: `20`
++ Unit: MiB
 
 ### `max-merge-region-keys`
 
