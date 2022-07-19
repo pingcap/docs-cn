@@ -675,6 +675,9 @@ TiCDC 在 v6.2.0 中新增了事件过滤器功能，用户可以通过配置该
 一个事件过滤器的配置规则的例子如下：
 
 ```toml
+[filter]
+# 事件过滤器的规则应该写在 filter 配置项之下
+
 [[filter.event-filters]]
 matcher = ["test.worker"] # 该过滤规则只会对 test 库中的 worker 表进行应用
 ignore-event = ["insert"] # 过滤掉 insert 事件
