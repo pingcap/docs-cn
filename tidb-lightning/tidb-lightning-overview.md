@@ -1,62 +1,48 @@
 ---
 title: TiDB Lightning 简介
-aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/reference/tools/tidb-lightning/overview/','/docs-cn/tools/lightning/overview-architecture/']
+aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-overview/','/docs-cn/dev/reference/tools/tidb-lightning/overview/','/docs-cn/tools/lightning/overview-architecture/','/zh/tidb/dev/tidb-lightning-backends/','/docs-cn/dev/tidb-lightning/tidb-lightning-backends/','/docs-cn/dev/reference/tools/tidb-lightning/backend/','/zh/tidb/dev/tidb-lightning-tidb-backend','/docs-cn/dev/tidb-lightning/tidb-lightning-tidb-backend/','/docs-cn/dev/loader-overview/','/docs-cn/dev/reference/tools/loader/','/docs-cn/tools/loader/','/docs-cn/dev/load-misuse-handling/','/docs-cn/dev/reference/tools/error-case-handling/load-misuse-handling/','/zh/tidb/dev/loader-overview/']
 ---
 
 # TiDB Lightning 简介
 
-TiDB Lightning 是一个将全量数据高速导入到 TiDB 集群的工具，可[在此下载](/download-ecosystem-tools.md)。
-
-TiDB Lightning 有以下两个主要的使用场景：
-
-- **迅速**导入**大量新**数据。
-- 恢复所有备份数据。
-
-目前，TiDB Lightning 支持：
-
-- 导入 [Dumpling](/dumpling-overview.md)输出的数据、CSV 文件或 [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)。
-- 从本地盘或 [Amazon S3 云盘](/br/backup-and-restore-storages.md)读取数据。
+TiDB Lightning 是用于从静态文件导入 TB 级数据到 TiDB 集群的工具，常用于 TiDB 集群的初始化数据导入。
 
 要快速了解 Lightning 的基本原理和使用方法，建议先观看下面的培训视频（时长 32 分钟）。注意本视频只为学习参考，具体操作步骤和最新功能，请以文档内容为准。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+19.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+19.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson19_lightning.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+19.png"></video>
+
+TiDB Lightning 支持以下文件类型：
+
+- [Dumpling](/dumpling-overview.md) 生成的文件
+- CSV 文件
+- [Amazon Aurora 生成的 Apache Parquet 文件](/migrate-aurora-to-tidb.md)
+
+TiDB Lightning 支持从以下位置读取：
+
+- 本地
+- [Amazon S3](/br/backup-and-restore-storages.md#s3-的-url-参数)
+- [Google GCS](/br/backup-and-restore-storages.md#gcs-的-url-参数)
 
 ## TiDB Lightning 整体架构
 
 ![TiDB Lightning 整体架构](/media/tidb-lightning-architecture.png)
 
-TiDB Lightning 整体工作原理如下：
+TiDB Lightning 目前支持两种导入方式，通过`backend`配置区分。不同的模式决定 TiDB Lightning 如何将数据导入到目标 TiDB 集群。
 
-1. 在导入数据之前，`tidb-lightning` 会自动将 TiKV 集群切换为“导入模式” (import mode)，优化写入效率并停止自动压缩。
+- [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md)：TiDB Lightning 首先将数据编码成键值对并排序存储在本地临时目录，然后将这些键值对上传到各个 TiKV 节点，最后调用 TiKV Ingest 接口将数据插入到 TiKV 的 RocksDB 中。如果用于初始化导入，请优先考虑使用 Physical Import Mode，其拥有较高的导入速度。
 
-2. `tidb-lightning` 会在目标数据库建立架构和表，并获取其元数据。
+- [Logical Import Mode](/tidb-lightning/tidb-lightning-logical-import-mode.md)：TiDB Lightning 先将数据编码成 SQL，然后直接运行这些 SQL 语句进行数据导入。如果需要导入的集群为生产环境线上集群，或需要导入的目标表中已包含有数据，则应使用 Logical Import Mode。
 
-3. 每张表都会被分割为多个连续的**区块**，这样来自大表 (200 GB+) 的数据就可以用增量方式并行导入。
+| 导入模式 | Physical Import Mode | Logical Import Mode |
+|:---|:---|:---|
+| 速度 | 快 (100 ~ 500 GiB/小时) | 慢 (10 ~ 50 GiB/小时) |
+| 资源使用率 | 高 | 低 |
+| 占用网络带宽 | 高 | 低 |
+| 导入时是否满足 ACID | 否 | 是 |
+| 目标表 | 必须为空 |  可以不为空 |
+| 支持 TiDB 集群版本 | >= v4.0.0| 全部 |
+| 导入期间是否允许 TiDB 对外提供服务 | 否 | 是 |
 
-4. `tidb-lightning` 会为每一个区块准备一个“引擎文件 (engine file)”来处理键值对。`tidb-lightning` 会并发读取 SQL dump，将数据源转换成与 TiDB 相同编码的键值对，然后将这些键值对排序写入本地临时存储文件中。
-
-5. 当一个引擎文件数据写入完毕时，`tidb-lightning` 便开始对目标 TiKV 集群数据进行分裂和调度，然后导入数据到 TiKV 集群。
-
-    引擎文件包含两种：**数据引擎**与**索引引擎**，各自又对应两种键值对：行数据和次级索引。通常行数据在数据源里是完全有序的，而次级索引是无序的。因此，数据引擎文件在对应区块写入完成后会被立即上传，而所有的索引引擎文件只有在整张表所有区块编码完成后才会执行导入。
-
-6. 整张表相关联的所有引擎文件完成导入后，`tidb-lightning` 会对比本地数据源及下游集群的校验和 (checksum)，确保导入的数据无损，然后让 TiDB 分析 (`ANALYZE`) 这些新增的数据，以优化日后的操作。同时，`tidb-lightning` 调整 `AUTO_INCREMENT` 值防止之后新增数据时发生冲突。
-
-    表的自增 ID 是通过行数的**上界**估计值得到的，与表的数据文件总大小成正比。因此，最后的自增 ID 通常比实际行数大得多。这属于正常现象，因为在 TiDB 中自增 ID [不一定是连续分配的](/mysql-compatibility.md#自增-id)。
-
-7. 在所有步骤完毕后，`tidb-lightning` 自动将 TiKV 切换回“普通模式” (normal mode)，此后 TiDB 集群可以正常对外提供服务。
-
-如果需要导入的目标集群是 v3.x 或以下的版本，需要使用 Importer-backend 来完成数据的导入。在这个模式下，`tidb-lightning` 需要将解析的键值对通过 gRPC 发送给 `tikv-importer` 并由 `tikv-importer` 完成数据的导入。
-
-TiDB Lightning 还支持使用 TiDB-backend 作为后端导入数据：`tidb-lightning` 将数据转换为 `INSERT` 语句，然后直接在目标集群上执行这些语句。详见 [TiDB Lightning Backends](/tidb-lightning/tidb-lightning-backends.md)。
-
-## 使用限制
-
-* TiDB Lightning 与 TiFlash 一起使用时需要注意：
-
-    无论是否已为一张表创建 TiFlash 副本，你都可以使用 TiDB Lightning 导入数据至该表。但该场景下，TiDB Lightning 导入数据耗费的时间更长，具体取决于 TiDB Lightning 部署机器的网卡带宽、TiFlash 节点的 CPU 及磁盘负载及 TiFlash 副本数等因素。
-
-* TiDB Lightning 与 TiDB 一起使用时需要注意：
-
-    TiDB Lightning 在 v5.4.0 之前不支持导入 `charset=GBK` 的表。
-
-* 如果源数据是 Apache Parquet 文件，TiDB Lightning 目前只支持由 Amazon Aurora 生成的 Apache Parquet 文件。
+> **注意：**
+>
+> 以上性能数据用于对比两种模式的导入性能差异，实际导入速度受硬件配置、表结构、索引数量等多方面因素影响。

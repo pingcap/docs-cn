@@ -273,7 +273,7 @@ ALTER TABLE {table_name} SET TIFLASH REPLICA {count};
 - `{table_name}`: 表名。
 - `{count}`: 同步副本数，若为 0，则表示删除同步副本。
 
-随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tiflash.md#使用-tidb-读取-tiflash) 文档。
+随后，TiFlash 将同步该表，查询时，TiDB 将会自动基于成本优化，考虑使用 **TiKV (行存)** 或 **TiFlash (列存)** 进行数据查询。当然，除了自动的方法，你也可以直接指定查询是否使用 TiFlash 副本，使用方法可查看[使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md) 文档。
 
 ### 使用 HTAP 的示例
 

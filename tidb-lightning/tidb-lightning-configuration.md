@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/tidb-lightning/tidb-lightning-configuration/','/docs-cn/
 
 # TiDB Lightning 配置参数
 
-你可以使用配置文件或命令行配置 TiDB Lightning。本文主要介绍 TiDB Lightning 的全局配置、任务配置和 TiKV Importer 的配置，以及如何使用命令行进行参数配置。
+你可以使用配置文件或命令行配置 TiDB Lightning。本文主要介绍 TiDB Lightning 的全局配置、任务配置，以及如何使用命令行进行参数配置。
 
 ## 配置文件
 
@@ -110,30 +110,31 @@ driver = "file"
 # keep-after-success = false
 
 [tikv-importer]
-# "local"：默认使用该模式，适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
-# "tidb"：TB 级以下数据量也可以采用 "tidb" 后端模式，下游 TiDB 可正常提供服务。
+# "local"：Physical Import Mode，默认使用。适用于 TB 级以上大数据量，但导入期间下游 TiDB 无法对外提供服务。
+# "tidb"：Logical Import Mode。TB 级以下数据量可以采用，下游 TiDB 可正常提供服务。
 # backend = "local"
 # 是否允许向已存在数据的表导入数据。默认值为 false。
 # 当使用并行导入模式时，由于多个 TiDB Lightning 实例同时导入一张表，因此此开关必须设置为 true。
 # incremental-import = false
 # 当后端是 “importer” 时，tikv-importer 的监听地址（需改为实际地址）。
 addr = "172.16.31.10:8287"
-# 当后端是 “tidb” 时，插入重复数据时执行的操作。
+# Logical Import Mode 插入重复数据时执行的操作。
 # - replace：新数据替代已有数据
 # - ignore：保留已有数据，忽略新数据
 # - error：中止导入并报错
 # on-duplicate = "replace"
-# 当后端模式为 'local' 时，设置是否检测和解决重复的记录（唯一键冲突）。
+
+# Physical Import Mode 设置是否检测和解决重复的记录（唯一键冲突）。
 # 目前支持三种解决方法：
 #  - record: 仅将重复记录添加到目的 TiDB 中的 `lightning_task_info.conflict_error_v1` 表中。注意，该方法要求目的 TiKV 的版本为 v5.2.0 或更新版本。如果版本过低，则会启用下面的 'none' 模式。
 #  - none: 不检测重复记录。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
 #  - remove: 记录所有的重复记录，和 'record' 模式相似。但是会删除所有的重复记录，以确保目的 TiDB 中的数据状态保持一致。
 # duplicate-resolution = 'none'
-# 当后端是 “local” 时，一次请求中发送的 KV 数量。
+# Physical Import Mode 一次请求中发送的 KV 数量。
 # send-kv-pairs = 32768
-# 当后端是 “local” 时，本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
+# Physical Import Mode 本地进行 KV 排序的路径。如果磁盘性能较低（如使用机械盘），建议设置成与 `data-source-dir` 不同的磁盘，这样可有效提升导入性能。
 # sorted-kv-dir = ""
-# 当后端是 “local” 时，TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
+# Physical Import Mode TiKV 写入 KV 数据的并发度。当 TiDB Lightning 和 TiKV 直接网络传输速度超过万兆的时候，可以适当增加这个值。
 # range-concurrency = 16
 
 [mydumper]
@@ -265,10 +266,10 @@ max-allowed-packet = 67_108_864
 # 此服务的私钥。默认为 `security.key-path` 的副本
 # key-path = "/path/to/lightning.key"
 
-# 对于 Local Backend 模式，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
+# 对于 Physical Import Mode，数据导入完成后，TiDB Lightning 可以自动执行 Checksum 和 Analyze 操作。
 # 在生产环境中，建议总是开启 Checksum 和 Analyze。
 # 执行的顺序为：Checksum -> Analyze。
-# 注意：对于 TiDB Backend, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
+# 注意：对于 Logical Import Mode, 无须执行这两个阶段，因此在实际运行时总是会直接跳过。
 [post-restore]
 # 配置是否在导入完成后对每一个表执行 `ADMIN CHECKSUM TABLE <table>` 操作来验证数据的完整性。
 # 可选的配置项：
@@ -295,85 +296,6 @@ switch-mode = "5m"
 log-progress = "5m"
 ```
 
-### TiKV Importer 配置参数
-
-```toml
-# TiKV Importer 配置文件模版
-
-# 日志文件
-log-file = "tikv-importer.log"
-# 日志等级：trace, debug, info, warn, error 和 off
-log-level = "info"
-
-# 状态服务器的监听地址。
-# Prometheus 可以从这个地址抓取监控指标。
-status-server-address = "0.0.0.0:8286"
-
-[server]
-# tikv-importer 的监听地址，tidb-lightning 需要连到这个地址进行数据写入。
-addr = "0.0.0.0:8287"
-# gRPC 服务器的线程池大小。
-grpc-concurrency = 16
-
-[metric]
-# 当使用 Prometheus Pushgateway 时会涉及相关设置。通常可以通过 Prometheus 从 状态服务器地址中抓取指标。
-# 给 Prometheus 客户端推送的 job 名称。
-job = "tikv-importer"
-# 给 Prometheus 客户端推送的间隔。
-interval = "15s"
-# Prometheus Pushgateway 的地址。
-address = ""
-
-[rocksdb]
-# background job 的最大并发数。
-max-background-jobs = 32
-
-[rocksdb.defaultcf]
-# 数据在刷新到硬盘前能存于内存的容量上限。
-write-buffer-size = "1GB"
-# 内存中写缓冲器的最大数量。
-max-write-buffer-number = 8
-
-# 各个压缩层级使用的算法。
-# 第 0 层的算法用于压缩 KV 数据。
-# 第 6 层的算法用于压缩 SST 文件。
-# 第 1 至 5 层的算法目前尚未使用。
-compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-
-[rocksdb.writecf]
-# 同上
-compression-per-level = ["lz4", "no", "no", "no", "no", "no", "lz4"]
-
-[security]
-# TLS 证书的路径。空字符串表示禁用安全连接。
-# ca-path = ""
-# cert-path = ""
-# key-path = ""
-
-[import]
-# 存储引擎文件的文件夹路径
-import-dir = "/mnt/ssd/data.import/"
-# 处理 RPC 请求的线程数
-num-threads = 16
-# 导入 job 的并发数。
-num-import-jobs = 24
-# 预处理 Region 最长时间。
-# max-prepare-duration = "5m"
-# 把要导入的数据切分为这个大小的 Region。
-#region-split-size = "512MB"
-# 设置 stream-channel-window 的大小。
-# channel 满了之后 stream 会处于阻塞状态。
-# stream-channel-window = 128
-# 同时打开引擎文档的最大数量。
-max-open-engines = 8
-# Importer 上传至 TiKV 的最大速度（字节/秒）。
-# upload-speed-limit = "512MB"
-# 目标存储可用空间比率（store_available_space/store_capacity）的最小值。
-# 如果目标存储空间的可用比率低于该值，Importer 将会暂停上传 SST
-# 来为 PD 提供足够时间进行 Regions 负载均衡。
-min-available-ratio = 0.05
-```
-
 ## 命令行参数
 
 ### `tidb-lightning`
@@ -387,7 +309,7 @@ min-available-ratio = 0.05
 | -d *directory* | 读取数据的本地目录或[外部存储 URL](/br/backup-and-restore-storages.md) | `mydumper.data-source-dir` |
 | -L *level* | 日志的等级： debug、info、warn、error 或 fatal (默认为 info) | `lightning.log-level` |
 | -f *rule* | [表库过滤的规则](/table-filter.md) (可多次指定) | `mydumper.filter` |
-| --backend [*backend*](/tidb-lightning/tidb-lightning-backends.md) | 选择后端的模式：`local`、`importer` 或 `tidb` | `tikv-importer.backend` |
+| --backend [*backend*](/tidb-lightning/tidb-lightning-overview.md) | 选择导入的模式：`local`为 Physical Import Mode ，`tidb`为 Logical Import Mode  | `local` |
 | --log-file *file* | 日志文件路径（默认值为 `/tmp/lightning.log.{timestamp}`, 设置为 '-' 表示日志输出到终端） | `lightning.log-file` |
 | --status-addr *ip:port* | TiDB Lightning 服务器的监听地址 | `lightning.status-port` |
 | --importer *host:port* | TiKV Importer 的地址 | `tikv-importer.addr` |
@@ -427,17 +349,3 @@ min-available-ratio = 0.05
 *tablename* 必须是`` `db`.`tbl` `` 中的限定表名（包括反引号），或关键词 `all`。
 
 此外，上表中所有 `tidb-lightning` 的参数也适用于 `tidb-lightning-ctl`。
-
-### `tikv-importer`
-
-使用 `tikv-importer` 可以对下列参数进行配置：
-
-| 参数 | 描述 | 对应配置项 |
-|:----|:----|:-------|
-| -C, --config *file* | 从 *file* 读取配置。如果没有指定，则使用默认设置| |
-| -V, --version | 输出程序的版本 | |
-| -A, --addr *ip:port* | TiKV Importer 服务器的监听地址 | `server.addr` |
-| --status-server *ip:port* | 状态服务器的监听地址 | `status-server-address` |
-| --import-dir *dir* | 引擎文件的存储目录 | `import.import-dir` |
-| --log-level *level* | 日志的等级： trace、debug、info、warn、error 或 off | `log-level` |
-| --log-file *file* | 日志文件路径 | `log-file` |

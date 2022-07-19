@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-tool/','/docs-cn/dev/reference/too
 
 # BR 简介
 
-[BR](https://github.com/pingcap/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
+[BR](https://github.com/pingcap/tidb/tree/master/br) 全称为 Backup & Restore，是 TiDB **分布式备份恢复**的命令行工具，用于对 TiDB 集群进行数据备份和恢复。BR 除了可以用来进行常规的备份恢复外，也可以在保证兼容性前提下用来做大规模的数据迁移。
 
 本文介绍了 BR 的架构、功能和使用前须知（限制、使用建议）。
 
@@ -100,8 +100,7 @@ BR 内置版本会在执行备份和恢复操作前，对 TiDB 集群版本和�
 - BR 只支持恢复数据到新集群，会尽可能多的使用恢复集群的资源。不推荐向正在提供服务的生产集群执行恢复，恢复期间会对业务产生不可避免的影响；
 - 不推荐多个 BR 备份和恢复任务并行运行。不同的任务并行，不仅会导致备份或恢复的性能降低，影响在线业务；还会因为任务之间缺少协调机制造成任务失败，甚至对集群的状态产生影响；
 - 推荐使用支持 S3/GCS/Azure Blob Storage 协议的存储系统保存备份数据；
-- 应确保 BR、TiKV 节点和备份存储系统有足够的网络带宽，备份存储系统能提供足够的写入/读取性能，否则，它们有可能成为备份恢复时的性能瓶颈；
-- BR 默认会分别在备份、恢复完成后，进行一轮数据校验，将备份数据的 checksum 同集群 [admin checksum table](/sql-statements/sql-statement-admin-checksum-table.md) 的结果比较，来保证正确性。但是 `admin checksum table` 执行耗时久，并且对集群性能影响比较大，可以根据你的情况，选择备份时关闭校验(`--checksum=false`)，只在恢复时开启校验。
+- 应确保 BR、TiKV 节点和备份存储系统有足够的网络带宽，备份存储系统能提供足够的写入/读取性能，否则，它们有可能成为备份恢复时的性能瓶颈。
 
 ### 探索更多
 
