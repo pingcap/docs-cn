@@ -215,7 +215,7 @@ br debug checksum \
 
 ### 将备份的 backupmeta 解码为 json 格式的可读文件
 
-在备份完成后，可通过 `tiup br debug decode` 命令将备份的 `backupmeta` 解码为 json 格式的可读文件，从而查看每个备份文件的键范围、键值对总数等元信息。
+在备份完成后，可通过 `tiup br debug decode` 命令将备份的 `backupmeta` 解码为 json 格式的可读文件，从而查看快照对应的 TSO 等元信息。
 
 用例：在 Amazon S3 上名为 `backup-data` 的 bucket 下，将 `${prefix}` 前缀目录下备份的 `backupmeta` 解码为 json 格式的文件 `backupmeta.json`，解码后的文件存储路径为 `s3://backup-data/${prefix}/backupmeta.json`。
 
@@ -225,6 +225,8 @@ br debug decode \
     --s3.endpoint '${S3-endpoint-URL}' \
     --log-file decode-backupmeta.log
 ```
+
+然后打开 `backupmeta.json` 文件，搜索 `end_version` 可以查看到快照对应的 TSO。
 
 如有需要，你也可以将 json 格式的 `backupmeta` 文件编码回解码前的状态。执行 `tiup br debug encode` 命令，生成的文件名为 `backupmeta_from_json`。
 
