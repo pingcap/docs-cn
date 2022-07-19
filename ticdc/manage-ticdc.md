@@ -630,11 +630,11 @@ ignore-txn-start-ts = [1, 2]
 # 过滤规则语法：https://docs.pingcap.com/zh/tidb/stable/table-filter#表库过滤语法
 rules = ['*.*', '!test.*']
 
-# 事件过滤器规则 (TiCDC v6.2.0 新增功能)
+# 事件过滤器规则
 # 事件过滤器的详细配置规则在下方的 Event Filter 配置规则中描述
 # 第一个事件过滤器规则
 [[filter.event-filters]]
-matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则只会对 test 库中的 worker 表进行应用
+matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则只应用于 test 库中的 worker 表
 ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含列名为 name 且值为 'john' 的 delete DML
@@ -644,7 +644,7 @@ ignore-update-new-value-expr = "gender = 'male'" # 过滤掉包含列名为 gend
 
 # 第二个事件过滤器规则
 [[filter.event-filters]]
-matcher = ["test.fruit"] # 该事件过滤器只会应用于 test.fruit 这张表
+matcher = ["test.fruit"] # 该事件过滤器只应用于 test.fruit 表
 ignore-event = ["drop table"] # 忽略 drop table 事件
 ignore-sql = ["delete"] # 忽略 delete DML
 ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略列 price 值大于 1000, 并且 origin 列值为 'no where' 的 insert DML
@@ -667,16 +667,16 @@ protocol = "canal-json"
 
 ### Event Filter 配置规则 <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
-TiCDC 在 v6.2.0 中新增了事件过滤器功能，用户可以通过配置该规则来过滤符合指定条件的 DML 和 DDL 事件。
+TiCDC 在 v6.2.0 中新增了事件过滤器功能，你可以通过配置该规则来过滤符合指定条件的 DML 和 DDL 事件。
 
-一个事件过滤器的配置规则的例子如下：
+以下是事件过滤器的配置规则示例：
 
 ```toml
 [filter]
 # 事件过滤器的规则应该写在 filter 配置项之下，可以同时配置多个事件过滤器。
 
 [[filter.event-filters]]
-matcher = ["test.worker"] # 该过滤规则只会对 test 库中的 worker 表进行应用
+matcher = ["test.worker"] # 该过滤规则只应用于 test 库中的 worker 表
 ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含列名为 name 且值为 'john' 的 delete DML
@@ -720,9 +720,9 @@ ignore-update-new-value-expr = "gender = 'male'" # 过滤掉包含列名为 gend
 
 > **注意：**
 >
-> - TiDB 在更新聚簇索引的列值时，会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法正确的将该类事件正确地识别为 UPDATE 事件，因此无法正确地进行过滤。
+> - TiDB 在更新聚簇索引的列值时，会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法将该类事件识别为 UPDATE 事件，因此无法正确地进行过滤。
 >
-> - 在配置 SQL 表达式时，请确保符合 matcher 规则的所有表中均包含了对应表达式中的所有列，否则同步任务将无法创建成功。此外，若在同步的过程中表的结构发生变化，不再包含 SQL 表达式中的列，那么同步任务将会进入无法自动恢复的错误状态，需要用户手动修改配置并进行恢复操作。
+> - 在配置 SQL 表达式时，请确保符合 matcher 规则的所有表中均包含了对应表达式中的所有列，否则同步任务将无法创建成功。此外，若在同步的过程中表的结构发生变化，不再包含 SQL 表达式中的列，那么同步任务将会进入无法自动恢复的错误状态，你需要手动修改配置并进行恢复操作。
 
 ### 配置文件兼容性的注意事项
 
