@@ -668,7 +668,7 @@ dispatchers = [
 protocol = "canal-json"
 ```
 
-### Event Filter 配置规则
+### Event Filter 配置规则 <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 TiCDC 在 v6.2.0 中新增了事件过滤器功能，用户可以通过配置该规则来过滤指定 DML 和 DDL 事件。
 
