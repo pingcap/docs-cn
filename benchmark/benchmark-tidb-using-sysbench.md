@@ -130,7 +130,7 @@ sysbench --config-file=config oltp_point_select --tables=32 --table-size=1000000
 
 To warm data, we load data from disk into the block cache of memory. The warmed data has significantly improved the overall performance of the system. It is recommended to warm data once after restarting the cluster.
 
-Sysbench 1.0.14 does not provide data warming, so it must be done manually. If you are using a later version of Sysbench, you can use the data warming feature included in the tool itself.
+Sysbench 1.0.14 does not provide data warming, so it must be done manually. If you are using [Sysbench of the master version](https://github.com/akopytov/sysbench/tree/master), you can use the data warming feature included in the tool itself.
 
 Take a table sbtest7 in Sysbench as an example. Execute the following SQL to warming up data:
 
