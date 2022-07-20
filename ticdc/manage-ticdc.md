@@ -637,10 +637,10 @@ rules = ['*.*', '!test.*']
 matcher = ["test.worker"] # matcher 是一个白名单，表示该过滤规则只应用于 test 库中的 worker 表
 ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
-ignore-delete-value-expr = "name = 'john'" # 过滤掉包含列名为 name 且值为 'john' 的 delete DML
-ignore-insert-value-expr = "id >= 100" # 过滤掉包含列名为 id 且值大于等于 100 的 insert DML 
-ignore-update-old-value-expr = "age < 18" # 过滤掉包含列名为 age 且旧值小于 18 的 update DML
-ignore-update-new-value-expr = "gender = 'male'" # 过滤掉包含列名为 gender 且新值等于 male 的 update DML
+ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
+ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
+ignore-update-old-value-expr = "age < 18" # 过滤掉旧值 age < 18 的 update DML
+ignore-update-new-value-expr = "gender = 'male'" # 过滤掉新值 gender = 'male' 的 update DML
 
 # 第二个事件过滤器规则
 [[filter.event-filters]]
