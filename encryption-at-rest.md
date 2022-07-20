@@ -28,7 +28,7 @@ TiKV 当前不从核心转储 (core dumps) 中排除加密密钥和用户数据�
 
 TiKV 使用文件的绝对路径来跟踪已加密的数据文件。一旦 TiKV 节点开启了加密功能，用户就不应更改数据文件的路径配置，例如 `storage.data-dir`，`raftstore.raftdb-path`，`rocksdb.wal-dir` 和 `raftdb.wal-dir`。
 
-SM4 加密只在 TiKV v6.2 及之后的版本支持，v6.2 之前的版本仅支持 AES 加密。若在 v6.2 及之后版本要使用 SM4 加密，需要在编译 TiKV 文件前将编译机上的 openssl 版本升级到 [1.1.1](https://www.openssl.org/blog/blog/2018/09/11/release111/) 及之后的版本，并确保编译机上使用的 openssl 库文件在生成时不带 `OPENSSL_NO_SM4`。（当前推荐源码编译安装 openssl, 因为目前官源提供的 openssl 安装包是带上 `OPENSSL_NO_SM4` 编译项编译生成的）
+SM4 加密只在 TiKV v6.2 及之后的版本支持，v6.2 之前的版本仅支持 AES 加密。
 
 ### TiFlash
 
