@@ -5,13 +5,13 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 # 使用 PingCAP Clinic 诊断 TiDB 集群
 
-对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 [Clinic Server 云诊断平台](https://clinic.pingcap.com.cn)（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
-
-目前，PingCAP Clinic 处于 Technical Preview 阶段。
+对于使用 TiUP 部署的 TiDB 集群和 DM 集群，PingCAP Clinic 诊断服务（以下简称为 PingCAP Clinic）可以通过 Diag 诊断客户端（以下简称为 Diag）与 Clinic Server 云诊断平台（以下简称为 Clinic Server）实现远程定位集群问题和本地快速检查集群状态。
 
 > **注意：**
 >
-> PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
+> - 本文档**仅**适用于使用 TiUP 部署的集群。如需查看适用于使用 Operator 部署的集群，请参阅 [在 TiDB Operator 部署环境使用 PingCAP Clinic](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/clinic-user-guide)。
+>
+> - PingCAP Clinic 暂时**不支持**对使用 TiDB Ansible 部署的集群进行数据采集。
 
 ## 使用场景
 
@@ -22,7 +22,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 - [本地快速检查集群状态](#本地快速检查集群状态)
 
-    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险。目前 PingCAP Clinic Technical Preview 版本主要对集群配置项提供合理性检查，用于发现不合理的配置，并提供修改建议。
+    即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险，本地诊断只覆盖配置项检查。如果需要更全面的检查，推荐上传诊断数据包到 Clinic Server，使用 Clinic Server 提供的 Health Report 对 Metrics、日志和配置项进行全面的快速检查。
 
 ## 准备工作
 
@@ -32,15 +32,11 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     - 如果你的中控机上已经安装了 TiUP，可以使用以下命令一键安装 Diag：
 
-        {{< copyable "shell-regular" >}}
-
         ```bash
         tiup install diag
         ```
 
     - 若已安装了 Diag，你可以通过以下命令，将本地的 Diag 一键升级至最新版本：
-
-        {{< copyable "shell-regular" >}}
 
         ```bash
         tiup update diag
@@ -55,9 +51,27 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     使用 Diag 上传采集到的数据时，你需要通过 Token 进行用户认证，以保证数据上传到组织后被安全地隔离。获取一个 Token 后，你可以重复使用该 Token。如果你已经获取过并在 Diag 上设置过 Token，可跳过此步骤。
 
-    首先，通过以下方法获取 Token：登录 [Clinic Server](https://clinic.pingcap.com.cn)，点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+    首先，通过以下方法获取 Token：
 
-    ![Token 示例](/media/clinic-get-token.png)
+    - 登录 Clinic Server。
+
+        <SimpleTab>
+        <div label="Clinic Server 中国区">
+
+        [Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区。
+
+        </div>
+
+        <div label="Clinic Server 美国区">
+
+        [Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。
+
+        </div>
+        </SimpleTab>
+
+    - 点击 Cluster 页面右下角的图标，选择 **Get Access Token For Diag Tool**，在弹出窗口中点击 **+** 符号获取 Token 后，复制并保存 Token 信息。
+
+        ![Token 示例](/media/clinic-get-token.png)
 
     > **注意：**
     >
@@ -65,15 +79,45 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > - 为了确保数据的安全性，TiDB 只在创建 Token 时显示 Token 信息。如果丢失了 Token 信息，你可以删除旧 Token 后重新创建。
     > - Token 只用于上传数据。
 
-    然后，参考以下命令行，在 Diag 中设置该 Token：
-
-    {{< copyable "shell-regular" >}}
+    然后，参考以下命令，在 Diag 中设置该 Token：
 
     ```bash
     tiup diag config clinic.token ${token-value}
     ```
 
-3. 开启日志脱敏配置（可选步骤）。
+3. 在 Diag 中设置 `region`。
+
+    `region` 决定数据打包时使用的加密证书和上传的目标 Clinic Server 地址。参考以下命令，根据你的 Clinic Server 在 Diag 中设置 `clinic.region`。
+
+    > **注意：**
+    >
+    > - Diag v0.9.0 及以后的版本支持 `region` 设置。
+    > - 对于 Diag v0.9.0 之前的版本，数据默认上传到 Clinic Server 中国区。
+    > - 如果你的 Diag 是 v0.9.0 之前的版本，你可以通过 `tiup update diag` 命令将其升级至最新版本后设置 `region`。
+
+    <SimpleTab>
+    <div label="Clinic Server 中国区">
+
+    对于 Clinic Server 中国区，参考以下命令，将 `region` 设置为 `CN`：
+
+    ```bash
+    tiup diag config clinic.region CN
+    ```
+
+    </div>
+
+    <div label="Clinic Server 美国区">
+
+    对于 Clinic Server 美国区，参考以下命令，将 `region` 设置为 `US`：
+
+    ```bash
+    tiup diag config clinic.region US
+    ```
+
+    </div>
+    </SimpleTab>
+
+4. 开启日志脱敏配置（可选步骤）。
 
     TiDB 在提供详细的日志信息时可能会打印数据库的敏感信息（例如用户数据）。如果希望本地日志及上传到 Clinic Server 的日志中不带有敏感信息，你可以开启日志脱敏配置。具体操作请参考[日志脱敏](/log-redaction.md#tidb-组件日志脱敏)。
 
@@ -96,8 +140,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 1. 运行 Diag 数据采集命令。
 
     例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag collect ${cluster-name} -f="-4h" -t="-2h"
@@ -125,8 +167,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     运行 Diag 数据采集命令后，Diag 不会立即开始采集数据，而会在输出中提供预估数据量大小和数据存储路径，并询问你是否进行数据收集。例如：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     Estimated size of data to collect:
     Host               Size       Target
@@ -146,8 +186,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
     ```
@@ -157,8 +195,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 1. 运行 Diag 数据采集命令。
 
     例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag collectdm ${cluster-name} -f="-4h" -t="-2h"
@@ -173,8 +209,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     采集数据需要一定的时间，具体所需时间与需要收集的数据量有关。例如，在测试环境中收集 1 GB 数据，大概需要 10 分钟。
 
     采集完成后，Diag 会提示采集数据所在的文件夹路径。例如：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Collected data are stored in /home/qiaodan/diag-fNTnz5MGhr6
@@ -204,7 +238,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 > **注意：**
 >
-> 如果在上传前没有在 Diag 中设置 Token，Diag 会提示上传失败，并提醒你设置 Token。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
+> 如果在上传前没有在 Diag 中设置 Token 或 `region`，Diag 会提示上传失败，并提醒你进行设置。关于 Token 获取方法，请参考[准备工作：第 2 步](#准备工作)。
 
 #### 方式 1：直接上传
 
@@ -224,8 +258,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 1. 打包在[第 2 步：采集数据](#第-2-步采集数据)中采集的数据，并对其数据包进行压缩和加密：
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag package ${filepath}
     ```
@@ -241,8 +273,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 2. 使用可以访问互联网的机器上传数据压缩包。
 
-    {{< copyable "shell-regular" >}}
-
     ```bash
     tiup diag upload ${filepath}
     ```
@@ -251,11 +281,9 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 ## 本地快速检查集群状态
 
-你可以使用 Diag 对集群状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。目前 PingCAP Clinic Technical Preview 版本主要提供对集群配置项的合理性检查，用于发现不合理的配置，并提供修改建议。
+你可以使用 Diag 对集群状态进行快速诊断。即使集群可以正常运行，也需要定期检查集群是否有潜在的稳定性风险。PingCAP Clinic 提供的本地快速诊断功能，用于检查集群潜在的健康风险，本地诊断只覆盖配置项检查。如果需要更全面的检查，推荐上传诊断数据包到 Clinic Server，使用 Clinic Server 提供的 Health Report 对 Metrics、日志和配置项进行全面的快速检查。
 
 1. 采集配置数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag collect ${cluster-name} --include="config"
@@ -264,8 +292,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     配置文件数据较小，采集后会默认存放至当前路径下。在测试环境中，对于一个 18 个节点的集群，配置文件数据量小于 10 KB。
 
 2. 诊断配置数据：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     tiup diag check ${subdir-in-output-data}
@@ -276,8 +302,6 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 3. 查看诊断结果：
 
     诊断结果会在命令行中返回，示例如下：
-
-    {{< copyable "shell-regular" >}}
 
     ```bash
     Starting component `diag`: /root/.tiup/components/diag/v0.7.0/diag check diag-fNTnz5MGhr6
@@ -322,7 +346,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     Result report and record are saved at diag-fNTnz5MGhr6/report-220125153215
     ```
 
-    在上述示例诊断结果信息的最后一部分（即 '#### 诊断结果文档的保存路径'）中，对于被发现的每一条潜在的配置问题，Diag 都会提供对应的知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`。
+    在上述示例诊断结果信息的最后一部分（即“#### 诊断结果文档的保存路径”）中，对于被发现的每一条潜在的配置问题，Diag 都会提供对应的知识库链接，以便查看详细的配置建议。在上面示例中，相关链接为 `https://s.tidb.io/msmo6awg`。
 
 ## 常见问题
 
@@ -332,8 +356,8 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 2. 数据上传后，无法打开返回的数据访问链接，怎么办？
 
-    你可以先尝试登录 [Clinic Server](https://clinic.pingcap.com.cn)。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
+    你可以先尝试登录 Clinic Server。如果登录后依然无法打开链接，请确认你是否拥有访问该数据的权限。如果没有权限，你需要联系数据所有人给你添加权限后，重新登录 Clinic Server 并访问数据链接。
 
 3. 上传到 Clinic Server 的数据后会保存多久？
 
-    在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
+    最长 180 天，用户可以随时通过 Clinic Server 页面删除自己上传的集群诊断数据。
