@@ -32,7 +32,7 @@ This guide introduces the key features of sync-diff-inspector and describes how 
 
 * Online check is not supported for data migration between MySQL and TiDB. Ensure that no data is written into the upstream-downstream checklist, and that data in a certain range is not changed. You can check data in this range by setting `range`.
 
-* `JSON`, `BIT`, `BINARY`, `BLOB` and other types of data are not supported. When you perform a data check, you need to set `ignore-columns` to skip checking these types of data.
+* `JSON`, `BIT`, `BINARY`, and `BLOB` are not supported. When you perform a data check, you need to set `ignore-columns` to skip checking these types of data.
 
 * In TiDB and MySQL, `FLOAT`, `DOUBLE` and other floating-point types are implemented differently. `FLOAT` and `DOUBLE` respectively take 6 and 15 significant digits for calculating checksum. If you do not want to use this feature, set `ignore-columns` to skip checking these columns.
 
