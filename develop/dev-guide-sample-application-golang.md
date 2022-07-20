@@ -47,7 +47,7 @@ git clone https://github.com/pingcap-inc/tidb-example-golang.git
 
 <div label="使用 go-sql-driver/mysql">
 
-进入目录 `sqldriver`：
+使用 go-sql-driver/mysql 时，首先进入目录 `sqldriver`：
 
 {{< copyable "shell-regular" >}}
 
@@ -724,6 +724,8 @@ func buyGoods(db *gorm.DB, sellID, buyID string, amount, price int) error {
 
 <div label="使用 go-sql-driver/mysql">
 
+> **注意：**
+>
 > 在 Gitpod Playground 中尝试 go-sql-driver/mysql: [现在就试试](https://gitpod.io/#targetMode=sqldriver/https://github.com/pingcap-inc/tidb-example-golang)
 
 使用 go-sql-driver/mysql 时，需手动初始化数据库表，若你本地已经安装了 `mysql-client`，且使用本地集群，可直接在 `sqldriver` 目录下运行：
@@ -748,7 +750,7 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 
 <div label="使用 GORM（推荐）">
 
-> **说明：**
+> **注意：**
 >
 > 在 Gitpod Playground 中尝试 GORM: [现在就试试](https://gitpod.io/#targetMode=gorm/https://github.com/pingcap-inc/tidb-example-golang)
 

@@ -35,7 +35,7 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
     <div label="macOS">
 
-    如果你没有安装 Homebrew，请移步 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
+    对于 macOS 操作系统，如果你没有安装 Homebrew，请参考 [Homebrew 官网](https://brew.sh/index_zh-cn)进行安装。
 
     {{< copyable "shell-regular" >}}
 
@@ -84,7 +84,7 @@ summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud �
 
     <div label="Linux">
 
-    以 CentOS 7 为例：
+    对于 Linux 操作系统，下面以 CentOS 7 为例：
 
     {{< copyable "shell-root" >}}
 
