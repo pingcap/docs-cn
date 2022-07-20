@@ -712,7 +712,7 @@ ignore-update-new-value-expr = "gender = 'male'" # 过滤掉包含列名为 gend
 | create view     | DDL  | |匹配 create view event     |
 | drop view     | DDL  | |匹配 drop view event     |
 
-- `ignore-sql`: 要过滤的 DDL 语句的正则表达式，它是一个字符串数组，可以配置多条正则表达式。该配置仅对 DDL 事件生效。
+- `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。该配置仅对 DDL 事件生效。
 - `ignore-delete-value-expr`: 配置一个表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
 - `ignore-insert-value-expr`: 配置一个表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
 - `ignore-update-old-value-expr`: 配置一个表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
