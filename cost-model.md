@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/cost-model/']
 
 ![CostModel](/media/cost-model.png)
 
-TiDB 会计算每个索引的访问代价，和计划中每个物理算子的执行代价（如 HashJoin、IndexJoin 等），选择代价最低的计划。
+TiDB 会计算每个索引的访问代价和计划中每个物理算子的执行代价（如 HashJoin、IndexJoin 等），选择代价最低的计划。
 
 下面是一个简化的例子，用来解释代价模型的原理，比如有这样一张表：
 
