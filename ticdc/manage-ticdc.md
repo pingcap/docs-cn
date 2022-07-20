@@ -647,7 +647,7 @@ ignore-update-new-value-expr = "gender = 'male'" # 过滤掉包含列名为 gend
 matcher = ["test.fruit"] # 该事件过滤器只应用于 test.fruit 表
 ignore-event = ["drop table"] # 忽略 drop table 事件
 ignore-sql = ["delete"] # 忽略 delete DML
-ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略列 price 值大于 1000, 并且 origin 列值为 'no where' 的 insert DML
+ignore-insert-value-expr = "price > 1000 and origin = 'no where'" # 忽略包含 price > 1000 和 origin = 'no where' 条件的 insert DML
 
 [sink]
 # 对于 MQ 类的 Sink，可以通过 dispatchers 配置 event 分发器
