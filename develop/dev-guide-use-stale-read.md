@@ -78,7 +78,7 @@ Rows matched: 1  Changed: 1  Warnings: 0
 <SimpleTab>
 <div label="SQL">
 
-你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
+在 SQL 中，你可以在上述价格的查询语句当中添加上 `AS OF TIMESTAMP <datetime>` 语句查看到固定时间点之前这本书的价格。
 
 {{< copyable "sql" >}}
 
@@ -124,7 +124,7 @@ ERROR 9006 (HY000): cannot set read timestamp to a future time.
 </div>
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中的示例如下：
 
 ```java
 public class BookDAO {
@@ -240,7 +240,7 @@ WARN: GC life time is shorter than transaction duration.
 <SimpleTab>
 <div label="SQL">
 
-例如：
+在 SQL 中的示例如下：
 
 {{< copyable "sql" >}}
 
@@ -289,7 +289,7 @@ SELECT id, title, type, price FROM books ORDER BY published_at DESC LIMIT 5;
 </div>
 <div label="Java">
 
-可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
+在 Java 中，可以先定义一个事务的工具类，将开启事务级别 Stale Read 的命令封装成工具方法。
 
 {{< copyable "" >}}
 
@@ -498,7 +498,7 @@ set @@tidb_read_staleness="";
 </div>
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中示例如下：
 
 ```java
 public static class StaleReadHelper{

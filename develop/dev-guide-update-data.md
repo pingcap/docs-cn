@@ -62,7 +62,7 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 <SimpleTab>
 <div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中更改作者姓名的示例为：
 
 ```sql
 UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
@@ -72,7 +72,7 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中更改作者姓名的示例为：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -126,7 +126,7 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 <SimpleTab>
 <div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中更新书籍评价的示例为：
 
 ```sql
 INSERT INTO `ratings`
@@ -140,7 +140,7 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中更新书籍评价的示例为：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource

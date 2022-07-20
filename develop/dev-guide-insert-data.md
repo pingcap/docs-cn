@@ -57,7 +57,7 @@ INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2);
 
 <div label="Java">
 
-在 JAVA 中插入多行数据的示例：
+在 Java 中插入多行数据的示例：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource

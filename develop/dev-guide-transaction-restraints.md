@@ -36,7 +36,7 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 <div label="Java">
 
-{{< copyable "" >}}
+Java 程序示例如下：
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -161,7 +161,7 @@ public class EffectWriteSkew {
 
 <div label="Golang">
 
-首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
+在 Golang 中，首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
 
 {{< copyable "" >}}
 
@@ -371,7 +371,7 @@ mysql> SELECT * FROM doctors;
 
 <div label="Java">
 
-{{< copyable "" >}}
+Java 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -496,7 +496,7 @@ public class EffectWriteSkew {
 
 <div label="Golang">
 
-{{< copyable "" >}}
+Golang 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
 ```go
 package main
