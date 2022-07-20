@@ -29,7 +29,7 @@ This document introduces some general development specifications for using SQL.
     ```sql
     SELECT gmt_create
     FROM ...
-    WHERE DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s') = '20090101 00:00:0'
+    WHERE DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s') = '20090101 00:00:00'
     ```
 
     Recommended:
@@ -38,8 +38,8 @@ This document introduces some general development specifications for using SQL.
 
     ```sql
     SELECT DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s')
-    FROM .. .
-    WHERE gmt_create = str_to_date('20090101 00:00:00', '%Y%m%d %H:%i:s')
+    FROM ...
+    WHERE gmt_create = str_to_date('20090101 00:00:00', '%Y%m%d %H:%i:%s')
     ```
 
 ## Other specifications
