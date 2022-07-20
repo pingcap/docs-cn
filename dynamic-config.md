@@ -119,6 +119,7 @@ show warnings;
 
 | 配置项 | 简介 |
 | --- | --- |
+| log.level | 日志等级 |
 | raftstore.raft-max-inflight-msgs | 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
