@@ -30,7 +30,7 @@ aliases: ['/zh/tidb/dev/sql-development-specification']
     ```sql
     SELECT gmt_create
     FROM ...
-    WHERE DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s') = '20090101 00:00:0'
+    WHERE DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s') = '20090101 00:00:00'
     ```
 
     推荐的写法：
@@ -38,9 +38,9 @@ aliases: ['/zh/tidb/dev/sql-development-specification']
     {{< copyable "sql" >}}
 
     ```sql
-    SELECT DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s')
+    SELECT DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s')
     FROM .. .
-    WHERE gmt_create = str_to_date('20090101 00:00:00'，'%Y%m%d %H:%i:s')
+    WHERE gmt_create = str_to_date('20090101 00:00:00', '%Y%m%d %H:%i:%s')
     ```
 
 ## 其他规范
