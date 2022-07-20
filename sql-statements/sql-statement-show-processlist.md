@@ -35,6 +35,15 @@ SHOW PROCESSLIST;
 1 rows in set (0.00 sec)
 ```
 
+以上结果主要字段的意义
+
+```
+Command: 命令的类型，多数情况是 Query
+Time:    开始执行时间
+State:   常见的值是 autocommit 代表该 SQL 是自动提交的, in transaction 表示该 SQL 处于事务中。
+Info:    SQL 具体的文本
+```
+
 ## MySQL 兼容性
 
 * TiDB 中的 `State` 列是非描述性的。在 TiDB 中，将状态表示为单个值更复杂，因为查询是并行执行的，而且每个 Go 线程在任一时刻都有不同的状态。
