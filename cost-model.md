@@ -37,3 +37,19 @@ mysql> show create table t;
 由于扫描 `b` 的代价更低，因此 TiDB 会选择 `b` 索引。
 
 上述是一个简化后的例子，只是用于做原理解释，实际 TiDB 的代价模型会更加复杂，具体的代价公式可以见[源码](https://github.com/pingcap/tidb/blob/master/planner/core/plan_cost.go)。
+
+## Cost Model Version 2
+
+> **警告：**
+>
+> - Cost Model Version 2 目前为实验特性，不建议在生产环境中使用。
+>
+> - 切换代价模型版本可能引起计划的变动。
+
+在 v6.2 版本中，我们引入了新的代价模型 Cost Model Version 2，在内部测试中，它比旧版代价模型更加准确。
+
+如下图，右边新版的代价模型估算出来的代价和计划实际的执行时间更加吻合：
+
+![cost-model-ver2](/media/cost-model-ver2.png)
+
+你可以通过设置变量 `tidb_cost_model_version` 来控制代价模型的版本。
