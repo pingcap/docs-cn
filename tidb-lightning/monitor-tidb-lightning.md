@@ -49,8 +49,6 @@ scrape_configs:
 
 [Grafana](https://grafana.com/) 的可视化面板可以让你在网页上监控 Prometheus 指标。
 
-使用 TiUP 部署 TiDB 集群时，需要在拓扑配置中添加 Grafana 和 Prometheus，TiUP 会同时部署一套 Grafana + Prometheus 的监控系统。此时需先导入[面板的 JSON 文件](https://raw.githubusercontent.com/pingcap/tidb-ansible/master/scripts/lightning.json)。
-
 ### 第一行：速度面板
 
 ![第一行速度面板](/media/lightning-grafana-row-1.png)

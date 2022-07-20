@@ -242,7 +242,7 @@ Query OK, 0 rows affected (0.01 sec)
 | --- | --- |
 | log.level| 日志级别 |
 | cluster-version | 集群的版本 |
-| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MB） |
+| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
 | schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
