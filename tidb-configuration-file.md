@@ -699,3 +699,8 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false
+
+### `fast-reorg-local-path` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 用于设置 fast add index reorg 阶段所需要设置的 TiDB 本地存储路径，用来存放本地临时的 index 回填数据。
++ 默认值："/tmp/tidb"
