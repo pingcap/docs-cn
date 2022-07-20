@@ -587,7 +587,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 范围：`[1, 256]`
 - 这个变量用来设置 DDL 操作 `re-organize` 阶段的并发度。
 
-### `tidb_default_string_match_selectivity`
+### `tidb_default_string_match_selectivity` <span class="version-mark">从 v6.2 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
