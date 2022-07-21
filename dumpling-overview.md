@@ -176,12 +176,10 @@ export AWS_SECRET_ACCESS_KEY=${SecretKey}
 
 Dumpling 同时还支持从 `~/.aws/credentials` 读取凭证文件。更多 Dumpling 存储配置可以参考[外部存储](/br/backup-and-restore-storages.md)。
 
-在进行 Dumpling 备份时，显式指定参数 `--s3.region`，即表示 Amazon S3 存储所在的区域，例如 `ap-northeast-1`。
-
 {{< copyable "shell-regular" >}}
 
 ```shell
-./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}" --s3.region "${region}"
+./dumpling -u root -P 4000 -h 127.0.0.1 -r 200000 -o "s3://${Bucket}/${Folder}"
 ```
 
 ### 筛选导出的数据
