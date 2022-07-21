@@ -1393,11 +1393,6 @@ rocksdb defaultcf titan 相关的配置项。
 + 是否通过开启 level-merge 来提升读性能，副作用是写放大会比不开启更大。
 + 默认值：false
 
-### `gc-merge-rewrite`
-
-+ 是否开启使用 merge operator 来进行 Titan GC 写回操作，减少 Titan GC 对于前台写入的影响。
-+ 默认值：false
-
 ## raftdb
 
 raftdb 相关配置项。
