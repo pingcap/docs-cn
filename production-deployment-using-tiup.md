@@ -80,9 +80,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     tiup --binary cluster
     ```
 
-</div>
-<div label="离线部署">
-
 ### 离线部署
 
 离线部署 TiUP 组件的操作步骤如下。
