@@ -484,7 +484,7 @@
       - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - Point-in-time Recovery
-   - [PiTR 简介](/br/pitr-overview.md)
+   - [PiTR 简介](/br/point-in-time-recovery.md)
    - [通过命令行使用 PiTR](/br/br-log-command-line.md)
    - [PiTR 的使用场景示例](/br/pitr-usage.md)
   - TiDB Binlog
