@@ -301,7 +301,7 @@ with cte1 as (select * from tc), cte2 as (with cte3 as (select /*+ MERGE() */ * 
 
 > **注意：**
 >
-> `MERGE()` 只适用于简单的 CTE 查询，在某些场景下无法使用该 Hint:
+> `MERGE()` 只适用于简单的 CTE 查询，在以下情况中无法使用该 hint：
 > 
 > - [递归的 CTE 查询](/develop/dev-guide-use-common-table-expression.md#递归的-cte)
 > - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及 `DINSTINCT` 等。
