@@ -173,7 +173,7 @@ FROM
 
 值得注意的是，`books_authored_by_rm` 中的查询只会执行一次，TiDB 会开辟一块临时空间对查询的结果进行缓存，当 `books_with_average_ratings` 和 `books_with_orders` 引用时会直接从该临时空间当中获取数据。
 
-> **注意：**
+> **建议：**
 >
 > - 当默认执行的CTE效率不高情况下，我们可以选用 [MERGE()](/optimizer-hints.md#merge) hint 的方式，将CTE子查询拓展到外部查询，借此来提高执行效率。
 
