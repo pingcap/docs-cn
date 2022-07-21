@@ -713,16 +713,16 @@ ignore-update-new-value-expr = "gender = 'male'" # 过滤掉新值 gender = 'mal
 | drop view     | DDL  | |匹配 drop view event     |
 
 - `ignore-sql`：要过滤的 DDL 语句的正则表达式。该参数接受一个字符串数组，数组中可以配置多条正则表达式。该配置仅对 DDL 事件生效。
-- `ignore-delete-value-expr`: 配置一个表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
-- `ignore-insert-value-expr`: 配置一个表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
-- `ignore-update-old-value-expr`: 配置一个表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
-- `ignore-update-new-value-expr`: 配置一个表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效。
+- `ignore-delete-value-expr`: 配置一个 SQL 表达式，对带有指定值的 DELETE 类型的 DML 事件生效。
+- `ignore-insert-value-expr`: 配置一个 SQL 表达式，对带有指定值的 INSERT 类型的 DML 事件生效。
+- `ignore-update-old-value-expr`: 配置一个 SQL 表达式，对带有指定旧值的 UPDATE 类型的 DML 事件生效。
+- `ignore-update-new-value-expr`: 配置一个 SQL 表达式，对带有指定新值的 UPDATE 类型的 DML 事件生效。
 
 > **注意：**
 >
 > - TiDB 在更新聚簇索引的列值时，会将一个 UPDATE 事件拆分成为 DELETE 和 INSERT 事件，TiCDC 无法将该类事件识别为 UPDATE 事件，因此无法正确地进行过滤。
 >
-> - 在配置 SQL 表达式时，请确保符合 matcher 规则的所有表中均包含了对应表达式中的所有列，否则同步任务将无法创建成功。此外，若在同步的过程中表的结构发生变化，不再包含 SQL 表达式中的列，那么同步任务将会进入无法自动恢复的错误状态，你需要手动修改配置并进行恢复操作。
+> - 在配置 SQL 表达式时，请确保符合 matcher 规则的所有表均包含了对应 SQL 表达式中指明的所有列，否则同步任务将无法创建成功。此外，若在同步的过程中表的结构发生变化，不再包含 SQL 表达式中的列，那么同步任务将会进入无法自动恢复的错误状态，你需要手动修改配置并进行恢复操作。
 
 ### 配置文件兼容性的注意事项
 
