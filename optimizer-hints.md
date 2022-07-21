@@ -295,7 +295,7 @@ SHOW WARNINGS;
 ```sql
 -- 利用 Hint 将外部查询条件谓词下推
 WITH CTE AS (SELECT /*+ MERGE() */ * FROM tc WHERE tc.a < 60) SELECT * FROM CTE WHERE CTE.a <18;
--- 在嵌套 CTE 查询中应用该 Hint 来指定某个 CTE 内联展开到外部查询
+-- 在嵌套 CTE 查询中使用该 hint 来指定将某个 CTE 内联展开到外部查询
 with cte1 as (select * from tc), cte2 as (with cte3 as (select /*+ MERGE() */ * from te) ,cte4 as (select * from tc) select * from cte3,cte4) select * from cte2;
 ```
 
