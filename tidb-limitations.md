@@ -77,4 +77,4 @@ aliases: ['/docs-cn/dev/tidb-limitations/']
 
 ## TiKV 版本的限制
 
-6.2.0 及以上版本的 TiDB 要求 TiKV 的最小版本为 6.2.0。
+在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。
