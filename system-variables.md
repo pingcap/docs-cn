@@ -1621,14 +1621,6 @@ explain select * from t where age=5;
 - 该变量控制 SQL 语句输出的最大长度。当一条 SQL 语句的输出长度大于 `tidb_query_log_max_len` 时，输出将会被截断。
 - 在 v6.1.0 之前这个开关也可以通过 TiDB 配置文件 (`log.query-log-max-len`) 进行配置，升级到 v6.1.0 后仅可通过系统变量配置。
 
-示例：
-
-{{< copyable "sql" >}}
-
-```sql
-SET tidb_query_log_max_len = 20;
-```
-
 ### `tidb_rc_read_check_ts`（从 v6.0.0 版本开始引入）
 
 > **警告：**
@@ -1759,14 +1751,6 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[-1, 9223372036854775807]`
 - 单位：毫秒
 - 输出慢日志的耗时阈值。当查询大于这个值，就会当做是一个慢查询，输出到慢查询日志。默认为 300 ms。
-
-示例：
-
-{{< copyable "sql" >}}
-
-```sql
-set tidb_slow_log_threshold = 200;
-```
 
 ### `tidb_max_tiflash_threads` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
