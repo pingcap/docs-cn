@@ -100,3 +100,94 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。 [BR �
 
 -  [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
 -  [PiTR 使用教程](/br/pitr-usage.md)
+
+## 监控告警
+
+PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标（metrics），目前所有的监控指标都内置在 TiKV 中。
+
+### 监控配置
+
+如果是通过 TiUP 部署的集群，[Prometheus](https://prometheus.io/) 会自动采集相关的监控指标。
+
+如果是手动部署集群，需要参考 [TiDB 集群监控部署](/deploy-monitoring-services.md)，在 Prometheus 配置文件的 scrape_configs 中加入 TiKV 相关的 job。
+
+### 监控指标
+
+| **指标**                                                | **类型**    | **说明**                              |
+|-------------------------------------------------------|-----------|-------------------------------------|
+| **tikv_log_backup_interal_actor_acting_duration_sec** | Histogram |                                     |
+| **tikv_log_backup_initial_scan_reason**               | Counter   |                                     |
+| **tikv_stream_event_handle_duration_sec**             | Histogram |                                     |
+| **tikv_stream_handle_kv_batch**                       | Histogram |                                     |
+| **tikv_log_backup_initial_scan_disk_read**            | Counter   |                                     |
+| **tikv_stream_incremental_scan_bytes**                | Histogram |                                     |
+| **tikv_stream_skip_kv_count**                         | Counter   |                                     |
+| **tikv_stream_errors**                                | Counter   |                                     |
+| **tikv_log_backup_fatal_errors**                      | Counter   |                                     |
+| **tikv_stream_heap_memory**                           | Gauge     |                                     |
+| **tikv_stream_on_event_duration_seconds**             | Histogram |                                     |
+| **tikv_stream_store_checkpoint_ts**                   | Gauge     |                                     |
+| **tikv_stream_flush_duration_sec**                    | Histogram |                                     |
+| **tikv_stream_flush_file_size**                       | Histogram |                                     |
+| **tikv_stream_initial_scan_duration_sec**             | Histogram |                                     |
+| **tikv_stream_skip_retry_observe**                    | Counter   |                                     |
+| **tikv_stream_initial_scan_operations**               | Counter   |                                     |
+| **tikv_stream_enabled**                               | Counter   | 日志备份功能是否开启，若值大于 0，表示开启              |
+| **tikv_stream_observed_region**                       | Gauge     | 被监听的 region 数量                      |
+| **tikv_log_backup_task_status**                       | Gauge     | 日志备份任务状态，0-Running 1-Paused 2-Error |
+| **tikv_pending_initial_scan**                         | Gauge     |                                     |
+
+### Grafana 配置
+
+如果是通过 TiUP 部署的集群，[Grafana](https://grafana.com/) 中已经内置了 PiTR 的面板。TiKV-Details dashboard 中的 Backup Log 面板即为 PiTR 的面板。
+
+如果是手动部署集群，需要参考[导入 Grafana 面板](/deploy-monitoring-services.md#第-2-步导入-grafana-面板)，将 [tikv_details](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) JSON 文件上传到 Grafana 中。之后在 TiKV-Details dashboard 中找到 Backup Log 面板即可。
+
+### 告警配置
+
+目前 PiTR 还未内置告警项，以下告警项为推荐的配置。
+
+#### LogBackupRunningRPOMoreThan10m
+
+- **表达式：** max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 60 > 10
+and max(tikv_stream_store_checkpoint_ts) by (task) > 0
+and max(tikv_log_backup_task_status) by (task) == 0
+- **告警级别：** warning
+- **说明：** 日志数据超过 10 分钟未持久化到存储中，这里主要是提醒，大部分情况下日志备份还会正常推进
+
+#### LogBackupRunningRPOMoreThan30m
+
+- **表达式：** max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 60 > 30
+  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
+  and max(tikv_log_backup_task_status) by (task) == 0
+- **告警级别：** critical
+- **说明：** 日志数据超过 30 分钟未持久化到存储中，此时极可能出现异常，可以查看 TiKV 日志定位原因
+
+#### LogBackupPausingMoreThan2h
+
+- **表达式：** max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 3600 > 2
+  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
+  and max(tikv_log_backup_task_status) by (task) == 1
+- **告警级别：** warning
+- **说明：** 日志备份任务处于暂停状态超过 2 小时，这里主要是提醒，建议尽早执行 `br log resume` 恢复任务
+
+#### LogBackupPausingMoreThan12h
+
+- **表达式：** max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 3600 > 12
+  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
+  and max(tikv_log_backup_task_status) by (task) == 1
+- **告警级别：** critical
+- **说明：** 日志备份任务处于暂停状态超过 12 小时，应尽快执行 `br log resume` 恢复任务。任务处于暂停状态时间过长会有数据丢失的风险
+
+#### LogBackupFailed
+
+- **表达式：** max(tikv_log_backup_task_status) by (task) == 2
+  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
+- **告警级别：** critical
+- **说明：** 日志备份任务进入失败状态，需要执行 `br log status` 查看失败原因，如有必要还需进一步查看 TiKV 日志
+
+#### LogBackupGCSafePointExceedsCheckpoint
+
+- **表达式：** min(tikv_stream_store_checkpoint_ts) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0
+- **告警级别：** critical
+- **说明：** 部分数据未被备份就已经被 GC，此时已有部分数据丢失，极有可能对业务产生影响

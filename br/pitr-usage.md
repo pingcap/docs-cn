@@ -88,7 +88,7 @@ TiDB 集群拓扑和配置：
 首先启动日志备份任务，日志备份进程会在 TiKV 集群运行，持续不断将数据库变更数据备份到 S3 中。 日志备份任务启动命令：
 
 ```shell
-tiup br log start --task-name=pitr --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+tiup br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
 启动日志备份任务后查询日志备份任务状态
@@ -118,13 +118,13 @@ checkpoint[store=5]: 2022-04-24 11:31:47.351 +0800 CST; gap=4m53s
 在 2022/05/12 00:00:00 执行一次快照备份
 
 ```shell
-tiup br backup full --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' --backupts='2022/05/12 00:00:00'
+tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' --backupts='2022/05/12 00:00:00'
 ```
 
 在 2022/05/14 00:00:00 执行一次快照备份
 
 ```shell
-tiup br backup full --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
+tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
 --backupts='2022/05/14 00:00:00'
 ```
 
@@ -152,8 +152,8 @@ tiup br backup full --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/b
 
 ```shell
 tiup br restore point -pd=172.16.102.95:2379
-–-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
-–-full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
+--storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
 
 Full Restore <---------------------------------------------------------------------> 100.00%
 Restore DDL files <----------------------------------------------------------------> 100.00%
