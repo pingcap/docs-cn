@@ -1,11 +1,10 @@
 ---
-title: Fast Mode 
-summary: 介绍通过使用 fast mode 来加速 AP 场景的查询的方法。
-aliases: ['/zh/tidb/dev/use-fast-mode']
+title: Fast Mode
+summary: 介绍通过使用 Fast Mode 来加速 AP 场景的查询的方法。
 ---
 # Fast Mode
 
-本章将介绍通过使用 fast mode 来加速 AP 场景的查询的方法。
+本章将介绍通过使用 Fast Mode 来加速 AP 场景的查询的方法。
 
 ## 概述
 
