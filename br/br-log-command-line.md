@@ -9,12 +9,9 @@ summary: 了解如何使用 br log 命令行工具进行日志备份。
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  backup-stream.enable: true 开启该功能。
 
-## 部署安装 
+## 前置条件 
 
-推荐使用 TiUP 安装或升级 BR 。 例如安装 v6.1.0 版本 BR 工具
-
-- 没有安装 BR，使用命令 `tiup install br:v6.1.0`   安装 v6.1.0 版本 BR
-- 已经安装 BR，使用命令 `tiup update br:v6.1.0`  升级 BR 到 v6.1.0 版本
+使用日志备份前，你需要安装 BR。你可以选择[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐），或[下载 TiDB 离线包](/download-ecosystem-tools.md)。
 
 ## 使用日志备份
 
