@@ -136,7 +136,7 @@
   - [Maintain TiDB Using TiUP](/maintain-tidb-using-tiup.md)
   - [Modify Configuration Online](/dynamic-config.md)
   - [Online Unsafe Recovery](/online-unsafe-recovery.md)
-  - [Replicate Data Between Primary and Secondary Clusters](/replicate-betwwen-primary-and-secondary-clusters.md)
+  - [Replicate Data Between Primary and Secondary Clusters](/replicate-between-primary-and-secondary-clusters.md)
 - Monitor and Alert
   - [Monitoring Framework Overview](/tidb-monitoring-framework.md)
   - [Monitoring API](/tidb-monitoring-api.md)
