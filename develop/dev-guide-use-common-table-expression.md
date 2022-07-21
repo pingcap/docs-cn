@@ -37,7 +37,7 @@ SELECT ... FROM <query_name>;
 <SimpleTab>
 <div label="SQL">
 
-可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
+在 SQL 中，可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
 
 {{< copyable "sql" >}}
 
@@ -76,7 +76,7 @@ GROUP BY ta.id;
 </div>
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中的示例如下：
 
 ```java
 public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {

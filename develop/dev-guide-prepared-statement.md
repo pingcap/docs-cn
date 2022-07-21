@@ -74,9 +74,9 @@ DEALLOCATE PREPARE {prepared_statement_name};
 
 <SimpleTab>
 
-<div label="SQL" href="read-sql">
+<div label="SQL">
 
-{{< copyable "sql" >}}
+使用 SQL 查询示例：
 
 ```sql
 PREPARE `books_query` FROM 'SELECT * FROM `books` WHERE `id` = ?';
@@ -119,9 +119,9 @@ EXECUTE `books_query` USING @id;
 
 </div>
 
-<div label="Java" href="read-java">
+<div label="Java">
 
-{{< copyable "" >}}
+使用 Java 查询示例：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -153,9 +153,9 @@ try (Connection connection = ds.getConnection()) {
 
 <SimpleTab>
 
-<div label="SQL" href="write-sql">
+<div label="SQL">
 
-{{< copyable "sql" >}}
+使用 SQL 插入数据示例如下：
 
 ```sql
 PREPARE `books_insert` FROM 'INSERT INTO `books` (`title`, `type`, `stock`, `price`, `published_at`) VALUES (?, ?, ?, ?, ?);';
@@ -197,9 +197,9 @@ Query OK, 1 row affected (0.03 sec)
 
 </div>
 
-<div label="Java" href="write-java">
+<div label="Java">
 
-{{< copyable "" >}}
+使用 Java 插入数据示例如下：
 
 ```java
 try (Connection connection = ds.getConnection()) {

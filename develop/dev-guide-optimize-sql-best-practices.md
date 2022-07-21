@@ -44,7 +44,7 @@ DELETE FROM t WHERE id = 3;
 <SimpleTab>
 <div label="Golang">
 
-{{< copyable "" >}}
+在 Golang 中使用 `PREPARE` 语句：
 
 ```go
 func BatchInsert(db *sql.DB) error {
@@ -67,7 +67,7 @@ func BatchInsert(db *sql.DB) error {
 
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中使用 `PREPARE` 语句：
 
 ```java
 public void batchInsert(Connection connection) throws SQLException {

@@ -27,13 +27,13 @@ summary: 介绍 TiDB 中的乐观事务和悲观事务，乐观事务的重试�
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-concurrent-save-java">
+<div label="Java">
 
 当使用多个线程模拟多用户同时插入的情况时，需要使用一个线程安全的连接对象，这里使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 。
 
 </div>
 
-<div label="Golang" href="pessimstic-concurrent-save-golang">
+<div label="Golang">
 
 Golang 的 `sql.DB` 是并发安全的，无需引入外部包。
 
@@ -99,11 +99,11 @@ func (tx *TiDBSqlTx) Rollback() error {
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-code-java">
+<div label="Java">
 
 **配置文件**
 
-如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
+在 Java 中，如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
 
 {{< copyable "" >}}
 
@@ -332,9 +332,9 @@ public class TxnExample {
 
 </div>
 
-<div label="Golang" href="pessimstic-code-golang">
+<div label="Golang">
 
-首先设计一个帮助类 `helper.go`，封装了所需的数据库操作：
+在 Golang 中，首先设计一个帮助类 `helper.go`，封装了所需的数据库操作：
 
 {{< copyable "" >}}
 
@@ -664,9 +664,9 @@ Golang 的例子中，已经包含乐观事务。
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-not-oversell-java">
+<div label="Java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -675,9 +675,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="pessimstic-not-oversell-golang">
+<div label="Golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
@@ -745,9 +745,9 @@ mysql> SELECT * FROM users;
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-oversell-java">
+<div label="Java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -756,9 +756,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="pessimstic-oversell-golang">
+<div label="Golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
@@ -823,7 +823,9 @@ mysql> SELECT * FROM users;
 
 <SimpleTab>
 
-<div label="Java" href="optimistic-code-java">
+<div label="Java">
+
+使用 Java 编写乐观事务示例：
 
 **代码编写**
 
@@ -1007,7 +1009,7 @@ public class TxnExample {
 
 </div>
 
-<div label="Golang" href="optimistic-code-golang">
+<div label="Golang">
 
 Golang 在[编写悲观事务示例](#1-编写悲观事务示例)章节中的例子已经支持了乐观事务，无需更改，可直接使用。
 
@@ -1021,9 +1023,9 @@ Golang 在[编写悲观事务示例](#1-编写悲观事务示例)章节中的例
 
 <SimpleTab>
 
-<div label="Java" href="optimistic-not-oversell-java">
+<div label="Java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -1032,9 +1034,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="optimistic-not-oversell-golang">
+<div label="Golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
@@ -1110,9 +1112,9 @@ mysql> SELECT * FROM users;
 
 <SimpleTab>
 
-<div label="Java" href="optimistic-oversell-java">
+<div label="Java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -1121,9 +1123,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="optimistic-oversell-golang">
+<div label="Golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
