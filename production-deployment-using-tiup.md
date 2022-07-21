@@ -79,9 +79,6 @@ summary: 了解如何使用 TiUP 部署 TiDB 集群。
     tiup --binary cluster
     ```
 
-</div>
-<div label="离线部署">
-
 ### 离线部署
 
 离线部署 TiUP 组件的操作步骤如下。
