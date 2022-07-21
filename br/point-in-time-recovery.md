@@ -53,15 +53,22 @@ summary: 了解 PiTR 功能设计和使用。
 
 在使用 PiTR 功能前，需要了解下面的 PiTR 使用限制
 
+### 功能限制
+
 - 单个集群只支持启动一个日志备份任务
 - 只支持恢复到新集群。为了避免对集群的业务请求和数据产生影响，不要在原集群（in-place）和其他已有数据集群执行 PiTR
 - 不支持恢复用户表和权限表的数据
-- 只支持保存数据到 S3，暂不支持 GCS/NFS/Azure Blob Storage 做为备份存储
+- 只支持保存数据到 S3 和分布文件系统等共享存储，暂不支持 GCS/Azure Blob Storage 做为备份存储
 - 只支持集群粒度的 PiTR，不支持对单个 database/table 执行 PiTR
 - 不支持恢复数据到 TiFlash storage engine。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本
-- 开启日志备份的时候不支持在集群进行大量写入操作，例如 bulk load：`INSERT INTO xxx VALUES  ... 10000 tuples ...`
-- 不要随意使用 `br log stop` 命令，该命令目前只适用于不再继续使用 PiTR 的情况下使用。如需暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令暂停和重启日志备份任务。如果你选择使用 `br log stop` 停止备份任务，则在使用 `br log start` 重启备份任务时需要指定一个与之前不同的日志备份保存目录，不同的日志备份保存目录会导致不能使用 `br restore point` 进行一键恢复。
+
+### 使用限制
+
 - 不支持在（单次）恢复中重复地恢复相同时间段的日志备份
+
+### 集群规模限制
+
+- 目前此功能仅在 5TB 左右的数据规模上做过验证。
 
 ## 架构介绍
 
