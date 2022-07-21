@@ -127,7 +127,7 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 
 ### SEMI_JOIN_REWRITE()
 
-`SEMI_JOIN_REWRITE()` 提示优化器可以将半连接（Semi Join）进行改写，改写为普通的内连接。目前该 Hint 只作用在 EXISTS 子查询，当子查询的结果集比外结果集显著的少的时候，这个改写可以很好的提升执行效率。
+`SEMI_JOIN_REWRITE()` 提示优化器可以将半连接（Semi Join）进行改写，改写为普通的内连接。目前该 Hint 只作用在 EXISTS 子查询。在不进行改写的情况下，SEMI JOIN 在选择 Hash Join 的执行方式时，只能够使用子查询去构建哈希表，因此在子查询比外查询结果集大时，执行速度可能会不及预期。在选择 Index Join 的执行方式时，只能够使用外查询作为驱动表，因此在子查询比外查询结果集小时，执行速度可能会不及预期。在使用了改写之后，便可以扩大选择范围，选择更好的执行方式。
 
 {{< copyable "sql" >}}
 
@@ -135,6 +135,7 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT 1 from t1 where t1.a=t.a);
 EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 from t1 where t1.a=t.a);
 ```
+
 ```sql
 +-----------------------------+---------+-----------+------------------------+---------------------------------------------------+
 | id                          | estRows | task      | access object          | operator info                                     |
