@@ -5,7 +5,7 @@ summary: 了解 PiTR 使用。
 
 > **警告：**
 >
-> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  backup-stream.enable: true 开启该功能。
+> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  log-backup.enable: true 开启该功能。
 
 # 使用 PiTR 
 
