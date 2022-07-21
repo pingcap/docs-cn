@@ -20,7 +20,7 @@ The join result of an inner join returns only rows that match the join condition
 For example, if you want to know the most prolific author, you need to join the author table named `authors` with the book author table named `book_authors`.
 
 <SimpleTab>
-<div label="SQL" href="inner-join-sql">
+<div label="SQL">
 
 In the following SQL statement, use the keyword `JOIN` to declare that you want to join the rows of the left table `authors` and the right table `book_authors` as an inner join with the join condition `a.id = ba.author_id`. The result set will only contain rows that satisfy the join condition. If an author has not written any books, then his record in `authors` table will not satisfy the join condition and will therefore not appear in the result set.
 
@@ -56,7 +56,7 @@ The query results are as follows:
 ```
 
 </div>
-<div label="Java" href="inner-join-java">
+<div label="Java">
 
 {{< copyable "java" >}}
 
@@ -99,7 +99,7 @@ In some cases, you want to use multiple tables to complete the data query, but d
 For example, on the homepage of the Bookshop app, you want to display a list of new books with average ratings. In this case, the new books may not have been rated by anyone yet. Using inner joins will cause the information of these unrated books to be filtered out, which is not what you expect.
 
 <SimpleTab>
-<div label="SQL" href="left-join-sql">
+<div label="SQL">
 
 In the following SQL statement, use the `LEFT JOIN` keyword to declare that the left table `books` will be joined to the right table `ratings` in a left outer join, thus ensuring that all rows in the `books` table are returned.
 
@@ -165,7 +165,7 @@ Query again. The book _The Documentary of lion_ still appears in the result set,
 What happens if you use `INNER JOIN`? It's up to you to have a try.
 
 </div>
-<div label="Java" href="left-join-java">
+<div label="Java">
 
 {{< copyable "java" >}}
 

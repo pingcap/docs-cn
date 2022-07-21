@@ -35,7 +35,7 @@ Now there is a situation where doctors `Alice` and `Bob` are on call. Both are f
 
 <SimpleTab>
 
-<div label="Java" href="write-skew-java">
+<div label="Java">
 
 {{< copyable "" >}}
 
@@ -160,7 +160,7 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang" href="write-skew-golang">
+<div label="Golang">
 
 To adapt TiDB transactions, write a [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util) according to the following code:
 
@@ -370,7 +370,7 @@ Now let's change the sample program to use `SELECT FOR UPDATE` to avoid the writ
 
 <SimpleTab>
 
-<div label="Java" href="overcome-write-skew-java">
+<div label="Java">
 
 {{< copyable "" >}}
 
@@ -495,7 +495,7 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang" href="overcome-write-skew-golang">
+<div label="Golang">
 
 {{< copyable "" >}}
 

@@ -39,7 +39,7 @@ If you need to run TiDB on your local machine, see [Starting TiDB Locally](/quic
 
 <div label="macOS">
 
-Install [Homebrew](https://brew.sh/index) if you do not have it, and then run the following command to install the MySQL client:
+For macOS, install [Homebrew](https://brew.sh/index) if you do not have it, and then run the following command to install the MySQL client:
 
 {{< copyable "shell-regular" >}}
 
@@ -88,7 +88,7 @@ mysql  Ver 8.0.28 for macos12.0 on arm64 (Homebrew)
 
 <div label="Linux">
 
-Take CentOS 7 as an example:
+For Linux, the following takes CentOS 7 as an example:
 
 {{< copyable "shell-regular" >}}
 

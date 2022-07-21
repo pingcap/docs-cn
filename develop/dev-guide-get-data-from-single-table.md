@@ -24,7 +24,7 @@ Before querying data, make sure that you have completed the following steps:
 In the database of the Bookshop application, the `authors` table stores the basic information of authors. You can use the `SELECT ... FROM ...` statement to query data from the database.
 
 <SimpleTab>
-<div label="SQL" href="simple-sql">
+<div label="SQL">
 
 Execute the following SQL statement in a MySQL client:
 
@@ -56,7 +56,7 @@ The output is as follows:
 ```
 
 </div>
-<div label="Java" href="simple-java">
+<div label="Java">
 
 In Java, authors' basic information can be stored by declaring a class `Author`. You should choose appropriate Java data types according to the [type](/data-type-overview.md) and [value range](/data-type-numeric.md) in the database. For example:
 
@@ -121,7 +121,7 @@ You can use the `WHERE` statement to filter query results.
 For example, the following command will query authors who were born in 1998 among all authors:
 
 <SimpleTab>
-<div label="SQL" href="filter-sql">
+<div label="SQL">
 
 Add filter conditions in the `WHERE` statement:
 
@@ -132,7 +132,7 @@ SELECT * FROM authors WHERE birth_year = 1998;
 ```
 
 </div>
-<div label="Java" href="filter-java">
+<div label="Java">
 
 In Java, you can use the same SQL to handle data query requests with dynamic parameters.
 

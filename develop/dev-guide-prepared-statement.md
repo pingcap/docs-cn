@@ -74,7 +74,7 @@ For example, you need to query a book with `id = 1` in the [`bookshop` applicati
 
 <SimpleTab>
 
-<div label="SQL" href="read-sql">
+<div label="SQL">
 
 {{< copyable "sql" >}}
 
@@ -119,7 +119,7 @@ Running result:
 
 </div>
 
-<div label="Java" href="read-java">
+<div label="Java">
 
 {{< copyable "" >}}
 
@@ -153,7 +153,7 @@ Using the [`books` table](/develop/dev-guide-bookshop-schema-design.md#books-tab
 
 <SimpleTab>
 
-<div label="SQL" href="write-sql">
+<div label="SQL">
 
 {{< copyable "sql" >}}
 
@@ -197,7 +197,7 @@ Query OK, 1 row affected (0.03 sec)
 
 </div>
 
-<div label="Java" href="write-java">
+<div label="Java">
 
 {{< copyable "" >}}
 

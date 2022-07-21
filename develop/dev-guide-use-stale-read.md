@@ -75,7 +75,7 @@ Assuming that in the Bookshop application, the real-time price of a book is not 
 ## Statement level
 
 <SimpleTab>
-<div label="SQL" href="statement-sql">
+<div label="SQL">
 
 To query the price of a book before a specific time, add an `AS OF TIMESTAMP <datetime>` clause in the above query statement.
 
@@ -237,7 +237,7 @@ WARN: GC life time is shorter than transaction duration.
 With the `START TRANSACTION READ ONLY AS OF TIMESTAMP` statement, you can start a read-only transaction based on historical time, which reads historical data from a specified historical timestamp.
 
 <SimpleTab>
-<div label="SQL" href="txn-sql">
+<div label="SQL">
 
 For example:
 
@@ -286,7 +286,7 @@ After the transaction with the `COMMIT;` statement is committed, you can read th
 ```
 
 </div>
-<div label="Java" href="txn-java">
+<div label="Java">
 
 You can define a helper class for transactions, which encapsulates the command to enable Stale Read at the transaction level as a helper method.
 
@@ -390,7 +390,7 @@ The latest book price (after the transaction commit): 150
 With the `SET TRANSACTION READ ONLY AS OF TIMESTAMP` statement, you can set the opened transaction or the next transaction to be a read-only transaction based on a specified historical time. The transaction will read historical data based on the provided historical time.
 
 <SimpleTab>
-<div label="SQL" href="next-txn-sql">
+<div label="SQL">
 
 For example, you can use the following `AS OF TIMESTAMP` statement to switch the ongoing transactions to the read-only mode and read historical data 5 seconds ago.
 
@@ -399,7 +399,7 @@ SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
 </div>
-<div label="Java" href="next-txn-java">
+<div label="Java">
 
 You can define a helper class for transactions, which encapsulates the command to enable Stale Read at the transaction level as a helper method.
 

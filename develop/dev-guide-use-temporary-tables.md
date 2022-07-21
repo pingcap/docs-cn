@@ -57,7 +57,7 @@ Temporary tables in TiDB are divided into two types: local temporary tables and 
 Before creating a local temporary table, you need to add `CREATE TEMPORARY TABLES` permission to the current database user.
 
 <SimpleTab>
-<div label="SQL" href="local-sql">
+<div label="SQL">
 
 You can create a temporary table using the `CREATE TEMPORARY TABLE <table_name>` statement. The default type is a local temporary table, which is visible only to the current session.
 
@@ -92,7 +92,7 @@ Records: 50  Duplicates: 0  Warnings: 0
 ```
 
 </div>
-<div label="Java" href="local-java">
+<div label="Java">
 
 {{< copyable "java" >}}
 
@@ -139,7 +139,7 @@ public List<Author> getTop50EldestAuthorInfo() throws SQLException {
 ### Create a global temporary table
 
 <SimpleTab>
-<div label="SQL" href="global-sql">
+<div label="SQL">
 
 To create a global temporary table, you can add the `GLOBAL` keyword and end with `ON COMMIT DELETE ROWS`, which means the table will be deleted after the current transaction ends.
 
@@ -157,7 +157,7 @@ CREATE GLOBAL TEMPORARY TABLE IF NOT EXISTS top_50_eldest_authors_global (
 When inserting data to global temporary tables, you must explicitly declare the start of the transaction via `BEGIN`. Otherwise, the data will be cleared after the `INSERT INTO` statement is executed. Because in the Auto Commit mode, the transaction is automatically committed after the `INSERT INTO` statement is executed, and the global temporary table is cleared when the transaction ends.
 
 </div>
-<div label="Java" href="global-java">
+<div label="Java">
 
 When using global temporary tables, you need to turn off Auto Commit mode first. In Java, you can do this with the `conn.setAutoCommit(false);` statement, and you can commit the transaction explicitly with `conn.commit();`. The data added to the global temporary table during the transaction will be cleared after the transaction is committed or canceled.
 

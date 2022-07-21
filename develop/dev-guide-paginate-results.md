@@ -22,7 +22,7 @@ SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 When pagination is used, it is recommended that you sort query results with the `ORDER BY` statement unless there is a need to display data randomly.
 
 <SimpleTab>
-<div label="SQL" href="page-sql">
+<div label="SQL">
 
 For example, to let users of the [Bookshop](/develop/dev-guide-bookshop-schema-design.md) application view the latest published books in a paginated manner, you can use the `LIMIT 0, 10` statement, which returns the first page of the result list, with a maximum of 10 records per page. To get the second page, you can change the statement to `LIMIT 10, 10`, and so on.
 
@@ -36,7 +36,7 @@ LIMIT 0, 10;
 ```
 
 </div>
-<div label="Java" href="page-java">
+<div label="Java">
 
 In application development, the backend program receives the `page_number` parameter (which means the number of the page being requested) and the `page_size` parameter (which controls how many records per page) from the frontend instead of the `offset` parameter. Therefore, some conversions needed to be done before querying.
 
@@ -81,7 +81,7 @@ Usually, you can write a pagination SQL statement using a primary key or unique 
 The following introduces a more efficient paging batching method:
 
 <SimpleTab>
-<div label="SQL" href="offset-sql">
+<div label="SQL">
 
 First, sort the data by primary key and call the window function `row_number()` to generate a row number for each row. Then, call the aggregation function to group row numbers by the specified page size and calculate the minimum and maximum values of each page.
 
@@ -132,7 +132,7 @@ ORDER BY id;
 ```
 
 </div>
-<div label="Java" href="offset-java">
+<div label="Java">
 
 In Java, define a `PageMeta` class to store page meta information.
 

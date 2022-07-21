@@ -59,7 +59,7 @@ The following are some best practices for updating data:
 Suppose an author changes her name to **Helen Haruki**. You need to change the [authors](/develop/dev-guide-bookshop-schema-design.md#authors-table) table. Assume that her unique `id` is **1**, and the filter should be: `id = 1`.
 
 <SimpleTab>
-<div label="SQL" href="update-sql">
+<div label="SQL">
 
 {{< copyable "sql" >}}
 
@@ -69,7 +69,7 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 
 </div>
 
-<div label="Java" href="update-java">
+<div label="Java">
 
 {{< copyable "" >}}
 
@@ -123,7 +123,7 @@ For example, you need to update the [ratings](/develop/dev-guide-bookshop-schema
 In the following example, the primary key is the joint primary keys of `book_id` and `user_id`. A user `user_id = 1` gives a rating of `5` to a book `book_id = 1000`.
 
 <SimpleTab>
-<div label="SQL" href="upsert-sql">
+<div label="SQL">
 
 {{< copyable "sql" >}}
 
@@ -137,7 +137,7 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 
 </div>
 
-<div label="Java" href="upsert-java">
+<div label="Java">
 
 {{< copyable "" >}}
 

@@ -27,13 +27,13 @@ The following code uses two threads to simulate the process that two users buy t
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-concurrent-save-java">
+<div label="Java">
 
 Because you use multiple threads to simulate the situation that multiple users insert data simultaneously, you need to use a connection object with safe threads. Here use Java's popular connection pool [HikariCP](https://github.com/brettwooldridge/HikariCP) for demo.
 
 </div>
 
-<div label="Golang" href="pessimstic-concurrent-save-golang">
+<div label="Golang">
 
 `sql.DB` in Golang is concurrency-safe, so there is no need to import a third-party package.
 
@@ -99,7 +99,7 @@ func (tx *TiDBSqlTx) Rollback() error {
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-code-java">
+<div label="Java">
 
 **Configuration file**
 
@@ -332,7 +332,7 @@ public class TxnExample {
 
 </div>
 
-<div label="Golang" href="pessimstic-code-golang">
+<div label="Golang">
 
 Write a `helper.go` file that contains the required database operations:
 
@@ -664,7 +664,7 @@ Run the sample program:
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-not-oversell-java">
+<div label="Java">
 
 {{< copyable "shell-regular" >}}
 
@@ -675,7 +675,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="pessimstic-not-oversell-golang">
+<div label="Golang">
 
 {{< copyable "shell-regular" >}}
 
@@ -745,7 +745,7 @@ Run the sample program:
 
 <SimpleTab>
 
-<div label="Java" href="pessimstic-oversell-java">
+<div label="Java">
 
 {{< copyable "shell-regular" >}}
 
@@ -756,7 +756,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="pessimstic-oversell-golang">
+<div label="Golang">
 
 {{< copyable "shell-regular" >}}
 
@@ -823,7 +823,7 @@ The following code uses two threads to simulate the process that two users buy t
 
 <SimpleTab>
 
-<div label="Java" href="optimistic-code-java">
+<div label="Java">
 
 **Coding**
 
@@ -1005,7 +1005,7 @@ Change it to the following to point to the optimistic transaction example.
 
 </div>
 
-<div label="Golang" href="optimistic-code-golang">
+<div label="Golang">
 
 The Golang example in the [Write a pessimistic transaction example](#write-a-pessimistic-transaction-example) section already supports optimistic transactions and can be used directly without changes.
 
@@ -1019,7 +1019,7 @@ Run the sample program:
 
 <SimpleTab>
 
-<div label="Java" href="optimistic-not-oversell-java">
+<div label="Java">
 
 {{< copyable "shell-regular" >}}
 
@@ -1030,7 +1030,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="optimistic-not-oversell-golang">
+<div label="Golang">
 
 {{< copyable "shell-regular" >}}
 
@@ -1108,7 +1108,7 @@ Run the sample program:
 
 <SimpleTab>
 
-<div label="Java" href="optimistic-oversell-java">
+<div label="Java">
 
 {{< copyable "shell-regular" >}}
 
@@ -1119,7 +1119,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="optimistic-oversell-golang">
+<div label="Golang">
 
 {{< copyable "shell-regular" >}}
 
