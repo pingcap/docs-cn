@@ -57,7 +57,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-如果要启用 Fast Mode 查询表 test，执行以下语句来切换模式, 并可以查询当前表的 mode。
+如果要启用 Fast Mode 查询 `test` 表，执行以下语句来切换模式, 并可以查询当前表的 mode。
 
 ```sql
 ALTER TABLE test SET tiflash mode FAST
