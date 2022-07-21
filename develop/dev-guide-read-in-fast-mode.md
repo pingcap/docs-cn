@@ -55,4 +55,4 @@ Normal Mode 中 TableScan 算子过程整体包括了以下步骤:
 3. Range Filter : 对步骤 2 中的数据进行过滤筛选并返回数据。
 4. MVCC + Column Filter：对步骤 3 中的数据进行 MVCC 过滤，同时过滤掉不需要的列并返回数据。
 
-Fast Mode 模式通过损失一定的数据一致性来获取更快的查询性能。简化 Fast Mode 中的 TableScan 流程，省略了上述过程中的第 2 步和第 4 步中 MVCC 的部分，从而提高查询的性能。
+Fast Mode 模式通过损失一定的数据一致性来获取更快的查询性能。Fast Mode 中的 TableScan 流程省略了上述 Normal Mode 过程中的第 2 步和第 4 步中 MVCC 的部分，从而提高查询的性能。
