@@ -80,4 +80,3 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命�
     ├── store4
     └── store5
 ```
-
