@@ -86,4 +86,4 @@ explain select * from t1 where exists (select * from t2);
 +------------------------+----------+-----------+---------------+--------------------------------+
 ```
 
-除了上述优化器会自动进行的优化之外，也可以通过 [`SEMI_JOIN_REWRITE`](/optimizer-hints.md#semijoinrewrite) 进行进一步的改写。这个改写在 EXISTS 子查询的结果集显著小于外面查询的结果集时会有比较好的效果。
+除了上述优化器会自动进行的优化之外，也可以通过 [`SEMI_JOIN_REWRITE`](/optimizer-hints.md#semi_join_rewrite) 进行进一步的改写。这个改写在 EXISTS 子查询的结果集显著小于外面查询的结果集时会有比较好的效果。
