@@ -4,7 +4,7 @@ summary: TiDB 数据库中 SHOW CREATE DATABASE 的使用概况。
 aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-database/','/docs-cn/dev/reference/sql/statements/show-create-database/']
 ---
 
-# SHOW CREATE TABLE
+# SHOW CREATE DATABASE
 
 `SHOW CREATE TABLE` 语句用于显示用 SQL 重新创建已有库的确切语句。
 
