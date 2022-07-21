@@ -264,6 +264,7 @@ SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = 
 + 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
 + 已经存在 `straight_join()` hint
 + 查询语句中包含 outer join，同时指定了包含笛卡尔积的情况
++ 在分区表的静态模式下，hint 中指定的表包含分区表
 + 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`、`ORDERED_HASH_JOIN`）同时使用时
 
 当出现了上述失效的情况，会输出 warning 警告。
@@ -285,6 +286,11 @@ SHOW WARNINGS;
 | Warning | 1815 | We can only use one leading hint at most, when multiple leading hints are used, all leading hints will be invalid |
 +---------+------+-------------------------------------------------------------------------------------------------------------------+
 ```
+
+> **注意：**
+>
+> 针对 outer join 的情况，在使用时需要注意只能指定可以用于交换连接顺序的表，如果 hint 中出现了不能用于交换的表则会使得 hint 失效。例如：`select * from t1 left join (t2 join t3 join t4) on t1.a = t2.a;` 如果想要控制 `t2`, `t3`, `t4` 表的连接顺序，在使用 leading hint 时，hint 中不能出现 `t1` 表。
+
 
 ## 查询范围生效的 Hint
 
