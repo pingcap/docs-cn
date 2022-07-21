@@ -11,10 +11,10 @@ summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用�
 
 使用 `ALTER TABLE ... SET TIFLASH MODE ...` 语句可以切换对应表在 TiFlash 中的模式状态。目前支持以下模式：
 
-- `Normal Mode` 模式。该模式下保证查询结果精度以及数据的一致性。
-- `Fast Mode` 模式。该模式不保证查询结果精度和数据一致性，但提供更高效的查询性能。
+- `Normal Mode` 模式。该模式能够保证查询结果精度以及数据一致性。
+- `Fast Mode` 模式。该模式不保证查询结果精度和数据一致性，但可以实现更高效的查询性能。
 
-该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句会在模式切换完毕后返回。
+该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句会在模式切换完毕后正常结束。
 
 该语句仅支持对表在 TiFlash 中的模式进行修改，因此模式修改后也仅对涉及到 TiFlash 表部分的读取产生对应模式的影响。
 
@@ -73,7 +73,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-如果想重新使用 Normal Mode 模式，执行以下语句将表切换。
+如果想重新使用 Normal Mode 模式，执行以下语句切换。
 
 ```sql
 ALTER TABLE test SET tiflash mode NORMAL
@@ -81,11 +81,11 @@ ALTER TABLE test SET tiflash mode NORMAL
 
 ## MySQL 兼容性
 
-`ALTER TABLE ...SET TiFLASH MODE ..`  语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，但你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
+`ALTER TABLE ...SET TiFLASH MODE ..`  语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
 
 ## TiDB Binlog 及 TiCDC 兼容性
 
-当下游也为 TiDB 时，`ALTER TABLE ...SET TiFLASH MODE ..` 会被 TiDB Binlog 同步到下游。其他状态下，Binlog 和 TiCDC 都不会同步该语句。
+当下游也为 TiDB 时，`ALTER TABLE ...SET TiFLASH MODE ..` 会被 TiDB Binlog 同步到下游。其他场景下，TiDB Binlog 和 TiCDC 都不会同步该语句。
 
 ## 另请参阅
 
