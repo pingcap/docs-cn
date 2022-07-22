@@ -5,7 +5,7 @@ summary: TiDB 数据库中 SHOW CREATE DATABASE 的使用概况。
 
 # SHOW CREATE DATABASE
 
-`SHOW CREATE TABLE` 语句用于显示用 SQL 重新创建已有库的确切语句。
+`SHOW CREATE DATABASE` 语句用于显示用 SQL 重新创建已有库的确切语句。`SHOW CREATE SCHEMA` 与其同义。
 
 ## 语法图
 
