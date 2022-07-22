@@ -15,10 +15,10 @@ summary: 了解如何使用 br log 命令行工具进行日志备份。
 
 ## 使用日志备份
 
-日志备份支持以下的子命令
+进行日志备份时，你需要使用 `br log` 命令：
 
 ```shell
-./br log --help
+tiup br log --help
 
 backup stream log from TiDB/TiKV cluster
 
@@ -233,8 +233,8 @@ Global Flags:
 
 > **警告：**
 >
-> 使用该命令需要谨慎，目前它只适用于不再继续使用 PiTR 的情况下使用。暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令暂停和重启日志备份任务.
-> 如果你选择使用 `br log stop` 停止备份任务，然后使用 `br log start` 重启备份任务时需要指定一个与之前不同的日志备份保存目录，不同的日志备份保存目录会影响到不能使用 `br restore point` 进行一键恢复。
+> - 请谨慎使用该命令。只有在你确认不再继续使用 PiTR 的情况下，才可以停止日志备份任务。如果你只需暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令。
+> - 如果你选择使用 `br log stop` 停止备份任务，在使用 `br log start` 重启备份任务时需要指定一个与之前不同的日志备份保存目录，而不同的日志备份保存目录会导致你无法使用 `br restore point` 进行一键恢复。
 
 使用示例
 
