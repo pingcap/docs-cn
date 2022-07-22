@@ -63,4 +63,4 @@ WHERE
 * `INDEX_COMMENT`：创建索引时以 `COMMENT` 标注的注释。
 * `INDEX_ID`：索引的 ID。
 * `IS_VISIBLE`: 索引是否可见。
-* `CLUSTERED`: 是否为聚簇索引。
+* `CLUSTERED`: 是否为[聚簇索引](/clustered-indexes.md)。
