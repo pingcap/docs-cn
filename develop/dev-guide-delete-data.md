@@ -164,7 +164,7 @@ This section provides an example of writing a script to handle an iterative dele
 
 ### Write a bulk-delete loop
 
-First, you write a `SELECT` query in a loop of your application or script. Use the returned value of this query as the primary key for the rows that need to be deleted. Note that when defining this `SELECT` query, you need to use the `WHERE` clause to filter the rows that need to be deleted.
+You can write a `DELETE` statement in the loop of your application or script, use the `WHERE` clause to filter data, and use `LIMIT` to constrain the number of rows to be deleted in a single statement.
 
 ### Bulk-delete example
 
