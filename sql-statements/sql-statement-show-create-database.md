@@ -1,7 +1,6 @@
 ---
 title: SHOW CREATE DATABASE
 summary: TiDB 数据库中 SHOW CREATE DATABASE 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-database/','/docs-cn/dev/reference/sql/statements/show-create-database/']
 ---
 
 # SHOW CREATE DATABASE
