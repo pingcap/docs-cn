@@ -288,8 +288,7 @@ SHOW WARNINGS;
 
 > **注意：**
 >
-> 针对 outer join 的情况，在使用时需要注意只能指定可以用于交换连接顺序的表，如果 hint 中出现了不能用于交换的表则会使得 hint 失效。例如：`select * from t1 left join (t2 join t3 join t4) on t1.a = t2.a;` 如果想要控制 `t2`, `t3`, `t4` 表的连接顺序，在使用 leading hint 时，hint 中不能出现 `t1` 表。
-
+> 如果查询语句中包含了 outer join，你只能在语句中指定可以用于交换连接顺序的表。如果 hint 中存在不能用于交换的表，则该 hint 会失效。例如在 `select * from t1 left join (t2 join t3 join t4) on t1.a = t2.a;` 中，如果想要控制 `t2`、`t3`、`t4` 表的连接顺序，那么在使用 `LEADING` hint 时，hint 中不能出现 `t1` 表。
 
 ## 查询范围生效的 Hint
 
