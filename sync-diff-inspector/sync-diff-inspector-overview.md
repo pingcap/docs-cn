@@ -31,7 +31,11 @@ title: sync-diff-inspector 用户文档
 
 * 对于 MySQL 和 TiDB 之间的数据同步不支持在线校验，需要保证上下游校验的表中没有数据写入，或者保证某个范围内的数据不再变更，通过配置 `range` 来校验这个范围内的数据。
 
+<<<<<<< HEAD
 * 不支持 JSON、BIT、BINARY、BLOB 等类型的数据，在校验时需要设置 `ignore-columns` 忽略检查这些类型的数据。
+=======
+* 不支持 JSON 类型的数据，在校验时需要设置 `ignore-columns` 忽略检查这些类型的数据。
+>>>>>>> 55b2d6dd3 (sync_diff_inspector: update unsupport types (#10630))
 
 * FLOAT、DOUBLE 等浮点数类型在 TiDB 和 MySQL 中的实现方式不同，在计算 checksum 时可能存在差异，如果发现因为这些类型的数据导致的数据校验不一致，需要设置 `ignore-columns` 忽略这些列的检查。
 
