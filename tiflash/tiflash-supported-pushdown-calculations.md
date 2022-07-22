@@ -35,7 +35,8 @@ TiFlash 支持部分算子的下推，支持的算子如下：
 * 日期函数：`date_format, timestampdiff, from_unixtime, unix_timestamp(int), unix_timestamp(decimal), str_to_date(date), str_to_date(datetime), datediff, year, month, day, extract(datetime), date, hour, microsecond, minute, second, sysdate, date_add, date_sub, adddate, subdate, quarter, dayname, dayofmonth, dayofweek, dayofyear, last_day, monthname, to_seconds, to_days, from_days, weekofyear`
 * JSON 函数：`json_length`
 * 转换函数：`cast(int as double), cast(int as decimal), cast(int as string), cast(int as time), cast(double as int), cast(double as decimal), cast(double as string), cast(double as time), cast(string as int), cast(string as double), cast(string as decimal), cast(string as time), cast(decimal as int), cast(decimal as string), cast(decimal as time), cast(time as int), cast(time as decimal), cast(time as string), cast(time as real)`
-* 聚合函数：`min, max, sum, count, avg, approx_count_distinct, group_concat`
+* 聚合函数：`min, max, sum, count, avg, group_concat`
+* 聚合函数(近似算法)：`approx_count_distinct` (功能同 `count`，计算速度有数量级的提升，但可能带来 1% ～ 5% 的误差。适合对精度要求不高的大量数据做快速统计。)
 * 其他函数：`inetntoa, inetaton, inet6ntoa, inet6aton`
 
 ## 下推限制
