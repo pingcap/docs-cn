@@ -175,7 +175,7 @@ FROM
 
 > **建议：**
 >
-> - 当默认的 CTE 查询执行效率不高时，你可以使用 [`MERGE()`](/optimizer-hints.md#merge) hint，将 CTE 子查询拓展到外部查询，以此提高执行效率。
+> 当默认的 CTE 查询执行效率不高时，你可以使用 [`MERGE()`](/optimizer-hints.md#merge) hint，将 CTE 子查询拓展到外部查询，以此提高执行效率。
 
 ### 递归的 CTE
 
