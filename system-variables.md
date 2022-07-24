@@ -1667,7 +1667,7 @@ explain select * from t where age=5;
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`leader`
 - 可选值：`leader`，`follower`，`leader-and-follower`
