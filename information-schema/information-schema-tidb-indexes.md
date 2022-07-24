@@ -29,6 +29,8 @@ DESC tidb_indexes;
 | INDEX_COMMENT | varchar(2048) | YES  |      | NULL    |       |
 | Expression    | varchar(64)   | YES  |      | NULL    |       |
 | INDEX_ID      | bigint(21)    | YES  |      | NULL    |       |
+| IS_VISIBLE    | varchar(64)   | YES  |      | NULL    |       |
+| CLUSTERED     | varchar(64)   | YES  |      | NULL    |       |
 +---------------+---------------+------+------+---------+-------+
 10 rows in set (0.00 sec)
 ```
@@ -61,3 +63,5 @@ WHERE
 * `SUB_PART`：索引前缀长度。如果列是部分被索引，则该值为被索引的字符数量，否则为 `NULL`。
 * `INDEX_COMMENT`：创建索引时以 `COMMENT` 标注的注释。
 * `INDEX_ID`：索引的 ID。
+* `IS_VISIBLE`: 索引是否可见。
+* `CLUSTERED`: 是否为[聚簇索引](/clustered-indexes.md)。
