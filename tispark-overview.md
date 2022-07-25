@@ -41,6 +41,7 @@ The following table lists the compatibility information of the supported TiSpark
 | 2.4.x-scala_2.11 | 5.x, 4.x             | 2.3.x, 2.4.x    | 2.11          |
 | 2.4.x-scala_2.12 | 5.x, 4.x             | 2.4.x           | 2.12          |
 | 2.5.x            | 5.x, 4.x             | 3.0.x, 3.1.x    | 2.12           |
+| 3.0.x            | 5.x, 4.x             | 3.0.x, 3.1.x, 3.2.x | 2.12            |
 
 TiSpark runs in any Spark mode such as YARN, Mesos, and Standalone.
 
