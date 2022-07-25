@@ -45,10 +45,8 @@ mysql> SHOW CREATE TABLE t;
 > - 当前 Cost Model Version 2 为实验特性，不建议在生产环境中使用。
 > - 切换代价模型版本可能会引起查询计划的变动。
 
-TiDB v6.2.0 引入了新的代价模型 Cost Model Version 2。在内部测试中，它比旧版代价模型更加准确。
+TiDB v6.2.0 引入了新的代价模型 Cost Model Version 2。
 
-如下图，右边新版的代价模型估算出来的代价和计划实际的执行时间更加吻合：
-
-![cost-model-ver2](/media/cost-model-ver2.png)
+Cost Model Version 2 对代价公式进行了更精确的回归校准，调整了部分代价公式，比旧版代价公式更加准确。
 
 你可以通过设置变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 来控制代价模型的版本。
