@@ -293,7 +293,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 2. 添加 `--force-new-cluster` 参数，以单副本模式启动从中心的 PD 节点。
 
-3. 使用 [Online Unsafe Recovery](/online-unsafe-recovery) 处理从中心的 TiKV 数据，参数为主中心所有 Store ID 的列表。
+3. 使用 [Online Unsafe Recovery](/online-unsafe-recovery.md) 处理从中心的 TiKV 数据，参数为主中心所有 Store ID 的列表。
 
 4. 使用 [PD Control 工具](/pd-control.md) 写入新的 placement rule 配置，其中 Region 的 Voter 副本数配置为原集群在从中心的副本数。
 
