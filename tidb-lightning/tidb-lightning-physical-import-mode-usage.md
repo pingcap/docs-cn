@@ -4,7 +4,7 @@ title: 使用 Physical Import Mode
 
 # 使用 Physical Import Mode
 
-本文档介绍如何编写 Physical Import Mode 的配置文件，如何进行性能调优等内容。
+本文档介绍如何编写 [Physical Import Mode](/tidb-lightning/tidb-lightning-physical-import-mode.md) 的配置文件，如何进行性能调优等内容。
 
 ## 配置及使用
 
@@ -115,7 +115,7 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 | `tpcc`.`order_line` | PRIMARY    | 21829218 | (2677, 10, 10, 13, 85618, 10, NULL, 5, 7427.98, "t3rsesgi9rVAKi9tf6an5Rpv") |
 | `tpcc`.`order_line` | PRIMARY    | 49931674 | (2677, 10, 10, 13, 85618, 10, NULL, 5, 7427.98, "t3rsesgi9rVAKi9tf6an5Rpv") |
 | `tpcc`.`order_line` | PRIMARY    | 21829219 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  |
-| `tpcc`.`order_line` | PRIMARY    | 49931675 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  | 
+| `tpcc`.`order_line` | PRIMARY    | 49931675 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  |
 | `tpcc`.`order_line` | PRIMARY    | 21829220 | (2678, 10, 10, 1, 44644, 10, NULL, 5, 8463.76, "TWKJBt5iJA4eF7FIVxnugNmz")  |
 | `tpcc`.`order_line` | PRIMARY    | 49931676 | (2678, 10, 10, 1, 44644, 10, NULL, 5, 8463.76, "TWKJBt5iJA4eF7FIVxnugNmz")  |
 +---------------------+------------+----------------------------------------------------------------------------------------+
@@ -150,7 +150,7 @@ distsql-scan-concurrency = 3
 
 [cron]
 # 避免将 TiKV 切换到 import 模式。
-switch-mode = '0' 
+switch-mode = '0'
 ```
 
 在测试中用 TPCC 测试模拟在线业务，同时用 TiDB Lightning 向 TiDB 集群导入数据，测试导入数据对 TPCC 测试结果的影响。测试结果如下：
