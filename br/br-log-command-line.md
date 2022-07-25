@@ -265,7 +265,15 @@ Global Flags:
 使用示例
 
 ```shell
-./br log truncate --until='2022/04/14 06:00:00' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log truncate --until='2022-07-16 20:30:09.0680' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+```
+
+该子命令运行后输出以下信息
+```shell
+Reading Metadata... DONE; take = 277.911599ms
+We are going to remove 698059 files, until 2022-07-16 20:30:09.0680.
+Removing metadata... DONE; take = 1m3.199368669s
+Clearing data files done. kv-count = 1391111377, total-size = 208288284714DONE; take = 10m12.406643526s
 ```
 
 ### 查看备份数据 metadata
@@ -344,7 +352,9 @@ Global Flags:
 –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 –-full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
 
-Full Restore <---------------------------------------------------------------------> 100.00%
-Restore DDL files <----------------------------------------------------------------> 100.00%
-Restore DML Files <----------------------------------------------------------------> 100.00%
+Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+[2022/07/19 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=546.663µs] [restore-ranges=3] [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
+Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+[2022/07/19 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=192.955533ms] [restore-from=434693681289625602] [restore-to=434693753549881345] [total-kv-count=33] [total-size=21551]
 ```
