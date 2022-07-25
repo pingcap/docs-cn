@@ -70,7 +70,7 @@ validators:
 
 ### 方法 2：通过 dmctl 开启
 
-使用 `dmctl validation start` 命令：
+你可以使用 `dmctl validation start` 命令来开启增量数据校验：
 
 ```
 Usage:
