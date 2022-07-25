@@ -1465,7 +1465,7 @@ mysql> desc select count(distinct a) from test.t;
 4 rows in set (0.00 sec)
 ```
 
-### tidb_opt_enable_correlation_adjustment
+### `tidb_opt_enable_correlation_adjustment`
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
@@ -1543,6 +1543,13 @@ explain select * from t where age=5;
 +-------------------------------+------------+-----------+-----------------------------+-------------------------------+
 3 rows in set (0.00 sec)
 ```
+
+### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：否
+- 默认值：`OFF`
+- 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。此优化**仅对 TiFlash 有效**。
 
 ### `tidb_opt_write_row_id`
 
