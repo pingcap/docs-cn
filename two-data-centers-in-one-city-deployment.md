@@ -289,7 +289,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 恢复流程（如果需要恢复数据技术支持，请联系 TiDB 团队）：
 
-1. 停止从中心所有的 PD / TiKV / TiDB 服务。
+1. 停止从中心所有的 PD、TiKV、TiDB 服务。
 
 2. 添加 `--force-new-cluster` 参数，以单副本模式启动从中心的 PD 节点。
 
