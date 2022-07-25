@@ -1,5 +1,6 @@
 ---
 title: Physical Import Mode
+summary: 了解 TiDB Lightning 的 Physical Import Mode。
 ---
 
 # Physical Import Mode
