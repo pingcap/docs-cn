@@ -36,7 +36,7 @@ mysql> SHOW CREATE TABLE t;
 
 由于扫描 `b` 的代价更低，因此 TiDB 会选择 `b` 索引。
 
-上述是一个简化后的例子，只是用于做原理解释，实际 TiDB 的代价模型会更加复杂，具体的代价公式可以见[源码](https://github.com/pingcap/tidb/blob/master/planner/core/plan_cost.go)。
+上述是一个简化后的例子，只是用于做原理解释，实际 TiDB 的代价模型会更加复杂。
 
 ## Cost Model Version 2
 
