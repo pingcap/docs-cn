@@ -18,7 +18,7 @@ summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用�
 
 该语句仅支持对表在 TiFlash 中的模式进行修改，因此模式修改后也仅对涉及到 TiFlash 表部分的读取产生对应模式的影响。
 
-对表 TiFlash 模式的修改在表具有 TiFlash Replica 时才真实生效。若修改模式时，表的 TiFlash Replica 为空，则需等后续重新设置表的 TiFlash Replica 后修改的模式才真正生效。
+对表 TiFlash 模式的修改在表具有 TiFlash Replica 时才真实生效。若修改模式时，表的 TiFlash Replica 为空，则需等后续重新设置表的 TiFlash Replica 后修改的模式才真正生效。你可以使用 [`ALTER TABLE ... SET TIFLASH REPLICA ...`](/sql-statements/sql-statement-alter-table.md) 语句来设置表的 TiFlash Replica。
 
 可以通过系统表 `information_schema.tiflash_replica` 查询对应表目前的 TiFlash table mode。
 
