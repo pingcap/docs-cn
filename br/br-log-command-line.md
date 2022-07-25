@@ -14,7 +14,7 @@ summary: 了解如何使用 br log 命令行工具进行日志备份。
 进行日志备份时，需要使用到 `br log` 命令：
 
 ```shell
-tiup br log --help
+br log --help
 
 backup stream log from TiDB/TiKV cluster
 
@@ -119,17 +119,14 @@ Global Flags:
 ```shell
 ● Total 1 Tasks.
 > #1 <
-    name: pitr
-    status: ● NORMAL
-    start: 2022-05-14 11:09:40.7 +0800 CST
-    end: 2035-01-01 00:00:00 +0800 CST
-    storage: s3://tidb-pitr-bucket/backup-data/log-backup
-    speed(est.): 0.00 ops/s
-checkpoint[global]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
-checkpoint[store=1]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
-error[store=1]: KV:logbackup:NoSuchTask
-checkpoint[store=4]: 2022-04-24 11:31:47.25 +0800 CST; gap=4m53s
-checkpoint[store=5]: 2022-04-24 11:31:47.351 +0800 CST; gap=4m53s
+              name: pitr
+            status: ● NORMAL
+             start: 2022-07-14 20:08:03.268 +0800 CST
+               end: 2090-11-18 22:07:45.624 +0800 CST
+           storage: s3://tmp/store-by-storeid/log1
+       speed(est.): 0.82 ops/s
+checkpoint[global]: 2022-07-25 22:52:15.518 +0800 CST; gap=2m52s
+    error[store=1]: KV:logbackup:NoSuchTask
 ```
 
 该子命令运行后输出以下信息
@@ -139,7 +136,6 @@ checkpoint[store=5]: 2022-04-24 11:31:47.351 +0800 CST; gap=4m53s
 - `storage`：备份存储
 - `speed`：日志备份任务的总 QPS（每秒备份的日志个数）
 - `checkpoint [global]`：表示集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
-- `checkpoint [store]`：表示对应存储节点早于 checkpoint 的数据都已经保存到备份存储
 - `error [store]`：表示该存储节点上的日志备份组件运行遇到的异常
 
 ### 暂停和重启日志备份任务
@@ -303,7 +299,7 @@ Global Flags:
 该子命令运行后输出以下信息
 
 ```shell
-[2022/05/17 11:27:35.044 +08:00] [INFO] [collector.go:69] ["log backup metadata"] [log-min-ts=433259922007785473] [log-min-date="2022-05-17 10:43:59.788 +0800 CST"] [log-max-ts=433260032007785473] [log-max-date="2022-05-17 10:50:59.404 +0800 CST"]
+[2022/07/25 23:02:57.236 +08:00] [INFO] [collector.go:69] ["log metadata"] [log-min-ts=434582449885806593] [log-min-date="2022-07-14 20:08:03.268 +0800"] [log-max-ts=434834300106964993] [log-max-date="2022-07-25 23:00:15.618 +0800"]
 ```
 
 ## 使用日志恢复
