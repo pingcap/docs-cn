@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/migrate-from-mysql-mydumper-files/','/zh/tidb/dev/migrat
 
 ## 第 1 步：准备 SQL 文件
 
-将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup?region=us-west-2`。Lightning 将递归地寻找该目录下及其子目录内的所有 `.sql` 文件。
+将所有 SQL 文件放到统一目录下，例如 `/data/my_datasource/` 或 `s3://my-bucket/sql-backup`。Lightning 将递归地寻找该目录下及其子目录内的所有 `.sql` 文件。
 
 ## 第 2 步：定义目标表结构
 
@@ -53,7 +53,7 @@ sorted-kv-dir = "${sorted-kv-dir}"
 
 [mydumper]
 # 源数据目录
-data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup?region=us-west-2'
+data-source-dir = "${data-path}" # 本地或 S3 路径，例如：'s3://my-bucket/sql-backup'
 
 [tidb]
 # 目标集群的信息
