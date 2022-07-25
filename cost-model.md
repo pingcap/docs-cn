@@ -52,4 +52,4 @@ mysql> SHOW CREATE TABLE t;
 
 ![cost-model-ver2](/media/cost-model-ver2.png)
 
-你可以通过设置变量 `tidb_cost_model_version` 来控制代价模型的版本。
+你可以通过设置变量 [`tidb_cost_model_version`](/system-variables.md#tidb_cost_model_version-从-v620-版本开始引入) 来控制代价模型的版本。
