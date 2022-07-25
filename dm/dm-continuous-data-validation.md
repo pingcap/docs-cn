@@ -82,7 +82,9 @@ Flags:
       --mode string         specify the mode of validation: full (default), fast; this flag will be ignored if the validation task has been ever enabled but currently paused (default "full")
       --start-time string   specify the start time of binlog for validation, e.g. '2021-10-21 00:01:00' or 2021-10-21T00:01:00
 ```
-`--mode` 参数指定开启的模式，可以是 fast 或者 full；`--start-time` 指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00；`task-name` 是你想开启校验的任务名，或者用 `--all-task` 来表示当前所有任务都开启增量数据校验。
+* `--mode` 参数指定开启的模式，可以是 fast 或者 full。
+* `--start-time` 指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00。
+* `task-name` 是你想开启增量数据校验的任务名，你也可以用 `--all-task` 来为当前所有任务开启增量数据校验。
 
 示例：
 
