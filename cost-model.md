@@ -42,9 +42,8 @@ mysql> SHOW CREATE TABLE t;
 
 > **警告：**
 >
-> - Cost Model Version 2 目前为实验特性，不建议在生产环境中使用。
->
-> - 切换代价模型版本可能引起计划的变动。
+> - 当前 Cost Model Version 2 为实验特性，不建议在生产环境中使用。
+> - 切换代价模型版本可能会引起查询计划的变动。
 
 在 v6.2 版本中，我们引入了新的代价模型 Cost Model Version 2，在内部测试中，它比旧版代价模型更加准确。
 
