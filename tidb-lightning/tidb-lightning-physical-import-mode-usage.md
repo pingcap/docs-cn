@@ -36,6 +36,9 @@ duplicate-resolution = 'remove'
 # 本地进行 KV 排序的路径。
 sorted-kv-dir = "./some-dir"
 
+# 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小，默认为 0，表示不限制。
+# store-write-bwlimit = "128MiB"
+
 [tidb]
 # 目标集群的信息。tidb-server 的地址，填一个即可。
 host = "172.16.31.1"
@@ -121,6 +124,50 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 ```
 
 根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
+
+## 导入数据到生产集群
+
+自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 支持使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，并提供机制控制导入数据过程对在线业务的影响。
+
+在技术实现上，TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，大大降低了对在线业务的影响。
+
+> **注意：**
+>
+> TiDB Lightning 不支持导入数据到已有业务写入的数据表。
+>
+> TiDB 集群版本需大于等于 v6.1.0，更低的版本 TiDB Lightning 会保持原有行为，暂停全局调度，数据导入期间会给在线业务带来严重影响。
+
+TiDB Lightning 默认情况下会在最小范围内暂停集群调度，无需额外配置。但默认配置下，TiDB 集群仍然会因为数据导入太快，使在线业务的性能受到影响，所以你需要额外配置几个选项来控制导入速度和其他可能影响集群性能的因素：
+
+```toml
+[tikv-importer]
+# 限制 TiDB Lightning 向每个 TiKV 节点写入的带宽大小。
+store-write-bwlimit = "128MiB"
+
+[tidb]
+# 使用更小的并发以降低计算 checksum 和执行 analyze 对事务延迟的影响。
+distsql-scan-concurrency = 3
+
+[cron]
+# 避免将 TiKV 切换到 import 模式。
+switch-mode = '0' 
+```
+
+在测试中用 TPCC 测试模拟在线业务，同时用 TiDB Lightning 向 TiDB 集群导入数据，测试导入数据对 TPCC 测试结果的影响。测试结果如下：
+
+| 线程数 | TPM | P99 | P90 | AVG |
+| ----- | --- | --- | --- | --- |
+| 1     | 20%~30% | 60%~80% | 30%~50% | 30%~40% |
+| 8     | 15%~25% | 70%~80% | 35%~45% | 20%~35% |
+| 16    | 20%~25% | 55%~85% | 35%~40% | 20%~30% |
+| 64    | 无显著影响 |
+| 256   | 无显著影响 |
+
+表格中的百分比含义为 TiDB Lightning 导入对 TPCC 结果的影响大小。对于 TPM，数值表示 TPM 下降的百分比；对于延迟 P99、P90、AVG，数值表示延迟上升的百分比。
+
+测试结果表明，TPCC 并发越小，TiDB Lightning 导入对 TPCC 结果影响越大。当 TPCC 并发达到 64 或以上时，Lightning 导入对 TPCC 结果无显著影响。
+
+因此，如果你的 TiDB 生产集群上有延迟敏感型业务，并且并发较小，**强烈建议**不使用 TiDB Lightning 导入数据到该集群，这会给在线业务带来较大影响。
 
 ## 性能调优
 

@@ -44,7 +44,7 @@ aliases: ['/zh/tidb/dev/insert-data']
 <SimpleTab>
 <div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中插入多行数据的示例：
 
 ```sql
 CREATE TABLE `player` (`id` INT, `coins` INT, `goods` INT);
@@ -57,7 +57,7 @@ INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2);
 
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中插入多行数据的示例：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -131,6 +131,8 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 </div>
 
 <div label="Golang">
+
+在 Golang 中插入多行数据的示例：
 
 ```go
 package main
