@@ -747,7 +747,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 是否持久化到集群：是
 - 默认值：`ON`
-- 这个变量用于控制是否让 TiDB 使用并发 DDL。在开启并发 DDL 后，DDL 执行流程改变，DDL 不容易被其他 DDL 阻塞，并且能够同时添加多个索引。 
+- 这个变量用于控制是否让 TiDB 使用并发 DDL 语句。在开启并发 DDL 语句后，DDL 语句的执行流程有所改变，DDL 语句不容易被其他 DDL 语句阻塞，并且能够同时添加多个索引。 
 
 ### `tidb_enable_enhanced_security`
 
