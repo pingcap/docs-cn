@@ -193,7 +193,7 @@ BR 可恢复的**系统权限相关数据**包括如下表：
 
 | 恢复版本（横向）\ 备份版本（纵向）   | 用 `BR 5.4` 恢复 `TiDB 5.4` | 用 `BR 6.0` 恢复 `TiDB 6.0` | 用 `BR 6.1` 恢复 `TiDB 6.1`.0| 用 `BR 6.2` 恢复 `TiDB 6.2` |
 |  ----  |  ----  | ---- | ---- | ---- |
-|用 `BR 5.4` 备份 `TiDB 5.4`| ✅ | ❌(调整`New collation`一致后可恢复) | ❌(调整`New collation`一致后可恢复) | ❌(调整`New collation`一致后可恢复) |
+|用 `BR 5.4` 备份 `TiDB 5.4`| 兼容 | 不兼容（调整 v5.4 备份集群使用[新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，可以恢复到 v6.0）| 不兼容（调整 v5.4 备份集群使用[新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，可以恢复到 v6.1） | 不兼容（调整 v5.4 备份集群使用[新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 后，可以恢复到 v6.2）|
 |用 `BR 6.0` 备份 `TiDB 6.0`| ❌ | ✅ | ✅ | ✅ |
 |用 `BR 6.1` 备份 `TiDB 6.1`| ❌ | ✅(已知问题 [#36379](https://github.com/pingcap/tidb/issues/36379)) | ✅ | ✅ |
 |用 `BR 6.2` 备份 `TiDB 6.2`| ❌ | ✅(已知问题 [#36379](https://github.com/pingcap/tidb/issues/36379)) | ✅ | ✅ |
