@@ -5,6 +5,10 @@ summary: 介绍通过使用 Fast Mode 来加速 AP 场景的查询的方法。
 
 # Fast Mode
 
+> **警告：**
+>
+> 该功能目前是实验性功能，不建议在生产环境中使用。
+
 本文档介绍通过使用 Fast Mode 来加速 Analytical Processing (AP) 场景中查询的方法。
 
 TiFlash 支持以下模式：
