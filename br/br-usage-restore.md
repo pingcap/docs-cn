@@ -187,24 +187,24 @@ BR 可恢复的**系统权限相关数据**包括如下表：
 >
 > 恢复系统权限表仅适用于备份集群和恢复集群版本 >= v6.0.0 的情况。对于更早版本的集群，建议使用与其版本相同的 BR，或者按下述方式显式设置 `--filter`。
 
-**版本兼容矩阵**
+**版本兼容矩阵：**
 
-说明：下表中的 `BR 5.4`需要是 `BR >= 5.4.1` 版本.
+说明：下表中的 BR v5.4 需要是 >= v5.4.1。
 
-| 恢复版本（横向）\ 备份版本（纵向）   | 用 `BR 5.4` 恢复 `TiDB 5.4` | 用 `BR 6.0` 恢复 `TiDB 6.0` | 用 `BR 6.1` 恢复 `TiDB 6.1`.0| 用 `BR 6.2` 恢复 `TiDB 6.2` |
+| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR v5.4 恢复 TiDB v5.4 | 用 BR v6.0 恢复 TiDB v6.0 | 用 BR v6.1 恢复 TiDB v6.1| 用 BR v6.2 恢复 TiDB v6.2 |
 |  ----  |  ----  | ---- | ---- | ---- |
-|用 `BR 5.4` 备份 `TiDB 5.4`| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
-|用 `BR 6.0` 备份 `TiDB 6.0`| 不兼容 |兼容 | 兼容 | 兼容 |
-|用 `BR 6.1` 备份 `TiDB 6.1`| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
-|用 `BR 6.2` 备份 `TiDB 6.2`| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
+|用 BR v5.4 备份 TiDB v5.4| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
+|用 BR v6.0 备份 TiDB v6.0| 不兼容 |兼容 | 兼容 | 兼容 |
+|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
+|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
 
 自 v6.2.0 起，BR 恢复数据前会检查以下两项：
 
 - 目标集群是否为空。
 - 目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件：
-    - 目标集群需要存在备份中的系统权限表
-    - 目标集群系统权限表列数需要跟备份数据中一致，列顺序可以有差异
-    - 目标集群系统权限表列需要跟备份数据兼容，如果为带长度类型（包括整形、字符等类型）前者长度需 >= 后者，如果为 enum 类型，则应该为后者超集
+    - 目标集群需要存在备份中的系统权限表。
+    - 目标集群系统权限表**列数**需要跟备份数据中一致，列顺序可以有差异。
+    - 目标集群系统权限表列需要跟备份数据兼容，如果为带长度类型（包括整形、字符等类型），前者长度需 >= 后者，如果为 enum 类型，则应该为后者超集。
 
 如果目标集群非空或者目标集群系统表跟备份数据不兼容，BR 会提示类似如下信息。此时可参考提示信息，通过显式指定 `--filter` 的方式跳过恢复系统表:
 
