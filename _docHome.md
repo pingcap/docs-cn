@@ -71,7 +71,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 <DocHomeCard href="https://pingcap.com/zh/education/" icon="cloud1" label="PingCAP Education">
 
-系列教程和认证体系，助你点亮职业生涯，拥抱无限可能
+提供众多免费课程，助你深入学习 TiDB，成为 TiDB 技术专家。
 
 </DocHomeCard>
 
