@@ -202,7 +202,7 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 ### `simplify-metrics`
 
-+ 是否开启精简返回的 Metrics 数据。在设置为 true 时，TiKV 可以通过过滤部分无用的 Metrics 采样数据以减少每次请求返回的 Metrics 数据量。
++ 是否精简返回的 Metrics 数据。设置为 `true` 后，TiKV 可以通过过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量。
 + 默认值：false
 
 ## readpool.unified
