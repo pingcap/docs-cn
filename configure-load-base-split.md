@@ -29,11 +29,11 @@ Load Base Split 后的 Region 不会被迅速 Merge。一方面，PD 的 `MergeC
 
 ## 使用方法
 
-目前的 Load Base Split 的控制参数有 3 个：
+目前的 Load Base Split 的控制参数如下：
 
 - `split.qps-threshold`：表明一个 Region 被识别为热点的 QPS 阈值，默认为每秒 `3000` QPS。
 - `split.byte-threshold`：表明一个 Region 被识别为热点的流量阈值，单位为 Byte，默认为每秒 `30 MiB` 流量。
-- `split.region-cpu-overload-threshold-ratio`：表明一个 Region 被识别为热点的 CPU 使用率（占读线程池 CPU 时间的百分比）阈值，默认为 `0.25`。
+- `split.region-cpu-overload-threshold-ratio`：自 v6.2.0 引入，表明一个 Region 被识别为热点的 CPU 使用率（占读线程池 CPU 时间的百分比）阈值，默认为 `0.25`。
 
 如果连续 10s 内，某个 Region 每秒的各类读请求之和超过了 `split.qps-threshold`、流量超过了 `split.byte-threshold`，或 CPU 使用率在 Unified Read Pool 内的占比超过了 `split.region-cpu-overload-threshold-ratio`，那么就会尝试对此 Region 进行拆分。
 
