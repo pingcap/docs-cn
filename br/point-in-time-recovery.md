@@ -65,7 +65,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 - 单个集群只支持启动一个日志备份任务
 - 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不要在原集群（in-place）和其他已有数据集群执行 PiTR
-- 仅支持保存数据到 S3 和分布文件系统等共享存储，暂不支持 GCS/Azure Blob Storage 做为备份存储
+- 存储支持 AWS S3 和 Posix file system(如 nfs 等)，暂不支持 GCS/Azure Blob Storage 做为备份存储
 - 仅支持集群粒度的 PiTR，不支持对单个 database/table 执行 PiTR
 - 不支持恢复用户表和权限表的数据
 - 不支持恢复数据到 TiFlash storage engine。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本
