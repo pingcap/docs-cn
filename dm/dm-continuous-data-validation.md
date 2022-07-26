@@ -31,7 +31,17 @@ validators:
     worker-count: 4 # 后台校验的 validation worker 数量，默认是 4 个
     row-error-delay: 30m # 某一行多久没有验证通过会报错，默认是 30m，即 30 分钟
 ```
-`mode`代表校验模式，可以是 `none`、`full`、`fast`，默认是 `none`，即不开启校验。`worker-count`代表增量校验功能使用的 worker 数量（每个 worker 都是一个 goroutine）。`row-error-delay`代表某一行多久没有验证通过会报错，默认是 30 分钟。
+
+示例中各配置项的含义如下：
+
+* `mode`：校验模式，可以是 `none`、`full`、`fast`。
+    * `none`：默认值，即不开启校验。
+    * `full`：将变动行和下游数据库中获取的行数据进行每列对比。
+    * `fast`：只判断这一行在下游数据库是否存在。
+* `worker-count`：增量校验功能使用的 worker 数量（每个 worker 都是一个 goroutine）。
+* `row-error-delay`：某一行多久没有验证通过会报错，默认是 30 分钟。
+
+完整配置请查阅 [DM 任务完整配置文件](dm/task-configuration-file-full.md)。
 
 ### 方法 2：通过 dmctl 开启
 
