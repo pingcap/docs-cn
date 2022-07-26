@@ -113,6 +113,56 @@ ADMIN SHOW DDL JOB QUERIES 51;
 
 只能在 DDL 历史作业队列中最近十条结果中搜索与 `job_id` 对应的正在运行中的 DDL 作业。
 
+### `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n`
+
+`ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n` 语句用于查看指定范围 `(n+1, n+m)` 的 `job_id` 对应的 DDL 任务的原始 SQL 语句：
+
+{{< copyable "sql" >}}
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
+ADMIN SHOW DDL JOB QUERIES LIMIT 2, 3;  # Retrieve rows 3-5
+ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 2;  # Retrieve rows 3-5
+```
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
++--------+--------------------------------------------------------------+
+| JOB_ID | QUERY                                                        | 
++--------+--------------------------------------------------------------+
+|     59 | ALTER TABLE t1 ADD INDEX index1 (col1)                       | 
+|     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       | 
+|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
++--------+--------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 2, 3;  # Retrieve rows 3-5
++--------+--------------------------------------------------------------+
+| JOB_ID | QUERY                                                        | 
++--------+--------------------------------------------------------------+
+|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+|     56 | CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+|     54 | DROP TABLE IF EXISTS t3                                      | 
++--------+--------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+```sql
+ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 2;  # Retrieve rows 3-5
++--------+--------------------------------------------------------------+
+| JOB_ID | QUERY                                                        | 
++--------+--------------------------------------------------------------+
+|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+|     56 | CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
+|     54 | DROP TABLE IF EXISTS t3                                      | 
++--------+--------------------------------------------------------------+
+3 rows in set (0.00 sec)
+```
+
+可以在 DDL 历史作业队列任意指定范围中搜索与 `job_id` 对应的正在运行中的 DDL 作业，没有 `ADMIN SHOW DDL JOB QUERIES` 语句的最近十条结果限制。
+
 ## MySQL 兼容性
 
 `ADMIN SHOW DDL [JOBS|JOB QUERIES]` 语句是 TiDB 对 MySQL 语法的扩展。
