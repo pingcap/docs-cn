@@ -5,10 +5,6 @@ summary: 了解 PiTR 功能设计和使用。
 
 # PiTR 功能介绍
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 `tikv: backup-stream.enable: true` 开启该功能。
-
 使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始支持 PiTR 功能，满足以下需求：
 
 - 降低灾备场景下的 RPO，如实现 RPO <= 10min。
