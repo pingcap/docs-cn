@@ -14,7 +14,7 @@ summary: 了解如何使用 BR 命令行恢复备份数据。
 - [从远端存储恢复备份数据](#从远端存储恢复备份数据)
 - [恢复增量备份数据](#恢复增量备份数据)
 - [恢复加密的备份数据](#恢复加密的备份数据)
-- [恢复创建在 `mysql` 数据库下的表](#恢复创建在-mysql-数据库下的表)
+- [恢复 `mysql` 数据库下的表](#恢复-mysql-数据库下的表)
 
 如果你还不熟悉恢复工具，建议先阅读以下文档，充分了解恢复工具的使用方法和限制：
 
@@ -54,6 +54,10 @@ br restore full \
     --log-file restorefull.log
 Full Restore <---------/...............................................> 17.12%.
 ```
+
+> **注意：**
+>
+> 自 BR v5.1.0 开始，全量备份会备份**系统表数据**。BR v6.2.0 以前的版本，在默认设置下只会恢复用户数据，而不会恢复系统表数据。自 BR v6.2.0 开始，如果备份数据中包含系统表数据，在默认设置下（即没有 `filter` 等参数影响数据恢复范围），恢复数据时 BR 将同时恢复**系统权限相关数据**。详细内容请查看[恢复 `mysql` 数据库下的表](#恢复-mysql-数据库下的表)
 
 ## 恢复备份数据中指定库表的数据
 
@@ -160,13 +164,66 @@ br restore full\
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
 
-## 恢复创建在 `mysql` 数据库下的表
+## 恢复 `mysql` 数据库下的表
+
+自 BR v5.1.0 开始，全量备份会备份**系统表数据**。BR v6.2.0 以前的版本，在默认设置下只会恢复用户数据，而不会恢复系统表数据。自 BR v6.2.0 开始，如果备份数据中包含系统表数据，在默认设置下（即没有 `filter` 等参数影响数据恢复范围），恢复数据时 BR 将同时恢复**系统权限相关数据**。
+
+BR 可恢复的**系统权限相关数据**包括如下表：
+
+```
++----------------------------------+
+| mysql.columns_priv               |
+| mysql.db                         |
+| mysql.default_roles              |
+| mysql.global_grants              |
+| mysql.global_priv                |
+| mysql.role_edges                 |
+| mysql.tables_priv                |
+| mysql.user                       |
++----------------------------------+
+```
+
+> **注意：**
+>
+> 恢复系统权限表仅适用于备份集群和恢复集群版本 >= v6.0.0 的情况。对于更早版本的集群，建议使用与其版本相同的 BR，或者按下述方式显式设置 `--filter`。
+
+**版本兼容矩阵：**
+
+说明：下表中的 BR v5.4 需要是 >= v5.4.1。
+
+| 恢复版本（横向）\ 备份版本（纵向）   | 用 BR v5.4 恢复 TiDB v5.4 | 用 BR v6.0 恢复 TiDB v6.0 | 用 BR v6.1 恢复 TiDB v6.1| 用 BR v6.2 恢复 TiDB v6.2 |
+|  ----  |  ----  | ---- | ---- | ---- |
+|用 BR v5.4 备份 TiDB v5.4| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
+|用 BR v6.0 备份 TiDB v6.0| 不兼容 |兼容 | 兼容 | 兼容 |
+|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
+|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
+
+自 v6.2.0 起，BR 恢复数据前会检查以下两项：
+
+- 目标集群是否为空。
+- 目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件：
+    - 目标集群需要存在备份中的系统权限表。
+    - 目标集群系统权限表**列数**需要跟备份数据中一致，列顺序可以有差异。
+    - 目标集群系统权限表列需要跟备份数据兼容，如果为带长度类型（包括整形、字符等类型），前者长度需 >= 后者，如果为 enum 类型，则应该为后者超集。
+
+如果目标集群非空或者目标集群系统表跟备份数据不兼容，BR 会提示类似如下信息。此时可参考提示信息，通过显式指定 `--filter` 的方式跳过恢复系统表:
+
+```
+#######################################################################
+# the target cluster is not compatible with the backup data,
+# br cannot restore system tables.
+# you can use the following command to skip restoring system tables:
+#    br restore full --filter '*.*' --filter '!mysql.*'
+#######################################################################
+```
+
+如需恢复除权限表以外的 `mysql` 数据库下的表，可参考以下方式。
 
 > **警告：**
 >
 > 当前该功能为实验特性，不建议在生产环境中使用。
 
-BR 会默认备份 `mysql` 数据库下的表。在执行恢复时，`mysql` 下的表默认不会被恢复。如果需要恢复 `mysql` 下的用户创建的表，可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中要恢复目标用户表为 `mysql.usertable`；该命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
+如果需要恢复 `mysql` 下的用户创建的表，可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中要恢复目标用户表为 `mysql.usertable`；该命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
 
 {{< copyable "shell-regular" >}}
 
@@ -190,14 +247,11 @@ br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
 
 > **警告：**
 >
-> 系统表（例如 `mysql.tidb`）可以通过 BR 进行备份。但恢复系统表存在限制。即便是使用了 `-filter` 设置，也不能通过 BR 恢复以下系统表
+> BR 可以备份系统表（例如 `mysql.tidb`），但在恢复除权限表以外的 `mysql` 系统表时存在限制。即便是使用了 `-filter` 设置，也不能通过 BR 恢复以下系统表：
 >
 > - 统计信息表（`mysql.stat_*`）
 > - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-> - 用户信息表（`mysql.user`、`mysql.columns_priv`、`tables_priv`，等等）
 > - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
->
-> 恢复系统表可能还存在更多兼容性问题。为了防止意外发生，请避免在生产环境中恢复系统表。
 
 ## 恢复性能和影响
 
