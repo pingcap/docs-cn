@@ -1709,14 +1709,22 @@ Raft Engine 相关的配置项。
 
 + 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 默认值：0（即无限制）
-+ 单位：millicpu （当该参数值为 `1500` 时，后端请求会消耗 1.5v CPU）。
++ 单位：millicpu（当该参数值为 `1500` 时，后端请求会消耗 1.5v CPU）。
 
 #### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
+> **注意：**
+>
+> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
+ 
 + 限制后台事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
 #### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **注意：**
+>
+> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
 
 + 限制后台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
@@ -1724,7 +1732,7 @@ Raft Engine 相关的配置项。
 #### `enable-auto-tune` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。
-+ 默认值：false （即关闭动态调整）
++ 默认值：false（即关闭动态调整）
 
 ## causal-ts <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
