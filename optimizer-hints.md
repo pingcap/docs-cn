@@ -290,6 +290,29 @@ SHOW WARNINGS;
 >
 > 如果查询语句中包含了 outer join，你只能在 hint 中指定可以用于交换连接顺序的表。如果 hint 中存在不能用于交换的表，则该 hint 会失效。例如在 `SELECT * FROM t1 LEFT JOIN (t2 JOIN t3 JOIN t4) ON t1.a = t2.a;` 中，如果想要控制 `t2`、`t3`、`t4` 表的连接顺序，那么在使用 `LEADING` hint 时，hint 中不能出现 `t1` 表。
 
+### MERGE()
+
+在含有[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中使用 `MERGE()` hint，可关闭对当前子查询的物化过程，并将内部查询的内联展开到外部查询。该 hint 适用于非递归的公共表表达式查询，在某些场景下，使用该 hint 会比默认分配一块临时空间的语句执行效率更高。例如将外部查询的条件下推或在嵌套的 CTE 查询中： 
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 hint 将外部查询条件的谓词下推
+WITH CTE AS (SELECT /*+ MERGE() */ * FROM tc WHERE tc.a < 60) SELECT * FROM CTE WHERE CTE.a <18;
+
+-- 在嵌套 CTE 查询中使用该 hint 来指定将某个 CTE 内联展开到外部查询
+WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * FROM t2), CTE4 AS (SELECT * FROM t3) SELECT * FROM CTE3, CTE4) SELECT * FROM CTE1, CTE2;
+```
+
+> **注意：**
+>
+> `MERGE()` 只适用于简单的 CTE 查询，在以下情况下无法使用该 hint：
+> 
+> - [递归的 CTE 查询](/develop/dev-guide-use-common-table-expression.md#递归的-cte)
+> - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及 `DINSTINCT` 等
+> 
+> 当 CTE 引用次数过多时，查询性能可能低于默认的物化方式。
+
 ## 查询范围生效的 Hint
 
 这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。

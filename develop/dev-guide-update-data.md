@@ -60,9 +60,9 @@ UPDATE {table} SET {update_column} = {update_value} WHERE {filter_column} = {fil
 假设某位作者改名为 Helen Haruki，需要更改 [authors](/develop/dev-guide-bookshop-schema-design.md#authors-表) 表。假设他的唯一标识 `id` 为 1，即过滤器应为：`id = 1`。
 
 <SimpleTab>
-<div label="SQL" href="update-sql">
+<div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中更改作者姓名的示例为：
 
 ```sql
 UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
@@ -70,9 +70,9 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 
 </div>
 
-<div label="Java" href="update-java">
+<div label="Java">
 
-{{< copyable "" >}}
+在 Java 中更改作者姓名的示例为：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -124,9 +124,9 @@ INSERT INTO {table} ({columns}) VALUES ({values})
 此处主键为 `book_id` 和 `user_id` 的联合主键。`user_id` 为 1 的用户，给 `book_id` 为 1000 的书籍，打出的 5 分的评价。
 
 <SimpleTab>
-<div label="SQL" href="upsert-sql">
+<div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中更新书籍评价的示例为：
 
 ```sql
 INSERT INTO `ratings`
@@ -138,9 +138,9 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 
 </div>
 
-<div label="Java" href="upsert-java">
+<div label="Java">
 
-{{< copyable "" >}}
+在 Java 中更新书籍评价的示例为：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource

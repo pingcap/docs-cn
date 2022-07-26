@@ -28,7 +28,7 @@ summary: 了解如何部署和使用 BR。
 
 ### 通过 SQL 语句
 
-TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。如果要查看备份恢复的进度，你可以使用 [`SHOW BACKUPS| RESTORE`](/sql-statements/sql-statement-show-backups.md) 语句。
+TiDB 支持使用 SQL 语句 [`BACKUP`](/sql-statements/sql-statement-backup.md) 和 [`RESTORE`](/sql-statements/sql-statement-restore.md) 进行备份恢复。如果要查看备份恢复的进度，你可以使用 [`SHOW BACKUPS|RESTORES`](/sql-statements/sql-statement-show-backups.md) 语句。
 
 ### 通过命令行工具
 

@@ -30,7 +30,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
     ```bash
     ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-        -o 's3://my-bucket/sql-backup?region=us-west-2'
+        -o 's3://my-bucket/sql-backup'
     ```
 
 * 用 TiDB Lightning 从 S3 导入数据：
@@ -39,7 +39,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
-        -d 's3://my-bucket/sql-backup?region=us-west-2'
+        -d 's3://my-bucket/sql-backup'
     ```
 
 * 用 TiDB Lightning 从 S3 导入数据（使用路径类型的请求模式）：
@@ -75,7 +75,6 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 |:----------|:---------|
 | `access-key` | 访问密钥 |
 | `secret-access-key` | secret 访问密钥 |
-| `region` | Amazon S3 服务区域（默认为 `us-east-1`） |
 | `use-accelerate-endpoint` | 是否在 Amazon S3 上使用加速端点（默认为 `false`） |
 | `endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
 | `force-path-style` | 使用 path-style，而不是 virtual-hosted style（默认为 `true`） |
@@ -138,8 +137,7 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 ```bash
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-    -o 's3://my-bucket/sql-backup' \
-    --s3.region 'us-west-2'
+    -o 's3://my-bucket/sql-backup'
 ```
 
 如果同时指定了 URL 参数和命令行参数，命令行参数会覆盖 URL 参数。
@@ -148,7 +146,6 @@ S3、 GCS 和 Azblob 等云存储有时需要额外的连接配置，你可以�
 
 | 命令行参数 | 描述 |
 |:----------|:------|
-| `--s3.region` | S3 服务区域（默认为 `us-east-1`） |
 | `--s3.endpoint` | S3 兼容服务自定义端点的 URL（例如 `https://s3.example.com/`）|
 | `--s3.storage-class` | 上传对象的存储类别（例如 `STANDARD` 或 `STANDARD_IA`） |
 | `--s3.sse` | 用于加密上传的服务器端加密算法（可以设置为空、`AES256` 或 `aws:kms`） |

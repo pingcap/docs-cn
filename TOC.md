@@ -78,6 +78,8 @@
       - [SQL 开发规范](/develop/dev-guide-sql-development-specification.md)
   - 云原生开发环境
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
+  - 第三方软件支持
+    - [PingCAP 维护的三方库](/develop/dev-guide-third-party-support.md)
 - 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
@@ -97,7 +99,7 @@
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 - 数据迁移
-  - [数据迁移综述](/migration-overview.md)
+  - [数据迁移概述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
   - 数据迁移场景
     - [从 Aurora 迁移数据到 TiDB](/migrate-aurora-to-tidb.md)
@@ -108,12 +110,17 @@
     - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
     - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
     - [从 TiDB 集群迁移数据至另一 TiDB 集群](/migrate-from-tidb-to-tidb.md)
-    - [从 TiDB 同步数据至 Apache Kafka](/replicate-data-to-kafka.md)
+    - [从 TiDB 集群迁移数据至兼容 MySQL 的数据库](/migrate-from-tidb-to-mysql.md)
   - 复杂迁移场景
     - [上游使用 pt/gh-ost 工具的持续同步场景](/migrate-with-pt-ghost.md)
     - [下游存在更多列的迁移场景](/migrate-with-more-columns-downstream.md)
     - [如何根据类型或 DDL 内容过滤 binlog 事件](/filter-binlog-event.md)
     - [如何通过 SQL 表达式过滤 DML binlog 事件](/filter-dml-event.md)
+- 数据集成
+  - [数据集成概述](/integration-overview.md)
+  - 数据集成场景
+    - [与 Confluent Cloud 进行数据集成](/ticdc/integrate-confluent-using-ticdc.md)
+    - [与 Apache Kafka 和 Apache Flink 进行数据集成](/replicate-data-to-kafka.md)
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
@@ -327,33 +334,49 @@
       - [tiup-cluster 部署运维生产集群](/tiup/tiup-cluster.md)
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
-  - PingCAP Clinic 诊断服务 (Technical Preview)
+  - PingCAP Clinic 诊断服务
     - [概述](/clinic/clinic-introduction.md)
     - [快速上手](/clinic/quick-start-with-clinic.md)
-    - [使用 PingCAP Clinic](/clinic/clinic-user-guide-for-tiup.md)
+    - [使用 PingCAP Clinic 诊断 TiDB 集群](/clinic/clinic-user-guide-for-tiup.md)
     - [数据采集说明](/clinic/clinic-data-instruction-for-tiup.md)
   - [TiDB Operator](/tidb-operator-overview.md)
   - [Dumpling](/dumpling-overview.md)
   - TiDB Lightning
     - [概述](/tidb-lightning/tidb-lightning-overview.md)
-    - 前置需求
-      - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
-      - [权限要求](/tidb-lightning/tidb-lightning-requirements.md)
-      - [空间估算](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
-    - 主要功能
-      - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      - [表库过滤](/table-filter.md)
-      - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
-      - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
-      - [错误处理功能](/tidb-lightning/tidb-lightning-error-resolution.md)
+    - [快速上手](/get-started-with-tidb-lightning.md)
+    - [部署 TiDB Lightning](/tidb-lightning/deploy-tidb-lightning.md)
+    - [目标数据库要求](/tidb-lightning/tidb-lightning-requirements.md)
+    - 数据源
+      - [文件匹配规则](/tidb-lightning/tidb-lightning-data-source.md)
+      - [CSV](/tidb-lightning/tidb-lightning-data-source.md#csv)
+      - [SQL](/tidb-lightning/tidb-lightning-data-source.md#sql)
+      - [Parquet](/tidb-lightning/tidb-lightning-data-source.md#parquet)
+      - [自定义文件匹配](/tidb-lightning/tidb-lightning-data-source.md#自定义文件匹配)
+    - Physical 导入模式
+      - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
+      - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#配置及使用)
+      - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
+      - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
+    - Logical 导入模式
+      - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
+      - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
+      - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#配置及使用)
+      - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
+      - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
+    - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
+    - [表库过滤](/table-filter.md)
+    - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+    - [并行导入](/tidb-lightning/tidb-lightning-distributed-import.md)
+    - [可容忍错误](/tidb-lightning/tidb-lightning-error-resolution.md)
+    - [故障处理](/tidb-lightning/troubleshoot-tidb-lightning.md)
+    - 参考手册
+      - [完整配置文件](/tidb-lightning/tidb-lightning-configuration.md)
+      - [命令行参数](/tidb-lightning/tidb-lightning-command-line-full.md)
+      - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
       - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
-    - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
-    - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-    - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+      - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+      - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
   - TiDB Data Migration
     - [关于 Data Migration](/dm/dm-overview.md)
     - [架构简介](/dm/dm-arch.md)
@@ -459,7 +482,8 @@
       - [使用 BR 在 Amazon S3 备份和恢复数据](/br/backup-storage-S3.md)
       - [使用 BR 在 Azure Blob Storage 备份和恢复数据](/br/backup-storage-azblob.md)
       - [使用 BR 在 Google Cloud Storage 备份和恢复数据](/br/backup-storage-gcs.md)
-      - [RawKV 备份和恢复](/br/rawkv-backup-and-restore.md)
+      - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
+      - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
@@ -494,7 +518,6 @@
       - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
       - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
       - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-      - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [常见问题解答](/ticdc/ticdc-faq.md)
     - [术语表](/ticdc/ticdc-glossary.md)
   - TiUniManager
@@ -629,6 +652,7 @@
       - [`RECOVER TABLE`](/sql-statements/sql-statement-recover-table.md)
       - [`RENAME INDEX`](/sql-statements/sql-statement-rename-index.md)
       - [`RENAME TABLE`](/sql-statements/sql-statement-rename-table.md)
+      - [`RENAME USER`](/sql-statements/sql-statement-rename-user.md)
       - [`REPLACE`](/sql-statements/sql-statement-replace.md)
       - [`RESTORE`](/sql-statements/sql-statement-restore.md)
       - [`REVOKE <privileges>`](/sql-statements/sql-statement-revoke-privileges.md)
@@ -845,7 +869,13 @@
       - [Titan 配置说明](/storage-engine/titan-configuration.md)
     - TiFlash
       - [TiFlash 简介](/tiflash/tiflash-overview.md)
-      - [使用 TiFlash](/tiflash/use-tiflash.md)
+      - [构建 TiFlash 副本](/tiflash/create-tiflash-replicas.md)
+      - [使用 TiDB 读取 TiFlash](/tiflash/use-tidb-to-read-tiflash.md)
+      - [使用 TiSpark 读取 TiFlash](/tiflash/use-tispark-to-read-tiflash.md)
+      - [使用 MPP 模式](/tiflash/use-tiflash-mpp-mode.md)
+      - [TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)
+      - [TiFlash 数据校验](/tiflash/tiflash-data-validation.md)
+      - [TiFlash 兼容性说明](/tiflash/tiflash-compatibility.md)
   - [遥测](/telemetry.md)
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
@@ -863,11 +893,13 @@
   - [发布版本汇总](/releases/release-notes.md)
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
+  - [TiDB 离线包](/binary-package.md)
   - v6.1
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
     - [6.0.0-DMR](/releases/release-6.0.0-dmr.md)
   - v5.4
+    - [5.4.2](/releases/release-5.4.2.md)
     - [5.4.1](/releases/release-5.4.1.md)
     - [5.4.0](/releases/release-5.4.0.md)
   - v5.3

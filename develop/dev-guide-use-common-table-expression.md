@@ -38,7 +38,7 @@ SELECT ... FROM <query_name>;
 <SimpleTab>
 <div label="SQL">
 
-可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
+在 SQL 中，可以将[临时表](/develop/dev-guide-use-temporary-tables.md)小节当中的例子改为以下 SQL 语句：
 
 {{< copyable "sql" >}}
 
@@ -77,7 +77,7 @@ GROUP BY ta.id;
 </div>
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中的示例如下：
 
 ```java
 public List<Author> getTop50EldestAuthorInfoByCTE() throws SQLException {
@@ -172,6 +172,10 @@ FROM
 先在 CTE 块 `books_authored_by_rm` 当中将该作者（作者 ID 为 `2299112019`）所编写的书查出来，然后在 `books_with_average_ratings` 和 `books_with_orders` 中分别查出这些书的平均评分和订单数，最后通过 `JOIN` 语句进行汇总。
 
 值得注意的是，`books_authored_by_rm` 中的查询只会执行一次，TiDB 会开辟一块临时空间对查询的结果进行缓存，当 `books_with_average_ratings` 和 `books_with_orders` 引用时会直接从该临时空间当中获取数据。
+
+> **建议：**
+>
+> 当默认的 CTE 查询执行效率不高时，你可以使用 [`MERGE()`](/optimizer-hints.md#merge) hint，将 CTE 子查询拓展到外部查询，以此提高执行效率。
 
 ### 递归的 CTE
 
