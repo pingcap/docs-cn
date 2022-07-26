@@ -3,10 +3,6 @@ title: PiTR 功能介绍
 summary: 了解 PiTR 使用。
 ---
 
-> **警告：**
->
-> 当前该功能为实验特性，不建议在生产环境中使用。打开该功能需要配置参数 tikv:  log-backup.enable: true 开启该功能。
-
 # 使用 PiTR 
 
 本教程介绍如何部署和使用 PiTR，帮助不熟悉 PiTR 的用户顺利上手该功能。在介绍具体操作前，我们设想一个用户场景，来加深对以下的操作的理解：用户 A 在 AWS 部署一套 TiDB 的生产集群供业务使用，业务团队提出了两个需求
@@ -39,18 +35,19 @@ TiDB 集群拓扑和配置：
 
 - 没有部署 TiDB 集群，请参考 [部署 TiDB 集群](/production-deployment-using-tiup.md)
 - 已经部署老版本 TiDB 集群，请先升级 TiDB 集群 [升级 TiDB 集群](/upgrade-tidb-using-tiup.md)
-- 在 v6.1.0 版本 TiDB 集群开启 PiTR 实验特性，请在 TiUP 集群拓扑文件中配置
 
+使用 TiUP 安装或升级 BR  
+
+- 没有安装 BR， 使用命令 `tiup install br:v6.2.0` 
+- 升级 BR，使用命令 `tiup update br:v6.2.0`
+
+## 打开日志备份参数
+要使用日志备份功能，需要打开配置参数 tikv: log-backup.enable: true 开启该功能，更改配置参数需要重启 TiKV。
   ```shell
   server_configs:
   tikv:
     log-backup.enable: true
-  ```
-
-使用 TiUP 安装或升级 BR  
-
-- 没有安装 BR， 使用命令 `tiup install br:v6.1.0` 
-- 升级 BR，使用命令 `tiup update br:v6.1.0` 
+  ``` 
 
 ## 配置备份存储（S3）
 
