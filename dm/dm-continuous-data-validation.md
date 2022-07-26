@@ -29,7 +29,7 @@ validators:
   global:
     mode: full # 也可以是 fast，默认是 none，即不开启校验
     worker-count: 4 # 后台校验的 validation worker 数量，默认是 4 个
-    row-error-delay: 30m # 某一行多久没有验证通过会报错，默认是 30min
+    row-error-delay: 30m # 某一行多久没有验证通过会报错，默认是 30m，即 30 分钟
 ```
 `mode`代表校验模式，可以是 `none`、`full`、`fast`，默认是 `none`，即不开启校验。`worker-count`代表增量校验功能使用的 worker 数量（每个 worker 都是一个 goroutine）。`row-error-delay`代表某一行多久没有验证通过会报错，默认是 30 分钟。
 
