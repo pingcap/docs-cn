@@ -1,6 +1,5 @@
 ---
 title: 代价模型
-aliases: ['/docs-cn/dev/cost-model/']
 ---
 
 # 代价模型
