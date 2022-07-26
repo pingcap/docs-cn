@@ -4,7 +4,7 @@ title: 代价模型
 
 # 代价模型
 
-如下图，TiDB 在物理优化时会使用代价模型来进行索引选择和算子选择：
+TiDB 在进行[物理优化](/sql-physical-optimization.md)时会使用代价模型来进行索引选择和算子选择，如下图所示：
 
 ![CostModel](/media/cost-model.png)
 
