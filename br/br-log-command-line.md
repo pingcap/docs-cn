@@ -126,7 +126,6 @@ Global Flags:
            storage: s3://tmp/store-by-storeid/log1
        speed(est.): 0.82 ops/s
 checkpoint[global]: 2022-07-25 22:52:15.518 +0800 CST; gap=2m52s
-    error[store=1]: KV:logbackup:NoSuchTask
 ```
 
 该子命令运行后输出以下信息
