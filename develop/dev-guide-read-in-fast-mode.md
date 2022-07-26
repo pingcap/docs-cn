@@ -50,7 +50,7 @@ Normal Mode 中 TableScan 算子过程整体包括了以下步骤:
 
 1. Read data : 在 Delta 层 和 Stable 层分别建立数据流，进行各自数据的读取。
 2. Sort Merge : 将步骤 1 中建立的数据流进行合并，并且将数据按照 (handle, version) 顺序排列返回。
-3. Range Filter : 对步骤 2 中的数据进行过滤筛选并返回。
+3. Range Filter : 根据读取范围限制，对步骤 2 中的数据进行过滤筛选并返回。
 4. MVCC + Column Filter：对步骤 3 中的数据进行 MVCC 过滤，同时过滤掉不需要的列并返回。
 
 Fast Mode 模式通过损失一定的数据一致性来获取更快的查询性能。Fast Mode 中的 TableScan 流程省略了上述 Normal Mode 过程中的第 2 步和第 4 步中 MVCC 的部分，从而提高查询性能。
