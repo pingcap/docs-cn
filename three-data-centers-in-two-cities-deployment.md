@@ -49,9 +49,9 @@ TiDB 分布式数据库采用 Raft 算法，可以原生支持双区域三 AZ �
 
 ![双区域三 AZ 配置详图](/media/three-data-centers-in-two-cities-deployment-02.png)
 
-- 如上图所示，北京有两个可用区 az1 和 az2，可用区 az1 中有三套机架 rac1、rac2、rac3，可用区 az2 有机架 rac4、rac5；西安可用区 az3 有机架 rac6。
-- 如上图中 rac1 机架所示，TiDB、PD 服务部署在同一台服务器上，还有两台 TiKV 服务器；每台 TiKV 服务器部署 2 个 TiKV 实例 (tikv-server)，rac2、rac4、rac5、rac6 类似。
-- 机架 rac3 上安放 TiDB Server 及中控 + 监控服务器。部署 TiDB Server，用于日常管理维护、备份使用。中控 + 监控服务器上部署 Prometheus、Grafana 以及恢复工具；
+如上图所示，北京有两个可用区 AZ1 和 AZ2，可用区 AZ1 有三套机架 rac1、rac2 和 rac3，可用区 AZ2 有两套机架 rac4 和 rac5；西安可用区 AZ3 有一套机架 rac6。
+AZ1 的 rac1 机架中，一台服务器部署了 TiDB 和 PD 服务，另外两台服务器部署了 TiKV 服务，其中，每台 TiKV 服务器部署了两个 TiKV 实例 (tikv-server)，rac2、rac4、rac5 和 rac6 类似。
+机架 rac3 上部署了 TiDB Server、中控及监控服务器。TiDB Server 用于日常管理维护和备份。中控和监控服务器上部署了 Prometheus、Grafana 以及恢复工具。
 - 另可增加备份服务器，其上部署 Drainer，Drainer 以输出 file 文件的方式将 binlog 数据保存到指定位置，实现增量备份的目的。
 
 ## 配置
