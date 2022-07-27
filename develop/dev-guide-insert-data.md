@@ -203,7 +203,7 @@ func buildBulkInsertSQL(amount int) string {
 有关 Golang 的完整示例，可参阅：
 
 - [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 go-sql-driver/mysql](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
-- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 gorm](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
+- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
 
 </div>
 
