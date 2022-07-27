@@ -585,7 +585,7 @@ func createUser(txn *util.TiDBSqlTx, id int, nickname string, balance decimal.De
 }
 ```
 
-再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的命令行参数:
+再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的命令行参数：
 
 {{< copyable "" >}}
 
