@@ -41,7 +41,7 @@ validators:
 * `worker-count`：增量校验功能使用的 worker 数量（每个 worker 都是一个 goroutine）。
 * `row-error-delay`：某一行多久没有验证通过会报错，默认是 30 分钟。
 
-完整配置请查阅 [DM 任务完整配置文件](dm/task-configuration-file-full.md)。
+完整配置请查阅 [DM 任务完整配置文件](/dm/task-configuration-file-full.md)。
 
 ### 方法 2：通过 dmctl 开启
 
@@ -58,9 +58,9 @@ Flags:
       --start-time string   specify the start time of binlog for validation, e.g. '2021-10-21 00:01:00' or 2021-10-21T00:01:00
 ```
 
-* `--mode` 参数指定开启的模式，可以是 fast 或者 full。
-* `--start-time` 指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00。
-* `task-name` 是你想开启增量数据校验的任务名，你也可以用 `--all-task` 来为当前所有任务开启增量数据校验。
+* `--mode`：指定开启的模式，可以是 fast 或者 full。
+* `--start-time`：指定 validator 开启校验的位置，格式是：2021-10-21 00:01:00 或者 2021-10-21T00:01:00。
+* `task-name`：需要开启增量数据校验的任务名，你也可以用 `--all-task` 来为当前所有任务开启增量数据校验。
 
 示例：
 
