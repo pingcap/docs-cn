@@ -107,7 +107,7 @@ tikv_servers:
       server.labels: { az: "2", zone: "3", rack: "3", host: "32" }
   - host: 10.63.10.33
     config:
-      server.labels: { az: "2", zone: "4", rack: "4", host: "33" }
+      server.labels: { az: "2", replication zone: "4", rack: "4", host: "33" }
   - host: 10.63.10.34
     config:
       server.labels: { az: "3", zone: "5", rack: "5", host: "34" }
