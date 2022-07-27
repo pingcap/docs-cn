@@ -89,7 +89,8 @@ member leader_priority pdName3 3
 
 #### 样例拓扑架构
 
-下面假设某区域存有 AZ1、AZ2、AZ3 三 AZ，AZ 中存有两套机架，每个机架存有三台服务器，不考虑混布以及单台机器多实例部署下，同区域三 AZ 架构集群（3 副本）部署参考如下：
+假设某区域有三个 AZ，AZ1、AZ2 和 AZ3。每个 AZ 中有两套机架，每个机架有三台服务器，不考虑混合布署以及单台机器多实例部署，同区域三 AZ 架构集群（3 副本）部署参考如下：
+
 
 ![同区域三 AZ 集群部署](/media/multi-data-centers-in-one-city-deployment-sample.png)
 
