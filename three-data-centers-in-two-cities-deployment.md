@@ -1,6 +1,6 @@
 ---
 title: 双区域多 AZ 部署
-summary: 介绍双区域多 AZ 部署方式。
+summary: 介绍在两个区域多个可用区部署 TiDB 的方式。
 aliases: ['/docs-cn/dev/three-data-centers-in-two-cities-deployment/']
 ---
 
