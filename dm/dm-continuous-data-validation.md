@@ -93,7 +93,7 @@ dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:0
             "task": "test", // 任务名
             "source": "mysql-01", // source id
             "mode": "full", // 校验模式
-            "stage": "Running", // 当前状态，Running 或者 Paused
+            "stage": "Running", // 当前状态，Running 或者 Stopped
             "validatorBinlog": "(mysql-bin.000001, 5989)", // 校验到的 binlog 位置
             "validatorBinlogGtid": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // 同上，用 GTID 表示
             "result": null, // 当增量校验异常时，显示异常信息
