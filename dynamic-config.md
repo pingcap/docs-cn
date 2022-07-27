@@ -166,9 +166,13 @@ show warnings;
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
 | quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
-| quota.foreground-write-bandwidth | 限制事务写入的带宽，软限制 |
-| quota.foreground-read-bandwidth | 限制事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
-| quota.max-delay-duration | 单次前台读写请求被强制等待的最大时间 |
+| quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
+| quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
+| quota.background-cpu-time | 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，软限制 |
+| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制，暂未生效 |
+| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制，暂未生效 |
+| quota.enable-auto-tune | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota |
+| quota.max-delay-duration | 单次读写请求被强制等待的最大时间 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |

@@ -56,7 +56,7 @@ aliases: ['/zh/tidb/dev/migrate-from-aurora-using-lightning/','/docs-cn/dev/migr
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup' --filter "mydb.*"
 ```
 
 命令中所用参数描述如下。如需更多信息可参考 [Dumpling overview](/dumpling-overview.md)。
@@ -109,7 +109,7 @@ sorted-kv-dir = "${path}"
 
 [mydumper]
 # 快照文件的地址
-data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup?region=us-west-2
+data-source-dir = "${s3_path}"  # eg: s3://my-bucket/sql-backup
 
 [[mydumper.files]]
 # 解析 parquet 文件所需的表达式
@@ -128,7 +128,7 @@ type = '$3'
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup?region=us-west-2'
+    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup'
     ```
 
 2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：

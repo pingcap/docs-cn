@@ -694,7 +694,7 @@ mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
 ```
 
-## 不支持 savepoint 和嵌套事务
+## 对 savepoint 和嵌套事务的支持
 
 Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
@@ -716,7 +716,9 @@ mysql> SELECT * FROM T2;
 +------+
 ```
 
-TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播行为。基于 Java Spring 框架的应用如果使用了 PROPAGATION_NESTED 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
+> **注意：**
+>
+> TiDB 从 v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 不支持 `PROPAGATION_NESTED` 传播行为。基于 Java Spring 框架的应用如果使用了 `PROPAGATION_NESTED` 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
 
 ## 大事务限制
 

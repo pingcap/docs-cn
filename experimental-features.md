@@ -39,10 +39,6 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SHOW CONFIG](/sql-statements/sql-statement-show-config.md)。（v4.0 实验特性）
 
-## TiDB 数据共享订阅
-
-+ TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
-
 ## 存储
 
 + [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan实验功能)。（v4.0 实验特性）
