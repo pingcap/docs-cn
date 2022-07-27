@@ -34,14 +34,11 @@ TiDB provides the following two support levels for Java:
 
 Support level: **Full**
 
-You can follow the [MySQL documentation](https://dev.mysql.com/doc/connector-j/8.0/en/) to download and configure a Java JDBC driver.
+You can follow the [MySQL documentation](https://dev.mysql.com/doc/connector-j/5.1/en/) to download and configure a Java JDBC driver.
 
 > **Note:**
 >
-> Version `8.0.16` or later is strongly recommended, which fixes two Common Vulnerabilities and Exposures (CVEs):
->
-> - Fix CVE-2019-2692 directly
-> - Fix CVE-2021-22569 indirectly
+> It is strongly recommended to use version 5.1.49, which is the latest version of JDBC 5.1. Since there is an [unresolved bug](https://bugs.mysql.com/bug.php?id=106252) in the current version 8.0.29, which might cause threads to hang when using TiDB. It is recommended that you do not upgrade to version 8.0 until MySQL JDBC 8.0 merges this fix.
 
 For an example of how to build a complete application, see [Build a Simple CRUD App with TiDB and JDBC](/develop/dev-guide-sample-application-java.md).
 
@@ -88,7 +85,7 @@ If you are using **Maven**, add the following to your `<dependencies></dependenc
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.28</version>
+    <version>5.1.49</version>
 </dependency>
 ```
 
@@ -98,7 +95,7 @@ If you are using **Gradle**, add the following to your `dependencies`:
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
-implementation 'mysql:mysql-connector-java:8.0.28'
+implementation 'mysql:mysql-connector-java:5.1.49'
 ```
 
 - For an example of using Hibernate to build a TiDB application by native Java, see [Build a Simple CRUD App with TiDB and Java](/develop/dev-guide-sample-application-java.md).
