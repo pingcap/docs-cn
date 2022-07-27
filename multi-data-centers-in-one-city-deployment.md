@@ -140,34 +140,34 @@ tikv_servers:
 
   - host: 10.63.10.34
     config:
-      server.labels: { zone: "z2", az: "az1", rack: "r1", host: "34" }
+      server.labels: { zone: "z2", az: "az2", rack: "r1", host: "34" }
   - host: 10.63.10.35
     config:
-      server.labels: { zone: "z2", az: "az1", rack: "r1", host: "35" }
+      server.labels: { zone: "z2", az: "az2", rack: "r1", host: "35" }
   - host: 10.63.10.36
     config:
-      server.labels: { zone: "z2", az: "az1", rack: "r2", host: "36" }
+      server.labels: { zone: "z2", az: "az2", rack: "r2", host: "36" }
   - host: 10.63.10.37
     config:
-      server.labels: { zone: "z2", az: "az1", rack: "r2", host: "37" }
+      server.labels: { zone: "z2", az: "az2", rack: "r2", host: "37" }
 
   - host: 10.63.10.38
     config:
-      server.labels: { zone: "z3", az: "az1", rack: "r1", host: "38" }
+      server.labels: { zone: "z3", az: "az3", rack: "r1", host: "38" }
   - host: 10.63.10.39
     config:
-      server.labels: { zone: "z3", az: "az1", rack: "r1", host: "39" }
+      server.labels: { zone: "z3", az: "az3", rack: "r1", host: "39" }
   - host: 10.63.10.40
     config:
-      server.labels: { zone: "z3", az: "az1", rack: "r2", host: "40" }
+      server.labels: { zone: "z3", az: "az3", rack: "r2", host: "40" }
   - host: 10.63.10.41
     config:
-      server.labels: { zone: "z3", az: "az1", rack: "r2", host: "41" }
+      server.labels: { zone: "z3", az: "az3", rack: "r2", host: "41" }
 ```
 
 本例中，zone 表示逻辑可用区层级，用于控制副本的隔离（当前集群 3 副本）。
 
-不直接采用 dc、rack 和 host 三层 Label 结构，是因为考虑到将来可能会扩容 AZ，假设新扩容的 AZ 编号是 AZ2、AZ3 和 AZ4，则只需在对应可用区下扩容 AZ，rack 也只需在对应 AZ 下扩容。
+不直接采用 az、rack 和 host 三层 Label 结构，是因为考虑到将来可能会扩容 AZ，假设新扩容的 AZ 编号是 AZ2、AZ3 和 AZ4，则只需在对应可用区下扩容 AZ，rack 也只需在对应 AZ 下扩容。
 
 
 如果直接采用 AZ、rack 和 host 三层 Label 结构，那么扩容 AZ 操作可能需重新添加 Label，TiKV 数据整体需要 Rebalance。
