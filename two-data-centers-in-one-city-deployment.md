@@ -21,8 +21,7 @@ TiDB 在 on-premises 部署的场景下，通常采用多 AZ 部署方案，以�
 
 下图为集群部署架构图，具体如下：
 
-- 集群采用单区域双 AZ 部署方案，主 AZ az1 在城东，从 AZ az2 在城西。
-- 集群采用推荐的 4 副本模式，其中 az1 中放 2 个 Voter az2 中放 1 个 Voter 副本 + 1 个 Learner 副本；TiKV 按机房的实际情况打上合适的 Label。
+- 集群采用推荐的 4 副本模式，其中 AZ1 中放 2 个 Voter，AZ2 中放 1 个 Voter 副本和 1 个 Learner 副本。TiKV 按机房的实际情况打上合适的 Label。
 - 副本间通过 Raft 协议保证数据的一致性和高可用，对用户完全透明。
 
 ![单区域双 AZ 集群架构图](/media/two-dc-replication-1.png)
