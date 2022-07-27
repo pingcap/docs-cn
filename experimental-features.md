@@ -39,10 +39,6 @@ This document introduces the experimental features of TiDB in different versions
 
 + [SHOW CONFIG](/sql-statements/sql-statement-show-config.md) (Introduced in v4.0)
 
-## Data sharing and subscription
-
-+ [Integrate TiCDC with Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md) (Introduced in v5.0)
-
 ## Storage
 
 + [Disable Titan](/storage-engine/titan-configuration.md#disable-titan-experimental) (Introduced in v4.0)
