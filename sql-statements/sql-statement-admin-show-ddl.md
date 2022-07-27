@@ -11,7 +11,7 @@ summary: TiDB 数据库中 ADMIN SHOW DDL [JOBS|JOB QUERIES] 的使用概况。
 
 ```ebnf+diagram
 AdminStmt ::=
-    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
+    'ADMIN' ( 'SHOW' ( 'DDL' ( 'JOBS' Int64Num? WhereClauseOptional | 'JOB' 'QUERIES' NumList | 'JOB' 'QUERIES' 'LIMIT' m 'OFFSET' n )? | TableName 'NEXT_ROW_ID' | 'SLOW' AdminShowSlow ) | 'CHECK' ( 'TABLE' TableNameList | 'INDEX' TableName Identifier ( HandleRange ( ',' HandleRange )* )? ) | 'RECOVER' 'INDEX' TableName Identifier | 'CLEANUP' ( 'INDEX' TableName Identifier | 'TABLE' 'LOCK' TableNameList ) | 'CHECKSUM' 'TABLE' TableNameList | 'CANCEL' 'DDL' 'JOBS' NumList | 'RELOAD' ( 'EXPR_PUSHDOWN_BLACKLIST' | 'OPT_RULE_BLACKLIST' | 'BINDINGS' ) | 'PLUGINS' ( 'ENABLE' | 'DISABLE' ) PluginNameList | 'REPAIR' 'TABLE' TableName CreateTableStmt | ( 'FLUSH' | 'CAPTURE' | 'EVOLVE' ) 'BINDINGS' )
 
 NumList ::=
     Int64Num ( ',' Int64Num )*
@@ -120,17 +120,18 @@ ADMIN SHOW DDL JOB QUERIES 51;
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
-ADMIN SHOW DDL JOB QUERIES LIMIT 2, 3;  # Retrieve rows 3-5
-ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 2;  # Retrieve rows 3-5
+ADMIN SHOW DDL JOB QUERIES LIMIT m;  # Retrieve first m rows
+ADMIN SHOW DDL JOB QUERIES LIMIT n, m;  # Retrieve rows [n+1, n+m]
+ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # Retrieve rows [n+1, n+m]
 ```
+where n and m are integers greater or equal to 0.
 
 ```sql
 ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
 +--------+--------------------------------------------------------------+
 | JOB_ID | QUERY                                                        | 
 +--------+--------------------------------------------------------------+
-|     59 | ALTER TABLE t1 ADD INDEX index1 (col1)                       | 
+|     59 | ALTER TABLE t1 ADD INDEX index2 (col2)                       | 
 |     60 | ALTER TABLE t2 ADD INDEX index1 (col1)                       | 
 |     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
 +--------+--------------------------------------------------------------+
@@ -138,26 +139,25 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
 ```
 
 ```sql
-ADMIN SHOW DDL JOB QUERIES LIMIT 2, 3;  # Retrieve rows 3-5
-+--------+--------------------------------------------------------------+
-| JOB_ID | QUERY                                                        | 
-+--------+--------------------------------------------------------------+
-|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
-|     56 | CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
-|     54 | DROP TABLE IF EXISTS t3                                      | 
-+--------+--------------------------------------------------------------+
+ADMIN SHOW DDL JOB QUERIES LIMIT 6, 2;  # Retrieve rows 7-8
++--------+----------------------------------------------------------------------------+
+| JOB_ID | QUERY                                                                      | 
++--------+----------------------------------------------------------------------------+
+|     52 | ALTER TABLE t1 ADD INDEX index1 (col1)                                     | 
+|     51 | CREATE TABLE IF NOT EXISTS t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
++--------+----------------------------------------------------------------------------+
 3 rows in set (0.00 sec)
 ```
 
 ```sql
-ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 2;  # Retrieve rows 3-5
-+--------+--------------------------------------------------------------+
-| JOB_ID | QUERY                                                        | 
-+--------+--------------------------------------------------------------+
-|     58 | CREATE TABLE t2 (id INT NOT NULL PRIMARY KEY auto_increment) | 
-|     56 | CREATE TABLE t1 (id INT NOT NULL PRIMARY KEY auto_increment) | 
-|     54 | DROP TABLE IF EXISTS t3                                      | 
-+--------+--------------------------------------------------------------+
+ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
++--------+----------------------------------------+
+| JOB_ID | QUERY                                  | 
++--------+----------------------------------------+
+|     54 | DROP TABLE IF EXISTS t3                |
+|     53 | ALTER TABLE t1 DROP INDEX index1       |
+|     52 | ALTER TABLE t1 ADD INDEX index1 (col1) | 
++--------+----------------------------------------+
 3 rows in set (0.00 sec)
 ```
 
