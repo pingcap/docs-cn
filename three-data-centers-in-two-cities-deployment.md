@@ -175,7 +175,7 @@ tikv_servers:
     schedule.tolerant-size-ratio: 20.0
     ```
 
-- 跨区域 AZ3 TiKV 节点网络优化，单独修改异跨区域 TiKV 此参数，拉长跨区域副本参与选举的时间，尽量避免跨区域 TiKV 中的副本参与 Raft 选举。
+- 优化跨区域 AZ3 的TiKV 节点网络，修改 TiKV 的如下参数，拉长跨区域副本参与选举的时间，避免跨区域 TiKV 中的副本参与 Raft 选举。
 
     ```
     raftstore.raft-min-election-timeout-ticks: 1000
