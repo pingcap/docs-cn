@@ -135,7 +135,7 @@ PD 设置中添加 TiKV label 的等级配置。
 ```
 server_configs:
   pd:
-    replication.location-labels:  ["az","zone","rack","host"]
+    replication.location-labels:  ["az","replication zone","rack","host"]
 ```
 
 tikv_servers 设置基于 TiKV 真实物理部署位置的 Label 信息，方便 PD 进行全局管理和调度。
