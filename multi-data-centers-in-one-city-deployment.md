@@ -10,9 +10,7 @@ aliases: ['/docs-cn/dev/how-to/deploy/geographic-redundancy/overview/','/docs-cn
 
 作为 NewSQL 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨可用区 (Availability Zone, AZ) 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 的方案。
 
-
 本文中的区域指的是地理隔离的不同位置，AZ 指的是区域内部划分的相互独立的资源集合。本文描述的方案同样适用于一个城市内多个数据中心（同城多中心）的场景。
-
 
 ## 了解 Raft 协议
 
@@ -29,19 +27,15 @@ Raft 是一种分布式一致性算法，在 TiDB 集群的多种组件中，PD 
 
 - 想应对任意 1 个区域的灾难场景，应至少规划 3 个区域用于部署集群。
 
-
 可见，原生 Raft 协议对于偶数副本的支持并不是很友好，考虑跨区域网络延迟影响，同区域三 AZ 可能是最适合部署 Raft 的高可用及容灾方案。
-
 
 ## 同区域三 AZ 方案
 
 同区域三 AZ 方案，即同区域有三个机房部署 TiDB 集群，AZ 间的数据在集群内部（通过 Raft 协议）进行同步。同区域三 AZ 可同时对外进行读写服务，任意中心发生故障不影响数据一致性。
 
-
 ### 简易架构图
 
 集群 TiDB、TiKV 和 PD 组件分别部署在 3 个不同的 AZ，这是最常规且高可用性最高的方案。
-
 
 ![三 AZ 部署](/media/deploy-3dc.png)
 
@@ -50,7 +44,6 @@ Raft 是一种分布式一致性算法，在 TiDB 集群的多种组件中，PD 
 - 所有数据的副本分布在三个 AZ，具备高可用和容灾能力
 - 任何一个 AZ 失效后，不会产生任何数据丢失 (RPO = 0)
 - 任何一个 AZ 失效后，其他两个 AZ 会自动发起 leader election，并在一定时间内（通常 20s 以内）自动恢复服务
-
 
 ![三 AZ 部署容灾](/media/deploy-3dc-dr.png)
 
@@ -63,11 +56,9 @@ Raft 是一种分布式一致性算法，在 TiDB 集群的多种组件中，PD 
 - 对于读请求来说，如果数据 leader 与发起读取的 TiDB 节点不在同一个 AZ，也会受网络延迟影响。
 - TiDB 中的每个事务都需要向 PD leader 获取 TSO，当 TiDB 与 PD leader 不在同一个 AZ 时，TiDB 上运行的事务也会因此受网络延迟影响，每个有写入的事务会获取两次 TSO。
 
-
 ### 架构优化图
 
 如果不需要每个 AZ 同时对外提供服务，可以将业务流量全部派发到一个 AZ，并通过调度策略把 Region leader 和 PD leader 都迁移到同一个 AZ。这样，不管是从 PD 获取 TSO，还是读取 Region，都不会受 AZ 间网络的影响。当该 AZ 失效时，PD leader 和 Region leader 会自动在其它 AZ 选出，只需要把业务流量转移至其他存活的 AZ 即可。
-
 
 ![三 AZ 部署读性能优化](/media/deploy-3dc-optimize.png)
 
@@ -103,7 +94,6 @@ member leader_priority pdName3 3
 #### 样例拓扑架构
 
 假设某区域有三个 AZ，AZ1、AZ2 和 AZ3。每个 AZ 中有两套机架，每个机架有三台服务器，不考虑混合布署以及单台机器多实例部署，同区域三 AZ 架构集群（3 副本）部署参考如下：
-
 
 ![同区域三 AZ 集群部署](/media/multi-data-centers-in-one-city-deployment-sample.png)
 
@@ -169,9 +159,7 @@ tikv_servers:
 
 不直接采用 az、rack 和 host 三层 Label 结构，是因为考虑到将来可能会扩容 AZ，假设新扩容的 AZ 编号是 AZ2、AZ3 和 AZ4，则只需在对应可用区下扩容 AZ，rack 也只需在对应 AZ 下扩容。
 
-
 如果直接采用 AZ、rack 和 host 三层 Label 结构，那么扩容 AZ 操作可能需重新添加 Label，TiKV 数据整体需要 Rebalance。
-
 
 ### 高可用和容灾分析
 
