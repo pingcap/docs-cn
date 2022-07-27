@@ -29,7 +29,7 @@ TiDB 在 on-premises 部署的场景下，通常采用多 AZ 部署方案，以�
 
 该部署方案定义了三种状态来控制和标示集群的同步状态，该状态约束了 TiKV 的同步方式。集群的复制模式可以自动在三种状态之间自适应切换。要了解切换过程，请参考[状态转换](#状态转换)。
 
-- **sync**：同步复制模式，此时从 AZ (DR) 至少有一个副本与主 AZ (PRIMARY) 进行同步，Raft 算法保证每条日志 (log) 按 Label 同步复制到 DR。
+- **sync**：同步复制模式，此时从 AZ (DR) 至少有一个副本与主 AZ (PRIMARY) 进行同步，Raft 算法保证每条日志按 Label 同步复制到 DR。
 - **async**：异步复制模式，此时不保证 DR 与 PRIMARY 完全同步，Raft 算法使用经典的 majority 方式复制日志。
 - **sync-recover**：恢复同步，此时不保证 DR 与 PRIMARY 完全同步，Raft 逐步切换成 Label 复制，切换成功后汇报给 PD。
 
