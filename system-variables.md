@@ -1470,6 +1470,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 可选值：`OFF`，`ON`
 - TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
 - 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
+- 从 v6.1.0 升级上来的用户此开关可能处于 `OFF` 状态，可以不用去修改它。
 
 ### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
