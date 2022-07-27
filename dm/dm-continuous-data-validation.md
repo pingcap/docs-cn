@@ -173,7 +173,7 @@ Flags:
             "dstData": "[]", // 错误行在下游的数据
             "errorType": "Expected rows not exist", // 错误原因
             "status": "NewErr", // 错误状态
-            "time": "2022-07-04 13:33:02", // 错误时间
+            "time": "2022-07-04 13:33:02", // `error row`发现时间
             "message": "" // 额外信息
         }
     ]
