@@ -84,7 +84,7 @@ alertmanager_servers:
 
 ### Placement Rules 规划
 
-为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 4 副本（2 Voter 副本在主 AZ，1 Voter 和 1 Learner 在从 AZ）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
+为了按照规划的集群拓扑进行部署，你需要使用 [Placement Rules](/configure-placement-rules.md) 来规划集群副本的放置位置。以 4 副本（2 个 Voter 副本在主 AZ，1 个 Voter 副本和 1 个 Learner 副本在从 AZ）的部署方式为例，可使用 Placement Rules 进行如下副本配置：
 
 ```
 cat rule.json
