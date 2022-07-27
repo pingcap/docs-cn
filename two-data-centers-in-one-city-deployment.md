@@ -235,8 +235,8 @@ cat default.json
 
 + `replication-mode` 为待启用的复制模式，以上示例中设置为 `dr-auto-sync`。默认使用 majority 算法。
 + `label-key` 用于区分不同的 AZ，需要和 Placement Rules 相匹配。其中主 AZ 为 "east"，从 AZ 为 "west"。
-+ `primary-replicas` 是在主 AZ Voter 副本的数量。
-+ `dr-replicas` 是在从 AZ Voter 副本的数量。
++ `primary-replicas` 是主 AZ 上 Voter 副本的数量。
++ `dr-replicas` 是从 AZ 上 Voter 副本的数量。
 + `wait-store-timeout` 是当出现网络隔离或者故障时，切换到异步复制模式的等待时间。如果超过这个时间还没恢复，则自动切换到异步复制模式。默认时间为 60 秒。
 
 如果需要检查当前集群的复制状态，可以通过以下 API 获取：
