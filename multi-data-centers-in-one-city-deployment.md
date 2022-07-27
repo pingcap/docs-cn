@@ -6,7 +6,8 @@ aliases: ['/docs-cn/dev/multi-data-centers-in-one-city-deployment/','/docs-cn/de
 
 # 单区域多 AZ 部署 TiDB
 
-作为 NewSQL 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨 AZ 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 方案。
+作为 NewSQL 数据库，TiDB 兼顾了传统关系型数据库的优秀特性、NoSQL 数据库可扩展性以及跨可用区 (Availability Zone, AZ) 场景下的高可用。本文档旨在介绍同区域多 AZ 部署 TiDB 的方案。
+
 
 本文中的区域指的是地理隔离的不同位置，AZ（可用区）指的是区域内部划分的相互独立的资源集合，这里所描述的方案同样适用于一个城市内多个数据中心（同城多中心）的场景。
 
