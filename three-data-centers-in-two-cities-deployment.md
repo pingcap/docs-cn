@@ -29,7 +29,7 @@ TiDB 分布式数据库采用 Raft 算法，可以原生支持双区域三 AZ �
 
 ![双区域三 AZ 集群架构图](/media/three-data-centers-in-two-cities-deployment-01.png)
 
-该架构具备高可用能力，同时通过 PD 调度限制了 Region Leader 尽量只出现在同区域的两个 AZ，这相比于三 AZ，即 Region Leader 分布不受限制的方案有以下优缺点：
+该架构具备高可用能力，同时通过 PD 调度保证 Region Leader 只出现在同区域的两个 AZ。相比于三 AZ，即 Region Leader 分布不受限制的方案，双区域三 AZ 方案有以下优缺点：
 
 - **优点**
 
