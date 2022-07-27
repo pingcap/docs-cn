@@ -166,9 +166,13 @@ show warnings;
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
 | quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
-| quota.foreground-write-bandwidth | 限制事务写入的带宽，软限制 |
-| quota.foreground-read-bandwidth | 限制事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
-| quota.max-delay-duration | 单次前台读写请求被强制等待的最大时间 |
+| quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
+| quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
+| quota.background-cpu-time | 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，软限制 |
+| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制，暂未生效 |
+| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制，暂未生效 |
+| quota.enable-auto-tune | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota |
+| quota.max-delay-duration | 单次读写请求被强制等待的最大时间 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
@@ -242,7 +246,7 @@ Query OK, 0 rows affected (0.01 sec)
 | --- | --- |
 | log.level| 日志级别 |
 | cluster-version | 集群的版本 |
-| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MB） |
+| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
 | schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |

@@ -24,9 +24,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
 
 在中控机上部署 TiUP 组件有两种方式：在线部署和离线部署。
 
-<SimpleTab>
-<div label="在线部署">
-
 ### 在线部署
 
 以普通用户身份登录中控机。以 `tidb` 用户为例，后续安装 TiUP 及集群管理操作均通过该用户完成：
@@ -82,9 +79,6 @@ aliases: ['/docs-cn/dev/production-offline-deployment-using-tiup/', '/zh/tidb/de
     ```shell
     tiup --binary cluster
     ```
-
-</div>
-<div label="离线部署">
 
 ### 离线部署
 
@@ -215,11 +209,8 @@ cd tidb-community-server-${version}-linux-amd64/
 cp -rp keys ~/.tiup/
 tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
 ```
-    
-若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
-</div>
-</SimpleTab>
+若需将镜像切换到其他目录，可以通过手动执行 `tiup mirror set <mirror-dir>` 进行切换。如果需要切换到在线环境，可执行 `tiup mirror set https://tiup-mirrors.pingcap.com`。
 
 ## 第 3 步：初始化集群拓扑文件
 
@@ -441,7 +432,7 @@ tiup cluster display tidb-test
 
 如果你已同时部署了 [TiFlash](/tiflash/tiflash-overview.md)，接下来可参阅以下文档：
 
-- [使用 TiFlash](/tiflash/use-tiflash.md)
+- [使用 TiFlash](/tiflash/tiflash-overview.md#使用-tiflash)
 - [TiFlash 集群运维](/tiflash/maintain-tiflash.md)
 - [TiFlash 报警规则与处理方法](/tiflash/tiflash-alert-rules.md)
 - [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)

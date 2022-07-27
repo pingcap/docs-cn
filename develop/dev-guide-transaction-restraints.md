@@ -34,9 +34,9 @@ TiDB 的 SI 隔离级别不能克服写偏斜异常（Write Skew），需要使�
 
 <SimpleTab>
 
-<div label="Java" href="write-skew-java">
+<div label="Java">
 
-{{< copyable "" >}}
+Java 程序示例如下：
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -159,9 +159,9 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang" href="write-skew-golang">
+<div label="Golang">
 
-首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
+在 Golang 中，首先，封装一个用于适配 TiDB 事务的工具包 [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util)，随后编写以下代码：
 
 {{< copyable "" >}}
 
@@ -369,9 +369,9 @@ mysql> SELECT * FROM doctors;
 
 <SimpleTab>
 
-<div label="Java" href="overcome-write-skew-java">
+<div label="Java">
 
-{{< copyable "" >}}
+Java 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
 ```java
 package com.pingcap.txn.write.skew;
@@ -494,9 +494,9 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang" href="overcome-write-skew-golang">
+<div label="Golang">
 
-{{< copyable "" >}}
+Golang 中使用 `SELECT FOR UPDATE` 来克服写偏斜问题的示例如下：
 
 ```go
 package main
@@ -694,7 +694,7 @@ mysql> SELECT * FROM doctors;
 +----+-------+---------+----------+
 ```
 
-## 不支持 savepoint 和嵌套事务
+## 对 savepoint 和嵌套事务的支持
 
 Spring 支持的 PROPAGATION_NESTED 传播行为会启动一个嵌套的事务，它是当前事务之上独立启动的一个子事务。嵌套事务开始时会记录一个 savepoint ，如果嵌套事务执行失败，事务将会回滚到 savepoint 的状态。嵌套事务是外层事务的一部分，它将会在外层事务提交时一起被提交。下面案例展示了 savepoint 机制：
 
@@ -716,7 +716,9 @@ mysql> SELECT * FROM T2;
 +------+
 ```
 
-TiDB 不支持 savepoint 机制，因此也不支持 PROPAGATION_NESTED 传播行为。基于 Java Spring 框架的应用如果使用了 PROPAGATION_NESTED 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
+> **注意：**
+>
+> TiDB 从 v6.2.0 版本开始支持 [savepoint](/sql-statements/sql-statement-savepoint.md) 特性。因此低于 v6.2.0 版本的 TiDB 不支持 `PROPAGATION_NESTED` 传播行为。基于 Java Spring 框架的应用如果使用了 `PROPAGATION_NESTED` 传播行为，需要在应用端做出调整，将嵌套事务的逻辑移除。
 
 ## 大事务限制
 

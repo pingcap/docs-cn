@@ -16,10 +16,9 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 ## 稳定性
 
-+ TiFlash 限制压缩或整理数据占用 I/O 资源，缓解后台任务与前端的数据读写对 I/O 资源的争抢（v5.0 实验特性）
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
     + 扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引。
-    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。
+    + 重构统计信息模块，帮助优化器选择相对较优的索引，包括从 `CMSKetch` 和直方图中删除 `TopN` 值，为索引的直方图维护 Bucket NDV。详情参阅[统计信息简介 - `tidb_analyze_version = 2` 的介绍](/statistics.md)。
 + 当 TiKV 部署的机型资源有限时，如果 TiKV 前台处理的读写请求量过大，会占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用[前台限流](/tikv-configuration-file.md#quota)以限制前台各类请求占用的 CPU 资源。（v6.0 实验特性）
 
 ## 调度功能
@@ -40,15 +39,10 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 
 + [SHOW CONFIG](/sql-statements/sql-statement-show-config.md)。（v4.0 实验特性）
 
-## TiDB 数据共享订阅
-
-+ TiCDC 集成第三方生态 [Kafka Connect (Confluent Platform)](/ticdc/integrate-confluent-using-ticdc.md)（v5.0 实验特性）
-
 ## 存储
 
 + [关闭 Titan 功能](/storage-engine/titan-configuration.md#关闭-titan实验功能)。（v4.0 实验特性）
 + [Titan Level Merge 功能](/storage-engine/titan-configuration.md#level-merge实验功能)。（v4.0 实验特性）
-+ TiFlash 支持将存储引擎的新数据分布在多个硬盘上，分摊 I/O 压力。（v4.0 实验特性）
 + 将 Region 划分为更小的区间 bucket，并且[以 bucket 作为并发查询单位](/tune-region-performance.md#使用-bucket-增加并发)，以提高扫描数据的并发度。（v6.1.0 实验特性）
 + TiKV 引入 [API v2](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。（v6.1.0 实验特性）
 
