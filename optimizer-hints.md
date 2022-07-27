@@ -138,9 +138,6 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 ```sql
 -- 不使用 SEMI_JOIN_REWRITE() 进行改写
 EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT 1 from t1 where t1.a=t.a);
-
--- 使用 SEMI_JOIN_REWRITE() 进行改写
-EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 from t1 where t1.a=t.a);
 ```
 
 ```sql
@@ -153,6 +150,16 @@ EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 from t
 | └─IndexReader_23(Probe)     | 9990.00 | root      |                        | index:IndexFullScan_22                            |
 |   └─IndexFullScan_22        | 9990.00 | cop[tikv] | table:t, index:idx(a)  | keep order:true, stats:pseudo                     |
 +-----------------------------+---------+-----------+------------------------+---------------------------------------------------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 SEMI_JOIN_REWRITE() 进行改写
+EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 from t1 where t1.a=t.a);
+```
+
+```sql
 +------------------------------+---------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------+
 | id                           | estRows | task      | access object          | operator info                                                                                                 |
 +------------------------------+---------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------+
