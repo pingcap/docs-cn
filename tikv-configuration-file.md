@@ -846,6 +846,12 @@ raftstore 相关的配置项。
 + 默认值：1MB
 + 最小值：0
 
+### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 如果配置大于 0 的值，TiKV 会周期性检查当前节点上所有 Region 的最小 ResolvedTS，并将它上报给 PD。
++ 默认值：0s
++ 最小值：0s
+
 ## coprocessor
 
 coprocessor 相关的配置项。
