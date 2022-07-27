@@ -144,7 +144,7 @@ tikv_servers 设置基于 TiKV 真实物理部署位置的 Label 信息，方便
 tikv_servers:
   - host: 10.63.10.30
     config:
-      server.labels: { az: "1", zone: "1", rack: "1", host: "30" }
+      server.labels: { az: "1", replication zone: "1", rack: "1", host: "30" }
   - host: 10.63.10.31
     config:
       server.labels: { az: "1", replication zone: "2", rack: "2", host: "31" }
