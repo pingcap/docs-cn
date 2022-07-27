@@ -334,7 +334,7 @@ public class TxnExample {
 
 <div label="Golang">
 
-在 Golang 中，首先设计一个帮助类 `helper.go`，封装了所需的数据库操作：
+首先编写一个封装了所需的数据库操作的 `helper.go` 文件：
 
 {{< copyable "" >}}
 
@@ -584,7 +584,7 @@ func createUser(txn *util.TiDBSqlTx, id int, nickname string, balance decimal.De
 }
 ```
 
-再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的参数:
+再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的命令行参数：
 
 {{< copyable "" >}}
 

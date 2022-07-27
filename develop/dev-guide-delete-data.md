@@ -172,7 +172,7 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 <SimpleTab>
 <div label="Java">
 
-在 Java 中，批量更新程序类似于以下内容：
+在 Java 中，批量删除程序类似于以下内容：
 
 {{< copyable "" >}}
 
@@ -241,7 +241,7 @@ public class BatchDeleteExample
 
 <div label="Golang">
 
-在 Golang 中，批量更新程序类似于以下内容：
+在 Golang 中，批量删除程序类似于以下内容：
 
 {{< copyable "" >}}
 
