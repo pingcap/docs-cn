@@ -65,7 +65,8 @@ Raft 是一种分布式一致性算法，在 TiDB 集群的多种组件中，PD 
 
 ### 架构优化图
 
-如果不需要每个 AZ 同时对外提供服务，可以将业务流量全部派发到一个 AZ，并通过调度策略把 Region leader 和 PD leader 都迁移到同一个 AZ。这样一来，不管是从 PD 获取 TSO，还是读取 Region，都不会受 AZ 间网络的影响。当该 AZ 失效后，PD leader 和 Region leader 会自动在其它 AZ 选出，只需要把业务流量转移至其他存活的 AZ 即可。
+如果不需要每个 AZ 同时对外提供服务，可以将业务流量全部派发到一个 AZ，并通过调度策略把 Region leader 和 PD leader 都迁移到同一个 AZ。这样，不管是从 PD 获取 TSO，还是读取 Region，都不会受 AZ 间网络的影响。当该 AZ 失效时，PD leader 和 Region leader 会自动在其它 AZ 选出，只需要把业务流量转移至其他存活的 AZ 即可。
+
 
 ![三 AZ 部署读性能优化](/media/deploy-3dc-optimize.png)
 
