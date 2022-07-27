@@ -190,7 +190,7 @@ Flags:
 
 dmctl 提供了三种错误处理命令：
 
-- `clear-error`：清理掉错误行，不再看到这个错误出现在 status 里。
+- `clear-error`：清理掉错误行，`show-error`命令将不再展示该`error row`。
 
     ```
     Usage:
