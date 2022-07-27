@@ -1667,35 +1667,79 @@ Raft Engine 相关的配置项。
 
 ## quota
 
-用于前台限流 (Quota Limiter) 相关的配置项。
+用于请求限流 (Quota Limiter) 相关的配置项。
 
-当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，以至于占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用前台限流相关的 quota 配置项以限制前台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration从-v600-版本开始引入) 的值。
+### `max-delay-duration` <span class="version-mark">从 v6.0.0 版本开始引入</span>
+
++ 单次读写请求被强制等待的最大时间。
++ 默认值：500ms
+
+### 前台限流
+
+用于前台限流相关的配置项。
+
+当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 前台处理的读写请求量过大，以至于占用 TiKV 后台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用前台限流相关的 quota 配置项以限制前台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration-从-v600-版本开始引入) 的值。
 
 > **警告：**
 >
 > - 前台限流是 TiDB 在 v6.0.0 中引入的实验特性，不建议在生产环境中使用。
 > - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
 
-### `foreground-cpu-time`（从 v6.0.0 版本开始引入）
+#### `foreground-cpu-time` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
 + 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，这是一个软限制。
 + 默认值：0（即无限制）
 + 单位：millicpu （当该参数值为 `1500` 时，前端请求会消耗 1.5v CPU）。
 
-### `foreground-write-bandwidth`（从 v6.0.0 版本开始引入）
+#### `foreground-write-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入</span>
 
-+ 限制事务写入的带宽，这是一个软限制。
++ 限制前台事务写入的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `foreground-read-bandwidth`（从 v6.0.0 版本开始引入）
+#### `foreground-read-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入 </span>
 
-+ 限制事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
++ 限制前台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
 + 默认值：0KB（即无限制）
 
-### `max-delay-duration`（从 v6.0.0 版本开始引入）
+### 后台限流
 
-+ 单次前台读写请求被强制等待的最大时间。
-+ 默认值：500ms
+用于后台限流相关的配置项。
+
+当 TiKV 部署的机型资源有限（如 4v CPU，16 G 内存）时，如果 TiKV 后台处理的计算或者读写请求量过大，以至于占用 TiKV 前台处理请求所需的 CPU 资源，最终影响 TiKV 性能的稳定性。此时，你可以使用后台限流相关的 quota 配置项以限制后台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。具体等待时间与新增请求量相关，最多不超过 [`max-delay-duration`](#max-delay-duration-从-v600-版本开始引入) 的值。
+
+> **警告：**
+>
+> - 后台限流是 TiDB 在 v6.2.0 中引入的实验特性，不建议在生产环境中使用。
+> - 该功能仅适合在资源有限的环境中使用，以保证 TiKV 在该环境下可以长期稳定地运行。如果在资源丰富的机型环境中开启该功能，可能会导致读写请求量达到峰值时 TiKV 的性能下降的问题。
+
+#### `background-cpu-time` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，这是一个软限制。
++ 默认值：0（即无限制）
++ 单位：millicpu（当该参数值为 `1500` 时，后端请求会消耗 1.5v CPU）。
+
+#### `background-write-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **注意：**
+>
+> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
+ 
++ 限制后台事务写入的带宽，这是一个软限制。
++ 默认值：0KB（即无限制）
+
+#### `background-read-bandwidth` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **注意：**
+>
+> 该配置项可以通过 `SHOW CONFIG` 查询到，但暂未生效。设置该配置项的值不生效。
+
++ 限制后台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
++ 默认值：0KB（即无限制）
+
+#### `enable-auto-tune` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。
++ 默认值：false（即关闭动态调整）
 
 ## causal-ts <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
