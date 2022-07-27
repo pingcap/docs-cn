@@ -153,7 +153,8 @@ tikv_servers:
 
 本例中，zone 表示逻辑可用区层级，用于控制副本的隔离（当前集群 3 副本）。
 
-不直接采用 dc，rack，host 三层 Label 结构的原因是考虑到将来可能发生 AZ 的扩容，假设新扩容的 AZ 编号是 az2，az3，az4，则只需在对应可用区下扩容 az；rack 扩容只需在对应 AZ 下扩容即可。
+不直接采用 dc、rack 和 host 三层 Label 结构，是因为考虑到将来可能会扩容 AZ，假设新扩容的 AZ 编号是 AZ2、AZ3 和 AZ4，则只需在对应可用区下扩容 AZ，rack 也只需在对应 AZ 下扩容。
+
 
 如果直接采用 AZ、rack 和 host 三层 Label 结构，那么扩容 AZ 操作可能需重新添加 Label，TiKV 数据整体需要 Rebalance。
 
