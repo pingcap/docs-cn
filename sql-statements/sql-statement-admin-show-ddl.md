@@ -115,7 +115,7 @@ ADMIN SHOW DDL JOB QUERIES 51;
 
 ### `ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n`
 
-`ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n` 语句用于查看指定范围 `(n+1, n+m)` 的 `job_id` 对应的 DDL 任务的原始 SQL 语句：
+`ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n` 语句用于查看指定范围 `[n+1, n+m]` 的 `job_id` 对应的 DDL 任务的原始 SQL 语句：
 
 {{< copyable "sql" >}}
 
