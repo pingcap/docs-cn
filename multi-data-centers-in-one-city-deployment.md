@@ -155,7 +155,8 @@ tikv_servers:
 
 不直接采用 dc，rack，host 三层 Label 结构的原因是考虑到将来可能发生 AZ 的扩容，假设新扩容的 AZ 编号是 az2，az3，az4，则只需在对应可用区下扩容 az；rack 扩容只需在对应 AZ 下扩容即可。
 
-如果直接采用 az，rack，host 三层 Label 结构，那么扩容 az 操作可能需重打 Label，TiKV 数据整体需要 Rebalance。
+如果直接采用 AZ、rack 和 host 三层 Label 结构，那么扩容 AZ 操作可能需重新添加 Label，TiKV 数据整体需要 Rebalance。
+
 
 ### 高可用和容灾分析
 
