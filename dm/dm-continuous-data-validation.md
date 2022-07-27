@@ -97,7 +97,7 @@ dmctl --master-addr=127.0.0.1:8261 validation start --start-time 2021-10-21T00:0
             "validatorBinlog": "(mysql-bin.000001, 5989)", // 校验到的 binlog 位置
             "validatorBinlogGtid": "1642618e-cf65-11ec-9e3d-0242ac110002:1-30", // 同上，用 GTID 表示
             "result": null, // 当增量校验异常时，显示异常信息
-            "processedRowsStatus": "insert/update/delete: 0/0/0", // 已经处理的 binlog
+            "processedRowsStatus": "insert/update/delete: 0/0/0", // 已经处理的 binlog 数据行的统计信息
             "pendingRowsStatus": "insert/update/delete: 0/0/0", // 还未校验或者校验失败，但还没标记为`错误行`的数据行统计信息
             "errorRowsStatus": "new/ignored/resolved: 0/0/0" // `错误行`统计信息，三种状态的错误会在下文讲解
         }
