@@ -144,7 +144,7 @@ validators:              # 增量数据校验的运行配置参数
     # none：不校验
     mode: full           # 可选填 full，fast 和 none，默认是 none，即不开启校验。
     worker-count: 4      # 后台校验的 validation worker 数量，默认是 4 个
-    row-error-delay: 30m # 某一行多久没有校验通过会被标记为 error row，默认是 30min
+    row-error-delay: 30m # 某一行多久没有校验通过会被标记为 error row，默认是 30 分钟
 
 # ----------- 实例配置 -----------
 mysql-instances:
