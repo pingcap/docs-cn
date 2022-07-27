@@ -1,5 +1,6 @@
 ---
 title: 代价模型
+summary: 介绍 TiDB 进行物理优化时所使用的代价模型的原理和 Cost Model Version 2。
 ---
 
 # 代价模型
