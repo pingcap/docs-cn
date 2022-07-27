@@ -14,7 +14,7 @@ RELEASE SAVEPOINT identifier
 ```
 
 > **警告：**
-> 
+>
 > `SAVEPOINT` 特性不支持与 TiDB Binlog 一起使用。
 
 - `SAVEPOINT` 语句用于在当前事务中，设置一个指定名字保存点。如果已经存在相同名字的保存点，就删除已有的保存点并设置新的保存点。
@@ -113,7 +113,7 @@ ROLLBACK TO SAVEPOINT sp1;
 Query OK, 0 rows affected (0.01 sec)
 ```
 
-提交事务并查询表格，发现表中仅有 `sp1` 前插入的数据。
+提交事务并查询表格，发现表中仅有 `sp1` 前插入的数据：
 
 ```sql
 COMMIT;
