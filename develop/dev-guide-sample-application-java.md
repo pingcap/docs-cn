@@ -1808,3 +1808,8 @@ mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
 </div>
 
 </SimpleTab>
+
+## 拓展阅读
+
+- PingCAP 免费在线课程：[使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide)
+- PingCAP 免费在线课程：[在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide)

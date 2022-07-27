@@ -172,3 +172,7 @@ ERROR 8048 (HY000): The isolation level 'SERIALIZABLE' is not supported. Set tid
 ```
 
 TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 MySQL 保持一致，又称其为“可重复读”。该隔离级别不同于 [ANSI 可重复读隔离级别](/transaction-isolation-levels.md#与-ansi-可重复读隔离级别的区别) 和 [MySQL 可重复读隔离级别](/transaction-isolation-levels.md#与-mysql-可重复读隔离级别的区别)。更多细节请阅读 [TiDB 事务隔离级别](/transaction-isolation-levels.md)。
+
+## 拓展阅读
+
+- PingCAP 免费在线课程 [TiDB 特有功能与事务控制 - TiDB v6](https://learn.pingcap.com/learner/course/750002/?utm_source=docs-cn-dev-guide): 了解可用于应用程序的 TiDB 独特功能，如 `AUTO_RANDOM` 及 `AUTO_INCREMENT` 特别注意事项、全局临时表、如何使用 TiFlash 启用 HTAP 以及放置策略等。
