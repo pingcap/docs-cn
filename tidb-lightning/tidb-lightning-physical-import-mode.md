@@ -11,23 +11,26 @@ Before you use the physical import mode, make sure to read [Requirements and res
 
 ## Implementation
 
-1. Before importing data, TiDB Lightning automatically switches the TiKV nodes to "import mode", which improves write performance and stops PD scheduling and auto-compaction.
+1. Before importing data, TiDB Lightning automatically switches the TiKV nodes to "import mode", which improves write performance and stops auto-compaction. TiDB Lightning determines whether to pause global scheduling according to the TiDB cluster version.
 
-2. `tidb-lightning` creates table schemas in the target database and fetches the metadata.
+    - When the TiDB cluster >= v6.1.0 and TiDB Lightning >= v6.2.0, TiDB Lightning pauses scheduling for the region that stores the target table data. After the import is completed, TiDB Lightning recovers scheduling.
+    - When the TiDB cluster < v6.1.0 or TiDB Lightning < v6.2.0, TiDB Lightning pauses global scheduling.
 
-3. Each table is divided into multiple contiguous **blocks**, so that Lightning can import data data from large tables (200 GB+) in parallel.
+2. TiDB Lightning creates table schemas in the target database and fetches the metadata.
 
-4. `tidb-lightning` prepares an "engine file" for each block to handle key-value pairs. `tidb-lightning` reads the SQL dump in parallel, converts the data source to key-value pairs in the same encoding as TiDB, sorts the key-value pairs and writes them to a local temporary storage file.
+3. Each table is divided into multiple contiguous **blocks**, so that TiDB Lightning can import data from large tables (greater than 200 GB) in parallel.
 
-5. When an engine file is written, `tidb-lightning` starts to split and schedule data on the target TiKV cluster, and then imports data to TiKV cluster.
+4. TiDB Lightning prepares an "engine file" for each block to handle key-value pairs. TiDB Lightning reads the SQL dump in parallel, converts the data source to key-value pairs in the same encoding as TiDB, sorts the key-value pairs and writes them to a local temporary storage file.
+
+5. When an engine file is written, TiDB Lightning starts to split and schedule data on the target TiKV cluster, and then imports data to TiKV cluster.
 
     The engine file contains two types of engines: **data engine** and **index engine**. Each engine corresponds to a type of key-value pairs: row data and secondary index. Normally, row data is completely ordered in the data source, and the secondary index is unordered. Therefore, the data engine files are imported immediately after the corresponding block is written, and all index engine files are imported only after the entire table is encoded.
 
-6. After all engine files are imported, `tidb-lightning` compares the checksum between the local data source and the downstream cluster, and ensures that the imported data is not corrupted. Then `tidb-lightning` analyzes the new data (`ANALYZE`) to optimize the future operations. Meanwhile, `tidb-lightning` adjusts the `AUTO_INCREMENT` value to prevent conflicts in the future.
+6. After all engine files are imported, TiDB Lightning compares the checksum between the local data source and the downstream cluster, and ensures that the imported data is not corrupted. Then TiDB Lightning analyzes the new data (`ANALYZE`) to optimize the future operations. Meanwhile, `tidb-lightning` adjusts the `AUTO_INCREMENT` value to prevent conflicts in the future.
 
     The auto-increment ID is estimated by the **upper bound** of the number of rows, and is proportional to the total size of the table data file. Therefore, the auto-increment ID is usually larger than the actual number of rows. This is normal because the auto-increment ID [is not necessarily contiguous](/mysql-compatibility.md#auto-increment-id).
 
-7. After all steps are completed, `tidb-lightning` automatically switches the TiKV nodes to "normal mode", and the TiDB cluster can provide services normally.
+7. After all steps are completed, TiDB Lightning automatically switches the TiKV nodes to "normal mode". If global scheduling is paused, TiDB Lightning also recovers global scheduling. After that, the TiDB cluster can provide services normally.
 
 ## Requirements and restrictions
 
@@ -57,7 +60,7 @@ It is recommended that you allocate CPU more than 32 cores and memory greater th
 
 ### Limitations
 
-- Do not use physical import mode to import data to TiDB clusters in production. It has severe performance implications.
+- Do not use physical import mode to directly import data to TiDB clusters in production. It has severe performance implications. If you need to do so, refer to [Import data into a cluster in production](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#import-data-into-a-cluster-in-production).
 - Do not use multiple TiDB Lightning instances to import data to the same TiDB cluster by default. Use [Parallel Import](/tidb-lightning/tidb-lightning-distributed-import.md) instead.
 - When you use multiple TiDB Lightning to import data to the same target, do not mix the backends. That is, do not use physical import mode and logical import mode at the same time.
 - A single Lightning process can import a single table of 10 TB at most. Parallel import can use 10 Lightning instances at most.

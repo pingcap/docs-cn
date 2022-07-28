@@ -37,6 +37,10 @@ duplicate-resolution = 'remove'
 # The directory of local KV sorting.
 sorted-kv-dir = "./some-dir"
 
+# Limits the bandwidth in which TiDB Lightning writes data into each TiKV
+# node in physical import mode. 0 by default, which means no limit.
+# store-write-bwlimit = "128MiB"
+
 [tidb]
 # The information of the target cluster. The address of any tidb-server from the cluster.
 host = "172.16.31.1"
@@ -125,6 +129,53 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 ```
 
 You can manually identify the records that need to be retained and insert these records into the table.
+
+## Import data into a cluster in production
+
+Starting from TiDB Lightning v6.2.0, you can import data into a cluster in production using physical import mode. TiDB Lightning implements a new mechanism to limit the impact of the import on the online application.
+
+With the new mechanism, TiDB Lightning does not pause the global scheduling, but only pauses scheduling for the region that stores the target table data. This significantly reduces the impact of the import on the online application.
+
+<Note>
+TiDB Lightning does not support importing data into a table that already contains data.
+
+The TiDB cluster must be v6.1.0 or later versions. For earlier versions, TiDB Lightning keeps the old behavior, which pauses scheduling globally and severely impacts the online application during the import.
+</Note>
+
+By default, TiDB Lightning pauses the cluster scheduling for the minimum range possible. However, under the default configuration, the cluster performance still might be affected by fast import. To avoid this, you can configure the following options to control the import speed and other factors that might impact the cluster performance:
+
+```toml
+[tikv-importer]
+# Limits the bandwidth in which TiDB Lightning writes data into each TiKV node in physical import mode.
+store-write-bwlimit = "128MiB"
+
+[tidb]
+# Use smaller concurrency to reduce the impact of Checksum and Analyze on the transaction latency.
+distsql-scan-concurrency = 3
+
+[cron]
+# Prevent TiKV from switching to import mode.
+switch-mode = '0'
+```
+
+You can measure the impact of data import on TPCC results by simulating the online application using TPCC and importing data into a TiDB cluster using TiDB Lightning. The test result is as follows:
+
+| Concurrency | TPM | P99 | P90 | AVG |
+| ----- | --- | --- | --- | --- |
+| 1     | 20%~30% | 60%~80% | 30%~50% | 30%~40% |
+| 8     | 15%~25% | 70%~80% | 35%~45% | 20%~35% |
+| 16    | 20%~25% | 55%~85% | 35%~40% | 20%~30% |
+| 64    | No significant impact |
+| 256   | No significant impact |
+
+The percentage in the preceding table indicates the impact of data import on TPCC results.
+
+* For the TPM column, the number indicates the percentage of TPM decrease.
+* For the P99, P90, and AVG columns, the number indicates the percentage of latency increase.
+
+The test results show that the smaller the concurrency, the larger the impact of data import on TPCC results. When the concurrency is 64 or more, the impact of data import on TPCC results is negligible.
+
+Therefore, if your TiDB cluster has a latency-sensitive application and a low concurrency, it is strongly recommended **not** to use TiDB Lightning to import data into the cluster. This will cause a significant impact on the online application.
 
 ## Performance tuning
 

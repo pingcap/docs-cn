@@ -1,5 +1,5 @@
 ---
-title: TiDB Lightning Import Mode
+title: TiDB Lightning Import Modes
 summary: Learn how to choose different import modes of TiDB Lightning.
 aliases: ['/docs/dev/tidb-lightning/tidb-lightning-tidb-backend/','/docs/dev/reference/tools/tidb-lightning/tidb-backend/','/tidb/dev/tidb-lightning-tidb-backend','/docs/dev/loader-overview/','/docs/dev/reference/tools/loader/','/docs/dev/load-misuse-handling/','/docs/dev/reference/tools/error-case-handling/load-misuse-handling/','/tidb/dev/load-misuse-handling','/tidb/dev/loader-overview/']
 ---
