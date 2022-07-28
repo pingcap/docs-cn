@@ -51,7 +51,7 @@ SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命�
 
 ### 备份文件布局
 
-将数据备份到 Google Cloud Storage、Azure Blob Storage 上时，SST 文件、 backupmeta 文件和 backup.lock 文件在同一目录下。布局如下：
+将数据备份到 Google Cloud Storage 或 Azure Blob Storage 上时，SST 文件、 backupmeta 文件和 backup.lock 文件在同一目录下。布局如下：
 
 ```
 .
