@@ -291,7 +291,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 1. 停止从中心所有的 PD、TiKV、TiDB 服务。
 
-2. 添加 `--force-new-cluster` 参数，以单副本模式启动从中心的 PD 节点。
+2. 启动 PD 时添加 [`--force-new-cluster`](/command-line-flags-for-pd-configuration.md#--force-new-cluster) 参数，以单副本模式启动从中心的 PD 节点。
 
 3. 使用 [Online Unsafe Recovery](/online-unsafe-recovery.md) 处理从中心的 TiKV 数据，参数为主中心所有 Store ID 的列表。
 
