@@ -41,14 +41,6 @@ TiDB 集群拓扑和配置：
 - 没有安装 BR， 使用命令 `tiup install br:v6.2.0` 
 - 升级 BR，使用命令 `tiup update br:v6.2.0`
 
-## 打开日志备份参数
-要使用日志备份功能，需要打开配置参数 tikv: log-backup.enable: true 开启该功能，更改配置参数需要重启 TiKV。
-  ```shell
-  server_configs:
-  tikv:
-    log-backup.enable: true
-  ``` 
-
 ## 配置备份存储（S3）
 
 在开始备份任务之前需要准备好备份存储，在该场景中包含 
@@ -103,7 +95,6 @@ tiup br log status --task-name=pitr --pd=172.16.102.95:2379
     speed(est.): 0.00 ops/s
 checkpoint[global]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
 checkpoint[store=1]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
-error[store=1]: KV:logbackup:NoSuchTask
 checkpoint[store=4]: 2022-04-24 11:31:47.25 +0800 CST; gap=4m53s
 checkpoint[store=5]: 2022-04-24 11:31:47.351 +0800 CST; gap=4m53s
 ```
@@ -121,8 +112,7 @@ tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/bac
 在 2022/05/14 00:00:00 执行一次快照备份
 
 ```shell
-tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
---backupts='2022/05/14 00:00:00'
+tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' --backupts='2022/05/14 00:00:00'
 ```
 
 ## 清理过期备份数据
@@ -150,7 +140,7 @@ tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/bac
 ```shell
 tiup br restore point -pd=172.16.102.95:2379
 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
 
 Full Restore <---------------------------------------------------------------------> 100.00%
 Restore DDL files <----------------------------------------------------------------> 100.00%
@@ -171,5 +161,3 @@ Restore DDL files <-------------------------------------------------------------
 > 由于此功能会备份集群的多版本数据，当任务发生错误且状态变更为 `ERROR` 后，同时会将当前任务的备份进度点的数据设为一个 `safe point`，`safe point` 的数据将保证 24 小时不被 GC 
 > 掉。所以，当任务恢复之后，会持续从上一个备份点继续备份日志。如果任务失败时间超过 24 小时，前一次备份进度点的数据已经被 GC，此时恢复任务操作会提示失败。这种场景下只能 stop 掉本次
 > 的任务，并重新开启新的备份任务。
-
-
