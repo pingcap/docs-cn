@@ -68,7 +68,7 @@ Global Flags:
 
 ```
 
-以上命令行示例只展示了常用的参数，这些常用的参数作用如下
+以上命令行示例只展示了常用的参数，这些常用的参数作用如下：
 
 - `task-name`：指定日志备份任务名。使用该名称对备份任务进行 status/pause/resume/stop 等操作。
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
@@ -214,7 +214,6 @@ Usage:
 
 Flags:
   -h, --help           help for status
-  --json               Print JSON as the output.
   --task-name string   The task name for backup stream log. 
 
 Global Flags:
@@ -263,13 +262,14 @@ Global Flags:
 - `--util`：早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值。
 - `--storage`：指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
-使用示例
+使用示例：
 
 ```shell
 ./br log truncate --until='2022-07-16 20:30:09.0680' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
-该子命令运行后输出以下信息
+该子命令运行后输出以下信息：
+
 ```shell
 Reading Metadata... DONE; take = 277.911599ms
 We are going to remove 698059 files, until 2022-07-16 20:30:09.0680.
@@ -286,10 +286,10 @@ BR 提供了命令 `br log metadata` 查看备份存储中保存的日志备份�
 get the metadata of log backup storage 
 
 Usage:
-  br log truncate [flags]
+  br log metadata [flags]
 
 Flags:
-  -h, --help       help for truncate
+  -h, --help       help for metadata
 
 Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
@@ -299,13 +299,13 @@ Global Flags:
 
 - `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
 
-使用示例
+使用示例：
 
 ```shell
 ./br log metadata –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
-该子命令运行后输出以下信息
+该子命令运行后输出以下信息：
 
 ```shell
 [2022/07/25 23:02:57.236 +08:00] [INFO] [collector.go:69] ["log metadata"] [log-min-ts=434582449885806593] [log-min-date="2022-07-14 20:08:03.268 +0800"] [log-max-ts=434834300106964993] [log-max-date="2022-07-25 23:00:15.618 +0800"]
@@ -337,7 +337,7 @@ Global Flags:
  -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-以上示例只展示了常用的参数，这些常用的参数作用如下
+以上示例只展示了常用的参数，这些常用的参数作用如下：
 
 - `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 - `--restored-ts`： 指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点 (备份数据的 checkpoint)。
@@ -346,7 +346,7 @@ Global Flags:
 - `ca`,`cert`,`key`： 指定使用 mTLS 加密方式与 TiKV/PD 进行通讯
 - `--storage`: 指定日志备份的存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
 
-使用示例
+使用示例：
 
 ```shell
 ./br restore point -pd=172.16.102.95:2379
