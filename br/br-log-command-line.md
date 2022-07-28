@@ -1,9 +1,11 @@
 ---
-title: 日志备份和恢复功能使用介绍
+title: 使用 BR 进行日志备份
 summary: 了解如何使用 br log 命令行工具进行日志备份。
 ---
 
-# 日志备份功能使用
+# 使用 BR 进行日志备份
+
+通过使用 `br log` 命令，你可以对 TiDB 集群进行日志备份。本文档介绍 `br log` 命令的使用方法。
 
 ## 前置条件 
 
@@ -31,19 +33,19 @@ Available Commands:
   truncate   truncate the log data until sometime.
 ```
 
-下面逐一介绍各个子命令的使用
+各个子命令的作用如下：
 
-- `br log start` 启动一个日志备份任务
-- `br log status` 查询日志备份任务状态
-- `br log pause` 暂停日志备份任务
-- `br log resume` 重启处于暂停的备份任务
-- `br log stop` 停止备份任务, 并删除任务元信息
-- `br log truncate` 从备份存储中清理日志备份数据
-- `br log metadata` 查询备份存储中备份数据的元信息
+- `br log start`：启动一个日志备份任务
+- `br log status`：查询日志备份任务状态
+- `br log pause`：暂停日志备份任务
+- `br log resume`：重启处于暂停的备份任务
+- `br log stop`：停止备份任务, 并删除任务元信息
+- `br log truncate`：从备份存储中清理日志备份数据
+- `br log metadata`：查询备份存储中备份数据的元信息
 
 ### 启动日志备份任务
 
-通过 `br log start` 在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 kv 变更日志保存到备份存储中。 运行 `br log start –help` 获取该子命令使用介绍
+通过 `br log start` 在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 kv 变更日志保存到备份存储中。运行 `br log start --help` 获取该子命令使用介绍：
 
 ```shell
 ./br log start --help
@@ -68,13 +70,13 @@ Global Flags:
 
 以上命令行示例只展示了常用的参数，这些常用的参数作用如下
 
-- `task-name`： 指定日志备份任务名。使用该名称对备份任务进行 status/pause/resume/stop 等操作
-- `--start-ts`： 指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts
-- `--pd`:  指定备份集群的 PD 访问地址。 BR 需要访问 PD 发起日志备份任务
-- `ca`,`cert`,`key`： 指定使用 mTLS 加密方式与 TiKV/PD 进行通讯
-- `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+- `task-name`：指定日志备份任务名。使用该名称对备份任务进行 status/pause/resume/stop 等操作。
+- `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
+- `--pd`：指定备份集群的 PD 访问地址。 BR 需要访问 PD 发起日志备份任务。
+- `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV/PD 进行通讯。
+- `--storage`：指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
-使用示例
+使用示例：
 
 ```shell
 ./br log start --task-name=pitr --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
@@ -82,7 +84,7 @@ Global Flags:
 
 ### 查询日志备份任务
 
-通过 `br log status` 可以查询日志备份任务状态。运行 `br log status –-help` 获取该子命令使用介绍
+通过 `br log status` 可以查询日志备份任务状态。运行 `br log status –-help` 获取该子命令使用介绍：
 
 ```shell
 ./br log status --help
@@ -104,17 +106,17 @@ Global Flags:
 
 ```
 
-以上示例只展示了常用的参数，这些常用的参数作用如下
+以上示例只展示了常用的参数，这些常用的参数作用如下：
 
-- `task-name`： 指定日志备份任务名。 默认值为 '*',  显示全部的任务
+- `task-name`：指定日志备份任务名。默认值为 '*'，显示全部的任务。
 
-使用示例
+使用示例：
 
 ```shell
 ./br log status --task-name=pitr --pd=172.16.102.95:2379 
 ```
 
-命令行运行后的输出如下
+命令输出如下：
 
 ```shell
 ● Total 1 Tasks.
@@ -128,10 +130,10 @@ Global Flags:
 checkpoint[global]: 2022-07-25 22:52:15.518 +0800 CST; gap=2m52s
 ```
 
-该子命令运行后输出以下信息
+输出中的字段含义如下：
 
 - `status`：任务状态，NORMAL(任务正常)/ERROR(任务异常) /PAUSE(任务被暂停)
-- `start`:  日志备份任务开始的时间，为备份任务启动时候指定的 start-ts
+- `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts。
 - `storage`：备份存储
 - `speed`：日志备份任务的总 QPS（每秒备份的日志个数）
 - `checkpoint [global]`：表示集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
@@ -139,7 +141,7 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800 CST; gap=2m52s
 
 ### 暂停和重启日志备份任务
 
-通过 `br log pause`  暂停正在运行中的日志备份任务。运行 `br log pause –help` 获取该子命令使用介绍
+通过 `br log pause` 暂停正在运行中的日志备份任务。运行 `br log pause –help` 获取该子命令使用介绍：
 
 ```shell
 ./br log pause --help
@@ -162,16 +164,16 @@ Global Flags:
 
 `br log pause` 命令使用需要注意：
 
-- 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被删除，暂停任务程序会自动调整 TiDB 集群的 `tidb_gc_life_time` 参数，允许最多保留最近 24h 内的 MVCC 数据。如果超过 24h，暂停的日志备份任务没有，那么对应的数据就会丢失，将不会被备份下来；
-- 此外，保留过多的 MVCC 数据会影响 TiDB 集群的存储容量和性能，任务暂停后请及时恢复任务。
+- 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被删除，暂停任务程序会自动调整 TiDB 集群的 `tidb_gc_life_time` 参数，允许最多保留最近 24 小时内的 MVCC 数据。如果暂停超过 24 小时，暂停的日志备份任务没有恢复，那么对应的数据就会丢失，将不会被备份下来；
+- 保留过多的 MVCC 数据会影响 TiDB 集群的存储容量和性能，任务暂停后请及时恢复任务。
 
-使用示例
+使用示例：
 
 ```shell
 ./br log pause --task-name=pitr --pd=172.16.102.95:2379 
 ```
 
-通过 `br log resume`  恢复被暂停的日志备份任务。运行 `br log resume –help` 获取该子命令使用介绍
+通过 `br log resume` 恢复被暂停的日志备份任务。运行 `br log resume --help` 获取该子命令使用介绍
 
 ```shell
 ./br log resume --help
@@ -191,9 +193,9 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-该命令需要注意，如果日志备份任务暂停超过了 24h 后，执行 `br log resume` 会报错，提示备份数据丢失，处理方法请参考 (#TODO FAQ)
+暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考 (#TODO FAQ)
 
-使用示例
+使用示例：
 
 ```shell
 ./br log resume --task-name=pitr --pd=172.16.102.95:2379 
@@ -201,7 +203,7 @@ Global Flags:
 
 ### （永久）停止日志备份任务
 
-通过 `br log stop`  永久的停止日志备份任务，该命令会清理备份集群中的任务元信息和关闭运行进程。运行 `br log stop –help` 获取该子命令使用介绍
+通过 `br log stop` 永久地停止日志备份任务，该命令会清理备份集群中的任务元信息、关闭运行进程。运行 `br log stop --help` 获取该子命令使用介绍：
 
 ```shell
 ./br log stop --help
@@ -227,7 +229,7 @@ Global Flags:
 > - 请谨慎使用该命令。只有在你确认不再继续使用 PiTR 的情况下，才可以停止日志备份任务。如果你只需暂停日志备份，请使用 `br log pause` 和 `br log resume` 命令。
 > - 如果你选择使用 `br log stop` 停止备份任务，在使用 `br log start` 重启备份任务时需要指定一个与之前不同的日志备份保存目录，而不同的日志备份保存目录会导致你无法使用 `br restore point` 进行一键恢复。
 
-使用示例
+使用示例：
 
 ```shell
 ./br log stop --task-name=pitr --pd=172.16.102.95:2379 
@@ -235,7 +237,7 @@ Global Flags:
 
 ### 清理日志备份数据
 
-BR 提供了命令 `br log truncate` 支持从备份存储中删除过期（不再需要）的备份日志数据。运行 `br log truncate –help` 获取该子命令使用介绍
+BR 提供了命令 `br log truncate` 支持从备份存储中删除过期（不再需要）的备份日志数据。运行 `br log truncate --help` 获取该子命令使用介绍：
 
 ```shell
 ./br log truncate --help
@@ -255,11 +257,11 @@ Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下
+该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下：
 
-- `--dry-run`: 运行命令，但是不要真正删除文件。
-- `--util`: 早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值
-- `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+- `--dry-run`：运行命令，但是不要真正删除文件。
+- `--util`：早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值。
+- `--storage`：指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例
 
@@ -277,7 +279,7 @@ Clearing data files done. kv-count = 1391111377, total-size = 208288284714DONE; 
 
 ### 查看备份数据 metadata
 
-BR 提供了命令 `br log metadata` 查看备份存储中保存的 log 备份的元信息，通过该命令你可以查询到 log 备份相关信息，例如最早和最近的可恢复时间点。运行 `br log metadata –-help` 获取该子命令使用介绍
+BR 提供了命令 `br log metadata` 查看备份存储中保存的日志备份的元信息，通过该命令你可以查询到 log 备份相关信息，例如最早和最近的可恢复时间点。运行 `br log metadata –-help` 获取该子命令使用介绍：
 
 ```shell
 ./br log metadata --help
@@ -337,9 +339,9 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些常用的参数作用如下
 
-- `--full-backup-storage`：  PiTR 恢复需要指定，请选择恢复时间点之前最近的快照备份。指定快照（全量）备份存储地址。如果只恢复日志备份数据，则不需要指定该参数；使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 - `--restored-ts`： 指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点 (备份数据的 checkpoint)。
-- `--start-ts`: 只恢复日志备份数据（不需要恢复快照备份）需要指定，指定日志备份恢复的起始时间点；
+- `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `--pd`: 指定恢复集群的 PD 访问地址
 - `ca`,`cert`,`key`： 指定使用 mTLS 加密方式与 TiKV/PD 进行通讯
 - `--storage`: 指定日志备份的存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
