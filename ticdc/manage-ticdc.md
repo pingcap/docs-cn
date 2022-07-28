@@ -681,8 +681,8 @@ ignore-event = ["insert"] # 过滤掉 insert 事件
 ignore-sql = ["^drop", "add column"] # 过滤掉以 "drop" 开头或者包含 "add column" 的 DDL
 ignore-delete-value-expr = "name = 'john'" # 过滤掉包含 name = 'john' 条件的 delete DML
 ignore-insert-value-expr = "id >= 100" # 过滤掉包含 id >= 100 条件的 insert DML 
-ignore-update-old-value-expr = "age < 18" # 过滤掉旧值 age < 18 的 update DML
-ignore-update-new-value-expr = "gender = 'male'" # 过滤掉新值 gender = 'male' 的 update DML
+ignore-update-old-value-expr = "age < 18 or name = 'lili'" # 过滤掉旧值 age < 18 或 name = 'lili' 的 update DML
+ignore-update-new-value-expr = "gender = 'male' and age > 18" # 过滤掉新值 gender = 'male' 且 age > 18 的 update DML
 ```
 
 事件过滤器的规则应该写在 filter 配置项之下，具体写法可以参考[同步任务配置文件描述](#同步任务配置文件描述)。
