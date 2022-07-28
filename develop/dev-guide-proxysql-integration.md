@@ -148,7 +148,7 @@ save mysql users to disk;
 
 ### 3.4 配置文件配置
 
-除了使用 **_ProxySQL Admin interface_** 配置，也可以使用配置文件进行配置。[官方解释](https://github.com/sysown/proxysql#configuring-proxysql-through-the-config-file)中，配置文件仅应该被视为是一种辅助初始化的方式，而并非主要配置的手段。配置文件仅在 SQLite 数据库未被创建时读取，后续将不会继续读取配置文件。因此，使用配置文件配置时，你应进行 SQLite 数据库的删除，这将***丢失***你在 **_ProxySQL Admin interface_** 中对配置进行的更改：
+除了使用 **_ProxySQL Admin interface_** 配置，也可以使用配置文件进行配置。[官方解释](https://github.com/sysown/proxysql#configuring-proxysql-through-the-config-file)中，配置文件仅应该被视为是一种辅助初始化的方式，而并非主要配置的手段。配置文件仅在 SQLite 数据库未被创建时读取，后续将不会继续读取配置文件。因此，使用配置文件配置时，你应进行 SQLite 数据库的删除，这将**_丢失_**你在 **_ProxySQL Admin interface_** 中对配置进行的更改：
 
 ```sh
 rm /var/lib/proxysql/proxysql.db
@@ -197,7 +197,7 @@ mysql_users:
 docker-compose up -d
 ```
 
-这样就已经完成了一个集成了 TiDB 与 ProxySQL 环境的启动，这将启动两个容器，***请勿***在生产环境使用此快速体验方式创建集成。你可以使用用户名`root`，密码为空的账号，登录到本机的 `6033` 端口 (ProxySQL)。容器具体配置可见 [docker-compose.yaml](/docker-compose.yaml)，ProxySQL 具体配置可见 [proxysql-docker.cnf](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/proxysql-docker.cnf)。
+这样就已经完成了一个集成了 TiDB 与 ProxySQL 环境的启动，这将启动两个容器，**_请勿_**在生产环境使用此快速体验方式创建集成。你可以使用用户名`root`，密码为空的账号，登录到本机的 `6033` 端口 (ProxySQL)。容器具体配置可见 [docker-compose.yaml](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/docker-compose.yaml)，ProxySQL 具体配置可见 [proxysql-docker.cnf](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/proxysql-docker.cnf)。
 
 ## 5. 使用
 
@@ -238,7 +238,7 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
         - Docker
         - Docker Compose
 
-那么你可以本地运行 `./proxysql-initial.sh && ./test-local.sh` 或使用 Docker 运行 `./test-docker.sh` 来运行集成测试。
+那么你可以克隆[集成测试代码](https://github.com/Icemap/tidb-proxysql-integration-test)并本地运行 `./proxysql-initial.sh && ./test-local.sh` 或使用 Docker 运行 `./test-docker.sh` 来运行集成测试。
 
 在[集成测试文档](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/README-zh.md)中有更多信息可供查看。
 
