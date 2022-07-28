@@ -297,7 +297,7 @@ curl http://pd_ip:pd_port/pd/api/v1/replication_mode/status
 
 4. 使用 [PD Control 工具](/pd-control.md) 写入新的 placement rule 配置，其中 Region 的 Voter 副本数配置为原集群在从中心的副本数。
 
-5. 启动 PD 和 TiKV 服务。
+5. 启动主集群的 PD 和 TiKV 服务。
 
 6. 如果需要进行 ACID 一致性恢复（原 PD 的 `DR_STATE` 文件内状态为 `sync-recover`），使用 [TiKV Control 工具的 `reset-to-version`](/tikv-control.md#恢复-acid-不一致的数据) 处理 TiKV 数据。所使用的 `version` 参数可以使用 `pd-ctl min-resolved-ts` 查得。
 
