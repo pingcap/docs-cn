@@ -10,7 +10,16 @@ TiDB Lightning 支持读取 CSV（逗号分隔值）的数据源，以及其他�
 
 ## 文件名
 
+<<<<<<< HEAD:tidb-lightning/migrate-from-csv-using-tidb-lightning.md
 包含整张表的 CSV 文件需命名为 `db_name.table_name.csv`，该文件会被解析为数据库 `db_name` 里名为 `table_name` 的表。
+=======
+| 文件类型 | 分类 | 命名规则 |
+|:--|:--|:---|
+|Schema 文件|包含 DDL 语句 `CREATE TABLE` 的文件|`${db_name}.${table_name}-schema.sql`|
+|Schema 文件|包含 `CREATE DATABASE` DDL 语句的文件|`${db_name}-schema-create.sql`|
+|数据文件|包含整张表的数据文件，该文件会被导入 `${db_name}.${table_name}` 表 | <code>\${db_name}.\${table_name}.\${csv\|sql\|parquet}</code>|
+|数据文件| 如果一个表分布于多个数据文件，这些文件命名需加上文件编号的后缀 | <code>\${db_name}.\${table_name}.001.\${csv\|sql\|parquet}</code> |
+>>>>>>> 701b1b3ee (fix table format in tidb-lightning-data-source (#10699)):tidb-lightning/tidb-lightning-data-source.md
 
 如果一个表分布于多个 CSV 文件，这些 CSV 文件命名需加上文件编号的后缀，如 `db_name.table_name.003.csv`。数字部分不需要连续但必须递增，并用零填充。
 
