@@ -175,4 +175,4 @@ TiDB 实现了快照隔离 (Snapshot Isolation, SI) 级别的一致性。为与 
 
 ## 拓展阅读
 
-- PingCAP 免费在线课程 [TiDB 特有功能与事务控制 - TiDB v6](https://learn.pingcap.com/learner/course/750002/?utm_source=docs-cn-dev-guide): 了解可用于应用程序的 TiDB 独特功能，如 `AUTO_RANDOM` 及 `AUTO_INCREMENT` 特别注意事项、全局临时表、如何使用 TiFlash 启用 HTAP 以及放置策略等。
+- PingCAP 免费在线课程 [TiDB 特有功能与事务控制 - TiDB v6](https://learn.pingcap.com/learner/course/750002/?utm_source=docs-cn-dev-guide)：了解可用于应用程序的 TiDB 独特功能，如 `AUTO_RANDOM` 及 `AUTO_INCREMENT` 特别注意事项、全局临时表、如何使用 TiFlash 启用 HTAP 以及放置策略等。
