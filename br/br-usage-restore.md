@@ -186,14 +186,13 @@ BR 可恢复的**系统权限相关数据**包括如下表：
     - 目标集群系统权限表**列数**需要跟备份数据中一致，列顺序可以有差异。
     - 目标集群系统权限表列需要跟备份数据兼容，如果为带长度类型（包括整形、字符等类型），前者长度需 >= 后者，如果为 enum 类型，则应该为后者超集。
 
-如果目标集群非空或者目标集群系统表跟备份数据不兼容，BR 会提示类似如下信息。此时可参考提示信息，通过设置 `--with-sys-table=false` 参数（或者去掉 `--with-sys-table=true`）的方式跳过恢复系统表:
+如果目标集群非空或者目标集群系统表跟备份数据不兼容，BR 会提示类似如下信息。此时可参考提示信息，通过去掉 `--with-sys-table=true` 配置（或者 `--with-sys-table=false` 参数）的方式跳过恢复系统表:
 
 ```
 #######################################################################
 # the target cluster is not compatible with the backup data,
 # br cannot restore system tables.
-# you can use the following command to skip restoring system tables:
-#    br restore full --with-sys-table=false
+# you can remove 'with-sys-table' flag to skip restoring system tables
 #######################################################################
 ```
 
