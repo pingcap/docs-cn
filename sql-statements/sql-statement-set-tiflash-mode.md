@@ -43,7 +43,7 @@ CREATE TABLE test (a INT NOT NULL, b INT);
 ALTER TABLE test SET TIFLASH REPLICA 1;
 ```
 
-`test` 表默认的 mode 为 Normal Mode，可以通过以下语句进行查询。
+`test` 表默认的模式为 Normal Mode。你可以通过以下语句查询该表的 table mode：
 
 ```sql
 SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'test' AND table_schema = 'test'
@@ -57,7 +57,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-如果要启用 Fast Mode 查询 `test` 表，执行以下语句来切换模式, 并可以查询当前表的 mode。
+如果要启用 Fast Mode 查询 `test` 表，执行以下语句来切换模式，并查询当前表的模式。
 
 ```sql
 ALTER TABLE test SET tiflash mode FAST
@@ -73,7 +73,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-如果想重新使用 Normal Mode 模式，执行以下语句切换。
+如果想重新使用 Normal Mode，执行以下语句切换。
 
 ```sql
 ALTER TABLE test SET tiflash mode NORMAL
@@ -81,7 +81,7 @@ ALTER TABLE test SET tiflash mode NORMAL
 
 ## MySQL 兼容性
 
-`ALTER TABLE ...SET TiFLASH MODE ..`  语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
+`ALTER TABLE ...SET TiFLASH MODE ...`  语法是 TiDB 引入的对标准 SQL 语法的扩展。尽管没有对应的 MySQL 语法，你仍然可通过 MySQL 各版本客户端，或各个遵循 MySQL 协议的数据库驱动执行该语句。
 
 ## TiDB Binlog 及 TiCDC 兼容性
 
