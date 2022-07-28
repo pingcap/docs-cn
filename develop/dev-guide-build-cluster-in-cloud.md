@@ -1,12 +1,12 @@
 ---
-title: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
-summary: 使用 TiDB Cloud (DevTier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
+title: 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群
+summary: 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群，并连接 TiDB Cloud 集群。
 aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 ---
 
 <!-- markdownlint-disable MD029 -->
 
-# 使用 TiDB Cloud (DevTier) 构建 TiDB 集群
+# 使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群
 
 本章节将介绍以最快的方式开始使用 TiDB。你将使用 [TiDB Cloud](https://en.pingcap.com/tidb-cloud) 创建并启动一个免费的 TiDB 集群，使用 TiDB SQL 客户端，插入数据。随后将从示例程序读取出数据。
 
