@@ -20,7 +20,7 @@ AlterTableCompactStmt ::=
     'ALTER' 'TABLE' TableName 'COMPACT' ( 'TIFLASH' 'REPLICA' )?
 ```
 
-自 v6.2.0 起，语法中 `TIFLASH REPLICA` 部分可以被省略。
+自 v6.2.0 起，语法中 `TIFLASH REPLICA` 部分可以被省略。省略后语句含义不变，同样只对 TiFlash 列存有效。
 
 ## 示例
 
