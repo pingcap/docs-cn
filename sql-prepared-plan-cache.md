@@ -53,7 +53,7 @@ key 中任何一项变动（如切换数据库，重命名 `Prepare` 语句，�
 - 考虑到不同 `Execute` 的参数会不同，执行计划缓存为了保证适配性会禁止一些和具体参数值密切相关的激进查询优化手段，导致对特定的一些参数值，查询计划可能不是最优。比如查询的过滤条件为 `where a > ? and a < ?`，第一次 `Execute` 时参数分别为 2 和 1，考虑到这两个参数下次执行时可能会是 1 和 2，优化器不会生成对当前参数最优的 `TableDual` 执行计划。
 - 如果不考虑缓存失效和淘汰，一份执行计划缓存会对应各种不同的参数取值，理论上也会导致某些取值下执行计划非最优。比如查询过滤条件为 `where a < ?`，假如第一次执行 `Execute` 时用的参数值为 1，此时优化器生成最优的 `IndexScan` 执行计划放入缓存，在后续执行 `Exeucte` 时参数变为 10000，此时 `TableScan` 可能才是更优执行计划，但由于执行计划缓存，执行时还是会使用先前生成的 `IndexScan`。因此执行计划缓存更适用于查询较为简单（查询编译耗时占比较高）且执行计划较为固定的业务场景。
 
-目前执行计划缓存功能默认关闭，可以通过打开配置文件中 [`prepared-plan-cache` 项](/tidb-configuration-file.md#prepared-plan-cache)启用这项功能。
+自 v6.1.0 起，执行计划缓存功能默认打开，可以通过变量 [`tidb_enable_prepared_plan_cache`](/system-variables.md#tidb_enable_prepared_plan_cache-从-v610-版本开始引入) 启用或关闭这项功能。
 
 > **注意：**
 >
@@ -131,6 +131,23 @@ MySQL [test]> select @@last_plan_from_cache;
 +------------------------+
 1 row in set (0.00 sec)
 ```
+
+## Prepared Plan Cache 的内存管理
+
+使用 Prepared Plan Cache 会有一定的内存开销，在内部测试中，平均每个缓存计划会消耗 100 KiB 内存，且目前 Plan Cache 是 `SESSION` 级别的，因此总内存消耗大致为 `SESSION 个数 * SESSION 平均缓存计划个数 * 100KiB`。
+
+比如目前 TiDB 实例的 `SESSION` 并发数是 50，平均每个 `SESSION` 大致缓存 100 个计划，则总内存开销为 `50 * 100 * 100KiB` 约等于 `512MB`。
+
+目前可以通过变量 `tidb_prepared_plan_cache_size` 来设置每个 `SESSION` 最多缓存的计划数量，针对不同的环境，推荐的设置如下：
+
+- TiDB Server 实例内存阈值 <= 64 GiB 时，`tidb_prepared_plan_cache_size = 50`
+- TiDB Server 实例内存阈值 > 64 GiB 时，`tidb_prepared_plan_cache_size = 100`
+
+当 TiDB Server 的内存余量小于一定阈值时，会触发 Plan Cache 的内存保护机制，此时会对一些缓存的计划进行逐出。
+
+目前该阈值由变量 `tidb_prepared_plan_cache_memory_guard_ratio` 控制，默认为 0.1，即 10%，也就是当剩余内存不足 10%（使用内存超过 90%）时，会触发此机制。
+
+由于内存限制，Plan Cache 可能出现 Cache Miss 的情况，可以通过 Grafana 中的 [`Plan Cache Miss OPS` 监控](/grafana-tidb-dashboard.md)查看。
 
 ## 手动清空计划缓存
 

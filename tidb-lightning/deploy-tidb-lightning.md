@@ -1,128 +1,49 @@
 ---
-title: TiDB Lightning 部署与执行
+title: 部署 TiDB Lightning
 aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 ---
 
-# TiDB Lightning 部署与执行
+# 部署 TiDB Lightning
 
-本文主要介绍 TiDB Lightning 使用 Local-backend 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。
+本文主要介绍 TiDB Lightning 进行数据导入的硬件需求，以及手动部署 TiDB Lightning 的方式。Lightning 不同的导入模式，其硬件要求有所不同，请先阅读：
 
-## 注意事项
+- [Physical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
+- [Logical Import Mode 必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
 
-在使用 TiDB Lightning 前，需注意以下事项：
+## 使用 TiUP 联网部署（推荐）
 
-- 若 `tidb-lightning` 崩溃，集群会留在“导入模式”。若忘记转回“普通模式”，集群会产生大量未压缩的文件，继而消耗 CPU 并导致延迟。此时，需要使用 `tidb-lightning-ctl` 手动将集群转回“普通模式”：
+1. 执行如下命令安装 TiUP 工具：
 
     {{< copyable "shell-regular" >}}
 
-    ```sh
-    bin/tidb-lightning-ctl --switch-mode=normal
+    ```shell
+    curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     ```
 
-## 硬件需求
+   安装完成后，`~/.bashrc` 已将 TiUP 加入到路径中，你需要新开一个终端或重新声明全局变量 `source ~/.bashrc` 来使用 TiUP。(也可能是`~/.profile`，以 TiUP 输出为准。)
 
-`tidb-lightning`为资源密集程序，为了优化效能，建议硬件配置如下：
+2. 安装 TiUP DM 组件：
 
-- 32+ 逻辑核 CPU
-- 20GB+ 内存
-- 足够储存整个数据源的 SSD 硬盘，读取速度越快越好
-- 使用万兆网卡，带宽需要 1GB/s 以上
-- 运行过程默认会占满 CPU，建议单独部署。条件不允许的情况下可以和其他组件（比如 `tikv-server`）部署在同一台机器上，然后通过配置 `region-concurrency` 限制 `tidb-lightning` 使用 CPU 资源。
+    {{< copyable "shell-regular" >}}
 
-> **注意：**
->
-> - `tidb-lightning` 是 CPU 密集型程序，如果和其它程序混合部署，需要通过 `region-concurrency` 限制 `tidb-lightning` 的 CPU 实际占用核数，否则会影响其他程序的正常运行。建议将混合部署机器上 75% 的 CPU 资源分配给 `tidb-lightning`。例如，机器为 32 核，则 `tidb-lightning` 的 `region-concurrency` 可设为 “24”。
+    ```shell
+    tiup install tidb-lightning
+    ```
 
-此外，目标 TiKV 集群必须有足够空间接收新导入的数据。除了[标准硬件配置](/hardware-and-software-requirements.md)以外，目标 TiKV 集群的总存储空间必须大于 **数据源大小 × [副本数量](/faq/manage-cluster-faq.md#每个-region-的-replica-数量可配置吗调整的方法是) × 2**。例如集群默认使用 3 副本，那么总存储空间需为数据源大小的 6 倍以上。
+## 手动部署
 
-## 导出数据
-
-使用 [`dumpling`](/dumpling-overview.md) 从 MySQL 导出数据，如下：
-
-{{< copyable "shell-regular" >}}
-
-```sh
-./dumpling -h 127.0.0.1 -P 3306 -u root -t 16 -F 256MB -B test -f 'test.t[12]' -o /data/my_database/
-```
-
-其中：
-
-- `-B test`：从 `test` 数据库导出。
-- `-f test.t[12]`：只导出 `test.t1` 和 `test.t2` 这两个表。
-- `-t 16`：使用 16 个线程导出数据。
-- `-F 256MB`：将每张表切分成多个文件，每个文件大小约为 256 MB。
-
-如果数据源是 CSV 文件，请参考 [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)获取配置信息。
-
-## 部署 TiDB Lightning
-
-本节介绍 TiDB Lightning 的部署方式：[手动部署](#手动部署-tidb-lightning)。
-
-### 手动部署 TiDB Lightning
-
-#### 第 1 步：部署 TiDB 集群
-
-在开始数据导入之前，需先部署一套要进行导入的 TiDB 集群，建议使用最新版本进行部署。部署方法可参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)。
-
-#### 第 2 步：下载 TiDB Lightning 安装包
+### 下载 TiDB Lightning 安装包
 
 参考[工具下载](/download-ecosystem-tools.md)文档下载 TiDB Lightning 安装包（TiDB Lightning 完全兼容较低版本的 TiDB 集群，建议选择最新稳定版本）。
 
-#### 第 3 步：启动 `tidb-lightning`
+解压 Lightning 压缩包即可获得 `tidb-lightning` 可执行文件。
 
-1. 从安装包上传 `bin/tidb-lightning` 及 `bin/tidb-lightning-ctl`。
+```bash
+tar -zxvf tidb-lightning-${version}-linux-amd64.tar.gz
+chmod +x tidb-lightning
+```
 
-2. 将数据源写入到同样的机器。
-
-3. 配置 `tidb-lightning.toml`。对于没有出现在下述模版中的配置，TiDB Lightning 给出配置错误的提醒并退出。
-
-    `sorted-kv-dir` 设置排序的键值对的临时存放地址，目标路径必须是一个空目录，目录空间须大于待导入数据集的大小。详情参见 [TiDB Lightning 运行时资源要求](/tidb-lightning/tidb-lightning-requirements.md#tidb-lightning-运行时资源要求)。
-
-    ```toml
-    [lightning]
-
-    # 转换数据的并发数，默认为逻辑 CPU 数量，不需要配置。
-    # 混合部署的情况下可以配置为逻辑 CPU 的 75% 大小。
-    # region-concurrency =
-
-    # 日志
-    level = "info"
-    file = "tidb-lightning.log"
-
-    [tikv-importer]
-    # backend 设置为 local 模式
-    backend = "local"
-    # 设置本地临时存储路径
-    sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
-
-    [mydumper]
-    # 源数据目录。
-    data-source-dir = "/data/my_database"
-
-    [tidb]
-    # 目标集群的信息。tidb-server 的监听地址，填一个即可。
-    host = "172.16.31.1"
-    port = 4000
-    user = "root"
-    password = ""
-    # 表架构信息在从 TiDB 的“状态端口”获取。
-    status-port = 10080
-    # pd-server 的地址，填一个即可
-    pd-addr = "172.16.31.4:2379"
-    ```
-
-    上面仅列出了 `tidb-lightning` 的基本配置信息。完整配置信息请参考[`tidb-lightning` 配置说明](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-全局配置)。
-
-4. 运行 `tidb-lightning`。如果直接在命令行中用 `nohup` 启动程序，可能会因为 SIGHUP 信号而退出，建议把 `nohup` 放到脚本里面，如：
-
-    {{< copyable "shell-regular" >}}
-
-    ```sh
-    #!/bin/bash
-    nohup ./tidb-lightning -config tidb-lightning.toml > nohup.out &
-    ```
-
-## 升级 TiDB Lightning
+### 升级 TiDB Lightning
 
 你可以通过替换二进制文件升级 TiDB Lightning，无需其他配置。重启 TiDB Lightning 的具体操作参见 [FAQ](/tidb-lightning/tidb-lightning-faq.md#如何正确重启-tidb-lightning)。
 

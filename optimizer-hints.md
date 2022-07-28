@@ -84,7 +84,7 @@ SELECT /*+ QB_NAME(QB1) */ * FROM (SELECT * FROM t) t1, (SELECT * FROM t) t2;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
 > **注意：**
@@ -98,7 +98,7 @@ SELECT /*+ MERGE_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
 `INL_JOIN()` 中的参数是建立查询计划时内表的候选表，比如 `INL_JOIN(t1)` 只会考虑使用 t1 作为内表构建查询计划。表如果指定了别名，就只能使用表的别名作为 `INL_JOIN()` 的参数；如果没有指定别名，则用表的本名作为其参数。比如在 `SELECT /*+ INL_JOIN(t1) */ * FROM t t1, t t2 WHERE t1.a = t2.b;` 中，`INL_JOIN()` 的参数只能使用 t 的别名 t1 或 t2，不能用 t。
@@ -118,12 +118,62 @@ SELECT /*+ INL_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
+SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1, t2 WHERE t1.id = t2.id;
 ```
 
 > **注意：**
 >
 > `HASH_JOIN` 的别名是 `TIDB_HJ`，在 3.0.x 及之前版本仅支持使用该别名；之后的版本同时支持使用这两种名称，推荐使用 `HASH_JOIN`。
+
+### SEMI_JOIN_REWRITE()
+
+`SEMI_JOIN_REWRITE()` 提示优化器将查询语句中的半连接 (Semi Join) 改写为普通的内连接。目前该 Hint 只作用于 `EXISTS` 子查询。
+
+如果不使用该 Hint 进行改写，Semi Join 在选择 Hash Join 的执行方式时，只能够使用子查询构建哈希表，因此在子查询比外查询结果集大时，执行速度可能会不及预期。Semi Join 在选择 Index Join 的执行方式时，只能够使用外查询作为驱动表，因此在子查询比外查询结果集小时，执行速度可能会不及预期。
+
+在使用了 `SEMI_JOIN_REWRITE()` 进行改写后，优化器便可以扩大选择范围，选择更好的执行方式。
+
+{{< copyable "sql" >}}
+
+```sql
+-- 不使用 SEMI_JOIN_REWRITE() 进行改写
+EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT 1 FROM t1 WHERE t1.a = t.a);
+```
+
+```sql
++-----------------------------+---------+-----------+------------------------+---------------------------------------------------+
+| id                          | estRows | task      | access object          | operator info                                     |
++-----------------------------+---------+-----------+------------------------+---------------------------------------------------+
+| MergeJoin_9                 | 7992.00 | root      |                        | semi join, left key:test.t.a, right key:test.t1.a |
+| ├─IndexReader_25(Build)     | 9990.00 | root      |                        | index:IndexFullScan_24                            |
+| │ └─IndexFullScan_24        | 9990.00 | cop[tikv] | table:t1, index:idx(a) | keep order:true, stats:pseudo                     |
+| └─IndexReader_23(Probe)     | 9990.00 | root      |                        | index:IndexFullScan_22                            |
+|   └─IndexFullScan_22        | 9990.00 | cop[tikv] | table:t, index:idx(a)  | keep order:true, stats:pseudo                     |
++-----------------------------+---------+-----------+------------------------+---------------------------------------------------+
+```
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 SEMI_JOIN_REWRITE() 进行改写
+EXPLAIN SELECT * FROM t WHERE EXISTS (SELECT /*+ SEMI_JOIN_REWRITE() */ 1 FROM t1 WHERE t1.a = t.a);
+```
+
+```sql
++------------------------------+---------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------+
+| id                           | estRows | task      | access object          | operator info                                                                                                 |
++------------------------------+---------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------+
+| IndexJoin_16                 | 1.25    | root      |                        | inner join, inner:IndexReader_15, outer key:test.t1.a, inner key:test.t.a, equal cond:eq(test.t1.a, test.t.a) |
+| ├─StreamAgg_39(Build)        | 1.00    | root      |                        | group by:test.t1.a, funcs:firstrow(test.t1.a)->test.t1.a                                                      |
+| │ └─IndexReader_34           | 1.00    | root      |                        | index:IndexFullScan_33                                                                                        |
+| │   └─IndexFullScan_33       | 1.00    | cop[tikv] | table:t1, index:idx(a) | keep order:true                                                                                               |
+| └─IndexReader_15(Probe)      | 1.25    | root      |                        | index:Selection_14                                                                                            |
+|   └─Selection_14             | 1.25    | cop[tikv] |                        | not(isnull(test.t.a))                                                                                         |
+|     └─IndexRangeScan_13      | 1.25    | cop[tikv] | table:t, index:idx(a)  | range: decided by [eq(test.t.a, test.t1.a)], keep order:false, stats:pseudo                                   |
++------------------------------+---------+-----------+------------------------+---------------------------------------------------------------------------------------------------------------+
+```
+
+在上述例子中可以看到，在使用了 Hint 之后，TiDB 可以选择由表 `t1` 作为驱动表的 IndexJoin 的执行方式。
 
 ### HASH_AGG()
 
@@ -132,7 +182,7 @@ SELECT /*+ HASH_JOIN(t1, t2) */ * FROM t1，t2 WHERE t1.id = t2.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ HASH_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
+SELECT /*+ HASH_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
 ### STREAM_AGG()
@@ -142,7 +192,7 @@ SELECT /*+ HASH_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
 {{< copyable "sql" >}}
 
 ```sql
-SELECT /*+ STREAM_AGG() */ count(*) FROM t1，t2 WHERE t1.a > 10 GROUP BY t1.id;
+SELECT /*+ STREAM_AGG() */ count(*) FROM t1, t2 WHERE t1.a > 10 GROUP BY t1.id;
 ```
 
 ### USE_INDEX(t1_name, idx1_name [, idx2_name ...])
@@ -244,6 +294,75 @@ SELECT /*+ USE_INDEX_MERGE(t1, idx_a, idx_b, idx_c) */ * FROM t1 WHERE t1.a > 10
 
 - 如果查询有除了全表扫以外的单索引扫描方式可以选择，优化器不会选择 index merge；
 
+### LEADING(t1_name [, tl_name ...])
+
+`LEADING(t1_name [, tl_name ...])` 提示优化器在生成多表连接的执行计划时，按照 hint 中表名出现的顺序来确定多表连接的顺序。例如：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ LEADING(t1, t2) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+```
+
+在以上多表连接查询语句中，`LEADING()` 中表出现的顺序决定了优化器将会先对表 `t1` 和 `t2` 进行连接，再将结果和表 `t3` 进行连接。该 hint 比 [`STRAIGHT_JOIN`](#straight_join) 更为通用。
+
+`LEADING` hint 在以下情况下会失效：
+
++ 指定了多个 `LEADING` hint
++ `LEADING` hint 中指定的表名不存在
++ `LEADING` hint 中指定了重复的表名
++ 优化器无法按照 `LEADING` hint 指定的顺序进行表连接
++ 已经存在 `straight_join()` hint
++ 查询语句中包含 outer join 且同时指定了包含笛卡尔积的情况
++ 和选择 join 算法的 hint（即 `MERGE_JOIN`、`INL_JOIN`、`INL_HASH_JOIN`、`HASH_JOIN`、`ORDERED_HASH_JOIN`）同时使用时
+
+当出现了上述失效的情况，会输出 warning 警告。
+
+```sql
+-- 指定了多个 LEADING hint
+
+SELECT /*+ LEADING(t1, t2) LEADING(t3) */ * FROM t1, t2, t3 WHERE t1.id = t2.id and t2.id = t3.id;
+
+-- 通过执行 `show warnings` 了解具体产生冲突的原因
+
+SHOW WARNINGS;
+```
+
+```sql
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Level   | Code | Message                                                                                                           |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+| Warning | 1815 | We can only use one leading hint at most, when multiple leading hints are used, all leading hints will be invalid |
++---------+------+-------------------------------------------------------------------------------------------------------------------+
+```
+
+> **注意：**
+>
+> 如果查询语句中包含了 outer join，你只能在 hint 中指定可以用于交换连接顺序的表。如果 hint 中存在不能用于交换的表，则该 hint 会失效。例如在 `SELECT * FROM t1 LEFT JOIN (t2 JOIN t3 JOIN t4) ON t1.a = t2.a;` 中，如果想要控制 `t2`、`t3`、`t4` 表的连接顺序，那么在使用 `LEADING` hint 时，hint 中不能出现 `t1` 表。
+
+### MERGE()
+
+在含有[公共表表达式](/develop/dev-guide-use-common-table-expression.md)的查询中使用 `MERGE()` hint，可关闭对当前子查询的物化过程，并将内部查询的内联展开到外部查询。该 hint 适用于非递归的公共表表达式查询，在某些场景下，使用该 hint 会比默认分配一块临时空间的语句执行效率更高。例如将外部查询的条件下推或在嵌套的 CTE 查询中： 
+
+{{< copyable "sql" >}}
+
+```sql
+-- 使用 hint 将外部查询条件的谓词下推
+WITH CTE AS (SELECT /*+ MERGE() */ * FROM tc WHERE tc.a < 60) SELECT * FROM CTE WHERE CTE.a <18;
+
+-- 在嵌套 CTE 查询中使用该 hint 来指定将某个 CTE 内联展开到外部查询
+WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * FROM t2), CTE4 AS (SELECT * FROM t3) SELECT * FROM CTE3, CTE4) SELECT * FROM CTE1, CTE2;
+```
+
+> **注意：**
+>
+> `MERGE()` 只适用于简单的 CTE 查询，在以下情况下无法使用该 hint：
+> 
+> - [递归的 CTE 查询](/develop/dev-guide-use-common-table-expression.md#递归的-cte)
+> - 子查询中有无法进行内联展开的部分，例如聚合算子、窗口函数以及 `DINSTINCT` 等
+> 
+> 当 CTE 引用次数过多时，查询性能可能低于默认的物化方式。
+
 ## 查询范围生效的 Hint
 
 这类 Hint 只能跟在语句中**第一个** `SELECT`、`UPDATE` 或 `DELETE` 关键字的后面，等同于在当前这条查询运行时对指定的系统变量进行修改，其优先级高于现有系统变量的值。
@@ -311,7 +430,7 @@ SELECT /*+ MAX_EXECUTION_TIME(1000) */ * FROM t1 inner join t2 WHERE t1.id = t2.
 SELECT /*+ MEMORY_QUOTA(1024 MB) */ * FROM t;
 ```
 
-除了 Hint 外，系统变量 `tidb_mem_quota_query` 也能限制语句执行的内存使用。
+除了 Hint 外，系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 也能限制语句执行的内存使用。
 
 ### READ_CONSISTENT_REPLICA()
 
@@ -331,7 +450,7 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 
 `IGNORE_PLAN_CACHE()` 提示优化器在处理当前 `prepare` 语句时不使用 plan cache。
 
-该 Hint 用于在 [prepared-plan-cache](/tidb-configuration-file.md#prepared-plan-cache) 开启的场景下临时对某类查询禁用 plan cache。
+该 Hint 用于在 [Prepared Plan Cache](/sql-prepared-plan-cache.md) 开启的场景下临时对某类查询禁用 plan cache。
 
 以下示例强制该 `prepare` 语句不使用 plan cache：
 
@@ -340,6 +459,21 @@ SELECT /*+ READ_CONSISTENT_REPLICA() */ * FROM t;
 ```sql
 prepare stmt FROM 'SELECT  /*+ IGNORE_PLAN_CACHE() */ * FROM t WHERE t.id = ?';
 ```
+
+### STRAIGHT_JOIN()
+
+`STRAIGHT_JOIN()` 提示优化器在生成表连接顺序时按照表名在 `FROM` 子句中出现的顺序进行连接。
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT /*+ STRAIGHT_JOIN() */ * FROM t t1, t t2 WHERE t1.a = t2.a;
+```
+
+> **注意：**
+>
+> - `STRAIGHT_JOIN` 优先级高于 `LEADING`，当这两类 Hint 同时存在时，`LEADING` 不会生效。
+> - 建议使用 `LEADING` Hint，它比 `STRAIGHT_JOIN` Hint 更通用。
 
 ### NTH_PLAN(N)
 

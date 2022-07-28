@@ -10,7 +10,7 @@ aliases: ['/zh/tidb/dev/join-tables']
 
 ## Join 类型
 
-此节将详细叙述 Join 的链接类型。
+此节将详细叙述 Join 的连接类型。
 
 ### 内连接 INNER JOIN
 
@@ -18,8 +18,10 @@ aliases: ['/zh/tidb/dev/join-tables']
 
 例如，想要知道编写过最多书的作家是谁，需要将作家基础信息表 `authors` 与书籍作者表 `book_authors` 进行连接。
 
+![Inner Join](/media/develop/inner-join.png)
+
 <SimpleTab>
-<div label="SQL" href="inner-join-sql">
+<div label="SQL">
 
 在下面的 SQL 语句当中，通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 表当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
 
@@ -55,9 +57,9 @@ LIMIT 10;
 ```
 
 </div>
-<div label="Java" href="inner-join-java">
+<div label="Java">
 
-{{< copyable "" >}}
+在 Java 中内连接的示例如下：
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -91,12 +93,14 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 
 左外连接会返回左表中的所有数据行，以及右表当中能够匹配连接条件的值，如果在右表当中没有找到能够匹配的行，则使用 `NULL` 填充。
 
+![Left Outer Join](/media/develop/left-outer-join.png)
+
 在一些情况下，希望使用多张表来完成数据的查询，但是并不希望因为不满足连接条件而导致数据集变小。
 
 例如，在 Bookshop 应用的首页，希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是期望的结果。
 
 <SimpleTab>
-<div label="SQL" href="left-join-sql">
+<div label="SQL">
 
 在下面的 SQL 语句当中，通过 `LEFT JOIN` 关键字声明左表 `books` 将以左外连接的方式与右表 `ratings` 进行连接，从而确保 `books` 表当中的所有记录都能得到返回。
 
@@ -162,9 +166,9 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 如果改成使用的是内连接 `JOIN` 结果会怎样？这就交给你来尝试了。
 
 </div>
-<div label="Java" href="left-join-java">
+<div label="Java">
 
-{{< copyable "" >}}
+在 Java 中左外连接的示例如下：
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {
@@ -198,9 +202,7 @@ public List<Book> getLatestBooksWithAverageScore() throws SQLException {
 
 右外连接返回右表中的所有记录，以及左表当中能够匹配连接条件的值，没有匹配的值则使用 `NULL` 填充。
 
-### 全外连接 FULL OUTER JOIN
-
-全外连接根据左表与右表的所有记录进行连接，如果在另外一张表当中没有找到能够满足连接条件的值则使用 `NULL` 填充。
+![Right Outer Join](/media/develop/right-outer-join.png)
 
 ### 交叉连接 CROSS JOIN
 

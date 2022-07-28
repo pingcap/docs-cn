@@ -9,18 +9,14 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 
 如果分库分表合并迁移在 1 TiB 以内，请参考[从小数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-small-mysql-shards-to-tidb.md)，支持全量和增量且更为简单。
 
-使用 TiDB Lightning 快速合并导入的原理如下图所示。
-
-![使用 Dumpling 和 TiDB Lightning 合并导入分表数据](/media/lightning/shard-merge-using-lightning.png)
-
-在这个示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
+在本文的示例中，假设有两个数据库 my_db1 和 my_db2 ，使用 Dumpling 分别从 my_db1 中导出 table1 和 table2 两个表，从 my_db2 中导出 table3 和 table4 两个表，然后再用 TiDB Lightning 把导出的 4 个表合并导入到下游 TiDB 中的同一个库 my_db 的同一个表格 table5 中。
 
 本文将以三个步骤演示导入流程：
 
-1. 使用 Dumpling 导出全量数据备份。在本文档示例中，分别从 2 个源数据库中各导出 2 个表：
+1. 使用 Dumpling 导出全量数据备份。在本文档示例中，分别从两个源数据库中各导出两个表：
     - 从 实例 1 MySQL 的 my_db1 导出 table1、table2
     - 从 实例 2 MySQL 的 my_db2 导出 table3、table4
-2. 启动 Lightning 执行导入 TiDB 中的 mydb.table5
+2. 启动 TiDB Lightning 执行导入 TiDB 中的 mydb.table5
 3. 使用 DM 进行增量数据迁移（可选）
 
 ## 前提条件
@@ -28,8 +24,8 @@ summary: 使用 Dumpling 和 TiDB Lightning 合并导入分表数据到 TiDB，�
 - [使用 TiUP 安装 DM 集群](/dm/deploy-a-dm-cluster-using-tiup.md)
 - [使用 TiUP 安装 Dumpling 和 Lightning](/migration-tools.md)
 - [Dumpling 所需上游数据库权限](/dumpling-overview.md#从-tidbmysql-导出数据)
-- [TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md#下游数据库权限要求)
-- [TiDB Lightning 下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md#下游数据库所需空间)
+- [TiDB Lightning 所需下游数据库权限](/tidb-lightning/tidb-lightning-requirements.md)
+- [TiDB Lightning 下游数据库所需空间](/tidb-lightning/tidb-lightning-requirements.md)
 - [DM 所需上下游数据库权限](/dm/dm-worker-intro.md)
 
 ### 分表数据冲突检查
@@ -49,7 +45,7 @@ CREATE TABLE `table1` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-其中`id`列为主键，具有自增属性，多个分表范围重复会引发数据冲突。`sid`列为分片键，可以保证全局满足唯一索引。因此可以移除下游`table5`表`id`列的唯一键属性
+其中 `id` 列为主键，具有自增属性，多个分表范围重复会引发数据冲突。`sid` 列为分片键，可以保证全局满足唯一索引。因此可以移除下游 `table5` 表 `id` 列的唯一键属性：
 
 ```sql
 CREATE TABLE `table5` (
@@ -74,20 +70,20 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db1 -f 'my
 
 以上命令行中用到的参数描述如下。要了解更多 Dumpling 参数，请参考 [Dumpling 使用文档](/dumpling-overview.md)。
 
-| 参数              |  描述 |
-|-                  |-|
-|-u 或 --user       |MySQL 数据库的用户|
-|-p 或 --password   |MySQL 数据库的用户密码|
-|-P 或 --port       |MySQL 数据库的端口|
-|-h 或 --host       |MySQL 数据库的 IP 地址|
-|-t 或 --thread     |导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64。|
-|-o 或 --output     |存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md)|
-|-r 或 --row        |用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用。|
-|-F                 |指定单个文件的最大大小，单位为 MiB。强烈建议使用`-F`参数以避免单表过大导致备份过程中断|
-|-B 或 --database  | 导出指定数据库 |
-|-f 或 --filter | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)。|
+| 参数                   | 描述 |
+| -                      | - |
+| `-u` 或 `--user`       | MySQL 数据库的用户 |
+| `-p` 或 `--password`   | MySQL 数据库的用户密码 |
+| `-P` 或 `--port`       | MySQL 数据库的端口 |
+| `-h` 或 `--host`       | MySQL 数据库的 IP 地址 |
+| `-t` 或 `--thread`     | 导出的线程数。增加线程数会增加 Dumpling 并发度提高导出速度，但也会加大数据库内存消耗，因此不宜设置过大，一般不超过 64|
+| `-o` 或 `--output`     | 存储导出文件的目录，支持本地文件路径或[外部存储 URL 格式](/br/backup-and-restore-storages.md) |
+| `-r` 或 `--row`        | 用于指定单个文件的最大行数，指定该参数后 Dumpling 会开启表内并发加速导出，同时减少内存使用 |
+| `-F`                   | 指定单个文件的最大大小，单位为 MiB。强烈建议使用`-F`参数以避免单表过大导致备份过程中断 |
+| `-B` 或 `--database`   | 导出指定数据库 |
+| `-f` 或 `--filter`     | 导出能匹配模式的表，语法可参考 [table-filter](/table-filter.md)|
 
-然后使用同样的方式从 my_db2 中导出表 table3 和 table4。注意路径在相同`${data-path}`下的不同子目录`my_db2`。
+然后使用同样的方式从 my_db2 中导出表 table3 和 table4。注意路径在相同 `${data-path}` 下的不同子目录 `my_db2`。
 
 {{< copyable "shell-regular" >}}
 
@@ -97,7 +93,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 这样所需的全量备份数据就全部导出到了 `${data-path}` 目录中。将所有源数据表格存储在一个目录中，是为了后续方便用 TiDB Lightning 导入。
 
-第 3 步增量同步的时候所需的起始位点信息，在`${data-path}`目录下,`my_db1`和`my_db2`的`metadata`文件中，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息。
+第 3 步增量同步的时候所需的起始位点信息，在 `${data-path}` 目录下，`my_db1` 和 `my_db2` 的 `metadata` 文件中，这是 Dumpling 自动生成的元信息文件，请记录其中的 binlog 位置信息。
 
 ## 第 2 步：启动 TiDB Lightning 进行导入
 
@@ -107,7 +103,7 @@ tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MB -B my_db2 -f 'my
 
 大量数据导入一般耗时数小时甚至数天，长时间运行的进程会有一定机率发生非正常中断。如果每次重启都从头开始，之前已成功导入的数据就会前功尽弃。为此，TiDB Lightning 提供了断点续传的功能，即使 TiDB Lightning 崩溃，在重启时仍然从断点开始继续工作。
 
-若 TiDB Lightning 因不可恢复的错误而退出，例如数据出错，在重启时不会使用断点，而是直接报错离开。为保证已导入的数据安全，必须先解决掉这些错误才能继续。你可以使用`tidb-lightning-ctl` 命令控制导入出错后的行为。该命令的选项有：
+若 TiDB Lightning 因不可恢复的错误而退出，例如数据出错，在重启时不会使用断点，而是直接报错离开。为保证已导入的数据安全，必须先解决掉这些错误才能继续。你可以使用 `tidb-lightning-ctl` 命令控制导入出错后的行为。该命令的选项有：
 
 * --checkpoint-error-destroy：出现错误后，让失败的表从头开始整个导入过程。
 * --checkpoint-error-ignore：如果导入表曾经出错，该命令会清除出错状态，如同错误没有发生过一样。
@@ -136,7 +132,7 @@ CREATE TABLE `table5` (
 
 启动 tidb-lightning 的步骤如下：
 
-1. 编写配置文件`tidb-lightning.toml`。
+1. 编写配置文件 `tidb-lightning.toml`。
 
     {{< copyable "" >}}
 
@@ -183,9 +179,9 @@ CREATE TABLE `table5` (
 
     ```
 
-2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合`nohup`或`screen`等工具，如：
+2. 运行 `tidb-lightning`。如果直接在命令行中启动程序，可能会因为 `SIGHUP` 信号而退出，建议配合 `nohup` 或 `screen` 等工具，如：
 
-    若从 S3 导入，则需将有权限访问该 Amazon S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
+    若从 Amazon S3 导入，则需将有权限访问该 S3 后端存储的账号的 SecretKey 和 AccessKey 作为环境变量传入 TiDB Lightning 节点。同时还支持从 `~/.aws/credentials` 读取凭证文件。
 
     {{< copyable "shell-regular" >}}
 
@@ -197,11 +193,11 @@ CREATE TABLE `table5` (
 
 3. 导入开始后，可以采用以下任意方式查看进度：
 
-   - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
-   - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
-   - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
+    - 通过 `grep` 日志关键字 `progress` 查看进度，默认 5 分钟更新一次。
+    - 通过监控面板查看进度，请参考 [TiDB Lightning 监控](/tidb-lightning/monitor-tidb-lightning.md)。
+    - 通过 Web 页面查看进度，请参考 [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)。
 
-4. 导入完毕后，TiDB Lightning 会自动退出。查看日志的最后 5 行中会有 `the whole procedure completed`，则表示导入成功。
+4. 导入完毕后，TiDB Lightning 会自动退出。查看 `tidb-lightning.log` 日志末尾是否有 `the whole procedure completed` 信息，如果有，表示导入成功。如果没有，则表示导入遇到了问题，可根据日志中的 error 提示解决遇到的问题。
 
 > **注意：**
 >
@@ -209,13 +205,13 @@ CREATE TABLE `table5` (
 
 如果导入过程中遇到问题，请参见 [TiDB Lightning 常见问题](/tidb-lightning/tidb-lightning-faq.md)。
 
-## 第 3 步： 使用 DM 持续复制增量数据到 TiDB (可选)
+## 第 3 步：使用 DM 持续复制增量数据到 TiDB (可选)
 
 基于 binlog 从指定位置同步数据库到 TiDB，可以使用 DM 来执行增量复制
 
 ### 添加数据源
 
-新建`source1.yaml`文件, 写入以下内容：
+新建 `source1.yaml` 文件, 写入以下内容：
 
 {{< copyable "" >}}
 
@@ -235,7 +231,7 @@ from:
 
 ```
 
-在终端中执行下面的命令，使用`tiup dmctl`将数据源配置加载到 DM 集群中:
+在终端中执行下面的命令，使用 `tiup dmctl` 将数据源配置加载到 DM 集群中:
 
 {{< copyable "shell-regular" >}}
 
@@ -245,16 +241,16 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 
 该命令中的参数描述如下：
 
-|参数           |描述|
-|-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}|
-|operate-source create  |  向 DM 集群加载数据源  |
+| 参数                     | 描述 |
+| -                        | - |
+| `--master-addr`          | dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`|
+| `operate-source create`  |  向 DM 集群加载数据源  |
 
 重复以上步骤直至所有 MySQL 实例被加入 DM。
 
 ### 添加同步任务
 
-编辑`task.yaml`，配置增量同步模式，以及每个数据源的同步起点：
+编辑 `task.yaml`，配置增量同步模式，以及每个数据源的同步起点：
 
 {{< copyable "" >}}
 
@@ -320,9 +316,9 @@ mysql-instances:
 
 ```
 
-关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
+关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
-在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
+在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
 {{< copyable "shell-regular" >}}
 
@@ -340,16 +336,16 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 该命令中的参数描述如下：
 
-|参数|描述|
-|-|-|
-| --master-addr | dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261 |
-|start-task|命令用于创建数据迁移任务|
+| 参数 | 描述 |
+| - | - |
+| `--master-addr` | dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261 |
+| `start-task`| 命令用于创建数据迁移任务 |
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)。
 
 ### 查看任务状态
 
-如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用`tiup dmctl`执行`query-status`命令进行查询：
+如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
 {{< copyable "shell-regular" >}}
 
@@ -357,7 +353,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)
+关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
 ### 监控任务与查看日志
 
@@ -369,10 +365,10 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过日志查看
 
-    DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息，其中包含迁移任务的相关信息。各组件的日志目录如下：
+    DM 在运行过程中，DM-worker、DM-master 及 dmctl 都会通过日志输出相关信息，其中包含迁移任务的相关信息。各组件的日志目录如下：
 
-    - DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
-    - DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
+    - DM-master 日志目录：通过 DM-master 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
+    - DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多
 

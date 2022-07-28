@@ -92,7 +92,7 @@ TiDB 版本：4.0.10
 
     + Dumpling
 
-        - 修改默认设置的 `tidb_mem_quota_query` 的行为以避免 TiDB 内存溢出 [#233](https://github.com/pingcap/dumpling/pull/233)
+        - 修改默认设置的 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的行为以避免 TiDB 内存溢出 [#233](https://github.com/pingcap/dumpling/pull/233)
 
     + Backup & Restore (BR)
 

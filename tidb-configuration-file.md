@@ -13,7 +13,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 为每个 table 建立单独的 Region。
 + 默认值：true
-+ 如果需要创建大量的表，建议将此参数设置为 false。
++ 如果需要创建大量的表（例如 10 万张以上），建议将此参数设置为 false。
 
 ### `token-limit`
 
@@ -24,22 +24,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 最大值（64 位平台）：`18446744073709551615`
 + 最大值（32 位平台）：`4294967295`
 
-### `mem-quota-query`
-
-+ 单条 SQL 语句可以占用的最大内存阈值，单位为字节。
-+ 默认值：1073741824
-+ 注意：当集群从 v2.0.x 或 v3.0.x 版本直接升级至 v4.0.9 及以上版本时，该配置默认值为 34359738368。
-+ 超过该值的请求会被 `oom-action` 定义的行为所处理。
-+ 该值作为系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 的初始值。
-
 ### `oom-use-tmp-storage`
 
-+ 设置是否在单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时为某些算子启用临时磁盘。
++ 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
 + 默认值：true
 
 ### `tmp-storage-path`
 
-+ 单条 SQL 语句的内存使用超出 `mem-quota-query` 限制时，某些算子的临时磁盘存储位置。
++ 单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时，某些算子的临时磁盘存储位置。
 + 默认值：`<操作系统临时文件夹>/<操作系统用户ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`。其中 `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` 是对 `<host>:<port>/<statusHost>:<statusPort>` 进行 `Base64` 编码的输出结果。
 + 此配置仅在 `oom-use-tmp-storage` 为 true 时有效。
 
@@ -51,22 +43,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 当 `tmp-storage-quota` 小于 0 时则没有上述检查与限制。
 + 默认值：-1
 + 当 `tmp-storage-path` 的剩余可用容量低于 `tmp-storage-quota` 所定义的值时，TiDB server 启动时将会报出错误并退出。
-
-### `oom-action`
-
-+ 当 TiDB 中单条 SQL 的内存使用超出 `mem-quota-query` 限制且不能再利用临时磁盘时的行为。
-+ 默认值："cancel"
-+ 目前合法的选项为 ["log", "cancel"]。设置为 "log" 时，仅输出日志。设置为 "cancel" 时，取消执行该 SQL 操作，并输出日志。
-
-### `lower-case-table-names`
-
-+ 这个选项可以设置 TiDB 的系统变量 `lower_case_table_names` 的值。
-+ 默认值：2
-+ 具体可以查看 MySQL 关于这个变量的[描述](https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_lower_case_table_names)
-
-> **注意：**
->
-> 目前 TiDB 只支持将该选项的值设为 2，即按照大小写来保存表名，按照小写来比较（不区分大小写）。
 
 ### `lease`
 
@@ -170,11 +146,17 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：true
 + 当该配置项值为 `true` 时，`ENUM` 和 `SET` 单个元素的最大长度为 255 个字符，[与 MySQL 8 兼容](https://dev.mysql.com/doc/refman/8.0/en/string-type-syntax.html)；当该配置项值为 `false` 时，不对单个元素的长度进行限制，与 TiDB v5.0 之前的版本兼容。
 
-#### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
+### `graceful-wait-before-shutdown` <span class="version-mark">从 v5.0 版本开始引入</span>
 
 - 指定关闭服务器时 TiDB 等待的秒数，使得客户端有时间断开连接。
 - 默认值：0
 - 在 TiDB 等待服务器关闭期间，HTTP 状态会显示失败，使得负载均衡器可以重新路由流量。
+
+### `enable-global-kill` <span class="version-mark">从 v6.1.0 版本开始引入</span>
+
++ 用于开启 Global Kill（跨节点终止查询或连接）功能。
++ 默认值：true
++ 当该配置项值为 `true` 时，`KILL` 语句和 `KILL TIDB` 语句均能跨节点终止查询或连接，无需担心错误地终止其他查询或连接。当你使用客户端连接到任何一个 TiDB 节点执行 `KILL` 语句或 `KILL TIDB` 语句时，该语句会被转发给对应的 TiDB 节点。当客户端和 TiDB 中间有代理时，`KILL` 语句或 `KILL TIDB` 语句也会被转发给对应的 TiDB 节点执行。目前暂时不支持在 `enable-global-kill` 为 `true` 时用 MySQL 命令行 <kbd>ctrl</kbd>+<kbd>c</kbd> 终止查询或连接。关于 `KILL` 语句的更多信息，请参考 [KILL [TIDB]](/sql-statements/sql-statement-kill.md)。
 
 ## log
 
@@ -193,12 +175,14 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `enable-timestamp`
 
 + 是否在日志中输出时间戳。
-+ 默认值：true
++ 默认值：null
 + 如果设置为 false，那么日志里面将不会输出时间戳。
 
 > **注意：**
 >
-> 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
+> - 考虑后向兼容性，原来的配置项 `disable-timestamp` 仍然有效，但如果和 `enable-timestamp` 配置的值在语义上冲突（例如在配置中把 `enable-timestamp` 和 `disable-timestamp` 同时设置为 `true`），则 TiDB 会忽略 `disable-timestamp` 的值。
+> - 当前 TiDB 默认使用 `disable-timestamp` 来决定是否在日志中输出时间戳，此时 `enable-timestamp` 的值为 `null`。
+> - 在未来的版本中，`disable-timestamp` 配置项将被彻底移除，请废弃 `disable-timestamp` 的用法，使用语义上更易于理解的 `enable-timestamp`。
 
 ### `enable-slow-log`
 
@@ -229,12 +213,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 输出 `expensive` 操作的行数阈值。
 + 默认值：10000
 + 当查询的行数（包括中间结果，基于统计信息）大于这个值，该操作会被认为是 `expensive` 查询，并输出一个前缀带有 `[EXPENSIVE_QUERY]` 的日志。
-
-### `query-log-max-len`
-
-+ 最长的 SQL 输出长度。
-+ 默认值：4096
-+ 当语句的长度大于 `query-log-max-len`，将会被截断输出。
 
 ## log.file
 
@@ -268,11 +246,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ## security
 
 安全相关配置。
-
-### `require-secure-transport`
-
-- 配置是否要求客户端使用安全传输模式。
-- 默认值：`false`
 
 ### `enable-sem`
 
@@ -382,12 +355,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 单位：毫秒
 + 超过此时间的事务只能执行提交或者回滚，提交不一定能够成功。
 
-### `committer-concurrency`
-
-+ 在单个事务的提交阶段，用于执行提交操作相关请求的 goroutine 数量
-+ 默认值：128
-+ 若提交的事务过大，事务提交时的流控队列等待耗时可能会过长，可以通过调大该配置项来加速提交。
-
 ### `stmt-count-limit`
 
 + TiDB 单个事务允许的最大语句条数限制。
@@ -424,11 +391,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
-### `run-auto-analyze`
-
-+ TiDB 是否做自动的 Analyze。
-+ 默认值：true
-
 ### `feedback-probability`
 
 + TiDB 对查询收集统计信息反馈的概率。
@@ -438,7 +400,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 ### `query-feedback-limit`
 
 + 在内存中缓存的最大 Query Feedback 数量，超过这个数量的 Feedback 会被丢弃。
-+ 默认值：1024
++ 默认值：512
 
 ### `pseudo-estimate-ratio`
 
@@ -465,27 +427,34 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 + 默认值：false
 + 该配置项可以控制系统变量 [`tidb_enforce_mpp`](/system-variables.md#tidb_enforce_mpp-从-v51-版本开始引入) 的初始值。例如，当设置该配置项为 true 时，`tidb_enforce_mpp` 的默认值为 ON。
 
-## prepared-plan-cache
+### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-prepare 语句的 [`plan cache`](/sql-prepared-plan-cache.md) 设置。
+> **警告：**
+>
+> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
 
-### `enabled`
++ TiDB 统计信息同步加载功能可以并发处理的最大列数
++ 默认值：5
++ 目前的合法值范围：`[1, 128]`
 
-+ 开启 prepare 语句的 plan cache。
-+ 默认值：false
+### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
-### `capacity`
+> **警告：**
+>
+> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
 
-+ 缓存语句的数量。
++ 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
 + 默认值：1000
-+ 类型为 uint，小于 0 的值会被转化为大整数。
++ 目前的合法值范围：`[1, 100000]`
 
-### `memory-guard-ratio`
+### `enable-stats-cache-mem-quota` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
-+ 用于防止 prepare plan cache 的内存用量超过 performance.server-memory-quota。当 prepare plan cache 的内存用量超过 server-memory-quota * (1 - prepared-plan-cache.memory-guard-ratio) 时，TiDB 会剔除 LRU 中的元素。
-+ 默认值：0.1
-+ 最小值：0
-+ 最大值：1
+> **警告：**
+>
+> 该变量为实验特性，不推荐在生产环境中使用。
+
++ 用于控制 TiDB 是否开启统计信息缓存的内存上限。
++ 默认值：false
 
 ## opentracing
 
@@ -623,20 +592,6 @@ opentracing.reporter 相关的设置。
 + 单位：MB
 + 类型：Float
 
-## txn-local-latches
-
-事务内存锁相关配置，当本地事务冲突比较多时建议开启。
-
-### `enabled`
-
-+ 开启或关闭事务内存锁
-+ 默认值：false
-
-### `capacity`
-
-+ Hash 对应的 slot 数，会自动向上调整为 2 的指数倍。每个 slot 占 32 Bytes 内存。当写入数据的范围比较广时（如导数据），设置过小会导致变慢，性能下降。
-+ 默认值：2048000
-
 ## binlog
 
 TiDB Binlog 相关配置。
@@ -707,9 +662,34 @@ TiDB 服务状态相关配置。
 
 + 用来控制开启全局悲观事务模式下 (`tidb_txn_mode='pessimistic'`) 时，自动提交的事务使用的事务模式。默认情况下，即使开启全局悲观事务模式，自动提交事务依然使用乐观事务模式来执行。当开启该配置项后（设置为 `true`），在全局悲观事务模式下，自动提交事务将也使用悲观事务模式执行。行为与其他显式提交的悲观事务相同。
 + 对于存在冲突的场景，开启本开关可以将自动提交事务纳入全局等锁管理中，从而避免死锁，改善冲突造成死锁带来的时延尖刺。
-+ 对于不存在冲突的场景，如果有大量自动提交事务且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
++ 对于不存在冲突的场景，如果有大量自动提交事务（例如自动提交事务数量占业务数量的比例超过一半甚至更多，需要根据实际情况分析）且单个事务操作数据量较大的情况下，开启该配置项会造成性能回退。例如，自动提交的 `INSERT INTO SELECT` 语句。
 
 + 默认值：false
+
+## isolation-read
+
+读取隔离相关的配置项。
+
+### `engines`
+
++ 用于控制 TiDB 节点允许从哪种类型的引擎读取数据。
++ 默认值：["tikv", "tiflash", "tidb"]，表示由优化器自动选择存储引擎。
++ 可选值："tikv", "tiflash", "tidb" 的组合，如：["tikv", "tidb"]、["tiflash", "tidb"]。
+
+## proxy-protocol
+
+PROXY 协议相关的配置项。
+
+### `networks`
+
++ 允许使用 [PROXY 协议](https://www.haproxy.org/download/1.8/doc/proxy-protocol.txt)连接 TiDB 的代理服务器地址列表。
++ 默认值：""
++ 通常情况下，通过反向代理使用 TiDB 时，TiDB 会将反向代理服务器的 IP 地址视为客户端 IP 地址。对于支持 PROXY 协议的反向代理（如 HAProxy），开启 PROXY 协议后能让反向代理透传客户端真实的 IP 地址给 TiDB。
++ 配置该参数后，TiDB 将允许配置的源 IP 地址使用 PROXY 协议连接到 TiDB，且拒绝这些源 IP 地址使用非 PROXY 协议连接。若该参数为空，则任何源 IP 地址都不能使用 PROXY 协议连接到 TiDB。地址可以使用 IP 地址格式 (192.168.1.50) 或者 CIDR 格式 (192.168.1.0/24)，并可用 `,` 分隔多个地址，或用 `*` 代表所有 IP 地址。
+
+> **警告：**
+>
+> 需谨慎使用 `*` 符号，因为 `*` 允许来自任何 IP 的客户端自行汇报其 IP 地址，从而可能引入安全风险。另外，`*` 可能导致部分直接连接 TiDB 的内部组件无法使用，例如 TiDB Dashboard。
 
 ## experimental
 
@@ -719,23 +699,3 @@ experimental 部分为 TiDB 实验功能相关的配置。该部分从 v3.1.0 �
 
 + 用于控制是否能创建表达式索引。自 v5.2.0 版本起，如果表达式中的函数是安全的，你可以直接基于该函数创建表达式索引，不需要打开该配置项。如果要创建基于其他函数的表达式索引，可以打开该配置项，但可能存在正确性问题。通过查询 `tidb_allow_function_for_expression_index` 变量可得到能直接用于创建表达式的安全函数。
 + 默认值：false
-
-### `stats-load-concurrency` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
-+ TiDB 统计信息同步加载功能可以并发处理的最大列数
-+ 默认值：5
-+ 目前的合法值范围：`[1, 128]`
-
-### `stats-load-queue-size` <span class="version-mark">从 v5.4.0 版本开始引入</span>
-
-> **警告：**
->
-> 统计信息同步加载功能目前为实验性特性，不建议在生产环境中使用。
-
-+ 用于设置 TiDB 统计信息同步加载功能最多可以缓存多少列的请求
-+ 默认值：1000
-+ 目前的合法值范围：`[1, 100000]`

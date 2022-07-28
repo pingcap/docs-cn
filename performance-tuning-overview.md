@@ -77,7 +77,7 @@ User Response time = Service time + Queuing delay + Coherency delay
 - 用户响应时间的平均值和长尾值、应用系统的吞吐
 - 数据库时间、Query 延迟和 QPS 等数据库性能数据。
 
-    TiDB 针对不同维度的性能数据进行了完善的测量和存储，例如[慢日志](/identify-slow-queries.md)、[Top SQL](/dashboard/top-sql.md)、[持续性能分析功能](/dashboard//continuous-profiling.md)和[流量可视化](/dashboard/dashboard-key-visualizer.md)等。此外，你还可以对存储在 Prometheus 中的时序指标数据进行历史回溯和对比。
+    TiDB 针对不同维度的性能数据进行了完善的测量和存储，例如[慢日志](/identify-slow-queries.md)、[Top SQL](/dashboard/top-sql.md)、[持续性能分析功能](/dashboard/continuous-profiling.md)和[流量可视化](/dashboard/dashboard-key-visualizer.md)等。此外，你还可以对存储在 Prometheus 中的时序指标数据进行历史回溯和对比。
 
 - 资源使用率，包含 CPU、IO 和网络等资源
 - 配置信息，比如应用系统、数据库和操作系统的配置
@@ -86,7 +86,7 @@ User Response time = Service time + Queuing delay + Coherency delay
 
 基于性能基线的数据，定位或者推测用户响应时间的瓶颈。
 
-实现中的应用程序往往没有对用户请求的链路进行完整的测量和记录，因此你无法通过应用程序对用户响应时间进行自上而下有效的分解。
+现实中的应用程序往往没有对用户请求的链路进行完整的测量和记录，因此你无法通过应用程序对用户响应时间进行自上而下有效的分解。
 
 与之相反的是，数据库内部对于 query 延迟和吞吐等性能指标记录非常完善。基于数据库时间，你可以判断用户响应时间的瓶颈是否在数据库中。
 

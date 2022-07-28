@@ -28,7 +28,7 @@ summary: 了解如何使用 BR 命令行进行集群数据备份和恢复。
 
 ### 命令和子命令
 
-BR 由多层命令组成。目前，BR 包含 `backup`、`restore` 和 `version` 三个子命令：
+BR 由多层命令组成。目前，BR 包含 `backup` 和 `restore` 两个子命令：
 
 * `br backup` 用于备份 TiDB 集群
 * `br restore` 用于恢复 TiDB 集群

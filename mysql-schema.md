@@ -26,6 +26,7 @@ aliases: ['/docs-cn/dev/system-tables/system-table-overview/','/docs-cn/dev/refe
 * `stats_buckets` 统计信息的桶
 * `stats_histograms` 统计信息的直方图
 * `stats_meta` 表的元信息，比如总行数和修改数
+* `analyze_jobs` 正在执行的统计信息收集任务以及过去 7 天内的历史任务记录
 
 ## GC Worker 相关系统表
 

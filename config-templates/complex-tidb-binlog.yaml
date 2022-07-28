@@ -149,7 +149,7 @@ drainer_servers:
       - db1
       - db2
       syncer.to.kafka-addrs: "10.0.1.20:9092,10.0.1.21:9092,10.0.1.22:9092"
-      syncer.to.kafka-version: "0.10.0.0"
+      syncer.to.kafka-version: "2.4.0"
       syncer.to.topic-name: "asyouwish"
 
 monitoring_servers:

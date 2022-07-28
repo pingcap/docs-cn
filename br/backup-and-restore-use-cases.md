@@ -39,14 +39,14 @@ aliases: ['/docs-cn/dev/br/backup-and-restore-use-cases/','/docs-cn/dev/referenc
 
 ### 集群版本
 
-* TiDB: v5.4.0
-* TiKV: v5.4.0
-* PD: v5.4.0
-* BR: v5.4.0
+* TiDB: v6.1.0
+* TiKV: v6.1.0
+* PD: v6.1.0
+* BR: v6.1.0
 
 > **注意：**
 >
-> v5.4.0 为编写本文档时的最新版本。推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB 版本**相同**。
+> 推荐使用[最新版本 TiDB/TiKV/PD/BR](/releases/release-notes.md)，同时需要确保 BR 版本和 TiDB 版本**相同**。
 
 ### TiKV 集群硬件信息
 
@@ -72,7 +72,7 @@ BR 可以直接将命令下发到 TiKV 集群来执行备份和恢复，不依�
 运行 [`br backup`](/br/use-br-command-line-tool.md#br-命令行描述) 命令进行备份前，请确保以下条件：
 
 1. TiDB 集群中没有正在运行中的 DDL。
-2. 用于创建备份的存储设备有足够的空间。
+2. 用于创建备份的存储设备有足够的空间（具有备份集群的 1/3 的磁盘空间即可）。
 
 #### 恢复前的准备工作
 

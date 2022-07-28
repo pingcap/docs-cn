@@ -15,18 +15,18 @@ aliases: ['/docs-cn/dev/schedule-replicas-by-topology-labels/','/docs-cn/dev/how
 
 ## 根据集群拓扑配置 labels
 
-### 设置 TiKV 的 `labels` 配置
+### 设置 TiKV 和 TiFlash 的 `labels`
 
-TiKV 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 在启动后，会将自身的标签上报给 PD，因此我们可以使用标签来标识 TiKV 节点的地理位置。
+TiKV 和 TiFlash 支持在命令行参数或者配置文件中以键值对的形式绑定一些属性，我们把这些属性叫做标签 (label)。TiKV 和 TiFlash 在启动后，会将自身的标签上报给 PD，因此可以使用标签来标识 TiKV 和 TiFlash 节点的地理位置。
 
-比如集群的拓扑结构分成三层：机房 (zone) -> 机架 (rack) -> 主机 (host)，就可以使用这 3 个标签来设置 TiKV 的位置。
+比如集群的拓扑结构分成四层：机房 (zone) -> 数据中心 (dc) -> 机架 (rack) -> 主机 (host)，就可以使用这 4 个标签来设置 TiKV 和 TiFlash 的位置。
 
-使用命令行参数的方式：
+使用命令行参数的方式启动一个 TiKV 实例：
 
 {{< copyable "" >}}
 
 ```
-tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
+tikv-server --labels zone=<zone>,dc=<dc>,rack=<rack>,host=<host>
 ```
 
 使用配置文件的方式：
@@ -35,7 +35,24 @@ tikv-server --labels zone=<zone>,rack=<rack>,host=<host>
 
 ```toml
 [server]
-labels = "zone=<zone>,rack=<rack>,host=<host>"
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
+```
+
+TiFlash 支持通过 tiflash-learner.toml （tiflash-proxy 的配置文件）的方式设置 labels：
+
+{{< copyable "" >}}
+
+```toml
+[server]
+[server.labels]
+zone = "<zone>"
+dc = "<dc>"
+rack = "<rack>"
+host = "<host>"
 ```
 
 ### 设置 PD 的 `location-labels` 配置
@@ -48,7 +65,8 @@ PD 上的配置叫做 `location-labels`，是一个字符串数组。该配置�
 
 > **注意：**
 >
-> 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
+> - 必须同时配置 PD 的 `location-labels` 和 TiKV 的 `labels` 参数，否则 PD 不会根据拓扑结构进行调度。
+> - 如果你使用 Placement Rules in SQL，只需要配置 TiKV 的 `labels` 即可。Placement Rules in SQL 目前不兼容 PD `location-labels` 设置，会忽略该设置。不建议 `location-labels` 与 Placement Rules in SQL 混用，否则可能产生非预期的结果。
 
 你可以根据集群状态来选择不同的配置方式：
 
@@ -96,9 +114,9 @@ pd-ctl config set isolation-level zone
 
 ### 使用 TiUP 进行配置（推荐）
 
-如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV 和 PD 配置文件。
+如果使用 TiUP 部署集群，可以在[初始化配置文件](/production-deployment-using-tiup.md#第-3-步初始化集群拓扑文件)中统一进行 location 相关配置。TiUP 会负责在部署时生成对应的 TiKV、PD 和 TiFlash 配置文件。
 
-下面的例子定义了 `zone/host` 两层拓扑结构。集群的 TiKV 分布在三个 zone，每个 zone 内有两台主机，其中 z1 每台主机部署两个 TiKV 实例，z2 和 z3 每台主机部署 1 个实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址。
+下面的例子定义了 `zone` 和 `host` 两层拓扑结构。集群的 TiKV 和 TiFlash 分布在三个 zone，z1、z2 和 z3。每个 zone 内有四台主机，z1 两台主机分别部署两个 TiKV 实例，另外两台分别部署一个 TiFlash 实例，z2 和 z3 其中两台主机分别部署一个 TiKV实例，另外两台分别部署一个 TiFlash 实例。以下例子中 `tikv-n` 代表第 n 个 TiKV 节点的 IP 地址，`tiflash-n` 代表第 n 个 TiFlash 节点的 IP 地址。
 
 ```
 server_configs:
@@ -149,9 +167,48 @@ tikv_servers:
       server.labels:
         zone: z3
         host: h2
+
+tiflash_servers:
+# z1
+  - host: tiflash-1
+    learner_config:
+      server.labels:
+        zone: z1
+        host: h3
+   - host: tiflash-2
+    learner_config:
+      server.labels:
+        zone: z1
+        host: h4
+# z2
+  - host: tiflash-3
+    learner_config:
+      server.labels:
+        zone: z2
+        host: h3
+   - host: tiflash-4
+    learner_config:
+      server.labels:
+        zone: z2
+        host: h4
+# z3
+  - host: tiflash-5
+    learner_config:
+      server.labels:
+        zone: z3
+        host: h3
+  - host: tiflash-6
+    learner_config:
+      server.labels:
+        zone: z3
+        host: h4
 ```
 
 详情参阅 [TiUP 跨数据中心部署拓扑](/geo-distributed-deployment-topology.md)。
+
+> **注意：**
+>
+> 如果你未在配置文件中配置 `replication.location-labels` 项，使用该拓扑配置文件部署集群时可能会报错。建议在部署集群前，确认 `replication.location-labels` 已配置。
 
 ## 基于拓扑 label 的 PD 调度策略
 
@@ -165,7 +222,7 @@ PD 在副本调度时，会按照 label 层级，保证同一份数据的不同�
 
 在 5 副本配置的前提下，如果 z3 出现了整体故障或隔离，并且 z3 在一段时间后仍然不能恢复（由 `max-store-down-time` 控制），PD 会通过调度补齐 5 副本，此时可用的主机只有 4 个了，故而无法保证 host 级别的隔离，于是可能出现多个副本被调度到同一台主机的情况。
 
-但假如 `isolation-level` 设置不为空，值为 `zone`，这样就规定了 Region 副本在物理层面上的最低隔离要求，也就是说 PD 一定会保证同一 Region 的副本分散于不同的 zone 之上。即便遵循此隔离限制会无法满足 `max-replicas` 的多副本要求，PD 也不会进行相应的调度。例如，当前存在 TiKV 集群的三个机房 z1/z2/z3，在三副本的设置下，PD 会将同一 Region 的三个副本分别分散调度至这三个机房。若此时 z1 整个机房发生了停电事故并在一段时间后仍然不能恢复，PD 会认为 z1 上的 Region 副本不再可用。但由于 `isolation-level` 设置为了 `zone`，PD 需要严格保证不同的 Region 副本不会落到同一 zone 上。此时的 z2 和 z3 均已存在副本，则 PD 在 `isolation-level` 的最小强制隔离级别限制下便不会进行任何调度，即使此时仅存在两个副本。
+但假如 `isolation-level` 设置不为空，值为 `zone`，这样就规定了 Region 副本在物理层面上的最低隔离要求，也就是说 PD 一定会保证同一 Region 的副本分散于不同的 zone 之上。即便遵循此隔离限制会无法满足 `max-replicas` 的多副本要求，PD 也不会进行相应的调度。例如，当前存在 TiKV 集群的三个机房 z1/z2/z3，在三副本的设置下，PD 会将同一 Region 的三个副本分别分散调度至这三个机房。若此时 z1 整个机房发生了停电事故并在一段时间后（由 [`max-store-down-time`](/pd-configuration-file.md#max-store-down-time) 控制，默认为 30 分钟）仍然不能恢复，PD 会认为 z1 上的 Region 副本不再可用。但由于 `isolation-level` 设置为了 `zone`，PD 需要严格保证不同的 Region 副本不会落到同一 zone 上。此时的 z2 和 z3 均已存在副本，则 PD 在 `isolation-level` 的最小强制隔离级别限制下便不会进行任何调度，即使此时仅存在两个副本。
 
 类似地，`isolation-level` 为 `rack` 时，最小隔离级别便为同一机房的不同 rack。在此设置下，如果能在 zone 级别保证隔离，会首先保证 zone 级别的隔离。只有在 zone 级别隔离无法完成时，才会考虑避免出现在同一 zone 同一 rack 的调度，并以此类推。
 

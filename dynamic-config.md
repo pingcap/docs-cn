@@ -6,10 +6,6 @@ aliases: ['/docs-cn/dev/dynamic-config/']
 
 # 在线修改集群配置
 
-> **警告：**
->
-> 该功能目前是实验性阶段，不建议在生产环境中使用。
-
 在线配置变更主要是通过利用 SQL 对包括 TiDB、TiKV 以及 PD 在内的各组件的配置进行在线更新。用户可以通过在线配置变更对各组件进行性能调优而无需重启集群组件。但目前在线修改 TiDB 实例配置的方式和修改其他组件 (TiKV, PD) 的有所不同。
 
 ## 常用操作
@@ -129,6 +125,7 @@ show warnings;
 | raftstore.raft-log-gc-count-limit | 允许残余的 Raft 日志个数，硬限制 |
 | raftstore.raft-log-gc-size-limit | 允许残余的 Raft 日志大小，硬限制 |
 | raftstore.raft-max-size-per-msg | 允许生成的单个消息包的大小，软限制 |
+| raftstore.raft-entry-max-size | 单个 Raft 日志最大大小，硬限制 |
 | raftstore.raft-entry-cache-life-time | 内存中日志 cache 允许的最长残留时间 |
 | raftstore.split-region-check-tick-interval | 检查 Region 是否需要分裂的时间间隔 |
 | raftstore.region-split-check-diff | 允许 Region 数据超过指定大小的最大值 |
@@ -147,7 +144,7 @@ show warnings;
 | raftstore.max-leader-missing-duration | 允许副本处于无主状态的最长时间，超过将会向 PD 校验自己是否已经被删除 |
 | raftstore.abnormal-leader-missing-duration | 允许副本处于无主状态的时间，超过将视为异常，标记在 metrics 和日志中 |
 | raftstore.peer-stale-state-check-interval | 触发检验副本是否处于无主状态的时间间隔 |
-| raftstore.consistency-check-interval | 触发一致性检查的时间间隔 |
+| raftstore.consistency-check-interval | 触发一致性检查的时间间隔（不建议使用该配置项，因为与 TiDB GC 操作不兼容）|
 | raftstore.raft-store-max-leader-lease | Region 主可信任期的最长时间 |
 | raftstore.merge-check-tick-interval | 触发 Merge 完成检查的时间间隔 |
 | raftstore.cleanup-import-sst-interval | 触发检查过期 SST 文件的时间间隔 |
@@ -168,6 +165,14 @@ show warnings;
 | pessimistic-txn.wake-up-delay-duration | 悲观事务被重新唤醒的时间 |
 | pessimistic-txn.pipelined | 是否开启流水线式加悲观锁流程 |
 | pessimistic-txn.in-memory | 是否开启内存悲观锁功能 |
+| quota.foreground-cpu-time | 限制处理 TiKV 前台读写请求所使用的 CPU 资源使用量，软限制 |
+| quota.foreground-write-bandwidth | 限制前台事务写入的带宽，软限制 |
+| quota.foreground-read-bandwidth | 限制前台事务读取数据和 Coprocessor 读取数据的带宽，软限制 |
+| quota.background-cpu-time | 限制处理 TiKV 后台读写请求所使用的 CPU 资源使用量，软限制 |
+| quota.background-write-bandwidth | 限制后台事务写入的带宽，软限制，暂未生效 |
+| quota.background-read-bandwidth | 限制后台事务读取数据和 Coprocessor 读取数据的带宽，软限制，暂未生效 |
+| quota.enable-auto-tune | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota |
+| quota.max-delay-duration | 单次读写请求被强制等待的最大时间 |
 | gc.ratio-threshold | 跳过 Region GC 的阈值（GC 版本个数/key 个数）|
 | gc.batch-keys | 一轮处理 key 的个数 |
 | gc.max-write-bytes-per-sec | 一秒可写入 RocksDB 的最大字节数 |
@@ -195,11 +200,16 @@ show warnings;
 | {db-name}.{cf-name}.soft-pending-compaction-bytes-limit | pending compaction bytes 的软限制 |
 | {db-name}.{cf-name}.hard-pending-compaction-bytes-limit | pending compaction bytes 的硬限制 |
 | {db-name}.{cf-name}.titan.blob-run-mode | 处理 blob 文件的模式 |
+| server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
+| server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
+| server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
+| server.simplify-metrics | 精简监控采样数据的开关 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
-| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则切分该 Region |
-| split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则切分该 Region |
+| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
+| split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则尝试切分该 Region |
+| split.region-cpu-overload-threshold-ratio | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的 Unified Read Pool CPU 使用时间占比超过了 region-cpu-overload-threshold-ratio，则尝试切分该 Region（自 v6.2.0 起支持）|
 | split.split-balance-score | load-base-split 的控制参数，确保 Region 切分后左右访问尽量均匀，数值越小越均匀，但也可能导致无法切分 |
 | split.split-contained-score | load-base-split 的控制参数，数值越小，Region 切分后跨 Region 的访问越少 |
 | cdc.min-ts-interval | 定期推进 Resolved TS 的时间间隔 |
@@ -238,7 +248,7 @@ Query OK, 0 rows affected (0.01 sec)
 | --- | --- |
 | log.level| 日志级别 |
 | cluster-version | 集群的版本 |
-| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MB） |
+| schedule.max-merge-region-size |  控制 Region Merge 的 size 上限（单位是 MiB） |
 | schedule.max-merge-region-keys | 控制 Region Merge 的 key 数量上限 |
 | schedule.patrol-region-interval | 控制 replicaChecker 检查 Region 健康状态的运行频率 |
 | schedule.split-merge-interval | 控制对同一个 Region 做 split 和 merge 操作的间隔 |
@@ -277,7 +287,7 @@ Query OK, 0 rows affected (0.01 sec)
 
 ### 在线修改 TiDB 配置
 
-在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，用户通过[系统变量](/system-variables.md)来完成修改。
+在线修改 TiDB 配置的方式和 TiKV/PD 有所不同，你可以通过修改[系统变量](/system-variables.md)来实现。
 
 下面例子展示了如何通过变量 `tidb_slow_log_threshold` 在线修改配置项 `slow-threshold`。
 
@@ -312,7 +322,37 @@ select @@tidb_slow_log_threshold;
 
 | 配置项 | 对应变量 | 简介 |
 | --- | --- | --- |
-| mem-quota-query | tidb_mem_quota_query | 查询语句的内存使用限制 |
 | log.enable-slow-log | tidb_enable_slow_log | 慢日志的开关 |
 | log.slow-threshold | tidb_slow_log_threshold | 慢日志阈值 |
 | log.expensive-threshold | tidb_expensive_query_time_threshold | expensive 查询阈值 |
+
+### 在线修改 TiFlash 配置
+
+目前，你可以通过修改系统变量 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 来在线修改 TiFlash 配置项 `max_threads`。`tidb_max_tiflash_threads` 表示 TiFlash 中 request 执行的最大并发度。
+
+`tidb_max_tiflash_threads` 默认值是 `-1`，表示此系统变量无效，由 TiFlash 的配置文件决定 max_threads。你可以通过设置系统变量 `tidb_max_tiflash_threads` 将其修改为 10：
+
+{{< copyable "sql" >}}
+
+```sql
+set tidb_max_tiflash_threads = 10;
+```
+
+```sql
+Query OK, 0 rows affected (0.00 sec)
+```
+
+{{< copyable "sql" >}}
+
+```sql
+select @@tidb_max_tiflash_threads;
+```
+
+```sql
++----------------------------+
+| @@tidb_max_tiflash_threads |
++----------------------------+
+| 10                         |
++----------------------------+
+1 row in set (0.00 sec)
+```

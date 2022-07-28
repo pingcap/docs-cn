@@ -1,6 +1,6 @@
 ---
 title: TiDB 简介
-aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
+aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/','/docs-cn/overview','/docs-cn/stable/overview/','/docs-cn/stable/key-features/']
 ---
 
 # TiDB 简介
@@ -9,7 +9,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 
 关于 TiDB 的关键技术创新，请观看以下视频。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+01.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+1.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson01_intro.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+1.png"></video>
 
 ## 五大核心特性
 
@@ -45,7 +45,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 
 - Real-time HTAP 场景
 
-    随着 5G、物联网、人工智能的高速发展，企业所生产的数据会越来越多，其规模可能达到数百 TB 甚至 PB 级别，传统的解决方案是通过 OLTP 型数据库处理在线联机交易业务，通过 ETL 工具将数据同步到 OLAP 型数据库进行数据分析，这种处理方案存在存储成本高、实时性差等多方面的问题。TiDB 在 4.0 版本中引入列存储引擎 TiFlash 结合行存储引擎 TiKV 构建真正的 HTAP 数据库，在增加少量存储成本的情况下，可以同一个系统中做联机交易处理、实时数据分析，极大地节省企业的成本。
+    随着 5G、物联网、人工智能的高速发展，企业所生产的数据会越来越多，其规模可能达到数百 TB 甚至 PB 级别，传统的解决方案是通过 OLTP 型数据库处理在线联机交易业务，通过 ETL 工具将数据同步到 OLAP 型数据库进行数据分析，这种处理方案存在存储成本高、实时性差等多方面的问题。TiDB 在 4.0 版本中引入列存储引擎 TiFlash 结合行存储引擎 TiKV 构建真正的 HTAP 数据库，在增加少量存储成本的情况下，可以在同一个系统中做联机交易处理、实时数据分析，极大地节省企业的成本。
 
 - 数据汇聚、二次加工处理的场景
 
@@ -53,7 +53,7 @@ aliases: ['/docs-cn/dev/overview/','/docs-cn/dev/key-features/']
 
 关于 TiDB 典型应用场景和用户案例的介绍，请观看以下视频。
 
-<video src="https://tidb-docs.s3.us-east-2.amazonaws.com/compressed+-+Lesson+06.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+6.png"></video>
+<video src="https://download.pingcap.com/docs-cn%2FLesson06_scenarios.mp4" width="600px" height="450px" controls="controls" poster="https://tidb-docs.s3.us-east-2.amazonaws.com/thumbnail+-+lesson+6.png"></video>
 
 ## 另请参阅
 

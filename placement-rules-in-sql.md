@@ -15,7 +15,7 @@ Placement Rules in SQL 特性用于通过 SQL 接口配置数据在 TiKV 集群�
 
 - 合并多个不同业务的数据库，大幅减少数据库常规运维管理的成本
 - 增加重要数据的副本数，提高业务可用性和数据可靠性
-- 将最新数据存入 SSD，历史数据存入 HDD，降低归档数据存储成本
+- 将最新数据存入 NVMe，历史数据存入 SSD，降低归档数据存储成本
 - 把热点数据的 leader 放到高性能的 TiKV 实例上
 - 将冷数据分离到不同的存储中以提高可用性
 - 支持物理隔离不同用户之间的计算资源，满足实例内部不同用户的隔离需求，以及不同混合负载 CPU、I/O、内存等资源隔离的需求
@@ -102,19 +102,21 @@ SELECT * FROM information_schema.partitions WHERE tidb_placement_policy_name IS 
 
 > **注意：**
 >
-> 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
+> - 放置选项依赖于正确地指定在每个 TiKV 节点配置中的标签 (label)。例如，`PRIMARY_REGION` 选项依赖 TiKV 中的 `region` 标签。若要查看当前 TiKV 集群中所有可用的标签，可执行 [`SHOW PLACEMENT LABELS`](/sql-statements/sql-statement-show-placement-labels.md) 语句。
 >
-> ```sql
-> mysql> show placement labels;
-> +--------+----------------+
-> | Key    | Values         |
-> +--------+----------------+
-> | disk   | ["ssd"]        |
-> | region | ["us-east-1"]  |
-> | zone   | ["us-east-1a"] |
-> +--------+----------------+
-> 3 rows in set (0.00 sec)
-> ```
+>     ```sql
+>     mysql> show placement labels;
+>     +--------+----------------+
+>     | Key    | Values         |
+>     +--------+----------------+
+>     | disk   | ["ssd"]        |
+>     | region | ["us-east-1"]  |
+>     | zone   | ["us-east-1a"] |
+>     +--------+----------------+
+>     3 rows in set (0.00 sec)
+>     ```
+>
+> - 使用 `CREATE PLACEMENT POLICY` 创建放置规则时，TiDB 不会检查标签是否存在，而是在绑定表的时候进行检查。
 
 | 选项名                | 描述                                                                                    |
 |----------------------------|------------------------------------------------------------------------------------------------|
@@ -158,10 +160,6 @@ CREATE TABLE t1 (a INT) PLACEMENT POLICY=eastandwest;
 如要保证在主区域内 (`us-east-1`) 放置足够多的 follower 副本，你可以使用 `MAJORITY_IN_PRIMARY` 调度规则来使该区域的 follower 达到指定数量。该调度牺牲一些可用性来换取更低的事务延迟。如果主区域宕机，`MAJORITY_IN_PRIMARY` 无法提供自动故障转移。
 
 ### 为分区表指定放置规则
-
-> **注意：**
->
-> 以下示例使用的 List 分区目前为 TiDB 实验特性。在表的分区功能中，要求主键里包含所有分区函数中使用的列。
 
 除了给表绑定放置策略之外，你还可以给表分区绑定放置策略。示例如下：
 
@@ -224,30 +222,30 @@ ALTER PLACEMENT POLICY p3 FOLLOWERS=3; -- 绑定策略 p3 的表，也就是 t4�
 以下示例设置了一个约束，要求数据必须位于某个 TiKV 节点，且该节点的 `disk` 标签必须匹配特定的值：
 
 ```sql
-CREATE PLACEMENT POLICY storeonfastssd CONSTRAINTS="[+disk=ssd]";
-CREATE PLACEMENT POLICY storeonhdd CONSTRAINTS="[+disk=hdd]";
+CREATE PLACEMENT POLICY storageonnvme CONSTRAINTS="[+disk=nvme]";
+CREATE PLACEMENT POLICY storageonssd CONSTRAINTS="[+disk=ssd]";
 CREATE PLACEMENT POLICY companystandardpolicy CONSTRAINTS="";
 
 CREATE TABLE t1 (id INT, name VARCHAR(50), purchased DATE)
 PLACEMENT POLICY=companystandardpolicy
 PARTITION BY RANGE( YEAR(purchased) ) (
-  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storeonhdd,
+  PARTITION p0 VALUES LESS THAN (2000) PLACEMENT POLICY=storageonssd,
   PARTITION p1 VALUES LESS THAN (2005),
   PARTITION p2 VALUES LESS THAN (2010),
   PARTITION p3 VALUES LESS THAN (2015),
-  PARTITION p4 VALUES LESS THAN MAXVALUE PLACEMENT POLICY=storeonfastssd
+  PARTITION p4 VALUES LESS THAN MAXVALUE PLACEMENT POLICY=storageonnvme
 );
 ```
 
-该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=hdd: 2}`) 指定。
+该约束可通过列表格式 (`[+disk=ssd]`) 或字典格式 (`{+disk=ssd: 1,+disk=nvme: 2}`) 指定。
 
-在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=ssd` 表示 `disk` 标签必须设为 `ssd`，`-disk=hdd` 表示 `disk` 标签值不能为 `hdd`。
+在列表格式中，约束以键值对列表格式。键以 `+` 或 `-` 开头。`+disk=nvme` 表示 `disk` 标签必须设为 `nvme`，`-disk=nvme` 表示 `disk` 标签值不能为 `nvme`。
 
-在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=hdd": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `hdd` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
+在字典格式中，约束还指定了适用于该规则的多个实例。例如，`FOLLOWER_CONSTRAINTS="{+region=us-east-1: 1,+region=us-east-2: 1,+region=us-west-1: 1}";` 表示 1 个 follower 位于 `us-east-1`，1 个 follower 位于 `us-east-2`，1 个 follower 位于 `us-west-1`。再例如，`FOLLOWER_CONSTRAINTS='{"+region=us-east-1,+disk=nvme": 1,"+region=us-west-1": 1}';` 表示 1 个 follower 位于 `us-east-1` 区域中有 `nvme` 硬盘的机器上，1 个 follower 位于 `us-west-1`。
 
 > **注意：**
 >
-> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=hdd:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=hdd:1": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=hdd: 1}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=hdd": 1}'。
+> 字典和列表格式都基于YAML解析，但 YAML 语法有些时候不能被正常解析。例如 YAML 会把 "{+disk=ssd:1,+disk=nvme:2}" 错误地解析成 '{"+disk=ssd:1": null, "+disk=nvme:2": null}'，不符合预期。但 "{+disk=ssd: 1,+disk=nvme: 2}" 能被正确解析成 '{"+disk=ssd": 1, "+disk=nvme": 2}'。
 
 ## 工具兼容性
 

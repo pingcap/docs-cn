@@ -41,7 +41,7 @@ TiDB 版本：5.3.0
 
 |  配置文件    |  配置项    |  修改类型    |  描述    |
 | :---------- | :----------- | :----------- | :----------- |
-| TiDB | [`prepared-plan-cache.capacity`](/tidb-configuration-file.md#capacity)  | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
+| TiDB | `prepared-plan-cache.capacity` | 修改 | 此配置项用于控制缓存语句的数量。默认值从 `100` 修改为 `1000`。 |
 | TiKV | [`storage.reserve-space`](/tikv-configuration-file.md#reserve-space) | 修改 | 此配置项用于控制 TiKV 启动时用于保护磁盘的预留空间。从 v5.3.0 起，预留空间的 80% 用作磁盘空间不足时运维操作所需要的额外磁盘空间，剩余的 20% 为磁盘临时文件。 |
 | TiKV | `memory-usage-limit` | 修改  | 以前的版本没有 `memory-usage-limit` 参数， 升级后该参数值根据 `storage.block-cache.capacity` 来计算。 |
 | TiKV | [`raftstore.store-io-pool-size`](/tikv-configuration-file.md#store-io-pool-size-从-v530-版本开始引入) | 新增 |  表示处理 Raft I/O 任务的线程池中线程的数量，即 StoreWriter 线程池的大小。|
@@ -61,7 +61,7 @@ TiDB 版本：5.3.0
 
     - 对于本地临时表，如果在 v5.3.0 升级前创建了本地临时表，这些临时表实际为普通表，在升级至 v5.3.0 或更高版本后，也会被 TiDB 当成普通表处理。对于全局临时表，如果在 v5.3.0 上创建了全局临时表，当 TiDB 降级至 v5.3.0 以前版本后，这些临时表会被当作普通表处理，导致数据错误。
     - TiCDC 和 BR 从 v5.3.0 开始支持[全局临时表](/temporary-tables.md#全局临时表)。如果使用 v5.3.0 以下版本同步全局临时表到下游，会导致表定义错误。
-    - 通过 TiDB 生态工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
+    - 通过 TiDB 数据迁移工具导入的集群、恢复后的集群、同步的下游集群必须是 TiDB v5.3.0 及以上版本，否则创建全局临时表时报错。
     - 关于临时表的更多兼容性信息，请参考[与 MySQL 临时表的兼容性](/temporary-tables.md#与-mysql-临时表的兼容性)和[与其他 TiDB 功能的兼容性限制](/temporary-tables.md#与其他-tidb-功能的兼容性限制)。
 
 - 对于 v5.3.0 之前的版本，当系统变量设置为非法值时，TiDB 会报错。从 v5.3.0 起，当系统变量设置为非法值时，TiDB 会返回成功，并报类似 `|Warning | 1292 | Truncated incorrect xxx: 'xx'` 的警告。
@@ -113,7 +113,7 @@ TiDB 版本：5.3.0
 
     增加 `ALTER TABLE [PARTITION] ATTRIBUTES` 语句支持，允许用户为表和分区设置属性。目前 TiDB 仅支持设置 `merge_option` 属性。通过为表或分区添加 `merge_option` 属性，用户可以显式控制 Region 是否合并。
 
-    应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
+    应用场景：当用户 `SPLIT TABLE` 之后，如果超过一定时间后（由 PD 参数 [`split-merge-interval`](/pd-configuration-file.md#split-merge-interval) 控制）没有插入数据，空 Region 默认会被自动合并。此时，可以通过该功能设置表属性为 `merge_option=deny`，避免 Region 的自动合并。
 
     [用户文档](/table-attributes.md)，[#3839](https://github.com/tikv/pd/issues/3839)
 

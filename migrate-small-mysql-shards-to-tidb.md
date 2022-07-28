@@ -13,11 +13,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenari
 
 若要迁移分表总和 1 TiB 以上的数据，则 DM 工具耗时较长，可参考[从大数据量分库分表 MySQL 合并迁移数据到 TiDB](/migrate-large-mysql-shards-to-tidb.md)。
 
-本文以一个简单的场景为例，示例中的两个数据源 MySQL 实例的分库和分表数据迁移至下游 TiDB 集群。示意图如下。
-
-![migrate-01](/media/lightning/migrate-shared-mysql-01.png)
-
-数据源 MySQL 实例 1 和 实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表
+在本文档的示例中，数据源 MySQL 实例 1 和 实例 2 均使用以下表结构，计划将 store_01 和 store_02 中 sale 开头的表合并导入下游 store.sale 表。
 
 |Schema|Tables|
 |-|-|
@@ -37,7 +33,7 @@ aliases: ['/zh/tidb/dev/usage-scenario-shard-merge/','/zh/tidb/dev/usage-scenari
 
 ## 分表数据冲突检查
 
-迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)
+迁移中如果涉及合库合表，来自多张分表的数据可能引发主键或唯一索引的数据冲突。因此在迁移之前，需要检查各分表数据的业务特点。详情请参考[跨分表数据在主键或唯一索引冲突处理](/dm/shard-merge-best-practices.md#跨分表数据在主键或唯一索引冲突处理)。
 
 在本示例中：`sale_01` 和 `sale_02` 具有相同的表结构如下：
 
@@ -52,7 +48,7 @@ CREATE TABLE `sale_01` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-其中`id`列为主键，`sid`列为分片键，具有全局唯一性。`id`列具有自增属性，多个分表范围重复会引发数据冲突。`sid`可以保证全局满足唯一索引，因此可以按照参考[去掉自增主键的主键属性](/dm/shard-merge-best-practices.md#去掉自增主键的主键属性)中介绍的操作绕过`id`列。在下游创建`sale`表时移除`id`列的唯一键属性
+其中 `id` 列为主键，`sid` 列为分片键，具有全局唯一性。`id` 列具有自增属性，多个分表范围重复会引发数据冲突。`sid` 可以保证全局满足唯一索引，因此可以按照参考[去掉自增主键的主键属性](/dm/shard-merge-best-practices.md#去掉自增主键的主键属性)中介绍的操作绕过 `id` 列。在下游创建 `sale` 表时移除 `id` 列的唯一键属性：
 
 ```sql
 CREATE TABLE `sale` (
@@ -65,9 +61,9 @@ CREATE TABLE `sale` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1
 ```
 
-## 第 1 步： 创建数据源
+## 第 1 步：创建数据源
 
-新建`source1.yaml`文件, 写入以下内容：
+新建 `source1.yaml` 文件, 写入以下内容：
 
 {{< copyable "shell-regular" >}}
 
@@ -85,7 +81,7 @@ from:
   port: 3306
 ```
 
-在终端中执行下面的命令，使用`tiup dmctl`将数据源配置加载到 DM 集群中:
+在终端中执行下面的命令，使用 `tiup dmctl` 将数据源配置加载到 DM 集群中:
 
 {{< copyable "shell-regular" >}}
 
@@ -94,14 +90,15 @@ tiup dmctl --master-addr ${advertise-addr} operate-source create source1.yaml
 ```
 
 该命令中的参数描述如下：
-|参数           |描述|
-|-              |-|
-|--master-addr  |dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|operate-source create|向 DM 集群加载数据源|
+
+| 参数           | 描述 |
+| -              | - |
+| `--master-addr`| dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261 |
+| `operate-source create` | 向 DM 集群加载数据源 |
 
 重复以上操作直至所有数据源均添加完成。
 
-## 第 2 步： 创建迁移任务
+## 第 2 步：创建迁移任务
 
 新建`task1.yaml`文件, 写入以下内容：
 
@@ -165,18 +162,18 @@ block-allow-list:
 
 ```
 
-以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考[DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)
+以上内容为执行迁移的最小任务配置。关于任务的更多配置项，可以参考 [DM 任务完整配置文件介绍](/dm/task-configuration-file-full.md)。
 
-若想了解配置文件中`routes`，`filters`等更多用法，请参考：
+若想了解配置文件中 `routes`、`filters` 等更多用法，请参考：
 
 - [Table routing](/dm/dm-key-features.md#table-routing)
 - [Block & Allow Table Lists](/dm/dm-key-features.md#block--allow-table-lists)
 - [如何过滤 binlog 事件](/filter-binlog-event.md)
 - [如何通过 SQL 表达式过滤 DML](/filter-dml-event.md)
 
-## 第 3 步： 启动任务
+## 第 3 步：启动任务
 
-在你启动数据迁移任务之前，建议使用`check-task`命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
+在你启动数据迁移任务之前，建议使用 `check-task` 命令检查配置是否符合 DM 的配置要求，以降低后期报错的概率。
 
 {{< copyable "shell-regular" >}}
 
@@ -194,16 +191,16 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 
 该命令中的参数描述如下：
 
-|参数|描述|
-|-|-|
-|--master-addr|dmctl 要连接的集群的任意 DM-master 节点的 {advertise-addr}，例如：172.16.10.71:8261|
-|start-task|命令用于创建数据迁移任务|
+| 参数 | 描述 |
+| - | - |
+| `--master-addr` | dmctl 要连接的集群的任意 DM-master 节点的 `{advertise-addr}`，例如：172.16.10.71:8261 |
+| `start-task` | 命令用于创建数据迁移任务 |
 
-如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)
+如果任务启动失败，可根据返回结果的提示进行配置变更后执行 start-task task.yaml 命令重新启动任务。遇到问题请参考 [故障及处理方法](/dm/dm-error-handling.md) 以及 [常见问题](/dm/dm-faq.md)。
 
-## 第 4 步： 查看任务状态
+## 第 4 步：查看任务状态
 
-如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用`tiup dmctl`执行`query-status`命令进行查询：
+如需了解 DM 集群中是否存在正在运行的迁移任务及任务状态等信息，可使用 `tiup dmctl` 执行 `query-status` 命令进行查询：
 
 {{< copyable "shell-regular" >}}
 
@@ -211,7 +208,7 @@ tiup dmctl --master-addr ${advertise-addr} start-task task.yaml
 tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 ```
 
-关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)
+关于查询结果的详细解读，请参考[查询状态](/dm/dm-query-status.md)。
 
 ## 第 5 步： 监控任务与查看日志(可选)
 
@@ -223,10 +220,10 @@ tiup dmctl --master-addr ${advertise-addr} query-status ${task-name}
 
 - 通过日志查看
 
-    DM 在运行过程中，DM-worker, DM-master 及 dmctl 都会通过日志输出相关信息，其中包含迁移任务的相关信息。各组件的日志目录如下：
+    DM 在运行过程中，DM-worker、DM-master 及 dmctl 都会通过日志输出相关信息，其中包含迁移任务的相关信息。各组件的日志目录如下：
 
-    - DM-master 日志目录：通过 DM-master 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-master-8261/log/`。
-    - DM-worker 日志目录：通过 DM-worker 进程参数`--log-file`设置。如果使用 TiUP 部署 DM，则日志目录默认位于`/dm-deploy/dm-worker-8262/log/`。
+    - DM-master 日志目录：通过 DM-master 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-master-8261/log/`。
+    - DM-worker 日志目录：通过 DM-worker 进程参数 `--log-file` 设置。如果使用 TiUP 部署 DM，则日志目录默认位于 `/dm-deploy/dm-worker-8262/log/`。
 
 ## 探索更多
 

@@ -11,34 +11,14 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-column/','/docs-cn/dev
 ## 语法图
 
 ```ebnf+diagram
-AlterTableStmt ::=
-    'ALTER' IgnoreOptional 'TABLE' TableName ( AlterTableSpecListOpt AlterTablePartitionOpt | 'ANALYZE' 'PARTITION' PartitionNameList ( 'INDEX' IndexNameList )? AnalyzeOptionListOpt )
+AlterTableStmt
+         ::= 'ALTER' 'IGNORE'? 'TABLE' TableName DropColumnSpec ( ',' DropColumnSpec )*
 
-AlterTableSpec ::=
-    TableOptionList
-|   'SET' 'TIFLASH' 'REPLICA' LengthNum LocationLabelList
-|   'CONVERT' 'TO' CharsetKw ( CharsetName | 'DEFAULT' ) OptCollate
-|   'ADD' ( ColumnKeywordOpt IfNotExists ( ColumnDef ColumnPosition | '(' TableElementList ')' ) | Constraint | 'PARTITION' IfNotExists NoWriteToBinLogAliasOpt ( PartitionDefinitionListOpt | 'PARTITIONS' NUM ) )
-|   ( ( 'CHECK' | 'TRUNCATE' ) 'PARTITION' | ( 'OPTIMIZE' | 'REPAIR' | 'REBUILD' ) 'PARTITION' NoWriteToBinLogAliasOpt ) AllOrPartitionNameList
-|   'COALESCE' 'PARTITION' NoWriteToBinLogAliasOpt NUM
-|   'DROP' ( ColumnKeywordOpt IfExists ColumnName RestrictOrCascadeOpt | 'PRIMARY' 'KEY' |  'PARTITION' IfExists PartitionNameList | ( KeyOrIndex IfExists | 'CHECK' ) Identifier | 'FOREIGN' 'KEY' IfExists Symbol )
-|   'EXCHANGE' 'PARTITION' Identifier 'WITH' 'TABLE' TableName WithValidationOpt
-|   ( 'IMPORT' | 'DISCARD' ) ( 'PARTITION' AllOrPartitionNameList )? 'TABLESPACE'
-|   'REORGANIZE' 'PARTITION' NoWriteToBinLogAliasOpt ReorganizePartitionRuleOpt
-|   'ORDER' 'BY' AlterOrderItem ( ',' AlterOrderItem )*
-|   ( 'DISABLE' | 'ENABLE' ) 'KEYS'
-|   ( 'MODIFY' ColumnKeywordOpt IfExists | 'CHANGE' ColumnKeywordOpt IfExists ColumnName ) ColumnDef ColumnPosition
-|   'ALTER' ( ColumnKeywordOpt ColumnName ( 'SET' 'DEFAULT' ( SignedLiteral | '(' Expression ')' ) | 'DROP' 'DEFAULT' ) | 'CHECK' Identifier EnforcedOrNot | 'INDEX' Identifier IndexInvisible )
-|   'RENAME' ( ( 'COLUMN' | KeyOrIndex ) Identifier 'TO' Identifier | ( 'TO' | '='? | 'AS' ) TableName )
-|   LockClause
-|   AlgorithmClause
-|   'FORCE'
-|   ( 'WITH' | 'WITHOUT' ) 'VALIDATION'
-|   'SECONDARY_LOAD'
-|   'SECONDARY_UNLOAD'
+DropColumnSpec
+         ::= 'DROP' 'COLUMN'? 'IF EXISTS'? ColumnName ( 'RESTRICT' | 'CASCADE' )?
 
-ColumnName ::=
-    Identifier ( '.' Identifier ( '.' Identifier )? )?
+ColumnName
+         ::= Identifier ( '.' Identifier ( '.' Identifier )? )?
 ```
 
 ## 示例
@@ -143,7 +123,6 @@ SELECT * FROM t1;
 
 ## MySQL 兼容性
 
-* 目前不支持在一条语句中同时删除多个列。
 * 目前不支持删除主键列或组合索引相关列。
 
 ## 另请参阅

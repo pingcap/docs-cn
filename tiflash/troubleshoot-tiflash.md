@@ -135,12 +135,12 @@ show warnings;
     - 如果有正常返回，进入下一步。
     - 如果无正常返回，请执行 `SELECT * FROM information_schema.tiflash_replica` 检查是否已经创建 TiFlash replica。如果没有，请重新执行 `ALTER table ${tbl_name} set tiflash replica ${num}`，查看是否有其他执行语句（如 `add index` ），或者检查 DDL 操作是否正常。
 
-2. 检查 TiFlash 进程是否正常。
+2. 检查 TiFlash Region 同步是否正常。
 
-    查看 `progress` 和 `tiflash_cluster_manager.log` 日志中的 `flash_region_count` 参数以及 TiFlash Uptime 是否有变化:
+    查看 `progress` 是否有变化:
 
-    - 如果有变化，说明 TiFlash 进程正常，进入下一步。
-    - 如果没有变化，说明 TiFlash 进程异常，请通过 `tiflash` 日志进一步排查。
+    - 如果有变化，说明 TiFlash 同步正常，进入下一步。
+    - 如果没有变化，说明 TiFlash 同步异常，在 `tidb.log` 中，搜索 `Tiflash replica is not available` 相关日志。检查对应表的 `region have` 是否更新。如果无更新，请通过 `tiflash` 日志进一步排查。
 
 3. 使用 pd-ctl 检查 PD 的 [Placement Rules](/configure-placement-rules.md) 功能是否开启：
 
@@ -179,44 +179,23 @@ show warnings;
     }' <http://172.16.x.xxx:2379/pd/api/v1/config/rule>
     ```
 
-5. 检查 TiFlash 与 TiDB 或 PD 的连接是否正常。
+5. 检查 TiDB 是否为表创建 `placement-rule`。
 
-    检查 `flash_cluster_manager.log` 日志，查找关键字 `ERROR`。
-
-    - 如果没有关键字 `ERROR`，说明连接正常，进入下一步。
-    - 如果有关键字 `ERROR`，说明连接异常，请进行以下检查。
-
-      - 检查日志文件中是否出现了 PD 相关关键字。
-
-        如果出现，请检查 TiFlash 配置文件中 `raft.pd_addr` 对应 PD 地址是否有效。检查方法：执行 `curl '{pd-addr}/pd/api/v1/config/rules'`，检查 5 秒内是否有正常返回。
-
-      - 检查日志文件中是否出现了 TiDB 相关关键字。
-
-        如果出现，请检查 TiFlash 配置文件中 `flash.tidb_status_addr` 对应 TiDB 的 status 服务地址是否有效。检查方法：执行 `curl '{tidb-status-addr}/tiflash/replica'`, 检查 5 秒内是否有正常返回。
-
-      - 检查节点间能否相互连通。
-
-    > **注意：**
-    >
-    > 如问题依然无法解决，收集相关组件的日志进行排查。
-
-6. 检查表是否创建 `placement-rule`。
-
-    检查 `flash_cluster_manager.log` 日志，查找是否存在关键字 `Set placement rule … table-<table_id>-r`。
+    搜索 TiDB DDL Owner 的日志，检查 TiDB 是否通知 PD 添加 `placement-rule`。对于非分区表搜索 `ConfigureTiFlashPDForTable`；对于分区表，搜索 `ConfigureTiFlashPDForPartitions`。
 
     - 有关键字，进入下一步。
     - 没有关键字，收集相关组件的日志进行排查。
+
+6. 检查 PD 是否为表设置 `placement-rule`。
+
+    可以通过 `curl http://<pd-ip>:<pd-port>/pd/api/v1/config/rules/group/tiflash` 查询比较当前 PD 上的所有 TiFlash Placement Rule。如果观察到有 id 为 `table-<table_id>-r` 的 Rule ，则表示 PD Rule 设置成功。
 
 7. 检查 PD 是否正常发起调度。
 
     查看 `pd.log` 日志是否出现 `table-<table_id>-r` 关键字，且之后是否出现 `add operator` 之类的调度行为。
 
     - 是，PD 调度正常。
-    - 否，PD 调度异常，请联系 PingCAP 技术支持人员协助排查。
-
-> **注意：**
->
-> 当需要同步的表有很多小 Region 且 Region merge 参数已开启或取值较大时，可能会出现同步进度一段时间不变化或者变小的现象。
+    - 否，PD 调度异常。
 
 ## TiFlash 数据同步卡住
 
@@ -229,21 +208,10 @@ show warnings;
     - 如果磁盘使用率大于等于 `low-space-ratio`，说明磁盘空间不足。此时，请删除不必要的文件，如 `${data}/flash/` 目录下的 `space_placeholder_file` 文件（必要时可在删除文件后将 `reserve-space` 设置为 0MB）。
     - 如果磁盘使用率小于 `low-space-ratio` ，说明磁盘空间正常，进入下一步。
 
-2. 检查 TiKV、PD、TiFlash 之间的网络连接情况。
+2. 检查是否有 `down peer` （`down peer` 没有清理干净可能会导致同步卡住）。
 
-    在 `flash_cluster_manager.log` 中，检查同步卡住的表对应的 `flash_region_count` 是否有更新。
-
-    - 没有更新，检查下一步。
-    - 有更新，检查是否有 `down peer` （`down peer` 没有清理干净可能会导致同步卡住）。
-
-      - 执行 `pd-ctl region check-down-peer` 命令检查是否有 `down peer`。
-      - 如果存在 `down peer`，执行 `pd-ctl operator add remove-peer\<region-id> \<tiflash-store-id>` 命令将其清除。
-
-3. 查看 CPU 使用率。
-
-    在 Grafana 界面，选择 **TiFlash-Proxy-Details** > **Thread CPU** > **Region task worker pre-handle/generate snapshot CPU**，查看监控中 `<instance-ip>:<instance-port>-region-worker` 对应线程的 CPU 使用率。
-
-    若曲线为一条直线，表示 TiFlash 发生卡死，可强制杀进程重启或联系 PingCAP 技术支持人员。
+    - 执行 `pd-ctl region check-down-peer` 命令检查是否有 `down peer`。
+    - 如果存在 `down peer`，执行 `pd-ctl operator add remove-peer <region-id> <tiflash-store-id>` 命令将其清除。
 
 ## 数据同步慢
 
@@ -252,8 +220,6 @@ show warnings;
 1. 调整调度参数取值。
 
     - 调大 [`store limit`](/configure-store-limit.md#使用方法)，加快同步速度。
-    - 调小 [`config set patrol-region-interval 10ms`](/pd-control.md#命令-command)，增加 TiKV 侧 checker 扫描 Region 的频率。
-    - 调大 [`region merge`](/pd-control.md#命令-command) 参数，减少 Region 数量，从而减少扫描数量，提高检查频次。
 
 2. 调整 TiFlash 侧负载。
 

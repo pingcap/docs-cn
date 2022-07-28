@@ -33,14 +33,11 @@ TiDB 与 MySQL 有差异：
 
 支持等级：**Full**
 
-按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/8.0/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。
+按照 [MySQL 文档](https://dev.mysql.com/doc/connector-j/5.1/en/)中的说明下载并配置 Java JDBC 驱动程序即可使用。
 
 > 注意：
 >
-> 强烈建议使用 8.0.16 及以上版本，其修复了两个 CVE ：
->
-> - CVE-2019-2692 直接引入
-> - CVE-2021-22569 间接引入
+> 强烈建议使用 JDBC 5.1 的最后一个版本 5.1.49。因为当前 8.0.29 版本有未合并的 [Bug 修复](https://bugs.mysql.com/bug.php?id=106252)，在与 TiDB 共同使用时可能会导致线程卡死。在 MySQL JDBC 8.0 未合并此修复之前，建议不要升级至 8.0 版本。
 
 有关一个完整的实例应用程序，可参阅使用 [TiDB 和 JDBC 构建一个 Java 应用](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。
 
@@ -52,25 +49,9 @@ TiDB 与 MySQL 有差异：
 
 > **注意：**
 >
-> Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 当前版本也[不支持 Savepoint](https://github.com/pingcap/tidb/issues/6840)。
+> Hibernate 当前[不支持嵌套事务](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres)，TiDB 从 v6.2.0 版本开始支持 [Savepoint](/sql-statements/sql-statement-savepoint.md)。
+>
 > 若你使用 Spring Data JPA 等框架，在 **@Transactional** 中请勿使用 `Propagation.NESTED` 事务传播选项，即：`@Transactional(propagation = Propagation.NESTED)`。
->
-> 你可以使用[这个例子](https://github.com/Icemap/tidb-savepoint)，快速复现 TiDB 与 MySQL 对 Savepoint 的输出结果：
->
-> ```
-> MySQL:
-> id: 1, coins: 1, goods: 1
-> id: 3, coins: 1, goods: 1
->
-> TiDB:
->
-> 2022/04/02 13:59:48 /<path>/go/pkg/mod/gorm.io/driver/mysql@v1.3.2/mysql.go:397 Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 9 near "SAVEPOINT sp0x102cf8960"
-> [1.119ms] [rows:0] SAVEPOINT sp0x102cf8960
->
-> 2022/04/02 13:59:48 /<path>/go/pkg/mod/gorm.io/driver/mysql@v1.3.2/mysql.go:397 Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 9 near "SAVEPOINT sp0x102cf8960"
-> [0.001ms] [rows:0] SAVEPOINT sp0x102cf8a00
-> id: 1, coins: 1, goods: 1
-> ```
 
 你可以使用 [Gradle](https://gradle.org/install) 或 [Maven](https://maven.apache.org/install.html) 获取你的应用程序的所有依赖项，且会帮你下载依赖项的间接依赖，而无需你手动管理复杂的依赖关系。注意，只有 Hibernate `6.0.0.Beta2` 及以上版本才支持 TiDB 方言。
 
@@ -88,7 +69,7 @@ TiDB 与 MySQL 有差异：
 <dependency>
     <groupId>mysql</groupId>
     <artifactId>mysql-connector-java</artifactId>
-    <version>8.0.28</version>
+    <version>5.1.49</version>
 </dependency>
 ```
 
@@ -98,7 +79,7 @@ TiDB 与 MySQL 有差异：
 
 ```gradle
 implementation 'org.hibernate:hibernate-core:6.0.0.CR2'
-implementation 'mysql:mysql-connector-java:8.0.28'
+implementation 'mysql:mysql-connector-java:5.1.49'
 ```
 
 - 有关原生 Java 使用 Hibernate 进行 TiDB 应用程序构建的例子，可参阅 [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 Hibernate](/develop/dev-guide-sample-application-java.md#第-2-步获取代码)。

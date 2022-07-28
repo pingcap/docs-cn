@@ -41,8 +41,9 @@ aliases: ['/docs-cn/dev/grafana-tikv-dashboard/','/docs-cn/dev/reference/key-mon
 - gRPC message error：每个 TiKV 实例上 gRPC 消息发生错误的个数
 - Leader drop：每个 TiKV 实例上 drop leader 的个数
 - Leader missing：每个 TiKV 实例上 missing leader 的个数
+- Log Replication Rejected：每个 TiKV 实例上由于内存不足而拒绝 logappend 消息的个数
 
-![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors.png)
+![TiKV Dashboard - Errors metrics](/media/tikv-dashboard-errors-v610.png)
 
 ## Server
 

@@ -19,7 +19,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8001
 
-    请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整 `mem-quota-query` 来增大单个 SQL 使用的内存上限。
+    请求使用的内存超过 TiDB 内存使用的阈值限制。出现这种错误，可以通过调整系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 来增大单个 SQL 使用的内存上限。
 
 * Error Number: 8002
 
@@ -272,6 +272,10 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 * Error Number: 8141
 
     事务写入时，对 key 的存在性断言报错，请参考[数据索引不一致报错](/troubleshoot-data-inconsistency-errors.md#error-8141)。
+
+* Error Number: 8143
+
+    非事务 DML 语句的一个 batch 报错，语句中止，请参考[非事务 DML 语句](/non-transactional-dml.md)
 
 * Error Number: 8200
 

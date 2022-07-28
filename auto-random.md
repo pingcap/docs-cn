@@ -63,7 +63,7 @@ CREATE TABLE t (a bigint AUTO_RANDOM, b varchar(255), PRIMARY KEY (a))
 CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM(3), b varchar(255))
 ```
 
-以上建表语句中，shard bits 的数量为 `3`。shard bits 的数量的取值范围是 `[1, field_max_bits)`，其中 `field_max_bits` 为整型主键列类型占用的位长度。
+以上建表语句中，shard bits 的数量为 `3`。shard bits 的数量的取值范围是 `[1, 16)`。
 
 创建完表后，使用 `SHOW WARNINGS` 可以查看当前表可支持的最大隐式分配的次数：
 
@@ -139,9 +139,11 @@ CREATE TABLE t (a bigint PRIMARY KEY AUTO_RANDOM)
 
 目前在 TiDB 中使用 `AUTO_RANDOM` 有以下限制：
 
-- 该属性必须指定在整数类型的主键列上，否则会报错。此外，当主键属性为 `NONCLUSTERED` 时，即使是整型主键列，也不支持使用 `AUTO_RANDOM`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
+- 该属性必须指定在 `BIGINT` 类型的主键列上，否则会报错。此外，当主键属性为 `NONCLUSTERED` 时，即使是整型主键列，也不支持使用 `AUTO_RANDOM`。要了解关于 `CLUSTERED` 主键的详细信息，请参考[聚簇索引](/clustered-indexes.md)。
 - 不支持使用 `ALTER TABLE` 来修改 `AUTO_RANDOM` 属性，包括添加或移除该属性。
+- 支持将 `AUTO_INCREMENT` 属性改为 `AUTO_RANDOM` 属性。但在 `AUTO_INCREMENT` 的列数据最大值已接近 `BIGINT` 类型最大值的情况下，修改可能会失败。
 - 不支持修改含有 `AUTO_RANDOM` 属性的主键列的列类型。
 - 不支持与 `AUTO_INCREMENT` 同时指定在同一列上。
 - 不支持与列的默认值 `DEFAULT` 同时指定在同一列上。
+- `AUTO_RANDOM` 列的数据很难迁移到 `AUTO_INCREMENT` 列上，因为 `AUTO_RANDOM` 列自动分配的值通常都很大。
 - 插入数据时，不建议自行显式指定含有 `AUTO_RANDOM` 列的值。不恰当地显式赋值，可能会导致该表提前耗尽用于自动分配的数值。

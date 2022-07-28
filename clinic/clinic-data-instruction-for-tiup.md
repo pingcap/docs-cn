@@ -9,9 +9,10 @@ summary: 详细说明 PingCAP Clinic 诊断服务在使用 TiUP 部署的 TiDB �
 
 通过 PingCAP Clinic 在使用 TiUP 部署的集群中采集的数据**仅**用于诊断和分析集群问题。
 
-Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境内）。如果你把采集的数据上传到了 Clinic Server 供 PingCAP 技术人员远程定位集群问题，这些数据将存储于 PingCAP 设立在 AWS S3 中国区（北京）的服务器。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
+Clinic Server 是部署在云端的云服务，根据数据存储的位置不同，分为以下两个独立的服务：
 
-在对应的技术支持 Case 关闭后，PingCAP 会在 90 天内对相关数据进行永久删除或匿名化处理。
+- [Clinic Server 中国区](https://clinic.pingcap.com.cn)：如果你把采集的数据上传到了 Clinic Server 中国区，这些数据将存储于 PingCAP 设立在 AWS 中国区（北京）的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
+- [Clinic Server 美国区](https://clinic.pingcap.com)：如果你把采集的数据上传到了 Clinic Server 美国区，这些数据将存储于 PingCAP 设立在 AWS 美国区的 S3 服务。PingCAP 对数据访问权限进行了严格的访问控制，只有经授权的内部技术人员可以访问该数据。
 
 ## TiDB 集群
 
@@ -33,7 +34,6 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 慢日志| `tidb_slow_query.log` | `--include=log` |
 | 配置文件 | `tidb.toml` | `--include=config` |
 | 实时配置| `config.json` | `--include=config` |
-| 性能数据 | `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf`（默认不采集） |
 
 ### TiKV 诊断数据
 
@@ -43,7 +43,6 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | Error 日志 | `tikv_stderr.log` | `--include=log` |
 | 配置文件 | `tikv.toml` | `--include=config` |
 | 实时配置 | `config.json` | `--include=config` |
-| 性能数据 | `cpu_profile.proto` | `--include=perf`（默认不采集）|
 
 ### PD 诊断数据
 
@@ -55,7 +54,6 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 实时配置 | `config.json` | `--include=config` |
 | `tiup ctl pd -u http://${pd IP}:${PORT} store` 的输出结果 | `store.json` | `--include=config` |
 | `tiup ctl pd -u http://${pd IP}:${PORT} config placement-rules show` 的输出结果 | `placement-rule.json` | `--include=config` |
-| 性能数据 | `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf`（默认不采集）|
 
 ### TiFlash 诊断数据
 
@@ -65,7 +63,6 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | Error 日志 | `tiflash_stderr.log` | `--include=log` |
 | 配置文件 |  `tiflash-learner.toml`，`tiflash-preprocessed.toml`，`tiflash.toml` | `--include=config` |
 | 实时配置 | `config.json` | `--include=config` |
-| 性能数据 | `cpu_profile.proto` | `--include=perf`（默认不采集） |
 
 ### TiCDC 诊断数据
 
@@ -74,7 +71,6 @@ Clinic Server 是部署在云端的云服务，位于 PingCAP 内网（中国境
 | 日志 | `ticdc.log` | `--include=log`|
 | Error 日志 | `ticdc_stderr.log` | `--include=log` |
 | 配置文件 | `ticdc.toml` | `--include=config` |
-| 性能数据 | `cpu_profile.proto`，`mem_heap.proto`，`goroutine.txt`，`mutex.txt` | `--include=perf`（默认不采集） |
 | Debug 数据 | `info.txt`，`status.txt`，`changefeeds.txt`，`captures.txt`，`processors.txt` | `--include=debug`（默认不采集）|
 
 ### Prometheus 监控数据

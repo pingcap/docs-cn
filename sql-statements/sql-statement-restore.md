@@ -98,7 +98,7 @@ BR 支持从 Amazon S3 或 Google Cloud Storage (GCS) 恢复数据：
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
 ```
 
 有关详细的 URL 语法，见[外部存储](/br/backup-and-restore-storages.md)。
@@ -108,7 +108,7 @@ RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2'
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 

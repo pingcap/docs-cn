@@ -54,7 +54,7 @@ TiDB Ansible 版本：3.0.0-beta.1
     - 支持通过配置文件管理发送 binlog 策略 [#9864](https://github.com/pingcap/tidb/pull/9864)
     - 支持通过内存表 `INFORMATION_SCHEMA.SLOW_QUERY` 查询慢日志 [#9290](https://github.com/pingcap/tidb/pull/9290)
     - 将 TiDB 显示的 MySQL Version 从 5.7.10 变更为 5.7.25 [#9553](https://github.com/pingcap/tidb/pull/9553)
-    - 统一[日志格式规范](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)，利于工具收集分析
+    - 统一日志格式规范，利于工具收集分析
     - 增加监控项 `high_error_rate_feedback_total`，记录实际数据量与统计信息估算数据量差距情况 [#9209](https://github.com/pingcap/tidb/pull/9209)
     - 新增 Database 维度的 QPS 监控项 , 可以通过配置项开启 [#9151](https://github.com/pingcap/tidb/pull/9151)
 + DDL
@@ -65,7 +65,7 @@ TiDB Ansible 版本：3.0.0-beta.1
 
 ## PD
 
-+ 统一[日志格式规范](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)，利于工具收集分析
++ 统一日志格式规范，利于工具收集分析
 + 模拟器
     - 支持不同 store 可采用不同的心跳间隔时间 [#1418](https://github.com/pingcap/pd/pull/1418)
     - 添加导入数据的场景 [#1263](https://github.com/pingcap/pd/pull/1263)
@@ -83,7 +83,7 @@ TiDB Ansible 版本：3.0.0-beta.1
     - 实现将表达式树转化成 RPN 格式 [#4329](https://github.com/tikv/tikv/pull/4329)
     - TableScan 算子实现为 Batch 方式，通过向量化计算加速计算 [#4351](https://github.com/tikv/tikv/pull/4351)
 
-- 统一[日志格式规范](https://github.com/tikv/rfcs/blob/master/text/2018-12-19-unified-log-format.md)，利于工具收集分析
+- 统一日志格式规范，利于工具收集分析
 - 支持 Raw Read 接口使用 Local Reader 进行读 [#4222](https://github.com/tikv/tikv/pull/4222)
 - 新增配置信息的 Metrics [#4206](https://github.com/tikv/tikv/pull/4206)
 - 新增 Key 越界的 Metrics [#4255](https://github.com/tikv/tikv/pull/4255)

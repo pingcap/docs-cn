@@ -1,48 +1,41 @@
 ---
 title: 表库过滤
-summary: 在 TiDB 生态工具中使用表库过滤功能。
+summary: 在 TiDB 数据迁移工具中使用表库过滤功能。
 aliases: ['/docs-cn/dev/table-filter/','/docs-cn/dev/tidb-lightning/tidb-lightning-table-filter/','/docs-cn/dev/reference/tools/tidb-lightning/table-filter/','/zh/tidb/dev/tidb-lightning-table-filter/']
 ---
 
 # 表库过滤
 
-TiDB 生态工具默认情况下作用于所有数据库，但实际使用中，往往只需要作用于其中的部分子集。例如，用户只想处理 `foo*` 和 `bar*` 形式的表，而无需对其他表进行操作。
+TiDB 数据迁移工具默认情况下作用于所有数据库，但实际使用中，往往只需要作用于其中的部分子集。例如，用户只想处理 `foo*` 和 `bar*` 形式的表，而无需对其他表进行操作。
 
-从 TiDB 4.0 起，所有 TiDB 生态系统工具都使用一个通用的过滤语法来定义子集。本文档介绍如何使用表库过滤功能。
+从 TiDB 4.0 起，所有 TiDB 数据迁移工具都使用一个通用的过滤语法来定义子集。本文档介绍如何使用表库过滤功能。
 
 ## 使用表库过滤
 
 ### 命令行
 
-在命令行中使用多个 `-f` 或 `--filter` 参数，即可在 TiDB 生态工具中应用表库过滤规则。每个过滤规则均采用 `db.table` 形式，支持通配符（详情见[下一节](#使用通配符)）。以下为各个工具中的使用示例：
+在命令行中使用多个 `-f` 或 `--filter` 参数，即可在 TiDB 数据迁移工具中应用表库过滤规则。每个过滤规则均采用 `db.table` 形式，支持通配符（详情见[下一节](#使用通配符)）。以下为各个工具中的使用示例：
 
 * [BR](/br/backup-and-restore-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./br backup full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
+    ```
+
+    ```shell
     ./br restore full -f 'foo*.*' -f 'bar*.*' -s 'local:///tmp/backup'
-    #                 ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [Dumpling](/dumpling-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./dumpling -f 'foo*.*' -f 'bar*.*' -P 3306 -o /tmp/data/
-    #          ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 * [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)：
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     ./tidb-lightning -f 'foo*.*' -f 'bar*.*' -d /tmp/data/ --backend tidb
-    #                ^~~~~~~~~~~~~~~~~~~~~~~
     ```
 
 ### TOML 配置文件
@@ -143,7 +136,7 @@ db.table   # 这一部分不是注释，且可能引起错误
 
 ### 排除规则
 
-在一条过滤规则的开头加上 `!`，则表示符合这条规则的表不会被 TiDB 生态工具处理。通过应用排除规则，库表过滤可以作为屏蔽名单来使用。
+在一条过滤规则的开头加上 `!`，则表示符合这条规则的表不会被 TiDB 数据迁移工具处理。通过应用排除规则，库表过滤可以作为屏蔽名单来使用。
 
 ```
 *.*
@@ -241,7 +234,7 @@ employees.*
 
 > **注意：**
 >
-> 在 TiDB 生态工具的默认配置中，系统库总是被排除。系统库有以下六个：
+> 在 TiDB 数据迁移工具的默认配置中，系统库总是被排除。系统库有以下六个：
 >
 > * `INFORMATION_SCHEMA`
 > * `PERFORMANCE_SCHEMA`

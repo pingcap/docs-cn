@@ -23,7 +23,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 处理方法：
 
-    参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
+    参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
 ### `cdc_resolvedts_high_delay`
 
@@ -37,7 +37,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 处理方法：
 
-    该告警与同步任务中断类似，可参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
+    该告警与同步任务中断类似，可参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
 ### `ticdc_processor_exit_with_error_count`
 
@@ -51,7 +51,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 处理方法：
 
-    参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
+    参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
 ## 警告级别报警项
 
@@ -111,7 +111,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 处理方法：
 
-    参考 [`TiCDC 同步任务出现中断`](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断) 的处理方法。
+    参考 [TiCDC 同步任务出现中断](/ticdc/troubleshoot-ticdc.md#ticdc-同步任务出现中断)的处理方法。
 
 ### `ticdc_puller_entry_sorter_sort_bucket`
 
@@ -181,7 +181,7 @@ summary: 了解 TiCDC 集群监控报警规则以及处理方法。
 
 * 处理方法：
 
-    MySQL 报错的情况较多，参考[`TiCDC 常见问题和故障处理`](/ticdc/troubleshoot-ticdc.md)。
+    MySQL 报错的情况较多，参考 [TiCDC 故障处理](/ticdc/troubleshoot-ticdc.md)。
 
 ### `ticdc_memory_abnormal`
 

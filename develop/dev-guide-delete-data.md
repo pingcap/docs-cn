@@ -49,51 +49,94 @@ DELETE FROM {table} WHERE {filter}
 {{< copyable "sql" >}}
 
 ```sql
-SELECT COUNT(*) FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 - 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
-- 若返回数量小于 1 万条，可参考此处的示例进行删除：
+- 若返回数量小于 1 万条，可参考下面的示例进行删除：
 
 <SimpleTab>
-<div label="SQL" href="delete-sql">
+<div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中，删除数据的示例如下：
 
 ```sql
-DELETE FROM `rating` WHERE `rating_at` >= "2022-04-15 00:00:00" AND  `rating_at` <= "2022-04-15 00:15:00";
+DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
 ```
 
 </div>
 
-<div label="Java" href="delete-java">
+<div label="Java">
 
-{{< copyable "" >}}
+在 Java 中，删除数据的示例如下：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
 
 try (Connection connection = ds.getConnection()) {
-    PreparedStatement pstmt = connection.prepareStatement("DELETE FROM `rating` WHERE `rating_at` >= ? AND  `rating_at` <= ?");
+    String sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?";
+    PreparedStatement preparedStatement = connection.prepareStatement(sql);
     Calendar calendar = Calendar.getInstance();
     calendar.set(Calendar.MILLISECOND, 0);
 
     calendar.set(2022, Calendar.APRIL, 15, 0, 0, 0);
-    pstmt.setTimestamp(1, new Timestamp(calendar.getTimeInMillis()));
+    preparedStatement.setTimestamp(1, new Timestamp(calendar.getTimeInMillis()));
 
     calendar.set(2022, Calendar.APRIL, 15, 0, 15, 0);
-    pstmt.setTimestamp(2, new Timestamp(calendar.getTimeInMillis()));
+    preparedStatement.setTimestamp(2, new Timestamp(calendar.getTimeInMillis()));
+
+    preparedStatement.executeUpdate();
 } catch (SQLException e) {
     e.printStackTrace();
 }
 ```
 
 </div>
+
+<div label="Golang">
+
+在 Golang 中，删除数据的示例如下：
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "time"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/bookshop")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    startTime := time.Date(2022, 04, 15, 0, 0, 0, 0, time.UTC)
+    endTime := time.Date(2022, 04, 15, 0, 15, 0, 0, time.UTC)
+
+    bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ?")
+    result, err := db.Exec(bulkUpdateSql, startTime, endTime)
+    if err != nil {
+        panic(err)
+    }
+    _, err = result.RowsAffected()
+    if err != nil {
+        panic(err)
+    }
+}
+```
+
+</div>
+
 </SimpleTab>
 
 > **注意：**
 >
-> `rating_at` 字段为[日期和时间类型](/data-type-date-and-time.md) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](/configure-time-zone.md)时，展示不同的时间字符串。
+> `rated_at` 字段为[日期和时间类型](/data-type-date-and-time.md) 中的 `DATETIME` 类型，你可以认为它在 TiDB 保存时，存储为一个字面量，与时区无关。而 `TIMESTAMP` 类型，将会保存一个时间戳，从而在不同的[时区配置](/configure-time-zone.md)时，展示不同的时间字符串。
 >
 > 另外，和 MySQL 一样，`TIMESTAMP` 数据类型受 [2038 年问题](https://zh.wikipedia.org/wiki/2038%E5%B9%B4%E9%97%AE%E9%A2%98)的影响。如果存储的值大于 2038，建议使用 `DATETIME` 类型。
 
@@ -121,11 +164,16 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 ### 编写批量删除循环
 
-首先，你应在你的应用或脚本的循环中，编写一个 `SELECT` 查询。这个查询的返回值可以作为需要删除的行的主键。需要注意的是，定义这个 `SELECT` 查询时，需要注意使用 `WHERE` 子句过滤需要删除的行。
+在你的应用或脚本的循环中，编写一个 `DELETE` 语句，使用 `WHERE` 子句过滤需要删除的行，并使用 `LIMIT` 限制单次删除的数据条数。
 
 ### 批量删除例子
 
 假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
+
+<SimpleTab>
+<div label="Java">
+
+在 Java 中，批量删除程序类似于以下内容：
 
 {{< copyable "" >}}
 
@@ -134,8 +182,11 @@ package com.pingcap.bulkDelete;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 public class BatchDeleteExample
@@ -153,13 +204,13 @@ public class BatchDeleteExample
         mysqlDataSource.setUser("root");
         mysqlDataSource.setPassword("");
 
-        while (true) {
-            batchDelete(mysqlDataSource);
-            TimeUnit.SECONDS.sleep(1);
+        Integer updateCount = -1;
+        while (updateCount != 0) {
+            updateCount = batchDelete(mysqlDataSource);
         }
     }
 
-    public static void batchDelete (MysqlDataSource ds) {
+    public static Integer batchDelete (MysqlDataSource ds) {
         try (Connection connection = ds.getConnection()) {
             String sql = "DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ? LIMIT 1000";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -174,11 +225,76 @@ public class BatchDeleteExample
 
             int count = preparedStatement.executeUpdate();
             System.out.println("delete " + count + " data");
+
+            return count;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        return -1;
     }
 }
 ```
 
-每次迭代中，`SELECT` 最多选择 1000 行时间段为`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据的主键值。然后进行批量删除。每次循环末尾的 `TimeUnit.SECONDS.sleep(1);` 将使得删除程序暂停 1 秒，防止批量删除程序占用过多的硬件资源。
+每次迭代中，`DELETE` 最多删除 1000 行时间段为 `2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
+
+</div>
+
+<div label="Golang">
+
+在 Golang 中，批量删除程序类似于以下内容：
+
+{{< copyable "" >}}
+
+```go
+package main
+
+import (
+    "database/sql"
+    "fmt"
+    "time"
+
+    _ "github.com/go-sql-driver/mysql"
+)
+
+func main() {
+    db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:4000)/bookshop")
+    if err != nil {
+        panic(err)
+    }
+    defer db.Close()
+
+    affectedRows := int64(-1)
+    startTime := time.Date(2022, 04, 15, 0, 0, 0, 0, time.UTC)
+    endTime := time.Date(2022, 04, 15, 0, 15, 0, 0, time.UTC)
+
+    for affectedRows != 0 {
+        affectedRows, err = deleteBatch(db, startTime, endTime)
+        if err != nil {
+            panic(err)
+        }
+    }
+}
+
+// deleteBatch delete at most 1000 lines per batch
+func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
+    bulkUpdateSql := fmt.Sprintf("DELETE FROM `bookshop`.`ratings` WHERE `rated_at` >= ? AND  `rated_at` <= ? LIMIT 1000")
+    result, err := db.Exec(bulkUpdateSql, startTime, endTime)
+    if err != nil {
+        return -1, err
+    }
+    affectedRows, err := result.RowsAffected()
+    if err != nil {
+        return -1, err
+    }
+
+    fmt.Printf("delete %d data\n", affectedRows)
+    return affectedRows, nil
+}
+```
+
+每次迭代中，`DELETE` 最多删除 1000 行时间段为 `2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。
+
+</div>
+
+</SimpleTab>

@@ -191,7 +191,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 ```sql
 create table t(a bigint, b bigint);
-desc format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
+explain format = "dot" select A.a, B.b from t A join t B on A.a > B.b where A.a < 10;
 ```
 
 ```
@@ -246,7 +246,7 @@ The `xx.dot` is the result returned by the above statement.
 ## MySQL 兼容性
 
 * `EXPLAIN` 的格式和 TiDB 中潜在的执行计划都与 MySQL 有很大不同。
-* TiDB 不像 MySQL 那样支持 `EXPLAIN FORMAT = JSON`。
+* TiDB 不支持 `FORMAT=JSON` 或 `FORMAT=TREE` 选项。
 
 ## `EXPLAIN FOR CONNECTION`
 

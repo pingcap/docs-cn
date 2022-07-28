@@ -7,8 +7,9 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 本文档适用于以下升级路径：
 
-- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 6.0 及后续修订版本。
-- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 6.0 及后续修订版本。
+- 使用 TiUP 从 TiDB 4.0 版本升级至 TiDB 6.1 及后续修订版本。
+- 使用 TiUP 从 TiDB 5.0-5.4 版本升级至 TiDB 6.1 及后续修订版本。
+- 使用 TiUP 从 TiDB 6.0 版本升级至 TiDB 6.1 及后续修订版本。
 
 > **警告：**
 >
@@ -18,17 +19,17 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 
 > **注意：**
 >
-> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 6.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 6.0 及后续修订版本。
+> 如果原集群是 3.0 或 3.1 或更早的版本，不支持直接升级到 6.1.0 及后续修订版本。你需要先从早期版本升级到 4.0 后，再从 4.0 升级到 6.1.0 及后续修订版本。
 
 ## 1. 升级兼容性说明
 
 - TiDB 目前暂不支持版本降级或升级后回退。
-- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.0 版本及后续修订版本。
-- 若要将 3.0 之前的版本升级至 6.0 版本：
+- 使用 TiDB Ansible 管理的 4.0 版本集群，需要先按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)将集群导入到 TiUP (`tiup cluster`) 管理后，再按本文档说明升级到 6.1.0 版本及后续修订版本。
+- 若要将 3.0 之前的版本升级至 6.1.0 版本：
     1. 首先[通过 TiDB Ansible 升级到 3.0 版本](https://docs.pingcap.com/zh/tidb/v3.0/upgrade-tidb-using-ansible)。
     2. 然后按照 [4.0 版本文档的说明](https://docs.pingcap.com/zh/tidb/v4.0/upgrade-tidb-using-tiup)，使用 TiUP (`tiup cluster`) 将 TiDB Ansible 配置导入。
     3. 将集群升级至 4.0 版本。
-    4. 按本文档说明将集群升级到 6.0 版本。
+    4. 按本文档说明将集群升级到 6.1.0 版本。
 - 支持 TiDB Binlog，TiCDC，TiFlash 等组件版本的升级。
 - 具体不同版本的兼容性说明，请查看各个版本的 [Release Note](/releases/release-notes.md)。请根据各个版本的 Release Note 的兼容性更改调整集群的配置。
 - 升级 v5.3 之前版本的集群到 v5.3 及后续版本时，默认部署的 Prometheus 会从 v2.8.1 升级到 v2.27.1，v2.27.1 提供更多的功能并解决了安全风险。Prometheus v2.27.1 相对于 v2.8.1 存在 Alert 时间格式变化，详情见 [Prometheus commit](https://github.com/prometheus/prometheus/commit/7646cbca328278585be15fa615e22f2a50b47d06)。
@@ -45,7 +46,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
 >
 > 如果原集群中控机不能访问 `https://tiup-mirrors.pingcap.com` 地址，可跳过本步骤，然后[更新 TiUP 离线镜像](#更新-tiup-离线镜像)。
 
-1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.9.3`）：
+1. 先升级 TiUP 版本（建议 `tiup` 版本不低于 `1.10.0`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -54,7 +55,7 @@ aliases: ['/docs-cn/dev/upgrade-tidb-using-tiup/','/docs-cn/dev/how-to/upgrade/u
     tiup --version
     ```
 
-2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.9.3`）：
+2. 再升级 TiUP Cluster 版本（建议 `tiup cluster` 版本不低于 `1.10.0`）：
 
     {{< copyable "shell-regular" >}}
 
@@ -79,7 +80,23 @@ sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
 
-覆盖升级完成后，执行下列命令升级 Cluster 组件：
+<Tips>
+关于 `TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包的内容物，请查阅 [TiDB 离线包](/binary-package.md)。
+</Tips>
+
+覆盖升级完成后，需将 server 和 toolkit 两个离线镜像合并，执行以下命令合并离线组件到 server 目录下。
+
+{{< copyable "shell-regular" >}}
+
+```bash
+tar xf tidb-community-toolkit-${version}-linux-amd64.tar.gz
+ls -ld tidb-community-server-${version}-linux-amd64 tidb-community-toolkit-${version}-linux-amd64
+cd tidb-community-server-${version}-linux-amd64/
+cp -rp keys ~/.tiup/
+tiup mirror merge ../tidb-community-toolkit-${version}-linux-amd64
+```
+
+离线镜像合并后，执行下列命令升级 Cluster 组件：
 
 {{< copyable "shell-regular" >}}
 
@@ -96,7 +113,7 @@ tiup update cluster
 > 以下情况可跳过此步骤：
 >
 > - 原集群没有修改过配置参数，或通过 tiup cluster 修改过参数但不需要调整。
-> - 升级后对未修改过的配置项希望使用 `6.0` 默认参数。
+> - 升级后对未修改过的配置项希望使用 `6.1.0` 默认参数。
 
 1. 进入拓扑文件的 `vi` 编辑模式：
 
@@ -112,7 +129,7 @@ tiup update cluster
 
 > **注意：**
 >
-> 升级到 6.0 版本前，请确认已在 4.0 修改的参数在 6.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
+> 升级到 6.1.0 版本前，请确认已在 4.0 修改的参数在 6.1.0 版本中是兼容的，可参考 [TiKV 配置文件描述](/tikv-configuration-file.md)。
 >
 > 以下 TiKV 参数在 TiDB v5.0 已废弃。如果在原集群配置过以下参数，需要通过 `edit-config` 编辑模式删除这些参数：
 >
@@ -148,12 +165,12 @@ tiup cluster check <cluster-name> --cluster
 tiup cluster upgrade <cluster-name> <version>
 ```
 
-以升级到 6.0.0 版本为例：
+以升级到 6.1.0 版本为例：
 
 {{< copyable "shell-regular" >}}
 
 ```
-tiup cluster upgrade <cluster-name> v6.0.0
+tiup cluster upgrade <cluster-name> v6.1.0
 ```
 
 > **注意：**
@@ -161,7 +178,10 @@ tiup cluster upgrade <cluster-name> v6.0.0
 > - 滚动升级会逐个升级所有的组件。升级 TiKV 期间，会逐个将 TiKV 上的所有 leader 切走再停止该 TiKV 实例。默认超时时间为 5 分钟（300 秒），超时后会直接停止该实例。
 > - 使用 `--force` 参数可以在不驱逐 leader 的前提下快速升级集群至新版本，但是该方式会忽略所有升级中的错误，在升级失败后得不到有效提示，请谨慎使用。
 > - 如果希望保持性能稳定，则需要保证 TiKV 上的所有 leader 驱逐完成后再停止该 TiKV 实例，可以指定 `--transfer-timeout` 为一个更大的值，如 `--transfer-timeout 3600`，单位为秒。
-> - 从 5.3 之前的老版本升级到 5.3 及之后的版本时，不支持在线升级 TiFlash，只能先将 TiFlash 实例关闭，然后离线地升级集群，最后 reload 整个集群，保证除 TiFlash 之外的组件不停机升级。
+> - 若想将 TiFlash 从 5.3 之前的版本升级到 5.3 及之后的版本，必须进行 TiFlash 的停机升级。参考如下步骤，可以在确保其他组件正常运行的情况下升级 TiFlash：
+>   1. 关闭 TiFlash 实例：`tiup cluster stop <cluster-name> -R tiflash`
+>   2. 使用 `--offline` 参数在不重启（只更新文件）的情况下升级集群：`tiup cluster upgrade <cluster-name> <version> --offline`
+>   3. reload 整个集群：`tiup cluster reload <cluster-name>`。此时，TiFlash 也会正常启动，无需额外操作。
 
 #### 停机升级
 
@@ -202,7 +222,7 @@ tiup cluster display <cluster-name>
 ```
 Cluster type:       tidb
 Cluster name:       <cluster-name>
-Cluster version:    v6.0.0
+Cluster version:    v6.1.0
 ```
 
 > **注意：**
@@ -252,10 +272,10 @@ tiup cluster upgrade <cluster-name> <version> --force
 {{< copyable "" >}}
 
 ```
-tiup install ctl:v6.0.0
+tiup install ctl:v6.1.0
 ```
 
-## 5. TiDB 6.0 兼容性变化
+## 5. TiDB 6.1.0 兼容性变化
 
-- 兼容性变化请参考 6.0 Release Notes。
+- 兼容性变化请参考 6.1.0 Release Notes。
 - 请避免在对使用 TiDB Binlog 的集群进行滚动升级过程中新创建聚簇索引表。

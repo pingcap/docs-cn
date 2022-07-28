@@ -19,7 +19,7 @@ db-type = "kafka"
 # Kafka 地址
 kafka-addrs = "127.0.0.1:9092"
 # Kafka 版本号
-kafka-version = "0.8.2.0"
+kafka-version = "2.4.0"
 ```
 
 ## 自定义开发
