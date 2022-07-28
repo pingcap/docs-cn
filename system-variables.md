@@ -865,6 +865,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_noop_variables` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 若该变量值为 `ON`，则 TiDB 和旧版本的 TiDB 行为一致；若该变量值为 `OFF`，TiDB 具有以下行为：
+    * 使用 `SET` 设置 `noop` 的系统变量时会报 "setting *variable_name* has no effect in TiDB" 的 warning。
+    * `SHOW [GLOBAL] VARIABLES` 不再显示 `noop` 的系统变量。
+    * 使用 `SELECT` 读取 `noop` 的系统变量时会报 "variable *variable_name* has no effect in TiDB" 的 warning。
+- 用户可以通过 `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` 语句来检查 TiDB 实例是否曾设置和读取 `noop` 系统变量。
+
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
