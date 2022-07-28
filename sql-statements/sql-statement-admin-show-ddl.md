@@ -120,12 +120,12 @@ ADMIN SHOW DDL JOB QUERIES 51;
 {{< copyable "sql" >}}
 
 ```sql
-ADMIN SHOW DDL JOB QUERIES LIMIT m;  # Retrieve first m rows
-ADMIN SHOW DDL JOB QUERIES LIMIT n, m;  # Retrieve rows [n+1, n+m]
-ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # Retrieve rows [n+1, n+m]
+ADMIN SHOW DDL JOB QUERIES LIMIT m;           # -- 取出前 m 行
+ADMIN SHOW DDL JOB QUERIES LIMIT n, m;        # -- 取出第 n+1 到 n+m 行
+ADMIN SHOW DDL JOB QUERIES LIMIT m OFFSET n;  # -- 取出第 n+1 到 n+m 行
 ```
 
-这里 n 和 m 都是非负整数。
+以上语法中 `n` 和 `m` 都是非负整数。语法的具体示例如下：
 
 ```sql
 ADMIN SHOW DDL JOB QUERIES LIMIT 3;  # Retrieve first 3 rows
@@ -162,7 +162,7 @@ ADMIN SHOW DDL JOB QUERIES LIMIT 3 OFFSET 4;  # Retrieve rows 5-7
 3 rows in set (0.00 sec)
 ```
 
-可以在 DDL 历史作业队列任意指定范围中搜索与 `job_id` 对应的正在运行中的 DDL 作业，没有 `ADMIN SHOW DDL JOB QUERIES` 语句的最近十条结果限制。
+该语句可以在 DDL 历史作业队列任意指定范围中搜索与 `job_id` 对应的正在运行中的 DDL 作业，没有 `ADMIN SHOW DDL JOB QUERIES` 语句的最近 10 条结果的限制。
 
 ## MySQL 兼容性
 
