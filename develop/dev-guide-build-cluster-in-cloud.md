@@ -19,8 +19,6 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 **Developer Tier** 方案。
 4. 在 **Create Cluster** 页面设置集群名称、云服务商（Developer Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Developer Tier 免费集群。
 
-    这将开始集群的创建过程，并且会弹出 **Security Quick Start** 对话框。
-
 5. 在 **Security Quick Start** 对话框中，设置密码，并添加允许连接你的集群的 IP 地址，完成后点击 **Apply**。
     
     你的 TiDB Cloud 集群将于 5~15 分钟后创建完毕。
