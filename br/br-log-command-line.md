@@ -16,7 +16,7 @@ summary: 了解如何使用 br log 命令行工具进行日志备份。
 进行日志备份时，需要使用到 `br log` 命令：
 
 ```shell
-br log --help
+./br log --help
 
 backup stream log from TiDB/TiKV cluster
 
