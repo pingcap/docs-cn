@@ -150,6 +150,13 @@ mysql> SELECT * FROM t1;
 - 这个变量表示数据存储的位置，位置可以是本地路径。如果数据存储在 TiKV 上，则可以是指向 PD 服务器的路径。
 - 如果变量值的格式为 `ip_address:port`，表示 TiDB 在启动时连接到的 PD 服务器。
 
+### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否
+- 默认值: `ON`
+- 用于设置该 TiDB 服务器是否运行 DDL 语句。
+
 ### `ddl_slow_threshold`
 
 - 作用域：GLOBAL
