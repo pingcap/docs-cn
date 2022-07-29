@@ -17,11 +17,11 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 1. 如果你还未拥有 TiDB Cloud 帐号，请先在此[注册](https://tidbcloud.com/free-trial)。
 2. 使用你的 TiDB Cloud 帐号[登录](https://tidbcloud.com/)。
 3. 在[方案](https://tidbcloud.com/console/plans)内选择一年内免费的 **Developer Tier** 方案。
-4. 请在 **Create a Cluster** 页面填写集群名称/密码/云服务商（暂时仅可选择 AWS）/ 可用区（建议就近选择）后，点击 **Create** 按钮创建 Developer Tier 免费集群。
+4. 在 **Create Cluster** 页面设置集群名称、云服务商（Developer Tier 默认为 AWS）、可用区（建议就近选择）后，点击 **Create** 按钮创建 Developer Tier 免费集群。
 
     这将开始集群的创建过程，并且会弹出 **Security Quick Start** 对话框。
 
-5. 在 **Security Quick Start** 对话框，设置密码，并允许 IP 地址来连接你的集群，完成时点击 **Apply**。
+5. 在 **Security Quick Start** 对话框中，设置密码，并添加允许连接你的集群的 IP 地址，完成后点击 **Apply**。
     
     你的 TiDB Cloud 集群将于 5~15 分钟后创建完毕。
 
@@ -39,7 +39,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     > **Note:**
     >
-    > - 需要特别说明的是，在你使用 [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `4JC1i9KroBMFRwW`），若使用命令行连接，还需使用单引号包裹用户名. 你可以在 [TiDB Cloud - 用户名前缀](/tidb-cloud/select-cluster-tier.md#user-name-prefix) 中获得更多信息。
+    > - 需要特别说明的是，在你使用 [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `4JC1i9KroBMFRwW`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](/tidb-cloud/select-cluster-tier.md#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
