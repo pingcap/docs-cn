@@ -60,7 +60,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 ### 执行计划
 
-TiDB Dashboard 提供两种方式查看执行计划：图形化和文本。其中，图形化的执行计划可以让用户更清晰地了解一个语句的具体算子和对应的内容。参阅[理解 TiDB 执行计划](/explain-overview.md)文档了解如何解读执行计划。
+TiDB Dashboard 提供两种方式查看执行计划：图形和文本。通过图形化的执行计划，你可以更清晰地了解一个语句的具体算子和对应的内容。参阅[理解 TiDB 执行计划](/explain-overview.md)。
 
 #### 如何查看图形化执行计划
 
