@@ -44,7 +44,7 @@ validators:
     * `full`：将变动行和下游数据库中获取的行数据进行每列对比。
     * `fast`：只判断这一行在下游数据库是否存在。
 * `worker-count`：增量校验功能使用的 worker 数量（每个 worker 都是一个 goroutine）。
-* `row-error-delay`：某一行多久没有验证通过会报错，默认是 30 分钟。
+* `row-error-delay`：某一行多久没有验证通过会被标记为 error row，默认是 30 分钟。
 
 完整配置请查阅 [DM 任务完整配置文件](/dm/task-configuration-file-full.md)。
 
