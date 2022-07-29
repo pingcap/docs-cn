@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/v6.0/grafana-performance-overview-dashboard']
 
 ## 面板监控指标详解
 
-按总分结构对 TiDB、TiKV、PD 的性能指标进行编排组织，包含了以下三部分内容：
+Performance Overview Dashboard 按总分结构对 TiDB、TiKV 和 PD 的性能指标进行了编排组织，包含以下三部分内容：
 
 - 总的概览：数据库时间和 SQL 执行时间概览。通过颜色优化法，你可以快速识别数据库负载特征和性能瓶颈。
 - 资源负载：关键指标和资源利用率，包含数据库 QPS、应用和数据库的连接信息和请求命令类型、数据库内部 TSO 和 KV 请求 OPS、TiDB 和 TiKV 的资源使用概况。
