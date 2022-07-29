@@ -1,42 +1,36 @@
 ---
-title: TiFlash v6.1.0 升级帮助
-summary: 了解升级 TiFlash 至 v6.1.0 时的注意事项。
+title: TiFlash v6.2.0 升级帮助
+summary: 了解升级 TiFlash 至 v6.2.0 时的注意事项。
 ---
 
-# TiFlash v6.1.0 升级帮助
+# TiFlash v6.2.0 升级帮助
 
-本文主要介绍 TiFlash 升级至 v6.1.0 时功能模块变化带来的影响，以及推荐的应对方法。
+本文主要介绍 TiFlash 升级至 v6.2.0 时功能模块变化带来的影响，以及推荐的应对方法。
 
 如需了解标准升级流程，请参考如下文档：
 
 - [使用 TiUP 升级 TiDB](/upgrade-tidb-using-tiup.md)
 - [使用 TiDB Operator 升级 TiDB](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
 
-## 升级策略
+> **注意：**
+>
+> - 不推荐跨大版本升级 TiDB 集群，如从 v4.0.0 升级至 v6.2.0。请先升级至 v5.4.x 或 v6.1.0，然后再升级至 v6.2.0。
+>
+> - v4.x.x 已接近产品周期尾声，请尽早升级到 v5.x.x 及以上版本。
+>
+> - v6.0.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1.0 及之后的 LTS 版本。
 
- 不推荐跨大版本升级 TiDB 集群，如从 v4.0.0 升级至 v6.1.0。请先升级至 v5.4.x 或 v6.0.0，然后再升级至 v6.1.0。
+## 从 v5.x.x 或 v6.0.0 升级至 v6.1.0
 
-### 升级 v4.x.x 至 v5.x.x
+从 v5.x.x 或 v6.0.0 升级至 v6.1.0 时，需要注意 TiFlash Proxy 和动态分区裁剪功能的变化。
 
-v4.x.x 已接近产品周期尾声，请尽早升级到 v5.x.x 及以上版本。
-
-### 升级 v5.x.x 至 v6.0.0
-
-v6.0.0 作为非 LTS 版本，不会推出后续的 bug 修复版，请尽量使用 v6.1.0 及之后的 LTS 版本。
-
-### 升级 v5.x.x 至 v6.1.0
-
-#### TiFlash Proxy
+### TiFlash Proxy
 
 TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。新的 Proxy 版本升级了 RocksDB 版本，在升级过程中会自动将数据格式转换为新版本。
 
 正常升级时，不会有明显风险。如果特殊场景（如测试验证）需要降级，请注意，v6.1.0 降级到之前的任意版本时，会无法解析新版 RocksDB 配置，从而导致 TiFlash 重启失败。请做好升级验证工作，并尽可能准备应急方案。
 
-**测试环境及特殊回退需求下的对策**
-
-强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
-
-#### 动态分区裁剪
+### 动态分区裁剪
 
 如果你没有也不打算开启动态分区裁剪，可略过本部分。
 
@@ -46,11 +40,15 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。新的 P
 
     升级完成之后，如果要启用动态分区裁剪特性，需要手动更新分区表的全局统计信息。关于如何手动更新统计信息，参见[动态裁剪模式](/partitioned-table.md#动态裁剪模式)。
 
-#### TiFlash PageStorage
+## 从 v5.x.x 或 v6.0.0 升级至 v6.2.0
 
-TiFlash v6.1.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在高并发或者重型查询情况下，可以有效缓解 TiFlash 数据 GC 带来的 CPU 占用高的问题。
+TiFlash 在 v6.2.0 将数据格式升级到 v3 版本，因此，从 v5.x.x 或 v6.0,0 升级至 v6.2.0 时，除了需要注意 [TiFlash Proxy](#tiflash-proxy) 和[动态分区裁剪](#动态分区裁剪)的变化，还应注意 PageStorage 功能的变化。
 
-- 已有节点升级 v6.1.0 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
+### PageStorage
+
+TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在高并发或者重型查询情况下，可以有效缓解 TiFlash 数据 GC 带来的 CPU 占用高的问题。
+
+- 已有节点升级 v6.2.0 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
 - 新旧版本的数据格式不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要注意）。升级完成后，请使用[手动 compact 命令](/sql-statements/sql-statement-alter-table-compact.md)触发一个 compaction 动作将相关表的数据转成新版本格式。操作步骤如下：
 
     1. 对每张有 TiFlash 副本（replica）的表执行如下命令：
@@ -63,24 +61,14 @@ TiFlash v6.1.0 默认升级到 PageStorage V3 版本（对应配置项参数 for
 
 你可以在 Grafana 监控查看是否还有表使用旧的数据版本：Tiflash summary > storage pool > Storage Pool Run Mode
 
+- Only V2：使用 PageStorage V2 的表数量（包括分区数）
+- Only V3：使用 PageStorage V3 的表数量（包括分区数）
+- Mix Mode：从 V2 迁移到 V3 的表数量（包括分区数）
+
 **测试环境及特殊回退需求下的对策**
 
 强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
 
-### 升级 v6.0.0 至 v6.1.0
+## 从 v6.1.0 升级至 v6.2.0
 
-#### 动态分区裁剪
-
-如果你没有也不打算开启动态分区裁剪，可略过本部分。
-
-TiDB v6.0.0 之后的全新安装会默认开启动态分区裁剪（Dynamic Pruning），旧版本升级遵循用户已有设定，不会自动开启（相对的也不会关闭）此功能。
-
-在从 v6.0.0 至 v6.1.0 的升级过程中，你不需要做任何特别操作，但是注意，分区表全局统计信息将会自动更新。
-
-#### TiFlash PageStorage
-
-参考[升级 v5.x.x 至 v6.1.0](#升级-v5xx-至-v610) 中 TiFlash PageStorage 的描述。
-
-#### TiFlash Proxy
-
-参考[升级 v5.x.x 至 v6.1.0](#升级-v5xx-至-v610) 中 TiFlash Proxy 的描述。
+从 v6.1.0 升级至 v6.2.0 时，需要注意 PageStorage 变更数据版本带来的影响。具体请参考 [PageStorage](#pagestorage)。
