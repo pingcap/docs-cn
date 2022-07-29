@@ -94,9 +94,6 @@ tiup br log status --task-name=pitr --pd=172.16.102.95:2379
     storage: s3://tidb-pitr-bucket/backup-data/log-backup
     speed(est.): 0.00 ops/s
 checkpoint[global]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
-checkpoint[store=1]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
-checkpoint[store=4]: 2022-04-24 11:31:47.25 +0800 CST; gap=4m53s
-checkpoint[store=5]: 2022-04-24 11:31:47.351 +0800 CST; gap=4m53s
 ```
 
 ## 执行快照备份
