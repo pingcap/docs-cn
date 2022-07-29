@@ -24,20 +24,12 @@ summary: 了解 TiDB 各版本的实验特性。
 + List Column 分区表 （List Column Partition)。（v5.0 实验特性）
 + [分区表动态裁剪模式](/partitioned-table.md#动态裁剪模式)。（v5.1 实验特性）
 + 表达式索引 (Expression Index) 功能。表达式索引也叫函数索引，在创建索引时索引的字段不一定是一个具体的列，也可以是由一个或者多个列计算出来的表达式。对于快速访问那些基于计算结果的表非常有用。详情参阅：[表达式索引](/sql-statements/sql-statement-create-index.md)。（v4.0 实验特性）
-<<<<<<< HEAD
 + [生成列](/generated-columns.md#生成列)。
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。
 + [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
 + [View](/information-schema/information-schema-views.md)。
 + [执行计划缓存](/sql-prepare-plan-cache.md)。（v4.0 实验特性）
-=======
-+ [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
-+ [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
-+ [JSON 数据类型](/data-type-json.md)及 [JSON 函数](/functions-and-operators/json-functions.md)。（v2.1 实验特性）
-+ [View](/information-schema/information-schema-views.md)。（v2.1 实验特性）
-+ [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。（v6.1.0 实验特性）
 + [使用 `ALTER TABLE` 修改多个列或索引](/system-variables.md#tidb_enable_change_multi_schema)。（v5.0.0 实验特性）
->>>>>>> 87d5b1438 (add multi-schema change to experimental feature page (#10704))
 
 ## 配置管理
 
