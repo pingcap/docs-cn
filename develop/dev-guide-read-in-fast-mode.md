@@ -35,7 +35,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'ta
 {{< copyable "sql" >}}
 
 ```sql
-ALTER TABLE table_name SET TIFALSH MODE FAST
+ALTER TABLE table_name SET TIFLASH MODE FAST
 ```
 
 切换完成后，后续在 TiFlash 中的查询，都会在 Fast Mode 下进行。
