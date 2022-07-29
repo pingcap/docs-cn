@@ -914,7 +914,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
-- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#oom-use-tmp-storage)。
+- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/system-variables.md#tidb_enable_tmp_storage_on_oom)。
 
 ### `tidb_enable_slow_log`
 
@@ -1417,6 +1417,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[10, 216000]`
 - 单位：秒
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step。
+
+### `tidb_enable_tmp_storage_on_oom` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
+- 在 v6.3.0 之前这个开关通过 TiDB 配置文件 (`oom-use-tmp-storage`) 进行配置，升级到 v6.3.0 时会自动继承原有设置。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
