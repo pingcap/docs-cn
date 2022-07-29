@@ -5,7 +5,7 @@ summary: 了解 information_schema 表 `VARIABLES_INFO`。
 
 # VARIABLES_INFO
 
-`VARIABLES_INFO` 可用于查看当前 TiDB 集群/实例系统变量的默认值、当前值以及 Scope 等信息。
+`VARIABLES_INFO` 可用于查看当前 TiDB 集群/实例系统变量的默认值、当前值以及作用域等信息。
 
 {{< copyable "sql" >}}
 
