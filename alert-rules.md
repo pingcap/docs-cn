@@ -815,7 +815,7 @@ aliases: ['/docs-cn/stable/alert-rules/','/docs-cn/v4.0/alert-rules/','/docs-cn/
 
 * 报警规则：
 
-    `node_filesystem_avail{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
+    `node_filesystem_avail_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} / node_filesystem_size_bytes{fstype=~"(ext.|xfs)", mountpoint!~"/boot"} * 100 <= 20`
 
 * 规则描述：
 
