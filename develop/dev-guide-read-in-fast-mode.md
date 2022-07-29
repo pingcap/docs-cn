@@ -43,7 +43,7 @@ ALTER TABLE table_name SET TIFLASH MODE FAST
 可以用下面语句重新切换回 Normal Mode。
 
 ```sql
-ALTER TABLE table_name SET TIFALSH MODE NORMAL
+ALTER TABLE table_name SET TIFLASH MODE NORMAL
 ```
 
 ## 实现机制
