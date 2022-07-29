@@ -8,14 +8,15 @@ aliases: ['/tidbcloud/restore-deleted-tidb-cluster']
 
 This document describes how to back up and restore your TiDB cluster data on TiDB Cloud.
 
+> **Note:**
+>
+> For [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier), the backup and restore feature is unavailable. You can use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) to export your data as a backup.
+
 ## Backup
 
 TiDB Cloud provides two types of data backup: automatic backup and manual backup.
 
-For [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier), each cluster allows one automatic backup and two manual backups:
-
-- For the automatic backup, the existing backup will be replaced by the newer backup.
-- For the manual backup, if you already have two backups, you need to delete at least one backup before you are able to make another backup.
+Daily backups are automatically scheduled for your TiDB clusters in TiDB Cloud. You can pick a backup snapshot and restore it into a new TiDB cluster at any time. Automated backup can reduce your losses in extreme disaster situations.
 
 ### Automatic backup
 
@@ -70,6 +71,14 @@ To delete an existing backup file, perform the following steps:
 
 2. Click **Delete** for the backup file that you want to delete.
 
+### Delete a running backup job
+
+To delete a running backup job, it is similar as [**Delete backup files**](#delete-backup-files).
+
+1. Navigate to the **Backup** tab of a cluster.
+
+2. Click **Delete** for the backup file that is in the **Pending** or **Running** state.
+
 ### Best practices for backup
 
 - It is recommended that you perform backup operations at cluster idle time to minimize the impact on business.
@@ -94,7 +103,7 @@ To restore your TiDB cluster data from a backup to a new cluster, take the follo
 3. In the **Restore** window, make the following changes if necessary:
 
     - Update the port number of the cluster.
-    - Increase the vCPUs size, node quantity, and storage size for the cluster.
+    - Increase the node size, node quantity, and storage size for the cluster.
 
 4. Click **Confirm**.
 
@@ -112,7 +121,7 @@ To restore a deleted cluster from recycle bin, take the following steps:
 4. In the **Restore** window, make the following changes if necessary:
 
     - Update the port number of the cluster.
-    - Increase the vCPUs size, node quantity, and storage size for the cluster.
+    - Increase the node size, node quantity, and storage size for the cluster.
 
 5. Click **Confirm**.
 

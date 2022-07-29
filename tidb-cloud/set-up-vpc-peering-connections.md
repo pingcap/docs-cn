@@ -11,13 +11,13 @@ VPC peering connection is a networking connection between two VPCs that enables 
 
 Currently, TiDB Cloud only supports VPC peering in the same region for the same project. TiDB clusters of the same project in the same region are created in the same VPC. Therefore, once VPC peering is set up in a region of a project, all the TiDB clusters created in the same region of this project can be connected in your VPC. VPC peering setup differs among cloud providers.
 
-## Prerequisites
+## Prerequisite: Set a Project CIDR
 
 Project CIDR (Classless Inter-Domain Routing) is the CIDR block used for network peering in a project.
 
-Before adding VPC Peering requests to a region, you need to set a project CIDR for your project's AWS and GCP respectively to establish a peering link to your application's VPC.
+Before adding VPC Peering requests to a region, you need to set a project CIDR for your project's cloud provider (AWS or GCP) to establish a peering link to your application's VPC.
 
-You can set the project CIDR during creating the first Dedicated Tier of your project. If you want to set the project CIDR before creating the tier, do the following:
+You can set the project CIDR when creating the first Dedicated Tier of your project. If you want to set the project CIDR before creating the tier, perform the following operations:
 
 1. On the TiDB Cloud console, choose a target project, and then click the **Project Settings** tab.
 
@@ -65,8 +65,6 @@ You can set the project CIDR during creating the first Dedicated Tier of your pr
 
 3. Click **Initialize**. The **Approve VPC Peerings** dialog is displayed.
 
-    ![Add VPC peering](/media/tidb-cloud/vpc-peering/tidb-cloud-vpc-peering-env-check-information.png)
-
 ### Step 2: Approve and configure the VPC peering
 
 Use either of the following two options to approve and configure the VPC peering connection:
@@ -99,7 +97,7 @@ Use either of the following two options to approve and configure the VPC peering
     {{< copyable "shell-regular" >}}
 
     ```bash
-    # Set up the related variables.
+    # Sets up the related variables.
     pcx_tidb_to_app_id="<TiDB peering id>"
     app_region="<APP Region>"
     app_vpc_id="<Your VPC ID>"
@@ -208,8 +206,6 @@ You can also use the AWS dashboard to configure the VPC peering connection.
     - Application GCP project ID
     - VPC Network Name
     - VPC CIDR
-
-    ![VPC-Peering](/media/tidb-cloud/VPC-Peering2.png)
 
 3. Click **Initialize**. The **Approve VPC Peerings** dialog is displayed.
 

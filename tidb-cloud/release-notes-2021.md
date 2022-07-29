@@ -46,7 +46,7 @@ Bug fixes:
     
     * One TiDB shared node
     * One TiKV shared node (with 500 MiB of OLTP storage)
-    * One TiFlash<sup>beta</sup> shared node (with 500 MiB of OLAP storage)
+    * One TiFlash shared node (with 500 MiB of OLAP storage)
   
   Get started [here](/tidb-cloud/tidb-cloud-quickstart.md).
   

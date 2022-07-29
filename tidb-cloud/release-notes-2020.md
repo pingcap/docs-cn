@@ -34,7 +34,7 @@ This page lists the release notes of [TiDB Cloud](https://en.pingcap.com/tidb-cl
 * Update Terms of Service and Privacy location in the Sign Up page
 * Add a feedback form entrance widget
 * Prevent Members from deleting owner(s) in the Preference tab
-* Change TiFlash<sup>beta</sup> and TiKV storage chart metrics
+* Change TiFlash and TiKV storage chart metrics
 * Upgrade the default TiDB cluster version to 4.0.8
 
 ## October 12, 2020
@@ -45,7 +45,7 @@ This page lists the release notes of [TiDB Cloud](https://en.pingcap.com/tidb-cl
 
 ## October 2, 2020
 
-* Fix TiFlash<sup>beta</sup> disk storage configuration
+* Fix TiFlash disk storage configuration
 
 ## September 14, 2020
 

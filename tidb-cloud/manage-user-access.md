@@ -1,11 +1,11 @@
 ---
-title: Manage User Access
-summary: Learn how to manage the user access in your TiDB Cloud cluster.
+title: Manage Console User Access
+summary: Learn how to manage the user access of the TiDB Cloud console.
 ---
 
-# Manage User Access
+# Manage Console User Access
 
-This document describes how to manage the user access in your TiDB Cloud cluster.
+This document describes how to manage user access of the [TiDB Cloud console](https://tidbcloud.com/console).
 
 ## Sign in
 

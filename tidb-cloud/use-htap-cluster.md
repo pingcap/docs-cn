@@ -5,15 +5,15 @@ summary: Learn how to use HTAP cluster in TiDB Cloud.
 
 # Use an HTAP Cluster
 
-[HTAP](https://en.wikipedia.org/wiki/Hybrid_transactional/analytical_processing) means Hybrid Transactional/Analytical Processing. The HTAP cluster in TiDB Cloud is composed of [TiKV](https://tikv.org), a row-based storage engine designed for transactional processing, and [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview)<sup>beta</sup>, a columnar storage designed for analytical processing. Your application data is first stored in TiKV and then replicated to TiFlash<sup>beta</sup> via the Raft consensus algorithm. So it is real time replication from the row store to the columnar store.
+[HTAP](https://en.wikipedia.org/wiki/Hybrid_transactional/analytical_processing) means Hybrid Transactional/Analytical Processing. The HTAP cluster in TiDB Cloud is composed of [TiKV](https://tikv.org), a row-based storage engine designed for transactional processing, and [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview), a columnar storage designed for analytical processing. Your application data is first stored in TiKV and then replicated to TiFlash via the Raft consensus algorithm. So it is real time replication from the row store to the columnar store.
 
-With TiDB Cloud, you can create an HTAP cluster easily by specifying one or more TiFlash<sup>beta</sup> nodes according to your HTAP workload. If the TiFlash<sup>beta</sup> node count is not specified when you create the cluster or you want to add more TiFlash<sup>beta</sup> nodes, you can change the node count by [scaling the cluster](/tidb-cloud/scale-tidb-cluster.md).
+With TiDB Cloud, you can create an HTAP cluster easily by specifying one or more TiFlash nodes according to your HTAP workload. If the TiFlash node count is not specified when you create the cluster or you want to add more TiFlash nodes, you can change the node count by [scaling the cluster](/tidb-cloud/scale-tidb-cluster.md).
 
 > **Note:**
 >
-> A Developer Tier cluster has one TiFlash<sup>beta</sup> node by default and you cannot change the number.
+> A Developer Tier cluster has one TiFlash node by default and you cannot change the number.
 
-TiKV data is not replicated to TiFlash<sup>beta</sup> by default. You can select which table to replicate to TiFlash<sup>beta</sup> using the following SQL statement:
+TiKV data is not replicated to TiFlash by default. You can select which table to replicate to TiFlash using the following SQL statement:
 
 {{< copyable "sql" >}}
 
@@ -21,7 +21,7 @@ TiKV data is not replicated to TiFlash<sup>beta</sup> by default. You can select
 ALTER TABLE table_name SET TIFLASH REPLICA 1;
 ```
 
-The number of replicas count must be smaller than the number of TiFlash<sup>beta</sup> nodes. Setting the number of replicas to `0` means deleting the replica in TiFlash<sup>beta</sup>.
+The number of replicas count must be no larger than the number of TiFlash nodes. Setting the number of replicas to `0` means deleting the replica in TiFlash.
 
 To check the replication progress, use the following command:
 
@@ -31,13 +31,13 @@ To check the replication progress, use the following command:
 SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = '<db_name>' and TABLE_NAME = '<table_name>';
 ```
 
-## Use TiDB to read TiFlash<sup>beta</sup> replicas
+## Use TiDB to read TiFlash replicas
 
-After data is replicated to TiFlash<sup>beta</sup>, you can use one of the following three ways to read TiFlash<sup>beta</sup> replicas to accelerate your analytical computing.
+After data is replicated to TiFlash, you can use one of the following three ways to read TiFlash replicas to accelerate your analytical computing.
 
 ### Smart selection
 
-For tables with TiFlash<sup>beta</sup> replicas, the TiDB optimizer automatically determines whether to use TiFlash<sup>beta</sup> replicas based on the cost estimation. For example:
+For tables with TiFlash replicas, the TiDB optimizer automatically determines whether to use TiFlash replicas based on the cost estimation. For example:
 
 {{< copyable "sql" >}}
 
@@ -55,7 +55,7 @@ explain analyze select count(*) from test.t;
 +--------------------------+---------+---------+--------------+---------------+----------------------------------------------------------------------+--------------------------------+-----------+------+
 ```
 
-`cop[tiflash]` means that the task will be sent to TiFlash<sup>beta</sup> for processing. If your queries have not selected a TiFlash<sup>beta</sup> replica, try to update the statistics using the `analyze table` statement, and then check the result using the `explain analyze` statement.
+`cop[tiflash]` means that the task will be sent to TiFlash for processing. If your queries have not selected a TiFlash replica, try to update the statistics using the `analyze table` statement, and then check the result using the `explain analyze` statement.
 
 ### Engine isolation
 
@@ -77,4 +77,4 @@ Manual hint can force TiDB to use specified replicas for one or more specific ta
 select /*+ read_from_storage(tiflash[table_name]) */ ... from table_name;
 ```
 
-To learn more about TiFlash<sup>beta</sup>, refer to the documentation [here](https://docs.pingcap.com/tidb/stable/tiflash-overview/).
+To learn more about TiFlash, refer to the documentation [here](https://docs.pingcap.com/tidb/stable/tiflash-overview/).

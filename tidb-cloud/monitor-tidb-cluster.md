@@ -18,7 +18,7 @@ You can see the current status of each running cluster on the cluster page.
 | **Normal** | Normal running (including data migration) |
 | **Creating** | Creating the cluster |
 | **Importing** | The cluster is importing data |
-| **Scaling** | Scaling the TiDB, TiKV, or TiFlash<sup>beta</sup> nodes |
+| **Scaling** | Scaling the TiDB, TiKV, or TiFlash nodes |
 | **Upgrading** | Upgrading the TiDB version |
 | **Unavailable** | The TiDB Cloud service is not available |
 | **Unhealthy** | Part of nodes are unavailable, not enough replicas, and so on |
@@ -51,7 +51,7 @@ On the cluster overview page, you can view the commonly used metrics of the clus
 
 2. Click the name of a cluster to go to the cluster overview page.
 
-    Currently, the metrics include Total QPS, Latency, Connections, TiFlash<sup>beta</sup> Request QPS, TiFlash<sup>beta</sup> Request Duration, TiFlash<sup>beta</sup> Storage Size, TiKV Storage Size, TiDB CPU, TiKV CPU, TiKV IO Read, and TiKV IO Write.
+    Currently, the metrics include Total QPS, Latency, Connections, TiFlash Request QPS, TiFlash Request Duration, TiFlash Storage Size, TiKV Storage Size, TiDB CPU, TiKV CPU, TiKV IO Read, and TiKV IO Write.
 
 ## Built-in alerting
 

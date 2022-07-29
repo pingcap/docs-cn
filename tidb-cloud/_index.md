@@ -29,7 +29,7 @@ aliases: ['/tidbcloud/beta/privacy-policy', '/tidbcloud/beta/terms-of-service', 
 - [Determine Your TiDB Size](/tidb-cloud/size-your-cluster.md)
 - [Create a TiDB Cluster](/tidb-cloud/create-tidb-cluster.md)
 - [Connect to a TiDB Cluster](/tidb-cloud/connect-to-tidb-cluster.md)
-- [Use an HTAP Cluster](/tidb-cloud/use-htap-cluster.md)
+- [Use an HTAP Cluster](/tiflash/tiflash-overview.md)
 - [Scale a TiDB Cluster](/tidb-cloud/scale-tidb-cluster.md)
 - [Upgrade a TiDB Cluster](/tidb-cloud/upgrade-tidb-cluster.md)
 
@@ -58,13 +58,8 @@ aliases: ['/tidbcloud/beta/privacy-policy', '/tidbcloud/beta/terms-of-service', 
 <NavColumn>
 <ColumnTitle>Manage User Access</ColumnTitle>
 
-- [Sign In](/tidb-cloud/manage-user-access.md#sign-in)
-- [Sign Out](/tidb-cloud/manage-user-access.md#sign-out)
-- [View the Organization and Project](/tidb-cloud/manage-user-access.md#view-the-organization-and-project)
-- [Invite an Organization Member](/tidb-cloud/manage-user-access.md#invite-an-organization-member)
-- [Invite a Project Member](/tidb-cloud/manage-user-access.md#invite-a-project-member)
-- [Configure Member Roles](/tidb-cloud/manage-user-access.md#configure-member-roles)
-- [Set the Local Time Zone](/tidb-cloud/manage-user-access.md#set-the-local-time-zone)
+- [Manage Console User Access](/tidb-cloud/manage-user-access.md)
+- [Configure Cluster Security Settings](/tidb-cloud/configure-security-settings.md)
 
 </NavColumn>
 

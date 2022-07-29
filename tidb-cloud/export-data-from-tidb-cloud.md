@@ -7,11 +7,9 @@ summary: This page has instructions for exporting data from your TiDB cluster in
 
 This page describes how to export data from your cluster in TiDB Cloud.
 
-Daily backups are automatically scheduled for your TiDB clusters in TiDB Cloud. You can pick a backup snapshot and restore it into a new TiDB cluster at any time. Automated backup can reduce your losses in extreme disaster situations.
+TiDB does not lock in your data. Sometimes you still want to be able to migrate data from TiDB to other data platforms. Because TiDB is highly compatible with MySQL, any export tool suitable for MySQL can also be used for TiDB.
 
-TiDB does not lock in your data, sometimes you still want to be able to migrate data from TiDB to other data platforms. Because TiDB is highly compatible with MySQL, any export tool suitable for MySQL can also be used for TiDB.
-
-You can use the same tool [Dumpling](https://github.com/pingcap/dumpling) for data export. 
+You can use the tool [Dumpling](https://github.com/pingcap/dumpling) for data export.
 
 1. Download and install TiUP:
 

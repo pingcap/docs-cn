@@ -7,11 +7,25 @@ aliases: ['/tidbcloud/glossary']
 
 # TiDB Cloud Glossary
 
+## A
+
+### ACID
+
+ACID refers to the four key properties of a transaction: atomicity, consistency, isolation, and durability. Each of these properties is described below.
+
+- **Atomicity** means that either all the changes of an operation are performed, or none of them are. TiDB ensures the atomicity of the [TiDB Region](#region) that stores the Primary Key to achieve the atomicity of transactions.
+
+- **Consistency** means that transactions always bring the database from one consistent state to another. In TiDB, data consistency is ensured before writing data to the memory.
+
+- **Isolation** means that a transaction in process is invisible to other transactions until it completes. This allows concurrent transactions to read and write data without sacrificing consistency. TiDB currently supports the isolation level of `REPEATABLE READ`.
+
+- **Durability** means that once a transaction is committed, it remains committed even in the event of a system failure. TiKV uses persistent storage to ensure durability.
+
 ## C
 
 ### cluster tier
 
-Determines the functionality and capacity of your cluster. Different cluster tiers provide different numbers of TiDB, TiKV, and TiFlash<sup>beta</sup> nodes in your cluster.
+Determines the functionality and capacity of your cluster. Different cluster tiers provide different numbers of TiDB, TiKV, and TiFlash nodes in your cluster.
 
 ## M
 
@@ -23,7 +37,7 @@ A user that has been invited to an organization, with access to the organization
 
 ### node
 
-Refers to either a data instance (TiKV) or a compute instance (TiDB) or an analytical instance (TiFlash<sup>beta</sup>).
+Refers to either a data instance (TiKV) or a compute instance (TiDB) or an analytical instance (TiFlash).
 
 ## O
 
@@ -73,13 +87,13 @@ A separate database that can be located in the same or different region and cont
 
 ### TiDB cluster
 
-The collection of [TiDB](https://docs.pingcap.com/tidb/stable/tidb-computing), [TiKV](https://docs.pingcap.com/tidb/stable/tidb-storage), [the Placement Driver](https://docs.pingcap.com/tidb/stable/tidb-scheduling) (PD), and [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview)<sup>beta</sup> nodes that form a functional working database.
+The collection of [TiDB](https://docs.pingcap.com/tidb/stable/tidb-computing), [TiKV](https://docs.pingcap.com/tidb/stable/tidb-storage), [the Placement Driver](https://docs.pingcap.com/tidb/stable/tidb-scheduling) (PD), and [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview) nodes that form a functional working database.
 
 ### TiDB node
 
 The computing node that aggregates data from queries returned from transactional or analytical stores. Increasing the number of TiDB nodes will increase the number of concurrent queries that the cluster can handle.
 
-### TiFlash<sup>beta</sup> node
+### TiFlash node
 
 The analytical storage node that replicates data from TiKV in real time and supports real-time analytical workloads.
 
