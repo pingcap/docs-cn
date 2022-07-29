@@ -16,7 +16,7 @@ aliases: ['/zh/tidb/v6.0/grafana-performance-overview-dashboard']
 
 ### Grafana
 
-使用 TiUP 部署 TiDB 集群时，你可以一键部署监控系统 (Prometheus & Grafana)，并在 Grafana 中查看。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
+使用 TiUP 部署 TiDB 集群时，你可以一键部署监控系统 (Prometheus 和 Grafana)，并在 Grafana 中查看 Performance Overview 面板。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 ![performance overview](/media/performance/grafana_performance_overview.png)
 
