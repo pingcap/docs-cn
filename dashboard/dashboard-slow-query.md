@@ -62,7 +62,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 TiDB Dashboard 提供两种方式查看执行计划：图形和文本。通过图形化的执行计划，你可以更清晰地了解一个语句的具体算子和对应的内容。参阅[理解 TiDB 执行计划](/explain-overview.md)。
 
-#### 如何查看图形化执行计划
+#### 图形化执行计划介绍
 
 1. 查看顺序是从左到右，从上到下。
 2. 更上的节点是父算子，更下的节点是子算子。
