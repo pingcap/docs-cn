@@ -6,15 +6,17 @@ aliases: ['/zh/tidb/v6.0/grafana-performance-overview-dashboard']
 
 # Performance Overview 面板重要监控指标详解
 
-## 查看方式
+Performance Overview 面板是 TiDB v6.1.0 引入的性能分析和优化工具，借助该工具，你可以高效地进行性能分析，确认用户响应时间的瓶颈是否在数据库中。如果数据库是整个系统的瓶颈，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。
 
-### TiDB Dashboard Metrics
+本文介绍如何查看 Performance Overview 面板，并解读面板重要监控指标。
+
+## 通过 TiDB Dashboard Monitoring 查看
 
 进入 TiDB Dashboard 中，进入指标页面查看。
 
 ![指标页面](/media/dashboard/dashboard-monitoring.png)
 
-### Grafana
+## 通过 Grafana 查看
 
 使用 TiUP 部署 TiDB 集群时，你可以一键部署监控系统 (Prometheus 和 Grafana)，并在 Grafana 中查看 Performance Overview 面板。监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
@@ -22,15 +24,15 @@ aliases: ['/zh/tidb/v6.0/grafana-performance-overview-dashboard']
 
 ## 面板监控指标详解
 
-Performance Overview Dashboard 按总分结构对 TiDB、TiKV 和 PD 的性能指标进行了编排组织，包含以下三部分内容：
+Performance Overview 面板按总分结构对 TiDB、TiKV 和 PD 的性能指标进行了编排组织，包含以下三部分内容：
 
 - 总的概览：数据库时间和 SQL 执行时间概览。通过颜色优化法，你可以快速识别数据库负载特征和性能瓶颈。
 - 资源负载：关键指标和资源利用率，包含数据库 QPS、应用和数据库的连接信息和请求命令类型、数据库内部 TSO 和 KV 请求 OPS、TiDB 和 TiKV 的资源使用概况。
 - 自上而下的延迟分解：Query 延迟和连接空闲时间对比、Query 延迟分解、execute 阶段 TSO 请求和 KV 请求的延迟、TiKV 内部写延迟的分解等。
 
-借助 Performance Overview Dashboard，你可以高效地进行性能分析，确认用户响应时间的瓶颈是否在数据库中。如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。详情请参考 [TiDB 性能分析和优化方法](/performance-tuning-methods.md)。
+借助 Performance Overview 面板，你可以高效地进行性能分析，确认用户响应时间的瓶颈是否在数据库中。如果数据库是整个系统的瓶颈，通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。详情请参考 [TiDB 性能分析和优化方法](/performance-tuning-methods.md)。
 
-以下为 Performance Overview Dashboard 监控说明：
+以下为 Performance Overview 面板监控说明：
 
 ### Database Time by SQL Type
 
