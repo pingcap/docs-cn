@@ -139,10 +139,11 @@ tiup br restore point -pd=172.16.102.95:2379
 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 --full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
 
-Full Restore <---------------------------------------------------------------------> 100.00%
-Restore DDL files <----------------------------------------------------------------> 100.00%
-Restore DML Files <----------------------------------------------------------------> 100.00%
-Restore DDL files <----------------------------------------------------------------> 100.00%
+Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+[2022/07/29 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=xxx] [ranges-failed=0] [split-region=xxx.xxxµs] [restore-ranges=xxx] [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
+Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+[2022/07/29 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
 ```
 
 ## 备份任务失败
