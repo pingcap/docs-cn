@@ -12,7 +12,7 @@ aliases: ['/zh/tidb/v6.0/grafana-performance-overview-dashboard']
 
 进入 TiDB Dashboard 中，进入指标页面查看。
 
-![指标页面]()
+![指标页面](/media/dashboard/dashboard-monitoring.png)
 
 ### Grafana
 
