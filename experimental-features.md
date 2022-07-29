@@ -29,6 +29,7 @@ aliases: ['/zh/tidb/v5.0/experimental-features-4.0/']
 + [JSON 数据类型](/data-type-json.md) 及 [JSON 函数](/functions-and-operators/json-functions.md)。
 + [View](/information-schema/information-schema-views.md)。
 + [执行计划缓存](/sql-prepare-plan-cache.md)。（v4.0 实验特性）
++ [使用 `ALTER TABLE` 修改多个列或索引](/system-variables.md#tidb_enable_change_multi_schema)。（v5.0.0 实验特性）
 
 ## 配置管理
 
