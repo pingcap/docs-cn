@@ -89,8 +89,8 @@ BR 和 TiDB 各版本兼容情况如下表所示：
 |  ----  |  ----  | ---- | ---- | ---- |
 |用 BR v5.4 备份 TiDB v5.4| 兼容 | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）| 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复） | 不兼容（调整恢复集群的 [新 collation](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) 配置跟备份集群相同后，可以恢复）|
 |用 BR v6.0 备份 TiDB v6.0| 不兼容 |兼容 | 兼容 | 兼容 |
-|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
-|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容(已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)) | 兼容 | 兼容 |
+|用 BR v6.1 备份 TiDB v6.1| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
+|用 BR v6.2 备份 TiDB v6.2| 不兼容 | 兼容（已知问题，如果备份数据中包含空库可能导致报错，参考 [#36379](https://github.com/pingcap/tidb/issues/36379)） | 兼容 | 兼容 |
 
 ### 使用建议
 
