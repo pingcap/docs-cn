@@ -162,9 +162,9 @@ br restore full\
 
 ## 恢复 `mysql` 数据库下的表
 
-自 BR v5.1.0 开始，全量备份会备份**系统表数据**。BR v6.2.0 以前的版本，在默认设置下只会恢复用户数据，而不会恢复系统表数据。自 BR v6.2.0 开始，如果备份数据中包含系统表数据，在设置 `--with-sys-table=true` 下，恢复数据时 BR 将同时恢复**系统权限相关数据**。
+自 BR v5.1.0 开始，全量备份会备份**系统表数据**。BR v6.2.0 以前的版本，在默认设置下只会恢复用户数据，而不会恢复系统表数据。自 BR v6.2.0 开始，如果备份数据中包含系统表数据，在设置 `--with-sys-table=true` 下，恢复数据时 BR 将同时恢复**部分系统表相关数据**。
 
-BR 可恢复的**系统权限相关数据**包括如下表：
+BR 可恢复的**部分系统表**包括如下表：
 
 ```
 +----------------------------------+
@@ -179,7 +179,13 @@ BR 可恢复的**系统权限相关数据**包括如下表：
 +----------------------------------+
 ```
 
-恢复系统权限相关数据的时候：
+**BR 不能恢复以下系统表**：
+
+- 统计信息表（`mysql.stat_*`）
+- 系统变量表（`mysql.tidb`、`mysql.global_variables`）
+- [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
+当恢复系统权限相关数据的时候，请注意：
 
 - BR 不会恢复 `user` 为 `cloud_admin` 并且 `host` 为 `'%'` 的用户数据，该用户是 TiDB Cloud 预留账户。
 - 在恢复数据前会检查目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件:
@@ -197,12 +203,12 @@ BR 可恢复的**系统权限相关数据**包括如下表：
 #######################################################################
 ```
 
-如果需要恢复 `mysql` 下的用户创建的表，可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中要恢复目标用户表为 `mysql.usertable`；该命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
+如果需要恢复 `mysql` 下的用户创建的表（非系统表），可以通过 [table filter](/table-filter.md#表库过滤语法) 来显式地包含目标表。以下示例中要恢复目标用户表为 `mysql.usertable`；该命令会在执行正常的恢复的同时恢复 `mysql.usertable`。
 
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
 ```
 
 在上面的命令中，
@@ -216,16 +222,8 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
+br restore full -f 'mysql.usertable' -s $external_storage_url
 ```
-
-> **警告：**
->
-> BR 可以备份系统表（例如 `mysql.tidb`），但在恢复除权限表以外的 `mysql` 系统表时存在限制。即便是使用了 `-filter` 设置，也不能通过 BR 恢复以下系统表：
->
-> - 统计信息表（`mysql.stat_*`）
-> - 系统变量表（`mysql.tidb`、`mysql.global_variables`）
-> - [其他系统表](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
 
 ## 恢复性能和影响
 
