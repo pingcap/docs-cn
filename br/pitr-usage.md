@@ -1,24 +1,24 @@
 ---
-title: PiTR 功能介绍 
-summary: 了解 PiTR 使用。
+title: 使用 PiTR 
+summary: 了解如何使用 PiTR。
 ---
 
 # 使用 PiTR 
 
-本教程介绍如何部署和使用 PiTR，帮助不熟悉 PiTR 的用户顺利上手该功能。在介绍具体操作前，我们设想一个用户场景，来加深对以下的操作的理解：用户 A 在 AWS 部署一套 TiDB 的生产集群供业务使用，业务团队提出了两个需求
+本教程介绍如何部署和使用 PiTR，可以帮助你顺利上手使用该功能。介绍具体操作前，设想有如下使用场景。你在 AWS 部署了一套 TiDB 生产集群，业务团队提出如下需求：
 
-1. 用户数据变更需要及时地备份下来，在数据库遭遇异常情况的时候能够以最小的用户数据丢失代价（容忍异常前几分钟内的用户数据丢失）快速地恢复业务；
-2. 每个月不定期进行业务审计。要求 A  接收到审计请求后，提供一个数据库来查询审计要求的一个月内某个时间点的数据 
+- 及时备份用户数据变更，在数据库遭遇异常情况时，能够以最小的数据丢失代价（容忍异常前几分钟内的用户数据丢失）快速地恢复业务。
+- 每个月不定期进行业务审计。接收到审计请求后，提供一个数据库来查询审计要求的一个月内某个时间点的数据 
 
-用户 A 通过 TiDB 提供的 PiTR 功能，满足了业务团队的需求。
+通过 TiDB 提供的 PiTR 功能，你可以满足业务团队的需求。
 
 ## 部署 TiDB 集群和 BR
 
-使用 PiTR 功能，需要部署 v6.2.0 及以上版本的 TiDB 集群，并且更新 BR 到与部署 TiDB 集群相同的版本， 该教程假设使用 v6.2.0 版本。
+使用 PiTR 功能，需要部署 v6.2.0 及以上版本的 TiDB 集群，并且更新 BR 到与 TiDB 集群相同的版本，本文假设使用的是 v6.2.0 版本。
 
-TiDB 集群拓扑和配置：
+下表介绍了 TiDB 集群的拓扑和配置。
 
-|**组件** | **CPU** | **内存** |**硬盘类型** | **AWS 机型** | **实例数量** | **实例数量** |
+|**组件** | **CPU** | **内存** |**硬盘类型** | **AWS 机型** | **实例数量** | **实例地址** |
 | --- | --- | --- | --- | --- | --- | --- |
 | TiDB | 16 核+ | 32 GB+ | SAS | c5.2xlarge | 2 | 172.16.102.94:4000 |
 | PD | 4核+ | 8 GB+ | SSD | c5.2xlarge | 3 | 172.16.102.95:2379 |
@@ -26,24 +26,24 @@ TiDB 集群拓扑和配置：
 | BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge |  2 | 172.16.102.93:3000 |
 | 监控 | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 | - |
 
-注意：
-
-- BR 执行备份恢复功能需要访问 PD/TiKV，请确保 BR 与所有 PD/TiKV 的联通性；
-- BR 与 PD 所在服务器时区需要相同。
+> **注意：**
+>
+> - BR 执行备份恢复功能需要访问 PD 和 TiKV，请确保 BR 与所有 PD 和 TiKV 连接正常。
+> - BR 与 PD 所在服务器时区需要相同。
 
 使用 TiUP 部署或升级 TiDB 集群
 
-- 没有部署 TiDB 集群，请参考 [部署 TiDB 集群](/production-deployment-using-tiup.md)
-- 已经部署老版本 TiDB 集群，请先升级 TiDB 集群 [升级 TiDB 集群](/upgrade-tidb-using-tiup.md)
+- 如果没有部署 TiDB 集群，请[部署 TiDB 集群](/production-deployment-using-tiup.md)。
+- 如果已经部署老版本 TiDB 集群，请[升级 TiDB 集群](/upgrade-tidb-using-tiup.md)。
 
 使用 TiUP 安装或升级 BR  
 
-- 没有安装 BR， 使用命令 `tiup install br:v6.2.0` 
-- 升级 BR，使用命令 `tiup update br:v6.2.0`
+- 安装：执行命令 `tiup install br:v6.2.0`
+- 升级：执行命令 `tiup update br:v6.2.0`
 
-## 配置备份存储（S3）
+## 配置备份存储 (Amazon S3)
 
-在开始备份任务之前需要准备好备份存储，在该场景中包含 
+在开始备份任务之前需要准备好备份存储，包括：
 
 1. 准备用于存放备份数据的 s3 bucket 和目录；
 2. 配置访问 s3 中备份目录的权限；
@@ -66,21 +66,21 @@ TiDB 集群拓扑和配置：
 
 ## 确定备份策略
 
-为了满足业务最小数据丢失、快速恢复、一个月内任意时间点审计需求，用户 A 制定了如下的备份策略
+为了满足业务最小数据丢失、快速恢复、一个月内任意时间点审计需求，你可以制定如下备份策略：
 
 - 运行日志备份，持续不断备份数据库数据变更；
 - 每隔两天在零点左右进行一次快照备份；
-- 保存 30 天内的快照备份和日志备份数据，清理超过 30 天的备份数据；
+- 保存 30 天内的快照备份和日志备份数据，清理超过 30 天的备份数据。
 
-## 启动日志备份
+## 执行日志备份
 
-首先启动日志备份任务，日志备份进程会在 TiKV 集群运行，持续不断将数据库变更数据备份到 S3 中。 日志备份任务启动命令：
+启动日志备份任务后，日志备份进程会在 TiKV 集群运行，持续不断将数据库变更数据备份到 S3 中。日志备份任务启动命令：
 
 ```shell
 tiup br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
-启动日志备份任务后查询日志备份任务状态
+启动日志备份任务后，可以查询日志备份任务状态
 
 ```shell
 tiup br log status --task-name=pitr --pd=172.16.102.95:2379 
@@ -89,16 +89,16 @@ tiup br log status --task-name=pitr --pd=172.16.102.95:2379
 > #1 <
     name: pitr
     status: ● NORMAL
-    start: 2022-05-14 11:09:40.7 +0800 CST
-    end: 2035-01-01 00:00:00 +0800 CST
+    start: 2022-05-14 11:09:40.7 +0800
+      end: 2035-01-01 00:00:00 +0800
     storage: s3://tidb-pitr-bucket/backup-data/log-backup
     speed(est.): 0.00 ops/s
-checkpoint[global]: 2022-04-24 11:31:47.2 +0800 CST; gap=4m53s
+checkpoint[global]: 2022-04-24 11:31:47.2 +0800; gap=4m53s
 ```
 
 ## 执行快照备份
 
-通过自动化运维工具（如 crontab）设置定期的快照备份任务，例如：每隔两天在零点左右行一次快照（全量）备份。 下面是两次备份的示例
+通过自动化运维工具（如 crontab）设置定期的快照备份任务，例如：每隔两天在零点左右进行一次快照（全量）备份。下面是两次备份的示例
 
 在 2022/05/12 00:00:00 执行一次快照备份
 
@@ -124,20 +124,21 @@ tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/bac
   rm s3://tidb-pitr-bucket/backup-data/snapshot-20220414000000
   ```
 
-- 删除早于 2022/04/14 00:00:00  的日志备份数据
+- 删除早于 2022/04/14 00:00:00 的日志备份数据
 
   ```shell
-  tiup br log truncate --until='2022/04/14 06:00:00'
+  tiup br log truncate --until='2022-04-14 06:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
   ```
 
 ## 执行 PiTR
 
-用户 A 接到需求，准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。用户 A 通过查看备份存储中的备份数据后，制定了 PiTR 方案。通过恢复 2022/04/12 的快照备份和该快照到 2022/04/13 18:00:00 之间的日志备份数据就可以实现需要，用户 A 执行命令如下：
+假设你接到需求，要准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。此时，你可以制定 PiTR 方案，恢复 2022/04/12 的快照备份和该快照到 2022/04/13 18:00:00 之间的日志备份数据，从而收集到目标数据。执行命令如下：
 
 ```shell
-tiup br restore point -pd=172.16.102.95:2379
+tiup br restore point --pd=172.16.102.95:2379
 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 --full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
+--restored-ts '2022-04-13 18:00:00+0800'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 [2022/07/29 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=xxx] [ranges-failed=0] [split-region=xxx.xxxµs] [restore-ranges=xxx] [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]

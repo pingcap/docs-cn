@@ -19,7 +19,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 下图为 PiTR 功能使用示意：
 
-![br-arch](/media/br/pitr-usage.png)
+![Point-in-Time Recovery](/media/br/pitr-usage.png)
 
 ### 备份数据
 
@@ -56,6 +56,7 @@ summary: 了解 PiTR 功能设计和使用。
 - PiTR 的日志备份对集群的影响在 5% 左右
 - PiTR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内
 - PiTR 恢复速度，全量恢复 ？，日志恢复 ?
+- PiTR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
 
 以上功能指标经过了以下场景验证：
 

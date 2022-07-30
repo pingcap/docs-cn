@@ -24,7 +24,7 @@ Usage:
   br log [command]
 
 Available Commands:
-  metadata   get the metadata of log backup storage 
+  metadata   get the metadata of log dir.
   pause      pause a log backup task
   resume     resume a log backup task
   start      start a log backup task
@@ -45,7 +45,7 @@ Available Commands:
 
 ### 启动日志备份任务
 
-通过 `br log start` 在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 kv 变更日志保存到备份存储中。运行 `br log start --help` 获取该子命令使用介绍：
+通过 `br log start` 在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。运行 `br log start --help` 获取该子命令使用介绍：
 
 ```shell
 ./br log start --help
@@ -56,7 +56,7 @@ Usage:
 
 Flags:
   -h, --help               help for start
-  --start-ts string        usually equals last full backupTS, used for backup log. Default value is current ts. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'.
+  --start-ts string        usually equals last full backupTS, used for backup log. Default value is current ts. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'.
   --task-name string       The task name for the backup log task.
 
 Global Flags:
@@ -74,12 +74,12 @@ Global Flags:
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
 - `--pd`：指定备份集群的 PD 访问地址。 BR 需要访问 PD 发起日志备份任务。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV/PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份暂时只支持本地文件系统和 S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
 ```shell
-./br log start --task-name=pitr --pd=172.16.102.95:2379 –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log start --task-name=pitr --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
 ### 查询日志备份任务
@@ -123,11 +123,11 @@ Global Flags:
 > #1 <
               name: pitr
             status: ● NORMAL
-             start: 2022-07-14 20:08:03.268 +0800 CST
-               end: 2090-11-18 22:07:45.624 +0800 CST
+             start: 2022-07-14 20:08:03.268 +0800
+               end: 2090-11-18 22:07:45.624 +0800
            storage: s3://tmp/store-by-storeid/log1
        speed(est.): 0.82 ops/s
-checkpoint[global]: 2022-07-25 22:52:15.518 +0800 CST; gap=2m52s
+checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 ```
 
 输出中的字段含义如下：
@@ -214,7 +214,7 @@ Usage:
 
 Flags:
   -h, --help           help for status
-  --task-name string   The task name for backup stream log. 
+  --task-name string   The task name for the backup log task.
 
 Global Flags:
  --ca string                  CA certificate path for TLS connection
@@ -248,7 +248,7 @@ Usage:
 Flags:
   --dry-run        Run the command but don't really delete the files.
   -h, --help       help for truncate
-  --until string   Remove all backup data until this TS.(support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'.)
+  --until string   Remove all backup data until this TS.(support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'.)
   -y, --yes        Skip all prompts and always execute the command.
 
 
@@ -265,16 +265,17 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log truncate --until='2022-07-16 20:30:09.0680' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+./br log truncate --until='2022-07-26 21:20:00+0800' –-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
 ```
 
 该子命令运行后输出以下信息：
 
 ```shell
 Reading Metadata... DONE; take = 277.911599ms
-We are going to remove 698059 files, until 2022-07-16 20:30:09.0680.
-Removing metadata... DONE; take = 1m3.199368669s
-Clearing data files done. kv-count = 1391111377, total-size = 208288284714DONE; take = 10m12.406643526s
+We are going to remove 9 files, until 2022-07-26 21:20:00.0000.
+Sure? (y/N) y
+Clearing data files... DONE; take = 43.504161ms, kv-count = 53, kv-size = 4573(4.573kB)
+Removing metadata... DONE; take = 24.038962ms
 ```
 
 ### 查看备份数据 metadata
@@ -313,7 +314,7 @@ Global Flags:
 
 ## 使用日志恢复
 
-通过 `br restore point` 可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point –help` 获取该命令使用介绍
+通过 `br restore point` 可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point --help` 获取该命令使用介绍
 
 ```shell
 ./br restore point --help
@@ -325,8 +326,8 @@ Usage:
 Flags:
   --full-backup-storage string specify the backup full storage. fill it if want restore full backup before restore log.
   -h, --help                   help for point
-  --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'
-  --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23'
+  --restored-ts string         the point of restore, used for log restore. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
+  --start-ts string            the start timestamp which log restore from. support TSO or datetime, e.g. '400036290571534337' or '2018-05-11 01:42:23+0800'
 
 
 Global Flags:
@@ -349,9 +350,9 @@ Global Flags:
 使用示例：
 
 ```shell
-./br restore point -pd=172.16.102.95:2379
-–-storage='s3://tidb-pitr-bucket/backup-data/log-backup'
-–-full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
+./br restore point --pd=172.16.102.95:2379
+--storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 [2022/07/19 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=546.663µs] [restore-ranges=3] [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
