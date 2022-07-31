@@ -12,7 +12,7 @@ Performance Overview 面板是 TiDB v6.1.0 引入的性能分析和优化工具�
 
 ## 通过 TiDB Dashboard Monitoring 查看
 
-进入 TiDB Dashboard 中，进入指标页面查看。
+启动 TiDB Dashboard，左侧面板选择监控 (Monitoring)，即可看到 Performance Overview 页面。
 
 ![指标页面](/media/dashboard/dashboard-monitoring.png)
 
