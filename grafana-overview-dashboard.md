@@ -13,8 +13,8 @@ aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key
     - Data Transfer：Backup & Import、Binlog、Lightning、TiCDC。
     - PD：PD。
     - TiDB：TiDB、TiDB\_Runtime、TiDB\_Summary。
-    - TiKV：TiKV\_Summary、TiKV\_Details、TiKV\_FastTune、TiKV\_Raw。
-    - TiFlash：TiFlash\_Summary、TiFlash\_Proxy\_Summary、TiFlash\_Proxy\_Details、TiKV\_Trouble\_Shooting。
+    - TiKV：TiKV\_Summary、TiKV\_Details、TiKV\_FastTune、TiKV\_Raw、TiKV\_Trouble\_Shooting。
+    - TiFlash：TiFlash\_Summary、TiFlash\_Proxy\_Summary、TiFlash\_Proxy\_Details。
     - Other：Node\_exporter、Blackbox\_exporter、Disk\_Performance、Kafka\_Overview。
 
 对于日常运维，我们单独挑选出重要的 Metrics 放在 Overview 页面，方便日常运维人员观察集群组件 (PD, TiDB, TiKV) 使用状态以及集群使用状态。
