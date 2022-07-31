@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 ### SQL
 
-点击**展开** (**Expand**) 链接可以展开相应项的完整内容，点击**复制** (**Copy**) 链接可以复制完整内容到剪贴板。
+点击**展开** (**Expand**) 链接可以展开相应项的完整内容，点击**复制** (**Copy**) 链接可以复制内容到剪贴板。
 
 ### 执行计划
 
@@ -73,6 +73,11 @@ TiDB Dashboard 提供两种方式查看执行计划：图形和文本。通过�
 - 点击节点的弹窗，将看到算子的详细信息和相关建议。
 
 ![可视化执行计划弹窗](/media/dashboard/dashboard-visual-plan-2.png)
+
+![可视化执行计划弹窗-侧栏](/media/dashboard/dashboard-visual-plan-popup.png)
+
+![可视化执行计划弹窗-建议](/media/dashboard/dashboard-visual-plan-Diagnosis.png)
+
 
 ### SQL 执行相关信息
 
