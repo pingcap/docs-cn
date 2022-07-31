@@ -8,7 +8,7 @@ aliases: ['/docs-cn/dev/grafana-overview-dashboard/','/docs-cn/dev/reference/key
 使用 TiUP 部署 TiDB 集群时，一键部署监控系统 (Prometheus & Grafana)，监控架构参见 [TiDB 监控框架概述](/tidb-monitoring-framework.md)。
 
 目前 Grafana Dashboard 分为:
-- 综合诊断面板：Overview、Performance\_overview、Performance\_Read、Performance\_Write。
+- 综合诊断面板：Overview、Performance\_Overview、Performance\_Read、Performance\_Write。
 - 组件面板：
     - Data Transfer：Backup & Import、Binlog、Lightning、TiCDC。
     - PD：PD。
