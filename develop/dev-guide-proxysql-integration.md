@@ -14,7 +14,9 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 ## 1. 启动 TiDB
 
-### 1.1 测试环境 - 源码编译启动
+<SimpleTab>
+
+<div label="测试环境 - 源码编译启动">
 
 1. 下载 [TiDB](https://github.com/pingcap/tidb) 源码，进入 `tidb-server` 目录后，进行编译。
 
@@ -34,7 +36,9 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
     ${TIDB_SERVER_PATH} -config ./tidb-config.toml -store unistore -path "" -lease 0s > ${LOCAL_TIDB_LOG} 2>&1 &
     ```
 
-### 1.2 测试环境 - TiUP 启动
+</div>
+
+<div label="测试环境 - TiUP 启动">
 
 [TiUP](/tiup/tiup-overview.md) 在 TiDB 中承担着包管理器的角色，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。
 
@@ -50,17 +54,27 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
     tiup playground
     ```
 
-### 1.3 测试环境 - TiDB Cloud Developer Tier
+</div>
+
+<div label="测试环境 - TiDB Cloud Developer Tier">
 
 请参考 [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
-### 1.4 正式环境 - TiDB Cloud
+</div>
+
+<div label="正式环境 - TiDB Cloud">
 
 在需要托管 TiDB 服务的前提下（如无法自行运维，或需要云原生环境等），我们建议直接使用 TiDB Cloud。你可以查看 [TiDB Cloud 的 Create a TiDB Cluster 文档](https://docs.pingcap.com/tidbcloud/create-tidb-cluster)，用以在 TiDB Cloud 中部署正式环境下的 TiDB。
 
-### 1.5 正式环境 - 本地安装
+</div>
+
+<div label="正式环境 - 本地安装">
 
 正式环境相对测试环境会复杂许多，建议详阅[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)一文，后根据硬件条件部署。
+
+</div>
+
+</SimpleTab>
 
 ## 2. 启动 ProxySQL
 
