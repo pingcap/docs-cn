@@ -105,7 +105,7 @@ hide_commit: true
 
 [Dumpling](https://docs.pingcap.com/zh/tidb/stable/dumpling-overview)
 
-[Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)
+[TiDB Lightning](https://docs.pingcap.com/zh/tidb/stable/tidb-lightning-overview)
 
 [Data Migration](https://docs.pingcap.com/zh/tidb/stable/dm-overview)
 
