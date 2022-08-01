@@ -87,7 +87,7 @@ ALTER TABLE test SET tiflash mode NORMAL
 
 当下游也为 TiDB 时，`ALTER TABLE ...SET TiFLASH MODE ..` 会被 TiDB Binlog 同步到下游。其他场景下，TiDB Binlog 不会同步该语句。
 
-Fast mode 不支持 TiCDC。
+Fast Mode 不支持 TiCDC。
 
 ## 另请参阅
 
