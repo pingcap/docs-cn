@@ -444,14 +444,41 @@ Removing network user-split-admin-interface_default
 
 ## 7. 配置代理规则示例 - 使用 Admin Interface 进行配置
 
-### 7.1 示例操作步骤
+### 7.1 示例脚本运行
 
-以 **_ProxySQL Admin Interface_** 为配置入口，代理规则场景中，常见的读写分离配置为例，将使用规则匹配将要运行的 SQL，从而将读、写 SQL 转发至不同的 TiDB 后端（若均未匹配，则使用用户的 `default_hostgroup`）。示例将进行以下操作：
+以 **_ProxySQL Admin Interface_** 为配置入口，代理规则场景中，常见的读写分离配置为例，将使用规则匹配将要运行的 SQL，从而将读、写 SQL 转发至不同的 TiDB 后端（若均未匹配，则使用用户的 `default_hostgroup`）。可使用以下命令获取并运行脚本：
 
-1. 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002。
-2. 通过 Docker Compose 启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。
-3. 在 2 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`，以便分辨不同的数据库实例。
-4. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 SQL 文件，此 SQL 文件将会运行：
+```sh
+git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
+cd tidb-proxysql-integration-test/example/proxy-rule-admin-interface
+./proxy-rule-split.sh
+```
+
+### 7.2 脚本关键步骤解释
+
+1. 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002。TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [docker-compose.yaml](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/proxy-rule-admin-interface/docker-compose.yaml) 中。
+
+    ```sh
+    docker-compose up -d
+    ```
+
+2. 在 2 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`，以便分辨不同的数据库实例。此处展示向其中一个 TiDB 实例写入数据的命令，另一实例同理：
+
+    ```sh
+    mysql -u root -h 127.0.0.1 -P 4001 << EOF
+    DROP TABLE IF EXISTS test.test;
+    CREATE TABLE test.test (db VARCHAR(255));
+    INSERT INTO test.test (db) VALUES ('tidb-0');
+    EOF
+    ```
+
+3. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 SQL 文件：
+
+    ```sh
+    docker-compose exec proxysql sh -c "mysql -uadmin -padmin -h127.0.0.1 -P6032 < ./proxysql-prepare.sql"
+    ```
+
+    此 SQL 文件将会运行：
 
     1. 添加 2 个 TiDB 后端的地址，其中，`tidb-0` 的`hostgroup_id` 为 `0`，`tidb-1` 的`hostgroup_id` 为 `1`。
     2. 生效 TiDB 后端配置，并落盘保存。
@@ -478,20 +505,15 @@ Removing network user-split-admin-interface_default
     > 
     > - 完整参数，请见 [mysql_query_rules](https://proxysql.com/documentation/main-runtime/#mysql_query_rules)。
 
-5. 使用 `root` 用户登录 **_ProxySQL MySQL Interface_**，运行以下语句：
+4. 使用 `root` 用户登录 **_ProxySQL MySQL Interface_**，运行以下语句：
     - `select * from test.test;`: 预计匹配 `rule_id`  为 `2` 的规则，从而转发至 `hostgroup` 为 `1` 的 TiDB 后端 `tidb-1` 中。
     - `select * from test.test for update;`: 预计匹配 `rule_id`  为 `1` 的规则，从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
     - `begin;insert into test.test (db) values ('insert this and rollback later'); select * from test.test; rollback;`: `insert` 语句预计不会匹配所有规则，因此将使用用户的 `default_hostgroup`（为 `0`），从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。而因为 ProxySQL 默认开启用户的 `transaction_persistent`，这将使同一个事务内的所有语句运行在同一个 `hostgroup` 中，因此，这里的 `select * from test.test;` 也将转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
-6. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
+5. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
-### 7.2 示例运行
-
-依赖：
-
-```sh
-cd example/proxy-rule-admin-interface/
-./proxy-rule-split.sh
-```
+    ```sh
+    trap 'docker-compose down' EXIT
+    ```
 
 ### 7.3 预期输出
 
@@ -538,6 +560,7 @@ Removing network proxy-rule-admin-interface_default
 **运行**
 
 ```sh
-cd example/load-balance-config-file/
+git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
+cd tidb-proxysql-integration-test/example/load-balance-config-file
 ./test-load-balance.sh
 ```
