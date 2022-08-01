@@ -58,7 +58,7 @@ Available Commands:
 
 ### 启动日志备份任务
 
-通过 `br log start` 在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。运行 `br log start --help` 获取该子命令使用介绍：
+执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。运行 `br log start --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log start --help
