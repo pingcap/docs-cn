@@ -154,7 +154,7 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 
 ### 暂停和重启日志备份任务
 
-通过 `br log pause` 暂停正在运行中的日志备份任务。运行 `br log pause –help` 获取该子命令使用介绍：
+执行 `br log pause` 命令，你可以暂停正在运行中的日志备份任务。运行 `br log pause –help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log pause --help
