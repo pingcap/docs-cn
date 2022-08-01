@@ -112,6 +112,23 @@ tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/bac
 tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' --backupts='2022/05/14 00:00:00'
 ```
 
+## 执行 PiTR
+
+假设你接到需求，要准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。此时，你可以制定 PiTR 方案，恢复 2022/04/12 的快照备份和该快照到 2022/04/13 18:00:00 之间的日志备份数据，从而收集到目标数据。执行命令如下：
+
+```shell
+tiup br restore point --pd=172.16.102.95:2379
+--storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
+--restored-ts '2022-04-13 18:00:00+0800'
+
+Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+[2022/07/29 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=xxx] [ranges-failed=0] [split-region=xxx.xxxµs] [restore-ranges=xxx] [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
+Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
+[2022/07/29 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
+```
+
 ## 清理过期备份数据
 
 通过自动化运维工具（如 crontab)  每两天定期清理过期备份数据的任务。
@@ -129,23 +146,6 @@ tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/bac
   ```shell
   tiup br log truncate --until='2022-04-14 06:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
   ```
-
-## 执行 PiTR
-
-假设你接到需求，要准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。此时，你可以制定 PiTR 方案，恢复 2022/04/12 的快照备份和该快照到 2022/04/13 18:00:00 之间的日志备份数据，从而收集到目标数据。执行命令如下：
-
-```shell
-tiup br restore point --pd=172.16.102.95:2379
---storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
---restored-ts '2022-04-13 18:00:00+0800'
-
-Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/29 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=xxx] [ranges-failed=0] [split-region=xxx.xxxµs] [restore-ranges=xxx] [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
-Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/29 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
-```
 
 ## 备份任务失败
 
