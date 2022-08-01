@@ -5,7 +5,9 @@ summary: 了解 PiTR 功能设计和使用。
 
 # PiTR 功能介绍
 
-使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始支持 PiTR 功能，满足以下需求：
+使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始在 [BR](/br/backup-and-restore-overview.md) 工具引入 PiTR 功能。通过 BR 工具，你可以完成 PiTR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点。
+
+PiTR 可用于满足以下业务需求：
 
 - 降低灾备场景下的 RPO，实现 RPO 15min。
 - 处理业务数据写错的案例，如回滚业务数据到出错事件前。
