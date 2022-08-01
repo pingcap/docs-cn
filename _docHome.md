@@ -9,13 +9,13 @@ hide_leftNav: true
 
 <DocHomeSection label="TiDB" anchor="tidb" id="tidb">
 
-TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或缩容、强一致性、金融级高可用。支持在本地和云上部署。
+TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库，是一款同时支持在线事务处理与在线分析处理 (Hybrid Transactional and Analytical Processing, HTAP) 的融合型分布式数据库产品，具备水平扩容或者缩容、金融级高可用、实时 HTAP、云原生的分布式数据库、兼容 MySQL 5.7 协议和 MySQL 生态等重要特性，支持在本地和云上部署。
 
 <DocHomeCardContainer>
 
 <DocHomeCard href="/tidb/stable" icon="doc1" label="TiDB 文档">
 
-查看 TiDB 的全部产品文档
+查看 TiDB 产品的全部文档
 
 </DocHomeCard>
 
@@ -41,13 +41,13 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 <DocHomeSection label="TiDB Cloud" anchor="tidb-cloud" id="tidb-cloud">
 
-TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产品，依托于公有云提供开箱即用的 TiDB 服务。TiDB Cloud 屏蔽 TiDB 数据库部署、运维和性能调优的复杂性，您可以通过界面上几下点击就可以快速创建和管理 TiDB 实例，让您专注于自身业务应用程序的开发，降低总体拥有成本。适用于中国出海企业和开发者。
+TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产品，依托于公有云提供开箱即用的 TiDB 服务。TiDB Cloud 让数据库部署、运维和性能调优变得轻松简单，通过界面上的几次点击即可快速创建和管理 TiDB 集群，让您可以专注于自身业务。适用于中国出海企业和开发者。
 
 <DocHomeCardContainer>
 
 <DocHomeCard href="https://docs.pingcap.com/tidbcloud" icon="doc2" label="TiDB Cloud 文档">
 
-查看 TiDB Cloud 的全部产品文档（英文版）
+查看 TiDB Cloud 产品的全部文档（英文版）
 
 </DocHomeCard>
 
@@ -57,7 +57,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证（PoC）">
+<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证 (PoC)">
 
 帮助您快速完成 TiDB Cloud 概念验证 (Proof of Concept, PoC)
 
@@ -65,7 +65,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCardContainer>
 
-体验云原生、分布式的实时 HTAP 数据库 TiDB Cloud
+体验全托管的云原生、分布式、实时 HTAP 数据库 TiDB Cloud
 
 <a href="https://tidbcloud.com/free-trial" class="button" target="_blank" referrerpolicy="no-referrer-when-downgrade">免费试用</a>
 
@@ -103,7 +103,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 <DocHomeCard href="https://pingcap.com/zh/education" icon="cloud1" label="PingCAP Education">
 
-提供众多免费课程，助您深入学习 TiDB，成为 TiDB 技术专家。
+提供众多免费课程，助您深入学习 TiDB，成为 TiDB 技术专家
 
 </DocHomeCard>
 
@@ -127,7 +127,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 <DocHomeCard href="https://ossinsight.io" icon="cloud6" label="OSS Insight">
 
-一款强大有趣的洞察工具，帮您深入分析 GitHub 库
+一款强大有趣的洞察工具，帮您深入分析 GitHub 仓库
 
 </DocHomeCard>
 

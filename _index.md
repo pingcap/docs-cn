@@ -5,7 +5,7 @@ hide_sidebar: true
 hide_commit: true
 ---
 
-<LearningPathContainer platform="tidb" title="TiDB" subTitle="TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。您可以在这里查看操作指南、示例、参考等产品文档。">
+<LearningPathContainer platform="tidb" title="TiDB" subTitle="TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。您可以在这里查看概念介绍、操作指南、应用开发、参考等产品文档。">
 
 <LearningPath label="了解" icon="cloud1">
 
@@ -91,7 +91,7 @@ hide_commit: true
 
 [调优实践](https://docs.pingcap.com/zh/tidb/stable/performance-tuning-practices)
 
-[调优操作系统性能参数](https://docs.pingcap.com/zh/tidb/stable/tune-operating-system)
+[操作系统性能参数调优](https://docs.pingcap.com/zh/tidb/stable/tune-operating-system)
 
 [内存调优](https://docs.pingcap.com/zh/tidb/stable/configure-memory-usage)
 
