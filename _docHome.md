@@ -51,13 +51,13 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart" icon="cloud5" label="TiDB Cloud 快速上手">
+<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" icon="cloud5" label="TiDB Cloud 快速上手">
 
 快速体验和上手 TiDB Cloud
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证（PoC）">
+<DocHomeCard href="/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证（PoC）">
 
 帮助您快速完成 TiDB Cloud 概念验证 (Proof of Concept, PoC)
 
@@ -75,19 +75,19 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 <DocHomeCardContainer>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-overview" icon="doc8" label="开发者手册">
+<DocHomeCard href="/tidb/stable/dev-guide-overview" icon="doc8" label="开发者手册">
 
 使用 TiDB 快速构建一个应用
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
+<DocHomeCard href="/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
 
 使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-outdated-for-go-sql-driver-mysql" icon="go" label="Golang">
+<DocHomeCard href="/tidb/stable/dev-guide-outdated-for-go-sql-driver-mysql" icon="go" label="Golang">
 
 使用 TiDB 和 Golang 来构造一个简单的 CRUD 应用程序
 
@@ -101,31 +101,31 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 <DocHomeCardContainer>
 
-<DocHomeCard href="https://pingcap.com/zh/education/" icon="cloud1" label="PingCAP Education">
+<DocHomeCard href="https://pingcap.com/zh/education" icon="cloud1" label="PingCAP Education">
 
 提供众多免费课程，助您深入学习 TiDB，成为 TiDB 技术专家。
 
 </DocHomeCard>
 
-<DocHomeCard href="https://tidb.net/" icon="doc9" label="TiDB 社区">
+<DocHomeCard href="https://tidb.net" icon="doc9" label="TiDB 社区">
 
 开发者、用户、Contributor、合作伙伴一起建立的分享、学习平台
 
 </DocHomeCard>
 
-<DocHomeCard href="https://pingcap.com/zh/blog/" icon="doc10" label="TiDB 博客">
+<DocHomeCard href="https://pingcap.com/zh/blog" icon="doc10" label="TiDB 博客">
 
 满满的技术干货、深度解读、技术分享
 
 </DocHomeCard>
 
-<DocHomeCard href="https://asktug.com/" icon="asktug" label="Ask TiDB User Group">
+<DocHomeCard href="https://asktug.com" icon="asktug" label="Ask TiDB User Group">
 
 互助交流，有问有答
 
 </DocHomeCard>
 
-<DocHomeCard href="https://ossinsight.io/" icon="cloud6" label="OSS Insight">
+<DocHomeCard href="https://ossinsight.io" icon="cloud6" label="OSS Insight">
 
 一款强大有趣的洞察工具，帮您深入分析 GitHub 库
 
