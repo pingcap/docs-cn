@@ -35,7 +35,7 @@ br log status --pd x.x.x.x:2379
       checkpoint[global]: 2022-07-25 14:46:50.118 +0000; gap=11h31m29s
           error[store=1]: KV:LogBackup:RaftReq
 error-happen-at[store=1]: 2022-07-25 14:54:44.467 +0000; gap=11h23m35s
-  error-message[store=1]: retry time exceeds: and error and error failed to get initial snapshot: failed to get the snapshot (region_id = 94812): Error during requesting raftstore: message: "read index not ready, reason ca
+  error-message[store=1]: retry time exceeds: and error failed to get initial snapshot: failed to get the snapshot (region_id = 94812): Error during requesting raftstore: message: "read index not ready, reason ca
                           n not read index due to merge, region 94812" read_index_not_ready { reason: "can not read index due to merge" region_id: 94812 }: failed to get initial snapshot: failed to get the snapshot (region
                           _id = 94812): Error during requesting raftstore: message: "read index not ready, reason can not read index due to merge, region 94812" read_index_not_ready { reason: "can not read index due to mer
                           ge" region_id: 94812 }: failed to get initial snapshot: failed to get the snapshot (region_id = 94812): Error during requesting raftstore: message: "read index not ready, reason can not read index
