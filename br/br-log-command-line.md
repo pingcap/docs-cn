@@ -51,8 +51,8 @@ Available Commands:
 - `br log start`：启动一个日志备份任务
 - `br log status`：查询日志备份任务状态
 - `br log pause`：暂停日志备份任务
-- `br log resume`：重启处于暂停的备份任务
-- `br log stop`：停止备份任务, 并删除任务元信息
+- `br log resume`：重启暂停的备份任务
+- `br log stop`：停止备份任务，并删除任务元信息
 - `br log truncate`：从备份存储中清理日志备份数据
 - `br log metadata`：查询备份存储中备份数据的元信息
 
