@@ -9,7 +9,7 @@ summary: 日志备份常见问题以及解决方法。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
-## 在使用 `br restore point` 命令恢复下游集群后，无法从 TiFlash 引擎中查询到数据？
+## 在使用 `br restore point` 命令恢复下游集群后，无法从 TiFlash 引擎中查询到数据，该如何处理 ？
 
 在当前 v6.2.0 版本中，使用 PiTR 功能恢复下游集群数据时，并不支持恢复下游的 TiFlash 副本，用户在恢复数据之后，需要手动设置 schema/table 的 TiFlash 副本，如：
 
