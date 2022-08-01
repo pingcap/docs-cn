@@ -216,7 +216,7 @@ Global Flags:
 
 ### （永久）停止日志备份任务
 
-通过 `br log stop` 永久地停止日志备份任务，该命令会清理备份集群中的任务元信息、关闭运行进程。运行 `br log stop --help` 获取该子命令使用介绍：
+执行 `br log stop` 命令，你可以永久地停止日志备份任务，该命令会清理备份集群中的任务元信息。运行 `br log stop --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log stop --help
