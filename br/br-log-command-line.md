@@ -11,7 +11,7 @@ summary: 了解如何使用 br log 命令行工具进行日志备份。
 
 使用日志备份前，你需要安装 BR。你可以选择[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐），或[下载 TiDB 离线包](/download-ecosystem-tools.md)。
 
-## 使用日志备份
+## 备份日志
 
 你可以使用 `br log` 命令来备份日志，通过该命令的子命令，你可以完成如下操作：
 
