@@ -240,19 +240,36 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 > - Docker Compose
 > - MySQL Client
 
-## 5. 配置负载均衡示例 - 使用 Admin Interface 进行配置
+## 5. 配置示例
 
-### 5.1 示例脚本运行
+示例依赖：
+
+- Docker
+- Docker Compose
+- MySQL Client
+
+下载示例源码并进入目录：
+
+```sh
+git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
+cd tidb-proxysql-integration-test
+```
+
+后续步骤皆以 `tidb-proxysql-integration-test` 目录做为根目录。
+
+### 5.1 配置负载均衡示例 - 使用 Admin Interface 进行配置
+
+进入本示例目录 `cd example/load-balance-admin-interface`。
+
+**脚本运行**
 
 以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡场景为例。可使用以下命令获取并运行脚本：
 
 ```sh
-git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
-cd tidb-proxysql-integration-test/example/load-balance-admin-interface
 ./test-load-balance.sh
 ```
 
-### 5.2 脚本关键步骤解释
+**逐步运行**
 
 1. 通过 Docker Compose 启动三个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002、4003。TiDB 容器实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [docker-compose.yaml](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/load-balance-admin-interface/docker-compose.yaml) 中。
 
@@ -260,13 +277,25 @@ cd tidb-proxysql-integration-test/example/load-balance-admin-interface
     docker-compose up -d
     ```
 
-2. 在 3 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`、`'tidb-2'`，以便分辨不同的数据库实例。此处展示向其中一个 TiDB 实例写入数据的命令，其他两实例同理：
+2. 在 3 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`、`'tidb-2'`，以便分辨不同的数据库实例：
 
     ```sh
     mysql -u root -h 127.0.0.1 -P 4001 << EOF
     DROP TABLE IF EXISTS test.test;
     CREATE TABLE test.test (db VARCHAR(255));
     INSERT INTO test.test (db) VALUES ('tidb-0');
+    EOF
+
+    mysql -u root -h 127.0.0.1 -P 4002 << EOF
+    DROP TABLE IF EXISTS test.test;
+    CREATE TABLE test.test (db VARCHAR(255));
+    INSERT INTO test.test (db) VALUES ('tidb-1');
+    EOF
+
+    mysql -u root -h 127.0.0.1 -P 4003 << EOF
+    DROP TABLE IF EXISTS test.test;
+    CREATE TABLE test.test (db VARCHAR(255));
+    INSERT INTO test.test (db) VALUES ('tidb-2');
     EOF
     ```
 
@@ -298,10 +327,10 @@ cd tidb-proxysql-integration-test/example/load-balance-admin-interface
 5. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
     ```sh
-    trap 'docker-compose down' EXIT
+    docker-compose down
     ```
 
-### 5.3 预期输出
+**预期输出**
 
 因为负载均衡的原因，预期输出将有 `'tidb-0'`、`'tidb-1'`、`'tidb-2'` 三种不同的返回。但具体顺序未知。其中一种预期输出为：
 
@@ -348,19 +377,19 @@ Removing load-balance-admin-interface_tidb-1_1   ... done
 Removing network load-balance-admin-interface_default
 ```
 
-## 6. 配置用户分离示例 - 使用 Admin Interface 进行配置
+### 5.2 配置用户分离示例 - 使用 Admin Interface 进行配置
 
-### 6.1 示例脚本运行
+进入本示例目录 `cd example/user-split-admin-interface`。
+
+**脚本运行**
 
 以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡配置用户分离场景为例，不同用户将使用不同的 TiDB 后端。可使用以下命令获取并运行脚本：
 
 ```sh
-git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
-cd tidb-proxysql-integration-test/example/user-split-admin-interface
 ./test-user-split.sh
 ```
 
-### 6.2 脚本关键步骤解释
+**逐步运行**
 
 1. 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002。TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [docker-compose.yaml](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/user-split-admin-interface/docker-compose.yaml) 中。
 
@@ -368,13 +397,19 @@ cd tidb-proxysql-integration-test/example/user-split-admin-interface
     docker-compose up -d
     ```
 
-2. 在 2 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`，以便分辨不同的数据库实例。此处展示向其中一个 TiDB 实例写入数据的命令，另一实例同理：
+2. 在 2 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`，以便分辨不同的数据库实例：
 
     ```sh
     mysql -u root -h 127.0.0.1 -P 4001 << EOF
     DROP TABLE IF EXISTS test.test;
     CREATE TABLE test.test (db VARCHAR(255));
     INSERT INTO test.test (db) VALUES ('tidb-0');
+    EOF
+
+    mysql -u root -h 127.0.0.1 -P 4002 << EOF
+    DROP TABLE IF EXISTS test.test;
+    CREATE TABLE test.test (db VARCHAR(255));
+    INSERT INTO test.test (db) VALUES ('tidb-1');
     EOF
     ```
 
@@ -412,10 +447,10 @@ cd tidb-proxysql-integration-test/example/user-split-admin-interface
 6. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
     ```sh
-    trap 'docker-compose down' EXIT
+    docker-compose down
     ```
 
-### 6.3 预期输出
+**预期输出**
 
 ```
 # ./test-user-split.sh 
@@ -442,19 +477,19 @@ Removing user-split-admin-interface_tidb-1_1   ... done
 Removing network user-split-admin-interface_default
 ```
 
-## 7. 配置代理规则示例 - 使用 Admin Interface 进行配置
+### 5.3 配置代理规则示例 - 使用 Admin Interface 进行配置
 
-### 7.1 示例脚本运行
+进入本示例目录 `cd example/proxy-rule-admin-interface`。
+
+**脚本运行**
 
 以 **_ProxySQL Admin Interface_** 为配置入口，代理规则场景中，常见的读写分离配置为例，将使用规则匹配将要运行的 SQL，从而将读、写 SQL 转发至不同的 TiDB 后端（若均未匹配，则使用用户的 `default_hostgroup`）。可使用以下命令获取并运行脚本：
 
 ```sh
-git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
-cd tidb-proxysql-integration-test/example/proxy-rule-admin-interface
 ./proxy-rule-split.sh
 ```
 
-### 7.2 脚本关键步骤解释
+**逐步运行**
 
 1. 通过 Docker Compose 启动两个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002。TiDB 实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [docker-compose.yaml](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/proxy-rule-admin-interface/docker-compose.yaml) 中。
 
@@ -469,6 +504,12 @@ cd tidb-proxysql-integration-test/example/proxy-rule-admin-interface
     DROP TABLE IF EXISTS test.test;
     CREATE TABLE test.test (db VARCHAR(255));
     INSERT INTO test.test (db) VALUES ('tidb-0');
+    EOF
+
+    mysql -u root -h 127.0.0.1 -P 4002 << EOF
+    DROP TABLE IF EXISTS test.test;
+    CREATE TABLE test.test (db VARCHAR(255));
+    INSERT INTO test.test (db) VALUES ('tidb-1');
     EOF
     ```
 
@@ -505,17 +546,48 @@ cd tidb-proxysql-integration-test/example/proxy-rule-admin-interface
     > 
     > - 完整参数，请见 [mysql_query_rules](https://proxysql.com/documentation/main-runtime/#mysql_query_rules)。
 
-4. 使用 `root` 用户登录 **_ProxySQL MySQL Interface_**，运行以下语句：
-    - `select * from test.test;`: 预计匹配 `rule_id`  为 `2` 的规则，从而转发至 `hostgroup` 为 `1` 的 TiDB 后端 `tidb-1` 中。
-    - `select * from test.test for update;`: 预计匹配 `rule_id`  为 `1` 的规则，从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
-    - `begin;insert into test.test (db) values ('insert this and rollback later'); select * from test.test; rollback;`: `insert` 语句预计不会匹配所有规则，因此将使用用户的 `default_hostgroup`（为 `0`），从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。而因为 ProxySQL 默认开启用户的 `transaction_persistent`，这将使同一个事务内的所有语句运行在同一个 `hostgroup` 中，因此，这里的 `select * from test.test;` 也将转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
+4. 使用 `root` 用户登录 **_ProxySQL MySQL Interface_**：
+
+    ```sh
+    mysql -u root -h 127.0.0.1 -P 6034
+    ```
+
+    登录后可运行以下语句：
+
+    - `SELECT` 语句：
+
+        ```sql
+        select * from test.test;
+        ```
+
+        预计匹配 `rule_id`  为 `2` 的规则，从而转发至 `hostgroup` 为 `1` 的 TiDB 后端 `tidb-1` 中。
+
+    - `SELECT ... FOR UPDATE` 语句：
+
+        ```sql
+        select * from test.test for update;
+        ```
+
+        预计匹配 `rule_id`  为 `1` 的规则，从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
+
+    - 事务语句：
+
+        ```sql
+        begin;
+        insert into test.test (db) values ('insert this and rollback later');
+        select * from test.test;
+        rollback;
+        ```
+
+        `insert` 语句预计不会匹配所有规则，因此将使用用户的 `default_hostgroup`（为 `0`），从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。而因为 ProxySQL 默认开启用户的 `transaction_persistent`，这将使同一个事务内的所有语句运行在同一个 `hostgroup` 中，因此，这里的 `select * from test.test;` 也将转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
+
 5. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
     ```sh
-    trap 'docker-compose down' EXIT
+    docker-compose down
     ```
 
-### 7.3 预期输出
+**预期输出**
 
 ```
 # ./proxy-rule-split.sh 
@@ -548,7 +620,7 @@ Removing proxy-rule-admin-interface_tidb-1_1   ... done
 Removing network proxy-rule-admin-interface_default
 ```
 
-## 8. 配置负载均衡示例 - 使用配置文件进行配置
+### 5.4 配置负载均衡示例 - 使用配置文件进行配置
 
 以配置文件为配置入口，配置负载均衡场景为例。此配置实现效果与 [5.3 配置负载均衡示例 - 使用 Admin Interface 进行配置](#53-配置负载均衡示例---使用-admin-interface-进行配置)完全一致，仅改为使用配置文件进行 ProxySQL 初始化配置。
 
@@ -560,7 +632,6 @@ Removing network proxy-rule-admin-interface_default
 **运行**
 
 ```sh
-git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
-cd tidb-proxysql-integration-test/example/load-balance-config-file
+cd example/load-balance-config-file
 ./test-load-balance.sh
 ```
