@@ -412,6 +412,7 @@
         - [手动处理 Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
       - [迁移使用 GH-ost/PT-osc 的数据源](/dm/feature-online-ddl.md)
       - [上下游列数量不一致的迁移](/migrate-with-more-columns-downstream.md)
+      - [增量数据校验](/dm/dm-continuous-data-validation.md)
     - 运维管理
       - 集群版本升级
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
