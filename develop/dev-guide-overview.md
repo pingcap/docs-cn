@@ -9,6 +9,8 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 本手册将展示如何使用 TiDB 来快速构建一个应用，并且阐述使用 TiDB 期间可能出现的场景以及可能会遇到的问题。因此，在阅读此页面之前，建议你先行阅读 [TiDB 数据库快速上手指南](/quick-start-with-tidb.md)。
 
+此外，你还可以通过视频的形式学习免费的 [TiDB SQL 开发在线课程](https://pingcap.com/zh/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)。
+
 ## TiDB 基础
 
 在你开始使用 TiDB 之前，你需要了解一些关于 TiDB 数据库的一些重要工作机制：
@@ -36,7 +38,6 @@ TiDB 高度兼容 MySQL 协议，TiDB 支持[大多数 MySQL 的语法及特性]
 ## 扩展阅读
 
 - [快速开始](/develop/dev-guide-build-cluster-in-cloud.md)
-- [TiDB SQL 开发免费在线课程](https://pingcap.com/zh/courses-catalog/back-end-developer/?utm_source=docs-cn-dev-guide)
 - [选择驱动或 ORM 框架](/develop/dev-guide-choose-driver-or-orm.md)
 - [连接到 TiDB](/develop/dev-guide-connect-to-tidb.md)
 - [数据库模式设计](/develop/dev-guide-schema-design-overview.md)
