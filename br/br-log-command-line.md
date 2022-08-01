@@ -325,7 +325,7 @@ Global Flags:
 [2022/07/25 23:02:57.236 +08:00] [INFO] [collector.go:69] ["log metadata"] [log-min-ts=434582449885806593] [log-min-date="2022-07-14 20:08:03.268 +0800"] [log-max-ts=434834300106964993] [log-max-date="2022-07-25 23:00:15.618 +0800"]
 ```
 
-## 使用日志恢复
+## 恢复日志
 
 通过 `br restore point` 可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point --help` 获取该命令使用介绍
 
