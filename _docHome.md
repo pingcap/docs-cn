@@ -51,13 +51,13 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/tidb-cloud-quickstart" icon="cloud5" label="TiDB Cloud 快速上手">
+<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-quickstart" icon="cloud5" label="TiDB Cloud 快速上手">
 
 快速体验和上手 TiDB Cloud
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证（PoC）">
+<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证（PoC）">
 
 帮助您快速完成 TiDB Cloud 概念验证 (Proof of Concept, PoC)
 
@@ -75,19 +75,19 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 <DocHomeCardContainer>
 
-<DocHomeCard href="/tidb/stable/dev-guide-overview" icon="doc8" label="开发者手册">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-overview" icon="doc8" label="开发者手册">
 
 使用 TiDB 快速构建一个应用
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
 
 使用 TiDB 和 Java 来构造一个简单的 CRUD 应用程序
 
 </DocHomeCard>
 
-<DocHomeCard href="/tidb/stable/dev-guide-outdated-for-go-sql-driver-mysql" icon="go" label="Golang">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-outdated-for-go-sql-driver-mysql" icon="go" label="Golang">
 
 使用 TiDB 和 Golang 来构造一个简单的 CRUD 应用程序
 
