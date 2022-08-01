@@ -50,7 +50,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 v3 版本，因此，从 v5.x.x 或 
 
 ### PageStorage
 
-TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在高并发或者重型查询情况下，可以有效缓解 TiFlash 数据 GC 带来的 CPU 占用高的问题。
+TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 format_version=4）。新版本大幅降低了峰值写 IO 流量，在有较高更新流量和同时有高并发或重型查询情况下，可以有效缓解 TiFlash 数据 GC 带来的 CPU 占用高的问题。
 
 - 已有节点升级 v6.2.0 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
 - 新旧版本的数据格式不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要注意）。升级完成后，请使用[手动 compact 命令](/sql-statements/sql-statement-alter-table-compact.md)触发一个 compaction 动作将相关表的数据转成新版本格式。操作步骤如下：
