@@ -14,6 +14,8 @@ TiDB offers two release series:
 * Long-Term Support Releases
 * Development Milestone Releases (introduced in TiDB v6.0.0)
 
+To learn about the support policy for major releases of TiDB, see [TiDB Release Support Policy](https://en.pingcap.com/tidb-release-support-policy/).
+
 ## Release versioning
 
 TiDB versioning has the form of `X.Y.Z`. `X.Y` represents a release series.
