@@ -13,19 +13,19 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 <DocHomeCardContainer>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable" icon="doc1" label="TiDB 文档">
+<DocHomeCard href="/tidb/stable" icon="doc1" label="TiDB 文档">
 
 查看 TiDB 的全部产品文档
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/quick-start-with-tidb" icon="doc5" label="快速上手 TiDB">
+<DocHomeCard href="/tidb/stable/quick-start-with-tidb" icon="doc5" label="快速上手 TiDB">
 
 快速了解和使用 TiDB
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup" icon="cloud7" label="部署本地 TiDB 集群">
+<DocHomeCard href="/tidb/stable/production-deployment-using-tiup" icon="cloud7" label="部署本地 TiDB 集群">
 
 在生产环境中部署本地 TiDB 集群
 
