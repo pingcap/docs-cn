@@ -232,6 +232,14 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 +--------------------+
 ```
 
+> **注意：**
+>
+> 示例依赖：
+>
+> - Docker
+> - Docker Compose
+> - MySQL Client
+
 ## 5. 配置负载均衡示例 - 使用 Admin Interface 进行配置
 
 ### 5.1 示例操作步骤
@@ -252,12 +260,6 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 6. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
 ### 5.2 示例运行
-
-依赖：
-
-- Docker
-- Docker Compose
-- MySQL Client
 
 ```sh
 cd example/load-balance-admin-interface/
@@ -311,7 +313,7 @@ Removing load-balance-admin-interface_tidb-1_1   ... done
 Removing network load-balance-admin-interface_default
 ```
 
-## 6. 配置用户分离 - 使用 Admin Interface 进行配置
+## 6. 配置用户分离示例 - 使用 Admin Interface 进行配置
 
 ### 6.1 示例操作步骤
 
@@ -332,12 +334,6 @@ Removing network load-balance-admin-interface_default
 6. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
 ### 6.2 示例运行
-
-依赖：
-
-- Docker
-- Docker Compose
-- MySQL Client
 
 ```sh
 cd example/user-split-admin-interface/
@@ -371,7 +367,7 @@ Removing user-split-admin-interface_tidb-1_1   ... done
 Removing network user-split-admin-interface_default
 ```
 
-## 7. 配置代理规则 - 使用 Admin Interface 进行配置
+## 7. 配置代理规则示例 - 使用 Admin Interface 进行配置
 
 ### 7.1 示例操作步骤
 
@@ -416,10 +412,6 @@ Removing network user-split-admin-interface_default
 ### 7.2 示例运行
 
 依赖：
-
-- Docker
-- Docker Compose
-- MySQL Client
 
 ```sh
 cd example/proxy-rule-admin-interface/
