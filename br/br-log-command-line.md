@@ -186,7 +186,7 @@ Global Flags:
 ./br log pause --task-name=pitr --pd=172.16.102.95:2379 
 ```
 
-通过 `br log resume` 恢复被暂停的日志备份任务。运行 `br log resume --help` 获取该子命令使用介绍
+执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。运行 `br log resume --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log resume --help
