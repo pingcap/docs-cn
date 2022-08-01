@@ -548,6 +548,21 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 悲观事务模式中，始终默认执行约束检查。
 
+### `tidb_cost_model_version` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **警告：**
+>
+> - 当前 Cost Model Version 2 为实验特性，不建议在生产环境中使用。
+> - 切换代价模型版本可能会引起查询计划的变动。
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`1`
+- 可选值：`[1, 2]`
+- TiDB v6.2.0 引入了代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)，在内部测试中比此前版本的代价模型更加准确。
+- 通过将 `tidb_cost_model_version` 设置为 `2` 可以启用 Cost Model Version 2 代价模型，设置为 `1` 则继续使用 Cost Model Version 1 代价模型。
+- 代价模型会影响优化器对计划的选择，具体可见[代价模型](/cost-model.md)。
+
 ### `tidb_current_ts`
 
 - 作用域：SESSION
@@ -660,6 +675,18 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 > **注意：**
 >
 > 目前该特性可能造成事务语义的变化，且与 TiDB Binlog 存在部分不兼容的场景，可以参考[事务语义行为区别](https://github.com/pingcap/tidb/issues/21069)和[与 TiDB Binlog 兼容问题汇总](https://github.com/pingcap/tidb/issues/20996)了解更多关于该特性的使用注意事项。
+
+### `tidb_enable_analyze_snapshot` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 该变量控制 `ANALYZE` 读取历史时刻的数据还是读取最新的数据。当该变量设置为 `ON` 时，`ANALYZE` 读取 `ANALYZE` 开始时刻的历史数据。当该变量设置为 `OFF` 时，`ANALYZE` 读取最新的数据。
+- 在 v5.2 之前，`ANALYZE` 读取最新的数据。v5.2 至 v6.1 版本 `ANALYZE` 读取 `ANALYZE` 开始时刻的历史数据。
+
+> **警告：**
+>
+> 如果 `ANALYZE` 读取 `ANALYZE` 开始时刻的历史数据，长时间的 `AUTO ANALYZE` 可能会因为历史数据被 GC 而出现 `GC life time is shorter than transaction duration` 的报错。
 
 ### `tidb_enable_async_commit` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -838,6 +865,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 >
 > 该变量只有在默认值 `OFF` 时，才算是安全的。因为设置 `tidb_enable_noop_functions=1` 后，TiDB 会自动忽略某些语法而不报错，这可能会导致应用程序出现异常行为。例如，允许使用语法 `START TRANSACTION READ ONLY` 时，事务仍会处于读写模式。
 
+### `tidb_enable_noop_variables` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 若该变量值为 `OFF`，TiDB 具有以下行为：
+    * 使用 `SET` 设置 `noop` 的系统变量时会报 `"setting *variable_name* has no effect in TiDB"` 的警告。
+    * `SHOW [SESSION | GLOBAL] VARIABLES` 的结果不显示 `noop` 的系统变量。
+    * 使用 `SELECT` 读取 `noop` 的系统变量时会报 `"variable *variable_name* has no effect in TiDB"` 的警告。
+- 你可以通过 `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` 语句来检查 TiDB 实例是否曾设置和读取 `noop` 系统变量。
+
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -850,11 +888,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：在 v6.2.0 前为 `OFF`，自 v6.2.0 起为 `ON`。如果是从 v6.2.0 前的集群升级至 v6.2.0 或以后版本，保持升级前的默认值 `OFF`。
+- 默认值：`OFF`
 - 这个变量用于控制 `IndexLookUp` 算子是否使用分页 (paging) 方式发送 Coprocessor 请求。
 - 适用场景：对于使用 `IndexLookUp` 和 `Limit` 并且 `Limit` 无法下推到 `IndexScan` 上的读请求，可能会出现读请求的延迟高、TiKV 的 Unified read pool CPU 使用率高的情况。在这种情况下，由于 `Limit` 算子只需要少部分数据，开启 `tidb_enable_paging`，能够减少处理数据的数量，从而降低延迟、减少资源消耗。
 - 开启 `tidb_enable_paging` 后，`Limit` 无法下推且数量小于 `960` 的 `IndexLookUp` 请求会使用 paging 方式发送 Coprocessor 请求。`Limit` 的值越小，优化效果会越明显。
-- 自 v6.2.0 起，Coprocessor 协议的数据传输默认采用分页模式。
 
 ### `tidb_enable_parallel_apply` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1074,6 +1111,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
+
+### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 这个变量用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。
+- 开启该变量后，即可在 TiDB Dashboard 中查看查询的图形化执行计划。注意，TiDB Dashboard 只显示变量开启时产生的查询的执行计划。
+- 用 `select tidb_decode_binary_plan('xxx...')` SQL 语句可以从编码后的执行计划解析出具体的执行计划。
 
 ### `tidb_gc_concurrency` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1408,6 +1454,16 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 > * [go-sql-driver](https://github.com/go-sql-driver/mysql#multistatements) (`multiStatements`)
 > * [Connector/J](https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-configuration-properties.html) (`allowMultiQueries`)
 > * PHP [mysqli](https://dev.mysql.com/doc/apis-php/en/apis-php-mysqli.quickstart.multiple-statement.html) (`mysqli_multi_query`)
+
+### `tidb_enable_new_cost_interface` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
+- 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
+- 从 v6.2.0 及之前版本升级至 v6.2.0 或之后版本的用户，此开关保持原版本的 `OFF` 状态，用户无需修改。
 
 ### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1995,6 +2051,26 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 范围：`[1, 256]`
 - 这个变量用于设置 window 算子的并行度。
 - 默认值 `-1` 表示使用 `tidb_executor_concurrency` 的值。
+
+### `tiflash_fine_grained_shuffle_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`8192`
+- 范围：`[1, 18446744073709551616]`
+- 细粒度 shuffle 功能开启时，下推到 TiFlash 的窗口函数可以并行执行。该变量控制发送端发送数据的攒批大小，即发送端累计行数超过该值就会进行一次数据发送。
+- 对性能影响：如果该值设置过小，例如极端值 1 ，会导致每个 Block 都进行一次网络传输。如果设置过大，例如极端值整个表的行数，会导致接收端大部分时间都在等待数据，无法流水线计算。可以观察 TiFlash 接收端收到的行数分布情况，如果大部分线程接收的行数很少，例如只有几百行，可以增加该值以达到减少网络开销的目的。
+
+### `tiflash_fine_grained_shuffle_stream_count` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 默认值：`0`
+- 范围：`[-1, 1024]`
+- 当窗口函数下推到 TiFlash 执行时，可以通过该变量控制窗口函数执行的并行度。不同取值含义：
+
+    * -1: 表示不使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数以单线程方式执行
+    * 0: 表示使用细粒度 shuffle 功能。如果 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) 有效（大于 0），则 `tiflash_fine_grained_shuffle_stream_count` 会自动取值为 [`tidb_max_tiflash_threads`](/system-variables.md#tidb_max_tiflash_threads-从-v610-版本开始引入) ，否则为默认值 8 。最终在 TiFlash 上窗口函数的实际并发度为：min(`tiflash_fine_grained_shuffle_stream_count`，TiFlash 节点物理线程数)
+    * 大于 0: 表示使用细粒度 shuffle 功能，下推到 TiFlash 的窗口函数会以多线程方式执行，并发度为： min(`tiflash_fine_grained_shuffle_stream_count`, TiFlash 节点物理线程数)
+- 理论上窗口函数的性能会随着该值的增加线性提升。但是如果设置的值超过实际的物理线程数，反而会导致性能下降。
 
 ### `time_zone`
 

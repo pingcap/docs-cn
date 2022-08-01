@@ -54,6 +54,7 @@
       - [Follower Read](/develop/dev-guide-use-follower-read.md)
       - [Stale Read](/develop/dev-guide-use-stale-read.md)
     - [HTAP 查询](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
+    - [Fast Mode](/develop/dev-guide-read-in-fast-mode.md)
   - 事务
     - [概览](/develop/dev-guide-transaction-overview.md)
     - [乐观事务和悲观事务](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
@@ -212,6 +213,7 @@
         - [统计信息简介](/statistics.md)
         - [错误索引的解决方案](/wrong-index-solution.md)
         - [Distinct 优化](/agg-distinct-optimization.md)
+        - [代价模型](/cost-model.md)
       - [执行计划缓存](/sql-prepared-plan-cache.md)
     - 控制执行计划
       - [控制执行计划概览](/control-execution-plan.md)
@@ -410,6 +412,7 @@
         - [手动处理 Sharding DDL Lock](/dm/manually-handling-sharding-ddl-locks.md)
       - [迁移使用 GH-ost/PT-osc 的数据源](/dm/feature-online-ddl.md)
       - [上下游列数量不一致的迁移](/migrate-with-more-columns-downstream.md)
+      - [增量数据校验](/dm/dm-continuous-data-validation.md)
     - 运维管理
       - 集群版本升级
         - [使用 TiUP 运维集群（推荐）](/dm/maintain-dm-using-tiup.md)
@@ -599,6 +602,7 @@
       - [`ALTER PLACEMENT POLICY`](/sql-statements/sql-statement-alter-placement-policy.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER TABLE COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)
+      - [`ALTER TABLE SET TIFLASH MODE`](/sql-statements/sql-statement-set-tiflash-mode.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
       - [`ANALYZE TABLE`](/sql-statements/sql-statement-analyze-table.md)
       - [`BACKUP`](/sql-statements/sql-statement-backup.md)
@@ -677,6 +681,7 @@
       - [`SHOW CREATE PLACEMENT POLICY`](/sql-statements/sql-statement-show-create-placement-policy.md)
       - [`SHOW CREATE SEQUENCE`](/sql-statements/sql-statement-show-create-sequence.md)
       - [`SHOW CREATE TABLE`](/sql-statements/sql-statement-show-create-table.md)
+      - [`SHOW CREATE DATABASE`](/sql-statements/sql-statement-show-create-database.md)
       - [`SHOW CREATE USER`](/sql-statements/sql-statement-show-create-user.md)
       - [`SHOW DATABASES`](/sql-statements/sql-statement-show-databases.md)
       - [`SHOW DRAINER STATUS`](/sql-statements/sql-statement-show-drainer-status.md)

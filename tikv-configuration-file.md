@@ -200,6 +200,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 + 该配置项指定 TiKV 中发送 Raft 消息的缓冲区大小。如果存在消息发送不及时导致缓冲区满、消息被丢弃的情况，可以适当调大该配置项值以提升系统运行的稳定性。
 + 默认值：8192
 
+### `simplify-metrics` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 是否精简返回的监控指标 Metrics 数据。设置为 `true` 后，TiKV 可以通过过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量。
++ 默认值：false
+
 ## readpool.unified
 
 统一处理读请求的线程池相关的配置项。该线程池自 4.0 版本起取代原有的 storage 和 coprocessor 线程池。
@@ -1619,6 +1624,17 @@ Raft Engine 相关的配置项。
 + 增量扫描历史数据任务的最大并发执行个数。
 + 默认值：6，即最多并发执行 6 个任务
 + 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
+
+### `raw-min-ts-outlier-threshold` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
++ 对 RawKV 的 Resolved TS 进行异常检测的阈值。
++ 如果某个 Region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 Region 将被认为出现锁释放缓慢，并触发 TiKV-CDC 重新订阅该 Region 的数据变更，从而重置锁资源状态。
++ 默认值：60s
+
+> **警告：**
+>
+> - 这个配置项将在未来版本中废弃。为了避免遇到升级兼容性问题，不建议设置这个配置项。
+> - 大部分情况下不需要修改这个参数，因为出现锁释放缓慢的概率很小。如果参数设置过小，会导致异常检测出现误判，引起数据复制的抖动。
 
 ## resolved-ts
 
