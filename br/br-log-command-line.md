@@ -356,9 +356,9 @@ Global Flags:
 - `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
-- `--pd`: 指定恢复集群的 PD 访问地址
-- `ca`,`cert`,`key`： 指定使用 mTLS 加密方式与 TiKV/PD 进行通讯
-- `--storage`: 指定日志备份的存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+- `--pd`：指定恢复集群的 PD 访问地址。
+- `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
+- `--storage`：指定日志备份的存储地址。日志备份暂时只支持 Amazon S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
