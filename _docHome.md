@@ -41,7 +41,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 <DocHomeSection label="TiDB Cloud" anchor="tidb-cloud" id="tidb-cloud">
 
-TiDB Cloud 是一款 Database-as-a-Service (DBaaS) 产品。提供 AWS 和 GCP 多云可选，按需付费。开箱即用，轻松进行集群部署和管理。适用于中国出海企业和开发者。
+TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产品，依托于公有云提供开箱即用的 TiDB 服务。TiDB Cloud 屏蔽 TiDB 数据库部署、运维和性能调优的复杂性，您可以通过界面上几下点击就可以快速创建和管理 TiDB 实例，让您专注于自身业务应用程序的开发，降低总体拥有成本。适用于中国出海企业和开发者。
 
 <DocHomeCardContainer>
 
