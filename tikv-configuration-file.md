@@ -1625,6 +1625,18 @@ Raft Engine 相关的配置项。
 + 默认值：6，即最多并发执行 6 个任务
 + 注意：`incremental-scan-concurrency` 需要大于等于 `incremental-scan-threads`，否则 TiKV 启动会报错。
 
+### `raw-min-ts-outlier-threshold` <span class="version-mark">从 v6.2 版本开始引入</span>
+
++ RawKV Resolved TS 异常检测阈值。
++ 如果某个 region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 region 将被认为发生了死锁，并触发 TiKV-CDC 的重新订阅，从而重置锁状态。
++ 默认值：60s
+
+> **警告：**
+>
+> - 不建议设置这个配置项。
+> - 仅在非常特殊的场景下，可能出现 Resolved TS 死锁。大部分情况下不需要修改这个参数。如果设置过小，会引起异常检测出现误判，导致数据复制出现抖动。
+> - 这个配置项将在未来 1 ~ 2 个版本内删除。为了避免升级遇到兼容性问题，不建议设置这个配置项。
+
 ## resolved-ts
 
 用于维护 Resolved TS 以服务 Stale Read 请求的相关配置项。
