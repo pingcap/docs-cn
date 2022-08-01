@@ -85,9 +85,9 @@ Global Flags:
 
 - `task-name`：指定日志备份任务名。该名称也用于查询备份状态、暂停、重启和恢复备份任务等操作。
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
-- `--pd`：指定备份集群的 PD 访问地址。 BR 需要访问 PD 发起日志备份任务。
-- `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV/PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份暂时只支持本地文件系统和 S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD 发起日志备份任务。
+- `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
+- `--storage`：指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
