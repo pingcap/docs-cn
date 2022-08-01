@@ -145,8 +145,8 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 
 命令输出中的字段含义如下：
 
-- `status`：任务状态，NORMAL(任务正常)/ERROR(任务异常) /PAUSE(任务被暂停)
-- `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts。
+- `status`：任务状态，包括 NORMAL（正常）、ERROR（异常）和 PAUSE（暂停）三种状态
+- `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts
 - `storage`：备份存储
 - `speed`：日志备份任务的总 QPS（每秒备份的日志个数）
 - `checkpoint [global]`：表示集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
