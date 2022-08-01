@@ -187,7 +187,7 @@ BR 可恢复的**部分系统表**包括如下表：
 
 当恢复系统权限相关数据的时候，请注意：
 
-- BR 不会恢复 `user` 为 `cloud_admin` 并且 `host` 为 `'%'` 的用户数据，该用户是 TiDB Cloud 预留账户。
+- BR 不会恢复 `user` 为 `cloud_admin` 并且 `host` 为 `'%'` 的用户数据，该用户是 TiDB Cloud 预留账户。请不要在你的环境中创建 `cloud_admin` 的用户或者角色，因为依赖 `cloud_admin` 的用户的权限将不能被完整恢复。
 - 在恢复数据前会检查目标集群的系统表是否跟备份数据中的系统表兼容。这里的兼容是指满足以下所有条件:
     - 目标集群需要存在备份中的系统权限表。
     - 目标集群系统权限表**列数**需要跟备份数据中一致，列顺序可以有差异。
@@ -208,7 +208,7 @@ BR 可恢复的**部分系统表**包括如下表：
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
 在上面的命令中，
@@ -222,7 +222,7 @@ br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f 'mysql.usertable' -s $external_storage_url
+br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
 ## 恢复性能和影响
