@@ -1628,13 +1628,13 @@ Raft Engine 相关的配置项。
 ### `raw-min-ts-outlier-threshold` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 + 对 RawKV 的 Resolved TS 进行异常检测的阈值。
-+ 如果某个 Region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 Region 将被认为出现了锁泄漏，并触发 TiKV-CDC 重新订阅该 Region 的数据变更，从而重置锁资源状态。
++ 如果某个 Region 的 Resolved TS 延迟超过这个阈值，将进入异常检测流程。此时，Resolved TS 延迟超过 3 x [IQR](https://en.wikipedia.org/wiki/Interquartile_range) 的 Region 将被认为出现锁释放缓慢，并触发 TiKV-CDC 重新订阅该 Region 的数据变更，从而重置锁资源状态。
 + 默认值：60s
 
 > **警告：**
 >
 > - 这个配置项将在未来版本中废弃。为了避免遇到升级兼容性问题，不建议设置这个配置项。
-> - 大部分情况下不需要修改这个参数，因为出现锁泄漏的概率很小。如果参数设置过小，会导致异常检测出现误判，引起数据复制的抖动。
+> - 大部分情况下不需要修改这个参数，因为出现锁释放缓慢的概率很小。如果参数设置过小，会导致异常检测出现误判，引起数据复制的抖动。
 
 ## resolved-ts
 
