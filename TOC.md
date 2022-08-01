@@ -489,6 +489,7 @@
     - [PiTR 的使用场景示例](/br/pitr-usage.md)
     - [PiTR 的监控告警](/br/pitr-monitoring-and-alerting.md)
     - [PiTR 的常见问题处理](/br/pitr-troubleshoot.md)
+    - [PiTR 的已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
