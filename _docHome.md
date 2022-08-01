@@ -5,7 +5,7 @@ hide_commit: true
 hide_leftNav: true
 ---
 
-<DocHomeContainer title="PingCAP 文档中心" subTitle="欢迎来到 PingCAP 文档中心！让我们以文会友，一起探索 HTAP 数据库的奥秘！在您使用 TiDB 产品、迁移数据、基于数据库开发应用等过程中，我们提供了丰富的教程指南、详实的参考资料，帮您顺利完成操作、为您排忧解难。">
+<DocHomeContainer title="PingCAP 文档中心" subTitle="欢迎来到 PingCAP 文档中心！我们为您使用 TiDB 产品、迁移数据、基于数据库开发应用等场景提供了丰富的操作指南、详实的参考资料，帮您顺利完成操作，为您排忧解难。">
 
 <DocHomeSection label="TiDB" anchor="tidb" id="tidb">
 
