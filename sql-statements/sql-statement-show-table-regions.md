@@ -51,7 +51,7 @@ SHOW TABLE [table_name] INDEX [index_name] REGIONS [WhereClauseOptional];
 * `READ_BYTES`：估算的 Region 在 1 个心跳周期内的读数据量大小，单位是 byte。
 * `APPROXIMATE_SIZE(MB)`：估算的 Region 的数据量大小，单位是 MB。
 * `APPROXIMATE_KEYS`：估算的 Region 内 Key 的个数。
-* `SCHEDULING_CONSTRAINTS`：Region 所在的表或者分区所关联的 [放置策略](/placement-rules-in-sql.md) 的规则。
+* `SCHEDULING_CONSTRAINTS`：Region 所在的表或者分区所关联的[放置策略](/placement-rules-in-sql.md)的规则。
 * `SCHEDULING_STATE`：关联了放置策略的 Region 的当前调度状态。
 
 > **注意：**
