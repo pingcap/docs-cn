@@ -17,7 +17,7 @@ summary: 整体叙述了开发者手册，罗列了开发者手册的大致脉�
 
 - 阅读 [TiDB 事务概览](/transaction-overview.md)来了解 TiDB 的事务运作方式或查看[为应用开发程序员准备的事务说明](/develop/dev-guide-transaction-overview.md)查看应用开发程序员需要了解的事务部分。
 - 学习免费在线课程 [TiDB 架构与特点](https://learn.pingcap.com/learner/course/600003/?utm_source=docs-cn-dev-guide)，了解构建 TiDB 分布式数据库集群的核心组件及其概念。
-- 此外，你需要了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
+- 了解[应用程序与 TiDB 交互的方式](#应用程序与-tidb-交互的方式)。
 
 ## TiDB 事务机制
 
