@@ -71,7 +71,7 @@ summary: 了解 PiTR 功能设计和使用。
 - 存储支持 AWS S3 和 POSIX file system（如 NFS 等），暂不支持使用 GCS/Azure Blob Storage 做为备份存储。
 - 仅支持集群粒度的 PiTR，不支持对单个 database/table 执行 PiTR。
 - 不支持恢复用户表和权限表的数据。
-- 不支持恢复数据到 TiFlash 存储引擎。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本。如果恢复集群包含 TiFlash，用户需要进行设置。具体操作，参考[手动设置 schema/table 的 TiFlash 副本](/br/pitr-faq.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据)。
+- 不支持恢复数据到 TiFlash 存储引擎。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本。如果恢复集群包含 TiFlash，用户需要进行设置。具体操作，参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-faq.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
 - 备份过程中不支持分区交换 (Exchange Partition)。
 - 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
 
