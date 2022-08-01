@@ -242,29 +242,64 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 
 ## 5. 配置负载均衡示例 - 使用 Admin Interface 进行配置
 
-### 5.1 示例操作步骤
+### 5.1 示例脚本运行
 
-以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡场景为例。示例将进行以下操作：
+以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡场景为例。可使用以下命令获取并运行脚本：
 
-1. 通过 Docker Compose 启动三个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002、4003。
-2. 通过 Docker Compose 启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。
-3. 在 3 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`、`'tidb-2'`，以便分辨不同的数据库实例。
-4. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 SQL 文件，此 SQL 文件将会运行：
+```sh
+git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
+cd tidb-proxysql-integration-test/example/load-balance-admin-interface
+./test-load-balance.sh
+```
+
+### 5.2 脚本关键步骤解释
+
+1. 通过 Docker Compose 启动三个 TiDB 容器实例，容器内部端口均为 4000，映射宿主机端口为 4001、4002、4003。TiDB 容器实例启动后，再启动一个 ProxySQL 实例，容器内部 **_ProxySQL MySQL Interface_** 端口为 6033，映射宿主机端口为 6034。不暴露 **_ProxySQL Admin Interface_** 端口，因为其仅可在本地（即容器内）登录 **_ProxySQL Admin Interface_**。此流程被写在 [docker-compose.yaml](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/load-balance-admin-interface/docker-compose.yaml) 中。
+
+    ```sh
+    docker-compose up -d
+    ```
+
+2. 在 3 个 TiDB 实例内，创建相同的表结构，但写入不同的数据：`'tidb-0'`、`'tidb-1'`、`'tidb-2'`，以便分辨不同的数据库实例。此处展示向其中一个 TiDB 实例写入数据的命令，其他两实例同理：
+
+    ```sh
+    mysql -u root -h 127.0.0.1 -P 4001 << EOF
+    DROP TABLE IF EXISTS test.test;
+    CREATE TABLE test.test (db VARCHAR(255));
+    INSERT INTO test.test (db) VALUES ('tidb-0');
+    EOF
+    ```
+
+3. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 [SQL 文件](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/load-balance-admin-interface/proxysql-prepare.sql)：
+
+    ```sh
+    docker-compose exec proxysql sh -c "mysql -uadmin -padmin -h127.0.0.1 -P6032 < ./proxysql-prepare.sql"
+    ```
+
+    此 SQL 文件将会运行：
 
     1. 添加 3 个 TiDB 后端的地址，并且 `hostgroup_id` 均为 `0`。
     2. 令 TiDB 后端配置生效，并落盘保存。
     3. 添加用户 `root`，密码为空，`default_hostgroup` 为 `0`，对应上方的 TiDB 后端 `hostgroup_id`。
     4. 生效用户配置，并落盘保存。
 
-5. 使用 `root` 用户登录 **_ProxySQL MySQL Interface_**，连续查询 5 次数据，预期结果将有 `'tidb-0'`、`'tidb-1'`、`'tidb-2'` 三种不同的返回。
-6. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
+4. 使用 `root` 用户登录 **_ProxySQL MySQL Interface_**，连续查询 5 次数据，预期结果将有 `'tidb-0'`、`'tidb-1'`、`'tidb-2'` 三种不同的返回。
 
-### 5.2 示例运行
+    ```sh
+    mysql -u root -h 127.0.0.1 -P 6034 -t << EOF
+    select * from test.test;
+    select * from test.test;
+    select * from test.test;
+    select * from test.test;
+    select * from test.test;
+    EOF
+    ```
 
-```sh
-cd example/load-balance-admin-interface/
-./test-load-balance.sh
-```
+5. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
+
+    ```sh
+    trap 'docker-compose down' EXIT
+    ```
 
 ### 5.3 预期输出
 
