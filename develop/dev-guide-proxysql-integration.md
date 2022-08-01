@@ -1,9 +1,9 @@
 ---
-title: TiDB 与 ProxySQL 集成方案
-summary: 叙述 TiDB 与 ProxySQL 集成方案。
+title: TiDB 与 ProxySQL 集成
+summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 ---
 
-# TiDB 与 ProxySQL 集成方案
+# TiDB 与 ProxySQL 集成
 
 此文档以 CentOS 7 为例，简单介绍 **_TiDB_** 与 **_ProxySQL_** 的集成方法，如果你有其他系统的集成需求，可查看[快速体验](#4-快速体验)一节，这是使用 Docker 及 Docker Compose 部署测试集成环境的介绍。你也可以自行参阅以下链接，以获得更多信息：
 
@@ -90,7 +90,7 @@ summary: 叙述 TiDB 与 ProxySQL 集成方案。
     systemctl start proxysql
     ```
 
-### 2.2 其他安装
+### 2.2 其他安装方式
 
 请参阅 ProxySQL 的 [Github 页面](https://github.com/sysown/proxysql#installation)或[官方文档](https://proxysql.com/documentation/)进行安装。
 
@@ -100,7 +100,7 @@ summary: 叙述 TiDB 与 ProxySQL 集成方案。
 
 ### 3.1 ProxySQL 配置的简单介绍
 
-ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。我们把配置管理的入口，称为 **_ProxySQL Admin interface_**，把代理的入口，称为 **_ProxySQL MySQL interface_**。
+ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。我们把配置管理的入口称为 **_ProxySQL Admin interface_**，把代理的入口称为 **_ProxySQL MySQL interface_**。
 
 - **_ProxySQL Admin interface_**: 可以使用具有 `admin` 权限的用户连接到管理界面，以读取和写入配置，或者使用具有 `stats` 权限的用户，只能读取某些统计数据（不读取或写入配置）。默认凭证是 `admin:admin` 和 `stats:stats`，但出于安全考虑，可以使用默认凭证进行本地连接。要远程连接，需要配置一个新的用户，通常它被命名为 `radmin`。
 - **_ProxySQL MySQL interface_**: 用于代理，将 SQL 转发到配置的服务中。
@@ -123,7 +123,7 @@ save mysql servers to disk;
 
 字段解释：
 
-- `hostgroup_id`: ProxySQL 是以 **hostgroup** 为单位管理后端服务的，可以将需要负载均衡的几个服务配置为同一个 hostgroup，这样 ProxySQL 将均匀的分发 SQL 到这些服务上。而在需要区分不同后端服务时（如读写分离场景等），可将其配置为不同的 hostgroup，以此配置不同的代理条件。
+- `hostgroup_id`: ProxySQL 是以 **hostgroup** 为单位管理后端服务的，可以将需要负载均衡的几个服务配置为同一个 hostgroup，这样 ProxySQL 将均匀地分发 SQL 到这些服务上。而在需要区分不同后端服务时（如读写分离场景等），可将其配置为不同的 hostgroup，以此配置不同的代理条件。
 - `hostname`: 后端服务的 IP 或域名。
 - `port`: 后端服务的端口。
 
@@ -187,7 +187,7 @@ mysql_users:
 
 ### 3.5 其余配置项
 
-仅以上配置为必需配置项，其余配置项并非必需。你可在 ProxySQL 文档中的 [Global Variables](https://proxysql.com/documentation/global-variables/) 一文中获取全部配置项名称及其作用。
+仅以上配置为必需配置项，其余配置项并非必需。你可在 ProxySQL 文档中的 [Global Variables](https://proxysql.com/documentation/global-variables/) 一文中获取全部配置项名称及其作用的描述。
 
 ## 4. 快速体验
 
@@ -254,7 +254,7 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 4. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 SQL 文件，此 SQL 文件将会运行：
 
     1. 添加 3 个 TiDB 后端的地址，并且 `hostgroup_id` 均为 `0`。
-    2. 生效 TiDB 后端配置，并落盘保存。
+    2. 令 TiDB 后端配置生效，并落盘保存。
     3. 添加用户 `root`，密码为空，`default_hostgroup` 为 `0`，对应上方的 TiDB 后端 `hostgroup_id`。
     4. 生效用户配置，并落盘保存。
 
