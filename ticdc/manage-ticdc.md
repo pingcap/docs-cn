@@ -527,6 +527,7 @@ cdc cli changefeed resume --pd=http://10.0.10.25:2379 --changefeed-id simple-rep
 - `--no-confirm`：恢复同步任务时无需用户确认相关信息。默认为 false。
 
 > **注意：**
+>
 > - 若 `--overwrite-checkpoint-ts` 指定的 TSO `t2` 大于 changefeed 的当前 checkpoint TSO `t1`（可通过 `cdc cli changefeed query` 命令获取），则会导致 `t1` 与 `t2` 之间的数据不会同步到下游，造成数据丢失。
 > - 若 `--overwrite-checkpoint-ts` 指定的 TSO `t2` 小于 changefeed 的当前 checkpoint TSO `t1`，则会导致 TiCDC 集群从一个旧的时间点 `t2` 重新拉取数据，可能会造成数据重复（例如 TiCDC 下游为 MQ sink）。
 
