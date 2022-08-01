@@ -143,7 +143,7 @@ Global Flags:
 checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 ```
 
-输出中的字段含义如下：
+命令输出中的字段含义如下：
 
 - `status`：任务状态，NORMAL(任务正常)/ERROR(任务异常) /PAUSE(任务被暂停)
 - `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts。
