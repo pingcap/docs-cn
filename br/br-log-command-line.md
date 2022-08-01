@@ -149,8 +149,8 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 - `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts
 - `storage`：备份存储
 - `speed`：日志备份任务的总 QPS（每秒备份的日志个数）
-- `checkpoint [global]`：表示集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
-- `error [store]`：表示该存储节点上的日志备份组件运行遇到的异常
+- `checkpoint [global]`：集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
+- `error [store]`：存储节点上的日志备份组件运行遇到的异常
 
 ### 暂停和重启日志备份任务
 
