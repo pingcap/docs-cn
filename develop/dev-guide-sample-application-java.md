@@ -14,6 +14,11 @@ summary: 给出一个 TiDB 和 Java 的简单 CRUD 应用程序示例。
 >
 > 推荐使用 Java 8 及以上版本进行 TiDB 的应用程序的编写。
 
+## 拓展学习视频
+
+- [使用 Connector/J - TiDB v6](https://learn.pingcap.com/learner/course/840002/?utm_source=docs-cn-dev-guide)
+- [在 TiDB 上开发应用的最佳实践 - TiDB v6](https://learn.pingcap.com/learner/course/780002/?utm_source=docs-cn-dev-guide)
+
 > **建议：**
 >
 > 如果你希望使用 Spring Boot 进行 TiDB 应用程序的编写，可以查看 [Build the TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)。
