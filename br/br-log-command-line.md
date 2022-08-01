@@ -309,9 +309,9 @@ Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下：
+该命令只需要访问备份存储，不需要访问备份集群。
 
-- `--storage`: 指定备份存储地址。日志备份暂时只支持 S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)
+- `--storage`：指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
