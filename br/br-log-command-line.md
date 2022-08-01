@@ -351,7 +351,7 @@ Global Flags:
  -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-以上示例只展示了常用的参数，这些常用的参数作用如下：
+以上示例只展示了常用的参数，这些参数作用如下：
 
 - `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
