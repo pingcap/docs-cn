@@ -103,7 +103,7 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。关于
 
 运行 PiTR 的相关功能，BR 需要运行在（8 核+/16 GB+）的节点上, 备份和恢复 TiDB 集群配置需要能够满足 [TiDB 集群配置推荐](/hardware-and-software-requirements.md)。
 
-使用 BR 进行 PiTR 操作，请参考下面教程
+## 探索更多
 
 -  [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
 -  [PiTR 使用教程](/br/pitr-usage.md)
