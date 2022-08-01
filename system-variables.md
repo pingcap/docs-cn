@@ -871,10 +871,10 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 若该变量值为 `OFF`，TiDB 具有以下行为：
-    * 使用 `SET` 设置 `noop` 的系统变量时会报 "setting *variable_name* has no effect in TiDB" 的 warning。
-    * `SHOW [SESSION | GLOBAL] VARIABLES` 不显示 `noop` 的系统变量。
-    * 使用 `SELECT` 读取 `noop` 的系统变量时会报 "variable *variable_name* has no effect in TiDB" 的 warning。
-- 用户可以通过 `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` 语句来检查 TiDB 实例是否曾设置和读取 `noop` 系统变量。
+    * 使用 `SET` 设置 `noop` 的系统变量时会报 `"setting *variable_name* has no effect in TiDB"` 的警告。
+    * `SHOW [SESSION | GLOBAL] VARIABLES` 的结果不显示 `noop` 的系统变量。
+    * 使用 `SELECT` 读取 `noop` 的系统变量时会报 `"variable *variable_name* has no effect in TiDB"` 的警告。
+- 你可以通过 `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` 语句来检查 TiDB 实例是否曾设置和读取 `noop` 系统变量。
 
 ### `tidb_enable_outer_join_reorder` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
