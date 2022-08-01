@@ -327,7 +327,7 @@ Global Flags:
 
 ## 恢复日志
 
-通过 `br restore point` 可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point --help` 获取该命令使用介绍
+执行 `br restore point` 命令，你可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point --help` 可获取该命令使用介绍：
 
 ```shell
 ./br restore point --help
