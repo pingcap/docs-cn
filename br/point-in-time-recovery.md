@@ -77,7 +77,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 ## PiTR 架构
 
-PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。关于快照备份恢复，请参考[BR 设计原理](/br/backup-and-restore-design.md)。本节介绍日志备份和恢复的实现。
+PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。关于快照备份恢复，请参考 [BR 设计原理](/br/backup-and-restore-design.md)。本节介绍日志备份和恢复的实现。
 
 日志备份恢复的架构实现如下：
 
