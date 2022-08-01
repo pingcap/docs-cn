@@ -249,7 +249,7 @@ Global Flags:
 
 ### 清理日志备份数据
 
-BR 提供了命令 `br log truncate` 支持从备份存储中删除过期（不再需要）的备份日志数据。运行 `br log truncate --help` 获取该子命令使用介绍：
+执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。运行 `br log truncate --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log truncate --help
