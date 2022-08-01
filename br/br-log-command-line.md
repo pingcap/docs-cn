@@ -293,7 +293,7 @@ Removing metadata... DONE; take = 24.038962ms
 
 ### 查看备份数据 metadata
 
-BR 提供了命令 `br log metadata` 查看备份存储中保存的日志备份的元信息，通过该命令你可以查询到 log 备份相关信息，例如最早和最近的可恢复时间点。运行 `br log metadata –-help` 获取该子命令使用介绍：
+执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。运行 `br log metadata –-help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log metadata --help
