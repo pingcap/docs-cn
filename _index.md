@@ -42,7 +42,6 @@ hide_commit: true
 [软硬件环境需求](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)
 
 [环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment)
-
 [部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)
 
 </LearningPath>
