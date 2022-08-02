@@ -20,7 +20,7 @@ summary: 了解日志备份的已知问题。
 - br 进程所在的节点内存配置过低。
     - 建议升级到 16G 内存配置节点提供给 PiTR 恢复使用。
 
-## 上游数据库使用 TiDB Lightning 导入数据，导致无法使用日志备份功能
+## 上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能
 
 目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning Physical 方式导入的数据没有备份到日志中。
 
