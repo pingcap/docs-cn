@@ -26,7 +26,7 @@ summary: 了解日志备份的已知问题。
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。若确实需要此功能，可在导入完成之后做一次全量备份操作，PiTR 可以恢复到全量备份之后的时间点。
 
-## 使用自建的 Minio 系统作为日志备份的存储，执行 br restore point 或者 br log truncate 出现如下错误 (https://github.com/pingcap/tidb/issues/36515)
+## 使用自建的 Minio 系统作为日志备份的存储，执行 `br restore point` 或者 `br log truncate` 出现如下错误 (https://github.com/pingcap/tidb/issues/36515)
 
 ```shell
 [error="RequestCanceled: request context canceled\ncaused by: context canceled"]
