@@ -22,7 +22,7 @@ summary: 了解如何使用 PiTR。
 | --- | --- | --- | --- | --- | --- | --- |
 | TiDB | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 2 | 172.16.102.94:4000 |
 | PD | 8 核+ | 16 GB+ | SSD | c5.2xlarge | 3 | 172.16.102.95:2379 |
-| TiKV | 16 核+ | 32 GB+ | SSD | m5.2xlarge | 3 | - |
+| TiKV | 8 核+ | 32 GB+ | SSD | m5.2xlarge | 3 | - |
 | BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 2 | 172.16.102.93:3000 |
 | 监控 | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 | - |
 
