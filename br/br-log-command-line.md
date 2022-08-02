@@ -102,7 +102,9 @@ Global Flags:
 
 ### 查询日志备份任务
 
-执行 `br log status` 命令，你可以查询日志备份任务状态。运行 `br log status –-help` 可获取该子命令使用介绍：
+执行 `br log status` 命令，你可以查询日志备份任务状态。
+
+运行 `br log status –-help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log status --help
@@ -124,9 +126,7 @@ Global Flags:
 
 ```
 
-以上示例只展示了常用的参数，这些常用的参数作用如下：
-
-- `task-name`：指定日志备份任务名。默认值为 '*'，显示全部的任务。
+以上示例中， `task-name` 为常用参数，它用来指定日志备份任务名。默认值为 '*'，显示全部的任务。
 
 使用示例：
 
@@ -193,7 +193,9 @@ Global Flags:
 ./br log pause --task-name=pitr --pd=172.16.102.95:2379
 ```
 
-执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。运行 `br log resume --help` 可获取该子命令使用介绍：
+执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。
+
+运行 `br log resume --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log resume --help
@@ -213,7 +215,7 @@ Global Flags:
  -u, --pd strings             PD address (default [127.0.0.1:2379])
 ```
 
-暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/br/pitr-troubleshoot.md#执行-br-log-resume-命令恢复处于暂停状态的任务时产生如下报错改如何处理)
+暂停日志备份任务超过了 24 小时后，执行 `br log resume` 会报错，提示备份数据丢失。处理方法请参考[恢复日志备份任务失败](/br/pitr-troubleshoot.md#执行-br-log-resume-命令恢复处于暂停状态的任务时产生如下报错该如何处理)。
 
 使用示例：
 
@@ -280,7 +282,7 @@ Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下：
+该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数如下：
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值。
@@ -324,7 +326,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-- `--storage`：指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，使用 S3 作为 storage 的详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
