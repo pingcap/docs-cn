@@ -59,19 +59,23 @@ PiTR 可用于满足以下业务需求：
 - PiTR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
 - 使用 BR 清理过期的日志备份数据速度为 600GB/h
 
-以上功能指标根据以下场景测试结果的总结，如有出入建议以实际测试结果为准：
+> **备注：**
+> - 以上功能指标根据以下场景测试结果的总结，如有出入建议以实际测试结果为准
+> - 全量恢复速度 = 全量恢复集群数据量 / (时间 * TiKV 数量)
+> - 日志恢复数据 = 日志恢复总量 /(时间 * TiKV 数量)
+
 
 测试场景 1 （on TiDB Cloud）
 
 - 21 （8c，16G 内存） TiKV 节点
 - 183k 数量的 Region
-- 每小时 TiKV 增量写入数据 10 GB， 写入 (insert/update/delete) QPS 10k
+- 每小时集群新增日志数据约 10 GB， 写入 (insert/update/delete) QPS 10k
 
 测试场景 2 （On-premise）
 
 - 6 （8c，64G 内存） TiKV 节点数
 - 50k 数量的 Region 个数
-- 每小时 TiKV 增量写入数据 10 GB， 写入 (insert/update/delete) QPS 10k
+- 每小时集群新增日志数据约 10 GB， 写入 (insert/update/delete) QPS 10k
 
 ## 使用限制
 
