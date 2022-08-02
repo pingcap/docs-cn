@@ -22,9 +22,9 @@ summary: 了解日志备份的已知问题。
 
 ## 上游数据库使用 TiDB Lightning 导入数据，导致无法使用日志备份功能
 
-目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning 导入的数据没有备份到日志中。
+目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning Physical 方式导入的数据没有备份到日志中。
 
-在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning 导入数据。如果需要 TiDB Lightning 导入，可在导入完成之后做一次全量备份操作，PiTR 可以恢复到全量备份之后的时间点。
+在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。若确实需要此功能，可在导入完成之后做一次全量备份操作，PiTR 可以恢复到全量备份之后的时间点。
 
 ## 使用自建的 Minio 系统作为日志备份的存储，执行 br restore point 或者 br log truncate 出现如下错误 (https://github.com/pingcap/tidb/issues/36515)
 
