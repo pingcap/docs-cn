@@ -84,4 +84,4 @@ Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepo
 restore of ddl `exchange-table-partition` is not supported
 ```
 
-因为当前 v6.0.2 版本的日志备份功能尚且不兼容分区交换 (Exchange Partition) DDL，在使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操作，PiTR 即可恢复本次全量备份点之后的日志数据。
+因为当前 v6.2.0 版本的日志备份功能尚且不兼容分区交换 (Exchange Partition) DDL，在使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操作，PiTR 即可恢复本次全量备份点之后的日志数据。
