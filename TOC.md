@@ -486,10 +486,10 @@
   - Point-in-time Recovery
     - [PiTR 简介](/br/point-in-time-recovery.md)
     - [通过命令行使用 PiTR](/br/br-log-command-line.md)
-    - [PiTR 的使用场景示例](/br/pitr-usage.md)
-    - [PiTR 的监控告警](/br/pitr-monitoring-and-alerting.md)
-    - [PiTR 的常见问题处理](/br/pitr-troubleshoot.md)
-    - [PiTR 的已知问题](/br/pitr-known-issues.md)
+    - [使用场景示例](/br/pitr-usage.md)
+    - [监控告警](/br/pitr-monitoring-and-alerting.md)
+    - [常见问题处理](/br/pitr-troubleshoot.md)
+    - [已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)

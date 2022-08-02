@@ -1,17 +1,20 @@
 ---
-title: 使用 BR 进行日志备份
-summary: 了解如何使用 br log 命令行工具进行日志备份。
+title: 使用 BR 进行日志备份与恢复
+summary: 了解如何使用 br log 命令行工具进行日志备份并恢复日志备份的数据。
 ---
 
-# 使用 BR 进行日志备份
+# 使用 BR 进行日志备份与恢复
 
 通过使用 `br log` 命令，你可以对 TiDB 集群进行日志备份。本文档介绍 `br log` 命令的使用方法。
 
-## 前置条件 
+## 前置条件
 
-使用日志备份前，你需要安装 BR。你可以选择[使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐），或[下载 TiDB 离线包](/download-ecosystem-tools.md)。
+使用日志备份前，你需要安装 BR。你可以选择以下任一方式安装 BR：
 
-## 备份日志
+* [使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐）
+* [下载 TiDB 离线包](/download-ecosystem-tools.md)
+
+## 使用日志备份
 
 你可以使用 `br log` 命令来备份日志，通过该命令的子命令，你可以完成如下操作：
 
@@ -24,7 +27,7 @@ summary: 了解如何使用 br log 命令行工具进行日志备份。
 
 本章节将介绍 `br log` 的子命令，并以示例介绍如何完成以上操作。
 
-### `br log` 子命令介绍
+### `br log` 子命令
 
 执行如下命令，可获取 `br log` 的命令帮助信息：
 
@@ -58,7 +61,9 @@ Available Commands:
 
 ### 启动日志备份任务
 
-执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。运行 `br log start --help` 可获取该子命令使用介绍：
+执行 `br log start` 命令，你可以在备份集群启动一个日志备份任务。该任务在 TiDB 集群持续地运行，及时地将 KV 变更日志保存到备份存储中。
+
+运行 `br log start --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log start --help
@@ -126,7 +131,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log status --task-name=pitr --pd=172.16.102.95:2379 
+./br log status --task-name=pitr --pd=172.16.102.95:2379
 ```
 
 命令输出如下：
@@ -145,16 +150,18 @@ checkpoint[global]: 2022-07-25 22:52:15.518 +0800; gap=2m52s
 
 命令输出中的字段含义如下：
 
-- `status`：任务状态，包括 NORMAL（正常）、ERROR（异常）和 PAUSE（暂停）三种状态
-- `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts
-- `storage`：备份存储
-- `speed`：日志备份任务的总 QPS（每秒备份的日志个数）
-- `checkpoint [global]`：集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点
-- `error [store]`：存储节点上的日志备份组件运行遇到的异常
+- `status`：任务状态，包括 NORMAL（正常）、ERROR（异常）和 PAUSE（暂停）三种状态。
+- `start`：日志备份任务开始的时间，该值为备份任务启动时候指定的 start-ts。
+- `storage`：备份存储。
+- `speed`：日志备份任务的总 QPS（每秒备份的日志个数）。
+- `checkpoint [global]`：集群中早于该 checkpoint 的数据都已经保存到备份存储，它也是备份数据可恢复的最近时间点。
+- `error [store]`：存储节点上的日志备份组件运行遇到的异常。
 
 ### 暂停和重启日志备份任务
 
-执行 `br log pause` 命令，你可以暂停正在运行中的日志备份任务。运行 `br log pause –help` 可获取该子命令使用介绍：
+执行 `br log pause` 命令，你可以暂停正在运行中的日志备份任务。
+
+运行 `br log pause –help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log pause --help
@@ -166,7 +173,7 @@ Usage:
 Flags:
   --gc-ttl int         the TTL (in seconds) that PD holds for BR's GC safepoint (default 86400)
   -h, --help           help for status
-  --task-name string   The task name for backup stream log. 
+  --task-name string   The task name for backup stream log.
 
 Global Flags:
  --ca string                  CA certificate path for TLS connection
@@ -183,7 +190,7 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log pause --task-name=pitr --pd=172.16.102.95:2379 
+./br log pause --task-name=pitr --pd=172.16.102.95:2379
 ```
 
 执行 `br log resume` 命令，你可以恢复被暂停的日志备份任务。运行 `br log resume --help` 可获取该子命令使用介绍：
@@ -197,7 +204,7 @@ Usage:
 
 Flags:
   -h, --help           help for status
-  --task-name string   The task name for backup stream log. 
+  --task-name string   The task name for backup stream log.
 
 Global Flags:
  --ca string                  CA certificate path for TLS connection
@@ -211,12 +218,14 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log resume --task-name=pitr --pd=172.16.102.95:2379 
+./br log resume --task-name=pitr --pd=172.16.102.95:2379
 ```
 
 ### （永久）停止日志备份任务
 
-执行 `br log stop` 命令，你可以永久地停止日志备份任务，该命令会清理备份集群中的任务元信息。运行 `br log stop --help` 可获取该子命令使用介绍：
+执行 `br log stop` 命令，你可以永久地停止日志备份任务，该命令会清理备份集群中的任务元信息。
+
+运行 `br log stop --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log stop --help
@@ -244,12 +253,14 @@ Global Flags:
 使用示例：
 
 ```shell
-./br log stop --task-name=pitr --pd=172.16.102.95:2379 
+./br log stop --task-name=pitr --pd=172.16.102.95:2379
 ```
 
 ### 清理日志备份数据
 
-执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。运行 `br log truncate --help` 可获取该子命令使用介绍：
+执行 `br log truncate` 命令，你可以从备份存储中删除过期或不再需要的备份日志数据。
+
+运行 `br log truncate --help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log truncate --help
@@ -293,11 +304,13 @@ Removing metadata... DONE; take = 24.038962ms
 
 ### 查看备份数据 metadata
 
-执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。运行 `br log metadata –-help` 可获取该子命令使用介绍：
+执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
+
+运行 `br log metadata –-help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log metadata --help
-get the metadata of log backup storage 
+get the metadata of log backup storage
 
 Usage:
   br log metadata [flags]
@@ -325,9 +338,11 @@ Global Flags:
 [2022/07/25 23:02:57.236 +08:00] [INFO] [collector.go:69] ["log metadata"] [log-min-ts=434582449885806593] [log-min-date="2022-07-14 20:08:03.268 +0800"] [log-max-ts=434834300106964993] [log-max-date="2022-07-25 23:00:15.618 +0800"]
 ```
 
-## 恢复日志
+## 恢复日志备份数据
 
-执行 `br restore point` 命令，你可以在新集群上进行 PiTR ，或者只恢复日志备份数据。 运行 `br restore point --help` 可获取该命令使用介绍：
+执行 `br restore point` 命令，你可以在新集群上进行 PiTR ，或者只恢复日志备份数据。
+
+运行 `br restore point --help` 可获取该命令使用介绍：
 
 ```shell
 ./br restore point --help
@@ -358,14 +373,14 @@ Global Flags:
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `--pd`：指定恢复集群的 PD 访问地址。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定日志备份的存储地址。日志备份暂时只支持 Amazon S3 作为备份存储，使用 s3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定日志备份的存储地址。日志备份暂时只支持 Amazon S3 作为备份存储，使用 S3 作为 storage 详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
 ```shell
 ./br restore point --pd=172.16.102.95:2379
 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' 
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 [2022/07/19 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=12] [ranges-failed=0] [split-region=546.663µs] [restore-ranges=3] [total-take=3.112928252s] [restore-data-size(after-compressed)=5.056kB] [Size=5056] [BackupTS=434693927394607136] [total-kv=4] [total-kv-size=290B] [average-speed=93.16B/s]
