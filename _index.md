@@ -41,8 +41,10 @@ hide_commit: true
 
 [软硬件环境需求](https://docs.pingcap.com/zh/tidb/stable/hardware-and-software-requirements)
 
-[环境与系统配置检查](https://docs.pingcap.com/zh/tidb/stable/check-before-deployment)
-[部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)
+[使用 TiUP 部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/stable/production-deployment-using-tiup)
+
+[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/stable/tidb-in-kubernetes)
+
 
 </LearningPath>
 
@@ -110,13 +112,16 @@ hide_commit: true
 
 [Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-overview)
 
-[TiDB Binlog](https://docs.pingcap.com/zh/tidb/stable/tidb-binlog-overview)
 
 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview)
 
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/stable/clinic-introduction)
 
-[sync-diff-inspector](https://docs.pingcap.com/zh/tidb/stable/sync-diff-inspector-overview)
+[TiUniManager](https://docs.pingcap.com/zh/tidb/stable/tiunimanager-overview)
+
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/stable/tidb-operator-overview)
+
+[TiSpark](https://docs.pingcap.com/zh/tidb/stable/tispark-overview)
 
 </LearningPath>
 

@@ -5,7 +5,7 @@ hide_commit: true
 hide_leftNav: true
 ---
 
-<DocHomeContainer title="PingCAP 文档中心" subTitle="欢迎来到 PingCAP 文档中心！我们为您使用 TiDB 产品、迁移数据、基于数据库开发应用等场景提供了丰富的操作指南、详实的参考资料，帮您顺利完成操作，为您排忧解难。">
+<DocHomeContainer title="PingCAP 文档中心" subTitle="欢迎来到 PingCAP 文档中心！我们为您提供了丰富的操作指南和详实的参考资料，助您轻松上手 TiDB 产品，顺利完成数据迁移和基于数据库的应用开发等操作。">
 
 <DocHomeSection label="TiDB" anchor="tidb" id="tidb">
 
@@ -35,7 +35,7 @@ TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库
 
 体验全新的一栈式实时 HTAP 数据库
 
-<a href="https://pingcap.com/zh/product-community" class="button" target="_blank" referrerpolicy="no-referrer-when-downgrade">下载</a>
+<a href="https://pingcap.com/zh/product-community" class="button" target="_blank" referrerpolicy="no-referrer-when-downgrade">免费下载</a>
 
 </DocHomeSection>
 
@@ -57,7 +57,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud 概念验证 (PoC)">
+<DocHomeCard href="https://docs.pingcap.com/tidbcloud/tidb-cloud-poc" icon="cloud3" label="TiDB Cloud PoC">
 
 帮助您快速完成 TiDB Cloud 概念验证 (Proof of Concept, PoC)
 
@@ -87,7 +87,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-outdated-for-go-sql-driver-mysql" icon="go" label="Golang">
+<DocHomeCard href="https://docs.pingcap.com/zh/tidb/stable/dev-guide-sample-application-golang" icon="go" label="Golang">
 
 使用 TiDB 和 Golang 来构造一个简单的 CRUD 应用程序
 
@@ -109,7 +109,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 <DocHomeCard href="https://tidb.net" icon="doc9" label="TiDB 社区">
 
-开发者、用户、Contributor、合作伙伴一起建立的分享、学习平台
+开发者、用户、Contributor、合作伙伴一起建立的学习和分享平台
 
 </DocHomeCard>
 
