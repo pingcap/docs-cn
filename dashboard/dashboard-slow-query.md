@@ -56,7 +56,7 @@ aliases: ['/docs-cn/dev/dashboard/dashboard-slow-query/']
 
 ### SQL
 
-点击**展开** (**Expand**) 链接可以展开相应项的完整内容，点击**复制** (**Copy**) 链接可以复制内容到剪贴板。
+点击**展开** (**Expand**) 可以展开相应项的完整内容，点击**复制** (**Copy**) 可以复制内容到剪贴板。
 
 ### 执行计划
 
