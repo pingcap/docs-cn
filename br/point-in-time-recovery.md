@@ -113,10 +113,6 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。关于
 4. PD 调度 region 成功后，BR 将恢复数据请求发送到各个 TiKV restore executor 模块。
 5. TiKV restore executor从备份存储下载日志备份数据，并将其写入对应的 region。
 
-## 部署和使用 PiTR
-
-运行 PiTR 的相关功能，BR 需要运行在（8 核+/16 GB+）的节点上, 用于备份和恢复的 TiDB 集群配置需要满足 [TiDB 集群推荐配置](/hardware-and-software-requirements.md)。
-
 ## 探索更多
 
 - [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
