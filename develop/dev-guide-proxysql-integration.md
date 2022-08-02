@@ -232,14 +232,6 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 +--------------------+
 ```
 
-> **注意：**
->
-> 示例依赖：
->
-> - Docker
-> - Docker Compose
-> - MySQL Client
-
 ## 5. 配置示例
 
 示例依赖：
@@ -255,7 +247,7 @@ git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
 cd tidb-proxysql-integration-test
 ```
 
-后续步骤皆以 `tidb-proxysql-integration-test` 目录做为根目录。
+后续示例皆以 `tidb-proxysql-integration-test` 目录做为根目录。
 
 ### 5.1 配置负载均衡示例 - 使用 Admin Interface 进行配置
 
@@ -263,7 +255,7 @@ cd tidb-proxysql-integration-test
 
 **脚本运行**
 
-以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡场景为例。可使用以下命令获取并运行脚本：
+以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡场景为例。可使用以下命令运行脚本：
 
 ```sh
 ./test-load-balance.sh
@@ -383,7 +375,7 @@ Removing network load-balance-admin-interface_default
 
 **脚本运行**
 
-以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡配置用户分离场景为例，不同用户将使用不同的 TiDB 后端。可使用以下命令获取并运行脚本：
+以 **_ProxySQL Admin Interface_** 为配置入口，配置负载均衡配置用户分离场景为例，不同用户将使用不同的 TiDB 后端。可使用以下命令运行脚本：
 
 ```sh
 ./test-user-split.sh
@@ -483,7 +475,7 @@ Removing network user-split-admin-interface_default
 
 **脚本运行**
 
-以 **_ProxySQL Admin Interface_** 为配置入口，代理规则场景中，常见的读写分离配置为例，将使用规则匹配将要运行的 SQL，从而将读、写 SQL 转发至不同的 TiDB 后端（若均未匹配，则使用用户的 `default_hostgroup`）。可使用以下命令获取并运行脚本：
+以 **_ProxySQL Admin Interface_** 为配置入口，代理规则场景中，常见的读写分离配置为例，将使用规则匹配将要运行的 SQL，从而将读、写 SQL 转发至不同的 TiDB 后端（若均未匹配，则使用用户的 `default_hostgroup`）。可使用以下命令运行脚本：
 
 ```sh
 ./proxy-rule-split.sh
@@ -513,7 +505,7 @@ Removing network user-split-admin-interface_default
     EOF
     ```
 
-3. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 SQL 文件：
+3. 使用 `docker-compose exec` 命令，在 **_ProxySQL Admin Interface_** 中运行事先准备好的配置 ProxySQL 的 [SQL 文件](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/example/proxy-rule-admin-interface/proxysql-prepare.sql)：
 
     ```sh
     docker-compose exec proxysql sh -c "mysql -uadmin -padmin -h127.0.0.1 -P6032 < ./proxysql-prepare.sql"
@@ -622,7 +614,7 @@ Removing network proxy-rule-admin-interface_default
 
 ### 5.4 配置负载均衡示例 - 使用配置文件进行配置
 
-以配置文件为配置入口，配置负载均衡场景为例。此配置实现效果与 [5.3 配置负载均衡示例 - 使用 Admin Interface 进行配置](#53-配置负载均衡示例---使用-admin-interface-进行配置)完全一致，仅改为使用配置文件进行 ProxySQL 初始化配置。
+以配置文件为配置入口，配置负载均衡场景为例。此配置实现效果与 [5.1 配置负载均衡示例 - 使用 Admin Interface 进行配置](#51-配置负载均衡示例---使用-admin-interface-进行配置)完全一致，仅改为使用配置文件进行 ProxySQL 初始化配置。
 
 > **Note:**
 >
