@@ -75,3 +75,7 @@ This document describes the common usage limitations of TiDB, including the maxi
 | Type       | Upper limit   |
 |:----------|:----------|
 | The maximum number of SQL statements in a single transaction |  When the optimistic transaction is used and the transaction retry is enabled, the default upper limit is 5000, which can be modified using [`stmt-count-limit`](/tidb-configuration-file.md#stmt-count-limit). |
+
+## Limitations on TiKV version
+
+In your cluster, if the version of the TiDB component is v6.2.0 or later, the version of TiKV must be v6.2.0 or later.
