@@ -487,7 +487,7 @@
     - [PiTR 简介](/br/point-in-time-recovery.md)
     - [通过命令行使用 PiTR](/br/br-log-command-line.md)
     - [使用场景示例](/br/pitr-usage.md)
-    - [监控告警](/br/pitr-monitoring-and-alerting.md)
+    - [监控告警](/br/pitr-monitoring-and-alert.md)
     - [常见问题处理](/br/pitr-troubleshoot.md)
     - [已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
