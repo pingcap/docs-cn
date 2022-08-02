@@ -282,7 +282,7 @@ Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数作用如下：
+该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数如下：
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值。
