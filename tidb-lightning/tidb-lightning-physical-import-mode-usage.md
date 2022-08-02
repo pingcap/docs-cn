@@ -213,6 +213,9 @@ io-concurrency = 5
 此外，TiKV 的 [num-threads](/tikv-configuration-file.md#num-threads) 配置也可能影响性能，新集群建议设置为 CPU 核数。
 
 ## 磁盘资源配额 <span class="version-mark">从 v6.2.0 版本开始引入</span>
+> **警告：**
+>
+> 磁盘资源配额目前是实验性功能，不建议在生产环境中使用
 
 TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。
 
