@@ -9,9 +9,9 @@ summary: 了解日志备份常见故障以及解决方法。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
-## 在使用 `br restore point` 命令恢复下游集群后，无法从 TiFlash 引擎中查询到数据，该如何处理 ？
+## 在使用 `br restore point` 命令恢复下游集群后，无法从 TiFlash 引擎中查询到数据，该如何处理？
 
-在当前 v6.2.0 版本中，使用 PiTR 功能恢复下游集群数据时，并不支持恢复下游的 TiFlash 副本。恢复数据之后，需要执行如下命令手动设置 schema 或 table 的 TiFlash 副本：
+在 v6.2.0 版本中，使用 PiTR 功能恢复下游集群数据时，并不支持恢复下游的 TiFlash 副本。恢复数据之后，需要执行如下命令手动设置 schema 或 table 的 TiFlash 副本：
 
 ``` shell
 ALTER TABLE table_name SET TIFLASH REPLICA count;
@@ -66,20 +66,22 @@ checkpoint[global]: 2022-07-25 14:46:50.118 +0000; gap=6m28s
 >
 > 由于此功能会备份集群的多版本数据，当任务发生错误且状态变更为 `ERROR` 时，同时会将当前任务的备份进度点的数据设为一个 `safe point`，`safe point` 的数据将保证 24 小时不被 GC 掉。所以，当任务恢复之后，会从上一个备份点继续备份日志。如果任务失败时间超过 24 小时，前一次备份进度点的数据就已经 GC，此时恢复任务操作会提示失败。这种场景下，只能执行 `br log stop` 命令先停止本次任务，然后重新开启新的备份任务。
 
-## 执行 `br log resume` 命令恢复处于暂停状态的任务时产生如下报错，改如何处理 ？
+## 执行 `br log resume` 命令恢复处于暂停状态的任务时产生如下报错，改如何处理？
+
 ```shell
 Error: failed to check gc safePoint, checkpoint ts 433177834291200000: GC safepoint 433193092308795392 exceed TS 433177834291200000: [BR:Backup:ErrBackupGCSafepointExceeded]backup GC safepoint exceeded
 ```
 
-暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被 GC，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许保留最近 24 小时内的 MVCC 数据。当超过 24h 后，备份点 checkpoint 的 MVCC 数据已经被 GC，此时程序会拒绝恢复备份任务。
+暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被 GC，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许保留最近 24 小时内的 MVCC 数据。当超过 24 小时后，备份点 checkpoint 的 MVCC 数据已经被 GC，此时程序会拒绝恢复备份任务。
 
 此场景的处理办法是：先执行 `br log stop` 命令来删除当前的任务，然后执行 `br log start` 重新创建新的日志备份任务，同时做一个全量备份，便于后续做 PiTR 恢复操作。
 
-## 日志备份过程中执行分区交换（Exchange Partiion）DDL，在 PiTR 恢复时会报错，该如何处理 ？
+## 日志备份过程中执行分区交换 (Exchange Partition) DDL，在 PiTR 恢复时会报错，该如何处理？
 
 在执行 PiTR 恢复日志过程中，出现如下报错：
+
 ```shell
 restore of ddl `exchange-table-partition` is not supported
 ```
 
-因为当前 v6.0.2 版本的日志备份功能尚且不兼容分区交换（Exchange Partition）DDL，在做使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操纵，PiTR 可恢复本次全量备份点之后的日志数据。
+因为当前 v6.0.2 版本的日志备份功能尚且不兼容分区交换 (Exchange Partition) DDL，在使用日志备份功能时，应尽量避免执行分区交换 DDL。如果已经执行此 DDL，需要立即做一次全量备份操作，PiTR 即可恢复本次全量备份点之后的日志数据。
