@@ -114,10 +114,10 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 ### 3.1 ProxySQL 配置的简单介绍
 
-ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。我们把配置管理的入口称为 **_ProxySQL Admin interface_**，把代理的入口称为 **_ProxySQL MySQL interface_**。
+ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。我们把配置管理的入口称为 **_ProxySQL Admin interface_**，把代理的入口称为 **_ProxySQL MySQL Interface_**。
 
 - **_ProxySQL Admin interface_**: 可以使用具有 `admin` 权限的用户连接到管理界面，以读取和写入配置，或者使用具有 `stats` 权限的用户，只能读取某些统计数据（不读取或写入配置）。默认凭证是 `admin:admin` 和 `stats:stats`，但出于安全考虑，可以使用默认凭证进行本地连接。要远程连接，需要配置一个新的用户，通常它被命名为 `radmin`。
-- **_ProxySQL MySQL interface_**: 用于代理，将 SQL 转发到配置的服务中。
+- **_ProxySQL MySQL Interface_**: 用于代理，将 SQL 转发到配置的服务中。
 
 ![proxysql config flow](/media/develop/proxysql_config_flow.png)
 
@@ -143,7 +143,7 @@ save mysql servers to disk;
 
 ### 3.3 配置 Proxy 登录账号
 
-在 ProxySQL 中添加 TiDB 后端的登录账号。ProxySQL 将允许此账号来登录 **_ProxySQL MySQL interface_**，而且 ProxySQL 将以此创建与 TiDB 之间的连接，因此，请确保此账号在 TiDB 中拥有相应权限。请在 **_ProxySQL Admin interface_** 进行此操作：
+在 ProxySQL 中添加 TiDB 后端的登录账号。ProxySQL 将允许此账号来登录 **_ProxySQL MySQL Interface_**，而且 ProxySQL 将以此创建与 TiDB 之间的连接，因此，请确保此账号在 TiDB 中拥有相应权限。请在 **_ProxySQL Admin interface_** 进行此操作：
 
 ```sql
 insert into mysql_users(username,password,active,default_hostgroup,transaction_persistent) values('root','',1,0,1);
@@ -174,27 +174,27 @@ rm /var/lib/proxysql/proxysql.db
 
 ```
 mysql_servers =
- (
-     {
-         address="127.0.0.1"
-         port=4000
-         hostgroup=0
-         max_connections=2000
-     }
- )
+(
+    {
+        address="127.0.0.1"
+        port=4000
+        hostgroup=0
+        max_connections=2000
+    }
+)
 
 mysql_users:
- (
+(
     {
-         username = "root"
+        username = "root"
         password = ""
-         default_hostgroup = 0
-         max_connections = 1000
-         default_schema = "test"
-         active = 1
+        default_hostgroup = 0
+        max_connections = 1000
+        default_schema = "test"
+        active = 1
         transaction_persistent = 1
-     }
- )
+    }
+)
 ```
 
 随后使用 `systemctl restart proxysql` 进行服务重启后即可生效，配置生效后将自动创建 SQLite 数据库，后续将不会再次读取配置文件。
