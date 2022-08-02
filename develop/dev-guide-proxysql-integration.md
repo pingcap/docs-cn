@@ -37,7 +37,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
     > **注意：**
     >
     > - 此处使用 `unistore` 作为存储引擎，这是 TiDB 的测试存储引擎，请仅在测试时使用它。
-    > - `TIDB_SERVER_PATH`：上一步中使用 `go build` 编译的二进制文件位置，如你在 `/usr/local` 下进行上一步操作，那么此处的 `TIDB_SERVER_PATH` 应为：`/usr/local/tidb/tidb-server/tidb-server`。
+    > - `TIDB_SERVER_PATH`：上一步中使用 `go build` 编译的二进制文件位置，如你在 `/usr/local` 下进行上一步操作，那么此处的 `TIDB_SERVER_PATH` 应为 `/usr/local/tidb/tidb-server/tidb-server`。
     > - `LOCAL_TIDB_LOG`：输出 TiDB 日志的位置。
 
 </div>
