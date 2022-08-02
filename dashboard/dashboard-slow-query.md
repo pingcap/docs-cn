@@ -67,17 +67,12 @@ TiDB Dashboard 提供两种方式查看执行计划：图形和文本。通过�
 - 执行计划的展示顺序是从左到右，从上到下。
 - 上面的节点是父算子，下面的节点是子算子。
 - 节点顶栏的颜色代表算子执行的组件：黄色代表 TiDB，蓝色代表 TiKV，粉色代表 TiFlash。
-- 节点顶栏的文本为算子的名称。
-- 节点右侧的提示为该算子的优化建议。
-- 节点页面正文为算子的基本信息。
-- 点击节点的弹窗，将看到算子的详细信息和相关建议。
+- 节点的顶栏为算子的名称，正文为算子的基本信息。
+- 点击节点区域，右侧将弹出算子的详细信息。
 
 ![可视化执行计划弹窗](/media/dashboard/dashboard-visual-plan-2.png)
 
 ![可视化执行计划弹窗-侧栏](/media/dashboard/dashboard-visual-plan-popup.png)
-
-![可视化执行计划弹窗-建议](/media/dashboard/dashboard-visual-plan-Diagnosis.png)
-
 
 ### SQL 执行相关信息
 
