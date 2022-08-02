@@ -102,7 +102,9 @@ Global Flags:
 
 ### 查询日志备份任务
 
-执行 `br log status` 命令，你可以查询日志备份任务状态。运行 `br log status –-help` 可获取该子命令使用介绍：
+执行 `br log status` 命令，你可以查询日志备份任务状态。
+
+运行 `br log status –-help` 可获取该子命令使用介绍：
 
 ```shell
 ./br log status --help
