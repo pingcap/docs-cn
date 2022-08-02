@@ -119,5 +119,6 @@ PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。关于
 
 ## 探索更多
 
--  [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
--  [PiTR 使用教程](/br/pitr-usage.md)
+- [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
+- [PiTR 使用教程](/br/pitr-usage.md)
+- [PiTR 监控告警](/br/pitr-monitoring-and-alert.md)

@@ -149,3 +149,7 @@ Restore KV Files <--------------------------------------------------------------
   tiup br log truncate --until='2022-04-14 06:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
   ```
   
+## 探索更多
+
+- [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
+- [PiTR 功能介绍](/br/point-in-time-recovery.md)
