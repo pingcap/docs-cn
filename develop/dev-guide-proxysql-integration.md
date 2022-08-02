@@ -18,7 +18,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 <SimpleTab grouId="startup-tidb">
 
-<div label="编译源码启动" value="source-code">
+<div label="编译源码" value="source-code">
 
 1. 下载 [TiDB](https://github.com/pingcap/tidb) 源码，进入 `tidb-server` 目录后，使用 `go build` 进行编译。
 
@@ -42,7 +42,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 </div>
 
-<div label="TiUP 启动" value="tiup">
+<div label="TiUP" value="tiup">
 
 [TiUP](/tiup/tiup-overview.md) 在 TiDB 中承担着包管理器的角色，管理着 TiDB 生态下众多的组件，如 TiDB、PD、TiKV 等。
 
@@ -78,7 +78,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 </div>
 
-<div label=" TiUP 本地安装" value="tiup">
+<div label="TiUP 本地安装" value="tiup">
 
 正式环境相对测试环境会复杂许多，建议参考[使用 TiUP 部署 TiDB 集群](/production-deployment-using-tiup.md)并根据硬件条件部署。
 
@@ -244,7 +244,7 @@ mysql -u root -h 127.0.0.1 -P 6033 -e "SELECT VERSION()"
 
 ## 5. 配置示例
 
-示例依赖：
+配置示例的前提条件：
 
 - Docker
 - Docker Compose
@@ -259,9 +259,13 @@ cd tidb-proxysql-integration-test
 
 下面的示例均以 `tidb-proxysql-integration-test` 目录做为根目录。
 
-### 配置负载均衡示例：使用 Admin Interface 进行配置
+### 使用 Admin Interface 配置负载均衡
 
-进入本示例目录 `cd example/load-balance-admin-interface`。
+进入本示例目录：
+
+```shell
+cd example/proxy-rule-admin-interface
+```
 
 #### 脚本运行
 
@@ -379,9 +383,13 @@ Removing load-balance-admin-interface_tidb-1_1   ... done
 Removing network load-balance-admin-interface_default
 ```
 
-### 配置用户分离示例：使用 Admin Interface 进行配置
+### 使用 Admin Interface 配置用户分离
 
-进入本示例目录 `cd example/user-split-admin-interface`。
+进入本示例目录：
+
+```shell
+cd example/proxy-rule-admin-interface
+```
 
 #### 脚本运行
 
@@ -479,9 +487,13 @@ Removing user-split-admin-interface_tidb-1_1   ... done
 Removing network user-split-admin-interface_default
 ```
 
-### 配置代理规则示例：使用 Admin Interface 进行配置
+### 使用 Admin Interface 配置代理规则
 
-进入本示例目录 `cd example/proxy-rule-admin-interface`。
+进入本示例目录：
+
+```shell
+cd example/proxy-rule-admin-interface
+```
 
 #### 脚本运行
 
@@ -622,7 +634,7 @@ Removing proxy-rule-admin-interface_tidb-1_1   ... done
 Removing network proxy-rule-admin-interface_default
 ```
 
-### 配置负载均衡示例：使用配置文件进行配置
+### 使用配置文件配置负载均衡
 
 以配置文件为配置入口，配置负载均衡场景为例，运行如下命令：
 
@@ -636,4 +648,4 @@ cd example/load-balance-config-file
 > **注意：**
 >
 > - ProxySQL 的配置保存在 SQLite 中。配置文件仅在 SQLite 不存在时读取。
-> - ProxySQL 不建议使用配置文件进行配置更改，仅作为初始化配置时使用，请勿过度依赖配置文件。
+> - ProxySQL **不建议**使用配置文件进行配置更改，仅作为初始化配置时使用，请勿过度依赖配置文件。
