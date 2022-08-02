@@ -5,9 +5,7 @@ summary: 了解 information_schema 表 `VARIABLES_INFO`。
 
 # VARIABLES_INFO
 
-`VARIABLES_INFO` 可用于查看当前 TiDB 集群/实例系统变量的默认值、当前值以及作用域等信息。
-
-{{< copyable "sql" >}}
+`VARIABLES_INFO` 可用于查看当前 TiDB 集群或实例的系统变量默认值、当前值以及作用域等信息。
 
 ```sql
 USE information_schema;
@@ -29,8 +27,6 @@ DESC variables_info;
 +-----------------+---------------------+------+------+---------+-------+
 8 rows in set (0.00 sec)
 ```
-
-{{< copyable "sql" >}}
 
 ```sql
 SELECT * FROM variables_info ORDER BY variable_name LIMIT 3;
