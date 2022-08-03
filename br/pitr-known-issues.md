@@ -9,7 +9,9 @@ summary: 了解日志备份的已知问题。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
-## BR 进程在执行 PiTR 恢复或执行 `br log truncate` 命令时出现 OOM 问题(https://github.com/pingcap/tidb/issues/36648)
+## BR 进程在执行 PiTR 恢复或执行 `br log truncate` 命令时出现 OOM 问题
+
+Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 执行 PiTR 恢复时遇到 BR OOM 问题，从以下几点考虑：
 
@@ -26,7 +28,9 @@ summary: 了解日志备份的已知问题。
 
 在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次全量备份操作，这样，PiTR 就可以恢复到全量备份之后的时间点。
 
-## 使用自建的 Minio 系统作为日志备份的存储，执行 `br restore point` 或者 `br log truncate` 出现如下错误(https://github.com/pingcap/tidb/issues/36515)
+## 使用自建的 Minio 系统作为日志备份的存储，执行 `br restore point` 或者 `br log truncate` 出现如下错误
+
+Issue 链接：[#36515](https://github.com/pingcap/tidb/issues/36515)
 
 ```shell
 [error="RequestCanceled: request context canceled\ncaused by: context canceled"]
@@ -36,12 +40,16 @@ summary: 了解日志备份的已知问题。
 
 如需解决该问题，需要将 Minio 系统升级到更大规模的分布式集群，或者直接使用 Amazon S3 存储系统作为日志备份的存储。
 
-## 集群负载过高，Region 过多，存储达到性能瓶颈（比如使用自建的 Minio 系统作为日志备份的存储）等情况下，备份进度 checkpoint 延迟可能超过 10 分钟 (https://github.com/tikv/tikv/issues/13030)
+## 集群负载过高，Region 过多，存储达到性能瓶颈（比如使用自建的 Minio 系统作为日志备份的存储）等情况下，备份进度 checkpoint 延迟可能超过 10 分钟
+
+Issue 链接：[#13030](https://github.com/tikv/tikv/issues/13030)
 
 因为日志备份会产生大量小文件，而自建的 Minio 系统在规模上难以支撑日志备份对于大量小文件的写入需求，导致备份进度缓慢。
 
 如需解决该问题，需将 Minio 系统升级到更大规模，或者直接使用 Amazon S3 存储系统作为日志备份的存储。
 
-## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进 (https://github.com/tikv/tikv/issues/13126)
+## 集群已经恢复了网络分区故障，日志备份任务进度 checkpoint 仍然不推进 
+
+Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 在集群出现网络分区故障后，备份任务难以继续备份日志，并且在超过一定的重试时间后，任务会被置为 `ERROR` 状态。此时备份任务已经停止，需要手动执行 `br log resume` 命令来恢复日志备份任务。

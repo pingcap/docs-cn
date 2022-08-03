@@ -51,40 +51,31 @@ PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目�
 
 ### LogBackupRunningRPOMoreThan10m
 
-- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 60 > 10
-  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
-  and max(tikv_log_backup_task_status) by (task) == 0
+- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_stream_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
 - 告警级别：warning
 - 说明：日志数据超过 10 分钟未持久化到存储中，该配置项主要用于提醒，大部分情况下，不会影响日志备份
 
 ### LogBackupRunningRPOMoreThan30m
 
-- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 60 > 30
-  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
-  and max(tikv_log_backup_task_status) by (task) == 0
+- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 60 > 30 and max(tikv_stream_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
 - 告警级别：critical
 - 说明：日志数据超过 30 分钟未持久化到存储中，出现该告警表示极有可能出现异常，可以查看 TiKV 日志定位原因
 
 ### LogBackupPausingMoreThan2h
 
-- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 3600 > 2
-  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
-  and max(tikv_log_backup_task_status) by (task) == 1
+- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 3600 > 2 and max(tikv_stream_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1
 - 告警级别：warning
 - 说明：日志备份任务处于暂停状态超过 2 小时，该告警主要用于提醒，建议尽早执行 `br log resume` 恢复任务
 
 ### LogBackupPausingMoreThan12h
 
-- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 3600 > 12
-  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
-  and max(tikv_log_backup_task_status) by (task) == 1
+- 表达式：max(time() - tikv_stream_store_checkpoint_ts / 262144000) by (task) / 3600 > 12 and max(tikv_stream_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1
 - 告警级别：critical
 - 说明：日志备份任务处于暂停状态超过 12 小时，应尽快执行 `br log resume` 恢复任务。任务处于暂停状态时间过长会有数据丢失的风险
 
 ### LogBackupFailed
 
-- 表达式：max(tikv_log_backup_task_status) by (task) == 2
-  and max(tikv_stream_store_checkpoint_ts) by (task) > 0
+- 表达式：max(tikv_log_backup_task_status) by (task) == 2 and max(tikv_stream_store_checkpoint_ts) by (task) > 0
 - 告警级别：critical
 - 说明：日志备份任务进入失败状态，需要执行 `br log status` 查看失败原因，如有必要还需进一步查看 TiKV 日志
 
