@@ -5,7 +5,7 @@ summary: 了解 PiTR 功能设计和使用。
 
 # PiTR 功能介绍
 
-使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始在 [BR](/br/backup-and-restore-overview.md) 工具引入 PiTR 功能。通过 BR 工具，你可以完成 PiTR 的所有操作，包含数据备份（快照备份、日志备份）、一键恢复到指定时间点。
+使用 PiTR (Point-in-time recovery) 功能，你可以在新集群上恢复备份集群的历史任意时刻点的快照。TiDB 自 v6.2.0 开始在 [BR](/br/backup-and-restore-overview.md) 工具引入 PiTR 功能。
 
 PiTR 可用于满足以下业务需求：
 
@@ -65,7 +65,7 @@ PiTR 可用于满足以下业务需求：
 > - 日志恢复数据 = 日志恢复总量 /(时间 * TiKV 数量)
 
 
-测试场景 1 （on TiDB Cloud）
+测试场景 1 （on [TiDB Cloud](https://tidbcloud.com)）
 
 - 21 （8c，16G 内存） TiKV 节点
 - 183k 数量的 Region
@@ -80,12 +80,12 @@ PiTR 可用于满足以下业务需求：
 ## 使用限制
 
 - 单个集群只支持启动一个日志备份任务。
-- 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不要在原集群（in-place）和其他已有数据集群执行 PiTR。
+- 仅支持恢复到空集群。为了避免对集群的业务请求和数据产生影响，不能在原集群（in-place）和其他已有数据集群执行 PiTR。
 - 存储支持 AWS S3 和共享的文件系统（如 NFS 等），暂不支持使用 GCS 和 Azure Blob Storage 作为备份存储。
 - 仅支持集群粒度的 PiTR，不支持对单个 database 或 table 执行 PiTR。
 - 不支持恢复用户表和权限表的数据。
 - 不支持恢复数据到 TiFlash 存储引擎。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本。如果恢复集群包含 TiFlash，用户需要进行设置。具体操作，参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
-- 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。参考[上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)
+- 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。参考文档 - [上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)
 - 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
 - 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
 
