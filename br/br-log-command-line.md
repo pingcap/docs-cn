@@ -92,7 +92,7 @@ Global Flags:
 - `--start-ts`：指定开始备份日志的起始时间点。如果未指定，备份程序选取当前时间作为 start-ts。
 - `--pd`：指定备份集群的 PD 访问地址。BR 需要访问 PD 发起日志备份任务。
 - `ca`,`cert`,`key`：指定使用 mTLS 加密方式与 TiKV 和 PD 进行通讯。
-- `--storage`：指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
@@ -286,7 +286,7 @@ Global Flags:
 
 - `--dry-run`：运行命令，但是不删除文件。
 - `--until`：早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值。
-- `--storage`：指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
@@ -326,7 +326,7 @@ Global Flags:
 
 该命令只需要访问备份存储，不需要访问备份集群。
 
-以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份暂时只支持文件系统和 Amazon S3 作为备份存储，使用 S3 作为 storage 的详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+以上示例中，`--storage` 为常用参数，它用来指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，使用 S3 作为 storage 的详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
 
