@@ -9,7 +9,7 @@ This document briefly introduces how to use TiDB's CURD SQL.
 
 ## Before you start
 
-Please make sure you are connected to a TiDB cluster. If not, refer to [Build a TiDB Cluster in TiDB Cloud (DevTier)](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster) to create a free cluster.
+Please make sure you are connected to a TiDB cluster. If not, refer to [Build a TiDB Cluster in TiDB Cloud (Developer Tier)](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster) to create a free cluster.
 
 ## Explore SQL with TiDB
 

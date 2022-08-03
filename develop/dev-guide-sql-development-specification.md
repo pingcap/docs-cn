@@ -3,7 +3,7 @@ title: SQL Development Specifications
 summary: Learn about the SQL development specifications for TiDB.
 ---
 
-# SQL Development Specification
+# SQL Development Specifications
 
 This document introduces some general development specifications for using SQL.
 

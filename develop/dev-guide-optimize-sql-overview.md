@@ -1,9 +1,9 @@
 ---
-title: Overview of Optimizing SQL Performance 
+title: Overview of Optimizing SQL Performance
 summary: Provides an overview of SQL performance tuning for TiDB application developers.
 ---
 
-# Overview of Optimizing SQL Performance 
+# Overview of Optimizing SQL Performance
 
 This document introduces how to optimize the performance of SQL statements in TiDB. To get good performance, you can start with the following aspects:
 

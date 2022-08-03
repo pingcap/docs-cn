@@ -11,7 +11,7 @@ This document describes how to create a secondary index using SQL and various pr
 
 Before creating a secondary index, do the following:
 
-- [Build a TiDB Cluster in TiDB Cloud Developer Tier](/develop/dev-guide-build-cluster-in-cloud.md).
+- [Build a TiDB Cluster in TiDB Cloud (Developer Tier)](/develop/dev-guide-build-cluster-in-cloud.md).
 - Read [Schema Design Overview](/develop/dev-guide-schema-design-overview.md).
 - [Create a Database](/develop/dev-guide-create-database.md).
 - [Create a Table](/develop/dev-guide-create-table.md).
