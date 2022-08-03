@@ -74,8 +74,8 @@ PiTR 可用于满足以下业务需求：
 
 测试场景 2 (本地部署）
 
-- TiKV 节点（8 core，64 GB 内存）数量：6 
--  Region 数量：50,000
+- TiKV 节点（8 core，64 GB 内存）数量：6
+- Region 数量：50,000
 - 集群新增日志数据：10 GB/h
 - 写入 (insert/update/delete) QPS：10,000
 
