@@ -156,7 +156,7 @@ SAVE mysql servers TO DISK;
 在 ProxySQL 中添加 TiDB 后端的登录账号。ProxySQL 将允许此账号来登录 **_ProxySQL MySQL Interface_**，而且 ProxySQL 将以此创建与 TiDB 之间的连接，因此，请确保此账号在 TiDB 中拥有相应权限。请在 **_ProxySQL Admin interface_** 进行此操作：
 
 ```sql
-INSERT INTO mysql_users(username, password, active,default_hostgroup,transaction_persistent) VALUES ('root','',1,0,1);
+INSERT INTO mysql_users(username, password, active, default_hostgroup, transaction_persistent) VALUES ('root', '', 1, 0, 1);
 LOAD mysql users TO runtime;
 SAVE mysql users TO DISK;
 ```
@@ -166,9 +166,8 @@ SAVE mysql users TO DISK;
 - `username`：用户名。
 - `password`：密码。
 - `active`：是否生效。`1` 为生效，`0` 为不生效，仅 `active = 1` 的用户可登录。
-- `default_hostgroup`：此账号默认使用的 **hostgroup**，SQL 将被发送至此 **hostgroup** 中，除非查询规则将流量发送到不同的 **hostgroup**。
-- `transaction_persistent`：值为 `1` 时，表示事务持久化，即：当某连接使用该用户开启了一个事务后，那么在事务提交或回滚之前，
-所有的语句都路由到同一个 **hostgroup** 中，避免语句分散到不同 **hostgroup**。
+- `default_hostgroup`：此账号默认使用的 hostgroup，SQL 将被发送至此 hostgroup 中，除非查询规则将流量发送到不同的 hostgroup。
+- `transaction_persistent`：值为 `1` 时，表示事务持久化，即：当该用户在连接中开启了一个事务后，那么在事务提交或回滚之前，所有的语句都路由到同一个 hostgroup 中，避免语句分散到不同 hostgroup。
 
 ### 配置文件配置
 
@@ -178,7 +177,7 @@ SAVE mysql users TO DISK;
 rm /var/lib/proxysql/proxysql.db
 ```
 
-另外，也可以运行`LOAD xxx FROM CONFIG`，用配置文件中的配置覆盖当前内存中的配置。
+另外，也可以运行 `LOAD xxx FROM CONFIG`，用配置文件中的配置覆盖当前内存中的配置。
 
 配置文件的位置为 `/etc/proxysql.cnf`，我们将上方的必需配置翻译为配置文件方式，仅更改 `mysql_servers`、`mysql_users` 这两个配置节点，其余配置可自行查看 `/etc/proxysql.cnf`：
 
@@ -322,11 +321,11 @@ cd example/proxy-rule-admin-interface
 
     ```shell
     mysql -u root -h 127.0.0.1 -P 6034 -t << EOF
-    select * from test.test;
-    select * from test.test;
-    select * from test.test;
-    select * from test.test;
-    select * from test.test;
+    SELECT * FROM test.test;
+    SELECT * FROM test.test;
+    SELECT * FROM test.test;
+    SELECT * FROM test.test;
+    SELECT * FROM test.test;
     EOF
     ```
 
@@ -450,8 +449,8 @@ cd example/proxy-rule-admin-interface
 5. 分别使用 `root` 用户及 `root1` 用户登录 **_ProxySQL MySQL Interface_**，预期结果将为 `'tidb-0'`、`'tidb-1'`。
 
     ```shell
-    mysql -u root -h 127.0.0.1 -P 6034 -e "select * from test.test;"
-    mysql -u root1 -h 127.0.0.1 -P 6034 -e "select * from test.test;"
+    mysql -u root -h 127.0.0.1 -P 6034 -e "SELECT * FROM test.test;"
+    mysql -u root1 -h 127.0.0.1 -P 6034 -e "SELECT * FROM test.test;"
     ```
 
 6. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
@@ -643,7 +642,7 @@ cd example/load-balance-config-file
 ./test-load-balance.sh
 ```
 
-此配置实现效果与[配置负载均衡示例：使用 Admin Interface 进行配置](#配置负载均衡示例使用-admin-interface-进行配置)完全一致，仅改为使用配置文件进行 ProxySQL 初始化配置。
+此配置实现效果与[使用 Admin Interface 配置负载均衡](#使用-admin-interface-配置负载均衡)完全一致，仅改为使用配置文件进行 ProxySQL 初始化配置。
 
 > **注意：**
 >
