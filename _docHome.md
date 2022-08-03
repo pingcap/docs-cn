@@ -131,6 +131,12 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
+<DocHomeCard href="https://github.com/pingcap/docs-cn/blob/master/CONTRIBUTING.md" icon="contributor" label="贡献内容">
+
+欢迎为 TiDB 文档做贡献，一起打造更好的 TiDB 文档！
+
+</DocHomeCard>
+
 </DocHomeCardContainer>
 
 </DocHomeSection>
