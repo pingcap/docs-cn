@@ -125,7 +125,7 @@ TiDB Cloud 是全托管的数据库即服务 (Database-as-a-Service, DBaaS) 产�
 
 </DocHomeCard>
 
-<DocHomeCard href="https://ossinsight.io" icon="cloud6" label="OSS Insight">
+<DocHomeCard href="https://ossinsight.io" icon="ossinsight" label="OSS Insight">
 
 一款由 TiDB Cloud 驱动的强大有趣的洞察工具，帮您深入分析 GitHub 仓库
 
