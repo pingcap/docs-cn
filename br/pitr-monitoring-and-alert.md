@@ -11,7 +11,7 @@ PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目�
 
 - 通过 TiUP 部署的集群，[Prometheus](https://prometheus.io/) 会自动采集相关的监控指标。
 
-- 手动部署的集群，需要参考 [TiDB 集群监控部署](/deploy-monitoring-services.md)，在 Prometheus 配置文件的 scrape_configs 中加入 TiKV 相关的 job。
+- 手动部署的集群，需要参考 [TiDB 集群监控部署](/deploy-monitoring-services.md)，在 Prometheus 配置文件的 `scrape_configs` 中加入 TiKV 相关的 job。
 
 ## 监控指标
 
