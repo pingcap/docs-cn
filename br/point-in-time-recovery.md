@@ -88,6 +88,7 @@ PiTR 可用于满足以下业务需求：
 - 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。参考文档 - [上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)
 - 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
 - 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
+- 其他 Known Issues 请参考 [pitr-known-issues](/br/pitr-known-issues.md)
 
 ## PiTR 架构
 
