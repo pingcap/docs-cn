@@ -391,17 +391,6 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
     - `mysql.stats_histograms`/`mysql.stats_buckets` 和 `mysql.stats_top_n`：TiDB 不再自动 analyze 和主动更新统计信息
     - `mysql.stats_feedback`：TiDB 不再根据被查询的数据反馈的部分统计信息更新表和索引的统计信息
 
-### `feedback-probability`
-
-+ TiDB 对查询收集统计信息反馈的概率。
-+ 默认值：0
-+ 此功能默认关闭，暂不建议开启。如果开启此功能，对于每一个查询，TiDB 会以 `feedback-probability` 的概率收集查询的反馈，用于更新统计信息。
-
-### `query-feedback-limit`
-
-+ 在内存中缓存的最大 Query Feedback 数量，超过这个数量的 Feedback 会被丢弃。
-+ 默认值：512
-
 ### `pseudo-estimate-ratio`
 
 + 修改过的行数/表的总行数的比值，超过该值时系统会认为统计信息已经过期，会采用 pseudo 的统计信息。
