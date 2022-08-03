@@ -489,6 +489,13 @@
       - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
       - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+  - Point-in-time Recovery
+    - [PiTR 简介](/br/point-in-time-recovery.md)
+    - [通过命令行使用 PiTR](/br/br-log-command-line.md)
+    - [使用场景示例](/br/pitr-usage.md)
+    - [监控告警](/br/pitr-monitoring-and-alert.md)
+    - [故障处理](/br/pitr-troubleshoot.md)
+    - [已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
