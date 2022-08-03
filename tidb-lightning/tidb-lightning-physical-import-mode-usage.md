@@ -5,7 +5,7 @@ summary: Learn how to use the physical import mode in TiDB Lightning.
 
 # Use Physical Import Mode
 
-This document introduces how to use the physical import mode in TiDB Lightning, including writing the configuration file and tuning performance.
+This document introduces how to use the physical import mode in TiDB Lightning, including writing the configuration file, tuning performance, and configuring disk quota.
 
 ## Configure and use the physical import mode
 
@@ -221,3 +221,30 @@ If the table is large, Lightning will split the table into multiple batches of 1
 After the file data is read, Lightning needs to do some post-processing, such as encoding and sorting the data locally. The concurrency of these operations is controlled by `region-concurrency`. The default value is the number of CPU cores. You can leave this configuration in the default value. It is recommended to deploy Lightning on a separate server from other components. If you must deploy Lightning together with other components, you need to lower the value of `region-concurrency` according to the load.
 
 The [`num-threads`](/tikv-configuration-file.md#num-threads) configuration of TiKV can also affect the performance. For new clusters, it is recommended to set `num-threads` to the number of CPU cores.
+
+## Configure disk quota <span class="version-mark">New in v6.2.0</span>
+
+> **Warning:**
+>
+> Disk quota is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+
+When you import data in physical import mode, TiDB Lightning creates a large number of temporary files on the local disk to encode, sort, and split the original data. When the local disk space is insufficient, TiDB Lightning reports an error and exits because of write failure.
+
+To avoid this situation, you can configure disk quota for TiDB Lightning. When the size of the temporary files exceeds the disk quota, TiDB Lightning pauses the process of reading the source data and writing temporary files. TiDB Lightning prioritizes writing the sorted key-value pairs to TiKV. After deleting the local temporary files, TiDB Lightning continues the import process.
+
+To enable disk quota, add the following configuration to your configuration file:
+
+```toml
+[tikv-importer]
+# MaxInt64 by default, which is 9223372036854775807 bytes.
+disk-quota = "10GB"
+backend = "local"
+
+[cron]
+# The interval of checking disk quota. 60 seconds by default.
+check-disk-quota = "30s"
+```
+
+`disk-quota` limits the storage space used by TiDB Lightning. The default value is MaxInt64, which is 9223372036854775807 bytes. This value is much larger than the disk space you might need for the import, so leaving it as the default value is equivalent to not setting the disk quota.
+
+`check-disk-quota` is the interval of checking disk quota. The default value is 60 seconds. When TiDB Lightning checks the disk quota, it acquires an exclusive lock for the relevant data, which blocks all the import threads. Therefore, if TiDB Lightning checks the disk quota before every write, it significantly slows down the write efficiency (as slow as a single-thread write). To achieve efficient write, disk quota is not checked before every write; instead, TiDB Lightning pauses all the import threads and checks the disk quota every `check-disk-quota` interval. That is, if the value of `check-disk-quota` is set to a large value, the disk space used by TiDB Lightning might exceed the disk quota you set, which leaves the disk quota ineffective. Therefore, it is recommended to set the value of `check-disk-quota` to a small value. The specific value of this item is determined by the environment in which TiDB Lightning is running. In different environments, TiDB Lightning writes temporary files at different speeds. Theoretically, the faster the speed, the smaller the value of `check-disk-quota` should be.
