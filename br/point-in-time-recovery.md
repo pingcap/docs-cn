@@ -13,7 +13,7 @@ PiTR 可用于满足以下业务需求：
 - 处理业务数据写错的案例，如回滚业务数据到出错事件前。
 - 审计业务的历史数据，满足司法审查的需求。
 
-本文档介绍 PiTR 的功能设计、能力边界与架构。如需了解如何使用 PiTR，请查阅 [使用 PiTR](/br/pitr-usage.md)。
+本文档介绍 PiTR 的功能设计、能力边界与架构。如需了解如何使用 PiTR，请查阅[使用 PiTR](/br/pitr-usage.md)。
 
 ## 在业务中使用 PiTR
 
@@ -48,8 +48,8 @@ PiTR 可用于满足以下业务需求：
 
 - 清理过期的或不再需要的备份数据：
 
-    - 删除快照备份时，可以直接删除快照备份数据的目录
-    - 使用 BR 命令 `br log truncate` 删除备份存储指定点之前的日志备份数据
+    - 删除快照备份时，可以直接删除快照备份数据的目录。
+    - 使用 BR 命令 `br log truncate` 删除备份存储指定点之前的日志备份数据。
 
 ## 功能指标
 
@@ -57,25 +57,27 @@ PiTR 可用于满足以下业务需求：
 - PiTR 的日志备份和全量备份一起运行时，对集群的影响在 20% 以内
 - PiTR 恢复速度，平均到单台 TiKV 节点：全量恢复为 280 GB/h ，日志恢复为 30 GB/h
 - PiTR 功能提供的灾备 RPO 低至十几分钟，RTO 根据要恢复的数据规模几分钟到几个小时不等
-- 使用 BR 清理过期的日志备份数据速度为 600GB/h
+- 使用 BR 清理过期的日志备份数据速度为 600 GB/h
 
 > **注意：**
 >
-> - 以上功能指标根据以下场景测试结果的总结，如有出入建议以实际测试结果为准
+> - 以上功能指标是根据下述两个场景测试得出的结论，如有出入，建议以实际测试结果为准
 > - 全量恢复速度 = 全量恢复集群数据量 / (时间 * TiKV 数量)
-> - 日志恢复数据 = 日志恢复总量 /(时间 * TiKV 数量)
+> - 日志恢复数据 = 日志恢复总量 / (时间 * TiKV 数量)
 
-测试场景 1 （on [TiDB Cloud](https://tidbcloud.com)）
+测试场景 1（[TiDB Cloud](https://tidbcloud.com) 上部署）
 
-- 21 （8c，16G 内存） TiKV 节点
-- 183k 数量的 Region
-- 每小时集群新增日志数据约 10 GB， 写入 (insert/update/delete) QPS 10k
+- TiKV 节点（8 core，16 GB 内存）数量：21
+- Region 数量：183,000
+- 集群新增日志数据：10 GB/h
+- 写入 (insert/update/delete) QPS：10,000
 
-测试场景 2 （On-premise）
+测试场景 2 (本地部署）
 
-- 6 （8c，64G 内存） TiKV 节点数
-- 50k 数量的 Region 个数
-- 每小时集群新增日志数据约 10 GB， 写入 (insert/update/delete) QPS 10k
+- TiKV 节点（8 core，64 GB 内存）数量：6 
+-  Region 数量：50,000
+- 集群新增日志数据：10 GB/h
+- 写入 (insert/update/delete) QPS：10,000
 
 ## 使用限制
 
@@ -85,14 +87,14 @@ PiTR 可用于满足以下业务需求：
 - 仅支持集群粒度的 PiTR，不支持对单个 database 或 table 执行 PiTR。
 - 不支持恢复用户表和权限表的数据。
 - 不支持恢复数据到 TiFlash 存储引擎。如果备份集群包含 TiFlash，执行 PiTR 后，恢复集群的数据不包含 TiFlash 副本。如果恢复集群包含 TiFlash，用户需要进行设置。具体操作，参考[手动设置 schema 或 table 的 TiFlash 副本](/br/pitr-troubleshoot.md#在使用-br-restore-point-命令恢复下游集群后无法从-tiflash-引擎中查询到数据该如何处理)。
-- 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。参考文档 - [上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)
+- 上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来。参考[上游数据库使用 TiDB Lightning Physical 方式导入数据，导致无法使用日志备份功能](/br/pitr-known-issues.md#上游数据库使用-tidb-lightning-physical-方式导入数据导致无法使用日志备份功能)。
 - 备份过程中不支持分区交换 (Exchange Partition)，参考[日志备份过程中执行分区交换](/br/pitr-troubleshoot.md#日志备份过程中执行分区交换-exchange-partition-ddl在-pitr-恢复时会报错该如何处理)。
 - 不支持在恢复中重复恢复某段时间区间的日志，如果多次重复恢复 [t1=10, ts2=20) 区间的日志备份数据，可能会造成恢复后的数据不一致。
-- 其他 Known Issues 请参考 [pitr-known-issues](/br/pitr-known-issues.md)
+- 其他已知问题，请参考 [PiTR 已知问题](/br/pitr-known-issues.md)。
 
 ## PiTR 架构
 
-PiTR 功能主要包含了快照备份恢复、日志备份恢复功能。关于快照备份恢复，请参考 [BR 设计原理](/br/backup-and-restore-design.md)。本节介绍日志备份和恢复的实现。
+PiTR 主要用于快照备份恢复和日志备份恢复。关于快照备份恢复，请参考 [BR 设计原理](/br/backup-and-restore-design.md)。本节介绍日志备份和恢复的实现。
 
 日志备份恢复的架构实现如下：
 

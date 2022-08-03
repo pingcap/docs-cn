@@ -40,13 +40,13 @@ Usage:
   br log [command]
 
 Available Commands:
-  metadata   get the metadata of log dir.
-  pause      pause a log backup task
+  metadata   get the metadata of log dir
+  pause      pause a log backup task.
   resume     resume a log backup task
   start      start a log backup task
   status     get status for the log backup task
   stop       stop a log backup task
-  truncate   truncate the log data until sometime.
+  truncate   truncate the log data until sometime
 ```
 
 各个子命令的作用如下：
@@ -126,7 +126,7 @@ Global Flags:
 
 ```
 
-以上示例中， `task-name` 为常用参数，它用来指定日志备份任务名。默认值为 '*'，显示全部的任务。
+以上示例中， `task-name` 为常用参数，它用来指定日志备份任务名。默认值为 `*`，即显示全部任务。
 
 使用示例：
 
@@ -184,7 +184,7 @@ Global Flags:
 
 > **注意：**
 >
-> - 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被删除，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许最多保留最近 24 小时内的 MVCC 数据。如果暂停的日志备份任务超过 24 小时未恢复，对应的数据就会被 GC，将不会被备份下来。
+> - 暂停日志备份任务后，备份程序为了防止生成变更日志的 MVCC 数据被删除，暂停任务程序会自动将当前备份点 checkpoint 设置为 service safepoint，允许最多保留最近 24 小时内的 MVCC 数据。如果暂停的日志备份任务超过 24 小时未恢复，对应的数据就会被 GC，不会备份。
 > - 保留过多的 MVCC 数据会影响 TiDB 集群的存储容量和性能，任务暂停后请及时恢复任务。
 
 使用示例：
@@ -282,10 +282,10 @@ Global Flags:
   -s, --storage string         specify the url where backup storage, eg, "s3://bucket/path/prefix"
 ```
 
-该命令只需要访问备份存储，不需要访问备份集群。此外常用的参数如下：
+该命令只需要访问备份存储，不需要访问备份集群。此外，常用的参数如下：
 
 - `--dry-run`：运行命令，但是不删除文件。
-- `--until`：早于该参数指定时间点的日志备份数据会被删除。建议以使用快照备份的时间点作为该参数值。
+- `--until`：早于该参数指定时间点的日志备份数据会被删除。建议使用快照备份的时间点作为该参数值。
 - `--storage`：指定备份存储地址。日志备份暂时只支持共享的文件系统和 Amazon S3 作为备份存储，详细介绍请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 
 使用示例：
@@ -304,7 +304,7 @@ Clearing data files... DONE; take = 43.504161ms, kv-count = 53, kv-size = 4573(4
 Removing metadata... DONE; take = 24.038962ms
 ```
 
-### 查看备份数据 metadata
+### 查看备份数据元信息
 
 执行 `br log metadata` 命令，你可以查看备份存储中保存的日志备份的元信息，例如最早和最近的可恢复时间点。
 
@@ -370,7 +370,7 @@ Global Flags:
 
 以上示例只展示了常用的参数，这些参数作用如下：
 
-- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
+- `--full-backup-storage`：指定快照（全量）备份的存储地址。如果你要使用 PiTR，需要指定该参数，并选择恢复时间点之前最近的快照备份；如果只恢复日志备份数据，则不需要指定该参数。如需使用 Amazon S3 作为存储地址，请参考 [AWS S3 storage](/br/backup-storage-S3.md)。
 - `--restored-ts`：指定恢复到的时间点。如果没有指定该参数，则恢复到日志备份数据最后的可恢复时间点（备份数据的 checkpoint）。
 - `--start-ts`：指定日志备份恢复的起始时间点。如果你只恢复日志备份数据，不恢复快照备份，需要指定这个参数。
 - `--pd`：指定恢复集群的 PD 访问地址。
@@ -393,6 +393,6 @@ Restore KV Files <--------------------------------------------------------------
 
 > **注意：**
 >
-> - 建议用户使用此命令直接做 PiTR 恢复数据，参考[PiTR 功能](/br/point-in-time-recovery.md)，不建议在集群上直接恢复一段时间区间内日志。
+> - 建议使用 `br restore point` 命令执行 PiTR 来恢复数据，参考 [PiTR 功能](/br/point-in-time-recovery.md)，不建议在集群上直接恢复一段时间区间内日志。
 > - 不支持重复恢复某段时间区间的日志，如多次重复恢复 [t1=10, ts2=20) 区间的日志数据，可能会造成恢复后的数据不正确。
-> - 多次恢复不同时间区间的日志时，用户需保证恢复日志的连续性。如先后恢复 [t1, t2)，[t2, t3)，[t3, t4) 三个区间的日志可以保证正确性，而在恢复 [t1, t2) 后跳过 [t2, t3) 直接恢复 [t3, t4) 的区间可能导致恢复之后的数据不正确。
+> - 多次恢复不同时间区间的日志时，需保证恢复日志的连续性。如先后恢复 [t1, t2)、[t2, t3) 和 [t3, t4) 三个区间的日志可以保证正确性，而在恢复 [t1, t2) 后跳过 [t2, t3) 直接恢复 [t3, t4) 的区间可能导致恢复之后的数据不正确。
