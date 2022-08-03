@@ -112,7 +112,6 @@ hide_commit: true
 
 [Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/stable/backup-and-restore-overview)
 
-
 [TiCDC](https://docs.pingcap.com/zh/tidb/stable/ticdc-overview)
 
 [PingCAP Clinic](https://docs.pingcap.com/zh/tidb/stable/clinic-introduction)
