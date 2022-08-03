@@ -9,7 +9,7 @@ summary: 了解日志备份的已知问题。
 
 如果遇到未包含在此文档且无法解决的问题，可以在 [AskTUG](https://asktug.com/) 社区中搜索答案或提问。
 
-## BR 进程在执行 PiTR 恢复或执行 `br log truncate` 命令时出现 OOM 问题 [issue 36648](https://github.com/pingcap/tidb/issues/36648)
+## BR 进程在执行 PiTR 恢复或执行 `br log truncate` 命令时出现 OOM 问题(https://github.com/pingcap/tidb/issues/36648)
 
 执行 PiTR 恢复时遇到 BR OOM 问题，从以下几点考虑：
 
