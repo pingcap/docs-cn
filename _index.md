@@ -45,7 +45,6 @@ hide_commit: true
 
 [在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/stable/tidb-in-kubernetes)
 
-
 </LearningPath>
 
 <LearningPath label="迁移" icon="cloud3">
