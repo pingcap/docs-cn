@@ -1339,6 +1339,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[32, 2147483647]`
 - 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
 
+### `tidb_max_paging_size`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`50000`
+- 范围：`[1, 2147483647]`
+- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数，设置过小会造成与 TiKV 的 RPC 交互次数增加，设置过大则会造成导数据/全表扫等特定场景的内存使用变高。
+
 ### `tidb_max_delta_schema_count`
 
 - 作用域：GLOBAL
@@ -1427,6 +1435,14 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[10, 216000]`
 - 单位：秒
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step。
+
+### `tidb_min_paging_size`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`128`
+- 范围：`[1, 2147483647]`
+- 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数，设置过小会造成与 TiKV 的 RPC 交互次数增加。设置过大可能造成 IndexLookup 带 Limit 场景下的性能下降。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
