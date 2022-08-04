@@ -126,6 +126,7 @@
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
+    - [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
@@ -488,6 +489,13 @@
       - [使用 BR 备份和恢复 RawKV 数据](/br/rawkv-backup-and-restore.md)
       - [使用 Dumpling 和 TiDB Lightning 备份和恢复数据](/backup-and-restore-using-dumpling-lightning.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
+  - Point-in-time Recovery
+    - [PiTR 简介](/br/point-in-time-recovery.md)
+    - [通过命令行使用 PiTR](/br/br-log-command-line.md)
+    - [使用场景示例](/br/pitr-usage.md)
+    - [监控告警](/br/pitr-monitoring-and-alert.md)
+    - [故障处理](/br/pitr-troubleshoot.md)
+    - [已知问题](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [概述](/tidb-binlog/tidb-binlog-overview.md)
     - [快速上手](/tidb-binlog/get-started-with-tidb-binlog.md)
@@ -843,6 +851,7 @@
         - [访问](/dashboard/dashboard-diagnostics-access.md)
         - [查看报告](/dashboard/dashboard-diagnostics-report.md)
         - [使用示例](/dashboard/dashboard-diagnostics-usage.md)
+      - [监控指标页面](/grafana-performance-overview-dashboard.md)
       - [日志搜索页面](/dashboard/dashboard-log-search.md)
       - 实例性能分析
         - [手动分析页面](/dashboard/dashboard-profiling.md)
