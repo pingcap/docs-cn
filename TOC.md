@@ -1,6 +1,7 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
+- [Docs Home](/_docHome.md)
 - About TiDB
   - [TiDB Introduction](/overview.md)
   - [TiDB 6.1 Release Notes](/releases/release-6.1.0.md)
