@@ -258,7 +258,7 @@ In dictionary format, constraints also indicate a number of instances that apply
 
 ## Known limitations
 
-The following known limitations exist in the experimental release of Placement Rules in SQL:
+The following known limitations are as follows:
 
 * Temporary tables do not support placement options.
 * Syntactic sugar rules are permitted for setting `PRIMARY_REGION` and `REGIONS`. In the future, we plan to add varieties for `PRIMARY_RACK`, `PRIMARY_ZONE`, and `PRIMARY_HOST`. See [issue #18030](https://github.com/pingcap/tidb/issues/18030).
