@@ -14,7 +14,7 @@ summary: 了解升级 TiFlash 至 v6.2.0 时的注意事项。
 
 > **注意：**
 >
-> - 不推荐跨主干版本升级 TiDB 集群，如从 v4.0.0 升级至 v6.2.0。请先升级至 v5.4.x 或 v6.1.0，然后再升级至 v6.2.0。
+> - 不推荐跨主干版本升级 TiDB 集群，如从 v4.x.x 升级至 v6.x.x，请先升级至 v5.x.x，然后再升级至 v6.x.x。
 >
 > - v4.x.x 已接近产品周期尾声，请尽早升级到 v5.x.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
 >
