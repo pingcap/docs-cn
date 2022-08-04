@@ -1442,7 +1442,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：是
 - 默认值：`128`
 - 范围：`[1, 2147483647]`
-- 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数，设置过小会造成与 TiKV 的 RPC 交互次数增加。设置过大可能造成 IndexLookup 带 Limit 场景下的性能下降。
+- 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会减少；设置过大，IndexLookup 带 Limit 场景会出现性能下降。
 
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
