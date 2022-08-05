@@ -1,30 +1,26 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
-<<<<<<< HEAD
-=======
 - [文档中心](https://docs.pingcap.com/zh)
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [What's New in TiDB 4.0](/whats-new-in-tidb-4.0.md)
-  - [TiDB 4.0 实验特性](/experimental-features-4.0.md)
+  - [What's New in TiDB 5.0](/releases/release-5.0.0.md)
   - [基本功能](/basic-features.md)
+  - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v4.0 对比 v3.0](/benchmark/benchmark-sysbench-v4-vs-v3.md)
-    - [TPC-H 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpch.md)
-    - [TPC-C 性能对比 - v4.0 对比 v3.0](/benchmark/v4.0-performance-benchmarking-with-tpcc.md)
-    - [线上负载与 ADD INDEX 相互影响测试](/benchmark/online-workloads-and-add-index-operations.md)
+    - [Sysbench 性能对比 - v5.0 对比 v4.0](/benchmark/benchmark-sysbench-v5-vs-v4.md)
+    - [TPC-C 性能对比 - v5.0 对比 v4.0](/benchmark/v5.0-performance-benchmarking-with-tpcc.md)
+    - [TPC-H 100 性能对比 - v5.0 MPP 对比 Greenplum / Apache Spark](/benchmark/v5.0-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
 - 快速上手
   - [快速上手指南](/quick-start-with-tidb.md)
   - [SQL 基本操作](/basic-sql-operations.md)
-- 部署集群
+- 部署标准集群
   - [软硬件环境需求](/hardware-and-software-requirements.md)
   - [环境与系统配置检查](/check-before-deployment.md)
-  - 配置拓扑结构
+  - 规划集群拓扑
     - [最小部署拓扑结构](/minimal-deployment-topology.md)
     - [TiFlash 部署拓扑](/tiflash-deployment-topology.md)
     - [TiCDC 部署拓扑](/ticdc-deployment-topology.md)
@@ -33,18 +29,15 @@
     - [跨机房部署拓扑结构](/geo-distributed-deployment-topology.md)
     - [混合部署拓扑结构](/hybrid-deployment-topology.md)
   - 安装与启动
-    - Linux 环境
-      - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
-      - [使用 TiUP 离线部署（推荐）](/production-offline-deployment-using-tiup.md)
-      - [使用 Ansible 部署](/online-deployment-using-ansible.md)
-      - [使用 Ansible 离线部署](/offline-deployment-using-ansible.md)
-      - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
+    - [使用 TiUP 部署（推荐）](/production-deployment-using-tiup.md)
+    - [在 Kubernetes 上部署](/tidb-in-kubernetes.md)
   - [验证集群状态](/post-installation-check.md)
-  - 性能测试方法
-    - [如何用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
-    - [如何对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
+  - 测试集群性能
+    - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
+    - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
 - 数据迁移
-  - [概述](/migration-overview.md)
+  - [数据迁移场景](/migration-overview.md)
+  - [迁移工具](/migration-tools.md)
   - 从 MySQL 迁移至 TiDB
     - [使用 TiDB Lightning 从 Amazon Aurora MySQL 迁移全量数据](/migrate-from-aurora-using-lightning.md)
     - [使用 TiDB Lightning 从 MySQL SQL 文件迁移全量数据](/migrate-from-mysql-dumpling-files.md)
@@ -56,12 +49,9 @@
 - 运维操作
   - 升级 TiDB 版本
     - [使用 TiUP 升级（推荐）](/upgrade-tidb-using-tiup.md)
-    - [使用 TiUP 离线升级（推荐）](/upgrade-tidb-using-tiup-offline.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/upgrade-a-tidb-cluster)
-    - [使用 TiDB Ansible](/upgrade-tidb-using-ansible.md)
   - 扩缩容
     - [使用 TiUP（推荐）](/scale-tidb-using-tiup.md)
-    - [使用 TiDB Ansible](/scale-tidb-using-ansible.md)
     - [使用 TiDB Operator](https://docs.pingcap.com/zh/tidb-in-kubernetes/stable/scale-a-tidb-cluster)
   - 备份与恢复
     - 使用 BR 工具（推荐）
@@ -70,13 +60,11 @@
       - [BR 备份恢复场景示例](/br/backup-and-restore-use-cases.md)
       - [外部存储](/br/backup-and-restore-storages.md)
       - [BR 常见问题](/br/backup-and-restore-faq.md)
-    - [使用 Dumpling/TiDB Lightning 备份与恢复](/backup-and-restore-using-dumpling-lightning.md)
   - [读取历史数据](/read-historical-data.md)
   - [修改时区](/configure-time-zone.md)
   - [日常巡检](/daily-check.md)
   - [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
-  - [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
-  - [Ansible 常用运维操作](/maintain-tidb-using-ansible.md)
+  - [使用 TiUP 运维集群](/maintain-tidb-using-tiup.md)
   - [在线修改集群配置](/dynamic-config.md)
 - 监控与告警
   - [监控框架概述](/tidb-monitoring-framework.md)
@@ -115,6 +103,7 @@
     - 理解 TiDB 执行计划
       - [TiDB 执行计划概览](/explain-overview.md)
       - [使用 `EXPLAIN` 解读执行计划](/explain-walkthrough.md)
+      - [MPP 模式查询的执行计划](/explain-mpp.md)
       - [索引查询的执行计划](/explain-indexes.md)
       - [Join 查询的执行计划](/explain-joins.md)
       - [子查询的执行计划](/explain-subqueries.md)
@@ -181,6 +170,22 @@
       - [tiup-mirror 定制离线镜像](/tiup/tiup-mirror.md)
       - [tiup-bench 进行 TPCC/TPCH 压力测试](/tiup/tiup-bench.md)
   - [TiDB Operator](/tidb-operator-overview.md)
+  - [Dumpling](/dumpling-overview.md)
+  - TiDB Lightning
+    - [概述](/tidb-lightning/tidb-lightning-overview.md)
+    - 主要功能
+      - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
+      - [表库过滤](/table-filter.md)
+      - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
+      - [TiDB Lightning 后端](/tidb-lightning/tidb-lightning-backends.md)
+      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
+    - [快速上手教程](/get-started-with-tidb-lightning.md)
+    - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
+    - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
+    - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
+    - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
+    - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
+  - [TiDB Data Migration](/dm/dm-overview.md)
   - Backup & Restore (BR)
     - [BR 工具简介](/br/backup-and-restore-tool.md)
     - [使用 BR 命令行备份恢复](/br/use-br-command-line-tool.md)
@@ -207,39 +212,22 @@
       - [故障诊断](/tidb-binlog/troubleshoot-tidb-binlog.md)
       - [常见错误修复](/tidb-binlog/handle-tidb-binlog-errors.md)
     - [FAQ](/tidb-binlog/tidb-binlog-faq.md)
-  - TiDB Lightning
-    - [概述](/tidb-lightning/tidb-lightning-overview.md)
-    - [快速上手教程](/get-started-with-tidb-lightning.md)
-    - [部署执行](/tidb-lightning/deploy-tidb-lightning.md)
-    - [参数说明](/tidb-lightning/tidb-lightning-configuration.md)
-    - 主要功能
-      - [断点续传](/tidb-lightning/tidb-lightning-checkpoints.md)
-      - [表库过滤](/table-filter.md)
-      - [CSV 支持](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-      - [后端](/tidb-lightning/tidb-lightning-backends.md)
-      - [Web 界面](/tidb-lightning/tidb-lightning-web-interface.md)
-    - [监控告警](/tidb-lightning/monitor-tidb-lightning.md)
-    - [FAQ](/tidb-lightning/tidb-lightning-faq.md)
-    - [术语表](/tidb-lightning/tidb-lightning-glossary.md)
-  - [TiDB Data Migration](/dm/dm-overview.md)
   - TiCDC
     - [概述](/ticdc/ticdc-overview.md)
     - [安装部署](/ticdc/deploy-ticdc.md)
     - [运维管理](/ticdc/manage-ticdc.md)
     - [故障诊断](/ticdc/troubleshoot-ticdc.md)
     - [监控指标](/ticdc/monitor-ticdc.md)
+    - [报警规则](/ticdc/ticdc-alert-rules.md)
     - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
     - [将 TiDB 集成到 Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
     - [术语表](/ticdc/ticdc-glossary.md)
-  - [Dumpling](/dumpling-overview.md)
+  - [TiUniManager](https://docs.pingcap.com/zh/tidb/stable/tiunimanager-overview)
   - sync-diff-inspector
     - [概述](/sync-diff-inspector/sync-diff-inspector-overview.md)
     - [不同库名或表名的数据校验](/sync-diff-inspector/route-diff.md)
     - [分库分表场景下的数据校验](/sync-diff-inspector/shard-diff.md)
     - [TiDB 主从集群的数据校验](/sync-diff-inspector/upstream-downstream-diff.md)
-  - [Loader](/loader-overview.md)
-  - [Mydumper](/mydumper-overview.md)
-  - [Syncer](/syncer-overview.md)
   - TiSpark
     - [TiSpark 快速上手](/get-started-with-tispark.md)
     - [TiSpark 用户指南](/tispark-overview.md)
@@ -261,6 +249,7 @@
     - [为 TiDB 组件间通信开启加密传输](/enable-tls-between-components.md)
     - [生成自签名证书](/generate-self-signed-certificates.md)
     - [静态加密](/encryption-at-rest.md)
+    - [为 TiDB 落盘文件开启加密](/enable-disk-spill-encrypt.md)
     - [日志脱敏](/log-redaction.md)
   - 权限
     - [与 MySQL 安全特性差异](/security-compatibility-with-mysql.md)
@@ -289,6 +278,7 @@
       - [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md)
       - [`ADMIN SHOW DDL [JOBS|QUERIES]`](/sql-statements/sql-statement-admin-show-ddl.md)
       - [`ALTER DATABASE`](/sql-statements/sql-statement-alter-database.md)
+      - [`ALTER INDEX`](/sql-statements/sql-statement-alter-index.md)
       - [`ALTER INSTANCE`](/sql-statements/sql-statement-alter-instance.md)
       - [`ALTER TABLE`](/sql-statements/sql-statement-alter-table.md)
       - [`ALTER USER`](/sql-statements/sql-statement-alter-user.md)
@@ -393,6 +383,7 @@
       - [`SHUTDOWN`](/sql-statements/sql-statement-shutdown.md)
       - [`SPLIT REGION`](/sql-statements/sql-statement-split-region.md)
       - [`START TRANSACTION`](/sql-statements/sql-statement-start-transaction.md)
+      - [`TABLE`](/sql-statements/sql-statement-table.md)
       - [`TRACE`](/sql-statements/sql-statement-trace.md)
       - [`TRUNCATE`](/sql-statements/sql-statement-truncate.md)
       - [`UPDATE`](/sql-statements/sql-statement-update.md)
@@ -421,7 +412,10 @@
       - [窗口函数](/functions-and-operators/window-functions.md)
       - [其它函数](/functions-and-operators/miscellaneous-functions.md)
       - [精度数学](/functions-and-operators/precision-math.md)
+      - [集合运算](/functions-and-operators/set-operators.md)
       - [下推到 TiKV 的表达式列表](/functions-and-operators/expressions-pushed-down.md)
+      - [TiDB 特有的函数](/functions-and-operators/tidb-functions.md)
+    - [聚簇索引](/clustered-indexes.md)
     - [约束](/constraints.md)
     - [生成列](/generated-columns.md)
     - [SQL 模式](/sql-mode.md)
@@ -441,6 +435,9 @@
       - INFORMATION_SCHEMA
         - [Overview](/information-schema/information-schema.md)
         - [`ANALYZE_STATUS`](/information-schema/information-schema-analyze-status.md)
+        - [`CLIENT_ERRORS_SUMMARY_BY_HOST`](/information-schema/client-errors-summary-by-host.md)
+        - [`CLIENT_ERRORS_SUMMARY_BY_USER`](/information-schema/client-errors-summary-by-user.md)
+        - [`CLIENT_ERRORS_SUMMARY_GLOBAL`](/information-schema/client-errors-summary-global.md)
         - [`CHARACTER_SETS`](/information-schema/information-schema-character-sets.md)
         - [`CLUSTER_CONFIG`](/information-schema/information-schema-cluster-config.md)
         - [`CLUSTER_HARDWARE`](/information-schema/information-schema-cluster-hardware.md)
@@ -544,6 +541,15 @@
   - [迁移 FAQ](/faq/migration-tidb-faq.md)
 - 版本发布历史
   - [发布版本汇总](/releases/release-notes.md)
+  - v5.0
+    - [5.0.6](/releases/release-5.0.6.md)
+    - [5.0.5](/releases/release-5.0.5.md)
+    - [5.0.4](/releases/release-5.0.4.md)
+    - [5.0.3](/releases/release-5.0.3.md)
+    - [5.0.2](/releases/release-5.0.2.md)
+    - [5.0.1](/releases/release-5.0.1.md)
+    - [5.0 GA](/releases/release-5.0.0.md)
+    - [5.0.0-rc](/releases/release-5.0.0-rc.md)
   - v4.0
     - [4.0.16](/releases/release-4.0.16.md)
     - [4.0.15](/releases/release-4.0.15.md)
