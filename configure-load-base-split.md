@@ -23,15 +23,25 @@ Previously, the solution to this problem was to manually execute a command to sp
 
 ## Implementation principles
 
-Load Base Split automatically splits the Region based on statistics. It identifies the Regions whose read load consistently exceeds the threshold for 10 seconds, and splits these Regions at a proper position. When choosing the split position, Load Base Split tries to balance the access load of both Regions after the split and avoid access across Regions.
+Load Base Split automatically splits the Region based on statistics. It identifies the Regions whose read load or CPU usage consistently exceeds the threshold for 10 seconds, and splits these Regions at a proper position. When choosing the split position, Load Base Split tries to balance the access load of both Regions after the split and avoid access across Regions.
 
 The Region split by Load Base Split will not be merged quickly. On the one hand, PD's `MergeChecker` skips the hot Regions; on the other hand, PD also determines whether to merge two Regions according to `QPS` in the heartbeat information, to avoid the merging of two Regions with high `QPS`.
 
 ## Usage
 
-The Load Base Split feature is currently controlled by the `split.qps-threshold` parameter (QPS threshold) and `split.byte-threshold` parameter (traffic threshold). If the sum of all types of read requests per second for a Region exceeds the QPS threshold or traffic threshold for 10 consecutive seconds, PD splits the Region.
+The Load Base Split feature is currently controlled by the following parameters:
 
-Load Base Split is enabled by default, but the parameter is set to a rather high value. `split.qps-threshold` defaults to `3000` and `split.byte-threshold` defaults to 30MB/s. If you want to disable this feature, set the two thresholds high enough at the same time.
+- `split.qps-threshold`: The QPS threshold at which a Region is identified as a hotspot. The default value is `3000` per second.
+- `split.byte-threshold`: The traffic threshold at which a Region is identified as a hotspot. The unit is byte and the default value is 30 MiB per second. (Introduced in v5.0)
+- `split.region-cpu-overload-threshold-ratio`: The CPU usage threshold (the percentage of CPU time of the read thread pool) at which a Region is identified as a hotspot. The default value is `0.25`. (Introduced in v6.2.0)
+
+If a Region meets one of the following conditions for 10 consecutive seconds, TiKV tries to split the Region:
+
+- the sum of its read requests exceeds `split.qps-threshold`.
+- its traffic exceeds `split.byte-threshold`.
+- its CPU usage in the Unified Read Pool exceeds `split.region-cpu-overload-threshold-ratio`.
+
+Load Base Split is enabled by default, but the parameter is set to a rather high value. If you want to disable this feature, set `split.qps-threshold` and `split.byte-threshold` high enough and set `split.region-cpu-overload-threshold-ratio` to `0` at the same time.
 
 To modify the parameter, take either of the following two methods:
 
