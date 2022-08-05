@@ -39,9 +39,9 @@ hide_commit: true
 
 [数据迁移概览](https://docs.pingcap.com/zh/tidb/v4.0/migration-overview)
 
-[迁移工具](https://docs.pingcap.com/zh/tidb/v4.0/migration-tools)
-
 [从 Amazon Aurora MySQL 迁移](https://docs.pingcap.com/zh/tidb/v4.0/migrate-from-aurora-using-lightning)
+
+[从 MySQL SQL 文件迁移](https://docs.pingcap.com/zh/tidb/v4.0/migrate-from-mysql-dumpling-files)
 
 </LearningPath>
 
