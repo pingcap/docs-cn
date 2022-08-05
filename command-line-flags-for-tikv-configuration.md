@@ -55,24 +55,24 @@ TiKV 的命令行参数支持一些可读性好的单位转换。
 + `FORMAT` 可选值：`json`。
 + 目前仅支持以 JSON 格式输出每个配置项的名字 (Name)、默认值 (DefaultValue) 和当前配置值 (ValueInFile)。当执行此命令时，若同时指定了 `-C` 或 `--config` 参数，则对应的配置文件包含的配置项会同时输出当前配置值和默认值，其他未指定的配置项仅输出默认值，示例如下：
 
-```json
-{
-  "Component": "TiKV Server",
-  "Version": "6.2.0",
-  "Parameters": [
-    {
-      "Name": "log-level",
-      "DefaultValue": "info",
-      "ValueInFile": "warn"
-    },
-    {
-      "Name": "log-file",
-      "DefaultValue": ""
-    },
-    ...
-  ]
- }
-```
+  ```json
+  {
+    "Component": "TiKV Server",
+    "Version": "6.2.0",
+    "Parameters": [
+      {
+        "Name": "log-level",
+        "DefaultValue": "info",
+        "ValueInFile": "warn"
+      },
+      {
+        "Name": "log-file",
+        "DefaultValue": ""
+      },
+      ...
+    ]
+  }
+  ```
 
 ## `--data-dir`
 
