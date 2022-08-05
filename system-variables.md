@@ -1010,6 +1010,17 @@ Constraint checking is always performed in place for pessimistic transactions (d
 >
 > Only the default value of `OFF` can be considered safe. Setting `tidb_enable_noop_functions=1` might lead to unexpected behaviors in your application, because it permits TiDB to ignore certain syntax without providing an error. For example, the syntax `START TRANSACTION READ ONLY` is permitted, but the transaction remains in read-write mode.
 
+### tidb_enable_noop_variables <span class="version-mark">New in v6.2.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `ON`
+- If you set the variable value to `OFF`, TiDB behaves as follows:
+    * When you use `SET` to set a `noop` variable, TiDB returns the `"setting *variable_name* has no effect in TiDB"` warning.
+    * The result of `SHOW [SESSION | GLOBAL] VARIABLES` does not include `noop` variables.
+    * When you use `SELECT` to read a `noop` variable, TiDB returns the `"variable *variable_name* has no effect in TiDB"` warning.
+- To check whether a TiDB instance has set and read the `noop` variable, you can use the `SELECT * FROM INFORMATION_SCHEMA.CLIENT_ERRORS_SUMMARY_GLOBAL;` statement.
+
 ### tidb_enable_outer_join_reorder <span class="version-mark">New in v6.1.0</span>
 
 - Scope: SESSION | GLOBAL
