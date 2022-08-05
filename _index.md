@@ -1,6 +1,6 @@
 ---
 title: TiDB 产品文档
-aliases: ["/docs/dev/", "/docs/dev/adopters/", "/tidb/dev/adopters"]
+aliases: ['/docs-cn/v4.0/']
 hide_sidebar: true
 hide_commit: true
 ---
