@@ -1611,6 +1611,17 @@ Configuration items related to TiCDC.
 + Default value: `6`, which means 6 tasks can be concurrent executed at most.
 + Note: The value of `incremental-scan-concurrency` must be greater than or equal to that of `incremental-scan-threads`; otherwise, TiKV will report an error at startup.
 
+### `raw-min-ts-outlier-threshold` <span class="version-mark">New in v6.2.0</span>
+
++ The threshold at which TiKV checks whether the Resolved TS of RawKV is abnormal.
++ If the Resolved TS latency of a Region exceeds this threshold, the anomaly detection process is triggered. At this time, the Region whose Resolved TS latency exceeds 3 x [interquartile range](https://en.wikipedia.org/wiki/Interquartile_range) is considered as slow in lock resolution, and triggers TiKV-CDC to re-subscribe the data changes of the Region, which resets the lock resource status.
++ Default value: `60s`
+
+> **Warning:**
+>
+> - This configuration item will be deprecated in a future release. To avoid upgrade compatibility issues, it is **NOT** recommended to set this configuration item.
+> - In most scenarios, you do not need to modify this configuration, because the slow lock resolution rarely happens. If this configuration value is set too small, the anomaly detection process might trigger false alarms, which causes data replication jitter.
+
 ## resolved-ts
 
 Configuration items related to maintaining the Resolved TS to serve Stale Read requests.
