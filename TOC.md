@@ -1,6 +1,10 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
+<<<<<<< HEAD
+=======
+- [文档中心](https://docs.pingcap.com/zh)
+>>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [What's New in TiDB 5.0](/releases/release-5.0.0.md)
