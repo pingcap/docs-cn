@@ -172,6 +172,10 @@ First, check out the books written by the author (ID is `2299112019`) in the CTE
 
 Note that the query in `books_authored_by_rm` executes only once, and then TiDB creates a temporary space to cache its result. When the queries in `books_with_average_ratings` and `books_with_orders` refer to `books_authored_by_rm`, TiDB gets its result directly from this temporary space.
 
+> **Tip:**
+>
+> If the efficiency of the default CTE queries is not good, you can use the [`MERGE()`](/optimizer-hints.md#merge) hint to expand the CTE subquery to the outer query to improve the efficiency.
+
 ### Recursive CTE
 
 Recursive CTE can be defined using the following syntax:

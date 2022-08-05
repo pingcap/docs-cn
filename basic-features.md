@@ -92,7 +92,7 @@ This document lists the features supported in each TiDB version. Note that suppo
 | [Auto increment](/auto-increment.md)                         | Y | Y  | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [Auto random](/auto-random.md)                               | Y | Y  | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
 | [DDL algorithm assertions](/sql-statements/sql-statement-alter-table.md) | Y | Y  | Y            |      Y       |      Y       |      Y       |      Y       |      Y       |
-| [Multi-schema change: add columns](/system-variables.md#tidb_enable_change_multi_schema)                           | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
+| Multi-schema change: add columns                           | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental | Experimental |
 | [Change column type](/sql-statements/sql-statement-modify-column.md) | Y | Y  | Y            |      Y       |      Y       |      Y       |      N       |      N       |
 | [Temporary tables](/temporary-tables.md)                    | Y | Y   | Y            |      Y       |      N       |      N       |      N       |      N       |
 
