@@ -207,6 +207,7 @@ The following TiKV configuration items can be modified online:
 | `server.grpc-memory-pool-quota` | Limits the memory size that can be used by gRPC |
 | `server.max-grpc-send-msg-len` | Sets the maximum length of a gRPC message that can be sent |
 | `server.raft-msg-max-batch-size` | Sets the maximum number of Raft messages that are contained in a single gRPC message |
+| `server.simplify-metrics`        | Controls whether to simplify the sampling monitoring metrics                   |
 | `storage.block-cache.capacity` | The size of shared block cache (supported since v4.0.3) |
 | `storage.scheduler-worker-pool-size` | The number of threads in the Scheduler thread pool |
 | `backup.num-threads` | The number of backup threads (supported since v4.0.3) |
