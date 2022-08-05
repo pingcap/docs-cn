@@ -157,7 +157,7 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 
 The following major restrictions apply to `ALTER TABLE` in TiDB:
 
-- Making multiple changes in a single `ALTER TABLE` statement is currently not supported.
+- Changing the same column or index when altering multiple schema objects in a single statement is not supported.
 
 - Changes of the [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) types on primary key columns are not supported.
 

@@ -149,7 +149,6 @@ ERROR 8200 (HY000): Unsupported modify column: change from original type decimal
 
 ## MySQL compatibility
 
-* Making multiple changes in a single `ALTER TABLE` statement is currently not supported.
 * Changes of [Reorg-Data](/sql-statements/sql-statement-modify-column.md#reorg-data-change) types on primary key columns are not supported.
 * Changes of column types on partitioned tables are not supported.
 * Changes of column types on generated columns are not supported.

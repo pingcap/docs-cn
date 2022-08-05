@@ -169,13 +169,6 @@ CREATE TABLE `t1` (
 
 ## MySQL compatibility
 
-* Does not support modifying multiple columns using a single `ALTER TABLE` statement. For example:
-
-    ```sql
-    ALTER TABLE t1 MODIFY col1 BIGINT, MODIFY id BIGINT NOT NULL;
-    ERROR 1105 (HY000): Unsupported multi schema change
-    ```
-
 * Does not support modifying the Reorg-Data types on the primary key columns but supports modifying the Meta-Only types. For example:
 
     ```sql
