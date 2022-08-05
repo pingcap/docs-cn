@@ -86,3 +86,11 @@ explain select * from t where exists (select * from t2);
 | └─TableFullScan_11     | 10000.00 | cop[tikv] | table:t       | keep order:false, stats:pseudo |
 +------------------------+----------+-----------+---------------+--------------------------------+
 ```
+
+In the preceding optimization, the optimizer automatically optimizes the statement execution. In addition, you can also add the [`SEMI_JOIN_REWRITE`](/optimizer-hints.md#semi_join_rewrite) hint to further rewrite the statement.
+
+If this hint is not used to rewrite the query, when the hash join is selected in the execution plan, the semi-join query can only use the subquery to build a hash table. In this case, when the result of the subquery is bigger than that of the outer query, the execution speed might be slower than expected.
+
+Similarly, when the index join is selected in the execution plan, the semi-join query can only use the outer query as the driving table. In this case, when the result of the subquery is smaller than that of the outer query, the execution speed might be slower than expected.
+
+When `SEMI_JOIN_REWRITE()` is used to rewrite the query, the optimizer can extend the selection range to select a better execution plan.
