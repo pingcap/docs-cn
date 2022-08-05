@@ -1437,7 +1437,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：秒
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step。
 
-### `tidb_min_paging_size`
+### `tidb_min_paging_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
