@@ -50,24 +50,9 @@ Support level: `Full`
 
 > **Note:**
 >
-> Currently, Hibernate does [not support nested transactions](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres), and TiDB does [not support Savepoint](https://github.com/pingcap/tidb/issues/6840). If you are using a framework such as `Spring Data JPA`, do not use the `Propagation.NESTED` transaction propagation option in `@Transactional`, that is, do not set `@Transactional( propagation = Propagation.NESTED)`
+> Currently, Hibernate does [not support nested transactions](https://stackoverflow.com/questions/37927208/nested-transaction-in-spring-app-with-jpa-postgres). Since v6.2.0, TiDB supports [savepoint](/sql-statements/sql-statement-savepoint.md).
 >
-> Using [this example](https://github.com/Icemap/tidb-savepoint), you can quickly reproduce the output of TiDB and MySQL for Savepoint:
-
-> ```
-> MySQL:
-> id: 1, coins: 1, goods: 1
-> id: 3, coins: 1, goods: 1
->
-> TiDB:
->
-> 2022/04/02 13:59:48 /<path>/go/pkg/mod/gorm.io/driver/mysql@v1.3.2/mysql.go:397 Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 9 near "SAVEPOINT sp0x102cf8960"
-> [1.119ms] [rows:0] SAVEPOINT sp0x102cf8960
->
-> 2022/04/02 13:59:48 /<path>/go/pkg/mod/gorm.io/driver/mysql@v1.3.2/mysql.go:397 Error 1064: You have an error in your SQL syntax; check the manual that corresponds to your TiDB version for the right syntax to use line 1 column 9 near "SAVEPOINT sp0x102cf8960"
-> [0.001ms] [rows:0] SAVEPOINT sp0x102cf8a00
-> id: 1, coins: 1, goods: 1
-> ```
+> If you are using a framework such as `Spring Data JPA`, do not use the `Propagation.NESTED` transaction propagation option in `@Transactional`, that is, do not set `@Transactional( propagation = Propagation.NESTED)`.
 
 To avoid manually managing complex relationships between different dependencies of an application, you can use [Gradle](https://gradle.org/install) or [Maven](https://maven.apache.org/install.html) to get all dependencies of your application, including those indirect ones. Note that only Hibernate `6.0.0.Beta2` or above supports the TiDB dialect.
 
