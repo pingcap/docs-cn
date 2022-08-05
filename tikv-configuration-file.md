@@ -1705,7 +1705,6 @@ Raft Engine 相关的配置项。
 + 默认值：0KB（即无限制）
 + 推荐设置：除非因为 `foreground-cpu-time` 设置不足以对写带宽做限制，一般情况下本配置项使用默认值 `0` 即可；否则，在 4 核及 4 核以下规格实例上，建议设置在 50M 以下。
 
-
 #### `foreground-read-bandwidth` <span class="version-mark">从 v6.0.0 版本开始引入 </span>
 
 + 限制前台事务读取数据和 Coprocessor 读取数据的带宽，这是一个软限制。
