@@ -95,7 +95,7 @@ hide_commit: true
 
 [TiDB Operator](https://docs.pingcap.com/zh/tidb/v5.1/tidb-operator-overview)
 
-[TiSpark](https://docs.pingcap.com/zh/tidb/v5.1/tispark-overview)
+[TiSpark](https://docs.pingcap.com/zh/tidb/v5.1/tispark-overview) 
 
 </LearningPath>
 
