@@ -154,7 +154,7 @@ Query OK, 0 rows affected, 1 warning (0.25 sec)
 
 TiDB 中的 `ALTER TABLE` 语法主要存在以下限制：
 
-- 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列、索引）时，
+- 使用 `ALTER TABLE` 语句修改一个表的多个模式对象（如列、索引）时：
     - 不允许在多个更改中指定同一个模式对象。
     - TiDB 根据**执行前**的表结构检查合法性。例如 `ALTER TABLE ADD INDEX i(b), DROP INDEX i;` 会报错，因为表结构中不存在名字为 "i" 的索引。
     - TiDB 的执行顺序是从左往右逐个执行。该行为在个别场景下和 MySQL 不兼容。
