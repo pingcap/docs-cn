@@ -1,6 +1,7 @@
 <!-- markdownlint-disable MD007 -->
 <!-- markdownlint-disable MD041 -->
 
+- [文档中心](/_docHome.md)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
   - [TiDB 6.1 Release Notes](/releases/release-6.1.0.md)
