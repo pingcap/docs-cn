@@ -136,16 +136,6 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
 2. 更改连接参数。
 
-    <SimpleTab>
-
-    <div label="本地默认集群">
-
-    本地默认集群无需更改连接参数。
-
-    </div>
-
-    <div label="非本地默认集群、TiDB Cloud 或其他远程集群">
-
     对于非本地默认集群、TiDB Cloud 或其他远程集群，需要更改 `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java` 内关于 Host、Port、User、Password 的参数：
 
     {{< copyable "" >}}
@@ -177,10 +167,6 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setUser("4JC1i9KroBMFRwW.root");
     mysqlDataSource.setPassword("123456");
     ```
-
-    </div>
-
-    </SimpleTab>
 
 3. 运行 `make plain-java-jdbc`。
 
