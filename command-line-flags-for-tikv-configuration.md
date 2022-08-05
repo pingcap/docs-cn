@@ -50,6 +50,31 @@ TiKV supports some readable unit conversions for command line parameters.
 - Default: `0` (unlimited)
 - PD uses this flag to determine how to balance the TiKV servers. (Tip: you can use 10GB instead of 1073741824)
 
+## `--config-info <FORMAT>`
+
+- When this flag is used, available configuration values are listed according to `FORMAT` and then exit.
+- Value option for `FORMAT`: `json`. Currently, only JSON format is supported.
+- Only the configuration name (Name), default value (DefaultValue) and current value (ValueInFile) are listed in the output JSON. If the `-C` or `--config` is specified, the current value and the default value of configuration items in the file are listed together, and other items without `-C` or `--config` specified only have default values. The following is an example:
+
+    ```json
+    {
+    "Component": "TiKV Server",
+    "Version": "6.2.0",
+    "Parameters": [
+        {
+        "Name": "log-level",
+        "DefaultValue": "info",
+        "ValueInFile": "warn"
+        },
+        {
+        "Name": "log-file",
+        "DefaultValue": ""
+        },
+        ...
+    ]
+    }
+    ```
+
 ## `--data-dir`
 
 - The path to the data directory
