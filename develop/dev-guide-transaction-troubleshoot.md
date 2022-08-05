@@ -104,7 +104,7 @@ while True:
         if (error.code != "9007" && error.code != "8028" && error.code != "8002" && error.code != "8022"):
             raise error
         else:
-            connnection.exec('ROLLBACK');
+            connection.exec('ROLLBACK')
 
             # Capture the error types that require application-side retry,
             # wait for a short period of time,
@@ -113,7 +113,7 @@ while True:
             sleep(sleep_ms) # make sure your sleep() takes milliseconds
 ```
 
-> Note:
+> **Note:**
 >
 > If you frequently encounter `Error 9007: Write conflict`, you may need to check your schema design and the data access patterns of your workload to find the root cause of the conflict and try to avoid conflicts by a better design.
 > For information about how to troubleshoot and resolve transaction conflicts, see [Troubleshoot Lock Conflicts](/troubleshoot-lock-conflicts.md).
