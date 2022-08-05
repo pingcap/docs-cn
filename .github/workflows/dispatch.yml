@@ -11,16 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Extract sha
-      id: extract
-      shell: bash
-      run: |
-        echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
+      - name: Extract sha
+        id: extract
+        shell: bash
+        run: |
+          echo "::set-output name=sha::$(sha=${{ github.sha }}; echo ${sha:0:6})"
 
-    - name: Repository Dispatch
-      uses: peter-evans/repository-dispatch@v1
-      with:
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
           token: ${{ secrets.PR_TRIGGER_BUILD_TOKEN }}
           repository: pingcap/website-docs
           event-type: ${{ github.repository }}/${{ github.ref_name }}-${{ steps.extract.outputs.sha }}
           client-payload: '{ "repo": "${{ github.repository }}", "ref": "${{ github.ref_name }}", "sha": "${{ github.sha }}" }'
+
+      - name: trigger docs-staging workflow
+        run: |
+          curl \
+          -X POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: token ${{ secrets.DOCS_STAGING }}" \
+          https://api.github.com/repos/pingcap/docs-staging/actions/workflows/update.yml/dispatches \
+          -d '{"ref":"main","inputs":{"full": "false", "repo":"${{ github.repository }}","branch":"${{ github.ref_name }}"}}'
