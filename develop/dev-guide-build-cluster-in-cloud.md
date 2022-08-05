@@ -22,7 +22,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     你的 TiDB Cloud 集群将于 5~15 分钟后创建完毕。
 
-6. 创建完毕后，直接点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
+6. 创建完毕后，点击右上角的 **Connect** 按钮。或点击集群名称，打开集群的详情页，再点击右上角的 **Connect** 按钮。这将显示一个连接对话框。
 7. 复制连接对话框 **Step 2: Connect with a SQL client** 中的连接字符串，供后续步骤使用。
 
     ![SQL string](/media/develop/tidb-cloud-connect.png)
@@ -153,7 +153,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     {{< copyable "shell-regular" >}}
 
     ```shell
-    mysql --connect-timeout 15 -u '4JC1i9KroBMFRwW.root' -h xxx.tidbcloud.com -P 4000 -D test -p
+    mysql --connect-timeout 15 -u '9ATyn6DhCXoo6U1.root' -h xxx.tidbcloud.com -P 4000 -D test -p
     ```
 
     那么此处应将参数更改为：
@@ -164,7 +164,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
     mysqlDataSource.setServerName("xxx.tidbcloud.com");
     mysqlDataSource.setPortNumber(4000);
     mysqlDataSource.setDatabaseName("test");
-    mysqlDataSource.setUser("4JC1i9KroBMFRwW.root");
+    mysqlDataSource.setUser("9ATyn6DhCXoo6U1.root");
     mysqlDataSource.setPassword("123456");
     ```
 
