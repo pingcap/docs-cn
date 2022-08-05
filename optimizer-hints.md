@@ -325,7 +325,7 @@ The `LEADING` hint does not take effect in the following situations:
 + A duplicated table name is specified in the `LEADING` hint.
 + The optimizer cannot perform join operations according to the order as specified by the `LEADING` hint.
 + The `straight_join()` hint already exists.
-+ The query contains an outer join.
++ The query contains an outer join together with the Cartesian product.
 + Any of the `MERGE_JOIN`, `INL_JOIN`, `INL_HASH_JOIN`, and `HASH_JOIN` hints is used at the same time.
 
 In the above situations, a warning is generated.
@@ -345,6 +345,10 @@ SHOW WARNINGS;
 | Warning | 1815 | We can only use one leading hint at most, when multiple leading hints are used, all leading hints will be invalid |
 +---------+------+-------------------------------------------------------------------------------------------------------------------+
 ```
+
+> **Note:**
+>
+> If the query statement includes an outer join, in the hint you can specify only the tables whose join order can be swapped. If there is a table in the hint whose join order cannot be swapped, the hint will be invalid. For example, in `SELECT * FROM t1 LEFT JOIN (t2 JOIN t3 JOIN t4) ON t1.a = t2.a;`, if you want to control the join order of `t2`, `t3`, and `t4` tables, you cannot specify `t1` in the `LEADING` hint.
 
 ### MERGE()
 
