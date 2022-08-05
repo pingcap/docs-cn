@@ -1,171 +1,101 @@
 ---
-<<<<<<< HEAD
-title: TiDB 简介
-summary: 了解 TiDB 数据库。
-=======
 title: TiDB 产品文档
 aliases: ["/docs/dev/", "/docs/dev/adopters/", "/tidb/dev/adopters"]
 hide_sidebar: true
 hide_commit: true
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
 ---
 
 <LearningPathContainer platform="tidb" title="TiDB" subTitle="TiDB 是 PingCAP 公司自主设计、研发的开源分布式关系型数据库。您可以在这里查看概念介绍、操作指南、应用开发、参考等产品文档。">
 
 <LearningPath label="了解" icon="cloud1">
 
-[TiDB 简介](https://docs.pingcap.com/zh/tidb/dev/overview)
+[TiDB 简介](https://docs.pingcap.com/zh/tidb/v5.1/overview)
 
-[基本功能](https://docs.pingcap.com/zh/tidb/dev/basic-features)
+[基本功能](https://docs.pingcap.com/zh/tidb/v5.1/basic-features)
 
-<<<<<<< HEAD
-- [TiDB 简介](/overview.md)
-- [基本功能](/basic-features.md)
-- [TiDB 5.1 Release Notes](/releases/release-5.1.0.md)
-- [与 MySQL 的兼容性](/mysql-compatibility.md)
-- [使用限制](/tidb-limitations.md)
-=======
-[TiFlash](https://docs.pingcap.com/zh/tidb/dev/tiflash-overview)
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
+[TiFlash](https://docs.pingcap.com/zh/tidb/v5.1/tiflash-overview)
 
 </LearningPath>
 
 <LearningPath label="试用" icon="cloud5">
 
-<<<<<<< HEAD
-- [快速上手指南](/quick-start-with-tidb.md)
-- [SQL 基本操作](/basic-sql-operations.md)
-=======
-[快速上手 TiDB](https://docs.pingcap.com/zh/tidb/dev/quick-start-with-tidb)
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
+[快速上手 TiDB](https://docs.pingcap.com/zh/tidb/v5.1/quick-start-with-tidb)
 
-[快速上手 HTAP](https://docs.pingcap.com/zh/tidb/dev/quick-start-with-htap)
-
-[深入探索 HTAP](https://docs.pingcap.com/zh/tidb/dev/explore-htap)
+[SQL 基本操作](https://docs.pingcap.com/zh/tidb/v5.1/basic-sql-operations)
 
 </LearningPath>
 
-<LearningPath label="开发" icon="doc8">
-
-[开发者手册概览](https://docs.pingcap.com/zh/tidb/dev/dev-guide-overview)
-
-<<<<<<< HEAD
-- [概述](/migration-overview.md)
-- [使用 Dumpling 与 TiDB Lightning 进行全量迁移](/migrate-from-mysql-dumpling-files.md)
-- [从 Aurora 全量迁移](/migrate-from-aurora-using-lightning.md)
-- [从 Aurora/MySQL 持续迁移](/migrate-from-aurora-mysql-database.md)
-- [从 CSV 文件迁移](/tidb-lightning/migrate-from-csv-using-tidb-lightning.md)
-- [从 SQL 文件迁移](/migrate-from-mysql-dumpling-files.md)
-=======
-[快速开始](https://docs.pingcap.com/zh/tidb/dev/dev-guide-build-cluster-in-cloud)
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
-
-[示例程序](https://docs.pingcap.com/zh/tidb/dev/dev-guide-sample-application-spring-boot)
-
-</LearningPath>
-
-<<<<<<< HEAD
-- [升级 TiDB 版本](/upgrade-tidb-using-tiup.md)
-- [扩容与缩容](/scale-tidb-using-tiup.md)
-- [备份与恢复](/br/backup-and-restore-tool.md)
-- [TiCDC 运维操作及任务管理](/ticdc/manage-ticdc.md)
-- [TiUP 常用运维操作](/maintain-tidb-using-tiup.md)
-- [TiFlash 常用运维操作](/tiflash/maintain-tiflash.md)
-=======
 <LearningPath label="部署" icon="deploy">
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
 
-[软硬件环境需求](https://docs.pingcap.com/zh/tidb/dev/hardware-and-software-requirements)
+[软硬件环境需求](https://docs.pingcap.com/zh/tidb/v5.1/hardware-and-software-requirements)
 
-[使用 TiUP 部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/dev/production-deployment-using-tiup)
+[使用 TiUP 部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/v5.1/production-deployment-using-tiup)
 
-[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/dev/tidb-in-kubernetes)
+[在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/v5.1/tidb-in-kubernetes)
 
 </LearningPath>
 
 <LearningPath label="迁移" icon="cloud3">
 
-<<<<<<< HEAD
-- [定位慢查询](/identify-slow-queries.md)
-- [分析慢查询](/analyze-slow-queries.md)
-- [SQL 诊断](/information-schema/information-schema-sql-diagnostics.md)
-- [热点问题处理](/troubleshoot-hot-spot-issues.md)
-- [磁盘 I/O 过高](/troubleshoot-high-disk-io.md)
-- [TiCDC 常见问题](/ticdc/troubleshoot-ticdc.md)
-- [TiFlash 常见问题](/tiflash/troubleshoot-tiflash.md)
-=======
-[数据迁移概览](https://docs.pingcap.com/zh/tidb/dev/migration-overview)
->>>>>>> 13813944a (tidb: add docs home in toc, and updated learning path (#10775))
+[数据迁移概览](https://docs.pingcap.com/zh/tidb/v5.1/migration-overview)
 
-[迁移工具](https://docs.pingcap.com/zh/tidb/dev/migration-tools)
+[迁移工具](https://docs.pingcap.com/zh/tidb/v5.1/migration-tools)
 
-[应用场景](https://docs.pingcap.com/zh/tidb/dev/migrate-aurora-to-tidb)
+[从 Amazon Aurora MySQL 迁移](https://docs.pingcap.com/zh/tidb/v5.1/migrate-from-aurora-using-lightning)
 
 </LearningPath>
 
 <LearningPath label="运维" icon="maintain">
 
-[升级集群](https://docs.pingcap.com/zh/tidb/dev/upgrade-tidb-using-tiup)
+[升级集群](https://docs.pingcap.com/zh/tidb/v5.1/upgrade-tidb-using-tiup)
 
-[扩容集群](https://docs.pingcap.com/zh/tidb/dev/scale-tidb-using-tiup)
+[扩容集群](https://docs.pingcap.com/zh/tidb/v5.1/scale-tidb-using-tiup)
 
-[备份数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-backup)
+[备份数据](https://docs.pingcap.com/zh/tidb/v5.1/use-br-command-line-tool)
 
-[恢复数据](https://docs.pingcap.com/zh/tidb/dev/br-usage-restore)
+[日常巡检](https://docs.pingcap.com/zh/tidb/v5.1/daily-check)
 
-[日常巡检](https://docs.pingcap.com/zh/tidb/dev/daily-check)
-
-[使用 TiUP 运维](https://docs.pingcap.com/zh/tidb/dev/maintain-tidb-using-tiup)
+[使用 TiUP 运维](https://docs.pingcap.com/zh/tidb/v5.1/maintain-tidb-using-tiup)
 
 </LearningPath>
 
 <LearningPath label="监控" icon="cloud6">
 
-[使用 Prometheus 和 Grafana](https://docs.pingcap.com/zh/tidb/dev/tidb-monitoring-framework)
+[使用 Prometheus 和 Grafana](https://docs.pingcap.com/zh/tidb/v5.1/tidb-monitoring-framework)
 
-[监控 API](https://docs.pingcap.com/zh/tidb/dev/tidb-monitoring-api)
+[监控 API](https://docs.pingcap.com/zh/tidb/v5.1/tidb-monitoring-api)
 
-[报警规则](https://docs.pingcap.com/zh/tidb/dev/alert-rules)
+[报警规则](https://docs.pingcap.com/zh/tidb/v5.1/alert-rules)
 
 </LearningPath>
 
 <LearningPath label="调优" icon="tidb-cloud-tune">
 
-[调优概述](https://docs.pingcap.com/zh/tidb/dev/performance-tuning-overview)
+[操作系统性能参数调优](https://docs.pingcap.com/zh/tidb/v5.1/tune-operating-system)
 
-[调优方法](https://docs.pingcap.com/zh/tidb/dev/performance-tuning-methods)
+[内存调优](https://docs.pingcap.com/zh/tidb/v5.1/configure-memory-usage)
 
-[调优实践](https://docs.pingcap.com/zh/tidb/dev/performance-tuning-practices)
-
-[操作系统性能参数调优](https://docs.pingcap.com/zh/tidb/dev/tune-operating-system)
-
-[内存调优](https://docs.pingcap.com/zh/tidb/dev/configure-memory-usage)
-
-[SQL 调优](https://docs.pingcap.com/zh/tidb/dev/sql-tuning-overview)
+[SQL 调优](https://docs.pingcap.com/zh/tidb/v5.1/sql-tuning-overview)
 
 </LearningPath>
 
 <LearningPath label="工具" icon="doc7">
 
-[TiUP](https://docs.pingcap.com/zh/tidb/dev/tiup-overview)
+[TiUP](https://docs.pingcap.com/zh/tidb/v5.1/tiup-overview)
 
-[Dumpling](https://docs.pingcap.com/zh/tidb/dev/dumpling-overview)
+[Dumpling](https://docs.pingcap.com/zh/tidb/v5.1/dumpling-overview)
 
-[TiDB Lightning](https://docs.pingcap.com/zh/tidb/dev/tidb-lightning-overview)
+[TiDB Lightning](https://docs.pingcap.com/zh/tidb/v5.1/tidb-lightning-overview)
 
-[Data Migration](https://docs.pingcap.com/zh/tidb/dev/dm-overview)
+[Data Migration](https://docs.pingcap.com/zh/tidb/v5.1/dm-overview)
 
-[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/dev/backup-and-restore-overview)
+[Backup & Restore (BR)](https://docs.pingcap.com/zh/tidb/v5.1/backup-and-restore-tool)
 
-[TiCDC](https://docs.pingcap.com/zh/tidb/dev/ticdc-overview)
+[TiCDC](https://docs.pingcap.com/zh/tidb/v5.1/ticdc-overview)
 
-[PingCAP Clinic](https://docs.pingcap.com/zh/tidb/dev/clinic-introduction)
+[TiDB Operator](https://docs.pingcap.com/zh/tidb/v5.1/tidb-operator-overview)
 
-[TiUniManager](https://docs.pingcap.com/zh/tidb/dev/tiunimanager-overview)
-
-[TiDB Operator](https://docs.pingcap.com/zh/tidb/dev/tidb-operator-overview)
-
-[TiSpark](https://docs.pingcap.com/zh/tidb/dev/tispark-overview)
+[TiSpark](https://docs.pingcap.com/zh/tidb/v5.1/tispark-overview)
 
 </LearningPath>
 
