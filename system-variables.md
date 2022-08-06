@@ -645,15 +645,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 作用域：GLOBAL
 - 默认值：`OFF`
 - 可选值：`OFF` 和 `ON`
-- `tidb_restricted_read_only`和 [`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 的作用相似。在大多数情况下，你只需要使用 [`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 即可。
+- `tidb_restricted_read_only`和 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的作用相似。在大多数情况下，你只需要使用 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 即可。
 - 拥有 `SUPER` 或 `SYSTEM_VARIABLES_ADMIN` 权限的用户可以修改该变量。如果 TiDB 开启了[安全增强模式](#tidb_enable_enhanced_security)，你还需要额外的 `RESTRICTED_VARIABLES_ADMIN` 权限才能读取或修改该变量。
-- `tidb_restricted_read_only` 的设置将影响 [`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 的值：
+- `tidb_restricted_read_only` 的设置将影响 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的值：
 
-    - 当设置 `tidb_restricted_read_only` 为 `ON` 时，[`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 的将自动被设置为 `ON`。
-    - 当设置 `tidb_restricted_read_only` 为 `OFF` 时，[`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 的值将不受影响。
-    - 当 `tidb_restricted_read_only` 为 `ON` 时，[`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 的值无法设置为 `OFF`。
+    - 当设置 `tidb_restricted_read_only` 为 `ON` 时，[`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的将自动被设置为 `ON`。
+    - 当设置 `tidb_restricted_read_only` 为 `OFF` 时，[`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的值将不受影响。
+    - 当 `tidb_restricted_read_only` 为 `ON` 时，[`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 的值无法设置为 `OFF`。
 
-- 对于 TiDB 的 DBaaS 供应商，当 TiDB 为另一个数据库的下游数据库时，如果要将整个 TiDB 集群设置为只读模式，你需要开启[安全增强模式](#tidb_enable_enhanced_security) 并将 `tidb_restricted_read_only` 设置为 `ON`，从而防止你的用户通过[`tidb_super_read_only`](#tidb_super_read_only-new-in-v531) 将 TiDB 集群设置为可写。实现方法：首先开启[安全增强模式](#tidb_enable_enhanced_security)，然后由你的数据库管理员控制 `tidb_restricted_read_only`（需要拥有 `SYSTEM_VARIABLES_ADMIN` 和 `RESTRICTED_VARIABLES_ADMIN` 权限），由你的数据库 root 用户控制 [`tidb_super_read_only`](#tidb_super_read_only-new-in-v531)（需要拥有 `SUPER` 权限）。
+- 对于 TiDB 的 DBaaS 供应商，当 TiDB 为另一个数据库的下游数据库时，如果要将整个 TiDB 集群设置为只读模式，你需要开启[安全增强模式](#tidb_enable_enhanced_security) 并将 `tidb_restricted_read_only` 设置为 `ON`，从而防止你的用户通过 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入) 将 TiDB 集群设置为可写。实现方法：首先开启[安全增强模式](#tidb_enable_enhanced_security)，然后由你的数据库管理员控制 `tidb_restricted_read_only`（需要拥有 `SYSTEM_VARIABLES_ADMIN` 和 `RESTRICTED_VARIABLES_ADMIN` 权限），由你的数据库 root 用户控制 [`tidb_super_read_only`](#tidb_super_read_only-从-v531-版本开始引入)（需要拥有 `SUPER` 权限）。
 - 该变量可以控制整个集群的只读状态。开启后（即该值为 `ON`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
 - 该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
 - 在执行 SQL 语句之前，TiDB 会检查集群的只读标志。从 v6.2.0 起，在提交 SQL 语句之前，TiDB 也会检查该标志，从而防止在服务器被置于只读模式后某些长期运行的 [auto commit](/transaction-overview.md#autocommit) 语句可能修改数据的情况。
@@ -1601,7 +1601,7 @@ set tidb_slow_log_threshold = 200;
 - 类型：布尔型
 - 默认值: `OFF`。
 - `tidb_super_read_only` 用于实现对 MySQL 变量 `super_read_only` 的替代。然而，由于 TiDB 是一个分布式数据库，开启 `tidb_super_read_only` 后数据库不会立刻进入只读模式，但最终会进入只读模式。
-- 拥有`SUPER`或`SYSTEM_VARIABLES_ADMIN`权限的用户可以修改这个变量。
+- 拥有`SUPER`或`SYSTEM_VARIABLES_ADMIN`权限的用户可以修改该变量。
 - 该变量可以控制整个集群的只读状态。开启后（即该值为 `ON`），整个集群中的 TiDB 服务器都将进入只读状态，只有 `SELECT`、`USE`、`SHOW` 等不会修改数据的语句才能被执行，其他如 `INSERT`、`UPDATE` 等语句会被拒绝执行。
 - 该变量开启只读模式只保证整个集群最终进入只读模式，当变量修改状态还没被同步到其他 TiDB 服务器时，尚未同步的 TiDB 仍然停留在非只读模式。
 - 在执行 SQL 语句之前，TiDB 会检查集群的只读标志。从 v6.2.0 起，在提交 SQL 语句之前，TiDB 也会检查该标志，从而防止在服务器被置于只读模式后某些长期运行的 [auto commit](/transaction-overview.md#autocommit) 语句可能修改数据的情况。
@@ -1610,7 +1610,7 @@ set tidb_slow_log_threshold = 200;
     - 如果尚未提交的事务为非只读事务，在事务内执行写入的 SQL 语句会被拒绝。
     - 如果尚未提交的事务已经有数据改动，其提交也会被拒绝。
 - 当集群开启只读模式后，所有用户（包括 `SUPER` 用户）都无法执行可能写入数据的 SQL 语句，除非该用户被显式地授予了 `RESTRICTED_REPLICA_WRITER_ADMIN` 权限。
-- 当系统变量 [`tidb_restricted_read_only`](#tidb_restricted_read_only-new-in-v520) 为 `ON` 时，`tidb_super_read_only` 的值会受到 [`tidb_restricted_read_only`](#tidb_restricted_read_only-new-in-v520) 的影响。详情请参见[`tidb_restricted_read_only`](#tidb_restricted_read_only-new-in-v520) 中的描述。
+- 当系统变量 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 为 `ON` 时，`tidb_super_read_only` 的值会受到 [`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 的影响。详情请参见[`tidb_restricted_read_only`](#tidb_restricted_read_only-从-v520-版本开始引入) 中的描述。
 
 ### `tidb_sysdate_is_now`（从 v6.0.0 版本开始引入）
 
