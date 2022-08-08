@@ -135,18 +135,18 @@ Restore KV Files <--------------------------------------------------------------
 
 通过自动化运维工具（如 crontab) 每两天定期清理过期备份数据的任务。
 
-下面是在 2022/05/14 执行的过期备份数据清理任务：
+下面是执行过期备份数据清理任务：
 
-- 删除早于 2022/04/14 00:00:00 的快照备份
+- 删除早于 2022/05/14 00:00:00 的快照备份
 
   ```shell
-  rm s3://tidb-pitr-bucket/backup-data/snapshot-20220414000000
+  rm s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000
   ```
 
-- 删除早于 2022/04/14 00:00:00 的日志备份数据
+- 删除早于 2022/05/14 00:00:00 的日志备份数据
 
   ```shell
-  tiup br log truncate --until='2022-04-14 06:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+  tiup br log truncate --until='2022-05-14 00:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
   ```
   
 ## 探索更多
