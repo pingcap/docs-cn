@@ -11,8 +11,6 @@ CH Benchmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.
 
 在进行 CH Benchmark 测试前，你需要部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署后，对于 TPC-C 联机交易数据，系统自动实时同步数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
 
-我们将以 1000 WAREHOUSE 为例进行测试。
-
 本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 CH 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序：
 
 {{< copyable "shell-regular" >}}
