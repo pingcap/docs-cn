@@ -1613,7 +1613,7 @@ explain select * from t where age=5;
 
 > **注意：**
 >
-> 此变量开启的优化仅对 TiFlash 有效。
+> 开启该变量带来的查询性能优化仅对 TiFlash 有效。
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
