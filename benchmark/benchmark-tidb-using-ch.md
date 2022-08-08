@@ -7,7 +7,9 @@ summary: 本文介绍如何对 TiDB 进行 CH 测试。
 
 本文介绍如何对 TiDB 进行 CH Benchmark 测试。
 
-CH Benchmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，同用来测试 HTAP 系统的最常见负载。TiDB 推荐部署 TiFlash 组件运行 CH Benchmark，对于 TPC-C 联机交易数据，系统自动实时同步到 TiFlash 组件；TiDB 优化器会自动将 TPCH 负载的 OLAP 查询下推到 TiFflash MPP 引擎进行高效执行。
+CH Benchmark 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，也是用于测试 HTAP 系统的最常见负载。
+
+在进行 CH Benchmark 测试前，你需要部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署后，对于 TPC-C 联机交易数据，系统自动实时同步数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
 
 我们将以 1000 WAREHOUSE 为例进行测试。
 
