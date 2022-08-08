@@ -24,6 +24,7 @@ tiup install bench
 ## 导入数据
 
 ### 导入 TPC-C 数据
+
 **导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
 
 在 shell 中运行 TiUP 命令：
