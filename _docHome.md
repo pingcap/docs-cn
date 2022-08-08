@@ -77,19 +77,13 @@ The open-source TiDB platform is released under the Apache 2.0 license, and supp
 
 <DocHomeCard href="https://docs.pingcap.com/tidb/stable/dev-guide-overview" icon="doc8" label="Developer Guide">
 
-Documentation for application developers
+Documentation for TiDB application developers
 
 </DocHomeCard>
 
-<DocHomeCard href="https://docs.pingcap.com/tidb/stable/dev-guide-sample-application-java" icon="java" label="Java">
+<DocHomeCard href="https://docs.pingcap.com/tidbcloud/dev-guide-overview" icon="cloud-dev" label="Developer Guide">
 
-Java applications can connect to and communicate with TiDB through JDBC or Swing, or with ORM frameworks like Hibernate
-
-</DocHomeCard>
-
-<DocHomeCard href="https://docs.pingcap.com/tidb/stable/dev-guide-sample-application-golang" icon="go" label="Golang">
-
-Golang applications can connect to and communicate with TiDB through a native driver and ORM frameworks
+Documentation for TiDB Cloud application developers
 
 </DocHomeCard>
 
