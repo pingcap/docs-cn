@@ -1562,6 +1562,16 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Range: `[100, 16384]`
 - This variable is used to set the maximum number of schema versions (the table IDs modified for corresponding versions) allowed to be cached. The value range is 100 ~ 16384.
 
+### tidb_max_paging_size <span class="version-mark">New in v6.2.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `50000`
+- Range: `[1, 2147483647]`
+- Unit: Rows
+- This variable is used to set the maximum number of rows during the coprocessor paging request process. Setting it to too small a value increases the RPC count between TiDB and TiKV, while setting it to too large a value results in excessive memory usage in some cases, such as loading data and full table scan.
+
 ### tidb_mem_oom_action <span class="version-mark">New in v6.1.0</span>
 
 - Scope: GLOBAL
@@ -1650,6 +1660,16 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Range: `[10, 216000]`
 - Unit: Seconds
 - This variable is used to set the step of the Prometheus statement generated when querying `METRICS_SCHEMA`.
+
+### tidb_min_paging_size <span class="version-mark">New in v6.2.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Integer
+- Default value: `128`
+- Range: `[1, 2147483647]`
+- Unit: Rows
+- This variable is used to set the minimum number of rows during the coprocessor paging request process. Setting it to too small a value increases the RPC request count between TiDB and TiKV, while setting it to too large a value might cause performance decrease when executing queries using IndexLookup with Limit.
 
 ### tidb_multi_statement_mode <span class="version-mark">New in v4.0.11</span>
 
