@@ -327,8 +327,6 @@ BATCH ON {dividing_column} LIMIT {batch_size} {delete_statement};
 | `{batch_size}` | 非事务批量删除的每批大小 |
 | `{delete_statement}` | 删除语句 |
 
-此处仅展示简单使用方法，
-
 此处仅展示非事务批量删除的简单用法，详细文档可参考 TiDB 的[非事务 DML 语句](/non-transactional-dml.md)。
 
 ### 非事务批量删除使用示例
