@@ -11,3 +11,5 @@ http://\$?\{remote-server-ip}:3000.*
 file:///home/runner/work/(docs|docs-cn)/(docs|docs-cn)/develop/.*
 file://.*https:/%7BnodeIP%7D:%7BnodePort%7D/dashboard
 file://.*?http:/\$%7BPD_IP%7D:\$%7BPD_PORT%7D/dashboard.*
+http://\{grafana-ip\}:3000
+http://\{pd-ip\}:2379/dashboard
