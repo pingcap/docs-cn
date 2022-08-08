@@ -1602,11 +1602,11 @@ Raft Engine 相关的配置项。
 ### `initial-scan-pending-memory-quota`
 
 + 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
-+ 默认值：取 TOTAL_MEM * 0.1 与 512MB 中的最小值
++ 默认值：取 TOTAL_MEM * 0.1 与 512 MB 中的较小值
 
 ### `initial-scan-rate-limit`
 
-+ 日志备份任务在扫描增量数据时，用于扫描时吞吐限流的参数。
++ 日志备份任务在扫描增量数据时的吞吐限流参数。
 + 默认值：60，即默认限流 60 MB/s
 
 ### `max-flush-interval`
@@ -1617,7 +1617,7 @@ Raft Engine 相关的配置项。
 ### `num-threads`
 
 + 日志备份功能占用的线程数目。
-+ 默认值：CPU * 0.5，
++ 默认值：CPU * 0.5
 + 可调整范围：[2, 12]
 
 ### `temp-path`
