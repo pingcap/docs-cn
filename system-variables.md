@@ -600,7 +600,6 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 ### `tidb_batch_pending_tiflash_count`
 
-
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
 - 默认值：`4000`
