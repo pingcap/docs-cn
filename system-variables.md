@@ -1829,6 +1829,18 @@ explain select * from t where age=5;
 3 rows in set (0.00 sec)
 ```
 
+### tidb_opt_skew_distinct_agg <span class="version-mark">New in v6.2.0</span>
+
+> **Note:**
+>
+> The query performance optimization by enabling this variable is effective **only for TiFlash**.
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- This variable sets whether the optimizer rewrites the aggregate functions with `DISTINCT` to the two-level aggregate functions, such as rewriting `SELECT b, COUNT(DISTINCT a) FROM t GROUP BY b` to `SELECT b, COUNT(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`. When the aggregation column has serious skew and the `DISTINCT` column has many different values, this rewriting can avoid the data skew in the query execution and improve the query performance. 
+
 ### tidb_opt_write_row_id
 
 - Scope: SESSION
