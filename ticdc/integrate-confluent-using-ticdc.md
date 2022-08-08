@@ -63,7 +63,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 3. 创建 Schema Registry API Key。
 
-    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials** > **Create Key** 来创建 Schema Registry API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
+    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials**，点击 **Edit** 和 **Create Key** 来创建 Schema Registry API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
 
     ```
     === Confluent Cloud API key: yyy-yyyyy ===
@@ -243,14 +243,13 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
 
     ![Authentication](/media/integrate/authentication.png)
 
-4. 在填写 SQL Server 的连接和认证信息后，进入下一页面：
-
-    ![Configuration](/media/integrate/sql-server-configuration.png)
+4. 在填写 SQL Server 的连接和认证信息后，进入下一页面。
 
 5. 在 **Configuration** 界面，按下表进行配置：
 
-    | Input Kafka record value format | AVRO |
+    | 字段 | 取值 |
     | :- | :- |
+    | Input Kafka record value format | AVRO |
     | Insert mode | UPSERT |
     | Auto create table | true |
     | Auto add columns | true |
