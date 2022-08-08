@@ -66,8 +66,9 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
-    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
-    # format_version = 3
+    ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
+    ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
+    # format_version = 4
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -184,6 +185,10 @@ delta_index_cache_size = 0
 
     ## 从 v5.4.0 引入，表示触发 TiFlash PageFile（log 类型） 进行 hardlink 时最小的 valid rate 值，取值范围为 [0.1,1.0]。取值越小，hardlink 越频繁；取值越大，触发 hardlink 条件越苛刻。默认为 2.0，即不开启 PageFile 的 hardlink 功能。如果 GC 时间过长，建议将该值修改成 0.8 以开启 hardlink 功能。
     dt_storage_pool_log_gc_force_hardlink_rate = 2.0
+
+    ## 从 v6.2.0 引入，使用线程池处理存储引擎的读请求。默认为 false。
+    ## 警告：目前是实验性功能，不建议在生产环境中使用。
+    # dt_enable_read_thread = false
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]

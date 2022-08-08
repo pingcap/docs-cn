@@ -80,9 +80,9 @@ sh tidb-community-server-${version}-linux-amd64/local_install.sh
 source /home/tidb/.bash_profile
 ```
 
-<Tips>
-关于 `TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包的内容物，请查阅 [TiDB 离线包](/binary-package.md)。
-</Tips>
+> **建议：**
+> 
+> 关于 `TiDB-community-server` 软件包和 `TiDB-community-toolkit` 软件包的内容物，请查阅 [TiDB 离线包](/binary-package.md)。
 
 覆盖升级完成后，需将 server 和 toolkit 两个离线镜像合并，执行以下命令合并离线组件到 server 目录下。
 

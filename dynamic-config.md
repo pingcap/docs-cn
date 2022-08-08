@@ -119,6 +119,7 @@ show warnings;
 
 | 配置项 | 简介 |
 | --- | --- |
+| log.level | 日志等级 |
 | raftstore.raft-max-inflight-msgs | 待确认的日志个数，如果超过这个数量，Raft 状态机会减缓发送日志的速度 |
 | raftstore.raft-log-gc-tick-interval | 删除 Raft 日志的轮询任务调度间隔时间 |
 | raftstore.raft-log-gc-threshold | 允许残余的 Raft 日志个数，软限制 |
@@ -203,12 +204,13 @@ show warnings;
 | server.grpc-memory-pool-quota | gRPC 可使用的内存大小限制 |
 | server.max-grpc-send-msg-len | gRPC 可发送的最大消息长度 |
 | server.raft-msg-max-batch-size | 单个 gRPC 消息可包含的最大 Raft 消息个数 |
+| server.simplify-metrics | 精简监控采样数据的开关 |
 | storage.block-cache.capacity | 共享 block cache 的大小（自 v4.0.3 起支持） |
 | storage.scheduler-worker-pool-size | Scheduler 线程池中线程的数量 |
 | backup.num-threads | backup 线程的数量（自 v4.0.3 起支持） |
-| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
-| split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的读请求的流量超过 byte-threshold，则尝试切分该 Region |
-| split.region-cpu-overload-threshold-ratio | 对 Region 执行 load-base-split 的阈值。如果连续一段时间内，某个 Region 的 Unified Read Pool CPU 使用时间占比超过了 region-cpu-overload-threshold-ratio，则尝试切分该 Region（自 v6.2.0 起支持）|
+| split.qps-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的 QPS 超过 qps-threshold，则尝试切分该 Region |
+| split.byte-threshold | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的读请求的流量超过 byte-threshold，则尝试切分该 Region |
+| split.region-cpu-overload-threshold-ratio | 对 Region 执行 load-base-split 的阈值。如果连续 10s 内，某个 Region 的 Unified Read Pool CPU 使用时间占比超过了 region-cpu-overload-threshold-ratio，则尝试切分该 Region（自 v6.2.0 起支持）|
 | split.split-balance-score | load-base-split 的控制参数，确保 Region 切分后左右访问尽量均匀，数值越小越均匀，但也可能导致无法切分 |
 | split.split-contained-score | load-base-split 的控制参数，数值越小，Region 切分后跨 Region 的访问越少 |
 | cdc.min-ts-interval | 定期推进 Resolved TS 的时间间隔 |
