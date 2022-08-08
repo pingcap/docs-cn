@@ -245,7 +245,7 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
 
 4. 在填写 SQL Server 的连接和认证信息后，进入下一页面：
 
-    ![Configuration](/media/integrate/configuration.png)
+    ![Configuration](/media/integrate/sql-server-configuration.png)
 
 5. 在 **Configuration** 界面，按下表进行配置：
 
