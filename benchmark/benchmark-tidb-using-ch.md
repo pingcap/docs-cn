@@ -27,6 +27,7 @@ tiup install bench
 
 **导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
 
+本文将以 1000 WAREHOUSE 为例进行导入和测试。
 在 shell 中运行 TiUP 命令：
 
 {{< copyable "shell-regular" >}}
