@@ -153,7 +153,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     {{< copyable "" >}}
 
     ```go
-    // 在 https://go.dev/play/p/bK-DnXTRUon
+    // 在 https://go.dev/play/p/bK-DnXTRUon 中尝试运行。
     package main
 
     import (
