@@ -101,7 +101,7 @@ analyze table supplier
 
 ## 运行测试
 
-以 50 TP并发，1 AP 并发为例，运行测试的命令是：
+以 50 TP 并发，1 AP 并发为例，运行以下测试命令：
 
 
 {{< copyable "shell-regular" >}}
