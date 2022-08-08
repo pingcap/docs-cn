@@ -149,7 +149,9 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     ```
 
     URI 中包含特殊字符，例如：`! * ' ( ) ; : @ & = + $ , / ? % # [ ]` 等字符时，需要对 URL 进行特殊字符进行转义处理。可以参考这个示例进行转义处理：
+    
     {{< copyable "" >}}
+
     ```go
     // 在 https://go.dev/play/p/bK-DnXTRUon
     package main
