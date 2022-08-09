@@ -171,7 +171,7 @@ PARTITION BY RANGE( YEAR(purchased) ) (
 
 ## 使用限制
 
-目前已知 Placement Rules in SQL 实验特性存在以下限制：
+目前已知 Placement Rules in SQL 存在以下限制：
 
 * Dumpling 不支持导出放置策略，见 [issue #29371](https://github.com/pingcap/tidb/issues/29371)。
 * TiDB 生态工具，包括 Backup & Restore (BR)、TiCDC、TiDB Lightning 和 TiDB Data Migration (DM)，不支持放置规则。
