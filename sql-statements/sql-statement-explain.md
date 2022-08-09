@@ -183,7 +183,7 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.01 sec)
 ```
 
-使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
+在 `EXPLAIN` 中使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
 如果 `EXPLAIN` 语句中未指定 `FORMAT`，或指定 `FORMAT = "row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md)。
 
@@ -207,7 +207,7 @@ EXPLAIN FORMAT = "brief" DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.001 sec)
 ```
 
-除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT = "dot"`：
+除 MySQL 标准结果格式外，TiDB 还支持 DotGraph，需要在 `EXPLAIN` 中指定 `FORMAT = "dot"`，示例如下：
 
 {{< copyable "sql" >}}
 
