@@ -89,7 +89,7 @@ summary: 了解 TiDB 的基本功能。
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                                                                     | Y            | Y            | Y            | Y            | Y            |
 | [`AUTO_RANDOM` 列](/auto-random.md)                                                                           | Y            | Y            | Y            | Y            | Y            |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            | Y            |
-| 在单条语句中添加多列                                                                       | 实验特性            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
+| [在单条语句中添加多列](/system-variables.md#tidb_enable_change_multi_schema)            | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | Y            | N            | N            |
 | [临时表](/temporary-tables.md)                                                                    | Y           |  N  |   N  |  N  |  N  |
 
@@ -118,25 +118,13 @@ summary: 了解 TiDB 的基本功能。
 
 ## 统计信息
 
-<<<<<<< HEAD
 | 统计信息                                                                                           | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
 | [CM-Sketch](/statistics.md)                                                                               | 已废弃   | 已废弃   | 已废弃   | 已废弃   | Y            |
 | [直方图](/statistics.md)                                                                             | Y            | Y            | Y            | Y            | Y            |
-| [扩展统计信息（多列）](/statistics.md)                                                 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N            |
+| 扩展统计信息（多列）                                                 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N            |
 | [统计反馈](/statistics.md#自动更新)                                                   | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-=======
-| 统计信息                                                  |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
-| --------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
-| [CM-Sketch](/statistics.md)                               | 默认关闭 | 默认关闭 |  默认关闭  |  默认关闭  |  Y  |  Y  |  Y  | Y        |
-| [直方图](/statistics.md)                                  |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| 扩展统计信息（多列）                    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N        |
-| [统计反馈](/statistics.md#自动更新)                       | 已废弃 | 已废弃 |  已废弃  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [统计信息自动更新](/statistics.md#自动更新) |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [动态剪裁](/partitioned-table.md#动态裁剪模式) | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N | N |
->>>>>>> 3fa7d5cc6 (correct experimental information in docs (#10813))
 
 ## 安全
 
@@ -166,7 +154,6 @@ summary: 了解 TiDB 的基本功能。
 
 ## 管理，可视化和工具
 
-<<<<<<< HEAD
 | 管理，可视化诊断和工具                                                                  | 5.3          | 5.2          | 5.1      | 5.0      | 4.0      |
 |----------------------------------------------------------------------------------------------------------|:------------:|:------------:|:------------:|:------------:|:------------:|
 | [TiDB Dashboard](/dashboard/dashboard-intro.md)                                                          | Y            | Y            | Y            | Y            | Y            |
@@ -182,29 +169,8 @@ summary: 了解 TiDB 的基本功能。
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y            | Y            | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [`SET CONFIG`](/dynamic-config.md)                                                                       | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [`SET CONFIG`](/dynamic-config.md)                                                                       | Y | Y | Y | Y | Y |
 | [持续性能分析](/dashboard/continuous-profiling.md) | 实验特性 | N | N | N | N |
-=======
-| 管理，可视化诊断和工具                                                    |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
-| ------------------------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
-| [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y     |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
-| [TiDB Dashboard Top SQL 功能](/dashboard/top-sql.md)                      |    Y     |    Y     | 实验特性 |    N     |    N     |    N     |    N     | N        |
-| [TiDB Dashboard SQL 诊断功能](/information-schema/information-schema-sql-diagnostics.md)     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Information schema](/information-schema/information-schema.md)           |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Metrics schema](/metrics-schema.md)                                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Statements summary tables](/statement-summary-tables.md)                 |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [慢查询日志](/identify-slow-queries.md)                                   |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [TiUP 部署](/tiup/tiup-overview.md)                                       |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| Ansible 部署                                                              |    N     |    N     |    N     |    N     |    N     |    N     |    N     | 已废弃   |
-| [Kubernetes operator](https://docs.pingcap.com/tidb-in-kubernetes/stable) |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [内置物理备份](/br/backup-and-restore-use-cases.md)                       |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [Global Kill](/sql-statements/sql-statement-kill.md)                      | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [Lock View](/information-schema/information-schema-data-lock-waits.md)    |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
-| [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y | Y | Y | Y | Y | Y | Y | Y |
-| [`SET CONFIG`](/dynamic-config.md)                                        | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [DM WebUI](/dm/dm-webui-guide.md)                                        | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
->>>>>>> 3fa7d5cc6 (correct experimental information in docs (#10813))
 
 [^1]: TiDB 误将 latin1 处理为 utf8 的子集。见 [TiDB #18955](https://github.com/pingcap/tidb/issues/18955)。
 
