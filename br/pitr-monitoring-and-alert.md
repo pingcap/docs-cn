@@ -50,9 +50,9 @@ PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目�
 目前 PiTR 还未内置告警项，以下告警项为推荐的配置。
 
 告警规则配置可以参考下面的步骤：
-1. 创建告警规则配置文件（如 pitr.rules.yml），参考 [Prometheus 文档](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) 和下列推荐告警项及配置样例填写告警规则；
+1. 在 Prometheus 所在节点创建告警规则配置文件（如 pitr.rules.yml），参考 [Prometheus 文档](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) 和下列推荐告警项及配置样例填写告警规则；
 2. 在 Prometheus 配置文件中的 `rule_files` 字段填入告警规则文件路径；
-3. 通过向 Prometheus 进程发送 `SIGHUP` 信号或向 `http://prometheus-addr/-/reload` 发送 HTTP POST 请求（WEB 请求的方式需要启动 Prometheus 时指定 `--web.enable-lifecycle`）。
+3. 通过向 Prometheus 进程发送 `SIGHUP` 信号（`kill -HUP pid`）或向 `http://prometheus-addr/-/reload` 发送 HTTP POST 请求（WEB 请求的方式需要启动 Prometheus 时指定 `--web.enable-lifecycle`）。
 
 ### LogBackupRunningRPOMoreThan10m
 
