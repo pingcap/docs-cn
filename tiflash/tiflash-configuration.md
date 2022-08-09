@@ -66,8 +66,9 @@ delta_index_cache_size = 0
     ## DTFile 储存文件格式
     ## * format_version = 1 老旧文件格式，已废弃
     ## * format_version = 2 v6.0.0 以前版本的默认文件格式
-    ## * format_version = 3 v6.0.0 及以后版本的默认文件格式，具有更完善的检验功能
-    # format_version = 3
+    ## * format_version = 3 v6.0.0 及 v6.1.x 版本的默认文件格式，具有更完善的检验功能
+    ## * format_version = 4 v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗
+    # format_version = 4
 
     [storage.main]
     ## 用于存储主要的数据，该目录列表中的数据占总数据的 90% 以上。
@@ -182,6 +183,9 @@ delta_index_cache_size = 0
     # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 
+    ## 从 v6.2.0 引入，使用线程池处理存储引擎的读请求。默认为 false。
+    ## 警告：目前是实验性功能，不建议在生产环境中使用。
+    # dt_enable_read_thread = false
 
 ## 安全相关配置，从 v4.0.5 开始生效
 [security]
@@ -229,7 +233,7 @@ delta_index_cache_size = 0
 
 ### 多盘部署
 
-TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](/config-templates/complex-tiflash.yaml)。
+TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。
 
 #### TiDB 集群版本低于 v4.0.9
 

@@ -109,7 +109,7 @@ while True:
         if (error.code != "9007" && error.code != "8028" && error.code != "8002" && error.code != "8022"):
             raise error
         else:
-            connnection.exec('ROLLBACK');
+            connection.exec('ROLLBACK')
 
             # Capture the error types that require application-side retry,
             # wait for a short period of time,

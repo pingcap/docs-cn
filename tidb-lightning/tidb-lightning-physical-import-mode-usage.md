@@ -1,10 +1,11 @@
 ---
 title: 使用 Physical Import Mode
+summary: 了解如何使用 TiDB Lightning 的 Physical Import Mode。
 ---
 
 # 使用 Physical Import Mode
 
-本文档介绍如何编写 Physical Import Mode 的配置文件，如何进行性能调优等内容。
+本文档介绍如何编写 Physical Import Mode 的配置文件，如何进行性能调优、使用磁盘资源配额等内容。
 
 ## 配置及使用
 
@@ -81,11 +82,11 @@ Lightning 的完整配置文件可参考[完整配置及命令行参数](/tidb-l
 - remove: 推荐方式。记录所有的冲突记录，和 'record' 模式相似。但是会删除所有的冲突记录，以确保目的 TiDB 中的数据状态保持一致。
 - none: 关闭冲突数据检测。该模式是三种模式中性能最佳的，但是可能会导致目的 TiDB 中出现数据不一致的情况。
 
-在 v5.3 版本之前，Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，无论`record`还是`remove`策略，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
+在 v5.3 版本之前，Lightning 不具备冲突数据检测特性，若存在冲突数据将导致导入过程最后的 checksum 环节失败；开启冲突检测特性的情况下，无论 `record` 还是 `remove` 策略，只要检测到冲突数据，Lightning 都会跳过最后的 checksum 环节（因为必定失败）。
 
-假设一张表`order_line`的表结构如下：
+假设一张表 `order_line` 的表结构如下：
 
-```
+```sql
 CREATE TABLE IF NOT EXISTS `order_line` (
   `ol_o_id` int(11) NOT NULL,
   `ol_d_id` int(11) NOT NULL,
@@ -101,9 +102,9 @@ CREATE TABLE IF NOT EXISTS `order_line` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 ```
 
-若在导入过程中检测到冲突数据，则可以查询`lightning_task_info.conflict_error_v1`表得到以下内容：
+若在导入过程中检测到冲突数据，则可以查询 `lightning_task_info.conflict_error_v1` 表得到以下内容：
 
-```
+```sql
 mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 limit 10;
 +---------------------+------------+----------+-----------------------------------------------------------------------------+
 |  table_name         | index_name | key_data | row_data                                                                    |
@@ -115,7 +116,7 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 | `tpcc`.`order_line` | PRIMARY    | 21829218 | (2677, 10, 10, 13, 85618, 10, NULL, 5, 7427.98, "t3rsesgi9rVAKi9tf6an5Rpv") |
 | `tpcc`.`order_line` | PRIMARY    | 49931674 | (2677, 10, 10, 13, 85618, 10, NULL, 5, 7427.98, "t3rsesgi9rVAKi9tf6an5Rpv") |
 | `tpcc`.`order_line` | PRIMARY    | 21829219 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  |
-| `tpcc`.`order_line` | PRIMARY    | 49931675 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  | 
+| `tpcc`.`order_line` | PRIMARY    | 49931675 | (2677, 10, 10, 14, 15873, 10, NULL, 5, 133.21, "z1vH0e31tQydJGhfNYNa4ScD")  |
 | `tpcc`.`order_line` | PRIMARY    | 21829220 | (2678, 10, 10, 1, 44644, 10, NULL, 5, 8463.76, "TWKJBt5iJA4eF7FIVxnugNmz")  |
 | `tpcc`.`order_line` | PRIMARY    | 49931676 | (2678, 10, 10, 1, 44644, 10, NULL, 5, 8463.76, "TWKJBt5iJA4eF7FIVxnugNmz")  |
 +---------------------+------------+----------------------------------------------------------------------------------------+
@@ -150,7 +151,7 @@ distsql-scan-concurrency = 3
 
 [cron]
 # 避免将 TiKV 切换到 import 模式。
-switch-mode = '0' 
+switch-mode = '0'
 ```
 
 在测试中用 TPCC 测试模拟在线业务，同时用 TiDB Lightning 向 TiDB 集群导入数据，测试导入数据对 TPCC 测试结果的影响。测试结果如下：
@@ -195,13 +196,13 @@ table-concurrency = 6
 io-concurrency = 5
 ```
 
-导入时，每张表被切分成一个用于存储索引的"索引引擎"和若干存储行数据的"数据引擎",`index-concurrency`用于调整"索引引擎"的并发度。
+导入时，每张表被切分成一个用于存储索引的“索引引擎”和若干存储行数据的“数据引擎”，`index-concurrency`用于调整"索引引擎"的并发度。
 
 在调整 `index-concurrency` 时，需要注意 `index-concurrency * 每个表对应的源文件数量 > region-concurrency` 以确保 cpu 被充分利用，一般比例大概在 1.5 ~ 2 左右为优。`index-concurrency` 不应该设置的过大，但不低于 2 (默认)，过大会导致太多导入的 pipeline 变差，大量 index-engine 的 import 阶段堆积。
 
 `table-concurrency` 同理，需要确保`table-concurrency * 每个表对应的源文件数量 > region-concurrency` 以确保 cpu 被充分利用。 推荐值为`region-concurrency * 4 / 每个表对应的源文件数量` 左右，最少设置为 4.
 
-如果表非常大，Lightning 会按照 100GiB 的大小将表分割成多个批次处理，并发度由 `table-concurrency` 控制。
+如果表非常大，Lightning 会按照 100 GiB 的大小将表分割成多个批次处理，并发度由 `table-concurrency` 控制。
 
 上述两个参数对导入速度影响不大，使用默认值即可。
 
@@ -210,3 +211,30 @@ io-concurrency = 5
 读取文件数据后，lightning 还需要做后续处理，例如将数据在本地进行编码和排序。此类操作的并发度由 `region-concurrency` 配置控制。`region-concurrency` 的默认值为 CPU 核数，通常无需调整，建议不要将 Lightning 与其它组件部署在同一主机，如果客观条件限制必须混合部署，则需要根据实际负载调低 `region-concurrency`。
 
 此外，TiKV 的 [num-threads](/tikv-configuration-file.md#num-threads) 配置也可能影响性能，新集群建议设置为 CPU 核数。
+
+## 磁盘资源配额 <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+> **警告：**
+>
+> 磁盘资源配额目前是实验性功能，不建议在生产环境中使用。
+
+TiDB Lightning 在使用物理模式导入数据时，会在本地磁盘创建大量的临时文件，用来对原始数据进行编码、排序、分割。当用户本地磁盘空间不足时，TiDB Lightning 会由于写入文件失败而报错退出。
+
+为了减少这种情况的发生，你可以为 TiDB Lightning 配置磁盘配额 (disk quota)。当磁盘配额不足时，TiDB Lightning 会暂停读取源数据以及写入临时文件的过程，优先将已经完成排序的 key-value 写入到 TiKV，TiDB Lightning 删除本地临时文件后，再继续导入过程。
+
+为 TiDB Lightning 开启磁盘配额，你需要在配置文件中加入配置项：
+
+```toml
+[tikv-importer]
+# 默认为 MaxInt64，即 9223372036854775807 字节
+disk-quota = "10GB"
+backend = "local"
+
+[cron]
+# 检查磁盘配额的时间间隔，默认为 60 秒。
+check-disk-quota = "30s"
+```
+
+`disk-quota` 配置项可以设置磁盘配额，默认为 MaxInt64，即 9223372036854775807 字节，这个值远远大于实际情况中可能需要的磁盘空间，相当于没开启。
+
+`check-disk-quota` 配置项是检查磁盘配额的时间间隔，默认为 60 秒。由于检查临时文件使用空间的过程需要加锁，会使所有的导入线程都暂停，如果在每次写入之前都检查一次磁盘空间的使用情况，则会大大降低写入文件的效率（相当于单线程写入）。为了维持高效的写入，磁盘配额不会在每次写入之前检查，而是每隔一段时间暂停所有线程的写入并检查当前磁盘空间的使用情况。也就是说，当 `check-disk-quota` 配置项设置为一个非常大的值时，磁盘的使用空间有可能会大大超出磁盘配额，这样的情况下，磁盘配额功能可以说是不生效的。因此，`check-disk-quota` 的值建议不要设置太大，而具体设置多少则需要由 TiDB Lightning 具体运行的环境决定，因为不同的环境下，TiDB Lightning 写入临时文件的速度是不一样的。理论上来说，写入临时文件的速度越快，`check-disk-quota` 需要设置得越小。
