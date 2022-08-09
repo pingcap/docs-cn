@@ -1585,6 +1585,46 @@ Raft Engine 相关的配置项。
 + 在集群资源占用率较高的情况下，是否允许 BR 自动限制备份使用的资源，减少对集群的影响。详情见[自动调节](/br/br-auto-tune.md)。
 + 默认值：true
 
+## log-backup
+
+用于日志备份相关的配置项。
+
+### `enable`
+
++ 用于开启日志备份功能。
++ 默认值：false
+
+### `file-size-limit`
+
++ 日志备份任务的备份数据达到一定大小时，自动 flush 到外部存储中。
++ 默认值：256MB
+
+### `initial-scan-pending-memory-quota`
+
++ 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
++ 默认值：`min(机器总内存 * 10%, 512 MB)`
+
+### `initial-scan-rate-limit`
+
++ 日志备份任务在扫描增量数据时的吞吐限流参数。
++ 默认值：60，即默认限流 60 MB/s
+
+### `max-flush-interval`
+
++ 日志备份任务将备份数据写入到外部存储的最大间隔时间。
++ 默认值：5min
+
+### `num-threads`
+
++ 日志备份功能占用的线程数目。
++ 默认值：CPU * 0.5
++ 可调整范围：[2, 12]
+
+### `temp-path`
+
++ 日志文件存放的临时目录，日志文件预先写入临时目录，然后 flush 到外部存储中。
++ 默认值：`${deploy-dir}/data/log-backup-temp`
+
 ## cdc
 
 用于 TiCDC 捕捉变更数据相关的配置项。
