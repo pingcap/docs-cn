@@ -66,7 +66,8 @@ creating view revenue1
 
 ## 同步数据到 TiFlash
 
-如果 TiDB 集群部署了 TiFlash，需要同步数据到 TiFLash
+部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句将数据同步到 TiFlash。同步后，TiDB 将创建对应的 TiFlash 副本。
+
 ```
 alter table customer set tiflash replica 2;
 alter table district set tiflash replica 2;
