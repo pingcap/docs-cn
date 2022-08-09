@@ -2290,6 +2290,18 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - Range: `[1, 5000]`
 - This variable is used to control how many SQL statements that contribute the most to the load (that is, top N) can be recorded by [Top SQL](/dashboard/top-sql.md) per minute.
 
+### tidb_track_aggregate_memory_usage
+
+- Scope: SESSION ｜ GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `true`
+- This variable controls whether TiDB tracks the memory usage of aggregate functions.
+
+> **Warning:**
+>
+> If you disable this variable, TiDB might not accurately track the memory usage and cannot control the memory usage of the corresponding SQL statements.
+
 ### tidb_tso_client_batch_max_wait_time <span class="version-mark">New in v5.3.0</span>
 
 - Scope: GLOBAL
