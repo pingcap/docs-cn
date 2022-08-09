@@ -184,9 +184,9 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 
 使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
-如果未指定 `FORMAT`，或指定 `FORMAT = "row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
+如果 `EXPLAIN` 语句中未指定 `FORMAT`，或指定 `FORMAT = "row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [TiDB 执行计划概览](/explain-overview.md)。
 
-如果指定 `FORMAT = "brief"`，那么 `EXPLAIN` 语句将会在未指定 `FORMAT` 时的输出结果的基础上，简化其中的算子 ID：
+如果在 `EXPLAIN` 中指定了 `FORMAT = "brief"`，那么 `EXPLAIN` 语句输出结果中的算子 ID，较之未指定 `FORMAT` 时输出结果的算子 ID 更为简化：
 
 {{< copyable "sql" >}}
 
