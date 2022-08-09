@@ -45,6 +45,7 @@ Many `INFORMATION_SCHEMA` tables have a corresponding `SHOW` command. The benefi
 | `TABLE_PRIVILEGES`                                                                      | Not implemented by TiDB. Returns zero rows. |
 | `TRIGGERS`                                                                              | Not implemented by TiDB. Returns zero rows. |
 | [`USER_PRIVILEGES`](/information-schema/information-schema-user-privileges.md)          | Summarizes the privileges associated with the current user. |
+| [`VARIABLES_INFO`](/information-schema/information-schema-variables-info.md)            | Provides information about TiDB system variables. |
 | [`VIEWS`](/information-schema/information-schema-views.md)                              | Provides a list of views that the current user has visibility of. Similar to running `SHOW FULL TABLES WHERE table_type = 'VIEW'` |
 
 ## Tables that are TiDB extensions
