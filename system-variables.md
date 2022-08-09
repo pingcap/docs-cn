@@ -255,18 +255,6 @@ mysql> SELECT * FROM t1;
 - 默认值：`OFF`
 - 这个变量用来控制是否允许通过 `ALTER TABLE MODIFY` 或 `ALTER TABLE CHANGE` 来移除某个列的 `AUTO_INCREMENT` 属性。默认 (`OFF`) 为不允许。
 
-<<<<<<< HEAD
-=======
-### `tidb_analyze_version` <span class="version-mark">从 v5.1.0 版本开始引入</span>
-
-- 作用域：SESSION | GLOBAL
-- 是否持久化到集群：是
-- 默认值：`2`
-- 范围：`[1, 2]`
-- 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
-
->>>>>>> 3fa7d5cc6 (correct experimental information in docs (#10813))
 ### `tidb_auto_analyze_end_time`
 
 - 作用域：GLOBAL
