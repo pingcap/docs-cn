@@ -148,7 +148,7 @@ Info: {"sink-uri":"mysql://root:123456@127.0.0.1:3306/","opts":{},"create-time":
     [scheme]://[userinfo@][host]:[port][/path]?[query_parameters]
     ```
 
-    URI 中包含特殊字符时，需要以 URL 编码对特殊字符进行处理。
+    URI 中包含特殊字符时，如 `! * ' ( ) ; : @ & = + $ , / ? % # [ ]`，需要对 URI 特殊字符进行转义处理。你可以在 [URI Encoder](https://meyerweb.com/eric/tools/dencoder/) 中对 URI 进行转义。
 
 - `--start-ts`：指定 changefeed 的开始 TSO。TiCDC 集群将从这个 TSO 开始拉取数据。默认为当前时间。
 - `--target-ts`：指定 changefeed 的目标 TSO。TiCDC 集群拉取数据直到这个 TSO 停止。默认为空，即 TiCDC 不会自动停止。

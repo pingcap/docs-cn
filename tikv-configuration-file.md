@@ -89,6 +89,13 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
     + 如果把此参数设置为非 `0` 的值，TiKV 最多会保留 `max-backups` 中指定的数量的旧日志文件。比如，如果该值设置为 `7`，TiKV 最多会保留 7 个旧的日志文件。
 + 默认值：0
 
+### `pd.enable-forwarding` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 控制 TiKV 中的 PD client 在疑似网络隔离的情况下是否通过 follower 将请求转发给 leader。
++ 默认值：false
++ 如果确认环境存在网络隔离的可能，开启这个参数可以减少服务不可用的窗口期。
++ 如果无法准确判断隔离、网络中断、宕机等情况，这个机制存在误判情况从而导致可用性、性能降低。如果网络中从未发生过网络故障，不推荐开启此选项。
+
 ## server
 
 服务器相关的配置项。
@@ -204,6 +211,11 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 
 + 是否精简返回的监控指标 Metrics 数据。设置为 `true` 后，TiKV 可以通过过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量。
 + 默认值：false
+
+### `forward-max-connections-per-address` <span class="version-mark">从 v5.0.0 版本开始引入</span>
+
++ 设置服务与转发请求的连接池大小。设置过小会影响请求的延迟和负载均衡。
++ 默认值：4
 
 ## readpool.unified
 
@@ -850,12 +862,6 @@ raftstore 相关的配置项。
 + 触发 Raft 数据写入的阈值。当数据大小超过该配置项值，数据会被写入磁盘。当 `store-io-pool-size` 的值为 `0` 时，该配置项不生效。
 + 默认值：1MB
 + 最小值：0
-
-### `report-min-resolved-ts-interval` <span class="version-mark">从 v6.2.0 版本开始引入</span>
-
-+ 如果配置大于 0 的值，TiKV 会周期性检查当前节点上所有 Region 的最小 ResolvedTS，并将它上报给 PD。
-+ 默认值：0s
-+ 最小值：0s
 
 ## coprocessor
 
