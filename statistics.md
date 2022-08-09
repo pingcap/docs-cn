@@ -4,7 +4,7 @@ title: 统计信息简介
 
 # 统计信息简介
 
-TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` （默认）以及 `tidb_analyze_version = 2`。两种版本中，TiDB 维护的统计信息如下：
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` （默认）以及 `tidb_analyze_version = 2`（实验特性）。两种版本中，TiDB 维护的统计信息如下：
 
 | 信息 | Version 1 | Version 2|
 | --- | --- | ---|
