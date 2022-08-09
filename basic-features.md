@@ -169,7 +169,7 @@ summary: 了解 TiDB 的基本功能。
 | [Global Kill](/sql-statements/sql-statement-kill.md)                                                     | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)                                   | Y           | Y            | Y            | 实验特性 | 实验特性 | 实验特性 |
 | [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)                                            | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
-| [`SET CONFIG`](/dynamic-config.md)                                                                       | Y | Y | Y | 实Y | Y | Y |
+| [`SET CONFIG`](/dynamic-config.md)                                                                       | Y | Y | Y | Y | Y | Y |
 | [持续性能分析](/dashboard/continuous-profiling.md) | 实验特性 | 实验特性 | N | N | N | N |
 | [Top SQL](/dashboard/top-sql.md) | 实验特性 | N | N | N | N | N |
 
