@@ -392,17 +392,6 @@ Configuration items related to performance.
     - `mysql.stats_histograms`/`mysql.stats_buckets` and `mysql.stats_top_n`: TiDB no longer automatically analyzes and proactively updates statistics.
     - `mysql.stats_feedback`: TiDB no longer updates the statistics of the tables and indexes according to a part of statistics returned by the queried data.
 
-### `feedback-probability`
-
-- The probability that TiDB collects the feedback statistics of each query.
-- Default value: `0`
-- This feature is disabled by default, and it is not recommended to enable this feature. If it is enabled, TiDB collects the feedback of each query at the probability of `feedback-probability`, to update statistics.
-
-### `query-feedback-limit`
-
-- The maximum pieces of query feedback that can be cached in memory. Extra pieces of feedback that exceed this limit are discarded.
-- Default value: `1024`
-
 ### `pseudo-estimate-ratio`
 
 - The ratio of (number of modified rows)/(total number of rows) in a table. If the value is exceeded, the system assumes that the statistics have expired and the pseudo statistics will be used.
