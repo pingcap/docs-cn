@@ -1602,7 +1602,7 @@ Raft Engine 相关的配置项。
 ### `initial-scan-pending-memory-quota`
 
 + 日志备份任务在扫描增量数据时，用于存放扫描数据的缓存大小。
-+ 默认值：取 TOTAL_MEM * 0.1 与 512 MB 中的较小值
++ 默认值：`min(机器总内存 * 10%, 512 MB)`
 
 ### `initial-scan-rate-limit`
 
