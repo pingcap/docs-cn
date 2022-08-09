@@ -183,9 +183,11 @@ EXPLAIN DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.01 sec)
 ```
 
-如果未指定 `FORMAT`，或指定 `FORMAT ="row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
+使用 `FORMAT = "xxx"` 语法可以指定输出的内容和格式。
 
-如果指定 `FORMAT ="brief"`，那么 `EXPLAIN` 语句将会在未指定 `FORMAT` 时的输出结果的基础上，简化其中的算子 ID：
+如果未指定 `FORMAT`，或指定 `FORMAT = "row"`，那么 `EXPLAIN` 语句将以表格格式输出结果。更多信息，可参阅 [Understand the Query Execution Plan](https://pingcap.com/docs/dev/reference/performance/understanding-the-query-execution-plan/)。
+
+如果指定 `FORMAT = "brief"`，那么 `EXPLAIN` 语句将会在未指定 `FORMAT` 时的输出结果的基础上，简化其中的算子 ID：
 
 {{< copyable "sql" >}}
 
@@ -205,7 +207,7 @@ EXPLAIN FORMAT = "brief" DELETE FROM t1 WHERE c1=3;
 4 rows in set (0.001 sec)
 ```
 
-除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT ="dot"`：
+除 MySQL 标准结果格式外，TiDB 还支持 DotGraph。需按照下列所示指定 `FORMAT = "dot"`：
 
 {{< copyable "sql" >}}
 
