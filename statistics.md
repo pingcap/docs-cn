@@ -5,7 +5,51 @@ aliases: ['/docs-cn/stable/statistics/','/docs-cn/v4.0/statistics/','/docs-cn/st
 
 # 统计信息简介
 
+<<<<<<< HEAD
 在[索引的选择](/choose-index.md)章节中，提到了 TiDB 会使用统计信息来决定选择哪个索引。在 TiDB 中，我们维护的统计信息包括表的总行数，列的等深直方图，Count-Min Sketch，Null 值的个数，平均长度，不同值的数目等等。本文将简单介绍直方图和 Count-Min Sketch，以及详细介绍统计信息的收集和维护。
+=======
+TiDB 使用统计信息来决定[索引的选择](/choose-index.md)。变量 `tidb_analyze_version` 用于控制所收集到的统计信息。目前 TiDB 中支持两种统计信息：`tidb_analyze_version = 1` 以及 `tidb_analyze_version = 2`。在 v5.3.0 及之后的版本中，该变量的默认值为 `2`。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+
+> **注意：**
+>
+> 当 `tidb_analyze_version = 2` 时，如果执行 ANALYZE 语句后发生 OOM，请设置全局变量 `tidb_analyze_version = 1`，然后进行以下操作之一：
+>
+> - 如果 ANALYZE 语句是手动执行的，请手动 analyze 每张需要的表：
+>
+>   {{< copyable "sql" >}}
+>
+>   ```sql
+>   select distinct(concat('ANALYZE ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
+>    ```
+>
+> - 如果 ANALYZE 语句是开启了自动 analyze 后 TiDB 自动执行的，请使用以下 SQL 语句生成 DROP STATS 的语句并执行：
+>
+>   {{< copyable "sql" >}}
+>
+>   ```sql
+>   select distinct(concat('DROP STATS ',table_schema, '.', table_name,';')) from information_schema.tables, mysql.stats_histograms where stats_ver = 2 and table_id = tidb_table_id ;
+>   ```
+
+两种版本中，TiDB 维护的统计信息如下：
+
+| 信息 | Version 1 | Version 2|
+| --- | --- | ---|
+| 表的总行数 | √ | √ |
+| 列的 Count-Min Sketch | √ | × |
+| 索引的 Count-Min Sketch | √ | × |
+| 列的 Top-N | √ | √（改善了维护方式和精度） |
+| 索引的 Top-N | √（维护精度不足，会产生较大误差） | √（改善了维护方式和精度） |
+| 列的直方图 | √ | √（直方图中不包含 Top-N 中出现的值） |
+| 索引的直方图 | √ | √（直方图的桶中记录了各自的不同值的个数，且直方图不包含 Top-N 中出现的值） |
+| 列的 NULL 值个数 | √ | √ |
+| 索引的 NULL 值个数 | √ | √ |
+| 列的平均长度 | √ | √ |
+| 索引的平均长度 | √ | √ |
+
+Version 2 的统计信息避免了 Version 1 中因为哈希冲突导致的在较大的数据量中可能产生的较大误差，并保持了大多数场景中的估算精度。
+
+本文接下来将简单介绍其中出现的直方图和 Count-Min Sketch 以及 Top-N 这些数据结构，以及详细介绍统计信息的收集和维护。
+>>>>>>> 3fa7d5cc6 (correct experimental information in docs (#10813))
 
 ## 直方图简介
 
