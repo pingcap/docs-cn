@@ -88,7 +88,7 @@ summary: 了解 TiDB 的基本功能。
 | [`AUTO_INCREMENT` 列](/auto-increment.md)                                                                     | Y            | Y            | Y            | Y            |
 | [`AUTO_RANDOM` 列](/auto-random.md)                                                                           | Y            | Y            | Y            | Y            |
 | [DDL 算法断言](/sql-statements/sql-statement-alter-table.md)                                 | Y            | Y            | Y            | Y            |
-| 在单条语句中添加多列                                                                       | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
+| [在单条语句中添加多列](/system-variables.md#tidb_enable_change_multi_schema)                                                                       | 实验特性            | 实验特性           | 实验特性            | 实验特性           |
 | [更改列类型](/sql-statements/sql-statement-modify-column.md)                                     | Y            | Y            | N            | N            |
 
 ## 事务
