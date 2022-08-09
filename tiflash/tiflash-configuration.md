@@ -156,7 +156,8 @@ delta_index_cache_size = 0
 [profiles]
 
 [profiles.default]
-    ## 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。不建议修改默认选项。
+    ## [deprecated] 存储引擎的 segment 分裂是否使用逻辑分裂。使用逻辑分裂可以减小写放大，但是会造成一定程度的硬盘空间回收不及时。默认为 false。不建议修改默认选项。
+    ## 注意 6.2 版本 logical split 与其他 feature 存在兼容性问题，不建议在 6.2 及之后的版本将该配置项设置为 true。
     # dt_enable_logical_split = false
 
     ## 单次 coprocessor 查询过程中，对中间数据的内存限制，单位为 byte，默认为 0，表示不限制
@@ -177,10 +178,11 @@ delta_index_cache_size = 0
 
     ## 从 v5.4.0 引入，表示是否启用弹性线程池，这项功能可以显著提高 TiFlash 在高并发场景的 CPU 利用率。默认为 true。
     # enable_elastic_threadpool = true
-    # TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
+
+    ## TiFlash 存储引擎的压缩算法，支持 LZ4、zstd 和 LZ4HC，大小写不敏感。默认使用 LZ4 算法。
     dt_compression_method = "LZ4"
 
-    # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
+    ## TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 
     ## 从 v6.2.0 引入，使用线程池处理存储引擎的读请求。默认为 false。
