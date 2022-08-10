@@ -130,7 +130,7 @@ go-tpc ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --
 ...
 ```
 
-运行结束后，会打印测试统计结果：
+命令运行结束后，控制台会打印测试统计结果。例如：
 
 ```text
 Finished: 50 OLTP workers, 1 OLAP workers
