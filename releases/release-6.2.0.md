@@ -33,7 +33,7 @@ TiDB 版本：6.2.0
 
     TiFlash 后台会依据特定条件、自动对物理数据进行整理（Compaction），减少无用数据的积压，并优化数据存储结构。在数据整理被自动触发前，TiFlash 数据表中往往存在一定量的无用数据。该特性支持用户自行选择合适的时机、手动执行 SQL 语句来对 TiFlash 中的物理数据立即进行整理，从而减少存储空间占用，并提升查询性能。此功能在 TiDB v6.1 作为一项实验功能引入，在 v6.2.0 版本正式发布。
 
-    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#ALTER-TABLE-COMPACT) [#4145](https://github.com/pingcap/tiflash/issues/4145) @[breezewish](https://github.com/breezewish)
+    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) [#4145](https://github.com/pingcap/tiflash/issues/4145) @[breezewish](https://github.com/breezewish)
 
 ### 可观测性
 
@@ -47,7 +47,7 @@ TiDB 版本：6.2.0
 
     TiDB Dashboard 新增 Monitoring 页面，展示在业务性能调优中所需的核心指标。用户可基于数据库时间的[系统优化方法](https://docs.pingcap.com/zh/tidb/stable/performance-tuning-methods)，利用该页面进行性能分析和优化。用户可以从全局、自顶向下的角度分析用户响应时间和数据库时间，确认用户响应时间的瓶颈是否在数据库中。如果瓶颈在数据库中，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。
 
-    [用户文档](/grafana-performance-overview-dashboard.md#通过-tidb-dashboard-monitoring-查看) [#1381](https://github.com/pingcap/tidb-dashboard/issues/1381) @[YiniXu9506](https://github.com/YiniXu9506)
+    [用户文档](/dashboard/dashboard-monitoring.md) [#1381](https://github.com/pingcap/tidb-dashboard/issues/1381) @[YiniXu9506](https://github.com/YiniXu9506)
 
 * TiDB Dashboard 支持可视化执行计划
 
@@ -103,7 +103,7 @@ TiDB 版本：6.2.0
 
     通过实现执行过程中的细粒度的数据交换 (shuffle) 能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量来控制 shuffle 的粒度。
 
-    [用户文档](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620) [4631](https://github.com/pingcap/tiflash/issues/4631, @[guo-shaoge](https://github.com/guo-shaoge)
+    [用户文档] (/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) [4631](https://github.com/pingcap/tiflash/issues/4631) @[guo-shaoge](https://github.com/guo-shaoge)
 
 * TiFlash 支持新版本的存储格式
 
@@ -243,8 +243,8 @@ TiDB 版本：6.2.0
 | [tidb_opt_skew_distinct_agg](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入) | 新增 | 用于设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。 |
 | [tidb_enable_noop_variables](/system-variables.md#tidb_enable_noop_variables-从-v620-版本开始引入) | 新增 | 用于设置 `SHOW [GLOBAL] VARIABLES` 是否显示 noop 变量。 |
 | [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
-| [tidb_max_paging_size](/system-variables.md#tidb_min_paging_size) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
-| [tidb_min_paging_size](/system-variables.md#tidb_max_paging_size) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
+| [tidb_max_paging_size](/system-variables.md#tidb_max_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
+| [tidb_min_paging_size](/system-variables.md#tidb_min_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
 | tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 `ALTER TABLE` 语句增删改多个列或索引。 |
 
 ### 配置文件参数
@@ -260,13 +260,13 @@ TiDB 版本：6.2.0
 | TiKV | [quota.enable-auto-tune](/tikv-configuration-file.md#enable-auto-tune-从-v620-版本开始引入) | 新增 | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。 |
 | TiKV | rocksdb.enable-pipelined-commit | 删除 | |
 | TiKV | gc-merge-rewrite | 删除 | 该配置不再生效。 |
-| TiKV | [log-backup.enable](/tikv-configuration-file.md#enable-2) | 新增 | TiKV 是否开启日志备份功能。 |
-| TiKV | [log-backup.file-size-limit](/tikv-configuration-file.md#file-size-limit) | 新增 | 日志备份任务备份的数据达到一定大小时，自动 flush 到外部存储中。 |
-| TiKV | [log-backup.initial-scan-pending-memory-quota](/tikv-configuration-file.md#initial-scan-pending-memory-quota) | 新增 | 增量扫描数据时，用于存放扫描数据的缓存大小。 |
-| TiKV | [log-backup.max-flush-interval](/tikv-configuration-file.md#max-flush-interval) | 新增 | 日志备份任务将备份数据写入到 External Storage 的最大间隔时间。 |
-| TiKV | [log-backup.initial-scan-rate-limit](/tikv-configuration-file.md#initial-scan-rate-limit) | 新增 | 增量扫描数据时，用于扫描时吞吐限流参数。 |
-| TiKV | [log-backup.num-threads](/tikv-configuration-file.md#num-threads-2) | 新增 | 日志备份功能使用的线程数。 |
-| TiKV | [log-backup.temp-path](/tikv-configuration-file.md#temp-path) | 新增 | 临时目录路径，TiKV 备份日志预先先写入临时目录，然后 flush 到外部存储中。 |
+| TiKV | [log-backup.enable](/tikv-configuration-file.md#enable-从-v620-版本开始引入) | 新增 | TiKV 是否开启日志备份功能。 |
+| TiKV | [log-backup.file-size-limit](/tikv-configuration-file.md#file-size-limit-从-v620-版本开始引入) | 新增 | 日志备份任务备份的数据达到一定大小时，自动 flush 到外部存储中。 |
+| TiKV | [log-backup.initial-scan-pending-memory-quota](/tikv-configuration-file.md#initial-scan-pending-memory-quota-从-v620-版本开始引入) | 新增 | 增量扫描数据时，用于存放扫描数据的缓存大小。 |
+| TiKV | [log-backup.max-flush-interval](/tikv-configuration-file.md#max-flush-interval-从-v620-版本开始引入) | 新增 | 日志备份任务将备份数据写入到 External Storage 的最大间隔时间。 |
+| TiKV | [log-backup.initial-scan-rate-limit](/tikv-configuration-file.md#initial-scan-rate-limit-从-v620-版本开始引入) | 新增 | 增量扫描数据时，用于扫描时吞吐限流参数。 |
+| TiKV | [log-backup.num-threads](/tikv-configuration-file.md#num-threads-从-v620-版本开始引入) | 新增 | 日志备份功能使用的线程数。 |
+| TiKV | [log-backup.temp-path](/tikv-configuration-file.md#temp-path-从-v620-版本开始引入) | 新增 | 临时目录路径，TiKV 备份日志预先先写入临时目录，然后 flush 到外部存储中。 |
 | PD | replication-mode.dr-auto-sync.wait-async-timeout | 删除 | 废弃未生效的配置项。 |
 | PD | replication-mode.dr-auto-sync.wait-sync-timeout | 删除 | 废弃未生效的配置项。|
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#tiflash-配置参数) | 修改 | `format_version` 默认值变更为 4，v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。 |
@@ -295,8 +295,9 @@ TiDB 版本：6.2.0
 - 从 v6.2.0 开始, 执行 `select tidb_version()` 返回的信息中会包含 Store 类型（tikv 或者 unistore）
 - TiDB 不再有隐藏的系统变量。
 - 新增两个系统表：
-  - information_schema.variables_info：用于查看 TiDB 系统变量相关的信息。
-  - Performance_schema.session_variables：用于查看 TiDB session 系统变量相关的信息。
+
+    - information_schema.variables_info：用于查看 TiDB 系统变量相关的信息。
+    - Performance_schema.session_variables：用于查看 TiDB session 系统变量相关的信息。
 
 ## 废弃功能
 
@@ -381,13 +382,13 @@ TiDB 版本：6.2.0
     - 修复了创建表时指定类型为 LONG BYTE 列的行为与 MySQL 不兼容的问题 [#36239](https://github.com/pingcap/tidb/issues/36239) @[Defined2014](https://github.com/Defined2014)
     - 修复了设置 `auto_increment=x` 对临时表无效的问题 [#36224](https://github.com/pingcap/tidb/issues/36224) @[djshow832](https://github.com/djshow832)
     - 修复了在并发修改列的情况下可能导致 DEFAULT VALUE 不正确的问题 [#35846](https://github.com/pingcap/tidb/issues/35846) @[wjhuang2016](https://github.com/wjhuang2016)
-    -  避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906) @[sticnarf](https://github.com/sticnarf)
+    - 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906) @[sticnarf](https://github.com/sticnarf)
     - 修复了 `LOAD DATA` 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     - 修复部分场景非唯一二级索引被误加悲观锁的问题 [#36235](https://github.com/pingcap/tidb/issues/36235) @[ekexium](https://github.com/ekexium)
 
 + TiKV
 
-    - 避免在悲观事务中报出 `Write Conflict` 错误 [#11612](https://github.com/tikv/tikv/issues/11612) @[sticnarf](https://github.com/sticnarf))
+    - 避免在悲观事务中报出 `Write Conflict` 错误 [#11612](https://github.com/tikv/tikv/issues/11612) @[sticnarf](https://github.com/sticnarf)
     - 修复了在悲观事务中使用 Async Commit 导致重复提交记录的问题 [#12615](https://github.com/tikv/tikv/issues/12615) @[sticnarf](https://github.com/sticnarf)
     - 修复了 TiKV API 从 `storage.api-version = 1` 升级为 `storage.api-version = 2` 时 panic 的问题 [#12600](https://github.com/tikv/tikv/issues/12600) @[pingyu](https://github.com/pingyu)
     - 修复了 TiKV 和 PD 配置文件中 Region size 不一致的问题 [#12518](https://github.com/tikv/tikv/issues/12518) @[5kbpers](https://github.com/5kbpers)
@@ -410,7 +411,7 @@ TiDB 版本：6.2.0
 
         修复了限速备份后，BR 没有及时清理速度限制的问题 [#31722](https://github.com/pingcap/tidb/issues/31722) @[MoCuishle28](https://github.com/MoCuishle28)
 
-Contributors
+## Contributors
 
 感谢来自 TiDB 社区的贡献者们：
 
