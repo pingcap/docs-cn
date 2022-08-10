@@ -158,11 +158,13 @@ Configuration items related to the log file
 ### `max-days`
 
 + The maximum number of days in which a log is kept
++ If the configuration item is not set, or the value of it is set to the default value 0, PD does not clean log files.
 + Default value: `0`
 
 ### `max-backups`
 
 + The maximum number of log files to keep
++ If the configuration item is not set, or the value of it is set to the default value 0, PD keeps all log files.
 + Default value: `0`
 
 ## `metric`
