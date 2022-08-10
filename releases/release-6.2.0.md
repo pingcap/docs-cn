@@ -204,7 +204,7 @@ TiDB 版本：6.2.0
     - 业务历史数据审计，满足司法审查的需求。
     - 该功能初版存在着一些使用限制，详细情况请参考功能使用文档。
 
-    [用户文档](), ([#29501](https://github.com/pingcap/tidb/issues/29501), @[joccau](https://github.com/joccau))
+  [用户文档](/br/point-in-time-recovery.md), ([#29501](https://github.com/pingcap/tidb/issues/29501), @[joccau](https://github.com/joccau))
 
 * 调整 [TiDB Lightning 在线文档](/tidb-lightning/tidb-lightning-overview.md)，使其目录结构更加合理和清晰。同时对文档中关于“后端模式”的描述进行了修改，使用 Physical Import Mode 替代原有 local backend，使用 Logical Import  Mode 替代原有 tidb backend ，以降低新用户的理解难度。
 
