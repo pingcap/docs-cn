@@ -65,7 +65,7 @@ TiDB 版本：6.2.0
 
 * 优化器增加对外连接顺序的提示
 
-    在 v6.1.0 中引入的优化器提示 `LEADING` 可干预表的连接顺序，但是这个提示并不能应用在包含了外连接的查询中，见 [`LEADING` 文档](/optimizer-hints.md#leadingt1_name--tl_name-)。 在 v6.2.0 中 TiDB 解除了这个限制， `LEADING` 提示对外连接同样生效。在包含外连接的查询中，你同样可以利用 `LEADING` 指定表的连接顺序，获得更好的 SQL 执行性能，并避免执行计划的突变。
+    在 v6.1.0 中引入的优化器提示 `LEADING` 可干预表的连接顺序，但是这个提示并不能应用在包含了外连接的查询中，见 [`LEADING` 文档](/optimizer-hints.md#leadingt1_name--tl_name-)。 在 v6.2.0 中 TiDB 解除了这个限制，`LEADING` 提示对外连接同样生效。在包含外连接的查询中，你同样可以利用 `LEADING` 指定表的连接顺序，获得更好的 SQL 执行性能，并避免执行计划的突变。
 
     [用户文档](), ([#29932](https://github.com/pingcap/tidb/issues/29932), @[Reminiscent](https://github.com/Reminiscent))
 
