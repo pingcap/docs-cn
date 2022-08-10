@@ -27,8 +27,7 @@ tiup install bench
 
 **导入数据通常是整个 TPC-C 测试中最耗时，也是最容易出问题的阶段。**
 
-本文将以 1000 WAREHOUSE 为例进行导入和测试。
-在 shell 中运行 TiUP 命令：
+本文将以 1000 WAREHOUSE 为例进行导入和测试。在 shell 中运行 TiUP 命令：
 
 {{< copyable "shell-regular" >}}
 
@@ -51,6 +50,7 @@ tiup bench ch -H 172.16.5.140 -P 4000 -D tpcc prepare
 ```
 
 日志输出如下：
+
 ```
 creating nation
 creating region
@@ -66,7 +66,7 @@ creating view revenue1
 
 ## 同步数据到 TiFlash
 
-部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句将数据同步到 TiFlash。同步后，TiDB 将创建对应的 TiFlash 副本。
+部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句将数据同步到 TiFlash。同步后，TiDB 将创建对应的 TiFlash 副本。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
 
 ```
 alter table customer set tiflash replica 2;
@@ -106,8 +106,8 @@ analyze table supplier
 
 以 50 TP 并发，1 AP 并发为例，运行以下测试命令：
 
-
 {{< copyable "shell-regular" >}}
+
 ```shell
 go-tpc ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --time 1h
 ```
