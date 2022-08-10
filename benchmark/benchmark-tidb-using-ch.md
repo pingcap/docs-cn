@@ -32,7 +32,7 @@ tiup install bench
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare
+tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 prepare -T 32
 ```
 
 基于不同的机器配置，这个过程可能会持续几个小时。如果是小型集群，可以使用较小的 WAREHOUSE 值进行测试。
@@ -66,22 +66,24 @@ creating view revenue1
 
 ## 同步数据到 TiFlash
 
-部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句创建 TiFlash 副本。创建 TiFlash 副本后，系统自动实时同步最新数据到 TiFlash 组件。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
+部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句创建整库的 TiFlash 副本。创建 TiFlash 副本后，系统自动实时同步最新数据到 TiFlash 组件。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
 
 ```
-alter table customer set tiflash replica 2;
-alter table district set tiflash replica 2;
-alter table history set tiflash replica 2;
-alter table item set tiflash replica 2;
-alter table new_order set tiflash replica 2;
-alter table order_line set tiflash replica 2;
-alter table orders set tiflash replica 2;
-alter table stock set tiflash replica 2;
-alter table warehouse set tiflash replica 2;
-alter table nation set tiflash replica 2;
-alter table region set tiflash replica 2;
-alter table supplier set tiflash replica 2;
+alter database tpcc set tiflash replica 2;
 ```
+
+可通过如下 SQL 语句确认所有表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态是否完成同步：
+
+{{< copyable "sql" >}}
+
+```sql
+SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'tpcc';
+```
+
+查询结果中：
+
+* AVAILABLE 字段表示该表的 TiFlash 副本是否可用。1 代表可用，0 代表不可用。副本状态为可用之后就不再改变，如果通过 DDL 命令修改副本数则会重新计算同步进度。
+* PROGRESS 字段代表同步进度，在 0.0~1.0 之间，1 代表至少 1 个副本已经完成同步。
 
 ## 搜集统计信息
 
