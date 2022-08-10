@@ -5,7 +5,7 @@ summary: 介绍如何通过 TiDB Dashboard 监控页面查看 Performance Overvi
 
 # TiDB Dashboard 监控页面
 
-该页面提供了 v6.1.0 引入的性能分析和优化工具 Performance Overview 面板的入口，借助该工具，你可以高效地进行性能分析，确认用户响应时间的瓶颈是否在数据库中。如果数据库是整个系统的瓶颈，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点。详情请参考 [TiDB 性能分析和优化方法](/performance-tuning-methods.md)。
+从 TiDB Dashboard 监控页面，你可以查看性能分析和优化工具 Performance Overview 面板。借助 Performance Overview 面板，你可以高效地进行性能分析，确认用户响应时间的瓶颈是否在数据库中。如果数据库是整个系统的瓶颈，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点。详情请参考 [TiDB 性能分析和优化方法](/performance-tuning-methods.md)。
 
 ## 访问页面
 
