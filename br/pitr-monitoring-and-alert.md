@@ -1,11 +1,11 @@
 ---
-title: PiTR 监控告警
-summary: PiTR 监控告警介绍。
+title: PITR 监控告警
+summary: PITR 监控告警介绍。
 ---
 
-# PiTR 监控告警
+# PITR 监控告警
 
-PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目前所有的监控指标都内置在 TiKV 中。
+PITR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目前所有的监控指标都内置在 TiKV 中。
 
 ## 监控配置
 
@@ -41,7 +41,7 @@ PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目�
 
 ## Grafana 配置
 
-- 通过 TiUP 部署的集群，[Grafana](https://grafana.com/) 中内置了 PiTR 的面板。TiKV-Details dashboard 中的 Backup Log 面板即为 PiTR 面板。
+- 通过 TiUP 部署的集群，[Grafana](https://grafana.com/) 中内置了 PITR 的面板。TiKV-Details dashboard 中的 Backup Log 面板即为 PITR 面板。
 
 - 手动部署的集群，需要参考[导入 Grafana 面板](/deploy-monitoring-services.md#第-2-步导入-grafana-面板)，将 [tikv_details](https://github.com/tikv/tikv/blob/master/metrics/grafana/tikv_details.json) JSON 文件上传到 Grafana 中。之后在 TiKV-Details dashboard 中找到 Backup Log 面板即可。
 
