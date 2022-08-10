@@ -112,7 +112,7 @@ analyze table supplier
 go-tpc ch --host 172.16.5.140 -P4000 --warehouses 1000 run -D tpcc -T 50 -t 1 --time 1h
 ```
 
-运行过程中控制台上会持续打印测试结果：
+命令运行过程中，控制台上会持续打印测试结果。例如：
 
 ```text
 [Current] NEW_ORDER - Takes(s): 10.0, Count: 13524, TPM: 81162.0, Sum(ms): 998317.6, Avg(ms): 73.9, 50th(ms): 71.3, 90th(ms): 100.7, 95th(ms): 113.2, 99th(ms): 159.4, 99.9th(ms): 209.7, Max(ms): 243.3
