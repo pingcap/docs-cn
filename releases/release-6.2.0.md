@@ -107,9 +107,9 @@ TiDB 版本：6.2.0
 
 * TiFlash 支持新版本的存储格式
 
-    TiFlash 通过改进存储格式，大幅减轻了在高并发、高负载场景下 GC 造成 CPU 占用高的问题，可以有效减少后台任务 IO 流量，提升高并发、高负载下的稳定性。
+    TiFlash 通过改进存储格式，大幅减轻了在高并发、高负载场景下 GC 造成 CPU 占用高的问题，可以有效减少后台任务 IO 流量，提升高并发、高负载下的稳定性。同时新版本存储格式可以显著降低空间放大，减少磁盘空间浪费。
 
-* v6.2.0 默认以新版本存储格式保存数据。从更低版本升级到 6.2.0 版本不会影响已有数据，但是新写入的数据都将使用新版本存储格式，所以更低版本升级至 6.2.0 版本并写入数据后，不支持原地降级，否则更低版本的 TiFlash 无法识别新版本的数据格式。
+    v6.2.0 默认以新版本存储格式保存数据。从更低版本升级到 6.2.0 版本不会影响已有数据，但是新写入的数据都将使用新版本存储格式，所以更低版本升级至 6.2.0 版本并写入数据后，不支持原地降级，否则更低版本的 TiFlash 无法识别新版本的数据格式。
 
     建议用户在升级前阅读 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
 
@@ -278,6 +278,7 @@ TiDB 版本：6.2.0
 ### 其他
 
 - TiFlash 的新存储格式不能直接从 format_version 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
+- `dt_enable_logical_split` 在 v6.2.0 及后续版本有已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)，**强烈不建议**将该配置项设置为 `true`。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本, 需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
 - 从 v6.2.0 开始，BR 恢复 mysql schema 下的数据需要需要指定参数 `--with-sys-table=true`。
 - 使用 Alter Table 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上TiDB 和 MySQL 在某些场景不兼容。
