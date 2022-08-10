@@ -140,6 +140,16 @@ syncers:
     # `DELETE FROM tb WHERE a=1; DELETE FROM tb WHERE a=2` will become `DELETE FROM tb WHERE (a) IN (1),(2)`, where "a" is the primary key
     multiple-rows: true
 
+# Configuration arguments of continuous data validation (validator).
+validators:
+  global:                # Configuration name.
+    # full: validates the data in each row is correct.
+    # fast: validates whether the row is successfully migrated to the downstream.
+    # none: does not validate the data.
+    mode: full           # Possible values are "full", "fast", and "none". The default value is "none", which does not validate the data.
+    worker-count: 4      # The number of validation workers in the background. The default value is 4.
+    row-error-delay: 30m # If a row cannot pass the validation within the specified time, it will be marked as an error row. The default value is 30m, which means 30 minutes.
+
 # ----------- Instance configuration -----------
 mysql-instances:
   -
@@ -157,6 +167,7 @@ mysql-instances:
     mydumper-config-name: "global"                  # The name of the mydumpers configuration.
     loader-config-name: "global"                    # The name of the loaders configuration.
     syncer-config-name: "global"                    # The name of the syncers configuration.
+    validator-config-name: "global"                 # The name of the validators configuration.
 
   -
     source-id: "mysql-replica-02"                   # The `source-id` in source.toml.
