@@ -59,7 +59,7 @@ TiDB 版本：6.2.0
 
     大量锁冲突往往会造成严重的性能问题，而定位锁冲突是这类性能问题排查的必要手段之一。TiDB v6.2.0 之前，支持通过系统视图 `INFORMATION_SCHEMA.DATA_LOCK_WAITS` 查看锁冲突的关系，但是不支持乐观事务被悲观锁阻塞的情况。TiDB v6.2.0 扩展 `DATA_LOCK_WAITS` 视图，提供乐观事务被悲观锁阻塞情况下的冲突关系，帮助用户快速定位锁冲突，同时为业务改进提供依据，从而减少这类锁冲突的发生频率，提升系统整体性能。
 
-    [用户文档](/information-schema/information-schema-data-lock-waits.md), [#34609](https://github.com/pingcap/tidb/issues/34609), @[longfangsong](https://github.com/longfangsong))
+    [用户文档](/information-schema/information-schema-data-lock-waits.md), ([#34609](https://github.com/pingcap/tidb/issues/34609), @[longfangsong](https://github.com/longfangsong))
 
 ### 性能
 
@@ -77,7 +77,7 @@ TiDB 版本：6.2.0
 
 * 引入一个优化器提示 `MERGE`，提升分析类查询性能
 
-    公共表表达式 (CTE) 是简化查询逻辑的有效方法，广泛应用于复杂查询的编写。在 v6.2.0 前，CTE 在 TiFlash 环境中还不能自动展开，这在一定程度上限制了 MPP 的运行效率。在 v6.2.0 中，TiDB 引入一个 MySQL 兼容的优化器提示 `MERGE` 。利用这个提示，优化器允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行，从而提升此类分析查询的性能。
+    公共表表达式 (CTE) 是简化查询逻辑的有效方法，广泛应用于复杂查询的编写。在 v6.2.0 前，CTE 在 TiFlash 环境中还不能自动展开，这在一定程度上限制了 MPP 的运行效率。在 v6.2.0 中，TiDB 引入一个 MySQL 兼容的优化器提示 `MERGE`。利用这个提示，优化器允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行，从而提升此类分析查询的性能。
 
     [用户文档](), ([#36122](https://github.com/pingcap/tidb/issues/36122), @[dayicklp](https://github.com/dayicklp))
 
@@ -101,7 +101,7 @@ TiDB 版本：6.2.0
 
 * 支持窗口函数下推到 TiFlash 进行多线程并行计算
 
-* 通过实现执行过程中的细粒度的数据交换 (shuffle)  能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量来控制 shuffle 的粒度。
+* 通过实现执行过程中的细粒度的数据交换 (shuffle) 能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量来控制 shuffle 的粒度。
 
     [用户文档](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620), [用户文档](/system-variables.md#tiflash_fine_grained_shuffle_stream_count-new-in-v620), ([4631](https://github.com/pingcap/tiflash/issues/4631), @[guo-shaoge](https://github.com/guo-shaoge))
 
@@ -123,7 +123,7 @@ TiDB 版本：6.2.0
 
 * TiFlash 新增快速数据扫描模式，降低一致性保证，提高读写速度（实验特性）
 
-    TiDB 从 v6.2.0 版本引入快速扫描模式（ Fast Mode ），支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据（称为 Normal Mode）。
+    TiDB 从 v6.2.0 版本引入快速扫描模式 (Fast Mode)，支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据（称为 Normal Mode）。
 
     从更低的版本升级到 v6.2.0 版本时，所有的表默认为 Normal Mode，即保持一致性的数据扫描模式。你可以为每一张表独立设定 Fast 或 Normal 扫描模式。如果在 v6.2.0 版本设定表的数据扫描模式为 Fast Mode 后，当降级到更低版本时数据扫描模式设定将失效，但不影响数据的正常读取。这种情况等同于强一致性读取的 Normal 模式。
 
@@ -133,7 +133,7 @@ TiDB 版本：6.2.0
 
 * TiKV 支持自适应调整 CPU 使用率（实验特性）
 
-    数据库通常会使用后台进程来执行一些内部操作，通过采集各种统计信息，帮助用户定位性能问题，生成更优的执行计划，从而提升数据库的稳定性和性能。然而如何平衡后台操作和前台操作的资源开销，在不影响用户日常数据库使用的基础上如何更高效地采集信息，一直是数据库领域最为头疼的问题之一。从 v6.2.0 开始，TiDB 支持通过 TiKV 配置文件设置后台请求的 CPU 使用率, 进而限制自动统计信息收集等后台操作在 TiKV 的 CPU 使用比例，避免极端情况下后台操作抢占对用户操作的资源，确保数据库稳定高效运行。同时 TiDB 还支持 CPU 使用率自动调节的功能, 这时 TiKV 会根据实例的 CPU 占用情况, 自适应地对后台请求占用的 CPU 资源进行动态调整。该功能默认关闭。
+    数据库通常会使用后台进程来执行一些内部操作，通过采集各种统计信息，帮助用户定位性能问题，生成更优的执行计划，从而提升数据库的稳定性和性能。然而如何平衡后台操作和前台操作的资源开销，在不影响用户日常数据库使用的基础上如何更高效地采集信息，一直是数据库领域最为头疼的问题之一。从 v6.2.0 开始，TiDB 支持通过 TiKV 配置文件设置后台请求的 CPU 使用率，进而限制自动统计信息收集等后台操作在 TiKV 的 CPU 使用比例，避免极端情况下后台操作抢占对用户操作的资源，确保数据库稳定高效运行。同时 TiDB 还支持 CPU 使用率自动调节的功能，这时 TiKV 会根据实例的 CPU 占用情况，自适应地对后台请求占用的 CPU 资源进行动态调整。该功能默认关闭。
 
     [用户文档](), ([#12503](https://github.com/tikv/tikv/issues/12503), @[BornChanger](https://github.com/BornChanger))
 
@@ -179,7 +179,7 @@ TiDB 版本：6.2.0
 
     ([#34275](https://github.com/pingcap/tidb/issues/34275), @[WangLe1321](https://github.com/WangLe1321))
 
-* TiDB Lightning 支持使用  Physical Import Mode 导入数据到生产集群
+* TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群
 
     TiDB Lightning 原有的物理导入模式 (backend='local') 对目标集群影响较大，例如导入过程将停止 PD 调度等，因此仅适用于目标集群初次导入数据。
 
@@ -191,13 +191,13 @@ TiDB 版本：6.2.0
 
 * BR 支持恢复用户和权限数据
 
-    该功能支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据, 只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
+    该功能支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
 
     [用户文档](/br/br-usage-restore.md#恢复-mysql-数据库下的表), ([#35395](https://github.com/pingcap/tidb/issues/35395), @[D3Hunter](https://github.com/D3Hunter))
 
 * 支持基于变更日志的备份和恢复实现 Point-in-time recovery
 
-    基于变更日志和快照数据的备份恢复实现 PITR (Point-in-time recovery) 功能，允许用户在新集群上恢复备份集群的历史任意时刻点的快照。该功能可以满足以下的用户需求:
+    基于变更日志和快照数据的备份恢复实现 PITR (Point-in-time recovery) 功能，允许用户在新集群上恢复备份集群的历史任意时刻点的快照。该功能可以满足以下的用户需求：
 
     - 降低灾备场景下的 RPO，如实现十几分钟的 RPO；
     - 用于处理业务数据写错的案例，如回滚业务数据到出错事件前；
@@ -241,7 +241,7 @@ TiDB 版本：6.2.0
 | [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
 | [tidb_max_paging_size](/system-variables.md#tidb_min_paging_size) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
 | [tidb_min_paging_size](/system-variables.md#tidb_max_paging_size) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
-| tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 ALTER TABLE 语句增删改多个列或索引。 |
+| tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 `ALTER TABLE` 语句增删改多个列或索引。 |
 
 ### 配置文件参数
 
@@ -401,11 +401,11 @@ TiDB 版本：6.2.0
     - 修复了新创建的 Region Commit Log Duration 较高导致 QPS 下降的问题 ([#13077](https://github.com/tikv/tikv/issues/13077), @[Connor1996](https://github.com/Connor1996))
     - 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 ([#12934](https://github.com/tikv/tikv/issues/12934), @[bufferflies](https://github.com/bufferflies))
 
-Tools
++ Tools
 
-Backup & Restore (BR)
+    + Backup & Restore (BR)
 
-修复了限速备份后，BR 没有及时清理速度限制的问题 ([#31722](https://github.com/pingcap/tidb/issues/31722), @[MoCuishle28](https://github.com/MoCuishle28))
+        修复了限速备份后，BR 没有及时清理速度限制的问题 ([#31722](https://github.com/pingcap/tidb/issues/31722), @[MoCuishle28](https://github.com/MoCuishle28))
 
 Contributors
 
