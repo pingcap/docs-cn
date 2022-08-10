@@ -47,20 +47,24 @@ PiTR 支持使用 [Prometheus](https://prometheus.io/) 采集监控指标，目�
 
 ## 告警配置
 
-目前 PiTR 还未内置告警项，以下告警项为推荐的配置。
+目前 PiTR 还未内置告警项，本节介绍如何在 PiTR 中配置告警项，以及推荐的告警项规则。
 
 告警规则配置可以参考下面的步骤：
+
 1. 在 Prometheus 所在节点创建告警规则配置文件（如 pitr.rules.yml），参考 [Prometheus 文档](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) 和下列推荐告警项及配置样例填写告警规则；
 2. 在 Prometheus 配置文件中的 `rule_files` 字段填入告警规则文件路径；
 3. 通过向 Prometheus 进程发送 `SIGHUP` 信号（`kill -HUP pid`）或向 `http://prometheus-addr/-/reload` 发送 HTTP POST 请求（WEB 请求的方式需要启动 Prometheus 时指定 `--web.enable-lifecycle`）。
 
+以下为推荐的告警项配置：
+
 ### LogBackupRunningRPOMoreThan10m
 
-- 表达式：max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
+- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 10 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - 告警级别：warning
 - 说明：日志数据超过 10 分钟未持久化到存储中，该配置项主要用于提醒，大部分情况下，不会影响日志备份。
 
-**Prometheus 配置样例：**
+Prometheus 中的配置样例如下：
+
 ```yaml
 groups:
 - name: PiTR
@@ -76,30 +80,30 @@ groups:
 
 ### LogBackupRunningRPOMoreThan30m
 
-- 表达式：max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 30 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0
+- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 60 > 30 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 0`
 - 告警级别：critical
 - 说明：日志数据超过 30 分钟未持久化到存储中，出现该告警表示极有可能出现异常，可以查看 TiKV 日志定位原因。
 
 ### LogBackupPausingMoreThan2h
 
-- 表达式：max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1
+- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - 告警级别：warning
 - 说明：日志备份任务处于暂停状态超过 2 小时，该告警主要用于提醒，建议尽早执行 `br log resume` 恢复任务。
 
 ### LogBackupPausingMoreThan12h
 
-- 表达式：max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 12 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1
+- 表达式：`max(time() - tikv_log_backup_store_checkpoint_ts / 262144000) by (task) / 3600 > 12 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0 and max(tikv_log_backup_task_status) by (task) == 1`
 - 告警级别：critical
 - 说明：日志备份任务处于暂停状态超过 12 小时，应尽快执行 `br log resume` 恢复任务。任务处于暂停状态时间过长会有数据丢失的风险。
 
 ### LogBackupFailed
 
-- 表达式：max(tikv_log_backup_task_status) by (task) == 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0
+- 表达式：`max(tikv_log_backup_task_status) by (task) == 2 and max(tikv_log_backup_store_checkpoint_ts) by (task) > 0`
 - 告警级别：critical
 - 说明：日志备份任务进入失败状态，需要执行 `br log status` 查看失败原因，如有必要还需进一步查看 TiKV 日志。
 
 ### LogBackupGCSafePointExceedsCheckpoint
 
-- 表达式：min(tikv_log_backup_store_checkpoint_ts) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0
+- 表达式：`min(tikv_log_backup_store_checkpoint_ts) by (instance) - max(tikv_gcworker_autogc_safe_point) by (instance) < 0`
 - 告警级别：critical
 - 说明：部分数据在备份前被 GC，此时已有部分数据丢失，极有可能对业务产生影响。
