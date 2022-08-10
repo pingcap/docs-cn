@@ -438,7 +438,7 @@ tiup cluster display <cluster-name>
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster scale-in <cluster-name> --force
+    tiup cluster scale-in <cluster-name> --node <pd_ip>:<pd_port> --force
     ```
 
 > **注意：**
