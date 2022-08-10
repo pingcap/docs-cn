@@ -64,7 +64,7 @@ generate suppliers table done
 creating view revenue1
 ```
 
-## 同步数据到 TiFlash
+## 创建 TiFlash 副本
 
 部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句创建 TiFlash 副本。创建 TiFlash 副本后，系统自动实时同步最新数据到 TiFlash 组件。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
 
