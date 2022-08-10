@@ -67,25 +67,25 @@ TiDB 版本：6.2.0
 
     在 v6.1.0 中引入的优化器提示 `LEADING` 可干预表的连接顺序，但是这个提示并不能应用在包含了外连接的查询中，见 [`LEADING` 文档](/optimizer-hints.md#leadingt1_name--tl_name-)。 在 v6.2.0 中 TiDB 解除了这个限制，`LEADING` 提示对外连接同样生效。在包含外连接的查询中，你同样可以利用 `LEADING` 指定表的连接顺序，获得更好的 SQL 执行性能，并避免执行计划的突变。
 
-    [用户文档](), ([#29932](https://github.com/pingcap/tidb/issues/29932), @[Reminiscent](https://github.com/Reminiscent))
+    [用户文档](/optimizer-hints.md#leadingt1_name--tl_name-), ([#29932](https://github.com/pingcap/tidb/issues/29932), @[Reminiscent](https://github.com/Reminiscent))
 
 * 引入新的优化器提示 `SEMI_JOIN_REWRITE` 改善 `EXISTS` 查询性能
 
     在部分场景下，带有 `EXISTS` 的查询并不能选择最优的执行计划，导致查询运行时间过长。在 v6.2.0 版本中，优化器增加了新的改写规则，用于优化此类场景下执行计划的选择，并通过 `SEMI_JOIN_REWRITE` 提示强制优化器进行改写，从而得到更好的查询性能。
 
-    [用户文档](), ([#35323](https://github.com/pingcap/tidb/issues/35323), @[winoros](https://github.com/winoros))
+    [用户文档](/optimizer-hints.md#semi_join_rewrite), ([#35323](https://github.com/pingcap/tidb/issues/35323), @[winoros](https://github.com/winoros))
 
 * 引入一个优化器提示 `MERGE`，提升分析类查询性能
 
     公共表表达式 (CTE) 是简化查询逻辑的有效方法，广泛应用于复杂查询的编写。在 v6.2.0 前，CTE 在 TiFlash 环境中还不能自动展开，这在一定程度上限制了 MPP 的运行效率。在 v6.2.0 中，TiDB 引入一个 MySQL 兼容的优化器提示 `MERGE`。利用这个提示，优化器允许对 CTE 内联进行展开，使得 CTE 查询结果的消费者能够在 TiFlash 内并行执行，从而提升此类分析查询的性能。
 
-    [用户文档](), ([#36122](https://github.com/pingcap/tidb/issues/36122), @[dayicklp](https://github.com/dayicklp))
+    [用户文档](/optimizer-hints.md#merge), ([#36122](https://github.com/pingcap/tidb/issues/36122), @[dayicklp](https://github.com/dayicklp))
 
 * 优化了个别分析场景的聚合操作性能
 
     在使用 TiFlash 的 OLAP 场景下对列进行聚合操作时，如果被聚合列因分布不均而存在严重数据倾斜，并且被聚合列有大量不同的取值，那么该列的 `COUNT(DISTINCT)` 查询效率偏低。在 v6.2.0 版本中，引入了新的改写规则，针对单列的 `COUNT(DISTINCT)` 查询进行了优化，提升此类场景下的查询性能。
 
-    [用户文档](), ([#36169](https://github.com/pingcap/tidb/issues/36169), @[fixdb](https://github.com/fixdb))
+    [用户文档](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入), ([#36169](https://github.com/pingcap/tidb/issues/36169), @[fixdb](https://github.com/fixdb))
 
 * TiDB 支持 DDL 并发执行
 
@@ -135,7 +135,7 @@ TiDB 版本：6.2.0
 
     数据库通常会使用后台进程来执行一些内部操作，通过采集各种统计信息，帮助用户定位性能问题，生成更优的执行计划，从而提升数据库的稳定性和性能。然而如何平衡后台操作和前台操作的资源开销，在不影响用户日常数据库使用的基础上如何更高效地采集信息，一直是数据库领域最为头疼的问题之一。从 v6.2.0 开始，TiDB 支持通过 TiKV 配置文件设置后台请求的 CPU 使用率，进而限制自动统计信息收集等后台操作在 TiKV 的 CPU 使用比例，避免极端情况下后台操作抢占对用户操作的资源，确保数据库稳定高效运行。同时 TiDB 还支持 CPU 使用率自动调节的功能，这时 TiKV 会根据实例的 CPU 占用情况，自适应地对后台请求占用的 CPU 资源进行动态调整。该功能默认关闭。
 
-    [用户文档](), ([#12503](https://github.com/tikv/tikv/issues/12503), @[BornChanger](https://github.com/BornChanger))
+    [用户文档](/tikv-configuration-file.md#后台限流), ([#12503](https://github.com/tikv/tikv/issues/12503), @[BornChanger](https://github.com/BornChanger))
 
 ### 易用性
 
@@ -157,7 +157,7 @@ TiDB 版本：6.2.0
 
     事务是数据库保证 ACID 特性的一系列连续操作的逻辑集合。在一些复杂业务场景下，你可能需要管理一个事务的大量操作，有时候需要在事务内实现部分操作的回退能力。Savepoint 就是针对事务内部实现的可命名保存点机制，通过这个机制，你可以灵活地控制事务内的回退节点，从而实现更复杂的事务管理能力，实现更为多样的业务设计。
 
-    [用户文档](), ([#6840](https://github.com/pingcap/tidb/issues/6840), @[crazycs520](https://github.com/crazycs520))
+    [用户文档](/sql-statements/sql-statement-savepoint.md), ([#6840](https://github.com/pingcap/tidb/issues/6840), @[crazycs520](https://github.com/crazycs520))
 
 ### 数据迁移
 
@@ -214,7 +214,7 @@ TiDB 版本：6.2.0
 
     支持订阅 RawKV 的数据变更，并通过新的 TiKV-CDC 组件将变更实时同步到下游  TiKV 集群，从而实现 RawKV 的跨集群复制能力。
 
-    [用户文档](), ([#11965](https://github.com/tikv/tikv/issues/11965), @[pingyu](https://github.com/pingyu))
+    [用户文档](/tikv-configuration-file.md#api-version-从-v610-版本开始引入), ([#11965](https://github.com/tikv/tikv/issues/11965), @[pingyu](https://github.com/pingyu))
 
 * 支持过滤 DDL 和 DML 事件
 
