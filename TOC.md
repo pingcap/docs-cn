@@ -809,6 +809,7 @@
         - [Access Cluster Diagnostics Page](/dashboard/dashboard-diagnostics-access.md)
         - [View Diagnostics Report](/dashboard/dashboard-diagnostics-report.md)
         - [Use Diagnostics](/dashboard/dashboard-diagnostics-usage.md)
+      - [Monitoring Page](/dashboard/dashboard-monitoring.md)
       - [Search Logs Page](/dashboard/dashboard-log-search.md)
       - Instance Profiling
         - [Manual Profiling](/dashboard/dashboard-profiling.md)
