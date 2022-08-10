@@ -33,9 +33,7 @@ TiDB 版本：6.2.0
 
     TiFlash 后台会依据特定条件、自动对物理数据进行整理（Compaction），减少无用数据的积压，并优化数据存储结构。在数据整理被自动触发前，TiFlash 数据表中往往存在一定量的无用数据。该特性支持用户自行选择合适的时机、手动执行 SQL 语句来对 TiFlash 中的物理数据立即进行整理，从而减少存储空间占用，并提升查询性能。此功能在 TiDB v6.1 作为一项实验功能引入，在 v6.2.0 版本正式发布。
 
-    参考 SQL 语法：ALTER TABLE <TableName> COMPACT [TIFLASH REPLICA];
-
-    [用户文档]((/sql-statements/sql-statement-alter-table-compact.md#ALTER-TABLE-COMPACT)), ([#4145](https://github.com/pingcap/tiflash/issues/4145), @[breezewish](https://github.com/breezewish))
+    [用户文档](/sql-statements/sql-statement-alter-table-compact.md#ALTER-TABLE-COMPACT), ([#4145](https://github.com/pingcap/tiflash/issues/4145), @[breezewish](https://github.com/breezewish))
 
 ### 可观测性
 
@@ -99,8 +97,9 @@ TiDB 版本：6.2.0
 
     在字符串条件匹配场景下，行数估算偏差有可能影响最优执行计划的生成，例如条件 `like '%xyz'` 或者借助 `regex()` 的正则表达式匹配。为了提升此类场景下估算的准确度，TiDB v6.2.0 增强了这个场景下的估算方式。新的方法会结合统计信息的 TopN 信息以及系统变量，在提升估算准确率的同时，还引入了手动调整的方法，进而提升此场景下的 SQL 性能。
 
-    [用户文档](system-variables.md#tidb_default_string_match_selectivity-从-v620-版本开始引入), ([#36209](https://github.com/pingcap/tidb/issues/36209), @[time-and-fate](https://github.com/time-and-fate))
-支持窗口函数下推到 TiFlash 进行多线程并行计算   PM: Liu Yu, TW: Hou Faxin
+    [用户文档](/system-variables.md#tidb_default_string_match_selectivity-从-v620-版本开始引入), ([#36209](https://github.com/pingcap/tidb/issues/36209), @[time-and-fate](https://github.com/time-and-fate))
+
+* 支持窗口函数下推到 TiFlash 进行多线程并行计算
 
 * 通过实现执行过程中的细粒度的数据交换 (shuffle)  能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量来控制 shuffle 的粒度。
 
@@ -125,6 +124,7 @@ TiDB 版本：6.2.0
 * TiFlash 新增快速数据扫描模式，降低一致性保证，提高读写速度（实验特性）
 
     TiDB 从 v6.2.0 版本引入快速扫描模式（ Fast Mode ），支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据（称为 Normal Mode）。
+
     从更低的版本升级到 v6.2.0 版本时，所有的表默认为 Normal Mode，即保持一致性的数据扫描模式。你可以为每一张表独立设定 Fast 或 Normal 扫描模式。如果在 v6.2.0 版本设定表的数据扫描模式为 Fast Mode 后，当降级到更低版本时数据扫描模式设定将失效，但不影响数据的正常读取。这种情况等同于强一致性读取的 Normal 模式。
 
     [用户文档](/develop/dev-guide-read-in-fast-mode.md), ([#5252](https://github.com/pingcap/tiflash/issues/5252), @[hongyunyan](https://github.com/hongyunyan))
@@ -272,7 +272,7 @@ TiDB 版本：6.2.0
 | DM | [mode](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，取值可以是 full、fast，默认是 none，即不开启校验。 |
 | DM | [worker-count](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，后台校验的 validation worker 数量，默认是 4 个。 |
 | DM | [row-error-delay](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，某一行多久没有验证通过会报错，默认是 30 min。 |
-| TiDB Lightning | [tikv-importer.store-write-bwlimit](/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 限制 TiDB Lightning 向每个 TiKV Store 写入带宽带宽大小，默认为 0，表示不限制。 |
+| TiDB Lightning | [tikv-importer.store-write-bwlimit](/tidb-lightning/tidb-lightning-configuration.md#tidb-lightning-任务配置) | 新增 | 限制 TiDB Lightning 向每个 TiKV Store 写入带宽带宽大小，默认为 0，表示不限制。 |
 | TiDB Lightning | [tikv-importer.disk-quota](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入) | 新增 | 用于设置 TiDB Lightning 可以使用的磁盘配额。 |
 
 ### 其他
@@ -290,8 +290,8 @@ TiDB 版本：6.2.0
 - 从 v6.2.0 开始, 执行 `select tidb_version()` 返回的信息中会包含 Store 类型（tikv 或者 unistore）
 - TiDB 不再有隐藏的系统变量。
 - 新增两个系统表：
-    - information_schema.variables_info：用于查看 TiDB 系统变量相关的信息。
-    - Performance_schema.session_variables：用于查看 TiDB session 系统变量相关的信息。
+  - information_schema.variables_info：用于查看 TiDB 系统变量相关的信息。
+  - Performance_schema.session_variables：用于查看 TiDB session 系统变量相关的信息。
 
 ## 废弃功能
 
@@ -311,8 +311,8 @@ TiDB 版本：6.2.0
     - 精简了一些日志的输出 ([#36011](https://github.com/pingcap/tidb/issues/36011), @[dveeden](https://github.com/dveeden))
     - 优化了 coprocessor 通信协议，大幅度降低读取数据时 TiDB 进程的内存消耗，进而可进一步缓解扫全表场景及 Dumpling 导出数据场景下的 OOM 问题。该通信协议是否开启由 `tidb_enable_paging` 系统变量控制（作用域为 SESSION 或 GLOBAL)，当前默认关闭。可将该变量值设为 `true` 进行开启 ([#35633](https://github.com/pingcap/tidb/issues/35633), @[tiancaiama](https://github.com/tiancaiamao), @[wshwsh12](https://github.com/wshwsh12))
     - 进一步优化了部分算子（HashJoin、HashAgg、Update、Delete）内存追踪的准确度 ([#35634](https://github.com/pingcap/tidb/issues/35634), @[wshwsh12](https://github.com/wshwsh12)), ([#35631](https://github.com/pingcap/tidb/issues/35631), @[wshwsh12](https://github.com/wshwsh12)), ([#35635](https://github.com/pingcap/tidb/issues/35635), @[wshwsh12](https://github.com/wshwsh12)), ([#34096](https://github.com/pingcap/tidb/issues/34096), @[ekexium](https://github.com/ekexium))
-    - 系统表 `INFORMATION_SCHEMA.DATA_LOCK_WAIT` 支持记录乐观事务的锁信息 ([#34609](https://github.com/pingcap/tidb/issues/34609), @[longfangson](github.com/longfangsong))
-    - 新增部分事务相关的监控指标 ([#34456](https://github.com/pingcap/tidb/issues/34456), @[longfangsong](github.com/longfangsong))
+    - 系统表 `INFORMATION_SCHEMA.DATA_LOCK_WAIT` 支持记录乐观事务的锁信息 ([#34609](https://github.com/pingcap/tidb/issues/34609), @[longfangson](https://github.com/longfangsong))
+    - 新增部分事务相关的监控指标 ([#34456](https://github.com/pingcap/tidb/issues/34456), @[longfangsong](https://github.com/longfangsong))
 
 + TiKV
 
@@ -339,8 +339,8 @@ TiDB 版本：6.2.0
 
     + TiCDC
 
-        - 优化了多 region 场景下，runtime 上下文切换带来过多性能开销的问题 ([#5610] https://github.com/pingcap/tiflow/issues/5610, @[hicqu](https://github.com/hicqu))
-        - 优化了 redo log 的性能、修复 meta 和数据不一致的问题 ([#6011](https://github.com/pingcap/tiflow/issues/6011), @[CharlesCheung96](https://github.com/CharlesCheung96), [5924](https://github.com/pingcap/tiflow/issues/5924), @[zhaoxinyu](https://github.com/zhaoxinyu), [6277](https://github.com/pingcap/tiflow/issues/6277), @[hicqu](https://github.com/hicqu))
+        - 优化了多 region 场景下，runtime 上下文切换带来过多性能开销的问题 ([#5610](https://github.com/pingcap/tiflow/issues/5610), @[hicqu](https://github.com/hicqu))
+        - 优化了 redo log 的性能、修复 meta 和数据不一致的问题 ([#6011](https://github.com/pingcap/tiflow/issues/6011), @[CharlesCheung96](https://github.com/CharlesCheung96), [#5924](https://github.com/pingcap/tiflow/issues/5924), @[zhaoxinyu](https://github.com/zhaoxinyu), [#6277](https://github.com/pingcap/tiflow/issues/6277), @[hicqu](https://github.com/hicqu))
 
     + TiDB Lightning
 
@@ -377,11 +377,9 @@ TiDB 版本：6.2.0
     - 修复了创建表时指定类型为 LONG BYTE 列的行为与 MySQL 不兼容的问题 ([#36239](https://github.com/pingcap/tidb/issues/36239), @[Defined2014](https://github.com/Defined2014))
     - 修复了设置 `auto_increment=x` 对临时表无效的问题 ([#36224](https://github.com/pingcap/tidb/issues/36224), @[djshow832](https://github.com/djshow832))
     - 修复了在并发修改列的情况下可能导致 DEFAULT VALUE 不正确的问题 ([#35846](https://github.com/pingcap/tidb/issues/35846), @[wjhuang2016](https://github.com/wjhuang2016))
-    - (dup) 避免向非健康状态的 TiKV 节点发送请求，以提升可用性
-([#34906](https://github.com/pingcap/tidb/issues/34906), @[sticnarf](https://github.com/sticnarf))
+    - (dup) 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 ([#34906](https://github.com/pingcap/tidb/issues/34906), @[sticnarf](https://github.com/sticnarf))
     - (dup) 修复了 `LOAD DATA` 语句中列的列表不生效的问题 ([#35198](https://github.com/pingcap/tidb/issues/35198), @[SpadeA-Tang](https://github.com/SpadeA-Tang))
-    - 修复部分场景非唯一二级索引被误加悲观锁的问题
-([#36235](https://github.com/pingcap/tidb/issues/36235), @[ekexium](https://github.com/ekexium))
+    - 修复部分场景非唯一二级索引被误加悲观锁的问题 ([#36235](https://github.com/pingcap/tidb/issues/36235), @[ekexium](https://github.com/ekexium))
 
 + TiKV
 
