@@ -184,10 +184,7 @@ delta_index_cache_size = 0
     dt_compression_level = 1
 
     ## 从 v6.2.0 引入，代表 PageStorage 单个数据文件中有效数据的最低比例，当某些数据文件的有效数据比例低于该值时，会触发 GC 对相关文件的数据进行整理。默认为 0.5。
-    dt_storage_blob_heavy_gc_valid_rate = 0.5
-
-    ## 从 v6.2.0 引入，PageStorage 数据文件中的数据块会按照此参数对齐 IO 边界。默认值为 0，代表不进行 IO 边界对齐.
-    dt_storage_blob_block_alignment_bytes = 0
+    dt_page_gc_threshold = 0.5
 
     ## 从 v6.2.0 引入，使用线程池处理存储引擎的读请求。默认为 false。
     ## 警告：目前是实验性功能，不建议在生产环境中使用。
