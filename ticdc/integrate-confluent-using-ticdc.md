@@ -63,7 +63,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 3. 创建 Schema Registry API Key。
 
-    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials**，点击 **Edit** 和 **Create Key** 来创建 Schema Registry API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
+    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials** > **Create Key** 来创建 Schema Registry API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
 
     ```
     === Confluent Cloud API key: yyy-yyyyy ===
