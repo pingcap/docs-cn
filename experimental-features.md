@@ -8,6 +8,10 @@ aliases: ['/zh/tidb/v5.0/experimental-features-4.0/']
 
 本文介绍 TiDB 各版本中的实验特性。**不建议**在生产环境中使用实验特性。
 
+## 性能
+
++ [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
+
 ## 稳定性
 
 + 提升优化器选择索引的稳定性（v5.0 实验特性）
