@@ -96,7 +96,7 @@ BR supports restoring data from S3 or GCS:
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2';
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/';
 ```
 
 The URL syntax is further explained in [External Storages](/br/backup-and-restore-storages.md).
@@ -106,7 +106,7 @@ When running on cloud environment where credentials should not be distributed, s
 {{< copyable "sql" >}}
 
 ```sql
-RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/?region=us-west-2'
+RESTORE DATABASE * FROM 's3://example-bucket-2020/backup-05/'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 

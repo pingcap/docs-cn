@@ -58,7 +58,7 @@ The target TiKV cluster must have enough disk space to store the imported data. 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MiB -B my_db1 -f 'my_db1.table[12]' -o 's3://my-bucket/sql-backup?region=us-west-2'
+    tiup dumpling -h ${ip} -P 3306 -u root -t 16 -r 200000 -F 256MiB -B my_db1 -f 'my_db1.table[12]' -o 's3://my-bucket/sql-backup'
     ```
 
     Dumpling exports data in SQL files by default. You can specify a different file format by adding the `--filetype` option.
@@ -110,7 +110,7 @@ The target TiKV cluster must have enough disk space to store the imported data. 
 
     [mydumper]
     # The data source directory. The same directory where Dumpling exports data in "Step 1. Export all data from MySQL".
-    data-source-dir = "${data-path}" # A local path or S3 path. For example, 's3://my-bucket/sql-backup?region=us-west-2'.
+    data-source-dir = "${data-path}" # A local path or S3 path. For example, 's3://my-bucket/sql-backup'.
 
     [tidb]
     # The target TiDB cluster information.

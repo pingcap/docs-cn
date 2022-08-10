@@ -30,7 +30,7 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
 
     ```bash
     ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-        -o 's3://my-bucket/sql-backup?region=us-west-2'
+        -o 's3://my-bucket/sql-backup'
     ```
 
 + Use TiDB Lightning to import data from S3:
@@ -39,7 +39,7 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
 
     ```bash
     ./tidb-lightning --tidb-port=4000 --pd-urls=127.0.0.1:2379 --backend=local --sorted-kv-dir=/tmp/sorted-kvs \
-        -d 's3://my-bucket/sql-backup?region=us-west-2'
+        -d 's3://my-bucket/sql-backup'
     ```
 
 + Use TiDB Lightning to import data from S3 (using the path style in the request mode):
@@ -75,7 +75,6 @@ Cloud storages such as S3, GCS and Azblob sometimes require additional configura
 |:----------|:---------|
 | `access-key` | The access key |
 | `secret-access-key` | The secret access key |
-| `region` | Service Region for Amazon S3 (default to `us-east-1`) |
 | `use-accelerate-endpoint` | Whether to use the accelerate endpoint on Amazon S3 (default to `false`) |
 | `endpoint` | URL of custom endpoint for S3-compatible services (for example, `https://s3.example.com/`) |
 | `force-path-style` | Use path style access rather than virtual hosted style access (default to `true`) |
@@ -138,8 +137,7 @@ In addition to the URL parameters, BR and Dumpling also support specifying these
 
 ```bash
 ./dumpling -u root -h 127.0.0.1 -P 3306 -B mydb -F 256MiB \
-    -o 's3://my-bucket/sql-backup' \
-    --s3.region 'us-west-2'
+    -o 's3://my-bucket/sql-backup'
 ```
 
 If you have specified URL parameters and command-line parameters at the same time, the URL parameters are overwritten by the command-line parameters.
@@ -148,7 +146,6 @@ If you have specified URL parameters and command-line parameters at the same tim
 
 | Command-line parameter | Description |
 |:----------|:------|
-| `--s3.region` | Amazon S3's service region, which defaults to `us-east-1`. |
 | `--s3.endpoint` | The URL of custom endpoint for S3-compatible services. For example, `https://s3.example.com/`. |
 | `--s3.storage-class` | The storage class of the upload object. For example, `STANDARD` or `STANDARD_IA`. |
 | `--s3.sse` | The server-side encryption algorithm used to encrypt the upload. The value options are empty, `AES256` and `aws:kms`. |

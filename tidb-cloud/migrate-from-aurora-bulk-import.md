@@ -5,7 +5,7 @@ summary: Learn how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bul
 
 # Migrate from Amazon Aurora MySQL to TiDB Cloud in Bulk
 
-This document describes how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bulk using the import tools on TiDB Cloud console. 
+This document describes how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bulk using the import tools on TiDB Cloud console.
 
 ## Learn how to create an import task on the TiDB Cloud console
 
@@ -82,7 +82,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     ```bash
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     source ~/.bash_profile
-    tiup install dumpling 
+    tiup install dumpling
     ```
 
     In the above commands, you need to modify `~/.bash_profile` to the path of your profile file.
@@ -92,7 +92,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     > **Note:**
     >
     > If you have assigned the IAM role to the EC2, you can skip configuring the access key and security key, and directly run Dumpling on this EC2.
-    
+
     You can grant the write privilege using the access key and security key of your AWS account in the environment. Create a specific key pair for preparing data, and revoke the access key immediately after you finish the preparation.
 
     {{< copyable "shell-regular" >}}
@@ -114,7 +114,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     export_endpoint="<the endpoint for Amazon Aurora MySQL>"
     # You will use the s3 url when you create importing task
     backup_dir="s3://<bucket name>/<backup dir>"
-    s3_bucket_region="<bueckt_region>"
+    s3_bucket_region="<bucket_region>"
 
     # Use `tiup -- dumpling` instead if "flag needs an argument: 'h' in -h" is prompted for TiUP versions earlier than v1.8
     tiup dumpling \
@@ -159,7 +159,7 @@ To migrate data from Aurora, you need to back up the schema of the database.
     mysqldump -h ${export_endpoint} -u ${export_username} -p --ssl-mode=DISABLED -d${export_database} >db.sql
     ```
 
-3. Import the schema of the database into TiDB Cloud. 
+3. Import the schema of the database into TiDB Cloud.
 
     {{< copyable "sql" >}}
 
@@ -189,7 +189,7 @@ To migrate data from Aurora, you need to back up the schema of the database.
 
  7. Choose the proper IAM role to grant write access to the S3 bucket. Make a note of this role as it will be used later when you import the snapshot to TiDB Cloud.
 
- 8. Choose a proper AWS KMS Key and make sure the IAM role has already been added to the KMS Key Users. To add a role, you can select a KSM service, select the key, and then click **Add**. 
+ 8. Choose a proper AWS KMS Key and make sure the IAM role has already been added to the KMS Key Users. To add a role, you can select a KSM service, select the key, and then click **Add**.
 
  9. Click **Export Amazon S3**. You can see the progress in the task table.
 

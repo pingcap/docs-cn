@@ -55,7 +55,7 @@ sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
 [mydumper]
 # Directory of the data source.
-data-source-dir = "${data-path}" # A local path or S3 path. For example, 's3://my-bucket/sql-backup?region=us-west-2'.
+data-source-dir = "${data-path}" # A local path or S3 path. For example, 's3://my-bucket/sql-backup'.
 
 # Defines CSV format.
 [mydumper.csv]

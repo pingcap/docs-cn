@@ -57,7 +57,7 @@ Export the schema using Dumpling by running the following command. The command i
 {{< copyable "shell-regular" >}}
 
 ```shell
-tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup?region=us-west-2' --filter "mydb.*"
+tiup dumpling --host ${host} --port 3306 --user root --password ${password} --filter 'my_db1.table[12]' --no-data --output 's3://my-bucket/schema-backup' --filter "mydb.*"
 ```
 
 The parameters used in the command above are as follows. For more parameters, refer to [Dumpling overview](/dumpling-overview.md).
@@ -110,7 +110,7 @@ sorted-kv-dir = "/mnt/ssd/sorted-kv-dir"
 
 [mydumper]
 # The path that stores the snapshot file.
-data-source-dir = "${s3_path}"  # e.g.: s3://my-bucket/sql-backup?region=us-west-2
+data-source-dir = "${s3_path}"  # e.g.: s3://my-bucket/sql-backup
 
 [[mydumper.files]]
 # The expression that parses the parquet file.
@@ -129,7 +129,7 @@ If you need to enable TLS in the TiDB cluster, refer to [TiDB Lightning Configur
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup?region=us-west-2'
+    tiup tidb-lightning -config tidb-lightning.toml -d 's3://my-bucket/schema-backup'
     ```
 
 2. Start the import by running `tidb-lightning`. If you launch the program directly in the command line, the process might exit unexpectedly after receiving a SIGHUP signal. In this case, it is recommended to run the program using a `nohup` or `screen` tool. For example:

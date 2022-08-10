@@ -105,7 +105,7 @@ BR supports backing up data to S3 or GCS:
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2&access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?access-key={YOUR_ACCESS_KEY}&secret-access-key={YOUR_SECRET_KEY}';
 ```
 
 The URL syntax is further explained in [External Storages](/br/backup-and-restore-storages.md).
@@ -115,7 +115,7 @@ When running on cloud environment where credentials should not be distributed, s
 {{< copyable "sql" >}}
 
 ```sql
-BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/?region=us-west-2'
+BACKUP DATABASE `test` TO 's3://example-bucket-2020/backup-05/'
     SEND_CREDENTIALS_TO_TIKV = FALSE;
 ```
 
