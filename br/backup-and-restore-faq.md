@@ -47,7 +47,7 @@ You can use either of the following solutions to manually control the impact of 
 
 Before v5.1.0, BR filters out data from the system schemas `mysql.*` during the backup. Since v5.1.0, BR **backs up** all data by default, including the system schemas `mysql.*`.
 
-The technical implementation of restoring the system tables in `mysql.*` is not complete yet, so the tables in the system schema `mysql` are **not restored** by default, which means no conflicts will be raised. For more details, refer to [Restore tables created in the `mysql` schema (experimental)](/br/br-usage-restore.md#restore-tables-created-in-the-mysql-schema).
+The technical implementation of restoring the system tables in `mysql.*` is not complete yet, so the tables in the system schema `mysql` are **not restored** by default, which means no conflicts will be raised. For more details, refer to [Restore tables in the `mysql` schema (experimental)](/br/br-usage-restore.md#restore-tables-in-the-mysql-schema).
 
 ## What should I do to handle the `Permission denied` or `No such file or directory` error, even if I have tried to run BR using root in vain?
 

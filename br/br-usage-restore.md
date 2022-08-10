@@ -14,7 +14,7 @@ This document describes how to restore cluster data using BR in the following sc
 - [Restore backup data from external storage](#restore-backup-data-from-external-storage)
 - [Restore incremental data](#restore-incremental-data)
 - [Restore encrypted backup data](#restore-encrypted-backup-data)
-- [Restore tables created in the `mysql` schema](#restore-tables-created-in-the-mysql-schema)
+- [Restore tables in the `mysql` schema](#restore-tables-in-the-mysql-schema)
 
 If you are not familiar with Backup & Restore (BR), it is recommended that you read the following documents to fully understand BR usage principles and methods:
 
@@ -158,18 +158,54 @@ br restore full\
     --crypter.key 0123456789abcdef0123456789abcdef
 ```
 
-## Restore tables created in the `mysql` schema
+## Restore tables in the `mysql` schema
 
-> **Warning:**
->
-> This is still an experimental feature. It is **NOT** recommended that you use it in the production environment.
+Starting from BR v5.1.0, when you perform a full backup, BR backs up the **system tables**. Before BR v6.2.0, under default configuration, BR only restores user data, but does not restore data in the system tables. Starting from BR v6.2.0, if the backup data contains system tables, and if you configure `--with-sys-table`, BR restores **data in some system tables**.
 
-BR backs up tables created in the `mysql` schema by default. When you restore data using BR, the tables created in the `mysql` schema are not restored by default. To restore these tables, you can explicitly include them using the [table filter](/table-filter.md#syntax). The following example restores `mysql.usertable` created in the `mysql` schema. The command restores `mysql.usertable` along with other data.
+BR can restore data in **the following system tables**:
 
-{{< copyable "shell-regular" >}}
+```
++----------------------------------+
+| mysql.columns_priv               |
+| mysql.db                         |
+| mysql.default_roles              |
+| mysql.global_grants              |
+| mysql.global_priv                |
+| mysql.role_edges                 |
+| mysql.tables_priv                |
+| mysql.user                       |
++----------------------------------+
+```
+
+**BR does not restore the following system tables**:
+
+- Statistics tables (`mysql.stat_*`)
+- System variable tables (`mysql.tidb`, `mysql.global_variables`)
+- [Other system tables](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
+
+When you restore data related to system privileges, note the following:
+
+- BR does not restore user data with `user` as `cloud_admin` and `host` as `'%'`. This user is reserved for TiDB Cloud. Do not create a user or role named `cloud_admin` in your environment, because the user privileges related to `cloud_admin` cannot be restored correctly.
+- Before BR restores data, it checks whether the system tables in the target cluster are compatible with those in the backup data. "Compatible" means that all the following conditions are met:
+
+    - The target cluster has the same system tables as the backup data.
+    - The **number of columns** in the system privilege table of the target cluster is consistent with that of the backup data. The order of the columns can be different.
+    - The columns in the system privilege table of the target cluster are compatible with those in the backup data. If the data type of the column is a type with length (for example, int or char), the length in the target cluster must be >= the length in the backup data. If the data type of the column is an enum type, the enum values in the target cluster must be a superset of the enum values in the backup data.
+
+If the target cluster is not empty or the target cluster is not compatible with the backup data, BR returns the following information. You can remove `--with-sys-table` to skip restoring system tables.
+
+```
+#######################################################################
+# the target cluster is not compatible with the backup data,
+# br cannot restore system tables.
+# you can remove 'with-sys-table' flag to skip restoring system tables
+#######################################################################
+```
+
+To restore a table created by the user in the `mysql` schema (not system tables), you can explicitly include the table using [table filters](/table-filter.md#syntax). The following example shows how to restore the `mysql.usertable` table when BR performs a normal restoration.
 
 ```shell
-br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
+br restore full -f '*.*' -f '!mysql.*' -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
 
 In the preceding command,
@@ -183,19 +219,8 @@ If you only need to restore `mysql.usertable`, run the following command:
 {{< copyable "shell-regular" >}}
 
 ```shell
-br restore full -f 'mysql.usertable' -s $external_storage_url --ratelimit 128
+br restore full -f 'mysql.usertable' -s $external_storage_url --with-sys-table
 ```
-
-> **Warning:**
->
-> Although you can back up system tables (such as `mysql.tidb`) using BR, BR ignores the following system tables even if you use the --filter setting to perform the restoration:
->
-> - Statistical information tables (`mysql.stat_*`)
-> - System variable tables (`mysql.tidb`, `mysql.global_variables`)
-> - User information tables (such as `mysql.user` and `mysql.columns_priv`)
-> - [Other system tables](https://github.com/pingcap/tidb/blob/master/br/pkg/restore/systable_restore.go#L31)
->
-> Compatibility issues might occur when restoring system tables. Therefore, avoid restoring system tables in production environments.
 
 ## Restoration performance and impact
 
