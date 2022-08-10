@@ -9,7 +9,7 @@ summary: 本文介绍如何对 TiDB 进行 CH 测试。
 
 [CH Benchmark](https://research.tableau.com/sites/default/files/a8-cole.pdf) 是包含 [TPC-C](http://www.tpc.org/tpcc/) 和 [TPC-H](http://www.tpc.org/tpch/) 的混合负载，也是用于测试 HTAP 系统的最常见负载。
 
-在进行 CH Benchmark 测试前，推荐部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署后，对于 TPC-C 联机交易数据，系统自动实时同步数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
+在进行 CH Benchmark 测试前，推荐部署 TiDB 的 HTAP 组件 [TiFlash](/tiflash/tiflash-overview.md)。部署 TiFlash 并[创建 TiFlash 副本](#创建-tiflash-副本)后，对于 TPC-C 联机交易数据，系统将实时同步最新的数据到 TiFlash 组件；TiDB 优化器会自动将 TPC-H 负载的 OLAP 查询下推到 TiFlash MPP 引擎进行高效执行。
 
 本文使用 [go-tpc](https://github.com/pingcap/go-tpc) 作为 CH 测试实现，可以通过 [TiUP](/tiup/tiup-overview.md) 命令下载测试程序：
 
@@ -64,7 +64,7 @@ generate suppliers table done
 creating view revenue1
 ```
 
-## 同步数据到 TiFlash
+## 创建 TiFlash 副本
 
 部署 TiFlash 后，TiFlash 并不会自动同步 TiKV 数据，你需要执行以下 SQL 语句创建整库的 TiFlash 副本。创建 TiFlash 副本后，系统自动实时同步最新数据到 TiFlash 组件。以下例子中，集群中部署了两个 TiFlash 节点，将 replica 设置为 2。
 
