@@ -183,7 +183,7 @@ delta_index_cache_size = 0
     # TiFlash 存储引擎的压缩级别，默认为 1。如果 dt_compression_method 设置为 LZ4，推荐将该值设为 1；如果 dt_compression_method 设置为 zstd ，推荐将该值设为 -1 或 1，设置为 -1 的压缩率更小，但是读性能会更好；如果 dt_compression_method 设置为 LZ4HC，推荐将该值设为 9。
     dt_compression_level = 1
 
-    ## 从 v6.2.0 引入，代表 PageStorage 单个数据文件中有效数据的最低比例，当某些数据文件的有效数据比例低于该值时，会触发 GC 对相关文件的数据进行整理。默认为 0.5。
+    ## 从 v6.2.0 引入，表示 PageStorage 单个数据文件中有效数据的最低比例。当某个数据文件的有效数据比例低于该值时，会触发 GC 对该文件的数据进行整理。默认为 0.5。
     dt_page_gc_threshold = 0.5
 
     ## 从 v6.2.0 引入，使用线程池处理存储引擎的读请求。默认为 false。
