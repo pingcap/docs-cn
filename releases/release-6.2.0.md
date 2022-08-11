@@ -123,9 +123,9 @@ TiDB 版本：6.2.0
 
 * TiFlash 新增快速数据扫描模式，降低一致性保证，提高读写速度（实验特性）
 
-    TiDB 从 v6.2.0 版本引入快速扫描模式 (Fast Mode)，支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据（称为 Normal Mode）。
+    TiDB 从 v6.2.0 版本引入快速扫描模式 (Fast Scan)，支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据（称为 Normal Mode）。
 
-    从更低的版本升级到 v6.2.0 版本时，所有的表默认为 Normal Mode，即保持一致性的数据扫描模式。你可以为每一张表独立设定 Fast 或 Normal 扫描模式。如果在 v6.2.0 版本设定表的数据扫描模式为 Fast Mode 后，当降级到更低版本时数据扫描模式设定将失效，但不影响数据的正常读取。这种情况等同于强一致性读取的 Normal 模式。
+    从更低的版本升级到 v6.2.0 版本时，所有的表默认不使用 Fast Scan，而是使用保持一致性的数据扫描模式。你可以为每一张表独立设定扫描模式。如果在 v6.2.0 版本设定表使用 Fast Scan 后，当降级到更低版本时数据扫描模式设置将失效，但不影响数据的正常读取。这种情况等同于强一致性的数据扫描模式。
 
     [用户文档](/develop/dev-guide-read-in-fast-mode.md) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
 
@@ -177,9 +177,9 @@ TiDB 版本：6.2.0
 
     [用户文档](/dm/dm-continuous-data-validation.md) [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
-* 自动识别 Amazon S3 bucket 所在的 Region
+* 自动识别 Amazon S3 bucket 所在的区域
 
-    数据迁移任务可自动判断 S3 bucket 所在 region，不再需要显式传递 region 参数。
+    数据迁移任务可自动判断 S3 bucket 所在区域，不再需要显式传递区域参数。
 
     [#34275](https://github.com/pingcap/tidb/issues/34275) @[WangLe1321](https://github.com/WangLe1321)
 
@@ -287,7 +287,7 @@ TiDB 版本：6.2.0
 - 从 v6.2.0 开始，BR 恢复 mysql schema 下的数据需要需要指定参数 `--with-sys-table=true`。
 - 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
 - 在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。
-- TiiKV 新增配置项 `split.region-cpu-overload-threshold-ratio` 支持在线修改。
+- TiKV 新增配置项 `split.region-cpu-overload-threshold-ratio` 支持在线修改。
 - 慢查询日志以及 `INFORMATION_SCHEMA` 中的系统表 `statements_summary` 和 `slow_query` 新增输出 `binary_plan`，即以二进制格式编码的执行计划。
 - `SHOW TABLE xx REGIONS` 返回的结果中新增两列：`SCHEDULING_CONSTRAINTS` 以及 `SCHEDULING_STATE`，表示对应 Region 在 Placement In SQL 中设置的调度规则以及当前的调度状态。
 - 从 v6.2.0 开始，你可以通过 [TiKV-CDC](https://github.com/tikv/migration/tree/main/cdc) 组件实现 RawKV 的 Change Data Capture (CDC)。
@@ -345,7 +345,7 @@ TiDB 版本：6.2.0
 
     + TiCDC
 
-        - 优化了多 region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610) @[hicqu](https://github.com/hicqu)
+        - 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610) @[hicqu](https://github.com/hicqu)
         - 优化了 redo log 的性能、修复 meta 和数据不一致的问题 ([#6011](https://github.com/pingcap/tiflow/issues/6011) @[CharlesCheung96](https://github.com/CharlesCheung96)) ([#5924](https://github.com/pingcap/tiflow/issues/5924) @[zhaoxinyu](https://github.com/zhaoxinyu)) ([#6277](https://github.com/pingcap/tiflow/issues/6277) @[hicqu](https://github.com/hicqu))
 
     + TiDB Lightning
