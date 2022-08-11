@@ -31,7 +31,7 @@ TiDB 版本：6.2.0
 
 * 正式支持通过 SQL 语句对 TiFlash 副本立即触发物理数据整理 (Compaction)
 
-    TiFlash 后台会依据特定条件、自动对物理数据进行整理（Compaction），减少无用数据的积压，并优化数据存储结构。在数据整理被自动触发前，TiFlash 数据表中往往存在一定量的无用数据。该特性支持用户自行选择合适的时机、手动执行 SQL 语句来对 TiFlash 中的物理数据立即进行整理，从而减少存储空间占用，并提升查询性能。此功能在 TiDB v6.1 作为一项实验功能引入，在 v6.2.0 版本正式发布。
+    TiFlash 后台会依据特定条件、自动对物理数据进行整理 (Compaction)，减少无用数据的积压，并优化数据存储结构。在数据整理被自动触发前，TiFlash 数据表中往往存在一定量的无用数据。该特性支持用户自行选择合适的时机、手动执行 SQL 语句来对 TiFlash 中的物理数据立即进行整理，从而减少存储空间占用，并提升查询性能。此功能在 TiDB v6.1 作为一项实验功能引入，在 v6.2.0 版本正式发布。
 
     [用户文档](/sql-statements/sql-statement-alter-table-compact.md#alter-table--compact) [#4145](https://github.com/pingcap/tiflash/issues/4145) @[breezewish](https://github.com/breezewish)
 
@@ -45,7 +45,7 @@ TiDB 版本：6.2.0
 
 * TiDB Dashboard 新增 Monitoring 页面
 
-    TiDB Dashboard 新增 Monitoring 页面，展示在业务性能调优中所需的核心指标。用户可基于数据库时间的[系统优化方法](https://docs.pingcap.com/zh/tidb/stable/performance-tuning-methods)，利用该页面进行性能分析和优化。用户可以从全局、自顶向下的角度分析用户响应时间和数据库时间，确认用户响应时间的瓶颈是否在数据库中。如果瓶颈在数据库中，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。
+    TiDB Dashboard 新增 Monitoring 页面，展示在业务性能调优中所需的核心指标。用户可基于数据库时间的[系统优化方法](/performance-tuning-methods.md)，利用该页面进行性能分析和优化。用户可以从全局、自顶向下的角度分析用户响应时间和数据库时间，确认用户响应时间的瓶颈是否在数据库中。如果瓶颈在数据库中，你可以通过数据库时间概览和 SQL 延迟的分解，定位数据库内部的瓶颈点，并进行针对性的优化。
 
     [用户文档](/dashboard/dashboard-monitoring.md) [#1381](https://github.com/pingcap/tidb-dashboard/issues/1381) @[YiniXu9506](https://github.com/YiniXu9506)
 
@@ -65,7 +65,7 @@ TiDB 版本：6.2.0
 
 * 优化器增加对外连接顺序的提示
 
-    在 v6.1.0 中引入的优化器提示 `LEADING` 可干预表的连接顺序，但是这个提示并不能应用在包含了外连接的查询中，见 [`LEADING` 文档](/optimizer-hints.md#leadingt1_name--tl_name-)。 在 v6.2.0 中 TiDB 解除了这个限制，`LEADING` 提示对外连接同样生效。在包含外连接的查询中，你同样可以利用 `LEADING` 指定表的连接顺序，获得更好的 SQL 执行性能，并避免执行计划的突变。
+    在 v6.1.0 中引入的优化器提示 `LEADING` 可干预表的连接顺序，但是这个提示并不能应用在包含了外连接的查询中，见 [`LEADING` 文档](/optimizer-hints.md#leadingt1_name--tl_name-)。在 v6.2.0 中 TiDB 解除了这个限制，`LEADING` 提示对外连接同样生效。在包含外连接的查询中，你同样可以利用 `LEADING` 指定表的连接顺序，获得更好的 SQL 执行性能，并避免执行计划的突变。
 
     [用户文档](/optimizer-hints.md#leadingt1_name--tl_name-) [#29932](https://github.com/pingcap/tidb/issues/29932) @[Reminiscent](https://github.com/Reminiscent)
 
@@ -103,7 +103,7 @@ TiDB 版本：6.2.0
 
     通过实现执行过程中的细粒度的数据交换 (shuffle) 能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量来控制 shuffle 的粒度。
 
-    [用户文档] (/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) [4631](https://github.com/pingcap/tiflash/issues/4631) @[guo-shaoge](https://github.com/guo-shaoge)
+    [用户文档](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) [#4631](https://github.com/pingcap/tiflash/issues/4631) @[guo-shaoge](https://github.com/guo-shaoge)
 
 * TiFlash 支持新版本的存储格式
 
@@ -371,7 +371,7 @@ TiDB 版本：6.2.0
     - 修复了创建表时列的默认值和列类型不一致没有自动修正的问题 [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复了在 DROP USER 之后 `mysql.columns_priv` 表中相关的数据没有被同步删除的问题 [#35059](https://github.com/pingcap/tidb/issues/35059) @[lcwangchao](https://github.com/lcwangchao)
     - 通过禁止在一些系统的 schema 内创建表，修复了由此导致的 DDL 卡住的问题 [#35205](https://github.com/pingcap/tidb/issues/35205) @[tangenta](https://github.com/tangenta)
-    - 修复了某些情况下查询分区表可能导致 “index-out-of-range” 和 “non used index” 的问题 [#35181](https://github.com/pingcap/tidb/issues/35181) @[mjonss](https://github.com/mjonss)
+    - 修复了某些情况下查询分区表可能导致“index-out-of-range”和“non used index”的问题 [#35181](https://github.com/pingcap/tidb/issues/35181) @[mjonss](https://github.com/mjonss)
     - 通过支持 `INTERVAL expr unit + expr` 形式的语法，修复了该语句会报错的问题 [#30253](https://github.com/pingcap/tidb/issues/30253) @[mjonss](https://github.com/mjonss)
     - 修复了在事务中创建的本地临时表无法找到的问题 [#35644](https://github.com/pingcap/tidb/issues/35644) @[djshow832](https://github.com/djshow832)
     - 修复了给 enum 列设置 collate 导致 panic 的问题 [#31637](https://github.com/pingcap/tidb/issues/31637) @[wjhuang2016](https://github.com/wjhuang2016)
