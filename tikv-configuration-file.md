@@ -229,8 +229,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `max-thread-count`
 
 + 统一处理读请求的线程池最多的线程数量，即 UnifyReadPool 线程池的大小。调整该线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 可调整范围：`[min-thread-count, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
-+ 默认值：MAX(4, CPU * 0.8)
++ 可调整范围：[min-thread-count, MAX(CPU * 0.8)]。当 CPU 核心数量小于 4 时，默认值为 4；当 CPU 核心数量高于 4 时，默认值为 CPU * 0.8 的整数部分。
++ 默认值：[4, CPU * 0.8]
 
 ### `stack-size`
 
@@ -367,8 +367,8 @@ TiKV 配置文件比命令行参数支持更多的选项。你可以在 [etc/con
 ### `scheduler-worker-pool-size`
 
 + Scheduler 线程池中线程的数量。Scheduler 线程主要负责写入之前的事务一致性检查工作。如果 CPU 核心数量大于等于 16，默认为 8；否则默认为 4。调整 scheduler 线程池的大小时，请参考 [TiKV 线程池调优](/tune-tikv-thread-performance.md#tikv-线程池调优)。
-+ 默认值：4
 + 可调整范围：`[1, MAX(4, CPU)]`。其中，`MAX(4, CPU)` 表示：如果 CPU 核心数量小于 `4`，取 `4`；如果 CPU 核心数量大于 `4`，则取 CPU 核心数量。
++ 默认值：[4, CPU]
 
 ### `scheduler-pending-write-threshold`
 
