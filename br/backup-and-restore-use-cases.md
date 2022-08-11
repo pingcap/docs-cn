@@ -40,10 +40,10 @@ It is recommended that you deploy the TiDB cluster using [TiUP](/tiup/tiup-clust
 
 ### Cluster versions
 
-- TiDB: v6.1.0
-- TiKV: v6.1.0
-- PD: v6.1.0
-- BR: v6.1.0
+- TiDB: v6.2.0
+- TiKV: v6.2.0
+- PD: v6.2.0
+- BR: v6.2.0
 
 > **Note:**
 >
