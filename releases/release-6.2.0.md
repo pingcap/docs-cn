@@ -11,14 +11,14 @@ TiDB 版本：6.2.0
 在 6.2.0 版本中，你可以获得以下关键特性：
 
 - TiDB Dashboard 支持可视化执行计划，查询计划展示更直观。
-- TiDB Dashboard 新增 Monitring 页面用于性能分析和优化。
+- TiDB Dashboard 新增 Monitoring 页面用于性能分析和优化。
 - TiDB 锁视图支持乐观事务被阻塞的信息，方便快速定位锁冲突。
 - TiFlash 引入新的存储格式 PageStorage V3，提升稳定性和性能。
 - 实现细粒度数据交换 (shuffle) 使窗口函数 (Window function) 可以利用多线程并行计算。
 - 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持自适应调整 CPU 使用率，确保数据库稳定高效运行。
 - 支持 Point-in-Time Recovery (PITR)，允许恢复备份集群的历史任意时刻点的快照。
-- TiDB Lightning 支持使用 physical import mode 导入数据到生产集群。
+- TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群。
 - BR 支持恢复用户和权限数据，备份恢复体验更平滑。
 - TiCDC 支持过滤指定类型的 DDL 事件，解锁更多数据同步场景。
 - 事务中支持 `SAVEPOINT` 机制，可以灵活地控制事务内的回退节点。
@@ -240,7 +240,7 @@ TiDB 版本：6.2.0
 | [tidb_default_string_match_selectivity](/system-variables.md#tidb_default_string_match_selectivity-从-v620-版本开始引入) | 新增 | 设置过滤条件中的 `like`、`rlike`、`regexp` 函数在行数估算时的默认选择率，以及是否对这些函数启用 TopN 辅助估算。 |
 | [tidb_enable_analyze_snapshot](/system-variables.md#tidb_enable_analyze_snapshot-从-v620-版本开始引入) | 新增 | 控制 `ANALYZE` 读取历史时刻的数据还是读取最新的数据。 |
 | [tidb_generate_binary_plan](/system-variables.md#tidb_generate_binary_plan-从-v620-版本开始引入) | 新增 | 用于指定是否在 slow log 和 statement summary 里包含以二进制格式编码的执行计划。 |
-| [tidb_opt_skew_distinct_agg](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入) | 新增 | 用于设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。 |
+| [tidb_opt_skew_distinct_agg](/system-variables.md#tidb_opt_skew_distinct_agg-从-v620-版本开始引入) | 新增 | 用于设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, COUNT(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, COUNT(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。 |
 | [tidb_enable_noop_variables](/system-variables.md#tidb_enable_noop_variables-从-v620-版本开始引入) | 新增 | 用于设置 `SHOW [GLOBAL] VARIABLES` 是否显示 noop 变量。 |
 | [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
 | [tidb_max_paging_size](/system-variables.md#tidb_max_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
@@ -285,10 +285,10 @@ TiDB 版本：6.2.0
 - `dt_enable_logical_split` 在 v6.2.0 及后续版本有已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)，**强烈不建议**将该配置项设置为 `true`。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本, 需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
 - 从 v6.2.0 开始，BR 恢复 mysql schema 下的数据需要需要指定参数 `--with-sys-table=true`。
-- 使用 Alter Table 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上TiDB 和 MySQL 在某些场景不兼容。
+- 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
 - 在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。
 - TiiKV 新增配置项 `split.region-cpu-overload-threshold-ratio` 支持在线修改。
-- 慢查询日志以及 `information_schema` 中的系统表 `statements_summary` 和 `slow_query` 新增输出 `binary_plan`，即以二进制格式编码的执行计划。
+- 慢查询日志以及 `INFORMATION_SCHEMA` 中的系统表 `statements_summary` 和 `slow_query` 新增输出 `binary_plan`，即以二进制格式编码的执行计划。
 - `SHOW TABLE xx REGIONS` 返回的结果中新增两列：`SCHEDULING_CONSTRAINTS` 以及 `SCHEDULING_STATE`，表示对应 Region 在 Placement In SQL 中设置的调度规则以及当前的调度状态。
 - 从 v6.2.0 开始，你可以通过 [TiKV-CDC](https://github.com/tikv/migration/tree/main/cdc) 组件实现 RawKV 的 Change Data Capture (CDC)。
 - 使用 `ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定保存点时，MySQL 会释放该保存点之后才持有的锁，但在 TiDB 悲观事务中，不会立即释放该保存点之后才持有的锁，而是等到事务提交或者回滚时，才释放全部持有的锁。
@@ -296,8 +296,8 @@ TiDB 版本：6.2.0
 - TiDB 不再有隐藏的系统变量。
 - 新增两个系统表：
 
-    - information_schema.variables_info：用于查看 TiDB 系统变量相关的信息。
-    - Performance_schema.session_variables：用于查看 TiDB session 系统变量相关的信息。
+    - INFORMATION_SCHEMA.VARIABLES_INFO：用于查看 TiDB 系统变量相关的信息。
+    - PERFORMANCE_SCHEMA.SESSION_VARIABLES：用于查看 TiDB session 系统变量相关的信息。
 
 ## 废弃功能
 
@@ -360,26 +360,26 @@ TiDB 版本：6.2.0
 
 + TiDB
 
-    - 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 collate 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
-    - 修复了 SET ROLE 中如果 host 中有大写字母无法匹配到已经 GRANT 的 ROLE 的问题 [#33061](https://github.com/pingcap/tidb/issues/33061) @[morgo](https://github.com/morgo)
-    - 修复了无法 drop auto_increment 的列的问题 [#34891](https://github.com/pingcap/tidb/issues/34891) @[Defined2014](https://github.com/Defined2014)
+    - 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
+    - 修复了 `SET ROLE` 中如果 host 中有大写字母无法匹配到已经 GRANT 的 ROLE 的问题 [#33061](https://github.com/pingcap/tidb/issues/33061) @[morgo](https://github.com/morgo)
+    - 修复了无法 DROP AUTO_INCREMENT 的列的问题 [#34891](https://github.com/pingcap/tidb/issues/34891) @[Defined2014](https://github.com/Defined2014)
     - 修复了 `SHOW CONFIG` 会显示一些已经移除掉的配置项的问题 [#34867](https://github.com/pingcap/tidb/issues/34867) @[morgo](https://github.com/morgo)
     - 修复了 `SHOW DATABASES LIKE …` 大小写敏感的问题 [#34766](https://github.com/pingcap/tidb/issues/34766) @[e11jah](https://github.com/e11jah)
     - 修复了 `SHOW TABLE STATUS LIKE …` 大小写敏感的问题 [#7518](https://github.com/pingcap/tidb/issues/7518) @[likzn](https://github.com/likzn)
     - 修复了 `max-index-length` 检查在非严格模式下仍然报错的问题 [#34931](https://github.com/pingcap/tidb/issues/34931) @[e11jah](https://github.com/e11jah)
-    - 修复了 `alter column xx drop default` 不起作用的问题 [#35018](https://github.com/pingcap/tidb/issues/35018) @[Defined2014](https://github.com/Defined2014)
+    - 修复了 `ALTER COLUMN xxx DROP DEFAULT` 不起作用的问题 [#35018](https://github.com/pingcap/tidb/issues/35018) @[Defined2014](https://github.com/Defined2014)
     - 修复了创建表时列的默认值和列类型不一致没有自动修正的问题 [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
-    - 修复了在 DROP USER 之后 `mysql.columns_priv` 表中相关的数据没有被同步删除的问题 [#35059](https://github.com/pingcap/tidb/issues/35059) @[lcwangchao](https://github.com/lcwangchao)
+    - 修复了在 `DROP USER` 之后 `mysql.columns_priv` 表中相关的数据没有被同步删除的问题 [#35059](https://github.com/pingcap/tidb/issues/35059) @[lcwangchao](https://github.com/lcwangchao)
     - 通过禁止在一些系统的 schema 内创建表，修复了由此导致的 DDL 卡住的问题 [#35205](https://github.com/pingcap/tidb/issues/35205) @[tangenta](https://github.com/tangenta)
     - 修复了某些情况下查询分区表可能导致“index-out-of-range”和“non used index”的问题 [#35181](https://github.com/pingcap/tidb/issues/35181) @[mjonss](https://github.com/mjonss)
     - 通过支持 `INTERVAL expr unit + expr` 形式的语法，修复了该语句会报错的问题 [#30253](https://github.com/pingcap/tidb/issues/30253) @[mjonss](https://github.com/mjonss)
     - 修复了在事务中创建的本地临时表无法找到的问题 [#35644](https://github.com/pingcap/tidb/issues/35644) @[djshow832](https://github.com/djshow832)
-    - 修复了给 enum 列设置 collate 导致 panic 的问题 [#31637](https://github.com/pingcap/tidb/issues/31637) @[wjhuang2016](https://github.com/wjhuang2016)
-    - 修复了当某台 PD 宕机时，由于没有重试其他 PD 节点，导致查询表 `information_schema.TIKV_REGION_STATUS` 时请求失败的问题 [#35708](https://github.com/pingcap/tidb/issues/35708) @[tangenta](https://github.com/tangenta)
-    - 修复在 `set character_set_results = GBK` 后 `SHOW CREATE TABLE …` 不能正确显示 set 和 enum 列的问题 [#31338](https://github.com/pingcap/tidb/issues/31338) @[tangenta](https://github.com/tangenta)
+    - 修复了给 `ENUM` 列设置 COLLATE 导致 panic 的问题 [#31637](https://github.com/pingcap/tidb/issues/31637) @[wjhuang2016](https://github.com/wjhuang2016)
+    - 修复了当某台 PD 宕机时，由于没有重试其他 PD 节点，导致查询表 `INFORMATION_SCHEMA.TIKV_REGION_STATUS` 时请求失败的问题 [#35708](https://github.com/pingcap/tidb/issues/35708) @[tangenta](https://github.com/tangenta)
+    - 修复在 `SET character_set_results = GBK` 后 `SHOW CREATE TABLE …` 不能正确显示 `SET` 和 `ENUM` 列的问题 [#31338](https://github.com/pingcap/tidb/issues/31338) @[tangenta](https://github.com/tangenta)
     - 修复了系统变量 `tidb_log_file_max_days` 和 `tidb_config` 的作用域不正确的问题 [#35190](https://github.com/pingcap/tidb/issues/35190) @[morgo](https://github.com/morgo)
-    - 修复了类型是 enum 或者 set 的列在 `SHOW CREATE TABLE` 的输出与 MySQL 不兼容的问题 [#36317](https://github.com/pingcap/tidb/issues/36317) @[Defined2014](https://github.com/Defined2014)
-    - 修复了创建表时指定类型为 LONG BYTE 列的行为与 MySQL 不兼容的问题 [#36239](https://github.com/pingcap/tidb/issues/36239) @[Defined2014](https://github.com/Defined2014)
+    - 修复了类型是 `ENUM` 或者 `SET` 的列在 `SHOW CREATE TABLE` 的输出与 MySQL 不兼容的问题 [#36317](https://github.com/pingcap/tidb/issues/36317) @[Defined2014](https://github.com/Defined2014)
+    - 修复了创建表时指定类型为 `LONG BYTE` 列的行为与 MySQL 不兼容的问题 [#36239](https://github.com/pingcap/tidb/issues/36239) @[Defined2014](https://github.com/Defined2014)
     - 修复了设置 `auto_increment=x` 对临时表无效的问题 [#36224](https://github.com/pingcap/tidb/issues/36224) @[djshow832](https://github.com/djshow832)
     - 修复了在并发修改列的情况下可能导致 DEFAULT VALUE 不正确的问题 [#35846](https://github.com/pingcap/tidb/issues/35846) @[wjhuang2016](https://github.com/wjhuang2016)
     - 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906) @[sticnarf](https://github.com/sticnarf)
@@ -393,7 +393,7 @@ TiDB 版本：6.2.0
     - 修复了 TiKV API 从 `storage.api-version = 1` 升级为 `storage.api-version = 2` 时 panic 的问题 [#12600](https://github.com/tikv/tikv/issues/12600) @[pingyu](https://github.com/pingyu)
     - 修复了 TiKV 和 PD 配置文件中 Region size 不一致的问题 [#12518](https://github.com/tikv/tikv/issues/12518) @[5kbpers](https://github.com/5kbpers)
     - 修复了 TiKV 持续重连 PD 的问题 [#12506](https://github.com/tikv/tikv/issues/12506), [#12827](https://github.com/tikv/tikv/issues/12827) @[Connor1996](https://github.com/Connor1996)
-    - (修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673) @[wshwsh12](https://github.com/wshwsh12)
+    - 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673) @[wshwsh12](https://github.com/wshwsh12)
     - 修复了 `DATETIME` 类型的数据包含小数部分和 `Z` 后缀导致检查报错的问题 [#12739](https://github.com/tikv/tikv/issues/12739) @[gengliqi](https://github.com/gengliqi)
     - 修复 Apply 写入 TiKV RocksDB 的 perf context 粒度过大的问题 [#11044](https://github.com/tikv/tikv/issues/11044) @[LykxSassinator](https://github.com/LykxSassinator)
     - 修复当 [backup](/tikv-configuration-file.md#backup)/[import](/tikv-configuration-file.md#import)/[cdc](/tikv-configuration-file.md#cdc) 配置项设置错误时 TiKV 无法启动的问题 [#12771](https://github.com/tikv/tikv/issues/12771) @[3pointer](https://github.com/3pointer)
