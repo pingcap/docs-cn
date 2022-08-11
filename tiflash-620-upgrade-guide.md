@@ -59,7 +59,7 @@ TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x.x 或 
 TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 [`format_version = 4`](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)）。V3 版本大幅降低了峰值写 IO 流量，在有较高更新流量和同时有高并发或重型查询情况下，可以有效缓解 TiFlash 数据 GC 带来的 CPU 占用高的问题。同时，相比旧版本数据格式，V3 版本数据格式可以显著降低空间放大，减少空间浪费。
 
 - 已有节点升级 v6.2.0 后，随着数据不断写入，旧版本的数据会逐步转换成新版本数据。
-- 新旧版本的数据格式不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要注意）。因此升级完成后，强烈建议使用 [`COMPACT` 命令](/sql-statements/sql-statement-alter-table-compact.md)触发数据整理 (Compaction) 将相关表的数据转成新版本格式。操作步骤如下：
+- 新旧版本的数据格式不能做到完全的转换，这会带来一定系统开销（通常不影响业务，但需要注意）。因此升级完成后，建议使用 [`COMPACT` 命令](/sql-statements/sql-statement-alter-table-compact.md)触发数据整理 (Compaction) 将相关表的数据转成新版本格式。操作步骤如下：
 
     1. 对每张有 TiFlash 副本（replica）的表执行如下命令：
 
@@ -82,3 +82,7 @@ TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 [`f
 ## 从 v6.1.0 升级至 v6.2.0
 
 从 v6.1.0 升级至 v6.2.0 时，需要注意 PageStorage 变更数据版本带来的影响。具体请参考 [PageStorage](#pagestorage)。
+
+### 关于 v6.2.0 的新增实验功能
+
+v6.2.0 新增了一项名为 FastScan (/develop/dev-guide-use-fastscan.md) 的实验功能。该实验功能在牺牲强一致性保证的前提下可以大幅提升扫表性能。相关实验功能的形态和使用方式有可能在后续版本中发生变化，提请用户在使用中注意。
