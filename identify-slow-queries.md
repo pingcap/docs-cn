@@ -62,7 +62,8 @@ Slow query basics:
 * `Index_ids`: The IDs of the indexes involved in a statement.
 * `Succ`: Whether a statement is executed successfully.
 * `Backoff_time`: The waiting time before retry when a statement encounters errors that require a retry. The common errors as such include: `lock occurs`, `Region split`, and `tikv server is busy`.
-* `Plan`: The execution plan of the statement. Use the `select tidb_decode_plan('xxx...')` statement to parse the specific execution plan.
+* `Plan`: The execution plan of a statement. Execute the `SELECT tidb_decode_plan('xxx...')` statement to parse the specific execution plan.
+* `Binary_plan`: The execution plan of a binary-encoded statement. Execute the `SELECT tidb_decode_binary_plan('xxx...')` statement to parse the specific execution plan. The `Plan` and `Binary_plan` fields carry the same information. However, the format of execution plans parsed from the two fields are different.
 * `Prepared`: Whether this statement is a `Prepare` or `Execute` request or not.
 * `Plan_from_cache`: Whether this statement hits the execution plan cache.
 * `Rewrite_time`: The time consumed for rewriting the query of this statement.
