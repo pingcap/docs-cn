@@ -204,7 +204,10 @@ delta_index_cache_size = 0
     ## Compression level of the TiFlash storage engine. The default value is 1. It is recommended that you set this value to 1 if dt_compression_method is LZ4, -1 (smaller compression rate, but better read performance) or 1 if dt_compression_method is zstd, and 9 if dt_compression_method is LZ4HC.
     dt_compression_level = 1
 
-    ## New in v6.2.0. Use the thread pool to handle read requests from the storage engine. The default value is false. 
+    ## New in v6.2.0. This item specifies the minimum ratio of valid data in a PageStorage data file. When the ratio of valid data in a PageStorage data file is less than the value of this configuration, GC is triggered to compact data in the file. The default value is 0.5.
+    dt_page_gc_threshold = 0.5
+
+    ## New in v6.2.0. Use the thread pool to handle read requests from the storage engine. The default value is false.
     ## Warning: This is still an experimental feature. It is NOT recommended that you use it in the production environment.
 
     # dt_enable_read_thread = false
