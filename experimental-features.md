@@ -16,12 +16,14 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [使用线程池处理存储引擎的读请求](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v6.2.0 实验特性）
 + [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
 + [Fast Mode](/develop/dev-guide-read-in-fast-mode.md)（v6.2.0 实验特性）
++ [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
 
 ## 稳定性
 
 + 提升优化器选择索引的稳定性：扩展统计信息功能，收集多列顺序依赖性信息，帮助优化器选择相对较优的索引（v5.0 实验特性）
-+ [后台限流](/tikv-configuration-file.md#后台限流)（v6.2.0 实验特性）：你可以使用后台限流相关的 quota 配置项以限制后台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。
-+ [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
++ [后台限流](/tikv-configuration-file.md#后台限流)（v6.2.0 实验特性）
+
+    你可以使用后台限流相关的 quota 配置项以限制后台各类请求占用的 CPU 资源。触发该限制的请求会被强制等待一段时间以让出 CPU 资源。
 
 ## 调度功能
 
