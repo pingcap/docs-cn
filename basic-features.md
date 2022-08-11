@@ -126,7 +126,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | --------------------------------------------------------- | :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: | -------- |
 | [CM-Sketch](/statistics.md)                               | 默认关闭 | 默认关闭 | 默认关闭 |  默认关闭  |  默认关闭  |  Y  |  Y  |  Y  | Y        |
 | [直方图](/statistics.md)                                  |   Y   |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
-| [扩展统计信息（多列）](/statistics.md)                    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N        |
+| 扩展统计信息（多列）                    | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | N        |
 | [统计反馈](/statistics.md#自动更新)                       | 已废弃 | 已废弃 | 已废弃 |  已废弃  | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [统计信息自动更新](/statistics.md#自动更新) |   Y  |   Y   |   Y   |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [快速分析](/system-variables.md#tidb_enable_fast_analyze) | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
@@ -159,8 +159,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [Change data capture (CDC)](/ticdc/ticdc-overview.md)                   |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |   Y    |
 
 ## 管理，可视化和工具
-
-| 管理，可视化诊断和工具                                                    |   6.2    |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
+                                                 |   6.2    |   6.1    |   6.0    |   5.4    |   5.3    |   5.2    |   5.1    |   5.0    | 4.0      |
 | ------------------------------------------------------------------------- | :------:| :------: | :------: | :------: | :------: | :------: | :------: | :------: | :------: |
 | [TiDB Dashboard 图形化展示](/dashboard/dashboard-intro.md)                      |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [TiDB Dashboard 持续性能分析功能](/dashboard/continuous-profiling.md)       |    Y    |    Y     |    Y     | 实验特性 | 实验特性 |    N     |    N     |    N     | N        |
@@ -176,7 +175,7 @@ aliases: ['/docs-cn/dev/basic-features/']
 | [内置物理备份](/br/backup-and-restore-use-cases.md)                       |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | Y        |
 | [Global Kill](/sql-statements/sql-statement-kill.md)                      | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [Lock View](/information-schema/information-schema-data-lock-waits.md)    |    Y     |    Y     |    Y     |    Y     |    Y     |    Y     | 实验特性 | 实验特性 | 实验特性 |
-| [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | 实验特性| 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
+| [`SHOW CONFIG`](/sql-statements/sql-statement-show-config.md)             | Y| Y | Y | Y | Y | Y | Y | Y | Y |
 | [`SET CONFIG`](/dynamic-config.md)                                        | Y | Y | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 | 实验特性 |
 | [DM WebUI](/dm/dm-webui-guide.md)                                        | 实验特性 | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |
 | [前台限流](/tikv-configuration-file.md#前台限流)                                        |Y | 实验特性 | 实验特性 |    N     |    N     |    N     |    N     |    N     | N        |

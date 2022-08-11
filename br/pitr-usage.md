@@ -1,20 +1,20 @@
 ---
-title: 使用 PiTR
-summary: 了解如何使用 PiTR。
+title: 使用 PITR
+summary: 了解如何使用 PITR。
 ---
 
-# 使用 PiTR
+# 使用 PITR
 
-本文档介绍如何部署和使用 PiTR，可以帮助你顺利上手使用该功能。介绍具体操作前，设想有如下使用场景。你在 AWS 部署了一套 TiDB 生产集群，业务团队提出如下需求：
+本文档介绍如何部署和使用 PITR，可以帮助你顺利上手使用该功能。介绍具体操作前，设想有如下使用场景。你在 AWS 部署了一套 TiDB 生产集群，业务团队提出如下需求：
 
 - 及时备份用户数据变更，在数据库遭遇异常情况时，能够以最小的数据丢失代价（容忍异常前几分钟内的用户数据丢失）快速地恢复业务。
 - 每个月不定期进行业务审计。接收到审计请求后，提供一个数据库来查询审计要求的一个月内某个时间点的数据
 
-通过 TiDB 提供的 PiTR 功能，你可以满足业务团队的需求。
+通过 TiDB 提供的 PITR 功能，你可以满足业务团队的需求。
 
 ## 部署 TiDB 集群和 BR
 
-使用 PiTR 功能，需要部署 v6.2.0 及以上版本的 TiDB 集群，并且更新 BR 到与 TiDB 集群相同的版本，本文假设使用的是 v6.2.0 版本。
+使用 PITR 功能，需要部署 v6.2.0 及以上版本的 TiDB 集群，并且更新 BR 到与 TiDB 集群相同的版本，本文假设使用的是 v6.2.0 版本。
 
 下表介绍了在 TiDB 集群中使用日志备份功能的推荐配置。
 
@@ -23,7 +23,7 @@ summary: 了解如何使用 PiTR。
 | TiDB | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 2 |
 | PD | 8 核+ | 16 GB+ | SSD | c5.2xlarge | 3 |
 | TiKV | 8 核+ | 32 GB+ | SSD | m5.2xlarge | 3 | 
-| BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 2 | 
+| BR | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 | 
 | 监控 | 8 核+ | 16 GB+ | SAS | c5.2xlarge | 1 |
 
 > **注意：**
@@ -91,65 +91,65 @@ tiup br log status --task-name=pitr --pd=172.16.102.95:2379
 > #1 <
     name: pitr
     status: ● NORMAL
-    start: 2022-05-14 11:09:40.7 +0800
+    start: 2022-05-13 11:09:40.7 +0800
       end: 2035-01-01 00:00:00 +0800
     storage: s3://tidb-pitr-bucket/backup-data/log-backup
     speed(est.): 0.00 ops/s
-checkpoint[global]: 2022-04-24 11:31:47.2 +0800; gap=4m53s
+checkpoint[global]: 2022-05-13 11:31:47.2 +0800; gap=4m53s
 ```
 
 ## 执行快照备份
 
 通过自动化运维工具（如 crontab）设置定期的快照备份任务，例如：每隔两天在零点左右进行一次快照（全量）备份。下面是两次备份的示例：
 
-- 在 2022/05/12 00:00:00 执行一次快照备份
-
-    ```shell
-    tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' --backupts='2022/05/12 00:00:00'
-    ```
-
 - 在 2022/05/14 00:00:00 执行一次快照备份
 
     ```shell
-    tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000' --backupts='2022/05/14 00:00:00'
+    tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000' --backupts='2022/05/14 00:00:00'
     ```
 
-## 执行 PiTR
+- 在 2022/05/16 00:00:00 执行一次快照备份
 
-假设你接到需求，要准备一个集群查询 2022/04/13 18:00:00 时间点的用户数据。此时，你可以制定 PiTR 方案，恢复 2022/04/12 的快照备份和该快照到 2022/04/13 18:00:00 之间的日志备份数据，从而收集到目标数据。执行命令如下：
+    ```shell
+    tiup br backup full --pd=172.16.102.95:2379 --storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220516000000' --backupts='2022/05/16 00:00:00'
+    ```
+
+## 执行 PITR
+
+假设你接到需求，要准备一个集群查询 2022/05/15 18:00:00 时间点的用户数据。此时，你可以制定 PITR 方案，恢复 2022/05/14 的快照备份和该快照到 2022/05/15 18:00:00 之间的日志备份数据，从而收集到目标数据。执行命令如下：
 
 ```shell
 tiup br restore point --pd=172.16.102.95:2379
 --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
---full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220512000000'
---restored-ts '2022-04-13 18:00:00+0800'
+--full-backup-storage='s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000'
+--restored-ts '2022-05-15 18:00:00+0800'
 
 Full Restore <--------------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/29 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=xxx] [ranges-failed=0] [split-region=xxx.xxxµs] [restore-ranges=xxx] [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
+[2022/05/29 18:15:39.132 +08:00] [INFO] [collector.go:69] ["Full Restore success summary"] [total-ranges=12] [ranges-succeed=xxx] [ranges-failed=0] [split-region=xxx.xxxµs] [restore-ranges=xxx] [total-take=xxx.xxxs] [restore-data-size(after-compressed)=xxx.xxx] [Size=xxxx] [BackupTS={TS}] [total-kv=xxx] [total-kv-size=xxx] [average-speed=xxx]
 Restore Meta Files <--------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
 Restore KV Files <----------------------------------------------------------------------------------------------------------------------------------------------------> 100.00%
-[2022/07/29 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
+[2022/05/29 18:15:39.325 +08:00] [INFO] [collector.go:69] ["restore log success summary"] [total-take=xxx.xx] [restore-from={TS}] [restore-to={TS}] [total-kv-count=xxx] [total-size=xxx]
 ```
 
 ## 清理过期备份数据
 
 通过自动化运维工具（如 crontab) 每两天定期清理过期备份数据的任务。
 
-下面是在 2022/05/14 执行的过期备份数据清理任务：
+下面是执行过期备份数据清理任务：
 
-- 删除早于 2022/04/14 00:00:00 的快照备份
+- 删除早于 2022/05/14 00:00:00 的快照备份
 
   ```shell
-  rm s3://tidb-pitr-bucket/backup-data/snapshot-20220414000000
+  rm s3://tidb-pitr-bucket/backup-data/snapshot-20220514000000
   ```
 
-- 删除早于 2022/04/14 00:00:00 的日志备份数据
+- 删除早于 2022/05/14 00:00:00 的日志备份数据
 
   ```shell
-  tiup br log truncate --until='2022-04-14 06:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
+  tiup br log truncate --until='2022-05-14 00:00:00 +0800' --storage='s3://tidb-pitr-bucket/backup-data/log-backup'
   ```
   
 ## 探索更多
 
 - [日志备份和恢复功能命令使用介绍](/br/br-log-command-line.md)
-- [PiTR 功能介绍](/br/point-in-time-recovery.md)
+- [PITR 功能介绍](/br/point-in-time-recovery.md)

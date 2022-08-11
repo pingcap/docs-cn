@@ -375,7 +375,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 默认值：`2`
 - 范围：`[1, 2]`
 - 这个变量用于控制 TiDB 收集统计信息的行为。
-- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，作为实验特性启用，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
+- 在 v5.3.0 及之后的版本中，该变量的默认值为 `2`，具体可参照[统计信息简介](/statistics.md)文档。如果从 v5.3.0 之前版本的集群升级至 v5.3.0 及之后的版本，`tidb_analyze_version` 的默认值不发生变化。
 
 ### `tidb_auto_analyze_end_time`
 
@@ -436,6 +436,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     例如，TiDB 向 PD 取 TSO 的基础超时时间是 15 秒，当 `tidb_backoff_weight = 2` 时，取 TSO 的最大超时时间为：基础时间 \* 2 等于 30 秒。
 
     在网络环境较差的情况下，适当增大该变量值可以有效缓解因为超时而向应用端报错的情况；而如果应用端希望更快地接到报错信息，则应该尽量减小该变量的值。
+
+### `tidb_batch_pending_tiflash_count` <span class="version-mark">从 v6.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`4000`
+- 范围：`[0, 2147483647]`
+- 使用 `ALTER DATABASE SET TIFLASH REPLICA` 语句为 TiFlash 添加副本时，能容许的不可用表的个数上限。如果超过该上限，则会停止或者以非常慢的速度为库中的剩余表设置 TiFlash 副本。
 
 ### `tidb_broadcast_join_threshold_count` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1339,6 +1347,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[32, 2147483647]`
 - 这个变量用来设置执行过程中一个 chunk 最大的行数，设置过大可能引起缓存局部性的问题。
 
+### `tidb_max_paging_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`50000`
+- 范围：`[1, 2147483647]`
+- 单位：行
+- 这个变量用来设置 coprocessor 协议中 paging size 的最大的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，导数据和全表扫等特定场景会占用更多内存。
+
 ### `tidb_max_delta_schema_count`
 
 - 作用域：GLOBAL
@@ -1428,6 +1445,15 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 单位：秒
 - 这个变量设置了查询 `METRIC_SCHEMA` 时生成的 Prometheus 语句的 step。
 
+### `tidb_min_paging_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`128`
+- 范围：`[1, 2147483647]`
+- 单位：行
+- 这个变量用来设置 coprocessor 协议中 paging size 的最小的行数。请合理设置该值，设置过小，TiDB 与 TiKV 的 RPC 交互会更频繁；设置过大，IndexLookup 带 Limit 场景会出现性能下降。
+
 ### `tidb_multi_statement_mode` <span class="version-mark">从 v4.0.11 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1463,7 +1489,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 可选值：`OFF`，`ON`
 - TiDB v6.2.0 对代价模型的实现进行了代码层面的重构，这个变量用来控制是否使用重构后的代价模型 [Cost Model Version 2](/cost-model.md#cost-model-version-2)。
 - 重构后的代价模型使用完全一样的代价公式，因此不会引起计划选择的变动，此开关默认打开。
-- 从 v6.2.0 及之前版本升级至 v6.2.0 或之后版本的用户，此开关保持原版本的 `OFF` 状态，用户无需修改。
+- 从 v6.1 升级至 v6.2 的用户，此开关保持升级前的 `OFF` 状态，此时建议直接打开；对于从 v6.1 之前版本升级至 v6.2 的用户，此开关默认为 `ON`。
 
 ### `tidb_enable_new_only_full_group_by_check` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -1611,10 +1637,14 @@ explain select * from t where age=5;
 
 ### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
+> **注意：**
+>
+> 开启该变量带来的查询性能优化仅对 TiFlash 有效。
+
 - 作用域：SESSION | GLOBAL
-- 是否持久化到集群：否
+- 是否持久化到集群：是
 - 默认值：`OFF`
-- 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。此优化**仅对 TiFlash 有效**。
+- 这个变量用来设置优化器是否将带有 `DISTINCT` 的聚合函数（例如 `SELECT b, count(DISTINCT a) FROM t GROUP BY b`）改写为两层聚合函数（例如 `SELECT b, count(a) FROM (SELECT b, a FROM t GROUP BY b, a) t GROUP BY b`）。当聚合列有严重的数据倾斜，且 `DISTINCT` 列有很多不同的值时，这种改写能够避免查询执行过程中的数据倾斜，从而提升查询性能。
 
 ### `tidb_opt_write_row_id`
 
