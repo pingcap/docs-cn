@@ -17,7 +17,7 @@ TiDB 版本：6.2.0
 - 实现细粒度数据交换 (shuffle) 使窗口函数 (Window function) 可以利用多线程并行计算。
 - 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持自适应调整 CPU 使用率，确保数据库稳定高效运行。
-- 支持 Point-in-Time Recovery (PITR)，允许恢复备份集群的历史任意时刻点的快照。
+- 支持 Point-in-Time Recovery (PITR)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群。
 - BR 支持恢复用户和权限数据，备份恢复体验更平滑。
 - TiCDC 支持过滤指定类型的 DDL 事件，解锁更多数据同步场景。
@@ -113,7 +113,7 @@ TiDB 版本：6.2.0
 
     建议用户在升级前阅读 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
 
-    [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#3594](https://github.com/pingcap/tiflash/issues/3594) @[JaySon-Huang](https://github.com/JaySon-Huang) @[jiaqizho](https://github.com/jiaqizho) @[lidezhu](https://github.com/lidezhu)
+    [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#3594](https://github.com/pingcap/tiflash/issues/3594) @[JaySon-Huang](https://github.com/JaySon-Huang) @[lidezhu](https://github.com/lidezhu) @[jiaqizho](https://github.com/jiaqizho)
 
 * TiFlash 优化提升多并发场景下的数据扫描性能（实验特性）
 
@@ -201,7 +201,7 @@ TiDB 版本：6.2.0
 
 * 支持基于变更日志的备份和恢复实现 Point-in-time recovery
 
-    基于变更日志和快照数据的备份恢复实现 PITR (Point-in-time recovery) 功能，允许用户在新集群上恢复备份集群的历史任意时刻点的快照。该功能可以满足以下的用户需求：
+    基于变更日志和快照数据的备份恢复实现 PITR (Point-in-time recovery) 功能，允许用户在新集群上恢复备份集群的历史任意时间点的快照。该功能可以满足以下的用户需求：
 
     - 降低灾备场景下的 RPO，如实现十几分钟的 RPO；
     - 用于处理业务数据写错的案例，如回滚业务数据到出错事件前；
@@ -271,6 +271,7 @@ TiDB 版本：6.2.0
 | PD | replication-mode.dr-auto-sync.wait-sync-timeout | 删除 | 废弃未生效的配置项。|
 | TiFlash | [`storage.format_version`](/tiflash/tiflash-configuration.md#tiflash-配置参数) | 修改 | `format_version` 默认值变更为 4，v6.2.0 及以后版本的默认文件格式，优化了写放大问题，同时减少了后台线程消耗。 |
 | TiFlash | [profiles.default.dt_enable_read_thread](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 控制存储引擎是否使用线程池读取数据。默认值为 false，不使用线程池读取数据。 |
+| TiFlash | [profiles.default.dt_page_gc_threshold](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) | 新增 | 表示 PageStorage 单个数据文件中有效数据的最低比例。 |
 | TiCDC | [--overwrite-checkpoint-ts](/ticdc/manage-ticdc.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
 | TiCDC | [--no-confirm](/ticdc/manage-ticdc.md#恢复同步任务) | 新增 | 在 cdc cli changefeed resume 子命令下新增的参数。 |
 | DM | [mode](/dm/task-configuration-file-full.md#完整配置文件示例) | 新增 | Validator 参数，取值可以是 full、fast，默认是 none，即不开启校验。 |
@@ -282,7 +283,7 @@ TiDB 版本：6.2.0
 ### 其他
 
 - TiFlash 的新存储格式不能直接从 format_version 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
-- `dt_enable_logical_split` 在 v6.2.0 及后续版本有已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)，**强烈不建议**将该配置项设置为 `true`。
+- 在 v6.2.0 以及后续版本，**强烈建议**保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本, 需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
 - 从 v6.2.0 开始，BR 恢复 mysql schema 下的数据需要需要指定参数 `--with-sys-table=true`。
 - 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
