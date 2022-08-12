@@ -15,7 +15,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
 + [使用线程池处理存储引擎的读请求](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)（v6.2.0 实验特性）
 + [Cost Model Version 2](/cost-model.md#cost-model-version-2)（v6.2.0 实验特性）
-+ [Fast Mode](/develop/dev-guide-read-in-fast-mode.md)（v6.2.0 实验特性）
++ [FastScan](/develop/dev-guide-read-in-fast-mode.md)（v6.2.0 实验特性）
 + [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
 
 ## 稳定性
