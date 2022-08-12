@@ -83,4 +83,4 @@ TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 [`f
 
 ## 从 v6.1 升级至 v6.2
 
-从 v6.1 升级至 v6.2 时，需要注意 v6.2.0 PageStorage 变更数据版本和引入实验特性 FastScan 带来的影响。具体请参考 [PageStorage](#pagestorage) 和 [FastScan](#fastscan)。
+从 v6.1 升级至 v6.2 时，需要注意 PageStorage 变更数据版本带来的影响。具体请参考 [PageStorage](#pagestorage)。
