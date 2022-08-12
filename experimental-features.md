@@ -13,6 +13,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [支持收集部分列的统计信息](/statistics.md#收集部分列的统计信息)（v5.4 实验特性）
 + [支持统计信息的同步加载](/statistics.md#统计信息的加载)（v5.4 实验特性）
 + [限制 ANALYZE 的内存使用量](/statistics.md#统计信息收集的内存限制) (v6.1.0 实验特性)
++ [随机采样约 10000 行数据来快速构建统计信息](/system-variables.md#tidb_enable_fast_analyze)（v3.0 实验特性）
 
 ## 稳定性
 
@@ -29,6 +30,7 @@ aliases: ['/docs-cn/dev/experimental-features-4.0/','/zh/tidb/dev/experimental-f
 + [生成列](/generated-columns.md#生成列)。（v2.1 实验特性）
 + [自定义变量](/user-defined-variables.md#用户自定义变量)。（v2.1 实验特性）
 + [JSON 数据类型](/data-type-json.md)及 [JSON 函数](/functions-and-operators/json-functions.md)。（v2.1 实验特性）
++ [Cascades Planner](/system-variables.md#tidb_enable_cascades_planner)：基于 Cascades 框架的自顶向下查询优化器。（v3.0 实验特性）
 + [`ALTER TABLE ... COMPACT`](/sql-statements/sql-statement-alter-table-compact.md)。（v6.1.0 实验特性）
 
 ## 存储
