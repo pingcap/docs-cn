@@ -121,11 +121,11 @@ TiDB 版本：6.2.0
 
     [用户文档](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml) [#5376](https://github.com/pingcap/tiflash/issues/5376) @[JinheLin](https://github.com/JinheLin)
 
-* TiFlash 新增快速数据扫描模式，降低一致性保证，提高读写速度（实验特性）
+* TiFlash 新增 FastScan 功能，降低一致性保证，提高读写速度（实验特性）
 
-    TiDB 从 v6.2.0 版本引入快速扫描模式 (Fast Scan)，支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据（称为 Normal Mode）。
+    TiDB 从 v6.2.0 版本引入快速扫描功能 (FastScan)，支持跳过一致性检测以大幅提高速度，适用于离线分析任务等对于数据的精度和一致性要求不高的场景。以往，为了保证数据一致性，TiFlash 在数据扫描过程中需要对数据进行一致性检查，从多个不同版本的数据中找到符合要求的数据。
 
-    从更低的版本升级到 v6.2.0 版本时，所有的表默认不使用 Fast Scan，而是使用保持一致性的数据扫描模式。你可以为每一张表独立设定扫描模式。如果在 v6.2.0 版本设定表使用 Fast Scan 后，当降级到更低版本时数据扫描模式设置将失效，但不影响数据的正常读取。这种情况等同于强一致性的数据扫描模式。
+    从更低的版本升级到 v6.2.0 版本时，所有的表默认不开启 FastScan 功能，而是保持一致性的数据扫描功能。你可以为每一张表独立开启 FastScan 功能。如果在 v6.2.0 版本设定表开启 FastScan 功能后，当降级到更低版本时 FastScan 功能设置将失效，但不影响数据的正常读取。这种情况等同于强一致性的数据扫描功能。
 
     [用户文档](/develop/dev-guide-read-in-fast-mode.md) [#5252](https://github.com/pingcap/tiflash/issues/5252) @[hongyunyan](https://github.com/hongyunyan)
 
