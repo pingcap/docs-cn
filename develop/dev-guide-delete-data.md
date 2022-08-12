@@ -55,8 +55,8 @@ SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `r
 - 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
 - 若返回数量小于 1 万条，可参考下面的示例进行删除：
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在 SQL 中，删除数据的示例如下：
 
@@ -66,7 +66,7 @@ DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` 
 
 </div>
 
-<div label="Java">
+<div label="Java" value="java">
 
 在 Java 中，删除数据的示例如下：
 
@@ -93,7 +93,7 @@ try (Connection connection = ds.getConnection()) {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 在 Golang 中，删除数据的示例如下：
 
@@ -170,8 +170,8 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
 
-<SimpleTab>
-<div label="Java">
+<SimpleTab groupId="language">
+<div label="Java" value="java">
 
 在 Java 中，批量删除程序类似于以下内容：
 
@@ -240,7 +240,7 @@ public class BatchDeleteExample
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 在 Golang 中，批量删除程序类似于以下内容：
 
