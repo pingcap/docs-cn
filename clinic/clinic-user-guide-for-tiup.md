@@ -55,14 +55,14 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     - 登录 Clinic Server。
 
-        <SimpleTab>
-        <div label="Clinic Server 中国区">
+        <SimpleTab groupId="clinicServer">
+        <div label="Clinic Server 中国区" value="clinic-cn">
 
         [Clinic Server 中国区](https://clinic.pingcap.com.cn)，数据存储在亚马逊云服务中国区。
 
         </div>
 
-        <div label="Clinic Server 美国区">
+        <div label="Clinic Server 美国区" value="clinic-us">
 
         [Clinic Server 美国区](https://clinic.pingcap.com)，数据存储在亚马逊云服务美国区。
 
@@ -95,8 +95,8 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
     > - 对于 Diag v0.9.0 之前的版本，数据默认上传到 Clinic Server 中国区。
     > - 如果你的 Diag 是 v0.9.0 之前的版本，你可以通过 `tiup update diag` 命令将其升级至最新版本后设置 `region`。
 
-    <SimpleTab>
-    <div label="Clinic Server 中国区">
+    <SimpleTab groupId="clinicServer">
+    <div label="Clinic Server 中国区" value="clinic-cn">
 
     对于 Clinic Server 中国区，参考以下命令，将 `region` 设置为 `CN`：
 
@@ -106,7 +106,7 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
     </div>
 
-    <div label="Clinic Server 美国区">
+    <div label="Clinic Server 美国区" value="clinic-us">
 
     对于 Clinic Server 美国区，参考以下命令，将 `region` 设置为 `US`：
 
