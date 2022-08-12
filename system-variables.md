@@ -237,14 +237,14 @@ mysql> SELECT * FROM t1;
 ### `plugin_dir`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：""
 - 指定加载插件的目录。
 
 ### `plugin_load`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：""
 - 指定 TiDB 启动时加载的插件，多个插件之间用逗号（,）分隔。
 
@@ -472,7 +472,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_check_mb4_value_in_utf8`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`ON`
 - 设置该变量为 `ON` 可强制只存储[基本多文种平面 (BMP)](https://zh.wikipedia.org/zh-hans/Unicode字符平面映射) 编码区段内的 `utf8` 字符值。若要存储 BMP 区段外的 `utf8` 值，推荐使用 `utf8mb4` 字符集。
 - 早期版本的 TiDB 中 (v2.1.x)，`utf8` 检查更为宽松。如果你的 TiDB 集群是从早期版本升级的，推荐关闭该变量，详情参阅[升级与升级后常见问题](/faq/upgrade-faq.md)。
@@ -722,7 +722,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_collect_execution_info`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`ON`
 - 这个变量用于控制是否同时将各个执行算子的执行信息记录入 slow query log 中。
 
@@ -882,7 +882,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 ### `tidb_enable_slow_log`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`ON`
 - 这个变量用于控制是否开启 slow log 功能。
 
@@ -1051,7 +1051,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_expensive_query_time_threshold`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`60`
 - 范围：`[10, 2147483647]`
 - 单位：秒
@@ -1060,7 +1060,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_force_priority`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
 - 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
@@ -1129,7 +1129,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_general_log`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`OFF`
 - 这个变量用来设置是否在[日志](/tidb-configuration-file.md#logfile)里记录所有的 SQL 语句。该功能默认关闭。如果系统运维人员在定位问题过程中需要追踪所有 SQL 记录，可考虑开启该功能。
 - 通过查询 `"GENERAL_LOG"` 字符串可以定位到该功能在日志中的所有记录。日志会记录以下内容：
@@ -1351,7 +1351,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_memory_usage_alarm_ratio`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`0.8`
 - TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
 - 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
@@ -1575,7 +1575,7 @@ explain select * from t where age=5;
 ### `tidb_pprof_sql_cpu` <span class="version-mark">从 v4.0 版本开始引入</span>
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`0`
 - 范围：`[0, 1]`
 - 这个变量用来控制是否在 profile 输出中标记出对应的 SQL 语句，用于定位和排查性能问题。
@@ -1644,7 +1644,7 @@ explain select * from t where age=5;
 ### `tidb_record_plan_in_slow_log`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`ON`
 - 这个变量用于控制是否在 slow log 里包含慢查询的执行计划。
 
@@ -1746,7 +1746,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 ### `tidb_slow_log_threshold`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`300`
 - 范围：`[-1, 9223372036854775807]`
 - 单位：毫秒
