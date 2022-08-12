@@ -578,6 +578,14 @@ MPP is a distributed computing framework provided by the TiFlash engine, which a
 
     In the case of a poor network environment, appropriately increasing the value of this variable can effectively alleviate error reporting to the application end caused by timeout. If the application end wants to receive the error information more quickly, minimize the value of this variable.
 
+### tidb_batch_pending_tiflash_count <span class="version-mark">New in v6.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Default value: `4000`
+- Scope: `[0, 2147483647]`
+- Specifies the maximum number of permitted unavailable tables when you use `ALTER DATABASE SET TIFLASH REPLICA` to add TiFlash replicas. If the number of unavailable tables exceeds this limit, the operation will be stopped or setting TiFlash replicas for the remaining tables will be very slow.
+
 ### tidb_broadcast_join_threshold_count <span class="version-mark">New in v5.0</span>
 
 - Scope: SESSION | GLOBAL
