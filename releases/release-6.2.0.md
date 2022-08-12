@@ -283,7 +283,7 @@ TiDB 版本：6.2.0
 ### 其他
 
 - TiFlash 的新存储格式不能直接从 format_version 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
-- 在 v6.2.0 以及后续版本，**强烈建议**保留默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
+- 在 v6.2.0 以及后续版本，**强烈建议**保留 `dt_enable_logical_split` 的默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
 - 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本, 需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
 - 从 v6.2.0 开始，BR 恢复 mysql schema 下的数据需要需要指定参数 `--with-sys-table=true`。
 - 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
