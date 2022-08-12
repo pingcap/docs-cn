@@ -191,7 +191,7 @@ ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FA
 > 此批量更新程序将使用 **DDL** 语句将进行数据表的模式更改。TiDB 的所有 DDL 变更操作全部都是在线进行的，可查看此处，了解此处使用的 [ADD COLUMN](/sql-statements/sql-statement-add-column.md) 语句。
 
 <SimpleTab groupId="language">
-<div label="Golang">
+<div label="Golang" value="golang">
 
 在 Golang 中，批量更新程序类似于以下内容：
 
@@ -273,7 +273,7 @@ func placeHolder(n int) string {
 
 </div>
 
-<div label="Java (JDBC)">
+<div label="Java (JDBC)" value="java">
 
 在 Java (JDBC) 中，批量更新程序类似于以下内容：
 
