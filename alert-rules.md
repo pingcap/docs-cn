@@ -401,6 +401,21 @@ This section gives the alert rules for the PD component.
     * Check whether there is enough space in the store.
     * Check whether there is any store for additional replicas according to the label configuration if it is configured.
 
+#### `PD_cluster_slow_tikv_nums`
+
+* Alert rule:
+
+    `sum(pd_cluster_status{type="store_slow_count"}) by (instance) > 0) and (sum(etcd_server_is_leader) by (instance) > 0`
+
+* Description:
+
+    There is a slow TiKV node. `raftstore.inspect-interval` controls the detection of TiKV slow nodes. For more information, see [`raftstore.inspect-interval`](/tikv-configuration-file.md#inspect-interval).
+
+* Solution:
+
+    * Check whether the performance of the store is proper.
+    * Set the `raftstore.inspect-interval` configuration item to a larger value to increase the timeout limit of latency.
+
 ## TiKV alert rules
 
 This section gives the alert rules for the TiKV component.
