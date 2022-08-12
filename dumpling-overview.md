@@ -47,7 +47,7 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 ### 需要的权限
 
 - SELECT
-- RELOAD
+- RELOAD（RDS 忽略）
 - LOCK TABLES
 - REPLICATION CLIENT
 - PROCESS
