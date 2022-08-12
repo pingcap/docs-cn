@@ -81,10 +81,6 @@ TiFlash v6.2.0 默认升级到 PageStorage V3 版本（对应配置项参数 [`f
 
 强制缩容 TiFlash 节点，并重新同步数据。操作步骤详见[缩容 TiFlash 节点](/scale-tidb-using-tiup.md#缩容-tiflash-节点)。
 
-### FastScan
-
-该功能在牺牲强一致性保证的前提下可以大幅提升扫表性能。相关功能的形态和使用方式有可能在后续版本中发生变化。
-
 ## 从 v6.1 升级至 v6.2
 
 从 v6.1 升级至 v6.2 时，需要注意 v6.2.0 PageStorage 变更数据版本和引入实验特性 FastScan 带来的影响。具体请参考 [PageStorage](#pagestorage) 和 [FastScan](#fastscan)。
