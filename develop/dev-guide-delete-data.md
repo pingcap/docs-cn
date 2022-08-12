@@ -304,7 +304,7 @@ func deleteBatch(db *sql.DB, startTime, endTime time.Time) (int64, error) {
 
 > **注意：**
 >
-> TiDB 从 v6.1.0 版本开始支持[非事务 DML 语句](/non-transactional-dml.md)特性。在更低版本上无法使用此特性。
+> TiDB 从 v6.1.0 版本开始支持[非事务 DML 语句](/non-transactional-dml.md)特性。在 TiDB v6.1.0 以下版本上无法使用此特性。
 
 ### 非事务批量删除使用前提
 
