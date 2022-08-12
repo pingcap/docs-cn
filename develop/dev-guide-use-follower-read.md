@@ -23,8 +23,8 @@ If read hotspots are unavoidable or the changing cost is very high, you can try 
 
 ## Enable Follower Read
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 To enable Follower Read, set the variable `tidb_replica_read` (default value is `leader`) to `follower` or `leader-and-follower`:
 
@@ -37,7 +37,7 @@ SET [GLOBAL] tidb_replica_read = 'follower';
 For more details about this variable, see [Follower Read Usage](/follower-read.md#usage).
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 In Java, to enable Follower Read, define a `FollowerReadHelper` class.
 

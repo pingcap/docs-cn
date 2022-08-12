@@ -74,8 +74,8 @@ Assuming that in the Bookshop application, the real-time price of a book is not 
 
 ## Statement level
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 To query the price of a book before a specific time, add an `AS OF TIMESTAMP <datetime>` clause in the above query statement.
 
@@ -121,7 +121,7 @@ ERROR 9006 (HY000): cannot set read timestamp to a future time.
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 
@@ -236,8 +236,8 @@ WARN: GC life time is shorter than transaction duration.
 
 With the `START TRANSACTION READ ONLY AS OF TIMESTAMP` statement, you can start a read-only transaction based on historical time, which reads historical data from a specified historical timestamp.
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 For example:
 
@@ -286,7 +286,7 @@ After the transaction with the `COMMIT;` statement is committed, you can read th
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 You can define a helper class for transactions, which encapsulates the command to enable Stale Read at the transaction level as a helper method.
 
@@ -389,8 +389,8 @@ The latest book price (after the transaction commit): 150
 
 With the `SET TRANSACTION READ ONLY AS OF TIMESTAMP` statement, you can set the opened transaction or the next transaction to be a read-only transaction based on a specified historical time. The transaction will read historical data based on the provided historical time.
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 For example, you can use the following `AS OF TIMESTAMP` statement to switch the ongoing transactions to the read-only mode and read historical data 5 seconds ago.
 
@@ -399,7 +399,7 @@ SET TRANSACTION READ ONLY AS OF TIMESTAMP NOW() - INTERVAL 5 SECOND;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 You can define a helper class for transactions, which encapsulates the command to enable Stale Read at the transaction level as a helper method.
 
@@ -472,8 +472,8 @@ public class BookDAO {
 
 To support reading historical data, TiDB has introduced a new system variable `tidb_read_staleness` since v5.4. you can use it to set the range of historical data that the current session is allowed to read. Its data type is `int` and its scope is `SESSION`.
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 Enable Stale Read in a session:
 
@@ -494,7 +494,7 @@ set @@tidb_read_staleness="";
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 

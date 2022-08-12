@@ -58,8 +58,8 @@ The following are some best practices for updating data:
 
 Suppose an author changes her name to **Helen Haruki**. You need to change the [authors](/develop/dev-guide-bookshop-schema-design.md#authors-table) table. Assume that her unique `id` is **1**, and the filter should be: `id = 1`.
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 {{< copyable "sql" >}}
 
@@ -69,7 +69,7 @@ UPDATE `authors` SET `name` = "Helen Haruki" WHERE `id` = 1;
 
 </div>
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 
@@ -122,8 +122,8 @@ For example, you need to update the [ratings](/develop/dev-guide-bookshop-schema
 
 In the following example, the primary key is the joint primary keys of `book_id` and `user_id`. A user `user_id = 1` gives a rating of `5` to a book `book_id = 1000`.
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 {{< copyable "sql" >}}
 
@@ -137,7 +137,7 @@ ON DUPLICATE KEY UPDATE `score` = 5, `rated_at` = NOW();
 
 </div>
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 
@@ -190,8 +190,8 @@ ALTER TABLE `bookshop`.`ratings` ADD COLUMN `ten_point` BOOL NOT NULL DEFAULT FA
 >
 > This bulk-update application uses the **DDL** statements to make schema changes to the data tables. All DDL change operations for TiDB are executed online. For more information, see [ADD COLUMN](/sql-statements/sql-statement-add-column.md).
 
-<SimpleTab>
-<div label="Golang">
+<SimpleTab groupId="language">
+<div label="Golang" value="golang">
 
 In Golang, a bulk-update application is similar to the following:
 
@@ -273,7 +273,7 @@ In each iteration, `SELECT` queries in order of the primary key. It selects prim
 
 </div>
 
-<div label="Java (JDBC)">
+<div label="Java (JDBC)" value="jdbc">
 
 In Java (JDBC), a bulk-update application might be similar to the following:
 

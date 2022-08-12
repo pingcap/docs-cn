@@ -34,8 +34,8 @@ SELECT ... FROM <query_name>;
 
 For example, if you want to know how many books each of the 50 oldest authors have written, take the following steps:
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 Change the statement in [temporary tables](/develop/dev-guide-use-temporary-tables.md) to the following:
 
@@ -74,7 +74,7 @@ The result is as follows:
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value = "java">
 
 {{< copyable "java" >}}
 

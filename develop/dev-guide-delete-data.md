@@ -55,8 +55,8 @@ If more than 10,000 records are returned, use [Bulk-Delete](#bulk-delete) to del
 
 If fewer than 10,000 records are returned, use the following example to delete them.
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 In SQL, the example is as follows:
 
@@ -66,7 +66,7 @@ DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` 
 
 </div>
 
-<div label="Java">
+<div label="Java" value="java">
 
 In Java, the example is as follows:
 
@@ -93,7 +93,7 @@ try (Connection connection = ds.getConnection()) {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 In Golang, the example is as follows:
 
@@ -170,8 +170,8 @@ You can write a `DELETE` statement in the loop of your application or script, us
 
 Suppose you find an application error within a specific time period. You need to delete all the data for the [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-table) within this period, for example, from `2022-04-15 00:00:00` to `2022-04-15 00:15:00`, and more than 10,000 records are written in 15 minutes. You can perform as follows.
 
-<SimpleTab>
-<div label="Java">
+<SimpleTab groupId="language">
+<div label="Java" value="java">
 
 In Java, the bulk-delete example is as follows:
 
@@ -233,7 +233,7 @@ In each iteration, `DELETE` deletes up to 1000 rows from `2022-04-15 00:00:00` t
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 In Golang, the bulk-delete example is as follows:
 

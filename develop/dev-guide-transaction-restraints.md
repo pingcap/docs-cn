@@ -33,9 +33,9 @@ For example, suppose you are writing a doctor shift management program for a hos
 
 Now there is a situation where doctors `Alice` and `Bob` are on call. Both are feeling sick, so they decide to take sick leave. They happen to click the button at the same time. Let's simulate this process with the following program:
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 
@@ -160,7 +160,7 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 To adapt TiDB transactions, write a [util](https://github.com/pingcap-inc/tidb-example-golang/tree/main/util) according to the following code:
 
@@ -368,9 +368,9 @@ In both transactions, the application first checks if two or more doctors are on
 
 Now let's change the sample program to use `SELECT FOR UPDATE` to avoid the write skew problem:
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 
@@ -495,7 +495,7 @@ public class EffectWriteSkew {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 {{< copyable "" >}}
 

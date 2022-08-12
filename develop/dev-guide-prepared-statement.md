@@ -72,9 +72,9 @@ This section describes two examples of prepared statements: `SELECT` data and `I
 
 For example, you need to query a book with `id = 1` in the [`bookshop` application](/develop/dev-guide-bookshop-schema-design.md#books-table).
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="SQL">
+<div label="SQL" value="sql">
 
 {{< copyable "sql" >}}
 
@@ -119,7 +119,7 @@ Running result:
 
 </div>
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 
@@ -151,9 +151,9 @@ try (Connection connection = ds.getConnection()) {
 
 Using the [`books` table](/develop/dev-guide-bookshop-schema-design.md#books-table) as an example, you need to insert a book with `title = TiDB Developer Guide`, `type = Science & Technology`, `stock = 100`, `price = 0.0`, and `published_at = NOW()` (current time of insertion). Note that you don't need to specify the `AUTO_RANDOM` attribute in the **primary key** of the `books` table. For more information about inserting data, see [Insert Data](/develop/dev-guide-insert-data.md).
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="SQL">
+<div label="SQL" value="sql">
 
 {{< copyable "sql" >}}
 
@@ -197,7 +197,7 @@ Query OK, 1 row affected (0.03 sec)
 
 </div>
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "" >}}
 

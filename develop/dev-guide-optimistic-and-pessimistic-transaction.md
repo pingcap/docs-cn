@@ -25,15 +25,15 @@ These operations must either all succeed or all fail. You must ensure that overs
 
 The following code uses two threads to simulate the process that two users buy the same book in a pessimistic transaction mode. There are 10 books left in the bookstore. Bob buys 6 books, and Alice buys 4 books. They complete the orders at nearly the same time. As a result, all books in inventory are sold out.
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 Because you use multiple threads to simulate the situation that multiple users insert data simultaneously, you need to use a connection object with safe threads. Here use Java's popular connection pool [HikariCP](https://github.com/brettwooldridge/HikariCP) for demo.
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 `sql.DB` in Golang is concurrency-safe, so there is no need to import a third-party package.
 
@@ -97,9 +97,9 @@ func (tx *TiDBSqlTx) Rollback() error {
 
 ### Write a pessimistic transaction example
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 **Configuration file**
 
@@ -332,7 +332,7 @@ public class TxnExample {
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 Write a `helper.go` file that contains the required database operations:
 
@@ -662,9 +662,9 @@ The Golang example already includes optimistic transactions.
 
 Run the sample program:
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "shell-regular" >}}
 
@@ -675,7 +675,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 {{< copyable "shell-regular" >}}
 
@@ -743,9 +743,9 @@ The task in this example is more challenging. Suppose there are 10 books left in
 
 Run the sample program:
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "shell-regular" >}}
 
@@ -756,7 +756,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 {{< copyable "shell-regular" >}}
 
@@ -821,9 +821,9 @@ The following code uses two threads to simulate the process that two users buy t
 
 ### Write an optimistic transaction example
 
-<SimpleTab>
+<SimpleTab  groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 **Coding**
 
@@ -1005,7 +1005,7 @@ Change it to the following to point to the optimistic transaction example.
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 The Golang example in the [Write a pessimistic transaction example](#write-a-pessimistic-transaction-example) section already supports optimistic transactions and can be used directly without changes.
 
@@ -1017,9 +1017,9 @@ The Golang example in the [Write a pessimistic transaction example](#write-a-pes
 
 Run the sample program:
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "shell-regular" >}}
 
@@ -1030,7 +1030,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 {{< copyable "shell-regular" >}}
 
@@ -1106,9 +1106,9 @@ This section describes an optimistic transaction example that prevents overselli
 
 Run the sample program:
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java">
+<div label="Java" value="java">
 
 {{< copyable "shell-regular" >}}
 
@@ -1119,7 +1119,7 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
 {{< copyable "shell-regular" >}}
 
