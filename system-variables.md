@@ -153,7 +153,7 @@ mysql> SELECT * FROM t1;
 ### `ddl_slow_threshold`
 
 - 作用域：GLOBAL
-- 是否持久化到集群：否，仅作用于当前 TiDB 实例
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`300`
 - 单位：毫秒
 - 耗时超过该阈值的 DDL 操作会被输出到日志。
