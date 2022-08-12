@@ -15,7 +15,7 @@ summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用�
 - `Normal Mode`。默认选项。该选项会禁用 FastScan，从而能够保证查询结果精度以及数据一致性。
 - `Fast Mode`。即FastScan，该选项可以实现更高效的查询性能，但不保证查询结果精度和数据一致性。
 
-该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句会在FastScan 切换完毕后正常结束。
+该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句会在 FastScan 切换完毕后正常结束。
 
 该语句仅支持对表在 TiFlash 中的 FastScan 选项进行修改，因此该选项修改后也仅对涉及到 TiFlash 表部分的读取产生对应的影响。
 
@@ -44,7 +44,7 @@ CREATE TABLE test (a INT NOT NULL, b INT);
 ALTER TABLE test SET TIFLASH REPLICA 1;
 ```
 
-`test` 表默认为 Normal Mode。你可以通过以下语句查询该表的 table mode：
+`test` 表默认不开启 FastScan 功能。你可以通过以下语句查询该表的 FastScan 功能是否开启：
 
 ```sql
 SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'test' AND table_schema = 'test'
@@ -58,7 +58,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-如果要启用 FastScan 查询 `test` 表，执行以下语句来切换，并查询当前表的 FastScan 状态。
+如果要启用 FastScan 查询 `test` 表，执行以下语句来切换，并查询当前表的 FastScan 功能是否开启。
 
 ```sql
 ALTER TABLE test SET tiflash mode FAST
