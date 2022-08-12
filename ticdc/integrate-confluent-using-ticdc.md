@@ -38,7 +38,9 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 1. 创建 Cluster API Key。
 
-    在 Confluent 集群控制面板中依次点击 **Data Integration** > **API Keys** > **Create key** 来创建 Cluster API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
+    在 Confluent 集群控制面板中依次点击 **Data integration** > **API keys** > **Create key**。在弹出的 **Select scope for API key** 页面，选择 **Global access**。
+
+    创建成功后会得到一个 Key Pair 文件，内容如下：
 
     ```
     === Confluent Cloud API key: xxx-xxxxx ===
@@ -61,9 +63,11 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
     https://yyy-yyyyy.us-east-2.aws.confluent.cloud
     ```
 
-3. 创建 Schema Registry API Key。
+3. 创建 Schema Registry API key。
 
-    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials** > **Create Key** 来创建 Schema Registry API Key。创建成功后会得到一个 Key Pair 文件，内容如下：
+    在 Confluent 集群控制面板中，选择 **Schema Registry** > **API credentials**，点击 **Edit** 和 **Create key**。
+
+    创建成功后会得到一个 Key Pair 文件，内容如下：
 
     ```
     === Confluent Cloud API key: yyy-yyyyy ===
@@ -192,7 +196,7 @@ Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只�
 
     在 Snowflake 控制面板中，选择 **Data** > **Database**。创建名为 `TPCC` 的 Database 和名为 `TiCDC` 的 Schema。
 
-2. 在 Confluent 集群控制面板中，选择 **Data Integration** > **Connectors** > **Snowflake Sink**，进入如下页面：
+2. 在 Confluent 集群控制面板中，选择 **Data integration** > **Connectors** > **Snowflake Sink**，进入如下页面：
 
     ![Add snowflake sink connector](/media/integrate/add-snowflake-sink-connector.png)
 
@@ -235,7 +239,7 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
     (6 rows affected)
     ```
 
-2. 在 Confluent 集群控制面板中，选择 **Data Integration** > **Connectors** > **Microsoft SQL Server Sink**，进入如下页面：
+2. 在 Confluent 集群控制面板中，选择 **Data integration** > **Connectors** > **Microsoft SQL Server Sink**，进入如下页面：
 
     ![Topic selection](/media/integrate/topic-selection.png)
 
@@ -243,14 +247,13 @@ SQL Server 是 Microsoft 推出的关系型数据库软件。借助 Confluent �
 
     ![Authentication](/media/integrate/authentication.png)
 
-4. 在填写 SQL Server 的连接和认证信息后，进入下一页面：
-
-    ![Configuration](/media/integrate/configuration.png)
+4. 在填写 SQL Server 的连接和认证信息后，进入下一页面。
 
 5. 在 **Configuration** 界面，按下表进行配置：
 
-    | Input Kafka record value format | AVRO |
+    | 字段 | 取值 |
     | :- | :- |
+    | Input Kafka record value format | AVRO |
     | Insert mode | UPSERT |
     | Auto create table | true |
     | Auto add columns | true |
