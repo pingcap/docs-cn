@@ -1575,6 +1575,46 @@ Configuration items related to BR backup.
 + Controls whether to limit the resources used by backup tasks to reduce the impact on the cluster when the cluster resource utilization is high. For more information, refer to [BR Auto-Tune](/br/br-auto-tune.md).
 + Default value: `true`
 
+## log-backup
+
+Configuration items related to log backup.
+
+### `enable` <span class="version-mark">New in v6.2.0</span>
+
++ Determines whether to enable log backup.
++ Default value: `false`
+
+### `file-size-limit` <span class="version-mark">New in v6.2.0</span>
+
++ The size limit on log backup data. Once this limit is reached, the backup data is automatically flushed to external storage.
++ Default value: 256MB
+
+### `initial-scan-pending-memory-quota` <span class="version-mark">New in v6.2.0</span>
+
++ The quota of cache used for storing incremental scan data during log backup.
++ Default value: `min(Total machine memory * 10%, 512 MB)`
+
+### `initial-scan-rate-limit` <span class="version-mark">New in v6.2.0</span>
+
++ The rate limit on throughput in an incremental data scan during log backup.
++ Default value: 60, indicating that the rate limit is 60 MB/s by default.
+
+### `max-flush-interval` <span class="version-mark">New in v6.2.0</span>
+
++ The maximum interval for writing backup data to external storage in log backup.
++ Default value: 5min
+
+### `num-threads` <span class="version-mark">New in v6.2.0</span>
+
++ The number of threads used in log backup.
++ Default value: CPU * 0.5
++ Value range: [2, 12]
+
+### `temp-path` <span class="version-mark">New in v6.2.0</span>
+
++ The temporary path to which log files are written before being flushed to external storage.
++ Default value: `${deploy-dir}/data/log-backup-temp`
+
 ## cdc
 
 Configuration items related to TiCDC.
@@ -1699,7 +1739,7 @@ Suppose that your machine on which TiKV is deployed has limited resources, for e
 
 + The soft limit on the bandwidth with which transactions and the Coprocessor read data.
 + Default value: `0KB` (which means no limit)
-+ + Recommended setting: Use the default value `0` in most cases unless the `foreground-cpu-time` setting is not enough to limit the read bandwidth. For such an exception, it is recommended to set the value smaller than `20MB` in the instance with 4 or less cores.
++ Recommended setting: Use the default value `0` in most cases unless the `foreground-cpu-time` setting is not enough to limit the read bandwidth. For such an exception, it is recommended to set the value smaller than `20MB` in the instance with 4 or less cores.
 
 ### Background Quota Limiter
 
