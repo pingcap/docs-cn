@@ -1408,6 +1408,16 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
     - `txn_mode`: The transactional mode. Value options are `OPTIMISTIC` and `PESSIMISTIC`.
     - `sql`: The SQL statement corresponding to the current query.
 
+### tidb_guarantee_linearizability <span class="version-mark">New in v5.0</span>
+
+- Scope: SESSION | GLOBAL
+- Persists to cluster: Yes
+- Type: Boolean
+- Default value: `OFF`
+- This variable controls the way commit TS is calculated for async commit. By default (with the `OFF` value), the two-phase commit requests a new TS from the PD server and uses the TS to calculate the final commit TS. In this situation, linearizability is guaranteed for all the concurrent transactions.
+- If you set this variable to `ON`, the TS fetched from the PD server is saved, with the cost that only causal consistency is guaranteed but not linearizability. For more details, see the blog post [Async Commit, the Accelerator for Transaction Commit in TiDB 5.0](https://en.pingcap.com/blog/async-commit-the-accelerator-for-transaction-commit-in-tidb-5-0/).
+- For scenarios that require only causal consistency, you can set this variable to `ON` to improve performance.
+
 ### tidb_hash_join_concurrency
 
 > **Warning:**
@@ -1543,6 +1553,18 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Scope: SESSION
 - Default value: `tikv,tiflash,tidb`
 - This variable is used to set the storage engine list that TiDB can use when reading data.
+
+### tidb_last_txn_info <span class="version-mark">New in v4.0.9</span>
+
+- Scope: SESSION
+- Persists to cluster: No
+- Type: String
+- This variable is used to get the last transaction information within the current session. It is a read-only variable. The transaction information includes:
+    - The transaction scope.
+    - The start and commit TS.
+    - The transaction commit mode, which might be a two-phase, one-phase, or async commit.
+    - The information of transaction fallback from async commit or one-phase commit to two-phase commit.
+    - The error encountered.
 
 ### tidb_log_file_max_days <span class="version-mark">New in v5.3.0</span>
 
