@@ -54,7 +54,7 @@ TiFlash 在 v6.1.0 对 Proxy 做了升级（与 TiKV v6.0.0 对齐）。新的 P
 
 ## 从 v5.x 或 v6.0 升级至 v6.2
 
-TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，同时，引入了一个新的实验特性 [FastScan](/develop/dev-guide-use-fastscan.md)，因此，从 v5.x 或 v6.0 升级至 v6.2 时，除了需要注意 [TiFlash Proxy](#tiflash-proxy) 和[动态分区裁剪](#动态分区裁剪)的变化，还应注意 PageStorage 和 FastScan 功能引入带来的注意事项。
+TiFlash 在 v6.2.0 将数据格式升级到 V3 版本，因此，从 v5.x 或 v6.0 升级至 v6.2 时，除了需要注意 [TiFlash Proxy](#tiflash-proxy) 和[动态分区裁剪](#动态分区裁剪)的变化，还应注意 PageStorage 和 FastScan 功能的变化。
 
 ### PageStorage
 
