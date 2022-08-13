@@ -22,8 +22,8 @@ SELECT * FROM table_a t ORDER BY gmt_modified DESC LIMIT offset, row_count;
 
 除非明确要求不要使用任何排序来随机展示数据，使用分页查询语句时都应该通过 `ORDER BY` 语句指定查询结果的排序方式。
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 例如，在 [Bookshop](/develop/dev-guide-bookshop-schema-design.md) 应用当中，希望将最新书籍列表以分页的形式返回给用户。通过 `LIMIT 0, 10` 语句，便可以得到列表第 1 页的书籍信息，每页中最多有 10 条记录。获取第 2 页信息，则改成可以改成 `LIMIT 10, 10`，如此类推。
 
@@ -37,7 +37,7 @@ LIMIT 0, 10;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 在使用 Java 开发应用程序时，后端程序从前端接收到的参数页码 `page_number` 和每页的数据条数 `page_size`，而不是起始记录数 `offset`，因此在进行数据库查询前需要对其进行一些转换。
 
@@ -81,8 +81,8 @@ public List<Book> getLatestBooksPage(Long pageNumber, Long pageSize) throws SQLE
 
 下面将介绍一种更为高效的分页批处理方案：
 
-<SimpleTab>
-<div label="SQL">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 使用 SQL 实现分页批处理，可以按照如下步骤进行：
 
@@ -135,7 +135,7 @@ ORDER BY id;
 ```
 
 </div>
-<div label="Java">
+<div label="Java" value="java">
 
 在 Java 语言当中，可以定义一个 `PageMeta` 类来存储分页元信息。
 
