@@ -282,23 +282,23 @@ TiDB 版本：6.2.0
 
 ### 其他
 
-- TiFlash 的新存储格式不能直接从 format_version 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
+- TiFlash 的存储格式 (`format_version`) 不能直接从 4 降级到 3，详情请参考 [TiFlash v6.2.0 升级帮助](/tiflash-620-upgrade-guide.md)。
 - 在 v6.2.0 以及后续版本，**强烈建议**保留 `dt_enable_logical_split` 的默认值 `false`，不要将其修改为 `true`。具体请参考已知问题 [#5576](https://github.com/pingcap/tiflash/issues/5576)。
-- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本, 需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
-- 从 v6.2.0 开始，BR 恢复 mysql schema 下的数据需要需要指定参数 `--with-sys-table=true`。
+- 如果备份集群包含 TiFlash，执行 PITR 后恢复集群的数据不包含 TiFlash 副本，需要手动恢复 TiFlash 副本；执行 exchange partition DDL 会导致 PITR restore 出错；上游数据库使用 TiDB Lightning Physical 方式导入的数据，无法作为数据日志备份下来，数据导入后需要执行一次全量备份。关于 PITR 功能使用的其他事项，请参考 [PITR 使用限制](/br/point-in-time-recovery.md#使用限制)。
+- 从 v6.2.0 开始，BR 支持通过手动指定参数 `--with-sys-table=true` 来恢复 mysql schema 下的表。
 - 使用 `ALTER TABLE` 增删改多个列或索引时，TiDB 会根据执行前的 schema 结构来验证一致性，而不管同一 DDL 语句中的更改。同时，语句的执行顺序上 TiDB 和 MySQL 在某些场景不兼容。
 - 在集群中，如果 TiDB 组件的版本为 v6.2.0 及以上，则 TiKV 组件版本不得低于 v6.2.0。
 - TiKV 新增配置项 `split.region-cpu-overload-threshold-ratio` 支持在线修改。
 - 慢查询日志以及 `INFORMATION_SCHEMA` 中的系统表 `statements_summary` 和 `slow_query` 新增输出 `binary_plan`，即以二进制格式编码的执行计划。
-- `SHOW TABLE xx REGIONS` 返回的结果中新增两列：`SCHEDULING_CONSTRAINTS` 以及 `SCHEDULING_STATE`，表示对应 Region 在 Placement In SQL 中设置的调度规则以及当前的调度状态。
+- `SHOW TABLE ... REGIONS` 返回的结果中新增两列：`SCHEDULING_CONSTRAINTS` 以及 `SCHEDULING_STATE`，表示对应 Region 在 Placement In SQL 中设置的调度规则以及当前的调度状态。
 - 从 v6.2.0 开始，你可以通过 [TiKV-CDC](https://github.com/tikv/migration/tree/main/cdc) 组件实现 RawKV 的 Change Data Capture (CDC)。
 - 使用 `ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定保存点时，MySQL 会释放该保存点之后才持有的锁，但在 TiDB 悲观事务中，不会立即释放该保存点之后才持有的锁，而是等到事务提交或者回滚时，才释放全部持有的锁。
 - 从 v6.2.0 开始, 执行 `select tidb_version()` 返回的信息中会包含 Store 类型（tikv 或者 unistore）
 - TiDB 不再有隐藏的系统变量。
 - 新增两个系统表：
 
-    - INFORMATION_SCHEMA.VARIABLES_INFO：用于查看 TiDB 系统变量相关的信息。
-    - PERFORMANCE_SCHEMA.SESSION_VARIABLES：用于查看 TiDB session 系统变量相关的信息。
+    - `INFORMATION_SCHEMA.VARIABLES_INFO`：用于查看 TiDB 系统变量相关的信息。
+    - `PERFORMANCE_SCHEMA.SESSION_VARIABLES`：用于查看 TiDB session 系统变量相关的信息。
 
 ## 废弃功能
 
