@@ -7,20 +7,20 @@ summary: An overview of the usage of ALTER TABLE ... SET TIFLASH MODE ... for th
 
 > **Warning:**
 >
-> This statement is still an experimental feature. It is NOT recommended that you use it in the production environment.
+> This statement is experimental and its form and usage may change in subsequent versions.
 
-You can use the `ALTER TABLE...SET TIFLASH MODE...` statement to switch the mode of the corresponding table in TiFlash. The following modes are currently supported.
+You can use the `ALTER TABLE...SET TIFLASH MODE...` statement to enable or disable FastScan on the corresponding table in TiFlash:
 
-- `Normal Mode`. The default mode. This mode guarantees the accuracy of query results and data consistency.
-- `Fast Mode`. This mode does not guarantee the accuracy of query results and data consistency, but provides more efficient query performance.
+- `Normal Mode`: the default option. In this mode, FastScan is disabled and the accuracy of query results and data consistency are guaranteed.
+- `Fast Mode`: in this mode, FastScan is enabled. TiFlash provides more efficient query performance, but does not guarantee the accuracy of query results and data consistency.
 
-This statement executes without blocking the execution of existing SQL statements or the running of TiDB features, such as transactions, DDL, and GC, and without changing the data content accessed through the SQL statement. The statement will end normally when the mode switch is completed.
+The execution of `ALTER TABLE ... SET TIFLASH MODE ...` does not block existing SQL statements or interrupt other TiDB features, such as transactions, DDL, and GC. At the same time, data accessed through SQL statements is not altered. This statement ends normally when the mode is switched.
 
-This statement only supports changing the mode to tables in TiFlash, so the mode change only affects reads involving the TiFlash table.
+You can only execute this statement to switch the FastScan option for tables in TiFlash. Therefore, option change only affects reading tables in TiFlash.
 
-The mode change to tables in TiFlash takes effect only if the table has a TiFlash Replica. If the TiFlash Replica of the table is empty when you change the mode, the mode will take effect only after the TiFlash Replica is subsequently reset. You can use [`ALTER TABLE ... SET TIFLASH REPLICA ...`](/sql-statements/sql-statement-alter-table.md) to reset the TiFlash Replica.
+The FastScan switch takes effect only if the table has TiFlash replicas. If no TiFlash replica is present when you switch the option, the option takes effect only after TiFlash replicas are configured. You can use [`ALTER TABLE ... SET TIFLASH REPLICA ...`](/sql-statements/sql-statement-alter-table.md) to configure TiFlash replicas.
 
-You can query the current TiFlash table mode of the corresponding table using the system table `information_schema.tiflash_replica`.
+You can query the current TiFlash table switch of the corresponding table using the system table `information_schema.tiflash_replica`.
 
 ## Synopsis
 
@@ -39,7 +39,7 @@ CREATE TABLE test (a INT NOT NULL, b INT);
 ALTER TABLE test SET TIFLASH REPLICA 1;
 ```
 
-The default mode of the `test` table is Normal Mode. You can query the table mode with the following statement.
+The default option of the `test` table is Normal Mode. You can query the table option with the following statement.
 
 ```sql
 SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'test' AND table_schema = 'test'
@@ -53,7 +53,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-If you want to enable Fast Mode to query the `test` table, execute the following statement to switch the mode, and you can query the mode of the current table.
+To enable FastScan for the `test` table, execute the following statement and then check whether FastScan is enabled for this table.
 
 ```sql
 ALTER TABLE test SET tiflash mode FAST
@@ -68,7 +68,7 @@ SELECT table_mode FROM information_schema.tiflash_replica WHERE table_name = 'te
 +------------+
 ```
 
-If you want to switch back to Normal Mode mode, execute the following statement to switch.
+To disable FastScan, execute the following statement.
 
 ```sql
 ALTER TABLE test SET tiflash mode NORMAL
@@ -82,7 +82,7 @@ ALTER TABLE test SET tiflash mode NORMAL
 
 When the downstream is also TiDB, `ALTER TABLE ... SET TiFLASH MODE ...` will be synchronized downstream by TiDB Binlog. In other scenarios, TiDB Binlog does not synchronize this statement.
 
-Fast mode does not support TiCDC.
+FastScan does not support TiCDC.
 
 ## See also
 
