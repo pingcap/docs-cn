@@ -411,12 +411,12 @@ In special cases (such as when a node needs to be forcibly taken down), or if th
 
 4. Manually delete TiFlash data files (the location can be found in the `data_dir` directory under the TiFlash configuration of the cluster topology file).
 
-5. Manually update TiUP's cluster configuration file (delete the information of the TiFlash node that goes down in edit mode).
+5. Delete information about the TiFlash node that goes down from the cluster topology using the following command:
 
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup cluster edit-config <cluster-name>
+    tiup cluster scale-in <cluster-name> --node <pd_ip>:<pd_port> --force
     ```
 
 > **Note:**
