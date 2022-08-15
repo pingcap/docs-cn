@@ -52,12 +52,12 @@ SELECT COUNT(*) FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `r
 ```
 
 - 若返回数量大于 1 万条，请参考[批量删除](#批量删除)。
-- 若返回数量小于 1 万条，可参考此处的示例进行删除：
+- 若返回数量小于 1 万条，可参考下面的示例进行删除：
 
-<SimpleTab>
-<div label="SQL" href="delete-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
-{{< copyable "sql" >}}
+在 SQL 中，删除数据的示例如下：
 
 ```sql
 DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` <= "2022-04-15 00:15:00";
@@ -65,9 +65,9 @@ DELETE FROM `ratings` WHERE `rated_at` >= "2022-04-15 00:00:00" AND  `rated_at` 
 
 </div>
 
-<div label="Java" href="delete-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中，删除数据的示例如下：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -92,9 +92,9 @@ try (Connection connection = ds.getConnection()) {
 
 </div>
 
-<div label="Golang" href="delete-golang">
+<div label="Golang" value="golang">
 
-{{< copyable "" >}}
+在 Golang 中，删除数据的示例如下：
 
 ```go
 package main
@@ -163,16 +163,16 @@ TiDB 使用[统计信息](/statistics.md)来决定索引的选择，因此，在
 
 ### 编写批量删除循环
 
-首先，你应在你的应用或脚本的循环中，编写一个 `SELECT` 查询。这个查询的返回值可以作为需要删除的行的主键。需要注意的是，定义这个 `SELECT` 查询时，需要注意使用 `WHERE` 子句过滤需要删除的行。
+在你的应用或脚本的循环中，编写一个 `DELETE` 语句，使用 `WHERE` 子句过滤需要删除的行，并使用 `LIMIT` 限制单次删除的数据条数。
 
 ### 批量删除例子
 
 假设发现在特定时间段内，发生了业务错误，需要删除这期间内的所有 [rating](/develop/dev-guide-bookshop-schema-design.md#ratings-表) 的数据，例如，`2022-04-15 00:00:00` 至 `2022-04-15 00:15:00` 的数据。并且在 15 分钟内，有大于 1 万条数据被写入，此时请使用循环删除的方式进行删除：
 
-<SimpleTab>
-<div label="Java">
+<SimpleTab groupId="language">
+<div label="Java" value="java">
 
-在 Java 中，批量更新程序类似于以下内容：
+在 Java 中，批量删除程序类似于以下内容：
 
 {{< copyable "" >}}
 
@@ -239,9 +239,9 @@ public class BatchDeleteExample
 
 </div>
 
-<div label="Golang">
+<div label="Golang" value="golang">
 
-在 Golang 中，批量更新程序类似于以下内容：
+在 Golang 中，批量删除程序类似于以下内容：
 
 {{< copyable "" >}}
 

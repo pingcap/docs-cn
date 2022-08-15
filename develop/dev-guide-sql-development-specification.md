@@ -29,7 +29,7 @@ summary: TiDB 的 SQL 开发规范。
     ```sql
     SELECT gmt_create
     FROM ...
-    WHERE DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s') = '20090101 00:00:0'
+    WHERE DATE_FORMAT(gmt_create, '%Y%m%d %H:%i:%s') = '20090101 00:00:00'
     ```
 
     推荐的写法：
@@ -38,8 +38,8 @@ summary: TiDB 的 SQL 开发规范。
 
     ```sql
     SELECT DATE_FORMAT(gmt_create，'%Y%m%d %H:%i:%s')
-    FROM .. .
-    WHERE gmt_create = str_to_date('20090101 00:00:00'，'%Y%m%d %H:%i:s')
+    FROM ...
+    WHERE gmt_create = str_to_date('20090101 00:00:00', '%Y%m%d %H:%i:%s')
     ```
 
 ## 其他规范

@@ -223,6 +223,10 @@ delta_index_cache_size = 0
 
 除以上几项外，其余功能参数和 TiKV 的配置相同。需要注意的是：`key` 为 `engine` 的 `label` 是保留项，不可手动配置。
 
+### 通过拓扑 label 进行副本调度
+
+[TiFlash 设置可用区](/tiflash/use-tiflash.md#设置可用区)
+
 ### 多盘部署
 
 TiFlash 支持单节点多盘部署。如果你的部署节点上有多块硬盘，可以通过以下的方式配置参数，提高节点的硬盘 I/O 利用率。TiUP 中参数配置格式参照[详细 TiFlash 配置模版](https://github.com/pingcap/docs-cn/blob/master/config-templates/complex-tiflash.yaml)。

@@ -25,15 +25,15 @@ summary: 介绍 TiDB 中的乐观事务和悲观事务，乐观事务的重试�
 
 下面代码以悲观事务的方式，用两个线程模拟了两个用户并发买同一本书的过程，书店剩余 10 本，Bob 购买了 6 本，Alice 购买了 4 本。两个人几乎同一时间完成订单，最终，这本书的剩余库存为零。
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="pessimstic-concurrent-save-java">
+<div label="Java" value="java">
 
 当使用多个线程模拟多用户同时插入的情况时，需要使用一个线程安全的连接对象，这里使用 Java 当前较流行的连接池 [HikariCP](https://github.com/brettwooldridge/HikariCP) 。
 
 </div>
 
-<div label="Golang" href="pessimstic-concurrent-save-golang">
+<div label="Golang" value="golang">
 
 Golang 的 `sql.DB` 是并发安全的，无需引入外部包。
 
@@ -97,13 +97,13 @@ func (tx *TiDBSqlTx) Rollback() error {
 
 ### 1. 编写悲观事务示例
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="pessimstic-code-java">
+<div label="Java" value="java">
 
 **配置文件**
 
-如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
+在 Java 中，如果你使用 Maven 作为包管理，在 `pom.xml` 中的 `<dependencies>` 节点中，加入以下依赖来引入 `HikariCP`，同时设定打包目标，及 JAR 包启动的主类，完整的 `pom.xml` 如下所示:
 
 {{< copyable "" >}}
 
@@ -332,9 +332,9 @@ public class TxnExample {
 
 </div>
 
-<div label="Golang" href="pessimstic-code-golang">
+<div label="Golang" value="golang">
 
-首先设计一个帮助类 `helper.go`，封装了所需的数据库操作：
+首先编写一个封装了所需的数据库操作的 `helper.go` 文件：
 
 {{< copyable "" >}}
 
@@ -584,7 +584,7 @@ func createUser(txn *util.TiDBSqlTx, id int, nickname string, balance decimal.De
 }
 ```
 
-再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的参数:
+再编写一个包含 `main` 函数的 `txn.go` 来调用 `helper.go`，同时处理传入的命令行参数：
 
 {{< copyable "" >}}
 
@@ -662,11 +662,11 @@ Golang 的例子中，已经包含乐观事务。
 
 运行示例程序：
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="pessimstic-not-oversell-java">
+<div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -675,9 +675,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="pessimstic-not-oversell-golang">
+<div label="Golang" value="golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
@@ -743,11 +743,11 @@ mysql> SELECT * FROM users;
 
 运行示例程序：
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="pessimstic-oversell-java">
+<div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -756,9 +756,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="pessimstic-oversell-golang">
+<div label="Golang" value="golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
@@ -821,9 +821,11 @@ mysql> SELECT * FROM users;
 
 ### 1. 编写乐观事务示例
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="optimistic-code-java">
+<div label="Java" value="java">
+
+使用 Java 编写乐观事务示例：
 
 **代码编写**
 
@@ -1007,7 +1009,7 @@ public class TxnExample {
 
 </div>
 
-<div label="Golang" href="optimistic-code-golang">
+<div label="Golang" value="golang">
 
 Golang 在[编写悲观事务示例](#1-编写悲观事务示例)章节中的例子已经支持了乐观事务，无需更改，可直接使用。
 
@@ -1019,11 +1021,11 @@ Golang 在[编写悲观事务示例](#1-编写悲观事务示例)章节中的例
 
 运行示例程序：
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="optimistic-not-oversell-java">
+<div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -1032,9 +1034,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="optimistic-not-oversell-golang">
+<div label="Golang" value="golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn
@@ -1108,11 +1110,11 @@ mysql> SELECT * FROM users;
 
 运行示例程序：
 
-<SimpleTab>
+<SimpleTab groupId="language">
 
-<div label="Java" href="optimistic-oversell-java">
+<div label="Java" value="java">
 
-{{< copyable "shell-regular" >}}
+在 Java 中运行示例程序：
 
 ```shell
 mvn clean package
@@ -1121,9 +1123,9 @@ java -jar target/plain-java-txn-0.0.1-jar-with-dependencies.jar ALICE_NUM=4 BOB_
 
 </div>
 
-<div label="Golang" href="optimistic-oversell-golang">
+<div label="Golang" value="golang">
 
-{{< copyable "shell-regular" >}}
+在 Golang 中运行示例程序：
 
 ```shell
 go build -o bin/txn

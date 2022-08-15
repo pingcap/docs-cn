@@ -32,9 +32,9 @@ title: TiFlash 集群运维
 
 | 日志信息 | 日志含义 |
 |---------------|-------------------|
-| [INFO] [`<unknown>`] ["KVStore: Start to persist [region 47, applied: term 6 index 10]"] [thread_id=23] | 在 TiFlash 中看到类似日志代表数据开始同步 |
-| [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handling DAG request"] [thread_id=30] | 该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
-| [DEBUG] [`<unknown>`] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handle DAG request done"] [thread_id=30] | 该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
+| `[INFO] [<unknown>] ["KVStore: Start to persist [region 47, applied: term 6 index 10]"] [thread_id=23]` | 在 TiFlash 中看到类似日志代表数据开始同步 |
+| `[DEBUG] [<unknown>] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handling DAG request"] [thread_id=30]` | 该日志代表 TiFlash 开始处理一个 Coprocessor 请求 |
+| `[DEBUG] [<unknown>] ["CoprocessorHandler: grpc::Status DB::CoprocessorHandler::execute(): Handle DAG request done"] [thread_id=30]` | 该日志代表 TiFlash 完成 Coprocessor 请求的处理 |
 
 你可以找到一个 Coprocessor 请求的开始或结束，然后通过日志前面打印的线程号找到该 Coprocessor 请求的其他相关日志。
 
@@ -42,11 +42,12 @@ title: TiFlash 集群运维
 
 `information_schema.tiflash_replica` 系统表的列名及含义如下：
 
-| 列名          | 含义                |
-|---------------|---------------------|
-| TABLE_SCHEMA  | 数据库名            |
-| TABLE_NAME    | 表名                |
-| TABLE_ID      | 表 ID               |
-| REPLICA_COUNT | TiFlash 副本数      |
-| AVAILABLE     | 是否可用（0/1）     |
-| PROGRESS      | 同步进度 [0.0~1.0] |
+| 列名            | 含义                                                                     |
+|-----------------|-------------------------------------------------------------------------|
+| TABLE_SCHEMA    | 数据库名                                                                 |
+| TABLE_NAME      | 表名                                                                     |
+| TABLE_ID        | 表 ID                                                                    |
+| REPLICA_COUNT   | TiFlash 副本数                                                           |
+| LOCATION_LABELS | 给 PD 的 hint，让 Region 的多个副本尽可能按照 LOCATION_LABELS 里的设置分散  |
+| AVAILABLE       | 是否可用（0/1）                                                          |
+| PROGRESS        | 同步进度 [0.0~1.0]                                                       |
