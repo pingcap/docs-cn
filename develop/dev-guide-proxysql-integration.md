@@ -223,7 +223,11 @@ sudo setenforce 0 # Only on Linux
 docker-compose up -d
 ```
 
-这样就已经完成了一个集成了 TiDB 与 ProxySQL 环境的启动，这将启动两个容器。**请勿**在生产环境使用此快速体验方式创建集成环境。你可以使用用户名为 `root`，密码为空的账号，登录到本机的 `6033` 端口 (ProxySQL)。容器具体配置可见 [`docker-compose.yaml`](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/docker-compose.yaml)，ProxySQL 具体配置可见 [proxysql-docker.cnf](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/proxysql-docker.cnf)。
+> **注意：**
+>
+> **请勿**在生产环境使用此快速体验方式创建集成环境。
+
+这样就已经完成了一个集成了 TiDB 与 ProxySQL 环境的启动，这将启动两个容器。你可以使用用户名为 `root`，密码为空的账号，登录到本机的 `6033` 端口 (ProxySQL)。容器具体配置可见 [`docker-compose.yaml`](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/docker-compose.yaml)，ProxySQL 具体配置可见 [proxysql-docker.cnf](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/proxysql-docker.cnf)。
 
 运行如下命令：
 
