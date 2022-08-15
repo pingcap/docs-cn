@@ -211,7 +211,7 @@ if __name__ == "__main__":
         "content": {
             "post": {
                 "zh-CN": {
-                    "title": "待处理的 PR 数目报告",
+                    "title": "待处理的发版文档 PR 数目报告",
                     "content": [
                         [
                             {
@@ -222,7 +222,7 @@ if __name__ == "__main__":
                         [
                             {
                                 "tag": "text",
-                                "text": "待处理 PR 数目如下"
+                                "text": "待处理的发版文档 PR 数目如下"
                             }
                         ],
                         [
