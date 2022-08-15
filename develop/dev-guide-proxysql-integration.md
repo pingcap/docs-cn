@@ -18,6 +18,12 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 <SimpleTab grouId="startup-tidb">
 
+<div label="TiDB Cloud" value="tidb-cloud">
+
+请参考[使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
+
+</div>
+
 <div label="编译源码" value="source-code">
 
 1. 下载 [TiDB](https://github.com/pingcap/tidb) 源码，进入 `tidb-server` 目录后，使用 `go build` 进行编译。
@@ -57,12 +63,6 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
     ```shell
     tiup playground
     ```
-
-</div>
-
-<div label="TiDB Cloud" value="tidb-cloud">
-
-请参考[使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)。
 
 </div>
 
