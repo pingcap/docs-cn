@@ -1214,7 +1214,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：布尔值
 - 默认值：`OFF`
 - 此变量控制异步提交 (Async Commit) 中提交时间戳的计算方式。默认情况下（使用 `OFF` 值），两阶段提交从 PD 服务器请求一个新的时间戳，并使用该时间戳计算最终提交的时间戳，这样可保证所有并发事务的线性化。
-- 如果将该变量值设为 `ON`，从 PD 获取的时间戳会被保存下来，这种情况下只保证因果一致性但不保证线性一致性。详情请参考博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
+- 如果将该变量值设为 `ON`，从 PD 获取的时间戳会被保存下来，这种情况下只保证因果一致性但不保证线性一致性。详情请参考 PingCAP 博文 [Async Commit 原理介绍](https://pingcap.com/zh/blog/async-commit-principle)。
 - 对于需要只保证因果一致性的场景，可将此变量设为 `ON` 以提升性能。
 
 ### `tidb_hash_join_concurrency`
