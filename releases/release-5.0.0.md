@@ -146,7 +146,7 @@ TiDB 支持对输出的日志信息进行脱敏处理，你可以通过以下开
 
 ### MPP 架构
 
-[用户文档](/tiflash/use-tiflash.md)
+[用户文档](/tiflash/use-tiflash-mpp-mode.md)
 
 TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查询可以由不同 TiFlash 节点分担共同完成。
 
@@ -154,7 +154,7 @@ TiDB 通过 TiFlash 节点引入了 MPP 架构。这使得大型表连接类查�
 
 经过 Benchmark 测试，在 TPC-H 100 的规模下，TiFlash MPP 提供了显著超越 Greenplum，Apache Spark 等传统分析数据库或数据湖上分析引擎的速度。借助这套架构，用户可以直接针对最新的交易数据进行大规模分析查询，且性能超越传统离线分析方案。经测试，TiDB 5.0 在同等资源下，MPP 引擎的总体性能是 Greenplum 6.15.0 与 Apache Spark 3.1.1 两到三倍之间，部分查询可达 8 倍性能差异。
 
-当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash.md)）：
+当前 MPP 模式不支持的主要功能如下（详细信息请参阅[用户文档](/tiflash/use-tiflash-mpp-mode.md)）：
 
 + 分区表
 + Window Function

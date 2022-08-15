@@ -127,7 +127,7 @@ TiDB 版本：5.4.0
     - 提升从 TiKV 同步数据时，由行存格式到列存格式的数据转换效率，整体的数据同步性能提升 50%
     - 调整一些配置项的默认值，提升 TiFlash 的性能和稳定性。HTAP 混合负载下，单表简单查询的性能最高提升 20%
 
-    用户文档：[TiFlash 支持的计算下推](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
+    用户文档：[TiFlash 支持的计算下推](/tiflash/tiflash-supported-pushdown-calculations.md)，[TiFlash 配置文件](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)
 
 - **通过 session 变量实现有界限过期数据读取**
 

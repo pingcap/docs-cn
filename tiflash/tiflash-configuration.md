@@ -225,7 +225,7 @@ delta_index_cache_size = 0
 
 ### 通过拓扑 label 进行副本调度
 
-[TiFlash 设置可用区](/tiflash/use-tiflash.md#设置可用区)
+[TiFlash 设置可用区](/tiflash/create-tiflash-replicas.md#设置可用区)
 
 ### 多盘部署
 
