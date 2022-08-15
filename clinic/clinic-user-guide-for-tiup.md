@@ -94,7 +94,7 @@ Before using PingCAP Clinic, you need to install Diag (a component to collect da
     > - Diag v0.9.0 and later versions support setting `region`.
     > - For versions earlier than Diag v0.9.0, data is uploaded to Clinic Server in the Chinese region by default. To set `region` in these versions, run the `tiup update diag` command to upgrade Diag to the latest version and then set `region` in Diag.
 
-    <SimpleTab groupId="clinicServer>
+    <SimpleTab groupId="clinicServer">
     <div label="Clinic Server in the US" value="clinic-us">
 
     For Clinic Server in the US, set `region` to `US` using the following command:

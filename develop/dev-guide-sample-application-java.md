@@ -515,7 +515,7 @@ public class JDBCExample
 
 </div>
 
-<div label="Using Mybatis (Recommended)" value=mybatis"">
+<div label="Using Mybatis (Recommended)" value="mybatis">
 
 Compared with [Mybatis](https://mybatis.org/mybatis-3/index.html), the JDBC implementation might be not a best practice, because you need to write error handling logic manually and cannot reuse code easily, which makes your code slightly redundant.
 
