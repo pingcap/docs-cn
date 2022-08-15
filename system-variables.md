@@ -1649,7 +1649,7 @@ explain select * from t where age=5;
 - 是否持久化到集群：否
 - 类型：布尔值
 - 默认值：`OFF`
-- 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash 协处理器。
+- 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
 
 ### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
