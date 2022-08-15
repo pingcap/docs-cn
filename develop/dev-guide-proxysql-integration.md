@@ -223,7 +223,7 @@ sudo setenforce 0 # Only on Linux
 docker-compose up -d
 ```
 
-> **注意：**
+> **警告：**
 >
 > **请勿**在生产环境使用此快速体验方式创建集成环境。
 
