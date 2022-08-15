@@ -7,13 +7,12 @@ summary: TiDB 数据库中 ALTER TABLE ... SET TIFLASH MODE ... 语句的使用�
 
 > **警告：**
 >
-> 该语句目前是实验性功能。
-> 该实验性功能的形式和使用方法可能会在未来版本中发生变化。
+> 该语句目前是实验性功能，其形式和使用方法可能会在未来版本中发生变化。
 
-使用 `ALTER TABLE ... SET TIFLASH MODE ...` 语句可以在对应表上启用 FastScan。目前支持以下选项：
+使用 `ALTER TABLE ... SET TIFLASH MODE ...` 语句，你可以在对应表上启用或禁用 FastScan：
 
-- `Normal Mode`。默认选项。该选项会禁用 FastScan，从而能够保证查询结果精度以及数据一致性。
-- `Fast Mode`。即FastScan，该选项可以实现更高效的查询性能，但不保证查询结果精度和数据一致性。
+- `Normal Mode`：默认选项。该选项会禁用 FastScan，从而能够保证查询结果精度以及数据一致性。
+- `Fast Mode`：即FastScan，该选项可以实现更高效的查询性能，但不保证查询结果精度和数据一致性。
 
 该语句执行时不会阻塞现有 SQL 语句的执行或 TiDB 功能的使用，包括事务、DDL、GC 等，也不会改变通过 SQL 语句访问获得的数据内容。该语句会在 FastScan 切换完毕后正常结束。
 
