@@ -592,7 +592,7 @@ cd example/proxy-rule-admin-interface
         ROLLBACK;
         ```
 
-        `INSERT` 语句预计不会匹配所有规则，因此将使用用户的 `default_hostgroup`（为 `0`），从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。而因为 ProxySQL 默认开启用户的 `transaction_persistent`，这将使同一个事务内的所有语句运行在同一个 `hostgroup` 中，因此，这里的 `SELECT * FROM test.test;` 也将转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
+        `BEGIN` 语句预计不会匹配所有规则，因此将使用用户的 `default_hostgroup`（为 `0`），从而转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。而因为 ProxySQL 默认开启用户的 `transaction_persistent`，这将使同一个事务内的所有语句运行在同一个 `hostgroup` 中，因此，这里的 `INSERT` 语句和 `SELECT * FROM test.test;` 也将转发至 `hostgroup` 为 `0` 的 TiDB 后端 `tidb-0` 中。
 
 5. 停止并清除 Docker Compose 启动的容器、网络拓扑等资源。
 
@@ -648,3 +648,9 @@ cd example/load-balance-config-file
 >
 > - ProxySQL 的配置保存在 SQLite 中。配置文件仅在 SQLite 不存在时读取。
 > - ProxySQL **不建议**使用配置文件进行配置更改，仅作为初始化配置时使用，请勿过度依赖配置文件。
+> - 这是由于使用 **_ProxySQL Admin Interface_** 配置时，会有以下优点：
+>
+>     - 输入校验。
+>     - 可使用任意 MySQL Client 进行配置更改。
+>     - 更高的可用性（因为无需重启）。
+>     - 在使用 [ProxySQL Cluster](https://proxysql.com/documentation/proxysql-cluster/) 时将自动同步至其他 ProxySQL 节点。
