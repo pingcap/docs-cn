@@ -245,6 +245,7 @@ TiDB 版本：6.2.0
 | [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
 | [tidb_max_paging_size](/system-variables.md#tidb_max_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
 | [tidb_min_paging_size](/system-variables.md#tidb_min_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
+| [tidb_txn_commit_batch_size](/system-variables.md#tidb_txn_commit_batch_size-从-v620-版本开始引入) | 新增 | TBP |
 | tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 `ALTER TABLE` 语句增删改多个列或索引。 |
 
 ### 配置文件参数
@@ -326,7 +327,6 @@ TiDB 版本：6.2.0
     - 支持通过 gzip 压缩 metrics 响应减少 HTTP body 大小 [#12355](https://github.com/tikv/tikv/issues/12355) @[glorv](https://github.com/glorv)
     - 优化了 TiKV Grafana Dashboard 的可读性 [#12007](https://github.com/tikv/tikv/issues/12007) @[kevin-xianliu](https://github.com/kevin-xianliu)
     - 优化 Apply 算子的写入性能 [#12898](https://github.com/tikv/tikv/issues/12898) @[ethercflow](https://github.com/ethercflow)
-    - tikv-server 新增 `--config-info` 参数输出所有的配置信息 [#12492](https://github.com/tikv/tikv/issues/12492) @[glorv](https://github.com/glorv)
     - 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
 
 + PD
