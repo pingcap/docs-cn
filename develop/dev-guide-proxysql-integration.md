@@ -179,7 +179,7 @@ rm /var/lib/proxysql/proxysql.db
 
 另外，也可以运行 `LOAD xxx FROM CONFIG`，用配置文件中的配置覆盖当前内存中的配置。
 
-配置文件的位置为 `/etc/proxysql.cnf`，我们将上方的必需配置翻译为配置文件方式，仅更改 `mysql_servers`、`mysql_users` 这两个配置节点，其余配置可自行查看 `/etc/proxysql.cnf`：
+配置文件的位置为 `/etc/proxysql.cnf`，我们将上方的必需配置转换为配置文件方式，仅更改 `mysql_servers`、`mysql_users` 这两个配置节点，其余配置可自行查看 `/etc/proxysql.cnf`：
 
 ```
 mysql_servers =
