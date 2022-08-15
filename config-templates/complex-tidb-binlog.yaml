@@ -21,7 +21,7 @@ monitored:
 # # - PD: https://pingcap.com/docs/stable/reference/configuration/pd-server/configuration-file/
 # # All configuration items use points to represent the hierarchy, e.g:
 # #   readpool.storage.use-unified-pool
-# #      
+# #
 # # You can overwrite this configuration via the instance-level `config` field.
 
 server_configs:
@@ -128,8 +128,6 @@ drainer_servers:
       syncer.to.user: "root"
       syncer.to.password: ""
       syncer.to.port: 4000
-<<<<<<< HEAD
-=======
       syncer.to.checkpoint:
         schema: "tidb_binlog"
         type: "tidb"
@@ -153,7 +151,6 @@ drainer_servers:
       syncer.to.kafka-addrs: "10.0.1.20:9092,10.0.1.21:9092,10.0.1.22:9092"
       syncer.to.kafka-version: "2.4.0"
       syncer.to.topic-name: "asyouwish"
->>>>>>> a59515cf5 (drainer: update config template (#8615))
 
 monitoring_servers:
   - host: 10.0.1.10
