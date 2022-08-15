@@ -2032,7 +2032,7 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
 - 作用域：SESSION ｜ GLOBAL
 - 是否持久化到集群：是
 - 类型：布尔值
-- 默认值：`true`
+- 默认值：`ON`
 - 本变量控制 TiDB 是否跟踪聚合函数的内存使用情况。
 
 > **警告：**
