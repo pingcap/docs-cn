@@ -122,7 +122,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 需要将 ProxySQL 内的配置指向 TiDB，以此将 ProxySQL 作为 TiDB 的代理。下面列举必需的配置项，其余配置项可参考 [ProxySQL 官方文档](https://proxysql.com/documentation/)。
 
-### ProxySQL 配置的简单介绍
+### ProxySQL 配置简介
 
 ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。其中，配置管理的入口称为 **_ProxySQL Admin interface_**，代理的入口称为 **_ProxySQL MySQL Interface_**。
 
