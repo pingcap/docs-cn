@@ -1609,7 +1609,7 @@ mysql> desc select count(distinct a) from test.t;
 - 是否持久化到集群：是
 - 类型：布尔值
 - 默认值：`ON`
-- 指定是否允许在 TiFlash 的外部联结中使用外部表作为构建端。
+- 当该变量值为 `ON` 时，左连接始终使用内表作为构建端，右连接始终使用外表作为构建端。将该变量值设为 `OFF` 后，外连接可以灵活选择任意一边表作为构建端。
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
