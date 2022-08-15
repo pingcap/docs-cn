@@ -47,7 +47,7 @@ The best way to learn about TiDB Cloud is to follow our step-by-step tutorial. C
 
 ## What companies are using TiDB or TiDB Cloud in production?
 
-TiDB is trusted by over 1500 global enterprises across a variety of industries, such as financial services, gaming, and e-commerce. Our users include Square (US), PayPay (Japan), Shopee (Singapore), and China UnionPay (China). See our [case studies](https://en.pingcap.com/customers/) for specific details.
+TiDB is trusted by over 1500 global enterprises across a variety of industries, such as financial services, gaming, and e-commerce. Our users include Square (US), Shopee (Singapore), and China UnionPay (China). See our [case studies](https://en.pingcap.com/customers/) for specific details.
 
 ## How does TiDB Cloud ensure high availability?
 
