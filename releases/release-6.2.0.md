@@ -19,7 +19,7 @@ TiDB 版本：6.2.0
 - TiKV 支持自适应调整 CPU 使用率，确保数据库稳定高效运行。
 - 支持 Point-in-Time Recovery (PITR)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群。
-- BR 支持恢复用户和权限数据，备份恢复体验更平滑。
+- Backup & Restore (BR) 支持恢复用户和权限数据，备份恢复体验更平滑。
 - TiCDC 支持过滤指定类型的 DDL 事件，解锁更多数据同步场景。
 - 事务中支持 `SAVEPOINT` 机制，可以灵活地控制事务内的回退节点。
 - 单 `ALTER TABLE` 语句增删改多个列或索引，方便实现 SQL 功能，提升产品易用性。
@@ -145,7 +145,7 @@ TiDB 版本：6.2.0
 
 * TiKV 支持通过命令行参数提供更详细的配置信息
 
-    TiKV 配置文件可以实现对 TiKV 实例的管理。但是对运行时间长且多人管理的 TiKV 实例，用户修改了哪些配置文件，配置的默认值是什么，目前缺少比对的能力。这在集群升级、迁移时容易造成困扰。从 TiDB v6.2.0 开始，tikv-server 新增命令行参数 `—config-info`，支持输出 TiKV 所有配置项的默认值和当前值，帮助用户快速验证 TiKV 进程的启动参数，提升易用性。
+    TiKV 配置文件可以实现对 TiKV 实例的管理。但是对运行时间长且多人管理的 TiKV 实例，用户修改了哪些配置文件，配置的默认值是什么，难以进行方便地比对。这在集群升级、迁移时容易造成困扰。从 TiDB v6.2.0 开始，tikv-server 新增命令行参数 `—config-info`，支持输出 TiKV 所有配置项的默认值和当前值，帮助用户快速验证 TiKV 进程的启动参数，提升易用性。
 
     [用户文档](/command-line-flags-for-tikv-configuration.md#--config-info-format) [#12492](https://github.com/tikv/tikv/issues/12492) @[glorv](https://github.com/glorv)
 
