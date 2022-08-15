@@ -34,7 +34,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
     go build
     ```
 
-2. 随后，你可以使用配置文件 [`tidb-config.toml`](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/tidb-config.toml) 来启动 TiDB，命令如下所示：
+2. 使用配置文件 [`tidb-config.toml`](https://github.com/Icemap/tidb-proxysql-integration-test/blob/main/tidb-config.toml) 来启动 TiDB，命令如下所示：
 
     ```shell
     ${TIDB_SERVER_PATH} -config ./tidb-config.toml -store unistore -path "" -lease 0s > ${LOCAL_TIDB_LOG} 2>&1 &
@@ -124,7 +124,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 ### ProxySQL 配置的简单介绍
 
-ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。我们把配置管理的入口称为 **_ProxySQL Admin interface_**，把代理的入口称为 **_ProxySQL MySQL Interface_**。
+ProxySQL 使用一个单独的端口进行配置管理，另一个端口进行代理。其中，配置管理的入口称为 **_ProxySQL Admin interface_**，代理的入口称为 **_ProxySQL MySQL Interface_**。
 
 - **_ProxySQL Admin interface_**：可以使用具有 `admin` 权限的用户连接到管理界面，以读取和写入配置，或者使用具有 `stats` 权限的用户，只能读取某些统计数据（不读取或写入配置）。默认凭证是 `admin:admin` 和 `stats:stats`，但出于安全考虑，可以使用默认凭证进行本地连接。要远程连接，需要配置一个新的用户，通常它被命名为 `radmin`。
 - **_ProxySQL MySQL Interface_**：用于代理，将 SQL 转发到配置的服务中。
@@ -214,7 +214,7 @@ mysql_users:
 
 ## 4. 快速体验
 
-你可以使用 Docker 及 Docker Compose 快速进行集成后的环境体验，请确认 `4000`、`6033` 端口未被占用，然后执行如下命令：
+在测试环境中，你可以使用 Docker 及 Docker Compose 快速进行集成后的环境体验，请确认 `4000`、`6033` 端口未被占用，然后执行如下命令：
 
 ```shell
 git clone https://github.com/Icemap/tidb-proxysql-integration-test.git
@@ -651,8 +651,7 @@ cd example/load-balance-config-file
 > **注意：**
 >
 > - ProxySQL 的配置保存在 SQLite 中。配置文件仅在 SQLite 不存在时读取。
-> - ProxySQL **不建议**使用配置文件进行配置更改，仅作为初始化配置时使用，请勿过度依赖配置文件。
-> - 这是由于使用 **_ProxySQL Admin Interface_** 配置时，会有以下优点：
+> - ProxySQL **不建议**使用配置文件进行配置更改，仅作为初始化配置时使用，请勿过度依赖配置文件。这是由于使用 **_ProxySQL Admin Interface_** 配置时，会有以下优点：
 >
 >     - 输入校验。
 >     - 可使用任意 MySQL Client 进行配置更改。
