@@ -432,7 +432,7 @@ tiup cluster display <cluster-name>
 
 4. 手动删除 TiFlash 的数据文件，具体位置可查看在集群拓扑配置文件中 TiFlash 配置部分下的 data_dir 目录。
 
-5. 从 TiUP 拓扑信息中删除我们已经下线的 TiFlash 节点信息：
+5. 从 TiUP 拓扑信息中删除已经下线的 TiFlash 节点信息：
 
     {{< copyable "shell-regular" >}}
 
