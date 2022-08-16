@@ -90,6 +90,13 @@ This document only describes the parameters that are not included in command-lin
     + If the configuration item is set to a value other than `0`, TiKV keeps at most the number of old log files specified by `max-backups`. For example, if the value is set to `7`, TiKV keeps up to 7 old log files.
 + Default value: `0`
 
+### `pd.enable-forwarding` <span class="version-mark">New in v5.0.0</span>
+
++ Controls whether the PD client in TiKV forwards requests to the leader via the followers in the case of possible network isolation.
++ Default value: `false`
++ If the environment might have isolated network, enabling this parameter can reduce the window of service unavailability.
++ If you cannot accurately determine whether isolation, network interruption, or downtime has occurred, using this mechanism has the risk of misjudgment and causes reduced availability and performance. If network failure has never occurred, it is not recommended to enable this parameter.
+
 ## server
 
 + Configuration items related to the server.
@@ -203,6 +210,11 @@ This document only describes the parameters that are not included in command-lin
 
 + Specifies whether to simplify the returned monitoring metrics. After you set the value to `true`, TiKV reduces the amount of data returned for each request by filtering out some metrics.
 + Default value: `false`
+
+### `forward-max-connections-per-address` <span class="version-mark">New in v5.0.0</span>
+
++ Sets the size of the connection pool for service and forwarding requests to the server. Setting it to too small a value affects the request latency and load balancing.
++ Default value: `4`
 
 ## readpool.unified
 
