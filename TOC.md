@@ -87,6 +87,7 @@
     - [Gitpod](/develop/dev-guide-playground-gitpod.md)
   - Third-party Support
     - [Third-Party Libraries Support](/develop/dev-guide-third-party-support.md)
+    - [Integrate with ProxySQL](/develop/dev-guide-proxysql-integration.md)
 - Deploy
   - [Software and Hardware Requirements](/hardware-and-software-requirements.md)
   - [Environment Configuration Checklist](/check-before-deployment.md)
