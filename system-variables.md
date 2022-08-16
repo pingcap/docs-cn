@@ -1315,7 +1315,7 @@ SET tidb_query_log_max_len = 20;
 
 ### `tidb_replica_read` <span class="version-mark">从 v4.0 版本开始引入</span>
 
-- 作用域：SESSION
+- 作用域：SESSION | GLOBAL
 - 默认值：`leader`
 - 可选值：`leader`，`follower`，`leader-and-follower`
 - 这个变量用于控制 TiDB 读取数据的位置，有以下三个选择：
