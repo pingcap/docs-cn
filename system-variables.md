@@ -1832,7 +1832,7 @@ set tidb_slow_log_threshold = 200;
     - `FAST`: 开启大多数检查项，对性能几乎无影响。
     - `STRICT`: 开启全部检查项，当系统负载较高时，对悲观事务的性能有较小影响。
 
-### `tidb_txn_commit_batch_size` (从 v6.2.0 版本开始引入)
+### `tidb_txn_commit_batch_size` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
 - 作用域：GLOBAL
 - 是否持久化到集群：是
