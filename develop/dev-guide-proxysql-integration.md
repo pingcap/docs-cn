@@ -16,7 +16,7 @@ This document describes how to integrate **TiDB** with **ProxySQL** using CentOS
 
 ### Test environment
 
-<SimpleTab grouId="startup-tidb">
+<SimpleTab groupId="startup-tidb">
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
@@ -70,7 +70,7 @@ You can refer to [Build a TiDB cluster in TiDB Cloud (Developer Tier)](/develop/
 
 ### Production environment
 
-<SimpleTab grouId="startup-tidb">
+<SimpleTab groupId="startup-tidb">
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
