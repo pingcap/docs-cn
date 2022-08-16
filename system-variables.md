@@ -1839,7 +1839,7 @@ set tidb_slow_log_threshold = 200;
 - 默认值：`16384`
 - 范围：`[1, 1073741824]`
 - 单位：字节
-- 这个变量用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。对于业务负载的大部分事务都有大量的写操作，适当调大该变量可以提高批处理的效果。但需要注意的是，设置过大将会超过 TiKV 的 `raft-entry-max-size` 限制，导致提交失败。
+- 这个变量用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。如果业务负载的大部分事务都有大量的写操作，适当调大该变量可以提高批处理的效果。但需要注意的是，设置过大将会超过 TiKV 的 [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size) 限制，导致提交失败。
 
 ### `tidb_txn_mode`
 
