@@ -16,7 +16,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 ### 测试环境
 
-<SimpleTab grouId="startup-tidb">
+<SimpleTab groupId="startup-tidb">
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
@@ -70,7 +70,7 @@ summary: 介绍 TiDB 与 ProxySQL 集成的方法。
 
 ### 正式环境
 
-<SimpleTab grouId="startup-tidb">
+<SimpleTab groupId="startup-tidb">
 
 <div label="TiDB Cloud" value="tidb-cloud">
 
