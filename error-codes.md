@@ -35,7 +35,7 @@ TiDB 兼容 MySQL 的错误码，在大多数情况下，返回和 MySQL 一样�
 
 * Error Number: 8005
 
-    完整的错误信息为 `ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale`。
+    完整的报错信息为 `ERROR 8005 (HY000) : Write Conflict, txnStartTS is stale`。
 
     事务在 TiDB 中遇到了写入冲突。可以检查 `tidb_disable_txn_auto_retry` 是否为 on。如是，将其设置为 off；如已经是 off，将 `tidb_retry_limit` 调大到不再发生该错误。
 
