@@ -46,7 +46,7 @@ tar -xzf grafana-7.5.11.linux-amd64.tar.gz
 {{< copyable "shell-regular" >}}
 
 ```bash
-cd node_exporter-0.17.0.linux-amd64
+cd node_exporter-1.3.1.linux-amd64
 ```
 
 启动 node_exporter 服务：
