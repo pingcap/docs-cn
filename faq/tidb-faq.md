@@ -3,7 +3,7 @@ title: TiDB FAQ
 aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 ---
 
-# FAQ
+# TiDB 产品 FAQ
 
 ## 1.1 TiDB 介绍及整体架构
 
