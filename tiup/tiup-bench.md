@@ -116,14 +116,6 @@ Flags:
     tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv --tables history,orders
     ```
 
-7. 开启 pprof：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup bench tpcc --warehouses 4 prepare --output-dir data --pprof :10111
-    ```
-
 ## 使用 TiUP 运行 TPC-H 测试
 
 TiUP bench 组件支持如下运行 TPC-H 测试的命令和参数：
