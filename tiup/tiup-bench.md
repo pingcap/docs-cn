@@ -33,8 +33,8 @@ Flags:
   -H, --host string         数据库的主机地址 (默认 "127.0.0.1")
       --ignore-error        忽略压测时数据库报出的错误
       --interval duration   两次报告输出时间的间隔 (默认 10s)
-      --isolation int       隔离级别 0: Default, 1: ReadUncommitted, 
-                            2: ReadCommitted, 3: WriteCommitted, 4: RepeatableRead, 
+      --isolation int       隔离级别 0: Default, 1: ReadUncommitted,
+                            2: ReadCommitted, 3: WriteCommitted, 4: RepeatableRead,
                             5: Snapshot, 6: Serializable, 7: Linerizable
       --max-procs int       runtime.GOMAXPROCS
   -p, --password string     数据库密码
@@ -63,9 +63,7 @@ Available Commands:
 Flags:
       --check-all        运行所有的一致性检测
   -h, --help             tpcc 的帮助信息
-      --output string    准备数据时生成 csv 文件的目录
       --parts int        分区仓库 的数量(默认 1)
-      --tables string    指定用于生成文件的表，多个表用逗号分割，只有设置了 output 时才有效。默认生成所有的表
       --warehouses int   仓库的数量 (默认 10)
 ```
 
@@ -108,7 +106,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output data
+    tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv
     ```
 
 6. 为指定的表生成 CSV 文件：
@@ -116,15 +114,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output data --tables history,orders
-    ```
-
-7. 开启 pprof：
-
-    {{< copyable "shell-regular" >}}
-
-    ```shell
-    tiup bench tpcc --warehouses 4 prepare --output data --pprof :10111
+    tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv --tables history,orders
     ```
 
 ## 使用 TiUP 运行 TPC-H 测试
