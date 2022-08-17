@@ -21,7 +21,7 @@ title: 部署 TiDB Lightning
 
    安装完成后，`~/.bashrc` 已将 TiUP 加入到路径中，你需要新开一个终端或重新声明全局变量 `source ~/.bashrc` 来使用 TiUP。(也可能是`~/.profile`，以 TiUP 输出为准。)
 
-2. 安装 TiUP DM 组件：
+2. 安装 TiUP Lightning 组件：
 
     {{< copyable "shell-regular" >}}
 
