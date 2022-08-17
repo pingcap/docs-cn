@@ -14,9 +14,9 @@ summary: 了解升级 TiFlash 至 v6.2 时的注意事项。
 
 > **注意：**
 >
-> - v6.2.0 新增了一项名为 FastScan (/develop/dev-guide-use-fastscan.md) 的实验功能。该实验功能在牺牲强一致性保证的前提下可以大幅提升扫表性能。相关实验功能的形态和使用方式有可能在后续版本中发生变化。
+> - v6.2.0 新增了一项名为 [FastScan](/develop/dev-guide-use-fastscan.md) 的实验功能。该实验功能在牺牲强一致性保证的前提下可以大幅提升扫表性能。相关实验功能的形态和使用方式有可能在后续版本中发生变化。
 >
-> - 不推荐跨主干版本升级 TiDB 集群，如从 v4.x 升级至 v6.x，请先升级至 v5.x，然后再升级至 v6.x。
+> - 不推荐跨主干版本升级包含 TiFlash 的 TiDB 集群，如从 v4.x 升级至 v6.x，请先升级至 v5.x，然后再升级至 v6.x。
 >
 > - v4.x. 已接近产品周期尾声，请尽早升级到 v5.x 及以上版本。具体的版本周期请参考 [TiDB 版本周期支持策略](https://pingcap.com/zh/tidb-release-support-policy)。
 >
