@@ -62,7 +62,7 @@ Available Commands:
 Flags:
       --check-all        运行所有的一致性检测
   -h, --help             tpcc 的帮助信息
-      --output string    准备数据时生成 csv 文件的目录
+      --output-dir string    准备数据时生成 csv 文件的目录
       --parts int        分区仓库 的数量(默认 1)
       --tables string    指定用于生成文件的表，多个表用逗号分割，只有设置了 output 时才有效。默认生成所有的表
       --warehouses int   仓库的数量 (默认 10)
@@ -107,7 +107,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output data
+    tiup bench tpcc --warehouses 4 prepare --output-dir data
     ```
 
 6. 为指定的表生成 CSV 文件：
@@ -115,7 +115,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output data --tables history,orders
+    tiup bench tpcc --warehouses 4 prepare --output-dir data --tables history,orders
     ```
 
 7. 开启 pprof：
@@ -123,7 +123,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output data --pprof :10111
+    tiup bench tpcc --warehouses 4 prepare --output-dir data --pprof :10111
     ```
 
 ## 使用 TiUP 运行 TPC-H 测试
