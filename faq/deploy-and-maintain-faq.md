@@ -1,10 +1,10 @@
 ---
-title: 安装部署 FAQ
+title: TiDB 安装部署常见问题
 summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
-# 安装部署 FAQ
+# TiDB 安装部署常见问题
 
 本文介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 

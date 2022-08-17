@@ -1,9 +1,9 @@
 ---
-title: TiDB FAQ
+title: TiDB 产品常见问题
 aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 ---
 
-# TiDB 产品 FAQ
+# TiDB 产品常见问题
 
 ## 1.1 TiDB 介绍及整体架构
 
