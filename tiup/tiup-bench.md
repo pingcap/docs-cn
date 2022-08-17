@@ -105,7 +105,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output-dir data
+    tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv
     ```
 
 6. 为指定的表生成 CSV 文件：
@@ -113,7 +113,7 @@ Flags:
     {{< copyable "shell-regular" >}}
 
     ```shell
-    tiup bench tpcc --warehouses 4 prepare --output-dir data --tables history,orders
+    tiup bench tpcc --warehouses 4 prepare --output-dir data --output-type=csv --tables history,orders
     ```
 
 7. 开启 pprof：
