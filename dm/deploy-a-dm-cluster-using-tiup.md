@@ -1,7 +1,6 @@
 ---
 title: 使用 TiUP 部署 DM 集群
 summary: 学习如何使用 TiUP DM 组件来部署 TiDB Data Migration 工具。
-aliases: ['/docs-cn/tidb-data-migration/dev/deploy-a-dm-cluster-using-ansible/']
 ---
 
 # 使用 TiUP 部署 DM 集群

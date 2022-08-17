@@ -1,7 +1,6 @@
 ---
 title: SHOW STATS_META
 summary: TiDB 数据库中 SHOW STATS_META 语句的简单说明。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-stats-meta/']
 ---
 
 # SHOW STATS_META

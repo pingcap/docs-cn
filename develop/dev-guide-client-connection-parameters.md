@@ -1,7 +1,6 @@
 ---
 title: 客户端链接参数
 summary: 介绍客户端链接参数。
-aliases: ['/zh/tidb/dev/client-connection-parameters']
 ---
 
 # 客户端链接参数

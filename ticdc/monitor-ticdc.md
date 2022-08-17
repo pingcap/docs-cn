@@ -1,7 +1,6 @@
 ---
 title: TiCDC 重要监控指标详解
 summary: 了解 TiCDC 重要的监控指标。
-aliases: ['/zh/tidb/dev/ticdc-grafana-dashboard']
 ---
 
 # TiCDC 重要监控指标详解

@@ -1,7 +1,6 @@
 ---
 title: SHOW CREATE USER
 summary: TiDB 数据库中 SHOW CREATE USER 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-create-user/','/docs-cn/dev/reference/sql/statements/show-create-user/']
 ---
 
 # SHOW CREATE USER
