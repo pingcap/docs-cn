@@ -8,11 +8,11 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
 本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的数据同步到 Apache Kafka。主要包含以下内容：
 
-- 快速搭建 TiCDC 集群、Kafka 集群和 Flink 集群
-- 创建 changefeed，将 TiDB 增量数据输出至 Kafka
-- 使用 go-tpc 写入数据到上游 TiDB
-- 使用 Kafka console consumer 观察数据被写入到指定的 Topic
-- （可选）配置 Flink 集群消费 Kafka 内数据，实现 TiDB 与 Flink 的数据集成
+1. 快速搭建 TiCDC 集群、Kafka 集群和 Flink 集群
+2. 创建 changefeed，将 TiDB 增量数据输出至 Kafka
+3. 使用 go-tpc 写入数据到上游 TiDB
+4. 使用 Kafka console consumer 观察数据被写入到指定的 Topic
+5. （可选）配置 Flink 集群消费 Kafka 内数据
 
 上述过程将会基于实验环境进行。你也可以参考上述执行步骤，搭建生产级别的集群。
 
@@ -61,7 +61,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     tiup ctl:v6.2.0 cdc changefeed create --pd="http://127.0.0.1:2379" --sink-uri="kafka://127.0.0.1:9092/kafka-topic-name?protocol=canal-json" --changefeed-id="kafka-changefeed" --config="changefeed.conf"
     ```
 
-    - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相信信息，内容如下：
+    - 如果命令执行成功，将会返回被创建的 changefeed 的相关信息，包含被创建的 changefeed 的 ID 以及相关信息，内容如下：
 
         ```shell
         Create changefeed successfully!
@@ -120,7 +120,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     - [flink-sql-connector-kafka-1.15.0.jar](https://repo.maven.apache.org/maven2/org/apache/flink/flink-sql-connector-kafka/1.15.0/flink-sql-connector-kafka-1.15.0.jar)
     - [kafka-clients-3.2.0.jar](https://repo.maven.apache.org/maven2/org/apache/kafka/kafka-clients/3.2.0/kafka-clients-3.2.0.jar)
 
-2. 创建 Table。
+2. 创建一个表。
 
     你可以在 Flink 的安装目录执行如下命令，启动 Flink SQL 交互式客户端：
 
@@ -128,7 +128,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
     [root@flink flink-1.15.0]# ./bin/sql-client.sh
     ```
 
-    随后，执行如下语句创建 Table：
+    随后，执行如下语句创建一个名为 `tpcc_orders` 的表：
 
     ```sql
     CREATE TABLE tpcc_orders (
@@ -153,7 +153,7 @@ aliases: ['/zh/tidb/dev/replicate-incremental-data-to-kafka/']
 
     请将 `topic` 和 `properties.bootstrap.servers` 参数替换为环境中的实际值。
 
-3. 查询 Table 内容。
+3. 查询表内容。
 
     执行如下命令，查询 `tpcc_orders` 表中的数据：
 
