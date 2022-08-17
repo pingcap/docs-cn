@@ -13,7 +13,7 @@ TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID �
 
 ### 1.1.2 TiDB 整体架构
 
-参见 [TiDB 整体架构](/tidb-architecture)。
+参见 [TiDB 整体架构](/tidb-architecture.md)。
 
 ### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
