@@ -7,13 +7,13 @@ aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
 
 ## 1.1 TiDB 介绍及整体架构
 
-### 1.1.1 TiDB 整体架构
+### 1.1.1 TiDB 是什么？
 
-[TiDB 简介](/overview.md#tidb-简介)
+TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID 事务、标准 SQL、MySQL 语法和 MySQL 协议，具有数据强一致的高可用特性，是一个不仅适合 OLTP 场景还适合 OLAP 场景的 HTAP 混合数据库。更多信息参见 [TiDB 简介](/overview.md#tidb-简介)。
 
-### 1.1.2 TiDB 是什么？
+### 1.1.2 TiDB 整体架构
 
-TiDB 是一个分布式 NewSQL 数据库。它支持水平弹性扩展、ACID 事务、标准 SQL、MySQL 语法和 MySQL 协议，具有数据强一致的高可用特性，是一个不仅适合 OLTP 场景还适合 OLAP 场景的混合数据库。
+参见 [TiDB 整体架构](/tidb-architecture)。
 
 ### 1.1.3 TiDB 是基于 MySQL 开发的吗？
 
