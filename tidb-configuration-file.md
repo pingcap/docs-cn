@@ -28,13 +28,13 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
 + 默认值：true
-+ 在 v6.3.0 之后（含 v6.3.0）该配置项的功能由系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 代替，升级到 v6.3.0 时会自动继承原有设置。
++ 在 v6.3.0 之后（含 v6.3.0）该配置项的功能由系统变量 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入) 代替，升级到 v6.3.0 时会自动继承原有设置。
 
 ### `tmp-storage-path`
 
 + 单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时，某些算子的临时磁盘存储位置。
 + 默认值：`<操作系统临时文件夹>/<操作系统用户ID>_tidb/MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=/tmp-storage`。其中 `MC4wLjAuMDo0MDAwLzAuMC4wLjA6MTAwODA=` 是对 `<host>:<port>/<statusHost>:<statusPort>` 进行 `Base64` 编码的输出结果。
-+ 此配置仅在 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom) 为 true 时有效。
++ 此配置仅在 [`tidb_enable_tmp_storage_on_oom`](/system-variables.md#tidb_enable_tmp_storage_on_oom-从-v630-版本开始引入) 为 true 时有效。
 
 ### `tmp-storage-quota`
 
@@ -701,7 +701,7 @@ PROXY 协议相关的配置项。
 + TiDB 中同时允许的最大客户端连接数，用于资源控制。
 + 默认值：0
 + 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
-+ 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections) 的初始值。
++ 该值作为系统变量 [`max_connections`](/system-variables.md#max_connections-从-v630-版本开始引入) 的初始值。
 
 ### `tidb_memory_usage_alarm_ratio` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
@@ -716,7 +716,7 @@ PROXY 协议相关的配置项。
 
 + 用于表示该 tidb-server 是否运行 DDL 语句。
 + 默认值：true
-+ 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl) 的初始值。
++ 该值作为系统变量 [`tidb_enable_ddl`](/system-variables.md#tidb_enable_ddl-从-v630-版本开始引入) 的初始值。
 
 ## experimental
 
