@@ -4,7 +4,14 @@ title: ADMIN
 
 # ADMIN
 
-`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。
+`ADMIN` 语句是 TiDB 扩展语法，用于查看 TiDB 自身的状态，并对 TiDB 中的表数据进行校验。本文介绍了下列与 ADMIN 相关的扩展语句：
+
+- [`ADMIN RELOAD`](#admin-reload-语句)
+- [`ADMIN PLUGIN`](#admin-plugin-语句)
+- [`ADMIN ... BINDINGS`](#admin--bindings-语句)
+- [`ADMIN REPAIR TABLE`](#admin-repair-table-语句)
+- [`ADMIN SHOW SLOW`](#admin-show-slow-语句)
+
 
 ## ADMIN 与 DDL 相关的扩展语句
 
@@ -15,7 +22,7 @@ title: ADMIN
 | [<code>ADMIN CHECK [TABLE\|INDEX]</code>](/sql-statements/sql-statement-admin-check-table-index.md) | 校验表中数据和对应索引的一致性 |
 | [<code>ADMIN SHOW DDL [JOBS\|QUERIES]</code>](/sql-statements/sql-statement-admin-show-ddl.md)      | 显示有关当前正在运行或最近完成的 DDL 作业的详细信息|
 
-## `admin reload` 语句
+## `ADMIN RELOAD` 语句
 
 {{< copyable "sql" >}}
 
@@ -33,7 +40,7 @@ ADMIN RELOAD opt_rule_blacklist;
 
 以上语句用于重新加载逻辑优化规则的黑名单。
 
-## `admin plugin` 语句
+## `ADMIN PLUGIN` 语句
 
 {{< copyable "sql" >}}
 
@@ -51,7 +58,7 @@ ADMIN PLUGINS DISABLE plugin_name [, plugin_name] ...;
 
 以上语句用于禁用 `plugin_name` 插件。
 
-## `admin ... bindings` 语句
+## `ADMIN ... BINDINGS` 语句
 
 {{< copyable "sql" >}}
 
@@ -85,7 +92,7 @@ ADMIN RELOAD bindings;
 
 以上语句用于重新加载 SQL Plan 绑定的信息。
 
-## `admin repair table` 语句
+## `ADMIN REPAIR TABLE` 语句
 
 {{< copyable "sql" >}}
 
@@ -95,7 +102,7 @@ ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT;
 
 `ADMIN REPAIR TABLE tbl_name CREATE TABLE STATEMENT` 用于在极端情况下，对存储层中的表的元信息进行非可信的覆盖。“非可信”是指需要人为保证原表的元信息可以完全由 `CREATE TABLE STATEMENT` 提供。该语句需要打开配置文件项中的 [`repair-mode`](/tidb-configuration-file.md#repair-mode) 开关，并且需要确保所修复的表名在 [`repair-table-list`](/tidb-configuration-file.md#repair-table-list) 名单中。
 
-## `admin show slow` 语句
+## `ADMIN SHOW SLOW` 语句
 
 {{< copyable "sql" >}}
 
@@ -125,7 +132,7 @@ AdminStmt ::=
 {{< copyable "sql" >}}
 
 ```sql
-admin show ddl jobs;
+ADMIN SHOW DDL jobs;
 ```
 
 ```
@@ -151,7 +158,7 @@ admin show ddl jobs;
 {{< copyable "sql" >}}
 
 ```sql
-admin show ddl jobs 5;
+ADMIN SHOW DDL JOBS 5;
 ```
 
 ```
@@ -172,7 +179,7 @@ admin show ddl jobs 5;
 {{< copyable "sql" >}}
 
 ```sql
-admin show ddl jobs 5 where state!='synced' and db_name='test';
+ADMIN SHOW DDL JOBS 5 WHERE state != 'synced' AND db_name = 'test';
 ```
 
 ```
