@@ -1,10 +1,5 @@
 ---
-<<<<<<< HEAD
-title: TiDB FAQ
-=======
 title: TiDB 产品常见问题
-aliases: ['/docs-cn/dev/faq/tidb-faq/','/docs-cn/dev/faq/tidb/']
->>>>>>> f0384c196 (faq: remove error codes content from tidb faq (#10931))
 ---
 
 # TiDB 产品常见问题
