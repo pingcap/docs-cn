@@ -267,6 +267,14 @@ mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
 1 row in set (0.00 sec)
 ```
 
+### `max_connections` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- TiDB 中同时允许的最大客户端连接数，用于资源控制。
+- 默认值：`0`
+- 默认情况下，TiDB 不限制客户端连接数。当本配置项的值大于 `0` 且客户端连接数到达此值时，TiDB 服务端将会拒绝新的客户端连接。
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
@@ -784,6 +792,14 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
     - `ON` 表示所有主键默认使用聚簇索引。
     - `INT_ONLY` 此时的行为受配置项 `alter-primary-key` 控制。如果该配置项取值为 `true`，则所有主键默认使用非聚簇索引；如果该配置项取值为 `false`，则由单个整数类型的列构成的主键默认使用聚簇索引，其他类型的主键默认使用非聚簇索引。
 
+### `tidb_enable_ddl` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
+- 默认值: `ON`
+- 可选值：`OFF`，`ON`
+- 用于设置该 TiDB 服务器是否运行 DDL 语句。
+
 ### `tidb_enable_collect_execution_info`
 
 - 作用域：GLOBAL
@@ -972,7 +988,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`ON`
 - 这个变量控制是否为读数据的算子开启动态内存控制功能。读数据的算子默认启用 [`tidb_distsql_scan_concurrency`](/system-variables.md#tidb_distsql_scan_concurrency) 所允许的最大线程数来读取数据。当单条 SQL 语句的内存使用每超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 一次，读数据的算子会停止一个线程。
-- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/tidb-configuration-file.md#oom-use-tmp-storage)。
+- 当读数据的算子只剩 1 个线程且当单条 SQL 语句的内存使用继续超过 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 时，该 SQL 语句会触发其它的内存控制行为，例如[落盘](/system-variables.md#tidb_enable_tmp_storage_on_oom)。
 
 ### `tidb_enable_slow_log`
 
@@ -980,6 +996,15 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`ON`
 - 这个变量用于控制是否开启 slow log 功能。
+
+### `tidb_enable_tmp_storage_on_oom` <span class="version-mark">从 v6.3.0 版本开始引入</span>
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 默认值：`ON`
+- 可选值：`OFF`，`ON`
+- 设置是否在单条 SQL 语句的内存使用超出系统变量 [`tidb_mem_quota_query`](/system-variables.md#tidb_mem_quota_query) 限制时为某些算子启用临时磁盘。
+- 在 v6.3.0 之前这个开关通过 TiDB 配置文件 (`oom-use-tmp-storage`) 进行配置，升级到 v6.3.0 时会自动继承原有设置。
 
 ### `tidb_enable_stmt_summary` <span class="version-mark">从 v3.0.4 版本开始引入</span>
 
@@ -1371,7 +1396,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：字符串
 - 此变量用于获取当前会话中最后一个事务的信息。这是一个只读变量。事务信息包括：
     - 事务的范围
@@ -1488,8 +1512,8 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 作用域：GLOBAL
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`0.8`
-- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入)。
-- 该变量的初始值可通过 [`memory-usage-alarm-ratio`](/tidb-configuration-file.md#memory-usage-alarm-ratio-从-v409-版本开始引入) 进行配置。
+- TiDB 内存使用占总内存的比例超过一定阈值时会报警。该功能的详细介绍和使用方法可以参考 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio-从-v610-版本开始引入)。
+- 该变量的初始值可通过 [`tidb_memory_usage_alarm_ratio`](/tidb-configuration-file.md#tidb_memory_usage_alarm_ratio-从-v610-版本开始引入) 进行配置。
 
 ### `tidb_metric_query_range_duration` <span class="version-mark">从 v4.0 版本开始引入</span>
 
@@ -1782,7 +1806,6 @@ explain select * from t where age=5;
 ### `tidb_opt_projection_push_down` <span class="version-mark">从 v6.1.0 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：布尔值
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
@@ -1910,7 +1933,6 @@ explain select * from t where age=5;
 ### `tidb_read_consistency` <span class="version-mark">New in v5.4.0</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 类型：字符串
 - 默认值：`strict`
 - 此变量用于控制自动提交的读语句的读一致性。
