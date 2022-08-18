@@ -246,7 +246,7 @@ mysql> SELECT * FROM t1;
 - 如果将变量值设为超过上限 `1048576`，则使用上限值 `1048576`：
 
 ```sql
-mysql> SET GLOBAL max_prepared_stmt_count=1048577;
+mysql> SET GLOBAL max_prepared_stmt_count = 1048577;
 Query OK, 0 rows affected, 1 warning (0.01 sec)
 
 mysql> SHOW WARNINGS;
@@ -1576,7 +1576,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 范围：`[0, 2]`
 - 表示是否允许 Broadcast Cartesian Join 算法。
 - 值为 `0` 时表示不允许使用 Broadcast Cartesian Join 算法。值为 `1` 时表示根据 [`tidb_broadcast_join_threshold_count`](#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 的行数阈值确定是否允许使用 Broadcast Cartesian Join 算法。值为 `2` 时表示总是允许 Broadcast Cartesian Join 算法，即使表的大小超过了该阈值。
-- 该变量是 TiDB 内部使用的变量，不推荐修改该变量的值。
+- 该变量是 TiDB 内部使用的变量，**不推荐**修改该变量的值。
 
 ### `tidb_opt_concurrency_factor`
 
@@ -1585,7 +1585,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`3.0`
-- 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_cop_cpu_factor`
 
@@ -1594,7 +1594,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`3.0`
-- 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_correlation_exp_factor`
 
@@ -1628,7 +1628,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`3.0`
-- 表示降序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示降序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_disk_factor`
 
@@ -1637,7 +1637,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`1.5`
-- 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_distinct_agg_push_down`
 
@@ -1727,7 +1727,7 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`0.001`
-- 表示 TiDB 存储一行数据的内存开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示 TiDB 存储一行数据的内存开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_mpp_outer_join_fixed_build_side` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
@@ -1744,7 +1744,7 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`1.0`
-- 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1793,7 +1793,7 @@ explain select * from t where age=5;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`1.5`
-- 表示升序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示升序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_seek_factor`
 
@@ -1802,7 +1802,7 @@ explain select * from t where age=5;
 - 类型：浮点数
 - 范围：`[0, 2147483647]`
 - 默认值：`20`
-- 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+- 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
