@@ -482,16 +482,16 @@ opentracing.sampler 相关的设置。
 
 ### `type`
 
-+ opentracing 采样器的类型。
++ opentracing 采样器的类型。字符串取值大小写不敏感。
 + 默认值："const"
-+ 可选值："const"，"probabilistic"，"rateLimiting"，remote"
++ 可选值："const"，"probabilistic"，"ratelimiting"，remote"
 
 ### `param`
 
 + 采样器参数。
     - 对于 const 类型，可选值为 0 或 1，表示是否开启。
     - 对于 probabilistic 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
-    - 对于 rateLimiting 类型，参数为每秒采样 span 的个数。
+    - 对于 ratelimiting 类型，参数为每秒采样 span 的个数。
     - 对于 remote 类型，参数为采样概率，可选值为 0 到 1 之间的浮点数。
 + 默认值：1.0
 
