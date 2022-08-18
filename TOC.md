@@ -869,6 +869,7 @@
   - [All Releases](/releases/release-notes.md)
   - [Release Timeline](/releases/release-timeline.md)
   - [TiDB Versioning](/releases/versioning.md)
+  - [TiDB Installation Packages](/binary-package.md)
   - v6.1
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
