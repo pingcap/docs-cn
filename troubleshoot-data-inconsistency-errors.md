@@ -55,7 +55,7 @@ summary: 了解如何处理数据索引一致性检查的报错。
 
 `ERROR 8003 (HY000): table count 3 != index(idx) count 2`
 
-上述错误表明，在 `ADMIN CHECK` 语句所执行的表上有 3 个行键值对，但只有 2 个索引键值对。
+上述错误表明，在 [`ADMIN CHECK`](/sql-statements/sql-statement-admin-check-table-index.md) 语句所执行的表上有 3 个行键值对，但只有 2 个索引键值对。
 
 #### Error 8134
 
@@ -88,4 +88,4 @@ summary: 了解如何处理数据索引一致性检查的报错。
 >
 > 关闭 `tidb_enable_mutation_checker` 和 `tidb_txn_assertion_level` 开关会关闭对所有 SQL 语句的对应检查。
 
-对于其它错误代码，包括执行 `ADMIN CHECK [TABLE|INDEX]` 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。
+对于其它错误代码，包括执行 [`ADMIN CHECK [TABLE|INDEX]`](/sql-statements/sql-statement-admin-check-table-index.md) 系列语句或执行事务中的报错，由于数据中已经存在不一致，无法跳过对应的检查。
