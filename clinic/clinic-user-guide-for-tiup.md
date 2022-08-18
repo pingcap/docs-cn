@@ -139,10 +139,15 @@ summary: 详细介绍在使用 TiUP 部署的集群上如何通过 PingCAP Clini
 
 1. 运行 Diag 数据采集命令。
 
-    例如，如需采集从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
+    例如，如需采集 `TiDB 集群` 从当前时间的 4 小时前到 2 小时前的诊断数据，可以运行以下命令：
 
     ```bash
     tiup diag collect ${cluster-name} -f="-4h" -t="-2h"
+    ```
+    采集 `DM 集群` 诊断数据：
+    ```bash
+    tiup diag collectdm ${dm-cluster-name} -f="-4h" -t="-2h"
+
     ```
 
     采集参数说明：
