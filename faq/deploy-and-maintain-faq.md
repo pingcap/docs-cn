@@ -1,10 +1,10 @@
 ---
-title: 安装部署 FAQ
+title: TiDB 安装部署常见问题
 summary: 介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 aliases: ['/docs-cn/dev/faq/deploy-and-maintain-faq/']
 ---
 
-# 安装部署 FAQ
+# TiDB 安装部署常见问题
 
 本文介绍 TiDB 集群安装部署的常见问题、原因及解决方法。
 
@@ -146,3 +146,9 @@ Direct 模式就是把写入请求直接封装成 I/O 指令发到磁盘，这�
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
+
+## TiDB 支持在公有云上部署吗？
+
+TiDB 支持在 [Google GKE](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-gcp-gke)、[AWS EKS](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-aws-eks) 和[阿里云 ACK](https://docs.pingcap.com/zh/tidb-in-kubernetes/v1.1/deploy-on-alibaba-cloud) 上部署使用。
+
+此外，TiDB 云上部署也已在京东云、UCloud 上线，均为数据库一级入口。
