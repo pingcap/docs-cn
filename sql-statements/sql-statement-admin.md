@@ -12,7 +12,6 @@ title: ADMIN
 - [`ADMIN REPAIR TABLE`](#admin-repair-table-语句)
 - [`ADMIN SHOW SLOW`](#admin-show-slow-语句)
 
-
 ## ADMIN 与 DDL 相关的扩展语句
 
 | 语句                                                                                | 功能描述                 |
