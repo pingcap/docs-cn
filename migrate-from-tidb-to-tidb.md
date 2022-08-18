@@ -111,18 +111,21 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
 
 > **注意：**
 >
-> 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
+> - 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
+>
+> - 上下游集群版本不一致时，应检查 BR 工具的[兼容性](/br/backup-and-restore-overview.md#使用前须知)。本文假设上下游集群版本相同。
 
 1. 关闭 GC。
 
     为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。
 
-    {{< copyable "sql" >}}
-
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
     Query OK, 0 rows affected (0.01 sec)
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+：
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -131,18 +134,16 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
     1 row in set (0.00 sec)
     ```
 
-    > **注意：**
-    >
-    > 在生产集群中，关闭 GC 机制和备份操作会一定程度上降低集群的读性能，建议在业务低峰期进行备份，并设置合适的 `RATE_LIMIT` 限制备份操作对线上业务的影响。
 
 2. 备份数据。
 
     在上游集群中执行 BACKUP 语句备份数据：
 
-    {{< copyable "sql" >}}
-
     ```sql
     MySQL [(none)]> BACKUP DATABASE * TO 's3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true' RATE_LIMIT = 120 MB/SECOND;
+    ```
+
+    ```
     +---------------+----------+--------------------+---------------------+---------------------+
     | Destination   | Size     | BackupTS           | Queue Time          | Execution Time      |
     +---------------+----------+--------------------+---------------------+---------------------+
@@ -157,10 +158,11 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
 
     在下游集群中执行 RESTORE 语句恢复数据：
 
-    {{< copyable "sql" >}}
-
     ```sql
     mysql> RESTORE DATABASE * FROM 's3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true';
+    ```
+
+    ```
     +--------------+-----------+--------------------+---------------------+---------------------+
     | Destination  | Size      | BackupTS           | Queue Time          | Execution Time      |
     +--------------+-----------+--------------------+---------------------+---------------------+
@@ -172,8 +174,6 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
 4. （可选）校验数据。
 
     通过 [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) 工具，可以验证上下游数据在某个时间点的一致性。从上述备份和恢复命令的输出可以看到，上游集群备份的时间点为 431434047157698561，下游集群完成数据恢复的时间点为 431434141450371074。
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     sync_diff_inspector -C ./config.yaml
@@ -236,6 +236,9 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
     Query OK, 0 rows affected (0.01 sec)
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -256,6 +259,9 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
 
     # 查看 changefeed 状态
     tiup cdc cli changefeed list
+    ```
+
+    ```
     [
       {
         "id": "upstream-to-downstream",
