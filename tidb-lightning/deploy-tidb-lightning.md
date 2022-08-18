@@ -1,6 +1,5 @@
 ---
 title: 部署 TiDB Lightning
-aliases: ['/docs-cn/dev/tidb-lightning/deploy-tidb-lightning/','/docs-cn/dev/reference/tools/tidb-lightning/deployment/']
 ---
 
 # 部署 TiDB Lightning

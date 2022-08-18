@@ -1,7 +1,6 @@
 ---
 title: TiDB 磁盘 I/O 过高的处理办法
 summary: 了解如何定位和处理 TiDB 存储 I/O 过高的问题。
-aliases: ['/docs-cn/dev/troubleshoot-high-disk-io/']
 ---
 
 # TiDB 磁盘 I/O 过高的处理办法

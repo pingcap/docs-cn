@@ -1,7 +1,6 @@
 ---
 title: TiCDC Open Protocol
 summary: 了解 TiCDC Open Protocol 的概念和使用方法。
-aliases: ['/docs-cn/dev/ticdc/ticdc-open-protocol/','/docs-cn/dev/reference/tools/ticdc/open-protocol/','/docs-cn/dev/ticdc/column-ddl-type-codes/','/docs-cn/stable/reference/tools/ticdc/column-ddl-type/']
 ---
 
 # TiCDC Open Protocol

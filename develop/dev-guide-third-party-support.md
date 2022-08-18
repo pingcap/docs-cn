@@ -1,6 +1,5 @@
 ---
 title: PingCAP 维护的三方库
-aliases: ['/zh/tidb/dev/supported-by-pingcap']
 ---
 
 # PingCAP 维护的三方库

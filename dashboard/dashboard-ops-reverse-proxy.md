@@ -1,6 +1,5 @@
 ---
 title: 通过反向代理使用 TiDB Dashboard
-aliases: ['/docs-cn/dev/dashboard/dashboard-ops-reverse-proxy/']
 ---
 
 # 通过反向代理使用 TiDB Dashboard

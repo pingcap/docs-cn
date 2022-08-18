@@ -1,7 +1,6 @@
 ---
 title: TiDB 锁冲突问题处理
 summary: 了解 TiDB 锁冲突问题以及处理方式。
-aliases: ['/docs-cn/dev/troubleshoot-lock-conflicts/']
 ---
 
 # TiDB 锁冲突问题处理

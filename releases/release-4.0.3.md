@@ -1,6 +1,5 @@
 ---
 title: TiDB 4.0.3 Release Notes
-aliases: ['/docs-cn/dev/releases/release-4.0.3/']
 ---
 
 # TiDB 4.0.3 Release Notes

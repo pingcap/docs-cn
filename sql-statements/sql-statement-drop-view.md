@@ -1,7 +1,6 @@
 ---
 title: DROP VIEW
 summary: TiDB 数据库中 DROP VIEW 的使用概况。
-aliases: ['/docs-cn/dev/sql-statements/sql-statement-drop-view/','/docs-cn/dev/reference/sql/statements/drop-view/']
 ---
 
 # DROP VIEW
