@@ -259,7 +259,7 @@ TiDB 版本：6.2.0
 | TiKV | [quota.background-write-bandwidth](/tikv-configuration-file.md#background-write-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务写入的带宽（暂未生效）。|
 | TiKV | [quota.background-read-bandwidth](/tikv-configuration-file.md#background-read-bandwidth-从-v620-版本开始引入) | 新增 | 限制后台事务读取数据和 Coprocessor 读取数据的带宽（暂未生效）。 |
 | TiKV | [quota.enable-auto-tune](/tikv-configuration-file.md#enable-auto-tune-从-v620-版本开始引入) | 新增 | 是否支持 quota 动态调整。如果打开该配置项，TiKV 会根据 TiKV 实例的负载情况动态调整对后台请求的限制 quota。 |
-| TiKV | rocksdb.enable-pipelined-commit | 删除 | |
+| TiKV | rocksdb.enable-pipelined-commit | 删除 | 该配置不再生效。 |
 | TiKV | gc-merge-rewrite | 删除 | 该配置不再生效。 |
 | TiKV | [log-backup.enable](/tikv-configuration-file.md#enable-从-v620-版本开始引入) | 新增 | TiKV 是否开启日志备份功能。 |
 | TiKV | [log-backup.file-size-limit](/tikv-configuration-file.md#file-size-limit-从-v620-版本开始引入) | 新增 | 日志备份任务备份的数据达到一定大小时，自动 flush 到外部存储中。 |
