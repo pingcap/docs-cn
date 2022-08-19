@@ -72,7 +72,7 @@ creating view revenue1
 alter database tpcc set tiflash replica 2;
 ```
 
-可通过如下 SQL 语句确认所有表（通过 WHERE 语句指定，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态是否完成同步：
+可通过如下 SQL 语句确认所有表（通过 WHERE 语句可以指定需要确认的表，去掉 WHERE 语句则查看所有表）的 TiFlash 副本的状态是否完成同步：
 
 {{< copyable "sql" >}}
 
