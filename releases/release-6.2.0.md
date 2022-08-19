@@ -57,7 +57,7 @@ TiDB 版本：6.2.0
 
 * 锁视图支持乐观事务被阻塞的信息
 
-    大量锁冲突往往会造成严重的性能问题，而定位锁冲突是这类性能问题排查的必要手段之一。TiDB v6.2.0 之前，支持通过系统视图 `INFORMATION_SCHEMA.DATA_LOCK_WAITS` 查看锁冲突的关系，但是不支持乐观事务被悲观锁阻塞的情况。TiDB v6.2.0 扩展 `DATA_LOCK_WAITS` 视图，提供乐观事务被悲观锁阻塞情况下的冲突关系，帮助用户快速定位锁冲突，同时为业务改进提供依据，从而减少这类锁冲突的发生频率，提升系统整体性能。
+    大量锁冲突往往会造成严重的性能问题，而定位锁冲突是这类性能问题排查的必要手段之一。TiDB v6.2.0 之前，支持通过系统视图 `INFORMATION_SCHEMA.DATA_LOCK_WAITS` 查看锁冲突的关系，但是不支持乐观事务被悲观锁阻塞的情况。TiDB v6.2.0 扩展 [`DATA_LOCK_WAITS`](/information-schema/information-schema-data-lock-waits.md) 视图，提供乐观事务被悲观锁阻塞情况下的冲突关系，帮助用户快速定位锁冲突，同时为业务改进提供依据，从而减少这类锁冲突的发生频率，提升系统整体性能。
 
     [用户文档](/information-schema/information-schema-data-lock-waits.md) [#34609](https://github.com/pingcap/tidb/issues/34609) @[longfangsong](https://github.com/longfangsong)
 
@@ -101,7 +101,7 @@ TiDB 版本：6.2.0
 
 * 支持窗口函数下推到 TiFlash 进行多线程并行计算
 
-    通过实现执行过程中的细粒度的数据交换 (shuffle) 能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量来控制 shuffle 的粒度。
+    通过实现执行过程中的细粒度的数据交换 (shuffle) 能力，窗口函数的计算由单线程变为多线程并行计算，成倍降低查询响应时间。此性能改进不改变用户使用行为。你可以通过控制变量 [`tiflash_fine_grained_shuffle_batch_size`](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) 来控制 shuffle 的粒度。
 
     [用户文档](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) [#4631](https://github.com/pingcap/tiflash/issues/4631) @[guo-shaoge](https://github.com/guo-shaoge)
 
@@ -145,7 +145,7 @@ TiDB 版本：6.2.0
 
 * TiKV 支持通过命令行参数提供更详细的配置信息
 
-    TiKV 配置文件可以实现对 TiKV 实例的管理。但是对运行时间长且多人管理的 TiKV 实例，用户修改了哪些配置文件，配置的默认值是什么，难以进行方便地比对。这在集群升级、迁移时容易造成困扰。从 TiDB v6.2.0 开始，tikv-server 新增命令行参数 `—config-info`，支持输出 TiKV 所有配置项的默认值和当前值，帮助用户快速验证 TiKV 进程的启动参数，提升易用性。
+    TiKV 配置文件可以实现对 TiKV 实例的管理。但是对运行时间长且多人管理的 TiKV 实例，用户修改了哪些配置文件，配置的默认值是什么，难以进行方便地比对。这在集群升级、迁移时容易造成困扰。从 TiDB v6.2.0 开始，tikv-server 新增命令行参数 [`—config-info`](/command-line-flags-for-tikv-configuration.md#--config-info-format)，支持输出 TiKV 所有配置项的默认值和当前值，帮助用户快速验证 TiKV 进程的启动参数，提升易用性。
 
     [用户文档](/command-line-flags-for-tikv-configuration.md#--config-info-format) [#12492](https://github.com/tikv/tikv/issues/12492) @[glorv](https://github.com/glorv)
 
@@ -222,7 +222,7 @@ TiDB 版本：6.2.0
 
 * 支持过滤 DDL 和 DML 事件
 
-    在一些特殊的场景下，用户可能希望对 TiDB 增量数据变更日志进行一定规则的过滤，例如过滤 Drop Table 等高风险 DDL。自 v6.2 起，TiCDC 支持过滤指定类型的 DDL 事件，支持基于 SQL 表达式过滤 DML 事件，从而适应更多的数据同步场景。
+    在一些特殊的场景下，用户可能希望对 TiDB 增量数据变更日志进行一定规则的过滤，例如过滤 Drop Table 等高风险 DDL。自 v6.2.0 起，TiCDC 支持过滤指定类型的 DDL 事件，支持基于 SQL 表达式过滤 DML 事件，从而适应更多的数据同步场景。
 
     [用户文档](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入) [#6160](https://github.com/pingcap/tiflow/issues/6160) @[asddongmen](https://github.com/asddongmen)
 
@@ -294,7 +294,7 @@ TiDB 版本：6.2.0
 - `SHOW TABLE ... REGIONS` 返回的结果中新增两列：`SCHEDULING_CONSTRAINTS` 以及 `SCHEDULING_STATE`，表示对应 Region 在 Placement In SQL 中设置的调度规则以及当前的调度状态。
 - 从 v6.2.0 开始，你可以通过 [TiKV-CDC](https://github.com/tikv/migration/tree/main/cdc) 组件实现 RawKV 的 Change Data Capture (CDC)。
 - 使用 `ROLLBACK TO SAVEPOINT` 语句将事务回滚到指定保存点时，MySQL 会释放该保存点之后才持有的锁，但在 TiDB 悲观事务中，不会立即释放该保存点之后才持有的锁，而是等到事务提交或者回滚时，才释放全部持有的锁。
-- 从 v6.2.0 开始, 执行 `select tidb_version()` 返回的信息中会包含 Store 类型（tikv 或者 unistore）
+- 从 v6.2.0 开始, 执行 `SELECT tidb_version()` 返回的信息中会包含 Store 类型（tikv 或者 unistore）
 - TiDB 不再有隐藏的系统变量。
 - 新增两个系统表：
 
@@ -368,7 +368,7 @@ TiDB 版本：6.2.0
     - 修复了 `SHOW DATABASES LIKE …` 大小写敏感的问题 [#34766](https://github.com/pingcap/tidb/issues/34766) @[e11jah](https://github.com/e11jah)
     - 修复了 `SHOW TABLE STATUS LIKE …` 大小写敏感的问题 [#7518](https://github.com/pingcap/tidb/issues/7518) @[likzn](https://github.com/likzn)
     - 修复了 `max-index-length` 检查在非严格模式下仍然报错的问题 [#34931](https://github.com/pingcap/tidb/issues/34931) @[e11jah](https://github.com/e11jah)
-    - 修复了 `ALTER COLUMN xxx DROP DEFAULT` 不起作用的问题 [#35018](https://github.com/pingcap/tidb/issues/35018) @[Defined2014](https://github.com/Defined2014)
+    - 修复了 `ALTER COLUMN ... DROP DEFAULT` 不起作用的问题 [#35018](https://github.com/pingcap/tidb/issues/35018) @[Defined2014](https://github.com/Defined2014)
     - 修复了创建表时列的默认值和列类型不一致没有自动修正的问题 [#34881](https://github.com/pingcap/tidb/issues/34881) @[Lloyd-Pottiger](https://github.com/Lloyd-Pottiger)
     - 修复了在 `DROP USER` 之后 `mysql.columns_priv` 表中相关的数据没有被同步删除的问题 [#35059](https://github.com/pingcap/tidb/issues/35059) @[lcwangchao](https://github.com/lcwangchao)
     - 通过禁止在一些系统的 schema 内创建表，修复了由此导致的 DDL 卡住的问题 [#35205](https://github.com/pingcap/tidb/issues/35205) @[tangenta](https://github.com/tangenta)
@@ -381,7 +381,7 @@ TiDB 版本：6.2.0
     - 修复了系统变量 `tidb_log_file_max_days` 和 `tidb_config` 的作用域不正确的问题 [#35190](https://github.com/pingcap/tidb/issues/35190) @[morgo](https://github.com/morgo)
     - 修复了类型是 `ENUM` 或者 `SET` 的列在 `SHOW CREATE TABLE` 的输出与 MySQL 不兼容的问题 [#36317](https://github.com/pingcap/tidb/issues/36317) @[Defined2014](https://github.com/Defined2014)
     - 修复了创建表时指定类型为 `LONG BYTE` 列的行为与 MySQL 不兼容的问题 [#36239](https://github.com/pingcap/tidb/issues/36239) @[Defined2014](https://github.com/Defined2014)
-    - 修复了设置 `auto_increment=x` 对临时表无效的问题 [#36224](https://github.com/pingcap/tidb/issues/36224) @[djshow832](https://github.com/djshow832)
+    - 修复了设置 `auto_increment = x` 对临时表无效的问题 [#36224](https://github.com/pingcap/tidb/issues/36224) @[djshow832](https://github.com/djshow832)
     - 修复了在并发修改列的情况下可能导致 DEFAULT VALUE 不正确的问题 [#35846](https://github.com/pingcap/tidb/issues/35846) @[wjhuang2016](https://github.com/wjhuang2016)
     - 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906) @[sticnarf](https://github.com/sticnarf)
     - 修复了 `LOAD DATA` 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
