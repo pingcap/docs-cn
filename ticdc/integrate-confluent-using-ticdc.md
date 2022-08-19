@@ -1,16 +1,16 @@
 ---
-title: 与 Confluent Cloud 进行数据集成
-summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud。
+title: 与 Confluent Cloud 和 Snowflake 进行数据集成
+summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud 以及 Snowflake、ksqlDB、SQL Server。
 ---
 
-# 与 Confluent Cloud 进行数据集成
+# 与 Confluent Cloud 和 Snowflake 进行数据集成
 
-Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存储和管理连续的实时流数据，具备丰富的数据集成能力。自 v6.1.0 开始，TiCDC 支持将增量变更数据以 Avro 格式输出到 Confluent。本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的增量数据同步到 Confluent Cloud，并借助 Confluent Cloud 的能力最终将数据分别同步到 ksqlDB、Snowflake、SQL Server。主要内容包括：
+Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存储和管理连续的实时流数据，具备丰富的数据集成能力。自 v6.1.0 开始，TiCDC 支持将增量变更数据以 Avro 格式输出到 Confluent。本文档介绍如何使用 [TiCDC](/ticdc/ticdc-overview.md) 将 TiDB 的增量数据同步到 Confluent Cloud，并借助 Confluent Cloud 的能力最终将数据分别同步到 Snowflake、ksqlDB、SQL Server。主要内容包括：
 
 - 快速搭建包含 TiCDC 的 TiDB 集群
 - 创建将数据输出到 Confluent Cloud 的 changefeed
-- 创建将数据从 Confluent Cloud 输出到 ksqlDB、Snowflake、SQL Server 的连接器 (Connector)
-- 使用 go-tpc 写入数据到上游 TiDB，并观察 ksqlDB、Snowflake、SQL Server 中的数据
+- 创建将数据从 Confluent Cloud 输出到 Snowflake、ksqlDB 和 SQL Server 的连接器 (Connector)
+- 使用 go-tpc 写入数据到上游 TiDB，并观察 Snowflake、ksqlDB 和 SQL Server 中的数据
 
 上述过程将会基于实验环境进行，你也可以参考上述执行步骤，搭建生产级别的集群。
 
@@ -156,30 +156,6 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
     在 Confluent 集群控制面板中，可以观察到相应的 Topic 已经被自动创建，并有数据正在写入。至此，TiDB 数据库中的增量数据就被成功输出到了 Confluent Cloud。
 
-## 与 ksqlDB 进行数据集成
-
-ksqlDB 是一种面向流式数据处理的数据库。你可以直接在 Confluent Cloud 上创建 ksqlDB 集群，并且直接读取 TiCDC 输出到 Confluent 的增量数据。
-
-1. 在 Confluent 集群控制面板中选择 ksqlDB，按照引导创建 ksqlDB 集群。
-
-    等待集群状态为 Running 后，进入下一步操作，这个过程可能持续数分钟。
-
-2. 在 ksqlDB Editor 中执行如下命令，创建一个用于读取 `tidb_tpcc_orders` Topic 的 STREAM。
-
-    ```sql
-    CREATE STREAM orders (o_id INTEGER, o_d_id INTEGER, o_w_id INTEGER, o_c_id INTEGER, o_entry_d STRING, o_carrier_id INTEGER, o_ol_cnt INTEGER, o_all_local INTEGER) WITH (kafka_topic='tidb_tpcc_orders', partitions=3, value_format='AVRO');
-    ```
-
-3. 执行如下命令查询 orders STREAM 数据：
-
-    ```sql
-    SELECT * FROM ORDERS EMIT CHANGES;
-    ```
-
-    ![Select from orders](/media/integrate/select-from-orders.png)
-
-可以观察到 TiDB 中的增量数据实时同步到了 ksqlDB，如上图。至此，就完成了 TiDB 与 ksqlDB 的数据集成。
-
 ## 与 Snowflake 进行数据集成
 
 Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只需要创建 Snowflake Sink Connector，就可以将 TiDB 的增量数据输出到 Snowflake。
@@ -213,6 +189,30 @@ Snowflake 是一种云原生数据仓库。借助 Confluent 的能力，你只�
     ![Data preview](/media/integrate/data-preview.png)
 
 6. 在 Snowflake 控制面板中，选择 **Data** > **Database** > **TPCC** > **TiCDC**，可以观察到 TiDB 中的增量数据实时同步到了 Snowflake，如上图。至此，就完成了 TiDB 与 Snowflake 的数据集成。
+
+## 与 ksqlDB 进行数据集成
+
+ksqlDB 是一种面向流式数据处理的数据库。你可以直接在 Confluent Cloud 上创建 ksqlDB 集群，并且直接读取 TiCDC 输出到 Confluent 的增量数据。
+
+1. 在 Confluent 集群控制面板中选择 ksqlDB，按照引导创建 ksqlDB 集群。
+
+    等待集群状态为 Running 后，进入下一步操作，这个过程可能持续数分钟。
+
+2. 在 ksqlDB Editor 中执行如下命令，创建一个用于读取 `tidb_tpcc_orders` Topic 的 STREAM。
+
+    ```sql
+    CREATE STREAM orders (o_id INTEGER, o_d_id INTEGER, o_w_id INTEGER, o_c_id INTEGER, o_entry_d STRING, o_carrier_id INTEGER, o_ol_cnt INTEGER, o_all_local INTEGER) WITH (kafka_topic='tidb_tpcc_orders', partitions=3, value_format='AVRO');
+    ```
+
+3. 执行如下命令查询 orders STREAM 数据：
+
+    ```sql
+    SELECT * FROM ORDERS EMIT CHANGES;
+    ```
+
+    ![Select from orders](/media/integrate/select-from-orders.png)
+
+可以观察到 TiDB 中的增量数据实时同步到了 ksqlDB，如上图。至此，就完成了 TiDB 与 ksqlDB 的数据集成。
 
 ## 与 SQL Server 进行数据集成
 
