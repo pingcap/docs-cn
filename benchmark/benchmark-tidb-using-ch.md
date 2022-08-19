@@ -87,7 +87,7 @@ SELECT * FROM information_schema.tiflash_replica WHERE TABLE_SCHEMA = 'tpcc';
 
 ## 搜集统计信息
 
-为了确保优化器能产生正确的执行计划，需要提前搜集统计信息。
+为了确保优化器能生成最优的执行计划，请执行以下 SQL 语句提前搜集统计信息：
 
 ```
 analyze table customer;
