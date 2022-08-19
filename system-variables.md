@@ -1359,7 +1359,7 @@ For a system upgraded to v5.0 from an earlier version, if you have not modified 
 - Scope: GLOBAL
 - Persists to cluster: Yes
 - Default value: `ON`
-- This variable controls whether to generate binary-encoded execution plans in slow logs and statement summaries.  
+- This variable controls whether to generate binary-encoded execution plans in slow logs and statement summaries.
 - When this variable is set to `ON`, you can view visual execution plans in TiDB Dashboard. Note that TiDB Dashboard only provides visual display for execution plans generated after this variable is enabled.
 - You can execute the `SELECT tidb_decode_binary_plan('xxx...')` statement to parse the specific plan from a binary plan.
 
@@ -2542,6 +2542,15 @@ Query OK, 0 rows affected, 1 warning (0.00 sec)
     - `STRICT`: Enable all check items, with a minor impact on pessimistic transaction performance when the system workload is high.
 
 - For new clusters of v6.0.0 or later versions, the default value is `FAST`. For existing clusters that upgrade from versions earlier than v6.0.0, the default value is `OFF`.
+
+### `tidb_txn_commit_batch_size` <span class="version-mark">New in v6.2.0</span>
+
+- Scope: GLOBAL
+- Persists to cluster: Yes
+- Default value: `16384`
+- Range: `[1, 1073741824]`
+- Unit: Bytes
+- This variable is used to control the batch size of transaction commit requests that TiDB sends to TiKV. If most of the transactions in the application workload have a large number of write operations, adjusting this variable to a larger value can improve the performance of batch processing. However, if this variable is set to too large a value and exceeds the limit of TiKV's [`raft-entry-max-size`](/tikv-configuration-file.md#raft-entry-max-size), the commits might fail.
 
 ### tidb_txn_mode
 
