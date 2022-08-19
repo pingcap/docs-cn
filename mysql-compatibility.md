@@ -10,13 +10,29 @@ TiDB is highly compatible with the MySQL 5.7 protocol and the common features an
 
 However, some features of MySQL are not supported. This could be because there is now a better way to solve the problem (such as XML functions superseded by JSON), or a lack of current demand versus effort required (such as stored procedures and functions). Some features might also be difficult to implement as a distributed system.
 
+<CustomContent platform="tidb">
+
 - In addition, TiDB does not support the MySQL replication protocol, but provides specific tools to replicate data with MySQL.
     - Replicate data from MySQL: [TiDB Data Migration (DM)](/dm/dm-overview.md) is a tool that supports the full data migration and the incremental data replication from MySQL/MariaDB into TiDB.
     - Replicate data to MySQL: [TiCDC](/ticdc/ticdc-overview.md) is a tool for replicating the incremental data of TiDB by pulling TiKV change logs. TiCDC uses the [MySQL sink](/ticdc/ticdc-overview.md#sink-support) to replicate the incremental data of TiDB to MySQL.
 
+</CustomContent>
+
+<CustomContent platform="tidb">
+
 > **Note:**
 >
 > This page refers to general differences between MySQL and TiDB. Refer to the dedicated pages for [Security](/security-compatibility-with-mysql.md) and [Pessimistic Transaction Mode](/pessimistic-transaction.md#difference-with-mysql-innodb) compatibility.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> For information about transaction differences between MySQL and TiDB, see [Pessimistic Transaction Mode](/pessimistic-transaction.md#difference-with-mysql-innodb).
+
+</CustomContent>
 
 ## Unsupported features
 
@@ -77,13 +93,35 @@ mysql> SELECT _tidb_rowid, id FROM t;
 3 rows in set (0.01 sec)
 ```
 
+<CustomContent platform="tidb">
+
 > **Note:**
 >
 > The `AUTO_INCREMENT` attribute might cause hotspot in production environments. See [Troubleshoot HotSpot Issues](/troubleshoot-hot-spot-issues.md) for details. It is recommended to use [`AUTO_RANDOM`](/auto-random.md) instead.
 
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> The `AUTO_INCREMENT` attribute might cause hotspot in production environments. See [Troubleshoot HotSpot Issues](https://docs.pingcap.com/tidb/stable/troubleshoot-hot-spot-issues#handle-auto-increment-primary-key-hotspot-tables-using-auto_random) for details. It is recommended to use [`AUTO_RANDOM`](/auto-random.md) instead.
+
+</CustomContent>
+
 ### Performance schema
 
+<CustomContent platform="tidb">
+
 TiDB uses a combination of [Prometheus and Grafana](/tidb-monitoring-api.md) to store and query the performance monitoring metrics. Performance schema tables return empty results in TiDB.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+To check performance metrics in TiDB Cloud, you can either check the cluster overview page on the TiDB Cloud console or use [third-party monitoring integrations](/tidb-cloud/monitor-tidb-cluster.md#third-party-integrations). Performance schema tables return empty results in TiDB.
+
+</CustomContent>
 
 ### Query Execution Plan
 
@@ -155,7 +193,11 @@ For details, see [Compatibility between TiDB local temporary tables and MySQL te
 
 For compatibility reasons, TiDB supports the syntax to create tables with alternative storage engines. In implementation, TiDB describes the metadata as the InnoDB storage engine.
 
+<CustomContent platform="tidb">
+
 TiDB supports storage engine abstraction similar to MySQL, but you need to specify the storage engine using the [`--store`](/command-line-flags-for-tidb-configuration.md#--store) option when you start the TiDB server.
+
+</CustomContent>
 
 ### SQL modes
 

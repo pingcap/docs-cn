@@ -6,7 +6,19 @@ aliases: ['/docs/dev/statistics/','/docs/dev/reference/performance/statistics/']
 
 # Introduction to Statistics
 
-TiDB uses statistics to decide [which index to choose](/choose-index.md). The `tidb_analyze_version` variable controls the statistics collected by TiDB. Currently, two versions of statistics are supported: `tidb_analyze_version = 1` and `tidb_analyze_version = 2`. In versions before v5.1.0, the default value of this variable is `1`. In v5.3.0 and later versions, the default value of this variable is `2`. If your cluster is upgraded from a version earlier than v5.3.0 to v5.3.0 or later, the default value of `tidb_analyze_version` does not change.
+TiDB uses statistics to decide [which index to choose](/choose-index.md). The `tidb_analyze_version` variable controls the statistics collected by TiDB. Currently, two versions of statistics are supported: `tidb_analyze_version = 1` and `tidb_analyze_version = 2`.
+
+<CustomContent platform="tidb">
+
+In versions before v5.1.0, the default value of this variable is `1`. In v5.3.0 and later versions, the default value of this variable is `2`. If your cluster is upgraded from a version earlier than v5.3.0 to v5.3.0 or later, the default value of `tidb_analyze_version` does not change.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+For TiDB Cloud, the default value of this variable is `1`.
+
+</CustomContent>
 
 > **Note:**
 >
@@ -113,11 +125,23 @@ You can perform full collection using the following syntax.
 
 Before v5.3.0, TiDB uses the reservoir sampling method to collect statistics. Since v5.3.0, the TiDB Version 2 statistics uses the Bernoulli sampling method to collect statistics by default. To re-use the reservoir sampling method, you can use the `WITH NUM SAMPLES` statement.
 
+The current sampling rate is calculated based on an adaptive algorithm. When you can observe the number of rows in a table using [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md), you can use this number of rows to calculate the sampling rate corresponding to 100,000 rows. If you cannot observe this number, you can use the `TABLE_KEYS` column in the [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) table as another reference to calculate the sampling rate.
+
+<CustomContent platform="tidb">
+
 > **Note:**
 >
-> The current sampling rate is calculated based on an adaptive algorithm. When you can observe the number of rows in a table using [`SHOW STATS_META`](/sql-statements/sql-statement-show-stats-meta.md), you can use this number of rows to calculate the sampling rate corresponding to 100,000 rows. If you cannot observe this number, you can use the `TABLE_KEYS` column in the [`TABLE_STORAGE_STATS`](/information-schema/information-schema-table-storage-stats.md) table as another reference to calculate the sampling rate.
+> Normally, `STATS_META` is more credible than `TABLE_KEYS`. However, after importing data through the methods like [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview), the result of `STATS_META` is `0`. To handle this situation, you can use `TABLE_KEYS` to calculate the sampling rate when the result of `STATS_META` is much smaller than the result of `TABLE_KEYS`.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
 >
-> Normally, `STATS_META` is more credible than `TABLE_KEYS`. However, after importing data through the methods like [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md), the result of `STATS_META` is `0`. To handle this situation, you can use `TABLE_KEYS` to calculate the sampling rate when the result of `STATS_META` is much smaller than the result of `TABLE_KEYS`.
+> Normally, `STATS_META` is more credible than `TABLE_KEYS`. However, after importing data through TiDB Cloud console (see [Import Sample Data](/tidb-cloud/import-sample-data.md)), the result of `STATS_META` is `0`. To handle this situation, you can use `TABLE_KEYS` to calculate the sampling rate when the result of `STATS_META` is much smaller than the result of `TABLE_KEYS`.
+
+</CustomContent>
 
 ##### Collect statistics on some columns
 
@@ -151,7 +175,17 @@ If a table has many columns, collecting statistics on all the columns can cause 
 
     1. Set the value of the [`tidb_enable_column_tracking`](/system-variables.md#tidb_enable_column_tracking-new-in-v540) system variable to `ON` to enable TiDB to collect `PREDICATE COLUMNS`.
 
+        <CustomContent platform="tidb">
+
         After the setting, TiDB writes the `PREDICATE COLUMNS` information to the `mysql.column_stats_usage` system table every 100 * [`stats-lease`](/tidb-configuration-file.md#stats-lease).
+
+        </CustomContent>
+
+        <CustomContent platform="tidb-cloud">
+
+        After the setting, TiDB writes the `PREDICATE COLUMNS` information to the `mysql.column_stats_usage` system table every 300 seconds.
+
+        </CustomContent>
 
     2. After the query pattern of your business is relatively stable, collect statistics on `PREDICATE COLUMNS` by using the following syntax:
 
@@ -360,8 +394,18 @@ Since TiDB v6.0, TiDB supports using the `KILL` statement to terminate an `ANALY
 
 2. Terminate the `ANALYZE` task that is running in the background.
 
-   - If [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610) is `true` (`true` by default), you can execute the `KILL TIDB ${id};` statement directly, where `${id}` is the `ID` of the background `ANALYZE` task obtained from the previous step.
-   - If `enable-global-kill` is `false`, you need to use a client to connect to the TiDB instance that is executing the backend `ANALYZE` task, and then execute the `KILL TIDB ${id};` statement. If you use a client to connect to another TiDB instance, or if there is a proxy between the client and the TiDB cluster, the `KILL` statement cannot terminate the background `ANALYZE` task.
+    <CustomContent platform="tidb">
+
+    - If [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610) is `true` (`true` by default), you can execute the `KILL TIDB ${id};` statement directly, where `${id}` is the `ID` of the background `ANALYZE` task obtained from the previous step.
+    - If `enable-global-kill` is `false`, you need to use a client to connect to the TiDB instance that is executing the backend `ANALYZE` task, and then execute the `KILL TIDB ${id};` statement. If you use a client to connect to another TiDB instance, or if there is a proxy between the client and the TiDB cluster, the `KILL` statement cannot terminate the background `ANALYZE` task.
+
+    </CustomContent>
+
+    <CustomContent platform="tidb-cloud">
+
+    To terminate the `ANALYZE` task, you can execute the `KILL TIDB ${id};` statement, where `${id}` is the `ID` of the background `ANALYZE` task obtained from the previous step.
+
+    </CustomContent>
 
 For more information on the `KILL` statement, see [`KILL`](/sql-statements/sql-statement-kill.md).
 
@@ -398,7 +442,19 @@ The following are the `ANALYZE` configurations that support persistence:
 
 #### Enable ANALYZE configuration persistence
 
-The `ANALYZE` configuration persistence feature is enabled by default (the system variable `tidb_analyze_version` is `2` and `tidb_persist_analyze_options` is `ON` by default). You can use this feature to record the persistence configurations specified in the `ANALYZE` statement when executing the statement manually. Once recorded, the next time TiDB automatically updates statistics or you manually collect statistics without specifying these configuration, TiDB will collect statistics according to the recorded configurations.
+<CustomContent platform="tidb">
+
+The `ANALYZE` configuration persistence feature is enabled by default (the system variable `tidb_analyze_version` is `2` and `tidb_persist_analyze_options` is `ON` by default).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+The `ANALYZE` configuration persistence feature is disabled by default. To enable the feature, ensure that the system variable `tidb_persist_analyze_options` is `ON` and set the system variable `tidb_analyze_version` to `2`.
+
+</CustomContent>
+
+You can use this feature to record the persistence configurations specified in the `ANALYZE` statement when executing the statement manually. Once recorded, the next time TiDB automatically updates statistics or you manually collect statistics without specifying these configuration, TiDB will collect statistics according to the recorded configurations.
 
 When you manually execute the `ANALYZE` statement multiple times with persistence configurations specified, TiDB overwrites the previously recorded persistent configuration using the new configurations specified by the latest `ANALYZE` statement.
 
@@ -648,6 +704,14 @@ The preceding statement only deletes GlobalStats generated in dynamic pruning mo
 
 ## Load statistics
 
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> This section is not applicable to TiDB Cloud.
+
+</CustomContent>
+
 By default, depending on the size of column statistics, TiDB loads statistics differently as follows:
 
 - For statistics that consume small space (such as count, distinctCount, and nullCount), as long as the column data is updated, TiDB automatically loads the corresponding statistics into memory for use in the SQL optimization stage.
@@ -661,13 +725,25 @@ Since v5.4.0, TiDB introduces the synchronously loading statistics feature. This
 
 The synchronously loading statistics feature is disabled by default. To enable this feature, set the value of the [`tidb_stats_load_sync_wait`](/system-variables.md#tidb_stats_load_sync_wait-new-in-v540) system variable to a timeout (in milliseconds) that SQL optimization can wait for at most to synchronously load complete column statistics. The default value of this variable is `0`, indicating that the feature is disabled.
 
+<CustomContent platform="tidb">
+
 After enabling the synchronously loading statistics feature, you can further configure the feature as follows:
 
 - To control how TiDB behaves when the waiting time of SQL optimization reaches the timeout, modify the value of the [`tidb_stats_load_pseudo_timeout`](/system-variables.md#tidb_stats_load_pseudo_timeout-new-in-v540) system variable. The default value of this variable is `OFF`, indicating that the SQL execution fails after the timeout. If you set this variable to `ON`, after the timeout, the SQL optimization process does not use any histogram, TopN, or CMSketch statistics on any columns, but gets back to using pseudo statistics.
 - To specify the maximum number of columns that the synchronously loading statistics feature can process concurrently, modify the value of the [`stats-load-concurrency`](/tidb-configuration-file.md#stats-load-concurrency-new-in-v540) option in the TiDB configuration file. The default value is `5`.
 - To specify the maximum number of column requests that the synchronously loading statistics feature can cache, modify the value of the [`stats-load-queue-size`](/tidb-configuration-file.md#stats-load-queue-size-new-in-v540) option in the TiDB configuration file. The default value is `1000`.
 
+</CustomContent>
+
 ## Import and export statistics
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> This section is not applicable to TiDB Cloud.
+
+</CustomContent>
 
 ### Export statistics
 
@@ -717,5 +793,15 @@ LOAD STATS 'file_name'
 
 ## See also
 
+<CustomContent platform="tidb">
+
 * [LOAD STATS](/sql-statements/sql-statement-load-stats.md)
 * [DROP STATS](/sql-statements/sql-statement-drop-stats.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+* [SQL Prepare Execution Plan Cache](/sql-prepared-plan-cache.md)
+
+</CustomContent>

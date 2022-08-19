@@ -47,7 +47,11 @@ set @@session.tidb_allow_mpp=1;
 set @@session.tidb_enforce_mpp=1;
 ```
 
+<CustomContent platform="tidb">
+
 The initial value of the `tidb_enforce_mpp` session variable is equal to the [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) configuration value of this tidb-server instance (which is `false` by default). If multiple tidb-server instances in a TiDB cluster only perform analytical queries and you want to make sure that the MPP mode is used on these instances, you can change their [`enforce-mpp`](/tidb-configuration-file.md#enforce-mpp) configuration values to `true`.
+
+</CustomContent>
 
 > **Note:**
 >

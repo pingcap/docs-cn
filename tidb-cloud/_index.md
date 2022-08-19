@@ -27,6 +27,16 @@ hide_commit: true
 
 </LearningPath>
 
+<LearningPath label="Develop" icon="doc8">
+
+[Developer Guide Overview](https://docs.pingcap.com/tidbcloud/dev-guide-overview)
+
+[Quick Start](https://docs.pingcap.com/tidbcloud/dev-guide-build-cluster-in-cloud)
+
+[Example Application](https://docs.pingcap.com/tidbcloud/dev-guide-sample-application-spring-boot)
+
+</LearningPath>
+
 <LearningPath label="Use" icon="cloud7">
 
 [Create a Cluster](https://docs.pingcap.com/tidbcloud/create-tidb-cluster)

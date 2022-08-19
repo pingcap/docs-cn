@@ -10,7 +10,17 @@ Starting from v4.0, the TiDB instance supports caching the results of the calcul
 
 ## Configuration
 
+<CustomContent platform="tidb">
+
 You can configure Coprocessor Cache via the `tikv-client.copr-cache` configuration items in the TiDB configuration file. For details about how to enable and configure Coprocessor Cache, see [TiDB Configuration File](/tidb-configuration-file.md#tikv-clientcopr-cache-new-in-v400).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+The Coprocessor Cache feature is enabled by default. The maximum size of the data that can be cached is 1000 MB.
+
+</CustomContent>
 
 ## Feature description
 

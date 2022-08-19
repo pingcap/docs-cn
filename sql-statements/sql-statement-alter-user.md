@@ -59,7 +59,12 @@ mysql> SHOW CREATE USER 'newuser';
 
 ## See also
 
+<CustomContent platform="tidb">
+
 * [Security Compatibility with MySQL](/security-compatibility-with-mysql.md)
+
+</CustomContent>
+
 * [CREATE USER](/sql-statements/sql-statement-create-user.md)
 * [DROP USER](/sql-statements/sql-statement-drop-user.md)
 * [SHOW CREATE USER](/sql-statements/sql-statement-show-create-user.md)

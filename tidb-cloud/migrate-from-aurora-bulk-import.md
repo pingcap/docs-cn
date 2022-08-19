@@ -5,17 +5,22 @@ summary: Learn how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bul
 
 # Migrate from Amazon Aurora MySQL to TiDB Cloud in Bulk
 
-This document describes how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bulk using the import tools on TiDB Cloud console.
+This document describes how to migrate data from Amazon Aurora MySQL to TiDB Cloud in bulk using the import tools on TiDB Cloud console. 
 
 ## Learn how to create an import task on the TiDB Cloud console
 
 To import data, perform the following steps:
 
-1. Navigate to the TiDB Clusters page and click the name of your target cluster. The overview page of your target cluster is displayed.
-2. In the cluster information pane on the left, click **Import**. The **Data Import Task** page is displayed.
+1. Navigate to the **Active Clusters** page.
+2. Find the area of your target cluster and click **Import Data** in the upper-right corner of the area. The **Data Import Task** page is displayed.
+
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of your target cluster on the **Active Clusters** page and click **Import Data** in the upper-right corner.
+
 3. Prepare source data according to [Learn how to create an Amazon S3 Bucket and prepare source data files](#learn-how-to-create-an-amazon-s3-bucket-and-prepare-source-data-files). You can see the advantages and disadvantages of different **Data Format** in the preparing data part.
 4. Fill in the **Data Source Type**, **Bucket URL**, and **Data Format** fields according to the specification of your source data.
-5. Fill in the **Username** and **Password** fields of the **Target Database** according to the connection settings of your cluster.
+5. Fill in the **Username** and **Password** fields of the **Target Cluster**.
 6. Create the bucket policy and role for cross-account access according to [Learn how to configure cross-account access](#learn-how-to-configure-cross-account-access).
 7. Click **Import**.
 
@@ -35,7 +40,7 @@ To prepare data, you can select one from the following two options:
 
 - [Option 1: Prepare source data files using Dumpling](#option-1-prepare-source-data-files-using-dumpling)
 
-    You need to launch [Dumpling](/dumpling-overview.md) on your EC2, and export the data to Amazon S3. The data you export is the current latest data of your source database. This might affect the online service. Dumpling will lock the table when you export data.
+    You need to launch [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) on your EC2, and export the data to Amazon S3. The data you export is the current latest data of your source database. This might affect the online service. Dumpling will lock the table when you export data.
 
 - [Option 2: Prepare source data files using Amazon Aurora snapshots](#option-2-prepare-source-data-files-using-amazon-aurora-snapshots)
 
@@ -82,7 +87,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     ```bash
     curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
     source ~/.bash_profile
-    tiup install dumpling
+    tiup install dumpling 
     ```
 
     In the above commands, you need to modify `~/.bash_profile` to the path of your profile file.
@@ -92,7 +97,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     > **Note:**
     >
     > If you have assigned the IAM role to the EC2, you can skip configuring the access key and security key, and directly run Dumpling on this EC2.
-
+    
     You can grant the write privilege using the access key and security key of your AWS account in the environment. Create a specific key pair for preparing data, and revoke the access key immediately after you finish the preparation.
 
     {{< copyable "shell-regular" >}}
@@ -104,7 +109,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
 
 3. Back up the source database to S3.
 
-    Use Dumpling to export the data from Amazon Aurora. Based on your environment, replace the content in angle brackets (>), and then execute the following commands. If you want to use filter rules when exporting the data, refer to [Table Filter](/table-filter.md#syntax).
+    Use Dumpling to export the data from Amazon Aurora. Based on your environment, replace the content in angle brackets (>), and then execute the following commands. If you want to use filter rules when exporting the data, refer to [Table Filter](https://docs.pingcap.com/tidb/stable/table-filter#syntax).
 
     {{< copyable "shell-regular" >}}
 
@@ -114,7 +119,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
     export_endpoint="<the endpoint for Amazon Aurora MySQL>"
     # You will use the s3 url when you create importing task
     backup_dir="s3://<bucket name>/<backup dir>"
-    s3_bucket_region="<bucket_region>"
+    s3_bucket_region="<bueckt_region>"
 
     # Use `tiup -- dumpling` instead if "flag needs an argument: 'h' in -h" is prompted for TiUP versions earlier than v1.8
     tiup dumpling \
@@ -159,7 +164,7 @@ To migrate data from Aurora, you need to back up the schema of the database.
     mysqldump -h ${export_endpoint} -u ${export_username} -p --ssl-mode=DISABLED -d${export_database} >db.sql
     ```
 
-3. Import the schema of the database into TiDB Cloud.
+3. Import the schema of the database into TiDB Cloud. 
 
     {{< copyable "sql" >}}
 
@@ -189,7 +194,7 @@ To migrate data from Aurora, you need to back up the schema of the database.
 
  7. Choose the proper IAM role to grant write access to the S3 bucket. Make a note of this role as it will be used later when you import the snapshot to TiDB Cloud.
 
- 8. Choose a proper AWS KMS Key and make sure the IAM role has already been added to the KMS Key Users. To add a role, you can select a KSM service, select the key, and then click **Add**.
+ 8. Choose a proper AWS KMS Key and make sure the IAM role has already been added to the KMS Key Users. To add a role, you can select a KSM service, select the key, and then click **Add**. 
 
  9. Click **Export Amazon S3**. You can see the progress in the task table.
 
@@ -197,13 +202,13 @@ To migrate data from Aurora, you need to back up the schema of the database.
 
 ## Learn how to configure cross-account access
 
-The TiDB Cloud cluster and the S3 bucket are in different AWS accounts. To allow the TiDB Cloud cluster to access the source data files in the S3 bucket, you need to configure the cross-account access to Amazon S3. For more information, see [Configure the Amazon S3 access](/tidb-cloud/migrate-from-amazon-s3-or-gcs.md#step-2-configure-amazon-s3-access).
+The TiDB Cloud cluster and the S3 bucket are in different AWS accounts. To allow the TiDB Cloud cluster to access the source data files in the S3 bucket, you need to configure the cross-account access to Amazon S3. For more information, see [Configure Amazon S3 access](/tidb-cloud/config-s3-and-gcs-access.md#configure-amazon-s3-access).
 
 Once finished, you will have created a policy and role for cross-account. You can then continue with the configuration on the data import task panel of TiDB Cloud.
 
 ## Learn how to set up filter rules
 
-Refer to the [Table Filter](/table-filter.md#syntax) document.
+Refer to the [Table Filter](https://docs.pingcap.com/tidb/stable/table-filter#syntax) document.
 
 ## Learn how to clean up incomplete data
 

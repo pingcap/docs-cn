@@ -6,17 +6,7 @@ aliases: ['/docs/dev/basic-sql-operations/','/docs/dev/how-to/get-started/explor
 
 # Explore SQL with TiDB
 
-<CustomContent platform="tidb">
-
 TiDB is compatible with MySQL, you can use MySQL statements directly in most of the cases. For unsupported features, see [Compatibility with MySQL](/mysql-compatibility.md#unsupported-features).
-
-</CustomContent>
-
-<CustomContent platform="tidb-cloud">
-
-TiDB is compatible with MySQL, you can use MySQL statements directly in most of the cases. For unsupported features, see [Compatibility with MySQL](https://docs.pingcap.com/tidb/stable/mysql-compatibility#unsupported-features).
-
-</CustomContent>
 
 <CustomContent platform="tidb">
 

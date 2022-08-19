@@ -382,7 +382,11 @@ To disable this error reporting, use `set @@tidb_skip_utf8_check=1;` to skip the
 
 ## Collation support framework
 
+<CustomContent platform="tidb">
+
 The syntax support and semantic support for the collation are influenced by the [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap) configuration item. The syntax support and semantic support are different. The former indicates that TiDB can parse and set collations. The latter indicates that TiDB can correctly use collations when comparing strings.
+
+</CustomContent>
 
 Before v4.0, TiDB provides only the [old framework for collations](#old-framework-for-collations). In this framework, TiDB supports syntactically parsing most of the MySQL collations but semantically takes all collations as binary collations.
 
@@ -407,7 +411,11 @@ Query OK, 1 row affected # In TiDB, it is successfully executed. In MySQL, becau
 
 ### New framework for collations
 
-In TiDB 4.0, a complete framework for collations is introduced. This new framework supports semantically parsing collations and introduces the `new_collations_enabled_on_first_bootstrap` configuration item to decide whether to enable the new framework when a cluster is first initialized. To enable the new framework, set `new_collations_enabled_on_first_bootstrap` to `true`. For details, see [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap). If you initialize the cluster after the configuration item is enabled, you can check whether the new collation is enabled through the `new_collation_enabled` variable in the `mysql`.`tidb` table:
+Since TiDB v4.0, a complete framework for collations is introduced.
+
+<CustomContent platform="tidb">
+
+This new framework supports semantically parsing collations and introduces the `new_collations_enabled_on_first_bootstrap` configuration item to decide whether to enable the new framework when a cluster is first initialized. To enable the new framework, set `new_collations_enabled_on_first_bootstrap` to `true`. For details, see [`new_collations_enabled_on_first_bootstrap`](/tidb-configuration-file.md#new_collations_enabled_on_first_bootstrap). If you initialize the cluster after the configuration item is enabled, you can check whether the new collation is enabled through the `new_collation_enabled` variable in the `mysql`.`tidb` table:
 
 {{< copyable "sql" >}}
 
@@ -423,6 +431,14 @@ SELECT VARIABLE_VALUE FROM mysql.tidb WHERE VARIABLE_NAME='new_collation_enabled
 +----------------+
 1 row in set (0.00 sec)
 ```
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+This new framework supports semantically parsing collations. TiDB enables the new framework by default when a cluster is first initialized.
+
+</CustomContent>
 
 Under the new framework, TiDB supports the `utf8_general_ci`, `utf8mb4_general_ci`, `utf8_unicode_ci`, `utf8mb4_unicode_ci`, `gbk_chinese_ci`, and `gbk_bin` collations, which is compatible with MySQL.
 

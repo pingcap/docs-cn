@@ -366,7 +366,7 @@ WITH CTE1 AS (SELECT * FROM t1), CTE2 AS (WITH CTE3 AS (SELECT /*+ MERGE() */ * 
 >
 > `MERGE()` is only applicable to simple CTE queries. It is not applicable in the following situations:
 >
-> - [Recursive CTE](/develop/dev-guide-use-common-table-expression.md#recursive-cte)
+> - [Recursive CTE](https://docs.pingcap.com/tidb/stable/dev-guide-use-common-table-expression#recursive-cte)
 > - Subqueries with inlines that cannot be expanded, such as aggregate operators, window functions, and `DISTINCT`.
 >
 > When the number of CTE references is too high, the query performance might be lower than the default materialization behavior.

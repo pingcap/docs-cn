@@ -164,4 +164,9 @@ This statement is understood to be fully compatible with roles, which are a feat
 * [`REVOKE <role>`](/sql-statements/sql-statement-revoke-role.md)
 * [SET ROLE](/sql-statements/sql-statement-set-role.md)
 * [SET DEFAULT ROLE](/sql-statements/sql-statement-set-default-role.md)
+
+<CustomContent platform="tidb">
+
 * [Role-Based Access Control](/role-based-access-control.md)
+
+</CustomContent>

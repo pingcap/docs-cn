@@ -19,7 +19,17 @@ The rest of the document introduces in detail how to perform these operations.
 
 ## Create security keys and certificates
 
-It is recommended that you use [OpenSSL](https://www.openssl.org/) to create keys and certificates. The certificate generation process is similar to the process described in [Enable TLS Between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md). The following paragraphs demonstrate on how to configure more attribute fields that need to be verified in the certificate.
+<CustomContent platform="tidb">
+
+It is recommended that you use [OpenSSL](https://www.openssl.org/) to create keys and certificates. The certificate generation process is similar to the process described in [Enable TLS Between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md). The following paragraphs demonstrate how to configure more attribute fields that need to be verified in the certificate.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+It is recommended that you use [OpenSSL](https://www.openssl.org/) to create keys and certificates. The certificate generation process is similar to the process described in [Enable TLS Between TiDB Clients and Servers](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers). The following paragraphs demonstrate how to configure more attribute fields that need to be verified in the certificate.
+
+</CustomContent>
 
 ### Generate CA key and certificate
 
@@ -278,7 +288,7 @@ The user certificate information can be specified by `require subject`, `require
     openssl x509 -noout -subject -in ca-cert.pem | sed 's/.\{8\}//'  | sed 's/, /\//g' | sed 's/ = /=/g' | sed 's/^/\//'
     ```
 
-+ `require san`: Specifies the `Subject Alternative Name` information of the CA certificate that issues the user certificate. The information to be specified is consistent with the [`alt_names` of the `openssl.cnf` configuration file](/generate-self-signed-certificates.md) used to generate the client certificate.
++ `require san`: Specifies the `Subject Alternative Name` information of the CA certificate that issues the user certificate. The information to be specified is consistent with the [`alt_names` of the `openssl.cnf` configuration file](https://docs.pingcap.com/tidb/stable/generate-self-signed-certificates) used to generate the client certificate.
 
     + Execute the following command to get the information of the `require san` item in the generated certificate:
 

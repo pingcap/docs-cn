@@ -75,7 +75,7 @@ Scheduling is based on information collection. In short, the PD scheduling compo
     * Data read/write speed
     * The number of snapshots that are sent/received (The data might be replicated between replicas through snapshots)
     * Whether the store is overloaded
-    * Labels (See [Perception of Topology](/schedule-replicas-by-topology-labels.md))
+    * Labels (See [Perception of Topology](https://docs.pingcap.com/tidb/stable/schedule-replicas-by-topology-labels))
 
     You can use PD control to check the status of a TiKV store, which can be Up, Disconnect, Offline, Down, or Tombstone. The following is a description of all statuses and their relationship.
 

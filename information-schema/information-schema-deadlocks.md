@@ -44,7 +44,17 @@ The meaning of each column field in the `DEADLOCKS` table is as follows:
 * `KEY_INFO`: The detailed information of `KEY`. See the [KEY_INFO](#key_info) section.
 * `TRX_HOLDING_LOCK`: The ID of the transaction that currently holds the lock on the key and causes blocking. This ID is also the `start_ts` of the transaction.
 
+<CustomContent platform="tidb">
+
 To adjust the maximum number of deadlock events that can be recorded in the `DEADLOCKS` table, adjust the [`pessimistic-txn.deadlock-history-capacity`](/tidb-configuration-file.md#deadlock-history-capacity) configuration in the TiDB configuration file. By default, the information of the recent 10 deadlock events is recorded in the table.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+The information of the recent 10 deadlock events is recorded in the `DEADLOCKS` table.
+
+</CustomContent>
 
 > **Warning:**
 >
@@ -78,9 +88,21 @@ In the above fields, if the information of a field is not applicable or currentl
 
 ## Retryable deadlock errors
 
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> This section is not applicable to TiDB Cloud.
+
+</CustomContent>
+
+<CustomContent platform="tidb">
+
 > **Note:**
 >
 > The `DEADLOCKS` table does not collect the information of retryable deadlock errors by default. If you want the table to collect the retryable deadlock error information, you can adjust the value of [`pessimistic-txn.deadlock-history-collect-retryable`](/tidb-configuration-file.md#deadlock-history-collect-retryable) in the TiDB configuration file.
+
+</CustomContent>
 
 When transaction A is blocked by a lock already held by transaction B, and transaction B is directly or indirectly blocked by the lock held by the current transaction A, a deadlock error will occur. In this deadlock, there might be two cases:
 

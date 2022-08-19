@@ -51,12 +51,30 @@ Query OK, 0 rows affected (0.00 sec)
 
 ## Behavior change descriptions
 
-Starting from v6.1.0, TiDB supports the Global Kill feature, which is enabled by default and controlled by the [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610) configuration. When the Global Kill feature is enabled, both `KILL` and `KILL TIDB` statements can terminate queries or connections across instances so you do not need to worry about erroneously terminating queries or connections. When you use a client to connect to any TiDB instance and execute the `KILL` or `KILL TIDB` statement, the statement will be forwarded to the target TiDB instance. If there is a proxy between the client and the TiDB cluster, the `KILL` and `KILL TIDB` statements will also be forwarded to the target TiDB instance for execution.
+<CustomContent platform="tidb">
+
+Starting from v6.1.0, TiDB supports the Global Kill feature, which is enabled by default and controlled by the [`enable-global-kill`](/tidb-configuration-file.md#enable-global-kill-new-in-v610) configuration.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Starting from v6.1.0, TiDB supports the Global Kill feature, which is enabled by default.
+
+</CustomContent>
+
+When the Global Kill feature is enabled, both `KILL` and `KILL TIDB` statements can terminate queries or connections across instances so you do not need to worry about erroneously terminating queries or connections. When you use a client to connect to any TiDB instance and execute the `KILL` or `KILL TIDB` statement, the statement will be forwarded to the target TiDB instance. If there is a proxy between the client and the TiDB cluster, the `KILL` and `KILL TIDB` statements will also be forwarded to the target TiDB instance for execution.
 
 If the Global Kill feature is not enabled or you are using a TiDB version earlier than v6.1.0, note the following:
 
 - By default, `KILL` is not compatible with MySQL. This helps prevent against a case of a connection being terminated by a wrong TiDB server, because it is common to place multiple TiDB servers behind a load balancer. To terminate other connections on the currently connected TiDB instance, you need to add the `TIDB` suffix explicitly by executing the `KILL TIDB` statement.
+
+<CustomContent platform="tidb">
+
 - It is **STRONGLY NOT RECOMMENDED** to set [`compatible-kill-query = true`](/tidb-configuration-file.md#compatible-kill-query) in your configuration file UNLESS you are certain that clients will be always connected to the same TiDB instance. This is because pressing <kbd>ctrl</kbd>+<kbd>c</kbd> in the default MySQL client opens a new connection in which `KILL` is executed. If there is a proxy between the client and the TiDB cluster, the new connection might be routed to a different TiDB instance, which possibly kills a different session by mistake.
+
+</CustomContent>
+
 - The `KILL TIDB` statement is a TiDB extension. The feature of this statement is similar to the MySQL `KILL [CONNECTION|QUERY]` command and the MySQL command line <kbd>ctrl</kbd>+<kbd>c</kbd>. It is safe to use `KILL TIDB` on the same TiDB instance.
 
 ## See also

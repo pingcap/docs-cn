@@ -14,6 +14,14 @@ The `SELECT` statement is used to read data from TiDB.
 
 ![SelectStmt](/media/sqlgram/SelectStmt.png)
 
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> The `SELECT ... INTO OUTFILE` statement is not supported by TiDB Cloud.
+
+</CustomContent>
+
 **FromDual:**
 
 ![FromDual](/media/sqlgram/FromDual.png)

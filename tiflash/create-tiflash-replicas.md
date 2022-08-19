@@ -133,6 +133,14 @@ SELECT TABLE_NAME FROM information_schema.tables where TABLE_SCHEMA = "<db_name>
 
 ## Set available zones
 
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> This section is not applicable to TiDB Cloud.
+
+</CustomContent>
+
 When configuring replicas, if you need to distribute TiFlash replicas to multiple data centers for disaster recovery, you can configure available zones by following the steps below:
 
 1. Specify labels for TiFlash nodes in the cluster configuration file.
@@ -197,4 +205,8 @@ When configuring replicas, if you need to distribute TiFlash replicas to multipl
         ...
     ```
 
+<CustomContent platform="tidb">
+
 For more information about scheduling replicas by using labels, see [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md), [Multiple Data Centers in One City Deployment](/multi-data-centers-in-one-city-deployment.md), and [Three Data Centers in Two Cities Deployment](/three-data-centers-in-two-cities-deployment.md).
+
+</CustomContent>

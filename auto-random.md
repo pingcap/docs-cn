@@ -8,11 +8,17 @@ aliases: ['/docs/dev/auto-random/','/docs/dev/reference/sql/attributes/auto-rand
 
 > **Note:**
 >
-> `AUTO_RANDOM` was marked as stable in v4.0.3.
+> `AUTO_RANDOM` has been generally available since v4.0.3.
 
 ## User scenario
 
-When you write data intensively into TiDB and TiDB has the table with a primary key of the auto-increment integer type, hotspot issue might occur. To solve the hotspot issue, you can use the `AUTO_RANDOM` attribute. Refer to [Highly Concurrent Write Best Practices](/best-practices/high-concurrency-best-practices.md#complex-hotspot-problems) for details.
+When you write data intensively into TiDB and TiDB has a table with the primary key of the auto-increment integer type, hotspot issue might occur. To solve the hotspot issue, you can use the `AUTO_RANDOM` attribute.
+
+<CustomContent platform="tidb">
+
+For more information, see [Highly Concurrent Write Best Practices](/best-practices/high-concurrency-best-practices.md#complex-hotspot-problems).
+
+</CustomContent>
 
 Take the following created table as an example:
 

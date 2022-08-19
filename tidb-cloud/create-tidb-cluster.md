@@ -64,17 +64,17 @@ If you are a project member, you can access only the specific projects to which 
 
 To create a Developer Tier cluster, take the following steps:
 
-1. On the TiDB Cloud cluster page, click **Create Cluster**, and then click **Developer Tier**.
+1. On the **Active Clusters** page, click **Create Cluster**.
 
-2. On the **Create a Cluster** page, update the default cluster name if necessary.
+2. On the **Create Cluster** page, update the default cluster name if necessary.
 
 3. Note that the cloud provider of Developer Tier is AWS, and then select the region where you want to create your cluster.
 
 4. View the cluster size of the Developer Tier, and then click **Create**.
 
-   The cluster creation process starts and the **Security Quick Start** dialog box is displayed.
+   The cluster creation process starts and the **Security Settings** dialog box is displayed.
 
-5. In the **Security Quick Start** dialog box, set the root password and allowed IP addresses to connect to your cluster, and then click **Apply**.
+5. In the **Security Settings** dialog box, set the root password and allowed IP addresses to connect to your cluster, and then click **Apply**.
 
     Your TiDB Cloud cluster will be created in approximately 5 to 15 minutes.
 
@@ -84,9 +84,9 @@ To create a Developer Tier cluster, take the following steps:
 
 To create a Dedicated Tier cluster, take the following steps:
 
-1. On the TiDB Cloud cluster page, click **Create Cluster**, and then click **Dedicated Tier**.
+1. On the **Active Clusters** page, click **Create Cluster**.
 
-2. On the **Create a Cluster** page, update the default cluster name and port number if necessary, choose a cloud provider and a region, and then click **Next**.
+2. On the **Create Cluster** page, select **Dedicated Tier**, update the default cluster name and port number if necessary, choose a cloud provider and a region, and then click **Next**.
 
     > **Note:**
     >
@@ -100,9 +100,9 @@ To create a Dedicated Tier cluster, take the following steps:
 
 4. Configure the [cluster size](/tidb-cloud/size-your-cluster.md) for TiDB, TiKV, and TiFlash (optional) respectively, and then click **Next**.
 
-5. Confirm the cluster information in the middle area and the billing information in the right pane.
+5. Confirm the cluster information on the page and the billing information in the lower-left corner.
 
-6. If you have not added a payment method, click **Add Credit Card** in the right pane.
+6. If you have not added a payment method, click **Add Credit Card** in the lower-right corner.
 
     > **Note:**
     >
@@ -110,9 +110,9 @@ To create a Dedicated Tier cluster, take the following steps:
 
 7. Click **Create**.
 
-   The cluster creation process starts and the **Security Quick Start** dialog box is displayed.
+   The cluster creation process starts and the **Security Settings** dialog box is displayed.
 
-8. In the **Security Quick Start** dialog box, set the root password and allowed IP addresses to connect to your cluster, and then click **Apply**.
+8. In the **Security Settings** dialog box, set the root password and allowed IP addresses to connect to your cluster, and then click **Apply**.
 
     Your TiDB Cloud cluster will be created in approximately 5 to 15 minutes.
 

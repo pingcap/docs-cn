@@ -12,7 +12,12 @@ Compared with the traditional standalone databases, TiDB has the following advan
 * Fully compatible with the MySQL 5.7 protocol, common features and syntax of MySQL. To migrate your applications to TiDB, you do not need to change a single line of code in many cases.
 * Supports high availability with automatic failover when a minority of replicas fail; transparent to applications.
 * Supports ACID transactions, suitable for scenarios requiring strong consistency such as bank transfer.
+
+<CustomContent platform="tidb">
+
 * Provides a rich series of [data migration tools](/migration-overview.md) for migrating, replicating, or backing up data.
+
+</CustomContent>
 
 As a distributed database, TiDB is designed to consist of multiple components. These components communicate with each other and form a complete TiDB system. The architecture is as follows:
 
@@ -30,7 +35,21 @@ The PD server is the metadata managing component of the entire cluster. It store
 
 ### TiKV server
 
-The TiKV server is responsible for storing data. TiKV is a distributed transactional key-value storage engine. [Region](/glossary.md#regionpeerraft-group) is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey. Multiple Regions exist in each TiKV node. TiKV APIs provide native support to distributed transactions at the key-value pair level and supports the Snapshot Isolation level isolation by default. This is the core of how TiDB supports distributed transactions at the SQL level. After processing SQL statements, the TiDB server converts the SQL execution plan to an actual call to the TiKV API. Therefore, data is stored in TiKV. All the data in TiKV is automatically maintained in multiple replicas (three replicas by default), so TiKV has native high availability and supports automatic failover.
+The TiKV server is responsible for storing data. TiKV is a distributed transactional key-value storage engine.
+
+<CustomContent platform="tidb">
+
+[Region](/glossary.md#regionpeerraft-group) is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+[Region](/tidb-cloud/tidb-cloud-glossary.md#region) is the basic unit to store data. Each Region stores the data for a particular Key Range which is a left-closed and right-open interval from StartKey to EndKey.
+
+</CustomContent>
+
+Multiple Regions exist in each TiKV node. TiKV APIs provide native support to distributed transactions at the key-value pair level and supports the Snapshot Isolation level isolation by default. This is the core of how TiDB supports distributed transactions at the SQL level. After processing SQL statements, the TiDB server converts the SQL execution plan to an actual call to the TiKV API. Therefore, data is stored in TiKV. All the data in TiKV is automatically maintained in multiple replicas (three replicas by default), so TiKV has native high availability and supports automatic failover.
 
 ### TiFlash server
 

@@ -19,7 +19,17 @@ TiDB supports multiple authentication methods. These methods can be specified on
 
 You can use one of the following supported authentication methods in the table. To specify a default method that the server advertises when the client-server connection is being established, set the [`default_authentication_plugin`](/system-variables.md#default_authentication_plugin) variable.
 
+<CustomContent platform="tidb">
+
 The support for TLS authentication is configured differently. For detailed information, see [Enable TLS between TiDB Clients and Servers](/enable-tls-between-clients-and-servers.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+The support for TLS authentication is configured differently. For detailed information, see [Enable TLS between TiDB Clients and Servers](https://docs.pingcap.com/tidb/stable/enable-tls-between-clients-and-servers).
+
+</CustomContent>
 
 | Authentication Method    | Supported        |
 | :------------------------| :--------------- |
@@ -33,5 +43,3 @@ The support for TLS authentication is configured differently. For detailed infor
 | ed25519 (MariaDB)        | No               |
 | GSSAPI (MariaDB)         | No               |
 | FIDO                     | No               |
-
-[TLS Certificates]: /enable-tls-between-clients-and-servers.md

@@ -19,6 +19,14 @@ You can scale a TiDB cluster in the following dimensions:
 
 For information about how to determine the size of your TiDB cluster, see [Determine Your TiDB Size](/tidb-cloud/size-your-cluster.md).
 
+> **Note:**
+>
+> If the node size of TiDB or TiKV is set as **4 vCPU, 16 GiB**, note the following restrictions. To bypass these restrictions, you can [increase your node size](#increase-node-size) first.
+>
+> - The node quantity of TiDB can only be set to 1 or 2, and the node quantity of TiKV is fixed to 3.
+> - 4 vCPU TiDB can only be used with 4 vCPU TiKV, and 4 vCPU TiKV can only be used with 4 vCPU TiDB.
+> - TiFlash is unavailable.
+
 ## Change node number
 
 You can change the number of TiDB, TiKV, or TiFlash nodes.
@@ -27,8 +35,13 @@ You can change the number of TiDB, TiKV, or TiFlash nodes.
 
 To increase the number of TiDB, TiKV, or TiFlash nodes, take the following steps:
 
-1. In the TiDB Cloud console, navigate to the **Active Clusters** page for your project, and then click the name of a cluster that you want to scale. The overview page of the cluster is displayed.
-2. In the cluster information pane on the left, click **Setting**.
+1. In the TiDB Cloud console, navigate to the **Active Clusters** page for your project.
+2. Find the area of the cluster that you want to scale, and click **...** in the upper-right corner of the area.
+
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of the cluster that you want to scale on the **Active Clusters** page and click **...** in the upper-right corner.
+
 3. Click **Scale** in the drop-down menu. The **Scale** window is displayed.
 4. In the **Scale** window, increase the number of TiDB, TiKV, or TiFlash nodes.
 5. Click **Confirm**.
@@ -37,8 +50,13 @@ To increase the number of TiDB, TiKV, or TiFlash nodes, take the following steps
 
 To decrease the number of TiDB nodes, take the following steps:
 
-1. In the TiDB Cloud console, navigate to the **Active Clusters** page for your project, and then click the name of a cluster that you want to scale. The overview page of the cluster is displayed.
-2. In the cluster information pane on the left, click **Setting**.
+1. In the TiDB Cloud console, navigate to the **Active Clusters** page for your project.
+2. Find the area of the cluster that you want to scale, and click **...** in the upper-right corner of the area.
+
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of the cluster that you want to scale on the **Active Clusters** page and click **...** in the upper-right corner.
+
 3. Click **Scale** in the drop-down menu. The **Scale** window is displayed.
 4. In the **Scale** window, decrease the number of TiDB nodes.
 5. Click **Confirm**.
@@ -65,8 +83,13 @@ You can change the storage size of TiKV or TiFlash.
 
 To increase the storage size of TiKV or TiFlash, take the following steps:
 
-1. In the TiDB Cloud console, navigate to the **Active Clusters** page for your project, and then click the name of a cluster that you want to scale. The overview page of the cluster is displayed.
-2. In the cluster information pane on the left, click **Setting**.
+1. In the TiDB Cloud console, navigate to the **Active Clusters** page for your project.
+2. Find the area of the cluster that you want to scale, and click **...** in the upper-right corner of the area.
+
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of the cluster that you want to scale on the **Active Clusters** page and click **...** in the upper-right corner.
+
 3. Click **Scale** in the drop-down menu. The **Scale** window is displayed.
 4. In the **Scale** window, increase the storage size of TiKV or TiFlash.
 5. Click **Confirm**.

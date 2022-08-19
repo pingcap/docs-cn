@@ -226,7 +226,18 @@ The following are hard restrictions on non-transactional DML statements. If thes
 - Cannot be used with the `prepare` statement.
 - `ENUM`, `BIT`, `SET`, `JSON` types are not supported as the dividing columns.
 - Not supported for [temporary tables](/temporary-tables.md).
+
+<CustomContent platform="tidb">
+
 - [Common Table Expression](/develop/dev-guide-use-common-table-expression.md) is not supported.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [Common Table Expression](https://docs.pingcap.com/tidb/stable/dev-guide-use-common-table-expression) is not supported.
+
+</CustomContent>
 
 ## Control batch execution failure
 

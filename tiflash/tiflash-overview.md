@@ -10,6 +10,12 @@ aliases: ['/docs/dev/tiflash/tiflash-overview/','/docs/dev/reference/tiflash/ove
 
 In TiFlash, the columnar replicas are asynchronously replicated according to the Raft Learner consensus algorithm. When these replicas are read, the Snapshot Isolation level of consistency is achieved by validating Raft index and multi-version concurrency control (MVCC).
 
+<CustomContent platform="tidb-cloud">
+
+With TiDB Cloud, you can create an HTAP cluster easily by specifying one or more TiFlash nodes according to your HTAP workload. If the TiFlash node count is not specified when you create the cluster or you want to add more TiFlash nodes, you can change the node count by [scaling the cluster](/tidb-cloud/scale-tidb-cluster.md).
+
+</CustomContent>
+
 ## Architecture
 
 ![TiFlash Architecture](/media/tidb-storage-architecture.png)
@@ -77,12 +83,24 @@ You can either use TiDB to read TiFlash replicas for medium-scale analytical pro
 
 - [Create TiFlash Replicas](/tiflash/create-tiflash-replicas.md)
 - [Use TiDB to Read TiFlash Replicas](/tiflash/use-tidb-to-read-tiflash.md)
+
+<CustomContent platform="tidb">
+
 - [Use TiSpark to Read TiFlash Replicas](/tiflash/use-tispark-to-read-tiflash.md)
+
+</CustomContent>
+
 - [Use MPP Mode](/tiflash/use-tiflash-mpp-mode.md)
+
+<CustomContent platform="tidb">
 
 To experience the whole process from importing data to querying in a TPC-H dataset, refer to [Quick Start Guide for TiDB HTAP](/quick-start-with-htap.md).
 
+</CustomContent>
+
 ## See also
+
+<CustomContent platform="tidb">
 
 - To deploy a new cluster with TiFlash nodes, see [Deploy a TiDB cluster using TiUP](/production-deployment-using-tiup.md).
 - To add a TiFlash node in a deployed cluster, see [Scale out a TiFlash cluster](/scale-tidb-using-tiup.md#scale-out-a-tiflash-cluster).
@@ -95,3 +113,13 @@ To experience the whole process from importing data to querying in a TPC-H datas
 - [Supported push-down calculations in TiFlash](/tiflash/tiflash-supported-pushdown-calculations.md)
 - [Data validation in TiFlash](/tiflash/tiflash-data-validation.md)
 - [TiFlash compatibility](/tiflash/tiflash-compatibility.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [Tune TiFlash performance](/tiflash/tune-tiflash-performance.md).
+- [Supported push-down calculations in TiFlash](/tiflash/tiflash-supported-pushdown-calculations.md)
+- [TiFlash compatibility](/tiflash/tiflash-compatibility.md)
+
+</CustomContent>

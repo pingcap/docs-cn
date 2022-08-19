@@ -6,7 +6,17 @@ aliases: ['/docs/dev/transaction-isolation-levels/','/docs/dev/reference/transac
 
 # TiDB Transaction Isolation Levels
 
+<CustomContent platform="tidb">
+
 Transaction isolation is one of the foundations of database transaction processing. Isolation is one of the four key properties of a transaction (commonly referred as [ACID](/glossary.md#acid)).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Transaction isolation is one of the foundations of database transaction processing. Isolation is one of the four key properties of a transaction (commonly referred as [ACID](/tidb-cloud/tidb-cloud-glossary.md#acid)).
+
+</CustomContent>
 
 The SQL-92 standard defines four levels of transaction isolation: Read Uncommitted, Read Committed, Repeatable Read, and Serializable. See the following table for details:
 
@@ -21,9 +31,9 @@ TiDB implements Snapshot Isolation (SI) consistency, which it advertises as `REP
 
 > **Note:**
 >
-> In TiDB v3.0, the automatic retry of transactions is disabled by default. It is not recommended to enable the automatic retry because it might **break the transaction isolation level**. Refer to [Transaction Retry](/optimistic-transaction.md#automatic-retry) for details.
+> Starting from TiDB v3.0, the automatic retry of transactions is disabled by default. It is not recommended to enable the automatic retry because it might **break the transaction isolation level**. Refer to [Transaction Retry](/optimistic-transaction.md#automatic-retry) for details.
 >
-> Starting from TiDB [v3.0.8](/releases/release-3.0.8.md#tidb), newly created TiDB clusters use the [pessimistic transaction mode](/pessimistic-transaction.md) by default. The current read (`for update` read) is **non-repeatable read**. Refer to [pessimistic transaction mode](/pessimistic-transaction.md) for details.
+> Starting from TiDB v3.0.8, newly created TiDB clusters use the [pessimistic transaction mode](/pessimistic-transaction.md) by default. The current read (`for update` read) is **non-repeatable read**. Refer to [pessimistic transaction mode](/pessimistic-transaction.md) for details.
 
 ## Repeatable Read isolation level
 
@@ -54,7 +64,7 @@ The Repeatable Read isolation level in TiDB differs from that in MySQL. The MySQ
 
 ## Read Committed isolation level
 
-Starting from TiDB [v4.0.0-beta](/releases/release-4.0.0-beta.md#tidb), TiDB supports the Read Committed isolation level.
+Starting from TiDB v4.0.0-beta, TiDB supports the Read Committed isolation level.
 
 For historical reasons, the Read Committed isolation level of current mainstream databases is essentially the [Consistent Read isolation level defined by Oracle](https://docs.oracle.com/cd/B19306_01/server.102/b14220/consist.htm). In order to adapt to this situation, the Read Committed isolation level in TiDB pessimistic transactions is also a consistent read behavior in essence.
 

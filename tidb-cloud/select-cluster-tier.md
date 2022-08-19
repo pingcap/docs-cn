@@ -51,8 +51,12 @@ Whenever you use or set a database user name, you must include the prefix in the
 
 To get the prefix for your cluster, take the following steps:
 
-1. In the TiDB Cloud console, navigate to the **Active Clusters** page of your project and click the name of your cluster.
-2. In the cluster information pane on the left, click **Connect**. The **Connect to TiDB** dialog is displayed.
+1. Navigate to the **Active Clusters** page.
+2. Click **Connect** in the upper-right corner of the area. A connection dialog box is displayed.
+
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of your cluster on the **Active Clusters** page and click **Connect** in the upper-right corner.
 3. In the dialog, locate **Step 2: Connect with a SQL client** and get the prefix.
 
 ### Automatic hibernation and resuming
@@ -63,7 +67,7 @@ The hibernation does not affect your data stored in the cluster but only stops t
 
 During the hibernation, the status of the cluster is still displayed as **Normal**, and you can see a message about hibernation in the TiDB Cloud console.
 
-Anytime you want to use your Developer Tier cluster again, just connect to your cluster using your MySQL client driver or ORM framework as you usually do. The cluster will be resumed within 50 seconds and back to service automatically.
+Anytime you want to use your Developer Tier cluster again, just [connect to your cluster](/tidb-cloud/connect-to-tidb-cluster.md) using your MySQL client driver or ORM framework as you usually do. The cluster will be resumed within 50 seconds and back to service automatically.
 
 Alternatively, you can log in to the TiDB Cloud console, and then click **Resume** for the cluster on the **Active Clusters** page.
 
@@ -77,7 +81,8 @@ Alternatively, you can log in to the TiDB Cloud console, and then click **Resume
 - You cannot create any changefeeds (Apache Kafka Sink and MySQL Sink) or use [TiCDC](https://docs.pingcap.com/tidb/stable/ticdc-overview) to replicate incremental data.
 - You cannot use VPC Peering to connect to clusters.
 - You cannot scale clusters to larger storage, standard nodes, or increase the number of nodes.
-- You cannot use a third-party monitoring service.
+- You cannot view the [Monitoring page](/tidb-cloud/built-in-monitoring.md).
+- You cannot use the third-party monitoring service.
 - You cannot customize the port number of a TiDB cluster.
 - The data transfer is limited to a total of 20 GiB in and out per week. If the 20 GiB limit is reached, the network traffic will be throttled to 10 KB/s.
 

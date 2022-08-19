@@ -7,9 +7,12 @@ summary: Learn how to import sample data into TiDB Cloud via UI.
 
 This document describes how to import sample data into TiDB Cloud via the UI. The sample data used is the system data from Capital Bikeshare, released under the Capital Bikeshare Data License Agreement. Before importing the sample data, you need to have one TiDB cluster.
 
-1. Navigate to the **Active Clusters** page and click the name of your newly created cluster. The overview page of your cluster is displayed.
+1. Navigate to the **Active Clusters** page.
+2. Find the area of your cluster and click **Import Data** in the upper-right corner of the area. The **Data Import Task** page is displayed.
 
-2. In the cluster information pane on the left, click **Import**. The **Data Import Task** page is displayed.
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of your cluster on the **Active Clusters** page and click **Import Data** in the upper-right corner.
 
 3. Fill in the import parameters:
 
@@ -22,9 +25,7 @@ This document describes how to import sample data into TiDB Cloud via the UI. Th
     - **Bucket URL**: enter the sample data URL `s3://tidbcloud-samples/data-ingestion/`.
     - **Data Format**: select **TiDB Dumpling**.
     - **Setup Credentials**: enter `arn:aws:iam::385595570414:role/import-sample-access` for Role-ARN.
-    - **Target Database**:
-        - **Username**: `root`.
-        - **Password**: enter your root password.
+    - **Target Cluster**: fill in the **Username** and **Password** fields.
     - **DB/Tables Filter**: leave this field blank.
 
     </div>
@@ -36,9 +37,7 @@ This document describes how to import sample data into TiDB Cloud via the UI. Th
     - **Data Source Type**: `Google Cloud Stroage`.
     - **Bucket URL**: enter the sample data URL `gcs://tidbcloud-samples-us-west1`.
     - **Data Format**: select **TiDB Dumpling**.
-    - **Target Database**:
-        - **Username**: `root`.
-        - **Password**: enter your root password.
+    - **Target Cluster**: fill in the **Username** and **Password** fields.
     - **DB/Tables Filter**: leave this field blank.
 
     </div>

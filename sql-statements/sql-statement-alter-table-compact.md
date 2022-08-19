@@ -57,7 +57,11 @@ The `ALTER TABLE ... COMPACT` statement compacts all replicas in a table simulta
 
 To avoid a significant impact on online business, each TiFlash instance only compacts data in one table at a time by default (except for the compaction triggered in the background). This means that if you execute the `ALTER TABLE ... COMPACT` statement on multiple tables at the same time, their executions will be queued on the same TiFlash instance, rather than being executed simultaneously.
 
+<CustomContent platform="tidb">
+
 To obtain greater table-level concurrency with higher resource usage, you can modify the TiFlash configuration [`manual_compact_pool_size`](/tiflash/tiflash-configuration.md). For example, when `manual_compact_pool_size` is set to 2, compaction for 2 tables can be processed simultaneously.
+
+</CustomContent>
 
 ## MySQL compatibility
 

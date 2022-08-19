@@ -22,16 +22,17 @@ For each TiDB cluster, the number of TiCDC Capacity Units is set up by TiDB Clou
 
 The following table lists the price of TiDB Cloud for each TiCDC Capacity Unit (TCU):
 
-| Region              | TCU Price ($/hr) |
-|---------------------|------------------|
-| aws/us-west-2       |          $0.1307 |
-| aws/us-east-1       |          $0.1307 |
-| aws/ap-northeast-1  |          $0.1669 |
-| aws/ap-southeast-1  |          $0.1623 |
-| aws/eu-central-1    |          $0.1564 |
-| aws/ap-south-1      |          $0.1393 |
-| gcp/us-west1        |          $0.1452 |
-| gcp/us-central1     |          $0.1452 |
-| gcp/asia-northeast1 |          $0.1868 |
-| gcp/asia-southeast1 |          $0.1746 |
-| gcp/asia-east1      |          $0.1628 |
+| Cloud provider | Region                      | TCU Price ($/hr) |
+|----------------|-----------------------------|------------------|
+| AWS            | Oregon (us-west-2)          |          $0.1307 |
+| AWS            | N. Virginia (us-east-1)     |          $0.1307 |
+| AWS            | Mumbai (ap-south-1)         |          $0.1393 |
+| AWS            | Singapore (ap-southeast-1)  |          $0.1623 |
+| AWS            | Tokyo (ap-northeast-1)      |          $0.1669 |
+| AWS            | Frankfurt (eu-central-1)    |          $0.1564 |
+| GCP            | Oregon (us-west1)           |          $0.1452 |
+| GCP            | Iowa (us-central1)          |          $0.1452 |
+| GCP            | Singapore (asia-southeast1) |          $0.1746 |
+| GCP            | Taiwan (asia-east1)         |          $0.1628 |
+| GCP            | Tokyo (asia-northeast1)     |          $0.1868 |
+| GCP            | Osaka (asia-northeast2)     |          $0.1868 |
