@@ -9,8 +9,8 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 - 快速搭建包含 TiCDC 的 TiDB 集群
 - 创建将数据输出到 Confluent Cloud 的 changefeed
-- 创建将数据从 Confluent Cloud 输出到 ksqlDB、Snowflake、SQL Server 的连接器 (Connector)
-- 使用 go-tpc 写入数据到上游 TiDB，并观察 ksqlDB、Snowflake、SQL Server 中的数据
+- 创建将数据从 Confluent Cloud 输出到 Snowflake、ksqlDB 和 SQL Server 的连接器 (Connector)
+- 使用 go-tpc 写入数据到上游 TiDB，并观察 Snowflake、ksqlDB 和 SQL Server 中的数据
 
 上述过程将会基于实验环境进行，你也可以参考上述执行步骤，搭建生产级别的集群。
 
