@@ -245,7 +245,7 @@ TiDB 版本：6.2.0
 | [tidb_enable_concurrent_ddl](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入) | 新增 | 用于控制是否让 TiDB 使用并发 DDL 语句。 |
 | [tidb_max_paging_size](/system-variables.md#tidb_max_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最大的行数。 |
 | [tidb_min_paging_size](/system-variables.md#tidb_min_paging_size-从-v620-版本开始引入) | 新增 | 用来设置 coprocessor 协议中 paging size 的最小的行数。 |
-| [tidb_txn_commit_batch_size](/system-variables.md#tidb_txn_commit_batch_size-从-v620-版本开始引入) | 新增 | TBP |
+| [tidb_txn_commit_batch_size](/system-variables.md#tidb_txn_commit_batch_size-从-v620-版本开始引入) | 新增 | 用于控制 TiDB 向 TiKV 发送的事务提交请求的批量大小。 |
 | tidb_enable_change_multi_schema | 删除 | TiDB 支持使用一个 `ALTER TABLE` 语句增删改多个列或索引。 |
 
 ### 配置文件参数
