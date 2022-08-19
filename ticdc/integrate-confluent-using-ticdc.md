@@ -1,6 +1,6 @@
 ---
 title: 与 Confluent Cloud 和 Snowflake 进行数据集成
-summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud 以及 Snowflake 等平台。
+summary: 了解如何使用 TiCDC 从 TiDB 同步数据至 Confluent Cloud 以及 Snowflake、ksqlDB、SQL Server。
 ---
 
 # 与 Confluent Cloud 和 Snowflake 进行数据集成
