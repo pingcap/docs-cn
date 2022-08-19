@@ -1,9 +1,9 @@
 ---
-title: Deployment FAQs
+title: TiDB Deployment FAQs
 summary: Learn about the FAQs related to TiDB deployment.
 ---
 
-# Deployment FAQs
+# TiDB Deployment FAQs
 
 This document summarizes the FAQs related to TiDB deployment.
 
@@ -145,3 +145,9 @@ The Direct mode wraps the Write request into the I/O command and sends this comm
     ```bash
     ./fio -ioengine=psync -bs=32k -fdatasync=1 -thread -rw=randrw -percentage_random=100,0 -size=10G -filename=fio_randread_write_test.txt -name='fio mixed randread and sequential write test' -iodepth=4 -runtime=60 -numjobs=4 -group_reporting --output-format=json --output=fio_randread_write_test.json
     ```
+
+## What public cloud vendors are currently supported by TiDB?
+
+TiDB supports deployment on [Google GKE](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-gcp-gke), [AWS EKS](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-aws-eks), and [Alibaba Cloud ACK](https://docs.pingcap.com/tidb-in-kubernetes/stable/deploy-on-alibaba-cloud).
+
+In addition, TiDB is currently available on JD Cloud and UCloud, and has the first-level database entries on them.

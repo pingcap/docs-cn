@@ -1,9 +1,9 @@
 ---
-title: Cluster Management FAQs
+title: TiDB Cluster Management FAQs
 summary: Learn about the FAQs related to TiDB cluster management.
 ---
 
-# Cluster Management FAQs
+# TiDB Cluster Management FAQs
 
 This document summarizes the FAQs related to TiDB cluster management.
 

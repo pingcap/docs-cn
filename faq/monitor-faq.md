@@ -1,9 +1,9 @@
 ---
-title: Monitoring FAQs
+title: TiDB Monitoring FAQs
 summary: Learn about the FAQs related to TiDB Monitoring.
 ---
 
-# Monitoring FAQs
+# TiDB Monitoring FAQs
 
 This document summarizes the FAQs related to TiDB monitoring.
 
