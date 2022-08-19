@@ -22,7 +22,7 @@ The preceding steps are performed in a lab environment. You can also deploy a cl
 
 1. Deploy a TiDB cluster with TiCDC included.
 
-    In a lab or testing environment, you can deploy a TiDB cluster with TiCDC quickly by using TiUP Playground.
+    In a lab or testing environment, you can deploy a TiDB cluster with TiCDC included quickly by using TiUP Playground.
 
     ```shell
     tiup playground --host 0.0.0.0 --db 1 --pd 1 --kv 1 --tiflash 0 --ticdc 1

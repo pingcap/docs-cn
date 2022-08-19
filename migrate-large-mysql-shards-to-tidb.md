@@ -98,7 +98,7 @@ The following table describes parameters in the command above. For more informat
 | `-r` or `--row`        | Specifies the maximum number of rows in a single file. If you use this parameter, Dumpling enables the in-table concurrency to speed up the export and reduce the memory usage.|
 | `-F` |  Specifies the maximum size of a single file. The unit is `MiB`. It is recommended to keep the value to 256 MiB. |
 | `-B` or `--database`   | Specifies databases to be exported. |
-| `-f` or `--filter`     |  Sexport tables that match the filter pattern. For the filter syntax, see [table-filter](/table-filter.md) |
+| `-f` or `--filter`     |  Exports tables that match the filter pattern. For the filter syntax, see [table-filter](/table-filter.md). |
 
 Ensure that there is enough free space in `${data-path}`. It is strongly recommended to use the `-F` option to avoid interruptions in the backup process due to oversized single tables.
 
@@ -219,7 +219,7 @@ Follow these steps to start `tidb-lightning`:
    - View progress via the monitoring dashboard. For more information, see [TiDB Lightning Monitoring]( /tidb-lightning/monitor-tidb-lightning.md).
    - View the progress via the Web page. See [Web Interface](/tidb-lightning/tidb-lightning-web-interface.md).
 
-After the importing finishes, TiDB Lightning will exit automatically. To make sure that the data is imported successfully, check for `the whole procedure completed` among the last 5 lines in the log.
+After TiDB Lightning completes the import, it exits automatically. Check whether `tidb-lightning.log` contains `the whole procedure completed` in the last lines. If yes, the import is successful. If no, the import encounters an error. Address the error as instructed in the error message.
 
 > **Note:**
 >
@@ -265,8 +265,8 @@ The parameters are described as follows.
 
 |Parameter      | Description |
 |-              |-            |
-|--master-addr         | {advertise-addr} of any DM-master node in the cluster that dmctl connects to. For example: 172.16.10.71:8261|
-| operate-source create | Load data sources to DM clusters. |
+|`--master-addr`         | {advertise-addr} of any DM-master node in the cluster that dmctl connects to. For example: 172.16.10.71:8261|
+| `operate-source create` | Load data sources to DM clusters. |
 
 Repeat the above steps until all MySQL upstream instances are added to the DM as data sources.
 

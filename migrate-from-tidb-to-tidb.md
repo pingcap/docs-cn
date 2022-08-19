@@ -25,9 +25,7 @@ This document exemplifies the whole migration process and contains the following
 
 1. Deploy TiDB clusters.
 
-    Deploy two TiDB clusters, one upstream and the other downstream by using tiup playground. For more information, refer to [Deploy and Maintain an Online TiDB Cluster Using TiUP](/tiup/tiup-cluster.md).
-
-    {{< copyable "shell-regular" >}}
+    Deploy two TiDB clusters, one upstream and the other downstream by using TiUP Playground. For more information, refer to [Deploy and Maintain an Online TiDB Cluster Using TiUP](/tiup/tiup-cluster.md).
 
     ```shell
     # Create an upstream cluster
@@ -42,15 +40,11 @@ This document exemplifies the whole migration process and contains the following
 
     By default, test databases are created in the newly deployed clusters. Therefore, you can use [sysbench](https://github.com/akopytov/sysbench#linux) to generate test data and simulate data in real scenarios.
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sysbench oltp_write_only --config-file=./tidb-config --tables=10 --table-size=10000 prepare
     ```
 
     In this document, we use sysbench to run the `oltp_write_only` script. This script generates 10 tables in the test database, each with 10,000 rows. The tidb-config is as follows:
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     mysql-host=172.16.6.122 # Replace the value with the IP address of your upstream cluster
@@ -69,8 +63,6 @@ This document exemplifies the whole migration process and contains the following
 
     In real scenarios, service data is continuously written to the upstream cluster. In this document, we use sysbench to simulate this workload. Specifically, run the following command to enable 10 workers to continuously write data to three tables, sbtest1, sbtest2, and sbtest3, with a total TPS not exceeding 100.
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     sysbench oltp_write_only --config-file=./tidb-config --tables=3 run
     ```
@@ -78,8 +70,6 @@ This document exemplifies the whole migration process and contains the following
 4. Prepare external storage.
 
     In full data backup, both the upstream and downstream clusters need to access backup files. It is recommended that you use [External storage](/br/backup-and-restore-storages.md) to store backup files. In this document, Minio is used to simulate an S3-compatible storage service.
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     wget https://dl.min.io/server/minio/release/linux-amd64/minio
@@ -103,8 +93,6 @@ This document exemplifies the whole migration process and contains the following
 
     The access link is as follows:
 
-    {{< copyable "shell-regular" >}}
-
     ```shell
     s3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true
     ```
@@ -115,18 +103,31 @@ After setting up the environment, you can use the backup and restore functions o
 
 > **Note:**
 >
+> In production clusters, performing a backup with GC disabled might affect cluster performance. It is recommended that you back up data in off-peak hours, and set `RATE_LIMIT` to a proper value to avoid performance degradation.
+>
 > If the versions of the upstream and downstream clusters are different, you should check [BR compatibility](/br/backup-and-restore-overview.md#before-you-use-br). In this document, we assume that the upstream and downstream clusters are the same version.
 
 1. Disable GC.
 
-    To ensure that newly written data is not deleted during incremental migration, you should disable GC for the upstream cluster before backup. In this way, history data will not be deleted.
+    To ensure that newly written data is not deleted during incremental migration, you should disable GC for the upstream cluster before backup. In this way, history data is not deleted.
 
-    {{< copyable "sql" >}}
+    Run the following command to disable GC:
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    To verify that the change takes effect, query the value of `tidb_gc_enable`:
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+:
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -135,18 +136,15 @@ After setting up the environment, you can use the backup and restore functions o
     1 row in set (0.00 sec)
     ```
 
-    > **Note:**
-    >
-    > In production clusters, performing a backup with GC disabled might affect cluster performance. It is recommended that you back up data in off-peak hours, and set RATE_LIMIT to a proper value to avoid performance degradation.
-
 2. Back up data.
 
     Run the `BACKUP` statement in the upstream cluster to back up data:
 
-    {{< copyable "sql" >}}
-
     ```sql
     MySQL [(none)]> BACKUP DATABASE * TO 's3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true' RATE_LIMIT = 120 MB/SECOND;
+    ```
+
+    ```
     +---------------+----------+--------------------+---------------------+---------------------+
     | Destination   | Size     | BackupTS           | Queue Time          | Execution Time      |
     +---------------+----------+--------------------+---------------------+---------------------+
@@ -161,10 +159,11 @@ After setting up the environment, you can use the backup and restore functions o
 
     Run the `RESTORE` command in the downstream cluster to restore data:
 
-    {{< copyable "sql" >}}
-
     ```sql
     mysql> RESTORE DATABASE * FROM 's3://backup?access-key=minio&secret-access-key=miniostorage&endpoint=http://${HOST_IP}:6060&force-path-style=true';
+    ```
+
+    ```
     +--------------+-----------+--------------------+---------------------+---------------------+
     | Destination  | Size      | BackupTS           | Queue Time          | Execution Time      |
     +--------------+-----------+--------------------+---------------------+---------------------+
@@ -173,19 +172,15 @@ After setting up the environment, you can use the backup and restore functions o
     1 row in set (41.85 sec)
     ```
 
-4. (Optional) Check data.
+4. (Optional) Validate data.
 
     You can use [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md) to check data consistency between upstream and downstream at a certain time. The preceding `BACKUP` output shows that the upstream cluster finishes backup at 431434047157698561. The preceding `RESTORE` output shows that the downstream finishes restoration at 431434141450371074.
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     sync_diff_inspector -C ./config.yaml
     ```
 
     For details about how to configure the sync-diff-inspector, see [Configuration file description](/sync-diff-inspector/sync-diff-inspector-overview.md#configuration-file-description). In this document, the configuration is as follows:
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # Diff Configuration.
@@ -196,7 +191,7 @@ After setting up the environment, you can use the backup and restore functions o
         port = 4000
         user = "root"
         password = ""
-        snapshot = "431434047157698561" # Set snapshot to the actual backup time (see BackupTS in the previous step)
+        snapshot = "431434047157698561" # Set snapshot to the actual backup time (BackupTS in the "Back up data" section in [Step 2. Migrate full data](#step-2-migrate-full-data))
     [data-sources.downstream]
         host = "172.16.6.125" # Replace the value with the IP address of your downstream cluster
         port = 4000
@@ -229,23 +224,34 @@ After setting up the environment, you can use the backup and restore functions o
 
     In this command, the parameters are as follows:
 
-    - --pd: PD address of the upstream cluster
-    - --sink-uri: URI of the downstream cluster
-    - --changefeed-id: changefeed ID, must be in the format of a regular expression, ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
-    - --start-ts: start timestamp of the changefeed, must be the backup time (or BackupTS mentioned in the previous step)
+    - `--pd`: PD address of the upstream cluster
+    - `--sink-uri`: URI of the downstream cluster
+    - `--changefeed-id`: changefeed ID, must be in the format of a regular expression, ^[a-zA-Z0-9]+(\-[a-zA-Z0-9]+)*$
+    - `--start-ts`: start timestamp of the changefeed, must be the backup time (or BackupTS in the "Back up data" section in [Step 2. Migrate full data](#step-2-migrate-full-data))
 
     For more information about the changefeed configurations, see [Task configuration file](/ticdc/manage-ticdc.md#task-configuration-file).
 
 3. Enable GC.
 
-    In incremental migration using TiCDC, GC only removes history data that is replicated. Therefore, after creating a changefeed, you need to run the following command to enable GC. For details, see [What is the complete behavior of TiCDC garbage collection (GC) safepoint?](/ticdc/ticdc-faq.md#what-is-the-complete-behavior-of-ticdc-garbage-collection-gc-safepoint). 
+    In incremental migration using TiCDC, GC only removes history data that is replicated. Therefore, after creating a changefeed, you need to run the following command to enable GC. For details, see [What is the complete behavior of TiCDC garbage collection (GC) safepoint?](/ticdc/ticdc-faq.md#what-is-the-complete-behavior-of-ticdc-garbage-collection-gc-safepoint).
 
-    {{< copyable "sql" >}}
+    To enable GC, run the following command:
 
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    To verify that the change takes effect, query the value of `tidb_gc_enable`:
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
+    ```
+
+    ```
     +-------------------------+
     | @@global.tidb_gc_enable |
     +-------------------------+
@@ -256,11 +262,9 @@ After setting up the environment, you can use the backup and restore functions o
 
 ## Step 4. Switch services to the new TiDB cluster
 
-After creating a changefeed, data written to the upstream cluster is replicated to the downstream cluster with low latency. You can migrate read stream to the downstream cluster gradually. Observe a period. If the downstream cluster is stable, you can switch write stream to the downstream cluster as well, which may include three steps:
+After creating a changefeed, data written to the upstream cluster is replicated to the downstream cluster with low latency. You can migrate read stream to the downstream cluster gradually. Observe a period. If the downstream cluster is stable, you can switch write stream to the downstream cluster by performing the following steps:
 
 1. Stop write services in the upstream cluster. Make sure that all upstream data are replicated to downstream before stopping the changefeed.
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     # Stop the changefeed from the upstream cluster to the downstream cluster
@@ -268,6 +272,9 @@ After creating a changefeed, data written to the upstream cluster is replicated 
 
     # View the changefeed status
     tiup cdc cli changefeed list
+    ```
+
+    ```
     [
       {
         "id": "upstream-to-downstream",
@@ -282,8 +289,6 @@ After creating a changefeed, data written to the upstream cluster is replicated 
     ```
 
 2. Create a changefeed from downstream to upstream. You can leave `start-ts` unspecified so as to use the default setting, because the upstream and downstream data are consistent and there is no new data written to the cluster.
-
-    {{< copyable "shell-regular" >}}
 
     ```shell
     tiup cdc cli changefeed create --pd=http://172.16.6.125:2379 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"

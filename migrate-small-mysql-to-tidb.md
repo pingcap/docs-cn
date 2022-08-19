@@ -49,7 +49,7 @@ The parameters used in the command above are described as follows:
 
 |Parameter      |Description|
 |  :-        |    :-           |
-|`--master-addr`  |The {advertise-addr} of any DM-master node in the cluster where `dmctl` is to connect. For example, 172.16.10.71:8261.
+|`--master-addr`  |`{advertise-addr}` of any DM-master node in the cluster where `dmctl` is to connect. For example, 172.16.10.71:8261.
 |`operate-source create`|Load the data source to the DM cluster.|
 
 ## Step 2. Create the migration task
@@ -114,7 +114,7 @@ The parameters used in the command above are described as follows:
 
 |Parameter|Description|
 |     -    |     -     |
-|`--master-addr`| The {advertise-addr} of any DM-master node in the cluster where `dmctl` is to connect. For example: 172.16.10.71:8261. |
+|`--master-addr`| `{advertise-addr}` of any DM-master node in the cluster where `dmctl` is to connect. For example: 172.16.10.71:8261. |
 |`start-task`| Start the migration task |
 
 If the task fails to start, after changing the configuration according to the returned result, you can run the `start-task task.yaml` command to restart the task. If you encounter problems, refer to [Handle Errors](/dm/dm-error-handling.md) and [FAQ](/dm/dm-faq.md).

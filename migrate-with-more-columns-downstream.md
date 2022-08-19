@@ -78,7 +78,7 @@ In such cases, you can use the `binlog-schema` command to set a table schema for
 
     |Parameter |Description|
     |:-- |:---|
-    |`-master-addr` |Specifies the `${advertise-addr}` of any DM-master node in the cluster where dmctl is to be connected. `${advertise-addr}` indicates the address that DM-master advertises to the outside world.|
+    |`-master-addr` |Specifies `${advertise-addr}` of any DM-master node in the cluster where dmctl is to be connected. `${advertise-addr}` indicates the address that DM-master advertises to the outside world.|
     |`binlog-schema set`| Manually set the schema information.|
     |`-s` | Specifies the source. `${source-id}` indicates the source ID of MySQL data.|
     |`${task-name}`| Specifies the name of the migration task defined in the `task.yaml` configuration file of the data migration task.|
