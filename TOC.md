@@ -503,7 +503,7 @@
       - [TiCDC Open Protocol](/ticdc/ticdc-open-protocol.md)
       - [TiCDC Avro Protocol](/ticdc/ticdc-avro-protocol.md)
       - [TiCDC Canal-JSON Protocol](/ticdc/ticdc-canal-json.md)
-      - [Integrate TiDB with Confluent Platform](/ticdc/integrate-confluent-using-ticdc.md)
+      - [Integrate TiDB with Confluent and Snowflake](/ticdc/integrate-confluent-using-ticdc.md)
     - [FAQs](/ticdc/ticdc-faq.md)
     - [Glossary](/ticdc/ticdc-glossary.md)
   - [Dumpling](/dumpling-overview.md)

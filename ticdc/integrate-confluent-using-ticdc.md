@@ -1,18 +1,18 @@
 ---
-title: Integrate Data with Confluent Cloud
-summary: Learn how to stream TiDB data to the Confluent Cloud using TiCDC, and how to replicate incremental data to ksqlDB, Snowflake, and SQL Server.
+title: Integrate Data with Confluent Cloud and Snowflake
+summary: Learn how to stream TiDB data to Confluent Cloud, Snowflake, ksqlDB, and SQL Server.
 ---
 
-# Integrate Data with Confluent Cloud
+# Integrate Data with Confluent Cloud and Snowflake
 
 Confluent is an Apache Kafka-compatible streaming data platform that provides strong data integration capabilities. On this platform, you can access, store, and manage non-stop real-time streaming data.
 
-Starting from TiDB v6.1.0, TiCDC supports replicating incremental data to Confluent in Avro format. This document introduces how to replicate TiDB incremental data to Confluent using [TiCDC](/ticdc/ticdc-overview.md), and further replicate data to ksqlDB, Snowflake, and SQL Server via Confluent Cloud. The organization of this document is as follows:
+Starting from TiDB v6.1.0, TiCDC supports replicating incremental data to Confluent in Avro format. This document introduces how to replicate TiDB incremental data to Confluent using [TiCDC](/ticdc/ticdc-overview.md), and further replicate data to Snowflake, ksqlDB, and SQL Server via Confluent Cloud. The organization of this document is as follows:
 
 1. Quickly deploy a TiDB cluster with TiCDC included.
 2. Create a changefeed that replicates data from TiDB to Confluent Cloud.
-3. Create Connectors that replicate data from Confluent Cloud to ksqlDB, Snowflake, and SQL Server.
-4. Write data to TiDB using go-tpc, and observe data changes in ksqlDB, Snowflake, and SQL Server.
+3. Create Connectors that replicate data from Confluent Cloud to Snowflake, ksqlDB, and SQL Server.
+4. Write data to TiDB using go-tpc, and observe data changes in Snowflake, ksqlDB, and SQL Server.
 
 The preceding steps are performed in a lab environment. You can also deploy a cluster in a production environment by referring to these steps.
 
@@ -158,30 +158,6 @@ After the preceding steps are done, TiCDC sends change logs of incremental data 
 
     In the Confluent Cloud Console, click **Topics**. You can see that the target topics have been created and are receiving data. At this time, incremental data of the TiDB database is successfully replicated to Confluent Cloud.
 
-## Integrate data with ksqlDB
-
-ksqlDB is a database purpose-built for stream processing applications. You can create ksqlDB clusters on Confluent Cloud and access incremental data replicated by TiCDC.
-
-1. Select **ksqlDB** in the Confluent Cloud Console and create a ksqlDB cluster as instructed.
-
-    Wait until the ksqlDB cluster status is **Running**. This process takes several minutes.
-
-2. In the ksqlDB Editor, run the following command to create a stream to access the `tidb_tpcc_orders` topic:
-
-    ```sql
-    CREATE STREAM orders (o_id INTEGER, o_d_id INTEGER, o_w_id INTEGER, o_c_id INTEGER, o_entry_d STRING, o_carrier_id INTEGER, o_ol_cnt INTEGER, o_all_local INTEGER) WITH (kafka_topic='tidb_tpcc_orders', partitions=3, value_format='AVRO');
-    ```
-
-3. Run the following command to check the orders STREAM data:
-
-    ```sql
-    SELECT * FROM ORDERS EMIT CHANGES;
-    ```
-
-    ![Select from orders](/media/integrate/select-from-orders.png)
-
-    You can see that the incremental data has been replicated to ksqlDB, as shown in the preceding figure. Data integration with ksqlDB is done.
-
 ## Integrate data with Snowflake
 
 Snowflake is a cloud native data warehouse. With Confluent, you can replicate TiDB incremental data to Snowflake by creating Snowflake Sink Connectors.
@@ -214,6 +190,30 @@ Snowflake is a cloud native data warehouse. With Confluent, you can replicate Ti
     ![Data preview](/media/integrate/data-preview.png)
 
 6. In the Snowflake console, choose **Data** > **Database** > **TPCC** > **TiCDC**. You can see that TiDB incremental data has been replicated to Snowflake. Data integration with Snowflake is done.
+
+## Integrate data with ksqlDB
+
+ksqlDB is a database purpose-built for stream processing applications. You can create ksqlDB clusters on Confluent Cloud and access incremental data replicated by TiCDC.
+
+1. Select **ksqlDB** in the Confluent Cloud Console and create a ksqlDB cluster as instructed.
+
+    Wait until the ksqlDB cluster status is **Running**. This process takes several minutes.
+
+2. In the ksqlDB Editor, run the following command to create a stream to access the `tidb_tpcc_orders` topic:
+
+    ```sql
+    CREATE STREAM orders (o_id INTEGER, o_d_id INTEGER, o_w_id INTEGER, o_c_id INTEGER, o_entry_d STRING, o_carrier_id INTEGER, o_ol_cnt INTEGER, o_all_local INTEGER) WITH (kafka_topic='tidb_tpcc_orders', partitions=3, value_format='AVRO');
+    ```
+
+3. Run the following command to check the orders STREAM data:
+
+    ```sql
+    SELECT * FROM ORDERS EMIT CHANGES;
+    ```
+
+    ![Select from orders](/media/integrate/select-from-orders.png)
+
+    You can see that the incremental data has been replicated to ksqlDB, as shown in the preceding figure. Data integration with ksqlDB is done.
 
 ## Integrate data with SQL Server
 
