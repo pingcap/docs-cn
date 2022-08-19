@@ -144,7 +144,6 @@ aliases: ['/zh/tidb/dev/incremental-replication-between-clusters/']
     1 row in set (0.00 sec)
     ```
 
-
 2. 备份数据。
 
     在上游集群中执行 BACKUP 语句备份数据：
