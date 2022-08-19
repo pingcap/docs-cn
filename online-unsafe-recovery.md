@@ -54,7 +54,7 @@ pd-ctl -u <pd_addr> unsafe remove-failed-stores <store_id1,store_id2,...>
 
 可通过 `--timeout <seconds>` 指定可允许执行恢复的最长时间。若未指定，默认为 5 分钟。当超时后，恢复中断报错。
 
-若 PD 进行过 `pd-recover` 操作，已丢失无法恢复的 TiKV 节点的 store 信息，因此无法确定要传的 store ID 时，可指定 `--auto-detect` 以允许接受一个空的 store ID 列表。在该模式下，所有未在 PD store 列表中的 store ID 均被认为无法恢复，进行移除。
+若 PD 进行过灾难性恢复 [`pd-recover`](/pd-recover.md) 操作，丢失了无法恢复的 TiKV 节点的 store 信息，因此无法确定要传的 store ID 时，可指定 `--auto-detect` 参数允许传入一个空的 store ID 列表。在该模式下，所有未在 PD store 列表中的 store ID 均被认为无法恢复，进行移除。
 
 > **注意：**
 >
