@@ -8,9 +8,9 @@
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v6.1 对比 v6.0](/benchmark/benchmark-sysbench-v6.1.0-vs-v6.0.0.md)
-    - [TPC-C 性能对比 - v6.1 对比 v6.0](/benchmark/v6.1-performance-benchmarking-with-tpcc.md)
-    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.1-performance-benchmarking-with-tpch.md)
+    - [Sysbench 性能对比 - v6.1 对比 v6.0](/benchmark/benchmark-sysbench-v6.2.0-vs-v6.1.0.md)
+    - [TPC-C 性能对比 - v6.1 对比 v6.0](/benchmark/v6.2-performance-benchmarking-with-tpcc.md)
+    - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.2-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
   - [荣誉列表](/credits.md)
