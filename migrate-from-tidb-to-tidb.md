@@ -119,9 +119,19 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
 
     为了保证增量迁移过程中新写入的数据不丢失，在开始备份之前，需要关闭上游集群的垃圾回收 (GC) 机制，以确保系统不再清理历史数据。
 
+    执行如下命令关闭 GC：
+
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=FALSE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    查询 `tidb_gc_enable` 的取值，判断 GC 是否已关闭：
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
     ```
 
@@ -232,9 +242,19 @@ aliases: ['/zh/tidb/stable/incremental-replication-between-clusters/']
 
     TiCDC 可以保证 GC 只回收已经同步的历史数据。因此，创建完从上游到下游集群的 changefeed 之后，就可以执行如下命令恢复集群的垃圾回收功能。详情请参考 [TiCDC GC safepoint 的完整行为](/ticdc/ticdc-faq.md#ticdc-gc-safepoint-的完整行为是什么)。
 
+   执行如下命令打开 GC：
+
     ```sql
     MySQL [test]> SET GLOBAL tidb_gc_enable=TRUE;
+    ```
+
+    ```
     Query OK, 0 rows affected (0.01 sec)
+    ```
+
+    查询 `tidb_gc_enable` 的取值，判断 GC 是否已开启：
+
+    ```sql
     MySQL [test]> SELECT @@global.tidb_gc_enable;
     ```
 
