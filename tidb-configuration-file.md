@@ -419,7 +419,7 @@ TiDB 配置文件比命令行参数支持更多的选项。你可以在 [config/
 
 + 把所有的语句优先级设置为 force-priority 的值。
 + 默认值：NO_PRIORITY
-+ 可选值：NO_PRIORITY, LOW_PRIORITY, HIGH_PRIORITY, DELAYED。
++ 可选值：默认值 NO_PRIORITY 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 LOW_PRIORITY、DELAYED 或 HIGH_PRIORITY。
 
 ### `distinct-agg-push-down`
 
