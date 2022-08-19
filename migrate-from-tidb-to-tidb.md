@@ -143,7 +143,6 @@ summary: 了解如何将数据从一个 TiDB 集群迁移至另一 TiDB 集群�
     1 row in set (0.00 sec)
     ```
 
-
 2. 备份数据。
 
     在上游集群中执行 BACKUP 语句备份数据：
