@@ -168,4 +168,4 @@ tpmC: 93826.9, efficiency: 729.6%
 [Summary] Q7     - Count: 11, Sum(ms): 158928.2, Avg(ms): 14446.3
 ```
 
-测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 check` 进行数据正确性验证。
+测试完成之后，也可以运行 `tiup bench tpcc -H 172.16.5.140 -P 4000 -D tpcc --warehouses 1000 check`  验证数据正确性。
