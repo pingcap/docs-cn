@@ -577,9 +577,13 @@ Empty set (0.00 sec)
 
 确保要交换入分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
 
-> **警告：**
->
-> `EXCHANGE PARTITION` 是实验性功能，不建议在生产环境中使用。要启用 `EXCHANGE PARTITION`，将系统变量 `tidb_enable_exchange_partition` 设置为 `ON`。
+TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html) ，还需要满足交换分区和非分区表 Placement Rules 一样。
+
+`EXCHANGE PARTITION` 和其他组件兼容性方面限制：
+
+- TiFlash：Replica 定义不同时，无法执行 `EXCHANGE PARTITION` 操作。
+- TiCDC：都有主键或者唯一键时，TiCDC 同步 `EXCHANGE PARTITION` 操作；反之 TiCDC 将不会同步。
+- Lightning & BR：分区表和非分区表使用 Lightning、BR 导入、恢复过程中，不要做 EXCHANGE PARTITION` 操作。
 
 ### Range 分区管理
 
