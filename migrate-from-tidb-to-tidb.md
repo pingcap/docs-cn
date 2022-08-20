@@ -19,7 +19,7 @@ This document exemplifies the whole migration process and contains the following
 
 3. Migrate incremental data.
 
-4. Switch services to the new TiDB cluster.
+4. Migrate services to the new TiDB cluster.
 
 ## Step 1. Set up the environment
 
@@ -260,9 +260,9 @@ After setting up the environment, you can use the backup and restore functions o
     1 row in set (0.00 sec)
     ```
 
-## Step 4. Switch services to the new TiDB cluster
+## Step 4. Migrate services to the new TiDB cluster
 
-After creating a changefeed, data written to the upstream cluster is replicated to the downstream cluster with low latency. You can migrate read stream to the downstream cluster gradually. Observe a period. If the downstream cluster is stable, you can switch write stream to the downstream cluster by performing the following steps:
+After creating a changefeed, data written to the upstream cluster is replicated to the downstream cluster with low latency. You can migrate read traffic to the downstream cluster gradually. Observe for a period. If the downstream cluster is stable, you can migrate write traffic to the downstream cluster by performing the following steps:
 
 1. Stop write services in the upstream cluster. Make sure that all upstream data are replicated to downstream before stopping the changefeed.
 
@@ -294,4 +294,4 @@ After creating a changefeed, data written to the upstream cluster is replicated 
     tiup cdc cli changefeed create --pd=http://172.16.6.125:2379 --sink-uri="mysql://root:@172.16.6.122:4000" --changefeed-id="downstream -to-upstream"
     ```
 
-3. After migrating writing services to the downstream cluster, observe for a period. If the downstream cluster is stable, you can quit the upstream cluster.
+3. After migrating writing services to the downstream cluster, observe for a period. If the downstream cluster is stable, you can discard the upstream cluster.

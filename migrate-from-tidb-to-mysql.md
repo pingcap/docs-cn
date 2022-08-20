@@ -10,7 +10,7 @@ This document describes how to migrate data from TiDB clusters to MySQL-compatib
 1. Set up the environment.
 2. Migrate full data.
 3. Migrate incremental data.
-4. Switch services to the new TiDB cluster.
+4. Migrate services to the MySQL-compatible cluster.
 
 ## Step 1. Set up the environment
 
@@ -199,9 +199,9 @@ After setting up the environment, you can use [Dumpling](/dumpling-overview.md) 
     1 row in set (0.00 sec)
     ```
 
-## Step 4. Switch services
+## Step 4. Migrate services
 
-After creating a changefeed, data written to the upstream cluster is replicated to the downstream cluster with low latency. You can migrate read stream to the downstream cluster gradually. Observe the read stream for a period. If the downstream cluster is stable, you can switch write stream to the downstream cluster as well in the following steps:
+After creating a changefeed, data written to the upstream cluster is replicated to the downstream cluster with low latency. You can migrate read traffic to the downstream cluster gradually. Observe the read traffic for a period. If the downstream cluster is stable, you can migrate write traffic to the downstream cluster as well in the following steps:
 
 1. Stop write services in the upstream cluster. Make sure that all upstream data are replicated to downstream before stopping the changefeed.
 
@@ -226,4 +226,4 @@ After creating a changefeed, data written to the upstream cluster is replicated 
     ]
     ```
 
-2. After migrating writing services to the downstream cluster, observe for a period. If the downstream cluster is stable, you can quit the upstream cluster.
+2. After migrating writing services to the downstream cluster, observe for a period. If the downstream cluster is stable, you can discard the upstream cluster.
