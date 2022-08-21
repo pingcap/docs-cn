@@ -27,7 +27,7 @@ aliases: ['/zh/tidb/dev/use-follower-read']
 <SimpleTab>
 <div label="SQL">
 
-你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower` 或 `leader-and-follower` 开启 TiDB 的 Follower Read 功能：
+在 SQL 中，你可以将变量 `tidb_replica_read` 的值（默认为 `leader`）设置为 `follower` 或 `leader-and-follower` 开启 TiDB 的 Follower Read 功能：
 
 {{< copyable "sql" >}}
 

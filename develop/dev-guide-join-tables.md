@@ -20,8 +20,8 @@ aliases: ['/zh/tidb/dev/join-tables']
 
 ![Inner Join](/media/develop/inner-join.png)
 
-<SimpleTab>
-<div label="SQL" href="inner-join-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在下面的 SQL 语句当中，通过关键字 `JOIN` 声明要将左表 `authors` 和右表 `book_authors` 的数据行以内连接的方式进行连接，连接条件为 `a.id = ba.author_id`，那么连接的结果集当中将只会包含满足连接条件的行。假设有一个作家没有编写过任何书籍，那么他在 `authors` 表当中的记录将无法满足连接条件，因此也不会出现在结果集当中。
 
@@ -57,9 +57,9 @@ LIMIT 10;
 ```
 
 </div>
-<div label="Java" href="inner-join-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中内连接的示例如下：
 
 ```java
 public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
@@ -99,8 +99,8 @@ public List<Author> getTop10AuthorsOrderByBooks() throws SQLException {
 
 例如，在 Bookshop 应用的首页，希望展示一个带有平均评分的最新书籍列表。在这种情况下，最新的书籍可能是还没有经过任何人评分的，如果使用内连接就会导致这些无人评分的书籍信息被过滤掉，而这并不是期望的结果。
 
-<SimpleTab>
-<div label="SQL" href="left-join-sql">
+<SimpleTab groupId="language">
+<div label="SQL" value="sql">
 
 在下面的 SQL 语句当中，通过 `LEFT JOIN` 关键字声明左表 `books` 将以左外连接的方式与右表 `ratings` 进行连接，从而确保 `books` 表当中的所有记录都能得到返回。
 
@@ -166,9 +166,9 @@ DELETE FROM ratings WHERE book_id = 3438991610;
 如果改成使用的是内连接 `JOIN` 结果会怎样？这就交给你来尝试了。
 
 </div>
-<div label="Java" href="left-join-java">
+<div label="Java" value="java">
 
-{{< copyable "" >}}
+在 Java 中左外连接的示例如下：
 
 ```java
 public List<Book> getLatestBooksWithAverageScore() throws SQLException {

@@ -39,7 +39,7 @@ TiDB 版本：6.1.0
     * `DENSE_RANK()`
     * `ROW_NUMBER()`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#33072](https://github.com/pingcap/tidb/issues/33072)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#33072](https://github.com/pingcap/tidb/issues/33072)
 
 ### 可观测性
 
@@ -83,13 +83,13 @@ TiDB 版本：6.1.0
     * `TO_SECONDS`
     * `WEEKOFYEAR`
 
-  [用户文档](/tiflash/use-tiflash.md#tiflash-支持的计算下推)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
+  [用户文档](/tiflash/tiflash-supported-pushdown-calculations.md)，[#4679](https://github.com/pingcap/tiflash/issues/4679)，[#4678](https://github.com/pingcap/tiflash/issues/4678)，[#4677](https://github.com/pingcap/tiflash/issues/4677)
 
 * 支持分区表动态裁剪
 
     支持分区表动态裁剪功能，以提升数据分析场景下的性能。v6.0.0 以前版本的用户升级完成后建议及时手动刷新既存分区表的统计信息，以达到最好的性能表现（全新安装，或在 v6.1.0 升级完成后新创建的分区表无需此动作）。
 
-    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
+    用户文档：[MPP 模式访问分区表](/tiflash/use-tiflash-mpp-mode.md#mpp-模式访问分区表)，[动态裁剪模式](/partitioned-table.md#动态裁剪模式)，[#3873](https://github.com/pingcap/tiflash/issues/3873)
 
 ### 稳定性
 

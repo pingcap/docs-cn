@@ -44,7 +44,7 @@ aliases: ['/zh/tidb/dev/insert-data']
 <SimpleTab>
 <div label="SQL">
 
-{{< copyable "sql" >}}
+在 SQL 中插入多行数据的示例：
 
 ```sql
 CREATE TABLE `player` (`id` INT, `coins` INT, `goods` INT);
@@ -57,7 +57,7 @@ INSERT INTO `player` (`id`, `coins`, `goods`) VALUES (1, 1000, 1), (2, 230, 2);
 
 <div label="Java">
 
-{{< copyable "" >}}
+在 Java 中插入多行数据的示例：
 
 ```java
 // ds is an entity of com.mysql.cj.jdbc.MysqlDataSource
@@ -132,6 +132,8 @@ jdbc:mysql://127.0.0.1:4000/test?user=root&useConfigs=maxPerformance&useServerPr
 
 <div label="Golang">
 
+在 Golang 中插入多行数据的示例：
+
 ```go
 package main
 
@@ -201,7 +203,7 @@ func buildBulkInsertSQL(amount int) string {
 有关 Golang 的完整示例，可参阅：
 
 - [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 go-sql-driver/mysql](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
-- [TiDB 和 Java 的简单 CRUD 应用程序 - 使用 gorm](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
+- [TiDB 和 Golang 的简单 CRUD 应用程序 - 使用 GORM](/develop/dev-guide-sample-application-golang.md#第-2-步获取代码)
 
 </div>
 
