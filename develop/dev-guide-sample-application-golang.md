@@ -17,15 +17,25 @@ This document describes how to use TiDB and Golang to build a simple CRUD applic
 
 ## Step 1. Launch your TiDB cluster
 
+<CustomContent platform="tidb">
+
 The following introduces how to start a TiDB cluster.
 
-### Use a TiDB Cloud free cluster
+**Use a TiDB Cloud free cluster**
 
 For detailed steps, see [Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
 
-### Use a local cluster
+**Use a local cluster**
 
 For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+See [Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
+
+</CustomContent>
 
 ## Step 2. Get the code
 
@@ -739,6 +749,8 @@ The following content introduces how to run the code step by step.
 
 <div label="Using go-sql-driver/mysql" value="sqldriver">
 
+<CustomContent platform="tidb">
+
 When using go-sql-driver/mysql, you need to initialize the database tables manually. If you are using a local cluster, and MySQL client has been installed locally, you can run it directly in the `sqldriver` directory:
 
 {{< copyable "shell-regular" >}}
@@ -756,6 +768,14 @@ mysql --host 127.0.0.1 --port 4000 -u root<sql/dbinit.sql
 ```
 
 If you are using a non-local cluster or MySQL client has not been installed, connect to your cluster and run the statement in the `sql/dbinit.sql` file.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+When using go-sql-driver/mysql, you need to connect to your cluster and run the statement in the `sql/dbinit.sql` file to initialize the database tables manually.
+
+</CustomContent>
 
 </div>
 

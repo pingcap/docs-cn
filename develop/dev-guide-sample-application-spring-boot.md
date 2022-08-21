@@ -17,15 +17,25 @@ You can build your own application based on this example.
 
 ## Step 1: Launch your TiDB cluster
 
-This step describes how to start a TiDB cluster.
+<CustomContent platform="tidb">
 
-### Using a TiDB Cloud free cluster
+The following introduces how to start a TiDB cluster.
 
-[Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
+**Use a TiDB Cloud free cluster**
 
-### Using a local cluster
+For detailed steps, see [Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
 
-You can start a local cluster by either [deploying a local testing cluster](/quick-start-with-tidb.md) or [deploying a TiDB cluster in production](/production-deployment-using-tiup.md).
+**Use a local cluster**
+
+For detailed steps, see [Deploy a local test cluster](/quick-start-with-tidb.md#deploy-a-local-test-cluster) or [Deploy a TiDB Cluster Using TiUP](/production-deployment-using-tiup.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+See [Create a free cluster](/develop/dev-guide-build-cluster-in-cloud.md#step-1-create-a-free-cluster).
+
+</CustomContent>
 
 ## Step 2: Install JDK
 

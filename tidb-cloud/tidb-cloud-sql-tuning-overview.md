@@ -17,7 +17,7 @@ To improve the performance of SQL statements, consider the following principles.
 - Minimize the scope of the scanned data. It is always a best practice to scan only the minimum scope of data and avoid scanning all data.
 - Use appropriate indexes. For each column in the `WHERE` clause in a SQL statement, make sure that there is a corresponding index. Otherwise, the `WHERE` clause will scan the full table and result in poor performance.
 - Use appropriate Join types. Depending on the size and correlation of each table in the query, it is very important to choose the right Join type. Generally, the cost-based optimizer in TiDB automatically chooses the optimal Join type. However, in some cases, you may need to specify the Join type manually. For details, see [Explain Statements That Use Joins](/explain-joins.md).
-- Use appropriate storage engines. It is recommended to use the TiFlash storage engine for Hybrid Transactional and Analytical Processing (HTAP) workloads. See [HTAP Queries](https://docs.pingcap.com/tidb/stable/dev-guide-hybrid-oltp-and-olap-queries).
+- Use appropriate storage engines. It is recommended to use the TiFlash storage engine for Hybrid Transactional and Analytical Processing (HTAP) workloads. See [HTAP Queries](/develop/dev-guide-hybrid-oltp-and-olap-queries.md).
 
 TiDB Cloud provides several tools to help you analyze slow queries on a cluster. The following sections describe several approaches to optimize slow queries.
 
@@ -53,7 +53,7 @@ Also, TiDB can choose to enable execution plan cache to reduce the creation over
 
 ### Optimize full table scan
 
-The most common reason for slow SQL queries is that the `SELECT` statements perform full table scan or use incorrect indexes. You can use EXPLAIN or EXPLAIN ANALYZE to view the execution plan of a query and locate the cause of the slow execution. There are [three methods](https://docs.pingcap.com/tidb/stable/dev-guide-optimize-sql) that you can use to optimize.
+The most common reason for slow SQL queries is that the `SELECT` statements perform full table scan or use incorrect indexes. You can use EXPLAIN or EXPLAIN ANALYZE to view the execution plan of a query and locate the cause of the slow execution. There are [three methods](/develop/dev-guide-optimize-sql.md) that you can use to optimize.
 
 - Use secondary index
 - Use covering index
@@ -61,17 +61,17 @@ The most common reason for slow SQL queries is that the `SELECT` statements perf
 
 ### DML best practices
 
-See [DML best practices](https://docs.pingcap.com/tidb/stable/dev-guide-optimize-sql-best-practices#dml-best-practices).
+See [DML best practices](/develop/dev-guide-optimize-sql-best-practices.md#dml-best-practices).
 
 ### DDL best practices when selecting primary keys
 
-See [Guidelines to follow when selecting primary keys](https://docs.pingcap.com/tidb/stable/dev-guide-create-table#guidelines-to-follow-when-selecting-primary-key).
+See [Guidelines to follow when selecting primary keys](/develop/dev-guide-create-table.md#guidelines-to-follow-when-selecting-primary-key).
 
 ### Index best practices
 
-[Best practices for indexing](https://docs.pingcap.com/tidb/stable/dev-guide-index-best-practice) include best practices for creating indexes and using indexes.
+[Best practices for indexing](/develop/dev-guide-index-best-practice.md) include best practices for creating indexes and using indexes.
 
-The speed of creating indexes is conservative by default, and the index creation process can be accelerated by [modifying variables](https://docs.pingcap.com/tidb/stable/dev-guide-optimize-sql-best-practices#add-index-best-practices) in some scenarios.
+The speed of creating indexes is conservative by default, and the index creation process can be accelerated by [modifying variables](/develop/dev-guide-optimize-sql-best-practices.md#add-index-best-practices) in some scenarios.
 
 <!--
 ### Use the slow log memory mapping table

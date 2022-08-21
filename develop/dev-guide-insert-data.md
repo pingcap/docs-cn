@@ -213,15 +213,32 @@ If you need to quickly import a large amount of data into a TiDB cluster, it is 
 The following are the recommended tools for bulk-insert:
 
 - Data export: [Dumpling](/dumpling-overview.md). You can export MySQL or TiDB data to local or Amazon S3.
+
+<CustomContent platform="tidb">
+
 - Data import: [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md). You can import **Dumpling** exported data, a **CSV** file, or [Migrate Data from Amazon Aurora to TiDB](/migrate-aurora-to-tidb.md). It also supports reading data from a local disk or [Amazon S3 cloud disk](/br/backup-and-restore-storages.md).
 - Data replication: [TiDB Data Migration](/dm/dm-overview.md). You can replicate MySQL, MariaDB, and Amazon Aurora databases to TiDB. It also supports merging and migrating the sharded instances and tables from the source databases.
 - Data backup and restore: [Backup & Restore (BR)](/br/backup-and-restore-overview.md). Compared to **Dumpling**, **BR** is more suitable for **_big data_** scenario.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- Data import: [Data Import Task](/tidb-cloud/import-sample-data.md) page in the TiDB Cloud console. You can import **Dumpling** exported data, a **CSV** file, or [Migrate Data from Amazon Aurora to TiDB](/tidb-cloud/migrate-from-aurora-bulk-import.md). It also supports reading data from a local disk, Amazon S3 cloud disk, or GCS cloud disk.
+- Data replication: [TiDB Data Migration](https://docs.pingcap.com/tidb/stable/dm-overview). You can replicate MySQL, MariaDB, and Amazon Aurora databases to TiDB. It also supports merging and migrating the sharded instances and tables from the source databases.
+- Data backup and restore: [Backup](/tidb-cloud/backup-and-restore.md) page in the TiDB Cloud console. Compared to **Dumpling**, backup and restore is more suitable for **_big data_** scenario.
+
+</CustomContent>
 
 ## Avoid hotspots
 
 When designing a table, you need to consider if there is a large number of insert operations. If so, you need to avoid hotspots during table design. See the [Select primary key](/develop/dev-guide-create-table.md#select-primary-key) section and follow the [Rules when selecting primary key](/develop/dev-guide-create-table.md#guidelines-to-follow-when-selecting-primary-key).
 
+<CustomContent platform="tidb">
+
 For more information on how to handle hotspot issues, see [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md).
+
+</CustomContent>
 
 ## Insert data to a table with the `AUTO_RANDOM` primary key
 

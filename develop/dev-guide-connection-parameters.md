@@ -6,7 +6,17 @@ title: Connection Pools and Connection Parameters
 
 This document describes how to configure connection pools and connection parameters when you use a driver or ORM framework to connect to TiDB.
 
+<CustomContent platform="tidb">
+
 If you are interested in more tips about Java application development, see [Best Practices for Developing Java Applications with TiDB](/best-practices/java-app-best-practices.md#connection-pool)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+If you are interested in more tips about Java application development, see [Best Practices for Developing Java Applications with TiDB](https://docs.pingcap.com/tidb/stable/java-app-best-practices)
+
+</CustomContent>
 
 ## Connection pool
 

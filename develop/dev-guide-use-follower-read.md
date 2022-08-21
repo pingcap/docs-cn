@@ -15,9 +15,21 @@ By default, TiDB only reads and writes data on the leader of the same Region. Wh
 
 ## When to use
 
+<CustomContent platform="tidb">
+
 You can visually analyze whether your application has a hotspot Region on the [TiDB Dashboard Key Visualizer Page](/dashboard/dashboard-key-visualizer.md). You can check whether a read hotspot occurs by selecting the "metrics selection box" to `Read (bytes)` or `Read (keys)`.
 
 For more information about handling hotspot, see [TiDB Hotspot Problem Handling](/troubleshoot-hot-spot-issues.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+You can visually analyze whether your application has a hotspot Region on the [TiDB Cloud Key Visualizer Page](/tidb-cloud/tune-performance.md#key-visualizer). You can check whether a read hotspot occurs by selecting the "metrics selection box" to `Read (bytes)` or `Read (keys)`.
+
+For more information about handling hotspot, see [TiDB Hotspot Problem Handling](https://docs.pingcap.com/tidb/stable/troubleshoot-hot-spot-issues).
+
+</CustomContent>
 
 If read hotspots are unavoidable or the changing cost is very high, you can try using the Follower Read feature to better load the balance of reading requests to the follower Region.
 
@@ -131,5 +143,17 @@ public static class AuthorDAO {
 ## Read more
 
 - [Follower Read](/follower-read.md)
+
+<CustomContent platform="tidb">
+
 - [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md)
 - [TiDB Dashboard - Key Visualizer Page](/dashboard/dashboard-key-visualizer.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [Troubleshoot Hotspot Issues](https://docs.pingcap.com/tidb/stable/troubleshoot-hot-spot-issues)
+- [TiDB Cloud Key Visualizer Page](/tidb-cloud/tune-performance.md#key-visualizer)
+
+</CustomContent>

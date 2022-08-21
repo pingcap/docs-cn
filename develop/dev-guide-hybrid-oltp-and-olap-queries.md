@@ -258,7 +258,18 @@ For more information about how TiDB chooses to use TiFlash, see [Use TiDB to rea
 
 ## Read more
 
+<CustomContent platform="tidb">
+
 - [Quick Start with HTAP](/quick-start-with-htap.md)
 - [Explore HTAP](/explore-htap.md)
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- [TiDB Cloud HTAP Quick Start](/tidb-cloud/tidb-cloud-htap-quickstart.md)
+
+</CustomContent>
+
 - [Window Functions](/functions-and-operators/window-functions.md)
 - [Use TiFlash](/tiflash/tiflash-overview.md#use-tiflash)

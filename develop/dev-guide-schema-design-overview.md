@@ -52,7 +52,13 @@ To improve query performance of various user scenarios, TiDB provides you with s
 - [Expression indexes](/sql-statements/sql-statement-create-index.md#expression-index) (Experimental)
 - [Columnar storage (TiFlash)](/tiflash/tiflash-overview.md)
 - [RocksDB engine](/storage-engine/rocksdb-overview.md)
+
+<CustomContent platform="tidb">
+
 - [Titan plugin](/storage-engine/titan-overview.md)
+
+</CustomContent>
+
 - [Invisible indexes](/sql-statements/sql-statement-add-index.md)
 - [Composite `PRIMARY KEY`](/constraints.md#primary-key)
 - [Unique indexes](/constraints.md#unique-key)
@@ -69,7 +75,17 @@ TiDB supports the following logical objects at the same level as **table**:
 
 ## Access Control
 
+<CustomContent platform="tidb">
+
 TiDB supports both user-based and role-based access control. To allow users to view, modify, or delete data objects and data schemas, you can either grant [privileges](/privilege-management.md) to [users](/user-account-management.md) directly or grant [privileges](/privilege-management.md) to users through [roles](/role-based-access-control.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+TiDB supports both user-based and role-based access control. To allow users to view, modify, or delete data objects and data schemas, you can either grant [privileges](https://docs.pingcap.com/tidb/stable/privilege-management) to [users](https://docs.pingcap.com/tidb/stable/user-account-management) directly or grant [privileges](https://docs.pingcap.com/tidb/stable/privilege-management) to users through [roles](https://docs.pingcap.com/tidb/stable/role-based-access-control).
+
+</CustomContent>
 
 ## Database schema changes
 
@@ -97,8 +113,14 @@ This section lists the object limitations on identifier length, a single table, 
 | Columns   | Defaults to 1017 and can be adjusted up to 4096     |
 | Indexes   |  Defaults to 64 and can be adjusted up to 512        |
 | Partitions | 8192     |
-| Single Line Size | 6 MB by default. You can adjust the size limit via the [**txn-entry-size-limit**](/tidb-configuration-file.md#txn-entry-size-limit-new-in-v50) configuration item. |
-| Single Column in a Line Size | 6 MB       |
+| Size of a single line | 6 MB by default. |
+| Size of a single column in a line  | 6 MB       |
+
+<CustomContent platform="tidb">
+
+You can adjust the size limit of a single line via the [**txn-entry-size-limit**](/tidb-configuration-file.md#txn-entry-size-limit-new-in-v50) configuration item.
+
+</CustomContent>
 
 ### Limitations on string types
 
@@ -113,4 +135,14 @@ This section lists the object limitations on identifier length, a single table, 
 
 ### Number of rows
 
+<CustomContent platform="tidb">
+
 TiDB supports an **unlimited** number of rows by adding nodes to the cluster. For the relevant principles, see [TiDB Best Practices](/best-practices/tidb-best-practices.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+TiDB supports an **unlimited** number of rows by adding nodes to the cluster. For the relevant principles, see [TiDB Best Practices](https://docs.pingcap.com/tidb/stable/tidb-best-practices).
+
+</CustomContent>

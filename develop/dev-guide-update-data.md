@@ -52,7 +52,18 @@ For detailed information, see [UPDATE syntax](/sql-statements/sql-statement-upda
 The following are some best practices for updating data:
 
 - Always specify the `WHERE` clause in the `UPDATE` statement. If the `UPDATE` statement does not have a `WHERE` clause, TiDB will update **_ALL ROWS_** in the table.
+
+<CustomContent platform="tidb">
+
 - Use [bulk-update](#bulk-update) when you need to update a large number of rows (for example, more than ten thousand). Because TiDB limits the size of a single transaction ([txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit), 100 MB by default), too many data updates at once will result in holding locks for too long ([pessimistic transactions](/pessimistic-transaction.md)) or cause conflicts ([optimistic transactions](/optimistic-transaction.md)).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- Use [bulk-update](#bulk-update) when you need to update a large number of rows (for example, more than ten thousand). Because TiDB limits the size of a single transaction to 100 MB by default, too many data updates at once will result in holding locks for too long ([pessimistic transactions](/pessimistic-transaction.md)) or cause conflicts ([optimistic transactions](/optimistic-transaction.md)).
+
+</CustomContent>
 
 ### `UPDATE` example
 
@@ -164,7 +175,17 @@ VALUES (?, ?, ?, NOW()) ON DUPLICATE KEY UPDATE `score` = ?, `rated_at` = NOW()"
 
 When you need to update multiple rows of data in a table, you can [use `INSERT ON DUPLICATE KEY UPDATE`](#use-insert-on-duplicate-key-update) with the `WHERE` clause to filter the data that needs to be updated.
 
+<CustomContent platform="tidb">
+
 However, if you need to update a large number of rows (for example, more than ten thousand), it is recommended that you update the data iteratively, that is, updating only a portion of the data at each iteration until the update is complete. This is because TiDB limits the size of a single transaction ([txn-total-size-limit](/tidb-configuration-file.md#txn-total-size-limit), 100 MB by default). Too many data updates at once will result in holding locks for too long ([pessimistic transactions](/pessimistic-transaction.md), or causing conflicts ([optimistic transactions](/optimistic-transaction.md)). You can use a loop in your program or script to complete the operation.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+However, if you need to update a large number of rows (for example, more than ten thousand), it is recommended that you update the data iteratively, that is, updating only a portion of the data at each iteration until the update is complete. This is because TiDB limits the size of a single transaction to 100 MB by default. Too many data updates at once will result in holding locks for too long ([pessimistic transactions](/pessimistic-transaction.md), or causing conflicts ([optimistic transactions](/optimistic-transaction.md)). You can use a loop in your program or script to complete the operation.
+
+</CustomContent>
 
 This section provides examples of writing scripts to handle iterative updates. This example shows how a combination of `SELECT` and `UPDATE` should be done to complete a bulk-update.
 

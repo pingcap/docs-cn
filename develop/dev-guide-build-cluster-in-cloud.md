@@ -7,29 +7,58 @@ summary: Learn how to build a TiDB cluster in TiDB Cloud (Developer Tier) and co
 
 # Build a TiDB Cluster in TiDB Cloud (Developer Tier)
 
+<CustomContent platform="tidb">
+
 This document walks you through the quickest way to get started with TiDB. You will use [TiDB Cloud](https://en.pingcap.com/tidb-cloud) to create a free TiDB cluster, connect to it, and run a sample application on it.
 
 If you need to run TiDB on your local machine, see [Starting TiDB Locally](/quick-start-with-tidb.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+This document walks you through the quickest way to get started with TiDB Cloud. You will create a free TiDB cluster, connect to it, and run a sample application on it.
+
+</CustomContent>
 
 ## Step 1. Create a free cluster
 
 1. If you do not have a TiDB Cloud account, click [TiDB Cloud](https://tidbcloud.com/free-trial) to sign up for an account.
 2. [Sign in](https://tidbcloud.com/) with your TiDB Cloud account.
-3. To create a Developer Tier cluster for one year free, you can either select the **Developer Tier** plan on the [plan page](https://tidbcloud.com/console/plans) or click [Create a Cluster (Developer Tier)](https://tidbcloud.com/console/create-cluster?tier=dev).
-4. On the **Create a Cluster (Developer Tier)** page, set up your cluster name, password, cloud provider (for now, only AWS is available for Developer Tier), and region (a nearby region is recommended). Then click **Create** to create your cluster.
-5. Your TiDB Cloud cluster will be created in approximately 5 to 15 minutes. You can check the creation progress at [Active Clusters](https://tidbcloud.com/console/clusters).
-6. After creating a cluster, on the **Active Clusters** page, click the name of your newly created cluster to navigate to the cluster control panel.
+3. To create a Developer Tier cluster for one year free, you can either select the **Developer Tier** plan on the [plan page](https://tidbcloud.com/console/plans) or click **Create Cluster** on the [**Active Clusters**](https://tidbcloud.com/console/clusters) page.
+4. On the **Create Cluster** page, set up your cluster name, cloud provider (for now, only AWS is available for Developer Tier), and region (a nearby region is recommended). Then click **Create** to create your cluster.
 
-    ![active clusters](/media/develop/IMG_20220331-232643794.png)
+    The cluster creation process starts and the **Security Settings** dialog box is displayed.
 
-7. Click **Connect** to create a traffic filter (a list of client IPs allowed for TiDB connection).
+5. In the **Security Settings** dialog box, set the root password and allowed IP addresses to connect to your cluster, and then click **Apply**.
 
-    ![connect](/media/develop/IMG_20220331-232726165.png)
+    Your TiDB Cloud cluster will be created in approximately 5 to 15 minutes.
 
-8. In the popup window, click **Add Your Current IP Address** to fill in your current IP address, and then click **Create Filter** to create a traffic filter.
-9. Copy the string to connect with a SQL client for later use.
+6. After creating a cluster, click **Connect** in the upper-right corner. A connection dialog box is displayed.
 
-    ![SQL string](/media/develop/IMG_20220331-232800929.png)
+    > **Tip:**
+    >
+    > Alternatively, you can also click the name of your newly created cluster to go to the cluster details page, and then click **Connect** in the upper-right corner.
+
+7. In the dialog box, locate **Step 2: Connect with a SQL client**, and then copy the string to connect with a SQL client for later use.
+
+    ![SQL string](/media/develop/tidb-cloud-connect.png)
+
+    <CustomContent platform="tidb">
+
+    > **Note:**
+    >
+    > For [Developer Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#developer-tier), when you connect to your cluster, you must include the prefix for your cluster in the user name and wrap the name with quotation marks. For more information, see [User name prefix](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix).
+
+    </CustomContent>
+
+    <CustomContent platform="tidb-cloud">
+
+    > **Note:**
+    >
+    > For [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier), when you connect to your cluster, you must include the prefix for your cluster in the user name and wrap the name with quotation marks. For more information, see [User name prefix](/tidb-cloud/select-cluster-tier.md#user-name-prefix).
+
+    </CustomContent>
 
 ## Step 2. Connect to a cluster
 
@@ -116,11 +145,11 @@ mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
 
 2. Run the connection string obtained in [Step 1](#step-1-create-a-free-cluster).
 
-{{< copyable "shell-regular" >}}
+    {{< copyable "shell-regular" >}}
 
-```shell
-mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
-```
+    ```shell
+    mysql --connect-timeout 15 -u '<prefix>.root' -h <host> -P 4000 -p
+    ```
 
 3. Fill in the password to sign in.
 
@@ -136,51 +165,37 @@ mysql --connect-timeout 15 -u root -h <host> -P 4000 -p
 
 2. Change connection parameters.
 
-  <SimpleTab>
+    In `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java`, modify the parameters of the host, port, user, and password:
 
-  <div label="Local default cluster">
+    {{< copyable "" >}}
 
-  No changes are required.
+    ```java
+    mysqlDataSource.setServerName("localhost");
+    mysqlDataSource.setPortNumber(4000);
+    mysqlDataSource.setDatabaseName("test");
+    mysqlDataSource.setUser("root");
+    mysqlDataSource.setPassword("");
+    ```
 
-  </div>
+    Suppose that the password you set is `123456` and the connection string you get from TiDB Cloud is the following:
 
-  <div label="Non-local default cluster, TiDB Cloud, or other remote cluster">
+    {{< copyable "" >}}
 
-  In `plain-java-jdbc/src/main/java/com/pingcap/JDBCExample.java`, modify the parameters of the host, port, user, and password:
+    ```shell
+    mysql --connect-timeout 15 -u '4JC1i9KroBMFRwW.root' -h xxx.tidbcloud.com -P 4000 -D test -p
+    ```
 
-  {{< copyable "" >}}
+    In this case, you can modify the parameters as follows:
 
-  ```java
-  mysqlDataSource.setServerName("localhost");
-  mysqlDataSource.setPortNumber(4000);
-  mysqlDataSource.setDatabaseName("test");
-  mysqlDataSource.setUser("root");
-  mysqlDataSource.setPassword("");
-  ```
+    {{< copyable "" >}}
 
-  Suppose that the password you set is `123456` and the connection string you get from TiDB Cloud is the following:
-
-  {{< copyable "" >}}
-
-  ```shell
-  mysql --connect-timeout 15 -u root -h xxx.tidbcloud.com -P 4000 -p
-  ```
-
-  In this case, you can modify the parameters as follows:
-
-  {{< copyable "" >}}
-
-  ```java
-  mysqlDataSource.setServerName("xxx.tidbcloud.com");
-  mysqlDataSource.setPortNumber(4000);
-  mysqlDataSource.setDatabaseName("test");
-  mysqlDataSource.setUser("root");
-  mysqlDataSource.setPassword("123456");
-  ```
-
-  </div>
-
-  </SimpleTab>
+    ```java
+    mysqlDataSource.setServerName("xxx.tidbcloud.com");
+    mysqlDataSource.setPortNumber(4000);
+    mysqlDataSource.setDatabaseName("test");
+    mysqlDataSource.setUser("4JC1i9KroBMFRwW.root");
+    mysqlDataSource.setPassword("123456");
+    ```
 
 3. Run `make plain-java-jdbc`.
 

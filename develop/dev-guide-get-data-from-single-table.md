@@ -15,7 +15,18 @@ The following content will take the [Bookshop](/develop/dev-guide-bookshop-schem
 
 Before querying data, make sure that you have completed the following steps:
 
+<CustomContent platform="tidb">
+
 1. Build a TiDB cluster (using [TiDB Cloud](/develop/dev-guide-build-cluster-in-cloud.md) or [TiUP](/production-deployment-using-tiup.md) is recommended).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+1. Build a TiDB cluster using [TiDB Cloud](/develop/dev-guide-build-cluster-in-cloud.md).
+
+</CustomContent>
+
 2. [Import table schema and sample data of the Bookshop application](/develop/dev-guide-bookshop-schema-design.md#import-table-structures-and-data).
 3. [Connect to TiDB](/develop/dev-guide-connect-to-tidb.md).
 

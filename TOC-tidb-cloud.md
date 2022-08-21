@@ -11,6 +11,66 @@
   - [Try Out TiDB Cloud](/tidb-cloud/tidb-cloud-quickstart.md)
   - [Try Out HTAP](/tidb-cloud/tidb-cloud-htap-quickstart.md)
   - [Perform a PoC](/tidb-cloud/tidb-cloud-poc.md)
+- Develop
+  - [Overview](/develop/dev-guide-overview.md)
+  - Quick Start
+    - [Build a TiDB Developer Cluster](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [CRUD SQL in TiDB](/develop/dev-guide-tidb-crud-sql.md)
+    - Build a Simple CRUD App with TiDB
+      - [Java](/develop/dev-guide-sample-application-java.md)
+      - [Golang](/develop/dev-guide-sample-application-golang.md)
+  - Example Applications
+    - [Build a TiDB Application using Spring Boot](/develop/dev-guide-sample-application-spring-boot.md)
+  - Connect to TiDB
+    - [Choose Driver or ORM](/develop/dev-guide-choose-driver-or-orm.md)
+    - [Connect to TiDB](/develop/dev-guide-connect-to-tidb.md)
+    - [Connection Pools and Connection Parameters](/develop/dev-guide-connection-parameters.md)
+  - Design Database Schema
+    - [Overview](/develop/dev-guide-schema-design-overview.md)
+    - [Create a Database](/develop/dev-guide-create-database.md)
+    - [Create a Table](/develop/dev-guide-create-table.md)
+    - [Create a Secondary Index](/develop/dev-guide-create-secondary-indexes.md)
+  - Write Data
+    - [Insert Data](/develop/dev-guide-insert-data.md)
+    - [Update Data](/develop/dev-guide-update-data.md)
+    - [Delete Data](/develop/dev-guide-delete-data.md)
+    - [Prepared Statements](/develop/dev-guide-prepared-statement.md)
+  - Read Data
+    - [Query Data from a Single Table](/develop/dev-guide-get-data-from-single-table.md)
+    - [Multi-table Join Queries](/develop/dev-guide-join-tables.md)
+    - [Subquery](/develop/dev-guide-use-subqueries.md)
+    - [Paginate Results](/develop/dev-guide-paginate-results.md)
+    - [Views](/develop/dev-guide-use-views.md)
+    - [Temporary Tables](/develop/dev-guide-use-temporary-tables.md)
+    - [Common Table Expression](/develop/dev-guide-use-common-table-expression.md)
+    - Read Replica Data
+      - [Follower Read](/develop/dev-guide-use-follower-read.md)
+      - [Stale Read](/develop/dev-guide-use-stale-read.md)
+    - [HTAP Queries](/develop/dev-guide-hybrid-oltp-and-olap-queries.md)
+  - Transaction
+    - [Overview](/develop/dev-guide-transaction-overview.md)
+    - [Optimistic and Pessimistic Transactions](/develop/dev-guide-optimistic-and-pessimistic-transaction.md)
+    - [Transaction Restraints](/develop/dev-guide-transaction-restraints.md)
+    - [Handle Transaction Errors](/develop/dev-guide-transaction-troubleshoot.md)
+  - Optimize
+    - [Overview](/develop/dev-guide-optimize-sql-overview.md)
+    - [SQL Performance Tuning](/develop/dev-guide-optimize-sql.md)
+    - [Best Practices for Performance Tuning](/develop/dev-guide-optimize-sql-best-practices.md)
+    - [Best Practices for Indexing](/develop/dev-guide-index-best-practice.md)
+    - Other Optimization Methods
+      - [Avoid Implicit Type Conversions](/develop/dev-guide-implicit-type-conversion.md)
+      - [Unique Serial Number Generation](/develop/dev-guide-unique-serial-number-generation.md)
+  - Troubleshoot
+    - [SQL or Transaction Issues](/develop/dev-guide-troubleshoot-overview.md)
+    - [Unstable Result Set](/develop/dev-guide-unstable-result-set.md)
+    - [Timeouts](/develop/dev-guide-timeouts-in-tidb.md)
+  - Reference
+    - [Bookshop Example Application](/develop/dev-guide-bookshop-schema-design.md)
+    - Guidelines
+      - [Object Naming Convention](/develop/dev-guide-object-naming-guidelines.md)
+      - [SQL Development Specifications](/develop/dev-guide-sql-development-specification.md)
+  - Cloud Native Development Environment
+    - [Gitpod](/develop/dev-guide-playground-gitpod.md)
 - Manage Cluster
   - Plan Your Cluster
     - [Select Your Cluster Tier](/tidb-cloud/select-cluster-tier.md)

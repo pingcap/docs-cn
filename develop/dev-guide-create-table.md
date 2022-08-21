@@ -60,7 +60,7 @@ Column definitions typically take the following form.
 **Parameter description**
 
 - `{column_name}`: The column name.
-- `{data_type}`: The column [data type](/basic-features.md#data-types-functions-and-operators).
+- `{data_type}`: The column [data type](/data-type-overview.md).
 - `{column_qualification}`: Column qualifications, such as **column-level constraints** or [generated column (experimental feature)](/generated-columns.md) clauses.
 
 You can add some columns to the `users` table, such as the unique identifier `id`, `balance` and `nickname`.
@@ -81,7 +81,7 @@ Then, a field named `nickname` is defined, which is the [varchar](/data-type-str
 
 Finally, a field named `balance` is added, which is the [decimal](/data-type-numeric.md#decimal-type) type, with a **precision** of `15` and a **scale** of `2`. **Precision** represents the total number of digits in the field, and **scale** represents the number of decimal places. For example, `decimal(5,2)` means a precision of `5` and a scale of `2`, with the range from `-999.99` to `999.99`. `decimal(6,1)` means a precision of `6` and a scale of `1`, with the range from `-99999.9` to `99999.9`. **decimal** is a [fixed-point types](/data-type-numeric.md#fixed-point-types), which can be used to store numbers accurately. In scenarios where accurate numbers are needed (for example, user property-related), make sure that you use the **decimal** type.
 
-TiDB supports many other column data types, including the [integer types](/data-type-numeric.md#integer-types), [floating-point types](/data-type-numeric.md#floating-point-types), [fixed-point types](/data-type-numeric.md#fixed-point-types), [date and time types](/data-type-date-and-time.md), and the [enum type](/data-type-string.md#enum-type). You can refer to the supported column [data types](/basic-features.md#data-types-functions-and-operators) and use the **data types** that match the data you want to save in the database.
+TiDB supports many other column data types, including the [integer types](/data-type-numeric.md#integer-types), [floating-point types](/data-type-numeric.md#floating-point-types), [fixed-point types](/data-type-numeric.md#fixed-point-types), [date and time types](/data-type-date-and-time.md), and the [enum type](/data-type-string.md#enum-type). You can refer to the supported column [data types](/data-type-overview.md) and use the **data types** that match the data you want to save in the database.
 
 To make it a bit more complex, you can define a `books` table which will be the core of the `bookshop` data. The `books` table contains fields for the book's ids, titles, types (for example, magazine, novel, life, arts), stock, prices, and publication dates.
 
@@ -122,7 +122,11 @@ A table can be created without a **primary key** or with a non-integer **primary
 
 When the **primary key** of a table is an [integer type](/data-type-numeric.md#integer-types) and `AUTO_INCREMENT` is used, hotspots cannot be avoided by using `SHARD_ROW_ID_BITS`. If you need to avoid hotspots and do not need a continuous and incremental primary key, you can use [`AUTO_RANDOM`](/auto-random.md) instead of `AUTO_INCREMENT` to eliminate row ID continuity.
 
+<CustomContent platform="tidb">
+
 For more information on how to handle hotspot issues, refer to [Troubleshoot Hotspot Issues](/troubleshoot-hot-spot-issues.md).
+
+</CustomContent>
 
 Following the [guidelines for selecting primary key](#guidelines-to-follow-when-selecting-primary-key), the following example shows how an `AUTO_RANDOM` primary key is defined in the `users` table.
 
@@ -179,7 +183,7 @@ In addition to [primary key constraints](#select-primary-key), TiDB also support
 
 To set a default value on a column, use the `DEFAULT` constraint. The default value allows you to insert data without specifying a value for each column.
 
-You can use `DEFAULT` together with [supported SQL functions](/basic-features.md#data-types-functions-and-operators) to move the calculation of defaults out of the application layer, thus saving resources of the application layer. The resources consumed by the calculation do not disappear and are moved to the TiDB cluster. Commonly, you can insert data with the default time. The following exemplifies setting the default value in the `ratings` table:
+You can use `DEFAULT` together with [supported SQL functions](/functions-and-operators/functions-and-operators-overview.md) to move the calculation of defaults out of the application layer, thus saving resources of the application layer. The resources consumed by the calculation do not disappear and are moved to the TiDB cluster. Commonly, you can insert data with the default time. The following exemplifies setting the default value in the `ratings` table:
 
 {{< copyable "sql" >}}
 
@@ -245,9 +249,21 @@ CREATE TABLE `bookshop`.`users` (
 
 ## Use HTAP capabilities
 
+<CustomContent platform="tidb">
+
 > **Note:**
 >
 > The steps provided in this guide is **_ONLY_** for quick start in the test environment. For production environments, refer to [explore HTAP](/explore-htap.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+> **Note:**
+>
+> The steps provided in this guide is **_ONLY_** for quick start. For more instructions, refer to [Use an HTAP Cluster with TiFlash](/tiflash/tiflash-overview.md).
+
+</CustomContent>
 
 Suppose that you want to perform OLAP analysis on the `ratings` table using the `bookshop` application, for example, to query **whether the rating of a book has a significant correlation with the time of the rating**, which is to analyze whether the user's rating of the book is objective or not. Then you need to query the `score` and `rated_at` fields of the entire `ratings` table. This operation is resource-intensive for an OLTP-only database. Or you can use some ETL or other data synchronization tools to export the data from the OLTP database to a dedicated OLAP database for analysis.
 
@@ -255,7 +271,19 @@ In this scenario, TiDB, an **HTAP (Hybrid Transactional and Analytical Processin
 
 ### Replicate column-based data
 
-Currently, TiDB supports two data analysis engines, **TiFlash** and **TiSpark**. For the large data scenarios (100 T), **TiFlash MPP** is recommended as the primary solution for HTAP, and **TiSpark** as a complementary solution. To learn more about TiDB HTAP capabilities, refer to the following documents: [Quick Start Guide for TiDB HTAP](/quick-start-with-htap.md) and [Explore HTAP](/explore-htap.md).
+Currently, TiDB supports two data analysis engines, **TiFlash** and **TiSpark**. For the large data scenarios (100 T), **TiFlash MPP** is recommended as the primary solution for HTAP, and **TiSpark** as a complementary solution.
+
+<CustomContent platform="tidb">
+
+To learn more about TiDB HTAP capabilities, refer to the following documents: [Quick Start Guide for TiDB HTAP](/quick-start-with-htap.md) and [Explore HTAP](/explore-htap.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+To learn more about TiDB HTAP capabilities, see [TiDB Cloud HTAP Quick Start](/tidb-cloud/tidb-cloud-htap-quickstart.md) and [Use an HTAP Cluster with TiFlash](/tiflash/tiflash-overview.md).
+
+</CustomContent>
 
 In this example, [TiFlash](https://docs.pingcap.com/tidb/stable/tiflash-overview) has been chosen as the data analysis engine for the `bookshop` database.
 
@@ -373,7 +401,7 @@ This section provides guidelines you need to follow when creating a table.
 
 ### Guidelines to follow when defining columns
 
-- Check the [data types](/basic-features.md#data-types-functions-and-operators) supported by columns and organize your data according to the data type restrictions. Select the appropriate type for the data you plan to store in the column.
+- Check the [data types](/data-type-overview.md) supported by columns and organize your data according to the data type restrictions. Select the appropriate type for the data you plan to store in the column.
 - Check the [guidelines to follow](#guidelines-to-follow-when-selecting-primary-key) for selecting primary keys and decide whether to use primary key columns.
 - Check the [guidelines to follow](#guidelines-to-follow-when-selecting-clustered-index) for selecting clustered indexes and decide whether to specify **clustered indexes**.
 - Check [adding column constraints](#add-column-constraints) and decide whether to add constraints to the columns.
