@@ -116,7 +116,7 @@ To import the Parquet files to TiDB Cloud, take the following steps:
         - `!db02.*`: except the tables in the `db02` database, all other tables will be imported. `!` is used to exclude tables that do not need to be imported.
         - `*.*` : all tables will be imported.
 
-        For more information, see [table filter snytax](https://docs.pingcap.com/tidb/stable/table-filter#syntax).
+        For more information, see [table filter snytax](/table-filter.md#syntax).
 
     - **Custom Pattern**: enable the **Custom Pattern** feature if you want to import Parquet files whose filenames match a certain pattern to a single target table.
 

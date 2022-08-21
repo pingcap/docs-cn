@@ -347,6 +347,8 @@
         - [RocksDB Overview](/storage-engine/rocksdb-overview.md)
     - TiFlash
         - [TiFlash Overview](/tiflash/tiflash-overview.md)
+  - [Dumpling](/dumpling-overview.md)
+  - [Table Filter](/table-filter.md)
   - [Troubleshoot Inconsistency Between Data and Indexes](/troubleshoot-data-inconsistency-errors.md)
 - [FAQs](/tidb-cloud/tidb-cloud-faq.md)
 - Release Notes

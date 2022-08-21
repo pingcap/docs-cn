@@ -40,7 +40,7 @@ To prepare data, you can select one from the following two options:
 
 - [Option 1: Prepare source data files using Dumpling](#option-1-prepare-source-data-files-using-dumpling)
 
-    You need to launch [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) on your EC2, and export the data to Amazon S3. The data you export is the current latest data of your source database. This might affect the online service. Dumpling will lock the table when you export data.
+    You need to launch [Dumpling](/dumpling-overview.md) on your EC2, and export the data to Amazon S3. The data you export is the current latest data of your source database. This might affect the online service. Dumpling will lock the table when you export data.
 
 - [Option 2: Prepare source data files using Amazon Aurora snapshots](#option-2-prepare-source-data-files-using-amazon-aurora-snapshots)
 
@@ -109,7 +109,7 @@ You need to prepare an EC2 to run the following data export task. It's better to
 
 3. Back up the source database to S3.
 
-    Use Dumpling to export the data from Amazon Aurora. Based on your environment, replace the content in angle brackets (>), and then execute the following commands. If you want to use filter rules when exporting the data, refer to [Table Filter](https://docs.pingcap.com/tidb/stable/table-filter#syntax).
+    Use Dumpling to export the data from Amazon Aurora. Based on your environment, replace the content in angle brackets (>), and then execute the following commands. If you want to use filter rules when exporting the data, refer to [Table Filter](/table-filter.md#syntax).
 
     {{< copyable "shell-regular" >}}
 
@@ -208,7 +208,7 @@ Once finished, you will have created a policy and role for cross-account. You ca
 
 ## Learn how to set up filter rules
 
-Refer to the [Table Filter](https://docs.pingcap.com/tidb/stable/table-filter#syntax) document.
+Refer to the [Table Filter](/table-filter.md#syntax) document.
 
 ## Learn how to clean up incomplete data
 

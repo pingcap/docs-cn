@@ -8,7 +8,11 @@ aliases: ['/docs/dev/mydumper-overview/','/docs/dev/reference/tools/mydumper/','
 
 This document introduces the data export tool - [Dumpling](https://github.com/pingcap/dumpling). Dumpling exports data stored in TiDB/MySQL as SQL or CSV data files and can be used to make a logical full backup or export.
 
+<CustomContent platform="tidb">
+
 For backups of SST files (key-value pairs) or backups of incremental data that are not sensitive to latency, refer to [BR](/br/backup-and-restore-overview.md). For real-time backups of incremental data, refer to [TiCDC](/ticdc/ticdc-overview.md).
+
+</CustomContent>
 
 > **Note:**
 >
@@ -35,9 +39,27 @@ For detailed usage of Dumpling, use the `--help` option or refer to [Option list
 
 When using Dumpling, you need to execute the export command on a running cluster. This document assumes that there is a TiDB instance on the `127.0.0.1:4000` host and that this TiDB instance has a root user without a password.
 
+<CustomContent platform="tidb">
+
 You can get Dumpling using [TiUP](/tiup/tiup-overview.md) by running `tiup install dumpling`. Afterwards, you can use `tiup dumpling ...` to run Dumpling.
 
 The Dumpling installation package is included in the TiDB Toolkit. To download the TiDB Toolkit, see [Download TiDB Tools](/download-ecosystem-tools.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+You can install Dumpling using the following commands:
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://tiup-mirrors.pingcap.com/install.sh | sh
+source ~/.bash_profile
+tiup install dumpling
+```
+
+In the above commands, you need to modify `~/.bash_profile` to the path of your profile file.
+
+</CustomContent>
 
 ## Export data from TiDB/MySQL
 
@@ -70,7 +92,19 @@ dumpling \
 In the command above:
 
 + The `-h`, `-p`, and `-u` option respectively mean the address, the port, and the user. If a password is required for authentication, you can use `-p $YOUR_SECRET_PASSWORD` to pass the password to Dumpling.
+
+<CustomContent platform="tidb">
+
 + The `-o` option specifies the export directory of the storage, which supports a local file path or a [URL of an external storage](/br/backup-and-restore-storages.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
++ The `-o` option specifies the export directory of the storage, which supports a local file path or a [URL of an external storage](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages).
+
+</CustomContent>
+
 + The `-t` option specifies the number of threads for the export. Increasing the number of threads improves the concurrency of Dumpling and the export speed, and also increases the database's memory consumption. Therefore, it is not recommended to set the number too large. Usually, it's less than 64.
 + The `-r` option specifies the maximum number of rows in a single file. With this option specified, Dumpling enables the in-table concurrency to speed up the export and reduce the memory usage. When the upstream database is TiDB v3.0 or later versions, a value of this parameter greater than 0 indicates that the TiDB region information is used for splitting and the value specified here will no longer take effect.
 + The `-F` option is used to specify the maximum size of a single file (the unit here is `MiB`; inputs like `5GiB` or `8KB` are also acceptable). It is recommended to keep its value to 256 MiB or less if you plan to use TiDB Lightning to load this file into a TiDB instance.
@@ -102,7 +136,19 @@ When you export data to CSV files, you can use `--sql <SQL>` to filter the recor
 In the command above:
 
 - The `--sql` option can be used only for exporting to CSV files. The command above executes the `SELECT * FROM <table-name> WHERE id <100` statement on all tables to be exported. If a table does not have the specified field, the export fails.
+
+<CustomContent platform="tidb">
+
 - When you use the `--sql` option, Dumpling cannot obtain the exported table and schema information. You can specify the file name format of the CSV files using the `--output-filename-template` option, which facilitates the subsequent use of [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md) to import the data file. For example, `--output-filename-template='test.sbtest1.{{.Index}}'` specifies that the exported CSV files are named as `test.sbtest1.000000000` or `test.sbtest1.000000001`.
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+- When you use the `--sql` option, Dumpling cannot obtain the exported table and schema information. You can specify the file name format of the CSV files using the `--output-filename-template` option. For example, `--output-filename-template='test.sbtest1.{{.Index}}'` specifies that the exported CSV files are named as `test.sbtest1.000000000` or `test.sbtest1.000000001`.
+
+</CustomContent>
+
 - You can use options like `--csv-separator` and `--csv-delimiter` to configure the CSV file format. For details, refer to the [Dumpling option list](#option-list-of-dumpling).
 
 > **Note:**
@@ -184,7 +230,17 @@ export AWS_ACCESS_KEY_ID=${AccessKey}
 export AWS_SECRET_ACCESS_KEY=${SecretKey}
 ```
 
+<CustomContent platform="tidb">
+
 Dumpling also supports reading credential files from `~/.aws/credentials`. For more Dumpling configuration, see the configuration of [External storages](/br/backup-and-restore-storages.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Dumpling also supports reading credential files from `~/.aws/credentials`. For more Dumpling configuration, see the configuration of [External storages](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages).
+
+</CustomContent>
 
 {{< copyable "shell-regular" >}}
 
@@ -335,7 +391,17 @@ After your operation is completed, set the GC time back (the default value is `1
 SET GLOBAL tidb_gc_life_time = '10m';
 ```
 
+<CustomContent platform="tidb">
+
 Finally, all the exported data can be imported back to TiDB using [TiDB Lightning](/tidb-lightning/tidb-lightning-backends.md).
+
+</CustomContent>
+
+<CustomContent platform="tidb-cloud">
+
+Finally, all the exported data can be imported back to TiDB.
+
+</CustomContent>
 
 ## Option list of Dumpling
 
@@ -359,7 +425,7 @@ Finally, all the exported data can be imported back to TiDB using [TiDB Lightnin
 | `-s` or `--statement-size`   | Control the size of the `INSERT` statements; the unit is bytes                                                                                                                                                                                                                                                                     |
 | `-F` or `--filesize`         | The file size of the divided tables. The unit must be specified such as `128B`, `64KiB`, `32MiB`, and `1.5GiB`.                                                                                                                                                                                                                    |
 | `--filetype`                 | Exported file type (csv/sql)                                                                                                                                                                                                                                                                                                       | "sql"                                      |
-| `-o` or `--output`           | The path of exported local files or [the URL of the external storage](/br/backup-and-restore-storages.md)                                                                                                                                                                                                                                                                                                    | "./export-${time}"                         |
+| `-o` or `--output`           | The path of exported local files or [the URL of the external storage](https://docs.pingcap.com/tidb/stable/backup-and-restore-storages)                                                                                                                                                                                                                                                                                                    | "./export-${time}"                         |
 | `-S` or `--sql`              | Export data according to the specified SQL statement. This command does not support concurrent export.                                                                                                                                                                                                                             |
 | `--consistency`              | flush: use FTWRL before the dump <br/> snapshot: dump the TiDB data of a specific snapshot of a TSO <br/> lock: execute `lock tables read` on all tables to be dumped <br/> none: dump without adding locks, which cannot guarantee consistency <br/> auto: use --consistency flush for MySQL; use --consistency snapshot for TiDB | "auto"                                     |
 | `--snapshot`                 | Snapshot TSO; valid only when `consistency=snapshot`                                                                                                                                                                                                                                                                               |

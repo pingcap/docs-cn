@@ -7,7 +7,7 @@ summary: Learn how to migrate data from MySQL-compatible databases to TiDB Cloud
 
 TiDB is highly compatible with MySQL. You can migrate data from any MySQL-compatible databases to TiDB smoothly, whether the data is from a self-hosted MySQL instance or RDS service provided by the public cloud.
 
-This document describes how to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) to export data from MySQL-compatible databases and use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) logical import mode to import the data to TiDB Cloud. 
+This document describes how to use [Dumpling](/dumpling-overview.md) to export data from MySQL-compatible databases and use [TiDB Lightning](https://docs.pingcap.com/tidb/stable/tidb-lightning-overview) logical import mode to import the data to TiDB Cloud.
 
 > **Note:**
 >
@@ -55,7 +55,7 @@ TiUP is a package manager in the TiDB ecosystem, which can help you run any TiDB
 
 ## Step 2. Export data from MySQL-compatible databases
 
-You can use several ways to dump data from MySQL, such as using `mysqldump` or `mydumper`. It is recommended to use [Dumpling](https://docs.pingcap.com/tidb/stable/dumpling-overview) for higher performance and compatibility with TiDB, which is also one of the open source tools created by PingCAP.
+You can use several ways to dump data from MySQL, such as using `mysqldump` or `mydumper`. It is recommended to use [Dumpling](/dumpling-overview.md) for higher performance and compatibility with TiDB, which is also one of the open source tools created by PingCAP.
 
 1. Install Dumpling:
 
@@ -67,7 +67,7 @@ You can use several ways to dump data from MySQL, such as using `mysqldump` or `
 
 2. Export your MySQL database using Dumpling.
 
-    - To export your data to Amazon S3 cloud storage, see [Export data to Amazon S3 cloud storage](https://docs.pingcap.com/tidb/stable/dumpling-overview#export-data-to-amazon-s3-cloud-storage). 
+    - To export your data to Amazon S3 cloud storage, see [Export data to Amazon S3 cloud storage](/dumpling-overview.md#export-data-to-amazon-s3-cloud-storage). 
     - To export your data to local data files, use the following command:
 
         {{< copyable "shell-regular" >}}

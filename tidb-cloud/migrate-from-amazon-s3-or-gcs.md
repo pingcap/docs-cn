@@ -67,7 +67,7 @@ For detailed steps, see [Configure Amazon S3 access](/tidb-cloud/config-s3-and-g
     - **Bucket URL**: fill in the bucket URL of your source data.
     - **Data Format**: choose the format of your data.
     - **Target Cluster**: fill in the **Username** and **Password** fields.
-    - **DB/Tables Filter**: if necessary, you can specify a [table filter](https://docs.pingcap.com/tidb/stable/table-filter#syntax). If you want to configure multiple filter rules, use `,` to separate the rules.
+    - **DB/Tables Filter**: if necessary, you can specify a [table filter](/table-filter.md#syntax). If you want to configure multiple filter rules, use `,` to separate the rules.
 
 2. Click **Import**.
 
