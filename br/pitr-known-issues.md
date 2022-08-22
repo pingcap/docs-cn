@@ -29,7 +29,7 @@ Issue 链接：[#36648](https://github.com/pingcap/tidb/issues/36648)
 
 目前日志备份功能还没有完全适配 TiDB Lightning，导致 TiDB Lightning Physical 方式导入的数据无法备份到日志中。
 
-在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次全量备份操作，这样，PITR 就可以恢复到全量备份之后的时间点。
+在创建日志备份任务的上游集群中，请尽量避免使用 TiDB Lightning Physical 方式导入数据。可以选择使用 TiDB Lightning Logical 方式导入数据。若确实需要使用 Physical 导入方式，可在导入完成之后做一次快照备份操作，这样，PITR 就可以恢复到快照备份之后的时间点。
 
 ## 使用自建的 Minio 系统作为日志备份的存储，执行 `br restore point` 或者 `br log truncate` 出现 `RequestCanceled` 错误
 
@@ -61,7 +61,7 @@ Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 
 Issue 链接：[#13306](https://github.com/tikv/tikv/issues/13306)
 
-这是由于集群监控显示的是 RocksDB 压缩后的数据，而日志备份使用的是自定义的编码方式存储 KV 数据，因此造成压缩比率不一致，大约是 2~3 倍之间。日志备份没有使用 RocksDB 生成 SST 文件的方式存储数据，是因为日志备份期间生成的数据会遇到区间范围过大而实际区间内容较少的情况。这个情况下，通过 ingest SST 的方式恢复数据，效果会大打折扣。
+这是由于集群监控显示的是 RocksDB 压缩后的数据，而日志备份使用的是自定义的编码方式存储 KV 数据，因此造成压缩比率不一致，大约是 2~3 倍之间。日志备份没有使用 RocksDB 生成 SST 文件的方式存储数据，是因为日志备份期间生成的数据会遇到区间范围过大而实际区间内容较少的情况。这个情况下，通过 ingest SST 的方式恢复数据，并不能有效提升恢复性能。
 
 ## 执行 PITR 恢复时遇到 `execute over region id` 报错
 
@@ -69,7 +69,7 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 该场景发生在全量数据导入时开启了日志备份，并使用 PiTR 恢复全量导入时间段的日志。经过测试发现，当存在长时间(24h)大量热点写入，且平均单台 TiKV 节点写入 ops > 50k/s(可以通过 grafana 中 `TiKV-Details` -> `Backup Log` -> `Handle Event Rate` 确认该数值)，那么有几率会遇到这个情况。
 
-- 当前版本中建议在集群初始化后，进行一次有效全量备份，并且以此作为基础进行 PITR 恢复。
+- 当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ## 当存在大事务的时候，事务的提交时间会影响日志备份 checkpoint lag
 
