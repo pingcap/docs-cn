@@ -70,3 +70,9 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 该场景发生在通过日志数据来恢复全量导入的集群初始化数据，经过测试发现，当存在长时间(24h)大量热点写入，且平均单台 TiKV 节点写入 ops > 50k/s ，那么有几率会遇到这个情况。
 
 - 当前版本中建议在集群初始化后，进行一次有效全量备份，并且以此作为基础进行 PITR 恢复。
+
+## 当存在大事务的时候，事务的提交时间会影响日志备份 checkpoint lag
+
+Issue 链接：[#13304](https://github.com/pingcap/tidb/issues/13304)
+
+当场景中有大事务时，日志 checkpoint lag 会增加接近大事务的提交时间。
