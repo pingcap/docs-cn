@@ -187,7 +187,7 @@ TiDB 版本：6.2.0
 
     TiDB Lightning 原有的物理导入模式 (backend='local') 对目标集群影响较大，例如导入过程将停止 PD 调度等，因此仅适用于目标集群初次导入数据。
 
-    TiDB Lightning 在现有基础上做了改进，导入时影响范围由集群级别降低到表级别，即非导入的表仍可进行读写操作。
+    TiDB Lightning 在现有基础上做了改进，导入时可以暂停对应表的调度，从而将影响范围由集群级别降低到表级别，即非导入的表仍可进行读写操作。
 
     此特性无需手动配置，目标 TiDB 集群版本在 v6.1.0 及以上且 TiDB Lightning 在 v6.2.0 及以上时自动生效。
 
@@ -410,7 +410,7 @@ TiDB 版本：6.2.0
 
     + Backup & Restore (BR)
 
-        修复了限速备份后，BR 没有及时清理速度限制的问题 [#31722](https://github.com/pingcap/tidb/issues/31722) @[MoCuishle28](https://github.com/MoCuishle28)
+        修复了限速备份后，BR 没有重置速度限制的问题 [#31722](https://github.com/pingcap/tidb/issues/31722) @[MoCuishle28](https://github.com/MoCuishle28)
 
 ## Contributors
 
