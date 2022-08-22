@@ -18,6 +18,8 @@ This document gives an overview of the data migration solutions that you can use
 
 - Data replication between TiDB clusters. TiDB supports backup and restore. This feature can initialize a snapshot in an existing TiDB cluster to a new TiDB cluster.
 
+- Incremental replication between TiDB clusters. TiDB supports disaster recovery between homogeneous databases to ensure eventual data consistency of primary and secondary databases after a disaster event. It works only when both primary and secondary clusters are TiDB.
+
 You might choose different migration solutions according to the database type, deployment location, application data size, and application needs. The following sections introduce some common migration scenarios, and you can refer to these sections to determine the most suitable solution according to your needs.
 
 ## Migrate data from Aurora MySQL to TiDB
@@ -50,6 +52,10 @@ If the data size of the sharded tables is large (for example, larger than 1 TiB)
 
 - [Migrate data from CSV files to TiDB](/migrate-from-csv-files-to-tidb.md)
 - [Migrate data from SQL files to TiDB](/migrate-from-sql-files-to-tidb.md)
+
+## Incremental replication between TiDB clusters
+
+You can use TiCDC for incremental data replication between TiDB clusters. For details, refer to [TiCDC Overview](/ticdc/ticdc-overview.md).
 
 ## More advanced migration solutions
 
