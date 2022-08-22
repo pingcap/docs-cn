@@ -21,8 +21,8 @@ jobs:
         uses: lycheeverse/lychee-action@v1.5.0
         with:
           # For parameter description, see https://github.com/lycheeverse/lychee#commandline-parameters
-          args: -E --exclude-mail --cache -v -i -n -t 45 -- **/*.md *.md
-          output: failed.md
+          args: -E --exclude-mail --cache -v -i -n -t 45 -- **/*.md *.md --output failed.md
+          jobSummary: false
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Check Failed Links
