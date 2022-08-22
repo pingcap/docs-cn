@@ -30,6 +30,8 @@ jobs:
         with:
           args: -E --exclude-mail --max-concurrency 1 -- failed.md
           output: out.md
+        env:
+            GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       # - name: Create Issue From File
       #   uses: peter-evans/create-issue-from-file@v3
