@@ -75,4 +75,4 @@ Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
 Issue 链接：[#13304](https://github.com/tikv/tikv/issues/13304)
 
-当场景中有大事务时，日志 checkpoint lag 会增加接近大事务的提交时间。
+当场景中有大事务时，日志 checkpoint lag 在事务提交前都不会更新，因此会增加一段接近于大事务提交时长的时间。
