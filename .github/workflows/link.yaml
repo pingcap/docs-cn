@@ -28,7 +28,7 @@ jobs:
       - name: Check Failed Links
         uses: lycheeverse/lychee-action@v1.5.0
         with:
-          args: -E --exclude-mail --mac-concurrency 1 -- failed.md
+          args: -E --exclude-mail --max-concurrency 1 -- failed.md
           output: out.md
 
       # - name: Create Issue From File
