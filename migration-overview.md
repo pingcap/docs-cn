@@ -55,7 +55,7 @@ summary: 了解各种数据迁移场景和对应的数据迁移方案。
 
 ## TiDB 集群增量数据同步
 
-可以使用 TiCDC 进行 TiDB 集群的增量数据同步。详情请参考 [TiCDC 简介](/ticdc/ticdc-overview.md)。
+可以使用 TiCDC 进行 TiDB 集群间的增量数据同步。详情请参考 [TiCDC 简介](/ticdc/ticdc-overview.md)。
 
 ## 复杂迁移场景
 
