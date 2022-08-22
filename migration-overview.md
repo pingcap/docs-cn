@@ -18,6 +18,8 @@ summary: 了解各种数据迁移场景和对应的数据迁移方案。
 
 - TiDB 集群复制：TiDB 支持备份恢复功能，该功能可以实现将 TiDB 的某个快照初始化到另一个全新的 TiDB 集群。
 
+- TiDB 集群增量数据同步：TiCDC 支持同构数据库之间的灾备场景，能够在灾难发生时保证主备集群数据的最终一致性。目前该场景仅支持 TiDB 作为主备集群。
+
 根据迁移数据所在数据库类型、部署位置、业务数据规模大小、业务需求等因素，会有不同数据迁移选择。下面展示一些常用的数据迁移场景，方便用户依据这些线索选择到最适合自己的数据迁移方案。
 
 ## 迁移 Aurora MySQL 到 TiDB
@@ -50,6 +52,10 @@ summary: 了解各种数据迁移场景和对应的数据迁移方案。
 
 - [从 CSV 文件迁移数据到 TiDB](/migrate-from-csv-files-to-tidb.md)
 - [从 SQL 文件迁移数据到 TiDB](/migrate-from-sql-files-to-tidb.md)
+
+## TiDB 集群增量数据同步
+
+可以使用 TiCDC 进行 TiDB 集群间的增量数据同步。详情请参考 [TiCDC 简介](/ticdc/ticdc-overview.md)。
 
 ## 复杂迁移场景
 
