@@ -1,9 +1,9 @@
 ---
-title: TiCDC 安装部署
-summary: 了解 TiCDC 软硬件环境要求以及如何安装部署 TiCDC。
+title: TiCDC 部署运维
+summary: 了解 TiCDC 软硬件环境要求以及如何部署运维 TiCDC。
 ---
 
-# TiCDC 安装部署
+# TiCDC 集群部署
 
 本文档介绍 TiCDC 集群的软硬件环境要求，以及如何安装部署 TiCDC 集群。你可以选择随新集群一起部署 TiCDC，也可以对原有 TiDB 集群新增 TiCDC 组件。通常推荐使用 TiUP 完成部署，如有特殊情况也可以用 binary 部署。
 
@@ -63,3 +63,7 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 - `cert-allowed-cn`：TiCDC 创建 TLS 连接时使用的通用名称文件路径，可选。
 - `key`：TiCDC 创建 TLS 连接时使用的证书密钥文件路径，PEM 格式，可选。
 - `tz`：TiCDC 服务使用的时区。TiCDC 在内部转换 `TIMESTAMP` 等时间数据类型和向下游同步数据时使用该时区，默认为进程运行本地时区。（注意如果同时指定 `tz` 参数和 `sink-uri` 中的 `time-zone` 参数，TiCDC 进程内部使用 `tz` 指定的时区，sink 向下游执行时使用 `time-zone` 指定的时区）
+
+## 基于 TiUP 运维 TiCDC 集群
+
+自 6.3 版本开始，TiCDC 支持了滚动升级能力，使用 xxx 版本之后的 TiUP 升级 TiCDC 集群，可以保证 TiCDC 在升级期间，同步延迟不上升，依旧对外提供高可用服务。
