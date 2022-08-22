@@ -62,3 +62,11 @@ Issue 链接：[#13126](https://github.com/tikv/tikv/issues/13126)
 Issue 链接：[#13306](https://github.com/tikv/tikv/issues/13306)
 
 这是由于集群监控显示的是 rocksdb 压缩后的数据，而日志备份使用的是自定义的编码方式存储 KV 数据，因此造成压缩比率不一致。而日志备份没有选择使用 rocksdb 生成 SST 文件的方式存储数据的原因是，日志备份期间生成的数据会遇到区间范围过大，但是实际区间内容较少的情况，这个情况下，通过 ingest SST 的方式恢复数据，效果会大打折扣。
+
+## 执行 PITR 恢复时遇到 execute over region id 报错
+
+Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
+
+该场景发生在没有全量备份作为基础时，仅通过日志数据来恢复全量导入的集群初始化数据，经过测试发现，当存在长时间(24h)大量热点写入，且平均单台 TiKV 节点写入 ops > 50k/s ，那么有几率会遇到这个情况。
+
+- 当前版本中建议在集群初始化后，进行一次有效全量备份，并且以此作为基础进行 PITR 恢复。
