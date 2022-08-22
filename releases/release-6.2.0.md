@@ -165,34 +165,6 @@ TiDB 版本：6.2.0
 
 ### 数据迁移
 
-* 支持为 TiDB Lightning 配置磁盘资源配额（实验特性）
-
-    当 TiDB Lightning 使用物理导入模式 (backend='local') 进行导入时，sorted-kv-dir 需要具备足以容纳数据源总量的空间，当空间不足时可能致使导入任务失败。新增的 `disk_quota` 配置项可以用于限定 TiDB Lightning 的磁盘空间使用总量，当 sorted-kv-dir 存储空间较少时也可以正常完成导入任务。
-
-    [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入) [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou)
-
-* DM 支持增量持续数据校验（实验特性）
-
-    增量持续数据校验用于在数据同步过程中，持续对比上游 binlog 与下游实际写入记录是否存在异常，例如错误同步、记录缺失等。此特性用以解决常见的全量数据校验方案的滞后性，资源消耗过重等问题。
-
-    [用户文档](/dm/dm-continuous-data-validation.md) [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) @[buchuitoudegou](https://github.com/buchuitoudegou)
-
-* 自动识别 Amazon S3 bucket 所在的区域
-
-    数据迁移任务可自动判断 S3 bucket 所在区域，不再需要显式传递区域参数。
-
-    [#34275](https://github.com/pingcap/tidb/issues/34275) @[WangLe1321](https://github.com/WangLe1321)
-
-* TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群
-
-    TiDB Lightning 原有的物理导入模式 (backend='local') 对目标集群影响较大，例如导入过程将停止 PD 调度等，因此仅适用于目标集群初次导入数据。
-
-    TiDB Lightning 在现有基础上做了改进，导入时可以暂停对应表的调度，从而将影响范围由集群级别降低到表级别，即非导入的表仍可进行读写操作。
-
-    此特性无需手动配置，目标 TiDB 集群版本在 v6.1.0 及以上且 TiDB Lightning 在 v6.2.0 及以上时自动生效。
-
-    [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入数据到生产集群) [#35148](https://github.com/pingcap/tidb/issues/35148) @[gozssky](https://github.com/gozssky)
-
 * BR 支持恢复用户和权限数据
 
     该功能支持恢复用户和权限数据，用户不再需要额外的方案恢复用户和权限数据，只需要在使用 BR 恢复数据时指定参数 `--with-sys-table`。
@@ -208,7 +180,35 @@ TiDB 版本：6.2.0
     - 业务历史数据审计，满足司法审查的需求。
     - 该功能初版存在着一些使用限制，详细情况请参考功能使用文档。
 
-  [用户文档](/br/point-in-time-recovery.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
+    [用户文档](/br/point-in-time-recovery.md) [#29501](https://github.com/pingcap/tidb/issues/29501) @[joccau](https://github.com/joccau)
+
+* DM 支持增量持续数据校验（实验特性）
+
+    增量持续数据校验用于在数据同步过程中，持续对比上游 binlog 与下游实际写入记录是否存在异常，例如错误同步、记录缺失等。此特性用以解决常见的全量数据校验方案的滞后性，资源消耗过重等问题。
+
+    [用户文档](/dm/dm-continuous-data-validation.md) [#4426](https://github.com/pingcap/tiflow/issues/4426) @[D3Hunter](https://github.com/D3Hunter) @[buchuitoudegou](https://github.com/buchuitoudegou)
+
+* 自动识别 Amazon S3 bucket 所在的区域
+
+    数据迁移任务可自动判断 S3 bucket 所在区域，不再需要显式传递区域参数。
+
+    [#34275](https://github.com/pingcap/tidb/issues/34275) @[WangLe1321](https://github.com/WangLe1321)
+
+* 支持为 TiDB Lightning 配置磁盘资源配额（实验特性）
+
+    当 TiDB Lightning 使用物理导入模式 (backend='local') 进行导入时，sorted-kv-dir 需要具备足以容纳数据源总量的空间，当空间不足时可能致使导入任务失败。新增的 `disk_quota` 配置项可以用于限定 TiDB Lightning 的磁盘空间使用总量，当 sorted-kv-dir 存储空间较少时也可以正常完成导入任务。
+
+    [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#磁盘资源配额-从-v620-版本开始引入) [#446](https://github.com/pingcap/tidb-lightning/issues/446) @[buchuitoudegou](https://github.com/buchuitoudegou)
+
+* TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群
+
+    TiDB Lightning 原有的物理导入模式 (backend='local') 对目标集群影响较大，例如导入过程将停止 PD 调度等，因此仅适用于目标集群初次导入数据。
+
+    TiDB Lightning 在现有基础上做了改进，导入时可以暂停对应表的调度，从而将影响范围由集群级别降低到表级别，即非导入的表仍可进行读写操作。
+
+    此特性无需手动配置，目标 TiDB 集群版本在 v6.1.0 及以上且 TiDB Lightning 在 v6.2.0 及以上时自动生效。
+
+    [用户文档](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入数据到生产集群) [#35148](https://github.com/pingcap/tidb/issues/35148) @[gozssky](https://github.com/gozssky)
 
 * 调整 [TiDB Lightning 在线文档](/tidb-lightning/tidb-lightning-overview.md)，使其目录结构更加合理和清晰。同时对文档中关于“后端模式”的描述进行了修改，使用 Physical Import Mode 替代原有 local backend，使用 Logical Import  Mode 替代原有 tidb backend ，以降低新用户的理解难度。
 
@@ -412,7 +412,7 @@ TiDB 版本：6.2.0
 
         修复了限速备份后，BR 没有重置速度限制的问题 [#31722](https://github.com/pingcap/tidb/issues/31722) @[MoCuishle28](https://github.com/MoCuishle28)
 
-## Contributors
+## 贡献者
 
 感谢来自 TiDB 社区的贡献者们：
 
