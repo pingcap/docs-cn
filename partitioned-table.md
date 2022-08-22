@@ -577,7 +577,11 @@ Empty set (0.00 sec)
 
 确保要交换入分区中的所有行与分区定义匹配；否则，你将无法找到这些行，并导致意外情况出现。
 
-TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html) ，还需要满足交换分区和非分区表 Placement Rules 一样。
+请注意 TiDB 有一些专有特性，当表结构中包含这些特性时，在 TiDB 中使用 `EXCHANGE PARTITION` 功能不仅需要满足 [MySQL 的 EXCHANGE PARTITION 条件](https://dev.mysql.com/doc/refman/8.0/en/partitioning-management-exchange.html)，还要保证这些专有特性对于分区表和非分区表上定义相同，这些专有特性包括：
+
+* [Placement Rules in SQL](placement-rules-in-sql.md)：Placement Policy 定义相同。
+* [TiFlash](tikv-overview.md)：TiFlash Replica 数量相同。
+* [聚簇索引](clustered-indexes.md)：分区表和非分区表要么都是聚簇索引，要么都不是聚簇索引。
 
 `EXCHANGE PARTITION` 和其他组件兼容性方面限制：
 
