@@ -67,12 +67,12 @@ Issue 链接：[#13306](https://github.com/tikv/tikv/issues/13306)
 
 Issue 链接：[#37207](https://github.com/pingcap/tidb/issues/37207)
 
-该场景发生在全量数据导入时开启了日志备份，并使用 PiTR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
+该场景发生在全量数据导入时开启了日志备份，并使用 PITR 恢复全量导入时间段的日志。经过测试发现，当存在长时间（24 小时）大量热点写入，且平均单台 TiKV 节点写入 OPS > 50k/s（可以通过 Grafana 中 **TiKV-Details** -> **Backup Log** -> **Handle Event Rate** 确认该数值），那么有几率会遇到这个情况。
 
 - 当前版本中建议在集群初始化后，进行一次有效快照备份，并且以此作为基础进行 PITR 恢复。
 
 ## 当存在大事务的时候，事务的提交时间会影响日志备份 checkpoint lag
 
-Issue 链接：[#13304](https://github.com/pingcap/tidb/issues/13304)
+Issue 链接：[#13304](https://github.com/tikv/tikv/issues/13304)
 
 当场景中有大事务时，日志 checkpoint lag 会增加接近大事务的提交时间。
