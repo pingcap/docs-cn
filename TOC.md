@@ -475,6 +475,13 @@
       - [Back Up and Restore Data on Google Cloud Storage Using BR](/br/backup-storage-gcs.md)
       - [Back Up and Restore RawKV](/br/rawkv-backup-and-restore.md)
       - [BR FAQs](/br/backup-and-restore-faq.md)
+  - Point-in-Time Recovery
+    - [PITR Overview](/br/point-in-time-recovery.md)
+    - [Use PITR via CLI](/br/br-log-command-line.md)
+    - [Usage Scenarios](/br/pitr-usage.md)
+    - [Monitoring and Alert](/br/pitr-monitoring-and-alert.md)
+    - [Troubleshooting](/br/pitr-troubleshoot.md)
+    - [Known Issues](/br/pitr-known-issues.md)
   - TiDB Binlog
     - [Overview](/tidb-binlog/tidb-binlog-overview.md)
     - [Quick Start](/tidb-binlog/get-started-with-tidb-binlog.md)
