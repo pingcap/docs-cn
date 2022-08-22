@@ -290,10 +290,8 @@ middle_key_by_approximate_size:
 `compact` 命令可以对单个 TiKV 进行手动 compact。
 
 - `--from` 和 `--to` 选项以 escaped raw key 形式指定 compact 的范围。如果没有设置，表示 compact 整个 TiKV。
-- `region` 选项指定 compact Region 的范围。如果设置，则 `--from` 和 `--to` 选项会被忽略。
-- `--host` 选项可以指定要 compact 的 TiKV。
+- `--region` 选项指定 compact Region 的范围。如果设置，则 `--from` 和 `--to` 选项会被忽略。
 - `--db` 选项可以指定要 compact 的 RocksDB，可选值为`kv` 和 `raft`。
-- `--data-dir` 选项指定本地 TiKV 数据的目录路径。
 - `--threads` 选项可以指定 compact 的并发数，默认值是 8。一般来说，并发数越大，compact 的速度越快，但是也会对服务造成影响，所以需要根据情况选择合适的并发数。
 - `--bottommost` 选项可以指定 compact 是否包括最下层的文件。可选值为 `default`、`skip` 和 `force`，默认为 `default`。
     - `default` 表示只有开启了 Compaction Filter 时 compact 才会包括最下层文件。
