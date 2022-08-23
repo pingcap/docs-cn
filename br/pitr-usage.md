@@ -41,6 +41,10 @@ summary: 了解如何使用 PiTR。
 - 安装：执行命令 `tiup install br:v6.2.0`
 - 升级：执行命令 `tiup update br:v6.2.0`
 
+## 开启 `TiKV` 端日志备份开关
+
+使用日志备份功能，需将 `TiKV` 端的日志备份开关参数 `log-backup.enable` 设置为 `true`，修改配置参数的方法请参考 [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
+
 ## 配置备份存储 (Amazon S3)
 
 在开始备份任务之前需要准备好备份存储，包括：
