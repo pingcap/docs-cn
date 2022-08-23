@@ -9,10 +9,16 @@ summary: 了解如何使用 br log 命令行工具进行日志备份并恢复日
 
 ## 前置条件
 
+### 安装 BR
+
 使用日志备份前，你需要安装 BR。你可以选择以下任一方式安装 BR：
 
 * [使用 TiUP 在线安装](/migration-tools.md#使用-tiup-快速安装)（推荐）
 * [下载 TiDB 离线包](/download-ecosystem-tools.md)
+
+### 打开日志备份开关
+
+使用日志备份功能，需将 `TiKV` 端的日志备份开关参数 `log-backup.enable` 设为 `true`，修改配置参数的方法请参考 [修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
 ## 使用日志备份
 
