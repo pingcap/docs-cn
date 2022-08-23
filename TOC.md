@@ -22,7 +22,7 @@
 - 应用开发
   - [概览](/develop/dev-guide-overview.md)
   - 快速开始
-    - [使用 TiDB Cloud (DevTier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
+    - [使用 TiDB Cloud (Developer Tier) 构建 TiDB 集群](/develop/dev-guide-build-cluster-in-cloud.md)
     - [使用 TiDB 的增删改查 SQL](/develop/dev-guide-tidb-crud-sql.md)
     - 构建简单的 CRUD 应用程序
       - [Java](/develop/dev-guide-sample-application-java.md)
