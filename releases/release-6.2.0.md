@@ -6,9 +6,9 @@ title: TiDB 6.2.0 Release Notes
 
 发版日期：2022 年 8 月 23 日
 
-TiDB 版本：6.2.0
+TiDB 版本：6.2.0-DMR
 
-在 6.2.0 版本中，你可以获得以下关键特性：
+在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
 - TiDB Dashboard 新增 [Monitoring 页面](/dashboard/dashboard-monitoring.md)用于性能分析和优化。
