@@ -5,7 +5,11 @@ summary: 了解 TiCDC 软硬件环境要求以及如何部署运维 TiCDC。
 
 # TiCDC 集群部署
 
-本文档介绍 TiCDC 集群的软硬件环境要求，以及如何安装部署 TiCDC 集群。你可以选择随新集群一起部署 TiCDC，也可以对原有 TiDB 集群新增 TiCDC 组件。通常推荐使用 TiUP 完成部署，如有特殊情况也可以用 binary 部署。
+本文档介绍 TiCDC 集群的软硬件环境要求，以及如何安装部署 TiCDC 集群。你可以选择随新集群一起部署 TiCDC，也可以对原有 TiDB 集群新增 TiCDC 组件。
+
+TiCDC 支持基于 Kubernetes 环境部署，详情参考 [在 Kubernetes 上部署 TiCDC](https://docs.pingcap.com/zh/tidb-in-kubernetes/dev/deploy-ticdc)
+
+本文档主要介绍如何使用 TiUP 部署运维 TiCDC 集群，如有特殊情况也可以用 binary 部署。
 
 ## 软件和硬件环境推荐配置
 
@@ -66,4 +70,15 @@ cdc server --pd=http://10.0.10.25:2379 --log-file=ticdc_3.log --addr=0.0.0.0:830
 
 ## 基于 TiUP 运维 TiCDC 集群
 
-自 6.3 版本开始，TiCDC 支持了滚动升级能力，使用 xxx 版本之后的 TiUP 升级 TiCDC 集群，可以保证 TiCDC 在升级期间，同步延迟不上升，依旧对外提供高可用服务。
+v1.11.0 及之后版本之后的 TiUP 使用了由 TiCDC 提供的 OpenAPI，在执行对 TiCDC 集群进行滚动升级，扩容 / 缩容操作时，同步延迟保持平稳。从 v6.3.0 版本的 TiCDC 开始支持该功能，并且要求集群至少存在 2 个正在运行的 TiCDC 实例，如果条件不满足，将会强制执行相关操作，完成升级，扩缩容。
+
+假设当前版本为 v6.3.0，使用 TiUP 升级集群到 v6.4.0 ：
+
+{{< copyable "shell-regular" >}}
+```shell
+tiup cluster upgrade test-cluster v6.4.0
+```
+
+TiCDC 从 v6.3.0 版本开始使用新的调度器模块，该模块实现了两阶段调度功能，在上述运维操作时，会将正在被操作的 TiCDC 实例上的工作负载表迁移到其他 TiCDC 实例上，然后实施升级，下线节点，上线新节点等操作。与之前版本的 TiCDC 升级过程相比，耗时变长，但是提供了在升级过程中同步任务延迟不因为升级原因而上升，该功能同样被应用于缩容 TiCDC 节点的场景。
+
+运维升级 / 缩容 一个 TiCDC 节点的耗时，和该节点上当前被分配的表同步任务数量相关，以及被连接的 regions 数量相关。表数量越多，regions 数量也就越多，迁移表耗时越长。TiUP 默认由 `--transfer-timeout` 参数控制该过程的时长，默认为 `600s`。如果在该时间范围内，TiCDC 节点上的表没能被完全迁移到其他节点上，那么执行强制升级 / 缩容操作，这种情况下不保证同步延迟。你可以根据当前集群中表的数量，在执行命令时设置修改该参数，保证每个节点滚动升级过程能够平稳执行。
