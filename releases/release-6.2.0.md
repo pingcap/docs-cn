@@ -10,20 +10,20 @@ TiDB 版本：6.2.0
 
 在 6.2.0 版本中，你可以获得以下关键特性：
 
-- TiDB Dashboard 支持可视化执行计划，查询计划展示更直观。
-- TiDB Dashboard 新增 Monitoring 页面用于性能分析和优化。
-- TiDB 锁视图支持乐观事务被阻塞的信息，方便快速定位锁冲突。
-- TiFlash 引入新的存储格式 PageStorage V3，提升稳定性和性能。
-- 实现细粒度数据交换 (shuffle) 使窗口函数 (Window function) 可以利用多线程并行计算。
-- 引入新的 DDL 并行执行框架，减少 DDL 阻塞，大幅提升执行效率。
-- TiKV 支持自适应调整 CPU 使用率，确保数据库稳定高效运行。
-- 支持 Point-in-Time Recovery (PITR)，允许恢复备份集群的历史任意时间点的快照。
-- TiDB Lightning 支持使用 Physical Import Mode 导入数据到生产集群。
-- Backup & Restore (BR) 支持恢复用户和权限数据，备份恢复体验更平滑。
-- TiCDC 支持过滤指定类型的 DDL 事件，解锁更多数据同步场景。
-- 事务中支持 `SAVEPOINT` 机制，可以灵活地控制事务内的回退节点。
-- 单 `ALTER TABLE` 语句增删改多个列或索引，方便实现 SQL 功能，提升产品易用性。
-- 支持 RawKV 跨集群复制。
+- TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
+- TiDB Dashboard 新增 [Monitoring 页面](/dashboard/dashboard-monitoring.md)用于性能分析和优化。
+- TiDB [锁视图支持乐观事务被阻塞的信息](/information-schema/information-schema-data-lock-waits.md)，方便快速定位锁冲突。
+- TiFlash 引入[新的存储格式 PageStorage V3](/tiflash/tiflash-configuration.md#配置文件-tiflashtoml)，提升稳定性和性能。
+- 实现[细粒度数据交换 (shuffle)](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) 使窗口函数 (Window function) 可以利用多线程并行计算。
+- 引入[新的 DDL 并行执行框架](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)，减少 DDL 阻塞，大幅提升执行效率。
+- TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
+- 支持 [Point-in-Time Recovery (PITR)](/br/point-in-time-recovery.md)，允许恢复备份集群的历史任意时间点的快照。
+- TiDB Lightning 支持[使用 Physical Import Mode 导入数据到生产集群](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入数据到生产集群)。
+- Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-usage-restore.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
+- TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入)，解锁更多数据同步场景。
+- 事务中支持 [`SAVEPOINT` 机制](/sql-statements/sql-statement-savepoint.md)，可以灵活地控制事务内的回退节点。
+- [单 `ALTER TABLE` 语句增删改多个列或索引](/sql-statements/sql-statement-alter-table.md)，方便实现 SQL 功能，提升产品易用性。
+- 支持 [RawKV 跨集群复制](/tikv-configuration-file.md#api-version-从-v610-版本开始引入)。
 
 ## 新功能
 
