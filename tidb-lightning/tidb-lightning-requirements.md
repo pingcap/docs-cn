@@ -89,7 +89,7 @@ It is difficult to calculate the exact data volume exported by Dumpling from MyS
 Calculate the size of all schemas, in MiB. Replace ${schema_name} with your schema name.
 
 ```sql
-select table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_schema;
+SELECT table_schema, SUM(data_length)/1024/1024 AS data_length, SUM(index_length)/1024/1024 AS index_length, SUM(data_length+index_length)/1024/1024 AS sum FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_schema;
 ```
 
 Calculate the size of the largest table, in MiB. Replace ${schema_name} with your schema name.
@@ -97,7 +97,7 @@ Calculate the size of the largest table, in MiB. Replace ${schema_name} with you
 {{< copyable "sql" >}}
 
 ```sql
-select table_name,table_schema,sum(data_length)/1024/1024 as data_length,sum(index_length)/1024/1024 as index_length,sum(data_length+index_length)/1024/1024 as sum from information_schema.tables where table_schema = "${schema_name}" group by table_name,table_schema order by sum  desc limit 5;
+SELECT table_name, table_schema, SUM(data_length)/1024/1024 AS data_length, SUM(index_length)/1024/1024 AS index_length,sum(data_length+index_length)/1024/1024 AS sum FROM information_schema.tables WHERE table_schema = "${schema_name}" GROUP BY table_name,table_schema ORDER BY sum DESC LIMIT 5;
 ```
 
 ## Resource requirements
