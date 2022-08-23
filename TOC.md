@@ -4,12 +4,12 @@
 - [文档中心](https://docs.pingcap.com/zh)
 - 关于 TiDB
   - [TiDB 简介](/overview.md)
-  - [TiDB 6.1 Release Notes](/releases/release-6.1.0.md)
+  - [TiDB 6.2 Release Notes](/releases/release-6.2.0.md)
   - [基本功能](/basic-features.md)
   - [实验特性](/experimental-features.md)
   - 性能测试报告
-    - [Sysbench 性能对比 - v6.1 对比 v6.0](/benchmark/benchmark-sysbench-v6.2.0-vs-v6.1.0.md)
-    - [TPC-C 性能对比 - v6.1 对比 v6.0](/benchmark/v6.2-performance-benchmarking-with-tpcc.md)
+    - [Sysbench 性能对比 - v6.2 对比 v6.1](/benchmark/benchmark-sysbench-v6.2.0-vs-v6.1.0.md)
+    - [TPC-C 性能对比 - v6.2 对比 v6.1](/benchmark/v6.2-performance-benchmarking-with-tpcc.md)
     - [TiFlash 与 Greenplum/Spark 性能比较](/benchmark/v6.2-performance-benchmarking-with-tpch.md)
   - [与 MySQL 的兼容性](/mysql-compatibility.md)
   - [使用限制](/tidb-limitations.md)
@@ -101,6 +101,7 @@
   - 测试集群性能
     - [用 Sysbench 测试 TiDB](/benchmark/benchmark-tidb-using-sysbench.md)
     - [对 TiDB 进行 TPC-C 测试](/benchmark/benchmark-tidb-using-tpcc.md)
+    - [对 TiDB 进行 CH Benchmark 测试](/benchmark/benchmark-tidb-using-ch.md)
 - 数据迁移
   - [数据迁移概述](/migration-overview.md)
   - [迁移工具](/migration-tools.md)
@@ -360,13 +361,13 @@
     - Physical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-physical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-physical-import-mode.md#必要条件及限制)
-      - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#配置及使用)
+      - [配置及使用](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#性能调优)
     - Logical 导入模式
       - [概述](/tidb-lightning/tidb-lightning-logical-import-mode.md)
       - [必要条件及限制](/tidb-lightning/tidb-lightning-logical-import-mode.md#必要条件及限制)
-      - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#配置及使用)
+      - [配置及使用](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md)
       - [冲突检测](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#冲突数据检测)
       - [性能调优](/tidb-lightning/tidb-lightning-logical-import-mode-usage.md#性能调优)
     - [前置检查](/tidb-lightning/tidb-lightning-prechecks.md)
@@ -912,6 +913,8 @@
   - [版本发布时间线](/releases/release-timeline.md)
   - [TiDB 版本规则](/releases/versioning.md)
   - [TiDB 离线包](/binary-package.md)
+  - v6.2
+    - [6.2.0](/releases/release-6.2.0.md)
   - v6.1
     - [6.1.0](/releases/release-6.1.0.md)
   - v6.0
