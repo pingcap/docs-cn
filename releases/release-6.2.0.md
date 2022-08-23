@@ -6,9 +6,9 @@ title: TiDB 6.2.0 Release Notes
 
 发版日期：2022 年 8 月 23 日
 
-TiDB 版本：6.2.0
+TiDB 版本：6.2.0-DMR
 
-在 6.2.0 版本中，你可以获得以下关键特性：
+在 6.2.0-DMR 版本中，你可以获得以下关键特性：
 
 - TiDB Dashboard 支持[可视化执行计划](/dashboard/dashboard-slow-query.md#图形化执行计划介绍)，查询计划展示更直观。
 - TiDB Dashboard 新增 [Monitoring 页面](/dashboard/dashboard-monitoring.md)用于性能分析和优化。
@@ -17,7 +17,7 @@ TiDB 版本：6.2.0
 - 实现[细粒度数据交换 (shuffle)](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-从-v620-版本开始引入) 使窗口函数 (Window function) 可以利用多线程并行计算。
 - 引入[新的 DDL 并行执行框架](/system-variables.md#tidb_enable_concurrent_ddl-从-v620-版本开始引入)，减少 DDL 阻塞，大幅提升执行效率。
 - TiKV 支持[自适应调整 CPU 使用率](/tikv-configuration-file.md#后台限流)，确保数据库稳定高效运行。
-- 支持 [Point-in-Time Recovery (PITR)](/br/point-in-time-recovery.md)，允许恢复备份集群的历史任意时间点的快照。
+- 支持 [point-in-time recovery (PITR)](/br/point-in-time-recovery.md)，允许恢复备份集群的历史任意时间点的快照。
 - TiDB Lightning 支持[使用 Physical Import Mode 导入数据到生产集群](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#导入数据到生产集群)。
 - Backup & Restore (BR) 支持[恢复用户和权限数据](/br/br-usage-restore.md#恢复-mysql-数据库下的表)，备份恢复体验更平滑。
 - TiCDC 支持[过滤指定类型的 DDL 事件](/ticdc/manage-ticdc.md#event-filter-配置规则-从-v620-版本开始引入)，解锁更多数据同步场景。
@@ -173,7 +173,7 @@ TiDB 版本：6.2.0
 
 * 支持基于变更日志的备份和恢复实现 Point-in-time recovery
 
-    基于变更日志和快照数据的备份恢复实现 PITR (Point-in-time recovery) 功能，允许用户在新集群上恢复备份集群的历史任意时间点的快照。该功能可以满足以下的用户需求：
+    基于变更日志和快照数据的备份恢复实现 PITR (point-in-time recovery) 功能，允许用户在新集群上恢复备份集群的历史任意时间点的快照。该功能可以满足以下的用户需求：
 
     - 降低灾备场景下的 RPO，如实现十几分钟的 RPO；
     - 用于处理业务数据写错的案例，如回滚业务数据到出错事件前；
