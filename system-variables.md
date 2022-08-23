@@ -922,7 +922,7 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 - 是否持久化到集群：是
 - 默认值：`OFF`
 - 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md) 开始支持 Outer Join。该变量用于控制这个支持行为，默认关闭，即不启用 Outer Join 的 Join Reorder。
-- 对于从旧版本升级上来的集群，该变量的默认值也会是 `FALSE`。
+- 对于从旧版本升级上来的集群，该变量的默认值也会是 `OFF`。
 
 ### `tidb_enable_ordered_result_mode`
 
