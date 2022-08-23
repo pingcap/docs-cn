@@ -29,7 +29,7 @@ aliases: ['/zh/tidb/dev/build-cluster-in-cloud']
 
     > **Note:**
     >
-    > 需要特别说明的是，在你使用 [Developer Tier clusters](/tidb-cloud/select-cluster-tier.md#developer-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](/tidb-cloud/select-cluster-tier.md#user-name-prefix) 中获得更多信息。
+    > 需要特别说明的是，在你使用 [Developer Tier clusters](https://docs.pingcap.com/tidbcloud/select-cluster-tier#developer-tier) 集群时，你需要给你设置的用户名加上前缀（如上图中的 `9ATyn6DhCXoo6U1`），若使用命令行连接，还需使用单引号包裹用户名。你可以在 [TiDB Cloud - 用户名前缀](https://docs.pingcap.com/tidbcloud/select-cluster-tier#user-name-prefix) 中获得更多信息。
 
 ## 第 2 步：连接到集群
 
