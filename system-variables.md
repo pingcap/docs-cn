@@ -235,6 +235,38 @@ mysql> SELECT * FROM t1;
 >
 > `max_execution_time` 目前对所有类型的语句生效，并非只对 `SELECT` 语句生效，与 MySQL 不同（只对`SELECT` 语句生效）。实际精度在 100ms 级别，而非更准确的毫秒级别。
 
+### `max_prepared_stmt_count`
+
+- 作用域：GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`-1`
+- 范围：`[-1, 1048576]`
+- 指定一个会话中 [`PREPARE`](/sql-statements/sql-statement-prepare.md) 语句的最大数量。
+- 值为 `-1` 时表示不对会话中的 `PREPARE` 语句数量进行限制。
+- 如果将变量值设为超过上限 `1048576`，则使用上限值 `1048576`：
+
+```sql
+mysql> SET GLOBAL max_prepared_stmt_count = 1048577;
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> SHOW WARNINGS;
++---------+------+--------------------------------------------------------------+
+| Level   | Code | Message                                                      |
++---------+------+--------------------------------------------------------------+
+| Warning | 1292 | Truncated incorrect max_prepared_stmt_count value: '1048577' |
++---------+------+--------------------------------------------------------------+
+1 row in set (0.00 sec)
+
+mysql> SHOW GLOBAL VARIABLES LIKE 'max_prepared_stmt_count';
++-------------------------+---------+
+| Variable_name           | Value   |
++-------------------------+---------+
+| max_prepared_stmt_count | 1048576 |
++-------------------------+---------+
+1 row in set (0.00 sec)
+```
+
 ### `plugin_dir`
 
 - 作用域：GLOBAL
@@ -888,9 +920,17 @@ MPP 是 TiFlash 引擎提供的分布式计算框架，允许节点之间的数�
 
 - 作用域：SESSION | GLOBAL
 - 是否持久化到集群：是
-- 默认值：`ON`
-- 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md) 开始支持 Outer Join。该变量用于控制这个支持行为，默认开启。
-- 对于从旧版本升级上来的集群，该变量的默认值也会是 `TRUE`。
+- 默认值：在 v6.1.0 中为 `ON`，即默认开启。在 v6.1.0 之后的版本中为 `OFF`，即默认关闭。
+- 自 v6.1.0 起，TiDB 的 [Join Reorder 算法](/join-reorder.md) 开始支持 Outer Join。该变量用于控制这个支持行为。默认关闭，即不启用 Outer Join 的 Join Reorder。
+- 对于从 v6.1.0 之前版本升级到 v6.1.0 及之后的版本，该变量的默认值为 `OFF`。对于从 v6.1.0 版本升级到之后的版本，该变量默认值为 `ON`。
+
+### `tidb_enable_ordered_result_mode`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`OFF`
+- 指定是否对最终的输出结果进行自动排序。
+- 例如，开启该变量后，TiDB 会将 `SELECT a, MAX(b) FROM t GROUP BY a` 处理为 `SELECT a, MAX(b) FROM t GROUP BY a ORDER BY a, MAX(b)`。
 
 ### `tidb_enable_paging` <span class="version-mark">从 v5.4.0 版本开始引入</span>
 
@@ -1118,7 +1158,7 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 是否持久化到集群：否，仅作用于当前连接的 TiDB 实例
 - 默认值：`NO_PRIORITY`
 - 这个变量用于改变 TiDB server 上执行的语句的默认优先级。例如，你可以通过设置该变量来确保正在执行 OLAP 查询的用户优先级低于正在执行 OLTP 查询的用户。
-- 可设置为 `NO_PRIORITY`、`LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
+- 默认值 `NO_PRIORITY` 表示不强制改变执行语句的优先级，其它优先级从低到高可设置为 `LOW_PRIORITY`、`DELAYED` 或 `HIGH_PRIORITY`。
 
 ### `tidb_generate_binary_plan` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
@@ -1528,6 +1568,35 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`OFF`
 - 这个变量用来设置优化器是否执行聚合函数下推到 Join，Projection 和 UnionAll 之前的优化操作。当查询中聚合操作执行很慢时，可以尝试设置该变量为 ON。
 
+### `tidb_opt_cartesian_bcj`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：整数
+- 默认值：`1`
+- 范围：`[0, 2]`
+- 表示是否允许 Broadcast Cartesian Join 算法。
+- 值为 `0` 时表示不允许使用 Broadcast Cartesian Join 算法。值为 `1` 时表示根据 [`tidb_broadcast_join_threshold_count`](#tidb_broadcast_join_threshold_count-从-v50-版本开始引入) 的行数阈值确定是否允许使用 Broadcast Cartesian Join 算法。值为 `2` 时表示总是允许 Broadcast Cartesian Join 算法，即使表的大小超过了该阈值。
+- 该变量是 TiDB 内部使用的变量，**不推荐**修改该变量的值。
+
+### `tidb_opt_concurrency_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`3.0`
+- 表示在 TiDB 中开启一个 Golang goroutine 的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_cop_cpu_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`3.0`
+- 表示 TiKV 协处理器处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_correlation_exp_factor`
 
 - 作用域：SESSION | GLOBAL
@@ -1543,6 +1612,33 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`0.9`
 - 这个变量用来设置优化器启用交叉估算 row count 方法的阈值。如果列和 handle 列之间的顺序相关性超过这个阈值，就会启用交叉估算方法。
 - 交叉估算方法可以简单理解为，利用这个列的直方图来估算 handle 列需要扫的行数。
+
+### `tidb_opt_cpu_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`3.0`
+- 表示 TiDB 处理一行数据的 CPU 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，不建议修改该变量的值。
+
+### `tidb_opt_desc_scan_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`3.0`
+- 表示降序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_disk_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1.5`
+- 表示 TiDB 往临时磁盘读写一个字节数据的 I/O 开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_distinct_agg_push_down`
 
@@ -1625,6 +1721,15 @@ mysql> desc select count(distinct a) from test.t;
 - 这个变量用来设置将 Limit 和 TopN 算子下推到 TiKV 的阈值。
 - 如果 Limit 或者 TopN 的取值小于等于这个阈值，则 Limit 和 TopN 算子会被强制下推到 TiKV。该变量可以解决部分由于估算误差导致 Limit 或者 TopN 无法被下推的问题。
 
+### `tidb_opt_memory_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`0.001`
+- 表示 TiDB 存储一行数据的内存开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
 ### `tidb_opt_mpp_outer_join_fixed_build_side` <span class="version-mark">从 v5.1.0 版本开始引入</span>
 
 - 作用域：SESSION | GLOBAL
@@ -1632,6 +1737,15 @@ mysql> desc select count(distinct a) from test.t;
 - 类型：布尔值
 - 默认值：`ON`
 - 当该变量值为 `ON` 时，左连接始终使用内表作为构建端，右连接始终使用外表作为构建端。将该变量值设为 `OFF` 后，外连接可以灵活选择任意一边表作为构建端。
+
+### `tidb_opt_network_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1.0`
+- 表示传输 1 比特数据的网络净开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_prefer_range_scan` <span class="version-mark">从 v5.0 版本开始引入</span>
 
@@ -1672,6 +1786,24 @@ explain select * from t where age=5;
 - 类型：布尔值
 - 默认值：`OFF`
 - 指定是否允许优化器将 `Projection` 算子下推到 TiKV 或者 TiFlash。
+
+### `tidb_opt_scan_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`1.5`
+- 表示升序扫描时，TiKV 在磁盘上扫描一行数据的开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
+
+### `tidb_opt_seek_factor`
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 类型：浮点数
+- 范围：`[0, 2147483647]`
+- 默认值：`20`
+- 表示 TiDB 从 TiKV 请求数据的初始开销。该变量是[代价模型](/cost-model.md)内部使用的变量，**不建议**修改该变量的值。
 
 ### `tidb_opt_skew_distinct_agg` <span class="version-mark">从 v6.2.0 版本开始引入</span>
 
