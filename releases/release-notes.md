@@ -7,7 +7,7 @@ aliases: ['/docs/dev/releases/release-notes/','/docs/dev/releases/rn/']
 
 ## 6.2
 
-- [6.2.0](/releases/release-6.2.0.md)
+- [6.2.0-DMR](/releases/release-6.2.0.md)
 
 ## 6.1
 

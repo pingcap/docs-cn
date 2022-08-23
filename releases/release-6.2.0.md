@@ -6,9 +6,9 @@ title: TiDB 6.2.0 Release Notes
 
 Release date: August 23, 2022
 
-TiDB version: 6.2.0
+TiDB version: 6.2.0-DMR
 
-In v6.2.0, the key new features and improvements are as follows:
+In v6.2.0-DMR, the key new features and improvements are as follows:
 
 * TiDB Dashboard supports [visual execution plans](/dashboard/dashboard-slow-query.md#visual-execution-plans), allowing more intuitive display of execution plans.
 * Add a [Monitoring page](/dashboard/dashboard-monitoring.md) in TiDB Dashboard to make the performance analysis and tuning more efficient.
@@ -17,7 +17,7 @@ In v6.2.0, the key new features and improvements are as follows:
 * The [Fine Grained Shuffle feature](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620) allows parallel execution of window functions in multiple threads.
 * A [new concurrent DDL framework](/system-variables.md#tidb_enable_concurrent_ddl-new-in-v620): Less DDL statements blocked and higher execution efficiency.
 * TiKV supports [automatically tuning the CPU usage](/tikv-configuration-file.md#background-quota-limiter), thus ensuring stable and efficient database operations.
-* [Point-in-Time Recovery (PITR)](/br/point-in-time-recovery.md) is introduced to restore a snapshot of a TiDB cluster to a new cluster from any given time point in the past.
+* [Point-in-time recovery (PITR)](/br/point-in-time-recovery.md) is introduced to restore a snapshot of a TiDB cluster to a new cluster from any given time point in the past.
 * TiDB Lightning supports [importing data to production clusters in the physical import mode](/tidb-lightning/tidb-lightning-physical-import-mode-usage.md#import-data-into-a-cluster-in-production).
 * BR supports [restoring user and privilege data](/br/br-usage-restore.md#restore-tables-in-the-mysql-schema), making backup and restore smoother.
 * TiCDC unlocks more data replication scenarios by supporting [filtering specific types of DDL events](/ticdc/manage-ticdc.md).
@@ -107,7 +107,7 @@ In v6.2.0, the key new features and improvements are as follows:
 
 * Window functions pushed down to TiFlash can be executed in multiple threads
 
-    By enabling the Fine Grained Shuffle feature, the window function can be executed from in a single thread to in multiple threads. It reduces the query response time significantly. This feature does not change user behavior. You can control the granularity of the shuffle by adjusting the value of the variables.
+    After the Fine Grained Shuffle feature is enabled, window functions can be executed in multiple threads, instead of in a single thread. This feature reduces the query response time significantly without changing user behavior. You can control the granularity of the shuffle by adjusting the value of the variables.
 
     [User document](/system-variables.md#tiflash_fine_grained_shuffle_batch_size-new-in-v620) [#4631](https://github.com/pingcap/tiflash/issues/4631) @[guo-shaoge](https://github.com/guo-shaoge)
 
