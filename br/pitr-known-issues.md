@@ -13,9 +13,15 @@ Issue: [#36648](https://github.com/pingcap/tidb/issues/36648)
 
 Consider the following possible causes:
 
-- PITR experiences OOM because the log range to be recovered is too large.
+- PITR experiences OOM because the log data to be recovered is too much. The following are two typical causes:
 
-    It is recommended that you recover logs of no more than two days, and one week to maximum. That is, perform a full backup operation at least once in two days or once in up to one week during PITR backup process.
+    - The log range to be recovered is too large.
+
+        It is recommended that you recover logs of no more than two days, and one week to maximum. That is, perform a full backup operation at least once in two days during PITR backup process.
+
+    - There are a large number of writes for a long time during the log backup process.
+
+        A large number of writes for a long time usually occur when you perform a full data import to initialize the cluster. It is recommended that you perform a snapshot backup after the initial import and use that backup to restore the cluster.
 
 - OOM occurs when you delete logs because the range of logs to be deleted is too large.
 
@@ -29,7 +35,7 @@ Consider the following possible causes:
 
 Currently, the log backup feature is not fully adapted to TiDB Lightning. Therefore, data imported in the physical mode of TiDB Lightning cannot be backed up to logs.
 
-In upstream clusters where you create log backup tasks, avoid using the TiDB Lightning physical mode to import data. Instead, you can use TiDB Lightning logical mode. If you do need to use the physical mode, perform a full backup after the import is complete, so that PITR can be restored to the time point after the full backup.
+In upstream clusters where you create log backup tasks, avoid using the TiDB Lightning physical mode to import data. Instead, you can use TiDB Lightning logical mode. If you do need to use the physical mode, perform a snapshot backup after the import is complete, so that PITR can be restored to the time point after the snapshot backup.
 
 ## When you use the self-built Minio system as the storage for log backups, running `br restore point` or `br log truncate` returns a `RequestCanceled` error
 
@@ -58,3 +64,27 @@ Issue: [#13126](https://github.com/tikv/tikv/issues/13126)
 After a network partition failure in the cluster, the backup task cannot continue backing up logs. After a certain retry time, the task will be set to `ERROR` state. At this point, the backup task has stopped.
 
 To resolve this issue, you need to manually execute the `br log resume` command to resume the log backup task.
+
+## The actual storage space used by log backup is 2~3 times the volume of the incremental data displayed in the cluster monitoring metrics
+
+Issue: [#13306](https://github.com/tikv/tikv/issues/13306)
+
+This issue occurs because log backup data use a customized encoding format. The different format leads to different data compression ratios, the difference of which is 2~3 times.
+
+Log backup does not store data the way RocksDB generates SST files, because the data generated during log backup might have a large range and a small content. In such cases, restoring data by ingesting SST files cannot improve the restoration performance.
+
+## The error `execute over region id` is returned when you perform PITR
+
+Issue: [#37207](https://github.com/pingcap/tidb/issues/37207)
+
+This issue usually occurs when you enable log backup during a full data import and afterwards perform a PITR to restore data at a time point during the data import.
+
+Specifically, there is a probability that this issue occurs if there are a large number of hotspot writes for a long time (such as 24 hours) and if the OPS of each TiKV node is larger than 50k/s (you can view the metrics in Grafana: **TiKV-Details** -> **Backup Log** -> **Handle Event Rate**).
+
+For the current version, it is recommended that you perform a snapshot backup after the data import and perform PITR based on this snapshot backup.
+
+## The commit time of a large transaction affects the checkpoint lag of log backup
+
+Issue: [#13304](https://github.com/tikv/tikv/issues/13304)
+
+When there is a large transaction, the log checkpoint lag is not updated before the transaction is committed. Therefore, the checkpoint lag is increased by a period of time close to the commit time of the transaction.
