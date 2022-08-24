@@ -7,6 +7,10 @@ summary: Learn about the FAQs related to high reliability of TiDB.
 
 This document summarizes the FAQs related to high reliability of TiDB.
 
+## Does TiDB support data encryption?
+
+Yes. To encrypt data in the network traffic, you can [enable TLS between TiDB clients and servers](/enable-tls-between-clients-and-servers.md). To encrypt data in the storage engine, you can enable [transparent data encryption (TDE)](/encryption-at-rest.md).
+
 ## Does TiDB support modifying the MySQL version string of the server to a specific one that is required by the security vulnerability scanning tool?
 
 Since v3.0.8, TiDB supports modifying the version string of the server by modifying [`server-version`](/tidb-configuration-file.md#server-version) in the configuration file. When you deploy TiDB using TiUP, you can also specify the proper version string by executing `tiup cluster edit-config <cluster-name>`:
