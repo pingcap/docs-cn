@@ -9,10 +9,16 @@ You can perform log backup and restoration on a TiDB cluster by using the `br lo
 
 ## Prerequisites
 
+### Install BR
+
 Before performing log backup, you need to install Backup & Restore (BR). You can install BR via either of the following methods:
 
 * [Install BR online using TiUP](/migration-tools.md#install-tools-using-tiup) (recommended)
 * [Download the TiDB binary package](/download-ecosystem-tools.md)
+
+### Enable log backup
+
+Before you use log backup, set [`log-backup.enable`](/tikv-configuration-file.md#enable-new-in-v620) in the TiKV configuration file to `true`. For the method to modify configuration, refer to [Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration).
 
 ## Perform log backup
 

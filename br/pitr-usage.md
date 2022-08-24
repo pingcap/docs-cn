@@ -43,6 +43,10 @@ Install or upgrade BR using TiUP:
 - Install: run `tiup install br:v6.2.0`.
 - Upgrade: run `tiup update br:v6.2.0`.
 
+## Enable log backup
+
+Before you use log backup, set [`log-backup.enable`](/tikv-configuration-file.md#enable-new-in-v620) in the TiKV configuration file to `true`. For the method to modify configuration, refer to [Modify the configuration](/maintain-tidb-using-tiup.md#modify-the-configuration).
+
 ## Configure backup storage (Amazon S3)
 
 Before you start a backup task, prepare the backup storage, including the following aspects:
