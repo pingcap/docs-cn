@@ -39,7 +39,7 @@ scrape_configs:
   - job_name: 'lightning'
     static_configs:
       - targets: ['192.168.20.10:8289']
-  - job_name: 'tikv-importer
+  - job_name: 'tikv-importer'
     static_configs:
       - targets: ['192.168.20.9:8286']
 ```
