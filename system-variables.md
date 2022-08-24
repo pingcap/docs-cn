@@ -1370,7 +1370,6 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 ### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
 
 - 作用域：SESSION
-- 是否持久化到集群：否
 - 默认值：""
 - 这是一个只读变量。用于在 TiDB 内部查询上一条 DML 语句的事务信息。查询的事务信息包括：
     - `txn_scope`：事务的作用域，可能为 `global` 或 `local`。
