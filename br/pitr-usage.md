@@ -41,7 +41,7 @@ summary: 了解如何使用 PITR。
 - 安装：执行命令 `tiup install br:v6.2.0`
 - 升级：执行命令 `tiup update br:v6.2.0`
 
-## 开启 `TiKV` 端日志备份开关
+## 启用日志备份
 
 使用日志备份功能前，需将 TiKV 配置项 [`log-backup.enable`](/tikv-configuration-file.md#enable-从-v620-版本开始引入) 设为 `true`。修改配置参数的方法，请参考[修改配置参数](/maintain-tidb-using-tiup.md#修改配置参数)。
 
