@@ -18,4 +18,4 @@ summary: 汇总 TiDB 产品的常见问题解答。
 | 集群管理  |  <ul><li>[TiDB 集群管理常见问题](/faq/manage-cluster-faq.md)</li><li>[TiUniManager 常见问题](/tiunimanager/tiunimanager-faq.md)</li></ul>  |
 | 监控报警  |  <ul><li>[TiDB 监控常见问题](/faq/monitor-faq.md)</li><li>[TiDB Dashboard 常见问题](/dashboard/dashboard-faq.md)</li><li>[TiDB 集群报警规则](/alert-rules.md)</li></ul>  |
 | 高可用和高可靠    |   <ul><li>[TiDB 高可用常见问题](/faq/high-availability-faq.md)</li><li>[TiDB 高可靠常见问题](/faq/high-reliability-faq.md)</li></ul>   |
-| 常见错误码和告警规则      |  [错误码与故障诊断](/error-codes.md) |
+| 常见错误码      |  [错误码与故障诊断](/error-codes.md) |
