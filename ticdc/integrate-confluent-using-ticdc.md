@@ -152,7 +152,7 @@ Confluent 是一个兼容 Apache Kafka 的数据流平台，能够访问、存�
 
 2. 观察 Confluent 中数据传输情况。
 
-    ![Confluent topics](/media/integrate/confluent-topics.PNG)
+    ![Confluent topics](/media/integrate/confluent-topics.png)
 
     在 Confluent 集群控制面板中，可以观察到相应的 Topic 已经被自动创建，并有数据正在写入。至此，TiDB 数据库中的增量数据就被成功输出到了 Confluent Cloud。
 
