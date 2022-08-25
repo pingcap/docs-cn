@@ -17,6 +17,7 @@ In 6.1.0, the key new features or improvements are as follows:
 * TiFlash supports on-demand data compaction
 * MPP introduces the window function framework
 * TiCDC supports replicating changelogs to Kafka via Avro
+* TiCDC supports splitting large transactions during replication, which significantly reduces replication latency caused by large transactions
 * The optimistic mode for merging and migrating sharded tables becomes GA
 
 ## New Features
@@ -352,6 +353,10 @@ In 6.1.0, the key new features or improvements are as follows:
 
         - Optimize Scatter Region to batch mode to improve the stability of the Scatter Region process [#33618](https://github.com/pingcap/tidb/issues/33618)
 
+    + TiCDC
+
+        - TiCDC supports splitting large transactions during replication, which significantly reduces replication latency caused by large transactions [#5280](https://github.com/pingcap/tiflow/issues/5280)
+
 ## Bug fixes
 
 + TiDB
@@ -398,7 +403,6 @@ In 6.1.0, the key new features or improvements are as follows:
     + TiCDC
 
         - Fix excessive memory usage by optimizing the way DDL schemas are buffered [#1386](https://github.com/pingcap/tiflow/issues/1386)
-        - Fix OOM caused by large transactions [#5280](https://github.com/pingcap/tiflow/issues/5280)
         - Fix data loss that occurs in special incremental scanning scenarios [#5468](https://github.com/pingcap/tiflow/issues/5468)
 
     + TiDB Data Migration (DM)
