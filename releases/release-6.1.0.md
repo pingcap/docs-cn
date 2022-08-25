@@ -354,7 +354,7 @@ TiDB 版本：6.1.0
 
     + TiCDC
 
-        - TiCDC 支持在数据复制过程中拆分大事务，有效降低了大事务带来的复制延迟 [#5280](https://github.com/pingcap/tiflow/issues/5280)
+        - TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟 [#5280](https://github.com/pingcap/tiflow/issues/5280)
 
 ## 错误修复
 
