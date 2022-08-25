@@ -868,6 +868,7 @@
   - [Table Filter](/table-filter.md)
   - [Schedule Replicas by Topology Labels](/schedule-replicas-by-topology-labels.md)
 - FAQs
+  - [FAQ Summary](/faq/faq-overview.md)
   - [TiDB FAQs](/faq/tidb-faq.md)
   - [SQL FAQs](/faq/sql-faq.md)
   - [Deployment FAQs](/faq/deploy-and-maintain-faq.md)

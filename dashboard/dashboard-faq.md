@@ -1,10 +1,10 @@
 ---
-title: TiDB Dashboard FAQ
+title: TiDB Dashboard FAQs
 summary: Learn about the frequently asked questions (FAQs) and answers about TiDB Dashboard.
 aliases: ['/docs/dev/dashboard/dashboard-faq/']
 ---
 
-# TiDB Dashboard FAQ
+# TiDB Dashboard FAQs
 
 This document summarizes the frequently asked questions (FAQs) and answers about TiDB Dashboard. If a problem cannot be located or persists after you perform as instructed, contact PingCAP technical support for help.
 
