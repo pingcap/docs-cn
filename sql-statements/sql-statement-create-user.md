@@ -30,9 +30,7 @@ StringName ::=
     stringLit
 |   Identifier
 
-LockOption ::=
-    'ACCOUNT' 'LOCK'
-|   'ACCOUNT' 'UNLOCK'
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 ```
 
 ## 示例

@@ -26,9 +26,7 @@ Username ::=
 AuthOption ::=
     ( 'IDENTIFIED' ( 'BY' ( AuthString | 'PASSWORD' HashString ) | 'WITH' StringName ( 'BY' AuthString | 'AS' HashString )? ) )?
 
-LockOption ::=
-    'ACCOUNT' 'LOCK'
-|   'ACCOUNT' 'UNLOCK
+LockOption ::= ( 'ACCOUNT' 'LOCK' | 'ACCOUNT' 'UNLOCK' )?
 ```
 
 ## 示例
