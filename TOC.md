@@ -883,6 +883,7 @@
   - [错误码](/error-codes.md)
   - [通过拓扑 label 进行副本调度](/schedule-replicas-by-topology-labels.md)
 - 常见问题解答 (FAQ)
+  - [FAQ 汇总](/faq/faq-overview.md)
   - [产品 FAQ](/faq/tidb-faq.md)
   - [SQL FAQ](/faq/sql-faq.md)
   - [安装部署 FAQ](/faq/deploy-and-maintain-faq.md)
