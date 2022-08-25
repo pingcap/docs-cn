@@ -17,7 +17,7 @@ TiDB 版本：6.1.0
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
-- TiCDC 支持在数据复制过程中拆分大事务，从而避免 OOM 的问题
+- TiCDC 支持在数据复制过程中拆分大事务，从而避免大事务拖慢复制过程
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
 ## 新功能
@@ -354,7 +354,7 @@ TiDB 版本：6.1.0
 
     + TiCDC
 
-        - TiCDC 支持在数据复制过程中对大事务进行拆分，降低了大事务对 TiCDC 复制延迟的影响，从而避免了大事务导致的 TiCDC 节点 OOM 问题 [#5280](https://github.com/pingcap/tiflow/issues/5280)
+        - TiCDC 支持在数据复制过程中对大事务进行拆分，降低了大事务对 TiCDC 复制延迟的影响，避免了大事务导致的 TiCDC 节点 OOM 问题 [#5280](https://github.com/pingcap/tiflow/issues/5280)
 
 ## 错误修复
 
