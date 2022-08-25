@@ -194,9 +194,9 @@ TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd �
 + 当 TiCDC 内部处理能力不足时，可能出现同步任务报错 `ErrBufferReachLimit`。
 + 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时，可能出现内存溢出 (OOM)。
 
-从 v6.1.1、v6.2 版本开始，TiCDC 支持拆分单表事务功能，可大幅降低同步大事务的延时和内存消耗。在用户业务对事务原子性要求不高的场景下，可以通过设置 [`transaction-atomicity` 参数](/manage-ticdc#sink-uri-配置-mysqltidb)打开拆分事务功能以解决可能出现的同步延迟和 OOM 问题。
+从 v6.1.1、v6.2 版本开始，TiCDC 支持拆分单表事务功能，可大幅降低同步大事务的延时和内存消耗。因此，建议用户在业务对事务原子性要求不高的场景下，通过设置 [`transaction-atomicity` 参数](/manage-ticdc#sink-uri-配置-mysqltidb)打开拆分事务功能以解决可能出现的同步延迟和 OOM 问题。
 
-如果遇到上述错误，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
+如果实际同步过程中仍然遇到了上述错误，建议将包含大事务部分的增量数据通过 BR 进行增量恢复，具体操作如下：
 
 1. 记录因为大事务而终止的 changefeed 的 `checkpoint-ts`，将这个 TSO 作为 BR 增量备份的 `--lastbackupts`，并执行[增量备份](/br/br-usage-backup.md#备份-tidb-集群增量数据)。
 2. 增量备份结束后，可以在 BR 日志输出中找到类似 `["Full backup Failed summary : total backup ranges: 0, total success: 0, total failed: 0"] [BackupTS=421758868510212097]` 的日志，记录其中的 `BackupTS`。
