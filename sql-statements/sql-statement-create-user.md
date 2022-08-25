@@ -12,7 +12,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-create-user/','/docs-cn/dev
 
 ```ebnf+diagram
 CreateUserStmt ::=
-    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions PasswordOrLockOptions
+    'CREATE' 'USER' IfNotExists UserSpecList RequireClauseOpt ConnectionOptions LockOption
 
 IfNotExists ::=
     ('IF' 'NOT' 'EXISTS')?
@@ -29,6 +29,10 @@ AuthOption ::=
 StringName ::=
     stringLit
 |   Identifier
+
+LockOption ::=
+    'Account' 'Lock'
+|   'Account' 'Unlock'
 ```
 
 ## 示例
