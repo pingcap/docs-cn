@@ -17,7 +17,7 @@ TiDB 版本：6.1.0
 - TiFlash 支持按需触发物理数据整理（Compaction）
 - MPP 实现窗口函数框架
 - TiCDC 支持将 changelogs 以 Avro 协议输出到 Kafka
-- TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的延迟
+- TiCDC 支持在数据复制过程中拆分大事务，能够有效降低大事务带来的复制延迟
 - DM 合库合表迁移场景的乐观 DDL 协调模式 GA
 
 ## 新功能
