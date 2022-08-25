@@ -1484,6 +1484,31 @@ v5.0 后，用户仍可以单独修改以上系统变量（会有废弃警告）
 - 默认值：`tikv,tiflash,tidb`
 - 这个变量用于设置 TiDB 在读取数据时可以使用的存储引擎列表。
 
+<<<<<<< HEAD
+=======
+### `tidb_last_query_info` <span class="version-mark">从 v4.0.14 版本开始引入</span>
+
+- 作用域：SESSION
+- 默认值：""
+- 这是一个只读变量。用于在 TiDB 内部查询上一条 DML 语句的事务信息。查询的事务信息包括：
+    - `txn_scope`：事务的作用域，可能为 `global` 或 `local`。
+    - `start_ts`：事务开始的时间戳。
+    - `for_update_ts`：先前执行的 DML 语句的 `for_update_ts` 信息。这是 TiDB 用于测试的内部术语。通常，你可以忽略此信息。
+    - `error`：错误消息（如果有）。
+
+### `tidb_last_txn_info` <span class="version-mark">从 v4.0.9 版本开始引入</span>
+
+- 作用域：SESSION
+- 是否持久化到集群：否
+- 类型：字符串
+- 此变量用于获取当前会话中最后一个事务的信息。这是一个只读变量。事务信息包括：
+    - 事务的范围
+    - 开始时间戳和提交时间戳
+    - 事务的提交模式，可能是两阶段提交，一阶段提交，或者异步提交
+    - 事务从异步提交或一阶段提交到两阶段提交的回退信息
+    - 遇到的错误
+
+>>>>>>> 4bb02439c (add doc for tidb_last_query_info and tidb_shard_allocate_step (#11045))
 ### `tidb_log_file_max_days` <span class="version-mark">从 v5.3.0 版本开始引入</span>
 
 - 作用域：SESSION
@@ -2072,6 +2097,14 @@ explain select * from t where age=5;
 - 默认值：`OFF`
 - TiDB 默认会在建表时为新表分裂 Region。开启该变量后，会在建表语句执行时，同步打散刚分裂出的 Region。适用于批量建表后紧接着批量写入数据，能让刚分裂出的 Region 先在 TiKV 分散而不用等待 PD 进行调度。为了保证后续批量写入数据的稳定性，建表语句会等待打散 Region 完成后再返回建表成功，建表语句执行时间会是该变量关闭时的数倍。
 - 如果建表时设置了 `SHARD_ROW_ID_BITS` 和 `PRE_SPLIT_REGIONS`，建表成功后会均匀切分出指定数量的 Region。
+
+### `tidb_shard_allocate_step` <span class="version-mark">从 v5.0 版本开始引入</span>
+
+- 作用域：SESSION | GLOBAL
+- 是否持久化到集群：是
+- 默认值：`9223372036854775807`
+- 范围：`[1, 9223372036854775807]`
+- 该变量设置为 [`AUTO_RANDOM`](/auto-random.md) 或 [`SHARD_ROW_ID_BITS`](/shard-row-id-bits.md) 属性列分配的最大连续 ID 数。通常，`AUTO_RANDOM` ID 或带有 `SHARD_ROW_ID_BITS` 属性的行 ID 在一个事务中是增量和连续的。你可以使用该变量来解决大事务场景下的热点问题。
 
 ### `tidb_skip_ascii_check` <span class="version-mark">从 v5.0 版本开始引入</span>
 
