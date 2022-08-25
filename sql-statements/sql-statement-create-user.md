@@ -31,8 +31,8 @@ StringName ::=
 |   Identifier
 
 LockOption ::=
-    'Account' 'Lock'
-|   'Account' 'Unlock'
+    'ACCOUNT' 'LOCK'
+|   'ACCOUNT' 'UNLOCK'
 ```
 
 ## 示例
