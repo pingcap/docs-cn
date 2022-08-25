@@ -66,7 +66,7 @@ TiCDC 的系统架构如下图所示：
 
 > **注意：**
   >
-  > 从 v6.1.1 版本起，TiCDC 可以通过配置 transaction-atomicity 控制是否拆分事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
+  > 从 v6.1.1 版本起，TiCDC 可以通过配置 transaction-atomicity 控制是否拆分单表事务。拆分事务可以大幅降低 MySQL sink 同步大事务的延时和内存消耗。
 
 - Kafka sink
 
