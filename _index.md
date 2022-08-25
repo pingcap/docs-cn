@@ -40,7 +40,7 @@ hide_commit: true
 
 [软硬件环境需求](https://docs.pingcap.com/zh/tidb/v6.2/hardware-and-software-requirements)
 
-[使用 TiUP 部署 TiDB 集群（推荐方式）](https://docs.pingcap.com/zh/tidb/v6.2/production-deployment-using-tiup)
+[使用 TiUP 部署 TiDB（推荐）](https://docs.pingcap.com/zh/tidb/v6.2/production-deployment-using-tiup)
 
 [在 Kubernetes 上部署 TiDB](https://docs.pingcap.com/zh/tidb/v6.2/tidb-in-kubernetes)
 
