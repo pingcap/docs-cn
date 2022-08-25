@@ -154,7 +154,7 @@ After the preceding steps are done, TiCDC sends change logs of incremental data 
 
 2. Observe data in Confluent Cloud.
 
-    ![Confluent topics](/media/integrate/confluent-topics.PNG)
+    ![Confluent topics](/media/integrate/confluent-topics.png)
 
     In the Confluent Cloud Console, click **Topics**. You can see that the target topics have been created and are receiving data. At this time, incremental data of the TiDB database is successfully replicated to Confluent Cloud.
 
