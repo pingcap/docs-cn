@@ -188,8 +188,9 @@ TiCDC 使用 PD 内部的 etcd 来存储元数据并定期更新。因为 etcd �
 
 ## TiCDC 支持同步大事务吗？有什么风险吗？
 
-TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同可能存在以下风险：
+根据场景不同，TiCDC 同步大事务存在以下风险：
 
++ 可能导致主从同步延迟大幅增高
 + 当 TiCDC 内部处理能力不足时，可能出现同步任务报错 `ErrBufferReachLimit`。
 + 当 TiCDC 内部处理能力不足或 TiCDC 下游吞吐能力不足时，可能出现内存溢出 (OOM)。
 
@@ -200,6 +201,8 @@ TiCDC 对大事务（大小超过 5 GB）提供部分支持，根据场景不同
 3. 执行[增量恢复](/br/br-usage-restore.md#恢复增量备份数据)。
 4. 建立一个新的 changefeed，从 `BackupTS` 开始同步任务。
 5. 删除旧的 changefeed。
+
+另外，从 v6.1.1、v6.2 版本开始，TiCDC 支持拆分单表事务功能，可大幅降低同步大事务的延时和内存消耗。在用户业务对事务原子性要求不高的场景下，可以通过设置 [`transaction-atomicity` 参数](/manage-ticdc#sink-uri-配置-mysqltidb)打开拆分事务功能以解决可能出现的同步延迟和 OOM 问题。
 
 ## 同步 DDL 到下游 MySQL 5.7 时为什么时间类型字段默认值不一致？
 
