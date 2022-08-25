@@ -38,7 +38,7 @@ The following table shows the meaning of each field in a rule:
 | `EndKey`          | `string`, in hexadecimal form                |  Applies to the ending key of a range.                |
 | `Role`            | `string` | Replica roles, including leader/follower/learner.                           |
 | `Count`           | `int`, positive integer                     |  The number of replicas.                            |
-| `LabelConstraint` | `[]Constraint`                    |  Filers nodes based on the label.               |
+| `LabelConstraint` | `[]Constraint`                    |  Filters nodes based on the label.               |
 | `LocationLabels`  | `[]string`                        |  Used for physical isolation.                       |
 | `IsolationLevel`  | `string`                          |  Used to set the minimum physical isolation level
 
