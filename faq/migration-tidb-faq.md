@@ -78,7 +78,7 @@ Restart the TiDB service, add the `-skip-grant-table=true` parameter in the conf
 
 You can use the following methods to export the data in TiDB:
 
-- See [MySQL uses mysqldump to export part of the table data](https://blog.csdn.net/xin_yu_xin/article/details/7574662) in Chinese and export data using mysqldump and the `WHERE` clause.
+- Export data using mysqldump and the `WHERE` clause.
 - Use the MySQL client to export the results of `select` to a file.
 
 ### How to migrate from DB2 or Oracle to TiDB?
