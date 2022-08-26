@@ -32,23 +32,20 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 
 ### TiDB 工具包说明
 
-<SimpleTab>
-<div label="AMD64">
-
 在 TiDB 工具包中，你可以依据要使用的工具，选择安装对应的离线包。
 
 | 工具  | 离线包名称  |
 |:------|:----------|
-| [TiUP](/tiup/tiup-overview.md)  | `tiup-linux-amd64.tar.gz` <br/>`tiup-{tiup-version}-linux-amd64.tar.gz` <br/>`dm-{tiup-version}-linux-amd64.tar.gz` <br/> `server-{version}-linux-amd64.tar.gz` |
-| [Dumpling](/dumpling-overview.md)  | `dumpling-{version}-linux-amd64.tar.gz`  |
-| [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)  | `tidb-lightning-ctl` <br/>`tidb-lightning-{version}-linux-amd64.tar.gz`  |
-| [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-amd64.tar.gz` <br/>`dm-master-{version}-linux-amd64.tar.gz` <br/>`dmctl-{version}-linux-amd64.tar.gz`  |
-| [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-amd64.tar.gz`  |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)  | `pump-{version}-linux-amd64.tar.gz` <br/>`drainer-{version}-linux-amd64.tar.gz` <br/>`binlogctl` <br/>`reparo`  |
-| [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-amd64.tar.gz`  |
+| [TiUP](/tiup/tiup-overview.md)  | `tiup-linux-{arch}.tar.gz` <br/>`tiup-{tiup-version}-linux-{arch}.tar.gz` <br/>`dm-{tiup-version}-linux-{arch}.tar.gz` <br/> `server-{version}-linux-{arch}.tar.gz` |
+| [Dumpling](/dumpling-overview.md)  | `dumpling-{version}-linux-{arch}.tar.gz`  |
+| [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)  | `tidb-lightning-ctl` <br/>`tidb-lightning-{version}-linux-{arch}.tar.gz`  |
+| [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-{arch}.tar.gz` <br/>`dm-master-{version}-linux-{arch}.tar.gz` <br/>`dmctl-{version}-linux-{arch}.tar.gz`  |
+| [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-{arch}.tar.gz`  |
+| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)  | `pump-{version}-linux-{arch}.tar.gz` <br/>`drainer-{version}-linux-{arch}.tar.gz` <br/>`binlogctl` <br/>`reparo`  |
+| [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-{arch}.tar.gz`  |
 | [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
 | [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
-| [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-amd64.tar.gz` |
+| [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |
 
 ## TiUniManager 下载
 
@@ -62,24 +59,3 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 >
 > - 下载链接中的 `{version}` 为 TiUniManager 的版本号。例如，`v1.0.2` 版本的下载链接为 `https://download.pingcap.org/em-enterprise-server-v1.0.2-linux-amd64.tar.gz`。
 > - TiUniManager 从 v1.0.2 起开放源代码，因此下载链接中 `{version}` 支持的最低版本为 `v1.0.2`。你不能将 `{version}` 替换为 `v1.0.0` 或 `v1.0.1`。
-
-</div>
-<div label="ARM64">
-
-在 TiDB 工具包中，你可以依据要使用的工具，选择安装对应的离线包。
-
-| 工具  | 离线包名称  |
-|:------|:----------|
-| [TiUP](/tiup/tiup-overview.md)  | `tiup-linux-arm64.tar.gz` <br/>`tiup-{tiup-version}-linux-arm64.tar.gz` <br/>`dm-{tiup-version}-linux-arm64.tar.gz` <br/> `server-{version}-linux-arm64.tar.gz` |
-| [Dumpling](/dumpling-overview.md)  | `dumpling-{version}-linux-arm64.tar.gz`  |
-| [TiDB Lightning](/tidb-lightning/tidb-lightning-overview.md)  | `tidb-lightning-ctl` <br/>`tidb-lightning-{version}-linux-arm64.tar.gz`  |
-| [TiDB DM (Data Migration)](/dm/dm-overview.md)  | `dm-worker-{version}-linux-arm64.tar.gz` <br/>`dm-master-{version}-linux-arm64.tar.gz` <br/>`dmctl-{version}-linux-arm64.tar.gz`  |
-| [TiCDC](/ticdc/ticdc-overview.md)  | `cdc-{version}-linux-arm64.tar.gz`  |
-| [TiDB Binlog](/tidb-binlog/tidb-binlog-overview.md)  | `pump-{version}-linux-arm64.tar.gz` <br/>`drainer-{version}-linux-arm64.tar.gz` <br/>`binlogctl` <br/>`reparo`  |
-| [Backup & Restore (BR)](/br/backup-and-restore-overview.md)  | `br-{version}-linux-arm64.tar.gz`  |
-| [sync-diff-inspector](/sync-diff-inspector/sync-diff-inspector-overview.md)  | `sync_diff_inspector`  |
-| [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
-| [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-arm64.tar.gz` |
-
-</div>
-</SimpleTab>
