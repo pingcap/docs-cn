@@ -300,7 +300,7 @@ The fields in the returned result above are described as follows:
 - id: The ID of the replication task.
 - state: The current [state](/ticdc/manage-ticdc.md#state-transfer-of-replication-tasks) of the replication task.
 - checkpoint_tso: The TSO representation of the current checkpoint of the replication task.
-- checkpoint_tso: The formatted time representation of the current checkpoint of the replication task.
+- checkpoint_time: The formatted time representation of the current checkpoint of the replication task.
 - error: The error information of the replication task.
 
 ## Query a specific replication task
