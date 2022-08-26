@@ -15,8 +15,8 @@ TiDB 提供两个二进制离线包：`TiDB-community-server` 软件包和 `TiDB
 |---|---|
 | tidb-{version}-linux-{arch}.tar.gz |  |
 | tikv-{version}-linux-{arch}.tar.gz |  |
-| tiflash-{version}-linux-{architecture}.tar.gz |  |
-| pd-{version}-linux-{architecture}.tar.gz |  |
+| tiflash-{version}-linux-{arch}.tar.gz |  |
+| pd-{version}-linux-{arch}.tar.gz |  |
 | ctl-{version}-linux-{arch}.tar.gz |  |
 | grafana-{version}-linux-{arch}.tar.gz |  |
 | alertmanager-{version}-linux-{arch}.tar.gz |  |
