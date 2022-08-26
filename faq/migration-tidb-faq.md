@@ -71,7 +71,11 @@ iperf Done.
 
 ### 如何导出 TiDB 数据？
 
-TiDB 目前暂时不支持 `select into outfile`，可以通过以下方式导出 TiDB 数据：参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出，使用 MySQL client 将 select 的结果输出到一个文件。
+你可以通过以下方式导出 TiDB 数据：
+
+- 参考 [MySQL 使用 mysqldump 导出某个表的部分数据](https://blog.csdn.net/xin_yu_xin/article/details/7574662)，使用 mysqldump 加 where 条件导出。
+
+- 使用 MySQL client 将 select 的结果输出到一个文件。
 
 ### 如何从 DB2、Oracle 数据库迁移到 TiDB？
 
