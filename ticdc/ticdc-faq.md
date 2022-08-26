@@ -254,6 +254,6 @@ If you need to replicate `recover table` to the downstream TiDB, you should have
 
 When upstream write traffic is at peak hours, the downstream may fail to consume all data in a timely manner, resulting in data pile-up. TiCDC uses disks to process the data that is piled up. TiCDC needs to write data to disks during normal operation. However, this is not usually the bottleneck for replication throughput and replication latency, given that writing to disks only results in latency within a hundred milliseconds. TiCDC also uses memory to accelerate reading data from disks to improve replication performance.
 
-## Why does replication using TiCDC stall or even stop after data restore using TiDB Lightning and BR?
+## Why does replication using TiCDC stall or even stop after data restore using TiDB Lightning and BR from upstream?
 
 Currently, TiCDC is not yet fully compatible with TiDB Lightning and BR. Therefore, please avoid using TiDB Lightning and BR on tables that are replicated by TiCDC.
