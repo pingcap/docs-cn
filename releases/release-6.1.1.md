@@ -65,11 +65,11 @@ TiDB 版本：6.1.1
 + TiDB
 
     <!-- <execution> -->
-    - Fix the issue that IndexLookupHashJoin may hangs when used with limit [#35638](https://github.com/pingcap/tidb/issues/35638)
-    - Fix the issue that TiDB may panic during update stmt [#32311](https://github.com/pingcap/tidb/issues/32311)
-    - Fix the bug that `show columns` may send cop request [#36496](https://github.com/pingcap/tidb/issues/36496)
-    - Fix bug that `show warnings` may return `invalid memory address or nil pointer dereference` error [#31569](https://github.com/pingcap/tidb/issues/31569)
-    - Fix bug that static partition prune may return wrong result for agg query if the table is empty [#35295](https://github.com/pingcap/tidb/issues/35295)
+    - 修复 IndexLookupHashJoin 在带有 limit 时可能会 hang 住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638)
+    - 修复 TiDB 在执行 update 语句时可能会 panic 的问题 [#32311](https://github.com/pingcap/tidb/issues/32311)
+    - 修复 TiDB 在运行 `show columns` 时会产生 cop request 的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
+    - 修复 `show warnings` 可能会报 `invalid memory address or nil pointer dereference` 的问题 [#31569](https://github.com/pingcap/tidb/issues/31569)
+    - 修复 static partition prune 模式下带聚合的 sql 语句在表为空表时出现结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
 
     <!-- <planner> -->
     - 修复了 join reorder 时会错误地下推 outer join condition 的问题 [#37238](https://github.com/pingcap/tidb/issues/37238)
