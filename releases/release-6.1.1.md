@@ -76,8 +76,8 @@ TiDB 版本：6.1.1
     - 修复了 join reorder 时会错误地下推 outer join condition 的问题 [#37238](https://github.com/pingcap/tidb/issues/37238)
     - 修复了 CTE 被引用多次时 schema hashcode 被错误复用导致的 cannot find column [#35404](https://github.com/pingcap/tidb/issues/35404)
     - 修复了某些 outer join 场景下 join reorder 错误导致的查询结果错误 [#36912] (https://github.com/pingcap/tidb/issues/36912)
-    - 修复了 firstrow agg function 在碰到 EqualAll 时，返回值的 nullable 设置错误导致查询报错的问题 [#34584] (https://github.com/pingcap/tidb/issues/34584)
-    - 修复了当查询创建了带 ignore_plan_cache hint 的 binding 后，无法再使用 plan cache 的问题 [#34596] (work https://github.com/pingcap/tidb/issues/34596)
+    - 修复了 firstrow agg function 在碰到 EqualAll 时，返回值的 nullable 设置错误导致查询报错的问题 [#34584](https://github.com/pingcap/tidb/issues/34584)
+    - 修复了当查询创建了带 ignore_plan_cache hint 的 binding 后，无法再使用 plan cache 的问题 [#34596](https://github.com/pingcap/tidb/issues/34596)
     - 修复了 hash-partition window 和 single-partition window 之间缺少 exchange 算子的问题 [#35990](https://github.com/pingcap/tidb/issues/35990)
     - 修复了 partition 列上的过滤条件在 partition prune 后被移除导致选不到索引的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
     - 修复了在某些场景下错误地设置了 partial agg 的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
@@ -117,10 +117,9 @@ TiDB 版本：6.1.1
 
 + PD
 
-    - Fix the issue that the online process is not accurate when having invalid label settings. [#5234](https://github.com/tikv/pd/issues/5234)
-    - Fix the problem that grpc handles return errors inappropriately [#5373](https://github.com/tikv/pd/issues/5373)
-    - Fix the issue that `/regions/replicated` may return the wrong status [#5095](https://github.com/tikv/pd/issues/5095)
-    - 修复 gRPC 处理返回错误不恰当的问题 [#5376](https://github.com/tikv/pd/pull/5376)
+    - 修复在有异常标记的节点的集群里面，上下线进度评估不工作的问题 [#5234](https://github.com/tikv/pd/issues/5234)
+    - 修复 gRPC 处理返回错误不恰当的问题 [#5373](https://github.com/tikv/pd/issues/5373)
+    - 修复`/regions/replicated` 返回错误状态的问题 [#5095](https://github.com/tikv/pd/issues/5095)
 
 + TiFlash
 
