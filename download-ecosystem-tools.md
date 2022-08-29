@@ -47,6 +47,10 @@ TiDB 工具包中包含了一些常用的 TiDB 工具，例如数据导出工具
 | [TiSpark](/tispark-overview.md)  | `tispark-{tispark-version}-any-any.tar.gz` <br/>`spark-{spark-version}-any-any.tar.gz`  |
 | [PD Recover](/pd-recover.md)  | `pd-recover-{version}-linux-{arch}.tar.gz` |
 
+> **注意：**
+>
+> 以上内容中，`{version}` 变量会被替换为实际的版本号，`{arch}` 变量会被替换为实际的架构（amd64 或 arm64）。
+
 ## TiUniManager 下载
 
 [TiUniManager](/tiunimanager/tiunimanager-overview.md) 是为 TiDB 打造的管控平台软件和数据库运维管理平台。使用下表中的链接下载 TiUniManager：
