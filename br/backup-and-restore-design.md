@@ -33,15 +33,50 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 
 ### SST 文件的命名格式
 
-SST 文件以 `storeID_regionID_regionEpoch_keyHash_cf` 的格式命名。格式名的解释如下：
+SST 文件以 `storeID_regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。格式名的解释如下：
 
 - storeID：TiKV 节点编号
 - regionID：Region 编号
 - regionEpoch：Region 版本号
 - keyHash：Range startKey 的 Hash (sha256) 值，确保唯一性
+- timestamp：TiKV 节点生成 SST 文件名时刻的 Unix 时间戳
 - cf：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
+
+当备份数据到 Amazon S3 或网络盘上时，SST 文件以 `regionID_regionEpoch_keyHash_timestamp_cf` 的格式命名。
 
 ### SST 文件存储格式
 
 - 关于 SST 文件存储格式，可以参考 [RocksDB SST table 介绍](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format)。
 - 关于 SST 文件中存储的备份数据编码格式，可以参考 [TiDB 表数据与 Key-Value 的映射关系](/tidb-computing.md#表数据与-key-value-的映射关系)。
+
+### 备份文件布局
+
+将数据备份到 Google Cloud Storage 或 Azure Blob Storage 上时，SST 文件、 backupmeta 文件和 backup.lock 文件在同一目录下。布局如下：
+
+```
+.
+└── 20220621
+    ├── backupmeta
+    |—— backup.lock
+    ├── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    └── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+```
+
+将数据备份到 Amazon S3 或网络盘上时，SST 文件会根据 storeID 划分子目录。布局如下：
+
+```
+.
+└── 20220621
+    ├── backupmeta
+    |—— backup.lock
+    ├── store1
+    │   └── {regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── store100
+    │   └── {regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── store2
+    │   └── {regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── store3
+    ├── store4
+    └── store5
+```

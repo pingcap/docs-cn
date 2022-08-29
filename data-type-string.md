@@ -121,7 +121,7 @@ TINYBLOB
 
 ### `MEDIUMBLOB` 类型
 
-类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16777215。
+类似于 [`BLOB`](#blob-类型)，区别在于最大列长度为 16,777,215。
 
 {{< copyable "sql" >}}
 

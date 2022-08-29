@@ -6,7 +6,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-processlist/','/docs-c
 
 # SHOW [FULL] PROCESSLIST
 
-`SHOW [FULL] PROCESSLIST` 语句列出连接到相同 TiDB 服务器的当前会话。`Info` 列包含查询文本，除非指定可选关键字 `FULL`，否则文本会被截断。
+`SHOW [FULL] PROCESSLIST` 语句列出连接到相同 TiDB 服务器的当前会话。
 
 ## 语法图
 
@@ -26,7 +26,7 @@ aliases: ['/docs-cn/dev/sql-statements/sql-statement-show-processlist/','/docs-c
 SHOW PROCESSLIST;
 ```
 
-```
+```sql
 +------+------+-----------------+------+---------+------+------------+------------------+
 | Id   | User | Host            | db   | Command | Time | State      | Info             |
 +------+------+-----------------+------+---------+------+------------+------------------+
@@ -34,6 +34,13 @@ SHOW PROCESSLIST;
 +------+------+-----------------+------+---------+------+------------+------------------+
 1 rows in set (0.00 sec)
 ```
+
+以上返回结果中的主要字段描述如下：
+
+- `Command`：SQL 语句的类型，通常值为 `Query`。
+- `Time`：SQL 语句开始执行的时间。
+- `State`：SQL 语句的状态。常见的值是 `autocommit`，表示该 SQL 语句是自动提交的。`in transaction` 表示该 SQL 语句处于事务中。
+- `Info`：表示具体的 SQL 文本。除非指定可选关键字 `FULL`，否则文本会被截断。
 
 ## MySQL 兼容性
 
