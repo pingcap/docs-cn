@@ -28,7 +28,7 @@ TiDB 版本：6.1.1
 + TiDB
 
     <!-- <planner> -->
-    (dup: release-6.2.0.md > # Performance)[User document](/optimizer-hints.md#semi_join_rewrite) [#35323](https://github.com/pingcap/tidb/issues/35323)
+    (dup: release-6.2.0.md > # Performance) - 引入新的优化器提示 `SEMI_JOIN_REWRITE` 改善 `EXISTS` 查询性能 [#35323](https://github.com/pingcap/tidb/issues/35323)
     (dup: release-5.2.4.md > Bug fixes> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
 
     <!-- <transaction> -->
