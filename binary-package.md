@@ -32,6 +32,10 @@ TiDB v6.2.0 提供了 amd64 和 arm64 两种架构的离线包。对于每种架
 | influxdb-{version}-linux-{arch}.tar.gz |  |
 | playground-{version}-linux-{arch}.tar.gz |  |
 
+> **注意：**
+>
+> 以上内容中，`{version}` 变量会被替换为实际的版本号，`{arch}` 变量会被替换为实际的架构（amd64 或 arm64）。
+
 `TiDB-community-toolkit` 软件包中包含以下内容：
 
 | 内容 | 变更说明 |
@@ -70,6 +74,10 @@ TiDB v6.2.0 提供了 amd64 和 arm64 两种架构的离线包。对于每种架
 | prometheus-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增  |
 | blackbox_exporter-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
 | node_exporter-{version}-linux-{arch}.tar.gz | 从 v6.2.0 起新增 |
+
+> **注意：**
+>
+> 以上内容中，`{version}` 变量会被替换为实际的版本号，`{arch}` 变量会被替换为实际的架构（amd64 或 arm64）。
 
 ## 延伸阅读
 
