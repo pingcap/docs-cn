@@ -69,7 +69,7 @@ TiDB 版本：6.1.1
     - Fix the issue that TiDB may panic during update stmt [#32311](https://github.com/pingcap/tidb/issues/32311)
     - Fix the bug that `show columns` may send cop request [#36496](https://github.com/pingcap/tidb/issues/36496)
     - Fix bug that `show warnings` may return `invalid memory address or nil pointer dereference` error [#31569](https://github.com/pingcap/tidb/issues/31569)
-    - Fix the case sensitive issues for `show database like` statement [#34766](https://github.com/pingcap/tidb/issues/34766)
+    - 修复了 `SHOW DATABASES LIKE …` 大小写敏感的问题 [#34766](https://github.com/pingcap/tidb/issues/34766)
     - Fix bug that static partition prune may return wrong result for agg query if the table is empty [#35295](https://github.com/pingcap/tidb/issues/35295)
 
     <!-- <planner> -->
