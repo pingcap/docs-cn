@@ -17,16 +17,13 @@ summary: 了解日志备份常见故障以及解决方法。
 ALTER TABLE table_name SET TIFLASH REPLICA count;
 ```
 
-在 v6.3.0 版本及以上，PiTR 会在恢复完成之后自动依照上游对应时刻的 TiFlash 副本数量执行 `ALTER TABLE SET TIFLASH REPLICA` DDL。
-此时你可以通过以下 SQL 检查 TiFlash 副本的设置状态：
+在 v6.3.0 版本及以上，PiTR 会在恢复完成之后自动依照上游对应时刻的 TiFlash 副本数量执行 `ALTER TABLE SET TIFLASH REPLICA` DDL。此时你可以通过以下 SQL 检查 TiFlash 副本的设置状态：
 
 ``` sql
 SELECT * FROM INFORMATION_SCHEMA.tiflash_replica;
 ```
 
-需要注意的是，这并不意味着在 PiTR 恢复之后 TiFlash 副本马上可用：
-在恢复完成之后，TiFlash 需要一定的时间从 TiKV 节点同步数据；PiTR 目前不支持在恢复阶段直接将数据灌入 TiFlash 中。
-同步进度可以从 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 一项中看到。
+需要注意的是，这并不意味着在 PiTR 恢复之后 TiFlash 副本马上可用：在恢复完成之后，TiFlash 需要一定的时间从 TiKV 节点同步数据；PiTR 目前不支持在恢复阶段直接将数据灌入 TiFlash 中。同步进度可以从 `INFORMATION_SCHEMA.tiflash_replica` 表中的 `progress` 一项中看到。
 
 ## 日志备份任务的 `status` 变为 `ERROR`，该如何处理？
 
