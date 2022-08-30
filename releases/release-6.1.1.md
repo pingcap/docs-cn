@@ -88,10 +88,11 @@ TiDB 版本：6.1.1
     (dup: release-5.2.4.md > Bug fixes> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
 
     <!-- <sql-infra> -->
+    (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在某些情况下查询分区表可能返回 `index-out-of-range` and `non used index` 错误的问题 [#35181](https://github.com/pingcap/tidb/issues/35181)
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
-    - 修复了当 TiDB 开启 Binlog 时，执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
-    - 修复了在极端情况情况下，启动 TiDB 时可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791)
-    - 修复了在 Dashboard 中查询分区表的执行计划时，有可能出现 `UnkownPlanID` 的问题 [#35153](https://github.com/pingcap/tidb/issues/35153)
+    - 修复了在开启 TiDB Binlog 时，TiDB 执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
+    - 修复了在极端情况情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791)
+    - 修复了在 TiDB Dashboard 中查询分区表的执行计划时，有可能出现 `UnkownPlanID` 的问题 [#35153](https://github.com/pingcap/tidb/issues/35153)
 
     <!-- <transaction> -->
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了 `LOAD DATA` 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
