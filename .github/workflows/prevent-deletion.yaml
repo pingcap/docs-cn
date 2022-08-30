@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       - run: |
           echo $pr
-          git checkout ${{github.event.pull_request.head.sha}}
+          git checkout ${{github.event.pull_request.head.ref}}
           git remote add remote --set-upstream ${{github.event.pull_request.base.repo.clone_url}}
           git fetch remote ${{github.event.pull_request.base.ref}}    
         env:
