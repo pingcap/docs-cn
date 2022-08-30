@@ -42,7 +42,7 @@ TiDB 版本：6.1.1
 
 + PD
 
-    - 改进 Balance Region 在空间快均衡阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990)
+    - 提升 Balance Region 在空间快均衡阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990)
 
 + Tools
 
@@ -82,11 +82,10 @@ TiDB 版本：6.1.1
     - 修复了在某些场景下错误地设置了 partial agg 的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
 
     <!-- <sql-infra> -->
-    (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749)
-    (dup: release-6.2.0.md > 错误修复> TiDB)- 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
-    - 修复当 TiDB 开启 Binlog 时，执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
-    - 修复了在极端情况情况下，TiDB 在启动时可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791)
-    - 修复了在 Dashboard 中查询涉及分区表的执行计划时，有可能产生 `UnkownPlanID` 的问题 [#35153](https://github.com/pingcap/tidb/issues/35153)
+    (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
+    - 修复了当 TiDB 开启 Binlog 时，执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
+    - 修复了在极端情况情况下，启动 TiDB 时可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791)
+    - 修复了在 Dashboard 中查询分区表的执行计划时，有可能出现 `UnkownPlanID` 的问题 [#35153](https://github.com/pingcap/tidb/issues/35153)
 
     <!-- <transaction> -->
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了 `LOAD DATA` 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
@@ -97,28 +96,28 @@ TiDB 版本：6.1.1
 
 + TiKV
 
-    - 修复 raftstore 线程过于繁忙时，可能会出现重叠 region 的问题 [#13160](https://github.com/tikv/tikv/issues/13160)
+    - 修复 Raftstore 线程繁忙时，可能会出现 Region 重叠的问题 [#13160](https://github.com/tikv/tikv/issues/13160)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复 PD Region heartbeat 连接异常中断后未重新连接的问题 [#12934](https://github.com/tikv/tikv/issues/12934)
     (dup: release-5.3.2.md > Bug Fixes> TiKV)- 修复了对空字符串进行类型转换导致 TiKV panic 的问题 [#12673](https://github.com/tikv/tikv/issues/12673)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复了 TiKV 和 PD 配置文件中 Region size 不一致的问题 [#12518](https://github.com/tikv/tikv/issues/12518)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复了启用 Raft Engine 时未清理加密密钥的问题 [#12890](https://github.com/tikv/tikv/issues/12890)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复同时分裂和销毁一个 peer 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复在 Region merge 时 source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663)
-    (dup: release-5.3.2.md > Bug Fixes> TiKV)- Fix the issue of frequent PD client reconnection that occurs when the PD client meets an error [#12345](https://github.com/tikv/tikv/issues/12345)
-    - 修复开启 raft engine 以后，加密密钥不会被清理的问题 [#13123](https://github.com/tikv/tikv/issues/13123)
+    (dup: release-5.3.2.md > Bug Fixes> TiKV)- 修复了 PD 客户端遇到报错时频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
+    - 修复了开启 Raft Engine 并发恢复时可能会 panic 的问题 [#13123](https://github.com/tikv/tikv/issues/13123)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复了新创建的 Region Commit Log Duration 较高导致 QPS 下降的问题 [#13077](https://github.com/tikv/tikv/issues/13077)
-    - 修复开启 raft-engine 后特殊情况下会 panic 的问题 [#12698](https://github.com/tikv/tikv/issues/12698)
-    - 修复找不到 procfs 时无用警告级别日志过多的的问题 [#13116](https://github.com/tikv/tikv/issues/13116)
-    - 修复 dashboard 中 "Unified Read Pool CPU" 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086)
-    - 修复默认 region-split-check-diff 可能会大于 bucket 大小的问题 [#12598](https://github.com/tikv/tikv/issues/12598)
-    - 修复开启 raft engine 以后，中止 apply snapshot 时可能会 panic 的问题 [#12470](https://github.com/tikv/tikv/issues/12470)
-    - 修复 pd client 可能会死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) [#12933](https://github.com/tikv/tikv/issues/12933)
+    - 修复启用 Raft Engine 后特殊情况下 TiKV 会 panic 的问题 [#12698](https://github.com/tikv/tikv/issues/12698)
+    - 修复无法找到 proc filesystem (procfs) 时警告级别日志过多的的问题 [#13116](https://github.com/tikv/tikv/issues/13116)
+    - 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086)
+    - 修复 Region 较大时，默认 [`region-split-check-diff`](/tikv-configuration-file.md#region-split-check-diff) 可能会大于 bucket 大小的问题 [#12598](https://github.com/tikv/tikv/issues/12598)
+    - 修复启用 Raft Engine 后，中止 Apply Snapshot 时可能会 panic 的问题 [#12470](https://github.com/tikv/tikv/issues/12470)
+    - 修复 PD 客户端可能会出现死锁的问题 [#13191](https://github.com/tikv/tikv/issues/13191) [#12933](https://github.com/tikv/tikv/issues/12933)
 
 + PD
 
     - 修复在有异常标记的节点的集群里面，上下线进度评估不工作的问题 [#5234](https://github.com/tikv/pd/issues/5234)
-    - 修复 gRPC 处理返回错误不恰当的问题 [#5373](https://github.com/tikv/pd/issues/5373)
-    - 修复`/regions/replicated` 返回错误状态的问题 [#5095](https://github.com/tikv/pd/issues/5095)
+    - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373)
+    - 修复 `/regions/replicated` 返回状态错误的问题 [#5095](https://github.com/tikv/pd/issues/5095)
 
 + TiFlash
 
