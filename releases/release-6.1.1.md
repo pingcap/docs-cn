@@ -12,27 +12,32 @@ TiDB 版本：6.1.1
 
 + TiDB
 
-    (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了 `SHOW DATABASES LIKE …` 大小写敏感的问题 [#34766](https://github.com/pingcap/tidb/issues/34766)
-    - [tidb_enable_outer_join_reorder](https://github.com/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) 从 6.1.0 的默认 ON 变为默认 OFF。
+    (dup: release-6.2.0.md > Bug fixes> TiDB)- `SHOW DATABASES LIKE …` 语句不再大小写敏感 [#34766](https://github.com/pingcap/tidb/issues/34766)
+    - 将 [`tidb_enable_outer_join_reorder`](https://github.com/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) 的默认值由 `1` 改为 `0`，即默认关闭 Join Reorder 对外连接的支持。
 
 + Diagnosis
 
-    - Continuous Profiling 现在默认被关闭。
+    - 默认关闭 Continuous Profiling 特性，以避免开启该特性后 TiFlash 可能会崩溃的问题，详情参见 [#5687](https://github.com/pingcap/tiflash/issues/5687)
+
+## 其他变更
+
+- 在 `TiDB-community-toolkit` 二进制包中新增了以下内容，详情参见 [TiDB 离线包](/binary-package.md)。
+
+    - `server-{version}-linux-amd64.tar.gz`
+    - `grafana-{version}-linux-amd64.tar.gz`
+    - `alertmanager-{version}-linux-amd64.tar.gz`
+    - `prometheus-{version}-linux-amd64.tar.gz`
+    - `blackbox_exporter-{version}-linux-amd64.tar.gz`
+    - `node_exporter-{version}-linux-amd64.tar.gz`
+
+- 引入对不同操作系统或平台的差异化支持，见 []
 
 ## 提升改进
-
-- 在 `TiDB-community-toolkit` 二进制包中新增了一些内容，详情参见 [TiDB 离线包](/binary-package.md)。
-- Add a document to introduce TiDB's support for different operating systems. See [].
-- 新增 TiDB 对不同操作系统支持的说明文档，见
 
 + TiDB
 
     <!-- <planner> -->
     (dup: release-6.2.0.md > # Performance) - 引入新的优化器提示 `SEMI_JOIN_REWRITE` 改善 `EXISTS` 查询性能 [#35323](https://github.com/pingcap/tidb/issues/35323)
-    (dup: release-5.2.4.md > Bug fixes> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
-
-    <!-- <transaction> -->
-    (dup: release-6.2.0.md > Bug fixes> TiDB)- 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
 
 + TiKV
 
@@ -65,21 +70,22 @@ TiDB 版本：6.1.1
 + TiDB
 
     <!-- <execution> -->
-    - 修复 IndexLookupHashJoin 在带有 limit 时可能会 hang 住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638)
-    - 修复 TiDB 在执行 update 语句时可能会 panic 的问题 [#32311](https://github.com/pingcap/tidb/issues/32311)
-    - 修复 TiDB 在运行 `show columns` 时会产生 cop request 的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
-    - 修复 `show warnings` 可能会报 `invalid memory address or nil pointer dereference` 的问题 [#31569](https://github.com/pingcap/tidb/issues/31569)
-    - 修复 static partition prune 模式下带聚合的 sql 语句在表为空表时出现结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
+    - 修复 `IndexLookupHashJoin` 和 `LIMIT` 一起使用时可能会卡住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638)
+    - 修复 TiDB 在执行 `UPDATE` 语句时可能会 panic 的问题 [#32311](https://github.com/pingcap/tidb/issues/32311)
+    - 修复 TiDB 在执行 `SHOW COLUMNS` 时会发出协处理器请求的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
+    - 修复执行 `SHOW WARNINGS` 时可能会报 `invalid memory address or nil pointer dereference` 的问题 [#31569](https://github.com/pingcap/tidb/issues/31569)
+    - 修复 Static Partition Prune 模式下带聚合条件的 SQL 语句在表为空时结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
 
     <!-- <planner> -->
     - 修复了 join reorder 时会错误地下推 outer join condition 的问题 [#37238](https://github.com/pingcap/tidb/issues/37238)
     - 修复了 CTE 被引用多次时 schema hashcode 被错误复用导致的 cannot find column [#35404](https://github.com/pingcap/tidb/issues/35404)
-    - 修复了某些 outer join 场景下 join reorder 错误导致的查询结果错误 [#36912] (https://github.com/pingcap/tidb/issues/36912)
+    - 修复了某些 outer join 场景下 join reorder 错误导致的查询结果错误 [#36912](https://github.com/pingcap/tidb/issues/36912)
     (dup: release-5.4.2.md > Bug 修复> TiDB)- 修复了执行计划在 EqualAll 的情况下，把 TiFlash 的 `firstrow` 聚合函数的 null flag 设错的问题 [#34584](https://github.com/pingcap/tidb/issues/34584)
     - 修复了当查询创建了带 ignore_plan_cache hint 的 binding 后，无法再使用 plan cache 的问题 [#34596](https://github.com/pingcap/tidb/issues/34596)
     - 修复了 hash-partition window 和 single-partition window 之间缺少 exchange 算子的问题 [#35990](https://github.com/pingcap/tidb/issues/35990)
     (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
     - 修复了在某些场景下错误地设置了 partial agg 的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
+    (dup: release-5.2.4.md > Bug fixes> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
 
     <!-- <sql-infra> -->
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
@@ -93,6 +99,7 @@ TiDB 版本：6.1.1
     - 去除 `tidb_gc_life_time` 设置时间检查限制 [#35392](https://github.com/pingcap/tidb/issues/35392)
     - 修复空分隔符使用情况下，load data 出现死循环的问题 [#33298](https://github.com/pingcap/tidb/issues/33298)
     (dup: release-6.2.0.md > 错误修复> TiDB)- 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
+    (dup: release-6.2.0.md > Bug fixes> TiDB)- 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
 
 + TiKV
 
