@@ -41,4 +41,4 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: token ${{ github.token }}" \
             -T '/tmp/body2.json' \
-          'https://api.github.com/repos/${{ github.repository }}/check-runs'
+          'https://api.github.com/repos/${{ github.event.pull_request.head.repo.full_name }}/check-runs'
