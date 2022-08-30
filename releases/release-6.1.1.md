@@ -37,12 +37,12 @@ TiDB 版本：6.1.1
 + TiKV
 
     (dup: release-6.2.0.md > Improvements> TiKV)- 支持通过 gzip 压缩 metrics 响应减少 HTTP body 大小 [#12355](https://github.com/tikv/tikv/issues/12355)
-    - 支持过滤不常用 metrics 以减少流量 [#12698](https://github.com/tikv/tikv/issues/12698)
+    - 支持使用 [`server.simplify-metrics`](/tikv-configuration-file.md#simplify-metrics-从-v620-版本开始引入) 配置项过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量 [#12355](https://github.com/tikv/tikv/issues/12355)
     (dup: release-6.2.0.md > Improvements> TiKV)- 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145)
 
 + PD
 
-    - 改进 balance region 在空间快均衡阶段的调度速度 [#5320](https://github.com/tikv/pd/pull/5320)
+    - 改进 Balance Region 在空间快均衡阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990)
 
 + Tools
 
