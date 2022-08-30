@@ -123,11 +123,11 @@ TiDB 版本：6.1.1
 + TiFlash
 
     (dup: release-5.4.2.md > Bug Fixes> TiFlash)- 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154)
-    - Fix the issue that format throw data truncated error [#4891](https://github.com/pingcap/tiflash/issues/4891)
-    - fix the problem that there may be some obsolete data left in storage which cannot be deleted [#5659](https://github.com/pingcap/tiflash/issues/5659)
-    - Reduce unnecessary CPU usage in some edge cases [#5409](https://github.com/pingcap/tiflash/issues/5409)
-    - Fix a bug that TiFlash can not work in a cluster using ipv6 [#5247](https://github.com/pingcap/tiflash/issues/5247)
-    - Fix a panic issue in parallel aggregation when an exception is thrown. [#5356](https://github.com/pingcap/tiflash/issues/5356)
+    - 修复 `format` 函数可能会报 `data truncated error` 的问题 [#4891](https://github.com/pingcap/tiflash/issues/4891)
+    - 修复存储中残留过期数据且无法删除的问题 [#5659](https://github.com/pingcap/tiflash/issues/5659)
+    - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409)
+    - 修复 TiFlash 无法在使用 IPv6 的集群运行的问题 [#5247](https://github.com/pingcap/tiflash/issues/5247)
+    - 修复 `MinTSOScheduler` 在查询出错时可能会泄露线程资源问题 [#5556](https://github.com/pingcap/tiflash/issues/5556)
 
 + Tools
 
@@ -152,7 +152,7 @@ TiDB 版本：6.1.1
 
     + Dumpling
 
-        - 使用 net.JoinHostPort 拼接 Host、Port，提供更好的 IPv6 兼容 [#36112](https://github.com/pingcap/tidb/issues/36112)
+        - 修复 GetDSN 方法不支持 IPv6 的问题 [#36112](https://github.com/pingcap/tidb/issues/36112)
 
     + TiDB Lightning
 
@@ -164,7 +164,7 @@ TiDB 版本：6.1.1
 
     + TiDB Binlog
 
-        - [#1152](https://github.com/pingcap/tidb-binlog/issues/1152)
+        - 修复 `compressor` 设为 `gzip` 时 Drainer 无法正确发送请求至 Pump 的问题 [#1152](https://github.com/pingcap/tidb-binlog/issues/1152)
 
     + TiDB Data Migration
 
