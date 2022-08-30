@@ -119,4 +119,4 @@ diag collect <cluster-name> --profile=<profile-filepath> --explain-sql=<statemen
 
 ### 将结果导入到 TiDB 集群
 
-采集结果中的 `plan_replayer.zip` 可以通过 sql 的方式直接导入到 TiDB 集群中进行信息查看，具体方法可参考[使用 `PLAN REPLAYER` 导入集群信息](/sql-plan-replayer.md#使用-plan-replayer-导出集群信息)
+采集结果中的 `plan_replayer.zip` 可以通过 `PLAN REPLAYER LOAD` 语句直接导入到 TiDB 集群中进行信息查看，具体方法可参考[使用 `PLAN REPLAYER` 导入集群信息](/sql-plan-replayer.md#使用-plan-replayer-导入集群信息)
