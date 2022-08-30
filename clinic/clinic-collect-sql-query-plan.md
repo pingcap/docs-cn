@@ -52,8 +52,13 @@ diag collect <cluster-name> --profile=tidb-plan-replayer --explain-sql=<statemen
 
 > **注意：**
 >
-> - 通过 `diag` 采集数据前，你需要提供 `sql-statement` 文件，该文件包含了需要采集的 SQL 语句。
-> - 以上命令中 `<statement-filepath>` 是指 `sql-statement` 文件的路径。
+> - 通过 `diag` 采集数据前，你需要通过 `--explain-sql` 指定 `sql-statement` 文件：
+>
+>     - 以上命令中 `<statement-filepath>` 是指 `sql-statement` 文件的路径。
+>     - 该文件包含了需要采集的 SQL 语句。
+>     - 如果有多条 SQL 语句需要分析，可以使用分号 `;` 分隔。
+>     - 因为以上 `diag` 命令会新建会话进行查询，所以 SQL 文件里的 SQL 语句必须显示指明所使用的数据库，如 `SELECT * FROM test.t1`。
+>
 > - `PLAN REPLAYER` **不会**导出表中数据。
 > - 采集数据时只会执行 `EXPLAIN`，不会真正执行查询。因此采集时对数据库性能影响较小。
 
