@@ -133,7 +133,7 @@ TiDB 版本：6.1.1
 
     + TiCDC
 
-        - 修复版本兼容性问题 [#6039](https://github.com/pingcap/tiflow/issues/6039)
+        - 修复最大兼容版本错误的问题 [#6039](https://github.com/pingcap/tiflow/issues/6039)
         - 修复cdc server 启动未完成接受请求出现 panic 问题 [#5639](https://github.com/pingcap/tiflow/issues/5639)
         - 修复 sync-point 打开时 ddl sink 可能出现 panic 的问题. [#4934](https://github.com/pingcap/tiflow/issues/4934)
         - 修复 cdc server 重启时 API 工作不正常的问题. [#5837](https://github.com/pingcap/tiflow/issues/5837)
