@@ -38,6 +38,7 @@ jobs:
           fi
       - name: Publish result
         run: |
+          cat /tmp/body2.json
           curl \
             -sSL \
             -X POST \
