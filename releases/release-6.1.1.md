@@ -53,9 +53,9 @@ TiDB 版本：6.1.1
 
     + TiDB Lightning
 
-        - 针对 Stale Command 错误增加自动重试机制，提升导入成功率 [#36877](https://github.com/pingcap/tidb/issues/36877)
+        - 针对 `stale command` 等错误增加自动重试机制，提升导入成功率 [#36877](https://github.com/pingcap/tidb/issues/36877)
 
-    + TiDB Data Migration
+    + TiDB Data Migration (DM)
 
         - 用户可手动设置 Lightning Loader 并发数 [#5505](https://github.com/pingcap/tiflow/issues/5505)
 
@@ -143,18 +143,18 @@ TiDB 版本：6.1.1
 
         - 修复了使用 IPv6 host 时无法连接到 TiDB 的问题 [#35880](https://github.com/pingcap/tidb/issues/35880)
         - 修复 `read index not ready` 问题，增加重试机制 [#36566](https://github.com/pingcap/tidb/issues/36566)
-        - 移除服务器模式下日志中的敏感信息 [#36374](https://github.com/pingcap/tidb/issues/36374)
-        - 支持 Parquet 格式中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名 [#36980](https://github.com/pingcap/tidb/issues/36980)
-        - 修复极端情况下重复去重可能会 panic 的问题 [#36163](https://github.com/pingcap/tidb/issues/34163)
+        - 修复服务器模式下日志敏感信息被打印的问题 [#36374](https://github.com/pingcap/tidb/issues/36374)
+        - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980)
+        - 修复极端情况下重复去重可能会 panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163)
 
-    + TiDB Data Migration
+    + TiDB Data Migration (DM)
 
         - 修复 `txn-entry-size-limit` 在 DM 不生效的问题 [#6161](https://github.com/pingcap/tiflow/issues/6161)
         - 修复 `check-task` 命令不能处理特殊编码的问题 [#5895](https://github.com/pingcap/tiflow/issues/5895)
         - 修复 `query-status` 内可能存在 data race 的问题 [#4811](https://github.com/pingcap/tiflow/issues/4811)
         - 修复 `operate-schema` 显示不一致问题 [#5688](https://github.com/pingcap/tiflow/issues/5688)
         - 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193)
-        - 修复 DM Worker 因 DB Conn 获取可能卡住的问题 [#6193](https://github.com/pingcap/tiflow/issues/6193)
+        - 修复 DM Worker 因 DB Conn 获取可能卡住的问题 [#3733](https://github.com/pingcap/tiflow/issues/3733)
         - 修复 DM IPv6 支持问题 [#6249](https://github.com/pingcap/tiflow/issues/6249)
 
     + TiCDC
