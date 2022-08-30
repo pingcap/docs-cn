@@ -126,11 +126,9 @@ mysql> select table_name,index_name,key_data,row_data from conflict_error_v1 lim
 
 根据上述信息人工甄别需要保留的重复数据，手动插回原表即可。
 
-## 导入数据到生产集群
+## 导入时限制调度范围从集群降低到表级别
 
-自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 支持使用 Physical Import Mode 向已经投入生产的 TiDB 集群导入数据，并提供机制控制导入数据过程对在线业务的影响。
-
-在技术实现上，TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，大大降低了对在线业务的影响。
+自 TiDB Lightning v6.2.0 版本起，TiDB Lightning 提供机制控制导入数据过程对在线业务的影响。TiDB Lightning 不会暂停全局的调度，而是只暂停目标表数据范围所在 region 的调度，降低了对在线业务的影响。
 
 > **注意：**
 >
