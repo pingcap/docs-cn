@@ -16,9 +16,13 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v3
-        with:
-          ref: ${{github.event.pull_request.head.ref}}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
+      - run: |
+          echo $pr
+          git checkout ${{github.event.pull_request.head}}
+          git remote add origin --set-upstream ${{github.event.pull_request.base}}
+          git fetch origin ${{github.event.pull_request.base.ref}}    
+        env:
+          pr: ${{ toJson(github) }}
       - name: Check changes
         run: |
           if git diff --name-only --diff-filter 'D' '${{ github.event.pull_request.base.sha }}' '${{ github.event.pull_request.head.sha }}' | grep -E '^media/.*\.(jpg|png|jpeg|gif)$' >/tmp/changed_files; then
