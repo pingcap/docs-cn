@@ -9,8 +9,6 @@ concurrency:
 
 jobs:
   check:
-    permissions:
-      checks: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout head
