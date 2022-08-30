@@ -22,6 +22,7 @@ jobs:
           git fetch --depth=1 head ${{ github.event.pull_request.head.ref }}
       - name: Find changes
         run: |
+          git rev-parse '${{ github.event.pull_request.head.sha }}'
           if git diff --name-only --diff-filter 'D' HEAD '${{ github.event.pull_request.head.sha }}' | grep -E '^media/.*\.(jpg|png|jpeg|gif)$' >/tmp/changed_files; then
             cat /tmp/changed_files
             echo '{"name":"Image","head_sha":"${{ github.event.pull_request.head.sha }}","status":"completed","conclusion":"failure"}' > /tmp/body.json
