@@ -48,7 +48,7 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
     >
     > 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS 的上游支持已于 2021 年 12 月 31 日终止。
 
-+ 在以下操作系统以及对应的 CPU 架构组合上，你可以编译构建和部署 TiDB。OLTP 和 OLAP 以及数据工具的基本功能可用。但是 TiDB **不保障企业级生产质量要求**：
++ 在以下操作系统以及对应的 CPU 架构组合上，你可以编译构建和部署 TiDB，可使用 OLTP 和 OLAP 以及数据工具的基本功能。但是 TiDB **不保障企业级生产质量要求**：
 
     |  操作系统   |   支持的 CPU 架构   |
     |   :---   |   :---   |
@@ -62,9 +62,12 @@ TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运�
 
     > **注意：**
     >
-    > TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
+    > - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
+    > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
 
 + 对于以上两个表格中所列操作系统的 32 位版本，TiDB 在这些 32 位操作系统以及对应的 CPU 架构上**不保障**可编译、可构建以及可部署，或 TiDB 不主动适配这些 32 位的操作系统。
+
++ 以上未提及的操作系统版本**也许可以**运行 TiDB，但尚未得到 TiDB 官方支持。
 
 </div>
 </simpleTab>
