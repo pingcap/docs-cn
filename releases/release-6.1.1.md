@@ -56,8 +56,8 @@ TiDB 版本：6.1.1
 
     + TiCDC
 
-        - 在 changefeed 的配置中增加参数来控制是否拆分大事务。 [#5231](https://github.com/pingcap/tiflow/issues/5231)
-        (dup: release-6.2.0.md > 改进提升> Tools> TiCDC)- 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610)
+        - 在 changefeed 的配置中增加参数 `transaction-atomicity` 来控制是否拆分大事务，从而大幅减少大事务的延时和内存消耗 [#5231](https://github.com/pingcap/tiflow/issues/5231)
+        - (dup: release-6.2.0.md > 改进提升> Tools> TiCDC)- 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610)
         - 优化 mysql sink 自动关闭 safe mode 的方式。[#5611](https://github.com/pingcap/tiflow/issues/5611)
 
 ## Bug 修复
