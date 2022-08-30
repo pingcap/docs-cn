@@ -129,7 +129,7 @@ TiDB 版本：6.1.1
 + TiFlash
 
     (dup: release-5.4.2.md > Bug Fixes> TiFlash)- 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154)
-    - 修复 `format` 函数可能会报 `data truncated error` 的问题 [#4891](https://github.com/pingcap/tiflash/issues/4891)
+    - 修复 `format` 函数可能会报 `Data truncated` 错误的问题 [#4891](https://github.com/pingcap/tiflash/issues/4891)
     - 修复存储中残留过期数据且无法删除的问题 [#5659](https://github.com/pingcap/tiflash/issues/5659)
     - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409)
     - 修复 TiFlash 无法在使用 IPv6 的集群运行的问题 [#5247](https://github.com/pingcap/tiflash/issues/5247)
