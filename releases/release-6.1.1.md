@@ -170,10 +170,8 @@ TiDB 版本：6.1.1
 
         - 修复 `txn-entry-size-limit` 在 DM 不生效的问题 [#6161](https://github.com/pingcap/tiflow/issues/6161)
         - 修复 `check-task` 命令不能处理特殊编码的问题 [#5895](https://github.com/pingcap/tiflow/issues/5895)
-        - 修复乐观模式下频繁重启 Master/Worker 会导致同步数据失败的问题 [#5489](https://github.com/pingcap/tiflow/issues/5489)
         - 修复 `query-status` 内可能存在 data race 的问题 [#4811](https://github.com/pingcap/tiflow/issues/4811)
         - 修复 `operate-schema` 显示不一致问题 [#5688](https://github.com/pingcap/tiflow/issues/5688)
         - 修复 relay 报错时可能导致 goroutine 泄露问题 [#6193](https://github.com/pingcap/tiflow/issues/6193)
         - 修复 DM Worker 因 DB Conn 获取可能卡住的问题 [#6193](https://github.com/pingcap/tiflow/issues/6193)
         - 修复 DM IPv6 支持问题 [#6249](https://github.com/pingcap/tiflow/issues/6249)
-        - 修复 invalid table ID 问题 [6526](https://github.com/pingcap/tiflow/issues/6526)
