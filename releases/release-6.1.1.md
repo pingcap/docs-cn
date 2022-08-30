@@ -77,14 +77,14 @@ TiDB 版本：6.1.1
     - 修复 Static Partition Prune 模式下带聚合条件的 SQL 语句在表为空时结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
 
     <!-- <planner> -->
-    - 修复了 join reorder 时会错误地下推 outer join condition 的问题 [#37238](https://github.com/pingcap/tidb/issues/37238)
-    - 修复了 CTE 被引用多次时 schema hashcode 被错误复用导致的 cannot find column [#35404](https://github.com/pingcap/tidb/issues/35404)
-    - 修复了某些 outer join 场景下 join reorder 错误导致的查询结果错误 [#36912](https://github.com/pingcap/tidb/issues/36912)
+    - 修复执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238)
+    - 修复了 CTE 被引用多次时 schema hash code 被错误克隆导致的 `cannot find column` 错误 [#35404](https://github.com/pingcap/tidb/issues/35404)
+    - 修复了某些 Right Outer Join 场景下 Join Reorder 错误导致查询结果错误的问题 [#36912](https://github.com/pingcap/tidb/issues/36912)
     (dup: release-5.4.2.md > Bug 修复> TiDB)- 修复了执行计划在 EqualAll 的情况下，把 TiFlash 的 `firstrow` 聚合函数的 null flag 设错的问题 [#34584](https://github.com/pingcap/tidb/issues/34584)
-    - 修复了当查询创建了带 ignore_plan_cache hint 的 binding 后，无法再使用 plan cache 的问题 [#34596](https://github.com/pingcap/tidb/issues/34596)
-    - 修复了 hash-partition window 和 single-partition window 之间缺少 exchange 算子的问题 [#35990](https://github.com/pingcap/tidb/issues/35990)
+    - 修复了当查询创建了带 `ignore_plan_cache hint` 的 binding 后，无法再使用 Plan Cache 的问题 [#34596](https://github.com/pingcap/tidb/issues/34596)
+    - 修复了 hash-partition window 和 single-partition window 之间缺少 `EXCHANGE` 算子的问题 [#35990](https://github.com/pingcap/tidb/issues/35990)
     (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
-    - 修复了在某些场景下错误地设置了 partial agg 的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
+    - 修复了聚合运算下推后为 partial aggregation 设置了错误的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
     (dup: release-5.2.4.md > Bug fixes> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
 
     <!-- <sql-infra> -->
