@@ -60,13 +60,13 @@ diag collect <cluster-name> --profile=tidb-plan-replayer --explain-sql=<statemen
 `sql-statement` 的文件内容示例：
 
 ```sql
-SELECT * FROM information_schema.slow_query;SELECT * FROM information_schema.statements_summary
+SELECT * FROM test.t1;SELECT * FROM test.t2;
 ```
 
-`sql-statement` 的文件内容说明：
+`--explain-sql` 指定的 `sql-statement` 文件内容说明：
 
 - 如果有多条 SQL 语句需要分析，可以使用分号 `;` 分隔。
-- 因为以上 `diag` 命令会新建会话进行查询，所以 SQL 文件里的 SQL 语句需要指明所使用的数据库。
+- 因为以上 `diag` 命令会新建会话进行查询，所以 SQL 文件里的 SQL 语句必须显示指明所使用的数据库，如 `SELECT * FROM test.t1`。
 
 #### 输出结果
 
@@ -80,7 +80,7 @@ SELECT * FROM information_schema.slow_query;SELECT * FROM information_schema.sta
 | 4 | `sql-statement` 中所包含的表结构 | `plan_replayer` | `plan_replayer.zip/schema/<db.table>.schema.txt` |
 | 5 | `sql-statement` 中所包含表的统计信息 | `plan_replayer` | `plan_replayer.zip/stats/<db.table>.json` |
 | 6 | `EXPLAIN sql-statement` 的结果 | `explain` | `explain/sql0` |
-| 8 | 默认采集的集群信息<ul><li>集群基础信息</li><li>Diag 本次采集记录</li></ul> | default | `cluster.json`，`meta.yaml`，`$collectid_diag_audit.log` |
+| 7 | 默认采集的集群信息<ul><li>集群基础信息</li><li>Diag 本次采集记录</li></ul> | default | `cluster.json`，`meta.yaml`，`$collectid_diag_audit.log` |
 
 ### 自定义数据采集
 
