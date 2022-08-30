@@ -95,12 +95,9 @@ maintainers = [
 
 # 要采集的数据类型
 collectors = [
-    "log",
     "config",
-    "db_vars",
     "sql_bind",
-    "statistics",
-    "explain"
+    "plan_replayer"
 ]
 
 # 要采集的组件
