@@ -123,7 +123,7 @@ TiDB 版本：6.1.1
 
 + PD
 
-    - 修复在有异常标记的节点的集群里面，上下线进度评估不工作的问题 [#5234](https://github.com/tikv/pd/issues/5234)
+    - 修复在有异常标记的节点的集群里面，store 上线进度评估不准确的问题 [#5234](https://github.com/tikv/pd/issues/5234)
     - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373)
     - 修复 `/regions/replicated` 返回状态错误的问题 [#5095](https://github.com/tikv/pd/issues/5095)
 
