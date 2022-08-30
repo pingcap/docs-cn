@@ -58,7 +58,7 @@ TiDB 版本：6.1.1
 
         - 在 changefeed 的配置中增加参数 `transaction-atomicity` 来控制是否拆分大事务，从而大幅减少大事务的延时和内存消耗 [#5231](https://github.com/pingcap/tiflow/issues/5231)
         - (dup: release-6.2.0.md > 改进提升> Tools> TiCDC)- 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610)
-        - 优化 mysql sink 自动关闭 safe mode 的方式。[#5611](https://github.com/pingcap/tiflow/issues/5611)
+        - 优化 MySQL sink，实现自动关闭 safe mode。[#5611](https://github.com/pingcap/tiflow/issues/5611)
 
 ## Bug 修复
 
@@ -134,15 +134,15 @@ TiDB 版本：6.1.1
     + TiCDC
 
         - 修复最大兼容版本错误的问题 [#6039](https://github.com/pingcap/tiflow/issues/6039)
-        - 修复cdc server 启动未完成接受请求出现 panic 问题 [#5639](https://github.com/pingcap/tiflow/issues/5639)
-        - 修复 sync-point 打开时 ddl sink 可能出现 panic 的问题. [#4934](https://github.com/pingcap/tiflow/issues/4934)
-        - 修复 cdc server 重启时 API 工作不正常的问题. [#5837](https://github.com/pingcap/tiflow/issues/5837)
-        - 修复 black hole sink 场景下出现的 data race 问题. [#6206](https://github.com/pingcap/tiflow/issues/6206)
-        - 修复disable old value 时可能出现的 cdc panic 问题 。 [#6198](https://github.com/pingcap/tiflow/issues/6198)
-        - 修复在打开 redo 功能时，可能出现的一些数据不一致问题。[#6189](https://github.com/pingcap/tiflow/issues/6189) [#6368](https://github.com/pingcap/tiflow/issues/6368) [#6277](https://github.com/pingcap/tiflow/issues/6277) [#6456](https://github.com/pingcap/tiflow/issues/6456) [#6695](https://github.com/pingcap/tiflow/issues/6695) [#6764](https://github.com/pingcap/tiflow/issues/6764) [#6859](https://github.com/pingcap/tiflow/issues/6859)
-        - 采取异步写的方式提升 Redo 吞吐。 [#6011](https://github.com/pingcap/tiflow/issues/6011)
-        -修复打开 sync-point 功能在某些特殊场景下出现卡住 changefeed 的问题 。 [#6827](https://github.com/pingcap/tiflow/issues/6827)
-        - 修复 mysql sink 链接 ipv6 的问题。[#6135](https://github.com/pingcap/tiflow/issues/6135)
+        - 修复 cdc server 启动未完成接受请求时出现 panic 的问题 [#5639](https://github.com/pingcap/tiflow/issues/5639)
+        - 修复打开 sync-point 时 ddl sink 可能出现 panic 的问题 [#4934](https://github.com/pingcap/tiflow/issues/4934)
+        - 修复打开 sync-point 功能在某些特殊场景下出现卡住 changefeed 的问题 [#6827](https://github.com/pingcap/tiflow/issues/6827)
+        - 修复 cdc server 重启时 API 工作不正常的问题 [#5837](https://github.com/pingcap/tiflow/issues/5837)
+        - 修复 black hole sink 场景下出现 data race 问题 [#6206](https://github.com/pingcap/tiflow/issues/6206)
+        - 修复 `enable-old-value = false` 时可能出现的 cdc panic 问题 [#6198](https://github.com/pingcap/tiflow/issues/6198)
+        - 修复在开启 redo 功能时，可能出现数据不一致问题 [#6189](https://github.com/pingcap/tiflow/issues/6189) [#6368](https://github.com/pingcap/tiflow/issues/6368) [#6277](https://github.com/pingcap/tiflow/issues/6277) [#6456](https://github.com/pingcap/tiflow/issues/6456) [#6695](https://github.com/pingcap/tiflow/issues/6695) [#6764](https://github.com/pingcap/tiflow/issues/6764) [#6859](https://github.com/pingcap/tiflow/issues/6859)
+        - 修复了 redo log 的性能问题，采取异步写的方式提升 redo 吞吐 [#6011](https://github.com/pingcap/tiflow/issues/6011)
+        - 修复 MySQL sink 无法连接 IPv6 地址的问题 [#6135](https://github.com/pingcap/tiflow/issues/6135)
 
     + Backup & Restore (BR)
 
