@@ -14,14 +14,14 @@ jobs:
       checks: write
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout head
+      - name: Checkout base
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Fetch base
+      - name: Fetch head
         run: |
-          git remote add base ${{ github.event.pull_request.base.repo.clone_url }}
-          git fetch base ${{ github.event.pull_request.base.ref }}
+          git remote add base ${{ github.event.pull_request.head.repo.clone_url }}
+          git fetch base ${{ github.event.pull_request.head.ref }}
       - name: Find changes
         run: |
           if git diff --name-only --diff-filter 'D' '${{ github.event.pull_request.base.sha }}' '${{ github.event.pull_request.head.sha }}' | grep -E '^media/.*\.(jpg|png|jpeg|gif)$' >/tmp/changed_files; then
