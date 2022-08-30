@@ -3,14 +3,15 @@ name: Prevent Deletion
 on:
   pull_request:
 
+permissions:
+  checks: write
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
   check:
-    permissions:
-      checks: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout head
