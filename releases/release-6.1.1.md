@@ -133,6 +133,7 @@ TiDB 版本：6.1.1
     - 修复存储中残留过期数据且无法删除的问题 [#5659](https://github.com/pingcap/tiflash/issues/5659)
     - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409)
     - 修复 TiFlash 无法在使用 IPv6 的集群运行的问题 [#5247](https://github.com/pingcap/tiflash/issues/5247)
+    - 修复并行聚合如果出错可能会导致 TiFlash crash 的问题 [#5356](https://github.com/pingcap/tiflash/issues/5356)
     - 修复 `MinTSOScheduler` 在查询出错时可能会泄露线程资源问题 [#5556](https://github.com/pingcap/tiflash/issues/5556)
 
 + Tools
