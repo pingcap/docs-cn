@@ -74,10 +74,10 @@ txn7: Public
 |                                                     | ALTER TABLE t MODIFY COLUMN a CHAR(10)          |
 | SELECT * FROM t; (报错 Information schema is changed) |                                                 |
 
-
 ## 不需要加元数据锁的场景
 
 并不是所有的 DML 语句都需要加元数据锁，例如：
+
 + Autocommit 的查询语句
 + 开启了 Stale Read
 + 访问临时表
@@ -95,18 +95,7 @@ select * from mysql.tidb_ddl_lock\G
    DB_NAME: test
 TABLE_NAME: t
      QUERY: ALTER TABLE t ADD COLUMN c INT
-  INSTANCE: 192.168.192.52:10081
-        ID: 2199023255957
-      USER: root
-      HOST: 127.0.0.1:52741
-        DB: test
-   COMMAND: Sleep
-      TIME: 5
-     STATE: in transaction; autocommit
-      INFO: NULL
-    DIGEST: e5796985ccafe2f71126ed6c0ac939ffa015a8c0744a24b7aee6d587103fd2f7
-       MEM: 0
-      DISK: 0
+SESSION ID: 2199023255957
   TxnStart: 08-30 16:35:41.313(435643624013955072)
 1 row in set (0.02 sec)
 ```
