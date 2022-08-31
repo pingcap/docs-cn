@@ -38,7 +38,7 @@ BR 将备份或恢复操作命令下发到各个 TiKV 节点。TiKV 收到命令
 - `storeID`：TiKV 节点编号
 - `regionID`：Region 编号
 - `regionEpoch`：Region 版本号
-- `k`eyHash`：Range startKey 的 Hash (sha256) 值，确保唯一性
+- `keyHash`：Range startKey 的 Hash (sha256) 值，确保唯一性
 - `timestamp`：TiKV 节点生成 SST 文件名时刻的 Unix 时间戳
 - `cf`：RocksDB 的 ColumnFamily（只备份 cf 为 `default` 或 `write` 的数据）
 
