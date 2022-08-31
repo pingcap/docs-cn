@@ -64,6 +64,10 @@ Currently, the TiCDC sink component supports replicating data to the following d
     - TiCDC splits cross-table transactions in the unit of table and does **not ensure** the atomicity of cross-table transactions.
     - TiCDC **ensures** that the order of single-row updates is consistent with that in the upstream.
 
+    > **Note:**
+    >
+    > Since v6.2, you can use the sink uri parameter [`transaction-atomicity`](/ticdc/manage-ticdc.md#configure-sink-uri-with-mysqltidb) to control whether to split single-table transactions. Splitting single-table transactions can greatly reduce the latency and memory consumption of replicating large transactions.
+
 - Kafka sink
 
     - TiCDC provides different strategies for data distribution. You can distribute data to different Kafka partitions based on the table, primary key, or timestamp.
