@@ -12,12 +12,12 @@ TiDB 版本：6.1.1
 
 + TiDB
 
-    (dup: release-6.2.0.md > Bug fixes> TiDB)- `SHOW DATABASES LIKE …` 语句不再大小写敏感 [#34766](https://github.com/pingcap/tidb/issues/34766)
+    (dup: release-6.2.0.md > Bug fixes> TiDB)- `SHOW DATABASES LIKE …` 语句不再大小写敏感 [#34766](https://github.com/pingcap/tidb/issues/34766) @[e1ijah1](https://github.com/e1ijah1)
     - 将 [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) 的默认值由 `1` 改为 `0`，即默认关闭 Join Reorder 对外连接的支持。
 
 + Diagnosis
 
-    - 默认关闭持续性能分析 (Continuous Profiling) 特性，以避免开启该特性后 TiFlash 可能会崩溃的问题，详情参见 [#5687](https://github.com/pingcap/tiflash/issues/5687)
+    - 默认关闭持续性能分析 (Continuous Profiling) 特性，以避免开启该特性后 TiFlash 可能会崩溃的问题，详情参见 [#5687](https://github.com/pingcap/tiflash/issues/5687) @[mornyx](https://github.com/mornyx)
 
 ## 其他变更
 
@@ -41,29 +41,29 @@ TiDB 版本：6.1.1
 
 + TiKV
 
-    (dup: release-6.2.0.md > Improvements> TiKV)- 支持通过 gzip 压缩 metrics 响应减少 HTTP body 大小 [#12355](https://github.com/tikv/tikv/issues/12355)
-    - 支持使用 [`server.simplify-metrics`](/tikv-configuration-file.md#simplify-metrics-从-v620-版本开始引入) 配置项过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量 [#12355](https://github.com/tikv/tikv/issues/12355)
-    (dup: release-6.2.0.md > Improvements> TiKV)- 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145)
+    (dup: release-6.2.0.md > Improvements> TiKV)- 支持通过 gzip 压缩 metrics 响应减少 HTTP body 大小 [#12355](https://github.com/tikv/tikv/issues/12355) @[winoros](https://github.com/winoros)
+    - 支持使用 [`server.simplify-metrics`](/tikv-configuration-file.md#simplify-metrics-从-v620-版本开始引入) 配置项过滤部分 Metrics 采样数据以减少每次请求返回的 Metrics 数据量 [#12355](https://github.com/tikv/tikv/issues/12355) @[glorv](https://github.com/glorv)
+    (dup: release-6.2.0.md > Improvements> TiKV)- 支持动态调整 RocksDB 进行 subcompaction 的并发个数 (`rocksdb.max-sub-compactions`) [#13145](https://github.com/tikv/tikv/issues/13145) @[ethercflow](https://github.com/ethercflow)
 
 + PD
 
-    - 提升 Balance Region 在特定阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990)
+    - 提升 Balance Region 在特定阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990) @[bufferflies](https://github.com/bufferflies)
 
 + Tools
 
     + TiDB Lightning
 
-        - 针对 `stale command` 等错误增加自动重试机制，提升导入成功率 [#36877](https://github.com/pingcap/tidb/issues/36877)
+        - 针对 `stale command` 等错误增加自动重试机制，提升导入成功率 [#36877](https://github.com/pingcap/tidb/issues/36877) @[D3Hunter](https://github.com/D3Hunter)
 
     + TiDB Data Migration (DM)
 
-        - 用户可手动设置 Lightning Loader 并发数 [#5505](https://github.com/pingcap/tiflow/issues/5505)
+        - 用户可手动设置 Lightning Loader 并发数 [#5505](https://github.com/pingcap/tiflow/issues/5505) @[buchuitoudegou](https://github.com/buchuitoudegou)
 
     + TiCDC
 
-        - 在 changefeed 的配置中增加参数 `transaction-atomicity` 来控制是否拆分大事务，从而大幅减少大事务的延时和内存消耗 [#5231](https://github.com/pingcap/tiflow/issues/5231)
-        - (dup: release-6.2.0.md > 改进提升> Tools> TiCDC)- 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610)
-        - 优化 MySQL sink，实现自动关闭 safe mode。[#5611](https://github.com/pingcap/tiflow/issues/5611)
+        - 在 changefeed 的配置中增加参数 `transaction-atomicity` 来控制是否拆分大事务，从而大幅减少大事务的延时和内存消耗 [#5231](https://github.com/pingcap/tiflow/issues/5231) @[CharlesCheung96](https://github.com/CharlesCheung96)
+        - (dup: release-6.2.0.md > 改进提升> Tools> TiCDC)- 优化了多 Region 场景下，runtime 上下文切换带来过多性能开销的问题 [#5610](https://github.com/pingcap/tiflow/issues/5610) @[hicqu](https://github.com/hicqu)
+        - 优化 MySQL sink，实现自动关闭 safe mode。[#5611](https://github.com/pingcap/tiflow/issues/5611) @[overvenus](https://github.com/overvenus)
 
 ## Bug 修复
 
