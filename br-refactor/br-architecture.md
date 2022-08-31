@@ -12,18 +12,25 @@ TiDB 的备份恢复功能，以 br、tidb-operator 为使用入口，创建相�
 对 TiDB 集群进行快照数据备份时：
 
 1. br 收到 `br backup full` 命令
+
   + 解析并校验用户操作的输入，获得快照 TSO（backup ts） 、备份存储地址
+
 2. br 配置 TiDB 集群，防止接下来要备份的数据被 GC 机制回收掉
 3. br 分配和调度备份任务
+
   + 访问 pd 获取所有 tikv 节点访问地址，以及数据分布的位置信息
   + 创建 BackupRequest 发送给相应的 tikv 节点，BackupRequest 包含有 backup ts、需要备份的 kvs，备份存储访问信息
+
 4. br 监听每个 BackupRequest 的执行结果，并对结果进行处理
+
   + 局部备份数据备份因为 region 调度发生变化，则计算这些数据的数据分布位置，然后发送给对应的 tikv 节点进行重新备份
   + 存在数据备份失败，则备份任务失败
   + 全部数据备份成功后，则备份任务成功
+
 5. br 备份 schema，并且按照表对备份数据计算 checksum
 6. br 生成 backup metadata，并写入备份存储。backup metadata 包含 backup ts，备份的表，表对应的备份文件，table data checksum 和文件 checksum 等信息
 7. tikv 节点执行备份任务
+
   + tikv 节点接收到 BackupRequest 后，启动 backup worker 进程
   + 从 raft group 角色为 leader 的 region 读取对应 backup ts 的数据
   + 将读取到的数据生成 SST 文件，保存在本地临时目录中
