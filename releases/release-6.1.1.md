@@ -121,29 +121,29 @@ TiDB 版本：6.1.1
 
 + PD
 
-    - 修复当集群中节点的 label 设置异常时，store 上线进度评估不准确的问题 [#5234](https://github.com/tikv/pd/issues/5234) @
-    - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @
-    - 修复 `/regions/replicated` 返回状态错误的问题 [#5095](https://github.com/tikv/pd/issues/5095) @
+    - 修复当集群中节点的 label 设置异常时，store 上线进度评估不准确的问题 [#5234](https://github.com/tikv/pd/issues/5234) @[rleungx (Ryan Leung)](https://github.com/rleungx)
+    - 修复开启 `enable-forwarding` 时 gRPC 处理返回错误不恰当导致 PD panic 的问题 [#5373](https://github.com/tikv/pd/issues/5373) @[bufferflies (buffer)](https://github.com/bufferflies)
+    - 修复 `/regions/replicated` 返回状态错误的问题 [#5095](https://github.com/tikv/pd/issues/5095) @[rleungx (Ryan Leung)](https://github.com/rleungx)
 
 + TiFlash
 
-    (dup: release-5.4.2.md > Bug Fixes> TiFlash)- 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154) @
-    - 修复 `format` 函数可能会报 `Data truncated` 错误的问题 [#4891](https://github.com/pingcap/tiflash/issues/4891) @
-    - 修复存储中残留过期数据且无法删除的问题 [#5659](https://github.com/pingcap/tiflash/issues/5659) @
-    - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409) @
-    - 修复 TiFlash 无法在使用 IPv6 的集群运行的问题 [#5247](https://github.com/pingcap/tiflash/issues/5247) @
-    - 修复并行聚合出错时可能导致 TiFlash crash 的问题 [#5356](https://github.com/pingcap/tiflash/issues/5356) @
-    - 修复 `MinTSOScheduler` 在查询出错时可能会泄露线程资源问题 [#5556](https://github.com/pingcap/tiflash/issues/5556) @
+    (dup: release-5.4.2.md > Bug Fixes> TiFlash)- 修复在 clustered index 表删除列导致 TiFlash 崩溃的问题 [#5154](https://github.com/pingcap/tiflash/issues/5154) @[hongyunyan (hongyunyan)](https://github.com/hongyunyan)
+    - 修复 `format` 函数可能会报 `Data truncated` 错误的问题 [#4891](https://github.com/pingcap/tiflash/issues/4891) @[xzhangxian1008](https://github.com/xzhangxian1008)
+    - 修复存储中残留过期数据且无法删除的问题 [#5659](https://github.com/pingcap/tiflash/issues/5659) @[lidezhu](https://github.com/lidezhu)
+    - 修复个别场景消耗不必要 CPU 的问题 [#5409](https://github.com/pingcap/tiflash/issues/5409) @[breezewish (Wenxuan)](https://github.com/breezewish)
+    - 修复 TiFlash 无法在使用 IPv6 的集群运行的问题 [#5247](https://github.com/pingcap/tiflash/issues/5247) @[solotzg (Zhigao Tong)](https://github.com/solotzg)
+    - 修复并行聚合出错时可能导致 TiFlash crash 的问题 [#5356](https://github.com/pingcap/tiflash/issues/5356) @[gengliqi (Liqi Geng)](https://github.com/gengliqi)
+    - 修复 `MinTSOScheduler` 在查询出错时可能会泄露线程资源问题 [#5556](https://github.com/pingcap/tiflash/issues/5556) @[windtalker (xufei)](https://github.com/windtalker)
 
 + Tools
 
     + TiDB Lightning
 
-        - 修复了使用 IPv6 host 时无法连接到 TiDB 的问题 [#35880](https://github.com/pingcap/tidb/issues/35880) @
-        - 修复 `read index not ready` 问题，增加重试机制 [#36566](https://github.com/pingcap/tidb/issues/36566) @
-        - 修复服务器模式下日志敏感信息被打印的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @
-        - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980) @
-        - 修复极端情况下重复去重可能会 panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163) @
+        - 修复了使用 IPv6 host 时无法连接到 TiDB 的问题 [#35880](https://github.com/pingcap/tidb/issues/35880) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复 `read index not ready` 问题，增加重试机制 [#36566](https://github.com/pingcap/tidb/issues/36566) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复服务器模式下日志敏感信息被打印的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[lichunzhu (Chunzhu Li)](https://github.com/lichunzhu)
+        - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980) @[D3Hunter](https://github.com/D3Hunter)
+        - 修复极端情况下重复去重可能会 panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163) @[ForwardStar (ForwardStar)](https://github.com/ForwardStar)
 
     + TiDB Data Migration (DM)
 
