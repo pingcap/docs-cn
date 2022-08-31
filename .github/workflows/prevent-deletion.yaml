@@ -1,0 +1,46 @@
+name: Prevent Deletion
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    permissions:
+      checks: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout base
+        uses: actions/checkout@v3
+      - name: Fetch head
+        run: |
+          git remote add head ${{ github.event.pull_request.head.repo.clone_url }}
+          git fetch --depth=1 head ${{ github.event.pull_request.head.ref }}
+      - name: Find changes
+        run: |
+          git rev-parse '${{ github.event.pull_request.head.sha }}'
+          if git diff --name-only --diff-filter 'D' HEAD '${{ github.event.pull_request.head.sha }}' | grep -E '^media/.*\.(jpg|png|jpeg|gif)$' >/tmp/changed_files; then
+            cat /tmp/changed_files
+            echo '{"name":"Image Deletion Check","head_sha":"${{ github.event.pull_request.head.sha }}","status":"completed","conclusion":"failure"}' > /tmp/body.json
+            jq \
+              --arg count "$(wc -l /tmp/changed_files | awk '{print $1}')" \
+              --arg summary "$(cat /tmp/changed_files | sed 's/^/- /')" \
+              '.output.title = "Found " + $count + " deleted images" | .output.summary = $summary' \
+            /tmp/body.json > /tmp/body2.json
+          else
+            echo '{"name":"Image Deletion Check","head_sha":"${{ github.event.pull_request.head.sha }}","status":"completed","conclusion":"success","output":{"title":"OK","summary":"No deleted images"}}' > /tmp/body2.json
+          fi
+      - name: Publish result
+        run: |
+          cat /tmp/body2.json
+          curl \
+            -sSL \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: token ${{ github.token }}" \
+            -T '/tmp/body2.json' \
+          'https://api.github.com/repos/${{ github.repository }}/check-runs'
