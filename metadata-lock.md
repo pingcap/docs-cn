@@ -82,6 +82,10 @@ txn7: Public
 + 开启了 Stale Read
 + 访问临时表
 
+## 启用元数据锁
+
+使用系统变量 [`tidb_enable_mdl`](/system-variables.md#tidb_enable_mdl-span-classversion-mark-v63-span) 启动或者关闭元数据锁特性。
+
 ## DDL 阻塞的排查
 
 TiDB 在 6.3 版本中引入了一个视图 `mysql.tidb_ddl_lock`, 可以用于查看当前阻塞的 DDL 的相关信息。
