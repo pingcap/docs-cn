@@ -90,23 +90,21 @@ TiDB 备份功能支持在存储服务端对备份数据进行加密，使用请
 
 #### 与其他功能的兼容性
 
-BR 和 TiDB 集群的兼容性问题分为两方面：
++ `charset=GBK` 不兼容
 
-+ BR 部分版本和 TiDB 集群的接口不兼容
+ BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 v5.4.0 之前的 TiDB 集群。
 
-    BR 在 v5.4.0 之前不支持恢复 `charset=GBK` 的表。并且，任何版本的 BR 都不支持恢复 `charset=GBK` 的表到 v5.4.0 之前的 TiDB 集群。
-
-+ 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此备份和恢复期间如果没有统一开启或关闭某功能，就会带来不兼容的问题。
++ 某些功能在开启或关闭状态下，会导致 KV 格式发生变化，因此需要保证恢复集群的这些配置，与备份集群备份时的配置相同
 
 下表整理了会导致 KV 格式发生变化的功能。
 
 | 功能 | 相关 issue | 解决方式 |
 |  ----  | ----  | ----- |
-| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保备份时 `tidb_enable_clustered_index` 全局变量和恢复时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
+| 聚簇索引 | [#565](https://github.com/pingcap/br/issues/565)       | 确保恢复时集群的 `tidb_enable_clustered_index` 全局变量和备份时一致，否则会导致数据不一致的问题，例如 `default not found` 和数据索引不一致。 |
 | New collation  | [#352](https://github.com/pingcap/br/issues/352)       | 确保恢复时集群的 `new_collations_enabled_on_first_bootstrap` 变量值和备份时的一致，否则会导致数据索引不一致和 checksum 通不过。更多信息，请参考 [FAQ - BR 为什么会报 `new_collations_enabled_on_first_bootstrap` 不匹配？](/br/backup-and-restore-faq.md#br-为什么会报-new_collations_enabled_on_first_bootstrap-不匹配)。 |
 | 全局临时表 | | 确保使用 BR v5.3.0 及以上版本进行备份和恢复，否则会导致全局临时表的表定义错误。 |
 
-在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本内部协议不一致/接口不一致出现不兼容的问题，因此 BR 内置了版本检查。
+在上述功能确保备份恢复一致的**前提**下，BR 和 TiKV/TiDB/PD 还可能因为版本之间实现不一致的问题导致功能运行失败，因此 BR 内置了版本检查。
 
 #### 版本兼容检查
 
