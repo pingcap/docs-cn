@@ -13,11 +13,11 @@ TiDB 版本：6.1.1
 + TiDB
 
     (dup: release-6.2.0.md > Bug fixes> TiDB)- `SHOW DATABASES LIKE …` 语句不再大小写敏感 [#34766](https://github.com/pingcap/tidb/issues/34766)
-    - 将 [`tidb_enable_outer_join_reorder`](https://github.com/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) 的默认值由 `1` 改为 `0`，即默认关闭 Join Reorder 对外连接的支持。
+    - 将 [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) 的默认值由 `1` 改为 `0`，即默认关闭 Join Reorder 对外连接的支持。
 
 + Diagnosis
 
-    - 默认关闭 Continuous Profiling 特性，以避免开启该特性后 TiFlash 可能会崩溃的问题，详情参见 [#5687](https://github.com/pingcap/tiflash/issues/5687)
+    - 默认关闭持续性能分析 (Continuous Profiling) 特性，以避免开启该特性后 TiFlash 可能会崩溃的问题，详情参见 [#5687](https://github.com/pingcap/tiflash/issues/5687)
 
 ## 其他变更
 
@@ -70,7 +70,7 @@ TiDB 版本：6.1.1
 + TiDB
 
     <!-- <execution> -->
-    - 修复 `IndexLookupHashJoin` 和 `LIMIT` 一起使用时可能会卡住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638)
+    - 修复 `INL_HASH_JOIN` 和 `LIMIT` 一起使用时可能会卡住的问题 [#35638](https://github.com/pingcap/tidb/issues/35638)
     - 修复 TiDB 在执行 `UPDATE` 语句时可能会 panic 的问题 [#32311](https://github.com/pingcap/tidb/issues/32311)
     - 修复 TiDB 在执行 `SHOW COLUMNS` 时会发出协处理器请求的问题 [#36496](https://github.com/pingcap/tidb/issues/36496)
     - 修复执行 `SHOW WARNINGS` 时可能会报 `invalid memory address or nil pointer dereference` 的问题 [#31569](https://github.com/pingcap/tidb/issues/31569)
@@ -78,14 +78,13 @@ TiDB 版本：6.1.1
 
     <!-- <planner> -->
     - 修复执行 Join Reorder 操作时会错误地下推 Outer Join 条件的问题 [#37238](https://github.com/pingcap/tidb/issues/37238)
-    - 修复了 CTE 被引用多次时 schema hash code 被错误克隆导致的 `cannot find column` 错误 [#35404](https://github.com/pingcap/tidb/issues/35404)
+    - 修复了 CTE 被引用多次时 schema hash code 被错误克隆导致的 `Can't find column ... in schema ...` 错误 [#35404](https://github.com/pingcap/tidb/issues/35404)
     - 修复了某些 Right Outer Join 场景下 Join Reorder 错误导致查询结果错误的问题 [#36912](https://github.com/pingcap/tidb/issues/36912)
     (dup: release-5.4.2.md > Bug 修复> TiDB)- 修复了执行计划在 EqualAll 的情况下，把 TiFlash 的 `firstrow` 聚合函数的 null flag 设错的问题 [#34584](https://github.com/pingcap/tidb/issues/34584)
-    - 修复了当查询创建了带 `ignore_plan_cache hint` 的 binding 后，无法再使用 Plan Cache 的问题 [#34596](https://github.com/pingcap/tidb/issues/34596)
+    - 修复了当查询创建了带 `IGNORE_PLAN_CACHE` hint 的 binding 后，无法再使用 Plan Cache 的问题 [#34596](https://github.com/pingcap/tidb/issues/34596)
     - 修复了 hash-partition window 和 single-partition window 之间缺少 `EXCHANGE` 算子的问题 [#35990](https://github.com/pingcap/tidb/issues/35990)
     (dup: release-5.2.4.md > Bug 修复> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
     - 修复了聚合运算下推后为 partial aggregation 设置了错误的默认值导致结果错误的问题 [#35295](https://github.com/pingcap/tidb/issues/35295)
-    (dup: release-5.2.4.md > Bug fixes> TiDB)- 修复某些情况下分区表无法充分利用索引来扫描数据的问题 [#33966](https://github.com/pingcap/tidb/issues/33966)
 
     <!-- <sql-infra> -->
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在某些情况下查询分区表可能返回 `index-out-of-range` and `non used index` 错误的问题 [#35181](https://github.com/pingcap/tidb/issues/35181)
@@ -98,9 +97,8 @@ TiDB 版本：6.1.1
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了 `LOAD DATA` 语句中列的列表不生效的问题 [#35198](https://github.com/pingcap/tidb/issues/35198) @[SpadeA-Tang](https://github.com/SpadeA-Tang)
     (dup: release-5.3.2.md > Bug Fixes> TiDB)- 修复开启 TiDB Binlog 后插入重复数据导致 data and columnID count not match 错误的问题 [#33608](https://github.com/pingcap/tidb/issues/33608)
     - 去除 `tidb_gc_life_time` 设置时间检查限制 [#35392](https://github.com/pingcap/tidb/issues/35392)
-    - 修复空分隔符使用情况下，load data 出现死循环的问题 [#33298](https://github.com/pingcap/tidb/issues/33298)
+    - 修复空分隔符使用情况下，`LOAD DATA` 出现死循环的问题 [#33298](https://github.com/pingcap/tidb/issues/33298)
     (dup: release-6.2.0.md > 错误修复> TiDB)- 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
-    (dup: release-6.2.0.md > Bug fixes> TiDB)- 避免向非健康状态的 TiKV 节点发送请求，以提升可用性 [#34906](https://github.com/pingcap/tidb/issues/34906)
 
 + TiKV
 
