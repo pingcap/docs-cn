@@ -8,38 +8,37 @@ title: 元数据锁
 
 ## 元数据锁的概念
 
-在 TiDB 中，对元数据对象的更改采用的是 F1 论文中的在线异步变更算法。事务在执行时会获取开始时对应的元数据快照。如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 Information schema is changed 的错误。
+在 TiDB 中，对元数据对象的更改采用的是 F1 论文中的在线异步变更算法。事务在执行时会获取开始时对应的元数据快照。如果事务执行过程中相关表上发生了元数据的更改，为了保证数据的一致性，TiDB 会返回 Information schema is changed 的错误，导致用户事务提交失败。
 为了解决这个问题，在 6.3 版本中，TiDB 引入元数据锁这一特性，对 DML 语句和 DDL 语句的执行进行协调，最大程度上避免了 DML 语句报错的问题。
 
 ## 元数据锁的原理
 
-一个 DDL 语句在执行过程中需要进行多次状态变更，而在元数据线异步变更的算法要求集群中事务提交所采用的元数据版本最多相差一个版本。
-以加索引为例，其状态会经历 None-> Delete Only, Delete Only -> Write Only, Write Only -> Write Reorg, Write Reorg -> Public 这四个变化。
+### 背景
+
+TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中需要修改定义的对象元数据版本需要进行多次小版本变更，而元数据在线异步变更的算法只论证了相邻的两个小版本之间是兼容的（即用户在相邻的两个版本间做操作，对于DDL 变更对象所存储的数据一致性是不会产生破坏的）。
+以针对 t1 表加索引 idx1 为例，其状态会经历 None-> Delete Only, Delete Only -> Write Only, Write Only -> Write Reorg, Write Reorg -> Public 这四个变化。
 
 那么以下的提交流程将违反这一约束：
 
-txn1: None
+| 事务   | 所用的版本      | 集群最新版本     | 版本差 |
+|:-----|:-----------|:-----------|:----|
+| txn1 | None       | None       | 0   |
+| txn2 | DeleteOnly | DeleteOnly | 0   |
+| txn3 | WriteOnly  | WriteOnly  | 0   |
+| txn4 | None       | WriteOnly  | 2   |
+| txn5 | WriteReorg | WriteReorg | 0   |
+| txn6 | WriteOnly  | WriteReorg | 1   |
+| txn7 | Public     | Public     | 0   |
 
-txn2: DeleteOnly
+其中 `txn4` 提交时采用的元数据版本与集群中最新的元数据版本相差了两个版本，会导致正确性问题。
 
-txn3: WriteOnly
-
-txn4: None
-
-txn5: Write Reorg
-
-txn6: WriteOnly
-
-txn7: Public
-
-其中 `txn4` 提交时采用的元数据版本与 `txn3` 提交时采用的元数据版本相差了两个版本，会导致正确性问题。
+### 元数据锁的实现
 
 在引入元数据锁后，会保证整个 TiDB 集群中的所有事务所用的元数据版本最多相差一个版本。为此：
 
 执行 DML 语句时，TiDB 会在事务上下文中记录下该 DML 语句访问的元数据对象，例如表、视图，以及对应的元数据版本。事务提交时会清空这些记录。
 
-执行 DDL 语句进行状态变更时，会往所有的 TiDB 节点推送新版本的元数据。如果一个 TiDB 节点上所有的与这次状态变更相关的旧事务都以及提交，我们称这个 TiDB 获得了该元数据对象的元数据锁。
-当集群中的所有 TiDB 节点都获取了该元数据对象的元数据锁后，才能进行下一次状态变更。
+执行 DDL 语句进行状态变更时，会往所有的 TiDB 节点推送新版本的元数据。如果一个 TiDB 节点上所有的与这次状态变更所有事务使用的状态与当前状态版本之差 < 2，我们称这个 TiDB 获得了该元数据对象的元数据锁。当集群中的所有 TiDB 节点都获取了该元数据对象的元数据锁后，才能进行下一次状态变更。
 
 ## 元数据锁的影响
 
@@ -55,8 +54,8 @@ txn7: Public
 |:----------------------------------------------------------|:------------------------------------------------|
 | CREATE TABLE t (a INT);                                   |                                                 |
 | INSERT INTO T VALUES(1);                                  |                                                 | 
-| BEGIN;                                                    |                                                 |  
-|                                                           | ALTER TABLE t ADD COLUMN b INT                  |           
+| BEGIN;                                                    |                                                 |
+|                                                           | ALTER TABLE t ADD COLUMN b INT                  |    
 | SELECT * FROM t;  采用 t 表当前的元数据版本，返回(a=1，b=NULL)，同时给表 t 上锁 |                                                 |
  |                                                           | ALTER TABLE t ADD COLUMN c INT (被 session 1 阻塞) |
 
