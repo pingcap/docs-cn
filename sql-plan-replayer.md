@@ -105,7 +105,7 @@ PLAN REPLAYER LOAD 'file_name';
 PLAN REPLAYER LOAD 'plan_replayer.zip';
 ```
 
-导入完毕后，该 TiDB 集群就有载入了所需要的表结构、统计信息等其他影响构造 Plan 所需要的信息。我们可以通过以下方式查看执行计划以及验证统计信息:
+导入完毕后，该 TiDB 集群就载入了所需要的表结构、统计信息等其他影响构造 Plan 所需要的信息。你可以通过以下方式查看执行计划以及验证统计信息:
 
 ```sql
 mysql> desc t;
@@ -136,4 +136,4 @@ mysql> show stats_meta;
 1 row in set (0.04 sec)
 ```
 
-当确认完加载所需现场还原完毕后，即可在该现场下进行执行计划的诊断与改进。
+加载并还原所需现场后，即可在在该现场诊断和改进执行计划。
