@@ -91,7 +91,7 @@ TiDB 版本：6.1.1
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在某些情况下查询分区表可能返回 `index-out-of-range` and `non used index` 错误的问题 [#35181](https://github.com/pingcap/tidb/issues/35181)
     (dup: release-6.2.0.md > Bug fixes> TiDB)- 修复了在查询分区表中如果查询条件中有分区键且两者使用了不同的 COLLATE 时会错误的进行分区裁剪的问题 [#32749](https://github.com/pingcap/tidb/issues/32749) @[mjonss](https://github.com/mjonss)
     - 修复了在开启 TiDB Binlog 时，TiDB 执行 `ALTER SEQUENCE` 会产生错误的元信息版本号，进而导致 Drainer 报错退出的问题 [#36276](https://github.com/pingcap/tidb/issues/36276)
-    - 修复了在极端情况情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791)
+    - 修复了在极端情况下，启动 TiDB 可能进入错误状态的问题 [#36791](https://github.com/pingcap/tidb/issues/36791)
     - 修复了在 TiDB Dashboard 中查询分区表的执行计划时，有可能出现 `UnkownPlanID` 的问题 [#35153](https://github.com/pingcap/tidb/issues/35153)
 
     <!-- <transaction> -->
@@ -112,10 +112,10 @@ TiDB 版本：6.1.1
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复同时分裂和销毁一个 peer 时可能导致 panic 的问题 [#12825](https://github.com/tikv/tikv/issues/12825)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复在 Region merge 时 source peer 通过 snapshot 追日志时可能导致 panic 的问题 [#12663](https://github.com/tikv/tikv/issues/12663)
     (dup: release-5.3.2.md > Bug Fixes> TiKV)- 修复了 PD 客户端遇到报错时频繁重连的问题 [#12345](https://github.com/tikv/tikv/issues/12345)
-    - 修复了开启 Raft Engine 并发恢复时可能会 panic 的问题 [#13123](https://github.com/tikv/tikv/issues/13123)
+    - 修复了开启 Raft Engine 并发恢复时 TiKV 可能会 panic 的问题 [#13123](https://github.com/tikv/tikv/issues/13123)
     (dup: release-6.2.0.md > Bug fixes> TiKV)- 修复了新创建的 Region Commit Log Duration 较高导致 QPS 下降的问题 [#13077](https://github.com/tikv/tikv/issues/13077)
     - 修复启用 Raft Engine 后特殊情况下 TiKV 会 panic 的问题 [#12698](https://github.com/tikv/tikv/issues/12698)
-    - 修复无法找到 proc filesystem (procfs) 时警告级别日志过多的的问题 [#13116](https://github.com/tikv/tikv/issues/13116)
+    - 修复无法找到 proc filesystem (procfs) 时警告级别日志过多的问题 [#13116](https://github.com/tikv/tikv/issues/13116)
     - 修复 Dashboard 中 Unified Read Pool CPU 表达式错误的问题 [#13086](https://github.com/tikv/tikv/issues/13086)
     - 修复 Region 较大时，默认 [`region-split-check-diff`](/tikv-configuration-file.md#region-split-check-diff) 可能会大于 bucket 大小的问题 [#12598](https://github.com/tikv/tikv/issues/12598)
     - 修复启用 Raft Engine 后，中止 Apply Snapshot 时可能会 panic 的问题 [#12470](https://github.com/tikv/tikv/issues/12470)
