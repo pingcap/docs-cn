@@ -47,7 +47,7 @@ TiDB 版本：6.1.1
 
 + PD
 
-    - 提升 Balance Region 在空间快均衡阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990)
+    - 提升 Balance Region 在特定阶段的调度速度 [#4990](https://github.com/tikv/pd/issues/4990)
 
 + Tools
 
