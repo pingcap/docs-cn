@@ -29,15 +29,56 @@ BR can generate the following types of backup files:
 
 ### Naming format of SST files
 
-SST files are named in the format of `storeID_regionID_regionEpoch_keyHash_cf`. The fields in the format are explained as follows:
+When data is backed up to Google Cloud Storage or Azure Blob Storage, SST files are named in the format of `storeID_regionID_regionEpoch_keyHash_timestamp_cf`. The fields in the format are explained as follows:
 
 - `storeID` is the TiKV node ID.
 - `regionID` is the Region ID.
 - `regionEpoch` is the version number of a Region.
 - `keyHash` is the Hash (sha256) value of the startKey of a range, which ensures the uniqueness of a key.
+- `timestamp` is the Unix timestamp of an SST file when it is generated at TiKV.
+- `cf` indicates the Column Family of RocksDB (`default` or `write` by default).
+
+When data is backed up to Amazon S3 or a network disk, the SST files are named in the format of `regionID_regionEpoch_keyHash_timestamp_cf`. The fields in the format are explained as follows:
+
+- `regionID` is the Region ID.
+- `regionEpoch` is the version number of a Region.
+- `keyHash` is the Hash (sha256) value of the startKey of a range, which ensures the uniqueness of a key.
+- `timestamp` is the Unix timestamp of an SST file when it is generated at TiKV.
 - `cf` indicates the Column Family of RocksDB (`default` or `write` by default).
 
 ### Storage format of SST files
 
 - For details about the storage format of SST files, see [Rocksdb BlockBasedTable Format](https://github.com/facebook/rocksdb/wiki/Rocksdb-BlockBasedTable-Format).
 - For details about the encoding format of backup data in SST files, see [Mapping of table data to Key-Value](/tidb-computing.md#mapping-of-table-data-to-key-value).
+
+### Backup file structure
+
+When you back up data to Google Cloud Storage or Azure Blob Storage, the SST files, backupmeta files, and backup.lock files are stored in the same directory in the following structure:
+
+```
+.
+└── 20220621
+    ├── backupmeta
+    |—— backup.lock
+    ├── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    └── {storeID}-{regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+```
+
+When you back up data to Amazon S3 or a network disk, the SST files are stored in sub-directories based on the storeID. The structure is as follows:
+
+```
+.
+└── 20220621
+    ├── backupmeta
+    |—— backup.lock
+    ├── store1
+    │   └── {regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── store100
+    │   └── {regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── store2
+    │   └── {regionID}-{regionEpoch}-{keyHash}-{timestamp}-{cf}.sst
+    ├── store3
+    ├── store4
+    └── store5
+```
