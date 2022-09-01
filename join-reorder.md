@@ -29,5 +29,6 @@ title: Join Reorder 算法简介
 当前的 Join Reorder 算法存在如下限制：
 
 - 受结果集的计算算法所限并不会保证一定会选到合适的 Join order
+- 目前默认关闭 Outer Join 的 Join Reorder。如需开启此功能，需要将系统变量 [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) 设为 `ON`。
 
 目前 TiDB 中支持使用 `STRAIGHT_JOIN` 语法来强制指定一种 Join 顺序，参见[语法元素说明](/sql-statements/sql-statement-select.md#语法元素说明)。
