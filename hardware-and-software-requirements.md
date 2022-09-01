@@ -6,26 +6,37 @@ title: TiDB 软件和硬件环境建议配置
 
 TiDB 作为一款开源分布式 NewSQL 数据库，可以很好地部署和运行在 Intel 架构服务器环境、ARM 架构的服务器环境及主流虚拟化环境，并支持绝大多数的主流硬件网络。作为一款高性能数据库系统，TiDB 支持主流的 Linux 操作系统环境。
 
-## Linux 操作系统版本要求
+## 操作系统及平台要求
 
-| Linux 操作系统       | 版本         |
+| 操作系统       | 版本         |
 | :----------------------- | :----------: |
-| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本   |
-| CentOS                   | 7.3 及以上的 7.x 版本   |
+| Red Hat Enterprise Linux | 7.3 及以上的 7.x 版本，8.4 及以上的 8.x 版本   |
+| CentOS                   | 7.3 及以上的 7.x 版本，8.4 及以上的 8.x 版本   |
 | Oracle Enterprise Linux  | 7.3 及以上的 7.x 版本   |
 | Amazon Linux             | 2 |
 | Ubuntu LTS               | 16.04 及以上的版本      |
 
 > **注意：**
 >
-> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。 
+> - TiDB 只支持 Red Hat 兼容内核 (RHCK) 的 Oracle Enterprise Linux，不支持 Oracle Enterprise Linux 提供的 Unbreakable Enterprise Kernel。
 > - TiDB 在 CentOS 7.3 的环境下进行过大量的测试，同时社区也有很多该操作系统部署的最佳实践，因此，建议使用 CentOS 7.3 以上的 7.x Linux 操作系统来部署 TiDB。
 > - 以上 Linux 操作系统可运行在物理服务器以及 VMware、KVM 及 XEN 主流虚拟化环境上。
 > - 目前尚不支持 Red Hat Enterprise Linux 8.0、CentOS 8 Stream 和 Oracle Enterprise Linux 8.0，因为目前对这些平台的测试还在进行中。
-> - 不计划支持 CentOS 8 Linux，因为 CentOS 的上游支持已于 2021 年 12 月 31 日终止。
+> - 根据 [CentOS Linux EOL](https://www.centos.org/centos-linux-eol/)，CentOS 的上游支持已于 2021 年 12 月 31 日终止。
 > - TiDB 将不再支持 Ubuntu 16.04。强烈建议升级到 Ubuntu 18.04 或更高版本。
 
 其他 Linux 操作系统版本（例如 Debian Linux 和 Fedora Linux）也许可以运行 TiDB，但尚未得到 TiDB 官方支持。
+
+### 编译和运行 TiDB 所依赖的库
+
+|  编译和构建 TiDB 所需的依赖库   |  版本   |
+|   :---   |   :---   |
+|   Golang  |  1.18.5 及以上版本  |
+|   Rust    |   nightly-2022-07-31 及以上版本  |
+|  GCC      |   7.x      |
+|  LLVM     |  13.0 及以上版本  |
+
+运行时所需的依赖库：glibc（2.28-151.el8 版本）
 
 ## 软件配置要求
 
