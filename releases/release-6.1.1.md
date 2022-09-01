@@ -13,7 +13,7 @@ TiDB 版本：6.1.1
 + TiDB
 
     - `SHOW DATABASES LIKE …` 语句不再大小写敏感 [#34766](https://github.com/pingcap/tidb/issues/34766) @[e1ijah1](https://github.com/e1ijah1)
-    - 将 [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-new-in-v610) 的默认值由 `1` 改为 `0`，即默认关闭 Join Reorder 对外连接的支持。
+    - 将 [`tidb_enable_outer_join_reorder`](/system-variables.md#tidb_enable_outer_join_reorder-从-v610-版本开始引入) 的默认值由 `1` 改为 `0`，即默认关闭 Join Reorder 对外连接的支持。
 
 + Diagnosis
 
