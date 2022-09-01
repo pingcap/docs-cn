@@ -143,7 +143,7 @@ TiDB 版本：6.1.1
         - 修复 `read index not ready` 问题，增加重试机制 [#36566](https://github.com/pingcap/tidb/issues/36566) @[D3Hunter](https://github.com/D3Hunter)
         - 修复服务器模式下日志敏感信息被打印的问题 [#36374](https://github.com/pingcap/tidb/issues/36374) @[lichunzhu (Chunzhu Li)](https://github.com/lichunzhu)
         - 修复 TiDB Lightning 不支持 Parquet 文件中以斜线 (`/`)、数字、非 ASCII 字符开头的特殊列名的问题 [#36980](https://github.com/pingcap/tidb/issues/36980) @[D3Hunter](https://github.com/D3Hunter)
-        - 修复极端情况下重复去重可能会 panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163) @[ForwardStar](https://github.com/ForwardStar)
+        - 修复极端情况下去重可能会导致 TiDB Lightning panic 的问题 [#34163](https://github.com/pingcap/tidb/issues/34163) @[ForwardStar](https://github.com/ForwardStar)
 
     + TiDB Data Migration (DM)
 
