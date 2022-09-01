@@ -81,6 +81,20 @@ SHOW CREATE USER 'newuser';
 1 row in set (0.00 sec)
 ```
 
+{{< copyable "sql" >}}
+
+```sql
+ALTER USER 'newuser' ACCOUNT LOCK;
+```
+
+```
+Query OK, 0 rows affected (0.02 sec)
+```
+
+> **注意：**
+>
+> 不要使用 `ACCOUNT UNLOCK` 解锁一个[角色（`Role`）](sql-statement-create-role.md)，否则通过该角色可以免密码登入 TiDB。
+
 ## MySQL 兼容性
 
 * 在 MySQL 中，`ALTER` 语句用于更改属性，例如使密码失效。但 TiDB 尚不支持此功能。
