@@ -47,10 +47,14 @@ TiDB 还提供了其他工具，你可以根据需要选择使用：
 ### 需要的权限
 
 - SELECT
-- RELOAD（RDS 忽略）
+- RELOAD
 - LOCK TABLES
 - REPLICATION CLIENT
 - PROCESS
+
+> **注意：**
+>
+> 如果上游数据库为 RDS，或者为数据库托管服务，上游用户权限请忽略 `RELOAD`。
 
 ### 导出为 SQL 文件
 
