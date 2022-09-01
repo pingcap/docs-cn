@@ -89,7 +89,7 @@ TiDB 中实现的是 Online DDL 的模式，一个 DDL 语句在执行过程中�
 
 TiDB 在 6.3 版本中引入了一个视图 `mysql.tidb_ddl_lock`, 可以用于查看当前阻塞的 DDL 的相关信息。
 
-以元数据锁的影响小节中 session2 的语句 `ALTER TABLE t ADD COLUMN c INT` 为例。
+以元数据锁的影响小节中 session2 的语句 `ALTER TABLE t ADD INDEX idx(a)` 为例。
 
 ```sql
 select * from mysql.tidb_ddl_lock\G
@@ -97,7 +97,7 @@ select * from mysql.tidb_ddl_lock\G
     JOB_ID: 141
    DB_NAME: test
 TABLE_NAME: t
-     QUERY: ALTER TABLE t ADD COLUMN c INT
+     QUERY: ALTER TABLE t ADD INDEX idx(a)
 SESSION ID: 2199023255957
   TxnStart: 08-30 16:35:41.313(435643624013955072)
 1 row in set (0.02 sec)
